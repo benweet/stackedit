@@ -3,8 +3,13 @@ body {
 	font-family: sans-serif;
 }
 
-#info-filename {
+#file-title {
 	float:right;
+	padding: 10px;
+}
+
+#file-title-input {
+	display: none;
 }
 
 #wmd-input, #wmd-preview  {

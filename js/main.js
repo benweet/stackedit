@@ -7,38 +7,104 @@ var fileManager = (function($) {
 	var fileManager = {};
 
 	fileManager.init = function() {
-		if (localStorage.fileSystem) {
-			this.fileSystem = JSON.parse(localStorage.fileSystem);
-			if (localStorage.currentFile)
-				this.selectFile(localStorage.currentFile);
-			else
-				this.selectFile(Object.keys(this.fileSystem)[0]);
-		} else {
-			this.fileSystem = {};
-			this.createFile("New file");
-		}
+		fileManager.selectFile();
 		window.setInterval(function() {
 			fileManager.saveFile();
 		}, 5000);
+		$("#new-file").click(function() {
+			fileManager.saveFile();
+			fileManager.createFile();
+			fileManager.selectFile();
+		});
+		$("#file-title").click(function() {
+			$(this).hide();
+			$("#file-title-input").show().focus();
+		});
+		$("#file-title-input").blur(function() {
+			var title = $.trim($(this).val());
+			if(title) {
+				fileIndex = localStorage["file.current"];
+				localStorage[fileIndex + ".title"] = title;
+			}
+			$(this).hide();
+			$("#file-title").show();
+			fileManager.selectFile();
+		});
+	};
+	
+	fileManager.selectFile = function() {
+		// If file system does not exist
+		if(!localStorage["file.count"]) {
+			localStorage.clear();
+			localStorage["file.count"] = 0;
+		}
+		this.updateFileTitleList();
+		// If no file create one
+		if(this.fileTitleList.length == 0) {
+			this.createFile();
+			this.updateFileTitleList();
+		}
+		// If no default file take first one
+		if(!localStorage["file.current"]) {
+			var fileCount = parseInt(localStorage["file.count"]);
+			for(var i=0; i<fileCount; i++) {
+				var fileIndex = "file." + i;
+				if(localStorage[fileIndex + ".title"]) {
+					localStorage["file.current"] = fileIndex;
+					break;
+				}
+			}
+		}
+		// Update the editor and the file title
+		var fileIndex = localStorage["file.current"];
+		$("#wmd-input").val(localStorage[fileIndex + ".content"]);
+		var title = localStorage[fileIndex + ".title"];
+		$("#file-title").text(title);
+		$("#file-title-input").val(title);
 	};
 
-	fileManager.createFile = function(filename) {
-		this.fileSystem[filename] = "blah blah";
-		this.selectFile(filename);
+	fileManager.createFile = function(title) {
+		if(!title) {
+			title = "New file";
+		}
+		var fileIndex = "file." + parseInt(localStorage["file.count"]);
+		localStorage[fileIndex + ".title"] = title;
+		localStorage[fileIndex + ".content"] = "";
+		localStorage["file.count"] = parseInt(localStorage["file.count"]) + 1;
+		localStorage["file.current"] = fileIndex;
 	};
-
-	fileManager.selectFile = function(filename) {
-		this.currentFile = filename;
-		this.content = this.fileSystem[this.currentFile];
-		$("#wmd-input").val(this.content);
-		$("#info-filename").text(filename);
+	
+	fileManager.updateFileTitleList = function() {
+		var fileCount = parseInt(localStorage["file.count"]);
+		this.fileTitleList = [];
+		$("#file-selector").empty();
+		for(var i=0; i<fileCount; i++) {
+			var fileIndex = "file." + i;
+			var title = localStorage[fileIndex + ".title"];
+			if(title) {
+				this.fileTitleList[i] = title;
+				var a = $("<a>").text(title);
+				var li = $("<li>").append(a);
+				if(fileIndex == localStorage["file.current"]) {
+					li.addClass("disabled");
+				}
+				else {
+					a.click((function(fileIndex) {
+						return function() {
+							localStorage["file.current"] = fileIndex;
+							fileManager.selectFile();
+						};
+					})(fileIndex));
+				}
+				$("#file-selector").append(li);
+			}
+		}
 	};
 
 	fileManager.saveFile = function() {
-		this.content = $("#wmd-input").val();
-		this.fileSystem[this.currentFile] = this.content;
-		localStorage.fileSystem = JSON.stringify(this.fileSystem);
-		localStorage.currentFile = this.currentFile;
+		var content = $("#wmd-input").val();
+		var fileIndex = localStorage["file.current"];
+		localStorage[fileIndex + ".content"] = content;
 		//insertFile(this.currentFile, this.content);
 	};
 

@@ -7,10 +7,104 @@
 <link href="css/bootstrap.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
 <script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/Markdown.Converter.js"></script>
 <script type="text/javascript" src="js/Markdown.Sanitizer.js"></script>
 <script type="text/javascript" src="js/Markdown.Editor.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript">
+	var CLIENT_ID = '241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com';
+	var SCOPES = 'https://www.googleapis.com/auth/drive';
+
+	/**
+	 * Called when the client library is loaded to start the auth flow.
+	 */
+	function handleClientLoad() {
+		window.setTimeout(checkAuth, 1);
+	}
+
+	/**
+	 * Check if the current user has authorized the application.
+	 */
+	function checkAuth() {
+		gapi.auth.authorize({ 'client_id' : CLIENT_ID, 'scope' : SCOPES,
+			'immediate' : true }, handleAuthResult);
+	}
+
+	/**
+	 * Called when authorization server replies.
+	 *
+	 * @param {Object} authResult Authorization result.
+	 */
+	function handleAuthResult(authResult) {
+		 if (authResult && !authResult.error) {
+			 $("#drive-link").hide();
+		 } else {
+			 $("#drive-link").click(function() {
+	                gapi.auth.authorize({ 'client_id' : CLIENT_ID,
+	                    'scope' : SCOPES, 'immediate' : false }, handleAuthResult);
+	            });
+		 }
+		//alert(authResult);
+	}
+
+	/**
+	 * Start the file upload.
+	 *
+	 * @param {Object} evt Arguments from the file selector.
+	 */
+	function uploadFile(evt) {
+		gapi.client.load('drive', 'v2', function() {
+			var file = evt.target.files[0];
+			insertFile(file);
+		});
+	}
+
+	/**
+	 * Insert new file.
+	 *
+	 * @param {File} fileData File object to read data from.
+	 * @param {Function} callback Function to call when the request is complete.
+	 */
+	function insertFile(fileData, callback) {
+		const
+		boundary = '-------314159265358979323846';
+		const
+		delimiter = "\r\n--" + boundary + "\r\n";
+		const
+		close_delim = "\r\n--" + boundary + "--";
+
+		var reader = new FileReader();
+		reader.readAsBinaryString(fileData);
+		reader.onload = function(e) {
+			var contentType = fileData.type || 'application/octet-stream';
+			var metadata = { 'title' : fileData.name, 'mimeType' : contentType };
+
+			var base64Data = btoa(reader.result);
+			var multipartRequestBody = delimiter
+				+ 'Content-Type: application/json\r\n\r\n'
+				+ JSON.stringify(metadata) + delimiter + 'Content-Type: '
+				+ contentType + '\r\n'
+				+ 'Content-Transfer-Encoding: base64\r\n' + '\r\n' + base64Data
+				+ close_delim;
+
+			var request = gapi.client.request({
+				'path' : '/upload/drive/v2/files',
+				'method' : 'POST',
+				'params' : { 'uploadType' : 'multipart' },
+				'headers' : { 'Content-Type' : 'multipart/mixed; boundary="'
+					+ boundary + '"' }, 'body' : multipartRequestBody });
+			if (!callback) {
+				callback = function(file) {
+					console.log(file)
+				};
+			}
+			request.execute(callback);
+		}
+	}
+</script>
+<script type="text/javascript"
+	src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 <script>
 	(function(i, s, o, g, r, a, m) {
 		i['GoogleAnalyticsObject'] = r;
@@ -29,8 +123,20 @@
 </script>
 </head>
 <body>
-	<div id="wmd-button-bar"></div>
-	<h4 id="info-filename"></h4>
+	<div id="navbar" class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<a id="wmd-button-bar" class="nav"></a>
+			<ul class="nav pull-right">
+			<li class="divider-vertical"></li>
+				<li id="menu" class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#"><img src="img/stackedit-16.png"/> Menu</a>
+					<ul class="dropdown-menu">
+						<li><a id="drive-link" href="javascript:void(0);">Link with Google Drive</a></li>
+					</ul></li>
+			</ul>
+			<a class="brand pull-right" id="info-filename"></a>
+		</div>
+	</div>
 	<textarea id="wmd-input"></textarea>
 	<div id="wmd-preview" class="well"></div>
 </body>

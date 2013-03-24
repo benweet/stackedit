@@ -3,14 +3,19 @@ body {
 	font-family: sans-serif;
 }
 
+#info-filename {
+	float:right;
+}
+
 #wmd-input, #wmd-preview  {
     position: absolute;
-	top: 40px;
+	top: 50px;
 }
 
 #wmd-input {
 	left: 20px;
 	font-family: "Courier New", Courier, monospace;
+    resize: none;
 }
 
 #wmd-preview {
@@ -18,14 +23,8 @@ body {
 	overflow: auto;
 }
 
-#info-filename {
-    position: absolute;
-	right: 30px;
-}
-
 .wmd-button-row {
-	position: absolute;
-	margin:0;
+	margin: 10px 30px;
 	top: 10px;
 	left: 30px;
 	padding: 0px;
@@ -35,8 +34,7 @@ body {
 .wmd-spacer {
 	width: 1px;
 	height: 20px;
-	margin-left: 14px;
-	position: absolute;
+	margin: 0 7px;
 	background-color: Silver;
 	display: inline-block;
 	list-style: none;
@@ -47,7 +45,6 @@ body {
 	height: 20px;
 	padding-left: 2px;
 	padding-right: 3px;
-	position: absolute;
 	display: inline-block;
 	list-style: none;
 	cursor: pointer;
@@ -60,18 +57,7 @@ body {
 	width: 20px;
 	height: 20px;
 	display: inline-block;
-}
-
-.wmd-spacer1 {
-	left: 50px;
-}
-
-.wmd-spacer2 {
-	left: 175px;
-}
-
-.wmd-spacer3 {
-	left: 300px;
+	border: 1px solid #e3e3e3;
 }
 
 .wmd-prompt-background {

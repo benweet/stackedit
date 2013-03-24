@@ -10,6 +10,7 @@ body {
 
 #wmd-input {
 	left: 20px;
+	font-family: "Courier New", Courier, monospace;
 }
 
 #wmd-preview {

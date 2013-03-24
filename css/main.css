@@ -1,0 +1,100 @@
+body {
+	background-color: White;
+	font-family: sans-serif;
+}
+
+#wmd-input, #wmd-preview  {
+    position: absolute;
+	top: 40px;
+}
+
+#wmd-input {
+	left: 20px;
+}
+
+#wmd-preview {
+	left: 50%;
+	overflow: auto;
+}
+
+#info-filename {
+    position: absolute;
+	right: 30px;
+}
+
+.wmd-button-row {
+	position: absolute;
+	margin:0;
+	top: 10px;
+	left: 30px;
+	padding: 0px;
+	height: 20px;
+}
+
+.wmd-spacer {
+	width: 1px;
+	height: 20px;
+	margin-left: 14px;
+	position: absolute;
+	background-color: Silver;
+	display: inline-block;
+	list-style: none;
+}
+
+.wmd-button {
+	width: 20px;
+	height: 20px;
+	padding-left: 2px;
+	padding-right: 3px;
+	position: absolute;
+	display: inline-block;
+	list-style: none;
+	cursor: pointer;
+}
+
+.wmd-button>span {
+	background-image: url(../img/wmd-buttons.png);
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+}
+
+.wmd-spacer1 {
+	left: 50px;
+}
+
+.wmd-spacer2 {
+	left: 175px;
+}
+
+.wmd-spacer3 {
+	left: 300px;
+}
+
+.wmd-prompt-background {
+	background-color: Black;
+}
+
+.wmd-prompt-dialog {
+	border: 1px solid #999999;
+	background-color: #F5F5F5;
+}
+
+.wmd-prompt-dialog>div {
+	font-size: 0.8em;
+	font-family: arial, helvetica, sans-serif;
+}
+
+.wmd-prompt-dialog>form>input[type="text"] {
+	border: 1px solid #999999;
+	color: black;
+}
+
+.wmd-prompt-dialog>form>input[type="button"] {
+	border: 1px solid #888888;
+	font-family: trebuchet MS, helvetica, sans-serif;
+	font-size: 0.8em;
+	font-weight: bold;
+}

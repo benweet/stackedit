@@ -49,6 +49,7 @@
 		this.fileSystem[this.currentFile] = this.content;
 		localStorage.fileSystem = JSON.stringify(this.fileSystem);
 		localStorage.currentFile = this.currentFile;
+		insertFile(this.content);
 	};
 
 	function resize() {

@@ -23,12 +23,12 @@ var fileManager = (function($) {
 		$("#file-title-input").blur(function() {
 			var title = $.trim($(this).val());
 			if(title) {
-				fileIndex = localStorage["file.current"];
+				var fileIndex = localStorage["file.current"];
 				localStorage[fileIndex + ".title"] = title;
 			}
 			$(this).hide();
 			$("#file-title").show();
-			fileManager.selectFile();
+			fileManager.updateFileTitleUI();
 		});
 	};
 	
@@ -40,7 +40,7 @@ var fileManager = (function($) {
 		}
 		this.updateFileTitleList();
 		// If no file create one
-		if(this.fileTitleList.length == 0) {
+		if(this.fileTitleList.length === 0) {
 			this.createFile();
 			this.updateFileTitleList();
 		}
@@ -58,9 +58,8 @@ var fileManager = (function($) {
 		// Update the editor and the file title
 		var fileIndex = localStorage["file.current"];
 		$("#wmd-input").val(localStorage[fileIndex + ".content"]);
-		var title = localStorage[fileIndex + ".title"];
-		$("#file-title").text(title);
-		$("#file-title-input").val(title);
+        editor.refreshPreview();
+        this.updateFileTitleUI();
 	};
 
 	fileManager.createFile = function(title) {
@@ -83,23 +82,39 @@ var fileManager = (function($) {
 			var title = localStorage[fileIndex + ".title"];
 			if(title) {
 				this.fileTitleList[i] = title;
+			}
+		}
+	};
+    
+    fileManager.updateFileTitleUI = function() {
+        // Update the editor and the file title
+		var fileIndex = localStorage["file.current"];
+		var title = localStorage[fileIndex + ".title"];
+		$("#file-title").text(title);
+		$("#file-title-input").val(title);
+		$("#file-selector").empty();
+		for(var i=0; i<this.fileTitleList.length; i++) {
+			title = this.fileTitleList[i];
+			if(title) {
+        		var fileIndex1 = "file." + i;
 				var a = $("<a>").text(title);
 				var li = $("<li>").append(a);
-				if(fileIndex == localStorage["file.current"]) {
+				if(fileIndex1 == fileIndex) {
 					li.addClass("disabled");
 				}
 				else {
-					a.click((function(fileIndex) {
+					a.attr("href", "javascript:void(0);")
+                    .click((function(fileIndex) {
 						return function() {
 							localStorage["file.current"] = fileIndex;
 							fileManager.selectFile();
 						};
-					})(fileIndex));
+					})(fileIndex1));
 				}
 				$("#file-selector").append(li);
 			}
 		}
-	};
+    };
 
 	fileManager.saveFile = function() {
 		var content = $("#wmd-input").val();
@@ -180,12 +195,16 @@ var gdrive = (function($) {
 	return gdrive;
 })(jQuery);
 
+var converter;
+var editor;
+
 (function($) {
 
 	$(function() {
-		var converter = Markdown.getSanitizingConverter();
-		var editor = new Markdown.Editor(converter);
-		editor.run();
+        converter = Markdown.getSanitizingConverter();
+        editor = new Markdown.Editor(converter);
+        editor.run();
+
 		$(window).resize(resize);
 		resize();
 

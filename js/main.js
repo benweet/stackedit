@@ -28,6 +28,7 @@ var fileManager = (function($) {
 			}
 			$(this).hide();
 			$("#file-title").show();
+			fileManager.updateFileTitleList();
 			fileManager.updateFileTitleUI();
 		});
 	};

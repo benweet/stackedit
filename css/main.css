@@ -27,23 +27,18 @@ body {
 }
 
 .wmd-button-row {
-	margin: 10px 30px;
-	top: 10px;
-	left: 30px;
-	padding: 0px;
+	margin: 10px;
 	height: 20px;
 }
 
 .wmd-spacer {
-	width: 1px;
-	height: 20px;
 	margin: 0 7px;
-	background-color: Silver;
 	display: inline-block;
-	list-style: none;
 }
 
+/*
 .wmd-button {
+
 	width: 20px;
 	height: 20px;
 	padding-left: 2px;
@@ -52,7 +47,7 @@ body {
 	list-style: none;
 	cursor: pointer;
 }
-
+*/
 .wmd-button>span {
 	background-image: url(../img/wmd-buttons.png);
 	background-repeat: no-repeat;
@@ -60,7 +55,7 @@ body {
 	width: 20px;
 	height: 20px;
 	display: inline-block;
-	border: 1px solid #e3e3e3;
+	border: 1px solid #f2f2f2;
 }
 
 .wmd-prompt-background {
@@ -88,3 +83,20 @@ body {
 	font-size: 0.8em;
 	font-weight: bold;
 }
+
+.icon-code {
+    background-position: -384px -168px;
+}
+
+.icon-numbered-list {
+    background-position: -408px -168px;
+}
+
+.icon-hr {
+    background-position: -432px -168px;
+}
+
+.icon-undo {
+    background-position: -456px -168px;
+}
+

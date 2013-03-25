@@ -58,13 +58,13 @@ var fileManager = (function($) {
 		// Update the editor and the file title
 		var fileIndex = localStorage["file.current"];
 		$("#wmd-input").val(localStorage[fileIndex + ".content"]);
-        editor.refreshPreview();
+		createEditor();
         this.updateFileTitleUI();
 	};
 
 	fileManager.createFile = function(title) {
 		if(!title) {
-			title = "New file";
+			title = "Filename";
 		}
 		var fileIndex = "file." + parseInt(localStorage["file.count"]);
 		localStorage[fileIndex + ".title"] = title;
@@ -90,7 +90,7 @@ var fileManager = (function($) {
         // Update the editor and the file title
 		var fileIndex = localStorage["file.current"];
 		var title = localStorage[fileIndex + ".title"];
-		$("#file-title").text(title);
+		$("#file-title > span").text(title);
 		$("#file-title-input").val(title);
 		$("#file-selector").empty();
 		for(var i=0; i<this.fileTitleList.length; i++) {
@@ -195,15 +195,31 @@ var gdrive = (function($) {
 	return gdrive;
 })(jQuery);
 
-var converter;
-var editor;
+function createEditor() {
+	$("#wmd-button-bar").empty();
+    var converter = Markdown.getSanitizingConverter();
+    var editor = new Markdown.Editor(converter);
+    editor.run();
+    
+    $(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)").addClass("btn").css({"left": 0,}).find("span").hide();
+    $("#wmd-bold-button").append($("<i>").addClass("icon-bold"));
+    $("#wmd-italic-button").append($("<i>").addClass("icon-italic"));
+    $("#wmd-link-button").append($("<i>").addClass("icon-globe"));
+    $("#wmd-quote-button").append($("<i>").addClass("icon-indent-left"));
+    $("#wmd-code-button").append($("<i>").addClass("icon-code"));
+    $("#wmd-image-button").append($("<i>").addClass("icon-picture"));
+    $("#wmd-olist-button").append($("<i>").addClass("icon-numbered-list"));
+    $("#wmd-ulist-button").append($("<i>").addClass("icon-list"));
+    $("#wmd-heading-button").append($("<i>").addClass("icon-text-height"));
+    $("#wmd-hr-button").append($("<i>").addClass("icon-hr"));
+    $("#wmd-undo-button").append($("<i>").addClass("icon-undo"));
+    $("#wmd-redo-button").append($("<i>").addClass("icon-share-alt"));
+    
+}
 
 (function($) {
 
 	$(function() {
-        converter = Markdown.getSanitizingConverter();
-        editor = new Markdown.Editor(converter);
-        editor.run();
 
 		$(window).resize(resize);
 		resize();

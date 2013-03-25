@@ -39,29 +39,33 @@
 <body>
 	<div id="navbar" class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
-			<div id="wmd-button-bar" class="nav"></div>
+
+			<ul class="nav">
+				<li class="divider-vertical"></li>
+				<li><div id="wmd-button-bar"></div></li>
+			</ul>
 			<ul class="nav pull-right">
-    		 <li>
-        		<a class="brand pull-right" id="file-title" href="javascript:void(0);"></a>
-    		 </li>
-			 <li class="navbar-form">
-			  <input id="file-title-input" type="text" class="span3" placeholder="File title" />
-			 </li>
+				<li><a class="brand" id="file-title" href="javascript:void(0);" title="Rename"><span></span></a></li>
+				<li class="navbar-form"><input id="file-title-input"
+					type="text" class="span3" placeholder="File title" /></li>
 				<li class="dropdown"><a class="dropdown-toggle"
-					data-toggle="dropdown" href="#"><b class="caret"></b></a>
+					data-toggle="dropdown" href="#" title="Open file"><i
+						class="icon-folder-open"></i></a>
 					<ul id="file-selector" class="dropdown-menu">
 					</ul></li>
 				<li class="divider-vertical"></li>
 				<li class="dropdown"><a class="dropdown-toggle"
-					data-toggle="dropdown" href="#"><img src="img/stackedit-16.png" />
+					data-toggle="dropdown" href="#" title="Menu"><img src="img/stackedit-16.png" />
 						Menu <b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a id="new-file" href="javascript:void(0);"><i class="icon-file"></i> New file</a></li>
-						<li><a id="remove-file" href="javascript:void(0);"><i class="icon-trash"></i> Remove file</a></li>
-						<li><a id="drive-link" href="javascript:void(0);"><i class="icon-magnet"></i> Link
-								with Google Drive</a></li>
+						<li><a id="new-file" href="javascript:void(0);" title="Create a new local file"><i
+								class="icon-file"></i> New file</a></li>
+						<li><a id="remove-file" href="javascript:void(0);" title="Delete the current file locally"><i
+								class="icon-trash"></i> Remove file</a></li>
+						<li><a id="drive-link" href="javascript:void(0);"><i
+								class="icon-magnet"></i> Link with Google Drive</a></li>
 					</ul></li>
-    			<li class="divider-vertical"></li>
+				<li class="divider-vertical"></li>
 			</ul>
 		</div>
 	</div>

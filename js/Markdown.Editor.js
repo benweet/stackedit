@@ -1412,10 +1412,12 @@
                         return false;
                     }
                 }
+                button.className = button.className.replace(/ disabled/g, "");
             }
             else {
                 image.style.backgroundPosition = button.XShift + " " + disabledYShift;
                 button.onmouseover = button.onmouseout = button.onclick = function () { };
+                button.className += " disabled";
             }
         }
 

@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Pagedown editor</title>
+<title>StackEdit</title>
+<link rel="icon" href="img/stackedit-64.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/stackedit-64.ico"
+	type="image/x-icon">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="css/bootstrap.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
 <script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="js/jquery.layout.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/Markdown.Converter.js"></script>
 <script type="text/javascript" src="js/Markdown.Sanitizer.js"></script>
@@ -37,39 +42,65 @@
 </script>
 </head>
 <body>
-	<div id="navbar" class="navbar navbar-fixed-top">
+	<div id="navbar" class="navbar navbar-fixed-top ui-layout-north">
 		<div class="navbar-inner">
 
 			<ul class="nav">
-				<li class="divider-vertical"></li>
 				<li><div id="wmd-button-bar"></div></li>
 			</ul>
-			<ul class="nav pull-right">
-				<li><a class="brand" id="file-title" href="javascript:void(0);" title="Rename"><span></span></a></li>
-				<li class="navbar-form"><input id="file-title-input"
-					type="text" class="span3" placeholder="File title" /></li>
-				<li class="dropdown"><a class="dropdown-toggle"
-					data-toggle="dropdown" href="#" title="Open file"><i
-						class="icon-folder-open"></i></a>
+			<ul class="pull-right" id="menu-bar">
+				<li class="btn-group"><a class="btn action-create-file"
+					href="javascript:void(0);" title="Create a local file"><i
+						class="icon-file"></i></a> <a class="btn" href="javascript:void(0);"
+					title="Delete the current file locally" data-toggle="modal"
+					data-target="#remove-file-confirm"><i class="icon-trash"></i></a> <a
+					class="btn dropdown-toggle" data-toggle="dropdown" href="#"
+					title="Open a local file"><i class="icon-folder-open"></i></a>
 					<ul id="file-selector" class="dropdown-menu">
 					</ul></li>
-				<li class="divider-vertical"></li>
-				<li class="dropdown"><a class="dropdown-toggle"
-					data-toggle="dropdown" href="#" title="Menu"><img src="img/stackedit-16.png" />
-						Menu <b class="caret"></b></a>
+				<li class="btn-group"><a class="btn dropdown-toggle"
+					data-toggle="dropdown" href="javascript:void(0);" title="Menu"><img
+						src="img/stackedit-16.png" />&nbsp;&nbsp;<b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a id="new-file" href="javascript:void(0);" title="Create a new local file"><i
-								class="icon-file"></i> New file</a></li>
-						<li><a id="remove-file" href="javascript:void(0);" title="Delete the current file locally"><i
-								class="icon-trash"></i> Remove file</a></li>
+						<li><a class="action-create-file" href="javascript:void(0);"
+							title="Create a new local file"><i class="icon-file"></i> New
+								file</a></li>
+						<li><a href="javascript:void(0);"
+							title="Delete the current file locally" data-toggle="modal"
+							data-target="#remove-file-confirm"><i class="icon-trash"></i>
+								Remove file</a></li>
 						<li><a id="drive-link" href="javascript:void(0);"><i
 								class="icon-magnet"></i> Link with Google Drive</a></li>
 					</ul></li>
-				<li class="divider-vertical"></li>
+			</ul>
+			<ul class="nav pull-right">
+				<li><a class="brand" id="file-title" href="javascript:void(0);"
+					title="Rename the current file"><span class="file-title"></span></a></li>
+				<li class="navbar-form"><input id="file-title-input"
+					type="text" class="span3 hide" placeholder="File title" /></li>
 			</ul>
 		</div>
 	</div>
-	<textarea id="wmd-input"></textarea>
-	<div id="wmd-preview" class="well"></div>
+	<textarea id="wmd-input" class="ui-layout-center"></textarea>
+	<div id="wmd-preview" class="well ui-layout-east"></div>
+	<div class="ui-layout-south"></div>
+	<div id="remove-file-confirm" class="modal hide">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">&times;</button>
+			<h3>Remove file</h3>
+		</div>
+		<div class="modal-body">
+			<p>Are you sure you want to remove "<span class="file-title"></span>"?
+			</p>
+			<p class="muted"><b>NOTE:</b> The file will be destroyed on the
+				local machine, not on distant synchronized locations.</p>
+		</div>
+		<div class="modal-footer">
+			<a href="javascript:void(0);" class="btn" data-dismiss="modal">Cancel</a>
+			<a href="javascript:void(0);"
+				class="btn btn-primary action-remove-file" data-dismiss="modal">Delete</a>
+		</div>
+	</div>
 </body>
 </html>

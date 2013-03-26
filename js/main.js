@@ -11,9 +11,13 @@ var fileManager = (function($) {
 		window.setInterval(function() {
 			fileManager.saveFile();
 		}, 5000);
-		$("#new-file").click(function() {
+		$(".action-create-file").click(function() {
 			fileManager.saveFile();
 			fileManager.createFile();
+			fileManager.selectFile();
+		});
+		$(".action-remove-file").click(function() {
+			fileManager.deleteFile();
 			fileManager.selectFile();
 		});
 		$("#file-title").click(function() {
@@ -28,7 +32,7 @@ var fileManager = (function($) {
 			}
 			$(this).hide();
 			$("#file-title").show();
-			fileManager.updateFileTitleList();
+			fileManager.updateFileDescList();
 			fileManager.updateFileTitleUI();
 		});
 	};
@@ -39,22 +43,15 @@ var fileManager = (function($) {
 			localStorage.clear();
 			localStorage["file.count"] = 0;
 		}
-		this.updateFileTitleList();
+		this.updateFileDescList();
 		// If no file create one
-		if(this.fileTitleList.length === 0) {
+		if(this.fileDescList.length === 0) {
 			this.createFile();
-			this.updateFileTitleList();
+			this.updateFileDescList();
 		}
 		// If no default file take first one
 		if(!localStorage["file.current"]) {
-			var fileCount = parseInt(localStorage["file.count"]);
-			for(var i=0; i<fileCount; i++) {
-				var fileIndex = "file." + i;
-				if(localStorage[fileIndex + ".title"]) {
-					localStorage["file.current"] = fileIndex;
-					break;
-				}
-			}
+			localStorage["file.current"] = this.fileDescList[0].index;
 		}
 		// Update the editor and the file title
 		var fileIndex = localStorage["file.current"];
@@ -67,53 +64,80 @@ var fileManager = (function($) {
 		if(!title) {
 			title = "Filename";
 		}
-		var fileIndex = "file." + parseInt(localStorage["file.count"]);
-		localStorage[fileIndex + ".title"] = title;
+		// Find a fileIndex
+		var fileCount = parseInt(localStorage["file.count"]);
+		var i;
+		for(i=0; i<fileCount; i++) {
+			if(!localStorage["file." + i + ".title"]) {
+				break;
+			}
+		}
+		var fileIndex = "file." + i;
+		// Create the file in the localStorag
 		localStorage[fileIndex + ".content"] = "";
-		localStorage["file.count"] = parseInt(localStorage["file.count"]) + 1;
+		localStorage[fileIndex + ".title"] = title;
 		localStorage["file.current"] = fileIndex;
+		if(i == fileCount) {
+			localStorage["file.count"] = fileCount + 1;
+		}
 	};
 	
-	fileManager.updateFileTitleList = function() {
+	fileManager.deleteFile = function() {
+		var fileIndex = localStorage["file.current"];
+		localStorage.removeItem("file.current");
+		localStorage.removeItem(fileIndex + ".title");
+		localStorage.removeItem(fileIndex + ".content");
+	};
+	
+	fileManager.updateFileDescList = function() {
 		var fileCount = parseInt(localStorage["file.count"]);
-		this.fileTitleList = [];
+		var lastIndex = -1;
+		this.fileDescList = [];
 		$("#file-selector").empty();
 		for(var i=0; i<fileCount; i++) {
 			var fileIndex = "file." + i;
 			var title = localStorage[fileIndex + ".title"];
 			if(title) {
-				this.fileTitleList[i] = title;
+				lastIndex = i;
+				this.fileDescList.push({"index": fileIndex, "title": title});
 			}
 		}
+		localStorage["file.count"] = lastIndex + 1;
+		this.fileDescList.sort(function(a, b) {
+			if (a.title.toLowerCase() < b.title.toLowerCase())
+				return -1;
+			if (a.title.toLowerCase() > b.title.toLowerCase())
+				return 1;
+			return 0;
+		});
 	};
     
     fileManager.updateFileTitleUI = function() {
         // Update the editor and the file title
 		var fileIndex = localStorage["file.current"];
 		var title = localStorage[fileIndex + ".title"];
-		$("#file-title > span").text(title);
+		document.title = "StackEdit - " + title;
+		$(".file-title").text(title);
 		$("#file-title-input").val(title);
 		$("#file-selector").empty();
-		for(var i=0; i<this.fileTitleList.length; i++) {
-			title = this.fileTitleList[i];
-			if(title) {
-        		var fileIndex1 = "file." + i;
-				var a = $("<a>").text(title);
-				var li = $("<li>").append(a);
-				if(fileIndex1 == fileIndex) {
-					li.addClass("disabled");
-				}
-				else {
-					a.attr("href", "javascript:void(0);")
-                    .click((function(fileIndex) {
-						return function() {
-							localStorage["file.current"] = fileIndex;
-							fileManager.selectFile();
-						};
-					})(fileIndex1));
-				}
-				$("#file-selector").append(li);
+		
+		for(var i=0; i<this.fileDescList.length; i++) {
+			var fileDesc = this.fileDescList[i];
+			var a = $("<a>").text(fileDesc.title);
+			var li = $("<li>").append(a);
+			if(fileDesc.index == fileIndex) {
+				li.addClass("disabled");
 			}
+			else {
+				a.attr("href", "javascript:void(0);")
+                .click((function(fileIndex) {
+					return function() {
+						localStorage["file.current"] = fileIndex;
+						fileManager.selectFile();
+					};
+				})(fileDesc.index));
+			}
+			$("#file-selector").append(li);
 		}
     };
 
@@ -202,7 +226,7 @@ function createEditor() {
     var editor = new Markdown.Editor(converter);
     editor.run();
     
-    $(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)").addClass("btn").css({"left": 0,}).find("span").hide();
+    $(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)").addClass("btn").css("left", 0).find("span").hide();
     $("#wmd-bold-button").append($("<i>").addClass("icon-bold"));
     $("#wmd-italic-button").append($("<i>").addClass("icon-italic"));
     $("#wmd-link-button").append($("<i>").addClass("icon-globe"));
@@ -215,28 +239,39 @@ function createEditor() {
     $("#wmd-hr-button").append($("<i>").addClass("icon-hr"));
     $("#wmd-undo-button").append($("<i>").addClass("icon-undo"));
     $("#wmd-redo-button").append($("<i>").addClass("icon-share-alt"));
-    
+}
+
+var layoutOrientation = 0;
+var layout;
+function createLayout() {
+	var layoutGlobalConfig = { closable : true, resizable : false,
+		slidable : false, livePaneResizing : true, spacing_open : 20,
+		spacing_closed : 20, togglerLength_open : 90,
+		togglerLength_closed : 90, center__minWidth : 200,
+		stateManagement__enabled : false, };
+	if (layoutOrientation === 0) {
+		layout = $('body').layout(
+			$.extend(layoutGlobalConfig,
+				{ east__resizable : true, east__size : .5, east__minSize : 200,
+					south__closable : false, }));
+	}
+	$(".ui-layout-toggler-north").addClass("btn").append($("<b>").addClass("caret"));
+	$(".ui-layout-toggler-east").addClass("btn").append($("<b>").addClass("caret"));
 }
 
 (function($) {
 
 	$(function() {
 
-		$(window).resize(resize);
-		resize();
-
+		createLayout();
 		if (typeof (Storage) !== "undefined") {
 			fileManager.init();
 		} else {
 			showError("Web storage is not available");
-		};
+		}
+		$("#navbar").click(function() {
+			layout.allowOverflow('north');
+		});
 	});
-
-	function resize() {
-		$("#wmd-input").width($(window).width() / 2 - 60).height(
-			$(window).height() - 70);
-		$("#wmd-preview").width($(window).width() / 2 - 60).height(
-			$(window).height() - 100);
-	};
 
 })(jQuery);

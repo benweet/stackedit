@@ -26,7 +26,7 @@ var fileManager = (function($) {
 		});
 		$("#file-title-input").blur(function() {
 			var title = $.trim($(this).val());
-			if(title) {
+			if (title) {
 				var fileIndex = localStorage["file.current"];
 				localStorage[fileIndex + ".title"] = title;
 			}
@@ -36,39 +36,39 @@ var fileManager = (function($) {
 			fileManager.updateFileTitleUI();
 		});
 	};
-	
+
 	fileManager.selectFile = function() {
 		// If file system does not exist
-		if(!localStorage["file.count"]) {
+		if (!localStorage["file.count"]) {
 			localStorage.clear();
 			localStorage["file.count"] = 0;
 		}
 		this.updateFileDescList();
 		// If no file create one
-		if(this.fileDescList.length === 0) {
+		if (this.fileDescList.length === 0) {
 			this.createFile();
 			this.updateFileDescList();
 		}
 		// If no default file take first one
-		if(!localStorage["file.current"]) {
+		if (!localStorage["file.current"]) {
 			localStorage["file.current"] = this.fileDescList[0].index;
 		}
 		// Update the editor and the file title
 		var fileIndex = localStorage["file.current"];
 		$("#wmd-input").val(localStorage[fileIndex + ".content"]);
 		createEditor();
-        this.updateFileTitleUI();
+		this.updateFileTitleUI();
 	};
 
 	fileManager.createFile = function(title) {
-		if(!title) {
+		if (!title) {
 			title = "Filename";
 		}
 		// Find a fileIndex
 		var fileCount = parseInt(localStorage["file.count"]);
 		var i;
-		for(i=0; i<fileCount; i++) {
-			if(!localStorage["file." + i + ".title"]) {
+		for (i = 0; i < fileCount; i++) {
+			if (!localStorage["file." + i + ".title"]) {
 				break;
 			}
 		}
@@ -77,29 +77,30 @@ var fileManager = (function($) {
 		localStorage[fileIndex + ".content"] = "";
 		localStorage[fileIndex + ".title"] = title;
 		localStorage["file.current"] = fileIndex;
-		if(i == fileCount) {
+		if (i == fileCount) {
 			localStorage["file.count"] = fileCount + 1;
 		}
 	};
-	
+
 	fileManager.deleteFile = function() {
 		var fileIndex = localStorage["file.current"];
 		localStorage.removeItem("file.current");
 		localStorage.removeItem(fileIndex + ".title");
 		localStorage.removeItem(fileIndex + ".content");
 	};
-	
+
 	fileManager.updateFileDescList = function() {
 		var fileCount = parseInt(localStorage["file.count"]);
 		var lastIndex = -1;
 		this.fileDescList = [];
 		$("#file-selector").empty();
-		for(var i=0; i<fileCount; i++) {
+		for ( var i = 0; i < fileCount; i++) {
 			var fileIndex = "file." + i;
 			var title = localStorage[fileIndex + ".title"];
-			if(title) {
+			if (title) {
 				lastIndex = i;
-				this.fileDescList.push({"index": fileIndex, "title": title});
+				this.fileDescList
+					.push({ "index" : fileIndex, "title" : title });
 			}
 		}
 		localStorage["file.count"] = lastIndex + 1;
@@ -111,41 +112,40 @@ var fileManager = (function($) {
 			return 0;
 		});
 	};
-    
-    fileManager.updateFileTitleUI = function() {
-        // Update the editor and the file title
+
+	fileManager.updateFileTitleUI = function() {
+		// Update the editor and the file title
 		var fileIndex = localStorage["file.current"];
 		var title = localStorage[fileIndex + ".title"];
 		document.title = "StackEdit - " + title;
 		$(".file-title").text(title);
 		$("#file-title-input").val(title);
 		$("#file-selector").empty();
-		
-		for(var i=0; i<this.fileDescList.length; i++) {
+
+		for ( var i = 0; i < this.fileDescList.length; i++) {
 			var fileDesc = this.fileDescList[i];
 			var a = $("<a>").text(fileDesc.title);
 			var li = $("<li>").append(a);
-			if(fileDesc.index == fileIndex) {
+			if (fileDesc.index == fileIndex) {
 				li.addClass("disabled");
-			}
-			else {
-				a.attr("href", "javascript:void(0);")
-                .click((function(fileIndex) {
-					return function() {
-						localStorage["file.current"] = fileIndex;
-						fileManager.selectFile();
-					};
-				})(fileDesc.index));
+			} else {
+				a.attr("href", "javascript:void(0);").click(
+					(function(fileIndex) {
+						return function() {
+							localStorage["file.current"] = fileIndex;
+							fileManager.selectFile();
+						};
+					})(fileDesc.index));
 			}
 			$("#file-selector").append(li);
 		}
-    };
+	};
 
 	fileManager.saveFile = function() {
 		var content = $("#wmd-input").val();
 		var fileIndex = localStorage["file.current"];
 		localStorage[fileIndex + ".content"] = content;
-		//insertFile(this.currentFile, this.content);
+		// insertFile(this.currentFile, this.content);
 	};
 
 	return fileManager;
@@ -168,7 +168,8 @@ var gdrive = (function($) {
 				var state = JSON.parse(decodeURI((/state=(.+?)(&|$)/
 					.exec(location.search) || [ , null ])[1]));
 				if (state.action == 'create') {
-					gdrive.createFile(state.folderId, fileManager.currentFile, fileManager.content);
+					gdrive.createFile(state.folderId, fileManager.currentFile,
+						fileManager.content);
 				}
 
 			} catch (e) {
@@ -197,7 +198,8 @@ var gdrive = (function($) {
 		var close_delim = "\r\n--" + boundary + "--";
 
 		var contentType = 'text/x-markdown';
-		var metadata = { 'title' : title, 'mimeType' : contentType, 'parents' : [ { 'kind' : 'drive#fileLink', 'id' : folderId } ] };
+		var metadata = { 'title' : title, 'mimeType' : contentType,
+			'parents' : [ { 'kind' : 'drive#fileLink', 'id' : folderId } ] };
 
 		var base64Data = btoa(content);
 		var multipartRequestBody = delimiter
@@ -222,23 +224,24 @@ var gdrive = (function($) {
 
 function createEditor() {
 	$("#wmd-button-bar").empty();
-    var converter = Markdown.getSanitizingConverter();
-    var editor = new Markdown.Editor(converter);
-    editor.run();
-    
-    $(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)").addClass("btn").css("left", 0).find("span").hide();
-    $("#wmd-bold-button").append($("<i>").addClass("icon-bold"));
-    $("#wmd-italic-button").append($("<i>").addClass("icon-italic"));
-    $("#wmd-link-button").append($("<i>").addClass("icon-globe"));
-    $("#wmd-quote-button").append($("<i>").addClass("icon-indent-left"));
-    $("#wmd-code-button").append($("<i>").addClass("icon-code"));
-    $("#wmd-image-button").append($("<i>").addClass("icon-picture"));
-    $("#wmd-olist-button").append($("<i>").addClass("icon-numbered-list"));
-    $("#wmd-ulist-button").append($("<i>").addClass("icon-list"));
-    $("#wmd-heading-button").append($("<i>").addClass("icon-text-height"));
-    $("#wmd-hr-button").append($("<i>").addClass("icon-hr"));
-    $("#wmd-undo-button").append($("<i>").addClass("icon-undo"));
-    $("#wmd-redo-button").append($("<i>").addClass("icon-share-alt"));
+	var converter = Markdown.getSanitizingConverter();
+	var editor = new Markdown.Editor(converter);
+	editor.run();
+
+	$(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)")
+		.addClass("btn").css("left", 0).find("span").hide();
+	$("#wmd-bold-button").append($("<i>").addClass("icon-bold"));
+	$("#wmd-italic-button").append($("<i>").addClass("icon-italic"));
+	$("#wmd-link-button").append($("<i>").addClass("icon-globe"));
+	$("#wmd-quote-button").append($("<i>").addClass("icon-indent-left"));
+	$("#wmd-code-button").append($("<i>").addClass("icon-code"));
+	$("#wmd-image-button").append($("<i>").addClass("icon-picture"));
+	$("#wmd-olist-button").append($("<i>").addClass("icon-numbered-list"));
+	$("#wmd-ulist-button").append($("<i>").addClass("icon-list"));
+	$("#wmd-heading-button").append($("<i>").addClass("icon-text-height"));
+	$("#wmd-hr-button").append($("<i>").addClass("icon-hr"));
+	$("#wmd-undo-button").append($("<i>").addClass("icon-undo"));
+	$("#wmd-redo-button").append($("<i>").addClass("icon-share-alt"));
 }
 
 var layoutOrientation = 0;
@@ -247,16 +250,27 @@ function createLayout() {
 	var layoutGlobalConfig = { closable : true, resizable : false,
 		slidable : false, livePaneResizing : true, spacing_open : 20,
 		spacing_closed : 20, togglerLength_open : 90,
-		togglerLength_closed : 90, center__minWidth : 200,
+		togglerLength_closed : 90, center__minWidth : 100, center__minHeight : 100,
 		stateManagement__enabled : false, };
 	if (layoutOrientation === 0) {
+		$(".ui-layout-east").addClass("well").attr("id", "wmd-preview");
 		layout = $('body').layout(
 			$.extend(layoutGlobalConfig,
 				{ east__resizable : true, east__size : .5, east__minSize : 200,
 					south__closable : false, }));
+	} else if (layoutOrientation === 1) {
+		$(".ui-layout-east").remove();
+		$(".ui-layout-south").addClass("well").attr("id", "wmd-preview");
+		layout = $('body').layout(
+			$.extend(layoutGlobalConfig, { south__resizable : true,
+				south__size : .5, south__minSize : 200, }));
 	}
-	$(".ui-layout-toggler-north").addClass("btn").append($("<b>").addClass("caret"));
-	$(".ui-layout-toggler-east").addClass("btn").append($("<b>").addClass("caret"));
+	$(".ui-layout-toggler-north").addClass("btn").append(
+		$("<b>").addClass("caret"));
+	$(".ui-layout-toggler-south").addClass("btn").append(
+		$("<b>").addClass("caret"));
+	$(".ui-layout-toggler-east").addClass("btn").append(
+		$("<b>").addClass("caret"));
 }
 
 (function($) {

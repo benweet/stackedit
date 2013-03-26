@@ -192,9 +192,9 @@ var gdrive = (function($) {
 	};
 
 	gdrive.createFile = function(folderId, title, content) {
-		const boundary = '-------314159265358979323846';
-		const delimiter = "\r\n--" + boundary + "\r\n";
-		const close_delim = "\r\n--" + boundary + "--";
+		var boundary = '-------314159265358979323846';
+		var delimiter = "\r\n--" + boundary + "\r\n";
+		var close_delim = "\r\n--" + boundary + "--";
 
 		var contentType = 'text/x-markdown';
 		var metadata = { 'title' : title, 'mimeType' : contentType, 'parents' : [ { 'kind' : 'drive#fileLink', 'id' : folderId } ] };

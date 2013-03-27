@@ -35,6 +35,12 @@ var fileManager = (function($) {
 			fileManager.updateFileDescList();
 			fileManager.updateFileTitleUI();
 		});
+		$(".action-upload-gdrive").click(function() {
+			var fileIndex = localStorage["file.current"];
+			var content = localStorage[fileIndex + ".content"];
+			var title = localStorage[fileIndex + ".title"];
+			gdrive.createFile(title, content);
+		});
 	};
 
 	fileManager.selectFile = function() {
@@ -149,77 +155,6 @@ var fileManager = (function($) {
 	};
 
 	return fileManager;
-})(jQuery);
-
-var gdrive = (function($) {
-
-	var CLIENT_ID = '241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com';
-	var SCOPES = [ 'https://www.googleapis.com/auth/drive.install',
-		'https://www.googleapis.com/auth/drive.file' ];
-
-	var driveEnabled = false;
-
-	var gdrive = {};
-
-	gdrive.init = function() {
-		function start() {
-			driveEnabled = true;
-			try {
-				var state = JSON.parse(decodeURI((/state=(.+?)(&|$)/
-					.exec(location.search) || [ , null ])[1]));
-				if (state.action == 'create') {
-					gdrive.createFile(state.folderId, fileManager.currentFile,
-						fileManager.content);
-				}
-
-			} catch (e) {
-			}
-		}
-		function handleAuthResult(authResult) {
-			if (authResult && !authResult.error) {
-				$("#drive-link").hide();
-				gapi.client.load('drive', 'v2', function() {
-					start();
-				});
-			}
-		}
-		$("#drive-link").click(
-			function() {
-				gapi.auth.authorize({ 'client_id' : CLIENT_ID,
-					'scope' : SCOPES, 'immediate' : false }, handleAuthResult);
-			});
-		gapi.auth.authorize({ 'client_id' : CLIENT_ID, 'scope' : SCOPES,
-			'immediate' : true }, handleAuthResult);
-	};
-
-	gdrive.createFile = function(folderId, title, content) {
-		var boundary = '-------314159265358979323846';
-		var delimiter = "\r\n--" + boundary + "\r\n";
-		var close_delim = "\r\n--" + boundary + "--";
-
-		var contentType = 'text/x-markdown';
-		var metadata = { 'title' : title, 'mimeType' : contentType,
-			'parents' : [ { 'kind' : 'drive#fileLink', 'id' : folderId } ] };
-
-		var base64Data = btoa(content);
-		var multipartRequestBody = delimiter
-			+ 'Content-Type: application/json\r\n\r\n'
-			+ JSON.stringify(metadata) + delimiter + 'Content-Type: '
-			+ contentType + '\r\n' + 'Content-Transfer-Encoding: base64\r\n'
-			+ '\r\n' + base64Data + close_delim;
-
-		var request = gapi.client.request({
-			'path' : '/upload/drive/v2/files',
-			'method' : 'POST',
-			'params' : { 'uploadType' : 'multipart', },
-			'headers' : { 'Content-Type' : 'multipart/mixed; boundary="'
-				+ boundary + '"', }, 'body' : multipartRequestBody, });
-		request.execute(function(file) {
-			console.log(file);
-		});
-	};
-
-	return gdrive;
 })(jQuery);
 
 var core = (function($) {

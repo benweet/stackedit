@@ -36,10 +36,14 @@ var fileManager = (function($) {
 			fileManager.updateFileTitleUI();
 		});
 		$(".action-upload-gdrive").click(function() {
+			$(".file-sync-indicator").removeClass("hide");
 			var fileIndex = localStorage["file.current"];
 			var content = localStorage[fileIndex + ".content"];
 			var title = localStorage[fileIndex + ".title"];
-			gdrive.createFile(title, content);
+			gdrive.createFile(title, content, function(file) {
+				$(".file-sync-indicator").addClass("hide");
+				console.log(file);
+			});
 		});
 	};
 

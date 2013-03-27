@@ -87,6 +87,14 @@ body {
 	background-position: 0 0;
 }
 
+.icon-spinner {
+	background-image: url("../img/ajax-loader.gif");
+	width: 43px;
+	height: 11px;
+	background-position: 0 0;
+	margin: 13px 15px 0;
+}
+
 .ui-layout-toggler-north {
 	margin-top: -3px !important;
 	height: 18px !important;

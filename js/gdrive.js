@@ -9,27 +9,37 @@ var gdrive = (function() {
 	var gdrive = {};
 
 	function askAuth(immediate, callback) {
-		gapi.auth.authorize({ 'client_id' : CLIENT_ID, 'scope' : SCOPES,
-			'immediate' : immediate }, function(authResult) {
-			if (authResult && !authResult.error) {
-				// $("#drive-link").hide();
-				gapi.client.load('drive', 'v2', function() {
-					driveEnabled = true;
-					callback();
-				});
-			}
-		});
+		if (!driveEnabled) {
+			gapi.auth.authorize({ 'client_id' : CLIENT_ID, 'scope' : SCOPES,
+				'immediate' : immediate }, function(authResult) {
+				if (authResult && !authResult.error) {
+					// $("#drive-link").hide();
+					gapi.client.load('drive', 'v2', function() {
+						driveEnabled = true;
+						callback();
+					});
+				}
+			});
+		}
 	}
 
-	function createFile(title, content, folderId, callback) {
+	function uploadFile(fileId, parentId, title, content, callback) {
 		var boundary = '-------314159265358979323846';
 		var delimiter = "\r\n--" + boundary + "\r\n";
 		var close_delim = "\r\n--" + boundary + "--";
 
 		var contentType = 'text/x-markdown';
 		var metadata = { title : title, mimeType : contentType };
-		if (folderId) {
-			metadata.parents = [ { kind : 'drive#fileLink', id : folderId } ];
+		if (parentId) {
+			// Specify the directory
+			metadata.parents = [ { kind : 'drive#fileLink', id : parentId } ];
+		}
+		var path = '/upload/drive/v2/files';
+		var method = 'POST';
+		if (fileId) {
+			// If it's an update
+			path += fileId;
+			method = 'PUT';
 		}
 
 		var base64Data = btoa(content);
@@ -40,8 +50,8 @@ var gdrive = (function() {
 			+ '\r\n' + base64Data + close_delim;
 
 		var request = gapi.client.request({
-			'path' : '/upload/drive/v2/files',
-			'method' : 'POST',
+			'path' : path,
+			'method' : method,
 			'params' : { 'uploadType' : 'multipart', },
 			'headers' : { 'Content-Type' : 'multipart/mixed; boundary="'
 				+ boundary + '"', }, 'body' : multipartRequestBody, });
@@ -59,8 +69,9 @@ var gdrive = (function() {
 				var state = JSON.parse(decodeURI((/state=(.+?)(&|$)/
 					.exec(location.search) || [ , null ])[1]));
 				if (state.action == 'create') {
-					createFile(fileManager.currentFile, fileManager.content,
-						state.folderId, function(file) {
+					uploadFile(undefined, state.folderId,
+						fileManager.currentFile, fileManager.content, function(
+							file) {
 							console.log(file);
 						});
 				}
@@ -69,19 +80,17 @@ var gdrive = (function() {
 		});
 	};
 
-	gdrive.createFile = function(title, content) {
-		var callback = function() {
-			createFile(title, content, undefined, function(file) {
-				console.log(file);
-			});
-		};
-		if(!driveEnabled) {
-			askAuth(false, callback);
-		}
-		else {
-			callback();
-		}
+	gdrive.createFile = function(title, content, callback) {
+		askAuth(false, function() {
+			uploadFile(undefined, undefined, title, content, callback);
+		});
 	};
 
+	gdrive.updateFile = function(id, title, content, callback) {
+		askAuth(false, function() {
+			uploadFile(id, undefined, title, content, callback);
+		});
+	};
+	
 	return gdrive;
 })();

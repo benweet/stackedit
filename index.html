@@ -20,7 +20,7 @@
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript">
 	function handleClientLoad() {
-		window.setTimeout(gdrive.init, 1);
+		window.setTimeout(fileManager.gdriveInit, 1);
 	}
 </script>
 <script type="text/javascript"
@@ -70,9 +70,10 @@
 							title="Delete the current file locally" data-toggle="modal"
 							data-target="#modal-remove-file-confirm"><i
 								class="icon-trash"></i> Remove file</a></li>
-                        <li class="divider"></li>
-						<li><a class="action-upload-gdrive" href="javascript: void(0)"><i
-								class="icon-gdrive"></i> Save on Google Drive</a></li>
+						<li class="divider"></li>
+						<li><a class="action-upload-gdrive"
+							href="javascript: void(0)"><i class="icon-gdrive"></i> Save
+								on Google Drive</a></li>
 						<li class="divider"></li>
 						<li><a href="javascript: void(0)"
 							title="Modify your preferences" data-toggle="modal"
@@ -81,8 +82,10 @@
 					</ul></li>
 			</ul>
 			<ul class="nav pull-right">
+				<li><i class="file-sync-indicator icon-spinner hide"></i></li>
 				<li><a class="brand" id="file-title" href="javascript: void(0)"
-					title="Rename the current file"><span class="file-title"></span></a></li>
+					title="Rename the current file"><span class="file-title"></span>
+				</a></li>
 				<li class="navbar-form"><input id="file-title-input"
 					type="text" class="span3 hide" placeholder="File title" /></li>
 			</ul>
@@ -123,20 +126,18 @@
 				<dd>
 					<label class="radio"> <input type="radio"
 						name="radio-layout-orientation"
-						id="radio-layout-orientation-horizontal">
-						Horizontal
+						id="radio-layout-orientation-horizontal"> Horizontal
 					</label> <label class="radio"> <input type="radio"
 						name="radio-layout-orientation"
-						id="radio-layout-orientation-vertical">
-						Vertical
+						id="radio-layout-orientation-vertical"> Vertical
 					</label>
 				</dd>
 			</dl>
 		</div>
 		<div class="modal-footer">
-			<a href="javascript: void(0)" class="btn action-load-settings" data-dismiss="modal">Cancel</a>
-			<a href="javascript: void(0)" class="btn btn-primary action-apply-settings"
-				data-dismiss="modal">OK</a>
+			<a href="javascript: void(0)" class="btn action-load-settings"
+				data-dismiss="modal">Cancel</a> <a href="javascript: void(0)"
+				class="btn btn-primary action-apply-settings" data-dismiss="modal">OK</a>
 		</div>
 	</div>
 </body>

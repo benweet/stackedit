@@ -20,6 +20,8 @@ var gdrive = (function() {
 					});
 				}
 			});
+		} else {
+			callback();
 		}
 	}
 

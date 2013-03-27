@@ -56,7 +56,7 @@ var fileManager = (function($) {
 		// Update the editor and the file title
 		var fileIndex = localStorage["file.current"];
 		$("#wmd-input").val(localStorage[fileIndex + ".content"]);
-		createEditor();
+		core.createEditor();
 		this.updateFileTitleUI();
 	};
 
@@ -222,70 +222,111 @@ var gdrive = (function($) {
 	return gdrive;
 })(jQuery);
 
-function createEditor() {
-	$("#wmd-button-bar").empty();
-	var converter = Markdown.getSanitizingConverter();
-	var editor = new Markdown.Editor(converter);
-	editor.run();
+var core = (function($) {
+	var core = {};
+	
+	core.init = function() {
+		this.loadSettings();
+		this.saveSettings();
+		this.createLayout();
+		
+		$(".action-apply-settings").click(function() {
+			core.saveSettings();
+			fileManager.saveFile();
+			location.reload();
+		});
+	};
+	
+	var settings = {};
+	core.loadSettings = function() {
+		if(localStorage.settings) {
+			settings = JSON.parse(localStorage.settings);
+		}
+		
+		// Layout orientation
+		$("#radio-layout-orientation-horizontal").attr('checked', true);
+		if(settings.layoutOrientation == "vertical") {
+			$("#radio-layout-orientation-vertical").attr('checked', true);
+		}
+	};
 
-	$(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)")
-		.addClass("btn").css("left", 0).find("span").hide();
-	$("#wmd-bold-button").append($("<i>").addClass("icon-bold"));
-	$("#wmd-italic-button").append($("<i>").addClass("icon-italic"));
-	$("#wmd-link-button").append($("<i>").addClass("icon-globe"));
-	$("#wmd-quote-button").append($("<i>").addClass("icon-indent-left"));
-	$("#wmd-code-button").append($("<i>").addClass("icon-code"));
-	$("#wmd-image-button").append($("<i>").addClass("icon-picture"));
-	$("#wmd-olist-button").append($("<i>").addClass("icon-numbered-list"));
-	$("#wmd-ulist-button").append($("<i>").addClass("icon-list"));
-	$("#wmd-heading-button").append($("<i>").addClass("icon-text-height"));
-	$("#wmd-hr-button").append($("<i>").addClass("icon-hr"));
-	$("#wmd-undo-button").append($("<i>").addClass("icon-undo"));
-	$("#wmd-redo-button").append($("<i>").addClass("icon-share-alt"));
-}
+	core.saveSettings = function() {
+		
+		// Layout orientation
+		settings.layoutOrientation = "horizontal"; 
+		if($("#radio-layout-orientation-vertical").is(":checked")) {
+			settings.layoutOrientation = "vertical";
+		}
+		
+		localStorage.settings = JSON.stringify(settings);
+	};
 
-var layoutOrientation = 0;
-var layout;
-function createLayout() {
-	var layoutGlobalConfig = { closable : true, resizable : false,
-		slidable : false, livePaneResizing : true, spacing_open : 20,
-		spacing_closed : 20, togglerLength_open : 90,
-		togglerLength_closed : 90, center__minWidth : 100, center__minHeight : 100,
-		stateManagement__enabled : false, };
-	if (layoutOrientation === 0) {
-		$(".ui-layout-east").addClass("well").attr("id", "wmd-preview");
-		layout = $('body').layout(
-			$.extend(layoutGlobalConfig,
-				{ east__resizable : true, east__size : .5, east__minSize : 200,
-					south__closable : false, }));
-	} else if (layoutOrientation === 1) {
-		$(".ui-layout-east").remove();
-		$(".ui-layout-south").addClass("well").attr("id", "wmd-preview");
-		layout = $('body').layout(
-			$.extend(layoutGlobalConfig, { south__resizable : true,
-				south__size : .5, south__minSize : 200, }));
-	}
-	$(".ui-layout-toggler-north").addClass("btn").append(
-		$("<b>").addClass("caret"));
-	$(".ui-layout-toggler-south").addClass("btn").append(
-		$("<b>").addClass("caret"));
-	$(".ui-layout-toggler-east").addClass("btn").append(
-		$("<b>").addClass("caret"));
-}
+	core.createLayout = function() {
+		var layout = undefined;
+		var layoutGlobalConfig = { closable : true, resizable : false,
+			slidable : false, livePaneResizing : true, spacing_open : 20,
+			spacing_closed : 20, togglerLength_open : 90,
+			togglerLength_closed : 90, center__minWidth : 100, center__minHeight : 100,
+			stateManagement__enabled : false, };
+		if (settings.layoutOrientation == "horizontal") {
+			$(".ui-layout-east").addClass("well").attr("id", "wmd-preview");
+			layout = $('body').layout(
+				$.extend(layoutGlobalConfig,
+					{ east__resizable : true, east__size : .5, east__minSize : 200,
+						south__closable : false, }));
+		} else if (settings.layoutOrientation == "vertical") {
+			$(".ui-layout-east").remove();
+			$(".ui-layout-south").addClass("well").attr("id", "wmd-preview");
+			layout = $('body').layout(
+				$.extend(layoutGlobalConfig, { south__resizable : true,
+					south__size : .5, south__minSize : 200, }));
+		}
+		$(".ui-layout-toggler-north").addClass("btn").append(
+			$("<b>").addClass("caret"));
+		$(".ui-layout-toggler-south").addClass("btn").append(
+			$("<b>").addClass("caret"));
+		$(".ui-layout-toggler-east").addClass("btn").append(
+			$("<b>").addClass("caret"));
+		$("#navbar").click(function() {
+			layout.allowOverflow('north');
+		});
+	};
+
+	core.createEditor = function() {
+		$("#wmd-button-bar").empty();
+		var converter = Markdown.getSanitizingConverter();
+		var editor = new Markdown.Editor(converter);
+		editor.run();
+
+		$(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)")
+			.addClass("btn").css("left", 0).find("span").hide();
+		$("#wmd-bold-button").append($("<i>").addClass("icon-bold"));
+		$("#wmd-italic-button").append($("<i>").addClass("icon-italic"));
+		$("#wmd-link-button").append($("<i>").addClass("icon-globe"));
+		$("#wmd-quote-button").append($("<i>").addClass("icon-indent-left"));
+		$("#wmd-code-button").append($("<i>").addClass("icon-code"));
+		$("#wmd-image-button").append($("<i>").addClass("icon-picture"));
+		$("#wmd-olist-button").append($("<i>").addClass("icon-numbered-list"));
+		$("#wmd-ulist-button").append($("<i>").addClass("icon-list"));
+		$("#wmd-heading-button").append($("<i>").addClass("icon-text-height"));
+		$("#wmd-hr-button").append($("<i>").addClass("icon-hr"));
+		$("#wmd-undo-button").append($("<i>").addClass("icon-undo"));
+		$("#wmd-redo-button").append($("<i>").addClass("icon-share-alt"));
+	};
+	
+	return core;
+})(jQuery);
 
 (function($) {
 
 	$(function() {
 
-		createLayout();
+		core.init();
 		if (typeof (Storage) !== "undefined") {
 			fileManager.init();
 		} else {
 			showError("Web storage is not available");
 		}
-		$("#navbar").click(function() {
-			layout.allowOverflow('north');
-		});
 	});
 
 })(jQuery);

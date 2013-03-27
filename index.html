@@ -53,8 +53,8 @@
 					href="javascript:void(0);" title="Create a local file"><i
 						class="icon-file"></i></a> <a class="btn" href="javascript:void(0);"
 					title="Delete the current file locally" data-toggle="modal"
-					data-target="#remove-file-confirm"><i class="icon-trash"></i></a> <a
-					class="btn dropdown-toggle" data-toggle="dropdown" href="#"
+					data-target="#modal-remove-file-confirm"><i class="icon-trash"></i></a>
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"
 					title="Open a local file"><i class="icon-folder-open"></i></a>
 					<ul id="file-selector" class="dropdown-menu">
 					</ul></li>
@@ -67,10 +67,15 @@
 								file</a></li>
 						<li><a href="javascript:void(0);"
 							title="Delete the current file locally" data-toggle="modal"
-							data-target="#remove-file-confirm"><i class="icon-trash"></i>
-								Remove file</a></li>
+							data-target="#modal-remove-file-confirm"><i
+								class="icon-trash"></i> Remove file</a></li>
 						<li><a id="drive-link" href="javascript:void(0);"><i
 								class="icon-magnet"></i> Link with Google Drive</a></li>
+						<li class="divider"></li>
+						<li><a href="javascript:void(0);"
+							title="Modify your preferences" data-toggle="modal"
+							data-target="#modal-settings"><i class="icon-cog"></i>
+								Settings</a></li>
 					</ul></li>
 			</ul>
 			<ul class="nav pull-right">
@@ -84,7 +89,8 @@
 	<textarea id="wmd-input" class="ui-layout-center"></textarea>
 	<div class="ui-layout-east"></div>
 	<div class="ui-layout-south"></div>
-	<div id="remove-file-confirm" class="modal hide">
+
+	<div id="modal-remove-file-confirm" class="modal hide">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal"
 				aria-hidden="true">&times;</button>
@@ -100,6 +106,35 @@
 			<a href="javascript:void(0);" class="btn" data-dismiss="modal">Cancel</a>
 			<a href="javascript:void(0);"
 				class="btn btn-primary action-remove-file" data-dismiss="modal">Delete</a>
+		</div>
+	</div>
+
+	<div id="modal-settings" class="modal hide">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">&times;</button>
+			<h3>Settings</h3>
+		</div>
+		<div class="modal-body">
+			<dl class="dl-horizontal">
+				<dt>Layout orientation</dt>
+				<dd>
+					<label class="radio"> <input type="radio"
+						name="radio-layout-orientation"
+						id="radio-layout-orientation-horizontal">
+						Horizontal
+					</label> <label class="radio"> <input type="radio"
+						name="radio-layout-orientation"
+						id="radio-layout-orientation-vertical">
+						Vertical
+					</label>
+				</dd>
+			</dl>
+		</div>
+		<div class="modal-footer">
+			<a href="javascript:void(0);" class="btn action-load-settings" data-dismiss="modal">Cancel</a>
+			<a href="javascript:void(0);" class="btn btn-primary action-apply-settings"
+				data-dismiss="modal">OK</a>
 		</div>
 	</div>
 </body>

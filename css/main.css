@@ -20,13 +20,11 @@ body {
 }
 
 #wmd-input {
-	left: 20px;
 	font-family: "Courier New", Courier, monospace;
     resize: none;
 }
 
 #wmd-preview {
-	left: 50%;
 	overflow: auto;
 }
 

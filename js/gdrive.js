@@ -60,8 +60,11 @@ var gdrive = (function() {
 				+ boundary + '"', }, 'body' : multipartRequestBody, });
 		request.execute(function(file) {
 			unsetWorkingIndicator(FLAG_GDRIVE_UPLOAD);
-			var fileSyncIndex = SYNC_PROVIDER_GDRIVE + file.id;
-			localStorage[fileSyncIndex + ".etag"] = file.etag;
+			var fileSyncIndex = undefined;
+			if(file.id) {
+				fileSyncIndex = SYNC_PROVIDER_GDRIVE + file.id;
+				localStorage[fileSyncIndex + ".etag"] = file.etag;
+			}
 			if (callback) {
 				callback(fileSyncIndex);
 			}

@@ -59,7 +59,10 @@ var synchronizer = (function($) {
 		// Try to find the provider
 		if(fileSyncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
 			var id = fileSyncIndex.substring(SYNC_PROVIDER_GDRIVE.length);
-			gdrive.updateFile(id, title, content, function() {
+			gdrive.updateFile(id, title, content, function(result) {
+				if(!result) {
+					showError("Error while uploading file on Google Drive");
+				}
 				sync(fileSyncIndexList, content, title);
 			});
 		} else {
@@ -140,7 +143,12 @@ var fileManager = (function($) {
 			var title = localStorage[fileIndex + ".title"];
 			(function(fileIndex) {
 				gdrive.createFile(title, content, function(fileSyncIndex) {
-					localStorage[fileIndex + ".sync"] += fileSyncIndex + ";";
+					if(fileSyncIndex) {
+						localStorage[fileIndex + ".sync"] += fileSyncIndex + ";";
+					}
+					else {
+						showError("Error while creating file on Google Drive");
+					}
 				});
 			})(fileIndex);
 		});

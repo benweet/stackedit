@@ -333,15 +333,19 @@ var core = (function($) {
 		});
 	};
 
-	core.createEditor = function(textChangeCallback) {
+	core.createEditor = function(onTextChange) {
 		$("#wmd-button-bar").empty();
 		var converter = Markdown.getSanitizingConverter();
+		var firstChange = true;
 		converter.hooks.chain("preConversion", function (text) {
-			textChangeCallback();
+			if(!firstChange) {
+				onTextChange();
+			}
             return text;
         });
 		var editor = new Markdown.Editor(converter);
 		editor.run();
+		firstChange = false;
 
 		$(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)")
 			.addClass("btn").css("left", 0).find("span").hide();

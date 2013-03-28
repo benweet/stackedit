@@ -333,11 +333,15 @@ var core = (function($) {
 		});
 	};
 
-	core.createEditor = function(textChangeCallback) {
+	core.createEditor = function(onTextChange) {
 		$("#wmd-button-bar").empty();
 		var converter = Markdown.getSanitizingConverter();
+		var firstChange = true;
 		converter.hooks.chain("preConversion", function (text) {
-			textChangeCallback();
+			if(!firstChange) {
+				onTextChange();
+			}
+			firstChange = false;
             return text;
         });
 		var editor = new Markdown.Editor(converter);

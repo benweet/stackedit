@@ -41,7 +41,7 @@ var gdrive = (function() {
 		var method = 'POST';
 		if (fileId) {
 			// If it's an update
-			path += fileId;
+			path += "/" + fileId;
 			method = 'PUT';
 		}
 

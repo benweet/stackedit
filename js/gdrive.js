@@ -26,6 +26,7 @@ var gdrive = (function() {
 	}
 
 	function uploadFile(fileId, parentId, title, content, callback) {
+		setWorkingIndicator(FLAG_GDRIVE_UPLOAD);
 		var boundary = '-------314159265358979323846';
 		var delimiter = "\r\n--" + boundary + "\r\n";
 		var close_delim = "\r\n--" + boundary + "--";
@@ -58,8 +59,11 @@ var gdrive = (function() {
 			'headers' : { 'Content-Type' : 'multipart/mixed; boundary="'
 				+ boundary + '"', }, 'body' : multipartRequestBody, });
 		request.execute(function(file) {
+			unsetWorkingIndicator(FLAG_GDRIVE_UPLOAD);
+			var fileSyncIndex = SYNC_PROVIDER_GDRIVE + file.id;
+			localStorage[fileSyncIndex + ".etag"] = file.etag;
 			if (callback) {
-				callback(file);
+				callback(fileSyncIndex);
 			}
 		});
 	}

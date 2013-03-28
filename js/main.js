@@ -2,15 +2,112 @@ function showError(msg) {
 	alert(msg);
 }
 
+var workingIndicator = 0;
+var FLAG_GDRIVE_UPLOAD = 1;
+var FLAG_SYNCHRONIZE = 2;
+function setWorkingIndicator(flag) {
+	workingIndicator |= flag;
+	if(workingIndicator) {
+		$(".working-indicator").removeClass("hide");
+	}
+}
+
+function unsetWorkingIndicator(flag) {
+	workingIndicator &= ~flag;
+	if(!workingIndicator) {
+		$(".working-indicator").addClass("hide");
+	}
+}
+
+var SYNC_PROVIDER_GDRIVE = "sync.gdrive.";
+var synchronizer = (function($) {
+	var synchronizer = {};
+	
+	// A synchronization queue containing fileIndex that has to be synchronized
+	var syncQueue = undefined;
+	synchronizer.init = function() {
+		syncQueue = ";";
+		// Load the queue from localStorage in case a previous synchronization was aborted
+		if(localStorage["sync.queue"]) {
+			syncQueue = localStorage["sync.queue"];
+		}
+		if(localStorage["sync.current"]) {
+			this.addFile(localStorage["sync.current"]);
+		}
+	};
+	
+	// Add a file to the synchronization queue
+	synchronizer.addFile = function(fileIndex) {
+		if(syncQueue.indexOf(";" + fileIndex + ";") === -1) {
+			syncQueue += fileIndex + ";";
+			localStorage["sync.queue"] = syncQueue;
+		}
+	};
+	
+	// Recursive function to run synchronization of a single file on multiple locations
+	function sync(fileSyncIndexList, content, title) {
+		if(fileSyncIndexList.length === 0) {
+			localStorage.removeItem("sync.current");
+			unsetWorkingIndicator(FLAG_SYNCHRONIZE);
+			running = false;
+			// run the next file synchronization
+			synchronizer.run();
+			return;
+		}
+		var fileSyncIndex = fileSyncIndexList.pop();
+		
+		// Try to find the provider
+		if(fileSyncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
+			var id = fileSyncIndex.substring(SYNC_PROVIDER_GDRIVE.length);
+			gdrive.updateFile(id, title, content, function() {
+				sync(fileSyncIndexList, content, title);
+			});
+		} else {
+			sync(fileSyncIndexList, content, title);
+		}
+	}
+	
+	var running = false;
+	synchronizer.run = function() {
+		// If synchronization is already running or nothing to synchronize
+		if(running || syncQueue.length === 1) {
+			return;
+		}
+		
+		// Start synchronization of the next available in the queue
+		setWorkingIndicator(FLAG_SYNCHRONIZE);
+		running = true;
+		
+		// Dequeue the fileIndex
+		var separatorPos = syncQueue.indexOf(";", 1);
+		var fileIndex = syncQueue.substring(1, separatorPos);
+		localStorage["sync.current"] = fileIndex;
+		syncQueue = syncQueue.substring(separatorPos);
+		localStorage["sync.queue"] = syncQueue;
+		
+		var content = localStorage[fileIndex + ".content"];
+		var title = localStorage[fileIndex + ".title"];
+		
+		// Parse the list of synchronized locations associated to the file
+		var fileSyncIndexList = localStorage[fileIndex + ".sync"].split(";");
+		sync(fileSyncIndexList, content, title);
+	};
+	
+	return synchronizer;
+})(jQuery);
+
 var fileManager = (function($) {
 
 	var fileManager = {};
 
+	var save = false;
 	fileManager.init = function() {
+		synchronizer.init();
 		fileManager.selectFile();
 		window.setInterval(function() {
 			fileManager.saveFile();
-		}, 5000);
+			synchronizer.run();
+		}, 3000);
 		$(".action-create-file").click(function() {
 			fileManager.saveFile();
 			fileManager.createFile();
@@ -34,24 +131,30 @@ var fileManager = (function($) {
 			$("#file-title").show();
 			fileManager.updateFileDescList();
 			fileManager.updateFileTitleUI();
+			save = true;
 		});
 		$(".action-upload-gdrive").click(function() {
 			$(".file-sync-indicator").removeClass("hide");
 			var fileIndex = localStorage["file.current"];
 			var content = localStorage[fileIndex + ".content"];
 			var title = localStorage[fileIndex + ".title"];
-			gdrive.createFile(title, content, function(file) {
-				$(".file-sync-indicator").addClass("hide");
-				console.log(file);
-			});
+			(function(fileIndex) {
+				gdrive.createFile(title, content, function(fileSyncIndex) {
+					localStorage[fileIndex + ".sync"] += fileSyncIndex + ";";
+				});
+			})(fileIndex);
+		});
+		$("#wmd-input").keyup(function() {
+			save = true;
 		});
 	};
-
+	
 	fileManager.selectFile = function() {
 		// If file system does not exist
-		if (!localStorage["file.count"]) {
+		if (!localStorage["file.counter"] || !localStorage["file.list"]) {
 			localStorage.clear();
-			localStorage["file.count"] = 0;
+			localStorage["file.counter"] = 0;
+			localStorage["file.list"] = ";";
 		}
 		this.updateFileDescList();
 		// If no file create one
@@ -74,46 +177,36 @@ var fileManager = (function($) {
 		if (!title) {
 			title = "Filename";
 		}
-		// Find a fileIndex
-		var fileCount = parseInt(localStorage["file.count"]);
-		var i;
-		for (i = 0; i < fileCount; i++) {
-			if (!localStorage["file." + i + ".title"]) {
-				break;
-			}
-		}
-		var fileIndex = "file." + i;
-		// Create the file in the localStorag
+		// Create the fileIndex
+		var fileCounter = parseInt(localStorage["file.counter"]);
+		var fileIndex = "file." + fileCounter;
+		// Create the file in the localStorage
 		localStorage[fileIndex + ".content"] = "";
 		localStorage[fileIndex + ".title"] = title;
+		localStorage[fileIndex + ".sync"] = ";";
+		localStorage["file.counter"] = fileCounter + 1;
+		localStorage["file.list"] += fileIndex + ";";
 		localStorage["file.current"] = fileIndex;
-		if (i == fileCount) {
-			localStorage["file.count"] = fileCount + 1;
-		}
 	};
 
 	fileManager.deleteFile = function() {
 		var fileIndex = localStorage["file.current"];
 		localStorage.removeItem("file.current");
+		localStorage["file.list"] = localStorage["file.list"].replace(";" + fileIndex + ";", ";");
+		localStorage.removeItem(fileIndex + ".sync");
 		localStorage.removeItem(fileIndex + ".title");
 		localStorage.removeItem(fileIndex + ".content");
 	};
 
 	fileManager.updateFileDescList = function() {
-		var fileCount = parseInt(localStorage["file.count"]);
-		var lastIndex = -1;
 		this.fileDescList = [];
 		$("#file-selector").empty();
-		for ( var i = 0; i < fileCount; i++) {
-			var fileIndex = "file." + i;
+		var fileIndexList = localStorage["file.list"].split(";");
+		for ( var i = 1; i < fileIndexList.length - 1; i++) {
+			var fileIndex = fileIndexList[i];
 			var title = localStorage[fileIndex + ".title"];
-			if (title) {
-				lastIndex = i;
-				this.fileDescList
-					.push({ "index" : fileIndex, "title" : title });
-			}
+			this.fileDescList.push({ "index" : fileIndex, "title" : title });
 		}
-		localStorage["file.count"] = lastIndex + 1;
 		this.fileDescList.sort(function(a, b) {
 			if (a.title.toLowerCase() < b.title.toLowerCase())
 				return -1;
@@ -139,7 +232,7 @@ var fileManager = (function($) {
 			if (fileDesc.index == fileIndex) {
 				li.addClass("disabled");
 			} else {
-				a.attr("href", "javascript:void(0);").click(
+				a.prop("href", "#").click(
 					(function(fileIndex) {
 						return function() {
 							localStorage["file.current"] = fileIndex;
@@ -152,10 +245,13 @@ var fileManager = (function($) {
 	};
 
 	fileManager.saveFile = function() {
-		var content = $("#wmd-input").val();
-		var fileIndex = localStorage["file.current"];
-		localStorage[fileIndex + ".content"] = content;
-		// insertFile(this.currentFile, this.content);
+		if(save) {
+			var content = $("#wmd-input").val();
+			var fileIndex = localStorage["file.current"];
+			localStorage[fileIndex + ".content"] = content;
+			synchronizer.addFile(fileIndex);
+			save = false;
+		}
 	};
 
 	return fileManager;
@@ -166,8 +262,11 @@ var core = (function($) {
 	
 	core.init = function() {
 		this.loadSettings();
-		this.saveSettings();
 		this.createLayout();
+		
+		$(".action-load-settings").click(function() {
+			core.loadSettings();
+		});
 		
 		$(".action-apply-settings").click(function() {
 			core.saveSettings();
@@ -176,26 +275,22 @@ var core = (function($) {
 		});
 	};
 	
-	var settings = {};
+	var settings = {
+		layoutOrientation: "horizontal"
+	};
 	core.loadSettings = function() {
 		if(localStorage.settings) {
-			settings = JSON.parse(localStorage.settings);
+			$.extend(settings, JSON.parse(localStorage.settings));
 		}
 		
 		// Layout orientation
-		$("#radio-layout-orientation-horizontal").attr('checked', true);
-		if(settings.layoutOrientation == "vertical") {
-			$("#radio-layout-orientation-vertical").attr('checked', true);
-		}
+		$("input:radio[name=radio-layout-orientation][value=" + settings.layoutOrientation + "]").prop("checked", true);
 	};
 
 	core.saveSettings = function() {
 		
 		// Layout orientation
-		settings.layoutOrientation = "horizontal"; 
-		if($("#radio-layout-orientation-vertical").is(":checked")) {
-			settings.layoutOrientation = "vertical";
-		}
+		settings.layoutOrientation = $("input:radio[name=radio-layout-orientation]:checked").prop("value"); 
 		
 		localStorage.settings = JSON.stringify(settings);
 	};
@@ -208,14 +303,14 @@ var core = (function($) {
 			togglerLength_closed : 90, center__minWidth : 100, center__minHeight : 100,
 			stateManagement__enabled : false, };
 		if (settings.layoutOrientation == "horizontal") {
-			$(".ui-layout-east").addClass("well").attr("id", "wmd-preview");
+			$(".ui-layout-east").addClass("well").prop("id", "wmd-preview");
 			layout = $('body').layout(
 				$.extend(layoutGlobalConfig,
 					{ east__resizable : true, east__size : .5, east__minSize : 200,
 						south__closable : false, }));
 		} else if (settings.layoutOrientation == "vertical") {
 			$(".ui-layout-east").remove();
-			$(".ui-layout-south").addClass("well").attr("id", "wmd-preview");
+			$(".ui-layout-south").addClass("well").prop("id", "wmd-preview");
 			layout = $('body').layout(
 				$.extend(layoutGlobalConfig, { south__resizable : true,
 					south__size : .5, south__minSize : 200, }));
@@ -264,7 +359,7 @@ var core = (function($) {
 		if (typeof (Storage) !== "undefined") {
 			fileManager.init();
 		} else {
-			showError("Web storage is not available");
+			showError("Local storage is not available");
 		}
 	});
 

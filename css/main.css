@@ -1,6 +1,11 @@
 body {
 	background-image: url(../img/honeycomb.png);
 	background-repeat: repeat;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
 }
 
 #navbar {
@@ -62,6 +67,13 @@ body {
 	font-family: trebuchet MS, helvetica, sans-serif;
 	font-size: 0.8em;
 	font-weight: bold;
+}
+
+.ui-layout-center,.ui-layout-east,.ui-layout-south {
+	-webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1) !important;
+	-moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1) !important;
+	box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1) !important;
+	border-color: #cccccc !important;
 }
 
 .icon-code {

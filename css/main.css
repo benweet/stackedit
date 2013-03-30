@@ -19,7 +19,7 @@ div, span, a, ul, li, textarea, input {
     text-shadow: none !important;
 }
 
-.btn, .navbar-inner, .well, textarea, input {
+.btn, .navbar-inner, .ui-layout-east, .ui-layout-south, textarea, input {
     border: none !important;
 }
 
@@ -51,11 +51,11 @@ div, span, a, ul, li, textarea, input {
 .dropdown-menu > .active > a,
 .dropdown-menu > .active > a:hover,
 .dropdown-menu > .active > a:focus {
-  background-color: #999;
+  background-color: #888;
 }
 
 .btn-primary {
-  background-color: #888;
+  background-color: #777;
 }
 
 .btn-primary:hover,
@@ -64,7 +64,7 @@ div, span, a, ul, li, textarea, input {
 .btn-primary.active,
 .btn-primary.disabled,
 .btn-primary[disabled] {
-  background-color: #999;
+  background-color: #888;
 }
 
 .btn-group {
@@ -232,4 +232,14 @@ hr {
 	border-top: 5px solid transparent;
 	border-right: 5px solid #525252;
 	border-left: 0;
+}
+
+#message-container {
+	position: absolute;
+	right: 20px;
+	bottom: 20px;
+	width: 200px;
+	background-color: #eee;
+    margin: 0;
+    font-weight: bold;
 }

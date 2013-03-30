@@ -1,21 +1,65 @@
+var currentTime = new Date().getTime();
+
 function showError(msg) {
-	alert(msg);
+	showMessage(msg, "icon-warning-sign");
 }
 
-var workingIndicator = 0;
-var FLAG_GDRIVE_UPLOAD = 1;
-var FLAG_SYNCHRONIZE = 2;
-function setWorkingIndicator(flag) {
-	workingIndicator |= flag;
-	if (workingIndicator) {
+function showMessage(msg, iconClass, options) {
+	options = options || {};
+	$.jGrowl("<i class='icon-white " + iconClass + "'></i> " + msg, options);
+}
+
+function showWorkingIndicator(show) {
+	if (show === false) {
+		$(".working-indicator").addClass("hide");
+	} else {
 		$(".working-indicator").removeClass("hide");
 	}
 }
 
-function unsetWorkingIndicator(flag) {
-	workingIndicator &= ~flag;
-	if (!workingIndicator) {
-		$(".working-indicator").addClass("hide");
+var offline = false;
+var offlineTime = currentTime;
+function onOffline() {
+	offline = true;
+	offlineTime = currentTime;
+	if ($(".msg-offline").length === 0)
+		showMessage("You are offline.", "icon-exclamation-sign msg-offline", {
+			sticky : true, close : function() {
+				showMessage("You are back online!", "icon-signal");
+			} });
+}
+
+function onOnline() {
+	offline = false;
+	$(".msg-offline").parents(".jGrowl-notification").trigger(
+		'jGrowl.beforeClose');
+}
+
+function autoClean() {
+	$("#message-container .msg-temp").each(function() {
+		var displayTime = $(this).data("displayTime");
+		if (displayTime + 5000 < currentTime) {
+			$(this).animate({ opacity : 'hide' }, 600, function() {
+				$(this).remove();
+				if ($("#message-container div").length === 0) {
+					$("#message-container").addClass("hide");
+				}
+			});
+		}
+	});
+	if ($("#message-container div").length === 0) {
+		$("#message-container").addClass("hide");
+	}
+	// Try to reconnect if we are offline but we have some network
+	if (offline === true && navigator.onLine === true
+		&& offlineTime + 60000 < currentTime) {
+		offlineTime = currentTime;
+		// Try to download anything to test the connection
+		$.ajax(
+			{ url : "https://apis.google.com/js/client.js", timeout : 5000,
+				dataType : "script" }).done(function() {
+			onOnline();
+		});
 	}
 }
 
@@ -50,7 +94,6 @@ var synchronizer = (function($) {
 	function sync(fileSyncIndexList, content, title) {
 		if (fileSyncIndexList.length === 0) {
 			localStorage.removeItem("sync.current");
-			unsetWorkingIndicator(FLAG_SYNCHRONIZE);
 			running = false;
 			// run the next file synchronization
 			synchronizer.run();
@@ -62,8 +105,13 @@ var synchronizer = (function($) {
 		if (fileSyncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
 			var id = fileSyncIndex.substring(SYNC_PROVIDER_GDRIVE.length);
 			gdrive.updateFile(id, title, content, function(result) {
-				if (!result) {
-					showError("Error while uploading file on Google Drive");
+				if (!result && offline) {
+					// If we detect offline mode we put the fileIndex back in
+					// the queue
+					synchronizer.addFile(localStorage["sync.current"]);
+					localStorage.removeItem("sync.current");
+					running = false;
+					return;
 				}
 				sync(fileSyncIndexList, content, title);
 			});
@@ -75,12 +123,9 @@ var synchronizer = (function($) {
 	var running = false;
 	synchronizer.run = function() {
 		// If synchronization is already running or nothing to synchronize
-		if (running || syncQueue.length === 1) {
+		if (running || syncQueue.length === 1 || offline) {
 			return;
 		}
-
-		// Start synchronization of the next available in the queue
-		setWorkingIndicator(FLAG_SYNCHRONIZE);
 		running = true;
 
 		// Dequeue the fileIndex
@@ -107,13 +152,17 @@ var fileManager = (function($) {
 
 	var save = false;
 	fileManager.init = function() {
+		gdrive.init();
 		synchronizer.init();
 		fileManager.selectFile();
 
 		// Save file automatically and synchronize
 		window.setInterval(function() {
+			currentTime = new Date().getTime();
 			fileManager.saveFile();
 			synchronizer.run();
+			asyncTaskRunner.runTask();
+			autoClean();
 		}, 1000);
 
 		$(".action-create-file").click(function() {
@@ -331,10 +380,11 @@ var core = (function($) {
 	core.createLayout = function() {
 		var layout = undefined;
 		var layoutGlobalConfig = { closable : true, resizable : false,
-			slidable : false, livePaneResizing : true, spacing_open : 15,
-			spacing_closed : 15, togglerLength_open : 90,
-			togglerLength_closed : 90, center__minWidth : 100,
-			center__minHeight : 100, stateManagement__enabled : false, };
+			slidable : false, livePaneResizing : true,
+			enableCursorHotkey : false, spacing_open : 15, spacing_closed : 15,
+			togglerLength_open : 90, togglerLength_closed : 90,
+			center__minWidth : 100, center__minHeight : 100,
+			stateManagement__enabled : false, };
 		if (settings.layoutOrientation == "horizontal") {
 			$(".ui-layout-south").remove();
 			$(".ui-layout-east").addClass("well").prop("id", "wmd-preview");
@@ -396,7 +446,19 @@ var core = (function($) {
 
 	$(function() {
 
+		$.jGrowl.defaults.closer = false;
+		$.jGrowl.defaults.closeTemplate = '';
+		$.jGrowl.defaults.position = 'bottom-right';
+
 		core.init();
+		
+		// listen to online/offline events
+		$(window).on('offline', onOffline);
+		$(window).on('online', onOnline);
+		if (navigator.onLine === false) {
+			onOffline();
+		}
+
 		if (typeof (Storage) !== "undefined") {
 			fileManager.init();
 		} else {

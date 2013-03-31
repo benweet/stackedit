@@ -1,9 +1,10 @@
 /**
  *  Used to run any asynchronous tasks sequentially (ajax mainly)
  *  An asynchronous task must be created with:
- *  - a run() function (required) that may call success() or error()
- *  - a onSuccess() function (optional)
- *  - a onError() function (optional)
+ *  - a required run() function that may call success() or error()
+ *  - an optional onSuccess() function
+ *  - an optional onError() function
+ *  - an optional timeout property
  */
 var asyncTaskRunner = (function() {
 	var asyncTaskRunner = {};
@@ -18,11 +19,13 @@ var asyncTaskRunner = (function() {
 		// If there is a task currently running
 		if(currentTask !== undefined) {
 			// If the current task takes too long
-			if(currentTaskStartTime + 30000 < currentTime) {
+			var timeout = currentTask.timeout || 30000;
+			if(currentTaskStartTime + timeout < currentTime) {
 				currentTask.error();
 			}
 			return;
 		}
+		
 		// If no task in the queue
 		if(asyncTaskQueue.length === 0) {
 			return;

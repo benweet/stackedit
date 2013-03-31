@@ -87,8 +87,9 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	margin-bottom: 			5px;
 	text-align: 			left;
 	display: 				none;
-	-moz-border-radius: 	5px;
-	-webkit-border-radius:	5px;
+    -webkit-border-radius:  5px;
+    -moz-border-radius:     5px;
+     border-radius:         5px;
 }
 
 div.jGrowl div.jGrowl-notification {

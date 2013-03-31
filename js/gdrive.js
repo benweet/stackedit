@@ -1,3 +1,4 @@
+var GOOGLE_CLIENT_ID = '241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com';
 var SCOPES = [ 'https://www.googleapis.com/auth/drive.install',
 	'https://www.googleapis.com/auth/drive.file' ];
 
@@ -63,6 +64,10 @@ var gdrive = (function($) {
 			}
 			
 			var asyncTask = {};
+			// If not immediate we add time for user to enter his credentials
+			if(immediate === false) {
+				asyncTask.timeout = 90000;
+			}
 			asyncTask.run = function() {
 				if(authenticated === true) {
 					asyncTask.success();

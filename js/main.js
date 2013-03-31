@@ -242,10 +242,18 @@ var fileManager = (function($) {
 
 	fileManager.deleteFile = function() {
 		var fileIndex = localStorage["file.current"];
+		
+		// Remove synchronized locations
+		var fileSyncIndexList = localStorage[fileIndex + ".sync"].split(";");
+		for ( var i = 1; i < fileSyncIndexList.length - 1; i++) {
+			var sync = fileSyncIndexList[i];
+			fileManager.removeSync(sync);
+		}		
+		localStorage.removeItem(fileIndex + ".sync");
+
 		localStorage.removeItem("file.current");
 		localStorage["file.list"] = localStorage["file.list"].replace(";"
-			+ fileIndex + ";", ";");
-		localStorage.removeItem(fileIndex + ".sync");
+			+ fileIndex + ";", ";");		
 		localStorage.removeItem(fileIndex + ".title");
 		localStorage.removeItem(fileIndex + ".content");
 	};
@@ -266,7 +274,7 @@ var fileManager = (function($) {
 		localStorage[fileIndexSync] = localStorage[fileIndexSync].replace(";"
 			+ sync + ";", ";");
 
-		localStorage.removeItem(fileIndexSync + ".etag");
+		localStorage.removeItem(sync + ".etag");
 	};
 
 	function uploadGdrive() {

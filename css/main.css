@@ -107,8 +107,13 @@ hr {
     margin: 30px 0;
 }
 
+#file-title {
+    line-height: 23px;
+    padding: 9px 15px 11px;
+}
+
 #file-title i {
-	margin: 3px 5px 0;
+	margin: 4px 5px 0;
 }
 
 .dropdown-menu {
@@ -208,7 +213,7 @@ hr {
 	width: 43px;
 	height: 11px;
 	background-position: 0 0;
-	margin: 13px 15px 0;
+	margin: 14px 15px 0;
 }
 
 .ui-layout-toggler-north .caret, .ui-layout-toggler-south .caret {

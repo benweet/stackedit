@@ -125,7 +125,7 @@ var gdrive = (function($) {
 					method = 'PUT';
 				}
 
-				var base64Data = btoa(content);
+				var base64Data = base64.encode(content);
 				var multipartRequestBody = delimiter
 					+ 'Content-Type: application/json\r\n\r\n'
 					+ JSON.stringify(metadata) + delimiter + 'Content-Type: '

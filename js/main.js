@@ -6,6 +6,7 @@ function showError(msg) {
 
 function showMessage(msg, iconClass, options) {
 	options = options || {};
+	iconClass = iconClass || "icon-info-sign";
 	$.jGrowl("<i class='icon-white " + iconClass + "'></i> " + msg, options);
 }
 
@@ -36,20 +37,6 @@ function onOnline() {
 }
 
 function autoClean() {
-	$("#message-container .msg-temp").each(function() {
-		var displayTime = $(this).data("displayTime");
-		if (displayTime + 5000 < currentTime) {
-			$(this).animate({ opacity : 'hide' }, 600, function() {
-				$(this).remove();
-				if ($("#message-container div").length === 0) {
-					$("#message-container").addClass("hide");
-				}
-			});
-		}
-	});
-	if ($("#message-container div").length === 0) {
-		$("#message-container").addClass("hide");
-	}
 	// Try to reconnect if we are offline but we have some network
 	if (offline === true && navigator.onLine === true
 		&& offlineTime + 60000 < currentTime) {
@@ -174,6 +161,7 @@ var fileManager = (function($) {
 			fileManager.deleteFile();
 			fileManager.selectFile();
 		});
+		$(".action-refresh-manage-sync").click(refreshManageSync);
 		$("#file-title").click(function() {
 			$(this).hide();
 			$("#file-title-input").show().focus();
@@ -181,53 +169,35 @@ var fileManager = (function($) {
 		$("#file-title-input").blur(function() {
 			var title = $.trim($(this).val());
 			if (title) {
-				var fileIndex = localStorage["file.current"];
-				localStorage[fileIndex + ".title"] = title;
+				var fileIndexTitle = localStorage["file.current"] + ".title";
+				if (title != localStorage[fileIndexTitle]) {
+					localStorage[fileIndexTitle] = title;
+					updateFileDescList();
+					updateFileTitleUI();
+					save = true;
+				}
 			}
 			$(this).hide();
 			$("#file-title").show();
-			fileManager.updateFileDescList();
-			fileManager.updateFileTitleUI();
-			save = true;
 		});
 		$(".action-download-md").click(
 			function() {
 				var content = $("#wmd-input").val();
-				var uriContent = "data:application/octet-stream,"
-					+ encodeURIComponent(content);
+				var uriContent = "data:application/octet-stream;base64,"
+					+ base64.encode(content);
 				window.open(uriContent, 'file');
 			});
 		$(".action-download-html").click(
 			function() {
 				var content = $("#wmd-preview").html();
-				var uriContent = "data:application/octet-stream,"
-					+ encodeURIComponent(content);
+				var uriContent = "data:application/octet-stream;base64,"
+					+ base64.encode(content);
 				window.open(uriContent, 'file');
 			});
-		$(".action-upload-gdrive")
-			.click(
-				function() {
-					$(".file-sync-indicator").removeClass("hide");
-					var fileIndex = localStorage["file.current"];
-					var content = localStorage[fileIndex + ".content"];
-					var title = localStorage[fileIndex + ".title"];
-					(function(fileIndex) {
-						gdrive
-							.createFile(
-								title,
-								content,
-								function(fileSyncIndex) {
-									if (fileSyncIndex) {
-										localStorage[fileIndex + ".sync"] += fileSyncIndex
-											+ ";";
-									} else {
-										showError("Error while creating file on Google Drive");
-									}
-								});
-					})(fileIndex);
-				});
+		$(".action-upload-gdrive").click(uploadGdrive);
 	};
 
+	var fileDescList = [];
 	fileManager.selectFile = function() {
 		// If file system does not exist
 		if (!localStorage["file.counter"] || !localStorage["file.list"]) {
@@ -235,15 +205,15 @@ var fileManager = (function($) {
 			localStorage["file.counter"] = 0;
 			localStorage["file.list"] = ";";
 		}
-		this.updateFileDescList();
+		updateFileDescList();
 		// If no file create one
-		if (this.fileDescList.length === 0) {
+		if (fileDescList.length === 0) {
 			this.createFile();
-			this.updateFileDescList();
+			updateFileDescList();
 		}
 		// If no default file take first one
 		if (!localStorage["file.current"]) {
-			localStorage["file.current"] = this.fileDescList[0].index;
+			localStorage["file.current"] = fileDescList[0].index;
 		}
 		// Update the editor and the file title
 		var fileIndex = localStorage["file.current"];
@@ -251,7 +221,7 @@ var fileManager = (function($) {
 		core.createEditor(function() {
 			save = true;
 		});
-		this.updateFileTitleUI();
+		updateFileTitleUI();
 	};
 
 	fileManager.createFile = function(title) {
@@ -280,36 +250,83 @@ var fileManager = (function($) {
 		localStorage.removeItem(fileIndex + ".content");
 	};
 
-	fileManager.updateFileDescList = function() {
-		this.fileDescList = [];
+	fileManager.saveFile = function() {
+		if (save) {
+			var content = $("#wmd-input").val();
+			var fileIndex = localStorage["file.current"];
+			localStorage[fileIndex + ".content"] = content;
+			synchronizer.addFile(fileIndex);
+			save = false;
+		}
+	};
+
+	// Remove a synchronization location associated to the file
+	fileManager.removeSync = function(sync) {
+		var fileIndexSync = localStorage["file.current"] + ".sync";
+		localStorage[fileIndexSync] = localStorage[fileIndexSync].replace(";"
+			+ sync + ";", ";");
+
+		localStorage.removeItem(fileIndexSync + ".etag");
+	};
+
+	function uploadGdrive() {
+		$(".file-sync-indicator").removeClass("hide");
+		var fileIndex = localStorage["file.current"];
+		var content = localStorage[fileIndex + ".content"];
+		var title = localStorage[fileIndex + ".title"];
+		gdrive.createFile(title, content, function(fileSyncIndex) {
+			if (fileSyncIndex) {
+				localStorage[fileIndex + ".sync"] += fileSyncIndex + ";";
+				updateFileTitleUI();
+				showMessage('The file "' + title
+					+ '" will now be synchronized on Google Drive.');
+			} else {
+				showError("Error while creating file on Google Drive.");
+			}
+		});
+	}
+
+	function updateFileDescList() {
+		fileDescList = [];
 		$("#file-selector").empty();
 		var fileIndexList = localStorage["file.list"].split(";");
 		for ( var i = 1; i < fileIndexList.length - 1; i++) {
 			var fileIndex = fileIndexList[i];
 			var title = localStorage[fileIndex + ".title"];
-			this.fileDescList.push({ "index" : fileIndex, "title" : title });
+			fileDescList.push({ index : fileIndex, title : title });
 		}
-		this.fileDescList.sort(function(a, b) {
+		fileDescList.sort(function(a, b) {
 			if (a.title.toLowerCase() < b.title.toLowerCase())
 				return -1;
 			if (a.title.toLowerCase() > b.title.toLowerCase())
 				return 1;
 			return 0;
 		});
-	};
+	}
+	;
 
-	fileManager.updateFileTitleUI = function() {
+	function updateFileTitleUI() {
+		function composeTitle(fileIndex) {
+			var result = localStorage[fileIndex + ".title"];
+			var sync = localStorage[fileIndex + ".sync"];
+			if (sync.indexOf(SYNC_PROVIDER_GDRIVE) !== -1) {
+				result = '<i class="icon-gdrive"></i> ' + result;
+			}
+			return result;
+		}
+
 		// Update the editor and the file title
 		var fileIndex = localStorage["file.current"];
 		var title = localStorage[fileIndex + ".title"];
 		document.title = "StackEdit - " + title;
+		$("#file-title").html(composeTitle(fileIndex));
 		$(".file-title").text(title);
 		$("#file-title-input").val(title);
 		$("#file-selector").empty();
 
-		for ( var i = 0; i < this.fileDescList.length; i++) {
-			var fileDesc = this.fileDescList[i];
-			var a = $("<a>").text(fileDesc.title);
+		for ( var i = 0; i < fileDescList.length; i++) {
+			var fileDesc = fileDescList[i];
+			var a = $("<a>").html(composeTitle(fileDesc.index));
 			var li = $("<li>").append(a);
 			if (fileDesc.index == fileIndex) {
 				li.addClass("disabled");
@@ -323,17 +340,39 @@ var fileManager = (function($) {
 			}
 			$("#file-selector").append(li);
 		}
-	};
+	}
+	;
 
-	fileManager.saveFile = function() {
-		if (save) {
-			var content = $("#wmd-input").val();
-			var fileIndex = localStorage["file.current"];
-			localStorage[fileIndex + ".content"] = content;
-			synchronizer.addFile(fileIndex);
-			save = false;
+	function refreshManageSync() {
+		var fileIndex = localStorage["file.current"];
+		var fileSyncIndexList = localStorage[fileIndex + ".sync"].split(";");
+		$(".msg-no-sync, .msg-sync-list").addClass("hide");
+		$("#manage-sync-list .input-append").remove();
+		if (fileSyncIndexList.length > 2) {
+			$(".msg-sync-list").removeClass("hide");
+		} else {
+			$(".msg-no-sync").removeClass("hide");
 		}
-	};
+		for ( var i = 1; i < fileSyncIndexList.length - 1; i++) {
+			var sync = fileSyncIndexList[i];
+			(function(sync) {
+				var line = $("<div>").addClass("input-append");
+				if (sync.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
+					line.append($("<input>").prop("type", "text").prop(
+						"disabled", true).addClass("span5").val(
+						"Google Drive, FileID="
+							+ sync.substring(SYNC_PROVIDER_GDRIVE.length)));
+					line.append($("<a>").addClass("btn").html(
+						'<i class="icon-trash"></i>').prop("title", "Remove this synchronized location").click(function() {
+						fileManager.removeSync(sync);
+						updateFileTitleUI();
+						refreshManageSync();
+					}));
+				}
+				$("#manage-sync-list").append(line);
+			})(sync);
+		}
+	}
 
 	return fileManager;
 })(jQuery);
@@ -451,7 +490,7 @@ var core = (function($) {
 		$.jGrowl.defaults.position = 'bottom-right';
 
 		core.init();
-		
+
 		// listen to online/offline events
 		$(window).on('offline', onOffline);
 		$(window).on('online', onOnline);

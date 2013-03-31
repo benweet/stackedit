@@ -2,7 +2,6 @@
 div.jGrowl {
 	z-index: 			1000;
 	color: 				#fff;
-	font-size: 			12px;
 }
 
 /** Special IE6 Style Positioning **/
@@ -83,7 +82,7 @@ div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	background-color: 		#777;
 	zoom: 					1;
 	width: 					235px;
-	padding: 				10px;
+	padding: 				15px 20px;
 	margin-top: 			5px;
 	margin-bottom: 			5px;
 	text-align: 			left;
@@ -98,7 +97,7 @@ div.jGrowl div.jGrowl-notification {
 
 div.jGrowl div.jGrowl-notification,
 div.jGrowl div.jGrowl-closer {
-	margin: 				10px;
+	margin: 				20px;
 }
 
 div.jGrowl div.jGrowl-notification div.jGrowl-header {

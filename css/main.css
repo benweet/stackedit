@@ -58,6 +58,11 @@ div, span, a, ul, li, textarea, input {
   background-color: #777;
 }
 
+input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly] {
+    cursor: not-allowed;
+    background-color: #f5f5f5;
+}
+
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active,
@@ -100,6 +105,18 @@ p, pre, blockquote {
 hr {
     border-top: 1px solid #ddd;
     margin: 30px 0;
+}
+
+#file-title i {
+	margin: 3px 5px 0;
+}
+
+.dropdown-menu {
+	border-color: #ddd
+}
+
+.dropdown-menu i {
+	margin-right: 5px;
 }
 
 #navbar {
@@ -232,14 +249,4 @@ hr {
 	border-top: 5px solid transparent;
 	border-right: 5px solid #525252;
 	border-left: 0;
-}
-
-#message-container {
-	position: absolute;
-	right: 20px;
-	bottom: 20px;
-	width: 200px;
-	background-color: #eee;
-    margin: 0;
-    font-weight: bold;
 }

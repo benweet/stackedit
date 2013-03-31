@@ -1,4 +1,3 @@
-var CLIENT_ID = '241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com';
 var SCOPES = [ 'https://www.googleapis.com/auth/drive.install',
 	'https://www.googleapis.com/auth/drive.file' ];
 
@@ -69,7 +68,7 @@ var gdrive = (function($) {
 					asyncTask.success();
 					return;
 				}
-				gapi.auth.authorize({ 'client_id' : CLIENT_ID, 'scope' : SCOPES,
+				gapi.auth.authorize({ 'client_id' : GOOGLE_CLIENT_ID, 'scope' : SCOPES,
 					'immediate' : immediate }, function(authResult) {
 					if (!authResult || authResult.error) {
 						asyncTask.error();

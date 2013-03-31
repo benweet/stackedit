@@ -868,7 +868,7 @@
 
 
             var text = panels.input.value;
-            if (text && text == oldInputText) {
+            if (text !== undefined && text == oldInputText) {
                 return; // Input text hasn't changed.
             }
             else {

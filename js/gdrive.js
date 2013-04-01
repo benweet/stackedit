@@ -31,14 +31,12 @@ var gdrive = (function($) {
 			gdriveDelayedFunction = function() {
 				asyncTask.success();
 			};
-			$
-				.ajax(
-					{
-						url : "https://apis.google.com/js/client.js?onload=runGdriveDelayedFunction",
-						dataType : "script", timeout : AJAX_TIMEOUT }).fail(
-					function() {
-						asyncTask.error();
-					});
+			$.ajax({
+				url : "https://apis.google.com/js/client.js?onload=runGdriveDelayedFunction",
+				dataType : "script", timeout : AJAX_TIMEOUT
+			}).fail(function() {
+				asyncTask.error();
+			});
 		};
 		asyncTask.onSuccess = function() {
 			gdriveDelayedFunction = undefined;
@@ -76,7 +74,7 @@ var gdrive = (function($) {
 					return;
 				}
 				if (immediate === false) {
-					showMessage("Please make sure the Google authorization popup is not blocked by your browser...");
+					showMessage("Please make sure the Google authorization popup is not blocked by your browser.");
 				}
 				gapi.auth.authorize({ 'client_id' : GOOGLE_CLIENT_ID,
 					'scope' : SCOPES, 'immediate' : immediate }, function(
@@ -106,10 +104,9 @@ var gdrive = (function($) {
 		});
 	}
 
-	function handleError(response, asyncTask, callback) {
+	function handleError(error, asyncTask, callback) {
 		var errorMsg = undefined;
-		if (response && response.error) {
-			var error = response.error;
+		if (error) {
 			// Try to analyze the error
 			if (error.code >= 500 && error.code < 600) {
 				errorMsg = "Google Drive is not accessible.";
@@ -119,7 +116,7 @@ var gdrive = (function($) {
 			} else if (error.code === 401) {
 				authenticated = false;
 				errorMsg = "Access to Google Drive is not authorized.";
-			} else if (error.code === -1) {
+			} else if (error.code <= 0) {
 				connected = false;
 				authenticated = false;
 				onOffline();
@@ -190,16 +187,17 @@ var gdrive = (function($) {
 						asyncTask.success();
 						return;
 					}
+					var error = response.error;
 					// If file has been removed from Google Drive
-					if(fileId !== undefined && response.error.code === 404) {
+					if(error !== undefined && fileId !== undefined && error.code === 404) {
 						showMessage('"' + title + '" has been removed from Google Drive.');
 						fileManager.removeSync(SYNC_PROVIDER_GDRIVE + fileId);
 						fileManager.updateFileTitles();
 						// Avoid error analyzed by handleError
-						response = undefined;
+						error = undefined;
 					}
 					// Handle error
-					handleError(response, asyncTask, callback);
+					handleError(error, asyncTask, callback);
 				});
 			};
 			asyncTask.onSuccess = function() {
@@ -223,29 +221,28 @@ var gdrive = (function($) {
 				var nextPageToken = undefined;
 				var asyncTask = {};
 				asyncTask.run = function() {
-					request
-						.execute(function(response) {
-							if (response && response.largestChangeId) {
-								// Retrieve success
-								newChangeId = response.largestChangeId;
-								nextPageToken = response.nextPageToken;
-								if (response.items !== undefined) {
-									for ( var i = 0; i < response.items.length; i++) {
-										var item = response.items[i];
-										var etag = localStorage[SYNC_PROVIDER_GDRIVE
-											+ item.fileId + ".etag"];
-										if (etag
-											&& (item.deleted === true || item.file.etag != etag)) {
-											changes.push(item);
-										}
+					request.execute(function(response) {
+						if (response && response.largestChangeId) {
+							// Retrieve success
+							newChangeId = response.largestChangeId;
+							nextPageToken = response.nextPageToken;
+							if (response.items !== undefined) {
+								for ( var i = 0; i < response.items.length; i++) {
+									var item = response.items[i];
+									var etag = localStorage[SYNC_PROVIDER_GDRIVE
+										+ item.fileId + ".etag"];
+									if (etag
+										&& (item.deleted === true || item.file.etag != etag)) {
+										changes.push(item);
 									}
 								}
-								asyncTask.success();
-								return;
 							}
-							// Handle error
-							handleError(response, asyncTask, callback);
-						});
+							asyncTask.success();
+							return;
+						}
+						// Handle error
+						handleError(response.error, asyncTask, callback);
+					});
 				};
 				asyncTask.onSuccess = function() {
 					if (nextPageToken !== undefined) {
@@ -297,19 +294,22 @@ var gdrive = (function($) {
 			var asyncTask = {};
 			asyncTask.run = function() {
 				var accessToken = gapi.auth.getToken().access_token;
-				$
-					.ajax(
-						{
-							url : file.downloadUrl,
-							headers : { "Authorization" : "Bearer "
-								+ accessToken }, dataType : "text",
-							timeout : AJAX_TIMEOUT }).done(
-						function(data, textStatus, jqXHR) {
-							file.content = data;
-							asyncTask.success();
-						}).fail(function() {
-						asyncTask.error();
-					});
+				$.ajax({
+					url : file.downloadUrl,
+					headers : { "Authorization" : "Bearer "
+						+ accessToken }, dataType : "text",
+					timeout : AJAX_TIMEOUT
+				}).done(function(data, textStatus, jqXHR) {
+					file.content = data;
+					asyncTask.success();
+				}).fail(function(jqXHR) {
+					var error = {
+						code: jqXHR.status,
+						message: jqXHR.statusText
+					};
+					// Handle error
+					handleError(error, asyncTask, callback);
+				});
 			};
 			asyncTask.onSuccess = function() {
 				gdrive.downloadContent(objects, callback, result);

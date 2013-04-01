@@ -211,6 +211,13 @@ hr {
 	background-position: 0 0;
 }
 
+.icon-dropbox {
+	background-image: url("../img/dropbox.png") !important;
+	width: 16px;
+	height: 16px;
+	background-position: 0 0;
+}
+
 .icon-spinner {
 	background-image: url("../img/ajax-loader.gif");
 	width: 43px;

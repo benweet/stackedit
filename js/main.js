@@ -23,19 +23,20 @@ var CHECK_ONLINE_PERIOD = 60000;
 var offline = false;
 var offlineTime = currentTime;
 function onOffline() {
-	offline = true;
 	offlineTime = currentTime;
-	if ($(".msg-offline").length === 0)
+	if(offline === false) {
+		offline = true;
 		showMessage("You are offline.", "icon-exclamation-sign msg-offline", {
 			sticky : true, close : function() {
 				showMessage("You are back online!", "icon-signal");
 			} });
+	}
 }
 
 function onOnline() {
-	offline = false;
 	$(".msg-offline").parents(".jGrowl-notification").trigger(
 		'jGrowl.beforeClose');
+	offline = false;
 }
 
 function checkOnline() {
@@ -52,185 +53,7 @@ function checkOnline() {
 	}
 }
 
-var SYNC_DOWN_PERIOD = 60000;
-var SYNC_PROVIDER_GDRIVE = "sync.gdrive.";
-var syncGoogleDrive = false;
-
-var synchronizer = (function($) {
-	var synchronizer = {};
-
-	// A synchronization queue containing fileIndex that has to be synchronized
-	var syncQueue = undefined;
-	synchronizer.init = function() {
-		syncQueue = ";";
-		// Load the queue from localStorage in case a previous synchronization
-		// was aborted
-		if (localStorage["sync.queue"]) {
-			syncQueue = localStorage["sync.queue"];
-		}
-		if (localStorage["sync.current"]) {
-			this.addFile(localStorage["sync.current"]);
-		}
-	};
-
-	// Add a file to the synchronization queue
-	synchronizer.addFile = function(fileIndex) {
-		if (syncQueue.indexOf(";" + fileIndex + ";") === -1) {
-			syncQueue += fileIndex + ";";
-			localStorage["sync.queue"] = syncQueue;
-		}
-	};
-
-	// Recursive function to upload a single file on multiple locations
-	function fileUp(fileSyncIndexList, content, title) {
-		if (fileSyncIndexList.length === 0) {
-			localStorage.removeItem("sync.current");
-			uploadRunning = false;
-			// run the next file synchronization
-			synchronizer.syncUp();
-			return;
-		}
-		var fileSyncIndex = fileSyncIndexList.pop();
-
-		// Try to find the provider
-		if (fileSyncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
-			var id = fileSyncIndex.substring(SYNC_PROVIDER_GDRIVE.length);
-			gdrive.updateFile(id, title, content, function(result) {
-				if (result === undefined && offline === true) {
-					// If we detect offline mode we put the fileIndex back in
-					// the queue
-					synchronizer.addFile(localStorage["sync.current"]);
-					localStorage.removeItem("sync.current");
-					uploadRunning = false;
-					return;
-				}
-				fileUp(fileSyncIndexList, content, title);
-			});
-		} else {
-			fileUp(fileSyncIndexList, content, title);
-		}
-	}
-
-	var uploadRunning = false;
-	synchronizer.syncUp = function() {
-		// If syncUp is already running or nothing to synchronize or offline
-		if (uploadRunning || syncQueue.length === 1 || offline) {
-			return;
-		}
-		uploadRunning = true;
-
-		// Dequeue the fileIndex
-		var separatorPos = syncQueue.indexOf(";", 1);
-		var fileIndex = syncQueue.substring(1, separatorPos);
-		localStorage["sync.current"] = fileIndex;
-		syncQueue = syncQueue.substring(separatorPos);
-		localStorage["sync.queue"] = syncQueue;
-
-		var content = localStorage[fileIndex + ".content"];
-		var title = localStorage[fileIndex + ".title"];
-
-		// Parse the list of synchronized locations associated to the file
-		var fileSyncIndexList = localStorage[fileIndex + ".sync"].split(";");
-		fileUp(fileSyncIndexList, content, title);
-	};
-
-	function syncDownGdrive(callback) {
-		if (syncGoogleDrive === false) {
-			callback();
-			return;
-		}
-		var lastChangeId = parseInt(localStorage[SYNC_PROVIDER_GDRIVE
-			+ "lastChangeId"]);
-		gdrive.checkUpdates(lastChangeId, function(changes, newChangeId) {
-			if (changes === undefined) {
-				callback();
-				return;
-			}
-			gdrive.downloadContent(changes, function(changes) {
-				if (changes === undefined) {
-					callback();
-					return;
-				}
-				var updateFileTitles = false;
-				for ( var i = 0; i < changes.length; i++) {
-					var change = changes[i];
-					var fileSyncIndex = SYNC_PROVIDER_GDRIVE + change.fileId;
-					var fileIndexList = localStorage["file.list"].split(";");
-					var fileIndex = undefined;
-					// Look for local file associated to this synchronized location 
-					for ( var i = 1; i < fileIndexList.length - 1; i++) {
-						var tempFileIndex = fileIndexList[i];
-						var sync = localStorage[tempFileIndex + ".sync"];
-						if (sync.indexOf(";" + fileSyncIndex + ";") !== -1) {
-							fileIndex = tempFileIndex;
-							break;
-						}
-					}
-					// No file corresponding (this should never happen...)
-					if(fileIndex === undefined) {
-						// We can remove the stored etag
-						localStorage.removeItem(fileSyncIndex + ".etag");
-						continue;
-					}
-					var title = localStorage[fileIndex + ".title"];
-					// File deleted
-					if (change.deleted === true) {
-						fileManager.removeSync(fileSyncIndex);
-						updateFileTitles = true;
-						showMessage('"' + title + '" has been removed from Google Drive.');
-						continue;
-					}
-					var content = localStorage[fileIndex + ".content"];
-					var file = change.file;
-					// File title changed
-					if(title != file.title) {
-						localStorage[fileIndex + ".title"] = file.title;
-						updateFileTitles = true;
-						showMessage('"' + title + '" has been renamed to "' + file.title + '" on Google Drive.');
-					}
-					// File content changed
-					if(content != file.content) {
-						localStorage[fileIndex + ".content"] = file.content;
-						showMessage('"' + file.title + '" has been updated from Google Drive.');
-						if(fileIndex == localStorage["file.current"]) {
-							updateFileTitles = false; // Done by next function
-							fileManager.selectFile();
-						}
-					}
-					// Update file etag
-					localStorage[fileSyncIndex + ".etag"] = file.etag;
-					// Synchronize file to others locations
-					synchronizer.addFile(fileIndex);
-				}
-				if(updateFileTitles) {
-					fileManager.updateFileTitles();
-				}
-				localStorage[SYNC_PROVIDER_GDRIVE
-				 			+ "lastChangeId"] = newChangeId;
-				callback();
-			});
-		});
-	}
-
-	var downloadRunning = false;
-	var lastSyncDown = 0;
-	synchronizer.syncDown = function() {
-		// If syncDown is already running or timeout is not reached or offline
-		if (downloadRunning || lastSyncDown + SYNC_DOWN_PERIOD > currentTime
-			|| offline) {
-			return;
-		}
-		downloadRunning = true;
-		lastSyncDown = currentTime;
-
-		syncDownGdrive(function() {
-			downloadRunning = false;
-		});
-	};
-
-	return synchronizer;
-})(jQuery);
-
+var DEFAULT_FILE_TITLE = "Filename";
 var fileManager = (function($) {
 
 	var fileManager = {};
@@ -245,16 +68,15 @@ var fileManager = (function($) {
 		window.setInterval(function() {
 			currentTime = new Date().getTime();
 			fileManager.saveFile();
-			synchronizer.syncDown();
-			synchronizer.syncUp();
+			synchronizer.sync();
 			asyncTaskRunner.runTask();
 			checkOnline();
 		}, 1000);
 
 		$(".action-create-file").click(function() {
 			fileManager.saveFile();
-			fileManager.createFile();
-			fileManager.selectFile();
+			var fileIndex = fileManager.createFile();
+			fileManager.selectFile(fileIndex);
 			$("#file-title").click();
 		});
 		$(".action-remove-file").click(function() {
@@ -294,10 +116,13 @@ var fileManager = (function($) {
 				window.open(uriContent, 'file');
 			});
 		$(".action-upload-gdrive").click(uploadGdrive);
+		$(".action-upload-dropbox").click(function() {
+			showMessage("Sorry, Dropbox synchronization is not yet available.");
+		});
 	};
 
 	var fileDescList = [];
-	fileManager.selectFile = function() {
+	fileManager.selectFile = function(fileIndex) {
 		// If file system does not exist
 		if (!localStorage["file.counter"] || !localStorage["file.list"]) {
 			localStorage.clear();
@@ -306,8 +131,14 @@ var fileManager = (function($) {
 		}
 		// If no file create one
 		if (localStorage["file.list"].length === 1) {
-			this.createFile();
+			fileIndex = this.createFile();
 		}
+		
+		fileIndex = fileIndex || localStorage["file.current"];
+		if(fileIndex !== undefined) {
+			localStorage["file.current"] = fileIndex;
+		}
+
 		// Update the file titles
 		this.updateFileTitles();
 		// Update the editor
@@ -318,20 +149,33 @@ var fileManager = (function($) {
 		});
 	};
 
-	fileManager.createFile = function(title) {
+	fileManager.createFile = function(title, content) {
+		content = content || "";
 		if (!title) {
-			title = "Filename";
+			// Create a file title 
+			title = DEFAULT_FILE_TITLE;
+			function exists(title) {
+				for ( var i = 0; i < fileDescList.length; i++) {
+					if(fileDescList[i].title == title) {
+						return true;
+					}
+				}
+			}
+			var indicator = 2;
+			while(exists(title)) {
+				title = DEFAULT_FILE_TITLE + indicator++;
+			}
 		}
 		// Create the fileIndex
 		var fileCounter = parseInt(localStorage["file.counter"]);
 		var fileIndex = "file." + fileCounter;
 		// Create the file in the localStorage
-		localStorage[fileIndex + ".content"] = "";
+		localStorage[fileIndex + ".content"] = content;
 		localStorage[fileIndex + ".title"] = title;
 		localStorage[fileIndex + ".sync"] = ";";
 		localStorage["file.counter"] = fileCounter + 1;
 		localStorage["file.list"] += fileIndex + ";";
-		localStorage["file.current"] = fileIndex;
+		return fileIndex;
 	};
 
 	fileManager.deleteFile = function() {
@@ -357,7 +201,7 @@ var fileManager = (function($) {
 			var content = $("#wmd-input").val();
 			var fileIndex = localStorage["file.current"];
 			localStorage[fileIndex + ".content"] = content;
-			synchronizer.addFile(fileIndex);
+			synchronizer.addFileForUpload(fileIndex);
 			save = false;
 		}
 	};
@@ -379,9 +223,11 @@ var fileManager = (function($) {
 			return 0;
 		});
 
+		var fileIndex = localStorage["file.current"];
 		// If no default file take first one
-		if (!localStorage["file.current"]) {
-			localStorage["file.current"] = fileDescList[0].index;
+		if (!fileIndex) {
+			fileIndex = fileDescList[0].index;
+			localStorage["file.current"] = fileIndex;
 		}
 		
 		syncGoogleDrive = false;
@@ -395,15 +241,15 @@ var fileManager = (function($) {
 			return result;
 		}
 
-		// Update the the file title and the file selector
-		var fileIndex = localStorage["file.current"];
+		// Update the file title
 		var title = localStorage[fileIndex + ".title"];
 		document.title = "StackEdit - " + title;
 		$("#file-title").html(composeTitle(fileIndex));
 		$(".file-title").text(title);
 		$("#file-title-input").val(title);
+		
+		// Update the file selector
 		$("#file-selector").empty();
-
 		for ( var i = 0; i < fileDescList.length; i++) {
 			var fileDesc = fileDescList[i];
 			var a = $("<a>").html(composeTitle(fileDesc.index));
@@ -595,11 +441,12 @@ var core = (function($) {
 
 	$(function() {
 
+		// jGrowl configuration
 		$.jGrowl.defaults.life = 5000;
 		$.jGrowl.defaults.closer = false;
 		$.jGrowl.defaults.closeTemplate = '';
 		$.jGrowl.defaults.position = 'bottom-right';
-
+		
 		core.init();
 
 		// listen to online/offline events

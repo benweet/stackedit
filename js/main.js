@@ -22,6 +22,7 @@ var AJAX_TIMEOUT = 5000;
 var CHECK_ONLINE_PERIOD = 60000;
 var offline = false;
 var offlineTime = currentTime;
+var offlineListeners = [];
 function onOffline() {
 	offlineTime = currentTime;
 	if(offline === false) {
@@ -30,13 +31,21 @@ function onOffline() {
 			sticky : true, close : function() {
 				showMessage("You are back online!", "icon-signal");
 			} });
+		for(var i=0; i<offlineListeners.length; i++) {
+			offlineListeners[i]();
+		}
 	}
 }
 
 function onOnline() {
-	$(".msg-offline").parents(".jGrowl-notification").trigger(
-		'jGrowl.beforeClose');
-	offline = false;
+	if(offline === true) {
+		$(".msg-offline").parents(".jGrowl-notification").trigger(
+			'jGrowl.beforeClose');
+		offline = false;
+		for(var i=0; i<offlineListeners.length; i++) {
+			offlineListeners[i]();
+		}
+	}
 }
 
 function checkOnline() {
@@ -61,7 +70,27 @@ var fileManager = (function($) {
 	var save = false;
 	fileManager.init = function() {
 		gdrive.init();
-		synchronizer.init();
+		
+		var changeSyncButtonState = function() {
+			if(synchronizer.isRunning() || synchronizer.isQueueEmpty() || offline) {
+				$(".action-force-sync").addClass("disabled");
+			}
+			else {
+				$(".action-force-sync").removeClass("disabled");
+			}
+		};
+		offlineListeners.push(changeSyncButtonState);
+		synchronizer.init({
+			onSyncBegin : changeSyncButtonState,
+			onSyncEnd : changeSyncButtonState,
+			onQueueChanged : changeSyncButtonState
+		});
+		$(".action-force-sync").click(function() {
+			if(!$(this).hasClass("disabled")) {
+				synchronizer.forceSync();
+			}
+		});
+		
 		fileManager.selectFile();
 
 		// Do periodic stuff
@@ -149,8 +178,9 @@ var fileManager = (function($) {
 		});
 	};
 
-	fileManager.createFile = function(title, content) {
+	fileManager.createFile = function(title, content, syncIndexes) {
 		content = content || "";
+		syncIndexes = syncIndexes || [];
 		if (!title) {
 			// Create a file title 
 			title = DEFAULT_FILE_TITLE;
@@ -172,7 +202,11 @@ var fileManager = (function($) {
 		// Create the file in the localStorage
 		localStorage[fileIndex + ".content"] = content;
 		localStorage[fileIndex + ".title"] = title;
-		localStorage[fileIndex + ".sync"] = ";";
+		var sync = ";";
+		for(var i=0; i<syncIndexes.length; i++) {
+			sync += syncIndexes[i] + ";";
+		}
+		localStorage[fileIndex + ".sync"] = sync;
 		localStorage["file.counter"] = fileCounter + 1;
 		localStorage["file.list"] += fileIndex + ";";
 		return fileIndex;
@@ -279,6 +313,21 @@ var fileManager = (function($) {
 		}
 		// Remove etag
 		localStorage.removeItem(fileSyncIndex + ".etag");
+	};
+	
+	// Look for local file associated to a synchronized location 
+	fileManager.getFileIndexFromSync = function(fileSyncIndex) {
+		var fileIndex = undefined;
+		var fileIndexList = localStorage["file.list"].split(";");
+		for ( var i = 1; i < fileIndexList.length - 1; i++) {
+			var tempFileIndex = fileIndexList[i];
+			var sync = localStorage[tempFileIndex + ".sync"];
+			if (sync.indexOf(";" + fileSyncIndex + ";") !== -1) {
+				fileIndex = tempFileIndex;
+				break;
+			}
+		}
+		return fileIndex;
 	};
 
 	function uploadGdrive() {
@@ -456,11 +505,7 @@ var core = (function($) {
 			onOffline();
 		}
 
-		if (typeof (Storage) !== "undefined") {
-			fileManager.init();
-		} else {
-			showError("Local storage is not available");
-		}
+		fileManager.init();
 	});
 
 })(jQuery);

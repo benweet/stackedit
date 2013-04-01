@@ -1,18 +1,31 @@
-var SYNC_PERIOD = 30000;
+var SYNC_PERIOD = 60000;
 var SYNC_PROVIDER_GDRIVE = "sync.gdrive.";
 var syncGoogleDrive = false;
 
 var synchronizer = (function() {
 	var synchronizer = {};
+	
+	var onSyncBegin = undefined;
+	var onSyncEnd = undefined;
+	var onQueueChanged = undefined;
 
+	var doNothing = function() {
+	};
+	
 	// A synchronization queue containing fileIndex that has to be synchronized
 	var syncUpQueue = undefined;
-	synchronizer.init = function() {
+	
+	synchronizer.init = function(options) {
+		onSyncBegin = options.onSyncBegin || doNothing;
+		onSyncEnd = options.onSyncEnd || doNothing;
+		onQueueChanged = options.onQueueChanged || doNothing;
+		
 		syncUpQueue = ";";
 		// Load the queue from localStorage in case a previous synchronization
 		// was aborted
 		if (localStorage["sync.queue"]) {
 			syncUpQueue = localStorage["sync.queue"];
+			onQueueChanged();
 		}
 		if (localStorage["sync.current"]) {
 			this.addFileForUpload(localStorage["sync.current"]);
@@ -21,10 +34,17 @@ var synchronizer = (function() {
 
 	// Add a file to the synchronization queue
 	synchronizer.addFileForUpload = function(fileIndex) {
-		if (syncUpQueue.indexOf(";" + fileIndex + ";") === -1) {
-			syncUpQueue += fileIndex + ";";
-			localStorage["sync.queue"] = syncUpQueue;
+		// Check that file has synchronized locations
+		if(localStorage[fileIndex + ".sync"].length === 1) {
+			return;
 		}
+		// Check that file is not in the queue
+		if (syncUpQueue.indexOf(";" + fileIndex + ";") !== -1) {
+			return;
+		}
+		syncUpQueue += fileIndex + ";";
+		localStorage["sync.queue"] = syncUpQueue;
+		onQueueChanged();
 	};
 
 	// Recursive function to upload a single file on multiple locations
@@ -69,6 +89,7 @@ var synchronizer = (function() {
 		localStorage["sync.current"] = fileIndex;
 		syncUpQueue = syncUpQueue.substring(separatorPos);
 		localStorage["sync.queue"] = syncUpQueue;
+		onQueueChanged();
 
 		var content = localStorage[fileIndex + ".content"];
 		var title = localStorage[fileIndex + ".title"];
@@ -99,17 +120,7 @@ var synchronizer = (function() {
 				for ( var i = 0; i < changes.length; i++) {
 					var change = changes[i];
 					var fileSyncIndex = SYNC_PROVIDER_GDRIVE + change.fileId;
-					var fileIndexList = localStorage["file.list"].split(";");
-					var fileIndex = undefined;
-					// Look for local file associated to this synchronized location 
-					for ( var i = 1; i < fileIndexList.length - 1; i++) {
-						var tempFileIndex = fileIndexList[i];
-						var sync = localStorage[tempFileIndex + ".sync"];
-						if (sync.indexOf(";" + fileSyncIndex + ";") !== -1) {
-							fileIndex = tempFileIndex;
-							break;
-						}
-					}
+					var fileIndex = fileManager.getFileIndexFromSync(fileSyncIndex);
 					// No file corresponding (this should never happen...)
 					if(fileIndex === undefined) {
 						// We can remove the stored etag
@@ -177,13 +188,28 @@ var synchronizer = (function() {
 		}
 		syncRunning = true;
 		lastSync = currentTime;
+		onSyncBegin();
 
 		syncDown(function() {
 			syncUp(function() {
 				syncRunning = false;
+				onSyncEnd();
 			});
 		});
 	};
+	
+	synchronizer.forceSync = function() {
+		lastSync = 0;
+		this.sync();
+	};
+	
+	synchronizer.isRunning = function() {
+		return syncRunning;
+	};
 
+	synchronizer.isQueueEmpty = function() {
+		return syncUpQueue.length === 1;
+	};
+	
 	return synchronizer;
 })();

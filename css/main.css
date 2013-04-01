@@ -13,7 +13,7 @@ body {
 /*
 Override Bootstrap 
 */
-div, span, a, ul, li, textarea, input {
+div, span, a, ul, li, textarea, input, button {
 	background-image: none !important;
 	filter: none !important;
 	-webkit-box-shadow: none !important;
@@ -132,7 +132,7 @@ hr {
 }
 
 #menu-bar {
-	margin-right: 15px;
+	margin: 0 15px 10px 15px;
 }
 
 #wmd-button-bar {
@@ -189,6 +189,7 @@ hr {
 }
 
 .icon-code {
+	width: 15px;
 	background-position: -384px -168px;
 }
 

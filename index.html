@@ -49,13 +49,22 @@
 				<li><div id="wmd-button-bar"></div></li>
 			</ul>
 			<ul class="pull-right" id="menu-bar">
-				<li class="btn-group"><a class="btn action-create-file"
-					href="#" title="Create a local file"><i class="icon-file"></i></a>
-					<a class="btn" href="#" title="Delete the current file locally"
-					data-toggle="modal" data-target="#modal-remove-file-confirm"><i
-						class="icon-trash"></i></a> <a class="btn dropdown-toggle"
-					data-toggle="dropdown" href="#" title="Open a local file"><i
-						class="icon-folder-open"></i></a>
+				<li class="btn-group"><button class="btn action-force-sync"
+						title="Synchronize">
+						<i class="icon-refresh"></i>
+					</button></li>
+				<li class="btn-group"><button class="btn action-create-file"
+						title="Create a local file">
+						<i class="icon-file"></i>
+					</button>
+					<button class="btn" title="Delete the current file locally"
+						data-toggle="modal" data-target="#modal-remove-file-confirm">
+						<i class="icon-trash"></i>
+					</button>
+					<button class="btn dropdown-toggle" data-toggle="dropdown"
+						title="Open a local file">
+						<i class="icon-folder-open"></i>
+					</button>
 					<ul id="file-selector" class="dropdown-menu">
 					</ul></li>
 				<li class="btn-group"><a class="btn dropdown-toggle"
@@ -78,8 +87,8 @@
 						<li><a href="#"
 							title="Change the current file synchronized locations"
 							data-toggle="modal" data-target="#modal-manage-sync"
-							class="action-refresh-manage-sync"><i
-								class="icon-resize-small"></i> Manage synchronization</a></li>
+							class="action-refresh-manage-sync"><i class="icon-refresh"></i>
+								Manage synchronization</a></li>
 						<li class="divider"></li>
 						<li><a href="#" title="Modify your preferences"
 							data-toggle="modal" data-target="#modal-settings"
@@ -109,8 +118,8 @@
 		<div class="modal-body">
 			<p>Are you sure you want to remove "<span class="file-title"></span>"?
 			</p>
-			<p class="muted"><b>NOTE:</b> The file will be removed on the
-				local machine, not on synchronized locations.</p>
+			<p class="muted"><b>NOTE:</b> This will not remove the file on
+				synchronized locations.</p>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
@@ -133,8 +142,8 @@
 			<br class="msg-sync-list hide" />
 			<p class="msg-sync-list hide muted"><b>NOTE:</b> Removing a
 				synchronized location will not delete any file.</p>
-			<p class="msg-no-sync hide">"<span class="file-title"></span>"
-				is not synchronized.
+			<p class="msg-no-sync hide">"<span class="file-title"></span>" is
+				not synchronized.
 			</p>
 			<p class="msg-no-sync hide muted"><b>NOTE:</b> You can add
 				synchronized locations using the top-right menu.</p>

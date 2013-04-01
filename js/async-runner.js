@@ -20,7 +20,7 @@ var asyncTaskRunner = (function() {
 	asyncTaskRunner.runTask = function() {
 		
 		// If there is a task currently running
-		if(currentTaskRunning !== false) {
+		if(currentTaskRunning === true) {
 			// If the current task takes too long
 			var timeout = currentTask.timeout || ASYNC_TASK_DEFAULT_TIMEOUT;
 			if(currentTaskStartTime + timeout < currentTime) {
@@ -45,34 +45,20 @@ var asyncTaskRunner = (function() {
 			currentTask.retryCounter = 0;
 			currentTask.finish = function() {
 				this.finished = true;
-				showWorkingIndicator(false);
 				currentTask = undefined;
 				currentTaskRunning = false;
-				asyncTaskRunner.runTask();
+				if(asyncTaskQueue.length === 0) {
+					showWorkingIndicator(false);
+				}
+				else {
+					asyncTaskRunner.runTask();
+				}
 			};
 			currentTask.success = function() {
-				if(this.finished === true) {
-					return;
-				}
-				try {
-					if(this.onSuccess) {
-						this.onSuccess();
-					}
-				} finally {
-					this.finish();
-				}
+				runSafe(this.onSuccess);
 			};
 			currentTask.error = function() {
-				if(this.finished === true) {
-					return;
-				}
-				try {
-					if(this.onError) {
-						this.onError();
-					}
-				} finally {
-					this.finish();
-				}
+				runSafe(this.onError);
 			};
 			currentTask.retry = function() {
 				if(this.finished === true) {
@@ -97,6 +83,27 @@ var asyncTaskRunner = (function() {
 			currentTask.run();
 		}
 	};
+	
+	function runSafe(func) {
+		if(currentTask.finished === true) {
+			return;
+		}
+		try {
+			if(func) {
+				func();
+			}
+		} finally {
+			currentTask.finished = true;
+			currentTask = undefined;
+			currentTaskRunning = false;
+			if(asyncTaskQueue.length === 0) {
+				showWorkingIndicator(false);
+			}
+			else {
+				asyncTaskRunner.runTask();
+			}
+		}
+	}
 	
 	// Add a task in the queue
 	asyncTaskRunner.addTask = function(asyncTask) {

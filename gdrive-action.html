@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html manifest="cache.manifest">
+<head>
+<script type="text/javascript">
+
+var redirectUrl = location.href.substring(0, location.href.indexOf("gdrive-action.html"));
+var state = decodeURI((/state=(.+?)(&|$)/
+    .exec(location.search) || [ , null ])[1]);
+if(state) {
+    localStorage["sync.gdrive.state"] = state;
+}
+window.location.replace(redirectUrl);
+
+</script>
+</head>
+</html>

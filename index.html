@@ -6,24 +6,8 @@
 <link rel="shortcut icon" href="img/stackedit-32.ico"
 	type="image/x-icon">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Bootstrap -->
-<link href="css/bootstrap.css" rel="stylesheet" media="screen">
-<link href="css/jgrowl.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
-<script type="text/javascript" src="js/base64.js"></script>
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/jquery.jgrowl.js"></script>
-<script type="text/javascript" src="js/jquery-ui.custom.js"></script>
-<script type="text/javascript" src="js/jquery.layout.js"></script>
-<script type="text/javascript" src="js/bootstrap.js"></script>
-<script type="text/javascript" src="js/Markdown.Converter.js"></script>
-<script type="text/javascript" src="js/Markdown.Sanitizer.js"></script>
-<script type="text/javascript" src="js/Markdown.Editor.js"></script>
-<script type="text/javascript" src="js/main.js"></script>
-<script type="text/javascript" src="js/async-runner.js"></script>
-<script type="text/javascript" src="js/gdrive.js"></script>
-<script type="text/javascript" src="js/synchronizer.js"></script>
-<script type="text/javascript" src="js/config.custo.js"></script>
+<script data-main="js/main" src="js/require.js"></script>
 <script>
 	(function(i, s, o, g, r, a, m) {
 		i['GoogleAnalyticsObject'] = r;
@@ -48,13 +32,13 @@
 			<ul class="nav">
 				<li><div id="wmd-button-bar"></div></li>
 			</ul>
-			<ul class="pull-right" id="menu-bar">
+			<ul class="pull-right hide" id="menu-bar">
 				<li class="btn-group"><button class="btn action-force-sync"
 						title="Synchronize">
 						<i class="icon-refresh"></i>
 					</button></li>
 				<li class="btn-group"><button class="btn action-create-file"
-						title="Create a local file">
+						title="Create a new local file">
 						<i class="icon-file"></i>
 					</button>
 					<button class="btn" title="Delete the current file locally"
@@ -78,22 +62,38 @@
 							title="Download the current file as HTML"><i
 								class="icon-download-alt"></i> Download as HTML</a></li>
 						<li class="divider"></li>
-						<li><a class="action-upload-gdrive" href="#"
-							title="Save the current file on Google Drive and synchonize it"><i
-								class="icon-gdrive"></i> Synchronize on Google Drive</a></li>
-						<li><a class="action-upload-dropbox" href="#"
-							title="Save the current file on Dropbox and synchonize it"><i
-								class="icon-dropbox"></i> Synchronize on Dropbox</a></li>
+						<li class="dropdown-submenu"><a href="#"><i
+								class="icon-gdrive"></i> Google Drive</a>
+							<ul class="dropdown-menu">
+                                <li><a class="action-upload-gdrive" href="#"
+                                    title="Export the current file to Google Drive and synchonize it">Export
+                                        to Google Drive</a></li>
+								<li><a href="#" data-toggle="modal" data-target="#modal-download-gdrive"
+									title="Import an existing file from Google Drive and synchonize it">Import
+										from Google Drive</a></li>
+							</ul></li>
+						<li class="dropdown-submenu"><a href="#"><i
+								class="icon-dropbox"></i> Dropbox</a>
+							<ul class="dropdown-menu">
+								<li><a class="action-upload-dropbox" href="#"
+									title="Export the current file to Dropbox and synchonize it">Export
+										to Dropbox</a></li>
+                                <li><a class="action-download-dropbox" href="#"
+                                    title="Import an existing file from Dropbox and synchonize it">Import
+                                        from Dropbox</a></li>
+							</ul></li>
 						<li><a href="#"
 							title="Change the current file synchronized locations"
-							data-toggle="modal" data-target="#modal-manage-sync"
-							class="action-refresh-manage-sync"><i class="icon-refresh"></i>
-								Manage synchronization</a></li>
+							data-toggle="modal" data-target="#modal-manage-sync"><i
+								class="icon-refresh"></i> Manage synchronization</a></li>
 						<li class="divider"></li>
 						<li><a href="#" title="Modify your preferences"
 							data-toggle="modal" data-target="#modal-settings"
 							class="action-load-settings"><i class="icon-cog"></i>
 								Settings</a></li>
+						<li><a href="#" data-toggle="modal"
+							data-target="#modal-about"><i class="icon-question-sign"></i>
+								About</a></li>
 					</ul></li>
 			</ul>
 			<ul class="nav pull-right">
@@ -105,9 +105,9 @@
 			</ul>
 		</div>
 	</div>
-	<textarea id="wmd-input" class="ui-layout-center"></textarea>
-	<div class="ui-layout-east"></div>
-	<div class="ui-layout-south"></div>
+	<textarea id="wmd-input" class="ui-layout-center hide"></textarea>
+	<div class="ui-layout-east hide"></div>
+	<div class="ui-layout-south hide"></div>
 
 	<div id="modal-remove-file-confirm" class="modal hide">
 		<div class="modal-header">
@@ -124,6 +124,23 @@
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
 				class="btn btn-primary action-remove-file" data-dismiss="modal">Delete</a>
+		</div>
+	</div>
+
+	<div id="modal-download-gdrive" class="modal hide">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">&times;</button>
+			<h3>Import</h3>
+		</div>
+		<div class="modal-body">
+			<p>Please provide a Google Drive file ID:
+			</p>
+			<p><input type="text" class="border span6 gdrive-fileid" placeholder="File ID"></input></p>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+				class="btn btn-primary action-download-gdrive" data-dismiss="modal">OK</a>
 		</div>
 	</div>
 
@@ -175,6 +192,66 @@
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
 				class="btn btn-primary action-apply-settings" data-dismiss="modal">OK</a>
+		</div>
+	</div>
+
+	<div id="modal-about" class="modal hide">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">&times;</button>
+			<img src="img/stackedit-promo.png" />
+		</div>
+		<div class="modal-body">
+			<dl>
+				<dt>About:</dt>
+				<dd>
+					<a href="https://github.com/benweet/stackedit/">GitHub page</a>
+				</dd>
+				<dd>
+					<a
+						href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome
+						app</a>
+				</dd>
+				<dd>
+					<a href="https://twitter.com/stackedit/">Follow on Twitter</a>
+				</dd>
+				<dd>
+					<a href="https://twitter.com/stackedit/">Follow on Google+</a>
+				</dd>
+			</dl>
+			<dl>
+				<dt>Developer:</dt>
+				<dd>
+					<a href="http://www.benoitschweblin.com">Benoit Schweblin</a>
+				<dd>
+			</dl>
+			<dl>
+				<dt>Credits:</dt>
+				<dd>
+					<a href="http://jquery.com/">jQuery</a>
+				</dd>
+				<dd>
+					<a href="http://twitter.github.com/bootstrap/">Bootstrap</a>
+				</dd>
+				<dd>
+					<a href="http://requirejs.org/">RequireJS</a>
+				</dd>
+				<dd>
+					<a href="https://code.google.com/p/pagedown/">PageDown</a>
+				</dd>
+				<dd>
+					<a href="http://layout.jquery-dev.net/">UI Layout</a>
+				</dd>
+				<dd>
+					<a href="https://github.com/stanlemon/jGrowl/">jGrowl</a>
+				</dd>
+			</dl>
+			<p>Copyright 2013 <a href="http://www.benoitschweblin.com">Benoit
+					Schweblin</a><br /> Licensed under an <a
+				href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a></p>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>
 	</div>
 </body>

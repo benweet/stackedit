@@ -1,3 +1,6 @@
+@import url("bootstrap.css");
+@import url("jgrowl.css");
+
 body {
 	background-color: #f5f5f5;
 }
@@ -22,8 +25,12 @@ div, span, a, ul, li, textarea, input, button {
     text-shadow: none !important;
 }
 
-.btn, .navbar-inner, .ui-layout-east, .ui-layout-south, textarea, input {
+.btn, .navbar-inner, .ui-layout-east, .ui-layout-south, textarea, input, .input-append .add-on {
     border: none !important;
+}
+
+.border, .dropdown-menu {
+    border: 1px solid #ddd !important;
 }
 
 .navbar-inner .btn {
@@ -61,7 +68,7 @@ div, span, a, ul, li, textarea, input, button {
   background-color: #777;
 }
 
-input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly] {
+input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly], .input-append .add-on {
     cursor: not-allowed;
     background-color: #f5f5f5;
 }
@@ -117,10 +124,6 @@ hr {
 
 #file-title i {
 	margin: 4px 5px 0;
-}
-
-.dropdown-menu {
-	border-color: #ddd
 }
 
 .dropdown-menu i {

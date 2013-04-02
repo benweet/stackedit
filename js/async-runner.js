@@ -1,20 +1,19 @@
-var ASYNC_TASK_DEFAULT_TIMEOUT = 30000;
-
 /**
- *  Used to run any asynchronous tasks sequentially (ajax mainly)
+ *  Used to run asynchronous tasks sequentially (ajax mainly)
  *  An asynchronous task must be created with:
  *  - a required run() function that may call success(), error() or retry()
  *  - an optional onSuccess() function
  *  - an optional onError() function
  *  - an optional timeout field (default is 30000)
  */
-var asyncTaskRunner = (function() {
+define(["core"], function(core) {
+	
 	var asyncTaskRunner = {};
 	
 	var asyncTaskQueue = [];
 	var currentTask = undefined;
 	var currentTaskRunning = false;
-	var currentTaskStartTime = currentTime;
+	var currentTaskStartTime = core.currentTime;
 	
 	// Run the next task in the queue if any and no other is running
 	asyncTaskRunner.runTask = function() {
@@ -23,7 +22,7 @@ var asyncTaskRunner = (function() {
 		if(currentTaskRunning === true) {
 			// If the current task takes too long
 			var timeout = currentTask.timeout || ASYNC_TASK_DEFAULT_TIMEOUT;
-			if(currentTaskStartTime + timeout < currentTime) {
+			if(currentTaskStartTime + timeout < core.currentTime) {
 				currentTask.error();
 			}
 			return;
@@ -37,8 +36,8 @@ var asyncTaskRunner = (function() {
 			
 			// Dequeue an enqueued task 
 			currentTask = asyncTaskQueue.shift();
-			currentTaskStartTime = currentTime;
-			showWorkingIndicator(true);
+			currentTaskStartTime = core.currentTime;
+			core.showWorkingIndicator(true);
 			
 			// Set task attributes and functions
 			currentTask.finished = false;
@@ -48,7 +47,7 @@ var asyncTaskRunner = (function() {
 				currentTask = undefined;
 				currentTaskRunning = false;
 				if(asyncTaskQueue.length === 0) {
-					showWorkingIndicator(false);
+					core.showWorkingIndicator(false);
 				}
 				else {
 					asyncTaskRunner.runTask();
@@ -71,14 +70,14 @@ var asyncTaskRunner = (function() {
 				// Implement an exponential backoff
 				var delay = (Math.pow(2, currentTask.retryCounter++) + Math.random()) * 1000;
 				console.log(delay);
-				currentTaskStartTime = currentTime + delay;
+				currentTaskStartTime = core.currentTime + delay;
 				currentTaskRunning = false;
 				asyncTaskRunner.runTask();
 			};
 		}
 		
 		// Run the task
-		if(currentTaskStartTime <= currentTime) {
+		if(currentTaskStartTime <= core.currentTime) {
 			currentTaskRunning = true;
 			currentTask.run();
 		}
@@ -97,7 +96,7 @@ var asyncTaskRunner = (function() {
 			currentTask = undefined;
 			currentTaskRunning = false;
 			if(asyncTaskQueue.length === 0) {
-				showWorkingIndicator(false);
+				core.showWorkingIndicator(false);
 			}
 			else {
 				asyncTaskRunner.runTask();
@@ -111,5 +110,5 @@ var asyncTaskRunner = (function() {
 	};
 	
 	return asyncTaskRunner;
-})();
+});
 

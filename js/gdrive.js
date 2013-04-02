@@ -1,52 +1,37 @@
-var GOOGLE_CLIENT_ID = '241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com';
-var SCOPES = [ 'https://www.googleapis.com/auth/drive.install',
-	'https://www.googleapis.com/auth/drive.file' ];
-var AUTH_POPUP_TIMEOUT = 90000;
-var DEFAULT_GDRIVE_FILE_TITLE = "New Markdown document";
-
-var gdriveDelayedFunction = undefined;
-function runGdriveDelayedFunction() {
-	if (gdriveDelayedFunction !== undefined) {
-		gdriveDelayedFunction();
-	}
-}
-
-var gdrive = (function($) {
+define(["jquery", "core", "file-manager", "async-runner", "base64"], function($, core, fileManager, asyncTaskRunner) {
 
 	var connected = false;
 	var authenticated = false;
-	var doNothing = function() {
-	};
 
 	var gdrive = {};
 
 	// Try to connect Gdrive by downloading client.js
 	function connect(callback) {
-		callback = callback || doNothing;
+		callback = callback || core.doNothing;
 		var asyncTask = {};
 		asyncTask.run = function() {
 			if (connected === true) {
 				asyncTask.success();
 				return;
 			}
-			gdriveDelayedFunction = function() {
+			delayedFunction = function() {
 				asyncTask.success();
 			};
 			$.ajax({
-				url : "https://apis.google.com/js/client.js?onload=runGdriveDelayedFunction",
+				url : "https://apis.google.com/js/client.js?onload=runDelayedFunction",
 				dataType : "script", timeout : AJAX_TIMEOUT
 			}).fail(function() {
 				asyncTask.error();
 			});
 		};
 		asyncTask.onSuccess = function() {
-			gdriveDelayedFunction = undefined;
+			delayedFunction = undefined;
 			connected = true;
 			callback();
 		};
 		asyncTask.onError = function() {
-			gdriveDelayedFunction = undefined;
-			onOffline();
+			delayedFunction = undefined;
+			core.setOffline();
 			callback();
 		};
 		asyncTaskRunner.addTask(asyncTask);
@@ -54,7 +39,7 @@ var gdrive = (function($) {
 
 	// Try to authenticate with Oauth
 	function authenticate(callback, immediate) {
-		callback = callback || doNothing;
+		callback = callback || core.doNothing;
 		if (immediate === undefined) {
 			immediate = true;
 		}
@@ -75,10 +60,10 @@ var gdrive = (function($) {
 					return;
 				}
 				if (immediate === false) {
-					showMessage("Please make sure the Google authorization popup is not blocked by your browser.");
+					core.showMessage("Please make sure the Google authorization popup is not blocked by your browser.");
 				}
 				gapi.auth.authorize({ 'client_id' : GOOGLE_CLIENT_ID,
-					'scope' : SCOPES, 'immediate' : immediate }, function(
+					'scope' : GOOGLE_SCOPES, 'immediate' : immediate }, function(
 					authResult) {
 					if (!authResult || authResult.error) {
 						asyncTask.error();
@@ -114,13 +99,13 @@ var gdrive = (function($) {
 				// Retry as described in Google's best practices
 				asyncTask.retry();
 				return;
-			} else if (error.code === 401) {
+			} else if (error.code === 401 || error.code === 403) {
 				authenticated = false;
 				errorMsg = "Access to Google Drive is not authorized.";
 			} else if (error.code <= 0) {
 				connected = false;
 				authenticated = false;
-				onOffline();
+				core.setOffline();
 			} else {
 				errorMsg = "Google Drive error (" + error.code + ": "
 					+ error.message + ").";
@@ -128,7 +113,7 @@ var gdrive = (function($) {
 		}
 		asyncTask.onError = function() {
 			if (errorMsg !== undefined) {
-				showError(errorMsg);
+				core.showError(errorMsg);
 			}
 			callback();
 		};
@@ -136,7 +121,7 @@ var gdrive = (function($) {
 	}
 
 	function upload(fileId, parentId, title, content, callback) {
-		callback = callback || doNothing;
+		callback = callback || core.doNothing;
 		authenticate(function() {
 			if (connected === false) {
 				callback();
@@ -191,7 +176,7 @@ var gdrive = (function($) {
 					var error = response.error;
 					// If file has been removed from Google Drive
 					if(error !== undefined && fileId !== undefined && error.code === 404) {
-						showMessage('"' + title + '" has been removed from Google Drive.');
+						core.showMessage('"' + title + '" has been removed from Google Drive.');
 						fileManager.removeSync(SYNC_PROVIDER_GDRIVE + fileId);
 						fileManager.updateFileTitles();
 						// Avoid error analyzed by handleError
@@ -209,7 +194,7 @@ var gdrive = (function($) {
 	}
 
 	gdrive.checkUpdates = function(lastChangeId, callback) {
-		callback = callback || doNothing;
+		callback = callback || core.doNothing;
 		authenticate(function() {
 			if (connected === false) {
 				callback();
@@ -263,7 +248,7 @@ var gdrive = (function($) {
 	};
 
 	gdrive.downloadMetadata = function(ids, callback, result) {
-		callback = callback || doNothing;
+		callback = callback || core.doNothing;
 		result = result || [];
 		if(ids.length === 0) {
 			callback(result);
@@ -305,7 +290,7 @@ var gdrive = (function($) {
 	};
 
 	gdrive.downloadContent = function(objects, callback, result) {
-		callback = callback || doNothing;
+		callback = callback || core.doNothing;
 		result = result || [];
 		if(objects.length === 0) {
 			callback(result);
@@ -377,14 +362,14 @@ var gdrive = (function($) {
 		localStorage.removeItem("sync.gdrive.state");
 		state = JSON.parse(state);
 		if (state.action == "create") {
-			upload(undefined, state.folderId, DEFAULT_GDRIVE_FILE_TITLE,
+			upload(undefined, state.folderId, GDRIVE_DEFAULT_FILE_TITLE,
 				"", function(fileSyncIndex) {
 				if(fileSyncIndex === undefined) {
 					return;
 				}
-				var fileIndex = fileManager.createFile(DEFAULT_GDRIVE_FILE_TITLE, "", [fileSyncIndex]);
+				var fileIndex = fileManager.createFile(GDRIVE_DEFAULT_FILE_TITLE, "", [fileSyncIndex]);
 				fileManager.selectFile(fileIndex);
-				showMessage('"' + DEFAULT_GDRIVE_FILE_TITLE + '" created successfully on Google Drive.');
+				core.showMessage('"' + GDRIVE_DEFAULT_FILE_TITLE + '" created successfully on Google Drive.');
 			});
 		}
 		else if (state.action == "open") {
@@ -413,7 +398,7 @@ var gdrive = (function($) {
 						localStorage[fileSyncIndex + ".etag"] = file.etag;
 						var fileIndex = fileManager.createFile(file.title, file.content, [fileSyncIndex]);
 						fileManager.selectFile(fileIndex);
-						showMessage('"' + file.title + '" imported successfully from Google Drive.');
+						core.showMessage('"' + file.title + '" imported successfully from Google Drive.');
 					}
 				});
 			});
@@ -421,4 +406,4 @@ var gdrive = (function($) {
 	};
 
 	return gdrive;
-})(jQuery);
+});

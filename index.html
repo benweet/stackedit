@@ -6,24 +6,8 @@
 <link rel="shortcut icon" href="img/stackedit-32.ico"
 	type="image/x-icon">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Bootstrap -->
-<link href="css/bootstrap.css" rel="stylesheet" media="screen">
-<link href="css/jgrowl.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
-<script type="text/javascript" src="js/base64.js"></script>
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/jquery.jgrowl.js"></script>
-<script type="text/javascript" src="js/jquery-ui.custom.js"></script>
-<script type="text/javascript" src="js/jquery.layout.js"></script>
-<script type="text/javascript" src="js/bootstrap.js"></script>
-<script type="text/javascript" src="js/Markdown.Converter.js"></script>
-<script type="text/javascript" src="js/Markdown.Sanitizer.js"></script>
-<script type="text/javascript" src="js/Markdown.Editor.js"></script>
-<script type="text/javascript" src="js/main.js"></script>
-<script type="text/javascript" src="js/async-runner.js"></script>
-<script type="text/javascript" src="js/gdrive.js"></script>
-<script type="text/javascript" src="js/synchronizer.js"></script>
-<script type="text/javascript" src="js/config.custo.js"></script>
+<script data-main="js/main" src="js/require.js"></script>
 <script>
 	(function(i, s, o, g, r, a, m) {
 		i['GoogleAnalyticsObject'] = r;
@@ -54,7 +38,7 @@
 						<i class="icon-refresh"></i>
 					</button></li>
 				<li class="btn-group"><button class="btn action-create-file"
-						title="Create a local file">
+						title="Create a new local file">
 						<i class="icon-file"></i>
 					</button>
 					<button class="btn" title="Delete the current file locally"
@@ -105,9 +89,9 @@
 			</ul>
 		</div>
 	</div>
-	<textarea id="wmd-input" class="ui-layout-center"></textarea>
-	<div class="ui-layout-east"></div>
-	<div class="ui-layout-south"></div>
+	<textarea id="wmd-input" class="ui-layout-center hide"></textarea>
+	<div class="ui-layout-east hide"></div>
+	<div class="ui-layout-south hide"></div>
 
 	<div id="modal-remove-file-confirm" class="modal hide">
 		<div class="modal-header">

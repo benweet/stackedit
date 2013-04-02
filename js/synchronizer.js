@@ -1,24 +1,20 @@
-var SYNC_PERIOD = 60000;
-var SYNC_PROVIDER_GDRIVE = "sync.gdrive.";
-var syncGoogleDrive = false;
-
-var synchronizer = (function() {
+define(["jquery", "core", "file-manager", "gdrive"], function($, core, fileManager, gdrive) {
 	var synchronizer = {};
+	
+	// Used to know the providers we are connected to 
+	synchronizer.useGoogleDrive = false;
 	
 	var onSyncBegin = undefined;
 	var onSyncEnd = undefined;
 	var onQueueChanged = undefined;
 
-	var doNothing = function() {
-	};
-	
 	// A synchronization queue containing fileIndex that has to be synchronized
 	var syncUpQueue = undefined;
 	
 	synchronizer.init = function(options) {
-		onSyncBegin = options.onSyncBegin || doNothing;
-		onSyncEnd = options.onSyncEnd || doNothing;
-		onQueueChanged = options.onQueueChanged || doNothing;
+		onSyncBegin = options.onSyncBegin || core.doNothing;
+		onSyncEnd = options.onSyncEnd || core.doNothing;
+		onQueueChanged = options.onQueueChanged || core.doNothing;
 		
 		syncUpQueue = ";";
 		// Load the queue from localStorage in case a previous synchronization
@@ -61,7 +57,7 @@ var synchronizer = (function() {
 		if (fileSyncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
 			var id = fileSyncIndex.substring(SYNC_PROVIDER_GDRIVE.length);
 			gdrive.updateFile(id, title, content, function(result) {
-				if (result === undefined && offline === true) {
+				if (result === undefined && core.isOffline === true) {
 					// If we detect offline mode we put the fileIndex back in
 					// the queue
 					synchronizer.addFileForUpload(localStorage["sync.current"]);
@@ -100,7 +96,7 @@ var synchronizer = (function() {
 	};
 
 	function syncDownGdrive(callback) {
-		if (syncGoogleDrive === false) {
+		if (synchronizer.useGoogleDrive === false) {
 			callback();
 			return;
 		}
@@ -132,7 +128,7 @@ var synchronizer = (function() {
 					if (change.deleted === true) {
 						fileManager.removeSync(fileSyncIndex);
 						updateFileTitles = true;
-						showMessage('"' + title + '" has been removed from Google Drive.');
+						core.showMessage('"' + title + '" has been removed from Google Drive.');
 						continue;
 					}
 					var content = localStorage[fileIndex + ".content"];
@@ -143,18 +139,18 @@ var synchronizer = (function() {
 					if ((titleChanged || contentChanged) && syncUpQueue.indexOf(";" + fileIndex + ";") !== -1) {
 						fileManager.createFile(title + " (backup)", content);
 						updateFileTitles = true;
-						showMessage('Conflict detected on "' + title + '". A backup has been created locally.');
+						core.showMessage('Conflict detected on "' + title + '". A backup has been created locally.');
 					}
 					// If file title changed
 					if(titleChanged) {
 						localStorage[fileIndex + ".title"] = file.title;
 						updateFileTitles = true;
-						showMessage('"' + title + '" has been renamed to "' + file.title + '" on Google Drive.');
+						core.showMessage('"' + title + '" has been renamed to "' + file.title + '" on Google Drive.');
 					}
 					// If file content changed
 					if(contentChanged) {
 						localStorage[fileIndex + ".content"] = file.content;
-						showMessage('"' + file.title + '" has been updated from Google Drive.');
+						core.showMessage('"' + file.title + '" has been updated from Google Drive.');
 						if(fileIndex == localStorage["file.current"]) {
 							updateFileTitles = false; // Done by next function
 							fileManager.selectFile();
@@ -183,11 +179,11 @@ var synchronizer = (function() {
 	var lastSync = 0;
 	synchronizer.sync = function() {
 		// If sync is already running or timeout is not reached or offline
-		if (syncRunning || lastSync + SYNC_PERIOD > currentTime || offline) {
+		if (syncRunning || lastSync + SYNC_PERIOD > core.currentTime || core.isOffline) {
 			return;
 		}
 		syncRunning = true;
-		lastSync = currentTime;
+		lastSync = core.currentTime;
 		onSyncBegin();
 
 		syncDown(function() {
@@ -212,4 +208,4 @@ var synchronizer = (function() {
 	};
 	
 	return synchronizer;
-})();
+});

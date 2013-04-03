@@ -25,12 +25,19 @@ div, span, a, ul, li, textarea, input, button {
     text-shadow: none !important;
 }
 
-.btn, .navbar-inner, .ui-layout-east, .ui-layout-south, textarea, input, .input-append .add-on {
+.btn, .navbar-inner, .ui-layout-east, .ui-layout-south, textarea, input, .add-on {
     border: none !important;
 }
 
-.border, .dropdown-menu {
-    border: 1px solid #ddd !important;
+.dropdown-menu {
+    border: 1px solid #e2e2e2 !important;
+}
+
+.input-prepend input,
+.input-prepend .btn,
+.input-prepend .add-on
+ {
+    border: 1px solid #ebebeb !important;
 }
 
 .navbar-inner .btn {

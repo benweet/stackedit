@@ -22,15 +22,15 @@
 						<i class="icon-refresh"></i>
 					</button></li>
 				<li class="btn-group"><button class="btn action-create-file"
-						title="New local file">
+						title="New local document">
 						<i class="icon-file"></i>
 					</button>
-					<button class="btn" title="Delete local file"
+					<button class="btn" title="Delete local document"
 						data-toggle="modal" data-target="#modal-remove-file-confirm">
 						<i class="icon-trash"></i>
 					</button>
 					<button class="btn dropdown-toggle" data-toggle="dropdown"
-						title="Open local file">
+						title="Open local document">
 						<i class="icon-folder-open"></i>
 					</button>
 					<ul id="file-selector" class="dropdown-menu">
@@ -47,27 +47,27 @@
 						<li class="dropdown-submenu"><a href="#"><i
 								class="icon-gdrive"></i> Google Drive</a>
 							<ul class="dropdown-menu">
-                                <li><a class="action-upload-gdrive" href="#">Export
-                                        to Google Drive</a></li>
-								<li><a href="#" data-toggle="modal" data-target="#modal-download-gdrive">Import
-										from Google Drive</a></li>
+								<li><a href="#" class="action-upload-gdrive">Export to
+										Google Drive</a></li>
+								<li><a href="#" data-toggle="modal"
+									data-target="#modal-download-gdrive">Import from Google
+										Drive</a></li>
 							</ul></li>
 						<li class="dropdown-submenu"><a href="#"><i
 								class="icon-dropbox"></i> Dropbox</a>
 							<ul class="dropdown-menu">
-								<li><a class="action-upload-dropbox" href="#">Export
-										to Dropbox</a></li>
-                                <li><a class="action-download-dropbox" href="#">Import
-                                        from Dropbox</a></li>
+								<li><a class="action-upload-dropbox" href="#">Export to
+										Dropbox</a></li>
+								<li><a class="action-download-dropbox" href="#">Import
+										from Dropbox</a></li>
 							</ul></li>
-						<li><a href="#"
-							data-toggle="modal" data-target="#modal-manage-sync"><i
-								class="icon-refresh"></i> Manage synchronization</a></li>
+						<li><a href="#" data-toggle="modal"
+							data-target="#modal-manage-sync"><i class="icon-refresh"></i>
+								Manage synchronization</a></li>
 						<li class="divider"></li>
-						<li><a href="#"
-							data-toggle="modal" data-target="#modal-settings"
-							class="action-load-settings"><i class="icon-cog"></i>
-								Settings</a></li>
+						<li><a href="#" data-toggle="modal"
+							data-target="#modal-settings" class="action-load-settings"><i
+								class="icon-cog"></i> Settings</a></li>
 						<li><a href="#" data-toggle="modal"
 							data-target="#modal-about"><i class="icon-question-sign"></i>
 								About</a></li>
@@ -76,9 +76,9 @@
 			<ul class="nav pull-right">
 				<li><i class="working-indicator icon-spinner hide"></i></li>
 				<li><a class="brand" id="file-title" href="#"
-					title="Rename current file"> </a></li>
+					title="Rename current document"> </a></li>
 				<li class="navbar-form"><input id="file-title-input"
-					type="text" class="span3 hide" placeholder="File title" /></li>
+					type="text" class="span3 hide" placeholder="Document title" /></li>
 			</ul>
 		</div>
 	</div>
@@ -111,9 +111,13 @@
 			<h3>Import</h3>
 		</div>
 		<div class="modal-body">
-			<p>Please provide a Google Drive file ID:
-			</p>
-			<p><input type="text" class="border span6 gdrive-fileid" placeholder="File ID"></input></p>
+			<p>Please provide a Google Drive file ID:</p>
+			<div class="input-prepend">
+				<span class="add-on"><i class="icon-gdrive"></i></span><input
+					id="download-gdrive-fileid" type="text" class="span5" placeholder="Google Drive file ID"></input>
+			</div>
+            <p class="muted"><b>NOTE:</b> This will create a local copy of your Google Drive document
+                and keep it synchronized.</p>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
@@ -133,14 +137,20 @@
 					is synchronized with these locations:
 				</p>
 			</div>
-			<br class="msg-sync-list hide" />
 			<p class="msg-sync-list hide muted"><b>NOTE:</b> Removing a
 				synchronized location will not delete any file.</p>
 			<p class="msg-no-sync hide">"<span class="file-title"></span>" is
 				not synchronized.
 			</p>
-			<p class="msg-no-sync hide muted"><b>NOTE:</b> You can add
-				synchronized locations using the top-right menu.</p>
+			<p>Add a synchronized location manually:</p>
+			<div class="input-prepend input-append">
+				<span class="add-on"><i class="icon-gdrive"></i></span><input
+					id="manual-gdrive-fileid" type="text" class="span5" placeholder="Google Drive file ID"></input>
+					<a class="btn action-manual-gdrive" data-dismiss="modal"><i class="icon-ok"></i></a>
+			</div>
+			<p class="muted"><b>NOTE:</b> Adding a synchronized location will
+				first upload the local document and overwrite the existing file on the
+				server.</p>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
@@ -178,69 +188,73 @@
 				aria-hidden="true">&times;</button>
 			<img src="img/stackedit-promo.png" />
 		</div>
-        <div class="modal-body">
-            <dl>
-                <dt>About:</dt>
-                <dd>
-                    <a target="_blank" href="https://github.com/benweet/stackedit/">GitHub
-                        page</a>
-                </dd>
-                <dd>
-                    <a target="_blank"
-                        href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome
-                        app</a>
-                </dd>
-                <dd>
-                    <a target="_blank" href="https://twitter.com/stackedit/">Follow
-                        on Twitter</a>
-                </dd>
-                <dd>
-                    <a target="_blank" href="https://www.facebook.com/stackedit/">Follow
-                        on Facebook</a>
-                </dd>
-                <dd>
-                    <a target="_blank"
-                        href="https://plus.google.com/b/110816046787593496375/110816046787593496375">Follow
-                        on Google+</a>
-                </dd>
-            </dl>
-            <dl>
-                <dt>Developer:</dt>
-                <dd>
-                    <a target="_blank" href="http://www.benoitschweblin.com">Benoit
-                        Schweblin</a>
-                <dd>
-            </dl>
-            <dl>
-                <dt>Credits:</dt>
-                <dd>
-                    <a target="_blank" href="http://jquery.com/">jQuery</a>
-                </dd>
+		<div class="modal-body">
+			<dl>
+				<dt>About:</dt>
+				<dd>
+					<a target="_blank" href="https://github.com/benweet/stackedit/">GitHub
+						page</a>
+				</dd>
+				<dd>
+					<a target="_blank"
+						href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome
+						app</a>
+				</dd>
+				<dd>
+					<a target="_blank" href="https://twitter.com/stackedit/">Follow
+						on Twitter</a>
+				</dd>
+				<dd>
+					<a target="_blank" href="https://www.facebook.com/stackedit/">Follow
+						on Facebook</a>
+				</dd>
+				<dd>
+					<a target="_blank"
+						href="https://plus.google.com/b/110816046787593496375/110816046787593496375">Follow
+						on Google+</a>
+				</dd>
+			</dl>
+			<dl>
+				<dt>Developer:</dt>
+				<dd>
+					<a target="_blank" href="http://www.benoitschweblin.com">Benoit
+						Schweblin</a>
+				<dd>
+			</dl>
+			<dl>
+				<dt>Credit:</dt>
                 <dd>
                     <a target="_blank" href="http://twitter.github.com/bootstrap/">Bootstrap</a>
                 </dd>
                 <dd>
-                    <a target="_blank" href="http://requirejs.org/">RequireJS</a>
-                </dd>
-                <dd>
-                    <a target="_blank" href="https://code.google.com/p/pagedown/">PageDown</a>
-                </dd>
-                <dd>
-                    <a target="_blank" href="http://layout.jquery-dev.net/">UI
-                        Layout</a>
+                    <a target="_blank" href="http://glyphicons.com/">GLYPHICONS</a>
                 </dd>
                 <dd>
                     <a target="_blank" href="https://github.com/stanlemon/jGrowl/">jGrowl</a>
                 </dd>
-            </dl>
-            <p>Copyright 2013 <a target="_blank"
-                href="http://www.benoitschweblin.com">Benoit Schweblin</a><br />
-                Licensed under an <a target="_blank"
-                href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a></p>
-        </div>
+				<dd>
+					<a target="_blank" href="http://jquery.com/">jQuery</a>
+				</dd>
+                <dd>
+                    <a target="_blank" href="http://layout.jquery-dev.net/">jQuery UI
+                        Layout</a>
+                </dd>
+                <dd>
+                    <a target="_blank" href="https://code.google.com/p/pagedown/">PageDown</a>
+                </dd>
+				<dd>
+					<a target="_blank" href="http://requirejs.org/">RequireJS</a>
+				</dd>
+			</dl>
+			<p>Copyright 2013 <a target="_blank"
+				href="http://www.benoitschweblin.com">Benoit Schweblin</a><br />
+				Licensed under an <a target="_blank"
+				href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a></p>
+		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>
+
 	</div>
 </body>
 </html>

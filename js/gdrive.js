@@ -254,7 +254,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 						message: jqXHR.statusText
 					};
 					// Handle error
-					if(error.code === 403 || error.code === 404) {
+					if(error.code === 404) {
 						error = "File is not available.";
 					}
 					handleError(error, asyncTask, callback);
@@ -337,8 +337,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 			if (typeof error === "string") {
 				errorMsg = error;
 			}
-			else if ((error.code >= 500 && error.code < 600) ||
-				(error.code === 401 && error.message == "Login Required")) { // Sometimes we have this 401 error
+			else if (error.code >= 500 && error.code < 600) {
 				errorMsg = "Google Drive is not accessible.";
 				// Retry as described in Google's best practices
 				asyncTask.retry();

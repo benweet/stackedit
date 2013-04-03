@@ -76,10 +76,15 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 				window.open(uriContent, 'file');
 			});
 		$(".action-upload-gdrive").click(uploadGdrive);
-		$(".action-download-gdrive").click(function() {
-			var fileId = $(".gdrive-fileid").val();
-			 $(".gdrive-fileid").val("");
-			downloadGdrive(fileId);
+		$(".action-download-gdrive").click(function(event) {
+			var fileId = core.getInputValue($("#download-gdrive-fileid"), event);
+			if(checkGdriveFileId(fileId) === true) {
+				gdrive.importFiles([fileId]);
+			}
+		});
+		$(".action-manual-gdrive").click(function(event) {
+			var fileId = core.getInputValue($("#manual-gdrive-fileid"), event);
+			manualGdrive(fileId);
 		});
 		$(".action-download-dropbox").click(function() {
 			core.showMessage("Sorry, Dropbox synchronization is not yet available.");
@@ -216,7 +221,6 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 			}
 			return result;
 		}
-		synchronizer.useGoogleDrive = useGoogleDrive;
 
 		// Update the file title
 		var title = localStorage[fileIndex + ".title"];
@@ -243,6 +247,7 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 			}
 			$("#file-selector").append(li);
 		}
+		synchronizer.useGoogleDrive = useGoogleDrive;
 	};
 
 	// Remove a synchronized location
@@ -280,22 +285,54 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 		var content = localStorage[fileIndex + ".content"];
 		var title = localStorage[fileIndex + ".title"];
 		gdrive.createFile(title, content, function(fileSyncIndex) {
-			if (fileSyncIndex) {
-				localStorage[fileIndex + ".sync"] += fileSyncIndex + ";";
-				refreshManageSync();
-				fileManager.updateFileTitles();
-				core.showMessage('"' + title
-					+ '" will now be synchronized on Google Drive.');
+			if (fileSyncIndex === undefined) {
+				return;
 			}
+			localStorage[fileIndex + ".sync"] += fileSyncIndex + ";";
+			refreshManageSync();
+			fileManager.updateFileTitles();
+			core.showMessage('"' + title
+				+ '" will now be synchronized on Google Drive.');
 		});
 	}
+	
+	function checkGdriveFileId(fileId) {
+		if(!fileId) {
+			return false;
+		}
+		// Check that file is not synchronized with an other one
+		var fileSyncIndex = SYNC_PROVIDER_GDRIVE + fileId;
+		var fileIndex = fileManager.getFileIndexFromSync(fileSyncIndex);
+		if(fileIndex !== undefined) {
+			var title = localStorage[fileIndex + ".title"];
+			core.showError('Google Drive file is already synchronized with "' + title + '"');
+			return false;
+		}
+		return true;
+	}
 
-	function downloadGdrive(fileId) {
-		fileId = fileId.trim();
-		if(fileId.length === 0) {
+	function manualGdrive(fileId) {
+		if(checkGdriveFileId(fileId) === false) {
 			return;
 		}
-		gdrive.importFiles([fileId]);
+		var fileIndex = localStorage["file.current"];
+		var title = localStorage[fileIndex + ".title"];
+		gdrive.downloadMetadata([fileId], function(result) {
+			if(result === undefined || result.length === 0) {
+				return;
+			}
+			var file = result[0];
+			var fileSyncIndex = SYNC_PROVIDER_GDRIVE + file.id;
+			localStorage[fileSyncIndex + ".etag"] = file.etag;
+			localStorage[fileIndex + ".sync"] += fileSyncIndex + ";";
+			refreshManageSync();
+			fileManager.updateFileTitles();
+			core.showMessage('"' + title
+				+ '" will now be synchronized on Google Drive.');
+			// Force synchronization
+			synchronizer.addFileForUpload(fileIndex);
+			synchronizer.forceSync();
+		});
 	}
 	
 	function refreshManageSync() {
@@ -317,7 +354,7 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 						'<i class="icon-gdrive"></i>'));
 					line.append($("<input>").prop("type", "text").prop(
 						"disabled", true).addClass("span5").val(
-						"FileID="
+						"ID="
 							+ fileSyncIndex.substring(SYNC_PROVIDER_GDRIVE.length)));
 				}
 				line.append($("<a>").addClass("btn").html(

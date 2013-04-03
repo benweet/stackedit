@@ -10,13 +10,32 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 	
 	// Usage: callback = callback || core.doNothing;
 	core.doNothing = function() {};
+	
+
+	// Useful function
+	core.getInputValue = function(element, event) {
+		var value = element.val();
+		if (value !== undefined) {
+			value = value.replace(/^\s+|\s+$/g, '');
+			element.val(undefined);
+		}
+		if (value === undefined || value.length === 0) {
+			element.stop(true, true).addClass("error").delay(400)
+				.switchClass("error");
+			event.stopPropagation();
+			return undefined;
+		}
+		return value;
+	};
 
 	// Used by asyncTaskRunner
 	core.showWorkingIndicator = function(show) {
 		if (show === false) {
 			$(".working-indicator").addClass("hide");
+			$("body").removeClass("working");
 		} else {
 			$(".working-indicator").removeClass("hide");
+			$("body").addClass("working");
 		}
 	};
 
@@ -58,7 +77,7 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 	};
 
 	core.setOnline = function() {
-		if(offline === true) {
+		if(core.isOffline === true) {
 			$(".msg-offline").parents(".jGrowl-notification").trigger(
 				'jGrowl.beforeClose');
 			core.isOffline = false;
@@ -117,8 +136,6 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 			spacing_closed : 15,
 			togglerLength_open : 90, 
 			togglerLength_closed : 90,
-			center__minWidth : 100, 
-			center__minHeight : 100,
 			stateManagement__enabled : false
 		};
 		if (settings.layoutOrientation == "horizontal") {
@@ -184,7 +201,6 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 		$("#wmd-redo-button").append($("<i>").addClass("icon-share-alt"));
 	};
 	
-
 	// Base64 conversion
 	core.encodeBase64 = function(str) {
 	    if (str.length === 0) {

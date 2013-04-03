@@ -10,3 +10,4 @@ RequireJS - http://requirejs.org/
 PageDown - https://code.google.com/p/pagedown/
 UI Layout - http://layout.jquery-dev.net/
 jGrowl - https://github.com/stanlemon/jGrowl/
+GLYPHICONS - http://glyphicons.com/

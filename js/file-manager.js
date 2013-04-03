@@ -295,11 +295,7 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 		if(fileId.length === 0) {
 			return;
 		}
-		gdrive.downloadMetadata([fileId], function(result) {
-			if(result === undefined || result.length === 0) {
-				return;
-			}
-		});
+		gdrive.importFiles([fileId]);
 	}
 	
 	function refreshManageSync() {

@@ -254,8 +254,8 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 						message: jqXHR.statusText
 					};
 					// Handle error
-					if(error.code === 403) {
-						error = "File is not available";
+					if(error.code === 403 || error.code === 404) {
+						error = "File is not available.";
 					}
 					handleError(error, asyncTask, callback);
 				});
@@ -365,6 +365,27 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 	gdrive.updateFile = function(id, title, content, callback) {
 		upload(id, undefined, title, content, callback);
 	};
+	
+	gdrive.importFiles = function(ids) {
+		gdrive.downloadMetadata(ids, function(result) {
+			if(result === undefined) {
+				return;
+			}
+			gdrive.downloadContent(result, function(result) {
+				if(result === undefined) {
+					return;
+				}
+				for(var i=0; i<result.length; i++) {
+					var file = result[i];
+					fileSyncIndex = SYNC_PROVIDER_GDRIVE + file.id;
+					localStorage[fileSyncIndex + ".etag"] = file.etag;
+					var fileIndex = fileManager.createFile(file.title, file.content, [fileSyncIndex]);
+					fileManager.selectFile(fileIndex);
+					core.showMessage('"' + file.title + '" imported successfully from Google Drive.');
+				}
+			});
+		});
+	};
 
 	gdrive.init = function(fileManagerModule) {
 		fileManager = fileManagerModule;
@@ -386,7 +407,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 			});
 		}
 		else if (state.action == "open") {
-			var importIds = [];
+			var ids = [];
 			for(var i=0; i<state.ids.length; i++) {
 				var id = state.ids[i];
 				var fileSyncIndex = SYNC_PROVIDER_GDRIVE + id;
@@ -394,27 +415,10 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 				if(fileIndex !== undefined) {
 					fileManager.selectFile(fileIndex);
 				} else {
-					importIds.push(id);
+					ids.push(id);
 				}
 			}
-			gdrive.downloadMetadata(importIds, function(result) {
-				if(result === undefined) {
-					return;
-				}
-				gdrive.downloadContent(result, function(result) {
-					if(result === undefined) {
-						return;
-					}
-					for(var i=0; i<result.length; i++) {
-						var file = result[i];
-						fileSyncIndex = SYNC_PROVIDER_GDRIVE + file.id;
-						localStorage[fileSyncIndex + ".etag"] = file.etag;
-						var fileIndex = fileManager.createFile(file.title, file.content, [fileSyncIndex]);
-						fileManager.selectFile(fileIndex);
-						core.showMessage('"' + file.title + '" imported successfully from Google Drive.');
-					}
-				});
-			});
+			gdrive.importFiles(ids);
 		}
 	};
 

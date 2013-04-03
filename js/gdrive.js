@@ -5,7 +5,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 
 	var connected = false;
 	var authenticated = false;
-	
+
 	var gdrive = {};
 
 	// Try to connect Gdrive by downloading client.js

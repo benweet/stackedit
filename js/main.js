@@ -18,7 +18,8 @@ require(["jquery", "core", "file-manager", "config", "custo"], function($, core,
 	$(function() {
 		
 		// If browser downloaded a new app cache.
-	    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+	    if (window.applicationCache
+				&& window.applicationCache.status == window.applicationCache.UPDATEREADY) {
 			window.applicationCache.swapCache();
 			window.location.reload();
 			return;

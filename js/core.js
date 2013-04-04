@@ -22,7 +22,9 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 		if (value === undefined || value.length === 0) {
 			element.stop(true, true).addClass("error").delay(400)
 				.switchClass("error");
-			event.stopPropagation();
+			if(event !== undefined) {
+				event.stopPropagation();
+			}
 			return undefined;
 		}
 		return value;
@@ -171,6 +173,7 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 	};
 
 	// Create the PageDown editor
+	var insertLinkCallback = undefined;
 	core.createEditor = function(onTextChange) {
 		$("#wmd-button-bar").empty();
 		var converter = Markdown.getSanitizingConverter();
@@ -182,6 +185,17 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 			return text;
 		});
 		var editor = new Markdown.Editor(converter);
+		editor.hooks.set("insertLinkDialog", function (callback) {
+			insertLinkCallback = callback;
+			$("#modal-insert-link").modal('show');
+			return true;
+	    });
+		editor.hooks.set("insertImageDialog", function (callback) {
+			insertLinkCallback = callback;
+			$("#modal-insert-image").modal('show');
+			return true;
+		});
+		
 		editor.run();
 		firstChange = false;
 
@@ -275,6 +289,23 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 		// Avoid dropdown to close when clicking on submenu
 		$('.dropdown-submenu > a').click(function(e) {
 			e.stopPropagation();
+		});
+		
+		// Click events on "insert link" and "insert image" dialog buttons
+		$(".action-insert-link").click(function(e) {
+			var value = core.getInputValue($("#input-insert-link"), e);
+			if(value !== undefined) {
+				insertLinkCallback(value);
+			}
+		});
+		$(".action-insert-image").click(function(e) {
+			var value = core.getInputValue($("#input-insert-image"), e);
+			if(value !== undefined) {
+				insertLinkCallback(value);
+			}
+		});
+		$(".action-close-insert-link").click(function(e) {
+			insertLinkCallback(null);
 		});
 		
 		$("#menu-bar, .ui-layout-center, .ui-layout-east, .ui-layout-south").removeClass("hide");

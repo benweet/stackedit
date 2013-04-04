@@ -86,6 +86,44 @@
 	<div class="ui-layout-east hide"></div>
 	<div class="ui-layout-south hide"></div>
 
+    <div id="modal-insert-link" class="modal hide">
+        <div class="modal-header">
+            <button type="button" class="close action-close-insert-link" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+            <h3>Hyperlink</h3>
+        </div>
+        <div class="modal-body">
+            <p>Please provide the link URL and an optional title:</p>
+            <div class="input-prepend">
+                <span class="add-on"><i class="icon-globe"></i></span><input
+                    id="input-insert-link" type="text" class="span5" placeholder='http://example.com/ "optional title"'></input>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn action-close-insert-link" data-dismiss="modal">Cancel</a> <a href="#"
+                class="btn btn-primary action-insert-link" data-dismiss="modal">OK</a>
+        </div>
+    </div>
+
+    <div id="modal-insert-image" class="modal hide">
+        <div class="modal-header">
+            <button type="button" class="close action-close-insert-link" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+            <h3>Image</h3>
+        </div>
+        <div class="modal-body">
+            <p>Please provide the image URL and an optional title:</p>
+            <div class="input-prepend">
+                <span class="add-on"><i class="icon-picture"></i></span><input
+                    id="input-insert-image" type="text" class="span5" placeholder='http://example.com/image.jpg "optional title"'></input>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn action-close-insert-link" data-dismiss="modal">Cancel</a> <a href="#"
+                class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>
+        </div>
+    </div>
+
 	<div id="modal-remove-file-confirm" class="modal hide">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal"

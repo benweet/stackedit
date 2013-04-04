@@ -42,10 +42,13 @@ div, span, a, ul, li, textarea, input, button {
 .input-prepend .add-on
  {
     border: 1px solid #ebebeb !important;
+<<<<<<< HEAD
 }
 
 input.error {
     border-color: #ee5f5b !important; 
+=======
+>>>>>>> branch 'gh-pages' of https://github.com/benweet/stackedit.git
 }
 
 .navbar-inner .btn {

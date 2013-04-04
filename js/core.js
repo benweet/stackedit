@@ -258,7 +258,7 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 	};
 	
 	core.init = function() {
-		
+
 		// jGrowl configuration
 		$.jGrowl.defaults.life = 5000;
 		$.jGrowl.defaults.closer = false;

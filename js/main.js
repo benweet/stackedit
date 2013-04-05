@@ -1,14 +1,12 @@
-// Use specific customization for production
-var custoPath = 'dev/custo';
+// Use specific customization for sites
+var configPaths = {};
 if(location.hostname == "benweet.github.com") {
-	custoPath = 'prod/custo';
+	paths.custo = 'custo.github';
 }
 
 // RequireJS configuration
 requirejs.config({
-    paths: {
-        'custo': custoPath
-    },
+    paths: configPaths,
     shim: {
         'jquery-ui': ['jquery'],
         'bootstrap': ['jquery'],

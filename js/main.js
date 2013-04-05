@@ -19,15 +19,6 @@ requirejs.config({
 
 require(["jquery", "core", "file-manager", "config", "custo"], function($, core, fileManager) {
 	$(function() {
-		
-		// If browser detected a new application cache.
-	    if (window.applicationCache
-				&& window.applicationCache.status === window.applicationCache.UPDATEREADY) {
-			window.applicationCache.swapCache();
-			window.location.reload();
-			return;
-		}
-	    
 		core.init();
 		fileManager.init();
 	});

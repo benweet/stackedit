@@ -1,6 +1,6 @@
 // Use specific customization for sites
 var configPaths = {};
-if(location.hostname == "benweet.github.com") {
+if(location.hostname.indexOf("benweet.github.") === 0) {
 	configPaths.custo = 'custo.github';
 }
 

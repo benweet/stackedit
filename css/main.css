@@ -284,3 +284,8 @@ hr {
 	border-right: 5px solid #525252;
 	border-left: 0;
 }
+
+/* Google picker */
+.picker-dialog {
+	z-index: 1050 !important;
+}

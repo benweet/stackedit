@@ -13,6 +13,12 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		callback = callback || core.doNothing;
 		var asyncTask = {};
 		asyncTask.run = function() {
+			if(core.isOffline === true) {
+				connected = false;
+				core.showMessage("Operation not available in offline mode.");
+				asyncTask.error();
+				return;
+			}
 			if (connected === true) {
 				asyncTask.success();
 				return;
@@ -68,11 +74,11 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 				gapi.auth.authorize({ 'client_id' : GOOGLE_CLIENT_ID,
 					'scope' : GOOGLE_SCOPES, 'immediate' : immediate }, function(
 					authResult) {
-					if (!authResult || authResult.error) {
-						asyncTask.error();
-						return;
-					}
 					gapi.client.load('drive', 'v2', function() {
+						if (!authResult || authResult.error) {
+							asyncTask.error();
+							return;
+						}
 						authenticated = true;
 						asyncTask.success();
 					});
@@ -357,6 +363,89 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		asyncTask.error();
 	}
 
+	var pickerLoaded = false;
+	function loadPicker(callback) {
+		var asyncTask = {};
+		asyncTask.run = function() {
+			if(core.isOffline === true) {
+				pickerLoaded = false;
+				core.showMessage("Operation not available in offline mode.");
+				asyncTask.error();
+				return;
+			}
+			if (pickerLoaded === true) {
+				asyncTask.success();
+				return;
+			}
+			$.ajax({
+				url : "//www.google.com/jsapi",
+				dataType : "script", timeout : AJAX_TIMEOUT
+			}).done(function() {
+				asyncTask.success();
+			}).fail(function() {
+				asyncTask.error();
+			});
+		};
+		asyncTask.onSuccess = function() {
+		    google.load('picker', '1', {callback: callback});
+			pickerLoaded = true;
+		};
+		asyncTask.onError = function() {
+			core.setOffline();
+			callback();
+		};
+		asyncTaskRunner.addTask(asyncTask);
+	}
+	
+	gdrive.picker = function(callback) {
+		callback = callback || core.doNothing;
+		loadPicker(function() {
+			if (pickerLoaded === false) {
+				callback();
+				return;
+			}
+			
+			var ids = [];
+			var picker = undefined;
+			var asyncTask = {};
+			asyncTask.run = function() {
+				var view = new google.picker.View(google.picker.ViewId.DOCS);
+				view.setMimeTypes("text/x-markdown,text/plain");
+				var pickerBuilder = new google.picker.PickerBuilder();
+				pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
+				pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);
+				pickerBuilder.addView(view);
+				pickerBuilder.addView(new google.picker.DocsUploadView());
+				pickerBuilder.setCallback(function(data) {
+					if (data.action == google.picker.Action.PICKED ||
+						data.action == google.picker.Action.CANCEL) {
+						if(data.action == google.picker.Action.PICKED) {
+							for(var i=0; i<data.docs.length; i++) {
+						        ids.push(data.docs[i].id);							
+							}
+						}
+						asyncTask.success();
+				    }
+				});
+				picker = pickerBuilder.build();
+				$("body").append($("<div>").addClass("modal-backdrop"));
+				picker.setVisible(true);
+			};
+			asyncTask.onSuccess = function() {
+				$(".modal-backdrop").remove();
+				callback(ids);
+			};
+			asyncTask.onError = function() {
+				if(picker !== undefined) {
+					picker.setVisible(false);
+				}
+				$(".modal-backdrop").remove();
+				callback();
+			};
+			asyncTaskRunner.addTask(asyncTask);
+		});
+	};
+
 	gdrive.createFile = function(title, content, callback) {
 		upload(undefined, undefined, title, content, callback);
 	};
@@ -420,6 +509,6 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 			gdrive.importFiles(ids);
 		}
 	};
-
+	
 	return gdrive;
 });

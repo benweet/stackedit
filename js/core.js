@@ -96,7 +96,7 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 			offlineTime = core.currentTime;
 			// Try to download anything to test the connection
 			$.ajax({ 
-				url : "https://apis.google.com/js/client.js",
+				url : "//www.google.com/jsapi",
 				timeout : AJAX_TIMEOUT, dataType : "script"
 			}).done(function() {
 				core.setOnline();

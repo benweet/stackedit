@@ -49,8 +49,7 @@
 							<ul class="dropdown-menu">
 								<li><a href="#" class="action-upload-gdrive">Export to
 										Google Drive</a></li>
-								<li><a href="#" data-toggle="modal"
-									data-target="#modal-download-gdrive">Import from Google
+								<li><a href="#" class="action-download-gdrive">Import from Google
 										Drive</a></li>
 							</ul></li>
 						<li class="dropdown-submenu"><a href="#"><i
@@ -139,27 +138,6 @@
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
 				class="btn btn-primary action-remove-file" data-dismiss="modal">Delete</a>
-		</div>
-	</div>
-
-	<div id="modal-download-gdrive" class="modal hide">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"
-				aria-hidden="true">&times;</button>
-			<h3>Import</h3>
-		</div>
-		<div class="modal-body">
-			<p>Please provide a Google Drive file ID:</p>
-			<div class="input-prepend">
-				<span class="add-on"><i class="icon-gdrive"></i></span><input
-					id="download-gdrive-fileid" type="text" class="span5" placeholder="Google Drive file ID"></input>
-			</div>
-            <p class="muted"><b>NOTE:</b> This will create a local copy of your Google Drive document
-                and keep it synchronized.</p>
-		</div>
-		<div class="modal-footer">
-			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
-				class="btn btn-primary action-download-gdrive" data-dismiss="modal">OK</a>
 		</div>
 	</div>
 

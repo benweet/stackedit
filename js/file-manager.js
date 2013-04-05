@@ -76,11 +76,8 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 				window.open(uriContent, 'file');
 			});
 		$(".action-upload-gdrive").click(uploadGdrive);
-		$(".action-download-gdrive").click(function(event) {
-			var fileId = core.getInputValue($("#download-gdrive-fileid"), event);
-			if(checkGdriveFileId(fileId) === true) {
-				gdrive.importFiles([fileId]);
-			}
+		$(".action-download-gdrive").click(function() {
+			gdrive.picker(importGdrive);
 		});
 		$(".action-manual-gdrive").click(function(event) {
 			var fileId = core.getInputValue($("#manual-gdrive-fileid"), event);
@@ -112,10 +109,10 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 		if(fileIndex !== undefined) {
 			localStorage["file.current"] = fileIndex;
 		}
-		refreshManageSync();
 
 		// Update the file titles
 		this.updateFileTitles();
+		refreshManageSync();
 		
 		// Recreate the editor
 		var fileIndex = localStorage["file.current"];
@@ -296,23 +293,35 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 		});
 	}
 	
-	function checkGdriveFileId(fileId) {
+	function importGdrive(ids) {
+		if(ids === undefined) {
+			return;
+		}
+		var importIds = [];
+		for(var i=0; i<ids.length; i++) {
+			var fileId = ids[i];
+			var fileSyncIndex = SYNC_PROVIDER_GDRIVE + fileId;
+			var fileIndex = fileManager.getFileIndexFromSync(fileSyncIndex);
+			if(fileIndex !== undefined) {
+				var title = localStorage[fileIndex + ".title"];
+				core.showError('"' + title + '" has already been imported');
+				continue;
+			}
+			importIds.push(fileId);
+		}
+		gdrive.importFiles(importIds);
+	}
+	
+	function manualGdrive(fileId) {
 		if(!fileId) {
-			return false;
+			return;
 		}
 		// Check that file is not synchronized with an other one
 		var fileSyncIndex = SYNC_PROVIDER_GDRIVE + fileId;
 		var fileIndex = fileManager.getFileIndexFromSync(fileSyncIndex);
 		if(fileIndex !== undefined) {
 			var title = localStorage[fileIndex + ".title"];
-			core.showError('Google Drive file is already synchronized with "' + title + '"');
-			return false;
-		}
-		return true;
-	}
-
-	function manualGdrive(fileId) {
-		if(checkGdriveFileId(fileId) === false) {
+			core.showError('File ID is already synchronized with "' + title + '"');
 			return;
 		}
 		var fileIndex = localStorage["file.current"];
@@ -321,9 +330,7 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 			if(result === undefined || result.length === 0) {
 				return;
 			}
-			var file = result[0];
-			var fileSyncIndex = SYNC_PROVIDER_GDRIVE + file.id;
-			localStorage[fileSyncIndex + ".etag"] = file.etag;
+			localStorage[fileSyncIndex + ".etag"] = result[0].etag;
 			localStorage[fileIndex + ".sync"] += fileSyncIndex + ";";
 			refreshManageSync();
 			fileManager.updateFileTitles();

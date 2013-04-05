@@ -1,7 +1,7 @@
 // Use specific customization for sites
 var configPaths = {};
 if(location.hostname == "benweet.github.com") {
-	paths.custo = 'custo.github';
+	configPaths.custo = 'custo.github';
 }
 
 // RequireJS configuration
@@ -22,7 +22,7 @@ require(["jquery", "core", "file-manager", "config", "custo"], function($, core,
 		
 		// If browser detected a new application cache.
 	    if (window.applicationCache
-				&& window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+				&& window.applicationCache.status === window.applicationCache.UPDATEREADY) {
 			window.applicationCache.swapCache();
 			window.location.reload();
 			return;

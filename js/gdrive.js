@@ -379,6 +379,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 			}
 			$.ajax({
 				url : "//www.google.com/jsapi",
+				data : {key: GOOGLE_KEY},
 				dataType : "script", timeout : AJAX_TIMEOUT
 			}).done(function() {
 				asyncTask.success();

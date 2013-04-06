@@ -408,49 +408,38 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 				return;
 			}
 			
-			var ids = [];
-			var picker = undefined;
+			var view = new google.picker.View(google.picker.ViewId.DOCS);
+			view.setMimeTypes("text/x-markdown,text/plain");
+			var pickerBuilder = new google.picker.PickerBuilder();
+			pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
+			pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);
+			pickerBuilder.setAppId(GOOGLE_DRIVE_APP_ID);
 			var token = gapi.auth.getToken();
-			var asyncTask = {};
-			asyncTask.run = function() {
-				var view = new google.picker.View(google.picker.ViewId.DOCS);
-				view.setMimeTypes("text/x-markdown,text/plain");
-				var pickerBuilder = new google.picker.PickerBuilder();
-				pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
-				pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);
-				pickerBuilder.setAppId(GOOGLE_DRIVE_APP_ID);
-				if(token) {
-					pickerBuilder.setOAuthToken(token.access_token);
-				}
-				pickerBuilder.addView(view);
-				pickerBuilder.addView(new google.picker.DocsUploadView());
-				pickerBuilder.setCallback(function(data) {
-					if (data.action == google.picker.Action.PICKED ||
-						data.action == google.picker.Action.CANCEL) {
-						if(data.action == google.picker.Action.PICKED) {
-							for(var i=0; i<data.docs.length; i++) {
-						        ids.push(data.docs[i].id);							
-							}
+			if(token) {
+				pickerBuilder.setOAuthToken(token.access_token);
+			}
+			pickerBuilder.addView(view);
+			pickerBuilder.addView(new google.picker.DocsUploadView());
+			pickerBuilder.setCallback(function(data) {
+				if (data.action == google.picker.Action.PICKED ||
+					data.action == google.picker.Action.CANCEL) {
+					var ids = [];
+					if(data.action == google.picker.Action.PICKED) {
+						for(var i=0; i<data.docs.length; i++) {
+					        ids.push(data.docs[i].id);							
 						}
-						asyncTask.success();
-				    }
-				});
-				picker = pickerBuilder.build();
-				$("body").append($("<div>").addClass("modal-backdrop"));
-				picker.setVisible(true);
-			};
-			asyncTask.onSuccess = function() {
-				$(".modal-backdrop, .picker").remove();
-				callback(ids);
-			};
-			asyncTask.onError = function() {
-				if(picker !== undefined) {
-					picker.setVisible(false);
-				}
+					}
+					$(".modal-backdrop, .picker").remove();
+					callback(ids);
+			    }
+			});
+			var picker = pickerBuilder.build();
+			$("body").append($("<div>").addClass("modal-backdrop").click(function() {
+				picker.setVisible(false);
 				$(".modal-backdrop, .picker").remove();
 				callback();
-			};
-			asyncTaskRunner.addTask(asyncTask);
+			}));
+			picker.setVisible(true);
 		});
 	};
 

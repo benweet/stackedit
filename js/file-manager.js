@@ -304,7 +304,7 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 			var fileIndex = fileManager.getFileIndexFromSync(fileSyncIndex);
 			if(fileIndex !== undefined) {
 				var title = localStorage[fileIndex + ".title"];
-				core.showError('"' + title + '" has already been imported');
+				core.showError('"' + title + '" was already imported');
 				continue;
 			}
 			importIds.push(fileId);

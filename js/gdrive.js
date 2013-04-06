@@ -365,37 +365,39 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 
 	var pickerLoaded = false;
 	function loadPicker(callback) {
-		var asyncTask = {};
-		asyncTask.run = function() {
-			if(core.isOffline === true) {
+		authenticate(function() {
+			if (connected === false) {
 				pickerLoaded = false;
-				core.showMessage("Operation not available in offline mode.");
-				asyncTask.error();
+				callback();
 				return;
 			}
-			if (pickerLoaded === true) {
-				asyncTask.success();
-				return;
-			}
-			$.ajax({
-				url : "//www.google.com/jsapi",
-				data : {key: GOOGLE_KEY},
-				dataType : "script", timeout : AJAX_TIMEOUT
-			}).done(function() {
-				asyncTask.success();
-			}).fail(function() {
-				asyncTask.error();
-			});
-		};
-		asyncTask.onSuccess = function() {
-		    google.load('picker', '1', {callback: callback});
-			pickerLoaded = true;
-		};
-		asyncTask.onError = function() {
-			core.setOffline();
-			callback();
-		};
-		asyncTaskRunner.addTask(asyncTask);
+				
+			var asyncTask = {};
+			asyncTask.run = function() {
+				if (pickerLoaded === true) {
+					asyncTask.success();
+					return;
+				}
+				$.ajax({
+					url : "//www.google.com/jsapi",
+					data : {key: GOOGLE_KEY},
+					dataType : "script", timeout : AJAX_TIMEOUT
+				}).done(function() {
+					asyncTask.success();
+				}).fail(function() {
+					asyncTask.error();
+				});
+			};
+			asyncTask.onSuccess = function() {
+			    google.load('picker', '1', {callback: callback});
+				pickerLoaded = true;
+			};
+			asyncTask.onError = function() {
+				core.setOffline();
+				callback();
+			};
+			asyncTaskRunner.addTask(asyncTask);
+		});
 	}
 	
 	gdrive.picker = function(callback) {
@@ -408,6 +410,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 			
 			var ids = [];
 			var picker = undefined;
+			var token = gapi.auth.getToken();
 			var asyncTask = {};
 			asyncTask.run = function() {
 				var view = new google.picker.View(google.picker.ViewId.DOCS);
@@ -415,6 +418,10 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 				var pickerBuilder = new google.picker.PickerBuilder();
 				pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
 				pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);
+				pickerBuilder.setAppId(GOOGLE_DRIVE_APP_ID);
+				if(token) {
+					pickerBuilder.setOAuthToken(token.access_token);
+				}
 				pickerBuilder.addView(view);
 				pickerBuilder.addView(new google.picker.DocsUploadView());
 				pickerBuilder.setCallback(function(data) {
@@ -433,14 +440,14 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 				picker.setVisible(true);
 			};
 			asyncTask.onSuccess = function() {
-				$(".modal-backdrop").remove();
+				$(".modal-backdrop, .picker").remove();
 				callback(ids);
 			};
 			asyncTask.onError = function() {
 				if(picker !== undefined) {
 					picker.setVisible(false);
 				}
-				$(".modal-backdrop").remove();
+				$(".modal-backdrop, .picker").remove();
 				callback();
 			};
 			asyncTaskRunner.addTask(asyncTask);

@@ -1,5 +1,6 @@
 var GOOGLE_SCOPES = [ 'https://www.googleapis.com/auth/drive.install',
     'https://www.googleapis.com/auth/drive' ];
+var GOOGLE_DRIVE_APP_ID = "241271498917";
 var DEFAULT_FILE_TITLE = "Title";
 var GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document";
 var CHECK_ONLINE_PERIOD = 60000;

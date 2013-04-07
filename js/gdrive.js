@@ -34,12 +34,10 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 			});
 		};
 		asyncTask.onSuccess = function() {
-			delayedFunction = undefined;
 			connected = true;
 			callback();
 		};
 		asyncTask.onError = function() {
-			delayedFunction = undefined;
 			core.setOffline();
 			callback();
 		};
@@ -99,7 +97,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		});
 	}
 
-	function upload(fileId, parentId, title, content, callback) {
+	gdrive.upload = function(fileId, parentId, title, content, callback) {
 		callback = callback || core.doNothing;
 		authenticate(function() {
 			if (connected === false) {
@@ -172,7 +170,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 			};
 			asyncTaskRunner.addTask(asyncTask);
 		});
-	}
+	};
 
 	gdrive.checkUpdates = function(lastChangeId, callback) {
 		callback = callback || core.doNothing;
@@ -245,10 +243,13 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 			var id = ids.pop();
 			var asyncTask = {};
 			asyncTask.run = function() {
-				var accessToken = gapi.auth.getToken().access_token;
+				var token = gapi.auth.getToken();
+				var headers = {
+					Authorization : token ? "Bearer " + token.access_token: null
+				};
 				$.ajax({
 					url : "https://www.googleapis.com/drive/v2/files/" + id,
-					headers : { "Authorization" : "Bearer " + accessToken },
+					headers : headers,
 					dataType : "json",
 					timeout : AJAX_TIMEOUT
 				}).done(function(data, textStatus, jqXHR) {
@@ -261,7 +262,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 					};
 					// Handle error
 					if(error.code === 404) {
-						error = "File is not available.";
+						error = 'File ID "' + id + '" does not exist on Google Drive.';
 					}
 					handleError(error, asyncTask, callback);
 				});
@@ -292,7 +293,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		else if(object.kind == "drive#change") {
 			file = object.file;
 		}
-		if(file === undefined) {
+		if(!file) {
 			this.downloadContent(objects, callback, result);
 			return;
 		}
@@ -305,10 +306,13 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 			
 			var asyncTask = {};
 			asyncTask.run = function() {
-				var accessToken = gapi.auth.getToken().access_token;
+				var token = gapi.auth.getToken();
+				var headers = {
+					Authorization : token ? "Bearer " + token.access_token: null
+				};
 				$.ajax({
 					url : file.downloadUrl,
-					headers : { "Authorization" : "Bearer " + accessToken },
+					headers : headers,
 					dataType : "text",
 					timeout : AJAX_TIMEOUT
 				}).done(function(data, textStatus, jqXHR) {
@@ -365,7 +369,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 
 	var pickerLoaded = false;
 	function loadPicker(callback) {
-		authenticate(function() {
+		connect(function() {
 			if (connected === false) {
 				pickerLoaded = false;
 				callback();
@@ -407,7 +411,6 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 				callback();
 				return;
 			}
-			
 			var view = new google.picker.View(google.picker.ViewId.DOCS);
 			view.setMimeTypes("text/x-markdown,text/plain");
 			var pickerBuilder = new google.picker.PickerBuilder();
@@ -443,14 +446,6 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		});
 	};
 
-	gdrive.createFile = function(title, content, callback) {
-		upload(undefined, undefined, title, content, callback);
-	};
-
-	gdrive.updateFile = function(id, title, content, callback) {
-		upload(id, undefined, title, content, callback);
-	};
-	
 	gdrive.importFiles = function(ids) {
 		gdrive.downloadMetadata(ids, function(result) {
 			if(result === undefined) {
@@ -481,7 +476,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		localStorage.removeItem("sync.gdrive.state");
 		state = JSON.parse(state);
 		if (state.action == "create") {
-			upload(undefined, state.folderId, GDRIVE_DEFAULT_FILE_TITLE,
+			gdrive.upload(undefined, state.folderId, GDRIVE_DEFAULT_FILE_TITLE,
 				"", function(fileSyncIndex) {
 				if(fileSyncIndex === undefined) {
 					return;

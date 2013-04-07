@@ -45,7 +45,7 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 	core.showMessage = function(msg, iconClass, options) {
 		options = options || {};
 		iconClass = iconClass || "icon-info-sign";
-		$.jGrowl("<i class='icon-white " + iconClass + "'></i> " + msg, options);
+		$.jGrowl("<i class='icon-white " + iconClass + "'></i> " + $("<div>").text(msg).html(), options);
 	};
 
 	// Used to show an error message

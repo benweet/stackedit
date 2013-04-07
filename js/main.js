@@ -6,6 +6,7 @@ if(location.hostname.indexOf("benweet.github.") === 0) {
 
 // RequireJS configuration
 requirejs.config({
+	waitSeconds: 0,
     paths: configPaths,
     shim: {
         'jquery-ui': ['jquery'],

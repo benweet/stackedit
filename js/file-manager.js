@@ -1,9 +1,11 @@
-define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($, core, gdrive, synchronizer, asyncTaskRunner) {
+define(["jquery", "core", "gdrive", "dropbox", "synchronizer", "async-runner"],
+	function($, core, gdrive, dropbox, synchronizer, asyncTaskRunner) {
 
 	var fileManager = {};
 
 	fileManager.init = function() {
 		gdrive.init(fileManager);
+		dropbox.init(fileManager);
 		
 		var changeSyncButtonState = function() {
 			if(synchronizer.isRunning() || synchronizer.isQueueEmpty() || core.isOffline) {
@@ -75,7 +77,18 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 					+ core.encodeBase64(content);
 				window.open(uriContent, 'file');
 			});
-		$(".action-upload-gdrive").click(uploadGdrive);
+		$(".action-upload-gdrive-root").click(function() {
+			uploadGdrive();
+		});
+		$(".action-upload-gdrive-select").click(function() {
+			// This action is not available because picker does not support
+			// folder selection yet
+			gdrive.picker(function(ids) {
+				if(ids !== undefined && ids.length !== 0) {
+					uploadGdrive(ids[0]);
+				}
+			}, true);
+		});
 		$(".action-download-gdrive").click(function() {
 			gdrive.picker(importGdrive);
 		});
@@ -84,10 +97,15 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 			manualGdrive(fileId);
 		});
 		$(".action-download-dropbox").click(function() {
-			core.showMessage("Sorry, Dropbox synchronization is not yet available.");
+			dropbox.picker(importDropbox);
 		});
-		$(".action-upload-dropbox").click(function() {
-			core.showMessage("Sorry, Dropbox synchronization is not yet available.");
+		$(".action-upload-dropbox").click(function(event) {
+			var path = core.getInputValue($("#upload-dropbox-path"), event);
+			manualDropbox(path);
+		});
+		$(".action-manual-dropbox").click(function(event) {
+			var path = core.getInputValue($("#manual-dropbox-path"), event);
+			manualDropbox(path);
 		});
 	};
 
@@ -209,12 +227,17 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 		}
 		
 		var useGoogleDrive = false;
+		var useDropbox = false;
 		function composeTitle(fileIndex) {
-			var result = localStorage[fileIndex + ".title"];
+			var result = " " + localStorage[fileIndex + ".title"];
 			var sync = localStorage[fileIndex + ".sync"];
+			if (sync.indexOf(";" + SYNC_PROVIDER_DROPBOX) !== -1) {
+				useDropbox = true;
+				result = '<i class="icon-dropbox"></i>' + result;
+			}
 			if (sync.indexOf(";" + SYNC_PROVIDER_GDRIVE) !== -1) {
 				useGoogleDrive = true;
-				result = '<i class="icon-gdrive"></i> ' + result;
+				result = '<i class="icon-gdrive"></i>' + result;
 			}
 			return result;
 		}
@@ -245,6 +268,7 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 			$("#file-selector").append(li);
 		}
 		synchronizer.useGoogleDrive = useGoogleDrive;
+		synchronizer.useDropbox = useDropbox;
 	};
 
 	// Remove a synchronized location
@@ -258,8 +282,10 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 				refreshManageSync();
 			}
 		}
-		// Remove etag
+		// Remove Google Drive etag
 		localStorage.removeItem(fileSyncIndex + ".etag");
+		// Remove Dropbox version
+		localStorage.removeItem(fileSyncIndex + ".version");
 	};
 	
 	// Look for local file associated to a synchronized location 
@@ -277,11 +303,11 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 		return fileIndex;
 	};
 
-	function uploadGdrive() {
+	function uploadGdrive(folderId) {
 		var fileIndex = localStorage["file.current"];
 		var content = localStorage[fileIndex + ".content"];
 		var title = localStorage[fileIndex + ".title"];
-		gdrive.createFile(title, content, function(fileSyncIndex) {
+		gdrive.upload(undefined, folderId, title, content, function(fileSyncIndex) {
 			if (fileSyncIndex === undefined) {
 				return;
 			}
@@ -342,6 +368,56 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 		});
 	}
 	
+	function manualDropbox(path) {
+		if(!path) {
+			return;
+		}
+		path = dropbox.checkPath(path);
+		if(path === undefined) {
+			return;
+		}
+		// Check that file is not synchronized with an other one
+		var fileSyncIndex = SYNC_PROVIDER_DROPBOX + encodeURIComponent(path.toLowerCase());
+		var fileIndex = fileManager.getFileIndexFromSync(fileSyncIndex);
+		if(fileIndex !== undefined) {
+			var title = localStorage[fileIndex + ".title"];
+			core.showError('Path "' + path + '" is already synchronized with "' + title + '"');
+			return;
+		}
+		var fileIndex = localStorage["file.current"];
+		var content = localStorage[fileIndex + ".content"];
+		var title = localStorage[fileIndex + ".title"];
+		dropbox.upload(path, content, function(fileSyncIndex) {
+			if (fileSyncIndex === undefined) {
+				return;
+			}
+			localStorage[fileIndex + ".sync"] += fileSyncIndex + ";";
+			refreshManageSync();
+			fileManager.updateFileTitles();
+			core.showMessage('"' + title
+				+ '" will now be synchronized on Dropbox.');
+		});
+	}
+	
+	function importDropbox(paths) {
+		if(paths === undefined) {
+			return;
+		}
+		var importPaths = [];
+		for(var i=0; i<paths.length; i++) {
+			var filePath = paths[i];
+			var fileSyncIndex = SYNC_PROVIDER_DROPBOX + encodeURIComponent(filePath.toLowerCase());
+			var fileIndex = fileManager.getFileIndexFromSync(fileSyncIndex);
+			if(fileIndex !== undefined) {
+				var title = localStorage[fileIndex + ".title"];
+				core.showError('"' + title + '" was already imported');
+				continue;
+			}
+			importPaths.push(filePath);
+		}
+		dropbox.importFiles(importPaths);
+	}
+	
 	function refreshManageSync() {
 		var fileIndex = localStorage["file.current"];
 		var fileSyncIndexList = localStorage[fileIndex + ".sync"].split(";");
@@ -361,12 +437,18 @@ define(["jquery", "core", "gdrive", "synchronizer", "async-runner"], function($,
 						'<i class="icon-gdrive"></i>'));
 					line.append($("<input>").prop("type", "text").prop(
 						"disabled", true).addClass("span5").val(
-						"ID="
-							+ fileSyncIndex.substring(SYNC_PROVIDER_GDRIVE.length)));
+						fileSyncIndex.substring(SYNC_PROVIDER_GDRIVE.length)));
+				}
+				if (fileSyncIndex.indexOf(SYNC_PROVIDER_DROPBOX) === 0) {
+					line.append($("<span>").addClass("add-on").html(
+					'<i class="icon-dropbox"></i>'));
+					line.append($("<input>").prop("type", "text").prop(
+						"disabled", true).addClass("span5").val(
+							decodeURIComponent(fileSyncIndex.substring(SYNC_PROVIDER_DROPBOX.length))));
 				}
 				line.append($("<a>").addClass("btn").html(
 					'<i class="icon-trash"></i>').prop("title",
-					"Remove this synchronized location").click(function() {
+					"Remove this location").click(function() {
 					fileManager.removeSync(fileSyncIndex);
 					fileManager.updateFileTitles();
 				}));

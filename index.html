@@ -5,6 +5,9 @@
 <link rel="icon" href="img/stackedit-32.ico" type="image/x-icon">
 <link rel="shortcut icon" href="img/stackedit-32.ico"
 	type="image/x-icon">
+<meta name="keywords" content="Markdown, Editor, PageDown, Stack Overflow, Stack Exchange">
+<meta name="description" content="StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.">
+<meta name="author" content="Benoit Schweblin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="css/main.css" rel="stylesheet" media="screen">
 <script data-main="js/main" src="js/require.js"></script>
@@ -47,18 +50,18 @@
 						<li class="dropdown-submenu"><a href="#"><i
 								class="icon-gdrive"></i> Google Drive</a>
 							<ul class="dropdown-menu">
-								<li><a href="#" class="action-upload-gdrive">Export to
-										Google Drive</a></li>
-								<li><a href="#" class="action-download-gdrive">Import from Google
-										Drive</a></li>
+								<li><a href="#" class="action-download-gdrive">Import
+										from Google Drive</a></li>
+								<li><a href="#" data-toggle="modal"
+									data-target="#modal-upload-gdrive">Export to Google Drive</a></li>
 							</ul></li>
 						<li class="dropdown-submenu"><a href="#"><i
 								class="icon-dropbox"></i> Dropbox</a>
 							<ul class="dropdown-menu">
-								<li><a class="action-upload-dropbox" href="#">Export to
-										Dropbox</a></li>
 								<li><a class="action-download-dropbox" href="#">Import
 										from Dropbox</a></li>
+								<li><a href="#" data-toggle="modal"
+									data-target="#modal-upload-dropbox">Export to Dropbox</a></li>
 							</ul></li>
 						<li><a href="#" data-toggle="modal"
 							data-target="#modal-manage-sync"><i class="icon-refresh"></i>
@@ -85,43 +88,47 @@
 	<div class="ui-layout-east hide"></div>
 	<div class="ui-layout-south hide"></div>
 
-    <div id="modal-insert-link" class="modal hide">
-        <div class="modal-header">
-            <button type="button" class="close action-close-insert-link" data-dismiss="modal"
-                aria-hidden="true">&times;</button>
-            <h3>Hyperlink</h3>
-        </div>
-        <div class="modal-body">
-            <p>Please provide the link URL and an optional title:</p>
-            <div class="input-prepend">
-                <span class="add-on"><i class="icon-globe"></i></span><input
-                    id="input-insert-link" type="text" class="span5" placeholder='http://example.com/ "optional title"'></input>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <a href="#" class="btn action-close-insert-link" data-dismiss="modal">Cancel</a> <a href="#"
-                class="btn btn-primary action-insert-link" data-dismiss="modal">OK</a>
-        </div>
-    </div>
+	<div id="modal-insert-link" class="modal hide">
+		<div class="modal-header">
+			<button type="button" class="close action-close-insert-link"
+				data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3>Hyperlink</h3>
+		</div>
+		<div class="modal-body">
+			<p>Please provide the link URL and an optional title:</p>
+			<div class="input-prepend">
+				<span class="add-on"><i class="icon-globe"></i></span><input
+					id="input-insert-link" type="text" class="span5"
+					placeholder='http://example.com/ "optional title"'></input>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn action-close-insert-link" data-dismiss="modal">Cancel</a>
+			<a href="#" class="btn btn-primary action-insert-link"
+				data-dismiss="modal">OK</a>
+		</div>
+	</div>
 
-    <div id="modal-insert-image" class="modal hide">
-        <div class="modal-header">
-            <button type="button" class="close action-close-insert-link" data-dismiss="modal"
-                aria-hidden="true">&times;</button>
-            <h3>Image</h3>
-        </div>
-        <div class="modal-body">
-            <p>Please provide the image URL and an optional title:</p>
-            <div class="input-prepend">
-                <span class="add-on"><i class="icon-picture"></i></span><input
-                    id="input-insert-image" type="text" class="span5" placeholder='http://example.com/image.jpg "optional title"'></input>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <a href="#" class="btn action-close-insert-link" data-dismiss="modal">Cancel</a> <a href="#"
-                class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>
-        </div>
-    </div>
+	<div id="modal-insert-image" class="modal hide">
+		<div class="modal-header">
+			<button type="button" class="close action-close-insert-link"
+				data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3>Image</h3>
+		</div>
+		<div class="modal-body">
+			<p>Please provide the image URL and an optional title:</p>
+			<div class="input-prepend">
+				<span class="add-on"><i class="icon-picture"></i></span><input
+					id="input-insert-image" type="text" class="span5"
+					placeholder='http://example.com/image.jpg "optional title"'></input>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn action-close-insert-link" data-dismiss="modal">Cancel</a>
+			<a href="#" class="btn btn-primary action-insert-image"
+				data-dismiss="modal">OK</a>
+		</div>
+	</div>
 
 	<div id="modal-remove-file-confirm" class="modal hide">
 		<div class="modal-header">
@@ -141,6 +148,55 @@
 		</div>
 	</div>
 
+	<div id="modal-upload-gdrive" class="modal hide">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">&times;</button>
+			<h3>Export</h3>
+		</div>
+		<div class="modal-body">
+			<p>This will upload the current document into your Google Drive
+				root folder and keep it synchronized.</p>
+			<p class="muted"><b>NOTE:</b> You can move or rename the file
+				within Google Drive afterwards.</p>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+				data-dismiss="modal"
+				class="btn btn-primary action-upload-gdrive-root">OK</a>
+		</div>
+	</div>
+
+	<div id="modal-upload-dropbox" class="modal hide">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">&times;</button>
+			<h3>Export</h3>
+		</div>
+		<div class="modal-body">
+			<p>This will upload the current document to your Dropbox account
+				and keep it synchronized.</p>
+			<p>Please specify a file path for "<span class="file-title"></span>":
+			</p>
+			<div class="input-prepend">
+				<span class="add-on"><i class="icon-dropbox"></i></span><input
+					id="upload-dropbox-path" type="text" class="span5"
+					placeholder="/path/to/My Document.md"></input>
+			</div>
+			<br /> <br /> <b class="muted">NOTE:</b>
+			<ul class="muted">
+				<li>Dropbox file path does not depend on document title.</li>
+				<li>The title of your document will not be synchronized.</li>
+				<li>Destination folder must exist.</li>
+				<li>Any existing file at this location will be overwritten.</li>
+			</ul>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+				data-dismiss="modal" class="btn btn-primary action-upload-dropbox">OK</a>
+		</div>
+	</div>
+
 	<div id="modal-manage-sync" class="modal hide">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal"
@@ -148,11 +204,10 @@
 			<h3>Synchronization</h3>
 		</div>
 		<div class="modal-body">
-			<div id="manage-sync-list">
-				<p class="msg-sync-list hide">"<span class="file-title"></span>"
-					is synchronized with these locations:
-				</p>
-			</div>
+			<p class="msg-sync-list hide">"<span class="file-title"></span>"
+				is synchronized with these locations:
+			</p>
+			<div id="manage-sync-list"></div>
 			<p class="msg-sync-list hide muted"><b>NOTE:</b> Removing a
 				synchronized location will not delete any file.</p>
 			<p class="msg-no-sync hide">"<span class="file-title"></span>" is
@@ -161,12 +216,21 @@
 			<p>Add a synchronized location manually:</p>
 			<div class="input-prepend input-append">
 				<span class="add-on"><i class="icon-gdrive"></i></span><input
-					id="manual-gdrive-fileid" type="text" class="span5" placeholder="Google Drive file ID"></input>
-					<a class="btn action-manual-gdrive" data-dismiss="modal"><i class="icon-ok"></i></a>
+					id="manual-gdrive-fileid" type="text" class="span5"
+					placeholder="Google Drive file ID"></input> <a
+					class="btn action-manual-gdrive" title="Add this location"
+					data-dismiss="modal"><i class="icon-ok"></i></a>
+			</div>
+			<div class="input-prepend input-append">
+				<span class="add-on"><i class="icon-dropbox"></i></span><input
+					id="manual-dropbox-path" type="text" class="span5"
+					placeholder="Dropbox file path"></input> <a
+					class="btn action-manual-dropbox" title="Add this location"
+					data-dismiss="modal"><i class="icon-ok"></i></a>
 			</div>
 			<p class="muted"><b>NOTE:</b> Adding a synchronized location will
-				first upload the local document and overwrite the existing file on the
-				server.</p>
+				upload the local document firstly and overwrite the existing file on
+				the server.</p>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
@@ -181,7 +245,7 @@
 		</div>
 		<div class="modal-body">
 			<dl class="dl-horizontal">
-				<dt>Layout orientation</dt>
+				<dt>Layout orientation:</dt>
 				<dd>
 					<label class="radio"> <input type="radio"
 						name="radio-layout-orientation" value="horizontal">
@@ -239,25 +303,25 @@
 			</dl>
 			<dl>
 				<dt>Credit:</dt>
-                <dd>
-                    <a target="_blank" href="http://twitter.github.com/bootstrap/">Bootstrap</a>
-                </dd>
-                <dd>
-                    <a target="_blank" href="http://glyphicons.com/">GLYPHICONS</a>
-                </dd>
-                <dd>
-                    <a target="_blank" href="https://github.com/stanlemon/jGrowl/">jGrowl</a>
-                </dd>
+				<dd>
+					<a target="_blank" href="http://twitter.github.com/bootstrap/">Bootstrap</a>
+				</dd>
+				<dd>
+					<a target="_blank" href="http://glyphicons.com/">GLYPHICONS</a>
+				</dd>
+				<dd>
+					<a target="_blank" href="https://github.com/stanlemon/jGrowl/">jGrowl</a>
+				</dd>
 				<dd>
 					<a target="_blank" href="http://jquery.com/">jQuery</a>
 				</dd>
-                <dd>
-                    <a target="_blank" href="http://layout.jquery-dev.net/">jQuery UI
-                        Layout</a>
-                </dd>
-                <dd>
-                    <a target="_blank" href="https://code.google.com/p/pagedown/">PageDown</a>
-                </dd>
+				<dd>
+					<a target="_blank" href="http://layout.jquery-dev.net/">jQuery
+						UI Layout</a>
+				</dd>
+				<dd>
+					<a target="_blank" href="https://code.google.com/p/pagedown/">PageDown</a>
+				</dd>
 				<dd>
 					<a target="_blank" href="http://requirejs.org/">RequireJS</a>
 				</dd>
@@ -272,5 +336,6 @@
 		</div>
 
 	</div>
+	<div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>
 </body>
 </html>

@@ -84,7 +84,7 @@ define(["core"], function(core) {
 	};
 	
 	function runSafe(func) {
-		if(currentTask.finished === true) {
+		if(currentTask === undefined || currentTask.finished === true) {
 			return;
 		}
 		try {
@@ -107,6 +107,7 @@ define(["core"], function(core) {
 	// Add a task in the queue
 	asyncTaskRunner.addTask = function(asyncTask) {
 		asyncTaskQueue.push(asyncTask);
+		asyncTaskRunner.runTask();
 	};
 	
 	return asyncTaskRunner;

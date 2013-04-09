@@ -23,7 +23,10 @@
 				<li class="btn-group"><button class="btn action-force-sync"
 						title="Synchronize">
 						<i class="icon-refresh"></i>
-					</button></li>
+					</button><button class="btn action-publish"
+                        title="Publish">
+                        <i class="icon-share"></i>
+                    </button></li>
 				<li class="btn-group"><button class="btn action-create-file"
 						title="New local document">
 						<i class="icon-file"></i>
@@ -39,8 +42,8 @@
 					<ul id="file-selector" class="dropdown-menu">
 					</ul></li>
 				<li class="btn-group"><a class="btn dropdown-toggle"
-					data-toggle="dropdown" href="#" title="Menu"><img
-						src="img/stackedit-16.png" />&nbsp;&nbsp;<b class="caret"></b></a>
+					data-toggle="dropdown" href="#" title="Menu"><i
+						class="icon-stackedit"></i>&nbsp;&nbsp;<b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li><a class="action-download-md" href="#"><i
 								class="icon-download-alt"></i> Save as MD</a></li>
@@ -67,6 +70,22 @@
 							data-target="#modal-manage-sync"><i class="icon-refresh"></i>
 								Manage synchronization</a></li>
 						<li class="divider"></li>
+                        <li class="dropdown-submenu"><a href="#"><i
+                                class="icon-share"></i> Publish</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" class="action-publish-github"><i
+                                class="icon-github"></i> GitHub</a></li>
+                                <li><a href="#" class="action-publish-blogger"><i
+                                class="icon-blogger"></i> Blogger</a></li>
+                                <li><a href="#" class="action-publish-wordpress"><i
+                                class="icon-wordpress"></i> WordPress</a></li>
+                                <li><a href="#" class="action-publish-tumblr"><i
+                                class="icon-tumblr"></i> Tumblr</a></li>
+                            </ul></li>
+                        <li><a href="#" data-toggle="modal"
+                            data-target="#modal-manage-publication"><i class="icon-share"></i>
+                                Manage publication</a></li>
+                        <li class="divider"></li>
 						<li><a href="#" data-toggle="modal"
 							data-target="#modal-settings" class="action-load-settings"><i
 								class="icon-cog"></i> Settings</a></li>
@@ -236,6 +255,56 @@
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>
 	</div>
+
+    <div id="modal-publish-existing" class="modal hide">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+            <h3>Publish</h3>
+        </div>
+        <div class="modal-body">
+            <dl class="dl-horizontal">
+                <dt>Would you like to:</dt>
+                <dd>
+                    <label class="radio"> <input type="radio"
+                        name="radio-publish-existing" value="new">
+                        Create a new Post
+                    </label> <label class="radio"> <input type="radio"
+                        name="radio-publish-existing" value="existing"> Edit an existing post
+                    </label>
+                </dd>
+            </dl>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+                data-dismiss="modal" class="btn btn-primary action-publish-next">Next</a>
+        </div>
+    </div>
+
+    <div id="modal-publish-format" class="modal hide">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+            <h3>Publish</h3>
+        </div>
+        <div class="modal-body">
+            <dl class="dl-horizontal">
+                <dt>Publish as:</dt>
+                <dd>
+                    <label class="radio"> <input type="radio"
+                        name="radio-publish-format" value="markdown">
+                        Markdown format
+                    </label> <label class="radio"> <input type="radio"
+                        name="radio-publish-format" value="html"> HTML format
+                    </label>
+                </dd>
+            </dl>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+                data-dismiss="modal" class="btn btn-primary action-publish-finish">OK</a>
+        </div>
+    </div>
 
 	<div id="modal-settings" class="modal hide">
 		<div class="modal-header">

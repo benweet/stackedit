@@ -225,18 +225,53 @@ hr {
 	background-position: -456px -168px;
 }
 
-.icon-gdrive {
-	background-image: url("../img/gdrive.png") !important;
+.icon-stackedit {
+	background-image: url("../img/icons.png") !important;
 	width: 16px;
 	height: 16px;
-	background-position: 0 0;
+	background-position: -1px 0;
+}
+
+.icon-gdrive {
+	background-image: url("../img/icons.png") !important;
+	width: 16px;
+	height: 16px;
+	background-position: -19px 0;
 }
 
 .icon-dropbox {
-	background-image: url("../img/dropbox.png") !important;
+	background-image: url("../img/icons.png") !important;
 	width: 16px;
 	height: 16px;
-	background-position: 0 0;
+	background-position: -37px 0;
+}
+
+.icon-github {
+	background-image: url("../img/icons.png") !important;
+	width: 16px;
+	height: 16px;
+	background-position: -55px 0;
+}
+
+.icon-blogger {
+	background-image: url("../img/icons.png") !important;
+	width: 16px;
+	height: 16px;
+	background-position: -73px 0;
+}
+
+.icon-tumblr {
+	background-image: url("../img/icons.png") !important;
+	width: 16px;
+	height: 16px;
+	background-position: -91px 0;
+}
+
+.icon-wordpress {
+	background-image: url("../img/icons.png") !important;
+	width: 16px;
+	height: 16px;
+	background-position: -109px 0;
 }
 
 .icon-spinner {

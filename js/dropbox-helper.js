@@ -6,7 +6,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 	var client = undefined;
 	var authenticated = false;
 
-	var dropbox = {};
+	var dropboxHelper = {};
 
 	// Try to connect dropbox by downloading client.js
 	function connect(callback) {
@@ -24,7 +24,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 				return;
 			}
 			$.ajax({
-				url : "js/dropbox.min.js",
+				url : "lib/dropbox.js",
 				dataType : "script", timeout : AJAX_TIMEOUT
 			}).done(function() {
 				asyncTask.success();
@@ -96,7 +96,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		});
 	}
 
-	dropbox.upload = function(path, content, callback) {
+	dropboxHelper.upload = function(path, content, callback) {
 		callback = callback || core.doNothing;
 		authenticate(function() {
 			if (client === undefined) {
@@ -128,7 +128,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		});
 	};
 
-	dropbox.checkUpdates = function(lastChangeId, callback) {
+	dropboxHelper.checkUpdates = function(lastChangeId, callback) {
 		callback = callback || core.doNothing;
 		authenticate(function() {
 			if (client === undefined) {
@@ -177,7 +177,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		});
 	};
 
-	dropbox.downloadMetadata = function(paths, callback, result) {
+	dropboxHelper.downloadMetadata = function(paths, callback, result) {
 		callback = callback || core.doNothing;
 		result = result || [];
 		if(paths.length === 0) {
@@ -204,13 +204,13 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 				});
 			};
 			asyncTask.onSuccess = function() {
-				dropbox.downloadMetadata(paths, callback, result);
+				dropboxHelper.downloadMetadata(paths, callback, result);
 			};
 			asyncTaskRunner.addTask(asyncTask);
 		});
 	};
 
-	dropbox.downloadContent = function(objects, callback, result) {
+	dropboxHelper.downloadContent = function(objects, callback, result) {
 		callback = callback || core.doNothing;
 		result = result || [];
 		if(objects.length === 0) {
@@ -252,7 +252,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 				});
 			};
 			asyncTask.onSuccess = function() {
-				dropbox.downloadContent(objects, callback, result);
+				dropboxHelper.downloadContent(objects, callback, result);
 			};
 			asyncTaskRunner.addTask(asyncTask);
 		});
@@ -322,7 +322,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		});
 	}
 	
-	dropbox.picker = function(callback) {
+	dropboxHelper.picker = function(callback) {
 		callback = callback || core.doNothing;
 		loadPicker(function() {
 			if (pickerLoaded === false) {
@@ -349,12 +349,12 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		});
 	};
 
-	dropbox.importFiles = function(paths) {
-		dropbox.downloadMetadata(paths, function(result) {
+	dropboxHelper.importFiles = function(paths) {
+		dropboxHelper.downloadMetadata(paths, function(result) {
 			if(result === undefined) {
 				return;
 			}
-			dropbox.downloadContent(result, function(result) {
+			dropboxHelper.downloadContent(result, function(result) {
 				if(result === undefined) {
 					return;
 				}
@@ -362,6 +362,8 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 					var file = result[i];
 					fileSyncIndex = SYNC_PROVIDER_DROPBOX + encodeURIComponent(file.path.toLowerCase());
 					localStorage[fileSyncIndex + ".version"] = file.versionTag;
+					var contentCRC = core.crc32(file.content);
+					localStorage[fileSyncIndex + ".contentCRC"] = contentCRC;
 					var fileIndex = fileManager.createFile(file.name, file.content, [fileSyncIndex]);
 					fileManager.selectFile(fileIndex);
 					core.showMessage('"' + file.name + '" imported successfully from Dropbox.');
@@ -370,11 +372,11 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		});
 	};
 
-	dropbox.init = function(fileManagerModule) {
+	dropboxHelper.init = function(fileManagerModule) {
 		fileManager = fileManagerModule;
 	};
 	
-	dropbox.checkPath = function(path) {
+	dropboxHelper.checkPath = function(path) {
 		if(!path.match(/^[^\\<>:"\|?\*]+$/)) {
 			core.showError('"' + path + '" contains invalid characters.');
 			return undefined;
@@ -385,5 +387,5 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		return path;
 	};
 	
-	return dropbox;
+	return dropboxHelper;
 });

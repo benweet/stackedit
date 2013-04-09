@@ -6,7 +6,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 	var connected = false;
 	var authenticated = false;
 
-	var gdrive = {};
+	var googleHelper = {};
 
 	// Try to connect Gdrive by downloading client.js
 	function connect(callback) {
@@ -97,7 +97,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		});
 	}
 
-	gdrive.upload = function(fileId, parentId, title, content, callback) {
+	googleHelper.upload = function(fileId, parentId, title, content, callback) {
 		callback = callback || core.doNothing;
 		authenticate(function() {
 			if (connected === false) {
@@ -151,17 +151,10 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 						return;
 					}
 					var error = response.error;
-					// If it's an update and file has been removed from Google Drive
-					if(error !== undefined && fileId !== undefined && error.code === 404) {
-						core.showMessage('"' + title + '" has been removed from Google Drive.');
-						fileManager.removeSync(SYNC_PROVIDER_GDRIVE + fileId);
-						fileManager.updateFileTitles();
-						// We assume it's not error
-						fileSyncIndex = null;
-						asyncTask.success();
-						return;
-					}
 					// Handle error
+					if(error !== undefined && fileId !== undefined && error.code === 404) {
+						error = 'File ID "' + fileId + '" does not exist on Google Drive.';
+					}
 					handleError(error, asyncTask, callback);
 				});
 			};
@@ -172,7 +165,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		});
 	};
 
-	gdrive.checkUpdates = function(lastChangeId, callback) {
+	googleHelper.checkUpdates = function(lastChangeId, callback) {
 		callback = callback || core.doNothing;
 		authenticate(function() {
 			if (connected === false) {
@@ -226,7 +219,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		});
 	};
 
-	gdrive.downloadMetadata = function(ids, callback, result) {
+	googleHelper.downloadMetadata = function(ids, callback, result) {
 		callback = callback || core.doNothing;
 		result = result || [];
 		if(ids.length === 0) {
@@ -268,13 +261,13 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 				});
 			};
 			asyncTask.onSuccess = function() {
-				gdrive.downloadMetadata(ids, callback, result);
+				googleHelper.downloadMetadata(ids, callback, result);
 			};
 			asyncTaskRunner.addTask(asyncTask);
 		});
 	};
 
-	gdrive.downloadContent = function(objects, callback, result) {
+	googleHelper.downloadContent = function(objects, callback, result) {
 		callback = callback || core.doNothing;
 		result = result || [];
 		if(objects.length === 0) {
@@ -328,7 +321,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 				});
 			};
 			asyncTask.onSuccess = function() {
-				gdrive.downloadContent(objects, callback, result);
+				googleHelper.downloadContent(objects, callback, result);
 			};
 			asyncTaskRunner.addTask(asyncTask);
 		});
@@ -404,7 +397,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		});
 	}
 	
-	gdrive.picker = function(callback) {
+	googleHelper.picker = function(callback) {
 		callback = callback || core.doNothing;
 		loadPicker(function() {
 			if (pickerLoaded === false) {
@@ -446,12 +439,12 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		});
 	};
 
-	gdrive.importFiles = function(ids) {
-		gdrive.downloadMetadata(ids, function(result) {
+	googleHelper.importFiles = function(ids) {
+		googleHelper.downloadMetadata(ids, function(result) {
 			if(result === undefined) {
 				return;
 			}
-			gdrive.downloadContent(result, function(result) {
+			googleHelper.downloadContent(result, function(result) {
 				if(result === undefined) {
 					return;
 				}
@@ -459,6 +452,10 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 					var file = result[i];
 					fileSyncIndex = SYNC_PROVIDER_GDRIVE + file.id;
 					localStorage[fileSyncIndex + ".etag"] = file.etag;
+					var contentCRC = core.crc32(file.content);
+					localStorage[fileSyncIndex + ".contentCRC"] = contentCRC;
+					var titleCRC = core.crc32(file.title);
+					localStorage[fileSyncIndex + ".titleCRC"] = titleCRC;
 					var fileIndex = fileManager.createFile(file.title, file.content, [fileSyncIndex]);
 					fileManager.selectFile(fileIndex);
 					core.showMessage('"' + file.title + '" imported successfully from Google Drive.');
@@ -467,7 +464,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		});
 	};
 
-	gdrive.init = function(fileManagerModule) {
+	googleHelper.init = function(fileManagerModule) {
 		fileManager = fileManagerModule;
 		var state = localStorage["sync.gdrive.state"];
 		if(state === undefined) {
@@ -476,11 +473,15 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		localStorage.removeItem("sync.gdrive.state");
 		state = JSON.parse(state);
 		if (state.action == "create") {
-			gdrive.upload(undefined, state.folderId, GDRIVE_DEFAULT_FILE_TITLE,
+			googleHelper.upload(undefined, state.folderId, GDRIVE_DEFAULT_FILE_TITLE,
 				"", function(fileSyncIndex) {
 				if(fileSyncIndex === undefined) {
 					return;
 				}
+				var contentCRC = core.crc32("");
+				localStorage[fileSyncIndex + ".contentCRC"] = contentCRC;
+				var titleCRC = core.crc32(GDRIVE_DEFAULT_FILE_TITLE);
+				localStorage[fileSyncIndex + ".titleCRC"] = titleCRC;
 				var fileIndex = fileManager.createFile(GDRIVE_DEFAULT_FILE_TITLE, "", [fileSyncIndex]);
 				fileManager.selectFile(fileIndex);
 				core.showMessage('"' + GDRIVE_DEFAULT_FILE_TITLE + '" created successfully on Google Drive.');
@@ -498,9 +499,9 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 					ids.push(id);
 				}
 			}
-			gdrive.importFiles(ids);
+			googleHelper.importFiles(ids);
 		}
 	};
 	
-	return gdrive;
+	return googleHelper;
 });

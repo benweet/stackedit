@@ -105,7 +105,11 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 	};
 	
 	// Setting management
-	var settings = { layoutOrientation : "horizontal" };
+	var settings = {
+		layoutOrientation : "horizontal",
+		editorFontSize : 14
+	};
+	
 	core.loadSettings = function() {
 		if (localStorage.settings) {
 			$.extend(settings, JSON.parse(localStorage.settings));
@@ -114,6 +118,9 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 		// Layout orientation
 		$("input:radio[name=radio-layout-orientation][value="
 				+ settings.layoutOrientation + "]").prop("checked", true);
+		
+		// Editor Font Size
+		$("input.text-editor-font-size").val(settings.editorFontSize);
 	};
 
 	core.saveSettings = function() {
@@ -121,6 +128,10 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 		// Layout orientation
 		settings.layoutOrientation = $(
 			"input:radio[name=radio-layout-orientation]:checked").prop("value");
+		
+		//Editor Font Size
+		settings.editorFontSize =
+			$("input.text-editor-font-size").val();
 
 		localStorage.settings = JSON.stringify(settings);
 	};
@@ -170,6 +181,9 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 		$("#navbar").click(function() {
 			layout.allowOverflow('north');
 		});
+		
+		//Apply Editor Font Size
+		$("#wmd-input").css("font-size", settings.editorFontSize + "px");
 	};
 
 	// Create the PageDown editor

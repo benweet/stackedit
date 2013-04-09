@@ -184,6 +184,7 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 		
 		//Apply Editor Font Size
 		$("#wmd-input").css("font-size", settings.editorFontSize + "px");
+		$("#wmd-input").css("line-height", Math.round(settings.editorFontSize * (20/14)) + "px");
 	};
 
 	// Create the PageDown editor

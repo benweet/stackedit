@@ -38,7 +38,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 			    secret: DROPBOX_APP_SECRET
 			});
 			client.authDriver(new Dropbox.Drivers.Popup({
-			    receiverUrl: "http://localhost/dropbox-oauth-receiver.html",
+			    receiverUrl: BASE_URL + "dropbox-oauth-receiver.html",
 			    rememberUser: true
 			}));
 			callback();

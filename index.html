@@ -26,7 +26,7 @@
 						title="Synchronize">
 						<i class="icon-refresh"></i>
 					</button>
-					<button class="btn action-publish" title="Publish">
+					<button class="btn action-force-publish" title="Publish">
 						<i class="icon-share"></i>
 					</button></li>
 				<li class="btn-group"><button class="btn action-create-file"
@@ -58,7 +58,8 @@
 								<li><a href="#" class="action-download-gdrive">Import
 										from Google Drive</a></li>
 								<li><a href="#" data-toggle="modal"
-									data-target="#modal-upload-gdrive">Export to Google Drive</a></li>
+									data-target="#modal-upload-gdrive" class="action-reset-input">Export
+										to Google Drive</a></li>
 							</ul></li>
 						<li class="dropdown-submenu"><a href="#"><i
 								class="icon-dropbox"></i> Dropbox</a>
@@ -66,11 +67,12 @@
 								<li><a class="action-download-dropbox" href="#">Import
 										from Dropbox</a></li>
 								<li><a href="#" data-toggle="modal"
-									data-target="#modal-upload-dropbox">Export to Dropbox</a></li>
+									data-target="#modal-upload-dropbox" class="action-reset-input">Export
+										to Dropbox</a></li>
 							</ul></li>
 						<li><a href="#" data-toggle="modal"
-							data-target="#modal-manage-sync"><i class="icon-refresh"></i>
-								Manage synchronization</a></li>
+							data-target="#modal-manage-sync" class="action-reset-input"><i
+								class="icon-refresh"></i> Manage synchronization</a></li>
 						<li class="divider"></li>
 						<li class="dropdown-submenu"><a href="#"><i
 								class="icon-share"></i> Publish on</a>
@@ -79,17 +81,15 @@
 										class="icon-github"></i> GitHub</a></li>
 								<li><a href="#" class="action-publish-blogger"><i
 										class="icon-blogger"></i> Blogger</a></li>
-								<li><a href="#" class="action-publish-wordpress"><i
-										class="icon-wordpress"></i> WordPress</a></li>
-								<li><a href="#" class="action-publish-tumblr"><i
-										class="icon-tumblr"></i> Tumblr</a></li>
 							</ul></li>
 						<li><a href="#" data-toggle="modal"
-							data-target="#modal-manage-publication"><i class="icon-share"></i>
-								Manage publication</a></li>
+							data-target="#modal-manage-publication"
+							class="action-reset-input"><i class="icon-share"></i> Manage
+								publishing</a></li>
 						<li class="divider"></li>
 						<li><a href="#" data-toggle="modal"
-							data-target="#modal-settings" class="action-load-settings"><i
+							data-target="#modal-settings"
+							class="action-load-settings action-reset-input"><i
 								class="icon-cog"></i> Settings</a></li>
 						<li><a href="#" data-toggle="modal"
 							data-target="#modal-about"><i class="icon-question-sign"></i>
@@ -226,7 +226,7 @@
 		</div>
 		<div class="modal-body">
 			<p class="msg-sync-list hide">"<span class="file-title"></span>"
-				is synchronized with these locations:
+				is synchronized with the following location(s):
 			</p>
 			<div id="manage-sync-list"></div>
 			<p class="msg-sync-list hide muted"><b>NOTE:</b> Removing a
@@ -267,14 +267,16 @@
 		<div class="modal-body">
 			<div class="form-horizontal">
 				<div class="control-group control-publish-blogger">
-					<label class="control-label" for="input-publish-blogger-url">Blog URL</label>
+					<label class="control-label" for="input-publish-blogger-url">Blog
+						URL</label>
 					<div class="controls">
 						<input type="text" id="input-publish-blogger-url"
 							placeholder="http://exemple.blogger.com/">
 					</div>
 				</div>
 				<div class="control-group control-publish-blogger">
-					<label class="control-label" for="input-publish-blogger-postid">Update existing post ID (optional)</label>
+					<label class="control-label" for="input-publish-blogger-postid">Update
+						existing post ID (optional)</label>
 					<div class="controls">
 						<input type="text" id="input-publish-blogger-postid"
 							placeholder="Post ID">
@@ -294,9 +296,8 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
-			<a href="#" data-dismiss="modal"
-				class="btn btn-primary action-publish-ok">OK</a>
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+				data-dismiss="modal" class="btn btn-primary action-process-publish">OK</a>
 		</div>
 	</div>
 
@@ -318,6 +319,14 @@
 							name="radio-layout-orientation" value="vertical">
 							Vertical
 						</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input-editor-font-size">Editor
+						font size</label>
+					<div class="controls">
+						<input type="text" id="input-editor-font-size" class="input-mini"><span
+							class="help-inline">px</span>
 					</div>
 				</div>
 			</div>
@@ -407,7 +416,7 @@
 			<h3>Stopped...</h3>
 		</div>
 		<div class="modal-body">
-			<p>StackEdit has stopped because another instance was running on
+			<p>StackEdit has stopped because another instance was running in
 				the same browser.</p>
 			<p class="muted">If you want to reopen StackEdit, click on
 				"Reload".</p>

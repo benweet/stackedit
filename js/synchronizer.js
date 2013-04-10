@@ -12,16 +12,31 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 	// Used to know if user can force synchronization
 	var uploadPending = false;
 	
-	// Add a file to the synchronization queue
+	// Allows external modules to update uploadPending flag
 	synchronizer.notifyChange = function(fileIndex) {
 		// Check that file has synchronized locations
-		if(localStorage[fileIndex + ".sync"].length === 1) {
-			return;
+		if(localStorage[fileIndex + ".sync"].length !== 1) {
+			uploadPending = true;
+			synchronizer.updateSyncButton();
 		}
-		uploadPending = true;
-		synchronizer.updateSyncButton();
+	};
+	
+	// Used to enable/disable the synchronization button
+	synchronizer.updateSyncButton = function() {
+		if(syncRunning === true || uploadPending === false || core.isOffline) {
+			$(".action-force-sync").addClass("disabled");
+		}
+		else {
+			$(".action-force-sync").removeClass("disabled");
+		}
 	};
 
+	// Force the synchronization
+	synchronizer.forceSync = function() {
+		lastSync = 0;
+		synchronizer.sync();
+	};
+	
 	// Recursive function to upload a single file on multiple locations
 	var uploadFileSyncIndexList = [];
 	var uploadContent = undefined;
@@ -329,20 +344,6 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 				uploadPending = false;
 			});
 		});
-	};
-	
-	synchronizer.forceSync = function() {
-		lastSync = 0;
-		synchronizer.sync();
-	};
-	
-	synchronizer.updateSyncButton = function() {
-		if(syncRunning === true || uploadPending === false || core.isOffline) {
-			$(".action-force-sync").addClass("disabled");
-		}
-		else {
-			$(".action-force-sync").removeClass("disabled");
-		}
 	};
 	
 	synchronizer.init = function(coreModule, fileManagerModule) {

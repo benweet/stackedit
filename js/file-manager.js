@@ -21,8 +21,9 @@ define(["jquery", "google-helper", "dropbox-helper", "synchronizer", "publisher"
 		}
 
 		// Update the file titles
-		this.updateFileTitles();
+		fileManager.updateFileTitles();
 		refreshManageSync();
+		publisher.notifyCurrentFile(localStorage["file.current"]);
 		
 		// Recreate the editor
 		fileIndex = localStorage["file.current"];
@@ -347,6 +348,37 @@ define(["jquery", "google-helper", "dropbox-helper", "synchronizer", "publisher"
 			})(fileSyncIndex);
 		}
 	}
+	
+	
+	// Initialize the "New publication" dialog
+	var newPublishProvider = undefined;
+	function initNewPublish(provider, defaultPublishFormat) {
+		defaultPublishFormat = defaultPublishFormat || "markdown";
+		newPublishProvider = provider;
+		
+		// Show/hide controls depending on provider
+		$('div[class*=" control-publish-"]').hide().filter(".control-publish-" + provider).show();
+		
+		// Reset fields
+		core.resetModalInputs();
+		$("input:radio[name=radio-publish-format][value=" + defaultPublishFormat + "]").prop("checked", true);
+		
+		// Open dialog box
+		$("#modal-publish").modal();
+	}
+	
+	// Create a new publication
+	function newPublishBlogger(event) {
+		var blogUrl = core.getInputValue($("#input-publish-blogger-url"), event);
+		if(event.isPropagationStopped()) {
+			return;
+		}
+		
+		googleHelper.getBlogByUrl(blogUrl, function(blog) {
+			console.log(blog);
+		});
+		
+	}
 
 	fileManager.init = function(coreModule) {
 		core = coreModule;
@@ -393,6 +425,8 @@ define(["jquery", "google-helper", "dropbox-helper", "synchronizer", "publisher"
 					+ core.encodeBase64(content);
 				window.open(uriContent, 'file');
 			});
+		
+		// Synchronize actions
 		$(".action-upload-gdrive-root").click(function() {
 			uploadGdrive();
 		});
@@ -422,6 +456,19 @@ define(["jquery", "google-helper", "dropbox-helper", "synchronizer", "publisher"
 		$(".action-manual-dropbox").click(function(event) {
 			var path = core.getInputValue($("#manual-dropbox-path"), event);
 			manualDropbox(path);
+		});
+		
+		// Publish actions
+		$(".action-publish-github").click(function() {
+			initNewPublish("github");
+		});
+		$(".action-publish-blogger").click(function() {
+			initNewPublish("blogger", "html");
+		});
+		$(".action-process-publish").click(function(e) {
+			if(newPublishProvider == "blogger") {
+				newPublishBlogger(e);
+			}
 		});
 	};
 

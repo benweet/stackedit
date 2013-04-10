@@ -1,9 +1,9 @@
 define(
 	[ "jquery", "file-manager", "google-helper", "dropbox-helper",
-		"synchronizer", "publisher", "async-runner", "bootstrap", "jgrowl",
-		"layout", "Markdown.Editor", "config", "custo" ],
-	function($, fileManager, googleHelper, dropboxHelper, synchronizer,
-		publisher, asyncTaskRunner) {
+		"github-helper", "synchronizer", "publisher", "async-runner",
+		"bootstrap", "jgrowl", "layout", "Markdown.Editor", "config", "custo" ],
+	function($, fileManager, googleHelper, dropboxHelper, githubHelper,
+		synchronizer, publisher, asyncTaskRunner) {
 	
 	var core = {};
 	
@@ -47,6 +47,7 @@ define(
 		var frontWindowId = localStorage["frontWindowId"];
 		if(frontWindowId != windowId) {
 			windowUnique = false;
+			$(".modal").modal("hide");
 			$('#modal-non-unique').modal({
 				backdrop: "static",
 				keyboard: false
@@ -54,22 +55,44 @@ define(
 		}
 	};
 
-	// Useful function
-	core.getInputValue = function(element, event) {
-		var value = element.val();
-		if (value !== undefined) {
-			value = value.replace(/^\s+|\s+$/g, '');
-			element.val(undefined);
+	// Useful function for input control
+	function inputError(element, event) {
+		element.stop(true, true).addClass("error").delay(400).switchClass("error");
+		if(event !== undefined) {
+			event.stopPropagation();
 		}
-		if (value === undefined || value.length === 0) {
-			element.stop(true, true).addClass("error").delay(400)
-				.switchClass("error");
-			if(event !== undefined) {
-				event.stopPropagation();
-			}
+	}
+	core.getInputValue = function(element, event, validationRegex) {
+		var value = element.val();
+		if (value === undefined) {
+			inputError(element, event);
+			return undefined;
+		}
+		// trim
+		value = value.replace(/^\s+|\s+$/g, '');
+		if((value.length === 0)
+			|| (validationRegex !== undefined && !value.match(validationRegex))) {
+			inputError(element, event);
 			return undefined;
 		}
 		return value;
+	};
+	core.getInputIntValue = function(element, event, min, max) {
+		var value = core.getInputValue(element, event);
+		if(value === undefined) {
+			return undefined;
+		}
+		value = parseInt(value);
+		if((value === NaN)
+			|| (min !== undefined && value < min)
+			|| (max !== undefined && value > max)) {
+			inputError(element, event);
+			return undefined;
+		}
+		return value;
+	};
+	core.resetModalInputs = function() {
+		$(".modal input[type=text]:not([disabled])").val("");
 	};
 
 	// Used by asyncTaskRunner
@@ -143,7 +166,11 @@ define(
 	}
 	
 	// Setting management
-	var settings = { layoutOrientation : "horizontal" };
+	var settings = {
+		layoutOrientation : "horizontal",
+		editorFontSize : 14
+	};
+	
 	core.loadSettings = function() {
 		if (localStorage.settings) {
 			$.extend(settings, JSON.parse(localStorage.settings));
@@ -152,15 +179,25 @@ define(
 		// Layout orientation
 		$("input:radio[name=radio-layout-orientation][value="
 				+ settings.layoutOrientation + "]").prop("checked", true);
+		
+		// Editor font size
+		$("#input-editor-font-size").val(settings.editorFontSize);
 	};
 
-	core.saveSettings = function() {
-
+	core.saveSettings = function(event) {
+		var newSettings = {};
+		
 		// Layout orientation
-		settings.layoutOrientation = $(
+		newSettings.layoutOrientation = $(
 			"input:radio[name=radio-layout-orientation]:checked").prop("value");
+		
+		// Editor font size
+		newSettings.editorFontSize = core.getInputIntValue($("#input-editor-font-size"), event, 1, 99);
 
-		localStorage.settings = JSON.stringify(settings);
+		if(!event.isPropagationStopped()) {
+			settings = newSettings;
+			localStorage.settings = JSON.stringify(newSettings);
+		}
 	};
 
 	// Create the layout
@@ -225,12 +262,14 @@ define(
 		var editor = new Markdown.Editor(converter);
 		editor.hooks.set("insertLinkDialog", function (callback) {
 			insertLinkCallback = callback;
-			$("#modal-insert-link").modal('show');
+			core.resetModalInputs();
+			$("#modal-insert-link").modal();
 			return true;
 	    });
 		editor.hooks.set("insertImageDialog", function (callback) {
 			insertLinkCallback = callback;
-			$("#modal-insert-image").modal('show');
+			core.resetModalInputs();
+			$("#modal-insert-image").modal();
 			return true;
 		});
 		
@@ -412,6 +451,24 @@ define(
 		}
 		localStorage["version"] = version;
 	}
+	
+
+	core.popupWindow = function(url, title, w, h) {
+		var left = (screen.width / 2) - (w / 2);
+		var top = (screen.height / 2) - (h / 2);
+		return window
+			.open(
+				url,
+				title,
+				'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='
+					+ w
+					+ ', height='
+					+ h
+					+ ', top='
+					+ top
+					+ ', left='
+					+ left);
+	};
 
 	core.init = function() {
 		setupLocalStorage();
@@ -458,14 +515,26 @@ define(
 		$("#menu-bar, .ui-layout-center, .ui-layout-east, .ui-layout-south").removeClass("hide");
 		this.loadSettings();
 		this.createLayout();
+		
+		// Apply editor font size
+		$("#wmd-input").css({
+			"font-size": settings.editorFontSize + "px",
+			"line-height": Math.round(settings.editorFontSize * (20/14)) + "px"
+		});
 
 		$(".action-load-settings").click(function() {
 			core.loadSettings();
 		});
 
-		$(".action-apply-settings").click(function() {
-			core.saveSettings();
-			window.location.reload();
+		$(".action-apply-settings").click(function(e) {
+			core.saveSettings(e);
+			if(!e.isPropagationStopped()) {
+				window.location.reload();
+			}
+		});
+		
+		$(".action-reset-input").click(function() {
+			core.resetModalInputs();
 		});
 		
 		// Init asyncTaskRunner
@@ -474,13 +543,16 @@ define(
 		// Init helpers
 		googleHelper.init(core, fileManager);
 		dropboxHelper.init(core, fileManager);
+		githubHelper.init(core, fileManager);
+		
+		// Init synchronizer
+		synchronizer.init(core, fileManager);
 		
 		// Init publisher
 		publisher.init(core, fileManager);
 		
-		// Init synchronizer
-		synchronizer.init(core, fileManager);
 		offlineListeners.push(synchronizer.updateSyncButton);		
+		offlineListeners.push(publisher.updatePublishButton);		
 		
 		// Init file manager
 		fileManager.init(core);

@@ -465,6 +465,84 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 		});
 	};
 
+	googleHelper.getBlogByUrl = function(url, callback) {
+		authenticate(function() {
+			if (connected === false) {
+				callback();
+				return;
+			}
+			
+			var result = undefined;
+			var asyncTask = {};
+			asyncTask.run = function() {
+				var token = gapi.auth.getToken();
+				var headers = {
+					Authorization : token ? "Bearer " + token.access_token: null
+				};
+				$.ajax({
+					url : "https://www.googleapis.com/blogger/v3/blogs/byurl",
+					data: { url: url },
+					headers : headers,
+					dataType : "json",
+					timeout : AJAX_TIMEOUT
+				}).done(function(blog, textStatus, jqXHR) {
+					result = blog;
+					asyncTask.success();
+				}).fail(function(jqXHR) {
+					var error = {
+						code: jqXHR.status,
+						message: jqXHR.statusText
+					};
+					// Handle error
+					handleError(error, asyncTask, callback);
+				});
+			};
+			asyncTask.onSuccess = function() {
+				callback(result);
+			};
+			asyncTaskRunner.addTask(asyncTask);
+		});
+	};
+
+	googleHelper.getBlogByUrl = function(url, callback) {
+		authenticate(function() {
+			if (connected === false) {
+				callback();
+				return;
+			}
+			
+			var result = undefined;
+			var asyncTask = {};
+			asyncTask.run = function() {
+				var token = gapi.auth.getToken();
+				var headers = {
+					Authorization : token ? "Bearer " + token.access_token: null
+				};
+				$.ajax({
+					url : "https://www.googleapis.com/blogger/v3/blogs/byurl",
+					data: { url: url },
+					headers : headers,
+					dataType : "json",
+					timeout : AJAX_TIMEOUT
+				}).done(function(blog, textStatus, jqXHR) {
+					result = blog;
+					asyncTask.success();
+				}).fail(function(jqXHR) {
+					var error = {
+						code: jqXHR.status,
+						message: jqXHR.statusText
+					};
+					// Handle error
+					handleError(error, asyncTask, callback);
+				});
+			};
+			asyncTask.onSuccess = function() {
+				callback(result);
+			};
+			asyncTaskRunner.addTask(asyncTask);
+		});
+	};
+	
 	googleHelper.init = function(coreModule, fileManagerModule) {
 		core = coreModule;
 		fileManager = fileManagerModule;

@@ -1,4 +1,4 @@
-define(["jquery"], function($) {
+define(["jquery", "google-helper", "github-helper"], function($, googleHelper, githubHelper) {
 	
 	// Dependencies
 	var core = undefined;
@@ -6,38 +6,37 @@ define(["jquery"], function($) {
 
 	var publisher = {};
 	
-	var wizardProvider = undefined;
+	// Used to know if the current file has publications
+	var hasPublications = false;
 	
-	function initWizard(provider, defaultPublishFormat) {
-		defaultPublishFormat = defaultPublishFormat || "markdown";
-		wizardProvider = provider;
+	// Allows external modules to update hasPublications flag
+	publisher.notifyCurrentFile = function(fileIndex) {
 		
-		// Show/hide controls depending on provider
-		$('div[class*=" control-publish-"]').hide().filter(".control-publish-" + provider).show();
-		
-		// Reset fields
-		$("#modal-publish input[type=text]").val("");
-		$("input:radio[name=radio-publish-format][value=" + defaultPublishFormat + "]").prop("checked", true);
-		
-		// Open dialog box
-		$("#modal-publish").modal();
-	}
+		// Check that file has publications
+		if(localStorage[fileIndex + ".publish"].length === 1) {
+			hasPublications = false;
+		}
+		else {
+			hasPublications = true;
+		}
+		publisher.updatePublishButton();
+	};
+
+	// Used to enable/disable the publish button
+	publisher.updatePublishButton = function() {
+		if(publishRunning === true || hasPublications === false || core.isOffline) {
+			$(".action-force-publish").addClass("disabled");
+		}
+		else {
+			$(".action-force-publish").removeClass("disabled");
+		}
+	};
 	
+	var publishRunning = false;
+
 	publisher.init = function(coreModule, fileManagerModule) {
 		core = coreModule;
 		fileManager = fileManagerModule;
-		$(".action-publish-github").click(function() {
-			initWizard("github");
-		});
-		$(".action-publish-blogger").click(function() {
-			initWizard("blogger", "html");
-		});
-		$(".action-publish-wordpress").click(function() {
-			initWizard("wordpress");
-		});
-		$(".action-publish-tumblr").click(function() {
-			initWizard("tumblr");
-		});
 	};
 	
 	return publisher;

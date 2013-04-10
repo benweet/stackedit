@@ -1,6 +1,7 @@
-define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
+define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 
 	// Dependencies
+	var core = undefined;
 	var fileManager = undefined;
 
 	var connected = false;
@@ -464,7 +465,8 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		});
 	};
 
-	googleHelper.init = function(fileManagerModule) {
+	googleHelper.init = function(coreModule, fileManagerModule) {
+		core = coreModule;
 		fileManager = fileManagerModule;
 		var state = localStorage["sync.gdrive.state"];
 		if(state === undefined) {

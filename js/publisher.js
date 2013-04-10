@@ -1,36 +1,43 @@
-define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
+define(["jquery"], function($) {
 	
 	// Dependencies
+	var core = undefined;
 	var fileManager = undefined;
 
 	var publisher = {};
 	
 	var wizardProvider = undefined;
 	
-	function initWizard(provider) {
+	function initWizard(provider, defaultPublishFormat) {
+		defaultPublishFormat = defaultPublishFormat || "markdown";
 		wizardProvider = provider;
-		$("input:radio[name=radio-publish-existing][value=new]").prop("checked", true);
-		$("input:radio[name=radio-publish-format][value=markdown]").prop("checked", true);
+		
+		// Show/hide controls depending on provider
+		$('div[class*=" control-publish-"]').hide().filter(".control-publish-" + provider).show();
+		
+		// Reset fields
+		$("#modal-publish input[type=text]").val("");
+		$("input:radio[name=radio-publish-format][value=" + defaultPublishFormat + "]").prop("checked", true);
+		
+		// Open dialog box
+		$("#modal-publish").modal();
 	}
 	
-	publisher.init = function(fileManagerModule) {
+	publisher.init = function(coreModule, fileManagerModule) {
+		core = coreModule;
 		fileManager = fileManagerModule;
-		$("#action-publish-github").click(function() {
+		$(".action-publish-github").click(function() {
 			initWizard("github");
 		});
-		$("#action-publish-blogger").click(function() {
-			initWizard("blogger");
+		$(".action-publish-blogger").click(function() {
+			initWizard("blogger", "html");
 		});
-		$("#action-publish-wordpress").click(function() {
+		$(".action-publish-wordpress").click(function() {
 			initWizard("wordpress");
 		});
-		$("#action-publish-tumblr").click(function() {
+		$(".action-publish-tumblr").click(function() {
 			initWizard("tumblr");
 		});
-	};
-	
-	publisher.initWizard = function() {
-		
 	};
 	
 	return publisher;

@@ -1,16 +1,58 @@
-define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function($) {
+define(
+	[ "jquery", "file-manager", "google-helper", "dropbox-helper",
+		"synchronizer", "publisher", "async-runner", "bootstrap", "jgrowl",
+		"layout", "Markdown.Editor", "config", "custo" ],
+	function($, fileManager, googleHelper, dropboxHelper, synchronizer,
+		publisher, asyncTaskRunner) {
 	
 	var core = {};
-	
-	// Time shared by others modules
-	core.currentTime = new Date().getTime();
-	core.updateCurrentTime = function() {
-		core.currentTime = new Date().getTime();
-	};
 	
 	// Usage: callback = callback || core.doNothing;
 	core.doNothing = function() {};
 	
+	// Time shared by others modules
+	core.currentTime = new Date().getTime();
+	function updateCurrentTime() {
+		core.currentTime = new Date().getTime();
+	}
+	
+	// Used to detect user activity
+	var userReal = false;
+	var userActive = false;
+	var windowUnique = true;
+	var userLastActivity = 0;
+	function setUserActive() {
+		userReal = true;
+		userActive = true;
+		userLastActivity = core.currentTime;
+	};
+	function isUserActive() {
+		if(userActive === true 
+			&& core.currentTime - userLastActivity > USER_IDLE_THRESHOLD) {
+			userActive = false;
+		}
+		return userActive && windowUnique;
+	}
+	
+	// Used to only have 1 window of the application in the same browser
+	var windowId = undefined;
+	core.checkWindowUnique = function() {
+		if(userReal === false || windowUnique === false) {
+			return;
+		}
+		if(windowId === undefined) {
+			windowId = Math.random().toString(36);
+			localStorage["frontWindowId"] = windowId;
+		}
+		var frontWindowId = localStorage["frontWindowId"];
+		if(frontWindowId != windowId) {
+			windowUnique = false;
+			$('#modal-non-unique').modal({
+				backdrop: "static",
+				keyboard: false
+			});
+		}
+	};
 
 	// Useful function
 	core.getInputValue = function(element, event) {
@@ -58,10 +100,6 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 	var offlineTime = core.currentTime;
 	var offlineListeners = [];
 	
-	core.addOfflineListener = function(listener) {
-		offlineListeners.push(listener);
-	};
-	
 	core.setOffline = function() {
 		offlineTime = core.currentTime;
 		if(core.isOffline === false) {
@@ -89,7 +127,7 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 		}
 	};
 
-	core.checkOnline = function() {
+	function checkOnline() {
 		// Try to reconnect if we are offline but we have some network
 		if (core.isOffline === true && navigator.onLine === true
 			&& offlineTime + CHECK_ONLINE_PERIOD < core.currentTime) {
@@ -102,7 +140,7 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 				core.setOnline();
 			});
 		}
-	};
+	}
 	
 	// Setting management
 	var settings = { layoutOrientation : "horizontal" };
@@ -338,10 +376,10 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 	
 	// Used to setup an empty localStorage 
 	function setupLocalStorage() {
-		if (localStorage["file.counter"] === undefined 
-			|| localStorage["file.list"] === undefined) {
+		if (localStorage["file.counter"] === undefined) {
 			localStorage["file.counter"] = "0";
 			localStorage["file.list"] = ";";
+			localStorage["version"] = "v1";
 		}		
 	}
 
@@ -351,19 +389,22 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 		
 		// from v0 to v1
 		if(version === undefined) {
+			
+			// Synchronization queue not used anymore
+			localStorage.removeItem("sync.queue");
+			localStorage.removeItem("sync.current");
+			
 			var fileIndexList = localStorage["file.list"].split(";");
 			for ( var i = 1; i < fileIndexList.length - 1; i++) {
 				var fileIndex = fileIndexList[i];
 				localStorage[fileIndex + ".publish"] = ";";
-				var titleCRC = core.crc32(localStorage[fileIndex + ".title"]);
-				var contentCRC = core.crc32(localStorage[fileIndex + ".content"]);
 				var fileSyncIndexList = localStorage[fileIndex + ".sync"].split(";");
 				for ( var j = 1; j < fileSyncIndexList.length - 1; j++) {
 					var fileSyncIndex = fileSyncIndexList[j];
-					localStorage[fileSyncIndex + ".contentCRC"] = contentCRC;
+					localStorage[fileSyncIndex + ".contentCRC"] = "0";
 					// We store title CRC only for Google Drive synchronization
 					if(localStorage[fileSyncIndex + ".etag"] !== undefined) {
-						localStorage[fileSyncIndex + ".titleCRC"] = titleCRC;
+						localStorage[fileSyncIndex + ".titleCRC"] = "0";
 					}
 				}
 			}
@@ -388,6 +429,9 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 		if (navigator.onLine === false) {
 			core.setOffline();
 		}
+		
+		// Detect user activity
+		$(document).mousemove(setUserActive).keypress(setUserActive);
 		
 		// Avoid dropdown to close when clicking on submenu
 		$('.dropdown-submenu > a').click(function(e) {
@@ -421,8 +465,37 @@ define(["jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor"], function(
 
 		$(".action-apply-settings").click(function() {
 			core.saveSettings();
-			location.reload();
+			window.location.reload();
 		});
+		
+		// Init asyncTaskRunner
+		asyncTaskRunner.init(core);
+		
+		// Init helpers
+		googleHelper.init(core, fileManager);
+		dropboxHelper.init(core, fileManager);
+		
+		// Init publisher
+		publisher.init(core, fileManager);
+		
+		// Init synchronizer
+		synchronizer.init(core, fileManager);
+		offlineListeners.push(synchronizer.updateSyncButton);		
+		
+		// Init file manager
+		fileManager.init(core);
+		
+		// Do periodic tasks
+		window.setInterval(function() {
+			updateCurrentTime();
+			core.checkWindowUnique();
+			if(isUserActive() === false) {
+				return;
+			}
+			synchronizer.sync();
+			asyncTaskRunner.runTask();
+			checkOnline();
+		}, 1000);
 	};
 
 	return core;

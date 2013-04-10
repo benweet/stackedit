@@ -5,8 +5,10 @@
 <link rel="icon" href="img/stackedit-32.ico" type="image/x-icon">
 <link rel="shortcut icon" href="img/stackedit-32.ico"
 	type="image/x-icon">
-<meta name="keywords" content="Markdown, Editor, PageDown, Stack Overflow, Stack Exchange">
-<meta name="description" content="StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.">
+<meta name="keywords"
+	content="Markdown, Editor, PageDown, Stack Overflow, Stack Exchange">
+<meta name="description"
+	content="StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.">
 <meta name="author" content="Benoit Schweblin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="css/main.css" rel="stylesheet" media="screen">
@@ -23,10 +25,10 @@
 				<li class="btn-group"><button class="btn action-force-sync"
 						title="Synchronize">
 						<i class="icon-refresh"></i>
-					</button><button class="btn action-publish"
-                        title="Publish">
-                        <i class="icon-share"></i>
-                    </button></li>
+					</button>
+					<button class="btn action-publish" title="Publish">
+						<i class="icon-share"></i>
+					</button></li>
 				<li class="btn-group"><button class="btn action-create-file"
 						title="New local document">
 						<i class="icon-file"></i>
@@ -70,22 +72,22 @@
 							data-target="#modal-manage-sync"><i class="icon-refresh"></i>
 								Manage synchronization</a></li>
 						<li class="divider"></li>
-                        <li class="dropdown-submenu"><a href="#"><i
-                                class="icon-share"></i> Publish</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#" class="action-publish-github"><i
-                                class="icon-github"></i> GitHub</a></li>
-                                <li><a href="#" class="action-publish-blogger"><i
-                                class="icon-blogger"></i> Blogger</a></li>
-                                <li><a href="#" class="action-publish-wordpress"><i
-                                class="icon-wordpress"></i> WordPress</a></li>
-                                <li><a href="#" class="action-publish-tumblr"><i
-                                class="icon-tumblr"></i> Tumblr</a></li>
-                            </ul></li>
-                        <li><a href="#" data-toggle="modal"
-                            data-target="#modal-manage-publication"><i class="icon-share"></i>
-                                Manage publication</a></li>
-                        <li class="divider"></li>
+						<li class="dropdown-submenu"><a href="#"><i
+								class="icon-share"></i> Publish on</a>
+							<ul class="dropdown-menu">
+								<li><a href="#" class="action-publish-github"><i
+										class="icon-github"></i> GitHub</a></li>
+								<li><a href="#" class="action-publish-blogger"><i
+										class="icon-blogger"></i> Blogger</a></li>
+								<li><a href="#" class="action-publish-wordpress"><i
+										class="icon-wordpress"></i> WordPress</a></li>
+								<li><a href="#" class="action-publish-tumblr"><i
+										class="icon-tumblr"></i> Tumblr</a></li>
+							</ul></li>
+						<li><a href="#" data-toggle="modal"
+							data-target="#modal-manage-publication"><i class="icon-share"></i>
+								Manage publication</a></li>
+						<li class="divider"></li>
 						<li><a href="#" data-toggle="modal"
 							data-target="#modal-settings" class="action-load-settings"><i
 								class="icon-cog"></i> Settings</a></li>
@@ -256,55 +258,47 @@
 		</div>
 	</div>
 
-    <div id="modal-publish-existing" class="modal hide">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"
-                aria-hidden="true">&times;</button>
-            <h3>Publish</h3>
-        </div>
-        <div class="modal-body">
-            <dl class="dl-horizontal">
-                <dt>Would you like to:</dt>
-                <dd>
-                    <label class="radio"> <input type="radio"
-                        name="radio-publish-existing" value="new">
-                        Create a new Post
-                    </label> <label class="radio"> <input type="radio"
-                        name="radio-publish-existing" value="existing"> Edit an existing post
-                    </label>
-                </dd>
-            </dl>
-        </div>
-        <div class="modal-footer">
-            <a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
-                data-dismiss="modal" class="btn btn-primary action-publish-next">Next</a>
-        </div>
-    </div>
-
-    <div id="modal-publish-format" class="modal hide">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"
-                aria-hidden="true">&times;</button>
-            <h3>Publish</h3>
-        </div>
-        <div class="modal-body">
-            <dl class="dl-horizontal">
-                <dt>Publish as:</dt>
-                <dd>
-                    <label class="radio"> <input type="radio"
-                        name="radio-publish-format" value="markdown">
-                        Markdown format
-                    </label> <label class="radio"> <input type="radio"
-                        name="radio-publish-format" value="html"> HTML format
-                    </label>
-                </dd>
-            </dl>
-        </div>
-        <div class="modal-footer">
-            <a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
-                data-dismiss="modal" class="btn btn-primary action-publish-finish">OK</a>
-        </div>
-    </div>
+	<div id="modal-publish" class="modal hide">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">&times;</button>
+			<h3>Publish</h3>
+		</div>
+		<div class="modal-body">
+			<div class="form-horizontal">
+				<div class="control-group control-publish-blogger">
+					<label class="control-label" for="input-publish-blogger-url">Blog URL</label>
+					<div class="controls">
+						<input type="text" id="input-publish-blogger-url"
+							placeholder="http://exemple.blogger.com/">
+					</div>
+				</div>
+				<div class="control-group control-publish-blogger">
+					<label class="control-label" for="input-publish-blogger-postid">Update existing post ID (optional)</label>
+					<div class="controls">
+						<input type="text" id="input-publish-blogger-postid"
+							placeholder="Post ID">
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="control-label">Publish as</div>
+					<div class="controls">
+						<label class="radio"> <input type="radio"
+							name="radio-publish-format" value="markdown"> Markdown
+							format
+						</label> <label class="radio"> <input type="radio"
+							name="radio-publish-format" value="html"> HTML format
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+			<a href="#" data-dismiss="modal"
+				class="btn btn-primary action-publish-ok">OK</a>
+		</div>
+	</div>
 
 	<div id="modal-settings" class="modal hide">
 		<div class="modal-header">
@@ -313,17 +307,20 @@
 			<h3>Settings</h3>
 		</div>
 		<div class="modal-body">
-			<dl class="dl-horizontal">
-				<dt>Layout orientation:</dt>
-				<dd>
-					<label class="radio"> <input type="radio"
-						name="radio-layout-orientation" value="horizontal">
-						Horizontal
-					</label> <label class="radio"> <input type="radio"
-						name="radio-layout-orientation" value="vertical"> Vertical
-					</label>
-				</dd>
-			</dl>
+			<div class="form-horizontal">
+				<div class="control-group">
+					<div class="control-label">Layout orientation</div>
+					<div class="controls">
+						<label class="radio"> <input type="radio"
+							name="radio-layout-orientation" value="horizontal">
+							Horizontal
+						</label> <label class="radio"> <input type="radio"
+							name="radio-layout-orientation" value="vertical">
+							Vertical
+						</label>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
@@ -376,7 +373,7 @@
 					<a target="_blank" href="http://twitter.github.com/bootstrap/">Bootstrap</a>
 				</dd>
 				<dd>
-					<a target="_blank" href="http://glyphicons.com/">GLYPHICONS</a>
+					<a target="_blank" href="http://glyphicons.com/">Glyphicons</a>
 				</dd>
 				<dd>
 					<a target="_blank" href="https://github.com/stanlemon/jGrowl/">jGrowl</a>
@@ -403,8 +400,24 @@
 		<div class="modal-footer">
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>
-
 	</div>
+
+	<div id="modal-non-unique" class="modal hide">
+		<div class="modal-header">
+			<h3>Stopped...</h3>
+		</div>
+		<div class="modal-body">
+			<p>StackEdit has stopped because another instance was running on
+				the same browser.</p>
+			<p class="muted">If you want to reopen StackEdit, click on
+				"Reload".</p>
+		</div>
+		<div class="modal-footer">
+			<a href="javascript:window.location.reload();"
+				class="btn btn-primary">Reload</a>
+		</div>
+	</div>
+
 	<div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>
 </body>
 </html>

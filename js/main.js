@@ -18,10 +18,10 @@ requirejs.config({
     }
 });
 
-require(["jquery", "core", "file-manager", "config", "custo"], function($, core, fileManager) {
+require(["jquery", "core"], function($, core) {
 	$(function() {
 		
-		// If browser detected a new application cache.
+		// If browser has detected a new application cache.
 	    if (window.applicationCache
 				&& window.applicationCache.status === window.applicationCache.UPDATEREADY) {
 			window.applicationCache.swapCache();
@@ -30,6 +30,5 @@ require(["jquery", "core", "file-manager", "config", "custo"], function($, core,
 		}
 	    
 		core.init();
-		fileManager.init();
 	});
 });

@@ -29,7 +29,7 @@ div, span, a, ul, li, textarea, input, button {
     text-shadow: none !important;
 }
 
-.btn, .navbar-inner, .ui-layout-east, .ui-layout-south, textarea, input, .add-on {
+.btn, .navbar-inner, .ui-layout-east, .ui-layout-south, textarea, .add-on {
     border: none !important;
 }
 
@@ -38,10 +38,9 @@ div, span, a, ul, li, textarea, input, button {
     text-align: left;
 }
 
-.input-prepend input,
+input,
 .input-prepend .btn,
-.input-prepend .add-on
- {
+.input-prepend .add-on {
     border: 1px solid #ebebeb !important;
 }
 

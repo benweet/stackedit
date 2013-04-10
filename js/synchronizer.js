@@ -1,132 +1,141 @@
-define(["jquery", "core", "google-helper", "dropbox-helper"], function($, core, googleHelper, dropboxHelper) {
+define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, dropboxHelper) {
 	var synchronizer = {};
 	
 	// Dependencies
+	var core = undefined;
 	var fileManager = undefined;
 
 	// Used to know the providers we are connected to 
 	synchronizer.useGoogleDrive = false;
 	synchronizer.useDropbox = false;
 	
-	var onSyncBegin = undefined;
-	var onSyncEnd = undefined;
-	var onQueueChanged = undefined;
-
-	// A synchronization queue containing fileIndex that has to be synchronized
-	var syncUpQueue = undefined;
+	// Used to know if user can force synchronization
+	var uploadPending = false;
 	
-	synchronizer.init = function(fileManagerModule, options) {
-		fileManager = fileManagerModule;
-		onSyncBegin = options.onSyncBegin || core.doNothing;
-		onSyncEnd = options.onSyncEnd || core.doNothing;
-		onQueueChanged = options.onQueueChanged || core.doNothing;
-		
-		syncUpQueue = ";";
-		// Load the queue from localStorage in case a previous synchronization
-		// was aborted
-		if (localStorage["sync.queue"]) {
-			syncUpQueue = localStorage["sync.queue"];
-			onQueueChanged();
-		}
-		if (localStorage["sync.current"]) {
-			this.addFileForUpload(localStorage["sync.current"]);
-		}
-	};
-
 	// Add a file to the synchronization queue
-	synchronizer.addFileForUpload = function(fileIndex) {
+	synchronizer.notifyChange = function(fileIndex) {
 		// Check that file has synchronized locations
 		if(localStorage[fileIndex + ".sync"].length === 1) {
 			return;
 		}
-		// Check that file is not in the queue
-		if (syncUpQueue.indexOf(";" + fileIndex + ";") !== -1) {
-			return;
-		}
-		syncUpQueue += fileIndex + ";";
-		localStorage["sync.queue"] = syncUpQueue;
-		onQueueChanged();
+		uploadPending = true;
+		synchronizer.updateSyncButton();
 	};
 
 	// Recursive function to upload a single file on multiple locations
-	function fileUp(fileSyncIndexList, content, contentCRC, title, titleCRC, callback) {
-		if (fileSyncIndexList.length === 0) {
-			localStorage.removeItem("sync.current");
-			// run the next file synchronization
-			syncUp(callback);
+	var uploadFileSyncIndexList = [];
+	var uploadContent = undefined;
+	var uploadContentCRC = undefined;
+	var uploadTitle = undefined;
+	var uploadTitleCRC = undefined;
+	function locationUp(callback) {
+		
+		// No more synchronized location for this document
+		if (uploadFileSyncIndexList.length === 0) {
+			fileUp(callback);
 			return;
 		}
-		var fileSyncIndex = fileSyncIndexList.pop();
+		
+		// Dequeue a synchronized location
+		var fileSyncIndex = uploadFileSyncIndexList.pop();
+		if(!fileSyncIndex) {
+			locationUp(callback);
+			return;
+		}
 
 		// Skip if CRC has not changed
 		var syncContentCRC = localStorage[fileSyncIndex + ".contentCRC"];
 		var syncTitleCRC = localStorage[fileSyncIndex + ".titleCRC"];
-		if(contentCRC == syncContentCRC && (syncTitleCRC === undefined || titleCRC == syncTitleCRC)) {
-			fileUp(fileSyncIndexList, content, contentCRC, title, titleCRC, callback);
+		if(uploadContentCRC == syncContentCRC && (syncTitleCRC === undefined || uploadTitleCRC == syncTitleCRC)) {
+			locationUp(callback);
 			return;
 		}
+		
+		// If upload is going to run, go for an other upload cycle at the end
+		uploadCycle = true;
+		// When page is refreshed, this flag is false but should be true here
+		uploadPending = true;
 
 		// Try to find the provider
 		if (fileSyncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
 			var id = fileSyncIndex.substring(SYNC_PROVIDER_GDRIVE.length);
-			googleHelper.upload(id, undefined, title, content, function(result) {
+			googleHelper.upload(id, undefined, uploadTitle, uploadContent, function(result) {
 				if (result !== undefined) {
-					localStorage[fileSyncIndex + ".contentCRC"] = contentCRC;
-					localStorage[fileSyncIndex + ".titleCRC"] = titleCRC;
-					fileUp(fileSyncIndexList, content, contentCRC, title, titleCRC, callback);
+					localStorage[fileSyncIndex + ".contentCRC"] = uploadContentCRC;
+					localStorage[fileSyncIndex + ".titleCRC"] = uploadTitleCRC;
+					locationUp(callback);
 					return;
 				}
-				// If error we put the fileIndex back in the queue
-				synchronizer.addFileForUpload(localStorage["sync.current"]);
-				localStorage.removeItem("sync.current");
-				callback();
+				
+				// If error we abort the synchronization (retry later)
+				callback("abort");
 				return;
 			});
 		} else if (fileSyncIndex.indexOf(SYNC_PROVIDER_DROPBOX) === 0) {
 			var path = fileSyncIndex.substring(SYNC_PROVIDER_DROPBOX.length);
 			path = decodeURIComponent(path);
-			dropboxHelper.upload(path, content, function(result) {
+			dropboxHelper.upload(path, uploadContent, function(result) {
 				if (result !== undefined) {
-					localStorage[fileSyncIndex + ".contentCRC"] = contentCRC;
-					fileUp(fileSyncIndexList, content, contentCRC, title, titleCRC, callback);
+					localStorage[fileSyncIndex + ".contentCRC"] = uploadContentCRC;
+					locationUp(callback);
 					return;
 				}
-				// If error we put the fileIndex back in the queue
-				synchronizer.addFileForUpload(localStorage["sync.current"]);
-				localStorage.removeItem("sync.current");
-				callback();
+				
+				// If error we abort the synchronization (retry later)
+				callback("abort");
 				return;
 			});
 		} else {
-			fileUp(fileSyncIndexList, content, contentCRC, title, titleCRC, callback);
+			// This should never happen
+			console.error("Invalid fileSyncIndex: " + fileSyncIndex);
+			callback("error");
 		}
 	}
 
-	function syncUp(callback) {
-		// If nothing to synchronize
-		if (syncUpQueue.length === 1) {
-			callback();
+	// Recursive function to upload multiple files
+	var uploadFileIndexList = [];
+	function fileUp(callback) {
+		
+		// No more fileIndex to synchronize
+		if (uploadFileIndexList.length === 0) {
+			syncUp(callback);
+			return;
+		}
+		
+		// Dequeue a fileIndex
+		var fileIndex = uploadFileIndexList.pop();
+		var fileSyncIndexes = localStorage[fileIndex + ".sync"];
+		if(!fileIndex || fileSyncIndexes.length === 1) {
+			fileUp(callback);
 			return;
 		}
 
-		// Dequeue the fileIndex
-		var separatorPos = syncUpQueue.indexOf(";", 1);
-		var fileIndex = syncUpQueue.substring(1, separatorPos);
-		localStorage["sync.current"] = fileIndex;
-		syncUpQueue = syncUpQueue.substring(separatorPos);
-		localStorage["sync.queue"] = syncUpQueue;
-		onQueueChanged();
+		// Get document title/content 
+		uploadContent = localStorage[fileIndex + ".content"];
+		uploadContentCRC = core.crc32(uploadContent);
+		uploadTitle = localStorage[fileIndex + ".title"];
+		uploadTitleCRC = core.crc32(uploadTitle);
 
-		var content = localStorage[fileIndex + ".content"];
-		var title = localStorage[fileIndex + ".title"];
-		var contentCRC = core.crc32(content);
-		var titleCRC = core.crc32(title);
+		// Parse the list of synchronized locations associated to the document
+		uploadFileSyncIndexList = fileSyncIndexes.split(";");
+		locationUp(callback);
+	}
 
-		// Parse the list of synchronized locations associated to the file
-		var fileSyncIndexList = localStorage[fileIndex + ".sync"].split(";");
-		fileUp(fileSyncIndexList, content, contentCRC, title, titleCRC, callback);
-	};
+	// Used to upload document changes from local storage
+	var uploadCycle = false;
+	function syncUp(callback) {
+		if(uploadCycle === true) {
+			// New upload cycle
+			uploadCycle = false;
+			uploadFileIndexList = localStorage["file.list"].split(";");
+			fileUp(callback);
+		}
+		else {
+			callback();
+		} 
+	}
 
+	// Used to download file changes from Google Drive
 	function syncDownGdrive(callback) {
 		if (synchronizer.useGoogleDrive === false) {
 			callback();
@@ -136,12 +145,12 @@ define(["jquery", "core", "google-helper", "dropbox-helper"], function($, core, 
 			+ "lastChangeId"]);
 		googleHelper.checkUpdates(lastChangeId, function(changes, newChangeId) {
 			if (changes === undefined) {
-				callback();
+				callback("error");
 				return;
 			}
 			googleHelper.downloadContent(changes, function(changes) {
 				if (changes === undefined) {
-					callback();
+					callback("error");
 					return;
 				}
 				var updateFileTitles = false;
@@ -155,32 +164,35 @@ define(["jquery", "core", "google-helper", "dropbox-helper"], function($, core, 
 						localStorage.removeItem(fileSyncIndex + ".etag");
 						continue;
 					}
-					var title = localStorage[fileIndex + ".title"];
+					var localTitle = localStorage[fileIndex + ".title"];
 					// File deleted
 					if (change.deleted === true) {
 						fileManager.removeSync(fileSyncIndex);
 						updateFileTitles = true;
-						core.showMessage('"' + title + '" has been removed from Google Drive.');
+						core.showMessage('"' + localTitle + '" has been removed from Google Drive.');
 						continue;
 					}
-					var content = localStorage[fileIndex + ".content"];
+					var localTitleChanged = localStorage[fileSyncIndex + ".titleCRC"] == core.crc32(localTitle);
+					var localContent = localStorage[fileIndex + ".content"];
+					var localContentChanged = localStorage[fileSyncIndex + ".contentCRC"] == core.crc32(localContent);
 					var file = change.file;
-					var titleChanged = title != file.title;
-					var contentChanged = content != file.content;
-					// If file is in the upload queue we have a conflict
-					if ((titleChanged || contentChanged) && syncUpQueue.indexOf(";" + fileIndex + ";") !== -1) {
-						fileManager.createFile(title + " (backup)", content);
+					var fileTitleChanged = localTitle != file.title;
+					var fileContentChanged = localContent != file.content;
+					// Conflict detection
+					if ((fileTitleChanged === true && localTitleChanged === true)
+						|| (fileContentChanged === true && localContentChanged === true)) {
+						fileManager.createFile(localTitle + " (backup)", localContent);
 						updateFileTitles = true;
-						core.showMessage('Conflict detected on "' + title + '". A backup has been created locally.');
+						core.showMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
 					}
 					// If file title changed
-					if(titleChanged) {
+					if(fileTitleChanged) {
 						localStorage[fileIndex + ".title"] = file.title;
 						updateFileTitles = true;
-						core.showMessage('"' + title + '" has been renamed to "' + file.title + '" on Google Drive.');
+						core.showMessage('"' + localTitle + '" has been renamed to "' + file.title + '" on Google Drive.');
 					}
 					// If file content changed
-					if(contentChanged) {
+					if(fileContentChanged) {
 						localStorage[fileIndex + ".content"] = file.content;
 						core.showMessage('"' + file.title + '" has been updated from Google Drive.');
 						if(fileIndex == localStorage["file.current"]) {
@@ -190,13 +202,11 @@ define(["jquery", "core", "google-helper", "dropbox-helper"], function($, core, 
 					}
 					// Update file etag and CRCs
 					localStorage[fileSyncIndex + ".etag"] = file.etag;
-					var contentCRC = core.crc32(file.content);
-					localStorage[fileSyncIndex + ".contentCRC"] = contentCRC;
-					var titleCRC = core.crc32(file.title);
-					localStorage[fileSyncIndex + ".titleCRC"] = titleCRC;
+					localStorage[fileSyncIndex + ".contentCRC"] = core.crc32(file.content);
+					localStorage[fileSyncIndex + ".titleCRC"] = core.crc32(file.title);
 
 					// Synchronize file with others locations
-					synchronizer.addFileForUpload(fileIndex);
+					uploadPending = true;
 				}
 				if(updateFileTitles) {
 					fileManager.updateFileTitles();
@@ -208,6 +218,7 @@ define(["jquery", "core", "google-helper", "dropbox-helper"], function($, core, 
 		});
 	}
 
+	// Used to download file changes from Dropbox
 	function syncDownDropbox(callback) {
 		if (synchronizer.useDropbox === false) {
 			callback();
@@ -216,12 +227,12 @@ define(["jquery", "core", "google-helper", "dropbox-helper"], function($, core, 
 		var lastChangeId = localStorage[SYNC_PROVIDER_DROPBOX + "lastChangeId"];
 		dropboxHelper.checkUpdates(lastChangeId, function(changes, newChangeId) {
 			if (changes === undefined) {
-				callback();
+				callback("error");
 				return;
 			}
 			dropboxHelper.downloadContent(changes, function(changes) {
 				if (changes === undefined) {
-					callback();
+					callback("error");
 					return;
 				}
 				var updateFileTitles = false;
@@ -235,27 +246,28 @@ define(["jquery", "core", "google-helper", "dropbox-helper"], function($, core, 
 						localStorage.removeItem(fileSyncIndex + ".version");
 						continue;
 					}
-					var title = localStorage[fileIndex + ".title"];
+					var localTitle = localStorage[fileIndex + ".title"];
 					// File deleted
 					if (change.wasRemoved === true) {
 						fileManager.removeSync(fileSyncIndex);
 						updateFileTitles = true;
-						core.showMessage('"' + title + '" has been removed from Dropbox.');
+						core.showMessage('"' + localTitle + '" has been removed from Dropbox.');
 						continue;
 					}
-					var content = localStorage[fileIndex + ".content"];
+					var localContent = localStorage[fileIndex + ".content"];
+					var localContentChanged = localStorage[fileSyncIndex + ".contentCRC"] == core.crc32(localContent);
 					var file = change.stat;
-					var contentChanged = content != file.content;
-					// If file is in the upload queue we have a conflict
-					if (contentChanged && syncUpQueue.indexOf(";" + fileIndex + ";") !== -1) {
-						fileManager.createFile(title + " (backup)", content);
+					var fileContentChanged = localContent != file.content;
+					// Conflict detection
+					if (fileContentChanged === true && localContentChanged === true) {
+						fileManager.createFile(localTitle + " (backup)", localContent);
 						updateFileTitles = true;
-						core.showMessage('Conflict detected on "' + title + '". A backup has been created locally.');
+						core.showMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
 					}
 					// If file content changed
-					if(contentChanged) {
+					if(fileContentChanged) {
 						localStorage[fileIndex + ".content"] = file.content;
-						core.showMessage('"' + title + '" has been updated from Dropbox.');
+						core.showMessage('"' + localTitle + '" has been updated from Dropbox.');
 						if(fileIndex == localStorage["file.current"]) {
 							updateFileTitles = false; // Done by next function
 							fileManager.selectFile(); // Refresh editor
@@ -263,11 +275,10 @@ define(["jquery", "core", "google-helper", "dropbox-helper"], function($, core, 
 					}
 					// Update file version and CRC
 					localStorage[fileSyncIndex + ".version"] = file.versionTag;
-					var contentCRC = core.crc32(file.content);
-					localStorage[fileSyncIndex + ".contentCRC"] = contentCRC;
+					localStorage[fileSyncIndex + ".contentCRC"] = core.crc32(file.content);
 					
 					// Synchronize file with others locations
-					synchronizer.addFileForUpload(fileIndex);
+					uploadPending = true;
 				}
 				if(updateFileTitles) {
 					fileManager.updateFileTitles();
@@ -293,29 +304,58 @@ define(["jquery", "core", "google-helper", "dropbox-helper"], function($, core, 
 			return;
 		}
 		syncRunning = true;
+		uploadCycle = true;
 		lastSync = core.currentTime;
-		onSyncBegin();
-
-		syncDown(function() {
-			syncUp(function() {
+		synchronizer.updateSyncButton();
+		
+		function isError(error) {
+			if(error !== undefined) {
 				syncRunning = false;
-				onSyncEnd();
+				synchronizer.updateSyncButton();
+				return true;
+			}
+			return false;
+		}
+
+		syncDown(function(error) {
+			if(isError(error)) {
+				return;
+			}
+			syncUp(function(error) {
+				if(isError(error)) {
+					return;
+				}
+				syncRunning = false;
+				uploadPending = false;
 			});
 		});
 	};
 	
 	synchronizer.forceSync = function() {
 		lastSync = 0;
-		this.sync();
+		synchronizer.sync();
 	};
 	
-	synchronizer.isRunning = function() {
-		return syncRunning;
+	synchronizer.updateSyncButton = function() {
+		if(syncRunning === true || uploadPending === false || core.isOffline) {
+			$(".action-force-sync").addClass("disabled");
+		}
+		else {
+			$(".action-force-sync").removeClass("disabled");
+		}
+	};
+	
+	synchronizer.init = function(coreModule, fileManagerModule) {
+		core = coreModule;
+		fileManager = fileManagerModule;
+		
+		synchronizer.updateSyncButton();
+		$(".action-force-sync").click(function() {
+			if(!$(this).hasClass("disabled")) {
+				synchronizer.forceSync();
+			}
+		});
 	};
 
-	synchronizer.isQueueEmpty = function() {
-		return syncUpQueue.length === 1;
-	};
-	
 	return synchronizer;
 });

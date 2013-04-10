@@ -6,17 +6,20 @@
  *  - an optional onError() function
  *  - an optional timeout field (default is 30000)
  */
-define(["core"], function(core) {
+define(function() {
 	
 	var asyncTaskRunner = {};
+	
+	// Dependencies
+	var core = undefined;
 	
 	var asyncTaskQueue = [];
 	var currentTask = undefined;
 	var currentTaskRunning = false;
-	var currentTaskStartTime = core.currentTime;
+	var currentTaskStartTime = 0;
 	
 	// Run the next task in the queue if any and no other is running
-	asyncTaskRunner.runTask = function() {
+	function runTask() {
 		
 		// If there is a task currently running
 		if(currentTaskRunning === true) {
@@ -42,17 +45,6 @@ define(["core"], function(core) {
 			// Set task attributes and functions
 			currentTask.finished = false;
 			currentTask.retryCounter = 0;
-			currentTask.finish = function() {
-				this.finished = true;
-				currentTask = undefined;
-				currentTaskRunning = false;
-				if(asyncTaskQueue.length === 0) {
-					core.showWorkingIndicator(false);
-				}
-				else {
-					asyncTaskRunner.runTask();
-				}
-			};
 			currentTask.success = function() {
 				runSafe(this.onSuccess);
 			};
@@ -68,8 +60,7 @@ define(["core"], function(core) {
 					return;
 				}
 				// Implement an exponential backoff
-				var delay = (Math.pow(2, currentTask.retryCounter++) + Math.random()) * 1000;
-				console.log(delay);
+				var delay = Math.pow(2, currentTask.retryCounter++) * 1000;
 				currentTaskStartTime = core.currentTime + delay;
 				currentTaskRunning = false;
 				asyncTaskRunner.runTask();
@@ -81,6 +72,11 @@ define(["core"], function(core) {
 			currentTaskRunning = true;
 			currentTask.run();
 		}
+	}
+	
+	asyncTaskRunner.runTask = function() {		
+		// Use setTimeout to avoid stack overflow
+		setTimeout(runTask, 0);
 	};
 	
 	function runSafe(func) {
@@ -104,10 +100,14 @@ define(["core"], function(core) {
 		}
 	}
 	
-	// Add a task in the queue
+	// Add a task into the queue
 	asyncTaskRunner.addTask = function(asyncTask) {
 		asyncTaskQueue.push(asyncTask);
 		asyncTaskRunner.runTask();
+	};
+	
+	asyncTaskRunner.init = function(coreModule) {
+		core = coreModule;
 	};
 	
 	return asyncTaskRunner;

@@ -1,6 +1,7 @@
-define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
+define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 
 	// Dependencies
+	var core = undefined;
 	var fileManager = undefined;
 
 	var client = undefined;
@@ -372,7 +373,8 @@ define(["jquery", "core", "async-runner"], function($, core, asyncTaskRunner) {
 		});
 	};
 
-	dropboxHelper.init = function(fileManagerModule) {
+	dropboxHelper.init = function(coreModule, fileManagerModule) {
+		core = coreModule;
 		fileManager = fileManagerModule;
 	};
 	

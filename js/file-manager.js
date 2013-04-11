@@ -1,5 +1,5 @@
-define(["jquery", "google-helper", "dropbox-helper", "synchronizer", "publisher"],
-	function($, googleHelper, dropboxHelper, synchronizer, publisher) {
+define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchronizer", "publisher"],
+	function($, googleHelper, dropboxHelper, githubHelper, synchronizer, publisher) {
 
 	var fileManager = {};
 
@@ -23,6 +23,7 @@ define(["jquery", "google-helper", "dropbox-helper", "synchronizer", "publisher"
 		// Update the file titles
 		fileManager.updateFileTitles();
 		refreshManageSync();
+		refreshManagePublish();
 		publisher.notifyCurrentFile(localStorage["file.current"]);
 		
 		// Recreate the editor
@@ -51,9 +52,13 @@ define(["jquery", "google-helper", "dropbox-helper", "synchronizer", "publisher"
 				title = DEFAULT_FILE_TITLE + indicator++;
 			}
 		}
-		// Create the fileIndex
-		var fileCounter = parseInt(localStorage["file.counter"]);
-		var fileIndex = "file." + fileCounter;
+		
+		// Generate a unique fileIndex
+		var fileIndex = undefined;
+		do {
+			fileIndex = "file." + core.randomString();
+		} while(localStorage[fileIndex + ".title"] !== undefined);
+		
 		// Create the file in the localStorage
 		localStorage[fileIndex + ".content"] = content;
 		localStorage[fileIndex + ".title"] = title;
@@ -63,7 +68,6 @@ define(["jquery", "google-helper", "dropbox-helper", "synchronizer", "publisher"
 		}
 		localStorage[fileIndex + ".sync"] = sync;
 		localStorage[fileIndex + ".publish"] = ";";
-		localStorage["file.counter"] = fileCounter + 1;
 		localStorage["file.list"] += fileIndex + ";";
 		return fileIndex;
 	};
@@ -82,6 +86,14 @@ define(["jquery", "google-helper", "dropbox-helper", "synchronizer", "publisher"
 		for ( var i = 1; i < fileSyncIndexList.length - 1; i++) {
 			var fileSyncIndex = fileSyncIndexList[i];
 			fileManager.removeSync(fileSyncIndex);
+		}
+		localStorage.removeItem(fileIndex + ".sync");
+		
+		// Remove publish locations
+		var publishIndexList = localStorage[fileIndex + ".publish"].split(";");
+		for ( var i = 1; i < publishIndexList.length - 1; i++) {
+			var publishIndex = publishIndexList[i];
+			fileManager.removePublish(publishIndex);
 		}
 		localStorage.removeItem(fileIndex + ".sync");
 
@@ -191,19 +203,46 @@ define(["jquery", "google-helper", "dropbox-helper", "synchronizer", "publisher"
 	
 	// Look for local file associated to a synchronized location 
 	fileManager.getFileIndexFromSync = function(fileSyncIndex) {
-		var fileIndex = undefined;
 		var fileIndexList = localStorage["file.list"].split(";");
 		for ( var i = 1; i < fileIndexList.length - 1; i++) {
-			var tempFileIndex = fileIndexList[i];
-			var sync = localStorage[tempFileIndex + ".sync"];
+			var fileIndex = fileIndexList[i];
+			var sync = localStorage[fileIndex + ".sync"];
 			if (sync.indexOf(";" + fileSyncIndex + ";") !== -1) {
-				fileIndex = tempFileIndex;
-				break;
+				return fileIndex;
 			}
 		}
-		return fileIndex;
+		return undefined;
 	};
 
+	// Remove a publish location
+	fileManager.removePublish = function(publishIndex) {
+		var fileIndexCurrent = localStorage["file.current"];
+		var fileIndex = this.getFileIndexFromPublish(publishIndex);
+		if(fileIndex !== undefined) {
+			localStorage[fileIndex + ".publish"] = localStorage[fileIndex + ".publish"].replace(";"
+				+ publishIndex + ";", ";");
+			if(fileIndex == fileIndexCurrent) {
+				refreshManagePublish();
+			}
+		}
+		// Remove publish object
+		localStorage.removeItem(publishIndex);
+		publisher.notifyCurrentFile(localStorage["file.current"]);
+	};
+	
+	// Look for local file associated to a publish location 
+	fileManager.getFileIndexFromPublish = function(publishIndex) {
+		var fileIndexList = localStorage["file.list"].split(";");
+		for ( var i = 1; i < fileIndexList.length - 1; i++) {
+			var fileIndex = fileIndexList[i];
+			var publish = localStorage[fileIndex + ".publish"];
+			if (publish.indexOf(";" + publishIndex + ";") !== -1) {
+				return fileIndex;
+			}
+		}
+		return undefined;
+	};
+	
 	function uploadGdrive(fileId, folderId) {
 		var fileIndex = localStorage["file.current"];
 		var content = localStorage[fileIndex + ".content"];
@@ -325,14 +364,14 @@ define(["jquery", "google-helper", "dropbox-helper", "synchronizer", "publisher"
 			(function(fileSyncIndex) {
 				var line = $("<div>").addClass("input-prepend input-append");
 				if (fileSyncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
-					line.append($("<span>").addClass("add-on").html(
+					line.append($("<span>").addClass("add-on").prop("title", "Google Drive").html(
 						'<i class="icon-gdrive"></i>'));
 					line.append($("<input>").prop("type", "text").prop(
 						"disabled", true).addClass("span5").val(
 						fileSyncIndex.substring(SYNC_PROVIDER_GDRIVE.length)));
 				}
-				if (fileSyncIndex.indexOf(SYNC_PROVIDER_DROPBOX) === 0) {
-					line.append($("<span>").addClass("add-on").html(
+				else if (fileSyncIndex.indexOf(SYNC_PROVIDER_DROPBOX) === 0) {
+					line.append($("<span>").addClass("add-on").prop("title", "Dropbox").html(
 					'<i class="icon-dropbox"></i>'));
 					line.append($("<input>").prop("type", "text").prop(
 						"disabled", true).addClass("span5").val(
@@ -349,6 +388,44 @@ define(["jquery", "google-helper", "dropbox-helper", "synchronizer", "publisher"
 		}
 	}
 	
+	function refreshManagePublish() {
+		var fileIndex = localStorage["file.current"];
+		var publishIndexList = localStorage[fileIndex + ".publish"].split(";");
+		$(".msg-no-publish, .msg-publish-list").addClass("hide");
+		$("#manage-publish-list .input-append").remove();
+		if (publishIndexList.length > 2) {
+			$(".msg-publish-list").removeClass("hide");
+		} else {
+			$(".msg-no-publish").removeClass("hide");
+		}
+		for ( var i = 1; i < publishIndexList.length - 1; i++) {
+			var publishIndex = publishIndexList[i];
+			var serializedObject = localStorage[publishIndex];
+			(function(publishIndex, publishObject, serializedObject) {
+				var line = $("<div>").addClass("input-prepend input-append");
+				if (publishObject.provider == PUBLISH_PROVIDER_GITHUB) {
+					line.append($("<span>").addClass("add-on").prop("title", "GitHub").html(
+					'<i class="icon-github"></i>'));
+					line.append($("<input>").prop("type", "text").prop(
+						"disabled", true).addClass("span5").val(
+							serializedObject));
+				}
+				else if (publishObject.provider == PUBLISH_PROVIDER_BLOGGER) {
+					line.append($("<span>").addClass("add-on").prop("title", "Blogger").html(
+					'<i class="icon-blogger"></i>'));
+					line.append($("<input>").prop("type", "text").prop(
+						"disabled", true).addClass("span5").val(
+							serializedObject));
+				}
+				line.append($("<a>").addClass("btn").html(
+				'<i class="icon-trash"></i>').prop("title",
+				"Remove this location").click(function() {
+					fileManager.removePublish(publishIndex);
+				}));
+				$("#manage-publish-list").append(line);
+			})(publishIndex, JSON.parse(serializedObject), serializedObject.replace(/{|}|"/g, ""));
+		}
+	}
 	
 	// Initialize the "New publication" dialog
 	var newPublishProvider = undefined;
@@ -367,7 +444,46 @@ define(["jquery", "google-helper", "dropbox-helper", "synchronizer", "publisher"
 		$("#modal-publish").modal();
 	}
 	
-	// Create a new publication
+	// Generate a publishIndex, store a publishObject and associate it to a fileIndex
+	function createPublishIndex(publishObject, fileIndex) {
+		var publishIndex = undefined;
+		do {
+			publishIndex = "publish." + core.randomString();
+		} while(localStorage[publishIndex] !== undefined);
+		localStorage[publishIndex] = JSON.stringify(publishObject);
+		localStorage[fileIndex + ".publish"] += publishIndex + ";";
+	}
+	
+	// Create a new publication on GitHub
+	function newPublishGithub(event) {
+		var publishObject = {};
+		publishObject.username = core.getInputValue($("#input-publish-github-username"), event);
+		publishObject.repository = core.getInputValue($("#input-publish-github-reponame"), event);
+		publishObject.branch = core.getInputValue($("#input-publish-github-branch"), event);
+		publishObject.path = core.getInputValue($("#input-publish-github-path"), event);
+		publishObject.provider = newPublishProvider;
+		if(event.isPropagationStopped()) {
+			return;
+		}
+		
+		var fileIndex = localStorage["file.current"];
+		var title = localStorage[fileIndex + ".title"];
+		var content = publisher.getPublishContent(publishObject);
+		var commitMsg = core.settings.commitMsg;
+		githubHelper.upload(publishObject.username, publishObject.repository,
+			publishObject.branch, publishObject.path, content, commitMsg,
+			function(error) {					
+				if(error === undefined) {
+					createPublishIndex(publishObject, fileIndex);
+					refreshManagePublish();
+					publisher.notifyCurrentFile(localStorage["file.current"]);
+					core.showMessage('"' + title
+						+ '" will now be published on GitHub.');
+				}
+		});
+	}
+	
+	// Create a new publication on Blogger
 	function newPublishBlogger(event) {
 		var blogUrl = core.getInputValue($("#input-publish-blogger-url"), event);
 		if(event.isPropagationStopped()) {
@@ -460,13 +576,16 @@ define(["jquery", "google-helper", "dropbox-helper", "synchronizer", "publisher"
 		
 		// Publish actions
 		$(".action-publish-github").click(function() {
-			initNewPublish("github");
+			initNewPublish(PUBLISH_PROVIDER_GITHUB);
 		});
 		$(".action-publish-blogger").click(function() {
-			initNewPublish("blogger", "html");
+			initNewPublish(PUBLISH_PROVIDER_BLOGGER, "html");
 		});
 		$(".action-process-publish").click(function(e) {
-			if(newPublishProvider == "blogger") {
+			if(newPublishProvider == PUBLISH_PROVIDER_GITHUB) {
+				newPublishGithub(e);
+			}
+			else if(newPublishProvider == PUBLISH_PROVIDER_BLOGGER) {
 				newPublishBlogger(e);
 			}
 		});

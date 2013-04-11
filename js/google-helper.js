@@ -122,10 +122,18 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 				}
 				var path = '/upload/drive/v2/files';
 				var method = 'POST';
+				var etag = undefined;
 				if (fileId !== undefined) {
 					// If it's an update
 					path += "/" + fileId;
 					method = 'PUT';
+					etag = localStorage[SYNC_PROVIDER_GDRIVE
+											+ fileId + ".etag"];
+				}
+				var headers = { 'Content-Type' : 'multipart/mixed; boundary="'
+					+ boundary + '"', };
+				if(etag !== undefined) {
+					headers["If-Match"] = etag;
 				}
 
 				var base64Data = core.encodeBase64(content);
@@ -141,8 +149,8 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 						'path' : path,
 						'method' : method,
 						'params' : { 'uploadType' : 'multipart', },
-						'headers' : { 'Content-Type' : 'multipart/mixed; boundary="'
-							+ boundary + '"', }, 'body' : multipartRequestBody, });
+						'headers' : headers,
+						'body' : multipartRequestBody, });
 				request.execute(function(response) {
 					if (response && response.id) {
 						// Upload success
@@ -154,13 +162,21 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 					var error = response.error;
 					// Handle error
 					if(error !== undefined && fileId !== undefined && error.code === 404) {
-						error = 'File ID "' + fileId + '" does not exist on Google Drive.';
+						if(error.code === 404) {
+							error = 'File ID "' + fileId + '" does not exist on Google Drive.';
+						}
+						else if(error.code === 412) {
+							error = 'Conflict on file ID "' + fileId + '". Please restart the synchronization.';
+						}
 					}
 					handleError(error, asyncTask, callback);
 				});
 			};
 			asyncTask.onSuccess = function() {
 				callback(fileSyncIndex);
+			};
+			asyncTask.onError = function() {
+				callback();
 			};
 			asyncTaskRunner.addTask(asyncTask);
 		});
@@ -211,6 +227,9 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 					} else {
 						callback(changes, newChangeId);
 					}
+				};
+				asyncTask.onError = function() {
+					callback();
 				};
 				asyncTaskRunner.addTask(asyncTask);
 			}
@@ -263,6 +282,9 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 			};
 			asyncTask.onSuccess = function() {
 				googleHelper.downloadMetadata(ids, callback, result);
+			};
+			asyncTask.onError = function() {
+				callback();
 			};
 			asyncTaskRunner.addTask(asyncTask);
 		});
@@ -323,6 +345,9 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 			};
 			asyncTask.onSuccess = function() {
 				googleHelper.downloadContent(objects, callback, result);
+			};
+			asyncTask.onError = function() {
+				callback();
 			};
 			asyncTaskRunner.addTask(asyncTask);
 		});
@@ -500,49 +525,13 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 			asyncTask.onSuccess = function() {
 				callback(result);
 			};
+			asyncTask.onError = function() {
+				callback();
+			};
 			asyncTaskRunner.addTask(asyncTask);
 		});
 	};
 
-	googleHelper.getBlogByUrl = function(url, callback) {
-		authenticate(function() {
-			if (connected === false) {
-				callback();
-				return;
-			}
-			
-			var result = undefined;
-			var asyncTask = {};
-			asyncTask.run = function() {
-				var token = gapi.auth.getToken();
-				var headers = {
-					Authorization : token ? "Bearer " + token.access_token: null
-				};
-				$.ajax({
-					url : "https://www.googleapis.com/blogger/v3/blogs/byurl",
-					data: { url: url },
-					headers : headers,
-					dataType : "json",
-					timeout : AJAX_TIMEOUT
-				}).done(function(blog, textStatus, jqXHR) {
-					result = blog;
-					asyncTask.success();
-				}).fail(function(jqXHR) {
-					var error = {
-						code: jqXHR.status,
-						message: jqXHR.statusText
-					};
-					// Handle error
-					handleError(error, asyncTask, callback);
-				});
-			};
-			asyncTask.onSuccess = function() {
-				callback(result);
-			};
-			asyncTaskRunner.addTask(asyncTask);
-		});
-	};
-	
 	googleHelper.init = function(coreModule, fileManagerModule) {
 		core = coreModule;
 		fileManager = fileManagerModule;

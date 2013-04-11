@@ -7,6 +7,9 @@ define(
 	
 	var core = {};
 	
+	// The interval Id for periodic tasks
+	var intervalId = undefined;
+
 	// Usage: callback = callback || core.doNothing;
 	core.doNothing = function() {};
 	
@@ -41,12 +44,15 @@ define(
 			return;
 		}
 		if(windowId === undefined) {
-			windowId = Math.random().toString(36);
+			windowId = core.randomString();
 			localStorage["frontWindowId"] = windowId;
 		}
 		var frontWindowId = localStorage["frontWindowId"];
 		if(frontWindowId != windowId) {
 			windowUnique = false;
+			if(intervalId !== undefined) {
+				clearInterval(intervalId);
+			}
 			$(".modal").modal("hide");
 			$('#modal-non-unique').modal({
 				backdrop: "static",
@@ -166,22 +172,26 @@ define(
 	}
 	
 	// Setting management
-	var settings = {
+	core.settings = {
 		layoutOrientation : "horizontal",
-		editorFontSize : 14
+		editorFontSize : 14,
+		commitMsg : "Published by StackEdit."
 	};
 	
 	core.loadSettings = function() {
 		if (localStorage.settings) {
-			$.extend(settings, JSON.parse(localStorage.settings));
+			$.extend(core.settings, JSON.parse(localStorage.settings));
 		}
 
 		// Layout orientation
 		$("input:radio[name=radio-layout-orientation][value="
-				+ settings.layoutOrientation + "]").prop("checked", true);
+				+ core.settings.layoutOrientation + "]").prop("checked", true);
 		
 		// Editor font size
-		$("#input-editor-font-size").val(settings.editorFontSize);
+		$("#input-settings-editor-font-size").val(core.settings.editorFontSize);
+		
+		// Commit message
+		$("#input-settings-publish-commit-msg").val(core.settings.commitMsg);
 	};
 
 	core.saveSettings = function(event) {
@@ -192,10 +202,13 @@ define(
 			"input:radio[name=radio-layout-orientation]:checked").prop("value");
 		
 		// Editor font size
-		newSettings.editorFontSize = core.getInputIntValue($("#input-editor-font-size"), event, 1, 99);
+		newSettings.editorFontSize = core.getInputIntValue($("#input-settings-editor-font-size"), event, 1, 99);
 
+		// Commit message
+		newSettings.commitMsg = core.getInputValue($("#input-settings-publish-commit-msg"), event);
+		
 		if(!event.isPropagationStopped()) {
-			settings = newSettings;
+			core.settings = newSettings;
 			localStorage.settings = JSON.stringify(newSettings);
 		}
 	};
@@ -215,7 +228,7 @@ define(
 			togglerLength_closed : 90,
 			stateManagement__enabled : false
 		};
-		if (settings.layoutOrientation == "horizontal") {
+		if (core.settings.layoutOrientation == "horizontal") {
 			$(".ui-layout-south").remove();
 			$(".ui-layout-east").addClass("well").prop("id", "wmd-preview");
 			layout = $('body').layout(
@@ -225,7 +238,7 @@ define(
 					east__minSize : 200
 				})
 			);
-		} else if (settings.layoutOrientation == "vertical") {
+		} else if (core.settings.layoutOrientation == "vertical") {
 			$(".ui-layout-east").remove();
 			$(".ui-layout-south").addClass("well").prop("id", "wmd-preview");
 			layout = $('body').layout(
@@ -413,10 +426,14 @@ define(
 	    return crc.toString(16);
 	};
 	
+	// Generates a random string
+	core.randomString = function() {
+		return Math.ceil(Math.random() * 4294967296).toString(36);
+	};
+	
 	// Used to setup an empty localStorage 
 	function setupLocalStorage() {
-		if (localStorage["file.counter"] === undefined) {
-			localStorage["file.counter"] = "0";
+		if (localStorage["file.list"] === undefined) {
 			localStorage["file.list"] = ";";
 			localStorage["version"] = "v1";
 		}		
@@ -429,9 +446,10 @@ define(
 		// from v0 to v1
 		if(version === undefined) {
 			
-			// Synchronization queue not used anymore
+			// Not used anymore
 			localStorage.removeItem("sync.queue");
 			localStorage.removeItem("sync.current");
+			localStorage.removeItem("file.counter");			
 			
 			var fileIndexList = localStorage["file.list"].split(";");
 			for ( var i = 1; i < fileIndexList.length - 1; i++) {
@@ -452,7 +470,7 @@ define(
 		localStorage["version"] = version;
 	}
 	
-
+	// Create an centered popup window
 	core.popupWindow = function(url, title, w, h) {
 		var left = (screen.width / 2) - (w / 2);
 		var top = (screen.height / 2) - (h / 2);
@@ -469,7 +487,7 @@ define(
 					+ ', left='
 					+ left);
 	};
-
+	
 	core.init = function() {
 		setupLocalStorage();
 		upgradeLocalStorage();
@@ -513,13 +531,13 @@ define(
 		});
 		
 		$("#menu-bar, .ui-layout-center, .ui-layout-east, .ui-layout-south").removeClass("hide");
-		this.loadSettings();
-		this.createLayout();
+		core.loadSettings();
+		core.createLayout();
 		
 		// Apply editor font size
 		$("#wmd-input").css({
-			"font-size": settings.editorFontSize + "px",
-			"line-height": Math.round(settings.editorFontSize * (20/14)) + "px"
+			"font-size": core.settings.editorFontSize + "px",
+			"line-height": Math.round(core.settings.editorFontSize * (20/14)) + "px"
 		});
 
 		$(".action-load-settings").click(function() {
@@ -558,7 +576,7 @@ define(
 		fileManager.init(core);
 		
 		// Do periodic tasks
-		window.setInterval(function() {
+		intervalId = window.setInterval(function() {
 			updateCurrentTime();
 			core.checkWindowUnique();
 			if(isUserActive() === false) {

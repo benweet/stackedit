@@ -39,7 +39,7 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 			    secret: DROPBOX_APP_SECRET
 			});
 			client.authDriver(new Dropbox.Drivers.Popup({
-			    receiverUrl: "http://localhost/dropbox-oauth-receiver.html",
+			    receiverUrl: BASE_URL + "dropbox-oauth-receiver.html",
 			    rememberUser: true
 			}));
 			callback();
@@ -125,6 +125,9 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 			asyncTask.onSuccess = function() {
 				callback(fileSyncIndex);
 			};
+			asyncTask.onError = function() {
+				callback();
+			};
 			asyncTaskRunner.addTask(asyncTask);
 		});
 	};
@@ -172,6 +175,9 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 						callback(changes, newChangeId);
 					}
 				};
+				asyncTask.onError = function() {
+					callback();
+				};
 				asyncTaskRunner.addTask(asyncTask);
 			}
 			retrievePageOfChanges(newChangeId);
@@ -206,6 +212,9 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 			};
 			asyncTask.onSuccess = function() {
 				dropboxHelper.downloadMetadata(paths, callback, result);
+			};
+			asyncTask.onError = function() {
+				callback();
 			};
 			asyncTaskRunner.addTask(asyncTask);
 		});
@@ -254,6 +263,9 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 			};
 			asyncTask.onSuccess = function() {
 				dropboxHelper.downloadContent(objects, callback, result);
+			};
+			asyncTask.onError = function() {
+				callback();
 			};
 			asyncTaskRunner.addTask(asyncTask);
 		});

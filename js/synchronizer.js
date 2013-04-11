@@ -187,9 +187,9 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 						core.showMessage('"' + localTitle + '" has been removed from Google Drive.');
 						continue;
 					}
-					var localTitleChanged = localStorage[fileSyncIndex + ".titleCRC"] == core.crc32(localTitle);
+					var localTitleChanged = localStorage[fileSyncIndex + ".titleCRC"] != core.crc32(localTitle);
 					var localContent = localStorage[fileIndex + ".content"];
-					var localContentChanged = localStorage[fileSyncIndex + ".contentCRC"] == core.crc32(localContent);
+					var localContentChanged = localStorage[fileSyncIndex + ".contentCRC"] != core.crc32(localContent);
 					var file = change.file;
 					var fileTitleChanged = localTitle != file.title;
 					var fileContentChanged = localContent != file.content;
@@ -270,7 +270,7 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 						continue;
 					}
 					var localContent = localStorage[fileIndex + ".content"];
-					var localContentChanged = localStorage[fileSyncIndex + ".contentCRC"] == core.crc32(localContent);
+					var localContentChanged = localStorage[fileSyncIndex + ".contentCRC"] != core.crc32(localContent);
 					var file = change.stat;
 					var fileContentChanged = localContent != file.content;
 					// Conflict detection

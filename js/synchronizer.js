@@ -220,7 +220,7 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 					localStorage[fileSyncIndex + ".titleCRC"] = core.crc32(file.title);
 
 					// Synchronize file with others locations
-					uploadPending = true; // (may be unnecessary since syncUp checks content changes)
+					uploadPending = true; // may be unnecessary since syncUp checks content changes
 				}
 				if(updateFileTitles) {
 					fileManager.updateFileTitles();
@@ -291,7 +291,7 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 					localStorage[fileSyncIndex + ".contentCRC"] = core.crc32(file.content);
 					
 					// Synchronize file with others locations
-					uploadPending = true; // (may be unnecessary since syncUp checks content changes)
+					uploadPending = true; // may be unnecessary since syncUp checks every changes
 				}
 				if(updateFileTitles) {
 					fileManager.updateFileTitles();

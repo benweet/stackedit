@@ -161,7 +161,7 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 				callback(error);
 			};
 			asyncTask.onError = function() {
-				var errorMsg = "Could not publish on GitHub";
+				var errorMsg = "Could not publish on GitHub.";
 				if(error === 401 || error === 403) {
 					github = undefined;
 					// Token must be renewed

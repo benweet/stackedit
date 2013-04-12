@@ -173,10 +173,9 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 					var change = changes[i];
 					var fileSyncIndex = SYNC_PROVIDER_GDRIVE + change.fileId;
 					var fileIndex = fileManager.getFileIndexFromSync(fileSyncIndex);
-					// No file corresponding (this should never happen...)
+					// No file corresponding (file may have been deleted locally)
 					if(fileIndex === undefined) {
-						// We can remove the stored etag
-						localStorage.removeItem(fileSyncIndex + ".etag");
+						fileManager.removeSync(fileSyncIndex);
 						continue;
 					}
 					var localTitle = localStorage[fileIndex + ".title"];
@@ -221,7 +220,7 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 					localStorage[fileSyncIndex + ".titleCRC"] = core.crc32(file.title);
 
 					// Synchronize file with others locations
-					uploadPending = true;
+					uploadPending = true; // (may be unnecessary since syncUp checks content changes)
 				}
 				if(updateFileTitles) {
 					fileManager.updateFileTitles();
@@ -255,10 +254,9 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 					var change = changes[i];
 					var fileSyncIndex = SYNC_PROVIDER_DROPBOX + encodeURIComponent(change.path.toLowerCase());
 					var fileIndex = fileManager.getFileIndexFromSync(fileSyncIndex);
-					// No file corresponding (this should never happen...)
+					// No file corresponding (file may have been deleted locally)
 					if(fileIndex === undefined) {
-						// We can remove the stored version
-						localStorage.removeItem(fileSyncIndex + ".version");
+						fileManager.removeSync(fileSyncIndex);
 						continue;
 					}
 					var localTitle = localStorage[fileIndex + ".title"];
@@ -293,7 +291,7 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 					localStorage[fileSyncIndex + ".contentCRC"] = core.crc32(file.content);
 					
 					// Synchronize file with others locations
-					uploadPending = true;
+					uploadPending = true; // (may be unnecessary since syncUp checks content changes)
 				}
 				if(updateFileTitles) {
 					fileManager.updateFileTitles();

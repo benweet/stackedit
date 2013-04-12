@@ -258,33 +258,25 @@
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal"
 				aria-hidden="true">&times;</button>
-			<h3>Publish</h3>
+			<h3 class="modal-publish-github">Publish on GitHub</h3>
 		</div>
 		<div class="modal-body">
 			<div class="form-horizontal">
-				<div class="control-group control-publish-github">
-					<label class="control-label" for="input-publish-github-username">GitHub
-						user</label>
-					<div class="controls">
-						<input type="text" id="input-publish-github-username"
-							placeholder="User name">
-					</div>
-				</div>
-				<div class="control-group control-publish-github">
+				<div class="control-group modal-publish-github">
 					<label class="control-label" for="input-publish-github-reponame">Repository</label>
 					<div class="controls">
 						<input type="text" id="input-publish-github-reponame"
 							placeholder="Repository name">
 					</div>
 				</div>
-				<div class="control-group control-publish-github">
+				<div class="control-group modal-publish-github">
 					<label class="control-label" for="input-publish-github-branch">Branch</label>
 					<div class="controls">
 						<input type="text" id="input-publish-github-branch"
 							placeholder="Branch name">
 					</div>
 				</div>
-				<div class="control-group control-publish-github">
+				<div class="control-group modal-publish-github">
 					<label class="control-label" for="input-publish-github-path">File
 						path</label>
 					<div class="controls">
@@ -292,7 +284,7 @@
 							placeholder="path/to/file.md">
 					</div>
 				</div>
-				<div class="control-group control-publish-blogger">
+				<div class="control-group modal-publish-blogger">
 					<label class="control-label" for="input-publish-blogger-url">Blog
 						URL</label>
 					<div class="controls">
@@ -300,7 +292,7 @@
 							placeholder="http://exemple.blogger.com/">
 					</div>
 				</div>
-				<div class="control-group control-publish-blogger">
+				<div class="control-group modal-publish-blogger">
 					<label class="control-label" for="input-publish-blogger-postid">Update
 						existing post ID (optional)</label>
 					<div class="controls">
@@ -309,13 +301,12 @@
 					</div>
 				</div>
 				<div class="control-group">
-					<div class="control-label">Publish as</div>
+					<div class="control-label">Format</div>
 					<div class="controls">
 						<label class="radio"> <input type="radio"
 							name="radio-publish-format" value="markdown"> Markdown
-							format
 						</label> <label class="radio"> <input type="radio"
-							name="radio-publish-format" value="html"> HTML format
+							name="radio-publish-format" value="html"> HTML
 						</label>
 					</div>
 				</div>

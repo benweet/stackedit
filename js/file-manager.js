@@ -434,7 +434,7 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		newPublishProvider = provider;
 		
 		// Show/hide controls depending on provider
-		$('div[class*=" control-publish-"]').hide().filter(".control-publish-" + provider).show();
+		$('div[class*=" modal-publish-"]').hide().filter(".modal-publish-" + provider).show();
 		
 		// Reset fields
 		core.resetModalInputs();
@@ -457,7 +457,6 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 	// Create a new publication on GitHub
 	function newPublishGithub(event) {
 		var publishObject = {};
-		publishObject.username = core.getInputValue($("#input-publish-github-username"), event);
 		publishObject.repository = core.getInputValue($("#input-publish-github-reponame"), event);
 		publishObject.branch = core.getInputValue($("#input-publish-github-branch"), event);
 		publishObject.path = core.getInputValue($("#input-publish-github-path"), event);
@@ -470,7 +469,7 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		var title = localStorage[fileIndex + ".title"];
 		var content = publisher.getPublishContent(publishObject);
 		var commitMsg = core.settings.commitMsg;
-		githubHelper.upload(publishObject.username, publishObject.repository,
+		githubHelper.upload(publishObject.repository,
 			publishObject.branch, publishObject.path, content, commitMsg,
 			function(error) {					
 				if(error === undefined) {

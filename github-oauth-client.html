@@ -12,12 +12,14 @@
 	}
 	var client_id = getParameter("client_id");
 	var code = getParameter("code");
-	if (code) {
-		localStorage["githubCode"] = code;
-		window.close();
-	} else if (client_id) {
+	if (client_id) {
 		window.location.href = "https://github.com/login/oauth/authorize?client_id="
 			+ client_id + "&scope=repo";
+	} else {
+		if (code) {
+			localStorage["githubCode"] = code;
+		}
+		window.close();
 	}
 </script>
 </head>

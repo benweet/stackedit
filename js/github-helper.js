@@ -55,6 +55,7 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 			var intervalId = undefined;
 			var authWindow = undefined;
 			var token = localStorage["githubToken"];
+			var errorMsg = "Access to GitHub is not authorized.";
 			var asyncTask = {};
 			asyncTask.run = function() {
 				if (github !== undefined) {
@@ -71,7 +72,7 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 					 return;
 				}
 				if(immediate === true) {
-					core.showError("Unable to perform GitHub authenticate.");
+					core.showError();
 					asyncTask.error();
 					return;
 				}
@@ -85,15 +86,18 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 				authWindow.focus();
 				intervalId = setInterval(function() {
 					var code = localStorage["githubCode"];
-					if(code !== undefined) {
+					if(authWindow.closed === true || code !== undefined) {
 						localStorage.removeItem("githubCode");
+						if(code === undefined) {
+							asyncTask.error();
+							return;
+						}
 						$.getJSON(GATEKEEPER_URL + "authenticate/" + code, function(data) {
 							if(data.token !== undefined) {
 								localStorage["githubToken"] = data.token;
 								asyncTask.success();
 							}
 							else {
-								core.showError("Error retrieving GitHub Oauth token.");
 								asyncTask.error();
 							}
 						});
@@ -117,50 +121,59 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 				if(authWindow !== undefined) {
 					authWindow.close();
 				}
+				core.showError(errorMsg);
 				callback();
 			};
 			asyncTaskRunner.addTask(asyncTask);
 		});
 	}
 
-	githubHelper.upload = function(username, reponame, branch, path, content, commitMsg, callback) {
+	githubHelper.upload = function(reponame, branch, path, content, commitMsg, callback) {
 		callback = callback || core.doNothing;
 		authenticate(function() {
 			if (github === undefined) {
-				callback();
+				callback("error");
 				return;
 			}
 
 			var error = undefined;
 			var asyncTask = {};
 			asyncTask.run = function() {
-				var repo = github.getRepo(username, reponame);
-				repo.write(branch, path, content, commitMsg, function(err) {
-					if(!err) {
-						asyncTask.success();
+				var user = github.getUser();
+				user.show(undefined, function(err, result) {
+					if(err) {
+						error = err.error;
+						asyncTask.error();
 						return;
 					}
-					error = err.error;
-					asyncTask.error();
+					var repo = github.getRepo(result.login, reponame);
+					repo.write(branch, path, content, commitMsg, function(err) {
+						if(err) {
+							error = err.error;
+							asyncTask.error();
+							return;
+						}
+						asyncTask.success();
+					});
 				});
 			};
 			asyncTask.onSuccess = function() {
 				callback(error);
 			};
 			asyncTask.onError = function() {
-				if(error === 401) {
+				var errorMsg = "Could not publish on GitHub";
+				if(error === 401 || error === 403) {
 					github = undefined;
 					// Token must be renewed
 					localStorage.removeItem("githubToken");
-					githubHelper.upload(username, reponame, branch, path, content, commitMsg, callback);
-					return;
+					errorMsg = "Access to GitHub is not authorized.";
 				}
-				if(error === 0) {
+				else if(error === 0) {
 					connected = false;
 					github = undefined;
 					core.setOffline();
 				}
-				core.showError("Could not publish on GitHub");
+				core.showError(errorMsg);
 				callback(error);
 			};
 			asyncTaskRunner.addTask(asyncTask);

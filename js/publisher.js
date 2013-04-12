@@ -66,8 +66,7 @@ define(["jquery", "google-helper", "github-helper"], function($, googleHelper, g
 
 		// Try to find the provider
 		if(publishObject.provider == PUBLISH_PROVIDER_GITHUB) {
-			githubHelper.upload(publishObject.username, publishObject.repository,
-				publishObject.branch, publishObject.path, content, commitMsg,
+			githubHelper.upload(publishObject.repository, publishObject.branch, publishObject.path, content, commitMsg,
 				function(error) {
 				publishLocation(callback, error);
 			});

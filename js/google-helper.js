@@ -161,11 +161,13 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 					}
 					var error = response.error;
 					// Handle error
-					if(error !== undefined && fileId !== undefined && error.code === 404) {
+					if(error !== undefined && fileId !== undefined) {
 						if(error.code === 404) {
 							error = 'File ID "' + fileId + '" does not exist on Google Drive.';
 						}
 						else if(error.code === 412) {
+							// We may have missed a file update
+							localStorage.removeItem("sync.gdrive.lastChangeId");
 							error = 'Conflict on file ID "' + fileId + '". Please restart the synchronization.';
 						}
 					}

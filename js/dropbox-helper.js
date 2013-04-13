@@ -25,7 +25,7 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 				return;
 			}
 			$.ajax({
-				url : "lib/dropbox.js",
+				url : "lib/dropbox.min.js",
 				dataType : "script", timeout : AJAX_TIMEOUT
 			}).done(function() {
 				asyncTask.success();

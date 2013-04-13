@@ -1,4 +1,5 @@
 chrome-app*
 .project
 .settings
+node_modules
 

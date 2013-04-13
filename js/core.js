@@ -1,7 +1,8 @@
 define(
 	[ "jquery", "file-manager", "google-helper", "dropbox-helper",
 		"github-helper", "synchronizer", "publisher", "async-runner",
-		"bootstrap", "jgrowl", "layout", "Markdown.Editor", "config", "custo" ],
+		"bootstrap", "jgrowl", "layout", "Markdown.Editor", "config",
+		"underscore-min" ],
 	function($, fileManager, googleHelper, dropboxHelper, githubHelper,
 		synchronizer, publisher, asyncTaskRunner) {
 	

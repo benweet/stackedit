@@ -1,13 +1,6 @@
-// Use specific customization for sites
-var configPaths = {};
-if(location.hostname.indexOf("benweet.github.") === 0) {
-	configPaths.custo = 'custo.github';
-}
-
 // RequireJS configuration
 requirejs.config({
 	waitSeconds: 0,
-    paths: configPaths,
     shim: {
         'jquery-ui': ['jquery'],
         'bootstrap': ['jquery'],

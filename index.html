@@ -12,7 +12,14 @@
 <meta name="author" content="Benoit Schweblin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="css/main.css" rel="stylesheet" media="screen">
-<script data-main="js/main" src="js/require.js"></script>
+<script>
+	var dep = "main-min";
+	if (location.search.indexOf("debug") !== -1) {
+		dep = "main";
+	}
+	var require = { baseUrl : "js", deps : [ dep ] };
+</script>
+<script src="js/require.js"></script>
 </head>
 <body>
 	<div id="navbar" class="navbar navbar-fixed-top ui-layout-north">
@@ -464,15 +471,14 @@
 					<a target="_blank" href="http://jquery.com/">jQuery</a>
 				</dd>
 				<dd>
-					<a target="_blank" href="http://layout.jquery-dev.net/">jQuery
-						UI Layout</a>
-				</dd>
-				<dd>
 					<a target="_blank" href="https://code.google.com/p/pagedown/">PageDown</a>
 				</dd>
 				<dd>
 					<a target="_blank" href="http://requirejs.org/">RequireJS</a>
 				</dd>
+                <dd>
+                    <a target="_blank" href="http://layout.jquery-dev.net/">UI Layout</a>
+                </dd>
 			</dl>
 			<p>Copyright 2013 <a target="_blank"
 				href="http://www.benoitschweblin.com">Benoit Schweblin</a><br />

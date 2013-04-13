@@ -209,7 +209,7 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 					if(fileContentChanged) {
 						localStorage[fileIndex + ".content"] = file.content;
 						core.showMessage('"' + file.title + '" has been updated from Google Drive.');
-						if(fileIndex == localStorage["file.current"]) {
+						if(fileManager.isCurrentFileIndex(fileIndex)) {
 							updateFileTitles = false; // Done by next function
 							fileManager.selectFile(); // Refresh editor
 						}
@@ -278,7 +278,7 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 					if(fileContentChanged) {
 						localStorage[fileIndex + ".content"] = file.content;
 						core.showMessage('"' + localTitle + '" has been updated from Dropbox.');
-						if(fileIndex == localStorage["file.current"]) {
+						if(fileManager.isCurrentFileIndex(fileIndex)) {
 							updateFileTitles = false; // Done by next function
 							fileManager.selectFile(); // Refresh editor
 						}

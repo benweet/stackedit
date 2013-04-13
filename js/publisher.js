@@ -1,4 +1,4 @@
-define(["jquery", "google-helper", "github-helper"], function($, googleHelper, githubHelper) {
+define(["jquery", "google-helper", "github-helper", "publish-github", "underscore"], function($, googleHelper, githubHelper) {
 	
 	// Dependencies
 	var core = undefined;
@@ -6,11 +6,15 @@ define(["jquery", "google-helper", "github-helper"], function($, googleHelper, g
 
 	var publisher = {};
 	
+	// Providers
+	var providerMap = {};
+	
 	// Used to know if the current file has publications
 	var hasPublications = false;
 	
 	// Allows external modules to update hasPublications flag
-	publisher.notifyCurrentFile = function(fileIndex) {
+	publisher.notifyCurrentFile = function() {
+		var fileIndex = fileManager.getCurrentFileIndex();
 		
 		// Check that file has publications
 		if(localStorage[fileIndex + ".publish"].length === 1) {
@@ -33,7 +37,7 @@ define(["jquery", "google-helper", "github-helper"], function($, googleHelper, g
 	};
 	
 	// Used to get content to publish
-	publisher.getPublishContent = function(publishObject) {
+	function getPublishContent(publishObject) {
 		if(publishObject.format === undefined) {
 			publishObject.format = $("input:radio[name=radio-publish-format]:checked").prop("value");			
 		}
@@ -41,7 +45,7 @@ define(["jquery", "google-helper", "github-helper"], function($, googleHelper, g
 			return $("#wmd-input").val();
 		}
 		return $("#wmd-preview").html();
-	};
+	}
 	
 	// Recursive function to publish a file on multiple locations
 	var publishIndexList = [];
@@ -61,7 +65,7 @@ define(["jquery", "google-helper", "github-helper"], function($, googleHelper, g
 		}
 
 		var publishObject = JSON.parse(localStorage[publishIndex]);
-		var content = publisher.getPublishContent(publishObject);
+		var content = getPublishContent(publishObject);
 		var commitMsg = core.settings.commitMsg;
 
 		// Try to find the provider
@@ -82,7 +86,7 @@ define(["jquery", "google-helper", "github-helper"], function($, googleHelper, g
 		
 		publishRunning = true;
 		publisher.updatePublishButton();
-		var fileIndex = localStorage["file.current"];
+		var fileIndex = fileManager.getCurrentFileIndex();
 		var title = localStorage[fileIndex + ".title"];
 		publishIndexList = localStorage[fileIndex + ".publish"].split(";");;
 		publishLocation(function(error) {
@@ -93,10 +97,32 @@ define(["jquery", "google-helper", "github-helper"], function($, googleHelper, g
 			}
 		});
 	};
-
+	
+	// Add a new publish location to a local document
+	publisher.newLocation = function(publishObject, callback) {
+		var fileIndex = fileManager.getCurrentFileIndex();
+		var title = localStorage[fileIndex + ".title"];
+		var content = getPublishContent(publishObject);
+		var provider = providerMap[publishObject.provider];
+		provider.publishNew(publishObject, title, content);
+	};
+	
+	// Associate publish provider to publisher
+	_.each(arguments, function(argument) {
+		if(argument !== undefined && argument.publishProvider !== undefined) {
+			providerMap[argument.publishProvider] = argument;
+		}
+	});
+	
 	publisher.init = function(coreModule, fileManagerModule) {
 		core = coreModule;
 		fileManager = fileManagerModule;
+		
+		// Init providers
+		_.each(providerMap, function(provider) {
+			provider.init();
+		});
+		
 		$(".action-force-publish").click(function() {
 			if(!$(this).hasClass("disabled")) {
 				publisher.publish();

@@ -1,10 +1,30 @@
-define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchronizer", "publisher"],
+define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchronizer", "publisher", "underscore"],
 	function($, googleHelper, dropboxHelper, githubHelper, synchronizer, publisher) {
 
 	var fileManager = {};
 
 	// Dependencies
 	var core = undefined;
+	
+	// Defines the current file
+	var currentFileIndex = localStorage["file.current"];
+	fileManager.getCurrentFileIndex = function() {
+		return currentFileIndex;
+	};
+	fileManager.isCurrentFileIndex = function(fileIndex) {
+		return fileIndex == currentFileIndex;
+	};
+	fileManager.setCurrentFileIndex = function(fileIndex) {
+		currentFileIndex = fileIndex;
+		// Sanity check since we are going to modify current file in localStorage
+		core.checkWindowUnique();
+		if(fileIndex === undefined) {
+			localStorage.removeItem("file.current");
+		}
+		else {
+			localStorage["file.current"] = fileIndex;
+		}
+	};
 	
 	// Caution: this function recreate the editor (reset undo operations)
 	var fileDescList = [];
@@ -15,19 +35,17 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		}
 		
 		if(fileIndex !== undefined) {
-			// Since we are going to modify current file
-			core.checkWindowUnique();
-			localStorage["file.current"] = fileIndex;
+			fileManager.setCurrentFileIndex(fileIndex);
 		}
 
 		// Update the file titles
 		fileManager.updateFileTitles();
 		refreshManageSync();
 		refreshManagePublish();
-		publisher.notifyCurrentFile(localStorage["file.current"]);
+		publisher.notifyCurrentFile();
 		
 		// Recreate the editor
-		fileIndex = localStorage["file.current"];
+		fileIndex = fileManager.getCurrentFileIndex();
 		$("#wmd-input").val(localStorage[fileIndex + ".content"]);
 		core.createEditor(function() {
 			fileManager.saveFile();
@@ -40,15 +58,10 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		if (!title) {
 			// Create a file title 
 			title = DEFAULT_FILE_TITLE;
-			function exists(title) {
-				for ( var i = 0; i < fileDescList.length; i++) {
-					if(fileDescList[i].title == title) {
-						return true;
-					}
-				}
-			}
 			var indicator = 2;
-			while(exists(title)) {
+			while(_.some(fileDescList, function(fileDesc) {
+				return fileDesc.title == title;
+			})) {
 				title = DEFAULT_FILE_TITLE + indicator++;
 			}
 		}
@@ -57,15 +70,14 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		var fileIndex = undefined;
 		do {
 			fileIndex = "file." + core.randomString();
-		} while(localStorage[fileIndex + ".title"] !== undefined);
+		} while(_.has(localStorage, fileIndex + ".title"));
 		
 		// Create the file in the localStorage
 		localStorage[fileIndex + ".content"] = content;
 		localStorage[fileIndex + ".title"] = title;
-		var sync = ";";
-		for(var i=0; i<syncIndexes.length; i++) {
-			sync += syncIndexes[i] + ";";
-		}
+		var sync = _.reduce(syncIndexes, function(sync, syncIndex) {
+			return sync + syncIndex + ";";
+		}, ";");
 		localStorage[fileIndex + ".sync"] = sync;
 		localStorage[fileIndex + ".publish"] = ";";
 		localStorage["file.list"] += fileIndex + ";";
@@ -73,29 +85,25 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 	};
 
 	fileManager.deleteFile = function(fileIndex) {
-		var fileIndexCurrent = localStorage["file.current"];
-		fileIndex = fileIndex || fileIndexCurrent;
-		if(fileIndex == fileIndexCurrent) {
-			// Since we are going to modify current file
-			core.checkWindowUnique();
-			localStorage.removeItem("file.current");
+		fileIndex = fileIndex || fileManager.getCurrentFileIndex();
+		if(fileManager.isCurrentFileIndex(fileIndex)) {
+			// Unset the current fileIndex
+			fileManager.setCurrentFileIndex();
 		}
 
 		// Remove synchronized locations
-		var fileSyncIndexList = localStorage[fileIndex + ".sync"].split(";");
-		for ( var i = 1; i < fileSyncIndexList.length - 1; i++) {
-			var fileSyncIndex = fileSyncIndexList[i];
-			fileManager.removeSync(fileSyncIndex);
-		}
+		var syncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
 		localStorage.removeItem(fileIndex + ".sync");
+		_.each(syncIndexList, function(syncIndex) {
+			fileManager.removeSync(syncIndex);
+		});
 		
 		// Remove publish locations
-		var publishIndexList = localStorage[fileIndex + ".publish"].split(";");
-		for ( var i = 1; i < publishIndexList.length - 1; i++) {
-			var publishIndex = publishIndexList[i];
+		var publishIndexList = _.compact(localStorage[fileIndex + ".publish"].split(";"));
+		localStorage.removeItem(fileIndex + ".publish");
+		_.each(publishIndexList, function(publishIndex) {
 			fileManager.removePublish(publishIndex);
-		}
-		localStorage.removeItem(fileIndex + ".sync");
+		});
 
 		localStorage["file.list"] = localStorage["file.list"].replace(";"
 			+ fileIndex + ";", ";");
@@ -105,35 +113,29 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 
 	fileManager.saveFile = function() {
 		var content = $("#wmd-input").val();
-		var fileIndex = localStorage["file.current"];
+		var fileIndex = fileManager.getCurrentFileIndex();
 		localStorage[fileIndex + ".content"] = content;
 		synchronizer.notifyChange(fileIndex);
 	};
 	
 	fileManager.updateFileTitles = function() {
-		fileDescList = [];
 		$("#file-selector").empty();
-		var fileIndexList = localStorage["file.list"].split(";");
-		for ( var i = 1; i < fileIndexList.length - 1; i++) {
-			var fileIndex = fileIndexList[i];
-			var title = localStorage[fileIndex + ".title"];
-			fileDescList.push({ index : fileIndex, title : title });
-		}
-		fileDescList.sort(function(a, b) {
-			if (a.title.toLowerCase() < b.title.toLowerCase())
-				return -1;
-			if (a.title.toLowerCase() > b.title.toLowerCase())
-				return 1;
-			return 0;
-		});
+		fileDescList = _.chain(localStorage["file.list"].split(";"))
+			.compact()
+			.reduce(function(fileDescList, fileIndex) {
+				var title = localStorage[fileIndex + ".title"];
+				fileDescList.push({ index : fileIndex, title : title });
+				return fileDescList;
+			}, [])
+			.sortBy(function(fileDesc) {
+				return fileDesc.title.toLowerCase();
+			}).value();
 
-		var fileIndex = localStorage["file.current"];
+		var fileIndex = fileManager.getCurrentFileIndex();
 		// If no default file take first one
-		if (!fileIndex) {
-			// Since we are going to modify current file
-			core.checkWindowUnique();
+		if (fileIndex === undefined) {
 			fileIndex = fileDescList[0].index;
-			localStorage["file.current"] = fileIndex;
+			fileManager.setCurrentFileIndex(fileIndex);
 		}
 		
 		var useGoogleDrive = false;
@@ -170,10 +172,7 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 			} else {
 				a.prop("href", "#").click((function(fileIndex) {
 					return function() {
-						// Since we are going to modify current file
-						core.checkWindowUnique();
-						localStorage["file.current"] = fileIndex;
-						fileManager.selectFile();
+						fileManager.selectFile(fileIndex);
 					};
 				})(fileDesc.index));
 			}
@@ -184,30 +183,30 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 	};
 
 	// Remove a synchronized location
-	fileManager.removeSync = function(fileSyncIndex) {
-		var fileIndexCurrent = localStorage["file.current"];
-		var fileIndex = this.getFileIndexFromSync(fileSyncIndex);
+	fileManager.removeSync = function(syncIndex) {
+		var currentFileIndex = fileManager.getCurrentFileIndex();
+		var fileIndex = this.getFileIndexFromSync(syncIndex);
 		if(fileIndex !== undefined) {
 			localStorage[fileIndex + ".sync"] = localStorage[fileIndex + ".sync"].replace(";"
-				+ fileSyncIndex + ";", ";");
-			if(fileIndex == fileIndexCurrent) {
+				+ syncIndex + ";", ";");
+			if(fileIndex == currentFileIndex) {
 				refreshManageSync();
 			}
 		}
 		// Remove ETAG, version, CRCs (if any) 
-		localStorage.removeItem(fileSyncIndex + ".etag");
-		localStorage.removeItem(fileSyncIndex + ".version");
-		localStorage.removeItem(fileSyncIndex + ".contentCRC");
-		localStorage.removeItem(fileSyncIndex + ".titleCRC");
+		localStorage.removeItem(syncIndex + ".etag");
+		localStorage.removeItem(syncIndex + ".version");
+		localStorage.removeItem(syncIndex + ".contentCRC");
+		localStorage.removeItem(syncIndex + ".titleCRC");
 	};
 	
 	// Look for local file associated to a synchronized location 
-	fileManager.getFileIndexFromSync = function(fileSyncIndex) {
+	fileManager.getFileIndexFromSync = function(syncIndex) {
 		var fileIndexList = localStorage["file.list"].split(";");
 		for ( var i = 1; i < fileIndexList.length - 1; i++) {
 			var fileIndex = fileIndexList[i];
 			var sync = localStorage[fileIndex + ".sync"];
-			if (sync.indexOf(";" + fileSyncIndex + ";") !== -1) {
+			if (sync.indexOf(";" + syncIndex + ";") !== -1) {
 				return fileIndex;
 			}
 		}
@@ -216,18 +215,18 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 
 	// Remove a publish location
 	fileManager.removePublish = function(publishIndex) {
-		var fileIndexCurrent = localStorage["file.current"];
+		var currentFileIndex = fileManager.getCurrentFileIndex();
 		var fileIndex = this.getFileIndexFromPublish(publishIndex);
 		if(fileIndex !== undefined) {
 			localStorage[fileIndex + ".publish"] = localStorage[fileIndex + ".publish"].replace(";"
 				+ publishIndex + ";", ";");
-			if(fileIndex == fileIndexCurrent) {
+			if(fileIndex == currentFileIndex) {
 				refreshManagePublish();
 			}
 		}
 		// Remove publish object
 		localStorage.removeItem(publishIndex);
-		publisher.notifyCurrentFile(localStorage["file.current"]);
+		publisher.notifyCurrentFile();
 	};
 	
 	// Look for local file associated to a publish location 
@@ -244,18 +243,18 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 	};
 	
 	function uploadGdrive(fileId, folderId) {
-		var fileIndex = localStorage["file.current"];
+		var fileIndex = fileManager.getCurrentFileIndex();
 		var content = localStorage[fileIndex + ".content"];
 		var title = localStorage[fileIndex + ".title"];
-		googleHelper.upload(fileId, folderId, title, content, function(fileSyncIndex) {
-			if (fileSyncIndex === undefined) {
+		googleHelper.upload(fileId, folderId, title, content, function(syncIndex) {
+			if (syncIndex === undefined) {
 				return;
 			}
 			var contentCRC = core.crc32(content);
-			localStorage[fileSyncIndex + ".contentCRC"] = contentCRC;
+			localStorage[syncIndex + ".contentCRC"] = contentCRC;
 			var titleCRC = core.crc32(title);
-			localStorage[fileSyncIndex + ".titleCRC"] = titleCRC;
-			localStorage[fileIndex + ".sync"] += fileSyncIndex + ";";
+			localStorage[syncIndex + ".titleCRC"] = titleCRC;
+			localStorage[fileIndex + ".sync"] += syncIndex + ";";
 			refreshManageSync();
 			fileManager.updateFileTitles();
 			core.showMessage('"' + title
@@ -268,8 +267,8 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 			return;
 		}
 		// Check that file is not synchronized with an other one
-		var fileSyncIndex = SYNC_PROVIDER_GDRIVE + fileId;
-		var fileIndex = fileManager.getFileIndexFromSync(fileSyncIndex);
+		var syncIndex = SYNC_PROVIDER_GDRIVE + fileId;
+		var fileIndex = fileManager.getFileIndexFromSync(syncIndex);
 		if(fileIndex !== undefined) {
 			var title = localStorage[fileIndex + ".title"];
 			core.showError('File ID is already synchronized with "' + title + '"');
@@ -285,8 +284,8 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		var importIds = [];
 		for(var i=0; i<ids.length; i++) {
 			var fileId = ids[i];
-			var fileSyncIndex = SYNC_PROVIDER_GDRIVE + fileId;
-			var fileIndex = fileManager.getFileIndexFromSync(fileSyncIndex);
+			var syncIndex = SYNC_PROVIDER_GDRIVE + fileId;
+			var fileIndex = fileManager.getFileIndexFromSync(syncIndex);
 			if(fileIndex !== undefined) {
 				var title = localStorage[fileIndex + ".title"];
 				core.showError('"' + title + '" was already imported');
@@ -306,23 +305,23 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 			return;
 		}
 		// Check that file is not synchronized with an other one
-		var fileSyncIndex = SYNC_PROVIDER_DROPBOX + encodeURIComponent(path.toLowerCase());
-		var fileIndex = fileManager.getFileIndexFromSync(fileSyncIndex);
+		var syncIndex = SYNC_PROVIDER_DROPBOX + encodeURIComponent(path.toLowerCase());
+		var fileIndex = fileManager.getFileIndexFromSync(syncIndex);
 		if(fileIndex !== undefined) {
 			var title = localStorage[fileIndex + ".title"];
 			core.showError('Path "' + path + '" is already synchronized with "' + title + '"');
 			return;
 		}
-		var fileIndex = localStorage["file.current"];
+		var fileIndex = fileManager.getCurrentFileIndex();
 		var content = localStorage[fileIndex + ".content"];
 		var title = localStorage[fileIndex + ".title"];
-		dropboxHelper.upload(path, content, function(fileSyncIndex) {
-			if (fileSyncIndex === undefined) {
+		dropboxHelper.upload(path, content, function(syncIndex) {
+			if (syncIndex === undefined) {
 				return;
 			}
 			var contentCRC = core.crc32(content);
-			localStorage[fileSyncIndex + ".contentCRC"] = contentCRC;
-			localStorage[fileIndex + ".sync"] += fileSyncIndex + ";";
+			localStorage[syncIndex + ".contentCRC"] = contentCRC;
+			localStorage[fileIndex + ".sync"] += syncIndex + ";";
 			refreshManageSync();
 			fileManager.updateFileTitles();
 			core.showMessage('"' + title
@@ -337,8 +336,8 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		var importPaths = [];
 		for(var i=0; i<paths.length; i++) {
 			var filePath = paths[i];
-			var fileSyncIndex = SYNC_PROVIDER_DROPBOX + encodeURIComponent(filePath.toLowerCase());
-			var fileIndex = fileManager.getFileIndexFromSync(fileSyncIndex);
+			var syncIndex = SYNC_PROVIDER_DROPBOX + encodeURIComponent(filePath.toLowerCase());
+			var fileIndex = fileManager.getFileIndexFromSync(syncIndex);
 			if(fileIndex !== undefined) {
 				var title = localStorage[fileIndex + ".title"];
 				core.showError('"' + title + '" was already imported');
@@ -350,46 +349,46 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 	}
 	
 	function refreshManageSync() {
-		var fileIndex = localStorage["file.current"];
-		var fileSyncIndexList = localStorage[fileIndex + ".sync"].split(";");
+		var fileIndex = fileManager.getCurrentFileIndex();
+		var syncIndexList = localStorage[fileIndex + ".sync"].split(";");
 		$(".msg-no-sync, .msg-sync-list").addClass("hide");
 		$("#manage-sync-list .input-append").remove();
-		if (fileSyncIndexList.length > 2) {
+		if (syncIndexList.length > 2) {
 			$(".msg-sync-list").removeClass("hide");
 		} else {
 			$(".msg-no-sync").removeClass("hide");
 		}
-		for ( var i = 1; i < fileSyncIndexList.length - 1; i++) {
-			var fileSyncIndex = fileSyncIndexList[i];
-			(function(fileSyncIndex) {
+		for ( var i = 1; i < syncIndexList.length - 1; i++) {
+			var syncIndex = syncIndexList[i];
+			(function(syncIndex) {
 				var line = $("<div>").addClass("input-prepend input-append");
-				if (fileSyncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
+				if (syncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
 					line.append($("<span>").addClass("add-on").prop("title", "Google Drive").html(
 						'<i class="icon-gdrive"></i>'));
 					line.append($("<input>").prop("type", "text").prop(
 						"disabled", true).addClass("span5").val(
-						fileSyncIndex.substring(SYNC_PROVIDER_GDRIVE.length)));
+						syncIndex.substring(SYNC_PROVIDER_GDRIVE.length)));
 				}
-				else if (fileSyncIndex.indexOf(SYNC_PROVIDER_DROPBOX) === 0) {
+				else if (syncIndex.indexOf(SYNC_PROVIDER_DROPBOX) === 0) {
 					line.append($("<span>").addClass("add-on").prop("title", "Dropbox").html(
 					'<i class="icon-dropbox"></i>'));
 					line.append($("<input>").prop("type", "text").prop(
 						"disabled", true).addClass("span5").val(
-							decodeURIComponent(fileSyncIndex.substring(SYNC_PROVIDER_DROPBOX.length))));
+							decodeURIComponent(syncIndex.substring(SYNC_PROVIDER_DROPBOX.length))));
 				}
 				line.append($("<a>").addClass("btn").html(
 					'<i class="icon-trash"></i>').prop("title",
 					"Remove this location").click(function() {
-					fileManager.removeSync(fileSyncIndex);
+					fileManager.removeSync(syncIndex);
 					fileManager.updateFileTitles();
 				}));
 				$("#manage-sync-list").append(line);
-			})(fileSyncIndex);
+			})(syncIndex);
 		}
 	}
 	
 	function refreshManagePublish() {
-		var fileIndex = localStorage["file.current"];
+		var fileIndex = fileManager.getCurrentFileIndex();
 		var publishIndexList = localStorage[fileIndex + ".publish"].split(";");
 		$(".msg-no-publish, .msg-publish-list").addClass("hide");
 		$("#manage-publish-list .input-append").remove();
@@ -465,7 +464,7 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 			return;
 		}
 		
-		var fileIndex = localStorage["file.current"];
+		var fileIndex = fileManager.getCurrentFileIndex();
 		var title = localStorage[fileIndex + ".title"];
 		var content = publisher.getPublishContent(publishObject);
 		var commitMsg = core.settings.commitMsg;
@@ -475,7 +474,7 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 				if(error === undefined) {
 					createPublishIndex(publishObject, fileIndex);
 					refreshManagePublish();
-					publisher.notifyCurrentFile(localStorage["file.current"]);
+					publisher.notifyCurrentFile();
 					core.showMessage('"' + title
 						+ '" will now be published on GitHub.');
 				}
@@ -516,7 +515,7 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		$("#file-title-input").blur(function() {
 			var title = $.trim($(this).val());
 			if (title) {
-				var fileIndexTitle = localStorage["file.current"] + ".title";
+				var fileIndexTitle = fileManager.getCurrentFileIndex() + ".title";
 				if (title != localStorage[fileIndexTitle]) {
 					localStorage[fileIndexTitle] = title;
 					fileManager.updateFileTitles();

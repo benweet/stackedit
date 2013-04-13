@@ -364,6 +364,7 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 			callback();
 		};
 		if (error) {
+			console.error(error);
 			// Try to analyze the error
 			if (typeof error === "string") {
 				errorMsg = error;

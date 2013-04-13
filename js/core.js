@@ -2,7 +2,7 @@ define(
 	[ "jquery", "file-manager", "google-helper", "dropbox-helper",
 		"github-helper", "synchronizer", "publisher", "async-runner",
 		"bootstrap", "jgrowl", "layout", "Markdown.Editor", "config",
-		"underscore-min" ],
+		"underscore" ],
 	function($, fileManager, googleHelper, dropboxHelper, githubHelper,
 		synchronizer, publisher, asyncTaskRunner) {
 	
@@ -117,7 +117,7 @@ define(
 	core.showMessage = function(msg, iconClass, options) {
 		options = options || {};
 		iconClass = iconClass || "icon-info-sign";
-		$.jGrowl("<i class='icon-white " + iconClass + "'></i> " + $("<div>").text(msg).html(), options);
+		$.jGrowl("<i class='icon-white " + iconClass + "'></i> " + _.escape(msg), options);
 	};
 
 	// Used to show an error message
@@ -429,7 +429,7 @@ define(
 	
 	// Generates a random string
 	core.randomString = function() {
-		return Math.ceil(Math.random() * 4294967296).toString(36);
+		return _.random(4294967296).toString(36);
 	};
 	
 	// Used to setup an empty localStorage 

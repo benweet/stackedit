@@ -389,15 +389,15 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 	
 	// Create a new publication on GitHub
 	function newPublishGithub(event) {
-		var publishObject = {};
-		publishObject.repository = core.getInputValue($("#input-publish-github-reponame"), event);
-		publishObject.branch = core.getInputValue($("#input-publish-github-branch"), event);
-		publishObject.path = core.getInputValue($("#input-publish-github-path"), event);
-		publishObject.provider = newPublishProvider;
+		var publishAttributes = {};
+		publishAttributes.repository = core.getInputValue($("#input-publish-github-reponame"), event);
+		publishAttributes.branch = core.getInputValue($("#input-publish-github-branch"), event);
+		publishAttributes.path = core.getInputValue($("#input-publish-github-path"), event);
+		publishAttributes.provider = newPublishProvider;
 		if(event.isPropagationStopped()) {
 			return;
 		}
-		publisher.newLocation(publishObject);
+		publisher.newLocation(publishAttributes);
 	}
 	
 	// Create a new publication on Blogger

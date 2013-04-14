@@ -329,6 +329,9 @@ hr {
 }
 
 #modal-settings textarea {
-	max-width: 206px;
-	height: 150px;
+	height: 180px;
+}
+
+.tooltip-inner {
+	text-align: left;
 }

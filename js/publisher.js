@@ -41,28 +41,34 @@ define(["jquery", "github-provider", "underscore"], function($) {
 	};
 	
 	// Apply template to the current document
-	publisher.applyTemplate = function() {
+	publisher.applyTemplate = function(publishAttributes) {
 		var fileIndex = fileManager.getCurrentFileIndex();
-		return _.template(core.settings.template, {
-			documentTitle: localStorage[fileIndex + ".title"],
-			documentMarkdown: $("#wmd-input").val(),
-			documentHTML: $("#wmd-preview").html()
-		});
+		try {
+			return _.template(core.settings.template, {
+				documentTitle: localStorage[fileIndex + ".title"],
+				documentMarkdown: $("#wmd-input").val(),
+				documentHTML: $("#wmd-preview").html(),
+				publishAttributes: publishAttributes
+			});
+		} catch(e) {
+			core.showError(e);
+			throw e;
+		}
 	};
 	
 	// Used to get content to publish
-	function getPublishContent(publishObject) {
-		if(publishObject.format === undefined) {
-			publishObject.format = $("input:radio[name=radio-publish-format]:checked").prop("value");			
+	function getPublishContent(publishAttributes) {
+		if(publishAttributes.format === undefined) {
+			publishAttributes.format = $("input:radio[name=radio-publish-format]:checked").prop("value");			
 		}
-		if(publishObject.format == "markdown") {
+		if(publishAttributes.format == "markdown") {
 			return $("#wmd-input").val();
 		}
-		else if(publishObject.format == "html") {
+		else if(publishAttributes.format == "html") {
 			return $("#wmd-preview").html();
 		}
 		else {
-			return publisher.applyTemplate();
+			return publisher.applyTemplate(publishAttributes);
 		}
 	}
 	
@@ -79,12 +85,12 @@ define(["jquery", "github-provider", "underscore"], function($) {
 		
 		// Dequeue a synchronized location
 		var publishIndex = publishIndexList.pop();
-		var publishObject = JSON.parse(localStorage[publishIndex]);
-		var content = getPublishContent(publishObject);
+		var publishAttributes = JSON.parse(localStorage[publishIndex]);
+		var content = getPublishContent(publishAttributes);
 		
 		// Call the provider
-		var provider = providerMap[publishObject.provider];
-		provider.publish(publishObject, publishTitle, content, function(error) {
+		var provider = providerMap[publishAttributes.provider];
+		provider.publish(publishAttributes, publishTitle, content, function(error) {
 			publishLocation(callback, errorFlag);
 		});
 	}
@@ -105,30 +111,30 @@ define(["jquery", "github-provider", "underscore"], function($) {
 			publishRunning = false;
 			publisher.updatePublishButton();
 			if(errorFlag === undefined) {
-				core.showMessage('"' + title + '" successfully published.');
+				core.showMessage('"' + publishTitle + '" successfully published.');
 			}
 		});
 	};
 	
-	// Generate a publishIndex associated to a fileIndex and store a publishObject
-	function createPublishIndex(fileIndex, publishObject) {
+	// Generate a publishIndex associated to a fileIndex and store publishAttributes
+	function createPublishIndex(fileIndex, publishAttributes) {
 		var publishIndex = undefined;
 		do {
 			publishIndex = "publish." + core.randomString();
 		} while(_.has(localStorage, publishIndex));
-		localStorage[publishIndex] = JSON.stringify(publishObject);
+		localStorage[publishIndex] = JSON.stringify(publishAttributes);
 		localStorage[fileIndex + ".publish"] += publishIndex + ";";
 	}
 	
 	// Add a new publish location to a local document
-	publisher.newLocation = function(publishObject) {
+	publisher.newLocation = function(publishAttributes) {
 		var fileIndex = fileManager.getCurrentFileIndex();
 		var title = localStorage[fileIndex + ".title"];
-		var content = getPublishContent(publishObject);
-		var provider = providerMap[publishObject.provider];
-		provider.publish(publishObject, title, content, function(error) {
+		var content = getPublishContent(publishAttributes);
+		var provider = providerMap[publishAttributes.provider];
+		provider.publish(publishAttributes, title, content, function(error) {
 			if(error === undefined) {
-				createPublishIndex(fileIndex, publishObject);
+				createPublishIndex(fileIndex, publishAttributes);
 				publisher.notifyPublish();
 				core.showMessage('"' + title
 					+ '" will now be published on GitHub.');
@@ -155,10 +161,10 @@ define(["jquery", "github-provider", "underscore"], function($) {
 		}
 		_.each(publishIndexList, function(publishIndex) {
 			var serializedObject = localStorage[publishIndex];
-			var publishObject = JSON.parse(serializedObject);
-			var publishDesc = JSON.stringify(_.omit(publishObject, 'provider')).replace(/{|}|"/g, "");
+			var publishAttributes = JSON.parse(serializedObject);
+			var publishDesc = JSON.stringify(_.omit(publishAttributes, 'provider')).replace(/{|}|"/g, "");
 			lineElement = $(_.template(lineTemplate, {
-				provider: providerMap[publishObject.provider],
+				provider: providerMap[publishAttributes.provider],
 				publishDesc: publishDesc
 			}));
 			lineElement.append($(removeButtonTemplate).click(function() {
@@ -184,9 +190,30 @@ define(["jquery", "github-provider", "underscore"], function($) {
 		});
 		
 		$(".tooltip-template").tooltip({
-			title: ['Variables:\n',
-			        'documentTitle: the document title'
-			].join("")
+			html: true,
+			container: '#modal-settings',
+			placement: 'right',
+			trigger: 'manual',
+			title: ['Available variables:<br>',
+			        '<ul><li><b>documentTitle</b>: document title</li>',
+			        '<li><b>documentMarkdown</b>: document in Markdown format</li>',
+			        '<li><b>documentHTML</b>: document in HTML format</li>',
+			        '<li><b>publishAttributes</b>: attributes of the publish location (undefined when using "Save")</li></ul>',
+			        'Examples:<br>',
+			        _.escape('<title><%= documentTitle %></title>'),
+			        '<br>',
+			        _.escape('<div><%- documentHTML %></div>'),
+			        '<br>',
+			        _.escape('<% if(publishAttributes.provider == "github") print(documentMarkdown); %>'),
+			        '<br><br><a target="_blank" href="http://underscorejs.org/#template">More info</a>',
+			        ].join("")
+		}).click(function(e) {
+			$(this).tooltip('show');
+			e.stopPropagation();
+		});
+		
+		$(document).click(function(e) {
+			$(".tooltip-template").tooltip('hide');
 		});
 	};
 	

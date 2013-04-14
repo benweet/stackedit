@@ -9,10 +9,10 @@ define(["jquery", "github-helper"], function($, githubHelper) {
 		providerName: "GitHub"
 	};
 	
-	publishGithub.publish = function(publishObject, title, content, callback) {
+	publishGithub.publish = function(publishAttributes, title, content, callback) {
 		var commitMsg = core.settings.commitMsg;
-		githubHelper.upload(publishObject.repository, publishObject.branch,
-			publishObject.path, content, commitMsg, callback);
+		githubHelper.upload(publishAttributes.repository, publishAttributes.branch,
+			publishAttributes.path, content, commitMsg, callback);
 	};
 
 	publishGithub.init = function(coreModule) {

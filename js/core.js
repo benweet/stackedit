@@ -176,7 +176,14 @@ define(
 	core.settings = {
 		layoutOrientation : "horizontal",
 		editorFontSize : 14,
-		commitMsg : "Published by StackEdit."
+		commitMsg : "Published by StackEdit.",
+		template : ['<!DOCTYPE html>\n',
+			'<html>\n',
+			'<head>\n',
+			'<title><%= documentTitle %></title>\n',
+			'</head>\n',
+			'<body><%= documentHTML %></body>\n',
+			'</html>'].join("")
 	};
 	
 	core.loadSettings = function() {
@@ -193,6 +200,9 @@ define(
 		
 		// Commit message
 		$("#input-settings-publish-commit-msg").val(core.settings.commitMsg);
+		
+		// Template
+		$("#textarea-settings-publish-template").val(core.settings.template);
 	};
 
 	core.saveSettings = function(event) {
@@ -208,12 +218,15 @@ define(
 		// Commit message
 		newSettings.commitMsg = core.getInputValue($("#input-settings-publish-commit-msg"), event);
 		
+		// Template
+		newSettings.template = core.getInputValue($("#textarea-settings-publish-template"), event);
+		
 		if(!event.isPropagationStopped()) {
 			core.settings = newSettings;
 			localStorage.settings = JSON.stringify(newSettings);
 		}
 	};
-
+	
 	// Create the layout
 	core.createLayout = function() {
 		var layout = undefined;

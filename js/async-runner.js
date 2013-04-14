@@ -6,7 +6,7 @@
  *  - an optional onError() function
  *  - an optional timeout field (default is 30000)
  */
-define(function() {
+define(["underscore"], function() {
 	
 	var asyncTaskRunner = {};
 	
@@ -75,8 +75,8 @@ define(function() {
 	}
 	
 	asyncTaskRunner.runTask = function() {		
-		// Use setTimeout to avoid stack overflow
-		setTimeout(runTask, 0);
+		// Use defer to avoid stack overflow
+		_.defer(runTask);
 	};
 	
 	function runSafe(func) {

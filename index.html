@@ -58,6 +58,8 @@
 								class="icon-download-alt"></i> Save as MD</a></li>
 						<li><a class="action-download-html" href="#"><i
 								class="icon-download-alt"></i> Save as HTML</a></li>
+						<li><a class="action-download-template" href="#"><i
+								class="icon-download-alt"></i> Save using template</a></li>
 						<li class="divider"></li>
 						<li class="dropdown-submenu"><a href="#"><i
 								class="icon-gdrive"></i> Google Drive</a>
@@ -314,7 +316,9 @@
 							name="radio-publish-format" value="markdown"> Markdown
 						</label> <label class="radio"> <input type="radio"
 							name="radio-publish-format" value="html"> HTML
-						</label>
+						</label> <label class="radio"> <input type="radio"
+                            name="radio-publish-format" value="template"> Template
+                        </label>
 					</div>
 				</div>
 			</div>
@@ -393,6 +397,13 @@
 								for="input-settings-publish-commit-msg">Commit message</label>
 							<div class="controls">
 								<input type="text" id="input-settings-publish-commit-msg">
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label"
+								for="textarea-settings-publish-template">Template</label>
+							<div class="controls">
+								<textarea id="textarea-settings-publish-template"></textarea>
 							</div>
 						</div>
 					</div>

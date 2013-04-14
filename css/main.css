@@ -29,7 +29,7 @@ div, span, a, ul, li, textarea, input, button {
     text-shadow: none !important;
 }
 
-.btn, .navbar-inner, .ui-layout-east, .ui-layout-south, textarea, .add-on {
+.btn, .navbar-inner, .ui-layout-east, .ui-layout-south, .add-on {
     border: none !important;
 }
 
@@ -39,12 +39,13 @@ div, span, a, ul, li, textarea, input, button {
 }
 
 input,
+textarea,
 .input-prepend .btn,
 .input-prepend .add-on {
     border: 1px solid #ebebeb !important;
 }
 
-input.error {
+.error {
     border-color: #ff6661 !important; 
 }
 
@@ -165,6 +166,7 @@ hr {
 #wmd-input {
 	font-family: "Courier New", Courier, monospace;
 	resize: none;
+	border: none !important;
 }
 
 #wmd-preview {
@@ -324,4 +326,9 @@ hr {
 /* Google picker */
 .picker-dialog {
 	z-index: 1050 !important;
+}
+
+#modal-settings textarea {
+	max-width: 206px;
+	height: 150px;
 }

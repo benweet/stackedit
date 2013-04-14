@@ -41,8 +41,7 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		// Update the file titles
 		fileManager.updateFileTitles();
 		refreshManageSync();
-		refreshManagePublish();
-		publisher.notifyCurrentFile();
+		publisher.notifyPublish();
 		
 		// Recreate the editor
 		fileIndex = fileManager.getCurrentFileIndex();
@@ -120,8 +119,7 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 	
 	fileManager.updateFileTitles = function() {
 		$("#file-selector").empty();
-		fileDescList = _.chain(localStorage["file.list"].split(";"))
-			.compact()
+		fileDescList = _.chain(localStorage["file.list"].split(";")).compact()
 			.reduce(function(fileDescList, fileIndex) {
 				var title = localStorage[fileIndex + ".title"];
 				fileDescList.push({ index : fileIndex, title : title });
@@ -163,8 +161,7 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		
 		// Update the file selector
 		$("#file-selector").empty();
-		for ( var i = 0; i < fileDescList.length; i++) {
-			var fileDesc = fileDescList[i];
+		_.each(fileDescList, function(fileDesc) {
 			var a = $("<a>").html(composeTitle(fileDesc.index));
 			var li = $("<li>").append(a);
 			if (fileDesc.index == fileIndex) {
@@ -176,20 +173,19 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 					};
 				})(fileDesc.index));
 			}
-			$("#file-selector").append(li);
-		}
+			$("#file-selector").append(li);			
+		});
 		synchronizer.useGoogleDrive = useGoogleDrive;
 		synchronizer.useDropbox = useDropbox;
 	};
 
-	// Remove a synchronized location
+	// Remove a syncIndex (synchronized location)
 	fileManager.removeSync = function(syncIndex) {
-		var currentFileIndex = fileManager.getCurrentFileIndex();
-		var fileIndex = this.getFileIndexFromSync(syncIndex);
+		var fileIndex = fileManager.getFileIndexFromSync(syncIndex);
 		if(fileIndex !== undefined) {
 			localStorage[fileIndex + ".sync"] = localStorage[fileIndex + ".sync"].replace(";"
 				+ syncIndex + ";", ";");
-			if(fileIndex == currentFileIndex) {
+			if(fileManager.isCurrentFileIndex(fileIndex)) {
 				refreshManageSync();
 			}
 		}
@@ -200,46 +196,36 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		localStorage.removeItem(syncIndex + ".titleCRC");
 	};
 	
-	// Look for local file associated to a synchronized location 
+	// Get the fileIndex associated to a syncIndex
 	fileManager.getFileIndexFromSync = function(syncIndex) {
-		var fileIndexList = localStorage["file.list"].split(";");
-		for ( var i = 1; i < fileIndexList.length - 1; i++) {
-			var fileIndex = fileIndexList[i];
-			var sync = localStorage[fileIndex + ".sync"];
-			if (sync.indexOf(";" + syncIndex + ";") !== -1) {
-				return fileIndex;
-			}
-		}
-		return undefined;
+		return _.chain(localStorage["file.list"].split(";")).compact()
+			.find(function(fileIndex) {
+				var sync = localStorage[fileIndex + ".sync"];
+				return sync.indexOf(";" + syncIndex + ";") !== -1;
+			}).value();
 	};
 
-	// Remove a publish location
+	// Remove a publishIndex (publish location)
 	fileManager.removePublish = function(publishIndex) {
-		var currentFileIndex = fileManager.getCurrentFileIndex();
-		var fileIndex = this.getFileIndexFromPublish(publishIndex);
+		var fileIndex = fileManager.getFileIndexFromPublish(publishIndex);
 		if(fileIndex !== undefined) {
 			localStorage[fileIndex + ".publish"] = localStorage[fileIndex + ".publish"].replace(";"
 				+ publishIndex + ";", ";");
-			if(fileIndex == currentFileIndex) {
-				refreshManagePublish();
+			if(fileManager.isCurrentFileIndex(fileIndex)) {
+				publisher.notifyPublish();
 			}
 		}
 		// Remove publish object
 		localStorage.removeItem(publishIndex);
-		publisher.notifyCurrentFile();
 	};
 	
-	// Look for local file associated to a publish location 
+	// Get the fileIndex associated to a publishIndex
 	fileManager.getFileIndexFromPublish = function(publishIndex) {
-		var fileIndexList = localStorage["file.list"].split(";");
-		for ( var i = 1; i < fileIndexList.length - 1; i++) {
-			var fileIndex = fileIndexList[i];
-			var publish = localStorage[fileIndex + ".publish"];
-			if (publish.indexOf(";" + publishIndex + ";") !== -1) {
-				return fileIndex;
-			}
-		}
-		return undefined;
+		return _.chain(localStorage["file.list"].split(";")).compact()
+			.find(function(fileIndex) {
+				var sync = localStorage[fileIndex + ".publish"];
+				return sync.indexOf(";" + publishIndex + ";") !== -1;
+			}).value();
 	};
 	
 	function uploadGdrive(fileId, folderId) {
@@ -350,80 +336,38 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 	
 	function refreshManageSync() {
 		var fileIndex = fileManager.getCurrentFileIndex();
-		var syncIndexList = localStorage[fileIndex + ".sync"].split(";");
+		var syncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
 		$(".msg-no-sync, .msg-sync-list").addClass("hide");
 		$("#manage-sync-list .input-append").remove();
-		if (syncIndexList.length > 2) {
+		if (syncIndexList.length > 0) {
 			$(".msg-sync-list").removeClass("hide");
 		} else {
 			$(".msg-no-sync").removeClass("hide");
 		}
-		for ( var i = 1; i < syncIndexList.length - 1; i++) {
-			var syncIndex = syncIndexList[i];
-			(function(syncIndex) {
-				var line = $("<div>").addClass("input-prepend input-append");
-				if (syncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
-					line.append($("<span>").addClass("add-on").prop("title", "Google Drive").html(
-						'<i class="icon-gdrive"></i>'));
-					line.append($("<input>").prop("type", "text").prop(
-						"disabled", true).addClass("span5").val(
-						syncIndex.substring(SYNC_PROVIDER_GDRIVE.length)));
-				}
-				else if (syncIndex.indexOf(SYNC_PROVIDER_DROPBOX) === 0) {
-					line.append($("<span>").addClass("add-on").prop("title", "Dropbox").html(
-					'<i class="icon-dropbox"></i>'));
-					line.append($("<input>").prop("type", "text").prop(
-						"disabled", true).addClass("span5").val(
-							decodeURIComponent(syncIndex.substring(SYNC_PROVIDER_DROPBOX.length))));
-				}
-				line.append($("<a>").addClass("btn").html(
-					'<i class="icon-trash"></i>').prop("title",
-					"Remove this location").click(function() {
-					fileManager.removeSync(syncIndex);
-					fileManager.updateFileTitles();
-				}));
-				$("#manage-sync-list").append(line);
-			})(syncIndex);
-		}
-	}
-	
-	function refreshManagePublish() {
-		var fileIndex = fileManager.getCurrentFileIndex();
-		var publishIndexList = localStorage[fileIndex + ".publish"].split(";");
-		$(".msg-no-publish, .msg-publish-list").addClass("hide");
-		$("#manage-publish-list .input-append").remove();
-		if (publishIndexList.length > 2) {
-			$(".msg-publish-list").removeClass("hide");
-		} else {
-			$(".msg-no-publish").removeClass("hide");
-		}
-		for ( var i = 1; i < publishIndexList.length - 1; i++) {
-			var publishIndex = publishIndexList[i];
-			var serializedObject = localStorage[publishIndex];
-			(function(publishIndex, publishObject, serializedObject) {
-				var line = $("<div>").addClass("input-prepend input-append");
-				if (publishObject.provider == PUBLISH_PROVIDER_GITHUB) {
-					line.append($("<span>").addClass("add-on").prop("title", "GitHub").html(
-					'<i class="icon-github"></i>'));
-					line.append($("<input>").prop("type", "text").prop(
-						"disabled", true).addClass("span5").val(
-							serializedObject));
-				}
-				else if (publishObject.provider == PUBLISH_PROVIDER_BLOGGER) {
-					line.append($("<span>").addClass("add-on").prop("title", "Blogger").html(
-					'<i class="icon-blogger"></i>'));
-					line.append($("<input>").prop("type", "text").prop(
-						"disabled", true).addClass("span5").val(
-							serializedObject));
-				}
-				line.append($("<a>").addClass("btn").html(
+		_.each(syncIndexList, function(syncIndex) {
+			var line = $("<div>").addClass("input-prepend input-append");
+			if (syncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
+				line.append($("<span>").addClass("add-on").prop("title", "Google Drive").html(
+					'<i class="icon-gdrive"></i>'));
+				line.append($("<input>").prop("type", "text").prop(
+					"disabled", true).addClass("span5").val(
+					syncIndex.substring(SYNC_PROVIDER_GDRIVE.length)));
+			}
+			else if (syncIndex.indexOf(SYNC_PROVIDER_DROPBOX) === 0) {
+				line.append($("<span>").addClass("add-on").prop("title", "Dropbox").html(
+				'<i class="icon-dropbox"></i>'));
+				line.append($("<input>").prop("type", "text").prop(
+					"disabled", true).addClass("span5").val(
+						decodeURIComponent(syncIndex.substring(SYNC_PROVIDER_DROPBOX.length))));
+			}
+			line.append($("<a>").addClass("btn").html(
 				'<i class="icon-trash"></i>').prop("title",
 				"Remove this location").click(function() {
-					fileManager.removePublish(publishIndex);
-				}));
-				$("#manage-publish-list").append(line);
-			})(publishIndex, JSON.parse(serializedObject), serializedObject.replace(/{|}|"/g, ""));
-		}
+				fileManager.removeSync(syncIndex);
+				fileManager.updateFileTitles();
+			}));
+			$("#manage-sync-list").append(line);
+		});
 	}
 	
 	// Initialize the "New publication" dialog
@@ -443,16 +387,6 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		$("#modal-publish").modal();
 	}
 	
-	// Generate a publishIndex, store a publishObject and associate it to a fileIndex
-	function createPublishIndex(publishObject, fileIndex) {
-		var publishIndex = undefined;
-		do {
-			publishIndex = "publish." + core.randomString();
-		} while(localStorage[publishIndex] !== undefined);
-		localStorage[publishIndex] = JSON.stringify(publishObject);
-		localStorage[fileIndex + ".publish"] += publishIndex + ";";
-	}
-	
 	// Create a new publication on GitHub
 	function newPublishGithub(event) {
 		var publishObject = {};
@@ -463,22 +397,7 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		if(event.isPropagationStopped()) {
 			return;
 		}
-		
-		var fileIndex = fileManager.getCurrentFileIndex();
-		var title = localStorage[fileIndex + ".title"];
-		var content = publisher.getPublishContent(publishObject);
-		var commitMsg = core.settings.commitMsg;
-		githubHelper.upload(publishObject.repository,
-			publishObject.branch, publishObject.path, content, commitMsg,
-			function(error) {					
-				if(error === undefined) {
-					createPublishIndex(publishObject, fileIndex);
-					refreshManagePublish();
-					publisher.notifyCurrentFile();
-					core.showMessage('"' + title
-						+ '" will now be published on GitHub.');
-				}
-		});
+		publisher.newLocation(publishObject);
 	}
 	
 	// Create a new publication on Blogger
@@ -538,6 +457,13 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 				var uriContent = "data:application/octet-stream;base64,"
 					+ core.encodeBase64(content);
 				window.open(uriContent, 'file');
+			});		
+		$(".action-download-template").click(
+			function() {
+				var content = publisher.applyTemplate();
+				var uriContent = "data:application/octet-stream;base64,"
+					+ core.encodeBase64(content);
+				window.open(uriContent, 'file');
 			});
 		
 		// Synchronize actions
@@ -574,16 +500,16 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		
 		// Publish actions
 		$(".action-publish-github").click(function() {
-			initNewPublish(PUBLISH_PROVIDER_GITHUB);
+			initNewPublish(PROVIDER_GITHUB);
 		});
 		$(".action-publish-blogger").click(function() {
-			initNewPublish(PUBLISH_PROVIDER_BLOGGER, "html");
+			initNewPublish(PROVIDER_BLOGGER, "html");
 		});
 		$(".action-process-publish").click(function(e) {
-			if(newPublishProvider == PUBLISH_PROVIDER_GITHUB) {
+			if(newPublishProvider == PROVIDER_GITHUB) {
 				newPublishGithub(e);
 			}
-			else if(newPublishProvider == PUBLISH_PROVIDER_BLOGGER) {
+			else if(newPublishProvider == PROVIDER_BLOGGER) {
 				newPublishBlogger(e);
 			}
 		});

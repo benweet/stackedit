@@ -182,6 +182,12 @@ define(["jquery", "github-provider", "underscore"], function($) {
 				publisher.publish();
 			}
 		});
+		
+		$(".tooltip-template").tooltip({
+			title: ['Variables:\n',
+			        'documentTitle: the document title'
+			].join("")
+		});
 	};
 	
 	return publisher;

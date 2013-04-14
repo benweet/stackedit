@@ -21,7 +21,6 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
  - Publish on GitHub
 
 
-> **NOTE:** This page has been written and published with [StackEdit][1].
-
+> **NOTE:** This page has been written with [StackEdit][1].
 
   [1]: http://benweet.github.io/stackedit/ "StackEdit"

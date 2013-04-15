@@ -161,7 +161,9 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 				callback(error);
 			};
 			asyncTask.onError = function() {
-				console.error(error);
+				if(error !== undefined) {
+					console.error(error);
+				}
 				var errorMsg = "Could not publish on GitHub.";
 				if(error === 401 || error === 403) {
 					github = undefined;

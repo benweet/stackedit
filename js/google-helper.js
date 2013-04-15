@@ -355,7 +355,8 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 		});
 	};
 	
-	function handleError(error, asyncTask, callback) {
+	function handleError(error, asyncTask, callback, serviceName) {
+		serviceName = serviceName || "Google Drive";
 		var errorMsg = undefined;
 		asyncTask.onError = function() {
 			if (errorMsg !== undefined) {
@@ -370,19 +371,19 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 				errorMsg = error;
 			}
 			else if (error.code >= 500 && error.code < 600) {
-				errorMsg = "Google Drive is not accessible.";
+				errorMsg = serviceName + " is not accessible.";
 				// Retry as described in Google's best practices
 				asyncTask.retry();
 				return;
 			} else if (error.code === 401 || error.code === 403) {
 				authenticated = false;
-				errorMsg = "Access to Google Drive is not authorized.";
+				errorMsg = "Access to " + serviceName + " is not authorized.";
 			} else if (error.code <= 0) {
 				connected = false;
 				authenticated = false;
 				core.setOffline();
 			} else {
-				errorMsg = "Google Drive error (" + error.code + ": "
+				errorMsg = serviceName + " error (" + error.code + ": "
 					+ error.message + ").";
 			}
 		}
@@ -493,40 +494,91 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 		});
 	};
 
-	googleHelper.getBlogByUrl = function(url, callback) {
+	googleHelper.uploadBlogger = function(blogUrl, blogId, postId, title, content, callback) {
 		authenticate(function() {
 			if (connected === false) {
 				callback();
 				return;
 			}
 			
-			var result = undefined;
 			var asyncTask = {};
 			asyncTask.run = function() {
 				var token = gapi.auth.getToken();
 				var headers = {
 					Authorization : token ? "Bearer " + token.access_token: null
 				};
-				$.ajax({
-					url : "https://www.googleapis.com/blogger/v3/blogs/byurl",
-					data: { url: url },
-					headers : headers,
-					dataType : "json",
-					timeout : AJAX_TIMEOUT
-				}).done(function(blog, textStatus, jqXHR) {
-					result = blog;
-					asyncTask.success();
-				}).fail(function(jqXHR) {
-					var error = {
-						code: jqXHR.status,
-						message: jqXHR.statusText
+				
+				function getBlogId(localCallback) {
+					$.ajax({
+						url : "https://www.googleapis.com/blogger/v3/blogs/byurl",
+						data: { url: blogUrl },
+						headers : headers,
+						dataType : "json",
+						timeout : AJAX_TIMEOUT
+					}).done(function(blog, textStatus, jqXHR) {
+						blogId = blog.id;
+						localCallback();
+					}).fail(function(jqXHR) {
+						var error = {
+							code: jqXHR.status,
+							message: jqXHR.statusText
+						};
+						// Handle error
+						if(error.code === 404) {
+							error = 'Blog "' + blogUrl + '" not found on Blogger.';
+						}
+						handleError(error, asyncTask, callback, "Blogger");
+					});
+				}
+				
+				function publish() {
+					var url = "https://www.googleapis.com/blogger/v3/blogs/" + blogId + "/posts/";
+					var data = {
+						kind: "blogger#post",
+						blog: { id: blogId },
+						title: title,
+						content: content
 					};
-					// Handle error
-					handleError(error, asyncTask, callback);
-				});
+					var type = "POST";
+					// If it's an update
+					if(postId !== undefined) {
+						url += postId;
+						data.id = postId;
+						type = "PUT";
+					}
+					$.ajax({
+						url : url,
+						data: JSON.stringify(data),
+						headers : headers,
+						type: type,
+						contentType: "application/json",
+						dataType : "json",
+						timeout : AJAX_TIMEOUT
+					}).done(function(post, textStatus, jqXHR) {
+						postId = post.id;
+						asyncTask.success();
+					}).fail(function(jqXHR) {
+						var error = {
+							code: jqXHR.status,
+							message: jqXHR.statusText
+						};
+						// Handle error
+						if(error.code === 404 && postId !== undefined) {
+							error = 'Post ' + postId + ' not found on Blogger.';
+						}
+						handleError(error, asyncTask, callback, "Blogger");
+					});
+				}
+				
+				if(blogId === undefined) {
+					getBlogId(publish);
+				}
+				else {
+					publish();
+				}
 			};
 			asyncTask.onSuccess = function() {
-				callback(result);
+				callback(blogId, postId);
 			};
 			asyncTask.onError = function() {
 				callback();

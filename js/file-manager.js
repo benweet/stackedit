@@ -370,49 +370,6 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		});
 	}
 	
-	// Initialize the "New publication" dialog
-	var newPublishProvider = undefined;
-	function initNewPublish(provider, defaultPublishFormat) {
-		defaultPublishFormat = defaultPublishFormat || "markdown";
-		newPublishProvider = provider;
-		
-		// Show/hide controls depending on provider
-		$('div[class*=" modal-publish-"]').hide().filter(".modal-publish-" + provider).show();
-		
-		// Reset fields
-		core.resetModalInputs();
-		$("input:radio[name=radio-publish-format][value=" + defaultPublishFormat + "]").prop("checked", true);
-		
-		// Open dialog box
-		$("#modal-publish").modal();
-	}
-	
-	// Create a new publication on GitHub
-	function newPublishGithub(event) {
-		var publishAttributes = {};
-		publishAttributes.repository = core.getInputValue($("#input-publish-github-reponame"), event);
-		publishAttributes.branch = core.getInputValue($("#input-publish-github-branch"), event);
-		publishAttributes.path = core.getInputValue($("#input-publish-github-path"), event);
-		publishAttributes.provider = newPublishProvider;
-		if(event.isPropagationStopped()) {
-			return;
-		}
-		publisher.newLocation(publishAttributes);
-	}
-	
-	// Create a new publication on Blogger
-	function newPublishBlogger(event) {
-		var blogUrl = core.getInputValue($("#input-publish-blogger-url"), event);
-		if(event.isPropagationStopped()) {
-			return;
-		}
-		
-		googleHelper.getBlogByUrl(blogUrl, function(blog) {
-			console.log(blog);
-		});
-		
-	}
-
 	fileManager.init = function(coreModule) {
 		core = coreModule;
 		
@@ -496,22 +453,6 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		$(".action-manual-dropbox").click(function(event) {
 			var path = core.getInputValue($("#manual-dropbox-path"), event);
 			manualDropbox(path);
-		});
-		
-		// Publish actions
-		$(".action-publish-github").click(function() {
-			initNewPublish(PROVIDER_GITHUB);
-		});
-		$(".action-publish-blogger").click(function() {
-			initNewPublish(PROVIDER_BLOGGER, "html");
-		});
-		$(".action-process-publish").click(function(e) {
-			if(newPublishProvider == PROVIDER_GITHUB) {
-				newPublishGithub(e);
-			}
-			else if(newPublishProvider == PROVIDER_BLOGGER) {
-				newPublishBlogger(e);
-			}
 		});
 	};
 

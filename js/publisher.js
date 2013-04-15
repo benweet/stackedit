@@ -1,4 +1,4 @@
-define(["jquery", "github-provider", "underscore"], function($) {
+define(["jquery", "github-provider", "blogger-provider", "underscore"], function($) {
 	
 	// Dependencies
 	var core = undefined;
@@ -91,7 +91,7 @@ define(["jquery", "github-provider", "underscore"], function($) {
 		// Call the provider
 		var provider = providerMap[publishAttributes.provider];
 		provider.publish(publishAttributes, publishTitle, content, function(error) {
-			publishLocation(callback, errorFlag);
+			publishLocation(callback, errorFlag || error );
 		});
 	}
 	
@@ -126,21 +126,43 @@ define(["jquery", "github-provider", "underscore"], function($) {
 		localStorage[fileIndex + ".publish"] += publishIndex + ";";
 	}
 	
+	// Initialize the "New publication" dialog
+	var newLocationProvider = undefined;
+	function initNewLocation(provider) {
+		var defaultPublishFormat = provider.defaultPublishFormat || "markdown";
+		newLocationProvider = provider;
+		
+		// Show/hide controls depending on provider
+		$('div[class*=" modal-publish-"]').hide().filter(".modal-publish-" + provider.providerId).show();
+		
+		// Reset fields
+		core.resetModalInputs();
+		$("input:radio[name=radio-publish-format][value=" + defaultPublishFormat + "]").prop("checked", true);
+		
+		// Open dialog box
+		$("#modal-publish").modal();
+	}
+	
 	// Add a new publish location to a local document
-	publisher.newLocation = function(publishAttributes) {
+	function performNewLocation(event) {
+		var provider = newLocationProvider;
+		var publishAttributes = provider.newPublishAttributes(event);
+		if(publishAttributes === undefined) {
+			return;
+		}
 		var fileIndex = fileManager.getCurrentFileIndex();
 		var title = localStorage[fileIndex + ".title"];
 		var content = getPublishContent(publishAttributes);
-		var provider = providerMap[publishAttributes.provider];
 		provider.publish(publishAttributes, title, content, function(error) {
 			if(error === undefined) {
+				publishAttributes.provider = provider.providerId;
 				createPublishIndex(fileIndex, publishAttributes);
 				publisher.notifyPublish();
 				core.showMessage('"' + title
-					+ '" will now be published on GitHub.');
+					+ '" is now published on ' + provider.providerName + '.');
 			}
 		});
-	};
+	}
 
 	// Used to populate the "Manage publication" dialog
 	var lineTemplate = ['<div class="input-prepend input-append">',
@@ -162,7 +184,7 @@ define(["jquery", "github-provider", "underscore"], function($) {
 		_.each(publishIndexList, function(publishIndex) {
 			var serializedObject = localStorage[publishIndex];
 			var publishAttributes = JSON.parse(serializedObject);
-			var publishDesc = JSON.stringify(_.omit(publishAttributes, 'provider')).replace(/{|}|"/g, "");
+			var publishDesc = JSON.stringify(publishAttributes).replace(/{|}|"/g, "");
 			lineElement = $(_.template(lineTemplate, {
 				provider: providerMap[publishAttributes.provider],
 				publishDesc: publishDesc
@@ -178,10 +200,16 @@ define(["jquery", "github-provider", "underscore"], function($) {
 		core = coreModule;
 		fileManager = fileManagerModule;
 		
-		// Init providers
+		// Init each provider
 		_.each(providerMap, function(provider) {
 			provider.init(core);
+			// Publish provider button
+			$(".action-publish-" + provider.providerId).click(function() {
+				initNewLocation(provider);
+			});
 		});
+		
+		$(".action-process-publish").click(performNewLocation);
 		
 		$(".action-force-publish").click(function() {
 			if(!$(this).hasClass("disabled")) {

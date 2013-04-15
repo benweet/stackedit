@@ -192,12 +192,12 @@ define(
 			$.extend(core.settings, JSON.parse(localStorage.settings));
 		}
 
-		// Converter type
-		$("#input-settings-converter-type").val(core.settings.converterType);
-		
 		// Layout orientation
 		$("input:radio[name=radio-layout-orientation][value="
 				+ core.settings.layoutOrientation + "]").prop("checked", true);
+		
+		// Converter type
+		$("#input-settings-converter-type").val(core.settings.converterType);
 		
 		// Editor font size
 		$("#input-settings-editor-font-size").val(core.settings.editorFontSize);
@@ -212,12 +212,12 @@ define(
 	core.saveSettings = function(event) {
 		var newSettings = {};
 		
-		// Converter type
-		newSettings.converterType = $("#input-settings-converter-type").val();
-		
 		// Layout orientation
 		newSettings.layoutOrientation = $(
 			"input:radio[name=radio-layout-orientation]:checked").prop("value");
+		
+		// Converter type
+		newSettings.converterType = $("#input-settings-converter-type").val();
 		
 		// Editor font size
 		newSettings.editorFontSize = core.getInputIntValue($("#input-settings-editor-font-size"), event, 1, 99);

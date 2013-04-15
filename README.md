@@ -21,6 +21,6 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
  - Online synchronization using Google Drive and Dropbox
  - One click publish on GitHub, Blogger
 
-> **NOTE:** This page has been written with [StackEdit][1].
+> **NOTE:** This page has been written and published with [StackEdit][1].
 
   [1]: http://benweet.github.io/stackedit/ "StackEdit"

@@ -1,5 +1,6 @@
 @import url("bootstrap.css");
 @import url("jgrowl.css");
+@import url("prettify.css");
 
 body {
 	background-color: #f5f5f5;
@@ -334,4 +335,38 @@ hr {
 
 .tooltip-inner {
 	text-align: left;
+}
+
+table {
+  margin-bottom: 20px;
+}
+
+table th,
+table td {
+  padding: 8px;
+  line-height: 20px;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid #dddddd;
+}
+
+table th {
+  font-weight: bold;
+}
+
+table thead th {
+  vertical-align: bottom;
+}
+
+table caption + thead tr:first-child th,
+table caption + thead tr:first-child td,
+table colgroup + thead tr:first-child th,
+table colgroup + thead tr:first-child td,
+table thead:first-child tr:first-child th,
+table thead:first-child tr:first-child td {
+  border-top: 0;
+}
+
+table tbody + tbody {
+  border-top: 2px solid #dddddd;
 }

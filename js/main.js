@@ -6,7 +6,8 @@ requirejs.config({
         'bootstrap': ['jquery'],
         'jgrowl': ['jquery'],
         'layout': ['jquery-ui'],
-        'Markdown.Sanitizer': ['Markdown.Converter'],
+        'Markdown.Extra': ['Markdown.Converter', 'prettify'],
+        'Markdown.Sanitizer': ['Markdown.Extra'],
         'Markdown.Editor': ['Markdown.Sanitizer']
     }
 });

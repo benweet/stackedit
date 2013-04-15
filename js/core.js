@@ -174,6 +174,7 @@ define(
 	
 	// Setting management
 	core.settings = {
+		converterType : "markdown-extra",
 		layoutOrientation : "horizontal",
 		editorFontSize : 14,
 		commitMsg : "Published by StackEdit.",
@@ -191,6 +192,9 @@ define(
 			$.extend(core.settings, JSON.parse(localStorage.settings));
 		}
 
+		// Converter type
+		$("#input-settings-converter-type").val(core.settings.converterType);
+		
 		// Layout orientation
 		$("input:radio[name=radio-layout-orientation][value="
 				+ core.settings.layoutOrientation + "]").prop("checked", true);
@@ -207,6 +211,9 @@ define(
 
 	core.saveSettings = function(event) {
 		var newSettings = {};
+		
+		// Converter type
+		newSettings.converterType = $("#input-settings-converter-type").val();
 		
 		// Layout orientation
 		newSettings.layoutOrientation = $(
@@ -279,6 +286,13 @@ define(
 	core.createEditor = function(onTextChange) {
 		$("#wmd-button-bar").empty();
 		var converter = Markdown.getSanitizingConverter();
+		if(core.settings.converterType.indexOf("markdown-extra") === 0) {
+			var options = {};
+			if(core.settings.converterType == "markdown-extra-prettify") {
+				options.highlighter = "prettify";
+			}
+			Markdown.Extra.init(converter, options);
+		}
 		var firstChange = true;
 		converter.hooks.chain("preConversion", function(text) {
 			if (!firstChange) {
@@ -299,6 +313,9 @@ define(
 			$("#modal-insert-image").modal();
 			return true;
 		});
+		if(core.settings.converterType == "markdown-extra-prettify") {
+			editor.hooks.chain("onPreviewRefresh", prettyPrint);
+		}
 		
 		editor.run();
 		firstChange = false;

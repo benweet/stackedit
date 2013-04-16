@@ -14,7 +14,7 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
 ### Features:
 
  - Real-time HTML preview
- - Markdown Extra support and Prettify syntax hightlight
+ - Markdown Extra support and Prettify syntax hightlighting
  - WYSIWYG control buttons
  - Configurable layout
  - Offline editing

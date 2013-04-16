@@ -106,10 +106,16 @@ define(["underscore"], function() {
 		asyncTaskRunner.runTask();
 	};
 	
+	// Change current task timeout
+	asyncTaskRunner.setCurrentTaskTimeout = function(timeout) {
+		if(currentTask !== undefined) {
+			currentTask.timeout = timeout;
+		}
+	};
+	
 	asyncTaskRunner.init = function(coreModule) {
 		core = coreModule;
 	};
 	
 	return asyncTaskRunner;
 });
-

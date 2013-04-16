@@ -1,4 +1,4 @@
-define(["jquery", "github-provider", "blogger-provider", "underscore"], function($) {
+define(["jquery", "github-provider", "blogger-provider", "dropbox-provider", "underscore"], function($) {
 	
 	// Dependencies
 	var core = undefined;
@@ -131,6 +131,7 @@ define(["jquery", "github-provider", "blogger-provider", "underscore"], function
 	function initNewLocation(provider) {
 		var defaultPublishFormat = provider.defaultPublishFormat || "markdown";
 		newLocationProvider = provider;
+		$(".publish-provider-name").text(provider.providerName);
 		
 		// Show/hide controls depending on provider
 		$('div[class*=" modal-publish-"]').hide().filter(".modal-publish-" + provider.providerId).show();

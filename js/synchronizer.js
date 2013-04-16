@@ -89,16 +89,14 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 		} else if (fileSyncIndex.indexOf(SYNC_PROVIDER_DROPBOX) === 0) {
 			var path = fileSyncIndex.substring(SYNC_PROVIDER_DROPBOX.length);
 			path = decodeURIComponent(path);
-			dropboxHelper.upload(path, uploadContent, function(result) {
-				if (result !== undefined) {
-					localStorage[fileSyncIndex + ".contentCRC"] = uploadContentCRC;
-					locationUp(callback);
+			dropboxHelper.upload(path, uploadContent, function(error, result) {
+				if (error) {
+					// If error we abort the synchronization (retry later)
+					callback(error);
 					return;
 				}
-				
-				// If error we abort the synchronization (retry later)
-				callback("abort");
-				return;
+				localStorage[fileSyncIndex + ".contentCRC"] = uploadContentCRC;
+				locationUp(callback);
 			});
 		} else {
 			// This should never happen
@@ -236,14 +234,14 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 			return;
 		}
 		var lastChangeId = localStorage[SYNC_PROVIDER_DROPBOX + "lastChangeId"];
-		dropboxHelper.checkUpdates(lastChangeId, function(changes, newChangeId) {
-			if (changes === undefined) {
-				callback("error");
+		dropboxHelper.checkUpdates(lastChangeId, function(error, changes, newChangeId) {
+			if (error) {
+				callback(error);
 				return;
 			}
-			dropboxHelper.downloadContent(changes, function(changes) {
-				if (changes === undefined) {
-					callback("error");
+			dropboxHelper.downloadContent(changes, function(error, changes) {
+				if (error) {
+					callback(error);
 					return;
 				}
 				var updateFileTitles = false;

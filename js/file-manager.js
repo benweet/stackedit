@@ -301,8 +301,8 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		var fileIndex = fileManager.getCurrentFileIndex();
 		var content = localStorage[fileIndex + ".content"];
 		var title = localStorage[fileIndex + ".title"];
-		dropboxHelper.upload(path, content, function(syncIndex) {
-			if (syncIndex === undefined) {
+		dropboxHelper.upload(path, content, function(error, syncIndex) {
+			if (error) {
 				return;
 			}
 			var contentCRC = core.crc32(content);
@@ -315,8 +315,8 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 		});
 	}
 	
-	function importDropbox(paths) {
-		if(paths === undefined) {
+	function importDropbox(error, paths) {
+		if(error) {
 			return;
 		}
 		var importPaths = [];

@@ -88,6 +88,8 @@
 							<ul class="dropdown-menu">
                                 <li><a href="#" class="action-publish-blogger"><i
                                         class="icon-blogger"></i> Blogger</a></li>
+                                <li><a href="#" class="action-publish-dropbox"><i
+                                        class="icon-dropbox"></i> Dropbox</a></li>
 								<li><a href="#" class="action-publish-github"><i
 										class="icon-github"></i> GitHub</a></li>
 							</ul></li>
@@ -269,7 +271,7 @@
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal"
 				aria-hidden="true">&times;</button>
-			<h3 class="modal-publish-github">Publish on GitHub</h3>
+			<h3>Publish on <span class="publish-provider-name"></span></h3>
 		</div>
 		<div class="modal-body">
 			<div class="form-horizontal">
@@ -309,6 +311,13 @@
 					<div class="controls">
 						<input type="text" id="input-publish-blogger-postid"
 							placeholder="Post ID">
+					</div>
+				</div>
+				<div class="control-group modal-publish-dropbox">
+					<label class="control-label" for="input-publish-dropbox-path">File path</label>
+					<div class="controls">
+						<input type="text" id="input-publish-dropbox-path"
+							placeholder="/path/to/My Document.html">
 					</div>
 				</div>
 				<div class="control-group">

@@ -15,8 +15,9 @@ var USER_IDLE_THRESHOLD = 300000;
 var SYNC_PROVIDER_GDRIVE = "sync.gdrive.";
 var SYNC_PROVIDER_DROPBOX = "sync.dropbox.";
 var PROVIDER_TYPE_PUBLISH_FLAG = 1;
-var PROVIDER_GITHUB = "github";
 var PROVIDER_BLOGGER = "blogger";
+var PROVIDER_DROPBOX = "dropbox";
+var PROVIDER_GITHUB = "github";
 
 // Use by Google's client.js
 var delayedFunction = undefined;

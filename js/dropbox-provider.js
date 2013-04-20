@@ -5,10 +5,10 @@ define(["jquery", "dropbox-helper"], function($, dropboxHelper) {
 	var fileManager = undefined;
 	
 	var dropboxProvider = {
-		providerType: PROVIDER_TYPE_SYNC_FLAG | PROVIDER_TYPE_PUBLISH_FLAG,
 		providerId: PROVIDER_DROPBOX,
 		providerName: "Dropbox",
-		defaultPublishFormat: "template"
+		defaultPublishFormat: "template",
+		useSync: false
 	};
 	
 	function checkPath(path) {
@@ -109,6 +109,113 @@ define(["jquery", "dropbox-helper"], function($, dropboxHelper) {
 		var path = core.getInputValue($("#input-sync-manual-dropbox-path"), event);
 		exportFileToPath(path);
 	};
+	
+	dropboxProvider.syncUp = function(uploadContent, uploadContentCRC, uploadTitle, uploadTitleCRC, syncAttributes, callback) {
+		var syncContentCRC = syncAttributes.contentCRC;
+		// Skip if CRC has not changed
+		if(uploadContentCRC == syncContentCRC) {
+			callback(undefined, false);
+			return;
+		}
+		dropboxHelper.upload(syncAttributes.path, uploadContent, function(error, result) {
+			if(error) {
+				callback(error, true);
+				return;
+			}
+			syncAttributes.version = result.versionTag;
+			syncAttributes.contentCRC = uploadContentCRC;
+			callback(undefined, true);
+		});
+	};
+	
+	function syncDown(callback) {
+		if (dropboxProvider.useSync === false) {
+			callback();
+			return;
+		}
+		var lastChangeId = parseInt(localStorage[PROVIDER_DROPBOX + ".lastChangeId"]);
+		dropboxHelper.checkChanges(lastChangeId, function(error, changes, newChangeId) {
+			if (error) {
+				callback(error);
+				return;
+			}
+			var interestingChanges = [];
+			_.each(changes, function(change) {
+				var syncIndex = "sync." + PROVIDER_DROPBOX + "." + encodeURIComponent(file.path.toLowerCase());
+				var serializedAttributes = localStorage[syncIndex];
+				if(serializedAttributes === undefined) {
+					return;
+				}
+				// Store syncIndex to avoid 2 times formating
+				change.syncIndex = syncIndex;
+				// Delete
+				if(change.wasRemoved === true) {
+					interestingChanges.push(change);
+					return;
+				}
+				// Modify
+				var syncAttributes = JSON.parse(serializedAttributes);
+				if(syncAttributes.version != change.stat.versionTag) {
+					interestingChanges.push(change);
+					// Store syncAttributes to avoid 2 times parsing 
+					change.syncAttributes = syncAttributes;
+				}
+			});
+			dropboxHelper.downloadContent(changes, function(error, changes) {
+				if (error) {
+					callback(error);
+					return;
+				}
+				var updateFileTitles = false;
+				_.each(changes, function(change) {
+					var syncIndex = change.syncIndex;
+					var fileIndex = fileManager.getFileIndexFromSync(syncIndex);
+					// No file corresponding (file may have been deleted locally)
+					if(fileIndex === undefined) {
+						fileManager.removeSync(syncIndex);
+						return;
+					}
+					var localTitle = localStorage[fileIndex + ".title"];
+					// File deleted
+					if (change.wasRemoved === true) {
+						fileManager.removeSync(syncIndex);
+						updateFileTitles = true;
+						core.showMessage('"' + localTitle + '" has been removed from Dropbox.');
+						return;
+					}
+					var syncAttributes = change.syncAttributes;
+					var localContent = localStorage[fileIndex + ".content"];
+					var localContentChanged = syncAttributes.contentCRC != core.crc32(localContent);
+					var file = change.stat;
+					var fileContentChanged = localContent != file.content;
+					// Conflict detection
+					if (fileContentChanged === true && localContentChanged === true) {
+						fileManager.createFile(localTitle + " (backup)", localContent);
+						updateFileTitles = true;
+						core.showMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
+					}
+					// If file content changed
+					if(fileContentChanged) {
+						localStorage[fileIndex + ".content"] = file.content;
+						core.showMessage('"' + localTitle + '" has been updated from Dropbox.');
+						if(fileManager.isCurrentFileIndex(fileIndex)) {
+							updateFileTitles = false; // Done by next function
+							fileManager.selectFile(); // Refresh editor
+						}
+					}
+					// Update syncAttributes
+					syncAttributes.version = file.versionTag;
+					syncAttributes.contentCRC = core.crc32(file.content);
+					localStorage[syncIndex] = JSON.stringify(syncAttributes);
+				});
+				if(updateFileTitles) {
+					fileManager.updateFileTitles();
+				}
+				localStorage[PROVIDER_DROPBOX + ".lastChangeId"] = newChangeId;
+				callback();
+			});
+		});
+	}
 	
 	dropboxProvider.publish = function(publishAttributes, title, content, callback) {
 		var path = checkPath(publishAttributes.path);

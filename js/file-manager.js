@@ -136,19 +136,13 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 			fileManager.setCurrentFileIndex(fileIndex);
 		}
 		
-		var useGoogleDrive = false;
-		var useDropbox = false;
+		synchronizer.resetSyncFlags();
 		function composeTitle(fileIndex) {
 			var result = " " + localStorage[fileIndex + ".title"];
-			var sync = localStorage[fileIndex + ".sync"];
-			if (sync.indexOf(";" + SYNC_PROVIDER_DROPBOX) !== -1) {
-				useDropbox = true;
-				result = '<i class="icon-dropbox"></i>' + result;
-			}
-			if (sync.indexOf(";" + SYNC_PROVIDER_GDRIVE) !== -1) {
-				useGoogleDrive = true;
-				result = '<i class="icon-gdrive"></i>' + result;
-			}
+			var providerIdList = synchronizer.getSyncProvidersFromFile(fileIndex);
+			_.each(providerIdList, function(providerId) {
+				result = '<i class="icon-' + providerId '"></i>' + result;
+			});
 			return result;
 		}
 
@@ -175,8 +169,6 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 			}
 			$("#file-selector").append(li);			
 		});
-		synchronizer.useGoogleDrive = useGoogleDrive;
-		synchronizer.useDropbox = useDropbox;
 	};
 
 	// Remove a syncIndex (synchronized location)

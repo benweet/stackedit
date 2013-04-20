@@ -76,7 +76,7 @@ define(["jquery", "async-runner"], function($, asyncRunner) {
 		});
 	}
 
-	googleHelper.upload = function(fileId, parentId, title, content, callback) {
+	googleHelper.upload = function(fileId, parentId, title, content, etag, callback) {
 		callback = callback || core.doNothing;
 		var result = undefined;
 		var task = asyncRunner.createTask();
@@ -95,13 +95,10 @@ define(["jquery", "async-runner"], function($, asyncRunner) {
 			}
 			var path = '/upload/drive/v2/files';
 			var method = 'POST';
-			var etag = undefined;
 			if (fileId !== undefined) {
 				// If it's an update
 				path += "/" + fileId;
 				method = 'PUT';
-				etag = localStorage[SYNC_PROVIDER_GDRIVE
-										+ fileId + ".etag"];
 			}
 			var headers = { 'Content-Type' : 'multipart/mixed; boundary="'
 				+ boundary + '"', };
@@ -155,7 +152,7 @@ define(["jquery", "async-runner"], function($, asyncRunner) {
 		asyncRunner.addTask(task);
 	};
 
-	googleHelper.checkUpdates = function(lastChangeId, callback) {
+	googleHelper.checkChanges = function(lastChangeId, callback) {
 		callback = callback || core.doNothing;
 		var changes = [];
 		var newChangeId = lastChangeId || 0;
@@ -185,15 +182,7 @@ define(["jquery", "async-runner"], function($, asyncRunner) {
 					newChangeId = response.largestChangeId;
 					nextPageToken = response.nextPageToken;
 					if (response.items !== undefined) {
-						for ( var i = 0; i < response.items.length; i++) {
-							var item = response.items[i];
-							var etag = localStorage[SYNC_PROVIDER_GDRIVE
-								+ item.fileId + ".etag"];
-							if (etag
-								&& (item.deleted === true || item.file.etag != etag)) {
-								changes.push(item);
-							}
-						}
+						changes = changes.concat(response.items);
 					}
 					if (nextPageToken !== undefined) {
 						task.chain(retrievePageOfChanges);

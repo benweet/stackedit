@@ -8,7 +8,7 @@ define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive
 	// Create a map with providerName: providerObject
 	var providerMap = _.chain(arguments)
 		.map(function(argument) {
-			return argument && argument.providerType & PROVIDER_TYPE_SYNC_FLAG && [argument.providerId, argument];
+			return argument && argument.providerId && [argument.providerId, argument];
 		}).compact().object().value();
 
 	// Used to know the providers we are connected to 
@@ -59,51 +59,32 @@ define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive
 		
 		// Dequeue a synchronized location
 		var syncIndex = uploadFileSyncIndexList.pop();
-		var syncAttributes = JSON.parse(localStorage[fileSyncIndex]);
-		=
-		var syncContentCRC = localStorage[fileSyncIndex + ".contentCRC"];
-		var syncTitleCRC = localStorage[fileSyncIndex + ".titleCRC"];
-		// Skip if CRC has not changed
-		if(uploadContentCRC == syncContentCRC && (syncTitleCRC === undefined || uploadTitleCRC == syncTitleCRC)) {
-			locationUp(callback);
-			return;
-		}
-		
-		// If upload is going to run, go for an other upload cycle at the end
-		uploadCycle = true;
-		// When page is refreshed, this flag is false but should be true here
-		uploadPending = true;
-
-		// Try to find the provider
-		if (fileSyncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
-			var id = fileSyncIndex.substring(SYNC_PROVIDER_GDRIVE.length);
-			googleHelper.upload(id, undefined, uploadTitle, uploadContent, function(error, result) {
+		var syncAttributes = JSON.parse(localStorage[syncIndex]);
+		// Use the specified provider to perform the upload
+		providerMap[syncAttributes.provider].syncUp(
+			uploadContent,
+			uploadContentCRC,
+			uploadTitle,
+			uploadTitleCRC,
+			syncAttributes,
+			function(error, uploadFlag) {
+				if(uploadFlag === true) {
+					// If uploadFlag is true, request another upload cycle
+					uploadCycle = true;
+					// When page is refreshed, this flag is false but should be true
+					uploadPending = true;
+				}
 				if(error) {
-					// If error we abort the synchronization (retry later)
 					callback(error);
 					return;
 				}
-				localStorage[fileSyncIndex + ".contentCRC"] = uploadContentCRC;
-				localStorage[fileSyncIndex + ".titleCRC"] = uploadTitleCRC;
-				locationUp(callback);
-			});
-		} else if (fileSyncIndex.indexOf(SYNC_PROVIDER_DROPBOX) === 0) {
-			var path = fileSyncIndex.substring(SYNC_PROVIDER_DROPBOX.length);
-			path = decodeURIComponent(path);
-			dropboxHelper.upload(path, uploadContent, function(error, result) {
-				if (error) {
-					// If error we abort the synchronization (retry later)
-					callback(error);
-					return;
+				if(uploadFlag) {
+					// Update syncAttributes in localStorage
+					localStorage[syncIndex] = JSON.stringify(syncAttributes);
 				}
-				localStorage[fileSyncIndex + ".contentCRC"] = uploadContentCRC;
 				locationUp(callback);
-			});
-		} else {
-			// This should never happen
-			console.error("Invalid fileSyncIndex: " + fileSyncIndex);
-			callback("error");
-		}
+			}
+		);
 	}
 
 	// Recursive function to upload multiple files
@@ -119,7 +100,7 @@ define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive
 		// Dequeue a fileIndex
 		var fileIndex = uploadFileIndexList.pop();
 		var fileSyncIndexes = localStorage[fileIndex + ".sync"];
-		if(!fileIndex || fileSyncIndexes.length === 1) {
+		if(fileSyncIndexes.length === 1) {
 			fileUp(callback);
 			return;
 		}
@@ -141,7 +122,7 @@ define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive
 		if(uploadCycle === true) {
 			// New upload cycle
 			uploadCycle = false;
-			uploadFileIndexList = localStorage["file.list"].split(";");
+			uploadFileIndexList = _.compact(localStorage["file.list"].split(";"));
 			fileUp(callback);
 		}
 		else {
@@ -149,157 +130,25 @@ define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive
 		} 
 	}
 
-	// Used to download file changes from Google Drive
-	function syncDownGdrive(callback) {
-		if (synchronizer.useGoogleDrive === false) {
+	// Recursive function to download changes from multiple providers
+	var providerList = [];
+	function providerDown(callback) {
+		if(providerList.length === 0) {
 			callback();
-			return;
 		}
-		var lastChangeId = parseInt(localStorage[SYNC_PROVIDER_GDRIVE
-			+ "lastChangeId"]);
-		googleHelper.checkUpdates(lastChangeId, function(error, changes, newChangeId) {
-			if (error) {
+		var provider = providerList.pop();
+		provider.syncDown(function(error) {
+			if(error) {
 				callback(error);
 				return;
 			}
-			googleHelper.downloadContent(changes, function(error, changes) {
-				if (error) {
-					callback(error);
-					return;
-				}
-				var updateFileTitles = false;
-				for ( var i = 0; i < changes.length; i++) {
-					var change = changes[i];
-					var fileSyncIndex = SYNC_PROVIDER_GDRIVE + change.fileId;
-					var fileIndex = fileManager.getFileIndexFromSync(fileSyncIndex);
-					// No file corresponding (file may have been deleted locally)
-					if(fileIndex === undefined) {
-						fileManager.removeSync(fileSyncIndex);
-						continue;
-					}
-					var localTitle = localStorage[fileIndex + ".title"];
-					// File deleted
-					if (change.deleted === true) {
-						fileManager.removeSync(fileSyncIndex);
-						updateFileTitles = true;
-						core.showMessage('"' + localTitle + '" has been removed from Google Drive.');
-						continue;
-					}
-					var localTitleChanged = localStorage[fileSyncIndex + ".titleCRC"] != core.crc32(localTitle);
-					var localContent = localStorage[fileIndex + ".content"];
-					var localContentChanged = localStorage[fileSyncIndex + ".contentCRC"] != core.crc32(localContent);
-					var file = change.file;
-					var fileTitleChanged = localTitle != file.title;
-					var fileContentChanged = localContent != file.content;
-					// Conflict detection
-					if ((fileTitleChanged === true && localTitleChanged === true)
-						|| (fileContentChanged === true && localContentChanged === true)) {
-						fileManager.createFile(localTitle + " (backup)", localContent);
-						updateFileTitles = true;
-						core.showMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
-					}
-					// If file title changed
-					if(fileTitleChanged) {
-						localStorage[fileIndex + ".title"] = file.title;
-						updateFileTitles = true;
-						core.showMessage('"' + localTitle + '" has been renamed to "' + file.title + '" on Google Drive.');
-					}
-					// If file content changed
-					if(fileContentChanged) {
-						localStorage[fileIndex + ".content"] = file.content;
-						core.showMessage('"' + file.title + '" has been updated from Google Drive.');
-						if(fileManager.isCurrentFileIndex(fileIndex)) {
-							updateFileTitles = false; // Done by next function
-							fileManager.selectFile(); // Refresh editor
-						}
-					}
-					// Update file etag and CRCs
-					localStorage[fileSyncIndex + ".etag"] = file.etag;
-					localStorage[fileSyncIndex + ".contentCRC"] = core.crc32(file.content);
-					localStorage[fileSyncIndex + ".titleCRC"] = core.crc32(file.title);
-				}
-				if(updateFileTitles) {
-					fileManager.updateFileTitles();
-				}
-				localStorage[SYNC_PROVIDER_GDRIVE
-				 			+ "lastChangeId"] = newChangeId;
-				callback();
-			});
-		});
-	}
-
-	// Used to download file changes from Dropbox
-	function syncDownDropbox(callback) {
-		if (synchronizer.useDropbox === false) {
-			callback();
-			return;
-		}
-		var lastChangeId = localStorage[SYNC_PROVIDER_DROPBOX + "lastChangeId"];
-		dropboxHelper.checkUpdates(lastChangeId, function(error, changes, newChangeId) {
-			if (error) {
-				callback(error);
-				return;
-			}
-			dropboxHelper.downloadContent(changes, function(error, changes) {
-				if (error) {
-					callback(error);
-					return;
-				}
-				var updateFileTitles = false;
-				for ( var i = 0; i < changes.length; i++) {
-					var change = changes[i];
-					var fileSyncIndex = SYNC_PROVIDER_DROPBOX + encodeURIComponent(change.path.toLowerCase());
-					var fileIndex = fileManager.getFileIndexFromSync(fileSyncIndex);
-					// No file corresponding (file may have been deleted locally)
-					if(fileIndex === undefined) {
-						fileManager.removeSync(fileSyncIndex);
-						continue;
-					}
-					var localTitle = localStorage[fileIndex + ".title"];
-					// File deleted
-					if (change.wasRemoved === true) {
-						fileManager.removeSync(fileSyncIndex);
-						updateFileTitles = true;
-						core.showMessage('"' + localTitle + '" has been removed from Dropbox.');
-						continue;
-					}
-					var localContent = localStorage[fileIndex + ".content"];
-					var localContentChanged = localStorage[fileSyncIndex + ".contentCRC"] != core.crc32(localContent);
-					var file = change.stat;
-					var fileContentChanged = localContent != file.content;
-					// Conflict detection
-					if (fileContentChanged === true && localContentChanged === true) {
-						fileManager.createFile(localTitle + " (backup)", localContent);
-						updateFileTitles = true;
-						core.showMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
-					}
-					// If file content changed
-					if(fileContentChanged) {
-						localStorage[fileIndex + ".content"] = file.content;
-						core.showMessage('"' + localTitle + '" has been updated from Dropbox.');
-						if(fileManager.isCurrentFileIndex(fileIndex)) {
-							updateFileTitles = false; // Done by next function
-							fileManager.selectFile(); // Refresh editor
-						}
-					}
-					// Update file version and CRC
-					localStorage[fileSyncIndex + ".version"] = file.versionTag;
-					localStorage[fileSyncIndex + ".contentCRC"] = core.crc32(file.content);
-				}
-				if(updateFileTitles) {
-					fileManager.updateFileTitles();
-				}
-				localStorage[SYNC_PROVIDER_DROPBOX
-				             + "lastChangeId"] = newChangeId;
-				callback();
-			});
+			providerDown(callback);
 		});
 	}
 	
 	function syncDown(callback) {
-		syncDownGdrive(function() {
-			syncDownDropbox(callback);
-		});
+		providerList = _.values(providerMap);
+		providerDown(callback);
 	};
 		
 	var syncRunning = false;
@@ -316,6 +165,7 @@ define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive
 		
 		function isError(error) {
 			if(error !== undefined) {
+				console.error(error);
 				syncRunning = false;
 				synchronizer.updateSyncButton();
 				return true;
@@ -367,6 +217,24 @@ define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive
 			}));
 			$("#manage-sync-list").append(lineElement);
 		});
+	};
+	
+	synchronizer.resetSyncFlags = function() {
+		_.each(providerMap, function(provider) {
+			provider.useSync = false;
+		});		
+	};
+	
+	synchronizer.getSyncProvidersFromFile = function(fileIndex) {
+		var sync = localStorage[fileIndex + ".sync"];
+		var providerIdList = [];
+		_.each(providerMap, function(provider) {
+			if (sync.indexOf(";sync." + provider.providerId + ".") !== -1) {
+				provider.useSync = true;
+				providerIdList.push(provider.providerId);
+			}
+		});
+		return providerIdList;
 	};
 	
 	synchronizer.init = function(coreModule, fileManagerModule) {

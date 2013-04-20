@@ -5,10 +5,10 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 	var fileManager = undefined;
 	
 	var gdriveProvider = {
-		providerType: PROVIDER_TYPE_SYNC_FLAG | PROVIDER_TYPE_PUBLISH_FLAG,
 		providerId: PROVIDER_GDRIVE,
 		providerName: "Gdrive",
-		defaultPublishFormat: "template"
+		defaultPublishFormat: "template",
+		useSync: false
 	};
 	
 	function createSyncAttributes(id, etag, content, title) {
@@ -63,7 +63,7 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 	};
 	
 	gdriveProvider.exportFile = function(event, title, content, callback) {
-		googleHelper.upload(undefined, undefined, title, content, function(error, result) {
+		googleHelper.upload(undefined, undefined, title, content, undefined, function(error, result) {
 			if (error) {
 				callback(error);
 				return;
@@ -87,7 +87,7 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 			callback(true);
 			return;
 		}
-		googleHelper.upload(id, undefined, title, content, function(error, result) {
+		googleHelper.upload(id, undefined, title, content, undefined, function(error, result) {
 			if (error) {
 				callback(error);
 				return;
@@ -97,8 +97,127 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 		});
 	};
 	
+	gdriveProvider.syncUp = function(uploadContent, uploadContentCRC, uploadTitle, uploadTitleCRC, syncAttributes, callback) {
+		var syncContentCRC = syncAttributes.contentCRC;
+		var syncTitleCRC = syncAttributes.titleCRC;
+		// Skip if CRC has not changed
+		if(uploadContentCRC == syncContentCRC && uploadTitleCRC == syncTitleCRC) {
+			callback(undefined, false);
+			return;
+		}
+		googleHelper.upload(syncAttributes.id, undefined, uploadTitle, uploadContent, syncAttributes.etag, function(error, result) {
+			if(error) {
+				callback(error, true);
+				return;
+			}
+			syncAttributes.etag = result.etag;
+			syncAttributes.contentCRC = uploadContentCRC;
+			syncAttributes.titleCRC = uploadTitleCRC;
+			callback(undefined, true);
+		});
+	};
+	
+	function syncDown(callback) {
+		if (gdriveProvider.useSync === false) {
+			callback();
+			return;
+		}
+		var lastChangeId = parseInt(localStorage[PROVIDER_GDRIVE + ".lastChangeId"]);
+		googleHelper.checkChanges(lastChangeId, function(error, changes, newChangeId) {
+			if (error) {
+				callback(error);
+				return;
+			}
+			var interestingChanges = [];
+			_.each(changes, function(change) {
+				var syncIndex = "sync." + PROVIDER_GDRIVE + "." + file.id;
+				var serializedAttributes = localStorage[syncIndex];
+				if(serializedAttributes === undefined) {
+					return;
+				}
+				// Store syncIndex to avoid 2 times formating
+				change.syncIndex = syncIndex;
+				// Delete
+				if(change.deleted === true) {
+					interestingChanges.push(change);
+					return;
+				}
+				// Modify
+				var syncAttributes = JSON.parse(serializedAttributes);
+				if(syncAttributes.etag != change.file.etag) {
+					interestingChanges.push(change);
+					// Store syncAttributes to avoid 2 times parsing 
+					change.syncAttributes = syncAttributes;
+				}
+			});
+			googleHelper.downloadContent(changes, function(error, changes) {
+				if (error) {
+					callback(error);
+					return;
+				}
+				var updateFileTitles = false;
+				_.each(changes, function(change) {
+					var syncIndex = change.syncIndex;
+					var fileIndex = fileManager.getFileIndexFromSync(syncIndex);
+					// No file corresponding (file may have been deleted locally)
+					if(fileIndex === undefined) {
+						fileManager.removeSync(syncIndex);
+						return;
+					}
+					var localTitle = localStorage[fileIndex + ".title"];
+					// File deleted
+					if (change.deleted === true) {
+						fileManager.removeSync(syncIndex);
+						updateFileTitles = true;
+						core.showMessage('"' + localTitle + '" has been removed from Google Drive.');
+						return;
+					}
+					var syncAttributes = change.syncAttributes;
+					var localTitleChanged = syncAttributes.titleCRC != core.crc32(localTitle);
+					var localContent = localStorage[fileIndex + ".content"];
+					var localContentChanged = syncAttributes.contentCRC != core.crc32(localContent);
+					var file = change.file;
+					var fileTitleChanged = localTitle != file.title;
+					var fileContentChanged = localContent != file.content;
+					// Conflict detection
+					if ((fileTitleChanged === true && localTitleChanged === true)
+						|| (fileContentChanged === true && localContentChanged === true)) {
+						fileManager.createFile(localTitle + " (backup)", localContent);
+						updateFileTitles = true;
+						core.showMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
+					}
+					// If file title changed
+					if(fileTitleChanged) {
+						localStorage[fileIndex + ".title"] = file.title;
+						updateFileTitles = true;
+						core.showMessage('"' + localTitle + '" has been renamed to "' + file.title + '" on Google Drive.');
+					}
+					// If file content changed
+					if(fileContentChanged) {
+						localStorage[fileIndex + ".content"] = file.content;
+						core.showMessage('"' + file.title + '" has been updated from Google Drive.');
+						if(fileManager.isCurrentFileIndex(fileIndex)) {
+							updateFileTitles = false; // Done by next function
+							fileManager.selectFile(); // Refresh editor
+						}
+					}
+					// Update syncAttributes
+					syncAttributes.etag = file.etag;
+					syncAttributes.contentCRC = core.crc32(file.content);
+					syncAttributes.titleCRC = core.crc32(file.title);
+					localStorage[syncIndex] = JSON.stringify(syncAttributes);
+				});
+				if(updateFileTitles) {
+					fileManager.updateFileTitles();
+				}
+				localStorage[PROVIDER_GDRIVE + ".lastChangeId"] = newChangeId;
+				callback();
+			});
+		});
+	}
+	
 	gdriveProvider.publish = function(publishAttributes, title, content, callback) {
-		googleHelper.upload(publishAttributes.fileId, undefined, title, content, callback);
+		googleHelper.upload(publishAttributes.fileId, undefined, title, content, undefined, callback);
 	};
 
 	gdriveProvider.newPublishAttributes = function(event) {
@@ -122,7 +241,7 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 		state = JSON.parse(state);
 		if (state.action == "create") {
 			googleHelper.upload(undefined, state.folderId, GDRIVE_DEFAULT_FILE_TITLE,
-				"", function(error, file) {
+				"", undefined, function(error, file) {
 				if(error) {
 					return;
 				}

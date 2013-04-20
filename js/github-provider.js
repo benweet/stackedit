@@ -4,7 +4,6 @@ define(["jquery", "github-helper"], function($, githubHelper) {
 	var core = undefined;
 	
 	var githubProvider = {
-		providerType: PROVIDER_TYPE_PUBLISH_FLAG,
 		providerId: PROVIDER_GITHUB,
 		providerName: "GitHub"
 	};

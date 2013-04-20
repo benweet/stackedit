@@ -108,7 +108,7 @@ define(["jquery", "async-runner"], function($, asyncRunner) {
 		asyncRunner.addTask(task);
 	};
 
-	dropboxHelper.checkUpdates = function(lastChangeId, callback) {
+	dropboxHelper.checkChanges = function(lastChangeId, callback) {
 		callback = callback || core.doNothing;
 		var changes = [];
 		var newChangeId = lastChangeId || 0;
@@ -125,14 +125,7 @@ define(["jquery", "async-runner"], function($, asyncRunner) {
 					// Retrieve success
 					newChangeId = pullChanges.cursor();
 					if(pullChanges.changes !== undefined) {
-						for(var i=0; i<pullChanges.changes.length; i++) {
-							var item = pullChanges.changes[i];
-							var version = localStorage[SYNC_PROVIDER_DROPBOX
-							    + encodeURIComponent(item.path.toLowerCase()) + ".version"];
-							if(version && (item.wasRemoved || item.stat.versionTag != version)) {
-								changes.push(item);
-							}
-						}
+						changes = changes.concat(pullChanges.changes);
 					}
 					if (pullChanges.shouldPullAgain) {
 						task.chain(retrievePageOfChanges);

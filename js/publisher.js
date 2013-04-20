@@ -9,7 +9,7 @@ define(["jquery", "github-provider", "blogger-provider", "dropbox-provider", "gd
 	// Create a map with providerName: providerObject
 	var providerMap = _.chain(arguments)
 		.map(function(argument) {
-			return argument && argument.providerType & PROVIDER_TYPE_PUBLISH_FLAG && [argument.providerId, argument];
+			return argument && argument.providerId && [argument.providerId, argument];
 		}).compact().object().value();
 
 	// Used to know if the current file has publications

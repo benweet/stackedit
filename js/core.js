@@ -177,7 +177,7 @@ define(
 	
 	// Setting management
 	core.settings = {
-		converterType : "markdown-extra",
+		converterType : "markdown-extra-prettify",
 		layoutOrientation : "horizontal",
 		editorFontSize : 14,
 		commitMsg : "Published by StackEdit.",
@@ -502,6 +502,12 @@ define(
 		
 		// from v1 to v2
 		if(version == "v1") {
+			var gdriveLastChangeId = localStorage["sync.gdrive.lastChangeId"];
+			localStorage["gdrive.lastChangeId"] = gdriveLastChangeId;
+			localStorage.removeItem("sync.gdrive.lastChangeId");
+			var dropboxLastChangeId = localStorage["sync.dropbox.lastChangeId"];
+			localStorage["dropbox.lastChangeId"] = dropboxLastChangeId;
+			localStorage.removeItem("sync.dropbox.lastChangeId");
 			
 			var SYNC_PROVIDER_GDRIVE = "sync." + PROVIDER_GDRIVE + ".";
 			var SYNC_PROVIDER_DROPBOX = "sync." + PROVIDER_DROPBOX + ".";

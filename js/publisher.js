@@ -1,4 +1,4 @@
-define(["jquery", "github-provider", "blogger-provider", "dropbox-provider", "underscore"], function($) {
+define(["jquery", "github-provider", "blogger-provider", "dropbox-provider", "gdrive-provider", "underscore"], function($) {
 	
 	// Dependencies
 	var core = undefined;
@@ -183,8 +183,7 @@ define(["jquery", "github-provider", "blogger-provider", "dropbox-provider", "un
 			$(".msg-no-publish").removeClass("hide");
 		}
 		_.each(publishIndexList, function(publishIndex) {
-			var serializedObject = localStorage[publishIndex];
-			var publishAttributes = JSON.parse(serializedObject);
+			var publishAttributes = JSON.parse(localStorage[publishIndex]);
 			var publishDesc = JSON.stringify(publishAttributes).replace(/{|}|"/g, "");
 			lineElement = $(_.template(lineTemplate, {
 				provider: providerMap[publishAttributes.provider],
@@ -203,7 +202,7 @@ define(["jquery", "github-provider", "blogger-provider", "dropbox-provider", "un
 		
 		// Init each provider
 		_.each(providerMap, function(provider) {
-			provider.init(core);
+			provider.init(core, fileManager);
 			// Publish provider button
 			$(".action-publish-" + provider.providerId).click(function() {
 				initNewLocation(provider);

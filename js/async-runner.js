@@ -1,121 +1,185 @@
 /**
- *  Used to run asynchronous tasks sequentially (ajax mainly)
- *  An asynchronous task must be created with:
- *  - a required run() function that may call success(), error() or retry()
- *  - an optional onSuccess() function
- *  - an optional onError() function
- *  - an optional timeout field (default is 30000)
+ * Used to run asynchronous tasks sequentially (ajax mainly) An asynchronous
+ * task is composed of different callback types: onRun, onSuccess, onError
  */
-define(["underscore"], function() {
-	
-	var asyncTaskRunner = {};
-	
+define([ "underscore" ], function() {
+
+	var asyncRunner = {};
+
 	// Dependencies
 	var core = undefined;
-	
-	var asyncTaskQueue = [];
+
+	var taskQueue = [];
 	var currentTask = undefined;
 	var currentTaskRunning = false;
 	var currentTaskStartTime = 0;
-	
-	// Run the next task in the queue if any and no other is running
+
+	asyncRunner.createTask = function() {
+		var task = {};
+		task.finished = false;
+		task.timeout = ASYNC_TASK_DEFAULT_TIMEOUT;
+		task.retryCounter = 0;
+		/**
+		 * onRun callbacks are called by chain(). These callbacks have to call
+		 * chain() themselves to chain with next callback or to finish the task
+		 * and call onSuccess callbacks.
+		 */
+		// Run callbacks
+		task.runCallbacks = [];
+		task.onRun = function(callback) {
+			task.runCallbacks.push(callback);
+		};
+		/**
+		 * onSuccess callbacks are called when every onRun callbacks have
+		 * succeed.
+		 */
+		task.successCallbacks = [];
+		task.onSuccess = function(callback) {
+			task.successCallbacks.push(callback);
+		};
+		/**
+		 * onError callbacks are called when error() is called in a onRun
+		 * callback.
+		 */
+		task.errorCallbacks = [];
+		task.onError = function(callback) {
+			task.errorCallbacks.push(callback);
+		};
+		/**
+		 * chain() calls the next onRun callback or the onSuccess callbacks when
+		 * finished. The optional callback parameter can be used to add a onRun
+		 * callback during execution.
+		 */
+		task.chain = function(callback) {
+			if (task.finished === true) {
+				return;
+			}
+			// If first execution
+			if (task.queue === undefined) {
+				// Create a copy of the onRun callbacks
+				task.queue = task.runCallbacks.slice();
+			}
+			// If a callback is passed as a parameter
+			if(callback !== undefined) {
+				callback();
+				return;
+			}
+			// If all callbacks have been run
+			if (task.queue.length === 0) {
+				// Run the onSuccess callbacks
+				runSafe(task, task.successCallbacks);
+				return;
+			}
+			// Run the next callback
+			var runCallback = task.queue.shift();
+			runCallback();
+		};
+		/**
+		 * error() calls the onError callbacks.
+		 */
+		task.error = function(error) {
+			if (task.finished === true) {
+				return;
+			}
+			error = error || "Unknown error";
+			runSafe(task, task.errorCallbacks, error);
+			// Exit the current call stack
+			throw error;
+		};
+		/**
+		 * retry() can be called in an onRun callback to restart the task
+		 */
+		task.retry = function() {
+			if (task.finished === true) {
+				return;
+			}
+			task.queue = undefined;
+			if (task.retryCounter === 5) {
+				task.error(new Error("Maximum retry number reached"));
+				return;
+			}
+			// Implement an exponential backoff
+			var delay = Math.pow(2, task.retryCounter++) * 1000;
+			currentTaskStartTime = core.currentTime + delay;
+			currentTaskRunning = false;
+			asyncRunner.runTask();
+		};
+		return task;
+	};
+
+	// Run the next task in the queue if any and no other running
 	function runTask() {
-		
+
 		// If there is a task currently running
-		if(currentTaskRunning === true) {
+		if (currentTaskRunning === true) {
 			// If the current task takes too long
-			var timeout = currentTask.timeout || ASYNC_TASK_DEFAULT_TIMEOUT;
-			if(currentTaskStartTime + timeout < core.currentTime) {
-				currentTask.error();
+			if (currentTaskStartTime + currentTask.timeout < core.currentTime) {
+				var errorMsg = "A timeout occurred.";
+				core.showError(errorMsg);
+				currentTask.error(new Error(errorMsg));
 			}
 			return;
 		}
-		
-		if(currentTask === undefined) {
+
+		if (currentTask === undefined) {
 			// If no task in the queue
-			if(asyncTaskQueue.length === 0) {
+			if (taskQueue.length === 0) {
 				return;
 			}
-			
-			// Dequeue an enqueued task 
-			currentTask = asyncTaskQueue.shift();
+
+			// Dequeue an enqueued task
+			currentTask = taskQueue.shift();
 			currentTaskStartTime = core.currentTime;
 			core.showWorkingIndicator(true);
-			
-			// Set task attributes and functions
-			currentTask.finished = false;
-			currentTask.retryCounter = 0;
-			currentTask.success = function() {
-				runSafe(this.onSuccess);
-			};
-			currentTask.error = function() {
-				runSafe(this.onError);
-			};
-			currentTask.retry = function() {
-				if(this.finished === true) {
-					return;
-				}
-				if(currentTask.retryCounter === 5) {
-					this.error();
-					return;
-				}
-				// Implement an exponential backoff
-				var delay = Math.pow(2, currentTask.retryCounter++) * 1000;
-				currentTaskStartTime = core.currentTime + delay;
-				currentTaskRunning = false;
-				asyncTaskRunner.runTask();
-			};
 		}
-		
+
 		// Run the task
-		if(currentTaskStartTime <= core.currentTime) {
+		if (currentTaskStartTime <= core.currentTime) {
 			currentTaskRunning = true;
-			currentTask.run();
+			currentTask.chain();
 		}
 	}
-	
-	asyncTaskRunner.runTask = function() {		
+
+	asyncRunner.runTask = function() {
 		// Use defer to avoid stack overflow
 		_.defer(runTask);
 	};
-	
-	function runSafe(func) {
-		if(currentTask === undefined || currentTask.finished === true) {
-			return;
-		}
+
+	function runSafe(task, callbacks, param) {
 		try {
-			if(func) {
-				func();
-			}
+			_.each(callbacks, function(callback) {
+				callback(param);
+			});
 		} finally {
-			currentTask.finished = true;
-			currentTask = undefined;
-			currentTaskRunning = false;
-			if(asyncTaskQueue.length === 0) {
-				core.showWorkingIndicator(false);
+			task.finished = true;
+			if (currentTask === task) {
+				currentTask = undefined;
+				currentTaskRunning = false;
 			}
-			else {
-				asyncTaskRunner.runTask();
+			if (taskQueue.length === 0) {
+				core.showWorkingIndicator(false);
+			} else {
+				asyncRunner.runTask();
 			}
 		}
 	}
-	
-	// Add a task into the queue
-	asyncTaskRunner.addTask = function(asyncTask) {
-		asyncTaskQueue.push(asyncTask);
-		asyncTaskRunner.runTask();
+
+	// Add a task to the queue
+	asyncRunner.addTask = function(task) {
+		taskQueue.push(task);
+		asyncRunner.runTask();
 	};
-	
+
 	// Change current task timeout
-	asyncTaskRunner.setCurrentTaskTimeout = function(timeout) {
-		if(currentTask !== undefined) {
+	asyncRunner.setCurrentTaskTimeout = function(timeout) {
+		if (currentTask !== undefined) {
 			currentTask.timeout = timeout;
 		}
 	};
-	
-	asyncTaskRunner.init = function(coreModule) {
+
+	asyncRunner.init = function(coreModule) {
 		core = coreModule;
 	};
-	
-	return asyncTaskRunner;
+
+	return asyncRunner;
 });

@@ -1,9 +1,15 @@
-define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, dropboxHelper) {
+define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive-provider"], function($, googleHelper, dropboxHelper) {
 	var synchronizer = {};
 	
 	// Dependencies
 	var core = undefined;
 	var fileManager = undefined;
+
+	// Create a map with providerName: providerObject
+	var providerMap = _.chain(arguments)
+		.map(function(argument) {
+			return argument && argument.providerType & PROVIDER_TYPE_SYNC_FLAG && [argument.providerId, argument];
+		}).compact().object().value();
 
 	// Used to know the providers we are connected to 
 	synchronizer.useGoogleDrive = false;
@@ -52,15 +58,12 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 		}
 		
 		// Dequeue a synchronized location
-		var fileSyncIndex = uploadFileSyncIndexList.pop();
-		if(!fileSyncIndex) {
-			locationUp(callback);
-			return;
-		}
-
-		// Skip if CRC has not changed
+		var syncIndex = uploadFileSyncIndexList.pop();
+		var syncAttributes = JSON.parse(localStorage[fileSyncIndex]);
+		=
 		var syncContentCRC = localStorage[fileSyncIndex + ".contentCRC"];
 		var syncTitleCRC = localStorage[fileSyncIndex + ".titleCRC"];
+		// Skip if CRC has not changed
 		if(uploadContentCRC == syncContentCRC && (syncTitleCRC === undefined || uploadTitleCRC == syncTitleCRC)) {
 			locationUp(callback);
 			return;
@@ -74,17 +77,15 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 		// Try to find the provider
 		if (fileSyncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
 			var id = fileSyncIndex.substring(SYNC_PROVIDER_GDRIVE.length);
-			googleHelper.upload(id, undefined, uploadTitle, uploadContent, function(result) {
-				if (result !== undefined) {
-					localStorage[fileSyncIndex + ".contentCRC"] = uploadContentCRC;
-					localStorage[fileSyncIndex + ".titleCRC"] = uploadTitleCRC;
-					locationUp(callback);
+			googleHelper.upload(id, undefined, uploadTitle, uploadContent, function(error, result) {
+				if(error) {
+					// If error we abort the synchronization (retry later)
+					callback(error);
 					return;
 				}
-				
-				// If error we abort the synchronization (retry later)
-				callback("abort");
-				return;
+				localStorage[fileSyncIndex + ".contentCRC"] = uploadContentCRC;
+				localStorage[fileSyncIndex + ".titleCRC"] = uploadTitleCRC;
+				locationUp(callback);
 			});
 		} else if (fileSyncIndex.indexOf(SYNC_PROVIDER_DROPBOX) === 0) {
 			var path = fileSyncIndex.substring(SYNC_PROVIDER_DROPBOX.length);
@@ -130,7 +131,7 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 		uploadTitleCRC = core.crc32(uploadTitle);
 
 		// Parse the list of synchronized locations associated to the document
-		uploadFileSyncIndexList = fileSyncIndexes.split(";");
+		uploadFileSyncIndexList = _.compact(fileSyncIndexes.split(";"));
 		locationUp(callback);
 	}
 
@@ -156,14 +157,14 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 		}
 		var lastChangeId = parseInt(localStorage[SYNC_PROVIDER_GDRIVE
 			+ "lastChangeId"]);
-		googleHelper.checkUpdates(lastChangeId, function(changes, newChangeId) {
-			if (changes === undefined) {
-				callback("error");
+		googleHelper.checkUpdates(lastChangeId, function(error, changes, newChangeId) {
+			if (error) {
+				callback(error);
 				return;
 			}
-			googleHelper.downloadContent(changes, function(changes) {
-				if (changes === undefined) {
-					callback("error");
+			googleHelper.downloadContent(changes, function(error, changes) {
+				if (error) {
+					callback(error);
 					return;
 				}
 				var updateFileTitles = false;
@@ -336,9 +337,82 @@ define(["jquery", "google-helper", "dropbox-helper"], function($, googleHelper, 
 		});
 	};
 	
+	// Used to populate the "Manage synchronization" dialog
+	var lineTemplate = ['<div class="input-prepend input-append">',
+		'<span class="add-on" title="<%= provider.providerName %>">',
+		'<i class="icon-<%= provider.providerId %>"></i></span>',
+		'<input class="span5" type="text" value="<%= syncDesc %>" disabled />',
+		'</div>'].join("");
+	var removeButtonTemplate = '<a class="btn" title="Remove this location"><i class="icon-trash"></i></a>';
+	synchronizer.refreshManageSync = function() {
+		var fileIndex = fileManager.getCurrentFileIndex();
+		var syncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
+		$(".msg-no-sync, .msg-sync-list").addClass("hide");
+		$("#manage-sync-list .input-append").remove();
+		if (syncIndexList.length > 0) {
+			$(".msg-sync-list").removeClass("hide");
+		} else {
+			$(".msg-no-sync").removeClass("hide");
+		}
+		_.each(syncIndexList, function(syncIndex) {
+			var syncAttributes = JSON.parse(localStorage[syncIndex]);
+			var syncDesc = syncAttributes.id || syncAttributes.path;
+			lineElement = $(_.template(lineTemplate, {
+				provider: providerMap[syncAttributes.provider],
+				syncDesc: syncDesc
+			}));
+			lineElement.append($(removeButtonTemplate).click(function() {
+				fileManager.removeSync(syncIndex);
+				fileManager.updateFileTitles();
+			}));
+			$("#manage-sync-list").append(lineElement);
+		});
+	};
+	
 	synchronizer.init = function(coreModule, fileManagerModule) {
 		core = coreModule;
 		fileManager = fileManagerModule;
+		
+		// Init each provider
+		_.each(providerMap, function(provider) {
+			provider.init(core, fileManager);
+			// Provider's import button
+			$(".action-sync-import-" + provider.providerId).click(function(event) {
+				provider.importFiles(event);
+			});
+			// Provider's export button
+			$(".action-sync-export-" + provider.providerId).click(function(event) {
+				var fileIndex = fileManager.getCurrentFileIndex();
+				var title = localStorage[fileIndex + ".title"];
+				var content = localStorage[fileIndex + ".content"];
+				provider.exportFile(event, title, content, function(error, syncIndex) {
+					if(error) {
+						return;
+					}
+					localStorage[fileIndex + ".sync"] += syncIndex + ";";
+					synchronizer.refreshManageSync();
+					fileManager.updateFileTitles();
+					core.showMessage('"' + title
+						+ '" will now be synchronized on ' + provider.providerName + '.');
+				});
+			});
+			// Provider's manual sync button
+			$(".action-sync-manual-" + provider.providerId).click(function(event) {
+				var fileIndex = fileManager.getCurrentFileIndex();
+				var title = localStorage[fileIndex + ".title"];
+				var content = localStorage[fileIndex + ".content"];
+				provider.exportManual(event, title, content, function(error, syncIndex) {
+					if(error) {
+						return;
+					}
+					localStorage[fileIndex + ".sync"] += syncIndex + ";";
+					synchronizer.refreshManageSync();
+					fileManager.updateFileTitles();
+					core.showMessage('"' + title
+						+ '" will now be synchronized on ' + provider.providerName + '.');
+				});
+			});
+		});
 		
 		synchronizer.updateSyncButton();
 		$(".action-force-sync").click(function() {

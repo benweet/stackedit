@@ -4,7 +4,7 @@ define(
 		"bootstrap", "jgrowl", "layout", "Markdown.Editor", "config",
 		"underscore" ],
 	function($, fileManager, googleHelper, dropboxHelper, githubHelper,
-		synchronizer, publisher, asyncTaskRunner) {
+		synchronizer, publisher, asyncRunner) {
 	
 	var core = {};
 	
@@ -102,7 +102,7 @@ define(
 		$(".modal input[type=text]:not([disabled])").val("");
 	};
 
-	// Used by asyncTaskRunner
+	// Used by asyncRunner
 	core.showWorkingIndicator = function(show) {
 		if (show === false) {
 			$(".working-indicator").addClass("hide");
@@ -115,6 +115,9 @@ define(
 
 	// Used to show a notification message
 	core.showMessage = function(msg, iconClass, options) {
+		if(!msg) {
+			return;
+		}
 		options = options || {};
 		iconClass = iconClass || "icon-info-sign";
 		$.jGrowl("<i class='icon-white " + iconClass + "'></i> " + _.escape(msg), options);
@@ -466,7 +469,7 @@ define(
 	function setupLocalStorage() {
 		if (localStorage["file.list"] === undefined) {
 			localStorage["file.list"] = ";";
-			localStorage["version"] = "v1";
+			localStorage["version"] = "v2";
 		}		
 	}
 
@@ -482,21 +485,52 @@ define(
 			localStorage.removeItem("sync.current");
 			localStorage.removeItem("file.counter");			
 			
-			var fileIndexList = localStorage["file.list"].split(";");
-			for ( var i = 1; i < fileIndexList.length - 1; i++) {
-				var fileIndex = fileIndexList[i];
+			var fileIndexList = _.compact(localStorage["file.list"].split(";"));
+			_.each(fileIndexList, function(fileIndex) {
 				localStorage[fileIndex + ".publish"] = ";";
-				var fileSyncIndexList = localStorage[fileIndex + ".sync"].split(";");
-				for ( var j = 1; j < fileSyncIndexList.length - 1; j++) {
-					var fileSyncIndex = fileSyncIndexList[j];
+				var fileSyncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
+				_.each(fileSyncIndexList, function(fileSyncIndex) {
 					localStorage[fileSyncIndex + ".contentCRC"] = "0";
 					// We store title CRC only for Google Drive synchronization
 					if(localStorage[fileSyncIndex + ".etag"] !== undefined) {
 						localStorage[fileSyncIndex + ".titleCRC"] = "0";
 					}
-				}
-			}
+				});
+			});
 			version = "v1";
+		}
+		
+		// from v1 to v2
+		if(version == "v1") {
+			
+			var SYNC_PROVIDER_GDRIVE = "sync." + PROVIDER_GDRIVE + ".";
+			var SYNC_PROVIDER_DROPBOX = "sync." + PROVIDER_DROPBOX + ".";
+			var fileIndexList = _.compact(localStorage["file.list"].split(";"));
+			_.each(fileIndexList, function(fileIndex) {
+				var fileSyncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
+				_.each(fileSyncIndexList, function(fileSyncIndex) {
+					var syncAttributes = {};
+					if (fileSyncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
+						syncAttributes.provider = PROVIDER_GDRIVE;
+						syncAttributes.id = fileSyncIndex.substring(SYNC_PROVIDER_GDRIVE.length);
+						syncAttributes.etag = localStorage[fileSyncIndex + ".etag"];
+						syncAttributes.contentCRC = localStorage[fileSyncIndex + ".contentCRC"];
+						syncAttributes.titleCRC = localStorage[fileSyncIndex + ".titleCRC"];
+					}
+					else if (fileSyncIndex.indexOf(SYNC_PROVIDER_DROPBOX) === 0) {
+						syncAttributes.provider = PROVIDER_DROPBOX;
+						syncAttributes.path = decodeURIComponent(fileSyncIndex.substring(SYNC_PROVIDER_DROPBOX.length));
+						syncAttributes.version = localStorage[fileSyncIndex + ".version"];
+						syncAttributes.contentCRC = localStorage[fileSyncIndex + ".contentCRC"];
+					}
+					localStorage[fileSyncIndex] = JSON.stringify(syncAttributes);
+					localStorage.remoteItem(fileSyncIndex + ".etag");
+					localStorage.remoteItem(fileSyncIndex + ".version");
+					localStorage.remoteItem(fileSyncIndex + ".contentCRC");
+					localStorage.remoteItem(fileSyncIndex + ".titleCRC");
+				});
+			});
+			version = "v2";
 		}
 		localStorage["version"] = version;
 	}
@@ -586,13 +620,13 @@ define(
 			core.resetModalInputs();
 		});
 		
-		// Init asyncTaskRunner
-		asyncTaskRunner.init(core);
+		// Init asyncRunner
+		asyncRunner.init(core);
 		
 		// Init helpers
-		googleHelper.init(core, fileManager);
-		dropboxHelper.init(core, fileManager);
-		githubHelper.init(core, fileManager);
+		googleHelper.init(core);
+		dropboxHelper.init(core);
+		githubHelper.init(core);
 		
 		// Init synchronizer
 		synchronizer.init(core, fileManager);
@@ -614,7 +648,7 @@ define(
 				return;
 			}
 			synchronizer.sync();
-			asyncTaskRunner.runTask();
+			asyncRunner.runTask();
 			checkOnline();
 		}, 1000);
 	};

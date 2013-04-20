@@ -1,8 +1,7 @@
-define(["jquery", "async-runner"], function($, asyncTaskRunner) {
+define(["jquery", "async-runner"], function($, asyncRunner) {
 
 	// Dependencies
 	var core = undefined;
-	var fileManager = undefined;
 
 	var connected = false;
 	var authenticated = false;
@@ -10,254 +9,224 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 	var googleHelper = {};
 
 	// Try to connect Gdrive by downloading client.js
-	function connect(callback) {
-		callback = callback || core.doNothing;
-		var asyncTask = {};
-		asyncTask.run = function() {
+	function connect(task) {
+		task.onRun(function() {
 			if(core.isOffline === true) {
 				connected = false;
 				core.showMessage("Operation not available in offline mode.");
-				asyncTask.error();
+				task.error();
 				return;
 			}
 			if (connected === true) {
-				asyncTask.success();
+				task.chain();
 				return;
 			}
 			delayedFunction = function() {
-				asyncTask.success();
+				connected = true;
+				task.chain();
 			};
 			$.ajax({
 				url : "https://apis.google.com/js/client.js?onload=runDelayedFunction",
 				dataType : "script", timeout : AJAX_TIMEOUT
 			}).fail(function() {
-				asyncTask.error();
+				core.setOffline();
+				task.error(new Error("Network timeout"));
 			});
-		};
-		asyncTask.onSuccess = function() {
-			connected = true;
-			callback();
-		};
-		asyncTask.onError = function() {
-			core.setOffline();
-			callback();
-		};
-		asyncTaskRunner.addTask(asyncTask);
+		});
 	}
 
 	// Try to authenticate with Oauth
-	function authenticate(callback, immediate) {
-		callback = callback || core.doNothing;
-		if (immediate === undefined) {
-			immediate = true;
-		}
-		connect(function() {
-			if (connected === false) {
-				callback();
+	function authenticate(task) {
+		task.onRun(function() {
+			if (authenticated === true) {
+				task.chain();
 				return;
 			}
-
-			var asyncTask = {};
-			// If not immediate we add time for user to enter his credentials
-			if (immediate === false) {
-				asyncTask.timeout = AUTH_POPUP_TIMEOUT;
-			}
-			asyncTask.run = function() {
-				if (authenticated === true) {
-					asyncTask.success();
-					return;
-				}
+			var immediate = true;
+			function localAuthenticate() {
 				if (immediate === false) {
 					core.showMessage("Please make sure the Google authorization popup is not blocked by your browser.");
+					// If not immediate we add time for user to enter his credentials
+					task.timeout = ASYNC_TASK_LONG_TIMEOUT;
 				}
 				gapi.auth.authorize({ 'client_id' : GOOGLE_CLIENT_ID,
 					'scope' : GOOGLE_SCOPES, 'immediate' : immediate }, function(
 					authResult) {
 					gapi.client.load('drive', 'v2', function() {
 						if (!authResult || authResult.error) {
-							asyncTask.error();
+							// If immediate did not work retry without immediate flag
+							if (connected === true && immediate === true) {
+								immediate = false;
+								task.chain(localAuthenticate);
+								return;
+							}
+							// Error
+							var errorMsg = "Access to Google account is not authorized.";
+							core.showError(errorMsg);
+							task.error(new Error(errorMsg));
 							return;
 						}
+						// Success
 						authenticated = true;
-						asyncTask.success();
+						task.chain();
 					});
 				});
-			};
-			asyncTask.onSuccess = function() {
-				callback();
-			};
-			asyncTask.onError = function() {
-				// If immediate did not work retry without immediate flag
-				if (connected === true && immediate === true) {
-					authenticate(callback, false);
-					return;
-				}
-				callback();
-			};
-			asyncTaskRunner.addTask(asyncTask);
+			}
+			task.chain(localAuthenticate);
 		});
 	}
 
 	googleHelper.upload = function(fileId, parentId, title, content, callback) {
 		callback = callback || core.doNothing;
-		authenticate(function() {
-			if (connected === false) {
-				callback();
-				return;
+		var result = undefined;
+		var task = asyncRunner.createTask();
+		connect(task);
+		authenticate(task);
+		task.onRun(function() {
+			var boundary = '-------314159265358979323846';
+			var delimiter = "\r\n--" + boundary + "\r\n";
+			var close_delim = "\r\n--" + boundary + "--";
+			var contentType = 'text/x-markdown';
+			var metadata = { title : title, mimeType : contentType };
+			if (parentId !== undefined) {
+				// Specify the directory
+				metadata.parents = [ { kind : 'drive#fileLink',
+					id : parentId } ];
+			}
+			var path = '/upload/drive/v2/files';
+			var method = 'POST';
+			var etag = undefined;
+			if (fileId !== undefined) {
+				// If it's an update
+				path += "/" + fileId;
+				method = 'PUT';
+				etag = localStorage[SYNC_PROVIDER_GDRIVE
+										+ fileId + ".etag"];
+			}
+			var headers = { 'Content-Type' : 'multipart/mixed; boundary="'
+				+ boundary + '"', };
+			if(etag !== undefined) {
+				headers["If-Match"] = etag;
 			}
 
-			var fileSyncIndex = undefined;
-			var asyncTask = {};
-			asyncTask.run = function() {
-				var boundary = '-------314159265358979323846';
-				var delimiter = "\r\n--" + boundary + "\r\n";
-				var close_delim = "\r\n--" + boundary + "--";
+			var base64Data = core.encodeBase64(content);
+			var multipartRequestBody = delimiter
+				+ 'Content-Type: application/json\r\n\r\n'
+				+ JSON.stringify(metadata) + delimiter + 'Content-Type: '
+				+ contentType + '\r\n'
+				+ 'Content-Transfer-Encoding: base64\r\n' + '\r\n'
+				+ base64Data + close_delim;
 
-				var contentType = 'text/x-markdown';
-				var metadata = { title : title, mimeType : contentType };
-				if (parentId !== undefined) {
-					// Specify the directory
-					metadata.parents = [ { kind : 'drive#fileLink',
-						id : parentId } ];
+			var request = gapi.client
+				.request({
+					'path' : path,
+					'method' : method,
+					'params' : { 'uploadType' : 'multipart', },
+					'headers' : headers,
+					'body' : multipartRequestBody, });
+			request.execute(function(response) {
+				if (response && response.id) {
+					// Upload success
+					result = response;
+					task.chain();
+					return;
 				}
-				var path = '/upload/drive/v2/files';
-				var method = 'POST';
-				var etag = undefined;
-				if (fileId !== undefined) {
-					// If it's an update
-					path += "/" + fileId;
-					method = 'PUT';
-					etag = localStorage[SYNC_PROVIDER_GDRIVE
-											+ fileId + ".etag"];
-				}
-				var headers = { 'Content-Type' : 'multipart/mixed; boundary="'
-					+ boundary + '"', };
-				if(etag !== undefined) {
-					headers["If-Match"] = etag;
-				}
-
-				var base64Data = core.encodeBase64(content);
-				var multipartRequestBody = delimiter
-					+ 'Content-Type: application/json\r\n\r\n'
-					+ JSON.stringify(metadata) + delimiter + 'Content-Type: '
-					+ contentType + '\r\n'
-					+ 'Content-Transfer-Encoding: base64\r\n' + '\r\n'
-					+ base64Data + close_delim;
-
-				var request = gapi.client
-					.request({
-						'path' : path,
-						'method' : method,
-						'params' : { 'uploadType' : 'multipart', },
-						'headers' : headers,
-						'body' : multipartRequestBody, });
-				request.execute(function(response) {
-					if (response && response.id) {
-						// Upload success
-						fileSyncIndex = SYNC_PROVIDER_GDRIVE + response.id;
-						localStorage[fileSyncIndex + ".etag"] = response.etag;
-						asyncTask.success();
-						return;
+				var error = response.error;
+				// Handle error
+				if(error !== undefined && fileId !== undefined) {
+					if(error.code === 404) {
+						error = 'File ID "' + fileId + '" does not exist on Google Drive.';
 					}
-					var error = response.error;
-					// Handle error
-					if(error !== undefined && fileId !== undefined) {
-						if(error.code === 404) {
-							error = 'File ID "' + fileId + '" does not exist on Google Drive.';
-						}
-						else if(error.code === 412) {
-							// We may have missed a file update
-							localStorage.removeItem("sync.gdrive.lastChangeId");
-							error = 'Conflict on file ID "' + fileId + '". Please restart the synchronization.';
-						}
+					else if(error.code === 412) {
+						// We may have missed a file update
+						localStorage.removeItem("sync.gdrive.lastChangeId");
+						error = 'Conflict on file ID "' + fileId + '". Please restart the synchronization.';
 					}
-					handleError(error, asyncTask, callback);
-				});
-			};
-			asyncTask.onSuccess = function() {
-				callback(fileSyncIndex);
-			};
-			asyncTask.onError = function() {
-				callback();
-			};
-			asyncTaskRunner.addTask(asyncTask);
+				}
+				handleError(error, task, callback);
+			});
 		});
+		task.onSuccess(function() {
+			callback(undefined, result);
+		});
+		task.onError(function(error) {
+			callback(error);
+		});
+		asyncRunner.addTask(task);
 	};
 
 	googleHelper.checkUpdates = function(lastChangeId, callback) {
 		callback = callback || core.doNothing;
-		authenticate(function() {
-			if (connected === false) {
-				callback();
-				return;
-			}
+		var changes = [];
+		var newChangeId = lastChangeId || 0;
+		var task = asyncRunner.createTask();
+		connect(task);
+		authenticate(task);
+		task.onRun(function() {
+			var nextPageToken = undefined;
+			function retrievePageOfChanges() {
+				var request = undefined;
+				if(nextPageToken === undefined) {
+					request = gapi.client.drive.changes
+						.list({ 'startChangeId' : newChangeId + 1 });
+				}
+				else {
+					request = gapi.client.drive.changes
+						.list({ 'pageToken' : nextPageToken });
+				}
 
-			var changes = [];
-			var newChangeId = lastChangeId || 0;
-			function retrievePageOfChanges(request) {
-				var nextPageToken = undefined;
-				var asyncTask = {};
-				asyncTask.run = function() {
-					request.execute(function(response) {
-						if (response && response.largestChangeId) {
-							// Retrieve success
-							newChangeId = response.largestChangeId;
-							nextPageToken = response.nextPageToken;
-							if (response.items !== undefined) {
-								for ( var i = 0; i < response.items.length; i++) {
-									var item = response.items[i];
-									var etag = localStorage[SYNC_PROVIDER_GDRIVE
-										+ item.fileId + ".etag"];
-									if (etag
-										&& (item.deleted === true || item.file.etag != etag)) {
-										changes.push(item);
-									}
-								}
-							}
-							asyncTask.success();
-							return;
-						}
+				request.execute(function(response) {
+					if (!response || !response.largestChangeId) {
 						// Handle error
-						handleError(response.error, asyncTask, callback);
-					});
-				};
-				asyncTask.onSuccess = function() {
-					if (nextPageToken !== undefined) {
-						request = gapi.client.drive.changes
-							.list({ 'pageToken' : nextPageToken });
-						retrievePageOfChanges(request);
-					} else {
-						callback(changes, newChangeId);
+						handleError(response.error, task, callback);
+						return;
 					}
-				};
-				asyncTask.onError = function() {
-					callback();
-				};
-				asyncTaskRunner.addTask(asyncTask);
+					// Retrieve success
+					newChangeId = response.largestChangeId;
+					nextPageToken = response.nextPageToken;
+					if (response.items !== undefined) {
+						for ( var i = 0; i < response.items.length; i++) {
+							var item = response.items[i];
+							var etag = localStorage[SYNC_PROVIDER_GDRIVE
+								+ item.fileId + ".etag"];
+							if (etag
+								&& (item.deleted === true || item.file.etag != etag)) {
+								changes.push(item);
+							}
+						}
+					}
+					if (nextPageToken !== undefined) {
+						task.chain(retrievePageOfChanges);
+					}
+					else {
+						task.chain();
+					}
+				});
 			}
-			var initialRequest = gapi.client.drive.changes
-				.list({ 'startChangeId' : newChangeId + 1 });
-			retrievePageOfChanges(initialRequest);
+			task.chain(retrievePageOfChanges);
 		});
+		task.onSuccess(function() {
+			callback(undefined, changes, newChangeId);
+		});
+		task.onError(function(error) {
+			callback(error);
+		});
+		asyncRunner.addTask(task);
 	};
 
-	googleHelper.downloadMetadata = function(ids, callback, result) {
+	googleHelper.downloadMetadata = function(ids, callback) {
 		callback = callback || core.doNothing;
-		result = result || [];
-		if(ids.length === 0) {
-			callback(result);
-			return;
-		}
-		
-		authenticate(function() {
-			if (connected === false) {
-				callback();
-				return;
-			}
-
-			var id = ids.pop();
-			var asyncTask = {};
-			asyncTask.run = function() {
+		var result = [];
+		var task = asyncRunner.createTask();
+		connect(task);
+		authenticate(task);
+		task.onRun(function() {
+			function recursiveDownloadMetadata() {
+				if(ids.length === 0) {
+					task.chain();
+					return;
+				}
+				var id = ids.pop();
 				var token = gapi.auth.getToken();
 				var headers = {
 					Authorization : token ? "Bearer " + token.access_token: null
@@ -269,7 +238,7 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 					timeout : AJAX_TIMEOUT
 				}).done(function(data, textStatus, jqXHR) {
 					result.push(data);
-					asyncTask.success();
+					task.chain(recursiveDownloadMetadata);
 				}).fail(function(jqXHR) {
 					var error = {
 						code: jqXHR.status,
@@ -279,51 +248,49 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 					if(error.code === 404) {
 						error = 'File ID "' + id + '" does not exist on Google Drive.';
 					}
-					handleError(error, asyncTask, callback);
+					handleError(error, task, callback);
 				});
-			};
-			asyncTask.onSuccess = function() {
-				googleHelper.downloadMetadata(ids, callback, result);
-			};
-			asyncTask.onError = function() {
-				callback();
-			};
-			asyncTaskRunner.addTask(asyncTask);
+			}
+			task.chain(recursiveDownloadMetadata);
 		});
+		task.onSuccess(function() {
+			callback(undefined, result);
+		});
+		task.onError(function(error) {
+			callback(error);
+		});
+		asyncRunner.addTask(task);
 	};
 
-	googleHelper.downloadContent = function(objects, callback, result) {
+	googleHelper.downloadContent = function(objects, callback) {
 		callback = callback || core.doNothing;
-		result = result || [];
-		if(objects.length === 0) {
-			callback(result);
-			return;
-		}
-		
-		var object = objects.pop();
-		result.push(object);
-		var file = undefined;
-		// object may be a file
-		if(object.kind == "drive#file") {
-			file = object;
-		}
-		// object may be a change
-		else if(object.kind == "drive#change") {
-			file = object.file;
-		}
-		if(!file) {
-			this.downloadContent(objects, callback, result);
-			return;
-		}
-		
-		authenticate(function() {
-			if (connected === false) {
-				callback();
-				return;
-			}
-			
-			var asyncTask = {};
-			asyncTask.run = function() {
+		var result = [];
+		var task = asyncRunner.createTask();
+		// Add some time for user to choose his files
+		task.timeout = ASYNC_TASK_LONG_TIMEOUT;
+		connect(task);
+		authenticate(task);
+		task.onRun(function() {
+			function recursiveDownloadContent() {
+				if(objects.length === 0) {
+					task.chain();
+					return;
+				}				
+				var object = objects.pop();
+				result.push(object);
+				var file = undefined;
+				// object may be a file
+				if(object.kind == "drive#file") {
+					file = object;
+				}
+				// object may be a change
+				else if(object.kind == "drive#change") {
+					file = object.file;
+				}
+				if(!file) {
+					task.chain(recursiveDownloadContent);
+					return;
+				}
 				var token = gapi.auth.getToken();
 				var headers = {
 					Authorization : token ? "Bearer " + token.access_token: null
@@ -335,35 +302,29 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 					timeout : AJAX_TIMEOUT
 				}).done(function(data, textStatus, jqXHR) {
 					file.content = data;
-					asyncTask.success();
+					task.chain(recursiveDownloadContent);
 				}).fail(function(jqXHR) {
 					var error = {
 						code: jqXHR.status,
 						message: jqXHR.statusText
 					};
 					// Handle error
-					handleError(error, asyncTask, callback);
+					handleError(error, task, callback);
 				});
-			};
-			asyncTask.onSuccess = function() {
-				googleHelper.downloadContent(objects, callback, result);
-			};
-			asyncTask.onError = function() {
-				callback();
-			};
-			asyncTaskRunner.addTask(asyncTask);
+			}
+			task.chain(recursiveDownloadContent);
 		});
+		task.onSuccess(function() {
+			callback(undefined, result);
+		});
+		task.onError(function(error) {
+			callback(error);
+		});
+		asyncRunner.addTask(task);
 	};
 	
-	function handleError(error, asyncTask, callback, serviceName) {
-		serviceName = serviceName || "Google Drive";
+	function handleError(error, task, callback) {
 		var errorMsg = undefined;
-		asyncTask.onError = function() {
-			if (errorMsg !== undefined) {
-				core.showError(errorMsg);
-			}
-			callback();
-		};
 		if (error) {
 			console.error(error);
 			// Try to analyze the error
@@ -371,69 +332,55 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 				errorMsg = error;
 			}
 			else if (error.code >= 500 && error.code < 600) {
-				errorMsg = serviceName + " is not accessible.";
 				// Retry as described in Google's best practices
-				asyncTask.retry();
+				task.retry();
 				return;
 			} else if (error.code === 401 || error.code === 403) {
 				authenticated = false;
-				errorMsg = "Access to " + serviceName + " is not authorized.";
+				task.retry();
+				return;
 			} else if (error.code <= 0) {
 				connected = false;
 				authenticated = false;
 				core.setOffline();
 			} else {
-				errorMsg = serviceName + " error (" + error.code + ": "
+				errorMsg = "Google error (" + error.code + ": "
 					+ error.message + ").";
 			}
+			core.showError(errorMsg);
 		}
-		asyncTask.error();
+		task.error(new Error(errorMsg));
 	}
 
 	var pickerLoaded = false;
-	function loadPicker(callback) {
-		connect(function() {
-			if (connected === false) {
-				pickerLoaded = false;
-				callback();
+	function loadPicker(task) {
+		task.onRun(function() {
+			if (pickerLoaded === true) {
+				task.chain();
 				return;
-			}
-				
-			var asyncTask = {};
-			asyncTask.run = function() {
-				if (pickerLoaded === true) {
-					asyncTask.success();
-					return;
-				}
-				$.ajax({
-					url : "//www.google.com/jsapi",
-					data : {key: GOOGLE_KEY},
-					dataType : "script", timeout : AJAX_TIMEOUT
-				}).done(function() {
-					asyncTask.success();
-				}).fail(function() {
-					asyncTask.error();
-				});
-			};
-			asyncTask.onSuccess = function() {
-			    google.load('picker', '1', {callback: callback});
+			}				
+			$.ajax({
+				url : "//www.google.com/jsapi",
+				data : {key: GOOGLE_KEY},
+				dataType : "script", timeout : AJAX_TIMEOUT
+			}).done(function() {
+			    google.load('picker', '1', {callback: task.chain});
 				pickerLoaded = true;
-			};
-			asyncTask.onError = function() {
+			}).fail(function() {
 				core.setOffline();
-				callback();
-			};
-			asyncTaskRunner.addTask(asyncTask);
+				task.error(new Error("Network timeout"));
+			});
 		});
 	}
 	
 	googleHelper.picker = function(callback) {
 		callback = callback || core.doNothing;
-		loadPicker(function() {
-			if (pickerLoaded === false) {
-				callback();
-				return;
-			}
+		var ids = [];
+		var picker = undefined; 
+		var task = asyncRunner.createTask();
+		connect(task);
+		loadPicker(task);
+		task.onRun(function() {			
 			var view = new google.picker.View(google.picker.ViewId.DOCS);
 			view.setMimeTypes("text/x-markdown,text/plain");
 			var pickerBuilder = new google.picker.PickerBuilder();
@@ -449,182 +396,122 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 			pickerBuilder.setCallback(function(data) {
 				if (data.action == google.picker.Action.PICKED ||
 					data.action == google.picker.Action.CANCEL) {
-					var ids = [];
 					if(data.action == google.picker.Action.PICKED) {
 						for(var i=0; i<data.docs.length; i++) {
 					        ids.push(data.docs[i].id);							
 						}
 					}
 					$(".modal-backdrop, .picker").remove();
-					callback(ids);
+					task.chain();
 			    }
 			});
-			var picker = pickerBuilder.build();
+			picker = pickerBuilder.build();
 			$("body").append($("<div>").addClass("modal-backdrop").click(function() {
 				picker.setVisible(false);
 				$(".modal-backdrop, .picker").remove();
-				callback();
+				task.chain();
 			}));
 			picker.setVisible(true);
 		});
-	};
-
-	googleHelper.importFiles = function(ids) {
-		googleHelper.downloadMetadata(ids, function(result) {
-			if(result === undefined) {
-				return;
-			}
-			googleHelper.downloadContent(result, function(result) {
-				if(result === undefined) {
-					return;
-				}
-				for(var i=0; i<result.length; i++) {
-					var file = result[i];
-					fileSyncIndex = SYNC_PROVIDER_GDRIVE + file.id;
-					localStorage[fileSyncIndex + ".etag"] = file.etag;
-					var contentCRC = core.crc32(file.content);
-					localStorage[fileSyncIndex + ".contentCRC"] = contentCRC;
-					var titleCRC = core.crc32(file.title);
-					localStorage[fileSyncIndex + ".titleCRC"] = titleCRC;
-					var fileIndex = fileManager.createFile(file.title, file.content, [fileSyncIndex]);
-					fileManager.selectFile(fileIndex);
-					core.showMessage('"' + file.title + '" imported successfully from Google Drive.');
-				}
-			});
+		task.onSuccess(function() {
+			callback(undefined, ids);
 		});
+		task.onError(function(error) {
+			if(picker !== undefined) {
+				picker.setVisible(false);
+				$(".modal-backdrop, .picker").remove();
+				task.chain();
+			}
+			callback(error);
+		});
+		asyncRunner.addTask(task);
 	};
 
 	googleHelper.uploadBlogger = function(blogUrl, blogId, postId, title, content, callback) {
-		authenticate(function() {
-			if (connected === false) {
-				callback();
-				return;
-			}
-			
-			var asyncTask = {};
-			asyncTask.run = function() {
-				var token = gapi.auth.getToken();
-				var headers = {
-					Authorization : token ? "Bearer " + token.access_token: null
+		var task = asyncRunner.createTask();
+		connect(task);
+		authenticate(task);
+		task.onRun(function() {
+			var token = gapi.auth.getToken();
+			var headers = {
+				Authorization : token ? "Bearer " + token.access_token: null
+			};				
+			function publish() {
+				var url = "https://www.googleapis.com/blogger/v3/blogs/" + blogId + "/posts/";
+				var data = {
+					kind: "blogger#post",
+					blog: { id: blogId },
+					title: title,
+					content: content
 				};
-				
-				function getBlogId(localCallback) {
-					$.ajax({
-						url : "https://www.googleapis.com/blogger/v3/blogs/byurl",
-						data: { url: blogUrl },
-						headers : headers,
-						dataType : "json",
-						timeout : AJAX_TIMEOUT
-					}).done(function(blog, textStatus, jqXHR) {
-						blogId = blog.id;
-						localCallback();
-					}).fail(function(jqXHR) {
-						var error = {
-							code: jqXHR.status,
-							message: jqXHR.statusText
-						};
-						// Handle error
-						if(error.code === 404) {
-							error = 'Blog "' + blogUrl + '" not found on Blogger.';
-						}
-						handleError(error, asyncTask, callback, "Blogger");
-					});
+				var type = "POST";
+				// If it's an update
+				if(postId !== undefined) {
+					url += postId;
+					data.id = postId;
+					type = "PUT";
 				}
-				
-				function publish() {
-					var url = "https://www.googleapis.com/blogger/v3/blogs/" + blogId + "/posts/";
-					var data = {
-						kind: "blogger#post",
-						blog: { id: blogId },
-						title: title,
-						content: content
+				$.ajax({
+					url : url,
+					data: JSON.stringify(data),
+					headers : headers,
+					type: type,
+					contentType: "application/json",
+					dataType : "json",
+					timeout : AJAX_TIMEOUT
+				}).done(function(post, textStatus, jqXHR) {
+					postId = post.id;
+					task.chain();
+				}).fail(function(jqXHR) {
+					var error = {
+						code: jqXHR.status,
+						message: jqXHR.statusText
 					};
-					var type = "POST";
-					// If it's an update
-					if(postId !== undefined) {
-						url += postId;
-						data.id = postId;
-						type = "PUT";
+					// Handle error
+					if(error.code === 404 && postId !== undefined) {
+						error = 'Post ' + postId + ' not found on Blogger.';
 					}
-					$.ajax({
-						url : url,
-						data: JSON.stringify(data),
-						headers : headers,
-						type: type,
-						contentType: "application/json",
-						dataType : "json",
-						timeout : AJAX_TIMEOUT
-					}).done(function(post, textStatus, jqXHR) {
-						postId = post.id;
-						asyncTask.success();
-					}).fail(function(jqXHR) {
-						var error = {
-							code: jqXHR.status,
-							message: jqXHR.statusText
-						};
-						// Handle error
-						if(error.code === 404 && postId !== undefined) {
-							error = 'Post ' + postId + ' not found on Blogger.';
-						}
-						handleError(error, asyncTask, callback, "Blogger");
-					});
+					handleError(error, task, callback);
+				});
+			}
+			function getBlogId() {
+				if(blogId !== undefined) {
+					task.chain(publish);
 				}
-				
-				if(blogId === undefined) {
-					getBlogId(publish);
-				}
-				else {
-					publish();
-				}
-			};
-			asyncTask.onSuccess = function() {
-				callback(blogId, postId);
-			};
-			asyncTask.onError = function() {
-				callback();
-			};
-			asyncTaskRunner.addTask(asyncTask);
+				$.ajax({
+					url : "https://www.googleapis.com/blogger/v3/blogs/byurl",
+					data: { url: blogUrl },
+					headers : headers,
+					dataType : "json",
+					timeout : AJAX_TIMEOUT
+				}).done(function(blog, textStatus, jqXHR) {
+					blogId = blog.id;
+					task.chain(publish);
+				}).fail(function(jqXHR) {
+					var error = {
+						code: jqXHR.status,
+						message: jqXHR.statusText
+					};
+					// Handle error
+					if(error.code === 404) {
+						error = 'Blog "' + blogUrl + '" not found on Blogger.';
+					}
+					handleError(error, task, callback);
+				});
+			}
+			task.chain(getBlogId);
 		});
+		task.onSuccess = function() {
+			callback(undefined, blogId, postId);
+		};
+		task.onError = function(error) {
+			callback(error);
+		};
+		asyncRunner.addTask(task);
 	};
 
-	googleHelper.init = function(coreModule, fileManagerModule) {
+	googleHelper.init = function(coreModule) {
 		core = coreModule;
-		fileManager = fileManagerModule;
-		var state = localStorage["sync.gdrive.state"];
-		if(state === undefined) {
-			return;
-		}
-		localStorage.removeItem("sync.gdrive.state");
-		state = JSON.parse(state);
-		if (state.action == "create") {
-			googleHelper.upload(undefined, state.folderId, GDRIVE_DEFAULT_FILE_TITLE,
-				"", function(fileSyncIndex) {
-				if(fileSyncIndex === undefined) {
-					return;
-				}
-				var contentCRC = core.crc32("");
-				localStorage[fileSyncIndex + ".contentCRC"] = contentCRC;
-				var titleCRC = core.crc32(GDRIVE_DEFAULT_FILE_TITLE);
-				localStorage[fileSyncIndex + ".titleCRC"] = titleCRC;
-				var fileIndex = fileManager.createFile(GDRIVE_DEFAULT_FILE_TITLE, "", [fileSyncIndex]);
-				fileManager.selectFile(fileIndex);
-				core.showMessage('"' + GDRIVE_DEFAULT_FILE_TITLE + '" created successfully on Google Drive.');
-			});
-		}
-		else if (state.action == "open") {
-			var ids = [];
-			for(var i=0; i<state.ids.length; i++) {
-				var id = state.ids[i];
-				var fileSyncIndex = SYNC_PROVIDER_GDRIVE + id;
-				var fileIndex = fileManager.getFileIndexFromSync(fileSyncIndex);
-				if(fileIndex !== undefined) {
-					fileManager.selectFile(fileIndex);
-				} else {
-					ids.push(id);
-				}
-			}
-			googleHelper.importFiles(ids);
-		}
 	};
 	
 	return googleHelper;

@@ -1,8 +1,7 @@
-define(["jquery", "async-runner"], function($, asyncTaskRunner) {
+define(["jquery", "async-runner"], function($, asyncRunner) {
 
 	// Dependencies
 	var core = undefined;
-	var fileManager = undefined;
 
 	var client = undefined;
 	var authenticated = false;
@@ -10,219 +9,194 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 	var dropboxHelper = {};
 
 	// Try to connect dropbox by downloading client.js
-	function connect(callback) {
-		callback = callback || core.doNothing;
-		if(core.isOffline === true) {
-			client = undefined;
-			core.showMessage("Operation not available in offline mode.");
-			callback(true);
-			return;
-		}		
-		if (client !== undefined) {
-			callback();
-			return;
-		}
-		$.ajax({
-			url : "lib/dropbox.min.js",
-			dataType : "script", timeout : AJAX_TIMEOUT
-		}).done(function() {
-			client = new Dropbox.Client({
-			    key: DROPBOX_APP_KEY,
-			    secret: DROPBOX_APP_SECRET
+	function connect(task) {
+		task.onRun(function() {
+			if(core.isOffline === true) {
+				client = undefined;
+				core.showMessage("Operation not available in offline mode.");
+				task.error();
+				return;
+			}		
+			if (client !== undefined) {
+				task.chain();
+				return;
+			}
+			$.ajax({
+				url : "lib/dropbox.min.js",
+				dataType : "script", timeout : AJAX_TIMEOUT
+			}).done(function() {
+				client = new Dropbox.Client({
+				    key: DROPBOX_APP_KEY,
+				    secret: DROPBOX_APP_SECRET
+				});
+				client.authDriver(new Dropbox.Drivers.Popup({
+				    receiverUrl: BASE_URL + "dropbox-oauth-receiver.html",
+				    rememberUser: true
+				}));
+				task.chain();
+			}).fail(function() {
+				core.setOffline();
+				task.error(new Error("Network timeout"));
 			});
-			client.authDriver(new Dropbox.Drivers.Popup({
-			    receiverUrl: BASE_URL + "dropbox-oauth-receiver.html",
-			    rememberUser: true
-			}));
-			callback();
-		}).fail(function() {
-			core.setOffline();
-			callback(true);
 		});
 	}
 
 	// Try to authenticate with Oauth
-	function authenticate(callback, immediate) {
-		callback = callback || core.doNothing;
-		if (immediate === undefined) {
-			immediate = true;
-		}
-		connect(function(error) {
-			if (error) {
-				callback(error);
-				return;
-			}
+	function authenticate(task) {
+		task.onRun(function() {
 			if (authenticated === true) {
-				callback();
+				task.chain();
 				return;
 			}
-			if (immediate === false) {
-				core.showMessage("Please make sure the Dropbox authorization popup is not blocked by your browser.");
-				asyncTaskRunner.setCurrentTaskTimeout(AUTH_POPUP_TIMEOUT);
+			var immediate = true;
+			function localAuthenticate() {
+				if (immediate === false) {
+					core.showMessage("Please make sure the Dropbox authorization popup is not blocked by your browser.");
+					// If not immediate we add time for user to enter his credentials
+					task.timeout = ASYNC_TASK_LONG_TIMEOUT;
+				}
+				client.reset();
+				client.authenticate({interactive: !immediate}, function(error, client) {
+					// Success
+					if (client.authState === Dropbox.Client.DONE) {
+						authenticated = true;
+						task.chain();
+						return;
+					}
+					// If immediate did not work retry without immediate flag
+					if (immediate === true) {
+						immediate = false;
+						task.chain(localAuthenticate);
+						return;
+					}
+					// Error
+					var errorMsg = "Access to Dropbox account is not authorized.";
+					core.showError(errorMsg);
+					task.error(new Error(errorMsg));
+				});
 			}
-			client.authenticate({interactive: !immediate}, function(error, client) {
-				if (client.authState === Dropbox.Client.DONE) {
-					callback();
-					return;
-				}
-
-				// If immediate did not work retry without immediate flag
-				if (client !== undefined && immediate === true) {
-					authenticate(callback, false);
-					return;
-				}
-				// Notify error
-				callback(true);
-			});
+			task.chain(localAuthenticate);
 		});
 	}
 
 	dropboxHelper.upload = function(path, content, callback) {
 		callback = callback || core.doNothing;
-		var syncIndex = undefined;
-		var asyncTask = {};
-		asyncTask.run = function() {
-			authenticate(function(error) {
-				if (error) {
-					handleError(error, asyncTask, callback);
+		var result = undefined;
+		var task = asyncRunner.createTask();
+		connect(task);
+		authenticate(task);
+		task.onRun(function() {
+			client.writeFile(path, content, function(error, stat) {
+				if (!error) {
+					result = stat;
+					task.chain();
 					return;
 				}
-
-				client.writeFile(path, content, function(error, stat) {
-					if (!error) {
-						syncIndex = SYNC_PROVIDER_DROPBOX + encodeURIComponent(stat.path.toLowerCase());
-						localStorage[syncIndex + ".version"] = stat.versionTag;
-						asyncTask.success();
-						return;
-					}
-					// Handle error
-					if(error.status === Dropbox.ApiError.INVALID_PARAM) {
-						error = 'Could not upload document into path "' + path + '".';
-					}
-					handleError(error, asyncTask, callback);
-				});
+				// Handle error
+				if(error.status === Dropbox.ApiError.INVALID_PARAM) {
+					error = 'Could not upload document into path "' + path + '".';
+				}
+				handleError(error, task, callback);
 			});
-		};
-		asyncTask.onSuccess = function() {
-			callback(undefined, syncIndex);
-		};
-		asyncTask.onError = function() {
-			callback(true);
-		};
-		asyncTaskRunner.addTask(asyncTask);
+		});
+		task.onSuccess(function() {
+			callback(undefined, result);
+		});
+		task.onError(function(error) {
+			callback(error);
+		});
+		asyncRunner.addTask(task);
 	};
 
 	dropboxHelper.checkUpdates = function(lastChangeId, callback) {
 		callback = callback || core.doNothing;
 		var changes = [];
 		var newChangeId = lastChangeId || 0;
-		var asyncTask = {};
-		asyncTask.run = function() {
-			function retrievePageOfChanges(changeId) {
-				if(asyncTask.finished === true) {
-					return;
-				}
-				authenticate(function(error) {
+		var task = asyncRunner.createTask();
+		connect(task);
+		authenticate(task);
+		task.onRun(function() {
+			function retrievePageOfChanges() {
+				client.pullChanges(newChangeId, function(error, pullChanges) {
 					if (error) {
-						handleError(error, asyncTask, callback);
+						handleError(error, task, callback);
 						return;
 					}
-
-					client.pullChanges(changeId, function(error, pullChanges) {
-						if (error) {
-							handleError(error, asyncTask, callback);
-							return;
-						}
-						
-						// Retrieve success
-						newChangeId = pullChanges.cursor();
-						if(pullChanges.changes !== undefined) {
-							for(var i=0; i<pullChanges.changes.length; i++) {
-								var item = pullChanges.changes[i];
-								var version = localStorage[SYNC_PROVIDER_DROPBOX
-								    + encodeURIComponent(item.path.toLowerCase()) + ".version"];
-								if(version && (item.wasRemoved || item.stat.versionTag != version)) {
-									changes.push(item);
-								}
+					// Retrieve success
+					newChangeId = pullChanges.cursor();
+					if(pullChanges.changes !== undefined) {
+						for(var i=0; i<pullChanges.changes.length; i++) {
+							var item = pullChanges.changes[i];
+							var version = localStorage[SYNC_PROVIDER_DROPBOX
+							    + encodeURIComponent(item.path.toLowerCase()) + ".version"];
+							if(version && (item.wasRemoved || item.stat.versionTag != version)) {
+								changes.push(item);
 							}
 						}
-						if (pullChanges.shouldPullAgain) {
-							retrievePageOfChanges(newChangeId);
-						} else {
-							asyncTask.success();
-						}
-					});
+					}
+					if (pullChanges.shouldPullAgain) {
+						task.chain(retrievePageOfChanges);
+					} else {
+						task.chain();
+					}
 				});
 			}
-			retrievePageOfChanges(newChangeId);
-		};
-		asyncTask.onSuccess = function() {
+			task.chain(retrievePageOfChanges);
+		});
+		task.onSuccess(function() {
 			callback(undefined, changes, newChangeId);
-		};
-		asyncTask.onError = function() {
-			callback(true);
-		};
-		asyncTaskRunner.addTask(asyncTask);
+		});
+		task.onError(function(error) {
+			callback(error);
+		});
+		asyncRunner.addTask(task);
 	};
 
 	dropboxHelper.downloadMetadata = function(paths, callback) {
 		callback = callback || core.doNothing;
-		result = result || [];
-	
-		var path = paths.pop();
-		var asyncTask = {};
-		asyncTask.run = function() {
+		var result = [];
+		var task = asyncRunner.createTask();
+		connect(task);
+		authenticate(task);
+		task.onRun(function() {
 			function recursiveDownloadMetadata() {
-				if(asyncTask.finished === true) {
-					return;
-				}
 				if(paths.length === 0) {
-					asyncTask.success();
+					task.chain();
 					return;
 				}
-				authenticate(function(error) {
-					if (error) {
-						handleError(error, asyncTask, callback);
+				var path = paths.pop();
+				client.stat(path, function(error, stat) {
+					if(stat) {
+						result.push(stat);
+						task.chain(recursiveDownloadMetadata);
 						return;
 					}
-
-					client.stat(path, function(error, stat) {
-						if(stat) {
-							result.push(stat);
-							recursiveDownloadMetadata();
-							return;
-						}
-						handleError(error, asyncTask, callback);
-					});
+					handleError(error, task, callback);
 				});
 			}
-			recursiveDownloadMetadata();
-		};
-		asyncTask.onSuccess = function() {
+			task.chain(recursiveDownloadMetadata);
+		});
+		task.onSuccess(function() {
 			callback(undefined, result);
-		};
-		asyncTask.onError = function() {
-			callback(true);
-		};
-		asyncTaskRunner.addTask(asyncTask);
+		});
+		task.onError(function(error) {
+			callback(error);
+		});
+		asyncRunner.addTask(task);
 	};
 
-	dropboxHelper.downloadContent = function(objects, callback, result) {
+	dropboxHelper.downloadContent = function(objects, callback) {
 		callback = callback || core.doNothing;
-		result = result || [];
-		
-		var asyncTask = {};
-		asyncTask.run = function() {
-			
+		var result = [];
+		var task = asyncRunner.createTask();
+		connect(task);
+		authenticate(task);
+		task.onRun(function() {			
 			function recursiveDownloadContent() {
-				if(asyncTask.finished === true) {
-					return;
-				}
 				if(objects.length === 0) {
-					asyncTask.success();
+					task.chain();
 					return;
 				}
-				
 				var object = objects.pop();
 				result.push(object);
 				var file = undefined;
@@ -235,44 +209,31 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 					file = object.stat;
 				}
 				if(!file) {
-					recursiveDownloadContent();
+					task.chain(recursiveDownloadContent);
 					return;
 				}
-				authenticate(function(error) {
-					if (error) {
-						handleError(error, asyncTask, callback);
+				client.readFile(file.path, function(error, data) {
+					if(data) {
+						file.content = data;
+						recursiveDownloadContent();
 						return;
 					}
-					
-					client.readFile(file.path, function(error, data) {
-						if(data) {
-							file.content = data;
-							recursiveDownloadContent();
-							return;
-						}
-						handleError(error, asyncTask, callback);
-					});
+					handleError(error, task, callback);
 				});
 			}
-			recursiveDownloadContent();
-		};
-		asyncTask.onSuccess = function() {
+			task.chain(recursiveDownloadContent);
+		});
+		task.onSuccess(function() {
 			callback(undefined, result);
-		};
-		asyncTask.onError = function() {
-			callback(true);
-		};
-		asyncTaskRunner.addTask(asyncTask);
+		});
+		task.onError(function(error) {
+			callback(error);
+		});
+		asyncRunner.addTask(task);
 	};
 	
-	function handleError(error, asyncTask, callback) {
-		var errorMsg = undefined;
-		asyncTask.onError = function() {
-			if (errorMsg !== undefined) {
-				core.showError(errorMsg);
-			}
-			callback(errorMsg);
-		};
+	function handleError(error, task, callback) {
+		var errorMsg = true;
 		if (error) {
 			console.error(error);
 			// Try to analyze the error
@@ -281,7 +242,20 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 			} else if (error.status === Dropbox.ApiError.INVALID_TOKEN
 				|| error.status === Dropbox.ApiError.OAUTH_ERROR) {
 				authenticated = false;
-				errorMsg = "Access to Dropbox is not authorized.";
+				task.retry();
+				return;
+			} else if(error.status === Dropbox.ApiError.INVALID_PARAM && error.responseText
+					.indexOf("oauth_nonce") !== -1) {
+				// A bug I guess...
+				_.each(_.keys(localStorage), function(key) {
+					// We have to remove the Oauth cache from the localStorage
+					if(key.indexOf("dropbox-auth") === 0) {
+						localStorage.removeItem(key);
+					}
+				});
+				authenticated = false;
+				task.retry();
+				return;
 			} else if (error.status === Dropbox.ApiError.NETWORK_ERROR) {
 				client = undefined;
 				authenticated = false;
@@ -290,31 +264,27 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 				errorMsg = "Dropbox error ("
 					+ error.status + ").";
 			}
+			core.showError(errorMsg);
 		}
-		asyncTask.error();
+		task.error(new Error(errorMsg));
 	}
 
 	var pickerLoaded = false;
-	function loadPicker(callback) {
-		if (pickerLoaded === true) {
-			callback();
-			return;
-		}
-		connect(function(error) {
-			if (error) {
-				pickerLoaded = false;
-				callback(error);
+	function loadPicker(task) {
+		task.onRun(function() {
+			if (pickerLoaded === true) {
+				task.chain();
 				return;
 			}
-
 			$.ajax({
 				url : "https://www.dropbox.com/static/api/1/dropbox.js",
 				dataType : "script", timeout : AJAX_TIMEOUT
 			}).done(function() {
 				pickerLoaded = true;
-				callback();
+				task.chain();
 			}).fail(function() {
-				callback(true);
+				core.setOffline();
+				task.error();
 			});
 		});
 	}
@@ -322,78 +292,40 @@ define(["jquery", "async-runner"], function($, asyncTaskRunner) {
 	dropboxHelper.picker = function(callback) {
 		callback = callback || core.doNothing;
 		var paths = [];
-		
-		var asyncTask = {};
-		asyncTask.run = function() {
-			loadPicker(function(error) {
-				if (error) {
-					handleError(error, asyncTask, callback);
-					return;
+		var task = asyncRunner.createTask();
+		// Add some time for user to choose his files
+		task.timeout = ASYNC_TASK_LONG_TIMEOUT;
+		connect(task);
+		loadPicker(task);
+		task.onRun(function() {			
+			var options = {};
+			options.multiselect = true;
+			options.linkType = "direct";
+			options.success = function(files) {
+				for(var i=0; i<files.length; i++) {
+					var path = files[i].link;
+					path = path.replace(/.*\/view\/[^\/]*/, "");
+					paths.push(decodeURI(path));
 				}
-				var options = {};
-				options.multiselect = true;
-				options.linkType = "direct";
-				options.success = function(files) {
-					for(var i=0; i<files.length; i++) {
-						var path = files[i].link;
-						path = path.replace(/.*\/view\/[^\/]*/, "");
-						paths.push(decodeURI(path));
-					}
-					asyncTask.success();
-	            };
-	            options.cancel = function() {
-					asyncTask.error();
-	            };
-				Dropbox.choose(options);
-				core.showMessage("Please make sure the Dropbox chooser popup is not blocked by your browser.");
-			});
-		};
-		asyncTask.onSuccess = function() {
-			callback(undefined, paths);
-		};
-		asyncTask.onError = function() {
-			callback(true);
-		};
-		asyncTaskRunner.addTask(asyncTask);
-	};
-
-	dropboxHelper.importFiles = function(paths) {
-		dropboxHelper.downloadMetadata(paths, function(error, result) {
-			if(error) {
-				return;
-			}
-			dropboxHelper.downloadContent(result, function(error, result) {
-				if(error) {
-					return;
-				}
-				for(var i=0; i<result.length; i++) {
-					var file = result[i];
-					syncIndex = SYNC_PROVIDER_DROPBOX + encodeURIComponent(file.path.toLowerCase());
-					localStorage[syncIndex + ".version"] = file.versionTag;
-					var contentCRC = core.crc32(file.content);
-					localStorage[syncIndex + ".contentCRC"] = contentCRC;
-					var fileIndex = fileManager.createFile(file.name, file.content, [syncIndex]);
-					fileManager.selectFile(fileIndex);
-					core.showMessage('"' + file.name + '" imported successfully from Dropbox.');
-				}
-			});
+				task.chain();
+            };
+            options.cancel = function() {
+				task.chain();
+            };
+			Dropbox.choose(options);
+			core.showMessage("Please make sure the Dropbox chooser popup is not blocked by your browser.");
 		});
+		task.onSuccess(function() {
+			callback(undefined, paths);
+		});
+		task.onError(function(error) {
+			callback(error);
+		});
+		asyncRunner.addTask(task);
 	};
 
-	dropboxHelper.init = function(coreModule, fileManagerModule) {
+	dropboxHelper.init = function(coreModule) {
 		core = coreModule;
-		fileManager = fileManagerModule;
-	};
-	
-	dropboxHelper.checkPath = function(path) {
-		if(!path.match(/^[^\\<>:"\|?\*]+$/)) {
-			core.showError('"' + path + '" contains invalid characters.');
-			return undefined;
-		}
-		if(path.indexOf("/") !== 0) {
-			return "/" + path;
-		}
-		return path;
 	};
 	
 	return dropboxHelper;

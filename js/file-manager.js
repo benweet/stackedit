@@ -40,7 +40,7 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 
 		// Update the file titles
 		fileManager.updateFileTitles();
-		refreshManageSync();
+		synchronizer.refreshManageSync();
 		publisher.notifyPublish();
 		
 		// Recreate the editor
@@ -186,14 +186,11 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 			localStorage[fileIndex + ".sync"] = localStorage[fileIndex + ".sync"].replace(";"
 				+ syncIndex + ";", ";");
 			if(fileManager.isCurrentFileIndex(fileIndex)) {
-				refreshManageSync();
+				synchronizer.refreshManageSync();
 			}
 		}
-		// Remove ETAG, version, CRCs (if any) 
-		localStorage.removeItem(syncIndex + ".etag");
-		localStorage.removeItem(syncIndex + ".version");
-		localStorage.removeItem(syncIndex + ".contentCRC");
-		localStorage.removeItem(syncIndex + ".titleCRC");
+		// Remove sync attributes
+		localStorage.removeItem(syncIndex);
 	};
 	
 	// Get the fileIndex associated to a syncIndex
@@ -215,7 +212,7 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 				publisher.notifyPublish();
 			}
 		}
-		// Remove publish object
+		// Remove publish attributes
 		localStorage.removeItem(publishIndex);
 	};
 	
@@ -227,148 +224,6 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 				return sync.indexOf(";" + publishIndex + ";") !== -1;
 			}).value();
 	};
-	
-	function uploadGdrive(fileId, folderId) {
-		var fileIndex = fileManager.getCurrentFileIndex();
-		var content = localStorage[fileIndex + ".content"];
-		var title = localStorage[fileIndex + ".title"];
-		googleHelper.upload(fileId, folderId, title, content, function(syncIndex) {
-			if (syncIndex === undefined) {
-				return;
-			}
-			var contentCRC = core.crc32(content);
-			localStorage[syncIndex + ".contentCRC"] = contentCRC;
-			var titleCRC = core.crc32(title);
-			localStorage[syncIndex + ".titleCRC"] = titleCRC;
-			localStorage[fileIndex + ".sync"] += syncIndex + ";";
-			refreshManageSync();
-			fileManager.updateFileTitles();
-			core.showMessage('"' + title
-				+ '" will now be synchronized on Google Drive.');
-		});
-	}
-	
-	function manualGdrive(fileId) {
-		if(!fileId) {
-			return;
-		}
-		// Check that file is not synchronized with an other one
-		var syncIndex = SYNC_PROVIDER_GDRIVE + fileId;
-		var fileIndex = fileManager.getFileIndexFromSync(syncIndex);
-		if(fileIndex !== undefined) {
-			var title = localStorage[fileIndex + ".title"];
-			core.showError('File ID is already synchronized with "' + title + '"');
-			return;
-		}
-		uploadGdrive(fileId);
-	}
-	
-	function importGdrive(ids) {
-		if(ids === undefined) {
-			return;
-		}
-		var importIds = [];
-		for(var i=0; i<ids.length; i++) {
-			var fileId = ids[i];
-			var syncIndex = SYNC_PROVIDER_GDRIVE + fileId;
-			var fileIndex = fileManager.getFileIndexFromSync(syncIndex);
-			if(fileIndex !== undefined) {
-				var title = localStorage[fileIndex + ".title"];
-				core.showError('"' + title + '" was already imported');
-				continue;
-			}
-			importIds.push(fileId);
-		}
-		googleHelper.importFiles(importIds);
-	}
-	
-	function manualDropbox(path) {
-		if(!path) {
-			return;
-		}
-		path = dropboxHelper.checkPath(path);
-		if(path === undefined) {
-			return;
-		}
-		// Check that file is not synchronized with an other one
-		var syncIndex = SYNC_PROVIDER_DROPBOX + encodeURIComponent(path.toLowerCase());
-		var fileIndex = fileManager.getFileIndexFromSync(syncIndex);
-		if(fileIndex !== undefined) {
-			var title = localStorage[fileIndex + ".title"];
-			core.showError('Path "' + path + '" is already synchronized with "' + title + '"');
-			return;
-		}
-		var fileIndex = fileManager.getCurrentFileIndex();
-		var content = localStorage[fileIndex + ".content"];
-		var title = localStorage[fileIndex + ".title"];
-		dropboxHelper.upload(path, content, function(error, syncIndex) {
-			if (error) {
-				return;
-			}
-			var contentCRC = core.crc32(content);
-			localStorage[syncIndex + ".contentCRC"] = contentCRC;
-			localStorage[fileIndex + ".sync"] += syncIndex + ";";
-			refreshManageSync();
-			fileManager.updateFileTitles();
-			core.showMessage('"' + title
-				+ '" will now be synchronized on Dropbox.');
-		});
-	}
-	
-	function importDropbox(error, paths) {
-		if(error) {
-			return;
-		}
-		var importPaths = [];
-		for(var i=0; i<paths.length; i++) {
-			var filePath = paths[i];
-			var syncIndex = SYNC_PROVIDER_DROPBOX + encodeURIComponent(filePath.toLowerCase());
-			var fileIndex = fileManager.getFileIndexFromSync(syncIndex);
-			if(fileIndex !== undefined) {
-				var title = localStorage[fileIndex + ".title"];
-				core.showError('"' + title + '" was already imported');
-				continue;
-			}
-			importPaths.push(filePath);
-		}
-		dropboxHelper.importFiles(importPaths);
-	}
-	
-	function refreshManageSync() {
-		var fileIndex = fileManager.getCurrentFileIndex();
-		var syncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
-		$(".msg-no-sync, .msg-sync-list").addClass("hide");
-		$("#manage-sync-list .input-append").remove();
-		if (syncIndexList.length > 0) {
-			$(".msg-sync-list").removeClass("hide");
-		} else {
-			$(".msg-no-sync").removeClass("hide");
-		}
-		_.each(syncIndexList, function(syncIndex) {
-			var line = $("<div>").addClass("input-prepend input-append");
-			if (syncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
-				line.append($("<span>").addClass("add-on").prop("title", "Google Drive").html(
-					'<i class="icon-gdrive"></i>'));
-				line.append($("<input>").prop("type", "text").prop(
-					"disabled", true).addClass("span5").val(
-					syncIndex.substring(SYNC_PROVIDER_GDRIVE.length)));
-			}
-			else if (syncIndex.indexOf(SYNC_PROVIDER_DROPBOX) === 0) {
-				line.append($("<span>").addClass("add-on").prop("title", "Dropbox").html(
-				'<i class="icon-dropbox"></i>'));
-				line.append($("<input>").prop("type", "text").prop(
-					"disabled", true).addClass("span5").val(
-						decodeURIComponent(syncIndex.substring(SYNC_PROVIDER_DROPBOX.length))));
-			}
-			line.append($("<a>").addClass("btn").html(
-				'<i class="icon-trash"></i>').prop("title",
-				"Remove this location").click(function() {
-				fileManager.removeSync(syncIndex);
-				fileManager.updateFileTitles();
-			}));
-			$("#manage-sync-list").append(line);
-		});
-	}
 	
 	fileManager.init = function(coreModule) {
 		core = coreModule;
@@ -388,18 +243,29 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 			$(this).hide();
 			$("#file-title-input").show().focus();
 		});
-		$("#file-title-input").blur(function() {
-			var title = $.trim($(this).val());
+		function applyTitle(input) {
+			var title = $.trim(input.val());
+			var fileIndexTitle = fileManager.getCurrentFileIndex() + ".title";
 			if (title) {
-				var fileIndexTitle = fileManager.getCurrentFileIndex() + ".title";
 				if (title != localStorage[fileIndexTitle]) {
 					localStorage[fileIndexTitle] = title;
 					fileManager.updateFileTitles();
 					fileManager.saveFile();
 				}
 			}
-			$(this).hide();
+			input.hide().val(localStorage[fileIndexTitle]);
 			$("#file-title").show();
+		}
+		$("#file-title-input").blur(function() {
+			applyTitle($(this));
+		}).keyup(function(e) {
+			if (e.keyCode == 13) {
+				applyTitle($(this));
+			}
+			if (e.keyCode == 27) {
+				$(this).val("");
+				applyTitle($(this));
+			}
 		});
 		$(".action-download-md").click(
 			function() {
@@ -422,38 +288,6 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 					+ core.encodeBase64(content);
 				window.open(uriContent, 'file');
 			});
-		
-		// Synchronize actions
-		$(".action-upload-gdrive-root").click(function() {
-			uploadGdrive();
-		});
-		$(".action-upload-gdrive-select").click(function() {
-			// This action is not available because picker does not support
-			// folder selection
-			googleHelper.picker(function(ids) {
-				if(ids !== undefined && ids.length !== 0) {
-					uploadGdrive(undefined, ids[0]);
-				}
-			}, true);
-		});
-		$(".action-download-gdrive").click(function() {
-			googleHelper.picker(importGdrive);
-		});
-		$(".action-manual-gdrive").click(function(event) {
-			var fileId = core.getInputValue($("#manual-gdrive-fileid"), event);
-			manualGdrive(fileId);
-		});
-		$(".action-download-dropbox").click(function() {
-			dropboxHelper.picker(importDropbox);
-		});
-		$(".action-upload-dropbox").click(function(event) {
-			var path = core.getInputValue($("#upload-dropbox-path"), event);
-			manualDropbox(path);
-		});
-		$(".action-manual-dropbox").click(function(event) {
-			var path = core.getInputValue($("#manual-dropbox-path"), event);
-			manualDropbox(path);
-		});
 	};
 
 	return fileManager;

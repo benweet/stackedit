@@ -13,9 +13,9 @@ define(["jquery", "google-helper"], function($, googleHelper) {
 	bloggerProvider.publish = function(publishAttributes, title, content, callback) {
 		googleHelper.uploadBlogger(publishAttributes.blogUrl,
 			publishAttributes.blogId, publishAttributes.postId, title, content,
-			function(blogId, postId) {
-			if(blogId === undefined || postId === undefined) {
-				callback(true);
+			function(error, blogId, postId) {
+			if(error) {
+				callback(error);
 				return;
 			}
 			publishAttributes.blogId = blogId;
@@ -27,10 +27,7 @@ define(["jquery", "google-helper"], function($, googleHelper) {
 	bloggerProvider.newPublishAttributes = function(event) {
 		var publishAttributes = {};
 		publishAttributes.blogUrl = core.getInputValue($("#input-publish-blogger-url"), event);
-		var postId = $("#input-publish-blogger-postid").val();
-		if(postId) {
-			publishAttributes.postId = postId;
-		}
+		publishAttributes.postId = $("#input-publish-blogger-postid").val() || undefined;
 		if(event.isPropagationStopped()) {
 			return undefined;
 		}

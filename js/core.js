@@ -620,6 +620,20 @@ define(
 		$("#wmd-input").css({
 			"font-size": core.settings.editorFontSize + "px",
 			"line-height": Math.round(core.settings.editorFontSize * (20/14)) + "px"
+		}).keydown(function(e) {
+			// Manage tab key
+		    if(e.keyCode === 9) {
+		        var value = $(this).val();
+		        var start = this.selectionStart;
+		        var end = this.selectionEnd;
+		        // IE8 does not support selection attributes
+		        if(start === undefined || end === undefined) {
+		        	return;
+		        }
+		        $(this).val(value.substring(0, start) + "\t" + value.substring(end));
+		        this.selectionStart = this.selectionEnd = start + 1;
+		        e.preventDefault();
+		    }
 		});
 
 		$(".action-load-settings").click(function() {

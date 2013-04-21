@@ -464,6 +464,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 			function getBlogId() {
 				if(blogId !== undefined) {
 					task.chain(publish);
+					return;
 				}
 				$.ajax({
 					url : "https://www.googleapis.com/blogger/v3/blogs/byurl",

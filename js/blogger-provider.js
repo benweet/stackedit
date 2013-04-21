@@ -7,17 +7,22 @@ define(["jquery", "core", "google-helper"], function($, core, googleHelper) {
 	};
 	
 	bloggerProvider.publish = function(publishAttributes, title, content, callback) {
-		googleHelper.uploadBlogger(publishAttributes.blogUrl,
-			publishAttributes.blogId, publishAttributes.postId, title, content,
+		googleHelper.uploadBlogger(
+			publishAttributes.blogUrl,
+			publishAttributes.blogId,
+			publishAttributes.postId,
+			title,
+			content,
 			function(error, blogId, postId) {
-			if(error) {
-				callback(error);
-				return;
+				if(error) {
+					callback(error);
+					return;
+				}
+				publishAttributes.blogId = blogId;
+				publishAttributes.postId = postId;
+				callback();
 			}
-			publishAttributes.blogId = blogId;
-			publishAttributes.postId = postId;
-			callback();
-		});
+		);
 	};
 	
 	bloggerProvider.newPublishAttributes = function(event) {

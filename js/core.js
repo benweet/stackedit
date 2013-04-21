@@ -188,7 +188,7 @@ define(
 		converterType : "markdown-extra-prettify",
 		layoutOrientation : "horizontal",
 		editorFontSize : 14,
-		commitMsg : "Published by StackEdit.",
+		commitMsg : "Published by StackEdit",
 		template : ['<!DOCTYPE html>\n',
 			'<html>\n',
 			'<head>\n',
@@ -298,6 +298,7 @@ define(
 		$("#wmd-button-bar").empty();
 		var converter = Markdown.getSanitizingConverter();
 		if(core.settings.converterType.indexOf("markdown-extra") === 0) {
+			// Markdown extra customized converter
 			var options = {};
 			if(core.settings.converterType == "markdown-extra-prettify") {
 				options.highlighter = "prettify";
@@ -306,18 +307,21 @@ define(
 		}
 		var firstChange = true;
 		converter.hooks.chain("preConversion", function(text) {
+			// Used to save changes when typing 
 			if (!firstChange) {
 				onTextChange();
 			}
 			return text;
 		});
 		var editor = new Markdown.Editor(converter);
+		// Custom insert link dialog
 		editor.hooks.set("insertLinkDialog", function (callback) {
 			insertLinkCallback = callback;
 			core.resetModalInputs();
 			$("#modal-insert-link").modal();
 			return true;
 	    });
+		// Custom insert image dialog
 		editor.hooks.set("insertImageDialog", function (callback) {
 			insertLinkCallback = callback;
 			core.resetModalInputs();
@@ -331,8 +335,11 @@ define(
 		editor.run();
 		firstChange = false;
 
+		// Hide default buttons
 		$(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)")
 			.addClass("btn").css("left", 0).find("span").hide();
+		
+		// Add customized buttons
 		$("#wmd-bold-button").append($("<i>").addClass("icon-bold"));
 		$("#wmd-italic-button").append($("<i>").addClass("icon-italic"));
 		$("#wmd-link-button").append($("<i>").addClass("icon-globe"));
@@ -473,18 +480,18 @@ define(
 		return _.random(4294967296).toString(36);
 	};
 	
-	// Used to setup an empty localStorage 
+	// Used to setup an empty localStorage or to upgrade an existing one
 	function setupLocalStorage() {
+		
+		// Create the file system if not exist
 		if (localStorage["file.list"] === undefined) {
 			localStorage["file.list"] = ";";
-		}		
-	}
-
-	// Used to upgrade an existing localStorage
-	function upgradeLocalStorage() {
+		}
+		
+		// localStorage versioning
 		var version = localStorage["version"];
 		
-		// from v0 to v1
+		// Upgrade from v0 to v1
 		if(version === undefined) {
 			
 			// Not used anymore
@@ -507,7 +514,7 @@ define(
 			version = "v1";
 		}
 		
-		// from v1 to v2
+		// Upgrade from v1 to v2
 		if(version == "v1") {
 			var gdriveLastChangeId = localStorage["sync.gdrive.lastChangeId"];
 			if(gdriveLastChangeId) {
@@ -551,6 +558,8 @@ define(
 		}
 		localStorage["version"] = version;
 	}
+	// Setup the localStorage when starting
+	setupLocalStorage();
 	
 	// Create an centered popup window
 	core.popupWindow = function(url, title, w, h) {
@@ -571,9 +580,7 @@ define(
 	};
 	
 	$(function() {
-		setupLocalStorage();
-		upgradeLocalStorage();
-
+		
 		// jGrowl configuration
 		$.jGrowl.defaults.life = 5000;
 		$.jGrowl.defaults.closer = false;
@@ -591,7 +598,7 @@ define(
 		$(document).mousemove(setUserActive).keypress(setUserActive);
 		
 		// Avoid dropdown to close when clicking on submenu
-		$('.dropdown-submenu > a').click(function(e) {
+		$(".dropdown-submenu > a").click(function(e) {
 			e.stopPropagation();
 		});
 		
@@ -611,13 +618,27 @@ define(
 		$(".action-close-insert-link").click(function(e) {
 			insertLinkCallback(null);
 		});
-		
-		$("#menu-bar, .ui-layout-center, .ui-layout-east, .ui-layout-south").removeClass("hide");
+
+		// Settings loading/saving
 		core.loadSettings();
-		core.createLayout();
+		$(".action-load-settings").click(function() {
+			core.loadSettings();
+		});
+
+		$(".action-apply-settings").click(function(e) {
+			core.saveSettings(e);
+			if(!e.isPropagationStopped()) {
+				window.location.reload();
+			}
+		});
 		
-		// Apply editor font size
+		// UI layout
+		$("#menu-bar, .ui-layout-center, .ui-layout-east, .ui-layout-south").removeClass("hide");
+		core.createLayout();
+
+		// Editor's textarea
 		$("#wmd-input").css({
+			// Apply editor font size
 			"font-size": core.settings.editorFontSize + "px",
 			"line-height": Math.round(core.settings.editorFontSize * (20/14)) + "px"
 		}).keydown(function(e) {
@@ -636,17 +657,7 @@ define(
 		    }
 		});
 
-		$(".action-load-settings").click(function() {
-			core.loadSettings();
-		});
-
-		$(".action-apply-settings").click(function(e) {
-			core.saveSettings(e);
-			if(!e.isPropagationStopped()) {
-				window.location.reload();
-			}
-		});
-		
+		// Reset inputs
 		$(".action-reset-input").click(function() {
 			core.resetModalInputs();
 		});

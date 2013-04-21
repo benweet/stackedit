@@ -1,13 +1,10 @@
 /**
- * Used to run asynchronous tasks sequentially (ajax mainly) An asynchronous
+ * Used to run asynchronous tasks sequentially (ajax mainly). An asynchronous
  * task is composed of different callback types: onRun, onSuccess, onError
  */
-define([ "underscore" ], function() {
+define([ "core", "underscore" ], function(core) {
 
 	var asyncRunner = {};
-
-	// Dependencies
-	var core = undefined;
 
 	var taskQueue = [];
 	var currentTask = undefined;
@@ -21,8 +18,8 @@ define([ "underscore" ], function() {
 		task.retryCounter = 0;
 		/**
 		 * onRun callbacks are called by chain(). These callbacks have to call
-		 * chain() themselves to chain with next callback or to finish the task
-		 * and call onSuccess callbacks.
+		 * chain() themselves to chain with next onRun callback or error() to
+		 * throw an exception or retry() to restart the task.
 		 */
 		// Run callbacks
 		task.runCallbacks = [];
@@ -75,7 +72,8 @@ define([ "underscore" ], function() {
 			runCallback();
 		};
 		/**
-		 * error() calls the onError callbacks.
+		 * error() calls the onError callbacks with the error parameter and ends
+		 * the task by throwing an exception.
 		 */
 		task.error = function(error) {
 			if (task.finished === true) {
@@ -175,10 +173,6 @@ define([ "underscore" ], function() {
 		if (currentTask !== undefined) {
 			currentTask.timeout = timeout;
 		}
-	};
-
-	asyncRunner.init = function(coreModule) {
-		core = coreModule;
 	};
 
 	return asyncRunner;

@@ -1,12 +1,8 @@
-define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
-	
-	// Dependencies
-	var core = undefined;
-	var fileManager = undefined;
+define(["jquery", "core", "google-helper", "underscore"], function($, core, googleHelper) {
 	
 	var gdriveProvider = {
 		providerId: PROVIDER_GDRIVE,
-		providerName: "Gdrive",
+		providerName: "Google Drive",
 		defaultPublishFormat: "template",
 		useSync: false
 	};
@@ -18,7 +14,7 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 		syncAttributes.etag = etag;
 		syncAttributes.contentCRC = core.crc32(content);
 		syncAttributes.titleCRC = core.crc32(title);
-		var syncIndex = "sync." + PROVIDER_GDRIVE + "." + file.id;
+		var syncIndex = "sync." + PROVIDER_GDRIVE + "." + id;
 		localStorage[syncIndex] = JSON.stringify(syncAttributes);
 		return syncIndex;
 	}
@@ -34,8 +30,8 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 				}
 				_.each(result, function(file) {
 					var syncIndex = createSyncAttributes(file.id, file.etag, file.content, file.title);
-					var fileIndex = fileManager.createFile(file.title, file.content, [syncIndex]);
-					fileManager.selectFile(fileIndex);
+					var fileIndex = core.fileManager.createFile(file.title, file.content, [syncIndex]);
+					core.fileManager.selectFile(fileIndex);
 					core.showMessage('"' + file.title + '" imported successfully from Google Drive.');
 				});
 			});
@@ -50,7 +46,7 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 			var importIds = [];
 			_.each(ids, function(id) {
 				var syncIndex = "sync." + PROVIDER_GDRIVE + "." + id;
-				var fileIndex = fileManager.getFileIndexFromSync(syncIndex);
+				var fileIndex = core.fileManager.getFileIndexFromSync(syncIndex);
 				if(fileIndex !== undefined) {
 					var title = localStorage[fileIndex + ".title"];
 					core.showError('"' + title + '" was already imported');
@@ -80,7 +76,7 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 		}
 		// Check that file is not synchronized with an other one
 		var syncIndex = "sync." + PROVIDER_GDRIVE + "." + id;
-		var fileIndex = fileManager.getFileIndexFromSync(syncIndex);
+		var fileIndex = core.fileManager.getFileIndexFromSync(syncIndex);
 		if(fileIndex !== undefined) {
 			var existingTitle = localStorage[fileIndex + ".title"];
 			core.showError('File ID is already synchronized with "' + existingTitle + '"');
@@ -117,7 +113,7 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 		});
 	};
 	
-	function syncDown(callback) {
+	gdriveProvider.syncDown = function(callback) {
 		if (gdriveProvider.useSync === false) {
 			callback();
 			return;
@@ -130,7 +126,7 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 			}
 			var interestingChanges = [];
 			_.each(changes, function(change) {
-				var syncIndex = "sync." + PROVIDER_GDRIVE + "." + file.id;
+				var syncIndex = "sync." + PROVIDER_GDRIVE + "." + change.fileId;
 				var serializedAttributes = localStorage[syncIndex];
 				if(serializedAttributes === undefined) {
 					return;
@@ -150,7 +146,7 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 					change.syncAttributes = syncAttributes;
 				}
 			});
-			googleHelper.downloadContent(changes, function(error, changes) {
+			googleHelper.downloadContent(interestingChanges, function(error, changes) {
 				if (error) {
 					callback(error);
 					return;
@@ -158,16 +154,16 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 				var updateFileTitles = false;
 				_.each(changes, function(change) {
 					var syncIndex = change.syncIndex;
-					var fileIndex = fileManager.getFileIndexFromSync(syncIndex);
+					var fileIndex = core.fileManager.getFileIndexFromSync(syncIndex);
 					// No file corresponding (file may have been deleted locally)
 					if(fileIndex === undefined) {
-						fileManager.removeSync(syncIndex);
+						core.fileManager.removeSync(syncIndex);
 						return;
 					}
 					var localTitle = localStorage[fileIndex + ".title"];
 					// File deleted
 					if (change.deleted === true) {
-						fileManager.removeSync(syncIndex);
+						core.fileManager.removeSync(syncIndex);
 						updateFileTitles = true;
 						core.showMessage('"' + localTitle + '" has been removed from Google Drive.');
 						return;
@@ -182,7 +178,7 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 					// Conflict detection
 					if ((fileTitleChanged === true && localTitleChanged === true)
 						|| (fileContentChanged === true && localContentChanged === true)) {
-						fileManager.createFile(localTitle + " (backup)", localContent);
+						core.fileManager.createFile(localTitle + " (backup)", localContent);
 						updateFileTitles = true;
 						core.showMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
 					}
@@ -196,9 +192,9 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 					if(fileContentChanged) {
 						localStorage[fileIndex + ".content"] = file.content;
 						core.showMessage('"' + file.title + '" has been updated from Google Drive.');
-						if(fileManager.isCurrentFileIndex(fileIndex)) {
+						if(core.fileManager.isCurrentFileIndex(fileIndex)) {
 							updateFileTitles = false; // Done by next function
-							fileManager.selectFile(); // Refresh editor
+							core.fileManager.selectFile(); // Refresh editor
 						}
 					}
 					// Update syncAttributes
@@ -208,36 +204,48 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 					localStorage[syncIndex] = JSON.stringify(syncAttributes);
 				});
 				if(updateFileTitles) {
-					fileManager.updateFileTitles();
+					core.fileManager.updateFileTitles();
 				}
 				localStorage[PROVIDER_GDRIVE + ".lastChangeId"] = newChangeId;
 				callback();
 			});
 		});
-	}
+	};
 	
 	gdriveProvider.publish = function(publishAttributes, title, content, callback) {
-		googleHelper.upload(publishAttributes.fileId, undefined, title, content, undefined, callback);
+		googleHelper.upload(
+			publishAttributes.fileId,
+			undefined,
+			publishAttributes.fileName || title,
+			content,
+			undefined,
+			function(error, result) {
+				if(error) {
+					callback(error);
+					return;
+				}
+				publishAttributes.fileId = result.id;
+				callback();
+			}
+		);
 	};
 
 	gdriveProvider.newPublishAttributes = function(event) {
 		var publishAttributes = {};
 		publishAttributes.fileId = $("#input-publish-gdrive-fileid").val() || undefined;
+		publishAttributes.fileName = $("#input-publish-gdrive-filename").val() || undefined;
 		if(event.isPropagationStopped()) {
 			return undefined;
 		}
 		return publishAttributes;
 	};
 	
-	gdriveProvider.init = function(coreModule, fileManagerModule) {
-		core = coreModule;
-		fileManager = fileManagerModule;
-		
-		var state = localStorage["sync.gdrive.state"];
+	$(function() {
+		var state = localStorage[PROVIDER_GDRIVE + ".state"];
 		if(state === undefined) {
 			return;
 		}
-		localStorage.removeItem("sync.gdrive.state");
+		localStorage.removeItem(PROVIDER_GDRIVE + ".state");
 		state = JSON.parse(state);
 		if (state.action == "create") {
 			googleHelper.upload(undefined, state.folderId, GDRIVE_DEFAULT_FILE_TITLE,
@@ -265,7 +273,7 @@ define(["jquery", "google-helper", "underscore"], function($, googleHelper) {
 			});
 			importFilesFromIds(importIds);
 		}
-	};
+	});
 
 	return gdriveProvider;
 });

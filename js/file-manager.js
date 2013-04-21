@@ -1,11 +1,10 @@
-define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchronizer", "publisher", "underscore"],
-	function($, googleHelper, dropboxHelper, githubHelper, synchronizer, publisher) {
+define(["jquery", "core", "synchronizer", "publisher", "underscore"],
+	function($, core, synchronizer, publisher) {
 
 	var fileManager = {};
+	// To avoid circle inclusion
+	core.fileManager = fileManager;
 
-	// Dependencies
-	var core = undefined;
-	
 	// Defines the current file
 	var currentFileIndex = localStorage["file.current"];
 	fileManager.getCurrentFileIndex = function() {
@@ -141,7 +140,7 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 			var result = " " + localStorage[fileIndex + ".title"];
 			var providerIdList = synchronizer.getSyncProvidersFromFile(fileIndex);
 			_.each(providerIdList, function(providerId) {
-				result = '<i class="icon-' + providerId '"></i>' + result;
+				result = '<i class="icon-' + providerId + '"></i>' + result;
 			});
 			return result;
 		}
@@ -217,9 +216,7 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 			}).value();
 	};
 	
-	fileManager.init = function(coreModule) {
-		core = coreModule;
-		
+	$(function() {
 		fileManager.selectFile();
 
 		$(".action-create-file").click(function() {
@@ -280,7 +277,7 @@ define(["jquery", "google-helper", "dropbox-helper", "github-helper", "synchroni
 					+ core.encodeBase64(content);
 				window.open(uriContent, 'file');
 			});
-	};
+	});
 
 	return fileManager;
 });

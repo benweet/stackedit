@@ -1,12 +1,8 @@
-define(["jquery", "github-provider", "blogger-provider", "dropbox-provider", "gdrive-provider", "underscore"], function($) {
-	
-	// Dependencies
-	var core = undefined;
-	var fileManager = undefined;
+define(["jquery", "core", "github-provider", "blogger-provider", "dropbox-provider", "gdrive-provider", "underscore"], function($, core) {
 
 	var publisher = {};
 	
-	// Create a map with providerName: providerObject
+	// Create a map with providerId: providerObject
 	var providerMap = _.chain(arguments)
 		.map(function(argument) {
 			return argument && argument.providerId && [argument.providerId, argument];
@@ -17,7 +13,7 @@ define(["jquery", "github-provider", "blogger-provider", "dropbox-provider", "gd
 	
 	// Allows external modules to update hasPublications flag
 	publisher.notifyPublish = function() {
-		var fileIndex = fileManager.getCurrentFileIndex();
+		var fileIndex = core.fileManager.getCurrentFileIndex();
 		
 		// Check that file has publications
 		if(localStorage[fileIndex + ".publish"].length === 1) {
@@ -42,7 +38,7 @@ define(["jquery", "github-provider", "blogger-provider", "dropbox-provider", "gd
 	
 	// Apply template to the current document
 	publisher.applyTemplate = function(publishAttributes) {
-		var fileIndex = fileManager.getCurrentFileIndex();
+		var fileIndex = core.fileManager.getCurrentFileIndex();
 		try {
 			return _.template(core.settings.template, {
 				documentTitle: localStorage[fileIndex + ".title"],
@@ -91,6 +87,10 @@ define(["jquery", "github-provider", "blogger-provider", "dropbox-provider", "gd
 		// Call the provider
 		var provider = providerMap[publishAttributes.provider];
 		provider.publish(publishAttributes, publishTitle, content, function(error) {
+			if(error !== undefined && error.toString().indexOf("|removePublish") !== -1) {
+				core.fileManager.removePublish(publishIndex);
+				core.showMessage(provider.providerName + " publish location has been removed.");
+			}
 			publishLocation(callback, errorFlag || error );
 		});
 	}
@@ -104,7 +104,7 @@ define(["jquery", "github-provider", "blogger-provider", "dropbox-provider", "gd
 		
 		publishRunning = true;
 		publisher.updatePublishButton();
-		var fileIndex = fileManager.getCurrentFileIndex();
+		var fileIndex = core.fileManager.getCurrentFileIndex();
 		publishTitle = localStorage[fileIndex + ".title"];
 		publishIndexList = _.compact(localStorage[fileIndex + ".publish"].split(";"));
 		publishLocation(function(errorFlag) {
@@ -151,7 +151,7 @@ define(["jquery", "github-provider", "blogger-provider", "dropbox-provider", "gd
 		if(publishAttributes === undefined) {
 			return;
 		}
-		var fileIndex = fileManager.getCurrentFileIndex();
+		var fileIndex = core.fileManager.getCurrentFileIndex();
 		var title = localStorage[fileIndex + ".title"];
 		var content = getPublishContent(publishAttributes);
 		provider.publish(publishAttributes, title, content, function(error) {
@@ -173,7 +173,7 @@ define(["jquery", "github-provider", "blogger-provider", "dropbox-provider", "gd
 		'</div>'].join("");
 	var removeButtonTemplate = '<a class="btn" title="Remove this location"><i class="icon-trash"></i></a>';
 	publisher.refreshManagePublish = function() {
-		var fileIndex = fileManager.getCurrentFileIndex();
+		var fileIndex = core.fileManager.getCurrentFileIndex();
 		var publishIndexList = _.compact(localStorage[fileIndex + ".publish"].split(";"));
 		$(".msg-no-publish, .msg-publish-list").addClass("hide");
 		$("#manage-publish-list .input-append").remove();
@@ -190,19 +190,17 @@ define(["jquery", "github-provider", "blogger-provider", "dropbox-provider", "gd
 				publishDesc: publishDesc
 			}));
 			lineElement.append($(removeButtonTemplate).click(function() {
-				fileManager.removePublish(publishIndex);
+				core.fileManager.removePublish(publishIndex);
 			}));
 			$("#manage-publish-list").append(lineElement);
 		});
 	};
 	
-	publisher.init = function(coreModule, fileManagerModule) {
-		core = coreModule;
-		fileManager = fileManagerModule;
+	$(function() {
+		core.addOfflineListener(publisher.updatePublishButton);
 		
 		// Init each provider
 		_.each(providerMap, function(provider) {
-			provider.init(core, fileManager);
 			// Publish provider button
 			$(".action-publish-" + provider.providerId).click(function() {
 				initNewLocation(provider);
@@ -243,7 +241,7 @@ define(["jquery", "github-provider", "blogger-provider", "dropbox-provider", "gd
 		$(document).click(function(e) {
 			$(".tooltip-template").tooltip('hide');
 		});
-	};
+	});
 	
 	return publisher;
 });

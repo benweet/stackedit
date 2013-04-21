@@ -1,7 +1,4 @@
-define(["jquery", "async-runner"], function($, asyncRunner) {
-
-	// Dependencies
-	var core = undefined;
+define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 
 	var connected = undefined;
 	var github = undefined;
@@ -10,7 +7,6 @@ define(["jquery", "async-runner"], function($, asyncRunner) {
 
 	// Try to connect github by downloading js file
 	function connect(task) {
-		callback = callback || core.doNothing;
 		task.onRun(function() {
 			if(core.isOffline === true) {
 				connected = false;
@@ -159,10 +155,6 @@ define(["jquery", "async-runner"], function($, asyncRunner) {
 			callback(errorMsg);
 		});
 		asyncRunner.addTask(task);
-	};
-	
-	githubHelper.init = function(coreModule) {
-		core = coreModule;
 	};
 	
 	return githubHelper;

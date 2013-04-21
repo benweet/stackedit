@@ -1,16 +1,10 @@
 define(
-	[ "jquery", "file-manager", "google-helper", "dropbox-helper",
-		"github-helper", "synchronizer", "publisher", "async-runner",
-		"bootstrap", "jgrowl", "layout", "Markdown.Editor", "config",
+	[ "jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor", "config",
 		"underscore" ],
-	function($, fileManager, googleHelper, dropboxHelper, githubHelper,
-		synchronizer, publisher, asyncRunner) {
+	function($) {
 	
 	var core = {};
 	
-	// The interval Id for periodic tasks
-	var intervalId = undefined;
-
 	// Usage: callback = callback || core.doNothing;
 	core.doNothing = function() {};
 	
@@ -19,6 +13,13 @@ define(
 	function updateCurrentTime() {
 		core.currentTime = new Date().getTime();
 	}
+	
+	// Used for periodic tasks
+	var intervalId = undefined;
+	var periodicCallbacks = [];
+	core.addPeriodicCallback = function(callback) {
+		periodicCallbacks.push(callback);
+	};
 	
 	// Used to detect user activity
 	var userReal = false;
@@ -118,6 +119,10 @@ define(
 		if(!msg) {
 			return;
 		}
+		var endOfMsg = msg.indexOf("|");
+		if(endOfMsg !== -1) {
+			msg = msg.substring(0, endOfMsg);
+		}
 		options = options || {};
 		iconClass = iconClass || "icon-info-sign";
 		$.jGrowl("<i class='icon-white " + iconClass + "'></i> " + _.escape(msg), options);
@@ -132,7 +137,9 @@ define(
 	core.isOffline = false;
 	var offlineTime = core.currentTime;
 	var offlineListeners = [];
-	
+	core.addOfflineListener = function(callback) {
+		offlineListeners.push(callback);		
+	};
 	core.setOffline = function() {
 		offlineTime = core.currentTime;
 		if(core.isOffline === false) {
@@ -148,7 +155,6 @@ define(
 			}
 		}
 	};
-
 	core.setOnline = function() {
 		if(core.isOffline === true) {
 			$(".msg-offline").parents(".jGrowl-notification").trigger(
@@ -159,7 +165,6 @@ define(
 			}
 		}
 	};
-
 	function checkOnline() {
 		// Try to reconnect if we are offline but we have some network
 		if (core.isOffline === true && navigator.onLine === true
@@ -469,7 +474,6 @@ define(
 	function setupLocalStorage() {
 		if (localStorage["file.list"] === undefined) {
 			localStorage["file.list"] = ";";
-			localStorage["version"] = "v2";
 		}		
 	}
 
@@ -488,12 +492,12 @@ define(
 			var fileIndexList = _.compact(localStorage["file.list"].split(";"));
 			_.each(fileIndexList, function(fileIndex) {
 				localStorage[fileIndex + ".publish"] = ";";
-				var fileSyncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
-				_.each(fileSyncIndexList, function(fileSyncIndex) {
-					localStorage[fileSyncIndex + ".contentCRC"] = "0";
+				var syncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
+				_.each(syncIndexList, function(syncIndex) {
+					localStorage[syncIndex + ".contentCRC"] = "0";
 					// We store title CRC only for Google Drive synchronization
-					if(localStorage[fileSyncIndex + ".etag"] !== undefined) {
-						localStorage[fileSyncIndex + ".titleCRC"] = "0";
+					if(localStorage[syncIndex + ".etag"] !== undefined) {
+						localStorage[syncIndex + ".titleCRC"] = "0";
 					}
 				});
 			});
@@ -503,37 +507,41 @@ define(
 		// from v1 to v2
 		if(version == "v1") {
 			var gdriveLastChangeId = localStorage["sync.gdrive.lastChangeId"];
-			localStorage["gdrive.lastChangeId"] = gdriveLastChangeId;
-			localStorage.removeItem("sync.gdrive.lastChangeId");
+			if(gdriveLastChangeId) {
+				localStorage["gdrive.lastChangeId"] = gdriveLastChangeId;
+				localStorage.removeItem("sync.gdrive.lastChangeId");
+			}
 			var dropboxLastChangeId = localStorage["sync.dropbox.lastChangeId"];
-			localStorage["dropbox.lastChangeId"] = dropboxLastChangeId;
-			localStorage.removeItem("sync.dropbox.lastChangeId");
+			if(dropboxLastChangeId) {
+				localStorage["dropbox.lastChangeId"] = dropboxLastChangeId;
+				localStorage.removeItem("sync.dropbox.lastChangeId");
+			}
 			
 			var SYNC_PROVIDER_GDRIVE = "sync." + PROVIDER_GDRIVE + ".";
 			var SYNC_PROVIDER_DROPBOX = "sync." + PROVIDER_DROPBOX + ".";
 			var fileIndexList = _.compact(localStorage["file.list"].split(";"));
 			_.each(fileIndexList, function(fileIndex) {
-				var fileSyncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
-				_.each(fileSyncIndexList, function(fileSyncIndex) {
+				var syncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
+				_.each(syncIndexList, function(syncIndex) {
 					var syncAttributes = {};
-					if (fileSyncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
+					if (syncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
 						syncAttributes.provider = PROVIDER_GDRIVE;
-						syncAttributes.id = fileSyncIndex.substring(SYNC_PROVIDER_GDRIVE.length);
-						syncAttributes.etag = localStorage[fileSyncIndex + ".etag"];
-						syncAttributes.contentCRC = localStorage[fileSyncIndex + ".contentCRC"];
-						syncAttributes.titleCRC = localStorage[fileSyncIndex + ".titleCRC"];
+						syncAttributes.id = syncIndex.substring(SYNC_PROVIDER_GDRIVE.length);
+						syncAttributes.etag = localStorage[syncIndex + ".etag"];
+						syncAttributes.contentCRC = localStorage[syncIndex + ".contentCRC"];
+						syncAttributes.titleCRC = localStorage[syncIndex + ".titleCRC"];
 					}
-					else if (fileSyncIndex.indexOf(SYNC_PROVIDER_DROPBOX) === 0) {
+					else if (syncIndex.indexOf(SYNC_PROVIDER_DROPBOX) === 0) {
 						syncAttributes.provider = PROVIDER_DROPBOX;
-						syncAttributes.path = decodeURIComponent(fileSyncIndex.substring(SYNC_PROVIDER_DROPBOX.length));
-						syncAttributes.version = localStorage[fileSyncIndex + ".version"];
-						syncAttributes.contentCRC = localStorage[fileSyncIndex + ".contentCRC"];
+						syncAttributes.path = decodeURIComponent(syncIndex.substring(SYNC_PROVIDER_DROPBOX.length));
+						syncAttributes.version = localStorage[syncIndex + ".version"];
+						syncAttributes.contentCRC = localStorage[syncIndex + ".contentCRC"];
 					}
-					localStorage[fileSyncIndex] = JSON.stringify(syncAttributes);
-					localStorage.remoteItem(fileSyncIndex + ".etag");
-					localStorage.remoteItem(fileSyncIndex + ".version");
-					localStorage.remoteItem(fileSyncIndex + ".contentCRC");
-					localStorage.remoteItem(fileSyncIndex + ".titleCRC");
+					localStorage[syncIndex] = JSON.stringify(syncAttributes);
+					localStorage.removeItem(syncIndex + ".etag");
+					localStorage.removeItem(syncIndex + ".version");
+					localStorage.removeItem(syncIndex + ".contentCRC");
+					localStorage.removeItem(syncIndex + ".titleCRC");
 				});
 			});
 			version = "v2";
@@ -559,7 +567,7 @@ define(
 					+ left);
 	};
 	
-	core.init = function() {
+	$(function() {
 		setupLocalStorage();
 		upgradeLocalStorage();
 
@@ -626,38 +634,18 @@ define(
 			core.resetModalInputs();
 		});
 		
-		// Init asyncRunner
-		asyncRunner.init(core);
-		
-		// Init helpers
-		googleHelper.init(core);
-		dropboxHelper.init(core);
-		githubHelper.init(core);
-		
-		// Init synchronizer
-		synchronizer.init(core, fileManager);
-		
-		// Init publisher
-		publisher.init(core, fileManager);
-		
-		offlineListeners.push(synchronizer.updateSyncButton);		
-		offlineListeners.push(publisher.updatePublishButton);		
-		
-		// Init file manager
-		fileManager.init(core);
-		
 		// Do periodic tasks
 		intervalId = window.setInterval(function() {
 			updateCurrentTime();
 			core.checkWindowUnique();
-			if(isUserActive() === false) {
-				return;
+			if(isUserActive() === true) {
+				_.each(periodicCallbacks, function(callback) {
+					callback();
+				});
+				checkOnline();
 			}
-			synchronizer.sync();
-			asyncRunner.runTask();
-			checkOnline();
 		}, 1000);
-	};
+	});
 
 	return core;
 });

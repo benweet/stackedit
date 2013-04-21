@@ -1,7 +1,4 @@
-define(["jquery", "google-helper"], function($, googleHelper) {
-	
-	// Dependencies
-	var core = undefined;
+define(["jquery", "core", "google-helper"], function($, core, googleHelper) {
 	
 	var bloggerProvider = {
 		providerId: PROVIDER_BLOGGER,
@@ -31,10 +28,6 @@ define(["jquery", "google-helper"], function($, googleHelper) {
 			return undefined;
 		}
 		return publishAttributes;
-	};
-
-	bloggerProvider.init = function(coreModule) {
-		core = coreModule;
 	};
 
 	return bloggerProvider;

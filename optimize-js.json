@@ -1,8 +1,8 @@
 // RequireJS optimizer configuration file
-// Usage: node r.js -o optimize.json
+// Usage: node r.js -o optimize-js.json
 ({
     baseUrl: "js",
     name: "main",
     out: "js/main-min.js",
-    mainConfigFile: 'js/main.js'
+    mainConfigFile: 'js/main.js',
 })

@@ -1,7 +1,4 @@
-define(["jquery", "github-helper"], function($, githubHelper) {
-	
-	// Dependencies
-	var core = undefined;
+define(["jquery", "core", "github-helper"], function($, core, githubHelper) {
 	
 	var githubProvider = {
 		providerId: PROVIDER_GITHUB,
@@ -23,10 +20,6 @@ define(["jquery", "github-helper"], function($, githubHelper) {
 			return undefined;
 		}
 		return publishAttributes;
-	};
-
-	githubProvider.init = function(coreModule) {
-		core = coreModule;
 	};
 
 	return githubProvider;

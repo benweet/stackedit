@@ -1,7 +1,4 @@
-define(["jquery", "async-runner"], function($, asyncRunner) {
-
-	// Dependencies
-	var core = undefined;
+define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 
 	var client = undefined;
 	var authenticated = false;
@@ -317,9 +314,5 @@ define(["jquery", "async-runner"], function($, asyncRunner) {
 		asyncRunner.addTask(task);
 	};
 
-	dropboxHelper.init = function(coreModule) {
-		core = coreModule;
-	};
-	
 	return dropboxHelper;
 });

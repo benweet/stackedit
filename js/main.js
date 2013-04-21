@@ -12,9 +12,8 @@ requirejs.config({
     }
 });
 
-require(["jquery", "core"], function($, core) {
+require(["jquery", "file-manager", "synchronizer", "publisher"], function($) {
 	$(function() {
-		
 		// If browser has detected a new application cache.
 	    if (window.applicationCache) {
 	    	window.applicationCache.addEventListener('updateready', function(e) {
@@ -24,7 +23,5 @@ require(["jquery", "core"], function($, core) {
 	    		}
 	    	}, false);
 	    }
-	    
-		core.init();
 	});
 });

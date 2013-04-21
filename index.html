@@ -11,8 +11,9 @@
 	content="StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.">
 <meta name="author" content="Benoit Schweblin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="css/main.css" rel="stylesheet" media="screen">
+<link href="css/main-min.css" rel="stylesheet" media="screen">
 <script>
+	// http://.../?debug to serve original JavaScript files for debug
 	var dep = "main-min";
 	if (location.search.indexOf("debug") !== -1) {
 		dep = "main";
@@ -184,13 +185,13 @@
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal"
 				aria-hidden="true">&times;</button>
-			<h3>Google Drive export</h3>
+			<h3>Export to Google Drive</h3>
 		</div>
 		<div class="modal-body">
 			<p>This will upload the current document into your Google Drive
 				root folder and keep it synchronized.</p>
 			<p class="muted"><b>NOTE:</b> You can move or rename the file
-				within Google Drive afterwards.</p>
+				afterwards within Google Drive.</p>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
@@ -203,7 +204,7 @@
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal"
 				aria-hidden="true">&times;</button>
-			<h3>Dropbox export</h3>
+			<h3>Export to Dropbox</h3>
 		</div>
 		<div class="modal-body">
 			<p>This will upload the current document to your Dropbox account
@@ -225,7 +226,8 @@
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
-				data-dismiss="modal" class="btn btn-primary action-sync-export-dropbox">OK</a>
+				data-dismiss="modal"
+				class="btn btn-primary action-sync-export-dropbox">OK</a>
 		</div>
 	</div>
 
@@ -260,9 +262,8 @@
 					class="btn action-sync-manual-dropbox" title="Add location"
 					data-dismiss="modal"><i class="icon-ok"></i></a>
 			</div>
-			<p class="muted"><b>NOTE:</b> Adding a synchronized location will
-				upload the local document firstly and overwrite the existing file on
-				the server.</p>
+			<p class="muted"><b>NOTE:</b> This will upload the local document
+				firstly and overwrite the existing file on the server.</p>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
@@ -335,12 +336,24 @@
 				</div>
 				<div class="control-group modal-publish-gdrive">
 					<div class="controls muted">
-                        <b>NOTE:</b> If no file ID
-                    is supplied, the file will be created into your Google Drive root
-                    folder. You can move the file within Google Drive afterwards.
+						If no file ID is supplied, the file will be created
+						into your Google Drive root folder. You can move the file afterwards within
+						Google Drive.
 					</div>
 				</div>
-				
+				<div class="control-group modal-publish-gdrive">
+					<label class="control-label" for="input-publish-gdrive-filename">Force file name (optional)</label>
+					<div class="controls">
+						<input type="text" id="input-publish-gdrive-filename"
+							placeholder="File name">
+					</div>
+				</div>
+				<div class="control-group modal-publish-gdrive">
+					<div class="controls muted">
+						If no filename is supplied, the document title will be used.
+					</div>
+				</div>
+
 				<div class="control-group">
 					<div class="control-label">Format</div>
 					<div class="controls">

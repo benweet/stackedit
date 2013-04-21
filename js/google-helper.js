@@ -1,7 +1,4 @@
-define(["jquery", "async-runner"], function($, asyncRunner) {
-
-	// Dependencies
-	var core = undefined;
+define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 
 	var connected = false;
 	var authenticated = false;
@@ -132,7 +129,7 @@ define(["jquery", "async-runner"], function($, asyncRunner) {
 				// Handle error
 				if(error !== undefined && fileId !== undefined) {
 					if(error.code === 404) {
-						error = 'File ID "' + fileId + '" does not exist on Google Drive.';
+						error = 'File ID "' + fileId + '" not found on Google Drive.|removePublish';
 					}
 					else if(error.code === 412) {
 						// We may have missed a file update
@@ -235,7 +232,7 @@ define(["jquery", "async-runner"], function($, asyncRunner) {
 					};
 					// Handle error
 					if(error.code === 404) {
-						error = 'File ID "' + id + '" does not exist on Google Drive.';
+						error = 'File ID "' + id + '" not found on Google Drive.';
 					}
 					handleError(error, task, callback);
 				});
@@ -458,7 +455,7 @@ define(["jquery", "async-runner"], function($, asyncRunner) {
 					};
 					// Handle error
 					if(error.code === 404 && postId !== undefined) {
-						error = 'Post ' + postId + ' not found on Blogger.';
+						error = 'Post ' + postId + ' not found on Blogger.|removePublish';
 					}
 					handleError(error, task, callback);
 				});
@@ -483,25 +480,21 @@ define(["jquery", "async-runner"], function($, asyncRunner) {
 					};
 					// Handle error
 					if(error.code === 404) {
-						error = 'Blog "' + blogUrl + '" not found on Blogger.';
+						error = 'Blog "' + blogUrl + '" not found on Blogger.|removePublish';
 					}
 					handleError(error, task, callback);
 				});
 			}
 			task.chain(getBlogId);
 		});
-		task.onSuccess = function() {
+		task.onSuccess(function() {
 			callback(undefined, blogId, postId);
-		};
-		task.onError = function(error) {
+		});
+		task.onError(function(error) {
 			callback(error);
-		};
+		});
 		asyncRunner.addTask(task);
 	};
 
-	googleHelper.init = function(coreModule) {
-		core = coreModule;
-	};
-	
 	return googleHelper;
 });

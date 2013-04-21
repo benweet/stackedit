@@ -1,0 +1,6 @@
+// RequireJS optimizer configuration file
+// Usage: node r.js -o optimize-css.json
+({
+    cssIn: "css/main.css",
+    out: "css/main-min.css"
+})

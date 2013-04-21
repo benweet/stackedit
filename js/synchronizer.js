@@ -1,20 +1,12 @@
-define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive-provider"], function($, googleHelper, dropboxHelper) {
+define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], function($, core) {
 	var synchronizer = {};
 	
-	// Dependencies
-	var core = undefined;
-	var fileManager = undefined;
-
-	// Create a map with providerName: providerObject
+	// Create a map with providerId: providerObject
 	var providerMap = _.chain(arguments)
 		.map(function(argument) {
 			return argument && argument.providerId && [argument.providerId, argument];
 		}).compact().object().value();
 
-	// Used to know the providers we are connected to 
-	synchronizer.useGoogleDrive = false;
-	synchronizer.useDropbox = false;
-	
 	// Used to know if user can force synchronization
 	var uploadPending = false;
 	
@@ -116,7 +108,7 @@ define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive
 		locationUp(callback);
 	}
 
-	// Used to upload document changes from local storage
+	// Entry point for up synchronization (upload changes)
 	var uploadCycle = false;
 	function syncUp(callback) {
 		if(uploadCycle === true) {
@@ -135,6 +127,7 @@ define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive
 	function providerDown(callback) {
 		if(providerList.length === 0) {
 			callback();
+			return;
 		}
 		var provider = providerList.pop();
 		provider.syncDown(function(error) {
@@ -146,11 +139,13 @@ define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive
 		});
 	}
 	
+	// Entry point for down synchronization (download changes)
 	function syncDown(callback) {
 		providerList = _.values(providerMap);
 		providerDown(callback);
 	};
-		
+	
+	// Main entry point for synchronization
 	var syncRunning = false;
 	var lastSync = 0;
 	synchronizer.sync = function() {
@@ -195,7 +190,7 @@ define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive
 		'</div>'].join("");
 	var removeButtonTemplate = '<a class="btn" title="Remove this location"><i class="icon-trash"></i></a>';
 	synchronizer.refreshManageSync = function() {
-		var fileIndex = fileManager.getCurrentFileIndex();
+		var fileIndex = core.fileManager.getCurrentFileIndex();
 		var syncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
 		$(".msg-no-sync, .msg-sync-list").addClass("hide");
 		$("#manage-sync-list .input-append").remove();
@@ -212,19 +207,19 @@ define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive
 				syncDesc: syncDesc
 			}));
 			lineElement.append($(removeButtonTemplate).click(function() {
-				fileManager.removeSync(syncIndex);
-				fileManager.updateFileTitles();
+				core.fileManager.removeSync(syncIndex);
+				core.fileManager.updateFileTitles();
 			}));
 			$("#manage-sync-list").append(lineElement);
 		});
 	};
 	
+	// Used to enable/disable providers' synchronization
 	synchronizer.resetSyncFlags = function() {
 		_.each(providerMap, function(provider) {
 			provider.useSync = false;
 		});		
 	};
-	
 	synchronizer.getSyncProvidersFromFile = function(fileIndex) {
 		var sync = localStorage[fileIndex + ".sync"];
 		var providerIdList = [];
@@ -237,20 +232,19 @@ define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive
 		return providerIdList;
 	};
 	
-	synchronizer.init = function(coreModule, fileManagerModule) {
-		core = coreModule;
-		fileManager = fileManagerModule;
+	$(function() {
+		core.addOfflineListener(synchronizer.updateSyncButton);
+		core.addPeriodicCallback(synchronizer.sync);
 		
 		// Init each provider
 		_.each(providerMap, function(provider) {
-			provider.init(core, fileManager);
 			// Provider's import button
 			$(".action-sync-import-" + provider.providerId).click(function(event) {
 				provider.importFiles(event);
 			});
 			// Provider's export button
 			$(".action-sync-export-" + provider.providerId).click(function(event) {
-				var fileIndex = fileManager.getCurrentFileIndex();
+				var fileIndex = core.fileManager.getCurrentFileIndex();
 				var title = localStorage[fileIndex + ".title"];
 				var content = localStorage[fileIndex + ".content"];
 				provider.exportFile(event, title, content, function(error, syncIndex) {
@@ -259,14 +253,14 @@ define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive
 					}
 					localStorage[fileIndex + ".sync"] += syncIndex + ";";
 					synchronizer.refreshManageSync();
-					fileManager.updateFileTitles();
+					core.fileManager.updateFileTitles();
 					core.showMessage('"' + title
 						+ '" will now be synchronized on ' + provider.providerName + '.');
 				});
 			});
 			// Provider's manual sync button
 			$(".action-sync-manual-" + provider.providerId).click(function(event) {
-				var fileIndex = fileManager.getCurrentFileIndex();
+				var fileIndex = core.fileManager.getCurrentFileIndex();
 				var title = localStorage[fileIndex + ".title"];
 				var content = localStorage[fileIndex + ".content"];
 				provider.exportManual(event, title, content, function(error, syncIndex) {
@@ -275,7 +269,7 @@ define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive
 					}
 					localStorage[fileIndex + ".sync"] += syncIndex + ";";
 					synchronizer.refreshManageSync();
-					fileManager.updateFileTitles();
+					core.fileManager.updateFileTitles();
 					core.showMessage('"' + title
 						+ '" will now be synchronized on ' + provider.providerName + '.');
 				});
@@ -288,7 +282,7 @@ define(["jquery", "google-helper", "dropbox-helper", "dropbox-provider", "gdrive
 				synchronizer.forceSync();
 			}
 		});
-	};
+	});
 
 	return synchronizer;
 });

@@ -121,11 +121,7 @@ code {
 }
 
 h1 {
-	margin: 40px 0 20px;
-}
-
-h2 {
-	margin-top: 30px;
+	margin: 30px 0 30px;
 }
 
 p, pre, blockquote {
@@ -371,4 +367,21 @@ table thead:first-child tr:first-child td {
 
 table tbody + tbody {
   border-top: 2px solid #dddddd;
+}
+
+blockquote p {
+  margin-bottom: 0;
+  font-size: 17.5px;
+  font-weight: 300;
+  line-height: 1.25;
+}
+
+ul, ol {
+    margin-bottom: 20px;
+}
+
+blockquote p {
+	margin-bottom: 20px;
+	font-size: 14px;
+	line-height: 20px;
 }

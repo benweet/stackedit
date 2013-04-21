@@ -204,13 +204,13 @@ else
 
             text = _UnescapeSpecialChars(text);
 
+            text = pluginHooks.postConversion(text);
+
             // attacklab: Restore dollar signs
             text = text.replace(/~D/g, "$$");
 
             // attacklab: Restore tildes
             text = text.replace(/~T/g, "~");
-
-            text = pluginHooks.postConversion(text);
 
             g_html_blocks = g_titles = g_urls = null;
 

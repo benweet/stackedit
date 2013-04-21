@@ -27,7 +27,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				dataType : "script", timeout : AJAX_TIMEOUT
 			}).fail(function() {
 				core.setOffline();
-				task.error(new Error("Network timeout"));
+				task.error(new Error("Network timeout|stopPublish"));
 			});
 		});
 	}
@@ -329,6 +329,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				connected = false;
 				authenticated = false;
 				core.setOffline();
+				errorMsg = "|stopPublish";
 			} else {
 				errorMsg = "Google error (" + error.code + ": "
 					+ error.message + ").";

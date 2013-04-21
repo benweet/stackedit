@@ -87,9 +87,16 @@ define(["jquery", "core", "github-provider", "blogger-provider", "dropbox-provid
 		// Call the provider
 		var provider = providerMap[publishAttributes.provider];
 		provider.publish(publishAttributes, publishTitle, content, function(error) {
-			if(error !== undefined && error.toString().indexOf("|removePublish") !== -1) {
-				core.fileManager.removePublish(publishIndex);
-				core.showMessage(provider.providerName + " publish location has been removed.");
+			if(error !== undefined) {
+				var errorMsg = error.toString();
+				if(errorMsg.indexOf("|removePublish") !== -1) {
+					core.fileManager.removePublish(publishIndex);
+					core.showMessage(provider.providerName + " publish location has been removed.");
+				}
+				if(errorMsg.indexOf("|stopPublish") !== -1) {
+					callback(error);
+					return;
+				}
 			}
 			publishLocation(callback, errorFlag || error );
 		});

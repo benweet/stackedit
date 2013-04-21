@@ -26,7 +26,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				task.chain();
 			}).fail(function() {
 				core.setOffline();
-				task.error(new Error("Network timeout"));
+				task.error(new Error("Network timeout|stopPublish"));
 			});
 		});
 	}

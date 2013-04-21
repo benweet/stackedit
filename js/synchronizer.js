@@ -63,7 +63,7 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 				if(uploadFlag === true) {
 					// If uploadFlag is true, request another upload cycle
 					uploadCycle = true;
-					// When page is refreshed, this flag is false but should be true
+					// When page is refreshed, this flag is false but should be true here
 					uploadPending = true;
 				}
 				if(error) {

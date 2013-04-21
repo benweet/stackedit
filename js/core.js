@@ -122,6 +122,9 @@ define(
 		var endOfMsg = msg.indexOf("|");
 		if(endOfMsg !== -1) {
 			msg = msg.substring(0, endOfMsg);
+			if(!msg) {
+				return;
+			}
 		}
 		options = options || {};
 		iconClass = iconClass || "icon-info-sign";

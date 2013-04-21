@@ -142,6 +142,8 @@ define([ "core", "underscore" ], function(core) {
 		// Use defer to avoid stack overflow
 		_.defer(runTask);
 	};
+	// Run runTask function periodically
+	core.addPeriodicCallback(asyncRunner.runTask);
 
 	function runSafe(task, callbacks, param) {
 		try {

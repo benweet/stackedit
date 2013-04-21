@@ -35,7 +35,9 @@ define(["jquery", "core", "github-provider", "blogger-provider", "dropbox-provid
 			$(".action-force-publish").removeClass("disabled");
 		}
 	};
-	
+	// Run updatePublishButton function on online/offline event
+	core.addOfflineListener(publisher.updatePublishButton);
+
 	// Apply template to the current document
 	publisher.applyTemplate = function(publishAttributes) {
 		var fileIndex = core.fileManager.getCurrentFileIndex();
@@ -204,8 +206,6 @@ define(["jquery", "core", "github-provider", "blogger-provider", "dropbox-provid
 	};
 	
 	$(function() {
-		core.addOfflineListener(publisher.updatePublishButton);
-		
 		// Init each provider
 		_.each(providerMap, function(provider) {
 			// Publish provider button

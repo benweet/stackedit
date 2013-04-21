@@ -28,6 +28,8 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 			$(".action-force-sync").removeClass("disabled");
 		}
 	};
+	// Run updateSyncButton on online/offline event
+	core.addOfflineListener(synchronizer.updateSyncButton);
 
 	// Force the synchronization
 	synchronizer.forceSync = function() {
@@ -181,6 +183,8 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 			});
 		});
 	};
+	// Run sync function periodically
+	core.addPeriodicCallback(synchronizer.sync);
 	
 	// Used to populate the "Manage synchronization" dialog
 	var lineTemplate = ['<div class="input-prepend input-append">',
@@ -232,10 +236,7 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 		return providerIdList;
 	};
 	
-	$(function() {
-		core.addOfflineListener(synchronizer.updateSyncButton);
-		core.addPeriodicCallback(synchronizer.sync);
-		
+	$(function() {		
 		// Init each provider
 		_.each(providerMap, function(provider) {
 			// Provider's import button

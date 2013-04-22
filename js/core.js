@@ -1,6 +1,6 @@
 define(
 	[ "jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor", "config",
-		"underscore" ],
+		"underscore", "FileSaver" ],
 	function($) {
 	
 	var core = {};
@@ -110,6 +110,18 @@ define(
 			return "http://" + url;
 		}
 		return url;
+	};
+	
+	core.saveFile = function(content, filename) {
+		if(saveAs !== undefined) {
+			var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+			saveAs(blob, filename);
+		}
+		else {
+			var uriContent = "data:application/octet-stream;base64,"
+				+ core.encodeBase64(content);
+			window.open(uriContent, 'file');
+		}
 	};
 
 	// Used by asyncRunner

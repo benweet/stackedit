@@ -254,27 +254,21 @@ define(["jquery", "core", "synchronizer", "publisher", "underscore"],
 				applyTitle($(this));
 			}
 		});
-		$(".action-download-md").click(
-			function() {
-				var content = $("#wmd-input").val();
-				var uriContent = "data:application/octet-stream;base64,"
-					+ core.encodeBase64(content);
-				window.open(uriContent, 'file');
-			});
-		$(".action-download-html").click(
-			function() {
-				var content = $("#wmd-preview").html();
-				var uriContent = "data:application/octet-stream;base64,"
-					+ core.encodeBase64(content);
-				window.open(uriContent, 'file');
-			});		
-		$(".action-download-template").click(
-			function() {
-				var content = publisher.applyTemplate();
-				var uriContent = "data:application/octet-stream;base64,"
-					+ core.encodeBase64(content);
-				window.open(uriContent, 'file');
-			});
+		$(".action-download-md").click(function() {
+			var content = $("#wmd-input").val();
+			var title = localStorage[fileManager.getCurrentFileIndex() + ".title"];
+			core.saveFile(content, title + ".md");
+		});
+		$(".action-download-html").click(function() {
+			var content = $("#wmd-preview").html();
+			var title = localStorage[fileManager.getCurrentFileIndex() + ".title"];
+			core.saveFile(content, title + ".html");
+		});		
+		$(".action-download-template").click(function() {
+			var content = publisher.applyTemplate();
+			var title = localStorage[fileManager.getCurrentFileIndex() + ".title"];
+			core.saveFile(content, title + ".txt");
+		});
 	});
 
 	core.setFileManager(fileManager);

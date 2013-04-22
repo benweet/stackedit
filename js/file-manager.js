@@ -2,7 +2,6 @@ define(["jquery", "core", "synchronizer", "publisher", "underscore"],
 	function($, core, synchronizer, publisher) {
 
 	var fileManager = {};
-	core.setFileManager(fileManager);
 
 	// Defines the current file
 	var currentFileIndex = localStorage["file.current"];
@@ -278,5 +277,6 @@ define(["jquery", "core", "synchronizer", "publisher", "underscore"],
 			});
 	});
 
+	core.setFileManager(fileManager);
 	return fileManager;
 });

@@ -414,7 +414,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 		asyncRunner.addTask(task);
 	};
 
-	googleHelper.uploadBlogger = function(blogUrl, blogId, postId, title, content, callback) {
+	googleHelper.uploadBlogger = function(blogUrl, blogId, postId, labelList, title, content, callback) {
 		var task = asyncRunner.createTask();
 		connect(task);
 		authenticate(task);
@@ -428,6 +428,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				var data = {
 					kind: "blogger#post",
 					blog: { id: blogId },
+					labels: labelList,
 					title: title,
 					content: content
 				};

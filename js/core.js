@@ -77,7 +77,7 @@ define(
 			return undefined;
 		}
 		// trim
-		value = value.replace(/^\s+|\s+$/g, '');
+		value = core.trim(value);
 		if((value.length === 0)
 			|| (validationRegex !== undefined && !value.match(validationRegex))) {
 			inputError(element, event);
@@ -101,6 +101,15 @@ define(
 	};
 	core.resetModalInputs = function() {
 		$(".modal input[type=text]:not([disabled])").val("");
+	};
+	core.trim = function(str) {
+		return str.replace(/^\s+|\s+$/g, '');
+	};
+	core.checkUrl = function(url) {
+		if(url.indexOf("http") !== 0) {
+			return "http://" + url;
+		}
+		return url;
 	};
 
 	// Used by asyncRunner
@@ -570,6 +579,17 @@ define(
 				}
 			});
 			version = "v3";
+		}
+		
+		// Upgrade from v3 to v4
+		if(version == "v3") {
+			var currentFileIndex = localStorage["file.current"];
+			if(currentFileIndex !== undefined && 
+				localStorage["file.list"].indexOf(";" + currentFileIndex + ";") === -1)
+			{
+				localStorage.removeItem("file.current");
+			}
+			version = "v4";
 		}
 		localStorage["version"] = version;
 	}

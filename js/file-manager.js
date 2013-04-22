@@ -89,17 +89,17 @@ define(["jquery", "core", "synchronizer", "publisher", "underscore"],
 
 		// Remove synchronized locations
 		var syncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
-		localStorage.removeItem(fileIndex + ".sync");
 		_.each(syncIndexList, function(syncIndex) {
 			fileManager.removeSync(syncIndex);
 		});
+		localStorage.removeItem(fileIndex + ".sync");
 		
 		// Remove publish locations
 		var publishIndexList = _.compact(localStorage[fileIndex + ".publish"].split(";"));
-		localStorage.removeItem(fileIndex + ".publish");
 		_.each(publishIndexList, function(publishIndex) {
 			fileManager.removePublish(publishIndex);
 		});
+		localStorage.removeItem(fileIndex + ".publish");
 
 		localStorage["file.list"] = localStorage["file.list"].replace(";"
 			+ fileIndex + ";", ";");

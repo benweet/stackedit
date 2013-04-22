@@ -556,6 +556,21 @@ define(
 			});
 			version = "v2";
 		}
+		
+		// Upgrade from v2 to v3
+		if(version == "v2") {
+			var fileIndexList = _.compact(localStorage["file.list"].split(";"));
+			_.each(fileIndexList, function(fileIndex) {
+				if(!_.has(localStorage, fileIndex + ".sync")) {
+					localStorage.removeItem(fileIndex + ".title");
+					localStorage.removeItem(fileIndex + ".publish");
+					localStorage.removeItem(fileIndex + ".content");
+					localStorage["file.list"] = localStorage["file.list"].replace(";"
+						+ fileIndex + ";", ";");
+				}
+			});
+			version = "v3";
+		}
 		localStorage["version"] = version;
 	}
 	// Setup the localStorage when starting

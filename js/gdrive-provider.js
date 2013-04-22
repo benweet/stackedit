@@ -254,8 +254,8 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 					return;
 				}
 				var syncIndex = createSyncAttributes(file.id, file.etag, file.content, file.title);
-				var fileIndex = fileManager.createFile(file.title, file.content, [syncIndex]);
-				fileManager.selectFile(fileIndex);
+				var fileIndex = core.fileManager.createFile(file.title, file.content, [syncIndex]);
+				core.fileManager.selectFile(fileIndex);
 				core.showMessage('"' + file.title + '" created successfully on Google Drive.');
 			});
 		}
@@ -263,9 +263,9 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 			var importIds = [];
 			_.each(state.ids, function(id) {
 				var syncIndex = "sync." + PROVIDER_GDRIVE + "." + id;
-				var fileIndex = fileManager.getFileIndexFromSync(syncIndex);
+				var fileIndex = core.fileManager.getFileIndexFromSync(syncIndex);
 				if(fileIndex !== undefined) {
-					fileManager.selectFile(fileIndex);
+					core.fileManager.selectFile(fileIndex);
 				}
 				else {
 					importIds.push(id);

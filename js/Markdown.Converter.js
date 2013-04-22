@@ -790,7 +790,7 @@ else
             return text;
         }
 
-        function _DoLists(text) {
+        function _DoLists(text, isInsideParagraphlessListItem) {
             //
             // Form HTML ordered (numbered) and unordered (bulleted) lists.
             //
@@ -830,7 +830,7 @@ else
                     var list = m1;
                     var list_type = (m2.search(/[*+-]/g) > -1) ? "ul" : "ol";
 
-                    var result = _ProcessListItems(list, list_type);
+                    var result = _ProcessListItems(list, list_type, isInsideParagraphlessListItem);
 
                     // Trim any trailing whitespace, to put the closing `</$list_type>`
                     // up on the preceding line, to get it past the current stupid
@@ -861,7 +861,7 @@ else
 
         var _listItemMarkers = { ol: "\\d+[.]", ul: "[*+-]" };
 
-        function _ProcessListItems(list_str, list_type) {
+        function _ProcessListItems(list_str, list_type, isInsideParagraphlessListItem) {
             //
             //  Process the contents of a single ordered or unordered list, splitting it
             //  into individual list items.
@@ -937,9 +937,10 @@ else
                     }
                     else {
                         // Recursion for sub-lists:
-                        item = _DoLists(_Outdent(item));
+                        item = _DoLists(_Outdent(item), /* isInsideParagraphlessListItem= */ true);
                         item = item.replace(/\n$/, ""); // chomp(item)
-                        item = _RunSpanGamut(item);
+                        if (!isInsideParagraphlessListItem)
+                            item = _RunSpanGamut(item);
                     }
                     last_item_had_a_double_newline = ends_with_double_newline;
                     return "<li>" + item + "</li>\n";

@@ -240,7 +240,7 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 		return publishAttributes;
 	};
 	
-	$(function() {
+	core.onReady(function() {
 		var state = localStorage[PROVIDER_GDRIVE + ".state"];
 		if(state === undefined) {
 			return;

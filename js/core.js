@@ -579,8 +579,33 @@ define(
 					+ left);
 	};
 	
+	// Keep a reference to the fileManager
+	core.setFileManager = function(fileManager) {
+		core.fileManager = fileManager;
+		runReadyCallbacks();
+	};
+	
+	// onReady event callbacks
+	var readyCallbacks = [];
+	core.onReady = function(callback) {
+		readyCallbacks.push(callback);
+		runReadyCallbacks();
+	};
+	var documentLoaded = false;
+	function runReadyCallbacks() {
+		if(documentLoaded === true && core.fileManager !== undefined) {
+			_.each(readyCallbacks, function(callback) {
+				callback();
+			});
+			readyCallbacks = [];
+		}
+	}
 	$(function() {
+		documentLoaded = true;
+		runReadyCallbacks();
+	});
 		
+	core.onReady(function() {
 		// jGrowl configuration
 		$.jGrowl.defaults.life = 5000;
 		$.jGrowl.defaults.closer = false;

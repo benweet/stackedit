@@ -205,7 +205,7 @@ define(["jquery", "core", "github-provider", "blogger-provider", "dropbox-provid
 		});
 	};
 	
-	$(function() {
+	core.onReady(function() {
 		// Init each provider
 		_.each(providerMap, function(provider) {
 			// Publish provider button

@@ -2,8 +2,7 @@ define(["jquery", "core", "synchronizer", "publisher", "underscore"],
 	function($, core, synchronizer, publisher) {
 
 	var fileManager = {};
-	// To avoid circle inclusion
-	core.fileManager = fileManager;
+	core.setFileManager(fileManager);
 
 	// Defines the current file
 	var currentFileIndex = localStorage["file.current"];
@@ -216,7 +215,7 @@ define(["jquery", "core", "synchronizer", "publisher", "underscore"],
 			}).value();
 	};
 	
-	$(function() {
+	core.onReady(function() {
 		fileManager.selectFile();
 
 		$(".action-create-file").click(function() {

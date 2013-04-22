@@ -236,7 +236,7 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 		return providerIdList;
 	};
 	
-	$(function() {		
+	core.onReady(function() {
 		// Init each provider
 		_.each(providerMap, function(provider) {
 			// Provider's import button

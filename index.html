@@ -11,13 +11,15 @@
 	content="StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.">
 <meta name="author" content="Benoit Schweblin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="css/main-min.css" rel="stylesheet" media="screen">
 <script>
-	// http://.../?debug to serve original JavaScript files for debug
+	// http://.../?debug to serve original CSS/JavaScript files for debug
 	var dep = "main-min";
+	var css = "css/main-min.css";
 	if (location.search.indexOf("debug") !== -1) {
 		dep = "main";
+		css = "css/main.css";
 	}
+    document.write('<link href="' + css + '" rel="stylesheet" media="screen">');
 	var require = { baseUrl : "js", deps : [ dep ] };
 </script>
 <script src="js/require.js"></script>
@@ -433,6 +435,13 @@
 							</div>
 						</div>
 						<div class="control-group">
+							<label class="control-label" for="input-settings-scroll-link">Scroll Link <a
+                                href="#" class="tooltip-scroll-link">(?)</a></label>
+							<div class="controls">
+								<input type="checkbox" id="input-settings-scroll-link" />
+							</div>
+						</div>
+						<div class="control-group">
 							<label class="control-label" for="input-settings-converter-type">Converter</label>
 							<div class="controls">
 								<select id="input-settings-converter-type">
@@ -528,7 +537,10 @@
 			<dl>
 				<dt>Credit:</dt>
 				<dd>
-					<a target="_blank" href="http://twitter.github.com/bootstrap/">Bootstrap</a>
+					<a target="_blank" href="http://twitter.github.io/bootstrap/">Bootstrap</a>
+				</dd>
+				<dd>
+					<a target="_blank" href="https://github.com/rafaelp/css_browser_selector/">CSS Browser Selector</a>
 				</dd>
 				<dd>
 					<a target="_blank" href="https://github.com/dropbox/dropbox-js">Dropbox-js</a>
@@ -594,7 +606,8 @@
 				class="btn btn-primary">Reload</a>
 		</div>
 	</div>
-
+	
+    <textarea id="md-section-helper"></textarea>
 	<div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>
 </body>
 </html>

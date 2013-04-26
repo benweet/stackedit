@@ -221,33 +221,6 @@ define(["jquery", "core", "github-provider", "blogger-provider", "dropbox-provid
 				publisher.publish();
 			}
 		});
-		
-		$(".tooltip-template").tooltip({
-			html: true,
-			container: '#modal-settings',
-			placement: 'right',
-			trigger: 'manual',
-			title: ['Available variables:<br>',
-			        '<ul><li><b>documentTitle</b>: document title</li>',
-			        '<li><b>documentMarkdown</b>: document in Markdown format</li>',
-			        '<li><b>documentHTML</b>: document in HTML format</li>',
-			        '<li><b>publishAttributes</b>: attributes of the publish location (undefined when using "Save")</li></ul>',
-			        'Examples:<br>',
-			        _.escape('<title><%= documentTitle %></title>'),
-			        '<br>',
-			        _.escape('<div><%- documentHTML %></div>'),
-			        '<br>',
-			        _.escape('<% if(publishAttributes.provider == "github") print(documentMarkdown); %>'),
-			        '<br><br><a target="_blank" href="http://underscorejs.org/#template">More info</a>',
-			        ].join("")
-		}).click(function(e) {
-			$(this).tooltip('show');
-			e.stopPropagation();
-		});
-		
-		$(document).click(function(e) {
-			$(".tooltip-template").tooltip('hide');
-		});
 	});
 	
 	return publisher;

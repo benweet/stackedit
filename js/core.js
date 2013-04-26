@@ -1,6 +1,6 @@
 define(
 	[ "jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor", "config",
-		"underscore", "FileSaver" ],
+		"underscore", "FileSaver", "css_browser_selector" ],
 	function($) {
 	
 	var core = {};
@@ -208,6 +208,7 @@ define(
 	core.settings = {
 		converterType : "markdown-extra-prettify",
 		layoutOrientation : "horizontal",
+		scrollLink : true,
 		editorFontSize : 14,
 		commitMsg : "Published by StackEdit",
 		template : ['<!DOCTYPE html>\n',
@@ -227,6 +228,9 @@ define(
 		// Layout orientation
 		$("input:radio[name=radio-layout-orientation][value="
 				+ core.settings.layoutOrientation + "]").prop("checked", true);
+		
+		// Scroll Link
+		$("#input-settings-scroll-link").prop("checked", core.settings.scrollLink);
 		
 		// Converter type
 		$("#input-settings-converter-type").val(core.settings.converterType);
@@ -251,6 +255,9 @@ define(
 		// Converter type
 		newSettings.converterType = $("#input-settings-converter-type").val();
 		
+		// Scroll Link
+		newSettings.scrollLink = $("#input-settings-scroll-link").prop("checked");
+		
 		// Editor font size
 		newSettings.editorFontSize = core.getInputIntValue($("#input-settings-editor-font-size"), event, 1, 99);
 
@@ -266,6 +273,131 @@ define(
 		}
 	};
 	
+	// Used by Scroll Link feature
+	var mdSectionList = [];
+	var htmlSectionList = [];
+	function pxToFloat(px) {
+		return parseFloat(px.substring(0, px.length-2));
+	}
+	var buildSections = _.debounce(function() {
+		
+		// Try to find Markdown sections by looking for titles
+		var editorElt = $("#wmd-input");
+		mdSectionList = [];
+		// This textarea is used to measure sections height
+		var textareaElt = $("#md-section-helper");
+		// It has to be the same width than wmd-input
+		textareaElt.width(editorElt.width());
+		// Consider wmd-input top padding
+		var padding = pxToFloat(editorElt.css('padding-top'));
+		var offset = 0, mdSectionOffset = 0;
+		function addMdSection(sectionText) {
+			var sectionHeight = padding;
+			if(sectionText) {
+				textareaElt.val(sectionText);
+				sectionHeight += textareaElt.prop('scrollHeight');
+			}
+			var newSectionOffset = mdSectionOffset + sectionHeight;
+			mdSectionList.push({
+				startOffset: mdSectionOffset,
+				endOffset: newSectionOffset,
+				height: sectionHeight
+			});
+			mdSectionOffset = newSectionOffset;
+			padding = 0;
+		}
+		// Create MD sections by finding title patterns (excluding gfm blocs)
+		var text = editorElt.val() + "\n\n";
+		text.replace(/^```.*\n[\s\S]*?\n```|(^.+[ \t]*\n=+[ \t]*\n+|^.+[ \t]*\n-+[ \t]*\n+|^\#{1,6}[ \t]*.+?[ \t]*\#*\n+)/gm,
+			function(match, title, matchOffset) {
+				if(title) {
+					// We just found a title which means end of the previous section
+					// Exclude last \n of the section
+					addMdSection(text.substring(offset, matchOffset-1));
+					offset = matchOffset;
+				}
+				return "";
+			}
+		);
+		// Last section
+		// Consider wmd-input bottom padding and exclude \n\n previously added
+		padding += pxToFloat(editorElt.css('padding-bottom'));
+		addMdSection(text.substring(offset, text.length-2));
+		
+		// Try to find corresponding sections in the preview
+		var previewElt = $("#wmd-preview");
+		htmlSectionList = [];
+		var htmlSectionOffset = 0;
+		var previewScrollTop = previewElt.scrollTop();
+		// Each title element is a section separator
+		previewElt.children("h1,h2,h3,h4,h5,h6").each(function() {
+			// Consider div scroll position and header element top margin
+			var newSectionOffset = $(this).position().top + previewScrollTop + pxToFloat($(this).css('margin-top'));
+			htmlSectionList.push({
+				startOffset: htmlSectionOffset,
+				endOffset: newSectionOffset,
+				height: newSectionOffset - htmlSectionOffset
+			});
+			htmlSectionOffset = newSectionOffset; 
+		});
+		// Last section
+		var scrollHeight = previewElt.prop('scrollHeight');
+		htmlSectionList.push({
+			startOffset: htmlSectionOffset,
+			endOffset: scrollHeight,
+			height: scrollHeight - htmlSectionOffset
+		});
+		
+		/*
+		console.log("mdSectionList: " + _.map(mdSectionList, function(section) {
+			return section.endOffset;
+		}));
+		*/
+		
+		// apply Scroll Link 
+		lastEditorScrollTop = -99;
+		lastPreviewScrollTop = -99;
+		scrollLink();
+	}, 800);
+	
+	var lastEditorScrollTop = -99;
+	var lastPreviewScrollTop = -99;
+	var scrollLink = _.debounce(function() {
+		if(mdSectionList.length === 0 || mdSectionList.length !== htmlSectionList.length) {
+			return;
+		}
+		var editorElt = $("#wmd-input");
+		var editorScrollTop = editorElt.scrollTop();
+		var previewElt = $("#wmd-preview");
+		var previewScrollTop = previewElt.scrollTop();
+		function animate(srcScrollTop, srcSectionList, destElt, destSectionList) {
+			// Find the section corresponding to the offset
+			var sectionIndex = undefined;
+			var srcSection = _.find(srcSectionList, function(section, index) {
+				sectionIndex = index; 
+				return srcScrollTop < section.endOffset;
+			});
+			if(srcSection === undefined) {
+				// Something wrong in the algorithm...
+				return 0;
+			}
+			var posInSection = (srcScrollTop - srcSection.startOffset) / srcSection.height;
+			var destSection = destSectionList[sectionIndex];
+			var destScrollTop = destSection.startOffset + destSection.height * posInSection;
+			destElt.animate({scrollTop: destScrollTop}, 800, function() {
+				lastEditorScrollTop = editorElt.scrollTop();
+				lastPreviewScrollTop = previewElt.scrollTop();
+			});
+			return destScrollTop;
+		}
+		if(Math.abs(editorScrollTop - lastEditorScrollTop) > 5) {
+			previewScrollTop = animate(editorScrollTop, mdSectionList, previewElt, htmlSectionList);
+		}
+		else if(Math.abs(previewScrollTop - lastPreviewScrollTop) > 5) {
+			editorScrollTop = animate(previewScrollTop, htmlSectionList, editorElt, mdSectionList);
+		}
+	}, 1000);
+
 	// Create the layout
 	core.createLayout = function() {
 		var layout = undefined;
@@ -281,6 +413,9 @@ define(
 			togglerLength_closed : 90,
 			stateManagement__enabled : false
 		};
+		if(core.settings.scrollLink === true) {
+			layoutGlobalConfig.onresize = buildSections;
+		}
 		if (core.settings.layoutOrientation == "horizontal") {
 			$(".ui-layout-south").remove();
 			$(".ui-layout-east").addClass("well").prop("id", "wmd-preview");
@@ -311,8 +446,13 @@ define(
 		$("#navbar").click(function() {
 			layout.allowOverflow('north');
 		});
+		
+		// ScrollLink
+		if(core.settings.scrollLink === true) {
+			$("#wmd-input, #wmd-preview").scroll(scrollLink);
+		}
 	};
-
+	
 	// Create the PageDown editor
 	var insertLinkCallback = undefined;
 	core.createEditor = function(onTextChange) {
@@ -335,6 +475,11 @@ define(
 			return text;
 		});
 		var editor = new Markdown.Editor(converter);
+		if(core.settings.scrollLink === true) {
+			editor.hooks.chain("onPreviewRefresh", function() {
+				buildSections();
+			});
+		}
 		// Custom insert link dialog
 		editor.hooks.set("insertLinkDialog", function (callback) {
 			insertLinkCallback = callback;
@@ -709,12 +854,14 @@ define(
 		core.createLayout();
 
 		// Editor's textarea
-		$("#wmd-input").css({
+		$("#wmd-input, #md-section-helper").css({
 			// Apply editor font size
 			"font-size": core.settings.editorFontSize + "px",
 			"line-height": Math.round(core.settings.editorFontSize * (20/14)) + "px"
-		}).keydown(function(e) {
-			// Manage tab key
+		});
+		
+		// Manage tab key
+		$("#wmd-input").keydown(function(e) {
 		    if(e.keyCode === 9) {
 		        var value = $(this).val();
 		        var start = this.selectionStart;
@@ -727,6 +874,45 @@ define(
 		        this.selectionStart = this.selectionEnd = start + 1;
 		        e.preventDefault();
 		    }
+		});
+
+		// Tooltips
+		$(".tooltip-scroll-link").tooltip({
+			html: true,
+			container: '#modal-settings',
+			placement: 'right',
+			title: ['Scroll Link is a feature that binds together editor and preview scrollbars. ',
+			        'It allows you to keep an eye on the preview while scrolling the editor and vice versa. ',
+			        '<br><br>',
+			        'The mapping between Markdown and HTML is based on the position of the title elements (h1, h2, ...) in the page. ',
+			        'Therefore, if your document does not contain any title, the mapping will be linear and consequently less efficient.',
+			        ].join("")
+		});
+		$(".tooltip-template").tooltip({
+			html: true,
+			container: '#modal-settings',
+			placement: 'right',
+			trigger: 'manual',
+			title: ['Available variables:<br>',
+			        '<ul><li><b>documentTitle</b>: document title</li>',
+			        '<li><b>documentMarkdown</b>: document in Markdown format</li>',
+			        '<li><b>documentHTML</b>: document in HTML format</li>',
+			        '<li><b>publishAttributes</b>: attributes of the publish location (undefined when using "Save")</li></ul>',
+			        'Examples:<br>',
+			        _.escape('<title><%= documentTitle %></title>'),
+			        '<br>',
+			        _.escape('<div><%- documentHTML %></div>'),
+			        '<br>',
+			        _.escape('<% if(publishAttributes.provider == "github") print(documentMarkdown); %>'),
+			        '<br><br><a target="_blank" href="http://underscorejs.org/#template">More info</a>',
+			        ].join("")
+		}).click(function(e) {
+			$(this).tooltip('show');
+			e.stopPropagation();
+		});
+		
+		$(document).click(function(e) {
+			$(".tooltip-template").tooltip('hide');
 		});
 
 		// Reset inputs

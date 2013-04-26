@@ -17,15 +17,15 @@
 
   // patch for ie7
   if (!Array.indexOf) {
-	  Array.prototype.indexOf = function(obj){
-	    for(var i = 0; i < this.length; i++){
-	      if(this[i] == obj){
-	        return i;
-	      }
-	    }
-	    return -1;
-	  }
-	}
+    Array.prototype.indexOf = function(obj) {
+      for (var i = 0; i < this.length; i++) {
+        if (this[i] == obj) {
+          return i;
+        }
+      }
+      return -1;
+    }
+  }
 
   function trim(str) {
     return str.replace(/^\s+|\s+$/g, '');
@@ -262,10 +262,10 @@
     // TODO: use sentinels. Should we just add/remove them in doConversion?
     // TODO: better matches for id / class attributes
     var attrBlock = "\\{\\s*[.|#][^}]+\\}";
-    var hdrAttributesA = new RegExp("^(#{1,6}.*#{0,6})\\s+(" + attrBlock + ")\\s*(\\n|0x03)", "gm");
-    var hdrAttributesB = new RegExp("^(.*)\\s+(" + attrBlock + ")\\s*\\n" +
+    var hdrAttributesA = new RegExp("^(#{1,6}.*#{0,6})\\s+(" + attrBlock + ")[ \\t]*(\\n|0x03)", "gm");
+    var hdrAttributesB = new RegExp("^(.*)\\s+(" + attrBlock + ")[ \\t]*\\n" +
                                     "(?=[\\-|=]+\\s*(\\n|0x03))", "gm"); // underline lookahead
-    var fcbAttributes =  new RegExp("^(```[^{]*)\\s+(" + attrBlock + ")\\s*\\n" +
+    var fcbAttributes =  new RegExp("^(```[^{]*)\\s+(" + attrBlock + ")[ \\t]*\\n" +
                                     "(?=([\\s\\S]*?)\\n```\\s*(\\n|0x03))", "gm");
 
     var self = this;
@@ -281,7 +281,7 @@
   Markdown.Extra.prototype.applyAttributeBlocks = function(text) {
     var self = this;
     var blockRe = new RegExp('<p>~XX(\\d+)XX</p>[\\s]*' +
-                             '(?:<(h[1-6]|pre)(?: +class="(\\S+)")?(>[\\s\\S]*</\\2>))', "gm");
+                             '(?:<(h[1-6]|pre)(?: +class="(\\S+)")?(>[\\s\\S]*?</\\2>))', "gm");
     text = text.replace(blockRe, function(wholeMatch, k, tag, cls, rest) {
       if (!tag) // no following header or fenced code block.
         return '';

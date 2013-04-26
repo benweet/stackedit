@@ -162,7 +162,7 @@ hr {
 	position: absolute;
 }
 
-#wmd-input {
+#wmd-input, #md-section-helper {
 	font-family: "Courier New", Courier, monospace;
 	resize: none;
 	border: none !important;
@@ -384,4 +384,23 @@ blockquote p {
 	margin-bottom: 20px;
 	font-size: 14px;
 	line-height: 20px;
+}
+
+#md-section-helper {
+	position: absolute;
+	top: -100px;
+    height: 1px;
+    padding: 0 6px;
+    overflow-y: scroll;
+    z-index: -1;
+}
+
+.gecko #md-section-helper {
+    /* Firefox doesn't show the scrollbar if height is less than 40px */
+    height: 40px;
+}
+
+.opera #md-section-helper {
+    /* Opera needs to have the textarea in the viewport to evaluate size correctly */
+    top: 0;
 }

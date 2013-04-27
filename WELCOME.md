@@ -3,7 +3,7 @@ Welcome to StackEdit!
 =====================
 
 
-Hi, I am your first Markdown document within **StackEdit**. Don't delete me, I can be helpful. I can be recovered anyway by clicking <i class="icon-cog"></i> `Settings` or <i class="icon-question-sign"></i> `About` in the <i class="icon-stackedit"></i> menu.
+Hi, I am your first Markdown document within **StackEdit**. Don't delete me, I can be helpful. I can be recovered anyway by clicking <i class="icon-question-sign"></i> `About` in the <i class="icon-stackedit"></i> menu.
 
 ----------
 

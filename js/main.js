@@ -7,8 +7,7 @@ requirejs.config({
         'jgrowl': ['jquery'],
         'layout': ['jquery-ui'],
         'Markdown.Extra': ['Markdown.Converter', 'prettify'],
-        'Markdown.Sanitizer': ['Markdown.Extra'],
-        'Markdown.Editor': ['Markdown.Sanitizer']
+        'Markdown.Editor': ['Markdown.Extra']
     }
 });
 

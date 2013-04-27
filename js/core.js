@@ -457,7 +457,7 @@ define(
 	var insertLinkCallback = undefined;
 	core.createEditor = function(onTextChange) {
 		$("#wmd-button-bar").empty();
-		var converter = Markdown.getSanitizingConverter();
+		var converter = new Markdown.Converter();
 		if(core.settings.converterType.indexOf("markdown-extra") === 0) {
 			// Markdown extra customized converter
 			var options = {};

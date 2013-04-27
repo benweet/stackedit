@@ -10,8 +10,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 		task.onRun(function() {
 			if(core.isOffline === true) {
 				connected = false;
-				core.showMessage("Operation not available in offline mode.");
-				task.error();
+				task.error(new Error("Operation not available in offline mode."));
 				return;
 			}
 			if (connected === true) {
@@ -25,9 +24,12 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 			$.ajax({
 				url : "https://apis.google.com/js/client.js?onload=runDelayedFunction",
 				dataType : "script", timeout : AJAX_TIMEOUT
-			}).fail(function() {
-				core.setOffline();
-				task.error(new Error("Network timeout|stopPublish"));
+			}).fail(function(jqXHR) {
+				var error = {
+					code: jqXHR.status,
+					message: jqXHR.statusText
+				};
+				handleError(error, task);
 			});
 		});
 	}
@@ -58,9 +60,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 								return;
 							}
 							// Error
-							var errorMsg = "Access to Google account is not authorized.";
-							core.showError(errorMsg);
-							task.error(new Error(errorMsg));
+							task.error(new Error("Access to Google account is not authorized."));
 							return;
 						}
 						// Success
@@ -137,7 +137,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 						error = 'Conflict on file ID "' + fileId + '". Please restart the synchronization.';
 					}
 				}
-				handleError(error, task, callback);
+				handleError(error, task);
 			});
 		});
 		task.onSuccess(function() {
@@ -172,7 +172,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				request.execute(function(response) {
 					if (!response || !response.largestChangeId) {
 						// Handle error
-						handleError(response.error, task, callback);
+						handleError(response.error, task);
 						return;
 					}
 					// Retrieve success
@@ -234,7 +234,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 					if(error.code === 404) {
 						error = 'File ID "' + id + '" not found on Google Drive.';
 					}
-					handleError(error, task, callback);
+					handleError(error, task);
 				});
 			}
 			task.chain(recursiveDownloadMetadata);
@@ -295,7 +295,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 						message: jqXHR.statusText
 					};
 					// Handle error
-					handleError(error, task, callback);
+					handleError(error, task);
 				});
 			}
 			task.chain(recursiveDownloadContent);
@@ -309,7 +309,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 		asyncRunner.addTask(task);
 	};
 	
-	function handleError(error, task, callback) {
+	function handleError(error, task) {
 		var errorMsg = undefined;
 		if (error) {
 			console.error(error);
@@ -317,24 +317,25 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 			if (typeof error === "string") {
 				errorMsg = error;
 			}
-			else if (error.code >= 500 && error.code < 600) {
-				// Retry as described in Google's best practices
-				task.retry();
-				return;
-			} else if (error.code === 401 || error.code === 403) {
-				authenticated = false;
-				task.retry();
-				return;
-			} else if (error.code <= 0) {
-				connected = false;
-				authenticated = false;
-				core.setOffline();
-				errorMsg = "|stopPublish";
-			} else {
+			else {
 				errorMsg = "Google error (" + error.code + ": "
 					+ error.message + ").";
+				if (error.code >= 500 && error.code < 600) {
+					// Retry as described in Google's best practices
+					task.retry(new Error(errorMsg));
+					return;
+				} else if (error.code === 401 || error.code === 403) {
+					authenticated = false;
+					errorMsg = "Access to Google account is not authorized.";
+					task.retry(new Error(errorMsg), 1);
+					return;
+				} else if (error.code <= 0) {
+					connected = false;
+					authenticated = false;
+					core.setOffline();
+					errorMsg = "|stopPublish";
+				}
 			}
-			core.showError(errorMsg);
 		}
 		task.error(new Error(errorMsg));
 	}
@@ -353,9 +354,12 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 			}).done(function() {
 			    google.load('picker', '1', {callback: task.chain});
 				pickerLoaded = true;
-			}).fail(function() {
-				core.setOffline();
-				task.error(new Error("Network timeout"));
+			}).fail(function(jqXHR) {
+				var error = {
+					code: jqXHR.status,
+					message: jqXHR.statusText
+				};
+				handleError(error, task);
 			});
 		});
 	}
@@ -363,7 +367,13 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 	googleHelper.picker = function(callback) {
 		callback = callback || core.doNothing;
 		var ids = [];
-		var picker = undefined; 
+		var picker = undefined;
+		function hidePicker() {
+			if(picker !== undefined) {
+				picker.setVisible(false);
+				$(".modal-backdrop, .picker").remove();
+			}
+		}
 		var task = asyncRunner.createTask();
 		connect(task);
 		loadPicker(task);
@@ -388,14 +398,13 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 					        ids.push(data.docs[i].id);							
 						}
 					}
-					$(".modal-backdrop, .picker").remove();
+					hidePicker();
 					task.chain();
 			    }
 			});
 			picker = pickerBuilder.build();
 			$("body").append($("<div>").addClass("modal-backdrop").click(function() {
-				picker.setVisible(false);
-				$(".modal-backdrop, .picker").remove();
+				hidePicker();
 				task.chain();
 			}));
 			picker.setVisible(true);
@@ -404,11 +413,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 			callback(undefined, ids);
 		});
 		task.onError(function(error) {
-			if(picker !== undefined) {
-				picker.setVisible(false);
-				$(".modal-backdrop, .picker").remove();
-				task.chain();
-			}
+			hidePicker();
 			callback(error);
 		});
 		asyncRunner.addTask(task);
@@ -459,7 +464,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 					if(error.code === 404 && postId !== undefined) {
 						error = 'Post ' + postId + ' not found on Blogger.|removePublish';
 					}
-					handleError(error, task, callback);
+					handleError(error, task);
 				});
 			}
 			function getBlogId() {
@@ -485,7 +490,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 					if(error.code === 404) {
 						error = 'Blog "' + blogUrl + '" not found on Blogger.|removePublish';
 					}
-					handleError(error, task, callback);
+					handleError(error, task);
 				});
 			}
 			task.chain(getBlogId);

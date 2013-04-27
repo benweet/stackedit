@@ -79,7 +79,10 @@ define([ "core", "underscore" ], function(core) {
 			if (task.finished === true) {
 				return;
 			}
-			error = error || "Unknown error";
+			error = error || new Error("Unknown error");
+			if(error.message) {
+				core.showError(error.message);
+			}
 			runSafe(task, task.errorCallbacks, error);
 			// Exit the current call stack
 			throw error;
@@ -87,13 +90,14 @@ define([ "core", "underscore" ], function(core) {
 		/**
 		 * retry() can be called in an onRun callback to restart the task
 		 */
-		task.retry = function() {
+		task.retry = function(error, maxRetryCounter) {
 			if (task.finished === true) {
 				return;
 			}
+			maxRetryCounter = maxRetryCounter || 5;
 			task.queue = undefined;
-			if (task.retryCounter === 5) {
-				task.error(new Error("Maximum retry number reached"));
+			if (task.retryCounter >= maxRetryCounter) {
+				task.error(error);
 				return;
 			}
 			// Implement an exponential backoff
@@ -112,9 +116,7 @@ define([ "core", "underscore" ], function(core) {
 		if (currentTaskRunning === true) {
 			// If the current task takes too long
 			if (currentTaskStartTime + currentTask.timeout < core.currentTime) {
-				var errorMsg = "A timeout occurred.";
-				core.showError(errorMsg);
-				currentTask.error(new Error(errorMsg));
+				currentTask.error(new Error("A timeout occurred."));
 			}
 			return;
 		}

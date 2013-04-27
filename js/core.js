@@ -127,10 +127,10 @@ define(
 	// Used by asyncRunner
 	core.showWorkingIndicator = function(show) {
 		if (show === false) {
-			$(".working-indicator").addClass("hide");
+			$(".working-indicator").removeClass("show");
 			$("body").removeClass("working");
 		} else {
-			$(".working-indicator").removeClass("hide");
+			$(".working-indicator").addClass("show");
 			$("body").addClass("working");
 		}
 	};
@@ -293,7 +293,7 @@ define(
 		var offset = 0, mdSectionOffset = 0;
 		function addMdSection(sectionText) {
 			var sectionHeight = padding;
-			if(sectionText) {
+			if(sectionText !== undefined) {
 				textareaElt.val(sectionText);
 				sectionHeight += textareaElt.prop('scrollHeight');
 			}
@@ -313,7 +313,11 @@ define(
 				if(title) {
 					// We just found a title which means end of the previous section
 					// Exclude last \n of the section
-					addMdSection(text.substring(offset, matchOffset-1));
+					var sectionText = undefined;
+					if(matchOffset > offset) {
+						sectionText = text.substring(offset, matchOffset-1);
+					}
+					addMdSection(sectionText);
 					offset = matchOffset;
 				}
 				return "";
@@ -358,8 +362,9 @@ define(
 		lastEditorScrollTop = -9;
 		lastPreviewScrollTop = -9;
 		scrollLink();
-	}, 800);
+	}, 500);
 	
+	// -9 is less than -5
 	var lastEditorScrollTop = -9;
 	var lastPreviewScrollTop = -9;
 	var scrollLink = _.debounce(function() {
@@ -379,11 +384,12 @@ define(
 			});
 			if(srcSection === undefined) {
 				// Something wrong in the algorithm...
-				return 0;
+				return -9;
 			}
 			var posInSection = (srcScrollTop - srcSection.startOffset) / srcSection.height;
 			var destSection = destSectionList[sectionIndex];
 			var destScrollTop = destSection.startOffset + destSection.height * posInSection;
+			destScrollTop = _.min([destScrollTop, destElt.prop('scrollHeight') - destElt.outerHeight()]);
 			destElt.animate({scrollTop: destScrollTop}, 800, function() {
 				lastEditorScrollTop = editorElt.scrollTop();
 				lastPreviewScrollTop = previewElt.scrollTop();
@@ -396,7 +402,7 @@ define(
 		else if(Math.abs(previewScrollTop - lastPreviewScrollTop) > 5) {
 			editorScrollTop = animate(previewScrollTop, htmlSectionList, editorElt, mdSectionList);
 		}
-	}, 1200);
+	}, 1000);
 
 	// Create the layout
 	var layout = undefined;
@@ -486,6 +492,11 @@ define(
 				// Modify scroll position of the preview not the editor
 				lastEditorScrollTop = -9;
 				buildSections();
+				// Preview may change if images are loading
+				$("#wmd-preview img").load(function() {
+					lastEditorScrollTop = -9;
+					buildSections();
+				});
 			});
 		}
 		// Custom insert link dialog

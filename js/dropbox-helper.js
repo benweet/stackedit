@@ -10,8 +10,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 		task.onRun(function() {
 			if(core.isOffline === true) {
 				client = undefined;
-				core.showMessage("Operation not available in offline mode.");
-				task.error();
+				task.error(new Error("Operation not available in offline mode."));
 				return;
 			}		
 			if (client !== undefined) {
@@ -31,9 +30,12 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				    rememberUser: true
 				}));
 				task.chain();
-			}).fail(function() {
-				core.setOffline();
-				task.error(new Error("Network timeout|stopPublish"));
+			}).fail(function(jqXHR) {
+				var error = {
+					status: jqXHR.status,
+					responseText: jqXHR.statusText
+				};
+				handleError(error, task);
 			});
 		});
 	}
@@ -67,9 +69,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 						return;
 					}
 					// Error
-					var errorMsg = "Access to Dropbox account is not authorized.";
-					core.showError(errorMsg);
-					task.error(new Error(errorMsg));
+					task.error(new Error("Access to Dropbox account is not authorized."));
 				});
 			}
 			task.chain(localAuthenticate);
@@ -93,7 +93,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				if(error.status === Dropbox.ApiError.INVALID_PARAM) {
 					error = 'Could not upload document into path "' + path + '".';
 				}
-				handleError(error, task, callback);
+				handleError(error, task);
 			});
 		});
 		task.onSuccess(function() {
@@ -116,7 +116,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 			function retrievePageOfChanges() {
 				client.pullChanges(newChangeId, function(error, pullChanges) {
 					if (error) {
-						handleError(error, task, callback);
+						handleError(error, task);
 						return;
 					}
 					// Retrieve success
@@ -161,7 +161,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 						task.chain(recursiveDownloadMetadata);
 						return;
 					}
-					handleError(error, task, callback);
+					handleError(error, task);
 				});
 			}
 			task.chain(recursiveDownloadMetadata);
@@ -208,7 +208,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 						recursiveDownloadContent();
 						return;
 					}
-					handleError(error, task, callback);
+					handleError(error, task);
 				});
 			}
 			task.chain(recursiveDownloadContent);
@@ -222,40 +222,43 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 		asyncRunner.addTask(task);
 	};
 	
-	function handleError(error, task, callback) {
+	function handleError(error, task) {
 		var errorMsg = true;
 		if (error) {
 			console.error(error);
 			// Try to analyze the error
 			if (typeof error === "string") {
 				errorMsg = error;
-			} else if (error.status === Dropbox.ApiError.INVALID_TOKEN
-				|| error.status === Dropbox.ApiError.OAUTH_ERROR) {
-				authenticated = false;
-				task.retry();
-				return;
-			} else if(error.status === Dropbox.ApiError.INVALID_PARAM && error.responseText
-					.indexOf("oauth_nonce") !== -1) {
-				// A bug I guess...
-				_.each(_.keys(localStorage), function(key) {
-					// We have to remove the Oauth cache from the localStorage
-					if(key.indexOf("dropbox-auth") === 0) {
-						localStorage.removeItem(key);
-					}
-				});
-				authenticated = false;
-				task.retry();
-				return;
-			} else if (error.status === Dropbox.ApiError.NETWORK_ERROR) {
-				client = undefined;
-				authenticated = false;
-				core.setOffline();
-				errorMsg = "|stopPublish";
-			} else {
-				errorMsg = "Dropbox error ("
-					+ error.status + ").";
 			}
-			core.showError(errorMsg);
+			else {
+				errorMsg = "Dropbox error ("
+					+ error.status + ": " + error.responseText + ").";
+
+				if (error.status === Dropbox.ApiError.INVALID_TOKEN
+					|| error.status === Dropbox.ApiError.OAUTH_ERROR) {
+					authenticated = false;
+					errorMsg = "Access to Dropbox account is not authorized.";
+					task.retry(new Error(errorMsg), 1);
+					return;
+				} else if(error.status === Dropbox.ApiError.INVALID_PARAM && error.responseText
+						.indexOf("oauth_nonce") !== -1) {
+					// A bug I guess...
+					_.each(_.keys(localStorage), function(key) {
+						// We have to remove the Oauth cache from the localStorage
+						if(key.indexOf("dropbox-auth") === 0) {
+							localStorage.removeItem(key);
+						}
+					});
+					authenticated = false;
+					task.retry(new Error(errorMsg), 1);
+					return;
+				} else if (error.status === Dropbox.ApiError.NETWORK_ERROR || error.status < 0) {
+					client = undefined;
+					authenticated = false;
+					core.setOffline();
+					errorMsg = "|stopPublish";
+				}
+			}
 		}
 		task.error(new Error(errorMsg));
 	}
@@ -273,9 +276,12 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 			}).done(function() {
 				pickerLoaded = true;
 				task.chain();
-			}).fail(function() {
-				core.setOffline();
-				task.error();
+			}).fail(function(jqXHR) {
+				var error = {
+					status: jqXHR.status,
+					responseText: jqXHR.statusText
+				};
+				handleError(error, task);
 			});
 		});
 	}

@@ -16,6 +16,7 @@ var PROVIDER_BLOGGER = "blogger";
 var PROVIDER_DROPBOX = "dropbox";
 var PROVIDER_GDRIVE = "gdrive";
 var PROVIDER_GITHUB = "github";
+var WELCOME_DOCUMENT_TITLE = "Welcome document";
 
 // Use by Google's client.js
 var delayedFunction = undefined;

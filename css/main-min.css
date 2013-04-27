@@ -5565,12 +5565,15 @@ hr {
 	height: 16px;
 	background-position: -109px 0;
 }
-.icon-spinner {
-	background-image: url("../img/ajax-loader.gif");
+.working-indicator {
+	background-image: none;
 	width: 43px;
 	height: 11px;
 	background-position: 0 0;
 	margin: 14px 15px 0;
+}
+.working-indicator.show {
+	background-image: url("../img/ajax-loader.gif");
 }
 .ui-layout-toggler-north .caret, .ui-layout-toggler-south .caret {
 	margin-top: 5px;

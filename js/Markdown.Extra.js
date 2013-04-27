@@ -470,6 +470,7 @@
   Markdown.Extra.prototype.all = function(text) {
     text = this.tables(text);
     text = this.fencedCodeBlocks(text);
+    text = this.definitionLists(text);
     return text;
   };
 

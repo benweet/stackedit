@@ -1,5 +1,5 @@
-define(["jquery", "core", "synchronizer", "publisher", "underscore"],
-	function($, core, synchronizer, publisher) {
+define(["jquery", "core", "synchronizer", "publisher", "text!../WELCOME.md", "underscore"],
+	function($, core, synchronizer, publisher, welcomeContent) {
 
 	var fileManager = {};
 
@@ -28,7 +28,7 @@ define(["jquery", "core", "synchronizer", "publisher", "underscore"],
 	fileManager.selectFile = function(fileIndex) {
 		// If no file create one
 		if (localStorage["file.list"].length === 1) {
-			fileIndex = this.createFile();
+			fileIndex = fileManager.createFile(WELCOME_DOCUMENT_TITLE, welcomeContent);
 		}
 		
 		if(fileIndex !== undefined) {
@@ -271,6 +271,10 @@ define(["jquery", "core", "synchronizer", "publisher", "underscore"],
 			var content = publisher.applyTemplate();
 			var title = localStorage[fileManager.getCurrentFileIndex() + ".title"];
 			core.saveFile(content, title + ".txt");
+		});
+		$(".action-welcome-file").click(function() {
+			var fileIndex = fileManager.createFile(WELCOME_DOCUMENT_TITLE, welcomeContent);
+			fileManager.selectFile(fileIndex);
 		});
 	});
 

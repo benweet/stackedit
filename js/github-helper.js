@@ -10,8 +10,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 		task.onRun(function() {
 			if(core.isOffline === true) {
 				connected = false;
-				core.showMessage("Operation not available in offline mode.");
-				task.error();
+				task.error(new Error("Operation not available in offline mode."));
 				return;
 			}
 			if (connected === true) {
@@ -24,9 +23,12 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 			}).done(function() {
 				connected = true;
 				task.chain();
-			}).fail(function() {
-				core.setOffline();
-				task.error(new Error("Network timeout|stopPublish"));
+			}).fail(function(jqXHR) {
+				var error = {
+					error: jqXHR.status,
+					message: jqXHR.statusText
+				};
+				handleError(error, task);
 			});
 		});
 	}
@@ -50,6 +52,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				return;
 			}
 			core.showMessage("Please make sure the Github authorization popup is not blocked by your browser.");
+			var errorMsg = "Failed to retrieve a token from GitHub.";
 			// We add time for user to enter his credentials
 			task.timeout = ASYNC_TASK_LONG_TIMEOUT;
 			var code = undefined;
@@ -66,7 +69,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 						intervalId = undefined;
 						code = localStorage["githubCode"];
 						if(code === undefined) {
-							task.error();
+							task.error(new Error(errorMsg));
 							return;
 						}
 						localStorage.removeItem("githubCode");
@@ -86,7 +89,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 						task.chain();
 					}
 					else {
-						task.error();
+						task.error(new Error(errorMsg));
 					}
 				});
 			}
@@ -113,7 +116,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				var user = github.getUser();
 				user.show(undefined, function(err, result) {
 					if(err) {
-						task.error(err);
+						handleError(err, task);
 						return;
 					}
 					userLogin = result.login;
@@ -124,7 +127,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				var repo = github.getRepo(userLogin, reponame);
 				repo.write(branch, path, content, commitMsg, function(err) {
 					if(err) {
-						task.error(err);
+						handleError(err, task);
 						return;
 					}
 					task.chain();
@@ -135,27 +138,37 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 		task.onSuccess(function() {
 			callback();
 		});
-		task.onError(function(err) {
-			var errorMsg = "Could not publish on GitHub.";
-			if(err !== undefined) {
-				console.error(err);
-				if(err.error === 401 || err.error === 403) {
-					github = undefined;
-					// Token must be renewed
-					localStorage.removeItem("githubToken");
-					errorMsg = "Access to GitHub is not authorized.";
-				}
-				else if(err.error === 0) {
-					connected = false;
-					github = undefined;
-					core.setOffline();
-				}
-			}
-			core.showError(errorMsg);
-			callback(errorMsg);
+		task.onError(function(error) {
+			callback(error);
 		});
 		asyncRunner.addTask(task);
 	};
 	
+	function handleError(error, task) {
+		var errorMsg = undefined;
+		if (error) {
+			console.error(error);
+			// Try to analyze the error
+			if (typeof error === "string") {
+				errorMsg = error;
+			}
+			else {
+				errorMsg = "Could not publish on GitHub.";
+				if (error.error === 401 || error.error === 403) {
+					github = undefined;
+					errorMsg = "Access to GitHub account is not authorized.";
+					task.retry(new Error(errorMsg), 1);
+					return;
+				} else if (error.error <= 0) {
+					connected = false;
+					github = undefined;
+					core.setOffline();
+					errorMsg = "|stopPublish";
+				}
+			}
+		}
+		task.error(new Error(errorMsg));
+	}
+
 	return githubHelper;
 });

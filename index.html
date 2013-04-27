@@ -19,7 +19,7 @@
 		dep = "main";
 		css = "css/main.css";
 	}
-    document.write('<link href="' + css + '" rel="stylesheet" media="screen">');
+	document.write('<link href="' + css + '" rel="stylesheet" media="screen">');
 	var require = { baseUrl : "js", deps : [ dep ] };
 </script>
 <script src="js/require.js"></script>
@@ -111,7 +111,7 @@
 					</ul></li>
 			</ul>
 			<ul class="nav pull-right">
-				<li><i class="working-indicator icon-spinner hide"></i></li>
+				<li><i class="working-indicator icon-none"></i></li>
 				<li><a class="brand" id="file-title" href="#"
 					title="Rename current document"> </a></li>
 				<li class="navbar-form"><input id="file-title-input"
@@ -321,7 +321,8 @@
 					</div>
 				</div>
 				<div class="control-group modal-publish-blogger">
-					<label class="control-label" for="input-publish-blogger-labels">Labels (comma separated)</label>
+					<label class="control-label" for="input-publish-blogger-labels">Labels
+						(comma separated)</label>
 					<div class="controls">
 						<input type="text" id="input-publish-blogger-labels"
 							placeholder="Label1, Label2">
@@ -344,23 +345,21 @@
 					</div>
 				</div>
 				<div class="control-group modal-publish-gdrive">
-					<div class="controls muted">
-						If no file ID is supplied, the file will be created
-						into your Google Drive root folder. You can move the file afterwards within
-						Google Drive.
-					</div>
+					<div class="controls muted">If no file ID is supplied, the
+						file will be created into your Google Drive root folder. You can
+						move the file afterwards within Google Drive.</div>
 				</div>
 				<div class="control-group modal-publish-gdrive">
-					<label class="control-label" for="input-publish-gdrive-filename">Force file name (optional)</label>
+					<label class="control-label" for="input-publish-gdrive-filename">Force
+						file name (optional)</label>
 					<div class="controls">
 						<input type="text" id="input-publish-gdrive-filename"
 							placeholder="File name">
 					</div>
 				</div>
 				<div class="control-group modal-publish-gdrive">
-					<div class="controls muted">
-						If no file name is supplied, the document title will be used.
-					</div>
+					<div class="controls muted">If no file name is supplied, the
+						document title will be used.</div>
 				</div>
 
 				<div class="control-group">
@@ -435,8 +434,9 @@
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" for="input-settings-scroll-link">Scroll Link <a
-                                href="#" class="tooltip-scroll-link">(?)</a></label>
+							<label class="control-label" for="input-settings-scroll-link">Scroll
+								Link <a href="#" class="tooltip-scroll-link">(?)</a>
+							</label>
 							<div class="controls">
 								<input type="checkbox" id="input-settings-scroll-link" />
 							</div>
@@ -540,7 +540,9 @@
 					<a target="_blank" href="http://twitter.github.io/bootstrap/">Bootstrap</a>
 				</dd>
 				<dd>
-					<a target="_blank" href="https://github.com/rafaelp/css_browser_selector/">CSS Browser Selector</a>
+					<a target="_blank"
+						href="https://github.com/rafaelp/css_browser_selector/">CSS
+						Browser Selector</a>
 				</dd>
 				<dd>
 					<a target="_blank" href="https://github.com/dropbox/dropbox-js">Dropbox-js</a>
@@ -587,13 +589,14 @@
 				href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a></p>
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+			<a href="#" class="btn action-welcome-file" data-dismiss="modal">Welcome
+				document</a> <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>
 	</div>
 
 	<div id="modal-non-unique" class="modal hide">
 		<div class="modal-header">
-			<h3>Stopped...</h3>
+			<h3>Whoops...</h3>
 		</div>
 		<div class="modal-body">
 			<p>StackEdit has stopped because another instance was running in
@@ -606,8 +609,8 @@
 				class="btn btn-primary">Reload</a>
 		</div>
 	</div>
-	
-    <textarea id="md-section-helper"></textarea>
+
+	<textarea id="md-section-helper"></textarea>
 	<div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>
 </body>
 </html>

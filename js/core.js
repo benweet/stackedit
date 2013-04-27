@@ -355,13 +355,13 @@ define(
 		*/
 		
 		// apply Scroll Link 
-		lastEditorScrollTop = -99;
-		lastPreviewScrollTop = -99;
+		lastEditorScrollTop = -9;
+		lastPreviewScrollTop = -9;
 		scrollLink();
 	}, 800);
 	
-	var lastEditorScrollTop = -99;
-	var lastPreviewScrollTop = -99;
+	var lastEditorScrollTop = -9;
+	var lastPreviewScrollTop = -9;
 	var scrollLink = _.debounce(function() {
 		if(mdSectionList.length === 0 || mdSectionList.length !== htmlSectionList.length) {
 			return;
@@ -396,11 +396,11 @@ define(
 		else if(Math.abs(previewScrollTop - lastPreviewScrollTop) > 5) {
 			editorScrollTop = animate(previewScrollTop, htmlSectionList, editorElt, mdSectionList);
 		}
-	}, 1000);
+	}, 1200);
 
 	// Create the layout
+	var layout = undefined;
 	core.createLayout = function() {
-		var layout = undefined;
 		var layoutGlobalConfig = {
 			closable : true, 
 			resizable : false,
@@ -452,6 +452,12 @@ define(
 			$("#wmd-input, #wmd-preview").scroll(scrollLink);
 		}
 	};
+	core.layoutRefresh = function() {
+		if(layout !== undefined) {
+			// Use defer to make sure UI has been updated
+			_.defer(layout.resizeAll);
+		}
+	};
 	
 	// Create the PageDown editor
 	var insertLinkCallback = undefined;
@@ -477,6 +483,8 @@ define(
 		var editor = new Markdown.Editor(converter);
 		if(core.settings.scrollLink === true) {
 			editor.hooks.chain("onPreviewRefresh", function() {
+				// Modify scroll position of the preview not the editor
+				lastEditorScrollTop = -9;
 				buildSections();
 			});
 		}

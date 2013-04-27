@@ -166,6 +166,8 @@ define(["jquery", "core", "synchronizer", "publisher", "underscore"],
 			}
 			$("#file-selector").append(li);			
 		});
+		
+		core.layoutRefresh();
 	};
 
 	// Remove a syncIndex (synchronized location)
@@ -242,6 +244,7 @@ define(["jquery", "core", "synchronizer", "publisher", "underscore"],
 			}
 			input.hide().val(localStorage[fileIndexTitle]);
 			$("#file-title").show();
+			core.layoutRefresh();
 		}
 		$("#file-title-input").blur(function() {
 			applyTitle($(this));

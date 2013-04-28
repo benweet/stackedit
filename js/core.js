@@ -868,6 +868,16 @@ define(
 			}
 		});
 		
+		$(".action-default-settings").click(function() {
+			localStorage.removeItem("settings");
+			window.location.reload();
+		});
+		
+		$(".action-app-reset").click(function() {
+			localStorage.clear();
+			window.location.reload();
+		});
+		
 		// UI layout
 		$("#menu-bar, .ui-layout-center, .ui-layout-east, .ui-layout-south").removeClass("hide");
 		core.createLayout();

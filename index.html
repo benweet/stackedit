@@ -174,8 +174,8 @@
 		<div class="modal-body">
 			<p>Are you sure you want to remove "<span class="file-title"></span>"?
 			</p>
-			<p class="muted"><b>NOTE:</b> This will not remove the file on
-				synchronized locations.</p>
+			<blockquote class="muted"><b>NOTE:</b> This will not remove the file on
+				synchronized locations.</blockquote>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
@@ -192,8 +192,8 @@
 		<div class="modal-body">
 			<p>This will upload the current document into your Google Drive
 				root folder and keep it synchronized.</p>
-			<p class="muted"><b>NOTE:</b> You can move or rename the file
-				afterwards within Google Drive.</p>
+			<blockquote class="muted"><b>NOTE:</b> You can move or rename the file
+				afterwards within Google Drive.</blockquote>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
@@ -218,13 +218,16 @@
 					id="input-sync-export-dropbox-path" type="text" class="span5"
 					placeholder="/path/to/My Document.md"></input>
 			</div>
-			<br /> <br /> <b class="muted">NOTE:</b>
-			<ul class="muted">
+			<br /> <br />
+			<blockquote class="muted">
+			<b>NOTE:</b>
+			<ul>
 				<li>Dropbox file path does not depend on document title.</li>
 				<li>The title of your document will not be synchronized.</li>
 				<li>Destination folder must exist.</li>
 				<li>Any existing file at this location will be overwritten.</li>
 			</ul>
+			</blockquote>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
@@ -264,8 +267,8 @@
 					class="btn action-sync-manual-dropbox" title="Add location"
 					data-dismiss="modal"><i class="icon-ok"></i></a>
 			</div>
-			<p class="muted"><b>NOTE:</b> This will upload the local document
-				firstly and overwrite the existing file on the server.</p>
+			<blockquote class="muted"><b>NOTE:</b> This will upload the local document
+				firstly and overwrite the existing file on the server.</blockquote>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
@@ -396,8 +399,8 @@
 			<p class="msg-no-publish hide">"<span class="file-title"></span>"
 				is not published.
 			</p>
-			<p class="muted"><b>NOTE:</b> You can add locations using
-				"Publish on" sub-menu.</p>
+			<blockquote class="muted"><b>NOTE:</b> You can add locations using
+				"Publish on" sub-menu.</blockquote>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
@@ -415,7 +418,9 @@
 				<li class="active"><a class="action-load-settings"
 					href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>
 				<li><a class="action-load-settings"
-					href="#tabpane-settings-publish" data-toggle="tab">Publishing</a></li>
+					href="#tabpane-settings-publish" data-toggle="tab">Publish</a></li>
+				<li><a class="action-load-settings"
+					href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>
 			</ul>
 
 			<div class="tab-content">
@@ -480,6 +485,17 @@
 								<textarea id="textarea-settings-publish-template"></textarea>
 							</div>
 						</div>
+					</div>
+				</div>
+				<div class="tab-pane" id="tabpane-settings-utils">
+					<div style="width: 200px; margin: 10px auto;">
+						<a href="#" class="btn btn-block btn-primary action-welcome-file"
+							data-dismiss="modal">Welcome document</a> <a href="#"
+							class="btn btn-block btn-primary action-default-settings"
+							data-dismiss="modal">Load default settings</a> <a href="#"
+							class="btn btn-block btn-primary" data-dismiss="modal"
+							data-toggle="modal" data-target="#modal-app-reset">Reset
+							application</a>
 					</div>
 				</div>
 			</div>
@@ -589,8 +605,7 @@
 				href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a></p>
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn action-welcome-file" data-dismiss="modal">Welcome
-				document</a> <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>
 	</div>
 
@@ -601,12 +616,26 @@
 		<div class="modal-body">
 			<p>StackEdit has stopped because another instance was running in
 				the same browser.</p>
-			<p class="muted">If you want to reopen StackEdit, click on
-				"Reload".</p>
+			<blockquote class="muted">If you want to reopen StackEdit, click on
+				"Reload".</blockquote>
 		</div>
 		<div class="modal-footer">
 			<a href="javascript:window.location.reload();"
 				class="btn btn-primary">Reload</a>
+		</div>
+	</div>
+
+	<div id="modal-app-reset" class="modal hide">
+		<div class="modal-header">
+			<h3>Application reset</h3>
+		</div>
+		<div class="modal-body">
+			<p>This will delete all your local documents.</p>
+			<blockquote class="muted">Are you sure?</blockquote>
+		</div>
+		<div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+                class="btn btn-primary action-app-reset" data-dismiss="modal">OK</a>
 		</div>
 	</div>
 

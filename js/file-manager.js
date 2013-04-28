@@ -137,6 +137,7 @@ define(["jquery", "core", "synchronizer", "publisher", "text!../WELCOME.md", "un
 		function composeTitle(fileIndex) {
 			var result = " " + localStorage[fileIndex + ".title"];
 			var providerIdList = synchronizer.getSyncProvidersFromFile(fileIndex);
+			providerIsList = _.extend(providerIdList, publisher.getPublishProvidersFromFile(fileIndex));
 			_.each(providerIdList, function(providerId) {
 				result = '<i class="icon-' + providerId + '"></i>' + result;
 			});

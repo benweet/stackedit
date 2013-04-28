@@ -93,6 +93,7 @@ define(["jquery", "core", "github-provider", "blogger-provider", "dropbox-provid
 				var errorMsg = error.toString();
 				if(errorMsg.indexOf("|removePublish") !== -1) {
 					core.fileManager.removePublish(publishIndex);
+					core.fileManager.updateFileTitles();
 					core.showMessage(provider.providerName + " publish location has been removed.");
 				}
 				if(errorMsg.indexOf("|stopPublish") !== -1) {
@@ -168,6 +169,7 @@ define(["jquery", "core", "github-provider", "blogger-provider", "dropbox-provid
 				publishAttributes.provider = provider.providerId;
 				createPublishIndex(fileIndex, publishAttributes);
 				publisher.notifyPublish();
+				core.fileManager.updateFileTitles();
 				core.showMessage('"' + title
 					+ '" is now published on ' + provider.providerName + '.');
 			}
@@ -200,9 +202,20 @@ define(["jquery", "core", "github-provider", "blogger-provider", "dropbox-provid
 			}));
 			lineElement.append($(removeButtonTemplate).click(function() {
 				core.fileManager.removePublish(publishIndex);
+				core.fileManager.updateFileTitles();
 			}));
 			$("#manage-publish-list").append(lineElement);
 		});
+	};
+	
+	publisher.getPublishProvidersFromFile = function(fileIndex) {
+		var publishIndexList = _.compact(localStorage[fileIndex + ".publish"].split(";"));
+		var providerIdList = {};
+		_.each(publishIndexList, function(publishIndex) {
+			var publishAttributes = JSON.parse(localStorage[publishIndex]);
+			providerIdList[publishAttributes.provider] = publishAttributes.provider;
+		});
+		return providerIdList;
 	};
 	
 	core.onReady(function() {

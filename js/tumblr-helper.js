@@ -121,7 +121,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				};
 				// Handle error
 				if(error.code === 404 && postId !== undefined) {
-					error = 'Post ' + postId + ' not found on Blogger.|removePublish';
+					error = 'Post ' + postId + ' not found on Tumblr.|removePublish';
 				}
 				handleError(error, task);
 			});

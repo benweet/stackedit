@@ -218,7 +218,7 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 		});
 	};
 	
-	// Used to enable/disable providers' synchronization
+	// Used to enable/disable provider synchronization
 	synchronizer.resetSyncFlags = function() {
 		_.each(providerMap, function(provider) {
 			provider.useSync = false;
@@ -226,11 +226,11 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 	};
 	synchronizer.getSyncProvidersFromFile = function(fileIndex) {
 		var sync = localStorage[fileIndex + ".sync"];
-		var providerIdList = [];
+		var providerIdList = {};
 		_.each(providerMap, function(provider) {
 			if (sync.indexOf(";sync." + provider.providerId + ".") !== -1) {
 				provider.useSync = true;
-				providerIdList.push(provider.providerId);
+				providerIdList[provider.providerId] = provider.providerId;
 			}
 		});
 		return providerIdList;

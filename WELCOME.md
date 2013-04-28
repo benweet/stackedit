@@ -1,9 +1,9 @@
 
-Welcome to StackEdit!
+Welcome to StackEdit!	{#welcome}
 =====================
 
 
-Hi, I am your first Markdown document within **StackEdit**. Don't delete me, I can be helpful. I can be recovered anyway by clicking <i class="icon-question-sign"></i> `About` in the <i class="icon-stackedit"></i> menu.
+Hello, I am your first Markdown document within **StackEdit**. Don't delete me, I can be helpful. I can be recovered anyway in the `Utils` tab of the <i class="icon-cog"></i> `Settings` dialog.
 
 ----------
 
@@ -59,7 +59,7 @@ Once your document is linked to a **Google Drive** or a **Dropbox** file, **Stac
 
 Since one document can be synchronized with multiple locations, you can list and manage synchronized locations by clicking <i class="icon-refresh"></i> `Manage synchronization` in the <i class="icon-stackedit"></i> menu. This will open a dialog box where you will be able to add or remove synchronization links that are associated to your document.
 
-> **NOTE:** If you remove the file on **Google Drive** or on **Dropbox**, the document will no longer be synchronized with that location.
+> **NOTE:** If you delete the file on **Google Drive** or on **Dropbox**, the document will no longer be synchronized with that location.
 
 ----------
 
@@ -77,7 +77,7 @@ You can publish your document by going to the <i class="icon-share"></i> `Publis
 - HTML, to publish the document converted into HTML (on a blog for instance),
 - Template, to have a full control of the output.
 
-> **NOTE:** The default template is a simple webpage which wraps your document in HTML format. You can customize it by going to the <i class="icon-cog"></i> `Settings` dialog in the `Publishing` tab.
+> **NOTE:** The default template is a simple webpage which wraps your document in HTML format. You can customize it in the `Publish` tab of the <i class="icon-cog"></i> `Settings` dialog.
 
 #### <i class="icon-share"></i> Update a publication
 
@@ -96,3 +96,77 @@ Since one document can be published on multiple locations, you can list and mana
 
 ----------
 
+
+Markdown Extra
+--------------
+
+**StackEdit** supports **Markdown Extra**, which extends **Markdown** syntax with some nice features.
+
+
+### Tables
+
+**Markdown Extra** has a special syntax for tables:
+
+Item      | Value
+--------- | -----
+Computer  | $1600
+Phone     | $12
+Pipe      | $1
+
+You can specify column alignment with one or two colons:
+
+| Item      | Value | Qty  |
+| :-------- | -----:| :--: |
+| Computer  | $1600 |  5   |
+| Phone     |   $12 |  12  |
+| Pipe      |    $1 | 234  |
+
+
+### Definition Lists
+
+**Markdown Extra** has a special syntax for definition lists too:
+
+Term 1
+Term 2
+:   Definition A
+:   Definition B
+
+Term 3
+
+:   Definition C
+
+:   Definition D
+
+	> part of definition D
+
+
+### Fenced code blocks
+
+**GitHub**'s fenced code blocks are also supported with **Prettify** syntax highlighting:
+
+```
+// Foo
+var bar = 0;
+```
+
+
+### Special Attributes
+
+With **Markdown Extra**, you can specify `class` and `id` attributes on headers and fenced code blocks just like this:
+
+##### Title example {#my-title}
+
+``` {#my-id .my-class}
+var foo = bar;
+```
+
+Then you can create cross-references like this: [beginning of the document](#welcome).
+
+
+> **NOTE:** You can find more information about **Markdown** syntax [here][1] or about **Markdown Extra** [here][2].
+
+----------
+
+
+  [1]: http://daringfireball.net/projects/markdown/syntax "Markdown"
+  [2]: http://michelf.ca/projects/php-markdown/extra/ "Markdown Extra"

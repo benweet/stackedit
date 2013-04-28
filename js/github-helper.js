@@ -75,7 +75,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 						localStorage.removeItem("githubCode");
 						task.chain(getToken);
 					}
-				});
+				}, 500);
 			}
 			function getToken() {
 				$.getJSON(GATEKEEPER_URL + "authenticate/" + code, function(data) {
@@ -156,6 +156,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				errorMsg = "Could not publish on GitHub.";
 				if (error.error === 401 || error.error === 403) {
 					github = undefined;
+					localStorage.removeItem("githubToken");
 					errorMsg = "Access to GitHub account is not authorized.";
 					task.retry(new Error(errorMsg), 1);
 					return;

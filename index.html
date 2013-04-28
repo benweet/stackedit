@@ -97,6 +97,8 @@
 										class="icon-github"></i> GitHub</a></li>
 								<li><a href="#" class="action-publish-gdrive"><i
 										class="icon-gdrive"></i> Google Drive</a></li>
+								<li><a href="#" class="action-publish-tumblr"><i
+										class="icon-tumblr"></i> Tumblr</a></li>
 							</ul></li>
 						<li><a href="#" data-toggle="modal"
 							data-target="#modal-manage-publish" class="action-reset-input"><i
@@ -315,20 +317,36 @@
 							placeholder="http://exemple.blogger.com/">
 					</div>
 				</div>
-				<div class="control-group modal-publish-blogger">
-					<label class="control-label" for="input-publish-blogger-postid">Update
+				<div class="control-group modal-publish-tumblr">
+					<label class="control-label" for="input-publish-tumblr-hostname">Blog
+						hostname</label>
+					<div class="controls">
+						<input type="text" id="input-publish-tumblr-hostname"
+							placeholder="exemple.tumblr.com">
+					</div>
+				</div>
+				<div class="control-group modal-publish-blogger modal-publish-tumblr">
+					<label class="control-label" for="input-publish-postid">Update
 						existing post ID (optional)</label>
 					<div class="controls">
-						<input type="text" id="input-publish-blogger-postid"
+						<input type="text" id="input-publish-postid"
 							placeholder="Post ID">
 					</div>
 				</div>
 				<div class="control-group modal-publish-blogger">
-					<label class="control-label" for="input-publish-blogger-labels">Labels
+					<label class="control-label" for="input-publish-labels">Labels
 						(comma separated)</label>
 					<div class="controls">
-						<input type="text" id="input-publish-blogger-labels"
+						<input type="text" id="input-publish-labels"
 							placeholder="Label1, Label2">
+					</div>
+				</div>
+				<div class="control-group modal-publish-tumblr">
+					<label class="control-label" for="input-publish-tags">Tags
+						(comma separated)</label>
+					<div class="controls">
+						<input type="text" id="input-publish-tags"
+							placeholder="Tag1, Tag2">
 					</div>
 				</div>
 				<div class="control-group modal-publish-dropbox">

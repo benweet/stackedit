@@ -53,7 +53,7 @@ define(["jquery", "core", "dropbox-helper"], function($, core, dropboxHelper) {
 
 	dropboxProvider.importFiles = function() {
 		dropboxHelper.picker(function(error, paths) {
-			if(error) {
+			if(error || paths.length === 0) {
 				return;
 			}
 			var importPaths = [];

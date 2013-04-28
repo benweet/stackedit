@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script type="text/javascript">
+	function getParameter(name) {
+		var regex = new RegExp(name + "=(.+?)(&|$)");
+		try {
+			return decodeURI(regex.exec(location.search)[1]);
+		} catch (e) {
+			return undefined;
+		}
+	}
+	var oauth_token = getParameter("oauth_token");
+	var oauth_verifier = getParameter("oauth_verifier");
+	if (oauth_token && !oauth_verifier) {
+		window.location.href = "http://www.tumblr.com/oauth/authorize?oauth_token="
+			+ oauth_token;
+	} else {
+		if (oauth_verifier) {
+			localStorage["tumblrVerifier"] = oauth_verifier;
+		}
+		window.close();
+	}
+</script>
+</head>
+</html>

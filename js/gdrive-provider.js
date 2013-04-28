@@ -40,7 +40,7 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 
 	gdriveProvider.importFiles = function() {
 		googleHelper.picker(function(error, ids) {
-			if(ids === undefined) {
+			if(error || ids.length === 0) {
 				return;
 			}
 			var importIds = [];

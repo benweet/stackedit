@@ -16,6 +16,7 @@ var PROVIDER_BLOGGER = "blogger";
 var PROVIDER_DROPBOX = "dropbox";
 var PROVIDER_GDRIVE = "gdrive";
 var PROVIDER_GITHUB = "github";
+var PROVIDER_TUMBLR = "tumblr";
 var WELCOME_DOCUMENT_TITLE = "Welcome document";
 
 // Use by Google's client.js
@@ -32,6 +33,7 @@ var GOOGLE_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw";
 var GOOGLE_CLIENT_ID = '241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com';
 var GITHUB_CLIENT_ID = 'e47fef6055344579799d';
 var GATEKEEPER_URL = "http://stackedit-gatekeeper-localhost.herokuapp.com/";
+var TUMBLR_PROXY_URL = "http://stackedit-tumblr-proxy-local.herokuapp.com/";
 
 if(location.hostname.indexOf("benweet.github.io") === 0) {
 	BASE_URL = "http://benweet.github.io/stackedit/";
@@ -39,4 +41,5 @@ if(location.hostname.indexOf("benweet.github.io") === 0) {
 	GOOGLE_CLIENT_ID = '241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com';
 	GITHUB_CLIENT_ID = 'fa0d09514da8377ee32e';
 	GATEKEEPER_URL = "http://stackedit-gatekeeper.herokuapp.com/";
+	TUMBLR_PROXY_URL = "http://stackedit-tumblr-proxy.herokuapp.com/";
 }

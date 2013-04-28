@@ -1,4 +1,4 @@
-define(["jquery", "core", "github-provider", "blogger-provider", "dropbox-provider", "gdrive-provider", "underscore"], function($, core) {
+define(["jquery", "core", "github-provider", "blogger-provider", "dropbox-provider", "gdrive-provider", "tumblr-provider", "underscore"], function($, core) {
 
 	var publisher = {};
 	

@@ -32,9 +32,9 @@ define(["jquery", "core", "google-helper"], function($, core, googleHelper) {
 		if(blogUrl !== undefined) {
 			publishAttributes.blogUrl = core.checkUrl(blogUrl);
 		}
-		publishAttributes.postId = $("#input-publish-blogger-postid").val() || undefined;
+		publishAttributes.postId = $("#input-publish-postid").val() || undefined;
 		publishAttributes.labelList = [];
-		var labels = $("#input-publish-blogger-labels").val() || undefined;
+		var labels = $("#input-publish-labels").val() || undefined;
 		if(labels !== undefined) {
 			publishAttributes.labelList = _.chain(labels.split(","))
 				.map(function(label) {

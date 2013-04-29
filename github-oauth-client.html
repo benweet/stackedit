@@ -14,7 +14,7 @@
 	var code = getParameter("code");
 	if (client_id) {
 		window.location.href = "https://github.com/login/oauth/authorize?client_id="
-			+ client_id + "&scope=repo";
+			+ client_id + "&scope=repo,gist";
 	} else {
 		if (code) {
 			localStorage["githubCode"] = code;

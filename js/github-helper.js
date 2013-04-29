@@ -144,6 +144,45 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 		asyncRunner.addTask(task);
 	};
 	
+	githubHelper.gistUpload = function(gistId, filename, isPublic, title, content, callback) {
+		callback = callback || core.doNothing;
+		var task = asyncRunner.createTask();
+		connect(task);
+		authenticate(task);
+		task.onRun(function() {
+			var gist = github.getGist(gistId);
+			var files = {};
+			files[filename] = {content: content};
+			githubFunction = gist.update;
+			if(gistId === undefined) {
+				githubFunction = gist.create;
+			}
+			githubFunction({
+				description: title,
+				"public": isPublic,
+				files: files
+			}, function(err, gist) {
+				if(err) {
+					// Handle error
+					if(err.error === 404 && gistId !== undefined) {
+						err = 'Gist ' + gistId + ' not found on GitHub.|removePublish';
+					}
+					handleError(err, task);
+					return;
+				}
+				gistId = gist.id;
+				task.chain();
+			});
+		});
+		task.onSuccess(function() {
+			callback(undefined, gistId);
+		});
+		task.onError(function(error) {
+			callback(error);
+		});
+		asyncRunner.addTask(task);
+	};
+	
 	function handleError(error, task) {
 		var errorMsg = undefined;
 		if (error) {

@@ -15,6 +15,7 @@ var USER_IDLE_THRESHOLD = 300000;
 var PROVIDER_BLOGGER = "blogger";
 var PROVIDER_DROPBOX = "dropbox";
 var PROVIDER_GDRIVE = "gdrive";
+var PROVIDER_GIST = "gist";
 var PROVIDER_GITHUB = "github";
 var PROVIDER_TUMBLR = "tumblr";
 var WELCOME_DOCUMENT_TITLE = "Welcome document";

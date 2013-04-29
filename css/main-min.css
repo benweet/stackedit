@@ -5541,7 +5541,8 @@ hr {
 	height: 16px;
 	background-position: -37px 0;
 }
-.icon-github {
+.icon-github,
+.icon-gist {
 	background-image: url("../img/icons.png") !important;
 	width: 16px;
 	height: 16px;
@@ -5613,7 +5614,8 @@ hr {
 	z-index: 1050 !important;
 }
 #modal-settings textarea {
-	height: 180px;
+	height: 80px;
+	max-width: 206px;
 }
 .tooltip-inner {
 	text-align: left;

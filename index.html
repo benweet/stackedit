@@ -88,17 +88,7 @@
 						<li class="divider"></li>
 						<li class="dropdown-submenu"><a href="#"><i
 								class="icon-share"></i> Publish on</a>
-							<ul class="dropdown-menu">
-								<li><a href="#" class="action-publish-blogger"><i
-										class="icon-blogger"></i> Blogger</a></li>
-								<li><a href="#" class="action-publish-dropbox"><i
-										class="icon-dropbox"></i> Dropbox</a></li>
-								<li><a href="#" class="action-publish-github"><i
-										class="icon-github"></i> GitHub</a></li>
-								<li><a href="#" class="action-publish-gdrive"><i
-										class="icon-gdrive"></i> Google Drive</a></li>
-								<li><a href="#" class="action-publish-tumblr"><i
-										class="icon-tumblr"></i> Tumblr</a></li>
+							<ul id="publish-menu" class="dropdown-menu">
 							</ul></li>
 						<li><a href="#" data-toggle="modal"
 							data-target="#modal-manage-publish" class="action-reset-input"><i
@@ -176,8 +166,10 @@
 		<div class="modal-body">
 			<p>Are you sure you want to remove "<span class="file-title"></span>"?
 			</p>
-			<blockquote class="muted"><b>NOTE:</b> This will not remove the file on
-				synchronized locations.</blockquote>
+			<blockquote class="muted">
+				<b>NOTE:</b> This will not remove the file on synchronized
+				locations.
+			</blockquote>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
@@ -194,8 +186,10 @@
 		<div class="modal-body">
 			<p>This will upload the current document into your Google Drive
 				root folder and keep it synchronized.</p>
-			<blockquote class="muted"><b>NOTE:</b> You can move or rename the file
-				afterwards within Google Drive.</blockquote>
+			<blockquote class="muted">
+				<b>NOTE:</b> You can move or rename the file afterwards within
+				Google Drive.
+			</blockquote>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
@@ -222,13 +216,13 @@
 			</div>
 			<br /> <br />
 			<blockquote class="muted">
-			<b>NOTE:</b>
-			<ul>
-				<li>Dropbox file path does not depend on document title.</li>
-				<li>The title of your document will not be synchronized.</li>
-				<li>Destination folder must exist.</li>
-				<li>Any existing file at this location will be overwritten.</li>
-			</ul>
+				<b>NOTE:</b>
+				<ul>
+					<li>Dropbox file path does not depend on document title.</li>
+					<li>The title of your document will not be synchronized.</li>
+					<li>Destination folder must exist.</li>
+					<li>Any existing file at this location will be overwritten.</li>
+				</ul>
 			</blockquote>
 		</div>
 		<div class="modal-footer">
@@ -269,8 +263,10 @@
 					class="btn action-sync-manual-dropbox" title="Add location"
 					data-dismiss="modal"><i class="icon-ok"></i></a>
 			</div>
-			<blockquote class="muted"><b>NOTE:</b> This will upload the local document
-				firstly and overwrite the existing file on the server.</blockquote>
+			<blockquote class="muted">
+				<b>NOTE:</b> This will upload the local document firstly and
+				overwrite the existing file on the server.
+			</blockquote>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
@@ -309,6 +305,28 @@
 							placeholder="path/to/file.md">
 					</div>
 				</div>
+                <div class="control-group modal-publish-gist">
+                    <label class="control-label" for="input-publish-filename">Filename</label>
+                    <div class="controls">
+                        <input type="text" id="input-publish-filename"
+                            placeholder="Filename">
+                    </div>
+                </div>
+				<div class="control-group modal-publish-gist">
+					<label class="control-label" for="input-publish-gist-id">Existing
+						ID (optional)</label>
+					<div class="controls">
+						<input type="text" id="input-publish-gist-id"
+							placeholder="Gist ID">
+					</div>
+				</div>
+				<div class="control-group modal-publish-gist">
+					<label class="control-label" for="input-publish-gist-public">Public</label>
+					<div class="controls">
+						<input type="checkbox" id="input-publish-gist-public"
+							checked="checked" />
+					</div>
+				</div>
 				<div class="control-group modal-publish-blogger">
 					<label class="control-label" for="input-publish-blogger-url">Blog
 						URL</label>
@@ -325,12 +343,12 @@
 							placeholder="exemple.tumblr.com">
 					</div>
 				</div>
-				<div class="control-group modal-publish-blogger modal-publish-tumblr">
+				<div
+					class="control-group modal-publish-blogger modal-publish-tumblr">
 					<label class="control-label" for="input-publish-postid">Update
 						existing post ID (optional)</label>
 					<div class="controls">
-						<input type="text" id="input-publish-postid"
-							placeholder="Post ID">
+						<input type="text" id="input-publish-postid" placeholder="Post ID">
 					</div>
 				</div>
 				<div class="control-group modal-publish-blogger">
@@ -417,8 +435,9 @@
 			<p class="msg-no-publish hide">"<span class="file-title"></span>"
 				is not published.
 			</p>
-			<blockquote class="muted"><b>NOTE:</b> You can add locations using
-				"Publish on" sub-menu.</blockquote>
+			<blockquote class="muted">
+				<b>NOTE:</b> You can add locations using "Publish on" sub-menu.
+			</blockquote>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
@@ -483,15 +502,15 @@
 									class="input-mini"><span class="help-inline">px</span>
 							</div>
 						</div>
-                        <div class="control-group">
-                            <label class="control-label"
-                                for="textarea-settings-default-content">Default content <a
-                                href="#" class="tooltip-default-content">(?)</a>
-                            </label>
-                            <div class="controls">
-                                <textarea id="textarea-settings-default-content"></textarea>
-                            </div>
-                        </div>
+						<div class="control-group">
+							<label class="control-label"
+								for="textarea-settings-default-content">Default content
+								<a href="#" class="tooltip-default-content">(?)</a>
+							</label>
+							<div class="controls">
+								<textarea id="textarea-settings-default-content"></textarea>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="tab-pane" id="tabpane-settings-publish">
@@ -643,8 +662,8 @@
 		<div class="modal-body">
 			<p>StackEdit has stopped because another instance was running in
 				the same browser.</p>
-			<blockquote class="muted">If you want to reopen StackEdit, click on
-				"Reload".</blockquote>
+			<blockquote class="muted">If you want to reopen
+				StackEdit, click on "Reload".</blockquote>
 		</div>
 		<div class="modal-footer">
 			<a href="javascript:window.location.reload();"
@@ -661,8 +680,8 @@
 			<blockquote class="muted">Are you sure?</blockquote>
 		</div>
 		<div class="modal-footer">
-            <a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
-                class="btn btn-primary action-app-reset" data-dismiss="modal">OK</a>
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+				class="btn btn-primary action-app-reset" data-dismiss="modal">OK</a>
 		</div>
 	</div>
 

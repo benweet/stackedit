@@ -1,4 +1,4 @@
-define(["jquery", "core", "github-provider", "blogger-provider", "dropbox-provider", "gdrive-provider", "tumblr-provider", "underscore"], function($, core) {
+define(["jquery", "core", "blogger-provider", "dropbox-provider", "gist-provider", "github-provider", "gdrive-provider", "tumblr-provider", "underscore"], function($, core) {
 
 	var publisher = {};
 	
@@ -219,12 +219,19 @@ define(["jquery", "core", "github-provider", "blogger-provider", "dropbox-provid
 	};
 	
 	core.onReady(function() {
-		// Init each provider
+		// Add every provider
+		var publishMenu = $("#publish-menu");
 		_.each(providerMap, function(provider) {
-			// Publish provider button
-			$(".action-publish-" + provider.providerId).click(function() {
-				initNewLocation(provider);
-			});
+			// Provider's publish button
+			publishMenu.append(
+				$("<li>").append(
+					$('<a href="#"><i class="icon-' + provider.providerId + '"></i> ' + provider.providerName + '</a>')
+						.click(function() {
+							initNewLocation(provider);
+						}
+					)
+				)
+			);
 		});
 		
 		$(".action-process-publish").click(performNewLocation);

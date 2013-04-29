@@ -762,6 +762,14 @@ define(
 			}
 			version = "v4";
 		}
+		
+		// Upgrade from v4 to v5
+		if(version == "v4") {
+			// Recreate GitHub token
+			localStorage.removeItem("githubToken");
+			version = "v5";
+		}
+		
 		localStorage["version"] = version;
 	}
 	// Setup the localStorage when starting

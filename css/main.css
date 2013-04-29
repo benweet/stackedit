@@ -246,7 +246,8 @@ hr {
 	background-position: -37px 0;
 }
 
-.icon-github {
+.icon-github,
+.icon-gist {
 	background-image: url("../img/icons.png") !important;
 	width: 16px;
 	height: 16px;

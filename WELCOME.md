@@ -35,7 +35,7 @@ You can delete the current document by clicking the <i class="icon-trash"></i> b
 Synchronization
 ---------------
 
-**StackEdit** can be combined with **Google Drive** or **Dropbox** to have your documents centralized in the *Cloud*. The synchronization feature will take care of uploading your modifications or download the latest version of your documents.
+**StackEdit** can be combined with **Google Drive** or **Dropbox** to have your documents centralized in the *Cloud*. The synchronization mechanism will take care of uploading your modifications or download the latest version of your documents.
 
 #### <i class="icon-download"></i> Import a document
 

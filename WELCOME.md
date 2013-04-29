@@ -39,7 +39,7 @@ Synchronization
 
 #### <i class="icon-download"></i> Import a document
 
-You can import a document from the *Cloud* by going to the <i class="icon-gdrive"></i> `Google Drive` or the <i class="icon-dropbox"></i> `Dropbox` sub-menu and by clicking `Import from...`. Once imported, your document will be marked with a <i class="icon-gdrive"></i> or a <i class="icon-dropbox"></i> icon in the navigation bar, which means **StackEdit** will synchronize it with the **Google Drive** / **Dropbox** file.
+You can import a document from the *Cloud* by going to the <i class="icon-gdrive"></i> `Google Drive` or the <i class="icon-dropbox"></i> `Dropbox` sub-menu and by clicking `Import from...`. Once imported, your document will be automatically synchronized with the **Google Drive** / **Dropbox** file.
 
 #### <i class="icon-upload"></i> Export a document
 
@@ -47,7 +47,7 @@ You can export any document by going to the <i class="icon-gdrive"></i> `Google 
 
 #### <i class="icon-refresh"></i> Synchronize a document
 
-Once your document is linked to a **Google Drive** or a **Dropbox** file, **StackEdit** will periodically (every 3 minutes) synchronize it by downloading/uploading any modifications. Any conflict will be detected, and a local copy of your document will be created as a backup if necessary. If you have just modified your document and you want to force the synchronization, click the <i class="icon-refresh"></i> button in the navigation bar.
+Once your document is linked to a **Google Drive** or a **Dropbox** file, **StackEdit** will periodically (every 3 minutes) synchronize it by downloading/uploading any modification. Any conflict will be detected, and a local copy of your document will be created as a backup if necessary. If you just have modified your document and you want to force the synchronization, click the <i class="icon-refresh"></i> button in the navigation bar.
 
 > **NOTE:** The <i class="icon-refresh"></i> button is disabled when:
 > 

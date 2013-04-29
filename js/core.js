@@ -210,7 +210,8 @@ define(
 		layoutOrientation : "horizontal",
 		scrollLink : true,
 		editorFontSize : 14,
-		commitMsg : "Published by StackEdit",
+		defaultContent: "\n\n\n> Written with [StackEdit](http://benweet.github.io/stackedit/).",
+		commitMsg : "Published by http://benweet.github.io/stackedit",
 		template : ['<!DOCTYPE html>\n',
 			'<html>\n',
 			'<head>\n',
@@ -228,19 +229,16 @@ define(
 		// Layout orientation
 		$("input:radio[name=radio-layout-orientation][value="
 				+ core.settings.layoutOrientation + "]").prop("checked", true);
-		
 		// Scroll Link
 		$("#input-settings-scroll-link").prop("checked", core.settings.scrollLink);
-		
 		// Converter type
 		$("#input-settings-converter-type").val(core.settings.converterType);
-		
 		// Editor font size
 		$("#input-settings-editor-font-size").val(core.settings.editorFontSize);
-		
+		// Default content
+		$("#textarea-settings-default-content").val(core.settings.defaultContent);
 		// Commit message
 		$("#input-settings-publish-commit-msg").val(core.settings.commitMsg);
-		
 		// Template
 		$("#textarea-settings-publish-template").val(core.settings.template);
 	};
@@ -251,19 +249,16 @@ define(
 		// Layout orientation
 		newSettings.layoutOrientation = $(
 			"input:radio[name=radio-layout-orientation]:checked").prop("value");
-		
 		// Converter type
 		newSettings.converterType = $("#input-settings-converter-type").val();
-		
 		// Scroll Link
 		newSettings.scrollLink = $("#input-settings-scroll-link").prop("checked");
-		
 		// Editor font size
 		newSettings.editorFontSize = core.getInputIntValue($("#input-settings-editor-font-size"), event, 1, 99);
-
+		// Default content
+		newSettings.defaultContent = $("#textarea-settings-default-content").val();
 		// Commit message
 		newSettings.commitMsg = core.getInputValue($("#input-settings-publish-commit-msg"), event);
-		
 		// Template
 		newSettings.template = core.getInputValue($("#textarea-settings-publish-template"), event);
 		
@@ -916,6 +911,12 @@ define(
 			        'The mapping between Markdown and HTML is based on the position of the title elements (h1, h2, ...) in the page. ',
 			        'Therefore, if your document does not contain any title, the mapping will be linear and consequently less efficient.',
 			        ].join("")
+		});
+		$(".tooltip-default-content").tooltip({
+			html: true,
+			container: '#modal-settings',
+			placement: 'right',
+			title: 'Thanks for supporting StackEdit by adding a backlink in your documents!'
 		});
 		$(".tooltip-template").tooltip({
 			html: true,

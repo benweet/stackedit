@@ -332,7 +332,8 @@ hr {
 }
 
 #modal-settings textarea {
-	height: 180px;
+	height: 80px;
+	max-width: 206px;
 }
 
 .tooltip-inner {

@@ -49,7 +49,7 @@ define(["jquery", "core", "synchronizer", "publisher", "text!../WELCOME.md", "un
 	};
 
 	fileManager.createFile = function(title, content, syncIndexes) {
-		content = content || "";
+		content = content || core.settings.defaultContent;
 		syncIndexes = syncIndexes || [];
 		if (!title) {
 			// Create a file title 
@@ -135,13 +135,15 @@ define(["jquery", "core", "synchronizer", "publisher", "text!../WELCOME.md", "un
 		
 		synchronizer.resetSyncFlags();
 		function composeTitle(fileIndex) {
-			var result = " " + localStorage[fileIndex + ".title"];
+			var result = [];
 			var providerIdList = synchronizer.getSyncProvidersFromFile(fileIndex);
-			providerIsList = _.extend(providerIdList, publisher.getPublishProvidersFromFile(fileIndex));
-			_.each(providerIdList, function(providerId) {
-				result = '<i class="icon-' + providerId + '"></i>' + result;
+			providerIdList = providerIdList.concat(publisher.getPublishProvidersFromFile(fileIndex));
+			_.each(providerIdList.sort(), function(providerId) {
+				result.push('<i class="icon-' + providerId + '"></i>');
 			});
-			return result;
+			result.push(" ");
+			result.push(localStorage[fileIndex + ".title"]);
+			return result.join("");
 		}
 
 		// Update the file title
@@ -231,7 +233,7 @@ define(["jquery", "core", "synchronizer", "publisher", "text!../WELCOME.md", "un
 		});
 		$("#file-title").click(function() {
 			$(this).hide();
-			$("#file-title-input").show().focus();
+			$("#file-title-input").show().focus().get(0).select();
 		});
 		function applyTitle(input) {
 			var title = $.trim(input.val());

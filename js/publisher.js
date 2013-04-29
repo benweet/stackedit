@@ -210,10 +210,10 @@ define(["jquery", "core", "github-provider", "blogger-provider", "dropbox-provid
 	
 	publisher.getPublishProvidersFromFile = function(fileIndex) {
 		var publishIndexList = _.compact(localStorage[fileIndex + ".publish"].split(";"));
-		var providerIdList = {};
+		var providerIdList = [];
 		_.each(publishIndexList, function(publishIndex) {
 			var publishAttributes = JSON.parse(localStorage[publishIndex]);
-			providerIdList[publishAttributes.provider] = publishAttributes.provider;
+			providerIdList.push(publishAttributes.provider);
 		});
 		return providerIdList;
 	};

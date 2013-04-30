@@ -5345,6 +5345,18 @@ li.L3,
 li.L5,
 li.L7,
 li.L9 { background: #eee }
+@media print {
+    @page { 
+        margin: 25mm 25mm 25mm 25mm;  
+    }
+    #wmd-preview { 
+        padding: 0px;  
+        margin: 0px;  
+    } 
+    #navbar {
+       display: none;
+    }
+}
 body {
 	background-color: #f5f5f5;
 	tab-size: 4;

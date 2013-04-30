@@ -2,6 +2,21 @@
 @import url("jgrowl.css");
 @import url("prettify.css");
 
+@media print {
+    @page { 
+        margin: 25mm 25mm 25mm 25mm;  
+    }
+
+    #wmd-preview { 
+        padding: 0px;  
+        margin: 0px;  
+    } 
+
+    #navbar {
+       display: none;
+    }
+}
+
 body {
 	background-color: #f5f5f5;
 	tab-size: 4;
@@ -31,7 +46,7 @@ div, span, a, ul, li, textarea, input, button {
     text-shadow: none !important;
 }
 
-.btn, .navbar-inner, .ui-layout-east, .ui-layout-south, .add-on {
+.btn, .navbar-inner, #wmd-preview, .add-on {
     border: none !important;
 }
 
@@ -103,8 +118,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 }
 
 .btn-group {
-    margin-left: 5px !important;
-    margin-right: 5px !important;
+    margin-right: 5px;
 }
 
 .btn-group > .btn + .dropdown-toggle {
@@ -156,10 +170,6 @@ hr {
 
 #wmd-button-bar {
 	margin-left: 15px;
-}
-
-#wmd-input,#wmd-preview {
-	position: absolute;
 }
 
 #wmd-input, #md-section-helper {
@@ -409,4 +419,23 @@ blockquote p {
 .opera #md-section-helper {
     /* Opera needs to have the textarea in the viewport to evaluate size correctly */
     top: 0;
+}
+
+/* Viewer */
+.viewer #navbar {
+	position: fixed;
+}
+
+.viewer .navbar-inner {
+	background-color:rgba(200,200,200,0.5) !important;
+}
+
+.viewer #wmd-preview {
+	max-width: 1024px;
+	margin: 50px auto;
+}
+
+.viewer .btn-group {
+	margin-right: 0;
+	margin-left: 0;
 }

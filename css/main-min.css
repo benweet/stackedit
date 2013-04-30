@@ -5367,7 +5367,7 @@ div, span, a, ul, li, textarea, input, button {
     box-shadow: none !important;
     text-shadow: none !important;
 }
-.btn, .navbar-inner, .ui-layout-east, .ui-layout-south, .add-on {
+.btn, .navbar-inner, #wmd-preview, .add-on {
     border: none !important;
 }
 .dropdown-menu {
@@ -5428,8 +5428,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 	background-color: #888;
 }
 .btn-group {
-    margin-left: 5px !important;
-    margin-right: 5px !important;
+    margin-right: 5px;
 }
 .btn-group > .btn + .dropdown-toggle {
     padding-right: 12px;
@@ -5469,9 +5468,6 @@ hr {
 }
 #wmd-button-bar {
 	margin-left: 15px;
-}
-#wmd-input,#wmd-preview {
-	position: absolute;
 }
 #wmd-input, #md-section-helper {
 	font-family: "Courier New", Courier, monospace;
@@ -5677,4 +5673,18 @@ blockquote p {
 .opera #md-section-helper {
     
     top: 0;
+}
+.viewer #navbar {
+	position: fixed;
+}
+.viewer .navbar-inner {
+	background-color:rgba(200,200,200,0.5) !important;
+}
+.viewer #wmd-preview {
+	max-width: 1024px;
+	margin: 50px auto;
+}
+.viewer .btn-group {
+	margin-right: 0;
+	margin-left: 0;
 }

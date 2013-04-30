@@ -402,6 +402,9 @@ define(
 	// Create the layout
 	var layout = undefined;
 	core.createLayout = function() {
+		if(viewerMode === true) {
+			return;
+		}
 		var layoutGlobalConfig = {
 			closable : true, 
 			resizable : false,
@@ -412,7 +415,9 @@ define(
 			spacing_closed : 15,
 			togglerLength_open : 90, 
 			togglerLength_closed : 90,
-			stateManagement__enabled : false
+			stateManagement__enabled : false,
+			center__minWidth : 200,
+			center__minHeight : 200
 		};
 		if(core.settings.scrollLink === true) {
 			layoutGlobalConfig.onresize = buildSections;
@@ -481,8 +486,14 @@ define(
 			}
 			return text;
 		});
+		// Convert email addresses (not managed by pagedown)
+		converter.hooks.chain("postConversion", function(text) {
+			return text.replace(/<(mailto\:)?([^\s>]+@[^\s>]+\.\S+?)>/g, function(match, mailto, email) {
+				return '<a href="mailto:' + email + '">' + email + '</a>';
+			});
+		});
 		var editor = new Markdown.Editor(converter);
-		if(core.settings.scrollLink === true) {
+		if(viewerMode === false && core.settings.scrollLink === true) {
 			editor.hooks.chain("onPreviewRefresh", function() {
 				// Modify scroll position of the preview not the editor
 				lastEditorScrollTop = -9;
@@ -493,6 +504,10 @@ define(
 					buildSections();
 				});
 			});
+		}
+		// Prettify
+		if(core.settings.converterType == "markdown-extra-prettify") {
+			editor.hooks.chain("onPreviewRefresh", prettyPrint);
 		}
 		// Custom insert link dialog
 		editor.hooks.set("insertLinkDialog", function (callback) {
@@ -508,9 +523,6 @@ define(
 			$("#modal-insert-image").modal();
 			return true;
 		});
-		if(core.settings.converterType == "markdown-extra-prettify") {
-			editor.hooks.chain("onPreviewRefresh", prettyPrint);
-		}
 		
 		editor.run();
 		firstChange = false;
@@ -962,7 +974,7 @@ define(
 		intervalId = window.setInterval(function() {
 			updateCurrentTime();
 			core.checkWindowUnique();
-			if(isUserActive() === true) {
+			if(viewerMode === false && isUserActive() === true) {
 				_.each(periodicCallbacks, function(callback) {
 					callback();
 				});

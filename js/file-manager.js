@@ -232,6 +232,9 @@ define(["jquery", "core", "synchronizer", "publisher", "text!../WELCOME.md", "un
 			fileManager.selectFile();
 		});
 		$("#file-title").click(function() {
+			if(viewerMode === true) {
+				return;
+			}
 			$(this).hide();
 			$("#file-title-input").show().focus().get(0).select();
 		});

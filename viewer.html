@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html manifest="cache.manifest">
+<head>
+<title>StackEdit Viewer</title>
+<link rel="icon" href="img/stackedit-32.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/stackedit-32.ico"
+	type="image/x-icon">
+<meta name="keywords"
+	content="Markdown, Editor, PageDown, Stack Overflow, Stack Exchange">
+<meta name="description"
+	content="StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.">
+<meta name="author" content="Benoit Schweblin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+	// http://.../?debug to serve original CSS/JavaScript files for debug
+	var dep = "main-min";
+	var css = "css/main-min.css";
+	if (location.search.indexOf("debug") !== -1) {
+		dep = "main";
+		css = "css/main.css";
+	}
+	document.write('<link href="' + css + '" rel="stylesheet">');
+	var require = { baseUrl : "js", deps : [ dep ] };
+    var viewerMode = true;
+</script>
+<script src="js/require.js"></script>
+</head>
+<body class="viewer">
+	<div id="navbar" class="navbar navbar-fixed-top ui-layout-north">
+		<div class="navbar-inner">
+
+			<ul class="pull-right hide" id="menu-bar">
+				<li class="btn-group">
+					<button class="btn dropdown-toggle" data-toggle="dropdown"
+						title="Save document">
+						<i class="icon-download-alt"></i>
+					</button>
+					<ul class="dropdown-menu">
+                        <li><a class="action-download-md" href="#"><i
+                                class="icon-download-alt"></i> Save as Markdown</a></li>
+                        <li><a class="action-download-html" href="#"><i
+                                class="icon-download-alt"></i> Save as HTML</a></li>
+                        <li><a class="action-download-template" href="#"><i
+                                class="icon-download-alt"></i> Save using template</a></li>
+					</ul></li>
+				<li class="btn-group">
+					<button class="btn dropdown-toggle" data-toggle="dropdown"
+						title="Open local document">
+						<i class="icon-folder-open"></i>
+					</button>
+					<ul id="file-selector" class="dropdown-menu">
+					</ul></li>
+				<li class="btn-group"><a class="btn"
+					href="." title="Open StackEdit"><i
+						class="icon-stackedit"></i></a></li>
+			</ul>
+			<ul class="nav pull-right">
+				<li><i class="working-indicator icon-none"></i></li>
+				<li><span class="brand" id="file-title"></span></li>
+			</ul>
+		</div>
+	</div>
+	<div id="wmd-button-bar" class="hide"></div>
+	<textarea id="wmd-input" class="hide"></textarea>
+	<div id="wmd-preview" class="well"></div>
+</body>
+</html>

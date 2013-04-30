@@ -19,7 +19,7 @@ You can create a new document by clicking the <i class="icon-file"></i> button i
 
 #### <i class="icon-folder-open"></i> Switch to another document
 
-You can list all your local documents and switch from one document to an other by clicking the <i class="icon-folder-open"></i> button in the navigation bar.
+You can list all your local documents and switch from one to an other by clicking the <i class="icon-folder-open"></i> button in the navigation bar.
 
 #### <i class="icon-pencil"></i> Rename a document
 

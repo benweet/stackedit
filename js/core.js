@@ -1,5 +1,5 @@
 define(
-	[ "jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor", "config",
+	[ "jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor", "storage", "config",
 		"underscore", "FileSaver", "css_browser_selector" ],
 	function($) {
 	
@@ -671,121 +671,6 @@ define(
 	core.randomString = function() {
 		return _.random(4294967296).toString(36);
 	};
-	
-	// Used to setup an empty localStorage or to upgrade an existing one
-	function setupLocalStorage() {
-		
-		// Create the file system if not exist
-		if (localStorage["file.list"] === undefined) {
-			localStorage["file.list"] = ";";
-		}
-		
-		// localStorage versioning
-		var version = localStorage["version"];
-		
-		// Upgrade from v0 to v1
-		if(version === undefined) {
-			
-			// Not used anymore
-			localStorage.removeItem("sync.queue");
-			localStorage.removeItem("sync.current");
-			localStorage.removeItem("file.counter");			
-			
-			var fileIndexList = _.compact(localStorage["file.list"].split(";"));
-			_.each(fileIndexList, function(fileIndex) {
-				localStorage[fileIndex + ".publish"] = ";";
-				var syncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
-				_.each(syncIndexList, function(syncIndex) {
-					localStorage[syncIndex + ".contentCRC"] = "0";
-					// We store title CRC only for Google Drive synchronization
-					if(localStorage[syncIndex + ".etag"] !== undefined) {
-						localStorage[syncIndex + ".titleCRC"] = "0";
-					}
-				});
-			});
-			version = "v1";
-		}
-		
-		// Upgrade from v1 to v2
-		if(version == "v1") {
-			var gdriveLastChangeId = localStorage["sync.gdrive.lastChangeId"];
-			if(gdriveLastChangeId) {
-				localStorage["gdrive.lastChangeId"] = gdriveLastChangeId;
-				localStorage.removeItem("sync.gdrive.lastChangeId");
-			}
-			var dropboxLastChangeId = localStorage["sync.dropbox.lastChangeId"];
-			if(dropboxLastChangeId) {
-				localStorage["dropbox.lastChangeId"] = dropboxLastChangeId;
-				localStorage.removeItem("sync.dropbox.lastChangeId");
-			}
-			
-			var SYNC_PROVIDER_GDRIVE = "sync." + PROVIDER_GDRIVE + ".";
-			var SYNC_PROVIDER_DROPBOX = "sync." + PROVIDER_DROPBOX + ".";
-			var fileIndexList = _.compact(localStorage["file.list"].split(";"));
-			_.each(fileIndexList, function(fileIndex) {
-				var syncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
-				_.each(syncIndexList, function(syncIndex) {
-					var syncAttributes = {};
-					if (syncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
-						syncAttributes.provider = PROVIDER_GDRIVE;
-						syncAttributes.id = syncIndex.substring(SYNC_PROVIDER_GDRIVE.length);
-						syncAttributes.etag = localStorage[syncIndex + ".etag"];
-						syncAttributes.contentCRC = localStorage[syncIndex + ".contentCRC"];
-						syncAttributes.titleCRC = localStorage[syncIndex + ".titleCRC"];
-					}
-					else if (syncIndex.indexOf(SYNC_PROVIDER_DROPBOX) === 0) {
-						syncAttributes.provider = PROVIDER_DROPBOX;
-						syncAttributes.path = decodeURIComponent(syncIndex.substring(SYNC_PROVIDER_DROPBOX.length));
-						syncAttributes.version = localStorage[syncIndex + ".version"];
-						syncAttributes.contentCRC = localStorage[syncIndex + ".contentCRC"];
-					}
-					localStorage[syncIndex] = JSON.stringify(syncAttributes);
-					localStorage.removeItem(syncIndex + ".etag");
-					localStorage.removeItem(syncIndex + ".version");
-					localStorage.removeItem(syncIndex + ".contentCRC");
-					localStorage.removeItem(syncIndex + ".titleCRC");
-				});
-			});
-			version = "v2";
-		}
-		
-		// Upgrade from v2 to v3
-		if(version == "v2") {
-			var fileIndexList = _.compact(localStorage["file.list"].split(";"));
-			_.each(fileIndexList, function(fileIndex) {
-				if(!_.has(localStorage, fileIndex + ".sync")) {
-					localStorage.removeItem(fileIndex + ".title");
-					localStorage.removeItem(fileIndex + ".publish");
-					localStorage.removeItem(fileIndex + ".content");
-					localStorage["file.list"] = localStorage["file.list"].replace(";"
-						+ fileIndex + ";", ";");
-				}
-			});
-			version = "v3";
-		}
-		
-		// Upgrade from v3 to v4
-		if(version == "v3") {
-			var currentFileIndex = localStorage["file.current"];
-			if(currentFileIndex !== undefined && 
-				localStorage["file.list"].indexOf(";" + currentFileIndex + ";") === -1)
-			{
-				localStorage.removeItem("file.current");
-			}
-			version = "v4";
-		}
-		
-		// Upgrade from v4 to v5
-		if(version == "v4") {
-			// Recreate GitHub token
-			localStorage.removeItem("githubToken");
-			version = "v5";
-		}
-		
-		localStorage["version"] = version;
-	}
-	// Setup the localStorage when starting
-	setupLocalStorage();
 	
 	// Create an centered popup window
 	core.popupWindow = function(url, title, w, h) {

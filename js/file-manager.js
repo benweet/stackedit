@@ -1,5 +1,5 @@
-define(["jquery", "core", "synchronizer", "publisher", "text!../WELCOME.md", "underscore"],
-	function($, core, synchronizer, publisher, welcomeContent) {
+define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCOME.md", "underscore"],
+	function($, core, synchronizer, publisher, sharing, welcomeContent) {
 
 	var fileManager = {};
 
@@ -13,8 +13,6 @@ define(["jquery", "core", "synchronizer", "publisher", "text!../WELCOME.md", "un
 	};
 	fileManager.setCurrentFileIndex = function(fileIndex) {
 		currentFileIndex = fileIndex;
-		// Sanity check since we are going to modify current file in localStorage
-		core.checkWindowUnique();
 		if(fileIndex === undefined) {
 			localStorage.removeItem("file.current");
 		}
@@ -134,12 +132,22 @@ define(["jquery", "core", "synchronizer", "publisher", "text!../WELCOME.md", "un
 		}
 		
 		synchronizer.resetSyncFlags();
-		function composeTitle(fileIndex) {
+		var links = [];
+		function composeTitle(fileIndex, generateLinks) {
 			var result = [];
-			var providerIdList = synchronizer.getSyncProvidersFromFile(fileIndex);
-			providerIdList = providerIdList.concat(publisher.getPublishProvidersFromFile(fileIndex));
-			_.each(providerIdList.sort(), function(providerId) {
-				result.push('<i class="icon-' + providerId + '"></i>');
+			var syncAttributesList = synchronizer.getSyncAttributesFromFile(fileIndex);
+			var publishAttributesList = publisher.getPublishAttributesFromFile(fileIndex);
+			var attributesList = syncAttributesList.concat(publishAttributesList);
+			_.chain(attributesList).sortBy(function(attributes) {
+				return attributes.provider;
+			}).each(function(attributes) {
+				result.push('<i class="icon-' + attributes.provider + '"></i>');
+				if(generateLinks === true) {
+					var url = sharing.getLink(attributes);
+					if(url !== undefined) {
+						links.push(url);
+					}
+				}
 			});
 			result.push(" ");
 			result.push(localStorage[fileIndex + ".title"]);
@@ -149,9 +157,18 @@ define(["jquery", "core", "synchronizer", "publisher", "text!../WELCOME.md", "un
 		// Update the file title
 		var title = localStorage[fileIndex + ".title"];
 		document.title = "StackEdit - " + title;
-		$("#file-title").html(composeTitle(fileIndex));
+		$("#file-title").html(composeTitle(fileIndex, true));
 		$(".file-title").text(title);
 		$("#file-title-input").val(title);
+		var linkList = $(".link-list").empty();
+		if(links.length > 0) {
+			_.each(links, function(url) {
+				linkList.append($('<div><a href="' + url + '">' + url + '</a></div>'));
+			});
+			$("#link-container no-link").hide();
+		} else {
+			$("#link-container no-link").show();
+		}
 		
 		// Update the file selector
 		$("#file-selector").empty();

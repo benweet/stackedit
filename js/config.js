@@ -1,9 +1,11 @@
+var MAIN_URL = "http://benweet.github.io/stackedit/";
 var GOOGLE_SCOPES = [ "https://www.googleapis.com/auth/drive.install",
 	"https://www.googleapis.com/auth/drive",
 	"https://www.googleapis.com/auth/blogger" ];
 var GOOGLE_DRIVE_APP_ID = "241271498917";
 var DROPBOX_APP_KEY = "lq6mwopab8wskas";
 var DROPBOX_APP_SECRET = "851fgnucpezy84t";
+var BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c";
 var DEFAULT_FILE_TITLE = "Title";
 var GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document";
 var CHECK_ONLINE_PERIOD = 60000;
@@ -37,7 +39,7 @@ var GATEKEEPER_URL = "http://stackedit-gatekeeper-localhost.herokuapp.com/";
 var TUMBLR_PROXY_URL = "http://stackedit-tumblr-proxy-local.herokuapp.com/";
 
 if(location.hostname.indexOf("benweet.github.io") === 0) {
-	BASE_URL = "http://benweet.github.io/stackedit/";
+	BASE_URL = MAIN_URL;
 	GOOGLE_KEY = "AIzaSyB1Bc1wI_YUWkkOR-5Gri5BFuypgZl0Sxc";
 	GOOGLE_CLIENT_ID = '241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com';
 	GITHUB_CLIENT_ID = 'fa0d09514da8377ee32e';

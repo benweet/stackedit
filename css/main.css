@@ -218,6 +218,33 @@ hr {
 	font-weight: bold;
 }
 
+.dropdown-menu .divider.with-text {
+	height: auto;
+	margin-bottom: 2px;
+	background-color: transparent;
+	border-top: 1px solid #e5e5e5;
+	color: #ccc;
+	font-variant: small-caps;
+	font-weight: bold;
+	padding-left: 20px;
+	cursor: default;
+}
+
+div.dropdown-menu {
+	padding: 5px 20px;
+	width: 300px;
+	white-space: normal;
+}
+
+div.dropdown-menu p,
+div.dropdown-menu blockquote {
+    margin: 10px 0;	
+}
+
+.icon-link {
+	background-position: -72px -168px;
+}
+
 .icon-code {
 	width: 15px;
 	background-position: -384px -168px;

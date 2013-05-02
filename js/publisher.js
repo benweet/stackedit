@@ -208,14 +208,14 @@ define(["jquery", "core", "blogger-provider", "dropbox-provider", "gist-provider
 		});
 	};
 	
-	publisher.getPublishProvidersFromFile = function(fileIndex) {
+	publisher.getPublishAttributesFromFile = function(fileIndex) {
 		var publishIndexList = _.compact(localStorage[fileIndex + ".publish"].split(";"));
-		var providerIdList = [];
+		var attributesList = [];
 		_.each(publishIndexList, function(publishIndex) {
 			var publishAttributes = JSON.parse(localStorage[publishIndex]);
-			providerIdList.push(publishAttributes.provider);
+			attributesList.push(publishAttributes);
 		});
-		return providerIdList;
+		return attributesList;
 	};
 	
 	core.onReady(function() {
@@ -232,6 +232,10 @@ define(["jquery", "core", "blogger-provider", "dropbox-provider", "gist-provider
 					)
 				)
 			);
+			// Action links (if any)
+			$(".action-publish-" + provider.providerId).click(function() {
+				initNewLocation(provider);
+			});
 		});
 		
 		$(".action-process-publish").click(performNewLocation);

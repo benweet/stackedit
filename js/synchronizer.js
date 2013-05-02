@@ -224,15 +224,15 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 			provider.useSync = false;
 		});		
 	};
-	synchronizer.getSyncProvidersFromFile = function(fileIndex) {
+	synchronizer.getSyncAttributesFromFile = function(fileIndex) {
 		var syncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
-		var providerIdList = [];
+		var attributesList = [];
 		_.each(syncIndexList, function(syncIndex) {
 			var syncAttributes = JSON.parse(localStorage[syncIndex]);
-			providerIdList.push(syncAttributes.provider);
+			attributesList.push(syncAttributes);
 			providerMap[syncAttributes.provider].useSync = true;
 		});
-		return providerIdList;
+		return attributesList;
 	};
 	
 	core.onReady(function() {

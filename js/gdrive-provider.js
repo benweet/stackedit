@@ -4,6 +4,7 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 		providerId: PROVIDER_GDRIVE,
 		providerName: "Google Drive",
 		defaultPublishFormat: "template",
+		sharingAttributes: ["id"], 
 		useSync: false
 	};
 	
@@ -214,7 +215,7 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 	
 	gdriveProvider.publish = function(publishAttributes, title, content, callback) {
 		googleHelper.upload(
-			publishAttributes.fileId,
+			publishAttributes.id,
 			undefined,
 			publishAttributes.fileName || title,
 			content,
@@ -224,7 +225,7 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 					callback(error);
 					return;
 				}
-				publishAttributes.fileId = result.id;
+				publishAttributes.id = result.id;
 				callback();
 			}
 		);
@@ -232,7 +233,7 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 
 	gdriveProvider.newPublishAttributes = function(event) {
 		var publishAttributes = {};
-		publishAttributes.fileId = $("#input-publish-gdrive-fileid").val() || undefined;
+		publishAttributes.id = $("#input-publish-gdrive-fileid").val() || undefined;
 		publishAttributes.fileName = $("#input-publish-gdrive-filename").val() || undefined;
 		if(event.isPropagationStopped()) {
 			return undefined;

@@ -63,5 +63,22 @@
 	<div id="wmd-button-bar" class="hide"></div>
 	<textarea id="wmd-input" class="hide"></textarea>
 	<div id="wmd-preview" class="well"></div>
+
+    <div id="modal-non-unique" class="modal hide">
+        <div class="modal-header">
+            <h3>Whoops...</h3>
+        </div>
+        <div class="modal-body">
+            <p>StackEdit has stopped because another instance was running in
+                the same browser.</p>
+            <blockquote class="muted">If you want to reopen
+                StackEdit, click on "Reload".</blockquote>
+        </div>
+        <div class="modal-footer">
+            <a href="javascript:window.location.reload();"
+                class="btn btn-primary">Reload</a>
+        </div>
+    </div>
+    
 </body>
 </html>

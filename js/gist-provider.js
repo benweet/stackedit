@@ -20,7 +20,7 @@ define(["jquery", "core", "github-helper"], function($, core, githubHelper) {
 
 	gistProvider.newPublishAttributes = function(event) {
 		var publishAttributes = {};
-		publishAttributes.gistId = core.getInputValue($("#input-publish-gist-id"));
+		publishAttributes.gistId = $("#input-publish-gist-id").val() || undefined;
 		publishAttributes.filename = core.getInputValue($("#input-publish-filename"), event);
 		publishAttributes.isPublic = $("#input-publish-gist-public").is(":checked");
 		if(event.isPropagationStopped()) {

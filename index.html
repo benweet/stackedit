@@ -34,13 +34,25 @@
 			</ul>
 			<ul class="pull-right hide" id="menu-bar">
 				<li class="btn-group">
-				    <button class="btn action-force-sync"
-						title="Synchronize">
+					<button class="btn action-force-sync" title="Synchronize">
 						<i class="icon-refresh"></i>
 					</button>
 					<button class="btn action-force-publish" title="Publish">
 						<i class="icon-share"></i>
-					</button></li>
+					</button>
+					<button class="btn dropdown-toggle" data-toggle="dropdown"
+						title="Share this document">
+						<i class="icon-link"></i>
+					</button>
+					<div id="link-container" class="dropdown-menu">
+					   <div class="link-list"></div>
+					   <p class="no-link">
+						To share this document you need first to synchronize it or to publish it in Markdown format on
+						<a href="#" class="action-publish-gist">Gist</a>.
+						</p>
+						<blockquote class="muted">Please make sure the document is public.</blockquote>
+					</div>
+				</li>
 				<li class="btn-group"><button class="btn action-create-file"
 						title="New local document">
 						<i class="icon-file"></i>
@@ -59,15 +71,15 @@
 					data-toggle="dropdown" href="#" title="Menu"><i
 						class="icon-stackedit"></i>&nbsp;&nbsp;<b class="caret"></b></a>
 					<ul class="dropdown-menu">
-                        <li><a href="viewer.html"><i
-                                class="icon-fullscreen"></i> Open in viewer</a></li>
+						<li><a href="viewer.html"><i class="icon-fullscreen"></i>
+								Open in viewer</a></li>
 						<li><a class="action-download-md" href="#"><i
 								class="icon-download-alt"></i> Save as Markdown</a></li>
 						<li><a class="action-download-html" href="#"><i
 								class="icon-download-alt"></i> Save as HTML</a></li>
 						<li><a class="action-download-template" href="#"><i
 								class="icon-download-alt"></i> Save using template</a></li>
-						<li class="divider"></li>
+						<li class="divider with-text">synchronize</li>
 						<li class="dropdown-submenu"><a href="#"><i
 								class="icon-gdrive"></i> Google Drive</a>
 							<ul class="dropdown-menu">
@@ -89,7 +101,7 @@
 						<li><a href="#" data-toggle="modal"
 							data-target="#modal-manage-sync" class="action-reset-input"><i
 								class="icon-refresh"></i> Manage synchronization</a></li>
-						<li class="divider"></li>
+                        <li class="divider with-text">publish</li>
 						<li class="dropdown-submenu"><a href="#"><i
 								class="icon-share"></i> Publish on</a>
 							<ul id="publish-menu" class="dropdown-menu">
@@ -309,13 +321,13 @@
 							placeholder="path/to/file.md">
 					</div>
 				</div>
-                <div class="control-group modal-publish-gist">
-                    <label class="control-label" for="input-publish-filename">Filename</label>
-                    <div class="controls">
-                        <input type="text" id="input-publish-filename"
-                            placeholder="Filename">
-                    </div>
-                </div>
+				<div class="control-group modal-publish-gist">
+					<label class="control-label" for="input-publish-filename">Filename</label>
+					<div class="controls">
+						<input type="text" id="input-publish-filename"
+							placeholder="Filename">
+					</div>
+				</div>
 				<div class="control-group modal-publish-gist">
 					<label class="control-label" for="input-publish-gist-id">Existing
 						ID (optional)</label>

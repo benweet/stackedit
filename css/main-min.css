@@ -5407,7 +5407,9 @@ textarea,
   color: #333333;
   background-color: #eee;
 }
-.nav .dropdown-toggle .caret {
+.nav .dropdown-toggle .caret,
+.nav .dropdown-toggle:hover .caret,
+.nav .dropdown-toggle:focus .caret {
 	border-top-color: #000;
     border-bottom-color: #000;
 }

@@ -133,7 +133,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 					}
 					else if(error.code === 412) {
 						// We may have missed a file update
-						localStorage.removeItem("sync.gdrive.lastChangeId");
+						localStorage.removeItem("gdrive.lastChangeId");
 						error = 'Conflict on file ID "' + fileId + '". Please restart the synchronization.';
 					}
 				}

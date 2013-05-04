@@ -100,7 +100,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 			var headers = { 'Content-Type' : 'multipart/mixed; boundary="'
 				+ boundary + '"', };
 			if(etag !== undefined) {
-				// Sometimes we have error 512 from Google even with the correct etag 
+				// Sometimes we have error 412 from Google even with the correct etag 
 				//headers["If-Match"] = etag;
 			}
 

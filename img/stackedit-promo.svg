@@ -16,8 +16,8 @@
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="stackedit-promo.svg"
    inkscape:export-filename="C:\Documents and Settings\g550003\Mes documents\Mes images\stackedit-promo.png"
-   inkscape:export-xdpi="103.5"
-   inkscape:export-ydpi="103.5">
+   inkscape:export-xdpi="27"
+   inkscape:export-ydpi="27">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -54,7 +54,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>

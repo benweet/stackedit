@@ -200,30 +200,35 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 		asyncRunner.addTask(task);
 	};
 
-	googleHelper.downloadMetadata = function(ids, callback) {
+	googleHelper.downloadMetadata = function(ids, callback, skipAuth) {
 		callback = callback || core.doNothing;
 		var result = [];
 		var task = asyncRunner.createTask();
 		connect(task);
-		authenticate(task);
+		if(!skipAuth) {
+			authenticate(task);
+		}
 		task.onRun(function() {
 			function recursiveDownloadMetadata() {
 				if(ids.length === 0) {
 					task.chain();
 					return;
 				}
-				var id = ids.pop();
+				var id = ids[0];
+				var headers = {};
 				var token = gapi.auth.getToken();
-				var headers = {
-					Authorization : token ? "Bearer " + token.access_token: null
-				};
+				if(token) {
+					headers.Authorization = "Bearer " + token.access_token;
+				}
 				$.ajax({
 					url : "https://www.googleapis.com/drive/v2/files/" + id,
 					headers : headers,
+					data : {key: GOOGLE_API_KEY},
 					dataType : "json",
 					timeout : AJAX_TIMEOUT
 				}).done(function(data, textStatus, jqXHR) {
 					result.push(data);
+					ids.shift();
 					task.chain(recursiveDownloadMetadata);
 				}).fail(function(jqXHR) {
 					var error = {
@@ -248,21 +253,23 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 		asyncRunner.addTask(task);
 	};
 
-	googleHelper.downloadContent = function(objects, callback) {
+	googleHelper.downloadContent = function(objects, callback, skipAuth) {
 		callback = callback || core.doNothing;
 		var result = [];
 		var task = asyncRunner.createTask();
 		// Add some time for user to choose his files
 		task.timeout = ASYNC_TASK_LONG_TIMEOUT;
 		connect(task);
-		authenticate(task);
+		if(!skipAuth) {
+			authenticate(task);
+		}
 		task.onRun(function() {
 			function recursiveDownloadContent() {
 				if(objects.length === 0) {
 					task.chain();
 					return;
 				}				
-				var object = objects.pop();
+				var object = objects[0];
 				result.push(object);
 				var file = undefined;
 				// object may be a file
@@ -274,20 +281,24 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 					file = object.file;
 				}
 				if(!file) {
+					objects.shift();
 					task.chain(recursiveDownloadContent);
 					return;
 				}
+				var headers = {};
 				var token = gapi.auth.getToken();
-				var headers = {
-					Authorization : token ? "Bearer " + token.access_token: null
-				};
+				if(token) {
+					headers.Authorization = "Bearer " + token.access_token;
+				}
 				$.ajax({
 					url : file.downloadUrl,
 					headers : headers,
+					data : {key: GOOGLE_API_KEY},
 					dataType : "text",
 					timeout : AJAX_TIMEOUT
 				}).done(function(data, textStatus, jqXHR) {
 					file.content = data;
+					objects.shift();
 					task.chain(recursiveDownloadContent);
 				}).fail(function(jqXHR) {
 					var error = {
@@ -349,8 +360,9 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 			}				
 			$.ajax({
 				url : "//www.google.com/jsapi",
-				data : {key: GOOGLE_KEY},
-				dataType : "script", timeout : AJAX_TIMEOUT
+				data : {key: GOOGLE_API_KEY},
+				dataType : "script",
+				timeout : AJAX_TIMEOUT
 			}).done(function() {
 			    google.load('picker', '1', {callback: task.chain});
 				pickerLoaded = true;
@@ -424,10 +436,11 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 		connect(task);
 		authenticate(task);
 		task.onRun(function() {
+			var headers = {};
 			var token = gapi.auth.getToken();
-			var headers = {
-				Authorization : token ? "Bearer " + token.access_token: null
-			};				
+			if(token) {
+				headers.Authorization = "Bearer " + token.access_token;
+			}
 			function publish() {
 				var url = "https://www.googleapis.com/blogger/v3/blogs/" + blogId + "/posts/";
 				var data = {

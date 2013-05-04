@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html manifest="cache.manifest">
 <head>
-<title>StackEdit</title>
+<title>StackEdit - Markdown editor</title>
 <link rel="icon" href="img/stackedit-32.ico" type="image/x-icon">
 <link rel="shortcut icon" href="img/stackedit-32.ico"
 	type="image/x-icon">
-<meta name="keywords"
-	content="Markdown, Editor, PageDown, Stack Overflow, Stack Exchange">
 <meta name="description"
 	content="StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.">
 <meta name="author" content="Benoit Schweblin">
@@ -32,7 +30,7 @@
 			<ul class="nav">
 				<li><div id="wmd-button-bar"></div></li>
 			</ul>
-			<ul class="pull-right hide" id="menu-bar">
+			<ul class="nav pull-right hide" id="menu-bar">
 				<li class="btn-group">
 					<button class="btn action-force-sync" title="Synchronize">
 						<i class="icon-refresh"></i>
@@ -45,12 +43,11 @@
 						<i class="icon-link"></i>
 					</button>
 					<div id="link-container" class="dropdown-menu">
-					   <div class="link-list"></div>
-					   <p class="no-link">
-						To share this document you need first to synchronize it or to publish it in Markdown format on
-						<a href="#" class="action-publish-gist">Gist</a>.
+						<div class="link-list"></div>
+						<p class="no-link">To share this document you need first to <span
+							class="internal-link action-publish-gist">publish it as a
+								Gist</span> in Markdown format.
 						</p>
-						<blockquote class="muted">Please make sure the document is public.</blockquote>
 					</div>
 				</li>
 				<li class="btn-group"><button class="btn action-create-file"
@@ -67,9 +64,9 @@
 					</button>
 					<ul id="file-selector" class="dropdown-menu">
 					</ul></li>
-				<li class="btn-group"><a class="btn dropdown-toggle"
-					data-toggle="dropdown" href="#" title="Menu"><i
-						class="icon-stackedit"></i>&nbsp;&nbsp;<b class="caret"></b></a>
+				<li class="btn-group"><button class="btn dropdown-toggle"
+					data-toggle="dropdown" title="Menu"><i
+						class="icon-stackedit"></i>&nbsp;&nbsp;<b class="caret"></b></button>
 					<ul class="dropdown-menu">
 						<li><a href="viewer.html"><i class="icon-fullscreen"></i>
 								Open in viewer</a></li>
@@ -101,7 +98,7 @@
 						<li><a href="#" data-toggle="modal"
 							data-target="#modal-manage-sync" class="action-reset-input"><i
 								class="icon-refresh"></i> Manage synchronization</a></li>
-                        <li class="divider with-text">publish</li>
+						<li class="divider with-text">publish</li>
 						<li class="dropdown-submenu"><a href="#"><i
 								class="icon-share"></i> Publish on</a>
 							<ul id="publish-menu" class="dropdown-menu">

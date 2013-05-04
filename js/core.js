@@ -671,7 +671,17 @@ define(
 	core.randomString = function() {
 		return _.random(4294967296).toString(36);
 	};
-	
+
+	// Access a URL parameter
+	core.getURLParameter = function(name) {
+		var regex = new RegExp(name + "=(.+?)(&|$)");
+		try {
+			return decodeURIComponent(regex.exec(location.search)[1]);
+		} catch (e) {
+			return undefined;
+		}
+	};
+
 	// Create an centered popup window
 	core.popupWindow = function(url, title, w, h) {
 		var left = (screen.width / 2) - (w / 2);
@@ -859,7 +869,7 @@ define(
 		intervalId = window.setInterval(function() {
 			updateCurrentTime();
 			core.checkWindowUnique();
-			if(viewerMode === false && isUserActive() === true) {
+			if(isUserActive() === true || viewerMode === true) {
 				_.each(periodicCallbacks, function(callback) {
 					callback();
 				});

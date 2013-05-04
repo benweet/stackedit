@@ -144,7 +144,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 		asyncRunner.addTask(task);
 	};
 	
-	githubHelper.gistUpload = function(gistId, filename, isPublic, title, content, callback) {
+	githubHelper.uploadGist = function(gistId, filename, isPublic, title, content, callback) {
 		callback = callback || core.doNothing;
 		var task = asyncRunner.createTask();
 		connect(task);
@@ -176,6 +176,41 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 		});
 		task.onSuccess(function() {
 			callback(undefined, gistId);
+		});
+		task.onError(function(error) {
+			callback(error);
+		});
+		asyncRunner.addTask(task);
+	};
+	
+	githubHelper.downloadGist = function(gistId, filename, callback) {
+		callback = callback || core.doNothing;
+		var task = asyncRunner.createTask();
+		connect(task);
+		// No need for authentication
+		var title = undefined;
+		var content = undefined;
+		task.onRun(function() {
+			var github = new Github({});
+			var gist = github.getGist(gistId);
+			gist.read(function(err, gist) {
+				if(err) {
+					// Handle error
+					task.error(new Error('Error trying to access Gist ' + gistId + '.'));
+					return;
+				}
+				title = gist.description;
+				var file = gist.files[filename];
+				if(file === undefined) {
+					task.error(new Error('Gist ' + gistId + ' does not contain "' + filename + '".'));
+					return;
+				}
+				content = file.content;
+				task.chain();
+			});
+		});
+		task.onSuccess(function() {
+			callback(undefined, title, content);
 		});
 		task.onError(function(error) {
 			callback(error);

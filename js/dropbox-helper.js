@@ -154,10 +154,11 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 					task.chain();
 					return;
 				}
-				var path = paths.pop();
+				var path = paths[0];
 				client.stat(path, function(error, stat) {
 					if(stat) {
 						result.push(stat);
+						paths.shift();
 						task.chain(recursiveDownloadMetadata);
 						return;
 					}
@@ -187,7 +188,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 					task.chain();
 					return;
 				}
-				var object = objects.pop();
+				var object = objects[0];
 				result.push(object);
 				var file = undefined;
 				// object may be a file
@@ -199,13 +200,15 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 					file = object.stat;
 				}
 				if(!file) {
+					objects.shift();
 					task.chain(recursiveDownloadContent);
 					return;
 				}
 				client.readFile(file.path, function(error, data) {
 					if(data) {
 						file.content = data;
-						recursiveDownloadContent();
+						objects.shift();
+						task.chain(recursiveDownloadContent);
 						return;
 					}
 					handleError(error, task);

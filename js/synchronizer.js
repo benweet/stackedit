@@ -184,7 +184,9 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 		});
 	};
 	// Run sync function periodically
-	core.addPeriodicCallback(synchronizer.sync);
+	if(viewerMode === false) {
+		core.addPeriodicCallback(synchronizer.sync);
+	}
 	
 	// Used to populate the "Manage synchronization" dialog
 	var lineTemplate = ['<div class="input-prepend input-append">',
@@ -197,7 +199,7 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 		var fileIndex = core.fileManager.getCurrentFileIndex();
 		var syncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
 		$(".msg-no-sync, .msg-sync-list").addClass("hide");
-		$("#manage-sync-list .input-append").remove();
+		var syncList = $("#manage-sync-list").empty();
 		if (syncIndexList.length > 0) {
 			$(".msg-sync-list").removeClass("hide");
 		} else {
@@ -206,7 +208,7 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 		_.each(syncIndexList, function(syncIndex) {
 			var syncAttributes = JSON.parse(localStorage[syncIndex]);
 			var syncDesc = syncAttributes.id || syncAttributes.path;
-			lineElement = $(_.template(lineTemplate, {
+			var lineElement = $(_.template(lineTemplate, {
 				provider: providerMap[syncAttributes.provider],
 				syncDesc: syncDesc
 			}));
@@ -214,7 +216,7 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 				core.fileManager.removeSync(syncIndex);
 				core.fileManager.updateFileTitles();
 			}));
-			$("#manage-sync-list").append(lineElement);
+			syncList.append(lineElement);
 		});
 	};
 	

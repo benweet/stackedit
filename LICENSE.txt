@@ -2,12 +2,3 @@ StackEdit - The Markdown editor powered by PageDown.
 
 Copyright 2013 Benoit Schweblin (http://www.benoitschweblin.com)
 Licensed under an Apache License (http://www.apache.org/licenses/LICENSE-2.0)
-
-Includes:
-jQuery - http://jquery.com/
-Bootstrap - http://twitter.github.com/bootstrap/
-RequireJS - http://requirejs.org/
-PageDown - https://code.google.com/p/pagedown/
-UI Layout - http://layout.jquery-dev.net/
-jGrowl - https://github.com/stanlemon/jGrowl/
-GLYPHICONS - http://glyphicons.com/

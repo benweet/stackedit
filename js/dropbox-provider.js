@@ -1,5 +1,7 @@
 define(["jquery", "core", "dropbox-helper"], function($, core, dropboxHelper) {
 	
+	var PROVIDER_DROPBOX = "dropbox";
+	
 	var dropboxProvider = {
 		providerId: PROVIDER_DROPBOX,
 		providerName: "Dropbox",
@@ -27,9 +29,11 @@ define(["jquery", "core", "dropbox-helper"], function($, core, dropboxHelper) {
 		syncAttributes.path = path;
 		syncAttributes.version = versionTag;
 		syncAttributes.contentCRC = core.crc32(content);
-		var syncIndex = "sync." + PROVIDER_DROPBOX + "." + encodeURIComponent(path.toLowerCase());
-		localStorage[syncIndex] = JSON.stringify(syncAttributes);
-		return syncIndex;
+		return syncAttributes;
+	}
+	
+	function createSyncIndex(path) {
+		return "sync." + PROVIDER_DROPBOX + "." + encodeURIComponent(path.toLowerCase());
 	}
 	
 	function importFilesFromPaths(paths) {
@@ -41,12 +45,16 @@ define(["jquery", "core", "dropbox-helper"], function($, core, dropboxHelper) {
 				if(error) {
 					return;
 				}
+				var titleList = [];
 				_.each(result, function(file) {
-					var syncIndex = createSyncAttributes(file.path, file.versionTag, file.content);
+					var syncAttributes = createSyncAttributes(file.path, file.versionTag, file.content);
+					var syncIndex = createSyncIndex(syncAttributes.path);
+					localStorage[syncIndex] = JSON.stringify(syncAttributes);
 					var fileIndex = core.fileManager.createFile(file.name, file.content, [syncIndex]);
 					core.fileManager.selectFile(fileIndex);
-					core.showMessage('"' + file.name + '" imported successfully from Dropbox.');
+					titleList.push('"' + file.name + '"');
 				});
+				core.showMessage(titleList.join(", ") + ' imported successfully from Dropbox.');
 			});
 		});
 	}
@@ -58,7 +66,7 @@ define(["jquery", "core", "dropbox-helper"], function($, core, dropboxHelper) {
 			}
 			var importPaths = [];
 			_.each(paths, function(path) {
-				var syncIndex = "sync." + PROVIDER_DROPBOX + "." + encodeURIComponent(path.toLowerCase());
+				var syncIndex = createSyncIndex(path);
 				var fileIndex = core.fileManager.getFileIndexFromSync(syncIndex);
 				if(fileIndex !== undefined) {
 					var title = localStorage[fileIndex + ".title"];
@@ -78,7 +86,7 @@ define(["jquery", "core", "dropbox-helper"], function($, core, dropboxHelper) {
 			return;
 		}
 		// Check that file is not synchronized with an other one
-		var syncIndex = "sync." + PROVIDER_DROPBOX + "." + encodeURIComponent(path.toLowerCase());
+		var syncIndex = createSyncIndex(path);
 		var fileIndex = core.fileManager.getFileIndexFromSync(syncIndex);
 		if(fileIndex !== undefined) {
 			var existingTitle = localStorage[fileIndex + ".title"];
@@ -91,7 +99,9 @@ define(["jquery", "core", "dropbox-helper"], function($, core, dropboxHelper) {
 				callback(error);
 				return;
 			}
-			syncIndex = createSyncAttributes(result.path, result.versionTag, content);
+			var syncAttributes = createSyncAttributes(result.path, result.versionTag, content);
+			var syncIndex = createSyncIndex(syncAttributes.path);
+			localStorage[syncIndex] = JSON.stringify(syncAttributes);
 			callback(undefined, syncIndex);
 		});
 	}
@@ -137,7 +147,7 @@ define(["jquery", "core", "dropbox-helper"], function($, core, dropboxHelper) {
 			}
 			var interestingChanges = [];
 			_.each(changes, function(change) {
-				var syncIndex = "sync." + PROVIDER_DROPBOX + "." + encodeURIComponent(change.path.toLowerCase());
+				var syncIndex = createSyncIndex(change.path);
 				var serializedAttributes = localStorage[syncIndex];
 				if(serializedAttributes === undefined) {
 					return;

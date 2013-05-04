@@ -1,5 +1,7 @@
 define(["jquery", "core", "github-helper"], function($, core, githubHelper) {
 	
+	var PROVIDER_GITHUB = "github";
+	
 	var githubProvider = {
 		providerId: PROVIDER_GITHUB,
 		providerName: "GitHub"

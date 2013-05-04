@@ -45,6 +45,8 @@ function setupLocalStorage() {
 			localStorage.removeItem("sync.dropbox.lastChangeId");
 		}
 		
+		var PROVIDER_GDRIVE = "gdrive";
+		var PROVIDER_DROPBOX = "dropbox";
 		var SYNC_PROVIDER_GDRIVE = "sync." + PROVIDER_GDRIVE + ".";
 		var SYNC_PROVIDER_DROPBOX = "sync." + PROVIDER_DROPBOX + ".";
 		_.each(fileIndexList, function(fileIndex) {
@@ -120,6 +122,8 @@ function setupLocalStorage() {
 				}
 			});
 		});
+		// Force creation of sharing links
+		localStorage["missingSharingLink"] = true;
 		version = "v6";
 	}
 	

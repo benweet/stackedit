@@ -1,10 +1,11 @@
 define(["jquery", "core", "google-helper", "underscore"], function($, core, googleHelper) {
 	
+	var PROVIDER_GDRIVE = "gdrive";
+	
 	var gdriveProvider = {
 		providerId: PROVIDER_GDRIVE,
 		providerName: "Google Drive",
 		defaultPublishFormat: "template",
-		sharingAttributes: ["id"], 
 		useSync: false
 	};
 	
@@ -15,9 +16,11 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 		syncAttributes.etag = etag;
 		syncAttributes.contentCRC = core.crc32(content);
 		syncAttributes.titleCRC = core.crc32(title);
-		var syncIndex = "sync." + PROVIDER_GDRIVE + "." + id;
-		localStorage[syncIndex] = JSON.stringify(syncAttributes);
-		return syncIndex;
+		return syncAttributes;
+	}
+	
+	function createSyncIndex(id) {
+		return "sync." + PROVIDER_GDRIVE + "." + id;
 	}
 	
 	function importFilesFromIds(ids) {
@@ -29,12 +32,16 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 				if(error) {
 					return;
 				}
+				var titleList = [];
 				_.each(result, function(file) {
-					var syncIndex = createSyncAttributes(file.id, file.etag, file.content, file.title);
+					var syncAttributes = createSyncAttributes(file.id, file.etag, file.content, file.title);
+					var syncIndex = createSyncIndex(syncAttributes.id);
+					localStorage[syncIndex] = JSON.stringify(syncAttributes);
 					var fileIndex = core.fileManager.createFile(file.title, file.content, [syncIndex]);
 					core.fileManager.selectFile(fileIndex);
-					core.showMessage('"' + file.title + '" imported successfully from Google Drive.');
+					titleList.push('"' + file.title + '"');
 				});
+				core.showMessage(titleList.join(", ") + ' imported successfully from Google Drive.');
 			});
 		});
 	};
@@ -46,7 +53,7 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 			}
 			var importIds = [];
 			_.each(ids, function(id) {
-				var syncIndex = "sync." + PROVIDER_GDRIVE + "." + id;
+				var syncIndex = createSyncIndex(id);
 				var fileIndex = core.fileManager.getFileIndexFromSync(syncIndex);
 				if(fileIndex !== undefined) {
 					var title = localStorage[fileIndex + ".title"];
@@ -65,7 +72,9 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 				callback(error);
 				return;
 			}
-			var syncIndex = createSyncAttributes(result.id, result.etag, content, title);
+			var syncAttributes = createSyncAttributes(result.id, result.etag, content, title);
+			var syncIndex = createSyncIndex(syncAttributes.id);
+			localStorage[syncIndex] = JSON.stringify(syncAttributes);
 			callback(undefined, syncIndex);
 		});
 	};
@@ -76,7 +85,7 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 			return;
 		}
 		// Check that file is not synchronized with an other one
-		var syncIndex = "sync." + PROVIDER_GDRIVE + "." + id;
+		var syncIndex = createSyncIndex(id);
 		var fileIndex = core.fileManager.getFileIndexFromSync(syncIndex);
 		if(fileIndex !== undefined) {
 			var existingTitle = localStorage[fileIndex + ".title"];
@@ -89,7 +98,9 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 				callback(error);
 				return;
 			}
-			var syncIndex = createSyncAttributes(result.id, result.etag, content, title);
+			var syncAttributes = createSyncAttributes(result.id, result.etag, content, title);
+			var syncIndex = createSyncIndex(syncAttributes.id);
+			localStorage[syncIndex] = JSON.stringify(syncAttributes);
 			callback(undefined, syncIndex);
 		});
 	};
@@ -127,7 +138,7 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 			}
 			var interestingChanges = [];
 			_.each(changes, function(change) {
-				var syncIndex = "sync." + PROVIDER_GDRIVE + "." + change.fileId;
+				var syncIndex = createSyncIndex(change.fileId);
 				var serializedAttributes = localStorage[syncIndex];
 				if(serializedAttributes === undefined) {
 					return;
@@ -263,7 +274,7 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 		else if (state.action == "open") {
 			var importIds = [];
 			_.each(state.ids, function(id) {
-				var syncIndex = "sync." + PROVIDER_GDRIVE + "." + id;
+				var syncIndex = createSyncIndex(id);
 				var fileIndex = core.fileManager.getFileIndexFromSync(syncIndex);
 				if(fileIndex !== undefined) {
 					core.fileManager.selectFile(fileIndex);

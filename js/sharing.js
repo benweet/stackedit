@@ -1,4 +1,4 @@
-define(["jquery", "core", "async-runner", "gdrive-provider", "underscore"], function($, core, asyncRunner) {
+define(["jquery", "core", "async-runner", "gist-provider", "underscore"], function($, core, asyncRunner) {
 	var sharing = {};
 	
 	// Create a map with providerId: providerObject
@@ -7,28 +7,34 @@ define(["jquery", "core", "async-runner", "gdrive-provider", "underscore"], func
 			return argument && argument.providerId && [argument.providerId, argument];
 		}).compact().object().value();
 
-	sharing.getLink = function(attributes) {
-		var provider = providerMap[attributes.provider];
-		if(provider === undefined) {
-			return undefined;
-		}
-		var url = [BASE_URL, 'viewer.html?provider=', attributes.provider];
-		_.each(provider.sharingAttributes, function(attributeName) {
-			url.push('&');
-			url.push(attributeName);
-			url.push('=');
-			url.push(attributes[attributeName]);
+	// Used to populate the "Sharing" dropdown box
+	var lineTemplate = ['<div class="input-prepend">',
+		'<a href="<%= link %>" class="add-on" title="Sharing location"><i class="icon-link"></i></a>',
+		'<input class="span2" type="text" value="<%= link %>" readonly />',
+		'</div>'].join("");
+	sharing.refreshDocumentSharing = function(attributesList) {
+		var linkList = $("#link-container .link-list").empty();
+		$("#link-container .no-link").show();
+		_.each(attributesList, function(attributes) {
+			if(attributes.sharingLink) {
+				var lineElement = $(_.template(lineTemplate, {
+					link: attributes.sharingLink
+				}));
+				lineElement.click(function(event) {
+					event.stopPropagation();
+				});
+				linkList.append(lineElement);
+				$("#link-container .no-link").hide();
+			}
 		});
-		return url.join("");
 	};
 	
 	sharing.createLink = function(attributes, callback) {
-		if(attributes.sharingLink !== undefined) {
-			callback();
-			return;
-		}
 		var provider = providerMap[attributes.provider];
-		if(provider === undefined) {
+		// Don't create link if link already exists or provider is not compatible for sharing
+		if(attributes.sharingLink !== undefined || provider === undefined
+			// Or document is not published in markdown format
+			|| attributes.format != "markdown") {
 			callback();
 			return;
 		}
@@ -44,7 +50,7 @@ define(["jquery", "core", "async-runner", "gdrive-provider", "underscore"], func
 				url.push('&');
 				url.push(attributeName);
 				url.push('=');
-				url.push(attributes[attributeName]);
+				url.push(encodeURIComponent(attributes[attributeName]));
 			});
 			$.getJSON(
 		        "https://api-ssl.bitly.com/v3/shorten", 
@@ -56,28 +62,77 @@ define(["jquery", "core", "async-runner", "gdrive-provider", "underscore"], func
 		        {
 		        	if(response.data) {
 		        		shortUrl = response.data.url;
+						attributes.sharingLink = shortUrl;
 		        	}
-		            console.log(shortUrl);
 		            task.chain();
 		        }
 		    );
 		});
-		task.onSuccess(function() {
+		function onFinish() {
+			if(shortUrl === undefined) {
+				localStorage["missingSharingLink"] = true;
+			}
 			callback(shortUrl);
-		});
+		}
+		task.onSuccess(onFinish);
+		task.onError(onFinish);
 		asyncRunner.addTask(task);
 	};
 	
-	core.onReady(function() {
+	// Create the possible missing links
+	function checkMissingLinks() {
+		if(core.isOffline === true) {
+			return;
+		}
+		if(!_.has(localStorage, "missingSharingLink")) {
+			return;
+		} 
+		localStorage.removeItem("missingSharingLink");
 		var fileIndexList = _.compact(localStorage["file.list"].split(";"));
 		_.each(fileIndexList, function(fileIndex) {
-			var publishIndexList = _.compact(localStorage[fileIndex + ".publish"].split(";"));
-			_.each(publishIndexList, function(publishIndex) {
-				var publishAttributes = JSON.parse(localStorage[publishIndex]);
-				sharing.createLink(publishAttributes, function(shortUrl) {
-					publishAttributes.sharingLink = shortUrl;
+			var syncIndexList = localStorage[fileIndex + ".sync"].split(";");
+			var publishIndexList = localStorage[fileIndex + ".publish"].split(";");
+			var attributesIndexList = _.compact(syncIndexList.concat(publishIndexList));
+			_.each(attributesIndexList, function(attributesIndex) {
+				var attributes = JSON.parse(localStorage[attributesIndex]);
+				sharing.createLink(attributes, function(shortUrl) {
+					if(shortUrl !== undefined) {
+						localStorage[attributesIndex] = JSON.stringify(attributes);
+					}
 				});
 			});
+		});
+	}
+	// Periodically check that links are not missing
+	if(viewerMode === false) {
+		core.addPeriodicCallback(checkMissingLinks);
+	}
+	
+	core.onReady(function() {
+		if(viewerMode === false) {
+			return;
+		}
+		// Check parameters to see if we have to download a shared document
+		var providerId = core.getURLParameter("provider");
+		if(providerId === undefined) {
+			return;
+		}
+		var provider = providerMap[providerId];
+		if(provider === undefined) {
+			return;
+		}
+		var importParameters = {};
+		_.each(provider.sharingAttributes, function(attributeName) {
+			importParameters[attributeName] = core.getURLParameter(attributeName);
+		});
+		$("#wmd-preview, #file-title").hide();
+		provider.importPublic(importParameters, function(error, title, content) {
+			$("#wmd-preview, #file-title").show();
+			if(error) {
+				return;
+			}
+			var fileIndex = core.fileManager.createFile(title, content, undefined, true);
+			core.fileManager.selectFile(fileIndex);
 		});
 	});
 	

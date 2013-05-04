@@ -1,5 +1,7 @@
 define(["jquery", "core", "google-helper"], function($, core, googleHelper) {
 	
+	var PROVIDER_BLOGGER = "blogger";
+
 	var bloggerProvider = {
 		providerId: PROVIDER_BLOGGER,
 		providerName: "Blogger",

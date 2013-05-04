@@ -80,6 +80,15 @@ textarea,
   background-color: #eee;
 }
 
+.nav .dropdown-toggle .caret {
+	border-top-color: #000;
+    border-bottom-color: #000;
+}
+
+.navbar .nav.hide {
+	display: none;
+}
+
 .navbar-inner .btn.disabled,
 .navbar-inner .btn[disabled] {
   color: #333333;
@@ -102,8 +111,13 @@ textarea,
     background-color: #777;
 }
 
-input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly], .input-append .add-on {
+input[disabled], select[disabled], textarea[disabled], .input-prepend .add-on {
     background-color: #f5f5f5;
+}
+
+input[readonly], select[readonly], textarea[readonly] {
+	background-color: transparent;
+	cursor: text;
 }
 
 .btn-primary:hover,
@@ -232,13 +246,26 @@ hr {
 
 div.dropdown-menu {
 	padding: 5px 20px;
-	width: 300px;
 	white-space: normal;
 }
 
 div.dropdown-menu p,
 div.dropdown-menu blockquote {
     margin: 10px 0;	
+}
+
+div.dropdown-menu i {
+    margin-right: 0;
+}
+
+.internal-link {
+	text-decoration: underline;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+#link-container .link-list {
+	margin-top: 10px;
 }
 
 .icon-link {

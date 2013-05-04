@@ -1,5 +1,7 @@
 define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCOME.md", "underscore"],
 	function($, core, synchronizer, publisher, sharing, welcomeContent) {
+	
+	var TEMPORARY_FILE_INDEX = "file.tempIndex";
 
 	var fileManager = {};
 
@@ -16,7 +18,7 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 		if(fileIndex === undefined) {
 			localStorage.removeItem("file.current");
 		}
-		else {
+		else if(fileIndex != TEMPORARY_FILE_INDEX) {
 			localStorage["file.current"] = fileIndex;
 		}
 	};
@@ -38,6 +40,14 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 		synchronizer.refreshManageSync();
 		publisher.notifyPublish();
 		
+		// Hide the viewer pencil button
+		if(fileIndex == TEMPORARY_FILE_INDEX) {
+			$(".action-edit-document").removeClass("hide");
+		}
+		else {
+			$(".action-edit-document").addClass("hide");
+		}
+		
 		// Recreate the editor
 		fileIndex = fileManager.getCurrentFileIndex();
 		$("#wmd-input").val(localStorage[fileIndex + ".content"]);
@@ -46,7 +56,7 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 		});
 	};
 
-	fileManager.createFile = function(title, content, syncIndexes) {
+	fileManager.createFile = function(title, content, syncIndexes, isTemporary) {
 		content = content || core.settings.defaultContent;
 		syncIndexes = syncIndexes || [];
 		if (!title) {
@@ -61,10 +71,12 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 		}
 		
 		// Generate a unique fileIndex
-		var fileIndex = undefined;
-		do {
-			fileIndex = "file." + core.randomString();
-		} while(_.has(localStorage, fileIndex + ".title"));
+		var fileIndex = TEMPORARY_FILE_INDEX;
+		if(!isTemporary) {
+			do {
+				fileIndex = "file." + core.randomString();
+			} while(_.has(localStorage, fileIndex + ".title"));
+		}
 		
 		// Create the file in the localStorage
 		localStorage[fileIndex + ".content"] = content;
@@ -74,7 +86,9 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 		}, ";");
 		localStorage[fileIndex + ".sync"] = sync;
 		localStorage[fileIndex + ".publish"] = ";";
-		localStorage["file.list"] += fileIndex + ";";
+		if(!isTemporary) {
+			localStorage["file.list"] += fileIndex + ";";
+		}
 		return fileIndex;
 	};
 
@@ -132,22 +146,18 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 		}
 		
 		synchronizer.resetSyncFlags();
-		var links = [];
-		function composeTitle(fileIndex, generateLinks) {
+		function composeTitle(fileIndex, refreshSharing) {
 			var result = [];
 			var syncAttributesList = synchronizer.getSyncAttributesFromFile(fileIndex);
 			var publishAttributesList = publisher.getPublishAttributesFromFile(fileIndex);
 			var attributesList = syncAttributesList.concat(publishAttributesList);
+			if(refreshSharing === true) {
+				sharing.refreshDocumentSharing(attributesList);
+			}
 			_.chain(attributesList).sortBy(function(attributes) {
 				return attributes.provider;
 			}).each(function(attributes) {
 				result.push('<i class="icon-' + attributes.provider + '"></i>');
-				if(generateLinks === true) {
-					var url = sharing.getLink(attributes);
-					if(url !== undefined) {
-						links.push(url);
-					}
-				}
 			});
 			result.push(" ");
 			result.push(localStorage[fileIndex + ".title"]);
@@ -160,15 +170,6 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 		$("#file-title").html(composeTitle(fileIndex, true));
 		$(".file-title").text(title);
 		$("#file-title-input").val(title);
-		var linkList = $(".link-list").empty();
-		if(links.length > 0) {
-			_.each(links, function(url) {
-				linkList.append($('<div><a href="' + url + '">' + url + '</a></div>'));
-			});
-			$("#link-container no-link").hide();
-		} else {
-			$("#link-container no-link").show();
-		}
 		
 		// Update the file selector
 		$("#file-selector").empty();
@@ -279,6 +280,16 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 				$(this).val("");
 				applyTitle($(this));
 			}
+		});
+		$(".action-open-stackedit").click(function() {
+			window.location.href = ".";
+		});
+		$(".action-edit-document").click(function() {
+			var content = $("#wmd-input").val();
+			var title = localStorage[fileManager.getCurrentFileIndex() + ".title"];
+			var fileIndex = fileManager.createFile(title, content);
+			fileManager.selectFile(fileIndex);
+			window.location.href = ".";
 		});
 		$(".action-download-md").click(function() {
 			var content = $("#wmd-input").val();

@@ -1,12 +1,15 @@
 define(["jquery", "core", "github-helper"], function($, core, githubHelper) {
 	
+	var PROVIDER_GIST = "gist";
+	
 	var gistProvider = {
 		providerId: PROVIDER_GIST,
-		providerName: "Gist"
+		providerName: "Gist",
+		sharingAttributes: ["gistId", "filename"]
 	};
 	
 	gistProvider.publish = function(publishAttributes, title, content, callback) {
-		githubHelper.gistUpload(publishAttributes.gistId, publishAttributes.filename, publishAttributes.isPublic,
+		githubHelper.uploadGist(publishAttributes.gistId, publishAttributes.filename, publishAttributes.isPublic,
 			title, content, function(error, gistId) {
 				if(error) {
 					callback(error);
@@ -27,6 +30,10 @@ define(["jquery", "core", "github-helper"], function($, core, githubHelper) {
 			return undefined;
 		}
 		return publishAttributes;
+	};
+	
+	gistProvider.importPublic = function(importParameters, callback) {
+		githubHelper.downloadGist(importParameters.gistId, importParameters.filename, callback);
 	};
 
 	return gistProvider;

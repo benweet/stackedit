@@ -1,4 +1,5 @@
-define(["jquery", "core", "blogger-provider", "dropbox-provider", "gist-provider", "github-provider", "gdrive-provider", "tumblr-provider", "underscore"], function($, core) {
+define(["jquery", "core", "sharing", "blogger-provider", "dropbox-provider", "gist-provider", "github-provider", "gdrive-provider", "tumblr-provider", "underscore"],
+	function($, core, sharing) {
 
 	var publisher = {};
 	
@@ -167,11 +168,13 @@ define(["jquery", "core", "blogger-provider", "dropbox-provider", "gist-provider
 		provider.publish(publishAttributes, title, content, function(error) {
 			if(error === undefined) {
 				publishAttributes.provider = provider.providerId;
-				createPublishIndex(fileIndex, publishAttributes);
-				publisher.notifyPublish();
-				core.fileManager.updateFileTitles();
-				core.showMessage('"' + title
-					+ '" is now published on ' + provider.providerName + '.');
+				sharing.createLink(publishAttributes, function() {
+					createPublishIndex(fileIndex, publishAttributes);
+					publisher.notifyPublish();
+					core.fileManager.updateFileTitles();
+					core.showMessage('"' + title
+						+ '" is now published on ' + provider.providerName + '.');
+				});
 			}
 		});
 	}
@@ -187,7 +190,7 @@ define(["jquery", "core", "blogger-provider", "dropbox-provider", "gist-provider
 		var fileIndex = core.fileManager.getCurrentFileIndex();
 		var publishIndexList = _.compact(localStorage[fileIndex + ".publish"].split(";"));
 		$(".msg-no-publish, .msg-publish-list").addClass("hide");
-		$("#manage-publish-list .input-append").remove();
+		var publishList = $("#manage-publish-list").empty();
 		if (publishIndexList.length > 0) {
 			$(".msg-publish-list").removeClass("hide");
 		} else {
@@ -196,7 +199,7 @@ define(["jquery", "core", "blogger-provider", "dropbox-provider", "gist-provider
 		_.each(publishIndexList, function(publishIndex) {
 			var publishAttributes = JSON.parse(localStorage[publishIndex]);
 			var publishDesc = JSON.stringify(publishAttributes).replace(/{|}|"/g, "");
-			lineElement = $(_.template(lineTemplate, {
+			var lineElement = $(_.template(lineTemplate, {
 				provider: providerMap[publishAttributes.provider],
 				publishDesc: publishDesc
 			}));
@@ -204,7 +207,7 @@ define(["jquery", "core", "blogger-provider", "dropbox-provider", "gist-provider
 				core.fileManager.removePublish(publishIndex);
 				core.fileManager.updateFileTitles();
 			}));
-			$("#manage-publish-list").append(lineElement);
+			publishList.append(lineElement);
 		});
 	};
 	

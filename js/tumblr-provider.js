@@ -1,5 +1,7 @@
 define(["jquery", "core", "tumblr-helper"], function($, core, tumblrHelper) {
 	
+	var PROVIDER_TUMBLR = "tumblr";
+	
 	var tumblrProvider = {
 		providerId: PROVIDER_TUMBLR,
 		providerName: "Tumblr"

@@ -100,7 +100,8 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 			var headers = { 'Content-Type' : 'multipart/mixed; boundary="'
 				+ boundary + '"', };
 			if(etag !== undefined) {
-				headers["If-Match"] = etag;
+				// Sometimes we have error 512 from Google even with the correct etag 
+				//headers["If-Match"] = etag;
 			}
 
 			var base64Data = core.encodeBase64(content);

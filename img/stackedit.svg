@@ -14,7 +14,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="stackedit-dark.svg"
+   sodipodi:docname="stackedit.svg"
    inkscape:export-filename="C:\Documents and Settings\g550003\Mes documents\Mes images\stackedit-128.png"
    inkscape:export-xdpi="360"
    inkscape:export-ydpi="360">
@@ -27,9 +27,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.4721116"
-     inkscape:cx="89.111669"
-     inkscape:cy="-23.177627"
+     inkscape:zoom="6.9921875"
+     inkscape:cx="92.512694"
+     inkscape:cy="-9.5071361"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -54,7 +54,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -65,7 +65,7 @@
      transform="translate(0,-1020.3622)">
     <path
        style="fill:none;stroke:#626265;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 2,-2 0,14 28,0 0,-14"
+       d="M 2,0 2,12 30,12 30,0"
        id="path3001"
        inkscape:connector-curvature="0"
        transform="translate(0,1036.3622)"

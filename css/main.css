@@ -134,7 +134,7 @@ input[readonly], select[readonly], textarea[readonly] {
 }
 
 .btn-group {
-    margin-right: 5px;
+    margin-right: 10px;
 }
 
 .btn-group > .btn + .dropdown-toggle {
@@ -204,7 +204,7 @@ hr {
 }
 
 .wmd-spacer {
-	margin: 0 10px;
+	margin-right: 15px;
 	display: inline-block;
 }
 

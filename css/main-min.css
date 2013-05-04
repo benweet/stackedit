@@ -5453,7 +5453,7 @@ input[readonly], select[readonly], textarea[readonly] {
 	background-color: #888;
 }
 .btn-group {
-    margin-right: 5px;
+    margin-right: 10px;
 }
 .btn-group > .btn + .dropdown-toggle {
     padding-right: 12px;
@@ -5507,7 +5507,7 @@ hr {
 	height: 20px;
 }
 .wmd-spacer {
-	margin: 0 10px;
+	margin-right: 15px;
 	display: inline-block;
 }
 .wmd-prompt-background {

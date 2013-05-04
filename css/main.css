@@ -258,12 +258,6 @@ div.dropdown-menu i {
     margin-right: 0;
 }
 
-.internal-link {
-	text-decoration: underline;
-	font-weight: 600;
-	cursor: pointer;
-}
-
 #link-container .link-list {
 	margin-top: 10px;
 }
@@ -481,7 +475,7 @@ blockquote p {
 }
 
 .viewer .navbar-inner {
-	background-color:rgba(200,200,200,0.5) !important;
+	background-color:rgba(215,215,215,0.75) !important;
 }
 
 .viewer #wmd-preview {

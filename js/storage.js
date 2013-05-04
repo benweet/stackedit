@@ -1,5 +1,5 @@
-// Setup an empty localStorage or upgrade an existing one
-function setupLocalStorage() {
+	// Setup an empty localStorage or upgrade an existing one
+define( [ "underscore" ], function() {
 	
 	// Create the file system if not exist
 	if (localStorage["file.list"] === undefined) {
@@ -128,6 +128,4 @@ function setupLocalStorage() {
 	}
 	
 	localStorage["version"] = version;
-}
-// Setup the localStorage when starting
-setupLocalStorage();
+});

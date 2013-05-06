@@ -203,7 +203,7 @@ define(["jquery", "core", "dropbox-helper"], function($, core, dropboxHelper) {
 						core.showMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
 					}
 					// If file content changed
-					if(fileContentChanged) {
+					if(fileContentChanged && remoteContentChanged === true) {
 						localStorage[fileIndex + ".content"] = file.content;
 						core.showMessage('"' + localTitle + '" has been updated from Dropbox.');
 						if(core.fileManager.isCurrentFileIndex(fileIndex)) {

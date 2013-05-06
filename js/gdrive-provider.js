@@ -199,13 +199,13 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 						core.showMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
 					}
 					// If file title changed
-					if(fileTitleChanged) {
+					if(fileTitleChanged && remoteTitleChanged === true) {
 						localStorage[fileIndex + ".title"] = file.title;
 						updateFileTitles = true;
 						core.showMessage('"' + localTitle + '" has been renamed to "' + file.title + '" on Google Drive.');
 					}
 					// If file content changed
-					if(fileContentChanged) {
+					if(fileContentChanged && remoteContentChanged === true) {
 						localStorage[fileIndex + ".content"] = file.content;
 						core.showMessage('"' + file.title + '" has been updated from Google Drive.');
 						if(core.fileManager.isCurrentFileIndex(fileIndex)) {

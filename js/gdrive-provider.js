@@ -185,11 +185,15 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 					var localContent = localStorage[fileIndex + ".content"];
 					var localContentChanged = syncAttributes.contentCRC != core.crc32(localContent);
 					var file = change.file;
-					var fileTitleChanged = localTitle != file.title;
+                    var remoteTitleCRC = core.crc32(file.title);
+                    var remoteTitleChanged = syncAttributes.titleCRC != remoteTitleCRC;
+                    var fileTitleChanged = localTitle != file.title;
+                    var remoteContentCRC = core.crc32(file.content);
+                    var remoteContentChanged = syncAttributes.contentCRC != remoteContentCRC;
 					var fileContentChanged = localContent != file.content;
 					// Conflict detection
-					if ((fileTitleChanged === true && localTitleChanged === true)
-						|| (fileContentChanged === true && localContentChanged === true)) {
+					if ((fileTitleChanged === true && localTitleChanged === true && remoteTitleChanged === true)
+						|| (fileContentChanged === true && localContentChanged === true && remoteContentChanged === true)) {
 						core.fileManager.createFile(localTitle + " (backup)", localContent);
 						updateFileTitles = true;
 						core.showMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
@@ -211,8 +215,8 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 					}
 					// Update syncAttributes
 					syncAttributes.etag = file.etag;
-					syncAttributes.contentCRC = core.crc32(file.content);
-					syncAttributes.titleCRC = core.crc32(file.title);
+					syncAttributes.contentCRC = remoteContentCRC;
+					syncAttributes.titleCRC = remoteTitleCRC;
 					localStorage[syncIndex] = JSON.stringify(syncAttributes);
 				});
 				if(updateFileTitles) {

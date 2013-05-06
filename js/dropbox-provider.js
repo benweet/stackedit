@@ -193,9 +193,11 @@ define(["jquery", "core", "dropbox-helper"], function($, core, dropboxHelper) {
 					var localContent = localStorage[fileIndex + ".content"];
 					var localContentChanged = syncAttributes.contentCRC != core.crc32(localContent);
 					var file = change.stat;
+                    var remoteContentCRC = core.crc32(file.content);
+                    var remoteContentChanged = syncAttributes.contentCRC != remoteContentCRC;
 					var fileContentChanged = localContent != file.content;
 					// Conflict detection
-					if (fileContentChanged === true && localContentChanged === true) {
+					if (fileContentChanged === true && localContentChanged === true && remoteContentChanged === true) {
 						core.fileManager.createFile(localTitle + " (backup)", localContent);
 						updateFileTitles = true;
 						core.showMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
@@ -211,7 +213,7 @@ define(["jquery", "core", "dropbox-helper"], function($, core, dropboxHelper) {
 					}
 					// Update syncAttributes
 					syncAttributes.version = file.versionTag;
-					syncAttributes.contentCRC = core.crc32(file.content);
+					syncAttributes.contentCRC = remoteContentCRC;
 					localStorage[syncIndex] = JSON.stringify(syncAttributes);
 				});
 				if(updateFileTitles) {

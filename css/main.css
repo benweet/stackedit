@@ -264,6 +264,10 @@ div.dropdown-menu i {
     margin-right: 0;
 }
 
+#link-container {
+	min-width: 210px;
+}
+
 #link-container .link-list {
 	margin-top: 10px;
 }

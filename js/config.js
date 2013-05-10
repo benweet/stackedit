@@ -10,12 +10,13 @@ var BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c";
 var DEFAULT_FILE_TITLE = "Title";
 var GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document";
 var CHECK_ONLINE_PERIOD = 60000;
-var AJAX_TIMEOUT = 10000;
+var AJAX_TIMEOUT = 15000;
 var ASYNC_TASK_DEFAULT_TIMEOUT = 30000;
 var ASYNC_TASK_LONG_TIMEOUT = 90000;
 var SYNC_PERIOD = 180000;
 var USER_IDLE_THRESHOLD = 300000;
 var WELCOME_DOCUMENT_TITLE = "Welcome document";
+var DOWNLOAD_PROXY_URL = "http://stackedit-download-proxy.herokuapp.com/";
 
 // Use by Google's client.js
 var delayedFunction = undefined;

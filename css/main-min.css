@@ -5386,6 +5386,9 @@ div, span, a, ul, li, textarea, input, button {
     border: 1px solid #e2e2e2 !important;
     text-align: left;
 }
+.dropdown-menu:before {
+	border-bottom-color: #e2e2e2 !important;
+}
 input,
 select,
 textarea,

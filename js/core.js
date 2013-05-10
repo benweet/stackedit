@@ -65,7 +65,7 @@ define(
 
 	// Useful function for input control
 	function inputError(element, event) {
-		element.stop(true, true).addClass("error").delay(400).switchClass("error");
+		element.stop(true, true).addClass("error").delay(800).switchClass("error");
 		if(event !== undefined) {
 			event.stopPropagation();
 		}
@@ -370,7 +370,7 @@ define(
 		var editorScrollTop = editorElt.scrollTop();
 		var previewElt = $("#wmd-preview");
 		var previewScrollTop = previewElt.scrollTop();
-		function animate(srcScrollTop, srcSectionList, destElt, destSectionList) {
+		function animate(srcScrollTop, srcSectionList, destElt, destSectionList, callback) {
 			// Find the section corresponding to the offset
 			var sectionIndex = undefined;
 			var srcSection = _.find(srcSectionList, function(section, index) {
@@ -385,19 +385,22 @@ define(
 			var destSection = destSectionList[sectionIndex];
 			var destScrollTop = destSection.startOffset + destSection.height * posInSection;
 			destScrollTop = _.min([destScrollTop, destElt.prop('scrollHeight') - destElt.outerHeight()]);
-			destElt.animate({scrollTop: destScrollTop}, 800, function() {
-				lastEditorScrollTop = editorElt.scrollTop();
-				lastPreviewScrollTop = previewElt.scrollTop();
-			});
+			destElt.animate({scrollTop: destScrollTop}, 600, callback);
 			return destScrollTop;
 		}
 		if(Math.abs(editorScrollTop - lastEditorScrollTop) > 5) {
-			previewScrollTop = animate(editorScrollTop, mdSectionList, previewElt, htmlSectionList);
+			lastEditorScrollTop = editorScrollTop;
+			previewScrollTop = animate(editorScrollTop, mdSectionList, previewElt, htmlSectionList, function() {
+				lastPreviewScrollTop = previewElt.scrollTop();
+			});
 		}
 		else if(Math.abs(previewScrollTop - lastPreviewScrollTop) > 5) {
-			editorScrollTop = animate(previewScrollTop, htmlSectionList, editorElt, mdSectionList);
+			lastPreviewScrollTop = previewScrollTop;
+			editorScrollTop = animate(previewScrollTop, htmlSectionList, editorElt, mdSectionList, function() {
+				lastEditorScrollTop = editorElt.scrollTop();
+			});
 		}
-	}, 1000);
+	}, 600);
 
 	// Create the layout
 	var layout = undefined;

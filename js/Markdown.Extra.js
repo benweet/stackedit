@@ -163,28 +163,31 @@
     // Each call to init creates a new instance of Markdown.Extra so it's
     // safe to have multiple converters, with different options, on a single page
     var extra = new Markdown.Extra();
-    var transformations = [];
+    var postNormalizationTransformations = [];
+    var preBlockGamutTransformations = [];
 
     options = options || {};
     options.extensions = options.extensions || ["all"];
-    if (contains(options.extensions, "all")) {
-      transformations.push("all");
-      extra.attributeBlocks = true;
-    } else {
-      if (contains(options.extensions, "tables"))
-        transformations.push("tables");
-      if (contains(options.extensions, "fenced_code_gfm"))
-        transformations.push("fencedCodeBlocks");
-      if (contains(options.extensions, "def_list"))
-        transformations.push("definitionLists");
-      if (contains(options.extensions, "attr_list"))
+    if (contains(options.extensions, "all"))
+    	options.extensions = ["tables", "fenced_code_gfm", "def_list", "attr_list"];
+    if (contains(options.extensions, "tables"))
+        preBlockGamutTransformations.push("tables");
+    if (contains(options.extensions, "fenced_code_gfm"))
+    	postNormalizationTransformations.push("fencedCodeBlocks");
+    if (contains(options.extensions, "def_list"))
+        preBlockGamutTransformations.push("definitionLists");
+    if (contains(options.extensions, "attr_list"))
         extra.attributeBlocks = true;
-    }
+    
+
+    converter.hooks.chain("postNormalization", function(text) {
+        return extra.doTransform(postNormalizationTransformations, text);
+    });
 
     // preBlockGamut also gives us access to a hook so we can run the
     // block gamut recursively, however we don't need it at this point
     converter.hooks.chain("preBlockGamut", function(text) {
-      return extra.doConversion(transformations, text);
+      return extra.doConversion(preBlockGamutTransformations, text);
     });
 
     converter.hooks.chain("postConversion", function(text) {
@@ -209,19 +212,27 @@
     return extra;
   };
 
+  // Do transformations
+  Markdown.Extra.prototype.doTransform = function(transformations, text) {
+	  if (this.attributeBlocks)
+	    text = this.hashFcbAttributeBlocks(text);
+
+	  for(var i = 0; i < transformations.length; i++)
+		  text = this[transformations[i]](text);
+	  
+	  return text + '\n';
+  };
+
   // Setup state vars, do conversion
   Markdown.Extra.prototype.doConversion = function(transformations, text) {
     text = processEscapes(text);
 
     if (this.attributeBlocks)
-      text = this.hashAttributeBlocks(text);
+      text = this.hashHeaderAttributeBlocks(text);
 
-    for(var i = 0; i < transformations.length; i++)
-      text = this[transformations[i]](text);
-
-    return text + '\n';
+    return this.doTransform(transformations, text);
   };
-
+  
   // Clear state vars that may use unnecessary memory. Unhash blocks we
   // stored, apply attribute blocks if necessary, and return converted text.
   Markdown.Extra.prototype.finishConversion = function(text) {
@@ -256,25 +267,40 @@
    * Attribute Blocks                                               *
    *****************************************************************/
 
-  // Extract attribute blocks, move them above the element they will be
+  // Extract headers attribute blocks, move them above the element they will be
   // applied to, and hash them for later.
-  Markdown.Extra.prototype.hashAttributeBlocks = function(text) {
+  Markdown.Extra.prototype.hashHeaderAttributeBlocks = function(text) {
+	  // TODO: use sentinels. Should we just add/remove them in doConversion?
+	  // TODO: better matches for id / class attributes
+	  var attrBlock = "\\{\\s*[.|#][^}]+\\}";
+	  var hdrAttributesA = new RegExp("^(#{1,6}.*#{0,6})\\s+(" + attrBlock + ")[ \\t]*(\\n|0x03)", "gm");
+	  var hdrAttributesB = new RegExp("^(.*)\\s+(" + attrBlock + ")[ \\t]*\\n" +
+		  "(?=[\\-|=]+\\s*(\\n|0x03))", "gm"); // underline lookahead
+	  
+	  var self = this;
+	  function attributeCallback(wholeMatch, pre, attr) {
+		  return '<p>~XX' + (self.hashBlocks.push(attr) - 1) + 'XX</p>\n' + pre + "\n";
+	  }
+
+	  text = text.replace(hdrAttributesA, attributeCallback);  // ## headers
+	  text = text.replace(hdrAttributesB, attributeCallback);  // underline headers
+	  return text;
+  };
+  
+  // Extract FCB attribute blocks, move them above the element they will be
+  // applied to, and hash them for later.
+  Markdown.Extra.prototype.hashFcbAttributeBlocks = function(text) {
     // TODO: use sentinels. Should we just add/remove them in doConversion?
     // TODO: better matches for id / class attributes
-    var attrBlock = "\\{\\s*[.|#][^}]+\\}";
-    var hdrAttributesA = new RegExp("^(#{1,6}.*#{0,6})\\s+(" + attrBlock + ")[ \\t]*(\\n|0x03)", "gm");
-    var hdrAttributesB = new RegExp("^(.*)\\s+(" + attrBlock + ")[ \\t]*\\n" +
-                                    "(?=[\\-|=]+\\s*(\\n|0x03))", "gm"); // underline lookahead
+	var attrBlock = "\\{\\s*[.|#][^}]+\\}";
     var fcbAttributes =  new RegExp("^(```[^{]*)\\s+(" + attrBlock + ")[ \\t]*\\n" +
                                     "(?=([\\s\\S]*?)\\n```\\s*(\\n|0x03))", "gm");
 
-    var self = this;
-    function attributeCallback(wholeMatch, pre, attr) {
-      return '<p>~XX' + (self.hashBlocks.push(attr) - 1) + 'XX</p>\n' + pre + "\n";
-    }
+	  var self = this;
+	  function attributeCallback(wholeMatch, pre, attr) {
+		  return '<p>~XX' + (self.hashBlocks.push(attr) - 1) + 'XX</p>\n' + pre + "\n";
+	  }
 
-    text = text.replace(hdrAttributesA, attributeCallback);  // ## headers
-    text = text.replace(hdrAttributesB, attributeCallback);  // underline headers
     return text.replace(fcbAttributes, attributeCallback);
   };
 
@@ -464,13 +490,6 @@
       return self.hashExtraBlock(html);
     });
 
-    return text;
-  };
-
-  Markdown.Extra.prototype.all = function(text) {
-    text = this.tables(text);
-    text = this.fencedCodeBlocks(text);
-    text = this.definitionLists(text);
     return text;
   };
 

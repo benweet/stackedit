@@ -1,7 +1,7 @@
 define(
-	[ "jquery", "bootstrap", "jgrowl", "layout", "Markdown.Editor", "storage", "config",
+	[ "jquery", "mathjax-editing", "bootstrap", "jgrowl", "layout", "Markdown.Editor", "storage", "config",
 		"underscore", "FileSaver", "css_browser_selector" ],
-	function($) {
+	function($, mathjaxEditing) {
 	
 	var core = {};
 	
@@ -370,6 +370,7 @@ define(
 		var editorScrollTop = editorElt.scrollTop();
 		var previewElt = $("#wmd-preview");
 		var previewScrollTop = previewElt.scrollTop();
+		console.log(previewScrollTop);
 		function animate(srcScrollTop, srcSectionList, destElt, destSectionList, callback) {
 			// Find the section corresponding to the offset
 			var sectionIndex = undefined;
@@ -496,6 +497,10 @@ define(
 			});
 		});
 		var editor = new Markdown.Editor(converter);
+		// Prettify
+		if(core.settings.converterType == "markdown-extra-prettify") {
+			editor.hooks.chain("onPreviewRefresh", prettyPrint);
+		}
 		if(viewerMode === false && core.settings.scrollLink === true) {
 			editor.hooks.chain("onPreviewRefresh", function() {
 				// Modify scroll position of the preview not the editor
@@ -507,10 +512,6 @@ define(
 					buildSections();
 				});
 			});
-		}
-		// Prettify
-		if(core.settings.converterType == "markdown-extra-prettify") {
-			editor.hooks.chain("onPreviewRefresh", prettyPrint);
 		}
 		// Custom insert link dialog
 		editor.hooks.set("insertLinkDialog", function (callback) {
@@ -526,6 +527,8 @@ define(
 			$("#modal-insert-image").modal();
 			return true;
 		});
+		// MathJax
+		mathjaxEditing.prepareWmdForMathJax(editor, [["$", "$"], ["\\\\(", "\\\\)"]]);
 		
 		editor.run();
 		firstChange = false;

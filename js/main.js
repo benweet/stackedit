@@ -11,6 +11,15 @@ requirejs.config({
     }
 });
 
+var load = requirejs.load;
+requirejs.load = function (context, moduleId, url) {
+    // MathJax configuration
+	if(url.indexOf("MathJax.js") !== -1) {
+		url += "?config=TeX-AMS_HTML";
+	}
+    return load(context, moduleId, url);
+};
+
 require(["jquery", "file-manager", "synchronizer", "publisher"], function($) {
 	$(function() {
 		// If browser has detected a new application cache.

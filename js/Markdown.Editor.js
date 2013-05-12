@@ -828,7 +828,7 @@
         var elapsedTime;
         var oldInputText;
         var maxDelay = 3000;
-        var startType = "delayed"; // The other legal value is "manual"
+        var startType = "manual"; // The other legal value is "manual"
 
         // Adds event listeners to elements
         var setupEvents = function (inputElem, listener) {

@@ -207,6 +207,7 @@ define(
 	// Setting management
 	core.settings = {
 		converterType : "markdown-extra-prettify",
+		enableMathJax : true,
 		layoutOrientation : "horizontal",
 		scrollLink : true,
 		editorFontSize : 14,
@@ -233,6 +234,8 @@ define(
 		$("#input-settings-scroll-link").prop("checked", core.settings.scrollLink);
 		// Converter type
 		$("#input-settings-converter-type").val(core.settings.converterType);
+		// MathJax
+		$("#input-settings-enable-mathjax").prop("checked", core.settings.enableMathJax);
 		// Editor font size
 		$("#input-settings-editor-font-size").val(core.settings.editorFontSize);
 		// Default content
@@ -251,6 +254,8 @@ define(
 			"input:radio[name=radio-layout-orientation]:checked").prop("value");
 		// Converter type
 		newSettings.converterType = $("#input-settings-converter-type").val();
+		// MathJax
+		newSettings.enableMathJax = $("#input-settings-enable-mathjax").prop("checked");
 		// Scroll Link
 		newSettings.scrollLink = $("#input-settings-scroll-link").prop("checked");
 		// Editor font size
@@ -355,7 +360,6 @@ define(
 		
 		// apply Scroll Link 
 		lastEditorScrollTop = -9;
-		lastPreviewScrollTop = -9;
 		scrollLink();
 	}, 500);
 	
@@ -370,7 +374,6 @@ define(
 		var editorScrollTop = editorElt.scrollTop();
 		var previewElt = $("#wmd-preview");
 		var previewScrollTop = previewElt.scrollTop();
-		console.log(previewScrollTop);
 		function animate(srcScrollTop, srcSectionList, destElt, destSectionList, callback) {
 			// Find the section corresponding to the offset
 			var sectionIndex = undefined;
@@ -501,8 +504,11 @@ define(
 		if(core.settings.converterType == "markdown-extra-prettify") {
 			editor.hooks.chain("onPreviewRefresh", prettyPrint);
 		}
-		if(viewerMode === false && core.settings.scrollLink === true) {
-			editor.hooks.chain("onPreviewRefresh", function() {
+		function previewFinished() {
+			if(viewerMode === false && core.settings.scrollLink === true) {
+				// MathJax may have change the scroll position. Restore it
+				$("#wmd-preview").scrollTop(lastPreviewScrollTop);
+				// Update Scroll Link sections
 				// Modify scroll position of the preview not the editor
 				lastEditorScrollTop = -9;
 				buildSections();
@@ -511,7 +517,14 @@ define(
 					lastEditorScrollTop = -9;
 					buildSections();
 				});
-			});
+			}
+		}
+		// MathJax
+		if(core.settings.enableMathJax === true) {
+			mathjaxEditing.prepareWmdForMathJax(editor, [["$", "$"], ["\\\\(", "\\\\)"]], previewFinished);
+		}
+		else {
+			editor.hooks.chain("onPreviewRefresh", previewFinished);
 		}
 		// Custom insert link dialog
 		editor.hooks.set("insertLinkDialog", function (callback) {
@@ -527,11 +540,10 @@ define(
 			$("#modal-insert-image").modal();
 			return true;
 		});
-		// MathJax
-		mathjaxEditing.prepareWmdForMathJax(editor, [["$", "$"], ["\\\\(", "\\\\)"]]);
 		
 		editor.run();
 		firstChange = false;
+		$("#wmd-input").bind('input propertychange', _.throttle(editor.refreshPreview, 1000));
 
 		// Hide default buttons
 		$(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)")

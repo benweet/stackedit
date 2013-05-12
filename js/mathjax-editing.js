@@ -1,4 +1,4 @@
-define([ "jquery", "../lib/MathJax/MathJax" ], function($) {
+define([ "../lib/MathJax/MathJax" ], function() {
 	
 	MathJax.Hub.Config({"HTML-CSS": {preferredFont: "TeX",availableFonts: ["STIX", "TeX"],linebreaks: {automatic: true},EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50), imageFont: null},
 	    tex2jax: {inlineMath: [["$", "$"], ["\\\\(", "\\\\)"]],displayMath: [["$$", "$$"], ["\\[", "\\]"]],processEscapes: true,ignoreClass: "tex2jax_ignore|dno"},
@@ -151,24 +151,12 @@ define([ "jquery", "../lib/MathJax/MathJax" ], function($) {
 	// This is run to restart MathJax after it has finished
 	// the previous run (that may have been canceled)
 	//
+	var refreshCallback = undefined;
 	function RestartMJ() {
 		pending = false;
 		HUB.cancelTypeset = false; // won't need to do this in the future
-		// Keep scroll position (due to a weird behavior when updating div) 
-		var scrollTop = undefined;
-		console.log($(preview).scrollTop());
-		HUB.Queue(function() {
-			console.log($(preview).scrollTop());
-			scrollTop = preview.scrollTop;
-		});
 		HUB.Queue([ "Typeset", HUB, preview ]);
-		HUB.Queue(function() {
-			console.log($(preview).scrollTop());
-			setTimeout(function() {
-				console.log($(preview).scrollTop());
-				preview.scrollTop = scrollTop;
-			}, 1000);
-		});
+		HUB.Queue(refreshCallback);
 	}
 
 	//
@@ -179,7 +167,6 @@ define([ "jquery", "../lib/MathJax/MathJax" ], function($) {
 		if (!pending && ready) {
 			pending = true;
 			HUB.Cancel();
-			console.log($(preview).scrollTop());
 			HUB.Queue(RestartMJ);
 		}
 	}
@@ -190,7 +177,8 @@ define([ "jquery", "../lib/MathJax/MathJax" ], function($) {
 	// to handle escaping the math.
 	// Create a preview refresh hook to handle starting MathJax.
 	//
-	function prepareWmdForMathJax(editorObject, delimiters) {
+	function prepareWmdForMathJax(editorObject, delimiters, callback) {
+		refreshCallback = callback;
 		preview = document.getElementById("wmd-preview");
 		inline = delimiters[0][0];
 

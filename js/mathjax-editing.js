@@ -1,4 +1,4 @@
-define([ "../lib/MathJax/MathJax" ], function() {
+define([ "MathJax" ], function() {
 	
 	MathJax.Hub.Config({"HTML-CSS": {preferredFont: "TeX",availableFonts: ["STIX", "TeX"],linebreaks: {automatic: true},EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50), imageFont: null},
 	    tex2jax: {inlineMath: [["$", "$"], ["\\\\(", "\\\\)"]],displayMath: [["$$", "$$"], ["\\[", "\\]"]],processEscapes: true,ignoreClass: "tex2jax_ignore|dno"},

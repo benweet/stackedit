@@ -1,6 +1,9 @@
 // RequireJS configuration
 requirejs.config({
 	waitSeconds: 0,
+	paths: {
+		MathJax: '../lib/MathJax/MathJax.js?config=TeX-AMS_HTML'
+    },
     shim: {
         'jquery-ui': ['jquery'],
         'bootstrap': ['jquery'],
@@ -10,15 +13,6 @@ requirejs.config({
         'Markdown.Editor': ['Markdown.Extra']
     }
 });
-
-var load = requirejs.load;
-requirejs.load = function (context, moduleId, url) {
-    // MathJax configuration
-	if(url.indexOf("MathJax.js") !== -1) {
-		url += "?config=TeX-AMS_HTML";
-	}
-    return load(context, moduleId, url);
-};
 
 require(["jquery", "file-manager", "synchronizer", "publisher"], function($) {
 	$(function() {

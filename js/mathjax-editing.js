@@ -151,12 +151,14 @@ define([ "../lib/MathJax/MathJax" ], function() {
 	// This is run to restart MathJax after it has finished
 	// the previous run (that may have been canceled)
 	//
-	var refreshCallback = undefined;
+	var beforeRefreshCallback = undefined;
+	var afterRefreshCallback = undefined;
 	function RestartMJ() {
 		pending = false;
 		HUB.cancelTypeset = false; // won't need to do this in the future
+		HUB.Queue(beforeRefreshCallback);
 		HUB.Queue([ "Typeset", HUB, preview ]);
-		HUB.Queue(refreshCallback);
+		HUB.Queue(afterRefreshCallback);
 	}
 
 	//
@@ -177,8 +179,9 @@ define([ "../lib/MathJax/MathJax" ], function() {
 	// to handle escaping the math.
 	// Create a preview refresh hook to handle starting MathJax.
 	//
-	function prepareWmdForMathJax(editorObject, delimiters, callback) {
-		refreshCallback = callback;
+	function prepareWmdForMathJax(editorObject, delimiters, beforeRefresh, afterRefresh) {
+		beforeRefreshCallback = beforeRefresh;
+		afterRefreshCallback = afterRefresh;
 		preview = document.getElementById("wmd-preview");
 		inline = delimiters[0][0];
 

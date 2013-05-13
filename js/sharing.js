@@ -125,10 +125,14 @@ define(["jquery", "core", "async-runner", "download-provider", "gist-provider", 
 		_.each(provider.sharingAttributes, function(attributeName) {
 			var parameter = core.getURLParameter(attributeName);
 			if(!parameter) {
+				importParameters = undefined;
 				return;
 			}
 			importParameters[attributeName] = parameter;
 		});
+		if(importParameters === undefined) {
+			return;
+		}
 		$("#wmd-preview, #file-title").hide();
 		provider.importPublic(importParameters, function(error, title, content) {
 			$("#wmd-preview, #file-title").show();

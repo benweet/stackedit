@@ -208,6 +208,7 @@ define(
 	core.settings = {
 		converterType : "markdown-extra-prettify",
 		enableMathJax : true,
+		lazyRendering : true,
 		layoutOrientation : "horizontal",
 		scrollLink : true,
 		editorFontSize : 14,
@@ -236,6 +237,8 @@ define(
 		$("#input-settings-converter-type").val(core.settings.converterType);
 		// MathJax
 		$("#input-settings-enable-mathjax").prop("checked", core.settings.enableMathJax);
+		// Lazy rendering
+		$("#input-settings-lazy-rendering").prop("checked", core.settings.lazyRendering);
 		// Editor font size
 		$("#input-settings-editor-font-size").val(core.settings.editorFontSize);
 		// Default content
@@ -258,6 +261,8 @@ define(
 		newSettings.enableMathJax = $("#input-settings-enable-mathjax").prop("checked");
 		// Scroll Link
 		newSettings.scrollLink = $("#input-settings-scroll-link").prop("checked");
+		// Lazy Rendering
+		newSettings.lazyRendering = $("#input-settings-lazy-rendering").prop("checked");
 		// Editor font size
 		newSettings.editorFontSize = core.getInputIntValue($("#input-settings-editor-font-size"), event, 1, 99);
 		// Default content
@@ -360,21 +365,23 @@ define(
 		
 		// apply Scroll Link 
 		lastEditorScrollTop = -9;
+		skipScrollLink = false;
 		scrollLink();
 	}, 500);
 	
 	// -9 is less than -5
 	var lastEditorScrollTop = -9;
 	var lastPreviewScrollTop = -9;
+	var skipScrollLink = false;
 	var scrollLink = _.debounce(function() {
-		if(mdSectionList.length === 0 || mdSectionList.length !== htmlSectionList.length) {
+		if(skipScrollLink === true || mdSectionList.length === 0 || mdSectionList.length !== htmlSectionList.length) {
 			return;
 		}
 		var editorElt = $("#wmd-input");
 		var editorScrollTop = editorElt.scrollTop();
 		var previewElt = $("#wmd-preview");
 		var previewScrollTop = previewElt.scrollTop();
-		function animate(srcScrollTop, srcSectionList, destElt, destSectionList, callback) {
+		function animate(srcScrollTop, srcSectionList, destElt, destSectionList, lastDestScrollTop, callback) {
 			// Find the section corresponding to the offset
 			var sectionIndex = undefined;
 			var srcSection = _.find(srcSectionList, function(section, index) {
@@ -389,19 +396,24 @@ define(
 			var destSection = destSectionList[sectionIndex];
 			var destScrollTop = destSection.startOffset + destSection.height * posInSection;
 			destScrollTop = _.min([destScrollTop, destElt.prop('scrollHeight') - destElt.outerHeight()]);
-			destElt.animate({scrollTop: destScrollTop}, 600, callback);
-			return destScrollTop;
+			if(Math.abs(destScrollTop - lastDestScrollTop) < 5) {
+				// Skip the animation in case it's not necessary
+				return;
+			}
+			destElt.animate({scrollTop: destScrollTop}, 600, function() {
+				callback(destScrollTop);
+			});
 		}
 		if(Math.abs(editorScrollTop - lastEditorScrollTop) > 5) {
 			lastEditorScrollTop = editorScrollTop;
-			previewScrollTop = animate(editorScrollTop, mdSectionList, previewElt, htmlSectionList, function() {
-				lastPreviewScrollTop = previewElt.scrollTop();
+			animate(editorScrollTop, mdSectionList, previewElt, htmlSectionList, lastPreviewScrollTop, function(destScrollTop) {
+				lastPreviewScrollTop = destScrollTop;
 			});
 		}
 		else if(Math.abs(previewScrollTop - lastPreviewScrollTop) > 5) {
 			lastPreviewScrollTop = previewScrollTop;
-			editorScrollTop = animate(previewScrollTop, htmlSectionList, editorElt, mdSectionList, function() {
-				lastEditorScrollTop = editorElt.scrollTop();
+			animate(previewScrollTop, htmlSectionList, editorElt, mdSectionList, lastEditorScrollTop, function(destScrollTop) {
+				lastEditorScrollTop = destScrollTop;
 			});
 		}
 	}, 600);
@@ -475,6 +487,9 @@ define(
 	// Create the PageDown editor
 	var insertLinkCallback = undefined;
 	core.createEditor = function(onTextChange) {
+		skipScrollLink = true;
+		lastPreviewScrollTop = -9;
+		$("#wmd-input, #wmd-preview").scrollTop(0);
 		$("#wmd-button-bar").empty();
 		var converter = new Markdown.Converter();
 		if(core.settings.converterType.indexOf("markdown-extra") === 0) {
@@ -504,33 +519,40 @@ define(
 		if(core.settings.converterType == "markdown-extra-prettify") {
 			editor.hooks.chain("onPreviewRefresh", prettyPrint);
 		}
-		function previewFinished() {
+		var previewRefreshFinished = function() {
 			if(viewerMode === false && core.settings.scrollLink === true) {
-				// MathJax may have change the scroll position. Restore it
-				$("#wmd-preview").scrollTop(lastPreviewScrollTop);
-				// Update Scroll Link sections
-				// Modify scroll position of the preview not the editor
-				lastEditorScrollTop = -9;
-				buildSections();
-				// Preview may change if images are loading
-				$("#wmd-preview img").load(function() {
+				function updateScrollLinkSections() {
+					// Modify scroll position of the preview not the editor
 					lastEditorScrollTop = -9;
 					buildSections();
-				});
+					// Preview may change if images are loading
+					$("#wmd-preview img").load(function() {
+						lastEditorScrollTop = -9;
+						buildSections();
+					});
+				}
+				// MathJax may have change the scroll position. Restore it
+				$("#wmd-preview").scrollTop(lastPreviewScrollTop);
+				_.defer(updateScrollLinkSections);
 			}
-		}
+		};
 		// MathJax
 		if(core.settings.enableMathJax === true) {
-			mathjaxEditing.prepareWmdForMathJax(editor, [["$", "$"], ["\\\\(", "\\\\)"]], previewFinished);
+			mathjaxEditing.prepareWmdForMathJax(editor, [["$", "$"], ["\\\\(", "\\\\)"]], function() {
+				skipScrollLink = true;
+			}, previewRefreshFinished);
 		}
 		else {
-			editor.hooks.chain("onPreviewRefresh", previewFinished);
+			editor.hooks.chain("onPreviewRefresh", previewRefreshFinished);
 		}
 		// Custom insert link dialog
 		editor.hooks.set("insertLinkDialog", function (callback) {
 			insertLinkCallback = callback;
 			core.resetModalInputs();
 			$("#modal-insert-link").modal();
+			_.defer(function() {
+				$("#input-insert-link").focus();
+			});
 			return true;
 	    });
 		// Custom insert image dialog
@@ -538,12 +560,22 @@ define(
 			insertLinkCallback = callback;
 			core.resetModalInputs();
 			$("#modal-insert-image").modal();
+			_.defer(function() {
+				$("#input-insert-image").focus();
+			});
 			return true;
 		});
 		
-		editor.run();
+		var previewWrapper = function(makePreview) {
+			return makePreview;
+		};
+		if(core.settings.lazyRendering === true) {
+			previewWrapper = function(makePreview) {
+				return _.debounce(makePreview, 500);
+			};
+		}
+		editor.run(previewWrapper);
 		firstChange = false;
-		$("#wmd-input").bind('input propertychange', _.throttle(editor.refreshPreview, 1000));
 
 		// Hide default buttons
 		$(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)")
@@ -844,6 +876,11 @@ define(
 			        'The mapping between Markdown and HTML is based on the position of the title elements (h1, h2, ...) in the page. ',
 			        'Therefore, if your document does not contain any title, the mapping will be linear and consequently less efficient.',
 			        ].join("")
+		});
+		$(".tooltip-lazy-rendering").tooltip({
+			container: '#modal-settings',
+			placement: 'right',
+			title: 'Disable preview rendering while typing in order to offload CPU. Refresh preview after 500 ms of inactivity.'
 		});
 		$(".tooltip-default-content").tooltip({
 			html: true,

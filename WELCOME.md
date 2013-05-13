@@ -109,17 +109,17 @@ Markdown Extra
 
 Item      | Value
 --------- | -----
-Computer  | $1600
-Phone     | $12
-Pipe      | $1
+Computer  | \$1600
+Phone     | \$12
+Pipe      | \$1
 
 You can specify column alignment with one or two colons:
 
-| Item      | Value | Qty  |
-| :-------- | -----:| :--: |
-| Computer  | $1600 |  5   |
-| Phone     |   $12 |  12  |
-| Pipe      |    $1 | 234  |
+| Item      |  Value | Qty  |
+| :-------- | ------:| :--: |
+| Computer  | \$1600 |  5   |
+| Phone     |   \$12 |  12  |
+| Pipe      |    \$1 | 234  |
 
 
 ### Definition Lists
@@ -154,7 +154,7 @@ var bar = 0;
 
 With **Markdown Extra**, you can specify `class` and `id` attributes on headers and fenced code blocks just like this:
 
-##### Title example {#my-title}
+##### Header example {#my-header}
 
 ``` {#my-id .my-class}
 var foo = bar;
@@ -163,10 +163,30 @@ var foo = bar;
 Then you can create cross-references like this: [beginning of the document](#welcome).
 
 
-> **NOTE:** You can find more information about **Markdown** syntax [here][1] or about **Markdown Extra** [here][2].
+### MathJax
+ 
+You can include **Latex** expressions to render mathematical formulas using **MathJax**, as on [math.stackexchange.com][1]:
+
+The *Gamma function* satisfying $\Gamma(n) = (n-1)!\quad\forall
+n\in\mathbb N$ is via through the Euler integral
+
+$$
+\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
+$$
+
+
+> **NOTE:** You can find more information:
+>
+> - about **Markdown** syntax [here][2],
+> - about **Markdown Extra** extension [here][3],
+> - about **Prettify** syntax highlighting [here][4],
+> - about **Latex** mathematical expressions [here][5].
 
 ----------
 
 
-  [1]: http://daringfireball.net/projects/markdown/syntax "Markdown"
-  [2]: http://michelf.ca/projects/php-markdown/extra/ "Markdown Extra"
+  [1]: http://math.stackexchange.com/
+  [2]: http://daringfireball.net/projects/markdown/syntax "Markdown"
+  [3]: http://michelf.ca/projects/php-markdown/extra/ "Markdown Extra"
+  [4]: https://code.google.com/p/google-code-prettify/
+  [5]: http://en.wikibooks.org/wiki/LaTeX/Mathematics

@@ -571,7 +571,15 @@ define(
 		};
 		if(core.settings.lazyRendering === true) {
 			previewWrapper = function(makePreview) {
-				return _.debounce(makePreview, 500);
+				var debouncedMakePreview = _.debounce(makePreview, 500); 
+				return function() {
+					if(firstChange === true) {
+						makePreview();
+					}
+					else {
+						debouncedMakePreview();
+					}
+				};
 			};
 		}
 		editor.run(previewWrapper);

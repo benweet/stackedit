@@ -57,7 +57,7 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 	};
 
 	fileManager.createFile = function(title, content, syncIndexes, isTemporary) {
-		content = content || core.settings.defaultContent;
+		content = content !== undefined ? content : core.settings.defaultContent;
 		syncIndexes = syncIndexes || [];
 		if (!title) {
 			// Create a file title 

@@ -41,6 +41,9 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 					core.fileManager.selectFile(fileIndex);
 					titleList.push('"' + file.title + '"');
 				});
+				if(titleList.length === 0) {
+					return;
+				}
 				core.showMessage(titleList.join(", ") + ' imported successfully from Google Drive.');
 			});
 		});

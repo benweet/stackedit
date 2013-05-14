@@ -392,7 +392,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 		loadPicker(task);
 		task.onRun(function() {			
 			var view = new google.picker.View(google.picker.ViewId.DOCS);
-			view.setMimeTypes("text/x-markdown,text/plain");
+			view.setMimeTypes("text/x-markdown,text/plain,application/octet-stream");
 			var pickerBuilder = new google.picker.PickerBuilder();
 			pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
 			pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);

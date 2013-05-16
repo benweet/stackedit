@@ -90,7 +90,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 					return;
 				}
 				// Handle error
-				if(error.status === Dropbox.ApiError.INVALID_PARAM) {
+				if(error.status === 400) {
 					error = 'Could not upload document into path "' + path + '".';
 				}
 				handleError(error, task);
@@ -237,13 +237,12 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				errorMsg = "Dropbox error ("
 					+ error.status + ": " + error.responseText + ").";
 
-				if (error.status === Dropbox.ApiError.INVALID_TOKEN
-					|| error.status === Dropbox.ApiError.OAUTH_ERROR) {
+				if (error.status === 401 || error.status === 403) {
 					authenticated = false;
 					errorMsg = "Access to Dropbox account is not authorized.";
 					task.retry(new Error(errorMsg), 1);
 					return;
-				} else if(error.status === Dropbox.ApiError.INVALID_PARAM && error.responseText
+				} else if(error.status === 400 && error.responseText
 						.indexOf("oauth_nonce") !== -1) {
 					// A bug I guess...
 					_.each(_.keys(localStorage), function(key) {
@@ -255,7 +254,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 					authenticated = false;
 					task.retry(new Error(errorMsg), 1);
 					return;
-				} else if (error.status === Dropbox.ApiError.NETWORK_ERROR || error.status < 0) {
+				} else if (error.status <= 0) {
 					client = undefined;
 					authenticated = false;
 					core.setOffline();

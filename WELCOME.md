@@ -47,7 +47,9 @@ You can export any document by going to the <i class="icon-gdrive"></i> `Google 
 
 #### <i class="icon-refresh"></i> Synchronize a document
 
-Once your document is linked to a **Google Drive** or a **Dropbox** file, **StackEdit** will periodically (every 3 minutes) synchronize it by downloading/uploading any modification. Any conflict will be detected, and a local copy of your document will be created as a backup if necessary. If you just have modified your document and you want to force the synchronization, click the <i class="icon-refresh"></i> button in the navigation bar.
+Once your document is linked to a **Google Drive** or a **Dropbox** file, **StackEdit** will periodically (every 3 minutes) synchronize it by downloading/uploading any modification. Any conflict will be detected, and a local copy of your document will be created as a backup if necessary.
+
+If you just have modified your document and you want to force the synchronization, click the <i class="icon-refresh"></i> button in the navigation bar.
 
 > **NOTE:** The <i class="icon-refresh"></i> button is disabled when:
 > 
@@ -57,7 +59,7 @@ Once your document is linked to a **Google Drive** or a **Dropbox** file, **Stac
 
 #### <i class="icon-refresh"></i> Manage document synchronization
 
-Since one document can be synchronized with multiple locations, you can list and manage synchronized locations by clicking <i class="icon-refresh"></i> `Manage synchronization` in the <i class="icon-stackedit"></i> menu. This will open a dialog box where you will be able to add or remove synchronization links that are associated to your document.
+Since one document can be synchronized with multiple locations, you can list and manage synchronized locations by clicking <i class="icon-refresh"></i> `Manage synchronization` in the <i class="icon-stackedit"></i> menu. This will open a dialog box allowing you to add or remove synchronization links that are associated to your document.
 
 > **NOTE:** If you delete the file on **Google Drive** or on **Dropbox**, the document will no longer be synchronized with that location.
 
@@ -90,7 +92,7 @@ After publishing, **StackEdit** will keep your document linked to that publish l
 
 #### <i class="icon-share"></i> Manage document publishing
 
-Since one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-share"></i> `Manage publishing` in the <i class="icon-stackedit"></i> menu. This will open a dialog box where you will be able to add or remove publication links that are associated to your document.
+Since one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-share"></i> `Manage publishing` in the <i class="icon-stackedit"></i> menu. This will open a dialog box allowing you to remove publication links that are associated to your document.
 
 > **NOTE:** In some cases, if you remove the file from the website or the post from the blog, the document will no longer be published on that location.
 

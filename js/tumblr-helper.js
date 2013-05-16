@@ -15,7 +15,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 		});
 	}
 
-	// Try to authenticate with Oauth
+	// Try to authenticate with OAuth
 	function authenticate(task) {
 		var authWindow = undefined;
 		var intervalId = undefined;

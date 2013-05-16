@@ -14,9 +14,11 @@ var AJAX_TIMEOUT = 30000;
 var ASYNC_TASK_DEFAULT_TIMEOUT = 60000;
 var ASYNC_TASK_LONG_TIMEOUT = 120000;
 var SYNC_PERIOD = 180000;
-var USER_IDLE_THRESHOLD = 300000;
+var USER_IDLE_THRESHOLD = 300000;	
 var WELCOME_DOCUMENT_TITLE = "Welcome document";
 var DOWNLOAD_PROXY_URL = "http://stackedit-download-proxy.herokuapp.com/";
+var WORDPRESS_CLIENT_ID = '3185';
+var WORDPRESS_PROXY_URL = "http://stackedit-wordpress-proxy.herokuapp.com/";
 
 // Use by Google's client.js
 var delayedFunction = undefined;

@@ -487,6 +487,7 @@ define(
 	// Create the PageDown editor
 	var insertLinkCallback = undefined;
 	core.createEditor = function(onTextChange) {
+		var firstChange = true;
 		skipScrollLink = true;
 		lastPreviewScrollTop = -9;
 		$("#wmd-input, #wmd-preview").scrollTop(0);
@@ -500,14 +501,6 @@ define(
 			}
 			Markdown.Extra.init(converter, options);
 		}
-		var firstChange = true;
-		converter.hooks.chain("preConversion", function(text) {
-			// Used to save changes when typing 
-			if (!firstChange) {
-				onTextChange();
-			}
-			return text;
-		});
 		// Convert email addresses (not managed by pagedown)
 		converter.hooks.chain("postConversion", function(text) {
 			return text.replace(/<(mailto\:)?([^\s>]+@[^\s>]+\.\S+?)>/g, function(match, mailto, email) {
@@ -567,7 +560,12 @@ define(
 		});
 		
 		var previewWrapper = function(makePreview) {
-			return makePreview;
+			return function() {
+				if(firstChange !== true) {
+					onTextChange();
+				}
+				makePreview();
+			};
 		};
 		if(core.settings.lazyRendering === true) {
 			previewWrapper = function(makePreview) {
@@ -577,6 +575,7 @@ define(
 						makePreview();
 					}
 					else {
+						onTextChange();
 						debouncedMakePreview();
 					}
 				};

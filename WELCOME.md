@@ -167,7 +167,7 @@ Then you can create cross-references like this: [beginning of the document](#wel
 
 ### MathJax
  
-You can include **Latex** expressions to render mathematical formulas using **MathJax**, as on [math.stackexchange.com][1]:
+You can include **LaTex** expressions to render mathematical formulas using **MathJax**, as on [math.stackexchange.com][1]:
 
 The *Gamma function* satisfying $\Gamma(n) = (n-1)!\quad\forall
 n\in\mathbb N$ is via through the Euler integral

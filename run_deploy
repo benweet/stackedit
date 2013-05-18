@@ -6,7 +6,5 @@ echo '### Modifying cache.manifest ###'
 sed -i "s/^#.*$/# `date`/g" cache.manifest
 echo '### Commit and push ###'
 git commit -a -m "Prepare deployment"
-git checkout gh-pages
-git merge master
-git checkout master
+git branch -f gh-pages master
 git push --all

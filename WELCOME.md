@@ -35,7 +35,7 @@ You can delete the current document by clicking the <i class="icon-trash"></i> b
 Synchronization
 ---------------
 
-**StackEdit** can be combined with **Google Drive** or **Dropbox** to have your documents centralized in the *Cloud*. The synchronization mechanism will take care of uploading your modifications or downloading the latest version of your documents.
+**StackEdit** can be combined with **Google Drive** and **Dropbox** to have your documents centralized in the *Cloud*. The synchronization mechanism will take care of uploading your modifications or downloading the latest version of your documents.
 
 #### <i class="icon-download"></i> Import a document
 
@@ -61,7 +61,7 @@ If you just have modified your document and you want to force the synchronizatio
 
 Since one document can be synchronized with multiple locations, you can list and manage synchronized locations by clicking <i class="icon-refresh"></i> `Manage synchronization` in the <i class="icon-stackedit"></i> menu. This will open a dialog box allowing you to add or remove synchronization links that are associated to your document.
 
-> **NOTE:** If you delete the file on **Google Drive** or on **Dropbox**, the document will no longer be synchronized with that location.
+> **NOTE:** If you delete the file from **Google Drive** or from **Dropbox**, the document will no longer be synchronized with that location.
 
 ----------
 
@@ -69,7 +69,7 @@ Since one document can be synchronized with multiple locations, you can list and
 Publication
 -----------
 
-Once you are happy with your document, you can publish it on different websites directly from **StackEdit**.
+Once you are happy with your document, you can publish it on different websites directly from **StackEdit**. As for now, **StackEdit** can publish on **Blogger**, **Dropbox**, **Gist**, **GitHub**, **Google Drive**, **Tumblr**, **WordPress**.
 
 #### <i class="icon-share"></i> Publish a document
 

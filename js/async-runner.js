@@ -44,7 +44,7 @@ define([ "core", "underscore" ], function(core) {
 		};
 		/**
 		 * chain() calls the next onRun callback or the onSuccess callbacks when
-		 * finished. The optional callback parameter can be used to add a onRun
+		 * finished. The optional callback parameter can be used to pass an onRun
 		 * callback during execution.
 		 */
 		task.chain = function(callback) {
@@ -72,7 +72,7 @@ define([ "core", "underscore" ], function(core) {
 			runCallback();
 		};
 		/**
-		 * error() calls the onError callbacks with the error parameter and ends
+		 * error() calls the onError callbacks passing the error parameter and ends
 		 * the task by throwing an exception.
 		 */
 		task.error = function(error) {
@@ -110,39 +110,37 @@ define([ "core", "underscore" ], function(core) {
 	};
 
 	// Run the next task in the queue if any and no other running
-	function runTask() {
+	asyncRunner.runTask = function() {
+		// Use defer to avoid stack overflow
+		_.defer(function() {
 
-		// If there is a task currently running
-		if (currentTaskRunning === true) {
-			// If the current task takes too long
-			if (currentTaskStartTime + currentTask.timeout < core.currentTime) {
-				currentTask.error(new Error("A timeout occurred."));
-			}
-			return;
-		}
-
-		if (currentTask === undefined) {
-			// If no task in the queue
-			if (taskQueue.length === 0) {
+			// If there is a task currently running
+			if (currentTaskRunning === true) {
+				// If the current task takes too long
+				if (currentTaskStartTime + currentTask.timeout < core.currentTime) {
+					currentTask.error(new Error("A timeout occurred."));
+				}
 				return;
 			}
 
-			// Dequeue an enqueued task
-			currentTask = taskQueue.shift();
-			currentTaskStartTime = core.currentTime;
-			core.showWorkingIndicator(true);
-		}
+			if (currentTask === undefined) {
+				// If no task in the queue
+				if (taskQueue.length === 0) {
+					return;
+				}
 
-		// Run the task
-		if (currentTaskStartTime <= core.currentTime) {
-			currentTaskRunning = true;
-			currentTask.chain();
-		}
-	}
+				// Dequeue an enqueued task
+				currentTask = taskQueue.shift();
+				currentTaskStartTime = core.currentTime;
+				core.showWorkingIndicator(true);
+			}
 
-	asyncRunner.runTask = function() {
-		// Use defer to avoid stack overflow
-		_.defer(runTask);
+			// Run the task
+			if (currentTaskStartTime <= core.currentTime) {
+				currentTaskRunning = true;
+				currentTask.chain();
+			}
+		});
 	};
 	// Run runTask function periodically
 	core.addPeriodicCallback(asyncRunner.runTask);

@@ -5,14 +5,14 @@ define(
 	
 	var core = {};
 	
-	// Usage: callback = callback || core.doNothing;
+	// For convenience
 	core.doNothing = function() {};
 	
 	// Time shared by others modules
-	core.currentTime = new Date().getTime();
 	function updateCurrentTime() {
 		core.currentTime = new Date().getTime();
 	}
+	updateCurrentTime();
 	
 	// Used for periodic tasks
 	var intervalId = undefined;

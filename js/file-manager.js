@@ -52,6 +52,7 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 		fileIndex = fileManager.getCurrentFileIndex();
 		$("#wmd-input").val(localStorage[fileIndex + ".content"]);
 		core.createEditor(function() {
+			// Callback to save content when textarea changes
 			fileManager.saveFile();
 		});
 	};
@@ -81,11 +82,14 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 		// Create the file in the localStorage
 		localStorage[fileIndex + ".content"] = content;
 		localStorage[fileIndex + ".title"] = title;
+		// Store syncIndexes associated to the file
 		var sync = _.reduce(syncIndexes, function(sync, syncIndex) {
 			return sync + syncIndex + ";";
 		}, ";");
 		localStorage[fileIndex + ".sync"] = sync;
+		// Store publishIndexes associated to the file
 		localStorage[fileIndex + ".publish"] = ";";
+		// Add the index to the file list
 		if(!isTemporary) {
 			localStorage["file.list"] += fileIndex + ";";
 		}
@@ -104,21 +108,23 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 		_.each(syncIndexList, function(syncIndex) {
 			fileManager.removeSync(syncIndex);
 		});
-		localStorage.removeItem(fileIndex + ".sync");
 		
 		// Remove publish locations
 		var publishIndexList = _.compact(localStorage[fileIndex + ".publish"].split(";"));
 		_.each(publishIndexList, function(publishIndex) {
 			fileManager.removePublish(publishIndex);
 		});
-		localStorage.removeItem(fileIndex + ".publish");
 
+		// Remove the index from the file list
 		localStorage["file.list"] = localStorage["file.list"].replace(";"
 			+ fileIndex + ";", ";");
 		localStorage.removeItem(fileIndex + ".title");
 		localStorage.removeItem(fileIndex + ".content");
+		localStorage.removeItem(fileIndex + ".sync");
+		localStorage.removeItem(fileIndex + ".publish");
 	};
 
+	// Save current file in localStorage
 	fileManager.saveFile = function() {
 		var content = $("#wmd-input").val();
 		var fileIndex = fileManager.getCurrentFileIndex();

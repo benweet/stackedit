@@ -1,0 +1,4 @@
+#!/bin/sh
+npm install requirejs
+r.js -o tools/optimize-css.json
+r.js -o tools/optimize-js.json

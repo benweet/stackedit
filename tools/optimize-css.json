@@ -1,0 +1,5 @@
+// RequireJS optimizer configuration file
+({
+    cssIn: "../css/main.css",
+    out: "../css/main-min.css"
+})

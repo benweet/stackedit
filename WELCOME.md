@@ -90,9 +90,9 @@ After publishing, **StackEdit** will keep your document linked to that publish l
 > - you are offline,
 > - or the document has not been published anywhere.
 
-#### <i class="icon-share"></i> Manage document publishing
+#### <i class="icon-share"></i> Manage document publication
 
-Since one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-share"></i> `Manage publishing` in the <i class="icon-stackedit"></i> menu. This will open a dialog box allowing you to remove publication links that are associated to your document.
+Since one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-share"></i> `Manage publication` in the <i class="icon-stackedit"></i> menu. This will open a dialog box allowing you to remove publication links that are associated to your document.
 
 > **NOTE:** In some cases, if you remove the file from the website or the post from the blog, the document will no longer be published on that location.
 

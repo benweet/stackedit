@@ -79,7 +79,7 @@ You can publish your document by going to the <i class="icon-share"></i> `Publis
 - HTML, to publish the document converted into HTML (on a blog for instance),
 - Template, to have a full control of the output.
 
-> **NOTE:** The default template is a simple webpage which wraps your document in HTML format. You can customize it in the `Publish` tab of the <i class="icon-cog"></i> `Settings` dialog.
+> **NOTE:** The default template is a simple webpage that wraps your document in HTML format. You can customize it in the `Publish` tab of the <i class="icon-cog"></i> `Settings` dialog.
 
 #### <i class="icon-share"></i> Update a publication
 

@@ -123,10 +123,10 @@ input[type="color"]:focus,
 
 .navbar-inner .btn.disabled,
 .navbar-inner .btn[disabled] {
-  color: #333333;
-  background-color: #ddd;
+    color: #333333;
+    background-color: #ddd;
     opacity: 0.3;
-  filter: alpha(opacity=30);
+    filter: alpha(opacity=30);
 }
 
 .dropdown-menu > li > a:hover,
@@ -136,7 +136,13 @@ input[type="color"]:focus,
 .dropdown-menu > .active > a,
 .dropdown-menu > .active > a:hover,
 .dropdown-menu > .active > a:focus {
-  background-color: #888;
+    background-color: #888;
+}
+
+.dropdown-menu > .disabled > a,
+.dropdown-menu > .disabled > a:hover,
+.dropdown-menu > .disabled > a:focus {
+	color: #bbb;
 }
 
 .btn-primary {
@@ -195,7 +201,12 @@ hr {
 
 #file-selector {
     max-height: 500px;
-    overflow-y: auto;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#file-selector .stick {
+	padding: 10px 20px 0;
 }
 
 #file-title {

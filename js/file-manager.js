@@ -133,7 +133,6 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 	};
 	
 	fileManager.updateFileTitles = function() {
-		$("#file-selector").empty();
 		fileDescList = _.chain(localStorage["file.list"].split(";")).compact()
 			.reduce(function(fileDescList, fileIndex) {
 				var title = localStorage[fileIndex + ".title"];
@@ -178,7 +177,7 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 		$("#file-title-input").val(title);
 		
 		// Update the file selector
-		$("#file-selector").empty();
+		$("#file-selector li:not(.stick)").empty();
 		_.each(fileDescList, function(fileDesc) {
 			var a = $("<a>").html(composeTitle(fileDesc.index));
 			var li = $("<li>").append(a);
@@ -243,6 +242,23 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 			}).value();
 	};
 	
+	// Filter for search input in file selector
+	function filterFileSelector(filter) {
+		var liList = $("#file-selector li:not(.stick)");
+		liList.show();
+		if(filter) {
+			var words = filter.toLowerCase().split(/\s+/);
+			liList.each(function() {
+				var fileTitle = $(this).text().toLowerCase();
+				if(_.some(words, function(word) {
+					return fileTitle.indexOf(word) === -1;
+				})) {
+					$(this).hide();
+				}
+			});
+		}
+	}
+	
 	core.onReady(function() {
 		fileManager.selectFile();
 
@@ -286,6 +302,17 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 				$(this).val("");
 				applyTitle($(this));
 			}
+		});
+		$(".action-open-file").click(function() {
+			filterFileSelector();
+			_.defer(function() {
+				$("#file-search").val("").focus();
+			});
+		});
+		$("#file-search").keyup(function() {
+			filterFileSelector($(this).val());
+		}).click(function(event) {
+			event.stopPropagation();
 		});
 		$(".action-open-stackedit").click(function() {
 			window.location.href = ".";

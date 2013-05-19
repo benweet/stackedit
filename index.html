@@ -263,23 +263,25 @@
 				is synchronized with the following location(s):
 			</p>
 			<div id="manage-sync-list"></div>
-			<p class="msg-sync-list hide muted"><b>NOTE:</b> Removing a
-				synchronized location will not delete any file.</p>
-			<p class="msg-no-sync hide">"<span class="file-title"></span>" is
-				not synchronized yet.
-			</p>
+			<blockquote class="msg-sync-list hide muted">
+				<b>NOTE:</b> Removing a synchronized location will not delete any
+				file.
+			</blockquote>
+			<blockquote class="msg-no-sync hide muted">
+				"<span class="file-title"></span>" is not synchronized yet.
+			</blockquote>
 			<p>Add a synchronized location manually:</p>
 			<div class="input-prepend input-append">
 				<span class="add-on" title="Google Drive"><i
 					class="icon-gdrive"></i></span><input id="input-sync-manual-gdrive-id"
-					type="text" class="span5" placeholder="Google Drive file ID"></input>
+					type="text" class="span5" placeholder="GoogleDriveFileID"></input>
 				<a class="btn action-sync-manual-gdrive" title="Add location"
 					data-dismiss="modal"><i class="icon-ok"></i></a>
 			</div>
 			<div class="input-prepend input-append">
 				<span class="add-on" title="Dropbox"><i class="icon-dropbox"></i></span><input
 					id="input-sync-manual-dropbox-path" type="text" class="span5"
-					placeholder="Dropbox file path"></input> <a
+					placeholder="/dropbox/file/path"></input> <a
 					class="btn action-sync-manual-dropbox" title="Add location"
 					data-dismiss="modal"><i class="icon-ok"></i></a>
 			</div>
@@ -303,25 +305,63 @@
 		</div>
 		<div class="modal-body">
 			<div class="form-horizontal">
+				<div class="control-group modal-publish-ssh">
+					<label class="control-label" for="input-publish-ssh-host">Host</label>
+					<div class="controls">
+						<input type="text" id="input-publish-ssh-host"
+							placeholder="host.name.or.ip"> <span class="help-block">
+							Host must be accessible publicly, unless you are hosting your own
+							<a target="_blank"
+							href="https://github.com/benweet/stackedit-ssh-proxy">SSH
+								proxy</a>.
+						</span>
+					</div>
+				</div>
+				<div class="control-group modal-publish-ssh">
+					<label class="control-label" for="input-publish-ssh-port">Port
+						(optional)</label>
+					<div class="controls">
+						<input type="text" id="input-publish-ssh-port" placeholder="22">
+					</div>
+				</div>
+				<div class="control-group modal-publish-ssh">
+					<label class="control-label" for="input-publish-ssh-username">Username</label>
+					<div class="controls">
+						<input type="text" id="input-publish-ssh-username"
+							placeholder="username">
+					</div>
+				</div>
+				<div class="control-group modal-publish-ssh">
+					<label class="control-label" for="input-publish-ssh-password">Password</label>
+					<div class="controls">
+						<input type="password" id="input-publish-ssh-password"
+							placeholder="password"> <span class="help-block">
+							Passwords are transmitted in clear, unless you are hosting your
+							own <a target="_blank"
+							href="https://github.com/benweet/stackedit-ssh-proxy">SSH
+								proxy</a>.
+						</span>
+					</div>
+				</div>
 				<div class="control-group modal-publish-github">
 					<label class="control-label" for="input-publish-github-reponame">Repository</label>
 					<div class="controls">
 						<input type="text" id="input-publish-github-reponame"
-							placeholder="Repository name">
+							placeholder="repository-name">
 					</div>
 				</div>
 				<div class="control-group modal-publish-github">
 					<label class="control-label" for="input-publish-github-branch">Branch</label>
 					<div class="controls">
 						<input type="text" id="input-publish-github-branch"
-							placeholder="Branch name">
+							placeholder="branch-name">
 					</div>
 				</div>
-				<div class="control-group modal-publish-github">
-					<label class="control-label" for="input-publish-github-path">File
+				<div class="control-group modal-publish-ssh modal-publish-github">
+					<label class="control-label" for="input-publish-file-path">File
 						path</label>
 					<div class="controls">
-						<input type="text" id="input-publish-github-path"
+						<input type="text" id="input-publish-file-path"
 							placeholder="path/to/file.md">
 					</div>
 				</div>
@@ -329,15 +369,14 @@
 					<label class="control-label" for="input-publish-filename">Filename</label>
 					<div class="controls">
 						<input type="text" id="input-publish-filename"
-							placeholder="Filename">
+							placeholder="filename">
 					</div>
 				</div>
 				<div class="control-group modal-publish-gist">
 					<label class="control-label" for="input-publish-gist-id">Existing
 						ID (optional)</label>
 					<div class="controls">
-						<input type="text" id="input-publish-gist-id"
-							placeholder="Gist ID">
+						<input type="text" id="input-publish-gist-id" placeholder="GistID">
 					</div>
 				</div>
 				<div class="control-group modal-publish-gist">
@@ -376,7 +415,7 @@
 					<label class="control-label" for="input-publish-postid">Update
 						existing post ID (optional)</label>
 					<div class="controls">
-						<input type="text" id="input-publish-postid" placeholder="Post ID">
+						<input type="text" id="input-publish-postid" placeholder="PostID">
 					</div>
 				</div>
 				<div class="control-group modal-publish-blogger">
@@ -409,25 +448,20 @@
 						ID (optional)</label>
 					<div class="controls">
 						<input type="text" id="input-publish-gdrive-fileid"
-							placeholder="File ID">
+							placeholder="FileID"> <span class="help-block">If
+							no file ID is supplied, the file will be created in your Google
+							Drive root folder. You can move the file afterwards within Google
+							Drive.</span>
 					</div>
-				</div>
-				<div class="control-group modal-publish-gdrive">
-					<div class="controls muted">If no file ID is supplied, the
-						file will be created into your Google Drive root folder. You can
-						move the file afterwards within Google Drive.</div>
 				</div>
 				<div class="control-group modal-publish-gdrive">
 					<label class="control-label" for="input-publish-gdrive-filename">Force
-						file name (optional)</label>
+						filename (optional)</label>
 					<div class="controls">
 						<input type="text" id="input-publish-gdrive-filename"
-							placeholder="File name">
+							placeholder="Filename"> <span class="help-block">If
+							no file name is supplied, the document title will be used.</span>
 					</div>
-				</div>
-				<div class="control-group modal-publish-gdrive">
-					<div class="controls muted">If no file name is supplied, the
-						document title will be used.</div>
 				</div>
 
 				<div class="control-group">
@@ -461,9 +495,9 @@
 				is published on the following location(s):
 			</p>
 			<div id="manage-publish-list"></div>
-			<p class="msg-no-publish hide">"<span class="file-title"></span>"
-				is not published yet.
-			</p>
+			<blockquote class="msg-no-publish hide muted">
+				"<span class="file-title"></span>" is not published yet.
+			</blockquote>
 			<blockquote class="muted">
 				<b>NOTE:</b> You can add locations using "Publish on" sub-menu.
 			</blockquote>
@@ -575,6 +609,13 @@
 								<textarea id="textarea-settings-publish-template"></textarea>
 							</div>
 						</div>
+						<div class="control-group">
+							<label class="control-label" for="input-settings-ssh-proxy">SSH
+								proxy</label>
+							<div class="controls">
+								<input type="text" id="input-settings-ssh-proxy">
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="tab-pane" id="tabpane-settings-utils">
@@ -615,7 +656,7 @@
 				<dd>
 					<a target="_blank"
 						href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome
-						app</a>
+						app</a> (thanks for your review!)
 				</dd>
 				<dd>
 					<a target="_blank" href="https://twitter.com/stackedit/">Follow
@@ -689,6 +730,29 @@
 					<a target="_blank" href="http://underscorejs.org/">Underscore.js</a>
 				</dd>
 			</dl>
+			<dl>
+				<dt>Related projects:</dt>
+				<dd>
+					<a target="_blank"
+						href="https://github.com/benweet/stackedit-download-proxy">StackEdit
+						Download Proxy</a>
+				</dd>
+				<dd>
+					<a target="_blank"
+						href="https://github.com/benweet/stackedit-ssh-proxy">StackEdit
+						SSH Proxy</a>
+				</dd>
+				<dd>
+					<a target="_blank"
+						href="https://github.com/benweet/stackedit-tumblr-proxy">StackEdit
+						Tumblr Proxy</a>
+				</dd>
+				<dd>
+					<a target="_blank"
+						href="https://github.com/benweet/stackedit-wordpress-proxy">StackEdit
+						WordPress Proxy</a>
+				</dd>
+			</dl>
 			<p>Copyright 2013 <a target="_blank"
 				href="http://www.benoitschweblin.com">Benoit Schweblin</a><br />
 				Licensed under an <a target="_blank"
@@ -731,5 +795,6 @@
 
 	<textarea id="md-section-helper"></textarea>
 	<div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>
+
 </body>
 </html>

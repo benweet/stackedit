@@ -1,4 +1,4 @@
-define(["jquery", "core", "sharing", "blogger-provider", "dropbox-provider", "gist-provider", "github-provider", "gdrive-provider", "tumblr-provider", "wordpress-provider", "underscore"],
+define(["jquery", "core", "sharing", "blogger-provider", "dropbox-provider", "gist-provider", "github-provider", "gdrive-provider", "ssh-provider", "tumblr-provider", "wordpress-provider", "underscore"],
 	function($, core, sharing) {
 
 	var publisher = {};
@@ -198,6 +198,9 @@ define(["jquery", "core", "sharing", "blogger-provider", "dropbox-provider", "gi
 		}
 		_.each(publishIndexList, function(publishIndex) {
 			var publishAttributes = JSON.parse(localStorage[publishIndex]);
+			if(publishAttributes.password) {
+				publishAttributes.password = "********";
+			}
 			var publishDesc = JSON.stringify(publishAttributes).replace(/{|}|"/g, "");
 			var lineElement = $(_.template(lineTemplate, {
 				provider: providerMap[publishAttributes.provider],

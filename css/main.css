@@ -51,12 +51,12 @@ div, span, a, ul, li, textarea, input, button {
 }
 
 .dropdown-menu {
-    border: 1px solid #e2e2e2 !important;
+    border: 1px solid #ddd !important;
     text-align: left;
 }
 
 .dropdown-menu:before {
-	border-bottom-color: #e2e2e2 !important;
+	border-bottom-color: #ddd !important;
 }
 
 input,
@@ -64,7 +64,33 @@ select,
 textarea,
 .input-prepend .btn,
 .input-prepend .add-on {
-    border: 1px solid #ebebeb !important;
+    border: 1px solid #ddd !important;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus
+{
+    border-color: rgba(82, 168, 236, 0.8) !important;
+}
+
+.help-block {
+    color: #999999;
+    font-size: 12px;
+    line-height: 17px;
 }
 
 .error {
@@ -341,6 +367,13 @@ div.dropdown-menu i {
 	width: 16px;
 	height: 16px;
 	background-position: -109px 0;
+}
+
+.icon-ssh {
+	background-image: url("../img/icons.png") !important;
+	width: 16px;
+	height: 16px;
+	background-position: -127px 0;
 }
 
 .working-indicator {

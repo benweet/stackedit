@@ -19,6 +19,7 @@ var WELCOME_DOCUMENT_TITLE = "Welcome document";
 var DOWNLOAD_PROXY_URL = "http://stackedit-download-proxy.herokuapp.com/";
 var WORDPRESS_CLIENT_ID = '3185';
 var WORDPRESS_PROXY_URL = "http://stackedit-wordpress-proxy.herokuapp.com/";
+var SSH_PROXY_URL = "http://stackedit-ssh-proxy.herokuapp.com/";
 
 // Use by Google's client.js
 var delayedFunction = undefined;

@@ -65,8 +65,8 @@ define(
 
 	// Useful function for input control
 	function inputError(element, event) {
-		element.stop(true, true).addClass("error").delay(800).switchClass("error");
 		if(event !== undefined) {
+			element.stop(true, true).addClass("error").delay(800).switchClass("error");
 			event.stopPropagation();
 		}
 	}
@@ -100,14 +100,20 @@ define(
 		return value;
 	};
 	core.resetModalInputs = function() {
-		$(".modal input[type=text]:not([disabled])").val("");
+		$(".modal input[type=text]:not([disabled]), .modal input[type=password]").val("");
 	};
 	core.trim = function(str) {
 		return str.replace(/^\s+|\s+$/g, '');
 	};
-	core.checkUrl = function(url) {
+	core.checkUrl = function(url, addSlash) {
+		if(!url) {
+			return url;
+		}
 		if(url.indexOf("http") !== 0) {
-			return "http://" + url;
+			url = "http://" + url;
+		}
+		if(addSlash && url.indexOf("/", url.length - 1) === -1) {
+			url += "/";
 		}
 		return url;
 	};
@@ -220,7 +226,9 @@ define(
 			'<title><%= documentTitle %></title>\n',
 			'</head>\n',
 			'<body><%= documentHTML %></body>\n',
-			'</html>'].join("")
+			'</html>'].join(""),
+		sshProxy : SSH_PROXY_URL,
+		sshConnectionList : []
 	};
 	
 	core.loadSettings = function() {
@@ -247,6 +255,8 @@ define(
 		$("#input-settings-publish-commit-msg").val(core.settings.commitMsg);
 		// Template
 		$("#textarea-settings-publish-template").val(core.settings.template);
+		// SSH proxy
+		$("#input-settings-ssh-proxy").val(core.settings.sshProxy);
 	};
 
 	core.saveSettings = function(event) {
@@ -271,9 +281,11 @@ define(
 		newSettings.commitMsg = core.getInputValue($("#input-settings-publish-commit-msg"), event);
 		// Template
 		newSettings.template = core.getInputValue($("#textarea-settings-publish-template"), event);
+		// SSH proxy
+		newSettings.sshProxy = core.checkUrl(core.getInputValue($("#input-settings-ssh-proxy"), event), true);
 		
 		if(!event.isPropagationStopped()) {
-			core.settings = newSettings;
+			$.extend(core.settings, newSettings);
 			localStorage.settings = JSON.stringify(newSettings);
 		}
 	};
@@ -356,12 +368,6 @@ define(
 			endOffset: scrollHeight,
 			height: scrollHeight - htmlSectionOffset
 		});
-		
-		/*
-		console.log("mdSectionList: " + _.map(mdSectionList, function(section) {
-			return section.endOffset;
-		}));
-		*/
 		
 		// apply Scroll Link 
 		lastEditorScrollTop = -9;

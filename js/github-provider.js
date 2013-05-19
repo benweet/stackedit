@@ -17,7 +17,7 @@ define(["jquery", "core", "github-helper"], function($, core, githubHelper) {
 		var publishAttributes = {};
 		publishAttributes.repository = core.getInputValue($("#input-publish-github-reponame"), event);
 		publishAttributes.branch = core.getInputValue($("#input-publish-github-branch"), event);
-		publishAttributes.path = core.getInputValue($("#input-publish-github-path"), event);
+		publishAttributes.path = core.getInputValue($("#input-publish-file-path"), event);
 		if(event.isPropagationStopped()) {
 			return undefined;
 		}

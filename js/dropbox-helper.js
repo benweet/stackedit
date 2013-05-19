@@ -10,7 +10,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 		task.onRun(function() {
 			if(core.isOffline === true) {
 				client = undefined;
-				task.error(new Error("Operation not available in offline mode."));
+				task.error(new Error("Operation not available in offline mode.|stopPublish"));
 				return;
 			}		
 			if (client !== undefined) {

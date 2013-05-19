@@ -193,6 +193,11 @@ hr {
     margin: 30px 0;
 }
 
+#file-selector {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
 #file-title {
     line-height: 23px;
     padding: 9px 15px 11px;

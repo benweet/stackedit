@@ -66,7 +66,7 @@ define(
 	// Useful function for input control
 	function inputError(element, event) {
 		if(event !== undefined) {
-			element.stop(true, true).addClass("error").delay(800).switchClass("error");
+			element.stop(true, true).addClass("error").delay(1000).switchClass("error");
 			event.stopPropagation();
 		}
 	}

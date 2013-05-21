@@ -9,7 +9,7 @@ In **StackEdit**, a theme is pretty much a CSS file that overrides the default l
 
  2. Create a sub-folder in the `themes` folder containing your resources (CSS, images...).
 
-	> The main CSS should have the same name as the folder.
+	> The CSS file should have the same name as the folder.
 
 	> **Example:** `themes/cool-theme/cool-theme.css`
 

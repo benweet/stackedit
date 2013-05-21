@@ -15,7 +15,7 @@ In **StackEdit**, a theme is pretty much a CSS file that overrides the default l
 
  3. Add an entry in `THEME_LIST` at the end of `config.js` with the folder name as key and the name of your theme as value.
 
-	> **Example:** `"cool-theme": "Very cool theme"`.
+	> **Example:** `"cool-theme": "Very cool theme"`
 
  4. Run the application on your machine, go to `Settings -> Editor -> Theme` and select your theme. Check that everything is beautiful (don't forget to test `viewer.html`).
 

@@ -1,9 +1,9 @@
 StackEdit theming guide
 =======================
 
-Basically in **StackEdit**, a theme is a CSS file that overrides the default look and feel.
+In **StackEdit**, a theme is pretty much a CSS file that overrides the default look and feel.
 
-Create a special theme very quickly by following these steps:
+*Create your special theme very quickly by following these steps:*
 
  1. Fork **StackEdit** on [GitHub][1]
 
@@ -13,7 +13,7 @@ Create a special theme very quickly by following these steps:
 
 	> **Example:** `themes/cool-theme/cool-theme.css`
 
- 3. Add an entry in the `THEME_LIST` object at the end of `config.js` with the folder name as key and the name of your theme as value.
+ 3. Add an entry in `THEME_LIST` at the end of `config.js` with the folder name as key and the name of your theme as value.
 
 	> **Example:** `"cool-theme": "Very cool theme"`.
 
@@ -22,6 +22,12 @@ Create a special theme very quickly by following these steps:
  5. Commit, push, create a pull request and wait for publishing...
 
 That's it!
+
+**Please, keep in mind these simple rules:**
+
+ - Avoid using gradients and shadows as much as possible (for performance concern).
+ - Try to create something at least as nice as the default theme...
+
 
 > Written with [StackEdit](http://benweet.github.io/stackedit/).
 

@@ -43,3 +43,8 @@ if(location.hostname.indexOf("benweet.github.io") === 0) {
 	GATEKEEPER_URL = "http://stackedit-gatekeeper.herokuapp.com/";
 	TUMBLR_PROXY_URL = "http://stackedit-tumblr-proxy.herokuapp.com/";
 }
+
+var THEME_LIST = {
+	"": "Default",
+	"blue-gray": "Blue-Gray"
+};

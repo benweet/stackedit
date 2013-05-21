@@ -93,6 +93,8 @@ lib/MathJax/jax/output/HTML-CSS/fonts/TeX/AMS/Regular/MiscTechnical.js
 lib/MathJax/jax/output/HTML-CSS/fonts/TeX/AMS/Regular/PUA.js
 lib/MathJax/jax/output/HTML-CSS/fonts/TeX/AMS/Regular/SpacingModLetters.js
 lib/MathJax/jax/output/HTML-CSS/fonts/TeX/AMS/Regular/SuppMathOperators.js
+themes/blue-gray/ajax-loader-blue-gray.gif
+themes/blue-gray/blue-gray.css
 
 
 NETWORK:

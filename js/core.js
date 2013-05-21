@@ -241,6 +241,8 @@ define(
 				+ core.settings.layoutOrientation + "]").prop("checked", true);
 		// Scroll Link
 		$("#input-settings-scroll-link").prop("checked", core.settings.scrollLink);
+		// Theme
+		$("#input-settings-theme").val(localStorage.theme);
 		// Converter type
 		$("#input-settings-converter-type").val(core.settings.converterType);
 		// MathJax
@@ -265,6 +267,8 @@ define(
 		// Layout orientation
 		newSettings.layoutOrientation = $(
 			"input:radio[name=radio-layout-orientation]:checked").prop("value");
+		// Theme
+		var theme = $("#input-settings-theme").val();
 		// Converter type
 		newSettings.converterType = $("#input-settings-converter-type").val();
 		// MathJax
@@ -287,6 +291,7 @@ define(
 		if(!event.isPropagationStopped()) {
 			$.extend(core.settings, newSettings);
 			localStorage.settings = JSON.stringify(newSettings);
+			localStorage.theme = theme;
 		}
 	};
 	
@@ -795,6 +800,11 @@ define(
 		$.jGrowl.defaults.closer = false;
 		$.jGrowl.defaults.closeTemplate = '';
 		$.jGrowl.defaults.position = 'bottom-right';
+		
+		// Load theme list
+		_.each(THEME_LIST, function(name, value) {
+			$("#input-settings-theme").append($('<option value="' + value + '">' + name + '</option>'));
+		});
 		
 		// listen to online/offline events
 		$(window).on('offline', core.setOffline);

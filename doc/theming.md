@@ -23,7 +23,7 @@ In **StackEdit**, a theme is pretty much a CSS file that overrides the default l
 
 That's it!
 
-**Please, keep in mind these simple rules:**
+### Please, keep in mind these simple rules
 
  - Avoid using gradients, shadows and other effects as much as possible (for performance concern).
  - Try to create something at least as nice as the default theme...

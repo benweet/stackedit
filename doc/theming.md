@@ -13,7 +13,7 @@ In **StackEdit**, a theme is pretty much a CSS file that overrides the default l
 
 	> **Example:** `themes/cool-theme/cool-theme.css`
 
- 3. Add an entry in `THEME_LIST` at the end of `config.js` with the folder name as key and the name of your theme as value.
+ 3. Add an entry in `THEME_LIST` at the end of `config.js` with the folder name as a key and the name of your theme as a value.
 
 	> **Example:** `"cool-theme": "Very cool theme"`
 

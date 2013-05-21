@@ -5,7 +5,7 @@ In **StackEdit**, a theme is pretty much a CSS file that overrides the default l
 
 *Create your special theme very quickly by following these steps:*
 
- 1. Fork **StackEdit** on [GitHub][1]
+ 1. Fork **StackEdit** on [GitHub][1].
 
  2. Create a sub-folder in the `themes` folder containing your resources (CSS, images...).
 

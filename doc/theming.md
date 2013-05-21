@@ -17,15 +17,15 @@ In **StackEdit**, a theme is pretty much a CSS file that overrides the default l
 
 	> **Example:** `"cool-theme": "Very cool theme"`
 
- 4. Run the application on your machine, go to `Settings -> Editor -> Theme` and select your theme. Check that everything is beautiful (don't forget to test `viewer.html`).
+ 4. Run the application on your machine, go to `Settings -> Editor -> Theme` and select your theme. Check that everything is marvelous (don't forget to test the `viewer.html`).
 
- 5. Commit, push, create a pull request and wait for publishing...
+ 5. List your resource files in `cache.manifest`, commit, push, create a pull request and wait for publishing...
 
 That's it!
 
 **Please, keep in mind these simple rules:**
 
- - Avoid using gradients and shadows as much as possible (for performance concern).
+ - Avoid using gradients, shadows and other effects as much as possible (for performance concern).
  - Try to create something at least as nice as the default theme...
 
 

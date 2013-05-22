@@ -4,7 +4,8 @@ define(["jquery", "core", "github-helper"], function($, core, githubHelper) {
 	
 	var githubProvider = {
 		providerId: PROVIDER_GITHUB,
-		providerName: "GitHub"
+		providerName: "GitHub",
+		publishPreferencesInputIds: ["github-reponame", "github-branch"]
 	};
 	
 	githubProvider.publish = function(publishAttributes, title, content, callback) {

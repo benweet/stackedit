@@ -5,7 +5,8 @@ define(["jquery", "core", "wordpress-helper"], function($, core, wordpressHelper
 	var wordpressProvider = {
 		providerId: PROVIDER_WORDPRESS,
 		providerName: "WordPress",
-		defaultPublishFormat: "html"
+		defaultPublishFormat: "html",
+		publishPreferencesInputIds: ["wordpress-site"]
 	};
 	
 	wordpressProvider.publish = function(publishAttributes, title, content, callback) {

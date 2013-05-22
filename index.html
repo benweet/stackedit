@@ -100,8 +100,7 @@
 							<ul class="dropdown-menu">
 								<li><a href="#" class="action-sync-import-gdrive">Import
 										from Google Drive</a></li>
-								<li><a href="#" data-toggle="modal"
-									data-target="#modal-upload-gdrive" class="action-reset-input">Export
+								<li><a href="#" class="action-sync-export-dialog-gdrive">Export
 										to Google Drive</a></li>
 							</ul></li>
 						<li class="dropdown-submenu"><a href="#"><i
@@ -109,8 +108,7 @@
 							<ul class="dropdown-menu">
 								<li><a class="action-sync-import-dropbox" href="#">Import
 										from Dropbox</a></li>
-								<li><a href="#" data-toggle="modal"
-									data-target="#modal-upload-dropbox" class="action-reset-input">Export
+								<li><a href="#" class="action-sync-export-dialog-dropbox">Export
 										to Dropbox</a></li>
 							</ul></li>
 						<li><a href="#" data-toggle="modal"
@@ -215,11 +213,24 @@
 			<h3>Export to Google Drive</h3>
 		</div>
 		<div class="modal-body">
-			<p>This will upload the current document into your Google Drive
-				root folder and keep it synchronized.</p>
+			<blockquote class="muted">This will upload the current
+				document to your Google Drive account and keep it synchronized.</blockquote>
+			<p>Here, you can specify a <b>folder ID</b> (optional):
+			</p>
+			<div class="input-prepend">
+				<span class="add-on"><i class="icon-gdrive"></i></span><input
+					id="input-sync-export-gdrive-parentid" type="text" class="span5"
+					placeholder="FolderID"></input>
+			</div>
+			<br /> <br />
 			<blockquote class="muted">
-				<b>NOTE:</b> You can move or rename the file afterwards within
-				Google Drive.
+				<b>NOTE:</b>
+				<ul>
+					<li>If no folder ID is supplied, the file will be created in
+						your root folder.</li>
+					<li>You can move or rename the file afterwards within Google
+						Drive.</li>
+				</ul>
 			</blockquote>
 		</div>
 		<div class="modal-footer">
@@ -236,9 +247,9 @@
 			<h3>Export to Dropbox</h3>
 		</div>
 		<div class="modal-body">
-			<p>This will upload the current document to your Dropbox account
-				and keep it synchronized.</p>
-			<p>Please specify a file path for "<span class="file-title"></span>":
+			<blockquote class="muted">This will upload the current
+				document to your Dropbox account and keep it synchronized.</blockquote>
+			<p>Please specify a <b>file path</b> for "<span class="file-title"></span>":
 			</p>
 			<div class="input-prepend">
 				<span class="add-on"><i class="icon-dropbox"></i></span><input
@@ -460,7 +471,7 @@
 					<div class="controls">
 						<input type="text" id="input-publish-gdrive-fileid"
 							placeholder="FileID"> <span class="help-block">If
-							no file ID is supplied, the file will be created in your Google
+							no file ID is supplied, a new file will be created in your Google
 							Drive root folder. You can move the file afterwards within Google
 							Drive.</span>
 					</div>
@@ -506,10 +517,10 @@
 				is published on the following location(s):
 			</p>
 			<div id="manage-publish-list"></div>
-			<blockquote class="msg-no-publish hide muted">
-				"<span class="file-title"></span>" is not published yet.
-			</blockquote>
 			<blockquote class="muted">
+				<div class="msg-no-publish hide">
+					"<span class="file-title"></span>" is not published yet. <br /> <br />
+				</div>
 				<b>NOTE:</b> You can add locations using "Publish on" sub-menu.
 			</blockquote>
 		</div>

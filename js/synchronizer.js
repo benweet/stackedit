@@ -237,6 +237,25 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 		return attributesList;
 	};
 	
+	// Initialize the export dialog
+	function initExportDialog(provider) {
+		
+		// Reset fields
+		core.resetModalInputs();
+		
+		// Load preferences
+		var serializedPreferences = localStorage[provider.providerId + ".exportPreferences"];
+		if(serializedPreferences) {
+			var exportPreferences = JSON.parse(serializedPreferences);
+			_.each(provider.exportPreferencesInputIds, function(inputId) {
+				$("#input-sync-export-" + inputId).val(exportPreferences[inputId]);
+			});
+		}
+		
+		// Open dialog box
+		$("#modal-upload-" + provider.providerId).modal();
+	}
+	
 	core.onReady(function() {
 		// Init each provider
 		_.each(providerMap, function(provider) {
@@ -244,8 +263,13 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 			$(".action-sync-import-" + provider.providerId).click(function(event) {
 				provider.importFiles(event);
 			});
-			// Provider's export button
+			// Provider's export action
+			$(".action-sync-export-dialog-" + provider.providerId).click(function() {
+				initExportDialog(provider);
+			});
 			$(".action-sync-export-" + provider.providerId).click(function(event) {
+
+				// Perform the provider's export
 				var fileIndex = core.fileManager.getCurrentFileIndex();
 				var title = localStorage[fileIndex + ".title"];
 				var content = localStorage[fileIndex + ".content"];
@@ -253,14 +277,22 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 					if(error) {
 						return;
 					}
+					// Link syncIndex with fileIndex
 					localStorage[fileIndex + ".sync"] += syncIndex + ";";
 					synchronizer.refreshManageSync();
 					core.fileManager.updateFileTitles();
 					core.showMessage('"' + title
 						+ '" will now be synchronized on ' + provider.providerName + '.');
 				});
+				
+				// Store input values as preferences for next time we open the export dialog
+				var exportPreferences = {};
+				_.each(provider.exportPreferencesInputIds, function(inputId) {
+					exportPreferences[inputId] = $("#input-sync-export-" + inputId).val();
+				});
+				localStorage[provider.providerId + ".exportPreferences"] = JSON.stringify(exportPreferences);
 			});
-			// Provider's manual sync button
+			// Provider's manual export button
 			$(".action-sync-manual-" + provider.providerId).click(function(event) {
 				var fileIndex = core.fileManager.getCurrentFileIndex();
 				var title = localStorage[fileIndex + ".title"];

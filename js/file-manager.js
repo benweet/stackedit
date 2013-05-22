@@ -265,6 +265,10 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 		$(".action-create-file").click(function() {
 			var fileIndex = fileManager.createFile();
 			fileManager.selectFile(fileIndex);
+			var wmdInput = $("#wmd-input").focus().get(0);
+			if(wmdInput.setSelectionRange) {
+				wmdInput.setSelectionRange(0, 0);
+			}
 			$("#file-title").click();
 		});
 		$(".action-remove-file").click(function() {
@@ -276,7 +280,10 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 				return;
 			}
 			$(this).hide();
-			$("#file-title-input").show().focus().get(0).select();
+			var fileTitleInput = $("#file-title-input").show();
+			_.defer(function() {
+				fileTitleInput.focus().get(0).select();
+			});
 		});
 		function applyTitle(input) {
 			var title = $.trim(input.val());
@@ -291,6 +298,7 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 			input.hide().val(localStorage[fileIndexTitle]);
 			$("#file-title").show();
 			core.layoutRefresh();
+			$("#wmd-input").focus();
 		}
 		$("#file-title-input").blur(function() {
 			applyTitle($(this));

@@ -4,7 +4,8 @@ define([ "jquery", "core", "ssh-helper" ], function($, core, sshHelper) {
 
 	var sshProvider = {
 		providerId : PROVIDER_SSH,
-		providerName : "SSH server"
+		providerName : "SSH server",
+		publishPreferencesInputIds: ["ssh-host", "ssh-port", "ssh-username", "ssh-password"]
 	};
 
 	sshProvider.publish = function(publishAttributes, title, content, callback) {

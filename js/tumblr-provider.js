@@ -4,7 +4,8 @@ define(["jquery", "core", "tumblr-helper"], function($, core, tumblrHelper) {
 	
 	var tumblrProvider = {
 		providerId: PROVIDER_TUMBLR,
-		providerName: "Tumblr"
+		providerName: "Tumblr",
+		publishPreferencesInputIds: ["tumblr-hostname"]
 	};
 	
 	tumblrProvider.publish = function(publishAttributes, title, content, callback) {

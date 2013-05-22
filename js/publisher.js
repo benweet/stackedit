@@ -151,6 +151,16 @@ define(["jquery", "core", "sharing", "blogger-provider", "dropbox-provider", "gi
 		core.resetModalInputs();
 		$("input:radio[name=radio-publish-format][value=" + defaultPublishFormat + "]").prop("checked", true);
 		
+		// Load preferences
+		var serializedPreferences = localStorage[provider.providerId + ".publishPreferences"];
+		if(serializedPreferences) {
+			var publishPreferences = JSON.parse(serializedPreferences);
+			_.each(provider.publishPreferencesInputIds, function(inputId) {
+				$("#input-publish-" + inputId).val(publishPreferences[inputId]);
+			});
+			$("input:radio[name=radio-publish-format][value=" + publishPreferences.format + "]").prop("checked", true);
+		}
+		
 		// Open dialog box
 		$("#modal-publish").modal();
 	}
@@ -162,6 +172,8 @@ define(["jquery", "core", "sharing", "blogger-provider", "dropbox-provider", "gi
 		if(publishAttributes === undefined) {
 			return;
 		}
+		
+		// Perform provider's publishing
 		var fileIndex = core.fileManager.getCurrentFileIndex();
 		var title = localStorage[fileIndex + ".title"];
 		var content = getPublishContent(publishAttributes);
@@ -177,6 +189,14 @@ define(["jquery", "core", "sharing", "blogger-provider", "dropbox-provider", "gi
 				});
 			}
 		});
+		
+		// Store input values as preferences for next time we open the publish dialog
+		var publishPreferences = {};
+		_.each(provider.publishPreferencesInputIds, function(inputId) {
+			publishPreferences[inputId] = $("#input-publish-" + inputId).val();
+		});
+		publishPreferences.format = publishAttributes.format;
+		localStorage[provider.providerId + ".publishPreferences"] = JSON.stringify(publishPreferences);
 	}
 
 	// Used to populate the "Manage publication" dialog

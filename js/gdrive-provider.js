@@ -6,6 +6,7 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 		providerId: PROVIDER_GDRIVE,
 		providerName: "Google Drive",
 		defaultPublishFormat: "template",
+		exportPreferencesInputIds: ["gdrive-parentid"],
 		useSync: false
 	};
 	
@@ -70,7 +71,8 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 	};
 	
 	gdriveProvider.exportFile = function(event, title, content, callback) {
-		googleHelper.upload(undefined, undefined, title, content, undefined, function(error, result) {
+		var parentId = core.getInputValue($("#input-sync-export-gdrive-parentid"));
+		googleHelper.upload(undefined, parentId, title, content, undefined, function(error, result) {
 			if (error) {
 				callback(error);
 				return;

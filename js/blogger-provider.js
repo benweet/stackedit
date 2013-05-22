@@ -5,7 +5,8 @@ define(["jquery", "core", "google-helper"], function($, core, googleHelper) {
 	var bloggerProvider = {
 		providerId: PROVIDER_BLOGGER,
 		providerName: "Blogger",
-		defaultPublishFormat: "html"
+		defaultPublishFormat: "html",
+		publishPreferencesInputIds: ["blogger-url"]
 	};
 	
 	bloggerProvider.publish = function(publishAttributes, title, content, callback) {

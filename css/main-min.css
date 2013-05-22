@@ -5523,7 +5523,6 @@ hr {
 #file-selector {
     max-height: 500px;
     overflow-y: auto;
-    overflow-x: hidden;
 }
 #file-selector .stick {
     padding: 10px 20px 0;

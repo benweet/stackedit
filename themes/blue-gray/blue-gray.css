@@ -56,7 +56,7 @@ div.jGrowl div.jGrowl-notification {
 }
 
 .working-indicator.show {
-    background-image: url("ajax-loader-blue-gray.gif");
+    background-image: url("ajax-loader.gif") !important;
 }
 
 .viewer .navbar-inner {

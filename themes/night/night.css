@@ -1,0 +1,211 @@
+body,
+.btn,
+.well,
+.modal-footer,
+input[disabled],
+select[disabled],
+textarea[disabled],
+.input-prepend .add-on {
+    background-color: #222;
+    color: #fff;
+}
+
+input,
+select,
+textarea,
+.input-prepend .btn,
+.input-prepend
+.add-on {
+    border-color: #444 !important;
+}
+
+input[readonly], select[readonly], textarea[readonly] {
+    background-color: #fff;
+}
+
+textarea, input, .dropdown-menu, .modal {
+	background: #111;
+    color: #fff;
+}
+
+.modal-header, .modal-footer {
+	border-color: #222;
+}
+
+a {
+    color: #f73;
+}
+
+a:hover,
+a:focus {
+	color: #ffab81;
+	text-decoration: underline;
+}
+
+#file-title:hover {
+    color: #fff;
+}
+
+blockquote {
+    border-color: #333;
+}
+
+.well {
+	color: #ccc;
+}
+
+.well blockquote {
+    border-color: #444;
+}
+
+.muted {
+    color: #aaa;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    background-image: url("../../img/glyphicons-halflings-white.png");
+}
+
+.navbar-inner {
+    background-color: #444 !important;
+}
+
+.navbar-inner .btn {
+    background-color: #444;
+}
+
+.navbar-inner .btn:hover,
+.navbar-inner .btn:focus,
+.navbar-inner .btn:active,
+.navbar-inner .btn.active,
+.btn-group.open .btn.dropdown-toggle {
+    background-color: #555;
+}
+
+.btn:hover {
+	background-color: #333;
+}
+
+.btn:hover, .btn:focus {
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: #444;
+}
+
+.btn-primary:hover {
+    background-color: #555;
+}
+
+.navbar-inner .btn.disabled,
+.navbar-inner .btn[disabled] {
+    background-color: #444;
+}
+
+.navbar .nav > li > a {
+    color: #bbb;
+}
+
+.dropdown-menu {
+    border-color: #333 !important;
+}
+
+.dropdown-menu > li > a {
+    color: #aaa;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus,
+.dropdown-submenu:hover > a,
+.dropdown-submenu:focus > a,
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus,
+div.jGrowl div.jGrowl-notification {
+    background-color: #444;
+}
+
+.dropdown-menu .divider {
+	background-color: #111 !important;
+	border-color: #111 !important;
+	color: #555 !important;
+}
+
+.dropdown-menu:before {
+    border-bottom-color: #333 !important;
+}
+
+.navbar .nav > li > .dropdown-menu:after {
+	border-bottom-color: #111;
+}
+
+.dropdown-menu > .disabled > a,
+.dropdown-menu > .disabled > a:hover,
+.dropdown-menu > .disabled > a:focus {
+    color: #444;
+}
+
+.modal textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus
+{
+    -webkit-box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0), 0 0 8px rgba(255, 255, 255, 1) !important;
+    -moz-box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0), 0 0 8px rgba(255, 255, 255, 1) !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0), 0 0 8px rgba(255, 255, 255, 1) !important;
+}
+
+.error {
+	background-color: #ffbca8 !important;
+    -webkit-box-shadow: inset 0 1px 1px rgba(255, 134, 97, 0), 0 0 8px rgba(255, 255, 255, 1) !important;
+    -moz-box-shadow: inset 0 1px 1px rgba(255, 134, 97, 0), 0 0 8px rgba(255, 255, 255, 1) !important;
+    box-shadow: inset 0 1px 1px rgba(255, 134, 97, 0), 0 0 8px rgba(255, 255, 255, 1) !important;
+}
+
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus {
+	color: #fff;
+    background-color: #222;
+    border-color: #222;
+    border-bottom-color: transparent;
+}
+
+.nav-tabs {
+    border-bottom-color: #222;
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+    background-color: #333;
+}
+
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus {
+  border-color: #333 #333 #222;
+}
+
+.nav .dropdown-toggle .caret, .nav .dropdown-toggle:hover .caret, .nav .dropdown-toggle:focus .caret {
+    border-top-color: #888;
+    border-bottom-color: #888;
+}
+
+.working-indicator.show {
+    background-image: url("ajax-loader.gif") !important;
+}
+
+.viewer .navbar-inner {
+    background-color:rgba(80,80,80,0.75) !important;
+}
+

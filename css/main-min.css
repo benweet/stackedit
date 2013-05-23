@@ -5677,14 +5677,14 @@ div.dropdown-menu i {
     background-position: -127px 0;
 }
 .working-indicator {
-    background-image: none;
+    background-image: none !important;
     width: 43px;
     height: 11px;
     background-position: 0 0;
     margin: 14px 15px 0;
 }
 .working-indicator.show {
-    background-image: url(../img/ajax-loader.gif);
+    background-image: url(../img/ajax-loader.gif) !important;
 }
 .ui-layout-toggler-north .caret, .ui-layout-toggler-south .caret {
     margin-top: 5px;

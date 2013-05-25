@@ -1,4 +1,4 @@
-define(["jquery", "core", "wordpress-helper"], function($, core, wordpressHelper) {
+define(["utils", "wordpress-helper"], function(utils, wordpressHelper) {
 	
 	var PROVIDER_WORDPRESS = "wordpress";
 	
@@ -29,13 +29,13 @@ define(["jquery", "core", "wordpress-helper"], function($, core, wordpressHelper
 
 	wordpressProvider.newPublishAttributes = function(event) {
 		var publishAttributes = {};
-		publishAttributes.site = core
-			.getInputValue(
-				$("#input-publish-wordpress-site"),
+		publishAttributes.site = utils
+			.getInputTextValue(
+				"#input-publish-wordpress-site",
 				event,
 				/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/);
-		publishAttributes.postId = $("#input-publish-postid").val() || undefined;
-		publishAttributes.tags = $("#input-publish-tags").val() || undefined;
+		publishAttributes.postId = utils.getInputTextValue("#input-publish-postid");
+		publishAttributes.tags = utils.getInputTextValue("#input-publish-tags");
 		if(event.isPropagationStopped()) {
 			return undefined;
 		}

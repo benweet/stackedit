@@ -1,5 +1,5 @@
-define(["jquery", "core", "sharing", "blogger-provider", "dropbox-provider", "gist-provider", "github-provider", "gdrive-provider", "ssh-provider", "tumblr-provider", "wordpress-provider", "underscore"],
-	function($, core, sharing) {
+define(["jquery", "core", "utils", "sharing", "blogger-provider", "dropbox-provider", "gist-provider", "github-provider", "gdrive-provider", "ssh-provider", "tumblr-provider", "wordpress-provider", "underscore"],
+	function($, core, sharing, utils) {
 
 	var publisher = {};
 	
@@ -131,7 +131,7 @@ define(["jquery", "core", "sharing", "blogger-provider", "dropbox-provider", "gi
 	function createPublishIndex(fileIndex, publishAttributes) {
 		var publishIndex = undefined;
 		do {
-			publishIndex = "publish." + core.randomString();
+			publishIndex = "publish." + utils.randomString();
 		} while(_.has(localStorage, publishIndex));
 		localStorage[publishIndex] = JSON.stringify(publishAttributes);
 		localStorage[fileIndex + ".publish"] += publishIndex + ";";
@@ -156,9 +156,9 @@ define(["jquery", "core", "sharing", "blogger-provider", "dropbox-provider", "gi
 		if(serializedPreferences) {
 			var publishPreferences = JSON.parse(serializedPreferences);
 			_.each(provider.publishPreferencesInputIds, function(inputId) {
-				$("#input-publish-" + inputId).val(publishPreferences[inputId]);
+				utils.setInputValue("#input-publish-" + inputId, publishPreferences[inputId]);
 			});
-			$("input:radio[name=radio-publish-format][value=" + publishPreferences.format + "]").prop("checked", true);
+			utils.setInputRadio("radio-publish-format", publishPreferences.format);
 		}
 		
 		// Open dialog box

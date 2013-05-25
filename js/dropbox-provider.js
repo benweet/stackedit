@@ -1,4 +1,4 @@
-define(["jquery", "core", "dropbox-helper"], function($, core, dropboxHelper) {
+define(["core", "utils", "dropbox-helper"], function(core, utils, dropboxHelper) {
 	
 	var PROVIDER_DROPBOX = "dropbox";
 	
@@ -28,7 +28,7 @@ define(["jquery", "core", "dropbox-helper"], function($, core, dropboxHelper) {
 		syncAttributes.provider = PROVIDER_DROPBOX;
 		syncAttributes.path = path;
 		syncAttributes.version = versionTag;
-		syncAttributes.contentCRC = core.crc32(content);
+		syncAttributes.contentCRC = utils.crc32(content);
 		return syncAttributes;
 	}
 	
@@ -107,12 +107,12 @@ define(["jquery", "core", "dropbox-helper"], function($, core, dropboxHelper) {
 	}
 	
 	dropboxProvider.exportFile = function(event, title, content, callback) {
-		var path = core.getInputValue($("#input-sync-export-dropbox-path"), event);
+		var path = utils.getInputTextValue("#input-sync-export-dropbox-path", event);
 		exportFileToPath(path, title, content, callback);
 	};
 
 	dropboxProvider.exportManual = function(event, title, content, callback) {
-		var path = core.getInputValue($("#input-sync-manual-dropbox-path"), event);
+		var path = utils.getInputTextValue("#input-sync-manual-dropbox-path", event);
 		exportFileToPath(path, title, content, callback);
 	};
 	
@@ -191,9 +191,9 @@ define(["jquery", "core", "dropbox-helper"], function($, core, dropboxHelper) {
 					}
 					var syncAttributes = change.syncAttributes;
 					var localContent = localStorage[fileIndex + ".content"];
-					var localContentChanged = syncAttributes.contentCRC != core.crc32(localContent);
+					var localContentChanged = syncAttributes.contentCRC != utils.crc32(localContent);
 					var file = change.stat;
-                    var remoteContentCRC = core.crc32(file.content);
+                    var remoteContentCRC = utils.crc32(file.content);
                     var remoteContentChanged = syncAttributes.contentCRC != remoteContentCRC;
 					var fileContentChanged = localContent != file.content;
 					// Conflict detection
@@ -236,7 +236,7 @@ define(["jquery", "core", "dropbox-helper"], function($, core, dropboxHelper) {
 
 	dropboxProvider.newPublishAttributes = function(event) {
 		var publishAttributes = {};
-		publishAttributes.path = core.getInputValue($("#input-publish-dropbox-path"), event);
+		publishAttributes.path = utils.getInputTextValue("#input-publish-dropbox-path", event);
 		if(event.isPropagationStopped()) {
 			return undefined;
 		}

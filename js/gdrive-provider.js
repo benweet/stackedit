@@ -1,4 +1,4 @@
-define(["jquery", "core", "google-helper", "underscore"], function($, core, googleHelper) {
+define(["core", "utils", "google-helper", "underscore"], function(core, utils, googleHelper) {
 	
 	var PROVIDER_GDRIVE = "gdrive";
 	
@@ -15,8 +15,8 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 		syncAttributes.provider = PROVIDER_GDRIVE;
 		syncAttributes.id = id;
 		syncAttributes.etag = etag;
-		syncAttributes.contentCRC = core.crc32(content);
-		syncAttributes.titleCRC = core.crc32(title);
+		syncAttributes.contentCRC = utils.crc32(content);
+		syncAttributes.titleCRC = utils.crc32(title);
 		return syncAttributes;
 	}
 	
@@ -71,7 +71,7 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 	};
 	
 	gdriveProvider.exportFile = function(event, title, content, callback) {
-		var parentId = core.getInputValue($("#input-sync-export-gdrive-parentid"));
+		var parentId = utils.getInputTextValue("#input-sync-export-gdrive-parentid");
 		googleHelper.upload(undefined, parentId, title, content, undefined, function(error, result) {
 			if (error) {
 				callback(error);
@@ -85,7 +85,7 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 	};
 
 	gdriveProvider.exportManual = function(event, title, content, callback) {
-		var id = core.getInputValue($("#input-sync-manual-gdrive-id"), event);
+		var id = utils.getInputTextValue("#input-sync-manual-gdrive-id", event);
 		if(!id) {
 			return;
 		}
@@ -186,14 +186,14 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 						return;
 					}
 					var syncAttributes = change.syncAttributes;
-					var localTitleChanged = syncAttributes.titleCRC != core.crc32(localTitle);
+					var localTitleChanged = syncAttributes.titleCRC != utils.crc32(localTitle);
 					var localContent = localStorage[fileIndex + ".content"];
-					var localContentChanged = syncAttributes.contentCRC != core.crc32(localContent);
+					var localContentChanged = syncAttributes.contentCRC != utils.crc32(localContent);
 					var file = change.file;
-                    var remoteTitleCRC = core.crc32(file.title);
+                    var remoteTitleCRC = utils.crc32(file.title);
                     var remoteTitleChanged = syncAttributes.titleCRC != remoteTitleCRC;
                     var fileTitleChanged = localTitle != file.title;
-                    var remoteContentCRC = core.crc32(file.content);
+                    var remoteContentCRC = utils.crc32(file.content);
                     var remoteContentChanged = syncAttributes.contentCRC != remoteContentCRC;
 					var fileContentChanged = localContent != file.content;
 					// Conflict detection
@@ -253,8 +253,8 @@ define(["jquery", "core", "google-helper", "underscore"], function($, core, goog
 
 	gdriveProvider.newPublishAttributes = function(event) {
 		var publishAttributes = {};
-		publishAttributes.id = $("#input-publish-gdrive-fileid").val() || undefined;
-		publishAttributes.fileName = $("#input-publish-gdrive-filename").val() || undefined;
+		publishAttributes.id = utils.getInputTextValue("#input-publish-gdrive-fileid");
+		publishAttributes.fileName = utils.getInputTextValue("#input-publish-gdrive-filename");
 		if(event.isPropagationStopped()) {
 			return undefined;
 		}

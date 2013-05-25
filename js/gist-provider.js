@@ -1,4 +1,4 @@
-define(["jquery", "core", "github-helper"], function($, core, githubHelper) {
+define(["utils", "github-helper"], function(utils, githubHelper) {
 	
 	var PROVIDER_GIST = "gist";
 	
@@ -23,9 +23,9 @@ define(["jquery", "core", "github-helper"], function($, core, githubHelper) {
 
 	gistProvider.newPublishAttributes = function(event) {
 		var publishAttributes = {};
-		publishAttributes.gistId = $("#input-publish-gist-id").val() || undefined;
-		publishAttributes.filename = core.getInputValue($("#input-publish-filename"), event);
-		publishAttributes.isPublic = $("#input-publish-gist-public").is(":checked");
+		publishAttributes.gistId = utils.getInputTextValue("#input-publish-gist-id");
+		publishAttributes.filename = utils.getInputTextValue("#input-publish-filename", event);
+		publishAttributes.isPublic = utils.getInputChecked("#input-publish-gist-public");
 		if(event.isPropagationStopped()) {
 			return undefined;
 		}

@@ -5,7 +5,8 @@ define( [ "jquery", "jgrowl", "underscore" ], function($) {
 		extensionName: "Notifications",
 		defaultConfig: {
 			showingTime: 5000
-		}
+		},
+		settingsBloc: "<p>Shows notification messages in the bottom-right corner of the screen.</p>"
 	};
 	
 	notifications.onReady = function() {

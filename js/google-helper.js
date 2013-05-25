@@ -104,7 +104,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				//headers["If-Match"] = etag;
 			}
 
-			var base64Data = core.encodeBase64(content);
+			var base64Data = utils.encodeBase64(content);
 			var multipartRequestBody = delimiter
 				+ 'Content-Type: application/json\r\n\r\n'
 				+ JSON.stringify(metadata) + delimiter + 'Content-Type: '

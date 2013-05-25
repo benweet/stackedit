@@ -1,4 +1,4 @@
-define(["jquery", "core", "async-runner", "download-provider", "gist-provider", "underscore"], function($, core, asyncRunner) {
+define(["jquery", "core", "utils", "async-runner", "download-provider", "gist-provider", "underscore"], function($, core, utils, asyncRunner) {
 	var sharing = {};
 	
 	// Create a map with providerId: providerObject
@@ -113,7 +113,7 @@ define(["jquery", "core", "async-runner", "download-provider", "gist-provider", 
 			return;
 		}
 		// Check parameters to see if we have to download a shared document
-		var providerId = core.getURLParameter("provider");
+		var providerId = utils.getURLParameter("provider");
 		if(providerId === undefined) {
 			providerId = "download";
 		}
@@ -123,7 +123,7 @@ define(["jquery", "core", "async-runner", "download-provider", "gist-provider", 
 		}
 		var importParameters = {};
 		_.each(provider.sharingAttributes, function(attributeName) {
-			var parameter = core.getURLParameter(attributeName);
+			var parameter = utils.getURLParameter(attributeName);
 			if(!parameter) {
 				importParameters = undefined;
 				return;

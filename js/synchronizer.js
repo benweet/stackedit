@@ -1,4 +1,4 @@
-define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], function($, core) {
+define(["jquery", "core", "utils", "dropbox-provider", "gdrive-provider", "underscore"], function($, core, utils) {
 	var synchronizer = {};
 	
 	// Create a map with providerId: providerObject
@@ -101,9 +101,9 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 
 		// Get document title/content 
 		uploadContent = localStorage[fileIndex + ".content"];
-		uploadContentCRC = core.crc32(uploadContent);
+		uploadContentCRC = utils.crc32(uploadContent);
 		uploadTitle = localStorage[fileIndex + ".title"];
-		uploadTitleCRC = core.crc32(uploadTitle);
+		uploadTitleCRC = utils.crc32(uploadTitle);
 
 		// Parse the list of synchronized locations associated to the document
 		uploadFileSyncIndexList = _.compact(fileSyncIndexes.split(";"));
@@ -247,7 +247,7 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 		if(serializedPreferences) {
 			var exportPreferences = JSON.parse(serializedPreferences);
 			_.each(provider.exportPreferencesInputIds, function(inputId) {
-				$("#input-sync-export-" + inputId).val(exportPreferences[inputId]);
+				utils.setInputValue("#input-sync-export-" + inputId, exportPreferences[inputId]);
 			});
 		}
 		

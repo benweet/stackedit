@@ -2,15 +2,19 @@ define( [ "MathJax" ], function($) {
 	
 	var mathJax = {
 		extensionId: "mathJax",
-		extensionName: "MathJax"
+		extensionName: "MathJax",
+        optional: true,
+		settingsBloc: '<p>Allows StackEdit to interpret LaTex mathematical expressions.</p>'
 	};
 	
-	MathJax.Hub.Config({"HTML-CSS": {preferredFont: "TeX",availableFonts: ["STIX", "TeX"],linebreaks: {automatic: true},EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50), imageFont: null},
-	    tex2jax: {inlineMath: [["$", "$"], ["\\\\(", "\\\\)"]],displayMath: [["$$", "$$"], ["\\[", "\\]"]],processEscapes: true,ignoreClass: "tex2jax_ignore|dno"},
-	    TeX: {noUndefined: {attributes: {mathcolor: "red",mathbackground: "#FFEEEE",mathsize: "90%"}},
-	        Safe: {allow: {URLs: "safe",classes: "safe",cssIDs: "safe",styles: "safe",fontsize: "all"}}},
-	    messageStyle: "none"
-	});
+	mathJax.onReady = function() {
+		MathJax.Hub.Config({"HTML-CSS": {preferredFont: "TeX",availableFonts: ["STIX", "TeX"],linebreaks: {automatic: true},EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50), imageFont: null},
+		    tex2jax: {inlineMath: [["$", "$"], ["\\\\(", "\\\\)"]],displayMath: [["$$", "$$"], ["\\[", "\\]"]],processEscapes: true,ignoreClass: "tex2jax_ignore|dno"},
+		    TeX: {noUndefined: {attributes: {mathcolor: "red",mathbackground: "#FFEEEE",mathsize: "90%"}},
+		        Safe: {allow: {URLs: "safe",classes: "safe",cssIDs: "safe",styles: "safe",fontsize: "all"}}},
+		    messageStyle: "none"
+		});
+	};
 		
 	var ready = false; // true after initial typeset is complete
 	var pending = false; // true when MathJax has been requested

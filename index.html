@@ -543,6 +543,8 @@
 				<li><a class="action-load-settings"
 					href="#tabpane-settings-publish" data-toggle="tab">Publish</a></li>
 				<li><a class="action-load-settings"
+					href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>
+				<li><a class="action-load-settings"
 					href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>
 			</ul>
 
@@ -571,37 +573,11 @@
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" for="input-settings-converter-type">Converter</label>
-							<div class="controls">
-								<select id="input-settings-converter-type">
-									<option value="markdown">Markdown</option>
-									<option value="markdown-extra">Markdown Extra</option>
-									<option value="markdown-extra-prettify">Markdown Extra
-										+ Prettify</option>
-								</select>
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="input-settings-enable-mathjax">MathJax
-								support </label>
-							<div class="controls">
-								<input type="checkbox" id="input-settings-enable-mathjax" />
-							</div>
-						</div>
-						<div class="control-group">
 							<label class="control-label" for="input-settings-lazy-rendering">Lazy
 								rendering <a href="#" class="tooltip-lazy-rendering">(?)</a>
 							</label>
 							<div class="controls">
 								<input type="checkbox" id="input-settings-lazy-rendering" />
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="input-settings-scroll-link">Scroll
-								Link <a href="#" class="tooltip-scroll-link">(?)</a>
-							</label>
-							<div class="controls">
-								<input type="checkbox" id="input-settings-scroll-link" />
 							</div>
 						</div>
 						<div class="control-group">
@@ -649,6 +625,13 @@
 							</div>
 						</div>
 					</div>
+				</div>
+				<div class="tab-pane" id="tabpane-settings-extensions">
+					<div class="accordion" id="accordion-extensions">
+					</div>
+					<span class="help-block pull-right"><a target="_blank"
+                                    href="https://github.com/benweet/stackedit/blob/master/doc/theming.md#stackedit-theming-guide">Create
+                                        your own extension...</a></span>
 				</div>
 				<div class="tab-pane" id="tabpane-settings-utils">
 					<div style="width: 200px; margin: 10px auto;">

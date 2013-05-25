@@ -1,4 +1,4 @@
-define(["jquery", "core", "tumblr-helper"], function($, core, tumblrHelper) {
+define(["utils", "tumblr-helper"], function(utils, tumblrHelper) {
 	
 	var PROVIDER_TUMBLR = "tumblr";
 	
@@ -29,13 +29,13 @@ define(["jquery", "core", "tumblr-helper"], function($, core, tumblrHelper) {
 
 	tumblrProvider.newPublishAttributes = function(event) {
 		var publishAttributes = {};
-		publishAttributes.blogHostname = core
-			.getInputValue(
-				$("#input-publish-tumblr-hostname"),
+		publishAttributes.blogHostname = utils
+			.getInputTextValue(
+				"#input-publish-tumblr-hostname",
 				event,
 				/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/);
-		publishAttributes.postId = $("#input-publish-postid").val() || undefined;
-		publishAttributes.tags = $("#input-publish-tags").val() || undefined;
+		publishAttributes.postId = utils.getInputTextValue("#input-publish-postid");
+		publishAttributes.tags = utils.getInputTextValue("#input-publish-tags");
 		if(event.isPropagationStopped()) {
 			return undefined;
 		}

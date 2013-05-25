@@ -2,7 +2,15 @@ define( [ "jquery", "underscore" ], function($) {
 	
 	var scrollLink = {
 		extensionId: "scrollLink",
-		extensionName: "Scroll Link"
+		extensionName: "Scroll Link",
+        optional: true,
+		settingsBloc: [
+		               	'<p>Binds together editor and preview scrollbars.</p>',
+		               	'<blockquote class="muted"><b>NOTE:</b> ',
+		               	'The mapping between Markdown and HTML is based on the position of the title elements (h1, h2, ...) in the page. ',
+				        'Therefore, if your document does not contain any title, the mapping will be linear and consequently less efficient.',
+		               	'</bloquote>'
+		              ].join("")
 	};
 	
 	var mdSectionList = [];

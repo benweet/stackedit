@@ -1,4 +1,4 @@
-define(["jquery", "core", "github-helper"], function($, core, githubHelper) {
+define(["core", "utils", "github-helper"], function(core, utils, githubHelper) {
 	
 	var PROVIDER_GITHUB = "github";
 	
@@ -16,9 +16,9 @@ define(["jquery", "core", "github-helper"], function($, core, githubHelper) {
 
 	githubProvider.newPublishAttributes = function(event) {
 		var publishAttributes = {};
-		publishAttributes.repository = core.getInputValue($("#input-publish-github-reponame"), event);
-		publishAttributes.branch = core.getInputValue($("#input-publish-github-branch"), event);
-		publishAttributes.path = core.getInputValue($("#input-publish-file-path"), event);
+		publishAttributes.repository = utils.getInputTextValue("#input-publish-github-reponame", event);
+		publishAttributes.branch = utils.getInputTextValue("#input-publish-github-branch", event);
+		publishAttributes.path = utils.getInputTextValue("#input-publish-file-path", event);
 		if(event.isPropagationStopped()) {
 			return undefined;
 		}

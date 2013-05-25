@@ -1,4 +1,4 @@
-define([ "jquery", "core", "ssh-helper" ], function($, core, sshHelper) {
+define([ "utils", "ssh-helper" ], function(utils, sshHelper) {
 
 	var PROVIDER_SSH = "ssh";
 
@@ -22,19 +22,19 @@ define([ "jquery", "core", "ssh-helper" ], function($, core, sshHelper) {
 
 	sshProvider.newPublishAttributes = function(event) {
 		var publishAttributes = {};
-		publishAttributes.host = core
-			.getInputValue(
-				$("#input-publish-ssh-host"),
+		publishAttributes.host = utils
+			.getInputTextValue(
+				"#input-publish-ssh-host",
 				event,
 				/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/);
-		publishAttributes.port = core.getInputIntValue(
-			$("#input-publish-ssh-port"), undefined, 0);
-		publishAttributes.username = core.getInputValue(
-			$("#input-publish-ssh-username"), event);
-		publishAttributes.password = core.getInputValue(
-			$("#input-publish-ssh-password"), event);
-		publishAttributes.path = core.getInputValue(
-			$("#input-publish-file-path"), event);
+		publishAttributes.port = utils.getInputIntValue(
+			"#input-publish-ssh-port", undefined, 0);
+		publishAttributes.username = utils.getInputTextValue(
+			"#input-publish-ssh-username", event);
+		publishAttributes.password = utils.getInputTextValue(
+			"#input-publish-ssh-password", event);
+		publishAttributes.path = utils.getInputTextValue(
+			"#input-publish-file-path", event);
 		if (event.isPropagationStopped()) {
 			return undefined;
 		}

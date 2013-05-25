@@ -1,5 +1,5 @@
-define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCOME.md", "underscore"],
-	function($, core, synchronizer, publisher, sharing, welcomeContent) {
+define(["jquery", "core", "utils", "synchronizer", "publisher", "sharing", "text!../WELCOME.md", "underscore"],
+	function($, core, utils, synchronizer, publisher, sharing, welcomeContent) {
 	
 	var TEMPORARY_FILE_INDEX = "file.tempIndex";
 
@@ -75,7 +75,7 @@ define(["jquery", "core", "synchronizer", "publisher", "sharing", "text!../WELCO
 		var fileIndex = TEMPORARY_FILE_INDEX;
 		if(!isTemporary) {
 			do {
-				fileIndex = "file." + core.randomString();
+				fileIndex = "file." + utils.randomString();
 			} while(_.has(localStorage, fileIndex + ".title"));
 		}
 		

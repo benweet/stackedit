@@ -1,4 +1,4 @@
-define(["jquery", "core", "google-helper"], function($, core, googleHelper) {
+define(["utils", "google-helper"], function(utils, googleHelper) {
 	
 	var PROVIDER_BLOGGER = "blogger";
 
@@ -31,17 +31,17 @@ define(["jquery", "core", "google-helper"], function($, core, googleHelper) {
 	
 	bloggerProvider.newPublishAttributes = function(event) {
 		var publishAttributes = {};
-		var blogUrl = core.getInputValue($("#input-publish-blogger-url"), event);
+		var blogUrl = utils.getInputTextValue("#input-publish-blogger-url", event);
 		if(blogUrl !== undefined) {
-			publishAttributes.blogUrl = core.checkUrl(blogUrl);
+			publishAttributes.blogUrl = utils.checkUrl(blogUrl);
 		}
-		publishAttributes.postId = $("#input-publish-postid").val() || undefined;
+		publishAttributes.postId = utils.getInputTextValue("#input-publish-postid");
 		publishAttributes.labelList = [];
-		var labels = $("#input-publish-labels").val() || undefined;
+		var labels = utils.getInputTextValue("#input-publish-labels");
 		if(labels !== undefined) {
 			publishAttributes.labelList = _.chain(labels.split(","))
 				.map(function(label) {
-					return core.trim(label);
+					return utils.trim(label);
 				}).compact().value();
 		} 
 		if(event.isPropagationStopped()) {

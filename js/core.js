@@ -1,7 +1,7 @@
 define(
-	[ "jquery", "mathjax-editing", "bootstrap", "jgrowl", "layout", "Markdown.Editor", "storage", "config",
+	[ "jquery", "extension-manager", "bootstrap", "layout", "Markdown.Editor", "storage", "config",
 		"underscore", "FileSaver", "css_browser_selector" ],
-	function($, mathjaxEditing) {
+	function($, extensionManager) {
 	
 	var core = {};
 	
@@ -118,6 +118,7 @@ define(
 		return url;
 	};
 	
+	// Export data on disk
 	core.saveFile = function(content, filename) {
 		if(saveAs !== undefined) {
 			var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
@@ -141,26 +142,21 @@ define(
 		}
 	};
 
-	// Used to show a notification message
-	core.showMessage = function(msg, iconClass, options) {
-		if(!msg) {
-			return;
-		}
-		var endOfMsg = msg.indexOf("|");
-		if(endOfMsg !== -1) {
-			msg = msg.substring(0, endOfMsg);
-			if(!msg) {
-				return;
-			}
-		}
-		options = options || {};
-		iconClass = iconClass || "icon-info-sign";
-		$.jGrowl("<i class='icon-white " + iconClass + "'></i> " + _.escape(msg), options);
+	// Log a message
+	core.showMessage = function(message) {
+		console.log(message);
+		extensionManager.onMessage(message);
 	};
 
-	// Used to show an error message
-	core.showError = function(msg) {
-		core.showMessage(msg, "icon-warning-sign");
+	// Log an error
+	core.showError = function(error) {
+		console.error(error);
+		if(_.isString(error)) {
+			extensionManager.onMessage(error);
+		}
+		else if(_.isObject(error)) {
+			extensionManager.onMessage(error.message);
+		}
 	};
 
 	// Offline management
@@ -174,25 +170,19 @@ define(
 		offlineTime = core.currentTime;
 		if(core.isOffline === false) {
 			core.isOffline = true;
-			core.showMessage("You are offline.", "icon-exclamation-sign msg-offline", {
-				sticky : true,
-				close : function() {
-					core.showMessage("You are back online!", "icon-signal");
-				}
+			extensionManager.onOfflineChanged(true);
+			_.each(offlineListeners, function(listener) {
+				listener();
 			});
-			for(var i=0; i<offlineListeners.length; i++) {
-				offlineListeners[i]();
-			}
 		}
 	};
 	core.setOnline = function() {
 		if(core.isOffline === true) {
-			$(".msg-offline").parents(".jGrowl-notification").trigger(
-				'jGrowl.beforeClose');
 			core.isOffline = false;
-			for(var i=0; i<offlineListeners.length; i++) {
-				offlineListeners[i]();
-			}
+			extensionManager.onOfflineChanged(false);
+			_.each(offlineListeners, function(listener) {
+				listener();
+			});
 		}
 	};
 	function checkOnline() {
@@ -295,140 +285,6 @@ define(
 		}
 	};
 	
-	// Used by Scroll Link feature
-	var mdSectionList = [];
-	var htmlSectionList = [];
-	function pxToFloat(px) {
-		return parseFloat(px.substring(0, px.length-2));
-	}
-	var buildSections = _.debounce(function() {
-		
-		// Try to find Markdown sections by looking for titles
-		var editorElt = $("#wmd-input");
-		mdSectionList = [];
-		// This textarea is used to measure sections height
-		var textareaElt = $("#md-section-helper");
-		// It has to be the same width than wmd-input
-		textareaElt.width(editorElt.width());
-		// Consider wmd-input top padding
-		var padding = pxToFloat(editorElt.css('padding-top'));
-		var offset = 0, mdSectionOffset = 0;
-		function addMdSection(sectionText) {
-			var sectionHeight = padding;
-			if(sectionText !== undefined) {
-				textareaElt.val(sectionText);
-				sectionHeight += textareaElt.prop('scrollHeight');
-			}
-			var newSectionOffset = mdSectionOffset + sectionHeight;
-			mdSectionList.push({
-				startOffset: mdSectionOffset,
-				endOffset: newSectionOffset,
-				height: sectionHeight
-			});
-			mdSectionOffset = newSectionOffset;
-			padding = 0;
-		}
-		// Create MD sections by finding title patterns (excluding gfm blocs)
-		var text = editorElt.val() + "\n\n";
-		text.replace(/^```.*\n[\s\S]*?\n```|(^.+[ \t]*\n=+[ \t]*\n+|^.+[ \t]*\n-+[ \t]*\n+|^\#{1,6}[ \t]*.+?[ \t]*\#*\n+)/gm,
-			function(match, title, matchOffset) {
-				if(title) {
-					// We just found a title which means end of the previous section
-					// Exclude last \n of the section
-					var sectionText = undefined;
-					if(matchOffset > offset) {
-						sectionText = text.substring(offset, matchOffset-1);
-					}
-					addMdSection(sectionText);
-					offset = matchOffset;
-				}
-				return "";
-			}
-		);
-		// Last section
-		// Consider wmd-input bottom padding and exclude \n\n previously added
-		padding += pxToFloat(editorElt.css('padding-bottom'));
-		addMdSection(text.substring(offset, text.length-2));
-		
-		// Try to find corresponding sections in the preview
-		var previewElt = $("#wmd-preview");
-		htmlSectionList = [];
-		var htmlSectionOffset = 0;
-		var previewScrollTop = previewElt.scrollTop();
-		// Each title element is a section separator
-		previewElt.children("h1,h2,h3,h4,h5,h6").each(function() {
-			// Consider div scroll position and header element top margin
-			var newSectionOffset = $(this).position().top + previewScrollTop + pxToFloat($(this).css('margin-top'));
-			htmlSectionList.push({
-				startOffset: htmlSectionOffset,
-				endOffset: newSectionOffset,
-				height: newSectionOffset - htmlSectionOffset
-			});
-			htmlSectionOffset = newSectionOffset; 
-		});
-		// Last section
-		var scrollHeight = previewElt.prop('scrollHeight');
-		htmlSectionList.push({
-			startOffset: htmlSectionOffset,
-			endOffset: scrollHeight,
-			height: scrollHeight - htmlSectionOffset
-		});
-		
-		// apply Scroll Link 
-		lastEditorScrollTop = -9;
-		skipScrollLink = false;
-		scrollLink();
-	}, 500);
-	
-	// -9 is less than -5
-	var lastEditorScrollTop = -9;
-	var lastPreviewScrollTop = -9;
-	var skipScrollLink = false;
-	var scrollLink = _.debounce(function() {
-		if(skipScrollLink === true || mdSectionList.length === 0 || mdSectionList.length !== htmlSectionList.length) {
-			return;
-		}
-		var editorElt = $("#wmd-input");
-		var editorScrollTop = editorElt.scrollTop();
-		var previewElt = $("#wmd-preview");
-		var previewScrollTop = previewElt.scrollTop();
-		function animate(srcScrollTop, srcSectionList, destElt, destSectionList, lastDestScrollTop, callback) {
-			// Find the section corresponding to the offset
-			var sectionIndex = undefined;
-			var srcSection = _.find(srcSectionList, function(section, index) {
-				sectionIndex = index; 
-				return srcScrollTop < section.endOffset;
-			});
-			if(srcSection === undefined) {
-				// Something wrong in the algorithm...
-				return -9;
-			}
-			var posInSection = (srcScrollTop - srcSection.startOffset) / srcSection.height;
-			var destSection = destSectionList[sectionIndex];
-			var destScrollTop = destSection.startOffset + destSection.height * posInSection;
-			destScrollTop = _.min([destScrollTop, destElt.prop('scrollHeight') - destElt.outerHeight()]);
-			if(Math.abs(destScrollTop - lastDestScrollTop) < 5) {
-				// Skip the animation in case it's not necessary
-				return;
-			}
-			destElt.animate({scrollTop: destScrollTop}, 600, function() {
-				callback(destScrollTop);
-			});
-		}
-		if(Math.abs(editorScrollTop - lastEditorScrollTop) > 5) {
-			lastEditorScrollTop = editorScrollTop;
-			animate(editorScrollTop, mdSectionList, previewElt, htmlSectionList, lastPreviewScrollTop, function(destScrollTop) {
-				lastPreviewScrollTop = destScrollTop;
-			});
-		}
-		else if(Math.abs(previewScrollTop - lastPreviewScrollTop) > 5) {
-			lastPreviewScrollTop = previewScrollTop;
-			animate(previewScrollTop, htmlSectionList, editorElt, mdSectionList, lastEditorScrollTop, function(destScrollTop) {
-				lastEditorScrollTop = destScrollTop;
-			});
-		}
-	}, 600);
-
 	// Create the layout
 	var layout = undefined;
 	core.createLayout = function() {
@@ -449,9 +305,7 @@ define(
 			center__minWidth : 200,
 			center__minHeight : 200
 		};
-		if(core.settings.scrollLink === true) {
-			layoutGlobalConfig.onresize = buildSections;
-		}
+		extensionManager.onLayoutConfigure(layoutGlobalConfig);
 		if (core.settings.layoutOrientation == "horizontal") {
 			$(".ui-layout-south").remove();
 			$(".ui-layout-east").addClass("well").prop("id", "wmd-preview");
@@ -483,10 +337,7 @@ define(
 			layout.allowOverflow('north');
 		});
 		
-		// ScrollLink
-		if(core.settings.scrollLink === true) {
-			$("#wmd-input, #wmd-preview").scroll(scrollLink);
-		}
+		extensionManager.onLayoutCreated();
 	};
 	core.layoutRefresh = function() {
 		if(layout !== undefined) {
@@ -498,57 +349,8 @@ define(
 	// Create the PageDown editor
 	var insertLinkCallback = undefined;
 	core.createEditor = function(onTextChange) {
-		var firstChange = true;
-		skipScrollLink = true;
-		lastPreviewScrollTop = -9;
-		$("#wmd-input, #wmd-preview").scrollTop(0);
-		$("#wmd-button-bar").empty();
 		var converter = new Markdown.Converter();
-		if(core.settings.converterType.indexOf("markdown-extra") === 0) {
-			// Markdown extra customized converter
-			var options = {};
-			if(core.settings.converterType == "markdown-extra-prettify") {
-				options.highlighter = "prettify";
-			}
-			Markdown.Extra.init(converter, options);
-		}
-		// Convert email addresses (not managed by pagedown)
-		converter.hooks.chain("postConversion", function(text) {
-			return text.replace(/<(mailto\:)?([^\s>]+@[^\s>]+\.\S+?)>/g, function(match, mailto, email) {
-				return '<a href="mailto:' + email + '">' + email + '</a>';
-			});
-		});
 		var editor = new Markdown.Editor(converter);
-		// Prettify
-		if(core.settings.converterType == "markdown-extra-prettify") {
-			editor.hooks.chain("onPreviewRefresh", prettyPrint);
-		}
-		var previewRefreshFinished = function() {
-			if(viewerMode === false && core.settings.scrollLink === true) {
-				function updateScrollLinkSections() {
-					// Modify scroll position of the preview not the editor
-					lastEditorScrollTop = -9;
-					buildSections();
-					// Preview may change if images are loading
-					$("#wmd-preview img").load(function() {
-						lastEditorScrollTop = -9;
-						buildSections();
-					});
-				}
-				// MathJax may have change the scroll position. Restore it
-				$("#wmd-preview").scrollTop(lastPreviewScrollTop);
-				_.defer(updateScrollLinkSections);
-			}
-		};
-		// MathJax
-		if(core.settings.enableMathJax === true) {
-			mathjaxEditing.prepareWmdForMathJax(editor, [["$", "$"], ["\\\\(", "\\\\)"]], function() {
-				skipScrollLink = true;
-			}, previewRefreshFinished);
-		}
-		else {
-			editor.hooks.chain("onPreviewRefresh", previewRefreshFinished);
-		}
 		// Custom insert link dialog
 		editor.hooks.set("insertLinkDialog", function (callback) {
 			insertLinkCallback = callback;
@@ -570,6 +372,7 @@ define(
 			return true;
 		});
 		
+		var firstChange = true;
 		var previewWrapper = function(makePreview) {
 			return function() {
 				if(firstChange !== true) {
@@ -592,6 +395,18 @@ define(
 				};
 			};
 		}
+		extensionManager.onEditorConfigure(editor);
+		editor.hooks.chain("onPreviewRefresh", extensionManager.onAsyncPreview);
+		
+		// Convert email addresses (not managed by pagedown)
+		converter.hooks.chain("postConversion", function(text) {
+			return text.replace(/<(mailto\:)?([^\s>]+@[^\s>]+\.\S+?)>/g, function(match, mailto, email) {
+				return '<a href="mailto:' + email + '">' + email + '</a>';
+			});
+		});
+		
+		$("#wmd-input, #wmd-preview").scrollTop(0);
+		$("#wmd-button-bar").empty();
 		editor.run(previewWrapper);
 		firstChange = false;
 
@@ -793,13 +608,12 @@ define(
 		documentLoaded = true;
 		runReadyCallbacks();
 	});
-		
+	
 	core.onReady(function() {
-		// jGrowl configuration
-		$.jGrowl.defaults.life = 5000;
-		$.jGrowl.defaults.closer = false;
-		$.jGrowl.defaults.closeTemplate = '';
-		$.jGrowl.defaults.position = 'bottom-right';
+		extensionManager.init(core.settings.extensionConfig);
+	});
+	core.onReady(extensionManager.onReady);
+	core.onReady(function() {
 		
 		// Load theme list
 		_.each(THEME_LIST, function(name, value) {

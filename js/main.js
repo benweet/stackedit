@@ -10,7 +10,7 @@ requirejs.config({
         'jgrowl': ['jquery'],
         'layout': ['jquery-ui'],
         'Markdown.Extra': ['Markdown.Converter', 'prettify'],
-        'Markdown.Editor': ['Markdown.Extra']
+        'Markdown.Editor': ['Markdown.Converter']
     }
 });
 

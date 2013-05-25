@@ -162,7 +162,6 @@ define(["jquery", "core", "dropbox-provider", "gdrive-provider", "underscore"], 
 		
 		function isError(error) {
 			if(error !== undefined) {
-				console.error(error);
 				syncRunning = false;
 				synchronizer.updateSyncButton();
 				return true;

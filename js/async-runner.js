@@ -81,7 +81,7 @@ define([ "core", "underscore" ], function(core) {
 			}
 			error = error || new Error("Unknown error");
 			if(error.message) {
-				core.showError(error.message);
+				core.showError(error);
 			}
 			runSafe(task, task.errorCallbacks, error);
 			// Exit the current call stack

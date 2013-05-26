@@ -240,7 +240,7 @@ define(["jquery", "core", "utils", "dropbox-provider", "gdrive-provider", "under
 	function initExportDialog(provider) {
 		
 		// Reset fields
-		core.resetModalInputs();
+		utils.resetModalInputs();
 		
 		// Load preferences
 		var serializedPreferences = localStorage[provider.providerId + ".exportPreferences"];

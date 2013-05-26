@@ -288,7 +288,7 @@ define(
 		// Custom insert link dialog
 		editor.hooks.set("insertLinkDialog", function (callback) {
 			insertLinkCallback = callback;
-			core.resetModalInputs();
+			utils.resetModalInputs();
 			$("#modal-insert-link").modal();
 			_.defer(function() {
 				$("#input-insert-link").focus();
@@ -298,7 +298,7 @@ define(
 		// Custom insert image dialog
 		editor.hooks.set("insertImageDialog", function (callback) {
 			insertLinkCallback = callback;
-			core.resetModalInputs();
+			utils.resetModalInputs();
 			$("#modal-insert-image").modal();
 			_.defer(function() {
 				$("#input-insert-image").focus();
@@ -316,15 +316,21 @@ define(
 			};
 		};
 		if(core.settings.lazyRendering === true) {
+			var lastRefresh = 0;
 			previewWrapper = function(makePreview) {
-				var debouncedMakePreview = _.debounce(makePreview, 500); 
+				//var debouncedMakePreview = _.debounce(makePreview, 500); 
 				return function() {
 					if(firstChange === true) {
 						makePreview();
 					}
 					else {
 						onTextChange();
-						debouncedMakePreview();
+						var currentDate = new Date().getTime();
+						if(currentDate - lastRefresh > 500) {
+							makePreview();
+							lastRefresh = currentDate;
+						}
+						//debouncedMakePreview();
 					}
 				};
 			};
@@ -519,7 +525,7 @@ define(
 			html: true,
 			container: '#modal-settings',
 			placement: 'right',
-			title: 'Thank you for supporting StackEdit by adding a backlink in your documents!'
+			title: 'Thanks for supporting StackEdit by adding a backlink in your documents!'
 		});
 		$(".tooltip-template").tooltip({
 			html: true,
@@ -550,7 +556,7 @@ define(
 
 		// Reset inputs
 		$(".action-reset-input").click(function() {
-			core.resetModalInputs();
+			utils.resetModalInputs();
 		});
 		
 		// Do periodic tasks

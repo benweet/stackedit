@@ -8,7 +8,7 @@ define( [ "jquery", "underscore" ], function($) {
 		               	'<p>Binds together editor and preview scrollbars.</p>',
 		               	'<blockquote class="muted"><b>NOTE:</b> ',
 		               	'The mapping between Markdown and HTML is based on the position of the title elements (h1, h2, ...) in the page. ',
-				        'Therefore, if your document does not contain any title, the mapping will be linear and consequently less efficient.',
+				        'Therefore, if your document does not contain any title, the mapping will be linear and consequently less accurate.',
 		               	'</bloquote>'
 		              ].join("")
 	};

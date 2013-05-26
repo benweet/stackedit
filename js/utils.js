@@ -104,7 +104,7 @@ define([ "jquery", "underscore" ], function($) {
 	
 	// Basic trim function
 	utils.trim = function(str) {
-		return str.replace(/^\s+|\s+$/g, '');
+		return $.trim(str);
 	};
 	
 	// Check an URL

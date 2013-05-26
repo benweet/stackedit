@@ -1,4 +1,4 @@
-define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
+define(["jquery", "core", "utils", "async-runner"], function($, core, utils, asyncRunner) {
 
 	var connected = false;
 	var authenticated = false;

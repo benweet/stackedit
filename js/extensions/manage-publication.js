@@ -46,7 +46,7 @@ define( [ "jquery", "underscore" ], function($) {
 				publishDesc: publishDesc
 			}));
 			lineElement.append($(removeButtonTemplate).click(function() {
-				fileManager.removePublish(publishIndex);
+				fileManager.removePublish(publishAttributes);
 			}));
 			publishList.append(lineElement);
 		});

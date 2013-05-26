@@ -18,7 +18,7 @@ define([
 		.reduce(function(fileSystemDescriptor, fileIndex) {
 			var title = localStorage[fileIndex + ".title"];
 			var fileDesc = {
-				index : fileIndex,
+				fileIndex : fileIndex,
 				title : title,
 				syncLocations: {},
 				publishLocations: {}
@@ -52,8 +52,8 @@ define([
 		if(fileDesc === undefined) {
 			localStorage.removeItem("file.current");
 		}
-		else if(fileDesc.index != TEMPORARY_FILE_INDEX) {
-			localStorage["file.current"] = fileDesc.index;
+		else if(fileDesc.fileIndex != TEMPORARY_FILE_INDEX) {
+			localStorage["file.current"] = fileDesc.fileIndex;
 		}
 	};
 	
@@ -78,7 +78,7 @@ define([
 		extensionManager.onFileSelected(fileDesc);
 		
 		// Hide the viewer pencil button
-		if(fileDesc.index == TEMPORARY_FILE_INDEX) {
+		if(fileDesc.fileIndex == TEMPORARY_FILE_INDEX) {
 			$(".action-edit-document").removeClass("hide");
 		}
 		else {
@@ -86,7 +86,7 @@ define([
 		}
 		
 		// Recreate the editor
-		$("#wmd-input").val(localStorage[fileDesc.index + ".content"]);
+		$("#wmd-input").val(localStorage[fileDesc.fileIndex + ".content"]);
 		core.createEditor(function() {
 			// Callback to save content when textarea changes
 			fileManager.saveFile();
@@ -128,7 +128,7 @@ define([
 		
 		// Create the file descriptor
 		var fileDesc = {
-			index : fileIndex,
+			fileIndex : fileIndex,
 			title : title,
 			syncLocations: syncLocations,
 			publishLocations: {}
@@ -151,17 +151,17 @@ define([
 		}
 
 		// Remove synchronized locations
-		_.each(fileDesc.syncLocations, function(syncAttributes, syncIndex) {
-			fileManager.removeSync(syncIndex, true);
+		_.each(fileDesc.syncLocations, function(syncAttributes) {
+			fileManager.removeSync(syncAttributes, true);
 		});
 		
 		// Remove publish locations
-		_.each(fileDesc.publishLocations, function(publishAttributes, publishIndex) {
-			fileManager.removePublish(publishIndex);
+		_.each(fileDesc.publishLocations, function(publishAttributes) {
+			fileManager.removePublish(publishAttributes, true);
 		});
 
 		// Remove the index from the file list
-		var fileIndex = fileDesc.index;
+		var fileIndex = fileDesc.fileIndex;
 		localStorage["file.list"] = localStorage["file.list"].replace(";"
 			+ fileIndex + ";", ";");
 		localStorage.removeItem(fileIndex + ".title");
@@ -176,29 +176,28 @@ define([
 	fileManager.saveFile = function() {
 		var content = $("#wmd-input").val();
 		var fileDesc = fileManager.getCurrentFile();
-		localStorage[fileDesc.index + ".content"] = content;
+		localStorage[fileDesc.fileIndex + ".content"] = content;
 		extensionManager.onFileChanged(fileDesc);
 		synchronizer.notifyChange(fileDesc);
 	};
 
-	// Add a syncIndex (synchronized location) to a file
-	fileManager.addSync = function(fileDesc, syncIndex, syncAttributes) {
-		localStorage[fileDesc.index + ".sync"] += syncIndex + ";";
-		fileDesc.syncLocations[syncIndex] = syncAttributes;
+	// Add a synchronized location to a file
+	fileManager.addSync = function(fileDesc, syncAttributes) {
+		localStorage[fileDesc.fileIndex + ".sync"] += syncAttributes.syncIndex + ";";
+		fileDesc.syncLocations[syncAttributes.syncIndex] = syncAttributes;
 		// addSync is only used for export, not for import
-		extensionManager.onSyncExportSuccess(fileDesc, syncIndex, syncAttributes);
+		extensionManager.onSyncExportSuccess(fileDesc, syncAttributes);
 	};
 	
-	// Remove a syncIndex (synchronized location)
-	fileManager.removeSync = function(syncIndex, skipExtensions) {
-		var fileDesc = fileManager.getFileFromSync(syncIndex);
+	// Remove a synchronized location
+	fileManager.removeSync = function(syncAttributes, skipExtensions) {
+		var fileDesc = fileManager.getFileFromSyncIndex(syncAttributes.syncIndex);
 		if(fileDesc !== undefined) {
-			localStorage[fileDesc.index + ".sync"] = localStorage[fileDesc.index + ".sync"].replace(";"
-				+ syncIndex + ";", ";");
+			localStorage[fileDesc.fileIndex + ".sync"] = localStorage[fileDesc.fileIndex + ".sync"].replace(";"
+				+ syncAttributes.syncIndex + ";", ";");
 		}
 		// Remove sync attributes
-		localStorage.removeItem(syncIndex);
-		var syncAttributes = fileDesc.syncLocations[syncIndex];
+		localStorage.removeItem(syncAttributes.syncIndex);
 		fileDesc.syncLocations.removeItem(syncIndex);
 		if(!skipExtensions) {
 			extensionManager.onSyncRemoved(fileDesc, syncAttributes);
@@ -206,7 +205,7 @@ define([
 	};
 	
 	// Get the file descriptor associated to a syncIndex
-	fileManager.getFileFromSync = function(syncIndex) {
+	fileManager.getFileFromSyncIndex = function(syncIndex) {
 		return _.find(fileSystemDescriptor, function(fileDesc) {
 			return _.has(fileDesc.syncLocations, syncIndex);
 		});
@@ -214,7 +213,7 @@ define([
 	
 	// Get syncAttributes from syncIndex
 	fileManager.getSyncAttributes = function(syncIndex) {
-		var fileDesc = fileManager.getFileFromSync(syncIndex);
+		var fileDesc = fileManager.getFileFromSyncIndex(syncIndex);
 		return fileDesc && fileDesc.syncLocations[syncIndex];
 	};
 	
@@ -228,25 +227,24 @@ define([
 	};
 
 	// Add a publishIndex (publish location) to a file
-	fileManager.addPublish = function(fileDesc, publishIndex, publishAttributes) {
-		localStorage[fileDesc.index + ".publish"] += publishIndex + ";";
-		fileDesc.publishLocations[publishIndex] = publishAttributes;
-		extensionManager.onNewPublishSuccess(fileDesc, publishIndex, publishAttributes);
+	fileManager.addPublish = function(fileDesc, publishAttributes) {
+		localStorage[fileDesc.fileIndex + ".publish"] += publishAttributes.publishIndex + ";";
+		fileDesc.publishLocations[publishAttributes.publishIndex] = publishAttributes;
+		extensionManager.onNewPublishSuccess(fileDesc, publishAttributes);
 	};
 	
 	// Remove a publishIndex (publish location)
-	fileManager.removePublish = function(publishIndex, skipExtensions) {
-		var fileDesc = fileManager.getFileFromPublish(publishIndex);
+	fileManager.removePublish = function(publishAttributes, skipExtensions) {
+		var fileDesc = fileManager.getFileFromPublish(publishAttributes.publishIndex);
 		if(fileDesc !== undefined) {
-			localStorage[fileDesc.index + ".publish"] = localStorage[fileDesc.index + ".publish"].replace(";"
-				+ publishIndex + ";", ";");
+			localStorage[fileDesc.fileIndex + ".publish"] = localStorage[fileDesc.fileIndex + ".publish"].replace(";"
+				+ publishAttributes.publishIndex + ";", ";");
 			if(fileManager.isCurrentFile(fileDesc)) {
 				publisher.notifyPublish();
 			}
 		}
 		// Remove publish attributes
-		localStorage.removeItem(publishIndex);
-		var publishAttributes = fileDesc.publishLocations[publishIndex];
+		localStorage.removeItem(publishAttributes.publishIndex);
 		fileDesc.publishLocations.removeItem(publishIndex);
 		if(!skipExtensions) {
 			extensionManager.onPublishRemoved(fileDesc, publishAttributes);
@@ -308,7 +306,7 @@ define([
 			$("#file-title").show();
 			var title = $.trim(input.val());
 			var fileDesc = fileManager.getCurrentFile();
-			var fileIndexTitle = fileDesc.index + ".title";
+			var fileIndexTitle = fileDesc.fileIndex + ".title";
 			if (title) {
 				if (title != localStorage[fileIndexTitle]) {
 					localStorage[fileIndexTitle] = title;

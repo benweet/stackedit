@@ -96,8 +96,7 @@ define([
 		}
 		
 		// Dequeue a synchronized location
-		var publishIndex = publishAttributesList.pop();
-		var publishAttributes = JSON.parse(localStorage[publishIndex]);
+		var publishAttributes = publishAttributesList.pop();
 		var content = getPublishContent(publishAttributes);
 		
 		// Call the provider
@@ -106,7 +105,7 @@ define([
 			if(error !== undefined) {
 				var errorMsg = error.toString();
 				if(errorMsg.indexOf("|removePublish") !== -1) {
-					core.fileManager.removePublish(publishIndex);
+					core.fileManager.removePublish(publishAttributes);
 				}
 				if(errorMsg.indexOf("|stopPublish") !== -1) {
 					callback(error);
@@ -144,8 +143,9 @@ define([
 		do {
 			publishIndex = "publish." + utils.randomString();
 		} while(_.has(localStorage, publishIndex));
+		publishAttributes.publishIndex = publishIndex;
 		localStorage[publishIndex] = JSON.stringify(publishAttributes);
-		core.fileManager.addPublish(fileDesc, publishIndex, publishAttributes);
+		core.fileManager.addPublish(fileDesc, publishAttributes);
 	}
 	
 	// Initialize the "New publication" dialog
@@ -210,7 +210,7 @@ define([
 	
 	// Retrieve file's publish locations from localStorage
 	publisher.populatePublishLocations = function(fileDesc) {
-		_.chain(localStorage[fileDesc.index + ".publish"].split(";"))
+		_.chain(localStorage[fileDesc.fileIndex + ".publish"].split(";"))
 			.compact()
 			.each(function(publishIndex) {
 				var publishAttributes = JSON.parse(localStorage[publishIndex]);

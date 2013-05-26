@@ -108,7 +108,7 @@ define([
 		}
 
 		// Get document title/content 
-		uploadContent = localStorage[fileDesc.index + ".content"];
+		uploadContent = localStorage[fileDesc.fileIndex + ".content"];
 		uploadContentCRC = utils.crc32(uploadContent);
 		uploadTitle = fileDesc.title;
 		uploadTitleCRC = utils.crc32(uploadTitle);
@@ -202,7 +202,7 @@ define([
 	
 	// Retrieve file's sync locations from localStorage
 	publisher.populateSyncLocations = function(fileDesc) {
-		_.chain(localStorage[fileDesc.index + ".sync"].split(";"))
+		_.chain(localStorage[fileDesc.fileIndex + ".sync"].split(";"))
 			.compact()
 			.each(function(syncIndex) {
 				var syncAttributes = JSON.parse(localStorage[syncIndex]);
@@ -249,12 +249,12 @@ define([
 				// Perform the provider's export
 				var fileDesc = core.fileManager.getCurrentFile();
 				var title = fileDesc.title;
-				var content = localStorage[fileDesc.index + ".content"];
-				provider.exportFile(event, title, content, function(error, syncIndex, syncAttributes) {
+				var content = localStorage[fileDesc.fileIndex + ".content"];
+				provider.exportFile(event, title, content, function(error, syncAttributes) {
 					if(error) {
 						return;
 					}
-					core.fileManager.addSync(fileDesc, syncIndex, syncAttributes);
+					core.fileManager.addSync(fileDesc, syncAttributes);
 				});
 				
 				// Store input values as preferences for next time we open the export dialog
@@ -268,12 +268,12 @@ define([
 			$(".action-sync-manual-" + provider.providerId).click(function(event) {
 				var fileDesc = core.fileManager.getCurrentFile();
 				var title = fileDesc.title;
-				var content = localStorage[fileDesc.index + ".content"];
-				provider.exportManual(event, title, content, function(error, syncIndex, syncAttributes) {
+				var content = localStorage[fileDesc.fileIndex + ".content"];
+				provider.exportManual(event, title, content, function(error, syncAttributes) {
 					if(error) {
 						return;
 					}
-					core.fileManager.addSync(fileDesc, syncIndex, syncAttributes);
+					core.fileManager.addSync(fileDesc, syncAttributes);
 				});
 			});
 		});

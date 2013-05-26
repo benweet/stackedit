@@ -68,7 +68,7 @@ define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, 
 			var importPaths = [];
 			_.each(paths, function(path) {
 				var syncIndex = createSyncIndex(path);
-				var fileDesc = core.fileManager.getFileFromSync(syncIndex);
+				var fileDesc = core.fileManager.getFileFromSyncIndex(syncIndex);
 				if(fileDesc !== undefined) {
 					core.showError('"' + fileDesc.title + '" was already imported');
 					return;
@@ -87,7 +87,7 @@ define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, 
 		}
 		// Check that file is not synchronized with an other one
 		var syncIndex = createSyncIndex(path);
-		var fileDesc = core.fileManager.getFileFromSync(syncIndex);
+		var fileDesc = core.fileManager.getFileFromSyncIndex(syncIndex);
 		if(fileDesc !== undefined) {
 			var existingTitle = fileDesc.title;
 			core.showError('File path is already synchronized with "' + existingTitle + '"');
@@ -101,7 +101,7 @@ define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, 
 			}
 			var syncAttributes = createSyncAttributes(result.path, result.versionTag, content);
 			localStorage[syncAttributes.syncIndex] = utils.serializeAttributes(syncAttributes);
-			callback(undefined, syncIndex, syncAttributes);
+			callback(undefined, syncAttributes);
 		});
 	}
 	
@@ -168,7 +168,7 @@ define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, 
 				_.each(changes, function(change) {
 					var syncAttributes = change.syncAttributes;
 					var syncIndex = syncAttributes.syncIndex;
-					var fileDesc = core.fileManager.getFileFromSync(syncIndex);
+					var fileDesc = core.fileManager.getFileFromSyncIndex(syncIndex);
 					// No file corresponding (file may have been deleted locally)
 					if(fileDesc === undefined) {
 						return;
@@ -177,10 +177,10 @@ define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, 
 					// File deleted
 					if (change.wasRemoved === true) {
 						core.showError('"' + localTitle + '" has been removed from Dropbox.');
-						core.fileManager.removeSync(syncIndex);
+						core.fileManager.removeSync(syncAttributes);
 						return;
 					}
-					var localContent = localStorage[fileDesc.index + ".content"];
+					var localContent = localStorage[fileDesc.fileIndex + ".content"];
 					var localContentChanged = syncAttributes.contentCRC != utils.crc32(localContent);
 					var file = change.stat;
                     var remoteContentCRC = utils.crc32(file.content);
@@ -194,7 +194,7 @@ define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, 
 					}
 					// If file content changed
 					if(fileContentChanged && remoteContentChanged === true) {
-						localStorage[fileDesc.index + ".content"] = file.content;
+						localStorage[fileDesc.fileIndex + ".content"] = file.content;
 						core.showMessage('"' + localTitle + '" has been updated from Dropbox.');
 						if(core.fileManager.isCurrentFile(fileDesc)) {
 							updateFileTitles = false; // Done by next function

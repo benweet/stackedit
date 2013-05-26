@@ -36,7 +36,7 @@ define( [ "jquery", "underscore" ], function($) {
 
 		$("#file-selector li:not(.stick)").empty();
 		_.each(sortedDescriptor, function(fileDescToPrint) {
-			var a = $("<a>").html(composeTitle(fileDescToPrint.index));
+			var a = $("<a>").html(composeTitle(fileDescToPrint.fileIndex));
 			var li = $("<li>").append(a);
 			if (fileDescToPrint === fileDesc) {
 				li.addClass("disabled");

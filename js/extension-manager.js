@@ -5,6 +5,7 @@ define( [
     "bootstrap",
     "extensions/notifications",
     "extensions/markdown-extra",
+    "extensions/toc",
     "extensions/math-jax",
     "extensions/scroll-link"
 ], function($, utils) {
@@ -71,7 +72,7 @@ define( [
 		extensionSettings = extensionSettings || {};
 		_.each(extensionList, function(extension) {
 			extension.config = _.extend({}, extension.defaultConfig, extensionSettings[extension.extensionId]);
-			extension.config.enabled = !extension.optional || extension.config.enabled;
+			extension.config.enabled = !extension.optional || extension.config.enabled === undefined || extension.config.enabled === true;
 		});
 		
 		// Create accordion in settings dialog

@@ -1,5 +1,5 @@
 define(["jquery", "core", "utils", "sharing", "blogger-provider", "dropbox-provider", "gist-provider", "github-provider", "gdrive-provider", "ssh-provider", "tumblr-provider", "wordpress-provider", "underscore"],
-	function($, core, sharing, utils) {
+	function($, core, utils, sharing) {
 
 	var publisher = {};
 	
@@ -148,7 +148,7 @@ define(["jquery", "core", "utils", "sharing", "blogger-provider", "dropbox-provi
 		$('div[class*=" modal-publish-"]').hide().filter(".modal-publish-" + provider.providerId).show();
 		
 		// Reset fields
-		core.resetModalInputs();
+		utils.resetModalInputs();
 		$("input:radio[name=radio-publish-format][value=" + defaultPublishFormat + "]").prop("checked", true);
 		
 		// Load preferences

@@ -55,5 +55,35 @@ define( [ "jquery", "jgrowl", "underscore" ], function($) {
 		}
 	};
 	
+	notifications.onSyncImportSuccess = function(fileDescList, provider) {
+		if(!fileDescList) {
+			return;
+		}
+		var titles = _.map(fileDescList, function(fileDesc) {
+			return fileDesc.title;
+		}).join(", ");
+		showMessage(titles + ' imported successfully from ' + provider.providerName + '.');
+	};
+	
+	notifications.onSyncExportSuccess = function(fileDesc, syncAttributes) {
+		showMessage('"' + fileDesc.title + '" will now be synchronized on ' + syncAttributes.provider.providerName + '.');
+	};
+	
+	notifications.onSyncRemoved = function(fileDesc, syncAttributes) {
+		showMessage(syncAttributes.provider.providerName + " synchronized location has been removed.");
+	};
+	
+	notifications.onPublishSuccess = function(fileDesc) {
+		showMessage('"' + fileDesc.title + '" successfully published.');
+	};
+	
+	notifications.onNewPublishSuccess = function(fileDesc, publishIndex, publishAttributes) {
+		showMessage('"' + fileDesc.title + '" is now published on ' + publishAttributes.provider.providerName + '.');
+	};
+	
+	notifications.onPublishRemoved = function(fileDesc, publishAttributes) {
+		showMessage(publishAttributes.provider.providerName + " publish location has been removed.");
+	};
+	
 	return notifications;
 });

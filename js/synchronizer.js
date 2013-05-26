@@ -1,4 +1,13 @@
-define(["jquery", "core", "utils", "dropbox-provider", "gdrive-provider", "underscore"], function($, core, utils) {
+define([
+    "jquery",
+    "core",
+    "utils",
+    "extension-manager",
+    "dropbox-provider",
+    "gdrive-provider",
+    "underscore"
+], function($, core, utils, extensionManager) {
+	
 	var synchronizer = {};
 	
 	// Create a map with providerId: providerObject
@@ -11,9 +20,9 @@ define(["jquery", "core", "utils", "dropbox-provider", "gdrive-provider", "under
 	var uploadPending = false;
 	
 	// Allows external modules to update uploadPending flag
-	synchronizer.notifyChange = function(fileIndex) {
+	synchronizer.notifyChange = function(fileDesc) {
 		// Check that file has synchronized locations
-		if(localStorage[fileIndex + ".sync"].length !== 1) {
+		if(_.size(fileDesc.syncLocations) !== 0) {
 			uploadPending = true;
 			synchronizer.updateSyncButton();
 		}
@@ -38,7 +47,7 @@ define(["jquery", "core", "utils", "dropbox-provider", "gdrive-provider", "under
 	};
 	
 	// Recursive function to upload a single file on multiple locations
-	var uploadFileSyncIndexList = [];
+	var uploadSyncAttributesList = [];
 	var uploadContent = undefined;
 	var uploadContentCRC = undefined;
 	var uploadTitle = undefined;
@@ -46,16 +55,15 @@ define(["jquery", "core", "utils", "dropbox-provider", "gdrive-provider", "under
 	function locationUp(callback) {
 		
 		// No more synchronized location for this document
-		if (uploadFileSyncIndexList.length === 0) {
+		if (uploadSyncAttributesList.length === 0) {
 			fileUp(callback);
 			return;
 		}
 		
 		// Dequeue a synchronized location
-		var syncIndex = uploadFileSyncIndexList.pop();
-		var syncAttributes = JSON.parse(localStorage[syncIndex]);
+		var syncAttributes = uploadSyncAttributesList.pop();
 		// Use the specified provider to perform the upload
-		providerMap[syncAttributes.provider].syncUp(
+		syncAttributes.provider.syncUp(
 			uploadContent,
 			uploadContentCRC,
 			uploadTitle,
@@ -74,7 +82,7 @@ define(["jquery", "core", "utils", "dropbox-provider", "gdrive-provider", "under
 				}
 				if(uploadFlag) {
 					// Update syncAttributes in localStorage
-					localStorage[syncIndex] = JSON.stringify(syncAttributes);
+					localStorage[syncIndex] = utils.serializeAttributes(syncAttributes);
 				}
 				locationUp(callback);
 			}
@@ -82,31 +90,28 @@ define(["jquery", "core", "utils", "dropbox-provider", "gdrive-provider", "under
 	}
 
 	// Recursive function to upload multiple files
-	var uploadFileIndexList = [];
+	var uploadFileList = [];
 	function fileUp(callback) {
 		
-		// No more fileIndex to synchronize
-		if (uploadFileIndexList.length === 0) {
+		// No more fileDesc to synchronize
+		if (uploadFileList.length === 0) {
 			syncUp(callback);
 			return;
 		}
 		
-		// Dequeue a fileIndex
-		var fileIndex = uploadFileIndexList.pop();
-		var fileSyncIndexes = localStorage[fileIndex + ".sync"];
-		if(fileSyncIndexes.length === 1) {
+		// Dequeue a fileDesc
+		var fileDesc = uploadFileList.pop();
+		uploadSyncAttributesList = _.values(fileDesc.syncLocations);
+		if(uploadSyncAttributesList.length === 0) {
 			fileUp(callback);
 			return;
 		}
 
 		// Get document title/content 
-		uploadContent = localStorage[fileIndex + ".content"];
+		uploadContent = localStorage[fileDesc.index + ".content"];
 		uploadContentCRC = utils.crc32(uploadContent);
-		uploadTitle = localStorage[fileIndex + ".title"];
+		uploadTitle = fileDesc.title;
 		uploadTitleCRC = utils.crc32(uploadTitle);
-
-		// Parse the list of synchronized locations associated to the document
-		uploadFileSyncIndexList = _.compact(fileSyncIndexes.split(";"));
 		locationUp(callback);
 	}
 
@@ -116,7 +121,7 @@ define(["jquery", "core", "utils", "dropbox-provider", "gdrive-provider", "under
 		if(uploadCycle === true) {
 			// New upload cycle
 			uploadCycle = false;
-			uploadFileIndexList = _.compact(localStorage["file.list"].split(";"));
+			uploadFileList = core.fileManager.getFileList();
 			fileUp(callback);
 		}
 		else {
@@ -132,6 +137,14 @@ define(["jquery", "core", "utils", "dropbox-provider", "gdrive-provider", "under
 			return;
 		}
 		var provider = providerList.pop();
+		
+		// Check that provider has files to sync
+		if(!core.fileManager.hasSync(provider)) {
+			providerDown(callback);
+			return;
+		}
+		
+		// Perform provider's syncDown
 		provider.syncDown(function(error) {
 			if(error) {
 				callback(error);
@@ -187,53 +200,18 @@ define(["jquery", "core", "utils", "dropbox-provider", "gdrive-provider", "under
 		core.addPeriodicCallback(synchronizer.sync);
 	}
 	
-	// Used to populate the "Manage synchronization" dialog
-	var lineTemplate = ['<div class="input-prepend input-append">',
-		'<span class="add-on" title="<%= provider.providerName %>">',
-		'<i class="icon-<%= provider.providerId %>"></i></span>',
-		'<input class="span5" type="text" value="<%= syncDesc %>" disabled />',
-		'</div>'].join("");
-	var removeButtonTemplate = '<a class="btn" title="Remove this location"><i class="icon-trash"></i></a>';
-	synchronizer.refreshManageSync = function() {
-		var fileIndex = core.fileManager.getCurrentFileIndex();
-		var syncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
-		$(".msg-no-sync, .msg-sync-list").addClass("hide");
-		var syncList = $("#manage-sync-list").empty();
-		if (syncIndexList.length > 0) {
-			$(".msg-sync-list").removeClass("hide");
-		} else {
-			$(".msg-no-sync").removeClass("hide");
-		}
-		_.each(syncIndexList, function(syncIndex) {
-			var syncAttributes = JSON.parse(localStorage[syncIndex]);
-			var syncDesc = syncAttributes.id || syncAttributes.path;
-			var lineElement = $(_.template(lineTemplate, {
-				provider: providerMap[syncAttributes.provider],
-				syncDesc: syncDesc
-			}));
-			lineElement.append($(removeButtonTemplate).click(function() {
-				core.fileManager.removeSync(syncIndex);
-				core.fileManager.updateFileTitles();
-			}));
-			syncList.append(lineElement);
-		});
-	};
-	
-	// Used to enable/disable provider synchronization
-	synchronizer.resetSyncFlags = function() {
-		_.each(providerMap, function(provider) {
-			provider.useSync = false;
-		});		
-	};
-	synchronizer.getSyncAttributesFromFile = function(fileIndex) {
-		var syncIndexList = _.compact(localStorage[fileIndex + ".sync"].split(";"));
-		var attributesList = [];
-		_.each(syncIndexList, function(syncIndex) {
-			var syncAttributes = JSON.parse(localStorage[syncIndex]);
-			attributesList.push(syncAttributes);
-			providerMap[syncAttributes.provider].useSync = true;
-		});
-		return attributesList;
+	// Retrieve file's sync locations from localStorage
+	publisher.populateSyncLocations = function(fileDesc) {
+		_.chain(localStorage[fileDesc.index + ".sync"].split(";"))
+			.compact()
+			.each(function(syncIndex) {
+				var syncAttributes = JSON.parse(localStorage[syncIndex]);
+				// Store syncIndex
+				syncAttributes.syncIndex = syncIndex;
+				// Replace provider ID by provider module in attributes
+				syncAttributes.provider = providerMap[syncAttributes.provider];
+				fileDesc.syncLocations[syncIndex] = syncAttributes;
+			});
 	};
 	
 	// Initialize the export dialog
@@ -269,19 +247,14 @@ define(["jquery", "core", "utils", "dropbox-provider", "gdrive-provider", "under
 			$(".action-sync-export-" + provider.providerId).click(function(event) {
 
 				// Perform the provider's export
-				var fileIndex = core.fileManager.getCurrentFileIndex();
-				var title = localStorage[fileIndex + ".title"];
-				var content = localStorage[fileIndex + ".content"];
-				provider.exportFile(event, title, content, function(error, syncIndex) {
+				var fileDesc = core.fileManager.getCurrentFile();
+				var title = fileDesc.title;
+				var content = localStorage[fileDesc.index + ".content"];
+				provider.exportFile(event, title, content, function(error, syncIndex, syncAttributes) {
 					if(error) {
 						return;
 					}
-					// Link syncIndex with fileIndex
-					localStorage[fileIndex + ".sync"] += syncIndex + ";";
-					synchronizer.refreshManageSync();
-					core.fileManager.updateFileTitles();
-					core.showMessage('"' + title
-						+ '" will now be synchronized on ' + provider.providerName + '.');
+					core.fileManager.addSync(fileDesc, syncIndex, syncAttributes);
 				});
 				
 				// Store input values as preferences for next time we open the export dialog
@@ -293,18 +266,14 @@ define(["jquery", "core", "utils", "dropbox-provider", "gdrive-provider", "under
 			});
 			// Provider's manual export button
 			$(".action-sync-manual-" + provider.providerId).click(function(event) {
-				var fileIndex = core.fileManager.getCurrentFileIndex();
-				var title = localStorage[fileIndex + ".title"];
-				var content = localStorage[fileIndex + ".content"];
-				provider.exportManual(event, title, content, function(error, syncIndex) {
+				var fileDesc = core.fileManager.getCurrentFile();
+				var title = fileDesc.title;
+				var content = localStorage[fileDesc.index + ".content"];
+				provider.exportManual(event, title, content, function(error, syncIndex, syncAttributes) {
 					if(error) {
 						return;
 					}
-					localStorage[fileIndex + ".sync"] += syncIndex + ";";
-					synchronizer.refreshManageSync();
-					core.fileManager.updateFileTitles();
-					core.showMessage('"' + title
-						+ '" will now be synchronized on ' + provider.providerName + '.');
+					core.fileManager.addSync(fileDesc, syncIndex, syncAttributes);
 				});
 			});
 		});
@@ -317,5 +286,6 @@ define(["jquery", "core", "utils", "dropbox-provider", "gdrive-provider", "under
 		});
 	});
 
+	extensionManager.onSynchronizerCreated(synchronizer);
 	return synchronizer;
 });

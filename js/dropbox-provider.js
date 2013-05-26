@@ -1,12 +1,11 @@
-define(["core", "utils", "dropbox-helper"], function(core, utils, dropboxHelper) {
+define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, utils, extensionManager, dropboxHelper) {
 	
 	var PROVIDER_DROPBOX = "dropbox";
 	
 	var dropboxProvider = {
 		providerId: PROVIDER_DROPBOX,
 		providerName: "Dropbox",
-		defaultPublishFormat: "template",
-		useSync: false
+		defaultPublishFormat: "template"
 	};
 	
 	function checkPath(path) {
@@ -23,17 +22,18 @@ define(["core", "utils", "dropbox-helper"], function(core, utils, dropboxHelper)
 		return path;
 	}
 	
+	function createSyncIndex(path) {
+		return "sync." + PROVIDER_DROPBOX + "." + encodeURIComponent(path.toLowerCase());
+	}
+	
 	function createSyncAttributes(path, versionTag, content) {
 		var syncAttributes = {};
-		syncAttributes.provider = PROVIDER_DROPBOX;
+		syncAttributes.provider = dropboxProvider;
 		syncAttributes.path = path;
 		syncAttributes.version = versionTag;
 		syncAttributes.contentCRC = utils.crc32(content);
+		syncAttributes.syncIndex = createSyncIndex(path);
 		return syncAttributes;
-	}
-	
-	function createSyncIndex(path) {
-		return "sync." + PROVIDER_DROPBOX + "." + encodeURIComponent(path.toLowerCase());
 	}
 	
 	function importFilesFromPaths(paths) {
@@ -45,16 +45,17 @@ define(["core", "utils", "dropbox-helper"], function(core, utils, dropboxHelper)
 				if(error) {
 					return;
 				}
-				var titleList = [];
+				var fileDescList = [];
 				_.each(result, function(file) {
 					var syncAttributes = createSyncAttributes(file.path, file.versionTag, file.content);
-					var syncIndex = createSyncIndex(syncAttributes.path);
-					localStorage[syncIndex] = JSON.stringify(syncAttributes);
-					var fileIndex = core.fileManager.createFile(file.name, file.content, [syncIndex]);
-					core.fileManager.selectFile(fileIndex);
-					titleList.push('"' + file.name + '"');
+					localStorage[syncAttributes.syncIndex] = utils.serializeAttributes(syncAttributes);
+					var syncLocations = {};
+					syncLocations[syncAttributes.syncIndex] = syncAttributes;
+					var fileDesc = core.fileManager.createFile(file.name, file.content, syncLocations);
+					core.fileManager.selectFile(fileDesc);
+					fileDescList.push(fileDesc);
 				});
-				core.showMessage(titleList.join(", ") + ' imported successfully from Dropbox.');
+				extensionManager.onSyncImportSuccess(fileDescList, dropboxProvider);
 			});
 		});
 	}
@@ -67,10 +68,9 @@ define(["core", "utils", "dropbox-helper"], function(core, utils, dropboxHelper)
 			var importPaths = [];
 			_.each(paths, function(path) {
 				var syncIndex = createSyncIndex(path);
-				var fileIndex = core.fileManager.getFileIndexFromSync(syncIndex);
-				if(fileIndex !== undefined) {
-					var title = localStorage[fileIndex + ".title"];
-					core.showError('"' + title + '" was already imported');
+				var fileDesc = core.fileManager.getFileFromSync(syncIndex);
+				if(fileDesc !== undefined) {
+					core.showError('"' + fileDesc.title + '" was already imported');
 					return;
 				}
 				importPaths.push(path);
@@ -87,9 +87,9 @@ define(["core", "utils", "dropbox-helper"], function(core, utils, dropboxHelper)
 		}
 		// Check that file is not synchronized with an other one
 		var syncIndex = createSyncIndex(path);
-		var fileIndex = core.fileManager.getFileIndexFromSync(syncIndex);
-		if(fileIndex !== undefined) {
-			var existingTitle = localStorage[fileIndex + ".title"];
+		var fileDesc = core.fileManager.getFileFromSync(syncIndex);
+		if(fileDesc !== undefined) {
+			var existingTitle = fileDesc.title;
 			core.showError('File path is already synchronized with "' + existingTitle + '"');
 			callback(true);
 			return;
@@ -100,9 +100,8 @@ define(["core", "utils", "dropbox-helper"], function(core, utils, dropboxHelper)
 				return;
 			}
 			var syncAttributes = createSyncAttributes(result.path, result.versionTag, content);
-			var syncIndex = createSyncIndex(syncAttributes.path);
-			localStorage[syncIndex] = JSON.stringify(syncAttributes);
-			callback(undefined, syncIndex);
+			localStorage[syncAttributes.syncIndex] = utils.serializeAttributes(syncAttributes);
+			callback(undefined, syncIndex, syncAttributes);
 		});
 	}
 	
@@ -135,10 +134,6 @@ define(["core", "utils", "dropbox-helper"], function(core, utils, dropboxHelper)
 	};
 	
 	dropboxProvider.syncDown = function(callback) {
-		if (dropboxProvider.useSync === false) {
-			callback();
-			return;
-		}
 		var lastChangeId = localStorage[PROVIDER_DROPBOX + ".lastChangeId"];
 		dropboxHelper.checkChanges(lastChangeId, function(error, changes, newChangeId) {
 			if (error) {
@@ -148,23 +143,20 @@ define(["core", "utils", "dropbox-helper"], function(core, utils, dropboxHelper)
 			var interestingChanges = [];
 			_.each(changes, function(change) {
 				var syncIndex = createSyncIndex(change.path);
-				var serializedAttributes = localStorage[syncIndex];
-				if(serializedAttributes === undefined) {
+				var syncAttributes = core.fileManager.getSyncAttributes(syncIndex);
+				if(syncAttributes === undefined) {
 					return;
 				}
-				// Store syncIndex to avoid 2 times formating
-				change.syncIndex = syncIndex;
+				// Store syncAttributes to avoid 2 times searching 
+				change.syncAttributes = syncAttributes;
 				// Delete
 				if(change.wasRemoved === true) {
 					interestingChanges.push(change);
 					return;
 				}
 				// Modify
-				var syncAttributes = JSON.parse(serializedAttributes);
 				if(syncAttributes.version != change.stat.versionTag) {
 					interestingChanges.push(change);
-					// Store syncAttributes to avoid 2 times parsing 
-					change.syncAttributes = syncAttributes;
 				}
 			});
 			dropboxHelper.downloadContent(interestingChanges, function(error, changes) {
@@ -174,23 +166,21 @@ define(["core", "utils", "dropbox-helper"], function(core, utils, dropboxHelper)
 				}
 				var updateFileTitles = false;
 				_.each(changes, function(change) {
-					var syncIndex = change.syncIndex;
-					var fileIndex = core.fileManager.getFileIndexFromSync(syncIndex);
+					var syncAttributes = change.syncAttributes;
+					var syncIndex = syncAttributes.syncIndex;
+					var fileDesc = core.fileManager.getFileFromSync(syncIndex);
 					// No file corresponding (file may have been deleted locally)
-					if(fileIndex === undefined) {
-						core.fileManager.removeSync(syncIndex);
+					if(fileDesc === undefined) {
 						return;
 					}
-					var localTitle = localStorage[fileIndex + ".title"];
+					var localTitle = fileDesc.title;
 					// File deleted
 					if (change.wasRemoved === true) {
+						core.showError('"' + localTitle + '" has been removed from Dropbox.');
 						core.fileManager.removeSync(syncIndex);
-						updateFileTitles = true;
-						core.showMessage('"' + localTitle + '" has been removed from Dropbox.');
 						return;
 					}
-					var syncAttributes = change.syncAttributes;
-					var localContent = localStorage[fileIndex + ".content"];
+					var localContent = localStorage[fileDesc.index + ".content"];
 					var localContentChanged = syncAttributes.contentCRC != utils.crc32(localContent);
 					var file = change.stat;
                     var remoteContentCRC = utils.crc32(file.content);
@@ -204,9 +194,9 @@ define(["core", "utils", "dropbox-helper"], function(core, utils, dropboxHelper)
 					}
 					// If file content changed
 					if(fileContentChanged && remoteContentChanged === true) {
-						localStorage[fileIndex + ".content"] = file.content;
+						localStorage[fileDesc.index + ".content"] = file.content;
 						core.showMessage('"' + localTitle + '" has been updated from Dropbox.');
-						if(core.fileManager.isCurrentFileIndex(fileIndex)) {
+						if(core.fileManager.isCurrentFile(fileDesc)) {
 							updateFileTitles = false; // Done by next function
 							core.fileManager.selectFile(); // Refresh editor
 						}
@@ -214,10 +204,10 @@ define(["core", "utils", "dropbox-helper"], function(core, utils, dropboxHelper)
 					// Update syncAttributes
 					syncAttributes.version = file.versionTag;
 					syncAttributes.contentCRC = remoteContentCRC;
-					localStorage[syncIndex] = JSON.stringify(syncAttributes);
+					localStorage[syncIndex] = utils.serializeAttributes(syncAttributes);
 				});
 				if(updateFileTitles) {
-					core.fileManager.updateFileTitles();
+					extensionManager.onTitleChanged();
 				}
 				localStorage[PROVIDER_DROPBOX + ".lastChangeId"] = newChangeId;
 				callback();

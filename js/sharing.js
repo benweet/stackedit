@@ -88,16 +88,12 @@ define(["jquery", "core", "utils", "async-runner", "download-provider", "gist-pr
 			return;
 		} 
 		localStorage.removeItem("missingSharingLink");
-		var fileIndexList = _.compact(localStorage["file.list"].split(";"));
-		_.each(fileIndexList, function(fileIndex) {
-			var syncIndexList = localStorage[fileIndex + ".sync"].split(";");
-			var publishIndexList = localStorage[fileIndex + ".publish"].split(";");
-			var attributesIndexList = _.compact(syncIndexList.concat(publishIndexList));
-			_.each(attributesIndexList, function(attributesIndex) {
-				var attributes = JSON.parse(localStorage[attributesIndex]);
-				sharing.createLink(attributes, function(shortUrl) {
+		var fileDescList = core.fileManager.getFileList();
+		_.each(fileDescList, function(fileDesc) {
+			_.each(fileDescList.publishLocations, function(publishAttributes, publishIndex) {
+				sharing.createLink(publishAttributes, function(shortUrl) {
 					if(shortUrl !== undefined) {
-						localStorage[attributesIndex] = JSON.stringify(attributes);
+						localStorage[publishIndex] = utils.serializeAttributes(attributes);
 					}
 				});
 			});
@@ -139,8 +135,8 @@ define(["jquery", "core", "utils", "async-runner", "download-provider", "gist-pr
 			if(error) {
 				return;
 			}
-			var fileIndex = core.fileManager.createFile(title, content, undefined, true);
-			core.fileManager.selectFile(fileIndex);
+			var fileDesc = core.fileManager.createFile(title, content, undefined, true);
+			core.fileManager.selectFile(fileDesc);
 		});
 	});
 	

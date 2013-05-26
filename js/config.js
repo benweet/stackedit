@@ -15,6 +15,7 @@ var ASYNC_TASK_DEFAULT_TIMEOUT = 60000;
 var ASYNC_TASK_LONG_TIMEOUT = 120000;
 var SYNC_PERIOD = 180000;
 var USER_IDLE_THRESHOLD = 300000;	
+var TEMPORARY_FILE_INDEX = "file.tempIndex";
 var WELCOME_DOCUMENT_TITLE = "Welcome document";
 var DOWNLOAD_PROXY_URL = "http://stackedit-download-proxy.herokuapp.com/";
 var WORDPRESS_CLIENT_ID = '3185';

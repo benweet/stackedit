@@ -12,24 +12,25 @@ define( [
 		
 	var extensionManager = {};
 	
-	// Create a map with providerId: providerObject
+	// Create a list of extensions
 	var extensionList = _.chain(arguments)
 		.map(function(argument) {
 			return _.isObject(argument) && argument.extensionId && argument;
 		}).compact().value();
 
 	// Return every named callbacks implemented in extensions
-	function getExtensionCallbackList(callbackName) {
+	function getExtensionCallbackList(hookName) {
 		return _.chain(extensionList)
 			.map(function(extension) {
-				return extension.config.enabled && extension[callbackName];
+				return extension.config.enabled && extension[hookName];
 			}).compact().value();
 	}
 	
 	// Return a function that calls every callbacks from extensions 
-	function createCallback(callbackName) {
-		var callbackList = getExtensionCallbackList(callbackName);
+	function createHook(hookName) {
+		var callbackList = getExtensionCallbackList(hookName);
 		return function() {
+			console.debug(hookName);
 			var callbackArguments = arguments;
 			_.each(callbackList, function(callback) {
 				callback.apply(null, callbackArguments);
@@ -37,9 +38,9 @@ define( [
 		};
 	}
 	
-	// Add a callback to the extensionManager
-	function addCallback(callbackName) {
-		extensionManager[callbackName] = createCallback(callbackName);
+	// Add a Hook to the extensionManager
+	function addHook(hookName) {
+		extensionManager[hookName] = createHook(hookName);
 	}
 	
 	var accordionTmpl = [
@@ -75,12 +76,9 @@ define( [
 			extension.config.enabled = !extension.optional || extension.config.enabled === undefined || extension.config.enabled === true;
 		});
 		
-		// Create accordion in settings dialog
-		_.each(extensionList, createSettings);
-
 		// Load/Save extension config from/to settings
-		addCallback("onLoadSettings");
 		extensionManager["onLoadSettings"] = function() {
+			console.debug("onLoadSettings");
 			_.each(extensionList, function(extension) {
 				utils.setInputChecked("#input-enable-extension-" + extension.extensionId, extension.config.enabled);
 				var onLoadSettingsCallback = extension.onLoadSettings;
@@ -88,6 +86,7 @@ define( [
 			});
 		};
 		extensionManager["onSaveSettings"] = function(newExtensionSettings, event) {
+			console.debug("onSaveSettings");
 			_.each(extensionList, function(extension) {
 				var newExtensionConfig = extension.defaultConfig || {};
 				newExtensionConfig.enabled = utils.getInputChecked("#input-enable-extension-" + extension.extensionId);
@@ -97,16 +96,40 @@ define( [
 			});
 		};
 		
-		addCallback("onMessage");
-		addCallback("onError");
-		addCallback("onOfflineChanged");
-		addCallback("onLayoutConfigure");
-		addCallback("onLayoutCreated");
-		addCallback("onEditorConfigure");
+		addHook("onMessage");
+		addHook("onError");
+		addHook("onOfflineChanged");
 		
-		var onPreviewFinished = createCallback("onPreviewFinished");
+		// To store reference to modules that are accessible from extensions
+		addHook("onFileManagerCreated");
+		addHook("onSynchronizerCreated");
+		addHook("onPublisherCreated");
+		
+		// Operations on files
+		addHook("onFileSystemLoaded");
+		addHook("onFileCreated");
+		addHook("onFileDeleted");
+		addHook("onFileChanged");
+		addHook("onFileSelected");
+		addHook("onTitleChanged");
+		addHook("onSyncImportSuccess");
+		addHook("onSyncExportSuccess");
+		addHook("onSyncRemoved");
+		addHook("onPublishSuccess");
+		addHook("onNewPublishSuccess");
+		addHook("onPublishRemoved");
+		
+		// Operations on Layout
+		addHook("onLayoutConfigure");
+		addHook("onLayoutCreated");
+		
+		// Operations on PageDown
+		addHook("onEditorConfigure");
+		
+		var onPreviewFinished = createHook("onPreviewFinished");
 		var onAsyncPreviewCallbackList = getExtensionCallbackList("onAsyncPreview"); 
 		extensionManager["onAsyncPreview"] = function() {
+			console.debug("onAsyncPreview");
 			// Call onPreviewFinished callbacks when all async preview are finished
 			var counter = 0;
 			function tryFinished() {
@@ -124,7 +147,14 @@ define( [
 		};
 		
 		// Call onReady callbacks
-		createCallback("onReady")();
+		var onReady = createHook("onReady");
+		extensionManager["onReady"] = function() {
+			
+			// Create accordion in settings dialog
+			_.each(extensionList, createSettings);
+
+			onReady();
+		};
 	};
 	
 	return extensionManager;

@@ -1,5 +1,19 @@
-define(["jquery", "core", "utils", "sharing", "blogger-provider", "dropbox-provider", "gist-provider", "github-provider", "gdrive-provider", "ssh-provider", "tumblr-provider", "wordpress-provider", "underscore"],
-	function($, core, utils, sharing) {
+define([
+    "jquery",
+    "core",
+    "utils",
+    "extension-manager",
+    "sharing",
+    "blogger-provider",
+    "dropbox-provider",
+    "gist-provider",
+    "github-provider",
+    "gdrive-provider",
+    "ssh-provider",
+    "tumblr-provider",
+    "wordpress-provider",
+    "underscore"
+], function($, core, utils, extensionManager, sharing) {
 
 	var publisher = {};
 	
@@ -14,17 +28,16 @@ define(["jquery", "core", "utils", "sharing", "blogger-provider", "dropbox-provi
 	
 	// Allows external modules to update hasPublications flag
 	publisher.notifyPublish = function() {
-		var fileIndex = core.fileManager.getCurrentFileIndex();
+		var fileDesc = core.fileManager.getCurrentFile();
 		
 		// Check that file has publications
-		if(localStorage[fileIndex + ".publish"].length === 1) {
+		if(_.size(fileDesc.publishLocations) === 0) {
 			hasPublications = false;
 		}
 		else {
 			hasPublications = true;
 		}
 		publisher.updatePublishButton();
-		publisher.refreshManagePublish();
 	};
 
 	// Used to enable/disable the publish button
@@ -41,10 +54,10 @@ define(["jquery", "core", "utils", "sharing", "blogger-provider", "dropbox-provi
 
 	// Apply template to the current document
 	publisher.applyTemplate = function(publishAttributes) {
-		var fileIndex = core.fileManager.getCurrentFileIndex();
+		var fileDesc = core.fileManager.getCurrentFile();
 		try {
 			return _.template(core.settings.template, {
-				documentTitle: localStorage[fileIndex + ".title"],
+				documentTitle: fileDesc.title,
 				documentMarkdown: $("#wmd-input").val(),
 				documentHTML: $("#wmd-preview").html(),
 				publishAttributes: publishAttributes
@@ -72,18 +85,18 @@ define(["jquery", "core", "utils", "sharing", "blogger-provider", "dropbox-provi
 	}
 	
 	// Recursive function to publish a file on multiple locations
-	var publishIndexList = [];
+	var publishAttributesList = [];
 	var publishTitle = undefined;
 	function publishLocation(callback, errorFlag) {
 		
 		// No more publish location for this document
-		if (publishIndexList.length === 0) {
+		if (publishAttributesList.length === 0) {
 			callback(errorFlag);
 			return;
 		}
 		
 		// Dequeue a synchronized location
-		var publishIndex = publishIndexList.pop();
+		var publishIndex = publishAttributesList.pop();
 		var publishAttributes = JSON.parse(localStorage[publishIndex]);
 		var content = getPublishContent(publishAttributes);
 		
@@ -94,8 +107,6 @@ define(["jquery", "core", "utils", "sharing", "blogger-provider", "dropbox-provi
 				var errorMsg = error.toString();
 				if(errorMsg.indexOf("|removePublish") !== -1) {
 					core.fileManager.removePublish(publishIndex);
-					core.fileManager.updateFileTitles();
-					core.showMessage(provider.providerName + " publish location has been removed.");
 				}
 				if(errorMsg.indexOf("|stopPublish") !== -1) {
 					callback(error);
@@ -115,26 +126,26 @@ define(["jquery", "core", "utils", "sharing", "blogger-provider", "dropbox-provi
 		
 		publishRunning = true;
 		publisher.updatePublishButton();
-		var fileIndex = core.fileManager.getCurrentFileIndex();
-		publishTitle = localStorage[fileIndex + ".title"];
-		publishIndexList = _.compact(localStorage[fileIndex + ".publish"].split(";"));
+		var fileDesc = fileManager.getCurrentFile();
+		publishTitle = fileDesc.title;
+		publishAttributesList = _.values(fileDesc.publishLocations);
 		publishLocation(function(errorFlag) {
 			publishRunning = false;
 			publisher.updatePublishButton();
 			if(errorFlag === undefined) {
-				core.showMessage('"' + publishTitle + '" successfully published.');
+				extensionManager.onPublishSuccess(fileDesc);
 			}
 		});
 	};
 	
-	// Generate a publishIndex associated to a fileIndex and store publishAttributes
-	function createPublishIndex(fileIndex, publishAttributes) {
+	// Generate a publishIndex associated to a file and store publishAttributes
+	function createPublishIndex(fileDesc, publishAttributes) {
 		var publishIndex = undefined;
 		do {
 			publishIndex = "publish." + utils.randomString();
 		} while(_.has(localStorage, publishIndex));
 		localStorage[publishIndex] = JSON.stringify(publishAttributes);
-		localStorage[fileIndex + ".publish"] += publishIndex + ";";
+		core.fileManager.addPublish(fileDesc, publishIndex, publishAttributes);
 	}
 	
 	// Initialize the "New publication" dialog
@@ -174,18 +185,16 @@ define(["jquery", "core", "utils", "sharing", "blogger-provider", "dropbox-provi
 		}
 		
 		// Perform provider's publishing
-		var fileIndex = core.fileManager.getCurrentFileIndex();
-		var title = localStorage[fileIndex + ".title"];
+		var fileDesc = core.fileManager.getCurrentFile();
+		var title = fileDesc.title;
 		var content = getPublishContent(publishAttributes);
 		provider.publish(publishAttributes, title, content, function(error) {
 			if(error === undefined) {
 				publishAttributes.provider = provider.providerId;
 				sharing.createLink(publishAttributes, function() {
-					createPublishIndex(fileIndex, publishAttributes);
+					createPublishIndex(fileDesc, publishAttributes);
 					publisher.notifyPublish();
 					core.fileManager.updateFileTitles();
-					core.showMessage('"' + title
-						+ '" is now published on ' + provider.providerName + '.');
 				});
 			}
 		});
@@ -198,50 +207,19 @@ define(["jquery", "core", "utils", "sharing", "blogger-provider", "dropbox-provi
 		publishPreferences.format = publishAttributes.format;
 		localStorage[provider.providerId + ".publishPreferences"] = JSON.stringify(publishPreferences);
 	}
-
-	// Used to populate the "Manage publication" dialog
-	var lineTemplate = ['<div class="input-prepend input-append">',
-		'<span class="add-on" title="<%= provider.providerName %>">',
-		'<i class="icon-<%= provider.providerId %>"></i></span>',
-		'<input class="span5" type="text" value="<%= publishDesc %>" disabled />',
-		'</div>'].join("");
-	var removeButtonTemplate = '<a class="btn" title="Remove this location"><i class="icon-trash"></i></a>';
-	publisher.refreshManagePublish = function() {
-		var fileIndex = core.fileManager.getCurrentFileIndex();
-		var publishIndexList = _.compact(localStorage[fileIndex + ".publish"].split(";"));
-		$(".msg-no-publish, .msg-publish-list").addClass("hide");
-		var publishList = $("#manage-publish-list").empty();
-		if (publishIndexList.length > 0) {
-			$(".msg-publish-list").removeClass("hide");
-		} else {
-			$(".msg-no-publish").removeClass("hide");
-		}
-		_.each(publishIndexList, function(publishIndex) {
-			var publishAttributes = JSON.parse(localStorage[publishIndex]);
-			if(publishAttributes.password) {
-				publishAttributes.password = "********";
-			}
-			var publishDesc = JSON.stringify(publishAttributes).replace(/{|}|"/g, "");
-			var lineElement = $(_.template(lineTemplate, {
-				provider: providerMap[publishAttributes.provider],
-				publishDesc: publishDesc
-			}));
-			lineElement.append($(removeButtonTemplate).click(function() {
-				core.fileManager.removePublish(publishIndex);
-				core.fileManager.updateFileTitles();
-			}));
-			publishList.append(lineElement);
-		});
-	};
 	
-	publisher.getPublishAttributesFromFile = function(fileIndex) {
-		var publishIndexList = _.compact(localStorage[fileIndex + ".publish"].split(";"));
-		var attributesList = [];
-		_.each(publishIndexList, function(publishIndex) {
-			var publishAttributes = JSON.parse(localStorage[publishIndex]);
-			attributesList.push(publishAttributes);
-		});
-		return attributesList;
+	// Retrieve file's publish locations from localStorage
+	publisher.populatePublishLocations = function(fileDesc) {
+		_.chain(localStorage[fileDesc.index + ".publish"].split(";"))
+			.compact()
+			.each(function(publishIndex) {
+				var publishAttributes = JSON.parse(localStorage[publishIndex]);
+				// Store publishIndex
+				publishAttributes.publishIndex = publishIndex;
+				// Replace provider ID by provider module in attributes
+				publishAttributes.provider = providerMap[publishAttributes.provider];
+				fileDesc.publishLocations[publishIndex] = publishAttributes;
+			});
 	};
 	
 	core.onReady(function() {
@@ -273,5 +251,6 @@ define(["jquery", "core", "utils", "sharing", "blogger-provider", "dropbox-provi
 		});
 	});
 	
+	extensionManager.onPublisherCreated(publisher);
 	return publisher;
 });

@@ -246,6 +246,15 @@ define([ "jquery", "underscore" ], function($) {
 	utils.randomString = function() {
 		return _.random(4294967296).toString(36);
 	};
+	
+	// Serialize sync/publish attributes
+	utils.serializeAttributes = function(attributes) {
+		// Don't store sync/publish index
+		attributes = _.omit(attributes, "syncIndex", "publishIndex");
+		// Store providerId instead of provider
+		attributes.provider = attributes.provider.providerId;
+		return JSON.stringify(attributes);
+	};
 
 	return utils;
 

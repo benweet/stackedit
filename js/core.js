@@ -1,7 +1,16 @@
-define(
-	[ "jquery", "utils", "extension-manager", "bootstrap", "layout", "Markdown.Editor", "storage", "config",
-		"underscore", "FileSaver", "css_browser_selector" ],
-	function($, utils, extensionManager) {
+define([
+    "jquery",
+    "utils",
+    "extension-manager",
+    "bootstrap",
+    "layout",
+    "Markdown.Editor",
+    "storage",
+    "config",
+	"underscore",
+	"FileSaver",
+	"css_browser_selector"
+], function($, utils, extensionManager) {
 	
 	var core = {};
 	
@@ -159,11 +168,13 @@ define(
 			'</head>\n',
 			'<body><%= documentHTML %></body>\n',
 			'</html>'].join(""),
-		sshProxy : SSH_PROXY_URL
+		sshProxy : SSH_PROXY_URL,
+		extensionSettings: {}
 	};
 	if (_.has(localStorage, "settings")) {
 		_.extend(core.settings, JSON.parse(localStorage.settings));
 	}
+	extensionManager.init(core.settings.extensionSettings);
 
 	core.loadSettings = function() {
 		
@@ -271,13 +282,7 @@ define(
 			layout.allowOverflow('north');
 		});
 		
-		extensionManager.onLayoutCreated();
-	};
-	core.layoutRefresh = function() {
-		if(layout !== undefined) {
-			// Use defer to make sure UI has been updated
-			_.defer(layout.resizeAll);
-		}
+		extensionManager.onLayoutCreated(layout);
 	};
 	
 	// Create the PageDown editor
@@ -413,9 +418,7 @@ define(
 		runReadyCallbacks();
 	});
 	
-	core.onReady(function() {
-		extensionManager.init(core.settings.extensionSettings);
-	});
+	core.onReady(extensionManager.onReady);
 	core.onReady(function() {
 		
 		// Load theme list

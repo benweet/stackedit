@@ -8,15 +8,15 @@ requirejs.config({
 		"lib/MathJax": '../lib/MathJax/MathJax.js?config=TeX-AMS_HTML'
     },
     shim: {
-    	'lib/underscore': {
+    	'underscore': {
             exports: '_'
         },
-        'lib/jgrowl': {
-            deps: ['lib/jquery'],
+        'jgrowl': {
+            deps: ['jquery'],
             exports: 'jQuery.jGrowl'
         },
-        'lib/jquery-ui': ['lib/jquery'],
-        'lib/bootstrap': ['lib/jquery'],
+        'lib/jquery-ui': ['jquery'],
+        'lib/bootstrap': ['jquery'],
         'lib/layout': ['lib/jquery-ui'],
         'lib/Markdown.Extra': ['lib/Markdown.Converter', 'lib/prettify'],
         'lib/Markdown.Editor': ['lib/Markdown.Converter']

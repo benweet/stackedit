@@ -230,32 +230,34 @@ define([
 			return true;
 		});
 		
-		var firstChange = true;
-		var previewWrapper = function(makePreview) {
-			return function() {
-				if(firstChange !== true) {
-					onTextChange();
-				}
-				makePreview();
-			};
-		};
+		var documentContent = undefined;
+		function checkDocumentChanges() {
+			var newDocumentContent = $("#wmd-input").val();
+			if(documentContent !== undefined && documentContent != newDocumentContent) {
+				onTextChange();
+			}
+			documentContent = newDocumentContent;
+		}
+		var previewWrapper = undefined;
 		if(settings.lazyRendering === true) {
-			var lastRefresh = 0;
 			previewWrapper = function(makePreview) {
-				//var debouncedMakePreview = _.debounce(makePreview, 500); 
+				var debouncedMakePreview = _.debounce(makePreview, 500); 
 				return function() {
-					if(firstChange === true) {
+					if(documentContent === undefined) {
 						makePreview();
 					}
 					else {
-						onTextChange();
-						var currentDate = new Date().getTime();
-						if(currentDate - lastRefresh > 500) {
-							makePreview();
-							lastRefresh = currentDate;
-						}
-						//debouncedMakePreview();
+						debouncedMakePreview();
 					}
+					checkDocumentChanges();
+				};
+			};
+		}
+		else {
+			previewWrapper = function(makePreview) {
+				return function() {
+					checkDocumentChanges();
+					makePreview();
 				};
 			};
 		}
@@ -313,7 +315,7 @@ define([
 		}
 	}
 	
-	core.onReady(extensionManager.onReady);
+	core.onReady(extensionMgr.onReady);
 	core.onReady(function() {
 				
 		// Load theme list

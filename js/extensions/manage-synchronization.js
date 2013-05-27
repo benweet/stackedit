@@ -39,7 +39,7 @@ define([
 		_.each(syncAttributesList, function(syncAttributes) {
 			var syncDesc = syncAttributes.id || syncAttributes.path;
 			var lineElement = $(_.template(lineTemplate, {
-				provider: providerMap[syncAttributes.provider],
+				provider: syncAttributes.provider,
 				syncDesc: syncDesc
 			}));
 			lineElement.append($(removeButtonTemplate).click(function() {

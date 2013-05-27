@@ -204,7 +204,7 @@ else
 
             text = _UnescapeSpecialChars(text);
 
-            text = pluginHooks.postConversion(text);
+            text = pluginHooks.postConversion(text); // benweet
 
             // attacklab: Restore dollar signs
             text = text.replace(/~D/g, "$$");
@@ -939,7 +939,7 @@ else
                         // Recursion for sub-lists:
                         item = _DoLists(_Outdent(item), /* isInsideParagraphlessListItem= */ true);
                         item = item.replace(/\n$/, ""); // chomp(item)
-                        if (!isInsideParagraphlessListItem)
+                        if (!isInsideParagraphlessListItem) // only the outer-most item should run this, otherwise it's run multiple times for the inner ones
                             item = _RunSpanGamut(item);
                     }
                     last_item_had_a_double_newline = ends_with_double_newline;
@@ -1231,7 +1231,12 @@ else
             text = text.replace(/\\([`*_{}\[\]()>#+-.!])/g, escapeCharacters_callback);
             return text;
         }
-        
+
+        var charInsideUrl = "[-A-Z0-9+&@#/%?=~_|[\\]()!:,.;]",
+            charEndingUrl = "[-A-Z0-9+&@#/%=~_|[\\])]",
+            autoLinkRegex = new RegExp("(=\"|<)?\\b(https?|ftp)(://" + charInsideUrl + "*" + charEndingUrl + ")(?=$|\\W)", "gi"),
+            endCharRegex = new RegExp(charEndingUrl, "i");
+
         function handleTrailingParens(wholeMatch, lookbehind, protocol, link) {
             if (lookbehind)
                 return wholeMatch;
@@ -1258,10 +1263,16 @@ else
                     return "";
                 });
             }
-            
+            if (tail) {
+                var lastChar = link.charAt(link.length - 1);
+                if (!endCharRegex.test(lastChar)) {
+                    tail = lastChar + tail;
+                    link = link.substr(0, link.length - 1);
+                }
+            }
             return "<" + protocol + link + ">" + tail;
         }
-
+        
         function _DoAutoLinks(text) {
 
             // note that at this point, all other URL in the text are already hyperlinked as <a href=""></a>
@@ -1271,7 +1282,7 @@ else
             // must be preceded by a non-word character (and not by =" or <) and followed by non-word/EOF character
             // simulating the lookbehind in a consuming way is okay here, since a URL can neither and with a " nor
             // with a <, so there is no risk of overlapping matches.
-            text = text.replace(/(="|<)?\b(https?|ftp)(:\/\/[-A-Z0-9+&@#\/%?=~_|\[\]\(\)!:,\.;]*[-A-Z0-9+&@#\/%=~_|\[\])])(?=$|\W)/gi, handleTrailingParens);
+            text = text.replace(autoLinkRegex, handleTrailingParens);
 
             //  autolink anything like <http://example.com>
             

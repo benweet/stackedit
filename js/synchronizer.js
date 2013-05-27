@@ -112,7 +112,7 @@ define([
 		if(uploadCycle === true) {
 			// New upload cycle
 			uploadCycle = false;
-			uploadFileList = fileMgr.getFileList();
+			uploadFileList = _.values(fileSystem);
 			fileUp(callback);
 		}
 		else {

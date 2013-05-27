@@ -14,7 +14,7 @@ define([
 	var uploadPending = false;
 	var isOffline = false;
 	// Enable/disable the button
-	function updateButtonState() {
+	var updateButtonState = function() {
 		if(syncRunning === true || uploadPending === false || isOffline) {
 			$(".action-force-sync").addClass("disabled");
 		}
@@ -38,6 +38,8 @@ define([
 		isOffline = isOfflineParameter;
 		updateButtonState();
 	};
+	
+	buttonSync.onReady = updateButtonState;
 	
 	// Check that a file has synchronized locations
 	var checkSynchronization = function(fileDesc) {

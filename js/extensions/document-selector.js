@@ -45,7 +45,7 @@ define([
 			return fileDesc.title.toLowerCase();
 		}).each(function(fileDesc) {
 			var a = $('<a href="#">').html(composeTitle(fileDesc)).click(function() {
-				if(liMap[fileDesc.fileIndex].is(".disabled")) {
+				if(!liMap[fileDesc.fileIndex].is(".disabled")) {
 					fileMgr.selectFile(fileDesc);
 				}
 			});

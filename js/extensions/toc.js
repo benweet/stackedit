@@ -8,7 +8,7 @@ define([
 		extensionId: "toc",
 		extensionName: "Table Of Content",
         optional: true,
-		settingsBloc: '<p>Generates tables of content using the marker [TOC].</p>'
+		settingsBloc: '<p>Generates a table of content and include it in your document using the marker [TOC].</p>'
 	};
 	
 	// TOC element description

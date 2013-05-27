@@ -43,7 +43,7 @@ define([
 			}
 			var publishDesc = JSON.stringify(publishAttributes).replace(/{|}|"/g, "");
 			var lineElement = $(_.template(lineTemplate, {
-				provider: providerMap[publishAttributes.provider],
+				provider: publishAttributes.provider,
 				publishDesc: publishDesc
 			}));
 			lineElement.append($(removeButtonTemplate).click(function() {

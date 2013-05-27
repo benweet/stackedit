@@ -194,7 +194,7 @@ define([
 	fileMgr.hasSync = function(provider) {
 		return _.some(fileSystem, function(fileDesc) {
 			return _.some(fileDesc.syncLocations, function(syncAttributes) {
-				syncAttributes.provider == provider.providerId;
+				return syncAttributes.provider === provider;
 			});
 		});
 	};

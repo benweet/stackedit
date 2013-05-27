@@ -111,20 +111,20 @@
                                                   * its own image insertion dialog, this hook should return true, and the callback should be called with the chosen
                                                   * image url (or null if the user cancelled). If this hook returns false, the default dialog will be used.
                                                   */
-        hooks.addFalse("insertLinkDialog");
+        hooks.addFalse("insertLinkDialog"); // benweet
 
         this.getConverter = function () { return markdownConverter; }
 
         var that = this,
             panels;
 
-        this.run = function (previewWrapper) {
+        this.run = function (previewWrapper) { // benweet
             if (panels)
                 return; // already initialized
 
             panels = new PanelCollection(idPostfix);
             var commandManager = new CommandManager(hooks, getString);
-            var previewManager = new PreviewManager(markdownConverter, panels, function () { hooks.onPreviewRefresh(); }, previewWrapper);
+            var previewManager = new PreviewManager(markdownConverter, panels, function () { hooks.onPreviewRefresh(); }, previewWrapper); // benweet
             var undoManager, uiManager;
 
             if (!/\?noundo/.test(doc.location.href)) {
@@ -821,7 +821,7 @@
         this.init();
     };
 
-    function PreviewManager(converter, panels, previewRefreshCallback, previewWrapper) {
+    function PreviewManager(converter, panels, previewRefreshCallback, previewWrapper) { // benweet
 
         var managerObj = this;
         var timeout;
@@ -869,7 +869,7 @@
 
 
             var text = panels.input.value;
-            if (text !== undefined && text == oldInputText) {
+            if (text && text == oldInputText) {
                 return; // Input text hasn't changed.
             }
             else {
@@ -887,7 +887,7 @@
 
             pushPreviewHtml(text);
         };
-        if(previewWrapper !== undefined) {
+        if(previewWrapper !== undefined) { // benweet
         	makePreviewHtml = previewWrapper(makePreviewHtml);
         }
 
@@ -1416,12 +1416,12 @@
                         return false;
                     }
                 }
-                button.className = button.className.replace(/ disabled/g, "");
+                button.className = button.className.replace(/ disabled/g, ""); // benweet
             }
             else {
                 image.style.backgroundPosition = button.XShift + " " + disabledYShift;
                 button.onmouseover = button.onmouseout = button.onclick = function () { };
-                button.className += " disabled";
+                button.className += " disabled"; // benweet
             }
         }
 
@@ -1786,7 +1786,7 @@
                     ui.prompt(this.getString("imagedialog"), imageDefaultText, linkEnteredCallback);
             }
             else {
-                if (!this.hooks.insertLinkDialog(linkEnteredCallback))
+                if (!this.hooks.insertLinkDialog(linkEnteredCallback)) // benweet
                 	ui.prompt(this.getString("linkdialog"), linkDefaultText, linkEnteredCallback);
             }
             return true;

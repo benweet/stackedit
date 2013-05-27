@@ -1,4 +1,7 @@
-define(["utils", "tumblr-helper"], function(utils, tumblrHelper) {
+define([
+    "utils",
+    "tumblr-helper"
+], function(utils, tumblrHelper) {
 	
 	var PROVIDER_TUMBLR = "tumblr";
 	

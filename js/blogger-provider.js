@@ -1,4 +1,8 @@
-define(["utils", "google-helper"], function(utils, googleHelper) {
+define([
+	"underscore",
+    "utils",
+    "google-helper"
+], function(_, utils, googleHelper) {
 	
 	var PROVIDER_BLOGGER = "blogger";
 
@@ -39,10 +43,11 @@ define(["utils", "google-helper"], function(utils, googleHelper) {
 		publishAttributes.labelList = [];
 		var labels = utils.getInputTextValue("#input-publish-labels");
 		if(labels !== undefined) {
-			publishAttributes.labelList = _.chain(labels.split(","))
-				.map(function(label) {
-					return utils.trim(label);
-				}).compact().value();
+			publishAttributes.labelList = _.chain(
+				labels.split(",")
+			).map(function(label) {
+				return utils.trim(label);
+			}).compact().value();
 		} 
 		if(event.isPropagationStopped()) {
 			return undefined;

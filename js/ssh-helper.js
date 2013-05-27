@@ -1,4 +1,8 @@
-define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
+define([
+    "jquery",
+    "core",
+    "async-runner"
+], function($, core, asyncRunner) {
 
 	var sshHelper = {};
 
@@ -14,7 +18,6 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 	}
 
 	sshHelper.upload = function(host, port, username, password, path, title, content, callback) {
-		callback = callback || core.doNothing;
 		var task = asyncRunner.createTask();
 		connect(task);
 		task.onRun(function() {

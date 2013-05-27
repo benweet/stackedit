@@ -1,4 +1,7 @@
-define(["utils", "github-helper"], function(utils, githubHelper) {
+define([
+    "utils",
+    "github-helper"
+], function(utils, githubHelper) {
 	
 	var PROVIDER_GIST = "gist";
 	

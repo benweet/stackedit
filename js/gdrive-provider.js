@@ -1,4 +1,11 @@
-define(["core", "utils", "extension-manager", "google-helper", "underscore"], function(core, utils, extensionManager, googleHelper) {
+define([
+    "underscore",
+    "core",
+    "utils",
+    "extension-manager",
+    "file-manager",
+    "google-helper"
+], function(_, core, utils, extensionMgr, fileMgr, googleHelper) {
 	
 	var PROVIDER_GDRIVE = "gdrive";
 	
@@ -39,11 +46,11 @@ define(["core", "utils", "extension-manager", "google-helper", "underscore"], fu
 					localStorage[syncAttributes.syncIndex] = utils.serializeAttributes(syncAttributes);
 					var syncLocations = {};
 					syncLocations[syncAttributes.syncIndex] = syncAttributes;
-					var fileDesc = core.fileManager.createFile(file.title, file.content, syncLocations);
-					core.fileManager.selectFile(fileDesc);
+					var fileDesc = fileMgr.createFile(file.title, file.content, syncLocations);
+					fileMgr.selectFile(fileDesc);
 					fileDescList.push(fileDesc);
 				});
-				extensionManager.onSyncImportSuccess(fileDescList, gdriveProvider);
+				extensionMgr.onSyncImportSuccess(fileDescList, gdriveProvider);
 			});
 		});
 	};
@@ -56,9 +63,9 @@ define(["core", "utils", "extension-manager", "google-helper", "underscore"], fu
 			var importIds = [];
 			_.each(ids, function(id) {
 				var syncIndex = createSyncIndex(id);
-				var fileDesc = core.fileManager.getFileFromSyncIndex(syncIndex);
+				var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
 				if(fileDesc !== undefined) {
-					core.showError('"' + fileDesc.title + '" was already imported');
+					extensionMgr.onError('"' + fileDesc.title + '" was already imported');
 					return;
 				}
 				importIds.push(id);
@@ -87,9 +94,9 @@ define(["core", "utils", "extension-manager", "google-helper", "underscore"], fu
 		}
 		// Check that file is not synchronized with an other one
 		var syncIndex = createSyncIndex(id);
-		var fileDesc = core.fileManager.getFileFromSyncIndex(syncIndex);
+		var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
 		if(fileDesc !== undefined) {
-			core.showError('File ID is already synchronized with "' + fileDesc.title + '"');
+			extensionMgr.onError('File ID is already synchronized with "' + fileDesc.title + '"');
 			callback(true);
 			return;
 		}
@@ -134,7 +141,7 @@ define(["core", "utils", "extension-manager", "google-helper", "underscore"], fu
 			var interestingChanges = [];
 			_.each(changes, function(change) {
 				var syncIndex = createSyncIndex(change.fileId);
-				var syncAttributes = core.fileManager.getSyncAttributes(syncIndex);
+				var syncAttributes = fileMgr.getSyncAttributes(syncIndex);
 				if(syncAttributes === undefined) {
 					return;
 				}
@@ -155,11 +162,10 @@ define(["core", "utils", "extension-manager", "google-helper", "underscore"], fu
 					callback(error);
 					return;
 				}
-				var updateFileTitles = false;
 				_.each(changes, function(change) {
 					var syncAttributes = change.syncAttributes;
 					var syncIndex = syncAttributes.syncIndex;
-					var fileDesc = core.fileManager.getFileFromSyncIndex(syncIndex);
+					var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
 					// No file corresponding (file may have been deleted locally)
 					if(fileDesc === undefined) {
 						return;
@@ -167,8 +173,8 @@ define(["core", "utils", "extension-manager", "google-helper", "underscore"], fu
 					var localTitle = fileDesc.title;
 					// File deleted
 					if (change.deleted === true) {
-						core.showError('"' + localTitle + '" has been removed from Google Drive.');
-						core.fileManager.removeSync(syncAttributes);
+						extensionMgr.onError('"' + localTitle + '" has been removed from Google Drive.');
+						fileMgr.removeSync(syncAttributes);
 						return;
 					}
 					var localTitleChanged = syncAttributes.titleCRC != utils.crc32(localTitle);
@@ -184,24 +190,23 @@ define(["core", "utils", "extension-manager", "google-helper", "underscore"], fu
 					// Conflict detection
 					if ((fileTitleChanged === true && localTitleChanged === true && remoteTitleChanged === true)
 						|| (fileContentChanged === true && localContentChanged === true && remoteContentChanged === true)) {
-						core.fileManager.createFile(localTitle + " (backup)", localContent);
-						updateFileTitles = true;
-						core.showMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
+						var backupFileDesc = fileMgr.createFile(localTitle + " (backup)", localContent);
+						extensionMgr.onTitleChanged(backupFileDesc);
+						extensionMgr.onMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
 					}
 					// If file title changed
 					if(fileTitleChanged && remoteTitleChanged === true) {
 						localStorage[fileDesc.fileIndex + ".title"] = file.title;
 						fileDesc.title = file.title;
-						updateFileTitles = true;
-						core.showMessage('"' + localTitle + '" has been renamed to "' + file.title + '" on Google Drive.');
+						extensionMgr.onTitleChanged(fileDesc);
+						extensionMgr.onMessage('"' + localTitle + '" has been renamed to "' + file.title + '" on Google Drive.');
 					}
 					// If file content changed
 					if(fileContentChanged && remoteContentChanged === true) {
 						localStorage[fileDesc.fileIndex + ".content"] = file.content;
-						core.showMessage('"' + file.title + '" has been updated from Google Drive.');
-						if(core.fileManager.isCurrentFile(fileDesc)) {
-							updateFileTitles = false; // Done by next function
-							core.fileManager.selectFile(); // Refresh editor
+						extensionMgr.onMessage('"' + file.title + '" has been updated from Google Drive.');
+						if(fileMgr.isCurrentFile(fileDesc)) {
+							fileMgr.selectFile(); // Refresh editor
 						}
 					}
 					// Update syncAttributes
@@ -210,9 +215,6 @@ define(["core", "utils", "extension-manager", "google-helper", "underscore"], fu
 					syncAttributes.titleCRC = remoteTitleCRC;
 					localStorage[syncIndex] = utils.serializeAttributes(syncAttributes);
 				});
-				if(updateFileTitles) {
-					extensionManager.onTitleChanged();
-				}
 				localStorage[PROVIDER_GDRIVE + ".lastChangeId"] = newChangeId;
 				callback();
 			});
@@ -264,18 +266,18 @@ define(["core", "utils", "extension-manager", "google-helper", "underscore"], fu
 				localStorage[syncAttributes.syncIndex] = utils.serializeAttributes(syncAttributes);
 				var syncLocations = {};
 				syncLocations[syncAttributes.syncIndex] = syncAttributes;
-				var fileDesc = core.fileManager.createFile(file.title, file.content, syncAttributes);
-				core.fileManager.selectFile(fileDesc);
-				core.showMessage('"' + file.title + '" created successfully on Google Drive.');
+				var fileDesc = fileMgr.createFile(file.title, file.content, syncAttributes);
+				fileMgr.selectFile(fileDesc);
+				extensionMgr.onMessage('"' + file.title + '" created successfully on Google Drive.');
 			});
 		}
 		else if (state.action == "open") {
 			var importIds = [];
 			_.each(state.ids, function(id) {
 				var syncIndex = createSyncIndex(id);
-				var fileDesc = core.fileManager.getFileFromSyncIndex(syncIndex);
+				var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
 				if(fileDesc !== undefined) {
-					core.fileManager.selectFile(fileDesc);
+					fileMgr.selectFile(fileDesc);
 				}
 				else {
 					importIds.push(id);

@@ -1,11 +1,12 @@
-define( [ "jquery", "underscore" ], function($) {
+define([
+    "jquery",
+    "underscore"
+], function($, _) {
 	
 	var documentTitle = {
 		extensionId: "documentTitle",
 		extensionName: "Document title",
-		settingsBloc: [
-		               '<p>Responsible for showing the document title in the navigation bar.</p>'
-		              ].join("")
+		settingsBloc: '<p>Responsible for showing the document title in the navigation bar.</p>'
 	};
 	
 	var layout = undefined;
@@ -15,7 +16,7 @@ define( [ "jquery", "underscore" ], function($) {
 	
 	var fileDesc = undefined;
 	var updateTitle = function(fileDescParameter) {
-		if(fileDescParameter !== undefined && fileDescParameter !== fileDesc) {
+		if(fileDescParameter !== fileDesc) {
 			return;
 		}
 		
@@ -25,9 +26,9 @@ define( [ "jquery", "underscore" ], function($) {
 			var publishAttributesList = _.values(fileDesc.publishLocations);
 			var attributesList = syncAttributesList.concat(publishAttributesList);
 			_.chain(attributesList).sortBy(function(attributes) {
-				return attributes.provider;
+				return attributes.provider.providerId;
 			}).each(function(attributes) {
-				result.push('<i class="icon-' + attributes.provider + '"></i>');
+				result.push('<i class="icon-' + attributes.provider.providerId + '"></i>');
 			});
 			result.push(" ");
 			result.push(fileDesc.title);

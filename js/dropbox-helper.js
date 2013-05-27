@@ -1,4 +1,10 @@
-define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
+define([
+    "jquery",
+    "underscore",
+    "core",
+    "extension-manager",
+    "async-runner"
+], function($, _, core, extensionMgr, asyncRunner) {
 
 	var client = undefined;
 	var authenticated = false;
@@ -50,7 +56,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 			var immediate = true;
 			function localAuthenticate() {
 				if (immediate === false) {
-					core.showMessage("Please make sure the Dropbox authorization popup is not blocked by your browser.");
+					extensionMgr.onMessage("Please make sure the Dropbox authorization popup is not blocked by your browser.");
 					// If not immediate we add time for user to enter his credentials
 					task.timeout = ASYNC_TASK_LONG_TIMEOUT;
 				}
@@ -77,7 +83,6 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 	}
 
 	dropboxHelper.upload = function(path, content, callback) {
-		callback = callback || core.doNothing;
 		var result = undefined;
 		var task = asyncRunner.createTask();
 		connect(task);
@@ -106,7 +111,6 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 	};
 
 	dropboxHelper.checkChanges = function(lastChangeId, callback) {
-		callback = callback || core.doNothing;
 		var changes = [];
 		var newChangeId = lastChangeId || 0;
 		var task = asyncRunner.createTask();
@@ -143,7 +147,6 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 	};
 
 	dropboxHelper.downloadMetadata = function(paths, callback) {
-		callback = callback || core.doNothing;
 		var result = [];
 		var task = asyncRunner.createTask();
 		connect(task);
@@ -177,7 +180,6 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 	};
 
 	dropboxHelper.downloadContent = function(objects, callback) {
-		callback = callback || core.doNothing;
 		var result = [];
 		var task = asyncRunner.createTask();
 		connect(task);
@@ -289,7 +291,6 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 	}
 	
 	dropboxHelper.picker = function(callback) {
-		callback = callback || core.doNothing;
 		var paths = [];
 		var task = asyncRunner.createTask();
 		// Add some time for user to choose his files
@@ -312,7 +313,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				task.chain();
             };
 			Dropbox.choose(options);
-			core.showMessage("Please make sure the Dropbox chooser popup is not blocked by your browser.");
+			extensionMgr.onMessage("Please make sure the Dropbox chooser popup is not blocked by your browser.");
 		});
 		task.onSuccess(function() {
 			callback(undefined, paths);

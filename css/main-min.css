@@ -5513,6 +5513,12 @@ code {
 h1 {
     margin: 30px 0 30px;
 }
+h4, h5, h6 {
+	line-height: 40px;
+}
+.toc ul {
+	list-style-type: none;
+}
 p, pre, blockquote {
     margin: 0 0 20px;
 }
@@ -5727,8 +5733,47 @@ div.dropdown-menu i {
     height: 80px;
     max-width: 206px;
 }
-.tooltip-inner {
+#modal-settings .accordion-group {
+	border: 0;
+    border-bottom: 1px solid #eee;
+    -webkit-border-radius: inherit;
+    -moz-border-radius: inherit;
+    border-radius: inherit;
+    margin-bottom: 10px;
+}
+#modal-settings .accordion-heading .checkbox {
+	padding: 8px 15px;
+	margin-bottom: 0px;
+}
+#modal-settings .accordion-inner {
+	border: 0;
+	padding: 10px 40px;
+}
+#modal-settings .accordion-inner .form-horizontal .control-group {
+	color: #999;
+}
+#modal-settings .accordion-inner .form-horizontal .control-label {
     text-align: left;
+}
+.accordion-toggle {
+	cursor: help;
+}
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus {
+	color: #fff;
+    background-color: #777;
+    border-color: #777;
+    border-bottom-color: transparent;
+}
+.nav-tabs {
+    border-bottom-color: #eee;
+}
+.nav > li > a:hover,
+.nav > li > a:focus {
+    background-color: #eee;
+}
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus {
+  border-color: #eee;
 }
 table {
   margin-bottom: 20px;

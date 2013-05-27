@@ -1,44 +1,37 @@
 define([
     "jquery",
+    "underscore",
     "core",
     "utils",
     "extension-manager",
+    "file-system",
+    "file-manager",
     "dropbox-provider",
-    "gdrive-provider",
-    "underscore"
-], function($, core, utils, extensionManager) {
+    "gdrive-provider"
+], function($, _, core, utils, extensionMgr, fileSystem, fileMgr) {
 	
 	var synchronizer = {};
 	
-	// Create a map with providerId: providerObject
-	var providerMap = _.chain(arguments)
-		.map(function(argument) {
-			return argument && argument.providerId && [argument.providerId, argument];
-		}).compact().object().value();
-
-	// Used to know if user can force synchronization
-	var uploadPending = false;
+	// Create a map with providerId: providerModule
+	var providerMap = _.chain(
+		arguments
+	).map(function(argument) {
+		return argument && argument.providerId && [argument.providerId, argument];
+	}).compact().object().value();
 	
-	// Allows external modules to update uploadPending flag
-	synchronizer.notifyChange = function(fileDesc) {
-		// Check that file has synchronized locations
-		if(_.size(fileDesc.syncLocations) !== 0) {
-			uploadPending = true;
-			synchronizer.updateSyncButton();
-		}
-	};
-	
-	// Used to enable/disable the synchronization button
-	synchronizer.updateSyncButton = function() {
-		if(syncRunning === true || uploadPending === false || core.isOffline) {
-			$(".action-force-sync").addClass("disabled");
-		}
-		else {
-			$(".action-force-sync").removeClass("disabled");
-		}
-	};
-	// Run updateSyncButton on online/offline event
-	core.addOfflineListener(synchronizer.updateSyncButton);
+	// Retrieve sync locations from localStorage
+	_.each(fileSystem, function(fileDesc) {
+		_.chain(
+			localStorage[fileDesc.fileIndex + ".sync"].split(";")
+		).compact().each(function(syncIndex) {
+			var syncAttributes = JSON.parse(localStorage[syncIndex]);
+			// Store syncIndex
+			syncAttributes.syncIndex = syncIndex;
+			// Replace provider ID by provider module in attributes
+			syncAttributes.provider = providerMap[syncAttributes.provider];
+			fileDesc.syncLocations[syncIndex] = syncAttributes;
+		});
+	});
 
 	// Force the synchronization
 	synchronizer.forceSync = function() {
@@ -73,8 +66,6 @@ define([
 				if(uploadFlag === true) {
 					// If uploadFlag is true, request another upload cycle
 					uploadCycle = true;
-					// When page is refreshed, this flag is false but should be true here
-					uploadPending = true;
 				}
 				if(error) {
 					callback(error);
@@ -121,7 +112,7 @@ define([
 		if(uploadCycle === true) {
 			// New upload cycle
 			uploadCycle = false;
-			uploadFileList = core.fileManager.getFileList();
+			uploadFileList = fileMgr.getFileList();
 			fileUp(callback);
 		}
 		else {
@@ -139,7 +130,7 @@ define([
 		var provider = providerList.pop();
 		
 		// Check that provider has files to sync
-		if(!core.fileManager.hasSync(provider)) {
+		if(!fileMgr.hasSync(provider)) {
 			providerDown(callback);
 			return;
 		}
@@ -165,18 +156,18 @@ define([
 	var lastSync = 0;
 	synchronizer.sync = function() {
 		// If sync is already running or timeout is not reached or offline
-		if (syncRunning || lastSync + SYNC_PERIOD > core.currentTime || core.isOffline) {
+		if (syncRunning || lastSync + SYNC_PERIOD > utils.currentTime || core.isOffline) {
 			return;
 		}
 		syncRunning = true;
+		extensionMgr.onSyncRunning(true);
 		uploadCycle = true;
-		lastSync = core.currentTime;
-		synchronizer.updateSyncButton();
+		lastSync = utils.currentTime;
 		
 		function isError(error) {
 			if(error !== undefined) {
 				syncRunning = false;
-				synchronizer.updateSyncButton();
+				extensionMgr.onSyncRunning(false);
 				return true;
 			}
 			return false;
@@ -191,7 +182,8 @@ define([
 					return;
 				}
 				syncRunning = false;
-				uploadPending = false;
+				extensionMgr.onSyncRunning(false);
+				extensionMgr.onSyncSuccess();
 			});
 		});
 	};
@@ -199,20 +191,6 @@ define([
 	if(viewerMode === false) {
 		core.addPeriodicCallback(synchronizer.sync);
 	}
-	
-	// Retrieve file's sync locations from localStorage
-	publisher.populateSyncLocations = function(fileDesc) {
-		_.chain(localStorage[fileDesc.fileIndex + ".sync"].split(";"))
-			.compact()
-			.each(function(syncIndex) {
-				var syncAttributes = JSON.parse(localStorage[syncIndex]);
-				// Store syncIndex
-				syncAttributes.syncIndex = syncIndex;
-				// Replace provider ID by provider module in attributes
-				syncAttributes.provider = providerMap[syncAttributes.provider];
-				fileDesc.syncLocations[syncIndex] = syncAttributes;
-			});
-	};
 	
 	// Initialize the export dialog
 	function initExportDialog(provider) {
@@ -247,14 +225,14 @@ define([
 			$(".action-sync-export-" + provider.providerId).click(function(event) {
 
 				// Perform the provider's export
-				var fileDesc = core.fileManager.getCurrentFile();
+				var fileDesc = fileMgr.getCurrentFile();
 				var title = fileDesc.title;
 				var content = localStorage[fileDesc.fileIndex + ".content"];
 				provider.exportFile(event, title, content, function(error, syncAttributes) {
 					if(error) {
 						return;
 					}
-					core.fileManager.addSync(fileDesc, syncAttributes);
+					fileMgr.addSync(fileDesc, syncAttributes);
 				});
 				
 				// Store input values as preferences for next time we open the export dialog
@@ -266,19 +244,18 @@ define([
 			});
 			// Provider's manual export button
 			$(".action-sync-manual-" + provider.providerId).click(function(event) {
-				var fileDesc = core.fileManager.getCurrentFile();
+				var fileDesc = fileMgr.getCurrentFile();
 				var title = fileDesc.title;
 				var content = localStorage[fileDesc.fileIndex + ".content"];
 				provider.exportManual(event, title, content, function(error, syncAttributes) {
 					if(error) {
 						return;
 					}
-					core.fileManager.addSync(fileDesc, syncAttributes);
+					fileMgr.addSync(fileDesc, syncAttributes);
 				});
 			});
 		});
 		
-		synchronizer.updateSyncButton();
 		$(".action-force-sync").click(function() {
 			if(!$(this).hasClass("disabled")) {
 				synchronizer.forceSync();
@@ -286,6 +263,6 @@ define([
 		});
 	});
 
-	extensionManager.onSynchronizerCreated(synchronizer);
+	extensionMgr.onSynchronizerCreated(synchronizer);
 	return synchronizer;
 });

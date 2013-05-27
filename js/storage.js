@@ -1,5 +1,7 @@
-	// Setup an empty localStorage or upgrade an existing one
-define( [ "underscore" ], function() {
+// Setup an empty localStorage or upgrade an existing one
+define([
+	"underscore"
+], function(_) {
 	
 	// Create the file system if not exist
 	if (localStorage["file.list"] === undefined) {
@@ -122,8 +124,6 @@ define( [ "underscore" ], function() {
 				}
 			});
 		});
-		// Force creation of sharing links
-		localStorage["missingSharingLink"] = true;
 		version = "v6";
 	}
 	

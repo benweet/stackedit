@@ -1,12 +1,13 @@
-define( [ "jquery", "underscore" ], function($) {
+define([
+    "jquery",
+    "underscore"
+], function($, _) {
 	
-	var sharingButton = {
-		extensionId: "sharingButton",
-		extensionName: "Sharing button",
+	var buttonShare = {
+		extensionId: "buttonShare",
+		extensionName: 'Button "Share"',
         optional: true,
-		settingsBloc: [
-		               '<p>Adds a "Share document" button in the navigation bar.</p>'
-		              ].join("")
+		settingsBloc: '<p>Adds a "Share document" button in the navigation bar.</p>'
 	};
 	
 	var fileDesc = undefined;
@@ -14,8 +15,7 @@ define( [ "jquery", "underscore" ], function($) {
         '<div class="input-prepend">',
 			'<a href="<%= link %>" class="add-on" title="Sharing location"><i class="icon-link"></i></a>',
 			'<input class="span2" type="text" value="<%= link %>" readonly />',
-		'</div>'
-	].join("");
+		'</div>'].join("");
 	var refreshDocumentSharing = function(fileDescParameter) {
 		if(fileDescParameter !== undefined && fileDescParameter !== fileDesc) {
 			return;
@@ -39,14 +39,14 @@ define( [ "jquery", "underscore" ], function($) {
 		});
 	};
 	
-	sharingButton.onFileSelected = function(fileDescParameter) {
+	buttonShare.onFileSelected = function(fileDescParameter) {
 		fileDesc = fileDescParameter;
 		refreshDocumentSharing(fileDescParameter);
 	};
 	
-	sharingButton.onNewPublishSuccess = refreshDocumentSharing;
-	sharingButton.onPublishRemoved = refreshDocumentSharing;
+	buttonShare.onNewPublishSuccess = refreshDocumentSharing;
+	buttonShare.onPublishRemoved = refreshDocumentSharing;
 	
-	return sharingButton;
+	return buttonShare;
 	
 });

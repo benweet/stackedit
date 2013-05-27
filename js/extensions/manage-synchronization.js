@@ -1,16 +1,17 @@
-define( [ "jquery", "underscore" ], function($) {
+define([
+    "jquery",
+    "underscore"
+], function($, _) {
 	
 	var manageSynchronization = {
 		extensionId: "manageSynchronization",
 		extensionName: "Manage Synchronization",
-		settingsBloc: [
-		               '<p>Populates the "Manage synchronization" dialog box.</p>'
-		              ].join("")
+		settingsBloc: '<p>Populates the "Manage synchronization" dialog box.</p>'
 	};
 	
-	var fileManager = undefined;
-	manageSynchronization.onFileManagerCreated = function(fileManagerParameter) {
-		fileManager = fileManagerParameter;
+	var fileMgr = undefined;
+	manageSynchronization.onFileMgrCreated = function(fileMgrParameter) {
+		fileMgr = fileMgrParameter;
 	};
 	
 	var fileDesc = undefined;
@@ -42,7 +43,7 @@ define( [ "jquery", "underscore" ], function($) {
 				syncDesc: syncDesc
 			}));
 			lineElement.append($(removeButtonTemplate).click(function() {
-				fileManager.removeSync(syncAttributes);
+				fileMgr.removeSync(syncAttributes);
 			}));
 			syncList.append(lineElement);
 		});

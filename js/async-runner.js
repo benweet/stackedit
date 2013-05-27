@@ -2,7 +2,12 @@
  * Used to run asynchronous tasks sequentially (ajax mainly). An asynchronous
  * task is composed of different callback types: onRun, onSuccess, onError
  */
-define([ "core", "underscore" ], function(core) {
+define([
+    "underscore",
+    "core",
+    "utils",
+    "extension-manager"
+], function(_, core, utils, extensionMgr) {
 
 	var asyncRunner = {};
 
@@ -81,7 +86,7 @@ define([ "core", "underscore" ], function(core) {
 			}
 			error = error || new Error("Unknown error");
 			if(error.message) {
-				core.showError(error);
+				extensionMgr.onError(error);
 			}
 			runSafe(task, task.errorCallbacks, error);
 			// Exit the current call stack
@@ -102,7 +107,7 @@ define([ "core", "underscore" ], function(core) {
 			}
 			// Implement an exponential backoff
 			var delay = Math.pow(2, task.retryCounter++) * 1000;
-			currentTaskStartTime = core.currentTime + delay;
+			currentTaskStartTime = utils.currentTime + delay;
 			currentTaskRunning = false;
 			asyncRunner.runTask();
 		};
@@ -117,7 +122,7 @@ define([ "core", "underscore" ], function(core) {
 			// If there is a task currently running
 			if (currentTaskRunning === true) {
 				// If the current task takes too long
-				if (currentTaskStartTime + currentTask.timeout < core.currentTime) {
+				if (currentTaskStartTime + currentTask.timeout < utils.currentTime) {
 					currentTask.error(new Error("A timeout occurred."));
 				}
 				return;
@@ -131,12 +136,12 @@ define([ "core", "underscore" ], function(core) {
 
 				// Dequeue an enqueued task
 				currentTask = taskQueue.shift();
-				currentTaskStartTime = core.currentTime;
-				core.showWorkingIndicator(true);
+				currentTaskStartTime = utils.currentTime;
+				extensionMgr.onAsyncRunning(true);
 			}
 
 			// Run the task
-			if (currentTaskStartTime <= core.currentTime) {
+			if (currentTaskStartTime <= utils.currentTime) {
 				currentTaskRunning = true;
 				currentTask.chain();
 			}
@@ -157,7 +162,7 @@ define([ "core", "underscore" ], function(core) {
 				currentTaskRunning = false;
 			}
 			if (taskQueue.length === 0) {
-				core.showWorkingIndicator(false);
+				extensionMgr.onAsyncRunning(false);
 			} else {
 				asyncRunner.runTask();
 			}

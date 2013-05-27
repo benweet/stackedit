@@ -1,4 +1,8 @@
-define([ "jquery", "underscore" ], function($) {
+define([
+    "jquery",
+    "underscore",
+    "lib/FileSaver"
+], function($, _) {
 	
 	var utils = {};
 
@@ -105,6 +109,16 @@ define([ "jquery", "underscore" ], function($) {
 	// Basic trim function
 	utils.trim = function(str) {
 		return $.trim(str);
+	};
+	
+	// Slug function
+	utils.slugify = function(text) {
+		return text.toLowerCase()
+		  	.replace(/\s+/g, '-') // Replace spaces with -
+			.replace(/[^\w\-]+/g, '') // Remove all non-word chars
+			.replace(/\-\-+/g, '-') // Replace multiple - with single -
+			.replace(/^-+/, '') // Trim - from start of text
+			.replace(/-+$/, ''); // Trim - from end of text
 	};
 	
 	// Check an URL
@@ -242,10 +256,47 @@ define([ "jquery", "underscore" ], function($) {
 	    return crc.toString(16);
 	};
 	
+	// Create an centered popup window
+	utils.popupWindow = function(url, title, width, height) {
+		var left = (screen.width / 2) - (width / 2);
+		var top = (screen.height / 2) - (height / 2);
+		return window.open(
+			url,
+			title,
+			'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='
+				+ width
+				+ ', height='
+				+ height
+				+ ', top='
+				+ top
+				+ ', left='
+				+ left);
+	};
+	
+	// Export data on disk
+	utils.saveAs = function(content, filename) {
+		if(saveAs !== undefined) {
+			var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+			saveAs(blob, filename);
+		}
+		else {
+			var uriContent = "data:application/octet-stream;base64,"
+				+ utils.encodeBase64(content);
+			window.open(uriContent, 'file');
+		}
+	};
+
 	// Generates a random string
 	utils.randomString = function() {
 		return _.random(4294967296).toString(36);
 	};
+	
+	// Time shared by others modules
+	utils.updateCurrentTime = function() {
+		utils.currentTime = new Date().getTime();
+	};
+	utils.updateCurrentTime();
+	
 	
 	// Serialize sync/publish attributes
 	utils.serializeAttributes = function(attributes) {

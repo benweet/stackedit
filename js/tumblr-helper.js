@@ -1,4 +1,10 @@
-define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
+define([
+    "jquery",
+    "core",
+    "utils",
+    "extension-manager",
+    "async-runner"
+], function($, core, utils, extensionMgr, asyncRunner) {
 
 	var oauthParams = undefined;
 
@@ -30,7 +36,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				task.chain();
 				return;
 			}
-			core.showMessage("Please make sure the Tumblr authorization popup is not blocked by your browser.");
+			extensionMgr.onMessage("Please make sure the Tumblr authorization popup is not blocked by your browser.");
 			var errorMsg = "Failed to retrieve a token from Tumblr.";
 			// We add time for user to enter his credentials
 			task.timeout = ASYNC_TASK_LONG_TIMEOUT;
@@ -48,7 +54,7 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 			}
 			function getVerifier() {
 				localStorage.removeItem("tumblrVerifier");
-				authWindow = core.popupWindow(
+				authWindow = utils.popupWindow(
 					'tumblr-oauth-client.html?oauth_token=' + oauth_object.oauth_token,
 					'stackedit-tumblr-oauth', 800, 600);
 				authWindow.focus();
@@ -92,7 +98,6 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 	}
 
 	tumblrHelper.upload = function(blogHostname, postId, tags, format, title, content, callback) {
-		callback = callback || core.doNothing;
 		var task = asyncRunner.createTask();
 		connect(task);
 		authenticate(task);

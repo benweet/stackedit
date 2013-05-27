@@ -1,24 +1,15 @@
-define( [ "jquery", "underscore" ], function($) {
+define([
+    "jquery",
+    "underscore",
+    "utils"
+], function($, _, utils) {
 	
 	var toc = {
 		extensionId: "toc",
 		extensionName: "Table Of Content",
         optional: true,
-		settingsBloc: [
-		               '<p>Generates tables of content using the marker [TOC].</p>'
-		              ].join("")
+		settingsBloc: '<p>Generates tables of content using the marker [TOC].</p>'
 	};
-	
-	// Used to generate an anchor
-	function slugify(text)
-	{
-		return text.toLowerCase()
-		  	.replace(/\s+/g, '-') // Replace spaces with -
-			.replace(/[^\w\-]+/g, '') // Remove all non-word chars
-			.replace(/\-\-+/g, '-') // Replace multiple - with single -
-			.replace(/^-+/, '') // Trim - from start of text
-			.replace(/-+$/, ''); // Trim - from end of text
-	}
 	
 	// TOC element description
 	function TocElement(tagName, anchor, text) {
@@ -83,7 +74,7 @@ define( [ "jquery", "underscore" ], function($) {
 	function buildToc() {
 		var anchorList = {};
 		function createAnchor(element) {
-			var id = element.prop("id") || slugify(element.text());
+			var id = element.prop("id") || utils.slugify(element.text());
 			var anchor = id;
 			var index = 0;
 			while(_.has(anchorList, anchor)) {

@@ -2,19 +2,34 @@
 requirejs.config({
 	waitSeconds: 0,
 	paths: {
-		MathJax: '../lib/MathJax/MathJax.js?config=TeX-AMS_HTML'
+		"jquery": "lib/jquery",
+		"underscore": "lib/underscore",
+		"jgrowl": "lib/jgrowl",
+		"lib/MathJax": '../lib/MathJax/MathJax.js?config=TeX-AMS_HTML'
     },
     shim: {
-        'jquery-ui': ['jquery'],
-        'bootstrap': ['jquery'],
-        'jgrowl': ['jquery'],
-        'layout': ['jquery-ui'],
-        'Markdown.Extra': ['Markdown.Converter', 'prettify'],
-        'Markdown.Editor': ['Markdown.Converter']
+    	'lib/underscore': {
+            exports: '_'
+        },
+        'lib/jgrowl': {
+            deps: ['lib/jquery'],
+            exports: 'jQuery.jGrowl'
+        },
+        'lib/jquery-ui': ['lib/jquery'],
+        'lib/bootstrap': ['lib/jquery'],
+        'lib/layout': ['lib/jquery-ui'],
+        'lib/Markdown.Extra': ['lib/Markdown.Converter', 'lib/prettify'],
+        'lib/Markdown.Editor': ['lib/Markdown.Converter']
     }
 });
 
-require(["jquery", "file-manager", "synchronizer", "publisher"], function($) {
+require([
+	"jquery",
+	"core",
+	"synchronizer",
+	"publisher"
+], function($, core) {
+	
 	$(function() {
 		// If browser has detected a new application cache.
 	    if (window.applicationCache) {
@@ -25,5 +40,8 @@ require(["jquery", "file-manager", "synchronizer", "publisher"], function($) {
 	    		}
 	    	}, false);
 	    }
+	    
+	    core.setReady();
 	});
+	
 });

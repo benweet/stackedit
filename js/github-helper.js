@@ -1,4 +1,10 @@
-define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
+define([
+    "jquery",
+    "core",
+    "utils",
+    "extension-manager",
+    "async-runner"
+], function($, core, utils, extensionMgr, asyncRunner) {
 
 	var connected = undefined;
 	var github = undefined;
@@ -51,14 +57,14 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				task.chain();
 				return;
 			}
-			core.showMessage("Please make sure the Github authorization popup is not blocked by your browser.");
+			extensionMgr.onMessage("Please make sure the Github authorization popup is not blocked by your browser.");
 			var errorMsg = "Failed to retrieve a token from GitHub.";
 			// We add time for user to enter his credentials
 			task.timeout = ASYNC_TASK_LONG_TIMEOUT;
 			var code = undefined;
 			function getCode() {
 				localStorage.removeItem("githubCode");
-				authWindow = core.popupWindow(
+				authWindow = utils.popupWindow(
 					'github-oauth-client.html?client_id=' + GITHUB_CLIENT_ID,
 					'stackedit-github-oauth', 960, 600);
 				authWindow.focus();
@@ -106,7 +112,6 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 	}
 
 	githubHelper.upload = function(reponame, branch, path, content, commitMsg, callback) {
-		callback = callback || core.doNothing;
 		var task = asyncRunner.createTask();
 		connect(task);
 		authenticate(task);
@@ -145,7 +150,6 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 	};
 	
 	githubHelper.uploadGist = function(gistId, filename, isPublic, title, content, callback) {
-		callback = callback || core.doNothing;
 		var task = asyncRunner.createTask();
 		connect(task);
 		authenticate(task);
@@ -184,7 +188,6 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 	};
 	
 	githubHelper.downloadGist = function(gistId, filename, callback) {
-		callback = callback || core.doNothing;
 		var task = asyncRunner.createTask();
 		connect(task);
 		// No need for authentication

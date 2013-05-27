@@ -1,4 +1,10 @@
-define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, utils, extensionManager, dropboxHelper) {
+define([
+    "underscore",
+    "utils",
+    "extension-manager",
+    "file-manager",
+    "dropbox-helper"
+], function(_, utils, extensionMgr, fileMgr, dropboxHelper) {
 	
 	var PROVIDER_DROPBOX = "dropbox";
 	
@@ -13,7 +19,7 @@ define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, 
 			return undefined;
 		}
 		if(!path.match(/^[^\\<>:"\|?\*]+$/)) {
-			core.showError('"' + path + '" contains invalid characters.');
+			extensionMgr.onError('"' + path + '" contains invalid characters.');
 			return undefined;
 		}
 		if(path.indexOf("/") !== 0) {
@@ -51,11 +57,11 @@ define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, 
 					localStorage[syncAttributes.syncIndex] = utils.serializeAttributes(syncAttributes);
 					var syncLocations = {};
 					syncLocations[syncAttributes.syncIndex] = syncAttributes;
-					var fileDesc = core.fileManager.createFile(file.name, file.content, syncLocations);
-					core.fileManager.selectFile(fileDesc);
+					var fileDesc = fileMgr.createFile(file.name, file.content, syncLocations);
+					fileMgr.selectFile(fileDesc);
 					fileDescList.push(fileDesc);
 				});
-				extensionManager.onSyncImportSuccess(fileDescList, dropboxProvider);
+				extensionMgr.onSyncImportSuccess(fileDescList, dropboxProvider);
 			});
 		});
 	}
@@ -68,9 +74,9 @@ define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, 
 			var importPaths = [];
 			_.each(paths, function(path) {
 				var syncIndex = createSyncIndex(path);
-				var fileDesc = core.fileManager.getFileFromSyncIndex(syncIndex);
+				var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
 				if(fileDesc !== undefined) {
-					core.showError('"' + fileDesc.title + '" was already imported');
+					extensionMgr.onError('"' + fileDesc.title + '" was already imported');
 					return;
 				}
 				importPaths.push(path);
@@ -87,10 +93,10 @@ define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, 
 		}
 		// Check that file is not synchronized with an other one
 		var syncIndex = createSyncIndex(path);
-		var fileDesc = core.fileManager.getFileFromSyncIndex(syncIndex);
+		var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
 		if(fileDesc !== undefined) {
 			var existingTitle = fileDesc.title;
-			core.showError('File path is already synchronized with "' + existingTitle + '"');
+			extensionMgr.onError('File path is already synchronized with "' + existingTitle + '"');
 			callback(true);
 			return;
 		}
@@ -143,7 +149,7 @@ define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, 
 			var interestingChanges = [];
 			_.each(changes, function(change) {
 				var syncIndex = createSyncIndex(change.path);
-				var syncAttributes = core.fileManager.getSyncAttributes(syncIndex);
+				var syncAttributes = fileMgr.getSyncAttributes(syncIndex);
 				if(syncAttributes === undefined) {
 					return;
 				}
@@ -164,11 +170,10 @@ define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, 
 					callback(error);
 					return;
 				}
-				var updateFileTitles = false;
 				_.each(changes, function(change) {
 					var syncAttributes = change.syncAttributes;
 					var syncIndex = syncAttributes.syncIndex;
-					var fileDesc = core.fileManager.getFileFromSyncIndex(syncIndex);
+					var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
 					// No file corresponding (file may have been deleted locally)
 					if(fileDesc === undefined) {
 						return;
@@ -176,8 +181,8 @@ define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, 
 					var localTitle = fileDesc.title;
 					// File deleted
 					if (change.wasRemoved === true) {
-						core.showError('"' + localTitle + '" has been removed from Dropbox.');
-						core.fileManager.removeSync(syncAttributes);
+						extensionMgr.onError('"' + localTitle + '" has been removed from Dropbox.');
+						fileMgr.removeSync(syncAttributes);
 						return;
 					}
 					var localContent = localStorage[fileDesc.fileIndex + ".content"];
@@ -188,17 +193,16 @@ define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, 
 					var fileContentChanged = localContent != file.content;
 					// Conflict detection
 					if (fileContentChanged === true && localContentChanged === true && remoteContentChanged === true) {
-						core.fileManager.createFile(localTitle + " (backup)", localContent);
-						updateFileTitles = true;
-						core.showMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
+						var backupFileDesc = fileMgr.createFile(localTitle + " (backup)", localContent);
+						extensionMgr.onTitleChanged(backupFileDesc);
+						extensionMgr.onMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
 					}
 					// If file content changed
 					if(fileContentChanged && remoteContentChanged === true) {
 						localStorage[fileDesc.fileIndex + ".content"] = file.content;
-						core.showMessage('"' + localTitle + '" has been updated from Dropbox.');
-						if(core.fileManager.isCurrentFile(fileDesc)) {
-							updateFileTitles = false; // Done by next function
-							core.fileManager.selectFile(); // Refresh editor
+						extensionMgr.onMessage('"' + localTitle + '" has been updated from Dropbox.');
+						if(fileMgr.isCurrentFile(fileDesc)) {
+							fileMgr.selectFile(); // Refresh editor
 						}
 					}
 					// Update syncAttributes
@@ -206,9 +210,6 @@ define(["core", "utils", "extension-manager", "dropbox-helper"], function(core, 
 					syncAttributes.contentCRC = remoteContentCRC;
 					localStorage[syncIndex] = utils.serializeAttributes(syncAttributes);
 				});
-				if(updateFileTitles) {
-					extensionManager.onTitleChanged();
-				}
 				localStorage[PROVIDER_DROPBOX + ".lastChangeId"] = newChangeId;
 				callback();
 			});

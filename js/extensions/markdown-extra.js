@@ -1,4 +1,7 @@
-define( [ "utils", "Markdown.Extra" ], function(utils) {
+define([
+    "utils",
+    "lib/Markdown.Extra"
+], function(utils) {
     
     var markdownExtra = {
         extensionId: "markdownExtra",

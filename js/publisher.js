@@ -1,8 +1,12 @@
 define([
     "jquery",
+    "underscore",
     "core",
     "utils",
+    "settings",
     "extension-manager",
+    "file-system",
+    "file-manager",
     "sharing",
     "blogger-provider",
     "dropbox-provider",
@@ -11,59 +15,44 @@ define([
     "gdrive-provider",
     "ssh-provider",
     "tumblr-provider",
-    "wordpress-provider",
-    "underscore"
-], function($, core, utils, extensionManager, sharing) {
+    "wordpress-provider"
+], function($, _, core, utils, settings, extensionMgr, fileSystem, fileMgr, sharing) {
 
 	var publisher = {};
 	
-	// Create a map with providerId: providerObject
-	var providerMap = _.chain(arguments)
-		.map(function(argument) {
-			return argument && argument.providerId && [argument.providerId, argument];
-		}).compact().object().value();
-
-	// Used to know if the current file has publications
-	var hasPublications = false;
+	// Create a map with providerId: providerModule
+	var providerMap = _.chain(
+		arguments
+	).map(function(argument) {
+		return argument && argument.providerId && [argument.providerId, argument];
+	}).compact().object().value();
 	
-	// Allows external modules to update hasPublications flag
-	publisher.notifyPublish = function() {
-		var fileDesc = core.fileManager.getCurrentFile();
-		
-		// Check that file has publications
-		if(_.size(fileDesc.publishLocations) === 0) {
-			hasPublications = false;
-		}
-		else {
-			hasPublications = true;
-		}
-		publisher.updatePublishButton();
-	};
-
-	// Used to enable/disable the publish button
-	publisher.updatePublishButton = function() {
-		if(publishRunning === true || hasPublications === false || core.isOffline) {
-			$(".action-force-publish").addClass("disabled");
-		}
-		else {
-			$(".action-force-publish").removeClass("disabled");
-		}
-	};
-	// Run updatePublishButton function on online/offline event
-	core.addOfflineListener(publisher.updatePublishButton);
+	// Retrieve publish locations from localStorage
+	_.each(fileSystem, function(fileDesc) {
+		_.chain(
+			localStorage[fileDesc.fileIndex + ".publish"].split(";")
+		).compact().each(function(publishIndex) {
+			var publishAttributes = JSON.parse(localStorage[publishIndex]);
+			// Store publishIndex
+			publishAttributes.publishIndex = publishIndex;
+			// Replace provider ID by provider module in attributes
+			publishAttributes.provider = providerMap[publishAttributes.provider];
+			fileDesc.publishLocations[publishIndex] = publishAttributes;
+		});
+	});
 
 	// Apply template to the current document
 	publisher.applyTemplate = function(publishAttributes) {
-		var fileDesc = core.fileManager.getCurrentFile();
+		var fileDesc = fileMgr.getCurrentFile();
 		try {
-			return _.template(core.settings.template, {
+			return _.template(settings.template, {
 				documentTitle: fileDesc.title,
 				documentMarkdown: $("#wmd-input").val(),
 				documentHTML: $("#wmd-preview").html(),
 				publishAttributes: publishAttributes
 			});
 		} catch(e) {
-			core.showError(e);
+			extensionMgr.onError(e);
 			throw e;
 		}
 	};
@@ -105,7 +94,7 @@ define([
 			if(error !== undefined) {
 				var errorMsg = error.toString();
 				if(errorMsg.indexOf("|removePublish") !== -1) {
-					core.fileManager.removePublish(publishAttributes);
+					fileMgr.removePublish(publishAttributes);
 				}
 				if(errorMsg.indexOf("|stopPublish") !== -1) {
 					callback(error);
@@ -124,15 +113,15 @@ define([
 		}
 		
 		publishRunning = true;
-		publisher.updatePublishButton();
-		var fileDesc = fileManager.getCurrentFile();
+		extensionMgr.onPublishRunning(true);
+		var fileDesc = fileMgr.getCurrentFile();
 		publishTitle = fileDesc.title;
 		publishAttributesList = _.values(fileDesc.publishLocations);
 		publishLocation(function(errorFlag) {
 			publishRunning = false;
-			publisher.updatePublishButton();
+			extensionMgr.onPublishRunning(false);
 			if(errorFlag === undefined) {
-				extensionManager.onPublishSuccess(fileDesc);
+				extensionMgr.onPublishSuccess(fileDesc);
 			}
 		});
 	};
@@ -144,8 +133,8 @@ define([
 			publishIndex = "publish." + utils.randomString();
 		} while(_.has(localStorage, publishIndex));
 		publishAttributes.publishIndex = publishIndex;
-		localStorage[publishIndex] = JSON.stringify(publishAttributes);
-		core.fileManager.addPublish(fileDesc, publishAttributes);
+		localStorage[publishIndex] = utils.serializeAttributes(publishAttributes);
+		fileMgr.addPublish(fileDesc, publishAttributes);
 	}
 	
 	// Initialize the "New publication" dialog
@@ -185,7 +174,7 @@ define([
 		}
 		
 		// Perform provider's publishing
-		var fileDesc = core.fileManager.getCurrentFile();
+		var fileDesc = fileMgr.getCurrentFile();
 		var title = fileDesc.title;
 		var content = getPublishContent(publishAttributes);
 		provider.publish(publishAttributes, title, content, function(error) {
@@ -193,8 +182,6 @@ define([
 				publishAttributes.provider = provider.providerId;
 				sharing.createLink(publishAttributes, function() {
 					createPublishIndex(fileDesc, publishAttributes);
-					publisher.notifyPublish();
-					core.fileManager.updateFileTitles();
 				});
 			}
 		});
@@ -210,16 +197,16 @@ define([
 	
 	// Retrieve file's publish locations from localStorage
 	publisher.populatePublishLocations = function(fileDesc) {
-		_.chain(localStorage[fileDesc.fileIndex + ".publish"].split(";"))
-			.compact()
-			.each(function(publishIndex) {
-				var publishAttributes = JSON.parse(localStorage[publishIndex]);
-				// Store publishIndex
-				publishAttributes.publishIndex = publishIndex;
-				// Replace provider ID by provider module in attributes
-				publishAttributes.provider = providerMap[publishAttributes.provider];
-				fileDesc.publishLocations[publishIndex] = publishAttributes;
-			});
+		_.chain(
+			localStorage[fileDesc.fileIndex + ".publish"].split(";")
+		).compact().each(function(publishIndex) {
+			var publishAttributes = JSON.parse(localStorage[publishIndex]);
+			// Store publishIndex
+			publishAttributes.publishIndex = publishIndex;
+			// Replace provider ID by provider module in attributes
+			publishAttributes.provider = providerMap[publishAttributes.provider];
+			fileDesc.publishLocations[publishIndex] = publishAttributes;
+		});
 	};
 	
 	core.onReady(function() {
@@ -249,8 +236,25 @@ define([
 				publisher.publish();
 			}
 		});
+
+		// Save As menu items
+		$(".action-download-md").click(function() {
+			var content = $("#wmd-input").val();
+			var title = fileMgr.getCurrentFile().title;
+			utils.saveAs(content, title + ".md");
+		});
+		$(".action-download-html").click(function() {
+			var content = $("#wmd-preview").html();
+			var title = fileMgr.getCurrentFile().title;
+			utils.saveAs(content, title + ".html");
+		});		
+		$(".action-download-template").click(function() {
+			var content = publisher.applyTemplate();
+			var title = fileMgr.getCurrentFile().title;
+			utils.saveAs(content, title + ".txt");
+		});
 	});
 	
-	extensionManager.onPublisherCreated(publisher);
+	extensionMgr.onPublisherCreated(publisher);
 	return publisher;
 });

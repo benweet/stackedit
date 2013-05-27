@@ -1,27 +1,17 @@
 define([
     "jquery",
+	"underscore",
     "utils",
+    "settings",
     "extension-manager",
-    "bootstrap",
-    "layout",
-    "Markdown.Editor",
     "storage",
     "config",
-	"underscore",
-	"FileSaver",
-	"css_browser_selector"
-], function($, utils, extensionManager) {
+    "lib/bootstrap",
+    "lib/layout",
+    "lib/Markdown.Editor"
+], function($, _, utils, settings, extensionMgr) {
 	
 	var core = {};
-	
-	// For convenience
-	core.doNothing = function() {};
-	
-	// Time shared by others modules
-	function updateCurrentTime() {
-		core.currentTime = new Date().getTime();
-	}
-	updateCurrentTime();
 	
 	// Used for periodic tasks
 	var intervalId = undefined;
@@ -38,11 +28,11 @@ define([
 	function setUserActive() {
 		userReal = true;
 		userActive = true;
-		userLastActivity = core.currentTime;
+		userLastActivity = utils.currentTime;
 	};
 	function isUserActive() {
 		if(userActive === true 
-			&& core.currentTime - userLastActivity > USER_IDLE_THRESHOLD) {
+			&& utils.currentTime - userLastActivity > USER_IDLE_THRESHOLD) {
 			userActive = false;
 		}
 		return userActive && windowUnique;
@@ -50,7 +40,7 @@ define([
 	
 	// Used to only have 1 window of the application in the same browser
 	var windowId = undefined;
-	core.checkWindowUnique = function() {
+	function checkWindowUnique() {
 		if(userReal === false || windowUnique === false) {
 			return;
 		}
@@ -70,136 +60,65 @@ define([
 				keyboard: false
 			});
 		}
-	};
+	}
 	
-	// Export data on disk
-	core.saveFile = function(content, filename) {
-		if(saveAs !== undefined) {
-			var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-			saveAs(blob, filename);
-		}
-		else {
-			var uriContent = "data:application/octet-stream;base64,"
-				+ utils.encodeBase64(content);
-			window.open(uriContent, 'file');
-		}
-	};
-
-	// Used by asyncRunner
-	core.showWorkingIndicator = function(show) {
-		if (show === false) {
-			$(".working-indicator").removeClass("show");
-			$("body").removeClass("working");
-		} else {
-			$(".working-indicator").addClass("show");
-			$("body").addClass("working");
-		}
-	};
-
-	// Log a message
-	core.showMessage = function(message) {
-		console.log(message);
-		extensionManager.onMessage(message);
-	};
-
-	// Log an error
-	core.showError = function(error) {
-		console.error(error);
-		if(_.isString(error)) {
-			extensionManager.onMessage(error);
-		}
-		else if(_.isObject(error)) {
-			extensionManager.onMessage(error.message);
-		}
-	};
-
 	// Offline management
 	core.isOffline = false;
-	var offlineTime = core.currentTime;
-	var offlineListeners = [];
-	core.addOfflineListener = function(callback) {
-		offlineListeners.push(callback);		
-	};
+	var offlineTime = utils.currentTime;
 	core.setOffline = function() {
-		offlineTime = core.currentTime;
+		offlineTime = utils.currentTime;
 		if(core.isOffline === false) {
 			core.isOffline = true;
-			extensionManager.onOfflineChanged(true);
-			_.each(offlineListeners, function(listener) {
-				listener();
-			});
+			extensionMgr.onOfflineChanged(true);
 		}
 	};
-	core.setOnline = function() {
+	function setOnline() {
 		if(core.isOffline === true) {
 			core.isOffline = false;
-			extensionManager.onOfflineChanged(false);
-			_.each(offlineListeners, function(listener) {
-				listener();
-			});
+			extensionMgr.onOfflineChanged(false);
 		}
-	};
+	}
 	function checkOnline() {
 		// Try to reconnect if we are offline but we have some network
 		if (core.isOffline === true && navigator.onLine === true
-			&& offlineTime + CHECK_ONLINE_PERIOD < core.currentTime) {
-			offlineTime = core.currentTime;
+			&& offlineTime + CHECK_ONLINE_PERIOD < utils.currentTime) {
+			offlineTime = utils.currentTime;
 			// Try to download anything to test the connection
 			$.ajax({ 
 				url : "//www.google.com/jsapi",
 				timeout : AJAX_TIMEOUT, dataType : "script"
 			}).done(function() {
-				core.setOnline();
+				setOnline();
 			});
 		}
 	}
 	
-	// Setting management
-	core.settings = {
-		layoutOrientation : "horizontal",
-		lazyRendering : true,
-		editorFontSize : 14,
-		defaultContent: "\n\n\n> Written with [StackEdit](http://benweet.github.io/stackedit/).",
-		commitMsg : "Published by http://benweet.github.io/stackedit",
-		template : ['<!DOCTYPE html>\n',
-			'<html>\n',
-			'<head>\n',
-			'<title><%= documentTitle %></title>\n',
-			'</head>\n',
-			'<body><%= documentHTML %></body>\n',
-			'</html>'].join(""),
-		sshProxy : SSH_PROXY_URL,
-		extensionSettings: {}
-	};
-	if (_.has(localStorage, "settings")) {
-		_.extend(core.settings, JSON.parse(localStorage.settings));
-	}
-	extensionManager.init(core.settings.extensionSettings);
-
-	core.loadSettings = function() {
+	// Load settings in settings dialog
+	function loadSettings() {
 		
 		// Layout orientation
-		utils.setInputRadio("radio-layout-orientation", core.settings.layoutOrientation);
+		utils.setInputRadio("radio-layout-orientation", settings.layoutOrientation);
 		// Theme
 		utils.setInputValue("#input-settings-theme", localStorage.theme);
 		// Lazy rendering
-		utils.setInputChecked("#input-settings-lazy-rendering", core.settings.lazyRendering);
+		utils.setInputChecked("#input-settings-lazy-rendering", settings.lazyRendering);
 		// Editor font size
-		utils.setInputValue("#input-settings-editor-font-size", core.settings.editorFontSize);
+		utils.setInputValue("#input-settings-editor-font-size", settings.editorFontSize);
 		// Default content
-		utils.setInputValue("#textarea-settings-default-content", core.settings.defaultContent);
+		utils.setInputValue("#textarea-settings-default-content", settings.defaultContent);
 		// Commit message
-		utils.setInputValue("#input-settings-publish-commit-msg", core.settings.commitMsg);
+		utils.setInputValue("#input-settings-publish-commit-msg", settings.commitMsg);
 		// Template
-		utils.setInputValue("#textarea-settings-publish-template", core.settings.template);
+		utils.setInputValue("#textarea-settings-publish-template", settings.template);
 		// SSH proxy
-		utils.setInputValue("#input-settings-ssh-proxy", core.settings.sshProxy);
+		utils.setInputValue("#input-settings-ssh-proxy", settings.sshProxy);
 		
 		// Load extension settings
-		extensionManager.onLoadSettings();
-	};
+		extensionMgr.onLoadSettings();
+	}
 
-	core.saveSettings = function(event) {
+	// Save settings from settings dialog
+	function saveSettings(event) {
 		var newSettings = {};
 		
 		// Layout orientation
@@ -221,14 +140,14 @@ define([
 		
 		// Save extension settings
 		newSettings.extensionSettings = {};
-		extensionManager.onSaveSettings(newSettings.extensionSettings, event);
+		extensionMgr.onSaveSettings(newSettings.extensionSettings, event);
 		
 		if(!event.isPropagationStopped()) {
-			$.extend(core.settings, newSettings);
-			localStorage.settings = JSON.stringify(newSettings);
+			$.extend(settings, newSettings);
+			localStorage.settings = JSON.stringify(settings);
 			localStorage.theme = theme;
 		}
-	};
+	}
 	
 	// Create the layout
 	var layout = undefined;
@@ -250,8 +169,8 @@ define([
 			center__minWidth : 200,
 			center__minHeight : 200
 		};
-		extensionManager.onLayoutConfigure(layoutGlobalConfig);
-		if (core.settings.layoutOrientation == "horizontal") {
+		extensionMgr.onLayoutConfigure(layoutGlobalConfig);
+		if (settings.layoutOrientation == "horizontal") {
 			$(".ui-layout-south").remove();
 			$(".ui-layout-east").addClass("well").prop("id", "wmd-preview");
 			layout = $('body').layout(
@@ -261,7 +180,7 @@ define([
 					east__minSize : 200
 				})
 			);
-		} else if (core.settings.layoutOrientation == "vertical") {
+		} else if (settings.layoutOrientation == "vertical") {
 			$(".ui-layout-east").remove();
 			$(".ui-layout-south").addClass("well").prop("id", "wmd-preview");
 			layout = $('body').layout(
@@ -282,7 +201,7 @@ define([
 			layout.allowOverflow('north');
 		});
 		
-		extensionManager.onLayoutCreated(layout);
+		extensionMgr.onLayoutCreated(layout);
 	};
 	
 	// Create the PageDown editor
@@ -320,7 +239,7 @@ define([
 				makePreview();
 			};
 		};
-		if(core.settings.lazyRendering === true) {
+		if(settings.lazyRendering === true) {
 			var lastRefresh = 0;
 			previewWrapper = function(makePreview) {
 				//var debouncedMakePreview = _.debounce(makePreview, 500); 
@@ -340,8 +259,8 @@ define([
 				};
 			};
 		}
-		extensionManager.onEditorConfigure(editor);
-		editor.hooks.chain("onPreviewRefresh", extensionManager.onAsyncPreview);
+		extensionMgr.onEditorConfigure(editor);
+		editor.hooks.chain("onPreviewRefresh", extensionMgr.onAsyncPreview);
 		
 		// Convert email addresses (not managed by pagedown)
 		converter.hooks.chain("postConversion", function(text) {
@@ -374,53 +293,29 @@ define([
 		$("#wmd-redo-button").append($("<i>").addClass("icon-share-alt"));
 	};
 
-	// Create an centered popup window
-	core.popupWindow = function(url, title, w, h) {
-		var left = (screen.width / 2) - (w / 2);
-		var top = (screen.height / 2) - (h / 2);
-		return window
-			.open(
-				url,
-				title,
-				'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='
-					+ w
-					+ ', height='
-					+ h
-					+ ', top='
-					+ top
-					+ ', left='
-					+ left);
-	};
-	
-	// Keep a reference to the fileManager
-	core.setFileManager = function(fileManager) {
-		core.fileManager = fileManager;
-		runReadyCallbacks();
-	};
-	
 	// onReady event callbacks
 	var readyCallbacks = [];
 	core.onReady = function(callback) {
 		readyCallbacks.push(callback);
 		runReadyCallbacks();
 	};
-	var documentLoaded = false;
+	var ready = false;
+	core.setReady = function() {
+		ready = true;
+		runReadyCallbacks();
+	};
 	function runReadyCallbacks() {
-		if(documentLoaded === true && core.fileManager !== undefined) {
+		if(ready === true) {
 			_.each(readyCallbacks, function(callback) {
 				callback();
 			});
 			readyCallbacks = [];
 		}
 	}
-	$(function() {
-		documentLoaded = true;
-		runReadyCallbacks();
-	});
 	
 	core.onReady(extensionManager.onReady);
 	core.onReady(function() {
-		
+				
 		// Load theme list
 		_.each(THEME_LIST, function(name, value) {
 			$("#input-settings-theme").append($('<option value="' + value + '">' + name + '</option>'));
@@ -428,7 +323,7 @@ define([
 		
 		// listen to online/offline events
 		$(window).on('offline', core.setOffline);
-		$(window).on('online', core.setOnline);
+		$(window).on('online', setOnline);
 		if (navigator.onLine === false) {
 			core.setOffline();
 		}
@@ -460,10 +355,10 @@ define([
 
 		// Settings loading/saving
 		$(".action-load-settings").click(function() {
-			core.loadSettings();
+			loadSettings();
 		});
 		$(".action-apply-settings").click(function(e) {
-			core.saveSettings(e);
+			saveSettings(e);
 			if(!e.isPropagationStopped()) {
 				window.location.reload();
 			}
@@ -487,8 +382,8 @@ define([
 		// Editor's textarea
 		$("#wmd-input, #md-section-helper").css({
 			// Apply editor font size
-			"font-size": core.settings.editorFontSize + "px",
-			"line-height": Math.round(core.settings.editorFontSize * (20/14)) + "px"
+			"font-size": settings.editorFontSize + "px",
+			"line-height": Math.round(settings.editorFontSize * (20/14)) + "px"
 		});
 		
 		// Manage tab key
@@ -564,8 +459,8 @@ define([
 		
 		// Do periodic tasks
 		intervalId = window.setInterval(function() {
-			updateCurrentTime();
-			core.checkWindowUnique();
+			utils.updateCurrentTime();
+			checkWindowUnique();
 			if(isUserActive() === true || viewerMode === true) {
 				_.each(periodicCallbacks, function(callback) {
 					callback();

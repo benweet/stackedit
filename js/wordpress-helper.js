@@ -1,4 +1,10 @@
-define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
+define([
+    "jquery",
+    "core",
+    "utils",
+    "extension-manager",
+    "async-runner"
+], function($, core, utils, extensionMgr, asyncRunner) {
 
 	var token = undefined;
 
@@ -25,14 +31,14 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 				task.chain();
 				return;
 			}
-			core.showMessage("Please make sure the Wordpress authorization popup is not blocked by your browser.");
+			extensionMgr.onMessage("Please make sure the Wordpress authorization popup is not blocked by your browser.");
 			var errorMsg = "Failed to retrieve a token from Wordpress.";
 			// We add time for user to enter his credentials
 			task.timeout = ASYNC_TASK_LONG_TIMEOUT;
 			var code = undefined;
 			function getCode() {
 				localStorage.removeItem("wordpressCode");
-				authWindow = core.popupWindow(
+				authWindow = utils.popupWindow(
 					'wordpress-oauth-client.html?client_id=' + WORDPRESS_CLIENT_ID,
 					'stackedit-wordpress-oauth', 960, 600);
 				authWindow.focus();
@@ -76,7 +82,6 @@ define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
 	}
 
 	wordpressHelper.upload = function(site, postId, tags, title, content, callback) {
-		callback = callback || core.doNothing;
 		var task = asyncRunner.createTask();
 		connect(task);
 		authenticate(task);

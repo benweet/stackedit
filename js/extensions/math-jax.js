@@ -1,4 +1,6 @@
-define( [ "MathJax" ], function($) {
+define([
+    "lib/MathJax"
+], function() {
 	
 	var mathJax = {
 		extensionId: "mathJax",

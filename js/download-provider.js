@@ -1,4 +1,8 @@
-define(["jquery", "core", "async-runner"], function($, core, asyncRunner) {
+define([
+    "jquery",
+    "core",
+    "async-runner"
+], function($, core, asyncRunner) {
 	
 	var PROVIDER_DOWNLOAD = "download";
 	

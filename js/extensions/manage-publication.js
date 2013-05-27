@@ -1,16 +1,17 @@
-define( [ "jquery", "underscore" ], function($) {
+define([
+    "jquery",
+    "underscore"
+], function($, _) {
 	
 	var managePublication = {
 		extensionId: "managePublication",
 		extensionName: "Manage Publication",
-		settingsBloc: [
-		               '<p>Populates the "Manage publication" dialog box.</p>'
-		              ].join("")
+		settingsBloc: '<p>Populates the "Manage publication" dialog box.</p>'
 	};
 	
-	var fileManager = undefined;
-	manageSynchronization.onFileManagerCreated = function(fileManagerParameter) {
-		fileManager = fileManagerParameter;
+	var fileMgr = undefined;
+	managePublication.onFileMgrCreated = function(fileMgrParameter) {
+		fileMgr = fileMgrParameter;
 	};
 	
 	var fileDesc = undefined;
@@ -46,7 +47,7 @@ define( [ "jquery", "underscore" ], function($) {
 				publishDesc: publishDesc
 			}));
 			lineElement.append($(removeButtonTemplate).click(function() {
-				fileManager.removePublish(publishAttributes);
+				fileMgr.removePublish(publishAttributes);
 			}));
 			publishList.append(lineElement);
 		});

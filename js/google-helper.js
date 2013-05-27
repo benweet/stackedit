@@ -1,4 +1,10 @@
-define(["jquery", "core", "utils", "async-runner"], function($, core, utils, asyncRunner) {
+define([
+    "jquery",
+    "core",
+    "utils",
+    "extension-manager",
+    "async-runner"
+], function($, core, utils, extensionMgr, asyncRunner) {
 
 	var connected = false;
 	var authenticated = false;
@@ -44,7 +50,7 @@ define(["jquery", "core", "utils", "async-runner"], function($, core, utils, asy
 			var immediate = true;
 			function localAuthenticate() {
 				if (immediate === false) {
-					core.showMessage("Please make sure the Google authorization popup is not blocked by your browser.");
+					extensionMgr.onMessage("Please make sure the Google authorization popup is not blocked by your browser.");
 					// If not immediate we add time for user to enter his credentials
 					task.timeout = ASYNC_TASK_LONG_TIMEOUT;
 				}
@@ -74,7 +80,6 @@ define(["jquery", "core", "utils", "async-runner"], function($, core, utils, asy
 	}
 
 	googleHelper.upload = function(fileId, parentId, title, content, etag, callback) {
-		callback = callback || core.doNothing;
 		var result = undefined;
 		var task = asyncRunner.createTask();
 		connect(task);
@@ -151,7 +156,6 @@ define(["jquery", "core", "utils", "async-runner"], function($, core, utils, asy
 	};
 
 	googleHelper.checkChanges = function(lastChangeId, callback) {
-		callback = callback || core.doNothing;
 		var changes = [];
 		var newChangeId = lastChangeId || 0;
 		var task = asyncRunner.createTask();
@@ -202,7 +206,6 @@ define(["jquery", "core", "utils", "async-runner"], function($, core, utils, asy
 	};
 
 	googleHelper.downloadMetadata = function(ids, callback, skipAuth) {
-		callback = callback || core.doNothing;
 		var result = [];
 		var task = asyncRunner.createTask();
 		connect(task);
@@ -255,7 +258,6 @@ define(["jquery", "core", "utils", "async-runner"], function($, core, utils, asy
 	};
 
 	googleHelper.downloadContent = function(objects, callback, skipAuth) {
-		callback = callback || core.doNothing;
 		var result = [];
 		var task = asyncRunner.createTask();
 		// Add some time for user to choose his files
@@ -378,7 +380,6 @@ define(["jquery", "core", "utils", "async-runner"], function($, core, utils, asy
 	}
 	
 	googleHelper.picker = function(callback) {
-		callback = callback || core.doNothing;
 		var ids = [];
 		var picker = undefined;
 		function hidePicker() {

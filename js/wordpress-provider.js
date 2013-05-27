@@ -1,4 +1,7 @@
-define(["utils", "wordpress-helper"], function(utils, wordpressHelper) {
+define([
+    "utils",
+    "wordpress-helper"
+], function(utils, wordpressHelper) {
 	
 	var PROVIDER_WORDPRESS = "wordpress";
 	

@@ -1,11 +1,24 @@
-define(["jquery", "core", "utils", "async-runner", "download-provider", "gist-provider", "underscore"], function($, core, utils, asyncRunner) {
+define([
+    "jquery",
+    "underscore",
+    "core",
+    "utils",
+    "extension-manager",
+    "file-system",
+    "file-manager",
+    "async-runner",
+    "download-provider",
+    "gist-provider"
+], function($, _, core, utils, extensionMgr, fileMgr, asyncRunner) {
+	
 	var sharing = {};
 	
-	// Create a map with providerId: providerObject
-	var providerMap = _.chain(arguments)
-		.map(function(argument) {
-			return argument && argument.providerId && [argument.providerId, argument];
-		}).compact().object().value();
+	// Create a map with providerId: providerModule
+	var providerMap = _.chain(
+		arguments
+	).map(function(argument) {
+		return argument && argument.providerId && [argument.providerId, argument];
+	}).compact().object().value();
 
 	// Used to populate the "Sharing" dropdown box
 	var lineTemplate = ['<div class="input-prepend">',
@@ -52,11 +65,12 @@ define(["jquery", "core", "utils", "async-runner", "download-provider", "gist-pr
 				url.push('=');
 				url.push(encodeURIComponent(attributes[attributeName]));
 			});
+			url = url.join("");
 			$.getJSON(
 		        "https://api-ssl.bitly.com/v3/shorten", 
 		        { 
 		            "access_token": BITLY_ACCESS_TOKEN,
-		            "longUrl": url.join("")
+		            "longUrl": url
 		        },
 		        function(response)
 		        {
@@ -64,45 +78,21 @@ define(["jquery", "core", "utils", "async-runner", "download-provider", "gist-pr
 		        		shortUrl = response.data.url;
 						attributes.sharingLink = shortUrl;
 		        	}
+		        	else {
+		        		extensionMgr.onError("An error occured while creating sharing link.");
+		        		attributes.sharingLink = url;
+		        	}
 		            task.chain();
 		        }
 		    );
 		});
 		function onFinish() {
-			if(shortUrl === undefined) {
-				localStorage["missingSharingLink"] = true;
-			}
-			callback(shortUrl);
+			callback();
 		}
 		task.onSuccess(onFinish);
 		task.onError(onFinish);
 		asyncRunner.addTask(task);
 	};
-	
-	// Create the possible missing links
-	function checkMissingLinks() {
-		if(core.isOffline === true) {
-			return;
-		}
-		if(!_.has(localStorage, "missingSharingLink")) {
-			return;
-		} 
-		localStorage.removeItem("missingSharingLink");
-		var fileDescList = core.fileManager.getFileList();
-		_.each(fileDescList, function(fileDesc) {
-			_.each(fileDescList.publishLocations, function(publishAttributes, publishIndex) {
-				sharing.createLink(publishAttributes, function(shortUrl) {
-					if(shortUrl !== undefined) {
-						localStorage[publishIndex] = utils.serializeAttributes(attributes);
-					}
-				});
-			});
-		});
-	}
-	// Periodically check that links are not missing
-	if(viewerMode === false) {
-		core.addPeriodicCallback(checkMissingLinks);
-	}
 	
 	core.onReady(function() {
 		if(viewerMode === false) {
@@ -135,8 +125,8 @@ define(["jquery", "core", "utils", "async-runner", "download-provider", "gist-pr
 			if(error) {
 				return;
 			}
-			var fileDesc = core.fileManager.createFile(title, content, undefined, true);
-			core.fileManager.selectFile(fileDesc);
+			var fileDesc = fileMgr.createFile(title, content, undefined, true);
+			fileMgr.selectFile(fileDesc);
 		});
 	});
 	

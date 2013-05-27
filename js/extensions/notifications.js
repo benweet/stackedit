@@ -1,4 +1,8 @@
-define( [ "jquery", "jgrowl", "underscore" ], function($) {
+define([
+    "jquery",
+    "underscore",
+    "jgrowl"
+], function($, _, jGrowl) {
 	
 	var notifications = {
 		extensionId: "notifications",
@@ -6,15 +10,15 @@ define( [ "jquery", "jgrowl", "underscore" ], function($) {
 		defaultConfig: {
 			showingTime: 5000
 		},
-		settingsBloc: "<p>Shows notification messages in the bottom-right corner of the screen.</p>"
+		settingsBloc: '<p>Shows notification messages in the bottom-right corner of the screen.</p>'
 	};
 	
 	notifications.onReady = function() {
 		// jGrowl configuration
-		$.jGrowl.defaults.life = notifications.config.showingTime;
-		$.jGrowl.defaults.closer = false;
-		$.jGrowl.defaults.closeTemplate = '';
-		$.jGrowl.defaults.position = 'bottom-right';
+		jGrowl.defaults.life = notifications.config.showingTime;
+		jGrowl.defaults.closer = false;
+		jGrowl.defaults.closeTemplate = '';
+		jGrowl.defaults.position = 'bottom-right';
 	};
 	
 	function showMessage(msg, iconClass, options) {
@@ -30,15 +34,22 @@ define( [ "jquery", "jgrowl", "underscore" ], function($) {
 		}
 		options = options || {};
 		iconClass = iconClass || "icon-info-sign";
-		$.jGrowl("<i class='icon-white " + iconClass + "'></i> " + _.escape(msg), options);
+		jGrowl("<i class='icon-white " + iconClass + "'></i> " + _.escape(msg), options);
 	}
 	
 	notifications.onMessage = function(message) {
+		console.log(message);
 		showMessage(message);
 	};
 	
 	notifications.onError = function(error) {
-		showMessage(error, "icon-warning-sign");
+		console.error(error);
+		if(_.isString(error)) {
+			showMessage(error, "icon-warning-sign");
+		}
+		else if(_.isObject(error)) {
+			showMessage(error.message, "icon-warning-sign");
+		}
 	};
 	
 	notifications.onOfflineChanged = function(isOffline) {

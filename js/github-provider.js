@@ -1,4 +1,8 @@
-define(["core", "utils", "github-helper"], function(core, utils, githubHelper) {
+define([
+    "utils",
+    "settings",
+    "github-helper"
+], function(utils, settings, githubHelper) {
 	
 	var PROVIDER_GITHUB = "github";
 	
@@ -9,7 +13,7 @@ define(["core", "utils", "github-helper"], function(core, utils, githubHelper) {
 	};
 	
 	githubProvider.publish = function(publishAttributes, title, content, callback) {
-		var commitMsg = core.settings.commitMsg;
+		var commitMsg = settings.commitMsg;
 		githubHelper.upload(publishAttributes.repository, publishAttributes.branch,
 			publishAttributes.path, content, commitMsg, callback);
 	};

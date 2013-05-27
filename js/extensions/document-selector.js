@@ -1,64 +1,75 @@
-define( [ "jquery", "underscore" ], function($) {
+define([
+    "jquery",
+    "underscore"
+], function($, _) {
 	
 	var documentSelector = {
 		extensionId: "documentSelector",
 		extensionName: "Document selector",
-		settingsBloc: [
-		               '<p>Builds the "Open document" dropdown menu.</p>'
-		              ].join("")
+		settingsBloc: '<p>Builds the "Open document" dropdown menu.</p>'
 	};
 	
-	var fileSystemDescriptor = undefined;
-	documentSelector.onFileSystemLoaded = function(fileSystemDescriptorParameter) {
-		fileSystemDescriptor = fileSystemDescriptorParameter;
+	var fileSystem = undefined;
+	documentSelector.onFileSystemCreated = function(fileSystemParameter) {
+		fileSystem = fileSystemParameter;
 	};
 	
-	var fileDesc = undefined;
-	var updateSelector = function() {
-		var sortedDescriptor = _.sortBy(fileSystemDescriptor, function(fileDesc) {
-			return fileDesc.title.toLowerCase();
-		});
-
+	var fileMgr = undefined;
+	documentSelector.onFileMgrCreated = function(fileMgrParameter) {
+		fileMgr = fileMgrParameter;
+	};
+	
+	var liMap = undefined;
+	var buildSelector = function() {
+		
 		function composeTitle(fileDesc) {
 			var result = [];
 			var syncAttributesList = _.values(fileDesc.syncLocations);
 			var publishAttributesList = _.values(fileDesc.publishLocations);
 			var attributesList = syncAttributesList.concat(publishAttributesList);
 			_.chain(attributesList).sortBy(function(attributes) {
-				return attributes.provider;
+				return attributes.provider.providerId;
 			}).each(function(attributes) {
-				result.push('<i class="icon-' + attributes.provider + '"></i>');
+				result.push('<i class="icon-' + attributes.provider.providerId + '"></i>');
 			});
 			result.push(" ");
 			result.push(fileDesc.title);
 			return result.join("");
 		}
 
+		liMap = {};
 		$("#file-selector li:not(.stick)").empty();
-		_.each(sortedDescriptor, function(fileDescToPrint) {
-			var a = $("<a>").html(composeTitle(fileDescToPrint.fileIndex));
+		_.chain(
+			fileSystem
+		).sortBy(function(fileDesc) {
+			return fileDesc.title.toLowerCase();
+		}).each(function(fileDesc) {
+			var a = $('<a href="#">').html(composeTitle(fileDesc)).click(function() {
+				if(liMap[fileDesc.fileIndex].is(".disabled")) {
+					fileMgr.selectFile(fileDesc);
+				}
+			});
 			var li = $("<li>").append(a);
-			if (fileDescToPrint === fileDesc) {
-				li.addClass("disabled");
-			} else {
-				a.prop("href", "#").click(function() {
-					fileManager.selectFile(fileDescToPrint);
-				});
-			}
+			liMap[fileDesc.fileIndex] = li;
 			$("#file-selector").append(li);			
 		});
 	};
 		
-	documentSelector.onFileSelected = function(fileDescParameter) {
-		fileDesc = fileDescParameter;
-		updateSelector();
+	documentSelector.onFileSelected = function(fileDesc) {
+		if(liMap === undefined) {
+			buildSelector();
+		}
+		$("#file-selector li:not(.stick)").removeClass("disabled");
+		liMap[fileDesc.fileIndex].addClass("disabled");
 	};
 	
-	documentSelector.onTitleChanged = updateSelector;
-	documentSelector.onSyncExportSuccess = updateSelector;
-	documentSelector.onSyncRemoved = updateSelector;
-	documentSelector.onNewPublishSuccess = updateSelector;
-	documentSelector.onPublishRemoved = updateSelector;
+	documentSelector.onFileCreated = buildSelector;
+	documentSelector.onFileDeleted = buildSelector;
+	documentSelector.onTitleChanged = buildSelector;
+	documentSelector.onSyncExportSuccess = buildSelector;
+	documentSelector.onSyncRemoved = buildSelector;
+	documentSelector.onNewPublishSuccess = buildSelector;
+	documentSelector.onPublishRemoved = buildSelector;
 	
 	return documentSelector;
 	

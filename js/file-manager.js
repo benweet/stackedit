@@ -174,7 +174,7 @@ define([
 		}
 		// Remove sync attributes
 		localStorage.removeItem(syncAttributes.syncIndex);
-		fileDesc.syncLocations.removeItem(syncIndex);
+		fileDesc.syncLocations.removeItem(syncAttributes.syncIndex);
 		if(!skipExtensions) {
 			extensionMgr.onSyncRemoved(fileDesc, syncAttributes);
 		}
@@ -218,7 +218,7 @@ define([
 		}
 		// Remove publish attributes
 		localStorage.removeItem(publishAttributes.publishIndex);
-		fileDesc.publishLocations.removeItem(publishIndex);
+		fileDesc.publishLocations.removeItem(publishAttributes.publishIndex);
 		if(!skipExtensions) {
 			extensionMgr.onPublishRemoved(fileDesc, publishAttributes);
 		}

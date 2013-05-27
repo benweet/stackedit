@@ -73,7 +73,7 @@ define([
 				}
 				if(uploadFlag) {
 					// Update syncAttributes in localStorage
-					localStorage[syncIndex] = utils.serializeAttributes(syncAttributes);
+					localStorage[syncAttributes.syncIndex] = utils.serializeAttributes(syncAttributes);
 				}
 				locationUp(callback);
 			}

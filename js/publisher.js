@@ -89,8 +89,7 @@ define([
 		var content = getPublishContent(publishAttributes);
 		
 		// Call the provider
-		var provider = providerMap[publishAttributes.provider];
-		provider.publish(publishAttributes, publishTitle, content, function(error) {
+		publishAttributes.provider.publish(publishAttributes, publishTitle, content, function(error) {
 			if(error !== undefined) {
 				var errorMsg = error.toString();
 				if(errorMsg.indexOf("|removePublish") !== -1) {

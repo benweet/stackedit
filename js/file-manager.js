@@ -36,15 +36,18 @@ define([
 	
 	// Caution: this function recreate the editor (reset undo operations)
 	fileMgr.selectFile = function(fileDesc) {
-		var fileSystemSize = _.size(fileSystem);
-		// If no file create one
-		if (_.size(fileSystem) === 0) {
-			fileDesc = fileMgr.createFile(WELCOME_DOCUMENT_TITLE, welcomeContent);
-		}
+		fileDesc = fileDesc || fileMgr.getCurrentFile();
 		
 		if(fileDesc === undefined) {
+			var fileSystemSize = _.size(fileSystem);
+			// If fileSystem empty create one file
+			if (fileSystemSize === 0) {
+				fileDesc = fileMgr.createFile(WELCOME_DOCUMENT_TITLE, welcomeContent);
+			}			
 			// If no file is selected take the last created
-			fileDesc = fileSystem[_.keys(fileSystem)[fileSystemSize - 1]];
+			else {
+				fileDesc = fileSystem[_.keys(fileSystem)[fileSystemSize - 1]];
+			}
 		}
 		fileMgr.setCurrentFile(fileDesc);
 

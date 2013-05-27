@@ -264,13 +264,6 @@ define([
 		extensionMgr.onEditorConfigure(editor);
 		editor.hooks.chain("onPreviewRefresh", extensionMgr.onAsyncPreview);
 		
-		// Convert email addresses (not managed by pagedown)
-		converter.hooks.chain("postConversion", function(text) {
-			return text.replace(/<(mailto\:)?([^\s>]+@[^\s>]+\.\S+?)>/g, function(match, mailto, email) {
-				return '<a href="mailto:' + email + '">' + email + '</a>';
-			});
-		});
-		
 		$("#wmd-input, #wmd-preview").scrollTop(0);
 		$("#wmd-button-bar").empty();
 		editor.run(previewWrapper);

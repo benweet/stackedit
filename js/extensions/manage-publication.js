@@ -5,7 +5,7 @@ define([
 	
 	var managePublication = {
 		extensionId: "managePublication",
-		extensionName: "Manage Publication",
+		extensionName: "Manage publication",
 		settingsBloc: '<p>Populates the "Manage publication" dialog box.</p>'
 	};
 	

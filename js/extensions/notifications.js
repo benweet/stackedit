@@ -1,21 +1,41 @@
 define([
     "jquery",
     "underscore",
+    "utils",
     "jgrowl"
-], function($, _, jGrowl) {
+], function($, _, utils, jGrowl) {
 	
 	var notifications = {
 		extensionId: "notifications",
 		extensionName: "Notifications",
 		defaultConfig: {
-			showingTime: 5000
+			timeout: 5000
 		},
-		settingsBloc: '<p>Shows notification messages in the bottom-right corner of the screen.</p>'
+        settingsBloc: [
+                       	'<p>Shows notification messages in the bottom-right corner of the screen.</p>',
+                       	'<div class="form-horizontal">',
+	                       	'<div class="control-group">',
+		                       	'<label class="control-label" for="input-notifications-timeout">Timeout</label>',
+		                       	'<div class="controls">',
+	                       		'<input type="text" id="input-notifications-timeout" class="input-mini">',
+	                       		'<span class="help-inline">ms</span>',
+	                       		'</div>',
+                       		'</div>',
+                   		'</div>'
+                      ].join("")
 	};
 	
+	notifications.onLoadSettings = function() {
+    	utils.setInputValue("#input-notifications-timeout", notifications.config.timeout);
+    };
+    
+    notifications.onSaveSettings = function(newConfig, event) {
+    	newConfig.timeout = utils.getInputIntValue("#input-notifications-timeout", event, 1, 60000);
+    };
+    
 	notifications.onReady = function() {
 		// jGrowl configuration
-		jGrowl.defaults.life = notifications.config.showingTime;
+		jGrowl.defaults.life = notifications.config.timeout;
 		jGrowl.defaults.closer = false;
 		jGrowl.defaults.closeTemplate = '';
 		jGrowl.defaults.position = 'bottom-right';

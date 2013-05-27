@@ -15,6 +15,7 @@ define( [
     "extensions/markdown-extra",
     "extensions/toc",
     "extensions/math-jax",
+    "extensions/email-converter",
     "extensions/scroll-link",
     "lib/bootstrap"
 ], function($, _, utils, settings) {
@@ -54,30 +55,6 @@ define( [
 		extensionMgr[hookName] = createHook(hookName);
 	}
 	
-	var accordionTmpl = [
-         		        '<div class="accordion-group">',
-         	         		'<div class="accordion-heading">',
- 		         				'<label class="checkbox pull-right">',
- 		         					'<input id="input-enable-extension-<%= extensionId %>" type="checkbox" <% if(!optional) { %> disabled <% } %>> enabled',
- 		         				'</label>',
-         		         		'<a id="accordion-toggle-test" data-toggle="collapse" data-parent="#accordion-extensions" class="accordion-toggle" href="#collapse-<%= extensionId %>">',
-         		         			'<%= extensionName %>',
-         		         		'</a>',
-         		         	'</div>',
-                  			'<div id="collapse-<%= extensionId %>" class="accordion-body collapse">',
-                  				'<div class="accordion-inner"><%= settingsBloc %></div>',
-                  			'</div>',
-	                  	'</div>'].join("");
-	         		
-	function createSettings(extension) {
-		$("#accordion-extensions").append($(_.template(accordionTmpl, {
-			extensionId: extension.extensionId,
-			extensionName: extension.extensionName,
-			optional: extension.optional,
-			settingsBloc: extension.settingsBloc
-		})));
-	}
-
 	// Set extension config
 	extensionSettings = settings.extensionSettings || {};
 	_.each(extensionList, function(extension) {
@@ -164,9 +141,37 @@ define( [
 		tryFinished();
 	};
 	
+	var accordionTmpl = [
+        '<div class="accordion-group">',
+	  		'<div class="accordion-heading">',
+				'<label class="checkbox pull-right">',
+					'<input id="input-enable-extension-<%= extensionId %>" type="checkbox" <% if(!optional) { %> disabled <% } %>> enabled',
+				'</label>',
+	      		'<a id="accordion-toggle-test" data-toggle="collapse" data-parent="#accordion-extensions" class="accordion-toggle" href="#collapse-<%= extensionId %>">',
+	      			'<%= extensionName %>',
+	      		'</a>',
+	      	'</div>',
+			'<div id="collapse-<%= extensionId %>" class="accordion-body collapse">',
+				'<div class="accordion-inner"><%= settingsBloc %></div>',
+			'</div>',
+	   	'</div>'].join("");
+	         		
+	function createSettings(extension) {
+		$("#accordion-extensions").append($(_.template(accordionTmpl, {
+			extensionId: extension.extensionId,
+			extensionName: extension.extensionName,
+			optional: extension.optional,
+			settingsBloc: extension.settingsBloc
+		})));
+	}
+
 	$(function() {
 		// Create accordion in settings dialog
-		_.each(extensionList, createSettings);
+		_.chain(
+			extensionList
+		).sortBy(function(extension) {
+			return extension.extensionName.toLowerCase();
+		}).each(createSettings);
 	});
 	
 	return extensionMgr;

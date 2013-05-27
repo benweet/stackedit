@@ -6,7 +6,6 @@ define([
 	var buttonSync = {
 		extensionId: "buttonSync",
 		extensionName: 'Button "Synchronize"',
-        optional: true,
 		settingsBloc: '<p>Adds a "Synchronize documents" button in the navigation bar.</p>'
 	};
 	

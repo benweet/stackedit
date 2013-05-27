@@ -6,7 +6,6 @@ define([
 	var buttonPublish = {
 		extensionId: "buttonPublish",
 		extensionName: 'Button "Publish"',
-        optional: true,
 		settingsBloc: '<p>Adds a "Publish document" button in the navigation bar.</p>'
 	};
 	

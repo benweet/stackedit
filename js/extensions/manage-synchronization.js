@@ -5,7 +5,7 @@ define([
 	
 	var manageSynchronization = {
 		extensionId: "manageSynchronization",
-		extensionName: "Manage Synchronization",
+		extensionName: "Manage synchronization",
 		settingsBloc: '<p>Populates the "Manage synchronization" dialog box.</p>'
 	};
 	

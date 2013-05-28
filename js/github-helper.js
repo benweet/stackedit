@@ -224,7 +224,7 @@ define([
 	function handleError(error, task) {
 		var errorMsg = undefined;
 		if (error) {
-			console.error(error);
+			logger.error(error);
 			// Try to analyze the error
 			if (typeof error === "string") {
 				errorMsg = error;

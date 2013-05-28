@@ -12,6 +12,7 @@ define([
 	var asyncRunner = {};
 
 	var taskQueue = [];
+	var asyncRunning = false;
 	var currentTask = undefined;
 	var currentTaskRunning = false;
 	var currentTaskStartTime = 0;
@@ -137,7 +138,10 @@ define([
 				// Dequeue an enqueued task
 				currentTask = taskQueue.shift();
 				currentTaskStartTime = utils.currentTime;
-				extensionMgr.onAsyncRunning(true);
+				if(asyncRunning === false) {
+					asyncRunning = true;
+					extensionMgr.onAsyncRunning(true);					
+				}
 			}
 
 			// Run the task
@@ -155,13 +159,15 @@ define([
 			_.each(callbacks, function(callback) {
 				callback(param);
 			});
-		} finally {
+		}
+		finally {
 			task.finished = true;
 			if (currentTask === task) {
 				currentTask = undefined;
 				currentTaskRunning = false;
 			}
 			if (taskQueue.length === 0) {
+				asyncRunning = false;
 				extensionMgr.onAsyncRunning(false);
 			} else {
 				asyncRunner.runTask();

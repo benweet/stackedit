@@ -3,9 +3,9 @@ define( [
     "underscore",
     "utils",
     "settings",
+    "extensions/button-sync",
     "extensions/button-publish",
     "extensions/button-share",
-    "extensions/button-sync",
     "extensions/document-selector",
     "extensions/document-title",
     "extensions/manage-publication",
@@ -42,7 +42,7 @@ define( [
 	function createHook(hookName) {
 		var callbackList = getExtensionCallbackList(hookName);
 		return function() {
-			console.debug(hookName);
+			logger.debug(hookName, arguments);
 			var callbackArguments = arguments;
 			_.each(callbackList, function(callback) {
 				callback.apply(null, callbackArguments);
@@ -64,7 +64,7 @@ define( [
 	
 	// Load/Save extension config from/to settings
 	extensionMgr["onLoadSettings"] = function() {
-		console.debug("onLoadSettings");
+		logger.debug("onLoadSettings");
 		_.each(extensionList, function(extension) {
 			utils.setInputChecked("#input-enable-extension-" + extension.extensionId, extension.config.enabled);
 			var onLoadSettingsCallback = extension.onLoadSettings;
@@ -72,7 +72,7 @@ define( [
 		});
 	};
 	extensionMgr["onSaveSettings"] = function(newExtensionSettings, event) {
-		console.debug("onSaveSettings");
+		logger.debug("onSaveSettings");
 		_.each(extensionList, function(extension) {
 			var newExtensionConfig = extension.defaultConfig || {};
 			newExtensionConfig.enabled = utils.getInputChecked("#input-enable-extension-" + extension.extensionId);
@@ -88,17 +88,16 @@ define( [
 	addHook("onOfflineChanged");
 	addHook("onAsyncRunning");
 	
-	// To store reference to modules that are accessible from extensions
+	// To access modules that are loaded after extensions
 	addHook("onFileMgrCreated");
 	addHook("onSynchronizerCreated");
 	addHook("onPublisherCreated");
 	
 	// Operations on files
-	addHook("onFileSystemCreated");
 	addHook("onFileCreated");
 	addHook("onFileDeleted");
-	addHook("onFileChanged");
 	addHook("onFileSelected");
+	addHook("onContentChanged");
 	addHook("onTitleChanged");
 	
 	// Sync events
@@ -124,7 +123,7 @@ define( [
 	var onPreviewFinished = createHook("onPreviewFinished");
 	var onAsyncPreviewCallbackList = getExtensionCallbackList("onAsyncPreview"); 
 	extensionMgr["onAsyncPreview"] = function() {
-		console.debug("onAsyncPreview");
+		logger.debug("onAsyncPreview");
 		// Call onPreviewFinished callbacks when all async preview are finished
 		var counter = 0;
 		function tryFinished() {
@@ -172,6 +171,14 @@ define( [
 		).sortBy(function(extension) {
 			return extension.extensionName.toLowerCase();
 		}).each(createSettings);
+		
+		// Create extension buttons
+		logger.debug("onCreateButton");
+		var onCreateButtonCallbackList = getExtensionCallbackList("onCreateButton");
+		_.each(onCreateButtonCallbackList, function(callback) {
+			$("#extension-buttons").append($('<div class="btn-group">').append(callback()));
+		});
+
 	});
 	
 	return extensionMgr;

@@ -261,8 +261,8 @@ define([
 				};
 			};
 		}
-		extensionMgr.onEditorConfigure(editor);
 		editor.hooks.chain("onPreviewRefresh", extensionMgr.onAsyncPreview);
+		extensionMgr.onEditorConfigure(editor);
 		
 		$("#wmd-input, #wmd-preview").scrollTop(0);
 		$("#wmd-button-bar").empty();

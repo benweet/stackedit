@@ -37,11 +37,11 @@ define([
 			$(".msg-no-publish").removeClass("hide");
 		}
 		_.each(publishAttributesList, function(publishAttributes) {
-			publishAttributes = _.extend({}, publishAttributes);
-			if(publishAttributes.password) {
-				publishAttributes.password = "********";
+			formattedAttributes = _.omit(publishAttributes, "provider", "publishIndex", "sharingLink");
+			if(formattedAttributes.password) {
+				formattedAttributes.password = "********";
 			}
-			var publishDesc = JSON.stringify(publishAttributes).replace(/{|}|"/g, "");
+			var publishDesc = JSON.stringify(formattedAttributes).replace(/{|}|"/g, "").replace(/,/g, ", ");
 			var lineElement = $(_.template(lineTemplate, {
 				provider: publishAttributes.provider,
 				publishDesc: publishDesc

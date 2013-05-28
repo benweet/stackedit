@@ -10,6 +10,26 @@ define([
 		settingsBloc: '<p>Adds a "Share document" button in the navigation bar.</p>'
 	};
 	
+	buttonShare.onCreateButton = function() {
+		return $([
+			'<button class="btn dropdown-toggle" data-toggle="dropdown" title="Share this document">',
+				'<i class="icon-link"></i>',
+			'</button>',
+			'<div id="link-container" class="dropdown-menu pull-right">',
+				'<div class="link-list"></div>',
+				'<p class="no-link">To share this document you need first to <a',
+					'href="#" class="action-publish-gist">publish it as a Gist</a> in',
+					'Markdown format.',
+				'</p>',
+				'<blockquote class="muted">',
+					'<b>NOTE:</b> You can open any URL within StackEdit using <a',
+						'href="viewer.html?url=https://raw.github.com/benweet/stackedit/master/README.md"',
+						'title="Sharing example">viewer.html?url=...</a>',
+				'</blockquote>',
+			'</div>'].join("")
+		);
+	};
+	
 	var fileDesc = undefined;
 	var lineTemplate = [
         '<div class="input-prepend">',

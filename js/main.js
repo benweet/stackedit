@@ -23,6 +23,20 @@ requirejs.config({
     }
 });
 
+// Defines the logger object
+var logger = {
+	debug: function() {},
+	log: function() {},
+	info: function() {},
+	warn: function() {},
+	error: function() {}
+};
+// Use http://.../?console to print logs in the console 
+if (location.search.indexOf("console") !== -1) {
+	logger = console;
+}
+
+// RequireJS entry point. By requiring synchronizer and publisher, we are actually loading all the modules
 require([
 	"jquery",
 	"core",
@@ -31,6 +45,7 @@ require([
 ], function($, core) {
 	
 	$(function() {
+		
 		// If browser has detected a new application cache.
 	    if (window.applicationCache) {
 	    	window.applicationCache.addEventListener('updateready', function(e) {
@@ -41,6 +56,7 @@ require([
 	    	}, false);
 	    }
 	    
+	    // Here, all the modules are loaded and the DOM is ready
 	    core.setReady();
 	});
 	

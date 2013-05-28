@@ -1,17 +1,13 @@
 define([
     "jquery",
-    "underscore"
-], function($, _) {
+    "underscore",
+    "file-system"
+], function($, _, fileSystem) {
 	
 	var documentSelector = {
 		extensionId: "documentSelector",
 		extensionName: "Document selector",
 		settingsBloc: '<p>Builds the "Open document" dropdown menu.</p>'
-	};
-	
-	var fileSystem = undefined;
-	documentSelector.onFileSystemCreated = function(fileSystemParameter) {
-		fileSystem = fileSystemParameter;
 	};
 	
 	var fileMgr = undefined;

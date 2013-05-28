@@ -39,6 +39,7 @@ define([
 		syncAttributes.version = versionTag;
 		syncAttributes.contentCRC = utils.crc32(content);
 		syncAttributes.syncIndex = createSyncIndex(path);
+		utils.storeAttributes(syncAttributes);
 		return syncAttributes;
 	}
 	
@@ -54,7 +55,6 @@ define([
 				var fileDescList = [];
 				_.each(result, function(file) {
 					var syncAttributes = createSyncAttributes(file.path, file.versionTag, file.content);
-					localStorage[syncAttributes.syncIndex] = utils.serializeAttributes(syncAttributes);
 					var syncLocations = {};
 					syncLocations[syncAttributes.syncIndex] = syncAttributes;
 					var fileDesc = fileMgr.createFile(file.name, file.content, syncLocations);
@@ -106,7 +106,6 @@ define([
 				return;
 			}
 			var syncAttributes = createSyncAttributes(result.path, result.versionTag, content);
-			localStorage[syncAttributes.syncIndex] = utils.serializeAttributes(syncAttributes);
 			callback(undefined, syncAttributes);
 		});
 	}
@@ -185,7 +184,7 @@ define([
 						fileMgr.removeSync(syncAttributes);
 						return;
 					}
-					var localContent = localStorage[fileDesc.fileIndex + ".content"];
+					var localContent = fileDesc.getContent();
 					var localContentChanged = syncAttributes.contentCRC != utils.crc32(localContent);
 					var file = change.stat;
                     var remoteContentCRC = utils.crc32(file.content);
@@ -193,13 +192,12 @@ define([
 					var fileContentChanged = localContent != file.content;
 					// Conflict detection
 					if (fileContentChanged === true && localContentChanged === true && remoteContentChanged === true) {
-						var backupFileDesc = fileMgr.createFile(localTitle + " (backup)", localContent);
-						extensionMgr.onTitleChanged(backupFileDesc);
+						fileMgr.createFile(localTitle + " (backup)", localContent);
 						extensionMgr.onMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
 					}
 					// If file content changed
 					if(fileContentChanged && remoteContentChanged === true) {
-						localStorage[fileDesc.fileIndex + ".content"] = file.content;
+						fileDesc.setContent(file.content);
 						extensionMgr.onMessage('"' + localTitle + '" has been updated from Dropbox.');
 						if(fileMgr.isCurrentFile(fileDesc)) {
 							fileMgr.selectFile(); // Refresh editor
@@ -208,7 +206,7 @@ define([
 					// Update syncAttributes
 					syncAttributes.version = file.versionTag;
 					syncAttributes.contentCRC = remoteContentCRC;
-					localStorage[syncIndex] = utils.serializeAttributes(syncAttributes);
+					utils.storeAttributes(syncAttributes);
 				});
 				localStorage[PROVIDER_DROPBOX + ".lastChangeId"] = newChangeId;
 				callback();

@@ -28,6 +28,7 @@ define([
 		syncAttributes.contentCRC = utils.crc32(content);
 		syncAttributes.titleCRC = utils.crc32(title);
 		syncAttributes.syncIndex = createSyncIndex(id);
+		utils.storeAttributes(syncAttributes);
 		return syncAttributes;
 	}
 	
@@ -43,7 +44,6 @@ define([
 				var fileDescList = [];
 				_.each(result, function(file) {
 					var syncAttributes = createSyncAttributes(file.id, file.etag, file.content, file.title);
-					localStorage[syncAttributes.syncIndex] = utils.serializeAttributes(syncAttributes);
 					var syncLocations = {};
 					syncLocations[syncAttributes.syncIndex] = syncAttributes;
 					var fileDesc = fileMgr.createFile(file.title, file.content, syncLocations);
@@ -82,7 +82,6 @@ define([
 				return;
 			}
 			var syncAttributes = createSyncAttributes(result.id, result.etag, content, title);
-			localStorage[syncAttributes.syncIndex] = utils.serializeAttributes(syncAttributes);
 			callback(undefined, syncAttributes);
 		});
 	};
@@ -92,7 +91,7 @@ define([
 		if(!id) {
 			return;
 		}
-		// Check that file is not synchronized with an other one
+		// Check that file is not synchronized with another an existing document
 		var syncIndex = createSyncIndex(id);
 		var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
 		if(fileDesc !== undefined) {
@@ -106,7 +105,6 @@ define([
 				return;
 			}
 			var syncAttributes = createSyncAttributes(result.id, result.etag, content, title);
-			localStorage[syncAttributes.syncIndex] = utils.serializeAttributes(syncAttributes);
 			callback(undefined, syncAttributes);
 		});
 	};
@@ -178,7 +176,7 @@ define([
 						return;
 					}
 					var localTitleChanged = syncAttributes.titleCRC != utils.crc32(localTitle);
-					var localContent = localStorage[fileDesc.fileIndex + ".content"];
+					var localContent = fileDesc.getContent();
 					var localContentChanged = syncAttributes.contentCRC != utils.crc32(localContent);
 					var file = change.file;
                     var remoteTitleCRC = utils.crc32(file.title);
@@ -190,20 +188,17 @@ define([
 					// Conflict detection
 					if ((fileTitleChanged === true && localTitleChanged === true && remoteTitleChanged === true)
 						|| (fileContentChanged === true && localContentChanged === true && remoteContentChanged === true)) {
-						var backupFileDesc = fileMgr.createFile(localTitle + " (backup)", localContent);
-						extensionMgr.onTitleChanged(backupFileDesc);
+						fileMgr.createFile(localTitle + " (backup)", localContent);
 						extensionMgr.onMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
 					}
 					// If file title changed
 					if(fileTitleChanged && remoteTitleChanged === true) {
-						localStorage[fileDesc.fileIndex + ".title"] = file.title;
-						fileDesc.title = file.title;
-						extensionMgr.onTitleChanged(fileDesc);
+						fileDesc.setTitle(file.title);
 						extensionMgr.onMessage('"' + localTitle + '" has been renamed to "' + file.title + '" on Google Drive.');
 					}
 					// If file content changed
 					if(fileContentChanged && remoteContentChanged === true) {
-						localStorage[fileDesc.fileIndex + ".content"] = file.content;
+						fileDesc.setContent(file.content);
 						extensionMgr.onMessage('"' + file.title + '" has been updated from Google Drive.');
 						if(fileMgr.isCurrentFile(fileDesc)) {
 							fileMgr.selectFile(); // Refresh editor
@@ -213,7 +208,7 @@ define([
 					syncAttributes.etag = file.etag;
 					syncAttributes.contentCRC = remoteContentCRC;
 					syncAttributes.titleCRC = remoteTitleCRC;
-					localStorage[syncIndex] = utils.serializeAttributes(syncAttributes);
+					utils.storeAttributes(syncAttributes);
 				});
 				localStorage[PROVIDER_GDRIVE + ".lastChangeId"] = newChangeId;
 				callback();
@@ -263,7 +258,6 @@ define([
 					return;
 				}
 				var syncAttributes = createSyncAttributes(file.id, file.etag, file.content, file.title);
-				localStorage[syncAttributes.syncIndex] = utils.serializeAttributes(syncAttributes);
 				var syncLocations = {};
 				syncLocations[syncAttributes.syncIndex] = syncAttributes;
 				var fileDesc = fileMgr.createFile(file.title, file.content, syncAttributes);

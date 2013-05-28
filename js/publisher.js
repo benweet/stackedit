@@ -132,7 +132,7 @@ define([
 			publishIndex = "publish." + utils.randomString();
 		} while(_.has(localStorage, publishIndex));
 		publishAttributes.publishIndex = publishIndex;
-		localStorage[publishIndex] = utils.serializeAttributes(publishAttributes);
+		utils.storeAttributes(publishAttributes);
 		fileMgr.addPublish(fileDesc, publishAttributes);
 	}
 	
@@ -230,12 +230,6 @@ define([
 		
 		$(".action-process-publish").click(performNewLocation);
 		
-		$(".action-force-publish").click(function() {
-			if(!$(this).hasClass("disabled")) {
-				publisher.publish();
-			}
-		});
-
 		// Save As menu items
 		$(".action-download-md").click(function() {
 			var content = $("#wmd-input").val();

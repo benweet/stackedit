@@ -298,13 +298,14 @@ define([
 	utils.updateCurrentTime();
 	
 	
-	// Serialize sync/publish attributes
-	utils.serializeAttributes = function(attributes) {
+	// Serialize sync/publish attributes and store it in the fileStorage
+	utils.storeAttributes = function(attributes) {
+		var storeIndex = attributes.syncIndex || attributes.publishIndex;
 		// Don't store sync/publish index
 		attributes = _.omit(attributes, "syncIndex", "publishIndex");
 		// Store providerId instead of provider
 		attributes.provider = attributes.provider.providerId;
-		return JSON.stringify(attributes);
+		localStorage[storeIndex] = JSON.stringify(attributes);
 	};
 
 	return utils;

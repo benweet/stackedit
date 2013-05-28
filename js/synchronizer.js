@@ -73,7 +73,7 @@ define([
 				}
 				if(uploadFlag) {
 					// Update syncAttributes in localStorage
-					localStorage[syncAttributes.syncIndex] = utils.serializeAttributes(syncAttributes);
+					utils.storeAttributes(syncAttributes);
 				}
 				locationUp(callback);
 			}
@@ -90,7 +90,7 @@ define([
 			return;
 		}
 		
-		// Dequeue a fileDesc
+		// Dequeue a fileDesc to synchronize
 		var fileDesc = uploadFileList.pop();
 		uploadSyncAttributesList = _.values(fileDesc.syncLocations);
 		if(uploadSyncAttributesList.length === 0) {
@@ -99,7 +99,7 @@ define([
 		}
 
 		// Get document title/content 
-		uploadContent = localStorage[fileDesc.fileIndex + ".content"];
+		uploadContent = fileDesc.getContent();
 		uploadContentCRC = utils.crc32(uploadContent);
 		uploadTitle = fileDesc.title;
 		uploadTitleCRC = utils.crc32(uploadTitle);
@@ -226,9 +226,7 @@ define([
 
 				// Perform the provider's export
 				var fileDesc = fileMgr.getCurrentFile();
-				var title = fileDesc.title;
-				var content = localStorage[fileDesc.fileIndex + ".content"];
-				provider.exportFile(event, title, content, function(error, syncAttributes) {
+				provider.exportFile(event, fileDesc.title, fileDesc.getContent(), function(error, syncAttributes) {
 					if(error) {
 						return;
 					}
@@ -245,21 +243,13 @@ define([
 			// Provider's manual export button
 			$(".action-sync-manual-" + provider.providerId).click(function(event) {
 				var fileDesc = fileMgr.getCurrentFile();
-				var title = fileDesc.title;
-				var content = localStorage[fileDesc.fileIndex + ".content"];
-				provider.exportManual(event, title, content, function(error, syncAttributes) {
+				provider.exportManual(event, fileDesc.title, fileDesc.getContent(), function(error, syncAttributes) {
 					if(error) {
 						return;
 					}
 					fileMgr.addSync(fileDesc, syncAttributes);
 				});
 			});
-		});
-		
-		$(".action-force-sync").click(function() {
-			if(!$(this).hasClass("disabled")) {
-				synchronizer.forceSync();
-			}
 		});
 	});
 

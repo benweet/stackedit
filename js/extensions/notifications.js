@@ -58,12 +58,12 @@ define([
 	}
 	
 	notifications.onMessage = function(message) {
-		console.log(message);
+		logger.log(message);
 		showMessage(message);
 	};
 	
 	notifications.onError = function(error) {
-		console.error(error);
+		logger.error(error);
 		if(_.isString(error)) {
 			showMessage(error, "icon-warning-sign");
 		}

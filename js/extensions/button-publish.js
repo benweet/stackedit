@@ -9,18 +9,40 @@ define([
 		settingsBloc: '<p>Adds a "Publish document" button in the navigation bar.</p>'
 	};
 	
+	var button = undefined;
 	var currentFileDesc = undefined;
 	var publishRunning = false;
 	var hasPublications = false;
 	var isOffline = false;
 	// Enable/disable the button
 	function updateButtonState() {
+		if(button === undefined) {
+			return;
+		}
 		if(publishRunning === true || hasPublications === false || isOffline === true) {
-			$(".action-force-publish").addClass("disabled");
+			button.addClass("disabled");
 		}
 		else {
-			$(".action-force-publish").removeClass("disabled");
+			button.removeClass("disabled");
 		}
+	};
+	
+	var publisher = undefined;
+	buttonPublish.onPublisherCreated = function(publisherParameter) {
+		publisher = publisherParameter;
+	};
+	
+	buttonPublish.onCreateButton = function() {
+		button = $([
+			'<button class="btn" title="Publish this document">',
+				'<i class="icon-share"></i>',
+			'</button>'].join("")
+		).click(function() {
+			if(!$(this).hasClass("disabled")) {
+				publisher.publish();
+			}
+		});
+		return button;
 	};
 	
 	buttonPublish.onPublishRunning = function(isRunning) {

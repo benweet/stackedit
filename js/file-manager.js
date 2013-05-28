@@ -10,14 +10,36 @@ define([
 ], function($, _, core, utils, settings, extensionMgr, fileSystem, welcomeContent) {
 	
 	var fileMgr = {};
+	
+	// Defines a file descriptor in the file system (fileDesc objects)
+	function FileDescriptor(fileIndex, title, syncLocations, publishLocations) {
+		this.fileIndex = fileIndex;
+		this.title = title;
+		this.syncLocations = syncLocations || {};
+		this.publishLocations = publishLocations || {};
+	}
+	FileDescriptor.prototype.getContent = function() {
+		return localStorage[this.fileIndex + ".content"];
+	};
+	FileDescriptor.prototype.setContent = function(content) {
+		localStorage[this.fileIndex + ".content"] = content;
+		extensionMgr.onContentChanged(this);
+	};
+	FileDescriptor.prototype.setTitle = function(title) {
+		this.title = title;
+		localStorage[this.fileIndex + ".title"] = title;
+		extensionMgr.onTitleChanged(this);
+	};
 
+	// Load file descriptors from localStorage
+	_.chain(
+		localStorage["file.list"].split(";")
+	).compact().each(function(fileIndex) {
+		fileSystem[fileIndex] = new FileDescriptor(fileIndex, localStorage[fileIndex + ".title"]);
+	});
+	
 	// Defines the current file
-	var currentFile = (function() {
-		var fileIndex = localStorage["file.current"];
-		if(fileIndex !== undefined) {
-			return fileSystem[fileIndex];
-		}
-	})();
+	var currentFile = undefined;
 	fileMgr.getCurrentFile = function() {
 		return currentFile;
 	};
@@ -34,7 +56,7 @@ define([
 		}
 	};
 	
-	// Caution: this function recreate the editor (reset undo operations)
+	// Caution: this function recreates the editor (reset undo operations)
 	fileMgr.selectFile = function(fileDesc) {
 		fileDesc = fileDesc || fileMgr.getCurrentFile();
 		
@@ -44,26 +66,33 @@ define([
 			if (fileSystemSize === 0) {
 				fileDesc = fileMgr.createFile(WELCOME_DOCUMENT_TITLE, welcomeContent);
 			}			
-			// If no file is selected take the last created
 			else {
-				fileDesc = fileSystem[_.keys(fileSystem)[fileSystemSize - 1]];
+				var fileIndex = localStorage["file.current"];
+				// If no file is selected take the last created
+				if(fileIndex === undefined) {
+					fileIndex = _.keys(fileSystem)[fileSystemSize - 1];
+				}
+				fileDesc = fileSystem[fileIndex];
 			}
 		}
-		fileMgr.setCurrentFile(fileDesc);
-
-		// Notify extensions
-		extensionMgr.onFileSelected(fileDesc);
 		
-		// Hide the viewer pencil button
-		if(fileDesc.fileIndex == TEMPORARY_FILE_INDEX) {
-			$(".action-edit-document").removeClass("hide");
-		}
-		else {
-			$(".action-edit-document").addClass("hide");
+		if(fileMgr.isCurrentFile(fileDesc) === false) {
+			fileMgr.setCurrentFile(fileDesc);
+			
+			// Notify extensions
+			extensionMgr.onFileSelected(fileDesc);			
+
+			// Hide the viewer pencil button
+			if(fileDesc.fileIndex == TEMPORARY_FILE_INDEX) {
+				$(".action-edit-document").removeClass("hide");
+			}
+			else {
+				$(".action-edit-document").addClass("hide");
+			}
 		}
 		
 		// Recreate the editor
-		$("#wmd-input").val(localStorage[fileDesc.fileIndex + ".content"]);
+		$("#wmd-input").val(fileDesc.getContent());
 		core.createEditor(function() {
 			// Callback to save content when textarea changes
 			fileMgr.saveFile();
@@ -72,7 +101,6 @@ define([
 	
 	fileMgr.createFile = function(title, content, syncLocations, isTemporary) {
 		content = content !== undefined ? content : settings.defaultContent;
-		syncLocations = syncLocations || {};
 		if (!title) {
 			// Create a file title 
 			title = DEFAULT_FILE_TITLE;
@@ -92,24 +120,19 @@ define([
 			} while(_.has(fileSystem, fileIndex));
 		}
 		
-		// Create the file in the localStorage
-		localStorage[fileIndex + ".content"] = content;
-		localStorage[fileIndex + ".title"] = title;
-		// Store syncIndexes associated to the file
+		// syncIndex associations
+		syncLocations = syncLocations || {};
 		var sync = _.reduce(syncLocations, function(sync, syncAttributes, syncIndex) {
 			return sync + syncIndex + ";";
 		}, ";");
+		
+		localStorage[fileIndex + ".title"] = title;
+		localStorage[fileIndex + ".content"] = content;
 		localStorage[fileIndex + ".sync"] = sync;
-		// Store publishIndexes associated to the file
 		localStorage[fileIndex + ".publish"] = ";";
 		
 		// Create the file descriptor
-		var fileDesc = {
-			fileIndex : fileIndex,
-			title : title,
-			syncLocations: syncLocations,
-			publishLocations: {}
-		};
+		var fileDesc = new FileDescriptor(fileIndex, title, syncLocations);
 		
 		// Add the index to the file list
 		if(!isTemporary) {
@@ -122,9 +145,11 @@ define([
 
 	fileMgr.deleteFile = function(fileDesc) {
 		fileDesc = fileDesc || fileMgr.getCurrentFile();
-		if(fileMgr.isCurrentFile(fileDesc)) {
+		if(fileMgr.isCurrentFile(fileDesc) === true) {
 			// Unset the current fileDesc
 			fileMgr.setCurrentFile();
+			// Refresh the editor with an other file
+			fileMgr.selectFile();
 		}
 
 		// Remove synchronized locations
@@ -141,10 +166,12 @@ define([
 		var fileIndex = fileDesc.fileIndex;
 		localStorage["file.list"] = localStorage["file.list"].replace(";"
 			+ fileIndex + ";", ";");
+		
 		localStorage.removeItem(fileIndex + ".title");
 		localStorage.removeItem(fileIndex + ".content");
 		localStorage.removeItem(fileIndex + ".sync");
 		localStorage.removeItem(fileIndex + ".publish");
+		
 		fileSystem.removeItem(fileIndex);
 		extensionMgr.onFileDeleted(fileDesc);
 	};
@@ -153,8 +180,7 @@ define([
 	fileMgr.saveFile = function() {
 		var content = $("#wmd-input").val();
 		var fileDesc = fileMgr.getCurrentFile();
-		localStorage[fileDesc.fileIndex + ".content"] = content;
-		extensionMgr.onFileChanged(fileDesc);
+		fileDesc.setContent(content);
 	};
 
 	// Add a synchronized location to a file
@@ -211,7 +237,7 @@ define([
 	
 	// Remove a publishIndex (publish location)
 	fileMgr.removePublish = function(publishAttributes, skipExtensions) {
-		var fileDesc = fileMgr.getFileFromPublish(publishAttributes.publishIndex);
+		var fileDesc = fileMgr.getFileFromPublishIndex(publishAttributes.publishIndex);
 		if(fileDesc !== undefined) {
 			localStorage[fileDesc.fileIndex + ".publish"] = localStorage[fileDesc.fileIndex + ".publish"].replace(";"
 				+ publishAttributes.publishIndex + ";", ";");
@@ -225,7 +251,7 @@ define([
 	};
 	
 	// Get the file descriptor associated to a publishIndex
-	fileMgr.getFileFromPublish = function(publishIndex) {
+	fileMgr.getFileFromPublishIndex = function(publishIndex) {
 		return _.find(fileSystem, function(fileDesc) {
 			return _.has(fileDesc.publishLocations, publishIndex);
 		});
@@ -263,7 +289,6 @@ define([
 		});
 		$(".action-remove-file").click(function() {
 			fileMgr.deleteFile();
-			fileMgr.selectFile();
 		});
 		$("#file-title").click(function() {
 			if(viewerMode === true) {
@@ -280,15 +305,10 @@ define([
 			$("#file-title").show();
 			var title = $.trim(input.val());
 			var fileDesc = fileMgr.getCurrentFile();
-			var fileIndexTitle = fileDesc.fileIndex + ".title";
-			if (title) {
-				if (title != localStorage[fileIndexTitle]) {
-					localStorage[fileIndexTitle] = title;
-					fileDesc.title = title;
-					extensionMgr.onTitleChanged(fileDesc);
-				}
+			if (title && title != fileDesc.title) {
+				fileDesc.setTitle(title);
 			}
-			input.val(localStorage[fileIndexTitle]);
+			input.val(fileDesc.title);
 			$("#wmd-input").focus();
 		}
 		$("#file-title-input").blur(function() {

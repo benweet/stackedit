@@ -6,6 +6,7 @@ define( [
     "extensions/button-sync",
     "extensions/button-publish",
     "extensions/button-share",
+    "extensions/button-stat",
     "extensions/document-selector",
     "extensions/document-title",
     "extensions/manage-publication",

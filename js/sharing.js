@@ -45,7 +45,7 @@ define([
     };
 
     sharing.createLink = function(attributes, callback) {
-        var provider = providerMap[attributes.provider];
+        var provider = providerMap[attributes.provider.providerId];
         // Don't create link if link already exists or provider is not
         // compatible for sharing
         if(attributes.sharingLink !== undefined || provider === undefined
@@ -64,7 +64,7 @@ define([
             var url = [
                 MAIN_URL,
                 'viewer.html?provider=',
-                attributes.provider
+                provider.providerId
             ];
             _.each(provider.sharingAttributes, function(attributeName) {
                 url.push('&');

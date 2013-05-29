@@ -61,7 +61,9 @@ define([
                     fileMgr.selectFile(fileDesc);
                     fileDescList.push(fileDesc);
                 });
-                extensionMgr.onSyncImportSuccess(fileDescList, dropboxProvider);
+                if(fileDescList.length !== 0) {
+                    extensionMgr.onSyncImportSuccess(fileDescList, dropboxProvider);
+                }
             });
         });
     }
@@ -76,7 +78,7 @@ define([
                 var syncIndex = createSyncIndex(path);
                 var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
                 if(fileDesc !== undefined) {
-                    extensionMgr.onError('"' + fileDesc.title + '" was already imported');
+                    extensionMgr.onError('"' + fileDesc.title + '" was already imported.');
                     return;
                 }
                 importPaths.push(path);
@@ -96,7 +98,7 @@ define([
         var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
         if(fileDesc !== undefined) {
             var existingTitle = fileDesc.title;
-            extensionMgr.onError('File path is already synchronized with "' + existingTitle + '"');
+            extensionMgr.onError('File path is already synchronized with "' + existingTitle + '".');
             callback(true);
             return;
         }

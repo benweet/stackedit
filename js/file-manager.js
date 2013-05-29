@@ -146,6 +146,11 @@ define([
 
     fileMgr.deleteFile = function(fileDesc) {
         fileDesc = fileDesc || fileMgr.getCurrentFile();
+
+        // Remove the index from the file list
+        localStorage["file.list"] = localStorage["file.list"].replace(";" + fileDesc.fileIndex + ";", ";");
+        delete fileSystem[fileDesc.fileIndex];
+        
         if(fileMgr.isCurrentFile(fileDesc) === true) {
             // Unset the current fileDesc
             fileMgr.setCurrentFile();
@@ -163,16 +168,11 @@ define([
             fileMgr.removePublish(publishAttributes, true);
         });
 
-        // Remove the index from the file list
-        var fileIndex = fileDesc.fileIndex;
-        localStorage["file.list"] = localStorage["file.list"].replace(";" + fileIndex + ";", ";");
+        localStorage.removeItem(fileDesc.fileIndex + ".title");
+        localStorage.removeItem(fileDesc.fileIndex + ".content");
+        localStorage.removeItem(fileDesc.fileIndex + ".sync");
+        localStorage.removeItem(fileDesc.fileIndex + ".publish");
 
-        localStorage.removeItem(fileIndex + ".title");
-        localStorage.removeItem(fileIndex + ".content");
-        localStorage.removeItem(fileIndex + ".sync");
-        localStorage.removeItem(fileIndex + ".publish");
-
-        fileSystem.removeItem(fileIndex);
         extensionMgr.onFileDeleted(fileDesc);
     };
 
@@ -198,7 +198,7 @@ define([
         }
         // Remove sync attributes
         localStorage.removeItem(syncAttributes.syncIndex);
-        fileDesc.syncLocations.removeItem(syncAttributes.syncIndex);
+        delete fileDesc.syncLocations[syncAttributes.syncIndex];
         if(!skipExtensions) {
             extensionMgr.onSyncRemoved(fileDesc, syncAttributes);
         }
@@ -241,7 +241,7 @@ define([
         }
         // Remove publish attributes
         localStorage.removeItem(publishAttributes.publishIndex);
-        fileDesc.publishLocations.removeItem(publishAttributes.publishIndex);
+        delete fileDesc.publishLocations[publishAttributes.publishIndex];
         if(!skipExtensions) {
             extensionMgr.onPublishRemoved(fileDesc, publishAttributes);
         }

@@ -7,7 +7,7 @@ input[disabled],
 select[disabled],
 textarea[disabled],
 .input-prepend .add-on {
-	background-color: #f1f2f7;
+	background-color: #f1f2f6;
 }
 
 .navbar-inner {
@@ -42,6 +42,11 @@ textarea[disabled],
 
 .navbar .nav > li > a {
 	color: #64656b;
+}
+
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus {
+    background-color: #8e929a;
+    border-color: #8e929a;
 }
 
 .dropdown-menu > li > a:hover,

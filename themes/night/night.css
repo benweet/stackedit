@@ -178,8 +178,8 @@ input[type="color"]:focus,
 
 .nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus {
 	color: #fff;
-    background-color: #222;
-    border-color: #222;
+    background-color: #333;
+    border-color: #333;
     border-bottom-color: transparent;
 }
 
@@ -189,12 +189,12 @@ input[type="color"]:focus,
 
 .nav > li > a:hover,
 .nav > li > a:focus {
-    background-color: #333;
+    background-color: #222;
 }
 
 .nav-tabs > li > a:hover,
 .nav-tabs > li > a:focus {
-  border-color: #333 #333 #222;
+  border-color: #222 #222 #222;
 }
 
 .nav .dropdown-toggle .caret, .nav .dropdown-toggle:hover .caret, .nav .dropdown-toggle:focus .caret {

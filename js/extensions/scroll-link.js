@@ -94,15 +94,15 @@ define([
         });
 
         // apply Scroll Link
-        lastEditorScrollTop = -9;
+        lastEditorScrollTop = -10;
         skipScrollLink = false;
         isScrollPreview = false;
         runScrollLink();
     }, 500);
 
-    // -9 is less than -5
-    var lastEditorScrollTop = -9;
-    var lastPreviewScrollTop = -9;
+    // -10 to be sure the gap is > 9
+    var lastEditorScrollTop = -10;
+    var lastPreviewScrollTop = -10;
     var skipScrollLink = false;
     var isScrollPreview = false;
     var runScrollLink = _.debounce(function() {
@@ -122,7 +122,7 @@ define([
             });
             if(srcSection === undefined) {
                 // Something wrong in the algorithm...
-                return -9;
+                return -10;
             }
             var posInSection = (srcScrollTop - srcSection.startOffset) / srcSection.height;
             var destSection = destSectionList[sectionIndex];
@@ -131,7 +131,7 @@ define([
                 destScrollTop,
                 destElt.prop('scrollHeight') - destElt.outerHeight()
             ]);
-            if(Math.abs(destScrollTop - lastDestScrollTop) < 5) {
+            if(Math.abs(destScrollTop - lastDestScrollTop) < 9) {
                 // Skip the animation in case it's not necessary
                 return;
             }
@@ -141,15 +141,15 @@ define([
                 callback(destScrollTop);
             });
         }
-        // Perform the animation if diff > 5px
-        if(isScrollPreview === false && Math.abs(editorScrollTop - lastEditorScrollTop) > 5) {
+        // Perform the animation if diff > 9px
+        if(isScrollPreview === false && Math.abs(editorScrollTop - lastEditorScrollTop) > 9) {
             // Animate the preview
             lastEditorScrollTop = editorScrollTop;
             animate(editorScrollTop, mdSectionList, previewElt, htmlSectionList, lastPreviewScrollTop, function(destScrollTop) {
                 lastPreviewScrollTop = destScrollTop;
             });
         }
-        else if(Math.abs(previewScrollTop - lastPreviewScrollTop) > 5) {
+        else if(Math.abs(previewScrollTop - lastPreviewScrollTop) > 9) {
             // Animate the editor
             lastPreviewScrollTop = previewScrollTop;
             animate(previewScrollTop, htmlSectionList, editorElt, mdSectionList, lastEditorScrollTop, function(destScrollTop) {
@@ -188,11 +188,11 @@ define([
         }
         _.defer(function() {
             // Modify scroll position of the preview not the editor
-            lastEditorScrollTop = -9;
+            lastEditorScrollTop = -10;
             buildSections();
             // Preview may change if images are loading
             $("#wmd-preview img").load(function() {
-                lastEditorScrollTop = -9;
+                lastEditorScrollTop = -10;
                 buildSections();
             });
         });

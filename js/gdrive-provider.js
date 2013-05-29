@@ -52,7 +52,9 @@ define([
                     fileMgr.selectFile(fileDesc);
                     fileDescList.push(fileDesc);
                 });
-                extensionMgr.onSyncImportSuccess(fileDescList, gdriveProvider);
+                if(fileDescList.length !== 0) {
+                    extensionMgr.onSyncImportSuccess(fileDescList, gdriveProvider);
+                }
             });
         });
     }
@@ -68,7 +70,7 @@ define([
                 var syncIndex = createSyncIndex(id);
                 var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
                 if(fileDesc !== undefined) {
-                    extensionMgr.onError('"' + fileDesc.title + '" was already imported');
+                    extensionMgr.onError('"' + fileDesc.title + '" was already imported.');
                     return;
                 }
                 importIds.push(id);
@@ -98,7 +100,7 @@ define([
         var syncIndex = createSyncIndex(id);
         var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
         if(fileDesc !== undefined) {
-            extensionMgr.onError('File ID is already synchronized with "' + fileDesc.title + '"');
+            extensionMgr.onError('File ID is already synchronized with "' + fileDesc.title + '".');
             callback(true);
             return;
         }

@@ -178,7 +178,7 @@ define([
         var content = getPublishContent(publishAttributes);
         provider.publish(publishAttributes, title, content, function(error) {
             if(error === undefined) {
-                publishAttributes.provider = provider.providerId;
+                publishAttributes.provider = provider;
                 sharing.createLink(publishAttributes, function() {
                     createPublishIndex(fileDesc, publishAttributes);
                 });

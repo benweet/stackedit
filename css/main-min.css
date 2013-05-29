@@ -5500,6 +5500,27 @@ input[readonly], select[readonly], textarea[readonly] {
 .btn-group {
     margin-right: 10px;
 }
+#extension-buttons {
+	margin-right: 15px;
+}
+#extension-buttons > .btn-group {
+	margin: 5px 0 0;
+}
+#extension-buttons > .btn-group > .btn {
+  -webkit-border-radius: 0;
+     -moz-border-radius: 0;
+	      border-radius: 0;
+}
+#extension-buttons > .btn-group:first-child > .btn {
+  -webkit-border-radius: 4px 0 0 4px;
+     -moz-border-radius: 4px 0 0 4px;
+          border-radius: 4px 0 0 4px;
+}
+#extension-buttons > .btn-group:last-child > .btn {
+  -webkit-border-radius: 0 4px 4px 0;
+     -moz-border-radius: 0 4px 4px 0;
+          border-radius: 0 4px 4px 0;
+}
 .btn-group > .btn + .dropdown-toggle {
     padding-right: 12px;
     padding-left: 12px;
@@ -5602,17 +5623,20 @@ hr {
 }
 div.dropdown-menu {
     padding: 5px 20px;
-    white-space: normal;
 }
 div.dropdown-menu p,
 div.dropdown-menu blockquote {
     margin: 10px 0; 
+}
+div.dropdown-menu .stat {
+    margin-bottom: 10px; 
 }
 div.dropdown-menu i {
     margin-right: 0;
 }
 #link-container {
     min-width: 210px;
+    white-space: normal;
 }
 #link-container .link-list {
     margin-top: 10px;
@@ -5623,6 +5647,9 @@ div.dropdown-menu i {
 .icon-code {
     width: 15px;
     background-position: -384px -168px;
+}
+.icon-stat {
+    background-position: -1px -168px;
 }
 .icon-numbered-list {
     background-position: -408px -168px;
@@ -5687,7 +5714,7 @@ div.dropdown-menu i {
     width: 43px;
     height: 11px;
     background-position: 0 0;
-    margin: 14px 15px 0;
+    margin: 16px 16px 0;
 }
 .working-indicator.show {
     background-image: url(../img/ajax-loader.gif) !important;
@@ -5754,6 +5781,9 @@ div.dropdown-menu i {
 }
 #modal-settings .accordion-inner .form-horizontal .control-label {
     text-align: left;
+}
+#modal-settings .accordion-inner .form-inline .label-text {
+	margin: 0 10px;
 }
 .accordion-toggle {
 	cursor: help;

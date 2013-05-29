@@ -54,6 +54,11 @@ define([
             buildSelector();
         }
         $("#file-selector li:not(.stick)").removeClass("disabled");
+        var li = liMap[fileDesc.fileIndex];
+        if(li === undefined) {
+            // It means that we are showing a temporary file (not in the selector)
+            return;
+        }
         liMap[fileDesc.fileIndex].addClass("disabled");
     };
 

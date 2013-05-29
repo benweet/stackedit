@@ -32,7 +32,7 @@ var logger = {
 	error: function() {}
 };
 // Use http://.../?console to print logs in the console 
-if (location.search.indexOf("console") !== -1) {
+if (location.search.match(/(\?|&)console/)) {
 	logger = console;
 }
 

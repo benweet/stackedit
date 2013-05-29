@@ -9,7 +9,7 @@ define([
         extensionId: "notifications",
         extensionName: "Notifications",
         defaultConfig: {
-            timeout: 5000
+            timeout: 8000
         },
         settingsBloc: [
             '<p>Shows notification messages in the bottom-right corner of the screen.</p>',
@@ -41,24 +41,24 @@ define([
         jGrowl.defaults.position = 'bottom-right';
     };
 
-    function showMessage(msg, iconClass, options) {
-        if(!msg) {
+    function showMessage(message, iconClass, options) {
+        logger.log(message);
+        if(!message) {
             return;
         }
-        var endOfMsg = msg.indexOf("|");
+        var endOfMsg = message.indexOf("|");
         if(endOfMsg !== -1) {
-            msg = msg.substring(0, endOfMsg);
-            if(!msg) {
+            message = message.substring(0, endOfMsg);
+            if(!message) {
                 return;
             }
         }
         options = options || {};
         iconClass = iconClass || "icon-info-sign";
-        jGrowl("<i class='icon-white " + iconClass + "'></i> " + _.escape(msg), options);
+        jGrowl("<i class='icon-white " + iconClass + "'></i> " + _.escape(message), options);
     }
 
     notifications.onMessage = function(message) {
-        logger.log(message);
         showMessage(message);
     };
 
@@ -87,9 +87,6 @@ define([
     };
 
     notifications.onSyncImportSuccess = function(fileDescList, provider) {
-        if(!fileDescList) {
-            return;
-        }
         var titles = _.map(fileDescList, function(fileDesc) {
             return fileDesc.title;
         }).join(", ");
@@ -108,7 +105,7 @@ define([
         showMessage('"' + fileDesc.title + '" successfully published.');
     };
 
-    notifications.onNewPublishSuccess = function(fileDesc, publishIndex, publishAttributes) {
+    notifications.onNewPublishSuccess = function(fileDesc, publishAttributes) {
         showMessage('"' + fileDesc.title + '" is now published on ' + publishAttributes.provider.providerName + '.');
     };
 

@@ -4,7 +4,6 @@ define([
     "core",
     "utils",
     "extension-manager",
-    "file-system",
     "file-manager",
     "async-runner",
     "download-provider",

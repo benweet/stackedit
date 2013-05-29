@@ -11,9 +11,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="msvalidate.01" content="5E47EE6F67B069C17E3CDD418351A612" />
 <script>
-	// Use http://.../?debug to serve original CSS/JavaScript files for debugging instead of minified
+	// Use http://.../?debug to serve original CSS/JavaScript files instead of minified
 	var suffix = "";
-	if (location.search.indexOf("debug") === -1) {
+    if (!location.search.match(/(\?|&)debug/)) {
 	    suffix = "-min";
 	}
 	document.write('<link href="css/main' + suffix + '.css" rel="stylesheet">');

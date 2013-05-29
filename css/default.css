@@ -327,12 +327,15 @@ hr {
 
 div.dropdown-menu {
     padding: 5px 20px;
-    white-space: normal;
 }
 
 div.dropdown-menu p,
 div.dropdown-menu blockquote {
     margin: 10px 0; 
+}
+
+div.dropdown-menu .stat {
+    margin-bottom: 10px; 
 }
 
 div.dropdown-menu i {
@@ -341,6 +344,7 @@ div.dropdown-menu i {
 
 #link-container {
     min-width: 210px;
+    white-space: normal;
 }
 
 #link-container .link-list {
@@ -516,6 +520,10 @@ div.dropdown-menu i {
 
 #modal-settings .accordion-inner .form-horizontal .control-label {
     text-align: left;
+}
+
+#modal-settings .accordion-inner .form-inline .label-text {
+	margin: 0 10px;
 }
 
 .accordion-toggle {

@@ -1,8 +1,10 @@
 var MAIN_URL = "http://benweet.github.io/stackedit/";
 var GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw";
-var GOOGLE_SCOPES = [ "https://www.googleapis.com/auth/drive.install",
-	"https://www.googleapis.com/auth/drive",
-	"https://www.googleapis.com/auth/blogger" ];
+var GOOGLE_SCOPES = [
+    "https://www.googleapis.com/auth/drive.install",
+    "https://www.googleapis.com/auth/drive",
+    "https://www.googleapis.com/auth/blogger"
+];
 var GOOGLE_DRIVE_APP_ID = "241271498917";
 var DROPBOX_APP_KEY = "lq6mwopab8wskas";
 var DROPBOX_APP_SECRET = "851fgnucpezy84t";
@@ -14,7 +16,7 @@ var AJAX_TIMEOUT = 30000;
 var ASYNC_TASK_DEFAULT_TIMEOUT = 60000;
 var ASYNC_TASK_LONG_TIMEOUT = 120000;
 var SYNC_PERIOD = 180000;
-var USER_IDLE_THRESHOLD = 300000;	
+var USER_IDLE_THRESHOLD = 300000;
 var TEMPORARY_FILE_INDEX = "file.tempIndex";
 var WELCOME_DOCUMENT_TITLE = "Welcome document";
 var DOWNLOAD_PROXY_URL = "http://stackedit-download-proxy.herokuapp.com/";
@@ -25,9 +27,9 @@ var SSH_PROXY_URL = "http://stackedit-ssh-proxy.herokuapp.com/";
 // Use by Google's client.js
 var delayedFunction = undefined;
 function runDelayedFunction() {
-	if (delayedFunction !== undefined) {
-		delayedFunction();
-	}
+    if(delayedFunction !== undefined) {
+        delayedFunction();
+    }
 }
 
 // Site dependent
@@ -38,15 +40,15 @@ var GATEKEEPER_URL = "http://stackedit-gatekeeper-localhost.herokuapp.com/";
 var TUMBLR_PROXY_URL = "http://stackedit-tumblr-proxy-local.herokuapp.com/";
 
 if(location.hostname.indexOf("benweet.github.io") === 0) {
-	BASE_URL = MAIN_URL;
-	GOOGLE_CLIENT_ID = '241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com';
-	GITHUB_CLIENT_ID = 'fa0d09514da8377ee32e';
-	GATEKEEPER_URL = "http://stackedit-gatekeeper.herokuapp.com/";
-	TUMBLR_PROXY_URL = "http://stackedit-tumblr-proxy.herokuapp.com/";
+    BASE_URL = MAIN_URL;
+    GOOGLE_CLIENT_ID = '241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com';
+    GITHUB_CLIENT_ID = 'fa0d09514da8377ee32e';
+    GATEKEEPER_URL = "http://stackedit-gatekeeper.herokuapp.com/";
+    TUMBLR_PROXY_URL = "http://stackedit-tumblr-proxy.herokuapp.com/";
 }
 
 var THEME_LIST = {
-	"": "Default",
-	"blue-gray": "Blue-Gray",
-	"night": "Night"
+    "": "Default",
+    "blue-gray": "Blue-Gray",
+    "night": "Night"
 };

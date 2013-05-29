@@ -165,6 +165,13 @@ var foo = bar;
 Then you can create cross-references like this: [beginning of the document](#welcome).
 
 
+### Table of content
+
+You can insert a table of content using the marker `[TOC]`:
+
+[TOC]
+
+
 ### MathJax
  
 You can include **LaTex** expressions to render mathematical formulas using **MathJax**, as on [math.stackexchange.com][1]:

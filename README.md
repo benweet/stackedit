@@ -12,6 +12,7 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
  - Post your Markdown document on Blogger/Blogspot, WordPress, Tumblr
  - Publish your Markdown document on GitHub, Gist, Google Drive, Dropbox or any SSH server
  - Share a link to a Markdown document that renders it in a nice viewer
+ - Show some statistics about your document
 
 ### Features:
 
@@ -21,6 +22,7 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
  - WYSIWYG control buttons
  - Configurable layout
  - Theming support with multiple themes available
+ - A la carte extensions
  - Offline editing
  - Online synchronization using Google Drive and Dropbox
  - One click publish on Blogger, Dropbox, Gist, GitHub, Google Drive, SSH server, Tumblr, WordPress

@@ -2,10 +2,11 @@ define([
     "underscore",
     "core",
     "utils",
+    "settings",
     "extension-manager",
     "file-manager",
     "google-helper"
-], function(_, core, utils, extensionMgr, fileMgr, googleHelper) {
+], function(_, core, utils, settings, extensionMgr, fileMgr, googleHelper) {
 
     var PROVIDER_GDRIVE = "gdrive";
 
@@ -250,7 +251,7 @@ define([
         localStorage.removeItem(PROVIDER_GDRIVE + ".state");
         state = JSON.parse(state);
         if(state.action == "create") {
-            googleHelper.upload(undefined, state.folderId, GDRIVE_DEFAULT_FILE_TITLE, "", undefined, function(error, file) {
+            googleHelper.upload(undefined, state.folderId, GDRIVE_DEFAULT_FILE_TITLE, settings.defaultContent, undefined, function(error, file) {
                 if(error) {
                     return;
                 }

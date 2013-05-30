@@ -89,6 +89,7 @@ define([
     addHook("onFileMgrCreated");
     addHook("onSynchronizerCreated");
     addHook("onPublisherCreated");
+    addHook("onExtensionMgrCreated");
 
     // Operations on files
     addHook("onFileCreated");
@@ -177,5 +178,7 @@ define([
 
     });
 
+    // For extensions that need to call other extensions
+    extensionMgr.onExtensionMgrCreated(extensionMgr);
     return extensionMgr;
 });

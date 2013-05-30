@@ -76,6 +76,23 @@ define([
         }
         return value;
     };
+    
+    // Return input value and check that it's a valid RegExp
+    utils.getInputRegExpValue = function(element, event) {
+        element = jqElt(element);
+        var value = utils.getInputTextValue(element, event);
+        if(value === undefined) {
+            return undefined;
+        }
+        try {
+            new RegExp(value);
+        }
+        catch(e) {
+            inputError(element, event);
+            return undefined;
+        }
+        return value;
+    };
 
     // Return checkbox boolean value
     utils.getInputChecked = function(element) {

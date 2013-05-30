@@ -14,7 +14,7 @@ define([
             name2: "Characters",
             value2: "\\S",
             name3: "Paragraphs",
-            value3: ".+",
+            value3: "\\S.*",
         },
         settingsBloc: [
             '<p>Adds a "Document statistics" button in the navigation bar.</p>',
@@ -35,18 +35,29 @@ define([
             '   <input id="input-stat-name3" type="text" class="input-small">',
             '   <label class="label-text" for="input-stat-value3">RegExp</label>',
             '   <input id="input-stat-value3" type="text" class="span2">',
-            '</div></p>'].join("")
+            '</div></p>'
+        ].join("")
     };
 
     buttonStat.onLoadSettings = function() {
-        _.each(buttonStat.defaultConfig, function(value, key) {
-            utils.setInputValue("#input-stat-" + key, buttonStat.config[key]);
+        _.each([
+            1,
+            2,
+            3
+        ], function(index) {
+            utils.setInputValue("#input-stat-name" + index, buttonStat.config["name" + index]);
+            utils.setInputValue("#input-stat-value" + index, buttonStat.config["value" + index]);
         });
     };
 
     buttonStat.onSaveSettings = function(newConfig, event) {
-        _.each(buttonStat.defaultConfig, function(value, key) {
-            newConfig[key] = utils.getInputTextValue("#input-stat-" + key, event);
+        _.each([
+            1,
+            2,
+            3
+        ], function(index) {
+            newConfig["name" + index] = utils.getInputTextValue("#input-stat-name" + index, event);
+            newConfig["value" + index] = utils.getInputRegExpValue("#input-stat-value" + index, event);
         });
     };
 
@@ -67,10 +78,10 @@ define([
     };
 
     buttonStat.onPreviewFinished = function() {
-        var text = $("#wmd-preview").text();
-        $("#span-stat-value1").text(text.match(new RegExp(buttonStat.config.value1, "g")).length);
-        $("#span-stat-value2").text(text.match(new RegExp(buttonStat.config.value2, "g")).length);
-        $("#span-stat-value3").text(text.match(new RegExp(buttonStat.config.value3, "g")).length);
+        var text = $("#wmd-preview").clone().find("script").remove().end().text();
+        $("#span-stat-value1").text((text.match(new RegExp(buttonStat.config.value1, "g")) || []).length);
+        $("#span-stat-value2").text((text.match(new RegExp(buttonStat.config.value2, "g")) || []).length);
+        $("#span-stat-value3").text((text.match(new RegExp(buttonStat.config.value3, "g")) || []).length);
     };
 
     return buttonStat;

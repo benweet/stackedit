@@ -510,18 +510,18 @@
 			<button type="button" class="close" data-dismiss="modal"
 				aria-hidden="true">&times;</button>
 			<h3>Settings</h3>
+            <ul class="nav nav-tabs">
+                <li class="active"><a class="action-load-settings"
+                    href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>
+                <li><a class="action-load-settings"
+                    href="#tabpane-settings-publish" data-toggle="tab">Publish</a></li>
+                <li><a class="action-load-settings"
+                    href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>
+                <li><a class="action-load-settings"
+                    href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>
+            </ul>
 		</div>
 		<div class="modal-body">
-			<ul class="nav nav-tabs">
-				<li class="active"><a class="action-load-settings"
-					href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>
-				<li><a class="action-load-settings"
-					href="#tabpane-settings-publish" data-toggle="tab">Publish</a></li>
-				<li><a class="action-load-settings"
-					href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>
-				<li><a class="action-load-settings"
-					href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>
-			</ul>
 
 			<div class="tab-content">
 				<div class="tab-pane active" id="tabpane-settings-editor">
@@ -608,7 +608,7 @@
 							your own extension...</a></span>
 				</div>
 				<div class="tab-pane" id="tabpane-settings-utils">
-					<div style="width: 200px; margin: 10px auto;">
+					<div class="tab-pane-button-container">
 						<a href="#" class="btn btn-block btn-primary action-welcome-file"
 							data-dismiss="modal">Welcome document</a> <a href="#"
 							class="btn btn-block btn-primary action-default-settings"

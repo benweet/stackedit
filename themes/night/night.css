@@ -23,7 +23,7 @@ input[readonly], select[readonly], textarea[readonly] {
     background-color: #fff;
 }
 
-textarea, input, .dropdown-menu, .modal {
+#wmd-input, input, .dropdown-menu, .modal {
 	background: #111;
     color: #fff;
 }
@@ -176,15 +176,14 @@ input[type="color"]:focus,
     box-shadow: inset 0 1px 1px rgba(255, 134, 97, 0), 0 0 8px rgba(255, 255, 255, 1) !important;
 }
 
+#modal-settings .accordion-group {
+    border-bottom-color: #222;
+}
+
 .nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus {
 	color: #fff;
     background-color: #333;
     border-color: #333;
-    border-bottom-color: transparent;
-}
-
-.nav-tabs {
-    border-bottom-color: #222;
 }
 
 .nav > li > a:hover,

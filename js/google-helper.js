@@ -139,6 +139,7 @@ define([
                 if(response && response.id) {
                     // Upload success
                     result = response;
+                    result.content = content;
                     task.chain();
                     return;
                 }

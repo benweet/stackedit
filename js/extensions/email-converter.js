@@ -4,7 +4,7 @@ define(function() {
         extensionId: "emailConverter",
         extensionName: "Email Converter",
         optional: true,
-        settingsBloc: '<p>Converts email adresses in the form &lt;email@example.com&gt; into a clickable links.</p>'
+        settingsBloc: '<p>Converts email adresses in the form &lt;email@example.com&gt; into clickable links.</p>'
     };
 
     emailConverter.onEditorConfigure = function(editor) {

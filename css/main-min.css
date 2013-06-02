@@ -5837,6 +5837,13 @@ div.dropdown-menu i {
 .tooltip-inner {
     text-align: left;
 }
+dt, dd {
+    margin-top: 5px; 
+    margin-bottom: 5px; 
+}
+dd {
+	margin-left: 40px;
+}
 table {
   margin-bottom: 20px;
 }

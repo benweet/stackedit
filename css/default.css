@@ -232,10 +232,6 @@ h1 {
     margin: 30px 0 30px;
 }
 
-h4, h5, h6 {
-	line-height: 40px;
-}
-
 .toc ul {
 	list-style-type: none;
 }

@@ -6,7 +6,7 @@ define([
     "settings",
     "extension-manager",
     "file-system",
-    "lib/text!../WELCOME.md"
+    "libs/text!../WELCOME.md"
 ], function($, _, core, utils, settings, extensionMgr, fileSystem, welcomeContent) {
 
     var fileMgr = {};

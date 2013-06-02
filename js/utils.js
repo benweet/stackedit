@@ -1,7 +1,7 @@
 define([
     "jquery",
     "underscore",
-    "lib/FileSaver"
+    "libs/FileSaver"
 ], function($, _) {
 
     var utils = {};

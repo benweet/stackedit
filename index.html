@@ -24,7 +24,7 @@
 	var require = { baseUrl : "js", deps : [ "main" + suffix ] };
 	var viewerMode = false;
 </script>
-<script src="js/lib/require.js"></script>
+<script src="js/libs/require.js"></script>
 </head>
 <body>
 	<div id="navbar" class="navbar navbar-fixed-top ui-layout-north">
@@ -116,8 +116,8 @@
 		</div>
 	</div>
 	<textarea id="wmd-input" class="ui-layout-center hide"></textarea>
-	<div class="ui-layout-east hide"></div>
-	<div class="ui-layout-south hide"></div>
+	<div class="ui-layout-east preview-container hide"></div>
+	<div class="ui-layout-south preview-container hide"></div>
 
 	<div id="modal-insert-link" class="modal hide">
 		<div class="modal-header">
@@ -134,7 +134,7 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn action-close-insert-link" data-dismiss="modal">Cancel</a>
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
 			<a href="#" class="btn btn-primary action-insert-link"
 				data-dismiss="modal">OK</a>
 		</div>
@@ -155,8 +155,45 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn action-close-insert-link" data-dismiss="modal">Cancel</a>
+            <a href="#" class="btn action-import-image-gplus" data-dismiss="modal"><i class="icon-gplus"></i> Import from Google+</a>
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
 			<a href="#" class="btn btn-primary action-insert-image"
+				data-dismiss="modal">OK</a>
+		</div>
+	</div>
+
+	<div id="modal-import-image" class="modal hide">
+		<div class="modal-header">
+			<button type="button" class="close action-close-insert-link"
+				data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3>Import image</h3>
+		</div>
+		<div class="modal-body">
+            <div class="form-horizontal">
+                <div class="control-group">
+                    <div class="controls">
+                        <img>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="input-import-image-title">Title (optional)</label>
+                    <div class="controls">
+                        <input type="text" id="input-import-image-title"
+                            placeholder="Image title">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="input-import-image-size">Size limit
+                        (optional)</label>
+                    <div class="controls">
+                        <input type="text" id="input-import-image-size" placeholder="345" class="input-mini"><span class="help-inline">px</span>
+                    </div>
+                </div>
+            </div>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+			<a href="#" class="btn btn-primary action-import-image"
 				data-dismiss="modal">OK</a>
 		</div>
 	</div>
@@ -269,14 +306,14 @@
 				"<span class="file-title"></span>" is not synchronized yet.
 			</blockquote>
 			<p>Add a synchronized location manually:</p>
-			<div class="input-prepend input-append">
+			<div class="input-prepend input-append sync-manual">
 				<span class="add-on" title="Google Drive"><i
 					class="icon-gdrive"></i></span><input id="input-sync-manual-gdrive-id"
 					type="text" class="span5" placeholder="GoogleDriveFileID"></input>
 				<a class="btn action-sync-manual-gdrive" title="Add location"
 					data-dismiss="modal"><i class="icon-ok"></i></a>
 			</div>
-			<div class="input-prepend input-append">
+			<div class="input-prepend input-append sync-manual">
 				<span class="add-on" title="Dropbox"><i class="icon-dropbox"></i></span><input
 					id="input-sync-manual-dropbox-path" type="text" class="span5"
 					placeholder="/dropbox/file/path"></input> <a
@@ -717,6 +754,9 @@
 				</dd>
 				<dd>
 					<a target="_blank" href="http://underscorejs.org/">Underscore.js</a>
+				</dd>
+				<dd>
+					<a target="_blank" href="https://github.com/alexanderdickson/waitForImages">waitForImages</a>
 				</dd>
 			</dl>
 			<dl>

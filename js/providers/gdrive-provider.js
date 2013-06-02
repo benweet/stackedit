@@ -5,7 +5,7 @@ define([
     "settings",
     "extension-manager",
     "file-manager",
-    "google-helper"
+    "helpers/google-helper"
 ], function(_, core, utils, settings, extensionMgr, fileMgr, googleHelper) {
 
     var PROVIDER_GDRIVE = "gdrive";
@@ -62,19 +62,19 @@ define([
     ;
 
     gdriveProvider.importFiles = function() {
-        googleHelper.picker(function(error, ids) {
+        googleHelper.picker(function(error, docs) {
             if(error || ids.length === 0) {
                 return;
             }
             var importIds = [];
-            _.each(ids, function(id) {
-                var syncIndex = createSyncIndex(id);
+            _.each(docs, function(doc) {
+                var syncIndex = createSyncIndex(doc.id);
                 var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
                 if(fileDesc !== undefined) {
                     extensionMgr.onError('"' + fileDesc.title + '" was already imported.');
                     return;
                 }
-                importIds.push(id);
+                importIds.push(doc.id);
             });
             importFilesFromIds(importIds);
         });

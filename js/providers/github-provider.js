@@ -1,7 +1,7 @@
 define([
     "utils",
     "settings",
-    "github-helper"
+    "helpers/github-helper"
 ], function(utils, settings, githubHelper) {
 
     var PROVIDER_GITHUB = "github";

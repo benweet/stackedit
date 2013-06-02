@@ -59,6 +59,19 @@ define([
     manageSynchronization.onSyncExportSuccess = refreshDialog;
     manageSynchronization.onSyncRemoved = refreshDialog;
 
+    manageSynchronization.onReady = function() {
+        // Handle enter key in the sync manual inputs
+        $(".sync-manual").each(function() {
+            var elt = $(this);
+            elt.find("input").keyup(function(e) {
+                if(e.which == 13) {
+                    elt.find("a").click();
+                    e.stopPropagation();
+                }
+            });
+        });
+    };
+
     return manageSynchronization;
 
 });

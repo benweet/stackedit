@@ -1,6 +1,6 @@
 define([
     "utils",
-    "ssh-helper"
+    "helpers/ssh-helper"
 ], function(utils, sshHelper) {
 
     var PROVIDER_SSH = "ssh";

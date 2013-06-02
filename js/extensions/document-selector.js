@@ -88,14 +88,24 @@ define([
     }
 
     documentSelector.onReady = function() {
+        $("#file-selector").click(function() {
+            _.defer(function() {
+                $("#wmd-input").focus();
+            });
+        });
         $(".action-open-file").click(function() {
             filterFileSelector();
             _.defer(function() {
                 $("#file-search").val("").focus();
             });
         });
-        $("#file-search").keyup(function() {
-            filterFileSelector($(this).val());
+        $("#file-search").keyup(function(e) {
+            if(e.which == 13 || e.which == 27) {
+                $(this).parent().click();
+            }
+            else {
+                filterFileSelector($(this).val());
+            }
         }).click(function(event) {
             event.stopPropagation();
         });

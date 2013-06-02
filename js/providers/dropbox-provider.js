@@ -3,7 +3,7 @@ define([
     "utils",
     "extension-manager",
     "file-manager",
-    "dropbox-helper"
+    "helpers/dropbox-helper"
 ], function(_, utils, extensionMgr, fileMgr, dropboxHelper) {
 
     var PROVIDER_DROPBOX = "dropbox";

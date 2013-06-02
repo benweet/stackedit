@@ -1,6 +1,6 @@
 define([
     "utils",
-    "github-helper"
+    "helpers/github-helper"
 ], function(utils, githubHelper) {
 
     var PROVIDER_GIST = "gist";

@@ -6,8 +6,8 @@ define([
     "extension-manager",
     "file-manager",
     "async-runner",
-    "download-provider",
-    "gist-provider"
+    "providers/download-provider",
+    "providers/gist-provider"
 ], function($, _, core, utils, extensionMgr, fileMgr, asyncRunner) {
 
     var sharing = {};

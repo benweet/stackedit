@@ -1,7 +1,7 @@
 define([
     "underscore",
     "utils",
-    "google-helper"
+    "helpers/google-helper"
 ], function(_, utils, googleHelper) {
 
     var PROVIDER_BLOGGER = "blogger";

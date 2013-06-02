@@ -6,8 +6,8 @@ define([
     "extension-manager",
     "file-system",
     "file-manager",
-    "dropbox-provider",
-    "gdrive-provider"
+    "providers/dropbox-provider",
+    "providers/gdrive-provider"
 ], function($, _, core, utils, extensionMgr, fileSystem, fileMgr) {
 
     var synchronizer = {};
@@ -142,7 +142,6 @@ define([
         providerList = _.values(providerMap);
         providerDown(callback);
     }
-    ;
 
     // Main entry point for synchronization
     var syncRunning = false;

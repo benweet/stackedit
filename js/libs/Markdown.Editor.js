@@ -118,14 +118,16 @@
         var that = this,
             panels;
 
-        this.run = function (previewWrapper) { // benweet
+        // benweet
+        var undoManager;
+        this.run = function (previewWrapper) {
             if (panels)
                 return; // already initialized
 
             panels = new PanelCollection(idPostfix);
             var commandManager = new CommandManager(hooks, getString);
             var previewManager = new PreviewManager(markdownConverter, panels, function () { hooks.onPreviewRefresh(); }, previewWrapper); // benweet
-            var undoManager, uiManager;
+            var uiManager;
 
             if (!/\?noundo/.test(doc.location.href)) {
                 undoManager = new UndoManager(function () {
@@ -146,6 +148,12 @@
             var forceRefresh = that.refreshPreview = function () { previewManager.refresh(true); };
 
             forceRefresh();
+        };
+        
+        // benweet
+        this.restart = function() {
+            undoManager.reinit();
+            that.refreshPreview();
         };
 
     }
@@ -673,6 +681,18 @@
         var init = function () {
             setEventHandlers();
             refreshState(true);
+            saveState();
+        };
+        
+        // benweet
+        this.reinit = function() {
+            undoStack = [];
+            stackPtr = 0;
+            mode = "none";
+            lastState = undefined;
+            timer = undefined;
+            inputStateObj = undefined;
+            refreshState();
             saveState();
         };
 

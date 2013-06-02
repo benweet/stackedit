@@ -1,5 +1,5 @@
 define([
-    "lib/MathJax"
+    "libs/MathJax"
 ], function() {
 	
 	var mathJax = {
@@ -175,7 +175,9 @@ define([
 	// if we haven't done that already.
 	//
 	function UpdateMJ() {
-		if (!pending && ready) {
+	    // sometimes ready flag is not set already (on opera basically)
+		//if (!pending && ready) {
+		if (!pending) {
 			pending = true;
 			HUB.Cancel();
 			HUB.Queue(RestartMJ);
@@ -194,10 +196,10 @@ define([
 		var converterObject = editorObject.getConverter();
 		converterObject.hooks.chain("preConversion", removeMath);
 		converterObject.hooks.chain("postConversion", replaceMath);
-		editorObject.hooks.chain("onPreviewRefresh", UpdateMJ);
 	};
 	mathJax.onAsyncPreview = function(callback) {
 		afterRefreshCallback = callback;
+		UpdateMJ();
 	};
 
 	//

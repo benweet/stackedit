@@ -1,6 +1,6 @@
 define([
     "utils",
-    "lib/Markdown.Extra"
+    "libs/Markdown.Extra"
 ], function(utils) {
 
     var markdownExtra = {

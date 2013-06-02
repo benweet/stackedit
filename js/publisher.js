@@ -8,14 +8,14 @@ define([
     "file-system",
     "file-manager",
     "sharing",
-    "blogger-provider",
-    "dropbox-provider",
-    "gist-provider",
-    "github-provider",
-    "gdrive-provider",
-    "ssh-provider",
-    "tumblr-provider",
-    "wordpress-provider"
+    "providers/blogger-provider",
+    "providers/dropbox-provider",
+    "providers/gist-provider",
+    "providers/github-provider",
+    "providers/gdrive-provider",
+    "providers/ssh-provider",
+    "providers/tumblr-provider",
+    "providers/wordpress-provider"
 ], function($, _, core, utils, settings, extensionMgr, fileSystem, fileMgr, sharing) {
 
     var publisher = {};

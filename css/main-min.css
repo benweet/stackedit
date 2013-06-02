@@ -5425,12 +5425,25 @@ input[type="color"]:focus,
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(128, 128, 128, 0.6) !important;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(128, 128, 128, 0.6) !important;
 }
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+  color: #ccc;
+}
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: #ccc;
+}
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #ccc;
+}
 .help-block {
     color: #999999;
     font-size: 12px;
     line-height: 17px;
 }
-.error {
+.modal textarea.error,
+.modal input.error {
     border-color: #ff8661 !important; 
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 134, 97, 0.6) !important;
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 134, 97, 0.6) !important;
@@ -5578,7 +5591,7 @@ hr {
     resize: none;
     border: none !important;
 }
-#wmd-preview {
+.preview-container {
     overflow: auto;
 }
 .wmd-button-row {
@@ -5709,6 +5722,12 @@ div.dropdown-menu i {
     height: 16px;
     background-position: -127px 0;
 }
+.icon-gplus {
+    background-image: url(../img/icons.png) !important;
+    width: 16px;
+    height: 16px;
+    background-position: -145px 0;
+}
 .working-indicator {
     background-image: none !important;
     width: 43px;
@@ -5755,6 +5774,9 @@ div.dropdown-menu i {
 }
 .picker-dialog {
     z-index: 1050 !important;
+}
+.action-import-image-gplus {
+	float: left;
 }
 #modal-settings .modal-header {
 	padding-bottom: 0;

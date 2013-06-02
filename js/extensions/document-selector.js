@@ -88,11 +88,6 @@ define([
     }
 
     documentSelector.onReady = function() {
-        $("#file-selector").click(function() {
-            _.defer(function() {
-                $("#wmd-input").focus();
-            });
-        });
         $(".action-open-file").click(function() {
             filterFileSelector();
             _.defer(function() {

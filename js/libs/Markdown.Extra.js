@@ -88,30 +88,15 @@
   }
 
   // Convert markdown within an element, retaining only span-level tags
-  // (An inefficient version of Pagedown's runSpanGamut. We rely on a
-  // pagedown coverter to do the complete conversion, and then retain
-  // only the specified tags -- inline in this case).
-  function convertSpans(text, converter) {
-    text = denormalize(text);
-    var html = converter.makeHtml(text);
-    return sanitizeHtml(html, inlineTags);
+  function convertSpans(text, extra) {
+    return sanitizeHtml(convertAll(text, extra), inlineTags);
   }
 
   // Convert internal markdown using the stock pagedown converter
-  function convertAll(text, converter) {
-    text = denormalize(text);
-    return converter.makeHtml(text);
-  }
-
-  // We use convertSpans and convertAll to convert markdown inside of Markdown Extra
-  // elements we create. Since this markdown has already been through the pagedown
-  // normalization process before our hooks were called, we need to do some
-  // denormalization before sending it back through a different Pagedown converter.
-  function denormalize(text) {
-    // Restore dollar signs and tildes
-    text = text.replace(/~D/g, "$$");
-    text = text.replace(/~T/g, "~");
-    return text;
+  function convertAll(text, extra) {
+    var result = extra.blockGamutHookCallback(text);
+    result = extra.previousPostConversion(result);
+    return result;
   }
 
   // Convert escaped special characters to HTML decimal entity codes.
@@ -121,13 +106,6 @@
     // regexes don't recognize them. Markdown doesn't support escaping
     // the escape character, e.g. `\\`, which make this even simpler.
     return text.replace(/\\\|/g, '&#124;').replace(/\\:/g, '&#58;');
-  }
-
-  // Determine if the given pagedown converter performs sanitization
-  // on postConversion
-  function isSanitizing(converter) {
-    // call the converter's postConversion hook and see if it sanitizes its input
-    return converter.hooks.postConversion("<table>") === "";
   }
 
 
@@ -186,10 +164,13 @@
 
     // preBlockGamut also gives us access to a hook so we can run the
     // block gamut recursively, however we don't need it at this point
-    converter.hooks.chain("preBlockGamut", function(text) {
+    converter.hooks.chain("preBlockGamut", function(text, blockGamutHookCallback) {
+      extra.blockGamutHookCallback = blockGamutHookCallback;
       return extra.doConversion(preBlockGamutTransformations, text);
     });
 
+    // Keep a reference to the hook chain running before finishConversion to apply on hashed extra blocks
+  	extra.previousPostConversion = converter.hooks.postConversion;
     converter.hooks.chain("postConversion", function(text) {
       return extra.finishConversion(text);
     });
@@ -203,10 +184,7 @@
       extra.tableClass = options.table_class;
     }
 
-    // we can't just use the same converter that the user passes in, as
-    // Pagedown forbids it (doing so could cause an infinite loop)
-    extra.converter = isSanitizing(converter) ? Markdown.getSanitizingConverter()
-                                              : new Markdown.Converter();
+    extra.converter = converter;
 
     // Caller usually won't need this, but it's handy for testing.
     return extra;
@@ -255,10 +233,21 @@
   // html blocks in the hashBlocks array.
   Markdown.Extra.prototype.unHashExtraBlocks = function(text) {
     var self = this;
-    text = text.replace(/<p>~X(\d+)X<\/p>/g, function(wholeMatch, m1) {
-      var key = parseInt(m1, 10);
-      return self.hashBlocks[key];
-    });
+    function recursiveUnHash() {
+      var hasHash = false;
+      text = text.replace(/<p>~X(\d+)X<\/p>/g, function(wholeMatch, m1) {
+        hasHash = true;
+        var key = parseInt(m1, 10);
+        var result = self.hashBlocks[key];
+        // We need to perform that since we skipped the steps in the converter
+        result = result.replace(/~D/g, "$$").replace(/~T/g, "~");
+        return result;
+      });
+      if(hasHash === true) {
+        recursiveUnHash();
+      }
+    }
+    recursiveUnHash();
     return text;
   };
 
@@ -419,7 +408,7 @@
 
       // build column headers.
       for (i = 0; i < colCount; i++) {
-        var headerHtml = convertSpans(trim(headers[i]), self.converter);
+        var headerHtml = convertSpans(trim(headers[i]), self);
         html += ["  <th", align[i], ">", headerHtml, "</th>\n"].join('');
       }
       html += "</tr>\n</thead>\n";
@@ -438,7 +427,7 @@
 
         html += "<tr>\n";
         for (j = 0; j < colCount; j++) {
-          var colHtml = convertSpans(trim(rowCells[j]), self.converter);
+          var colHtml = convertSpans(trim(rowCells[j]), self);
           html += ["  <td", align[j], ">", colHtml, "</td>\n"].join('');
         }
         html += "</tr>\n";
@@ -592,7 +581,7 @@
       for (var i = 0; i < terms.length; i++) {
         var term = terms[i];
         // process spans inside dt
-        term = convertSpans(trim(term), self.converter);
+        term = convertSpans(trim(term), self);
         text += "\n<dt>" + term + "</dt>";
       }
       return text + "\n";
@@ -606,11 +595,11 @@
         // process markdown inside definition
         // TODO?: currently doesn't apply extensions
         def = outdent(def) + "\n\n";
-        def = "\n" + convertAll(def, self.converter) + "\n";
+        def = "\n" + convertAll(def, self) + "\n";
       } else {
         // convert span-level markdown inside definition
         def = rtrim(def);
-        def = convertSpans(outdent(def), self.converter);
+        def = convertSpans(outdent(def), self);
       }
 
       return "\n<dd>" + def + "</dd>\n";

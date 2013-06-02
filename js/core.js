@@ -321,14 +321,22 @@ define([
             e.stopPropagation();
         });
 
-        $(".modal").on('shown', function() {
+        var shownModalId = undefined;
+        $(".modal").on('shown', function(e) {
             // Focus on the first input when modal opens
-            _.defer(function(elt) {
-                elt.find("input:enabled:visible:first").focus();
-            }, $(this));
+            var modalId = $(this).attr("id");
+            if(shownModalId != modalId) {
+                // Hack to avoid conflict with tabs, collapse, tooltips events
+                shownModalId = modalId;
+                _.defer(function(elt) {
+                    elt.find("input:enabled:visible:first").focus();
+                }, $(this));
+            }
         }).on('hidden', function() {
             // Focus on the editor when modal is gone
-            if($(this).is(":hidden")) {
+            var modalId = $(this).attr("id");
+            if(shownModalId == modalId && $(this).is(":hidden")) {
+                shownModalId = undefined;
                 _.defer(function() {
                     $("#wmd-input").focus();
                 });
@@ -345,12 +353,14 @@ define([
             var value = utils.getInputTextValue($("#input-insert-link"), e);
             if(value !== undefined) {
                 core.insertLinkCallback(value);
+                core.insertLinkCallback = undefined;
             }
         });
         $(".action-insert-image").click(function(e) {
             var value = utils.getInputTextValue($("#input-insert-image"), e);
             if(value !== undefined) {
                 core.insertLinkCallback(value);
+                core.insertLinkCallback = undefined;
             }
         });
         
@@ -358,6 +368,7 @@ define([
         $("#modal-insert-link, #modal-insert-image").on('hidden', function() {
             if(core.insertLinkCallback !== undefined) {
                 core.insertLinkCallback(null);
+                core.insertLinkCallback = undefined;
             }
         });
 

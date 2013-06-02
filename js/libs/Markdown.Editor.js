@@ -693,6 +693,7 @@
             timer = undefined;
             inputStateObj = undefined;
             refreshState();
+            inputStateObj.setInputAreaSelection();
             saveState();
         };
 

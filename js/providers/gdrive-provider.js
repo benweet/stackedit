@@ -63,7 +63,7 @@ define([
 
     gdriveProvider.importFiles = function() {
         googleHelper.picker(function(error, docs) {
-            if(error || ids.length === 0) {
+            if(error || docs.length === 0) {
                 return;
             }
             var importIds = [];

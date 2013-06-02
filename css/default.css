@@ -591,6 +591,16 @@ div.dropdown-menu i {
     text-align: left;
 }
 
+/* Definition list */
+dt, dd {
+    margin-top: 5px; 
+    margin-bottom: 5px; 
+}
+
+dd {
+	margin-left: 40px;
+}
+
 /* Table style */
 table {
   margin-bottom: 20px;

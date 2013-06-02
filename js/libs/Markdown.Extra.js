@@ -95,6 +95,9 @@
   // Convert internal markdown using the stock pagedown converter
   function convertAll(text, extra) {
     var result = extra.blockGamutHookCallback(text);
+    // We need to perform these operations since we skip the steps in the converter
+    result = unescapeSpecialChars(result);
+    result = result.replace(/~D/g, "$$").replace(/~T/g, "~");
     result = extra.previousPostConversion(result);
     return result;
   }
@@ -108,6 +111,19 @@
     return text.replace(/\\\|/g, '&#124;').replace(/\\:/g, '&#58;');
   }
 
+  // Duplicated from PageDown converter
+  function unescapeSpecialChars(text) {
+    //
+    // Swap back in all the special characters we've hidden.
+    //
+    text = text.replace(/~E(\d+)E/g,
+        function (wholeMatch, m1) {
+            var charCodeToReplace = parseInt(m1);
+            return String.fromCharCode(charCodeToReplace);
+        }
+    );
+    return text;
+  }
 
   /******************************************************************
    * Markdown.Extra                                                 *
@@ -238,10 +254,7 @@
       text = text.replace(/<p>~X(\d+)X<\/p>/g, function(wholeMatch, m1) {
         hasHash = true;
         var key = parseInt(m1, 10);
-        var result = self.hashBlocks[key];
-        // We need to perform that since we skipped the steps in the converter
-        result = result.replace(/~D/g, "$$").replace(/~T/g, "~");
-        return result;
+        return self.hashBlocks[key];
       });
       if(hasHash === true) {
         recursiveUnHash();

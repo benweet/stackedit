@@ -282,8 +282,10 @@ define([
         undoManager = editor.run(previewWrapper);
         undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
         $("#wmd-input").bind("keydown click focus", function(event) {
-            fileDesc.editorStart = this.selectionStart;
-            fileDesc.editorEnd = this.selectionEnd;
+            if(documentContent !== undefined) {
+                fileDesc.editorStart = this.selectionStart;
+                fileDesc.editorEnd = this.selectionEnd;
+            }
         });
 
         // Hide default buttons

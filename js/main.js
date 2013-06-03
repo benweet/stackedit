@@ -26,6 +26,9 @@ requirejs.config({
         'libs/jquery.waitforimages': [
             'jquery'
         ],
+        'libs/jquery.mousewheel': [
+            'jquery'
+        ],
         'libs/layout': [
             'libs/jquery-ui'
         ],

@@ -244,12 +244,11 @@ define([
     };
 
     core.onReady(function() {
-        var state = localStorage[PROVIDER_GDRIVE + ".state"];
+        var state = utils.retrieveIgnoreError(PROVIDER_GDRIVE + ".state");
         if(state === undefined) {
             return;
         }
         localStorage.removeItem(PROVIDER_GDRIVE + ".state");
-        state = JSON.parse(state);
         if(state.action == "create") {
             googleHelper.upload(undefined, state.folderId, GDRIVE_DEFAULT_FILE_TITLE, settings.defaultContent, undefined, function(error, file) {
                 if(error) {

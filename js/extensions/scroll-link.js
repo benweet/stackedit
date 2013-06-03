@@ -1,7 +1,8 @@
 define([
     "jquery",
     "underscore",
-    "libs/css_browser_selector"
+    "libs/css_browser_selector",
+    "libs/jquery.mousewheel"
 ], function($, _) {
 
     var scrollLink = {
@@ -95,13 +96,14 @@ define([
 
         // apply Scroll Link
         lastEditorScrollTop = -10;
-        isScrollPreview = false;
+        lastPreviewScrollTop = -10;
         runScrollLink();
     }, 500);
 
-    // -10 to be sure the gap is > 9
+    // -10 to be sure the gap is more than 9px
     var lastEditorScrollTop = -10;
     var lastPreviewScrollTop = -10;
+    var isScrollEditor = false;
     var isScrollPreview = false;
     var runScrollLink = _.debounce(function() {
         if(mdSectionList.length === 0 || mdSectionList.length !== htmlSectionList.length) {
@@ -120,7 +122,8 @@ define([
             });
             if(srcSection === undefined) {
                 // Something wrong in the algorithm...
-                return -10;
+                callback(-10);
+                return;
             }
             var posInSection = (srcScrollTop - srcSection.startOffset) / srcSection.height;
             var destSection = destSectionList[sectionIndex];
@@ -131,50 +134,58 @@ define([
             ]);
             if(Math.abs(destScrollTop - lastDestScrollTop) < 9) {
                 // Skip the animation in case it's not necessary
+                callback(lastDestScrollTop);
                 return;
             }
             destElt.animate({
                 scrollTop: destScrollTop
-            }, 600, function() {
+            }, 500, function() {
                 callback(destScrollTop);
             });
         }
         // Perform the animation if diff > 9px
-        if(isScrollPreview === false && Math.abs(editorScrollTop - lastEditorScrollTop) > 9) {
+        if(isScrollEditor === true && Math.abs(editorScrollTop - lastEditorScrollTop) > 9) {
+            isScrollEditor = false;
             // Animate the preview
             lastEditorScrollTop = editorScrollTop;
             animate(editorScrollTop, mdSectionList, previewElt, htmlSectionList, lastPreviewScrollTop, function(destScrollTop) {
                 lastPreviewScrollTop = destScrollTop;
             });
         }
-        else if(Math.abs(previewScrollTop - lastPreviewScrollTop) > 9) {
+        else if(isScrollPreview === true && Math.abs(previewScrollTop - lastPreviewScrollTop) > 9) {
+            isScrollPreview = false;
             // Animate the editor
             lastPreviewScrollTop = previewScrollTop;
             animate(previewScrollTop, htmlSectionList, editorElt, mdSectionList, lastEditorScrollTop, function(destScrollTop) {
                 lastEditorScrollTop = destScrollTop;
             });
         }
-    }, 600);
+    }, 500);
 
     scrollLink.onLayoutConfigure = function(layoutConfig) {
-        layoutConfig.onresize = buildSections;
+        layoutConfig.onresize = function() {
+            isScrollEditor = true;
+            buildSections();
+        };
     };
 
     scrollLink.onLayoutCreated = function() {
-        $(".preview-container").scroll(function() {
+        $(".preview-container").bind("keydown click focus mousewheel", function() {
             isScrollPreview = true;
+            isScrollEditor = false;
             runScrollLink();
         });
-        $("#wmd-input").scroll(function() {
+        $("#wmd-input").bind("keydown click focus mousewheel", function() {
+            isScrollEditor = true;
             isScrollPreview = false;
             runScrollLink();
         });
     };
 
     scrollLink.onEditorConfigure = function(editor) {
-        lastPreviewScrollTop = 0;
         editor.getConverter().hooks.chain("postConversion", function(text) {
-            // To avoid losing scrolling position before elements are fully loaded
+            // To avoid losing scrolling position before elements are fully
+            // loaded
             $("#wmd-preview").height($("#wmd-preview").height());
             return text;
         });
@@ -183,11 +194,8 @@ define([
     scrollLink.onPreviewFinished = function() {
         // Now set the correct height
         $("#wmd-preview").height("auto");
-        _.defer(function() {
-            // Modify scroll position of the preview not the editor
-            lastEditorScrollTop = -10;
-            buildSections();
-        });
+        isScrollEditor = true;
+        buildSections();
     };
 
     return scrollLink;

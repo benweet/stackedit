@@ -24,7 +24,7 @@
         }
       }
       return -1;
-    }
+    };
   }
 
   function trim(str) {
@@ -113,21 +113,17 @@
 
   // Duplicated from PageDown converter
   function unescapeSpecialChars(text) {
-    //
     // Swap back in all the special characters we've hidden.
-    //
-    text = text.replace(/~E(\d+)E/g,
-        function (wholeMatch, m1) {
-            var charCodeToReplace = parseInt(m1);
-            return String.fromCharCode(charCodeToReplace);
-        }
-    );
+    text = text.replace(/~E(\d+)E/g, function(wholeMatch, m1) {
+			var charCodeToReplace = parseInt(m1);
+			return String.fromCharCode(charCodeToReplace);
+		});
     return text;
   }
 
-  /******************************************************************
-   * Markdown.Extra                                                 *
-   *****************************************************************/
+  /*****************************************************************************
+	 * Markdown.Extra *
+	 ****************************************************************************/
 
   Markdown.Extra = function() {
     // For converting internal markdown (in tables for instance).
@@ -159,36 +155,47 @@
     var extra = new Markdown.Extra();
     var postNormalizationTransformations = [];
     var preBlockGamutTransformations = [];
+    var postConversionTransformations = ["unHashExtraBlocks"];
 
     options = options || {};
     options.extensions = options.extensions || ["all"];
-    if (contains(options.extensions, "all"))
+    if (contains(options.extensions, "all")) {
     	options.extensions = ["tables", "fenced_code_gfm", "def_list", "attr_list"];
-    if (contains(options.extensions, "tables"))
-        preBlockGamutTransformations.push("tables");
-    if (contains(options.extensions, "fenced_code_gfm"))
+    }
+    if (contains(options.extensions, "attr_list")) {
+    	postNormalizationTransformations.push("hashFcbAttributeBlocks");
+    	preBlockGamutTransformations.push("hashHeaderAttributeBlocks");
+    	postConversionTransformations.push("applyAttributeBlocks");
+      extra.attributeBlocks = true;
+    }
+    if (contains(options.extensions, "tables")) {
+    	preBlockGamutTransformations.push("tables");
+    }
+    if (contains(options.extensions, "fenced_code_gfm")) {
     	postNormalizationTransformations.push("fencedCodeBlocks");
-    if (contains(options.extensions, "def_list"))
-        preBlockGamutTransformations.push("definitionLists");
-    if (contains(options.extensions, "attr_list"))
-        extra.attributeBlocks = true;
+    }
+    if (contains(options.extensions, "def_list")) {
+      preBlockGamutTransformations.push("definitionLists");
+    }
     
-
     converter.hooks.chain("postNormalization", function(text) {
-        return extra.doTransform(postNormalizationTransformations, text);
+      return extra.doTransform(postNormalizationTransformations, text) + '\n';
     });
 
-    // preBlockGamut also gives us access to a hook so we can run the
-    // block gamut recursively, however we don't need it at this point
     converter.hooks.chain("preBlockGamut", function(text, blockGamutHookCallback) {
+    	// Keep a reference to the block gamut callback to run recursively
       extra.blockGamutHookCallback = blockGamutHookCallback;
-      return extra.doConversion(preBlockGamutTransformations, text);
+      text = processEscapes(text);
+      return extra.doTransform(preBlockGamutTransformations, text) + '\n';
     });
 
-    // Keep a reference to the hook chain running before finishConversion to apply on hashed extra blocks
+    // Keep a reference to the hook chain running before doPostConversion to apply on hashed extra blocks
   	extra.previousPostConversion = converter.hooks.postConversion;
     converter.hooks.chain("postConversion", function(text) {
-      return extra.finishConversion(text);
+      text = extra.doTransform(postConversionTransformations, text);
+      // Clear state vars that may use unnecessary memory
+      this.hashBlocks = [];
+      return text;
     });
 
     if ("highlighter" in options) {
@@ -208,35 +215,9 @@
 
   // Do transformations
   Markdown.Extra.prototype.doTransform = function(transformations, text) {
-	  if (this.attributeBlocks)
-	    text = this.hashFcbAttributeBlocks(text);
-
 	  for(var i = 0; i < transformations.length; i++)
 		  text = this[transformations[i]](text);
-	  
-	  return text + '\n';
-  };
-
-  // Setup state vars, do conversion
-  Markdown.Extra.prototype.doConversion = function(transformations, text) {
-    text = processEscapes(text);
-
-    if (this.attributeBlocks)
-      text = this.hashHeaderAttributeBlocks(text);
-
-    return this.doTransform(transformations, text);
-  };
-  
-  // Clear state vars that may use unnecessary memory. Unhash blocks we
-  // stored, apply attribute blocks if necessary, and return converted text.
-  Markdown.Extra.prototype.finishConversion = function(text) {
-    text = this.unHashExtraBlocks(text);
-
-    if (this.attributeBlocks)
-      text = this.applyAttributeBlocks(text);
-
-    this.hashBlocks = [];
-    return text;
+	  return text;
   };
 
   // Return a placeholder containing a key, which is the block's index in the
@@ -466,6 +447,9 @@
       code = code.replace(/&/g, "&amp;");
       code = code.replace(/</g, "&lt;");
       code = code.replace(/>/g, "&gt;");
+      // These were escaped by PageDown before postNormalization 
+      code = code.replace(/~D/g, "$$");
+      code = code.replace(/~T/g, "~");
       return code;
     }
 

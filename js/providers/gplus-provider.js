@@ -28,6 +28,7 @@ define([
 
     var importImageCallback = undefined;
     var imageDoc = undefined;
+    var importImagePreferences = utils.retrieveIgnoreError(PROVIDER_GPLUS + ".importImagePreferences");
     gplusProvider.importImage = function(callback) {
         importImageCallback = callback;
         googleHelper.picker(function(error, docs) {
@@ -46,9 +47,7 @@ define([
             utils.setInputValue("#input-import-image-title", imageDoc.name);
 
             // Load preferences
-            var serializedPreferences = localStorage[PROVIDER_GPLUS + ".importImagePreferences"];
-            if(serializedPreferences) {
-                var importImagePreferences = JSON.parse(serializedPreferences);
+            if(importImagePreferences) {
                 utils.setInputValue("#input-import-image-size", importImagePreferences.size);
             }
 
@@ -67,7 +66,7 @@ define([
             importImageCallback(undefined, image);
 
             // Store import preferences for next time
-            var importImagePreferences = {};
+            importImagePreferences = {};
             if(size) {
                 importImagePreferences.size = size;
             }

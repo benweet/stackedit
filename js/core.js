@@ -200,15 +200,31 @@ define([
 
     // Create the PageDown editor
     var editor = undefined;
+    var fileDesc = undefined;
     var documentContent = undefined;
-    core.createEditor = function(onTextChange) {
+    var undoManager = undefined;
+    core.createEditor = function(fileDescParam) {
+        fileDesc = fileDescParam;
         documentContent = undefined;
-        $("#wmd-input, .preview-container").scrollTop(0);
+        var initDocumentContent = fileDesc.content;
+        $("#wmd-input").val(initDocumentContent);
         if(editor !== undefined) {
-            // Only restart if the editor is already created
-            editor.restart();
+            // If the editor is already created
+            undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
+            editor.refreshPreview();
             return;
         }
+        // Store scrollTop on scroll event
+        $("#wmd-input").scroll(function() {
+            if(documentContent !== undefined) {
+                fileDesc.editorScrollTop = $(this).scrollTop();
+            }
+        });
+        $(".preview-container").scroll(function() {
+            if(documentContent !== undefined) {
+                fileDesc.previewScrollTop = $(this).scrollTop();
+            }
+        });
         var converter = new Markdown.Converter();
         editor = new Markdown.Editor(converter);
         // Custom insert link dialog
@@ -229,7 +245,7 @@ define([
         function checkDocumentChanges() {
             var newDocumentContent = $("#wmd-input").val();
             if(documentContent !== undefined && documentContent != newDocumentContent) {
-                onTextChange();
+                fileDesc.content = newDocumentContent;
             }
             documentContent = newDocumentContent;
         }
@@ -240,6 +256,8 @@ define([
                 return function() {
                     if(documentContent === undefined) {
                         makePreview();
+                        $("#wmd-input").scrollTop(fileDesc.editorScrollTop);
+                        $(".preview-container").scrollTop(fileDesc.previewScrollTop);
                     }
                     else {
                         debouncedMakePreview();
@@ -251,14 +269,22 @@ define([
         else {
             previewWrapper = function(makePreview) {
                 return function() {
-                    checkDocumentChanges();
                     makePreview();
+                    if(documentContent === undefined) {
+                        $(".preview-container").scrollTop(fileDesc.previewScrollTop);
+                    }
+                    checkDocumentChanges();
                 };
             };
         }
         extensionMgr.onEditorConfigure(editor);
         editor.hooks.chain("onPreviewRefresh", extensionMgr.onAsyncPreview);
-        editor.run(previewWrapper);
+        undoManager = editor.run(previewWrapper);
+        undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
+        $("#wmd-input").bind("keydown click focus", function(event) {
+            fileDesc.editorStart = this.selectionStart;
+            fileDesc.editorEnd = this.selectionEnd;
+        });
 
         // Hide default buttons
         $(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)").addClass("btn").css("left", 0).find("span").hide();
@@ -482,11 +508,6 @@ define([
                 checkOnline();
             }
         }, 1000);
-        
-        // Focus on the editor at startup
-        _.defer(function() {
-            $("#wmd-input").focus();
-        });
     });
 
     return core;

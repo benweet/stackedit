@@ -22,13 +22,22 @@ define([
 
     // Retrieve sync locations from localStorage
     _.each(fileSystem, function(fileDesc) {
-        _.chain(localStorage[fileDesc.fileIndex + ".sync"].split(";")).compact().each(function(syncIndex) {
-            var syncAttributes = JSON.parse(localStorage[syncIndex]);
-            // Store syncIndex
-            syncAttributes.syncIndex = syncIndex;
-            // Replace provider ID by provider module in attributes
-            syncAttributes.provider = providerMap[syncAttributes.provider];
-            fileDesc.syncLocations[syncIndex] = syncAttributes;
+        _.each(utils.retrieveIndexArray(fileDesc.fileIndex + ".sync"), function(syncIndex) {
+            try {
+                var syncAttributes = JSON.parse(localStorage[syncIndex]);
+                // Store syncIndex
+                syncAttributes.syncIndex = syncIndex;
+                // Replace provider ID by provider module in attributes
+                syncAttributes.provider = providerMap[syncAttributes.provider];
+                fileDesc.syncLocations[syncIndex] = syncAttributes;
+            }
+            catch(e) {
+                // localStorage can be corrupted
+                extensionMgr.onError(e);
+                // Remove sync location
+                utils.removeIndexFromArray(fileDesc.fileIndex + ".sync", syncIndex);
+                localStorage.removeItem(syncIndex);
+            }
         });
     });
 
@@ -191,9 +200,8 @@ define([
         utils.resetModalInputs();
 
         // Load preferences
-        var serializedPreferences = localStorage[provider.providerId + ".exportPreferences"];
-        if(serializedPreferences) {
-            var exportPreferences = JSON.parse(serializedPreferences);
+        var exportPreferences = utils.retrieveIgnoreError(provider.providerId + ".exportPreferences");
+        if(exportPreferences) {
             _.each(provider.exportPreferencesInputIds, function(inputId) {
                 utils.setInputValue("#input-sync-export-" + inputId, exportPreferences[inputId]);
             });

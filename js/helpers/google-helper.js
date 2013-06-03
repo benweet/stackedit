@@ -362,7 +362,7 @@ define([
                     task.retry(new Error(errorMsg), 1);
                     return;
                 }
-                else if(error.code <= 0) {
+                else if(error.code === 0 || error.code === -1) {
                     connected = false;
                     authenticated = false;
                     core.setOffline();

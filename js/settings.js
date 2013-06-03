@@ -26,8 +26,11 @@ define([
         extensionSettings: {}
     };
 
-    if(_.has(localStorage, "settings")) {
+    try {
         _.extend(settings, JSON.parse(localStorage.settings));
+    }
+    catch(e) {
+        // Ignore parsing error
     }
 
     return settings;

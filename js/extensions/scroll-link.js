@@ -23,6 +23,8 @@ define([
     function pxToFloat(px) {
         return parseFloat(px.substring(0, px.length - 2));
     }
+    var lastEditorScrollTop = undefined;
+    var lastPreviewScrollTop = undefined;
     var buildSections = _.debounce(function() {
 
         // Try to find Markdown sections by looking for titles
@@ -30,9 +32,9 @@ define([
         mdSectionList = [];
         // This textarea is used to measure sections height
         var textareaElt = $("#md-section-helper");
-        // It has to be the same width than wmd-input
+        // It has to be the same width as wmd-input
         textareaElt.width(editorElt.width());
-        // Consider wmd-input top padding
+        // Consider wmd-input top padding (will be used for 1st and last section) 
         var padding = pxToFloat(editorElt.css('padding-top'));
         var offset = 0, mdSectionOffset = 0;
         function addMdSection(sectionText) {
@@ -95,14 +97,11 @@ define([
         });
 
         // apply Scroll Link
-        lastEditorScrollTop = -10;
-        lastPreviewScrollTop = -10;
+        lastEditorScrollTop = editorElt.scrollTop();
+        lastPreviewScrollTop = previewScrollTop;
         runScrollLink();
     }, 500);
 
-    // -10 to be sure the gap is more than 9px
-    var lastEditorScrollTop = -10;
-    var lastPreviewScrollTop = -10;
     var isScrollEditor = false;
     var isScrollPreview = false;
     var runScrollLink = _.debounce(function() {
@@ -122,7 +121,6 @@ define([
             });
             if(srcSection === undefined) {
                 // Something wrong in the algorithm...
-                callback(-10);
                 return;
             }
             var posInSection = (srcScrollTop - srcSection.startOffset) / srcSection.height;
@@ -170,12 +168,12 @@ define([
     };
 
     scrollLink.onLayoutCreated = function() {
-        $(".preview-container").bind("keydown click focus mousewheel", function() {
+        $(".preview-container").bind("keyup mouseup mousewheel", function() {
             isScrollPreview = true;
             isScrollEditor = false;
             runScrollLink();
         });
-        $("#wmd-input").bind("keydown click focus mousewheel", function() {
+        $("#wmd-input").bind("keyup mouseup mousewheel", function() {
             isScrollEditor = true;
             isScrollPreview = false;
             runScrollLink();
@@ -186,7 +184,8 @@ define([
         editor.getConverter().hooks.chain("postConversion", function(text) {
             // To avoid losing scrolling position before elements are fully
             // loaded
-            $("#wmd-preview").height($("#wmd-preview").height());
+            var previewElt = $("#wmd-preview");
+            previewElt.height(previewElt.height());
             return text;
         });
     };

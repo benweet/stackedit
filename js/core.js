@@ -207,24 +207,37 @@ define([
         fileDesc = fileDescParam;
         documentContent = undefined;
         var initDocumentContent = fileDesc.content;
-        $("#wmd-input").val(initDocumentContent);
+        var editorElt = $("#wmd-input");
+        editorElt.val(initDocumentContent);
         if(editor !== undefined) {
             // If the editor is already created
             undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
             editor.refreshPreview();
             return;
         }
-        // Store scrollTop on scroll event
-        $("#wmd-input").scroll(function() {
+        var previewContainerElt = $(".preview-container");
+        
+        // Store editor scrollTop on scroll event
+        editorElt.scroll(function() {
             if(documentContent !== undefined) {
                 fileDesc.editorScrollTop = $(this).scrollTop();
             }
         });
-        $(".preview-container").scroll(function() {
+        // Store editor selection on change
+        editorElt.bind("keyup mouseup", function() {
+            if(documentContent !== undefined) {
+                fileDesc.editorStart = this.selectionStart;
+                fileDesc.editorEnd = this.selectionEnd;
+            }
+        });
+        // Store preview scrollTop on scroll event
+        previewContainerElt.scroll(function() {
             if(documentContent !== undefined) {
                 fileDesc.previewScrollTop = $(this).scrollTop();
             }
         });
+        
+        // Create the converter and the editor 
         var converter = new Markdown.Converter();
         editor = new Markdown.Editor(converter);
         // Custom insert link dialog
@@ -243,7 +256,7 @@ define([
         });
 
         function checkDocumentChanges() {
-            var newDocumentContent = $("#wmd-input").val();
+            var newDocumentContent = editorElt.val();
             if(documentContent !== undefined && documentContent != newDocumentContent) {
                 fileDesc.content = newDocumentContent;
             }
@@ -256,8 +269,8 @@ define([
                 return function() {
                     if(documentContent === undefined) {
                         makePreview();
-                        $("#wmd-input").scrollTop(fileDesc.editorScrollTop);
-                        $(".preview-container").scrollTop(fileDesc.previewScrollTop);
+                        editorElt.scrollTop(fileDesc.editorScrollTop);
+                        previewContainerElt.scrollTop(fileDesc.previewScrollTop);
                     }
                     else {
                         debouncedMakePreview();
@@ -271,7 +284,7 @@ define([
                 return function() {
                     makePreview();
                     if(documentContent === undefined) {
-                        $(".preview-container").scrollTop(fileDesc.previewScrollTop);
+                        previewContainerElt.scrollTop(fileDesc.previewScrollTop);
                     }
                     checkDocumentChanges();
                 };
@@ -281,12 +294,6 @@ define([
         editor.hooks.chain("onPreviewRefresh", extensionMgr.onAsyncPreview);
         undoManager = editor.run(previewWrapper);
         undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
-        $("#wmd-input").bind("keydown click focus", function(event) {
-            if(documentContent !== undefined) {
-                fileDesc.editorStart = this.selectionStart;
-                fileDesc.editorEnd = this.selectionEnd;
-            }
-        });
 
         // Hide default buttons
         $(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)").addClass("btn").css("left", 0).find("span").hide();

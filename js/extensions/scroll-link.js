@@ -96,9 +96,9 @@ define([
             height: scrollHeight - htmlSectionOffset
         });
 
-        // apply Scroll Link
-        lastEditorScrollTop = editorElt.scrollTop();
-        lastPreviewScrollTop = previewScrollTop;
+        // apply Scroll Link (-10 to have a gap > 9 px)
+        lastEditorScrollTop = -10;
+        lastPreviewScrollTop = -10;
         runScrollLink();
     }, 500);
 
@@ -112,7 +112,7 @@ define([
         var editorScrollTop = editorElt.scrollTop();
         var previewElt = $(".preview-container");
         var previewScrollTop = previewElt.scrollTop();
-        function animate(srcScrollTop, srcSectionList, destElt, destSectionList, lastDestScrollTop, callback) {
+        function animate(srcScrollTop, srcSectionList, destElt, destSectionList, currentDestScrollTop, callback) {
             // Find the section corresponding to the offset
             var sectionIndex = undefined;
             var srcSection = _.find(srcSectionList, function(section, index) {
@@ -130,9 +130,9 @@ define([
                 destScrollTop,
                 destElt.prop('scrollHeight') - destElt.outerHeight()
             ]);
-            if(Math.abs(destScrollTop - lastDestScrollTop) < 9) {
+            if(Math.abs(destScrollTop - currentDestScrollTop) <= 9) {
                 // Skip the animation in case it's not necessary
-                callback(lastDestScrollTop);
+                callback(currentDestScrollTop);
                 return;
             }
             destElt.animate({
@@ -146,7 +146,7 @@ define([
             isScrollEditor = false;
             // Animate the preview
             lastEditorScrollTop = editorScrollTop;
-            animate(editorScrollTop, mdSectionList, previewElt, htmlSectionList, lastPreviewScrollTop, function(destScrollTop) {
+            animate(editorScrollTop, mdSectionList, previewElt, htmlSectionList, previewScrollTop, function(destScrollTop) {
                 lastPreviewScrollTop = destScrollTop;
             });
         }
@@ -154,7 +154,7 @@ define([
             isScrollPreview = false;
             // Animate the editor
             lastPreviewScrollTop = previewScrollTop;
-            animate(previewScrollTop, htmlSectionList, editorElt, mdSectionList, lastEditorScrollTop, function(destScrollTop) {
+            animate(previewScrollTop, htmlSectionList, editorElt, mdSectionList, editorScrollTop, function(destScrollTop) {
                 lastEditorScrollTop = destScrollTop;
             });
         }

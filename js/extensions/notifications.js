@@ -42,7 +42,7 @@ define([
     };
 
     function showMessage(message, iconClass, options) {
-        logger.log(message);
+        logger.info(message);
         if(!message) {
             return;
         }

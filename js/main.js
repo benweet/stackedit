@@ -29,6 +29,9 @@ requirejs.config({
         'libs/jquery.mousewheel': [
             'jquery'
         ],
+        'libs/jquery.hotkeys': [
+            'jquery'
+        ],
         'libs/layout': [
             'libs/jquery-ui'
         ],

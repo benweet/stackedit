@@ -1,17 +1,18 @@
 define([
     "jquery",
     "underscore",
-    "file-system"
+    "file-system",
+    "libs/mousetrap",
 ], function($, _, fileSystem) {
 
     var documentSelector = {
         extensionId: "documentSelector",
         extensionName: "Document selector",
-        /*
         defaultConfig: {
-            keyShortcut: 223
+            sortBy: "mru",
+            keyPrevious: "[",
+            keyNext: "]"
         },
-        */
         settingsBloc: '<p>Builds the "Open document" dropdown menu.</p>'
     };
 
@@ -21,6 +22,8 @@ define([
     };
 
     var liMap = undefined;
+    var liArray = undefined;
+    var sortFunction = undefined;
     var buildSelector = function() {
 
         function composeTitle(fileDesc) {
@@ -40,9 +43,7 @@ define([
 
         liMap = {};
         $("#file-selector li:not(.stick)").empty();
-        _.chain(fileSystem).sortBy(function(fileDesc) {
-            return fileDesc.title.toLowerCase();
-        }).each(function(fileDesc) {
+        _.chain(fileSystem).sortBy(sortFunction).each(function(fileDesc) {
             var a = $('<a href="#">').html(composeTitle(fileDesc)).click(function() {
                 if(!liMap[fileDesc.fileIndex].is(".disabled")) {
                     fileMgr.selectFile(fileDesc);
@@ -52,12 +53,13 @@ define([
             liMap[fileDesc.fileIndex] = li;
             $("#file-selector").append(li);
         });
+        liArray = _.values(liMap);
     };
 
+    var selectFileDesc = undefined;
     documentSelector.onFileSelected = function(fileDesc) {
-        if(liMap === undefined) {
-            buildSelector();
-        }
+        selectFileDesc = fileDesc;
+        buildSelector();
         $("#file-selector li:not(.stick)").removeClass("disabled");
         var li = liMap[fileDesc.fileIndex];
         if(li === undefined) {
@@ -65,7 +67,7 @@ define([
             // selector)
             return;
         }
-        liMap[fileDesc.fileIndex].addClass("disabled");
+        li.addClass("disabled");
     };
 
     documentSelector.onFileCreated = buildSelector;
@@ -94,8 +96,26 @@ define([
     }
 
     documentSelector.onReady = function() {
+        if(documentSelector.config.sortBy == "title") {
+            sortFunction = function(fileDesc) {
+                return fileDesc.title.toLowerCase();
+            };
+        }
+        else if(documentSelector.config.sortBy == "mru") {
+            sortFunction = function(fileDesc) {
+                return -fileDesc.selectTime;
+            };
+        }
+
+        var shortcutClick = false;
         $(".action-open-file").click(function() {
+            if($("#file-selector:parent").is(".open")) {
+                return;
+            }
             filterFileSelector();
+            if(shortcutClick === true) {
+                return;
+            }
             _.defer(function() {
                 $("#file-search").val("").focus();
             });
@@ -110,12 +130,45 @@ define([
         }).click(function(event) {
             event.stopPropagation();
         });
-        /*
-        $("#wmd-input").keydown(function(event) {
-            if(event.ctrlKey && event.keyCode == documentSelector.config.keyShortcut) {
-                console.log(event.keyCode);
+
+        // Handle key shortcut
+        var shortcutLi = undefined;
+        Mousetrap.bind('ctrl+' + documentSelector.config.keyPrevious, function() {
+            shortcutClick = true;
+            if(shortcutLi === undefined) {
+                $(".action-open-file").click();
+                shortcutLi = liMap[selectFileDesc.fileIndex];
             }
-        });*/
+            var liIndex = _.indexOf(liArray, shortcutLi) - 1;
+            if(liIndex === -2) {
+                liIndex = -1;
+            }
+            shortcutLi = liArray[(liIndex + liArray.length) % liArray.length];
+            _.defer(function() {
+                shortcutLi.find("a").focus();
+            });
+            return false;
+        });
+        Mousetrap.bind('ctrl+' + documentSelector.config.keyNext, function() {
+            shortcutClick = true;
+            if(shortcutLi === undefined) {
+                $(".action-open-file").click();
+                shortcutLi = liMap[selectFileDesc.fileIndex];
+            }
+            var liIndex = _.indexOf(liArray, shortcutLi) + 1;
+            shortcutLi = liArray[liIndex % liArray.length];
+            _.defer(function() {
+                shortcutLi.find("a").focus();
+            });
+            return false;
+        });
+        Mousetrap.bind('ctrl', function() {
+            shortcutClick = false;
+            if(shortcutLi !== undefined) {
+                shortcutLi.find("a").click();
+                shortcutLi = undefined;
+            }
+        }, "keyup");
     };
 
     return documentSelector;

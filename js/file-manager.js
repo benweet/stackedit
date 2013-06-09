@@ -19,50 +19,72 @@ define([
         this._editorStart = parseInt(localStorage[fileIndex + ".editorStart"]) || 0;
         this._editorEnd = parseInt(localStorage[fileIndex + ".editorEnd"]) || 0;
         this._previewScrollTop = parseInt(localStorage[fileIndex + ".previewScrollTop"]) || 0;
+        this._selectTime = parseInt(localStorage[fileIndex + ".selectTime"]) || 0;
         this.syncLocations = syncLocations || {};
         this.publishLocations = publishLocations || {};
-        this.__defineGetter__("title", function() {
-            return this._title;
+        Object.defineProperty(this, 'title', {
+            get: function() {
+                return this._title;
+            },
+            set: function(title) {
+                this._title = title;
+                localStorage[this.fileIndex + ".title"] = title;
+                extensionMgr.onTitleChanged(this);
+            }
         });
-        this.__defineSetter__("title", function(title) {
-            this._title = title;
-            localStorage[this.fileIndex + ".title"] = title;
-            extensionMgr.onTitleChanged(this);
+        Object.defineProperty(this, 'content', {
+            get: function() {
+                return localStorage[this.fileIndex + ".content"];
+            },
+            set: function(content) {
+                localStorage[this.fileIndex + ".content"] = content;
+                extensionMgr.onContentChanged(this);
+            }
         });
-        this.__defineGetter__("content", function() {
-            return localStorage[this.fileIndex + ".content"];
+        Object.defineProperty(this, 'editorScrollTop', {
+            get: function() {
+                return this._editorScrollTop;
+            },
+            set: function(editorScrollTop) {
+                this._editorScrollTop = editorScrollTop;
+                localStorage[this.fileIndex + ".editorScrollTop"] = editorScrollTop;
+            }
         });
-        this.__defineSetter__("content", function(content) {
-            localStorage[this.fileIndex + ".content"] = content;
-            extensionMgr.onContentChanged(this);
+        Object.defineProperty(this, 'editorStart', {
+            get: function() {
+                return this._editorStart;
+            },
+            set: function(editorStart) {
+                this._editorStart = editorStart;
+                localStorage[this.fileIndex + ".editorStart"] = editorStart;
+            }
         });
-        this.__defineGetter__("editorScrollTop", function() {
-            return this._editorScrollTop;
+        Object.defineProperty(this, 'editorEnd', {
+            get: function() {
+                return this._editorEnd;
+            },
+            set: function(editorEnd) {
+                this._editorEnd = editorEnd;
+                localStorage[this.fileIndex + ".editorEnd"] = editorEnd;
+            }
         });
-        this.__defineSetter__("editorScrollTop", function(editorScrollTop) {
-            this._editorScrollTop = editorScrollTop;
-            localStorage[this.fileIndex + ".editorScrollTop"] = editorScrollTop;
+        Object.defineProperty(this, 'previewScrollTop', {
+            get: function() {
+                return this._previewScrollTop;
+            },
+            set: function(previewScrollTop) {
+                this._previewScrollTop = previewScrollTop;
+                localStorage[this.fileIndex + ".previewScrollTop"] = previewScrollTop;
+            }
         });
-        this.__defineGetter__("editorStart", function() {
-            return this._editorStart;
-        });
-        this.__defineSetter__("editorStart", function(editorStart) {
-            this._editorStart = editorStart;
-            localStorage[this.fileIndex + ".editorStart"] = editorStart;
-        });
-        this.__defineGetter__("editorEnd", function() {
-            return this._editorEnd;
-        });
-        this.__defineSetter__("editorEnd", function(editorEnd) {
-            this._editorEnd = editorEnd;
-            localStorage[this.fileIndex + ".editorEnd"] = editorEnd;
-        });
-        this.__defineGetter__("previewScrollTop", function() {
-            return this._previewScrollTop;
-        });
-        this.__defineSetter__("previewScrollTop", function(previewScrollTop) {
-            this._previewScrollTop = previewScrollTop;
-            localStorage[this.fileIndex + ".previewScrollTop"] = previewScrollTop;
+        Object.defineProperty(this, 'selectTime', {
+            get: function() {
+                return this._selectTime;
+            },
+            set: function(selectTime) {
+                this._selectTime = selectTime;
+                localStorage[this.fileIndex + ".selectTime"] = selectTime;
+            }
         });
     }
 
@@ -110,6 +132,7 @@ define([
 
         if(fileMgr.isCurrentFile(fileDesc) === false) {
             fileMgr.setCurrentFile(fileDesc);
+            fileDesc.selectTime = new Date().getTime();
 
             // Notify extensions
             extensionMgr.onFileSelected(fileDesc);
@@ -177,7 +200,7 @@ define([
         // Remove the index from the file list
         utils.removeIndexFromArray("file.list", fileDesc.fileIndex);
         delete fileSystem[fileDesc.fileIndex];
-        
+
         if(fileMgr.isCurrentFile(fileDesc) === true) {
             // Unset the current fileDesc
             fileMgr.setCurrentFile();

@@ -363,6 +363,7 @@ define([
             if(shownModalId != modalId) {
                 // Hack to avoid conflict with tabs, collapse, tooltips events
                 shownModalId = modalId;
+                Mousetrap.pause();
                 _.defer(function(elt) {
                     elt.find("input:enabled:visible:first").focus();
                 }, $(this));
@@ -372,6 +373,7 @@ define([
             var modalId = $(this).attr("id");
             if(shownModalId == modalId && $(this).is(":hidden")) {
                 shownModalId = undefined;
+                Mousetrap.unpause();
                 _.defer(function() {
                     $("#wmd-input").focus();
                 });

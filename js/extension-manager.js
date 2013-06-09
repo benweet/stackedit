@@ -40,7 +40,7 @@ define([
     function createHook(hookName) {
         var callbackList = getExtensionCallbackList(hookName);
         return function() {
-            logger.debug(hookName, arguments);
+            logger.log(hookName, arguments);
             var callbackArguments = arguments;
             _.each(callbackList, function(callback) {
                 callback.apply(null, callbackArguments);
@@ -62,7 +62,7 @@ define([
 
     // Load/Save extension config from/to settings
     extensionMgr["onLoadSettings"] = function() {
-        logger.debug("onLoadSettings");
+        logger.log("onLoadSettings");
         _.each(extensionList, function(extension) {
             utils.setInputChecked("#input-enable-extension-" + extension.extensionId, extension.config.enabled);
             var onLoadSettingsCallback = extension.onLoadSettings;
@@ -70,7 +70,7 @@ define([
         });
     };
     extensionMgr["onSaveSettings"] = function(newExtensionSettings, event) {
-        logger.debug("onSaveSettings");
+        logger.log("onSaveSettings");
         _.each(extensionList, function(extension) {
             var newExtensionConfig = _.extend({}, extension.defaultConfig);
             newExtensionConfig.enabled = utils.getInputChecked("#input-enable-extension-" + extension.extensionId);
@@ -124,7 +124,7 @@ define([
     // The number of times we expect tryFinished to be called
     var nbAsyncPreviewCallback = onAsyncPreviewCallbackList.length + 1;
     extensionMgr["onAsyncPreview"] = function() {
-        logger.debug("onAsyncPreview");
+        logger.log("onAsyncPreview");
         // Call onPreviewFinished callbacks when all async preview are finished
         var counter = 0;
         function tryFinished() {
@@ -171,7 +171,7 @@ define([
         }).each(createSettings);
 
         // Create extension buttons
-        logger.debug("onCreateButton");
+        logger.log("onCreateButton");
         var onCreateButtonCallbackList = getExtensionCallbackList("onCreateButton");
         _.each(onCreateButtonCallbackList, function(callback) {
             $("#extension-buttons").append($('<div class="btn-group">').append(callback()));

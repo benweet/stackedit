@@ -29,9 +29,6 @@ requirejs.config({
         'libs/jquery.mousewheel': [
             'jquery'
         ],
-        'libs/jquery.hotkeys': [
-            'jquery'
-        ],
         'libs/layout': [
             'libs/jquery-ui'
         ],
@@ -47,8 +44,6 @@ requirejs.config({
 
 // Defines the logger object
 var logger = {
-    debug: function() {
-    },
     log: function() {
     },
     info: function() {

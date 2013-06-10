@@ -5807,7 +5807,8 @@ div.dropdown-menu i {
 #modal-settings .accordion-inner .form-horizontal .control-label {
     text-align: left;
 }
-#modal-settings .accordion-inner .form-inline .label-text {
+#modal-settings .accordion-inner .form-inline .label-text,
+#modal-settings .accordion-inner .control-label {
 	margin: 0 10px;
 }
 #modal-settings .tab-pane-button-container {

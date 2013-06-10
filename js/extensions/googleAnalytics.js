@@ -31,48 +31,48 @@ define([
             // Collect informations about user settings
             _gaq.push([
                 '_trackEvent',
-                "settings",
+                "Settings",
                 'layoutOrientation',
                 "" + settings.layoutOrientation
             ]);
             _gaq.push([
                 '_trackEvent',
-                "settings",
+                "Settings",
                 'lazyRendering',
                 "" + settings.lazyRendering
             ]);
             _gaq.push([
                 '_trackEvent',
-                "settings",
+                "Settings",
                 'editorFontSize',
                 "" + settings.editorFontSize
             ]);
             // Check if user has removed back links
             _gaq.push([
                 '_trackEvent',
-                "settings",
-                'defaultContentBacklink',
+                "Settings",
+                'defaultContent backlink',
                 "" + settings.defaultContent.indexOf(MAIN_URL) >= 0
             ]);
             _gaq.push([
                 '_trackEvent',
-                "settings",
-                'commitMsgBacklink',
+                "Settings",
+                'commitMsg backlink',
                 "" + settings.commitMsg.indexOf(MAIN_URL) >= 0
             ]);
             // Check if user has changed sshProxy
             _gaq.push([
                 '_trackEvent',
-                "settings",
-                'sshProxyChanged',
+                "Settings",
+                'sshProxy changed',
                 "" + settings.sshProxy != SSH_PROXY_URL
             ]);
             // Check if extensions have been disabled
             _.each(settings.extensionSettings, function(config, extensionId) {
                 _gaq.push([
                     '_trackEvent',
-                    "extensions",
-                    extensionId + "Enabled",
+                    "Extensions",
+                    extensionId + " enabled",
                     "" + config.enabled
                 ]);
             });
@@ -97,25 +97,34 @@ define([
         init();
     };
 
-    var currentAction = "No action";
-    googleAnalytics.onSyncRunning = function() {
-        currentAction = "Sync";
+    var currentAction = "Unknown";
+    var startTime = 0;
+    googleAnalytics.onSyncRunning = function(isRunning) {
+        if(isRunning === true) {
+            currentAction = "Sync";
+            startTime = new Date().getTime();
+        }
     };
-    googleAnalytics.onPublishRunning = function() {
-        currentAction = "Publish";
+    googleAnalytics.onPublishRunning = function(isRunning) {
+        if(isRunning === true) {
+            currentAction = "Publish";
+            startTime = new Date().getTime();
+        }
     };
     googleAnalytics.onAsyncRunning = function(isRunning) {
         if(isRunning === false) {
-            currentAction = "No action";
+            currentAction = "Unknown";
         }
     };
 
-    // Log sync frequency
+    // Log sync time
     googleAnalytics.onSyncSuccess = function() {
+        var endTime = new Date().getTime();
         _gaq.push([
-            '_trackEvent',
+            '_trackTiming',
             'Sync',
-            'SyncSuccess'
+            'SyncTime',
+            endTime - startTime
         ]);
     };
     // Log import frequency and provider
@@ -128,7 +137,7 @@ define([
         _gaq.push([
             '_trackEvent',
             'Sync',
-            'SyncImportProvider',
+            'SyncImport provider',
             provider.providerId
         ]);
     };
@@ -142,22 +151,24 @@ define([
         _gaq.push([
             '_trackEvent',
             'Sync',
-            'SyncExportProvider',
+            'SyncExport provider',
             syncAttributes.provider.providerId
         ]);
     };
-    // Log publish frequency and provider
+    // Log publish time and provider
     googleAnalytics.onPublishSuccess = function(fileDesc) {
+        var endTime = new Date().getTime();
         _gaq.push([
-            '_trackEvent',
+            '_trackTiming',
             'Publish',
-            'PublishSuccess'
+            'PublishSuccess',
+            endTime - startTime
         ]);
         _.each(fileDesc.publishLocations, function(publishAttributes) {
             _gaq.push([
                 '_trackEvent',
                 'Publish',
-                'PublishSuccessProvider',
+                'PublishSuccess provider',
                 publishAttributes.provider.providerId
             ]);
         });
@@ -167,7 +178,7 @@ define([
         _gaq.push([
             '_trackEvent',
             'Publish',
-            'NewPublishProvider',
+            'NewPublish provider',
             publishAttributes.provider.providerId
         ]);
     };

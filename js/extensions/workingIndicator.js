@@ -5,7 +5,7 @@ define([
 
     var workingIndicator = {
         extensionId: "workingIndicator",
-        extensionName: "Working indicator",
+        extensionName: "Working Indicator",
         settingsBloc: '<p>Displays an animated image when a network operation is running.</p>'
     };
 

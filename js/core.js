@@ -17,7 +17,7 @@ define([
 
     // Used for periodic tasks
     var intervalId = undefined;
-    var periodicCallbacks = [];
+    var periodicCallbacks = [extensionMgr.onPeriodicRun];
     core.addPeriodicCallback = function(callback) {
         periodicCallbacks.push(callback);
     };

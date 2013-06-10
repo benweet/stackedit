@@ -7,7 +7,7 @@ define([
 
     var toc = {
         extensionId: "toc",
-        extensionName: "Table of content",
+        extensionName: "Table of Content",
         optional: true,
         defaultConfig: {
             marker: "\\[(TOC|toc)\\]"

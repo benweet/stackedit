@@ -553,7 +553,8 @@ div.dropdown-menu i {
     text-align: left;
 }
 
-#modal-settings .accordion-inner .form-inline .label-text {
+#modal-settings .accordion-inner .form-inline .label-text,
+#modal-settings .accordion-inner .control-label {
 	margin: 0 10px;
 }
 

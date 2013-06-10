@@ -40,10 +40,12 @@ define([
     }
 
     // Return a function that calls every callbacks from extensions
-    function createHook(hookName) {
+    function createHook(hookName, noLog) {
         var callbackList = getExtensionCallbackList(hookName);
         return function() {
-            logger.log(hookName, arguments);
+            if(!noLog) {
+                logger.log(hookName, arguments);
+            }
             var callbackArguments = arguments;
             _.each(callbackList, function(callback) {
                 callback.apply(null, callbackArguments);
@@ -52,8 +54,8 @@ define([
     }
 
     // Add a Hook to the extensionMgr
-    function addHook(hookName) {
-        extensionMgr[hookName] = createHook(hookName);
+    function addHook(hookName, noLog) {
+        extensionMgr[hookName] = createHook(hookName, noLog);
     }
 
     // Set extension config
@@ -87,7 +89,8 @@ define([
     addHook("onMessage");
     addHook("onError");
     addHook("onOfflineChanged");
-    addHook("onAsyncRunning");
+    addHook("onAsyncRunning", true);
+    addHook("onPeriodicRun", true);
 
     // To access modules that are loaded after extensions
     addHook("onFileMgrCreated");

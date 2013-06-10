@@ -41,12 +41,6 @@ define([
         });
     });
 
-    // Force the synchronization
-    synchronizer.forceSync = function() {
-        lastSync = 0;
-        synchronizer.sync();
-    };
-
     // Recursive function to upload a single file on multiple locations
     var uploadSyncAttributesList = [];
     var uploadContent = undefined;
@@ -154,16 +148,14 @@ define([
 
     // Main entry point for synchronization
     var syncRunning = false;
-    var lastSync = 0;
     synchronizer.sync = function() {
-        // If sync is already running or timeout is not reached or offline
-        if(syncRunning || lastSync + SYNC_PERIOD > utils.currentTime || core.isOffline) {
-            return;
+        // If sync is already running or offline
+        if(syncRunning || core.isOffline) {
+            return false;
         }
         syncRunning = true;
         extensionMgr.onSyncRunning(true);
         uploadCycle = true;
-        lastSync = utils.currentTime;
 
         function isError(error) {
             if(error !== undefined) {
@@ -187,11 +179,8 @@ define([
                 extensionMgr.onSyncSuccess();
             });
         });
+        return true;
     };
-    // Run sync function periodically
-    if(viewerMode === false) {
-        core.addPeriodicCallback(synchronizer.sync);
-    }
 
     // Initialize the export dialog
     function initExportDialog(provider) {

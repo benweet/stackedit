@@ -1,13 +1,26 @@
 define([
     "jquery",
     "underscore",
+    "utils",
     "text!html/buttonSync.html",
-], function($, _, buttonSyncHTML) {
+    "text!html/buttonSyncSettingsBloc.html",
+], function($, _, utils, buttonSyncHTML, buttonSyncSettingsBlocHTML) {
 
     var buttonSync = {
         extensionId: "buttonSync",
         extensionName: 'Button "Synchronize"',
-        settingsBloc: '<p>Adds a "Synchronize documents" button in the navigation bar.</p>'
+        defaultConfig: {
+            syncPeriod: 180000
+        },
+        settingsBloc: buttonSyncSettingsBlocHTML
+    };
+
+    buttonSync.onLoadSettings = function() {
+        utils.setInputValue("#input-sync-period", buttonSync.config.syncPeriod);
+    };
+
+    buttonSync.onSaveSettings = function(newConfig, event) {
+        newConfig.syncPeriod = utils.getInputIntValue("#input-sync-period", undefined, 0);
     };
 
     var button = undefined;
@@ -32,10 +45,21 @@ define([
         synchronizer = synchronizerParameter;
     };
 
+    // Run sync periodically
+    var lastSync = 0;
+    buttonSync.onPeriodicRun = function() {
+        if(viewerMode === true || !buttonSync.config.syncPeriod || lastSync + buttonSync.config.syncPeriod > utils.currentTime) {
+            return;
+        }
+        if(synchronizer.sync() === true) {
+            lastSync = utils.currentTime;
+        }
+    };
+
     buttonSync.onCreateButton = function() {
         button = $(buttonSyncHTML).click(function() {
             if(!$(this).hasClass("disabled")) {
-                synchronizer.forceSync();
+                synchronizer.sync();
             }
         });
         return button;

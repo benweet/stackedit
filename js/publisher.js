@@ -4,18 +4,18 @@ define([
     "core",
     "utils",
     "settings",
-    "extension-manager",
-    "file-system",
-    "file-manager",
+    "extensionMgr",
+    "fileSystem",
+    "fileMgr",
     "sharing",
-    "providers/blogger-provider",
-    "providers/dropbox-provider",
-    "providers/gist-provider",
-    "providers/github-provider",
-    "providers/gdrive-provider",
-    "providers/ssh-provider",
-    "providers/tumblr-provider",
-    "providers/wordpress-provider"
+    "providers/bloggerProvider",
+    "providers/dropboxProvider",
+    "providers/gistProvider",
+    "providers/githubProvider",
+    "providers/gdriveProvider",
+    "providers/sshProvider",
+    "providers/tumblrProvider",
+    "providers/wordpressProvider"
 ], function($, _, core, utils, settings, extensionMgr, fileSystem, fileMgr, sharing) {
 
     var publisher = {};

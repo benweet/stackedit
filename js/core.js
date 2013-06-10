@@ -3,13 +3,15 @@ define([
     "underscore",
     "utils",
     "settings",
-    "extension-manager",
+    "extensionMgr",
+    "mousetrap",
+    "text!html/settingsTemplateTooltip.html",
     "storage",
     "config",
     "libs/bootstrap",
     "libs/layout",
     "libs/Markdown.Editor"
-], function($, _, utils, settings, extensionMgr) {
+], function($, _, utils, settings, extensionMgr, mousetrap, settingsTemplateTooltipHTML) {
 
     var core = {};
 
@@ -216,7 +218,7 @@ define([
             return;
         }
         var previewContainerElt = $(".preview-container");
-        
+
         // Store editor scrollTop on scroll event
         editorElt.scroll(function() {
             if(documentContent !== undefined) {
@@ -236,8 +238,8 @@ define([
                 fileDesc.previewScrollTop = $(this).scrollTop();
             }
         });
-        
-        // Create the converter and the editor 
+
+        // Create the converter and the editor
         var converter = new Markdown.Converter();
         editor = new Markdown.Editor(converter);
         // Custom insert link dialog
@@ -363,7 +365,6 @@ define([
             if(shownModalId != modalId) {
                 // Hack to avoid conflict with tabs, collapse, tooltips events
                 shownModalId = modalId;
-                Mousetrap.pause();
                 _.defer(function(elt) {
                     elt.find("input:enabled:visible:first").focus();
                 }, $(this));
@@ -373,10 +374,7 @@ define([
             var modalId = $(this).attr("id");
             if(shownModalId == modalId && $(this).is(":hidden")) {
                 shownModalId = undefined;
-                Mousetrap.unpause();
-                _.defer(function() {
-                    $("#wmd-input").focus();
-                });
+                $("#wmd-input").focus();
             }
         }).keyup(function(e) {
             // Handle enter key in modals
@@ -384,6 +382,11 @@ define([
                 $(this).find(".modal-footer a:last").click();
             }
         });
+
+        // Configure Mousetrap
+        mousetrap.stopCallback = function(e, element, combo) {
+            return shownModalId || $(element).is("input, select, textarea:not(#wmd-input)");
+        };
 
         // Click events on "insert link" and "insert image" dialog buttons
         $(".action-insert-link").click(function(e) {
@@ -400,7 +403,7 @@ define([
                 core.insertLinkCallback = undefined;
             }
         });
-        
+
         // Hide events on "insert link" and "insert image" dialogs
         $("#modal-insert-link, #modal-insert-image").on('hidden', function() {
             if(core.insertLinkCallback !== undefined) {
@@ -477,23 +480,7 @@ define([
             container: '#modal-settings',
             placement: 'right',
             trigger: 'manual',
-            title: [
-                'Available variables:<br>',
-                '<ul>',
-                '   <li><b>documentTitle</b>: document title</li>',
-                '   <li><b>documentMarkdown</b>: document in Markdown format</li>',
-                '   <li><b>documentHTML</b>: document in HTML format</li>',
-                '   <li><b>publishAttributes</b>: attributes of the publish location (undefined when using "Save")</li>',
-                '</ul>',
-                'Examples:<br />',
-                _.escape('<title><%= documentTitle %></title>'),
-                '<br />',
-                _.escape('<div><%- documentHTML %></div>'),
-                '<br />',
-                _.escape('<% if(publishAttributes.provider == "github") print(documentMarkdown); %>'),
-                '<br /><br />',
-                '<a target="_blank" href="http://underscorejs.org/#template">More info</a>',
-            ].join("")
+            title: settingsTemplateTooltipHTML
         }).click(function(e) {
             $(this).tooltip('show');
             $(document).on("click.tooltip-template", function(e) {

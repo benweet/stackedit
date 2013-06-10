@@ -3,11 +3,11 @@ define([
     "underscore",
     "core",
     "utils",
-    "extension-manager",
-    "file-system",
-    "file-manager",
-    "providers/dropbox-provider",
-    "providers/gdrive-provider"
+    "extensionMgr",
+    "fileSystem",
+    "fileMgr",
+    "providers/dropboxProvider",
+    "providers/gdriveProvider"
 ], function($, _, core, utils, extensionMgr, fileSystem, fileMgr) {
 
     var synchronizer = {};

@@ -1,4 +1,5 @@
 var MAIN_URL = "http://benweet.github.io/stackedit/";
+var GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1";
 var GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw";
 var GOOGLE_SCOPES = [
     "https://www.googleapis.com/auth/drive.install",

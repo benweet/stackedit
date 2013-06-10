@@ -1,8 +1,9 @@
 define([
     "jquery",
     "underscore",
-    "utils"
-], function($, _, utils) {
+    "utils",
+    "text!html/tocSettingsBloc.html",
+], function($, _, utils, tocSettingsBlocHTML) {
 
     var toc = {
         extensionId: "toc",
@@ -11,17 +12,7 @@ define([
         defaultConfig: {
             marker: "\\[(TOC|toc)\\]"
         },
-        settingsBloc: [
-            '<p>Generates a table of content when a [TOC] marker is found.</p>',
-            '<div class="form-horizontal">',
-            '   <div class="control-group">',
-            '       <label class="control-label" for="input-toc-marker">Marker RegExp</label>',
-            '       <div class="controls">',
-            '           <input type="text" id="input-toc-marker" class="span2">',
-            '       </div>',
-            '   </div>',
-            '</div>'
-        ].join("")
+        settingsBloc: tocSettingsBlocHTML
     };
 
     toc.onLoadSettings = function() {

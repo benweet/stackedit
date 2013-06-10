@@ -3,11 +3,11 @@ define([
     "underscore",
     "core",
     "utils",
-    "extension-manager",
-    "file-manager",
-    "async-runner",
-    "providers/download-provider",
-    "providers/gist-provider"
+    "extensionMgr",
+    "fileMgr",
+    "asyncRunner",
+    "providers/downloadProvider",
+    "providers/gistProvider"
 ], function($, _, core, utils, extensionMgr, fileMgr, asyncRunner) {
 
     var sharing = {};
@@ -19,30 +19,6 @@ define([
             argument
         ];
     }).compact().object().value();
-
-    // Used to populate the "Sharing" dropdown box
-    var lineTemplate = [
-        '<div class="input-prepend">',
-        '   <a href="<%= link %>" class="add-on" title="Sharing location"><i class="icon-link"></i></a>',
-        '   <input class="span2" type="text" value="<%= link %>" readonly />',
-        '</div>'
-    ].join("");
-    sharing.refreshDocumentSharing = function(attributesList) {
-        var linkList = $("#link-container .link-list").empty();
-        $("#link-container .no-link").show();
-        _.each(attributesList, function(attributes) {
-            if(attributes.sharingLink) {
-                var lineElement = $(_.template(lineTemplate, {
-                    link: attributes.sharingLink
-                }));
-                lineElement.click(function(event) {
-                    event.stopPropagation();
-                });
-                linkList.append(lineElement);
-                $("#link-container .no-link").hide();
-            }
-        });
-    };
 
     sharing.createLink = function(attributes, callback) {
         var provider = providerMap[attributes.provider.providerId];

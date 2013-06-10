@@ -2,8 +2,9 @@ define([
     "jquery",
     "underscore",
     "utils",
-    "jgrowl"
-], function($, _, utils, jGrowl) {
+    "jgrowl",
+    "text!html/notificationsSettingsBloc.html",
+], function($, _, utils, jGrowl, notificationsSettingsBlocHTML) {
 
     var notifications = {
         extensionId: "notifications",
@@ -11,18 +12,7 @@ define([
         defaultConfig: {
             timeout: 8000
         },
-        settingsBloc: [
-            '<p>Shows notification messages in the bottom-right corner of the screen.</p>',
-            '<div class="form-horizontal">',
-            '   <div class="control-group">',
-            '       <label class="control-label" for="input-notifications-timeout">Timeout</label>',
-            '       <div class="controls">',
-            '           <input type="text" id="input-notifications-timeout" class="input-mini">',
-            '           <span class="help-inline">ms</span>',
-            '       </div>',
-            '   </div>',
-            '</div>'
-        ].join("")
+        settingsBloc: notificationsSettingsBlocHTML
     };
 
     notifications.onLoadSettings = function() {

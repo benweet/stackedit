@@ -46,7 +46,7 @@
 <setting id="org.eclipse.wst.jsdt.core.formatter.indent_switchstatements_compare_to_cases" value="true"/>
 <setting id="org.eclipse.wst.jsdt.core.formatter.alignment_for_arguments_in_explicit_constructor_call" value="16"/>
 <setting id="org.eclipse.wst.jsdt.core.formatter.align_type_members_on_columns" value="false"/>
-<setting id="org.eclipse.wst.jsdt.core.formatter.insert_space_before_opening_paren_in_catch" value="insert"/>
+<setting id="org.eclipse.wst.jsdt.core.formatter.insert_space_before_opening_paren_in_catch" value="do not insert"/>
 <setting id="org.eclipse.wst.jsdt.core.formatter.insert_space_after_comma_in_type_arguments" value="insert"/>
 <setting id="org.eclipse.wst.jsdt.core.formatter.insert_space_before_opening_paren_in_annotation" value="do not insert"/>
 <setting id="org.eclipse.wst.jsdt.core.formatter.comment.clear_blank_lines_in_block_comment" value="false"/>

@@ -1,7 +1,8 @@
 define([
     "utils",
-    "libs/Markdown.Extra"
-], function(utils) {
+    "text!html/markdownExtraSettingsBloc.html",
+    "libs/Markdown.Extra",
+], function(utils, markdownExtraSettingsBlocHTML) {
 
     var markdownExtra = {
         extensionId: "markdownExtra",
@@ -10,17 +11,7 @@ define([
         defaultConfig: {
             prettify: true
         },
-        settingsBloc: [
-            '<p>Adds extra features to the original Markdown syntax.</p>',
-            '<div class="form-horizontal">',
-            '   <div class="control-group">',
-            '       <label class="control-label" for="input-markdownextra-prettify">Prettify syntax highlighting</label>',
-            '       <div class="controls">',
-            '           <input type="checkbox" id="input-markdownextra-prettify">',
-            '       </div>',
-            '   </div>',
-            '</div>'
-        ].join("")
+        settingsBloc: markdownExtraSettingsBlocHTML
     };
 
     markdownExtra.onLoadSettings = function() {

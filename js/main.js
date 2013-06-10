@@ -5,6 +5,8 @@ requirejs.config({
         "jquery": "libs/jquery",
         "underscore": "libs/underscore",
         "jgrowl": "libs/jgrowl",
+        "mousetrap": "libs/mousetrap",
+        "text": "libs/text",
         "libs/MathJax": '../lib/MathJax/MathJax.js?config=TeX-AMS_HTML'
     },
     shim: {
@@ -16,6 +18,9 @@ requirejs.config({
                 'jquery'
             ],
             exports: 'jQuery.jGrowl'
+        },
+        'mousetrap': {
+            exports: 'Mousetrap'
         },
         'libs/jquery-ui': [
             'jquery'
@@ -65,7 +70,7 @@ require([
     "core",
     "synchronizer",
     "publisher",
-    "media-importer"
+    "mediaImporter"
 ], function($, core) {
 
     $(function() {

@@ -5793,25 +5793,22 @@ div.dropdown-menu i {
     border-radius: inherit;
     margin-bottom: 10px;
 }
-#modal-settings .accordion-heading .checkbox {
+#modal-settings .accordion-heading {
 	padding: 8px 15px;
-	margin-bottom: 0px;
+}
+#modal-settings .accordion-heading .accordion-toggle {
+    display: inline;
+    padding: 0;
 }
 #modal-settings .accordion-inner {
 	border: 0;
 	padding: 10px 40px;
-}
-#modal-settings .accordion-inner .form-horizontal .control-group {
-	color: #999;
 }
 #modal-settings .accordion-inner .form-horizontal .control-label {
     text-align: left;
 }
 #modal-settings .accordion-inner .form-inline .label-text {
 	margin: 0 10px;
-}
-#modal-settings .accordion-toggle {
-    cursor: help;
 }
 #modal-settings .tab-pane-button-container {
 	 width: 200px;

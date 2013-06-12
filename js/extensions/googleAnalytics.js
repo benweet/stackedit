@@ -18,66 +18,6 @@ define([
 
     var init = function() {
         if(isLoaded === false && isOffline === false) {
-
-            // First configure GA
-            _gaq.push([
-                '_setAccount',
-                GOOGLE_ANALYTICS_ACCOUNT_ID
-            ]);
-            _gaq.push([
-                '_trackPageview'
-            ]);
-
-            // Collect informations about user settings
-            _gaq.push([
-                '_trackEvent',
-                "Settings",
-                'layoutOrientation',
-                "" + settings.layoutOrientation
-            ]);
-            _gaq.push([
-                '_trackEvent',
-                "Settings",
-                'lazyRendering',
-                "" + settings.lazyRendering
-            ]);
-            _gaq.push([
-                '_trackEvent',
-                "Settings",
-                'editorFontSize',
-                "" + settings.editorFontSize
-            ]);
-            // Check if user has removed back links
-            _gaq.push([
-                '_trackEvent',
-                "Settings",
-                'defaultContent backlink',
-                "" + settings.defaultContent.indexOf(MAIN_URL) >= 0
-            ]);
-            _gaq.push([
-                '_trackEvent',
-                "Settings",
-                'commitMsg backlink',
-                "" + settings.commitMsg.indexOf(MAIN_URL) >= 0
-            ]);
-            // Check if user has changed sshProxy
-            _gaq.push([
-                '_trackEvent',
-                "Settings",
-                'sshProxy changed',
-                "" + settings.sshProxy != SSH_PROXY_URL
-            ]);
-            // Check if extensions have been disabled
-            _.each(settings.extensionSettings, function(config, extensionId) {
-                _gaq.push([
-                    '_trackEvent',
-                    "Extensions",
-                    extensionId + " enabled",
-                    "" + config.enabled
-                ]);
-            });
-
-            // Now load GA script using jQuery
             var gaUrl = "/ga.js";
             if(location.search.match(/(\?|&)console/)) {
                 gaUrl = "/u/ga_debug.js";
@@ -91,13 +31,84 @@ define([
         }
     };
 
-    googleAnalytics.onReady = init;
+    var currentAction = "Unknown";
+    googleAnalytics.onReady = function() {
+
+        // First configure GA
+        _gaq.push([
+            '_setAccount',
+            GOOGLE_ANALYTICS_ACCOUNT_ID
+        ]);
+        _gaq.push([
+            '_trackPageview'
+        ]);
+
+        // Collect informations about user settings
+        _gaq.push([
+            '_trackEvent',
+            "Settings",
+            'layoutOrientation',
+            "" + settings.layoutOrientation
+        ]);
+        _gaq.push([
+            '_trackEvent',
+            "Settings",
+            'lazyRendering',
+            "" + settings.lazyRendering
+        ]);
+        _gaq.push([
+            '_trackEvent',
+            "Settings",
+            'editorFontSize',
+            "" + settings.editorFontSize
+        ]);
+        // Check if user has removed back links
+        _gaq.push([
+            '_trackEvent',
+            "Settings",
+            'defaultContent backlink',
+            "" + (settings.defaultContent.indexOf(MAIN_URL) !== -1)
+        ]);
+        _gaq.push([
+            '_trackEvent',
+            "Settings",
+            'commitMsg backlink',
+            "" + (settings.commitMsg.indexOf(MAIN_URL) !== -1)
+        ]);
+        // Check if user has changed sshProxy
+        _gaq.push([
+            '_trackEvent',
+            "Settings",
+            'sshProxy unchanged',
+            "" + (settings.sshProxy == SSH_PROXY_URL)
+        ]);
+        // Check if extensions have been disabled
+        _.each(settings.extensionSettings, function(config, extensionId) {
+            _gaq.push([
+                '_trackEvent',
+                "Extensions",
+                extensionId + " enabled",
+                "" + (config.enabled === true)
+            ]);
+        });
+
+        // Catch window JavaScript errors
+        window.onerror = function(message, url, line) {
+            _gaq.push([
+                "_trackEvent",
+                currentAction,
+                'JS error',
+                message + "(" + url + ": " + line + ")"
+            ]);
+        };
+
+        init();
+    };
     googleAnalytics.onOfflineChanged = function(isOfflineParam) {
         isOffline = isOfflineParam;
         init();
     };
 
-    var currentAction = "Unknown";
     var startTime = 0;
     googleAnalytics.onSyncRunning = function(isRunning) {
         if(isRunning === true) {

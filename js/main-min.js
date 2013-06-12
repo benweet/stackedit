@@ -4424,7 +4424,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   t.each(n.extensionSettings, function(e, t) {
    _gaq.push([ "_trackEvent", "Extensions", t + " enabled", "" + (e.enabled === !0) ]);
   }), window.onerror = function(e, t, n) {
-   _gaq.push([ "_trackEvent", "Error", t, e + "(" + t + ": " + n + ")" ]);
+   _gaq.push([ "_trackEvent", "Error", t, e + " (" + n + ")" ]);
   }, s();
  }, i.onOfflineChanged = function(e) {
   r = e, s();

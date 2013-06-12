@@ -26,6 +26,7 @@ define([
         "Pagedown-extra": "https://github.com/jmcmanus/pagedown-extra/",
         "Prettify": "https://code.google.com/p/google-code-prettify/",
         "RequireJS": "http://requirejs.org/",
+        "stacktrace.js": "http://stacktracejs.com/",
         "UI Layout": "http://layout.jquery-dev.net/",
         "Underscore.js": "http://underscorejs.org/",
         "waitForImages": "https://github.com/alexanderdickson/waitForImages"

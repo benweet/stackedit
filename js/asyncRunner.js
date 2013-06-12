@@ -6,7 +6,8 @@ define([
     "underscore",
     "core",
     "utils",
-    "extensionMgr"
+    "extensionMgr",
+    "libs/stacktrace",
 ], function(_, core, utils, extensionMgr) {
 
     var asyncRunner = {};
@@ -22,6 +23,7 @@ define([
         task.finished = false;
         task.timeout = ASYNC_TASK_DEFAULT_TIMEOUT;
         task.retryCounter = 0;
+        task.callPath = [];
         /**
          * onRun callbacks are called by chain(). These callbacks have to call
          * chain() themselves to chain with next onRun callback or error() to
@@ -54,6 +56,7 @@ define([
          * onRun callback during execution.
          */
         task.chain = function(callback) {
+            task.callPath.unshift(printStackTrace()[5]);
             if(task.finished === true) {
                 return;
             }
@@ -82,10 +85,11 @@ define([
          * ends the task by throwing an exception.
          */
         task.error = function(error) {
+            task.callPath.unshift(printStackTrace()[5]);
             if(task.finished === true) {
                 return;
             }
-            error = error || new Error("Unknown error");
+            error = error || new Error("Unknown error|\n" + task.callPath.join("\n"));
             if(error.message) {
                 extensionMgr.onError(error);
             }
@@ -110,6 +114,7 @@ define([
             var delay = Math.pow(2, task.retryCounter++) * 1000;
             currentTaskStartTime = utils.currentTime + delay;
             currentTaskRunning = false;
+            task.callPath = [];
             asyncRunner.runTask();
         };
         return task;
@@ -124,7 +129,7 @@ define([
             if(currentTaskRunning === true) {
                 // If the current task takes too long
                 if(currentTaskStartTime + currentTask.timeout < utils.currentTime) {
-                    currentTask.error(new Error("A timeout occurred."));
+                    currentTask.error(new Error("A timeout occurred.|\n" + currentTask.callPath.join("\n")));
                 }
                 return;
             }

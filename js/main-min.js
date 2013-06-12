@@ -12222,7 +12222,7 @@ printStackTrace.implementation = function() {}, printStackTrace.implementation.p
   }, e.errorCallbacks = [], e.onError = function(t) {
    e.errorCallbacks.push(t);
   }, e.chain = function(t) {
-   if (e.callPath.push(printStackTrace()[5]), e.finished !== !0) {
+   if (e.callPath.unshift(printStackTrace()[5]), e.finished !== !0) {
     if (void 0 === e.queue && (e.queue = e.runCallbacks.slice()), void 0 !== t) return t(), 
     void 0;
     if (0 === e.queue.length) return o(e, e.successCallbacks), void 0;
@@ -12230,7 +12230,7 @@ printStackTrace.implementation = function() {}, printStackTrace.implementation.p
     n();
    }
   }, e.error = function(t) {
-   if (e.callPath.push(printStackTrace()[5]), e.finished !== !0) throw t = t || Error("Unknown error|\n" + e.callPath.join("\n")), 
+   if (e.callPath.unshift(printStackTrace()[5]), e.finished !== !0) throw t = t || Error("Unknown error|\n" + e.callPath.join("\n")), 
    t.message && i.onError(t), o(e, e.errorCallbacks, t), t;
   }, e.retry = function(t, i) {
    if (e.finished !== !0) {

@@ -4,4 +4,11 @@
     name: "main",
     out: "../js/main-min.js",
     mainConfigFile: '../js/main.js',
+    optimize: "uglify2",
+    uglify2: {
+        output: {
+            beautify: true,
+            indent_level: 1,
+        },
+    },
 })

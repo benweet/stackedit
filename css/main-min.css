@@ -5369,6 +5369,10 @@ body {
     background-color: #f5f5f5;
     tab-size: 4;
 }
+#wmd-preview {
+	padding: 19px;
+    margin-bottom: 30px;
+}
 .working {
     cursor: progress;
 }

@@ -18,6 +18,11 @@ body {
     tab-size: 4;
 }
 
+#wmd-preview {
+	padding: 19px;
+    margin-bottom: 50px;
+}
+
 .working {
     cursor: progress;
 }

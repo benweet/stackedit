@@ -31,7 +31,6 @@ define([
         }
     };
 
-    var currentAction = "Unknown";
     googleAnalytics.onReady = function() {
 
         // First configure GA
@@ -96,9 +95,9 @@ define([
         window.onerror = function(message, url, line) {
             _gaq.push([
                 "_trackEvent",
-                currentAction,
-                'JS error',
-                message + "(" + url + ": " + line + ")"
+                "Error",
+                url,
+                message + " (" + line + ")"
             ]);
         };
 
@@ -112,19 +111,12 @@ define([
     var startTime = 0;
     googleAnalytics.onSyncRunning = function(isRunning) {
         if(isRunning === true) {
-            currentAction = "Sync";
             startTime = new Date().getTime();
         }
     };
     googleAnalytics.onPublishRunning = function(isRunning) {
         if(isRunning === true) {
-            currentAction = "Publish";
             startTime = new Date().getTime();
-        }
-    };
-    googleAnalytics.onAsyncRunning = function(isRunning) {
-        if(isRunning === false) {
-            currentAction = "Unknown";
         }
     };
 
@@ -194,19 +186,5 @@ define([
         ]);
     };
 
-    // Log error messages
-    googleAnalytics.onError = function(error) {
-        if(_.isString(error) || !error.message) {
-            return;
-        }
-        _gaq.push([
-            '_trackEvent',
-            currentAction,
-            'Error',
-            error.message
-        ]);
-    };
-
     return googleAnalytics;
-
 });

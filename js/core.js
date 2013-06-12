@@ -174,7 +174,7 @@ define([
         extensionMgr.onLayoutConfigure(layoutGlobalConfig);
         if(settings.layoutOrientation == "horizontal") {
             $(".ui-layout-south").remove();
-            $(".preview-container").html('<div id="wmd-preview" class="well"></div>');
+            $(".preview-container").html('<div id="wmd-preview"></div>');
             layout = $('body').layout($.extend(layoutGlobalConfig, {
                 east__resizable: true,
                 east__size: .5,
@@ -183,7 +183,7 @@ define([
         }
         else if(settings.layoutOrientation == "vertical") {
             $(".ui-layout-east").remove();
-            $(".preview-container").html('<div id="wmd-preview" class="well"></div>');
+            $(".preview-container").html('<div id="wmd-preview"></div>');
             layout = $('body').layout($.extend(layoutGlobalConfig, {
                 south__resizable: true,
                 south__size: .5,

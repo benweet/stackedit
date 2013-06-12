@@ -20,7 +20,7 @@ define([
     };
 
     buttonSync.onSaveSettings = function(newConfig, event) {
-        newConfig.syncPeriod = utils.getInputIntValue("#input-sync-period", undefined, 0);
+        newConfig.syncPeriod = utils.getInputIntValue("#input-sync-period", event, 0);
     };
 
     var button = undefined;

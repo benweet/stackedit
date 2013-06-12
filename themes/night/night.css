@@ -1,6 +1,6 @@
 body,
 .btn,
-.well,
+#wmd-preview,
 .modal-footer,
 input[disabled],
 select[disabled],
@@ -42,6 +42,10 @@ a:focus {
 	text-decoration: underline;
 }
 
+#file-title {
+	color: #bbb;
+}
+
 #file-title:hover {
     color: #fff;
 }
@@ -50,11 +54,11 @@ blockquote {
     border-color: #333;
 }
 
-.well {
+#wmd-preview {
 	color: #ccc;
 }
 
-.well blockquote {
+#wmd-preview blockquote {
     border-color: #444;
 }
 

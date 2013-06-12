@@ -2,6 +2,9 @@ Developer guide
 ===============
 
 
+----------
+
+
 Architecture
 ------------
 
@@ -9,6 +12,10 @@ Architecture
 
 
 StackEdit uses [RequireJS][2] for asynchronous module definition ([AMD][3]). 
+
+
+----------
+
 
 ### core
 
@@ -19,6 +26,10 @@ The `core` module is responsible for:
 - Loading/saving the settings
 - detecting the offline status
 
+
+----------
+
+
 ### fileMgr
 
 The `fileMgr` module is responsible for:
@@ -27,6 +38,10 @@ The `fileMgr` module is responsible for:
 - switching from one file to another
 - setting/removing file's sync/publish location
 
+
+----------
+
+
 ### synchronizer
 
 The `synchronizer` module is responsible for:
@@ -34,6 +49,10 @@ The `synchronizer` module is responsible for:
 - creating a new local file from a sync location (import)
 - creating a new sync location from a local file (export)
 - running 2 ways synchronization (upload and download) for all sync locations
+
+
+----------
+
 
 ### publisher
 

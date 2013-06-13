@@ -173,8 +173,8 @@ define([
 
         // syncIndex associations
         syncLocations = syncLocations || {};
-        var sync = _.reduce(syncLocations, function(sync, syncAttributes, syncIndex) {
-            return sync + syncIndex + ";";
+        var sync = _.reduce(syncLocations, function(sync, syncAttributes) {
+            return sync + syncAttributes.syncIndex + ";";
         }, ";");
 
         localStorage[fileIndex + ".title"] = title;

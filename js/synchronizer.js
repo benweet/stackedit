@@ -28,7 +28,11 @@ define([
                 // Store syncIndex
                 syncAttributes.syncIndex = syncIndex;
                 // Replace provider ID by provider module in attributes
-                syncAttributes.provider = providerMap[syncAttributes.provider];
+                var provider = providerMap[syncAttributes.provider];
+                if(!provider) {
+                    throw new Error("Invalid provider ID: " + syncAttributes.provider);
+                }
+                syncAttributes.provider = provider;
                 fileDesc.syncLocations[syncIndex] = syncAttributes;
             }
             catch(e) {

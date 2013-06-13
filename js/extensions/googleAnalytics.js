@@ -186,5 +186,18 @@ define([
         ]);
     };
 
+    // Log error messages
+    googleAnalytics.onError = function(error) {
+        if(_.isString(error) || !error.message) {
+            return;
+        }
+        _gaq.push([
+            '_trackEvent',
+            "Error",
+            "message",
+            error.message
+        ]);
+    };
+
     return googleAnalytics;
 });

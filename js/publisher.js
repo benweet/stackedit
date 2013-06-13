@@ -36,7 +36,11 @@ define([
                 // Store publishIndex
                 publishAttributes.publishIndex = publishIndex;
                 // Replace provider ID by provider module in attributes
-                publishAttributes.provider = providerMap[publishAttributes.provider];
+                var provider = providerMap[publishAttributes.provider];
+                if(!provider) {
+                    throw new Error("Invalid provider ID: " + publishAttributes.provider);
+                }
+                publishAttributes.provider = provider;
                 fileDesc.publishLocations[publishIndex] = publishAttributes;
             }
             catch(e) {
@@ -60,7 +64,7 @@ define([
                 publishAttributes: publishAttributes
             });
         }
-        catch (e) {
+        catch(e) {
             extensionMgr.onError(e);
             throw e;
         }
@@ -233,7 +237,7 @@ define([
         $(".action-download-template").click(function() {
             var content = publisher.applyTemplate();
             var title = fileMgr.getCurrentFile().title;
-            utils.saveAs(content, title + ".txt");
+            utils.saveAs(content, title + (settings.template.indexOf("documentHTML") === -1 ? ".md" : ".html"));
         });
     });
 

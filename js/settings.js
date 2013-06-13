@@ -18,6 +18,9 @@ define([
             '<link rel="stylesheet" href="',
             MAIN_URL,
             'css/main-min.css" />\n',
+            '<script type="text/javascript" src="',
+            MAIN_URL,
+            'lib/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n',
             '</head>\n',
             '<body><%= documentHTML %></body>\n',
             '</html>'

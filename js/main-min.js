@@ -4280,7 +4280,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   editorFontSize: 14,
   defaultContent: "\n\n\n> Written with [StackEdit](" + MAIN_URL + ").",
   commitMsg: "Published with " + MAIN_URL,
-  template: [ "<!DOCTYPE html>\n", "<html>\n", "<head>\n", '<meta charset="utf-8">\n', "<title><%= documentTitle %></title>\n", '<link rel="stylesheet" href="', MAIN_URL, 'css/main-min.css" />\n', "</head>\n", "<body><%= documentHTML %></body>\n", "</html>" ].join(""),
+  template: [ "<!DOCTYPE html>\n", "<html>\n", "<head>\n", '<meta charset="utf-8">\n', "<title><%= documentTitle %></title>\n", '<link rel="stylesheet" href="', MAIN_URL, 'css/main-min.css" />\n', '<script type="text/javascript" src="', MAIN_URL, 'lib/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n', "</head>\n", "<body><%= documentHTML %></body>\n", "</html>" ].join(""),
   sshProxy: SSH_PROXY_URL,
   extensionSettings: {}
  };
@@ -4456,6 +4456,8 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   });
  }, i.onNewPublishSuccess = function(e, t) {
   _gaq.push([ "_trackEvent", "Publish", "NewPublish provider", t.provider.providerId ]);
+ }, i.onError = function(e) {
+  !t.isString(e) && e.message && _gaq.push([ "_trackEvent", "Error", "message", e.message ]);
  }, i;
 }), define("text!html/buttonSync.html", [], function() {
  return '<button class="btn" title="Synchronize all documents">\r\n	<i class="icon-refresh"></i>\r\n</button>';
@@ -11966,8 +11968,8 @@ function(e) {
   var d = TEMPORARY_FILE_INDEX;
   if (!c) do d = "file." + i.randomString(); while (t.has(s, d));
   a = a || {};
-  var p = t.reduce(a, function(e, t, n) {
-   return e + n + ";";
+  var p = t.reduce(a, function(e, t) {
+   return e + t.syncIndex + ";";
   }, ";");
   localStorage[d + ".title"] = e, localStorage[d + ".content"] = n, localStorage[d + ".sync"] = p, 
   localStorage[d + ".publish"] = ";";
@@ -12949,9 +12951,12 @@ printStackTrace.implementation = function() {}, printStackTrace.implementation.p
   t.each(i.retrieveIndexArray(e.fileIndex + ".sync"), function(t) {
    try {
     var n = JSON.parse(localStorage[t]);
-    n.syncIndex = t, n.provider = h[n.provider], e.syncLocations[t] = n;
-   } catch (r) {
-    o.onError(r), i.removeIndexFromArray(e.fileIndex + ".sync", t), localStorage.removeItem(t);
+    n.syncIndex = t;
+    var r = h[n.provider];
+    if (!r) throw Error("Invalid provider ID: " + n.provider);
+    n.provider = r, e.syncLocations[t] = n;
+   } catch (s) {
+    o.onError(s), i.removeIndexFromArray(e.fileIndex + ".sync", t), localStorage.removeItem(t);
    }
   });
  });
@@ -13553,9 +13558,12 @@ printStackTrace.implementation = function() {}, printStackTrace.implementation.p
   t.each(i.retrieveIndexArray(e.fileIndex + ".publish"), function(t) {
    try {
     var n = JSON.parse(localStorage[t]);
-    n.publishIndex = t, n.provider = g[n.provider], e.publishLocations[t] = n;
-   } catch (o) {
-    r.onError(o), i.removeIndexFromArray(e.fileIndex + ".publish", t), localStorage.removeItem(t);
+    n.publishIndex = t;
+    var o = g[n.provider];
+    if (!o) throw Error("Invalid provider ID: " + n.provider);
+    n.provider = o, e.publishLocations[t] = n;
+   } catch (s) {
+    r.onError(s), i.removeIndexFromArray(e.fileIndex + ".publish", t), localStorage.removeItem(t);
    }
   });
  }), h.applyTemplate = function(n) {
@@ -13598,7 +13606,7 @@ printStackTrace.implementation = function() {}, printStackTrace.implementation.p
    i.saveAs(t, n + ".html");
   }), e(".action-download-template").click(function() {
    var e = h.applyTemplate(), t = a.getCurrentFile().title;
-   i.saveAs(e, t + ".txt");
+   i.saveAs(e, t + (-1 === o.template.indexOf("documentHTML") ? ".md" : ".html"));
   });
  }), r.onPublisherCreated(h), h;
 }), define("providers/gplusProvider", [ "underscore", "core", "utils", "extensionMgr", "helpers/googleHelper" ], function(e, t, n, i, o) {

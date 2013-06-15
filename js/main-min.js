@@ -4216,9 +4216,8 @@ define("libs/FileSaver", function() {}), define("utils", [ "jquery", "underscore
  }, o.updateCurrentTime = function() {
   o.currentTime = new Date().getTime();
  }, o.updateCurrentTime(), o.storeAttributes = function(e) {
-  var n = e.syncIndex || e.publishIndex;
-  e = t.omit(e, "syncIndex", "publishIndex"), e.provider = e.provider.providerId, 
-  localStorage[n] = JSON.stringify(e);
+  var n = e.syncIndex || e.publishIndex, i = t.omit(e, "syncIndex", "publishIndex", "provider");
+  i.provider = e.provider.providerId, localStorage[n] = JSON.stringify(i);
  }, o.retrieveIndexArray = function(e) {
   try {
    return t.compact(localStorage[e].split(";"));

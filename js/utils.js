@@ -200,10 +200,10 @@ define([
     utils.storeAttributes = function(attributes) {
         var storeIndex = attributes.syncIndex || attributes.publishIndex;
         // Don't store sync/publish index
-        attributes = _.omit(attributes, "syncIndex", "publishIndex");
+        var storedAttributes = _.omit(attributes, "syncIndex", "publishIndex", "provider");
         // Store providerId instead of provider
-        attributes.provider = attributes.provider.providerId;
-        localStorage[storeIndex] = JSON.stringify(attributes);
+        storedAttributes.provider = attributes.provider.providerId;
+        localStorage[storeIndex] = JSON.stringify(storedAttributes);
     };
     
     // Retrieve/parse an index array from localStorage

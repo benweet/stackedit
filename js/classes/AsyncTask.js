@@ -13,7 +13,6 @@ define([
         this.finished = false;
         this.timeout = ASYNC_TASK_DEFAULT_TIMEOUT;
         this.retryCounter = 0;
-        this.callPath = [];
         this.runCallbacks = [];
         this.successCallbacks = [];
         this.errorCallbacks = [];
@@ -50,7 +49,7 @@ define([
      * onRun callback during execution, bypassing the onRun queue.
      */
     AsyncTask.prototype.chain = function(callback) {
-        this.callPath.unshift(printStackTrace()[5]);
+        utils.logStackTrace();
         if(this.finished === true) {
             return;
         }
@@ -80,11 +79,11 @@ define([
      * ends the task by throwing an exception.
      */
     AsyncTask.prototype.error = function(error) {
-        this.callPath.unshift(printStackTrace()[5]);
+        utils.logStackTrace();
         if(this.finished === true) {
             return;
         }
-        error = error || new Error("Unknown error|\n" + this.callPath.join("\n"));
+        error = error || new Error("Unknown error");
         if(error.message) {
             extensionMgr.onError(error);
         }
@@ -110,7 +109,6 @@ define([
         var delay = Math.pow(2, this.retryCounter++) * 1000;
         currentTaskStartTime = utils.currentTime + delay;
         currentTaskRunning = false;
-        this.callPath = [];
         runTask();
     };
 
@@ -136,7 +134,7 @@ define([
             if(currentTaskRunning === true) {
                 // If the current task takes too long
                 if(currentTaskStartTime + currentTask.timeout < utils.currentTime) {
-                    currentTask.error(new Error("A timeout occurred.|\n" + currentTask.callPath.join("\n")));
+                    currentTask.error(new Error("A timeout occurred."));
                 }
                 return;
             }
@@ -163,7 +161,8 @@ define([
             }
         });
     }
-    // Run runTask function periodically
+    
+    // Call runTask function periodically
     core.addPeriodicCallback(runTask);
 
     function runSafe(task, callbacks, param) {

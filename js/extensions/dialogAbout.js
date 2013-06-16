@@ -27,6 +27,7 @@ define([
         "Prettify": "https://code.google.com/p/google-code-prettify/",
         "RequireJS": "http://requirejs.org/",
         "stacktrace.js": "http://stacktracejs.com/",
+        "to-markdown": "https://github.com/domchristie/to-markdown",
         "UI Layout": "http://layout.jquery-dev.net/",
         "Underscore.js": "http://underscorejs.org/",
         "waitForImages": "https://github.com/alexanderdickson/waitForImages"

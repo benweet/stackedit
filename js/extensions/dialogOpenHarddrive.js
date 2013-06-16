@@ -1,14 +1,15 @@
 define([
     "jquery",
     "underscore",
+    "utils",
     "toMarkdown",
     "config",
-], function($, _, toMarkdown) {
+], function($, _, utils, toMarkdown) {
 
     var dialogOpenHarddrive = {
         extensionId: "dialogOpenHarddrive",
         extensionName: 'Dialog "Open from"',
-        settingsBloc: '<p>Handles the "Open from hard drive" and the "Convert HTML to Markdown" dialog boxes.</p>'
+        settingsBloc: '<p>Handles the "Import from hard drive" and the "Convert HTML to Markdown" dialog boxes.</p>'
     };
 
     var fileMgr = undefined;
@@ -86,6 +87,19 @@ define([
         $('#dropzone-import-harddrive-html').each(function() {
             this.addEventListener('dragover', handleDragOver, false);
             this.addEventListener('drop', handleHtmlImport, false);
+        });
+        $(".action-convert-html").click(function(e) {
+            var content = utils.getInputTextValue("#input-convert-html", e);
+            if(content === undefined) {
+                return;
+            }
+            content = converter.makeMd(content);
+            if(content === undefined) {
+                extensionMgr.onError(importedFile.name + " is not a valid HTML file.");
+                return;
+            }
+            var fileDesc = fileMgr.createFile(undefined, content);
+            fileMgr.selectFile(fileDesc);
         });
     };
 

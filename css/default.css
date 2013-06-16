@@ -124,7 +124,7 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
 	color: #333333;
 	background-color: #ddd;
 	opacity: 0.3;
-	filter: alpha(opacity = 30);
+	filter: alpha(opacity =   30);
 }
 
 .dropdown-menu>li>a:hover,.dropdown-menu>li>a:focus,.dropdown-submenu:hover>a,.dropdown-submenu:focus>a,.dropdown-menu>.active>a,.dropdown-menu>.active>a:hover,.dropdown-menu>.active>a:focus
@@ -619,9 +619,9 @@ blockquote p {
 }
 
 input[type="file"] {
-    line-height: inherit;
-    height: inherit;
-    border: none !important;
+	line-height: inherit;
+	height: inherit;
+	border: none !important;
 }
 
 .drop-zone {
@@ -633,6 +633,12 @@ input[type="file"] {
 	text-align: center;
 	font-size: 24px;
 	color: #bbb;
+}
+
+#modal-import-harddrive-html textarea {
+	width: 500px;
+	max-width: 500px;
+	height: 100px;
 }
 
 #md-section-helper {

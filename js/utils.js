@@ -1,7 +1,8 @@
 define([
     "jquery",
     "underscore",
-    "libs/FileSaver"
+    "libs/FileSaver",
+    "libs/stacktrace",
 ], function($, _) {
 
     var utils = {};
@@ -118,7 +119,7 @@ define([
 
     // Reset input control in all modals
     utils.resetModalInputs = function() {
-        $(".modal input[type=text]:not([disabled]), .modal input[type=password]").val("");
+        $(".modal input[type=text]:not([disabled]), .modal input[type=password], .modal textarea").val("");
     };
 
     // Basic trim function
@@ -235,6 +236,34 @@ define([
         catch(e) {
             return undefined;
         }
+    };
+    
+    var eventList = [];
+    utils.logValue = function(value) {
+        eventList.unshift(value);
+        if(eventList.length > 5) {
+            eventList.pop();
+        }
+    };
+    utils.logStackTrace = function() {
+        eventList.unshift(printStackTrace());
+        if(eventList.length > 5) {
+            eventList.pop();
+        }
+    };
+    utils.formatEventList = function() {
+        var result = [];
+        _.each(eventList, function(event) {
+            result.push("\n");
+            if(_.isString(event)) {
+                result.push(event);
+            }
+            else if(_.isArray(event)) {
+                result.push(event[5] || "");
+                result.push(event[6] || "");
+            }
+        });
+        return result.join("");
     };
     
     // Base64 conversion

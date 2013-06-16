@@ -43,7 +43,7 @@ define([
             }));
             lineElement.append($(removeButtonTemplate).click(function() {
                 fileDesc.removePublishLocation(publishAttributes);
-                extensionMgr.onPublishRemoved(publishFileDesc, publishAttributes);
+                extensionMgr.onPublishRemoved(fileDesc, publishAttributes);
             }));
             publishList.append(lineElement);
         });

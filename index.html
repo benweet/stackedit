@@ -71,11 +71,12 @@
 								class="icon-hdd"></i> Open from...</a>
 							<ul class="dropdown-menu">
 								<li><a data-toggle="modal"
-									data-target="#modal-import-harddrive-markdown" class="action-reset-input"
-									href="#">Import from hard drive</a></li>
+									data-target="#modal-import-harddrive-markdown"
+									class="action-reset-input" href="#">Import from hard drive</a></li>
 								<li><a data-toggle="modal"
-									data-target="#modal-import-harddrive-html" class="action-reset-input"
-									href="#">Convert HTML to Markdown</a></li>
+									data-target="#modal-import-harddrive-html"
+									class="action-reset-input" href="#">Convert HTML to
+										Markdown</a></li>
 							</ul></li>
 						<li class="dropdown-submenu"><a href="#"><i
 								class="icon-hdd"></i> Save as...</a>
@@ -244,10 +245,12 @@
 			<h3>Import from hard drive</h3>
 		</div>
 		<div class="modal-body">
-			<p>Please select the Markdown files to import:</p>
-			<p><input type="file" id="input-file-import-harddrive-markdown" multiple /></p>
-			<p>Or drag and drop the Markdown files here:</p>
-			<div id="dropzone-import-harddrive-markdown" class="drop-zone">Drop zone</div>
+			<p>Please select your Markdown files here:</p>
+			<p><input type="file" id="input-file-import-harddrive-markdown"
+				multiple /></p>
+			<p>Or drag and drop your Markdown files here:</p>
+			<p id="dropzone-import-harddrive-markdown" class="drop-zone">Drop
+				files here</p>
 		</div>
 		<div class="modal-footer">
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
@@ -258,16 +261,21 @@
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal"
 				aria-hidden="true">&times;</button>
-			<h3>Import from hard drive</h3>
+			<h3>Convert HTML to Markdown</h3>
 		</div>
 		<div class="modal-body">
-			<p>Please select the HTML files to import:</p>
-			<p><input type="file" id="input-file-import-harddrive-html" multiple /></p>
-			<p>Or drag and drop the HTML files here:</p>
-			<div id="dropzone-import-harddrive-html" class="drop-zone">Drop zone</div>
+			<p>Please select your HTML files here:</p>
+			<p><input type="file" id="input-file-import-harddrive-html"
+				multiple /></p>
+			<p>Or drag and drop your HTML files here:</p>
+			<p id="dropzone-import-harddrive-html" class="drop-zone">Drop
+				files here</p>
+			<p>Or insert your HTML code here:</p> <textarea id="input-convert-html"></textarea>
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+			<a href="#" class="btn" data-dismiss="modal">Close</a> <a
+				href="#" class="btn btn-primary action-convert-html"
+				data-dismiss="modal">OK</a>
 		</div>
 	</div>
 

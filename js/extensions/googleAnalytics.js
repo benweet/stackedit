@@ -1,9 +1,10 @@
 define([
     "jquery",
     "underscore",
+    "utils",
     "settings",
     "config",
-], function($, _, settings) {
+], function($, _, utils, settings) {
 
     var googleAnalytics = {
         extensionId: "googleAnalytics",
@@ -31,6 +32,19 @@ define([
         }
     };
 
+    var lastPageView = 0;
+    function trackPageView() {
+        if(utils.currentTime - lastPageView > 180000) {
+            _gaq.push([
+                '_trackPageview'
+            ]);
+            lastPageView = utils.currentTime;
+        }
+    }
+    googleAnalytics.onPeriodicRun = function() {
+        trackPageView();
+    };
+
     googleAnalytics.onReady = function() {
 
         // First configure GA
@@ -38,9 +52,7 @@ define([
             '_setAccount',
             GOOGLE_ANALYTICS_ACCOUNT_ID
         ]);
-        _gaq.push([
-            '_trackPageview'
-        ]);
+        trackPageView();
 
         // Collect informations about user settings
         _gaq.push([
@@ -96,8 +108,8 @@ define([
             _gaq.push([
                 "_trackEvent",
                 "Error",
-                url,
-                message + " (" + line + ")"
+                message,
+                url + ":" + line + utils.formatEventList()
             ]);
         };
 
@@ -195,7 +207,7 @@ define([
             '_trackEvent',
             "Error",
             "message",
-            error.message
+            error.message + utils.formatEventList()
         ]);
     };
 

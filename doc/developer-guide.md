@@ -2,7 +2,6 @@ Developer guide
 ===============
 
 
-----------
 
 
 Architecture

@@ -1,8 +1,8 @@
 define([
     "jquery",
     "core",
-    "asyncRunner"
-], function($, core, asyncRunner) {
+    "classes/AsyncTask"
+], function($, core, AsyncTask) {
 
     var PROVIDER_DOWNLOAD = "download";
 
@@ -14,9 +14,9 @@ define([
     };
 
     downloadProvider.importPublic = function(importParameters, callback) {
-        var task = asyncRunner.createTask();
         var title = undefined;
         var content = undefined;
+        var task = new AsyncTask();
         task.onRun(function() {
             var url = importParameters.url;
             var slashUrl = url.lastIndexOf("/");
@@ -43,7 +43,7 @@ define([
         task.onError(function(error) {
             callback(error);
         });
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     return downloadProvider;

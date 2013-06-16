@@ -10,9 +10,9 @@ define([
         settingsBloc: '<p>Populates the "Manage synchronization" dialog box.</p>'
     };
 
-    var fileMgr = undefined;
-    dialogManageSynchronization.onFileMgrCreated = function(fileMgrParameter) {
-        fileMgr = fileMgrParameter;
+    var extensionMgr = undefined;
+    dialogManageSynchronization.onExtensionMgrCreated = function(extensionMgrParameter) {
+        extensionMgr = extensionMgrParameter;
     };
 
     var fileDesc = undefined;
@@ -38,7 +38,8 @@ define([
                 syncDesc: syncDesc
             }));
             lineElement.append($(removeButtonTemplate).click(function() {
-                fileMgr.removeSync(syncAttributes);
+                fileDesc.removeSyncLocation(syncAttributes);
+                extensionMgr.onSyncRemoved(fileDesc, syncAttributes);
             }));
             syncList.append(lineElement);
         });

@@ -120,6 +120,16 @@ define([
         });
         version = "v6";
     }
+    
+    // Upgrade from v6 to v7
+    if(version == "v6") {
+        var currentFileIndex = localStorage["file.current"];
+        if(currentFileIndex !== undefined) {
+            localStorage[currentFileIndex + ".selectTime"] = new Date().getTime();
+            localStorage.removeItem("file.current");
+        }
+        version = "v7";
+    }
 
     localStorage["version"] = version;
 });

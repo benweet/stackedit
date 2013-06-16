@@ -3,8 +3,8 @@ define([
     "core",
     "utils",
     "extensionMgr",
-    "asyncRunner"
-], function($, core, utils, extensionMgr, asyncRunner) {
+    "classes/AsyncTask"
+], function($, core, utils, extensionMgr, AsyncTask) {
 
     var oauthParams = undefined;
 
@@ -96,7 +96,7 @@ define([
     }
 
     tumblrHelper.upload = function(blogHostname, postId, tags, format, title, content, callback) {
-        var task = asyncRunner.createTask();
+        var task = new AsyncTask();
         connect(task);
         authenticate(task);
         task.onRun(function() {
@@ -135,7 +135,7 @@ define([
         task.onError(function(error) {
             callback(error);
         });
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     function handleError(error, task) {

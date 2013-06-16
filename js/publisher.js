@@ -54,41 +54,41 @@ define([
     });
 
     // Apply template to the current document
-    publisher.applyTemplate = function(publishAttributes) {
-        var fileDesc = fileMgr.getCurrentFile();
+    publisher.applyTemplate = function(fileDesc, publishAttributes, html) {
         try {
             return _.template(settings.template, {
                 documentTitle: fileDesc.title,
-                documentMarkdown: $("#wmd-input").val(),
-                documentHTML: $("#wmd-preview").html(),
+                documentMarkdown: fileDesc.content,
+                documentHTML: html,
                 publishAttributes: publishAttributes
             });
         }
         catch(e) {
             extensionMgr.onError(e);
-            throw e;
+            return e.message;
         }
     };
 
     // Used to get content to publish
-    function getPublishContent(publishAttributes) {
+    function getPublishContent(fileDesc, publishAttributes, html) {
         if(publishAttributes.format === undefined) {
             publishAttributes.format = $("input:radio[name=radio-publish-format]:checked").prop("value");
         }
         if(publishAttributes.format == "markdown") {
-            return $("#wmd-input").val();
+            return fileDesc.content;
         }
         else if(publishAttributes.format == "html") {
-            return $("#wmd-preview").html();
+            return html;
         }
         else {
-            return publisher.applyTemplate(publishAttributes);
+            return publisher.applyTemplate(fileDesc, publishAttributes, html);
         }
     }
 
     // Recursive function to publish a file on multiple locations
     var publishAttributesList = [];
-    var publishTitle = undefined;
+    var publishFileDesc = undefined;
+    var publishHTML = undefined;
     function publishLocation(callback, errorFlag) {
 
         // No more publish location for this document
@@ -99,14 +99,17 @@ define([
 
         // Dequeue a synchronized location
         var publishAttributes = publishAttributesList.pop();
-        var content = getPublishContent(publishAttributes);
+        
+        // Format the content
+        var content = getPublishContent(publishFileDesc, publishAttributes, publishHTML);
 
         // Call the provider
-        publishAttributes.provider.publish(publishAttributes, publishTitle, content, function(error) {
+        publishAttributes.provider.publish(publishAttributes, publishFileDesc.title, content, function(error) {
             if(error !== undefined) {
                 var errorMsg = error.toString();
                 if(errorMsg.indexOf("|removePublish") !== -1) {
-                    fileMgr.removePublish(publishAttributes);
+                    publishFileDesc.removePublishLocation(publishAttributes);
+                    extensionMgr.onPublishRemoved(publishFileDesc, publishAttributes);
                 }
                 if(errorMsg.indexOf("|stopPublish") !== -1) {
                     callback(error);
@@ -126,14 +129,14 @@ define([
 
         publishRunning = true;
         extensionMgr.onPublishRunning(true);
-        var fileDesc = fileMgr.getCurrentFile();
-        publishTitle = fileDesc.title;
-        publishAttributesList = _.values(fileDesc.publishLocations);
+        publishFileDesc = fileMgr.getCurrentFile();
+        publishHTML = $("#wmd-preview").html();
+        publishAttributesList = _.values(publishFileDesc.publishLocations);
         publishLocation(function(errorFlag) {
             publishRunning = false;
             extensionMgr.onPublishRunning(false);
             if(errorFlag === undefined) {
-                extensionMgr.onPublishSuccess(fileDesc);
+                extensionMgr.onPublishSuccess(publishFileDesc);
             }
         });
     };
@@ -145,8 +148,8 @@ define([
             publishIndex = "publish." + utils.randomString();
         } while (_.has(localStorage, publishIndex));
         publishAttributes.publishIndex = publishIndex;
-        utils.storeAttributes(publishAttributes);
-        fileMgr.addPublish(fileDesc, publishAttributes);
+        fileDesc.addPublishLocation(publishAttributes);
+        extensionMgr.onNewPublishSuccess(fileDesc, publishAttributes);
     }
 
     // Initialize the "New publication" dialog
@@ -186,9 +189,9 @@ define([
 
         // Perform provider's publishing
         var fileDesc = fileMgr.getCurrentFile();
-        var title = fileDesc.title;
-        var content = getPublishContent(publishAttributes);
-        provider.publish(publishAttributes, title, content, function(error) {
+        var html = $("#wmd-preview").html();
+        var content = getPublishContent(fileDesc, publishAttributes, html);
+        provider.publish(publishAttributes, fileDesc.title, content, function(error) {
             if(error === undefined) {
                 publishAttributes.provider = provider;
                 sharing.createLink(publishAttributes, function() {
@@ -235,9 +238,10 @@ define([
             utils.saveAs(content, title + ".html");
         });
         $(".action-download-template").click(function() {
-            var content = publisher.applyTemplate();
-            var title = fileMgr.getCurrentFile().title;
-            utils.saveAs(content, title + (settings.template.indexOf("documentHTML") === -1 ? ".md" : ".html"));
+            var fileDesc = fileMgr.getCurrentFile();
+            var html = $("#wmd-preview").html();
+            var content = publisher.applyTemplate(fileDesc, undefined, html);
+            utils.saveAs(content, fileDesc.title + (settings.template.indexOf("documentHTML") === -1 ? ".md" : ".html"));
         });
     });
 

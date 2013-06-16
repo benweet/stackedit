@@ -12,6 +12,7 @@ define([
     "extensions/dialogAbout",
     "extensions/dialogManagePublication",
     "extensions/dialogManageSynchronization",
+    "extensions/dialogOpenHarddrive",
     "extensions/documentSelector",
     "extensions/documentTitle",
     "extensions/workingIndicator",

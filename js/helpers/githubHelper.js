@@ -3,8 +3,8 @@ define([
     "core",
     "utils",
     "extensionMgr",
-    "asyncRunner"
-], function($, core, utils, extensionMgr, asyncRunner) {
+    "classes/AsyncTask"
+], function($, core, utils, extensionMgr, AsyncTask) {
 
     var connected = undefined;
     var github = undefined;
@@ -111,7 +111,7 @@ define([
     }
 
     githubHelper.upload = function(reponame, branch, path, content, commitMsg, callback) {
-        var task = asyncRunner.createTask();
+        var task = new AsyncTask();
         connect(task);
         authenticate(task);
         task.onRun(function() {
@@ -145,11 +145,11 @@ define([
         task.onError(function(error) {
             callback(error);
         });
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     githubHelper.uploadGist = function(gistId, filename, isPublic, title, content, callback) {
-        var task = asyncRunner.createTask();
+        var task = new AsyncTask();
         connect(task);
         authenticate(task);
         task.onRun(function() {
@@ -185,11 +185,11 @@ define([
         task.onError(function(error) {
             callback(error);
         });
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     githubHelper.downloadGist = function(gistId, filename, callback) {
-        var task = asyncRunner.createTask();
+        var task = new AsyncTask();
         connect(task);
         // No need for authentication
         var title = undefined;
@@ -219,7 +219,7 @@ define([
         task.onError(function(error) {
             callback(error);
         });
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     function handleError(error, task) {

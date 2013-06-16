@@ -11,18 +11,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="msvalidate.01" content="5E47EE6F67B069C17E3CDD418351A612" />
 <script>
-	// Use http://.../?debug to serve original CSS/JavaScript files instead of minified
-	var suffix = "";
-	if (!location.search.match(/(\?|&)debug/)) {
-		suffix = "-min";
-	}
-	document.write('<link href="css/main' + suffix + '.css" rel="stylesheet">');
-	var theme = localStorage.theme;
-	if (theme) {
-		document.write('<link href="themes/' + theme + '/' + theme + '.css" rel="stylesheet">');
-	}
-	var require = { baseUrl : "js", deps : [ "main" + suffix ] };
-	var viewerMode = false;
+    // Use http://.../?debug to serve original CSS/JavaScript files instead of minified
+    var suffix = "";
+    if(!location.search.match(/(\?|&)debug/)) {
+        suffix = "-min";
+    }
+    document.write('<link href="css/main' + suffix + '.css" rel="stylesheet">');
+    var theme = localStorage.theme;
+    if(theme) {
+        document.write('<link href="themes/' + theme + '/' + theme + '.css" rel="stylesheet">');
+    }
+    var require = {
+        baseUrl: "js",
+        deps: [
+            "main" + suffix
+        ]
+    };
+    var viewerMode = false;
 </script>
 <script src="js/libs/require.js"></script>
 </head>
@@ -34,8 +39,7 @@
 				<li><div id="wmd-button-bar"></div></li>
 			</ul>
 			<ul class="nav pull-right hide" id="menu-bar">
-				<li id="extension-buttons">
-				</li>
+				<li id="extension-buttons"></li>
 				<li class="btn-group"><button class="btn action-create-file"
 						title="New local document">
 						<i class="icon-file"></i>
@@ -62,13 +66,27 @@
 					</button>
 					<ul class="dropdown-menu">
 						<li><a href="viewer.html" title="StackEdit Viewer"><i
-								class="icon-fullscreen"></i> Open viewer</a></li>
-						<li><a class="action-download-md" href="#"><i
-								class="icon-download-alt"></i> Save as Markdown</a></li>
-						<li><a class="action-download-html" href="#"><i
-								class="icon-download-alt"></i> Save as HTML</a></li>
-						<li><a class="action-download-template" href="#"><i
-								class="icon-download-alt"></i> Save using template</a></li>
+								class="icon-fullscreen"></i> StackEdit Viewer</a></li>
+						<li class="dropdown-submenu"><a href="#"><i
+								class="icon-hdd"></i> Open from...</a>
+							<ul class="dropdown-menu">
+								<li><a data-toggle="modal"
+									data-target="#modal-import-harddrive-markdown" class="action-reset-input"
+									href="#">Import from hard drive</a></li>
+								<li><a data-toggle="modal"
+									data-target="#modal-import-harddrive-html" class="action-reset-input"
+									href="#">Convert HTML to Markdown</a></li>
+							</ul></li>
+						<li class="dropdown-submenu"><a href="#"><i
+								class="icon-hdd"></i> Save as...</a>
+							<ul class="dropdown-menu">
+								<li><a class="action-download-md" href="#">Save as
+										Markdown</a></li>
+								<li><a class="action-download-html" href="#">Save as
+										HTML</a></li>
+								<li><a class="action-download-template" href="#">Save
+										using template</a></li>
+							</ul></li>
 						<li class="divider with-text">synchronize</li>
 						<li class="dropdown-submenu"><a href="#"><i
 								class="icon-gdrive"></i> Google Drive</a>
@@ -134,9 +152,8 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
-			<a href="#" class="btn btn-primary action-insert-link"
-				data-dismiss="modal">OK</a>
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+				class="btn btn-primary action-insert-link" data-dismiss="modal">OK</a>
 		</div>
 	</div>
 
@@ -155,9 +172,10 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-            <a href="#" class="btn action-import-image-gplus" data-dismiss="modal"><i class="icon-gplus"></i> Import from Google+</a>
-			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
-			<a href="#" class="btn btn-primary action-insert-image"
+			<a href="#" class="btn action-import-image-gplus"
+				data-dismiss="modal"><i class="icon-gplus"></i> Import from
+				Google+</a> <a href="#" class="btn" data-dismiss="modal">Cancel</a> <a
+				href="#" class="btn btn-primary action-insert-image"
 				data-dismiss="modal">OK</a>
 		</div>
 	</div>
@@ -169,32 +187,33 @@
 			<h3>Import image</h3>
 		</div>
 		<div class="modal-body">
-            <div class="form-horizontal">
-                <div class="control-group">
-                    <div class="controls">
-                        <img>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="input-import-image-title">Title (optional)</label>
-                    <div class="controls">
-                        <input type="text" id="input-import-image-title"
-                            placeholder="Image title">
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="input-import-image-size">Size limit
-                        (optional)</label>
-                    <div class="controls">
-                        <input type="text" id="input-import-image-size" placeholder="345" class="input-mini"><span class="help-inline">px</span>
-                    </div>
-                </div>
-            </div>
+			<div class="form-horizontal">
+				<div class="control-group">
+					<div class="controls">
+						<img>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input-import-image-title">Title
+						(optional)</label>
+					<div class="controls">
+						<input type="text" id="input-import-image-title"
+							placeholder="Image title">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input-import-image-size">Size
+						limit (optional)</label>
+					<div class="controls">
+						<input type="text" id="input-import-image-size" placeholder="345"
+							class="input-mini"><span class="help-inline">px</span>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
-			<a href="#" class="btn btn-primary action-import-image"
-				data-dismiss="modal">OK</a>
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+				class="btn btn-primary action-import-image" data-dismiss="modal">OK</a>
 		</div>
 	</div>
 
@@ -215,6 +234,40 @@
 		<div class="modal-footer">
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
 				class="btn btn-primary action-remove-file" data-dismiss="modal">Delete</a>
+		</div>
+	</div>
+
+	<div id="modal-import-harddrive-markdown" class="modal hide">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">&times;</button>
+			<h3>Import from hard drive</h3>
+		</div>
+		<div class="modal-body">
+			<p>Please select the Markdown files to import:</p>
+			<p><input type="file" id="input-file-import-harddrive-markdown" multiple /></p>
+			<p>Or drag and drop the Markdown files here:</p>
+			<div id="dropzone-import-harddrive-markdown" class="drop-zone">Drop zone</div>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+		</div>
+	</div>
+
+	<div id="modal-import-harddrive-html" class="modal hide">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">&times;</button>
+			<h3>Import from hard drive</h3>
+		</div>
+		<div class="modal-body">
+			<p>Please select the HTML files to import:</p>
+			<p><input type="file" id="input-file-import-harddrive-html" multiple /></p>
+			<p>Or drag and drop the HTML files here:</p>
+			<div id="dropzone-import-harddrive-html" class="drop-zone">Drop zone</div>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>
 	</div>
 
@@ -442,7 +495,11 @@
 						site</label>
 					<div class="controls">
 						<input type="text" id="input-publish-wordpress-site"
-							placeholder="exemple.wordpress.com">
+							placeholder="exemple.wordpress.com"> <span
+							class="help-block"> <a target="_blank"
+							href="http://jetpack.me/">Jetpack plugin</a> is required for
+							self-hosted sites.
+						</span>
 					</div>
 				</div>
 				<div
@@ -547,16 +604,16 @@
 			<button type="button" class="close" data-dismiss="modal"
 				aria-hidden="true">&times;</button>
 			<h3>Settings</h3>
-            <ul class="nav nav-tabs">
-                <li class="active"><a class="action-load-settings"
-                    href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>
-                <li><a class="action-load-settings"
-                    href="#tabpane-settings-publish" data-toggle="tab">Publish</a></li>
-                <li><a class="action-load-settings"
-                    href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>
-                <li><a class="action-load-settings"
-                    href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>
-            </ul>
+			<ul class="nav nav-tabs">
+				<li class="active"><a class="action-load-settings"
+					href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>
+				<li><a class="action-load-settings"
+					href="#tabpane-settings-publish" data-toggle="tab">Publish</a></li>
+				<li><a class="action-load-settings"
+					href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>
+				<li><a class="action-load-settings"
+					href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>
+			</ul>
 		</div>
 		<div class="modal-body">
 
@@ -647,12 +704,14 @@
 				<div class="tab-pane" id="tabpane-settings-utils">
 					<div class="tab-pane-button-container">
 						<a href="#" class="btn btn-block btn-primary action-welcome-file"
-							data-dismiss="modal"><i class="icon-info-sign icon-white"></i> Welcome document</a> <a href="#"
+							data-dismiss="modal"><i class="icon-info-sign icon-white"></i>
+							Welcome document</a> <a href="#"
 							class="btn btn-block btn-primary action-default-settings"
-							data-dismiss="modal"><i class="icon-wrench icon-white"></i> Load default settings</a> <a href="#"
+							data-dismiss="modal"><i class="icon-wrench icon-white"></i>
+							Load default settings</a> <a href="#"
 							class="btn btn-block btn-primary" data-dismiss="modal"
-							data-toggle="modal" data-target="#modal-app-reset"><i class="icon-fire icon-white"></i> Reset
-							application</a>
+							data-toggle="modal" data-target="#modal-app-reset"><i
+							class="icon-fire icon-white"></i> Reset application</a>
 					</div>
 				</div>
 			</div>
@@ -670,8 +729,7 @@
 				aria-hidden="true">&times;</button>
 			<img src="img/stackedit-promo.png" />
 		</div>
-		<div class="modal-body">
-		</div>
+		<div class="modal-body"></div>
 		<div class="modal-footer">
 			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 		</div>

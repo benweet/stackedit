@@ -261,6 +261,7 @@ define([
             var newDocumentContent = editorElt.val();
             if(documentContent !== undefined && documentContent != newDocumentContent) {
                 fileDesc.content = newDocumentContent;
+                extensionMgr.onContentChanged(fileDesc);
             }
             documentContent = newDocumentContent;
         }

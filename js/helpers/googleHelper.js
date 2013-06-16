@@ -3,8 +3,8 @@ define([
     "core",
     "utils",
     "extensionMgr",
-    "asyncRunner"
-], function($, core, utils, extensionMgr, asyncRunner) {
+    "classes/AsyncTask"
+], function($, core, utils, extensionMgr, AsyncTask) {
 
     var connected = false;
     var authenticated = false;
@@ -86,7 +86,7 @@ define([
 
     googleHelper.upload = function(fileId, parentId, title, content, etag, callback) {
         var result = undefined;
-        var task = asyncRunner.createTask();
+        var task = new AsyncTask();
         connect(task);
         authenticate(task);
         task.onRun(function() {
@@ -164,13 +164,13 @@ define([
         task.onError(function(error) {
             callback(error);
         });
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     googleHelper.checkChanges = function(lastChangeId, callback) {
         var changes = [];
         var newChangeId = lastChangeId || 0;
-        var task = asyncRunner.createTask();
+        var task = new AsyncTask();
         connect(task);
         authenticate(task);
         task.onRun(function() {
@@ -216,12 +216,12 @@ define([
         task.onError(function(error) {
             callback(error);
         });
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     googleHelper.downloadMetadata = function(ids, callback, skipAuth) {
         var result = [];
-        var task = asyncRunner.createTask();
+        var task = new AsyncTask();
         connect(task);
         if(!skipAuth) {
             authenticate(task);
@@ -270,12 +270,12 @@ define([
         task.onError(function(error) {
             callback(error);
         });
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     googleHelper.downloadContent = function(objects, callback, skipAuth) {
         var result = [];
-        var task = asyncRunner.createTask();
+        var task = new AsyncTask();
         // Add some time for user to choose his files
         task.timeout = ASYNC_TASK_LONG_TIMEOUT;
         connect(task);
@@ -338,7 +338,7 @@ define([
         task.onError(function(error) {
             callback(error);
         });
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     function handleError(error, task) {
@@ -389,7 +389,9 @@ define([
                 timeout: AJAX_TIMEOUT
             }).done(function() {
                 google.load('picker', '1', {
-                    callback: task.chain
+                    callback: function() {
+                        task.chain();
+                    }
                 });
                 pickerLoaded = true;
             }).fail(function(jqXHR) {
@@ -411,7 +413,7 @@ define([
                 $(".modal-backdrop, .picker").remove();
             }
         }
-        var task = asyncRunner.createTask();
+        var task = new AsyncTask();
         connect(task);
         loadPicker(task);
         task.onRun(function() {
@@ -451,11 +453,11 @@ define([
             hidePicker();
             callback(error);
         });
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     googleHelper.uploadBlogger = function(blogUrl, blogId, postId, labelList, title, content, callback) {
-        var task = asyncRunner.createTask();
+        var task = new AsyncTask();
         connect(task);
         authenticate(task);
         task.onRun(function() {
@@ -541,7 +543,7 @@ define([
         task.onError(function(error) {
             callback(error);
         });
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     return googleHelper;

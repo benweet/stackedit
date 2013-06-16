@@ -1,53 +1,43 @@
+<blockquote>StackEdit is a free, open-source Markdown
+	editor based on PageDown, the Markdown library used by Stack Overflow
+	and the other Stack Exchange sites.</blockquote>
 
 <dl>
 	<dt>About:</dt>
 	<dd>
 		<a target="_blank" href="https://github.com/benweet/stackedit/">GitHub
 			project</a> / <a target="_blank"
-			href="https://github.com/benweet/stackedit/issues">issue tracker</a>
-	</dd>
-	<dd>
+			href="https://github.com/benweet/stackedit/issues">issue tracker</a><br />
 		<a target="_blank"
 			href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome
-			app</a> (thanks for your review!)
-	</dd>
-	<dd>
-		<a target="_blank" href="https://twitter.com/stackedit/">Follow on
-			Twitter</a>
-	</dd>
-	<dd>
-		<a target="_blank" href="https://www.facebook.com/stackedit/">Follow
-			on Facebook</a>
-	</dd>
-	<dd>
-		<a target="_blank"
+			app</a> (thanks for your review!)<br /> <a target="_blank"
+			href="https://twitter.com/stackedit/">Follow on Twitter</a><br /> <a
+			target="_blank" href="https://www.facebook.com/stackedit/">Follow
+			on Facebook</a><br /> <a target="_blank"
 			href="https://plus.google.com/110816046787593496375" rel="publisher">Follow
-			on Google+</a>
+			on Google+</a><br />
 	</dd>
 </dl>
 <dl>
 	<dt>Developers:</dt>
 	<dd>
 		<a target="_blank" href="http://www.benoitschweblin.com">Benoit
-			Schweblin</a><br />
+			Schweblin</a><br /> Pete Eigel (contributor)
 	</dd>
-	<dd>Pete Eigel (contributor)</dd>
 </dl>
 <dl>
 	<dt>Credit:</dt>
-	<% _.each(libraries, function(url, name) { %>
 	<dd>
-		<a target="_blank" href="<%= url %>"><%= name %></a>
+		<% _.each(libraries, function(url, name) { %> <a target="_blank"
+			href="<%= url %>"><%= name %></a><br /> <% }); %>
 	</dd>
-	<% }); %>
 </dl>
 <dl>
 	<dt>Related projects:</dt>
-	<% _.each(projects, function(url, name) { %>
 	<dd>
-		<a target="_blank" href="<%= url %>"><%= name %></a>
+		<% _.each(projects, function(url, name) { %> <a target="_blank"
+			href="<%= url %>"><%= name %></a><br /> <% }); %>
 	</dd>
-	<% }); %>
 </dl>
 <p>Copyright 2013 <a target="_blank"
 	href="http://www.benoitschweblin.com">Benoit Schweblin</a><br />

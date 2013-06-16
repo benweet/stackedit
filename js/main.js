@@ -6,6 +6,7 @@ requirejs.config({
         "underscore": "libs/underscore",
         "jgrowl": "libs/jgrowl",
         "mousetrap": "libs/mousetrap",
+        "toMarkdown": "libs/to-markdown",
         "text": "libs/text",
         "libs/MathJax": '../lib/MathJax/MathJax.js?config=TeX-AMS_HTML'
     },
@@ -21,6 +22,12 @@ requirejs.config({
         },
         'mousetrap': {
             exports: 'Mousetrap'
+        },
+        'toMarkdown': {
+            deps: [
+                'jquery'
+            ],
+            exports: 'toMarkdown'
         },
         'libs/jquery-ui': [
             'jquery'

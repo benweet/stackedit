@@ -10,9 +10,9 @@ define([
         settingsBloc: '<p>Populates the "Manage publication" dialog box.</p>'
     };
 
-    var fileMgr = undefined;
-    dialogManagePublication.onFileMgrCreated = function(fileMgrParameter) {
-        fileMgr = fileMgrParameter;
+    var extensionMgr = undefined;
+    dialogManagePublication.onExtensionMgrCreated = function(extensionMgrParameter) {
+        extensionMgr = extensionMgrParameter;
     };
 
     var fileDesc = undefined;
@@ -42,7 +42,8 @@ define([
                 publishDesc: publishDesc
             }));
             lineElement.append($(removeButtonTemplate).click(function() {
-                fileMgr.removePublish(publishAttributes);
+                fileDesc.removePublishLocation(publishAttributes);
+                extensionMgr.onPublishRemoved(publishFileDesc, publishAttributes);
             }));
             publishList.append(lineElement);
         });

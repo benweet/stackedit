@@ -223,7 +223,8 @@ define([
                     if(error) {
                         return;
                     }
-                    fileMgr.addSync(fileDesc, syncAttributes);
+                    fileDesc.addSyncLocation(syncAttributes);
+                    extensionMgr.onSyncExportSuccess(fileDesc, syncAttributes);
                 });
 
                 // Store input values as preferences for next time we open the
@@ -241,7 +242,8 @@ define([
                     if(error) {
                         return;
                     }
-                    fileMgr.addSync(fileDesc, syncAttributes);
+                    fileDesc.addSyncLocation(syncAttributes);
+                    extensionMgr.onSyncExportSuccess(fileDesc, syncAttributes);
                 });
             });
         });

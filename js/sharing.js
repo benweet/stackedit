@@ -5,10 +5,10 @@ define([
     "utils",
     "extensionMgr",
     "fileMgr",
-    "asyncRunner",
+    "classes/AsyncTask",
     "providers/downloadProvider",
     "providers/gistProvider"
-], function($, _, core, utils, extensionMgr, fileMgr, asyncRunner) {
+], function($, _, core, utils, extensionMgr, fileMgr, AsyncTask) {
 
     var sharing = {};
 
@@ -30,7 +30,7 @@ define([
             callback();
             return;
         }
-        var task = asyncRunner.createTask();
+        var task = new AsyncTask();
         var shortUrl = undefined;
         task.onRun(function() {
             if(core.isOffline === true) {
@@ -69,7 +69,7 @@ define([
         }
         task.onSuccess(onFinish);
         task.onError(onFinish);
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     core.onReady(function() {

@@ -18,6 +18,7 @@ var ASYNC_TASK_DEFAULT_TIMEOUT = 60000;
 var ASYNC_TASK_LONG_TIMEOUT = 180000;
 var SYNC_PERIOD = 180000;
 var USER_IDLE_THRESHOLD = 300000;
+var IMPORT_FILE_MAX_CONTENT_SIZE = 100000;
 var TEMPORARY_FILE_INDEX = "file.tempIndex";
 var WELCOME_DOCUMENT_TITLE = "Welcome document";
 var DOWNLOAD_PROXY_URL = "http://stackedit-download-proxy.herokuapp.com/";

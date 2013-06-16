@@ -3,8 +3,8 @@ define([
     "underscore",
     "core",
     "extensionMgr",
-    "asyncRunner"
-], function($, _, core, extensionMgr, asyncRunner) {
+    "classes/AsyncTask"
+], function($, _, core, extensionMgr, AsyncTask) {
 
     var client = undefined;
     var authenticated = false;
@@ -88,7 +88,7 @@ define([
 
     dropboxHelper.upload = function(path, content, callback) {
         var result = undefined;
-        var task = asyncRunner.createTask();
+        var task = new AsyncTask();
         connect(task);
         authenticate(task);
         task.onRun(function() {
@@ -111,13 +111,13 @@ define([
         task.onError(function(error) {
             callback(error);
         });
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     dropboxHelper.checkChanges = function(lastChangeId, callback) {
         var changes = [];
         var newChangeId = lastChangeId || 0;
-        var task = asyncRunner.createTask();
+        var task = new AsyncTask();
         connect(task);
         authenticate(task);
         task.onRun(function() {
@@ -148,12 +148,12 @@ define([
         task.onError(function(error) {
             callback(error);
         });
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     dropboxHelper.downloadMetadata = function(paths, callback) {
         var result = [];
-        var task = asyncRunner.createTask();
+        var task = new AsyncTask();
         connect(task);
         authenticate(task);
         task.onRun(function() {
@@ -181,12 +181,12 @@ define([
         task.onError(function(error) {
             callback(error);
         });
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     dropboxHelper.downloadContent = function(objects, callback) {
         var result = [];
-        var task = asyncRunner.createTask();
+        var task = new AsyncTask();
         connect(task);
         authenticate(task);
         task.onRun(function() {
@@ -229,7 +229,7 @@ define([
         task.onError(function(error) {
             callback(error);
         });
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     function handleError(error, task) {
@@ -299,7 +299,7 @@ define([
 
     dropboxHelper.picker = function(callback) {
         var paths = [];
-        var task = asyncRunner.createTask();
+        var task = new AsyncTask();
         // Add some time for user to choose his files
         task.timeout = ASYNC_TASK_LONG_TIMEOUT;
         connect(task);
@@ -328,7 +328,7 @@ define([
         task.onError(function(error) {
             callback(error);
         });
-        asyncRunner.addTask(task);
+        task.enqueue();
     };
 
     return dropboxHelper;

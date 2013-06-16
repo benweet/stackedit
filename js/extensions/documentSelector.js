@@ -38,6 +38,7 @@ define([
     var liMap = undefined;
     var liArray = undefined;
     var sortFunction = undefined;
+    var selectFileDesc = undefined;
     var buildSelector = function() {
 
         function composeTitle(fileDesc) {
@@ -68,23 +69,17 @@ define([
             });
             var li = $("<li>").append(a);
             liMap[fileDesc.fileIndex] = li;
+            if(fileDesc === selectFileDesc) {
+                li.addClass("disabled");
+            }
             $("#file-selector").append(li);
         });
         liArray = _.values(liMap);
     };
 
-    var selectFileDesc = undefined;
     documentSelector.onFileSelected = function(fileDesc) {
         selectFileDesc = fileDesc;
         buildSelector();
-        $("#file-selector li:not(.stick)").removeClass("disabled");
-        var li = liMap[fileDesc.fileIndex];
-        if(li === undefined) {
-            // It means that we are showing a temporary file (not in the
-            // selector)
-            return;
-        }
-        li.addClass("disabled");
     };
 
     documentSelector.onFileCreated = buildSelector;

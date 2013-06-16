@@ -31,7 +31,6 @@ define([
         syncAttributes.contentCRC = utils.crc32(content);
         syncAttributes.titleCRC = utils.crc32(title);
         syncAttributes.syncIndex = createSyncIndex(id);
-        utils.storeAttributes(syncAttributes);
         return syncAttributes;
     }
 
@@ -179,7 +178,8 @@ define([
                     // File deleted
                     if(change.deleted === true) {
                         extensionMgr.onError('"' + localTitle + '" has been removed from Google Drive.');
-                        fileMgr.removeSync(syncAttributes);
+                        fileDesc.removeSyncLocation(syncAttributes);
+                        extensionMgr.onSyncRemoved(fileDesc, syncAttributes);
                         return;
                     }
                     var localTitleChanged = syncAttributes.titleCRC != utils.crc32(localTitle);
@@ -200,11 +200,13 @@ define([
                     // If file title changed
                     if(fileTitleChanged && remoteTitleChanged === true) {
                         fileDesc.title = file.title;
+                        extensionMgr.onTitleChanged(fileDesc);
                         extensionMgr.onMessage('"' + localTitle + '" has been renamed to "' + file.title + '" on Google Drive.');
                     }
                     // If file content changed
                     if(fileContentChanged && remoteContentChanged === true) {
                         fileDesc.content = file.content;
+                        extensionMgr.onContentChanged(fileDesc);
                         extensionMgr.onMessage('"' + file.title + '" has been updated from Google Drive.');
                         if(fileMgr.isCurrentFile(fileDesc)) {
                             fileMgr.selectFile(); // Refresh editor

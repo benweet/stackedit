@@ -39,7 +39,6 @@ define([
         syncAttributes.version = versionTag;
         syncAttributes.contentCRC = utils.crc32(content);
         syncAttributes.syncIndex = createSyncIndex(path);
-        utils.storeAttributes(syncAttributes);
         return syncAttributes;
     }
 
@@ -184,7 +183,8 @@ define([
                     // File deleted
                     if(change.wasRemoved === true) {
                         extensionMgr.onError('"' + localTitle + '" has been removed from Dropbox.');
-                        fileMgr.removeSync(syncAttributes);
+                        fileDesc.removeSyncLocation(syncAttributes);
+                        extensionMgr.onSyncRemoved(fileDesc, syncAttributes);
                         return;
                     }
                     var localContent = fileDesc.content;
@@ -201,6 +201,7 @@ define([
                     // If file content changed
                     if(fileContentChanged && remoteContentChanged === true) {
                         fileDesc.content = file.content;
+                        extensionMgr.onContentChanged(fileDesc);
                         extensionMgr.onMessage('"' + localTitle + '" has been updated from Dropbox.');
                         if(fileMgr.isCurrentFile(fileDesc)) {
                             fileMgr.selectFile(); // Refresh editor

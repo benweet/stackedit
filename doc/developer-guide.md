@@ -66,7 +66,6 @@ The `publisher` module is responsible for:
 A [`provider`][6] module can be associated with the `publisher` module if it implements the following functions:
 
 - `newPublishAttributes()`: returns a new [`publishAttributes`][7] object in order to create a new publish location
-
 - `publish()`: performs publishing of one publish location
 
 #### publishAttributes

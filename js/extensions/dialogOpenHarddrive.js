@@ -95,7 +95,7 @@ define([
             }
             content = converter.makeMd(content);
             if(content === undefined) {
-                extensionMgr.onError(importedFile.name + " is not a valid HTML file.");
+                extensionMgr.onError("Invalid HTML code.");
                 return;
             }
             var fileDesc = fileMgr.createFile(undefined, content);

@@ -63,9 +63,10 @@ The `publisher` module is responsible for:
 
 #### publisher's providers
 
-A `provider` module can be associated with the `publisher` module if it implements the following functions:
+A [`provider`][6] module can be associated with the `publisher` module if it implements the following functions:
 
-- `newPublishAttributes()`: returns a new [`publishAttributes`][6] object in order to create a new publish location
+- `newPublishAttributes()`: returns a new [`publishAttributes`][7] object in order to create a new publish location
+
 - `publish()`: performs publishing of one publish location
 
 #### publishAttributes
@@ -73,24 +74,17 @@ A `provider` module can be associated with the `publisher` module if it implemen
 A `publishAttributes` object is an object that describes a publish location. Attributes list differs from one provider to another except for the following attributes:
 
 - `publishIndex`: the unique index of the publish location
-- `provider`: the `provider` module that handles the publish location
+- `provider`: the [`provider`][6] module that handles the publish location
 - `format`: the publishing format for the publish location. It can be:
 	- `markdown` for Markdown format
 	- `html` for HTML format
 	- `template` for template format
 
 
+----------
 
 
-
-
-
-
-
-
-
-
-
+### provider
 
 
 
@@ -105,4 +99,5 @@ A `publishAttributes` object is an object that describes a publish location. Att
   [3]: http://en.wikipedia.org/wiki/Asynchronous_module_definition "Asynchronous module definition"
   [4]: http://layout.jquery-dev.net/ "UI Layout"
   [5]: https://code.google.com/p/pagedown/ "PageDown"
-  [6]: #publishattributes
+  [6]: #provider
+  [7]: #publishattributes

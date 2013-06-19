@@ -5498,7 +5498,7 @@ input[readonly],select[readonly],textarea[readonly] {
 #extension-preview-buttons,
 #extension-preview-buttons .dropdown-menu {
     position: fixed;
-    right: 30px;
+    right: 25px;
     top: inherit;
     z-index: 1;
 }
@@ -5514,7 +5514,7 @@ input[readonly],select[readonly],textarea[readonly] {
 	margin: 5px 0 0;
 }
 #extension-preview-buttons>.btn-group {
-	margin: 0;
+	margin: 0 0 0 1px;
 }
 #extension-buttons>.btn-group>.btn,
 #extension-preview-buttons>.btn-group>.btn {

@@ -764,19 +764,19 @@ function css_browser_selector(e) {
  }
  function E(e) {
   var t = X, n = xn[e];
-  return n || (n = I(e, t), "none" !== n && n || (un = (un || lt("<iframe frameborder='0' width='0' height='0'/>").css("cssText", "display:block !important")).appendTo(t.documentElement), 
+  return n || (n = P(e, t), "none" !== n && n || (un = (un || lt("<iframe frameborder='0' width='0' height='0'/>").css("cssText", "display:block !important")).appendTo(t.documentElement), 
   t = (un[0].contentWindow || un[0].contentDocument).document, t.write("<!doctype html><html><body>"), 
-  t.close(), n = I(e, t), un.detach()), xn[e] = n), n;
+  t.close(), n = P(e, t), un.detach()), xn[e] = n), n;
  }
- function I(e, t) {
+ function P(e, t) {
   var n = lt(t.createElement(e)).appendTo(t.body), i = lt.css(n[0], "display");
   return n.remove(), i;
  }
- function P(e, t, n, i) {
+ function I(e, t, n, i) {
   var o;
   if (lt.isArray(t)) lt.each(t, function(t, o) {
-   n || En.test(e) ? i(e, o) : P(e + "[" + ("object" == typeof o ? t : "") + "]", o, n, i);
-  }); else if (n || "object" !== lt.type(t)) i(e, t); else for (o in t) P(e + "[" + o + "]", t[o], n, i);
+   n || En.test(e) ? i(e, o) : I(e + "[" + ("object" == typeof o ? t : "") + "]", o, n, i);
+  }); else if (n || "object" !== lt.type(t)) i(e, t); else for (o in t) I(e + "[" + o + "]", t[o], n, i);
  }
  function $(e) {
   return function(t, n) {
@@ -1490,7 +1490,7 @@ function css_browser_selector(e) {
    return l(), r.promise(n);
   }
  });
- var _t, Et, It = /[\t\r\n]/g, Pt = /\r/g, $t = /^(?:input|select|textarea|button|object)$/i, zt = /^(?:a|area)$/i, Nt = /^(?:checked|selected|autofocus|autoplay|async|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped)$/i, Rt = /^(?:checked|selected)$/i, Lt = lt.support.getSetAttribute, At = lt.support.input;
+ var _t, Et, Pt = /[\t\r\n]/g, It = /\r/g, $t = /^(?:input|select|textarea|button|object)$/i, zt = /^(?:a|area)$/i, Nt = /^(?:checked|selected|autofocus|autoplay|async|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped)$/i, Rt = /^(?:checked|selected)$/i, Lt = lt.support.getSetAttribute, At = lt.support.input;
  lt.fn.extend({
   attr: function(e, t) {
    return lt.access(this, lt.attr, e, t, arguments.length > 1);
@@ -1515,7 +1515,7 @@ function css_browser_selector(e) {
    if (lt.isFunction(e)) return this.each(function(t) {
     lt(this).addClass(e.call(this, t, this.className));
    });
-   if (l) for (t = (e || "").match(ut) || []; a > s; s++) if (n = this[s], i = 1 === n.nodeType && (n.className ? (" " + n.className + " ").replace(It, " ") : " ")) {
+   if (l) for (t = (e || "").match(ut) || []; a > s; s++) if (n = this[s], i = 1 === n.nodeType && (n.className ? (" " + n.className + " ").replace(Pt, " ") : " ")) {
     for (r = 0; o = t[r++]; ) 0 > i.indexOf(" " + o + " ") && (i += o + " ");
     n.className = lt.trim(i);
    }
@@ -1526,7 +1526,7 @@ function css_browser_selector(e) {
    if (lt.isFunction(e)) return this.each(function(t) {
     lt(this).removeClass(e.call(this, t, this.className));
    });
-   if (l) for (t = (e || "").match(ut) || []; a > s; s++) if (n = this[s], i = 1 === n.nodeType && (n.className ? (" " + n.className + " ").replace(It, " ") : "")) {
+   if (l) for (t = (e || "").match(ut) || []; a > s; s++) if (n = this[s], i = 1 === n.nodeType && (n.className ? (" " + n.className + " ").replace(Pt, " ") : "")) {
     for (r = 0; o = t[r++]; ) for (;i.indexOf(" " + o + " ") >= 0; ) i = i.replace(" " + o + " ", " ");
     n.className = e ? lt.trim(i) : "";
    }
@@ -1543,7 +1543,7 @@ function css_browser_selector(e) {
    });
   },
   hasClass: function(e) {
-   for (var t = " " + e + " ", n = 0, i = this.length; i > n; n++) if (1 === this[n].nodeType && (" " + this[n].className + " ").replace(It, " ").indexOf(t) >= 0) return !0;
+   for (var t = " " + e + " ", n = 0, i = this.length; i > n; n++) if (1 === this[n].nodeType && (" " + this[n].className + " ").replace(Pt, " ").indexOf(t) >= 0) return !0;
    return !1;
   },
   val: function(e) {
@@ -1556,7 +1556,7 @@ function css_browser_selector(e) {
      })), i = lt.valHooks[this.type] || lt.valHooks[this.nodeName.toLowerCase()], i && "set" in i && i.set(this, r, "value") !== t || (this.value = r));
     });
     if (r) return i = lt.valHooks[r.type] || lt.valHooks[r.nodeName.toLowerCase()], 
-    i && "get" in i && (n = i.get(r, "value")) !== t ? n : (n = r.value, "string" == typeof n ? n.replace(Pt, "") : null == n ? "" : n);
+    i && "get" in i && (n = i.get(r, "value")) !== t ? n : (n = r.value, "string" == typeof n ? n.replace(It, "") : null == n ? "" : n);
    }
   }
  }), lt.extend({
@@ -2157,7 +2157,7 @@ function css_browser_selector(e) {
    }, s, !0), c = f(function(e) {
     return Z.call(t, e) > -1;
    }, s, !0), u = [ function(e, n, i) {
-    return !r && (i || n !== P) || ((t = n).nodeType ? l(e, n, i) : c(e, n, i));
+    return !r && (i || n !== I) || ((t = n).nodeType ? l(e, n, i) : c(e, n, i));
    } ]; o > a; a++) if (n = S.relative[e[a].type]) u = [ f(h(u), n) ]; else {
     if (n = S.filter[e[a].type].apply(null, e[a].matches), n[j]) {
      for (i = ++a; o > i && !S.relative[e[i].type]; i++) ;
@@ -2169,8 +2169,8 @@ function css_browser_selector(e) {
   }
   function y(e, t) {
    var n = 0, i = t.length > 0, r = e.length > 0, a = function(o, a, l, c, u) {
-    var d, p, f, h = [], m = 0, v = "0", y = o && [], b = null != u, w = P, x = o || r && S.find.TAG("*", u && a.parentNode || a), C = B += null == w ? 1 : Math.random() || .1;
-    for (b && (P = a !== z && a, k = n); null != (d = x[v]); v++) {
+    var d, p, f, h = [], m = 0, v = "0", y = o && [], b = null != u, w = I, x = o || r && S.find.TAG("*", u && a.parentNode || a), C = B += null == w ? 1 : Math.random() || .1;
+    for (b && (I = a !== z && a, k = n); null != (d = x[v]); v++) {
      if (r && d) {
       for (p = 0; f = e[p++]; ) if (f(d, a, l)) {
        c.push(d);
@@ -2188,7 +2188,7 @@ function css_browser_selector(e) {
      }
      J.apply(c, h), b && !o && h.length > 0 && m + t.length > 1 && s.uniqueSort(c);
     }
-    return b && (B = C, P = w), y;
+    return b && (B = C, I = w), y;
    };
    return i ? o(a) : a;
   }
@@ -2211,7 +2211,7 @@ function css_browser_selector(e) {
    return E(e, c)(i, t, R, n, ft.test(e)), n;
   }
   function x() {}
-  var C, k, S, T, _, E, I, P, $, z, N, R, L, A, O, M, D, j = "sizzle" + -new Date(), H = e.document, F = {}, B = 0, W = 0, q = i(), G = i(), U = i(), V = typeof t, X = 1 << 31, Y = [], K = Y.pop, J = Y.push, Q = Y.slice, Z = Y.indexOf || function(e) {
+  var C, k, S, T, _, E, P, I, $, z, N, R, L, A, O, M, D, j = "sizzle" + -new Date(), H = e.document, F = {}, B = 0, W = 0, q = i(), G = i(), U = i(), V = typeof t, X = 1 << 31, Y = [], K = Y.pop, J = Y.push, Q = Y.slice, Z = Y.indexOf || function(e) {
    for (var t = 0, n = this.length; n > t; t++) if (this[t] === e) return t;
    return -1;
   }, et = "[\\x20\\t\\r\\n\\f]", tt = "(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+", nt = tt.replace("w", "w#"), it = "([*^$|!~]?=)", ot = "\\[" + et + "*(" + tt + ")" + et + "*(?:" + it + et + "*(?:(['\"])((?:\\\\.|[^\\\\])*?)\\3|(" + nt + ")|)|)" + et + "*\\]", rt = ":(" + tt + ")(?:\\(((['\"])((?:\\\\.|[^\\\\])*?)\\3|((?:\\\\.|[^\\\\()[\\]]|" + ot.replace(3, 8) + ")*)|.*)\\)|)", st = RegExp("^" + et + "+|((?:^|[^\\\\])(?:\\\\.)*)" + et + "+$", "g"), at = RegExp("^" + et + "*," + et + "*"), ct = RegExp("^" + et + "*([\\x20\\t\\r\\n\\f>+~])" + et + "*"), ut = RegExp(rt), dt = RegExp("^" + nt + "$"), pt = {
@@ -2315,17 +2315,17 @@ function css_browser_selector(e) {
     return !1;
    }, D = N.compareDocumentPosition ? function(e, t) {
     var n;
-    return e === t ? (I = !0, 0) : (n = t.compareDocumentPosition && e.compareDocumentPosition && e.compareDocumentPosition(t)) ? 1 & n || e.parentNode && 11 === e.parentNode.nodeType ? e === i || M(H, e) ? -1 : t === i || M(H, t) ? 1 : 0 : 4 & n ? -1 : 1 : e.compareDocumentPosition ? -1 : 1;
+    return e === t ? (P = !0, 0) : (n = t.compareDocumentPosition && e.compareDocumentPosition && e.compareDocumentPosition(t)) ? 1 & n || e.parentNode && 11 === e.parentNode.nodeType ? e === i || M(H, e) ? -1 : t === i || M(H, t) ? 1 : 0 : 4 & n ? -1 : 1 : e.compareDocumentPosition ? -1 : 1;
    } : function(e, t) {
     var n, o = 0, r = e.parentNode, s = t.parentNode, l = [ e ], c = [ t ];
-    if (e === t) return I = !0, 0;
+    if (e === t) return P = !0, 0;
     if (!r || !s) return e === i ? -1 : t === i ? 1 : r ? -1 : s ? 1 : 0;
     if (r === s) return a(e, t);
     for (n = e; n = n.parentNode; ) l.unshift(n);
     for (n = t; n = n.parentNode; ) c.unshift(n);
     for (;l[o] === c[o]; ) o++;
     return o ? a(l[o], c[o]) : l[o] === H ? -1 : c[o] === H ? 1 : 0;
-   }, I = !1, [ 0, 0 ].sort(D), F.detectDuplicates = I, z) : z;
+   }, P = !1, [ 0, 0 ].sort(D), F.detectDuplicates = P, z) : z;
   }, s.matches = function(e, t) {
    return s(e, null, null, t);
   }, s.matchesSelector = function(e, t) {
@@ -2343,7 +2343,7 @@ function css_browser_selector(e) {
    throw Error("Syntax error, unrecognized expression: " + e);
   }, s.uniqueSort = function(e) {
    var t, n = [], i = 1, o = 0;
-   if (I = !F.detectDuplicates, e.sort(D), I) {
+   if (P = !F.detectDuplicates, e.sort(D), P) {
     for (;t = e[i]; i++) t === e[i - 1] && (o = n.push(i));
     for (;o--; ) e.splice(n[o], 1);
    }
@@ -3013,7 +3013,7 @@ function css_browser_selector(e) {
    }
   }, vn.test(e) || (lt.cssHooks[e + t].set = S);
  });
- var _n = /%20/g, En = /\[\]$/, In = /\r?\n/g, Pn = /^(?:submit|button|image|reset|file)$/i, $n = /^(?:input|select|textarea|keygen)/i;
+ var _n = /%20/g, En = /\[\]$/, Pn = /\r?\n/g, In = /^(?:submit|button|image|reset|file)$/i, $n = /^(?:input|select|textarea|keygen)/i;
  lt.fn.extend({
   serialize: function() {
    return lt.param(this.serializeArray());
@@ -3024,17 +3024,17 @@ function css_browser_selector(e) {
     return e ? lt.makeArray(e) : this;
    }).filter(function() {
     var e = this.type;
-    return this.name && !lt(this).is(":disabled") && $n.test(this.nodeName) && !Pn.test(e) && (this.checked || !tn.test(e));
+    return this.name && !lt(this).is(":disabled") && $n.test(this.nodeName) && !In.test(e) && (this.checked || !tn.test(e));
    }).map(function(e, t) {
     var n = lt(this).val();
     return null == n ? null : lt.isArray(n) ? lt.map(n, function(e) {
      return {
       name: t.name,
-      value: e.replace(In, "\r\n")
+      value: e.replace(Pn, "\r\n")
      };
     }) : {
      name: t.name,
-     value: n.replace(In, "\r\n")
+     value: n.replace(Pn, "\r\n")
     };
    }).get();
   }
@@ -3044,7 +3044,7 @@ function css_browser_selector(e) {
   };
   if (n === t && (n = lt.ajaxSettings && lt.ajaxSettings.traditional), lt.isArray(e) || e.jquery && !lt.isPlainObject(e)) lt.each(e, function() {
    r(this.name, this.value);
-  }); else for (i in e) P(i, e[i], n, r);
+  }); else for (i in e) I(i, e[i], n, r);
   return o.join("&").replace(_n, "+");
  }, lt.each("blur focus focusin focusout load resize scroll unload click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup error contextmenu".split(" "), function(e, t) {
   lt.fn[t] = function(e, n) {
@@ -3675,7 +3675,7 @@ function css_browser_selector(e) {
    return e.index < t.index ? -1 : 1;
   }), "value");
  };
- var I = function(e, t, n, i) {
+ var P = function(e, t, n, i) {
   var o = {}, r = E(t || k.identity);
   return S(e, function(t, s) {
    var a = r.call(n, t, s, e);
@@ -3683,11 +3683,11 @@ function css_browser_selector(e) {
   }), o;
  };
  k.groupBy = function(e, t, n) {
-  return I(e, t, n, function(e, t, n) {
+  return P(e, t, n, function(e, t, n) {
    (k.has(e, t) ? e[t] : e[t] = []).push(n);
   });
  }, k.countBy = function(e, t, n) {
-  return I(e, t, n, function(e, t) {
+  return P(e, t, n, function(e, t) {
    k.has(e, t) || (e[t] = 0), e[t]++;
   });
  }, k.sortedIndex = function(e, t, n, i) {
@@ -3712,13 +3712,13 @@ function css_browser_selector(e) {
  }, k.compact = function(e) {
   return k.filter(e, k.identity);
  };
- var P = function(e, t, n) {
+ var I = function(e, t, n) {
   return S(e, function(e) {
-   k.isArray(e) ? t ? s.apply(n, e) : P(e, t, n) : n.push(e);
+   k.isArray(e) ? t ? s.apply(n, e) : I(e, t, n) : n.push(e);
   }), n;
  };
  k.flatten = function(e, t) {
-  return P(e, t, []);
+  return I(e, t, []);
  }, k.without = function(e) {
   return k.difference(e, a.call(arguments, 1));
  }, k.uniq = k.unique = function(e, t, n, i) {
@@ -4738,9 +4738,9 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   r = e, s(e);
  }, o.onNewPublishSuccess = s, o.onPublishRemoved = s, o;
 }), define("text!html/buttonStat.html", [], function() {
- return '<button class="btn dropdown-toggle" data-toggle="dropdown"\r\n	title="Document\'s statistics">\r\n	<i class="icon-stat"></i>\r\n</button>\r\n<div id="statistics-container" class="dropdown-menu pull-right">\r\n	<h3 class="muted">Statistics</h3>\r\n	<div class="stat">\r\n		<div>\r\n			<%= name1 %>: <span id="span-stat-value1"></span>\r\n		</div>\r\n		<div>\r\n			<%= name2 %>: <span id="span-stat-value2"></span>\r\n		</div>\r\n		<div>\r\n			<%= name3 %>: <span id="span-stat-value3"></span>\r\n		</div>\r\n	</div>\r\n</div>\r\n';
+ return '<button class="btn dropdown-toggle" data-toggle="dropdown"\r\n	title="Document statistics">\r\n	<i class="icon-stat"></i>\r\n</button>\r\n<div class="dropdown-menu pull-right">\r\n	<h3 class="muted">Statistics</h3>\r\n	<div class="stat">\r\n		<div>\r\n			<%= name1 %>: <span id="span-stat-value1"></span>\r\n		</div>\r\n		<div>\r\n			<%= name2 %>: <span id="span-stat-value2"></span>\r\n		</div>\r\n		<div>\r\n			<%= name3 %>: <span id="span-stat-value3"></span>\r\n		</div>\r\n	</div>\r\n</div>\r\n';
 }), define("text!html/buttonStatSettingsBloc.html", [], function() {
- return '<p>Adds a "Document\'s statistics" button in the navigation bar.</p>\r\n<div class="form-horizontal">\r\n	<div class="control-group form-inline">\r\n		<label class="label-text" for="input-stat-name1">Title</label> <input\r\n			id="input-stat-name1" type="text" class="input-small"> <label\r\n			class="label-text" for="input-stat-value1">RegExp</label> <input\r\n			id="input-stat-value1" type="text" class="span2">\r\n	</div>\r\n	<div class="control-group form-inline">\r\n		<label class="label-text" for="input-stat-name2">Title</label> <input\r\n			id="input-stat-name2" type="text" class="input-small"> <label\r\n			class="label-text" for="input-stat-value2">RegExp</label> <input\r\n			id="input-stat-value2" type="text" class="span2">\r\n	</div>\r\n	<div class="control-group form-inline">\r\n		<label class="label-text" for="input-stat-name3">Title</label> <input\r\n			id="input-stat-name3" type="text" class="input-small"> <label\r\n			class="label-text" for="input-stat-value3">RegExp</label> <input\r\n			id="input-stat-value3" type="text" class="span2">\r\n	</div>\r\n</div>\r\n';
+ return '<p>Adds a "Document statistics" button over the preview.</p>\r\n<div class="form-horizontal">\r\n	<div class="control-group form-inline">\r\n		<label class="label-text" for="input-stat-name1">Title</label> <input\r\n			id="input-stat-name1" type="text" class="input-small"> <label\r\n			class="label-text" for="input-stat-value1">RegExp</label> <input\r\n			id="input-stat-value1" type="text" class="span2">\r\n	</div>\r\n	<div class="control-group form-inline">\r\n		<label class="label-text" for="input-stat-name2">Title</label> <input\r\n			id="input-stat-name2" type="text" class="input-small"> <label\r\n			class="label-text" for="input-stat-value2">RegExp</label> <input\r\n			id="input-stat-value2" type="text" class="span2">\r\n	</div>\r\n	<div class="control-group form-inline">\r\n		<label class="label-text" for="input-stat-name3">Title</label> <input\r\n			id="input-stat-name3" type="text" class="input-small"> <label\r\n			class="label-text" for="input-stat-value3">RegExp</label> <input\r\n			id="input-stat-value3" type="text" class="span2">\r\n	</div>\r\n</div>\r\n';
 }), define("extensions/buttonStat", [ "jquery", "underscore", "utils", "text!html/buttonStat.html", "text!html/buttonStatSettingsBloc.html" ], function(e, t, n, i, o) {
  var r = {
   extensionId: "buttonStat",
@@ -4764,7 +4764,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   t.each([ 1, 2, 3 ], function(t) {
    e["name" + t] = n.getInputTextValue("#input-stat-name" + t, i), e["value" + t] = n.getInputRegExpValue("#input-stat-value" + t, i);
   });
- }, r.onCreateButton = function() {
+ }, r.onCreatePreviewButton = function() {
   return e(t.template(i, r.config));
  }, r.onPreviewFinished = function() {
   var t = e("#wmd-preview").clone().find("script").remove().end().text();
@@ -4772,6 +4772,30 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   e("#span-stat-value2").text((t.match(RegExp(r.config.value2, "g")) || []).length), 
   e("#span-stat-value3").text((t.match(RegExp(r.config.value3, "g")) || []).length);
  }, r;
+}), define("text!html/buttonHtmlCode.html", [], function() {
+ return '<button class="btn dropdown-toggle action-html-code" data-toggle="dropdown"\r\n	title="HTML code">\r\n	<i class="icon-code"></i>\r\n</button>\r\n<div class="dropdown-menu pull-right">\r\n	<h3 class="muted">HTML code</h3>\r\n	<textarea id="input-html-code"></textarea>\r\n</div>\r\n';
+}), define("extensions/buttonHtmlCode", [ "jquery", "text!html/buttonHtmlCode.html" ], function(e, t) {
+ var n = {
+  extensionId: "buttonHtmlCode",
+  extensionName: 'Button "HTML code"',
+  optional: !0,
+  settingsBloc: '<p>Adds a "HTML code" button over the preview.</p>'
+ };
+ return n.onCreatePreviewButton = function() {
+  return e(t);
+ }, n.onPreviewFinished = function() {
+  e("#input-html-code").val(e("#wmd-preview").html());
+ }, n.onReady = function() {
+  e("#input-html-code").click(function(e) {
+   e.stopPropagation();
+  }), e(".action-html-code").click(function() {
+   _.defer(function() {
+    e("#input-html-code").each(function() {
+     e(this).is(":hidden") || e(this).get(0).select();
+    });
+   });
+  });
+ }, n;
 }), define("text!html/dialogAbout.html", [], function() {
  return '<p>StackEdit is a free, open-source Markdown editor based on\r\n	PageDown, the Markdown library used by Stack Overflow and the other\r\n	Stack Exchange sites.</p>\r\n\r\n<dl>\r\n	<dt>About:</dt>\r\n	<dd>\r\n		<a target="_blank" href="https://github.com/benweet/stackedit/">GitHub\r\n			project</a> / <a target="_blank"\r\n			href="https://github.com/benweet/stackedit/issues">issue tracker</a><br />\r\n		<a target="_blank"\r\n			href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome\r\n			app</a> (thanks for your review!)<br /> <a target="_blank"\r\n			href="https://twitter.com/stackedit/">Follow on Twitter</a><br /> <a\r\n			target="_blank" href="https://www.facebook.com/stackedit/">Follow\r\n			on Facebook</a><br /> <a target="_blank"\r\n			href="https://plus.google.com/110816046787593496375" rel="publisher">Follow\r\n			on Google+</a><br />\r\n	</dd>\r\n</dl>\r\n<dl>\r\n	<dt>Developers:</dt>\r\n	<dd>\r\n		<a target="_blank" href="http://www.benoitschweblin.com">Benoit\r\n			Schweblin</a><br /> Pete Eigel (contributor)\r\n	</dd>\r\n</dl>\r\n<dl>\r\n	<dt>Credit:</dt>\r\n	<dd>\r\n		<% _.each(libraries, function(url, name) { %> <a target="_blank"\r\n			href="<%= url %>"><%= name %></a><br /> <% }); %>\r\n	</dd>\r\n</dl>\r\n<dl>\r\n	<dt>Related projects:</dt>\r\n	<dd>\r\n		<% _.each(projects, function(url, name) { %> <a target="_blank"\r\n			href="<%= url %>"><%= name %></a><br /> <% }); %>\r\n	</dd>\r\n</dl>\r\n<p>Copyright 2013 <a target="_blank"\r\n	href="http://www.benoitschweblin.com">Benoit Schweblin</a><br />\r\n	Licensed under an <a target="_blank"\r\n	href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a></p>\r\n';
 }), define("extensions/dialogAbout", [ "jquery", "underscore", "text!html/dialogAbout.html" ], function(e, t, n) {
@@ -4790,6 +4814,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   jGrowl: "https://github.com/stanlemon/jGrowl/",
   jQuery: "http://jquery.com/",
   "jQuery Mouse Wheel Plugin": "https://github.com/brandonaaron/jquery-mousewheel",
+  MathJax: "http://www.mathjax.org/",
   Mousetrap: "http://craig.is/killing/mice",
   PageDown: "https://code.google.com/p/pagedown/",
   "Pagedown-extra": "https://github.com/jmcmanus/pagedown-extra/",
@@ -5087,7 +5112,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   e = e || {};
   var t, n = !1;
   for (t in _) e[t] ? n = !0 : _[t] = 0;
-  n || (I = !1);
+  n || (P = !1);
  }
  function o(e, t, i, o, r, s) {
   var a, l, u = [], d = i.type;
@@ -5115,7 +5140,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
    if (a[r].level != u) continue;
    d = !0, l[a[r].seq] = 1, s(a[r].callback, n, a[r].combo);
   } else d || s(a[r].callback, n, a[r].combo);
-  n.type != I || c(e) || i(l);
+  n.type != P || c(e) || i(l);
  }
  function l(e) {
   "number" != typeof e.which && (e.which = e.keyCode);
@@ -5143,7 +5168,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  function f(e, n, o, r) {
   function a(t) {
    return function() {
-    I = t, ++_[e], u();
+    P = t, ++_[e], u();
    };
   }
   function l(n) {
@@ -5252,8 +5277,8 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   "return": "enter",
   escape: "esc",
   mod: /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "meta" : "ctrl"
- }, S = {}, T = {}, _ = {}, E = !1, I = !1, P = 1; 20 > P; ++P) w[111 + P] = "f" + P;
- for (P = 0; 9 >= P; ++P) w[P + 96] = P;
+ }, S = {}, T = {}, _ = {}, E = !1, P = !1, I = 1; 20 > I; ++I) w[111 + I] = "f" + I;
+ for (I = 0; 9 >= I; ++I) w[I + 96] = I;
  e(document, "keypress", l), e(document, "keydown", l), e(document, "keyup", l);
  var $ = {
   bind: function(e, t, n) {
@@ -5276,7 +5301,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  window.Mousetrap = $, "function" == typeof define && define.amd && define("mousetrap", $);
 }(), define("classes/FileDescriptor", [ "utils" ], function(e) {
  function t(e, t, n, i) {
-  this.fileIndex = e, this._title = t, this._editorScrollTop = parseInt(localStorage[e + ".editorScrollTop"]) || 0, 
+  this.fileIndex = e, this._title = t || localStorage[e + ".title"], this._editorScrollTop = parseInt(localStorage[e + ".editorScrollTop"]) || 0, 
   this._editorStart = parseInt(localStorage[e + ".editorStart"]) || 0, this._editorEnd = parseInt(localStorage[e + ".editorEnd"]) || 0, 
   this._previewScrollTop = parseInt(localStorage[e + ".previewScrollTop"]) || 0, this._selectTime = parseInt(localStorage[e + ".selectTime"]) || 0, 
   this.syncLocations = n || {}, this.publishLocations = i || {}, Object.defineProperty(this, "title", {
@@ -5391,11 +5416,11 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   i = "v7";
  }
  localStorage.version = i;
-}), define("fileSystem", [ "utils", "classes/FileDescriptor", "storage" ], function(e, t) {
- var n = {};
- return _.each(e.retrieveIndexArray("file.list"), function(e) {
-  n[e] = new t(e, localStorage[e + ".title"]);
- }), n;
+}), define("fileSystem", [ "underscore", "utils", "classes/FileDescriptor", "storage" ], function(e, t, n) {
+ var i = {};
+ return e.each(t.retrieveIndexArray("file.list"), function(e) {
+  i[e] = new n(e);
+ }), i;
 }), define("text!html/documentSelectorSettingsBloc.html", [], function() {
  return '<p>Builds the "Open document" dropdown menu.</p>\r\n<div class="form-horizontal">\r\n	<div class="control-group">\r\n		<label class="control-label" for="select-document-selector-orderby">Order\r\n			by</label>\r\n		<div class="controls">\r\n			<select id="select-document-selector-orderby">\r\n				<option value="title">Document title</option>\r\n				<option value="mru">Most recently used</option>\r\n			</select>\r\n		</div>\r\n	</div>\r\n	<div class="control-group">\r\n		<label class="control-label"\r\n			for="input-document-selector-shortcut-previous">"Previous"\r\n			shortcut <a href="http://craig.is/killing/mice#keys" target="_blank">(?)</a></label>\r\n		<div class="controls">\r\n			<input type="text" id="input-document-selector-shortcut-previous"\r\n				class="span2">\r\n		</div>\r\n	</div>\r\n	<div class="control-group">\r\n		<label class="control-label"\r\n			for="input-document-selector-shortcut-next">"Next"\r\n			shortcut <a href="http://craig.is/killing/mice#keys" target="_blank">(?)</a></label>\r\n		<div class="controls">\r\n			<input type="text" id="input-document-selector-shortcut-next"\r\n				class="span2">\r\n		</div>\r\n	</div>\r\n</div>';
 }), define("extensions/documentSelector", [ "jquery", "underscore", "utils", "mousetrap", "fileSystem", "text!html/documentSelectorSettingsBloc.html" ], function(e, t, n, i, o, r) {
@@ -5648,14 +5673,18 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
 }(this)), define("text!html/notificationsSettingsBloc.html", [], function() {
  return '<p>Shows notification messages in the bottom-right corner of the\r\n	screen.</p>\r\n<div class="form-horizontal">\r\n	<div class="control-group">\r\n		<label class="control-label" for="input-notifications-timeout">Timeout</label>\r\n		<div class="controls">\r\n			<input type="text" id="input-notifications-timeout"\r\n				class="input-mini"> <span class="help-inline">ms</span>\r\n		</div>\r\n	</div>\r\n</div>';
 }), define("extensions/notifications", [ "jquery", "underscore", "utils", "jgrowl", "text!html/notificationsSettingsBloc.html" ], function(e, t, n, i, o) {
- function r(e, n, o) {
-  if (logger.info(e), e) {
-   var r = e.indexOf("|");
-   (-1 === r || (e = e.substring(0, r))) && (o = o || {}, n = n || "icon-info-sign", 
+ function r() {
+  l === !1 && (i.defaults.life = a.config.timeout, i.defaults.closer = !1, i.defaults.closeTemplate = "", 
+  i.defaults.position = "bottom-right", l = !0);
+ }
+ function s(e, n, o) {
+  if (logger.info(e), r(), e) {
+   var s = e.indexOf("|");
+   (-1 === s || (e = e.substring(0, s))) && (o = o || {}, n = n || "icon-info-sign", 
    i("<i class='icon-white " + n + "'></i> " + t.escape(e), o));
   }
  }
- var s = {
+ var a = {
   extensionId: "notifications",
   extensionName: "Notifications",
   defaultConfig: {
@@ -5663,40 +5692,39 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   },
   settingsBloc: o
  };
- return s.onLoadSettings = function() {
-  n.setInputValue("#input-notifications-timeout", s.config.timeout);
- }, s.onSaveSettings = function(e, t) {
+ a.onLoadSettings = function() {
+  n.setInputValue("#input-notifications-timeout", a.config.timeout);
+ }, a.onSaveSettings = function(e, t) {
   e.timeout = n.getInputIntValue("#input-notifications-timeout", t, 1, 6e4);
- }, s.onReady = function() {
-  i.defaults.life = s.config.timeout, i.defaults.closer = !1, i.defaults.closeTemplate = "", 
-  i.defaults.position = "bottom-right";
- }, s.onMessage = function(e) {
-  r(e);
- }, s.onError = function(e) {
-  logger.error(e), t.isString(e) ? r(e, "icon-warning-sign") : t.isObject(e) && r(e.message, "icon-warning-sign");
- }, s.onOfflineChanged = function(t) {
-  t === !0 ? r("You are offline.", "icon-exclamation-sign msg-offline", {
+ };
+ var l = !1;
+ return a.onMessage = function(e) {
+  s(e);
+ }, a.onError = function(e) {
+  logger.error(e), t.isString(e) ? s(e, "icon-warning-sign") : t.isObject(e) && s(e.message, "icon-warning-sign");
+ }, a.onOfflineChanged = function(t) {
+  t === !0 ? s("You are offline.", "icon-exclamation-sign msg-offline", {
    sticky: !0,
    close: function() {
-    r("You are back online!", "icon-signal");
+    s("You are back online!", "icon-signal");
    }
   }) : e(".msg-offline").parents(".jGrowl-notification").trigger("jGrowl.beforeClose");
- }, s.onSyncImportSuccess = function(e, n) {
+ }, a.onSyncImportSuccess = function(e, n) {
   var i = t.map(e, function(e) {
    return e.title;
   }).join(", ");
-  r(i + " imported successfully from " + n.providerName + ".");
- }, s.onSyncExportSuccess = function(e, t) {
-  r('"' + e.title + '" will now be synchronized on ' + t.provider.providerName + ".");
- }, s.onSyncRemoved = function(e, t) {
-  r(t.provider.providerName + " synchronized location has been removed.");
- }, s.onPublishSuccess = function(e) {
-  r('"' + e.title + '" successfully published.');
- }, s.onNewPublishSuccess = function(e, t) {
-  r('"' + e.title + '" is now published on ' + t.provider.providerName + ".");
- }, s.onPublishRemoved = function(e, t) {
-  r(t.provider.providerName + " publish location has been removed.");
- }, s;
+  s(i + " imported successfully from " + n.providerName + ".");
+ }, a.onSyncExportSuccess = function(e, t) {
+  s('"' + e.title + '" will now be synchronized on ' + t.provider.providerName + ".");
+ }, a.onSyncRemoved = function(e, t) {
+  s(t.provider.providerName + " synchronized location has been removed.");
+ }, a.onPublishSuccess = function(e) {
+  s('"' + e.title + '" successfully published.');
+ }, a.onNewPublishSuccess = function(e, t) {
+  s('"' + e.title + '" is now published on ' + t.provider.providerName + ".");
+ }, a.onPublishRemoved = function(e, t) {
+  s(t.provider.providerName + " publish location has been removed.");
+ }, a;
 }), define("text!html/markdownExtraSettingsBloc.html", [], function() {
  return '<p>Adds extra features to the original Markdown syntax.</p>\r\n<div class="form-horizontal">\r\n	<div class="control-group">\r\n		<label class="control-label" for="input-markdownextra-prettify">Prettify\r\n			syntax highlighting</label>\r\n		<div class="controls">\r\n			<input type="checkbox" id="input-markdownextra-prettify">\r\n		</div>\r\n	</div>\r\n</div>\r\n';
 });
@@ -5835,14 +5863,14 @@ function() {
    var i = j[t], o = RegExp("(^[ \\t]*)(" + i + ")[ \\t]+([^\\r]+?(\\n+))(?=(~0|\\1(" + i + ")[ \\t]+))", "gm"), a = !1;
    return e = e.replace(o, function(e, t, i, o) {
     var l = o, c = /\n\n$/.test(l), u = c || l.search(/\n{2,}/) > -1;
-    return u || a ? l = r(I(l), !0) : (l = h(I(l), !0), l = l.replace(/\n$/, ""), n || (l = s(l))), 
+    return u || a ? l = r(P(l), !0) : (l = h(P(l), !0), l = l.replace(/\n$/, ""), n || (l = s(l))), 
     a = c, "<li>" + l + "</li>\n";
    }), e = e.replace(/~0/g, ""), M--, e;
   }
   function m(e) {
    return e += "~0", e = e.replace(/(?:\n\n|^\n?)((?:(?:[ ]{4}|\t).*\n+)+)(\n*[ ]{0,3}[^ \t\n]|(?=~0))/g, function(e, t, n) {
     var i = t, o = n;
-    return i = b(I(i)), i = P(i), i = i.replace(/^\n+/g, ""), i = i.replace(/\n+$/g, ""), 
+    return i = b(P(i)), i = I(i), i = i.replace(/^\n+/g, ""), i = i.replace(/\n+$/g, ""), 
     i = "<pre><code>" + i + "\n</code></pre>", "\n\n" + i + "\n\n" + o;
    }), e = e.replace(/~0/, "");
   }
@@ -5925,10 +5953,10 @@ function() {
     return String.fromCharCode(n);
    });
   }
-  function I(e) {
+  function P(e) {
    return e = e.replace(/^(\t|[ ]{1,4})/gm, "~0"), e = e.replace(/~0/g, "");
   }
-  function P(e) {
+  function I(e) {
    if (!/\t/.test(e)) return e;
    var t, n = [ "    ", "   ", "  ", " " ], i = 0;
    return e.replace(/[\n\t]/g, function(e, o) {
@@ -5961,7 +5989,7 @@ function() {
    if (L) throw Error("Recursive call to converter.makeHtml");
    return L = new i(), A = new i(), O = [], M = 0, n = R.preConversion(n), n = n.replace(/~/g, "~T"), 
    n = n.replace(/\$/g, "~D"), n = n.replace(/\r\n/g, "\n"), n = n.replace(/\r/g, "\n"), 
-   n = "\n\n" + n + "\n\n", n = P(n), n = n.replace(/^[ \t]+$/gm, ""), n = R.postNormalization(n), 
+   n = "\n\n" + n + "\n\n", n = I(n), n = n.replace(/^[ \t]+$/gm, ""), n = R.postNormalization(n), 
    n = t(n), n = e(n), n = r(n), n = E(n), n = n.replace(/~D/g, "$$"), n = n.replace(/~T/g, "~"), 
    n = R.postConversion(n), O = A = L = null, n;
   };
@@ -6141,11 +6169,11 @@ var prettyPrintOne, prettyPrint;
  }
  function r(e) {
   var t = [], n = [];
-  e.tripleQuotedStrings ? t.push([ P, /^(?:\'\'\'(?:[^\'\\]|\\[\s\S]|\'{1,2}(?=[^\']))*(?:\'\'\'|$)|\"\"\"(?:[^\"\\]|\\[\s\S]|\"{1,2}(?=[^\"]))*(?:\"\"\"|$)|\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$))/, null, "'\"" ]) : e.multiLineStrings ? t.push([ P, /^(?:\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$)|\`(?:[^\\\`]|\\[\s\S])*(?:\`|$))/, null, "'\"`" ]) : t.push([ P, /^(?:\'(?:[^\\\'\r\n]|\\.)*(?:\'|$)|\"(?:[^\\\"\r\n]|\\.)*(?:\"|$))/, null, "\"'" ]), 
-  e.verbatimStrings && n.push([ P, /^@\"(?:[^\"]|\"\")*(?:\"|$)/, null ]);
+  e.tripleQuotedStrings ? t.push([ I, /^(?:\'\'\'(?:[^\'\\]|\\[\s\S]|\'{1,2}(?=[^\']))*(?:\'\'\'|$)|\"\"\"(?:[^\"\\]|\\[\s\S]|\"{1,2}(?=[^\"]))*(?:\"\"\"|$)|\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$))/, null, "'\"" ]) : e.multiLineStrings ? t.push([ I, /^(?:\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$)|\`(?:[^\\\`]|\\[\s\S])*(?:\`|$))/, null, "'\"`" ]) : t.push([ I, /^(?:\'(?:[^\\\'\r\n]|\\.)*(?:\'|$)|\"(?:[^\\\"\r\n]|\\.)*(?:\"|$))/, null, "\"'" ]), 
+  e.verbatimStrings && n.push([ I, /^@\"(?:[^\"]|\"\")*(?:\"|$)/, null ]);
   var i = e.hashComments;
   i && (e.cStyleComments ? (i > 1 ? t.push([ z, /^#(?:##(?:[^#]|#(?!##))*(?:###|$)|.*)/, null, "#" ]) : t.push([ z, /^#(?:(?:define|e(?:l|nd)if|else|error|ifn?def|include|line|pragma|undef|warning)\b|[^\r\n]*)/, null, "#" ]), 
-  n.push([ P, /^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h(?:h|pp|\+\+)?|[a-z]\w*)>/, null ])) : t.push([ z, /^#[^\r\n]*/, null, "#" ])), 
+  n.push([ I, /^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h(?:h|pp|\+\+)?|[a-z]\w*)>/, null ])) : t.push([ z, /^#[^\r\n]*/, null, "#" ])), 
   e.cStyleComments && (n.push([ z, /^\/\/[^\r\n]*/, null ]), n.push([ z, /^\/\*[\s\S]*?(?:\*\/|$)/, null ]));
   var r = e.regexLiterals;
   if (r) {
@@ -6293,11 +6321,11 @@ var prettyPrintOne, prettyPrint;
      }
      if (!T) {
       n.className += " prettyprinted";
-      var I = r.lang;
-      if (!I) {
-       I = h.match(y);
-       var P;
-       !I && (P = i(n)) && C.test(P.tagName) && (I = P.className.match(y)), I && (I = I[1]);
+      var P = r.lang;
+      if (!P) {
+       P = h.match(y);
+       var I;
+       !P && (I = i(n)) && C.test(I.tagName) && (P = I.className.match(y)), P && (P = P[1]);
       }
       var $;
       if (x.test(n.tagName)) $ = 1; else {
@@ -6307,7 +6335,7 @@ var prettyPrintOne, prettyPrint;
       var L = r.linenums;
       (L = "true" === L || +L) || (L = h.match(/\blinenums\b(?::(\d+))?/), L = L ? L[1] && L[1].length ? +L[1] : !0 : !1), 
       L && s(n, L, $), m = {
-       langExtension: I,
+       langExtension: P,
        sourceNode: n,
        numberLines: L,
        pre: $
@@ -6328,7 +6356,7 @@ var prettyPrintOne, prettyPrint;
   var m, v = 0, y = /\blang(?:uage)?-([\w.]+)(?!\S)/, b = /\bprettyprint\b/, w = /\bprettyprinted\b/, x = /pre|xmp/i, C = /^code$/i, k = /^(?:pre|code|xmp)$/i, S = {};
   o();
  }
- var f = window, h = [ "break,continue,do,else,for,if,return,while" ], g = [ h, "auto,case,char,const,default,double,enum,extern,float,goto,inline,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile" ], m = [ g, "catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof" ], v = [ m, "alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,delegate,dynamic_cast,explicit,export,friend,generic,late_check,mutable,namespace,nullptr,property,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where" ], y = [ m, "abstract,assert,boolean,byte,extends,final,finally,implements,import,instanceof,interface,null,native,package,strictfp,super,synchronized,throws,transient" ], b = [ y, "as,base,by,checked,decimal,delegate,descending,dynamic,event,fixed,foreach,from,group,implicit,in,internal,into,is,let,lock,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where" ], w = "all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes", x = [ m, "debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN" ], C = "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END", k = [ h, "and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None" ], S = [ h, "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END" ], T = [ h, "as,assert,const,copy,drop,enum,extern,fail,false,fn,impl,let,log,loop,match,mod,move,mut,priv,pub,pure,ref,self,static,struct,true,trait,type,unsafe,use" ], _ = [ h, "case,done,elif,esac,eval,fi,function,in,local,set,then,until" ], E = [ v, b, x, C, k, S, _ ], I = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/, P = "str", $ = "kwd", z = "com", N = "typ", R = "lit", L = "pun", A = "pln", O = "tag", M = "dec", D = "src", j = "atn", H = "atv", F = "nocode", B = "(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*", W = /\S/, q = r({
+ var f = window, h = [ "break,continue,do,else,for,if,return,while" ], g = [ h, "auto,case,char,const,default,double,enum,extern,float,goto,inline,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile" ], m = [ g, "catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof" ], v = [ m, "alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,delegate,dynamic_cast,explicit,export,friend,generic,late_check,mutable,namespace,nullptr,property,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where" ], y = [ m, "abstract,assert,boolean,byte,extends,final,finally,implements,import,instanceof,interface,null,native,package,strictfp,super,synchronized,throws,transient" ], b = [ y, "as,base,by,checked,decimal,delegate,descending,dynamic,event,fixed,foreach,from,group,implicit,in,internal,into,is,let,lock,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where" ], w = "all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes", x = [ m, "debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN" ], C = "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END", k = [ h, "and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None" ], S = [ h, "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END" ], T = [ h, "as,assert,const,copy,drop,enum,extern,fail,false,fn,impl,let,log,loop,match,mod,move,mut,priv,pub,pure,ref,self,static,struct,true,trait,type,unsafe,use" ], _ = [ h, "case,done,elif,esac,eval,fi,function,in,local,set,then,until" ], E = [ v, b, x, C, k, S, _ ], P = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/, I = "str", $ = "kwd", z = "com", N = "typ", R = "lit", L = "pun", A = "pln", O = "tag", M = "dec", D = "src", j = "atn", H = "atv", F = "nocode", B = "(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*", W = /\S/, q = r({
   keywords: E,
   hashComments: !0,
   cStyleComments: !0,
@@ -6341,7 +6369,7 @@ var prettyPrintOne, prettyPrint;
   keywords: v,
   hashComments: !0,
   cStyleComments: !0,
-  types: I
+  types: P
  }), [ "c", "cc", "cpp", "cxx", "cyc", "m" ]), l(r({
   keywords: "null,true,false"
  }), [ "json" ]), l(r({
@@ -6349,7 +6377,7 @@ var prettyPrintOne, prettyPrint;
   hashComments: !0,
   cStyleComments: !0,
   verbatimStrings: !0,
-  types: I
+  types: P
  }), [ "cs" ]), l(r({
   keywords: y,
   cStyleComments: !0
@@ -6387,7 +6415,7 @@ var prettyPrintOne, prettyPrint;
   keywords: T,
   cStyleComments: !0,
   multilineStrings: !0
- }), [ "rc", "rs", "rust" ]), l(o([], [ [ P, /^[\s\S]+/ ] ]), [ "regex" ]);
+ }), [ "rc", "rs", "rust" ]), l(o([], [ [ I, /^[\s\S]+/ ] ]), [ "regex" ]);
  var U = f.PR = {
   createSimpleLexer: o,
   registerLangHandler: l,
@@ -6402,7 +6430,7 @@ var prettyPrintOne, prettyPrint;
   PR_PLAIN: A,
   PR_PUNCTUATION: L,
   PR_SOURCE: D,
-  PR_STRING: P,
+  PR_STRING: I,
   PR_TAG: O,
   PR_TYPE: N,
   prettyPrintOne: IN_GLOBAL_SCOPE ? f.prettyPrintOne = d : prettyPrintOne = d,
@@ -7784,7 +7812,7 @@ function(e) {
    });
   });
  };
-}(jQuery), define("libs/jquery.waitforimages", function() {}), define("extensionMgr", [ "jquery", "underscore", "utils", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/googleAnalytics", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdown-extra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o) {
+}(jQuery), define("libs/jquery.waitforimages", function() {}), define("extensionMgr", [ "jquery", "underscore", "utils", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/googleAnalytics", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdown-extra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o) {
  function r(e) {
   return t.chain(u).map(function(t) {
    return t.config.enabled && t[e];
@@ -7829,7 +7857,7 @@ function(e) {
    var s = o.onSaveSettings;
    s && s(r, i), e[o.extensionId] = r;
   });
- }, a("onReady"), a("onMessage"), a("onError"), a("onOfflineChanged"), a("onAsyncRunning", !0), 
+ }, a("onMessage"), a("onError"), a("onOfflineChanged"), a("onAsyncRunning", !0), 
  a("onPeriodicRun", !0), a("onFileMgrCreated"), a("onSynchronizerCreated"), a("onPublisherCreated"), 
  a("onExtensionMgrCreated"), a("onFileCreated"), a("onFileDeleted"), a("onFileSelected"), 
  a("onContentChanged"), a("onTitleChanged"), a("onSyncRunning"), a("onSyncSuccess"), 
@@ -7846,15 +7874,21 @@ function(e) {
   e("#wmd-preview").waitForImages(n), t.each(p, function(e) {
    e(n);
   });
- }, e(function() {
+ }, c.onReady = function() {
   t.chain(u).sortBy(function(e) {
    return e.extensionName.toLowerCase();
   }).each(l), logger.log("onCreateButton");
   var n = r("onCreateButton");
   t.each(n, function(t) {
    e("#extension-buttons").append(e('<div class="btn-group">').append(t()));
+  }), logger.log("onCreatePreviewButton");
+  var i = r("onCreatePreviewButton");
+  t.each(i, function(t) {
+   e("#extension-preview-buttons").append(e('<div class="btn-group">').append(t()));
   });
- }), c.onExtensionMgrCreated(c), c;
+  var o = s("onReady");
+  o();
+ }, c.onExtensionMgrCreated(c), c;
 }), define("text!html/settingsTemplateTooltip.html", [], function() {
  return 'Available variables:\r\n<br>\r\n<ul>\r\n	<li><b>documentTitle</b>: document title</li>\r\n	<li><b>documentMarkdown</b>: document in Markdown format</li>\r\n	<li><b>documentHTML</b>: document in HTML format</li>\r\n	<li><b>publishAttributes</b>: attributes of the publish location\r\n		(undefined when using "Save")</li>\r\n</ul>\r\nExamples:\r\n<br />\r\n&lt;title&gt;&lt;%= documentTitle %&gt;&lt;&#x2F;title&gt;\r\n<br />\r\n&lt;div&gt;&lt;%- documentHTML %&gt;&lt;&#x2F;div&gt;\r\n<br />\r\n&lt;% if(publishAttributes.provider == &quot;github&quot;)\r\nprint(documentMarkdown); %&gt;\r\n<br />\r\n<br />\r\n<a target="_blank" href="http://underscorejs.org/#template">More\r\n	info</a>';
 }), function(e, t) {
@@ -12091,16 +12125,16 @@ function(e) {
  };
 }(), define("libs/Markdown.Editor", function() {}), define("core", [ "jquery", "underscore", "utils", "settings", "extensionMgr", "mousetrap", "text!html/settingsTemplateTooltip.html", "storage", "config", "libs/bootstrap", "libs/layout", "libs/Markdown.Editor" ], function(e, t, n, i, o, r, s) {
  function a() {
-  y = !0, b = !0, x = n.currentTime;
+  b = !0, w = !0, C = n.currentTime;
  }
  function l() {
-  return b === !0 && n.currentTime - x > USER_IDLE_THRESHOLD && (b = !1), b && w;
+  return w === !0 && n.currentTime - C > USER_IDLE_THRESHOLD && (w = !1), w && x;
  }
  function c() {
-  if (y !== !1 && w !== !1) {
-   void 0 === C && (C = n.randomString(), localStorage.frontWindowId = C);
+  if (b !== !1 && x !== !1) {
+   void 0 === k && (k = n.randomString(), localStorage.frontWindowId = k);
    var t = localStorage.frontWindowId;
-   t != C && (w = !1, void 0 !== m && clearInterval(m), e(".modal").modal("hide"), 
+   t != k && (x = !1, void 0 !== v && clearInterval(v), e(".modal").modal("hide"), 
    e("#modal-non-unique").modal({
     backdrop: "static",
     keyboard: !1
@@ -12108,10 +12142,10 @@ function(e) {
   }
  }
  function u() {
-  g.isOffline === !0 && (g.isOffline = !1, o.onOfflineChanged(!1));
+  m.isOffline === !0 && (m.isOffline = !1, o.onOfflineChanged(!1));
  }
  function d() {
-  g.isOffline === !0 && navigator.onLine === !0 && n.currentTime > k + CHECK_ONLINE_PERIOD && (k = n.currentTime, 
+  m.isOffline === !0 && navigator.onLine === !0 && n.currentTime > S + CHECK_ONLINE_PERIOD && (S = n.currentTime, 
   e.ajax({
    url: "//www.google.com/jsapi",
    timeout: AJAX_TIMEOUT,
@@ -12138,22 +12172,6 @@ function(e) {
   localStorage.settings = JSON.stringify(i), localStorage.theme = s);
  }
  function h() {
-  $ === !0 && (t.each(P, function(e) {
-   e();
-  }), P = []);
- }
- var g = {}, m = void 0, v = [ o.onPeriodicRun ];
- g.addPeriodicCallback = function(e) {
-  v.push(e);
- };
- var y = !1, b = !1, w = !0, x = 0, C = void 0;
- g.isOffline = !1;
- var k = n.currentTime;
- g.setOffline = function() {
-  k = n.currentTime, g.isOffline === !1 && (g.isOffline = !0, o.onOfflineChanged(!0));
- };
- var S = void 0;
- g.createLayout = function() {
   if (viewerMode !== !0) {
    var t = {
     closable: !0,
@@ -12170,62 +12188,78 @@ function(e) {
     center__minHeight: 200
    };
    o.onLayoutConfigure(t), "horizontal" == i.layoutOrientation ? (e(".ui-layout-south").remove(), 
-   e(".preview-container").html('<div id="wmd-preview"></div>'), S = e("body").layout(e.extend(t, {
+   e(".preview-container").html('<div id="extension-preview-buttons"></div><div id="wmd-preview"></div>'), 
+   T = e("body").layout(e.extend(t, {
     east__resizable: !0,
     east__size: .5,
     east__minSize: 200
-   }))) : "vertical" == i.layoutOrientation && (e(".ui-layout-east").remove(), e(".preview-container").html('<div id="wmd-preview"></div>'), 
-   S = e("body").layout(e.extend(t, {
+   }))) : "vertical" == i.layoutOrientation && (e(".ui-layout-east").remove(), e(".preview-container").html('<div id="extension-preview-buttons"></div><div id="wmd-preview"></div>'), 
+   T = e("body").layout(e.extend(t, {
     south__resizable: !0,
     south__size: .5,
     south__minSize: 200
-   }))), e(".ui-layout-toggler-north").addClass("btn").append(e("<b>").addClass("caret")), 
+   }))), e("#navbar").click(function() {
+    T.allowOverflow("north");
+   }), e(".ui-layout-toggler-north").addClass("btn").append(e("<b>").addClass("caret")), 
    e(".ui-layout-toggler-south").addClass("btn").append(e("<b>").addClass("caret")), 
    e(".ui-layout-toggler-east").addClass("btn").append(e("<b>").addClass("caret")), 
-   e("#navbar").click(function() {
-    S.allowOverflow("north");
-   }), o.onLayoutCreated(S);
+   o.onLayoutCreated(T);
   }
+ }
+ function g() {
+  z === !0 && (t.each($, function(e) {
+   e();
+  }), $ = []);
+ }
+ var m = {}, v = void 0, y = [ o.onPeriodicRun ];
+ m.runPeriodically = function(e) {
+  y.push(e);
  };
- var T = void 0, _ = void 0, E = void 0, I = void 0;
- g.createEditor = function(r) {
+ var b = !1, w = !1, x = !0, C = 0, k = void 0;
+ m.isOffline = !1;
+ var S = n.currentTime;
+ m.setOffline = function() {
+  S = n.currentTime, m.isOffline === !1 && (m.isOffline = !0, o.onOfflineChanged(!0));
+ };
+ var T = void 0, _ = void 0, E = void 0, P = void 0, I = void 0;
+ m.initEditor = function(r) {
   function s() {
    var e = l.val();
-   void 0 !== E && E != e && (_.content = e, o.onContentChanged(_)), E = e;
+   void 0 !== P && P != e && (E.content = e, o.onContentChanged(E)), P = e;
   }
-  _ = r, E = void 0;
-  var a = _.content, l = e("#wmd-input");
-  if (l.val(a), void 0 !== T) return I.reinit(a, _.editorStart, _.editorEnd, _.editorScrollTop), 
-  T.refreshPreview(), void 0;
+  E = r, P = void 0;
+  var a = E.content, l = e("#wmd-input");
+  if (l.val(a), void 0 !== _) return I.reinit(a, E.editorStart, E.editorEnd, E.editorScrollTop), 
+  _.refreshPreview(), void 0;
   var c = e(".preview-container");
   l.scroll(function() {
-   void 0 !== E && (_.editorScrollTop = e(this).scrollTop());
+   void 0 !== P && (E.editorScrollTop = e(this).scrollTop());
   }), l.bind("keyup mouseup", function() {
-   void 0 !== E && (_.editorStart = this.selectionStart, _.editorEnd = this.selectionEnd);
+   void 0 !== P && (E.editorStart = this.selectionStart, E.editorEnd = this.selectionEnd);
   }), c.scroll(function() {
-   void 0 !== E && (_.previewScrollTop = e(this).scrollTop());
+   void 0 !== P && (E.previewScrollTop = e(this).scrollTop());
   });
   var u = new Markdown.Converter();
-  T = new Markdown.Editor(u), T.hooks.set("insertLinkDialog", function(t) {
-   return g.insertLinkCallback = t, n.resetModalInputs(), e("#modal-insert-link").modal(), 
+  _ = new Markdown.Editor(u), _.hooks.set("insertLinkDialog", function(t) {
+   return m.insertLinkCallback = t, n.resetModalInputs(), e("#modal-insert-link").modal(), 
    !0;
-  }), T.hooks.set("insertImageDialog", function(t) {
-   return g.insertLinkCallback = t, n.resetModalInputs(), e("#modal-insert-image").modal(), 
+  }), _.hooks.set("insertImageDialog", function(t) {
+   return m.insertLinkCallback = t, n.resetModalInputs(), e("#modal-insert-image").modal(), 
    !0;
   });
   var d;
   d = i.lazyRendering === !0 ? function(e) {
    var n = t.debounce(e, 500);
    return function() {
-    void 0 === E ? (e(), l.scrollTop(_.editorScrollTop), c.scrollTop(_.previewScrollTop)) : n(), 
+    void 0 === P ? (e(), l.scrollTop(E.editorScrollTop), c.scrollTop(E.previewScrollTop)) : n(), 
     s();
    };
   } : function(e) {
    return function() {
-    e(), void 0 === E && c.scrollTop(_.previewScrollTop), s();
+    e(), void 0 === P && c.scrollTop(E.previewScrollTop), s();
    };
-  }, o.onEditorConfigure(T), T.hooks.chain("onPreviewRefresh", o.onAsyncPreview), 
-  I = T.run(d), I.reinit(a, _.editorStart, _.editorEnd, _.editorScrollTop), e(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)").addClass("btn").css("left", 0).find("span").hide(), 
+  }, o.onEditorConfigure(_), _.hooks.chain("onPreviewRefresh", o.onAsyncPreview), 
+  I = _.run(d), I.reinit(a, E.editorStart, E.editorEnd, E.editorScrollTop), e(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)").addClass("btn").css("left", 0).find("span").hide(), 
   e("#wmd-bold-button").append(e("<i>").addClass("icon-bold")), e("#wmd-italic-button").append(e("<i>").addClass("icon-italic")), 
   e("#wmd-link-button").append(e("<i>").addClass("icon-globe")), e("#wmd-quote-button").append(e("<i>").addClass("icon-indent-left")), 
   e("#wmd-code-button").append(e("<i>").addClass("icon-code")), e("#wmd-image-button").append(e("<i>").addClass("icon-picture")), 
@@ -12233,17 +12267,17 @@ function(e) {
   e("#wmd-heading-button").append(e("<i>").addClass("icon-text-height")), e("#wmd-hr-button").append(e("<i>").addClass("icon-hr")), 
   e("#wmd-undo-button").append(e("<i>").addClass("icon-undo")), e("#wmd-redo-button").append(e("<i>").addClass("icon-share-alt"));
  };
- var P = [];
- g.onReady = function(e) {
-  P.push(e), h();
+ var $ = [];
+ m.onReady = function(e) {
+  $.push(e), g();
  };
- var $ = !1;
- return g.setReady = function() {
-  $ = !0, h();
- }, g.onReady(o.onReady), g.onReady(function() {
+ var z = !1;
+ return m.setReady = function() {
+  z = !0, g();
+ }, m.onReady(function() {
   t.each(THEME_LIST, function(t, n) {
    e("#input-settings-theme").append(e('<option value="' + n + '">' + t + "</option>"));
-  }), e(window).on("offline", g.setOffline), e(window).on("online", u), navigator.onLine === !1 && g.setOffline(), 
+  }), e(window).on("offline", m.setOffline), e(window).on("online", u), navigator.onLine === !1 && m.setOffline(), 
   e(document).mousemove(a).keypress(a), e(".dropdown-submenu > a").click(function(e) {
    e.stopPropagation();
   });
@@ -12262,12 +12296,12 @@ function(e) {
    return o || e(n).is("input, select, textarea:not(#wmd-input)");
   }, e(".action-insert-link").click(function(t) {
    var i = n.getInputTextValue(e("#input-insert-link"), t);
-   void 0 !== i && (g.insertLinkCallback(i), g.insertLinkCallback = void 0);
+   void 0 !== i && (m.insertLinkCallback(i), m.insertLinkCallback = void 0);
   }), e(".action-insert-image").click(function(t) {
    var i = n.getInputTextValue(e("#input-insert-image"), t);
-   void 0 !== i && (g.insertLinkCallback(i), g.insertLinkCallback = void 0);
+   void 0 !== i && (m.insertLinkCallback(i), m.insertLinkCallback = void 0);
   }), e("#modal-insert-link, #modal-insert-image").on("hidden", function() {
-   void 0 !== g.insertLinkCallback && (g.insertLinkCallback(null), g.insertLinkCallback = void 0);
+   void 0 !== m.insertLinkCallback && (m.insertLinkCallback(null), m.insertLinkCallback = void 0);
   }), e(".action-load-settings").click(function() {
    p();
   }), e(".action-apply-settings").click(function(e) {
@@ -12277,7 +12311,7 @@ function(e) {
   }), e(".action-app-reset").click(function() {
    localStorage.clear(), window.location.reload();
   }), e("#menu-bar, .ui-layout-center, .ui-layout-east, .ui-layout-south").removeClass("hide"), 
-  g.createLayout(), e("#wmd-input, #md-section-helper").css({
+  h(), e("#wmd-input, #md-section-helper").css({
    "font-size": i.editorFontSize + "px",
    "line-height": Math.round(i.editorFontSize * (20 / 14)) + "px"
   }), e("#wmd-input").keydown(function(t) {
@@ -12310,32 +12344,26 @@ function(e) {
    }), t.stopPropagation();
   }), e(".action-reset-input").click(function() {
    n.resetModalInputs();
-  }), m = window.setInterval(function() {
-   n.updateCurrentTime(), c(), (l() === !0 || viewerMode === !0) && (t.each(v, function(e) {
+  }), v = window.setInterval(function() {
+   n.updateCurrentTime(), c(), (l() === !0 || viewerMode === !0) && (t.each(y, function(e) {
     e();
    }), d());
   }, 1e3);
- }), g;
+ }), m.onReady(o.onReady), m;
 }), define("text!../WELCOME.md", [], function() {
  return '\r\nWelcome to StackEdit!	{#welcome}\r\n=====================\r\n\r\n\r\nHello, I am your first Markdown document within **StackEdit**. Don\'t delete me, I can be helpful. I can be recovered anyway in the `Utils` tab of the <i class="icon-cog"></i> `Settings` dialog.\r\n\r\n----------\r\n\r\n\r\nDocuments\r\n---------\r\n\r\n**StackEdit** stores your documents in the browser local storage, which means all your documents are automatically saved locally and are accessible offline.\r\n\r\n#### <i class="icon-file"></i> Create a document\r\n\r\nYou can create a new document by clicking the <i class="icon-file"></i> button in the navigation bar. This will switch from the current document to the new one.\r\n\r\n#### <i class="icon-folder-open"></i> Switch to another document\r\n\r\nYou can list all your local documents and switch from one to another by clicking the <i class="icon-folder-open"></i> button in the navigation bar.\r\n\r\n#### <i class="icon-pencil"></i> Rename a document\r\n\r\nYou can rename the current document by clicking the document title in the navigation bar.\r\n\r\n#### <i class="icon-trash"></i> Delete a document\r\n\r\nYou can delete the current document by clicking the <i class="icon-trash"></i> button in the navigation bar.\r\n\r\n----------\r\n\r\n\r\nSynchronization\r\n---------------\r\n\r\n**StackEdit** can be combined with **Google Drive** and **Dropbox** to have your documents centralized in the *Cloud*. The synchronization mechanism will take care of uploading your modifications or downloading the latest version of your documents.\r\n\r\n#### <i class="icon-download"></i> Import a document\r\n\r\nYou can import a document from the *Cloud* by going to the <i class="icon-gdrive"></i> `Google Drive` or the <i class="icon-dropbox"></i> `Dropbox` sub-menu and by clicking `Import from...`. Once imported, your document will be automatically synchronized with the **Google Drive** / **Dropbox** file.\r\n\r\n#### <i class="icon-upload"></i> Export a document\r\n\r\nYou can export any document by going to the <i class="icon-gdrive"></i> `Google Drive` or the <i class="icon-dropbox"></i> `Dropbox` sub-menu and by clicking `Export to...`. Even if your document is already synchronized with **Google Drive** or **Dropbox**, you can export it to a another location. **StackEdit** can synchronize one document with multiple locations.\r\n\r\n#### <i class="icon-refresh"></i> Synchronize a document\r\n\r\nOnce your document is linked to a **Google Drive** or a **Dropbox** file, **StackEdit** will periodically (every 3 minutes) synchronize it by downloading/uploading any modification. Any conflict will be detected, and a local copy of your document will be created as a backup if necessary.\r\n\r\nIf you just have modified your document and you want to force the synchronization, click the <i class="icon-refresh"></i> button in the navigation bar.\r\n\r\n> **NOTE:** The <i class="icon-refresh"></i> button is disabled when:\r\n> \r\n> - you are offline,\r\n> - or the document is not synchronized with any location,\r\n> - or the document has not been modified since the last synchronization.\r\n\r\n#### <i class="icon-refresh"></i> Manage document synchronization\r\n\r\nSince one document can be synchronized with multiple locations, you can list and manage synchronized locations by clicking <i class="icon-refresh"></i> `Manage synchronization` in the <i class="icon-stackedit"></i> menu. This will open a dialog box allowing you to add or remove synchronization links that are associated to your document.\r\n\r\n> **NOTE:** If you delete the file from **Google Drive** or from **Dropbox**, the document will no longer be synchronized with that location.\r\n\r\n----------\r\n\r\n\r\nPublication\r\n-----------\r\n\r\nOnce you are happy with your document, you can publish it on different websites directly from **StackEdit**. As for now, **StackEdit** can publish on **Blogger**, **Dropbox**, **Gist**, **GitHub**, **Google Drive**, **Tumblr**, **WordPress** and on any SSH server.\r\n\r\n#### <i class="icon-share"></i> Publish a document\r\n\r\nYou can publish your document by going to the <i class="icon-share"></i> `Publish on` sub-menu and by choosing a website. In the dialog box, you can choose the publication format:\r\n\r\n- Markdown, to publish the Markdown text on a website that can interpret it (**GitHub** for instance),\r\n- HTML, to publish the document converted into HTML (on a blog for instance),\r\n- Template, to have a full control of the output.\r\n\r\n> **NOTE:** The default template is a simple webpage that wraps your document in HTML format. You can customize it in the `Publish` tab of the <i class="icon-cog"></i> `Settings` dialog.\r\n\r\n#### <i class="icon-share"></i> Update a publication\r\n\r\nAfter publishing, **StackEdit** will keep your document linked to that publish location so that you can update it easily. Once you have modified your document and you want to update your publication, click on the <i class="icon-share"></i> button in the navigation bar.\r\n\r\n> **NOTE:** The <i class="icon-share"></i> button is disabled when:\r\n> \r\n> - you are offline,\r\n> - or the document has not been published anywhere.\r\n\r\n#### <i class="icon-share"></i> Manage document publication\r\n\r\nSince one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-share"></i> `Manage publication` in the <i class="icon-stackedit"></i> menu. This will open a dialog box allowing you to remove publication links that are associated to your document.\r\n\r\n> **NOTE:** In some cases, if you remove the file from the website or the post from the blog, the document will no longer be published on that location.\r\n\r\n----------\r\n\r\n\r\nMarkdown Extra\r\n--------------\r\n\r\n**StackEdit** supports **Markdown Extra**, which extends **Markdown** syntax with some nice features.\r\n\r\n\r\n### Tables\r\n\r\n**Markdown Extra** has a special syntax for tables:\r\n\r\nItem      | Value\r\n--------- | -----\r\nComputer  | \\$1600\r\nPhone     | \\$12\r\nPipe      | \\$1\r\n\r\nYou can specify column alignment with one or two colons:\r\n\r\n| Item      |  Value | Qty  |\r\n| :-------- | ------:| :--: |\r\n| Computer  | \\$1600 |  5   |\r\n| Phone     |   \\$12 |  12  |\r\n| Pipe      |    \\$1 | 234  |\r\n\r\n\r\n### Definition Lists\r\n\r\n**Markdown Extra** has a special syntax for definition lists too:\r\n\r\nTerm 1\r\nTerm 2\r\n:   Definition A\r\n:   Definition B\r\n\r\nTerm 3\r\n\r\n:   Definition C\r\n\r\n:   Definition D\r\n\r\n	> part of definition D\r\n\r\n\r\n### Fenced code blocks\r\n\r\n**GitHub**\'s fenced code blocks are also supported with **Prettify** syntax highlighting:\r\n\r\n```\r\n// Foo\r\nvar bar = 0;\r\n```\r\n\r\n\r\n### Special Attributes\r\n\r\nWith **Markdown Extra**, you can specify `class` and `id` attributes on headers and fenced code blocks just like this:\r\n\r\n##### Header example {#my-header}\r\n\r\n``` {#my-id .my-class}\r\nvar foo = bar;\r\n```\r\n\r\nThen you can create cross-references like this: [beginning of the document](#welcome).\r\n\r\n\r\n### Table of content\r\n\r\nYou can insert a table of content using the marker `[TOC]`:\r\n\r\n[TOC]\r\n\r\n\r\n### MathJax\r\n \r\nYou can include **LaTex** expressions to render mathematical formulas using **MathJax**, as on [math.stackexchange.com][1]:\r\n\r\nThe *Gamma function* satisfying $\\Gamma(n) = (n-1)!\\quad\\forall\r\nn\\in\\mathbb N$ is via through the Euler integral\r\n\r\n$$\r\n\\Gamma(z) = \\int_0^\\infty t^{z-1}e^{-t}dt\\,.\r\n$$\r\n\r\n\r\n> **NOTE:** You can find more information:\r\n>\r\n> - about **Markdown** syntax [here][2],\r\n> - about **Markdown Extra** extension [here][3],\r\n> - about **Prettify** syntax highlighting [here][4],\r\n> - about **Latex** mathematical expressions [here][5].\r\n\r\n----------\r\n\r\n\r\n  [1]: http://math.stackexchange.com/\r\n  [2]: http://daringfireball.net/projects/markdown/syntax "Markdown"\r\n  [3]: http://michelf.ca/projects/php-markdown/extra/ "Markdown Extra"\r\n  [4]: https://code.google.com/p/google-code-prettify/\r\n  [5]: http://en.wikibooks.org/wiki/LaTeX/Mathematics';
 }), define("fileMgr", [ "jquery", "underscore", "core", "utils", "settings", "extensionMgr", "fileSystem", "classes/FileDescriptor", "text!../WELCOME.md" ], function(e, t, n, i, o, r, s, a, l) {
- var c = {}, u = void 0;
- return c.getCurrentFile = function() {
-  return u;
- }, c.isCurrentFile = function(e) {
-  return e === u;
- }, c.setCurrentFile = function(e) {
-  u = e;
- }, c.selectFile = function(i) {
-  if (i = i || c.getCurrentFile(), void 0 === i) {
+ var c = {};
+ return c.currentFile = void 0, c.selectFile = function(i) {
+  if (i = i || c.currentFile, void 0 === i) {
    var o = t.size(s);
    i = 0 === o ? c.createFile(WELCOME_DOCUMENT_TITLE, l) : t.max(s, function(e) {
     return e.selectTime || 0;
    });
   }
-  c.isCurrentFile(i) === !1 && (c.setCurrentFile(i), i.selectTime = new Date().getTime(), 
+  c.currentFile !== i && (c.currentFile = i, i.selectTime = new Date().getTime(), 
   r.onFileSelected(i), i.fileIndex == TEMPORARY_FILE_INDEX ? e(".action-edit-document").removeClass("hide") : e(".action-edit-document").addClass("hide")), 
-  n.createEditor(i);
+  n.initEditor(i);
  }, c.createFile = function(e, n, l, c) {
   if (n = void 0 !== n ? n : o.defaultContent, !e) {
    e = DEFAULT_FILE_TITLE;
@@ -12355,8 +12383,8 @@ function(e) {
   return c || (i.appendIndexToArray("file.list", d), s[d] = f, r.onFileCreated(f)), 
   f;
  }, c.deleteFile = function(e) {
-  e = e || c.getCurrentFile(), i.removeIndexFromArray("file.list", e.fileIndex), delete s[e.fileIndex], 
-  c.isCurrentFile(e) === !0 && (c.setCurrentFile(), c.selectFile()), t.each(e.syncLocations, function(e) {
+  e = e || c.currentFile, i.removeIndexFromArray("file.list", e.fileIndex), delete s[e.fileIndex], 
+  c.currentFile === e && (c.currentFile = void 0, c.selectFile()), t.each(e.syncLocations, function(e) {
    localStorage.removeItem(e.syncIndex);
   }), t.each(e.publishLocations, function(e) {
    localStorage.removeItem(e.publishIndex);
@@ -12383,7 +12411,7 @@ function(e) {
  }, n.onReady(function() {
   function n(t) {
    t.hide(), e("#file-title").show();
-   var n = e.trim(t.val()), i = c.getCurrentFile();
+   var n = e.trim(t.val()), i = c.currentFile;
    n && n != i.title && (i.title = n, r.onTitleChanged(i)), t.val(i.title), e("#wmd-input").focus();
   }
   c.selectFile(), e(".action-create-file").click(function() {
@@ -12408,7 +12436,7 @@ function(e) {
   }), e(".action-open-stackedit").click(function() {
    window.location.href = ".";
   }), e(".action-edit-document").click(function() {
-   var t = e("#wmd-input").val(), n = c.getCurrentFile().title, i = c.createFile(n, t);
+   var t = e("#wmd-input").val(), n = c.currentFile.title, i = c.createFile(n, t);
    c.selectFile(i), window.location.href = ".";
   }), e(".action-welcome-file").click(function() {
    var e = c.createFile(WELCOME_DOCUMENT_TITLE, l);
@@ -12469,7 +12497,7 @@ function(e) {
   a.push(this), r();
  };
  var l = !1, c = void 0, u = !1, d = 0;
- return t.addPeriodicCallback(r), o;
+ return t.runPeriodically(r), o;
 }), define("helpers/dropboxHelper", [ "jquery", "underscore", "core", "extensionMgr", "classes/AsyncTask" ], function(e, t, n, i, o) {
  function r(t) {
   t.onRun(function() {
@@ -12713,7 +12741,7 @@ function(e) {
       var l = s.content, c = o.contentCRC != t.crc32(l), u = e.stat, d = t.crc32(u.content), p = o.contentCRC != d, f = l != u.content;
       f === !0 && c === !0 && p === !0 && (i.createFile(a + " (backup)", l), n.onMessage('Conflict detected on "' + a + '". A backup has been created locally.')), 
       f && p === !0 && (s.content = u.content, n.onContentChanged(s), n.onMessage('"' + a + '" has been updated from Dropbox.'), 
-      i.isCurrentFile(s) && i.selectFile()), o.version = u.versionTag, o.contentCRC = d, 
+      i.currentFile === s && i.selectFile()), o.version = u.versionTag, o.contentCRC = d, 
       t.storeAttributes(o);
      }
     }), localStorage[u + ".lastChangeId"] = c, r(), void 0);
@@ -13094,7 +13122,7 @@ function(e) {
       o.onMessage('Conflict detected on "' + a + '". A backup has been created locally.')), 
       h && f === !0 && (s.title = d.title, o.onTitleChanged(s), o.onMessage('"' + a + '" has been renamed to "' + d.title + '" on Google Drive.')), 
       v && m === !0 && (s.content = d.content, o.onContentChanged(s), o.onMessage('"' + d.title + '" has been updated from Google Drive.'), 
-      r.isCurrentFile(s) && r.selectFile()), t.etag = d.etag, t.contentCRC = g, t.titleCRC = p, 
+      r.currentFile === s && r.selectFile()), t.etag = d.etag, t.contentCRC = g, t.titleCRC = p, 
       n.storeAttributes(t);
      }
     }), localStorage[u + ".lastChangeId"] = c, t(), void 0);
@@ -13193,7 +13221,7 @@ function(e) {
    }), e(".action-sync-export-dialog-" + n.providerId).click(function() {
     p(n);
    }), e(".action-sync-export-" + n.providerId).click(function(i) {
-    var r = s.getCurrentFile();
+    var r = s.currentFile;
     n.exportFile(i, r.title, r.content, function(e, t) {
      e || (r.addSyncLocation(t), o.onSyncExportSuccess(r, t));
     });
@@ -13202,7 +13230,7 @@ function(e) {
      a[t] = e("#input-sync-export-" + t).val();
     }), localStorage[n.providerId + ".exportPreferences"] = JSON.stringify(a);
    }), e(".action-sync-manual-" + n.providerId).click(function(e) {
-    var t = s.getCurrentFile();
+    var t = s.currentFile;
     n.exportManual(e, t.title, t.content, function(e, n) {
      e || (t.addSyncLocation(n), o.onSyncExportSuccess(t, n));
     });
@@ -13755,7 +13783,7 @@ function(e) {
  function f(n) {
   var i = w, o = i.newPublishAttributes(n);
   if (void 0 !== o) {
-   var r = a.getCurrentFile(), s = e("#wmd-preview").html(), u = c(r, o, s);
+   var r = a.currentFile, s = e("#wmd-preview").html(), u = c(r, o, s);
    i.publish(o, r.title, u, function(e) {
     void 0 === e && (o.provider = i, l.createLink(o, function() {
      d(r, o);
@@ -13796,8 +13824,8 @@ function(e) {
  };
  var m = [], v = void 0, y = void 0, b = !1;
  h.publish = function() {
-  b === !0 || n.isOffline || (b = !0, r.onPublishRunning(!0), v = a.getCurrentFile(), 
-  y = e("#wmd-preview").html(), m = t.values(v.publishLocations), u(function(e) {
+  b === !0 || n.isOffline || (b = !0, r.onPublishRunning(!0), v = a.currentFile, y = e("#wmd-preview").html(), 
+  m = t.values(v.publishLocations), u(function(e) {
    b = !1, r.onPublishRunning(!1), void 0 === e && r.onPublishSuccess(v);
   }));
  };
@@ -13811,13 +13839,13 @@ function(e) {
     p(t);
    });
   }), e(".action-process-publish").click(f), e(".action-download-md").click(function() {
-   var t = e("#wmd-input").val(), n = a.getCurrentFile().title;
+   var t = e("#wmd-input").val(), n = a.currentFile.title;
    i.saveAs(t, n + ".md");
   }), e(".action-download-html").click(function() {
-   var t = e("#wmd-preview").html(), n = a.getCurrentFile().title;
+   var t = e("#wmd-preview").html(), n = a.currentFile.title;
    i.saveAs(t, n + ".html");
   }), e(".action-download-template").click(function() {
-   var t = a.getCurrentFile(), n = e("#wmd-preview").html(), r = h.applyTemplate(t, void 0, n);
+   var t = a.currentFile, n = e("#wmd-preview").html(), r = h.applyTemplate(t, void 0, n);
    i.saveAs(r, t.title + (-1 === o.template.indexOf("documentHTML") ? ".md" : ".html"));
   });
  }), r.onPublisherCreated(h), h;

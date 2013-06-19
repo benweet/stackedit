@@ -8,11 +8,12 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
  - Manage multiple Markdown documents online or offline
  - Export your documents in Markdown or HTML and format it using a template
  - Synchronize your Markdown documents in the Cloud
- - Edit existing Markdown documents from Google Drive and Dropbox
+ - Edit existing Markdown documents from Google Drive, Dropbox and your local hard drive
  - Post your Markdown document on Blogger/Blogspot, WordPress, Tumblr
  - Publish your Markdown document on GitHub, Gist, Google Drive, Dropbox or any SSH server
  - Share a link to a Markdown document that renders it in a nice viewer
- - Show some statistics about your document
+ - Show statistics about your document
+ - Convert HTML to Markdown
 
 ### Features:
 
@@ -27,6 +28,14 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
  - Online synchronization using Google Drive and Dropbox
  - One click publish on Blogger, Dropbox, Gist, GitHub, Google Drive, SSH server, Tumblr, WordPress
 
-> **NOTE:** This page has been written and published with [StackEdit][1].
+### Documentation:
 
-  [1]: http://benweet.github.io/stackedit/ "StackEdit"
+ - [Developer guide][2]
+ - [Theming guide][1]
+
+> **NOTE:** This page has been written and published with [StackEdit][3].
+
+
+  [1]: https://github.com/benweet/stackedit/blob/master/doc/theming.md#stackedit-theming-guide "Theming guide"
+  [2]: https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#developer-guide "Developer guide"
+  [3]: http://benweet.github.io/stackedit/ "StackEdit"

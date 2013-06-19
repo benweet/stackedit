@@ -10,6 +10,7 @@ define([
     "extensions/buttonShare",
     "extensions/buttonStat",
     "extensions/buttonHtmlCode",
+    "extensions/buttonViewer",
     "extensions/dialogAbout",
     "extensions/dialogManagePublication",
     "extensions/dialogManageSynchronization",

@@ -61,7 +61,6 @@ define([
 
         // Dequeue a synchronized location
         var syncAttributes = uploadSyncAttributesList.pop();
-        utils.logValue(syncAttributes.syncIndex + localStorage[syncAttributes.syncIndex]);
 
         // Use the specified provider to perform the upload
         syncAttributes.provider.syncUp(uploadContent, uploadContentCRC, uploadTitle, uploadTitleCRC, syncAttributes, function(error, uploadFlag) {

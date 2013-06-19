@@ -21,6 +21,7 @@ define([
         "jGrowl": "https://github.com/stanlemon/jGrowl/",
         "jQuery": "http://jquery.com/",
         "jQuery Mouse Wheel Plugin": "https://github.com/brandonaaron/jquery-mousewheel",
+        "MathJax": "http://www.mathjax.org/",
         "Mousetrap": "http://craig.is/killing/mice",
         "PageDown": "https://code.google.com/p/pagedown/",
         "Pagedown-extra": "https://github.com/jmcmanus/pagedown-extra/",

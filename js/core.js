@@ -18,7 +18,7 @@ define([
     // Used for periodic tasks
     var intervalId = undefined;
     var periodicCallbacks = [extensionMgr.onPeriodicRun];
-    core.addPeriodicCallback = function(callback) {
+    core.runPeriodically = function(callback) {
         periodicCallbacks.push(callback);
     };
 
@@ -153,7 +153,7 @@ define([
 
     // Create the layout
     var layout = undefined;
-    core.createLayout = function() {
+    function createLayout() {
         if(viewerMode === true) {
             return;
         }
@@ -174,7 +174,7 @@ define([
         extensionMgr.onLayoutConfigure(layoutGlobalConfig);
         if(settings.layoutOrientation == "horizontal") {
             $(".ui-layout-south").remove();
-            $(".preview-container").html('<div id="wmd-preview"></div>');
+            $(".preview-container").html('<div id="extension-preview-buttons"></div><div id="wmd-preview"></div>');
             layout = $('body').layout($.extend(layoutGlobalConfig, {
                 east__resizable: true,
                 east__size: .5,
@@ -183,19 +183,19 @@ define([
         }
         else if(settings.layoutOrientation == "vertical") {
             $(".ui-layout-east").remove();
-            $(".preview-container").html('<div id="wmd-preview"></div>');
+            $(".preview-container").html('<div id="extension-preview-buttons"></div><div id="wmd-preview"></div>');
             layout = $('body').layout($.extend(layoutGlobalConfig, {
                 south__resizable: true,
                 south__size: .5,
                 south__minSize: 200
             }));
         }
-        $(".ui-layout-toggler-north").addClass("btn").append($("<b>").addClass("caret"));
-        $(".ui-layout-toggler-south").addClass("btn").append($("<b>").addClass("caret"));
-        $(".ui-layout-toggler-east").addClass("btn").append($("<b>").addClass("caret"));
         $("#navbar").click(function() {
             layout.allowOverflow('north');
         });
+        $(".ui-layout-toggler-north").addClass("btn").append($("<b>").addClass("caret"));
+        $(".ui-layout-toggler-south").addClass("btn").append($("<b>").addClass("caret"));
+        $(".ui-layout-toggler-east").addClass("btn").append($("<b>").addClass("caret"));
 
         extensionMgr.onLayoutCreated(layout);
     };
@@ -205,7 +205,7 @@ define([
     var fileDesc = undefined;
     var documentContent = undefined;
     var undoManager = undefined;
-    core.createEditor = function(fileDescParam) {
+    core.initEditor = function(fileDescParam) {
         fileDesc = fileDescParam;
         documentContent = undefined;
         var initDocumentContent = fileDesc.content;
@@ -336,7 +336,6 @@ define([
         }
     }
 
-    core.onReady(extensionMgr.onReady);
     core.onReady(function() {
 
         // Load theme list
@@ -437,7 +436,7 @@ define([
 
         // UI layout
         $("#menu-bar, .ui-layout-center, .ui-layout-east, .ui-layout-south").removeClass("hide");
-        core.createLayout();
+        createLayout();
 
         // Editor's textarea
         $("#wmd-input, #md-section-helper").css({
@@ -508,6 +507,7 @@ define([
             }
         }, 1000);
     });
+    core.onReady(extensionMgr.onReady);
 
     return core;
 });

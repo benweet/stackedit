@@ -2,7 +2,7 @@ define(["utils"], function(utils) {
 
     function FileDescriptor(fileIndex, title, syncLocations, publishLocations) {
         this.fileIndex = fileIndex;
-        this._title = title;
+        this._title = title || localStorage[fileIndex + ".title"];
         this._editorScrollTop = parseInt(localStorage[fileIndex + ".editorScrollTop"]) || 0;
         this._editorStart = parseInt(localStorage[fileIndex + ".editorStart"]) || 0;
         this._editorEnd = parseInt(localStorage[fileIndex + ".editorEnd"]) || 0;

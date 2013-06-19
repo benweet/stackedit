@@ -74,7 +74,8 @@ blockquote {
     background-color: #444 !important;
 }
 
-.navbar-inner .btn {
+.navbar-inner .btn,
+#extension-preview-buttons .btn {
     background-color: #444;
 }
 
@@ -82,7 +83,9 @@ blockquote {
 .navbar-inner .btn:focus,
 .navbar-inner .btn:active,
 .navbar-inner .btn.active,
-.btn-group.open .btn.dropdown-toggle {
+.btn-group.open .btn.dropdown-toggle,
+#extension-preview-buttons .btn-group:hover .btn,
+#extension-preview-buttons .btn-group.open .btn {
     background-color: #555;
 }
 

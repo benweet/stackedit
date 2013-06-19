@@ -163,7 +163,7 @@ define([
     }
     
     // Call runTask function periodically
-    core.addPeriodicCallback(runTask);
+    core.runPeriodically(runTask);
 
     function runSafe(task, callbacks, param) {
         try {

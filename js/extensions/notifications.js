@@ -23,16 +23,21 @@ define([
         newConfig.timeout = utils.getInputIntValue("#input-notifications-timeout", event, 1, 60000);
     };
 
-    notifications.onReady = function() {
-        // jGrowl configuration
-        jGrowl.defaults.life = notifications.config.timeout;
-        jGrowl.defaults.closer = false;
-        jGrowl.defaults.closeTemplate = '';
-        jGrowl.defaults.position = 'bottom-right';
-    };
+    var isInit = false;
+    function init() {
+        if(isInit === false) {
+            // jGrowl configuration
+            jGrowl.defaults.life = notifications.config.timeout;
+            jGrowl.defaults.closer = false;
+            jGrowl.defaults.closeTemplate = '';
+            jGrowl.defaults.position = 'bottom-right';
+            isInit = true;
+        }
+    }
 
     function showMessage(message, iconClass, options) {
         logger.info(message);
+        init();
         if(!message) {
             return;
         }

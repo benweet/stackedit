@@ -208,7 +208,7 @@ define([
                         fileDesc.content = file.content;
                         extensionMgr.onContentChanged(fileDesc);
                         extensionMgr.onMessage('"' + file.title + '" has been updated from Google Drive.');
-                        if(fileMgr.isCurrentFile(fileDesc)) {
+                        if(fileMgr.currentFile === fileDesc) {
                             fileMgr.selectFile(); // Refresh editor
                         }
                     }

@@ -14,7 +14,8 @@ textarea[disabled],
     background-color: #ced5de !important;
 }
 
-.navbar-inner .btn {
+.navbar-inner .btn,
+#extension-preview-buttons .btn {
     background-color: #ced5de;
 }
 
@@ -23,7 +24,9 @@ textarea[disabled],
 .navbar-inner .btn:focus,
 .navbar-inner .btn:active,
 .navbar-inner .btn.active,
-.btn-group.open .btn.dropdown-toggle {
+.btn-group.open .btn.dropdown-toggle,
+#extension-preview-buttons .btn-group:hover .btn,
+#extension-preview-buttons .btn-group.open .btn {
     background-color: #e1e6ed;
 }
 

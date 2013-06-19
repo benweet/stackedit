@@ -9,6 +9,7 @@ define([
     "extensions/buttonPublish",
     "extensions/buttonShare",
     "extensions/buttonStat",
+    "extensions/buttonHtmlCode",
     "extensions/dialogAbout",
     "extensions/dialogManagePublication",
     "extensions/dialogManageSynchronization",
@@ -86,7 +87,6 @@ define([
         });
     };
 
-    addHook("onReady");
     addHook("onMessage");
     addHook("onError");
     addHook("onOfflineChanged");
@@ -155,7 +155,7 @@ define([
         })));
     }
 
-    $(function() {
+    extensionMgr["onReady"] = function() {
         // Create accordion in settings dialog
         _.chain(extensionList).sortBy(function(extension) {
             return extension.extensionName.toLowerCase();
@@ -167,8 +167,18 @@ define([
         _.each(onCreateButtonCallbackList, function(callback) {
             $("#extension-buttons").append($('<div class="btn-group">').append(callback()));
         });
-
-    });
+        
+        // Create extension preview buttons
+        logger.log("onCreatePreviewButton");
+        var onCreatePreviewButtonCallbackList = getExtensionCallbackList("onCreatePreviewButton");
+        _.each(onCreatePreviewButtonCallbackList, function(callback) {
+            $("#extension-preview-buttons").append($('<div class="btn-group">').append(callback()));
+        });
+        
+        // Call extensions onReady callbacks
+        var onReady = createHook("onReady");
+        onReady();
+    };
 
     // For extensions that need to call other extensions
     extensionMgr.onExtensionMgrCreated(extensionMgr);

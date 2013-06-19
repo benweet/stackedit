@@ -203,7 +203,7 @@ define([
                         fileDesc.content = file.content;
                         extensionMgr.onContentChanged(fileDesc);
                         extensionMgr.onMessage('"' + localTitle + '" has been updated from Dropbox.');
-                        if(fileMgr.isCurrentFile(fileDesc)) {
+                        if(fileMgr.currentFile === fileDesc) {
                             fileMgr.selectFile(); // Refresh editor
                         }
                     }

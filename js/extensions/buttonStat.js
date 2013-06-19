@@ -43,7 +43,7 @@ define([
         });
     };
 
-    buttonStat.onCreateButton = function() {
+    buttonStat.onCreatePreviewButton = function() {
         return $(_.template(buttonStatHTML, buttonStat.config));
     };
 

@@ -13,19 +13,10 @@ define([
     var fileMgr = {};
 
     // Defines the current file
-    var currentFile = undefined;
-    fileMgr.getCurrentFile = function() {
-        return currentFile;
-    };
-    fileMgr.isCurrentFile = function(fileDesc) {
-        return fileDesc === currentFile;
-    };
-    fileMgr.setCurrentFile = function(fileDesc) {
-        currentFile = fileDesc;
-    };
+    fileMgr.currentFile = undefined;
 
     fileMgr.selectFile = function(fileDesc) {
-        fileDesc = fileDesc || fileMgr.getCurrentFile();
+        fileDesc = fileDesc || fileMgr.currentFile;
 
         if(fileDesc === undefined) {
             var fileSystemSize = _.size(fileSystem);
@@ -41,8 +32,8 @@ define([
             }
         }
 
-        if(fileMgr.isCurrentFile(fileDesc) === false) {
-            fileMgr.setCurrentFile(fileDesc);
+        if(fileMgr.currentFile !== fileDesc) {
+            fileMgr.currentFile = fileDesc;
             fileDesc.selectTime = new Date().getTime();
 
             // Notify extensions
@@ -58,7 +49,7 @@ define([
         }
 
         // Refresh the editor
-        core.createEditor(fileDesc);
+        core.initEditor(fileDesc);
     };
 
     fileMgr.createFile = function(title, content, syncLocations, isTemporary) {
@@ -107,15 +98,15 @@ define([
     };
 
     fileMgr.deleteFile = function(fileDesc) {
-        fileDesc = fileDesc || fileMgr.getCurrentFile();
+        fileDesc = fileDesc || fileMgr.currentFile;
 
         // Remove the index from the file list
         utils.removeIndexFromArray("file.list", fileDesc.fileIndex);
         delete fileSystem[fileDesc.fileIndex];
 
-        if(fileMgr.isCurrentFile(fileDesc) === true) {
+        if(fileMgr.currentFile === fileDesc) {
             // Unset the current fileDesc
-            fileMgr.setCurrentFile();
+            fileMgr.currentFile = undefined;
             // Refresh the editor with another file
             fileMgr.selectFile();
         }
@@ -197,7 +188,7 @@ define([
             input.hide();
             $("#file-title").show();
             var title = $.trim(input.val());
-            var fileDesc = fileMgr.getCurrentFile();
+            var fileDesc = fileMgr.currentFile;
             if(title && title != fileDesc.title) {
                 fileDesc.title = title;
                 extensionMgr.onTitleChanged(fileDesc);
@@ -221,7 +212,7 @@ define([
         });
         $(".action-edit-document").click(function() {
             var content = $("#wmd-input").val();
-            var title = fileMgr.getCurrentFile().title;
+            var title = fileMgr.currentFile.title;
             var fileDesc = fileMgr.createFile(title, content);
             fileMgr.selectFile(fileDesc);
             window.location.href = ".";

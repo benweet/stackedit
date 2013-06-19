@@ -220,7 +220,7 @@ define([
             $(".action-sync-export-" + provider.providerId).click(function(event) {
 
                 // Perform the provider's export
-                var fileDesc = fileMgr.getCurrentFile();
+                var fileDesc = fileMgr.currentFile;
                 provider.exportFile(event, fileDesc.title, fileDesc.content, function(error, syncAttributes) {
                     if(error) {
                         return;
@@ -239,7 +239,7 @@ define([
             });
             // Provider's manual export button
             $(".action-sync-manual-" + provider.providerId).click(function(event) {
-                var fileDesc = fileMgr.getCurrentFile();
+                var fileDesc = fileMgr.currentFile;
                 provider.exportManual(event, fileDesc.title, fileDesc.content, function(error, syncAttributes) {
                     if(error) {
                         return;

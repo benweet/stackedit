@@ -129,7 +129,7 @@ define([
 
         publishRunning = true;
         extensionMgr.onPublishRunning(true);
-        publishFileDesc = fileMgr.getCurrentFile();
+        publishFileDesc = fileMgr.currentFile;
         publishHTML = $("#wmd-preview").html();
         publishAttributesList = _.values(publishFileDesc.publishLocations);
         publishLocation(function(errorFlag) {
@@ -188,7 +188,7 @@ define([
         }
 
         // Perform provider's publishing
-        var fileDesc = fileMgr.getCurrentFile();
+        var fileDesc = fileMgr.currentFile;
         var html = $("#wmd-preview").html();
         var content = getPublishContent(fileDesc, publishAttributes, html);
         provider.publish(publishAttributes, fileDesc.title, content, function(error) {
@@ -229,16 +229,16 @@ define([
         // Save As menu items
         $(".action-download-md").click(function() {
             var content = $("#wmd-input").val();
-            var title = fileMgr.getCurrentFile().title;
+            var title = fileMgr.currentFile.title;
             utils.saveAs(content, title + ".md");
         });
         $(".action-download-html").click(function() {
             var content = $("#wmd-preview").html();
-            var title = fileMgr.getCurrentFile().title;
+            var title = fileMgr.currentFile.title;
             utils.saveAs(content, title + ".html");
         });
         $(".action-download-template").click(function() {
-            var fileDesc = fileMgr.getCurrentFile();
+            var fileDesc = fileMgr.currentFile;
             var html = $("#wmd-preview").html();
             var content = publisher.applyTemplate(fileDesc, undefined, html);
             utils.saveAs(content, fileDesc.title + (settings.template.indexOf("documentHTML") === -1 ? ".md" : ".html"));

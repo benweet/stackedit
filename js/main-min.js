@@ -4796,6 +4796,18 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
    });
   });
  }, n;
+}), define("text!html/buttonViewer.html", [], function() {
+ return '<a href="viewer.html" class="btn dropdown-toggle"\r\n	title="Open in viewer">\r\n	<i class="icon-fullscreen"></i>\r\n</a>\r\n';
+}), define("extensions/buttonViewer", [ "jquery", "text!html/buttonViewer.html" ], function(e, t) {
+ var n = {
+  extensionId: "buttonViewer",
+  extensionName: 'Button "Viewer"',
+  optional: !0,
+  settingsBloc: '<p>Adds a "Viewer" button over the preview.</p>'
+ };
+ return n.onCreatePreviewButton = function() {
+  return e(t);
+ }, n;
 }), define("text!html/dialogAbout.html", [], function() {
  return '<p>StackEdit is a free, open-source Markdown editor based on\r\n	PageDown, the Markdown library used by Stack Overflow and the other\r\n	Stack Exchange sites.</p>\r\n\r\n<dl>\r\n	<dt>About:</dt>\r\n	<dd>\r\n		<a target="_blank" href="https://github.com/benweet/stackedit/">GitHub\r\n			project</a> / <a target="_blank"\r\n			href="https://github.com/benweet/stackedit/issues">issue tracker</a><br />\r\n		<a target="_blank"\r\n			href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome\r\n			app</a> (thanks for your review!)<br /> <a target="_blank"\r\n			href="https://twitter.com/stackedit/">Follow on Twitter</a><br /> <a\r\n			target="_blank" href="https://www.facebook.com/stackedit/">Follow\r\n			on Facebook</a><br /> <a target="_blank"\r\n			href="https://plus.google.com/110816046787593496375" rel="publisher">Follow\r\n			on Google+</a><br />\r\n	</dd>\r\n</dl>\r\n<dl>\r\n	<dt>Developers:</dt>\r\n	<dd>\r\n		<a target="_blank" href="http://www.benoitschweblin.com">Benoit\r\n			Schweblin</a><br /> Pete Eigel (contributor)\r\n	</dd>\r\n</dl>\r\n<dl>\r\n	<dt>Credit:</dt>\r\n	<dd>\r\n		<% _.each(libraries, function(url, name) { %> <a target="_blank"\r\n			href="<%= url %>"><%= name %></a><br /> <% }); %>\r\n	</dd>\r\n</dl>\r\n<dl>\r\n	<dt>Related projects:</dt>\r\n	<dd>\r\n		<% _.each(projects, function(url, name) { %> <a target="_blank"\r\n			href="<%= url %>"><%= name %></a><br /> <% }); %>\r\n	</dd>\r\n</dl>\r\n<p>Copyright 2013 <a target="_blank"\r\n	href="http://www.benoitschweblin.com">Benoit Schweblin</a><br />\r\n	Licensed under an <a target="_blank"\r\n	href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a></p>\r\n';
 }), define("extensions/dialogAbout", [ "jquery", "underscore", "text!html/dialogAbout.html" ], function(e, t, n) {
@@ -7812,7 +7824,7 @@ function(e) {
    });
   });
  };
-}(jQuery), define("libs/jquery.waitforimages", function() {}), define("extensionMgr", [ "jquery", "underscore", "utils", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/googleAnalytics", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdown-extra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o) {
+}(jQuery), define("libs/jquery.waitforimages", function() {}), define("extensionMgr", [ "jquery", "underscore", "utils", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/googleAnalytics", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonViewer", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdown-extra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o) {
  function r(e) {
   return t.chain(u).map(function(t) {
    return t.config.enabled && t[e];
@@ -13157,7 +13169,7 @@ function(e) {
  function a(e) {
   if (0 === g.length) return l(e), void 0;
   var t = g.pop();
-  i.logValue(t.syncIndex + localStorage[t.syncIndex]), t.provider.syncUp(m, v, y, b, t, function(n, o) {
+  t.provider.syncUp(m, v, y, b, t, function(n, o) {
    return o === !0 && (x = !0), n ? (e(n), void 0) : (o && i.storeAttributes(t), a(e), 
    void 0);
   });

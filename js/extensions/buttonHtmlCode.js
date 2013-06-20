@@ -19,10 +19,6 @@ define([
     };
 
     buttonHtmlCode.onReady = function() {
-        $("#input-html-code").click(function(event) {
-            event.stopPropagation();
-        });
-        
         $(".action-html-code").click(function() {
             _.defer(function() {
                 $("#input-html-code").each(function() {

@@ -19,14 +19,19 @@ textarea[disabled],
     background-color: #ced5de;
 }
 
+#extension-preview-buttons .dropdown-menu,
+#extension-preview-buttons .btn-group.open .btn,
+#extension-preview-buttons .btn-group.open:hover .btn {
+    background-color: #e1e6ed;
+}
+
 .btn:hover,
 .navbar-inner .btn:hover,
 .navbar-inner .btn:focus,
 .navbar-inner .btn:active,
 .navbar-inner .btn.active,
 .btn-group.open .btn.dropdown-toggle,
-#extension-preview-buttons .btn-group:hover .btn,
-#extension-preview-buttons .btn-group.open .btn {
+#extension-preview-buttons .btn-group:hover .btn {
     background-color: #e1e6ed;
 }
 

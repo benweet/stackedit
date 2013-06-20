@@ -671,7 +671,7 @@ function css_browser_selector(e) {
    var i = lt.grep(e, function(e) {
     return 1 === e.nodeType;
    });
-   if (Wt.test(t)) return lt.filter(t, i, !n);
+   if (qt.test(t)) return lt.filter(t, i, !n);
    t = lt.filter(t, i);
   }
   return lt.grep(e, function(e) {
@@ -795,7 +795,7 @@ function css_browser_selector(e) {
     r(u), !1);
    }), c;
   }
-  var s = {}, a = e === qn;
+  var s = {}, a = e === Wn;
   return r(n.dataTypes[0]) || !s["*"] && r("*");
  }
  function N(e, n) {
@@ -853,12 +853,12 @@ function css_browser_selector(e) {
    return new e.XMLHttpRequest();
   } catch (t) {}
  }
- function O() {
+ function M() {
   try {
    return new e.ActiveXObject("Microsoft.XMLHTTP");
   } catch (t) {}
  }
- function M() {
+ function O() {
   return setTimeout(function() {
    Zn = t;
   }), Zn = lt.now();
@@ -873,7 +873,7 @@ function css_browser_selector(e) {
    delete l.elem;
   }), l = function() {
    if (o) return !1;
-   for (var t = Zn || M(), n = Math.max(0, c.startTime + c.duration - t), i = n / c.duration || 0, r = 1 - i, s = 0, l = c.tweens.length; l > s; s++) c.tweens[s].run(r);
+   for (var t = Zn || O(), n = Math.max(0, c.startTime + c.duration - t), i = n / c.duration || 0, r = 1 - i, s = 0, l = c.tweens.length; l > s; s++) c.tweens[s].run(r);
    return a.notifyWith(e, [ c, r, n ]), 1 > r && l ? n : (a.resolveWith(e, [ c ]), 
    !1);
   }, c = a.promise({
@@ -884,7 +884,7 @@ function css_browser_selector(e) {
    }, n),
    originalProperties: t,
    originalOptions: n,
-   startTime: Zn || M(),
+   startTime: Zn || O(),
    duration: n.duration,
    tweens: [],
    createTween: function(t, n) {
@@ -947,14 +947,14 @@ function css_browser_selector(e) {
  function B(e, t, n, i, o) {
   return new B.prototype.init(e, t, n, i, o);
  }
- function W(e, t) {
+ function q(e, t) {
   var n, i = {
    height: e
   }, o = 0;
   for (t = t ? 1 : 0; 4 > o; o += 2 - t) n = Sn[o], i["margin" + n] = i["padding" + n] = e;
   return t && (i.opacity = i.width = e), i;
  }
- function q(e) {
+ function W(e) {
   return lt.isWindow(e) ? e : 9 === e.nodeType ? e.defaultView || e.parentWindow : !1;
  }
  var G, U, V = typeof t, X = e.document, Y = e.location, K = e.jQuery, J = e.$, Q = {}, Z = [], et = "1.9.1", tt = Z.concat, nt = Z.push, it = Z.slice, ot = Z.indexOf, rt = Q.toString, st = Q.hasOwnProperty, at = et.trim, lt = function(e, t) {
@@ -1709,7 +1709,7 @@ function css_browser_selector(e) {
    }
   });
  });
- var Ot = /^(?:input|select|textarea)$/i, Mt = /^key/, Dt = /^(?:mouse|contextmenu)|click/, jt = /^(?:focusinfocus|focusoutblur)$/, Ht = /^([^.]*)(?:\.(.+)|)$/;
+ var Mt = /^(?:input|select|textarea)$/i, Ot = /^key/, Dt = /^(?:mouse|contextmenu)|click/, jt = /^(?:focusinfocus|focusoutblur)$/, Ht = /^([^.]*)(?:\.(.+)|)$/;
  lt.event = {
   global: {},
   add: function(e, n, i, o, r) {
@@ -1804,7 +1804,7 @@ function css_browser_selector(e) {
   fix: function(e) {
    if (e[lt.expando]) return e;
    var t, n, i, o = e.type, r = e, s = this.fixHooks[o];
-   for (s || (this.fixHooks[o] = s = Dt.test(o) ? this.mouseHooks : Mt.test(o) ? this.keyHooks : {}), 
+   for (s || (this.fixHooks[o] = s = Dt.test(o) ? this.mouseHooks : Ot.test(o) ? this.keyHooks : {}), 
    i = s.props ? this.props.concat(s.props) : this.props, e = new lt.Event(r), t = i.length; t--; ) n = i[t], 
    e[n] = r[n];
    return e.target || (e.target = r.srcElement || X), 3 === e.target.nodeType && (e.target = e.target.parentNode), 
@@ -1923,13 +1923,13 @@ function css_browser_selector(e) {
   }
  }), lt.support.changeBubbles || (lt.event.special.change = {
   setup: function() {
-   return Ot.test(this.nodeName) ? (("checkbox" === this.type || "radio" === this.type) && (lt.event.add(this, "propertychange._change", function(e) {
+   return Mt.test(this.nodeName) ? (("checkbox" === this.type || "radio" === this.type) && (lt.event.add(this, "propertychange._change", function(e) {
     "checked" === e.originalEvent.propertyName && (this._just_changed = !0);
    }), lt.event.add(this, "click._change", function(e) {
     this._just_changed && !e.isTrigger && (this._just_changed = !1), lt.event.simulate("change", this, e, !0);
    })), !1) : (lt.event.add(this, "beforeactivate._change", function(e) {
     var t = e.target;
-    Ot.test(t.nodeName) && !lt._data(t, "changeBubbles") && (lt.event.add(t, "change._change", function(e) {
+    Mt.test(t.nodeName) && !lt._data(t, "changeBubbles") && (lt.event.add(t, "change._change", function(e) {
      !this.parentNode || e.isSimulated || e.isTrigger || lt.event.simulate("change", this.parentNode, e, !0);
     }), lt._data(t, "changeBubbles", !0));
    }), t);
@@ -1939,7 +1939,7 @@ function css_browser_selector(e) {
    return this !== n || e.isSimulated || e.isTrigger || "radio" !== n.type && "checkbox" !== n.type ? e.handleObj.handler.apply(this, arguments) : t;
   },
   teardown: function() {
-   return lt.event.remove(this, "._change"), !Ot.test(this.nodeName);
+   return lt.event.remove(this, "._change"), !Mt.test(this.nodeName);
   }
  }), lt.support.focusinBubbles || lt.each({
   focus: "focusin",
@@ -2041,7 +2041,7 @@ function css_browser_selector(e) {
      if (9 === a) {
       if (r = t.getElementById(s), !r || !r.parentNode) return n;
       if (r.id === s) return n.push(r), n;
-     } else if (t.ownerDocument && (r = t.ownerDocument.getElementById(s)) && M(t, r) && r.id === s) return n.push(r), 
+     } else if (t.ownerDocument && (r = t.ownerDocument.getElementById(s)) && O(t, r) && r.id === s) return n.push(r), 
      n;
     } else {
      if (o[2]) return J.apply(n, Q.call(t.getElementsByTagName(e), 0)), n;
@@ -2112,7 +2112,7 @@ function css_browser_selector(e) {
    return i;
   }
   function f(e, t, n) {
-   var i = t.dir, o = n && "parentNode" === i, r = W++;
+   var i = t.dir, o = n && "parentNode" === i, r = q++;
    return t.first ? function(t, n, r) {
     for (;t = t[i]; ) if (1 === t.nodeType || o) return e(t, n, r);
    } : function(t, n, s) {
@@ -2211,7 +2211,7 @@ function css_browser_selector(e) {
    return E(e, c)(i, t, R, n, ft.test(e)), n;
   }
   function x() {}
-  var C, k, S, T, _, E, P, I, $, z, N, R, L, A, O, M, D, j = "sizzle" + -new Date(), H = e.document, F = {}, B = 0, W = 0, q = i(), G = i(), U = i(), V = typeof t, X = 1 << 31, Y = [], K = Y.pop, J = Y.push, Q = Y.slice, Z = Y.indexOf || function(e) {
+  var C, k, S, T, _, E, P, I, $, z, N, R, L, A, M, O, D, j = "sizzle" + -new Date(), H = e.document, F = {}, B = 0, q = 0, W = i(), G = i(), U = i(), V = typeof t, X = 1 << 31, Y = [], K = Y.pop, J = Y.push, Q = Y.slice, Z = Y.indexOf || function(e) {
    for (var t = 0, n = this.length; n > t; t++) if (this[t] === e) return t;
    return -1;
   }, et = "[\\x20\\t\\r\\n\\f]", tt = "(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+", nt = tt.replace("w", "w#"), it = "([*^$|!~]?=)", ot = "\\[" + et + "*(" + tt + ")" + et + "*(?:" + it + et + "*(?:(['\"])((?:\\\\.|[^\\\\])*?)\\3|(" + nt + ")|)|)" + et + "*\\]", rt = ":(" + tt + ")(?:\\(((['\"])((?:\\\\.|[^\\\\])*?)\\3|((?:\\\\.|[^\\\\()[\\]]|" + ot.replace(3, 8) + ")*)|.*)\\)|)", st = RegExp("^" + et + "+|((?:^|[^\\\\])(?:\\\\.)*)" + et + "+$", "g"), at = RegExp("^" + et + "*," + et + "*"), ct = RegExp("^" + et + "*([\\x20\\t\\r\\n\\f>+~])" + et + "*"), ut = RegExp(rt), dt = RegExp("^" + nt + "$"), pt = {
@@ -2305,9 +2305,9 @@ function css_browser_selector(e) {
     e.innerHTML = "<input type='hidden' i=''/>", e.querySelectorAll("[i^='']").length && L.push("[*^$]=" + et + "*(?:\"\"|'')"), 
     e.querySelectorAll(":enabled").length || L.push(":enabled", ":disabled"), e.querySelectorAll("*,:x"), 
     L.push(",.*:");
-   })), (F.matchesSelector = n(O = N.matchesSelector || N.mozMatchesSelector || N.webkitMatchesSelector || N.oMatchesSelector || N.msMatchesSelector)) && r(function(e) {
-    F.disconnectedMatch = O.call(e, "div"), O.call(e, "[s!='']:x"), A.push("!=", rt);
-   }), L = RegExp(L.join("|")), A = RegExp(A.join("|")), M = n(N.contains) || N.compareDocumentPosition ? function(e, t) {
+   })), (F.matchesSelector = n(M = N.matchesSelector || N.mozMatchesSelector || N.webkitMatchesSelector || N.oMatchesSelector || N.msMatchesSelector)) && r(function(e) {
+    F.disconnectedMatch = M.call(e, "div"), M.call(e, "[s!='']:x"), A.push("!=", rt);
+   }), L = RegExp(L.join("|")), A = RegExp(A.join("|")), O = n(N.contains) || N.compareDocumentPosition ? function(e, t) {
     var n = 9 === e.nodeType ? e.documentElement : e, i = t && t.parentNode;
     return e === i || !(!i || 1 !== i.nodeType || !(n.contains ? n.contains(i) : e.compareDocumentPosition && 16 & e.compareDocumentPosition(i)));
    } : function(e, t) {
@@ -2315,7 +2315,7 @@ function css_browser_selector(e) {
     return !1;
    }, D = N.compareDocumentPosition ? function(e, t) {
     var n;
-    return e === t ? (P = !0, 0) : (n = t.compareDocumentPosition && e.compareDocumentPosition && e.compareDocumentPosition(t)) ? 1 & n || e.parentNode && 11 === e.parentNode.nodeType ? e === i || M(H, e) ? -1 : t === i || M(H, t) ? 1 : 0 : 4 & n ? -1 : 1 : e.compareDocumentPosition ? -1 : 1;
+    return e === t ? (P = !0, 0) : (n = t.compareDocumentPosition && e.compareDocumentPosition && e.compareDocumentPosition(t)) ? 1 & n || e.parentNode && 11 === e.parentNode.nodeType ? e === i || O(H, e) ? -1 : t === i || O(H, t) ? 1 : 0 : 4 & n ? -1 : 1 : e.compareDocumentPosition ? -1 : 1;
    } : function(e, t) {
     var n, o = 0, r = e.parentNode, s = t.parentNode, l = [ e ], c = [ t ];
     if (e === t) return P = !0, 0;
@@ -2330,12 +2330,12 @@ function css_browser_selector(e) {
    return s(e, null, null, t);
   }, s.matchesSelector = function(e, t) {
    if ((e.ownerDocument || e) !== z && $(e), t = t.replace(bt, "='$1']"), !(!F.matchesSelector || R || A && A.test(t) || L.test(t))) try {
-    var n = O.call(e, t);
+    var n = M.call(e, t);
     if (n || F.disconnectedMatch || e.document && 11 !== e.document.nodeType) return n;
    } catch (i) {}
    return s(t, z, null, [ e ]).length > 0;
   }, s.contains = function(e, t) {
-   return (e.ownerDocument || e) !== z && $(e), M(e, t);
+   return (e.ownerDocument || e) !== z && $(e), O(e, t);
   }, s.attr = function(e, t) {
    var n;
    return (e.ownerDocument || e) !== z && $(e), R || (t = t.toLowerCase()), (n = S.attrHandle[t]) ? n(e) : R || F.attributes ? e.getAttribute(t) : ((n = e.getAttributeNode(t)) || e.getAttribute(t)) && e[t] === !0 ? t : n && n.specified ? n.value : null;
@@ -2403,8 +2403,8 @@ function css_browser_selector(e) {
      });
     },
     CLASS: function(e) {
-     var t = q[e + " "];
-     return t || (t = RegExp("(^|" + et + ")" + e + "(" + et + "|$)")) && q(e, function(e) {
+     var t = W[e + " "];
+     return t || (t = RegExp("(^|" + et + ")" + e + "(" + et + "|$)")) && W(e, function(e) {
       return t.test(e.className || typeof e.getAttribute !== V && e.getAttribute("class") || "");
      });
     },
@@ -2570,7 +2570,7 @@ function css_browser_selector(e) {
   $(), s.attr = lt.attr, lt.find = s, lt.expr = s.selectors, lt.expr[":"] = lt.expr.pseudos, 
   lt.unique = s.uniqueSort, lt.text = s.getText, lt.isXMLDoc = s.isXML, lt.contains = s.contains;
  }(e);
- var Ft = /Until$/, Bt = /^(?:parents|prev(?:Until|All))/, Wt = /^.[^:#\[\.,]*$/, qt = lt.expr.match.needsContext, Gt = {
+ var Ft = /Until$/, Bt = /^(?:parents|prev(?:Until|All))/, qt = /^.[^:#\[\.,]*$/, Wt = lt.expr.match.needsContext, Gt = {
   children: !0,
   contents: !0,
   next: !0,
@@ -2599,10 +2599,10 @@ function css_browser_selector(e) {
    return this.pushStack(d(this, e, !0));
   },
   is: function(e) {
-   return !!e && ("string" == typeof e ? qt.test(e) ? lt(e, this.context).index(this[0]) >= 0 : lt.filter(e, this).length > 0 : this.filter(e).length > 0);
+   return !!e && ("string" == typeof e ? Wt.test(e) ? lt(e, this.context).index(this[0]) >= 0 : lt.filter(e, this).length > 0 : this.filter(e).length > 0);
   },
   closest: function(e, t) {
-   for (var n, i = 0, o = this.length, r = [], s = qt.test(e) || "string" != typeof e ? lt(e, t || this.context) : 0; o > i; i++) for (n = this[i]; n && n.ownerDocument && n !== t && 11 !== n.nodeType; ) {
+   for (var n, i = 0, o = this.length, r = [], s = Wt.test(e) || "string" != typeof e ? lt(e, t || this.context) : 0; o > i; i++) for (n = this[i]; n && n.ownerDocument && n !== t && 11 !== n.nodeType; ) {
     if (s ? s.index(n) > -1 : lt.find.matchesSelector(n, e)) {
      r.push(n);
      break;
@@ -3053,7 +3053,7 @@ function css_browser_selector(e) {
  }), lt.fn.hover = function(e, t) {
   return this.mouseenter(e).mouseleave(t || e);
  };
- var zn, Nn, Rn = lt.now(), Ln = /\?/, An = /#.*$/, On = /([?&])_=[^&]*/, Mn = /^(.*?):[ \t]*([^\r\n]*)\r?$/gm, Dn = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/, jn = /^(?:GET|HEAD)$/, Hn = /^\/\//, Fn = /^([\w.+-]+:)(?:\/\/([^\/?#:]*)(?::(\d+)|)|)/, Bn = lt.fn.load, Wn = {}, qn = {}, Gn = "*/".concat("*");
+ var zn, Nn, Rn = lt.now(), Ln = /\?/, An = /#.*$/, Mn = /([?&])_=[^&]*/, On = /^(.*?):[ \t]*([^\r\n]*)\r?$/gm, Dn = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/, jn = /^(?:GET|HEAD)$/, Hn = /^\/\//, Fn = /^([\w.+-]+:)(?:\/\/([^\/?#:]*)(?::(\d+)|)|)/, Bn = lt.fn.load, qn = {}, Wn = {}, Gn = "*/".concat("*");
  try {
   Nn = Y.href;
  } catch (Un) {
@@ -3129,8 +3129,8 @@ function css_browser_selector(e) {
   ajaxSetup: function(e, t) {
    return t ? N(N(e, lt.ajaxSettings), t) : N(lt.ajaxSettings, e);
   },
-  ajaxPrefilter: $(Wn),
-  ajaxTransport: $(qn),
+  ajaxPrefilter: $(qn),
+  ajaxTransport: $(Wn),
   ajax: function(e, n) {
    function i(e, n, i, o) {
     var r, d, y, b, x, k = n;
@@ -3149,7 +3149,7 @@ function css_browser_selector(e) {
     getResponseHeader: function(e) {
      var t;
      if (2 === w) {
-      if (!d) for (d = {}; t = Mn.exec(a); ) d[t[1].toLowerCase()] = t[2];
+      if (!d) for (d = {}; t = On.exec(a); ) d[t[1].toLowerCase()] = t[2];
       t = d[e.toLowerCase()];
      }
      return null == t ? null : t;
@@ -3178,10 +3178,10 @@ function css_browser_selector(e) {
    p.type = n.method || n.type || p.method || p.type, p.dataTypes = lt.trim(p.dataType || "*").toLowerCase().match(ut) || [ "" ], 
    null == p.crossDomain && (o = Fn.exec(p.url.toLowerCase()), p.crossDomain = !(!o || o[1] === zn[1] && o[2] === zn[2] && (o[3] || ("http:" === o[1] ? 80 : 443)) == (zn[3] || ("http:" === zn[1] ? 80 : 443)))), 
    p.data && p.processData && "string" != typeof p.data && (p.data = lt.param(p.data, p.traditional)), 
-   z(Wn, p, n, C), 2 === w) return C;
+   z(qn, p, n, C), 2 === w) return C;
    c = p.global, c && 0 === lt.active++ && lt.event.trigger("ajaxStart"), p.type = p.type.toUpperCase(), 
    p.hasContent = !jn.test(p.type), s = p.url, p.hasContent || (p.data && (s = p.url += (Ln.test(s) ? "&" : "?") + p.data, 
-   delete p.data), p.cache === !1 && (p.url = On.test(s) ? s.replace(On, "$1_=" + Rn++) : s + (Ln.test(s) ? "&" : "?") + "_=" + Rn++)), 
+   delete p.data), p.cache === !1 && (p.url = Mn.test(s) ? s.replace(Mn, "$1_=" + Rn++) : s + (Ln.test(s) ? "&" : "?") + "_=" + Rn++)), 
    p.ifModified && (lt.lastModified[s] && C.setRequestHeader("If-Modified-Since", lt.lastModified[s]), 
    lt.etag[s] && C.setRequestHeader("If-None-Match", lt.etag[s])), (p.data && p.hasContent && p.contentType !== !1 || n.contentType) && C.setRequestHeader("Content-Type", p.contentType), 
    C.setRequestHeader("Accept", p.dataTypes[0] && p.accepts[p.dataTypes[0]] ? p.accepts[p.dataTypes[0]] + ("*" !== p.dataTypes[0] ? ", " + Gn + "; q=0.01" : "") : p.accepts["*"]);
@@ -3193,7 +3193,7 @@ function css_browser_selector(e) {
     error: 1,
     complete: 1
    }) C[r](p[r]);
-   if (u = z(qn, p, n, C)) {
+   if (u = z(Wn, p, n, C)) {
     C.readyState = 1, c && h.trigger("ajaxSend", [ C, p ]), p.async && p.timeout > 0 && (l = setTimeout(function() {
      C.abort("timeout");
     }, p.timeout));
@@ -3268,7 +3268,7 @@ function css_browser_selector(e) {
   for (e in Yn) Yn[e](t, !0);
  };
  lt.ajaxSettings.xhr = e.ActiveXObject ? function() {
-  return !this.isLocal && A() || O();
+  return !this.isLocal && A() || M();
  } : A, Kn = lt.ajaxSettings.xhr(), lt.support.cors = !!Kn && "withCredentials" in Kn, 
  Kn = lt.support.ajax = !!Kn, Kn && lt.ajaxTransport(function(n) {
   if (!n.crossDomain || lt.support.cors) {
@@ -3363,7 +3363,7 @@ function css_browser_selector(e) {
  }, lt.each([ "toggle", "show", "hide" ], function(e, t) {
   var n = lt.fn[t];
   lt.fn[t] = function(e, i, o) {
-   return null == e || "boolean" == typeof e ? n.apply(this, arguments) : this.animate(W(t, !0), e, i, o);
+   return null == e || "boolean" == typeof e ? n.apply(this, arguments) : this.animate(q(t, !0), e, i, o);
   };
  }), lt.fn.extend({
   fadeTo: function(e, t, n, i) {
@@ -3405,9 +3405,9 @@ function css_browser_selector(e) {
    });
   }
  }), lt.each({
-  slideDown: W("show"),
-  slideUp: W("hide"),
-  slideToggle: W("toggle"),
+  slideDown: q("show"),
+  slideUp: q("hide"),
+  slideToggle: q("toggle"),
   fadeIn: {
    opacity: "show"
   },
@@ -3465,7 +3465,7 @@ function css_browser_selector(e) {
    left: 0
   }, r = this[0], s = r && r.ownerDocument;
   if (s) return n = s.documentElement, lt.contains(n, r) ? (typeof r.getBoundingClientRect !== V && (o = r.getBoundingClientRect()), 
-  i = q(s), {
+  i = W(s), {
    top: o.top + (i.pageYOffset || n.scrollTop) - (n.clientTop || 0),
    left: o.left + (i.pageXOffset || n.scrollLeft) - (n.clientLeft || 0)
   }) : o;
@@ -3506,7 +3506,7 @@ function css_browser_selector(e) {
   var i = /Y/.test(n);
   lt.fn[e] = function(o) {
    return lt.access(this, function(e, o, r) {
-    var s = q(e);
+    var s = W(e);
     return r === t ? s ? n in s ? s[n] : s.document.documentElement[o] : e[o] : (s ? s.scrollTo(i ? lt(s).scrollLeft() : r, i ? r : lt(s).scrollTop()) : e[o] = r, 
     t);
    }, e, o, arguments.length, null);
@@ -3988,7 +3988,7 @@ function css_browser_selector(e) {
    var n = k[t] = e[t];
    k.prototype[t] = function() {
     var e = [ this._wrapped ];
-    return s.apply(e, arguments), M.call(this, n.apply(k, e));
+    return s.apply(e, arguments), O.call(this, n.apply(k, e));
    };
   });
  };
@@ -4009,13 +4009,13 @@ function css_browser_selector(e) {
   "	": "t",
   "\u2028": "u2028",
   "\u2029": "u2029"
- }, O = /\\|'|\r|\n|\t|\u2028|\u2029/g;
+ }, M = /\\|'|\r|\n|\t|\u2028|\u2029/g;
  k.template = function(e, t, n) {
   var i;
   n = k.defaults({}, n, k.templateSettings);
   var o = RegExp([ (n.escape || L).source, (n.interpolate || L).source, (n.evaluate || L).source ].join("|") + "|$", "g"), r = 0, s = "__p+='";
   e.replace(o, function(t, n, i, o, a) {
-   return s += e.slice(r, a).replace(O, function(e) {
+   return s += e.slice(r, a).replace(M, function(e) {
     return "\\" + A[e];
    }), n && (s += "'+\n((__t=(" + n + "))==null?'':_.escape(__t))+\n'"), i && (s += "'+\n((__t=(" + i + "))==null?'':__t)+\n'"), 
    o && (s += "';\n" + o + "\n__p+='"), r = a + t.length, t;
@@ -4033,7 +4033,7 @@ function css_browser_selector(e) {
  }, k.chain = function(e) {
   return k(e).chain();
  };
- var M = function(e) {
+ var O = function(e) {
   return this._chain ? k(e).chain() : e;
  };
  k.mixin(k), S([ "pop", "push", "reverse", "shift", "sort", "splice", "unshift" ], function(e) {
@@ -4041,12 +4041,12 @@ function css_browser_selector(e) {
   k.prototype[e] = function() {
    var n = this._wrapped;
    return t.apply(n, arguments), "shift" != e && "splice" != e || 0 !== n.length || delete n[0], 
-   M.call(this, n);
+   O.call(this, n);
   };
  }), S([ "concat", "join", "slice" ], function(e) {
   var t = i[e];
   k.prototype[e] = function() {
-   return M.call(this, t.apply(this._wrapped, arguments));
+   return O.call(this, t.apply(this._wrapped, arguments));
   };
  }), k.extend(k.prototype, {
   chain: function() {
@@ -4738,7 +4738,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   r = e, s(e);
  }, o.onNewPublishSuccess = s, o.onPublishRemoved = s, o;
 }), define("text!html/buttonStat.html", [], function() {
- return '<button class="btn dropdown-toggle" data-toggle="dropdown"\r\n	title="Document statistics">\r\n	<i class="icon-stat"></i>\r\n</button>\r\n<div class="dropdown-menu pull-right">\r\n	<h3 class="muted">Statistics</h3>\r\n	<div class="stat">\r\n		<div>\r\n			<%= name1 %>: <span id="span-stat-value1"></span>\r\n		</div>\r\n		<div>\r\n			<%= name2 %>: <span id="span-stat-value2"></span>\r\n		</div>\r\n		<div>\r\n			<%= name3 %>: <span id="span-stat-value3"></span>\r\n		</div>\r\n	</div>\r\n</div>\r\n';
+ return '<button class="btn dropdown-toggle" title="Document statistics">\r\n	<i class="icon-stat"></i>\r\n</button>\r\n<div class="dropdown-menu pull-right">\r\n	<h3>Statistics</h3>\r\n	<div class="stat">\r\n		<div>\r\n			<%= name1 %>: <span id="span-stat-value1"></span>\r\n		</div>\r\n		<div>\r\n			<%= name2 %>: <span id="span-stat-value2"></span>\r\n		</div>\r\n		<div>\r\n			<%= name3 %>: <span id="span-stat-value3"></span>\r\n		</div>\r\n	</div>\r\n</div>\r\n';
 }), define("text!html/buttonStatSettingsBloc.html", [], function() {
  return '<p>Adds a "Document statistics" button over the preview.</p>\r\n<div class="form-horizontal">\r\n	<div class="control-group form-inline">\r\n		<label class="label-text" for="input-stat-name1">Title</label> <input\r\n			id="input-stat-name1" type="text" class="input-small"> <label\r\n			class="label-text" for="input-stat-value1">RegExp</label> <input\r\n			id="input-stat-value1" type="text" class="span2">\r\n	</div>\r\n	<div class="control-group form-inline">\r\n		<label class="label-text" for="input-stat-name2">Title</label> <input\r\n			id="input-stat-name2" type="text" class="input-small"> <label\r\n			class="label-text" for="input-stat-value2">RegExp</label> <input\r\n			id="input-stat-value2" type="text" class="span2">\r\n	</div>\r\n	<div class="control-group form-inline">\r\n		<label class="label-text" for="input-stat-name3">Title</label> <input\r\n			id="input-stat-name3" type="text" class="input-small"> <label\r\n			class="label-text" for="input-stat-value3">RegExp</label> <input\r\n			id="input-stat-value3" type="text" class="span2">\r\n	</div>\r\n</div>\r\n';
 }), define("extensions/buttonStat", [ "jquery", "underscore", "utils", "text!html/buttonStat.html", "text!html/buttonStatSettingsBloc.html" ], function(e, t, n, i, o) {
@@ -4773,7 +4773,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   e("#span-stat-value3").text((t.match(RegExp(r.config.value3, "g")) || []).length);
  }, r;
 }), define("text!html/buttonHtmlCode.html", [], function() {
- return '<button class="btn dropdown-toggle action-html-code" data-toggle="dropdown"\r\n	title="HTML code">\r\n	<i class="icon-code"></i>\r\n</button>\r\n<div class="dropdown-menu pull-right">\r\n	<h3 class="muted">HTML code</h3>\r\n	<textarea id="input-html-code"></textarea>\r\n</div>\r\n';
+ return '<button class="btn dropdown-toggle action-html-code" title="HTML code">\r\n	<i class="icon-code"></i>\r\n</button>\r\n<div class="dropdown-menu pull-right">\r\n	<h3>HTML code</h3>\r\n	<textarea id="input-html-code"></textarea>\r\n</div>\r\n';
 }), define("extensions/buttonHtmlCode", [ "jquery", "text!html/buttonHtmlCode.html" ], function(e, t) {
  var n = {
   extensionId: "buttonHtmlCode",
@@ -4786,15 +4786,25 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  }, n.onPreviewFinished = function() {
   e("#input-html-code").val(e("#wmd-preview").html());
  }, n.onReady = function() {
-  e("#input-html-code").click(function(e) {
-   e.stopPropagation();
-  }), e(".action-html-code").click(function() {
+  e(".action-html-code").click(function() {
    _.defer(function() {
     e("#input-html-code").each(function() {
      e(this).is(":hidden") || e(this).get(0).select();
     });
    });
   });
+ }, n;
+}), define("text!html/buttonMarkdownSyntax.html", [], function() {
+ return '<button class="btn dropdown-toggle" title="Markdown syntax">\r\n	<i class="icon-question-sign"></i>\r\n</button>\r\n<div class="dropdown-menu pull-right">\r\n	<h3>Markdown syntax</h3>\r\n	<div id="markdown-syntax">\r\n<h4>Phrase Emphasis</h4>\r\n\r\n<pre><code>*italic*   **bold**\r\n_italic_   __bold__\r\n</code></pre>\r\n\r\n<h4>Links</h4>\r\n\r\n<p>Inline:</p>\r\n\r\n<pre><code>An [example](http://url.com/ "Title")\r\n</code></pre>\r\n\r\n<p>Reference-style labels (titles are optional):</p>\r\n\r\n<pre><code>An [example][id]. Then, anywhere\r\nelse in the doc, define the link:\r\n\r\n  [id]: http://example.com/  "Title"\r\n</code></pre>\r\n\r\n<h4>Images</h4>\r\n\r\n<p>Inline (titles are optional):</p>\r\n\r\n<pre><code>![alt text](/path/img.jpg "Title")\r\n</code></pre>\r\n\r\n<p>Reference-style:</p>\r\n\r\n<pre><code>![alt text][id]\r\n\r\n[id]: /url/to/img.jpg "Title"\r\n</code></pre>\r\n\r\n<h4>Headers</h4>\r\n\r\n<p>Setext-style:</p>\r\n\r\n<pre><code>Header 1\r\n========\r\n\r\nHeader 2\r\n--------\r\n</code></pre>\r\n\r\n<p>atx-style (closing #\'s are optional):</p>\r\n\r\n<pre><code># Header 1 #\r\n\r\n## Header 2 ##\r\n\r\n###### Header 6\r\n</code></pre>\r\n\r\n<h4>Lists</h4>\r\n\r\n<p>Ordered, without paragraphs:</p>\r\n\r\n<pre><code>1.  Foo\r\n2.  Bar\r\n</code></pre>\r\n\r\n<p>Unordered, with paragraphs:</p>\r\n\r\n<pre><code>*   A list item.\r\n\r\n    With multiple paragraphs.\r\n\r\n*   Bar\r\n</code></pre>\r\n\r\n<p>You can nest them:</p>\r\n\r\n<pre><code>*   Abacus\r\n    * answer\r\n*   Bubbles\r\n    1.  bunk\r\n    2.  bupkis\r\n        * BELITTLER\r\n    3. burper\r\n*   Cunning\r\n</code></pre>\r\n\r\n<h4>Blockquotes</h4>\r\n\r\n<pre><code>&gt; Email-style angle brackets\r\n&gt; are used for blockquotes.\r\n\r\n&gt; &gt; And, they can be nested.\r\n\r\n&gt; #### Headers in blockquotes\r\n&gt; \r\n&gt; * You can quote a list.\r\n&gt; * Etc.\r\n</code></pre>\r\n\r\n<h4>Code Spans</h4>\r\n\r\n<pre><code>`&lt;code&gt;` spans are delimited\r\nby backticks.\r\n\r\nYou can include literal backticks\r\nlike `` `this` ``.\r\n</code></pre>\r\n\r\n<h4>Preformatted Code Blocks</h4>\r\n\r\n<p>Indent every line of a code block by at least 4 spaces or 1 tab.</p>\r\n\r\n<pre><code>This is a normal paragraph.\r\n\r\n    This is a preformatted\r\n    code block.\r\n</code></pre>\r\n\r\n<h4>Horizontal Rules</h4>\r\n\r\n<p>Three or more dashes or asterisks:</p>\r\n\r\n<pre><code>---\r\n\r\n* * *\r\n\r\n- - - - \r\n</code></pre>\r\n\r\n<h4>Manual Line Breaks</h4>\r\n\r\n<p>End a line with two or more spaces:</p>\r\n\r\n<pre><code>Roses are red,   \r\nViolets are blue.\r\n</code></pre>\r\n\r\n<p class="muted">Based on the <a target="_blank" href="https://github.com/fletcher/MultiMarkdown/blob/master/Documentation/Markdown%20Syntax.md">Markdown syntax guide</a>, by Fletcher T. Penney.</p>\r\n    </div>\r\n</div>\r\n';
+}), define("extensions/buttonMarkdownSyntax", [ "jquery", "text!html/buttonMarkdownSyntax.html" ], function(e, t) {
+ var n = {
+  extensionId: "buttonMarkdownSyntax",
+  extensionName: 'Button "Markdown syntax"',
+  optional: !0,
+  settingsBloc: '<p>Adds a "Markdown syntax" button over the preview.</p>'
+ };
+ return n.onCreatePreviewButton = function() {
+  return e(t);
  }, n;
 }), define("text!html/buttonViewer.html", [], function() {
  return '<a href="viewer.html" class="btn dropdown-toggle"\r\n	title="Open in viewer">\r\n	<i class="icon-fullscreen"></i>\r\n</a>\r\n';
@@ -5794,7 +5804,7 @@ function() {
   }
   function o(e, t) {
    var n = t;
-   return n = n.replace(/^\n+/, ""), n = n.replace(/\n+$/g, ""), n = "\n\n~K" + (O.push(n) - 1) + "K\n\n";
+   return n = n.replace(/^\n+/, ""), n = n.replace(/\n+$/g, ""), n = "\n\n~K" + (M.push(n) - 1) + "K\n\n";
   }
   function r(e, n) {
    e = R.preBlockGamut(e, D), e = f(e);
@@ -5861,7 +5871,7 @@ function() {
   function h(e, t) {
    e += "~0";
    var n = /^(([ ]{0,3}([*+-]|\d+[.])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*+-]|\d+[.])[ \t]+)))/gm;
-   return M ? e = e.replace(n, function(e, n, i) {
+   return O ? e = e.replace(n, function(e, n, i) {
     var o = n, r = i.search(/[*+-]/g) > -1 ? "ul" : "ol", s = g(o, r, t);
     return s = s.replace(/\s+$/, ""), s = "<" + r + ">" + s + "</" + r + ">\n";
    }) : (n = /(\n\n|^\n?)(([ ]{0,3}([*+-]|\d+[.])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*+-]|\d+[.])[ \t]+)))/g, 
@@ -5871,13 +5881,13 @@ function() {
    })), e = e.replace(/~0/, "");
   }
   function g(e, t, n) {
-   M++, e = e.replace(/\n{2,}$/, "\n"), e += "~0";
+   O++, e = e.replace(/\n{2,}$/, "\n"), e += "~0";
    var i = j[t], o = RegExp("(^[ \\t]*)(" + i + ")[ \\t]+([^\\r]+?(\\n+))(?=(~0|\\1(" + i + ")[ \\t]+))", "gm"), a = !1;
    return e = e.replace(o, function(e, t, i, o) {
     var l = o, c = /\n\n$/.test(l), u = c || l.search(/\n{2,}/) > -1;
     return u || a ? l = r(P(l), !0) : (l = h(P(l), !0), l = l.replace(/\n$/, ""), n || (l = s(l))), 
     a = c, "<li>" + l + "</li>\n";
-   }), e = e.replace(/~0/g, ""), M--, e;
+   }), e = e.replace(/~0/g, ""), O--, e;
   }
   function m(e) {
    return e += "~0", e = e.replace(/(?:\n\n|^\n?)((?:(?:[ ]{4}|\t).*\n+)+)(\n*[ ]{0,3}[^ \t\n]|(?=~0))/g, function(e, t, n) {
@@ -5887,7 +5897,7 @@ function() {
    }), e = e.replace(/~0/, "");
   }
   function v(e) {
-   return e = e.replace(/(^\n+|\n+$)/g, ""), "\n\n~K" + (O.push(e) - 1) + "K\n\n";
+   return e = e.replace(/(^\n+|\n+$)/g, ""), "\n\n~K" + (M.push(e) - 1) + "K\n\n";
   }
   function y(e) {
    return e = e.replace(/(^|[^\\])(`+)([^\r]*?[^`])\2(?!`)/gm, function(e, t, n, i) {
@@ -5924,7 +5934,7 @@ function() {
    if (!t) {
     r = i.length;
     for (var a = 0; r > a; a++) for (var c = !0; c; ) c = !1, i[a] = i[a].replace(/~K(\d+)K/g, function(e, t) {
-     return c = !0, O[t];
+     return c = !0, M[t];
     });
    }
    return i.join("\n\n");
@@ -5948,7 +5958,7 @@ function() {
    }
    if (a) {
     var c = i.charAt(i.length - 1);
-    W.test(c) || (a = c + a, i = i.substr(0, i.length - 1));
+    q.test(c) || (a = c + a, i = i.substr(0, i.length - 1));
    }
    return "<" + n + i + ">" + a;
   }
@@ -5978,7 +5988,7 @@ function() {
   function $(e) {
    if (!e) return "";
    var t = e.length;
-   return e.replace(q, function(n, i) {
+   return e.replace(W, function(n, i) {
     return "~D" == n ? "%24" : ":" != n || i != t - 1 && !/[0-9\/]/.test(e.charAt(i + 1)) ? "%" + n.charCodeAt(0).toString(16) : ":";
    });
   }
@@ -5996,21 +6006,21 @@ function() {
   R.addNoop("plainLinkText"), R.addNoop("preConversion"), R.addNoop("postNormalization"), 
   R.addNoop("preBlockGamut"), R.addNoop("postBlockGamut"), R.addNoop("preSpanGamut"), 
   R.addNoop("postSpanGamut"), R.addNoop("postConversion");
-  var L, A, O, M;
+  var L, A, M, O;
   this.makeHtml = function(n) {
    if (L) throw Error("Recursive call to converter.makeHtml");
-   return L = new i(), A = new i(), O = [], M = 0, n = R.preConversion(n), n = n.replace(/~/g, "~T"), 
+   return L = new i(), A = new i(), M = [], O = 0, n = R.preConversion(n), n = n.replace(/~/g, "~T"), 
    n = n.replace(/\$/g, "~D"), n = n.replace(/\r\n/g, "\n"), n = n.replace(/\r/g, "\n"), 
    n = "\n\n" + n + "\n\n", n = I(n), n = n.replace(/^[ \t]+$/gm, ""), n = R.postNormalization(n), 
    n = t(n), n = e(n), n = r(n), n = E(n), n = n.replace(/~D/g, "$$"), n = n.replace(/~T/g, "~"), 
-   n = R.postConversion(n), O = A = L = null, n;
+   n = R.postConversion(n), M = A = L = null, n;
   };
   var D = function(e) {
    return r(e);
   }, j = {
    ol: "\\d+[.]",
    ul: "[*+-]"
-  }, H = "[-A-Z0-9+&@#/%?=~_|[\\]()!:,.;]", F = "[-A-Z0-9+&@#/%=~_|[\\])]", B = RegExp('(="|<)?\\b(https?|ftp)(://' + H + "*" + F + ")(?=$|\\W)", "gi"), W = RegExp(F, "i"), q = /(?:["'*()[\]:]|~D)/g;
+  }, H = "[-A-Z0-9+&@#/%?=~_|[\\]()!:,.;]", F = "[-A-Z0-9+&@#/%=~_|[\\])]", B = RegExp('(="|<)?\\b(https?|ftp)(://' + H + "*" + F + ")(?=$|\\W)", "gi"), q = RegExp(F, "i"), W = /(?:["'*()[\]:]|~D)/g;
  };
 }(), define("libs/Markdown.Converter", function() {});
 
@@ -6137,7 +6147,7 @@ var prettyPrintOne, prettyPrint;
  function i(e) {
   for (var t = void 0, n = e.firstChild; n; n = n.nextSibling) {
    var i = n.nodeType;
-   t = 1 === i ? t ? e : n : 3 === i ? W.test(n.nodeValue) ? e : t : t;
+   t = 1 === i ? t ? e : n : 3 === i ? q.test(n.nodeValue) ? e : t : t;
   }
   return t === e ? void 0 : t;
  }
@@ -6368,15 +6378,15 @@ var prettyPrintOne, prettyPrint;
   var m, v = 0, y = /\blang(?:uage)?-([\w.]+)(?!\S)/, b = /\bprettyprint\b/, w = /\bprettyprinted\b/, x = /pre|xmp/i, C = /^code$/i, k = /^(?:pre|code|xmp)$/i, S = {};
   o();
  }
- var f = window, h = [ "break,continue,do,else,for,if,return,while" ], g = [ h, "auto,case,char,const,default,double,enum,extern,float,goto,inline,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile" ], m = [ g, "catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof" ], v = [ m, "alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,delegate,dynamic_cast,explicit,export,friend,generic,late_check,mutable,namespace,nullptr,property,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where" ], y = [ m, "abstract,assert,boolean,byte,extends,final,finally,implements,import,instanceof,interface,null,native,package,strictfp,super,synchronized,throws,transient" ], b = [ y, "as,base,by,checked,decimal,delegate,descending,dynamic,event,fixed,foreach,from,group,implicit,in,internal,into,is,let,lock,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where" ], w = "all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes", x = [ m, "debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN" ], C = "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END", k = [ h, "and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None" ], S = [ h, "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END" ], T = [ h, "as,assert,const,copy,drop,enum,extern,fail,false,fn,impl,let,log,loop,match,mod,move,mut,priv,pub,pure,ref,self,static,struct,true,trait,type,unsafe,use" ], _ = [ h, "case,done,elif,esac,eval,fi,function,in,local,set,then,until" ], E = [ v, b, x, C, k, S, _ ], P = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/, I = "str", $ = "kwd", z = "com", N = "typ", R = "lit", L = "pun", A = "pln", O = "tag", M = "dec", D = "src", j = "atn", H = "atv", F = "nocode", B = "(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*", W = /\S/, q = r({
+ var f = window, h = [ "break,continue,do,else,for,if,return,while" ], g = [ h, "auto,case,char,const,default,double,enum,extern,float,goto,inline,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile" ], m = [ g, "catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof" ], v = [ m, "alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,delegate,dynamic_cast,explicit,export,friend,generic,late_check,mutable,namespace,nullptr,property,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where" ], y = [ m, "abstract,assert,boolean,byte,extends,final,finally,implements,import,instanceof,interface,null,native,package,strictfp,super,synchronized,throws,transient" ], b = [ y, "as,base,by,checked,decimal,delegate,descending,dynamic,event,fixed,foreach,from,group,implicit,in,internal,into,is,let,lock,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where" ], w = "all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes", x = [ m, "debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN" ], C = "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END", k = [ h, "and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None" ], S = [ h, "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END" ], T = [ h, "as,assert,const,copy,drop,enum,extern,fail,false,fn,impl,let,log,loop,match,mod,move,mut,priv,pub,pure,ref,self,static,struct,true,trait,type,unsafe,use" ], _ = [ h, "case,done,elif,esac,eval,fi,function,in,local,set,then,until" ], E = [ v, b, x, C, k, S, _ ], P = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/, I = "str", $ = "kwd", z = "com", N = "typ", R = "lit", L = "pun", A = "pln", M = "tag", O = "dec", D = "src", j = "atn", H = "atv", F = "nocode", B = "(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*", q = /\S/, W = r({
   keywords: E,
   hashComments: !0,
   cStyleComments: !0,
   multiLineStrings: !0,
   regexLiterals: !0
  }), G = {};
- l(q, [ "default-code" ]), l(o([], [ [ A, /^[^<?]+/ ], [ M, /^<!\w[^>]*(?:>|$)/ ], [ z, /^<\!--[\s\S]*?(?:-\->|$)/ ], [ "lang-", /^<\?([\s\S]+?)(?:\?>|$)/ ], [ "lang-", /^<%([\s\S]+?)(?:%>|$)/ ], [ L, /^(?:<[%?]|[%?]>)/ ], [ "lang-", /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i ], [ "lang-js", /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i ], [ "lang-css", /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i ], [ "lang-in.tag", /^(<\/?[a-z][^<>]*>)/i ] ]), [ "default-markup", "htm", "html", "mxml", "xhtml", "xml", "xsl" ]), 
- l(o([ [ A, /^[\s]+/, null, " 	\r\n" ], [ H, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, "\"'" ] ], [ [ O, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i ], [ j, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i ], [ "lang-uq.val", /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/ ], [ L, /^[=<>\/]+/ ], [ "lang-js", /^on\w+\s*=\s*\"([^\"]+)\"/i ], [ "lang-js", /^on\w+\s*=\s*\'([^\']+)\'/i ], [ "lang-js", /^on\w+\s*=\s*([^\"\'>\s]+)/i ], [ "lang-css", /^style\s*=\s*\"([^\"]+)\"/i ], [ "lang-css", /^style\s*=\s*\'([^\']+)\'/i ], [ "lang-css", /^style\s*=\s*([^\"\'>\s]+)/i ] ]), [ "in.tag" ]), 
+ l(W, [ "default-code" ]), l(o([], [ [ A, /^[^<?]+/ ], [ O, /^<!\w[^>]*(?:>|$)/ ], [ z, /^<\!--[\s\S]*?(?:-\->|$)/ ], [ "lang-", /^<\?([\s\S]+?)(?:\?>|$)/ ], [ "lang-", /^<%([\s\S]+?)(?:%>|$)/ ], [ L, /^(?:<[%?]|[%?]>)/ ], [ "lang-", /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i ], [ "lang-js", /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i ], [ "lang-css", /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i ], [ "lang-in.tag", /^(<\/?[a-z][^<>]*>)/i ] ]), [ "default-markup", "htm", "html", "mxml", "xhtml", "xml", "xsl" ]), 
+ l(o([ [ A, /^[\s]+/, null, " 	\r\n" ], [ H, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, "\"'" ] ], [ [ M, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i ], [ j, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i ], [ "lang-uq.val", /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/ ], [ L, /^[=<>\/]+/ ], [ "lang-js", /^on\w+\s*=\s*\"([^\"]+)\"/i ], [ "lang-js", /^on\w+\s*=\s*\'([^\']+)\'/i ], [ "lang-js", /^on\w+\s*=\s*([^\"\'>\s]+)/i ], [ "lang-css", /^style\s*=\s*\"([^\"]+)\"/i ], [ "lang-css", /^style\s*=\s*\'([^\']+)\'/i ], [ "lang-css", /^style\s*=\s*([^\"\'>\s]+)/i ] ]), [ "in.tag" ]), 
  l(o([], [ [ H, /^[\s\S]+/ ] ]), [ "uq.val" ]), l(r({
   keywords: v,
   hashComments: !0,
@@ -6435,7 +6445,7 @@ var prettyPrintOne, prettyPrint;
   PR_ATTRIB_NAME: j,
   PR_ATTRIB_VALUE: H,
   PR_COMMENT: z,
-  PR_DECLARATION: M,
+  PR_DECLARATION: O,
   PR_KEYWORD: $,
   PR_LITERAL: R,
   PR_NOCODE: F,
@@ -6443,7 +6453,7 @@ var prettyPrintOne, prettyPrint;
   PR_PUNCTUATION: L,
   PR_SOURCE: D,
   PR_STRING: I,
-  PR_TAG: O,
+  PR_TAG: M,
   PR_TYPE: N,
   prettyPrintOne: IN_GLOBAL_SCOPE ? f.prettyPrintOne = d : prettyPrintOne = d,
   prettyPrint: prettyPrint = IN_GLOBAL_SCOPE ? f.prettyPrint = p : prettyPrint = p
@@ -7824,7 +7834,7 @@ function(e) {
    });
   });
  };
-}(jQuery), define("libs/jquery.waitforimages", function() {}), define("extensionMgr", [ "jquery", "underscore", "utils", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/googleAnalytics", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonViewer", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdown-extra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o) {
+}(jQuery), define("libs/jquery.waitforimages", function() {}), define("extensionMgr", [ "jquery", "underscore", "utils", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/googleAnalytics", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonMarkdownSyntax", "extensions/buttonViewer", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdown-extra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o) {
  function r(e) {
   return t.chain(u).map(function(t) {
    return t.config.enabled && t[e];
@@ -7887,19 +7897,28 @@ function(e) {
    e(n);
   });
  }, c.onReady = function() {
+  function n(t) {
+   e("#extension-preview-buttons .open").removeClass("open").find(".dropdown-menu").addClass("hide"), 
+   void 0 !== t && t.addClass("open").find(".dropdown-menu").removeClass("hide");
+  }
   t.chain(u).sortBy(function(e) {
    return e.extensionName.toLowerCase();
   }).each(l), logger.log("onCreateButton");
-  var n = r("onCreateButton");
-  t.each(n, function(t) {
+  var i = r("onCreateButton");
+  t.each(i, function(t) {
    e("#extension-buttons").append(e('<div class="btn-group">').append(t()));
   }), logger.log("onCreatePreviewButton");
-  var i = r("onCreatePreviewButton");
-  t.each(i, function(t) {
-   e("#extension-preview-buttons").append(e('<div class="btn-group">').append(t()));
+  var o = r("onCreatePreviewButton");
+  t.each(o, function(t) {
+   e("#extension-preview-buttons").append(e('<div class="btn-group">').append(t()).each(function() {
+    var t = e(this);
+    t.find(".dropdown-toggle").click(function() {
+     n(t.is(".open") ? void 0 : t);
+    });
+   }));
   });
-  var o = s("onReady");
-  o();
+  var a = s("onReady");
+  a();
  }, c.onExtensionMgrCreated(c), c;
 }), define("text!html/settingsTemplateTooltip.html", [], function() {
  return 'Available variables:\r\n<br>\r\n<ul>\r\n	<li><b>documentTitle</b>: document title</li>\r\n	<li><b>documentMarkdown</b>: document in Markdown format</li>\r\n	<li><b>documentHTML</b>: document in HTML format</li>\r\n	<li><b>publishAttributes</b>: attributes of the publish location\r\n		(undefined when using "Save")</li>\r\n</ul>\r\nExamples:\r\n<br />\r\n&lt;title&gt;&lt;%= documentTitle %&gt;&lt;&#x2F;title&gt;\r\n<br />\r\n&lt;div&gt;&lt;%- documentHTML %&gt;&lt;&#x2F;div&gt;\r\n<br />\r\n&lt;% if(publishAttributes.provider == &quot;github&quot;)\r\nprint(documentMarkdown); %&gt;\r\n<br />\r\n<br />\r\n<a target="_blank" href="http://underscorejs.org/#template">More\r\n	info</a>';

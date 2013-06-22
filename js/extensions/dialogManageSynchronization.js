@@ -1,14 +1,12 @@
 define([
     "jquery",
     "underscore",
+    "classes/Extension",
     "text!html/dialogManageSynchronizationLocation.html",
-], function($, _, dialogManageSynchronizationLocationHTML) {
+], function($, _, Extension, dialogManageSynchronizationLocationHTML) {
 
-    var dialogManageSynchronization = {
-        extensionId: "dialogManageSynchronization",
-        extensionName: 'Dialog "Manage synchronization"',
-        settingsBloc: '<p>Populates the "Manage synchronization" dialog box.</p>'
-    };
+    var dialogManageSynchronization = new Extension("dialogManageSynchronization", 'Dialog "Manage synchronization"');
+    dialogManageSynchronization.settingsBlock = '<p>Populates the "Manage synchronization" dialog box.</p>';
 
     var extensionMgr = undefined;
     dialogManageSynchronization.onExtensionMgrCreated = function(extensionMgrParameter) {

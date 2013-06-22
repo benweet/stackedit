@@ -1,17 +1,14 @@
 define([
     "jquery",
     "core",
+    "classes/Provider",
     "classes/AsyncTask"
-], function($, core, AsyncTask) {
+], function($, core, Provider, AsyncTask) {
 
-    var PROVIDER_DOWNLOAD = "download";
-
-    var downloadProvider = {
-        providerId: PROVIDER_DOWNLOAD,
-        sharingAttributes: [
-            "url"
-        ]
-    };
+    var downloadProvider = new Provider("download");
+    downloadProvider.sharingAttributes = [
+        "url"
+    ];
 
     downloadProvider.importPublic = function(importParameters, callback) {
         var title = undefined;

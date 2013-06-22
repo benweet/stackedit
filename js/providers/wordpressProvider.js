@@ -1,18 +1,14 @@
 define([
     "utils",
+    "classes/Provider",
     "helpers/wordpressHelper"
-], function(utils, wordpressHelper) {
+], function(utils, Provider, wordpressHelper) {
 
-    var PROVIDER_WORDPRESS = "wordpress";
-
-    var wordpressProvider = {
-        providerId: PROVIDER_WORDPRESS,
-        providerName: "WordPress",
-        defaultPublishFormat: "html",
-        publishPreferencesInputIds: [
-            "wordpress-site"
-        ]
-    };
+    var wordpressProvider = new Provider("wordpress", "WordPress");
+    wordpressProvider.defaultPublishFormat = "html";
+    wordpressProvider.publishPreferencesInputIds = [
+        "wordpress-site"
+    ];
 
     wordpressProvider.publish = function(publishAttributes, title, content, callback) {
         wordpressHelper.upload(publishAttributes.site, publishAttributes.postId, publishAttributes.tags, title, content, function(error, postId) {

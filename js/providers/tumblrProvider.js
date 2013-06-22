@@ -1,17 +1,13 @@
 define([
     "utils",
+    "classes/Provider",
     "helpers/tumblrHelper"
-], function(utils, tumblrHelper) {
+], function(utils, Provider, tumblrHelper) {
 
-    var PROVIDER_TUMBLR = "tumblr";
-
-    var tumblrProvider = {
-        providerId: PROVIDER_TUMBLR,
-        providerName: "Tumblr",
-        publishPreferencesInputIds: [
-            "tumblr-hostname"
-        ]
-    };
+    var tumblrProvider = new Provider("tumblr", "Tumblr");
+    tumblrProvider.publishPreferencesInputIds = [
+        "tumblr-hostname"
+    ];
 
     tumblrProvider.publish = function(publishAttributes, title, content, callback) {
         tumblrHelper.upload(publishAttributes.blogHostname, publishAttributes.postId, publishAttributes.tags, publishAttributes.format == "markdown" ? "markdown" : "html", title, content, function(error, postId) {

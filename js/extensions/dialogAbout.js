@@ -1,14 +1,12 @@
 define([
     "jquery",
     "underscore",
+    "classes/Extension",
     "text!html/dialogAbout.html",
-], function($, _, dialogAboutHTML) {
+], function($, _, Extension, dialogAboutHTML) {
 
-    var dialogAbout = {
-        extensionId: "dialogAbout",
-        extensionName: 'Dialog "About"',
-        settingsBloc: '<p>Prints the content of the "About" dialog box.</p>'
-    };
+    var dialogAbout = new Extension("dialogAbout", 'Dialog "About"');
+    dialogAbout.settingsBlock = '<p>Prints the content of the "About" dialog box.</p>';
 
     var libraries = {
         "Bootstrap": "http://twitter.github.io/bootstrap/",

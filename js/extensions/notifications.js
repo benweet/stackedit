@@ -2,17 +2,15 @@ define([
     "jquery",
     "underscore",
     "utils",
+    "classes/Extension",
     "jgrowl",
-    "text!html/notificationsSettingsBloc.html",
-], function($, _, utils, jGrowl, notificationsSettingsBlocHTML) {
+    "text!html/notificationsSettingsBlock.html",
+], function($, _, utils, Extension, jGrowl, notificationsSettingsBlockHTML) {
 
-    var notifications = {
-        extensionId: "notifications",
-        extensionName: "Notifications",
-        defaultConfig: {
-            timeout: 8000
-        },
-        settingsBloc: notificationsSettingsBlocHTML
+    var notifications = new Extension("notifications", "Notifications");
+    notifications.settingsBlock = notificationsSettingsBlockHTML;
+    notifications.defaultConfig = {
+        timeout: 8000
     };
 
     notifications.onLoadSettings = function() {

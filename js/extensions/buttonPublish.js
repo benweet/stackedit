@@ -1,14 +1,12 @@
 define([
     "jquery",
     "underscore",
+    "classes/Extension",
     "text!html/buttonPublish.html",
-], function($, _, buttonPublishHTML) {
+], function($, _, Extension, buttonPublishHTML) {
 
-    var buttonPublish = {
-        extensionId: "buttonPublish",
-        extensionName: 'Button "Publish"',
-        settingsBloc: '<p>Adds a "Publish document" button in the navigation bar.</p>'
-    };
+    var buttonPublish = new Extension("buttonPublish", 'Button "Publish"');
+    buttonPublish.settingsBlock = '<p>Adds a "Publish document" button in the navigation bar.</p>';
 
     var button = undefined;
     var currentFileDesc = undefined;

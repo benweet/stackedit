@@ -1,14 +1,11 @@
 define([
     "jquery",
+    "classes/Extension",
     "text!html/buttonViewer.html",
-], function($, buttonViewerHTML) {
+], function($, Extension, buttonViewerHTML) {
 
-    var buttonViewer = {
-        extensionId: "buttonViewer",
-        extensionName: 'Button "Viewer"',
-        optional: true,
-        settingsBloc: '<p>Adds a "Viewer" button over the preview.</p>'
-    };
+    var buttonViewer = new Extension("buttonViewer", 'Button "Viewer"', true);
+    buttonViewer.settingsBlock = '<p>Adds a "Viewer" button over the preview.</p>';
 
     buttonViewer.onCreatePreviewButton = function() {
         return $(buttonViewerHTML);

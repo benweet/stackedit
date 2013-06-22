@@ -1,14 +1,12 @@
 define([
     "jquery",
     "underscore",
+    "classes/Extension",
     "text!html/dialogManagePublicationLocation.html",
-], function($, _, dialogManagePublicationLocationHTML) {
+], function($, _, Extension, dialogManagePublicationLocationHTML) {
 
-    var dialogManagePublication = {
-        extensionId: "dialogManagePublication",
-        extensionName: 'Dialog "Manage publication"',
-        settingsBloc: '<p>Populates the "Manage publication" dialog box.</p>'
-    };
+    var dialogManagePublication = new Extension("dialogManagePublication", 'Dialog "Manage publication"');
+    dialogManagePublication.settingsBlock = '<p>Populates the "Manage publication" dialog box.</p>';
 
     var extensionMgr = undefined;
     dialogManagePublication.onExtensionMgrCreated = function(extensionMgrParameter) {

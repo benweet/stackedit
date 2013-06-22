@@ -461,6 +461,28 @@ define([
             }
         });
 
+        // Reset inputs
+        $(".action-reset-input").click(function() {
+            utils.resetModalInputs();
+        });
+
+        // Do periodic tasks
+        intervalId = window.setInterval(function() {
+            utils.updateCurrentTime();
+            checkWindowUnique();
+            if(isUserActive() === true || viewerMode === true) {
+                _.each(periodicCallbacks, function(callback) {
+                    callback();
+                });
+                checkOnline();
+            }
+        }, 1000);
+    });
+    core.onReady(extensionMgr.onReady);
+    
+    // After extensions onReady callbacks
+    core.onReady(function() {
+
         // Tooltips
         $(".tooltip-lazy-rendering").tooltip({
             container: '#modal-settings',
@@ -490,24 +512,7 @@ define([
             e.stopPropagation();
         });
 
-        // Reset inputs
-        $(".action-reset-input").click(function() {
-            utils.resetModalInputs();
-        });
-
-        // Do periodic tasks
-        intervalId = window.setInterval(function() {
-            utils.updateCurrentTime();
-            checkWindowUnique();
-            if(isUserActive() === true || viewerMode === true) {
-                _.each(periodicCallbacks, function(callback) {
-                    callback();
-                });
-                checkOnline();
-            }
-        }, 1000);
     });
-    core.onReady(extensionMgr.onReady);
 
     return core;
 });

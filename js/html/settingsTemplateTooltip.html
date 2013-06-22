@@ -5,7 +5,7 @@ Available variables:
 	<li><b>documentMarkdown</b>: document in Markdown format</li>
 	<li><b>documentHTML</b>: document in HTML format</li>
 	<li><b>publishAttributes</b>: attributes of the publish location
-		(undefined when using "Save")</li>
+		(undefined if not publishing)</li>
 </ul>
 Examples:
 <br />
@@ -13,8 +13,10 @@ Examples:
 <br />
 &lt;div&gt;&lt;%- documentHTML %&gt;&lt;&#x2F;div&gt;
 <br />
-&lt;% if(publishAttributes.provider == &quot;github&quot;)
-print(documentMarkdown); %&gt;
+&lt;%<br />
+if(publishAttributes.provider.providerId == &quot;github&quot;)
+print(documentMarkdown);<br />
+%&gt;
 <br />
 <br />
 <a target="_blank" href="http://underscorejs.org/#template">More

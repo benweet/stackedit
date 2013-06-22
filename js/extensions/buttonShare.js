@@ -1,16 +1,13 @@
 define([
     "jquery",
     "underscore",
+    "classes/Extension",
     "text!html/buttonShare.html",
     "text!html/buttonShareLocation.html",
-], function($, _, buttonShareHTML, buttonShareLocationHTML) {
+], function($, _, Extension, buttonShareHTML, buttonShareLocationHTML) {
 
-    var buttonShare = {
-        extensionId: "buttonShare",
-        extensionName: 'Button "Share"',
-        optional: true,
-        settingsBloc: '<p>Adds a "Share document" button in the navigation bar.</p>'
-    };
+    var buttonShare = new Extension("buttonShare", 'Button "Share"', true);
+    buttonShare.settingsBlock = '<p>Adds a "Share document" button in the navigation bar.</p>';
 
     buttonShare.onCreateButton = function() {
         return $(buttonShareHTML);

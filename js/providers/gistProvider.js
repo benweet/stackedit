@@ -1,18 +1,14 @@
 define([
     "utils",
+    "classes/Provider",
     "helpers/githubHelper"
-], function(utils, githubHelper) {
+], function(utils, Provider, githubHelper) {
 
-    var PROVIDER_GIST = "gist";
-
-    var gistProvider = {
-        providerId: PROVIDER_GIST,
-        providerName: "Gist",
-        sharingAttributes: [
-            "gistId",
-            "filename"
-        ]
-    };
+    var gistProvider = new Provider("gist", "Gist");
+    gistProvider.sharingAttributes = [
+        "gistId",
+        "filename"
+    ];
 
     gistProvider.publish = function(publishAttributes, title, content, callback) {
         githubHelper.uploadGist(publishAttributes.gistId, publishAttributes.filename, publishAttributes.isPublic, title, content, function(error, gistId) {

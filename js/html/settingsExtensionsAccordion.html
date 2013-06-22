@@ -2,12 +2,12 @@
 	<div class="accordion-heading">
 		<label class="checkbox pull-right"> <input
 			id="input-enable-extension-<%= extensionId %>" type="checkbox"<%
-			if(!optional) print('disabled') %>> enabled
+			if(!isOptional) print('disabled') %>> enabled
 		</label> <a data-toggle="collapse"
 			data-parent="#accordion-extensions" class="accordion-toggle"
 			href="#collapse-<%= extensionId %>"> <%= extensionName %> </a>
 	</div>
 	<div id="collapse-<%= extensionId %>" class="accordion-body collapse">
-		<div class="accordion-inner"><%= settingsBloc %></div>
+		<div class="accordion-inner"><%= settingsBlock %></div>
 	</div>
 </div>

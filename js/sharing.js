@@ -6,15 +6,16 @@ define([
     "extensionMgr",
     "fileMgr",
     "classes/AsyncTask",
+    "classes/Provider",
     "providers/downloadProvider",
     "providers/gistProvider"
-], function($, _, core, utils, extensionMgr, fileMgr, AsyncTask) {
+], function($, _, core, utils, extensionMgr, fileMgr, AsyncTask, Provider) {
 
     var sharing = {};
 
     // Create a map with providerId: providerModule
     var providerMap = _.chain(arguments).map(function(argument) {
-        return argument && argument.providerId && [
+        return argument instanceof Provider && [
             argument.providerId,
             argument
         ];

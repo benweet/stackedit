@@ -1,17 +1,14 @@
 define([
     "utils",
-    "text!html/markdownExtraSettingsBloc.html",
+    "classes/Extension",
+    "text!html/markdownExtraSettingsBlock.html",
     "libs/Markdown.Extra",
-], function(utils, markdownExtraSettingsBlocHTML) {
+], function(utils, Extension, markdownExtraSettingsBlockHTML) {
 
-    var markdownExtra = {
-        extensionId: "markdownExtra",
-        extensionName: "Markdown Extra",
-        optional: true,
-        defaultConfig: {
-            prettify: true
-        },
-        settingsBloc: markdownExtraSettingsBlocHTML
+    var markdownExtra = new Extension("markdownExtra", "Markdown Extra", true);
+    markdownExtra.settingsBlock = markdownExtraSettingsBlockHTML;
+    markdownExtra.defaultConfig = {
+        prettify: true
     };
 
     markdownExtra.onLoadSettings = function() {

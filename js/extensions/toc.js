@@ -2,17 +2,14 @@ define([
     "jquery",
     "underscore",
     "utils",
-    "text!html/tocSettingsBloc.html",
-], function($, _, utils, tocSettingsBlocHTML) {
+    "classes/Extension",
+    "text!html/tocSettingsBlock.html",
+], function($, _, utils, Extension, tocSettingsBlockHTML) {
 
-    var toc = {
-        extensionId: "toc",
-        extensionName: "Table of Content",
-        optional: true,
-        defaultConfig: {
-            marker: "\\[(TOC|toc)\\]"
-        },
-        settingsBloc: tocSettingsBlocHTML
+    var toc = new Extension("toc", "Markdown Table of Content", true);
+    toc.settingsBlock = tocSettingsBlockHTML;
+    toc.defaultConfig = {
+        marker: "\\[(TOC|toc)\\]"
     };
 
     toc.onLoadSettings = function() {
@@ -21,7 +18,7 @@ define([
 
     toc.onSaveSettings = function(newConfig, event) {
         newConfig.marker = utils.getInputRegExpValue("#input-toc-marker", event);
-};
+    };
 
     // TOC element description
     function TocElement(tagName, anchor, text) {

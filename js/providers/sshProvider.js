@@ -1,20 +1,16 @@
 define([
     "utils",
+    "classes/Provider",
     "helpers/sshHelper"
-], function(utils, sshHelper) {
+], function(utils, Provider, sshHelper) {
 
-    var PROVIDER_SSH = "ssh";
-
-    var sshProvider = {
-        providerId: PROVIDER_SSH,
-        providerName: "SSH server",
-        publishPreferencesInputIds: [
-            "ssh-host",
-            "ssh-port",
-            "ssh-username",
-            "ssh-password"
-        ]
-    };
+    var sshProvider = new Provider("ssh", "SSH server");
+    sshProvider.publishPreferencesInputIds = [
+        "ssh-host",
+        "ssh-port",
+        "ssh-username",
+        "ssh-password"
+    ];
 
     sshProvider.publish = function(publishAttributes, title, content, callback) {
         sshHelper.upload(publishAttributes.host, publishAttributes.port, publishAttributes.username, publishAttributes.password, publishAttributes.path, title, content, callback);

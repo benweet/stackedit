@@ -1,13 +1,11 @@
 define([
     "jquery",
-    "underscore"
-], function($, _) {
+    "underscore",
+    "classes/Extension",
+], function($, _, Extension) {
 
-    var documentTitle = {
-        extensionId: "documentTitle",
-        extensionName: "Document Title",
-        settingsBloc: '<p>Responsible for showing the document title in the navigation bar.</p>'
-    };
+    var documentTitle = new Extension("documentTitle", "Document Title");
+    documentTitle.settingsBlock = '<p>Responsible for showing the document title in the navigation bar.</p>';
 
     var layout = undefined;
     documentTitle.onLayoutCreated = function(layoutParameter) {

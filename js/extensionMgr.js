@@ -2,6 +2,7 @@ define([
     "jquery",
     "underscore",
     "utils",
+    "classes/Extension",
     "settings",
     "text!html/settingsExtensionsAccordion.html",
     "extensions/googleAnalytics",
@@ -20,20 +21,21 @@ define([
     "extensions/documentTitle",
     "extensions/workingIndicator",
     "extensions/notifications",
-    "extensions/markdown-extra",
+    "extensions/markdownExtra",
+    "extensions/markdownFootnotes",
     "extensions/toc",
     "extensions/mathJax",
     "extensions/emailConverter",
     "extensions/scrollLink",
     "libs/bootstrap",
     "libs/jquery.waitforimages"
-], function($, _, utils, settings, settingsExtensionsAccordionHTML) {
+], function($, _, utils, Extension, settings, settingsExtensionsAccordionHTML) {
 
     var extensionMgr = {};
 
     // Create a list of extensions
     var extensionList = _.chain(arguments).map(function(argument) {
-        return _.isObject(argument) && argument.extensionId && argument;
+        return argument instanceof Extension && argument;
     }).compact().value();
 
     // Return every named callbacks implemented in extensions
@@ -66,7 +68,7 @@ define([
     extensionSettings = settings.extensionSettings || {};
     _.each(extensionList, function(extension) {
         extension.config = _.extend({}, extension.defaultConfig, extensionSettings[extension.extensionId]);
-        extension.config.enabled = !extension.optional || extension.config.enabled === undefined || extension.config.enabled === true;
+        extension.config.enabled = !extension.isOptional || extension.config.enabled === undefined || extension.config.enabled === true;
     });
 
     // Load/Save extension config from/to settings
@@ -152,8 +154,8 @@ define([
         $("#accordion-extensions").append($(_.template(settingsExtensionsAccordionHTML, {
             extensionId: extension.extensionId,
             extensionName: extension.extensionName,
-            optional: extension.optional,
-            settingsBloc: extension.settingsBloc
+            isOptional: extension.isOptional,
+            settingsBlock: extension.settingsBlock
         })));
     }
 

@@ -37,7 +37,7 @@
 
   // Remove one level of indentation from text. Indent is 4 spaces.
   function outdent(text) {
-      return text.replace(new RegExp('^(\\t|[ ]{1,4})', 'gm'), '');
+    return text.replace(new RegExp('^(\\t|[ ]{1,4})', 'gm'), '');
   }
 
   function contains(str, substr) {
@@ -115,15 +115,15 @@
   function unescapeSpecialChars(text) {
     // Swap back in all the special characters we've hidden.
     text = text.replace(/~E(\d+)E/g, function(wholeMatch, m1) {
-			var charCodeToReplace = parseInt(m1);
-			return String.fromCharCode(charCodeToReplace);
-		});
+      var charCodeToReplace = parseInt(m1);
+      return String.fromCharCode(charCodeToReplace);
+    });
     return text;
   }
 
   /*****************************************************************************
-	 * Markdown.Extra *
-	 ****************************************************************************/
+   * Markdown.Extra *
+   ****************************************************************************/
 
   Markdown.Extra = function() {
     // For converting internal markdown (in tables for instance).
@@ -160,19 +160,19 @@
     options = options || {};
     options.extensions = options.extensions || ["all"];
     if (contains(options.extensions, "all")) {
-    	options.extensions = ["tables", "fenced_code_gfm", "def_list", "attr_list"];
+      options.extensions = ["tables", "fenced_code_gfm", "def_list", "attr_list"];
     }
     if (contains(options.extensions, "attr_list")) {
-    	postNormalizationTransformations.push("hashFcbAttributeBlocks");
-    	preBlockGamutTransformations.push("hashHeaderAttributeBlocks");
-    	postConversionTransformations.push("applyAttributeBlocks");
+      postNormalizationTransformations.push("hashFcbAttributeBlocks");
+      preBlockGamutTransformations.push("hashHeaderAttributeBlocks");
+      postConversionTransformations.push("applyAttributeBlocks");
       extra.attributeBlocks = true;
     }
     if (contains(options.extensions, "tables")) {
-    	preBlockGamutTransformations.push("tables");
+      preBlockGamutTransformations.push("tables");
     }
     if (contains(options.extensions, "fenced_code_gfm")) {
-    	postNormalizationTransformations.push("fencedCodeBlocks");
+      postNormalizationTransformations.push("fencedCodeBlocks");
     }
     if (contains(options.extensions, "def_list")) {
       preBlockGamutTransformations.push("definitionLists");
@@ -183,14 +183,14 @@
     });
 
     converter.hooks.chain("preBlockGamut", function(text, blockGamutHookCallback) {
-    	// Keep a reference to the block gamut callback to run recursively
+      // Keep a reference to the block gamut callback to run recursively
       extra.blockGamutHookCallback = blockGamutHookCallback;
       text = processEscapes(text);
       return extra.doTransform(preBlockGamutTransformations, text) + '\n';
     });
 
     // Keep a reference to the hook chain running before doPostConversion to apply on hashed extra blocks
-  	extra.previousPostConversion = converter.hooks.postConversion;
+    extra.previousPostConversion = converter.hooks.postConversion;
     converter.hooks.chain("postConversion", function(text) {
       text = extra.doTransform(postConversionTransformations, text);
       // Clear state vars that may use unnecessary memory
@@ -215,9 +215,9 @@
 
   // Do transformations
   Markdown.Extra.prototype.doTransform = function(transformations, text) {
-	  for(var i = 0; i < transformations.length; i++)
-		  text = this[transformations[i]](text);
-	  return text;
+    for(var i = 0; i < transformations.length; i++)
+      text = this[transformations[i]](text);
+    return text;
   };
 
   // Return a placeholder containing a key, which is the block's index in the
@@ -253,21 +253,21 @@
   // Extract headers attribute blocks, move them above the element they will be
   // applied to, and hash them for later.
   Markdown.Extra.prototype.hashHeaderAttributeBlocks = function(text) {
-	  // TODO: use sentinels. Should we just add/remove them in doConversion?
-	  // TODO: better matches for id / class attributes
-	  var attrBlock = "\\{\\s*[.|#][^}]+\\}";
-	  var hdrAttributesA = new RegExp("^(#{1,6}.*#{0,6})\\s+(" + attrBlock + ")[ \\t]*(\\n|0x03)", "gm");
-	  var hdrAttributesB = new RegExp("^(.*)\\s+(" + attrBlock + ")[ \\t]*\\n" +
-		  "(?=[\\-|=]+\\s*(\\n|0x03))", "gm"); // underline lookahead
-	  
-	  var self = this;
-	  function attributeCallback(wholeMatch, pre, attr) {
-		  return '<p>~XX' + (self.hashBlocks.push(attr) - 1) + 'XX</p>\n' + pre + "\n";
-	  }
+    // TODO: use sentinels. Should we just add/remove them in doConversion?
+    // TODO: better matches for id / class attributes
+    var attrBlock = "\\{\\s*[.|#][^}]+\\}";
+    var hdrAttributesA = new RegExp("^(#{1,6}.*#{0,6})\\s+(" + attrBlock + ")[ \\t]*(\\n|0x03)", "gm");
+    var hdrAttributesB = new RegExp("^(.*)\\s+(" + attrBlock + ")[ \\t]*\\n" +
+      "(?=[\\-|=]+\\s*(\\n|0x03))", "gm"); // underline lookahead
+    
+    var self = this;
+    function attributeCallback(wholeMatch, pre, attr) {
+      return '<p>~XX' + (self.hashBlocks.push(attr) - 1) + 'XX</p>\n' + pre + "\n";
+    }
 
-	  text = text.replace(hdrAttributesA, attributeCallback);  // ## headers
-	  text = text.replace(hdrAttributesB, attributeCallback);  // underline headers
-	  return text;
+    text = text.replace(hdrAttributesA, attributeCallback);  // ## headers
+    text = text.replace(hdrAttributesB, attributeCallback);  // underline headers
+    return text;
   };
   
   // Extract FCB attribute blocks, move them above the element they will be
@@ -275,14 +275,14 @@
   Markdown.Extra.prototype.hashFcbAttributeBlocks = function(text) {
     // TODO: use sentinels. Should we just add/remove them in doConversion?
     // TODO: better matches for id / class attributes
-	var attrBlock = "\\{\\s*[.|#][^}]+\\}";
+    var attrBlock = "\\{\\s*[.|#][^}]+\\}";
     var fcbAttributes =  new RegExp("^(```[^{]*)\\s+(" + attrBlock + ")[ \\t]*\\n" +
                                     "(?=([\\s\\S]*?)\\n```\\s*(\\n|0x03))", "gm");
 
-	  var self = this;
-	  function attributeCallback(wholeMatch, pre, attr) {
-		  return '<p>~XX' + (self.hashBlocks.push(attr) - 1) + 'XX</p>\n' + pre + "\n";
-	  }
+    var self = this;
+    function attributeCallback(wholeMatch, pre, attr) {
+      return '<p>~XX' + (self.hashBlocks.push(attr) - 1) + 'XX</p>\n' + pre + "\n";
+    }
 
     return text.replace(fcbAttributes, attributeCallback);
   };

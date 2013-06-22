@@ -1,19 +1,15 @@
 define([
     "utils",
+    "classes/Provider",
     "settings",
     "helpers/githubHelper"
-], function(utils, settings, githubHelper) {
+], function(utils, Provider, settings, githubHelper) {
 
-    var PROVIDER_GITHUB = "github";
-
-    var githubProvider = {
-        providerId: PROVIDER_GITHUB,
-        providerName: "GitHub",
-        publishPreferencesInputIds: [
-            "github-reponame",
-            "github-branch"
-        ]
-    };
+    var githubProvider = new Provider("github", "GitHub");
+    githubProvider.publishPreferencesInputIds = [
+        "github-reponame",
+        "github-branch"
+    ];
 
     githubProvider.publish = function(publishAttributes, title, content, callback) {
         var commitMsg = settings.commitMsg;

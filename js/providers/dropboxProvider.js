@@ -1,18 +1,16 @@
 define([
     "underscore",
     "utils",
+    "classes/Provider",
     "extensionMgr",
     "fileMgr",
     "helpers/dropboxHelper"
-], function(_, utils, extensionMgr, fileMgr, dropboxHelper) {
+], function(_, utils, Provider, extensionMgr, fileMgr, dropboxHelper) {
 
     var PROVIDER_DROPBOX = "dropbox";
 
-    var dropboxProvider = {
-        providerId: PROVIDER_DROPBOX,
-        providerName: "Dropbox",
-        defaultPublishFormat: "template"
-    };
+    var dropboxProvider = new Provider(PROVIDER_DROPBOX, "Dropbox");
+    dropboxProvider.defaultPublishFormat = "template";
 
     function checkPath(path) {
         if(path === undefined) {

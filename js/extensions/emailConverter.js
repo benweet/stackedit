@@ -1,11 +1,9 @@
-define(function() {
+define([
+    "classes/Extension",
+], function(Extension) {
 
-    var emailConverter = {
-        extensionId: "emailConverter",
-        extensionName: "Email Converter",
-        optional: true,
-        settingsBloc: '<p>Converts email adresses in the form &lt;email@example.com&gt; into clickable links.</p>'
-    };
+    var emailConverter = new Extension("emailConverter", "Markdown Email", true);
+    emailConverter.settingsBlock = '<p>Converts email adresses in the form &lt;email@example.com&gt; into clickable links.</p>';
 
     emailConverter.onEditorConfigure = function(editor) {
         editor.getConverter().hooks.chain("postConversion", function(text) {

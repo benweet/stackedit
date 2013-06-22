@@ -1,15 +1,16 @@
 define([
     "jquery",
     "underscore",
+    "classes/Provider",
     "core",
     "providers/gplusProvider"
-], function($, _, core) {
+], function($, _, Provider, core) {
 
     var mediaImporter = {};
 
     // Create a map with providerId: providerModule
     var providerMap = _.chain(arguments).map(function(argument) {
-        return argument && argument.providerId && [
+        return argument instanceof Provider && [
             argument.providerId,
             argument
         ];

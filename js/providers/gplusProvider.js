@@ -2,16 +2,14 @@ define([
     "underscore",
     "core",
     "utils",
+    "classes/Provider",
     "extensionMgr",
     "helpers/googleHelper"
-], function(_, core, utils, extensionMgr, googleHelper) {
+], function(_, core, utils, Provider, extensionMgr, googleHelper) {
 
     var PROVIDER_GPLUS = "gplus";
 
-    var gplusProvider = {
-        providerId: PROVIDER_GPLUS,
-        providerName: "Google+"
-    };
+    var gplusProvider = new Provider(PROVIDER_GPLUS, "Google+");
 
     function getThumbnailUrl(doc, size) {
         var result = undefined;

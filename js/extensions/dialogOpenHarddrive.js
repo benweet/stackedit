@@ -2,15 +2,13 @@ define([
     "jquery",
     "underscore",
     "utils",
+    "classes/Extension",
     "toMarkdown",
     "config",
-], function($, _, utils, toMarkdown) {
+], function($, _, utils, Extension, toMarkdown) {
 
-    var dialogOpenHarddrive = {
-        extensionId: "dialogOpenHarddrive",
-        extensionName: 'Dialog "Open from"',
-        settingsBloc: '<p>Handles the "Import from hard drive" and the "Convert HTML to Markdown" dialog boxes.</p>'
-    };
+    var dialogOpenHarddrive = new Extension("dialogOpenHarddrive", 'Dialog "Open from"');
+    dialogOpenHarddrive.settingsBlock = '<p>Handles the "Import from hard drive" and the "Convert HTML to Markdown" dialog boxes.</p>';
 
     var fileMgr = undefined;
     dialogOpenHarddrive.onFileMgrCreated = function(fileMgrParameter) {

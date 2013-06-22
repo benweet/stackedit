@@ -6,15 +6,16 @@ define([
     "extensionMgr",
     "fileSystem",
     "fileMgr",
+    "classes/Provider",
     "providers/dropboxProvider",
     "providers/gdriveProvider"
-], function($, _, core, utils, extensionMgr, fileSystem, fileMgr) {
+], function($, _, core, utils, extensionMgr, fileSystem, fileMgr, Provider) {
 
     var synchronizer = {};
 
     // Create a map with providerId: providerModule
     var providerMap = _.chain(arguments).map(function(argument) {
-        return argument && argument.providerId && [
+        return argument instanceof Provider && [
             argument.providerId,
             argument
         ];

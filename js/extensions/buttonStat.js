@@ -2,23 +2,20 @@ define([
     "jquery",
     "underscore",
     "utils",
+    "classes/Extension",
     "text!html/buttonStat.html",
-    "text!html/buttonStatSettingsBloc.html",
-], function($, _, utils, buttonStatHTML, buttonStatSettingsBlocHTML) {
+    "text!html/buttonStatSettingsBlock.html",
+], function($, _, utils, Extension, buttonStatHTML, buttonStatSettingsBlockHTML) {
 
-    var buttonStat = {
-        extensionId: "buttonStat",
-        extensionName: 'Button "Statistics"',
-        optional: true,
-        defaultConfig: {
-            name1: "Characters",
-            value1: "\\S",
-            name2: "Words",
-            value2: "\\S+",
-            name3: "Paragraphs",
-            value3: "\\S.*",
-        },
-        settingsBloc: buttonStatSettingsBlocHTML
+    var buttonStat = new Extension("buttonStat", 'Button "Statistics"', true);
+    buttonStat.settingsBlock = buttonStatSettingsBlockHTML;
+    buttonStat.defaultConfig = {
+        name1: "Characters",
+        value1: "\\S",
+        name2: "Words",
+        value2: "\\S+",
+        name3: "Paragraphs",
+        value3: "\\S.*",
     };
 
     buttonStat.onLoadSettings = function() {

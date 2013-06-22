@@ -1,19 +1,15 @@
 define([
     "underscore",
     "utils",
+    "classes/Provider",
     "helpers/googleHelper"
-], function(_, utils, googleHelper) {
+], function(_, utils, Provider, googleHelper) {
 
-    var PROVIDER_BLOGGER = "blogger";
-
-    var bloggerProvider = {
-        providerId: PROVIDER_BLOGGER,
-        providerName: "Blogger",
-        defaultPublishFormat: "html",
-        publishPreferencesInputIds: [
-            "blogger-url"
-        ]
-    };
+    var bloggerProvider = new Provider("blogger", "Blogger");
+    bloggerProvider.defaultPublishFormat = "html";
+    bloggerProvider.publishPreferencesInputIds = [
+        "blogger-url"
+    ];
 
     bloggerProvider.publish = function(publishAttributes, title, content, callback) {
         googleHelper.uploadBlogger(publishAttributes.blogUrl, publishAttributes.blogId, publishAttributes.postId, publishAttributes.labelList, title, content, function(error, blogId, postId) {

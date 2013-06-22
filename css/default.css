@@ -419,6 +419,13 @@ div.dropdown-menu textarea {
 	margin-top: 10px;
 }
 
+.footnote {
+	vertical-align: top;
+    position: relative;
+    top: -0.5em;
+    font-size: 0.8em;
+}
+
 .icon-link {
 	background-position: -72px -168px;
 }
@@ -640,6 +647,10 @@ div.dropdown-menu textarea {
 
 .tooltip-inner {
 	text-align: left;
+}
+
+.tooltip li {
+	line-height: 1.4;
 }
 
 /* Definition list */

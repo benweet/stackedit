@@ -8,6 +8,7 @@ define([
     "fileSystem",
     "fileMgr",
     "sharing",
+    "classes/Provider",
     "providers/bloggerProvider",
     "providers/dropboxProvider",
     "providers/gistProvider",
@@ -16,13 +17,13 @@ define([
     "providers/sshProvider",
     "providers/tumblrProvider",
     "providers/wordpressProvider"
-], function($, _, core, utils, settings, extensionMgr, fileSystem, fileMgr, sharing) {
+], function($, _, core, utils, settings, extensionMgr, fileSystem, fileMgr, sharing, Provider) {
 
     var publisher = {};
 
     // Create a map with providerId: providerModule
     var providerMap = _.chain(arguments).map(function(argument) {
-        return argument && argument.providerId && [
+        return argument instanceof Provider && [
             argument.providerId,
             argument
         ];

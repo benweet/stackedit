@@ -2,17 +2,15 @@ define([
     "jquery",
     "underscore",
     "utils",
+    "classes/Extension",
     "text!html/buttonSync.html",
-    "text!html/buttonSyncSettingsBloc.html",
-], function($, _, utils, buttonSyncHTML, buttonSyncSettingsBlocHTML) {
+    "text!html/buttonSyncSettingsBlock.html",
+], function($, _, utils, Extension, buttonSyncHTML, buttonSyncSettingsBlockHTML) {
 
-    var buttonSync = {
-        extensionId: "buttonSync",
-        extensionName: 'Button "Synchronize"',
-        defaultConfig: {
-            syncPeriod: 180000
-        },
-        settingsBloc: buttonSyncSettingsBlocHTML
+    var buttonSync = new Extension("buttonSync", 'Button "Synchronize"');
+    buttonSync.settingsBlock = buttonSyncSettingsBlockHTML;
+    buttonSync.defaultConfig = {
+        syncPeriod: 180000
     };
 
     buttonSync.onLoadSettings = function() {

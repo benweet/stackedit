@@ -1,17 +1,14 @@
 define([
     "jquery",
     "underscore",
-    "text!html/scrollLinkSettingsBloc.html",
+    "classes/Extension",
+    "text!html/scrollLinkSettingsBlock.html",
     "libs/css_browser_selector",
     "libs/jquery.mousewheel"
-], function($, _, scrollLinkSettingsBlocHTML) {
+], function($, _, Extension, scrollLinkSettingsBlockHTML) {
 
-    var scrollLink = {
-        extensionId: "scrollLink",
-        extensionName: "Scroll Link",
-        optional: true,
-        settingsBloc: scrollLinkSettingsBlocHTML
-    };
+    var scrollLink = new Extension("scrollLink", "Scroll Link", true);
+    scrollLink.settingsBlock = scrollLinkSettingsBlockHTML;
 
     var mdSectionList = [];
     var htmlSectionList = [];

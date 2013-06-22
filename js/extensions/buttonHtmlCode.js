@@ -1,21 +1,48 @@
 define([
     "jquery",
+    "underscore",
+    "utils",
+    "classes/Extension",
     "text!html/buttonHtmlCode.html",
-], function($, buttonHtmlCodeHTML) {
+    "text!html/buttonHtmlCodeSettingsBlock.html",
+], function($, _, utils, Extension, buttonHtmlCodeHTML, buttonHtmlCodeSettingsBlockHTML) {
 
-    var buttonHtmlCode = {
-        extensionId: "buttonHtmlCode",
-        extensionName: 'Button "HTML code"',
-        optional: true,
-        settingsBloc: '<p>Adds a "HTML code" button over the preview.</p>'
+    var buttonHtmlCode = new Extension("buttonHtmlCode", 'Button "HTML code"', true);
+    buttonHtmlCode.settingsBlock = buttonHtmlCodeSettingsBlockHTML;
+    buttonHtmlCode.defaultConfig = {
+        template: "<%= documentHTML %>",
+    };
+    
+    buttonHtmlCode.onLoadSettings = function() {
+        utils.setInputValue("#textarea-html-code-template", buttonHtmlCode.config.template);
+    };
+
+    buttonHtmlCode.onSaveSettings = function(newConfig, event) {
+        newConfig.template = utils.getInputValue("#textarea-html-code-template");
     };
 
     buttonHtmlCode.onCreatePreviewButton = function() {
         return $(buttonHtmlCodeHTML);
     };
 
+    var selectedFileDesc = undefined;
+    buttonHtmlCode.onFileSelected = function(fileDesc) {
+        selectedFileDesc = fileDesc;
+    };
+
     buttonHtmlCode.onPreviewFinished = function() {
-        $("#input-html-code").val($("#wmd-preview").html());
+        try {
+            var htmlCode = _.template(buttonHtmlCode.config.template, {
+                documentTitle: selectedFileDesc.title,
+                documentMarkdown: selectedFileDesc.content,
+                documentHTML: $("#wmd-preview").html()
+            });
+            $("#input-html-code").val(htmlCode);
+        }
+        catch(e) {
+            extensionMgr.onError(e);
+            return e.message;
+        }
     };
 
     buttonHtmlCode.onReady = function() {

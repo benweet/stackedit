@@ -2,16 +2,13 @@ define([
     "jquery",
     "underscore",
     "utils",
+    "classes/Extension",
     "settings",
     "config",
-], function($, _, utils, settings) {
+], function($, _, utils, Extension, settings) {
 
-    var googleAnalytics = {
-        extensionId: "googleAnalytics",
-        extensionName: 'Google Analytics',
-        optional: true,
-        settingsBloc: '<p>Sends anonymous statistics about usage and errors to help improve StackEdit.</p>'
-    };
+    var googleAnalytics = new Extension("googleAnalytics", "Google Analytics", true);
+    googleAnalytics.settingsBlock = '<p>Sends anonymous statistics about usage and errors to help improve StackEdit.</p>';
 
     var isLoaded = false;
     var isOffline = false;

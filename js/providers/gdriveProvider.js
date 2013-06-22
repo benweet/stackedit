@@ -2,22 +2,20 @@ define([
     "underscore",
     "core",
     "utils",
+    "classes/Provider",
     "settings",
     "extensionMgr",
     "fileMgr",
     "helpers/googleHelper"
-], function(_, core, utils, settings, extensionMgr, fileMgr, googleHelper) {
+], function(_, core, utils, Provider, settings, extensionMgr, fileMgr, googleHelper) {
 
     var PROVIDER_GDRIVE = "gdrive";
 
-    var gdriveProvider = {
-        providerId: PROVIDER_GDRIVE,
-        providerName: "Google Drive",
-        defaultPublishFormat: "template",
-        exportPreferencesInputIds: [
-            "gdrive-parentid"
-        ]
-    };
+    var gdriveProvider = new Provider(PROVIDER_GDRIVE, "Google Drive");
+    gdriveProvider.defaultPublishFormat = "template";
+    gdriveProvider.exportPreferencesInputIds = [
+        "gdrive-parentid"
+    ];
 
     function createSyncIndex(id) {
         return "sync." + PROVIDER_GDRIVE + "." + id;

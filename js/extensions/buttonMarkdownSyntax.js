@@ -1,14 +1,11 @@
 define([
     "jquery",
+    "classes/Extension",
     "text!html/buttonMarkdownSyntax.html",
-], function($, buttonMarkdownSyntaxHTML) {
+], function($, Extension, buttonMarkdownSyntaxHTML) {
 
-    var buttonMarkdownSyntax = {
-        extensionId: "buttonMarkdownSyntax",
-        extensionName: 'Button "Markdown syntax"',
-        optional: true,
-        settingsBloc: '<p>Adds a "Markdown syntax" button over the preview.</p>'
-    };
+    var buttonMarkdownSyntax = new Extension("buttonMarkdownSyntax", 'Button "Markdown syntax', true);
+    buttonMarkdownSyntax.settingsBlock = '<p>Adds a "Markdown syntax" button over the preview.</p>';
 
     buttonMarkdownSyntax.onCreatePreviewButton = function() {
         return $(buttonMarkdownSyntaxHTML);

@@ -2,20 +2,18 @@ define([
     "jquery",
     "underscore",
     "utils",
+    "classes/Extension",
     "mousetrap",
     "fileSystem",
-    "text!html/documentSelectorSettingsBloc.html",
-], function($, _, utils, mousetrap, fileSystem, documentSelectorSettingsBlocHTML) {
+    "text!html/documentSelectorSettingsBlock.html",
+], function($, _, utils, Extension, mousetrap, fileSystem, documentSelectorSettingsBlockHTML) {
 
-    var documentSelector = {
-        extensionId: "documentSelector",
-        extensionName: "Document Selector",
-        defaultConfig: {
-            orderBy: "title",
-            shortcutPrevious: "Ctrl+[",
-            shortcutNext: "Ctrl+]"
-        },
-        settingsBloc: documentSelectorSettingsBlocHTML
+    var documentSelector = new Extension("documentSelector", 'Document Selector');
+    documentSelector.settingsBlock = documentSelectorSettingsBlockHTML;
+    documentSelector.defaultConfig = {
+        orderBy: "title",
+        shortcutPrevious: "Ctrl+[",
+        shortcutNext: "Ctrl+]"
     };
 
     documentSelector.onLoadSettings = function() {
@@ -148,7 +146,8 @@ define([
         });
 
         // Handle key shortcut
-        mousetrap.bind(documentSelector.config.shortcutPrevious.toLowerCase(), function() {
+        var shortcutPrevious = documentSelector.config.shortcutPrevious.toLowerCase();
+        mousetrap.bind(shortcutPrevious, function() {
             if(shortcutLi === undefined) {
                 $("#file-selector").parent().is(".open") || $(".action-open-file").click();
                 shortcutLi = liMap[selectFileDesc.fileIndex];
@@ -163,6 +162,7 @@ define([
             });
             return false;
         });
+        var shortcutNext = documentSelector.config.shortcutNext.toLowerCase();
         mousetrap.bind(documentSelector.config.shortcutNext.toLowerCase(), function() {
             if(shortcutLi === undefined) {
                 $("#file-selector").parent().is(".open") || $(".action-open-file").click();
@@ -175,7 +175,14 @@ define([
             });
             return false;
         });
-        mousetrap.bind('ctrl', function() {
+        var delimiter1 = shortcutPrevious.indexOf("+");
+        var shortcutSelect1 = delimiter1 === -1 ? shortcutPrevious : shortcutPrevious.substring(0, delimiter1);
+        var delimiter2 = shortcutNext.indexOf("+");
+        var shortcutSelect2 = delimiter2 === -1 ? shortcutNext : shortcutNext.substring(0, delimiter2);
+        mousetrap.bind([
+            shortcutSelect1,
+            shortcutSelect2
+        ], function() {
             if(shortcutLi !== undefined) {
                 shortcutLi.find("a").click();
                 shortcutLi = undefined;

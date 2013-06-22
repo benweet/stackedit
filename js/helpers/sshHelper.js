@@ -1,8 +1,9 @@
 define([
     "jquery",
     "core",
+    "settings",
     "classes/AsyncTask"
-], function($, core, AsyncTask) {
+], function($, core, settings, AsyncTask) {
 
     var sshHelper = {};
 
@@ -21,7 +22,7 @@ define([
         var task = new AsyncTask();
         connect(task);
         task.onRun(function() {
-            var url = SSH_PROXY_URL + "upload";
+            var url = settings.sshProxy + "upload";
             var data = {
                 host: host,
                 port: port,

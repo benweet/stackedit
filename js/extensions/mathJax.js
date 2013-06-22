@@ -1,22 +1,65 @@
 define([
-    "libs/MathJax"
-], function() {
+    "utils",
+    "classes/Extension",
+    "text!html/mathJaxSettingsBlock.html",
+    "libs/MathJax",
+], function(utils, Extension, mathJaxSettingsBlockHTML) {
 	
-	var mathJax = {
-		extensionId: "mathJax",
-		extensionName: "MathJax",
-        optional: true,
-		settingsBloc: '<p>Allows StackEdit to interpret LaTex mathematical expressions.</p>'
-	};
+	var mathJax = new Extension("mathJax", "MathJax", true);
+	mathJax.settingsBlock = mathJaxSettingsBlockHTML;
+    mathJax.defaultConfig = {
+        tex: "{}",
+        tex2jax: '{ inlineMath: [["$","$"],["\\\\(","\\\\)"]], displayMath: [["$$","$$"],["\\[","\\]"]], processEscapes: true }'
+    };
+
+    mathJax.onLoadSettings = function() {
+        utils.setInputValue("#input-mathjax-config-tex", mathJax.config.tex);
+        utils.setInputValue("#input-mathjax-config-tex2jax", mathJax.config.tex2jax);
+    };
+
+    mathJax.onSaveSettings = function(newConfig, event) {
+        newConfig.tex = utils.getInputJsValue("#input-mathjax-config-tex", event);
+        newConfig.tex2jax = utils.getInputJsValue("#input-mathjax-config-tex2jax", event);
+    };
 	
-	mathJax.onReady = function() {
-		MathJax.Hub.Config({"HTML-CSS": {preferredFont: "TeX",availableFonts: ["STIX", "TeX"],linebreaks: {automatic: true},EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50), imageFont: null},
-		    tex2jax: {inlineMath: [["$", "$"], ["\\\\(", "\\\\)"]],displayMath: [["$$", "$$"], ["\\[", "\\]"]],processEscapes: true,ignoreClass: "tex2jax_ignore|dno"},
-		    TeX: {noUndefined: {attributes: {mathcolor: "red",mathbackground: "#FFEEEE",mathsize: "90%"}},
-		        Safe: {allow: {URLs: "safe",classes: "safe",cssIDs: "safe",styles: "safe",fontsize: "all"}}},
-		    messageStyle: "none"
-		});
-	};
+    mathJax.onReady = function() {
+        eval("var tex = " + mathJax.config.tex);
+        eval("var tex2jax = " + mathJax.config.tex2jax);
+        MathJax.Hub.Config({
+            "HTML-CSS": {
+                preferredFont: "TeX",
+                availableFonts: [
+                    "STIX",
+                    "TeX"
+                ],
+                linebreaks: {
+                    automatic: true
+                },
+                EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50),
+                imageFont: null
+            },
+            tex2jax: tex2jax,
+            TeX: $.extend({
+                noUndefined: {
+                    attributes: {
+                        mathcolor: "red",
+                        mathbackground: "#FFEEEE",
+                        mathsize: "90%"
+                    }
+                },
+                Safe: {
+                    allow: {
+                        URLs: "safe",
+                        classes: "safe",
+                        cssIDs: "safe",
+                        styles: "safe",
+                        fontsize: "all"
+                    }
+                }
+            }, tex),
+            messageStyle: "none"
+        });
+    };
 		
 	var ready = false; // true after initial typeset is complete
 	var pending = false; // true when MathJax has been requested

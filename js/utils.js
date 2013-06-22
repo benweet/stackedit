@@ -95,6 +95,23 @@ define([
         return value;
     };
 
+    // Return input value and check that it's a valid JavaScript object
+    utils.getInputJsValue = function(element, event) {
+        element = jqElt(element);
+        var value = utils.getInputTextValue(element, event);
+        if(value === undefined) {
+            return undefined;
+        }
+        try {
+            eval("var test=" + value);
+        }
+        catch(e) {
+            inputError(element, event);
+            return undefined;
+        }
+        return value;
+    };
+    
     // Return checkbox boolean value
     utils.getInputChecked = function(element) {
         element = jqElt(element);

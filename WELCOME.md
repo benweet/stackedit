@@ -165,6 +165,13 @@ var foo = bar;
 Then you can create cross-references like this: [beginning of the document](#welcome).
 
 
+### Footnotes
+
+You can create footnotes like this[^footnote].
+
+  [^footnote]: Here is the *text* of the **footnote**.
+
+
 ### Table of content
 
 You can insert a table of content using the marker `[TOC]`:
@@ -174,7 +181,7 @@ You can insert a table of content using the marker `[TOC]`:
 
 ### MathJax
  
-You can include **LaTex** expressions to render mathematical formulas using **MathJax**, as on [math.stackexchange.com][1]:
+You can render *LaTeX* mathematical expressions using **MathJax**, as on [math.stackexchange.com][1]:
 
 The *Gamma function* satisfying $\Gamma(n) = (n-1)!\quad\forall
 n\in\mathbb N$ is via through the Euler integral
@@ -188,14 +195,12 @@ $$
 >
 > - about **Markdown** syntax [here][2],
 > - about **Markdown Extra** extension [here][3],
-> - about **Prettify** syntax highlighting [here][4],
-> - about **Latex** mathematical expressions [here][5].
+> - about **Prettify** syntax highlighting [here][4].
 
-----------
 
 
   [1]: http://math.stackexchange.com/
   [2]: http://daringfireball.net/projects/markdown/syntax "Markdown"
-  [3]: http://michelf.ca/projects/php-markdown/extra/ "Markdown Extra"
+  [3]: https://github.com/jmcmanus/pagedown-extra "Pagedown Extra"
   [4]: https://code.google.com/p/google-code-prettify/
   [5]: http://en.wikibooks.org/wiki/LaTeX/Mathematics

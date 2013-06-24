@@ -172,9 +172,9 @@ You can create footnotes like this[^footnote].
   [^footnote]: Here is the *text* of the **footnote**.
 
 
-### Table of content
+### Table of contents
 
-You can insert a table of content using the marker `[TOC]`:
+You can insert a table of contents using the marker `[TOC]`:
 
 [TOC]
 

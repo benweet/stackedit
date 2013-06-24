@@ -270,7 +270,6 @@ input[readonly],select[readonly],textarea[readonly] {
 
 .table-of-contents ul {
     margin-left: 10px;
-    margin-bottom: 10px;
 }
 
 .btn-group>.btn+.dropdown-toggle {

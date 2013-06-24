@@ -32,10 +32,10 @@ define([
         footnotes = {};
         usedFootnotes = [];
 
-        text = text.replace(/\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?(.*?)\n{1,2}((?=\n[ ]{0,3}\S)|\Z)/g, function(wholeMatch, m1, m2) {
+        text = text.replace(/\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|\Z)/g, function(wholeMatch, m1, m2) {
             m1 = utils.slugify(m1);
             m2 += "\n";
-            m2 = m2.replace(/^[ ]{0,3}/gm, "");
+            m2 = m2.replace(/^[ ]{0,3}/g, "");
             footnotes[m1] = m2;
             return "\n";
         });

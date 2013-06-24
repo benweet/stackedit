@@ -249,14 +249,28 @@ input[readonly],select[readonly],textarea[readonly] {
     border-bottom-right-radius: 4px;
 }
 
-#markdown-syntax {
-	max-height: 300px;
+.markdown-syntax, .table-of-contents {
     overflow-y: auto;
     overflow-x: hidden;
     padding-right: 20px;
     margin: 0 -20px 10px 0;
+}
+
+.markdown-syntax {
     width: 300px;
     white-space: normal;
+    max-height: 350px;
+}
+
+.table-of-contents {
+	width: 250px;
+	margin-left: -10px;
+    max-height: 400px;
+}
+
+.table-of-contents ul {
+    margin-left: 10px;
+    margin-bottom: 10px;
 }
 
 .btn-group>.btn+.dropdown-toggle {

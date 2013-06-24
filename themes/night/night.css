@@ -91,7 +91,7 @@ blockquote {
 #extension-preview-buttons .dropdown-menu,
 #extension-preview-buttons .btn-group.open .btn,
 #extension-preview-buttons .btn-group.open:hover .btn {
-	background-color: #555;
+	background-color: #444;
 }
 
 .btn:hover {

@@ -3,21 +3,31 @@ define([
     "underscore",
     "utils",
     "classes/Extension",
+    "text!html/buttonToc.html",
     "text!html/tocSettingsBlock.html",
-], function($, _, utils, Extension, tocSettingsBlockHTML) {
+], function($, _, utils, Extension, buttonTocHTML, tocSettingsBlockHTML) {
 
-    var toc = new Extension("toc", "Markdown Table of Content", true);
+    var toc = new Extension("toc", "Table of Contents", true);
     toc.settingsBlock = tocSettingsBlockHTML;
     toc.defaultConfig = {
-        marker: "\\[(TOC|toc)\\]"
+        marker: "\\[(TOC|toc)\\]",
+        button: true,
     };
 
     toc.onLoadSettings = function() {
         utils.setInputValue("#input-toc-marker", toc.config.marker);
+        utils.setInputChecked("#input-toc-button", toc.config.button);
     };
 
     toc.onSaveSettings = function(newConfig, event) {
         newConfig.marker = utils.getInputRegExpValue("#input-toc-marker", event);
+        newConfig.button = utils.getInputChecked("#input-toc-button");
+    };
+
+    toc.onCreatePreviewButton = function() {
+        if(toc.config.button) {
+            return $(buttonTocHTML);
+        }
     };
 
     // TOC element description
@@ -31,11 +41,11 @@ define([
         if(this.children.length === 0) {
             return "";
         }
-        var result = "<ul>";
+        var result = "<ul>\n";
         _.each(this.children, function(child) {
             result += child.toString();
         });
-        result += "</ul>";
+        result += "</ul>\n";
         return result;
     };
     TocElement.prototype.toString = function() {
@@ -43,7 +53,7 @@ define([
         if(this.anchor && this.text) {
             result += '<a href="#' + this.anchor + '">' + this.text + '</a>';
         }
-        result += this.childrenToString() + "</li>";
+        result += this.childrenToString() + "</li>\n";
         return result;
     };
 
@@ -96,11 +106,11 @@ define([
         }
 
         var elementList = [];
-        $("#wmd-preview > h1," + "#wmd-preview > h2," + "#wmd-preview > h3," + "#wmd-preview > h4," + "#wmd-preview > h5," + "#wmd-preview > h6").each(function() {
+        $("#wmd-preview").children("h1, h2, h3, h4, h5, h6").each(function() {
             elementList.push(new TocElement($(this).prop("tagName"), createAnchor($(this)), $(this).text()));
         });
         elementList = groupTags(elementList);
-        return '<div class="toc"><ul>' + elementList.toString() + '</ul></div>';
+        return '<div class="toc">\n<ul>\n' + elementList.join("") + '</ul>\n</div>\n';
     }
 
     toc.onEditorConfigure = function(editor) {
@@ -110,6 +120,7 @@ define([
             var html = $("#wmd-preview").html();
             html = html.replace(new RegExp("<p>" + toc.config.marker + "<\\/p>", "g"), htmlToc);
             $("#wmd-preview").html(html);
+            $(".table-of-contents").html(htmlToc);
         });
     };
 

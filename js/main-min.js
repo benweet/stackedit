@@ -4645,181 +4645,6 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  }, s.onError = function(e) {
   !t.isString(e) && e.message && _gaq.push([ "_trackEvent", "Error", "message", e.message + n.formatEventList() ]);
  }, s;
-}), define("text!html/buttonSync.html", [], function() {
- return '<button class="btn" title="Synchronize all documents">\r\n	<i class="icon-refresh"></i>\r\n</button>';
-}), define("text!html/buttonSyncSettingsBlock.html", [], function() {
- return '<p>Adds a "Synchronize documents" button in the navigation bar.</p>\r\n<div class="form-horizontal">\r\n	<div class="control-group">\r\n		<label class="control-label" for="input-sync-period">Sync\r\n			period (0: manual)</label>\r\n		<div class="controls">\r\n			<input type="text" id="input-sync-period" class="input-mini"\r\n				placeholder="180000"> <span class="help-inline">ms</span>\r\n		</div>\r\n	</div>\r\n</div>';
-}), define("extensions/buttonSync", [ "jquery", "underscore", "utils", "classes/Extension", "text!html/buttonSync.html", "text!html/buttonSyncSettingsBlock.html" ], function(e, t, n, i, o, r) {
- var s = new i("buttonSync", 'Button "Synchronize"');
- s.settingsBlock = r, s.defaultConfig = {
-  syncPeriod: 18e4
- }, s.onLoadSettings = function() {
-  n.setInputValue("#input-sync-period", s.config.syncPeriod);
- }, s.onSaveSettings = function(e, t) {
-  e.syncPeriod = n.getInputIntValue("#input-sync-period", t, 0);
- };
- var a = void 0, l = !1, c = !1, u = !1, d = function() {
-  void 0 !== a && (l === !0 || c === !1 || u ? a.addClass("disabled") : a.removeClass("disabled"));
- }, p = void 0;
- s.onSynchronizerCreated = function(e) {
-  p = e;
- };
- var f = 0;
- s.onPeriodicRun = function() {
-  viewerMode === !0 || !s.config.syncPeriod || f + s.config.syncPeriod > n.currentTime || p.sync() === !0 && (f = n.currentTime);
- }, s.onCreateButton = function() {
-  return a = e(o).click(function() {
-   e(this).hasClass("disabled") || p.sync();
-  });
- }, s.onReady = d, s.onSyncRunning = function(e) {
-  l = e, c = !0, d();
- }, s.onSyncSuccess = function() {
-  c = !1, d();
- }, s.onOfflineChanged = function(e) {
-  u = e, d();
- };
- var h = function(e) {
-  0 !== t.size(e.syncLocations) && (c = !0, d());
- };
- return s.onContentChanged = h, s.onTitleChanged = h, s;
-}), define("text!html/buttonPublish.html", [], function() {
- return '<button class="btn" title="Publish this document">\r\n	<i class="icon-share"></i>\r\n</button>';
-}), define("extensions/buttonPublish", [ "jquery", "underscore", "classes/Extension", "text!html/buttonPublish.html" ], function(e, t, n, i) {
- function o() {
-  void 0 !== s && (l === !0 || c === !1 || u === !0 ? s.addClass("disabled") : s.removeClass("disabled"));
- }
- var r = new n("buttonPublish", 'Button "Publish"');
- r.settingsBlock = '<p>Adds a "Publish document" button in the navigation bar.</p>';
- var s = void 0, a = void 0, l = !1, c = !1, u = !1, d = void 0;
- r.onPublisherCreated = function(e) {
-  d = e;
- }, r.onCreateButton = function() {
-  return s = e(i).click(function() {
-   e(this).hasClass("disabled") || d.publish();
-  });
- }, r.onPublishRunning = function(e) {
-  l = e, o();
- }, r.onOfflineChanged = function(e) {
-  u = e, o();
- };
- var p = function() {
-  c = 0 === t.size(a.publishLocations) ? !1 : !0, o();
- };
- return r.onFileSelected = function(e) {
-  a = e, p();
- }, r.onPublishRemoved = p, r.onNewPublishSuccess = p, r;
-}), define("text!html/buttonShare.html", [], function() {
- return '<button class="btn dropdown-toggle" data-toggle="dropdown"\r\n	title="Share this document">\r\n	<i class="icon-link"></i>\r\n</button>\r\n<div id="link-container" class="dropdown-menu pull-right">\r\n	<h3 class="muted">Sharing</h3>\r\n	<div class="link-list"></div>\r\n	<p class="no-link">To share this document you need first to <a\r\n		href="#" class="action-publish-gist">publish it as a Gist</a> in\r\n		Markdown format.\r\n	</p>\r\n	<blockquote class="muted">\r\n		<b>NOTE:</b> You can open any URL within StackEdit using <a\r\n			href="viewer.html?url=https://raw.github.com/benweet/stackedit/master/README.md"\r\n			title="Sharing example">viewer.html?url=...</a>\r\n	</blockquote>\r\n</div>\r\n';
-}), define("text!html/buttonShareLocation.html", [], function() {
- return '<div class="input-prepend">\r\n	<a href="<%= link %>" class="add-on" title="Sharing location"><i\r\n		class="icon-link"></i></a> <input class="span2" type="text"\r\n		value="<%= link %>" readonly />\r\n</div>\r\n';
-}), define("extensions/buttonShare", [ "jquery", "underscore", "classes/Extension", "text!html/buttonShare.html", "text!html/buttonShareLocation.html" ], function(e, t, n, i, o) {
- var r = new n("buttonShare", 'Button "Share"', !0);
- r.settingsBlock = '<p>Adds a "Share document" button in the navigation bar.</p>', 
- r.onCreateButton = function() {
-  return e(i);
- };
- var s = void 0, a = function(n) {
-  if (void 0 === n || n === s) {
-   var i = e("#link-container .link-list").empty();
-   e("#link-container .no-link").show();
-   var r = t.values(s.publishLocations);
-   t.each(r, function(n) {
-    if (n.sharingLink) {
-     var r = e(t.template(o, {
-      link: n.sharingLink
-     }));
-     r.click(function(e) {
-      e.stopPropagation();
-     }), i.append(r), e("#link-container .no-link").hide();
-    }
-   });
-  }
- };
- return r.onFileSelected = function(e) {
-  s = e, a(e);
- }, r.onNewPublishSuccess = a, r.onPublishRemoved = a, r;
-}), define("text!html/buttonStat.html", [], function() {
- return '<button class="btn dropdown-toggle" title="Document statistics">\r\n	<i class="icon-stat"></i>\r\n</button>\r\n<div class="dropdown-menu pull-right">\r\n	<h3>Statistics</h3>\r\n	<div class="stat">\r\n		<div>\r\n			<%= name1 %>: <span id="span-stat-value1"></span>\r\n		</div>\r\n		<div>\r\n			<%= name2 %>: <span id="span-stat-value2"></span>\r\n		</div>\r\n		<div>\r\n			<%= name3 %>: <span id="span-stat-value3"></span>\r\n		</div>\r\n	</div>\r\n</div>\r\n';
-}), define("text!html/buttonStatSettingsBlock.html", [], function() {
- return '<p>Adds a "Document statistics" button over the preview.</p>\r\n<div class="form-horizontal">\r\n	<div class="control-group form-inline">\r\n		<label class="label-text" for="input-stat-name1">Title</label> <input\r\n			id="input-stat-name1" type="text" class="input-small"> <label\r\n			class="label-text" for="input-stat-value1">RegExp</label> <input\r\n			id="input-stat-value1" type="text" class="span2">\r\n	</div>\r\n	<div class="control-group form-inline">\r\n		<label class="label-text" for="input-stat-name2">Title</label> <input\r\n			id="input-stat-name2" type="text" class="input-small"> <label\r\n			class="label-text" for="input-stat-value2">RegExp</label> <input\r\n			id="input-stat-value2" type="text" class="span2">\r\n	</div>\r\n	<div class="control-group form-inline">\r\n		<label class="label-text" for="input-stat-name3">Title</label> <input\r\n			id="input-stat-name3" type="text" class="input-small"> <label\r\n			class="label-text" for="input-stat-value3">RegExp</label> <input\r\n			id="input-stat-value3" type="text" class="span2">\r\n	</div>\r\n</div>\r\n';
-}), define("extensions/buttonStat", [ "jquery", "underscore", "utils", "classes/Extension", "text!html/buttonStat.html", "text!html/buttonStatSettingsBlock.html" ], function(e, t, n, i, o, r) {
- var s = new i("buttonStat", 'Button "Statistics"', !0);
- return s.settingsBlock = r, s.defaultConfig = {
-  name1: "Characters",
-  value1: "\\S",
-  name2: "Words",
-  value2: "\\S+",
-  name3: "Paragraphs",
-  value3: "\\S.*"
- }, s.onLoadSettings = function() {
-  t.each([ 1, 2, 3 ], function(e) {
-   n.setInputValue("#input-stat-name" + e, s.config["name" + e]), n.setInputValue("#input-stat-value" + e, s.config["value" + e]);
-  });
- }, s.onSaveSettings = function(e, i) {
-  t.each([ 1, 2, 3 ], function(t) {
-   e["name" + t] = n.getInputTextValue("#input-stat-name" + t, i), e["value" + t] = n.getInputRegExpValue("#input-stat-value" + t, i);
-  });
- }, s.onCreatePreviewButton = function() {
-  return e(t.template(o, s.config));
- }, s.onPreviewFinished = function() {
-  var t = e("#wmd-preview").clone().find("script").remove().end().text();
-  e("#span-stat-value1").text((t.match(RegExp(s.config.value1, "g")) || []).length), 
-  e("#span-stat-value2").text((t.match(RegExp(s.config.value2, "g")) || []).length), 
-  e("#span-stat-value3").text((t.match(RegExp(s.config.value3, "g")) || []).length);
- }, s;
-}), define("text!html/buttonHtmlCode.html", [], function() {
- return '<button class="btn dropdown-toggle action-html-code" title="HTML code">\r\n	<i class="icon-code"></i>\r\n</button>\r\n<div class="dropdown-menu pull-right">\r\n	<h3>HTML code</h3>\r\n	<textarea id="input-html-code"></textarea>\r\n</div>\r\n';
-}), define("text!html/buttonHtmlCodeSettingsBlock.html", [], function() {
- return '<p>Adds a "HTML code" button over the preview.</p>\r\n<div class="form-horizontal">\r\n	<div class="control-group">\r\n		<label class="control-label" for="textarea-html-code-template">Template\r\n			<a href="#" class="tooltip-template">(?)</a>\r\n		</label>\r\n		<div class="controls">\r\n			<textarea id="textarea-html-code-template"></textarea>\r\n		</div>\r\n	</div>\r\n</div>';
-}), define("extensions/buttonHtmlCode", [ "jquery", "underscore", "utils", "classes/Extension", "text!html/buttonHtmlCode.html", "text!html/buttonHtmlCodeSettingsBlock.html" ], function(e, t, n, i, o, r) {
- var s = new i("buttonHtmlCode", 'Button "HTML code"', !0);
- s.settingsBlock = r, s.defaultConfig = {
-  template: "<%= documentHTML %>"
- }, s.onLoadSettings = function() {
-  n.setInputValue("#textarea-html-code-template", s.config.template);
- }, s.onSaveSettings = function(e) {
-  e.template = n.getInputValue("#textarea-html-code-template");
- }, s.onCreatePreviewButton = function() {
-  return e(o);
- };
- var a = void 0;
- return s.onFileSelected = function(e) {
-  a = e;
- }, s.onPreviewFinished = function() {
-  try {
-   var n = t.template(s.config.template, {
-    documentTitle: a.title,
-    documentMarkdown: a.content,
-    documentHTML: e("#wmd-preview").html()
-   });
-   e("#input-html-code").val(n);
-  } catch (i) {
-   return extensionMgr.onError(i), i.message;
-  }
- }, s.onReady = function() {
-  e(".action-html-code").click(function() {
-   t.defer(function() {
-    e("#input-html-code").each(function() {
-     e(this).is(":hidden") || e(this).get(0).select();
-    });
-   });
-  });
- }, s;
-}), define("text!html/buttonMarkdownSyntax.html", [], function() {
- return '<button class="btn dropdown-toggle" title="Markdown syntax">\r\n	<i class="icon-question-sign"></i>\r\n</button>\r\n<div class="dropdown-menu pull-right">\r\n	<h3>Markdown syntax</h3>\r\n	<div id="markdown-syntax">\r\n<h4>Phrase Emphasis</h4>\r\n\r\n<pre><code>*italic*   **bold**\r\n_italic_   __bold__\r\n</code></pre>\r\n\r\n<h4>Links</h4>\r\n\r\n<p>Inline:</p>\r\n\r\n<pre><code>An [example](http://url.com/ "Title")\r\n</code></pre>\r\n\r\n<p>Reference-style labels (titles are optional):</p>\r\n\r\n<pre><code>An [example][id]. Then, anywhere\r\nelse in the doc, define the link:\r\n\r\n  [id]: http://example.com/  "Title"\r\n</code></pre>\r\n\r\n<h4>Images</h4>\r\n\r\n<p>Inline (titles are optional):</p>\r\n\r\n<pre><code>![alt text](/path/img.jpg "Title")\r\n</code></pre>\r\n\r\n<p>Reference-style:</p>\r\n\r\n<pre><code>![alt text][id]\r\n\r\n[id]: /url/to/img.jpg "Title"\r\n</code></pre>\r\n\r\n<h4>Headers</h4>\r\n\r\n<p>Setext-style:</p>\r\n\r\n<pre><code>Header 1\r\n========\r\n\r\nHeader 2\r\n--------\r\n</code></pre>\r\n\r\n<p>atx-style (closing #\'s are optional):</p>\r\n\r\n<pre><code># Header 1 #\r\n\r\n## Header 2 ##\r\n\r\n###### Header 6\r\n</code></pre>\r\n\r\n<h4>Lists</h4>\r\n\r\n<p>Ordered, without paragraphs:</p>\r\n\r\n<pre><code>1.  Foo\r\n2.  Bar\r\n</code></pre>\r\n\r\n<p>Unordered, with paragraphs:</p>\r\n\r\n<pre><code>*   A list item.\r\n\r\n    With multiple paragraphs.\r\n\r\n*   Bar\r\n</code></pre>\r\n\r\n<p>You can nest them:</p>\r\n\r\n<pre><code>*   Abacus\r\n    * answer\r\n*   Bubbles\r\n    1.  bunk\r\n    2.  bupkis\r\n        * BELITTLER\r\n    3. burper\r\n*   Cunning\r\n</code></pre>\r\n\r\n<h4>Blockquotes</h4>\r\n\r\n<pre><code>&gt; Email-style angle brackets\r\n&gt; are used for blockquotes.\r\n\r\n&gt; &gt; And, they can be nested.\r\n\r\n&gt; #### Headers in blockquotes\r\n&gt; \r\n&gt; * You can quote a list.\r\n&gt; * Etc.\r\n</code></pre>\r\n\r\n<h4>Code Spans</h4>\r\n\r\n<pre><code>`&lt;code&gt;` spans are delimited\r\nby backticks.\r\n\r\nYou can include literal backticks\r\nlike `` `this` ``.\r\n</code></pre>\r\n\r\n<h4>Preformatted Code Blocks</h4>\r\n\r\n<p>Indent every line of a code block by at least 4 spaces or 1 tab.</p>\r\n\r\n<pre><code>This is a normal paragraph.\r\n\r\n    This is a preformatted\r\n    code block.\r\n</code></pre>\r\n\r\n<h4>Horizontal Rules</h4>\r\n\r\n<p>Three or more dashes or asterisks:</p>\r\n\r\n<pre><code>---\r\n\r\n* * *\r\n\r\n- - - - \r\n</code></pre>\r\n\r\n<h4>Manual Line Breaks</h4>\r\n\r\n<p>End a line with two or more spaces:</p>\r\n\r\n<pre><code>Roses are red,   \r\nViolets are blue.\r\n</code></pre>\r\n\r\n<p class="muted">Based on the <a target="_blank" href="https://github.com/fletcher/MultiMarkdown/blob/master/Documentation/Markdown%20Syntax.md">Markdown syntax guide</a>, by Fletcher T. Penney.</p>\r\n    </div>\r\n</div>\r\n';
-}), define("extensions/buttonMarkdownSyntax", [ "jquery", "classes/Extension", "text!html/buttonMarkdownSyntax.html" ], function(e, t, n) {
- var i = new t("buttonMarkdownSyntax", 'Button "Markdown syntax', !0);
- return i.settingsBlock = '<p>Adds a "Markdown syntax" button over the preview.</p>', 
- i.onCreatePreviewButton = function() {
-  return e(n);
- }, i;
-}), define("text!html/buttonViewer.html", [], function() {
- return '<a href="viewer.html" class="btn dropdown-toggle"\r\n	title="Open in viewer">\r\n	<i class="icon-fullscreen"></i>\r\n</a>\r\n';
-}), define("extensions/buttonViewer", [ "jquery", "classes/Extension", "text!html/buttonViewer.html" ], function(e, t, n) {
- var i = new t("buttonViewer", 'Button "Viewer"', !0);
- return i.settingsBlock = '<p>Adds a "Viewer" button over the preview.</p>', i.onCreatePreviewButton = function() {
-  return e(n);
- }, i;
 }), define("text!html/dialogAbout.html", [], function() {
  return '<p>StackEdit is a free, open-source Markdown editor based on\r\n	PageDown, the Markdown library used by Stack Overflow and the other\r\n	Stack Exchange sites.</p>\r\n\r\n<dl>\r\n	<dt>About:</dt>\r\n	<dd>\r\n		<a target="_blank" href="https://github.com/benweet/stackedit/">GitHub\r\n			project</a> / <a target="_blank"\r\n			href="https://github.com/benweet/stackedit/issues">issue tracker</a><br />\r\n		<a target="_blank"\r\n			href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome\r\n			app</a> (thanks for your review!)<br /> <a target="_blank"\r\n			href="https://twitter.com/stackedit/">Follow on Twitter</a><br /> <a\r\n			target="_blank" href="https://www.facebook.com/stackedit/">Follow\r\n			on Facebook</a><br /> <a target="_blank"\r\n			href="https://plus.google.com/110816046787593496375" rel="publisher">Follow\r\n			on Google+</a><br />\r\n	</dd>\r\n</dl>\r\n<dl>\r\n	<dt>Developers:</dt>\r\n	<dd>\r\n		<a target="_blank" href="http://www.benoitschweblin.com">Benoit\r\n			Schweblin</a><br /> Pete Eigel (contributor)\r\n	</dd>\r\n</dl>\r\n<dl>\r\n	<dt>Credit:</dt>\r\n	<dd>\r\n		<% _.each(libraries, function(url, name) { %> <a target="_blank"\r\n			href="<%= url %>"><%= name %></a><br /> <% }); %>\r\n	</dd>\r\n</dl>\r\n<dl>\r\n	<dt>Related projects:</dt>\r\n	<dd>\r\n		<% _.each(projects, function(url, name) { %> <a target="_blank"\r\n			href="<%= url %>"><%= name %></a><br /> <% }); %>\r\n	</dd>\r\n</dl>\r\n<p>Copyright 2013 <a target="_blank"\r\n	href="http://www.benoitschweblin.com">Benoit Schweblin</a><br />\r\n	Licensed under an <a target="_blank"\r\n	href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a></p>\r\n';
 }), define("extensions/dialogAbout", [ "jquery", "underscore", "classes/Extension", "text!html/dialogAbout.html" ], function(e, t, n, i) {
@@ -6628,9 +6453,8 @@ var prettyPrintOne, prettyPrint;
  }, i;
 }), define("extensions/markdownFootnotes", [ "underscore", "utils", "classes/Extension" ], function(e, t, n) {
  function i(e) {
-  return u = {}, d = [], e = e.replace(/\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?(.*?)\n{1,2}((?=\n[ ]{0,3}\S)|\Z)/g, function(e, n, i) {
-   return n = t.slugify(n), i += "\n", i = i.replace(/^[ ]{0,3}/gm, ""), u[n] = i, 
-   "\n";
+  return u = {}, d = [], e = e.replace(/\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|\Z)/g, function(e, n, i) {
+   return n = t.slugify(n), i += "\n", i = i.replace(/^[ ]{0,3}/g, ""), u[n] = i, "\n";
   });
  }
  function o(e, n) {
@@ -6668,55 +6492,61 @@ var prettyPrintOne, prettyPrint;
  };
  var u = void 0, d = void 0, p = void 0;
  return a;
+}), define("text!html/buttonToc.html", [], function() {
+ return '<button class="btn dropdown-toggle" title="Table of contents">\r\n    <i class="icon-th-list"></i>\r\n</button>\r\n<div class="dropdown-menu pull-right">\r\n    <h3>Table of contents</h3>\r\n    <div class="table-of-contents">\r\n    </div>\r\n</div>\r\n';
 }), define("text!html/tocSettingsBlock.html", [], function() {
- return '<p>Generates a table of content when a [TOC] marker is found.</p>\r\n<div class="form-horizontal">\r\n	<div class="control-group">\r\n		<label class="control-label" for="input-toc-marker">Marker\r\n			RegExp</label>\r\n		<div class="controls">\r\n			<input type="text" id="input-toc-marker" class="span2">\r\n		</div>\r\n	</div>\r\n</div>';
-}), define("extensions/toc", [ "jquery", "underscore", "utils", "classes/Extension", "text!html/tocSettingsBlock.html" ], function(e, t, n, i, o) {
- function r(e, t, n) {
+ return '<p>Generates a table of contents when a [TOC] marker is found.</p>\r\n<div class="form-horizontal">\r\n	<div class="control-group">\r\n		<label class="control-label" for="input-toc-marker">Marker\r\n			RegExp</label>\r\n		<div class="controls">\r\n			<input type="text" id="input-toc-marker" class="span2">\r\n		</div>\r\n	</div>\r\n	<div class="control-group">\r\n        <label class="control-label" for="input-toc-button">Button over preview</label>\r\n        <div class="controls">\r\n            <input type="checkbox" id="input-toc-button">\r\n        </div>\r\n    </div>\r\n	\r\n</div>';
+}), define("extensions/toc", [ "jquery", "underscore", "utils", "classes/Extension", "text!html/buttonToc.html", "text!html/tocSettingsBlock.html" ], function(e, t, n, i, o, r) {
+ function s(e, t, n) {
   this.tagName = e, this.anchor = t, this.text = n, this.children = [];
  }
- function s(e, n) {
+ function a(e, n) {
   function i() {
-   void 0 !== l && (l.children.length > 0 && (l.children = s(l.children, n + 1)), a.push(l));
+   void 0 !== l && (l.children.length > 0 && (l.children = a(l.children, n + 1)), r.push(l));
   }
   n = n || 1;
-  var o = "H" + n, a = [], l = void 0;
+  var o = "H" + n, r = [], l = void 0;
   return t.each(e, function(e) {
-   e.tagName != o ? (void 0 === l && (l = new r()), l.children.push(e)) : (i(), l = e);
-  }), i(), a;
+   e.tagName != o ? (void 0 === l && (l = new s()), l.children.push(e)) : (i(), l = e);
+  }), i(), r;
  }
- function a() {
+ function l() {
   function i(e) {
    for (var i = e.prop("id") || n.slugify(e.text()), r = i, s = 0; t.has(o, r); ) r = i + "-" + ++s;
    return o[r] = !0, e.prop("id", r), r;
   }
-  var o = {}, a = [];
-  return e("#wmd-preview > h1,#wmd-preview > h2,#wmd-preview > h3,#wmd-preview > h4,#wmd-preview > h5,#wmd-preview > h6").each(function() {
-   a.push(new r(e(this).prop("tagName"), i(e(this)), e(this).text()));
-  }), a = s(a), '<div class="toc"><ul>' + ("" + a) + "</ul></div>";
+  var o = {}, r = [];
+  return e("#wmd-preview").children("h1, h2, h3, h4, h5, h6").each(function() {
+   r.push(new s(e(this).prop("tagName"), i(e(this)), e(this).text()));
+  }), r = a(r), '<div class="toc">\n<ul>\n' + r.join("") + "</ul>\n</div>\n";
  }
- var l = new i("toc", "Markdown Table of Content", !0);
- return l.settingsBlock = o, l.defaultConfig = {
-  marker: "\\[(TOC|toc)\\]"
- }, l.onLoadSettings = function() {
-  n.setInputValue("#input-toc-marker", l.config.marker);
- }, l.onSaveSettings = function(e, t) {
-  e.marker = n.getInputRegExpValue("#input-toc-marker", t);
- }, r.prototype.childrenToString = function() {
+ var c = new i("toc", "Table of Contents", !0);
+ return c.settingsBlock = r, c.defaultConfig = {
+  marker: "\\[(TOC|toc)\\]",
+  button: !0
+ }, c.onLoadSettings = function() {
+  n.setInputValue("#input-toc-marker", c.config.marker), n.setInputChecked("#input-toc-button", c.config.button);
+ }, c.onSaveSettings = function(e, t) {
+  e.marker = n.getInputRegExpValue("#input-toc-marker", t), e.button = n.getInputChecked("#input-toc-button");
+ }, c.onCreatePreviewButton = function() {
+  return c.config.button ? e(o) : void 0;
+ }, s.prototype.childrenToString = function() {
   if (0 === this.children.length) return "";
-  var e = "<ul>";
+  var e = "<ul>\n";
   return t.each(this.children, function(t) {
    e += "" + t;
-  }), e += "</ul>";
- }, r.prototype.toString = function() {
+  }), e += "</ul>\n";
+ }, s.prototype.toString = function() {
   var e = "<li>";
   return this.anchor && this.text && (e += '<a href="#' + this.anchor + '">' + this.text + "</a>"), 
-  e += this.childrenToString() + "</li>";
- }, l.onEditorConfigure = function(t) {
+  e += this.childrenToString() + "</li>\n";
+ }, c.onEditorConfigure = function(t) {
   t.hooks.chain("onPreviewRefresh", function() {
-   var t = a(), n = e("#wmd-preview").html();
-   n = n.replace(RegExp("<p>" + l.config.marker + "<\\/p>", "g"), t), e("#wmd-preview").html(n);
+   var t = l(), n = e("#wmd-preview").html();
+   n = n.replace(RegExp("<p>" + c.config.marker + "<\\/p>", "g"), t), e("#wmd-preview").html(n), 
+   e(".table-of-contents").html(t);
   });
- }, l;
+ }, c;
 }), define("text!html/mathJaxSettingsBlock.html", [], function() {
  return '<p>Allows StackEdit to interpret LaTeX mathematical expressions.</p>\r\n<div class="form-horizontal">\r\n    <div class="control-group">\r\n        <label class="control-label"\r\n            for="input-mathjax-config-tex">TeX configuration</label>\r\n        <div class="controls">\r\n            <input type="text" id="input-mathjax-config-tex">\r\n        </div>\r\n    </div>\r\n    <div class="control-group">\r\n        <label class="control-label"\r\n            for="input-mathjax-config-tex2jax">tex2jax configuration</label>\r\n        <div class="controls">\r\n            <input type="text" id="input-mathjax-config-tex2jax">\r\n        </div>\r\n    </div>\r\n</div>\r\n<span class="help-block pull-right"><a target="_blank" href="http://docs.mathjax.org/en/latest/options/">More info</a></span>';
 }), define("extensions/mathJax", [ "utils", "classes/Extension", "text!html/mathJaxSettingsBlock.html", "libs/MathJax" ], function(utils, Extension, mathJaxSettingsBlockHTML) {
@@ -6977,6 +6807,181 @@ function(e) {
  }, r.onPreviewFinished = function() {
   e("#wmd-preview").height("auto"), d = !0, u();
  }, r;
+}), define("text!html/buttonSync.html", [], function() {
+ return '<button class="btn" title="Synchronize all documents">\r\n	<i class="icon-refresh"></i>\r\n</button>';
+}), define("text!html/buttonSyncSettingsBlock.html", [], function() {
+ return '<p>Adds a "Synchronize documents" button in the navigation bar.</p>\r\n<div class="form-horizontal">\r\n	<div class="control-group">\r\n		<label class="control-label" for="input-sync-period">Sync\r\n			period (0: manual)</label>\r\n		<div class="controls">\r\n			<input type="text" id="input-sync-period" class="input-mini"\r\n				placeholder="180000"> <span class="help-inline">ms</span>\r\n		</div>\r\n	</div>\r\n</div>';
+}), define("extensions/buttonSync", [ "jquery", "underscore", "utils", "classes/Extension", "text!html/buttonSync.html", "text!html/buttonSyncSettingsBlock.html" ], function(e, t, n, i, o, r) {
+ var s = new i("buttonSync", 'Button "Synchronize"');
+ s.settingsBlock = r, s.defaultConfig = {
+  syncPeriod: 18e4
+ }, s.onLoadSettings = function() {
+  n.setInputValue("#input-sync-period", s.config.syncPeriod);
+ }, s.onSaveSettings = function(e, t) {
+  e.syncPeriod = n.getInputIntValue("#input-sync-period", t, 0);
+ };
+ var a = void 0, l = !1, c = !1, u = !1, d = function() {
+  void 0 !== a && (l === !0 || c === !1 || u ? a.addClass("disabled") : a.removeClass("disabled"));
+ }, p = void 0;
+ s.onSynchronizerCreated = function(e) {
+  p = e;
+ };
+ var f = 0;
+ s.onPeriodicRun = function() {
+  viewerMode === !0 || !s.config.syncPeriod || f + s.config.syncPeriod > n.currentTime || p.sync() === !0 && (f = n.currentTime);
+ }, s.onCreateButton = function() {
+  return a = e(o).click(function() {
+   e(this).hasClass("disabled") || p.sync();
+  });
+ }, s.onReady = d, s.onSyncRunning = function(e) {
+  l = e, c = !0, d();
+ }, s.onSyncSuccess = function() {
+  c = !1, d();
+ }, s.onOfflineChanged = function(e) {
+  u = e, d();
+ };
+ var h = function(e) {
+  0 !== t.size(e.syncLocations) && (c = !0, d());
+ };
+ return s.onContentChanged = h, s.onTitleChanged = h, s;
+}), define("text!html/buttonPublish.html", [], function() {
+ return '<button class="btn" title="Publish this document">\r\n	<i class="icon-share"></i>\r\n</button>';
+}), define("extensions/buttonPublish", [ "jquery", "underscore", "classes/Extension", "text!html/buttonPublish.html" ], function(e, t, n, i) {
+ function o() {
+  void 0 !== s && (l === !0 || c === !1 || u === !0 ? s.addClass("disabled") : s.removeClass("disabled"));
+ }
+ var r = new n("buttonPublish", 'Button "Publish"');
+ r.settingsBlock = '<p>Adds a "Publish document" button in the navigation bar.</p>';
+ var s = void 0, a = void 0, l = !1, c = !1, u = !1, d = void 0;
+ r.onPublisherCreated = function(e) {
+  d = e;
+ }, r.onCreateButton = function() {
+  return s = e(i).click(function() {
+   e(this).hasClass("disabled") || d.publish();
+  });
+ }, r.onPublishRunning = function(e) {
+  l = e, o();
+ }, r.onOfflineChanged = function(e) {
+  u = e, o();
+ };
+ var p = function() {
+  c = 0 === t.size(a.publishLocations) ? !1 : !0, o();
+ };
+ return r.onFileSelected = function(e) {
+  a = e, p();
+ }, r.onPublishRemoved = p, r.onNewPublishSuccess = p, r;
+}), define("text!html/buttonShare.html", [], function() {
+ return '<button class="btn dropdown-toggle" data-toggle="dropdown"\r\n	title="Share this document">\r\n	<i class="icon-link"></i>\r\n</button>\r\n<div id="link-container" class="dropdown-menu pull-right">\r\n	<h3 class="muted">Sharing</h3>\r\n	<div class="link-list"></div>\r\n	<p class="no-link">To share this document you need first to <a\r\n		href="#" class="action-publish-gist">publish it as a Gist</a> in\r\n		Markdown format.\r\n	</p>\r\n	<blockquote class="muted">\r\n		<b>NOTE:</b> You can open any URL within StackEdit using <a\r\n			href="viewer.html?url=https://raw.github.com/benweet/stackedit/master/README.md"\r\n			title="Sharing example">viewer.html?url=...</a>\r\n	</blockquote>\r\n</div>\r\n';
+}), define("text!html/buttonShareLocation.html", [], function() {
+ return '<div class="input-prepend">\r\n	<a href="<%= link %>" class="add-on" title="Sharing location"><i\r\n		class="icon-link"></i></a> <input class="span2" type="text"\r\n		value="<%= link %>" readonly />\r\n</div>\r\n';
+}), define("extensions/buttonShare", [ "jquery", "underscore", "classes/Extension", "text!html/buttonShare.html", "text!html/buttonShareLocation.html" ], function(e, t, n, i, o) {
+ var r = new n("buttonShare", 'Button "Share"', !0);
+ r.settingsBlock = '<p>Adds a "Share document" button in the navigation bar.</p>', 
+ r.onCreateButton = function() {
+  return e(i);
+ };
+ var s = void 0, a = function(n) {
+  if (void 0 === n || n === s) {
+   var i = e("#link-container .link-list").empty();
+   e("#link-container .no-link").show();
+   var r = t.values(s.publishLocations);
+   t.each(r, function(n) {
+    if (n.sharingLink) {
+     var r = e(t.template(o, {
+      link: n.sharingLink
+     }));
+     r.click(function(e) {
+      e.stopPropagation();
+     }), i.append(r), e("#link-container .no-link").hide();
+    }
+   });
+  }
+ };
+ return r.onFileSelected = function(e) {
+  s = e, a(e);
+ }, r.onNewPublishSuccess = a, r.onPublishRemoved = a, r;
+}), define("text!html/buttonStat.html", [], function() {
+ return '<button class="btn dropdown-toggle" title="Document statistics">\r\n	<i class="icon-stat"></i>\r\n</button>\r\n<div class="dropdown-menu pull-right">\r\n	<h3>Statistics</h3>\r\n	<div class="stat">\r\n		<div>\r\n			<%= name1 %>: <span id="span-stat-value1"></span>\r\n		</div>\r\n		<div>\r\n			<%= name2 %>: <span id="span-stat-value2"></span>\r\n		</div>\r\n		<div>\r\n			<%= name3 %>: <span id="span-stat-value3"></span>\r\n		</div>\r\n	</div>\r\n</div>\r\n';
+}), define("text!html/buttonStatSettingsBlock.html", [], function() {
+ return '<p>Adds a "Document statistics" button over the preview.</p>\r\n<div class="form-horizontal">\r\n	<div class="control-group form-inline">\r\n		<label class="label-text" for="input-stat-name1">Title</label> <input\r\n			id="input-stat-name1" type="text" class="input-small"> <label\r\n			class="label-text" for="input-stat-value1">RegExp</label> <input\r\n			id="input-stat-value1" type="text" class="span2">\r\n	</div>\r\n	<div class="control-group form-inline">\r\n		<label class="label-text" for="input-stat-name2">Title</label> <input\r\n			id="input-stat-name2" type="text" class="input-small"> <label\r\n			class="label-text" for="input-stat-value2">RegExp</label> <input\r\n			id="input-stat-value2" type="text" class="span2">\r\n	</div>\r\n	<div class="control-group form-inline">\r\n		<label class="label-text" for="input-stat-name3">Title</label> <input\r\n			id="input-stat-name3" type="text" class="input-small"> <label\r\n			class="label-text" for="input-stat-value3">RegExp</label> <input\r\n			id="input-stat-value3" type="text" class="span2">\r\n	</div>\r\n</div>\r\n';
+}), define("extensions/buttonStat", [ "jquery", "underscore", "utils", "classes/Extension", "text!html/buttonStat.html", "text!html/buttonStatSettingsBlock.html" ], function(e, t, n, i, o, r) {
+ var s = new i("buttonStat", 'Button "Statistics"', !0);
+ return s.settingsBlock = r, s.defaultConfig = {
+  name1: "Characters",
+  value1: "\\S",
+  name2: "Words",
+  value2: "\\S+",
+  name3: "Paragraphs",
+  value3: "\\S.*"
+ }, s.onLoadSettings = function() {
+  t.each([ 1, 2, 3 ], function(e) {
+   n.setInputValue("#input-stat-name" + e, s.config["name" + e]), n.setInputValue("#input-stat-value" + e, s.config["value" + e]);
+  });
+ }, s.onSaveSettings = function(e, i) {
+  t.each([ 1, 2, 3 ], function(t) {
+   e["name" + t] = n.getInputTextValue("#input-stat-name" + t, i), e["value" + t] = n.getInputRegExpValue("#input-stat-value" + t, i);
+  });
+ }, s.onCreatePreviewButton = function() {
+  return e(t.template(o, s.config));
+ }, s.onPreviewFinished = function() {
+  var t = e("#wmd-preview").clone().find("script").remove().end().text();
+  e("#span-stat-value1").text((t.match(RegExp(s.config.value1, "g")) || []).length), 
+  e("#span-stat-value2").text((t.match(RegExp(s.config.value2, "g")) || []).length), 
+  e("#span-stat-value3").text((t.match(RegExp(s.config.value3, "g")) || []).length);
+ }, s;
+}), define("text!html/buttonHtmlCode.html", [], function() {
+ return '<button class="btn dropdown-toggle action-html-code" title="HTML code">\r\n	<i class="icon-code"></i>\r\n</button>\r\n<div class="dropdown-menu pull-right">\r\n	<h3>HTML code</h3>\r\n	<textarea id="input-html-code"></textarea>\r\n</div>\r\n';
+}), define("text!html/buttonHtmlCodeSettingsBlock.html", [], function() {
+ return '<p>Adds a "HTML code" button over the preview.</p>\r\n<div class="form-horizontal">\r\n	<div class="control-group">\r\n		<label class="control-label" for="textarea-html-code-template">Template\r\n			<a href="#" class="tooltip-template">(?)</a>\r\n		</label>\r\n		<div class="controls">\r\n			<textarea id="textarea-html-code-template"></textarea>\r\n		</div>\r\n	</div>\r\n</div>';
+}), define("extensions/buttonHtmlCode", [ "jquery", "underscore", "utils", "classes/Extension", "text!html/buttonHtmlCode.html", "text!html/buttonHtmlCodeSettingsBlock.html" ], function(e, t, n, i, o, r) {
+ var s = new i("buttonHtmlCode", 'Button "HTML code"', !0);
+ s.settingsBlock = r, s.defaultConfig = {
+  template: "<%= documentHTML %>"
+ }, s.onLoadSettings = function() {
+  n.setInputValue("#textarea-html-code-template", s.config.template);
+ }, s.onSaveSettings = function(e) {
+  e.template = n.getInputValue("#textarea-html-code-template");
+ }, s.onCreatePreviewButton = function() {
+  return e(o);
+ };
+ var a = void 0;
+ return s.onFileSelected = function(e) {
+  a = e;
+ }, s.onPreviewFinished = function() {
+  try {
+   var n = t.template(s.config.template, {
+    documentTitle: a.title,
+    documentMarkdown: a.content,
+    documentHTML: e("#wmd-preview").html()
+   });
+   e("#input-html-code").val(n);
+  } catch (i) {
+   return extensionMgr.onError(i), i.message;
+  }
+ }, s.onReady = function() {
+  e(".action-html-code").click(function() {
+   t.defer(function() {
+    e("#input-html-code").each(function() {
+     e(this).is(":hidden") || e(this).get(0).select();
+    });
+   });
+  });
+ }, s;
+}), define("text!html/buttonMarkdownSyntax.html", [], function() {
+ return '<button class="btn dropdown-toggle" title="Markdown syntax">\r\n	<i class="icon-question-sign"></i>\r\n</button>\r\n<div class="dropdown-menu pull-right">\r\n	<h3>Markdown syntax</h3>\r\n	<div class="markdown-syntax">\r\n<h4>Phrase Emphasis</h4>\r\n\r\n<pre><code>*italic*   **bold**\r\n_italic_   __bold__\r\n</code></pre>\r\n\r\n<h4>Links</h4>\r\n\r\n<p>Inline:</p>\r\n\r\n<pre><code>An [example](http://url.com/ "Title")\r\n</code></pre>\r\n\r\n<p>Reference-style labels (titles are optional):</p>\r\n\r\n<pre><code>An [example][id]. Then, anywhere\r\nelse in the doc, define the link:\r\n\r\n  [id]: http://example.com/  "Title"\r\n</code></pre>\r\n\r\n<h4>Images</h4>\r\n\r\n<p>Inline (titles are optional):</p>\r\n\r\n<pre><code>![alt text](/path/img.jpg "Title")\r\n</code></pre>\r\n\r\n<p>Reference-style:</p>\r\n\r\n<pre><code>![alt text][id]\r\n\r\n[id]: /url/to/img.jpg "Title"\r\n</code></pre>\r\n\r\n<h4>Headers</h4>\r\n\r\n<p>Setext-style:</p>\r\n\r\n<pre><code>Header 1\r\n========\r\n\r\nHeader 2\r\n--------\r\n</code></pre>\r\n\r\n<p>atx-style (closing #\'s are optional):</p>\r\n\r\n<pre><code># Header 1 #\r\n\r\n## Header 2 ##\r\n\r\n###### Header 6\r\n</code></pre>\r\n\r\n<h4>Lists</h4>\r\n\r\n<p>Ordered, without paragraphs:</p>\r\n\r\n<pre><code>1.  Foo\r\n2.  Bar\r\n</code></pre>\r\n\r\n<p>Unordered, with paragraphs:</p>\r\n\r\n<pre><code>*   A list item.\r\n\r\n    With multiple paragraphs.\r\n\r\n*   Bar\r\n</code></pre>\r\n\r\n<p>You can nest them:</p>\r\n\r\n<pre><code>*   Abacus\r\n    * answer\r\n*   Bubbles\r\n    1.  bunk\r\n    2.  bupkis\r\n        * BELITTLER\r\n    3. burper\r\n*   Cunning\r\n</code></pre>\r\n\r\n<h4>Blockquotes</h4>\r\n\r\n<pre><code>&gt; Email-style angle brackets\r\n&gt; are used for blockquotes.\r\n\r\n&gt; &gt; And, they can be nested.\r\n\r\n&gt; #### Headers in blockquotes\r\n&gt; \r\n&gt; * You can quote a list.\r\n&gt; * Etc.\r\n</code></pre>\r\n\r\n<h4>Code Spans</h4>\r\n\r\n<pre><code>`&lt;code&gt;` spans are delimited\r\nby backticks.\r\n\r\nYou can include literal backticks\r\nlike `` `this` ``.\r\n</code></pre>\r\n\r\n<h4>Preformatted Code Blocks</h4>\r\n\r\n<p>Indent every line of a code block by at least 4 spaces or 1 tab.</p>\r\n\r\n<pre><code>This is a normal paragraph.\r\n\r\n    This is a preformatted\r\n    code block.\r\n</code></pre>\r\n\r\n<h4>Horizontal Rules</h4>\r\n\r\n<p>Three or more dashes or asterisks:</p>\r\n\r\n<pre><code>---\r\n\r\n* * *\r\n\r\n- - - - \r\n</code></pre>\r\n\r\n<h4>Manual Line Breaks</h4>\r\n\r\n<p>End a line with two or more spaces:</p>\r\n\r\n<pre><code>Roses are red,   \r\nViolets are blue.\r\n</code></pre>\r\n\r\n<p class="muted">Based on the <a target="_blank" href="https://github.com/fletcher/MultiMarkdown/blob/master/Documentation/Markdown%20Syntax.md">Markdown syntax guide</a>, by Fletcher T. Penney.</p>\r\n    </div>\r\n</div>\r\n';
+}), define("extensions/buttonMarkdownSyntax", [ "jquery", "classes/Extension", "text!html/buttonMarkdownSyntax.html" ], function(e, t, n) {
+ var i = new t("buttonMarkdownSyntax", 'Button "Markdown syntax', !0);
+ return i.settingsBlock = '<p>Adds a "Markdown syntax" button over the preview.</p>', 
+ i.onCreatePreviewButton = function() {
+  return e(n);
+ }, i;
+}), define("text!html/buttonViewer.html", [], function() {
+ return '<a href="viewer.html" class="btn dropdown-toggle"\r\n	title="Open in viewer">\r\n	<i class="icon-fullscreen"></i>\r\n</a>\r\n';
+}), define("extensions/buttonViewer", [ "jquery", "classes/Extension", "text!html/buttonViewer.html" ], function(e, t, n) {
+ var i = new t("buttonViewer", 'Button "Viewer"', !0);
+ return i.settingsBlock = '<p>Adds a "Viewer" button over the preview.</p>', i.onCreatePreviewButton = function() {
+  return e(n);
+ }, i;
 }), !function(e) {
  e(function() {
   e.support.transition = function() {
@@ -7842,7 +7847,7 @@ function(e) {
    });
   });
  };
-}(jQuery), define("libs/jquery.waitforimages", function() {}), define("extensionMgr", [ "jquery", "underscore", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/googleAnalytics", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonMarkdownSyntax", "extensions/buttonViewer", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/markdownFootnotes", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o, r) {
+}(jQuery), define("libs/jquery.waitforimages", function() {}), define("extensionMgr", [ "jquery", "underscore", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/markdownFootnotes", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonMarkdownSyntax", "extensions/buttonViewer", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o, r) {
  function s(e) {
   return t.chain(d).map(function(t) {
    return t.config.enabled && t[e];
@@ -12392,7 +12397,7 @@ function(e) {
   });
  }), m;
 }), define("text!../WELCOME.md", [], function() {
- return '\r\nWelcome to StackEdit!	{#welcome}\r\n=====================\r\n\r\n\r\nHello, I am your first Markdown document within **StackEdit**. Don\'t delete me, I can be helpful. I can be recovered anyway in the `Utils` tab of the <i class="icon-cog"></i> `Settings` dialog.\r\n\r\n----------\r\n\r\n\r\nDocuments\r\n---------\r\n\r\n**StackEdit** stores your documents in the browser local storage, which means all your documents are automatically saved locally and are accessible offline.\r\n\r\n#### <i class="icon-file"></i> Create a document\r\n\r\nYou can create a new document by clicking the <i class="icon-file"></i> button in the navigation bar. This will switch from the current document to the new one.\r\n\r\n#### <i class="icon-folder-open"></i> Switch to another document\r\n\r\nYou can list all your local documents and switch from one to another by clicking the <i class="icon-folder-open"></i> button in the navigation bar.\r\n\r\n#### <i class="icon-pencil"></i> Rename a document\r\n\r\nYou can rename the current document by clicking the document title in the navigation bar.\r\n\r\n#### <i class="icon-trash"></i> Delete a document\r\n\r\nYou can delete the current document by clicking the <i class="icon-trash"></i> button in the navigation bar.\r\n\r\n----------\r\n\r\n\r\nSynchronization\r\n---------------\r\n\r\n**StackEdit** can be combined with **Google Drive** and **Dropbox** to have your documents centralized in the *Cloud*. The synchronization mechanism will take care of uploading your modifications or downloading the latest version of your documents.\r\n\r\n#### <i class="icon-download"></i> Import a document\r\n\r\nYou can import a document from the *Cloud* by going to the <i class="icon-gdrive"></i> `Google Drive` or the <i class="icon-dropbox"></i> `Dropbox` sub-menu and by clicking `Import from...`. Once imported, your document will be automatically synchronized with the **Google Drive** / **Dropbox** file.\r\n\r\n#### <i class="icon-upload"></i> Export a document\r\n\r\nYou can export any document by going to the <i class="icon-gdrive"></i> `Google Drive` or the <i class="icon-dropbox"></i> `Dropbox` sub-menu and by clicking `Export to...`. Even if your document is already synchronized with **Google Drive** or **Dropbox**, you can export it to a another location. **StackEdit** can synchronize one document with multiple locations.\r\n\r\n#### <i class="icon-refresh"></i> Synchronize a document\r\n\r\nOnce your document is linked to a **Google Drive** or a **Dropbox** file, **StackEdit** will periodically (every 3 minutes) synchronize it by downloading/uploading any modification. Any conflict will be detected, and a local copy of your document will be created as a backup if necessary.\r\n\r\nIf you just have modified your document and you want to force the synchronization, click the <i class="icon-refresh"></i> button in the navigation bar.\r\n\r\n> **NOTE:** The <i class="icon-refresh"></i> button is disabled when:\r\n> \r\n> - you are offline,\r\n> - or the document is not synchronized with any location,\r\n> - or the document has not been modified since the last synchronization.\r\n\r\n#### <i class="icon-refresh"></i> Manage document synchronization\r\n\r\nSince one document can be synchronized with multiple locations, you can list and manage synchronized locations by clicking <i class="icon-refresh"></i> `Manage synchronization` in the <i class="icon-stackedit"></i> menu. This will open a dialog box allowing you to add or remove synchronization links that are associated to your document.\r\n\r\n> **NOTE:** If you delete the file from **Google Drive** or from **Dropbox**, the document will no longer be synchronized with that location.\r\n\r\n----------\r\n\r\n\r\nPublication\r\n-----------\r\n\r\nOnce you are happy with your document, you can publish it on different websites directly from **StackEdit**. As for now, **StackEdit** can publish on **Blogger**, **Dropbox**, **Gist**, **GitHub**, **Google Drive**, **Tumblr**, **WordPress** and on any SSH server.\r\n\r\n#### <i class="icon-share"></i> Publish a document\r\n\r\nYou can publish your document by going to the <i class="icon-share"></i> `Publish on` sub-menu and by choosing a website. In the dialog box, you can choose the publication format:\r\n\r\n- Markdown, to publish the Markdown text on a website that can interpret it (**GitHub** for instance),\r\n- HTML, to publish the document converted into HTML (on a blog for instance),\r\n- Template, to have a full control of the output.\r\n\r\n> **NOTE:** The default template is a simple webpage that wraps your document in HTML format. You can customize it in the `Publish` tab of the <i class="icon-cog"></i> `Settings` dialog.\r\n\r\n#### <i class="icon-share"></i> Update a publication\r\n\r\nAfter publishing, **StackEdit** will keep your document linked to that publish location so that you can update it easily. Once you have modified your document and you want to update your publication, click on the <i class="icon-share"></i> button in the navigation bar.\r\n\r\n> **NOTE:** The <i class="icon-share"></i> button is disabled when:\r\n> \r\n> - you are offline,\r\n> - or the document has not been published anywhere.\r\n\r\n#### <i class="icon-share"></i> Manage document publication\r\n\r\nSince one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-share"></i> `Manage publication` in the <i class="icon-stackedit"></i> menu. This will open a dialog box allowing you to remove publication links that are associated to your document.\r\n\r\n> **NOTE:** In some cases, if you remove the file from the website or the post from the blog, the document will no longer be published on that location.\r\n\r\n----------\r\n\r\n\r\nMarkdown Extra\r\n--------------\r\n\r\n**StackEdit** supports **Markdown Extra**, which extends **Markdown** syntax with some nice features.\r\n\r\n\r\n### Tables\r\n\r\n**Markdown Extra** has a special syntax for tables:\r\n\r\nItem      | Value\r\n--------- | -----\r\nComputer  | \\$1600\r\nPhone     | \\$12\r\nPipe      | \\$1\r\n\r\nYou can specify column alignment with one or two colons:\r\n\r\n| Item      |  Value | Qty  |\r\n| :-------- | ------:| :--: |\r\n| Computer  | \\$1600 |  5   |\r\n| Phone     |   \\$12 |  12  |\r\n| Pipe      |    \\$1 | 234  |\r\n\r\n\r\n### Definition Lists\r\n\r\n**Markdown Extra** has a special syntax for definition lists too:\r\n\r\nTerm 1\r\nTerm 2\r\n:   Definition A\r\n:   Definition B\r\n\r\nTerm 3\r\n\r\n:   Definition C\r\n\r\n:   Definition D\r\n\r\n	> part of definition D\r\n\r\n\r\n### Fenced code blocks\r\n\r\n**GitHub**\'s fenced code blocks are also supported with **Prettify** syntax highlighting:\r\n\r\n```\r\n// Foo\r\nvar bar = 0;\r\n```\r\n\r\n\r\n### Special Attributes\r\n\r\nWith **Markdown Extra**, you can specify `class` and `id` attributes on headers and fenced code blocks just like this:\r\n\r\n##### Header example {#my-header}\r\n\r\n``` {#my-id .my-class}\r\nvar foo = bar;\r\n```\r\n\r\nThen you can create cross-references like this: [beginning of the document](#welcome).\r\n\r\n\r\n### Footnotes\r\n\r\nYou can create footnotes like this[^footnote].\r\n\r\n  [^footnote]: Here is the *text* of the **footnote**.\r\n\r\n\r\n### Table of content\r\n\r\nYou can insert a table of content using the marker `[TOC]`:\r\n\r\n[TOC]\r\n\r\n\r\n### MathJax\r\n \r\nYou can render *LaTeX* mathematical expressions using **MathJax**, as on [math.stackexchange.com][1]:\r\n\r\nThe *Gamma function* satisfying $\\Gamma(n) = (n-1)!\\quad\\forall\r\nn\\in\\mathbb N$ is via through the Euler integral\r\n\r\n$$\r\n\\Gamma(z) = \\int_0^\\infty t^{z-1}e^{-t}dt\\,.\r\n$$\r\n\r\n\r\n> **NOTE:** You can find more information:\r\n>\r\n> - about **Markdown** syntax [here][2],\r\n> - about **Markdown Extra** extension [here][3],\r\n> - about **Prettify** syntax highlighting [here][4].\r\n\r\n\r\n\r\n  [1]: http://math.stackexchange.com/\r\n  [2]: http://daringfireball.net/projects/markdown/syntax "Markdown"\r\n  [3]: https://github.com/jmcmanus/pagedown-extra "Pagedown Extra"\r\n  [4]: https://code.google.com/p/google-code-prettify/\r\n  [5]: http://en.wikibooks.org/wiki/LaTeX/Mathematics';
+ return '\r\nWelcome to StackEdit!	{#welcome}\r\n=====================\r\n\r\n\r\nHello, I am your first Markdown document within **StackEdit**. Don\'t delete me, I can be helpful. I can be recovered anyway in the `Utils` tab of the <i class="icon-cog"></i> `Settings` dialog.\r\n\r\n----------\r\n\r\n\r\nDocuments\r\n---------\r\n\r\n**StackEdit** stores your documents in the browser local storage, which means all your documents are automatically saved locally and are accessible offline.\r\n\r\n#### <i class="icon-file"></i> Create a document\r\n\r\nYou can create a new document by clicking the <i class="icon-file"></i> button in the navigation bar. This will switch from the current document to the new one.\r\n\r\n#### <i class="icon-folder-open"></i> Switch to another document\r\n\r\nYou can list all your local documents and switch from one to another by clicking the <i class="icon-folder-open"></i> button in the navigation bar.\r\n\r\n#### <i class="icon-pencil"></i> Rename a document\r\n\r\nYou can rename the current document by clicking the document title in the navigation bar.\r\n\r\n#### <i class="icon-trash"></i> Delete a document\r\n\r\nYou can delete the current document by clicking the <i class="icon-trash"></i> button in the navigation bar.\r\n\r\n----------\r\n\r\n\r\nSynchronization\r\n---------------\r\n\r\n**StackEdit** can be combined with **Google Drive** and **Dropbox** to have your documents centralized in the *Cloud*. The synchronization mechanism will take care of uploading your modifications or downloading the latest version of your documents.\r\n\r\n#### <i class="icon-download"></i> Import a document\r\n\r\nYou can import a document from the *Cloud* by going to the <i class="icon-gdrive"></i> `Google Drive` or the <i class="icon-dropbox"></i> `Dropbox` sub-menu and by clicking `Import from...`. Once imported, your document will be automatically synchronized with the **Google Drive** / **Dropbox** file.\r\n\r\n#### <i class="icon-upload"></i> Export a document\r\n\r\nYou can export any document by going to the <i class="icon-gdrive"></i> `Google Drive` or the <i class="icon-dropbox"></i> `Dropbox` sub-menu and by clicking `Export to...`. Even if your document is already synchronized with **Google Drive** or **Dropbox**, you can export it to a another location. **StackEdit** can synchronize one document with multiple locations.\r\n\r\n#### <i class="icon-refresh"></i> Synchronize a document\r\n\r\nOnce your document is linked to a **Google Drive** or a **Dropbox** file, **StackEdit** will periodically (every 3 minutes) synchronize it by downloading/uploading any modification. Any conflict will be detected, and a local copy of your document will be created as a backup if necessary.\r\n\r\nIf you just have modified your document and you want to force the synchronization, click the <i class="icon-refresh"></i> button in the navigation bar.\r\n\r\n> **NOTE:** The <i class="icon-refresh"></i> button is disabled when:\r\n> \r\n> - you are offline,\r\n> - or the document is not synchronized with any location,\r\n> - or the document has not been modified since the last synchronization.\r\n\r\n#### <i class="icon-refresh"></i> Manage document synchronization\r\n\r\nSince one document can be synchronized with multiple locations, you can list and manage synchronized locations by clicking <i class="icon-refresh"></i> `Manage synchronization` in the <i class="icon-stackedit"></i> menu. This will open a dialog box allowing you to add or remove synchronization links that are associated to your document.\r\n\r\n> **NOTE:** If you delete the file from **Google Drive** or from **Dropbox**, the document will no longer be synchronized with that location.\r\n\r\n----------\r\n\r\n\r\nPublication\r\n-----------\r\n\r\nOnce you are happy with your document, you can publish it on different websites directly from **StackEdit**. As for now, **StackEdit** can publish on **Blogger**, **Dropbox**, **Gist**, **GitHub**, **Google Drive**, **Tumblr**, **WordPress** and on any SSH server.\r\n\r\n#### <i class="icon-share"></i> Publish a document\r\n\r\nYou can publish your document by going to the <i class="icon-share"></i> `Publish on` sub-menu and by choosing a website. In the dialog box, you can choose the publication format:\r\n\r\n- Markdown, to publish the Markdown text on a website that can interpret it (**GitHub** for instance),\r\n- HTML, to publish the document converted into HTML (on a blog for instance),\r\n- Template, to have a full control of the output.\r\n\r\n> **NOTE:** The default template is a simple webpage that wraps your document in HTML format. You can customize it in the `Publish` tab of the <i class="icon-cog"></i> `Settings` dialog.\r\n\r\n#### <i class="icon-share"></i> Update a publication\r\n\r\nAfter publishing, **StackEdit** will keep your document linked to that publish location so that you can update it easily. Once you have modified your document and you want to update your publication, click on the <i class="icon-share"></i> button in the navigation bar.\r\n\r\n> **NOTE:** The <i class="icon-share"></i> button is disabled when:\r\n> \r\n> - you are offline,\r\n> - or the document has not been published anywhere.\r\n\r\n#### <i class="icon-share"></i> Manage document publication\r\n\r\nSince one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-share"></i> `Manage publication` in the <i class="icon-stackedit"></i> menu. This will open a dialog box allowing you to remove publication links that are associated to your document.\r\n\r\n> **NOTE:** In some cases, if you remove the file from the website or the post from the blog, the document will no longer be published on that location.\r\n\r\n----------\r\n\r\n\r\nMarkdown Extra\r\n--------------\r\n\r\n**StackEdit** supports **Markdown Extra**, which extends **Markdown** syntax with some nice features.\r\n\r\n\r\n### Tables\r\n\r\n**Markdown Extra** has a special syntax for tables:\r\n\r\nItem      | Value\r\n--------- | -----\r\nComputer  | \\$1600\r\nPhone     | \\$12\r\nPipe      | \\$1\r\n\r\nYou can specify column alignment with one or two colons:\r\n\r\n| Item      |  Value | Qty  |\r\n| :-------- | ------:| :--: |\r\n| Computer  | \\$1600 |  5   |\r\n| Phone     |   \\$12 |  12  |\r\n| Pipe      |    \\$1 | 234  |\r\n\r\n\r\n### Definition Lists\r\n\r\n**Markdown Extra** has a special syntax for definition lists too:\r\n\r\nTerm 1\r\nTerm 2\r\n:   Definition A\r\n:   Definition B\r\n\r\nTerm 3\r\n\r\n:   Definition C\r\n\r\n:   Definition D\r\n\r\n	> part of definition D\r\n\r\n\r\n### Fenced code blocks\r\n\r\n**GitHub**\'s fenced code blocks are also supported with **Prettify** syntax highlighting:\r\n\r\n```\r\n// Foo\r\nvar bar = 0;\r\n```\r\n\r\n\r\n### Special Attributes\r\n\r\nWith **Markdown Extra**, you can specify `class` and `id` attributes on headers and fenced code blocks just like this:\r\n\r\n##### Header example {#my-header}\r\n\r\n``` {#my-id .my-class}\r\nvar foo = bar;\r\n```\r\n\r\nThen you can create cross-references like this: [beginning of the document](#welcome).\r\n\r\n\r\n### Footnotes\r\n\r\nYou can create footnotes like this[^footnote].\r\n\r\n  [^footnote]: Here is the *text* of the **footnote**.\r\n\r\n\r\n### Table of contents\r\n\r\nYou can insert a table of contents using the marker `[TOC]`:\r\n\r\n[TOC]\r\n\r\n\r\n### MathJax\r\n \r\nYou can render *LaTeX* mathematical expressions using **MathJax**, as on [math.stackexchange.com][1]:\r\n\r\nThe *Gamma function* satisfying $\\Gamma(n) = (n-1)!\\quad\\forall\r\nn\\in\\mathbb N$ is via through the Euler integral\r\n\r\n$$\r\n\\Gamma(z) = \\int_0^\\infty t^{z-1}e^{-t}dt\\,.\r\n$$\r\n\r\n\r\n> **NOTE:** You can find more information:\r\n>\r\n> - about **Markdown** syntax [here][2],\r\n> - about **Markdown Extra** extension [here][3],\r\n> - about **Prettify** syntax highlighting [here][4].\r\n\r\n\r\n\r\n  [1]: http://math.stackexchange.com/\r\n  [2]: http://daringfireball.net/projects/markdown/syntax "Markdown"\r\n  [3]: https://github.com/jmcmanus/pagedown-extra "Pagedown Extra"\r\n  [4]: https://code.google.com/p/google-code-prettify/\r\n  [5]: http://en.wikibooks.org/wiki/LaTeX/Mathematics';
 }), define("fileMgr", [ "jquery", "underscore", "core", "utils", "settings", "extensionMgr", "fileSystem", "classes/FileDescriptor", "text!../WELCOME.md" ], function(e, t, n, i, o, r, s, a, l) {
  var c = {};
  return c.currentFile = void 0, c.selectFile = function(i) {

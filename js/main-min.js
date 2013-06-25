@@ -6305,7 +6305,7 @@ var prettyPrintOne, prettyPrint;
   e;
  }
  function l(e, t) {
-  return o(c(e, t), p);
+  return o(c(e, t), f);
  }
  function c(e, t) {
   var n = t.blockGamutHookCallback(e);
@@ -6320,25 +6320,31 @@ var prettyPrintOne, prettyPrint;
    return String.fromCharCode(n);
   });
  }
- var p = RegExp([ "^(<\\/?(a|abbr|acronym|applet|area|b|basefont|", "bdo|big|button|cite|code|del|dfn|em|figcaption|", "font|i|iframe|img|input|ins|kbd|label|map|", "mark|meter|object|param|progress|q|ruby|rp|rt|s|", "samp|script|select|small|span|strike|strong|", "sub|sup|textarea|time|tt|u|var|wbr)[^>]*>|", "<(br)\\s?\\/?>)$" ].join(""), "i");
+ function p(e) {
+  return e.toLowerCase().replace(/\s+/g, "-").replace(/[^\w\-]+/g, "").replace(/\-\-+/g, "-").replace(/^-+/, "").replace(/-+$/, "");
+ }
+ var f = RegExp([ "^(<\\/?(a|abbr|acronym|applet|area|b|basefont|", "bdo|big|button|cite|code|del|dfn|em|figcaption|", "font|i|iframe|img|input|ins|kbd|label|map|", "mark|meter|object|param|progress|q|ruby|rp|rt|s|", "samp|script|select|small|span|strike|strong|", "sub|sup|textarea|time|tt|u|var|wbr)[^>]*>|", "<(br)\\s?\\/?>)$" ].join(""), "i");
  Array.indexOf || (Array.prototype.indexOf = function(e) {
   for (var t = 0; this.length > t; t++) if (this[t] == e) return t;
   return -1;
  }), Markdown.Extra = function() {
-  this.converter = null, this.hashBlocks = [], this.attributeBlocks = !1, this.googleCodePrettify = !1, 
-  this.highlightJs = !1, this.tableClass = "", this.tabWidth = 4;
+  this.converter = null, this.hashBlocks = [], this.footnotes = {}, this.usedFootnotes = [], 
+  this.attributeBlocks = !1, this.googleCodePrettify = !1, this.highlightJs = !1, 
+  this.tableClass = "", this.tabWidth = 4;
  }, Markdown.Extra.init = function(e, t) {
   var n = new Markdown.Extra(), o = [], r = [], s = [ "unHashExtraBlocks" ];
-  return t = t || {}, t.extensions = t.extensions || [ "all" ], i(t.extensions, "all") && (t.extensions = [ "tables", "fenced_code_gfm", "def_list", "attr_list" ]), 
+  return t = t || {}, t.extensions = t.extensions || [ "all" ], i(t.extensions, "all") && (t.extensions = [ "tables", "fenced_code_gfm", "def_list", "attr_list", "footnotes" ]), 
   i(t.extensions, "attr_list") && (o.push("hashFcbAttributeBlocks"), r.push("hashHeaderAttributeBlocks"), 
   s.push("applyAttributeBlocks"), n.attributeBlocks = !0), i(t.extensions, "tables") && r.push("tables"), 
   i(t.extensions, "fenced_code_gfm") && o.push("fencedCodeBlocks"), i(t.extensions, "def_list") && r.push("definitionLists"), 
-  e.hooks.chain("postNormalization", function(e) {
+  i(t.extensions, "footnotes") && (o.push("stripFootnoteDefinitions"), r.push("doFootnotes"), 
+  s.push("printFootnotes")), e.hooks.chain("postNormalization", function(e) {
    return n.doTransform(o, e) + "\n";
   }), e.hooks.chain("preBlockGamut", function(e, t) {
    return n.blockGamutHookCallback = t, e = u(e), n.doTransform(r, e) + "\n";
   }), n.previousPostConversion = e.hooks.postConversion, e.hooks.chain("postConversion", function(e) {
-   return e = n.doTransform(s, e), this.hashBlocks = [], e;
+   return e = n.doTransform(s, e), n.hashBlocks = [], n.footnotes = {}, n.usedFootnotes = [], 
+   e;
   }), "highlighter" in t && (n.googleCodePrettify = "prettify" === t.highlighter, 
   n.highlightJs = "highlight" === t.highlighter), "table_class" in t && (n.tableClass = t.table_class), 
   n.converter = e, n;
@@ -6368,7 +6374,7 @@ var prettyPrintOne, prettyPrint;
   function t(e, t, n) {
    return "<p>~XX" + (o.hashBlocks.push(n) - 1) + "XX</p>\n" + t + "\n";
   }
-  var n = "\\{\\s*[.|#][^}]+\\}", i = RegExp("^(```[^{]*)\\s+(" + n + ")[ \\t]*\\n" + "(?=([\\s\\S]*?)\\n```\\s*(\\n|0x03))", "gm"), o = this;
+  var n = "\\{\\s*[.|#][^}]+\\}", i = RegExp("^(```[^{\\n]*)\\s+(" + n + ")[ \\t]*\\n" + "(?=([\\s\\S]*?)\\n```\\s*(\\n|0x03))", "gm"), o = this;
   return e.replace(i, t);
  }, Markdown.Extra.prototype.applyAttributeBlocks = function(e) {
   var t = this, n = RegExp('<p>~XX(\\d+)XX</p>[\\s]*(?:<(h[1-6]|pre)(?: +class="(\\S+)")?(>[\\s\\S]*?</\\2>))', "gm");
@@ -6407,6 +6413,27 @@ var prettyPrintOne, prettyPrint;
   }
   var i = this, o = RegExp([ "^", "[ ]{0,3}", "[|]", "(.+)\\n", "[ ]{0,3}", "[|]([ ]*[-:]+[-| :]*)\\n", "(", "(?:[ ]*[|].*\\n?)*", ")", "(?:\\n|$)" ].join(""), "gm"), r = RegExp([ "^", "[ ]{0,3}", "(\\S.*[|].*)\\n", "[ ]{0,3}", "([-:]+[ ]*[|][-| :]*)\\n", "(", "(?:.*[|].*\\n?)*", ")", "(?:\\n|$)" ].join(""), "gm");
   return t = t.replace(o, n), t = t.replace(r, n);
+ }, Markdown.Extra.prototype.stripFootnoteDefinitions = function(e) {
+  var t = this;
+  return e = e.replace(/\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|$)/g, function(e, n, i) {
+   return n = p(n), i += "\n", i = i.replace(/^[ ]{0,3}/g, ""), t.footnotes[n] = i, 
+   "\n";
+  });
+ }, Markdown.Extra.prototype.doFootnotes = function(e) {
+  var t = this, n = 0;
+  return e = e.replace(/\[\^(.+?)\]/g, function(e, i) {
+   var o = p(i), r = t.footnotes[o];
+   return void 0 === r ? "" : (n++, t.usedFootnotes.push(o), '<a href="#fn:' + o + '" id="fnref:' + o + '" title="See footnote" class="footnote">' + n + "</a>");
+  });
+ }, Markdown.Extra.prototype.printFootnotes = function(e) {
+  var t = this;
+  if (0 === t.usedFootnotes.length) return e;
+  e += '\n\n<div class="footnotes">\n<hr>\n<ol>\n\n';
+  for (var n = 0; t.usedFootnotes.length > n; n++) {
+   var i = t.usedFootnotes[n], o = t.footnotes[i], r = l(o, t);
+   e += '<li id="fn:' + i + '">' + r + ' <a href="#fnref:' + i + '" title="Return to article" class="reversefootnote">&#8617;</a></li>\n\n';
+  }
+  return e += "</ol>\n</div>";
  }, Markdown.Extra.prototype.fencedCodeBlocks = function(e) {
   function t(e) {
    return e = e.replace(/&/g, "&amp;"), e = e.replace(/</g, "&lt;"), e = e.replace(/>/g, "&gt;"), 
@@ -6451,47 +6478,6 @@ var prettyPrintOne, prettyPrint;
   i.config.prettify === !0 && (n.highlighter = "prettify", e.hooks.chain("onPreviewRefresh", prettyPrint)), 
   Markdown.Extra.init(t, n);
  }, i;
-}), define("extensions/markdownFootnotes", [ "underscore", "utils", "classes/Extension" ], function(e, t, n) {
- function i(e) {
-  return u = {}, d = [], e = e.replace(/\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|\Z)/g, function(e, n, i) {
-   return n = t.slugify(n), i += "\n", i = i.replace(/^[ ]{0,3}/g, ""), u[n] = i, "\n";
-  });
- }
- function o(e, n) {
-  p = n;
-  var i = 0;
-  return e = e.replace(/\[\^(.+?)\]/g, function(e, n) {
-   var o = t.slugify(n), r = u[o];
-   return void 0 === r ? "" : (i++, d.push(o), '<a href="#fn:' + o + '" id="fnref:' + o + '" title="See footnote" class="footnote">' + i + "</a>");
-  });
- }
- function r(t) {
-  return 0 === d.length ? t : (e.each(u, function(e, t) {
-   var n = p(e);
-   n = s(n), n = n.replace(/~D/g, "$$").replace(/~T/g, "~"), n = c(n), n = n.replace(/<[^>]*>?/gi, function(e) {
-    return e.match(l) ? e : "";
-   }), u[t] = n;
-  }), t += '\n\n<div class="footnotes">\n<hr>\n<ol>\n\n', e.each(d, function(e) {
-   var n = u[e];
-   t += '<li id="fn:' + e + '">' + n + ' <a href="#fnref:' + e + '" title="Return to article" class="reversefootnote">&#8617;</a></li>\n\n';
-  }), t += "</ol>\n</div>");
- }
- function s(e) {
-  return e = e.replace(/~E(\d+)E/g, function(e, t) {
-   var n = parseInt(t);
-   return String.fromCharCode(n);
-  });
- }
- var a = new n("markdownFootnotes", "Markdown Footnotes", !0);
- a.settingsBlock = "<p>Adds support for Markdown footnotes.</p>";
- var l = RegExp([ "^(<\\/?(a|abbr|acronym|applet|area|b|basefont|", "bdo|big|button|cite|code|del|dfn|em|figcaption|", "font|i|iframe|img|input|ins|kbd|label|map|", "mark|meter|object|param|progress|q|ruby|rp|rt|s|", "samp|script|select|small|span|strike|strong|", "sub|sup|textarea|time|tt|u|var|wbr)[^>]*>|", "<(br)\\s?\\/?>)$" ].join(""), "i"), c = void 0;
- a.onEditorConfigure = function(e) {
-  var t = e.getConverter();
-  c = t.hooks.postConversion, t.hooks.chain("postNormalization", i), t.hooks.chain("postBlockGamut", o), 
-  t.hooks.chain("postConversion", r);
- };
- var u = void 0, d = void 0, p = void 0;
- return a;
 }), define("text!html/buttonToc.html", [], function() {
  return '<button class="btn dropdown-toggle" title="Table of contents">\r\n    <i class="icon-th-list"></i>\r\n</button>\r\n<div class="dropdown-menu pull-right">\r\n    <h3>Table of contents</h3>\r\n    <div class="table-of-contents">\r\n    </div>\r\n</div>\r\n';
 }), define("text!html/tocSettingsBlock.html", [], function() {
@@ -6581,7 +6567,7 @@ var prettyPrintOne, prettyPrint;
  var mathJax = new Extension("mathJax", "MathJax", !0);
  mathJax.settingsBlock = mathJaxSettingsBlockHTML, mathJax.defaultConfig = {
   tex: "{}",
-  tex2jax: '{ inlineMath: [["$","$"],["\\\\(","\\\\)"]], displayMath: [["$$","$$"],["\\[","\\]"]], processEscapes: true }'
+  tex2jax: '{ inlineMath: [["$","$"],["\\\\\\\\(","\\\\\\\\)"]], displayMath: [["$$","$$"],["\\\\[","\\\\]"]], processEscapes: true }'
  }, mathJax.onLoadSettings = function() {
   utils.setInputValue("#input-mathjax-config-tex", mathJax.config.tex), utils.setInputValue("#input-mathjax-config-tex2jax", mathJax.config.tex2jax);
  }, mathJax.onSaveSettings = function(e, t) {
@@ -7847,7 +7833,7 @@ function(e) {
    });
   });
  };
-}(jQuery), define("libs/jquery.waitforimages", function() {}), define("extensionMgr", [ "jquery", "underscore", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/markdownFootnotes", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonMarkdownSyntax", "extensions/buttonViewer", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o, r) {
+}(jQuery), define("libs/jquery.waitforimages", function() {}), define("extensionMgr", [ "jquery", "underscore", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonMarkdownSyntax", "extensions/buttonViewer", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o, r) {
  function s(e) {
   return t.chain(d).map(function(t) {
    return t.config.enabled && t[e];

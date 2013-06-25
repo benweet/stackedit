@@ -120,6 +120,15 @@
     });
     return text;
   }
+  
+  function slugify(text) {
+    return text.toLowerCase()
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+    .replace(/^-+/, '') // Trim - from start of text
+    .replace(/-+$/, ''); // Trim - from end of text
+  }
 
   /*****************************************************************************
    * Markdown.Extra *
@@ -135,6 +144,10 @@
     // Stores html blocks we generate in hooks so that
     // they're not destroyed if the user is using a sanitizing converter
     this.hashBlocks = [];
+    
+    // Stores footnotes
+    this.footnotes = {};
+    this.usedFootnotes = [];
 
     // Special attribute blocks for fenced code blocks and headers enabled.
     this.attributeBlocks = false;
@@ -160,7 +173,7 @@
     options = options || {};
     options.extensions = options.extensions || ["all"];
     if (contains(options.extensions, "all")) {
-      options.extensions = ["tables", "fenced_code_gfm", "def_list", "attr_list"];
+      options.extensions = ["tables", "fenced_code_gfm", "def_list", "attr_list", "footnotes"];
     }
     if (contains(options.extensions, "attr_list")) {
       postNormalizationTransformations.push("hashFcbAttributeBlocks");
@@ -176,6 +189,11 @@
     }
     if (contains(options.extensions, "def_list")) {
       preBlockGamutTransformations.push("definitionLists");
+    }
+    if (contains(options.extensions, "footnotes")) {
+      postNormalizationTransformations.push("stripFootnoteDefinitions");
+      preBlockGamutTransformations.push("doFootnotes");
+      postConversionTransformations.push("printFootnotes");
     }
     
     converter.hooks.chain("postNormalization", function(text) {
@@ -194,7 +212,9 @@
     converter.hooks.chain("postConversion", function(text) {
       text = extra.doTransform(postConversionTransformations, text);
       // Clear state vars that may use unnecessary memory
-      this.hashBlocks = [];
+      extra.hashBlocks = [];
+      extra.footnotes = {};
+      extra.usedFootnotes = [];
       return text;
     });
 
@@ -276,7 +296,7 @@
     // TODO: use sentinels. Should we just add/remove them in doConversion?
     // TODO: better matches for id / class attributes
     var attrBlock = "\\{\\s*[.|#][^}]+\\}";
-    var fcbAttributes =  new RegExp("^(```[^{]*)\\s+(" + attrBlock + ")[ \\t]*\\n" +
+    var fcbAttributes =  new RegExp("^(```[^{\\n]*)\\s+(" + attrBlock + ")[ \\t]*\\n" +
                                     "(?=([\\s\\S]*?)\\n```\\s*(\\n|0x03))", "gm");
 
     var self = this;
@@ -437,6 +457,75 @@
   };
 
 
+  /******************************************************************
+   * Footnotes                                                      *
+   *****************************************************************/
+  
+  // Strip footnote, store in hashes.
+  Markdown.Extra.prototype.stripFootnoteDefinitions = function(text) {
+    var self = this;
+
+    text = text.replace(
+      /\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|$)/g,
+      function(wholeMatch, m1, m2) {
+        m1 = slugify(m1);
+        m2 += "\n";
+        m2 = m2.replace(/^[ ]{0,3}/g, "");
+        self.footnotes[m1] = m2;
+        return "\n";
+      });
+
+    return text;
+  };
+  
+
+  // Find and convert footnotes references.
+  Markdown.Extra.prototype.doFootnotes = function(text) {
+    var self = this;
+
+    var footnoteCounter = 0;
+    text = text.replace(/\[\^(.+?)\]/g, function(wholeMatch, m1) {
+      var id = slugify(m1);
+      var footnote = self.footnotes[id];
+      if (footnote === undefined) {
+        return "";
+      }
+      footnoteCounter++;
+      self.usedFootnotes.push(id);
+      return '<a href="#fn:' + id + '" id="fnref:' + id
+          + '" title="See footnote" class="footnote">' + footnoteCounter
+          + '</a>';
+    });
+
+    return text;
+  };
+
+  // Print footnotes at the end of the document
+  Markdown.Extra.prototype.printFootnotes = function(text) {
+    var self = this;
+
+    if (self.usedFootnotes.length === 0) {
+      return text;
+    }
+
+    text += '\n\n<div class="footnotes">\n<hr>\n<ol>\n\n';
+    for(var i=0; i<self.usedFootnotes.length; i++) {
+      var id = self.usedFootnotes[i];
+      var footnote = self.footnotes[id];
+      var formattedfootnote = convertSpans(footnote, self);
+      text += '<li id="fn:'
+        + id
+        + '">'
+        + formattedfootnote
+        + ' <a href="#fnref:'
+        + id
+        + '" title="Return to article" class="reversefootnote">&#8617;</a></li>\n\n';
+    }
+    text += '</ol>\n</div>';
+    return text;
+  };
+  
+  
   /******************************************************************
   * Fenced Code Blocks  (gfm)                                       *
   ******************************************************************/

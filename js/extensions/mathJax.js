@@ -9,7 +9,7 @@ define([
 	mathJax.settingsBlock = mathJaxSettingsBlockHTML;
     mathJax.defaultConfig = {
         tex: "{}",
-        tex2jax: '{ inlineMath: [["$","$"],["\\\\(","\\\\)"]], displayMath: [["$$","$$"],["\\[","\\]"]], processEscapes: true }'
+        tex2jax: '{ inlineMath: [["$","$"],["\\\\\\\\(","\\\\\\\\)"]], displayMath: [["$$","$$"],["\\\\[","\\\\]"]], processEscapes: true }'
     };
 
     mathJax.onLoadSettings = function() {

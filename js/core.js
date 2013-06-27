@@ -104,6 +104,8 @@ define([
         utils.setInputValue("#input-settings-theme", localStorage.theme);
         // Lazy rendering
         utils.setInputChecked("#input-settings-lazy-rendering", settings.lazyRendering);
+        // Editor font family
+        utils.setInputValue("#input-settings-editor-font-family", settings.editorFontFamily);
         // Editor font size
         utils.setInputValue("#input-settings-editor-font-size", settings.editorFontSize);
         // Default content
@@ -129,6 +131,8 @@ define([
         var theme = utils.getInputValue("#input-settings-theme");
         // Lazy Rendering
         newSettings.lazyRendering = utils.getInputChecked("#input-settings-lazy-rendering");
+        // Editor font family
+        newSettings.editorFontFamily = utils.getInputTextValue("#input-settings-editor-font-family", event);
         // Editor font size
         newSettings.editorFontSize = utils.getInputIntValue("#input-settings-editor-font-size", event, 1, 99);
         // Default content
@@ -440,7 +444,8 @@ define([
 
         // Editor's textarea
         $("#wmd-input, #md-section-helper").css({
-            // Apply editor font size
+            // Apply editor font
+            "font-family": settings.editorFontFamily,
             "font-size": settings.editorFontSize + "px",
             "line-height": Math.round(settings.editorFontSize * (20 / 14)) + "px"
         });

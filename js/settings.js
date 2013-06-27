@@ -6,6 +6,7 @@ define([
     var settings = {
         layoutOrientation: "horizontal",
         lazyRendering: true,
+        editorFontFamily: "Courier New, Courier, monospace",
         editorFontSize: 14,
         defaultContent: "\n\n\n> Written with [StackEdit](" + MAIN_URL + ").",
         commitMsg: "Published with " + MAIN_URL,

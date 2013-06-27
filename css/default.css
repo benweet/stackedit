@@ -343,7 +343,6 @@ hr {
 }
 
 #wmd-input,#md-section-helper {
-	font-family: "Courier New", Courier, monospace;
 	resize: none;
 	border: none !important;
 }

@@ -173,21 +173,9 @@ define([
 
         // Create extension preview buttons
         logger.log("onCreatePreviewButton");
-        function showDropdown(btnGroup) {
-            $("#extension-preview-buttons .open").removeClass("open").find(".dropdown-menu").addClass("hide");
-            if(btnGroup !== undefined) {
-                btnGroup.addClass("open").find(".dropdown-menu").removeClass("hide");
-            }
-        }
         var onCreatePreviewButtonCallbackList = getExtensionCallbackList("onCreatePreviewButton");
         _.each(onCreatePreviewButtonCallbackList, function(callback) {
-            $("#extension-preview-buttons").append($('<div class="btn-group">').append(callback()).each(function() {
-                // Toggle dropdown manually
-                var btnGroup = $(this);
-                btnGroup.find(".dropdown-toggle").click(function() {
-                    showDropdown(btnGroup.is(".open") ? undefined : btnGroup);
-                });
-            }));
+            $("#extension-preview-buttons").append($('<div class="btn-group">').append(callback()));
         });
 
         // Call extensions onReady callbacks

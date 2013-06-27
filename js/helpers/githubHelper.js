@@ -110,25 +110,24 @@ define([
         });
     }
 
-    githubHelper.upload = function(reponame, branch, path, content, commitMsg, callback) {
+    githubHelper.upload = function(reponame, username, branch, path, content, commitMsg, callback) {
         var task = new AsyncTask();
         connect(task);
         authenticate(task);
         task.onRun(function() {
-            var userLogin = undefined;
-            function getUserLogin() {
+            function getUsername() {
                 var user = github.getUser();
                 user.show(undefined, function(err, result) {
                     if(err) {
                         handleError(err, task);
                         return;
                     }
-                    userLogin = result.login;
+                    username = result.login;
                     task.chain(write);
                 });
             }
             function write() {
-                var repo = github.getRepo(userLogin, reponame);
+                var repo = github.getRepo(username, reponame);
                 repo.write(branch, path, content, commitMsg, function(err) {
                     if(err) {
                         handleError(err, task);
@@ -137,7 +136,12 @@ define([
                     task.chain();
                 });
             }
-            task.chain(getUserLogin);
+            if(username) {
+                task.chain(write);
+            }
+            else {
+                task.chain(getUsername);
+            }
         });
         task.onSuccess(function() {
             callback();

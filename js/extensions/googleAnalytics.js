@@ -67,9 +67,15 @@ define([
         _gaq.push([
             '_trackEvent',
             "Settings",
-            'editorFontSize',
-            "" + settings.editorFontSize
+            'editorFontFamily',
+            "" + settings.editorFontFamily
         ]);
+        _gaq.push([
+                   '_trackEvent',
+                   "Settings",
+                   'editorFontSize',
+                   "" + settings.editorFontSize
+                   ]);
         // Check if user has removed back links
         _gaq.push([
             '_trackEvent',

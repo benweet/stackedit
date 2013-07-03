@@ -448,7 +448,8 @@
 					</div>
 				</div>
 				<div class="control-group modal-publish-github">
-					<label class="control-label" for="input-publish-github-username">Username (optional)</label>
+					<label class="control-label" for="input-publish-github-username">Username
+						(optional)</label>
 					<div class="controls">
 						<input type="text" id="input-publish-github-username"
 							placeholder="username">
@@ -670,8 +671,9 @@
 								for="input-settings-editor-font-family">Editor font</label>
 							<div class="controls form-inline">
 								<input type="text" id="input-settings-editor-font-family"
-									class="span2"> <input type="text" id="input-settings-editor-font-size"
-                                    class="input-mini"><span class="help-inline">px</span>
+									class="span2"> <input type="text"
+									id="input-settings-editor-font-size" class="input-mini"><span
+									class="help-inline">px</span>
 							</div>
 						</div>
 						<div class="control-group">
@@ -720,14 +722,23 @@
 				</div>
 				<div class="tab-pane" id="tabpane-settings-utils">
 					<div class="tab-pane-button-container">
-						<a href="#" class="btn btn-block btn-primary action-welcome-file"
-							data-dismiss="modal"><i class="icon-info-sign icon-white"></i>
-							Welcome document</a> <a href="#"
+						<a href="#"
+							class="btn btn-block btn-primary action-import-settings"><i
+							class="icon-wrench icon-white"></i> Import settings</a> <a href="#"
+							class="btn btn-block btn-primary action-export-settings"
+							data-dismiss="modal"><i class="icon-wrench icon-white"></i>
+							Export settings</a> <a href="#"
 							class="btn btn-block btn-primary action-default-settings"
 							data-dismiss="modal"><i class="icon-wrench icon-white"></i>
-							Load default settings</a> <a href="#"
-							class="btn btn-block btn-primary" data-dismiss="modal"
-							data-toggle="modal" data-target="#modal-app-reset"><i
+							Load default settings</a> <input type="file"
+							id="input-file-import-settings" class="hide">
+					</div>
+					<div class="tab-pane-button-container">
+						<a href="#" class="btn btn-block btn-primary action-welcome-file"
+							data-dismiss="modal"><i class="icon-info-sign icon-white"></i>
+							Welcome document</a> <a href="#" class="btn btn-block btn-primary"
+							data-dismiss="modal" data-toggle="modal"
+							data-target="#modal-app-reset"><i
 							class="icon-fire icon-white"></i> Reset application</a>
 					</div>
 				</div>

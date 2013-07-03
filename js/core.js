@@ -17,7 +17,9 @@ define([
 
     // Used for periodic tasks
     var intervalId = undefined;
-    var periodicCallbacks = [extensionMgr.onPeriodicRun];
+    var periodicCallbacks = [
+        extensionMgr.onPeriodicRun
+    ];
     core.runPeriodically = function(callback) {
         periodicCallbacks.push(callback);
     };
@@ -202,7 +204,8 @@ define([
         $(".ui-layout-toggler-east").addClass("btn").append($("<b>").addClass("caret"));
 
         extensionMgr.onLayoutCreated(layout);
-    };
+    }
+    ;
 
     // Create the PageDown editor
     var editor = undefined;
@@ -426,6 +429,37 @@ define([
                 window.location.reload();
             }
         });
+        // Import settings
+        $(".action-import-settings").click(function(e) {
+            $("#input-file-import-settings").click();
+        });
+        $("#input-file-import-settings").change(function(evt) {
+            var files = (evt.dataTransfer || evt.target).files;
+            $("#modal-settings").modal("hide");
+            _.each(files, function(file) {
+                var reader = new FileReader();
+                reader.onload = (function(importedFile) {
+                    return function(e) {
+                        var content = e.target.result;
+                        try {
+                            JSON.parse(content);
+                        }
+                        catch(e) {
+                            extensionMgr.onError(importedFile.name + " is not a valid JSON file.");
+                            return;
+                        }
+                        localStorage.settings = content;
+                        window.location.reload();
+                    };
+                })(file);
+                var blob = file.slice(0, IMPORT_FILE_MAX_CONTENT_SIZE);
+                reader.readAsText(blob);
+            });
+        });
+        // Export settings
+        $(".action-export-settings").click(function(e) {
+            utils.saveAs(JSON.stringify(settings), "StackEdit Settings.json");
+        });
 
         $(".action-default-settings").click(function() {
             localStorage.removeItem("settings");
@@ -484,7 +518,7 @@ define([
         }, 1000);
     });
     core.onReady(extensionMgr.onReady);
-    
+
     // After extensions onReady callbacks
     core.onReady(function() {
 

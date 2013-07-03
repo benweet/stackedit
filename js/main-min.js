@@ -957,7 +957,7 @@ function css_browser_selector(e) {
  function W(e) {
   return lt.isWindow(e) ? e : 9 === e.nodeType ? e.defaultView || e.parentWindow : !1;
  }
- var U, G, V = typeof t, X = e.document, Y = e.location, J = e.jQuery, K = e.$, Q = {}, Z = [], et = "1.9.1", tt = Z.concat, nt = Z.push, it = Z.slice, ot = Z.indexOf, rt = Q.toString, st = Q.hasOwnProperty, at = et.trim, lt = function(e, t) {
+ var U, G, V = typeof t, X = e.document, J = e.location, Y = e.jQuery, K = e.$, Q = {}, Z = [], et = "1.9.1", tt = Z.concat, nt = Z.push, it = Z.slice, ot = Z.indexOf, rt = Q.toString, st = Q.hasOwnProperty, at = et.trim, lt = function(e, t) {
   return new lt.fn.init(e, t, G);
  }, ct = /[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/.source, ut = /\S+/g, dt = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, pt = /^(?:(<[\w\W]+>)[^>]*|#([\w-]*))$/, ft = /^<(\w+)\s*\/?>(?:<\/\1>|)$/, ht = /^[\],:{}\s]*$/, gt = /(?:^|:|,)(?:\s*\[)+/g, mt = /\\(?:["\\\/bfnrt]|u[\da-fA-F]{4})/g, vt = /"[^"\\\r\n]*"|true|false|null|-?(?:\d+\.|)\d+(?:[eE][+-]?\d+|)/g, bt = /^-ms-/, yt = /-([\da-z])/gi, wt = function(e, t) {
   return t.toUpperCase();
@@ -1045,7 +1045,7 @@ function css_browser_selector(e) {
   return a;
  }, lt.extend({
   noConflict: function(t) {
-   return e.$ === lt && (e.$ = K), t && e.jQuery === lt && (e.jQuery = J), lt;
+   return e.$ === lt && (e.$ = K), t && e.jQuery === lt && (e.jQuery = Y), lt;
   },
   isReady: !1,
   readyWait: 1,
@@ -2183,7 +2183,7 @@ function css_browser_selector(e) {
     if (m += v, i && v !== m) {
      for (p = 0; f = t[p++]; ) f(b, h, a, l);
      if (o) {
-      if (m > 0) for (;v--; ) b[v] || h[v] || (h[v] = J.call(c));
+      if (m > 0) for (;v--; ) b[v] || h[v] || (h[v] = Y.call(c));
       h = g(h);
      }
      K.apply(c, h), y && !o && h.length > 0 && m + t.length > 1 && s.uniqueSort(c);
@@ -2211,7 +2211,7 @@ function css_browser_selector(e) {
    return E(e, c)(i, t, N, n, ft.test(e)), n;
   }
   function x() {}
-  var C, k, S, T, _, E, P, I, $, z, R, N, L, A, M, O, j, D = "sizzle" + -new Date(), H = e.document, F = {}, B = 0, q = 0, W = i(), U = i(), G = i(), V = typeof t, X = 1 << 31, Y = [], J = Y.pop, K = Y.push, Q = Y.slice, Z = Y.indexOf || function(e) {
+  var C, k, S, T, _, E, P, I, $, z, R, N, L, A, M, O, j, D = "sizzle" + -new Date(), H = e.document, F = {}, B = 0, q = 0, W = i(), U = i(), G = i(), V = typeof t, X = 1 << 31, J = [], Y = J.pop, K = J.push, Q = J.slice, Z = J.indexOf || function(e) {
    for (var t = 0, n = this.length; n > t; t++) if (this[t] === e) return t;
    return -1;
   }, et = "[\\x20\\t\\r\\n\\f]", tt = "(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+", nt = tt.replace("w", "w#"), it = "([*^$|!~]?=)", ot = "\\[" + et + "*(" + tt + ")" + et + "*(?:" + it + et + "*(?:(['\"])((?:\\\\.|[^\\\\])*?)\\3|(" + nt + ")|)|)" + et + "*\\]", rt = ":(" + tt + ")(?:\\(((['\"])((?:\\\\.|[^\\\\])*?)\\3|((?:\\\\.|[^\\\\()[\\]]|" + ot.replace(3, 8) + ")*)|.*)\\)|)", st = RegExp("^" + et + "+|((?:^|[^\\\\])(?:\\\\.)*)" + et + "+$", "g"), at = RegExp("^" + et + "*," + et + "*"), ct = RegExp("^" + et + "*([\\x20\\t\\r\\n\\f>+~])" + et + "*"), ut = RegExp(rt), dt = RegExp("^" + nt + "$"), pt = {
@@ -2680,7 +2680,7 @@ function css_browser_selector(e) {
    return n;
   }
  });
- var Gt = "abbr|article|aside|audio|bdi|canvas|data|datalist|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video", Vt = / jQuery\d+="(?:null|\d+)"/g, Xt = RegExp("<(?:" + Gt + ")[\\s/>]", "i"), Yt = /^\s+/, Jt = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi, Kt = /<([\w:]+)/, Qt = /<tbody/i, Zt = /<|&#?\w+;/, en = /<(?:script|style|link)/i, tn = /^(?:checkbox|radio)$/i, nn = /checked\s*(?:[^=]|=\s*.checked.)/i, on = /^$|\/(?:java|ecma)script/i, rn = /^true\/(.*)/, sn = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g, an = {
+ var Gt = "abbr|article|aside|audio|bdi|canvas|data|datalist|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video", Vt = / jQuery\d+="(?:null|\d+)"/g, Xt = RegExp("<(?:" + Gt + ")[\\s/>]", "i"), Jt = /^\s+/, Yt = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi, Kt = /<([\w:]+)/, Qt = /<tbody/i, Zt = /<|&#?\w+;/, en = /<(?:script|style|link)/i, tn = /^(?:checkbox|radio)$/i, nn = /checked\s*(?:[^=]|=\s*.checked.)/i, on = /^$|\/(?:java|ecma)script/i, rn = /^true\/(.*)/, sn = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g, an = {
   option: [ 1, "<select multiple='multiple'>", "</select>" ],
   legend: [ 1, "<fieldset>", "</fieldset>" ],
   area: [ 1, "<map>", "</map>" ],
@@ -2771,8 +2771,8 @@ function css_browser_selector(e) {
    return lt.access(this, function(e) {
     var n = this[0] || {}, i = 0, o = this.length;
     if (e === t) return 1 === n.nodeType ? n.innerHTML.replace(Vt, "") : t;
-    if (!("string" != typeof e || en.test(e) || !lt.support.htmlSerialize && Xt.test(e) || !lt.support.leadingWhitespace && Yt.test(e) || an[(Kt.exec(e) || [ "", "" ])[1].toLowerCase()])) {
-     e = e.replace(Jt, "<$1></$2>");
+    if (!("string" != typeof e || en.test(e) || !lt.support.htmlSerialize && Xt.test(e) || !lt.support.leadingWhitespace && Jt.test(e) || an[(Kt.exec(e) || [ "", "" ])[1].toLowerCase()])) {
+     e = e.replace(Yt, "<$1></$2>");
      try {
       for (;o > i; i++) n = this[i] || {}, 1 === n.nodeType && (lt.cleanData(y(n, !1)), 
       n.innerHTML = e);
@@ -2842,9 +2842,9 @@ function css_browser_selector(e) {
    for (var o, r, s, a, l, c, u, d = e.length, f = p(t), h = [], g = 0; d > g; g++) if (r = e[g], 
    r || 0 === r) if ("object" === lt.type(r)) lt.merge(h, r.nodeType ? [ r ] : r); else if (Zt.test(r)) {
     for (a = a || f.appendChild(t.createElement("div")), l = (Kt.exec(r) || [ "", "" ])[1].toLowerCase(), 
-    u = an[l] || an._default, a.innerHTML = u[1] + r.replace(Jt, "<$1></$2>") + u[2], 
+    u = an[l] || an._default, a.innerHTML = u[1] + r.replace(Yt, "<$1></$2>") + u[2], 
     o = u[0]; o--; ) a = a.lastChild;
-    if (!lt.support.leadingWhitespace && Yt.test(r) && h.push(t.createTextNode(Yt.exec(r)[0])), 
+    if (!lt.support.leadingWhitespace && Jt.test(r) && h.push(t.createTextNode(Jt.exec(r)[0])), 
     !lt.support.tbody) for (r = "table" !== l || Qt.test(r) ? "<table>" !== u[1] || Qt.test(r) ? 0 : a : a.firstChild, 
     o = r && r.childNodes.length; o--; ) lt.nodeName(c = r.childNodes[o], "tbody") && !c.childNodes.length && r.removeChild(c);
     for (lt.merge(h, a.childNodes), a.textContent = ""; a.firstChild; ) a.removeChild(a.firstChild);
@@ -3055,7 +3055,7 @@ function css_browser_selector(e) {
  };
  var zn, Rn, Nn = lt.now(), Ln = /\?/, An = /#.*$/, Mn = /([?&])_=[^&]*/, On = /^(.*?):[ \t]*([^\r\n]*)\r?$/gm, jn = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/, Dn = /^(?:GET|HEAD)$/, Hn = /^\/\//, Fn = /^([\w.+-]+:)(?:\/\/([^\/?#:]*)(?::(\d+)|)|)/, Bn = lt.fn.load, qn = {}, Wn = {}, Un = "*/".concat("*");
  try {
-  Rn = Y.href;
+  Rn = J.href;
  } catch (Gn) {
   Rn = X.createElement("a"), Rn.href = "", Rn = Rn.href;
  }
@@ -3263,14 +3263,14 @@ function css_browser_selector(e) {
    a = s = t;
   }), "script") : t;
  });
- var Yn, Jn, Kn = 0, Qn = e.ActiveXObject && function() {
+ var Jn, Yn, Kn = 0, Qn = e.ActiveXObject && function() {
   var e;
-  for (e in Yn) Yn[e](t, !0);
+  for (e in Jn) Jn[e](t, !0);
  };
  lt.ajaxSettings.xhr = e.ActiveXObject ? function() {
   return !this.isLocal && A() || M();
- } : A, Jn = lt.ajaxSettings.xhr(), lt.support.cors = !!Jn && "withCredentials" in Jn, 
- Jn = lt.support.ajax = !!Jn, Jn && lt.ajaxTransport(function(n) {
+ } : A, Yn = lt.ajaxSettings.xhr(), lt.support.cors = !!Yn && "withCredentials" in Yn, 
+ Yn = lt.support.ajax = !!Yn, Yn && lt.ajaxTransport(function(n) {
   if (!n.crossDomain || lt.support.cors) {
    var i;
    return {
@@ -3286,7 +3286,7 @@ function css_browser_selector(e) {
       var a, c, u, d;
       try {
        if (i && (o || 4 === l.readyState)) if (i = t, s && (l.onreadystatechange = lt.noop, 
-       Qn && delete Yn[s]), o) 4 !== l.readyState && l.abort(); else {
+       Qn && delete Jn[s]), o) 4 !== l.readyState && l.abort(); else {
         d = {}, a = l.status, c = l.getAllResponseHeaders(), "string" == typeof l.responseText && (d.text = l.responseText);
         try {
          u = l.statusText;
@@ -3299,8 +3299,8 @@ function css_browser_selector(e) {
        o || r(-1, f);
       }
       d && r(a, u, d, c);
-     }, n.async ? 4 === l.readyState ? setTimeout(i) : (s = ++Kn, Qn && (Yn || (Yn = {}, 
-     lt(e).unload(Qn)), Yn[s] = i), l.onreadystatechange = i) : i();
+     }, n.async ? 4 === l.readyState ? setTimeout(i) : (s = ++Kn, Qn && (Jn || (Jn = {}, 
+     lt(e).unload(Qn)), Jn[s] = i), l.onreadystatechange = i) : i();
     },
     abort: function() {
      i && i(t, !0);
@@ -12305,19 +12305,19 @@ function(e) {
   e(document).mousemove(a).keypress(a), e(".dropdown-submenu > a").click(function(e) {
    e.stopPropagation();
   });
-  var o = void 0;
+  var s = void 0;
   e(".modal").on("shown", function() {
    var n = e(this).attr("id");
-   o != n && (o = n, t.defer(function(e) {
+   s != n && (s = n, t.defer(function(e) {
     e.find("input:enabled:visible:first").focus();
    }, e(this)));
   }).on("hidden", function() {
    var t = e(this).attr("id");
-   o == t && e(this).is(":hidden") && (o = void 0, e("#wmd-input").focus());
+   s == t && e(this).is(":hidden") && (s = void 0, e("#wmd-input").focus());
   }).keyup(function(t) {
    13 != t.which || e(t.target).is("textarea") || e(this).find(".modal-footer a:last").click();
   }), r.stopCallback = function(t, n) {
-   return o || e(n).is("input, select, textarea:not(#wmd-input)");
+   return s || e(n).is("input, select, textarea:not(#wmd-input)");
   }, e(".action-insert-link").click(function(t) {
    var i = n.getInputTextValue(e("#input-insert-link"), t);
    void 0 !== i && (m.insertLinkCallback(i), m.insertLinkCallback = void 0);
@@ -12330,6 +12330,28 @@ function(e) {
    p();
   }), e(".action-apply-settings").click(function(e) {
    f(e), e.isPropagationStopped() || window.location.reload();
+  }), e(".action-import-settings").click(function() {
+   e("#input-file-import-settings").click();
+  }), e("#input-file-import-settings").change(function(n) {
+   var i = (n.dataTransfer || n.target).files;
+   e("#modal-settings").modal("hide"), t.each(i, function(e) {
+    var t = new FileReader();
+    t.onload = function(e) {
+     return function(t) {
+      var n = t.target.result;
+      try {
+       JSON.parse(n);
+      } catch (t) {
+       return o.onError(e.name + " is not a valid JSON file."), void 0;
+      }
+      localStorage.settings = n, window.location.reload();
+     };
+    }(e);
+    var n = e.slice(0, IMPORT_FILE_MAX_CONTENT_SIZE);
+    t.readAsText(n);
+   });
+  }), e(".action-export-settings").click(function() {
+   n.saveAs(JSON.stringify(i), "StackEdit Settings.json");
   }), e(".action-default-settings").click(function() {
    localStorage.removeItem("settings"), localStorage.removeItem("theme"), window.location.reload();
   }), e(".action-app-reset").click(function() {

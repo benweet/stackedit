@@ -5874,7 +5874,11 @@ div.dropdown-menu textarea {
 }
 #modal-settings .tab-pane-button-container {
 	width: 200px;
-	margin: 10px auto;
+	margin: 10px auto 20px;
+}
+#modal-settings .tab-pane-button-container .btn {
+	text-align: initial;
+	padding-left: 15px;
 }
 #modal-settings .nav-tabs {
 	border-bottom: 1px solid transparent;

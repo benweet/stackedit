@@ -26,6 +26,7 @@ define([
     "extensions/buttonHtmlCode",
     "extensions/buttonMarkdownSyntax",
     "extensions/buttonViewer",
+    "extensions/userCustom",
     "libs/bootstrap",
     "libs/jquery.waitforimages"
 ], function($, _, utils, Extension, settings, settingsExtensionsAccordionHTML) {
@@ -37,14 +38,14 @@ define([
         return argument instanceof Extension && argument;
     }).compact().value();
 
-    // Return every named callbacks implemented in extensions
+    // Returns all callbacks with the specified name that are implemented in extensions
     function getExtensionCallbackList(hookName) {
         return _.chain(extensionList).map(function(extension) {
             return extension.config.enabled && extension[hookName];
         }).compact().value();
     }
 
-    // Return a function that calls every callbacks from extensions
+    // Return a function that calls every callbacks with the specified name from all extensions
     function createHook(hookName, noLog) {
         var callbackList = getExtensionCallbackList(hookName);
         return function() {
@@ -69,6 +70,9 @@ define([
         extension.config = _.extend({}, extension.defaultConfig, extensionSettings[extension.extensionId]);
         extension.config.enabled = !extension.isOptional || extension.config.enabled === undefined || extension.config.enabled === true;
     });
+    
+    // Call every onInit callbacks
+    createHook("onInit")();
 
     // Load/Save extension config from/to settings
     extensionMgr["onLoadSettings"] = function() {

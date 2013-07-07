@@ -6,12 +6,13 @@ define([
     "extensionMgr",
     "mousetrap",
     "text!html/settingsTemplateTooltip.html",
+    "text!html/settingsUserCustomExtensionTooltip.html",
     "storage",
     "config",
     "libs/bootstrap",
     "libs/layout",
     "libs/Markdown.Editor"
-], function($, _, utils, settings, extensionMgr, mousetrap, settingsTemplateTooltipHTML) {
+], function($, _, utils, settings, extensionMgr, mousetrap, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
 
@@ -535,6 +536,20 @@ define([
             placement: 'right',
             trigger: 'hover',
             title: 'Thanks for supporting StackEdit by adding a backlink in your documents!'
+        });
+        $(".tooltip-usercustom-extension").tooltip({
+            html: true,
+            container: '#modal-settings',
+            placement: 'right',
+            trigger: 'manual',
+            title: settingsUserCustomExtensionTooltipHTML
+        }).click(function(e) {
+            $(this).tooltip('show');
+            $(document).on("click.tooltip-usercustom-extension", function(e) {
+                $(".tooltip-usercustom-extension").tooltip('hide');
+                $(document).off("click.tooltip-usercustom-extension");
+            });
+            e.stopPropagation();
         });
         $(".tooltip-template").tooltip({
             html: true,

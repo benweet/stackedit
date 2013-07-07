@@ -5,6 +5,7 @@ define([
     "classes/Extension",
     "settings",
     "text!html/settingsExtensionsAccordion.html",
+    "extensions/userCustom",
     "extensions/googleAnalytics",
     "extensions/dialogAbout",
     "extensions/dialogManagePublication",
@@ -26,7 +27,6 @@ define([
     "extensions/buttonHtmlCode",
     "extensions/buttonMarkdownSyntax",
     "extensions/buttonViewer",
-    "extensions/userCustom",
     "libs/bootstrap",
     "libs/jquery.waitforimages"
 ], function($, _, utils, Extension, settings, settingsExtensionsAccordionHTML) {
@@ -54,7 +54,13 @@ define([
             }
             var callbackArguments = arguments;
             _.each(callbackList, function(callback) {
-                callback.apply(null, callbackArguments);
+                // In case user custom callback contains error
+                try {
+                    callback.apply(null, callbackArguments);
+                }
+                catch(e) {
+                    console.error(e);
+                }
             });
         };
     }

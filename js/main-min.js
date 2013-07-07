@@ -4598,6 +4598,166 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  }), t;
 }), define("text!html/settingsExtensionsAccordion.html", [], function() {
  return '<div class="accordion-group">\n	<div class="accordion-heading">\n		<label class="checkbox pull-right"> <input\n			id="input-enable-extension-<%= extensionId %>" type="checkbox"<%\n			if(!isOptional) print(\'disabled\') %>> enabled\n		</label> <a data-toggle="collapse"\n			data-parent="#accordion-extensions" class="accordion-toggle"\n			href="#collapse-<%= extensionId %>"> <%= extensionName %> </a>\n	</div>\n	<div id="collapse-<%= extensionId %>" class="accordion-body collapse">\n		<div class="accordion-inner"><%= settingsBlock %></div>\n	</div>\n</div>\n';
+}), define("classes/FileDescriptor", [ "utils" ], function(e) {
+ function t(e, t, n, i) {
+  this.fileIndex = e, this._title = t || localStorage[e + ".title"], this._editorScrollTop = parseInt(localStorage[e + ".editorScrollTop"]) || 0, 
+  this._editorStart = parseInt(localStorage[e + ".editorStart"]) || 0, this._editorEnd = parseInt(localStorage[e + ".editorEnd"]) || 0, 
+  this._previewScrollTop = parseInt(localStorage[e + ".previewScrollTop"]) || 0, this._selectTime = parseInt(localStorage[e + ".selectTime"]) || 0, 
+  this.syncLocations = n || {}, this.publishLocations = i || {}, Object.defineProperty(this, "title", {
+   get: function() {
+    return this._title;
+   },
+   set: function(e) {
+    this._title = e, localStorage[this.fileIndex + ".title"] = e;
+   }
+  }), Object.defineProperty(this, "content", {
+   get: function() {
+    return localStorage[this.fileIndex + ".content"];
+   },
+   set: function(e) {
+    localStorage[this.fileIndex + ".content"] = e;
+   }
+  }), Object.defineProperty(this, "editorScrollTop", {
+   get: function() {
+    return this._editorScrollTop;
+   },
+   set: function(e) {
+    this._editorScrollTop = e, localStorage[this.fileIndex + ".editorScrollTop"] = e;
+   }
+  }), Object.defineProperty(this, "editorStart", {
+   get: function() {
+    return this._editorStart;
+   },
+   set: function(e) {
+    this._editorStart = e, localStorage[this.fileIndex + ".editorStart"] = e;
+   }
+  }), Object.defineProperty(this, "editorEnd", {
+   get: function() {
+    return this._editorEnd;
+   },
+   set: function(e) {
+    this._editorEnd = e, localStorage[this.fileIndex + ".editorEnd"] = e;
+   }
+  }), Object.defineProperty(this, "previewScrollTop", {
+   get: function() {
+    return this._previewScrollTop;
+   },
+   set: function(e) {
+    this._previewScrollTop = e, localStorage[this.fileIndex + ".previewScrollTop"] = e;
+   }
+  }), Object.defineProperty(this, "selectTime", {
+   get: function() {
+    return this._selectTime;
+   },
+   set: function(e) {
+    this._selectTime = e, localStorage[this.fileIndex + ".selectTime"] = e;
+   }
+  });
+ }
+ return t.prototype.addSyncLocation = function(t) {
+  e.storeAttributes(t), e.appendIndexToArray(this.fileIndex + ".sync", t.syncIndex), 
+  this.syncLocations[t.syncIndex] = t;
+ }, t.prototype.removeSyncLocation = function(t) {
+  e.removeIndexFromArray(this.fileIndex + ".sync", t.syncIndex), delete this.syncLocations[t.syncIndex], 
+  localStorage.removeItem(t.syncIndex);
+ }, t.prototype.addPublishLocation = function(t) {
+  e.storeAttributes(t), e.appendIndexToArray(this.fileIndex + ".publish", t.publishIndex), 
+  this.publishLocations[t.publishIndex] = t;
+ }, t.prototype.removePublishLocation = function(t) {
+  e.removeIndexFromArray(this.fileIndex + ".publish", t.publishIndex), delete this.publishLocations[t.publishIndex], 
+  localStorage.removeItem(t.publishIndex);
+ }, t;
+}), define("storage", [ "underscore", "utils" ], function(e, t) {
+ var n = t.retrieveIndexArray("file.list"), i = localStorage.version;
+ if (void 0 === i && (localStorage.removeItem("sync.queue"), localStorage.removeItem("sync.current"), 
+ localStorage.removeItem("file.counter"), e.each(n, function(n) {
+  localStorage[n + ".publish"] = ";";
+  var i = t.retrieveIndexArray(n + ".sync");
+  e.each(i, function(e) {
+   localStorage[e + ".contentCRC"] = "0", void 0 !== localStorage[e + ".etag"] && (localStorage[e + ".titleCRC"] = "0");
+  });
+ }), i = "v1"), "v1" == i) {
+  var o = localStorage["sync.gdrive.lastChangeId"];
+  o && (localStorage["gdrive.lastChangeId"] = o, localStorage.removeItem("sync.gdrive.lastChangeId"));
+  var r = localStorage["sync.dropbox.lastChangeId"];
+  r && (localStorage["dropbox.lastChangeId"] = r, localStorage.removeItem("sync.dropbox.lastChangeId"));
+  var s = "gdrive", a = "dropbox", l = "sync." + s + ".", c = "sync." + a + ".";
+  e.each(n, function(n) {
+   var i = t.retrieveIndexArray(n + ".sync");
+   e.each(i, function(e) {
+    var t = {};
+    0 === e.indexOf(l) ? (t.provider = s, t.id = e.substring(l.length), t.etag = localStorage[e + ".etag"], 
+    t.contentCRC = localStorage[e + ".contentCRC"], t.titleCRC = localStorage[e + ".titleCRC"]) : 0 === e.indexOf(c) && (t.provider = a, 
+    t.path = decodeURIComponent(e.substring(c.length)), t.version = localStorage[e + ".version"], 
+    t.contentCRC = localStorage[e + ".contentCRC"]), localStorage[e] = JSON.stringify(t), 
+    localStorage.removeItem(e + ".etag"), localStorage.removeItem(e + ".version"), localStorage.removeItem(e + ".contentCRC"), 
+    localStorage.removeItem(e + ".titleCRC");
+   });
+  }), i = "v2";
+ }
+ if ("v2" == i && (e.each(n, function(n) {
+  e.has(localStorage, n + ".sync") || (localStorage.removeItem(n + ".title"), localStorage.removeItem(n + ".publish"), 
+  localStorage.removeItem(n + ".content"), t.removeIndexFromArray("file.list", n));
+ }), i = "v3"), "v3" == i) {
+  var u = localStorage["file.current"];
+  void 0 !== u && -1 === localStorage["file.list"].indexOf(";" + u + ";") && localStorage.removeItem("file.current"), 
+  i = "v4";
+ }
+ if ("v4" == i && (localStorage.removeItem("githubToken"), i = "v5"), "v5" == i && (e.each(n, function(n) {
+  var i = t.retrieveIndexArray(n + ".publish");
+  e.each(i, function(e) {
+   var t = JSON.parse(localStorage[e]);
+   "gdrive" == t.provider && (t.id = t.fileId, t.fileId = void 0, localStorage[e] = JSON.stringify(t));
+  });
+ }), i = "v6"), "v6" == i) {
+  var u = localStorage["file.current"];
+  void 0 !== u && (localStorage[u + ".selectTime"] = new Date().getTime(), localStorage.removeItem("file.current")), 
+  i = "v7";
+ }
+ localStorage.version = i;
+}), define("fileSystem", [ "underscore", "utils", "classes/FileDescriptor", "storage" ], function(e, t, n) {
+ var i = {};
+ return e.each(t.retrieveIndexArray("file.list"), function(e) {
+  i[e] = new n(e);
+ }), i;
+}), define("text!html/userCustomSettingsBlock.html", [], function() {
+ return '<p>Allows users to implement their own extension.</p>\n<div class="form-horizontal">\n	<div class="control-group">\n		<label class="control-label" for="textarea-usercustom-code">JavaScript code\n			<a href="#" class="tooltip-usercustom-extension">(?)</a>\n		</label>\n		<div class="controls">\n			<textarea id="textarea-usercustom-code"></textarea>\n		</div>\n	</div>\n</div>\n<span class="help-block pull-right"><a target="_blank" href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">More info</a></span>';
+}), define("extensions/userCustom", [ "jquery", "underscore", "utils", "classes/Extension", "fileSystem", "settings", "text!html/userCustomSettingsBlock.html" ], function($, _, utils, Extension, fileSystem, settings, userCustomSettingsBlockHTML) {
+ var userCustom = new Extension("userCustom", "UserCustom extension", !0);
+ userCustom.settingsBlock = userCustomSettingsBlockHTML, userCustom.defaultConfig = {
+  code: ""
+ };
+ var fileMgr = void 0;
+ userCustom.onFileMgrCreated = function(e) {
+  fileMgr = e;
+ };
+ var synchronizer = void 0;
+ userCustom.onSynchronizerCreated = function(e) {
+  synchronizer = e;
+ };
+ var publisher = void 0;
+ userCustom.onPublisherCreated = function(e) {
+  publisher = e;
+ };
+ var extensionMgr = void 0;
+ return userCustom.onExtensionMgrCreated = function(e) {
+  extensionMgr = e;
+ }, userCustom.onLoadSettings = function() {
+  utils.setInputValue("#textarea-usercustom-code", userCustom.config.code);
+ }, userCustom.onSaveSettings = function(newConfig, event) {
+  newConfig.code = utils.getInputValue("#textarea-usercustom-code");
+  try {
+   eval(newConfig.code);
+  } catch (e) {
+   extensionMgr.onError(e), utils.getInputTextValue("#textarea-usercustom-code", event, /^$/);
+  }
+ }, userCustom.onInit = function() {
+  try {
+   eval(userCustom.config.code);
+  } catch (e) {
+   console.error(e);
+  }
+ }, userCustom;
 }), define("extensions/googleAnalytics", [ "jquery", "underscore", "utils", "classes/Extension", "settings", "config" ], function(e, t, n, i, o) {
  function r() {
   n.currentTime - u > 18e4 && (_gaq.push([ "_trackPageview" ]), u = n.currentTime);
@@ -5152,129 +5312,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   handleKey: a
  };
  window.Mousetrap = $, "function" == typeof define && define.amd && define("mousetrap", $);
-}(), define("classes/FileDescriptor", [ "utils" ], function(e) {
- function t(e, t, n, i) {
-  this.fileIndex = e, this._title = t || localStorage[e + ".title"], this._editorScrollTop = parseInt(localStorage[e + ".editorScrollTop"]) || 0, 
-  this._editorStart = parseInt(localStorage[e + ".editorStart"]) || 0, this._editorEnd = parseInt(localStorage[e + ".editorEnd"]) || 0, 
-  this._previewScrollTop = parseInt(localStorage[e + ".previewScrollTop"]) || 0, this._selectTime = parseInt(localStorage[e + ".selectTime"]) || 0, 
-  this.syncLocations = n || {}, this.publishLocations = i || {}, Object.defineProperty(this, "title", {
-   get: function() {
-    return this._title;
-   },
-   set: function(e) {
-    this._title = e, localStorage[this.fileIndex + ".title"] = e;
-   }
-  }), Object.defineProperty(this, "content", {
-   get: function() {
-    return localStorage[this.fileIndex + ".content"];
-   },
-   set: function(e) {
-    localStorage[this.fileIndex + ".content"] = e;
-   }
-  }), Object.defineProperty(this, "editorScrollTop", {
-   get: function() {
-    return this._editorScrollTop;
-   },
-   set: function(e) {
-    this._editorScrollTop = e, localStorage[this.fileIndex + ".editorScrollTop"] = e;
-   }
-  }), Object.defineProperty(this, "editorStart", {
-   get: function() {
-    return this._editorStart;
-   },
-   set: function(e) {
-    this._editorStart = e, localStorage[this.fileIndex + ".editorStart"] = e;
-   }
-  }), Object.defineProperty(this, "editorEnd", {
-   get: function() {
-    return this._editorEnd;
-   },
-   set: function(e) {
-    this._editorEnd = e, localStorage[this.fileIndex + ".editorEnd"] = e;
-   }
-  }), Object.defineProperty(this, "previewScrollTop", {
-   get: function() {
-    return this._previewScrollTop;
-   },
-   set: function(e) {
-    this._previewScrollTop = e, localStorage[this.fileIndex + ".previewScrollTop"] = e;
-   }
-  }), Object.defineProperty(this, "selectTime", {
-   get: function() {
-    return this._selectTime;
-   },
-   set: function(e) {
-    this._selectTime = e, localStorage[this.fileIndex + ".selectTime"] = e;
-   }
-  });
- }
- return t.prototype.addSyncLocation = function(t) {
-  e.storeAttributes(t), e.appendIndexToArray(this.fileIndex + ".sync", t.syncIndex), 
-  this.syncLocations[t.syncIndex] = t;
- }, t.prototype.removeSyncLocation = function(t) {
-  e.removeIndexFromArray(this.fileIndex + ".sync", t.syncIndex), delete this.syncLocations[t.syncIndex], 
-  localStorage.removeItem(t.syncIndex);
- }, t.prototype.addPublishLocation = function(t) {
-  e.storeAttributes(t), e.appendIndexToArray(this.fileIndex + ".publish", t.publishIndex), 
-  this.publishLocations[t.publishIndex] = t;
- }, t.prototype.removePublishLocation = function(t) {
-  e.removeIndexFromArray(this.fileIndex + ".publish", t.publishIndex), delete this.publishLocations[t.publishIndex], 
-  localStorage.removeItem(t.publishIndex);
- }, t;
-}), define("storage", [ "underscore", "utils" ], function(e, t) {
- var n = t.retrieveIndexArray("file.list"), i = localStorage.version;
- if (void 0 === i && (localStorage.removeItem("sync.queue"), localStorage.removeItem("sync.current"), 
- localStorage.removeItem("file.counter"), e.each(n, function(n) {
-  localStorage[n + ".publish"] = ";";
-  var i = t.retrieveIndexArray(n + ".sync");
-  e.each(i, function(e) {
-   localStorage[e + ".contentCRC"] = "0", void 0 !== localStorage[e + ".etag"] && (localStorage[e + ".titleCRC"] = "0");
-  });
- }), i = "v1"), "v1" == i) {
-  var o = localStorage["sync.gdrive.lastChangeId"];
-  o && (localStorage["gdrive.lastChangeId"] = o, localStorage.removeItem("sync.gdrive.lastChangeId"));
-  var r = localStorage["sync.dropbox.lastChangeId"];
-  r && (localStorage["dropbox.lastChangeId"] = r, localStorage.removeItem("sync.dropbox.lastChangeId"));
-  var s = "gdrive", a = "dropbox", l = "sync." + s + ".", c = "sync." + a + ".";
-  e.each(n, function(n) {
-   var i = t.retrieveIndexArray(n + ".sync");
-   e.each(i, function(e) {
-    var t = {};
-    0 === e.indexOf(l) ? (t.provider = s, t.id = e.substring(l.length), t.etag = localStorage[e + ".etag"], 
-    t.contentCRC = localStorage[e + ".contentCRC"], t.titleCRC = localStorage[e + ".titleCRC"]) : 0 === e.indexOf(c) && (t.provider = a, 
-    t.path = decodeURIComponent(e.substring(c.length)), t.version = localStorage[e + ".version"], 
-    t.contentCRC = localStorage[e + ".contentCRC"]), localStorage[e] = JSON.stringify(t), 
-    localStorage.removeItem(e + ".etag"), localStorage.removeItem(e + ".version"), localStorage.removeItem(e + ".contentCRC"), 
-    localStorage.removeItem(e + ".titleCRC");
-   });
-  }), i = "v2";
- }
- if ("v2" == i && (e.each(n, function(n) {
-  e.has(localStorage, n + ".sync") || (localStorage.removeItem(n + ".title"), localStorage.removeItem(n + ".publish"), 
-  localStorage.removeItem(n + ".content"), t.removeIndexFromArray("file.list", n));
- }), i = "v3"), "v3" == i) {
-  var u = localStorage["file.current"];
-  void 0 !== u && -1 === localStorage["file.list"].indexOf(";" + u + ";") && localStorage.removeItem("file.current"), 
-  i = "v4";
- }
- if ("v4" == i && (localStorage.removeItem("githubToken"), i = "v5"), "v5" == i && (e.each(n, function(n) {
-  var i = t.retrieveIndexArray(n + ".publish");
-  e.each(i, function(e) {
-   var t = JSON.parse(localStorage[e]);
-   "gdrive" == t.provider && (t.id = t.fileId, t.fileId = void 0, localStorage[e] = JSON.stringify(t));
-  });
- }), i = "v6"), "v6" == i) {
-  var u = localStorage["file.current"];
-  void 0 !== u && (localStorage[u + ".selectTime"] = new Date().getTime(), localStorage.removeItem("file.current")), 
-  i = "v7";
- }
- localStorage.version = i;
-}), define("fileSystem", [ "underscore", "utils", "classes/FileDescriptor", "storage" ], function(e, t, n) {
- var i = {};
- return e.each(t.retrieveIndexArray("file.list"), function(e) {
-  i[e] = new n(e);
- }), i;
-}), define("text!html/documentSelectorSettingsBlock.html", [], function() {
+}(), define("text!html/documentSelectorSettingsBlock.html", [], function() {
  return '<p>Builds the "Open document" dropdown menu.</p>\n<div class="form-horizontal">\n	<div class="control-group">\n		<label class="control-label" for="select-document-selector-orderby">Order\n			by</label>\n		<div class="controls">\n			<select id="select-document-selector-orderby">\n				<option value="title">Document title</option>\n				<option value="mru">Most recently used</option>\n			</select>\n		</div>\n	</div>\n	<div class="control-group">\n		<label class="control-label"\n			for="input-document-selector-shortcut-previous">"Previous"\n			shortcut <a href="http://craig.is/killing/mice#keys" target="_blank">(?)</a></label>\n		<div class="controls">\n			<input type="text" id="input-document-selector-shortcut-previous"\n				class="span2">\n		</div>\n	</div>\n	<div class="control-group">\n		<label class="control-label"\n			for="input-document-selector-shortcut-next">"Next"\n			shortcut <a href="http://craig.is/killing/mice#keys" target="_blank">(?)</a></label>\n		<div class="controls">\n			<input type="text" id="input-document-selector-shortcut-next"\n				class="span2">\n		</div>\n	</div>\n</div>';
 }), define("extensions/documentSelector", [ "jquery", "underscore", "utils", "classes/Extension", "mousetrap", "fileSystem", "text!html/documentSelectorSettingsBlock.html" ], function(e, t, n, i, o, r, s) {
  function a(n) {
@@ -6979,44 +7017,6 @@ function(e) {
  return i.settingsBlock = '<p>Adds a "Viewer" button over the preview.</p>', i.onCreatePreviewButton = function() {
   return e(n);
  }, i;
-}), define("text!html/userCustomSettingsBlock.html", [], function() {
- return '<p>Allows users to implement their own extension.</p>\n<div class="form-horizontal">\n	<div class="control-group">\n		<label class="control-label" for="textarea-usercustom-code">JavaScript code\n			<a href="#" class="tooltip-usercustom-extension">(?)</a>\n		</label>\n		<div class="controls">\n			<textarea id="textarea-usercustom-code"></textarea>\n		</div>\n	</div>\n</div>\n<span class="help-block pull-right"><a target="_blank" href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">More info</a></span>';
-}), define("extensions/userCustom", [ "jquery", "underscore", "utils", "classes/Extension", "fileSystem", "settings", "text!html/userCustomSettingsBlock.html" ], function($, _, utils, Extension, fileSystem, settings, userCustomSettingsBlockHTML) {
- var userCustom = new Extension("userCustom", "UserCustom extension", !0);
- userCustom.settingsBlock = userCustomSettingsBlockHTML, userCustom.defaultConfig = {
-  code: ""
- };
- var fileMgr = void 0;
- userCustom.onFileMgrCreated = function(e) {
-  fileMgr = e;
- };
- var synchronizer = void 0;
- userCustom.onSynchronizerCreated = function(e) {
-  synchronizer = e;
- };
- var publisher = void 0;
- userCustom.onPublisherCreated = function(e) {
-  publisher = e;
- };
- var extensionMgr = void 0;
- return userCustom.onExtensionMgrCreated = function(e) {
-  extensionMgr = e;
- }, userCustom.onLoadSettings = function() {
-  utils.setInputValue("#textarea-usercustom-code", userCustom.config.code);
- }, userCustom.onSaveSettings = function(newConfig, event) {
-  newConfig.code = utils.getInputValue("#textarea-usercustom-code");
-  try {
-   eval(newConfig.code);
-  } catch (e) {
-   extensionMgr.onError(e), utils.getInputTextValue("#textarea-usercustom-code", event, /^$/);
-  }
- }, userCustom.onInit = function() {
-  try {
-   eval(userCustom.config.code);
-  } catch (e) {
-   console.error(e);
-  }
- }, userCustom;
 }), !function(e) {
  e(function() {
   e.support.transition = function() {
@@ -7882,7 +7882,7 @@ function(e) {
    });
   });
  };
-}(jQuery), define("libs/jquery.waitforimages", function() {}), define("extensionMgr", [ "jquery", "underscore", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonMarkdownSyntax", "extensions/buttonViewer", "extensions/userCustom", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o, r) {
+}(jQuery), define("libs/jquery.waitforimages", function() {}), define("extensionMgr", [ "jquery", "underscore", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/userCustom", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonMarkdownSyntax", "extensions/buttonViewer", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o, r) {
  function s(e) {
   return t.chain(d).map(function(t) {
    return t.config.enabled && t[e];
@@ -7894,7 +7894,11 @@ function(e) {
    n || logger.log(e, arguments);
    var o = arguments;
    t.each(i, function(e) {
-    e.apply(null, o);
+    try {
+     e.apply(null, o);
+    } catch (t) {
+     console.error(t);
+    }
    });
   };
  }

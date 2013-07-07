@@ -550,6 +550,11 @@ define([
             });
             e.stopPropagation();
         });
+        
+        // Avoid dropdown panels to close on click
+        $("div.dropdown-menu").click(function(e) {
+            e.stopPropagation();
+        });
 
     });
 

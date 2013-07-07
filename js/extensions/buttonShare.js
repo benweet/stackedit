@@ -28,9 +28,6 @@ define([
                 var lineElement = $(_.template(buttonShareLocationHTML, {
                     link: attributes.sharingLink
                 }));
-                lineElement.click(function(event) {
-                    event.stopPropagation();
-                });
                 linkList.append(lineElement);
                 $("#link-container .no-link").hide();
             }

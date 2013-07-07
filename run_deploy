@@ -3,7 +3,7 @@ set -e
 echo '### Optimizing resources ###'
 scripts/run_optimize
 echo '### Modifying cache.manifest ###'
-sed -i "s/^#.*/# `date`/" cache.manifest
+sed -i '' "s/^#.*/# `date`/" cache.manifest
 echo '### Commit and push ###'
 git commit -a -m "Prepare deployment"
 git branch -f gh-pages master

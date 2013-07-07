@@ -1,4 +1,5 @@
 #!/bin/sh
 npm install requirejs
+export PATH=${PATH}:node_modules/requirejs/bin/
 r.js -o tools/optimize-css.json
 r.js -o tools/optimize-js.json

@@ -5209,7 +5209,7 @@ a.badge:focus {
 }
 
 div.jGrowl {
-	z-index: 			1000;
+	z-index: 			1050;
 	color: 				#fff;
 }
 div.ie6 {
@@ -5353,6 +5353,7 @@ li.L3,
 li.L5,
 li.L7,
 li.L9 { background: #eee }
+
 @media print {
 	@page {
 		margin: 25mm 25mm 25mm 25mm;

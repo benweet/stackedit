@@ -30,12 +30,14 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
 
 ### Documentation:
 
+ - [Welcome document][1]
  - [Developer guide][2]
- - [Theming guide][1]
+ - [Theming guide][3]
 
-> **NOTE:** This page has been written and published with [StackEdit][3].
+> **NOTE:** This page has been written and published with [StackEdit][4].
 
 
-  [1]: https://github.com/benweet/stackedit/blob/master/doc/theming.md#stackedit-theming-guide "Theming guide"
+  [1]: https://github.com/benweet/stackedit/blob/master/WELCOME.md#welcome-to-stackedit---welcome "Welcome document"
   [2]: https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#developer-guide "Developer guide"
-  [3]: http://benweet.github.io/stackedit/ "StackEdit"
+  [3]: https://github.com/benweet/stackedit/blob/master/doc/theming.md#stackedit-theming-guide "Theming guide"
+  [4]: http://benweet.github.io/stackedit/ "StackEdit"

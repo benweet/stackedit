@@ -670,6 +670,10 @@ div.dropdown-menu textarea {
 	line-height: 1.4;
 }
 
+code, pre {
+	font-family: Menlo, Consolas, "Courier New", monospace;
+}
+
 /* Definition list */
 dt,dd {
 	margin-top: 5px;

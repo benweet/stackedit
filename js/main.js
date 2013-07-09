@@ -46,7 +46,8 @@ requirejs.config({
         ],
         'libs/Markdown.Extra': [
             'libs/Markdown.Converter',
-            'libs/prettify'
+            'libs/prettify',
+            'libs/highlight.pack',
         ],
         'libs/Markdown.Editor': [
             'libs/Markdown.Converter'

@@ -3,7 +3,7 @@ Welcome to StackEdit!	{#welcome}
 =====================
 
 
-Hello, I am your first Markdown document within **StackEdit**. Don't delete me, I can be helpful. I can be recovered anyway in the `Utils` tab of the <i class="icon-cog"></i> `Settings` dialog.
+Hello, I am your first Markdown document within **StackEdit**[^stackedit]. Don't delete me, I can be helpful. I can be recovered anyway in the `Utils` tab of the <i class="icon-cog"></i> `Settings` dialog.
 
 ----------
 
@@ -197,7 +197,7 @@ $$
 > - about **Markdown Extra** extension [here][3],
 > - about **Prettify** syntax highlighting [here][4].
 
-
+  [^stackedit]: StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.
 
   [1]: http://math.stackexchange.com/
   [2]: http://daringfireball.net/projects/markdown/syntax "Markdown"

@@ -151,6 +151,8 @@ Term 3
 var bar = 0;
 ```
 
+> **NOTE:** To use **Highlight.js** instead of **Prettify**, just configure the `Markdown Extra` extension in the <i class="icon-cog"></i> `Settings` dialog.
+
 
 ### Special Attributes
 
@@ -196,11 +198,13 @@ $$
 > - about **Markdown** syntax [here][2],
 > - about **Markdown Extra** extension [here][3],
 > - about **Prettify** syntax highlighting [here][4].
+> - about **Highlight.js** syntax highlighting [here][5].
 
   [^stackedit]: StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.
+
 
   [1]: http://math.stackexchange.com/
   [2]: http://daringfireball.net/projects/markdown/syntax "Markdown"
   [3]: https://github.com/jmcmanus/pagedown-extra "Pagedown Extra"
   [4]: https://code.google.com/p/google-code-prettify/
-  [5]: http://en.wikibooks.org/wiki/LaTeX/Mathematics
+  [5]: http://softwaremaniacs.org/soft/highlight/en/

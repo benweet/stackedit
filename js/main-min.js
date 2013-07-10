@@ -5093,7 +5093,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   return f.makeMd(e);
  };
  return c.onReady = function() {
-  f = new o.converter(), e("#input-file-import-harddrive-markdown").change(s), e("#dropzone-import-harddrive-markdown").each(function() {
+  f = new o.converter(), e("#input-file-import-harddrive-markdown").change(s), e("#dropzone-import-harddrive-markdown, #wmd-input").each(function() {
    this.addEventListener("dragover", l, !1), this.addEventListener("drop", s, !1);
   }), e("#input-file-import-harddrive-html").change(a), e("#dropzone-import-harddrive-html").each(function() {
    this.addEventListener("dragover", l, !1), this.addEventListener("drop", a, !1);
@@ -5847,11 +5847,9 @@ function() {
    });
   }
   function $(e) {
-   if (!e) return "";
-   var t = e.length;
-   return e.replace(W, function(n, i) {
-    return "~D" == n ? "%24" : ":" != n || i != t - 1 && !/[0-9\/]/.test(e.charAt(i + 1)) ? "%" + n.charCodeAt(0).toString(16) : ":";
-   });
+   return e ? (e.length, e.replace(W, function(e) {
+    return "~D" == e ? "%24" : ":" == e ? ":" : "%" + e.charCodeAt(0).toString(16);
+   })) : "";
   }
   function N(e, t, n) {
    var i = "([" + t.replace(/([\[\]\\])/g, "\\$1") + "])";

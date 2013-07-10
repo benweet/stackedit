@@ -77,7 +77,7 @@ define([
         converter = new toMarkdown.converter();
         
         $("#input-file-import-harddrive-markdown").change(handleMarkdownImport);
-        $('#dropzone-import-harddrive-markdown').each(function() {
+        $('#dropzone-import-harddrive-markdown, #wmd-input').each(function() {
             this.addEventListener('dragover', handleDragOver, false);
             this.addEventListener('drop', handleMarkdownImport, false);
         });

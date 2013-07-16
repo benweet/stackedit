@@ -24,11 +24,13 @@ define([
                 return;
             }
             delayedFunction = function() {
-                connected = true;
-                task.chain();
+                gapi.load("client,drive-realtime", function() {
+                    connected = true;
+                    task.chain();
+                });
             };
             $.ajax({
-                url: "https://apis.google.com/js/client.js?onload=runDelayedFunction",
+                url: "https://apis.google.com/js/api.js?onload=runDelayedFunction",
                 dataType: "script",
                 timeout: AJAX_TIMEOUT
             }).fail(function(jqXHR) {
@@ -124,7 +126,19 @@ define([
             // }
 
             var base64Data = utils.encodeBase64(content);
-            var multipartRequestBody = delimiter + 'Content-Type: application/json\r\n\r\n' + JSON.stringify(metadata) + delimiter + 'Content-Type: ' + contentType + '\r\n' + 'Content-Transfer-Encoding: base64\r\n' + '\r\n' + base64Data + close_delim;
+            var multipartRequestBody = [
+                delimiter,
+                'Content-Type: application/json\r\n\r\n',
+                JSON.stringify(metadata),
+                delimiter,
+                'Content-Type: ',
+                contentType,
+                '\r\n',
+                'Content-Transfer-Encoding: base64\r\n',
+                '\r\n',
+                base64Data,
+                close_delim
+            ].join("");
 
             var request = gapi.client.request({
                 'path': path,
@@ -154,6 +168,52 @@ define([
                         localStorage.removeItem("gdrive.lastChangeId");
                         error = 'Conflict on file ID "' + fileId + '". Please restart the synchronization.';
                     }
+                }
+                handleError(error, task);
+            });
+        });
+        task.onSuccess(function() {
+            callback(undefined, result);
+        });
+        task.onError(function(error) {
+            callback(error);
+        });
+        task.enqueue();
+    };
+
+    googleHelper.uploadImg = function(name, content, albumId, callback) {
+        var result = undefined;
+        var task = new AsyncTask();
+        connect(task);
+        authenticate(task);
+        task.onRun(function() {
+            var headers = {
+                "Content-Type": "image/jpeg",
+                "Slug": name
+            };
+            var token = gapi.auth.getToken();
+            if(token) {
+                headers.Authorization = "Bearer " + token.access_token;
+            }
+
+            $.ajax({
+                url: PICASA_PROXY_URL + "upload/" + albumId,
+                headers: headers,
+                data: content,
+                processData: false,
+                dataType: "xml",
+                timeout: AJAX_TIMEOUT,
+                type: "POST"
+            }).done(function(data, textStatus, jqXHR) {
+                result = data;
+                task.chain();
+            }).fail(function(jqXHR) {
+                var error = {
+                    code: jqXHR.status,
+                    message: jqXHR.statusText
+                };
+                if(error.code == 200) {
+                    error.message = jqXHR.responseText;
                 }
                 handleError(error, task);
             });

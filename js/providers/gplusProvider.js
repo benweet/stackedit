@@ -23,10 +23,28 @@ define([
         });
         return result;
     }
-
-    var importImageCallback = undefined;
+    
     var imageDoc = undefined;
     var importImagePreferences = utils.retrieveIgnoreError(PROVIDER_GPLUS + ".importImagePreferences");
+    function showImportImgDialog() {
+        if(!imageDoc.thumbnails) {
+            extensionMgr.onError("Image " + imageDoc.name + " is not accessible.");
+            callback(true);
+            return;
+        }
+        utils.resetModalInputs();
+        $("#modal-import-image img").prop("src", getThumbnailUrl(imageDoc, 128));
+        utils.setInputValue("#input-import-image-title", imageDoc.name);
+
+        // Load preferences
+        if(importImagePreferences) {
+            utils.setInputValue("#input-import-image-size", importImagePreferences.size);
+        }
+
+        $("#modal-import-image").modal();
+    }
+
+    var importImageCallback = undefined;
     gplusProvider.importImage = function(callback) {
         importImageCallback = callback;
         googleHelper.picker(function(error, docs) {
@@ -35,22 +53,28 @@ define([
                 return;
             }
             imageDoc = docs[0];
-            if(!imageDoc.thumbnails) {
-                extensionMgr.onError("Image " + imageDoc.title + " is not accessible.");
-                callback(true);
+            showImportImgDialog();
+        }, true);
+    };
+    
+    gplusProvider.uploadImage = function(imgName, imgContent, callback) {
+        importImageCallback = callback;
+        googleHelper.uploadImg(imgName, imgContent, "default", function(error, image) {
+            if(error || !image) {
+                callback(error);
                 return;
             }
-            utils.resetModalInputs();
-            $("#modal-import-image img").prop("src", getThumbnailUrl(imageDoc, 128));
-            utils.setInputValue("#input-import-image-title", imageDoc.name);
-
-            // Load preferences
-            if(importImagePreferences) {
-                utils.setInputValue("#input-import-image-size", importImagePreferences.size);
-            }
-
-            $("#modal-import-image").modal();
-        }, true);
+            imageDoc = {
+                name: imgName,
+                thumbnails: []
+            };
+            $(image).find("thumbnail").each(function() {
+                imageDoc.thumbnails.push({
+                    url: $(this).attr("url")
+                });
+            });            
+            showImportImgDialog();
+        });
     };
 
     core.onReady(function() {

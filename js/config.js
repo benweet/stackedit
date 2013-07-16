@@ -4,7 +4,8 @@ var GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw";
 var GOOGLE_SCOPES = [
     "https://www.googleapis.com/auth/drive.install",
     "https://www.googleapis.com/auth/drive",
-    "https://www.googleapis.com/auth/blogger"
+    "https://www.googleapis.com/auth/blogger",
+    "https://picasaweb.google.com/data/"
 ];
 var GOOGLE_DRIVE_APP_ID = "241271498917";
 var DROPBOX_APP_KEY = "lq6mwopab8wskas";
@@ -19,9 +20,11 @@ var ASYNC_TASK_LONG_TIMEOUT = 180000;
 var SYNC_PERIOD = 180000;
 var USER_IDLE_THRESHOLD = 300000;
 var IMPORT_FILE_MAX_CONTENT_SIZE = 100000;
+var IMPORT_IMG_MAX_CONTENT_SIZE = 10000000;
 var TEMPORARY_FILE_INDEX = "file.tempIndex";
 var WELCOME_DOCUMENT_TITLE = "Welcome document";
 var DOWNLOAD_PROXY_URL = "http://stackedit-download-proxy.herokuapp.com/";
+var PICASA_PROXY_URL = "http://stackedit-picasa-proxy.herokuapp.com/";
 var WORDPRESS_CLIENT_ID = '3185';
 var WORDPRESS_PROXY_URL = "http://stackedit-wordpress-proxy.herokuapp.com/";
 var SSH_PROXY_URL = "http://stackedit-ssh-proxy.herokuapp.com/";

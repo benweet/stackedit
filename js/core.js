@@ -260,6 +260,9 @@ define([
         // Custom insert image dialog
         editor.hooks.set("insertImageDialog", function(callback) {
             core.insertLinkCallback = callback;
+            if(core.catchModal) {
+                return true;
+            }
             utils.resetModalInputs();
             $("#modal-insert-image").modal();
             return true;

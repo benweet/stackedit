@@ -5052,22 +5052,24 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   n.stopPropagation(), n.preventDefault();
   var i = (n.dataTransfer || n.target).files;
   e("#modal-import-harddrive-markdown, #modal-import-harddrive-html").modal("hide"), 
-  t.each(i, function(e) {
-   var t = new FileReader();
-   t.onload = function(e) {
-    return function(t) {
-     var n = t.target.result;
-     if (n.match(/\uFFFD/)) return d.onError(e.name + " is a binary file."), void 0;
-     if (n = p ? p(n) : n, void 0 === n) return d.onError(e.name + " is not a valid HTML file."), 
-     void 0;
-     var i = e.name, o = i.lastIndexOf(".");
-     i = -1 !== o ? i.substring(0, o) : i;
-     var r = u.createFile(i, n);
-     u.selectFile(r);
-    };
-   }(e);
-   var n = e.slice(0, IMPORT_FILE_MAX_CONTENT_SIZE);
-   t.readAsText(n);
+  t.each(i, function(t) {
+   if (!e(n.target).is("#wmd-input") || !t.name.match(/.(jpe?g|png|gif)$/)) {
+    var i = new FileReader();
+    i.onload = function(e) {
+     return function(t) {
+      var n = t.target.result;
+      if (n.match(/\uFFFD/)) return d.onError(e.name + " is a binary file."), void 0;
+      if (n = p ? p(n) : n, void 0 === n) return d.onError(e.name + " is not a valid HTML file."), 
+      void 0;
+      var i = e.name, o = i.lastIndexOf(".");
+      i = -1 !== o ? i.substring(0, o) : i;
+      var r = u.createFile(i, n);
+      u.selectFile(r);
+     };
+    }(t);
+    var o = t.slice(0, IMPORT_FILE_MAX_CONTENT_SIZE);
+    i.readAsText(o);
+   }
   });
  }
  function s(e) {
@@ -15294,9 +15296,9 @@ function(e) {
  }).compact().object().value();
  return i.onReady(function() {
   function n(n) {
-   n.stopPropagation(), n.preventDefault();
    var o = (n.dataTransfer || n.target).files, s = t.first(o);
    if (s.name.match(/.(jpe?g|png|gif)$/)) {
+    n.stopPropagation(), n.preventDefault();
     var a = new FileReader();
     a.onload = function() {
      return function(t) {

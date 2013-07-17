@@ -36,11 +36,11 @@ define([
         });
 
         function handleImgImport(evt) {
-            evt.stopPropagation();
-            evt.preventDefault();
             var files = (evt.dataTransfer || evt.target).files;
             var file = _.first(files);
             if(file.name.match(/.(jpe?g|png|gif)$/)) {
+                evt.stopPropagation();
+                evt.preventDefault();
                 var reader = new FileReader();
                 reader.onload = (function(importedFile) {
                     return function(e) {

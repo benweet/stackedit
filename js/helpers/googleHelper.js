@@ -188,9 +188,17 @@ define([
         authenticate(task);
         task.onRun(function() {
             var headers = {
-                "Content-Type": "image/jpeg",
                 "Slug": name
             };
+            if(name.match(/.jpe?g$/)) {
+                headers["Content-Type"] = "image/jpeg";
+            }
+            else if(name.match(/.png$/)) {
+                headers["Content-Type"] = "image/png";
+            }
+            else if(name.match(/.gif$/)) {
+                headers["Content-Type"] = "image/gif";
+            }
             var token = gapi.auth.getToken();
             if(token) {
                 headers.Authorization = "Bearer " + token.access_token;

@@ -40,7 +40,7 @@ define([
             evt.preventDefault();
             var files = (evt.dataTransfer || evt.target).files;
             var file = _.first(files);
-            if(file.name.match(/.(jpe?g|png|gif|bmp)$/)) {
+            if(file.name.match(/.(jpe?g|png|gif)$/)) {
                 var reader = new FileReader();
                 reader.onload = (function(importedFile) {
                     return function(e) {
@@ -60,13 +60,6 @@ define([
                             core.insertLinkCallback = undefined;
                             insertLinkCallback(imageLink || null);
                         });
-
-                        // var title = importedFile.name;
-                        // var dotPosition = title.lastIndexOf(".");
-                        // title = dotPosition !== -1 ? title.substring(0,
-                        // dotPosition) : title;
-                        // var fileDesc = fileMgr.createFile(title, content);
-                        // fileMgr.selectFile(fileDesc);
                     };
                 })(file);
                 var blob = file.slice(0, IMPORT_IMG_MAX_CONTENT_SIZE);

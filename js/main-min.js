@@ -14570,7 +14570,7 @@ function(e) {
    if (!e) {
     var n = c(t.id, t.etag, t.content, t.title), i = {};
     i[n.syncIndex] = n;
-    var o = s.createFile(t.title, t.content, n);
+    var o = s.createFile(t.title, t.content, i);
     s.selectFile(o), r.onMessage('"' + t.title + '" created successfully on Google Drive.');
    }
   }); else if ("open" == t.action) {

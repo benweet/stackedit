@@ -257,7 +257,7 @@ define([
                 var syncAttributes = createSyncAttributes(file.id, file.etag, file.content, file.title);
                 var syncLocations = {};
                 syncLocations[syncAttributes.syncIndex] = syncAttributes;
-                var fileDesc = fileMgr.createFile(file.title, file.content, syncAttributes);
+                var fileDesc = fileMgr.createFile(file.title, file.content, syncLocations);
                 fileMgr.selectFile(fileDesc);
                 extensionMgr.onMessage('"' + file.title + '" created successfully on Google Drive.');
             });

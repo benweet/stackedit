@@ -331,6 +331,28 @@ define([
         $("#wmd-undo-button").append($("<i>").addClass("icon-undo"));
         $("#wmd-redo-button").append($("<i>").addClass("icon-share-alt"));
     };
+    
+    // Used to lock the editor from the user interaction during asynchronous tasks
+    var uiLocked = false;
+    core.lockUI = function(param) {
+        uiLocked = param;
+        $("#wmd-input").prop("disabled", uiLocked);
+        $(".btn").each(function() {
+            var classes = $(this).attr("class");
+            if(uiLocked) {
+                $(this).attr("class", classes + " disabled");
+            } else {
+                $(this).attr("class", classes.replace(" disabled", ""));
+            }
+        });
+        if(uiLocked) {
+            $(".lock-ui").removeClass("hide");
+        }
+        else {
+            $(".lock-ui").addClass("hide");
+        }
+    };
+
 
     // onReady event callbacks
     var readyCallbacks = [];
@@ -351,7 +373,7 @@ define([
             readyCallbacks = [];
         }
     }
-
+    
     core.onReady(function() {
 
         // Load theme list
@@ -401,7 +423,7 @@ define([
 
         // Configure Mousetrap
         mousetrap.stopCallback = function(e, element, combo) {
-            return shownModalId || $(element).is("input, select, textarea:not(#wmd-input)");
+            return uiLocked || shownModalId || $(element).is("input, select, textarea:not(#wmd-input)");
         };
 
         // Click events on "insert link" and "insert image" dialog buttons

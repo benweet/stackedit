@@ -81,9 +81,11 @@ define([
         updateButtonState();
     };
 
-    // Check that a file has synchronized locations
+    // Check that a file has synchronized locations and no real time synchronized location
     var checkSynchronization = function(fileDesc) {
-        if(_.size(fileDesc.syncLocations) !== 0) {
+        if(_.size(fileDesc.syncLocations) !== 0 && !_.some(fileDesc.syncLocations, function(syncAttributes) {
+            return syncAttributes.isRealtime;
+        })) {
             uploadPending = true;
             updateButtonState();
         }

@@ -187,23 +187,31 @@ define([
         });
         return true;
     };
-    
+
+    // Used for realtime synchronization
     function onFileOpen(fileDesc) {
         _.each(fileDesc.syncLocations, function(syncAttributes) {
-            if(_.isFunction(syncAttributes.provider.onSyncStart)) {
-                syncAttributes.provider.onSyncStart(fileDesc, syncAttributes);
+            if(syncAttributes.isRealtime) {
+                core.lockUI(true);
+                syncAttributes.provider.startSync(fileDesc.content, syncAttributes, function() {
+                    core.lockUI(false);
+                });
             }
         });
     }
-    
     function onFileClosed(fileDesc) {
         _.each(fileDesc.syncLocations, function(syncAttributes) {
-            if(_.isFunction(syncAttributes.provider.onSyncStop)) {
-                syncAttributes.provider.onSyncStop(syncAttributes);
+            if(syncAttributes.isRealtime) {
+                syncAttributes.provider.stopSync(syncAttributes);
             }
         });
     }
-    
+    // Enable realtime synchronization
+    if(viewerMode === false) {
+        extensionMgr.addHookCallback("onFileOpen", onFileOpen);
+        extensionMgr.addHookCallback("onFileClosed", onFileClosed);
+    }
+
 
     // Initialize the export dialog
     function initExportDialog(provider) {
@@ -235,16 +243,38 @@ define([
                 initExportDialog(provider);
             });
             $(".action-sync-export-" + provider.providerId).click(function(event) {
-
-                // Perform the provider's export
+                var isRealtime = utils.getInputChecked("#input-sync-export-" + provider.providerId + "-realtime");
                 var fileDesc = fileMgr.currentFile;
-                provider.exportFile(event, fileDesc.title, fileDesc.content, function(error, syncAttributes) {
-                    if(error) {
+
+                if(isRealtime) {
+                    if(_.size(fileDesc.syncLocations) > 0) {
+                        extensionMgr.onError("Realtime collaboration document can't be synchronized with multiple locations");
                         return;
-                    }
-                    fileDesc.addSyncLocation(syncAttributes);
-                    extensionMgr.onSyncExportSuccess(fileDesc, syncAttributes);
-                });
+                    } 
+                    // Perform the provider's real time export
+                    provider.exportRealtimeFile(event, fileDesc.title, fileDesc.content, function(error, syncAttributes) {
+                        if(error) {
+                            return;
+                        }
+                        syncAttributes.isRealtime = true;
+                        fileDesc.addSyncLocation(syncAttributes);
+                        extensionMgr.onSyncExportSuccess(fileDesc, syncAttributes);
+                    });
+                }
+                else {
+                    if(_.size(fileDesc.syncLocations) > 0 && _.first(_.values(obj)).isRealtime) {
+                        extensionMgr.onError("Realtime collaboration document can't be synchronized with multiple locations");
+                        return;
+                    } 
+                    // Perform the provider's standard export
+                    provider.exportFile(event, fileDesc.title, fileDesc.content, function(error, syncAttributes) {
+                        if(error) {
+                            return;
+                        }
+                        fileDesc.addSyncLocation(syncAttributes);
+                        extensionMgr.onSyncExportSuccess(fileDesc, syncAttributes);
+                    });
+                }
 
                 // Store input values as preferences for next time we open the
                 // export dialog
@@ -257,6 +287,10 @@ define([
             // Provider's manual export button
             $(".action-sync-manual-" + provider.providerId).click(function(event) {
                 var fileDesc = fileMgr.currentFile;
+                if(_.size(fileDesc.syncLocations) > 0 && _.first(_.values(obj)).isRealtime) {
+                    extensionMgr.onError("Realtime collaboration document can't be synchronized with multiple locations");
+                    return;
+                } 
                 provider.exportManual(event, fileDesc.title, fileDesc.content, function(error, syncAttributes) {
                     if(error) {
                         return;
@@ -268,8 +302,6 @@ define([
         });
     });
 
-    extensionMgr.addHookCallback("onFileOpen", onFileOpen);
-    extensionMgr.addHookCallback("onFileClosed", onFileClosed);
     extensionMgr.onSynchronizerCreated(synchronizer);
     return synchronizer;
 });

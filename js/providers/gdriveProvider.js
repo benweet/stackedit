@@ -56,7 +56,6 @@ define([
             });
         });
     }
-    ;
 
     gdriveProvider.importFiles = function() {
         googleHelper.picker(function(error, docs) {
@@ -80,6 +79,18 @@ define([
     gdriveProvider.exportFile = function(event, title, content, callback) {
         var parentId = utils.getInputTextValue("#input-sync-export-gdrive-parentid");
         googleHelper.upload(undefined, parentId, title, content, undefined, function(error, result) {
+            if(error) {
+                callback(error);
+                return;
+            }
+            var syncAttributes = createSyncAttributes(result.id, result.etag, content, title);
+            callback(undefined, syncAttributes);
+        });
+    };
+    
+    gdriveProvider.exportRealtimeFile = function(event, title, content, callback) {
+        var parentId = utils.getInputTextValue("#input-sync-export-gdrive-parentid");
+        googleHelper.createRealtimeFile(parentId, title, function(error, result) {
             if(error) {
                 callback(error);
                 return;
@@ -243,30 +254,37 @@ define([
         return publishAttributes;
     };
 
+    // Keep a link to the pagedown editor
     var editor = undefined;
     extensionMgr.addHookCallback("onEditorConfigure", function(editorParam) {
         editor = editorParam;
     });
+    
+    // Start realtime synchronization
     var binding = undefined;
-    gdriveProvider.onSyncStart = function(fileDesc, syncAttributes) {
-        console.log("onSyncStart");
-        console.log(syncAttributes);
-        googleHelper.loadRealtime(syncAttributes.id, fileDesc.content, function(err, doc) {
+    gdriveProvider.startSync = function(content, syncAttributes, callback) {
+        logger.log("Starting Google Drive realtime synchronization");
+        googleHelper.loadRealtime(syncAttributes.id, content, function(err, doc) {
             if(err || !doc) {
+                callback(err);
                 return;
             }
             var string = doc.getModel().getRoot().get('content');
             binding = gapi.drive.realtime.databinding.bindString(string, $("#wmd-input")[0]);
+            // Listen to  
             var debouncedRefreshPreview = _.debounce(editor.refreshPreview, 100);
             string.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, debouncedRefreshPreview);
             string.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, debouncedRefreshPreview);
+            callback();
         });
     };
 
-    gdriveProvider.onSyncStop = function(syncAttributes) {
-        console.log("onSyncStop");
+    // Stop realtime synchronization
+    gdriveProvider.stopSync = function(syncAttributes) {
+        logger.log("Stopping Google Drive realtime synchronization");
         if(binding !== undefined) {
             binding.unbind();
+            binding = undefined;
         }
     };
 

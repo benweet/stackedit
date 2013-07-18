@@ -180,6 +180,47 @@ define([
         });
         task.enqueue();
     };
+    
+    googleHelper.createRealtimeFile = function(parentId, title, callback) {
+        var result = undefined;
+        var task = new AsyncTask();
+        connect(task);
+        authenticate(task);
+        task.onRun(function() {
+            var metadata = {
+                title: title,
+                mimeType : 'application/vnd.google-apps.drive-sdk',
+            };
+            if(parentId !== undefined) {
+                // Specify the directory
+                metadata.parents = [
+                    {
+                        kind: 'drive#fileLink',
+                        id: parentId
+                    }
+                ];
+            }
+            var request = gapi.client.drive.files.insert({
+                'resource' : metadata
+            });
+            request.execute(function(response) {
+                if(response && response.id) {
+                    // Upload success
+                    result = response;
+                    task.chain();
+                    return;
+                }
+                handleError(response.error, task);
+            });
+        });
+        task.onSuccess(function() {
+            callback(undefined, result);
+        });
+        task.onError(function(error) {
+            callback(error);
+        });
+        task.enqueue();
+    };
 
     googleHelper.uploadImg = function(name, content, albumId, callback) {
         var result = undefined;

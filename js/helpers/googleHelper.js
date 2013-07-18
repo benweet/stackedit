@@ -408,6 +408,36 @@ define([
         });
         task.enqueue();
     };
+    
+    googleHelper.loadRealtime = function(fileId, content, callback) {
+        var doc = undefined;
+        var task = new AsyncTask();
+        connect(task);
+        authenticate(task);
+        task.onRun(function() {
+            gapi.drive.realtime.load(fileId, function(result) {
+                // onFileLoaded
+                doc = result;
+                task.chain();
+            }, function(model) {
+                // initializeModel
+                var string = model.createString(content);
+                model.getRoot().set('content', string);
+            }, function(err) {
+                // handleErrors
+                handleError({
+                    code: err.type
+                }, task);
+        });
+        task.onSuccess(function() {
+            callback(undefined, doc);
+            });
+        });
+        task.onError(function(error) {
+            callback(error);
+        });
+        task.enqueue();
+    };
 
     function handleError(error, task) {
         var errorMsg = undefined;

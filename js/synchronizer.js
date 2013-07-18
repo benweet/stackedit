@@ -187,6 +187,23 @@ define([
         });
         return true;
     };
+    
+    function onFileOpen(fileDesc) {
+        _.each(fileDesc.syncLocations, function(syncAttributes) {
+            if(_.isFunction(syncAttributes.provider.onSyncStart)) {
+                syncAttributes.provider.onSyncStart(fileDesc, syncAttributes);
+            }
+        });
+    }
+    
+    function onFileClosed(fileDesc) {
+        _.each(fileDesc.syncLocations, function(syncAttributes) {
+            if(_.isFunction(syncAttributes.provider.onSyncStop)) {
+                syncAttributes.provider.onSyncStop(syncAttributes);
+            }
+        });
+    }
+    
 
     // Initialize the export dialog
     function initExportDialog(provider) {
@@ -251,6 +268,8 @@ define([
         });
     });
 
+    extensionMgr.addHookCallback("onFileOpen", onFileOpen);
+    extensionMgr.addHookCallback("onFileClosed", onFileClosed);
     extensionMgr.onSynchronizerCreated(synchronizer);
     return synchronizer;
 });

@@ -214,6 +214,9 @@ define([
     var documentContent = undefined;
     var undoManager = undefined;
     core.initEditor = function(fileDescParam) {
+        if(fileDesc !== undefined) {
+            extensionMgr.onFileClosed(fileDesc);
+        }
         fileDesc = fileDescParam;
         documentContent = undefined;
         var initDocumentContent = fileDesc.content;
@@ -223,6 +226,7 @@ define([
             // If the editor is already created
             undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
             editor.refreshPreview();
+            extensionMgr.onFileOpen(fileDesc);
             return;
         }
         var previewContainerElt = $(".preview-container");
@@ -308,6 +312,7 @@ define([
         editor.hooks.chain("onPreviewRefresh", extensionMgr.onAsyncPreview);
         undoManager = editor.run(previewWrapper);
         undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
+        extensionMgr.onFileOpen(fileDesc);
 
         // Hide default buttons
         $(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)").addClass("btn").css("left", 0).find("span").hide();

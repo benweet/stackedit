@@ -15,6 +15,7 @@ define([
     // Defines the current file
     fileMgr.currentFile = undefined;
 
+    // Set the current file and refresh the editor
     fileMgr.selectFile = function(fileDesc) {
         fileDesc = fileDesc || fileMgr.currentFile;
 
@@ -47,8 +48,8 @@ define([
                 $(".action-edit-document").addClass("hide");
             }
         }
-
-        // Refresh the editor
+        
+        // Refresh the editor (even if it's the same file)
         core.initEditor(fileDesc);
     };
 

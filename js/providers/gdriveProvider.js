@@ -243,6 +243,33 @@ define([
         return publishAttributes;
     };
 
+    var editor = undefined;
+    extensionMgr.addHookCallback("onEditorConfigure", function(editorParam) {
+        editor = editorParam;
+    });
+    var binding = undefined;
+    gdriveProvider.onSyncStart = function(fileDesc, syncAttributes) {
+        console.log("onSyncStart");
+        console.log(syncAttributes);
+        googleHelper.loadRealtime(syncAttributes.id, fileDesc.content, function(err, doc) {
+            if(err || !doc) {
+                return;
+            }
+            var string = doc.getModel().getRoot().get('content');
+            binding = gapi.drive.realtime.databinding.bindString(string, $("#wmd-input")[0]);
+            var debouncedRefreshPreview = _.debounce(editor.refreshPreview, 100);
+            string.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, debouncedRefreshPreview);
+            string.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, debouncedRefreshPreview);
+        });
+    };
+
+    gdriveProvider.onSyncStop = function(syncAttributes) {
+        console.log("onSyncStop");
+        if(binding !== undefined) {
+            binding.unbind();
+        }
+    };
+
     core.onReady(function() {
         var state = utils.retrieveIgnoreError(PROVIDER_GDRIVE + ".state");
         if(state === undefined) {

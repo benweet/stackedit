@@ -46,14 +46,15 @@ define([
     }
 
     // Return a function that calls every callbacks with the specified name from all extensions
+    var hookCallbackList = {};
     function createHook(hookName, noLog) {
-        var callbackList = getExtensionCallbackList(hookName);
+        hookCallbackList[hookName] = getExtensionCallbackList(hookName);
         return function() {
             if(!noLog) {
                 logger.log(hookName, arguments);
             }
             var callbackArguments = arguments;
-            _.each(callbackList, function(callback) {
+            _.each(hookCallbackList[hookName], function(callback) {
                 // In case user custom callback contains error
                 try {
                     callback.apply(null, callbackArguments);
@@ -64,6 +65,9 @@ define([
             });
         };
     }
+    extensionMgr.addHookCallback = function(hookName, callback) {
+        hookCallbackList[hookName].push(callback);
+    };
 
     // Add a Hook to the extensionMgr
     function addHook(hookName, noLog) {
@@ -116,6 +120,8 @@ define([
     addHook("onFileCreated");
     addHook("onFileDeleted");
     addHook("onFileSelected");
+    addHook("onFileOpen");
+    addHook("onFileClosed");
     addHook("onContentChanged");
     addHook("onTitleChanged");
 

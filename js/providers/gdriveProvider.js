@@ -287,20 +287,19 @@ define([
             string.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, debouncedRefreshPreview);
             debouncedRefreshPreview();
             
-            // Add event handler for UndoRedoStateChanged events.
+            // Save undo/redo buttons actions
             undoExecute = editor.uiManager.buttons.undo.execute;
             redoExecute = editor.uiManager.buttons.redo.execute;
-            
-//            var undoButton = $('#wmd-undo-button-realtime').removeClass("hide");
-//            var redoButton = $('#wmd-redo-button-realtime').removeClass("hide");
-//            $('#wmd-undo-button').addClass("hide");
-//            $('#wmd-redo-button').addClass("hide");
+
+            // Set new actions for undo/redo buttons
             editor.uiManager.buttons.undo.execute = function() {
                 model.canUndo && model.undo();
             };
             editor.uiManager.buttons.redo.execute = function() {
                 model.canRedo && model.redo();
             };
+            
+            // Add event handler for UndoRedoStateChanged events.
             function setUndoRedoState() {
                 editor.uiManager.setButtonState(editor.uiManager.buttons.undo, model.canUndo);
                 editor.uiManager.setButtonState(editor.uiManager.buttons.redo, model.canRedo);
@@ -326,14 +325,10 @@ define([
             realtimeDocument = undefined;
         }
         
+        // Set back original undo/redo actions
         editor.uiManager.buttons.undo.execute = undoExecute;
         editor.uiManager.buttons.redo.execute = redoExecute;
         editor.uiManager.setUndoRedoButtonStates();
-
-//        $('#wmd-undo-button-realtime').off('click').addClass("hide");
-//        $('#wmd-redo-button-realtime').off('click').addClass("hide");
-//        $('#wmd-undo-button').removeClass("hide");
-//        $('#wmd-redo-button').removeClass("hide");
     };
 
     core.onReady(function() {

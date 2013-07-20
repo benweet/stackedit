@@ -1397,6 +1397,7 @@
 
                 if (!noCleanup) {
                     fixupInputArea();
+                    inputBox.dispatchEvent(new Event('input'));
                 }
 
             }

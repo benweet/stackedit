@@ -316,23 +316,18 @@ define([
         $(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)").addClass("btn").css("left", 0).find("span").hide();
 
         // Add customized buttons
-        $("#wmd-bold-button").append($("<i>").addClass("icon-bold"));
-        $("#wmd-italic-button").append($("<i>").addClass("icon-italic"));
-        $("#wmd-link-button").append($("<i>").addClass("icon-globe"));
-        $("#wmd-quote-button").append($("<i>").addClass("icon-indent-left"));
-        $("#wmd-code-button").append($("<i>").addClass("icon-code"));
-        $("#wmd-image-button").append($("<i>").addClass("icon-picture"));
-        $("#wmd-olist-button").append($("<i>").addClass("icon-numbered-list"));
-        $("#wmd-ulist-button").append($("<i>").addClass("icon-list"));
-        $("#wmd-heading-button").append($("<i>").addClass("icon-text-height"));
-        $("#wmd-hr-button").append($("<i>").addClass("icon-hr"));
-        // Create additional undo/redo button for real time synchronization
-        var realtimeUndoButton = $('<li class="btn hide" id="wmd-undo-button-realtime" title="Undo - Ctrl+Z" style="left: 0px;">');
-        realtimeUndoButton.append($("<i>").addClass("icon-undo"));
-        $("#wmd-undo-button").append($("<i>").addClass("icon-undo")).after(realtimeUndoButton);
-        var realtimeRedoButton = $('<li class="btn hide" id="wmd-redo-button-realtime" title="Redo - Ctrl+Shift+Z" style="left: 0px;">');
-        realtimeRedoButton.append($("<i>").addClass("icon-share-alt"));
-        $("#wmd-redo-button").append($("<i>").addClass("icon-share-alt")).after(realtimeRedoButton);
+        $("#wmd-bold-button").append($('<i class="icon-bold">'));
+        $("#wmd-italic-button").append($('<i class="icon-italic">'));
+        $("#wmd-link-button").append($('<i class="icon-globe">'));
+        $("#wmd-quote-button").append($('<i class="icon-indent-left">'));
+        $("#wmd-code-button").append($('<i class="icon-code">'));
+        $("#wmd-image-button").append($('<i class="icon-picture">'));
+        $("#wmd-olist-button").append($('<i class="icon-numbered-list">'));
+        $("#wmd-ulist-button").append($('<i class="icon-list">'));
+        $("#wmd-heading-button").append($('<i class="icon-text-height">'));
+        $("#wmd-hr-button").append($('<i class="icon-hr">'));
+        $("#wmd-undo-button").append($('<i class="icon-undo">'));
+        $("#wmd-redo-button").append($('<i class="icon-share-alt">'));
         
         extensionMgr.onFileOpen(fileDesc);
     };

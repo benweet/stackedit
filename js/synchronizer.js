@@ -46,6 +46,10 @@ define([
         });
     });
 
+    /***************************************************************************
+     * Standard synchronization
+     **************************************************************************/
+
     // Recursive function to upload a single file on multiple locations
     var uploadSyncAttributesList = [];
     var uploadContent = undefined;
@@ -62,6 +66,12 @@ define([
 
         // Dequeue a synchronized location
         var syncAttributes = uploadSyncAttributesList.pop();
+
+        // Skip real time synchronized location
+        if(syncAttributes.isRealtime === true) {
+            locationUp(callback);
+            return;
+        }
 
         // Use the specified provider to perform the upload
         syncAttributes.provider.syncUp(uploadContent, uploadContentCRC, uploadTitle, uploadTitleCRC, syncAttributes, function(error, uploadFlag) {
@@ -188,30 +198,65 @@ define([
         return true;
     };
 
-    // Used for realtime synchronization
+    /***************************************************************************
+     * Realtime synchronization
+     **************************************************************************/
+
+    var realtimeFileDesc = undefined;
+    var realtimeSyncAttributes = undefined;
+    var isOnline = true;
+
+    // Determines if open file has real time sync location and tries to start
+    // real time sync
     function onFileOpen(fileDesc) {
-        _.each(fileDesc.syncLocations, function(syncAttributes) {
-            if(syncAttributes.isRealtime) {
-                core.lockUI(true);
-                syncAttributes.provider.startSync(fileDesc.content, syncAttributes, function() {
-                    core.lockUI(false);
-                });
-            }
-        });
-    }
-    function onFileClosed(fileDesc) {
-        _.each(fileDesc.syncLocations, function(syncAttributes) {
-            if(syncAttributes.isRealtime) {
-                syncAttributes.provider.stopSync(syncAttributes);
-            }
-        });
-    }
-    // Enable realtime synchronization
-    if(viewerMode === false) {
-        extensionMgr.addHookCallback("onFileOpen", onFileOpen);
-        extensionMgr.addHookCallback("onFileClosed", onFileClosed);
+        realtimeFileDesc = _.some(fileDesc.syncLocations, function(syncAttributes) {
+            realtimeSyncAttributes = syncAttributes;
+            return syncAttributes.isRealtime;
+        }) ? fileDesc : undefined;
+        tryStartRealtimeSync();
     }
 
+    // Tries to start/stop real time sync on online/offline event
+    function onOfflineChanged(isOfflineParam) {
+        if(isOfflineParam === false) {
+            isOnline = true;
+            tryStartRealtimeSync();
+        }
+        else {
+            synchronizer.tryStopRealtimeSync();
+            isOnline = false;
+        }
+    }
+
+    // Starts real time synchronization if:
+    // 1. current file has real time sync location
+    // 2. we are online
+    function tryStartRealtimeSync() {
+        if(realtimeFileDesc !== undefined && isOnline === true) {
+            core.lockUI(true);
+            realtimeSyncAttributes.provider.startRealtimeSync(realtimeFileDesc.content, realtimeSyncAttributes, function() {
+                core.lockUI(false);
+            });
+        }
+    }
+
+    // Stops previously started synchronization if any
+    synchronizer.tryStopRealtimeSync = function() {
+        if(realtimeFileDesc !== undefined && isOnline === true) {
+            realtimeSyncAttributes.provider.stopRealtimeSync();
+        }
+    };
+
+    // Triggers realtime synchronization from extensionMgr events
+    if(viewerMode === false) {
+        extensionMgr.addHookCallback("onFileOpen", onFileOpen);
+        extensionMgr.addHookCallback("onFileClosed", synchronizer.tryStopRealtimeSync);
+        extensionMgr.addHookCallback("onOfflineChanged", onOfflineChanged);
+    }
+
+    /***************************************************************************
+     * Initialize module
+     **************************************************************************/
 
     // Initialize the export dialog
     function initExportDialog(provider) {
@@ -250,7 +295,7 @@ define([
                     if(_.size(fileDesc.syncLocations) > 0) {
                         extensionMgr.onError("Realtime collaboration document can't be synchronized with multiple locations");
                         return;
-                    } 
+                    }
                     // Perform the provider's real time export
                     provider.exportRealtimeFile(event, fileDesc.title, fileDesc.content, function(error, syncAttributes) {
                         if(error) {
@@ -259,13 +304,18 @@ define([
                         syncAttributes.isRealtime = true;
                         fileDesc.addSyncLocation(syncAttributes);
                         extensionMgr.onSyncExportSuccess(fileDesc, syncAttributes);
+
+                        // Start the real time sync
+                        realtimeFileDesc = fileDesc;
+                        realtimeSyncAttributes = syncAttributes;
+                        tryStartRealtimeSync();
                     });
                 }
                 else {
                     if(_.size(fileDesc.syncLocations) > 0 && _.first(_.values(obj)).isRealtime) {
                         extensionMgr.onError("Realtime collaboration document can't be synchronized with multiple locations");
                         return;
-                    } 
+                    }
                     // Perform the provider's standard export
                     provider.exportFile(event, fileDesc.title, fileDesc.content, function(error, syncAttributes) {
                         if(error) {
@@ -290,7 +340,7 @@ define([
                 if(_.size(fileDesc.syncLocations) > 0 && _.first(_.values(obj)).isRealtime) {
                     extensionMgr.onError("Realtime collaboration document can't be synchronized with multiple locations");
                     return;
-                } 
+                }
                 provider.exportManual(event, fileDesc.title, fileDesc.content, function(error, syncAttributes) {
                     if(error) {
                         return;

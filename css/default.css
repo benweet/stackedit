@@ -134,6 +134,7 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
 }
 
 .navbar-inner .btn.disabled,
+.navbar-inner .btn.blocked,
 .navbar-inner .btn[disabled] {
 	color: #333333;
 	background-color: #ddd;

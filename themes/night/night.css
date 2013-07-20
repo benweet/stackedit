@@ -111,6 +111,7 @@ blockquote {
 }
 
 .navbar-inner .btn.disabled,
+.navbar-inner .btn.blocked,
 .navbar-inner .btn[disabled] {
     background-color: #444;
 }

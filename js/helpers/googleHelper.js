@@ -180,7 +180,7 @@ define([
         });
         task.enqueue();
     };
-    
+
     googleHelper.createRealtimeFile = function(parentId, title, callback) {
         var result = undefined;
         var task = new AsyncTask();
@@ -189,7 +189,7 @@ define([
         task.onRun(function() {
             var metadata = {
                 title: title,
-                mimeType : 'application/vnd.google-apps.drive-sdk',
+                mimeType: 'application/vnd.google-apps.drive-sdk',
             };
             if(parentId !== undefined) {
                 // Specify the directory
@@ -201,7 +201,7 @@ define([
                 ];
             }
             var request = gapi.client.drive.files.insert({
-                'resource' : metadata
+                'resource': metadata
             });
             request.execute(function(response) {
                 if(response && response.id) {
@@ -413,6 +413,14 @@ define([
                     task.chain(recursiveDownloadContent);
                     return;
                 }
+                // if file is a real time document
+                if(file.mimeType.indexOf("application/vnd.google-apps.drive-sdk") === 0) {
+                    file.content = "";
+                    file.isRealtime = true;
+                    objects.shift();
+                    task.chain(recursiveDownloadContent);
+                    return;
+                }
                 var headers = {};
                 var token = gapi.auth.getToken();
                 if(token) {
@@ -449,7 +457,7 @@ define([
         });
         task.enqueue();
     };
-    
+
     googleHelper.loadRealtime = function(fileId, content, callback) {
         var doc = undefined;
         var task = new AsyncTask();
@@ -469,9 +477,9 @@ define([
                 handleError({
                     code: err.type
                 }, task);
-        });
-        task.onSuccess(function() {
-            callback(undefined, doc);
+            });
+            task.onSuccess(function() {
+                callback(undefined, doc);
             });
         });
         task.onError(function(error) {
@@ -560,7 +568,12 @@ define([
             pickerBuilder.setAppId(GOOGLE_DRIVE_APP_ID);
             if(!isImagePicker) {
                 var view = new google.picker.View(google.picker.ViewId.DOCS);
-                view.setMimeTypes("text/x-markdown,text/plain,application/octet-stream");
+                view.setMimeTypes([
+                    "text/x-markdown",
+                    "text/plain",
+                    "application/octet-stream",
+                    "application/vnd.google-apps.drive-sdk." + GOOGLE_DRIVE_APP_ID
+                ].join(","));
                 pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
                 pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);
                 pickerBuilder.addView(view);

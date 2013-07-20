@@ -12,6 +12,11 @@ define([
     dialogManageSynchronization.onExtensionMgrCreated = function(extensionMgrParameter) {
         extensionMgr = extensionMgrParameter;
     };
+    
+    var synchronizer = undefined;
+    dialogManageSynchronization.onSynchronizerCreated = function(synchronizerParameter) {
+        synchronizer = synchronizerParameter;
+    };
 
     var fileDesc = undefined;
     var removeButtonTemplate = '<a class="btn" title="Remove this location"><i class="icon-trash"></i></a>';
@@ -36,6 +41,7 @@ define([
                 syncDesc: syncDesc
             }));
             lineElement.append($(removeButtonTemplate).click(function() {
+                synchronizer.tryStopRealtimeSync();
                 fileDesc.removeSyncLocation(syncAttributes);
                 extensionMgr.onSyncRemoved(fileDesc, syncAttributes);
             }));

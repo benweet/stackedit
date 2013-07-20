@@ -148,7 +148,8 @@
 
             //Not necessary
             //forceRefresh();
-            return undoManager;
+            that.undoManager = undoManager;
+            that.uiManager = uiManager;
         };
 
     }
@@ -663,7 +664,7 @@
                 }
             };
 
-            util.addEvent(panels.input, "keydown", handleCtrlYZ);
+            //util.addEvent(panels.input, "keydown", handleCtrlYZ);
             util.addEvent(panels.input, "keydown", handleModeChange);
             util.addEvent(panels.input, "mousedown", function () {
                 setMode("moving");
@@ -694,6 +695,7 @@
             inputStateObj.setInputAreaSelection();
             saveState();
         };
+        this.setMode = setMode;
 
         init();
     }
@@ -1251,7 +1253,7 @@
         util.addEvent(inputBox, keyEvent, function (key) {
 
             // Check to see if we have a button key and, if so execute the callback.
-            if ((key.ctrlKey || key.metaKey) && !key.altKey && !key.shiftKey) {
+            if ((key.ctrlKey || key.metaKey) && !key.altKey) {
 
                 var keyCode = key.charCode || key.keyCode;
                 var keyCodeStr = String.fromCharCode(keyCode).toLowerCase();
@@ -1298,6 +1300,12 @@
                             doClick(buttons.undo);
                         }
                         break;
+                    case "v":
+                        undoManager.setMode("typing");
+                        return;
+                    case "x":
+                        undoManager.setMode("deleting");
+                        return;
                     default:
                         return;
                 }
@@ -1547,6 +1555,8 @@
         };
 
         this.setUndoRedoButtonStates = setUndoRedoButtonStates;
+        this.buttons = buttons;
+        this.setButtonState = setupButton;
 
     }
 

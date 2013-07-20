@@ -197,7 +197,7 @@ define([
                 south__minSize: 200
             }));
         }
-        $("#navbar").click(function() {
+        $(".navbar").click(function() {
             layout.allowOverflow('north');
         });
         $(".ui-layout-toggler-north").addClass("btn").append($("<b>").addClass("caret"));
@@ -212,7 +212,6 @@ define([
     var editor = undefined;
     var fileDesc = undefined;
     var documentContent = undefined;
-    var undoManager = undefined;
     core.initEditor = function(fileDescParam) {
         if(fileDesc !== undefined) {
             extensionMgr.onFileClosed(fileDesc);
@@ -224,7 +223,7 @@ define([
         editorElt.val(initDocumentContent);
         if(editor !== undefined) {
             // If the editor is already created
-            undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
+            editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
             editor.refreshPreview();
             extensionMgr.onFileOpen(fileDesc);
             return;
@@ -310,9 +309,8 @@ define([
         }
         extensionMgr.onEditorConfigure(editor);
         editor.hooks.chain("onPreviewRefresh", extensionMgr.onAsyncPreview);
-        undoManager = editor.run(previewWrapper);
-        undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
-        extensionMgr.onFileOpen(fileDesc);
+        editor.run(previewWrapper);
+        editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
 
         // Hide default buttons
         $(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)").addClass("btn").css("left", 0).find("span").hide();
@@ -328,8 +326,15 @@ define([
         $("#wmd-ulist-button").append($("<i>").addClass("icon-list"));
         $("#wmd-heading-button").append($("<i>").addClass("icon-text-height"));
         $("#wmd-hr-button").append($("<i>").addClass("icon-hr"));
-        $("#wmd-undo-button").append($("<i>").addClass("icon-undo"));
-        $("#wmd-redo-button").append($("<i>").addClass("icon-share-alt"));
+        // Create additional undo/redo button for real time synchronization
+        var realtimeUndoButton = $('<li class="btn hide" id="wmd-undo-button-realtime" title="Undo - Ctrl+Z" style="left: 0px;">');
+        realtimeUndoButton.append($("<i>").addClass("icon-undo"));
+        $("#wmd-undo-button").append($("<i>").addClass("icon-undo")).after(realtimeUndoButton);
+        var realtimeRedoButton = $('<li class="btn hide" id="wmd-redo-button-realtime" title="Redo - Ctrl+Shift+Z" style="left: 0px;">');
+        realtimeRedoButton.append($("<i>").addClass("icon-share-alt"));
+        $("#wmd-redo-button").append($("<i>").addClass("icon-share-alt")).after(realtimeRedoButton);
+        
+        extensionMgr.onFileOpen(fileDesc);
     };
     
     // Used to lock the editor from the user interaction during asynchronous tasks
@@ -337,14 +342,7 @@ define([
     core.lockUI = function(param) {
         uiLocked = param;
         $("#wmd-input").prop("disabled", uiLocked);
-        $(".btn").each(function() {
-            var classes = $(this).attr("class");
-            if(uiLocked) {
-                $(this).attr("class", classes + " disabled");
-            } else {
-                $(this).attr("class", classes.replace(" disabled", ""));
-            }
-        });
+        $(".navbar-inner .btn").toggleClass("blocked", uiLocked);
         if(uiLocked) {
             $(".lock-ui").removeClass("hide");
         }

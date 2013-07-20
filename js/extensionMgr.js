@@ -65,14 +65,16 @@ define([
             });
         };
     }
-    extensionMgr.addHookCallback = function(hookName, callback) {
-        hookCallbackList[hookName].push(callback);
-    };
-
+    
     // Add a Hook to the extensionMgr
     function addHook(hookName, noLog) {
         extensionMgr[hookName] = createHook(hookName, noLog);
     }
+
+    // Used by external modules to listen to extension events
+    extensionMgr.addHookCallback = function(hookName, callback) {
+        hookCallbackList[hookName].push(callback);
+    };
 
     // Set extension config
     extensionSettings = settings.extensionSettings || {};

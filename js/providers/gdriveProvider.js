@@ -42,16 +42,18 @@ define([
                     return;
                 }
                 var fileDescList = [];
+                var fileDesc = undefined;
                 _.each(result, function(file) {
                     var syncAttributes = createSyncAttributes(file.id, file.etag, file.content, file.title);
+                    syncAttributes.isRealtime = file.isRealtime;
                     var syncLocations = {};
                     syncLocations[syncAttributes.syncIndex] = syncAttributes;
-                    var fileDesc = fileMgr.createFile(file.title, file.content, syncLocations);
-                    fileMgr.selectFile(fileDesc);
+                    fileDesc = fileMgr.createFile(file.title, file.content, syncLocations);
                     fileDescList.push(fileDesc);
                 });
-                if(fileDescList.length !== 0) {
+                if(fileDesc !== undefined) {
                     extensionMgr.onSyncImportSuccess(fileDescList, gdriveProvider);
+                    fileMgr.selectFile(fileDesc);
                 }
             });
         });
@@ -154,7 +156,9 @@ define([
             _.each(changes, function(change) {
                 var syncIndex = createSyncIndex(change.fileId);
                 var syncAttributes = fileMgr.getSyncAttributes(syncIndex);
-                if(syncAttributes === undefined) {
+                // If file is not synchronized or it's a real time synchronized location
+                if(syncAttributes === undefined || syncAttributes.isRealtime === true) {
+                    // Skip it
                     return;
                 }
                 // Store syncAttributes to avoid 2 times searching
@@ -261,31 +265,75 @@ define([
     });
     
     // Start realtime synchronization
-    var binding = undefined;
-    gdriveProvider.startSync = function(content, syncAttributes, callback) {
+    var realtimeDocument = undefined;
+    var realtimeBinding = undefined;
+    var undoExecute = undefined;
+    var redoExecute = undefined;
+    gdriveProvider.startRealtimeSync = function(content, syncAttributes, callback) {
         logger.log("Starting Google Drive realtime synchronization");
         googleHelper.loadRealtime(syncAttributes.id, content, function(err, doc) {
             if(err || !doc) {
                 callback(err);
                 return;
             }
-            var string = doc.getModel().getRoot().get('content');
-            binding = gapi.drive.realtime.databinding.bindString(string, $("#wmd-input")[0]);
-            // Listen to  
+            realtimeDocument = doc;
+            var model = realtimeDocument.getModel();
+            var string = model.getRoot().get('content');
+            realtimeBinding = gapi.drive.realtime.databinding.bindString(string, $("#wmd-input")[0]);
+            
+            // Listen to text changed events
             var debouncedRefreshPreview = _.debounce(editor.refreshPreview, 100);
             string.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, debouncedRefreshPreview);
             string.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, debouncedRefreshPreview);
+            debouncedRefreshPreview();
+            
+            // Add event handler for UndoRedoStateChanged events.
+            undoExecute = editor.uiManager.buttons.undo.execute;
+            redoExecute = editor.uiManager.buttons.redo.execute;
+            
+//            var undoButton = $('#wmd-undo-button-realtime').removeClass("hide");
+//            var redoButton = $('#wmd-redo-button-realtime').removeClass("hide");
+//            $('#wmd-undo-button').addClass("hide");
+//            $('#wmd-redo-button').addClass("hide");
+            editor.uiManager.buttons.undo.execute = function() {
+                model.canUndo && model.undo();
+            };
+            editor.uiManager.buttons.redo.execute = function() {
+                model.canRedo && model.redo();
+            };
+            function setUndoRedoState() {
+                editor.uiManager.setButtonState(editor.uiManager.buttons.undo, model.canUndo);
+                editor.uiManager.setButtonState(editor.uiManager.buttons.redo, model.canRedo);
+            }
+            model.addEventListener(
+                gapi.drive.realtime.EventType.UNDO_REDO_STATE_CHANGED,
+                setUndoRedoState);
+            setUndoRedoState();
+            
             callback();
         });
     };
 
     // Stop realtime synchronization
-    gdriveProvider.stopSync = function(syncAttributes) {
+    gdriveProvider.stopRealtimeSync = function() {
         logger.log("Stopping Google Drive realtime synchronization");
-        if(binding !== undefined) {
-            binding.unbind();
-            binding = undefined;
+        if(realtimeBinding !== undefined) {
+            realtimeBinding.unbind();
+            realtimeBinding = undefined;
         }
+        if(realtimeDocument !== undefined) {
+            realtimeDocument.close();
+            realtimeDocument = undefined;
+        }
+        
+        editor.uiManager.buttons.undo.execute = undoExecute;
+        editor.uiManager.buttons.redo.execute = redoExecute;
+        editor.uiManager.setUndoRedoButtonStates();
+
+//        $('#wmd-undo-button-realtime').off('click').addClass("hide");
+//        $('#wmd-redo-button-realtime').off('click').addClass("hide");
+//        $('#wmd-undo-button').removeClass("hide");
+//        $('#wmd-redo-button').removeClass("hide");
     };
 
     core.onReady(function() {

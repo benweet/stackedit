@@ -240,10 +240,7 @@ define([
     // 2. we are online
     function tryStartRealtimeSync() {
         if(realtimeFileDesc !== undefined && isOnline === true) {
-            core.lockUI(true);
-            realtimeSyncAttributes.provider.startRealtimeSync(realtimeFileDesc.title, realtimeFileDesc.content, realtimeSyncAttributes, function() {
-                core.lockUI(false);
-            });
+            realtimeSyncAttributes.provider.startRealtimeSync(realtimeFileDesc, realtimeSyncAttributes);
         }
     }
 
@@ -319,7 +316,7 @@ define([
                     });
                 }
                 else {
-                    if(_.size(fileDesc.syncLocations) > 0 && _.first(_.values(obj)).isRealtime) {
+                    if(_.size(fileDesc.syncLocations) > 0 && _.first(_.values(fileDesc.syncLocations)).isRealtime) {
                         extensionMgr.onError("Realtime collaboration document can't be synchronized with multiple locations");
                         return;
                     }
@@ -344,7 +341,7 @@ define([
             // Provider's manual export button
             $(".action-sync-manual-" + provider.providerId).click(function(event) {
                 var fileDesc = fileMgr.currentFile;
-                if(_.size(fileDesc.syncLocations) > 0 && _.first(_.values(obj)).isRealtime) {
+                if(_.size(fileDesc.syncLocations) > 0 && _.first(_.values(fileDesc.syncLocations)).isRealtime) {
                     extensionMgr.onError("Realtime collaboration document can't be synchronized with multiple locations");
                     return;
                 }

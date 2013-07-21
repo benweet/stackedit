@@ -89,7 +89,7 @@ define([
             callback(undefined, syncAttributes);
         });
     };
-    
+
     gdriveProvider.exportRealtimeFile = function(event, title, content, callback) {
         var parentId = utils.getInputTextValue("#input-sync-export-gdrive-parentid");
         googleHelper.createRealtimeFile(parentId, title, function(error, result) {
@@ -266,33 +266,38 @@ define([
     extensionMgr.addHookCallback("onEditorConfigure", function(editorParam) {
         editor = editorParam;
     });
-    
+
     // Start realtime synchronization
     var realtimeDocument = undefined;
     var realtimeBinding = undefined;
     var undoExecute = undefined;
     var redoExecute = undefined;
-    gdriveProvider.startRealtimeSync = function(localTitle, localContent, syncAttributes, callback) {
-        logger.log("Starting Google Drive realtime synchronization");
-        googleHelper.loadRealtime(syncAttributes.id, localContent, function(err, doc) {
+    gdriveProvider.startRealtimeSync = function(fileDesc, syncAttributes) {
+        googleHelper.loadRealtime(syncAttributes.id, fileDesc.content, function(err, doc) {
             if(err || !doc) {
-                callback(err);
                 return;
             }
+            
+            // If user just switched to another document
+            if(fileMgr.currentFile !== fileDesc) {
+                doc.close();
+                return;
+            }
+            
+            logger.log("Starting Google Drive realtime synchronization");
             realtimeDocument = doc;
             var model = realtimeDocument.getModel();
             var string = model.getRoot().get('content');
-            
+
             // Saves model content checksum
             function updateContentState() {
                 syncAttributes.contentCRC = utils.crc32(string.getText());
                 utils.storeAttributes(syncAttributes);
             }
-            
+
             var debouncedRefreshPreview = _.debounce(editor.refreshPreview, 100);
             // Called when a modification has been detected
             function contentChangeListener(e) {
-                console.log(e);
                 // If modification comes down from a collaborator
                 if(e.isLocal === false) {
                     logger.log("Google Drive realtime document updated from server");
@@ -304,15 +309,15 @@ define([
             string.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, contentChangeListener);
             string.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, contentChangeListener);
             realtimeDocument.addEventListener(gapi.drive.realtime.EventType.DOCUMENT_SAVE_STATE_CHANGED, function(e) {
-                console.log(e);
                 // Save success event
                 if(e.isPending === false && e.isSaving === false) {
                     logger.log("Google Drive realtime document successfully saved on server");
                     updateContentState();
                 }
             });
-            
+
             // Try to merge offline modifications
+            var localContent = fileDesc.content;
             var localContentChanged = syncAttributes.contentCRC != utils.crc32(localContent);
             var remoteContent = string.getText();
             var remoteContentCRC = utils.crc32(remoteContent);
@@ -321,25 +326,25 @@ define([
             if(fileContentChanged === true && localContentChanged === true) {
                 if(remoteContentChanged === true) {
                     // Conflict detected
-                    fileMgr.createFile(localTitle + " (backup)", localContent);
-                    extensionMgr.onMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
+                    fileMgr.createFile(fileDesc.title + " (backup)", localContent);
+                    extensionMgr.onMessage('Conflict detected on "' + fileDesc.title + '". A backup has been created locally.');
                 }
                 else {
                     // Add local modifications if no collaborators change
                     string.setText(localContent);
                 }
             }
-            
+
             // Binds model with textarea
             realtimeBinding = gapi.drive.realtime.databinding.bindString(string, $("#wmd-input")[0]);
-            
+
             // Update content state according to collaborators changes
             if(remoteContentChanged === true) {
                 logger.log("Google Drive realtime document updated from server");
                 updateContentState();
                 debouncedRefreshPreview();
             }
-            
+
             // Save undo/redo buttons actions
             undoExecute = editor.uiManager.buttons.undo.execute;
             redoExecute = editor.uiManager.buttons.redo.execute;
@@ -351,18 +356,30 @@ define([
             editor.uiManager.buttons.redo.execute = function() {
                 model.canRedo && model.redo();
             };
-            
+
             // Add event handler for model's UndoRedoStateChanged events
             function setUndoRedoState() {
                 editor.uiManager.setButtonState(editor.uiManager.buttons.undo, model.canUndo);
                 editor.uiManager.setButtonState(editor.uiManager.buttons.redo, model.canRedo);
             }
-            model.addEventListener(
-                gapi.drive.realtime.EventType.UNDO_REDO_STATE_CHANGED,
-                setUndoRedoState);
+            model.addEventListener(gapi.drive.realtime.EventType.UNDO_REDO_STATE_CHANGED, setUndoRedoState);
             setUndoRedoState();
             
-            callback();
+        }, function(err) {
+            console.error(err);
+            if(err.type == "token_refresh_required") {
+                googleHelper.forceAuthenticate();
+            }
+            else if(err.type == "not_found") {
+                extensionMgr.onError('"' + fileDesc.title + '" has been removed from Google Drive.');
+                fileDesc.removeSyncLocation(syncAttributes);
+                extensionMgr.onSyncRemoved(fileDesc, syncAttributes);
+                gdriveProvider.stopRealtimeSync();
+            }
+            else if(err.isFatal) {
+                extensionMgr.onError('An error has forced real time synchronization to stop.');
+                gdriveProvider.stopRealtimeSync();
+            }
         });
     };
 
@@ -377,7 +394,7 @@ define([
             realtimeDocument.close();
             realtimeDocument = undefined;
         }
-        
+
         // Set back original undo/redo actions
         editor.uiManager.buttons.undo.execute = undoExecute;
         editor.uiManager.buttons.redo.execute = redoExecute;

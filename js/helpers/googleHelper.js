@@ -85,6 +85,13 @@ define([
             task.chain(localAuthenticate);
         });
     }
+    googleHelper.forceAuthenticate = function() {
+        authenticated = false;
+        var task = new AsyncTask();
+        connect(task);
+        authenticate(task);
+        task.enqueue();
+    };
 
     googleHelper.upload = function(fileId, parentId, title, content, etag, callback) {
         var result = undefined;
@@ -458,7 +465,7 @@ define([
         task.enqueue();
     };
 
-    googleHelper.loadRealtime = function(fileId, content, callback) {
+    googleHelper.loadRealtime = function(fileId, content, callback, errorCallback) {
         var doc = undefined;
         var task = new AsyncTask();
         connect(task);
@@ -473,10 +480,8 @@ define([
                 var string = model.createString(content);
                 model.getRoot().set('content', string);
             }, function(err) {
-                // handleErrors
-                handleError({
-                    code: err.type
-                }, task);
+                errorCallback(err);
+                task.error(new Error(err.message));
             });
         });
         task.onSuccess(function() {
@@ -503,7 +508,7 @@ define([
                     task.retry(new Error(errorMsg));
                     return;
                 }
-                else if(error.code === 401 || error.code === 403) {
+                else if(error.code === 401 || error.code === 403 || error.code == "token_refresh_required") {
                     authenticated = false;
                     errorMsg = "Access to Google account is not authorized.";
                     task.retry(new Error(errorMsg), 1);

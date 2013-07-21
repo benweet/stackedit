@@ -137,6 +137,7 @@ define([
     // Reset input control in all modals
     utils.resetModalInputs = function() {
         $(".modal input[type=text]:not([disabled]), .modal input[type=password], .modal textarea").val("");
+        $(".modal input[type=checkbox]").prop("checked", false);
     };
 
     // Basic trim function

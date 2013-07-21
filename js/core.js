@@ -26,12 +26,12 @@ define([
     };
 
     // Used to detect user activity
-    var userReal = false;
+    core.isUserReal = false;
     var userActive = false;
     var windowUnique = true;
     var userLastActivity = 0;
     function setUserActive() {
-        userReal = true;
+        core.isUserReal = true;
         userActive = true;
         userLastActivity = utils.currentTime;
     }
@@ -46,7 +46,7 @@ define([
     // Used to only have 1 window of the application in the same browser
     var windowId = undefined;
     function checkWindowUnique() {
-        if(userReal === false || windowUnique === false) {
+        if(core.isUserReal === false || windowUnique === false) {
             return;
         }
         if(windowId === undefined) {

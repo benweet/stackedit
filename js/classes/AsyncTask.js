@@ -127,6 +127,12 @@ define([
 
     // Run the next task in the queue if any and no other running
     function runTask() {
+        
+        // Wait for user first interaction before running first task
+        if(core.isUserReal === false) {
+            return
+        }
+        
         // Use defer to avoid stack overflow
         _.defer(function() {
 

@@ -21,26 +21,25 @@ define([
         newConfig.syncPeriod = utils.getInputIntValue("#input-sync-period", event, 0);
     };
 
+    var synchronizer = undefined;
+    buttonSync.onSynchronizerCreated = function(synchronizerParameter) {
+        synchronizer = synchronizerParameter;
+    };
+
     var button = undefined;
     var syncRunning = false;
-    var uploadPending = false;
     var isOffline = false;
     // Enable/disable the button
     var updateButtonState = function() {
         if(button === undefined) {
             return;
         }
-        if(syncRunning === true || uploadPending === false || isOffline) {
+        if(syncRunning === true || synchronizer.hasSync() === false || isOffline) {
             button.addClass("disabled");
         }
         else {
             button.removeClass("disabled");
         }
-    };
-
-    var synchronizer = undefined;
-    buttonSync.onSynchronizerCreated = function(synchronizerParameter) {
-        synchronizer = synchronizerParameter;
     };
 
     // Run sync periodically
@@ -64,15 +63,14 @@ define([
     };
 
     buttonSync.onReady = updateButtonState;
+    buttonSync.onFileCreated = updateButtonState;
+    buttonSync.onFileDeleted = updateButtonState;
+    buttonSync.onSyncImportSuccess = updateButtonState;
+    buttonSync.onSyncExportSuccess = updateButtonState;
+    buttonSync.onSyncRemoved = updateButtonState;
 
     buttonSync.onSyncRunning = function(isRunning) {
         syncRunning = isRunning;
-        uploadPending = true;
-        updateButtonState();
-    };
-
-    buttonSync.onSyncSuccess = function() {
-        uploadPending = false;
         updateButtonState();
     };
 
@@ -80,19 +78,6 @@ define([
         isOffline = isOfflineParameter;
         updateButtonState();
     };
-
-    // Check that a file has synchronized locations and no real time synchronized location
-    var checkSynchronization = function(fileDesc) {
-        if(_.size(fileDesc.syncLocations) !== 0 && !_.some(fileDesc.syncLocations, function(syncAttributes) {
-            return syncAttributes.isRealtime;
-        })) {
-            uploadPending = true;
-            updateButtonState();
-        }
-    };
-
-    buttonSync.onContentChanged = checkSynchronization;
-    buttonSync.onTitleChanged = checkSynchronization;
 
     return buttonSync;
 

@@ -26,7 +26,11 @@ define([
             _.chain(attributesList).sortBy(function(attributes) {
                 return attributes.provider.providerId;
             }).each(function(attributes) {
-                result.push('<i class="icon-' + attributes.provider.providerId + '"></i>');
+                var classes = 'icon-' + attributes.provider.providerId;
+                if(attributes.isRealtime === true) {
+                    classes += " realtime";
+                }
+                result.push('<i class="' + classes + '"></i>');
             });
             result.push(" ");
             result.push(fileDesc.title);

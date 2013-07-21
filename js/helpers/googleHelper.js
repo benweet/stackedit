@@ -478,9 +478,9 @@ define([
                     code: err.type
                 }, task);
             });
-            task.onSuccess(function() {
-                callback(undefined, doc);
-            });
+        });
+        task.onSuccess(function() {
+            callback(undefined, doc);
         });
         task.onError(function(error) {
             callback(error);

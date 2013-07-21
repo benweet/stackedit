@@ -291,10 +291,10 @@
 			<h3>Export to Google Drive</h3>
 		</div>
 		<div class="modal-body">
-			<blockquote class="muted">This will upload the current
+			<blockquote class="muted">This will save the current
 				document to your Google Drive account and keep it synchronized.</blockquote>
 			<p>
-				Here, you can specify a <b>folder ID</b> (optional):
+				Please specify a <b>folder ID</b> (optional):
 			</p>
 			<div class="input-prepend">
 				<span class="add-on"><i class="icon-gdrive"></i></span><input
@@ -302,6 +302,15 @@
 					placeholder="FolderID"></input>
 			</div>
 			<br /> <br />
+			<blockquote class="muted">
+				<b>NOTE:</b>
+				<ul>
+					<li>If no folder ID is supplied, the file will be created in
+						your root folder.</li>
+					<li>You can move or rename the file afterwards within Google
+						Drive.</li>
+				</ul>
+			</blockquote>
 			<p>
 				<label class="checkbox"> <input
 					id="input-sync-export-gdrive-realtime" type="checkbox">
@@ -311,12 +320,8 @@
 			<blockquote class="muted">
 				<b>NOTE:</b>
 				<ul>
-					<li>If no folder ID is supplied, the file will be created in
-						your root folder.</li>
-					<li>You can move or rename the file afterwards within Google
-						Drive.</li>
 					<li>Real time collaborative documents can't be open outside
-						StackEdit</li>
+						StackEdit.</li>
 					<li>Real time collaborative documents can't have multiple
 						synchronized locations.</li>
 				</ul>
@@ -336,7 +341,7 @@
 			<h3>Export to Dropbox</h3>
 		</div>
 		<div class="modal-body">
-			<blockquote class="muted">This will upload the current
+			<blockquote class="muted">This will save the current
 				document to your Dropbox account and keep it synchronized.</blockquote>
 			<p>
 				Please specify a <b>file path</b> for "<span class="file-title"></span>":

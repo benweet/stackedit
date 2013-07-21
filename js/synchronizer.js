@@ -45,6 +45,13 @@ define([
             }
         });
     });
+    
+    // Returns true if at least one file has synchronized location
+    synchronizer.hasSync = function() {
+        return _.some(providerMap, function(provider) {
+            return fileMgr.hasSync(provider);
+        });
+    };
 
     /***************************************************************************
      * Standard synchronization
@@ -234,7 +241,7 @@ define([
     function tryStartRealtimeSync() {
         if(realtimeFileDesc !== undefined && isOnline === true) {
             core.lockUI(true);
-            realtimeSyncAttributes.provider.startRealtimeSync(realtimeFileDesc.content, realtimeSyncAttributes, function() {
+            realtimeSyncAttributes.provider.startRealtimeSync(realtimeFileDesc.title, realtimeFileDesc.content, realtimeSyncAttributes, function() {
                 core.lockUI(false);
             });
         }

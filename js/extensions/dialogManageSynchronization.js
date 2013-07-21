@@ -38,7 +38,8 @@ define([
             var syncDesc = syncAttributes.id || syncAttributes.path;
             var lineElement = $(_.template(dialogManageSynchronizationLocationHTML, {
                 provider: syncAttributes.provider,
-                syncDesc: syncDesc
+                syncDesc: syncDesc,
+                isRealtime: syncAttributes.isRealtime
             }));
             lineElement.append($(removeButtonTemplate).click(function() {
                 synchronizer.tryStopRealtimeSync();

@@ -478,6 +478,11 @@ div.dropdown-menu textarea {
 	background-position: -19px 0;
 }
 
+.icon-gdrive.realtime {
+	width: 18px;
+	background-position: -180px 0;
+}
+
 .icon-dropbox {
 	background-image: url("../img/icons.png") !important;
 	width: 16px;

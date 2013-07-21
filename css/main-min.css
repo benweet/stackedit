@@ -5603,6 +5603,7 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
 	display: none;
 }
 .navbar-inner .btn.disabled,
+.navbar-inner .btn.blocked,
 .navbar-inner .btn[disabled] {
 	color: #333333;
 	background-color: #ddd;
@@ -5882,6 +5883,10 @@ div.dropdown-menu textarea {
 	height: 16px;
 	background-position: -19px 0;
 }
+.icon-gdrive.realtime {
+	width: 18px;
+	background-position: -162px 0;
+}
 .icon-dropbox {
 	background-image: url(../img/icons.png) !important;
 	width: 16px;
@@ -6113,6 +6118,14 @@ input[type="file"] {
 	padding: 0 6px;
 	overflow-y: scroll;
 	z-index: -1;
+}
+.lock-ui {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1050;
 }
 .gecko #md-section-helper {
 	

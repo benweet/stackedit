@@ -61,6 +61,9 @@ define([
             editor.hooks.chain("onPreviewRefresh", prettyPrint);
         }
         Markdown.Extra.init(converter, options);
+        
+        // Store extensions list in converter for partialRendering
+        converter.extraExtensions = markdownExtra.config.extensions;
     };
 
     return markdownExtra;

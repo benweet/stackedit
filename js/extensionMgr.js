@@ -5,6 +5,7 @@ define([
     "classes/Extension",
     "settings",
     "text!html/settingsExtensionsAccordion.html",
+    "extensions/partialRendering",
     "extensions/userCustom",
     "extensions/googleAnalytics",
     "extensions/dialogAbout",

@@ -45,7 +45,7 @@ define([
     };
 
     buttonStat.onPreviewFinished = function() {
-        var text = $("#wmd-preview").clone().find("script").remove().end().text();
+        var text = $("#preview-contents").clone().find("script").remove().end().text();
         $("#span-stat-value1").text((text.match(new RegExp(buttonStat.config.value1, "g")) || []).length);
         $("#span-stat-value2").text((text.match(new RegExp(buttonStat.config.value2, "g")) || []).length);
         $("#span-stat-value3").text((text.match(new RegExp(buttonStat.config.value3, "g")) || []).length);

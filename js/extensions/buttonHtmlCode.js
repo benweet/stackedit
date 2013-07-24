@@ -30,12 +30,12 @@ define([
         selectedFileDesc = fileDesc;
     };
 
-    buttonHtmlCode.onPreviewFinished = function() {
+    buttonHtmlCode.onPreviewFinished = function(html) {
         try {
             var htmlCode = _.template(buttonHtmlCode.config.template, {
                 documentTitle: selectedFileDesc.title,
                 documentMarkdown: selectedFileDesc.content,
-                documentHTML: $("#wmd-preview").html()
+                documentHTML: html
             });
             $("#input-html-code").val(htmlCode);
         }

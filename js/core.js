@@ -181,7 +181,7 @@ define([
         extensionMgr.onLayoutConfigure(layoutGlobalConfig);
         if(settings.layoutOrientation == "horizontal") {
             $(".ui-layout-south").remove();
-            $(".preview-container").html('<div id="extension-preview-buttons"></div><div id="wmd-preview"></div>');
+            $(".preview-container").html('<div id="extension-preview-buttons"></div><div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>');
             layout = $('body').layout($.extend(layoutGlobalConfig, {
                 east__resizable: true,
                 east__size: .5,
@@ -190,7 +190,7 @@ define([
         }
         else if(settings.layoutOrientation == "vertical") {
             $(".ui-layout-east").remove();
-            $(".preview-container").html('<div id="extension-preview-buttons"></div><div id="wmd-preview"></div>');
+            $(".preview-container").html('<div id="extension-preview-buttons"></div><div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>');
             layout = $('body').layout($.extend(layoutGlobalConfig, {
                 south__resizable: true,
                 south__size: .5,
@@ -299,6 +299,7 @@ define([
         else {
             previewWrapper = function(makePreview) {
                 return function() {
+                    window.previewStartTime = new Date().getTime();
                     makePreview();
                     if(documentContent === undefined) {
                         previewContainerElt.scrollTop(fileDesc.previewScrollTop);

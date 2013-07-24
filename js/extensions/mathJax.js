@@ -61,6 +61,7 @@ define([
         });
     };
 		
+    var converter = undefined;
 	var ready = false; // true after initial typeset is complete
 	var pending = false; // true when MathJax has been requested
 	var preview = null; // the preview container
@@ -209,7 +210,7 @@ define([
 	function RestartMJ() {
 		pending = false;
 		HUB.cancelTypeset = false; // won't need to do this in the future
-		HUB.Queue([ "Typeset", HUB, preview ]);
+		HUB.Queue([ "Typeset", HUB, converter.eltList || preview ]);
 		HUB.Queue(afterRefreshCallback);
 	}
 
@@ -236,9 +237,9 @@ define([
 	mathJax.onEditorConfigure = function(editorObject) {
 		preview = document.getElementById("wmd-preview");
 
-		var converterObject = editorObject.getConverter();
-		converterObject.hooks.chain("preConversion", removeMath);
-		converterObject.hooks.chain("postConversion", replaceMath);
+		converter = editorObject.getConverter();
+		converter.hooks.chain("preConversion", removeMath);
+		converter.hooks.chain("postConversion", replaceMath);
 	};
 	mathJax.onAsyncPreview = function(callback) {
 		afterRefreshCallback = callback;

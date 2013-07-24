@@ -70,7 +70,7 @@ define([
         var htmlSectionOffset = 0;
         var previewScrollTop = previewElt.scrollTop();
         // Each title element is a section separator
-        $("#wmd-preview").children("h1,h2,h3,h4,h5,h6").each(function() {
+        $("#preview-contents > .preview-content").children("h1,h2,h3,h4,h5,h6").each(function() {
             // Consider div scroll position and header element top margin
             var newSectionOffset = $(this).position().top + previewScrollTop + pxToFloat($(this).css('margin-top'));
             htmlSectionList.push({
@@ -176,7 +176,7 @@ define([
         editor.getConverter().hooks.chain("postConversion", function(text) {
             // To avoid losing scrolling position before elements are fully
             // loaded
-            var previewElt = $("#wmd-preview");
+            var previewElt = $("#preview-contents");
             previewElt.height(previewElt.height());
             return text;
         });
@@ -184,7 +184,7 @@ define([
 
     scrollLink.onPreviewFinished = function() {
         // Now set the correct height
-        $("#wmd-preview").height("auto");
+        $("#preview-contents").height("auto");
         isScrollEditor = true;
         buildSections();
     };

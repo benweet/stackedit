@@ -106,7 +106,7 @@ define([
         }
 
         var elementList = [];
-        $("#wmd-preview").children("h1, h2, h3, h4, h5, h6").each(function() {
+        $("#preview-contents > .preview-content").children("h1, h2, h3, h4, h5, h6").each(function() {
             elementList.push(new TocElement($(this).prop("tagName"), createAnchor($(this)), $(this).text()));
         });
         elementList = groupTags(elementList);
@@ -117,9 +117,11 @@ define([
         // Run TOC generation when conversion is finished directly on HTML
         editor.hooks.chain("onPreviewRefresh", function() {
             var htmlToc = buildToc();
-            var html = $("#wmd-preview").html();
-            html = html.replace(new RegExp("<p>" + toc.config.marker + "<\\/p>", "g"), htmlToc);
-            $("#wmd-preview").html(html);
+            $("#preview-contents > .preview-content").each(function() {
+                var html = $(this).html();
+                html = html.replace(new RegExp("<p>" + toc.config.marker + "<\\/p>", "g"), htmlToc);
+                $(this).html(html);
+            });
             $(".table-of-contents").html(htmlToc);
         });
     };

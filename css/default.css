@@ -2,7 +2,7 @@
 	@page {
 		margin: 25mm 25mm 25mm 25mm;
 	}
-	#wmd-preview {
+	#preview-contents {
 		padding: 0px;
 		margin: 0px;
 	}
@@ -16,7 +16,7 @@ body {
 	tab-size: 4;
 }
 
-#wmd-preview {
+#preview-contents {
 	padding: 19px;
 	margin-bottom: 50px;
 }
@@ -46,7 +46,7 @@ div,span,a,ul,li,textarea,input,button {
 	text-shadow: none !important;
 }
 
-.btn,.navbar-inner,#wmd-preview,.add-on {
+.btn,.navbar-inner,.add-on {
 	border: none !important;
 }
 
@@ -720,7 +720,7 @@ table tbody+tbody {
 	border-top: 2px solid #dddddd;
 }
 
-#wmd-preview blockquote {
+#preview-contents blockquote {
   border-color: #ddd;
   border-color: rgba(0, 0, 0, 0.15);
 }
@@ -796,7 +796,7 @@ input[type="file"] {
 	background-color: rgba(215, 215, 215, 0.75) !important;
 }
 
-.viewer #wmd-preview {
+.viewer #preview-contents {
 	max-width: 1024px;
 	margin: 50px auto;
 }

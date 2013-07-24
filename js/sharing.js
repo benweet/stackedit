@@ -98,9 +98,9 @@ define([
         if(importParameters === undefined) {
             return;
         }
-        $("#wmd-preview, #file-title").hide();
+        $("#preview-contents, #file-title").hide();
         provider.importPublic(importParameters, function(error, title, content) {
-            $("#wmd-preview, #file-title").show();
+            $("#preview-contents, #file-title").show();
             if(error) {
                 return;
             }

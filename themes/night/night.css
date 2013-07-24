@@ -1,6 +1,6 @@
 body,
 .btn,
-#wmd-preview,
+#preview-contents,
 .modal-footer,
 input[disabled],
 select[disabled],
@@ -54,11 +54,11 @@ blockquote {
     border-color: #333;
 }
 
-#wmd-preview {
+#preview-contents {
 	color: #ccc;
 }
 
-#wmd-preview blockquote {
+#preview-contents blockquote {
     border-color: #444;
 }
 

@@ -120,6 +120,13 @@ define([
             publishLocation(callback, errorFlag || error);
         });
     }
+    
+    // Get the html from the onPreviewFinished callback
+    var previewHtml = undefined;
+    extensionMgr.addHookCallback("onPreviewFinished", function(html) {
+        previewHtml = html;
+    });
+
 
     var publishRunning = false;
     publisher.publish = function() {
@@ -131,7 +138,7 @@ define([
         publishRunning = true;
         extensionMgr.onPublishRunning(true);
         publishFileDesc = fileMgr.currentFile;
-        publishHTML = $("#wmd-preview").html();
+        publishHTML = previewHtml;
         publishAttributesList = _.values(publishFileDesc.publishLocations);
         publishLocation(function(errorFlag) {
             publishRunning = false;
@@ -190,7 +197,7 @@ define([
 
         // Perform provider's publishing
         var fileDesc = fileMgr.currentFile;
-        var html = $("#wmd-preview").html();
+        var html = previewHtml;
         var content = getPublishContent(fileDesc, publishAttributes, html);
         provider.publish(publishAttributes, fileDesc.title, content, function(error) {
             if(error === undefined) {
@@ -234,14 +241,12 @@ define([
             utils.saveAs(content, title + ".md");
         });
         $(".action-download-html").click(function() {
-            var content = $("#wmd-preview").html();
             var title = fileMgr.currentFile.title;
-            utils.saveAs(content, title + ".html");
+            utils.saveAs(previewHtml, title + ".html");
         });
         $(".action-download-template").click(function() {
             var fileDesc = fileMgr.currentFile;
-            var html = $("#wmd-preview").html();
-            var content = publisher.applyTemplate(fileDesc, undefined, html);
+            var content = publisher.applyTemplate(fileDesc, undefined, previewHtml);
             utils.saveAs(content, fileDesc.title + (settings.template.indexOf("documentHTML") === -1 ? ".md" : ".html"));
         });
     });

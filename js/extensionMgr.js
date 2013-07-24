@@ -158,11 +158,16 @@ define([
         var counter = 0;
         function tryFinished() {
             if(++counter === nbAsyncPreviewCallback) {
-                onPreviewFinished();
+                var html = "";
+                $("#preview-contents > .preview-content").each(function() {
+                    html += $(this).html();
+                });
+                onPreviewFinished(html);
+                console.log("Preview time: " + (new Date().getTime() - window.previewStartTime));
             }
         }
         // We assume images are loading in the preview
-        $("#wmd-preview").waitForImages(tryFinished);
+        $("#preview-contents").waitForImages(tryFinished);
         _.each(onAsyncPreviewCallbackList, function(asyncPreviewCallback) {
             asyncPreviewCallback(tryFinished);
         });

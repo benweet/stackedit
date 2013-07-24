@@ -17,7 +17,7 @@ define([
     };
 
     documentSelector.onLoadSettings = function() {
-        utils.setInputValue("#select-document-selector-orderby", documentSelector.config.sortBy);
+        utils.setInputValue("#select-document-selector-orderby", documentSelector.config.orderBy);
         utils.setInputValue("#input-document-selector-shortcut-previous", documentSelector.config.shortcutPrevious);
         utils.setInputValue("#input-document-selector-shortcut-next", documentSelector.config.shortcutNext);
     };

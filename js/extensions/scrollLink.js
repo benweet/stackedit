@@ -9,6 +9,11 @@ define([
 
     var scrollLink = new Extension("scrollLink", "Scroll Link", true);
     scrollLink.settingsBlock = scrollLinkSettingsBlockHTML;
+    
+    var sectionList = undefined;
+    scrollLink.onSectionsCreated = function(sectionListParam) {
+        sectionList = sectionListParam;
+    };
 
     var mdSectionList = [];
     var htmlSectionList = [];
@@ -28,7 +33,7 @@ define([
         textareaElt.width(editorElt.width());
         // Consider wmd-input top padding (will be used for 1st and last section) 
         var padding = pxToFloat(editorElt.css('padding-top'));
-        var offset = 0, mdSectionOffset = 0;
+        var mdSectionOffset = 0;
         function addMdSection(sectionText) {
             var sectionHeight = padding;
             if(sectionText !== undefined) {
@@ -44,25 +49,14 @@ define([
             mdSectionOffset = newSectionOffset;
             padding = 0;
         }
-        // Create MD sections by finding title patterns (excluding gfm blocs)
-        var text = editorElt.val() + "\n\n";
-        text.replace(/^```.*\n[\s\S]*?\n```|(^.+[ \t]*\n=+[ \t]*\n+|^.+[ \t]*\n-+[ \t]*\n+|^\#{1,6}[ \t]*.+?[ \t]*\#*\n+)/gm, function(match, title, matchOffset) {
-            if(title) {
-                // We just found a title which means end of the previous section
-                // Exclude last \n of the section
-                var sectionText = undefined;
-                if(matchOffset > offset) {
-                    sectionText = text.substring(offset, matchOffset - 1);
-                }
-                addMdSection(sectionText);
-                offset = matchOffset;
+        _.each(sectionList, function(sectionText, index) {
+            if(index === sectionList.length - 1) {
+                // Last section
+                // Consider wmd-input bottom padding and exclude \n\n previously added
+                padding += pxToFloat(editorElt.css('padding-bottom'));
             }
-            return "";
+            addMdSection(sectionText);
         });
-        // Last section
-        // Consider wmd-input bottom padding and exclude \n\n previously added
-        padding += pxToFloat(editorElt.css('padding-bottom'));
-        addMdSection(text.substring(offset, text.length - 2));
 
         // Try to find corresponding sections in the preview
         var previewElt = $(".preview-container");
@@ -70,7 +64,7 @@ define([
         var htmlSectionOffset = 0;
         var previewScrollTop = previewElt.scrollTop();
         // Each title element is a section separator
-        $("#preview-contents > .preview-content").children("h1,h2,h3,h4,h5,h6").each(function() {
+        $("#preview-contents > .preview-content").children(".wmd-title").each(function() {
             // Consider div scroll position and header element top margin
             var newSectionOffset = $(this).position().top + previewScrollTop + pxToFloat($(this).css('margin-top'));
             htmlSectionList.push({

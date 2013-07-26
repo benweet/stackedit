@@ -252,6 +252,25 @@ define([
 
         // Create the converter and the editor
         var converter = new Markdown.Converter();
+        // Create MD sections for extensions
+        converter.hooks.chain("preConversion", function(text) {
+            var tmpText = text + "\n\n";
+            var sectionList = [], offset = 0;
+            // Look for titles (exclude gfm blocs)
+            tmpText.replace(/^```.*\n[\s\S]*?\n```|(^.+[ \t]*\n=+[ \t]*\n+|^.+[ \t]*\n-+[ \t]*\n+|^\#{1,6}[ \t]*.+?[ \t]*\#*\n+)/gm, function(match, title, matchOffset) {
+                if(title && matchOffset > offset) {
+                    // We just found a title which means end of the previous section
+                    // Exclude last \n of the section
+                    sectionList.push(tmpText.substring(offset, matchOffset - 1));
+                    offset = matchOffset;
+                }
+                return "";
+            });
+            // Last section
+            sectionList.push(tmpText.substring(offset, text.length));
+            extensionMgr.onSectionsCreated(sectionList);
+            return text;
+        });
         editor = new Markdown.Editor(converter);
         // Custom insert link dialog
         editor.hooks.set("insertLinkDialog", function(callback) {

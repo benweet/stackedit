@@ -9,14 +9,27 @@ define([
     partialRendering.settingsBlock = partialRenderingSettingsBlockHTML;
 
     var converter = undefined;
-    var sectionIdGenerator = 0;
-    var sectionList = [
-        {
-            text: ""
+    var sectionCounter = 0;
+    var sectionList = [];
+    var linkDefinition = "";
+    var sectionsToRemove = [];
+    var modifiedSections = [];
+    var insertAfterSection = undefined;
+    var fileChanged = true;
+    function updateSectionList(newSectionList, newLinkDefinition) {
+        modifiedSections = [];
+        sectionsToRemove = [];
+        insertAfterSection = undefined;
+
+        // Render everything if file changed or linkDefinition changed
+        if(fileChanged === true || linkDefinition != newLinkDefinition) {
+            fileChanged = false;
+            linkDefinition = newLinkDefinition;
+            sectionsToRemove = sectionList;
+            sectionList = newSectionList;
+            modifiedSections = newSectionList;
+            return;
         }
-    ];
-    var sectionsToRemove = undefined;
-    function updateSectionList(newSectionList) {
 
         // Find modified sections starting from left
         var leftIndex = sectionList.length;
@@ -44,134 +57,140 @@ define([
         // Create an array composed of left unmodified, modified, right
         // unmodified sections
         var leftSections = sectionList.slice(0, leftIndex);
-        var modifiedSections = newSectionList.slice(leftIndex, newSectionList.length + rightIndex);
+        modifiedSections = newSectionList.slice(leftIndex, newSectionList.length + rightIndex);
         var rightSections = sectionList.slice(sectionList.length + rightIndex, sectionList.length);
+        insertAfterSection = _.last(leftSections);
         sectionsToRemove = sectionList.slice(leftIndex, sectionList.length + rightIndex);
         sectionList = leftSections.concat(modifiedSections).concat(rightSections);
     }
+    var doFootnotes = false;
     var hasFootnotes = false;
-    function extractSections(text) {
+    partialRendering.onSectionsCreated = function(sectionListParam) {
 
-        text += "\n\n";
-
-        // Strip link definitions
-        var linkDefinition = "";
-        text = text.replace(/^[ ]{0,3}\[(.+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?(?=\s|$)[ \t]*\n?[ \t]*((\n*)["(](.+?)[")][ \t]*)?(?:\n+)/gm, function(wholeMatch) {
-            linkDefinition += wholeMatch;
-            return "";
-        });
-
-        // And eventually footnotes...
-        hasFootnotes = false;
-        var doFootnotes = _.some(converter.extraExtensions, function(extension) {
-            return extension == "footnotes";
-        });
-        if(doFootnotes) {
-            text = text.replace(/\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|$)/g, function(wholeMatch) {
-                hasFootnotes = true;
-                linkDefinition += wholeMatch;
-                return "";
-            });
-        }
-
-        // Look for titles
         var newSectionList = [];
-        var offset = 0;
-        text.replace(/^```.*\n[\s\S]*?\n```|(^.+[ \t]*\n=+[ \t]*\n+|^.+[ \t]*\n-+[ \t]*\n+|^\#{1,6}[ \t]*.+?[ \t]*\#*\n+)/gm, function(match, title, matchOffset) {
-            if(title) {
-                // We just found a title which means end of the previous section
-                if(matchOffset > offset) {
-                    newSectionList.push({
-                        id: ++sectionIdGenerator,
-                        text: text.substring(offset, matchOffset) + "\n" + linkDefinition
-                    });
-                    offset = matchOffset;
+        var newLinkDefinition = "";
+        hasFootnotes = false;
+        _.each(sectionListParam, function(text) {
+            text += "\n\n";
+            
+            // Strip link definitions
+            text = text.replace(/^```.*\n[\s\S]*?\n```|^[ ]{0,3}\[(.+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?(?=\s|$)[ \t]*\n?[ \t]*((\n*)["(](.+?)[")][ \t]*)?(?:\n+)/gm, function(wholeMatch, link) {
+                if(link) {
+                    newLinkDefinition += wholeMatch;
+                    return "";
                 }
+                return wholeMatch;
+            });
+
+            // And eventually footnotes...
+            if(doFootnotes) {
+                text = text.replace(/^```.*\n[\s\S]*?\n```|\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|$)/g, function(wholeMatch, footnote) {
+                    if(footnote) {
+                        hasFootnotes = true;
+                        newLinkDefinition += wholeMatch;
+                        return "";
+                    }
+                    return wholeMatch;
+                });
             }
-            return "";
-        });
-        // Last section
-        newSectionList.push({
-            id: ++sectionIdGenerator,
-            text: text.substring(offset, text.length) + linkDefinition
+
+            // Skip space only sections
+            if(/\S/.test(text)) {
+                // Add section to the newSectionList
+                newSectionList.push({
+                    id: ++sectionCounter,
+                    text: text
+                });
+            }
         });
 
-        updateSectionList(newSectionList);
-    }
+        updateSectionList(newSectionList, newLinkDefinition);
+    };
 
-    var isRendering = false;
-    var footnoteContainer = $('<div>');
-    var footnoteContainerFirstChild = $('<div>').appendTo(footnoteContainer);
-    function renderSections() {
-        converter.eltList = [];
+    var footnoteContainerElt = $('<div id="wmd-preview-section-footnotes" class="preview-content">');
+    var footnoteList = {};
+    function refreshSections() {
+
         // Remove outdated sections
         _.each(sectionsToRemove, function(section) {
             $("#wmd-preview-section-" + section.id).remove();
-            footnoteContainer.find("#footnotes-section-" + section.id).remove();
         });
-        var footnoteContainerElt = $("#wmd-preview-section-footnotes");
-        footnoteContainerElt.empty();
-        
-        // Renders modified sections
-        isRendering = true;
-        var previousSectionElt = $("#wmd-preview");
-        var previousFootnoteElt = footnoteContainerFirstChild;
-        _.each(sectionList, function(section) {
-            if(section.isConverted === true) {
-                previousSectionElt = $("#wmd-preview-section-" + section.id);
-                footnoteContainer.find("#footnotes-section-" + section.id).each(function() {
-                    previousFootnoteElt = $(this);
-                });
-                return;
-            }
-            var sectionHtml = converter.makeHtml(section.text);
-            var sectionElt = $('<div id="wmd-preview-section-' + section.id + '" class="preview-content">').html(sectionHtml);
-            sectionElt.find("div.footnotes").each(function() {
-                var footnoteElt = $(this).attr("id", "footnotes-section-" + section.id);
-                previousFootnoteElt.after(footnoteElt);
-                previousFootnoteElt = footnoteElt;
-            });
-            previousSectionElt.after(sectionElt);
-            previousSectionElt = sectionElt;
-            converter.eltList.push(sectionElt[0]);
-            section.isConverted = true;
-        });
-        isRendering = false;
 
-        // Rewrite footnotes in the footer
-        if(hasFootnotes === true) {
-            // Recreate a footnote list
-            var footnoteElts = $("<ol>");
-            footnoteContainer.find("div.footnotes > ol > li").each(function(index) {
-                hasFootnotes = true;
-                var elt = $(this);
-                footnoteElts.append(elt.clone());
-                // Restore footnotes numbers
-                var refId = "#fnref\\:" + elt.attr("id").substring(3);
-                $(refId).text(index + 1);
+        var wmdPreviewElt = $("#wmd-preview");
+        var insertAfterSectionElt = insertAfterSection === undefined ? wmdPreviewElt : $("#wmd-preview-section-" + insertAfterSection.id);
+        _.each(modifiedSections, function(section) {
+            var sectionElt = $('<div id="wmd-preview-section-' + section.id + '" class="wmd-preview-section preview-content">');
+            _.some(wmdPreviewElt.children(), function(elt, index) {
+                elt = $(elt);
+                if(index !== 0 && elt.is(".wmd-title")) {
+                    return true;
+                }
+                else if(elt.is("div.footnotes")) {
+                    elt.find("ol > li").each(function() {
+                        var footnoteElt = $(this).clone();
+                        var id = footnoteElt.attr("id").substring(3);
+                        footnoteList[id] = footnoteElt;
+                    });
+                    elt.remove();
+                }
+                else {
+                    sectionElt.append(elt);
+                }
             });
-            // Append the whole footnotes at the end of the document
-            footnoteContainerElt.html($('<div class="footnotes">').append("<hr>").append(footnoteElts));
+            insertAfterSectionElt.after(sectionElt);
+            insertAfterSectionElt = sectionElt;
+        });
+
+        // Rewrite footnotes in the footer and update footnote numbers
+        footnoteContainerElt.empty();
+        var usedFootnoteIds = [];
+        if(hasFootnotes === true) {
+            var footnoteElts = $("<ol>");
+            $("#preview-contents a.footnote").each(function(index) {
+                var id=$(this).text(index + 1).attr("id").substring(6);
+                usedFootnoteIds.push(id);
+                footnoteElts.append(footnoteList[id].clone());
+            });
+            if(usedFootnoteIds.length > 0) {
+                // Append the whole footnotes at the end of the document
+                footnoteContainerElt.html($('<div class="footnotes">').append("<hr>").append(footnoteElts));
+            }
+            // Keep only used footnotes in our map
+            footnoteList = _.pick(footnoteList, usedFootnoteIds);
         }
     }
 
     partialRendering.onEditorConfigure = function(editor) {
         converter = editor.getConverter();
         converter.hooks.chain("preConversion", function(text) {
-            if(isRendering === true) {
-                return text;
-            }
-            extractSections(text);
-            return "";
+            var result = _.map(modifiedSections, function(section) {
+                return section.text;
+            });
+            result.push(linkDefinition + "\n\n");
+            return result.join("");
         });
         editor.hooks.chain("onPreviewRefresh", function() {
-            $("#wmd-preview").html(renderSections());
+            refreshSections();
         });
     };
-    
-    partialRendering.onReady = function() {
-        $("#preview-contents").append($('<div id="wmd-preview-section-footnotes" class="preview-content">'));
 
+    partialRendering.onPreviewFinished = function() {
+        $('script[type="math/tex; mode=display"]').remove();
+    };
+
+    partialRendering.onReady = function() {
+        $("#preview-contents").append(footnoteContainerElt);
+        $("#wmd-preview").hide();
+    };
+    partialRendering.onFileClose = function() {
+        fileChanged = true;
+    };
+    partialRendering.onFileOpen = function() {
+        if(converter.extraExtensions) {
+            doFootnotes = _.some(converter.extraExtensions, function(extension) {
+                return extension == "footnotes";
+            });
+        }
     };
 
     return partialRendering;

@@ -210,7 +210,7 @@ define([
 	function RestartMJ() {
 		pending = false;
 		HUB.cancelTypeset = false; // won't need to do this in the future
-		HUB.Queue([ "Typeset", HUB, converter.eltList || preview ]);
+		HUB.Queue([ "Typeset", HUB, preview ]);
 		HUB.Queue(afterRefreshCallback);
 	}
 
@@ -235,7 +235,7 @@ define([
 	// Create a preview refresh hook to handle starting MathJax.
 	//
 	mathJax.onEditorConfigure = function(editorObject) {
-		preview = document.getElementById("wmd-preview");
+		preview = document.getElementById("preview-contents");
 
 		converter = editorObject.getConverter();
 		converter.hooks.chain("preConversion", removeMath);

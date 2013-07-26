@@ -754,11 +754,11 @@ else
             //  --------
             //
             text = text.replace(/^(.+)[ \t]*\n=+[ \t]*\n+/gm,
-                function (wholeMatch, m1) { return "<h1>" + _RunSpanGamut(m1) + "</h1>\n\n"; }
+                function (wholeMatch, m1) { return "<h1 class=\"wmd-title\">" + _RunSpanGamut(m1) + "</h1>\n\n"; }
             );
 
             text = text.replace(/^(.+)[ \t]*\n-+[ \t]*\n+/gm,
-                function (matchFound, m1) { return "<h2>" + _RunSpanGamut(m1) + "</h2>\n\n"; }
+                function (matchFound, m1) { return "<h2 class=\"wmd-title\">" + _RunSpanGamut(m1) + "</h2>\n\n"; }
             );
 
             // atx-style headers:
@@ -783,7 +783,7 @@ else
             text = text.replace(/^(\#{1,6})[ \t]*(.+?)[ \t]*\#*\n+/gm,
                 function (wholeMatch, m1, m2) {
                     var h_level = m1.length;
-                    return "<h" + h_level + ">" + _RunSpanGamut(m2) + "</h" + h_level + ">\n\n";
+                    return "<h" + h_level + " class=\"wmd-title\">" + _RunSpanGamut(m2) + "</h" + h_level + ">\n\n";
                 }
             );
 

@@ -147,6 +147,7 @@ define([
 
     // Operations on PageDown
     addHook("onEditorConfigure");
+    addHook("onSectionsCreated");
 
     var onPreviewFinished = createHook("onPreviewFinished");
     var onAsyncPreviewCallbackList = getExtensionCallbackList("onAsyncPreview");
@@ -162,7 +163,7 @@ define([
                 $("#preview-contents > .preview-content").each(function() {
                     html += $(this).html();
                 });
-                onPreviewFinished(html);
+                onPreviewFinished(utils.trim(html));
                 console.log("Preview time: " + (new Date().getTime() - window.previewStartTime));
             }
         }

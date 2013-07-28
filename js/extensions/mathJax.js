@@ -35,7 +35,7 @@ define([
                 linebreaks: {
                     automatic: true
                 },
-                EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50),
+                EqnChunk: 10,
                 imageFont: null
             },
             tex2jax: tex2jax,

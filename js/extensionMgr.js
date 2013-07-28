@@ -164,7 +164,7 @@ define([
                     html += $(this).html();
                 });
                 onPreviewFinished(utils.trim(html));
-                console.log("Preview time: " + (new Date().getTime() - window.previewStartTime));
+                logger.log("Preview time: " + (new Date() - extensionMgr.previewStartTime));
             }
         }
         // We assume images are loading in the preview

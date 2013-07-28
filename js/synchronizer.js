@@ -297,7 +297,7 @@ define([
 
                 if(isRealtime) {
                     if(_.size(fileDesc.syncLocations) > 0) {
-                        extensionMgr.onError("Realtime collaboration document can't be synchronized with multiple locations");
+                        extensionMgr.onError("Real time collaborative document can't be synchronized with multiple locations");
                         return;
                     }
                     // Perform the provider's real time export
@@ -317,7 +317,7 @@ define([
                 }
                 else {
                     if(_.size(fileDesc.syncLocations) > 0 && _.first(_.values(fileDesc.syncLocations)).isRealtime) {
-                        extensionMgr.onError("Realtime collaboration document can't be synchronized with multiple locations");
+                        extensionMgr.onError("Real time collaborative document can't be synchronized with multiple locations");
                         return;
                     }
                     // Perform the provider's standard export
@@ -342,7 +342,7 @@ define([
             $(".action-sync-manual-" + provider.providerId).click(function(event) {
                 var fileDesc = fileMgr.currentFile;
                 if(_.size(fileDesc.syncLocations) > 0 && _.first(_.values(fileDesc.syncLocations)).isRealtime) {
-                    extensionMgr.onError("Realtime collaboration document can't be synchronized with multiple locations");
+                    extensionMgr.onError("Real time collaborative document can't be synchronized with multiple locations");
                     return;
                 }
                 provider.exportManual(event, fileDesc.title, fileDesc.content, function(error, syncAttributes) {

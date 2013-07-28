@@ -5,23 +5,23 @@ define([
     "text!html/partialRenderingSettingsBlock.html",
 ], function($, _, Extension, partialRenderingSettingsBlockHTML) {
 
-    var partialRendering = new Extension("partialRendering", "Partial rendering", true);
+    var partialRendering = new Extension("partialRendering", "Partial Rendering", true);
     partialRendering.settingsBlock = partialRenderingSettingsBlockHTML;
 
     var converter = undefined;
     var sectionCounter = 0;
     var sectionList = [];
-    var linkDefinition = "";
+    var linkDefinition = undefined;
     var sectionsToRemove = [];
     var modifiedSections = [];
     var insertAfterSection = undefined;
-    var fileChanged = true;
+    var fileChanged = false;
     function updateSectionList(newSectionList, newLinkDefinition) {
         modifiedSections = [];
         sectionsToRemove = [];
         insertAfterSection = undefined;
 
-        // Render everything if file changed or linkDefinition changed
+        // Render everything if file or linkDefinition changed
         if(fileChanged === true || linkDefinition != newLinkDefinition) {
             fileChanged = false;
             linkDefinition = newLinkDefinition;
@@ -31,7 +31,7 @@ define([
             return;
         }
 
-        // Find modified sections starting from left
+        // Find modified sections starting from top
         var leftIndex = sectionList.length;
         _.some(sectionList, function(section, index) {
             if(index >= newSectionList.length || section.text != newSectionList[index].text) {
@@ -40,7 +40,7 @@ define([
             }
         });
 
-        // Find modified sections starting from right
+        // Find modified sections starting from bottom
         var rightIndex = -sectionList.length;
         _.some(sectionList.slice().reverse(), function(section, index) {
             if(index >= newSectionList.length || section.text != newSectionList[newSectionList.length - index - 1].text) {
@@ -82,7 +82,7 @@ define([
                 return wholeMatch;
             });
 
-            // And eventually footnotes...
+            // And footnotes eventually
             if(doFootnotes) {
                 text = text.replace(/^```.*\n[\s\S]*?\n```|\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|$)/g, function(wholeMatch, footnote) {
                     if(footnote) {
@@ -120,7 +120,7 @@ define([
         var insertAfterSectionElt = insertAfterSection === undefined ? wmdPreviewElt : $("#wmd-preview-section-" + insertAfterSection.id);
         _.each(modifiedSections, function(section) {
             var sectionElt = $('<div id="wmd-preview-section-' + section.id + '" class="wmd-preview-section preview-content">');
-            _.some(wmdPreviewElt.children(), function(elt, index) {
+            _.some(wmdPreviewElt.contents(), function(elt, index) {
                 elt = $(elt);
                 if(index !== 0 && elt.is(".wmd-title")) {
                     return true;
@@ -155,7 +155,7 @@ define([
                 // Append the whole footnotes at the end of the document
                 footnoteContainerElt.html($('<div class="footnotes">').append("<hr>").append(footnoteElts));
             }
-            // Keep only used footnotes in our map
+            // Keep used footnotes only in our map
             footnoteList = _.pick(footnoteList, usedFootnoteIds);
         }
     }
@@ -174,15 +174,11 @@ define([
         });
     };
 
-    partialRendering.onPreviewFinished = function() {
-        $('script[type="math/tex; mode=display"]').remove();
-    };
-
     partialRendering.onReady = function() {
         $("#preview-contents").append(footnoteContainerElt);
         $("#wmd-preview").hide();
     };
-    partialRendering.onFileClose = function() {
+    partialRendering.onFileSelected = function() {
         fileChanged = true;
     };
     partialRendering.onFileOpen = function() {

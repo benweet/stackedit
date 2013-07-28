@@ -224,8 +224,8 @@ define([
         if(editor !== undefined) {
             // If the editor is already created
             editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
-            editor.refreshPreview();
             extensionMgr.onFileOpen(fileDesc);
+            editor.refreshPreview();
             return;
         }
         var previewContainerElt = $(".preview-container");
@@ -256,12 +256,12 @@ define([
         converter.hooks.chain("preConversion", function(text) {
             var tmpText = text + "\n\n";
             var sectionList = [], offset = 0;
-            // Look for titles (exclude gfm blocs)
+            // Look for titles (excluding gfm blocs)
             tmpText.replace(/^```.*\n[\s\S]*?\n```|(^.+[ \t]*\n=+[ \t]*\n+|^.+[ \t]*\n-+[ \t]*\n+|^\#{1,6}[ \t]*.+?[ \t]*\#*\n+)/gm, function(match, title, matchOffset) {
-                if(title && matchOffset > offset) {
+                if(title) {
                     // We just found a title which means end of the previous section
                     // Exclude last \n of the section
-                    sectionList.push(tmpText.substring(offset, matchOffset - 1));
+                    sectionList.push(tmpText.substring(offset, matchOffset));
                     offset = matchOffset;
                 }
                 return "";
@@ -318,7 +318,7 @@ define([
         else {
             previewWrapper = function(makePreview) {
                 return function() {
-                    window.previewStartTime = new Date().getTime();
+                    extensionMgr.previewStartTime = new Date();
                     makePreview();
                     if(documentContent === undefined) {
                         previewContainerElt.scrollTop(fileDesc.previewScrollTop);

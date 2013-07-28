@@ -114,14 +114,17 @@ define([
     }
 
     toc.onEditorConfigure = function(editor) {
+        var tocExp = new RegExp("^" + toc.config.marker + "$", "g")
         // Run TOC generation when conversion is finished directly on HTML
         editor.hooks.chain("onPreviewRefresh", function() {
             var htmlToc = buildToc();
-            $("#preview-contents > .preview-content").each(function() {
-                var html = $(this).html();
-                html = html.replace(new RegExp("<p>" + toc.config.marker + "<\\/p>", "g"), htmlToc);
-                $(this).html(html);
+            // Replace toc paragraphs
+            $("#preview-contents p").each(function() {
+                if(tocExp.test($(this).html())) {
+                    $(this).html(htmlToc);
+                }
             });
+            // Add toc in the TOC button 
             $(".table-of-contents").html(htmlToc);
         });
     };

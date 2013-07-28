@@ -9,7 +9,7 @@ define([
 
     var scrollLink = new Extension("scrollLink", "Scroll Link", true);
     scrollLink.settingsBlock = scrollLinkSettingsBlockHTML;
-    
+
     var sectionList = undefined;
     scrollLink.onSectionsCreated = function(sectionListParam) {
         sectionList = sectionListParam;
@@ -31,12 +31,13 @@ define([
         var textareaElt = $("#md-section-helper");
         // It has to be the same width as wmd-input
         textareaElt.width(editorElt.width());
-        // Consider wmd-input top padding (will be used for 1st and last section) 
+        // Consider wmd-input top padding (will be used for 1st and last
+        // section)
         var padding = pxToFloat(editorElt.css('padding-top'));
         var mdSectionOffset = 0;
         function addMdSection(sectionText) {
             var sectionHeight = padding;
-            if(sectionText !== undefined) {
+            if(sectionText.length !== 0) {
                 textareaElt.val(sectionText);
                 sectionHeight += textareaElt.prop('scrollHeight');
             }
@@ -50,9 +51,14 @@ define([
             padding = 0;
         }
         _.each(sectionList, function(sectionText, index) {
-            if(index === sectionList.length - 1) {
+            if(index !== sectionList.length - 1) {
+                // Remove the last \n preceding the next title
+                sectionText = sectionText.substring(0, sectionText.length - 1);
+            }
+            else {
                 // Last section
-                // Consider wmd-input bottom padding and exclude \n\n previously added
+                // Consider wmd-input bottom padding and exclude \n\n previously
+                // added
                 padding += pxToFloat(editorElt.css('padding-bottom'));
             }
             addMdSection(sectionText);

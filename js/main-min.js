@@ -31,6 +31,12 @@
  * see: http://github.com/requirejs/text for details
  */
 
+//Copyright (C) 2012 Kory Nunn
+
+//Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+//The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
 /*
  * to-markdown - an HTML to Markdown converter
  *
@@ -788,7 +794,7 @@ function css_browser_selector(e) {
    n || Tn.test(e) ? i(e, o) : P(e + "[" + ("object" == typeof o ? t : "") + "]", o, n, i);
   }); else if (n || "object" !== lt.type(t)) i(e, t); else for (o in t) P(e + "[" + o + "]", t[o], n, i);
  }
- function $(e) {
+ function N(e) {
   return function(t, n) {
    "string" != typeof t && (n = t, t = "*");
    var i, o = 0, r = t.toLowerCase().match(ut) || [];
@@ -796,7 +802,7 @@ function css_browser_selector(e) {
    (e[i] = e[i] || []).unshift(n)) : (e[i] = e[i] || []).push(n);
   };
  }
- function N(e, t, n, i) {
+ function $(e, t, n, i) {
   function o(a) {
    var l;
    return r[a] = !0, lt.each(e[a] || [], function(e, a) {
@@ -967,7 +973,7 @@ function css_browser_selector(e) {
  function W(e) {
   return lt.isWindow(e) ? e : 9 === e.nodeType ? e.defaultView || e.parentWindow : !1;
  }
- var U, G, V = typeof t, X = e.document, J = e.location, Y = e.jQuery, K = e.$, Z = {}, Q = [], et = "1.9.1", tt = Q.concat, nt = Q.push, it = Q.slice, ot = Q.indexOf, rt = Z.toString, st = Z.hasOwnProperty, at = et.trim, lt = function(e, t) {
+ var U, G, V = typeof t, X = e.document, Y = e.location, J = e.jQuery, K = e.$, Z = {}, Q = [], et = "1.9.1", tt = Q.concat, nt = Q.push, it = Q.slice, ot = Q.indexOf, rt = Z.toString, st = Z.hasOwnProperty, at = et.trim, lt = function(e, t) {
   return new lt.fn.init(e, t, G);
  }, ct = /[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/.source, ut = /\S+/g, dt = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, pt = /^(?:(<[\w\W]+>)[^>]*|#([\w-]*))$/, ft = /^<(\w+)\s*\/?>(?:<\/\1>|)$/, ht = /^[\],:{}\s]*$/, gt = /(?:^|:|,)(?:\s*\[)+/g, mt = /\\(?:["\\\/bfnrt]|u[\da-fA-F]{4})/g, vt = /"[^"\\\r\n]*"|true|false|null|-?(?:\d+\.|)\d+(?:[eE][+-]?\d+|)/g, bt = /^-ms-/, yt = /-([\da-z])/gi, wt = function(e, t) {
   return t.toUpperCase();
@@ -1055,7 +1061,7 @@ function css_browser_selector(e) {
   return a;
  }, lt.extend({
   noConflict: function(t) {
-   return e.$ === lt && (e.$ = K), t && e.jQuery === lt && (e.jQuery = Y), lt;
+   return e.$ === lt && (e.$ = K), t && e.jQuery === lt && (e.jQuery = J), lt;
   },
   isReady: !1,
   readyWait: 1,
@@ -1500,7 +1506,7 @@ function css_browser_selector(e) {
    return l(), r.promise(n);
   }
  });
- var Et, Tt, It = /[\t\r\n]/g, Pt = /\r/g, $t = /^(?:input|select|textarea|button|object)$/i, Nt = /^(?:a|area)$/i, Rt = /^(?:checked|selected|autofocus|autoplay|async|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped)$/i, Lt = /^(?:checked|selected)$/i, Mt = lt.support.getSetAttribute, At = lt.support.input;
+ var Et, Tt, It = /[\t\r\n]/g, Pt = /\r/g, Nt = /^(?:input|select|textarea|button|object)$/i, $t = /^(?:a|area)$/i, Rt = /^(?:checked|selected|autofocus|autoplay|async|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped)$/i, Lt = /^(?:checked|selected)$/i, Mt = lt.support.getSetAttribute, At = lt.support.input;
  lt.fn.extend({
   attr: function(e, t) {
    return lt.access(this, lt.attr, e, t, arguments.length > 1);
@@ -1639,7 +1645,7 @@ function css_browser_selector(e) {
    tabIndex: {
     get: function(e) {
      var n = e.getAttributeNode("tabindex");
-     return n && n.specified ? parseInt(n.value, 10) : $t.test(e.nodeName) || Nt.test(e.nodeName) && e.href ? 0 : t;
+     return n && n.specified ? parseInt(n.value, 10) : Nt.test(e.nodeName) || $t.test(e.nodeName) && e.href ? 0 : t;
     }
    }
   }
@@ -2033,7 +2039,7 @@ function css_browser_selector(e) {
    return e[D] = !0, e;
   }
   function r(e) {
-   var t = N.createElement("div");
+   var t = $.createElement("div");
    try {
     return e(t);
    } catch (n) {
@@ -2044,7 +2050,7 @@ function css_browser_selector(e) {
   }
   function s(e, t, n, i) {
    var o, r, s, a, l, c, u, f, h, g;
-   if ((t ? t.ownerDocument || t : H) !== N && $(t), t = t || N, n = n || [], !e || "string" != typeof e) return n;
+   if ((t ? t.ownerDocument || t : H) !== $ && N(t), t = t || $, n = n || [], !e || "string" != typeof e) return n;
    if (1 !== (a = t.nodeType) && 9 !== a) return [];
    if (!L && !i) {
     if (o = gt.exec(e)) if (s = o[1]) {
@@ -2180,7 +2186,7 @@ function css_browser_selector(e) {
   function b(e, t) {
    var n = 0, i = t.length > 0, r = e.length > 0, a = function(o, a, l, c, u) {
     var d, p, f, h = [], m = 0, v = "0", b = o && [], y = null != u, w = P, x = o || r && S.find.TAG("*", u && a.parentNode || a), k = B += null == w ? 1 : Math.random() || .1;
-    for (y && (P = a !== N && a, C = n); null != (d = x[v]); v++) {
+    for (y && (P = a !== $ && a, C = n); null != (d = x[v]); v++) {
      if (r && d) {
       for (p = 0; f = e[p++]; ) if (f(d, a, l)) {
        c.push(d);
@@ -2193,7 +2199,7 @@ function css_browser_selector(e) {
     if (m += v, i && v !== m) {
      for (p = 0; f = t[p++]; ) f(b, h, a, l);
      if (o) {
-      if (m > 0) for (;v--; ) b[v] || h[v] || (h[v] = Y.call(c));
+      if (m > 0) for (;v--; ) b[v] || h[v] || (h[v] = J.call(c));
       h = g(h);
      }
      K.apply(c, h), y && !o && h.length > 0 && m + t.length > 1 && s.uniqueSort(c);
@@ -2221,7 +2227,7 @@ function css_browser_selector(e) {
    return T(e, c)(i, t, L, n, ft.test(e)), n;
   }
   function x() {}
-  var k, C, S, _, E, T, I, P, $, N, R, L, M, A, z, O, j, D = "sizzle" + -new Date(), H = e.document, F = {}, B = 0, q = 0, W = i(), U = i(), G = i(), V = typeof t, X = 1 << 31, J = [], Y = J.pop, K = J.push, Z = J.slice, Q = J.indexOf || function(e) {
+  var k, C, S, _, E, T, I, P, N, $, R, L, M, A, z, O, j, D = "sizzle" + -new Date(), H = e.document, F = {}, B = 0, q = 0, W = i(), U = i(), G = i(), V = typeof t, X = 1 << 31, Y = [], J = Y.pop, K = Y.push, Z = Y.slice, Q = Y.indexOf || function(e) {
    for (var t = 0, n = this.length; n > t; t++) if (this[t] === e) return t;
    return -1;
   }, et = "[\\x20\\t\\r\\n\\f]", tt = "(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+", nt = tt.replace("w", "w#"), it = "([*^$|!~]?=)", ot = "\\[" + et + "*(" + tt + ")" + et + "*(?:" + it + et + "*(?:(['\"])((?:\\\\.|[^\\\\])*?)\\3|(" + nt + ")|)|)" + et + "*\\]", rt = ":(" + tt + ")(?:\\(((['\"])((?:\\\\.|[^\\\\])*?)\\3|((?:\\\\.|[^\\\\()[\\]]|" + ot.replace(3, 8) + ")*)|.*)\\)|)", st = new RegExp("^" + et + "+|((?:^|[^\\\\])(?:\\\\.)*)" + et + "+$", "g"), at = new RegExp("^" + et + "*," + et + "*"), ct = new RegExp("^" + et + "*([\\x20\\t\\r\\n\\f>+~])" + et + "*"), ut = new RegExp(rt), dt = new RegExp("^" + nt + "$"), pt = {
@@ -2248,9 +2254,9 @@ function css_browser_selector(e) {
   E = s.isXML = function(e) {
    var t = e && (e.ownerDocument || e).documentElement;
    return t ? "HTML" !== t.nodeName : !1;
-  }, $ = s.setDocument = function(e) {
+  }, N = s.setDocument = function(e) {
    var i = e ? e.ownerDocument || e : H;
-   return i !== N && 9 === i.nodeType && i.documentElement ? (N = i, R = i.documentElement, 
+   return i !== $ && 9 === i.nodeType && i.documentElement ? ($ = i, R = i.documentElement, 
    L = E(i), F.tagNameNoComments = r(function(e) {
     return e.appendChild(i.createComment("")), !e.getElementsByTagName("*").length;
    }), F.attributes = r(function(e) {
@@ -2335,20 +2341,20 @@ function css_browser_selector(e) {
     for (n = t; n = n.parentNode; ) c.unshift(n);
     for (;l[o] === c[o]; ) o++;
     return o ? a(l[o], c[o]) : l[o] === H ? -1 : c[o] === H ? 1 : 0;
-   }, I = !1, [ 0, 0 ].sort(j), F.detectDuplicates = I, N) : N;
+   }, I = !1, [ 0, 0 ].sort(j), F.detectDuplicates = I, $) : $;
   }, s.matches = function(e, t) {
    return s(e, null, null, t);
   }, s.matchesSelector = function(e, t) {
-   if ((e.ownerDocument || e) !== N && $(e), t = t.replace(yt, "='$1']"), !(!F.matchesSelector || L || A && A.test(t) || M.test(t))) try {
+   if ((e.ownerDocument || e) !== $ && N(e), t = t.replace(yt, "='$1']"), !(!F.matchesSelector || L || A && A.test(t) || M.test(t))) try {
     var n = z.call(e, t);
     if (n || F.disconnectedMatch || e.document && 11 !== e.document.nodeType) return n;
    } catch (i) {}
-   return s(t, N, null, [ e ]).length > 0;
+   return s(t, $, null, [ e ]).length > 0;
   }, s.contains = function(e, t) {
-   return (e.ownerDocument || e) !== N && $(e), O(e, t);
+   return (e.ownerDocument || e) !== $ && N(e), O(e, t);
   }, s.attr = function(e, t) {
    var n;
-   return (e.ownerDocument || e) !== N && $(e), L || (t = t.toLowerCase()), (n = S.attrHandle[t]) ? n(e) : L || F.attributes ? e.getAttribute(t) : ((n = e.getAttributeNode(t)) || e.getAttribute(t)) && e[t] === !0 ? t : n && n.specified ? n.value : null;
+   return (e.ownerDocument || e) !== $ && N(e), L || (t = t.toLowerCase()), (n = S.attrHandle[t]) ? n(e) : L || F.attributes ? e.getAttribute(t) : ((n = e.getAttributeNode(t)) || e.getAttribute(t)) && e[t] === !0 ? t : n && n.specified ? n.value : null;
   }, s.error = function(e) {
    throw new Error("Syntax error, unrecognized expression: " + e);
   }, s.uniqueSort = function(e) {
@@ -2495,7 +2501,7 @@ function css_browser_selector(e) {
      return e === R;
     },
     focus: function(e) {
-     return e === N.activeElement && (!N.hasFocus || N.hasFocus()) && !!(e.type || e.href || ~e.tabIndex);
+     return e === $.activeElement && (!$.hasFocus || $.hasFocus()) && !!(e.type || e.href || ~e.tabIndex);
     },
     enabled: function(e) {
      return e.disabled === !1;
@@ -2577,7 +2583,7 @@ function css_browser_selector(e) {
    }
    return r;
   }, S.pseudos.nth = S.pseudos.eq, S.filters = x.prototype = S.pseudos, S.setFilters = new x(), 
-  $(), s.attr = lt.attr, lt.find = s, lt.expr = s.selectors, lt.expr[":"] = lt.expr.pseudos, 
+  N(), s.attr = lt.attr, lt.find = s, lt.expr = s.selectors, lt.expr[":"] = lt.expr.pseudos, 
   lt.unique = s.uniqueSort, lt.text = s.getText, lt.isXMLDoc = s.isXML, lt.contains = s.contains;
  }(e);
  var Ft = /Until$/, Bt = /^(?:parents|prev(?:Until|All))/, qt = /^.[^:#\[\.,]*$/, Wt = lt.expr.match.needsContext, Ut = {
@@ -2690,7 +2696,7 @@ function css_browser_selector(e) {
    return n;
   }
  });
- var Gt = "abbr|article|aside|audio|bdi|canvas|data|datalist|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video", Vt = / jQuery\d+="(?:null|\d+)"/g, Xt = new RegExp("<(?:" + Gt + ")[\\s/>]", "i"), Jt = /^\s+/, Yt = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi, Kt = /<([\w:]+)/, Zt = /<tbody/i, Qt = /<|&#?\w+;/, en = /<(?:script|style|link)/i, tn = /^(?:checkbox|radio)$/i, nn = /checked\s*(?:[^=]|=\s*.checked.)/i, on = /^$|\/(?:java|ecma)script/i, rn = /^true\/(.*)/, sn = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g, an = {
+ var Gt = "abbr|article|aside|audio|bdi|canvas|data|datalist|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video", Vt = / jQuery\d+="(?:null|\d+)"/g, Xt = new RegExp("<(?:" + Gt + ")[\\s/>]", "i"), Yt = /^\s+/, Jt = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi, Kt = /<([\w:]+)/, Zt = /<tbody/i, Qt = /<|&#?\w+;/, en = /<(?:script|style|link)/i, tn = /^(?:checkbox|radio)$/i, nn = /checked\s*(?:[^=]|=\s*.checked.)/i, on = /^$|\/(?:java|ecma)script/i, rn = /^true\/(.*)/, sn = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g, an = {
   option: [ 1, "<select multiple='multiple'>", "</select>" ],
   legend: [ 1, "<fieldset>", "</fieldset>" ],
   area: [ 1, "<map>", "</map>" ],
@@ -2781,8 +2787,8 @@ function css_browser_selector(e) {
    return lt.access(this, function(e) {
     var n = this[0] || {}, i = 0, o = this.length;
     if (e === t) return 1 === n.nodeType ? n.innerHTML.replace(Vt, "") : t;
-    if (!("string" != typeof e || en.test(e) || !lt.support.htmlSerialize && Xt.test(e) || !lt.support.leadingWhitespace && Jt.test(e) || an[(Kt.exec(e) || [ "", "" ])[1].toLowerCase()])) {
-     e = e.replace(Yt, "<$1></$2>");
+    if (!("string" != typeof e || en.test(e) || !lt.support.htmlSerialize && Xt.test(e) || !lt.support.leadingWhitespace && Yt.test(e) || an[(Kt.exec(e) || [ "", "" ])[1].toLowerCase()])) {
+     e = e.replace(Jt, "<$1></$2>");
      try {
       for (;o > i; i++) n = this[i] || {}, 1 === n.nodeType && (lt.cleanData(y(n, !1)), 
       n.innerHTML = e);
@@ -2852,9 +2858,9 @@ function css_browser_selector(e) {
    for (var o, r, s, a, l, c, u, d = e.length, f = p(t), h = [], g = 0; d > g; g++) if (r = e[g], 
    r || 0 === r) if ("object" === lt.type(r)) lt.merge(h, r.nodeType ? [ r ] : r); else if (Qt.test(r)) {
     for (a = a || f.appendChild(t.createElement("div")), l = (Kt.exec(r) || [ "", "" ])[1].toLowerCase(), 
-    u = an[l] || an._default, a.innerHTML = u[1] + r.replace(Yt, "<$1></$2>") + u[2], 
+    u = an[l] || an._default, a.innerHTML = u[1] + r.replace(Jt, "<$1></$2>") + u[2], 
     o = u[0]; o--; ) a = a.lastChild;
-    if (!lt.support.leadingWhitespace && Jt.test(r) && h.push(t.createTextNode(Jt.exec(r)[0])), 
+    if (!lt.support.leadingWhitespace && Yt.test(r) && h.push(t.createTextNode(Yt.exec(r)[0])), 
     !lt.support.tbody) for (r = "table" !== l || Zt.test(r) ? "<table>" !== u[1] || Zt.test(r) ? 0 : a : a.firstChild, 
     o = r && r.childNodes.length; o--; ) lt.nodeName(c = r.childNodes[o], "tbody") && !c.childNodes.length && r.removeChild(c);
     for (lt.merge(h, a.childNodes), a.textContent = ""; a.firstChild; ) a.removeChild(a.firstChild);
@@ -3023,7 +3029,7 @@ function css_browser_selector(e) {
    }
   }, vn.test(e) || (lt.cssHooks[e + t].set = S);
  });
- var En = /%20/g, Tn = /\[\]$/, In = /\r?\n/g, Pn = /^(?:submit|button|image|reset|file)$/i, $n = /^(?:input|select|textarea|keygen)/i;
+ var En = /%20/g, Tn = /\[\]$/, In = /\r?\n/g, Pn = /^(?:submit|button|image|reset|file)$/i, Nn = /^(?:input|select|textarea|keygen)/i;
  lt.fn.extend({
   serialize: function() {
    return lt.param(this.serializeArray());
@@ -3034,7 +3040,7 @@ function css_browser_selector(e) {
     return e ? lt.makeArray(e) : this;
    }).filter(function() {
     var e = this.type;
-    return this.name && !lt(this).is(":disabled") && $n.test(this.nodeName) && !Pn.test(e) && (this.checked || !tn.test(e));
+    return this.name && !lt(this).is(":disabled") && Nn.test(this.nodeName) && !Pn.test(e) && (this.checked || !tn.test(e));
    }).map(function(e, t) {
     var n = lt(this).val();
     return null == n ? null : lt.isArray(n) ? lt.map(n, function(e) {
@@ -3063,13 +3069,13 @@ function css_browser_selector(e) {
  }), lt.fn.hover = function(e, t) {
   return this.mouseenter(e).mouseleave(t || e);
  };
- var Nn, Rn, Ln = lt.now(), Mn = /\?/, An = /#.*$/, zn = /([?&])_=[^&]*/, On = /^(.*?):[ \t]*([^\r\n]*)\r?$/gm, jn = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/, Dn = /^(?:GET|HEAD)$/, Hn = /^\/\//, Fn = /^([\w.+-]+:)(?:\/\/([^\/?#:]*)(?::(\d+)|)|)/, Bn = lt.fn.load, qn = {}, Wn = {}, Un = "*/".concat("*");
+ var $n, Rn, Ln = lt.now(), Mn = /\?/, An = /#.*$/, zn = /([?&])_=[^&]*/, On = /^(.*?):[ \t]*([^\r\n]*)\r?$/gm, jn = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/, Dn = /^(?:GET|HEAD)$/, Hn = /^\/\//, Fn = /^([\w.+-]+:)(?:\/\/([^\/?#:]*)(?::(\d+)|)|)/, Bn = lt.fn.load, qn = {}, Wn = {}, Un = "*/".concat("*");
  try {
-  Rn = J.href;
+  Rn = Y.href;
  } catch (Gn) {
   Rn = X.createElement("a"), Rn.href = "", Rn = Rn.href;
  }
- Nn = Fn.exec(Rn.toLowerCase()) || [], lt.fn.load = function(e, n, i) {
+ $n = Fn.exec(Rn.toLowerCase()) || [], lt.fn.load = function(e, n, i) {
   if ("string" != typeof e && Bn) return Bn.apply(this, arguments);
   var o, r, s, a = this, l = e.indexOf(" ");
   return l >= 0 && (o = e.slice(l, e.length), e = e.slice(0, l)), lt.isFunction(n) ? (i = n, 
@@ -3104,7 +3110,7 @@ function css_browser_selector(e) {
   ajaxSettings: {
    url: Rn,
    type: "GET",
-   isLocal: jn.test(Nn[1]),
+   isLocal: jn.test($n[1]),
    global: !0,
    processData: !0,
    async: !0,
@@ -3139,8 +3145,8 @@ function css_browser_selector(e) {
   ajaxSetup: function(e, t) {
    return t ? R(R(e, lt.ajaxSettings), t) : R(lt.ajaxSettings, e);
   },
-  ajaxPrefilter: $(qn),
-  ajaxTransport: $(Wn),
+  ajaxPrefilter: N(qn),
+  ajaxTransport: N(Wn),
   ajax: function(e, n) {
    function i(e, n, i, o) {
     var r, d, b, y, x, C = n;
@@ -3184,11 +3190,11 @@ function css_browser_selector(e) {
      return u && u.abort(t), i(0, t), this;
     }
    };
-   if (g.promise(k).complete = m.add, k.success = k.done, k.error = k.fail, p.url = ((e || p.url || Rn) + "").replace(An, "").replace(Hn, Nn[1] + "//"), 
+   if (g.promise(k).complete = m.add, k.success = k.done, k.error = k.fail, p.url = ((e || p.url || Rn) + "").replace(An, "").replace(Hn, $n[1] + "//"), 
    p.type = n.method || n.type || p.method || p.type, p.dataTypes = lt.trim(p.dataType || "*").toLowerCase().match(ut) || [ "" ], 
-   null == p.crossDomain && (o = Fn.exec(p.url.toLowerCase()), p.crossDomain = !(!o || o[1] === Nn[1] && o[2] === Nn[2] && (o[3] || ("http:" === o[1] ? 80 : 443)) == (Nn[3] || ("http:" === Nn[1] ? 80 : 443)))), 
+   null == p.crossDomain && (o = Fn.exec(p.url.toLowerCase()), p.crossDomain = !(!o || o[1] === $n[1] && o[2] === $n[2] && (o[3] || ("http:" === o[1] ? 80 : 443)) == ($n[3] || ("http:" === $n[1] ? 80 : 443)))), 
    p.data && p.processData && "string" != typeof p.data && (p.data = lt.param(p.data, p.traditional)), 
-   N(qn, p, n, k), 2 === w) return k;
+   $(qn, p, n, k), 2 === w) return k;
    c = p.global, c && 0 === lt.active++ && lt.event.trigger("ajaxStart"), p.type = p.type.toUpperCase(), 
    p.hasContent = !Dn.test(p.type), s = p.url, p.hasContent || (p.data && (s = p.url += (Mn.test(s) ? "&" : "?") + p.data, 
    delete p.data), p.cache === !1 && (p.url = zn.test(s) ? s.replace(zn, "$1_=" + Ln++) : s + (Mn.test(s) ? "&" : "?") + "_=" + Ln++)), 
@@ -3203,7 +3209,7 @@ function css_browser_selector(e) {
     error: 1,
     complete: 1
    }) k[r](p[r]);
-   if (u = N(Wn, p, n, k)) {
+   if (u = $(Wn, p, n, k)) {
     k.readyState = 1, c && h.trigger("ajaxSend", [ k, p ]), p.async && p.timeout > 0 && (l = setTimeout(function() {
      k.abort("timeout");
     }, p.timeout));
@@ -3273,14 +3279,14 @@ function css_browser_selector(e) {
    a = s = t;
   }), "script") : void 0;
  });
- var Jn, Yn, Kn = 0, Zn = e.ActiveXObject && function() {
+ var Yn, Jn, Kn = 0, Zn = e.ActiveXObject && function() {
   var e;
-  for (e in Jn) Jn[e](t, !0);
+  for (e in Yn) Yn[e](t, !0);
  };
  lt.ajaxSettings.xhr = e.ActiveXObject ? function() {
   return !this.isLocal && A() || z();
- } : A, Yn = lt.ajaxSettings.xhr(), lt.support.cors = !!Yn && "withCredentials" in Yn, 
- Yn = lt.support.ajax = !!Yn, Yn && lt.ajaxTransport(function(n) {
+ } : A, Jn = lt.ajaxSettings.xhr(), lt.support.cors = !!Jn && "withCredentials" in Jn, 
+ Jn = lt.support.ajax = !!Jn, Jn && lt.ajaxTransport(function(n) {
   if (!n.crossDomain || lt.support.cors) {
    var i;
    return {
@@ -3296,7 +3302,7 @@ function css_browser_selector(e) {
       var a, c, u, d;
       try {
        if (i && (o || 4 === l.readyState)) if (i = t, s && (l.onreadystatechange = lt.noop, 
-       Zn && delete Jn[s]), o) 4 !== l.readyState && l.abort(); else {
+       Zn && delete Yn[s]), o) 4 !== l.readyState && l.abort(); else {
         d = {}, a = l.status, c = l.getAllResponseHeaders(), "string" == typeof l.responseText && (d.text = l.responseText);
         try {
          u = l.statusText;
@@ -3309,8 +3315,8 @@ function css_browser_selector(e) {
        o || r(-1, f);
       }
       d && r(a, u, d, c);
-     }, n.async ? 4 === l.readyState ? setTimeout(i) : (s = ++Kn, Zn && (Jn || (Jn = {}, 
-     lt(e).unload(Zn)), Jn[s] = i), l.onreadystatechange = i) : i();
+     }, n.async ? 4 === l.readyState ? setTimeout(i) : (s = ++Kn, Zn && (Yn || (Yn = {}, 
+     lt(e).unload(Zn)), Yn[s] = i), l.onreadystatechange = i) : i();
     },
     abort: function() {
      i && i(t, !0);
@@ -3888,7 +3894,7 @@ function css_browser_selector(e) {
  }, C.tap = function(e, t) {
   return t(e), e;
  };
- var $ = function(e, t, n, i) {
+ var N = function(e, t, n, i) {
   if (e === t) return 0 !== e || 1 / e == 1 / t;
   if (null == e || null == t) return e === t;
   e instanceof C && (e = e._wrapped), t instanceof C && (t = t._wrapped);
@@ -3913,11 +3919,11 @@ function css_browser_selector(e) {
   n.push(e), i.push(t);
   var s = 0, a = !0;
   if ("[object Array]" == o) {
-   if (s = e.length, a = s == t.length) for (;s-- && (a = $(e[s], t[s], n, i)); ) ;
+   if (s = e.length, a = s == t.length) for (;s-- && (a = N(e[s], t[s], n, i)); ) ;
   } else {
    var l = e.constructor, u = t.constructor;
    if (l !== u && !(C.isFunction(l) && l instanceof l && C.isFunction(u) && u instanceof u)) return !1;
-   for (var d in e) if (C.has(e, d) && (s++, !(a = C.has(t, d) && $(e[d], t[d], n, i)))) break;
+   for (var d in e) if (C.has(e, d) && (s++, !(a = C.has(t, d) && N(e[d], t[d], n, i)))) break;
    if (a) {
     for (d in t) if (C.has(t, d) && !s--) break;
     a = !s;
@@ -3926,7 +3932,7 @@ function css_browser_selector(e) {
   return n.pop(), i.pop(), a;
  };
  C.isEqual = function(e, t) {
-  return $(e, t, [], []);
+  return N(e, t, [], []);
  }, C.isEmpty = function(e) {
   if (null == e) return !0;
   if (C.isArray(e) || C.isString(e)) return 0 === e.length;
@@ -3968,7 +3974,7 @@ function css_browser_selector(e) {
  }, C.random = function(e, t) {
   return null == t && (t = e, e = 0), e + Math.floor(Math.random() * (t - e + 1));
  };
- var N = {
+ var $ = {
   escape: {
    "&": "&amp;",
    "<": "&lt;",
@@ -3978,15 +3984,15 @@ function css_browser_selector(e) {
    "/": "&#x2F;"
   }
  };
- N.unescape = C.invert(N.escape);
+ $.unescape = C.invert($.escape);
  var R = {
-  escape: new RegExp("[" + C.keys(N.escape).join("") + "]", "g"),
-  unescape: new RegExp("(" + C.keys(N.unescape).join("|") + ")", "g")
+  escape: new RegExp("[" + C.keys($.escape).join("") + "]", "g"),
+  unescape: new RegExp("(" + C.keys($.unescape).join("|") + ")", "g")
  };
  C.each([ "escape", "unescape" ], function(e) {
   C[e] = function(t) {
    return null == t ? "" : ("" + t).replace(R[e], function(t) {
-    return N[e][t];
+    return $[e][t];
    });
   };
  }), C.result = function(e, t) {
@@ -4599,6 +4605,121 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  }), t;
 }), define("text!html/settingsExtensionsAccordion.html", [], function() {
  return '<div class="accordion-group">\n	<div class="accordion-heading">\n		<label class="checkbox pull-right"> <input\n			id="input-enable-extension-<%= extensionId %>" type="checkbox"<%\n			if(!isOptional) print(\'disabled\') %>> enabled\n		</label> <a data-toggle="collapse"\n			data-parent="#accordion-extensions" class="accordion-toggle"\n			href="#collapse-<%= extensionId %>"> <%= extensionName %> </a>\n	</div>\n	<div id="collapse-<%= extensionId %>" class="accordion-body collapse">\n		<div class="accordion-inner"><%= settingsBlock %></div>\n	</div>\n</div>\n';
+}), function(e, t) {
+ "object" == typeof exports ? module.exports = t() : "function" == typeof define && define.amd ? define("crel", t) : e.crel = t();
+}(this, function() {
+ function e() {
+  var n, i = window.document, o = arguments, r = i.createElement(o[0]), s = o[1], a = 2, l = o.length, c = e.attrMap;
+  if (1 === l) return r;
+  if (("object" != typeof s || t(s)) && (--a, s = null), 1 === l - a && "string" == typeof o[a] && void 0 !== r.textContent) r.textContent = o[a]; else for (;l > a; ++a) n = o[a], 
+  null != n && (t(n) || (n = i.createTextNode(n)), r.appendChild(n));
+  for (var u in s) if (c[u]) {
+   var d = e.attrMap[u];
+   "function" == typeof d ? d(r, s[u]) : r.setAttribute(d, s[u]);
+  } else r.setAttribute(u, s[u]);
+  return r;
+ }
+ var t = "object" == typeof Node ? function(e) {
+  return e instanceof Node;
+ } : function(e) {
+  return e && "object" == typeof e && "number" == typeof e.nodeType && "string" == typeof e.nodeName;
+ };
+ return e.attrMap = {}, e.isNode = t, e;
+}), define("text!html/partialRenderingSettingsBlock.html", [], function() {
+ return '<p>Renders modified sections only.</p>\n<blockquote class="muted">\n	<b>NOTE:</b> Document sections are based on title elements (h1, h2...). Therefore if\n	your document does not contain any title, performance will not be increased.\n</blockquote>';
+}), define("extensions/partialRendering", [ "underscore", "crel", "classes/Extension", "text!html/partialRenderingSettingsBlock.html" ], function(e, t, n, i) {
+ function o(t, n) {
+  if (p = [], d = [], f = void 0, h === !0 || u != n) return h = !1, u = n, d = c, 
+  c = t, p = t, void 0;
+  var i = c.length;
+  e.some(c, function(e, n) {
+   return n >= t.length || e.text != t[n].text ? (i = n, !0) : void 0;
+  });
+  var o = -c.length;
+  if (e.some(c.slice().reverse(), function(e, n) {
+   return n >= t.length || e.text != t[t.length - n - 1].text ? (o = -n, !0) : void 0;
+  }), i !== c.length || o !== -i) {
+   var r = c.slice(0, i);
+   p = t.slice(i, t.length + o);
+   var s = c.slice(c.length + o, c.length);
+   f = e.first(s), d = c.slice(i, c.length + o), c = r.concat(p).concat(s);
+  }
+ }
+ function r() {
+  e.each(d, function(e) {
+   var t = document.getElementById("wmd-preview-section-" + e.id);
+   b.removeChild(t);
+  });
+  var n = document.getElementById("wmd-preview"), i = Array.prototype.slice.call(n.childNodes);
+  n.innerHTML = "";
+  var o = document.createDocumentFragment();
+  e.each(p, function(n) {
+   for (var r = t("div", {
+    id: "wmd-preview-section-" + n.id,
+    "class": "wmd-preview-section preview-content"
+   }), s = !0; 0 !== i.length; ) {
+    var a = i[0];
+    if (s === !1 && /(^| )wmd-title($| )/.test(a.className)) break;
+    s = !1, "DIV" == a.tagName && "footnotes" == a.className ? e.each(a.querySelectorAll("ol > li"), function(e) {
+     var t = e.id.substring(3);
+     y[t] = e;
+    }) : r.appendChild(a), i.shift();
+   }
+   o.appendChild(r);
+  });
+  var r = v;
+  void 0 !== f && (r = document.getElementById("wmd-preview-section-" + f.id)), b.insertBefore(o, r), 
+  v.innerHTML = "";
+  var s = [];
+  if (m === !0) {
+   var a = t("ol");
+   e.each(b.querySelectorAll("a.footnote"), function(e, t) {
+    e.textContent = t + 1;
+    var n = e.id.substring(6);
+    s.push(n), a.appendChild(y[n].cloneNode(!0));
+   }), s.length > 0 && v.appendChild(t("div", {
+    "class": "footnotes"
+   }, t("hr"), a)), y = e.pick(y, s);
+  }
+ }
+ var s = new n("partialRendering", "Partial Rendering", !0);
+ s.settingsBlock = i;
+ var a = void 0, l = 0, c = [], u = void 0, d = [], p = [], f = void 0, h = !1, g = !1, m = !1;
+ s.onSectionsCreated = function(t) {
+  var n = [], i = "";
+  m = !1, e.each(t, function(e) {
+   e += "\n\n", g && (e = e.replace(/^```.*\n[\s\S]*?\n```|\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|$)/g, function(e, t) {
+    return t ? (m = !0, i += e, "") : e;
+   })), e = e.replace(/^```.*\n[\s\S]*?\n```|^[ ]{0,3}\[(.+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?(?=\s|$)[ \t]*\n?[ \t]*((\n*)["(](.+?)[")][ \t]*)?(?:\n+)/gm, function(e, t) {
+    return t ? (i += e, "") : e;
+   }), /\S/.test(e) && n.push({
+    id: ++l,
+    text: e
+   });
+  }), o(n, i);
+ };
+ var v = void 0, b = void 0, y = {};
+ return s.onEditorConfigure = function(t) {
+  a = t.getConverter(), a.hooks.chain("preConversion", function() {
+   var t = e.map(p, function(e) {
+    return e.text;
+   });
+   return t.push(u + "\n\n"), t.join("");
+  }), t.hooks.chain("onPreviewRefresh", function() {
+   r();
+  });
+ }, s.onReady = function() {
+  v = t("div", {
+   id: "wmd-preview-section-footnotes",
+   "class": "preview-content"
+  }), b = document.getElementById("preview-contents"), b.appendChild(v);
+ }, s.onFileSelected = function() {
+  h = !0;
+ }, s.onFileOpen = function() {
+  a.extraExtensions && (g = e.some(a.extraExtensions, function(e) {
+   return "footnotes" == e;
+  }));
+ }, s;
 }), define("classes/FileDescriptor", [ "utils" ], function(e) {
  function t(e, t, n, i) {
   this.fileIndex = e, this._title = t || localStorage[e + ".title"], this._editorScrollTop = parseInt(localStorage[e + ".editorScrollTop"]) || 0, 
@@ -4825,12 +4946,14 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  o.settingsBlock = '<p>Prints the content of the "About" dialog box.</p>';
  var r = {
   Bootstrap: "http://twitter.github.io/bootstrap/",
+  crel: "https://github.com/KoryNunn/crel",
   "CSS Browser Selector": "https://github.com/rafaelp/css_browser_selector/",
   "Dropbox-js": "https://github.com/dropbox/dropbox-js",
   "FileSaver.js": "https://github.com/eligrey/FileSaver.js/",
   Gatekeeper: "https://github.com/prose/gatekeeper",
   "Github.js": "https://github.com/michael/github",
   Glyphicons: "http://glyphicons.com/",
+  "Highlight.js": "http://softwaremaniacs.org/soft/highlight/en/",
   jGrowl: "https://github.com/stanlemon/jGrowl/",
   jQuery: "http://jquery.com/",
   "jQuery Mouse Wheel Plugin": "https://github.com/brandonaaron/jquery-mousewheel",
@@ -4847,6 +4970,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   waitForImages: "https://github.com/alexanderdickson/waitForImages"
  }, s = {
   "StackEdit Download Proxy": "https://github.com/benweet/stackedit-download-proxy",
+  "StackEdit Picasa Proxy": "https://github.com/benweet/stackedit-picasa-proxy",
   "StackEdit SSH Proxy": "https://github.com/benweet/stackedit-ssh-proxy",
   "StackEdit Tumblr Proxy": "https://github.com/benweet/stackedit-tumblr-proxy",
   "StackEdit WordPress Proxy": "https://github.com/benweet/stackedit-wordpress-proxy"
@@ -5151,7 +5275,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   e.metaKey && t.push("meta"), t;
  }
  function s(e, t, n) {
-  $.stopCallback(t, t.target || t.srcElement, n) || e(t, n) === !1 && (t.preventDefault && t.preventDefault(), 
+  N.stopCallback(t, t.target || t.srcElement, n) || e(t, n) === !1 && (t.preventDefault && t.preventDefault(), 
   t.stopPropagation && t.stopPropagation(), t.returnValue = !1, t.cancelBubble = !0);
  }
  function a(e, t, n) {
@@ -5166,7 +5290,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  function l(e) {
   "number" != typeof e.which && (e.which = e.keyCode);
   var n = t(e);
-  if (n) return "keyup" == e.type && T == n ? (T = !1, void 0) : ($.handleKey(n, r(e), e), 
+  if (n) return "keyup" == e.type && T == n ? (T = !1, void 0) : (N.handleKey(n, r(e), e), 
   void 0);
  }
  function c(e) {
@@ -5301,12 +5425,12 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  }, S = {}, _ = {}, E = {}, T = !1, I = !1, P = 1; 20 > P; ++P) w[111 + P] = "f" + P;
  for (P = 0; 9 >= P; ++P) w[P + 96] = P;
  e(document, "keypress", l), e(document, "keydown", l), e(document, "keyup", l);
- var $ = {
+ var N = {
   bind: function(e, t, n) {
    return e = e instanceof Array ? e : [ e ], v(e, t, n), this;
   },
   unbind: function(e, t) {
-   return $.bind(e, function() {}, t);
+   return N.bind(e, function() {}, t);
   },
   trigger: function(e, t) {
    return _[e + ":" + t] && _[e + ":" + t]({}, e), this;
@@ -5319,7 +5443,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   },
   handleKey: a
  };
- window.Mousetrap = $, "function" == typeof define && define.amd && define("mousetrap", $);
+ window.Mousetrap = N, "function" == typeof define && define.amd && define("mousetrap", N);
 }(), define("text!html/documentSelectorSettingsBlock.html", [], function() {
  return '<p>Builds the "Open document" dropdown menu.</p>\n<div class="form-horizontal">\n	<div class="control-group">\n		<label class="control-label" for="select-document-selector-orderby">Order\n			by</label>\n		<div class="controls">\n			<select id="select-document-selector-orderby">\n				<option value="title">Document title</option>\n				<option value="mru">Most recently used</option>\n			</select>\n		</div>\n	</div>\n	<div class="control-group">\n		<label class="control-label"\n			for="input-document-selector-shortcut-previous">"Previous"\n			shortcut <a href="http://craig.is/killing/mice#keys" target="_blank">(?)</a></label>\n		<div class="controls">\n			<input type="text" id="input-document-selector-shortcut-previous"\n				class="span2">\n		</div>\n	</div>\n	<div class="control-group">\n		<label class="control-label"\n			for="input-document-selector-shortcut-next">"Next"\n			shortcut <a href="http://craig.is/killing/mice#keys" target="_blank">(?)</a></label>\n		<div class="controls">\n			<input type="text" id="input-document-selector-shortcut-next"\n				class="span2">\n		</div>\n	</div>\n</div>';
 }), define("extensions/documentSelector", [ "jquery", "underscore", "utils", "classes/Extension", "mousetrap", "fileSystem", "text!html/documentSelectorSettingsBlock.html" ], function(e, t, n, i, o, r, s) {
@@ -5341,7 +5465,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   shortcutPrevious: "Ctrl+[",
   shortcutNext: "Ctrl+]"
  }, l.onLoadSettings = function() {
-  n.setInputValue("#select-document-selector-orderby", l.config.sortBy), n.setInputValue("#input-document-selector-shortcut-previous", l.config.shortcutPrevious), 
+  n.setInputValue("#select-document-selector-orderby", l.config.orderBy), n.setInputValue("#input-document-selector-shortcut-previous", l.config.shortcutPrevious), 
   n.setInputValue("#input-document-selector-shortcut-next", l.config.shortcutNext);
  }, l.onSaveSettings = function(e, t) {
   e.orderBy = n.getInputValue("#select-document-selector-orderby"), e.shortcutPrevious = n.getInputTextValue("#input-document-selector-shortcut-previous", t), 
@@ -5693,7 +5817,7 @@ function() {
    var t = /(<[a-z\/!$]("[^"]*"|'[^']*'|[^'">])*>|<!(--(?:|(?:[^>-]|-[^>])(?:[^-]|-[^-])*)--)>)/gi;
    return e = e.replace(t, function(e) {
     var t = e.replace(/(.)<\/?code>(?=.)/g, "$1`");
-    return t = N(t, "!" == e.charAt(1) ? "\\`*_/" : "\\`*_");
+    return t = $(t, "!" == e.charAt(1) ? "\\`*_/" : "\\`*_");
    });
   }
   function l(e) {
@@ -5709,9 +5833,9 @@ function() {
     if (!(l.search(/\(\s*\)$/m) > -1)) return l;
     p = "";
    }
-   p = $(p), p = N(p, "*_");
+   p = N(p), p = $(p, "*_");
    var h = '<a href="' + p + '"';
-   return "" != f && (f = d(f), f = N(f, "*_"), h += ' title="' + f + '"'), h += ">" + c + "</a>";
+   return "" != f && (f = d(f), f = $(f, "*_"), h += ' title="' + f + '"'), h += ">" + c + "</a>";
   }
   function u(e) {
    return e = e.replace(/(!\[(.*?)\][ ]?(?:\n[ ]*)?\[(.*?)\])()()()()/g, p), e = e.replace(/(!\[(.*?)\]\s?\([ \t]*()<?(\S+?)>?[ \t]*((['"])(.*?)\6[ \t]*)?\))/g, p);
@@ -5725,18 +5849,18 @@ function() {
     if ("" == u && (u = c.toLowerCase().replace(/ ?\n/g, " ")), p = "#" + u, void 0 == M.get(u)) return l;
     p = M.get(u), void 0 != A.get(u) && (f = A.get(u));
    }
-   c = N(d(c), "*_[]()"), p = N(p, "*_");
+   c = $(d(c), "*_[]()"), p = $(p, "*_");
    var h = '<img src="' + p + '" alt="' + c + '"';
-   return f = d(f), f = N(f, "*_"), h += ' title="' + f + '"', h += " />";
+   return f = d(f), f = $(f, "*_"), h += ' title="' + f + '"', h += " />";
   }
   function f(e) {
    return e = e.replace(/^(.+)[ \t]*\n=+[ \t]*\n+/gm, function(e, t) {
-    return "<h1>" + s(t) + "</h1>\n\n";
+    return '<h1 class="wmd-title">' + s(t) + "</h1>\n\n";
    }), e = e.replace(/^(.+)[ \t]*\n-+[ \t]*\n+/gm, function(e, t) {
-    return "<h2>" + s(t) + "</h2>\n\n";
+    return '<h2 class="wmd-title">' + s(t) + "</h2>\n\n";
    }), e = e.replace(/^(\#{1,6})[ \t]*(.+?)[ \t]*\#*\n+/gm, function(e, t, n) {
     var i = t.length;
-    return "<h" + i + ">" + s(n) + "</h" + i + ">\n\n";
+    return "<h" + i + ' class="wmd-title">' + s(n) + "</h" + i + ">\n\n";
    });
   }
   function h(e, t) {
@@ -5779,7 +5903,7 @@ function() {
   }
   function y(e) {
    return e = e.replace(/&/g, "&amp;"), e = e.replace(/</g, "&lt;"), e = e.replace(/>/g, "&gt;"), 
-   e = N(e, "*_{}[]\\", !1);
+   e = $(e, "*_{}[]\\", !1);
   }
   function w(e) {
    return e = e.replace(/([\W_]|^)(\*\*|__)(?=\S)([^\r]*?\S[\*_]*)\2([\W_]|$)/g, "$1<strong>$3</strong>$4"), 
@@ -5856,12 +5980,12 @@ function() {
     return "\n" === e ? (i = o + 1, e) : (t = (o - i) % 4, i = o + 1, n[t]);
    });
   }
-  function $(e) {
+  function N(e) {
    return e ? (e.length, e.replace(W, function(e) {
     return "~D" == e ? "%24" : ":" == e ? ":" : "%" + e.charCodeAt(0).toString(16);
    })) : "";
   }
-  function N(e, t, n) {
+  function $(e, t, n) {
    var i = "([" + t.replace(/([\[\]\\])/g, "\\$1") + "])";
    n && (i = "\\\\" + i);
    var o = new RegExp(i, "g");
@@ -6063,9 +6187,9 @@ var prettyPrintOne, prettyPrint;
   e.tripleQuotedStrings ? t.push([ P, /^(?:\'\'\'(?:[^\'\\]|\\[\s\S]|\'{1,2}(?=[^\']))*(?:\'\'\'|$)|\"\"\"(?:[^\"\\]|\\[\s\S]|\"{1,2}(?=[^\"]))*(?:\"\"\"|$)|\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$))/, null, "'\"" ]) : e.multiLineStrings ? t.push([ P, /^(?:\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$)|\`(?:[^\\\`]|\\[\s\S])*(?:\`|$))/, null, "'\"`" ]) : t.push([ P, /^(?:\'(?:[^\\\'\r\n]|\\.)*(?:\'|$)|\"(?:[^\\\"\r\n]|\\.)*(?:\"|$))/, null, "\"'" ]), 
   e.verbatimStrings && n.push([ P, /^@\"(?:[^\"]|\"\")*(?:\"|$)/, null ]);
   var i = e.hashComments;
-  i && (e.cStyleComments ? (i > 1 ? t.push([ N, /^#(?:##(?:[^#]|#(?!##))*(?:###|$)|.*)/, null, "#" ]) : t.push([ N, /^#(?:(?:define|e(?:l|nd)if|else|error|ifn?def|include|line|pragma|undef|warning)\b|[^\r\n]*)/, null, "#" ]), 
-  n.push([ P, /^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h(?:h|pp|\+\+)?|[a-z]\w*)>/, null ])) : t.push([ N, /^#[^\r\n]*/, null, "#" ])), 
-  e.cStyleComments && (n.push([ N, /^\/\/[^\r\n]*/, null ]), n.push([ N, /^\/\*[\s\S]*?(?:\*\/|$)/, null ]));
+  i && (e.cStyleComments ? (i > 1 ? t.push([ $, /^#(?:##(?:[^#]|#(?!##))*(?:###|$)|.*)/, null, "#" ]) : t.push([ $, /^#(?:(?:define|e(?:l|nd)if|else|error|ifn?def|include|line|pragma|undef|warning)\b|[^\r\n]*)/, null, "#" ]), 
+  n.push([ P, /^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h(?:h|pp|\+\+)?|[a-z]\w*)>/, null ])) : t.push([ $, /^#[^\r\n]*/, null, "#" ])), 
+  e.cStyleComments && (n.push([ $, /^\/\/[^\r\n]*/, null ]), n.push([ $, /^\/\*[\s\S]*?(?:\*\/|$)/, null ]));
   var r = e.regexLiterals;
   if (r) {
    var s = r > 1 ? "" : "\n\r", a = s ? "." : "[\\S\\s]", l = "/(?=[^/*" + s + "])" + "(?:[^/\\x5B\\x5C" + s + "]" + "|\\x5C" + a + "|\\x5B(?:[^\\x5C\\x5D" + s + "]" + "|\\x5C" + a + ")*(?:\\x5D|$))+" + "/";
@@ -6074,7 +6198,7 @@ var prettyPrintOne, prettyPrint;
   var c = e.types;
   c && n.push([ R, c ]);
   var u = ("" + e.keywords).replace(/^ | $/g, "");
-  u.length && n.push([ $, new RegExp("^(?:" + u.replace(/[\s,]+/g, "|") + ")\\b"), null ]), 
+  u.length && n.push([ N, new RegExp("^(?:" + u.replace(/[\s,]+/g, "|") + ")\\b"), null ]), 
   t.push([ A, /^\s+/, null, " \r\n	 " ]);
   var d = "^.[^\\s\\w.$@'\"`/\\\\]*";
   return e.regexLiterals && (d += "(?!s*/)"), n.push([ L, /^@[a-z_$][a-z_$@0-9]*/i, null ], [ R, /^(?:[@_]?[A-Z]+[a-z][A-Za-z_$@0-9]*|\w+_t\b)/, null ], [ A, /^[a-z_$][a-z_$@0-9]*/i, null ], [ L, new RegExp("^(?:0x[a-f0-9]+|(?:\\d(?:_\\d+)*\\d*(?:\\.\\d*)?|\\.\\d\\+)(?:e[+\\-]?\\d+)?)[a-z]*", "i"), null, "0123456789" ], [ A, /^\\[\s\S]?/, null ], [ M, new RegExp(d), null ]), 
@@ -6218,18 +6342,18 @@ var prettyPrintOne, prettyPrint;
        var P;
        !I && (P = i(n)) && k.test(P.tagName) && (I = P.className.match(b)), I && (I = I[1]);
       }
-      var $;
-      if (x.test(n.tagName)) $ = 1; else {
-       var N = n.currentStyle, R = a.defaultView, L = N ? N.whiteSpace : R && R.getComputedStyle ? R.getComputedStyle(n, null).getPropertyValue("white-space") : 0;
-       $ = L && "pre" === L.substring(0, 3);
+      var N;
+      if (x.test(n.tagName)) N = 1; else {
+       var $ = n.currentStyle, R = a.defaultView, L = $ ? $.whiteSpace : R && R.getComputedStyle ? R.getComputedStyle(n, null).getPropertyValue("white-space") : 0;
+       N = L && "pre" === L.substring(0, 3);
       }
       var M = r.linenums;
       (M = "true" === M || +M) || (M = h.match(/\blinenums\b(?::(\d+))?/), M = M ? M[1] && M[1].length ? +M[1] : !0 : !1), 
-      M && s(n, M, $), m = {
+      M && s(n, M, N), m = {
        langExtension: I,
        sourceNode: n,
        numberLines: M,
-       pre: $
+       pre: N
       }, u(m);
      }
     }
@@ -6247,14 +6371,14 @@ var prettyPrintOne, prettyPrint;
   var m, v = 0, b = /\blang(?:uage)?-([\w.]+)(?!\S)/, y = /\bprettyprint\b/, w = /\bprettyprinted\b/, x = /pre|xmp/i, k = /^code$/i, C = /^(?:pre|code|xmp)$/i, S = {};
   o();
  }
- var f = window, h = [ "break,continue,do,else,for,if,return,while" ], g = [ h, "auto,case,char,const,default,double,enum,extern,float,goto,inline,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile" ], m = [ g, "catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof" ], v = [ m, "alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,delegate,dynamic_cast,explicit,export,friend,generic,late_check,mutable,namespace,nullptr,property,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where" ], b = [ m, "abstract,assert,boolean,byte,extends,final,finally,implements,import,instanceof,interface,null,native,package,strictfp,super,synchronized,throws,transient" ], y = [ b, "as,base,by,checked,decimal,delegate,descending,dynamic,event,fixed,foreach,from,group,implicit,in,internal,into,is,let,lock,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where" ], w = "all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes", x = [ m, "debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN" ], k = "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END", C = [ h, "and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None" ], S = [ h, "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END" ], _ = [ h, "as,assert,const,copy,drop,enum,extern,fail,false,fn,impl,let,log,loop,match,mod,move,mut,priv,pub,pure,ref,self,static,struct,true,trait,type,unsafe,use" ], E = [ h, "case,done,elif,esac,eval,fi,function,in,local,set,then,until" ], T = [ v, y, x, k, C, S, E ], I = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/, P = "str", $ = "kwd", N = "com", R = "typ", L = "lit", M = "pun", A = "pln", z = "tag", O = "dec", j = "src", D = "atn", H = "atv", F = "nocode", B = "(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*", q = /\S/, W = r({
+ var f = window, h = [ "break,continue,do,else,for,if,return,while" ], g = [ h, "auto,case,char,const,default,double,enum,extern,float,goto,inline,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile" ], m = [ g, "catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof" ], v = [ m, "alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,delegate,dynamic_cast,explicit,export,friend,generic,late_check,mutable,namespace,nullptr,property,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where" ], b = [ m, "abstract,assert,boolean,byte,extends,final,finally,implements,import,instanceof,interface,null,native,package,strictfp,super,synchronized,throws,transient" ], y = [ b, "as,base,by,checked,decimal,delegate,descending,dynamic,event,fixed,foreach,from,group,implicit,in,internal,into,is,let,lock,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where" ], w = "all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes", x = [ m, "debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN" ], k = "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END", C = [ h, "and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None" ], S = [ h, "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END" ], _ = [ h, "as,assert,const,copy,drop,enum,extern,fail,false,fn,impl,let,log,loop,match,mod,move,mut,priv,pub,pure,ref,self,static,struct,true,trait,type,unsafe,use" ], E = [ h, "case,done,elif,esac,eval,fi,function,in,local,set,then,until" ], T = [ v, y, x, k, C, S, E ], I = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/, P = "str", N = "kwd", $ = "com", R = "typ", L = "lit", M = "pun", A = "pln", z = "tag", O = "dec", j = "src", D = "atn", H = "atv", F = "nocode", B = "(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*", q = /\S/, W = r({
   keywords: T,
   hashComments: !0,
   cStyleComments: !0,
   multiLineStrings: !0,
   regexLiterals: !0
  }), U = {};
- l(W, [ "default-code" ]), l(o([], [ [ A, /^[^<?]+/ ], [ O, /^<!\w[^>]*(?:>|$)/ ], [ N, /^<\!--[\s\S]*?(?:-\->|$)/ ], [ "lang-", /^<\?([\s\S]+?)(?:\?>|$)/ ], [ "lang-", /^<%([\s\S]+?)(?:%>|$)/ ], [ M, /^(?:<[%?]|[%?]>)/ ], [ "lang-", /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i ], [ "lang-js", /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i ], [ "lang-css", /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i ], [ "lang-in.tag", /^(<\/?[a-z][^<>]*>)/i ] ]), [ "default-markup", "htm", "html", "mxml", "xhtml", "xml", "xsl" ]), 
+ l(W, [ "default-code" ]), l(o([], [ [ A, /^[^<?]+/ ], [ O, /^<!\w[^>]*(?:>|$)/ ], [ $, /^<\!--[\s\S]*?(?:-\->|$)/ ], [ "lang-", /^<\?([\s\S]+?)(?:\?>|$)/ ], [ "lang-", /^<%([\s\S]+?)(?:%>|$)/ ], [ M, /^(?:<[%?]|[%?]>)/ ], [ "lang-", /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i ], [ "lang-js", /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i ], [ "lang-css", /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i ], [ "lang-in.tag", /^(<\/?[a-z][^<>]*>)/i ] ]), [ "default-markup", "htm", "html", "mxml", "xhtml", "xml", "xsl" ]), 
  l(o([ [ A, /^[\s]+/, null, " 	\r\n" ], [ H, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, "\"'" ] ], [ [ z, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i ], [ D, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i ], [ "lang-uq.val", /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/ ], [ M, /^[=<>\/]+/ ], [ "lang-js", /^on\w+\s*=\s*\"([^\"]+)\"/i ], [ "lang-js", /^on\w+\s*=\s*\'([^\']+)\'/i ], [ "lang-js", /^on\w+\s*=\s*([^\"\'>\s]+)/i ], [ "lang-css", /^style\s*=\s*\"([^\"]+)\"/i ], [ "lang-css", /^style\s*=\s*\'([^\']+)\'/i ], [ "lang-css", /^style\s*=\s*([^\"\'>\s]+)/i ] ]), [ "in.tag" ]), 
  l(o([], [ [ H, /^[\s\S]+/ ] ]), [ "uq.val" ]), l(r({
   keywords: v,
@@ -6313,9 +6437,9 @@ var prettyPrintOne, prettyPrint;
   sourceDecorator: r,
   PR_ATTRIB_NAME: D,
   PR_ATTRIB_VALUE: H,
-  PR_COMMENT: N,
+  PR_COMMENT: $,
   PR_DECLARATION: O,
-  PR_KEYWORD: $,
+  PR_KEYWORD: N,
   PR_LITERAL: L,
   PR_NOCODE: F,
   PR_PLAIN: A,
@@ -7745,7 +7869,9 @@ hljs.LANGUAGES.bash = function(e) {
    "\n";
   });
  }, Markdown.Extra.prototype.doFootnotes = function(e) {
-  var t = this, n = 0;
+  var t = this;
+  if (t.isConvertingFootnote === !0) return e;
+  var n = 0;
   return e = e.replace(/\[\^(.+?)\]/g, function(e, i) {
    var o = p(i), r = t.footnotes[o];
    return void 0 === r ? "" : (n++, t.usedFootnotes.push(o), '<a href="#fn:' + o + '" id="fnref:' + o + '" title="See footnote" class="footnote">' + n + "</a>");
@@ -7755,8 +7881,10 @@ hljs.LANGUAGES.bash = function(e) {
   if (0 === t.usedFootnotes.length) return e;
   e += '\n\n<div class="footnotes">\n<hr>\n<ol>\n\n';
   for (var n = 0; n < t.usedFootnotes.length; n++) {
-   var i = t.usedFootnotes[n], o = t.footnotes[i], r = l(o, t);
-   e += '<li id="fn:' + i + '">' + r + ' <a href="#fnref:' + i + '" title="Return to article" class="reversefootnote">&#8617;</a></li>\n\n';
+   var i = t.usedFootnotes[n], o = t.footnotes[i];
+   t.isConvertingFootnote = !0;
+   var r = l(o, t);
+   delete t.isConvertingFootnote, e += '<li id="fn:' + i + '">' + r + ' <a href="#fnref:' + i + '" title="Return to article" class="reversefootnote">&#8617;</a></li>\n\n';
   }
   return e += "</ol>\n</div>";
  }, Markdown.Extra.prototype.fencedCodeBlocks = function(e) {
@@ -7790,38 +7918,42 @@ hljs.LANGUAGES.bash = function(e) {
    s = "\n" + c(s, o) + "\n") : (s = t(s), s = l(n(s), o)), "\n<dd>" + s + "</dd>\n";
   }), a(i);
  };
-}(), define("libs/Markdown.Extra", function() {}), define("extensions/markdownExtra", [ "jquery", "utils", "classes/Extension", "text!html/markdownExtraSettingsBlock.html", "libs/Markdown.Extra" ], function(e, t, n, i) {
- var o = new n("markdownExtra", "Markdown Extra", !0);
- return o.settingsBlock = i, o.defaultConfig = {
+}(), define("libs/Markdown.Extra", function() {}), define("extensions/markdownExtra", [ "jquery", "underscore", "utils", "classes/Extension", "text!html/markdownExtraSettingsBlock.html", "libs/Markdown.Extra" ], function(e, t, n, i, o) {
+ var r = new i("markdownExtra", "Markdown Extra", !0);
+ return r.settingsBlock = o, r.defaultConfig = {
   extensions: [ "fenced_code_gfm", "tables", "def_list", "attr_list", "footnotes" ],
   highlighter: "prettify"
- }, o.onLoadSettings = function() {
+ }, r.onLoadSettings = function() {
   function e(e) {
-   return _.some(o.config.extensions, function(t) {
+   return t.some(r.config.extensions, function(t) {
     return t == e;
    });
   }
-  t.setInputChecked("#input-markdownextra-fencedcodegfm", e("fenced_code_gfm")), t.setInputChecked("#input-markdownextra-tables", e("tables")), 
-  t.setInputChecked("#input-markdownextra-deflist", e("def_list")), t.setInputChecked("#input-markdownextra-attrlist", e("attr_list")), 
-  t.setInputChecked("#input-markdownextra-footnotes", e("footnotes")), t.setInputValue("#input-markdownextra-highlighter", o.config.highlighter);
- }, o.onSaveSettings = function(e) {
-  e.extensions = [], t.getInputChecked("#input-markdownextra-fencedcodegfm") && e.extensions.push("fenced_code_gfm"), 
-  t.getInputChecked("#input-markdownextra-tables") && e.extensions.push("tables"), 
-  t.getInputChecked("#input-markdownextra-deflist") && e.extensions.push("def_list"), 
-  t.getInputChecked("#input-markdownextra-attrlist") && e.extensions.push("attr_list"), 
-  t.getInputChecked("#input-markdownextra-footnotes") && e.extensions.push("footnotes"), 
-  e.highlighter = t.getInputValue("#input-markdownextra-highlighter");
- }, o.onEditorConfigure = function(t) {
-  var n = t.getConverter(), i = {
-   extensions: o.config.extensions
+  n.setInputChecked("#input-markdownextra-fencedcodegfm", e("fenced_code_gfm")), n.setInputChecked("#input-markdownextra-tables", e("tables")), 
+  n.setInputChecked("#input-markdownextra-deflist", e("def_list")), n.setInputChecked("#input-markdownextra-attrlist", e("attr_list")), 
+  n.setInputChecked("#input-markdownextra-footnotes", e("footnotes")), n.setInputValue("#input-markdownextra-highlighter", r.config.highlighter);
+ }, r.onSaveSettings = function(e) {
+  e.extensions = [], n.getInputChecked("#input-markdownextra-fencedcodegfm") && e.extensions.push("fenced_code_gfm"), 
+  n.getInputChecked("#input-markdownextra-tables") && e.extensions.push("tables"), 
+  n.getInputChecked("#input-markdownextra-deflist") && e.extensions.push("def_list"), 
+  n.getInputChecked("#input-markdownextra-attrlist") && e.extensions.push("attr_list"), 
+  n.getInputChecked("#input-markdownextra-footnotes") && e.extensions.push("footnotes"), 
+  e.highlighter = n.getInputValue("#input-markdownextra-highlighter");
+ }, r.onEditorConfigure = function(e) {
+  var n = e.getConverter(), i = {
+   extensions: r.config.extensions
   };
-  "highlight" == o.config.highlighter ? (i.highlighter = "prettify", t.hooks.chain("onPreviewRefresh", function() {
-   e(".prettyprint").each(function(e, t) {
-    hljs.highlightBlock(t);
+  if ("highlight" == r.config.highlighter) {
+   i.highlighter = "prettify";
+   var o = document.getElementById("preview-contents");
+   e.hooks.chain("onPreviewRefresh", function() {
+    t.each(o.querySelectorAll(".prettyprint"), function(e) {
+     hljs.highlightBlock(e);
+    });
    });
-  })) : "prettify" == o.config.highlighter && (i.highlighter = "prettify", t.hooks.chain("onPreviewRefresh", prettyPrint)), 
-  Markdown.Extra.init(n, i);
- }, o;
+  } else "prettify" == r.config.highlighter && (i.highlighter = "prettify", e.hooks.chain("onPreviewRefresh", prettyPrint));
+  Markdown.Extra.init(n, i), n.extraExtensions = r.config.extensions;
+ }, r;
 }), define("text!html/buttonToc.html", [], function() {
  return '<button class="btn dropdown-toggle" title="Table of contents" data-toggle="dropdown">\n    <i class="icon-list"></i>\n</button>\n<div class="dropdown-menu pull-right">\n    <h3>Table of contents</h3>\n    <div class="table-of-contents">\n    </div>\n</div>\n';
 }), define("text!html/tocSettingsBlock.html", [], function() {
@@ -7841,17 +7973,17 @@ hljs.LANGUAGES.bash = function(e) {
   }), i(), r;
  }
  function l() {
-  function i(e) {
-   for (var i = e.prop("id") || n.slugify(e.text()), r = i, s = 0; t.has(o, r); ) r = i + "-" + ++s;
-   return o[r] = !0, e.prop("id", r), r;
+  function e(e) {
+   for (var o = e.id || n.slugify(e.textContent), r = o, s = 0; t.has(i, r); ) r = o + "-" + ++s;
+   return i[r] = !0, e.id = r, r;
   }
-  var o = {}, r = [];
-  return e("#wmd-preview").children("h1, h2, h3, h4, h5, h6").each(function() {
-   r.push(new s(e(this).prop("tagName"), i(e(this)), e(this).text()));
-  }), r = a(r), '<div class="toc">\n<ul>\n' + r.join("") + "</ul>\n</div>\n";
+  var i = {}, o = [];
+  return t.each(u.querySelectorAll(".preview-content > .wmd-title"), function(t) {
+   o.push(new s(t.tagName, e(t), t.textContent));
+  }), o = a(o), '<div class="toc">\n<ul>\n' + o.join("") + "</ul>\n</div>\n";
  }
  var c = new i("toc", "Table of Contents", !0);
- return c.settingsBlock = r, c.defaultConfig = {
+ c.settingsBlock = r, c.defaultConfig = {
   marker: "\\[(TOC|toc)\\]",
   button: !0
  }, c.onLoadSettings = function() {
@@ -7870,11 +8002,18 @@ hljs.LANGUAGES.bash = function(e) {
   var e = "<li>";
   return this.anchor && this.text && (e += '<a href="#' + this.anchor + '">' + this.text + "</a>"), 
   e += this.childrenToString() + "</li>\n";
- }, c.onEditorConfigure = function(t) {
-  t.hooks.chain("onPreviewRefresh", function() {
-   var t = l(), n = e("#wmd-preview").html();
-   n = n.replace(new RegExp("<p>" + c.config.marker + "<\\/p>", "g"), t), e("#wmd-preview").html(n), 
-   e(".table-of-contents").html(t);
+ };
+ var u = void 0;
+ return c.onEditorConfigure = function(e) {
+  u = document.getElementById("preview-contents");
+  var n = document.querySelectorAll(".table-of-contents"), i = new RegExp("^" + c.config.marker + "$", "g");
+  e.hooks.chain("onPreviewRefresh", function() {
+   var e = l();
+   t.each(u.getElementsByTagName("p"), function(t) {
+    i.test(t.innerHTML) && (t.innerHTML = e);
+   }), t.each(n, function(t) {
+    t.innerHTML = e;
+   });
   });
  }, c;
 }), define("text!html/mathJaxSettingsBlock.html", [], function() {
@@ -7925,7 +8064,7 @@ hljs.LANGUAGES.bash = function(e) {
     linebreaks: {
      automatic: !0
     },
-    EqnChunk: MathJax.Hub.Browser.isMobile ? 10 : 50,
+    EqnChunk: 10,
     imageFont: null
    },
    tex2jax: tex2jax,
@@ -7950,7 +8089,7 @@ hljs.LANGUAGES.bash = function(e) {
    messageStyle: "none"
   });
  };
- var ready = !1, pending = !1, preview = null, inline = "$", blocks, start, end, last, braces, math, HUB = MathJax.Hub;
+ var converter = void 0, ready = !1, pending = !1, preview = null, inline = "$", blocks, start, end, last, braces, math, HUB = MathJax.Hub;
  HUB.Queue(function() {
   ready = !0, HUB.processUpdateTime = 50, HUB.Config({
    "HTML-CSS": {
@@ -7965,9 +8104,8 @@ hljs.LANGUAGES.bash = function(e) {
  });
  var SPLIT = /(\$\$?|\\(?:begin|end)\{[a-z]*\*?\}|\\[\\{}$]|[{}]|(?:\n\s*)+|@@\d+@@)/i, afterRefreshCallback = void 0;
  if (mathJax.onEditorConfigure = function(e) {
-  preview = document.getElementById("wmd-preview");
-  var t = e.getConverter();
-  t.hooks.chain("preConversion", removeMath), t.hooks.chain("postConversion", replaceMath);
+  preview = document.getElementById("preview-contents"), converter = e.getConverter(), 
+  converter.hooks.chain("preConversion", removeMath), converter.hooks.chain("postConversion", replaceMath);
  }, mathJax.onAsyncPreview = function(e) {
   afterRefreshCallback = e, UpdateMJ();
  }, !HUB.Cancel) {
@@ -8018,7 +8156,7 @@ hljs.LANGUAGES.bash = function(e) {
   });
  }, t;
 }), define("text!html/scrollLinkSettingsBlock.html", [], function() {
- return '<p>Binds together editor and preview scrollbars.</p>\n<blockquote class="muted">\n	<b>NOTE:</b> The mapping between Markdown and HTML is based on the\n	position of the title elements (h1 h2 ...) in the page. Therefore if\n	your document does not contain any title the mapping will be linear and\n	consequently less accurate.\n</blockquote>';
+ return '<p>Binds together editor and preview scrollbars.</p>\n<blockquote class="muted">\n	<b>NOTE:</b> The mapping between Markdown and HTML is based on the\n	position of the title elements (h1, h2...) in the page. Therefore if\n	your document does not contain any title, the mapping will be linear and\n	consequently less accurate.\n</blockquote>';
 }), showLog = !0, css_browser_selector(navigator.userAgent), define("libs/css_browser_selector", function() {}), 
 function(e) {
  "function" == typeof define && define.amd ? define("libs/jquery.mousewheel", [ "jquery" ], e) : "object" == typeof exports ? module.exports = e : e(jQuery);
@@ -8055,48 +8193,44 @@ function(e) {
  }
  var r = new n("scrollLink", "Scroll Link", !0);
  r.settingsBlock = i;
- var s = [], a = [], l = void 0, c = void 0, u = t.debounce(function() {
-  function t(e) {
-   var t = r;
-   void 0 !== e && (i.val(e), t += i.prop("scrollHeight"));
-   var n = d + t;
-   s.push({
-    startOffset: d,
+ var s = void 0;
+ r.onSectionsCreated = function(e) {
+  s = e;
+ };
+ var a = void 0, l = void 0, c = void 0, u = [], d = [], p = void 0, f = void 0, h = t.debounce(function() {
+  function n(e) {
+   var t = i;
+   0 !== e.length && (c.val(e), t += c.prop("scrollHeight"));
+   var n = r + t;
+   u.push({
+    startOffset: r,
     endOffset: n,
     height: t
-   }), d = n, r = 0;
+   }), r = n, i = 0;
   }
-  var n = e("#wmd-input");
-  s = [];
-  var i = e("#md-section-helper");
-  i.width(n.width());
-  var r = o(n.css("padding-top")), u = 0, d = 0, p = n.val() + "\n\n";
-  p.replace(/^```.*\n[\s\S]*?\n```|(^.+[ \t]*\n=+[ \t]*\n+|^.+[ \t]*\n-+[ \t]*\n+|^\#{1,6}[ \t]*.+?[ \t]*\#*\n+)/gm, function(e, n, i) {
-   if (n) {
-    var o = void 0;
-    i > u && (o = p.substring(u, i - 1)), t(o), u = i;
-   }
-   return "";
-  }), r += o(n.css("padding-bottom")), t(p.substring(u, p.length - 2));
-  var h = e(".preview-container");
-  a = [];
-  var g = 0, m = h.scrollTop();
-  e("#wmd-preview").children("h1,h2,h3,h4,h5,h6").each(function() {
-   var t = e(this).position().top + m + o(e(this).css("margin-top"));
-   a.push({
-    startOffset: g,
-    endOffset: t,
-    height: t - g
-   }), g = t;
+  u = [], c.width(a.width());
+  var i = o(a.css("padding-top")), r = 0;
+  t.each(s, function(e, t) {
+   t !== s.length - 1 ? e = e.substring(0, e.length - 1) : i += o(a.css("padding-bottom")), 
+   n(e);
+  }), d = [];
+  var h = 0, g = l.scrollTop();
+  l.find(".preview-content > .wmd-title").each(function() {
+   var t = e(this), n = t.position().top + g + o(t.css("margin-top"));
+   d.push({
+    startOffset: h,
+    endOffset: n,
+    height: n - h
+   }), h = n;
   });
-  var v = h.prop("scrollHeight");
-  a.push({
-   startOffset: g,
-   endOffset: v,
-   height: v - g
-  }), l = -10, c = -10, f();
- }, 500), d = !1, p = !1, f = t.debounce(function() {
-  function n(e, n, i, o, r, s) {
+  var m = l.prop("scrollHeight");
+  d.push({
+   startOffset: h,
+   endOffset: m,
+   height: m - h
+  }), p = -10, f = -10, v();
+ }, 500), g = !1, m = !1, v = t.debounce(function() {
+  function e(e, n, i, o, r, s) {
    var a = void 0, l = t.find(n, function(t, n) {
     return a = n, e < t.endOffset;
    });
@@ -8110,32 +8244,33 @@ function(e) {
     }), void 0);
    }
   }
-  if (0 !== s.length && s.length === a.length) {
-   var i = e("#wmd-input"), o = i.scrollTop(), r = e(".preview-container"), u = r.scrollTop();
-   d === !0 && Math.abs(o - l) > 9 ? (d = !1, l = o, n(o, s, r, a, u, function(e) {
-    c = e;
-   })) : p === !0 && Math.abs(u - c) > 9 && (p = !1, c = u, n(u, a, i, s, o, function(e) {
-    l = e;
+  if (0 !== u.length && u.length === d.length) {
+   var n = a.scrollTop(), i = l.scrollTop();
+   g === !0 && Math.abs(n - p) > 9 ? (g = !1, p = n, e(n, u, l, d, i, function(e) {
+    f = e;
+   })) : m === !0 && Math.abs(i - f) > 9 && (m = !1, f = i, e(i, d, a, u, n, function(e) {
+    p = e;
    }));
   }
  }, 500);
- return r.onLayoutConfigure = function(e) {
+ r.onLayoutConfigure = function(e) {
   e.onresize = function() {
-   d = !0, u();
+   g = !0, h();
   };
  }, r.onLayoutCreated = function() {
-  e(".preview-container").bind("keyup mouseup mousewheel", function() {
-   p = !0, d = !1, f();
+  a = e("#wmd-input"), l = e(".preview-container"), c = e("#md-section-helper"), e(".preview-container").bind("keyup mouseup mousewheel", function() {
+   m = !0, g = !1, v();
   }), e("#wmd-input").bind("keyup mouseup mousewheel", function() {
-   d = !0, p = !1, f();
+   g = !0, m = !1, v();
   });
- }, r.onEditorConfigure = function(t) {
-  t.getConverter().hooks.chain("postConversion", function(t) {
-   var n = e("#wmd-preview");
-   return n.height(n.height()), t;
+ };
+ var b = void 0;
+ return r.onEditorConfigure = function(t) {
+  b = e("#preview-contents"), t.getConverter().hooks.chain("postConversion", function(e) {
+   return b.height(b.height()), e;
   });
  }, r.onPreviewFinished = function() {
-  e("#wmd-preview").height("auto"), d = !0, u();
+  b.height("auto"), g = !0, h();
  }, r;
 }), define("text!html/buttonSync.html", [], function() {
  return '<button class="btn" title="Synchronize all documents">\n	<i class="icon-refresh"></i>\n</button>';
@@ -8229,7 +8364,7 @@ function(e) {
  return '<p>Adds a "Document statistics" button over the preview.</p>\n<div class="form-horizontal">\n	<div class="control-group form-inline">\n		<label class="label-text" for="input-stat-name1">Title</label> <input\n			id="input-stat-name1" type="text" class="input-small"> <label\n			class="label-text" for="input-stat-value1">RegExp</label> <input\n			id="input-stat-value1" type="text" class="span2">\n	</div>\n	<div class="control-group form-inline">\n		<label class="label-text" for="input-stat-name2">Title</label> <input\n			id="input-stat-name2" type="text" class="input-small"> <label\n			class="label-text" for="input-stat-value2">RegExp</label> <input\n			id="input-stat-value2" type="text" class="span2">\n	</div>\n	<div class="control-group form-inline">\n		<label class="label-text" for="input-stat-name3">Title</label> <input\n			id="input-stat-name3" type="text" class="input-small"> <label\n			class="label-text" for="input-stat-value3">RegExp</label> <input\n			id="input-stat-value3" type="text" class="span2">\n	</div>\n</div>\n';
 }), define("extensions/buttonStat", [ "jquery", "underscore", "utils", "classes/Extension", "text!html/buttonStat.html", "text!html/buttonStatSettingsBlock.html" ], function(e, t, n, i, o, r) {
  var s = new i("buttonStat", 'Button "Statistics"', !0);
- return s.settingsBlock = r, s.defaultConfig = {
+ s.settingsBlock = r, s.defaultConfig = {
   name1: "Characters",
   value1: "\\S",
   name2: "Words",
@@ -8246,11 +8381,19 @@ function(e) {
   });
  }, s.onCreatePreviewButton = function() {
   return e(t.template(o, s.config));
+ };
+ var a = void 0, l = void 0, c = void 0, u = void 0;
+ return s.onReady = function() {
+  a = document.getElementById("preview-contents"), l = document.getElementById("span-stat-value1"), 
+  c = document.getElementById("span-stat-value2"), u = document.getElementById("span-stat-value3");
  }, s.onPreviewFinished = function() {
-  var t = e("#wmd-preview").clone().find("script").remove().end().text();
-  e("#span-stat-value1").text((t.match(new RegExp(s.config.value1, "g")) || []).length), 
-  e("#span-stat-value2").text((t.match(new RegExp(s.config.value2, "g")) || []).length), 
-  e("#span-stat-value3").text((t.match(new RegExp(s.config.value3, "g")) || []).length);
+  for (var e = a.cloneNode(!0), t = e.getElementsByTagName("script"), n = t.length - 1; n >= 0; n--) {
+   var i = t[n];
+   i.parentNode.removeChild(i);
+  }
+  var o = e.textContent;
+  l.textContent = (o.match(new RegExp(s.config.value1, "g")) || []).length, c.textContent = (o.match(new RegExp(s.config.value2, "g")) || []).length, 
+  u.textContent = (o.match(new RegExp(s.config.value3, "g")) || []).length;
  }, s;
 }), define("text!html/buttonHtmlCode.html", [], function() {
  return '<button class="btn dropdown-toggle action-html-code" title="HTML code" data-toggle="dropdown">\n	<i class="icon-code"></i>\n</button>\n<div class="dropdown-menu pull-right">\n	<h3>HTML code</h3>\n	<textarea id="input-html-code"></textarea>\n</div>\n';
@@ -8268,21 +8411,23 @@ function(e) {
   return e(o);
  };
  var a = void 0;
- return s.onFileSelected = function(e) {
+ s.onFileSelected = function(e) {
   a = e;
- }, s.onPreviewFinished = function() {
+ };
+ var l = void 0;
+ return s.onPreviewFinished = function(e) {
   try {
    var n = t.template(s.config.template, {
     documentTitle: a.title,
     documentMarkdown: a.content,
-    documentHTML: e("#wmd-preview").html()
+    documentHTML: e
    });
-   e("#input-html-code").val(n);
+   l.value = n;
   } catch (i) {
    return extensionMgr.onError(i), i.message;
   }
  }, s.onReady = function() {
-  e(".action-html-code").click(function() {
+  l = document.getElementById("input-html-code"), e(".action-html-code").click(function() {
    t.defer(function() {
     e("#input-html-code").each(function() {
      e(this).is(":hidden") || e(this).get(0).select();
@@ -9170,7 +9315,7 @@ function(e) {
    });
   });
  };
-}(jQuery), define("libs/jquery.waitforimages", function() {}), define("extensionMgr", [ "jquery", "underscore", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/userCustom", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonMarkdownSyntax", "extensions/buttonViewer", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o, r) {
+}(jQuery), define("libs/jquery.waitforimages", function() {}), define("extensionMgr", [ "jquery", "underscore", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/partialRendering", "extensions/userCustom", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonMarkdownSyntax", "extensions/buttonViewer", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o, r) {
  function s(e) {
   return t.chain(d).map(function(t) {
    return t.config.enabled && t[e];
@@ -9226,19 +9371,25 @@ function(e) {
  l("onFileOpen"), l("onFileClosed"), l("onContentChanged"), l("onTitleChanged"), 
  l("onSyncRunning"), l("onSyncSuccess"), l("onSyncImportSuccess"), l("onSyncExportSuccess"), 
  l("onSyncRemoved"), l("onPublishRunning"), l("onPublishSuccess"), l("onNewPublishSuccess"), 
- l("onPublishRemoved"), l("onLayoutConfigure"), l("onLayoutCreated"), l("onEditorConfigure");
- var f = a("onPreviewFinished"), h = s("onAsyncPreview"), g = h.length + 1;
+ l("onPublishRemoved"), l("onLayoutConfigure"), l("onLayoutCreated"), l("onEditorConfigure"), 
+ l("onSectionsCreated");
+ var f = a("onPreviewFinished"), h = s("onAsyncPreview"), g = h.length + 1, m = void 0, v = void 0;
  return u.onAsyncPreview = function() {
-  function n() {
-   ++i === g && f();
+  function e() {
+   ++i === g && t.defer(function() {
+    var e = "";
+    t.each(m.children, function(t) {
+     e += t.innerHTML;
+    }), f(n.trim(e)), logger.log("Preview time: " + (new Date() - u.previewStartTime));
+   });
   }
   logger.log("onAsyncPreview");
   var i = 0;
-  e("#wmd-preview").waitForImages(n), t.each(h, function(e) {
-   e(n);
+  v.waitForImages(e), t.each(h, function(t) {
+   t(e);
   });
  }, u.onReady = function() {
-  t.chain(d).sortBy(function(e) {
+  m = document.getElementById("preview-contents"), v = e(m), t.chain(d).sortBy(function(e) {
    return e.extensionName.toLowerCase();
   }).each(c), logger.log("onCreateButton");
   var n = s("onCreateButton");
@@ -13545,12 +13696,12 @@ function(e) {
     center__minHeight: 200
    };
    o.onLayoutConfigure(t), "horizontal" == i.layoutOrientation ? (e(".ui-layout-south").remove(), 
-   e(".preview-container").html('<div id="extension-preview-buttons"></div><div id="wmd-preview"></div>'), 
+   e(".preview-container").html('<div id="extension-preview-buttons"></div><div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>'), 
    _ = e("body").layout(e.extend(t, {
     east__resizable: !0,
     east__size: .5,
     east__minSize: 200
-   }))) : "vertical" == i.layoutOrientation && (e(".ui-layout-east").remove(), e(".preview-container").html('<div id="extension-preview-buttons"></div><div id="wmd-preview"></div>'), 
+   }))) : "vertical" == i.layoutOrientation && (e(".ui-layout-east").remove(), e(".preview-container").html('<div id="extension-preview-buttons"></div><div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>'), 
    _ = e("body").layout(e.extend(t, {
     south__resizable: !0,
     south__size: .5,
@@ -13564,9 +13715,9 @@ function(e) {
   }
  }
  function m() {
-  N === !0 && (t.each($, function(e) {
+  $ === !0 && (t.each(N, function(e) {
    e();
-  }), $ = []);
+  }), N = []);
  }
  var v = {}, b = void 0, y = [ o.onPeriodicRun ];
  v.runPeriodically = function(e) {
@@ -13587,7 +13738,7 @@ function(e) {
   void 0 !== T && o.onFileClosed(T), T = r, I = void 0;
   var a = T.content, l = e("#wmd-input");
   if (l.val(a), void 0 !== E) return E.undoManager.reinit(a, T.editorStart, T.editorEnd, T.editorScrollTop), 
-  E.refreshPreview(), o.onFileOpen(T), void 0;
+  o.onFileOpen(T), E.refreshPreview(), void 0;
   var c = e(".preview-container");
   l.scroll(function() {
    void 0 !== I && (T.editorScrollTop = e(this).scrollTop());
@@ -13597,7 +13748,12 @@ function(e) {
    void 0 !== I && (T.previewScrollTop = e(this).scrollTop());
   });
   var u = new Markdown.Converter();
-  E = new Markdown.Editor(u), E.hooks.set("insertLinkDialog", function(t) {
+  u.hooks.chain("preConversion", function(e) {
+   var t = e + "\n\n", n = [], i = 0;
+   return t.replace(/^```.*\n[\s\S]*?\n```|(^.+[ \t]*\n=+[ \t]*\n+|^.+[ \t]*\n-+[ \t]*\n+|^\#{1,6}[ \t]*.+?[ \t]*\#*\n+)/gm, function(e, o, r) {
+    return o && (n.push(t.substring(i, r)), i = r), "";
+   }), n.push(t.substring(i, e.length)), o.onSectionsCreated(n), e;
+  }), E = new Markdown.Editor(u), E.hooks.set("insertLinkDialog", function(t) {
    return v.insertLinkCallback = t, n.resetModalInputs(), e("#modal-insert-link").modal(), 
    !0;
   }), E.hooks.set("insertImageDialog", function(t) {
@@ -13613,7 +13769,8 @@ function(e) {
    };
   } : function(e) {
    return function() {
-    e(), void 0 === I && c.scrollTop(T.previewScrollTop), s();
+    o.previewStartTime = new Date(), e(), void 0 === I && c.scrollTop(T.previewScrollTop), 
+    s();
    };
   }, o.onEditorConfigure(E), E.hooks.chain("onPreviewRefresh", o.onAsyncPreview), 
   E.run(d), E.undoManager.reinit(a, T.editorStart, T.editorEnd, T.editorScrollTop), 
@@ -13631,13 +13788,13 @@ function(e) {
   P = t, e("#wmd-input").prop("disabled", P), e(".navbar-inner .btn").toggleClass("blocked", P), 
   P ? e(".lock-ui").removeClass("hide") : e(".lock-ui").addClass("hide");
  };
- var $ = [];
+ var N = [];
  v.onReady = function(e) {
-  $.push(e), m();
+  N.push(e), m();
  };
- var N = !1;
+ var $ = !1;
  return v.setReady = function() {
-  N = !0, m();
+  $ = !0, m();
  }, v.onReady(function() {
   t.each(THEME_LIST, function(t, n) {
    e("#input-settings-theme").append(e('<option value="' + n + '">' + t + "</option>"));
@@ -14717,10 +14874,10 @@ function(e) {
   }) ? e : void 0, g();
  }
  function h(e) {
-  e === !1 ? ($ = !0, g()) : (v.tryStopRealtimeSync(), $ = !1);
+  e === !1 ? (N = !0, g()) : (v.tryStopRealtimeSync(), N = !1);
  }
  function g() {
-  void 0 !== I && $ === !0 && P.provider.startRealtimeSync(I, P);
+  void 0 !== I && N === !0 && P.provider.startRealtimeSync(I, P);
  }
  function m(n) {
   i.resetModalInputs();
@@ -14760,9 +14917,9 @@ function(e) {
    });
   }), !0);
  };
- var I = void 0, P = void 0, $ = !0;
+ var I = void 0, P = void 0, N = !0;
  return v.tryStopRealtimeSync = function() {
-  void 0 !== I && $ === !0 && P.provider.stopRealtimeSync();
+  void 0 !== I && N === !0 && P.provider.stopRealtimeSync();
  }, viewerMode === !1 && (o.addHookCallback("onFileOpen", f), o.addHookCallback("onFileClosed", v.tryStopRealtimeSync), 
  o.addHookCallback("onOfflineChanged", h)), n.onReady(function() {
   t.each(b, function(n) {
@@ -14773,14 +14930,14 @@ function(e) {
    }), e(".action-sync-export-" + n.providerId).click(function(r) {
     var a = i.getInputChecked("#input-sync-export-" + n.providerId + "-realtime"), l = s.currentFile;
     if (a) {
-     if (t.size(l.syncLocations) > 0) return o.onError("Realtime collaboration document can't be synchronized with multiple locations"), 
+     if (t.size(l.syncLocations) > 0) return o.onError("Real time collaborative document can't be synchronized with multiple locations"), 
      void 0;
      n.exportRealtimeFile(r, l.title, l.content, function(e, t) {
       e || (t.isRealtime = !0, l.addSyncLocation(t), o.onSyncExportSuccess(l, t), I = l, 
       P = t, g());
      });
     } else {
-     if (t.size(l.syncLocations) > 0 && t.first(t.values(l.syncLocations)).isRealtime) return o.onError("Realtime collaboration document can't be synchronized with multiple locations"), 
+     if (t.size(l.syncLocations) > 0 && t.first(t.values(l.syncLocations)).isRealtime) return o.onError("Real time collaborative document can't be synchronized with multiple locations"), 
      void 0;
      n.exportFile(r, l.title, l.content, function(e, t) {
       e || (l.addSyncLocation(t), o.onSyncExportSuccess(l, t));
@@ -14792,7 +14949,7 @@ function(e) {
     }), localStorage[n.providerId + ".exportPreferences"] = JSON.stringify(c);
    }), e(".action-sync-manual-" + n.providerId).click(function(e) {
     var i = s.currentFile;
-    return t.size(i.syncLocations) > 0 && t.first(t.values(i.syncLocations)).isRealtime ? (o.onError("Realtime collaboration document can't be synchronized with multiple locations"), 
+    return t.size(i.syncLocations) > 0 && t.first(t.values(i.syncLocations)).isRealtime ? (o.onError("Real time collaborative document can't be synchronized with multiple locations"), 
     void 0) : (n.exportManual(e, i.title, i.content, function(e, t) {
      e || (i.addSyncLocation(t), o.onSyncExportSuccess(i, t));
     }), void 0);
@@ -14995,8 +15152,8 @@ function(e) {
     t.each(o.sharingAttributes, function(e) {
      var t = i.getURLParameter(e);
      return t ? (s[e] = t, void 0) : (s = void 0, void 0);
-    }), void 0 !== s && (e("#wmd-preview, #file-title").hide(), o.importPublic(s, function(t, n, i) {
-     if (e("#wmd-preview, #file-title").show(), !t) {
+    }), void 0 !== s && (e("#preview-contents, #file-title").hide(), o.importPublic(s, function(t, n, i) {
+     if (e("#preview-contents, #file-title").show(), !t) {
       var o = r.createFile(n, i, void 0, !0);
       r.selectFile(o);
      }
@@ -15310,7 +15467,7 @@ function(e) {
  }
  function f(n) {
   var o = n.defaultPublishFormat || "markdown";
-  x = n, e(".publish-provider-name").text(n.providerName), e('div[class*=" modal-publish-"]').hide().filter(".modal-publish-" + n.providerId).show(), 
+  k = n, e(".publish-provider-name").text(n.providerName), e('div[class*=" modal-publish-"]').hide().filter(".modal-publish-" + n.providerId).show(), 
   i.resetModalInputs(), e("input:radio[name=radio-publish-format][value=" + o + "]").prop("checked", !0);
   var r = i.retrieveIgnoreError(n.providerId + ".publishPreferences");
   r && (t.each(n.publishPreferencesInputIds, function(e) {
@@ -15318,9 +15475,9 @@ function(e) {
   }), i.setInputRadio("radio-publish-format", r.format)), e("#modal-publish").modal();
  }
  function h(n) {
-  var i = x, o = i.newPublishAttributes(n);
+  var i = k, o = i.newPublishAttributes(n);
   if (void 0 !== o) {
-   var r = a.currentFile, s = e("#wmd-preview").html(), c = u(r, o, s);
+   var r = a.currentFile, s = w, c = u(r, o, s);
    i.publish(o, r.title, c, function(e) {
     void 0 === e && (o.provider = i, l.createLink(o, function() {
      p(r, o);
@@ -15359,14 +15516,18 @@ function(e) {
    return r.onError(s), s.message;
   }
  };
- var v = [], b = void 0, y = void 0, w = !1;
+ var v = [], b = void 0, y = void 0, w = void 0;
+ r.addHookCallback("onPreviewFinished", function(e) {
+  w = e;
+ });
+ var x = !1;
  g.publish = function() {
-  w === !0 || n.isOffline || (w = !0, r.onPublishRunning(!0), b = a.currentFile, y = e("#wmd-preview").html(), 
+  x === !0 || n.isOffline || (x = !0, r.onPublishRunning(!0), b = a.currentFile, y = w, 
   v = t.values(b.publishLocations), d(function(e) {
-   w = !1, r.onPublishRunning(!1), void 0 === e && r.onPublishSuccess(b);
+   x = !1, r.onPublishRunning(!1), void 0 === e && r.onPublishSuccess(b);
   }));
  };
- var x = void 0;
+ var k = void 0;
  return n.onReady(function() {
   var n = e("#publish-menu");
   t.each(m, function(t) {
@@ -15379,11 +15540,11 @@ function(e) {
    var t = e("#wmd-input").val(), n = a.currentFile.title;
    i.saveAs(t, n + ".md");
   }), e(".action-download-html").click(function() {
-   var t = e("#wmd-preview").html(), n = a.currentFile.title;
-   i.saveAs(t, n + ".html");
+   var e = a.currentFile.title;
+   i.saveAs(w, e + ".html");
   }), e(".action-download-template").click(function() {
-   var t = a.currentFile, n = e("#wmd-preview").html(), r = g.applyTemplate(t, void 0, n);
-   i.saveAs(r, t.title + (-1 === o.template.indexOf("documentHTML") ? ".md" : ".html"));
+   var e = a.currentFile, t = g.applyTemplate(e, void 0, w);
+   i.saveAs(t, e.title + (-1 === o.template.indexOf("documentHTML") ? ".md" : ".html"));
   });
  }), r.onPublisherCreated(g), g;
 }), define("providers/gplusProvider", [ "underscore", "core", "utils", "classes/Provider", "extensionMgr", "helpers/googleHelper" ], function(e, t, n, i, o, r) {
@@ -15469,6 +15630,7 @@ function(e) {
  paths: {
   jquery: "libs/jquery",
   underscore: "libs/underscore",
+  crel: "libs/crel",
   jgrowl: "libs/jgrowl",
   mousetrap: "libs/mousetrap",
   toMarkdown: "libs/to-markdown",

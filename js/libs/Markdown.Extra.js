@@ -482,6 +482,9 @@
   // Find and convert footnotes references.
   Markdown.Extra.prototype.doFootnotes = function(text) {
     var self = this;
+    if(self.isConvertingFootnote === true) {
+      return text;
+    }
 
     var footnoteCounter = 0;
     text = text.replace(/\[\^(.+?)\]/g, function(wholeMatch, m1) {
@@ -512,7 +515,9 @@
     for(var i=0; i<self.usedFootnotes.length; i++) {
       var id = self.usedFootnotes[i];
       var footnote = self.footnotes[id];
+      self.isConvertingFootnote = true;
       var formattedfootnote = convertSpans(footnote, self);
+      delete self.isConvertingFootnote;
       text += '<li id="fn:'
         + id
         + '">'

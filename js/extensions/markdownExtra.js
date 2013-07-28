@@ -1,10 +1,11 @@
 define([
     "jquery",
+    "underscore",
     "utils",
     "classes/Extension",
     "text!html/markdownExtraSettingsBlock.html",
     "libs/Markdown.Extra",
-], function($, utils, Extension, markdownExtraSettingsBlockHTML) {
+], function($, _, utils, Extension, markdownExtraSettingsBlockHTML) {
 
     var markdownExtra = new Extension("markdownExtra", "Markdown Extra", true);
     markdownExtra.settingsBlock = markdownExtraSettingsBlockHTML;
@@ -50,9 +51,10 @@ define([
         };
         if(markdownExtra.config.highlighter == "highlight") {
             options.highlighter = "prettify";
+            var previewContentsElt = document.getElementById('preview-contents');
             editor.hooks.chain("onPreviewRefresh", function() {
-                $('.prettyprint').each(function(i, e) {
-                    hljs.highlightBlock(e);
+                _.each(previewContentsElt.querySelectorAll('.prettyprint'), function(elt) {
+                    hljs.highlightBlock(elt);
                 });
             });
         }
@@ -61,7 +63,7 @@ define([
             editor.hooks.chain("onPreviewRefresh", prettyPrint);
         }
         Markdown.Extra.init(converter, options);
-        
+
         // Store extensions list in converter for partialRendering
         converter.extraExtensions = markdownExtra.config.extensions;
     };

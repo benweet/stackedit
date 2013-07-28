@@ -15,6 +15,9 @@ define([
         sectionList = sectionListParam;
     };
 
+    var editorElt = undefined;
+    var previewElt = undefined;
+    var textareaElt = undefined;
     var mdSectionList = [];
     var htmlSectionList = [];
     function pxToFloat(px) {
@@ -25,10 +28,7 @@ define([
     var buildSections = _.debounce(function() {
 
         // Try to find Markdown sections by looking for titles
-        var editorElt = $("#wmd-input");
         mdSectionList = [];
-        // This textarea is used to measure sections height
-        var textareaElt = $("#md-section-helper");
         // It has to be the same width as wmd-input
         textareaElt.width(editorElt.width());
         // Consider wmd-input top padding (will be used for 1st and last
@@ -65,14 +65,14 @@ define([
         });
 
         // Try to find corresponding sections in the preview
-        var previewElt = $(".preview-container");
         htmlSectionList = [];
         var htmlSectionOffset = 0;
         var previewScrollTop = previewElt.scrollTop();
         // Each title element is a section separator
-        $("#preview-contents > .preview-content").children(".wmd-title").each(function() {
+        previewElt.find(".preview-content > .wmd-title").each(function() {
+            var titleElt = $(this);
             // Consider div scroll position and header element top margin
-            var newSectionOffset = $(this).position().top + previewScrollTop + pxToFloat($(this).css('margin-top'));
+            var newSectionOffset = titleElt.position().top + previewScrollTop + pxToFloat(titleElt.css('margin-top'));
             htmlSectionList.push({
                 startOffset: htmlSectionOffset,
                 endOffset: newSectionOffset,
@@ -100,9 +100,7 @@ define([
         if(mdSectionList.length === 0 || mdSectionList.length !== htmlSectionList.length) {
             return;
         }
-        var editorElt = $("#wmd-input");
         var editorScrollTop = editorElt.scrollTop();
-        var previewElt = $(".preview-container");
         var previewScrollTop = previewElt.scrollTop();
         function animate(srcScrollTop, srcSectionList, destElt, destSectionList, currentDestScrollTop, callback) {
             // Find the section corresponding to the offset
@@ -160,6 +158,12 @@ define([
     };
 
     scrollLink.onLayoutCreated = function() {
+        editorElt = $("#wmd-input");
+        previewElt = $(".preview-container");
+        
+        // This textarea is used to measure sections height
+        textareaElt = $("#md-section-helper");
+        
         $(".preview-container").bind("keyup mouseup mousewheel", function() {
             isScrollPreview = true;
             isScrollEditor = false;
@@ -172,19 +176,20 @@ define([
         });
     };
 
+    var previewContentsElt = undefined;
     scrollLink.onEditorConfigure = function(editor) {
+        previewContentsElt = $("#preview-contents");
         editor.getConverter().hooks.chain("postConversion", function(text) {
             // To avoid losing scrolling position before elements are fully
             // loaded
-            var previewElt = $("#preview-contents");
-            previewElt.height(previewElt.height());
+            previewContentsElt.height(previewContentsElt.height());
             return text;
         });
     };
 
     scrollLink.onPreviewFinished = function() {
         // Now set the correct height
-        $("#preview-contents").height("auto");
+        previewContentsElt.height("auto");
         isScrollEditor = true;
         buildSections();
     };

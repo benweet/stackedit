@@ -4,6 +4,7 @@ requirejs.config({
     paths: {
         "jquery": "libs/jquery",
         "underscore": "libs/underscore",
+        "crel": "libs/crel",
         "jgrowl": "libs/jgrowl",
         "mousetrap": "libs/mousetrap",
         "toMarkdown": "libs/to-markdown",

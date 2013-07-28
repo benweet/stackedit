@@ -90,10 +90,11 @@ define([
     }
 
     // Build the TOC
+    var previewContentsElt = undefined;
     function buildToc() {
         var anchorList = {};
         function createAnchor(element) {
-            var id = element.prop("id") || utils.slugify(element.text());
+            var id = element.id || utils.slugify(element.textContent);
             var anchor = id;
             var index = 0;
             while (_.has(anchorList, anchor)) {
@@ -101,31 +102,35 @@ define([
             }
             anchorList[anchor] = true;
             // Update the id of the element
-            element.prop("id", anchor);
+            element.id = anchor;
             return anchor;
         }
 
         var elementList = [];
-        $("#preview-contents > .preview-content").children("h1, h2, h3, h4, h5, h6").each(function() {
-            elementList.push(new TocElement($(this).prop("tagName"), createAnchor($(this)), $(this).text()));
+        _.each(previewContentsElt.querySelectorAll('.preview-content > .wmd-title'), function(elt) {
+            elementList.push(new TocElement(elt.tagName, createAnchor(elt), elt.textContent));
         });
         elementList = groupTags(elementList);
         return '<div class="toc">\n<ul>\n' + elementList.join("") + '</ul>\n</div>\n';
     }
 
     toc.onEditorConfigure = function(editor) {
-        var tocExp = new RegExp("^" + toc.config.marker + "$", "g")
+        previewContentsElt = document.getElementById('preview-contents');
+        var tocEltList = document.querySelectorAll('.table-of-contents');
+        var tocExp = new RegExp("^" + toc.config.marker + "$", "g");
         // Run TOC generation when conversion is finished directly on HTML
         editor.hooks.chain("onPreviewRefresh", function() {
             var htmlToc = buildToc();
             // Replace toc paragraphs
-            $("#preview-contents p").each(function() {
-                if(tocExp.test($(this).html())) {
-                    $(this).html(htmlToc);
+            _.each(previewContentsElt.getElementsByTagName('p'), function(elt) {
+                if(tocExp.test(elt.innerHTML)) {
+                    elt.innerHTML = htmlToc;
                 }
             });
             // Add toc in the TOC button 
-            $(".table-of-contents").html(htmlToc);
+            _.each(tocEltList, function(elt) {
+                elt.innerHTML = htmlToc;
+            });
         });
     };
 

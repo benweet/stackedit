@@ -30,6 +30,7 @@ define([
         selectedFileDesc = fileDesc;
     };
 
+    var textareaElt = undefined;
     buttonHtmlCode.onPreviewFinished = function(html) {
         try {
             var htmlCode = _.template(buttonHtmlCode.config.template, {
@@ -37,7 +38,7 @@ define([
                 documentMarkdown: selectedFileDesc.content,
                 documentHTML: html
             });
-            $("#input-html-code").val(htmlCode);
+            textareaElt.value = htmlCode;
         }
         catch(e) {
             extensionMgr.onError(e);
@@ -46,6 +47,7 @@ define([
     };
 
     buttonHtmlCode.onReady = function() {
+        textareaElt = document.getElementById('input-html-code');
         $(".action-html-code").click(function() {
             _.defer(function() {
                 $("#input-html-code").each(function() {

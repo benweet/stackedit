@@ -153,22 +153,26 @@ define([
     var onAsyncPreviewCallbackList = getExtensionCallbackList("onAsyncPreview");
     // The number of times we expect tryFinished to be called
     var nbAsyncPreviewCallback = onAsyncPreviewCallbackList.length + 1;
+    var previewContentsElt = undefined;
+    var previewContentsJQElt = undefined;
     extensionMgr["onAsyncPreview"] = function() {
         logger.log("onAsyncPreview");
         // Call onPreviewFinished callbacks when all async preview are finished
         var counter = 0;
         function tryFinished() {
             if(++counter === nbAsyncPreviewCallback) {
-                var html = "";
-                $("#preview-contents > .preview-content").each(function() {
-                    html += $(this).html();
+                _.defer(function() {
+                    var html = "";
+                    _.each(previewContentsElt.children, function(elt) {
+                        html += elt.innerHTML;
+                    });
+                    onPreviewFinished(utils.trim(html));
+                    logger.log("Preview time: " + (new Date() - extensionMgr.previewStartTime));
                 });
-                onPreviewFinished(utils.trim(html));
-                logger.log("Preview time: " + (new Date() - extensionMgr.previewStartTime));
             }
         }
         // We assume images are loading in the preview
-        $("#preview-contents").waitForImages(tryFinished);
+        previewContentsJQElt.waitForImages(tryFinished);
         _.each(onAsyncPreviewCallbackList, function(asyncPreviewCallback) {
             asyncPreviewCallback(tryFinished);
         });
@@ -184,6 +188,9 @@ define([
     }
 
     extensionMgr["onReady"] = function() {
+        previewContentsElt = document.getElementById('preview-contents');
+        previewContentsJQElt = $(previewContentsElt);
+        
         // Create accordion in settings dialog
         _.chain(extensionList).sortBy(function(extension) {
             return extension.extensionName.toLowerCase();

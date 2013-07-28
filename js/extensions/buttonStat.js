@@ -43,12 +43,29 @@ define([
     buttonStat.onCreatePreviewButton = function() {
         return $(_.template(buttonStatHTML, buttonStat.config));
     };
+    
+    var previewContentsElt = undefined;
+    var value1Elt = undefined;
+    var value2Elt = undefined;
+    var value3Elt = undefined;
+    buttonStat.onReady = function() {
+        previewContentsElt = document.getElementById('preview-contents');
+        value1Elt = document.getElementById('span-stat-value1');
+        value2Elt = document.getElementById('span-stat-value2');
+        value3Elt = document.getElementById('span-stat-value3');
+    };
 
     buttonStat.onPreviewFinished = function() {
-        var text = $("#preview-contents").clone().find("script").remove().end().text();
-        $("#span-stat-value1").text((text.match(new RegExp(buttonStat.config.value1, "g")) || []).length);
-        $("#span-stat-value2").text((text.match(new RegExp(buttonStat.config.value2, "g")) || []).length);
-        $("#span-stat-value3").text((text.match(new RegExp(buttonStat.config.value3, "g")) || []).length);
+        var previewContentsEltClone = previewContentsElt.cloneNode(true);
+        var scriptEltList = previewContentsEltClone.getElementsByTagName('script');
+        for(var i = scriptEltList.length-1; i >= 0; i--) {
+            var scriptElt = scriptEltList[i];
+            scriptElt.parentNode.removeChild(scriptElt);
+        }
+        var text = previewContentsEltClone.textContent;
+        value1Elt.textContent = (text.match(new RegExp(buttonStat.config.value1, "g")) || []).length;
+        value2Elt.textContent = (text.match(new RegExp(buttonStat.config.value2, "g")) || []).length;
+        value3Elt.textContent = (text.match(new RegExp(buttonStat.config.value3, "g")) || []).length;
     };
 
     return buttonStat;

@@ -4487,8 +4487,8 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  } catch (n) {}
  return t;
 }), define("classes/Extension", [], function() {
- function e(e, t, n) {
-  this.extensionId = e, this.extensionName = t, this.isOptional = n;
+ function e(e, t, n, i) {
+  this.extensionId = e, this.extensionName = t, this.isOptional = n, this.disableInViewer = i;
  }
  return e;
 }), define("text", [ "module" ], function(e) {
@@ -7802,10 +7802,12 @@ hljs.LANGUAGES.bash = function(e) {
   return t;
  }, Markdown.Extra.prototype.hashExtraBlock = function(e) {
   return "\n<p>~X" + (this.hashBlocks.push(e) - 1) + "X</p>\n";
+ }, Markdown.Extra.prototype.hashExtraInline = function(e) {
+  return "~X" + (this.hashBlocks.push(e) - 1) + "X";
  }, Markdown.Extra.prototype.unHashExtraBlocks = function(e) {
   function t() {
    var i = !1;
-   e = e.replace(/<p>~X(\d+)X<\/p>/g, function(e, t) {
+   e = e.replace(/(?:<p>)?~X(\d+)X(?:<\/p>)?/g, function(e, t) {
     i = !0;
     var o = parseInt(t, 10);
     return n.hashBlocks[o];
@@ -7874,7 +7876,10 @@ hljs.LANGUAGES.bash = function(e) {
   var n = 0;
   return e = e.replace(/\[\^(.+?)\]/g, function(e, i) {
    var o = p(i), r = t.footnotes[o];
-   return void 0 === r ? "" : (n++, t.usedFootnotes.push(o), '<a href="#fn:' + o + '" id="fnref:' + o + '" title="See footnote" class="footnote">' + n + "</a>");
+   if (void 0 === r) return "";
+   n++, t.usedFootnotes.push(o);
+   var s = '<a href="#fn:' + o + '" id="fnref:' + o + '" title="See footnote" class="footnote">' + n + "</a>";
+   return t.hashExtraInline(s);
   });
  }, Markdown.Extra.prototype.printFootnotes = function(e) {
   var t = this;
@@ -8191,7 +8196,7 @@ function(e) {
  function o(e) {
   return parseFloat(e.substring(0, e.length - 2));
  }
- var r = new n("scrollLink", "Scroll Link", !0);
+ var r = new n("scrollLink", "Scroll Link", !0, !0);
  r.settingsBlock = i;
  var s = void 0;
  r.onSectionsCreated = function(e) {
@@ -8363,7 +8368,7 @@ function(e) {
 }), define("text!html/buttonStatSettingsBlock.html", [], function() {
  return '<p>Adds a "Document statistics" button over the preview.</p>\n<div class="form-horizontal">\n	<div class="control-group form-inline">\n		<label class="label-text" for="input-stat-name1">Title</label> <input\n			id="input-stat-name1" type="text" class="input-small"> <label\n			class="label-text" for="input-stat-value1">RegExp</label> <input\n			id="input-stat-value1" type="text" class="span2">\n	</div>\n	<div class="control-group form-inline">\n		<label class="label-text" for="input-stat-name2">Title</label> <input\n			id="input-stat-name2" type="text" class="input-small"> <label\n			class="label-text" for="input-stat-value2">RegExp</label> <input\n			id="input-stat-value2" type="text" class="span2">\n	</div>\n	<div class="control-group form-inline">\n		<label class="label-text" for="input-stat-name3">Title</label> <input\n			id="input-stat-name3" type="text" class="input-small"> <label\n			class="label-text" for="input-stat-value3">RegExp</label> <input\n			id="input-stat-value3" type="text" class="span2">\n	</div>\n</div>\n';
 }), define("extensions/buttonStat", [ "jquery", "underscore", "utils", "classes/Extension", "text!html/buttonStat.html", "text!html/buttonStatSettingsBlock.html" ], function(e, t, n, i, o, r) {
- var s = new i("buttonStat", 'Button "Statistics"', !0);
+ var s = new i("buttonStat", 'Button "Statistics"', !0, !0);
  s.settingsBlock = r, s.defaultConfig = {
   name1: "Characters",
   value1: "\\S",
@@ -8400,34 +8405,38 @@ function(e) {
 }), define("text!html/buttonHtmlCodeSettingsBlock.html", [], function() {
  return '<p>Adds a "HTML code" button over the preview.</p>\n<div class="form-horizontal">\n	<div class="control-group">\n		<label class="control-label" for="textarea-html-code-template">Template\n			<a href="#" class="tooltip-template">(?)</a>\n		</label>\n		<div class="controls">\n			<textarea id="textarea-html-code-template"></textarea>\n		</div>\n	</div>\n</div>';
 }), define("extensions/buttonHtmlCode", [ "jquery", "underscore", "utils", "classes/Extension", "text!html/buttonHtmlCode.html", "text!html/buttonHtmlCodeSettingsBlock.html" ], function(e, t, n, i, o, r) {
- var s = new i("buttonHtmlCode", 'Button "HTML code"', !0);
+ var s = new i("buttonHtmlCode", 'Button "HTML code"', !0, !0);
  s.settingsBlock = r, s.defaultConfig = {
   template: "<%= documentHTML %>"
  }, s.onLoadSettings = function() {
   n.setInputValue("#textarea-html-code-template", s.config.template);
  }, s.onSaveSettings = function(e) {
   e.template = n.getInputValue("#textarea-html-code-template");
+ };
+ var a = void 0;
+ s.onExtensionMgrCreated = function(e) {
+  a = e;
  }, s.onCreatePreviewButton = function() {
   return e(o);
  };
- var a = void 0;
- s.onFileSelected = function(e) {
-  a = e;
- };
  var l = void 0;
+ s.onFileSelected = function(e) {
+  l = e;
+ };
+ var c = void 0;
  return s.onPreviewFinished = function(e) {
   try {
    var n = t.template(s.config.template, {
-    documentTitle: a.title,
-    documentMarkdown: a.content,
+    documentTitle: l.title,
+    documentMarkdown: l.content,
     documentHTML: e
    });
-   l.value = n;
+   c.value = n;
   } catch (i) {
-   return extensionMgr.onError(i), i.message;
+   return a.onError(i), i.message;
   }
  }, s.onReady = function() {
-  l = document.getElementById("input-html-code"), e(".action-html-code").click(function() {
+  c = document.getElementById("input-html-code"), e(".action-html-code").click(function() {
    t.defer(function() {
     e("#input-html-code").each(function() {
      e(this).is(":hidden") || e(this).get(0).select();
@@ -9351,7 +9360,8 @@ function(e) {
  u.addHookCallback = function(e, t) {
   p[e].push(t);
  }, extensionSettings = o.extensionSettings || {}, t.each(d, function(e) {
-  e.config = t.extend({}, e.defaultConfig, extensionSettings[e.extensionId]), e.config.enabled = !e.isOptional || void 0 === e.config.enabled || e.config.enabled === !0;
+  e.config = t.extend({}, e.defaultConfig, extensionSettings[e.extensionId]), e.config.enabled = !e.isOptional || void 0 === e.config.enabled || e.config.enabled === !0, 
+  viewerMode === !0 && e.disableInViewer && (e.config.enabled = !1);
  }), a("onInit")(), u.onLoadSettings = function() {
   logger.log("onLoadSettings"), t.each(d, function(e) {
    n.setInputChecked("#input-enable-extension-" + e.extensionId, e.config.enabled);
@@ -9376,14 +9386,15 @@ function(e) {
  var f = a("onPreviewFinished"), h = s("onAsyncPreview"), g = h.length + 1, m = void 0, v = void 0;
  return u.onAsyncPreview = function() {
   function e() {
-   ++i === g && t.defer(function() {
+   ++i === g && (logger.log("Preview time: " + (new Date() - u.previewStartTime)), 
+   t.defer(function() {
     var e = "";
     t.each(m.children, function(t) {
      e += t.innerHTML;
-    }), f(n.trim(e)), logger.log("Preview time: " + (new Date() - u.previewStartTime));
-   });
+    }), f(n.trim(e));
+   }));
   }
-  logger.log("onAsyncPreview");
+  logger.log("onAsyncPreview"), logger.log("Conversion time: " + (new Date() - u.previewStartTime));
   var i = 0;
   v.waitForImages(e), t.each(h, function(t) {
    t(e);

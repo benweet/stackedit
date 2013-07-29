@@ -245,14 +245,17 @@
   Markdown.Extra.prototype.hashExtraBlock = function(block) {
     return '\n<p>~X' + (this.hashBlocks.push(block) - 1) + 'X</p>\n';
   };
-
+  Markdown.Extra.prototype.hashExtraInline = function(block) {
+    return '~X' + (this.hashBlocks.push(block) - 1) + 'X';
+  };
+  
   // Replace placeholder blocks in `text` with their corresponding
   // html blocks in the hashBlocks array.
   Markdown.Extra.prototype.unHashExtraBlocks = function(text) {
     var self = this;
     function recursiveUnHash() {
       var hasHash = false;
-      text = text.replace(/<p>~X(\d+)X<\/p>/g, function(wholeMatch, m1) {
+      text = text.replace(/(?:<p>)?~X(\d+)X(?:<\/p>)?/g, function(wholeMatch, m1) {
         hasHash = true;
         var key = parseInt(m1, 10);
         return self.hashBlocks[key];
@@ -495,9 +498,10 @@
       }
       footnoteCounter++;
       self.usedFootnotes.push(id);
-      return '<a href="#fn:' + id + '" id="fnref:' + id
-          + '" title="See footnote" class="footnote">' + footnoteCounter
-          + '</a>';
+      var html = '<a href="#fn:' + id + '" id="fnref:' + id
+      + '" title="See footnote" class="footnote">' + footnoteCounter
+      + '</a>';
+      return self.hashExtraInline(html);
     });
 
     return text;

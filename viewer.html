@@ -2,7 +2,8 @@
 <html manifest="cache.manifest">
 <head>
 <title>StackEdit Viewer</title>
-<link rel="canonical" href="http://benweet.github.io/stackedit/viewer.html">
+<link rel="canonical"
+	href="http://benweet.github.io/stackedit/viewer.html">
 <link rel="icon" href="img/stackedit-32.ico" type="image/x-icon">
 <link rel="shortcut icon" href="img/stackedit-32.ico"
 	type="image/x-icon">
@@ -12,17 +13,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="msvalidate.01" content="5E47EE6F67B069C17E3CDD418351A612" />
 <script>
-	// Use http://.../?debug to serve original CSS/JavaScript files instead of minified
-	var suffix = "";
-    if (!location.search.match(/(\?|&)debug/)) {
-	    suffix = "-min";
-	}
-	document.write('<link href="css/main' + suffix + '.css" rel="stylesheet">');
-	var theme = localStorage.theme;
-	if(theme) {
+    // Use http://.../?debug to serve original CSS/JavaScript files instead of minified
+    var suffix = "";
+    if(!location.search.match(/(\?|&)debug/)) {
+        suffix = "-min";
+    }
+    document.write('<link href="css/main' + suffix + '.css" rel="stylesheet">');
+    var theme = localStorage.theme;
+    if(theme) {
         document.write('<link href="themes/' + theme + '/' + theme + '.css" rel="stylesheet">');
-	}
-	var require = { baseUrl : "js", deps : [ "main" + suffix ] };
+    }
+    var require = {
+        baseUrl: "js",
+        deps: [
+            "main" + suffix
+        ]
+    };
     var viewerMode = true;
 </script>
 <script src="js/libs/require.js"></script>
@@ -44,13 +50,14 @@
 						<i class="icon-download-alt"></i>
 					</button>
 					<ul class="dropdown-menu">
-                        <li><a class="action-download-md" href="#"><i
-                                class="icon-download-alt"></i> Save as Markdown</a></li>
-                        <li><a class="action-download-html" href="#"><i
-                                class="icon-download-alt"></i> Save as HTML</a></li>
-                        <li><a class="action-download-template" href="#"><i
-                                class="icon-download-alt"></i> Save using template</a></li>
-					</ul></li>
+						<li><a class="action-download-md" href="#"><i
+								class="icon-download-alt"></i> Save as Markdown</a></li>
+						<li><a class="action-download-html" href="#"><i
+								class="icon-download-alt"></i> Save as HTML</a></li>
+						<li><a class="action-download-template" href="#"><i
+								class="icon-download-alt"></i> Save using template</a></li>
+					</ul>
+				</li>
 				<li class="btn-group">
 					<button class="btn dropdown-toggle action-open-file"
 						data-toggle="dropdown" title="Open local document">
@@ -63,10 +70,12 @@
 									type="text" id="file-search" class="span3">
 							</div>
 						</li>
-					</ul></li>
+					</ul>
+				</li>
 				<li class="btn-group"><button class="btn action-open-stackedit"
-					title="Open StackEdit"><i
-						class="icon-stackedit"></i></button></li>
+						title="Open StackEdit">
+						<i class="icon-stackedit"></i>
+					</button></li>
 			</ul>
 			<ul class="nav pull-right">
 				<li><i class="working-indicator icon-none"></i></li>
@@ -76,23 +85,27 @@
 	</div>
 	<div id="wmd-button-bar" class="hide"></div>
 	<textarea id="wmd-input" class="hide"></textarea>
-	<div id="preview-container"></div>
+	<div class="preview-container">
+		<div id="preview-contents">
+			<div id="wmd-preview" class="preview-content"></div>
+		</div>
+	</div>
 
-    <div id="modal-non-unique" class="modal hide">
-        <div class="modal-header">
-            <h3>Ooops...</h3>
-        </div>
-        <div class="modal-body">
-            <p>StackEdit has stopped because another instance was running in
-                the same browser.</p>
-            <blockquote class="muted">If you want to reopen
-                StackEdit, click on "Reload".</blockquote>
-        </div>
-        <div class="modal-footer">
-            <a href="javascript:window.location.reload();"
-                class="btn btn-primary">Reload</a>
-        </div>
-    </div>
-    
+	<div id="modal-non-unique" class="modal hide">
+		<div class="modal-header">
+			<h3>Ooops...</h3>
+		</div>
+		<div class="modal-body">
+			<p>StackEdit has stopped because another instance was running in
+				the same browser.</p>
+			<blockquote class="muted">If you want to reopen
+				StackEdit, click on "Reload".</blockquote>
+		</div>
+		<div class="modal-footer">
+			<a href="javascript:window.location.reload();"
+				class="btn btn-primary">Reload</a>
+		</div>
+	</div>
+
 </body>
 </html>

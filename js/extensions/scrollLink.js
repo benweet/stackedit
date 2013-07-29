@@ -7,7 +7,7 @@ define([
     "libs/jquery.mousewheel"
 ], function($, _, Extension, scrollLinkSettingsBlockHTML) {
 
-    var scrollLink = new Extension("scrollLink", "Scroll Link", true);
+    var scrollLink = new Extension("scrollLink", "Scroll Link", true, true);
     scrollLink.settingsBlock = scrollLinkSettingsBlockHTML;
 
     var sectionList = undefined;

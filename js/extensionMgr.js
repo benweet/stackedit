@@ -82,6 +82,9 @@ define([
     _.each(extensionList, function(extension) {
         extension.config = _.extend({}, extension.defaultConfig, extensionSettings[extension.extensionId]);
         extension.config.enabled = !extension.isOptional || extension.config.enabled === undefined || extension.config.enabled === true;
+        if(viewerMode === true && extension.disableInViewer) {
+            extension.config.enabled = false;
+        }
     });
     
     // Call every onInit callbacks
@@ -157,17 +160,18 @@ define([
     var previewContentsJQElt = undefined;
     extensionMgr["onAsyncPreview"] = function() {
         logger.log("onAsyncPreview");
+        logger.log("Conversion time: " + (new Date() - extensionMgr.previewStartTime));
         // Call onPreviewFinished callbacks when all async preview are finished
         var counter = 0;
         function tryFinished() {
             if(++counter === nbAsyncPreviewCallback) {
+                logger.log("Preview time: " + (new Date() - extensionMgr.previewStartTime));
                 _.defer(function() {
                     var html = "";
                     _.each(previewContentsElt.children, function(elt) {
                         html += elt.innerHTML;
                     });
                     onPreviewFinished(utils.trim(html));
-                    logger.log("Preview time: " + (new Date() - extensionMgr.previewStartTime));
                 });
             }
         }

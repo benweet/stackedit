@@ -7,7 +7,7 @@ define([
     "text!html/buttonHtmlCodeSettingsBlock.html",
 ], function($, _, utils, Extension, buttonHtmlCodeHTML, buttonHtmlCodeSettingsBlockHTML) {
 
-    var buttonHtmlCode = new Extension("buttonHtmlCode", 'Button "HTML code"', true);
+    var buttonHtmlCode = new Extension("buttonHtmlCode", 'Button "HTML code"', true, true);
     buttonHtmlCode.settingsBlock = buttonHtmlCodeSettingsBlockHTML;
     buttonHtmlCode.defaultConfig = {
         template: "<%= documentHTML %>",
@@ -19,6 +19,11 @@ define([
 
     buttonHtmlCode.onSaveSettings = function(newConfig, event) {
         newConfig.template = utils.getInputValue("#textarea-html-code-template");
+    };
+
+    var extensionMgr = undefined;
+    buttonHtmlCode.onExtensionMgrCreated = function(extensionMgrParameter) {
+        extensionMgr = extensionMgrParameter;
     };
 
     buttonHtmlCode.onCreatePreviewButton = function() {

@@ -59,7 +59,7 @@ define([
                 synchronizer.sync();
             }
         });
-        return button;
+        return button[0];
     };
 
     buttonSync.onReady = updateButtonState;

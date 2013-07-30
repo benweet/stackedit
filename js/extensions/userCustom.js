@@ -29,9 +29,9 @@ define([
         publisher = publisherParameter;
     };
 
-    var extensionMgr = undefined;
-    userCustom.onExtensionMgrCreated = function(extensionMgrParameter) {
-        extensionMgr = extensionMgrParameter;
+    var eventMgr = undefined;
+    userCustom.onEventMgrCreated = function(eventMgrParameter) {
+        eventMgr = eventMgrParameter;
     };
 
     userCustom.onLoadSettings = function() {
@@ -44,7 +44,7 @@ define([
             eval(newConfig.code);
         }
         catch(e) {
-            extensionMgr.onError(e);
+            eventMgr.onError(e);
             // Mark the textarea as error
             utils.getInputTextValue("#textarea-usercustom-code", event, /^$/);
         }

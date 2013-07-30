@@ -8,7 +8,7 @@ define([
     buttonViewer.settingsBlock = '<p>Adds a "Viewer" button over the preview.</p>';
 
     buttonViewer.onCreatePreviewButton = function() {
-        return $(buttonViewerHTML);
+        return buttonViewerHTML;
     };
 
     return buttonViewer;

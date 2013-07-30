@@ -3,7 +3,7 @@ define([
     "underscore",
     "utils",
     "settings",
-    "extensionMgr",
+    "eventMgr",
     "mousetrap",
     "text!html/settingsTemplateTooltip.html",
     "text!html/settingsUserCustomExtensionTooltip.html",
@@ -12,14 +12,14 @@ define([
     "libs/bootstrap",
     "libs/layout",
     "libs/Markdown.Editor"
-], function($, _, utils, settings, extensionMgr, mousetrap, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
+], function($, _, utils, settings, eventMgr, mousetrap, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
 
     // Used for periodic tasks
     var intervalId = undefined;
     var periodicCallbacks = [
-        extensionMgr.onPeriodicRun
+        eventMgr.onPeriodicRun
     ];
     core.runPeriodically = function(callback) {
         periodicCallbacks.push(callback);
@@ -74,13 +74,13 @@ define([
         offlineTime = utils.currentTime;
         if(core.isOffline === false) {
             core.isOffline = true;
-            extensionMgr.onOfflineChanged(true);
+            eventMgr.onOfflineChanged(true);
         }
     };
     function setOnline() {
         if(core.isOffline === true) {
             core.isOffline = false;
-            extensionMgr.onOfflineChanged(false);
+            eventMgr.onOfflineChanged(false);
         }
     }
     function checkOnline() {
@@ -121,7 +121,7 @@ define([
         utils.setInputValue("#input-settings-ssh-proxy", settings.sshProxy);
 
         // Load extension settings
-        extensionMgr.onLoadSettings();
+        eventMgr.onLoadSettings();
     }
 
     // Save settings from settings dialog
@@ -149,7 +149,7 @@ define([
 
         // Save extension settings
         newSettings.extensionSettings = {};
-        extensionMgr.onSaveSettings(newSettings.extensionSettings, event);
+        eventMgr.onSaveSettings(newSettings.extensionSettings, event);
 
         if(!event.isPropagationStopped()) {
             $.extend(settings, newSettings);
@@ -178,7 +178,7 @@ define([
             center__minWidth: 200,
             center__minHeight: 200
         };
-        extensionMgr.onLayoutConfigure(layoutGlobalConfig);
+        eventMgr.onLayoutConfigure(layoutGlobalConfig);
         if(settings.layoutOrientation == "horizontal") {
             $(".ui-layout-south").remove();
             $(".preview-container").html('<div id="extension-preview-buttons"></div><div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>');
@@ -204,7 +204,7 @@ define([
         $(".ui-layout-toggler-south").addClass("btn").append($("<b>").addClass("caret"));
         $(".ui-layout-toggler-east").addClass("btn").append($("<b>").addClass("caret"));
 
-        extensionMgr.onLayoutCreated(layout);
+        eventMgr.onLayoutCreated(layout);
     }
     ;
 
@@ -214,7 +214,7 @@ define([
     var documentContent = undefined;
     core.initEditor = function(fileDescParam) {
         if(fileDesc !== undefined) {
-            extensionMgr.onFileClosed(fileDesc);
+            eventMgr.onFileClosed(fileDesc);
         }
         fileDesc = fileDescParam;
         documentContent = undefined;
@@ -224,7 +224,7 @@ define([
         if(editor !== undefined) {
             // If the editor is already created
             editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
-            extensionMgr.onFileOpen(fileDesc);
+            eventMgr.onFileOpen(fileDesc);
             editor.refreshPreview();
             return;
         }
@@ -268,7 +268,7 @@ define([
             });
             // Last section
             sectionList.push(tmpText.substring(offset, text.length));
-            extensionMgr.onSectionsCreated(sectionList);
+            eventMgr.onSectionsCreated(sectionList);
             return text;
         });
         editor = new Markdown.Editor(converter);
@@ -294,7 +294,7 @@ define([
             var newDocumentContent = editorElt.val();
             if(documentContent !== undefined && documentContent != newDocumentContent) {
                 fileDesc.content = newDocumentContent;
-                extensionMgr.onContentChanged(fileDesc);
+                eventMgr.onContentChanged(fileDesc);
             }
             documentContent = newDocumentContent;
         }
@@ -318,7 +318,7 @@ define([
         else {
             previewWrapper = function(makePreview) {
                 return function() {
-                    extensionMgr.previewStartTime = new Date();
+                    eventMgr.previewStartTime = new Date();
                     makePreview();
                     if(documentContent === undefined) {
                         previewContainerElt.scrollTop(fileDesc.previewScrollTop);
@@ -327,8 +327,8 @@ define([
                 };
             };
         }
-        extensionMgr.onEditorConfigure(editor);
-        editor.hooks.chain("onPreviewRefresh", extensionMgr.onAsyncPreview);
+        eventMgr.onEditorConfigure(editor);
+        editor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
         editor.run(previewWrapper);
         editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
 
@@ -349,7 +349,7 @@ define([
         $("#wmd-undo-button").append($('<i class="icon-undo">'));
         $("#wmd-redo-button").append($('<i class="icon-share-alt">'));
         
-        extensionMgr.onFileOpen(fileDesc);
+        eventMgr.onFileOpen(fileDesc);
     };
     
     // Used to lock the editor from the user interaction during asynchronous tasks
@@ -489,7 +489,7 @@ define([
                             JSON.parse(content);
                         }
                         catch(e) {
-                            extensionMgr.onError(importedFile.name + " is not a valid JSON file.");
+                            eventMgr.onError(importedFile.name + " is not a valid JSON file.");
                             return;
                         }
                         localStorage.settings = content;
@@ -561,7 +561,7 @@ define([
             }
         }, 1000);
     });
-    core.onReady(extensionMgr.onReady);
+    core.onReady(eventMgr.onReady);
 
     // After extensions onReady callbacks
     core.onReady(function() {

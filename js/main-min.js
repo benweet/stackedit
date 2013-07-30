@@ -4861,9 +4861,9 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  userCustom.onPublisherCreated = function(e) {
   publisher = e;
  };
- var extensionMgr = void 0;
- return userCustom.onExtensionMgrCreated = function(e) {
-  extensionMgr = e;
+ var eventMgr = void 0;
+ return userCustom.oneventMgrCreated = function(e) {
+  eventMgr = e;
  }, userCustom.onLoadSettings = function() {
   utils.setInputValue("#textarea-usercustom-code", userCustom.config.code);
  }, userCustom.onSaveSettings = function(newConfig, event) {
@@ -4871,7 +4871,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   try {
    eval(newConfig.code);
   } catch (e) {
-   extensionMgr.onError(e), utils.getInputTextValue("#textarea-usercustom-code", event, /^$/);
+   eventMgr.onError(e), utils.getInputTextValue("#textarea-usercustom-code", event, /^$/);
   }
  }, userCustom.onInit = function() {
   try {
@@ -4987,7 +4987,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  var o = new n("dialogManagePublication", 'Dialog "Manage publication"');
  o.settingsBlock = '<p>Populates the "Manage publication" dialog box.</p>';
  var r = void 0;
- o.onExtensionMgrCreated = function(e) {
+ o.oneventMgrCreated = function(e) {
   r = e;
  };
  var s = void 0, a = '<a class="btn" title="Remove this location"><i class="icon-trash"></i></a>', l = function(n) {
@@ -5017,7 +5017,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  var o = new n("dialogManageSynchronization", 'Dialog "Manage synchronization"');
  o.settingsBlock = '<p>Populates the "Manage synchronization" dialog box.</p>';
  var r = void 0;
- o.onExtensionMgrCreated = function(e) {
+ o.oneventMgrCreated = function(e) {
   r = e;
  };
  var s = void 0;
@@ -5218,7 +5218,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   u = e;
  };
  var d = void 0;
- c.onExtensionMgrCreated = function(e) {
+ c.oneventMgrCreated = function(e) {
   d = e;
  };
  var p = void 0, f = void 0, h = function(e) {
@@ -8414,7 +8414,7 @@ function(e) {
   e.template = n.getInputValue("#textarea-html-code-template");
  };
  var a = void 0;
- s.onExtensionMgrCreated = function(e) {
+ s.oneventMgrCreated = function(e) {
   a = e;
  }, s.onCreatePreviewButton = function() {
   return e(o);
@@ -9324,7 +9324,7 @@ function(e) {
    });
   });
  };
-}(jQuery), define("libs/jquery.waitforimages", function() {}), define("extensionMgr", [ "jquery", "underscore", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/partialRendering", "extensions/userCustom", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonMarkdownSyntax", "extensions/buttonViewer", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o, r) {
+}(jQuery), define("libs/jquery.waitforimages", function() {}), define("eventMgr", [ "jquery", "underscore", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/partialRendering", "extensions/userCustom", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonMarkdownSyntax", "extensions/buttonViewer", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o, r) {
  function s(e) {
   return t.chain(d).map(function(t) {
    return t.config.enabled && t[e];
@@ -9377,7 +9377,7 @@ function(e) {
   });
  }, l("onMessage"), l("onError"), l("onOfflineChanged"), l("onAsyncRunning", !0), 
  l("onPeriodicRun", !0), l("onFileMgrCreated"), l("onSynchronizerCreated"), l("onPublisherCreated"), 
- l("onExtensionMgrCreated"), l("onFileCreated"), l("onFileDeleted"), l("onFileSelected"), 
+ l("oneventMgrCreated"), l("onFileCreated"), l("onFileDeleted"), l("onFileSelected"), 
  l("onFileOpen"), l("onFileClosed"), l("onContentChanged"), l("onTitleChanged"), 
  l("onSyncRunning"), l("onSyncSuccess"), l("onSyncImportSuccess"), l("onSyncExportSuccess"), 
  l("onSyncRemoved"), l("onPublishRunning"), l("onPublishSuccess"), l("onNewPublishSuccess"), 
@@ -9413,11 +9413,11 @@ function(e) {
   });
   var o = a("onReady");
   o();
- }, u.onExtensionMgrCreated(u), u;
+ }, u.oneventMgrCreated(u), u;
 }), define("text!html/settingsTemplateTooltip.html", [], function() {
  return 'Available variables:\n<br>\n<ul>\n	<li><b>documentTitle</b>: document title</li>\n	<li><b>documentMarkdown</b>: document in Markdown format</li>\n	<li><b>documentHTML</b>: document in HTML format</li>\n	<li><b>publishAttributes</b>: attributes of the publish location\n		(undefined if not publishing)</li>\n</ul>\n<b>Examples:</b>\n<br />\n&lt;title&gt;&lt;%= documentTitle %&gt;&lt;&#x2F;title&gt;\n<br />\n&lt;div&gt;&lt;%- documentHTML %&gt;&lt;&#x2F;div&gt;\n<br />\n&lt;%<br />\nif(publishAttributes.provider.providerId == &quot;github&quot;)\nprint(documentMarkdown);<br />\n%&gt;\n<br />\n<br />\n<a target="_blank" href="http://underscorejs.org/#template">More\n	info</a>';
 }), define("text!html/settingsUserCustomExtensionTooltip.html", [], function() {
- return 'Extension variable name:\n<b>userCustom</b>\n<br>\n<br>\n<b>Example:</b>\n<br />\nuserCustom.onPreviewFinished = function() {\n<br />\n&nbsp;&nbsp;extensionMgr.onMessage(&quot;Finished!&quot;);\n<br />\n};\n<br />\n<br />\n<a target="_blank"\n	href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">More\n	info</a>';
+ return 'Extension variable name:\n<b>userCustom</b>\n<br>\n<br>\n<b>Example:</b>\n<br />\nuserCustom.onPreviewFinished = function() {\n<br />\n&nbsp;&nbsp;eventMgr.onMessage(&quot;Finished!&quot;);\n<br />\n};\n<br />\n<br />\n<a target="_blank"\n	href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">More\n	info</a>';
 }), function(e, t) {
  function n(t, n) {
   var o, r, s, a = t.nodeName.toLowerCase();
@@ -13641,7 +13641,7 @@ function(e) {
  }, y.doHorizontalRule = function(e) {
   e.startTag = "----------\n", e.selection = "", e.skipLines(2, 1, !0);
  };
-}(), define("libs/Markdown.Editor", function() {}), define("core", [ "jquery", "underscore", "utils", "settings", "extensionMgr", "mousetrap", "text!html/settingsTemplateTooltip.html", "text!html/settingsUserCustomExtensionTooltip.html", "storage", "config", "libs/bootstrap", "libs/layout", "libs/Markdown.Editor" ], function(e, t, n, i, o, r, s, a) {
+}(), define("libs/Markdown.Editor", function() {}), define("core", [ "jquery", "underscore", "utils", "settings", "eventMgr", "mousetrap", "text!html/settingsTemplateTooltip.html", "text!html/settingsUserCustomExtensionTooltip.html", "storage", "config", "libs/bootstrap", "libs/layout", "libs/Markdown.Editor" ], function(e, t, n, i, o, r, s, a) {
  function l() {
   v.isUserReal = !0, w = !0, k = n.currentTime;
  }
@@ -13921,7 +13921,7 @@ function(e) {
  }), v;
 }), define("text!../WELCOME.md", [], function() {
  return '\nWelcome to StackEdit!	{#welcome}\n=====================\n\n\nHello, I am your first Markdown document within **StackEdit**[^stackedit]. Don\'t delete me, I can be helpful. I can be recovered anyway in the `Utils` tab of the <i class="icon-cog"></i> `Settings` dialog.\n\n----------\n\n\nDocuments\n---------\n\n**StackEdit** stores your documents in the browser local storage, which means all your documents are automatically saved locally and are accessible offline.\n\n#### <i class="icon-file"></i> Create a document\n\nYou can create a new document by clicking the <i class="icon-file"></i> button in the navigation bar. This will switch from the current document to the new one.\n\n#### <i class="icon-folder-open"></i> Switch to another document\n\nYou can list all your local documents and switch from one to another by clicking the <i class="icon-folder-open"></i> button in the navigation bar.\n\n#### <i class="icon-pencil"></i> Rename a document\n\nYou can rename the current document by clicking the document title in the navigation bar.\n\n#### <i class="icon-trash"></i> Delete a document\n\nYou can delete the current document by clicking the <i class="icon-trash"></i> button in the navigation bar.\n\n----------\n\n\nSynchronization\n---------------\n\n**StackEdit** can be combined with **Google Drive** and **Dropbox** to have your documents centralized in the *Cloud*. The synchronization mechanism will take care of uploading your modifications or downloading the latest version of your documents.\n\n#### <i class="icon-download"></i> Import a document\n\nYou can import a document from the *Cloud* by going to the <i class="icon-gdrive"></i> `Google Drive` or the <i class="icon-dropbox"></i> `Dropbox` sub-menu and by clicking `Import from...`. Once imported, your document will be automatically synchronized with the **Google Drive** / **Dropbox** file.\n\n#### <i class="icon-upload"></i> Export a document\n\nYou can export any document by going to the <i class="icon-gdrive"></i> `Google Drive` or the <i class="icon-dropbox"></i> `Dropbox` sub-menu and by clicking `Export to...`. Even if your document is already synchronized with **Google Drive** or **Dropbox**, you can export it to a another location. **StackEdit** can synchronize one document with multiple locations.\n\n#### <i class="icon-refresh"></i> Synchronize a document\n\nOnce your document is linked to a **Google Drive** or a **Dropbox** file, **StackEdit** will periodically (every 3 minutes) synchronize it by downloading/uploading any modification. Any conflict will be detected, and a local copy of your document will be created as a backup if necessary.\n\nIf you just have modified your document and you want to force the synchronization, click the <i class="icon-refresh"></i> button in the navigation bar.\n\n> **NOTE:** The <i class="icon-refresh"></i> button is disabled when:\n> \n> - you are offline,\n> - or the document is not synchronized with any location,\n> - or the document has not been modified since the last synchronization.\n\n#### <i class="icon-refresh"></i> Manage document synchronization\n\nSince one document can be synchronized with multiple locations, you can list and manage synchronized locations by clicking <i class="icon-refresh"></i> `Manage synchronization` in the <i class="icon-stackedit"></i> menu. This will open a dialog box allowing you to add or remove synchronization links that are associated to your document.\n\n> **NOTE:** If you delete the file from **Google Drive** or from **Dropbox**, the document will no longer be synchronized with that location.\n\n----------\n\n\nPublication\n-----------\n\nOnce you are happy with your document, you can publish it on different websites directly from **StackEdit**. As for now, **StackEdit** can publish on **Blogger**, **Dropbox**, **Gist**, **GitHub**, **Google Drive**, **Tumblr**, **WordPress** and on any SSH server.\n\n#### <i class="icon-share"></i> Publish a document\n\nYou can publish your document by going to the <i class="icon-share"></i> `Publish on` sub-menu and by choosing a website. In the dialog box, you can choose the publication format:\n\n- Markdown, to publish the Markdown text on a website that can interpret it (**GitHub** for instance),\n- HTML, to publish the document converted into HTML (on a blog for instance),\n- Template, to have a full control of the output.\n\n> **NOTE:** The default template is a simple webpage that wraps your document in HTML format. You can customize it in the `Publish` tab of the <i class="icon-cog"></i> `Settings` dialog.\n\n#### <i class="icon-share"></i> Update a publication\n\nAfter publishing, **StackEdit** will keep your document linked to that publish location so that you can update it easily. Once you have modified your document and you want to update your publication, click on the <i class="icon-share"></i> button in the navigation bar.\n\n> **NOTE:** The <i class="icon-share"></i> button is disabled when:\n> \n> - you are offline,\n> - or the document has not been published anywhere.\n\n#### <i class="icon-share"></i> Manage document publication\n\nSince one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-share"></i> `Manage publication` in the <i class="icon-stackedit"></i> menu. This will open a dialog box allowing you to remove publication links that are associated to your document.\n\n> **NOTE:** In some cases, if you remove the file from the website or the post from the blog, the document will no longer be published on that location.\n\n----------\n\n\nMarkdown Extra\n--------------\n\n**StackEdit** supports **Markdown Extra**, which extends **Markdown** syntax with some nice features.\n\n\n### Tables\n\n**Markdown Extra** has a special syntax for tables:\n\nItem      | Value\n--------- | -----\nComputer  | \\$1600\nPhone     | \\$12\nPipe      | \\$1\n\nYou can specify column alignment with one or two colons:\n\n| Item      |  Value | Qty  |\n| :-------- | ------:| :--: |\n| Computer  | \\$1600 |  5   |\n| Phone     |   \\$12 |  12  |\n| Pipe      |    \\$1 | 234  |\n\n\n### Definition Lists\n\n**Markdown Extra** has a special syntax for definition lists too:\n\nTerm 1\nTerm 2\n:   Definition A\n:   Definition B\n\nTerm 3\n\n:   Definition C\n\n:   Definition D\n\n	> part of definition D\n\n\n### Fenced code blocks\n\n**GitHub**\'s fenced code blocks are also supported with **Prettify** syntax highlighting:\n\n```\n// Foo\nvar bar = 0;\n```\n\n> **NOTE:** To use **Highlight.js** instead of **Prettify**, just configure the `Markdown Extra` extension in the <i class="icon-cog"></i> `Settings` dialog.\n\n\n### Special Attributes\n\nWith **Markdown Extra**, you can specify `class` and `id` attributes on headers and fenced code blocks just like this:\n\n##### Header example {#my-header}\n\n``` {#my-id .my-class}\nvar foo = bar;\n```\n\nThen you can create cross-references like this: [beginning of the document](#welcome).\n\n\n### Footnotes\n\nYou can create footnotes like this[^footnote].\n\n  [^footnote]: Here is the *text* of the **footnote**.\n\n\n### Table of contents\n\nYou can insert a table of contents using the marker `[TOC]`:\n\n[TOC]\n\n\n### MathJax\n \nYou can render *LaTeX* mathematical expressions using **MathJax**, as on [math.stackexchange.com][1]:\n\nThe *Gamma function* satisfying $\\Gamma(n) = (n-1)!\\quad\\forall\nn\\in\\mathbb N$ is via through the Euler integral\n\n$$\n\\Gamma(z) = \\int_0^\\infty t^{z-1}e^{-t}dt\\,.\n$$\n\n\n> **NOTE:** You can find more information:\n>\n> - about **Markdown** syntax [here][2],\n> - about **Markdown Extra** extension [here][3],\n> - about **Prettify** syntax highlighting [here][4].\n> - about **Highlight.js** syntax highlighting [here][5].\n\n  [^stackedit]: StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.\n\n\n  [1]: http://math.stackexchange.com/\n  [2]: http://daringfireball.net/projects/markdown/syntax "Markdown"\n  [3]: https://github.com/jmcmanus/pagedown-extra "Pagedown Extra"\n  [4]: https://code.google.com/p/google-code-prettify/\n  [5]: http://softwaremaniacs.org/soft/highlight/en/';
-}), define("fileMgr", [ "jquery", "underscore", "core", "utils", "settings", "extensionMgr", "fileSystem", "classes/FileDescriptor", "text!../WELCOME.md" ], function(e, t, n, i, o, r, s, a, l) {
+}), define("fileMgr", [ "jquery", "underscore", "core", "utils", "settings", "eventMgr", "fileSystem", "classes/FileDescriptor", "text!../WELCOME.md" ], function(e, t, n, i, o, r, s, a, l) {
  var c = {};
  return c.currentFile = void 0, c.selectFile = function(i) {
   if (i = i || c.currentFile, void 0 === i) {
@@ -14017,7 +14017,7 @@ function(e) {
   this.providerId = e, this.providerName = t;
  }
  return e;
-}), define("classes/AsyncTask", [ "underscore", "core", "utils", "extensionMgr", "config", "libs/stacktrace" ], function(e, t, n, i) {
+}), define("classes/AsyncTask", [ "underscore", "core", "utils", "eventMgr", "config", "libs/stacktrace" ], function(e, t, n, i) {
  function o() {
   this.finished = !1, this.timeout = ASYNC_TASK_DEFAULT_TIMEOUT, this.retryCounter = 0, 
   this.runCallbacks = [], this.successCallbacks = [], this.errorCallbacks = [];
@@ -14072,7 +14072,7 @@ function(e) {
  };
  var l = !1, c = void 0, u = !1, d = 0;
  return t.runPeriodically(r), o;
-}), define("helpers/dropboxHelper", [ "jquery", "underscore", "core", "extensionMgr", "classes/AsyncTask" ], function(e, t, n, i, o) {
+}), define("helpers/dropboxHelper", [ "jquery", "underscore", "core", "eventMgr", "classes/AsyncTask" ], function(e, t, n, i, o) {
  function r(t) {
   t.onRun(function() {
    return n.isOffline === !0 ? (c = void 0, t.error(new Error("Operation not available in offline mode.|stopPublish")), 
@@ -14226,7 +14226,7 @@ function(e) {
    e(t);
   }), n.enqueue();
  }, d;
-}), define("providers/dropboxProvider", [ "underscore", "utils", "classes/Provider", "extensionMgr", "fileMgr", "helpers/dropboxHelper" ], function(e, t, n, i, o, r) {
+}), define("providers/dropboxProvider", [ "underscore", "utils", "classes/Provider", "eventMgr", "fileMgr", "helpers/dropboxHelper" ], function(e, t, n, i, o, r) {
  function s(e) {
   return void 0 === e ? void 0 : e.match(/^[^\\<>:"\|?\*]+$/) ? 0 !== e.indexOf("/") ? "/" + e : e : (i.onError('"' + e + '" contains invalid characters.'), 
   void 0);
@@ -14324,7 +14324,7 @@ function(e) {
   var n = {};
   return n.path = t.getInputTextValue("#input-publish-dropbox-path", e), e.isPropagationStopped() ? void 0 : n;
  }, p;
-}), define("helpers/googleHelper", [ "jquery", "core", "utils", "extensionMgr", "classes/AsyncTask" ], function(e, t, n, i, o) {
+}), define("helpers/googleHelper", [ "jquery", "core", "utils", "eventMgr", "classes/AsyncTask" ], function(e, t, n, i, o) {
  function r(n) {
   n.onRun(function() {
    return t.isOffline === !0 ? (c = !1, n.error(new Error("Operation not available in offline mode.|stopPublish")), 
@@ -14683,7 +14683,7 @@ function(e) {
    d(e);
   }), p.enqueue();
  }, d;
-}), define("providers/gdriveProvider", [ "underscore", "core", "utils", "classes/Provider", "settings", "extensionMgr", "fileMgr", "helpers/googleHelper" ], function(e, t, n, i, o, r, s, a) {
+}), define("providers/gdriveProvider", [ "underscore", "core", "utils", "classes/Provider", "settings", "eventMgr", "fileMgr", "helpers/googleHelper" ], function(e, t, n, i, o, r, s, a) {
  function l(e) {
   return "sync." + d + "." + e;
  }
@@ -14851,7 +14851,7 @@ function(e) {
    }), u(i);
   }
  }), p;
-}), define("synchronizer", [ "jquery", "underscore", "core", "utils", "extensionMgr", "fileSystem", "fileMgr", "classes/Provider", "providers/dropboxProvider", "providers/gdriveProvider" ], function(e, t, n, i, o, r, s, a) {
+}), define("synchronizer", [ "jquery", "underscore", "core", "utils", "eventMgr", "fileSystem", "fileMgr", "classes/Provider", "providers/dropboxProvider", "providers/gdriveProvider" ], function(e, t, n, i, o, r, s, a) {
  function l(e) {
   if (0 === y.length) return c(e), void 0;
   var t = y.pop();
@@ -14990,7 +14990,7 @@ function(e) {
    n(e);
   }), s.enqueue();
  }, o;
-}), define("helpers/githubHelper", [ "jquery", "core", "utils", "extensionMgr", "classes/AsyncTask" ], function(e, t, n, i, o) {
+}), define("helpers/githubHelper", [ "jquery", "core", "utils", "eventMgr", "classes/AsyncTask" ], function(e, t, n, i, o) {
  function r(n) {
   n.onRun(function() {
    return t.isOffline === !0 ? (l = !1, n.error(new Error("Operation not available in offline mode.|stopPublish")), 
@@ -15128,7 +15128,7 @@ function(e) {
  }, i.importPublic = function(e, t) {
   n.downloadGist(e.gistId, e.filename, t);
  }, i;
-}), define("sharing", [ "jquery", "underscore", "core", "utils", "extensionMgr", "fileMgr", "classes/AsyncTask", "classes/Provider", "providers/downloadProvider", "providers/gistProvider" ], function(e, t, n, i, o, r, s, a) {
+}), define("sharing", [ "jquery", "underscore", "core", "utils", "eventMgr", "fileMgr", "classes/AsyncTask", "classes/Provider", "providers/downloadProvider", "providers/gistProvider" ], function(e, t, n, i, o, r, s, a) {
  var l = {}, c = t.chain(arguments).map(function(e) {
   return e instanceof a && [ e.providerId, e ];
  }).compact().object().value();
@@ -15258,7 +15258,7 @@ function(e) {
   n.password = e.getInputTextValue("#input-publish-ssh-password", t), n.path = e.getInputTextValue("#input-publish-file-path", t), 
   t.isPropagationStopped() ? void 0 : n;
  }, i;
-}), define("helpers/tumblrHelper", [ "jquery", "core", "utils", "extensionMgr", "classes/AsyncTask" ], function(e, t, n, i, o) {
+}), define("helpers/tumblrHelper", [ "jquery", "core", "utils", "eventMgr", "classes/AsyncTask" ], function(e, t, n, i, o) {
  function r(e) {
   e.onRun(function() {
    return t.isOffline === !0 ? (e.error(new Error("Operation not available in offline mode.|stopPublish")), 
@@ -15357,7 +15357,7 @@ function(e) {
   n.postId = e.getInputTextValue("#input-publish-postid"), n.tags = e.getInputTextValue("#input-publish-tags"), 
   t.isPropagationStopped() ? void 0 : n;
  }, i;
-}), define("helpers/wordpressHelper", [ "jquery", "core", "utils", "extensionMgr", "classes/AsyncTask" ], function(e, t, n, i, o) {
+}), define("helpers/wordpressHelper", [ "jquery", "core", "utils", "eventMgr", "classes/AsyncTask" ], function(e, t, n, i, o) {
  function r(e) {
   e.onRun(function() {
    return t.isOffline === !0 ? (e.error(new Error("Operation not available in offline mode.|stopPublish")), 
@@ -15454,7 +15454,7 @@ function(e) {
   n.postId = e.getInputTextValue("#input-publish-postid"), n.tags = e.getInputTextValue("#input-publish-tags"), 
   t.isPropagationStopped() ? void 0 : n;
  }, i;
-}), define("publisher", [ "jquery", "underscore", "core", "utils", "settings", "extensionMgr", "fileSystem", "fileMgr", "sharing", "classes/Provider", "providers/bloggerProvider", "providers/dropboxProvider", "providers/gistProvider", "providers/githubProvider", "providers/gdriveProvider", "providers/sshProvider", "providers/tumblrProvider", "providers/wordpressProvider" ], function(e, t, n, i, o, r, s, a, l, c) {
+}), define("publisher", [ "jquery", "underscore", "core", "utils", "settings", "eventMgr", "fileSystem", "fileMgr", "sharing", "classes/Provider", "providers/bloggerProvider", "providers/dropboxProvider", "providers/gistProvider", "providers/githubProvider", "providers/gdriveProvider", "providers/sshProvider", "providers/tumblrProvider", "providers/wordpressProvider" ], function(e, t, n, i, o, r, s, a, l, c) {
  function u(t, n, i) {
   return void 0 === n.format && (n.format = e("input:radio[name=radio-publish-format]:checked").prop("value")), 
   "markdown" == n.format ? t.content : "html" == n.format ? i : g.applyTemplate(t, n, i);
@@ -15558,7 +15558,7 @@ function(e) {
    i.saveAs(t, e.title + (-1 === o.template.indexOf("documentHTML") ? ".md" : ".html"));
   });
  }), r.onPublisherCreated(g), g;
-}), define("providers/gplusProvider", [ "underscore", "core", "utils", "classes/Provider", "extensionMgr", "helpers/googleHelper" ], function(e, t, n, i, o, r) {
+}), define("providers/gplusProvider", [ "underscore", "core", "utils", "classes/Provider", "eventMgr", "helpers/googleHelper" ], function(e, t, n, i, o, r) {
  function s(t, n) {
   var i = void 0;
   return e.find(t.thumbnails, function(e) {
@@ -15596,7 +15596,7 @@ function(e) {
    t && (i += ' "' + t + '"'), p(void 0, i), d = {}, e && (d.size = e), localStorage[l + ".importImagePreferences"] = JSON.stringify(d);
   });
  }), c;
-}), define("mediaImporter", [ "jquery", "underscore", "classes/Provider", "core", "extensionMgr", "providers/gplusProvider" ], function(e, t, n, i) {
+}), define("mediaImporter", [ "jquery", "underscore", "classes/Provider", "core", "eventMgr", "providers/gplusProvider" ], function(e, t, n, i) {
  var o = {}, r = t.chain(arguments).map(function(e) {
   return e instanceof n && [ e.providerId, e ];
  }).compact().object().value();

@@ -2,9 +2,9 @@ define([
     "jquery",
     "core",
     "utils",
-    "extensionMgr",
+    "eventMgr",
     "classes/AsyncTask"
-], function($, core, utils, extensionMgr, AsyncTask) {
+], function($, core, utils, eventMgr, AsyncTask) {
 
     var token = undefined;
 
@@ -31,7 +31,7 @@ define([
                 task.chain();
                 return;
             }
-            extensionMgr.onMessage("Please make sure the Wordpress authorization popup is not blocked by your browser.");
+            eventMgr.onMessage("Please make sure the Wordpress authorization popup is not blocked by your browser.");
             var errorMsg = "Failed to retrieve a token from Wordpress.";
             // We add time for user to enter his credentials
             task.timeout = ASYNC_TASK_LONG_TIMEOUT;

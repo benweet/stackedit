@@ -4,7 +4,7 @@ define([
     "core",
     "utils",
     "settings",
-    "extensionMgr",
+    "eventMgr",
     "fileSystem",
     "fileMgr",
     "sharing",
@@ -17,7 +17,7 @@ define([
     "providers/sshProvider",
     "providers/tumblrProvider",
     "providers/wordpressProvider"
-], function($, _, core, utils, settings, extensionMgr, fileSystem, fileMgr, sharing, Provider) {
+], function($, _, core, utils, settings, eventMgr, fileSystem, fileMgr, sharing, Provider) {
 
     var publisher = {};
 
@@ -46,7 +46,7 @@ define([
             }
             catch(e) {
                 // localStorage can be corrupted
-                extensionMgr.onError(e);
+                eventMgr.onError(e);
                 // Remove publish location
                 utils.removeIndexFromArray(fileDesc.fileIndex + ".publish", publishIndex);
                 localStorage.removeItem(publishIndex);
@@ -65,7 +65,7 @@ define([
             });
         }
         catch(e) {
-            extensionMgr.onError(e);
+            eventMgr.onError(e);
             return e.message;
         }
     };
@@ -110,7 +110,7 @@ define([
                 var errorMsg = error.toString();
                 if(errorMsg.indexOf("|removePublish") !== -1) {
                     publishFileDesc.removePublishLocation(publishAttributes);
-                    extensionMgr.onPublishRemoved(publishFileDesc, publishAttributes);
+                    eventMgr.onPublishRemoved(publishFileDesc, publishAttributes);
                 }
                 if(errorMsg.indexOf("|stopPublish") !== -1) {
                     callback(error);
@@ -123,7 +123,7 @@ define([
     
     // Get the html from the onPreviewFinished callback
     var previewHtml = undefined;
-    extensionMgr.addHookCallback("onPreviewFinished", function(html) {
+    eventMgr.addListener("onPreviewFinished", function(html) {
         previewHtml = html;
     });
 
@@ -136,15 +136,15 @@ define([
         }
 
         publishRunning = true;
-        extensionMgr.onPublishRunning(true);
+        eventMgr.onPublishRunning(true);
         publishFileDesc = fileMgr.currentFile;
         publishHTML = previewHtml;
         publishAttributesList = _.values(publishFileDesc.publishLocations);
         publishLocation(function(errorFlag) {
             publishRunning = false;
-            extensionMgr.onPublishRunning(false);
+            eventMgr.onPublishRunning(false);
             if(errorFlag === undefined) {
-                extensionMgr.onPublishSuccess(publishFileDesc);
+                eventMgr.onPublishSuccess(publishFileDesc);
             }
         });
     };
@@ -157,7 +157,7 @@ define([
         } while (_.has(localStorage, publishIndex));
         publishAttributes.publishIndex = publishIndex;
         fileDesc.addPublishLocation(publishAttributes);
-        extensionMgr.onNewPublishSuccess(fileDesc, publishAttributes);
+        eventMgr.onNewPublishSuccess(fileDesc, publishAttributes);
     }
 
     // Initialize the "New publication" dialog
@@ -251,6 +251,6 @@ define([
         });
     });
 
-    extensionMgr.onPublisherCreated(publisher);
+    eventMgr.onPublisherCreated(publisher);
     return publisher;
 });

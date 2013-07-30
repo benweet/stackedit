@@ -3,13 +3,13 @@ define([
     "underscore",
     "core",
     "utils",
-    "extensionMgr",
+    "eventMgr",
     "fileSystem",
     "fileMgr",
     "classes/Provider",
     "providers/dropboxProvider",
     "providers/gdriveProvider"
-], function($, _, core, utils, extensionMgr, fileSystem, fileMgr, Provider) {
+], function($, _, core, utils, eventMgr, fileSystem, fileMgr, Provider) {
 
     var synchronizer = {};
 
@@ -38,7 +38,7 @@ define([
             }
             catch(e) {
                 // localStorage can be corrupted
-                extensionMgr.onError(e);
+                eventMgr.onError(e);
                 // Remove sync location
                 utils.removeIndexFromArray(fileDesc.fileIndex + ".sync", syncIndex);
                 localStorage.removeItem(syncIndex);
@@ -47,9 +47,11 @@ define([
     });
     
     // Returns true if at least one file has synchronized location
-    synchronizer.hasSync = function() {
-        return _.some(providerMap, function(provider) {
-            return fileMgr.hasSync(provider);
+    synchronizer.hasSync = function(provider) {
+        return _.some(fileSystem, function(fileDesc) {
+            return _.some(fileDesc.syncLocations, function(syncAttributes) {
+                return provider === undefined || syncAttributes.provider === provider;
+            });
         });
     };
 
@@ -148,7 +150,7 @@ define([
         var provider = providerList.pop();
 
         // Check that provider has files to sync
-        if(!fileMgr.hasSync(provider)) {
+        if(!synchronizer.hasSync(provider)) {
             providerDown(callback);
             return;
         }
@@ -177,13 +179,13 @@ define([
             return false;
         }
         syncRunning = true;
-        extensionMgr.onSyncRunning(true);
+        eventMgr.onSyncRunning(true);
         uploadCycle = true;
 
         function isError(error) {
             if(error !== undefined) {
                 syncRunning = false;
-                extensionMgr.onSyncRunning(false);
+                eventMgr.onSyncRunning(false);
                 return true;
             }
             return false;
@@ -198,8 +200,8 @@ define([
                     return;
                 }
                 syncRunning = false;
-                extensionMgr.onSyncRunning(false);
-                extensionMgr.onSyncSuccess();
+                eventMgr.onSyncRunning(false);
+                eventMgr.onSyncSuccess();
             });
         });
         return true;
@@ -251,11 +253,11 @@ define([
         }
     };
 
-    // Triggers realtime synchronization from extensionMgr events
+    // Triggers realtime synchronization from eventMgr events
     if(viewerMode === false) {
-        extensionMgr.addHookCallback("onFileOpen", onFileOpen);
-        extensionMgr.addHookCallback("onFileClosed", synchronizer.tryStopRealtimeSync);
-        extensionMgr.addHookCallback("onOfflineChanged", onOfflineChanged);
+        eventMgr.addListener("onFileOpen", onFileOpen);
+        eventMgr.addListener("onFileClosed", synchronizer.tryStopRealtimeSync);
+        eventMgr.addListener("onOfflineChanged", onOfflineChanged);
     }
 
     /***************************************************************************
@@ -297,7 +299,7 @@ define([
 
                 if(isRealtime) {
                     if(_.size(fileDesc.syncLocations) > 0) {
-                        extensionMgr.onError("Real time collaborative document can't be synchronized with multiple locations");
+                        eventMgr.onError("Real time collaborative document can't be synchronized with multiple locations");
                         return;
                     }
                     // Perform the provider's real time export
@@ -307,7 +309,7 @@ define([
                         }
                         syncAttributes.isRealtime = true;
                         fileDesc.addSyncLocation(syncAttributes);
-                        extensionMgr.onSyncExportSuccess(fileDesc, syncAttributes);
+                        eventMgr.onSyncExportSuccess(fileDesc, syncAttributes);
 
                         // Start the real time sync
                         realtimeFileDesc = fileDesc;
@@ -317,7 +319,7 @@ define([
                 }
                 else {
                     if(_.size(fileDesc.syncLocations) > 0 && _.first(_.values(fileDesc.syncLocations)).isRealtime) {
-                        extensionMgr.onError("Real time collaborative document can't be synchronized with multiple locations");
+                        eventMgr.onError("Real time collaborative document can't be synchronized with multiple locations");
                         return;
                     }
                     // Perform the provider's standard export
@@ -326,7 +328,7 @@ define([
                             return;
                         }
                         fileDesc.addSyncLocation(syncAttributes);
-                        extensionMgr.onSyncExportSuccess(fileDesc, syncAttributes);
+                        eventMgr.onSyncExportSuccess(fileDesc, syncAttributes);
                     });
                 }
 
@@ -342,7 +344,7 @@ define([
             $(".action-sync-manual-" + provider.providerId).click(function(event) {
                 var fileDesc = fileMgr.currentFile;
                 if(_.size(fileDesc.syncLocations) > 0 && _.first(_.values(fileDesc.syncLocations)).isRealtime) {
-                    extensionMgr.onError("Real time collaborative document can't be synchronized with multiple locations");
+                    eventMgr.onError("Real time collaborative document can't be synchronized with multiple locations");
                     return;
                 }
                 provider.exportManual(event, fileDesc.title, fileDesc.content, function(error, syncAttributes) {
@@ -350,12 +352,12 @@ define([
                         return;
                     }
                     fileDesc.addSyncLocation(syncAttributes);
-                    extensionMgr.onSyncExportSuccess(fileDesc, syncAttributes);
+                    eventMgr.onSyncExportSuccess(fileDesc, syncAttributes);
                 });
             });
         });
     });
 
-    extensionMgr.onSynchronizerCreated(synchronizer);
+    eventMgr.onSynchronizerCreated(synchronizer);
     return synchronizer;
 });

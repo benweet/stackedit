@@ -41,7 +41,7 @@ define([
     };
 
     buttonStat.onCreatePreviewButton = function() {
-        return $(_.template(buttonStatHTML, buttonStat.config));
+        return _.template(buttonStatHTML, buttonStat.config);
     };
     
     var previewContentsElt = undefined;

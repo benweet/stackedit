@@ -8,9 +8,9 @@ define([
     var dialogManagePublication = new Extension("dialogManagePublication", 'Dialog "Manage publication"');
     dialogManagePublication.settingsBlock = '<p>Populates the "Manage publication" dialog box.</p>';
 
-    var extensionMgr = undefined;
-    dialogManagePublication.onExtensionMgrCreated = function(extensionMgrParameter) {
-        extensionMgr = extensionMgrParameter;
+    var eventMgr = undefined;
+    dialogManagePublication.onEventMgrCreated = function(eventMgrParameter) {
+        eventMgr = eventMgrParameter;
     };
 
     var fileDesc = undefined;
@@ -41,7 +41,7 @@ define([
             }));
             lineElement.append($(removeButtonTemplate).click(function() {
                 fileDesc.removePublishLocation(publishAttributes);
-                extensionMgr.onPublishRemoved(fileDesc, publishAttributes);
+                eventMgr.onPublishRemoved(fileDesc, publishAttributes);
             }));
             publishList.append(lineElement);
         });

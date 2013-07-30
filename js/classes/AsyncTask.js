@@ -2,10 +2,10 @@ define([
     "underscore",
     "core",
     "utils",
-    "extensionMgr",
+    "eventMgr",
     "config",
     "libs/stacktrace",
-], function(_, core, utils, extensionMgr) {
+], function(_, core, utils, eventMgr) {
     
     var taskQueue = [];
     
@@ -85,7 +85,7 @@ define([
         }
         error = error || new Error("Unknown error");
         if(error.message) {
-            extensionMgr.onError(error);
+            eventMgr.onError(error);
         }
         runSafe(this, this.errorCallbacks, error);
         // Exit the current call stack
@@ -156,7 +156,7 @@ define([
                 currentTaskStartTime = utils.currentTime;
                 if(asyncRunning === false) {
                     asyncRunning = true;
-                    extensionMgr.onAsyncRunning(true);
+                    eventMgr.onAsyncRunning(true);
                 }
             }
 
@@ -185,7 +185,7 @@ define([
             }
             if(taskQueue.length === 0) {
                 asyncRunning = false;
-                extensionMgr.onAsyncRunning(false);
+                eventMgr.onAsyncRunning(false);
             }
             else {
                 runTask();

@@ -3,9 +3,9 @@ define([
     "core",
     "utils",
     "classes/Provider",
-    "extensionMgr",
+    "eventMgr",
     "helpers/googleHelper"
-], function(_, core, utils, Provider, extensionMgr, googleHelper) {
+], function(_, core, utils, Provider, eventMgr, googleHelper) {
 
     var PROVIDER_GPLUS = "gplus";
 
@@ -28,7 +28,7 @@ define([
     var importImagePreferences = utils.retrieveIgnoreError(PROVIDER_GPLUS + ".importImagePreferences");
     function showImportImgDialog() {
         if(!imageDoc.thumbnails) {
-            extensionMgr.onError("Image " + imageDoc.name + " is not accessible.");
+            eventMgr.onError("Image " + imageDoc.name + " is not accessible.");
             callback(true);
             return;
         }

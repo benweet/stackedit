@@ -15,9 +15,9 @@ define([
         fileMgr = fileMgrParameter;
     };
 
-    var extensionMgr = undefined;
-    dialogOpenHarddrive.onExtensionMgrCreated = function(extensionMgrParameter) {
-        extensionMgr = extensionMgrParameter;
+    var eventMgr = undefined;
+    dialogOpenHarddrive.onEventMgrCreated = function(eventMgrParameter) {
+        eventMgr = eventMgrParameter;
     };
 
     var contentWrapper = undefined;
@@ -39,12 +39,12 @@ define([
                 return function(e) {
                     var content = e.target.result;
                     if(content.match(/\uFFFD/)) {
-                        extensionMgr.onError(importedFile.name + " is a binary file.");
+                        eventMgr.onError(importedFile.name + " is a binary file.");
                         return;
                     }
                     content = contentWrapper ? contentWrapper(content) : content;
                     if(content === undefined) {
-                        extensionMgr.onError(importedFile.name + " is not a valid HTML file.");
+                        eventMgr.onError(importedFile.name + " is not a valid HTML file.");
                         return;
                     }
                     var title = importedFile.name;
@@ -96,7 +96,7 @@ define([
             }
             content = converter.makeMd(content);
             if(content === undefined) {
-                extensionMgr.onError("Invalid HTML code.");
+                eventMgr.onError("Invalid HTML code.");
                 return;
             }
             var fileDesc = fileMgr.createFile(undefined, content);

@@ -3,13 +3,13 @@ define([
     "underscore",
     "core",
     "utils",
-    "extensionMgr",
+    "eventMgr",
     "fileMgr",
     "classes/AsyncTask",
     "classes/Provider",
     "providers/downloadProvider",
     "providers/gistProvider"
-], function($, _, core, utils, extensionMgr, fileMgr, AsyncTask, Provider) {
+], function($, _, core, utils, eventMgr, fileMgr, AsyncTask, Provider) {
 
     var sharing = {};
 
@@ -59,7 +59,7 @@ define([
                     attributes.sharingLink = shortUrl;
                 }
                 else {
-                    extensionMgr.onError("An error occured while creating sharing link.");
+                    eventMgr.onError("An error occured while creating sharing link.");
                     attributes.sharingLink = url;
                 }
                 task.chain();

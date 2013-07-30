@@ -4,10 +4,10 @@ define([
     "utils",
     "classes/Provider",
     "settings",
-    "extensionMgr",
+    "eventMgr",
     "fileMgr",
     "helpers/googleHelper"
-], function(_, core, utils, Provider, settings, extensionMgr, fileMgr, googleHelper) {
+], function(_, core, utils, Provider, settings, eventMgr, fileMgr, googleHelper) {
 
     var PROVIDER_GDRIVE = "gdrive";
 
@@ -52,7 +52,7 @@ define([
                     fileDescList.push(fileDesc);
                 });
                 if(fileDesc !== undefined) {
-                    extensionMgr.onSyncImportSuccess(fileDescList, gdriveProvider);
+                    eventMgr.onSyncImportSuccess(fileDescList, gdriveProvider);
                     fileMgr.selectFile(fileDesc);
                 }
             });
@@ -69,7 +69,7 @@ define([
                 var syncIndex = createSyncIndex(doc.id);
                 var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
                 if(fileDesc !== undefined) {
-                    extensionMgr.onError('"' + fileDesc.title + '" was already imported.');
+                    eventMgr.onError('"' + fileDesc.title + '" was already imported.');
                     return;
                 }
                 importIds.push(doc.id);
@@ -111,7 +111,7 @@ define([
         var syncIndex = createSyncIndex(id);
         var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
         if(fileDesc !== undefined) {
-            extensionMgr.onError('File ID is already synchronized with "' + fileDesc.title + '".');
+            eventMgr.onError('File ID is already synchronized with "' + fileDesc.title + '".');
             callback(true);
             return;
         }
@@ -188,9 +188,9 @@ define([
                     var localTitle = fileDesc.title;
                     // File deleted
                     if(change.deleted === true) {
-                        extensionMgr.onError('"' + localTitle + '" has been removed from Google Drive.');
+                        eventMgr.onError('"' + localTitle + '" has been removed from Google Drive.');
                         fileDesc.removeSyncLocation(syncAttributes);
-                        extensionMgr.onSyncRemoved(fileDesc, syncAttributes);
+                        eventMgr.onSyncRemoved(fileDesc, syncAttributes);
                         if(syncAttributes.isRealtime === true && fileMgr.currentFile === fileDesc) {
                             gdriveProvider.stopRealtimeSync();
                         }
@@ -209,19 +209,19 @@ define([
                     // Conflict detection
                     if((fileTitleChanged === true && localTitleChanged === true && remoteTitleChanged === true) || (!syncAttributes.isRealtime && fileContentChanged === true && localContentChanged === true && remoteContentChanged === true)) {
                         fileMgr.createFile(localTitle + " (backup)", localContent);
-                        extensionMgr.onMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
+                        eventMgr.onMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
                     }
                     // If file title changed
                     if(fileTitleChanged && remoteTitleChanged === true) {
                         fileDesc.title = file.title;
-                        extensionMgr.onTitleChanged(fileDesc);
-                        extensionMgr.onMessage('"' + localTitle + '" has been renamed to "' + file.title + '" on Google Drive.');
+                        eventMgr.onTitleChanged(fileDesc);
+                        eventMgr.onMessage('"' + localTitle + '" has been renamed to "' + file.title + '" on Google Drive.');
                     }
                     // If file content changed
                     if(!syncAttributes.isRealtime && fileContentChanged && remoteContentChanged === true) {
                         fileDesc.content = file.content;
-                        extensionMgr.onContentChanged(fileDesc);
-                        extensionMgr.onMessage('"' + file.title + '" has been updated from Google Drive.');
+                        eventMgr.onContentChanged(fileDesc);
+                        eventMgr.onMessage('"' + file.title + '" has been updated from Google Drive.');
                         if(fileMgr.currentFile === fileDesc) {
                             fileMgr.selectFile(); // Refresh editor
                         }
@@ -263,7 +263,7 @@ define([
 
     // Keep a link to the pagedown editor
     var editor = undefined;
-    extensionMgr.addHookCallback("onEditorConfigure", function(editorParam) {
+    eventMgr.addListener("onEditorConfigure", function(editorParam) {
         editor = editorParam;
     });
 
@@ -327,7 +327,7 @@ define([
                 if(remoteContentChanged === true) {
                     // Conflict detected
                     fileMgr.createFile(fileDesc.title + " (backup)", localContent);
-                    extensionMgr.onMessage('Conflict detected on "' + fileDesc.title + '". A backup has been created locally.');
+                    eventMgr.onMessage('Conflict detected on "' + fileDesc.title + '". A backup has been created locally.');
                 }
                 else {
                     // Add local modifications if no collaborators change
@@ -371,13 +371,13 @@ define([
                 googleHelper.forceAuthenticate();
             }
             else if(err.type == "not_found") {
-                extensionMgr.onError('"' + fileDesc.title + '" has been removed from Google Drive.');
+                eventMgr.onError('"' + fileDesc.title + '" has been removed from Google Drive.');
                 fileDesc.removeSyncLocation(syncAttributes);
-                extensionMgr.onSyncRemoved(fileDesc, syncAttributes);
+                eventMgr.onSyncRemoved(fileDesc, syncAttributes);
                 gdriveProvider.stopRealtimeSync();
             }
             else if(err.isFatal) {
-                extensionMgr.onError('An error has forced real time synchronization to stop.');
+                eventMgr.onError('An error has forced real time synchronization to stop.');
                 gdriveProvider.stopRealtimeSync();
             }
         });
@@ -417,7 +417,7 @@ define([
                 syncLocations[syncAttributes.syncIndex] = syncAttributes;
                 var fileDesc = fileMgr.createFile(file.title, file.content, syncLocations);
                 fileMgr.selectFile(fileDesc);
-                extensionMgr.onMessage('"' + file.title + '" created successfully on Google Drive.');
+                eventMgr.onMessage('"' + file.title + '" created successfully on Google Drive.');
             });
         }
         else if(state.action == "open") {

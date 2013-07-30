@@ -8,7 +8,7 @@ define([
     buttonMarkdownSyntax.settingsBlock = '<p>Adds a "Markdown syntax" button over the preview.</p>';
 
     buttonMarkdownSyntax.onCreatePreviewButton = function() {
-        return $(buttonMarkdownSyntaxHTML);
+        return buttonMarkdownSyntaxHTML;
     };
 
     return buttonMarkdownSyntax;

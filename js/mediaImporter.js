@@ -3,9 +3,9 @@ define([
     "underscore",
     "classes/Provider",
     "core",
-    "extensionMgr",
+    "eventMgr",
     "providers/gplusProvider"
-], function($, _, Provider, core, extensionMgr) {
+], function($, _, Provider, core, eventMgr) {
 
     var mediaImporter = {};
 

@@ -8,9 +8,9 @@ define([
     var dialogManageSynchronization = new Extension("dialogManageSynchronization", 'Dialog "Manage synchronization"');
     dialogManageSynchronization.settingsBlock = '<p>Populates the "Manage synchronization" dialog box.</p>';
 
-    var extensionMgr = undefined;
-    dialogManageSynchronization.onExtensionMgrCreated = function(extensionMgrParameter) {
-        extensionMgr = extensionMgrParameter;
+    var eventMgr = undefined;
+    dialogManageSynchronization.onEventMgrCreated = function(eventMgrParameter) {
+        eventMgr = eventMgrParameter;
     };
     
     var synchronizer = undefined;
@@ -44,7 +44,7 @@ define([
             lineElement.append($(removeButtonTemplate).click(function() {
                 synchronizer.tryStopRealtimeSync();
                 fileDesc.removeSyncLocation(syncAttributes);
-                extensionMgr.onSyncRemoved(fileDesc, syncAttributes);
+                eventMgr.onSyncRemoved(fileDesc, syncAttributes);
             }));
             syncList.append(lineElement);
         });

@@ -2,9 +2,9 @@ define([
     "jquery",
     "underscore",
     "core",
-    "extensionMgr",
+    "eventMgr",
     "classes/AsyncTask"
-], function($, _, core, extensionMgr, AsyncTask) {
+], function($, _, core, eventMgr, AsyncTask) {
 
     var client = undefined;
     var authenticated = false;
@@ -57,7 +57,7 @@ define([
             var immediate = true;
             function localAuthenticate() {
                 if(immediate === false) {
-                    extensionMgr.onMessage("Please make sure the Dropbox authorization popup is not blocked by your browser.");
+                    eventMgr.onMessage("Please make sure the Dropbox authorization popup is not blocked by your browser.");
                     // If not immediate we add time for user to enter his
                     // credentials
                     task.timeout = ASYNC_TASK_LONG_TIMEOUT;
@@ -320,7 +320,7 @@ define([
                 task.chain();
             };
             Dropbox.choose(options);
-            extensionMgr.onMessage("Please make sure the Dropbox chooser popup is not blocked by your browser.");
+            eventMgr.onMessage("Please make sure the Dropbox chooser popup is not blocked by your browser.");
         });
         task.onSuccess(function() {
             callback(undefined, paths);

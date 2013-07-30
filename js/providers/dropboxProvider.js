@@ -2,10 +2,10 @@ define([
     "underscore",
     "utils",
     "classes/Provider",
-    "extensionMgr",
+    "eventMgr",
     "fileMgr",
     "helpers/dropboxHelper"
-], function(_, utils, Provider, extensionMgr, fileMgr, dropboxHelper) {
+], function(_, utils, Provider, eventMgr, fileMgr, dropboxHelper) {
 
     var PROVIDER_DROPBOX = "dropbox";
 
@@ -17,7 +17,7 @@ define([
             return undefined;
         }
         if(!path.match(/^[^\\<>:"\|?\*]+$/)) {
-            extensionMgr.onError('"' + path + '" contains invalid characters.');
+            eventMgr.onError('"' + path + '" contains invalid characters.');
             return undefined;
         }
         if(path.indexOf("/") !== 0) {
@@ -59,7 +59,7 @@ define([
                     fileDescList.push(fileDesc);
                 });
                 if(fileDescList.length !== 0) {
-                    extensionMgr.onSyncImportSuccess(fileDescList, dropboxProvider);
+                    eventMgr.onSyncImportSuccess(fileDescList, dropboxProvider);
                 }
             });
         });
@@ -75,7 +75,7 @@ define([
                 var syncIndex = createSyncIndex(path);
                 var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
                 if(fileDesc !== undefined) {
-                    extensionMgr.onError('"' + fileDesc.title + '" was already imported.');
+                    eventMgr.onError('"' + fileDesc.title + '" was already imported.');
                     return;
                 }
                 importPaths.push(path);
@@ -95,7 +95,7 @@ define([
         var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
         if(fileDesc !== undefined) {
             var existingTitle = fileDesc.title;
-            extensionMgr.onError('File path is already synchronized with "' + existingTitle + '".');
+            eventMgr.onError('File path is already synchronized with "' + existingTitle + '".');
             callback(true);
             return;
         }
@@ -180,9 +180,9 @@ define([
                     var localTitle = fileDesc.title;
                     // File deleted
                     if(change.wasRemoved === true) {
-                        extensionMgr.onError('"' + localTitle + '" has been removed from Dropbox.');
+                        eventMgr.onError('"' + localTitle + '" has been removed from Dropbox.');
                         fileDesc.removeSyncLocation(syncAttributes);
-                        extensionMgr.onSyncRemoved(fileDesc, syncAttributes);
+                        eventMgr.onSyncRemoved(fileDesc, syncAttributes);
                         return;
                     }
                     var localContent = fileDesc.content;
@@ -194,13 +194,13 @@ define([
                     // Conflict detection
                     if(fileContentChanged === true && localContentChanged === true && remoteContentChanged === true) {
                         fileMgr.createFile(localTitle + " (backup)", localContent);
-                        extensionMgr.onMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
+                        eventMgr.onMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
                     }
                     // If file content changed
                     if(fileContentChanged && remoteContentChanged === true) {
                         fileDesc.content = file.content;
-                        extensionMgr.onContentChanged(fileDesc);
-                        extensionMgr.onMessage('"' + localTitle + '" has been updated from Dropbox.');
+                        eventMgr.onContentChanged(fileDesc);
+                        eventMgr.onMessage('"' + localTitle + '" has been updated from Dropbox.');
                         if(fileMgr.currentFile === fileDesc) {
                             fileMgr.selectFile(); // Refresh editor
                         }

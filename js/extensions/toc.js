@@ -26,7 +26,7 @@ define([
 
     toc.onCreatePreviewButton = function() {
         if(toc.config.button) {
-            return $(buttonTocHTML);
+            return buttonTocHTML;
         }
     };
 

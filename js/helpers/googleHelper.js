@@ -2,9 +2,9 @@ define([
     "jquery",
     "core",
     "utils",
-    "extensionMgr",
+    "eventMgr",
     "classes/AsyncTask"
-], function($, core, utils, extensionMgr, AsyncTask) {
+], function($, core, utils, eventMgr, AsyncTask) {
 
     var connected = false;
     var authenticated = false;
@@ -53,7 +53,7 @@ define([
             var immediate = true;
             function localAuthenticate() {
                 if(immediate === false) {
-                    extensionMgr.onMessage("Please make sure the Google authorization popup is not blocked by your browser.");
+                    eventMgr.onMessage("Please make sure the Google authorization popup is not blocked by your browser.");
                     // If not immediate we add time for user to enter his
                     // credentials
                     task.timeout = ASYNC_TASK_LONG_TIMEOUT;

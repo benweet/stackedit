@@ -21,13 +21,13 @@ define([
         newConfig.template = utils.getInputValue("#textarea-html-code-template");
     };
 
-    var extensionMgr = undefined;
-    buttonHtmlCode.onExtensionMgrCreated = function(extensionMgrParameter) {
-        extensionMgr = extensionMgrParameter;
+    var eventMgr = undefined;
+    buttonHtmlCode.onEventMgrCreated = function(eventMgrParameter) {
+        eventMgr = eventMgrParameter;
     };
 
     buttonHtmlCode.onCreatePreviewButton = function() {
-        return $(buttonHtmlCodeHTML);
+        return buttonHtmlCodeHTML;
     };
 
     var selectedFileDesc = undefined;
@@ -46,7 +46,7 @@ define([
             textareaElt.value = htmlCode;
         }
         catch(e) {
-            extensionMgr.onError(e);
+            eventMgr.onError(e);
             return e.message;
         }
     };

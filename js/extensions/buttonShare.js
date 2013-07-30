@@ -10,7 +10,7 @@ define([
     buttonShare.settingsBlock = '<p>Adds a "Share document" button in the navigation bar.</p>';
 
     buttonShare.onCreateButton = function() {
-        return $(buttonShareHTML);
+        return buttonShareHTML;
     };
 
     var fileDesc = undefined;

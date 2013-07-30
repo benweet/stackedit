@@ -38,7 +38,7 @@ define([
                 publisher.publish();
             }
         });
-        return button;
+        return button[0];
     };
 
     buttonPublish.onPublishRunning = function(isRunning) {

@@ -4,11 +4,11 @@ define([
     "core",
     "utils",
     "settings",
-    "extensionMgr",
+    "eventMgr",
     "fileSystem",
     "classes/FileDescriptor",
     "text!../WELCOME.md"
-], function($, _, core, utils, settings, extensionMgr, fileSystem, FileDescriptor, welcomeContent) {
+], function($, _, core, utils, settings, eventMgr, fileSystem, FileDescriptor, welcomeContent) {
 
     var fileMgr = {};
 
@@ -38,7 +38,7 @@ define([
             fileDesc.selectTime = new Date().getTime();
 
             // Notify extensions
-            extensionMgr.onFileSelected(fileDesc);
+            eventMgr.onFileSelected(fileDesc);
 
             // Hide the viewer pencil button
             if(fileDesc.fileIndex == TEMPORARY_FILE_INDEX) {
@@ -93,7 +93,7 @@ define([
         if(!isTemporary) {
             utils.appendIndexToArray("file.list", fileIndex);
             fileSystem[fileIndex] = fileDesc;
-            extensionMgr.onFileCreated(fileDesc);
+            eventMgr.onFileCreated(fileDesc);
         }
         return fileDesc;
     };
@@ -127,7 +127,7 @@ define([
         localStorage.removeItem(fileDesc.fileIndex + ".sync");
         localStorage.removeItem(fileDesc.fileIndex + ".publish");
 
-        extensionMgr.onFileDeleted(fileDesc);
+        eventMgr.onFileDeleted(fileDesc);
     };
 
     // Get the file descriptor associated to a syncIndex
@@ -141,15 +141,6 @@ define([
     fileMgr.getSyncAttributes = function(syncIndex) {
         var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
         return fileDesc && fileDesc.syncLocations[syncIndex];
-    };
-
-    // Returns true if provider has locations to synchronize
-    fileMgr.hasSync = function(provider) {
-        return _.some(fileSystem, function(fileDesc) {
-            return _.some(fileDesc.syncLocations, function(syncAttributes) {
-                return syncAttributes.provider === provider;
-            });
-        });
     };
 
     // Get the file descriptor associated to a publishIndex
@@ -192,7 +183,7 @@ define([
             var fileDesc = fileMgr.currentFile;
             if(title && title != fileDesc.title) {
                 fileDesc.title = title;
-                extensionMgr.onTitleChanged(fileDesc);
+                eventMgr.onTitleChanged(fileDesc);
             }
             input.val(fileDesc.title);
             $("#wmd-input").focus();
@@ -224,6 +215,6 @@ define([
         });
     });
 
-    extensionMgr.onFileMgrCreated(fileMgr);
+    eventMgr.onFileMgrCreated(fileMgr);
     return fileMgr;
 });

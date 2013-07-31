@@ -45,18 +45,20 @@ define([
     _.each(extensionList, function(extension) {
         // Set the extension.config attribute from settings or default configuration
         extension.config = _.extend({}, extension.defaultConfig, extensionSettings[extension.extensionId]);
-        // Skip enabling the extension if we are in the viewer and extension doesn't support it
-        if(viewerMode === true && extension.disableInViewer) {
-            return;
+        if(viewerMode === true && extension.disableInViewer === true) {
+            // Skip enabling the extension if we are in the viewer and extension doesn't support it
+            extension.enabled = false;
         }
-        // Enable the extension if it's not optional or it has not been disabled by the user
-        extension.config.enabled = !extension.isOptional || extension.config.enabled === undefined || extension.config.enabled === true;        
+        else {
+            // Enable the extension if it's not optional or it has not been disabled by the user
+            extension.enabled = !extension.isOptional || extension.config.enabled === undefined || extension.config.enabled === true;        
+        }
     });
     
     // Returns all listeners with the specified name that are implemented in the enabled extensions
     function getExtensionListenerList(eventName) {
         return _.chain(extensionList).map(function(extension) {
-            return extension.config.enabled && extension[eventName];
+            return extension.enabled && extension[eventName];
         }).compact().value();
     }
 
@@ -100,7 +102,7 @@ define([
     eventMgr["onLoadSettings"] = function() {
         logger.log("onLoadSettings");
         _.each(extensionList, function(extension) {
-            utils.setInputChecked("#input-enable-extension-" + extension.extensionId, extension.config.enabled);
+            utils.setInputChecked("#input-enable-extension-" + extension.extensionId, extension.config.enabled === true);
             var onLoadSettingsListener = extension.onLoadSettings;
             onLoadSettingsListener && onLoadSettingsListener();
         });

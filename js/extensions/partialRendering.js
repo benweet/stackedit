@@ -49,11 +49,6 @@ define([
             }
         });
 
-        if(leftIndex === sectionList.length && rightIndex === -leftIndex) {
-            // No modification detected...
-            return;
-        }
-
         // Create an array composed of left unmodified, modified, right
         // unmodified sections
         var leftSections = sectionList.slice(0, leftIndex);

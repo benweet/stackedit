@@ -25,17 +25,17 @@
 
 /*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
 
-/**
- * @license RequireJS text 2.0.6 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
- * Available via the MIT or new BSD license.
- * see: http://github.com/requirejs/text for details
- */
-
 //Copyright (C) 2012 Kory Nunn
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 //The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+/**
+ * @license RequireJS text 2.0.6 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
+ * Available via the MIT or new BSD license.
+ * see: http://github.com/requirejs/text for details
+ */
 
 /*
  * to-markdown - an HTML to Markdown converter
@@ -4486,6 +4486,26 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   e.extend(t, JSON.parse(localStorage.settings));
  } catch (n) {}
  return t;
+}), function(e, t) {
+ "object" == typeof exports ? module.exports = t() : "function" == typeof define && define.amd ? define("crel", t) : e.crel = t();
+}(this, function() {
+ function e() {
+  var n, i = window.document, o = arguments, r = i.createElement(o[0]), s = o[1], a = 2, l = o.length, c = e.attrMap;
+  if (1 === l) return r;
+  if (("object" != typeof s || t(s)) && (--a, s = null), 1 === l - a && "string" == typeof o[a] && void 0 !== r.textContent) r.textContent = o[a]; else for (;l > a; ++a) n = o[a], 
+  null != n && (t(n) || (n = i.createTextNode(n)), r.appendChild(n));
+  for (var u in s) if (c[u]) {
+   var d = e.attrMap[u];
+   "function" == typeof d ? d(r, s[u]) : r.setAttribute(d, s[u]);
+  } else r.setAttribute(u, s[u]);
+  return r;
+ }
+ var t = "object" == typeof Node ? function(e) {
+  return e instanceof Node;
+ } : function(e) {
+  return e && "object" == typeof e && "number" == typeof e.nodeType && "string" == typeof e.nodeName;
+ };
+ return e.attrMap = {}, e.isNode = t, e;
 }), define("classes/Extension", [], function() {
  function e(e, t, n, i) {
   this.extensionId = e, this.extensionName = t, this.isOptional = n, this.disableInViewer = i;
@@ -4605,26 +4625,6 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  }), t;
 }), define("text!html/settingsExtensionsAccordion.html", [], function() {
  return '<div class="accordion-group">\n	<div class="accordion-heading">\n		<label class="checkbox pull-right"> <input\n			id="input-enable-extension-<%= extensionId %>" type="checkbox"<%\n			if(!isOptional) print(\'disabled\') %>> enabled\n		</label> <a data-toggle="collapse"\n			data-parent="#accordion-extensions" class="accordion-toggle"\n			href="#collapse-<%= extensionId %>"> <%= extensionName %> </a>\n	</div>\n	<div id="collapse-<%= extensionId %>" class="accordion-body collapse">\n		<div class="accordion-inner"><%= settingsBlock %></div>\n	</div>\n</div>\n';
-}), function(e, t) {
- "object" == typeof exports ? module.exports = t() : "function" == typeof define && define.amd ? define("crel", t) : e.crel = t();
-}(this, function() {
- function e() {
-  var n, i = window.document, o = arguments, r = i.createElement(o[0]), s = o[1], a = 2, l = o.length, c = e.attrMap;
-  if (1 === l) return r;
-  if (("object" != typeof s || t(s)) && (--a, s = null), 1 === l - a && "string" == typeof o[a] && void 0 !== r.textContent) r.textContent = o[a]; else for (;l > a; ++a) n = o[a], 
-  null != n && (t(n) || (n = i.createTextNode(n)), r.appendChild(n));
-  for (var u in s) if (c[u]) {
-   var d = e.attrMap[u];
-   "function" == typeof d ? d(r, s[u]) : r.setAttribute(d, s[u]);
-  } else r.setAttribute(u, s[u]);
-  return r;
- }
- var t = "object" == typeof Node ? function(e) {
-  return e instanceof Node;
- } : function(e) {
-  return e && "object" == typeof e && "number" == typeof e.nodeType && "string" == typeof e.nodeName;
- };
- return e.attrMap = {}, e.isNode = t, e;
 }), define("text!html/partialRenderingSettingsBlock.html", [], function() {
  return '<p>Renders modified sections only.</p>\n<blockquote class="muted">\n	<b>NOTE:</b> Document sections are based on title elements (h1, h2...). Therefore if\n	your document does not contain any title, performance will not be increased.\n</blockquote>';
 }), define("extensions/partialRendering", [ "underscore", "crel", "classes/Extension", "text!html/partialRenderingSettingsBlock.html" ], function(e, t, n, i) {
@@ -4636,14 +4636,13 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
    return n >= t.length || e.text != t[n].text ? (i = n, !0) : void 0;
   });
   var o = -c.length;
-  if (e.some(c.slice().reverse(), function(e, n) {
+  e.some(c.slice().reverse(), function(e, n) {
    return n >= t.length || e.text != t[t.length - n - 1].text ? (o = -n, !0) : void 0;
-  }), i !== c.length || o !== -i) {
-   var r = c.slice(0, i);
-   p = t.slice(i, t.length + o);
-   var s = c.slice(c.length + o, c.length);
-   f = e.first(s), d = c.slice(i, c.length + o), c = r.concat(p).concat(s);
-  }
+  });
+  var r = c.slice(0, i);
+  p = t.slice(i, t.length + o);
+  var s = c.slice(c.length + o, c.length);
+  f = e.first(s), d = c.slice(i, c.length + o), c = r.concat(p).concat(s);
  }
  function r() {
   e.each(d, function(e) {
@@ -4862,7 +4861,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   publisher = e;
  };
  var eventMgr = void 0;
- return userCustom.oneventMgrCreated = function(e) {
+ return userCustom.onEventMgrCreated = function(e) {
   eventMgr = e;
  }, userCustom.onLoadSettings = function() {
   utils.setInputValue("#textarea-usercustom-code", userCustom.config.code);
@@ -4987,7 +4986,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  var o = new n("dialogManagePublication", 'Dialog "Manage publication"');
  o.settingsBlock = '<p>Populates the "Manage publication" dialog box.</p>';
  var r = void 0;
- o.oneventMgrCreated = function(e) {
+ o.onEventMgrCreated = function(e) {
   r = e;
  };
  var s = void 0, a = '<a class="btn" title="Remove this location"><i class="icon-trash"></i></a>', l = function(n) {
@@ -5017,7 +5016,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  var o = new n("dialogManageSynchronization", 'Dialog "Manage synchronization"');
  o.settingsBlock = '<p>Populates the "Manage synchronization" dialog box.</p>';
  var r = void 0;
- o.oneventMgrCreated = function(e) {
+ o.onEventMgrCreated = function(e) {
   r = e;
  };
  var s = void 0;
@@ -5218,7 +5217,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   u = e;
  };
  var d = void 0;
- c.oneventMgrCreated = function(e) {
+ c.onEventMgrCreated = function(e) {
   d = e;
  };
  var p = void 0, f = void 0, h = function(e) {
@@ -7996,7 +7995,7 @@ hljs.LANGUAGES.bash = function(e) {
  }, c.onSaveSettings = function(e, t) {
   e.marker = n.getInputRegExpValue("#input-toc-marker", t), e.button = n.getInputChecked("#input-toc-button");
  }, c.onCreatePreviewButton = function() {
-  return c.config.button ? e(o) : void 0;
+  return c.config.button ? o : void 0;
  }, s.prototype.childrenToString = function() {
   if (0 === this.children.length) return "";
   var e = "<ul>\n";
@@ -8302,7 +8301,7 @@ function(e) {
  }, s.onCreateButton = function() {
   return l = e(o).click(function() {
    e(this).hasClass("disabled") || a.sync();
-  });
+  }), l[0];
  }, s.onReady = d, s.onFileCreated = d, s.onFileDeleted = d, s.onSyncImportSuccess = d, 
  s.onSyncExportSuccess = d, s.onSyncRemoved = d, s.onSyncRunning = function(e) {
   c = e, d();
@@ -8323,7 +8322,7 @@ function(e) {
  }, r.onCreateButton = function() {
   return s = e(i).click(function() {
    e(this).hasClass("disabled") || d.publish();
-  });
+  }), s[0];
  }, r.onPublishRunning = function(e) {
   l = e, o();
  }, r.onOfflineChanged = function(e) {
@@ -8343,7 +8342,7 @@ function(e) {
  var r = new n("buttonShare", 'Button "Share"', !0);
  r.settingsBlock = '<p>Adds a "Share document" button in the navigation bar.</p>', 
  r.onCreateButton = function() {
-  return e(i);
+  return i;
  };
  var s = void 0, a = function(n) {
   if (void 0 === n || n === s) {
@@ -8385,7 +8384,7 @@ function(e) {
    e["name" + t] = n.getInputTextValue("#input-stat-name" + t, i), e["value" + t] = n.getInputRegExpValue("#input-stat-value" + t, i);
   });
  }, s.onCreatePreviewButton = function() {
-  return e(t.template(o, s.config));
+  return t.template(o, s.config);
  };
  var a = void 0, l = void 0, c = void 0, u = void 0;
  return s.onReady = function() {
@@ -8414,10 +8413,10 @@ function(e) {
   e.template = n.getInputValue("#textarea-html-code-template");
  };
  var a = void 0;
- s.oneventMgrCreated = function(e) {
+ s.onEventMgrCreated = function(e) {
   a = e;
  }, s.onCreatePreviewButton = function() {
-  return e(o);
+  return o;
  };
  var l = void 0;
  s.onFileSelected = function(e) {
@@ -8450,14 +8449,14 @@ function(e) {
  var i = new t("buttonMarkdownSyntax", 'Button "Markdown syntax', !0);
  return i.settingsBlock = '<p>Adds a "Markdown syntax" button over the preview.</p>', 
  i.onCreatePreviewButton = function() {
-  return e(n);
+  return n;
  }, i;
 }), define("text!html/buttonViewer.html", [], function() {
  return '<a href="viewer.html" class="btn dropdown-toggle"\n	title="Open in viewer">\n	<i class="icon-fullscreen"></i>\n</a>\n';
 }), define("extensions/buttonViewer", [ "jquery", "classes/Extension", "text!html/buttonViewer.html" ], function(e, t, n) {
  var i = new t("buttonViewer", 'Button "Viewer"', !0);
  return i.settingsBlock = '<p>Adds a "Viewer" button over the preview.</p>', i.onCreatePreviewButton = function() {
-  return e(n);
+  return n;
  }, i;
 }), !function(e) {
  e(function() {
@@ -9324,96 +9323,110 @@ function(e) {
    });
   });
  };
-}(jQuery), define("libs/jquery.waitforimages", function() {}), define("eventMgr", [ "jquery", "underscore", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/partialRendering", "extensions/userCustom", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonMarkdownSyntax", "extensions/buttonViewer", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o, r) {
- function s(e) {
+}(jQuery), define("libs/jquery.waitforimages", function() {}), define("eventMgr", [ "jquery", "underscore", "crel", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/partialRendering", "extensions/userCustom", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentSelector", "extensions/documentTitle", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonMarkdownSyntax", "extensions/buttonViewer", "libs/bootstrap", "libs/jquery.waitforimages" ], function(e, t, n, i, o, r, s) {
+ function a(e) {
   return t.chain(d).map(function(t) {
-   return t.config.enabled && t[e];
+   return t.enabled && t[e];
   }).compact().value();
  }
- function a(e, n) {
-  return p[e] = s(e), function() {
-   n || logger.log(e, arguments);
-   var i = arguments;
+ function l(e) {
+  return p[e] = a(e), function() {
+   logger.log(e, arguments);
+   var n = arguments;
    t.each(p[e], function(e) {
     try {
-     e.apply(null, i);
+     e.apply(null, n);
     } catch (t) {
      console.error(t);
     }
    });
   };
  }
- function l(e, t) {
-  u[e] = a(e, t);
- }
- function c(n) {
-  e("#accordion-extensions").append(e(t.template(r, {
-   extensionId: n.extensionId,
-   extensionName: n.extensionName,
-   isOptional: n.isOptional,
-   settingsBlock: n.settingsBlock
-  })));
+ function c(e) {
+  u[e] = l(e);
  }
  var u = {}, d = t.chain(arguments).map(function(e) {
-  return e instanceof i && e;
- }).compact().value(), p = {};
- u.addHookCallback = function(e, t) {
-  p[e].push(t);
- }, extensionSettings = o.extensionSettings || {}, t.each(d, function(e) {
-  e.config = t.extend({}, e.defaultConfig, extensionSettings[e.extensionId]), e.config.enabled = !e.isOptional || void 0 === e.config.enabled || e.config.enabled === !0, 
-  viewerMode === !0 && e.disableInViewer && (e.config.enabled = !1);
- }), a("onInit")(), u.onLoadSettings = function() {
+  return e instanceof o && e;
+ }).compact().value();
+ extensionSettings = r.extensionSettings || {}, t.each(d, function(e) {
+  e.config = t.extend({}, e.defaultConfig, extensionSettings[e.extensionId]), e.enabled = viewerMode === !0 && e.disableInViewer === !0 ? !1 : !e.isOptional || void 0 === e.config.enabled || e.config.enabled === !0;
+ });
+ var p = {};
+ u.addListener = function(e, t) {
+  try {
+   p[e].push(t);
+  } catch (n) {
+   console.error("No event listener called " + e);
+  }
+ }, l("onInit")(), u.onLoadSettings = function() {
   logger.log("onLoadSettings"), t.each(d, function(e) {
-   n.setInputChecked("#input-enable-extension-" + e.extensionId, e.config.enabled);
+   i.setInputChecked("#input-enable-extension-" + e.extensionId, e.config.enabled === !0);
    var t = e.onLoadSettings;
    t && t();
   });
- }, u.onSaveSettings = function(e, i) {
+ }, u.onSaveSettings = function(e, n) {
   logger.log("onSaveSettings"), t.each(d, function(o) {
    var r = t.extend({}, o.defaultConfig);
-   r.enabled = n.getInputChecked("#input-enable-extension-" + o.extensionId);
+   r.enabled = i.getInputChecked("#input-enable-extension-" + o.extensionId);
    var s = o.onSaveSettings;
-   s && s(r, i), e[o.extensionId] = r;
+   s && s(r, n), e[o.extensionId] = r;
   });
- }, l("onMessage"), l("onError"), l("onOfflineChanged"), l("onAsyncRunning", !0), 
- l("onPeriodicRun", !0), l("onFileMgrCreated"), l("onSynchronizerCreated"), l("onPublisherCreated"), 
- l("oneventMgrCreated"), l("onFileCreated"), l("onFileDeleted"), l("onFileSelected"), 
- l("onFileOpen"), l("onFileClosed"), l("onContentChanged"), l("onTitleChanged"), 
- l("onSyncRunning"), l("onSyncSuccess"), l("onSyncImportSuccess"), l("onSyncExportSuccess"), 
- l("onSyncRemoved"), l("onPublishRunning"), l("onPublishSuccess"), l("onNewPublishSuccess"), 
- l("onPublishRemoved"), l("onLayoutConfigure"), l("onLayoutCreated"), l("onEditorConfigure"), 
- l("onSectionsCreated");
- var f = a("onPreviewFinished"), h = s("onAsyncPreview"), g = h.length + 1, m = void 0, v = void 0;
- return u.onAsyncPreview = function() {
+ }, c("onMessage"), c("onError"), c("onOfflineChanged"), c("onAsyncRunning", !0), 
+ c("onPeriodicRun", !0), c("onFileMgrCreated"), c("onSynchronizerCreated"), c("onPublisherCreated"), 
+ c("onEventMgrCreated"), c("onFileCreated"), c("onFileDeleted"), c("onFileSelected"), 
+ c("onFileOpen"), c("onFileClosed"), c("onContentChanged"), c("onTitleChanged"), 
+ c("onSyncRunning"), c("onSyncSuccess"), c("onSyncImportSuccess"), c("onSyncExportSuccess"), 
+ c("onSyncRemoved"), c("onPublishRunning"), c("onPublishSuccess"), c("onNewPublishSuccess"), 
+ c("onPublishRemoved"), c("onLayoutConfigure"), c("onLayoutCreated"), c("onEditorConfigure"), 
+ c("onSectionsCreated");
+ var f = l("onPreviewFinished"), h = a("onAsyncPreview"), g = h.length + 1, m = void 0, v = void 0;
+ u.onAsyncPreview = function() {
   function e() {
-   ++i === g && (logger.log("Preview time: " + (new Date() - u.previewStartTime)), 
+   ++n === g && (logger.log("Preview time: " + (new Date() - u.previewStartTime)), 
    t.defer(function() {
     var e = "";
     t.each(m.children, function(t) {
      e += t.innerHTML;
-    }), f(n.trim(e));
+    }), f(i.trim(e));
    }));
   }
   logger.log("onAsyncPreview"), logger.log("Conversion time: " + (new Date() - u.previewStartTime));
-  var i = 0;
+  var n = 0;
   v.waitForImages(e), t.each(h, function(t) {
    t(e);
   });
- }, u.onReady = function() {
-  m = document.getElementById("preview-contents"), v = e(m), t.chain(d).sortBy(function(e) {
-   return e.extensionName.toLowerCase();
-  }).each(c), logger.log("onCreateButton");
-  var n = s("onCreateButton");
-  t.each(n, function(t) {
-   e("#extension-buttons").append(e('<div class="btn-group">').append(t()));
-  }), logger.log("onCreatePreviewButton");
-  var i = s("onCreatePreviewButton");
-  t.each(i, function(t) {
-   e("#extension-preview-buttons").append(e('<div class="btn-group">').append(t()));
-  });
-  var o = a("onReady");
-  o();
- }, u.oneventMgrCreated(u), u;
+ };
+ var b = l("onReady");
+ return u.onReady = function() {
+  function i(e) {
+   var i = n("div", {
+    "class": "btn-group"
+   }), o = e();
+   return t.isString(o) ? i.innerHTML = o : t.isElement(o) && i.appendChild(o), i;
+  }
+  if (m = document.getElementById("preview-contents"), v = e(m), viewerMode === !1) {
+   var o = t.chain(d).sortBy(function(e) {
+    return e.extensionName.toLowerCase();
+   }).reduce(function(e, n) {
+    return e + t.template(s, {
+     extensionId: n.extensionId,
+     extensionName: n.extensionName,
+     isOptional: n.isOptional,
+     settingsBlock: n.settingsBlock
+    });
+   }, "").value();
+   document.getElementById("accordion-extensions").innerHTML = o, logger.log("onCreateButton");
+   var r = a("onCreateButton"), l = document.createDocumentFragment();
+   t.each(r, function(e) {
+    l.appendChild(i(e));
+   }), document.getElementById("extension-buttons").appendChild(l), logger.log("onCreatePreviewButton");
+   var c = a("onCreatePreviewButton"), u = document.createDocumentFragment();
+   t.each(c, function(e) {
+    u.appendChild(i(e));
+   }), document.getElementById("extension-preview-buttons").appendChild(u);
+  }
+  b();
+ }, u.onEventMgrCreated(u), u;
 }), define("text!html/settingsTemplateTooltip.html", [], function() {
  return 'Available variables:\n<br>\n<ul>\n	<li><b>documentTitle</b>: document title</li>\n	<li><b>documentMarkdown</b>: document in Markdown format</li>\n	<li><b>documentHTML</b>: document in HTML format</li>\n	<li><b>publishAttributes</b>: attributes of the publish location\n		(undefined if not publishing)</li>\n</ul>\n<b>Examples:</b>\n<br />\n&lt;title&gt;&lt;%= documentTitle %&gt;&lt;&#x2F;title&gt;\n<br />\n&lt;div&gt;&lt;%- documentHTML %&gt;&lt;&#x2F;div&gt;\n<br />\n&lt;%<br />\nif(publishAttributes.provider.providerId == &quot;github&quot;)\nprint(documentMarkdown);<br />\n%&gt;\n<br />\n<br />\n<a target="_blank" href="http://underscorejs.org/#template">More\n	info</a>';
 }), define("text!html/settingsUserCustomExtensionTooltip.html", [], function() {
@@ -13967,12 +13980,6 @@ function(e) {
  }, c.getSyncAttributes = function(e) {
   var t = c.getFileFromSyncIndex(e);
   return t && t.syncLocations[e];
- }, c.hasSync = function(e) {
-  return t.some(s, function(n) {
-   return t.some(n.syncLocations, function(t) {
-    return t.provider === e;
-   });
-  });
  }, c.getFileFromPublishIndex = function(e) {
   return t.find(s, function(n) {
    return t.has(n.publishLocations, e);
@@ -14789,7 +14796,7 @@ function(e) {
   e.isPropagationStopped() ? void 0 : t;
  };
  var f = void 0;
- r.addHookCallback("onEditorConfigure", function(e) {
+ r.addListener("onEditorConfigure", function(e) {
   f = e;
  });
  var h = void 0, g = void 0, m = void 0, v = void 0;
@@ -14872,7 +14879,7 @@ function(e) {
  function d(e) {
   if (0 === E.length) return e(), void 0;
   var t = E.pop();
-  return s.hasSync(t) ? (t.syncDown(function(t) {
+  return v.hasSync(t) ? (t.syncDown(function(t) {
    return t ? (e(t), void 0) : (d(e), void 0);
   }), void 0) : (d(e), void 0);
  }
@@ -14912,9 +14919,11 @@ function(e) {
     o.onError(s), i.removeIndexFromArray(e.fileIndex + ".sync", t), localStorage.removeItem(t);
    }
   });
- }), v.hasSync = function() {
-  return t.some(b, function(e) {
-   return s.hasSync(e);
+ }), v.hasSync = function(e) {
+  return t.some(r, function(n) {
+   return t.some(n.syncLocations, function(t) {
+    return void 0 === e || t.provider === e;
+   });
   });
  };
  var y = [], w = void 0, x = void 0, k = void 0, C = void 0, S = [], _ = !1, E = [], T = !1;
@@ -14931,8 +14940,8 @@ function(e) {
  var I = void 0, P = void 0, N = !0;
  return v.tryStopRealtimeSync = function() {
   void 0 !== I && N === !0 && P.provider.stopRealtimeSync();
- }, viewerMode === !1 && (o.addHookCallback("onFileOpen", f), o.addHookCallback("onFileClosed", v.tryStopRealtimeSync), 
- o.addHookCallback("onOfflineChanged", h)), n.onReady(function() {
+ }, viewerMode === !1 && (o.addListener("onFileOpen", f), o.addListener("onFileClosed", v.tryStopRealtimeSync), 
+ o.addListener("onOfflineChanged", h)), n.onReady(function() {
   t.each(b, function(n) {
    e(".action-sync-import-" + n.providerId).click(function(e) {
     n.importFiles(e);
@@ -15528,7 +15537,7 @@ function(e) {
   }
  };
  var v = [], b = void 0, y = void 0, w = void 0;
- r.addHookCallback("onPreviewFinished", function(e) {
+ r.addListener("onPreviewFinished", function(e) {
   w = e;
  });
  var x = !1;

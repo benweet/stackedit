@@ -31,7 +31,7 @@ define([
             return;
         }
 
-        // Find modified sections starting from top
+        // Find modified section starting from top
         var leftIndex = sectionList.length;
         _.some(sectionList, function(section, index) {
             if(index >= newSectionList.length || section.text != newSectionList[index].text) {
@@ -40,7 +40,7 @@ define([
             }
         });
 
-        // Find modified sections starting from bottom
+        // Find modified section starting from bottom
         var rightIndex = -sectionList.length;
         _.some(sectionList.slice().reverse(), function(section, index) {
             if(index >= newSectionList.length || section.text != newSectionList[newSectionList.length - index - 1].text) {

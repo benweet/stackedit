@@ -9360,7 +9360,7 @@ function(e) {
   }
  }, l("onInit")(), u.onLoadSettings = function() {
   logger.log("onLoadSettings"), t.each(d, function(e) {
-   i.setInputChecked("#input-enable-extension-" + e.extensionId, e.config.enabled === !0);
+   i.setInputChecked("#input-enable-extension-" + e.extensionId, e.enabled === !0);
    var t = e.onLoadSettings;
    t && t();
   });

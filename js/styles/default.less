@@ -1,5 +1,3 @@
-@import "bootstrap/bootstrap.less";
-
 @body-background: #f5f5f5;
 @border: #ddd;
 
@@ -29,6 +27,7 @@ body {
 /*
 Override Bootstrap 
 */
+
 div,span,a,ul,li,textarea,input,button {
 	background-image: none !important;
 	filter: none !important;
@@ -38,8 +37,32 @@ div,span,a,ul,li,textarea,input,button {
 	text-shadow: none !important;
 }
 
+.form-inline {
+  .col-lg-1  { width: percentage((1 / @grid-columns)); }
+  .col-lg-2  { width: percentage((2 / @grid-columns)); }
+  .col-lg-3  { width: percentage((3 / @grid-columns)); }
+  .col-lg-4  { width: percentage((4 / @grid-columns)); }
+  .col-lg-5  { width: percentage((5 / @grid-columns)); }
+  .col-lg-6  { width: percentage((6 / @grid-columns)); }
+  .col-lg-7  { width: percentage((7 / @grid-columns)); }
+  .col-lg-8  { width: percentage((8 / @grid-columns)); }
+  .col-lg-9  { width: percentage((9 / @grid-columns)); }
+  .col-lg-10 { width: percentage((10/ @grid-columns)); }
+  .col-lg-11 { width: percentage((11/ @grid-columns)); }
+  .col-lg-12 { width: 100%; }
+  * {float:none;}
+}
+
 .btn,.navbar-inner,.add-on {
 	border: none !important;
+}
+
+.modal-backdrop {
+	background-color: fade(#999, 60%);
+}
+
+.modal-content {
+	border-width: 0;
 }
 
 .dropdown-menu {
@@ -80,7 +103,6 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
 .help-block {
 	color: #999999;
 	font-size: 12px;
-	line-height: 17px;
 }
 
 .modal textarea.error,.modal input.error {
@@ -516,6 +538,16 @@ div.dropdown-menu textarea {
 	background-repeat: no-repeat;
 }
 
+.icon-code {
+	font-size: 80%;
+	margin-left: -3px;
+	margin-right: 3px;
+}
+
+.icon-trash {
+	font-size: 90%;
+}
+
 .icon-stackedit {
 	background-image: url("../../img/icons.png") !important;
 	width: 16px;
@@ -589,11 +621,10 @@ div.dropdown-menu textarea {
 	width: 43px;
 	height: 11px;
 	background-position: 0 0;
-	margin: 0 20px 12px;
-}
-
-.working-indicator.show {
-	background-image: url("../../img/ajax-loader.gif") !important;
+	margin: 0 30px 12px;
+	&.show {
+		background-image: url("../../img/ajax-loader.gif") !important;
+	}
 }
 
 .ui-layout-toggler-north .caret,.ui-layout-toggler-south .caret {
@@ -645,64 +676,67 @@ div.dropdown-menu textarea {
 	float: left;
 }
 
-#modal-settings .modal-header {
-	padding-bottom: 0;
-}
-
-#modal-settings .form-horizontal {
-	margin-top: 10px;
-}
-
-#modal-settings textarea {
-	height: 80px;
-	max-width: 206px;
-}
-
-#modal-settings .accordion-group {
-	border: 0;
-	border-bottom: 1px solid #eee;
-	-webkit-border-radius: inherit;
-	-moz-border-radius: inherit;
-	border-radius: inherit;
-	margin-bottom: 10px;
-}
-
-#modal-settings .accordion-heading {
-	padding: 8px 15px;
-}
-
-#modal-settings .accordion-heading .accordion-toggle {
-	display: inline;
-	padding: 0;
-}
-
-#modal-settings .accordion-inner {
-	border: 0;
-	padding: 10px 40px;
-}
-
-#modal-settings .accordion-inner .form-horizontal .control-label {
-	text-align: left;
-}
-
-#modal-settings .accordion-inner .form-inline .label-text,#modal-settings .accordion-inner .control-label
-	{
-	margin: 0 10px;
-}
-
-#modal-settings .tab-pane-button-container {
-	width: 200px;
-	margin: 10px auto 20px;
-}
-
-#modal-settings .tab-pane-button-container .btn {
-	text-align: initial;
-	padding-left: 15px;
-}
-
-#modal-settings .nav-tabs {
-	border-bottom: 1px solid transparent;
-	margin: 20px 0 0;
+#modal-settings {
+	.modal-header {
+		padding-bottom: 0;
+	}
+	
+	.form-horizontal {
+		margin-top: 10px;
+	}
+	
+	textarea {
+		max-width: 100%;
+		min-height: 100px;
+	}
+	
+	.accordion-group {
+		border: 0;
+		border-bottom: 1px solid #eee;
+		-webkit-border-radius: inherit;
+		-moz-border-radius: inherit;
+		border-radius: inherit;
+		margin-bottom: 10px;
+		clear: both;
+	}
+	
+	.accordion-heading {
+		padding: 8px 15px;
+	}
+	
+	.accordion-heading .accordion-toggle {
+		display: inline;
+		padding: 0;
+	}
+	
+	.accordion-inner {
+		border: 0;
+		padding: 10px 40px;
+	}
+	
+	.accordion-inner .form-horizontal .control-label {
+		text-align: left;
+	}
+	
+	.accordion-inner .form-inline .label-text,.accordion-inner .control-label
+		{
+		margin: 0 10px;
+	}
+	
+	.tab-pane-button-container {
+		width: 200px;
+		margin: 10px auto 20px;
+	}
+	
+	.tab-pane-button-container .btn {
+		text-align: initial;
+		padding-left: 15px;
+	}
+	
+	.nav-tabs {
+		border-bottom: 1px solid transparent;
+		margin: 15px 0 0;
+	}
 }
 
 .nav-tabs>.active>a,.nav-tabs>.active>a:hover,.nav-tabs>.active>a:focus

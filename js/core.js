@@ -5,6 +5,8 @@ define([
     "settings",
     "eventMgr",
     "mousetrap",
+    "text!html/bodyIndex.html",
+    "text!html/bodyViewer.html",
     "text!html/settingsTemplateTooltip.html",
     "text!html/settingsUserCustomExtensionTooltip.html",
     "storage",
@@ -12,7 +14,7 @@ define([
     "libs/bootstrap",
     "libs/layout",
     "libs/Markdown.Editor"
-], function($, _, utils, settings, eventMgr, mousetrap, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
+], function($, _, utils, settings, eventMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
 
@@ -366,7 +368,15 @@ define([
         }
     };
 
-    function init() {
+    // Initialize multiple things and then fire eventMgr.onReady
+    core.onReady = function() {
+
+        if(viewerMode === true) {
+            $('body').html(bodyViewerHTML);
+        }
+        else {
+            $('body').html(bodyIndexHTML);
+        }
 
         // listen to online/offline events
         $(window).on('offline', core.setOffline);
@@ -451,35 +461,6 @@ define([
         }, 1000);
 
         eventMgr.onReady();
-    }
-
-    // Initialize multiple things and then fire eventMgr.onReady
-    core.onReady = function() {
-
-        if(viewerMode === true) {
-            require([
-                "text!html/bodyViewer.html",
-            ], function(bodyViewerHTML) {
-                $('body').html(bodyViewerHTML);
-                init();
-            });
-        }
-        else {
-            require([
-                "text!html/bodyIndex.html",
-                "text!html/dialogInsertLink.html",
-                "text!html/dialogInsertImage.html",
-                "text!html/dialogImportImage.html",
-                "text!html/dialogRemoveFileConfirm.html",
-            ], function(bodyIndexHTML, dialogInsertLinkHTML, dialogInsertImageHTML, dialogImportImageHTML, dialogRemoveFileConfirmHTML) {
-                $('body').html(bodyIndexHTML);
-                utils.addModal('modal-insert-link', dialogInsertLinkHTML);
-                utils.addModal('modal-insert-image', dialogInsertImageHTML);
-                utils.addModal('modal-import-image', dialogImportImageHTML);
-                utils.addModal('modal-remove-file-confirm', dialogRemoveFileConfirmHTML);
-                init();
-            });
-        }
     };
 
     // Other initialization that are not prioritary

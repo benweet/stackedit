@@ -22,7 +22,7 @@
 					<li class="stick">
 						<div class="input-prepend">
 							<span class="add-on"><i class="icon-search"></i></span><input
-								type="text" id="file-search" class="span3">
+								type="text" id="file-search" class="col-lg-3 form-control">
 						</div>
 					</li>
 				</ul></li>
@@ -94,586 +94,816 @@
 			<li><a class="brand" id="file-title" href="#"
 				title="Rename current document"> </a></li>
 			<li class="navbar-form"><input id="file-title-input" type="text"
-				class="span3 hide" placeholder="Document title" /></li>
+				class="col-lg-3 form-control hide" placeholder="Document title" /></li>
 		</ul>
 	</div>
 </div>
-<textarea id="wmd-input" class="ui-layout-center"></textarea>
+<textarea id="wmd-input" class="ui-layout-center form-control"></textarea>
 <div class="ui-layout-east preview-container"></div>
 <div class="ui-layout-south preview-container"></div>
 
-<div id="modal-import-harddrive-markdown" class="modal hide">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"
-			aria-hidden="true">&times;</button>
-		<h3>Import from hard drive</h3>
-	</div>
-	<div class="modal-body">
-		<p>Please select your Markdown files here:</p>
-		<p>
-			<input type="file" id="input-file-import-harddrive-markdown" multiple />
-		</p>
-		<p>Or drag and drop your Markdown files here:</p>
-		<p id="dropzone-import-harddrive-markdown" class="drop-zone">Drop
-			files here</p>
-	</div>
-	<div class="modal-footer">
-		<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
-	</div>
-</div>
 
-<div id="modal-import-harddrive-html" class="modal hide">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"
-			aria-hidden="true">&times;</button>
-		<h3>Convert HTML to Markdown</h3>
-	</div>
-	<div class="modal-body">
-		<p>Please select your HTML files here:</p>
-		<p>
-			<input type="file" id="input-file-import-harddrive-html" multiple />
-		</p>
-		<p>Or drag and drop your HTML files here:</p>
-		<p id="dropzone-import-harddrive-html" class="drop-zone">Drop
-			files here</p>
-		<p>Or insert your HTML code here:</p>
-		<textarea id="input-convert-html"></textarea>
-	</div>
-	<div class="modal-footer">
-		<a href="#" class="btn" data-dismiss="modal">Close</a> <a href="#"
-			class="btn btn-primary action-convert-html" data-dismiss="modal">OK</a>
-	</div>
-</div>
+<div id="modal-insert-link" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
 
-<div id="modal-upload-gdrive" class="modal hide">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"
-			aria-hidden="true">&times;</button>
-		<h3>Export to Google Drive</h3>
-	</div>
-	<div class="modal-body">
-		<blockquote class="muted">This will save the current
-			document to your Google Drive account and keep it synchronized.</blockquote>
-		<p>
-			Please specify a <b>folder ID</b> (optional):
-		</p>
-		<div class="input-prepend">
-			<span class="add-on"><i class="icon-gdrive"></i></span><input
-				id="input-sync-export-gdrive-parentid" type="text" class="span5"
-				placeholder="FolderID"></input>
+			<div class="modal-header">
+				<button type="button" class="close action-close-insert-link"
+					data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 class="modal-title">Hyperlink</h3>
+			</div>
+			<div class="modal-body">
+				<p>Please provide the link URL and an optional title:</p>
+				<div class="input-prepend">
+					<span class="add-on"><i class="icon-globe"></i></span><input
+						id="input-insert-link" type="text" class="col-lg-5 form-control"
+						placeholder='http://example.com/ "optional title"'></input>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+					class="btn btn-primary action-insert-link" data-dismiss="modal">OK</a>
+			</div>
 		</div>
-		<br /> <br />
-		<blockquote class="muted">
-			<b>NOTE:</b>
-			<ul>
-				<li>If no folder ID is supplied, the file will be created in
-					your root folder.</li>
-				<li>You can move or rename the file afterwards within Google
-					Drive.</li>
-			</ul>
-		</blockquote>
-		<p>
-			<label class="checkbox"> <input
-				id="input-sync-export-gdrive-realtime" type="checkbox">
-				Create a real time collaborative document
-			</label>
-		</p>
-		<blockquote class="muted">
-			<b>NOTE:</b>
-			<ul>
-				<li>Real time collaborative documents can't be open outside
-					StackEdit.</li>
-				<li>Real time collaborative documents can't have multiple
-					synchronized locations.</li>
-			</ul>
-		</blockquote>
-	</div>
-	<div class="modal-footer">
-		<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
-			data-dismiss="modal"
-			class="btn btn-primary action-sync-export-gdrive">OK</a>
 	</div>
 </div>
 
-<div id="modal-upload-dropbox" class="modal hide">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"
-			aria-hidden="true">&times;</button>
-		<h3>Export to Dropbox</h3>
-	</div>
-	<div class="modal-body">
-		<blockquote class="muted">This will save the current
-			document to your Dropbox account and keep it synchronized.</blockquote>
-		<p>
-			Please specify a <b>file path</b> for "<span class="file-title"></span>":
-		</p>
-		<div class="input-prepend">
-			<span class="add-on"><i class="icon-dropbox"></i></span><input
-				id="input-sync-export-dropbox-path" type="text" class="span5"
-				placeholder="/path/to/My Document.md"></input>
+
+<div id="modal-insert-image" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close action-close-insert-link"
+					data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 class="modal-title">Image</h3>
+			</div>
+			<div class="modal-body">
+				<p>Please provide the image URL and an optional title:</p>
+				<div class="input-prepend">
+					<span class="add-on"><i class="icon-picture"></i></span><input
+						id="input-insert-image" type="text" class="col-lg-5 form-control"
+						placeholder='http://example.com/image.jpg "optional title"'></input>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn action-import-image-gplus"
+					data-dismiss="modal"><i class="icon-gplus"></i> Import from
+					Google+</a> <a href="#" class="btn" data-dismiss="modal">Cancel</a> <a
+					href="#" class="btn btn-primary action-insert-image"
+					data-dismiss="modal">OK</a>
+			</div>
 		</div>
-		<br /> <br />
-		<blockquote class="muted">
-			<b>NOTE:</b>
-			<ul>
-				<li>Dropbox file path does not depend on document title.</li>
-				<li>The title of your document will not be synchronized.</li>
-				<li>Destination folder must exist.</li>
-				<li>Any existing file at this location will be overwritten.</li>
-			</ul>
-		</blockquote>
-	</div>
-	<div class="modal-footer">
-		<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
-			data-dismiss="modal"
-			class="btn btn-primary action-sync-export-dropbox">OK</a>
 	</div>
 </div>
 
-<div id="modal-manage-sync" class="modal hide">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"
-			aria-hidden="true">&times;</button>
-		<h3>Synchronization</h3>
-	</div>
-	<div class="modal-body">
-		<p class="msg-sync-list hide">
-			"<span class="file-title"></span>" is synchronized with the following
-			location(s):
-		</p>
-		<div id="manage-sync-list"></div>
-		<blockquote class="msg-sync-list hide muted">
-			<b>NOTE:</b> Removing a synchronized location will not delete any
-			file.
-		</blockquote>
-		<blockquote class="msg-no-sync hide muted">
-			"<span class="file-title"></span>" is not synchronized yet.
-		</blockquote>
-		<p>Add a synchronized location manually:</p>
-		<div class="input-prepend input-append sync-manual">
-			<span class="add-on" title="Google Drive"><i
-				class="icon-gdrive"></i></span><input id="input-sync-manual-gdrive-id"
-				type="text" class="span5" placeholder="GoogleDriveFileID"></input> <a
-				class="btn action-sync-manual-gdrive" title="Add location"
-				data-dismiss="modal"><i class="icon-ok"></i></a>
+
+<div id="modal-import-image" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close action-close-insert-link"
+					data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 class="modal-title">Google+ image import</h3>
+			</div>
+			<div class="modal-body">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<div class="col-lg-7">
+							<img>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-4 control-label"
+							for="input-import-image-title">Title (optional)</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-import-image-title"
+								placeholder="Image title" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-4 control-label"
+							for="input-import-image-size">Size limit (optional)</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-import-image-size" placeholder="123"
+								class="col-lg-2 form-control"><span class="help-inline">px</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+					class="btn btn-primary action-import-image" data-dismiss="modal">OK</a>
+			</div>
 		</div>
-		<div class="input-prepend input-append sync-manual">
-			<span class="add-on" title="Dropbox"><i class="icon-dropbox"></i></span><input
-				id="input-sync-manual-dropbox-path" type="text" class="span5"
-				placeholder="/dropbox/file/path"></input> <a
-				class="btn action-sync-manual-dropbox" title="Add location"
-				data-dismiss="modal"><i class="icon-ok"></i></a>
-		</div>
-		<blockquote class="muted">
-			<b>NOTE:</b> This will first upload the document and overwrite the
-			existing file on the server.
-		</blockquote>
-	</div>
-	<div class="modal-footer">
-		<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 	</div>
 </div>
 
-<div id="modal-publish" class="modal hide">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"
-			aria-hidden="true">&times;</button>
-		<h3>
-			Publish on <span class="publish-provider-name"></span>
-		</h3>
-	</div>
-	<div class="modal-body">
-		<div class="form-horizontal">
-			<div class="control-group modal-publish-ssh">
-				<label class="control-label" for="input-publish-ssh-host">Host</label>
-				<div class="controls">
-					<input type="text" id="input-publish-ssh-host"
-						placeholder="host.name.or.ip"> <span class="help-block">
-						Host must be accessible publicly, unless you are hosting your own
-						<a target="_blank"
-						href="https://github.com/benweet/stackedit-ssh-proxy">SSH
-							proxy</a>.
-					</span>
-				</div>
-			</div>
-			<div class="control-group modal-publish-ssh">
-				<label class="control-label" for="input-publish-ssh-port">Port
-					(optional)</label>
-				<div class="controls">
-					<input type="text" id="input-publish-ssh-port" placeholder="22">
-				</div>
-			</div>
-			<div class="control-group modal-publish-ssh">
-				<label class="control-label" for="input-publish-ssh-username">Username</label>
-				<div class="controls">
-					<input type="text" id="input-publish-ssh-username"
-						placeholder="username">
-				</div>
-			</div>
-			<div class="control-group modal-publish-ssh">
-				<label class="control-label" for="input-publish-ssh-password">Password</label>
-				<div class="controls">
-					<input type="password" id="input-publish-ssh-password"
-						placeholder="password"> <span class="help-block">
-						Passwords are transmitted in clear, unless you are hosting your
-						own <a target="_blank"
-						href="https://github.com/benweet/stackedit-ssh-proxy">SSH
-							proxy</a>.
-					</span>
-				</div>
-			</div>
-			<div class="control-group modal-publish-github">
-				<label class="control-label" for="input-publish-github-reponame">Repository</label>
-				<div class="controls">
-					<input type="text" id="input-publish-github-reponame"
-						placeholder="repository-name">
-				</div>
-			</div>
-			<div class="control-group modal-publish-github">
-				<label class="control-label" for="input-publish-github-username">Username
-					(optional)</label>
-				<div class="controls">
-					<input type="text" id="input-publish-github-username"
-						placeholder="username">
-				</div>
-			</div>
-			<div class="control-group modal-publish-github">
-				<label class="control-label" for="input-publish-github-branch">Branch</label>
-				<div class="controls">
-					<input type="text" id="input-publish-github-branch"
-						placeholder="branch-name">
-				</div>
-			</div>
-			<div class="control-group modal-publish-ssh modal-publish-github">
-				<label class="control-label" for="input-publish-file-path">File
-					path</label>
-				<div class="controls">
-					<input type="text" id="input-publish-file-path"
-						placeholder="path/to/file.md">
-				</div>
-			</div>
-			<div class="control-group modal-publish-gist">
-				<label class="control-label" for="input-publish-filename">Filename</label>
-				<div class="controls">
-					<input type="text" id="input-publish-filename"
-						placeholder="filename">
-				</div>
-			</div>
-			<div class="control-group modal-publish-gist">
-				<label class="control-label" for="input-publish-gist-id">Existing
-					ID (optional)</label>
-				<div class="controls">
-					<input type="text" id="input-publish-gist-id" placeholder="GistID">
-				</div>
-			</div>
-			<div class="control-group modal-publish-gist">
-				<label class="control-label" for="input-publish-gist-public">Public</label>
-				<div class="controls">
-					<input type="checkbox" id="input-publish-gist-public"
-						checked="checked" />
-				</div>
-			</div>
-			<div class="control-group modal-publish-blogger">
-				<label class="control-label" for="input-publish-blogger-url">Blog
-					URL</label>
-				<div class="controls">
-					<input type="text" id="input-publish-blogger-url"
-						placeholder="http://exemple.blogger.com/">
-				</div>
-			</div>
-			<div class="control-group modal-publish-tumblr">
-				<label class="control-label" for="input-publish-tumblr-hostname">Blog
-					hostname</label>
-				<div class="controls">
-					<input type="text" id="input-publish-tumblr-hostname"
-						placeholder="exemple.tumblr.com">
-				</div>
-			</div>
-			<div class="control-group modal-publish-wordpress">
-				<label class="control-label" for="input-publish-tumblr-hostname">WordPress
-					site</label>
-				<div class="controls">
-					<input type="text" id="input-publish-wordpress-site"
-						placeholder="exemple.wordpress.com"> <span
-						class="help-block"> <a target="_blank"
-						href="http://jetpack.me/">Jetpack plugin</a> is required for
-						self-hosted sites.
-					</span>
-				</div>
-			</div>
-			<div
-				class="control-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">
-				<label class="control-label" for="input-publish-postid">Update
-					existing post ID (optional)</label>
-				<div class="controls">
-					<input type="text" id="input-publish-postid" placeholder="PostID">
-				</div>
-			</div>
-			<div class="control-group modal-publish-blogger">
-				<label class="control-label" for="input-publish-labels">Labels
-					(comma separated)</label>
-				<div class="controls">
-					<input type="text" id="input-publish-labels"
-						placeholder="Label1, Label2">
-				</div>
-			</div>
-			<div
-				class="control-group modal-publish-tumblr modal-publish-wordpress">
-				<label class="control-label" for="input-publish-tags">Tags
-					(comma separated)</label>
-				<div class="controls">
-					<input type="text" id="input-publish-tags" placeholder="Tag1, Tag2">
-				</div>
-			</div>
-			<div class="control-group modal-publish-dropbox">
-				<label class="control-label" for="input-publish-dropbox-path">File
-					path</label>
-				<div class="controls">
-					<input type="text" id="input-publish-dropbox-path"
-						placeholder="/path/to/My Document.html">
-				</div>
-			</div>
-			<div class="control-group modal-publish-gdrive">
-				<label class="control-label" for="input-publish-gdrive-fileid">File
-					ID (optional)</label>
-				<div class="controls">
-					<input type="text" id="input-publish-gdrive-fileid"
-						placeholder="FileID"> <span class="help-block">If
-						no file ID is supplied, a new file will be created in your Google
-						Drive root folder. You can move the file afterwards within Google
-						Drive.</span>
-				</div>
-			</div>
-			<div class="control-group modal-publish-gdrive">
-				<label class="control-label" for="input-publish-gdrive-filename">Force
-					filename (optional)</label>
-				<div class="controls">
-					<input type="text" id="input-publish-gdrive-filename"
-						placeholder="Filename"> <span class="help-block">If
-						no file name is supplied, the document title will be used.</span>
-				</div>
-			</div>
 
-			<div class="control-group">
-				<div class="control-label">Format</div>
-				<div class="controls">
-					<label class="radio"> <input type="radio"
-						name="radio-publish-format" value="markdown"> Markdown
-					</label> <label class="radio"> <input type="radio"
-						name="radio-publish-format" value="html"> HTML
-					</label> <label class="radio"> <input type="radio"
-						name="radio-publish-format" value="template"> Template
+<div id="modal-remove-file-confirm" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title">Delete</h3>
+			</div>
+			<div class="modal-body">
+				<p>
+					Are you sure you want to delete "<span class="file-title"></span>"?
+				</p>
+				<blockquote class="muted">
+					<b>NOTE:</b> This will not delete the file on synchronized
+					locations.
+				</blockquote>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+					class="btn btn-primary action-remove-file" data-dismiss="modal">Delete</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="modal-import-harddrive-markdown" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title">Import from hard drive</h3>
+			</div>
+			<div class="modal-body">
+				<p>Please select your Markdown files here:</p>
+				<p>
+					<input type="file" id="input-file-import-harddrive-markdown"
+						multiple class="form-control" />
+				</p>
+				<p>Or drag and drop your Markdown files here:</p>
+				<p id="dropzone-import-harddrive-markdown" class="drop-zone">Drop
+					files here</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="modal-import-harddrive-html" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title">Convert HTML to Markdown</h3>
+			</div>
+			<div class="modal-body">
+				<p>Please select your HTML files here:</p>
+				<p>
+					<input type="file" id="input-file-import-harddrive-html" multiple
+						class="form-control" />
+				</p>
+				<p>Or drag and drop your HTML files here:</p>
+				<p id="dropzone-import-harddrive-html" class="drop-zone">Drop
+					files here</p>
+				<p>Or insert your HTML code here:</p>
+				<textarea id="input-convert-html"></textarea>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Close</a> <a href="#"
+					class="btn btn-primary action-convert-html" data-dismiss="modal">OK</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="modal-upload-gdrive" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title">Export to Google Drive</h3>
+			</div>
+			<div class="modal-body">
+				<blockquote class="muted">This will save the current
+					document to your Google Drive account and keep it synchronized.</blockquote>
+				<p>
+					Please specify a <b>folder ID</b> (optional):
+				</p>
+				<div class="input-prepend">
+					<span class="add-on"><i class="icon-gdrive"></i></span><input
+						id="input-sync-export-gdrive-parentid" type="text"
+						class="col-lg-5 form-control" placeholder="FolderID"></input>
+				</div>
+				<br /> <br />
+				<blockquote class="muted">
+					<b>NOTE:</b>
+					<ul>
+						<li>If no folder ID is supplied, the file will be created in
+							your root folder.</li>
+						<li>You can move or rename the file afterwards within Google
+							Drive.</li>
+					</ul>
+				</blockquote>
+				<div class="checkbox">
+					<label> <input id="input-sync-export-gdrive-realtime"
+						type="checkbox"> Create a real time collaborative document
 					</label>
 				</div>
+				<br /> <br />
+				<blockquote class="muted">
+					<b>NOTE:</b>
+					<ul>
+						<li>Real time collaborative documents can't be open outside
+							StackEdit.</li>
+						<li>Real time collaborative documents can't have multiple
+							synchronized locations.</li>
+					</ul>
+				</blockquote>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+					data-dismiss="modal"
+					class="btn btn-primary action-sync-export-gdrive">OK</a>
 			</div>
 		</div>
 	</div>
-	<div class="modal-footer">
-		<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
-			data-dismiss="modal" class="btn btn-primary action-process-publish">OK</a>
-	</div>
 </div>
 
-<div id="modal-manage-publish" class="modal hide">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"
-			aria-hidden="true">&times;</button>
-		<h3>Publication</h3>
-	</div>
-	<div class="modal-body">
-		<p class="msg-publish-list hide">
-			"<span class="file-title"></span>" is published on the following
-			location(s):
-		</p>
-		<div id="manage-publish-list"></div>
-		<blockquote class="muted">
-			<div class="msg-no-publish hide">
-				"<span class="file-title"></span>" is not published yet. <br /> <br />
-			</div>
-			<b>NOTE:</b> You can add publications using "Publish on" sub-menu.
-		</blockquote>
-	</div>
-	<div class="modal-footer">
-		<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
-	</div>
-</div>
 
-<div id="modal-settings" class="modal hide">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"
-			aria-hidden="true">&times;</button>
-		<h3>Settings</h3>
-		<ul class="nav nav-tabs">
-			<li class="active"><a class="action-load-settings"
-				href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>
-			<li><a class="action-load-settings"
-				href="#tabpane-settings-publish" data-toggle="tab">Publish</a></li>
-			<li><a class="action-load-settings"
-				href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>
-			<li><a class="action-load-settings"
-				href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>
-		</ul>
-	</div>
-	<div class="modal-body">
+<div id="modal-upload-dropbox" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
 
-		<div class="tab-content">
-			<div class="tab-pane active" id="tabpane-settings-editor">
-				<div class="form-horizontal">
-					<div class="control-group">
-						<div class="control-label">Layout orientation</div>
-						<div class="controls">
-							<label class="radio"> <input type="radio"
-								name="radio-layout-orientation" value="horizontal">
-								Horizontal
-							</label> <label class="radio"> <input type="radio"
-								name="radio-layout-orientation" value="vertical">
-								Vertical
-							</label>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="input-settings-theme">Theme</label>
-						<div class="controls">
-							<select id="input-settings-theme">
-							</select> <span class="help-block"><a target="_blank"
-								href="https://github.com/benweet/stackedit/blob/master/doc/theming.md#stackedit-theming-guide">Create
-									your own theme...</a></span>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="input-settings-lazy-rendering">Lazy
-							rendering <a href="#" class="tooltip-lazy-rendering">(?)</a>
-						</label>
-						<div class="controls">
-							<input type="checkbox" id="input-settings-lazy-rendering" />
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label"
-							for="input-settings-editor-font-family">Editor font</label>
-						<div class="controls form-inline">
-							<input type="text" id="input-settings-editor-font-family"
-								class="span2"> <input type="text"
-								id="input-settings-editor-font-size" class="input-mini"><span
-								class="help-inline">px</span>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label"
-							for="textarea-settings-default-content">Default content <a
-							href="#" class="tooltip-default-content">(?)</a>
-						</label>
-						<div class="controls">
-							<textarea id="textarea-settings-default-content"></textarea>
-						</div>
-					</div>
-				</div>
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title">Export to Dropbox</h3>
 			</div>
-			<div class="tab-pane" id="tabpane-settings-publish">
-				<div class="form-horizontal">
-					<div class="control-group">
-						<label class="control-label"
-							for="input-settings-publish-commit-msg">Commit message</label>
-						<div class="controls">
-							<input type="text" id="input-settings-publish-commit-msg">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label"
-							for="textarea-settings-publish-template">Template <a
-							href="#" class="tooltip-template">(?)</a>
-						</label>
-						<div class="controls">
-							<textarea id="textarea-settings-publish-template"></textarea>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="input-settings-ssh-proxy">SSH
-							proxy</label>
-						<div class="controls">
-							<input type="text" id="input-settings-ssh-proxy">
-						</div>
-					</div>
+			<div class="modal-body">
+				<blockquote class="muted">This will save the current
+					document to your Dropbox account and keep it synchronized.</blockquote>
+				<p>
+					Please specify a <b>file path</b> for "<span class="file-title"></span>":
+				</p>
+				<div class="input-prepend">
+					<span class="add-on"><i class="icon-dropbox"></i></span><input
+						id="input-sync-export-dropbox-path" type="text"
+						class="col-lg-5 form-control"
+						placeholder="/path/to/My Document.md"></input>
 				</div>
+				<br /> <br />
+				<blockquote class="muted">
+					<b>NOTE:</b>
+					<ul>
+						<li>Dropbox file path does not depend on document title.</li>
+						<li>The title of your document will not be synchronized.</li>
+						<li>Destination folder must exist.</li>
+						<li>Any existing file at this location will be overwritten.</li>
+					</ul>
+				</blockquote>
 			</div>
-			<div class="tab-pane" id="tabpane-settings-extensions">
-				<div class="accordion" id="accordion-extensions"></div>
-				<span class="help-block pull-right"><a target="_blank"
-					href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">Create
-						your own extension...</a></span>
-			</div>
-			<div class="tab-pane" id="tabpane-settings-utils">
-				<div class="tab-pane-button-container">
-					<a href="#"
-						class="btn btn-block btn-primary action-import-settings"><i
-						class="icon-wrench icon-white"></i> Import settings</a> <a href="#"
-						class="btn btn-block btn-primary action-export-settings"
-						data-dismiss="modal"><i class="icon-wrench icon-white"></i>
-						Export settings</a> <a href="#"
-						class="btn btn-block btn-primary action-default-settings"
-						data-dismiss="modal"><i class="icon-wrench icon-white"></i>
-						Load default settings</a> <input type="file"
-						id="input-file-import-settings" class="hide">
-				</div>
-				<div class="tab-pane-button-container">
-					<a href="#" class="btn btn-block btn-primary action-welcome-file"
-						data-dismiss="modal"><i class="icon-info-sign icon-white"></i>
-						Welcome document</a> <a href="#" class="btn btn-block btn-primary"
-						data-dismiss="modal" data-toggle="modal"
-						data-target="#modal-app-reset"><i class="icon-fire icon-white"></i>
-						Reset application</a>
-				</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+					data-dismiss="modal"
+					class="btn btn-primary action-sync-export-dropbox">OK</a>
 			</div>
 		</div>
-
-	</div>
-	<div class="modal-footer">
-		<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
-			class="btn btn-primary action-apply-settings" data-dismiss="modal">OK</a>
 	</div>
 </div>
 
-<div id="modal-about" class="modal hide">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"
-			aria-hidden="true">&times;</button>
-		<img src="img/stackedit-promo.png" />
-	</div>
-	<div class="modal-body"></div>
-	<div class="modal-footer">
-		<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+
+<div id="modal-manage-sync" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title">Synchronization</h3>
+			</div>
+			<div class="modal-body">
+				<p class="msg-sync-list hide">
+					"<span class="file-title"></span>" is synchronized with the
+					following location(s):
+				</p>
+				<div id="manage-sync-list"></div>
+				<blockquote class="msg-sync-list hide muted">
+					<b>NOTE:</b> Removing a synchronized location will not delete any
+					file.
+				</blockquote>
+				<blockquote class="msg-no-sync hide muted">
+					"<span class="file-title"></span>" is not synchronized yet.
+				</blockquote>
+				<p>Add a synchronized location manually:</p>
+				<div class="input-prepend input-append sync-manual">
+					<span class="add-on" title="Google Drive"><i
+						class="icon-gdrive"></i></span><input id="input-sync-manual-gdrive-id"
+						type="text" class="col-lg-5 form-control"
+						placeholder="GoogleDriveFileID"></input> <a
+						class="btn action-sync-manual-gdrive" title="Add location"
+						data-dismiss="modal"><i class="icon-ok"></i></a>
+				</div>
+				<div class="input-prepend input-append sync-manual">
+					<span class="add-on" title="Dropbox"><i class="icon-dropbox"></i></span><input
+						id="input-sync-manual-dropbox-path" type="text"
+						class="col-lg-5 form-control" placeholder="/dropbox/file/path"></input>
+					<a class="btn action-sync-manual-dropbox" title="Add location"
+						data-dismiss="modal"><i class="icon-ok"></i></a>
+				</div>
+				<blockquote class="muted">
+					<b>NOTE:</b> This will first upload the document and overwrite the
+					existing file on the server.
+				</blockquote>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+			</div>
+		</div>
 	</div>
 </div>
 
-<div id="modal-non-unique" class="modal hide">
-	<div class="modal-header">
-		<h3>Ooops...</h3>
-	</div>
-	<div class="modal-body">
-		<p>StackEdit has stopped because another instance was running in
-			the same browser.</p>
-		<blockquote class="muted">If you want to reopen
-			StackEdit, click on "Reload".</blockquote>
-	</div>
-	<div class="modal-footer">
-		<a href="javascript:window.location.reload();" class="btn btn-primary">Reload</a>
+
+<div id="modal-publish" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title">
+					Publish on <span class="publish-provider-name"></span>
+				</h3>
+			</div>
+			<div class="modal-body">
+				<div class="form-horizontal">
+					<div class="control-group modal-publish-ssh">
+						<label class="col-lg-4 control-label" for="input-publish-ssh-host">Host</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-ssh-host"
+								placeholder="host.name.or.ip" class="form-control"> <span
+								class="help-block"> Host must be accessible publicly,
+								unless you are hosting your own <a target="_blank"
+								href="https://github.com/benweet/stackedit-ssh-proxy">SSH
+									proxy</a>.
+							</span>
+						</div>
+					</div>
+					<div class="control-group modal-publish-ssh">
+						<label class="col-lg-4 control-label" for="input-publish-ssh-port">Port
+							(optional)</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-ssh-port" placeholder="22"
+								class="form-control">
+						</div>
+					</div>
+					<div class="control-group modal-publish-ssh">
+						<label class="col-lg-4 control-label"
+							for="input-publish-ssh-username">Username</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-ssh-username"
+								placeholder="username" class="form-control">
+						</div>
+					</div>
+					<div class="control-group modal-publish-ssh">
+						<label class="col-lg-4 control-label"
+							for="input-publish-ssh-password">Password</label>
+						<div class="col-lg-7">
+							<input type="password" id="input-publish-ssh-password"
+								placeholder="password" class="form-control"> <span
+								class="help-block"> Passwords are transmitted in clear,
+								unless you are hosting your own <a target="_blank"
+								href="https://github.com/benweet/stackedit-ssh-proxy">SSH
+									proxy</a>.
+							</span>
+						</div>
+					</div>
+					<div class="control-group modal-publish-github">
+						<label class="col-lg-4 control-label"
+							for="input-publish-github-reponame">Repository</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-github-reponame"
+								placeholder="repository-name" class="form-control">
+						</div>
+					</div>
+					<div class="control-group modal-publish-github">
+						<label class="col-lg-4 control-label"
+							for="input-publish-github-username">Username (optional)</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-github-username"
+								placeholder="username" class="form-control">
+						</div>
+					</div>
+					<div class="control-group modal-publish-github">
+						<label class="col-lg-4 control-label"
+							for="input-publish-github-branch">Branch</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-github-branch"
+								placeholder="branch-name" class="form-control">
+						</div>
+					</div>
+					<div class="control-group modal-publish-ssh modal-publish-github">
+						<label class="col-lg-4 control-label"
+							for="input-publish-file-path">File path</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-file-path"
+								placeholder="path/to/file.md" class="form-control">
+						</div>
+					</div>
+					<div class="control-group modal-publish-gist">
+						<label class="col-lg-4 control-label" for="input-publish-filename">Filename</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-filename"
+								placeholder="filename" class="form-control">
+						</div>
+					</div>
+					<div class="control-group modal-publish-gist">
+						<label class="col-lg-4 control-label" for="input-publish-gist-id">Existing
+							ID (optional)</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-gist-id"
+								placeholder="GistID" class="form-control">
+						</div>
+					</div>
+					<div class="control-group modal-publish-gist">
+						<label class="col-lg-4 control-label"
+							for="input-publish-gist-public">Public</label>
+						<div class="col-lg-7">
+							<div class="checkbox">
+								<input type="checkbox" id="input-publish-gist-public"
+									checked="checked" />
+							</div>
+						</div>
+					</div>
+					<div class="control-group modal-publish-blogger">
+						<label class="col-lg-4 control-label"
+							for="input-publish-blogger-url">Blog URL</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-blogger-url"
+								placeholder="http://exemple.blogger.com/" class="form-control">
+						</div>
+					</div>
+					<div class="control-group modal-publish-tumblr">
+						<label class="col-lg-4 control-label"
+							for="input-publish-tumblr-hostname">Blog hostname</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-tumblr-hostname"
+								placeholder="exemple.tumblr.com" class="form-control">
+						</div>
+					</div>
+					<div class="control-group modal-publish-wordpress">
+						<label class="col-lg-4 control-label"
+							for="input-publish-tumblr-hostname">WordPress site</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-wordpress-site"
+								placeholder="exemple.wordpress.com" class="form-control">
+							<span class="help-block"> <a target="_blank"
+								href="http://jetpack.me/">Jetpack plugin</a> is required for
+								self-hosted sites.
+							</span>
+						</div>
+					</div>
+					<div
+						class="control-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">
+						<label class="col-lg-4 control-label" for="input-publish-postid">Update
+							existing post ID (optional)</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-postid" placeholder="PostID"
+								class="form-control">
+						</div>
+					</div>
+					<div class="control-group modal-publish-blogger">
+						<label class="col-lg-4 control-label" for="input-publish-labels">Labels
+							(comma separated)</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-labels"
+								placeholder="Label1, Label2" class="form-control">
+						</div>
+					</div>
+					<div
+						class="control-group modal-publish-tumblr modal-publish-wordpress">
+						<label class="col-lg-4 control-label" for="input-publish-tags">Tags
+							(comma separated)</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-tags"
+								placeholder="Tag1, Tag2" class="form-control">
+						</div>
+					</div>
+					<div class="control-group modal-publish-dropbox">
+						<label class="col-lg-4 control-label"
+							for="input-publish-dropbox-path">File path</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-dropbox-path"
+								placeholder="/path/to/My Document.html" class="form-control">
+						</div>
+					</div>
+					<div class="control-group modal-publish-gdrive">
+						<label class="col-lg-4 control-label"
+							for="input-publish-gdrive-fileid">File ID (optional)</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-gdrive-fileid"
+								placeholder="FileID" class="form-control"> <span
+								class="help-block">If no file ID is supplied, a new file
+								will be created in your Google Drive root folder. You can move
+								the file afterwards within Google Drive.</span>
+						</div>
+					</div>
+					<div class="control-group modal-publish-gdrive">
+						<label class="col-lg-4 control-label"
+							for="input-publish-gdrive-filename">Force filename
+							(optional)</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-gdrive-filename"
+								placeholder="Filename" class="form-control"> <span
+								class="help-block">If no file name is supplied, the
+								document title will be used.</span>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-lg-4 control-label">Format</div>
+						<div class="col-lg-7">
+							<div class="radio">
+								<label> <input type="radio" name="radio-publish-format"
+									value="markdown"> Markdown
+								</label>
+							</div>
+							<div class="radio">
+								<label> <input type="radio" name="radio-publish-format"
+									value="html"> HTML
+								</label>
+							</div>
+							<div class="radio">
+								<label> <input type="radio" name="radio-publish-format"
+									value="template"> Template
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+					data-dismiss="modal" class="btn btn-primary action-process-publish">OK</a>
+			</div>
+		</div>
 	</div>
 </div>
 
-<div id="modal-app-reset" class="modal hide">
-	<div class="modal-header">
-		<h3>Reset application</h3>
-	</div>
-	<div class="modal-body">
-		<p>This will delete all your local documents.</p>
-		<blockquote class="muted">Are you sure?</blockquote>
-	</div>
-	<div class="modal-footer">
-		<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
-			class="btn btn-primary action-app-reset" data-dismiss="modal">OK</a>
+
+<div id="modal-manage-publish" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title">Publication</h3>
+			</div>
+			<div class="modal-body">
+				<p class="msg-publish-list hide">
+					"<span class="file-title"></span>" is published on the following
+					location(s):
+				</p>
+				<div id="manage-publish-list"></div>
+				<blockquote class="muted">
+					<div class="msg-no-publish hide">
+						"<span class="file-title"></span>" is not published yet. <br /> <br />
+					</div>
+					<b>NOTE:</b> You can add publications using "Publish on" sub-menu.
+				</blockquote>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+			</div>
+		</div>
 	</div>
 </div>
 
-<textarea id="md-section-helper"></textarea>
+
+<div id="modal-settings" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title">Settings</h3>
+				<ul class="nav nav-tabs">
+					<li class="active"><a class="action-load-settings"
+						href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>
+					<li><a class="action-load-settings"
+						href="#tabpane-settings-publish" data-toggle="tab">Publish</a></li>
+					<li><a class="action-load-settings"
+						href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>
+					<li><a class="action-load-settings"
+						href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>
+				</ul>
+			</div>
+			<div class="modal-body">
+
+				<div class="tab-content">
+					<div class="tab-pane active" id="tabpane-settings-editor">
+						<div class="form-horizontal">
+							<div class="form-group">
+								<label class="col-lg-4 control-label">Layout orientation</label>
+								<div class="col-lg-7">
+									<div class="radio">
+										<label> <input type="radio"
+											name="radio-layout-orientation" value="horizontal">
+											Horizontal
+										</label>
+									</div>
+									<div class="radio">
+										<label> <input type="radio"
+											name="radio-layout-orientation" value="vertical">
+											Vertical
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label" for="input-settings-theme">Theme</label>
+								<div class="col-lg-7">
+									<select id="input-settings-theme" class="form-control">
+									</select> <span class="help-block"><a target="_blank"
+										href="https://github.com/benweet/stackedit/blob/master/doc/theming.md#stackedit-theming-guide">Create
+											your own theme...</a></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label"
+									for="input-settings-lazy-rendering">Lazy rendering <a
+									href="#" class="tooltip-lazy-rendering">(?)</a>
+								</label>
+								<div class="col-lg-7">
+									<div class="checkbox">
+										<input type="checkbox" id="input-settings-lazy-rendering" />
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label"
+									for="input-settings-editor-font-family">Editor font</label>
+								<div class="col-lg-8 form-inline">
+									<input type="text" id="input-settings-editor-font-family"
+										class="form-control col-lg-7"> <input type="text"
+										id="input-settings-editor-font-size"
+										class="form-control col-lg-2"> px
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label"
+									for="textarea-settings-default-content">Default content
+									<a href="#" class="tooltip-default-content">(?)</a>
+								</label>
+								<div class="col-lg-7">
+									<textarea id="textarea-settings-default-content"
+										class="form-control"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="tabpane-settings-publish">
+						<div class="form-horizontal">
+							<div class="form-group">
+								<label class="col-lg-4 control-label"
+									for="input-settings-publish-commit-msg">Commit message</label>
+								<div class="col-lg-7">
+									<input type="text" id="input-settings-publish-commit-msg"
+										class="form-control">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label"
+									for="textarea-settings-publish-template">Template <a
+									href="#" class="tooltip-template">(?)</a>
+								</label>
+								<div class="col-lg-7">
+									<textarea id="textarea-settings-publish-template"
+										class="form-control"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label"
+									for="input-settings-ssh-proxy">SSH proxy</label>
+								<div class="col-lg-7">
+									<input type="text" id="input-settings-ssh-proxy"
+										class="form-control">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="tabpane-settings-extensions">
+						<div class="accordion" id="accordion-extensions"></div>
+						<span class="help-block pull-right"><a target="_blank"
+							href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">Create
+								your own extension...</a></span>
+					</div>
+					<div class="tab-pane" id="tabpane-settings-utils">
+						<div class="tab-pane-button-container">
+							<a href="#"
+								class="btn btn-block btn-primary action-import-settings"><i
+								class="icon-wrench icon-white"></i> Import settings</a> <a href="#"
+								class="btn btn-block btn-primary action-export-settings"
+								data-dismiss="modal"><i class="icon-wrench icon-white"></i>
+								Export settings</a> <a href="#"
+								class="btn btn-block btn-primary action-default-settings"
+								data-dismiss="modal"><i class="icon-wrench icon-white"></i>
+								Load default settings</a> <input type="file"
+								id="input-file-import-settings" class="hide">
+						</div>
+						<div class="tab-pane-button-container">
+							<a href="#" class="btn btn-block btn-primary action-welcome-file"
+								data-dismiss="modal"><i class="icon-info-sign icon-white"></i>
+								Welcome document</a> <a href="#" class="btn btn-block btn-primary"
+								data-dismiss="modal" data-toggle="modal"
+								data-target="#modal-app-reset"><i
+								class="icon-fire icon-white"></i> Reset application</a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+					class="btn btn-primary action-apply-settings" data-dismiss="modal">OK</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="modal-about" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<img src="img/stackedit-promo.png" />
+			</div>
+			<div class="modal-body"></div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="modal-non-unique" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h3 class="modal-title">Ooops...</h3>
+			</div>
+			<div class="modal-body">
+				<p>StackEdit has stopped because another instance was running in
+					the same browser.</p>
+				<blockquote class="muted">If you want to reopen
+					StackEdit, click on "Reload".</blockquote>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:window.location.reload();"
+					class="btn btn-primary">Reload</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="modal-app-reset" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h3 class="modal-title">Reset application</h3>
+			</div>
+			<div class="modal-body">
+				<p>This will delete all your local documents.</p>
+				<blockquote class="muted">Are you sure?</blockquote>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal">Cancel</a> <a href="#"
+					class="btn btn-primary action-app-reset" data-dismiss="modal">OK</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<textarea id="md-section-helper" class="form-control"></textarea>
 <div class="lock-ui hide"></div>
 <div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>

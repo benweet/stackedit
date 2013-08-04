@@ -92,11 +92,10 @@ require([
     "synchronizer",
     "publisher",
     "mediaImporter",
-    "css!styles/fontello.css",
     "css!styles/jgrowl.css",
     "css!styles/prettify.css",
     "css!styles/highlight.css",
-    "less!styles/default.less",
+    "less!styles/main.less",
 ], function($, core) {
 
     $(function() {

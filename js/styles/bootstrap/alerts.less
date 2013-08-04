@@ -1,0 +1,69 @@
+//
+// Alerts
+// --------------------------------------------------
+
+
+// Base styles
+// -------------------------
+
+.alert {
+  padding: 10px 35px 10px 15px;
+  margin-bottom: @line-height-computed;
+  color: @alert-text;
+  background-color: @alert-bg;
+  border: 1px solid @alert-border;
+  border-radius: @alert-border-radius;
+
+  // Headings for larger alerts
+  h4 {
+    margin-top: 0;
+    // Specified for the h4 to prevent conflicts of changing @headingsColor
+    color: inherit;
+  }
+  // Match the hr to the border of the alert
+  hr {
+    border-top-color: darken(@alert-border, 5%);
+  }
+  // Provide class for links that match alerts
+  .alert-link {
+    font-weight: 500;
+    color: darken(@alert-text, 10%);
+  }
+
+  // Adjust close link position
+  .close {
+    position: relative;
+    top: -2px;
+    right: -21px;
+    color: inherit;
+  }
+}
+
+// Alternate styles
+// -------------------------
+
+.alert-success {
+  .alert-variant(@alert-success-bg, @alert-success-border, @alert-success-text);
+}
+.alert-danger {
+  .alert-variant(@alert-danger-bg, @alert-danger-border, @alert-danger-text);
+}
+.alert-info {
+  .alert-variant(@alert-info-bg, @alert-info-border, @alert-info-text);
+}
+
+// Block alerts
+// -------------------------
+
+.alert-block {
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  > p,
+  > ul {
+    margin-bottom: 0;
+  }
+  p + p {
+    margin-top: 5px;
+  }
+}

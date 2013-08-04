@@ -201,12 +201,12 @@ define([
             var accordionHtml = _.chain(extensionList).sortBy(function(extension) {
                 return extension.extensionName.toLowerCase();
             }).reduce(function(html, extension) {
-                return html + _.template(settingsExtensionsAccordionHTML, {
+                return html + (extension.settingsBlock ? _.template(settingsExtensionsAccordionHTML, {
                     extensionId: extension.extensionId,
                     extensionName: extension.extensionName,
                     isOptional: extension.isOptional,
                     settingsBlock: extension.settingsBlock
-                });
+                }): "");
             }, "").value();
             document.getElementById('accordion-extensions').innerHTML = accordionHtml;
             

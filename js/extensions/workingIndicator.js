@@ -5,7 +5,6 @@ define([
 ], function($, _, Extension) {
 
     var workingIndicator = new Extension("workingIndicator", "Working Indicator");
-    workingIndicator.settingsBlock = '<p>Displays an animated image when a network operation is running.</p>';
 
     workingIndicator.onAsyncRunning = function(isRunning) {
         if(isRunning === false) {

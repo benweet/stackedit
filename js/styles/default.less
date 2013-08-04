@@ -1,8 +1,18 @@
-@body-background: #f5f5f5;
+@bg-light: #f2f2f2;
+@bg-navbar-hover: #eee;
 @border: #ddd;
+@text-inv: #fff;
+
+/* Bootstrap */
+@body-bg: #f5f5f5;
+@input-border: #ddd;
+@dropdown-border: #ddd;
+@navbar-bg: #ddd;
+@dropdown-link-hover-bg: #888;
+@dropdown-link-active-color: #fff;
+@input-color-placeholder: #ccc;
 
 body {
-	background-color: @body-background;
 	tab-size: 4;
 }
 
@@ -28,6 +38,7 @@ body {
 Override Bootstrap 
 */
 
+/*
 div,span,a,ul,li,textarea,input,button {
 	background-image: none !important;
 	filter: none !important;
@@ -36,6 +47,7 @@ div,span,a,ul,li,textarea,input,button {
 	box-shadow: none !important;
 	text-shadow: none !important;
 }
+*/
 
 .form-inline {
   .col-lg-1  { width: percentage((1 / @grid-columns)); }
@@ -57,6 +69,9 @@ div,span,a,ul,li,textarea,input,button {
 	border: none !important;
 }
 
+/*******************
+ * Modal
+ *******************/
 .modal-backdrop {
 	background-color: fade(#999, 60%);
 }
@@ -65,43 +80,15 @@ div,span,a,ul,li,textarea,input,button {
 	border-width: 0;
 }
 
-.dropdown-menu {
-	border: 1px solid @border !important;
-	text-align: left;
-}
-
-.dropdown-menu:before {
-	border-bottom-color: @border !important;
-}
-
-input,select,textarea,.input-prepend .btn,.input-prepend .add-on {
-	border: 1px solid @border !important;
-}
-
-.modal textarea:focus,input[type="text"]:focus,input[type="password"]:focus,input[type="datetime"]:focus,input[type="datetime-local"]:focus,input[type="date"]:focus,input[type="month"]:focus,input[type="time"]:focus,input[type="week"]:focus,input[type="number"]:focus,input[type="email"]:focus,input[type="url"]:focus,input[type="search"]:focus,input[type="tel"]:focus,input[type="color"]:focus,.uneditable-input:focus
-	{
-	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px
-		rgba(128, 128, 128, 0.6) !important;
-	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px
-		rgba(128, 128, 128, 0.6) !important;
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px
-		rgba(128, 128, 128, 0.6) !important;
-}
-
-input:-moz-placeholder,textarea:-moz-placeholder {
-	color: #ccc;
-}
-
-input:-ms-input-placeholder,textarea:-ms-input-placeholder {
-	color: #ccc;
-}
-
-input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
-	color: #ccc;
+/********************
+ * Input
+ ********************/
+.form-control:focus {
+    border-color: @input-border;
+    .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(128, 128, 128, 0.6)");
 }
 
 .help-block {
-	color: #999999;
 	font-size: 12px;
 }
 
@@ -137,7 +124,7 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
 .btn-group.open .btn.dropdown-toggle,
 #extension-preview-buttons .btn-group:hover .btn {
 	color: #333333;
-	background-color: #eee;
+	background-color: @bg-navbar-hover;
 }
 
 .nav .dropdown-toggle .caret,
@@ -245,7 +232,7 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
 
 input[disabled],select[disabled],textarea[disabled],.input-prepend .add-on
 	{
-	background-color: @body-background;
+	background-color: @body-bg;
 }
 
 input[readonly],select[readonly],textarea[readonly] {
@@ -409,7 +396,6 @@ hr {
 }
 
 .navbar {
-	background-color: #ddd;
 	position: static;
 }
 
@@ -429,6 +415,12 @@ hr {
 
 #menu-bar {
 	margin-left: 15px;
+}
+
+#wmd-input {
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	box-shadow: none !important;
 }
 
 #wmd-input,#md-section-helper {
@@ -459,7 +451,7 @@ hr {
 
 .wmd-prompt-dialog {
 	border: 1px solid #999999;
-	background-color: @body-background;
+	background-color: @body-bg;
 }
 
 .wmd-prompt-dialog>div {
@@ -530,12 +522,20 @@ div.dropdown-menu textarea {
     font-size: 0.8em;
 }
 
+/***********************
+ * Icons
+ ***********************/
+
 [class^="icon-"], [class*=" icon-"] {
 	color: #525252;
 	display: inline-block;
 	line-height: 14px;
 	vertical-align: middle;
 	background-repeat: no-repeat;
+}
+
+.icon-white {
+	color: #fff;
 }
 
 .icon-code {
@@ -676,6 +676,10 @@ div.dropdown-menu textarea {
 	float: left;
 }
 
+/**************************
+ * Settings
+ **************************/
+
 #modal-settings {
 	.modal-header {
 		padding-bottom: 0;
@@ -690,11 +694,14 @@ div.dropdown-menu textarea {
 		min-height: 100px;
 	}
 	
+	.modal-body {
+		max-height: 450px;
+		overflow: auto;
+	}
+	
 	.accordion-group {
 		border: 0;
-		border-bottom: 1px solid #eee;
-		-webkit-border-radius: inherit;
-		-moz-border-radius: inherit;
+		border-bottom: 1px solid @bg-light;
 		border-radius: inherit;
 		margin-bottom: 10px;
 		clear: both;
@@ -702,25 +709,27 @@ div.dropdown-menu textarea {
 	
 	.accordion-heading {
 		padding: 8px 15px;
-	}
-	
-	.accordion-heading .accordion-toggle {
-		display: inline;
-		padding: 0;
+		.accordion-toggle {
+			display: inline;
+			padding: 0;
+		}
+		.checkbox {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
 	}
 	
 	.accordion-inner {
 		border: 0;
 		padding: 10px 40px;
-	}
-	
-	.accordion-inner .form-horizontal .control-label {
-		text-align: left;
-	}
-	
-	.accordion-inner .form-inline .label-text,.accordion-inner .control-label
-		{
-		margin: 0 10px;
+		.form-horizontal {
+			.control-label {
+				text-align: left;
+			}
+			.form-inline .label-text {
+				margin-left: 15px
+			}			
+		}
 	}
 	
 	.tab-pane-button-container {
@@ -736,23 +745,28 @@ div.dropdown-menu textarea {
 	.nav-tabs {
 		border-bottom: 1px solid transparent;
 		margin: 15px 0 0;
+		
+		& > li > a {
+			&:hover, &:focus {
+				background-color: @bg-light;
+			}
+		}
+		
+		& > li.active > a {
+			&, &:hover, &:focus {
+				color: @text-inv;
+				background-color: #777;
+				border-color: #777;
+			}
+		}
 	}
 }
 
-.nav-tabs>.active>a,.nav-tabs>.active>a:hover,.nav-tabs>.active>a:focus
-	{
-	color: #fff;
-	background-color: #777;
-	border-color: #777;
-}
-
+/*
 .nav>li>a:hover,.nav>li>a:focus {
-	background-color: #eee;
+	background-color: @bg-light;
 }
-
-.nav-tabs>li>a:hover,.nav-tabs>li>a:focus {
-	border-color: #eee;
-}
+*/
 
 .tooltip-inner {
 	text-align: left;

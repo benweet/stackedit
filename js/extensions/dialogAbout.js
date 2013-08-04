@@ -6,7 +6,6 @@ define([
 ], function($, _, Extension, dialogAboutHTML) {
 
     var dialogAbout = new Extension("dialogAbout", 'Dialog "About"');
-    dialogAbout.settingsBlock = '<p>Prints the content of the "About" dialog box.</p>';
 
     var libraries = {
         "Bootstrap": "http://twitter.github.io/bootstrap/",
@@ -41,7 +40,7 @@ define([
         "StackEdit Tumblr Proxy": "https://github.com/benweet/stackedit-tumblr-proxy",
         "StackEdit WordPress Proxy": "https://github.com/benweet/stackedit-wordpress-proxy",
     };
-    
+
     dialogAbout.onReady = function() {
         $("#modal-about .modal-body").html(_.template(dialogAboutHTML, {
             libraries: libraries,

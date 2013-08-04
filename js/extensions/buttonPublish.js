@@ -6,7 +6,8 @@ define([
 ], function($, _, Extension, buttonPublishHTML) {
 
     var buttonPublish = new Extension("buttonPublish", 'Button "Publish"');
-    buttonPublish.settingsBlock = '<p>Adds a "Publish document" button in the navigation bar.</p>';
+    // buttonPublish.settingsBlock = '<p>Adds a "Publish document" button in the
+    // navigation bar.</p>';
 
     var button = undefined;
     var currentFileDesc = undefined;

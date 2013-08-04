@@ -6,7 +6,6 @@ define([
 ], function($, _, Extension, dialogManagePublicationLocationHTML) {
 
     var dialogManagePublication = new Extension("dialogManagePublication", 'Dialog "Manage publication"');
-    dialogManagePublication.settingsBlock = '<p>Populates the "Manage publication" dialog box.</p>';
 
     var eventMgr = undefined;
     dialogManagePublication.onEventMgrCreated = function(eventMgrParameter) {

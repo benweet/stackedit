@@ -8,7 +8,6 @@ define([
 ], function($, _, utils, Extension, toMarkdown) {
 
     var dialogOpenHarddrive = new Extension("dialogOpenHarddrive", 'Dialog "Open from"');
-    dialogOpenHarddrive.settingsBlock = '<p>Handles the "Import from hard drive" and the "Convert HTML to Markdown" dialog boxes.</p>';
 
     var fileMgr = undefined;
     dialogOpenHarddrive.onFileMgrCreated = function(fileMgrParameter) {

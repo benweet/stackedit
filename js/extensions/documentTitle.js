@@ -5,7 +5,6 @@ define([
 ], function($, _, Extension) {
 
     var documentTitle = new Extension("documentTitle", "Document Title");
-    documentTitle.settingsBlock = '<p>Responsible for showing the document title in the navigation bar.</p>';
 
     var layout = undefined;
     documentTitle.onLayoutCreated = function(layoutParameter) {

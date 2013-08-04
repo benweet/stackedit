@@ -6,7 +6,6 @@ define([
 ], function($, _, Extension, dialogManageSynchronizationLocationHTML) {
 
     var dialogManageSynchronization = new Extension("dialogManageSynchronization", 'Dialog "Manage synchronization"');
-    dialogManageSynchronization.settingsBlock = '<p>Populates the "Manage synchronization" dialog box.</p>';
 
     var eventMgr = undefined;
     dialogManageSynchronization.onEventMgrCreated = function(eventMgrParameter) {

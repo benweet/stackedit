@@ -200,9 +200,9 @@ define([
         $(".navbar").click(function() {
             layout.allowOverflow('north');
         });
-        $(".ui-layout-toggler-north").addClass("btn").append($("<b>").addClass("caret"));
-        $(".ui-layout-toggler-south").addClass("btn").append($("<b>").addClass("caret"));
-        $(".ui-layout-toggler-east").addClass("btn").append($("<b>").addClass("caret"));
+        $(".ui-layout-toggler-north").addClass("btn btn-info").append($("<b>").addClass("caret"));
+        $(".ui-layout-toggler-south").addClass("btn btn-info").append($("<b>").addClass("caret"));
+        $(".ui-layout-toggler-east").addClass("btn btn-info").append($("<b>").addClass("caret"));
 
         eventMgr.onLayoutCreated(layout);
     }
@@ -334,7 +334,7 @@ define([
         editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
 
         // Hide default buttons
-        $(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)").addClass("btn").css("left", 0).find("span").hide();
+        $(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)").addClass("btn btn-default").css("left", 0).find("span").hide();
 
         // Add customized buttons
         $("#wmd-bold-button").append($('<i class="icon-bold">'));

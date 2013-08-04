@@ -13,7 +13,7 @@ define([
     };
 
     var fileDesc = undefined;
-    var removeButtonTemplate = '<a class="btn" title="Remove this location"><i class="icon-trash"></i></a>';
+    var removeButtonTemplate = '<a class="btn btn-default" title="Remove this location"><i class="icon-trash"></i></a>';
     var refreshDialog = function(fileDescParameter) {
         if(fileDescParameter !== undefined && fileDescParameter !== fileDesc) {
             return;

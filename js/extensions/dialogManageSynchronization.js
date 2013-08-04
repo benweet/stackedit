@@ -18,7 +18,7 @@ define([
     };
 
     var fileDesc = undefined;
-    var removeButtonTemplate = '<a class="btn" title="Remove this location"><i class="icon-trash"></i></a>';
+    var removeButtonTemplate = '<a class="btn btn-info" title="Remove this location"><i class="icon-trash"></i></a>';
     var refreshDialog = function(fileDescParameter) {
         if(fileDescParameter !== undefined && fileDescParameter !== fileDesc) {
             return;
@@ -40,11 +40,11 @@ define([
                 syncDesc: syncDesc,
                 isRealtime: syncAttributes.isRealtime
             }));
-            lineElement.append($(removeButtonTemplate).click(function() {
+            lineElement.append($('<div class="input-group-btn">').append($(removeButtonTemplate).click(function() {
                 synchronizer.tryStopRealtimeSync();
                 fileDesc.removeSyncLocation(syncAttributes);
                 eventMgr.onSyncRemoved(fileDesc, syncAttributes);
-            }));
+            })));
             syncList.append(lineElement);
         });
     };

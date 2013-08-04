@@ -11,10 +11,16 @@ define([
 
     var googleHelper = {};
 
+    // Listen to offline status changes
+    var isOffline = false;
+    eventMgr.addListener("onOfflineChanged", function(isOfflineParam) {
+        isOffline = isOfflineParam;
+    });
+
     // Try to connect Gdrive by downloading client.js
     function connect(task) {
         task.onRun(function() {
-            if(core.isOffline === true) {
+            if(isOffline === true) {
                 connected = false;
                 task.error(new Error("Operation not available in offline mode.|stopPublish"));
                 return;

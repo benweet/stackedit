@@ -101,6 +101,10 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
 		rgba(255, 134, 97, 0.6) !important;
 }
 
+.nav > li {
+	display: inline-block;
+}
+
 .navbar-inner .btn,
 #extension-preview-buttons .btn {
 	background-color: #ddd;
@@ -125,8 +129,8 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
 .nav .dropdown-toggle .caret,
 .nav .dropdown-toggle:hover .caret,
 .nav .dropdown-toggle:focus .caret {
-	border-top-color: #000;
-	border-bottom-color: #000;
+	border-top-color: #525252;
+	border-bottom-color: #525252;
 }
 
 .navbar .nav.hide {
@@ -140,6 +144,68 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
 	background-color: #ddd;
 	opacity: 0.3;
 	filter: alpha(opacity =   30);
+}
+
+.navbar .pull-right > li > .dropdown-menu, .navbar .nav > li > .dropdown-menu.pull-right {
+	right: 0;
+	left: auto;
+}
+
+.navbar .pull-right > li > .dropdown-menu .dropdown-menu,
+.navbar .nav > li > .dropdown-menu.pull-right .dropdown-menu {
+  right: 100%;
+  left: auto;
+  margin-right: -1px;
+  margin-left: 0;
+}
+
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+  display: block;
+}
+
+.dropup .dropdown-submenu > .dropdown-menu {
+  top: auto;
+  bottom: 0;
+  margin-top: 0;
+  margin-bottom: -2px;
+}
+
+.dropdown-submenu > a:after {
+  display: block;
+  float: right;
+  width: 0;
+  height: 0;
+  margin-top: 5px;
+  margin-right: -10px;
+  border-color: transparent;
+  border-left-color: #cccccc;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  content: " ";
+}
+
+.dropdown-submenu:hover > a:after {
+  border-left-color: #ffffff;
+}
+
+.dropdown-submenu.pull-left {
+  float: none;
+}
+
+.dropdown-submenu.pull-left > .dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
 }
 
 .dropdown-menu>li>a:hover,
@@ -216,7 +282,7 @@ input[readonly],select[readonly],textarea[readonly] {
 }
 
 #extension-buttons>.btn-group {
-	margin: 5px 0 0;
+	margin: 0;
 }
 
 #extension-preview-buttons>.btn-group {
@@ -278,10 +344,6 @@ input[readonly],select[readonly],textarea[readonly] {
 	padding-left: 12px;
 }
 
-.navbar-inner {
-	background-color: #ddd !important;
-}
-
 code {
 	color: #333333;
 }
@@ -319,8 +381,13 @@ hr {
 }
 
 #file-title {
-	line-height: 23px;
-	padding: 9px 15px 11px;
+	padding: 4px 15px;
+	display: block;
+	float: left;
+	margin-left: -20px;
+	font-size: 20px;
+	font-weight: 200;
+	color: #666;
 }
 
 #file-title i {
@@ -331,15 +398,26 @@ hr {
 	margin-right: 5px;
 }
 
-#navbar {
+.navbar {
+	background-color: #ddd;
 	position: static;
 }
 
-#menu-bar {
-	margin: 0 15px 10px 15px;
+.navbar .nav {
+	float: left;
+	margin: 6px 0 0;
 }
 
-#wmd-button-bar {
+.navbar .nav.pull-right {
+	float: right;
+}
+
+.navbar .pull-right > li > .dropdown-menu {
+	right: 0;
+	left: auto;
+}
+
+#menu-bar {
 	margin-left: 15px;
 }
 
@@ -353,13 +431,16 @@ hr {
 }
 
 .wmd-button-row {
-	margin: 10px 0;
-	height: 20px;
+	padding: 0;
+	margin-left: 10px;
 }
 
 .wmd-spacer {
-	margin-right: 15px;
-	display: inline-block;
+	display: none;
+}
+
+.wmd-spacer + .wmd-button {
+	margin-left: 20px;
 }
 
 .wmd-prompt-background {
@@ -439,29 +520,12 @@ div.dropdown-menu textarea {
     font-size: 0.8em;
 }
 
-.icon-link {
-	background-position: -72px -168px;
-}
-
-.icon-code {
-	width: 15px;
-	background-position: -384px -168px;
-}
-
-.icon-stat {
-	background-position: -1px -168px;
-}
-
-.icon-numbered-list {
-	background-position: -408px -168px;
-}
-
-.icon-hr {
-	background-position: -432px -168px;
-}
-
-.icon-undo {
-	background-position: -456px -168px;
+[class^="icon-"], [class*=" icon-"] {
+	color: #525252;
+	display: inline-block;
+	line-height: 14px;
+	vertical-align: middle;
+	background-repeat: no-repeat;
 }
 
 .icon-stackedit {
@@ -537,7 +601,7 @@ div.dropdown-menu textarea {
 	width: 43px;
 	height: 11px;
 	background-position: 0 0;
-	margin: 16px 16px 0;
+	margin: 0 20px 12px;
 }
 
 .working-indicator.show {

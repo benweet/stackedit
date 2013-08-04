@@ -1,7 +1,6 @@
 define([
     "jquery",
     "underscore",
-    "core",
     "utils",
     "eventMgr",
     "fileMgr",
@@ -9,7 +8,7 @@ define([
     "classes/Provider",
     "providers/downloadProvider",
     "providers/gistProvider"
-], function($, _, core, utils, eventMgr, fileMgr, AsyncTask, Provider) {
+], function($, _, utils, eventMgr, fileMgr, AsyncTask, Provider) {
 
     var sharing = {};
 
@@ -20,6 +19,12 @@ define([
             argument
         ];
     }).compact().object().value();
+
+    // Listen to offline status changes
+    var isOffline = false;
+    eventMgr.addListener("onOfflineChanged", function(isOfflineParam) {
+        isOffline = isOfflineParam;
+    });
 
     sharing.createLink = function(attributes, callback) {
         var provider = providerMap[attributes.provider.providerId];
@@ -34,7 +39,7 @@ define([
         var task = new AsyncTask();
         var shortUrl = undefined;
         task.onRun(function() {
-            if(core.isOffline === true) {
+            if(isOffline === true) {
                 task.chain();
                 return;
             }
@@ -73,7 +78,7 @@ define([
         task.enqueue();
     };
 
-    core.onReady(function() {
+    eventMgr.addListener("onReady", function() {
         if(viewerMode === false) {
             return;
         }

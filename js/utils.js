@@ -1,9 +1,10 @@
 define([
     "jquery",
     "underscore",
+    "crel",
     "libs/FileSaver",
     "libs/stacktrace",
-], function($, _) {
+], function($, _, crel) {
 
     var utils = {};
 
@@ -166,6 +167,15 @@ define([
             url += "/";
         }
         return url;
+    };
+    
+    utils.addModal = function(id, content) {
+        var modal = crel('div', {
+            id: id,
+            class: 'modal'
+        });
+        modal.innerHTML = content;
+        document.getElementsByTagName('body')[0].appendChild(modal);
     };
 
     // Create an centered popup window

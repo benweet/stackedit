@@ -1,7 +1,6 @@
 define([
     "jquery",
     "underscore",
-    "core",
     "utils",
     "eventMgr",
     "fileSystem",
@@ -9,7 +8,7 @@ define([
     "classes/Provider",
     "providers/dropboxProvider",
     "providers/gdriveProvider"
-], function($, _, core, utils, eventMgr, fileSystem, fileMgr, Provider) {
+], function($, _, utils, eventMgr, fileSystem, fileMgr, Provider) {
 
     var synchronizer = {};
 
@@ -171,11 +170,17 @@ define([
         providerDown(callback);
     }
 
+    // Listen to offline status changes
+    var isOffline = false;
+    eventMgr.addListener("onOfflineChanged", function(isOfflineParam) {
+        isOffline = isOfflineParam;
+    });
+
     // Main entry point for synchronization
     var syncRunning = false;
     synchronizer.sync = function() {
         // If sync is already running or offline
-        if(syncRunning || core.isOffline) {
+        if(syncRunning === true || isOffline === true) {
             return false;
         }
         syncRunning = true;
@@ -282,7 +287,7 @@ define([
         $("#modal-upload-" + provider.providerId).modal();
     }
 
-    core.onReady(function() {
+    eventMgr.addListener("onReady", function() {
         // Init each provider
         _.each(providerMap, function(provider) {
             // Provider's import button

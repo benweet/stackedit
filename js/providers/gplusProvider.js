@@ -1,11 +1,10 @@
 define([
     "underscore",
-    "core",
     "utils",
     "classes/Provider",
     "eventMgr",
     "helpers/googleHelper"
-], function(_, core, utils, Provider, eventMgr, googleHelper) {
+], function(_, utils, Provider, eventMgr, googleHelper) {
 
     var PROVIDER_GPLUS = "gplus";
 
@@ -77,7 +76,7 @@ define([
         });
     };
 
-    core.onReady(function() {
+    eventMgr.addListener("onReady", function() {
         $(".action-import-image").click(function(e) {
             var size = utils.getInputIntValue("#input-import-image-size", undefined, 0) || 0;
             var title = utils.getInputTextValue("#input-import-image-title");

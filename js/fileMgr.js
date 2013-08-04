@@ -150,7 +150,7 @@ define([
         });
     };
 
-    core.onReady(function() {
+    eventMgr.addListener("onReady", function() {
 
         fileMgr.selectFile();
 

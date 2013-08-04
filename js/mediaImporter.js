@@ -17,7 +17,7 @@ define([
         ];
     }).compact().object().value();
 
-    core.onReady(function() {
+    eventMgr.addListener("onReady", function() {
         _.each(providerMap, function(provider) {
             // Import image action links (if any)
             $(".action-import-image-" + provider.providerId).click(function() {

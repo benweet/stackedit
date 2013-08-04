@@ -10,11 +10,17 @@ define([
     var authenticated = false;
 
     var dropboxHelper = {};
+    
+    // Listen to offline status changes
+    var isOffline = false;
+    eventMgr.addListener("onOfflineChanged", function(isOfflineParam) {
+        isOffline = isOfflineParam;
+    });
 
     // Try to connect dropbox by downloading client.js
     function connect(task) {
         task.onRun(function() {
-            if(core.isOffline === true) {
+            if(isOffline === true) {
                 client = undefined;
                 task.error(new Error("Operation not available in offline mode.|stopPublish"));
                 return;

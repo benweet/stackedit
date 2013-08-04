@@ -1,11 +1,10 @@
 define([
     "underscore",
-    "core",
     "utils",
     "eventMgr",
     "config",
     "libs/stacktrace",
-], function(_, core, utils, eventMgr) {
+], function(_, utils, eventMgr) {
     
     var taskQueue = [];
     
@@ -125,11 +124,17 @@ define([
     var currentTaskRunning = false;
     var currentTaskStartTime = 0;
 
+    // Determine if user is real by listening to his activity
+    var isUserReal = false;
+    eventMgr.addListener("onUserActive", function() {
+        isUserReal = true;
+    });
+    
     // Run the next task in the queue if any and no other running
     function runTask() {
         
         // Wait for user first interaction before running first task
-        if(core.isUserReal === false) {
+        if(isUserReal === false) {
             return
         }
         
@@ -168,8 +173,8 @@ define([
         });
     }
     
-    // Call runTask function periodically
-    core.runPeriodically(runTask);
+    // Call runTask periodically
+    eventMgr.addListener("onPeriodicRun", runTask);
 
     function runSafe(task, callbacks, param) {
         try {

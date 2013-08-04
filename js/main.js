@@ -9,6 +9,10 @@ requirejs.config({
         "mousetrap": "libs/mousetrap",
         "toMarkdown": "libs/to-markdown",
         "text": "libs/text",
+        "css": "libs/css",
+        "less": "libs/less",
+        "lessc": "libs/lessc",
+        "normalize": "libs/normalize",
         "libs/MathJax": '../lib/MathJax/MathJax.js?config=TeX-AMS_HTML'
     },
     shim: {
@@ -79,7 +83,12 @@ require([
     "core",
     "synchronizer",
     "publisher",
-    "mediaImporter"
+    "mediaImporter",
+    "css!styles/fontello.css",
+    "css!styles/jgrowl.css",
+    "css!styles/prettify.css",
+    "css!styles/highlight.css",
+    "less!styles/default.less",
 ], function($, core) {
 
     $(function() {
@@ -95,7 +104,7 @@ require([
         }
 
         // Here, all the modules are loaded and the DOM is ready
-        core.setReady();
+        core.onReady();
     });
 
 });

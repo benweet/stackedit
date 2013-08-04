@@ -1,7 +1,6 @@
 define([
     "jquery",
     "underscore",
-    "core",
     "utils",
     "settings",
     "eventMgr",
@@ -17,7 +16,7 @@ define([
     "providers/sshProvider",
     "providers/tumblrProvider",
     "providers/wordpressProvider"
-], function($, _, core, utils, settings, eventMgr, fileSystem, fileMgr, sharing, Provider) {
+], function($, _, utils, settings, eventMgr, fileSystem, fileMgr, sharing, Provider) {
 
     var publisher = {};
 
@@ -127,11 +126,16 @@ define([
         previewHtml = html;
     });
 
+    // Listen to offline status changes
+    var isOffline = false;
+    eventMgr.addListener("onOfflineChanged", function(isOfflineParam) {
+        isOffline = isOfflineParam;
+    });
 
     var publishRunning = false;
     publisher.publish = function() {
         // If publish is running or offline
-        if(publishRunning === true || core.isOffline) {
+        if(publishRunning === true || isOffline === true) {
             return;
         }
 
@@ -218,7 +222,7 @@ define([
         localStorage[provider.providerId + ".publishPreferences"] = JSON.stringify(publishPreferences);
     }
 
-    core.onReady(function() {
+    eventMgr.addListener("onReady", function() {
         // Add every provider
         var publishMenu = $("#publish-menu");
         _.each(providerMap, function(provider) {

@@ -1,9 +1,8 @@
 define([
     "jquery",
-    "core",
     "classes/Provider",
     "classes/AsyncTask"
-], function($, core, Provider, AsyncTask) {
+], function($, Provider, AsyncTask) {
 
     var downloadProvider = new Provider("download");
     downloadProvider.sharingAttributes = [

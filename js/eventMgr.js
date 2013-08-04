@@ -121,6 +121,7 @@ define([
     addEventHook("onMessage");
     addEventHook("onError");
     addEventHook("onOfflineChanged");
+    addEventHook("onUserActive");
     addEventHook("onAsyncRunning", true);
     addEventHook("onPeriodicRun", true);
 

@@ -18,22 +18,20 @@ define([
 
     // Used for periodic tasks
     var intervalId = undefined;
-    var periodicCallbacks = [
-        eventMgr.onPeriodicRun
-    ];
-    core.runPeriodically = function(callback) {
-        periodicCallbacks.push(callback);
-    };
 
     // Used to detect user activity
-    core.isUserReal = false;
+    var isUserReal = false;
     var userActive = false;
     var windowUnique = true;
     var userLastActivity = 0;
     function setUserActive() {
-        core.isUserReal = true;
+        isUserReal = true;
         userActive = true;
-        userLastActivity = utils.currentTime;
+        var currentTime = utils.currentTime;
+        if(currentTime > userLastActivity + 1000) {
+            userLastActivity = currentTime;
+            eventMgr.onUserActive();
+        }
     }
 
     function isUserActive() {
@@ -46,7 +44,7 @@ define([
     // Used to only have 1 window of the application in the same browser
     var windowId = undefined;
     function checkWindowUnique() {
-        if(core.isUserReal === false || windowUnique === false) {
+        if(isUserReal === false || windowUnique === false) {
             return;
         }
         if(windowId === undefined) {
@@ -68,24 +66,24 @@ define([
     }
 
     // Offline management
-    core.isOffline = false;
+    var isOffline = false;
     var offlineTime = utils.currentTime;
     core.setOffline = function() {
         offlineTime = utils.currentTime;
-        if(core.isOffline === false) {
-            core.isOffline = true;
+        if(isOffline === false) {
+            isOffline = true;
             eventMgr.onOfflineChanged(true);
         }
     };
     function setOnline() {
-        if(core.isOffline === true) {
-            core.isOffline = false;
+        if(isOffline === true) {
+            isOffline = false;
             eventMgr.onOfflineChanged(false);
         }
     }
     function checkOnline() {
         // Try to reconnect if we are offline but we have some network
-        if(core.isOffline === true && navigator.onLine === true && offlineTime + CHECK_ONLINE_PERIOD < utils.currentTime) {
+        if(isOffline === true && navigator.onLine === true && offlineTime + CHECK_ONLINE_PERIOD < utils.currentTime) {
             offlineTime = utils.currentTime;
             // Try to download anything to test the connection
             $.ajax({
@@ -254,12 +252,14 @@ define([
         var converter = new Markdown.Converter();
         // Create MD sections for extensions
         converter.hooks.chain("preConversion", function(text) {
+            eventMgr.previewStartTime = new Date();
             var tmpText = text + "\n\n";
             var sectionList = [], offset = 0;
             // Look for titles (excluding gfm blocs)
             tmpText.replace(/^```.*\n[\s\S]*?\n```|(^.+[ \t]*\n=+[ \t]*\n+|^.+[ \t]*\n-+[ \t]*\n+|^\#{1,6}[ \t]*.+?[ \t]*\#*\n+)/gm, function(match, title, matchOffset) {
                 if(title) {
-                    // We just found a title which means end of the previous section
+                    // We just found a title which means end of the previous
+                    // section
                     // Exclude last \n of the section
                     sectionList.push(tmpText.substring(offset, matchOffset));
                     offset = matchOffset;
@@ -318,7 +318,6 @@ define([
         else {
             previewWrapper = function(makePreview) {
                 return function() {
-                    eventMgr.previewStartTime = new Date();
                     makePreview();
                     if(documentContent === undefined) {
                         previewContainerElt.scrollTop(fileDesc.previewScrollTop);
@@ -339,20 +338,21 @@ define([
         $("#wmd-bold-button").append($('<i class="icon-bold">'));
         $("#wmd-italic-button").append($('<i class="icon-italic">'));
         $("#wmd-link-button").append($('<i class="icon-globe">'));
-        $("#wmd-quote-button").append($('<i class="icon-indent-left">'));
+        $("#wmd-quote-button").append($('<i class="icon-indent-right">'));
         $("#wmd-code-button").append($('<i class="icon-code">'));
         $("#wmd-image-button").append($('<i class="icon-picture">'));
-        $("#wmd-olist-button").append($('<i class="icon-numbered-list">'));
-        $("#wmd-ulist-button").append($('<i class="icon-list">'));
+        $("#wmd-olist-button").append($('<i class="icon-list-numbered">'));
+        $("#wmd-ulist-button").append($('<i class="icon-list-bullet">'));
         $("#wmd-heading-button").append($('<i class="icon-text-height">'));
-        $("#wmd-hr-button").append($('<i class="icon-hr">'));
-        $("#wmd-undo-button").append($('<i class="icon-undo">'));
-        $("#wmd-redo-button").append($('<i class="icon-share-alt">'));
-        
+        $("#wmd-hr-button").append($('<i class="icon-ellipsis">'));
+        $("#wmd-undo-button").append($('<i class="icon-reply">'));
+        $("#wmd-redo-button").append($('<i class="icon-forward">'));
+
         eventMgr.onFileOpen(fileDesc);
     };
-    
-    // Used to lock the editor from the user interaction during asynchronous tasks
+
+    // Used to lock the editor from the user interaction during asynchronous
+    // tasks
     var uiLocked = false;
     core.lockUI = function(param) {
         uiLocked = param;
@@ -366,33 +366,7 @@ define([
         }
     };
 
-
-    // onReady event callbacks
-    var readyCallbacks = [];
-    core.onReady = function(callback) {
-        readyCallbacks.push(callback);
-        runReadyCallbacks();
-    };
-    var ready = false;
-    core.setReady = function() {
-        ready = true;
-        runReadyCallbacks();
-    };
-    function runReadyCallbacks() {
-        if(ready === true) {
-            _.each(readyCallbacks, function(callback) {
-                callback();
-            });
-            readyCallbacks = [];
-        }
-    }
-    
-    core.onReady(function() {
-
-        // Load theme list
-        _.each(THEME_LIST, function(name, value) {
-            $("#input-settings-theme").append($('<option value="' + value + '">' + name + '</option>'));
-        });
+    function init() {
 
         // listen to online/offline events
         $(window).on('offline', core.setOffline);
@@ -438,6 +412,84 @@ define([
         mousetrap.stopCallback = function(e, element, combo) {
             return uiLocked || shownModalId || $(element).is("input, select, textarea:not(#wmd-input)");
         };
+
+        // UI layout
+        createLayout();
+
+        // Editor's textarea
+        $("#wmd-input, #md-section-helper").css({
+            // Apply editor font
+            "font-family": settings.editorFontFamily,
+            "font-size": settings.editorFontSize + "px",
+            "line-height": Math.round(settings.editorFontSize * (20 / 14)) + "px"
+        });
+
+        // Handle tab key
+        $("#wmd-input").keydown(function(e) {
+            if(e.keyCode === 9) {
+                var value = $(this).val();
+                var start = this.selectionStart;
+                var end = this.selectionEnd;
+                // IE8 does not support selection attributes
+                if(start === undefined || end === undefined) {
+                    return;
+                }
+                $(this).val(value.substring(0, start) + "\t" + value.substring(end));
+                this.selectionStart = this.selectionEnd = start + 1;
+                e.preventDefault();
+            }
+        });
+
+        // Do periodic tasks
+        intervalId = window.setInterval(function() {
+            utils.updateCurrentTime();
+            checkWindowUnique();
+            if(isUserActive() === true || viewerMode === true) {
+                eventMgr.onPeriodicRun();
+                checkOnline();
+            }
+        }, 1000);
+
+        eventMgr.onReady();
+    }
+
+    // Initialize multiple things and then fire eventMgr.onReady
+    core.onReady = function() {
+
+        if(viewerMode === true) {
+            require([
+                "text!html/bodyViewer.html",
+            ], function(bodyViewerHTML) {
+                $('body').html(bodyViewerHTML);
+                init();
+            });
+        }
+        else {
+            require([
+                "text!html/bodyIndex.html",
+                "text!html/dialogInsertLink.html",
+                "text!html/dialogInsertImage.html",
+                "text!html/dialogImportImage.html",
+                "text!html/dialogRemoveFileConfirm.html",
+            ], function(bodyIndexHTML, dialogInsertLinkHTML, dialogInsertImageHTML, dialogImportImageHTML, dialogRemoveFileConfirmHTML) {
+                $('body').html(bodyIndexHTML);
+                utils.addModal('modal-insert-link', dialogInsertLinkHTML);
+                utils.addModal('modal-insert-image', dialogInsertImageHTML);
+                utils.addModal('modal-import-image', dialogImportImageHTML);
+                utils.addModal('modal-remove-file-confirm', dialogRemoveFileConfirmHTML);
+                init();
+            });
+        }
+    };
+
+    // Other initialization that are not prioritary
+    eventMgr.addListener("onReady", function() {
+
+        // Load theme list
+        var themeOptions = _.reduce(THEME_LIST, function(themeOptions, name, value) {
+            return themeOptions + '<option value="' + value + '">' + name + '</option>';
+        }, "");
+        $("#input-settings-theme").html(themeOptions);
 
         // Click events on "insert link" and "insert image" dialog buttons
         $(".action-insert-link").click(function(e) {
@@ -516,55 +568,10 @@ define([
             window.location.reload();
         });
 
-        // UI layout
-        $("#menu-bar, .ui-layout-center, .ui-layout-east, .ui-layout-south").removeClass("hide");
-        createLayout();
-
-        // Editor's textarea
-        $("#wmd-input, #md-section-helper").css({
-            // Apply editor font
-            "font-family": settings.editorFontFamily,
-            "font-size": settings.editorFontSize + "px",
-            "line-height": Math.round(settings.editorFontSize * (20 / 14)) + "px"
-        });
-
-        // Handle tab key
-        $("#wmd-input").keydown(function(e) {
-            if(e.keyCode === 9) {
-                var value = $(this).val();
-                var start = this.selectionStart;
-                var end = this.selectionEnd;
-                // IE8 does not support selection attributes
-                if(start === undefined || end === undefined) {
-                    return;
-                }
-                $(this).val(value.substring(0, start) + "\t" + value.substring(end));
-                this.selectionStart = this.selectionEnd = start + 1;
-                e.preventDefault();
-            }
-        });
-
         // Reset inputs
         $(".action-reset-input").click(function() {
             utils.resetModalInputs();
         });
-
-        // Do periodic tasks
-        intervalId = window.setInterval(function() {
-            utils.updateCurrentTime();
-            checkWindowUnique();
-            if(isUserActive() === true || viewerMode === true) {
-                _.each(periodicCallbacks, function(callback) {
-                    callback();
-                });
-                checkOnline();
-            }
-        }, 1000);
-    });
-    core.onReady(eventMgr.onReady);
-
-    // After extensions onReady callbacks
-    core.onReady(function() {
 
         // Tooltips
         $(".tooltip-lazy-rendering").tooltip({
@@ -608,7 +615,7 @@ define([
             });
             e.stopPropagation();
         });
-        
+
         // Avoid dropdown panels to close on click
         $("div.dropdown-menu").click(function(e) {
             e.stopPropagation();

@@ -1,13 +1,12 @@
 define([
     "underscore",
-    "core",
     "utils",
     "classes/Provider",
     "settings",
     "eventMgr",
     "fileMgr",
     "helpers/googleHelper"
-], function(_, core, utils, Provider, settings, eventMgr, fileMgr, googleHelper) {
+], function(_, utils, Provider, settings, eventMgr, fileMgr, googleHelper) {
 
     var PROVIDER_GDRIVE = "gdrive";
 
@@ -401,7 +400,7 @@ define([
         editor.uiManager.setUndoRedoButtonStates();
     };
 
-    core.onReady(function() {
+    eventMgr.addListener("onReady", function() {
         var state = utils.retrieveIgnoreError(PROVIDER_GDRIVE + ".state");
         if(state === undefined) {
             return;

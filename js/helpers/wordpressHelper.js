@@ -10,10 +10,16 @@ define([
 
     var wordpressHelper = {};
 
+    // Listen to offline status changes
+    var isOffline = false;
+    eventMgr.addListener("onOfflineChanged", function(isOfflineParam) {
+        isOffline = isOfflineParam;
+    });
+
     // Only used to check the offline status
     function connect(task) {
         task.onRun(function() {
-            if(core.isOffline === true) {
+            if(isOffline === true) {
                 task.error(new Error("Operation not available in offline mode.|stopPublish"));
                 return;
             }

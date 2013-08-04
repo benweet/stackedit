@@ -1,6 +1,18 @@
 // RequireJS configuration
 requirejs.config({
     waitSeconds: 0,
+    packages: [
+        {
+            name: 'css',
+            location: 'libs/css',
+            main: 'css'
+        },
+        {
+            name: 'less',
+            location: 'libs/less',
+            main: 'less'
+        }
+    ],
     paths: {
         "jquery": "libs/jquery",
         "underscore": "libs/underscore",
@@ -9,10 +21,6 @@ requirejs.config({
         "mousetrap": "libs/mousetrap",
         "toMarkdown": "libs/to-markdown",
         "text": "libs/text",
-        "css": "libs/css",
-        "less": "libs/less",
-        "lessc": "libs/lessc",
-        "normalize": "libs/normalize",
         "libs/MathJax": '../lib/MathJax/MathJax.js?config=TeX-AMS_HTML'
     },
     shim: {

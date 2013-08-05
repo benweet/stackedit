@@ -11,4 +11,5 @@
             indent_level: 1,
         },
     },
+	excludeShallow: ['css/css-builder', 'less/lessc-server', 'less/lessc'],
 })

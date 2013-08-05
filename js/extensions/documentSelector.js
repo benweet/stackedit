@@ -47,7 +47,7 @@ define([
             _.chain(attributesList).sortBy(function(attributes) {
                 return attributes.provider.providerId;
             }).each(function(attributes) {
-                var classes = 'icon-' + attributes.provider.providerId;
+                var classes = 'icon-provider-' + attributes.provider.providerId;
                 if(attributes.isRealtime === true) {
                     classes += " realtime";
                 }

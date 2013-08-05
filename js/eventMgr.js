@@ -29,7 +29,7 @@ define([
     "extensions/buttonHtmlCode",
     "extensions/buttonMarkdownSyntax",
     "extensions/buttonViewer",
-    "libs/bootstrap",
+    "libs/bootstrap/bootstrap",
     "libs/jquery.waitforimages"
 ], function($, _, crel, utils, Extension, settings, settingsExtensionsAccordionHTML) {
 

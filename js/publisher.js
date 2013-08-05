@@ -227,7 +227,7 @@ define([
         var publishMenu = $("#publish-menu");
         _.each(providerMap, function(provider) {
             // Provider's publish button
-            publishMenu.append($("<li>").append($('<a href="#"><i class="icon-' + provider.providerId + '"></i> ' + provider.providerName + '</a>').click(function() {
+            publishMenu.append($("<li>").append($('<a href="#"><i class="icon-provider-' + provider.providerId + '"></i> ' + provider.providerName + '</a>').click(function() {
                 initNewLocation(provider);
             })));
             // Action links (if any)

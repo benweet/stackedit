@@ -45,7 +45,7 @@ requirejs.config({
         'libs/jquery-ui': [
             'jquery'
         ],
-        'libs/bootstrap': [
+        'libs/bootstrap/bootstrap': [
             'jquery'
         ],
         'libs/jquery.waitforimages': [
@@ -92,9 +92,7 @@ require([
     "synchronizer",
     "publisher",
     "mediaImporter",
-    "css!styles/jgrowl.css",
-    "css!styles/prettify.css",
-    "css!styles/highlight.css",
+    "css",
     "less!styles/main.less",
 ], function($, core) {
 

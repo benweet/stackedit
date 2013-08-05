@@ -19,8 +19,8 @@ define([
             return;
         }
 
-        var linkList = $("#link-container .link-list").empty();
-        $("#link-container .no-link").show();
+        var linkList = $(".link-container .link-list").empty();
+        $(".link-container .no-link").show();
 
         var attributesList = _.values(fileDesc.publishLocations);
         _.each(attributesList, function(attributes) {
@@ -29,7 +29,7 @@ define([
                     link: attributes.sharingLink
                 }));
                 linkList.append(lineElement);
-                $("#link-container .no-link").hide();
+                $(".link-container .no-link").hide();
             }
         });
     };

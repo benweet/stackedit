@@ -4,7 +4,7 @@
 		<ul class="nav">
 			<li><div id="wmd-button-bar"></div></li>
 		</ul>
-		<ul class="nav pull-right" id="menu-bar">
+		<ul class="nav pull-right">
 			<li id="extension-buttons"></li>
 			<li class="btn-group"><button class="btn btn-default action-create-file"
 					title="New local document">
@@ -91,7 +91,7 @@
 		</ul>
 		<ul class="nav pull-right">
 			<li><i class="working-indicator icon-none"></i></li>
-			<li><a class="brand" id="file-title" href="#"
+			<li><a class="btn btn-default" id="file-title" href="#"
 				title="Rename current document"> </a></li>
 			<li class="navbar-form"><input id="file-title-input" type="text"
 				class="col-lg-3 form-control hide" placeholder="Document title" /></li>
@@ -447,7 +447,7 @@
 			</div>
 			<div class="modal-body">
 				<div class="form-horizontal">
-					<div class="control-group modal-publish-ssh">
+					<div class="form-group modal-publish-ssh">
 						<label class="col-lg-4 control-label" for="input-publish-ssh-host">Host</label>
 						<div class="col-lg-7">
 							<input type="text" id="input-publish-ssh-host"
@@ -459,15 +459,15 @@
 							</span>
 						</div>
 					</div>
-					<div class="control-group modal-publish-ssh">
+					<div class="form-group modal-publish-ssh">
 						<label class="col-lg-4 control-label" for="input-publish-ssh-port">Port
 							(optional)</label>
-						<div class="col-lg-7">
+						<div class="col-lg-2">
 							<input type="text" id="input-publish-ssh-port" placeholder="22"
 								class="form-control">
 						</div>
 					</div>
-					<div class="control-group modal-publish-ssh">
+					<div class="form-group modal-publish-ssh">
 						<label class="col-lg-4 control-label"
 							for="input-publish-ssh-username">Username</label>
 						<div class="col-lg-7">
@@ -475,7 +475,7 @@
 								placeholder="username" class="form-control">
 						</div>
 					</div>
-					<div class="control-group modal-publish-ssh">
+					<div class="form-group modal-publish-ssh">
 						<label class="col-lg-4 control-label"
 							for="input-publish-ssh-password">Password</label>
 						<div class="col-lg-7">
@@ -488,7 +488,7 @@
 							</span>
 						</div>
 					</div>
-					<div class="control-group modal-publish-github">
+					<div class="form-group modal-publish-github">
 						<label class="col-lg-4 control-label"
 							for="input-publish-github-reponame">Repository</label>
 						<div class="col-lg-7">
@@ -496,7 +496,7 @@
 								placeholder="repository-name" class="form-control">
 						</div>
 					</div>
-					<div class="control-group modal-publish-github">
+					<div class="form-group modal-publish-github">
 						<label class="col-lg-4 control-label"
 							for="input-publish-github-username">Username (optional)</label>
 						<div class="col-lg-7">
@@ -504,7 +504,7 @@
 								placeholder="username" class="form-control">
 						</div>
 					</div>
-					<div class="control-group modal-publish-github">
+					<div class="form-group modal-publish-github">
 						<label class="col-lg-4 control-label"
 							for="input-publish-github-branch">Branch</label>
 						<div class="col-lg-7">
@@ -512,7 +512,7 @@
 								placeholder="branch-name" class="form-control">
 						</div>
 					</div>
-					<div class="control-group modal-publish-ssh modal-publish-github">
+					<div class="form-group modal-publish-ssh modal-publish-github">
 						<label class="col-lg-4 control-label"
 							for="input-publish-file-path">File path</label>
 						<div class="col-lg-7">
@@ -520,14 +520,14 @@
 								placeholder="path/to/file.md" class="form-control">
 						</div>
 					</div>
-					<div class="control-group modal-publish-gist">
+					<div class="form-group modal-publish-gist">
 						<label class="col-lg-4 control-label" for="input-publish-filename">Filename</label>
 						<div class="col-lg-7">
 							<input type="text" id="input-publish-filename"
 								placeholder="filename" class="form-control">
 						</div>
 					</div>
-					<div class="control-group modal-publish-gist">
+					<div class="form-group modal-publish-gist">
 						<label class="col-lg-4 control-label" for="input-publish-gist-id">Existing
 							ID (optional)</label>
 						<div class="col-lg-7">
@@ -535,7 +535,7 @@
 								placeholder="GistID" class="form-control">
 						</div>
 					</div>
-					<div class="control-group modal-publish-gist">
+					<div class="form-group modal-publish-gist">
 						<label class="col-lg-4 control-label"
 							for="input-publish-gist-public">Public</label>
 						<div class="col-lg-7">
@@ -545,7 +545,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="control-group modal-publish-blogger">
+					<div class="form-group modal-publish-blogger">
 						<label class="col-lg-4 control-label"
 							for="input-publish-blogger-url">Blog URL</label>
 						<div class="col-lg-7">
@@ -553,7 +553,7 @@
 								placeholder="http://exemple.blogger.com/" class="form-control">
 						</div>
 					</div>
-					<div class="control-group modal-publish-tumblr">
+					<div class="form-group modal-publish-tumblr">
 						<label class="col-lg-4 control-label"
 							for="input-publish-tumblr-hostname">Blog hostname</label>
 						<div class="col-lg-7">
@@ -561,7 +561,7 @@
 								placeholder="exemple.tumblr.com" class="form-control">
 						</div>
 					</div>
-					<div class="control-group modal-publish-wordpress">
+					<div class="form-group modal-publish-wordpress">
 						<label class="col-lg-4 control-label"
 							for="input-publish-tumblr-hostname">WordPress site</label>
 						<div class="col-lg-7">
@@ -574,7 +574,7 @@
 						</div>
 					</div>
 					<div
-						class="control-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">
+						class="form-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">
 						<label class="col-lg-4 control-label" for="input-publish-postid">Update
 							existing post ID (optional)</label>
 						<div class="col-lg-7">
@@ -582,7 +582,7 @@
 								class="form-control">
 						</div>
 					</div>
-					<div class="control-group modal-publish-blogger">
+					<div class="form-group modal-publish-blogger">
 						<label class="col-lg-4 control-label" for="input-publish-labels">Labels
 							(comma separated)</label>
 						<div class="col-lg-7">
@@ -591,7 +591,7 @@
 						</div>
 					</div>
 					<div
-						class="control-group modal-publish-tumblr modal-publish-wordpress">
+						class="form-group modal-publish-tumblr modal-publish-wordpress">
 						<label class="col-lg-4 control-label" for="input-publish-tags">Tags
 							(comma separated)</label>
 						<div class="col-lg-7">
@@ -599,7 +599,7 @@
 								placeholder="Tag1, Tag2" class="form-control">
 						</div>
 					</div>
-					<div class="control-group modal-publish-dropbox">
+					<div class="form-group modal-publish-dropbox">
 						<label class="col-lg-4 control-label"
 							for="input-publish-dropbox-path">File path</label>
 						<div class="col-lg-7">
@@ -607,7 +607,7 @@
 								placeholder="/path/to/My Document.html" class="form-control">
 						</div>
 					</div>
-					<div class="control-group modal-publish-gdrive">
+					<div class="form-group modal-publish-gdrive">
 						<label class="col-lg-4 control-label"
 							for="input-publish-gdrive-fileid">File ID (optional)</label>
 						<div class="col-lg-7">
@@ -618,7 +618,7 @@
 								the file afterwards within Google Drive.</span>
 						</div>
 					</div>
-					<div class="control-group modal-publish-gdrive">
+					<div class="form-group modal-publish-gdrive">
 						<label class="col-lg-4 control-label"
 							for="input-publish-gdrive-filename">Force filename
 							(optional)</label>
@@ -631,7 +631,7 @@
 					</div>
 
 					<div class="form-group">
-						<div class="col-lg-4 control-label">Format</div>
+						<label class="col-lg-4 control-label">Format</label>
 						<div class="col-lg-7">
 							<div class="radio">
 								<label> <input type="radio" name="radio-publish-format"

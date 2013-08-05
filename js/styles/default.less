@@ -1,11 +1,14 @@
 @bg-light: #f2f2f2;
 @preview-bg-light: #e8e8e8;
-@bg-navbar-hover: #eee;
+@bg-navbar-hover: @body-bg;
 @text-inv: #fff;
 @text-light: #888;
 @error-border: #ff8661;
 @icon-color: #525252;
 @icon-color-inv: #fff;
+@menu-width: 250px;
+@menu-bg: @bg-navbar-hover;
+@transparent: fade(#000, 0%);
 
 /* Bootstrap */
 @body-bg: #f5f5f5;
@@ -17,13 +20,62 @@
 @input-color-placeholder: #ccc;
 @btn-default-color: #333333;
 @btn-default-bg: #fff;
-@btn-default-border: fade(#000, 0%);
+@btn-default-border: @transparent;
 @btn-primary-color: #fff;
 @btn-primary-bg: #777;
-@btn-primary-border: fade(#000, 0%);
+@btn-primary-border: @transparent;
+@btn-success-color: #333333;
+@btn-success-bg: @navbar-bg;
+@btn-success-border: @transparent;
 @btn-info-bg: @body-bg;
-@btn-info-border: fade(#000, 0%);
+@btn-info-border: @transparent;
 @gray-lighter: @body-bg;
+@list-group-border: @transparent;
+
+.menu-panel {
+	position: absolute;
+	height: 100% !important;
+	width: @menu-width;
+	z-index: 10;
+	margin-left: (-@menu-width - 30);
+	background-color: @menu-bg;
+	.box-shadow(0 6px 12px rgba(0,0,0,.175));
+	border: 1px solid @dropdown-border;
+	overflow: initial;
+	-webkit-transition: margin-left 0.35s ease;
+        -moz-transition: margin-left 0.35s ease;
+        -o-transition: margin-left 0.35s ease;
+        transition: margin-left 0.35s ease;
+	&.in {
+        margin-left: 0;
+        .menu-button {
+        	background-color: @menu-bg;
+        }
+    }
+    .menu-button {
+	    right: -80px;
+		position: absolute;
+		margin-top: 5px;
+		padding: 2px 20px 2px;
+		z-index: -1;
+	}
+	.menu-container {
+		overflow: auto;
+		height: 100%;
+		.list-group {
+			margin-top: 5px;
+			.list-group-item {
+				color: @btn-default-color;
+			}
+			i {
+				margin-right: 5px;
+			}
+			ul.nav > li > a {
+				padding-left: 25px;
+			}
+		}		
+	}
+}
 
 
 body {
@@ -64,6 +116,10 @@ Override Bootstrap
 	color: @btn-primary-color;
 }
 
+.btn-success:hover {
+	background-color: @bg-navbar-hover;
+}
+
 .btn-group {
 	margin-right: 10px;
 }
@@ -87,9 +143,6 @@ Override Bootstrap
 	border-width: 0;
 }
 
-.modal-body {
-	padding-bottom: 0;
-}
 
 /********************
  * Input
@@ -170,16 +223,7 @@ Override Bootstrap
 			}
 		}
 	}
-	.btn-group > .btn,
-	#file-title {
-		background-color: @navbar-bg;
-		border-color: @navbar-bg;
-		&:hover,
-		&:focus,
-		&:active,
-		&.active {
-			background-color: @bg-navbar-hover;
-		}
+	.btn-group > .btn {
 		&.disabled,
 		&.blocked,
 		&[disabled] {
@@ -428,7 +472,7 @@ hr {
 
 .wmd-button-row {
 	padding: 0;
-	margin-left: 10px;
+	margin-left: 40px;
 }
 
 .wmd-spacer {
@@ -650,11 +694,6 @@ div.dropdown-menu textarea {
 	textarea {
 		max-width: 100%;
 		min-height: 100px;
-	}
-	
-	.modal-body {
-		max-height: 450px;
-		overflow: auto;
 	}
 	
 	.accordion-group {

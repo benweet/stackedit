@@ -205,7 +205,6 @@ define([
 
         eventMgr.onLayoutCreated(layout);
     }
-    ;
 
     // Create the PageDown editor
     var editor = undefined;
@@ -333,7 +332,7 @@ define([
         editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
 
         // Hide default buttons
-        $(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)").addClass("btn btn-default").css("left", 0).find("span").hide();
+        $(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)").addClass("btn btn-success").css("left", 0).find("span").hide();
 
         // Add customized buttons
         $("#wmd-bold-button").append($('<i class="icon-bold">'));

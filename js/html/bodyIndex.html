@@ -6,15 +6,16 @@
 		</ul>
 		<ul class="nav pull-right">
 			<li id="extension-buttons"></li>
-			<li class="btn-group"><button class="btn btn-default action-create-file"
+			<li class="btn-group"><button
+					class="btn btn-success action-create-file"
 					title="New local document">
 					<i class="icon-file"></i>
 				</button>
-				<button class="btn btn-default" title="Delete local document"
+				<button class="btn btn-success" title="Delete local document"
 					data-toggle="modal" data-target="#modal-remove-file-confirm">
 					<i class="icon-trash"></i>
 				</button>
-				<button class="btn btn-default dropdown-toggle action-open-file"
+				<button class="btn btn-success dropdown-toggle action-open-file"
 					data-toggle="dropdown" title="Open local document">
 					<i class="icon-folder-open"></i>
 				</button>
@@ -26,72 +27,10 @@
 						</div>
 					</li>
 				</ul></li>
-			<li class="btn-group"><button class="btn btn-default dropdown-toggle"
-					data-toggle="dropdown" title="Menu">
-					<i class="icon-provider-stackedit"></i>&nbsp;&nbsp;<i class="icon-down-dir"></i>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="viewer.html" title="StackEdit Viewer"><i
-							class="icon-resize-full"></i> StackEdit Viewer</a></li>
-					<li class="dropdown-submenu"><a href="#"><i
-							class="icon-hdd"></i> Open from...</a>
-						<ul class="dropdown-menu">
-							<li><a data-toggle="modal"
-								data-target="#modal-import-harddrive-markdown"
-								class="action-reset-input" href="#">Import from hard drive</a></li>
-							<li><a data-toggle="modal"
-								data-target="#modal-import-harddrive-html"
-								class="action-reset-input" href="#">Convert HTML to Markdown</a></li>
-						</ul></li>
-					<li class="dropdown-submenu"><a href="#"><i
-							class="icon-hdd"></i> Save as...</a>
-						<ul class="dropdown-menu">
-							<li><a class="action-download-md" href="#">Save as
-									Markdown</a></li>
-							<li><a class="action-download-html" href="#">Save as
-									HTML</a></li>
-							<li><a class="action-download-template" href="#">Save
-									using template</a></li>
-						</ul></li>
-					<li class="divider with-text">synchronize</li>
-					<li class="dropdown-submenu"><a href="#"><i
-							class="icon-provider-gdrive"></i> Google Drive</a>
-						<ul class="dropdown-menu">
-							<li><a href="#" class="action-sync-import-gdrive">Import
-									from Google Drive</a></li>
-							<li><a href="#" class="action-sync-export-dialog-gdrive">Export
-									to Google Drive</a></li>
-						</ul></li>
-					<li class="dropdown-submenu"><a href="#"><i
-							class="icon-provider-dropbox"></i> Dropbox</a>
-						<ul class="dropdown-menu">
-							<li><a class="action-sync-import-dropbox" href="#">Import
-									from Dropbox</a></li>
-							<li><a href="#" class="action-sync-export-dialog-dropbox">Export
-									to Dropbox</a></li>
-						</ul></li>
-					<li><a href="#" data-toggle="modal"
-						data-target="#modal-manage-sync" class="action-reset-input"><i
-							class="icon-refresh"></i> Manage synchronization</a></li>
-					<li class="divider with-text">publish</li>
-					<li class="dropdown-submenu"><a href="#"><i
-							class="icon-share"></i> Publish on</a>
-						<ul id="publish-menu" class="dropdown-menu">
-						</ul></li>
-					<li><a href="#" data-toggle="modal"
-						data-target="#modal-manage-publish" class="action-reset-input"><i
-							class="icon-share"></i> Manage publication</a></li>
-					<li class="divider"></li>
-					<li><a href="#" data-toggle="modal"
-						data-target="#modal-settings" class="action-load-settings"><i
-							class="icon-cog"></i> Settings</a></li>
-					<li><a href="#" data-toggle="modal" data-target="#modal-about"><i
-							class="icon-help-circled"></i> About</a></li>
-				</ul></li>
 		</ul>
 		<ul class="nav pull-right">
 			<li><i class="working-indicator icon-none"></i></li>
-			<li><a class="btn btn-default" id="file-title" href="#"
+			<li><a class="btn btn-success" id="file-title" href="#"
 				title="Rename current document"> </a></li>
 			<li class="navbar-form"><input id="file-title-input" type="text"
 				class="col-lg-3 form-control hide" placeholder="Document title" /></li>
@@ -101,6 +40,80 @@
 <textarea id="wmd-input" class="ui-layout-center form-control"></textarea>
 <div class="ui-layout-east preview-container"></div>
 <div class="ui-layout-south preview-container"></div>
+
+<div class="menu-panel nav-collapse collapse">
+	<button class="btn btn-success menu-button" data-toggle="collapse"
+		data-target=".menu-panel" title="Menu">
+		<i class="icon-left-dir"></i> <img src="img/stackedit-64.png"
+			width="32" height="32" />
+	</button>
+	<div class="menu-container">
+		<div class="list-group">
+			<a href="viewer.html" title="StackEdit Viewer"
+				class="list-group-item"><i class="icon-resize-full"></i>
+				StackEdit Viewer</a> <a href="#" data-toggle="collapse"
+				data-target=".collapse-open-from" class="list-group-item"><i
+				class="icon-hdd"></i> Open from...</a>
+			<ul class="nav collapse collapse-open-from">
+				<li><a data-toggle="modal"
+					data-target="#modal-import-harddrive-markdown"
+					class="action-reset-input" href="#">Import from hard drive</a></li>
+				<li><a data-toggle="modal"
+					data-target="#modal-import-harddrive-html"
+					class="action-reset-input" href="#">Convert HTML to Markdown</a></li>
+			</ul>
+
+			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"
+				class="list-group-item"><i class="icon-hdd"></i> Save as...</a>
+			<ul class="nav collapse collapse-save-as">
+				<li><a class="action-download-md" href="#">Save as Markdown</a></li>
+				<li><a class="action-download-html" href="#">Save as HTML</a></li>
+				<li><a class="action-download-template" href="#">Save using
+						template</a></li>
+			</ul>
+		</div>
+		<div class=dropdown-header>SYNCHRONIZE</div>
+		<div class="list-group">
+			<a href="#" data-toggle="collapse"
+				data-target=".collapse-sync-gdrive" class="list-group-item"><i
+				class="icon-provider-gdrive"></i> Google Drive</a>
+			<ul class="nav collapse collapse-sync-gdrive">
+				<li><a href="#" class="action-sync-import-gdrive">Import
+						from Google Drive</a></li>
+				<li><a href="#" class="action-sync-export-dialog-gdrive">Export
+						to Google Drive</a></li>
+			</ul>
+			<a href="#" data-toggle="collapse"
+				data-target=".collapse-sync-dropbox" class="list-group-item"><i
+				class="icon-provider-dropbox"></i> Dropbox</a>
+			<ul class="nav collapse collapse-sync-dropbox">
+				<li><a class="action-sync-import-dropbox" href="#">Import
+						from Dropbox</a></li>
+				<li><a href="#" class="action-sync-export-dialog-dropbox">Export
+						to Dropbox</a></li>
+			</ul>
+			<a href="#" data-toggle="modal" data-target="#modal-manage-sync"
+				class="action-reset-input list-group-item"><i
+				class="icon-refresh"></i> Manage synchronization</a>
+		</div>
+		<div class=dropdown-header>PUBLISH</div>
+		<div class="list-group">
+			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"
+				class="list-group-item"><i class="icon-share"></i> Publish on</a>
+			<ul class="nav collapse collapse-publish-on">
+			</ul>
+			<a href="#" data-toggle="modal" data-target="#modal-manage-publish"
+				class="action-reset-input list-group-item"><i class="icon-share"></i>
+				Manage publication</a>
+		</div>
+		<div class="list-group">
+			<a href="#" data-toggle="modal" data-target="#modal-settings"
+				class="action-load-settings list-group-item"><i class="icon-cog"></i>
+				Settings</a> <a href="#" data-toggle="modal" data-target="#modal-about" class=" list-group-item"><i
+				class="icon-help-circled"></i> About</a>
+		</div>
+	</div>
+</div>
 
 
 <div id="modal-insert-link" class="modal">
@@ -121,8 +134,9 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a> <a href="#"
-					class="btn btn-primary action-insert-link" data-dismiss="modal">OK</a>
+				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<a href="#" class="btn btn-primary action-insert-link"
+					data-dismiss="modal">OK</a>
 			</div>
 		</div>
 	</div>
@@ -148,10 +162,10 @@
 			</div>
 			<div class="modal-footer">
 				<a href="#" class="btn btn-default action-import-image-gplus"
-					data-dismiss="modal"><i class="icon-provider-gplus"></i> Import from
-					Google+</a> <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a> <a
-					href="#" class="btn btn-primary action-insert-image"
-					data-dismiss="modal">OK</a>
+					data-dismiss="modal"><i class="icon-provider-gplus"></i> Import
+					from Google+</a> <a href="#" class="btn btn-default"
+					data-dismiss="modal">Cancel</a> <a href="#"
+					class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>
 			</div>
 		</div>
 	</div>
@@ -193,8 +207,9 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a> <a href="#"
-					class="btn btn-primary action-import-image" data-dismiss="modal">OK</a>
+				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<a href="#" class="btn btn-primary action-import-image"
+					data-dismiss="modal">OK</a>
 			</div>
 		</div>
 	</div>
@@ -220,8 +235,9 @@
 				</blockquote>
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a> <a href="#"
-					class="btn btn-primary action-remove-file" data-dismiss="modal">Delete</a>
+				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<a href="#" class="btn btn-primary action-remove-file"
+					data-dismiss="modal">Delete</a>
 			</div>
 		</div>
 	</div>
@@ -277,8 +293,9 @@
 				<textarea id="input-convert-html"></textarea>
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn btn-default" data-dismiss="modal">Close</a> <a href="#"
-					class="btn btn-primary action-convert-html" data-dismiss="modal">OK</a>
+				<a href="#" class="btn btn-default" data-dismiss="modal">Close</a> <a
+					href="#" class="btn btn-primary action-convert-html"
+					data-dismiss="modal">OK</a>
 			</div>
 		</div>
 	</div>
@@ -332,8 +349,8 @@
 				</blockquote>
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a> <a href="#"
-					data-dismiss="modal"
+				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<a href="#" data-dismiss="modal"
 					class="btn btn-primary action-sync-export-gdrive">OK</a>
 			</div>
 		</div>
@@ -374,8 +391,8 @@
 				</blockquote>
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a> <a href="#"
-					data-dismiss="modal"
+				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<a href="#" data-dismiss="modal"
 					class="btn btn-primary action-sync-export-dropbox">OK</a>
 			</div>
 		</div>
@@ -408,18 +425,19 @@
 				<p>Add a synchronized location manually:</p>
 				<div class="input-prepend input-append sync-manual">
 					<span class="add-on" title="Google Drive"><i
-						class="icon-provider-gdrive"></i></span><input id="input-sync-manual-gdrive-id"
-						type="text" class="col-lg-5 form-control"
-						placeholder="GoogleDriveFileID"></input> <a
-						class="btn btn-default action-sync-manual-gdrive" title="Add location"
-						data-dismiss="modal"><i class="icon-ok"></i></a>
+						class="icon-provider-gdrive"></i></span><input
+						id="input-sync-manual-gdrive-id" type="text"
+						class="col-lg-5 form-control" placeholder="GoogleDriveFileID"></input>
+					<a class="btn btn-default action-sync-manual-gdrive"
+						title="Add location" data-dismiss="modal"><i class="icon-ok"></i></a>
 				</div>
 				<div class="input-prepend input-append sync-manual">
-					<span class="add-on" title="Dropbox"><i class="icon-provider-dropbox"></i></span><input
+					<span class="add-on" title="Dropbox"><i
+						class="icon-provider-dropbox"></i></span><input
 						id="input-sync-manual-dropbox-path" type="text"
 						class="col-lg-5 form-control" placeholder="/dropbox/file/path"></input>
-					<a class="btn btn-default action-sync-manual-dropbox" title="Add location"
-						data-dismiss="modal"><i class="icon-ok"></i></a>
+					<a class="btn btn-default action-sync-manual-dropbox"
+						title="Add location" data-dismiss="modal"><i class="icon-ok"></i></a>
 				</div>
 				<blockquote class="muted">
 					<b>NOTE:</b> This will first upload the document and overwrite the
@@ -653,8 +671,9 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a> <a href="#"
-					data-dismiss="modal" class="btn btn-primary action-process-publish">OK</a>
+				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<a href="#" data-dismiss="modal"
+					class="btn btn-primary action-process-publish">OK</a>
 			</div>
 		</div>
 	</div>
@@ -836,8 +855,9 @@
 
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a> <a href="#"
-					class="btn btn-primary action-apply-settings" data-dismiss="modal">OK</a>
+				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<a href="#" class="btn btn-primary action-apply-settings"
+					data-dismiss="modal">OK</a>
 			</div>
 		</div>
 	</div>
@@ -896,8 +916,9 @@
 				<blockquote class="muted">Are you sure?</blockquote>
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a> <a href="#"
-					class="btn btn-primary action-app-reset" data-dismiss="modal">OK</a>
+				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<a href="#" class="btn btn-primary action-app-reset"
+					data-dismiss="modal">OK</a>
 			</div>
 		</div>
 	</div>

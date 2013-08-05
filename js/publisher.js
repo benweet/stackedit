@@ -224,7 +224,7 @@ define([
 
     eventMgr.addListener("onReady", function() {
         // Add every provider
-        var publishMenu = $("#publish-menu");
+        var publishMenu = $(".collapse-publish-on");
         _.each(providerMap, function(provider) {
             // Provider's publish button
             publishMenu.append($("<li>").append($('<a href="#"><i class="icon-provider-' + provider.providerId + '"></i> ' + provider.providerName + '</a>').click(function() {

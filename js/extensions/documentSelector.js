@@ -59,7 +59,7 @@ define([
         }
 
         liMap = {};
-        $("#file-selector li:not(.stick)").empty();
+        $(".file-selector li:not(.stick)").empty();
         _.chain(fileSystem).sortBy(sortFunction).each(function(fileDesc) {
             var a = $('<a href="#">').html(composeTitle(fileDesc)).click(function() {
                 if(!liMap[fileDesc.fileIndex].is(".disabled")) {
@@ -74,7 +74,7 @@ define([
             if(fileDesc === selectFileDesc) {
                 li.addClass("disabled");
             }
-            $("#file-selector").append(li);
+            $(".file-selector").append(li);
         });
         liArray = _.values(liMap);
     };
@@ -94,7 +94,7 @@ define([
 
     // Filter for search input in file selector
     function filterFileSelector(filter) {
-        var liList = $("#file-selector li:not(.stick)");
+        var liList = $(".file-selector li:not(.stick)");
         liList.show();
         if(filter) {
             var words = filter.toLowerCase().split(/\s+/);
@@ -123,7 +123,7 @@ define([
 
         var shortcutLi = undefined;
         $(".action-open-file").click(function() {
-            if($("#file-selector").parent().is(".open")) {
+            if($(".file-selector").parent().is(".open")) {
                 return;
             }
             filterFileSelector();
@@ -153,7 +153,7 @@ define([
         var shortcutPrevious = documentSelector.config.shortcutPrevious.toLowerCase();
         mousetrap.bind(shortcutPrevious, function() {
             if(shortcutLi === undefined) {
-                $("#file-selector").parent().is(".open") || $(".action-open-file").click();
+                $(".file-selector").parent().is(".open") || $(".action-open-file").click();
                 shortcutLi = liMap[selectFileDesc.fileIndex];
             }
             var liIndex = _.indexOf(liArray, shortcutLi) - 1;
@@ -169,7 +169,7 @@ define([
         var shortcutNext = documentSelector.config.shortcutNext.toLowerCase();
         mousetrap.bind(documentSelector.config.shortcutNext.toLowerCase(), function() {
             if(shortcutLi === undefined) {
-                $("#file-selector").parent().is(".open") || $(".action-open-file").click();
+                $(".file-selector").parent().is(".open") || $(".action-open-file").click();
                 shortcutLi = liMap[selectFileDesc.fileIndex];
             }
             var liIndex = _.indexOf(liArray, shortcutLi) + 1;

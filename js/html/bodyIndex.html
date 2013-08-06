@@ -14,19 +14,18 @@
 				<button class="btn btn-success" title="Delete local document"
 					data-toggle="modal" data-target="#modal-remove-file-confirm">
 					<i class="icon-trash"></i>
-				</button>
-				<button class="btn btn-success dropdown-toggle action-open-file"
-					data-toggle="dropdown" title="Open local document">
-					<i class="icon-folder-open"></i>
-				</button>
-				<ul id="file-selector" class="dropdown-menu">
+				</button></li>
+			<li>
+				<button data-toggle="dropdown" class="action-open-file hide"></button>
+				<ul class="dropdown-menu file-selector">
 					<li class="stick">
-						<div class="input-prepend">
-							<span class="add-on"><i class="icon-search"></i></span><input
+						<div class="input-group">
+							<span class="input-group-addon"><i class="icon-search"></i></span><input
 								type="text" id="file-search" class="col-lg-3 form-control">
 						</div>
 					</li>
-				</ul></li>
+				</ul>
+			</li>
 		</ul>
 		<ul class="nav pull-right">
 			<li><i class="working-indicator icon-none"></i></li>
@@ -41,6 +40,14 @@
 <div class="ui-layout-east preview-container"></div>
 <div class="ui-layout-south preview-container"></div>
 
+
+<div class="document-panel nav-collapse collapse">
+	<button class="btn btn-success document-button" data-toggle="collapse"
+		data-target=".document-panel" title="Menu">
+		<i class="icon-folder-open"></i> <i class="icon-right-dir"></i>
+	</button>
+	<div class="document-container"></div>
+</div>
 <div class="menu-panel nav-collapse collapse">
 	<button class="btn btn-success menu-button" data-toggle="collapse"
 		data-target=".menu-panel" title="Menu">
@@ -99,19 +106,22 @@
 		<div class=dropdown-header>PUBLISH</div>
 		<div class="list-group">
 			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"
-				class="list-group-item"><i class="icon-share"></i> Publish on</a>
+				class="list-group-item"><i class="icon-share"></i> Publish on...</a>
 			<ul class="nav collapse collapse-publish-on">
 			</ul>
 			<a href="#" data-toggle="modal" data-target="#modal-manage-publish"
 				class="action-reset-input list-group-item"><i class="icon-share"></i>
 				Manage publication</a>
 		</div>
-		<div class="list-group">
-			<a href="#" data-toggle="modal" data-target="#modal-settings"
+		<ul class="nav">
+			<li><a href="#" data-toggle="modal"
+				data-target="#modal-settings"
 				class="action-load-settings list-group-item"><i class="icon-cog"></i>
-				Settings</a> <a href="#" data-toggle="modal" data-target="#modal-about" class=" list-group-item"><i
-				class="icon-help-circled"></i> About</a>
-		</div>
+					Settings</a></li>
+			<li><a href="#" data-toggle="modal" data-target="#modal-about"
+				class=" list-group-item"><i class="icon-help-circled"></i> About</a></li>
+		</ul>
+
 	</div>
 </div>
 
@@ -127,8 +137,8 @@
 			</div>
 			<div class="modal-body">
 				<p>Please provide the link URL and an optional title:</p>
-				<div class="input-prepend">
-					<span class="add-on"><i class="icon-globe"></i></span><input
+				<div class="input-group">
+					<span class="input-group-addon"><i class="icon-globe"></i></span><input
 						id="input-insert-link" type="text" class="col-lg-5 form-control"
 						placeholder='http://example.com/ "optional title"'></input>
 				</div>
@@ -154,8 +164,8 @@
 			</div>
 			<div class="modal-body">
 				<p>Please provide the image URL and an optional title:</p>
-				<div class="input-prepend">
-					<span class="add-on"><i class="icon-picture"></i></span><input
+				<div class="input-group">
+					<span class="input-group-addon"><i class="icon-picture"></i></span><input
 						id="input-insert-image" type="text" class="col-lg-5 form-control"
 						placeholder='http://example.com/image.jpg "optional title"'></input>
 				</div>
@@ -201,7 +211,7 @@
 							for="input-import-image-size">Size limit (optional)</label>
 						<div class="col-lg-7">
 							<input type="text" id="input-import-image-size" placeholder="123"
-								class="col-lg-2 form-control"><span class="help-inline">px</span>
+								class="col-lg-3 form-control"> px
 						</div>
 					</div>
 				</div>

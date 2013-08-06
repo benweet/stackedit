@@ -390,25 +390,48 @@ define([
         $(".dropdown-submenu > a").click(function(e) {
             e.stopPropagation();
         });
-
-        var shownModalId = undefined;
-        $(".modal").on('shown', function(e) {
+        
+        var menuPanelElt = $('.menu-panel');
+        var isMenuPanelShown = false;
+        menuPanelElt.on('shown.bs.collapse', function() {
+            isMenuPanelShown = true;
+            // Register a click listener when menu panel is open
+            $(document).on("click.hide-menu-panel", function(e) {
+                if(!$(e.target).is('.menu-panel [data-toggle=collapse]')) {
+                    // If click outside the panel, close the panel and unregister the listener
+                    menuPanelElt.collapse('hide');
+                    $(document).off("click.hide-menu-panel");
+                    isMenuPanelShown = false;
+                }
+            });
+        });
+        
+        var documentPanelElt = $('.document-panel');
+        var isDocumentPanelShown = false;
+        documentPanelElt.on('shown.bs.collapse', function() {
+            isDocumentPanelShown = true;
+            // Register a click listener when document panel is open
+            $(document).on("click.hide-document-panel", function(e) {
+                if(!$(e.target).is('.document-panel [data-toggle=collapse]')) {
+                    // If click outside the panel, close the panel and unregister the listener
+                    documentPanelElt.collapse('hide');
+                    $(document).off("click.hide-document-panel");
+                    isDocumentPanelShown = false;
+                }
+            });
+        });
+        
+        var isModalShown = false;
+        $('.modal').on('shown.bs.modal', function() {
             // Focus on the first input when modal opens
-            var modalId = $(this).attr("id");
-            if(shownModalId != modalId) {
-                // Hack to avoid conflict with tabs, collapse, tooltips events
-                shownModalId = modalId;
-                _.defer(function(elt) {
-                    elt.find("input:enabled:visible:first").focus();
-                }, $(this));
-            }
-        }).on('hidden', function() {
+            isModalShown = true;
+            _.defer(function(elt) {
+                elt.find("input:enabled:visible:first").focus();
+            }, $(this));
+        }).on('hidden.bs.modal', function() {
             // Focus on the editor when modal is gone
-            var modalId = $(this).attr("id");
-            if(shownModalId == modalId && $(this).is(":hidden")) {
-                shownModalId = undefined;
-                $("#wmd-input").focus();
-            }
+            isModalShown = false;
+            $("#wmd-input").focus();
         }).keyup(function(e) {
             // Handle enter key in modals
             if(e.which == 13 && !$(e.target).is("textarea")) {
@@ -418,7 +441,7 @@ define([
 
         // Configure Mousetrap
         mousetrap.stopCallback = function(e, element, combo) {
-            return uiLocked || shownModalId || $(element).is("input, select, textarea:not(#wmd-input)");
+            return uiLocked || isMenuPanelShown || isDocumentPanelShown || isModalShown || $(element).is("input, select, textarea:not(#wmd-input)");
         };
 
         // UI layout
@@ -487,7 +510,7 @@ define([
         });
 
         // Hide events on "insert link" and "insert image" dialogs
-        $("#modal-insert-link, #modal-insert-image").on('hidden', function() {
+        $("#modal-insert-link, #modal-insert-image").on('hidden.bs.modal', function() {
             if(core.insertLinkCallback !== undefined) {
                 core.insertLinkCallback(null);
                 core.insertLinkCallback = undefined;

@@ -601,13 +601,7 @@
     {
       "uid": "f8aa663c489bcbd6e68ec8147dca841e",
       "css": "folder",
-      "code": 59720,
-      "src": "fontawesome"
-    },
-    {
-      "uid": "c95735c17a10af81448c7fed98a04546",
-      "css": "folder-open",
-      "code": 59481,
+      "code": 59433,
       "src": "fontawesome"
     },
     {
@@ -1898,6 +1892,12 @@
       "uid": "838db85de51df09e2d0c34a17dc30ff6",
       "css": "code",
       "code": 59460,
+      "src": "websymbols"
+    },
+    {
+      "uid": "f242fed2af708c938523b0e14d9c6b07",
+      "css": "folder-open",
+      "code": 59422,
       "src": "websymbols"
     }
   ]

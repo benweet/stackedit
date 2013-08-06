@@ -6,7 +6,8 @@
 @error-border: #ff8661;
 @icon-color: #525252;
 @icon-color-inv: #fff;
-@menu-width: 250px;
+@menu-panel-width: 250px;
+@document-panel-width: 250px;
 @menu-bg: @bg-navbar-hover;
 @transparent: fade(#000, 0%);
 
@@ -31,51 +32,6 @@
 @btn-info-border: @transparent;
 @gray-lighter: @body-bg;
 @list-group-border: @transparent;
-
-.menu-panel {
-	position: absolute;
-	height: 100% !important;
-	width: @menu-width;
-	z-index: 10;
-	margin-left: (-@menu-width - 30);
-	background-color: @menu-bg;
-	.box-shadow(0 6px 12px rgba(0,0,0,.175));
-	border: 1px solid @dropdown-border;
-	overflow: initial;
-	-webkit-transition: margin-left 0.35s ease;
-        -moz-transition: margin-left 0.35s ease;
-        -o-transition: margin-left 0.35s ease;
-        transition: margin-left 0.35s ease;
-	&.in {
-        margin-left: 0;
-        .menu-button {
-        	background-color: @menu-bg;
-        }
-    }
-    .menu-button {
-	    right: -80px;
-		position: absolute;
-		margin-top: 5px;
-		padding: 2px 20px 2px;
-		z-index: -1;
-	}
-	.menu-container {
-		overflow: auto;
-		height: 100%;
-		.list-group {
-			margin-top: 5px;
-			.list-group-item {
-				color: @btn-default-color;
-			}
-			i {
-				margin-right: 5px;
-			}
-			ul.nav > li > a {
-				padding-left: 25px;
-			}
-		}		
-	}
-}
 
 
 body {
@@ -202,6 +158,8 @@ Override Bootstrap
  
 .navbar {
 	position: static;
+	padding-left: 55px;
+	padding-right: 35px;
 	.nav {
 		float: left;
 		margin: 6px 0 0;
@@ -232,54 +190,24 @@ Override Bootstrap
 			}
 		}
 	}
+	
+	// Dropdown menus
 	.btn-group.open .dropdown-toggle {
 		background-color: @bg-navbar-hover;
-	}	
-	
-	// Support for dropdown submenu (from Bootstrap v2)
-	.dropdown-submenu {
-		position: relative;
-		
-		& > .dropdown-menu {
-			top: 0;
-			left: 100%;
-			margin-top: -6px;
-			margin-left: -1px;
-		}
-		
-		&:hover {
-			& > a {
-			    color: @dropdown-link-hover-color;
-			    #gradient > .vertical(@start-color: @dropdown-link-hover-bg; @end-color: darken(@dropdown-link-hover-bg, 5%));
-				&:after {
-					border-left-color: @dropdown-link-hover-color;
-				}
-			}
-			& > .dropdown-menu {
-				display: block;
-			}
-		}
-		
-		& > a:after {
-			display: block;
-			float: right;
-			width: 0;
-			height: 0;
-			margin-top: 5px;
-			margin-right: -10px;
-			border-color: transparent;
-			border-left-color: #cccccc;
-			border-style: solid;
-			border-width: 5px 0 5px 5px;
-			content: " ";
-		}
+	}
+	.dropdown-menu > li > a > i {
+		margin-right: 5px;
 	}
 	
-	#file-selector {
+	
+	.file-selector {
+		top: 30px;
+		right: -10px !important;
 		max-height: 500px;
+		min-width: 280px;
 		overflow-y: auto;
 		.stick {
-			padding: 10px 20px 0;
+			padding: 10px 20px;
 		}
 	}
 	
@@ -305,6 +233,108 @@ Override Bootstrap
 		}
 	}
 }
+
+
+/*********************
+ * Menu panel
+ *********************/
+ 
+.menu-panel {
+	position: absolute;
+	height: 100% !important;
+	width: @menu-panel-width;
+	z-index: 10;
+	margin-left: (-@menu-panel-width - 30);
+	background-color: @menu-bg;
+	border-right: 1px solid @dropdown-border;
+	.box-shadow(0 6px 12px rgba(0,0,0,.175));
+	overflow: initial;
+	-webkit-transition: margin-left 0.35s ease;
+        -moz-transition: margin-left 0.35s ease;
+        -o-transition: margin-left 0.35s ease;
+        transition: margin-left 0.35s ease;
+	&.in {
+        margin-left: 0;
+        .menu-button {
+        	background-color: @menu-bg;
+        }
+    }
+    .menu-button {
+	    right: -80px;
+		position: absolute;
+		margin-top: 6px;
+		padding: 2px 20px;
+		z-index: -1;
+	}
+	.menu-container {
+		overflow: auto;
+		height: 100%;
+		i {
+			margin-right: 5px;
+			color: inherit;
+		}
+		.list-group {
+			margin-top: 6px;
+			.list-group-item {
+				color: @btn-default-color;
+			}
+		}		
+	}
+}
+
+
+/*********************
+ * Document panel
+ *********************/
+ 
+.document-panel {
+	position: absolute;
+	right: 0;
+	height: 100% !important;
+	width: @document-panel-width;
+	z-index: 10;
+	margin-right: (-@document-panel-width - 30);
+	background-color: @menu-bg;
+	border-left: 1px solid @dropdown-border;
+	.box-shadow(0 6px 12px rgba(0,0,0,.175));
+	overflow: initial;
+	-webkit-transition: margin-right 0.35s ease;
+        -moz-transition: margin-right 0.35s ease;
+        -o-transition: margin-right 0.35s ease;
+        transition: margin-right 0.35s ease;
+	&.in {
+        margin-right: 0;
+        .document-button {
+        	background-color: @menu-bg;
+        }
+    }
+    .document-button {
+	    left: -80px;
+		position: absolute;
+		margin-top: 6px;
+		padding: 7px 18px;
+		z-index: -1;
+		i.icon-folder-open {
+			color: #777;
+       		font-size: 22px;
+       	}
+	}
+	.document-container {
+		overflow: auto;
+		height: 100%;
+		i {
+			margin-right: 5px;
+			color: inherit;
+		}
+		.list-group {
+			margin-top: 6px;
+			.list-group-item {
+				color: @btn-default-color;
+			}
+		}		
+	}
+}
+
 
 
 /********************
@@ -450,10 +480,6 @@ hr {
 	margin: 30px 0;
 }
 
-.dropdown-menu i {
-	margin-right: 5px;
-}
-
 
 #wmd-input {
 	-webkit-box-shadow: none !important;
@@ -472,7 +498,6 @@ hr {
 
 .wmd-button-row {
 	padding: 0;
-	margin-left: 40px;
 }
 
 .wmd-spacer {
@@ -573,6 +598,12 @@ div.dropdown-menu textarea {
 }
 
 .icon-code {
+	font-size: 80%;
+	margin-left: -1px;
+	margin-right: 5px;
+}
+
+.icon-folder-open {
 	font-size: 80%;
 	margin-left: -1px;
 	margin-right: 5px;

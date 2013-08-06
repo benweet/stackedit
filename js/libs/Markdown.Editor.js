@@ -1349,10 +1349,11 @@
         function doClick(button) {
 
             inputBox.focus();
+            var linkOrImage = button.id == "wmd-link-button" || button.id == "wmd-image-button";
 
             if (button.textOp) {
 
-                if (undoManager) {
+                if (undoManager && !linkOrImage) {
                     undoManager.setCommandMode();
                 }
 
@@ -1397,7 +1398,9 @@
 
                 if (!noCleanup) {
                     fixupInputArea();
-                    inputBox.dispatchEvent(new Event('input'));
+                    if(!linkOrImage) {
+                        inputBox.dispatchEvent(new Event('input'));
+                    }
                 }
 
             }

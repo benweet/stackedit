@@ -59,9 +59,14 @@ define([
         }
 
         liMap = {};
-        $(".file-selector li:not(.stick)").empty();
+        var fileSelectorElt = $(".file-selector");
+        fileSelectorElt.empty();
+        var documentPanelSelectorElt = $(".document-panel > .panel-content > .list-group");
+        documentPanelSelectorElt.empty();
         _.chain(fileSystem).sortBy(sortFunction).each(function(fileDesc) {
-            var a = $('<a href="#">').html(composeTitle(fileDesc)).click(function() {
+            var a = $('<a href="#">').html(composeTitle(fileDesc));
+            var documentPanelItemElt = a.clone().addClass('list-group-item');
+            documentPanelItemElt.add(a).click(function() {
                 if(!liMap[fileDesc.fileIndex].is(".disabled")) {
                     fileMgr.selectFile(fileDesc);
                 }
@@ -73,8 +78,10 @@ define([
             liMap[fileDesc.fileIndex] = li;
             if(fileDesc === selectFileDesc) {
                 li.addClass("disabled");
+                documentPanelItemElt.addClass("active");
             }
-            $(".file-selector").append(li);
+            fileSelectorElt.append(li);
+            documentPanelSelectorElt.append(documentPanelItemElt);
         });
         liArray = _.values(liMap);
     };
@@ -94,7 +101,7 @@ define([
 
     // Filter for search input in file selector
     function filterFileSelector(filter) {
-        var liList = $(".file-selector li:not(.stick)");
+        var liList = $(".file-selector > li");
         liList.show();
         if(filter) {
             var words = filter.toLowerCase().split(/\s+/);

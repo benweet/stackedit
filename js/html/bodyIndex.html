@@ -28,11 +28,13 @@
 			</li>
 		</ul>
 		<ul class="nav pull-right">
-			<li><i class="working-indicator icon-none"></i></li>
-			<li><a class="btn btn-success" id="file-title" href="#"
+			<li><a class="btn btn-success file-title-navbar" href="#"
 				title="Rename current document"> </a></li>
-			<li class="navbar-form"><input id="file-title-input" type="text"
-				class="col-lg-3 form-control hide" placeholder="Document title" /></li>
+			<li><input type="text"
+				class="col-lg-4 form-control hide input-file-title" placeholder="Document title" /></li>
+		</ul>
+		<ul class="nav pull-right">
+			<li><i class="working-indicator icon-none"></i></li>
 		</ul>
 	</div>
 </div>
@@ -41,20 +43,23 @@
 <div class="ui-layout-south preview-container"></div>
 
 
-<div class="document-panel nav-collapse collapse">
-	<button class="btn btn-success document-button" data-toggle="collapse"
+<div class="document-panel collapse width">
+	<button class="btn btn-success collapse-button" data-toggle="collapse"
 		data-target=".document-panel" title="Menu">
 		<i class="icon-folder-open"></i> <i class="icon-right-dir"></i>
 	</button>
-	<div class="document-container"></div>
+	<div class="panel-content">
+		<div class="list-group">
+		</div>
+		</div>
 </div>
-<div class="menu-panel nav-collapse collapse">
-	<button class="btn btn-success menu-button" data-toggle="collapse"
+<div class="menu-panel collapse width">
+	<button class="btn btn-success collapse-button" data-toggle="collapse"
 		data-target=".menu-panel" title="Menu">
 		<i class="icon-left-dir"></i> <img src="img/stackedit-64.png"
 			width="32" height="32" />
 	</button>
-	<div class="menu-container">
+	<div class="panel-content">
 		<div class="list-group">
 			<a href="viewer.html" title="StackEdit Viewer"
 				class="list-group-item"><i class="icon-resize-full"></i>

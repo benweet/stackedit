@@ -154,6 +154,8 @@ define([
 
         fileMgr.selectFile();
 
+        var fileTitleElt = $('.file-title-navbar');
+        var fileTitleInputElt = $(".input-file-title");
         $(".action-create-file").click(function() {
             var fileDesc = fileMgr.createFile();
             fileMgr.selectFile(fileDesc);
@@ -161,42 +163,42 @@ define([
             if(wmdInput.setSelectionRange) {
                 wmdInput.setSelectionRange(0, 0);
             }
-            $("#file-title").click();
+            fileTitleElt.click();
         });
         $(".action-remove-file").click(function() {
             fileMgr.deleteFile();
         });
-        $("#file-title").click(function() {
+        fileTitleElt.click(function() {
             if(viewerMode === true) {
                 return;
             }
-            $(this).hide();
-            var fileTitleInput = $("#file-title-input").show();
+            fileTitleElt.addClass('hide');
+            var fileTitleInput = fileTitleInputElt.removeClass('hide');
             _.defer(function() {
                 fileTitleInput.focus().get(0).select();
             });
         });
-        function applyTitle(input) {
-            input.hide();
-            $("#file-title").show();
-            var title = $.trim(input.val());
+        function applyTitle() {
+            fileTitleInputElt.addClass('hide');
+            fileTitleElt.removeClass('hide');
+            var title = $.trim(fileTitleInputElt.val());
             var fileDesc = fileMgr.currentFile;
             if(title && title != fileDesc.title) {
                 fileDesc.title = title;
                 eventMgr.onTitleChanged(fileDesc);
             }
-            input.val(fileDesc.title);
+            fileTitleInputElt.val(fileDesc.title);
             $("#wmd-input").focus();
         }
-        $("#file-title-input").blur(function() {
-            applyTitle($(this));
+        fileTitleInputElt.blur(function() {
+            applyTitle();
         }).keyup(function(e) {
             if(e.keyCode == 13) {
-                applyTitle($(this));
+                applyTitle();
             }
             if(e.keyCode == 27) {
-                $(this).val("");
-                applyTitle($(this));
+                fileTitleInputElt.val("");
+                applyTitle();
             }
         });
         $(".action-open-stackedit").click(function() {

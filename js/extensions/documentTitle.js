@@ -38,9 +38,9 @@ define([
 
         var title = fileDesc.title;
         document.title = "StackEdit - " + title;
-        $("#file-title").html(composeTitle(fileDesc));
+        $(".file-title-navbar").html(composeTitle(fileDesc));
         $(".file-title").text(title);
-        $("#file-title-input").val(title);
+        $(".input-file-title").val(title);
 
         if(layout !== undefined) {
             // Use defer to make sure UI has been updated

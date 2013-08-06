@@ -157,8 +157,21 @@ define([
         }
     }
 
-    // Create the layout
+    // Set the panels visibility
     var layout = undefined;
+    var menuPanelElt = undefined;
+    var documentPanelElt = undefined;
+    function setPanelVisibility(forceHide) {
+        if(forceHide === true || layout.state.north.isClosed) {
+            menuPanelElt.hide();
+            documentPanelElt.hide();
+        } else {
+            menuPanelElt.show();
+            documentPanelElt.show();
+        }
+    }
+    
+    // Create the layout
     function createLayout() {
         if(viewerMode === true) {
             return;
@@ -175,7 +188,15 @@ define([
             togglerLength_closed: 90,
             stateManagement__enabled: false,
             center__minWidth: 200,
-            center__minHeight: 200
+            center__minHeight: 200,
+            onopen: function() {
+                setPanelVisibility();
+            },
+            onclose_start: function(paneName) {
+                if(paneName == 'north') {
+                    setPanelVisibility(true);
+                }
+            },
         };
         eventMgr.onLayoutConfigure(layoutGlobalConfig);
         if(settings.layoutOrientation == "horizontal") {
@@ -202,6 +223,7 @@ define([
         $(".ui-layout-toggler-north").addClass("btn btn-info").append($("<b>").addClass("caret"));
         $(".ui-layout-toggler-south").addClass("btn btn-info").append($("<b>").addClass("caret"));
         $(".ui-layout-toggler-east").addClass("btn btn-info").append($("<b>").addClass("caret"));
+        setPanelVisibility();
 
         eventMgr.onLayoutCreated(layout);
     }
@@ -391,7 +413,7 @@ define([
             e.stopPropagation();
         });
         
-        var menuPanelElt = $('.menu-panel');
+        menuPanelElt = $('.menu-panel');
         var isMenuPanelShown = false;
         menuPanelElt.on('shown.bs.collapse', function() {
             isMenuPanelShown = true;
@@ -406,7 +428,7 @@ define([
             });
         });
         
-        var documentPanelElt = $('.document-panel');
+        documentPanelElt = $('.document-panel');
         var isDocumentPanelShown = false;
         documentPanelElt.on('shown.bs.collapse', function() {
             isDocumentPanelShown = true;

@@ -8,7 +8,7 @@
 @icon-color-inv: #fff;
 @menu-panel-width: 250px;
 @document-panel-width: 250px;
-@menu-bg: @bg-navbar-hover;
+@panel-bg: @bg-navbar-hover;
 @transparent: fade(#000, 0%);
 
 /* Bootstrap */
@@ -18,6 +18,8 @@
 @navbar-bg: #ddd;
 @dropdown-link-hover-bg: #888;
 @dropdown-link-active-color: #fff;
+@list-group-border: @transparent;
+@list-group-active-bg: @dropdown-link-hover-bg;
 @input-color-placeholder: #ccc;
 @btn-default-color: #333333;
 @btn-default-bg: #fff;
@@ -31,7 +33,6 @@
 @btn-info-bg: @body-bg;
 @btn-info-border: @transparent;
 @gray-lighter: @body-bg;
-@list-group-border: @transparent;
 
 
 body {
@@ -158,11 +159,14 @@ Override Bootstrap
  
 .navbar {
 	position: static;
-	padding-left: 55px;
-	padding-right: 35px;
+	padding: 0;	
+	.navbar-inner {
+		margin-left: 50px;
+		margin-right: 30px;
+	}
 	.nav {
 		float: left;
-		margin: 6px 0 0;
+		margin: 6px 5px 0;
 		& > li {
 			display: inline-block;
 		}
@@ -211,9 +215,8 @@ Override Bootstrap
 		}
 	}
 	
-	#file-title {
+	.file-title-navbar {
 		padding: 4px 15px;
-		margin-left: -20px;
 		font-size: 20px;
 		font-weight: 200;
 		color: #666;
@@ -221,13 +224,17 @@ Override Bootstrap
 			margin-right: 10px;
 		}
 	}
+	
+	.input-file-title {
+		margin-right: 10px;
+	}
 
 	.working-indicator {
 		background-image: none !important;
 		width: 43px;
 		height: 11px;
 		background-position: 0 0;
-		margin-right: 30px;
+		margin: 15px 10px 0;
 		&.show {
 			background-image: url("../../img/ajax-loader.gif") !important;
 		}
@@ -236,37 +243,20 @@ Override Bootstrap
 
 
 /*********************
- * Menu panel
+ * Menu/Document panels
  *********************/
- 
-.menu-panel {
+
+// Common style 
+.menu-panel, .document-panel {
+	background-color: @panel-bg;
 	position: absolute;
-	height: 100% !important;
-	width: @menu-panel-width;
+	height: 100%;
 	z-index: 10;
-	margin-left: (-@menu-panel-width - 30);
-	background-color: @menu-bg;
-	border-right: 1px solid @dropdown-border;
-	.box-shadow(0 6px 12px rgba(0,0,0,.175));
 	overflow: initial;
-	-webkit-transition: margin-left 0.35s ease;
-        -moz-transition: margin-left 0.35s ease;
-        -o-transition: margin-left 0.35s ease;
-        transition: margin-left 0.35s ease;
-	&.in {
-        margin-left: 0;
-        .menu-button {
-        	background-color: @menu-bg;
-        }
-    }
-    .menu-button {
-	    right: -80px;
-		position: absolute;
-		margin-top: 6px;
-		padding: 2px 20px;
-		z-index: -1;
-	}
-	.menu-container {
+	.box-shadow(0 6px 12px rgba(0,0,0,.175));
+	.panel-content {
+		padding-top: 6px;
+		padding-bottom: 25px;
 		overflow: auto;
 		height: 100%;
 		i {
@@ -274,41 +264,60 @@ Override Bootstrap
 			color: inherit;
 		}
 		.list-group {
-			margin-top: 6px;
 			.list-group-item {
+				border-radius: 0;
 				color: @btn-default-color;
+				&.active {
+					color: @text-inv;
+				}
+			}
+			.nav {
+				border-left: 10px solid @panel-bg;
+				margin-left: 10px;
 			}
 		}		
 	}
 }
 
-
-/*********************
- * Document panel
- *********************/
- 
-.document-panel {
-	position: absolute;
-	right: 0;
-	height: 100% !important;
-	width: @document-panel-width;
-	z-index: 10;
-	margin-right: (-@document-panel-width - 30);
-	background-color: @menu-bg;
-	border-left: 1px solid @dropdown-border;
-	.box-shadow(0 6px 12px rgba(0,0,0,.175));
-	overflow: initial;
-	-webkit-transition: margin-right 0.35s ease;
-        -moz-transition: margin-right 0.35s ease;
-        -o-transition: margin-right 0.35s ease;
-        transition: margin-right 0.35s ease;
+.menu-panel {
+	width: @menu-panel-width !important;
+	margin-left: (-@menu-panel-width - 30);
+	border-right: 1px solid @dropdown-border;
+	-webkit-transition: margin-left 0.35s ease;
+	-moz-transition: margin-left 0.35s ease;
+	-o-transition: margin-left 0.35s ease;
+	transition: margin-left 0.35s ease;
 	&.in {
-        margin-right: 0;
-        .document-button {
-        	background-color: @menu-bg;
+        margin-left: 0;
+        .collapse-button {
+        	background-color: @panel-bg;
         }
     }
-    .document-button {
+    .collapse-button {
+	    right: -80px;
+		position: absolute;
+		margin-top: 6px;
+		padding: 2px 20px;
+		z-index: -1;
+	}
+}
+
+.document-panel {
+	right: 0;
+	width: @document-panel-width !important;
+	margin-right: (-@document-panel-width - 30);
+	border-left: 1px solid @dropdown-border;
+	-webkit-transition: margin-right 0.35s ease;
+    -moz-transition: margin-right 0.35s ease;
+    -o-transition: margin-right 0.35s ease;
+    transition: margin-right 0.35s ease;
+	&.in {
+        margin-right: 0;
+        .collapse-button {
+        	background-color: @panel-bg;
+        }
+    }
+    .collapse-button {
 	    left: -80px;
 		position: absolute;
 		margin-top: 6px;
@@ -319,22 +328,7 @@ Override Bootstrap
        		font-size: 22px;
        	}
 	}
-	.document-container {
-		overflow: auto;
-		height: 100%;
-		i {
-			margin-right: 5px;
-			color: inherit;
-		}
-		.list-group {
-			margin-top: 6px;
-			.list-group-item {
-				color: @btn-default-color;
-			}
-		}		
-	}
 }
-
 
 
 /********************

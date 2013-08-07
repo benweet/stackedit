@@ -1,41 +1,60 @@
-<dl>
-	<dt>About:</dt>
-	<dd>
-		<a target="_blank" href="https://github.com/benweet/stackedit/">GitHub
-			project</a> / <a target="_blank"
-			href="https://github.com/benweet/stackedit/issues">issue tracker</a><br />
-		<a target="_blank"
-			href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome
-			app</a> (thanks for your review!)<br /> <a target="_blank"
-			href="https://twitter.com/stackedit/">Follow on Twitter</a><br /> <a
-			target="_blank" href="https://www.facebook.com/stackedit/">Follow
-			on Facebook</a><br /> <a target="_blank"
-			href="https://plus.google.com/110816046787593496375" rel="publisher">Follow
-			on Google+</a><br />
-	</dd>
-</dl>
-<dl>
-	<dt>Developers:</dt>
-	<dd>
-		<a target="_blank" href="http://www.benoitschweblin.com">Benoit
-			Schweblin</a><br /> Pete Eigel (contributor)
-	</dd>
-</dl>
-<dl>
-	<dt>Credit:</dt>
-	<dd>
-		<% _.each(libraries, function(url, name) { %> <a target="_blank"
-			href="<%= url %>"><%= name %></a><br /> <% }); %>
-	</dd>
-</dl>
-<dl>
-	<dt>Related projects:</dt>
-	<dd>
-		<% _.each(projects, function(url, name) { %> <a target="_blank"
-			href="<%= url %>"><%= name %></a><br /> <% }); %>
-	</dd>
-</dl>
-<p>Copyright 2013 <a target="_blank"
-	href="http://www.benoitschweblin.com">Benoit Schweblin</a><br />
-	Licensed under an <a target="_blank"
-	href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a></p>
+
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">&times;</button>
+			<img src="img/stackedit-promo.png" />
+		</div>
+		<div class="modal-body">
+			<dl>
+				<dt>About:</dt>
+				<dd>
+					<a target="_blank" href="https://github.com/benweet/stackedit/">GitHub
+						project</a> / <a target="_blank"
+						href="https://github.com/benweet/stackedit/issues">issue
+						tracker</a><br /> <a target="_blank"
+						href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome
+						app</a> (thanks for your review!)<br /> <a target="_blank"
+						href="https://twitter.com/stackedit/">Follow on Twitter</a><br />
+					<a target="_blank" href="https://www.facebook.com/stackedit/">Follow
+						on Facebook</a><br /> <a target="_blank"
+						href="https://plus.google.com/110816046787593496375"
+						rel="publisher">Follow on Google+</a><br />
+				</dd>
+			</dl>
+			<dl>
+				<dt>Developers:</dt>
+				<dd>
+					<a target="_blank" href="http://www.benoitschweblin.com">Benoit
+						Schweblin</a><br /> Pete Eigel (contributor)
+				</dd>
+			</dl>
+			<dl>
+				<dt>Credit:</dt>
+				<dd>
+					<% _.each(libraries, function(url, name) { %> <a target="_blank"
+						href="<%= url %>"><%= name %></a><br /> <% }); %>
+				</dd>
+			</dl>
+			<dl>
+				<dt>Related projects:</dt>
+				<dd>
+					<% _.each(projects, function(url, name) { %> <a target="_blank"
+						href="<%= url %>"><%= name %></a><br /> <% }); %>
+				</dd>
+			</dl>
+			<p>
+				StackEdit <%= version %><br /> Copyright 2013 <a
+					target="_blank" href="http://www.benoitschweblin.com">Benoit
+					Schweblin</a><br /> Licensed under an <a target="_blank"
+					href="http://www.apache.org/licenses/LICENSE-2.0">Apache
+					License</a>
+			</p>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+		</div>
+	</div>
+</div>

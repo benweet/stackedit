@@ -1,9 +1,10 @@
 define([
-    "jquery",
     "underscore",
+    "utils",
     "classes/Extension",
+    "text!../../version",
     "text!html/dialogAbout.html",
-], function($, _, Extension, dialogAboutHTML) {
+], function(_, utils, Extension, version, dialogAboutHTML) {
 
     var dialogAbout = new Extension("dialogAbout", 'Dialog "About"');
 
@@ -42,9 +43,10 @@ define([
     };
 
     dialogAbout.onReady = function() {
-        $("#modal-about .modal-body").html(_.template(dialogAboutHTML, {
+        utils.addModal('modal-about', _.template(dialogAboutHTML, {
             libraries: libraries,
-            projects: projects
+            projects: projects,
+            version: version
         }));
     };
 

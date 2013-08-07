@@ -2,3 +2,5 @@
 npm install requirejs
 export PATH=${PATH}:node_modules/requirejs/bin/
 r.js -o tools/optimize-js.json
+sed -i '' "s/^#.*/# `date`/" cache.manifest
+

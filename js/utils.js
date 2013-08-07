@@ -175,7 +175,7 @@ define([
             class: 'modal'
         });
         modal.innerHTML = content;
-        document.getElementsByTagName('body')[0].appendChild(modal);
+        document.body.appendChild(modal);
     };
 
     // Create an centered popup window

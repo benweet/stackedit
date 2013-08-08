@@ -14,6 +14,22 @@ textarea[disabled],
     direction: rtl;
 }
 
+.preview-container {
+    margin: 0px !important; 
+    left: 0px !important; 
+    right: 727px !important; 
+}
+
+#wmd-input {
+    margin: 0px !important; 
+    left: auto !important; 
+    right: 0px !important;
+}
+
+.extension-preview-buttons {
+    /* need to align this to the preview container */
+}
+
 .navbar-inner {
     background-color: #ced5de !important;
 }

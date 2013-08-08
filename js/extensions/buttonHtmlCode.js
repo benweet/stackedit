@@ -27,7 +27,7 @@ define([
     };
 
     buttonHtmlCode.onCreatePreviewButton = function() {
-        return '<button class="btn btn-default dropdown-toggle action-html-code" title="HTML code" data-toggle="dropdown" data-target=".panel-html-code"><i class="icon-code"></i></button>';
+        return buttonHtmlCodeHTML;
     };
 
     var selectedFileDesc = undefined;
@@ -52,7 +52,6 @@ define([
     };
 
     buttonHtmlCode.onReady = function() {
-        $('#extension-preview-buttons').append($(buttonHtmlCodeHTML));
         textareaElt = document.getElementById('input-html-code');
         $(".action-html-code").click(function() {
             _.defer(function() {

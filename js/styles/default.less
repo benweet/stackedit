@@ -377,11 +377,16 @@ Override Bootstrap
  * Preview extensions buttons
  ********************/
  
-#extension-preview-buttons {
-    position: fixed;
+.ui-layout-resizer-north, .ui-layout-resizer-south {
+	overflow: visible !important;
+}
+ 
+.extension-preview-buttons {
+    position: absolute;
+    top: 15px;
     right: 25px;
-    top: auto;
     z-index: 1;
+    font-size: 14px;
 	.dropdown-menu {
 	    border: 0 !important;
 	    margin-top: 1px;

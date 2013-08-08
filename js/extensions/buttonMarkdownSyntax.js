@@ -8,13 +8,9 @@ define([
     buttonMarkdownSyntax.settingsBlock = '<p>Adds a "Markdown syntax" button over the preview.</p>';
 
     buttonMarkdownSyntax.onCreatePreviewButton = function() {
-        return '<button class="btn btn-default dropdown-toggle" title="Markdown syntax" data-toggle="dropdown" data-target=".panel-markdown-syntax"><i class="icon-help-circled"></i></button>';
+        return buttonMarkdownSyntaxHTML;
     };
-    
-    buttonMarkdownSyntax.onReady = function() {
-        $('#extension-preview-buttons').append($(buttonMarkdownSyntaxHTML));
-    };
-    
+
     return buttonMarkdownSyntax;
 
 });

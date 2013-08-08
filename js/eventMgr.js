@@ -238,16 +238,14 @@ define([
             logger.log("onCreatePreviewButton");
             var onCreatePreviewButtonListenerList = getExtensionListenerList("onCreatePreviewButton");
             var extensionPreviewButtonsFragment = document.createDocumentFragment();
-            var buttonGrpElt = crel('div', {
-                class: 'btn-group'
+            var previewButtonsElt = crel('div', {
+                class: 'extension-preview-buttons'
             });
-            extensionPreviewButtonsFragment.appendChild(buttonGrpElt);
-            var buttonGroupInnerHtml = "";
+            extensionPreviewButtonsFragment.appendChild(previewButtonsElt);
             _.each(onCreatePreviewButtonListenerList, function(listener) {
-                buttonGroupInnerHtml += listener();
+                previewButtonsElt.appendChild(createBtn(listener));
             });
-            buttonGrpElt.innerHTML = buttonGroupInnerHtml;
-            document.getElementById('extension-preview-buttons').appendChild(extensionPreviewButtonsFragment);
+            document.querySelector('.ui-layout-resizer-north').appendChild(extensionPreviewButtonsFragment);
         }
 
         // Call onReady listeners

@@ -7,7 +7,7 @@
 @icon-color: #525252;
 @icon-color-inv: #fff;
 @menu-panel-width: 250px;
-@document-panel-width: 250px;
+@document-panel-width: 300px;
 @panel-bg: @bg-navbar-hover;
 @transparent: fade(#000, 0%);
 
@@ -259,7 +259,7 @@ Override Bootstrap
 		padding-bottom: 25px;
 		overflow: auto;
 		height: 100%;
-		i {
+		a > i {
 			margin-right: 5px;
 			color: inherit;
 		}
@@ -275,6 +275,9 @@ Override Bootstrap
 				border-left: 10px solid @panel-bg;
 				margin-left: 10px;
 			}
+		}
+		.input-group {
+			padding: 15px 20px;
 		}		
 	}
 }
@@ -375,13 +378,10 @@ Override Bootstrap
  ********************/
  
 #extension-preview-buttons {
-	&,
-	.dropdown-menu {
-	    position: fixed;
-	    right: 25px;
-	    top: auto;
-	    z-index: 1;
-	}
+    position: absolute;
+    right: 25px;
+    top: auto;
+    z-index: 1;
 	.dropdown-menu {
 	    border: 0 !important;
 	    margin-top: 1px;

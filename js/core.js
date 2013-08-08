@@ -165,12 +165,13 @@ define([
         if(forceHide === true || layout.state.north.isClosed) {
             menuPanelElt.hide();
             documentPanelElt.hide();
-        } else {
+        }
+        else {
             menuPanelElt.show();
             documentPanelElt.show();
         }
     }
-    
+
     // Create the layout
     function createLayout() {
         if(viewerMode === true) {
@@ -412,37 +413,35 @@ define([
         $(".dropdown-submenu > a").click(function(e) {
             e.stopPropagation();
         });
-        
+
         menuPanelElt = $('.menu-panel');
         var isMenuPanelShown = false;
         menuPanelElt.on('shown.bs.collapse', function() {
             isMenuPanelShown = true;
             // Register a click listener when menu panel is open
-            $(document).on("click.hide-menu-panel", function(e) {
-                if(!$(e.target).is('.menu-panel [data-toggle=collapse]')) {
-                    // If click outside the panel, close the panel and unregister the listener
-                    menuPanelElt.collapse('hide');
-                    $(document).off("click.hide-menu-panel");
-                    isMenuPanelShown = false;
-                }
+            $('body').on('click.hide-menu-panel', '.action-close-panel, :not(.menu-panel, .menu-panel *)', function(e) {
+                // If click outside the panel, close the panel and unregister
+                // the listener
+                menuPanelElt.collapse('hide');
+                $('body').off('click.hide-menu-panel');
+                isMenuPanelShown = false;
             });
         });
-        
+
         documentPanelElt = $('.document-panel');
         var isDocumentPanelShown = false;
         documentPanelElt.on('shown.bs.collapse', function() {
             isDocumentPanelShown = true;
             // Register a click listener when document panel is open
-            $(document).on("click.hide-document-panel", function(e) {
-                if(!$(e.target).is('.document-panel [data-toggle=collapse]')) {
-                    // If click outside the panel, close the panel and unregister the listener
-                    documentPanelElt.collapse('hide');
-                    $(document).off("click.hide-document-panel");
-                    isDocumentPanelShown = false;
-                }
+            $('body').on('click.hide-document-panel', '.action-close-panel, :not(.document-panel, .document-panel *)', function(e) {
+                // If click outside the panel, close the panel and unregister
+                // the listener
+                documentPanelElt.collapse('hide');
+                $(document).off('click.hide-document-panel');
+                isDocumentPanelShown = false;
             });
         });
-        
+
         var isModalShown = false;
         $('.modal').on('shown.bs.modal', function() {
             // Focus on the first input when modal opens

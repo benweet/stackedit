@@ -238,9 +238,15 @@ define([
             logger.log("onCreatePreviewButton");
             var onCreatePreviewButtonListenerList = getExtensionListenerList("onCreatePreviewButton");
             var extensionPreviewButtonsFragment = document.createDocumentFragment();
-            _.each(onCreatePreviewButtonListenerList, function(listener) {
-                extensionPreviewButtonsFragment.appendChild(createBtn(listener));
+            var buttonGrpElt = crel('div', {
+                class: 'btn-group'
             });
+            extensionPreviewButtonsFragment.appendChild(buttonGrpElt);
+            var buttonGroupInnerHtml = "";
+            _.each(onCreatePreviewButtonListenerList, function(listener) {
+                buttonGroupInnerHtml += listener();
+            });
+            buttonGrpElt.innerHTML = buttonGroupInnerHtml;
             document.getElementById('extension-preview-buttons').appendChild(extensionPreviewButtonsFragment);
         }
 

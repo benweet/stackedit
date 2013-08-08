@@ -1,0 +1,4 @@
+#!/bin/sh
+version_minor=`sed 's/.*-\([0-9]*\)/\1/' version`
+((version_minor++))
+sed -i '' "s/\(.*-\)[0-9]*/\1$version_minor/" version 

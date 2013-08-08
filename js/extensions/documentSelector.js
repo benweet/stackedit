@@ -62,10 +62,10 @@ define([
         var fileSelectorElt = $(".file-selector");
         fileSelectorElt.empty();
         var documentPanelSelectorElt = $(".document-panel > .panel-content > .list-group");
-        documentPanelSelectorElt.empty();
+        documentPanelSelectorElt.find('.list-group-item').remove();
         _.chain(fileSystem).sortBy(sortFunction).each(function(fileDesc) {
             var a = $('<a href="#">').html(composeTitle(fileDesc));
-            var documentPanelItemElt = a.clone().addClass('list-group-item');
+            var documentPanelItemElt = a.clone().addClass('list-group-item action-close-panel');
             documentPanelItemElt.add(a).click(function() {
                 if(!liMap[fileDesc.fileIndex].is(".disabled")) {
                     fileMgr.selectFile(fileDesc);

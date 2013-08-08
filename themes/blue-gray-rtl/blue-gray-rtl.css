@@ -10,7 +10,7 @@ textarea[disabled],
 	background-color: #f1f2f6;
 }
 
-body {
+.ui-layout-pane {
     direction: rtl;
 }
 

@@ -238,14 +238,23 @@ define([
             logger.log("onCreatePreviewButton");
             var onCreatePreviewButtonListenerList = getExtensionListenerList("onCreatePreviewButton");
             var extensionPreviewButtonsFragment = document.createDocumentFragment();
-            var previewButtonsElt = crel('div', {
-                class: 'extension-preview-buttons'
-            });
-            extensionPreviewButtonsFragment.appendChild(previewButtonsElt);
             _.each(onCreatePreviewButtonListenerList, function(listener) {
-                previewButtonsElt.appendChild(createBtn(listener));
+                extensionPreviewButtonsFragment.appendChild(createBtn(listener));
             });
-            document.querySelector('.ui-layout-resizer-north').appendChild(extensionPreviewButtonsFragment);
+            var previewButtonsElt = document.querySelector('.extension-preview-buttons');
+            previewButtonsElt.appendChild(extensionPreviewButtonsFragment);
+            
+            // A bit of jQuery...
+            previewButtonsElt = $(previewButtonsElt);
+            var previewButtonsWidth = previewButtonsElt.width();
+            previewButtonsElt.find('.btn-group').each(function() {
+                var btnGroupElt = $(this);
+                // Align dropdown to the left of the screen
+                btnGroupElt.find('.dropdown-menu').css({
+                    right: -previewButtonsWidth + btnGroupElt.width() + btnGroupElt.position().left
+                });
+            });
+            
         }
 
         // Call onReady listeners

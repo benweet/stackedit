@@ -1,6 +1,7 @@
 define([
     "jquery",
     "underscore",
+    "crel",
     "utils",
     "settings",
     "eventMgr",
@@ -13,7 +14,7 @@ define([
     "config",
     "libs/layout",
     "libs/Markdown.Editor"
-], function($, _, utils, settings, eventMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
+], function($, _, crel, utils, settings, eventMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
 
@@ -171,6 +172,17 @@ define([
             documentPanelElt.show();
         }
     }
+    
+    // Set the preview button visibility
+    var previewButtonsElt = undefined;
+    function setPreviewButtonsVisibility(forceHide) {
+        if(forceHide === true || layout.state.east.isClosed) {
+            previewButtonsElt.hide();
+        }
+        else {
+            previewButtonsElt.show();
+        }
+    }
 
     // Create the layout
     function createLayout() {
@@ -183,6 +195,7 @@ define([
             slidable: false,
             livePaneResizing: true,
             enableCursorHotkey: false,
+            resizerDblClickToggle: false,
             spacing_open: 15,
             spacing_closed: 15,
             togglerLength_open: 90,
@@ -192,26 +205,30 @@ define([
             center__minHeight: 200,
             onopen: function() {
                 setPanelVisibility();
+                setPreviewButtonsVisibility();
             },
             onclose_start: function(paneName) {
                 if(paneName == 'north') {
                     setPanelVisibility(true);
+                }
+                else if(paneName == 'east') {
+                    setPreviewButtonsVisibility(true);
                 }
             },
         };
         eventMgr.onLayoutConfigure(layoutGlobalConfig);
         if(settings.layoutOrientation == "horizontal") {
             $(".ui-layout-south").remove();
-            $(".preview-container").html('<div id="extension-preview-buttons"></div><div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>');
+            $(".preview-container").html('<div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>');
             layout = $('body').layout($.extend(layoutGlobalConfig, {
                 east__resizable: true,
                 east__size: .5,
-                east__minSize: 200
+                east__minSize: 250
             }));
         }
         else if(settings.layoutOrientation == "vertical") {
             $(".ui-layout-east").remove();
-            $(".preview-container").html('<div id="extension-preview-buttons"></div><div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>');
+            $(".preview-container").html('<div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>');
             layout = $('body').layout($.extend(layoutGlobalConfig, {
                 south__resizable: true,
                 south__size: .5,
@@ -221,10 +238,21 @@ define([
         $(".navbar").click(function() {
             layout.allowOverflow('north');
         });
-        $(".ui-layout-toggler-north").addClass("btn btn-info").append($("<b>").addClass("caret"));
-        $(".ui-layout-toggler-south").addClass("btn btn-info").append($("<b>").addClass("caret"));
-        $(".ui-layout-toggler-east").addClass("btn btn-info").append($("<b>").addClass("caret"));
+        $(".ui-layout-toggler-north").addClass("btn btn-info").html('<b class="caret"></b>');
+        $(".ui-layout-toggler-south").addClass("btn btn-info").html('<b class="caret"></b>');
+        $(".ui-layout-toggler-east").addClass("btn btn-info").html('<b class="caret"></b>');
+        
+        // We attach the preview buttons to the UI layout resizer in order to have fixed position
+        previewButtonsElt = $('<div class="extension-preview-buttons">');
+        if(settings.layoutOrientation == "horizontal") {
+            $('.ui-layout-resizer-north').append(previewButtonsElt);
+        }
+        else {
+            $('.ui-layout-resizer-south').append(previewButtonsElt);
+        }
+
         setPanelVisibility();
+        setPreviewButtonsVisibility();
 
         eventMgr.onLayoutCreated(layout);
     }

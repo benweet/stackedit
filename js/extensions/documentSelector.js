@@ -33,6 +33,7 @@ define([
         fileMgr = fileMgrParameter;
     };
 
+    var dropdownElt = undefined;
     var liMap = undefined;
     var liArray = undefined;
     var sortFunction = undefined;
@@ -59,8 +60,7 @@ define([
         }
 
         liMap = {};
-        var fileSelectorElt = $(".file-selector");
-        fileSelectorElt.empty();
+        dropdownElt.empty();
         var documentPanelSelectorElt = $(".document-panel > .panel-content > .list-group");
         documentPanelSelectorElt.find('.list-group-item').remove();
         _.chain(fileSystem).sortBy(sortFunction).each(function(fileDesc) {
@@ -80,7 +80,7 @@ define([
                 li.addClass("disabled");
                 documentPanelItemElt.addClass("active");
             }
-            fileSelectorElt.append(li);
+            dropdownElt.append(li);
             documentPanelSelectorElt.append(documentPanelItemElt);
         });
         liArray = _.values(liMap);
@@ -127,8 +127,13 @@ define([
                 return -fileDesc.selectTime;
             };
         }
+        
+        dropdownElt = $('<ul class="dropdown-menu dropdown-file-selector">');
+        $('<div>').append('<div data-toggle="dropdown">').append(dropdownElt).appendTo('.ui-layout-resizer-north');
+        dropdownElt.dropdown();
 
         var shortcutLi = undefined;
+        /*
         $(".action-open-file").click(function() {
             if($(".file-selector").parent().is(".open")) {
                 return;
@@ -155,12 +160,20 @@ define([
         }).click(function(event) {
             event.stopPropagation();
         });
+        */
+        
+        var documentPanelTogglerElt = $('.document-panel .collapse-button');
+        documentPanelTogglerElt.prop("title", _.template("<%= title %>  <%= shortcutPrevious %>  <%= shortcutNext %>", {
+            title: documentPanelTogglerElt.prop("title"),
+            shortcutPrevious: documentSelector.config.shortcutPrevious,
+            shortcutNext: documentSelector.config.shortcutNext
+        }));
 
         // Handle key shortcut
         var shortcutPrevious = documentSelector.config.shortcutPrevious.toLowerCase();
         mousetrap.bind(shortcutPrevious, function() {
             if(shortcutLi === undefined) {
-                $(".file-selector").parent().is(".open") || $(".action-open-file").click();
+                dropdownElt.dropdown('toggle');
                 shortcutLi = liMap[selectFileDesc.fileIndex];
             }
             var liIndex = _.indexOf(liArray, shortcutLi) - 1;
@@ -176,7 +189,7 @@ define([
         var shortcutNext = documentSelector.config.shortcutNext.toLowerCase();
         mousetrap.bind(documentSelector.config.shortcutNext.toLowerCase(), function() {
             if(shortcutLi === undefined) {
-                $(".file-selector").parent().is(".open") || $(".action-open-file").click();
+                dropdownElt.dropdown('toggle');
                 shortcutLi = liMap[selectFileDesc.fileIndex];
             }
             var liIndex = _.indexOf(liArray, shortcutLi) + 1;

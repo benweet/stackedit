@@ -44,8 +44,11 @@ body {
 }
 
 #preview-contents {
-	padding: 8px 15px 8px 5px;
+	padding: 15px;
 	margin-bottom: 50px;
+	.ui-layout-east & {
+		padding-left: 5px;
+	}
 }
 
 .working {
@@ -207,18 +210,6 @@ Override Bootstrap
 		margin-right: 5px;
 	}
 	
-	
-	.file-selector {
-		top: 30px;
-		right: -10px !important;
-		max-height: 500px;
-		min-width: 280px;
-		overflow-y: auto;
-		.stick {
-			padding: 10px 20px;
-		}
-	}
-	
 	.file-title-navbar {
 		padding: 4px 15px;
 		font-size: 20px;
@@ -345,6 +336,17 @@ Override Bootstrap
 	}
 }
 
+// Dropdown document selector
+.dropdown-file-selector {
+	top: 6px;
+	right: 40px;
+	left: auto;
+	margin: 0;
+	max-height: 500px;
+	min-width: 280px;
+	overflow-y: auto;
+}
+
 
 /********************
  * Extensions buttons
@@ -393,8 +395,8 @@ Override Bootstrap
     right: 40px;
     z-index: 1;
     top: 6px;
-    .ui-layout-resizer-closed > & {
-    	display: none;
+    .ui-layout-resizer-south-closed > & {
+    	display: none !important;
     }
 	.dropdown-menu {
 	    border: 0;
@@ -441,6 +443,7 @@ Override Bootstrap
 }
 
 
+
 /*********************************
  * UI Layout
  *********************************/
@@ -467,24 +470,43 @@ Override Bootstrap
 	.ui-layout-toggler {
 		font-size: 22px !important;
 		background-color: transparent;
-		&.ui-layout-toggler-east-open i {
-			margin: 18px 0 0 2px !important;
-			&:before {
+		&.ui-layout-toggler-east {
+			line-height: 55px;
+			&.ui-layout-toggler-east-open i:before {
 				content: '\e950';
 			}
-		}
-		&.ui-layout-toggler-east-closed i {
-			margin: 18px 0 0 -2px !important;
-			&:before {
+			&.ui-layout-toggler-east-closed i:before {
 				content: '\e94f';
 			}
 		}
-		&.ui-layout-toggler-south-open i:before {
-			content: '\e94d';
+		&.ui-layout-toggler-south {
+			&.ui-layout-toggler-south-open i:before {
+				content: '\e94d';
+			}
+			&.ui-layout-toggler-south-closed i:before {
+				content: '\e94e';
+			}
 		}
-		&.ui-layout-toggler-south-closed i:before {
-			content: '\e94e';
+		&.ui-layout-toggler-north {
+			left: 0 !important;
+			line-height: 0;
+			i {
+				margin-top: -5px;
+			}
+			&.ui-layout-toggler-north-open i:before {
+				content: '\e94e';
+			}
+			&.ui-layout-toggler-north-closed i:before {
+				content: '\e94d';
+			}
 		}
+	}
+	&.ui-layout-resizer-east .ui-layout-toggler-north {
+		width: 35px !important;
+		height: 60px !important;
+	}
+	&.ui-layout-resizer-south .ui-layout-toggler-north {
+		height: 35px !important;
 	}
 }
 

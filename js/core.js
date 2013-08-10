@@ -158,8 +158,22 @@ define([
         }
     }
 
-    // Set the preview button visibility
+    // Set the panels visibility
     var layout = undefined;
+    var menuPanelElt = undefined;
+    var documentPanelElt = undefined;
+    function setPanelVisibility(forceHide) {
+        if(forceHide === true || layout.state.north.isClosed) {
+            menuPanelElt.hide();
+            documentPanelElt.hide();
+        }
+        else {
+            menuPanelElt.show();
+            documentPanelElt.show();
+        }
+    }
+    
+    // Set the preview button visibility
     var previewButtonsElt = undefined;
     function setPreviewButtonsVisibility(forceHide) {
         if(forceHide === true || layout.state.east.isClosed) {
@@ -176,24 +190,29 @@ define([
             return;
         }
         var layoutGlobalConfig = {
-            closable: false,
+            closable: true,
             resizable: false,
             slidable: false,
             livePaneResizing: true,
             enableCursorHotkey: false,
             north__spacing_open: 6,
+            north__spacing_closed: 6,
             spacing_open: 35,
             spacing_closed: 35,
             togglerLength_open: 60,
             togglerLength_closed: 60,
             stateManagement__enabled: false,
             center__minWidth: 200,
-            center__minHeight: 100,
+            center__minHeight: 200,
             onopen: function() {
+                setPanelVisibility();
                 setPreviewButtonsVisibility();
             },
             onclose_start: function(paneName) {
-                if(paneName == 'east') {
+                if(paneName == 'north') {
+                    setPanelVisibility(true);
+                }
+                else if(paneName == 'east') {
                     setPreviewButtonsVisibility(true);
                 }
             },
@@ -203,7 +222,6 @@ define([
             $(".ui-layout-south").remove();
             $(".preview-container").html('<div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>');
             layout = $('body').layout($.extend(layoutGlobalConfig, {
-                east__closable: true,
                 east__resizable: true,
                 east__size: .5,
                 east__minSize: 250
@@ -213,7 +231,6 @@ define([
             $(".ui-layout-east").remove();
             $(".preview-container").html('<div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>');
             layout = $('body').layout($.extend(layoutGlobalConfig, {
-                south__closable: true,
                 south__resizable: true,
                 south__size: .5,
                 south__minSize: 200
@@ -224,16 +241,20 @@ define([
         });
         $(".ui-layout-toggler-south").addClass("btn btn-info").html('<i class="icon-none"></i>');
         $(".ui-layout-toggler-east").addClass("btn btn-info").html('<i class="icon-none"></i>');
+        var northTogglerElt = $(".ui-layout-toggler-north").addClass("btn btn-info").html('<i class="icon-none"></i>');
         
         // We attach the preview buttons to the UI layout resizer in order to have fixed position
+        // We also move the north toggler to the east or south resizer as the north resizer is very small
         previewButtonsElt = $('<div class="extension-preview-buttons">');
         if(settings.layoutOrientation == "horizontal") {
             $('.ui-layout-resizer-north').append(previewButtonsElt);
+            $('.ui-layout-resizer-east').append(northTogglerElt);
         }
         else {
-            $('.ui-layout-resizer-south').append(previewButtonsElt);
+            $('.ui-layout-resizer-south').append(previewButtonsElt).append(northTogglerElt);
         }
 
+        setPanelVisibility();
         setPreviewButtonsVisibility();
 
         eventMgr.onLayoutCreated(layout);

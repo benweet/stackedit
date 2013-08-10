@@ -6,7 +6,7 @@
 @error-border: #ff8661;
 @icon-color: #525252;
 @icon-color-inv: #fff;
-@menu-panel-width: 250px;
+@menu-panel-width: 280px;
 @document-panel-width: 300px;
 @panel-bg: @bg-navbar-hover;
 @transparent: fade(#000, 0%);
@@ -15,6 +15,7 @@
 @body-bg: #f5f5f5;
 @input-border: #ddd;
 @dropdown-border: #ddd;
+@pre-border-color: #ddd;
 @navbar-bg: #ddd;
 @dropdown-link-hover-bg: #888;
 @dropdown-link-active-color: #fff;
@@ -25,7 +26,7 @@
 @btn-default-bg: #fff;
 @btn-default-border: @transparent;
 @btn-primary-color: #fff;
-@btn-primary-bg: #777;
+@btn-primary-bg: #888;
 @btn-primary-border: @transparent;
 @btn-success-color: #333333;
 @btn-success-bg: @navbar-bg;
@@ -33,6 +34,9 @@
 @btn-info-bg: @body-bg;
 @btn-info-border: @transparent;
 @gray-lighter: @body-bg;
+@modal-header-border-color: #e8e8e8;
+@modal-content-border-color: #e8e8e8;
+@modal-footer-border-color: #e8e8e8;
 
 
 body {
@@ -40,7 +44,7 @@ body {
 }
 
 #preview-contents {
-	padding: 19px;
+	padding: 8px 15px 8px 5px;
 	margin-bottom: 50px;
 }
 
@@ -97,7 +101,7 @@ Override Bootstrap
 }
 
 .modal-content {
-	border-width: 0;
+	border-width: 5px;
 }
 
 
@@ -248,12 +252,17 @@ Override Bootstrap
 
 // Common style 
 .menu-panel, .document-panel {
+	display: block;
 	background-color: @panel-bg;
 	position: absolute;
 	height: 100%;
 	z-index: 10;
 	overflow: initial;
 	.box-shadow(0 6px 12px rgba(0,0,0,.175));
+    .collapse-button i {
+		color: #777;
+    	font-size: 18px;
+	}
 	.panel-content {
 		padding-top: 6px;
 		padding-bottom: 25px;
@@ -272,7 +281,7 @@ Override Bootstrap
 				}
 			}
 			.nav {
-				border-left: 10px solid @panel-bg;
+				border-left: 10px solid fade(#000, 5%);
 				margin-left: 10px;
 			}
 		}
@@ -284,8 +293,7 @@ Override Bootstrap
 
 .menu-panel {
 	width: @menu-panel-width !important;
-	margin-left: (-@menu-panel-width - 30);
-	border-right: 1px solid @dropdown-border;
+	margin-left: (-@menu-panel-width - 32);
 	-webkit-transition: margin-left 0.35s ease;
 	-moz-transition: margin-left 0.35s ease;
 	-o-transition: margin-left 0.35s ease;
@@ -303,13 +311,15 @@ Override Bootstrap
 		padding: 2px 20px;
 		z-index: -1;
 	}
+	.panel-content {
+		border-right: 5px solid @preview-bg-light;
+	}
 }
 
 .document-panel {
 	right: 0;
 	width: @document-panel-width !important;
-	margin-right: (-@document-panel-width - 30);
-	border-left: 1px solid @dropdown-border;
+	margin-right: (-@document-panel-width - 32);
 	-webkit-transition: margin-right 0.35s ease;
     -moz-transition: margin-right 0.35s ease;
     -o-transition: margin-right 0.35s ease;
@@ -327,9 +337,11 @@ Override Bootstrap
 		padding: 7px 18px;
 		z-index: -1;
 		i.icon-folder-open {
-			color: #777;
        		font-size: 22px;
        	}
+	}
+	.panel-content {
+		border-left: 5px solid @preview-bg-light;
 	}
 }
 
@@ -377,34 +389,17 @@ Override Bootstrap
  * Preview extensions buttons
  ********************/
  
-.ui-layout-resizer-north, .ui-layout-resizer-south {
-	overflow: visible !important;
-}
- 
 .extension-preview-buttons {
     position: absolute;
-    top: 15px;
-    right: 25px;
+    right: 40px;
     z-index: 1;
-    font-size: 14px;
+    top: 6px;
+    .ui-layout-resizer-closed > & {
+    	display: none;
+    }
 	.dropdown-menu {
 	    border: 0;
 	    margin-top: 1px;
-	}
-	.btn {
-		background-color: fade(@navbar-bg, 50%);
-		float: none;
-		i {
-			color: fade(@icon-color, 30%);
-		}
-		&:hover,
-		&:focus,
-		&:active,
-		&.active {
-			i {
-				color: @icon-color
-			}
-		}
 	}
 	.btn-group {
 		margin: 0 0 0 1px;
@@ -428,7 +423,7 @@ Override Bootstrap
 	    overflow-x: hidden;
 	    padding-right: 20px;
 	    margin-right: -20px;
-	    width: 300px;
+	    width: 320px;
 	}
 	
 	.markdown-syntax {
@@ -442,6 +437,54 @@ Override Bootstrap
 	    ul {
 		    margin-left: 10px;
 		    padding-left: 10px;
+		}
+	}
+}
+
+
+/*********************************
+ * UI Layout
+ *********************************/
+ 
+.ui-layout-resizer {
+	overflow: visible !important;
+    font-size: 14px !important;
+	.btn {
+		background-color: fade(@navbar-bg, 50%);
+		float: none;
+		i {
+			color: fade(@icon-color, 30%);
+		}
+		&:hover,
+		&:focus,
+		&:active,
+		&.active {
+			background-color: fade(@navbar-bg, 50%);
+			i {
+				color: @icon-color
+			}
+		}
+	}
+	.ui-layout-toggler {
+		font-size: 22px !important;
+		background-color: transparent;
+		&.ui-layout-toggler-east-open i {
+			margin: 18px 0 0 2px !important;
+			&:before {
+				content: '\e950';
+			}
+		}
+		&.ui-layout-toggler-east-closed i {
+			margin: 18px 0 0 -2px !important;
+			&:before {
+				content: '\e94f';
+			}
+		}
+		&.ui-layout-toggler-south-open i:before {
+			content: '\e94d';
+		}
+		&.ui-layout-toggler-south-closed i:before {
+			content: '\e94e';
 		}
 	}
 }
@@ -592,10 +635,6 @@ div.dropdown-menu textarea {
 }
 
 // Custom icons (not from Font Awesome)
-.icon-down-dir {
-	margin-right: -5px;
-}
-
 .icon-code {
 	font-size: 80%;
 	margin-left: -1px;
@@ -661,55 +700,6 @@ div.dropdown-menu textarea {
 
 .icon-provider-gplus {
 	background-position: -144px 0;
-}
-
-.ui-layout-toggler-north .caret,.ui-layout-toggler-south .caret {
-	margin-top: 5px;
-}
-
-.ui-layout-toggler-north-open .caret,.ui-layout-toggler-south-closed .caret
-	{
-	border-bottom: 5px solid #525252;
-	border-right: 5px solid transparent;
-	border-left: 5px solid transparent;
-	border-top: 0;
-}
-
-.ui-layout-toggler-north-closed .caret,.ui-layout-toggler-south-open .caret
-	{
-	border-top: 5px solid #525252;
-	border-right: 5px solid transparent;
-	border-left: 5px solid transparent;
-	border-bottom: 0;
-}
-
-.ui-layout-toggler-east .caret,.ui-layout-toggler-west .caret {
-	margin-top: 40px;
-}
-
-.ui-layout-toggler-east-open .caret,.ui-layout-toggler-west-closed .caret
-	{
-	border-bottom: 5px solid transparent;
-	border-top: 5px solid transparent;
-	border-left: 5px solid #525252;
-	border-right: 0;
-}
-
-.ui-layout-toggler-east-closed .caret,.ui-layout-toggler-west-opened .caret
-	{
-	border-bottom: 5px solid transparent;
-	border-top: 5px solid transparent;
-	border-right: 5px solid #525252;
-	border-left: 0;
-}
-
-/* Google picker */
-.picker-dialog {
-	z-index: 1050 !important;
-}
-
-.action-import-image-gplus {
-	float: left;
 }
 
 /**************************
@@ -789,6 +779,15 @@ div.dropdown-menu textarea {
 	}
 }
 
+/* Google picker */
+.picker-dialog {
+	z-index: 1050 !important;
+}
+
+.action-import-image-gplus {
+	float: left;
+}
+
 /*
 .nav>li>a:hover,.nav>li>a:focus {
 	background-color: @bg-light;
@@ -847,13 +846,8 @@ table tbody+tbody {
 	border-top: 2px solid #dddddd;
 }
 
-// Duplicate from .well blockquote
-#preview-contents blockquote {
-  	border-color: #ddd;
-  	border-color: rgba(0, 0, 0, 0.15);
-}
-
 blockquote {
+	border-left: 10px solid fade(#000, 5%);
 	p {
 	    margin-bottom: 20px;
 	    font-size: 14px;

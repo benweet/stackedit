@@ -158,22 +158,8 @@ define([
         }
     }
 
-    // Set the panels visibility
-    var layout = undefined;
-    var menuPanelElt = undefined;
-    var documentPanelElt = undefined;
-    function setPanelVisibility(forceHide) {
-        if(forceHide === true || layout.state.north.isClosed) {
-            menuPanelElt.hide();
-            documentPanelElt.hide();
-        }
-        else {
-            menuPanelElt.show();
-            documentPanelElt.show();
-        }
-    }
-    
     // Set the preview button visibility
+    var layout = undefined;
     var previewButtonsElt = undefined;
     function setPreviewButtonsVisibility(forceHide) {
         if(forceHide === true || layout.state.east.isClosed) {
@@ -190,28 +176,24 @@ define([
             return;
         }
         var layoutGlobalConfig = {
-            closable: true,
+            closable: false,
             resizable: false,
             slidable: false,
             livePaneResizing: true,
             enableCursorHotkey: false,
-            resizerDblClickToggle: false,
-            spacing_open: 15,
-            spacing_closed: 15,
-            togglerLength_open: 90,
-            togglerLength_closed: 90,
+            north__spacing_open: 6,
+            spacing_open: 35,
+            spacing_closed: 35,
+            togglerLength_open: 60,
+            togglerLength_closed: 60,
             stateManagement__enabled: false,
             center__minWidth: 200,
             center__minHeight: 200,
             onopen: function() {
-                setPanelVisibility();
                 setPreviewButtonsVisibility();
             },
             onclose_start: function(paneName) {
-                if(paneName == 'north') {
-                    setPanelVisibility(true);
-                }
-                else if(paneName == 'east') {
+                if(paneName == 'east') {
                     setPreviewButtonsVisibility(true);
                 }
             },
@@ -221,6 +203,7 @@ define([
             $(".ui-layout-south").remove();
             $(".preview-container").html('<div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>');
             layout = $('body').layout($.extend(layoutGlobalConfig, {
+                east__closable: true,
                 east__resizable: true,
                 east__size: .5,
                 east__minSize: 250
@@ -230,6 +213,7 @@ define([
             $(".ui-layout-east").remove();
             $(".preview-container").html('<div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>');
             layout = $('body').layout($.extend(layoutGlobalConfig, {
+                south__closable: true,
                 south__resizable: true,
                 south__size: .5,
                 south__minSize: 200
@@ -238,9 +222,8 @@ define([
         $(".navbar").click(function() {
             layout.allowOverflow('north');
         });
-        $(".ui-layout-toggler-north").addClass("btn btn-info").html('<b class="caret"></b>');
-        $(".ui-layout-toggler-south").addClass("btn btn-info").html('<b class="caret"></b>');
-        $(".ui-layout-toggler-east").addClass("btn btn-info").html('<b class="caret"></b>');
+        $(".ui-layout-toggler-south").addClass("btn btn-info").html('<i class="icon-none"></i>');
+        $(".ui-layout-toggler-east").addClass("btn btn-info").html('<i class="icon-none"></i>');
         
         // We attach the preview buttons to the UI layout resizer in order to have fixed position
         previewButtonsElt = $('<div class="extension-preview-buttons">');
@@ -251,7 +234,6 @@ define([
             $('.ui-layout-resizer-south').append(previewButtonsElt);
         }
 
-        setPanelVisibility();
         setPreviewButtonsVisibility();
 
         eventMgr.onLayoutCreated(layout);
@@ -447,13 +429,18 @@ define([
         menuPanelElt.on('shown.bs.collapse', function() {
             isMenuPanelShown = true;
             // Register a click listener when menu panel is open
-            $('body').on('click.hide-menu-panel', '.action-close-panel, :not(.menu-panel, .menu-panel *)', function(e) {
+            $('body').on('click.hide-menu-panel', function(e) {
                 // If click outside the panel, close the panel and unregister
                 // the listener
-                menuPanelElt.collapse('hide');
-                $('body').off('click.hide-menu-panel');
-                isMenuPanelShown = false;
+                if($(e.target).is('.action-close-panel, :not(.menu-panel, .menu-panel *)')) {
+                    menuPanelElt.collapse('hide');
+                    $('body').off('click.hide-menu-panel');
+                    isMenuPanelShown = false;
+                }
             });
+        }).on('hidden.bs.collapse', function() {
+            // Close all collapsed sub-menu when menu panel is closed
+            menuPanelElt.find('.in').collapse('hide');
         });
 
         documentPanelElt = $('.document-panel');
@@ -461,13 +448,18 @@ define([
         documentPanelElt.on('shown.bs.collapse', function() {
             isDocumentPanelShown = true;
             // Register a click listener when document panel is open
-            $('body').on('click.hide-document-panel', '.action-close-panel, :not(.document-panel, .document-panel *)', function(e) {
+            $('body').on('click.hide-document-panel', function(e) {
                 // If click outside the panel, close the panel and unregister
                 // the listener
-                documentPanelElt.collapse('hide');
-                $(document).off('click.hide-document-panel');
-                isDocumentPanelShown = false;
+                if($(e.target).is('.action-close-panel, :not(.document-panel, .document-panel *)')) {
+                    documentPanelElt.collapse('hide');
+                    $('body').off('click.hide-document-panel');
+                    isDocumentPanelShown = false;
+                }
             });
+        }).on('hidden.bs.collapse', function() {
+            // Close all collapsed sub-menu when document panel is closed
+            documentPanelElt.find('.in').collapse('hide');
         });
 
         var isModalShown = false;

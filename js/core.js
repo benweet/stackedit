@@ -188,7 +188,7 @@ define([
             togglerLength_closed: 60,
             stateManagement__enabled: false,
             center__minWidth: 200,
-            center__minHeight: 200,
+            center__minHeight: 100,
             onopen: function() {
                 setPreviewButtonsVisibility();
             },
@@ -365,21 +365,25 @@ define([
         editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
 
         // Hide default buttons
-        $(".wmd-button-row").addClass("btn-group").find("li:not(.wmd-spacer)").addClass("btn btn-success").css("left", 0).find("span").hide();
+        $(".wmd-button-row li").addClass("btn btn-success").css("left", 0).find("span").hide();
 
         // Add customized buttons
-        $("#wmd-bold-button").append($('<i class="icon-bold">'));
-        $("#wmd-italic-button").append($('<i class="icon-italic">'));
-        $("#wmd-link-button").append($('<i class="icon-globe">'));
-        $("#wmd-quote-button").append($('<i class="icon-indent-right">'));
-        $("#wmd-code-button").append($('<i class="icon-code">'));
-        $("#wmd-image-button").append($('<i class="icon-picture">'));
-        $("#wmd-olist-button").append($('<i class="icon-list-numbered">'));
-        $("#wmd-ulist-button").append($('<i class="icon-list-bullet">'));
-        $("#wmd-heading-button").append($('<i class="icon-text-height">'));
-        $("#wmd-hr-button").append($('<i class="icon-ellipsis">'));
-        $("#wmd-undo-button").append($('<i class="icon-reply">'));
-        $("#wmd-redo-button").append($('<i class="icon-forward">'));
+        var btnGroupElt = $('.wmd-button-group1');
+        $("#wmd-bold-button").append($('<i class="icon-bold">')).appendTo(btnGroupElt);
+        $("#wmd-italic-button").append($('<i class="icon-italic">')).appendTo(btnGroupElt);
+        var btnGroupElt = $('.wmd-button-group2');
+        $("#wmd-link-button").append($('<i class="icon-globe">')).appendTo(btnGroupElt);
+        $("#wmd-quote-button").append($('<i class="icon-indent-right">')).appendTo(btnGroupElt);
+        $("#wmd-code-button").append($('<i class="icon-code">')).appendTo(btnGroupElt);
+        $("#wmd-image-button").append($('<i class="icon-picture">')).appendTo(btnGroupElt);
+        var btnGroupElt = $('.wmd-button-group3');
+        $("#wmd-olist-button").append($('<i class="icon-list-numbered">')).appendTo(btnGroupElt);
+        $("#wmd-ulist-button").append($('<i class="icon-list-bullet">')).appendTo(btnGroupElt);
+        $("#wmd-heading-button").append($('<i class="icon-text-height">')).appendTo(btnGroupElt);
+        $("#wmd-hr-button").append($('<i class="icon-ellipsis">')).appendTo(btnGroupElt);
+        var btnGroupElt = $('.wmd-button-group4');
+        $("#wmd-undo-button").append($('<i class="icon-reply">')).appendTo(btnGroupElt);
+        $("#wmd-redo-button").append($('<i class="icon-forward">')).appendTo(btnGroupElt);
 
         eventMgr.onFileOpen(fileDesc);
     };

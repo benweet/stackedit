@@ -81,10 +81,6 @@ Override Bootstrap
 	background-color: @bg-navbar-hover;
 }
 
-.btn-group {
-	margin-right: 10px;
-}
-
 // Last dropdown-toggle in a button-group (Bootstrap override)
 .btn-group>.btn+.dropdown-toggle {
 	padding-right: 11px;
@@ -164,13 +160,17 @@ Override Bootstrap
 .navbar {
 	position: static;
 	padding: 0;	
-	.navbar-inner {
-		margin-left: 50px;
-		margin-right: 30px;
+	.left-space {
+		width: 30px;
+		height: 38px;
+	}
+	.right-space {
+		width: 20px;
+		height: 38px;
 	}
 	.nav {
 		float: left;
-		margin: 6px 5px 0;
+		margin: 6px 10px 5px;
 		& > li {
 			display: inline-block;
 		}
@@ -351,7 +351,6 @@ Override Bootstrap
  ********************/
  
 #extension-buttons {
-	margin-right: 15px;
 	.btn-group {
 		margin: 0;
 	}

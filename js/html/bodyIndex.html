@@ -1,20 +1,20 @@
 <div class="navbar navbar-fixed-top ui-layout-north">
 	<div class="navbar-inner">
-
+		<div class="nav left-space"></div>
+		<div class="nav right-space pull-right"></div>
 		<ul class="nav">
-			<li><div id="wmd-button-bar"></div></li>
+			<li class="wmd-button-group1 btn-group"></li>
+		</ul>
+		<ul class="nav">
+			<li class="wmd-button-group2 btn-group"></li>
+		</ul>
+		<ul class="nav">
+			<li class="wmd-button-group3 btn-group"></li>
+		</ul>
+		<ul class="nav">
+			<li class="wmd-button-group4 btn-group"></li>
 		</ul>
 		<ul class="nav pull-right">
-			<li id="extension-buttons"></li>
-			<li class="btn-group"><button
-					class="btn btn-success action-create-file"
-					title="New local document">
-					<i class="icon-file"></i>
-				</button>
-				<button class="btn btn-success" title="Delete current document"
-					data-toggle="modal" data-target="#modal-remove-file-confirm">
-					<i class="icon-trash"></i>
-				</button></li>
 			<li>
 				<button data-toggle="dropdown" class="action-open-file hide"></button>
 				<ul class="dropdown-menu file-selector">
@@ -28,10 +28,25 @@
 			</li>
 		</ul>
 		<ul class="nav pull-right">
+			<li class="btn-group"><button
+					class="btn btn-success action-create-file"
+					title="New local document">
+					<i class="icon-file"></i>
+				</button>
+				<button class="btn btn-success" title="Delete current document"
+					data-toggle="modal" data-target="#modal-remove-file-confirm">
+					<i class="icon-trash"></i>
+				</button></li>
+		</ul>
+		<ul class="nav pull-right">
+			<li id="extension-buttons"></li>
+		</ul>
+		<ul class="nav pull-right">
 			<li><a class="btn btn-success file-title-navbar" href="#"
 				title="Rename current document"> </a></li>
 			<li><input type="text"
-				class="col-lg-4 form-control hide input-file-title" placeholder="Document title" /></li>
+				class="col-lg-4 form-control hide input-file-title"
+				placeholder="Document title" /></li>
 		</ul>
 		<ul class="nav pull-right">
 			<li><i class="working-indicator icon-none"></i></li>
@@ -41,6 +56,7 @@
 <textarea id="wmd-input" class="ui-layout-center form-control"></textarea>
 <div class="ui-layout-east preview-container"></div>
 <div class="ui-layout-south preview-container"></div>
+<div id="wmd-button-bar" class="hide"></div>
 
 
 <div class="menu-panel collapse width">
@@ -59,10 +75,12 @@
 			<ul class="nav collapse collapse-open-from">
 				<li><a data-toggle="modal"
 					data-target="#modal-import-harddrive-markdown"
-					class="action-reset-input action-close-panel" href="#">Import from hard drive</a></li>
+					class="action-reset-input action-close-panel" href="#">Import
+						from hard drive</a></li>
 				<li><a data-toggle="modal"
 					data-target="#modal-import-harddrive-html"
-					class="action-reset-input action-close-panel" href="#">Convert HTML to Markdown</a></li>
+					class="action-reset-input action-close-panel" href="#">Convert
+						HTML to Markdown</a></li>
 			</ul>
 
 			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"
@@ -105,16 +123,17 @@
 			<ul class="nav collapse collapse-publish-on">
 			</ul>
 			<a href="#" data-toggle="modal" data-target="#modal-manage-publish"
-				class="action-reset-input list-group-item action-close-panel"><i class="icon-share"></i>
-				Manage publication</a>
+				class="action-reset-input list-group-item action-close-panel"><i
+				class="icon-share"></i> Manage publication</a>
 		</div>
 		<ul class="nav">
 			<li><a href="#" data-toggle="modal"
 				data-target="#modal-settings"
-				class="action-load-settings list-group-item action-close-panel"><i class="icon-cog"></i>
-					Settings</a></li>
+				class="action-load-settings list-group-item action-close-panel"><i
+					class="icon-cog"></i> Settings</a></li>
 			<li><a href="#" data-toggle="modal" data-target="#modal-about"
-				class="list-group-item action-close-panel"><i class="icon-help-circled"></i> About</a></li>
+				class="list-group-item action-close-panel"><i
+					class="icon-help-circled"></i> About</a></li>
 		</ul>
 
 	</div>
@@ -128,12 +147,12 @@
 	</button>
 	<div class="panel-content">
 		<div class="list-group">
-		<div class="input-group">
-			<span class="input-group-addon"><i class="icon-search"></i></span><input
-				type="text" class="form-control"></input>
+			<div class="input-group">
+				<span class="input-group-addon"><i class="icon-search"></i></span><input
+					type="text" class="form-control"></input>
+			</div>
 		</div>
-		</div>
-		</div>
+	</div>
 </div>
 
 

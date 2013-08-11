@@ -27,24 +27,25 @@ define([
         '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>" data-toggle="collapse" data-target=".modal-document-manager .nav.<%= id %>">',
         '<label class="checkbox" title="Select"><input type="checkbox"></label>',
         '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>',
+        '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>',
         '<div class="name"><i class="icon-folder"></i> ',
         '<%= folderDesc.name %></div>',
         '<input type="text" class="input-rename form-control hide"></a>',
         '<ul class="nav collapse <%= id %>"><%= fileListHtml %></ul>'
     ].join('');
     var orphanEltTmpl = [
-        '<div class="list-group-item file clearfix" data-file-index="<%= fileDesc.fileIndex %>">',
+        '<li class="list-group-item file clearfix" data-file-index="<%= fileDesc.fileIndex %>">',
         '<label class="checkbox" title="Select"><input type="checkbox"></label>',
         '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>',
         '<div class="name"><%= fileDesc.composeTitle() %></div>',
-        '<input type="text" class="input-rename form-control hide"></div>',
+        '<input type="text" class="input-rename form-control hide"></li>',
     ].join('');
     var buildManager = function() {
 
         var documentListHtml = '';
 
         // Add orphan documents
-        documentListHtml += _.chain(fileSystem).filter(function(fileDesc) {
+        documentListHtml += '<ul class="nav">' + _.chain(fileSystem).filter(function(fileDesc) {
             return fileDesc.folder === undefined;
         }).sortBy(function(fileDesc) {
             return fileDesc.title.toLowerCase();
@@ -52,7 +53,7 @@ define([
             return result + _.template(orphanEltTmpl, {
                 fileDesc: fileDesc,
             });
-        }, '').value();
+        }, '').value() + '</ul>';
 
         // Build directories
         _.chain(folderList).sortBy(function(folderDesc) {

@@ -73,9 +73,6 @@ body {
 		color: @btn-default-color;
 		border-radius: 0;
 	}
-	&:hover {
-		background-color: @list-group-hover-bg;
-	}
 }
 
 
@@ -471,6 +468,11 @@ body {
 	.folder {
 		font-weight: bold;
 	}
+	.file{
+		&:nth-child(odd) {
+			background-color: fade(#000, 3%);
+		}
+	}
 	.checkbox {
 		float: right;
 		margin: 0;
@@ -485,8 +487,8 @@ body {
 	.input-rename {
 		width: 300px;
 	}
-	.name {
-		padding: 9px 15px;		
+	.name, .file-count {
+		padding: 9px 25px 9px 15px;		
 	}	
 	.button-rename {
 		float: right;

@@ -284,7 +284,7 @@ define([
         }
 
         // Open dialog box
-        $("#modal-upload-" + provider.providerId).modal();
+        $(".modal-upload-" + provider.providerId).modal();
     }
 
     eventMgr.addListener("onReady", function() {

@@ -60,7 +60,7 @@ define([
                 clearInterval(intervalId);
             }
             $(".modal").modal("hide");
-            $('#modal-non-unique').modal({
+            $('.modal-non-unique').modal({
                 backdrop: "static",
                 keyboard: false
             });
@@ -330,7 +330,7 @@ define([
         editor.hooks.set("insertLinkDialog", function(callback) {
             core.insertLinkCallback = callback;
             utils.resetModalInputs();
-            $("#modal-insert-link").modal();
+            $(".modal-insert-link").modal();
             return true;
         });
         // Custom insert image dialog
@@ -340,7 +340,7 @@ define([
                 return true;
             }
             utils.resetModalInputs();
-            $("#modal-insert-image").modal();
+            $(".modal-insert-image").modal();
             return true;
         });
 
@@ -457,14 +457,17 @@ define([
             $('body').on('click.hide-menu-panel', function(e) {
                 // If click outside the panel, close the panel and unregister
                 // the listener
-                if($(e.target).is('.action-close-panel, :not(.menu-panel, .menu-panel *)')) {
+                if($(e.target).is('.action-close-panel, .action-close-panel *, :not(.menu-panel, .menu-panel *)')) {
                     menuPanelElt.collapse('hide');
                     $('body').off('click.hide-menu-panel');
                     isMenuPanelShown = false;
                 }
             });
+        }).on('show.bs.collapse', function(){
+            // Close all open sub-menus when one submenu opens
+            menuPanelElt.find('.in').collapse('hide');
         }).on('hidden.bs.collapse', function() {
-            // Close all collapsed sub-menu when menu panel is closed
+            // Close all open sub-menus when menu panel is closed
             menuPanelElt.find('.in').collapse('hide');
         });
 
@@ -476,14 +479,17 @@ define([
             $('body').on('click.hide-document-panel', function(e) {
                 // If click outside the panel, close the panel and unregister
                 // the listener
-                if($(e.target).is('.action-close-panel, :not(.document-panel, .document-panel *)')) {
+                if($(e.target).is('.action-close-panel, .action-close-panel *, :not(.document-panel, .document-panel *)')) {
                     documentPanelElt.collapse('hide');
                     $('body').off('click.hide-document-panel');
                     isDocumentPanelShown = false;
                 }
             });
+        }).on('show.bs.collapse', function(){
+            // Close all open sub-menus when one submenu opens
+            documentPanelElt.find('.in').collapse('hide');
         }).on('hidden.bs.collapse', function() {
-            // Close all collapsed sub-menu when document panel is closed
+            // Close all open sub-menus when menu panel is closed
             documentPanelElt.find('.in').collapse('hide');
         });
 
@@ -576,7 +582,7 @@ define([
         });
 
         // Hide events on "insert link" and "insert image" dialogs
-        $("#modal-insert-link, #modal-insert-image").on('hidden.bs.modal', function() {
+        $(".modal-insert-link, .modal-insert-image").on('hidden.bs.modal', function() {
             if(core.insertLinkCallback !== undefined) {
                 core.insertLinkCallback(null);
                 core.insertLinkCallback = undefined;
@@ -599,7 +605,7 @@ define([
         });
         $("#input-file-import-settings").change(function(evt) {
             var files = (evt.dataTransfer || evt.target).files;
-            $("#modal-settings").modal("hide");
+            $(".modal-settings").modal("hide");
             _.each(files, function(file) {
                 var reader = new FileReader();
                 reader.onload = (function(importedFile) {
@@ -643,21 +649,21 @@ define([
 
         // Tooltips
         $(".tooltip-lazy-rendering").tooltip({
-            container: '#modal-settings',
+            container: '.modal-settings',
             placement: 'right',
             trigger: 'hover',
             title: 'Disable preview rendering while typing in order to offload CPU. Refresh preview after 500 ms of inactivity.'
         });
         $(".tooltip-default-content").tooltip({
             html: true,
-            container: '#modal-settings',
+            container: '.modal-settings',
             placement: 'right',
             trigger: 'hover',
             title: 'Thanks for supporting StackEdit by adding a backlink in your documents!'
         });
         $(".tooltip-usercustom-extension").tooltip({
             html: true,
-            container: '#modal-settings',
+            container: '.modal-settings',
             placement: 'right',
             trigger: 'manual',
             title: settingsUserCustomExtensionTooltipHTML
@@ -671,7 +677,7 @@ define([
         });
         $(".tooltip-template").tooltip({
             html: true,
-            container: '#modal-settings',
+            container: '.modal-settings',
             placement: 'right',
             trigger: 'manual',
             title: settingsTemplateTooltipHTML

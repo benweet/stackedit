@@ -1899,6 +1899,12 @@
       "css": "folder-open",
       "code": 59422,
       "src": "websymbols"
+    },
+    {
+      "uid": "bb1090404a4d33340a9ad7302ef8b6e8",
+      "css": "archive",
+      "code": 59481,
+      "src": "websymbols"
     }
   ]
 }

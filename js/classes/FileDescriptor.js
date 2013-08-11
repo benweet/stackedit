@@ -1,4 +1,4 @@
-define(["utils"], function(utils) {
+define(["underscore", "utils"], function(_, utils) {
 
     function FileDescriptor(fileIndex, title, syncLocations, publishLocations) {
         this.fileIndex = fileIndex;
@@ -96,6 +96,25 @@ define(["utils"], function(utils) {
         utils.removeIndexFromArray(this.fileIndex + ".publish", publishAttributes.publishIndex);
         delete this.publishLocations[publishAttributes.publishIndex];
         localStorage.removeItem(publishAttributes.publishIndex);
+    };
+    
+    FileDescriptor.prototype.composeTitle = function() {
+        var result = [];
+        var syncAttributesList = _.values(this.syncLocations);
+        var publishAttributesList = _.values(this.publishLocations);
+        var attributesList = syncAttributesList.concat(publishAttributesList);
+        _.chain(attributesList).sortBy(function(attributes) {
+            return attributes.provider.providerId;
+        }).each(function(attributes) {
+            var classes = 'icon-provider-' + attributes.provider.providerId;
+            if(attributes.isRealtime === true) {
+                classes += ' realtime';
+            }
+            result.push('<i class="' + classes + '"></i>');
+        });
+        result.push(' ');
+        result.push(this.title);
+        return result.join('');
     };
     
     return FileDescriptor;

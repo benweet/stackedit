@@ -4,10 +4,8 @@
 @text-inv: #fff;
 @text-light: #888;
 @error-border: #ff8661;
-@icon-color: #525252;
-@icon-color-inv: #fff;
 @menu-panel-width: 280px;
-@document-panel-width: 300px;
+@document-panel-width: 330px;
 @panel-bg: @bg-navbar-hover;
 @transparent: fade(#000, 0%);
 
@@ -22,13 +20,13 @@
 @list-group-border: @transparent;
 @list-group-active-bg: @dropdown-link-hover-bg;
 @input-color-placeholder: #ccc;
-@btn-default-color: #333333;
-@btn-default-bg: #fff;
+@btn-default-color: #333;
+@btn-default-bg: @transparent;
 @btn-default-border: @transparent;
 @btn-primary-color: #fff;
 @btn-primary-bg: #888;
 @btn-primary-border: @transparent;
-@btn-success-color: #333333;
+@btn-success-color: #555;
 @btn-success-bg: @navbar-bg;
 @btn-success-border: @transparent;
 @btn-info-bg: @body-bg;
@@ -64,9 +62,22 @@ body {
 	user-select: none;
 }
 
-/*
-Override Bootstrap 
-*/
+.list-group .nav {
+	border-left: 10px solid fade(#000, 5%);
+	margin-left: 10px;
+}
+
+.list-group-item {
+	padding: 10px 15px;
+	.list-group & {
+		color: @btn-default-color;
+		border-radius: 0;
+	}
+	&:hover {
+		background-color: @list-group-hover-bg;
+	}
+}
+
 
 /*******************
  * Buttons
@@ -76,8 +87,16 @@ Override Bootstrap
 	padding: 8px 11px;
 } 
 
+.btn-default:hover {
+	background-color: fade(#000, 5%);
+}
+
 .btn-primary:hover {
 	color: @btn-primary-color;
+}
+
+.btn-success:hover {
+	color: @btn-success-color;
 }
 
 .btn-success:hover {
@@ -88,19 +107,6 @@ Override Bootstrap
 .btn-group>.btn+.dropdown-toggle {
 	padding-right: 11px;
 	padding-left: 11px;
-}
-
-
-/*******************
- * Modal
- *******************/
- 
-.modal-backdrop {
-	background-color: fade(#999, 60%);
-}
-
-.modal-content {
-	border-width: 5px;
 }
 
 
@@ -139,22 +145,40 @@ Override Bootstrap
     .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 134, 97, 0.6)");
 }
 
-// Fix add-on support in Bootstrap v3
-.input-group-btn .btn {
-	border: 1px solid @input-border;
-}
-
-.input-group-btn:first-child .btn {
-	border-right: 0;
-}
-
-.input-group-btn:last-child .btn {
-	border-left: 0;
-}
-
-.input-group-addon, .input-group-btn .btn {
+// Input add-on
+.input-group-addon {
 	.box-shadow(inset 0 1px 1px rgba(0,0,0,.075));	
 }
+
+.input-group-btn {
+	.btn {
+		color: @btn-success-color;
+		i {
+			font-size: 120%;
+		}
+	}
+	&:first-child .btn {
+		margin-right: 6px;
+	}
+	
+	&:last-child .btn {
+		margin-left: 6px;
+	}
+}
+
+
+/*******************
+ * Modal
+ *******************/
+ 
+.modal-backdrop {
+	background-color: fade(#999, 60%);
+}
+
+.modal-content {
+	border-width: 5px;
+}
+
 
 /*******************
  * Navbar
@@ -215,6 +239,8 @@ Override Bootstrap
 		font-size: 20px;
 		font-weight: 200;
 		color: #666;
+		max-width: 400px;
+		overflow: hidden;
 		i {
 			margin-right: 10px;
 		}
@@ -262,19 +288,6 @@ Override Bootstrap
 		a > i {
 			margin-right: 5px;
 			color: inherit;
-		}
-		.list-group {
-			.list-group-item {
-				border-radius: 0;
-				color: @btn-default-color;
-				&.active {
-					color: @text-inv;
-				}
-			}
-			.nav {
-				border-left: 10px solid fade(#000, 5%);
-				margin-left: 10px;
-			}
 		}
 		.input-group {
 			padding: 15px 20px;
@@ -339,7 +352,7 @@ Override Bootstrap
 // Dropdown document selector
 .dropdown-file-selector {
 	top: 6px;
-	right: 40px;
+	right: 30px;
 	left: auto;
 	margin: 0;
 	max-height: 500px;
@@ -386,13 +399,14 @@ Override Bootstrap
     border-bottom-right-radius: 4px;
 }
 
+
 /********************
  * Preview extensions buttons
  ********************/
  
 .extension-preview-buttons {
     position: absolute;
-    right: 40px;
+    right: 30px;
     z-index: 1;
     top: 6px;
     .ui-layout-resizer-south-closed > & {
@@ -410,7 +424,7 @@ Override Bootstrap
 		&.open .btn{
 			background-color: @preview-bg-light;
 			i {
-				color: @icon-color
+				color: @btn-success-color
 			}
 		}
 	}
@@ -443,6 +457,128 @@ Override Bootstrap
 }
 
 
+/**************************
+ * Document manager
+ **************************/
+ 
+.modal-document-manager {
+	.list-group-item {
+		padding: 0;
+		i {
+			margin-right: 5px;
+		}
+	}	
+	.folder {
+		font-weight: bold;
+	}
+	.checkbox {
+		float: right;
+		margin: 0;
+		padding: 0;
+		cursor: pointer;
+		input {
+			cursor: pointer;
+			margin: 0 20px;
+			height: 38px;
+		}
+	}
+	.input-rename {
+		width: 300px;
+	}
+	.name {
+		padding: 9px 15px;		
+	}	
+	.button-rename {
+		float: right;
+		i {
+			font-size: 115%;
+			margin: 0;
+		}
+	}
+}
+
+
+/**************************
+ * Settings dialog
+ **************************/
+
+.modal-settings {
+	.modal-header {
+		padding-bottom: 0;
+	}
+	
+	textarea {
+		max-width: 100%;
+		min-height: 100px;
+	}
+	
+	.accordion-group {
+		border: 0;
+		border-bottom: 1px solid @bg-light;
+		border-radius: inherit;
+		margin-bottom: 10px;
+		clear: both;
+	}
+	
+	.accordion-heading {
+		padding: 8px 15px;
+		.accordion-toggle {
+			display: inline;
+			padding: 0;
+			font-weight: 500;
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+		.checkbox {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+	}
+	
+	.accordion-inner {
+		border: 0;
+		padding: 10px 40px;
+		.form-horizontal {
+			.control-label {
+				text-align: left;
+			}
+			.form-inline .label-text {
+				margin-left: 15px
+			}			
+		}
+	}
+	
+	.tab-pane-button-container {
+		width: 200px;
+		margin: 10px auto 20px;
+	}
+	
+	.tab-pane-button-container .btn {
+		text-align: initial;
+		padding-left: 15px;
+	}
+	
+	.nav-tabs {
+		border-bottom: 1px solid transparent;
+		margin: 15px 0 0;
+		
+		& > li > a {
+			&:hover, &:focus {
+				background-color: @bg-light;
+			}
+		}
+		
+		& > li.active > a {
+			&, &:hover, &:focus {
+				color: @text-inv;
+				background-color: @btn-primary-bg;
+				border-color: @btn-primary-bg;
+			}
+		}
+	}
+}
+
 
 /*********************************
  * UI Layout
@@ -455,7 +591,7 @@ Override Bootstrap
 		background-color: fade(@navbar-bg, 50%);
 		float: none;
 		i {
-			color: fade(@icon-color, 30%);
+			color: fade(@btn-success-color, 30%);
 		}
 		&:hover,
 		&:focus,
@@ -463,7 +599,7 @@ Override Bootstrap
 		&.active {
 			background-color: fade(@navbar-bg, 50%);
 			i {
-				color: @icon-color
+				color: @btn-success-color
 			}
 		}
 	}
@@ -644,7 +780,6 @@ div.dropdown-menu textarea {
  ***********************/
 
 [class^="icon-"], [class*=" icon-"] {
-	color: @icon-color;
 	display: inline-block;
 	line-height: 14px;
 	vertical-align: middle;
@@ -674,7 +809,7 @@ div.dropdown-menu textarea {
 }
 
 .icon-trash {
-	font-size: 90%;
+	font-size: 95%;
 }
 
 // Provider's icons (the colored ones)
@@ -723,82 +858,6 @@ div.dropdown-menu textarea {
 	background-position: -144px 0;
 }
 
-/**************************
- * Settings
- **************************/
-
-#modal-settings {
-	.modal-header {
-		padding-bottom: 0;
-	}
-	
-	textarea {
-		max-width: 100%;
-		min-height: 100px;
-	}
-	
-	.accordion-group {
-		border: 0;
-		border-bottom: 1px solid @bg-light;
-		border-radius: inherit;
-		margin-bottom: 10px;
-		clear: both;
-	}
-	
-	.accordion-heading {
-		padding: 8px 15px;
-		.accordion-toggle {
-			display: inline;
-			padding: 0;
-		}
-		.checkbox {
-			margin-top: 0;
-			margin-bottom: 0;
-		}
-	}
-	
-	.accordion-inner {
-		border: 0;
-		padding: 10px 40px;
-		.form-horizontal {
-			.control-label {
-				text-align: left;
-			}
-			.form-inline .label-text {
-				margin-left: 15px
-			}			
-		}
-	}
-	
-	.tab-pane-button-container {
-		width: 200px;
-		margin: 10px auto 20px;
-	}
-	
-	.tab-pane-button-container .btn {
-		text-align: initial;
-		padding-left: 15px;
-	}
-	
-	.nav-tabs {
-		border-bottom: 1px solid transparent;
-		margin: 15px 0 0;
-		
-		& > li > a {
-			&:hover, &:focus {
-				background-color: @bg-light;
-			}
-		}
-		
-		& > li.active > a {
-			&, &:hover, &:focus {
-				color: @text-inv;
-				background-color: @btn-primary-bg;
-				border-color: @btn-primary-bg;
-			}
-		}
-	}
-}
 
 /* Google picker */
 .picker-dialog {
@@ -903,7 +962,7 @@ input[type="file"] {
 	color: #bbb;
 }
 
-#modal-import-harddrive-html textarea {
+.modal-import-harddrive-html textarea {
 	width: 500px;
 	max-width: 500px;
 	height: 100px;

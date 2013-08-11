@@ -21,7 +21,7 @@
 					<i class="icon-file"></i>
 				</button>
 				<button class="btn btn-success" title="Delete current document"
-					data-toggle="modal" data-target="#modal-remove-file-confirm">
+					data-toggle="modal" data-target=".modal-remove-file-confirm">
 					<i class="icon-trash"></i>
 				</button></li>
 		</ul>
@@ -60,11 +60,11 @@
 				class="icon-hdd"></i> Open from...</a>
 			<ul class="nav collapse collapse-open-from">
 				<li><a data-toggle="modal"
-					data-target="#modal-import-harddrive-markdown"
+					data-target=".modal-import-harddrive-markdown"
 					class="action-reset-input action-close-panel" href="#">Import
 						from hard drive</a></li>
 				<li><a data-toggle="modal"
-					data-target="#modal-import-harddrive-html"
+					data-target=".modal-import-harddrive-html"
 					class="action-reset-input action-close-panel" href="#">Convert
 						HTML to Markdown</a></li>
 			</ul>
@@ -98,7 +98,7 @@
 				<li><a href="#" class="action-sync-export-dialog-dropbox">Export
 						to Dropbox</a></li>
 			</ul>
-			<a href="#" data-toggle="modal" data-target="#modal-manage-sync"
+			<a href="#" data-toggle="modal" data-target=".modal-manage-sync"
 				class="action-reset-input list-group-item action-close-panel"><i
 				class="icon-refresh"></i> Manage synchronization</a>
 		</div>
@@ -108,16 +108,16 @@
 				class="list-group-item"><i class="icon-share"></i> Publish on...</a>
 			<ul class="nav collapse collapse-publish-on">
 			</ul>
-			<a href="#" data-toggle="modal" data-target="#modal-manage-publish"
+			<a href="#" data-toggle="modal" data-target=".modal-manage-publish"
 				class="action-reset-input list-group-item action-close-panel"><i
 				class="icon-share"></i> Manage publication</a>
 		</div>
 		<ul class="nav">
 			<li><a href="#" data-toggle="modal"
-				data-target="#modal-settings"
+				data-target=".modal-settings"
 				class="action-load-settings list-group-item action-close-panel"><i
 					class="icon-cog"></i> Settings</a></li>
-			<li><a href="#" data-toggle="modal" data-target="#modal-about"
+			<li><a href="#" data-toggle="modal" data-target=".modal-about"
 				class="list-group-item action-close-panel"><i
 					class="icon-help-circled"></i> About</a></li>
 		</ul>
@@ -136,19 +136,60 @@
 			<div class="input-group">
 				<span class="input-group-addon"><i class="icon-search"></i></span><input
 					type="text" class="form-control"></input>
+				<div class="input-group-btn">
+					<a data-toggle="modal" data-target=".modal-document-manager"
+						class="btn btn-default action-close-panel"
+						title="Manage documents"><i class="icon-archive"></i></a>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
 
-<div id="modal-insert-link" class="modal">
+<div class="modal modal-document-manager">
 	<div class="modal-dialog">
 		<div class="modal-content">
 
 			<div class="modal-header">
-				<button type="button" class="close action-close-insert-link"
-					data-dismiss="modal" aria-hidden="true">&times;</button>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title">Manage documents</h3>
+			</div>
+			<div class="modal-body">
+				<p class="clearfix document-list">
+					<button class="btn btn-default pull-right">
+						<i class="icon-check"></i> Selection
+					</button>
+					<button class="btn btn-default pull-right action-create-folder">
+						<i class="icon-folder"></i> Create folder
+					</button>
+				</p>
+				<div class="list-group document-list"></div>
+				<p class="clearfix document-list">
+					<button class="btn btn-default pull-right">
+						<i class="icon-check"></i> Selection
+					</button>
+					<button class="btn btn-default pull-right action-create-folder">
+						<i class="icon-folder"></i> Create folder
+					</button>
+				</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal modal-insert-link">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
 				<h3 class="modal-title">Hyperlink</h3>
 			</div>
 			<div class="modal-body">
@@ -169,13 +210,13 @@
 </div>
 
 
-<div id="modal-insert-image" class="modal">
+<div class="modal modal-insert-image">
 	<div class="modal-dialog">
 		<div class="modal-content">
 
 			<div class="modal-header">
-				<button type="button" class="close action-close-insert-link"
-					data-dismiss="modal" aria-hidden="true">&times;</button>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
 				<h3 class="modal-title">Image</h3>
 			</div>
 			<div class="modal-body">
@@ -198,13 +239,13 @@
 </div>
 
 
-<div id="modal-import-image" class="modal">
+<div class="modal modal-import-image">
 	<div class="modal-dialog">
 		<div class="modal-content">
 
 			<div class="modal-header">
-				<button type="button" class="close action-close-insert-link"
-					data-dismiss="modal" aria-hidden="true">&times;</button>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
 				<h3 class="modal-title">Google+ image import</h3>
 			</div>
 			<div class="modal-body">
@@ -242,7 +283,7 @@
 </div>
 
 
-<div id="modal-remove-file-confirm" class="modal">
+<div class="modal modal-remove-file-confirm">
 	<div class="modal-dialog">
 		<div class="modal-content">
 
@@ -270,7 +311,7 @@
 </div>
 
 
-<div id="modal-import-harddrive-markdown" class="modal">
+<div class="modal modal-import-harddrive-markdown">
 	<div class="modal-dialog">
 		<div class="modal-content">
 
@@ -297,7 +338,7 @@
 </div>
 
 
-<div id="modal-import-harddrive-html" class="modal">
+<div class="modal modal-import-harddrive-html">
 	<div class="modal-dialog">
 		<div class="modal-content">
 
@@ -328,7 +369,7 @@
 </div>
 
 
-<div id="modal-upload-gdrive" class="modal">
+<div class="modal modal-upload-gdrive">
 	<div class="modal-dialog">
 		<div class="modal-content">
 
@@ -384,7 +425,7 @@
 </div>
 
 
-<div id="modal-upload-dropbox" class="modal">
+<div class="modal modal-upload-dropbox">
 	<div class="modal-dialog">
 		<div class="modal-content">
 
@@ -426,7 +467,7 @@
 </div>
 
 
-<div id="modal-manage-sync" class="modal">
+<div class="modal modal-manage-sync">
 	<div class="modal-dialog">
 		<div class="modal-content">
 
@@ -478,7 +519,7 @@
 </div>
 
 
-<div id="modal-publish" class="modal">
+<div class="modal modal-publish">
 	<div class="modal-dialog">
 		<div class="modal-content">
 
@@ -706,7 +747,7 @@
 </div>
 
 
-<div id="modal-manage-publish" class="modal">
+<div class="modal modal-manage-publish">
 	<div class="modal-dialog">
 		<div class="modal-content">
 
@@ -736,7 +777,7 @@
 </div>
 
 
-<div id="modal-settings" class="modal">
+<div class="modal modal-settings">
 	<div class="modal-dialog">
 		<div class="modal-content">
 
@@ -873,7 +914,7 @@
 								data-dismiss="modal"><i class="icon-help-circled icon-white"></i>
 								Welcome document</a> <a href="#" class="btn btn-block btn-primary"
 								data-dismiss="modal" data-toggle="modal"
-								data-target="#modal-app-reset"><i
+								data-target=".modal-app-reset"><i
 								class="icon-fire icon-white"></i> Reset application</a>
 						</div>
 					</div>
@@ -890,7 +931,7 @@
 </div>
 
 
-<div id="modal-non-unique" class="modal">
+<div class="modal modal-non-unique">
 	<div class="modal-dialog">
 		<div class="modal-content">
 
@@ -912,7 +953,7 @@
 </div>
 
 
-<div id="modal-app-reset" class="modal">
+<div class="modal modal-app-reset">
 	<div class="modal-dialog">
 		<div class="modal-content">
 

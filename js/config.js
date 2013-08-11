@@ -12,6 +12,7 @@ var DROPBOX_APP_KEY = "lq6mwopab8wskas";
 var DROPBOX_APP_SECRET = "851fgnucpezy84t";
 var BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c";
 var DEFAULT_FILE_TITLE = "Title";
+var DEFAULT_FOLDER_NAME = "New folder";
 var GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document";
 var CHECK_ONLINE_PERIOD = 120000;
 var AJAX_TIMEOUT = 30000;

@@ -32,7 +32,7 @@ define([
             return;
         }
         utils.resetModalInputs();
-        $("#modal-import-image img").prop("src", getThumbnailUrl(imageDoc, 128));
+        $(".modal-import-image img").prop("src", getThumbnailUrl(imageDoc, 128));
         utils.setInputValue("#input-import-image-title", imageDoc.name);
 
         // Load preferences
@@ -40,7 +40,7 @@ define([
             utils.setInputValue("#input-import-image-size", importImagePreferences.size);
         }
 
-        $("#modal-import-image").modal();
+        $(".modal-import-image").modal();
     }
 
     var importImageCallback = undefined;

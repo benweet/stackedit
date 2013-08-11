@@ -14,6 +14,7 @@ define([
     "extensions/dialogManageSynchronization",
     "extensions/dialogOpenHarddrive",
     "extensions/documentSelector",
+    "extensions/documentManager",
     "extensions/documentTitle",
     "extensions/workingIndicator",
     "extensions/notifications",

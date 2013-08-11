@@ -171,8 +171,7 @@ define([
     
     utils.addModal = function(id, content) {
         var modal = crel('div', {
-            id: id,
-            class: 'modal'
+            class: 'modal ' + id
         });
         modal.innerHTML = content;
         document.body.appendChild(modal);

@@ -451,46 +451,55 @@ define([
 
         menuPanelElt = $('.menu-panel');
         var isMenuPanelShown = false;
-        menuPanelElt.on('shown.bs.collapse', function() {
-            isMenuPanelShown = true;
-            // Register a click listener when menu panel is open
-            $('body').on('click.hide-menu-panel', function(e) {
-                // If click outside the panel, close the panel and unregister
-                // the listener
-                if($(e.target).is('.action-close-panel, .action-close-panel *, :not(.menu-panel, .menu-panel *)')) {
-                    menuPanelElt.collapse('hide');
+        var menuPanelBackdropElt = undefined;
+        menuPanelElt.on('shown.bs.collapse', function(e) {
+            if(e.target === menuPanelElt[0]) {
+                isMenuPanelShown = true;
+                menuPanelBackdropElt = utils.createBackdrop();
+                menuPanelElt.addClass('move-to-front');
+                // Register a click listener when menu panel is open
+                var closePanelElt = menuPanelElt.find('.action-close-panel').add(menuPanelBackdropElt);
+                closePanelElt.on('click.hide-menu-panel', function(e) {
+                    // Unregister the listener
                     $('body').off('click.hide-menu-panel');
+                    menuPanelElt.collapse('hide');
                     isMenuPanelShown = false;
-                }
-            });
+                });
+            }
         }).on('show.bs.collapse', function(){
             // Close all open sub-menus when one submenu opens
             menuPanelElt.find('.in').collapse('hide');
-        }).on('hidden.bs.collapse', function() {
+        }).on('hidden.bs.collapse', function(e) {
             // Close all open sub-menus when menu panel is closed
-            menuPanelElt.find('.in').collapse('hide');
+            if(e.target === menuPanelElt[0]) {
+                menuPanelElt.find('.in').collapse('hide');
+            }
         });
 
         documentPanelElt = $('.document-panel');
         var isDocumentPanelShown = false;
-        documentPanelElt.on('shown.bs.collapse', function() {
-            isDocumentPanelShown = true;
-            // Register a click listener when document panel is open
-            $('body').on('click.hide-document-panel', function(e) {
-                // If click outside the panel, close the panel and unregister
-                // the listener
-                if($(e.target).is('.action-close-panel, .action-close-panel *, :not(.document-panel, .document-panel *)')) {
-                    documentPanelElt.collapse('hide');
-                    $('body').off('click.hide-document-panel');
-                    isDocumentPanelShown = false;
-                }
-            });
+        documentPanelElt.on('shown.bs.collapse', function(e) {
+            if(e.target === documentPanelElt[0]) {
+                isDocumentPanelShown = true;
+                // Register a click listener when document panel is open
+                $('body').on('click.hide-document-panel', function(e) {
+                    // If click outside the panel, close the panel and unregister
+                    // the listener
+                    if($(e.target).is('.action-close-panel, .action-close-panel *, :not(.document-panel, .document-panel *)')) {
+                        documentPanelElt.collapse('hide');
+                        $('body').off('click.hide-document-panel');
+                        isDocumentPanelShown = false;
+                    }
+                });
+            }
         }).on('show.bs.collapse', function(){
             // Close all open sub-menus when one submenu opens
             documentPanelElt.find('.in').collapse('hide');
-        }).on('hidden.bs.collapse', function() {
-            // Close all open sub-menus when menu panel is closed
-            documentPanelElt.find('.in').collapse('hide');
+        }).on('hidden.bs.collapse', function(e) {
+            if(e.target === documentPanelElt[0]) {
+                // Close all open sub-menus when menu panel is closed
+                documentPanelElt.find('.in').collapse('hide');
+            }
         });
 
         var isModalShown = false;

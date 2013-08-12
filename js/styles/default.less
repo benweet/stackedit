@@ -82,6 +82,10 @@ body {
 	}
 }
 
+.move-to-front {
+	z-index: 1031 !important;
+}
+
 
 /*******************
  * Buttons
@@ -230,14 +234,6 @@ body {
 		}
 	}
 	
-	// Dropdown menus
-	.btn-group.open .dropdown-toggle {
-		background-color: @bg-navbar-hover;
-	}
-	.dropdown-menu > li > a > i {
-		margin-right: 5px;
-	}
-	
 	.file-title-navbar {
 		padding: 4px 15px;
 		font-size: 20px;
@@ -246,7 +242,7 @@ body {
 		max-width: 400px;
 		overflow: hidden;
 		i {
-			margin-right: 10px;
+			margin-right: 6px;
 		}
 	}
 	
@@ -290,7 +286,7 @@ body {
 		overflow: auto;
 		height: 100%;
 		a > i {
-			margin-right: 5px;
+			margin-right: 3px;
 			color: inherit;
 		}
 	}
@@ -318,6 +314,9 @@ body {
 	}
 	.panel-content {
 		border-right: 5px solid @preview-bg-light;
+		.nav {
+			margin-bottom: 20px;
+		}
 	}
 }
 
@@ -366,8 +365,7 @@ body {
 	}
 	.list-group .nav {
 		border: 0;
-		margin: 0 20px;
-		padding-bottom: 25px;
+		margin: 0 20px 20px;
 	}
 }
 
@@ -393,13 +391,13 @@ body {
 	}
 	.list-group .nav {
 		margin-left: 40px;
-		margin-bottom: 25px;
+		margin-bottom: 30px;
 	}
 	.list-group-item {
 		padding: 3px;
 		margin: 0;
 		i {
-			margin-right: 5px;
+			margin-right: 3px;
 		}
 		.btn {
 			float: right;

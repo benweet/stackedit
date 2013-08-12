@@ -607,10 +607,10 @@ define([
                 }
             });
             picker = pickerBuilder.build();
-            $("body").append($("<div>").addClass("modal-backdrop").click(function() {
+            $(utils.createBackdrop()).click(function() {
                 hidePicker();
                 task.chain();
-            }));
+            });
             picker.setVisible(true);
         });
         task.onSuccess(function() {

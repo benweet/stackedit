@@ -15,10 +15,10 @@ define([
     };
 
     var folderEltTmpl = [
-        '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>" data-toggle="collapse" data-target=".document-panel .nav.<%= id %>">',
+        '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>" data-toggle="collapse" data-target=".document-panel .file-list.<%= id %>">',
         '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>',
         '<i class="icon-folder"></i> <%= folderDesc.name %></a>',
-        '<ul class="nav collapse <%= id %>"><%= fileListHtml %></ul>'
+        '<div class="file-list collapse <%= id %> clearfix"><%= fileListHtml %></div>'
     ].join('');
     var documentEltTmpl = [
         '<a href="#" class="list-group-item file action-close-panel<%= fileDesc === selectedFileDesc ? " active" : "" %>" data-file-index="<%= fileDesc.fileIndex %>">',
@@ -42,7 +42,7 @@ define([
                 fileDesc: fileDesc,
             }) + '</li>';
         }, '').value();
-        documentListHtml = '<ul class="nav">' + documentListHtml + '</ul>';
+        documentListHtml = documentListHtml && '<ul class="nav">' + documentListHtml + '</ul>';
         
         // Build directories
         _.chain(folderList).sortBy(function(folderDesc) {
@@ -51,10 +51,11 @@ define([
             var fileListHtml = _.chain(folderDesc.fileList).sortBy(function(fileDesc) {
                 return fileDesc.title.toLowerCase();
             }).reduce(function(result, fileDesc) {
-                return result + _.template(documentEltTmpl, {
+                return result + '<li>' + _.template(documentEltTmpl, {
                     fileDesc: fileDesc,
-                });
+                }) + '</li>';
             }, '').value();
+            fileListHtml = fileListHtml && '<ul class="nav">' + fileListHtml + '</ul>';
             documentListHtml += _.template(folderEltTmpl, {
                 folderDesc: folderDesc,
                 fileListHtml: fileListHtml,
@@ -111,6 +112,18 @@ define([
     documentPanel.onReady = function() {
         panelElt = document.querySelector('.document-panel');
         documentListElt = panelElt.querySelector('.list-group');
+        
+        // Open current folder before opening
+        $(panelElt).on('show.bs.collapse', function(e) {
+            var folderDesc = selectedFileDesc.folder;
+            if(e.target === panelElt && folderDesc !== undefined) {
+                $(panelElt.querySelector('.file-list.' + folderDesc.folderIndex.replace('.', ''))).collapse('show');
+            }
+        }).on('shown.bs.collapse', function(e) {
+            // Scroll to the active file
+            if(e.target === panelElt) {
+            }            
+        });
     };
 
     return documentPanel;

@@ -22,7 +22,7 @@ define([
     };
 
     var folderEltTmpl = [
-        '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>" data-toggle="collapse" data-target=".modal-document-manager .nav.<%= id %>">',
+        '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>" data-toggle="collapse" data-target=".modal-document-manager .file-list.<%= id %>">',
         '<label class="checkbox" title="Select"><input type="checkbox"></label>',
         '<button class="btn btn-default button-delete" title="Delete"><i class="icon-trash"></i></button>',
         '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>',
@@ -30,7 +30,7 @@ define([
         '<div class="name"><i class="icon-folder"></i> ',
         '<%= folderDesc.name %></div>',
         '<input type="text" class="input-rename form-control hide"></a>',
-        '<ul class="nav collapse <%= id %>"><%= fileListHtml %></ul>'
+        '<div class="file-list collapse <%= id %> clearfix"><%= fileListHtml %></div>'
     ].join('');
     var documentEltTmpl = [
         '<li class="list-group-item file clearfix" data-file-index="<%= fileDesc.fileIndex %>">',
@@ -142,7 +142,7 @@ define([
 
         // Root folder
         var documentListHtml = [
-            '<a href="#" class="list-group-item folder clearfix" data-toggle="collapse" data-target=".modal-document-manager .nav.root-folder">',
+            '<a href="#" class="list-group-item folder clearfix" data-toggle="collapse" data-target=".modal-document-manager .file-list.root-folder">',
             '<label class="checkbox" title="Select"><input type="checkbox"></label>',
             '<div class="pull-right file-count">',
             _.size(orphanDocumentList),
@@ -152,13 +152,15 @@ define([
         ].join('');
 
         // Add orphan documents
-        documentListHtml += '<ul class="nav collapse root-folder">' + _.chain(orphanDocumentList).sortBy(function(fileDesc) {
+        var orphanListHtml = _.chain(orphanDocumentList).sortBy(function(fileDesc) {
             return fileDesc.title.toLowerCase();
         }).reduce(function(result, fileDesc) {
             return result + _.template(documentEltTmpl, {
                 fileDesc: fileDesc,
             });
-        }, '').value() + '</ul>';
+        }, '').value();
+        orphanListHtml = orphanListHtml && '<ul class="nav">' + orphanListHtml + '</ul>';
+        documentListHtml += '<div class="file-list collapse root-folder clearfix">' + orphanListHtml + '</div>';
 
         // Build directories
         _.chain(folderList).sortBy(function(folderDesc) {
@@ -171,6 +173,7 @@ define([
                     fileDesc: fileDesc,
                 });
             }, '').value();
+            fileListHtml = fileListHtml && '<ul class="nav">' + fileListHtml + '</ul>';
             documentListHtml += _.template(folderEltTmpl, {
                 folderDesc: folderDesc,
                 fileListHtml: fileListHtml,

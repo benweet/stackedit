@@ -169,6 +169,7 @@ define([
         return url;
     };
     
+    // Create the modal element and add to the body
     utils.addModal = function(id, content) {
         var modal = crel('div', {
             class: 'modal ' + id
@@ -177,6 +178,15 @@ define([
         document.body.appendChild(modal);
     };
 
+    // Create a backdrop and add to the body
+    utils.createBackdrop = function() {
+        var result = crel('div', {
+            class: 'modal-backdrop'
+        });
+        document.body.appendChild(result);
+        return result;
+    };
+    
     // Create an centered popup window
     utils.popupWindow = function(url, title, width, height) {
         var left = (screen.width / 2) - (width / 2);

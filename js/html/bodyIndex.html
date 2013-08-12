@@ -58,46 +58,55 @@
 				StackEdit Viewer</a> <a href="#" data-toggle="collapse"
 				data-target=".collapse-open-from" class="list-group-item"><i
 				class="icon-hdd"></i> Open from...</a>
-			<ul class="nav collapse collapse-open-from">
-				<li><a data-toggle="modal"
-					data-target=".modal-import-harddrive-markdown"
-					class="action-reset-input action-close-panel" href="#">Import
-						from hard drive</a></li>
-				<li><a data-toggle="modal"
-					data-target=".modal-import-harddrive-html"
-					class="action-reset-input action-close-panel" href="#">Convert
-						HTML to Markdown</a></li>
-			</ul>
+			<div class="sub-menu collapse collapse-open-from clearfix">
+				<ul class="nav">
+					<li><a data-toggle="modal"
+						data-target=".modal-import-harddrive-markdown"
+						class="action-reset-input action-close-panel" href="#">Import
+							from hard drive</a></li>
+					<li><a data-toggle="modal"
+						data-target=".modal-import-harddrive-html"
+						class="action-reset-input action-close-panel" href="#">Convert
+							HTML to Markdown</a></li>
+				</ul>
+			</div>
 
 			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"
 				class="list-group-item"><i class="icon-hdd"></i> Save as...</a>
-			<ul class="nav collapse collapse-save-as">
-				<li><a class="action-download-md" href="#">Save as Markdown</a></li>
-				<li><a class="action-download-html" href="#">Save as HTML</a></li>
-				<li><a class="action-download-template" href="#">Save using
-						template</a></li>
-			</ul>
+			<div class="sub-menu collapse collapse-save-as clearfix">
+				<ul class="nav">
+					<li><a class="action-download-md" href="#">Save as
+							Markdown</a></li>
+					<li><a class="action-download-html" href="#">Save as HTML</a></li>
+					<li><a class="action-download-template" href="#">Save
+							using template</a></li>
+				</ul>
+			</div>
 		</div>
 		<div class=dropdown-header>SYNCHRONIZE</div>
 		<div class="list-group">
 			<a href="#" data-toggle="collapse"
 				data-target=".collapse-sync-gdrive" class="list-group-item"><i
 				class="icon-provider-gdrive"></i> Google Drive</a>
-			<ul class="nav collapse collapse-sync-gdrive">
-				<li><a href="#" class="action-sync-import-gdrive">Import
-						from Google Drive</a></li>
-				<li><a href="#" class="action-sync-export-dialog-gdrive">Export
-						to Google Drive</a></li>
-			</ul>
+			<div class="sub-menu collapse collapse-sync-gdrive clearfix">
+				<ul class="nav">
+					<li><a href="#" class="action-sync-import-gdrive">Import
+							from Google Drive</a></li>
+					<li><a href="#" class="action-sync-export-dialog-gdrive">Export
+							to Google Drive</a></li>
+				</ul>
+			</div>
 			<a href="#" data-toggle="collapse"
 				data-target=".collapse-sync-dropbox" class="list-group-item"><i
 				class="icon-provider-dropbox"></i> Dropbox</a>
-			<ul class="nav collapse collapse-sync-dropbox">
-				<li><a class="action-sync-import-dropbox" href="#">Import
-						from Dropbox</a></li>
-				<li><a href="#" class="action-sync-export-dialog-dropbox">Export
-						to Dropbox</a></li>
-			</ul>
+			<div class="sub-menu collapse collapse-sync-dropbox clearfix">
+				<ul class="nav">
+					<li><a class="action-sync-import-dropbox" href="#">Import
+							from Dropbox</a></li>
+					<li><a href="#" class="action-sync-export-dialog-dropbox">Export
+							to Dropbox</a></li>
+				</ul>
+			</div>
 			<a href="#" data-toggle="modal" data-target=".modal-manage-sync"
 				class="action-reset-input list-group-item action-close-panel"><i
 				class="icon-refresh"></i> Manage synchronization</a>
@@ -106,8 +115,10 @@
 		<div class="list-group">
 			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"
 				class="list-group-item"><i class="icon-share"></i> Publish on...</a>
-			<ul class="nav collapse collapse-publish-on">
-			</ul>
+			<div class="sub-menu collapse collapse-publish-on clearfix">
+				<ul class="nav">
+				</ul>
+			</div>
 			<a href="#" data-toggle="modal" data-target=".modal-manage-publish"
 				class="action-reset-input list-group-item action-close-panel"><i
 				class="icon-share"></i> Manage publication</a>
@@ -177,9 +188,9 @@
 							Create folder
 					</a></li>
 					<li class="disabled"><a><i class="icon-file"></i> <span
-							class="document-count">0</span></a></li>
+							class="document-count"></span></a></li>
 					<li class="disabled"><a><i class="icon-folder"></i> <span
-							class="folder-count">0</span></a></li>
+							class="folder-count"></span></a></li>
 				</ul>
 				<div class="list-group document-list"></div>
 				<p class="confirm-delete hide">The following documents will be

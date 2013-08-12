@@ -13,9 +13,10 @@ define([
     "extensions/dialogManagePublication",
     "extensions/dialogManageSynchronization",
     "extensions/dialogOpenHarddrive",
-    "extensions/documentSelector",
-    "extensions/documentManager",
     "extensions/documentTitle",
+    "extensions/documentSelector",
+    "extensions/documentPanel",
+    "extensions/documentManager",
     "extensions/workingIndicator",
     "extensions/notifications",
     "extensions/markdownExtra",
@@ -140,6 +141,9 @@ define([
     addEventHook("onFileClosed");
     addEventHook("onContentChanged");
     addEventHook("onTitleChanged");
+    
+    // Operations on folders
+    addEventHook("onFoldersChanged");
 
     // Sync events
     addEventHook("onSyncRunning");

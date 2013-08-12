@@ -126,6 +126,11 @@ define([
         localStorage.removeItem(fileDesc.fileIndex + ".content");
         localStorage.removeItem(fileDesc.fileIndex + ".sync");
         localStorage.removeItem(fileDesc.fileIndex + ".publish");
+        localStorage.removeItem(fileDesc.fileIndex + ".selectTime");
+        localStorage.removeItem(fileDesc.fileIndex + ".editorStart");
+        localStorage.removeItem(fileDesc.fileIndex + ".editorEnd");
+        localStorage.removeItem(fileDesc.fileIndex + ".editorScrollTop");
+        localStorage.removeItem(fileDesc.fileIndex + ".previewScrollTop");
 
         eventMgr.onFileDeleted(fileDesc);
     };

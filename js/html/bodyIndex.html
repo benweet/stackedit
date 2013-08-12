@@ -132,17 +132,16 @@
 		<i class="icon-folder-open"></i> <i class="icon-right-dir"></i>
 	</button>
 	<div class="panel-content">
-		<div class="list-group">
-			<div class="input-group">
-				<span class="input-group-addon"><i class="icon-search"></i></span><input
-					type="text" class="form-control"></input>
-				<div class="input-group-btn">
-					<a data-toggle="modal" data-target=".modal-document-manager"
-						class="btn btn-default action-close-panel"
-						title="Manage documents"><i class="icon-archive"></i></a>
-				</div>
+		<div class="input-group">
+			<span class="input-group-addon"><i class="icon-search"></i></span><input
+				type="text" class="form-control"></input>
+			<div class="input-group-btn">
+				<a data-toggle="modal" data-target=".modal-document-manager"
+					class="btn btn-default action-close-panel" title="Manage documents"><i
+					class="icon-layers"></i></a>
 			</div>
 		</div>
+		<div class="list-group document-list"></div>
 	</div>
 </div>
 
@@ -157,26 +156,46 @@
 				<h3 class="modal-title">Manage documents</h3>
 			</div>
 			<div class="modal-body">
-				<p class="clearfix document-list">
-					<button class="btn btn-default pull-right">
-						<i class="icon-check"></i> Selection
-					</button>
-					<button class="btn btn-default pull-right action-create-folder">
-						<i class="icon-folder"></i> Create folder
-					</button>
-				</p>
+				<div></div>
+				<ul class="nav nav-pills document-list">
+					<li class="pull-right dropdown"><a href="#"
+						data-toggle="dropdown"><i class="icon-check"></i> Selection <b
+							class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="#" class="action-select-all"><i
+									class="icon-check"></i> Select all</a></li>
+							<li><a href="#" class="action-unselect-all"><i
+									class="icon-check-empty"></i> Unselect all</a></li>
+							<li class="divider"></li>
+							<li><a href="#" class="action-move-items"><i
+									class="icon-forward"></i> Move to folder</a></li>
+							<li><a href="#" class="action-delete-items"><i
+									class="icon-trash"></i> Delete</a></li>
+						</ul></li>
+					<li class="pull-right"><a href="#"
+						class="action-create-folder"> <i class="icon-folder"></i>
+							Create folder
+					</a></li>
+					<li class="disabled"><a><i class="icon-file"></i> <span
+							class="document-count">0</span></a></li>
+					<li class="disabled"><a><i class="icon-folder"></i> <span
+							class="folder-count">0</span></a></li>
+				</ul>
 				<div class="list-group document-list"></div>
-				<p class="clearfix document-list">
-					<button class="btn btn-default pull-right">
-						<i class="icon-check"></i> Selection
-					</button>
-					<button class="btn btn-default pull-right action-create-folder">
-						<i class="icon-folder"></i> Create folder
-					</button>
-				</p>
+				<p class="confirm-delete hide">The following documents will be
+					deleted locally:</p>
+				<p class="choose-folder hide">Please choose a destination
+					folder:</p>
+				<div class="list-group selected-document-list hide"></div>
+				<div class="list-group select-folder-list hide"></div>
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+				<a href="#"
+					class="btn btn-default confirm-delete choose-folder action-cancel hide">Cancel</a>
+				<a href="#"
+					class="btn btn-primary confirm-delete action-delete-items-confirm hide">OK</a>
+				<a href="#" class="btn btn-primary document-list"
+					data-dismiss="modal">Close</a>
 			</div>
 		</div>
 	</div>

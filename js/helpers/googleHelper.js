@@ -297,6 +297,10 @@ define([
         authenticate(task);
         task.onRun(function() {
             var nextPageToken = undefined;
+            if(newChangeId === 0) {
+                // Add time for the first synchronization
+                task.timeout = ASYNC_TASK_LONG_TIMEOUT;
+            }
             function retrievePageOfChanges() {
                 var request = undefined;
                 if(nextPageToken === undefined) {

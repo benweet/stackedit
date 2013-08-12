@@ -40,33 +40,11 @@ define([
     var selectFileDesc = undefined;
     var buildSelector = function() {
 
-        function composeTitle(fileDesc) {
-            var result = [];
-            var syncAttributesList = _.values(fileDesc.syncLocations);
-            var publishAttributesList = _.values(fileDesc.publishLocations);
-            var attributesList = syncAttributesList.concat(publishAttributesList);
-            _.chain(attributesList).sortBy(function(attributes) {
-                return attributes.provider.providerId;
-            }).each(function(attributes) {
-                var classes = 'icon-provider-' + attributes.provider.providerId;
-                if(attributes.isRealtime === true) {
-                    classes += " realtime";
-                }
-                result.push('<i class="' + classes + '"></i>');
-            });
-            result.push(" ");
-            result.push(fileDesc.title);
-            return result.join("");
-        }
-
         liMap = {};
         dropdownElt.empty();
-        var documentPanelSelectorElt = $(".document-panel > .panel-content > .list-group");
-        documentPanelSelectorElt.find('.list-group-item').remove();
         _.chain(fileSystem).sortBy(sortFunction).each(function(fileDesc) {
-            var a = $('<a href="#">').html(composeTitle(fileDesc));
-            var documentPanelItemElt = a.clone().addClass('list-group-item action-close-panel');
-            documentPanelItemElt.add(a).click(function() {
+            var aElt = $('<a href="#">').html(fileDesc.composeTitle());
+            aElt.click(function() {
                 if(!liMap[fileDesc.fileIndex].is(".disabled")) {
                     fileMgr.selectFile(fileDesc);
                 }
@@ -74,14 +52,12 @@ define([
                     $("#wmd-input").focus();
                 }
             });
-            var li = $("<li>").append(a);
-            liMap[fileDesc.fileIndex] = li;
+            var liElt = $("<li>").append(aElt);
+            liMap[fileDesc.fileIndex] = liElt;
             if(fileDesc === selectFileDesc) {
-                li.addClass("disabled");
-                documentPanelItemElt.addClass("active");
+                liElt.addClass("disabled");
             }
-            dropdownElt.append(li);
-            documentPanelSelectorElt.append(documentPanelItemElt);
+            dropdownElt.append(liElt);
         });
         liArray = _.values(liMap);
     };

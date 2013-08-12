@@ -17,28 +17,9 @@ define([
             return;
         }
 
-        function composeTitle(fileDesc) {
-            var result = [];
-            var syncAttributesList = _.values(fileDesc.syncLocations);
-            var publishAttributesList = _.values(fileDesc.publishLocations);
-            var attributesList = syncAttributesList.concat(publishAttributesList);
-            _.chain(attributesList).sortBy(function(attributes) {
-                return attributes.provider.providerId;
-            }).each(function(attributes) {
-                var classes = 'icon-provider-' + attributes.provider.providerId;
-                if(attributes.isRealtime === true) {
-                    classes += " realtime";
-                }
-                result.push('<i class="' + classes + '"></i>');
-            });
-            result.push(" ");
-            result.push(fileDesc.title);
-            return result.join("");
-        }
-
         var title = fileDesc.title;
         document.title = "StackEdit - " + title;
-        $(".file-title-navbar").html(composeTitle(fileDesc));
+        $(".file-title-navbar").html(fileDesc.composeTitle());
         $(".file-title").text(title);
         $(".input-file-title").val(title);
 

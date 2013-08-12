@@ -7,6 +7,7 @@
 @menu-panel-width: 280px;
 @document-panel-width: 330px;
 @panel-bg: @bg-navbar-hover;
+@folder-color: #555;
 @transparent: fade(#000, 0%);
 
 /* Bootstrap */
@@ -15,6 +16,8 @@
 @dropdown-border: #ddd;
 @pre-border-color: #ddd;
 @navbar-bg: #ddd;
+@nav-disabled-link-color: #ccc;
+@nav-disabled-link-hover-color: #bbb;
 @dropdown-link-hover-bg: #888;
 @dropdown-link-active-color: #fff;
 @list-group-border: @transparent;
@@ -35,6 +38,7 @@
 @modal-header-border-color: #e8e8e8;
 @modal-content-border-color: #e8e8e8;
 @modal-footer-border-color: #e8e8e8;
+@modal-content-separator-color: #eee;
 
 
 body {
@@ -72,6 +76,9 @@ body {
 	.list-group & {
 		color: @btn-default-color;
 		border-radius: 0;
+	}
+	&.active:hover {
+	    background-color: @list-group-active-bg;
 	}
 }
 
@@ -286,9 +293,6 @@ body {
 			margin-right: 5px;
 			color: inherit;
 		}
-		.input-group {
-			padding: 15px 20px;
-		}		
 	}
 }
 
@@ -343,6 +347,27 @@ body {
 	}
 	.panel-content {
 		border-left: 5px solid @preview-bg-light;
+		.icon-layers {
+			font-size: 135%;
+		}	
+		.input-group {
+			background-color: @list-group-bg;
+			padding: 15px 5px 15px 20px;
+		}		
+	}
+	.list-group-item {
+		margin: 0;
+	}
+	.folder {
+		font-weight: bold;
+		color: @folder-color;
+		font-size: 15px;
+		border-bottom-color: @modal-content-separator-color;
+	}
+	.list-group .nav {
+		border: 0;
+		margin: 0 20px;
+		padding-bottom: 25px;
 	}
 }
 
@@ -355,6 +380,61 @@ body {
 	max-height: 500px;
 	min-width: 280px;
 	overflow-y: auto;
+}
+
+
+/**************************
+ * Document manager
+ **************************/
+ 
+.modal-document-manager {
+	.nav-pills {
+		margin-bottom: 15px;
+	}
+	.list-group .nav {
+		margin-left: 40px;
+		margin-bottom: 25px;
+	}
+	.list-group-item {
+		padding: 3px;
+		margin: 0;
+		i {
+			margin-right: 5px;
+		}
+		.btn {
+			float: right;
+			i {
+				margin: 0;
+				font-size: 105%;
+				&.icon-pencil {
+					font-size: 115%;
+				}
+			}
+		}
+	}
+	.folder {
+		font-weight: bold;
+		color: @folder-color;
+		font-size: 15px;
+		border-bottom-color: @modal-content-separator-color;
+	}
+	.checkbox {
+		float: right;
+		margin: 0;
+		padding: 0;
+		cursor: pointer;
+		input {
+			cursor: pointer;
+			margin: 0 16px;
+			height: 38px;
+		}
+	}
+	.input-rename {
+		width: 220px;
+	}
+	.name, .file-count {
+		padding: 9px 20px 9px 15px;		
+	}	
 }
 
 
@@ -449,52 +529,6 @@ body {
 	    ul {
 		    margin-left: 10px;
 		    padding-left: 10px;
-		}
-	}
-}
-
-
-/**************************
- * Document manager
- **************************/
- 
-.modal-document-manager {
-	.list-group-item {
-		padding: 0;
-		i {
-			margin-right: 5px;
-		}
-	}	
-	.folder {
-		font-weight: bold;
-	}
-	.file{
-		&:nth-child(odd) {
-			background-color: fade(#000, 3%);
-		}
-	}
-	.checkbox {
-		float: right;
-		margin: 0;
-		padding: 0;
-		cursor: pointer;
-		input {
-			cursor: pointer;
-			margin: 0 20px;
-			height: 38px;
-		}
-	}
-	.input-rename {
-		width: 300px;
-	}
-	.name, .file-count {
-		padding: 9px 25px 9px 15px;		
-	}	
-	.button-rename {
-		float: right;
-		i {
-			font-size: 115%;
-			margin: 0;
 		}
 	}
 }
@@ -786,8 +820,7 @@ div.dropdown-menu textarea {
 	line-height: 14px;
 	vertical-align: middle;
 	background-repeat: no-repeat;
-	&.icon-white,
-	.dropdown-menu > li:hover > a > & {
+	&.icon-white {
 		color: #fff;
 	}
 }

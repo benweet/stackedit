@@ -62,12 +62,10 @@
 				<ul class="nav">
 					<li><a data-toggle="modal"
 						data-target=".modal-import-harddrive-markdown"
-						class="action-reset-input action-close-panel" href="#">Import
-							from hard drive</a></li>
+						class="action-reset-input" href="#">Import from hard drive</a></li>
 					<li><a data-toggle="modal"
 						data-target=".modal-import-harddrive-html"
-						class="action-reset-input action-close-panel" href="#">Convert
-							HTML to Markdown</a></li>
+						class="action-reset-input" href="#">Convert HTML to Markdown</a></li>
 				</ul>
 			</div>
 
@@ -90,8 +88,9 @@
 				class="icon-provider-gdrive"></i> Google Drive</a>
 			<div class="sub-menu collapse collapse-sync-gdrive clearfix">
 				<ul class="nav">
-					<li><a href="#" class="action-sync-import-gdrive">Import
-							from Google Drive</a></li>
+					<li><a href="#" class="action-sync-import-gdrive"
+						data-toggle="collapse" data-target=".menu-panel">Import from
+							Google Drive</a></li>
 					<li><a href="#" class="action-sync-export-dialog-gdrive">Export
 							to Google Drive</a></li>
 				</ul>
@@ -101,14 +100,15 @@
 				class="icon-provider-dropbox"></i> Dropbox</a>
 			<div class="sub-menu collapse collapse-sync-dropbox clearfix">
 				<ul class="nav">
-					<li><a class="action-sync-import-dropbox" href="#">Import
-							from Dropbox</a></li>
+					<li><a class="action-sync-import-dropbox" href="#"
+						data-toggle="collapse" data-target=".menu-panel">Import from
+							Dropbox</a></li>
 					<li><a href="#" class="action-sync-export-dialog-dropbox">Export
 							to Dropbox</a></li>
 				</ul>
 			</div>
 			<a href="#" data-toggle="modal" data-target=".modal-manage-sync"
-				class="action-reset-input list-group-item action-close-panel"><i
+				class="action-reset-input list-group-item"><i
 				class="icon-refresh"></i> Manage synchronization</a>
 		</div>
 		<div class=dropdown-header>PUBLISH</div>
@@ -120,17 +120,16 @@
 				</ul>
 			</div>
 			<a href="#" data-toggle="modal" data-target=".modal-manage-publish"
-				class="action-reset-input list-group-item action-close-panel"><i
-				class="icon-share"></i> Manage publication</a>
+				class="action-reset-input list-group-item"><i class="icon-share"></i>
+				Manage publication</a>
 		</div>
 		<ul class="nav">
 			<li><a href="#" data-toggle="modal"
 				data-target=".modal-settings"
-				class="action-load-settings list-group-item action-close-panel"><i
-					class="icon-cog"></i> Settings</a></li>
+				class="action-load-settings list-group-item"><i class="icon-cog"></i>
+					Settings</a></li>
 			<li><a href="#" data-toggle="modal" data-target=".modal-about"
-				class="list-group-item action-close-panel"><i
-					class="icon-help-circled"></i> About</a></li>
+				class="list-group-item"><i class="icon-help-circled"></i> About</a></li>
 		</ul>
 
 	</div>
@@ -148,7 +147,7 @@
 				type="text" class="form-control"></input>
 			<div class="input-group-btn">
 				<a data-toggle="modal" data-target=".modal-document-manager"
-					class="btn btn-default action-close-panel" title="Manage documents"><i
+					class="btn btn-default" title="Manage documents"><i
 					class="icon-layers"></i></a>
 			</div>
 		</div>

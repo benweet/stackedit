@@ -15,14 +15,28 @@ define([
     };
 
     var folderEltTmpl = [
-        '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>" data-toggle="collapse" data-target=".document-panel .file-list.<%= id %>">',
-        '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>',
-        '<i class="icon-folder"></i> <%= folderDesc.name %></a>',
-        '<div class="file-list collapse <%= id %> clearfix"><%= fileListHtml %></div>'
+        '<a href="#"',
+        ' class="list-group-item folder clearfix"',
+        ' data-folder-index="<%= folderDesc.folderIndex %>"',
+        ' data-toggle="collapse"',
+        ' data-target=".document-panel .file-list.<%= id %>">',
+        '   <div class="pull-right file-count">',
+        '       <%= _.size(folderDesc.fileList) %>',
+        '   </div>',
+        '   <i class="icon-folder"></i> <%= folderDesc.name %>',
+        '</a>',
+        '<div class="file-list collapse <%= id %> clearfix">',
+        '   <%= fileListHtml %>',
+        '</div>'
     ].join('');
     var documentEltTmpl = [
-        '<a href="#" class="list-group-item file action-close-panel<%= fileDesc === selectedFileDesc ? " active" : "" %>" data-file-index="<%= fileDesc.fileIndex %>">',
-        '<%= fileDesc.composeTitle() %></a>',
+        '<a href="#"',
+        ' class="list-group-item file<%= fileDesc === selectedFileDesc ? " active" : "" %>"',
+        ' data-file-index="<%= fileDesc.fileIndex %>"',
+        ' data-toggle="collapse"',
+        ' data-target=".document-panel">',
+        '   <%= fileDesc.composeTitle() %>',
+        '</a>',
     ].join('');
 
     var panelElt = undefined;
@@ -43,7 +57,7 @@ define([
             }) + '</li>';
         }, '').value();
         documentListHtml = documentListHtml && '<ul class="nav">' + documentListHtml + '</ul>';
-        
+
         // Build directories
         _.chain(folderList).sortBy(function(folderDesc) {
             return folderDesc.name.toLowerCase();
@@ -64,7 +78,7 @@ define([
         });
 
         documentListElt.innerHTML = documentListHtml;
-        
+
         // Add click listeners
         _.each(documentListElt.querySelectorAll('.file'), function(fileElt) {
             fileElt = $(fileElt);
@@ -112,7 +126,7 @@ define([
     documentPanel.onReady = function() {
         panelElt = document.querySelector('.document-panel');
         documentListElt = panelElt.querySelector('.list-group');
-        
+
         // Open current folder before opening
         $(panelElt).on('show.bs.collapse', function(e) {
             var folderDesc = selectedFileDesc.folder;
@@ -122,7 +136,7 @@ define([
         }).on('shown.bs.collapse', function(e) {
             // Scroll to the active file
             if(e.target === panelElt) {
-            }            
+            }
         });
     };
 

@@ -99,7 +99,7 @@ define([
 
         // Dequeue a synchronized location
         var publishAttributes = publishAttributesList.pop();
-        
+
         // Format the content
         var content = getPublishContent(publishFileDesc, publishAttributes, publishHTML);
 
@@ -119,7 +119,7 @@ define([
             publishLocation(callback, errorFlag || error);
         });
     }
-    
+
     // Get the html from the onPreviewFinished callback
     var previewHtml = undefined;
     eventMgr.addListener("onPreviewFinished", function(html) {
@@ -222,15 +222,29 @@ define([
         localStorage[provider.providerId + ".publishPreferences"] = JSON.stringify(publishPreferences);
     }
 
+    var initPublishButtonTmpl = [
+        '<li>',
+        '   <a href="#"',
+        '    class="action-init-publish-<%= provider.providerId %>">',
+        '       <i class="icon-provider-<%= provider.providerId %>"></i> <%= provider.providerName %>',
+        '   </a>',
+        '</li>'
+    ].join('');
     eventMgr.addListener("onReady", function() {
-        // Add every provider
-        var publishMenu = $('.collapse-publish-on .nav');
+        // Add every provider in the panel menu
+        var publishMenuElt = document.querySelector('.menu-panel .collapse-publish-on .nav');
+        var publishMenuHtml = _.reduce(providerMap, function(result, provider) {
+            return result + _.template(initPublishButtonTmpl, {
+                provider: provider
+            });
+        }, '');
+        publishMenuElt.innerHTML = publishMenuHtml;
         _.each(providerMap, function(provider) {
-            // Provider's publish button
-            publishMenu.append($("<li>").append($('<a href="#" class="action-close-panel"><i class="icon-provider-' + provider.providerId + '"></i> ' + provider.providerName + '</a>').click(function() {
+            // Click on open publish dialog
+            $(publishMenuElt.querySelector('.action-init-publish-' + provider.providerId)).click(function() {
                 initNewLocation(provider);
-            })));
-            // Action links (if any)
+            });
+            // Click on perform new publication
             $(".action-publish-" + provider.providerId).click(function() {
                 initNewLocation(provider);
             });

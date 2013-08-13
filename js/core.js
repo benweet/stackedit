@@ -172,7 +172,7 @@ define([
             documentPanelElt.show();
         }
     }
-    
+
     // Set the preview button visibility
     var previewButtonsElt = undefined;
     function setPreviewButtonsVisibility(forceHide) {
@@ -242,9 +242,11 @@ define([
         $(".ui-layout-toggler-south").addClass("btn btn-info").html('<i class="icon-none"></i>');
         $(".ui-layout-toggler-east").addClass("btn btn-info").html('<i class="icon-none"></i>');
         var northTogglerElt = $(".ui-layout-toggler-north").addClass("btn btn-info").html('<i class="icon-none"></i>');
-        
-        // We attach the preview buttons to the UI layout resizer in order to have fixed position
-        // We also move the north toggler to the east or south resizer as the north resizer is very small
+
+        // We attach the preview buttons to the UI layout resizer in order to
+        // have fixed position
+        // We also move the north toggler to the east or south resizer as the
+        // north resizer is very small
         previewButtonsElt = $('<div class="extension-preview-buttons">');
         if(settings.layoutOrientation == "horizontal") {
             $('.ui-layout-resizer-north').append(previewButtonsElt);
@@ -449,52 +451,55 @@ define([
             e.stopPropagation();
         });
 
-        menuPanelElt = $('.menu-panel');
+        menuPanelElt = $('.menu-panel').collapse({
+            toggle: false
+        });
         var isMenuPanelShown = false;
         var menuPanelBackdropElt = undefined;
-        menuPanelElt.on('shown.bs.collapse', function(e) {
+        menuPanelElt.on('show.bs.collapse', function(e) {
             if(e.target === menuPanelElt[0]) {
                 isMenuPanelShown = true;
-                menuPanelBackdropElt = utils.createBackdrop();
+                menuPanelBackdropElt = utils.createBackdrop('collapse', '.menu-panel');
                 menuPanelElt.addClass('move-to-front');
-                // Register a click listener when menu panel is open
-                var closePanelElt = menuPanelElt.find('.action-close-panel').add(menuPanelBackdropElt);
-                closePanelElt.on('click.hide-menu-panel', function(e) {
-                    // Unregister the listener
-                    $('body').off('click.hide-menu-panel');
-                    menuPanelElt.collapse('hide');
-                    isMenuPanelShown = false;
-                });
             }
-        }).on('show.bs.collapse', function(){
-            // Close all open sub-menus when one submenu opens
-            menuPanelElt.find('.in').collapse('hide');
-        }).on('hidden.bs.collapse', function(e) {
-            // Close all open sub-menus when menu panel is closed
+            else {
+                // Close all open sub-menus when one submenu opens
+                menuPanelElt.find('.in').collapse('hide');
+            }
+        }).on('hide.bs.collapse', function(e) {
             if(e.target === menuPanelElt[0]) {
+                isMenuPanelShown = false;
+                menuPanelBackdropElt.remove();
+                menuPanelElt.removeClass('move-to-front');
+            }
+        }).on('hidden.bs.collapse', function(e) {
+            if(e.target === menuPanelElt[0]) {
+                // Close all open sub-menus when menu panel is closed
                 menuPanelElt.find('.in').collapse('hide');
             }
         });
 
-        documentPanelElt = $('.document-panel');
+        documentPanelElt = $('.document-panel').collapse({
+            toggle: false
+        });
         var isDocumentPanelShown = false;
-        documentPanelElt.on('shown.bs.collapse', function(e) {
+        var documentPanelBackdropElt = undefined;
+        documentPanelElt.on('show.bs.collapse', function(e) {
             if(e.target === documentPanelElt[0]) {
                 isDocumentPanelShown = true;
-                // Register a click listener when document panel is open
-                $('body').on('click.hide-document-panel', function(e) {
-                    // If click outside the panel, close the panel and unregister
-                    // the listener
-                    if($(e.target).is('.action-close-panel, .action-close-panel *, :not(.document-panel, .document-panel *)')) {
-                        documentPanelElt.collapse('hide');
-                        $('body').off('click.hide-document-panel');
-                        isDocumentPanelShown = false;
-                    }
-                });
+                documentPanelBackdropElt = utils.createBackdrop('collapse', '.document-panel');
+                documentPanelElt.addClass('move-to-front');
             }
-        }).on('show.bs.collapse', function(){
-            // Close all open sub-menus when one submenu opens
-            documentPanelElt.find('.in').collapse('hide');
+            else {
+                // Close all open sub-menus when one submenu opens
+                documentPanelElt.find('.in').collapse('hide');
+            }
+        }).on('hide.bs.collapse', function(e) {
+            if(e.target === documentPanelElt[0]) {
+                isDocumentPanelShown = false;
+                documentPanelBackdropElt.remove();
+                documentPanelElt.removeClass('move-to-front');
+            }
         }).on('hidden.bs.collapse', function(e) {
             if(e.target === documentPanelElt[0]) {
                 // Close all open sub-menus when menu panel is closed
@@ -503,7 +508,11 @@ define([
         });
 
         var isModalShown = false;
-        $('.modal').on('shown.bs.modal', function() {
+        $('.modal').on('show.bs.modal', function() {
+            // Close panel if open
+            menuPanelElt.collapse('hide');
+            documentPanelElt.collapse('hide');
+        }).on('shown.bs.modal', function() {
             // Focus on the first input when modal opens
             isModalShown = true;
             _.defer(function(elt) {

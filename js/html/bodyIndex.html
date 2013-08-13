@@ -141,17 +141,21 @@
 		data-target=".document-panel" title="Select document">
 		<i class="icon-folder-open"></i> <i class="icon-right-dir"></i>
 	</button>
-	<div class="panel-content">
+	<div class="search-bar clearfix">
 		<div class="input-group">
 			<span class="input-group-addon"><i class="icon-search"></i></span><input
 				type="text" class="form-control"></input>
+				<button type="button" class="close" title="clear">&times;</button>
 			<div class="input-group-btn">
 				<a data-toggle="modal" data-target=".modal-document-manager"
 					class="btn btn-default" title="Manage documents"><i
 					class="icon-layers"></i></a>
 			</div>
 		</div>
+	</div>
+	<div class="panel-content">
 		<div class="list-group document-list"></div>
+		<div class="list-group document-list-filtered hide"></div>
 	</div>
 </div>
 

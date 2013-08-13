@@ -5,7 +5,7 @@
 @text-light: #888;
 @error-border: #ff8661;
 @menu-panel-width: 280px;
-@document-panel-width: 330px;
+@document-panel-width: 350px;
 @panel-bg: @bg-navbar-hover;
 @folder-color: #555;
 @transparent: fade(#000, 0%);
@@ -270,7 +270,6 @@ body {
 // Common style 
 .menu-panel, .document-panel {
 	display: block;
-	background-color: @panel-bg;
 	position: absolute;
 	height: 100%;
 	z-index: 10;
@@ -281,8 +280,6 @@ body {
     	font-size: 18px;
 	}
 	.panel-content {
-		padding-top: 6px;
-		padding-bottom: 25px;
 		overflow: auto;
 		height: 100%;
 		a > i {
@@ -293,6 +290,7 @@ body {
 }
 
 .menu-panel {
+	background-color: @panel-bg;
 	width: @menu-panel-width !important;
 	margin-left: (-@menu-panel-width - 32);
 	-webkit-transition: margin-left 0.35s ease;
@@ -313,6 +311,8 @@ body {
 		z-index: -1;
 	}
 	.panel-content {
+		padding-top: 6px;
+		padding-bottom: 25px;
 		border-right: 5px solid @preview-bg-light;
 		.nav {
 			margin-bottom: 20px;
@@ -321,6 +321,7 @@ body {
 }
 
 .document-panel {
+	background-color: @list-group-bg;
 	right: 0;
 	width: @document-panel-width !important;
 	margin-right: (-@document-panel-width - 32);
@@ -349,11 +350,27 @@ body {
 		.icon-layers {
 			font-size: 135%;
 		}	
-		.input-group {
-			background-color: @list-group-bg;
-			padding: 15px 5px 15px 20px;
-		}		
 	}
+	.search-bar {
+		position: absolute;
+		background-color: @panel-bg;
+		margin: -10px 25px 0;
+		padding: 20px 5px 10px 20px;
+		z-index: 3;
+		border: 1px solid #e8e8e8;
+		border-top: 0;
+		border-radius: 6px;
+		.form-control {
+			padding: 8px 30px 8px 12px;
+		}
+		.close {
+		    position: absolute;
+		    line-height: 10px;
+		    margin-left: -30px;
+		    margin-top: 5px;
+		    padding: 8px;			
+		}
+	}		
 	.list-group-item {
 		margin: 0;
 	}
@@ -363,10 +380,15 @@ body {
 		font-size: 15px;
 		border-bottom-color: @modal-content-separator-color;
 	}
-	.list-group .nav {
-		border: 0;
-		margin: 0 20px 20px;
-	}
+	.list-group {
+		padding-top: 70px;
+		padding-bottom: 30px;
+		margin: 0;
+		.nav {
+			border: 0;
+			margin: 0 20px 20px;
+		}		
+	} 
 }
 
 // Dropdown document selector

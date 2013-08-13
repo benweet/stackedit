@@ -108,8 +108,6 @@ define([
             delete folderList[folderDesc.folderIndex];
         });
         eventMgr.onFoldersChanged();
-
-        refreshManager();
     }
 
     var liMoveElt = undefined;
@@ -232,11 +230,10 @@ define([
                 var fileDesc = fileSystem[parentElt.data('fileIndex')];
                 if(name && folderDesc && name != folderDesc.name) {
                     folderDesc.name = name;
-                    refreshManager();
+                    eventMgr.onFoldersChanged();
                 }
                 else if(name && fileDesc && name != fileDesc.title) {
                     fileDesc.title = name;
-                    refreshManager();
                     eventMgr.onTitleChanged(fileDesc);
                 }
                 else {
@@ -286,6 +283,7 @@ define([
     documentManager.onSyncRemoved = refreshManager;
     documentManager.onNewPublishSuccess = refreshManager;
     documentManager.onPublishRemoved = refreshManager;
+    documentManager.onFoldersChanged = refreshManager;
 
     documentManager.onReady = function() {
         modalElt = document.querySelector('.modal-document-manager');
@@ -318,12 +316,11 @@ define([
             // Add the index to the folder list
             utils.appendIndexToArray("folder.list", folderIndex);
             folderList[folderIndex] = folderDesc;
-
-            refreshManager();
+            eventMgr.onFoldersChanged();
 
             // Edit the name when folder has just been created
             var renameButtonElt = $(modalElt.querySelector('[data-folder-index="' + folderIndex + '"] .button-rename')).click();
-            modalElt.scrollTop = modalElt.scrollTop + renameButtonElt.offset().top - 50;
+            modalElt.scrollTop += renameButtonElt.offset().top - 50;
         });
 
         // Selection dropdown menu actions
@@ -389,8 +386,6 @@ define([
                         folderDesc && folderDesc.addFile(fileDesc);
                     });
                     eventMgr.onFoldersChanged();
-
-                    refreshManager();
 
                     $(modalElt.querySelectorAll('.document-list')).removeClass('hide');
                     $(modalElt.querySelectorAll('.choose-folder, .select-folder-list')).addClass('hide');

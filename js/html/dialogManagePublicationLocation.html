@@ -1,5 +1,11 @@
-<div class="input-prepend input-append">
-	<span class="add-on" title="<%= provider.providerName %>"> <i
-		class="icon-provider-<%= provider.providerId %>"></i>
-	</span> <input class="span5" type="text" value="<%= publishDesc %>" disabled />
+<div class="input-group">
+	<span class="input-group-addon" title="<%= publishAttributes.provider.providerName %>">
+		<i class="icon-provider-<%= publishAttributes.provider.providerId %>"></i>
+	</span> <input class="form-control" type="text"
+		value="<%= publishDesc %>" disabled />
+	<div class="input-group-btn">
+		<a class="btn btn-default remove-button" title="Remove this location"
+			data-publish-index="<%= publishAttributes.publishIndex %>"><i
+			class="icon-trash"></i></a>
+	</div>
 </div>

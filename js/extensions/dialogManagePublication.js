@@ -13,36 +13,43 @@ define([
     };
 
     var fileDesc = undefined;
-    var removeButtonTemplate = '<a class="btn btn-default" title="Remove this location"><i class="icon-trash"></i></a>';
+    var publishListElt = undefined;
+    var $msgPublishListElt = undefined;
+    var $msgNoPublishElt = undefined;
     var refreshDialog = function(fileDescParameter) {
         if(fileDescParameter !== undefined && fileDescParameter !== fileDesc) {
             return;
         }
 
-        var publishAttributesList = _.values(fileDesc.publishLocations);
-        $(".msg-no-publish, .msg-publish-list").addClass("hide");
-        var publishList = $("#manage-publish-list").empty();
-        if(publishAttributesList.length > 0) {
-            $(".msg-publish-list").removeClass("hide");
+        if(_.size(fileDesc.publishLocations) > 0) {
+            $msgPublishListElt.removeClass("hide");
+            $msgNoPublishElt.addClass("hide");
         }
         else {
-            $(".msg-no-publish").removeClass("hide");
+            $msgPublishListElt.addClass("hide");
+            $msgNoPublishElt.removeClass("hide");
         }
-        _.each(publishAttributesList, function(publishAttributes) {
-            formattedAttributes = _.omit(publishAttributes, "provider", "publishIndex", "sharingLink");
+        
+        var publishListHtml = _.reduce(fileDesc.publishLocations, function(result, publishAttributes) {
+            var formattedAttributes = _.omit(publishAttributes, "provider", "publishIndex", "sharingLink");
             if(formattedAttributes.password) {
                 formattedAttributes.password = "********";
             }
-            var publishDesc = JSON.stringify(formattedAttributes).replace(/{|}|"/g, "").replace(/,/g, ", ");
-            var lineElement = $(_.template(dialogManagePublicationLocationHTML, {
-                provider: publishAttributes.provider,
-                publishDesc: publishDesc
-            }));
-            lineElement.append($(removeButtonTemplate).click(function() {
+            formattedAttributes = JSON.stringify(formattedAttributes).replace(/{|}|"/g, "").replace(/,/g, ", ");
+            return result + _.template(dialogManagePublicationLocationHTML, {
+                publishAttributes: publishAttributes,
+                publishDesc: formattedAttributes
+            });
+        }, '');
+        publishListElt.innerHTML = publishListHtml;
+        
+        _.each(publishListElt.querySelectorAll('.remove-button'), function(removeButtonElt) {
+            var $removeButtonElt = $(removeButtonElt);
+            var publishAttributes = fileDesc.publishLocations[$removeButtonElt.data('publishIndex')];
+            $removeButtonElt.click(function() {
                 fileDesc.removePublishLocation(publishAttributes);
                 eventMgr.onPublishRemoved(fileDesc, publishAttributes);
-            }));
-            publishList.append(lineElement);
+            });
         });
     };
 
@@ -53,6 +60,13 @@ define([
 
     dialogManagePublication.onNewPublishSuccess = refreshDialog;
     dialogManagePublication.onPublishRemoved = refreshDialog;
+
+    dialogManagePublication.onReady = function() {
+        var modalElt = document.querySelector(".modal-manage-publish");
+        publishListElt = modalElt.querySelector(".publish-list");
+        $msgPublishListElt = $(modalElt.querySelectorAll(".msg-publish-list"));
+        $msgNoPublishElt = $(modalElt.querySelectorAll(".msg-no-publish"));
+    };
 
     return dialogManagePublication;
 

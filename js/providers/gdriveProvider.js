@@ -78,8 +78,19 @@ define([
     };
 
     gdriveProvider.exportFile = function(event, title, content, callback) {
+        var fileId = utils.getInputTextValue("#input-sync-export-gdrive-fileid");
+        if(fileId) {
+            // Check that file is not synchronized with another an existing document
+            var syncIndex = createSyncIndex(fileId);
+            var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
+            if(fileDesc !== undefined) {
+                eventMgr.onError('File ID is already synchronized with "' + fileDesc.title + '".');
+                callback(true);
+                return;
+            }
+        }
         var parentId = utils.getInputTextValue("#input-sync-export-gdrive-parentid");
-        googleHelper.upload(undefined, parentId, title, content, undefined, function(error, result) {
+        googleHelper.upload(fileId, parentId, title, content, undefined, function(error, result) {
             if(error) {
                 callback(error);
                 return;
@@ -92,29 +103,6 @@ define([
     gdriveProvider.exportRealtimeFile = function(event, title, content, callback) {
         var parentId = utils.getInputTextValue("#input-sync-export-gdrive-parentid");
         googleHelper.createRealtimeFile(parentId, title, function(error, result) {
-            if(error) {
-                callback(error);
-                return;
-            }
-            var syncAttributes = createSyncAttributes(result.id, result.etag, content, title);
-            callback(undefined, syncAttributes);
-        });
-    };
-
-    gdriveProvider.exportManual = function(event, title, content, callback) {
-        var id = utils.getInputTextValue("#input-sync-manual-gdrive-id", event);
-        if(!id) {
-            return;
-        }
-        // Check that file is not synchronized with another an existing document
-        var syncIndex = createSyncIndex(id);
-        var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
-        if(fileDesc !== undefined) {
-            eventMgr.onError('File ID is already synchronized with "' + fileDesc.title + '".');
-            callback(true);
-            return;
-        }
-        googleHelper.upload(id, undefined, title, content, undefined, function(error, result) {
             if(error) {
                 callback(error);
                 return;
@@ -401,6 +389,14 @@ define([
     };
 
     eventMgr.addListener("onReady", function() {
+        
+        // On export, disable file ID input if realtime is checked
+        var $realtimeCheckboxElt = $('#input-sync-export-gdrive-realtime');
+        var $fileIdInputElt = $('#input-sync-export-gdrive-fileid');
+        $('#input-sync-export-gdrive-realtime').change(function() {
+            $fileIdInputElt.prop('disabled', $realtimeCheckboxElt.prop('checked'));
+        });
+        
         var state = utils.retrieveIgnoreError(PROVIDER_GDRIVE + ".state");
         if(state === undefined) {
             return;

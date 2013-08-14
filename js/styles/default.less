@@ -13,13 +13,16 @@
 /* Bootstrap */
 @body-bg: #f5f5f5;
 @input-border: #ddd;
+@input-height-base: 38px;
 @dropdown-border: #ddd;
 @pre-border-color: #ddd;
 @navbar-bg: #ddd;
+@navbar-border: @transparent;
 @nav-disabled-link-color: #ccc;
 @nav-disabled-link-hover-color: #bbb;
 @dropdown-link-hover-bg: #888;
 @dropdown-link-active-color: #fff;
+@list-group-link-color: #333;
 @list-group-border: @transparent;
 @list-group-active-bg: @dropdown-link-hover-bg;
 @input-color-placeholder: #ccc;
@@ -74,7 +77,6 @@ body {
 .list-group-item {
 	padding: 10px 15px;
 	.list-group & {
-		color: @btn-default-color;
 		border-radius: 0;
 	}
 	&.active:hover {
@@ -255,7 +257,7 @@ body {
 		width: 43px;
 		height: 11px;
 		background-position: 0 0;
-		margin: 15px 10px 0;
+		margin-top: 15px;
 		&.show {
 			background-image: url("../../img/ajax-loader.gif") !important;
 		}
@@ -281,6 +283,7 @@ body {
 	}
 	.panel-content {
 		overflow: auto;
+		padding-bottom: 30px;
 		height: 100%;
 		a > i {
 			margin-right: 3px;
@@ -297,6 +300,9 @@ body {
 	-moz-transition: margin-left 0.35s ease;
 	-o-transition: margin-left 0.35s ease;
 	transition: margin-left 0.35s ease;
+	.sub-menu {
+		background-color: @list-group-bg;
+	}
 	&.in {
         margin-left: 0;
         .collapse-button {
@@ -312,16 +318,11 @@ body {
 	}
 	.panel-content {
 		padding-top: 6px;
-		padding-bottom: 25px;
 		border-right: 5px solid @preview-bg-light;
-		.nav {
-			margin-bottom: 20px;
-		}
 	}
 }
 
 .document-panel {
-	background-color: @list-group-bg;
 	right: 0;
 	width: @document-panel-width !important;
 	margin-right: (-@document-panel-width - 32);
@@ -346,6 +347,8 @@ body {
        	}
 	}
 	.panel-content {
+		background-color: @list-group-bg;
+		padding-top: 80px;
 		border-left: 5px solid @preview-bg-light;
 		.icon-layers {
 			font-size: 135%;
@@ -355,7 +358,7 @@ body {
 		position: absolute;
 		background-color: @panel-bg;
 		margin: -10px 25px 0;
-		padding: 20px 5px 10px 20px;
+		padding: 20px 5px 10px 15px;
 		z-index: 3;
 		border: 1px solid #e8e8e8;
 		border-top: 0;
@@ -368,7 +371,8 @@ body {
 		    line-height: 10px;
 		    margin-left: -30px;
 		    margin-top: 5px;
-		    padding: 8px;			
+		    padding: 8px;
+		    font-weight: normal;
 		}
 	}		
 	.list-group-item {
@@ -381,8 +385,6 @@ body {
 		border-bottom-color: @modal-content-separator-color;
 	}
 	.list-group {
-		padding-top: 70px;
-		padding-bottom: 30px;
 		margin: 0;
 		.nav {
 			border: 0;
@@ -632,6 +634,25 @@ body {
 				border-color: @btn-primary-bg;
 			}
 		}
+	}
+}
+
+
+/********************************
+ * Publish/Sync dialogs
+ ********************************/
+ 
+.modal-manage-sync .sync-list {
+	margin-bottom: 20px;
+	.input-group {
+		margin-bottom: 10px;
+	}
+}
+
+.modal-manage-publish .publish-list {
+	margin-bottom: 20px;
+	.input-group {
+		margin-bottom: 10px;
 	}
 }
 

@@ -84,13 +84,14 @@ define([
         });
     };
 
-    function exportFileToPath(path, title, content, callback) {
+    dropboxProvider.exportFile = function(event, title, content, callback) {
+        var path = utils.getInputTextValue("#input-sync-export-dropbox-path", event);
         path = checkPath(path);
         if(path === undefined) {
             callback(true);
             return;
         }
-        // Check that file is not synchronized with an other one
+        // Check that file is not synchronized with another one
         var syncIndex = createSyncIndex(path);
         var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
         if(fileDesc !== undefined) {
@@ -107,16 +108,6 @@ define([
             var syncAttributes = createSyncAttributes(result.path, result.versionTag, content);
             callback(undefined, syncAttributes);
         });
-    }
-
-    dropboxProvider.exportFile = function(event, title, content, callback) {
-        var path = utils.getInputTextValue("#input-sync-export-dropbox-path", event);
-        exportFileToPath(path, title, content, callback);
-    };
-
-    dropboxProvider.exportManual = function(event, title, content, callback) {
-        var path = utils.getInputTextValue("#input-sync-manual-dropbox-path", event);
-        exportFileToPath(path, title, content, callback);
     };
 
     dropboxProvider.syncUp = function(uploadContent, uploadContentCRC, uploadTitle, uploadTitleCRC, syncAttributes, callback) {

@@ -427,6 +427,8 @@ define([
     };
 
     // Initialize multiple things and then fire eventMgr.onReady
+    var isDocumentPanelShown = false;
+    var isMenuPanelShown = false;
     core.onReady = function() {
 
         if(viewerMode === true) {
@@ -454,7 +456,6 @@ define([
         menuPanelElt = $('.menu-panel').collapse({
             toggle: false
         });
-        var isMenuPanelShown = false;
         var menuPanelBackdropElt = undefined;
         menuPanelElt.on('show.bs.collapse', function(e) {
             if(e.target === menuPanelElt[0]) {
@@ -482,7 +483,6 @@ define([
         documentPanelElt = $('.document-panel').collapse({
             toggle: false
         });
-        var isDocumentPanelShown = false;
         var documentPanelBackdropElt = undefined;
         documentPanelElt.on('show.bs.collapse', function(e) {
             if(e.target === documentPanelElt[0]) {
@@ -506,33 +506,6 @@ define([
                 documentPanelElt.find('.in').collapse('hide');
             }
         });
-
-        var isModalShown = false;
-        $('.modal').on('show.bs.modal', function() {
-            // Close panel if open
-            menuPanelElt.collapse('hide');
-            documentPanelElt.collapse('hide');
-        }).on('shown.bs.modal', function() {
-            // Focus on the first input when modal opens
-            isModalShown = true;
-            _.defer(function(elt) {
-                elt.find("input:enabled:visible:first").focus();
-            }, $(this));
-        }).on('hidden.bs.modal', function() {
-            // Focus on the editor when modal is gone
-            isModalShown = false;
-            $("#wmd-input").focus();
-        }).keyup(function(e) {
-            // Handle enter key in modals
-            if(e.which == 13 && !$(e.target).is("textarea")) {
-                $(this).find(".modal-footer a:last").click();
-            }
-        });
-
-        // Configure Mousetrap
-        mousetrap.stopCallback = function(e, element, combo) {
-            return uiLocked || isMenuPanelShown || isDocumentPanelShown || isModalShown || $(element).is("input, select, textarea:not(#wmd-input)");
-        };
 
         // UI layout
         createLayout();
@@ -582,6 +555,33 @@ define([
             return themeOptions + '<option value="' + value + '">' + name + '</option>';
         }, "");
         $("#input-settings-theme").html(themeOptions);
+
+        var isModalShown = false;
+        $('.modal').on('show.bs.modal', function() {
+            // Close panel if open
+            menuPanelElt.collapse('hide');
+            documentPanelElt.collapse('hide');
+        }).on('shown.bs.modal', function() {
+            // Focus on the first input when modal opens
+            isModalShown = true;
+            _.defer(function(elt) {
+                elt.find("input:enabled:visible:first").focus();
+            }, $(this));
+        }).on('hidden.bs.modal', function() {
+            // Focus on the editor when modal is gone
+            isModalShown = false;
+            $("#wmd-input").focus();
+        }).keyup(function(e) {
+            // Handle enter key in modals
+            if(e.which == 13 && !$(e.target).is("textarea")) {
+                $(this).find(".modal-footer a:last").click();
+            }
+        });
+        
+        // Configure Mousetrap
+        mousetrap.stopCallback = function(e, element, combo) {
+            return uiLocked || isMenuPanelShown || isDocumentPanelShown || isModalShown || $(element).is("input, select, textarea:not(#wmd-input)");
+        };
 
         // Click events on "insert link" and "insert image" dialog buttons
         $(".action-insert-link").click(function(e) {

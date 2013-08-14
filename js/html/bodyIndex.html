@@ -126,10 +126,9 @@
 		<ul class="nav">
 			<li><a href="#" data-toggle="modal"
 				data-target=".modal-settings"
-				class="action-load-settings list-group-item"><i class="icon-cog"></i>
+				class="action-load-settings"><i class="icon-cog"></i>
 					Settings</a></li>
-			<li><a href="#" data-toggle="modal" data-target=".modal-about"
-				class="list-group-item"><i class="icon-help-circled"></i> About</a></li>
+			<li><a href="#" data-toggle="modal" data-target=".modal-about"><i class="icon-help-circled"></i> About</a></li>
 		</ul>
 
 	</div>
@@ -145,7 +144,7 @@
 		<div class="input-group">
 			<span class="input-group-addon"><i class="icon-search"></i></span><input
 				type="text" class="form-control"></input>
-				<button type="button" class="close" title="clear">&times;</button>
+			<button type="button" class="close" title="clear">&times;</button>
 			<div class="input-group-btn">
 				<a data-toggle="modal" data-target=".modal-document-manager"
 					class="btn btn-default" title="Manage documents"><i
@@ -412,35 +411,45 @@
 				<h3 class="modal-title">Export to Google Drive</h3>
 			</div>
 			<div class="modal-body">
-				<blockquote class="muted">This will save the current
-					document to your Google Drive account and keep it synchronized.</blockquote>
-				<p>
-					Please specify a <b>folder ID</b> (optional):
-				</p>
-				<div class="input-prepend">
-					<span class="add-on"><i class="icon-provider-gdrive"></i></span><input
-						id="input-sync-export-gdrive-parentid" type="text"
-						class="col-lg-5 form-control" placeholder="FolderID"></input>
+				<p>This will save "<span class="file-title"></span>" to your Google Drive
+					account and keep it synchronized.</p>
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-lg-3 control-label"
+							for="input-sync-export-gdrive-parentid">Folder ID
+							(optional)</label>
+						<div class="col-lg-8">
+							<input type="text" id="input-sync-export-gdrive-parentid"
+								placeholder="FolderID" class="form-control"> <span
+								class="help-block"> If no folder ID is supplied, the file
+								will be created in your root folder. </span>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-lg-3 control-label"></div>
+						<div class="col-lg-8">
+							<label> <input id="input-sync-export-gdrive-realtime"
+								type="checkbox"> Create a real time collaborative
+								document
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-3 control-label"
+							for="input-sync-export-gdrive-fileid">Existing file ID
+							(optional)</label>
+						<div class="col-lg-8">
+							<input type="text" id="input-sync-export-gdrive-fileid"
+								placeholder="FileID" class="form-control"> <span
+								class="help-block"> This will overwrite the existing file on the server. </span>
+						</div>
+					</div>
 				</div>
-				<br /> <br />
 				<blockquote class="muted">
 					<b>NOTE:</b>
 					<ul>
-						<li>If no folder ID is supplied, the file will be created in
-							your root folder.</li>
 						<li>You can move or rename the file afterwards within Google
 							Drive.</li>
-					</ul>
-				</blockquote>
-				<div class="checkbox">
-					<label> <input id="input-sync-export-gdrive-realtime"
-						type="checkbox"> Create a real time collaborative document
-					</label>
-				</div>
-				<br /> <br />
-				<blockquote class="muted">
-					<b>NOTE:</b>
-					<ul>
 						<li>Real time collaborative documents can't be open outside
 							StackEdit.</li>
 						<li>Real time collaborative documents can't have multiple
@@ -468,18 +477,20 @@
 				<h3 class="modal-title">Export to Dropbox</h3>
 			</div>
 			<div class="modal-body">
-				<blockquote class="muted">This will save the current
-					document to your Dropbox account and keep it synchronized.</blockquote>
-				<p>
-					Please specify a <b>file path</b> for "<span class="file-title"></span>":
-				</p>
-				<div class="input-prepend">
-					<span class="add-on"><i class="icon-provider-dropbox"></i></span><input
-						id="input-sync-export-dropbox-path" type="text"
-						class="col-lg-5 form-control"
-						placeholder="/path/to/My Document.md"></input>
+				<p>This will save "<span class="file-title"></span>" to your Dropbox account
+					and keep it synchronized.</p>
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-lg-3 control-label"
+							for="input-sync-export-dropbox-path">File path</label>
+						<div class="col-lg-8">
+							<input type="text" id="input-sync-export-dropbox-path"
+								placeholder="/path/to/My Document.md" class="form-control">
+							<span class="help-block"> File path is composed of both
+								folder and filename. </span>
+						</div>
+					</div>
 				</div>
-				<br /> <br />
 				<blockquote class="muted">
 					<b>NOTE:</b>
 					<ul>
@@ -514,34 +525,17 @@
 					"<span class="file-title"></span>" is synchronized with the
 					following location(s):
 				</p>
-				<p id="manage-sync-list"></p>
+				<div class="msg-sync-list sync-list hide"></div>
 				<blockquote class="msg-sync-list hide muted">
 					<b>NOTE:</b> Removing a synchronized location will not delete any
 					file.
 				</blockquote>
 				<blockquote class="msg-no-sync hide muted">
-					"<span class="file-title"></span>" is not synchronized yet.
-				</blockquote>
-				<p>Add a synchronized location manually:</p>
-				<div class="input-prepend input-append sync-manual">
-					<span class="add-on" title="Google Drive"><i
-						class="icon-provider-gdrive"></i></span><input
-						id="input-sync-manual-gdrive-id" type="text"
-						class="col-lg-5 form-control" placeholder="GoogleDriveFileID"></input>
-					<a class="btn btn-default action-sync-manual-gdrive"
-						title="Add location" data-dismiss="modal"><i class="icon-ok"></i></a>
-				</div>
-				<div class="input-prepend input-append sync-manual">
-					<span class="add-on" title="Dropbox"><i
-						class="icon-provider-dropbox"></i></span><input
-						id="input-sync-manual-dropbox-path" type="text"
-						class="col-lg-5 form-control" placeholder="/dropbox/file/path"></input>
-					<a class="btn btn-default action-sync-manual-dropbox"
-						title="Add location" data-dismiss="modal"><i class="icon-ok"></i></a>
-				</div>
-				<blockquote class="muted">
-					<b>NOTE:</b> This will first upload the document and overwrite the
-					existing file on the server.
+					"<span class="file-title"></span>" is not synchronized yet. <br />
+					<br /> <b>NOTE:</b> You can add synchronized locations by
+					exporting your document using <i class="icon-provider-gdrive"></i>
+					Google Drive or <i class="icon-provider-dropbox"></i> Dropbox
+					sub-menu.
 				</blockquote>
 			</div>
 			<div class="modal-footer">
@@ -794,7 +788,7 @@
 					"<span class="file-title"></span>" is published on the following
 					location(s):
 				</p>
-				<div id="manage-publish-list"></div>
+				<div class="msg-publish-list publish-list hide"></div>
 				<blockquote class="muted">
 					<div class="msg-no-publish hide">
 						"<span class="file-title"></span>" is not published yet. <br /> <br />

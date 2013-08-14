@@ -18,34 +18,39 @@ define([
     };
 
     var fileDesc = undefined;
-    var removeButtonTemplate = '<a class="btn btn-default" title="Remove this location"><i class="icon-trash"></i></a>';
+    var syncListElt = undefined;
+    var $msgSyncListElt = undefined;
+    var $msgNoSyncElt = undefined;
     var refreshDialog = function(fileDescParameter) {
         if(fileDescParameter !== undefined && fileDescParameter !== fileDesc) {
             return;
         }
 
-        var syncAttributesList = _.values(fileDesc.syncLocations);
-        $(".msg-no-sync, .msg-sync-list").addClass("hide");
-        var syncList = $("#manage-sync-list").empty();
-        if(syncAttributesList.length > 0) {
-            $(".msg-sync-list").removeClass("hide");
+        if(_.size(fileDesc.syncLocations) > 0) {
+            $msgSyncListElt.removeClass("hide");
+            $msgNoSyncElt.addClass("hide");
         }
         else {
-            $(".msg-no-sync").removeClass("hide");
+            $msgSyncListElt.addClass("hide");
+            $msgNoSyncElt.removeClass("hide");
         }
-        _.each(syncAttributesList, function(syncAttributes) {
-            var syncDesc = syncAttributes.id || syncAttributes.path;
-            var lineElement = $(_.template(dialogManageSynchronizationLocationHTML, {
-                provider: syncAttributes.provider,
-                syncDesc: syncDesc,
-                isRealtime: syncAttributes.isRealtime
-            }));
-            lineElement.append($('<div class="input-group-btn">').append($(removeButtonTemplate).click(function() {
+        
+        var syncListHtml = _.reduce(fileDesc.syncLocations, function(result, syncAttributes) {
+            return result + _.template(dialogManageSynchronizationLocationHTML, {
+                syncAttributes: syncAttributes,
+                syncDesc: syncAttributes.id || syncAttributes.path
+            });
+        }, '');
+        syncListElt.innerHTML = syncListHtml;
+        
+        _.each(syncListElt.querySelectorAll('.remove-button'), function(removeButtonElt) {
+            var $removeButtonElt = $(removeButtonElt);
+            var syncAttributes = fileDesc.syncLocations[$removeButtonElt.data('syncIndex')];
+            $removeButtonElt.click(function() {
                 synchronizer.tryStopRealtimeSync();
                 fileDesc.removeSyncLocation(syncAttributes);
                 eventMgr.onSyncRemoved(fileDesc, syncAttributes);
-            })));
-            syncList.append(lineElement);
+            });
         });
     };
 
@@ -58,16 +63,10 @@ define([
     dialogManageSynchronization.onSyncRemoved = refreshDialog;
 
     dialogManageSynchronization.onReady = function() {
-        // Handle enter key in the sync manual inputs
-        $(".sync-manual").each(function() {
-            var elt = $(this);
-            elt.find("input").keyup(function(e) {
-                if(e.which == 13) {
-                    elt.find("a").click();
-                    e.stopPropagation();
-                }
-            });
-        });
+        var modalElt = document.querySelector(".modal-manage-sync");
+        syncListElt = modalElt.querySelector(".sync-list");
+        $msgSyncListElt = $(modalElt.querySelectorAll(".msg-sync-list"));
+        $msgNoSyncElt = $(modalElt.querySelectorAll(".msg-no-sync"));
     };
 
     return dialogManageSynchronization;

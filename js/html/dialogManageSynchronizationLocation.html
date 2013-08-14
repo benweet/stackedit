@@ -1,5 +1,12 @@
 <div class="input-group">
-	<span class="input-group-addon" title="<%= provider.providerName %><%= isRealtime ? ' (real time)' : '' %>"> <i
-		class="icon-provider-<%= provider.providerId %><%= isRealtime ? ' realtime' : '' %>"></i>
-	</span> <input class="col-lg-6 form-control" type="text" value="<%= syncDesc %>" disabled />
+	<span class="input-group-addon"
+		title="<%= syncAttributes.provider.providerName %><%= syncAttributes.isRealtime ? ' (real time)' : '' %>">
+		<i
+		class="icon-provider-<%= syncAttributes.provider.providerId %><%= syncAttributes.isRealtime ? ' realtime' : '' %>"></i>
+	</span> <input class="form-control" type="text"
+		value="<%= syncDesc %>" disabled />
+	<div class="input-group-btn">
+		<a class="btn btn-default remove-button" title="Remove this location"
+			data-sync-index="<%= syncAttributes.syncIndex %>"><i class="icon-trash"></i></a>
+	</div>
 </div>

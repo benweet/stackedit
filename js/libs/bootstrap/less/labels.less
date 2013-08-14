@@ -6,13 +6,12 @@
   display: inline;
   padding: .25em .6em;
   font-size: 75%;
-  font-weight: 500;
+  font-weight: bold;
   line-height: 1;
   color: @label-color;
   text-align: center;
   white-space: nowrap;
-  vertical-align: middle;
-  background-color: @gray-light;
+  vertical-align: baseline;
   border-radius: .25em;
 
   // Add hover effects, but only for links
@@ -22,13 +21,22 @@
       color: @label-link-hover-color;
       text-decoration: none;
       cursor: pointer;
-      background-color: darken(@gray-light, 10%);
     }
+  }
+
+  // Empty labels collapse automatically (not available in IE8)
+  &:empty {
+    display: none;
   }
 }
 
 // Colors
 // Contextual variations (linked labels get darker on :hover)
+
+.label-default {
+  .label-variant(@label-default-bg);
+}
+
 .label-danger {
   .label-variant(@label-danger-bg);
 }

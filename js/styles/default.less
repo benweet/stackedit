@@ -20,6 +20,7 @@
 @navbar-border: @transparent;
 @nav-disabled-link-color: #ccc;
 @nav-disabled-link-hover-color: #bbb;
+@nav-tabs-border-color: @transparent;
 @dropdown-link-hover-bg: #888;
 @dropdown-link-active-color: #fff;
 @list-group-link-color: #333;
@@ -42,6 +43,7 @@
 @modal-content-border-color: #e8e8e8;
 @modal-footer-border-color: #e8e8e8;
 @modal-content-separator-color: #eee;
+@tooltip-max-width: 220px;
 
 
 body {
@@ -369,9 +371,10 @@ body {
 		    position: absolute;
 		    line-height: 10px;
 		    margin-left: -30px;
-		    margin-top: 5px;
-		    padding: 8px;
-		    font-weight: normal;
+		    margin-top: 2px;
+			padding: 0 8px 4px;
+			font-weight: normal;
+			height: 34px;
 		}
 	}		
 	.list-group-item {
@@ -432,6 +435,9 @@ body {
 				}
 			}
 		}
+	}
+	.file-list .list-group-item {
+		padding: 0 3px;
 	}
 	.folder {
 		font-weight: bold;
@@ -569,20 +575,19 @@ body {
 		min-height: 100px;
 	}
 	
-	.accordion-group {
+	.panel {
 		border: 0;
-		border-bottom: 1px solid @bg-light;
 		border-radius: inherit;
-		margin-bottom: 10px;
-		clear: both;
+		background: @modal-content-bg;
 	}
 	
 	.accordion-heading {
-		padding: 8px 15px;
+		padding: 12px 15px;
 		.accordion-toggle {
 			display: inline;
 			padding: 0;
-			font-weight: 500;
+			font-weight: bold;
+			cursor: pointer;
 			&:hover {
 				text-decoration: underline;
 			}
@@ -595,7 +600,7 @@ body {
 	
 	.accordion-inner {
 		border: 0;
-		padding: 10px 40px;
+		padding: 10px 40px 20px;
 		.form-horizontal {
 			.control-label {
 				text-align: left;
@@ -607,7 +612,7 @@ body {
 	}
 	
 	.tab-pane-button-container {
-		width: 200px;
+		width: 220px;
 		margin: 10px auto 20px;
 	}
 	
@@ -617,7 +622,6 @@ body {
 	}
 	
 	.nav-tabs {
-		border-bottom: 1px solid transparent;
 		margin: 15px 0 0;
 		
 		& > li > a {
@@ -785,40 +789,6 @@ hr {
 
 .wmd-prompt-background {
 	display: none;
-}
-
-.wmd-prompt-dialog {
-	border: 1px solid #999999;
-	background-color: @body-bg;
-}
-
-.wmd-prompt-dialog>div {
-	font-size: 0.8em;
-	font-family: arial, helvetica, sans-serif;
-}
-
-.wmd-prompt-dialog>form>input[type="text"] {
-	border: 1px solid #999999;
-	color: black;
-}
-
-.wmd-prompt-dialog>form>input[type="button"] {
-	border: 1px solid #888888;
-	font-family: trebuchet MS, helvetica, sans-serif;
-	font-size: 0.8em;
-	font-weight: bold;
-}
-
-.dropdown-menu .divider.with-text {
-	height: auto;
-	margin-bottom: 2px;
-	background-color: transparent;
-	border-top: 1px solid #e5e5e5;
-	color: #ccc;
-	font-variant: small-caps;
-	font-weight: bold;
-	padding-left: 20px;
-	cursor: default;
 }
 
 div.dropdown-menu {

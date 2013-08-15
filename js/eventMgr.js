@@ -213,7 +213,7 @@ define([
                     settingsBlock: extension.settingsBlock
                 }): "");
             }, "").value();
-            document.getElementById('accordion-extensions').innerHTML = accordionHtml;
+            document.querySelector('.accordion-extensions').innerHTML = accordionHtml;
             
             // Create a button from an extension listener
             function createBtn(listener) {

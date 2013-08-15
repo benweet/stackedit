@@ -88,7 +88,7 @@ define([
                 fileDesc: fileDesc,
             });
         }, '').value();
-        selectedDocumentListElt.innerHTML = '<ul class="nav">' + selectedDocumentListHtml + '</ul>';
+        selectedDocumentListElt.innerHTML = '<ul class="file-list nav">' + selectedDocumentListHtml + '</ul>';
 
         // Ask user confirmation
         $(modalElt.querySelectorAll('.document-list')).addClass('hide');

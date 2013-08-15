@@ -561,9 +561,9 @@ define([
             // Close panel if open
             menuPanelElt.collapse('hide');
             documentPanelElt.collapse('hide');
+            isModalShown = true;
         }).on('shown.bs.modal', function() {
             // Focus on the first input when modal opens
-            isModalShown = true;
             _.defer(function(elt) {
                 elt.find("input:enabled:visible:first").focus();
             }, $(this));

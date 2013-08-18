@@ -181,7 +181,7 @@ define([
     // Create a backdrop and add to the body
     utils.createBackdrop = function(toggle, target) {
         var result = crel('div', {
-            'class': 'modal-backdrop',
+            'class': 'modal-backdrop in',
             'data-toggle': toggle,
             'data-target': target,
         });

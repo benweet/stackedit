@@ -1,12 +1,13 @@
 define([
     "jquery",
     "underscore",
+    "crel",
     "utils",
     "classes/Extension",
     "mousetrap",
     "fileSystem",
     "text!html/documentSelectorSettingsBlock.html",
-], function($, _, utils, Extension, mousetrap, fileSystem, documentSelectorSettingsBlockHTML) {
+], function($, _, crel, utils, Extension, mousetrap, fileSystem, documentSelectorSettingsBlockHTML) {
 
     var documentSelector = new Extension("documentSelector", 'Document Selector');
     documentSelector.settingsBlock = documentSelectorSettingsBlockHTML;
@@ -33,33 +34,45 @@ define([
         fileMgr = fileMgrParameter;
     };
 
+    var liEltTmpl = [
+        '<li class="<%= isCurrent ? "disabled" : "" %>" data-file-index="<%= fileDesc.fileIndex %>">',
+        '   <a href="#">',
+        '       <%= fileDesc.composeTitle() %>',
+        '   </a>',
+        '</li>'
+    ].join('');
+    var $editorElt = undefined;
     var dropdownElt = undefined;
-    var liMap = undefined;
-    var liArray = undefined;
+    var liEltMap = undefined;
+    var liEltList = undefined;
     var sortFunction = undefined;
     var selectFileDesc = undefined;
     var buildSelector = function() {
+        var liListHtml = _.chain(fileSystem).sortBy(sortFunction).reduce(function(result, fileDesc) {
+            return result + _.template(liEltTmpl, {
+                fileDesc: fileDesc,
+                isCurrent: fileDesc === selectFileDesc
+            });
+        }, '').value();
+        dropdownElt.innerHTML = liListHtml;
 
-        liMap = {};
-        dropdownElt.empty();
-        _.chain(fileSystem).sortBy(sortFunction).each(function(fileDesc) {
-            var aElt = $('<a href="#">').html(fileDesc.composeTitle());
-            aElt.click(function() {
-                if(!liMap[fileDesc.fileIndex].is(".disabled")) {
+        liEltList = [];
+        liEltMap = {};
+        _.each(dropdownElt.querySelectorAll('li'), function(liElt) {
+            var $liElt = $(liElt);
+            liEltList.push($liElt);
+            var fileDesc = fileSystem[$liElt.data('fileIndex')];
+            liEltMap[fileDesc.fileIndex] = $liElt;
+            $liElt.find("a").click(function() {
+                if(!$liElt.hasClass("disabled")) {
                     fileMgr.selectFile(fileDesc);
                 }
                 else {
-                    $("#wmd-input").focus();
+                    $editorElt.focus();
                 }
             });
-            var liElt = $("<li>").append(aElt);
-            liMap[fileDesc.fileIndex] = liElt;
-            if(fileDesc === selectFileDesc) {
-                liElt.addClass("disabled");
-            }
-            dropdownElt.append(liElt);
         });
-        liArray = _.values(liMap);
+
     };
 
     documentSelector.onFileSelected = function(fileDesc) {
@@ -93,6 +106,8 @@ define([
     }
 
     documentSelector.onReady = function() {
+        $editorElt = $("#wmd-input");
+
         if(documentSelector.config.orderBy == "title") {
             sortFunction = function(fileDesc) {
                 return fileDesc.title.toLowerCase();
@@ -103,41 +118,16 @@ define([
                 return -fileDesc.selectTime;
             };
         }
-        
-        dropdownElt = $('<ul class="dropdown-menu dropdown-file-selector">');
-        $('<div>').append('<div data-toggle="dropdown">').append(dropdownElt).appendTo('.ui-layout-resizer-north');
-        dropdownElt.dropdown();
+
+        dropdownElt = crel('ul', {
+            class: 'dropdown-menu dropdown-file-selector'
+        });
+        document.querySelector('.ui-layout-resizer-north').appendChild(crel('div', crel('div', {
+            'data-toggle': 'dropdown'
+        }), dropdownElt));
+        var $dropdownElt = $(dropdownElt).dropdown();
 
         var shortcutLi = undefined;
-        /*
-        $(".action-open-file").click(function() {
-            if($(".file-selector").parent().is(".open")) {
-                return;
-            }
-            filterFileSelector();
-            if(shortcutLi !== undefined) {
-                return;
-            }
-            _.defer(function() {
-                $("#file-search").val("").focus();
-            });
-        }).prop("title", _.template("<%= title %>  <%= shortcutPrevious %>  <%= shortcutNext %>", {
-            title: $(".action-open-file").prop("title"),
-            shortcutPrevious: documentSelector.config.shortcutPrevious,
-            shortcutNext: documentSelector.config.shortcutNext
-        }));
-        $("#file-search").keyup(function(e) {
-            if(e.which == 13 || e.which == 27) {
-                $(this).parent().click();
-            }
-            else {
-                filterFileSelector($(this).val());
-            }
-        }).click(function(event) {
-            event.stopPropagation();
-        });
-        */
-        
         var documentPanelTogglerElt = $('.document-panel .collapse-button');
         documentPanelTogglerElt.prop("title", _.template("<%= title %>  <%= shortcutPrevious %>  <%= shortcutNext %>", {
             title: documentPanelTogglerElt.prop("title"),
@@ -149,14 +139,14 @@ define([
         var shortcutPrevious = documentSelector.config.shortcutPrevious.toLowerCase();
         mousetrap.bind(shortcutPrevious, function() {
             if(shortcutLi === undefined) {
-                dropdownElt.dropdown('toggle');
-                shortcutLi = liMap[selectFileDesc.fileIndex];
+                $dropdownElt.dropdown('toggle');
+                shortcutLi = liEltMap[selectFileDesc.fileIndex];
             }
-            var liIndex = _.indexOf(liArray, shortcutLi) - 1;
+            var liIndex = _.indexOf(liEltList, shortcutLi) - 1;
             if(liIndex === -2) {
                 liIndex = -1;
             }
-            shortcutLi = liArray[(liIndex + liArray.length) % liArray.length];
+            shortcutLi = liEltList[(liIndex + liEltList.length) % liEltList.length];
             _.defer(function() {
                 shortcutLi.find("a").focus();
             });
@@ -165,11 +155,11 @@ define([
         var shortcutNext = documentSelector.config.shortcutNext.toLowerCase();
         mousetrap.bind(documentSelector.config.shortcutNext.toLowerCase(), function() {
             if(shortcutLi === undefined) {
-                dropdownElt.dropdown('toggle');
-                shortcutLi = liMap[selectFileDesc.fileIndex];
+                $dropdownElt.dropdown('toggle');
+                shortcutLi = liEltMap[selectFileDesc.fileIndex];
             }
-            var liIndex = _.indexOf(liArray, shortcutLi) + 1;
-            shortcutLi = liArray[liIndex % liArray.length];
+            var liIndex = _.indexOf(liEltList, shortcutLi) + 1;
+            shortcutLi = liEltList[liIndex % liEltList.length];
             _.defer(function() {
                 shortcutLi.find("a").focus();
             });

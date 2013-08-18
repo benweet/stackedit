@@ -173,7 +173,7 @@ define([
                 filterFiles('');
                 
                 // Scroll to the active file
-                panelContentElt.scrollTop += documentListElt.querySelector('.file.active').getBoundingClientRect().top - 100;
+                panelContentElt.scrollTop += documentListElt.querySelector('.file.active').getBoundingClientRect().top - 120;
             }
         });
         

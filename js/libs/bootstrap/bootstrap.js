@@ -711,7 +711,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
     clearMenus()
 
     if (!isActive) {
-      if ('ontouchstart' in document.documentElement) {
+      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
         // if mobile we we use a backdrop because click events don't delegate
         $('<div class="dropdown-backdrop"/>').insertAfter($(this)).on('click', clearMenus)
       }
@@ -723,9 +723,9 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
       $parent
         .toggleClass('open')
         .trigger('shown.bs.dropdown')
-    }
 
-    $this.focus()
+      $this.focus()
+    }
 
     return false
   }
@@ -851,7 +851,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
 
   var Modal = function (element, options) {
     this.options   = options
-    this.$element  = $(element).on('click.dismiss.modal', '[data-dismiss="modal"]', $.proxy(this.hide, this))
+    this.$element  = $(element)
     this.$backdrop =
     this.isShown   = null
 
@@ -880,6 +880,8 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
 
     this.escape()
 
+    this.$element.on('click.dismiss.modal', '[data-dismiss="modal"]', $.proxy(this.hide, this))
+
     this.backdrop(function () {
       var transition = $.support.transition && that.$element.hasClass('fade')
 
@@ -902,7 +904,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
       var e = $.Event('shown.bs.modal', { relatedTarget: _relatedTarget })
 
       transition ?
-        that.$element
+        that.$element.find('.modal-dialog') // wait for modal to slide in
           .one($.support.transition.end, function () {
             that.$element.focus().trigger(e)
           })
@@ -1064,7 +1066,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
   })
 
   $(document)
-    .on('shown.bs.modal',  '.modal', function () { $(document.body).addClass('modal-open') })
+    .on('show.bs.modal',  '.modal', function () { $(document.body).addClass('modal-open') })
     .on('hidden.bs.modal', '.modal', function () { $(document.body).removeClass('modal-open') })
 
 }(window.jQuery);

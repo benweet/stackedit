@@ -195,6 +195,7 @@ define([
             slidable: false,
             livePaneResizing: true,
             enableCursorHotkey: false,
+            resizerDblClickToggle: false,
             north__spacing_open: 6,
             north__spacing_closed: 6,
             spacing_open: 35,
@@ -266,6 +267,7 @@ define([
     var editor = undefined;
     var fileDesc = undefined;
     var documentContent = undefined;
+    var $editorElt = undefined;
     core.initEditor = function(fileDescParam) {
         if(fileDesc !== undefined) {
             eventMgr.onFileClosed(fileDesc);
@@ -273,8 +275,7 @@ define([
         fileDesc = fileDescParam;
         documentContent = undefined;
         var initDocumentContent = fileDesc.content;
-        var editorElt = $("#wmd-input");
-        editorElt.val(initDocumentContent);
+        $editorElt.val(initDocumentContent);
         if(editor !== undefined) {
             // If the editor is already created
             editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
@@ -285,13 +286,13 @@ define([
         var previewContainerElt = $(".preview-container");
 
         // Store editor scrollTop on scroll event
-        editorElt.scroll(function() {
+        $editorElt.scroll(function() {
             if(documentContent !== undefined) {
                 fileDesc.editorScrollTop = $(this).scrollTop();
             }
         });
         // Store editor selection on change
-        editorElt.bind("keyup mouseup", function() {
+        $editorElt.bind("keyup mouseup", function() {
             if(documentContent !== undefined) {
                 fileDesc.editorStart = this.selectionStart;
                 fileDesc.editorEnd = this.selectionEnd;
@@ -347,7 +348,7 @@ define([
         });
 
         function checkDocumentChanges() {
-            var newDocumentContent = editorElt.val();
+            var newDocumentContent = $editorElt.val();
             if(documentContent !== undefined && documentContent != newDocumentContent) {
                 fileDesc.content = newDocumentContent;
                 eventMgr.onContentChanged(fileDesc);
@@ -361,7 +362,7 @@ define([
                 return function() {
                     if(documentContent === undefined) {
                         makePreview();
-                        editorElt.scrollTop(fileDesc.editorScrollTop);
+                        $editorElt.scrollTop(fileDesc.editorScrollTop);
                         previewContainerElt.scrollTop(fileDesc.previewScrollTop);
                     }
                     else {
@@ -416,7 +417,7 @@ define([
     var uiLocked = false;
     core.lockUI = function(param) {
         uiLocked = param;
-        $("#wmd-input").prop("disabled", uiLocked);
+        $editorElt.prop("disabled", uiLocked);
         $(".navbar-inner .btn").toggleClass("blocked", uiLocked);
         if(uiLocked) {
             $(".lock-ui").removeClass("hide");
@@ -430,7 +431,6 @@ define([
     var isDocumentPanelShown = false;
     var isMenuPanelShown = false;
     core.onReady = function() {
-
         if(viewerMode === true) {
             $('body').html(bodyViewerHTML);
         }
@@ -509,6 +509,7 @@ define([
 
         // UI layout
         createLayout();
+        $editorElt = $("#wmd-input");
 
         // Editor's textarea
         $("#wmd-input, #md-section-helper").css({
@@ -519,15 +520,11 @@ define([
         });
 
         // Handle tab key
-        $("#wmd-input").keydown(function(e) {
+        $editorElt.keydown(function(e) {
             if(e.keyCode === 9) {
-                var value = $(this).val();
+                var value = $editorElt.val();
                 var start = this.selectionStart;
                 var end = this.selectionEnd;
-                // IE8 does not support selection attributes
-                if(start === undefined || end === undefined) {
-                    return;
-                }
                 $(this).val(value.substring(0, start) + "\t" + value.substring(end));
                 this.selectionStart = this.selectionEnd = start + 1;
                 e.preventDefault();
@@ -570,7 +567,7 @@ define([
         }).on('hidden.bs.modal', function() {
             // Focus on the editor when modal is gone
             isModalShown = false;
-            $("#wmd-input").focus();
+            $editorElt.focus();
         }).keyup(function(e) {
             // Handle enter key in modals
             if(e.which == 13 && !$(e.target).is("textarea")) {

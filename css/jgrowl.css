@@ -1,6 +1,6 @@
 
 div.jGrowl {
-	z-index: 			1050;
+	z-index: 			1040;
 	color: 				#fff;
 }
 
@@ -48,7 +48,7 @@ div.center div.jGrowl-notification, div.center div.jGrowl-closer {
 div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
 	background-color: 		#777;
 	zoom: 					1;
-	width: 					280px;
+	width: 					260px;
 	padding: 				15px 20px;
 	margin-top: 			5px;
 	margin-bottom: 			5px;

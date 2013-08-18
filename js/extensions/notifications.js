@@ -67,7 +67,7 @@ define([
 
     notifications.onOfflineChanged = function(isOffline) {
         if(isOffline === true) {
-            showMessage("You are offline.", "icon-exclamation-sign msg-offline", {
+            showMessage("You are offline.", "icon-attention-circled msg-offline", {
                 sticky: true,
                 close: function() {
                     showMessage("You are back online!", "icon-signal");

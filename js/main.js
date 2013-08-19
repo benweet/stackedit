@@ -84,6 +84,8 @@ if(location.search.match(/(\?|&)console/)) {
     logger = console;
 }
 
+var theme = localStorage.theme || 'default';
+
 // RequireJS entry point. By requiring synchronizer, publisher and
 // media-importer, we are actually loading all the modules
 require([
@@ -93,7 +95,7 @@ require([
     "publisher",
     "mediaImporter",
     "css",
-    "less!styles/main.less",
+    "less!styles/" + theme + ".less",
 ], function($, core) {
 
     $(function() {

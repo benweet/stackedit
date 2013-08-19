@@ -104,7 +104,7 @@ define([
         // Layout orientation
         utils.setInputRadio("radio-layout-orientation", settings.layoutOrientation);
         // Theme
-        utils.setInputValue("#input-settings-theme", localStorage.theme);
+        utils.setInputValue("#input-settings-theme", localStorage.theme || 'default');
         // Lazy rendering
         utils.setInputChecked("#input-settings-lazy-rendering", settings.lazyRendering);
         // Editor font family
@@ -550,8 +550,8 @@ define([
         // Load theme list
         var themeOptions = _.reduce(THEME_LIST, function(themeOptions, name, value) {
             return themeOptions + '<option value="' + value + '">' + name + '</option>';
-        }, "");
-        $("#input-settings-theme").html(themeOptions);
+        }, '');
+        document.getElementById('input-settings-theme').innerHTML = themeOptions;
 
         var isModalShown = false;
         $('.modal').on('show.bs.modal', function() {

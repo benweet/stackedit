@@ -1,59 +1,80 @@
 @import "../libs/bootstrap/less/bootstrap.less";
 @import "../libs/fontello/css/fontello.css"
-@import "../../css/jgrowl.css"
-@import "../../css/prettify.css"
-@import "../../css/highlight.css"
+@import "../libs/jgrowl/jquery.jgrowl.css"
+@import "../libs/prettify/prettify.css"
+@import "../libs/highlight/highlight.css"
 
-@bg-light: #f2f2f2;
-@preview-bg-light: #e8e8e8;
-@bg-navbar-hover: @body-bg;
-@navbar-text-color: #666;
-@text-inv: #fff;
-@text-light: #888;
+/* Colors */
+@transparent: fade(#000, 0%);
+@primary-bg: #ddd;
+@primary-bg-light: lighten(@primary-bg, 4%);
+@primary-bg-lighter: lighten(@primary-bg, 8%);
+@secondary-bg: #888;
+@secondary-bg-light: lighten(@secondary-bg, 7%);
+@secondary-bg-dark: darken(@secondary-bg, 7%);
+@primary-color: #333;
+@primary-color-light: lighten(@primary-color, 13%);
+@primary-color-lighter: lighten(@primary-color, 20%);
+@primary-color-inv: #fff;
+@bg-navbar-hover: @primary-bg-lighter;
 @error-border: #ff8661;
-@panel-button-color: #777;
+@disabled-color: #ccc;
+@panel-button-color: @primary-color-lighter;
+@panel-bg: @primary-bg-lighter;
+@panel-border-color: @primary-bg-light;
+@folder-color: @primary-color-light;
+@jgrowl-bg-color: @secondary-bg-dark;
+
+/* Sizes */
 @menu-panel-width: 280px;
 @document-panel-width: 350px;
-@panel-bg: @bg-navbar-hover;
-@folder-color: #555;
-@transparent: fade(#000, 0%);
+@jgrowl-width: 260px;
 
 /* Bootstrap */
-@body-bg: #f5f5f5;
-@input-border: #ddd;
+@body-bg: @primary-bg-lighter;
+@text-color: @primary-color;
+@input-border: @primary-bg;
 @input-height-base: 38px;
-@dropdown-border: #ddd;
-@pre-border-color: #ddd;
-@navbar-bg: #ddd;
+@dropdown-border: @primary-bg;
+@pre-border-color: @primary-bg;
+@navbar-bg: @primary-bg;
 @navbar-border: @transparent;
-@nav-disabled-link-color: #ccc;
-@nav-disabled-link-hover-color: #bbb;
+@nav-link-hover-bg: @primary-bg-lighter;
+@nav-disabled-link-color: @disabled-color;
+@nav-disabled-link-hover-color: @disabled-color;
 @nav-tabs-border-color: @transparent;
-@dropdown-link-hover-bg: #888;
-@dropdown-link-active-color: #fff;
-@list-group-link-color: #333;
+@dropdown-link-color: @primary-color;
+@dropdown-link-hover-bg: @secondary-bg;
+@dropdown-link-active-color: @primary-color-inv;
+@list-group-link-color: @primary-color;
 @list-group-border: @transparent;
 @list-group-active-bg: @dropdown-link-hover-bg;
-@input-color-placeholder: #ccc;
-@btn-default-color: #333;
+@list-group-hover-bg: @primary-bg-lighter;
+@input-color-placeholder: @disabled-color;
+@btn-default-color: @primary-color;
 @btn-default-bg: @transparent;
 @btn-default-border: @transparent;
-@btn-primary-color: #fff;
-@btn-primary-bg: #888;
+@btn-default-hover-bg: fade(#000, 5%);
+@btn-primary-color: @primary-color-inv;
+@btn-primary-bg: @secondary-bg;
 @btn-primary-border: @transparent;
-@btn-success-color: #555;
+@btn-primary-hover-bg: darken(@secondary-bg, 8%);
+@btn-success-color: @primary-color-light;
 @btn-success-bg: @navbar-bg;
 @btn-success-border: @transparent;
 @btn-info-bg: @body-bg;
 @btn-info-border: @transparent;
 @gray-lighter: @body-bg;
-@modal-header-border-color: @preview-bg-light;
-@modal-content-border-color: @preview-bg-light;
-@modal-footer-border-color: @preview-bg-light;
-@modal-content-separator-color: #eee;
-@modal-backdrop-bg: #999;
+@modal-header-border-color: @primary-bg-light;
+@modal-content-border-color: @primary-bg-light;
+@modal-footer-border-color: @primary-bg-light;
+@modal-content-separator-color: @primary-bg-lighter;
+@modal-backdrop-bg: @secondary-bg-light;
 @blockquote-border-color: fade(#000, 5%);
+@code-color: @primary-color;
+@code-bg: fade(#000, 5%);
 @tooltip-max-width: 220px;
+@close-color: @primary-color;
 
 
 body {
@@ -110,11 +131,12 @@ body {
 } 
 
 .btn-default:hover {
-	background-color: fade(#000, 5%);
+	background-color: @btn-default-hover-bg;
 }
 
 .btn-primary:hover {
 	color: @btn-primary-color;
+	background-color: @btn-primary-hover-bg;
 }
 
 .btn-success:hover {
@@ -155,13 +177,13 @@ body {
     .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(128, 128, 128, 0.6)");
 }
 
-.help-block {
-	font-size: 12px;
-}
-
-.modal textarea.error,.modal input.error {
+.form-control.error {
 	border-color: @error-border;
     .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 134, 97, 0.6)");
+}
+
+.help-block {
+	font-size: 12px;
 }
 
 // Input add-on
@@ -244,7 +266,7 @@ body {
 		padding: 4px 15px;
 		font-size: 20px;
 		font-weight: 200;
-		color: @navbar-text-color;
+		color: @primary-color-light;
 		max-width: 400px;
 		overflow: hidden;
 		i {
@@ -322,7 +344,7 @@ body {
 	}
 	.panel-content {
 		padding-top: 6px;
-		border-right: 5px solid @preview-bg-light;
+		border-right: 5px solid @panel-border-color;
 	}
 }
 
@@ -353,7 +375,7 @@ body {
 	.panel-content {
 		background-color: @list-group-bg;
 		padding-top: 80px;
-		border-left: 5px solid @preview-bg-light;
+		border-left: 5px solid @panel-border-color;
 		.icon-layers {
 			font-size: 135%;
 		}	
@@ -364,7 +386,7 @@ body {
 		margin: -10px 25px 0;
 		padding: 20px 5px 10px 15px;
 		z-index: 3;
-		border: 1px solid @preview-bg-light;
+		border: 1px solid @primary-bg-light;
 		border-top: 0;
 		border-radius: 6px;
 		.form-control {
@@ -531,14 +553,14 @@ body {
 			position: initial;
 		}
 		&.open .btn{
-			background-color: @preview-bg-light;
+			background-color: @primary-bg-light;
 			i {
 				color: @btn-success-color
 			}
 		}
 	}
 	.dropdown-menu {
-    	background-color: @preview-bg-light;
+    	background-color: @primary-bg-light;
     	padding-bottom: 20px;
 	}
 	
@@ -584,6 +606,8 @@ body {
 		border: 0;
 		border-radius: inherit;
 		background: @modal-content-bg;
+		border-bottom: 1px solid @modal-content-separator-color;
+		.box-shadow(none);
 	}
 	
 	.accordion-heading {
@@ -631,13 +655,13 @@ body {
 		
 		& > li > a {
 			&:hover, &:focus {
-				background-color: @bg-light;
+				background-color: @btn-default-hover-bg;
 			}
 		}
 		
 		& > li.active > a {
 			&, &:hover, &:focus {
-				color: @text-inv;
+				color: @primary-color-inv;
 				background-color: @btn-primary-bg;
 				border-color: @btn-primary-bg;
 			}
@@ -736,11 +760,6 @@ body {
  * Markdown
  *********************/
 
-code {
-	color: #333333;
-	background-color: fade(#000, 5%);
-}
-
 a code {
 	color: inherit;
 }
@@ -764,16 +783,34 @@ hr {
 	margin: 30px 0;
 }
 
-
+/*****************************
+ * Editor
+ *****************************/
+ 
 #wmd-input {
-	-webkit-box-shadow: none !important;
-	-moz-box-shadow: none !important;
-	box-shadow: none !important;
+	.box-shadow(none);
 }
 
 #wmd-input,#md-section-helper {
 	resize: none;
 	border: none !important;
+}
+
+#md-section-helper {
+	position: absolute;
+	top: -100px;
+	height: 1px;
+	padding: 0 6px;
+	overflow-y: scroll;
+	z-index: -1;
+	.gecko & {
+		/* Firefox doesn't show the scrollbar if height is less than 40px */
+		height: 40px;
+	}	
+	.opera & {
+		/* Opera needs to have the textarea in the viewport to evaluate its size correctly */
+		top: 0;
+	}
 }
 
 .preview-container {
@@ -918,12 +955,6 @@ div.dropdown-menu textarea {
 	float: left;
 }
 
-/*
-.nav>li>a:hover,.nav>li>a:focus {
-	background-color: @bg-light;
-}
-*/
-
 .tooltip-inner {
 	text-align: left;
 }
@@ -1018,49 +1049,48 @@ input[type="file"] {
 	height: 120px;
 }
 
-#md-section-helper {
-	position: absolute;
-	top: -100px;
-	height: 1px;
-	padding: 0 6px;
-	overflow-y: scroll;
-	z-index: -1;
+/********************
+ * jGrowl
+ ********************/
+
+div.jGrowl {
+	z-index: 1040;
+	font-size: inherit;
+	div.jGrowl-notification, div.jGrowl-closer {
+		background-color: @jgrowl-bg-color;
+		width: @jgrowl-width;
+		margin: 20px 30px;
+		padding: 15px 20px;
+		-ms-filter: none;
+		filter: none;
+		border-radius: 5px;
+	}
+	div.jGrowl-notification {
+		min-height: 80px;
+	}
 }
 
-.lock-ui {
-	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: 1050;
-}
 
-.gecko #md-section-helper {
-	/* Firefox doesn't show the scrollbar if height is less than 40px */
-	height: 40px;
-}
-
-.opera #md-section-helper {
-	/* Opera needs to have the textarea in the viewport to evaluate size correctly */
-	top: 0;
-}
-
-/* Viewer */
-.viewer #navbar {
-	position: fixed;
-}
-
-.viewer .navbar-inner {
-	background-color: rgba(215, 215, 215, 0.75) !important;
-}
-
-.viewer #preview-contents {
-	max-width: 1024px;
-	margin: 50px auto;
-}
-
-.viewer .btn-group {
-	margin-right: 0;
-	margin-left: 0;
+/*******************
+ * Viewer
+ *******************/
+ 
+.viewer {
+	#navbar {
+		position: fixed;
+	}
+	
+	.navbar-inner {
+		background-color: rgba(215, 215, 215, 0.75) !important;
+	}
+	
+	#preview-contents {
+		max-width: 1024px;
+		margin: 50px auto;
+	}
+	
+	.btn-group {
+		margin-right: 0;
+		margin-left: 0;
+	}
 }

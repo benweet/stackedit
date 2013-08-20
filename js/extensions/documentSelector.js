@@ -47,6 +47,7 @@ define([
     var liEltList = undefined;
     var sortFunction = undefined;
     var selectFileDesc = undefined;
+    var selectedLi = undefined;
     var buildSelector = function() {
         var liListHtml = _.chain(fileSystem).sortBy(sortFunction).reduce(function(result, fileDesc) {
             return result + _.template(liEltTmpl, {
@@ -64,6 +65,7 @@ define([
             var fileDesc = fileSystem[$liElt.data('fileIndex')];
             liEltMap[fileDesc.fileIndex] = $liElt;
             $liElt.find("a").click(function() {
+                selectedLi = undefined;
                 if(!$liElt.hasClass("disabled")) {
                     fileMgr.selectFile(fileDesc);
                 }
@@ -127,7 +129,6 @@ define([
         }), dropdownElt));
         var $dropdownElt = $(dropdownElt).dropdown();
 
-        var shortcutLi = undefined;
         var documentPanelTogglerElt = $('.document-panel .collapse-button');
         documentPanelTogglerElt.prop("title", _.template("<%= title %>  <%= shortcutPrevious %>  <%= shortcutNext %>", {
             title: documentPanelTogglerElt.prop("title"),
@@ -138,30 +139,30 @@ define([
         // Handle key shortcut
         var shortcutPrevious = documentSelector.config.shortcutPrevious.toLowerCase();
         mousetrap.bind(shortcutPrevious, function() {
-            if(shortcutLi === undefined) {
+            if(selectedLi === undefined) {
                 $dropdownElt.dropdown('toggle');
-                shortcutLi = liEltMap[selectFileDesc.fileIndex];
+                selectedLi = liEltMap[selectFileDesc.fileIndex];
             }
-            var liIndex = _.indexOf(liEltList, shortcutLi) - 1;
+            var liIndex = _.indexOf(liEltList, selectedLi) - 1;
             if(liIndex === -2) {
                 liIndex = -1;
             }
-            shortcutLi = liEltList[(liIndex + liEltList.length) % liEltList.length];
+            selectedLi = liEltList[(liIndex + liEltList.length) % liEltList.length];
             _.defer(function() {
-                shortcutLi.find("a").focus();
+                selectedLi.find("a").focus();
             });
             return false;
         });
         var shortcutNext = documentSelector.config.shortcutNext.toLowerCase();
         mousetrap.bind(documentSelector.config.shortcutNext.toLowerCase(), function() {
-            if(shortcutLi === undefined) {
+            if(selectedLi === undefined) {
                 $dropdownElt.dropdown('toggle');
-                shortcutLi = liEltMap[selectFileDesc.fileIndex];
+                selectedLi = liEltMap[selectFileDesc.fileIndex];
             }
-            var liIndex = _.indexOf(liEltList, shortcutLi) + 1;
-            shortcutLi = liEltList[liIndex % liEltList.length];
+            var liIndex = _.indexOf(liEltList, selectedLi) + 1;
+            selectedLi = liEltList[liIndex % liEltList.length];
             _.defer(function() {
-                shortcutLi.find("a").focus();
+                selectedLi.find("a").focus();
             });
             return false;
         });
@@ -173,9 +174,8 @@ define([
             shortcutSelect1,
             shortcutSelect2
         ], function() {
-            if(shortcutLi !== undefined) {
-                shortcutLi.find("a").click();
-                shortcutLi = undefined;
+            if(selectedLi !== undefined) {
+                selectedLi.find("a").click();
             }
         }, "keyup");
     };

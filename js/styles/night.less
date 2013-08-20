@@ -1,48 +1,44 @@
 @import "main.less"
 
-@bg-light: #f2f2f2;
-@preview-bg-light: #444;
-@bg-navbar-hover: #333;
-@navbar-text-color: #999;
-@text-inv: #fff;
-@text-light: #888;
-@error-border: #ff8661;
-@panel-button-color: #999;
-@panel-bg: #222;
-@folder-color: #aaa;
+@primary-bg: #444;
+@primary-bg-light: darken(@primary-bg, 7%);
+@primary-bg-lighter: darken(@primary-bg, 13%);
+@secondary-bg: #444;
+@secondary-bg-light: darken(@secondary-bg, 7%);
+@secondary-bg-dark: lighten(@secondary-bg, 7%);
+@primary-color: #fff;
+@primary-color-light: darken(@primary-color, 13%);
+@primary-color-lighter: darken(@primary-color, 20%);
+@primary-color-inv: #fff;
+@disabled-color: #999;
 
-
-/* Bootstrap */
-@body-bg: #222;
-@text-color: #fff;
+@bg-navbar-hover: @secondary-bg-dark;
+@panel-border-color: @primary-bg;
 @link-color: #f73;
-@input-color: #fff; 
-@input-border: #444;
+@input-color: @primary-color; 
+@input-border: @primary-bg;
 @input-bg: #111;
-@dropdown-border: #ddd;
-@pre-border-color: #ddd;
-@navbar-bg: #444;
-@nav-link-hover-bg: #444;
-@nav-disabled-link-color: #ccc;
-@nav-disabled-link-hover-color: #bbb;
-@dropdown-link-hover-bg: #888;
-@dropdown-link-active-color: #fff;
-@list-group-link-color: #fff;
-@list-group-active-bg: @dropdown-link-hover-bg;
-@list-group-hover-bg: #444;
-@list-group-bg: #333;
-@input-color-placeholder: #ccc;
-@btn-default-color: #fff;
-@btn-primary-color: #fff;
-@btn-primary-bg: #555;
-@btn-success-color: #bbb;
-@btn-info-bg: @body-bg;
-@gray-lighter: @body-bg;
-@modal-content-bg: #333;
-@modal-content-separator-color: #444;
-@modal-backdrop-bg: #000;
+@list-group-bg: @primary-bg-light;
+@list-group-hover-bg: @primary-bg;
+@code-bg: fade(#fff, 10%);
+@modal-content-bg: @primary-bg-light;
+@modal-header-border-color: @primary-bg;
+@modal-content-border-color: @primary-bg;
+@modal-footer-border-color: @primary-bg;
+@modal-content-separator-color: @primary-bg;
+@nav-link-hover-bg: @primary-bg;
+@list-group-hover-bg: @primary-bg;
+@btn-default-hover-bg: fade(#fff, 8%);
+@btn-primary-hover-bg: lighten(@secondary-bg, 8%);
 @blockquote-border-color: fade(#fff, 8%);
-@close-color: #fff;
+@modal-backdrop-bg: #000;
+@dropdown-border: @primary-bg;
+@dropdown-bg: @primary-bg-light;
+
+.form-control:focus {
+    .box-shadow(~"inset 0 1px 1px rgba(255, 255, 255, 0), 0 0 8px rgba(255, 255, 255, 0.75)");
+}
+
 
 /*
 input[readonly], select[readonly], textarea[readonly] {

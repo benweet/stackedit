@@ -13,6 +13,7 @@
     },
 	include: [
 		'less!styles/default.less',
+		'less!styles/blue-gray.less',
 		'less!styles/night.less',
 	],
 	excludeShallow: [

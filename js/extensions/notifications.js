@@ -47,7 +47,7 @@ define([
             }
         }
         options = options || {};
-        iconClass = iconClass || "icon-info-sign";
+        iconClass = iconClass || "icon-info-circled";
         jGrowl("<i class='icon-white " + iconClass + "'></i> " + _.escape(message), options);
     }
 
@@ -58,10 +58,10 @@ define([
     notifications.onError = function(error) {
         logger.error(error);
         if(_.isString(error)) {
-            showMessage(error, "icon-warning-sign");
+            showMessage(error, "icon-attention");
         }
         else if(_.isObject(error)) {
-            showMessage(error.message, "icon-warning-sign");
+            showMessage(error.message, "icon-attention");
         }
     };
 

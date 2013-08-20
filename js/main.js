@@ -17,7 +17,7 @@ requirejs.config({
         "jquery": "libs/jquery",
         "underscore": "libs/underscore",
         "crel": "libs/crel",
-        "jgrowl": "libs/jgrowl",
+        "jgrowl": "libs/jgrowl/jquery.jgrowl",
         "mousetrap": "libs/mousetrap",
         "toMarkdown": "libs/to-markdown",
         "text": "libs/text",
@@ -59,8 +59,8 @@ requirejs.config({
         ],
         'libs/Markdown.Extra': [
             'libs/Markdown.Converter',
-            'libs/prettify',
-            'libs/highlight.pack',
+            'libs/prettify/prettify',
+            'libs/highlight/highlight.pack',
         ],
         'libs/Markdown.Editor': [
             'libs/Markdown.Converter'

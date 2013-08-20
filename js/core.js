@@ -99,12 +99,14 @@ define([
     }
 
     // Load settings in settings dialog
+    var $themeInputElt = undefined;
     function loadSettings() {
 
         // Layout orientation
         utils.setInputRadio("radio-layout-orientation", settings.layoutOrientation);
         // Theme
-        utils.setInputValue("#input-settings-theme", localStorage.theme || 'default');
+        utils.setInputValue($themeInputElt, localStorage.theme || 'default');
+        $themeInputElt.change();
         // Lazy rendering
         utils.setInputChecked("#input-settings-lazy-rendering", settings.lazyRendering);
         // Editor font family
@@ -131,7 +133,7 @@ define([
         // Layout orientation
         newSettings.layoutOrientation = utils.getInputRadio("radio-layout-orientation");
         // Theme
-        var theme = utils.getInputValue("#input-settings-theme");
+        var theme = utils.getInputValue($themeInputElt);
         // Lazy Rendering
         newSettings.lazyRendering = utils.getInputChecked("#input-settings-lazy-rendering");
         // Editor font family
@@ -574,7 +576,7 @@ define([
                 $(this).find(".modal-footer a:last").click();
             }
         });
-        
+
         // Configure Mousetrap
         mousetrap.stopCallback = function(e, element, combo) {
             return uiLocked || isMenuPanelShown || isDocumentPanelShown || isModalShown || $(element).is("input, select, textarea:not(#wmd-input)");
@@ -614,6 +616,30 @@ define([
                 window.location.reload();
             }
         });
+
+        // Hot theme switcher in the settings
+        var currentTheme = localStorage.theme || 'default';
+        function applyTheme(theme) {
+            theme = theme || 'default';
+            if(currentTheme != theme) {
+                var themeModule = "less!styles/" + theme;
+                // Undefine the module in RequireJS
+                requirejs.undef(themeModule);
+                // Then reload the style
+                require([
+                    themeModule + ".less"
+                ]);
+                currentTheme = theme;
+            }
+        }
+        $themeInputElt = $("#input-settings-theme");
+        $themeInputElt.on("change", function() {
+            applyTheme(this.value);
+        });
+        $(".action-apply-theme").click("change", function() {
+            applyTheme(localStorage.theme);
+        });
+
         // Import settings
         $(".action-import-settings").click(function(e) {
             $("#input-file-import-settings").click();

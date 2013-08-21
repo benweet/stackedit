@@ -84,6 +84,7 @@ if(location.search.match(/(\?|&)console/)) {
     logger = console;
 }
 
+var viewerMode = /(^| )viewer($| )/.test(document.body.className);
 var theme = localStorage.theme || 'default';
 
 // RequireJS entry point. By requiring synchronizer, publisher and

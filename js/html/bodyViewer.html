@@ -1,8 +1,9 @@
 
 <div class="navbar navbar-fixed-top ui-layout-north">
 	<div class="navbar-inner">
+		<div class="nav right-space pull-right"></div>
 
-		<ul class="nav pull-right hide">
+		<ul class="nav pull-right">
 			<li class="btn-group">
 				<button class="btn btn-default action-edit-document hide"
 					title="Edit this document">
@@ -10,63 +11,80 @@
 				</button>
 			</li>
 			<li class="btn-group">
-				<button class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-					title="Save this document">
-					<i class="icon-download-alt"></i>
+				<button class="btn btn-default dropdown-toggle"
+					data-toggle="dropdown" title="Save this document">
+					<i class="icon-download"></i>
 				</button>
 				<ul class="dropdown-menu">
 					<li><a class="action-download-md" href="#"><i
-							class="icon-download-alt"></i> Save as Markdown</a></li>
+							class="icon-download"></i> Save as Markdown</a></li>
 					<li><a class="action-download-html" href="#"><i
-							class="icon-download-alt"></i> Save as HTML</a></li>
+							class="icon-download"></i> Save as HTML</a></li>
 					<li><a class="action-download-template" href="#"><i
-							class="icon-download-alt"></i> Save using template</a></li>
+							class="icon-download"></i> Save using template</a></li>
 				</ul>
 			</li>
-			<li class="btn-group">
-				<button class="btn btn-default dropdown-toggle action-open-file"
-					data-toggle="dropdown" title="Open local document">
-					<i class="icon-folder-open"></i>
-				</button>
-				<ul id="file-selector" class="dropdown-menu">
-					<li class="stick">
-						<div class="input-prepend">
-							<span class="add-on"><i class="icon-search"></i></span><input
-								type="text" id="file-search" class="span3">
-						</div>
-					</li>
-				</ul>
-			</li>
-			<li class="btn-group"><button class="btn btn-default action-open-stackedit"
-					title="Open StackEdit">
-					<i class="icon-provider-stackedit"></i>
-				</button></li>
+		</ul>
+		<ul class="nav pull-right">
+			<li><span class="file-title-navbar"></span></li>
 		</ul>
 		<ul class="nav pull-right">
 			<li><i class="working-indicator icon-none"></i></li>
-			<li><span class="brand file-title-navbar"></span></li>
 		</ul>
+
 	</div>
 </div>
 <div id="wmd-button-bar" class="hide"></div>
 <textarea id="wmd-input" class="hide"></textarea>
-<div class="preview-container">
-	<div id="preview-contents">
-		<div id="wmd-preview" class="preview-content"></div>
+<div class="ui-layout-center preview-container"></div>
+
+<div class="menu-panel collapse width">
+	<button class="btn btn-success collapse-button action-open-stackedit" title="Open StackEdit">
+		<i class="icon-left-dir"></i> <img src="img/stackedit-64.png"
+			width="32" height="32" />
+	</button>
+</div>
+
+<div class="document-panel collapse width">
+	<button class="btn btn-success collapse-button" data-toggle="collapse"
+		data-target=".document-panel" title="Select document">
+		<i class="icon-folder-open"></i> <i class="icon-right-dir"></i>
+	</button>
+	<div class="search-bar clearfix">
+		<div class="input-group">
+			<span class="input-group-addon"><i class="icon-search"></i></span><input
+				type="text" class="form-control"></input>
+			<button type="button" class="close" title="clear">&times;</button>
+			<div class="input-group-btn">
+				<a data-toggle="modal" data-target=".modal-document-manager"
+					class="btn btn-link" title="Manage documents"><i
+					class="icon-layers"></i></a>
+			</div>
+		</div>
+	</div>
+	<div class="panel-content">
+		<div class="list-group document-list"></div>
+		<div class="list-group document-list-filtered hide"></div>
 	</div>
 </div>
 
 <div class="modal modal-non-unique">
-	<div class="modal-header">
-		<h3>Ooops...</h3>
-	</div>
-	<div class="modal-body">
-		<p>StackEdit has stopped because another instance was running in
-			the same browser.</p>
-		<blockquote class="muted">If you want to reopen
-			StackEdit, click on "Reload".</blockquote>
-	</div>
-	<div class="modal-footer">
-		<a href="javascript:window.location.reload();" class="btn btn-primary">Reload</a>
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h3 class="modal-title">Ooops...</h3>
+			</div>
+			<div class="modal-body">
+				<p>StackEdit has stopped because another instance was running in
+					the same browser.</p>
+				<blockquote class="muted">If you want to reopen
+					StackEdit, click on "Reload".</blockquote>
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:window.location.reload();"
+					class="btn btn-primary">Reload</a>
+			</div>
+		</div>
 	</div>
 </div>

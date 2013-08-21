@@ -13,23 +13,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="msvalidate.01" content="5E47EE6F67B069C17E3CDD418351A612" />
 <script>
-    // Use http://.../?debug to serve original CSS/JavaScript files instead of minified
-    var suffix = "";
+    // Use http://.../?debug to serve original JavaScript files instead of minified
+    var mainModule = "main";
     if(!location.search.match(/(\?|&)debug/)) {
-        suffix = "-min";
-    }
-    document.write('<link href="css/main' + suffix + '.css" rel="stylesheet">');
-    var theme = localStorage.theme;
-    if(theme) {
-        document.write('<link href="themes/' + theme + '/' + theme + '.css" rel="stylesheet">');
+        mainModule += "-min";
     }
     var require = {
         baseUrl: "js",
         deps: [
-            "main" + suffix
+			mainModule
         ]
     };
-    var viewerMode = true;
 </script>
 <script src="js/libs/require.js"></script>
 </head>

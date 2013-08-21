@@ -105,7 +105,7 @@ define([
         // Layout orientation
         utils.setInputRadio("radio-layout-orientation", settings.layoutOrientation);
         // Theme
-        utils.setInputValue($themeInputElt, localStorage.theme || 'default');
+        utils.setInputValue($themeInputElt, theme);
         $themeInputElt.change();
         // Lazy rendering
         utils.setInputChecked("#input-settings-lazy-rendering", settings.lazyRendering);
@@ -188,9 +188,6 @@ define([
 
     // Create the layout
     function createLayout() {
-        if(viewerMode === true) {
-            return;
-        }
         var layoutGlobalConfig = {
             closable: true,
             resizable: false,
@@ -549,12 +546,6 @@ define([
     // Other initialization that are not prioritary
     eventMgr.addListener("onReady", function() {
 
-        // Load theme list
-        var themeOptions = _.reduce(THEME_LIST, function(themeOptions, name, value) {
-            return themeOptions + '<option value="' + value + '">' + name + '</option>';
-        }, '');
-        document.getElementById('input-settings-theme').innerHTML = themeOptions;
-
         var isModalShown = false;
         $('.modal').on('show.bs.modal', function() {
             // Close panel if open
@@ -618,7 +609,7 @@ define([
         });
 
         // Hot theme switcher in the settings
-        var currentTheme = localStorage.theme || 'default';
+        var currentTheme = theme;
         function applyTheme(theme) {
             theme = theme || 'default';
             if(currentTheme != theme) {
@@ -735,6 +726,14 @@ define([
         $("div.dropdown-menu").click(function(e) {
             e.stopPropagation();
         });
+
+        if (viewerMode === false) {
+            // Load theme list
+            var themeOptions = _.reduce(THEME_LIST, function(themeOptions, name, value) {
+                return themeOptions + '<option value="' + value + '">' + name + '</option>';
+            }, '');
+            document.getElementById('input-settings-theme').innerHTML = themeOptions;
+        }
 
     });
 

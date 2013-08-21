@@ -225,11 +225,11 @@ body {
 	padding: 0;	
 	.left-space {
 		width: 30px;
-		height: 38px;
+		height: @input-height-base;
 	}
 	.right-space {
 		width: 20px;
-		height: 38px;
+		height: @input-height-base;
 	}
 	.nav {
 		float: left;
@@ -299,6 +299,7 @@ body {
 .menu-panel, .document-panel {
 	display: block;
 	position: absolute;
+	top: 0;
 	height: 100%;
 	z-index: 10;
 	overflow: initial;
@@ -480,7 +481,7 @@ body {
 		input {
 			cursor: pointer;
 			margin: 0 16px;
-			height: 38px;
+			height: @input-height-base;
 		}
 	}
 	.input-rename {
@@ -1076,21 +1077,19 @@ div.jGrowl {
  *******************/
  
 .viewer {
-	#navbar {
-		position: fixed;
-	}
-	
-	.navbar-inner {
-		background-color: rgba(215, 215, 215, 0.75) !important;
+	.file-title-navbar {
+		line-height: @input-height-base;
 	}
 	
 	#preview-contents {
 		max-width: 1024px;
-		margin: 50px auto;
+		margin: 0 auto;
 	}
-	
-	.btn-group {
-		margin-right: 0;
-		margin-left: 0;
+		
+	.document-panel .search-bar {
+		padding: 20px 20px 10px;
+		.input-group-btn {
+			display: none;
+		}
 	}
 }

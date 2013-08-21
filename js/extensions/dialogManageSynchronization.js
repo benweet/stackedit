@@ -5,7 +5,7 @@ define([
     "text!html/dialogManageSynchronizationLocation.html",
 ], function($, _, Extension, dialogManageSynchronizationLocationHTML) {
 
-    var dialogManageSynchronization = new Extension("dialogManageSynchronization", 'Dialog "Manage synchronization"');
+    var dialogManageSynchronization = new Extension("dialogManageSynchronization", 'Dialog "Manage synchronization"', false, true);
 
     var eventMgr = undefined;
     dialogManageSynchronization.onEventMgrCreated = function(eventMgrParameter) {

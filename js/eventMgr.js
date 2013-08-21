@@ -45,26 +45,31 @@ define([
     // Configure extensions
     extensionSettings = settings.extensionSettings || {};
     _.each(extensionList, function(extension) {
-        // Set the extension.config attribute from settings or default configuration
+        // Set the extension.config attribute from settings or default
+        // configuration
         extension.config = _.extend({}, extension.defaultConfig, extensionSettings[extension.extensionId]);
         if(viewerMode === true && extension.disableInViewer === true) {
-            // Skip enabling the extension if we are in the viewer and extension doesn't support it
+            // Skip enabling the extension if we are in the viewer and extension
+            // doesn't support it
             extension.enabled = false;
         }
         else {
-            // Enable the extension if it's not optional or it has not been disabled by the user
-            extension.enabled = !extension.isOptional || extension.config.enabled === undefined || extension.config.enabled === true;        
+            // Enable the extension if it's not optional or it has not been
+            // disabled by the user
+            extension.enabled = !extension.isOptional || extension.config.enabled === undefined || extension.config.enabled === true;
         }
     });
-    
-    // Returns all listeners with the specified name that are implemented in the enabled extensions
+
+    // Returns all listeners with the specified name that are implemented in the
+    // enabled extensions
     function getExtensionListenerList(eventName) {
         return _.chain(extensionList).map(function(extension) {
             return extension.enabled && extension[eventName];
         }).compact().value();
     }
 
-    // Returns a function that calls every listeners with the specified name from all enabled extensions
+    // Returns a function that calls every listeners with the specified name
+    // from all enabled extensions
     var eventListenerListMap = {};
     function createEventHook(eventName) {
         eventListenerListMap[eventName] = getExtensionListenerList(eventName);
@@ -77,12 +82,12 @@ define([
                     listener.apply(null, eventArguments);
                 }
                 catch(e) {
-                    console.error(e);
+                    console.error(_.isObject(e) ? e.stack : e);
                 }
             });
         };
     }
-    
+
     // Add a Hook to the eventMgr that we can fire using eventMgr.eventName()
     function addEventHook(eventName) {
         eventMgr[eventName] = createEventHook(eventName);
@@ -92,7 +97,8 @@ define([
     eventMgr.addListener = function(eventName, listener) {
         try {
             eventListenerListMap[eventName].push(listener);
-        } catch(e) {
+        }
+        catch(e) {
             console.error('No event listener called ' + eventName);
         }
     };
@@ -141,7 +147,7 @@ define([
     addEventHook("onFileClosed");
     addEventHook("onContentChanged");
     addEventHook("onTitleChanged");
-    
+
     // Operations on folders
     addEventHook("onFoldersChanged");
 
@@ -200,7 +206,7 @@ define([
     eventMgr["onReady"] = function() {
         previewContentsElt = document.getElementById('preview-contents');
         previewContentsJQElt = $(previewContentsElt);
-        
+
         if(viewerMode === false) {
             // Create accordion in settings dialog
             var accordionHtml = _.chain(extensionList).sortBy(function(extension) {
@@ -211,10 +217,10 @@ define([
                     extensionName: extension.extensionName,
                     isOptional: extension.isOptional,
                     settingsBlock: extension.settingsBlock
-                }): "");
+                }) : "");
             }, "").value();
             document.querySelector('.accordion-extensions').innerHTML = accordionHtml;
-            
+
             // Create a button from an extension listener
             function createBtn(listener) {
                 var buttonGrpElt = crel('div', {
@@ -248,7 +254,7 @@ define([
             });
             var previewButtonsElt = document.querySelector('.extension-preview-buttons');
             previewButtonsElt.appendChild(extensionPreviewButtonsFragment);
-            
+
             // A bit of jQuery...
             previewButtonsElt = $(previewButtonsElt);
             var previewButtonsWidth = previewButtonsElt.width();
@@ -259,7 +265,7 @@ define([
                     right: -previewButtonsWidth + btnGroupElt.width() + btnGroupElt.position().left
                 });
             });
-            
+
         }
 
         // Call onReady listeners

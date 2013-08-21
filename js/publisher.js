@@ -231,25 +231,28 @@ define([
         '</li>'
     ].join('');
     eventMgr.addListener("onReady", function() {
-        // Add every provider in the panel menu
-        var publishMenuElt = document.querySelector('.menu-panel .collapse-publish-on .nav');
-        var publishMenuHtml = _.reduce(providerMap, function(result, provider) {
-            return result + _.template(initPublishButtonTmpl, {
-                provider: provider
+        if(viewerMode === false) {
+            // Add every provider in the panel menu
+            var publishMenuElt = document.querySelector('.menu-panel .collapse-publish-on .nav');
+            var publishMenuHtml = _.reduce(providerMap, function(result, provider) {
+                return result + _.template(initPublishButtonTmpl, {
+                    provider: provider
+                });
+            }, '');
+            publishMenuElt.innerHTML = publishMenuHtml;
+            _.each(providerMap, function(provider) {
+                // Click on open publish dialog
+                $(publishMenuElt.querySelector('.action-init-publish-' + provider.providerId)).click(function() {
+                    initNewLocation(provider);
+                });
+                // Click on perform new publication
+                $(".action-publish-" + provider.providerId).click(function() {
+                    initNewLocation(provider);
+                });
             });
-        }, '');
-        publishMenuElt.innerHTML = publishMenuHtml;
-        _.each(providerMap, function(provider) {
-            // Click on open publish dialog
-            $(publishMenuElt.querySelector('.action-init-publish-' + provider.providerId)).click(function() {
-                initNewLocation(provider);
-            });
-            // Click on perform new publication
-            $(".action-publish-" + provider.providerId).click(function() {
-                initNewLocation(provider);
-            });
-        });
-
+        }
+        
+        // 
         $(".action-process-publish").click(performNewLocation);
 
         // Save As menu items

@@ -5,7 +5,7 @@ define([
     "text!html/dialogManagePublicationLocation.html",
 ], function($, _, Extension, dialogManagePublicationLocationHTML) {
 
-    var dialogManagePublication = new Extension("dialogManagePublication", 'Dialog "Manage publication"');
+    var dialogManagePublication = new Extension("dialogManagePublication", 'Dialog "Manage publication"', false, true);
 
     var eventMgr = undefined;
     dialogManagePublication.onEventMgrCreated = function(eventMgrParameter) {

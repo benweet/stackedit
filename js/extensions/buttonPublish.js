@@ -34,8 +34,9 @@ define([
     };
 
     buttonPublish.onCreateButton = function() {
-        button = $(buttonPublishHTML).click(function() {
-            if(!$(this).hasClass("disabled")) {
+        var $buttonPublishHTML = $(buttonPublishHTML);
+        button = $buttonPublishHTML.click(function() {
+            if(!$buttonPublishHTML.hasClass("disabled")) {
                 publisher.publish();
             }
         });

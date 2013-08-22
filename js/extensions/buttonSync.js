@@ -1,11 +1,11 @@
 define([
     "jquery",
     "underscore",
+    "crel",
     "utils",
     "classes/Extension",
-    "text!html/buttonSync.html",
     "text!html/buttonSyncSettingsBlock.html",
-], function($, _, utils, Extension, buttonSyncHTML, buttonSyncSettingsBlockHTML) {
+], function($, _, crel, utils, Extension, buttonSyncSettingsBlockHTML) {
 
     var buttonSync = new Extension("buttonSync", 'Button "Synchronize"');
     buttonSync.settingsBlock = buttonSyncSettingsBlockHTML;
@@ -26,19 +26,19 @@ define([
         synchronizer = synchronizerParameter;
     };
 
-    var button = undefined;
+    var $button = undefined;
     var syncRunning = false;
     var isOffline = false;
     // Enable/disable the button
     var updateButtonState = function() {
-        if(button === undefined) {
+        if($button === undefined) {
             return;
         }
         if(syncRunning === true || synchronizer.hasSync() === false || isOffline) {
-            button.addClass("disabled");
+            $button.addClass("disabled");
         }
         else {
-            button.removeClass("disabled");
+            $button.removeClass("disabled");
         }
     };
 
@@ -54,12 +54,17 @@ define([
     };
 
     buttonSync.onCreateButton = function() {
-        button = $(buttonSyncHTML).click(function() {
+        var button = crel('button', {
+            class: 'btn btn-success'
+        }, crel('i', {
+            class: 'icon-refresh'
+        }));
+        $button = $(button).click(function() {
             if(!$(this).hasClass("disabled")) {
                 synchronizer.sync();
             }
         });
-        return button[0];
+        return button;
     };
 
     buttonSync.onReady = updateButtonState;

@@ -58,7 +58,7 @@ define([
                 $("#input-html-code").each(function() {
                     if($(this).is(":hidden"))
                         return;
-                    $(this).get(0).select();
+                    this.select();
                 });
             });
         });

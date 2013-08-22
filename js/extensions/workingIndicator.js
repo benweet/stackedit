@@ -6,15 +6,16 @@ define([
 
     var workingIndicator = new Extension("workingIndicator", "Working Indicator");
 
+    var $bodyElt = undefined;
+    var $workingIndicatorElt = undefined;
     workingIndicator.onAsyncRunning = function(isRunning) {
-        if(isRunning === false) {
-            $(".working-indicator").removeClass("show");
-            $("body").removeClass("working");
-        }
-        else {
-            $(".working-indicator").addClass("show");
-            $("body").addClass("working");
-        }
+        $bodyElt.toggleClass("working", isRunning);
+        $workingIndicatorElt.toggleClass("show", isRunning);
+    };
+    
+    workingIndicator.onReady = function() {
+        $bodyElt = $(document.body);
+        $workingIndicatorElt = $(".working-indicator");
     };
 
     return workingIndicator;

@@ -60,9 +60,9 @@ define([
         selectedFolderList = [];
         selectedDocumentList = [];
         _.each(documentListElt.querySelectorAll('input[type="checkbox"]:checked'), function(checkboxElt) {
-            var parentElt = $(checkboxElt.parentNode.parentNode);
-            var folderDesc = folderList[parentElt.data('folderIndex')];
-            var fileDesc = fileSystem[parentElt.data('fileIndex')];
+            var $parentElt = $(checkboxElt.parentNode.parentNode);
+            var folderDesc = folderList[$parentElt.data('folderIndex')];
+            var fileDesc = fileSystem[$parentElt.data('fileIndex')];
             if(folderDesc !== undefined) {
                 selectedFolderList.push(folderDesc);
             }
@@ -110,18 +110,18 @@ define([
         eventMgr.onFoldersChanged();
     }
 
-    var liMoveElt = undefined;
-    var liDeleteElt = undefined;
+    var $liMoveElt = undefined;
+    var $liDeleteElt = undefined;
     function doActiveButtons() {
         doSelect();
 
-        liMoveElt.toggleClass('disabled', _.size(folderList) === 0 || _.size(selectedDocumentList) === 0);
-        liDeleteElt.toggleClass('disabled', _.size(selectedFolderList) === 0 && _.size(selectedDocumentList) === 0);
+        $liMoveElt.toggleClass('disabled', _.size(folderList) === 0 || _.size(selectedDocumentList) === 0);
+        $liDeleteElt.toggleClass('disabled', _.size(selectedFolderList) === 0 && _.size(selectedDocumentList) === 0);
     }
 
     var orphanDocumentList = undefined;
-    var documentCountElt = undefined;
-    var folderCountElt = undefined;
+    var $documentCountElt = undefined;
+    var $folderCountElt = undefined;
     var refreshManager = function() {
         if(isVisible === false) {
             return;
@@ -130,8 +130,8 @@ define([
         doActiveButtons();
 
         // Refresh file/folder counters
-        documentCountElt.text(_.size(fileSystem));
-        folderCountElt.text(_.size(folderList) + 1);
+        $documentCountElt.text(_.size(fileSystem));
+        $folderCountElt.text(_.size(folderList) + 1);
 
         // List orphan documents
         orphanDocumentList = _.filter(fileSystem, function(fileDesc) {
@@ -183,12 +183,12 @@ define([
 
         // Set delete event listeners
         _.each(documentListElt.querySelectorAll('.button-delete'), function(buttonElt) {
-            buttonElt = $(buttonElt);
-            buttonElt.click(function(e) {
+            var $buttonElt = $(buttonElt);
+            $buttonElt.click(function(e) {
                 e.stopPropagation();
-                var parentElt = buttonElt.parent();
-                var folderDesc = folderList[parentElt.data('folderIndex')];
-                var fileDesc = fileSystem[parentElt.data('fileIndex')];
+                var $parentElt = $buttonElt.parent();
+                var folderDesc = folderList[$parentElt.data('folderIndex')];
+                var fileDesc = fileSystem[$parentElt.data('fileIndex')];
                 selectedDocumentList = [];
                 selectedFolderList = [];
                 if(folderDesc) {
@@ -204,28 +204,28 @@ define([
 
         // Set rename event listeners
         _.each(documentListElt.querySelectorAll('.button-rename'), function(buttonElt) {
-            buttonElt = $(buttonElt);
-            buttonElt.click(function(e) {
+            var $buttonElt = $(buttonElt);
+            $buttonElt.click(function(e) {
                 e.stopPropagation();
-                var parentElt = buttonElt.parent();
+                var $parentElt = $buttonElt.parent();
                 var name = undefined;
-                var folderDesc = folderList[parentElt.data('folderIndex')];
-                var fileDesc = fileSystem[parentElt.data('fileIndex')];
+                var folderDesc = folderList[$parentElt.data('folderIndex')];
+                var fileDesc = fileSystem[$parentElt.data('fileIndex')];
                 if(folderDesc) {
                     name = folderDesc.name;
                 }
                 else if(fileDesc) {
                     name = fileDesc.title;
                 }
-                parentElt.find('.name').addClass('hide');
-                parentElt.find('.input-rename').removeClass('hide').val(name)[0].select();
+                $parentElt.find('.name').addClass('hide');
+                $parentElt.find('.input-rename').removeClass('hide').val(name)[0].select();
             });
         });
         _.each(documentListElt.querySelectorAll('.input-rename'), function(inputElt) {
-            inputElt = $(inputElt);
+            var $inputElt = $(inputElt);
             function rename() {
-                var parentElt = inputElt.parent();
-                var name = $.trim(inputElt.val());
+                var parentElt = $inputElt.parent();
+                var name = $.trim($inputElt.val());
                 var folderDesc = folderList[parentElt.data('folderIndex')];
                 var fileDesc = fileSystem[parentElt.data('fileIndex')];
                 if(name && folderDesc && name != folderDesc.name) {
@@ -237,11 +237,11 @@ define([
                     eventMgr.onTitleChanged(fileDesc);
                 }
                 else {
-                    inputElt.addClass('hide');
+                    $inputElt.addClass('hide');
                     parentElt.find('.name').removeClass('hide');
                 }
             }
-            inputElt.blur(function() {
+            $inputElt.blur(function() {
                 rename();
             }).keyup(function(e) {
                 if(e.keyCode == 13) {
@@ -249,7 +249,7 @@ define([
                     e.stopPropagation();
                 }
                 if(e.keyCode == 27) {
-                    inputElt.val('');
+                    $inputElt.val('');
                     rename();
                     e.stopPropagation();
                 }
@@ -258,11 +258,11 @@ define([
 
         // Set folder checkbox special behavior
         _.each(documentListElt.querySelectorAll('.folder .checkbox'), function(checkboxElt) {
-            checkboxElt = $(checkboxElt);
-            checkboxElt.click(function(e) {
+            var $checkboxElt = $(checkboxElt);
+            $checkboxElt.click(function(e) {
                 e.stopPropagation();
             }).find('[type=checkbox]').change(function() {
-                var documentCheckboxElts = checkboxElt.parent().next().find('[type=checkbox]');
+                var documentCheckboxElts = $checkboxElt.parent().next().find('[type=checkbox]');
                 if(this.checked) {
                     documentCheckboxElts.prop('checked', true).prop('disabled', true);
                 }
@@ -288,8 +288,8 @@ define([
     documentManager.onReady = function() {
         modalElt = document.querySelector('.modal-document-manager');
         documentListElt = modalElt.querySelector('.list-group.document-list');
-        documentCountElt = $(modalElt.querySelectorAll('.document-count'));
-        folderCountElt = $(modalElt.querySelectorAll('.folder-count'));
+        $documentCountElt = $(modalElt.querySelectorAll('.document-count'));
+        $folderCountElt = $(modalElt.querySelectorAll('.folder-count'));
         selectedDocumentListElt = modalElt.querySelector('.list-group.selected-document-list');
         var selectFolderListElt = modalElt.querySelector('.list-group.select-folder-list');
 
@@ -332,15 +332,15 @@ define([
         });
 
         // Delete selection actions
-        var aDeleteElt = $(modalElt.querySelectorAll('.action-delete-items')).click(function() {
-            if(liDeleteElt.hasClass('disabled')) {
+        var $aDeleteElt = $(modalElt.querySelectorAll('.action-delete-items')).click(function() {
+            if($liDeleteElt.hasClass('disabled')) {
                 return;
             }
 
             doSelect();
             doDeleteConfirmation();
         });
-        liDeleteElt = aDeleteElt.parent();
+        $liDeleteElt = $aDeleteElt.parent();
 
         // Delete confirmation actions
         $(modalElt.querySelectorAll('.action-delete-items-confirm')).click(function() {
@@ -351,8 +351,8 @@ define([
         });
 
         // Move selection actions
-        var aMoveElt = $(modalElt.querySelectorAll('.action-move-items')).click(function() {
-            if(liMoveElt.hasClass('disabled')) {
+        var $aMoveElt = $(modalElt.querySelectorAll('.action-move-items')).click(function() {
+            if($liMoveElt.hasClass('disabled')) {
                 return;
             }
 
@@ -396,7 +396,7 @@ define([
             $(modalElt.querySelectorAll('.document-list')).addClass('hide');
             $(modalElt.querySelectorAll('.choose-folder, .select-folder-list')).removeClass('hide');
         });
-        liMoveElt = aMoveElt.parent();
+        $liMoveElt = $aMoveElt.parent();
 
         // Cancel button
         $(modalElt.querySelectorAll('.action-cancel')).click(function() {

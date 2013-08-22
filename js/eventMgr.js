@@ -8,6 +8,7 @@ define([
     "text!html/settingsExtensionsAccordion.html",
     "extensions/partialRendering",
     "extensions/userCustom",
+    "extensions/buttonMarkdownSyntax",
     "extensions/googleAnalytics",
     "extensions/dialogAbout",
     "extensions/dialogManagePublication",
@@ -29,7 +30,6 @@ define([
     "extensions/buttonShare",
     "extensions/buttonStat",
     "extensions/buttonHtmlCode",
-    "extensions/buttonMarkdownSyntax",
     "extensions/buttonViewer",
     "libs/bootstrap/bootstrap",
     "libs/jquery.waitforimages"
@@ -177,7 +177,7 @@ define([
     // The number of times we expect tryFinished to be called
     var nbAsyncPreviewListener = onAsyncPreviewListenerList.length + 1;
     var previewContentsElt = undefined;
-    var previewContentsJQElt = undefined;
+    var $previewContentsElt = undefined;
     eventMgr["onAsyncPreview"] = function() {
         logger.log("onAsyncPreview");
         logger.log("Conversion time: " + (new Date() - eventMgr.previewStartTime));
@@ -196,7 +196,7 @@ define([
             }
         }
         // We assume images are loading in the preview
-        previewContentsJQElt.waitForImages(tryFinished);
+        $previewContentsElt.waitForImages(tryFinished);
         _.each(onAsyncPreviewListenerList, function(asyncPreviewListener) {
             asyncPreviewListener(tryFinished);
         });
@@ -205,7 +205,7 @@ define([
     var onReady = createEventHook("onReady");
     eventMgr["onReady"] = function() {
         previewContentsElt = document.getElementById('preview-contents');
-        previewContentsJQElt = $(previewContentsElt);
+        $previewContentsElt = $(previewContentsElt);
 
         if(viewerMode === false) {
             // Create accordion in settings dialog
@@ -256,13 +256,13 @@ define([
             previewButtonsElt.appendChild(extensionPreviewButtonsFragment);
 
             // A bit of jQuery...
-            previewButtonsElt = $(previewButtonsElt);
-            var previewButtonsWidth = previewButtonsElt.width();
-            previewButtonsElt.find('.btn-group').each(function() {
-                var btnGroupElt = $(this);
+            var $previewButtonsElt = $(previewButtonsElt);
+            var previewButtonsWidth = $previewButtonsElt.width();
+            $previewButtonsElt.find('.btn-group').each(function() {
+                var $btnGroupElt = $(this);
                 // Align dropdown to the left of the screen
-                btnGroupElt.find('.dropdown-menu').css({
-                    right: -previewButtonsWidth + btnGroupElt.width() + btnGroupElt.position().left
+                $btnGroupElt.find('.dropdown-menu').css({
+                    right: -previewButtonsWidth + $btnGroupElt.width() + $btnGroupElt.position().left
                 });
             });
 

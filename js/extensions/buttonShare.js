@@ -6,7 +6,7 @@ define([
     "text!html/buttonShareLocation.html",
 ], function($, _, Extension, buttonShareHTML, buttonShareLocationHTML) {
 
-    var buttonShare = new Extension("buttonShare", 'Button "Share"', true);
+    var buttonShare = new Extension("buttonShare", 'Button "Share"', true, true);
     buttonShare.settingsBlock = '<p>Adds a "Share document" button in the navigation bar.</p>';
 
     buttonShare.onCreateButton = function() {
@@ -14,24 +14,23 @@ define([
     };
 
     var fileDesc = undefined;
+    var linkListElt = undefined;
+    var $noLinkElt = undefined;
     var refreshDocumentSharing = function(fileDescParameter) {
         if(fileDescParameter !== undefined && fileDescParameter !== fileDesc) {
             return;
         }
 
-        var linkList = $(".link-container .link-list").empty();
-        $(".link-container .no-link").show();
-
-        var attributesList = _.values(fileDesc.publishLocations);
-        _.each(attributesList, function(attributes) {
+        var linkListHtml = _.reduce(fileDesc.publishLocations, function(result, attributes) {
             if(attributes.sharingLink) {
-                var lineElement = $(_.template(buttonShareLocationHTML, {
+                result += _.template(buttonShareLocationHTML, {
                     link: attributes.sharingLink
-                }));
-                linkList.append(lineElement);
-                $(".link-container .no-link").hide();
+                });
             }
-        });
+            return result;
+        }, '');
+        linkListElt.innerHTML = linkListHtml;
+        $noLinkElt.toggleClass('hide', linkListHtml.length !== 0);
     };
 
     buttonShare.onFileSelected = function(fileDescParameter) {
@@ -41,6 +40,12 @@ define([
 
     buttonShare.onNewPublishSuccess = refreshDocumentSharing;
     buttonShare.onPublishRemoved = refreshDocumentSharing;
+    
+    buttonShare.onReady = function() {
+        var linkContainerElt = document.querySelector('.link-container');
+        linkListElt = linkContainerElt.querySelector('.link-list');
+        $noLinkElt = $(linkContainerElt.querySelector('.no-link'));
+    };
 
     return buttonShare;
 

@@ -96,9 +96,9 @@ define([
         
         // Add click listeners
         _.each(documentListElt.querySelectorAll('.file'), function(fileElt) {
-            fileElt = $(fileElt);
-            fileElt.click(function(e) {
-                var fileDesc = fileSystem[fileElt.data('fileIndex')];
+            var $fileElt = $(fileElt);
+            $fileElt.click(function(e) {
+                var fileDesc = fileSystem[$fileElt.data('fileIndex')];
                 if(fileDesc && fileDesc !== selectedFileDesc) {
                     fileMgr.selectFile(fileDesc);
                 }

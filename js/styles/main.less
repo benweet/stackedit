@@ -109,6 +109,7 @@ body {
 
 .list-group-item {
 	padding: 10px 15px;
+	margin: 0;
 	.list-group & {
 		border-radius: 0;
 	}
@@ -139,7 +140,7 @@ body {
 	background-color: @btn-primary-hover-bg;
 }
 
-.btn-success:hover {
+.btn-success:hover, .open .dropdown-toggle.btn-success {
 	color: @btn-success-color;
 	background-color: @bg-navbar-hover !important; // important to override .nav > li > a:hover
 }
@@ -279,13 +280,12 @@ body {
 	}
 
 	.working-indicator {
-		background-image: none !important;
-		width: 43px;
-		height: 11px;
+		width: 50px;
+		height: 17px;
 		background-position: 0 0;
-		margin-top: 15px;
+		margin-top: 12px;
 		&.show {
-			background-image: url("../../img/ajax-loader.gif") !important;
+			.img-retina('../../../../img/loader-default.gif', '../../../../img/loader-default2x.gif', 50px, 17px);
 		}
 	}
 }
@@ -898,6 +898,11 @@ div.dropdown-menu textarea {
 
 .icon-trash {
 	font-size: 95%;
+	margin-top: -2px;
+}
+
+.icon-folder {
+	margin-top: -2px;
 }
 
 // Provider's icons (the colored ones)
@@ -966,6 +971,7 @@ div.dropdown-menu textarea {
 
 code, pre {
 	font-family: Menlo, Consolas, "Courier New", monospace;
+	font-size: 12px !important;
 }
 
 /* Definition list */

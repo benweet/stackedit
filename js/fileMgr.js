@@ -41,14 +41,9 @@ define([
             eventMgr.onFileSelected(fileDesc);
 
             // Hide the viewer pencil button
-            if(fileDesc.fileIndex == TEMPORARY_FILE_INDEX) {
-                $(".action-edit-document").removeClass("hide");
-            }
-            else {
-                $(".action-edit-document").addClass("hide");
-            }
+            $(".action-edit-document").toggleClass("hide", fileDesc.fileIndex != TEMPORARY_FILE_INDEX);
         }
-        
+
         // Refresh the editor (even if it's the same file)
         core.initEditor(fileDesc);
     };
@@ -160,8 +155,8 @@ define([
 
         fileMgr.selectFile();
 
-        var fileTitleElt = $('.file-title-navbar');
-        var fileTitleInputElt = $(".input-file-title");
+        var $fileTitleElt = $('.file-title-navbar');
+        var $fileTitleInputElt = $(".input-file-title");
         $(".action-create-file").click(function() {
             var fileDesc = fileMgr.createFile();
             fileMgr.selectFile(fileDesc);
@@ -169,41 +164,41 @@ define([
             if(wmdInput.setSelectionRange) {
                 wmdInput.setSelectionRange(0, 0);
             }
-            fileTitleElt.click();
+            $fileTitleElt.click();
         });
         $(".action-remove-file").click(function() {
             fileMgr.deleteFile();
         });
-        fileTitleElt.click(function() {
+        $fileTitleElt.click(function() {
             if(viewerMode === true) {
                 return;
             }
-            fileTitleElt.addClass('hide');
-            var fileTitleInput = fileTitleInputElt.removeClass('hide');
+            $fileTitleElt.addClass('hide');
+            var fileTitleInput = $fileTitleInputElt.removeClass('hide');
             _.defer(function() {
                 fileTitleInput.focus().get(0).select();
             });
         });
         function applyTitle() {
-            fileTitleInputElt.addClass('hide');
-            fileTitleElt.removeClass('hide');
-            var title = $.trim(fileTitleInputElt.val());
+            $fileTitleInputElt.addClass('hide');
+            $fileTitleElt.removeClass('hide');
+            var title = $.trim($fileTitleInputElt.val());
             var fileDesc = fileMgr.currentFile;
             if(title && title != fileDesc.title) {
                 fileDesc.title = title;
                 eventMgr.onTitleChanged(fileDesc);
             }
-            fileTitleInputElt.val(fileDesc.title);
+            $fileTitleInputElt.val(fileDesc.title);
             $editorElt.focus();
         }
-        fileTitleInputElt.blur(function() {
+        $fileTitleInputElt.blur(function() {
             applyTitle();
         }).keyup(function(e) {
             if(e.keyCode == 13) {
                 applyTitle();
             }
             if(e.keyCode == 27) {
-                fileTitleInputElt.val("");
+                $fileTitleInputElt.val("");
                 applyTitle();
             }
         });

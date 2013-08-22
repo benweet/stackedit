@@ -341,7 +341,7 @@ define([
                 // export dialog
                 var exportPreferences = {};
                 _.each(provider.exportPreferencesInputIds, function(inputId) {
-                    exportPreferences[inputId] = $("#input-sync-export-" + inputId).val();
+                    exportPreferences[inputId] = document.getElementById("input-sync-export-" + inputId).value;
                 });
                 localStorage[provider.providerId + ".exportPreferences"] = JSON.stringify(exportPreferences);
             });

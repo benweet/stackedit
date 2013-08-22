@@ -90,23 +90,6 @@ define([
     documentSelector.onNewPublishSuccess = buildSelector;
     documentSelector.onPublishRemoved = buildSelector;
 
-    // Filter for search input in file selector
-    function filterFileSelector(filter) {
-        var liList = $(".file-selector > li");
-        liList.show();
-        if(filter) {
-            var words = filter.toLowerCase().split(/\s+/);
-            liList.each(function() {
-                var fileTitle = $(this).text().toLowerCase();
-                if(_.some(words, function(word) {
-                    return fileTitle.indexOf(word) === -1;
-                })) {
-                    $(this).hide();
-                }
-            });
-        }
-    }
-
     documentSelector.onReady = function() {
         $editorElt = $("#wmd-input");
 
@@ -129,9 +112,9 @@ define([
         }), dropdownElt));
         var $dropdownElt = $(dropdownElt).dropdown();
 
-        var documentPanelTogglerElt = $('.document-panel .collapse-button');
-        documentPanelTogglerElt.prop("title", _.template("<%= title %>  <%= shortcutPrevious %>  <%= shortcutNext %>", {
-            title: documentPanelTogglerElt.prop("title"),
+        var $documentPanelTogglerElt = $('.document-panel .collapse-button');
+        $documentPanelTogglerElt.prop("title", _.template("<%= title %>  <%= shortcutPrevious %>  <%= shortcutNext %>", {
+            title: $documentPanelTogglerElt.prop("title"),
             shortcutPrevious: documentSelector.config.shortcutPrevious,
             shortcutNext: documentSelector.config.shortcutNext
         }));

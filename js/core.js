@@ -162,27 +162,27 @@ define([
 
     // Set the panels visibility
     var layout = undefined;
-    var menuPanelElt = undefined;
-    var documentPanelElt = undefined;
+    var $menuPanelElt = undefined;
+    var $documentPanelElt = undefined;
     function setPanelVisibility(forceHide) {
         if(forceHide === true || layout.state.north.isClosed) {
-            menuPanelElt.hide();
-            documentPanelElt.hide();
+            $menuPanelElt.hide();
+            $documentPanelElt.hide();
         }
         else {
-            menuPanelElt.show();
-            documentPanelElt.show();
+            $menuPanelElt.show();
+            $documentPanelElt.show();
         }
     }
 
     // Set the preview button visibility
-    var previewButtonsElt = undefined;
+    var $previewButtonsElt = undefined;
     function setPreviewButtonsVisibility(forceHide) {
         if(forceHide === true || layout.state.east.isClosed) {
-            previewButtonsElt.hide();
+            $previewButtonsElt.hide();
         }
         else {
-            previewButtonsElt.show();
+            $previewButtonsElt.show();
         }
     }
 
@@ -241,19 +241,19 @@ define([
         });
         $(".ui-layout-toggler-south").addClass("btn btn-info").html('<i class="icon-none"></i>');
         $(".ui-layout-toggler-east").addClass("btn btn-info").html('<i class="icon-none"></i>');
-        var northTogglerElt = $(".ui-layout-toggler-north").addClass("btn btn-info").html('<i class="icon-none"></i>');
+        var $northTogglerElt = $(".ui-layout-toggler-north").addClass("btn btn-info").html('<i class="icon-none"></i>');
 
         // We attach the preview buttons to the UI layout resizer in order to
         // have fixed position
         // We also move the north toggler to the east or south resizer as the
         // north resizer is very small
-        previewButtonsElt = $('<div class="extension-preview-buttons">');
+        $previewButtonsElt = $('<div class="extension-preview-buttons">');
         if(settings.layoutOrientation == "horizontal") {
-            $('.ui-layout-resizer-north').append(previewButtonsElt);
-            $('.ui-layout-resizer-east').append(northTogglerElt);
+            $('.ui-layout-resizer-north').append($previewButtonsElt);
+            $('.ui-layout-resizer-east').append($northTogglerElt);
         }
         else {
-            $('.ui-layout-resizer-south').append(previewButtonsElt).append(northTogglerElt);
+            $('.ui-layout-resizer-south').append($previewButtonsElt).append($northTogglerElt);
         }
 
         setPanelVisibility();
@@ -282,7 +282,7 @@ define([
             editor.refreshPreview();
             return;
         }
-        var previewContainerElt = $(".preview-container");
+        var $previewContainerElt = $(".preview-container");
 
         // Store editor scrollTop on scroll event
         $editorElt.scroll(function() {
@@ -298,7 +298,7 @@ define([
             }
         });
         // Store preview scrollTop on scroll event
-        previewContainerElt.scroll(function() {
+        $previewContainerElt.scroll(function() {
             if(documentContent !== undefined) {
                 fileDesc.previewScrollTop = $(this).scrollTop();
             }
@@ -306,7 +306,7 @@ define([
 
         // Create the converter and the editor
         var converter = new Markdown.Converter();
-        // Create MD sections for extensions
+        // Parse MD sections for extensions
         converter.hooks.chain("preConversion", function(text) {
             eventMgr.previewStartTime = new Date();
             var tmpText = text + "\n\n";
@@ -362,7 +362,7 @@ define([
                     if(documentContent === undefined) {
                         makePreview();
                         $editorElt.scrollTop(fileDesc.editorScrollTop);
-                        previewContainerElt.scrollTop(fileDesc.previewScrollTop);
+                        $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
                     }
                     else {
                         debouncedMakePreview();
@@ -376,7 +376,7 @@ define([
                 return function() {
                     makePreview();
                     if(documentContent === undefined) {
-                        previewContainerElt.scrollTop(fileDesc.previewScrollTop);
+                        $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
                     }
                     checkDocumentChanges();
                 };
@@ -391,22 +391,22 @@ define([
         $(".wmd-button-row li").addClass("btn btn-success").css("left", 0).find("span").hide();
 
         // Add customized buttons
-        var btnGroupElt = $('.wmd-button-group1');
-        $("#wmd-bold-button").append($('<i class="icon-bold">')).appendTo(btnGroupElt);
-        $("#wmd-italic-button").append($('<i class="icon-italic">')).appendTo(btnGroupElt);
-        var btnGroupElt = $('.wmd-button-group2');
-        $("#wmd-link-button").append($('<i class="icon-globe">')).appendTo(btnGroupElt);
-        $("#wmd-quote-button").append($('<i class="icon-indent-right">')).appendTo(btnGroupElt);
-        $("#wmd-code-button").append($('<i class="icon-code">')).appendTo(btnGroupElt);
-        $("#wmd-image-button").append($('<i class="icon-picture">')).appendTo(btnGroupElt);
-        var btnGroupElt = $('.wmd-button-group3');
-        $("#wmd-olist-button").append($('<i class="icon-list-numbered">')).appendTo(btnGroupElt);
-        $("#wmd-ulist-button").append($('<i class="icon-list-bullet">')).appendTo(btnGroupElt);
-        $("#wmd-heading-button").append($('<i class="icon-text-height">')).appendTo(btnGroupElt);
-        $("#wmd-hr-button").append($('<i class="icon-ellipsis">')).appendTo(btnGroupElt);
-        var btnGroupElt = $('.wmd-button-group4');
-        $("#wmd-undo-button").append($('<i class="icon-reply">')).appendTo(btnGroupElt);
-        $("#wmd-redo-button").append($('<i class="icon-forward">')).appendTo(btnGroupElt);
+        var $btnGroupElt = $('.wmd-button-group1');
+        $("#wmd-bold-button").append($('<i class="icon-bold">')).appendTo($btnGroupElt);
+        $("#wmd-italic-button").append($('<i class="icon-italic">')).appendTo($btnGroupElt);
+        var $btnGroupElt = $('.wmd-button-group2');
+        $("#wmd-link-button").append($('<i class="icon-globe">')).appendTo($btnGroupElt);
+        $("#wmd-quote-button").append($('<i class="icon-indent-right">')).appendTo($btnGroupElt);
+        $("#wmd-code-button").append($('<i class="icon-code">')).appendTo($btnGroupElt);
+        $("#wmd-image-button").append($('<i class="icon-picture">')).appendTo($btnGroupElt);
+        var $btnGroupElt = $('.wmd-button-group3');
+        $("#wmd-olist-button").append($('<i class="icon-list-numbered">')).appendTo($btnGroupElt);
+        $("#wmd-ulist-button").append($('<i class="icon-list-bullet">')).appendTo($btnGroupElt);
+        $("#wmd-heading-button").append($('<i class="icon-text-height">')).appendTo($btnGroupElt);
+        $("#wmd-hr-button").append($('<i class="icon-ellipsis">')).appendTo($btnGroupElt);
+        var $btnGroupElt = $('.wmd-button-group4');
+        $("#wmd-undo-button").append($('<i class="icon-reply">')).appendTo($btnGroupElt);
+        $("#wmd-redo-button").append($('<i class="icon-forward">')).appendTo($btnGroupElt);
 
         eventMgr.onFileOpen(fileDesc);
     };
@@ -431,10 +431,10 @@ define([
     var isMenuPanelShown = false;
     core.onReady = function() {
         if(viewerMode === true) {
-            $('body').html(bodyViewerHTML);
+            document.body.innerHTML = bodyViewerHTML;
         }
         else {
-            $('body').html(bodyIndexHTML);
+            document.body.innerHTML = bodyIndexHTML;
         }
 
         // listen to online/offline events
@@ -452,57 +452,57 @@ define([
             e.stopPropagation();
         });
 
-        menuPanelElt = $('.menu-panel').collapse({
+        $menuPanelElt = $('.menu-panel').collapse({
             toggle: false
         });
         var menuPanelBackdropElt = undefined;
-        menuPanelElt.on('show.bs.collapse', function(e) {
-            if(e.target === menuPanelElt[0]) {
+        $menuPanelElt.on('show.bs.collapse', function(e) {
+            if(e.target === $menuPanelElt[0]) {
                 isMenuPanelShown = true;
                 menuPanelBackdropElt = utils.createBackdrop('collapse', '.menu-panel');
-                menuPanelElt.addClass('move-to-front');
+                $menuPanelElt.addClass('move-to-front');
             }
             else {
                 // Close all open sub-menus when one submenu opens
-                menuPanelElt.find('.in').collapse('hide');
+                $menuPanelElt.find('.in').collapse('hide');
             }
         }).on('hide.bs.collapse', function(e) {
-            if(e.target === menuPanelElt[0]) {
+            if(e.target === $menuPanelElt[0]) {
                 isMenuPanelShown = false;
                 menuPanelBackdropElt.remove();
-                menuPanelElt.removeClass('move-to-front');
+                $menuPanelElt.removeClass('move-to-front');
             }
         }).on('hidden.bs.collapse', function(e) {
-            if(e.target === menuPanelElt[0]) {
+            if(e.target === $menuPanelElt[0]) {
                 // Close all open sub-menus when menu panel is closed
-                menuPanelElt.find('.in').collapse('hide');
+                $menuPanelElt.find('.in').collapse('hide');
             }
         });
 
-        documentPanelElt = $('.document-panel').collapse({
+        $documentPanelElt = $('.document-panel').collapse({
             toggle: false
         });
         var documentPanelBackdropElt = undefined;
-        documentPanelElt.on('show.bs.collapse', function(e) {
-            if(e.target === documentPanelElt[0]) {
+        $documentPanelElt.on('show.bs.collapse', function(e) {
+            if(e.target === $documentPanelElt[0]) {
                 isDocumentPanelShown = true;
                 documentPanelBackdropElt = utils.createBackdrop('collapse', '.document-panel');
-                documentPanelElt.addClass('move-to-front');
+                $documentPanelElt.addClass('move-to-front');
             }
             else {
                 // Close all open sub-menus when one submenu opens
-                documentPanelElt.find('.in').collapse('hide');
+                $documentPanelElt.find('.in').collapse('hide');
             }
         }).on('hide.bs.collapse', function(e) {
-            if(e.target === documentPanelElt[0]) {
+            if(e.target === $documentPanelElt[0]) {
                 isDocumentPanelShown = false;
                 documentPanelBackdropElt.remove();
-                documentPanelElt.removeClass('move-to-front');
+                $documentPanelElt.removeClass('move-to-front');
             }
         }).on('hidden.bs.collapse', function(e) {
-            if(e.target === documentPanelElt[0]) {
+            if(e.target === $documentPanelElt[0]) {
                 // Close all open sub-menus when menu panel is closed
-                documentPanelElt.find('.in').collapse('hide');
+                $documentPanelElt.find('.in').collapse('hide');
             }
         });
 
@@ -549,8 +549,8 @@ define([
         var isModalShown = false;
         $('.modal').on('show.bs.modal', function() {
             // Close panel if open
-            menuPanelElt.collapse('hide');
-            documentPanelElt.collapse('hide');
+            $menuPanelElt.collapse('hide');
+            $documentPanelElt.collapse('hide');
             isModalShown = true;
         }).on('shown.bs.modal', function() {
             // Focus on the first input when modal opens

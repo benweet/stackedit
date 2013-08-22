@@ -323,7 +323,7 @@ define([
             }
 
             // Binds model with textarea
-            realtimeBinding = gapi.drive.realtime.databinding.bindString(string, $("#wmd-input")[0]);
+            realtimeBinding = gapi.drive.realtime.databinding.bindString(string, document.getElementById("wmd-input"));
 
             // Update content state according to collaborators changes
             if(remoteContentChanged === true) {

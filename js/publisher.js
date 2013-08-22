@@ -216,7 +216,7 @@ define([
         // dialog
         var publishPreferences = {};
         _.each(provider.publishPreferencesInputIds, function(inputId) {
-            publishPreferences[inputId] = $("#input-publish-" + inputId).val();
+            publishPreferences[inputId] = document.getElementById("input-publish-" + inputId).value;
         });
         publishPreferences.format = publishAttributes.format;
         localStorage[provider.providerId + ".publishPreferences"] = JSON.stringify(publishPreferences);
@@ -257,7 +257,7 @@ define([
 
         // Save As menu items
         $(".action-download-md").click(function() {
-            var content = $("#wmd-input").val();
+            var content = document.getElementById("wmd-input").value;
             var title = fileMgr.currentFile.title;
             utils.saveAs(content, title + ".md");
         });

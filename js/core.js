@@ -707,19 +707,22 @@ define([
             });
             e.stopPropagation();
         });
-        $(".tooltip-template").tooltip({
-            html: true,
-            container: '.modal-settings',
-            placement: 'right',
-            trigger: 'manual',
-            title: settingsTemplateTooltipHTML
-        }).click(function(e) {
-            $(this).tooltip('show');
-            $(document).on("click.tooltip-template", function(e) {
-                $(".tooltip-template").tooltip('hide');
-                $(document).off("click.tooltip-template");
+        _.each(document.querySelectorAll(".tooltip-template"), function(tooltipElt) {
+            var $tooltipElt = $(tooltipElt);
+            $tooltipElt.tooltip({
+                html: true,
+                container: $tooltipElt.parents('.modal'),
+                placement: 'right',
+                trigger: 'manual',
+                title: settingsTemplateTooltipHTML
+            }).click(function(e) {
+                $tooltipElt.tooltip('show');
+                $(document).on("click.tooltip-template", function(e) {
+                    $(".tooltip-template").tooltip('hide');
+                    $(document).off("click.tooltip-template");
+                });
+                e.stopPropagation();
             });
-            e.stopPropagation();
         });
 
         // Avoid dropdown panels to close on click
@@ -727,7 +730,7 @@ define([
             e.stopPropagation();
         });
 
-        if (viewerMode === false) {
+        if(viewerMode === false) {
             // Load theme list
             var themeOptions = _.reduce(THEME_LIST, function(themeOptions, name, value) {
                 return themeOptions + '<option value="' + value + '">' + name + '</option>';

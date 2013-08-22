@@ -56,7 +56,8 @@ define([
     // Apply template to the current document
     publisher.applyTemplate = function(fileDesc, publishAttributes, html) {
         try {
-            return _.template(settings.template, {
+            var template = (publishAttributes && publishAttributes.customTmpl) || settings.template;
+            return _.template(template, {
                 documentTitle: fileDesc.title,
                 documentMarkdown: fileDesc.content,
                 documentHTML: html,
@@ -72,7 +73,10 @@ define([
     // Used to get content to publish
     function getPublishContent(fileDesc, publishAttributes, html) {
         if(publishAttributes.format === undefined) {
-            publishAttributes.format = $("input:radio[name=radio-publish-format]:checked").prop("value");
+            publishAttributes.format = utils.getInputRadio("radio-publish-format");
+            if(publishAttributes.format == 'template' && utils.getInputChecked("#checkbox-publish-custom-template")) {
+                publishAttributes.customTmpl = utils.getInputValue('#textarea-publish-custom-template');
+            }
         }
         if(publishAttributes.format == "markdown") {
             return fileDesc.content;
@@ -176,7 +180,9 @@ define([
 
         // Reset fields
         utils.resetModalInputs();
-        $("input:radio[name=radio-publish-format][value=" + defaultPublishFormat + "]").prop("checked", true);
+        utils.setInputRadio("radio-publish-format", defaultPublishFormat);
+        utils.setInputChecked("#checkbox-publish-custom-template", false);
+        utils.setInputValue('#textarea-publish-custom-template', settings.template);
 
         // Load preferences
         var publishPreferences = utils.retrieveIgnoreError(provider.providerId + ".publishPreferences");
@@ -185,6 +191,8 @@ define([
                 utils.setInputValue("#input-publish-" + inputId, publishPreferences[inputId]);
             });
             utils.setInputRadio("radio-publish-format", publishPreferences.format);
+            utils.setInputChecked("#checkbox-publish-custom-template-toggle", publishPreferences.customTmpl !== undefined);
+            utils.setInputValue('#checkbox-publish-custom-template', publishPreferences.customTmpl || settings.template);
         }
 
         // Open dialog box
@@ -219,6 +227,7 @@ define([
             publishPreferences[inputId] = document.getElementById("input-publish-" + inputId).value;
         });
         publishPreferences.format = publishAttributes.format;
+        publishPreferences.customTmpl = publishAttributes.customTmpl;
         localStorage[provider.providerId + ".publishPreferences"] = JSON.stringify(publishPreferences);
     }
 
@@ -254,6 +263,16 @@ define([
         
         // 
         $(".action-process-publish").click(performNewLocation);
+        
+        var $customTmplCollapseElt = $('.publish-custom-template-collapse').collapse();
+        var $customTmplTextareaElt = $('#textarea-publish-custom-template');
+        $("#checkbox-publish-custom-template").change(function() {
+            $customTmplTextareaElt.prop('disabled', !this.checked);
+        });
+        $("input:radio[name=radio-publish-format]").change(function() {
+            $customTmplCollapseElt.collapse(this.value == 'template' ? 'show' : 'hide');
+        });
+        
 
         // Save As menu items
         $(".action-download-md").click(function() {

@@ -47,7 +47,9 @@ define([
      * finished. The optional callback parameter can be used to pass an
      * onRun callback during execution, bypassing the onRun queue.
      */
+    var currentTaskStartTime = 0;
     AsyncTask.prototype.chain = function(callback) {
+        currentTaskStartTime = utils.currentTime;
         utils.logStackTrace();
         if(this.finished === true) {
             return;
@@ -94,6 +96,7 @@ define([
     /**
      * retry() can be called in an onRun callback to restart the task
      */
+    var currentTaskRunning = false;
     AsyncTask.prototype.retry = function(error, maxRetryCounter) {
         if(this.finished === true) {
             return;
@@ -121,8 +124,6 @@ define([
 
     var asyncRunning = false;
     var currentTask = undefined;
-    var currentTaskRunning = false;
-    var currentTaskStartTime = 0;
 
     // Determine if user is real by listening to his activity
     var isUserReal = false;

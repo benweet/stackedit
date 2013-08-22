@@ -122,7 +122,7 @@ define([
     // Set checkbox state
     utils.setInputChecked = function(element, checked) {
         element = jqElt(element);
-        element.prop("checked", checked);
+        element.prop("checked", checked).change();
     };
 
     // Get radio button value
@@ -132,7 +132,7 @@ define([
 
     // Set radio button value
     utils.setInputRadio = function(name, value) {
-        $("input:radio[name=" + name + "][value=" + value + "]").prop("checked", true);
+        $("input:radio[name=" + name + "][value=" + value + "]").prop("checked", true).change();
     };
 
     // Reset input control in all modals

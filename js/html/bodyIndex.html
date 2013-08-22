@@ -125,10 +125,10 @@
 		</div>
 		<ul class="nav">
 			<li><a href="#" data-toggle="modal"
-				data-target=".modal-settings"
-				class="action-load-settings"><i class="icon-cog"></i>
-					Settings</a></li>
-			<li><a href="#" data-toggle="modal" data-target=".modal-about"><i class="icon-help-circled"></i> About</a></li>
+				data-target=".modal-settings" class="action-load-settings"><i
+					class="icon-cog"></i> Settings</a></li>
+			<li><a href="#" data-toggle="modal" data-target=".modal-about"><i
+					class="icon-help-circled"></i> About</a></li>
 		</ul>
 
 	</div>
@@ -411,8 +411,10 @@
 				<h3 class="modal-title">Export to Google Drive</h3>
 			</div>
 			<div class="modal-body">
-				<p>This will save "<span class="file-title"></span>" to your Google Drive
-					account and keep it synchronized.</p>
+				<p>
+					This will save "<span class="file-title"></span>" to your Google
+					Drive account and keep it synchronized.
+				</p>
 				<div class="form-horizontal">
 					<div class="form-group">
 						<label class="col-lg-3 control-label"
@@ -441,7 +443,8 @@
 						<div class="col-lg-8">
 							<input type="text" id="input-sync-export-gdrive-fileid"
 								placeholder="FileID" class="form-control"> <span
-								class="help-block"> This will overwrite the existing file on the server. </span>
+								class="help-block"> This will overwrite the existing file
+								on the server. </span>
 						</div>
 					</div>
 				</div>
@@ -477,8 +480,10 @@
 				<h3 class="modal-title">Export to Dropbox</h3>
 			</div>
 			<div class="modal-body">
-				<p>This will save "<span class="file-title"></span>" to your Dropbox account
-					and keep it synchronized.</p>
+				<p>
+					This will save "<span class="file-title"></span>" to your Dropbox
+					account and keep it synchronized.
+				</p>
 				<div class="form-horizontal">
 					<div class="form-group">
 						<label class="col-lg-3 control-label"
@@ -762,6 +767,18 @@
 							</div>
 						</div>
 					</div>
+					<div class="form-group collapse publish-custom-template-collapse">
+						<div class="col-lg-4"></div>
+						<div class="col-lg-7">
+							<div class="checkbox">
+								<label> <input type="checkbox"
+									id="checkbox-publish-custom-template"> Custom template
+								</label> <a href="#" class="tooltip-template">(?)</a>
+							</div>
+							<textarea class="form-control"
+								id="textarea-publish-custom-template"></textarea>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -899,8 +916,8 @@
 							</div>
 							<div class="form-group">
 								<label class="col-lg-4 control-label"
-									for="textarea-settings-publish-template">Template <a
-									href="#" class="tooltip-template">(?)</a>
+									for="textarea-settings-publish-template">Default
+									template <a href="#" class="tooltip-template">(?)</a>
 								</label>
 								<div class="col-lg-7">
 									<textarea id="textarea-settings-publish-template"
@@ -949,9 +966,9 @@
 
 			</div>
 			<div class="modal-footer">
-				<a href="#" class="btn btn-default action-apply-theme" data-dismiss="modal">Cancel</a>
-				<a href="#" class="btn btn-primary action-apply-settings"
-					data-dismiss="modal">OK</a>
+				<a href="#" class="btn btn-default action-apply-theme"
+					data-dismiss="modal">Cancel</a> <a href="#"
+					class="btn btn-primary action-apply-settings" data-dismiss="modal">OK</a>
 			</div>
 		</div>
 	</div>
@@ -968,8 +985,8 @@
 			<div class="modal-body">
 				<p>StackEdit has stopped because another instance was running in
 					the same browser.</p>
-				<blockquote>If you want to reopen
-					StackEdit, click on "Reload".</blockquote>
+				<blockquote>If you want to reopen StackEdit, click on
+					"Reload".</blockquote>
 			</div>
 			<div class="modal-footer">
 				<a href="javascript:window.location.reload();"

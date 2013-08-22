@@ -12,7 +12,7 @@ define([
     var documentSelector = new Extension("documentSelector", 'Document Selector', true, true);
     documentSelector.settingsBlock = documentSelectorSettingsBlockHTML;
     documentSelector.defaultConfig = {
-        orderBy: "title",
+        orderBy: "mru",
         shortcutPrevious: "Ctrl+[",
         shortcutNext: "Ctrl+]"
     };

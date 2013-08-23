@@ -55,6 +55,12 @@
 @headings-font-weight:    500;
 @headings-line-height:    1.1;
 
+// Iconography
+// -------------------------
+
+@icon-font-path:          "../fonts/";
+@icon-font-name:          "glyphicons-halflings-regular";
+
 
 // Components
 // -------------------------
@@ -98,7 +104,7 @@
 // Buttons
 // -------------------------
 
-@btn-font-weight:                bold;
+@btn-font-weight:                normal;
 
 @btn-default-color:              #333;
 @btn-default-bg:                 #fff;
@@ -182,6 +188,7 @@
 // Used for a bird's eye view of components dependent on the z-axis
 // Try to avoid customizing these :)
 
+@zindex-navbar:            1000;
 @zindex-dropdown:          1000;
 @zindex-popover:           1010;
 @zindex-tooltip:           1030;
@@ -231,31 +238,31 @@
 // Basics of a navbar
 @navbar-height:                    50px;
 @navbar-margin-bottom:             @line-height-computed;
-@navbar-color:                     #777;
-@navbar-bg:                        #f8f8f8;
-@navbar-border:                    darken(@navbar-bg, 6.5%);
+@navbar-default-color:             #777;
+@navbar-default-bg:                #f8f8f8;
+@navbar-default-border:            darken(@navbar-default-bg, 6.5%);
 @navbar-border-radius:             @border-radius-base;
 @navbar-padding-horizontal:        floor(@grid-gutter-width / 2);
 @navbar-padding-vertical:          ((@navbar-height - @line-height-computed) / 2);
 
 // Navbar links
-@navbar-link-color:                #777;
-@navbar-link-hover-color:          #333;
-@navbar-link-hover-bg:             transparent;
-@navbar-link-active-color:         #555;
-@navbar-link-active-bg:            darken(@navbar-bg, 6.5%);
-@navbar-link-disabled-color:       #ccc;
-@navbar-link-disabled-bg:          transparent;
+@navbar-default-link-color:                #777;
+@navbar-default-link-hover-color:          #333;
+@navbar-default-link-hover-bg:             transparent;
+@navbar-default-link-active-color:         #555;
+@navbar-default-link-active-bg:            darken(@navbar-default-bg, 6.5%);
+@navbar-default-link-disabled-color:       #ccc;
+@navbar-default-link-disabled-bg:          transparent;
 
 // Navbar brand label
-@navbar-brand-color:               @navbar-link-color;
-@navbar-brand-hover-color:         darken(@navbar-link-color, 10%);
-@navbar-brand-hover-bg:            transparent;
+@navbar-default-brand-color:               @navbar-default-link-color;
+@navbar-default-brand-hover-color:         darken(@navbar-default-link-color, 10%);
+@navbar-default-brand-hover-bg:            transparent;
 
 // Navbar toggle
-@navbar-toggle-hover-bg:           #ddd;
-@navbar-toggle-icon-bar-bg:        #ccc;
-@navbar-toggle-border-color:       #ddd;
+@navbar-default-toggle-hover-bg:           #ddd;
+@navbar-default-toggle-icon-bar-bg:        #ccc;
+@navbar-default-toggle-border-color:       #ddd;
 
 
 // Inverted navbar
@@ -345,9 +352,11 @@
 // Jumbotron
 // -------------------------
 
+@jumbotron-padding:              30px;
+@jumbotron-color:                inherit;
 @jumbotron-bg:                   @gray-lighter;
+
 @jumbotron-heading-color:        inherit;
-@jumbotron-lead-color:           inherit;
 
 
 // Form states and alerts
@@ -433,21 +442,21 @@
 @alert-border-radius:         @border-radius-base;
 @alert-link-font-weight:      bold;
 
-@alert-bg:                    @state-warning-bg;
-@alert-text:                  @state-warning-text;
-@alert-border:                @state-warning-border;
-
 @alert-success-bg:            @state-success-bg;
 @alert-success-text:          @state-success-text;
 @alert-success-border:        @state-success-border;
 
-@alert-danger-bg:             @state-danger-bg;
-@alert-danger-text:           @state-danger-text;
-@alert-danger-border:         @state-danger-border;
-
 @alert-info-bg:               @state-info-bg;
 @alert-info-text:             @state-info-text;
 @alert-info-border:           @state-info-border;
+
+@alert-warning-bg:            @state-warning-bg;
+@alert-warning-text:          @state-warning-text;
+@alert-warning-border:        @state-warning-border;
+
+@alert-danger-bg:             @state-danger-bg;
+@alert-danger-text:           @state-danger-text;
+@alert-danger-border:         @state-danger-border;
 
 
 // Progress bars
@@ -480,10 +489,13 @@
 // Panels
 // -------------------------
 @panel-bg:                    #fff;
-@panel-border:                #ddd;
+@panel-inner-border:          #ddd;
 @panel-border-radius:         @border-radius-base;
-@panel-heading-bg:            #f5f5f5;
 @panel-footer-bg:             #f5f5f5;
+
+@panel-default-text:          @gray-dark;
+@panel-default-border:        #ddd;
+@panel-default-heading-bg:    #f5f5f5;
 
 @panel-primary-text:          #fff;
 @panel-primary-border:        @brand-primary;

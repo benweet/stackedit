@@ -279,7 +279,13 @@ define([
         var exportPreferences = utils.retrieveIgnoreError(provider.providerId + ".exportPreferences");
         if(exportPreferences) {
             _.each(provider.exportPreferencesInputIds, function(inputId) {
-                utils.setInputValue("#input-sync-export-" + inputId, exportPreferences[inputId]);
+                var exportPreferenceValue = exportPreferences[inputId];
+                if(_.isBoolean(exportPreferenceValue)) {
+                    utils.setInputChecked("#input-sync-export-" + inputId, exportPreferenceValue);
+                }
+                else {
+                    utils.setInputValue("#input-sync-export-" + inputId, exportPreferenceValue);
+                }
             });
         }
 
@@ -341,7 +347,13 @@ define([
                 // export dialog
                 var exportPreferences = {};
                 _.each(provider.exportPreferencesInputIds, function(inputId) {
-                    exportPreferences[inputId] = document.getElementById("input-sync-export-" + inputId).value;
+                    var inputElt = document.getElementById("input-sync-export-" + inputId);
+                    if(inputElt.type == 'checkbox') {
+                        exportPreferences[inputId] = inputElt.checked;
+                    }
+                    else {
+                        exportPreferences[inputId] = inputElt.value;
+                    }
                 });
                 localStorage[provider.providerId + ".exportPreferences"] = JSON.stringify(exportPreferences);
             });

@@ -5,6 +5,9 @@ define([
 ], function(utils, Provider, githubHelper) {
 
     var gistProvider = new Provider("gist", "Gist");
+    gistProvider.publishPreferencesInputIds = [
+        "gist-public"
+    ];
     gistProvider.sharingAttributes = [
         "gistId",
         "filename"

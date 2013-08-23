@@ -613,12 +613,15 @@ define([
         function applyTheme(theme) {
             theme = theme || 'default';
             if(currentTheme != theme) {
-                var themeModule = "less!styles/" + theme;
+                var themeModule = "less!themes/" + theme;
+                if(baseDir == 'js-min') {
+                    themeModule = "css!themes/" + theme;
+                }
                 // Undefine the module in RequireJS
                 requirejs.undef(themeModule);
                 // Then reload the style
                 require([
-                    themeModule + ".less"
+                    themeModule
                 ]);
                 currentTheme = theme;
             }
@@ -728,6 +731,15 @@ define([
         // Avoid dropdown panels to close on click
         $("div.dropdown-menu").click(function(e) {
             e.stopPropagation();
+        });
+        
+        // Load images
+        _.each(document.querySelectorAll('img'), function(imgElt) {
+            var $imgElt = $(imgElt);
+            var src = $imgElt.data('stackeditSrc');
+            if(src) {
+                $imgElt.attr('src', baseDir + '/img/' + src);
+            }
         });
 
         if(viewerMode === false) {

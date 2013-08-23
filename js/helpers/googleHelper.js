@@ -562,7 +562,7 @@ define([
         });
     }
 
-    googleHelper.picker = function(callback, isImagePicker) {
+    googleHelper.picker = function(callback, pickerType) {
         var docs = [];
         var picker = undefined;
         function hidePicker() {
@@ -572,13 +572,16 @@ define([
             }
         }
         var task = new AsyncTask();
+        // Add some time for user to choose his files
+        task.timeout = ASYNC_TASK_LONG_TIMEOUT;
         connect(task);
         loadPicker(task);
         task.onRun(function() {
             var pickerBuilder = new google.picker.PickerBuilder();
             pickerBuilder.setAppId(GOOGLE_DRIVE_APP_ID);
-            if(!isImagePicker) {
-                var view = new google.picker.View(google.picker.ViewId.DOCS);
+            if(pickerType == 'doc') {
+                var view = new google.picker.DocsView(google.picker.ViewId.DOCS);
+                view.setIncludeFolders(true);
                 view.setMimeTypes([
                     "text/x-markdown",
                     "text/plain",
@@ -589,7 +592,15 @@ define([
                 pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);
                 pickerBuilder.addView(view);
             }
-            else {
+            else if(pickerType == 'folder') {
+                var view = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
+                view.setIncludeFolders(true);
+                view.setSelectFolderEnabled(true);
+                view.setMimeTypes('application/vnd.google-apps.folder');
+                pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
+                pickerBuilder.addView(view);
+            }
+            else if(pickerType == 'img') {
                 pickerBuilder.addView(google.picker.ViewId.PHOTOS);
                 pickerBuilder.addView(google.picker.ViewId.PHOTO_UPLOAD);
             }

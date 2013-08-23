@@ -1,18 +1,9 @@
 CACHE MANIFEST
-# Mon 19 Aug 2013 00:01:51 IST
 
 CACHE:
 index.html
 viewer.html
-css/main-min.css
-js/main-min.js
 js/libs/require.js
-img/ajax-loader.gif
-img/glyphicons-halflings.png
-img/glyphicons-halflings-white.png
-img/icons.png
-img/stackedit-32.ico
-img/stackedit-promo.png
 lib/MathJax/MathJax.js?config=TeX-AMS_HTML
 lib/MathJax/config/Safe.js
 lib/MathJax/config/TeX-AMS_HTML.js
@@ -93,12 +84,31 @@ lib/MathJax/jax/output/HTML-CSS/fonts/TeX/AMS/Regular/MiscTechnical.js
 lib/MathJax/jax/output/HTML-CSS/fonts/TeX/AMS/Regular/PUA.js
 lib/MathJax/jax/output/HTML-CSS/fonts/TeX/AMS/Regular/SpacingModLetters.js
 lib/MathJax/jax/output/HTML-CSS/fonts/TeX/AMS/Regular/SuppMathOperators.js
-themes/blue-gray/ajax-loader.gif
-themes/blue-gray/blue-gray.css
-themes/night/ajax-loader.gif
-themes/night/night.css
 
+#dynamic
+
+# Sat 24 Aug 2013 01:45:48 CEST
+js-min/font/fontello.eot
+js-min/font/fontello.svg
+js-min/font/fontello.ttf
+js-min/font/fontello.woff
+js-min/img/glyphicons-halflings-white.png
+js-min/img/glyphicons-halflings.png
+js-min/img/icons.png
+js-min/img/icons2x.png
+js-min/img/loader-blue-gray.gif
+js-min/img/loader-blue-gray2x.gif
+js-min/img/loader-default.gif
+js-min/img/loader-default2x.gif
+js-min/img/loader-night.gif
+js-min/img/loader-night2x.gif
+js-min/img/stackedit-32.ico
+js-min/img/stackedit-64.png
+js-min/img/stackedit-promo.png
+js-min/main.js
+js-min/themes/blue-gray.css
+js-min/themes/default.css
+js-min/themes/night.css
 
 NETWORK:
 *
-

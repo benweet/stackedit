@@ -53,7 +53,7 @@ define([
             }
             imageDoc = docs[0];
             showImportImgDialog();
-        }, true);
+        }, 'img');
     };
     
     gplusProvider.uploadImage = function(imgName, imgContent, callback) {

@@ -85,7 +85,12 @@ if(location.search.match(/(\?|&)console/)) {
 }
 
 var viewerMode = /(^| )viewer($| )/.test(document.body.className);
+
 var theme = localStorage.theme || 'default';
+var themeModule = "less!themes/" + theme;
+if(baseDir == 'js-min') {
+    themeModule = "css!themes/" + theme;
+}
 
 // RequireJS entry point. By requiring synchronizer, publisher and
 // media-importer, we are actually loading all the modules
@@ -96,7 +101,7 @@ require([
     "publisher",
     "mediaImporter",
     "css",
-    "less!styles/" + theme + ".less",
+    themeModule,
 ], function($, core) {
 
     $(function() {

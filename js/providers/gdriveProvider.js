@@ -13,7 +13,8 @@ define([
     var gdriveProvider = new Provider(PROVIDER_GDRIVE, "Google Drive");
     gdriveProvider.defaultPublishFormat = "template";
     gdriveProvider.exportPreferencesInputIds = [
-        "gdrive-parentid"
+        "gdrive-parentid",
+        "gdrive-realtime",
     ];
 
     function createSyncIndex(id) {
@@ -74,7 +75,7 @@ define([
                 importIds.push(doc.id);
             });
             importFilesFromIds(importIds);
-        });
+        }, 'doc');
     };
 
     gdriveProvider.exportFile = function(event, title, content, callback) {
@@ -389,6 +390,18 @@ define([
     };
 
     eventMgr.addListener("onReady", function() {
+        // Choose folder button in export modal
+        $('.export-gdrive-choose-folder').click(function() {
+            googleHelper.picker(function(error, docs) {
+                if(error || docs.length === 0) {
+                    return;
+                }
+                // Open export dialog
+                $(".modal-upload-gdrive").modal();
+                // Set parent ID
+                utils.setInputValue('#input-sync-export-gdrive-parentid', docs[0].id);
+            }, 'folder');
+        });
         
         // On export, disable file ID input if realtime is checked
         var $realtimeCheckboxElt = $('#input-sync-export-gdrive-realtime');

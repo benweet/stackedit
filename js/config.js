@@ -53,6 +53,14 @@ if(location.hostname.indexOf("benweet.github.io") === 0) {
     TUMBLR_PROXY_URL = "http://stackedit-tumblr-proxy.herokuapp.com/";
 }
 
+if(location.hostname.indexOf("benweet.insomnia247.nl") === 0) {
+    BASE_URL = "http://benweet.insomnia247.nl/stackedit/";
+    GOOGLE_CLIENT_ID = '241271498917-52hae7a08hv7ltenv7km8h7lghno9sk3.apps.googleusercontent.com';
+    GITHUB_CLIENT_ID = 'd2943d6074b2d9c4a830';
+    GATEKEEPER_URL = "http://stackedit-gatekeeper-insomnia.herokuapp.com/";
+    TUMBLR_PROXY_URL = "http://stackedit-tumblr-proxy-beta.herokuapp.com/";
+}
+
 var THEME_LIST = {
     "default": "Default",
     "blue-gray": "Blue-Gray",

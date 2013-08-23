@@ -1,4 +1,4 @@
-<div class="navbar navbar-fixed-top ui-layout-north">
+<div class="navbar navbar-default ui-layout-north">
 	<div class="navbar-inner">
 		<div class="nav left-space"></div>
 		<div class="nav right-space pull-right"></div>
@@ -48,7 +48,7 @@
 <div class="menu-panel collapse width">
 	<button class="btn btn-success collapse-button" data-toggle="collapse"
 		data-target=".menu-panel" title="Menu">
-		<i class="icon-left-dir"></i> <img src="img/stackedit-64.png"
+		<i class="icon-left-dir"></i> <img data-stackedit-src="stackedit-64.png"
 			width="32" height="32" />
 	</button>
 	<div class="panel-content">
@@ -421,10 +421,16 @@
 							for="input-sync-export-gdrive-parentid">Folder ID
 							(optional)</label>
 						<div class="col-lg-8">
-							<input type="text" id="input-sync-export-gdrive-parentid"
-								placeholder="FolderID" class="form-control"> <span
-								class="help-block"> If no folder ID is supplied, the file
-								will be created in your root folder. </span>
+							<div class="input-group">
+								<input type="text" id="input-sync-export-gdrive-parentid"
+									placeholder="FolderID" class="form-control">
+								<div class="input-group-btn">
+									<a class="btn btn-link export-gdrive-choose-folder"
+										title="Choose folder" data-dismiss="modal"><i class="icon-folder-open"></i></a>
+								</div>
+							</div>
+							<span class="help-block"> If no folder ID is supplied, the
+								file will be created in your root folder. </span>
 						</div>
 					</div>
 					<div class="form-group">
@@ -842,7 +848,7 @@
 			</div>
 			<div class="modal-body">
 
-				<div class="tab-content">
+				<div class="tab-content clearfix">
 					<div class="tab-pane active" id="tabpane-settings-editor">
 						<div class="form-horizontal">
 							<div class="form-group">

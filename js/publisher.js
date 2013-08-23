@@ -188,11 +188,17 @@ define([
         var publishPreferences = utils.retrieveIgnoreError(provider.providerId + ".publishPreferences");
         if(publishPreferences) {
             _.each(provider.publishPreferencesInputIds, function(inputId) {
-                utils.setInputValue("#input-publish-" + inputId, publishPreferences[inputId]);
+                var publishPreferenceValue = publishPreferences[inputId];
+                if(_.isBoolean(publishPreferenceValue)) {
+                    utils.setInputChecked("#input-publish-" + inputId, publishPreferenceValue);
+                }
+                else {
+                    utils.setInputValue("#input-publish-" + inputId, publishPreferenceValue);
+                }
             });
             utils.setInputRadio("radio-publish-format", publishPreferences.format);
-            utils.setInputChecked("#checkbox-publish-custom-template-toggle", publishPreferences.customTmpl !== undefined);
-            utils.setInputValue('#checkbox-publish-custom-template', publishPreferences.customTmpl || settings.template);
+            utils.setInputChecked("#checkbox-publish-custom-template", publishPreferences.customTmpl !== undefined);
+            utils.setInputValue('#textarea-publish-custom-template', publishPreferences.customTmpl || settings.template);
         }
 
         // Open dialog box
@@ -224,7 +230,13 @@ define([
         // dialog
         var publishPreferences = {};
         _.each(provider.publishPreferencesInputIds, function(inputId) {
-            publishPreferences[inputId] = document.getElementById("input-publish-" + inputId).value;
+            var inputElt = document.getElementById("input-publish-" + inputId);
+            if(inputElt.type == 'checkbox') {
+                publishPreferences[inputId] = inputElt.checked;
+            }
+            else {
+                publishPreferences[inputId] = inputElt.value;
+            }
         });
         publishPreferences.format = publishAttributes.format;
         publishPreferences.customTmpl = publishAttributes.customTmpl;
@@ -260,19 +272,26 @@ define([
                 });
             });
         }
-        
+
         // 
         $(".action-process-publish").click(performNewLocation);
-        
-        var $customTmplCollapseElt = $('.publish-custom-template-collapse').collapse();
+
+        var $customTmplCollapseElt = $('.publish-custom-template-collapse').collapse({
+            toggle: false
+        });
         var $customTmplTextareaElt = $('#textarea-publish-custom-template');
+        var doCustomTmplCollapse = _.debounce(function() {
+            $customTmplCollapseElt.collapse(utils.getInputRadio("radio-publish-format") == 'template' ? 'show' : 'hide');
+        }, 100);
         $("#checkbox-publish-custom-template").change(function() {
             $customTmplTextareaElt.prop('disabled', !this.checked);
         });
         $("input:radio[name=radio-publish-format]").change(function() {
-            $customTmplCollapseElt.collapse(this.value == 'template' ? 'show' : 'hide');
+            doCustomTmplCollapse();
         });
-        
+        $('.modal-publish').on('hidden.bs.modal', function() {
+            $customTmplCollapseElt.collapse('hide');
+        });
 
         // Save As menu items
         $(".action-download-md").click(function() {

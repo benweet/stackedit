@@ -59,8 +59,6 @@ if(location.hostname.indexOf("benweet.insomnia247.nl") === 0) {
     GITHUB_CLIENT_ID = 'd2943d6074b2d9c4a830';
     GATEKEEPER_URL = "http://stackedit-gatekeeper-insomnia.herokuapp.com/";
     TUMBLR_PROXY_URL = "http://stackedit-tumblr-proxy-beta.herokuapp.com/";
-    DROPBOX_APP_KEY = "9od4uxm536nmd6h";
-    DROPBOX_APP_SECRET = "4cm7vsbamdwo5cu";
 }
 
 var THEME_LIST = {

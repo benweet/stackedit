@@ -13696,23 +13696,21 @@ function(e) {
    e.stopPropagation();
   }), L = e(".menu-panel").collapse({
    toggle: !1
-  });
-  var t = void 0;
-  L.on("show.bs.collapse", function(e) {
-   e.target === L[0] ? (F = !0, t = i.createBackdrop("collapse", ".menu-panel"), L.addClass("move-to-front")) : L.find(".in").collapse("hide");
+  }), L.on("show.bs.collapse", function(e) {
+   e.target === L[0] ? F = !0 : L.find(".in").collapse("hide");
   }).on("hide.bs.collapse", function(e) {
-   e.target === L[0] && (F = !1, t.remove(), L.removeClass("move-to-front"));
+   e.target === L[0] && (F = !1);
   }).on("hidden.bs.collapse", function(e) {
    e.target === L[0] && L.find(".in").collapse("hide");
   }), R = e(".document-panel").collapse({
    toggle: !1
   });
-  var n = void 0;
+  var t = void 0;
   R.on("show.bs.collapse", function(e) {
-   e.target === R[0] ? (H = !0, n = i.createBackdrop("collapse", ".document-panel"), 
+   e.target === R[0] ? (H = !0, t = i.createBackdrop("collapse", ".document-panel"), 
    R.addClass("move-to-front")) : R.find(".in").collapse("hide");
   }).on("hide.bs.collapse", function(e) {
-   e.target === R[0] && (H = !1, n.remove(), R.removeClass("move-to-front"));
+   e.target === R[0] && (H = !1, t.remove(), R.removeClass("move-to-front"));
   }).on("hidden.bs.collapse", function(e) {
    e.target === R[0] && R.find(".in").collapse("hide");
   }), w(), O = e("#wmd-input"), e("#wmd-input, #md-section-helper").css({
@@ -13945,7 +13943,7 @@ function(e) {
   this.runCallbacks = [], this.successCallbacks = [], this.errorCallbacks = [];
  }
  function o() {
-  d !== !1 && e.defer(function() {
+  if (d !== !1) {
    if (l === !0) return a + u.timeout < t.currentTime && u.error(new Error("A timeout occurred.")), 
    void 0;
    if (void 0 === u) {
@@ -13953,7 +13951,7 @@ function(e) {
     u = s.shift(), a = t.currentTime, c === !1 && (c = !0, n.onAsyncRunning(!0));
    }
    a <= t.currentTime && (l = !0, u.chain());
-  });
+  }
  }
  function r(t, i, r) {
   try {

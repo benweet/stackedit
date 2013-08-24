@@ -140,7 +140,7 @@ define([
         }
         
         // Use defer to avoid stack overflow
-        _.defer(function() {
+        //_.defer(function() {
 
             // If there is a task currently running
             if(currentTaskRunning === true) {
@@ -171,7 +171,7 @@ define([
                 currentTaskRunning = true;
                 currentTask.chain();
             }
-        });
+        //});
     }
     
     // Call runTask periodically

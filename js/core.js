@@ -459,8 +459,8 @@ define([
         $menuPanelElt.on('show.bs.collapse', function(e) {
             if(e.target === $menuPanelElt[0]) {
                 isMenuPanelShown = true;
-                //menuPanelBackdropElt = utils.createBackdrop('collapse', '.menu-panel');
-                //$menuPanelElt.addClass('move-to-front');
+                menuPanelBackdropElt = utils.createBackdrop('collapse', '.menu-panel');
+                $menuPanelElt.addClass('move-to-front');
             }
             else {
                 // Close all open sub-menus when one submenu opens
@@ -469,8 +469,8 @@ define([
         }).on('hide.bs.collapse', function(e) {
             if(e.target === $menuPanelElt[0]) {
                 isMenuPanelShown = false;
-                //menuPanelBackdropElt.remove();
-                //$menuPanelElt.removeClass('move-to-front');
+                menuPanelBackdropElt.remove();
+                $menuPanelElt.removeClass('move-to-front');
             }
         }).on('hidden.bs.collapse', function(e) {
             if(e.target === $menuPanelElt[0]) {

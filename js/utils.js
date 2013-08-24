@@ -181,11 +181,14 @@ define([
     // Create a backdrop and add to the body
     utils.createBackdrop = function(toggle, target) {
         var result = crel('div', {
-            'class': 'modal-backdrop in',
-            'data-toggle': toggle,
-            'data-target': target,
+            'class': 'modal-backdrop in'
         });
         document.body.appendChild(result);
+        if(toggle == 'collapse') {
+            $(result).click(function() {
+                $(target).collapse('hide');
+            });
+        }
         return result;
     };
     

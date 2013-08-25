@@ -469,7 +469,7 @@ define([
         }).on('hide.bs.collapse', function(e) {
             if(e.target === $menuPanelElt[0]) {
                 isMenuPanelShown = false;
-                menuPanelBackdropElt.remove();
+                menuPanelBackdropElt.parentNode.removeChild(menuPanelBackdropElt);
                 $menuPanelElt.removeClass('move-to-front');
             }
         }).on('hidden.bs.collapse', function(e) {
@@ -496,7 +496,7 @@ define([
         }).on('hide.bs.collapse', function(e) {
             if(e.target === $documentPanelElt[0]) {
                 isDocumentPanelShown = false;
-                documentPanelBackdropElt.remove();
+                documentPanelBackdropElt.parentNode.removeChild(documentPanelBackdropElt);
                 $documentPanelElt.removeClass('move-to-front');
             }
         }).on('hidden.bs.collapse', function(e) {

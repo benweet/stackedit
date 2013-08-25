@@ -13696,21 +13696,23 @@ function(e) {
    e.stopPropagation();
   }), L = e(".menu-panel").collapse({
    toggle: !1
-  }), L.on("show.bs.collapse", function(e) {
-   e.target === L[0] ? F = !0 : L.find(".in").collapse("hide");
+  });
+  var t = void 0;
+  L.on("show.bs.collapse", function(e) {
+   e.target === L[0] ? (F = !0, t = i.createBackdrop("collapse", ".menu-panel"), L.addClass("move-to-front")) : L.find(".in").collapse("hide");
   }).on("hide.bs.collapse", function(e) {
-   e.target === L[0] && (F = !1);
+   e.target === L[0] && (F = !1, t.parentNode.removeChild(t), L.removeClass("move-to-front"));
   }).on("hidden.bs.collapse", function(e) {
    e.target === L[0] && L.find(".in").collapse("hide");
   }), R = e(".document-panel").collapse({
    toggle: !1
   });
-  var t = void 0;
+  var n = void 0;
   R.on("show.bs.collapse", function(e) {
-   e.target === R[0] ? (H = !0, t = i.createBackdrop("collapse", ".document-panel"), 
+   e.target === R[0] ? (H = !0, n = i.createBackdrop("collapse", ".document-panel"), 
    R.addClass("move-to-front")) : R.find(".in").collapse("hide");
   }).on("hide.bs.collapse", function(e) {
-   e.target === R[0] && (H = !1, t.remove(), R.removeClass("move-to-front"));
+   e.target === R[0] && (H = !1, n.parentNode.removeChild(n), R.removeClass("move-to-front"));
   }).on("hidden.bs.collapse", function(e) {
    e.target === R[0] && R.find(".in").collapse("hide");
   }), w(), O = e("#wmd-input"), e("#wmd-input, #md-section-helper").css({

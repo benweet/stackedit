@@ -1348,20 +1348,20 @@ th.visible-print,td.visible-print{display:none !important}
 .navbar .input-file-title{margin-right:10px}
 .navbar .working-indicator{width:50px;height:17px;background-position:0 0;margin-top:12px}
 .navbar .working-indicator.show{background-image:url("../img/loader-default.gif")}
-@media only screen and (-webkit-min-device-pixel-ratio:2),only screen and (min--moz-device-pixel-ratio:2),only screen and (-o-min-device-pixel-ratio:2/1),only screen and (min-device-pixel-ratio:2),only screen and (min-resolution:192dpi),only screen and (min-resolution:2dppx){.navbar .working-indicator.show{background-image:url("../img/loader-default2x.gif");background-size:50px 17px}}@media only screen and (-webkit-min-device-pixel-ratio:2),only screen and (min--moz-device-pixel-ratio:2),only screen and (-o-min-device-pixel-ratio:2/1),only screen and (min-device-pixel-ratio:2),only screen and (min-resolution:192dpi),only screen and (min-resolution:2dppx){.navbar .working-indicator.show{background-image:url("../img/loader-default2x.gif");background-size:50px 17px}}.menu-panel,.document-panel{display:block;position:absolute;top:0;height:100%;z-index:10;overflow:initial;-webkit-box-shadow:0 6px 12px rgba(0,0,0,0.175);box-shadow:0 6px 12px rgba(0,0,0,0.175)}
+@media only screen and (-webkit-min-device-pixel-ratio:2),only screen and (min--moz-device-pixel-ratio:2),only screen and (-o-min-device-pixel-ratio:2/1),only screen and (min-device-pixel-ratio:2),only screen and (min-resolution:192dpi),only screen and (min-resolution:2dppx){.navbar .working-indicator.show{background-image:url("../img/loader-default2x.gif");background-size:50px 17px}}@media only screen and (-webkit-min-device-pixel-ratio:2),only screen and (min--moz-device-pixel-ratio:2),only screen and (-o-min-device-pixel-ratio:2/1),only screen and (min-device-pixel-ratio:2),only screen and (min-resolution:192dpi),only screen and (min-resolution:2dppx){.navbar .working-indicator.show{background-image:url("../img/loader-default2x.gif");background-size:50px 17px}}.menu-panel,.document-panel{display:block;position:absolute;top:0;height:100%;z-index:10;overflow:initial}
 .menu-panel .collapse-button i,.document-panel .collapse-button i{color:#ccc;font-size:19px}
-.menu-panel .panel-content,.document-panel .panel-content{overflow:auto;padding-bottom:30px;height:100%}
+.menu-panel .panel-content,.document-panel .panel-content{-webkit-box-shadow:0 6px 12px rgba(0,0,0,0.175);box-shadow:0 6px 12px rgba(0,0,0,0.175);overflow:auto;padding-bottom:30px;height:100%}
 .menu-panel .panel-content a>i,.document-panel .panel-content a>i{margin-right:3px;color:inherit}
-.menu-panel{background-color:#232323;width:280px !important;margin-left:-312px;-webkit-transition:margin-left .35s ease;-moz-transition:margin-left .35s ease;-o-transition:margin-left .35s ease;transition:margin-left .35s ease}
+.menu-panel{width:280px !important;margin-left:-315px;-webkit-transition:margin-left .35s ease;-moz-transition:margin-left .35s ease;-o-transition:margin-left .35s ease;transition:margin-left .35s ease}
 .menu-panel .sub-menu{background-color:#323232}
 .menu-panel.in{margin-left:0}
 .menu-panel.in .collapse-button{background-color:#232323}
-.menu-panel .collapse-button{right:-80px;position:absolute;margin-top:6px;padding:2px 20px;z-index:-1}
-.menu-panel .panel-content{padding-top:6px;border-right:5px solid #444}
-.document-panel{right:0;width:350px !important;margin-right:-382px;-webkit-transition:margin-right .35s ease;-moz-transition:margin-right .35s ease;-o-transition:margin-right .35s ease;transition:margin-right .35s ease}
+.menu-panel .collapse-button{right:-83px;position:absolute;margin-top:6px;padding:2px 20px;z-index:-1}
+.menu-panel .panel-content{background-color:#232323;padding-top:6px;border-right:5px solid #444}
+.document-panel{right:0;width:350px !important;margin-right:-385px;-webkit-transition:margin-right .35s ease;-moz-transition:margin-right .35s ease;-o-transition:margin-right .35s ease;transition:margin-right .35s ease}
 .document-panel.in{margin-right:0}
 .document-panel.in .collapse-button{background-color:#232323}
-.document-panel .collapse-button{left:-80px;position:absolute;margin-top:6px;padding:7px 18px;z-index:-1}
+.document-panel .collapse-button{left:-83px;position:absolute;margin-top:6px;padding:7px 18px;z-index:-1}
 .document-panel .collapse-button i.icon-folder-open{font-size:22px}
 .document-panel .panel-content{background-color:#323232;padding-top:80px;border-left:5px solid #444}
 .document-panel .panel-content .icon-layers{font-size:135%}

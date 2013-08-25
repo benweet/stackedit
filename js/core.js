@@ -455,16 +455,11 @@ define([
         $menuPanelElt = $('.menu-panel').collapse({
             toggle: false
         });
-        $menuPanelElt.click(function(e) {
-            console.log(e);
-        }).find('.panel-content').click(function(e) {
-            e.stopPropagation();
-        });
         var menuPanelBackdropElt = undefined;
         $menuPanelElt.on('show.bs.collapse', function(e) {
             if(e.target === $menuPanelElt[0]) {
                 isMenuPanelShown = true;
-                menuPanelBackdropElt = utils.createBackdrop();
+                menuPanelBackdropElt = utils.createBackdrop('collapse', '.menu-panel');
                 $menuPanelElt.addClass('move-to-front');
             }
             else {

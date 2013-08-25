@@ -14,14 +14,14 @@
 <meta name="msvalidate.01" content="5E47EE6F67B069C17E3CDD418351A612" />
 <script>
     // Use http://.../?debug to serve original JavaScript files instead of minified
-    var mainModule = "main";
+    var baseDir = 'js';
     if(!location.search.match(/(\?|&)debug/)) {
-        mainModule += "-min";
+        baseDir += '-min';
     }
     var require = {
-        baseUrl: "js",
+        baseUrl: baseDir,
         deps: [
-			mainModule
+			'main'
         ]
     };
 </script>

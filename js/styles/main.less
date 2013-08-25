@@ -336,7 +336,6 @@ body {
 }
 
 .menu-panel {
-	background-color: @panel-bg;
 	width: @menu-panel-width !important;
 	margin-left: (-@menu-panel-width - 32);
 	-webkit-transition: margin-left 0.35s ease;
@@ -360,6 +359,7 @@ body {
 		z-index: -1;
 	}
 	.panel-content {
+		background-color: @panel-bg;
 		padding-top: 6px;
 		border-right: 5px solid @panel-border-color;
 	}

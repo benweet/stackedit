@@ -317,14 +317,14 @@ body {
 	position: absolute;
 	top: 0;
 	height: 100%;
-	z-index: 2000;
+	z-index: 10;
 	overflow: initial;
-	.box-shadow(0 6px 12px rgba(0,0,0,.175));
     .collapse-button i {
 		color: @panel-button-color;
     	font-size: 19px;
 	}
 	.panel-content {
+		.box-shadow(0 6px 12px rgba(0,0,0,.175));
 		overflow: auto;
 		padding-bottom: 30px;
 		height: 100%;
@@ -336,9 +336,8 @@ body {
 }
 
 .menu-panel {
-	background-color: @panel-bg;
-	width: @menu-panel-width !important;
-	margin-left: (-@menu-panel-width - 32);
+	width: 0 !important;
+	margin-left: (-@menu-panel-width - 38);
 	-webkit-transition: margin-left 0.35s ease;
 	-moz-transition: margin-left 0.35s ease;
 	-o-transition: margin-left 0.35s ease;
@@ -347,19 +346,22 @@ body {
 		background-color: @list-group-bg;
 	}
 	&.in {
-        margin-left: 0;
+		width: 100% !important;
+		margin-left: 0;
         .collapse-button {
         	background-color: @panel-bg;
         }
     }
     .collapse-button {
-	    right: -80px;
+	    left: 260px;
 		position: absolute;
 		margin-top: 6px;
 		padding: 2px 20px;
 		z-index: -1;
 	}
 	.panel-content {
+		background-color: @panel-bg;
+		width: @menu-panel-width;
 		padding-top: 6px;
 		border-right: 5px solid @panel-border-color;
 	}

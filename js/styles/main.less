@@ -319,12 +319,12 @@ body {
 	height: 100%;
 	z-index: 10;
 	overflow: initial;
-	.box-shadow(0 6px 12px rgba(0,0,0,.175));
     .collapse-button i {
 		color: @panel-button-color;
     	font-size: 19px;
 	}
 	.panel-content {
+		.box-shadow(0 6px 12px rgba(0,0,0,.175));
 		overflow: auto;
 		padding-bottom: 30px;
 		height: 100%;
@@ -337,7 +337,7 @@ body {
 
 .menu-panel {
 	width: @menu-panel-width !important;
-	margin-left: (-@menu-panel-width - 32);
+	margin-left: (-@menu-panel-width - 35);
 	-webkit-transition: margin-left 0.35s ease;
 	-moz-transition: margin-left 0.35s ease;
 	-o-transition: margin-left 0.35s ease;
@@ -352,7 +352,7 @@ body {
         }
     }
     .collapse-button {
-	    right: -80px;
+	    right: -83px;
 		position: absolute;
 		margin-top: 6px;
 		padding: 2px 20px;
@@ -368,7 +368,7 @@ body {
 .document-panel {
 	right: 0;
 	width: @document-panel-width !important;
-	margin-right: (-@document-panel-width - 32);
+	margin-right: (-@document-panel-width - 35);
 	-webkit-transition: margin-right 0.35s ease;
     -moz-transition: margin-right 0.35s ease;
     -o-transition: margin-right 0.35s ease;
@@ -380,7 +380,7 @@ body {
         }
     }
     .collapse-button {
-	    left: -80px;
+	    left: -83px;
 		position: absolute;
 		margin-top: 6px;
 		padding: 7px 18px;

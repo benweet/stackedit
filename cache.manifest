@@ -3,7 +3,7 @@ CACHE MANIFEST
 CACHE:
 index.html
 viewer.html
-js/libs/require.js
+res/libs/require.js
 lib/MathJax/MathJax.js?config=TeX-AMS_HTML
 lib/MathJax/config/Safe.js
 lib/MathJax/config/TeX-AMS_HTML.js

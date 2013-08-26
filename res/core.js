@@ -614,7 +614,7 @@ define([
             theme = theme || 'default';
             if(currentTheme != theme) {
                 var themeModule = "less!themes/" + theme;
-                if(baseDir == 'js-min') {
+                if(baseDir.indexOf('-min') !== -1) {
                     themeModule = "css!themes/" + theme;
                 }
                 // Undefine the module in RequireJS

@@ -88,7 +88,7 @@ var viewerMode = /(^| )viewer($| )/.test(document.body.className);
 
 var theme = localStorage.theme || 'default';
 var themeModule = "less!themes/" + theme;
-if(baseDir == 'js-min') {
+if(baseDir.indexOf('-min') !== -1) {
     themeModule = "css!themes/" + theme;
 }
 

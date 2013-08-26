@@ -44,6 +44,7 @@ define([
     var $documentListElt = undefined;
     var documentListFilteredElt = undefined;
     var $documentListFilteredElt = undefined;
+    var selectedFileDesc = undefined;
     var refreshPanel = function() {
 
         // List orphan documents
@@ -57,6 +58,7 @@ define([
         }).reduce(function(result, fileDesc) {
             return result + '<li>' + _.template(documentEltTmpl, {
                 fileDesc: fileDesc,
+                selectedFileDesc: selectedFileDesc
             }) + '</li>';
         }, '').value();
         documentListHtml = documentListHtml && '<ul class="nav">' + documentListHtml + '</ul>';
@@ -70,6 +72,7 @@ define([
             }).reduce(function(result, fileDesc) {
                 return result + '<li>' + _.template(documentEltTmpl, {
                     fileDesc: fileDesc,
+                    selectedFileDesc: selectedFileDesc
                 }) + '</li>';
             }, '').value();
             fileListHtml = fileListHtml && '<ul class="nav">' + fileListHtml + '</ul>';
@@ -88,6 +91,7 @@ define([
         }).reduce(function(result, fileDesc) {
             return result + '<li>' + _.template(documentEltTmpl, {
                 fileDesc: fileDesc,
+                selectedFileDesc: selectedFileDesc
             }) + '</li>';
         }, '').value();
         documentListFilteredHtml = '<ul class="nav">' + documentListFilteredHtml + '</ul>';

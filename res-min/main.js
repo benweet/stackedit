@@ -5381,8 +5381,8 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  }), i;
 }), define("extensions/documentPanel", [ "jquery", "underscore", "utils", "classes/Extension", "folderList", "fileSystem" ], function(e, t, n, i, o, r) {
  function s(n) {
-  if (n != b) {
-   if (b = n, v.scrollTop = 0, !n) return g.addClass("hide"), f.removeClass("hide"), 
+  if (n != y) {
+   if (y = n, b.scrollTop = 0, !n) return g.addClass("hide"), f.removeClass("hide"), 
    void 0;
    var i = n.toLowerCase().split(/\s+/);
    t.each(h.querySelectorAll(".file"), function(n) {
@@ -5397,14 +5397,15 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  a.onFileMgrCreated = function(e) {
   l = e;
  };
- var c = [ '<a href="#"', ' class="list-group-item folder clearfix"', ' data-folder-index="<%= folderDesc.folderIndex %>"', ' data-toggle="collapse"', ' data-target=".document-panel .file-list.<%= id %>">', '   <div class="pull-right file-count">', "       <%= _.size(folderDesc.fileList) %>", "   </div>", '   <i class="icon-folder"></i> <%= folderDesc.name %>', "</a>", '<div class="file-list collapse <%= id %> clearfix">', "   <%= fileListHtml %>", "</div>" ].join(""), u = [ '<a href="#"', ' class="list-group-item file<%= fileDesc === selectedFileDesc ? " active" : "" %>"', ' data-file-index="<%= fileDesc.fileIndex %>"', ' data-toggle="collapse"', ' data-target=".document-panel">', "   <%= fileDesc.composeTitle() %>", "</a>" ].join(""), d = void 0, p = void 0, f = void 0, h = void 0, g = void 0, m = function() {
+ var c = [ '<a href="#"', ' class="list-group-item folder clearfix"', ' data-folder-index="<%= folderDesc.folderIndex %>"', ' data-toggle="collapse"', ' data-target=".document-panel .file-list.<%= id %>">', '   <div class="pull-right file-count">', "       <%= _.size(folderDesc.fileList) %>", "   </div>", '   <i class="icon-folder"></i> <%= folderDesc.name %>', "</a>", '<div class="file-list collapse <%= id %> clearfix">', "   <%= fileListHtml %>", "</div>" ].join(""), u = [ '<a href="#"', ' class="list-group-item file<%= fileDesc === selectedFileDesc ? " active" : "" %>"', ' data-file-index="<%= fileDesc.fileIndex %>"', ' data-toggle="collapse"', ' data-target=".document-panel">', "   <%= fileDesc.composeTitle() %>", "</a>" ].join(""), d = void 0, p = void 0, f = void 0, h = void 0, g = void 0, m = void 0, v = function() {
   var n = t.filter(r, function(e) {
    return void 0 === e.folder;
   }), i = t.chain(n).sortBy(function(e) {
    return e.title.toLowerCase();
   }).reduce(function(e, n) {
    return e + "<li>" + t.template(u, {
-    fileDesc: n
+    fileDesc: n,
+    selectedFileDesc: m
    }) + "</li>";
   }, "").value();
   i = i && '<ul class="nav">' + i + "</ul>", t.chain(o).sortBy(function(e) {
@@ -5414,7 +5415,8 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
     return e.title.toLowerCase();
    }).reduce(function(e, n) {
     return e + "<li>" + t.template(u, {
-     fileDesc: n
+     fileDesc: n,
+     selectedFileDesc: m
     }) + "</li>";
    }, "").value();
    n = n && '<ul class="nav">' + n + "</ul>", i += t.template(c, {
@@ -5427,32 +5429,33 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
    return e.title.toLowerCase();
   }).reduce(function(e, n) {
    return e + "<li>" + t.template(u, {
-    fileDesc: n
+    fileDesc: n,
+    selectedFileDesc: m
    }) + "</li>";
   }, "").value();
   s = '<ul class="nav">' + s + "</ul>", h.innerHTML = s, t.each(p.querySelectorAll(".file"), function(t) {
    var n = e(t);
    n.click(function() {
     var e = r[n.data("fileIndex")];
-    e && e !== selectedFileDesc && l.selectFile(e);
+    e && e !== m && l.selectFile(e);
    });
   });
  };
  a.onFileSelected = function(e) {
-  selectedFileDesc = e, m();
- }, a.onFileCreated = m, a.onFileDeleted = m, a.onTitleChanged = m, a.onSyncExportSuccess = m, 
- a.onSyncRemoved = m, a.onNewPublishSuccess = m, a.onPublishRemoved = m, a.onFoldersChanged = m;
- var v = void 0, b = "";
+  m = e, v();
+ }, a.onFileCreated = v, a.onFileDeleted = v, a.onTitleChanged = v, a.onSyncExportSuccess = v, 
+ a.onSyncRemoved = v, a.onNewPublishSuccess = v, a.onPublishRemoved = v, a.onFoldersChanged = v;
+ var b = void 0, y = "";
  return a.onReady = function() {
-  d = document.querySelector(".document-panel"), v = d.querySelector(".panel-content"), 
+  d = document.querySelector(".document-panel"), b = d.querySelector(".panel-content"), 
   p = d.querySelector(".document-list"), f = e(p), h = d.querySelector(".document-list-filtered"), 
   g = e(h), e(d).on("show.bs.collapse", function(t) {
    if (t.target === d) {
-    var n = selectedFileDesc.folder;
+    var n = m.folder;
     void 0 !== n && e(d.querySelector(".file-list." + n.folderIndex.replace(".", ""))).collapse("show");
    }
   }).on("shown.bs.collapse", function(e) {
-   e.target === d && (t.val(""), s(""), v.scrollTop += p.querySelector(".file.active").getBoundingClientRect().top - 120);
+   e.target === d && (t.val(""), s(""), b.scrollTop += p.querySelector(".file.active").getBoundingClientRect().top - 120);
   });
   var t = e(d.querySelector(".search-bar .form-control"));
   t.bind("propertychange keyup input paste", function() {

@@ -1304,7 +1304,7 @@ th.visible-print,td.visible-print{display:none !important}
 .working{cursor:progress}
 .btn,.dropdown-menu{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none}
 .list-group .nav{border-left:10px solid rgba(0,0,0,0.05);margin-left:10px}
-.list-group-item{padding:10px 15px;margin:0}
+.list-group-item{padding:10px 15px}
 .list-group .list-group-item{border-radius:0}
 .list-group-item.active:hover{background-color:#888}
 .move-to-front{z-index:1050 !important}

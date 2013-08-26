@@ -1,25 +1,29 @@
 #!/bin/sh
 echo
+
 echo '### Installing dependencies ###'
 npm install requirejs
 npm install less
 export PATH=${PATH}:`pwd`/node_modules/requirejs/bin/:`pwd`/node_modules/less/bin/
 echo
+
 echo '### Optimizing JavaScript ###'
-rm -rf js-min
+rm -rf res-min
 r.js -o tools/optimize-js.json
 echo
+
 echo '### Optimizing CSS ###'
-mkdir -p js-min/themes
-cd js/themes
-for theme in *; do lessc $theme | sed 's/@import/@import (less)/g' | lessc -x - > `echo ../../js-min/themes/${theme} | sed 's/.less$/.css/'`; done
+mkdir -p res-min/themes
+cd res/themes
+for theme in *; do lessc $theme | sed 's/@import/@import (less)/g' | lessc -x - > `echo ../../res-min/themes/${theme} | sed 's/.less$/.css/'`; done
 cd ../..
-cp -R js/libs/fontello/font js-min/
-cp -R js/img js-min/
+cp -R res/libs/fontello/font res-min/
+cp -R res/img res-min/
 echo
+
 echo '### Updating cache.manifest ###'
 sed -n '1,/#dynamic/p' cache.manifest > cache.manifest.new
 printf "\n# `date`\n" >> cache.manifest.new
-find js-min -type f >> cache.manifest.new
+find res-min -type f >> cache.manifest.new
 printf "\nNETWORK:\n*" >> cache.manifest.new
 mv cache.manifest.new cache.manifest

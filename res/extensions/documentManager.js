@@ -105,6 +105,8 @@ define([
         // Delete folders
         _.each(selectedFolderList, function(folderDesc) {
             utils.removeIndexFromArray("folder.list", folderDesc.folderIndex);
+            localStorage.removeItem(folderDesc.folderIndex + ".name");
+            localStorage.removeItem(folderDesc.folderIndex + ".files");
             delete folderList[folderDesc.folderIndex];
         });
         eventMgr.onFoldersChanged();

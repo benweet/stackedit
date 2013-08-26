@@ -130,6 +130,19 @@ define([
         }
         version = "v7";
     }
+    
+    // Upgrade from v7 to v8
+    if(version == "v7") {
+        _.each(_.keys(localStorage), function(key) {
+            var matchResult = key.match(/(file\.\S+\.)\S+/);
+            if(matchResult) {
+                if(!_.has(localStorage, matchResult[1] + 'title')) {
+                    localStorage.removeItem(key);
+                }
+            }
+        });
+        version = "v8";
+    }
 
     localStorage["version"] = version;
 });

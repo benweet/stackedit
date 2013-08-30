@@ -175,23 +175,33 @@ module.exports = function(grunt) {
      * Resources
      */
     grunt.registerTask('build-res', function() {
-        
+
         // Copy some resources (images, fonts...)
         grunt.task.run('copy:resources');
-        
+
         // List resources and inject them in cache.manifest
-        grunt.task.run('list-res');
+        var resFolderList = [
+            'res-min',
+            'lib/MathJax/extensions',
+            'lib/MathJax/fonts/HTML-CSS/TeX/woff',
+            'lib/MathJax/jax/output/HTML-CSS/fonts/TeX',
+            'lib/MathJax/jax/output/HTML-CSS/fonts/STIX'
+        ];
+        grunt.task.run('list-res:' + resFolderList.join(':'));
         grunt.task.run('string-replace:cache-manifest');
-        
+
     });
-    
+
     /***************************************************************************
      * Other tasks
      */
     grunt.registerTask('list-res', function() {
         var resourceList = [];
-        grunt.file.recurse('res-min', function(abspath) {
-            resourceList.push(abspath);
+        grunt.util.recurse(arguments, function(arg) {
+            grunt.log.writeln('Listing resources: ' + arg);
+            grunt.file.recurse(arg, function(abspath) {
+                resourceList.push(abspath);
+            });
         });
         grunt.config.set('resources', resourceList.join('\n'));
     });

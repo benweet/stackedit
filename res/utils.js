@@ -2,8 +2,8 @@ define([
     "jquery",
     "underscore",
     "crel",
-    "libs/FileSaver",
-    "libs/stacktrace",
+    "FileSaver",
+    "stacktrace",
 ], function($, _, crel) {
 
     var utils = {};

@@ -12,7 +12,7 @@ define([
     "text!html/settingsUserCustomExtensionTooltip.html",
     "storage",
     "config",
-    "libs/layout",
+    "uilayout",
     "libs/Markdown.Editor"
 ], function($, _, crel, utils, settings, eventMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 

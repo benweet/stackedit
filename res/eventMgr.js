@@ -31,8 +31,8 @@ define([
     "extensions/buttonStat",
     "extensions/buttonHtmlCode",
     "extensions/buttonViewer",
-    "libs/bootstrap/bootstrap",
-    "libs/jquery.waitforimages"
+    "bootstrap",
+    "jquery-waitforimages"
 ], function($, _, crel, utils, Extension, settings, settingsExtensionsAccordionHTML) {
 
     var eventMgr = {};

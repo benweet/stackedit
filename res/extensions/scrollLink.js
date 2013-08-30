@@ -3,8 +3,8 @@ define([
     "underscore",
     "classes/Extension",
     "text!html/scrollLinkSettingsBlock.html",
-    "libs/css_browser_selector",
-    "libs/jquery.mousewheel"
+    "css_browser_selector",
+    'jquery-mousewheel',
 ], function($, _, Extension, scrollLinkSettingsBlockHTML) {
 
     var scrollLink = new Extension("scrollLink", "Scroll Link", true, true);

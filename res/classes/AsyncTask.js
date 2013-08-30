@@ -2,8 +2,7 @@ define([
     "underscore",
     "utils",
     "eventMgr",
-    "config",
-    "libs/stacktrace",
+    "config"
 ], function(_, utils, eventMgr) {
     
     var taskQueue = [];
@@ -115,7 +114,7 @@ define([
     };
 
     /**
-     * enqueue() has to be called to add the task in the running task queue
+     * enqueue() has to be called to add the task to the task queue
      */
     AsyncTask.prototype.enqueue = function() {
         taskQueue.push(this);

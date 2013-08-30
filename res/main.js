@@ -4,63 +4,96 @@ requirejs.config({
     packages: [
         {
             name: 'css',
-            location: 'libs/css',
+            location: 'bower-libs/require-css',
             main: 'css'
         },
         {
             name: 'less',
-            location: 'libs/less',
+            location: 'bower-libs/require-less',
             main: 'less'
         }
     ],
     paths: {
-        "jquery": "libs/jquery",
-        "underscore": "libs/underscore",
-        "crel": "libs/crel",
-        "jgrowl": "libs/jgrowl/jquery.jgrowl",
-        "mousetrap": "libs/mousetrap",
-        "toMarkdown": "libs/to-markdown",
-        "text": "libs/text",
-        "libs/MathJax": '../lib/MathJax/MathJax.js?config=TeX-AMS_HTML'
+        jquery: 'bower-libs/jquery/jquery',
+        underscore: 'bower-libs/underscore/underscore',
+        crel: 'libs/crel',
+        jgrowl: 'bower-libs/jgrowl/jquery.jgrowl',
+        mousetrap: 'bower-libs/mousetrap/mousetrap',
+        toMarkdown: 'libs/to-markdown',
+        text: 'bower-libs/requirejs-text/text',
+        mathjax: '../lib/MathJax/MathJax.js?config=TeX-AMS_HTML',
+        bootstrap: 'bower-libs/bootstrap/dist/js/bootstrap',
+        requirejs: 'bower-libs/requirejs/require',
+        'google-code-prettify': 'bower-libs/google-code-prettify/src/prettify',
+        highlightjs: 'bower-libs/highlightjs/highlight.pack',
+        'jquery-mousewheel': 'bower-libs/jquery-mousewheel/jquery.mousewheel',
+        'jquery-waitforimages': 'libs/jquery.waitforimages',
+        'jquery-ui': 'bower-libs/jquery-ui/ui/jquery-ui',
+        'jquery-ui-core': 'bower-libs/jquery-ui/ui/jquery.ui.core',
+        'jquery-ui-widget': 'bower-libs/jquery-ui/ui/jquery.ui.widget',
+        'jquery-ui-mouse': 'bower-libs/jquery-ui/ui/jquery.ui.mouse',
+        'jquery-ui-draggable': 'bower-libs/jquery-ui/ui/jquery.ui.draggable',
+        'jquery-ui-effect': 'bower-libs/jquery-ui/ui/jquery.ui.effect',
+        'jquery-ui-effect-slide': 'bower-libs/jquery-ui/ui/jquery.ui.effect-slide',
+        uilayout: 'libs/layout',
+        css_browser_selector: 'bower-libs/css_browser_selector/css_browser_selector',
+        FileSaver: 'bower-libs/FileSaver/FileSaver',
+        stacktrace: 'bower-libs/stacktrace/stacktrace',
+        'requirejs-text': 'bower-libs/requirejs-text/text'
     },
     shim: {
-        'underscore': {
+        underscore: {
             exports: '_'
         },
-        'jgrowl': {
+        jgrowl: {
             deps: [
                 'jquery'
             ],
             exports: 'jQuery.jGrowl'
         },
-        'mousetrap': {
+        mousetrap: {
             exports: 'Mousetrap'
         },
-        'toMarkdown': {
+        toMarkdown: {
             deps: [
                 'jquery'
             ],
             exports: 'toMarkdown'
         },
-        'libs/jquery-ui': [
+        bootstrap: [
             'jquery'
         ],
-        'libs/bootstrap/bootstrap': [
+        'jquery-waitforimages': [
             'jquery'
         ],
-        'libs/jquery.waitforimages': [
+        'jquery-mousewheel': [
             'jquery'
         ],
-        'libs/jquery.mousewheel': [
-            'jquery'
+        uilayout: [
+            'jquery-ui-effect-slide'
         ],
-        'libs/layout': [
-            'libs/jquery-ui'
+        'jquery-ui-effect-slide': [
+            'jquery-ui-effect'
+        ],
+        'jquery-ui-effect': [
+            'jquery-ui-draggable'
+        ],
+        'jquery-ui-draggable': [
+            'jquery-ui-mouse'
+        ],
+        'jquery-ui-mouse': [
+            'jquery-ui-widget'
+        ],
+        'jquery-ui-widget': [
+            'jquery-ui-core'
+        ],
+        'jquery-ui-core': [
+            'jquery'
         ],
         'libs/Markdown.Extra': [
             'libs/Markdown.Converter',
-            'libs/prettify/prettify',
-            'libs/highlight/highlight.pack',
+            'google-code-prettify',
+            'highlightjs'
         ],
         'libs/Markdown.Editor': [
             'libs/Markdown.Converter'

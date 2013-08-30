@@ -1,0 +1,21 @@
+{
+  "name": "stackedit",
+  "dependencies": {
+    "bootstrap": "3.0.0",
+    "jquery": "2.0.3",
+    "underscore": "1.5.1",
+    "requirejs": "~2.1.8",
+    "require-css": "~0.0.7",
+    "require-less": "~0.0.7",
+    "mousetrap": "~1.4.4",
+    "jgrowl": "~1.2.10",
+    "google-code-prettify": "~1.0.0",
+    "highlightjs": "~7.3.0",
+    "jquery-ui": "~1.10.3",
+    "jquery-mousewheel": "~3.1.3",
+    "css_browser_selector": "*",
+    "FileSaver": "*",
+    "stacktrace": "~0.5.3",
+    "requirejs-text": "~2.0.10"
+  }
+}

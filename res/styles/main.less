@@ -1,8 +1,8 @@
-@import "../libs/bootstrap/less/bootstrap.less";
+@import "../bower-libs/bootstrap/less/bootstrap.less";
+@import "../bower-libs/google-code-prettify/src/prettify.css";
+@import "../bower-libs/highlightjs/styles/default.css";
 @import "../libs/fontello/css/fontello.css";
-@import "../libs/jgrowl/jquery.jgrowl.css";
-@import "../libs/prettify/prettify.css";
-@import "../libs/highlight/highlight.css";
+@import "jquery.jgrowl.css";
 
 /* Colors */
 @transparent: fade(#000, 0%);
@@ -98,6 +98,7 @@ body {
 #preview-contents {
 	padding: 15px;
 	margin-bottom: 50px;
+	background-color: @body-bg;
 	.ui-layout-east & {
 		padding-left: 5px;
 	}
@@ -995,6 +996,15 @@ div.dropdown-menu textarea {
 code, pre {
 	font-family: Menlo, Consolas, "Courier New", monospace;
 	font-size: 12px !important;
+}
+
+// Need to force these values because of prettify
+pre {
+	padding: ((@line-height-computed - 1) / 2) !important;
+	border: 1px solid @pre-border-color !important;
+	code {
+	    background-color: transparent !important;
+	}
 }
 
 /* Definition list */

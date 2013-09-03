@@ -34,6 +34,12 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
  - [Developer guide][2]
  - [Theming guide][3]
 
+### Note:
+
+Full access to Dropbox or Google Drive is required to be able to import any document in StackEdit.
+Imported documents are downloaded in your browser and are not transmitted to a server. Your passwords
+and credentials are never transmitted to a server and only stay in your browser locally.
+
 > **NOTE:** This page has been written and published with [StackEdit][4].
 
 

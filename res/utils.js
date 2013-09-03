@@ -14,7 +14,7 @@ define([
         try {
             return decodeURIComponent(regex.exec(location.search)[1]);
         }
-        catch (e) {
+        catch(e) {
             return undefined;
         }
     };
@@ -78,7 +78,7 @@ define([
         }
         return value;
     };
-    
+
     // Return input value and check that it's a valid RegExp
     utils.getInputRegExpValue = function(element, event) {
         element = jqElt(element);
@@ -112,7 +112,7 @@ define([
         }
         return value;
     };
-    
+
     // Return checkbox boolean value
     utils.getInputChecked = function(element) {
         element = jqElt(element);
@@ -148,8 +148,11 @@ define([
 
     // Slug function
     utils.slugify = function(text) {
-        return text.toLowerCase().replace(/\s+/g, '-') // Replace spaces with -
-        .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+        return text.toLowerCase().replace(/\s/g, '-') // Replace spaces with -
+        .replace(/![\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Pc}]/g, '') // Remove
+                                                                    // all
+                                                                    // non-word
+                                                                    // chars
         .replace(/\-\-+/g, '-') // Replace multiple - with single -
         .replace(/^-+/, '') // Trim - from start of text
         .replace(/-+$/, ''); // Trim - from end of text
@@ -168,7 +171,7 @@ define([
         }
         return url;
     };
-    
+
     // Create the modal element and add to the body
     utils.addModal = function(id, content) {
         var modal = crel('div', {
@@ -188,7 +191,7 @@ define([
         document.body.appendChild(result);
         return result;
     };
-    
+
     // Create an centered popup window
     utils.popupWindow = function(url, title, width, height) {
         var left = (screen.width / 2) - (width / 2);
@@ -245,7 +248,7 @@ define([
         storedAttributes.provider = attributes.provider.providerId;
         localStorage[storeIndex] = JSON.stringify(storedAttributes);
     };
-    
+
     // Retrieve/parse an index array from localStorage
     utils.retrieveIndexArray = function(storeIndex) {
         try {
@@ -256,12 +259,12 @@ define([
             return [];
         }
     };
-    
+
     // Append an index to an array in localStorage
     utils.appendIndexToArray = function(storeIndex, index) {
         localStorage[storeIndex] += index + ";";
     };
-    
+
     // Remove an index from an array in localStorage
     utils.removeIndexFromArray = function(storeIndex, index) {
         localStorage[storeIndex] = localStorage[storeIndex].replace(";" + index + ";", ";");
@@ -276,7 +279,7 @@ define([
             return undefined;
         }
     };
-    
+
     var eventList = [];
     utils.logValue = function(value) {
         eventList.unshift(value);
@@ -304,7 +307,7 @@ define([
         });
         return result.join("");
     };
-    
+
     // Base64 conversion
     utils.encodeBase64 = function(str) {
         if(str.length === 0) {

@@ -94,7 +94,7 @@ define([
     function buildToc() {
         var anchorList = {};
         function createAnchor(element) {
-            var id = element.id || utils.slugify(element.textContent);
+            var id = element.id || utils.slugify(element.textContent) || 'title';
             var anchor = id;
             var index = 0;
             while (_.has(anchorList, anchor)) {

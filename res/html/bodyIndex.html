@@ -16,8 +16,7 @@
 		</ul>
 		<ul class="nav pull-right">
 			<li class="btn-group"><button
-					class="btn btn-success action-create-file"
-					title="New local document">
+					class="btn btn-success action-create-file" title="New document">
 					<i class="icon-file"></i>
 				</button>
 				<button class="btn btn-success" title="Delete current document"
@@ -48,7 +47,7 @@
 <div class="menu-panel collapse width">
 	<button class="btn btn-success collapse-button" data-toggle="collapse"
 		data-target=".menu-panel" title="Menu">
-		<i class="icon-left-dir"></i> <img
+		<i class="icon-left-open"></i> <img
 			data-stackedit-src="stackedit-64.png" width="32" height="32" />
 	</button>
 	<div class="panel-content">
@@ -60,6 +59,8 @@
 				class="icon-hdd"></i> Open from...</a>
 			<div class="sub-menu collapse collapse-open-from clearfix">
 				<ul class="nav">
+					<li><a data-toggle="modal" data-target=".modal-import-url"
+						class="action-reset-input" href="#">Open from URL</a></li>
 					<li><a data-toggle="modal"
 						data-target=".modal-import-harddrive-markdown"
 						class="action-reset-input" href="#">Import from hard drive</a></li>
@@ -138,7 +139,7 @@
 <div class="document-panel collapse width">
 	<button class="btn btn-success collapse-button" data-toggle="collapse"
 		data-target=".document-panel" title="Select document">
-		<i class="icon-folder-open"></i> <i class="icon-right-dir"></i>
+		<i class="icon-folder-open"></i> <i class="icon-right-open"></i>
 	</button>
 	<div class="search-bar clearfix">
 		<div class="input-group">
@@ -337,6 +338,37 @@
 				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
 				<a href="#" class="btn btn-primary action-remove-file"
 					data-dismiss="modal">Delete</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal modal-import-url">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title">Open from URL</h3>
+			</div>
+			<div class="modal-body">
+				<p>Please provide a link to a Markdown document.</p>
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-lg-3 control-label" for="input-import-url">URL</label>
+						<div class="col-lg-8">
+							<input type="text" id="input-import-url"
+								placeholder="http://www.abc.com/xyz.md" class="form-control">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<a href="#" data-dismiss="modal"
+					class="btn btn-primary action-import-url">OK</a>
 			</div>
 		</div>
 	</div>
@@ -780,16 +812,23 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group collapse publish-custom-template-collapse">
-						<div class="col-lg-4"></div>
-						<div class="col-lg-7">
-							<div class="checkbox">
-								<label> <input type="checkbox"
-									id="checkbox-publish-custom-template"> Custom template
-								</label> <a href="#" class="tooltip-template">(?)</a>
+					<div class="collapse publish-custom-template-collapse">
+						<div class="form-group">
+							<div class="col-lg-4"></div>
+							<div class="col-lg-7">
+								<div class="checkbox">
+									<label> <input type="checkbox"
+										id="checkbox-publish-custom-template"> Custom template
+									</label> <a href="#" class="tooltip-template">(?)</a>
+								</div>
 							</div>
-							<textarea class="form-control"
-								id="textarea-publish-custom-template"></textarea>
+						</div>
+						<div class="form-group">
+							<div class="col-lg-4"></div>
+							<div class="col-lg-7">
+								<textarea class="form-control"
+									id="textarea-publish-custom-template"></textarea>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -969,7 +1008,13 @@
 						<div class="tab-pane-button-container">
 							<a href="#" class="btn btn-block btn-primary action-welcome-file"
 								data-dismiss="modal"><i class="icon-help-circled icon-white"></i>
-								Welcome document</a> <a href="#" class="btn btn-block btn-primary"
+								Welcome document</a> <a href="#"
+								class="btn btn-block btn-primary action-welcome-tour"
+								data-dismiss="modal" data-dismiss="modal"><i
+								class="icon-help-circled icon-white"></i> Welcome tour</a>
+						</div>
+						<div class="tab-pane-button-container">
+							<a href="#" class="btn btn-block btn-primary"
 								data-dismiss="modal" data-toggle="modal"
 								data-target=".modal-app-reset"><i
 								class="icon-fire icon-white"></i> Reset application</a>

@@ -1,8 +1,11 @@
 define([
     "jquery",
+    "eventMgr",
+    "utils",
+    "fileMgr",
     "classes/Provider",
     "classes/AsyncTask"
-], function($, Provider, AsyncTask) {
+], function($, eventMgr, utils, fileMgr, Provider, AsyncTask) {
 
     var downloadProvider = new Provider("download");
     downloadProvider.sharingAttributes = [
@@ -41,6 +44,23 @@ define([
         });
         task.enqueue();
     };
+
+    eventMgr.addListener("onReady", function() {
+        $('.action-import-url').click(function(e) {
+            var url = utils.getInputTextValue('#input-import-url', e);
+            if(url) {
+                downloadProvider.importPublic({
+                    url: url
+                }, function(error, title, content) {
+                    if(error) {
+                        return;
+                    }
+                    var fileDesc = fileMgr.createFile(title, content);
+                    fileMgr.selectFile(fileDesc);
+                });
+            }
+        });
+    });
 
     return downloadProvider;
 });

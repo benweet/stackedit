@@ -2,14 +2,15 @@ define([
     "underscore",
     "utils",
     "classes/Extension",
-    "text!../../version",
     "text!html/dialogAbout.html",
-], function(_, utils, Extension, version, dialogAboutHTML) {
+    "config"
+], function(_, utils, Extension, dialogAboutHTML) {
 
     var dialogAbout = new Extension("dialogAbout", 'Dialog "About"');
 
     var libraries = {
         "Bootstrap": "http://getbootstrap.com/",
+        "Bootstrap Tour": "http://bootstraptour.com/",
         "crel": "https://github.com/KoryNunn/crel",
         "CSS Browser Selector": "https://github.com/rafaelp/css_browser_selector/",
         "Dropbox-js": "https://github.com/dropbox/dropbox-js",
@@ -50,7 +51,7 @@ define([
         utils.addModal('modal-about', _.template(dialogAboutHTML, {
             libraries: libraries,
             projects: projects,
-            version: version
+            version: VERSION
         }));
     };
 

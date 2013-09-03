@@ -39,7 +39,8 @@ requirejs.config({
         css_browser_selector: 'bower-libs/css_browser_selector/css_browser_selector',
         FileSaver: 'bower-libs/FileSaver/FileSaver',
         stacktrace: 'bower-libs/stacktrace/stacktrace',
-        'requirejs-text': 'bower-libs/requirejs-text/text'
+        'requirejs-text': 'bower-libs/requirejs-text/text',
+        'bootstrap-tour': 'bower-libs/bootstrap-tour/build/js/bootstrap-tour'
     },
     shim: {
         underscore: {
@@ -60,6 +61,9 @@ requirejs.config({
             ],
             exports: 'toMarkdown'
         },
+        'bootstrap-tour': [
+            'bootstrap'
+        ],
         bootstrap: [
             'jquery'
         ],

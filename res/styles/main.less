@@ -1,6 +1,7 @@
 @import "../bower-libs/bootstrap/less/bootstrap.less";
 @import "../bower-libs/google-code-prettify/src/prettify.css";
 @import "../bower-libs/highlightjs/styles/default.css";
+@import "../bower-libs/bootstrap-tour/src/less/bootstrap-tour.less";
 @import "../libs/fontello/css/fontello.css";
 @import "jquery.jgrowl.css";
 
@@ -72,8 +73,13 @@
 @blockquote-border-color: fade(#000, 5%);
 @code-color: @primary-color;
 @code-bg: fade(#000, 5%);
-@tooltip-max-width: 220px;
+@tooltip-max-width: 240px;
 @close-color: @primary-color;
+@popover-bg: @primary-bg-lighter;
+@popover-border-color: @primary-bg-lighter;
+@popover-arrow-color: @primary-bg-lighter;
+@popover-arrow-outer-color: @primary-bg-lighter;
+@popover-title-bg: @transparent;
 
 // Copied from Bootstrap in order to have correct urls
 .img-retina(@file-1x; @file-2x; @width-1x; @height-1x) {
@@ -90,6 +96,26 @@
     background-size: @width-1x @height-1x;
   }
 }
+
+/*********************
+ * Bootstrap tour
+ *********************/
+
+.popover {
+	max-width: 400px;
+	padding: 20px;
+	.box-shadow(0 5px 30px rgba(0,0,0,.4));
+	.popover-title {
+		font-weight: @headings-font-weight;
+		font-size: 24px;
+		padding: 5px 15px 10px;
+	}
+	.disabled {
+		display: none;
+	}
+}
+
+
 
 body {
 	tab-size: 4;
@@ -250,7 +276,7 @@ body {
 	}
 	.nav {
 		float: left;
-		margin: 6px 10px;
+		margin: 6px 10px 0;
 		& > li {
 			display: inline-block;
 		}
@@ -321,7 +347,7 @@ body {
 	overflow: initial;
     .collapse-button i {
 		color: @panel-button-color;
-    	font-size: 19px;
+    	font-size: 14px;
 	}
 	.panel-content {
 		.box-shadow(0 6px 12px rgba(0,0,0,.175));
@@ -738,23 +764,23 @@ body {
 		}
 	}
 	.ui-layout-toggler {
-		font-size: 21px !important;
+		font-size: 22px !important;
 		background-color: transparent;
 		&.ui-layout-toggler-east {
 			line-height: 55px;
 			&.ui-layout-toggler-east-open i:before {
-				content: '\e950';
+				content: '\e87e';
 			}
 			&.ui-layout-toggler-east-closed i:before {
-				content: '\e94f';
+				content: '\e87d';
 			}
 		}
 		&.ui-layout-toggler-south {
 			&.ui-layout-toggler-south-open i:before {
-				content: '\e94d';
+				content: '\e880';
 			}
 			&.ui-layout-toggler-south-closed i:before {
-				content: '\e94e';
+				content: '\e87f';
 			}
 		}
 		&.ui-layout-toggler-north {
@@ -764,10 +790,10 @@ body {
 				margin-top: -5px;
 			}
 			&.ui-layout-toggler-north-open i:before {
-				content: '\e94e';
+				content: '\e87f';
 			}
 			&.ui-layout-toggler-north-closed i:before {
-				content: '\e94d';
+				content: '\e880';
 			}
 		}
 	}
@@ -905,19 +931,17 @@ div.dropdown-menu textarea {
 // Custom icons (not from Font Awesome)
 .icon-code {
 	font-size: 80%;
-	margin-left: -1px;
-	margin-right: 5px;
+	padding-right: 5px;
 }
 
 .icon-folder-open {
 	font-size: 80%;
-	margin-left: -1px;
-	margin-right: 5px;
+	padding-right: 5px;
 }
 
 .icon-chart-bar {
 	font-size: 90%;
-	margin-right: 2px;
+	padding-right: 2px;
 }
 
 .icon-trash {

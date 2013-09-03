@@ -6,10 +6,6 @@
   "directories": {
     "doc": "doc"
   },
-  "dependencies": {
-    "less": "~1.4.2",
-    "requirejs": "~2.1.8"
-  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-requirejs": "~0.4.1",
@@ -18,7 +14,8 @@
     "grunt-contrib-copy": "~0.4.1",
     "bower": "~1.2.5",
     "grunt-bower-requirejs": "~0.7.1",
-    "grunt-bower-task": "~0.3.1"
+    "grunt-bower-task": "~0.3.1",
+    "grunt-bump": "0.0.11"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

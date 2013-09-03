@@ -5,6 +5,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-string-replace');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-bower-requirejs');
+    grunt.loadNpmTasks('grunt-bump');
 
     /***************************************************************************
      * Configuration
@@ -78,6 +79,19 @@ module.exports = function(grunt) {
                     ]
                 }
             },
+            'config': {
+                files: {
+                    'res/config.js': 'res/config.js'
+                },
+                options: {
+                    replacements: [
+                        {
+                            pattern: /(var VERSION = ).*/,
+                            replacement: 'var VERSION = "<%= pkg.version %>";'
+                        },
+                    ]
+                }
+            },
             'cache-manifest': {
                 files: {
                     'cache.manifest': 'cache.manifest'
@@ -94,7 +108,7 @@ module.exports = function(grunt) {
                         },
                     ]
                 }
-            }
+            },
         },
         copy: {
             resources: {
@@ -133,6 +147,17 @@ module.exports = function(grunt) {
         bower: {
             target: {
                 rjsConfig: 'res/main.js'
+            }
+        },
+        bump: {
+            options: {
+                files: [
+                    'package.json',
+                    'bower.json'
+                ],
+                updateConfigs: [
+                    'pkg'
+                ]
             }
         }
     });
@@ -192,9 +217,6 @@ module.exports = function(grunt) {
 
     });
 
-    /***************************************************************************
-     * Other tasks
-     */
     grunt.registerTask('list-res', function() {
         var resourceList = [];
         grunt.util.recurse(arguments, function(arg) {
@@ -206,14 +228,22 @@ module.exports = function(grunt) {
         grunt.config.set('resources', resourceList.join('\n'));
     });
 
-    function getResources(folder) {
-        return result;
-    }
-
+    /***************************************************************************
+     * Default task
+     */
     grunt.registerTask('default', function() {
         grunt.task.run('clean');
         grunt.task.run('build-js');
         grunt.task.run('build-css');
         grunt.task.run('build-res');
+    });
+
+    /***************************************************************************
+     * Deploy task
+     */
+    grunt.registerTask('deploy', function() {
+        grunt.task.run('bump-only:patch');
+        grunt.task.run('string-replace:config');
+        grunt.task.run('default');
     });
 };

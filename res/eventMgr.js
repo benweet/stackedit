@@ -31,6 +31,7 @@ define([
     "extensions/buttonStat",
     "extensions/buttonHtmlCode",
     "extensions/buttonViewer",
+    "extensions/welcomeTour",
     "bootstrap",
     "jquery-waitforimages"
 ], function($, _, crel, utils, Extension, settings, settingsExtensionsAccordionHTML) {

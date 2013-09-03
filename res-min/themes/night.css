@@ -1354,7 +1354,7 @@ body{tab-size:4}
 .navbar .nav.pull-right>li>.dropdown-menu{right:0;left:auto}
 .navbar .nav.pull-right>li>.dropdown-menu .dropdown-menu{right:100%;left:auto;margin-right:-1px;margin-left:0}
 .navbar .btn-group>.btn.disabled *,.navbar .btn-group>.btn.blocked *,.navbar .btn-group>.btn[disabled] *{color:rgba(222,222,222,0.3)}
-.navbar .file-title-navbar{padding:4px 15px;font-size:20px;font-weight:200;color:#dedede;max-width:400px;overflow:hidden}
+.navbar .file-title-navbar{padding:4px 15px;font-size:20px;font-weight:200;color:#dedede;max-width:320px;overflow:hidden}
 .navbar .file-title-navbar i{margin-right:6px}
 .navbar .input-file-title{margin-right:10px}
 .navbar .working-indicator{width:50px;height:17px;background-position:0 0;margin-top:12px}

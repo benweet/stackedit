@@ -67,6 +67,18 @@ define([
             }
             addMdSection(sectionText);
         });
+        
+        // Apply a coef to manage divergence in some browsers
+        var theoricalHeight = _.last(mdSectionList).endOffset;
+        var realHeight = $editorElt[0].scrollHeight;
+        var coef = realHeight/theoricalHeight;
+        mdSectionList = _.map(mdSectionList, function(mdSection) {
+            return {
+                startOffset: mdSection.startOffset * coef,
+                endOffset: mdSection.endOffset * coef,
+                height: mdSection.height * coef,
+            };
+        });
 
         // Try to find corresponding sections in the preview
         htmlSectionList = [];

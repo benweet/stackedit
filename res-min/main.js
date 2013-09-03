@@ -9999,21 +9999,29 @@ function(e) {
   t.each(a, function(e, t) {
    t !== a.length - 1 ? e = 0 === e.length ? void 0 : e.substring(0, e.length - 1) : i += o(s.css("padding-bottom")), 
    n(e);
-  }), d = [];
-  var h = 0, m = l.scrollTop();
-  l.find(".preview-content > .wmd-title").each(function() {
-   var t = e(this), n = t.position().top + m + o(t.css("margin-top"));
-   d.push({
-    startOffset: h,
-    endOffset: n,
-    height: n - h
-   }), h = n;
   });
-  var g = l.prop("scrollHeight");
+  var h = t.last(u).endOffset, m = s[0].scrollHeight, g = m / h;
+  u = t.map(u, function(e) {
+   return {
+    startOffset: e.startOffset * g,
+    endOffset: e.endOffset * g,
+    height: e.height * g
+   };
+  }), d = [];
+  var b = 0, y = l.scrollTop();
+  l.find(".preview-content > .wmd-title").each(function() {
+   var t = e(this), n = t.position().top + y + o(t.css("margin-top"));
+   d.push({
+    startOffset: b,
+    endOffset: n,
+    height: n - b
+   }), b = n;
+  });
+  var x = l.prop("scrollHeight");
   d.push({
-   startOffset: h,
-   endOffset: g,
-   height: g - h
+   startOffset: b,
+   endOffset: x,
+   height: x - b
   }), p = -10, f = -10, v();
  }, 500), m = !1, g = !1, v = t.debounce(function() {
   function e(e, n, i, o, r, a) {

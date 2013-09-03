@@ -142,7 +142,8 @@ define([
                         sectionElt.appendChild(elt);
                     }
                     catch(e) {
-                        // IE fails with some text nodes
+                        // IE fails with text nodes
+                        sectionElt.appendChild(document.createTextNode(elt.textContent));
                     }
                 }
                 markdownEltList.shift();

@@ -6,6 +6,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-bower-requirejs');
     grunt.loadNpmTasks('grunt-bump');
+    grunt.loadNpmTasks('grunt-shell');
 
     /***************************************************************************
      * Configuration
@@ -157,7 +158,22 @@ module.exports = function(grunt) {
                 ],
                 updateConfigs: [
                     'pkg'
-                ]
+                ],
+                commitFiles: ['-a'],
+                pushTo: 'origin'
+            }
+        },
+        shell: {
+            deploy: {
+                options: {
+                    stdout: true,
+                    stderr: true,
+                    failOnError: true
+                },
+                command: [
+                    'git branch -f gh-pages master',
+                    'git push --all origin'
+                ].join('&&')
             }
         }
     });
@@ -242,8 +258,10 @@ module.exports = function(grunt) {
      * Deploy task
      */
     grunt.registerTask('deploy', function() {
-        grunt.task.run('bump-only:patch');
+        grunt.task.run('bump-only');
         grunt.task.run('string-replace:config');
         grunt.task.run('default');
+        grunt.task.run('bump-commit');
+        grunt.task.run('shell');
     });
 };

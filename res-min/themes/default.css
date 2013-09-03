@@ -1518,8 +1518,8 @@ div.dropdown-menu textarea{width:250px;height:150px;resize:none}
 input[type="file"]{line-height:inherit;height:inherit;border:none !important}
 .drop-zone{border:2px dashed #bbb;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;padding:40px;text-align:center;font-size:24px;color:#bbb}
 .modal-import-harddrive-html textarea{width:530px;max-width:530px;height:120px}
-.popover{max-width:400px;padding:20px;-webkit-box-shadow:0 5px 30px rgba(0,0,0,0.4);box-shadow:0 5px 30px rgba(0,0,0,0.4)}
-.popover .popover-title{font-weight:500;font-size:24px;padding:5px 15px 10px}
+.popover{max-width:360px;padding:15px;-webkit-box-shadow:0 5px 30px rgba(0,0,0,0.4);box-shadow:0 5px 30px rgba(0,0,0,0.4)}
+.popover .popover-title{font-weight:500;font-size:24px;padding:10px 15px}
 .popover .disabled{display:none}
 div.jGrowl{z-index:1040;font-size:inherit}
 div.jGrowl div.jGrowl-notification,div.jGrowl div.jGrowl-closer{background-color:rgba(118,118,118,0.9);width:260px;margin:20px 30px;padding:15px 20px;-ms-filter:none;filter:none;border-radius:5px}

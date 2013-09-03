@@ -4542,10 +4542,13 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
    }), a = !0; 0 !== i.length; ) {
     var s = i[0];
     if (a === !1 && /(^| )wmd-title($| )/.test(s.className)) break;
-    a = !1, "DIV" == s.tagName && "footnotes" == s.className ? e.each(s.querySelectorAll("ol > li"), function(e) {
+    if (a = !1, "DIV" == s.tagName && "footnotes" == s.className) e.each(s.querySelectorAll("ol > li"), function(e) {
      var t = e.id.substring(3);
      y[t] = e;
-    }) : r.appendChild(s), i.shift();
+    }); else try {
+     r.appendChild(s);
+    } catch (l) {}
+    i.shift();
    }
    o.appendChild(r);
   });
@@ -11152,9 +11155,9 @@ function(e) {
    template: [ "<div class='popover tour'>", "   <div class='arrow'></div>", "   <h3 class='popover-title'></h3>", "   <div class='popover-content'></div>", "   <nav class='popover-navigation'>", "       <button class='btn btn-primary' data-role='next'>Next</button>", "       <button class='btn btn-default' data-role='end'>Got it!</button>", "   </nav>", "</div>" ].join("")
   });
   t.addSteps([ {
-   element: ".ui-layout-resizer-north",
-   title: "Welcome to StackEdit 2.0!",
-   content: "Please click <code>Next</code> to start a small tour...",
+   element: ".navbar-inner",
+   title: "Welcome to StackEdit 2.0",
+   content: "Please click <code>Next</code> to start a small tour.",
    placement: "bottom"
   }, {
    element: ".navbar .action-create-file",
@@ -17742,7 +17745,7 @@ var viewerMode = /(^| )viewer($| )/.test(document.body.className), theme = local
  e(function() {
   t.onReady(), window.applicationCache && window.applicationCache.addEventListener("updateready", function() {
    window.applicationCache.status === window.applicationCache.UPDATEREADY && (window.applicationCache.swapCache(), 
-   n.onMessage("New version available.\nPlease refresh the page to upgrade."));
+   n.onMessage("New version available.\nJust refresh the page to upgrade."));
   }, !1);
  });
 }), define("main", function() {});

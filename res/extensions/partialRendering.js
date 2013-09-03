@@ -138,7 +138,12 @@ define([
                     });
                 }
                 else {
-                    sectionElt.appendChild(elt);
+                    try {
+                        sectionElt.appendChild(elt);
+                    }
+                    catch(e) {
+                        // IE fails with some text nodes
+                    }
                 }
                 markdownEltList.shift();
             };

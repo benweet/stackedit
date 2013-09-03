@@ -4548,7 +4548,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
     }); else try {
      r.appendChild(s);
     } catch (l) {
-     r.appendChild(document.createTextNode(s.textContent));
+     r.appendChild(document.createTextNode(s.innerText));
     }
     i.shift();
    }

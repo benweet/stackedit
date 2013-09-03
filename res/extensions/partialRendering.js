@@ -143,7 +143,7 @@ define([
                     }
                     catch(e) {
                         // IE fails with text nodes
-                        sectionElt.appendChild(document.createTextNode(elt.textContent));
+                        sectionElt.appendChild(document.createTextNode(elt.innerText));
                     }
                 }
                 markdownEltList.shift();

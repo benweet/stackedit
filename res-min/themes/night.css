@@ -1309,9 +1309,6 @@ th.visible-print,td.visible-print{display:none !important}
 .popover[class*="tour-"] .popover-navigation *[data-role=prev].disabled,.popover[class*="tour-"] .popover-navigation *[data-role=next].disabled,.popover[class*="tour-"] .popover-navigation *[data-role=end].disabled{cursor:default}
 .popover[class*="tour-"].orphan{position:fixed;margin-top:0}
 .popover[class*="tour-"].orphan .arrow{display:none}
-.popover{max-width:400px;padding:20px;-webkit-box-shadow:0 5px 30px rgba(0,0,0,0.4);box-shadow:0 5px 30px rgba(0,0,0,0.4)}
-.popover .popover-title{font-weight:500;font-size:24px;padding:5px 15px 10px}
-.popover .disabled{display:none}
 body{tab-size:4}
 #preview-contents{padding:15px;margin-bottom:50px;background-color:#232323}
 .ui-layout-east #preview-contents{padding-left:5px}
@@ -1458,10 +1455,28 @@ body{tab-size:4}
 .ui-layout-resizer.ui-layout-resizer-east .ui-layout-toggler-north{width:35px !important;height:60px !important}
 .ui-layout-resizer.ui-layout-resizer-south .ui-layout-toggler-north{height:35px !important}
 a code{color:inherit}
-h1{margin:30px 0 30px}
+h1{margin:40px 0}
+h2{margin:30px 0}
+h3{margin:20px 0}
+h4,h5,h6{margin:15px 0}
 .toc ul{list-style-type:none}
-p,pre,blockquote{margin:0 0 20px}
+p,pre,blockquote{margin:0 0 15px}
 hr{border-top:1px solid #ddd;margin:30px 0}
+code,pre{font-family:Menlo,Consolas,"Courier New",monospace;font-size:12px !important}
+pre{padding:9.5px !important;border:1px solid #444444 !important}
+pre code{background-color:transparent !important}
+dt,dd{margin-top:5px;margin-bottom:5px}
+dd{margin-left:40px}
+table{margin-bottom:20px}
+table th,table td{padding:8px;line-height:20px;text-align:left;vertical-align:top;border-top:1px solid #dddddd}
+table th{font-weight:bold}
+table thead th{vertical-align:bottom}
+table caption+thead tr:first-child th,table caption+thead tr:first-child td,table colgroup+thead tr:first-child th,table colgroup+thead tr:first-child td,table thead:first-child tr:first-child th,table thead:first-child tr:first-child td{border-top:0}
+table tbody+tbody{border-top:2px solid #dddddd}
+blockquote{border-left-width:10px}
+blockquote p{margin-bottom:15px;font-size:14px;line-height:20px}
+blockquote ul:last-child,blockquote ol:last-child{margin-bottom:0}
+ul,ol{margin-bottom:15px}
 #wmd-input{-webkit-box-shadow:none;box-shadow:none}
 #wmd-input,#md-section-helper{resize:none;border:none !important}
 #md-section-helper{position:absolute;top:-100px;height:1px;padding:0 6px;overflow-y:scroll;z-index:-1}
@@ -1500,24 +1515,12 @@ div.dropdown-menu textarea{width:250px;height:150px;resize:none}
 .action-import-image-gplus{float:left}
 .tooltip-inner{text-align:left}
 .tooltip li{line-height:1.4}
-code,pre{font-family:Menlo,Consolas,"Courier New",monospace;font-size:12px !important}
-pre{padding:9.5px !important;border:1px solid #444444 !important}
-pre code{background-color:transparent !important}
-dt,dd{margin-top:5px;margin-bottom:5px}
-dd{margin-left:40px}
-table{margin-bottom:20px}
-table th,table td{padding:8px;line-height:20px;text-align:left;vertical-align:top;border-top:1px solid #dddddd}
-table th{font-weight:bold}
-table thead th{vertical-align:bottom}
-table caption+thead tr:first-child th,table caption+thead tr:first-child td,table colgroup+thead tr:first-child th,table colgroup+thead tr:first-child td,table thead:first-child tr:first-child th,table thead:first-child tr:first-child td{border-top:0}
-table tbody+tbody{border-top:2px solid #dddddd}
-blockquote{border-left-width:10px}
-blockquote p{margin-bottom:20px;font-size:14px;font-weight:300;line-height:20px}
-blockquote ul:last-child,blockquote ol:last-child{margin-bottom:0}
-ul,ol{margin-bottom:20px}
 input[type="file"]{line-height:inherit;height:inherit;border:none !important}
 .drop-zone{border:2px dashed #bbb;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;padding:40px;text-align:center;font-size:24px;color:#bbb}
 .modal-import-harddrive-html textarea{width:530px;max-width:530px;height:120px}
+.popover{max-width:400px;padding:20px;-webkit-box-shadow:0 5px 30px rgba(0,0,0,0.4);box-shadow:0 5px 30px rgba(0,0,0,0.4)}
+.popover .popover-title{font-weight:500;font-size:24px;padding:5px 15px 10px}
+.popover .disabled{display:none}
 div.jGrowl{z-index:1040;font-size:inherit}
 div.jGrowl div.jGrowl-notification,div.jGrowl div.jGrowl-closer{background-color:rgba(86,86,86,0.9);width:260px;margin:20px 30px;padding:15px 20px;-ms-filter:none;filter:none;border-radius:5px}
 div.jGrowl div.jGrowl-notification{min-height:80px}

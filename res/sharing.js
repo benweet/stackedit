@@ -103,9 +103,9 @@ define([
         if(importParameters === undefined) {
             return;
         }
-        $("#preview-contents, #file-title").hide();
+        $("#preview-contents, .navbar .file-title-navbar").hide();
         provider.importPublic(importParameters, function(error, title, content) {
-            $("#preview-contents, #file-title").show();
+            $("#preview-contents, .navbar .file-title-navbar").show();
             if(error) {
                 return;
             }

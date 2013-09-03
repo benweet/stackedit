@@ -23,7 +23,7 @@ define([
             MAIN_URL,
             'lib/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n',
             '</head>\n',
-            '<body><%= documentHTML %></body>\n',
+            '<body><div class="container"><%= documentHTML %></div></body>\n',
             '</html>'
         ].join(""),
         sshProxy: SSH_PROXY_URL,

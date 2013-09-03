@@ -97,25 +97,6 @@
   }
 }
 
-/*********************
- * Bootstrap tour
- *********************/
-
-.popover {
-	max-width: 400px;
-	padding: 20px;
-	.box-shadow(0 5px 30px rgba(0,0,0,.4));
-	.popover-title {
-		font-weight: @headings-font-weight;
-		font-size: 24px;
-		padding: 5px 15px 10px;
-	}
-	.disabled {
-		display: none;
-	}
-}
-
-
 
 body {
 	tab-size: 4;
@@ -817,7 +798,19 @@ a code {
 }
 
 h1 {
-	margin: 30px 0 30px;
+	margin: 40px 0;
+}
+
+h2 {
+	margin: 30px 0;
+}
+
+h3 {
+	margin: 20px 0;
+}
+
+h4, h5, h6 {
+	margin: 15px 0;
 }
 
 .toc ul {
@@ -827,12 +820,84 @@ h1 {
 p,
 pre,
 blockquote {
-	margin: 0 0 20px;
+	margin: 0 0 15px;
 }
 
 hr {
 	border-top: 1px solid #ddd;
 	margin: 30px 0;
+}
+
+code, pre {
+	font-family: Menlo, Consolas, "Courier New", monospace;
+	font-size: 12px !important;
+}
+
+// Need to force these values because of prettify
+pre {
+	padding: ((@line-height-computed - 1) / 2) !important;
+	border: 1px solid @pre-border-color !important;
+	code {
+	    background-color: transparent !important;
+	}
+}
+
+/* Definition list */
+dt,dd {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+dd {
+	margin-left: 40px;
+}
+
+/* Table style */
+table {
+	margin-bottom: 20px;
+}
+
+table th,table td {
+	padding: 8px;
+	line-height: 20px;
+	text-align: left;
+	vertical-align: top;
+	border-top: 1px solid #dddddd;
+}
+
+table th {
+	font-weight: bold;
+}
+
+table thead th {
+	vertical-align: bottom;
+}
+
+table caption+thead tr:first-child th,table caption+thead tr:first-child td,table colgroup+thead tr:first-child th,table colgroup+thead tr:first-child td,table thead:first-child tr:first-child th,table thead:first-child tr:first-child td
+	{
+	border-top: 0;
+}
+
+table tbody+tbody {
+	border-top: 2px solid #dddddd;
+}
+
+blockquote {
+	border-left-width: 10px;
+	p {
+	    margin-bottom: 15px;
+	    font-size: 14px;
+	    line-height: 20px;
+	}
+	
+	ul:last-child,
+	ol:last-child {
+		margin-bottom: 0;
+	}
+} 
+
+ul,ol {
+	margin-bottom: 15px;
 }
 
 /*****************************
@@ -1018,79 +1083,6 @@ div.dropdown-menu textarea {
 	line-height: 1.4;
 }
 
-code, pre {
-	font-family: Menlo, Consolas, "Courier New", monospace;
-	font-size: 12px !important;
-}
-
-// Need to force these values because of prettify
-pre {
-	padding: ((@line-height-computed - 1) / 2) !important;
-	border: 1px solid @pre-border-color !important;
-	code {
-	    background-color: transparent !important;
-	}
-}
-
-/* Definition list */
-dt,dd {
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
-
-dd {
-	margin-left: 40px;
-}
-
-/* Table style */
-table {
-	margin-bottom: 20px;
-}
-
-table th,table td {
-	padding: 8px;
-	line-height: 20px;
-	text-align: left;
-	vertical-align: top;
-	border-top: 1px solid #dddddd;
-}
-
-table th {
-	font-weight: bold;
-}
-
-table thead th {
-	vertical-align: bottom;
-}
-
-table caption+thead tr:first-child th,table caption+thead tr:first-child td,table colgroup+thead tr:first-child th,table colgroup+thead tr:first-child td,table thead:first-child tr:first-child th,table thead:first-child tr:first-child td
-	{
-	border-top: 0;
-}
-
-table tbody+tbody {
-	border-top: 2px solid #dddddd;
-}
-
-blockquote {
-	border-left-width: 10px;
-	p {
-	    margin-bottom: 20px;
-	    font-size: 14px;
-		font-weight: 300;
-	    line-height: 20px;
-	}
-	
-	ul:last-child,
-	ol:last-child {
-		margin-bottom: 0;
-	}
-} 
-
-ul,ol {
-	margin-bottom: 20px;
-}
-
 input[type="file"] {
 	line-height: inherit;
 	height: inherit;
@@ -1113,6 +1105,26 @@ input[type="file"] {
 	max-width: 530px;
 	height: 120px;
 }
+
+
+/*********************
+ * Bootstrap tour
+ *********************/
+
+.popover {
+	max-width: 400px;
+	padding: 20px;
+	.box-shadow(0 5px 30px rgba(0,0,0,.4));
+	.popover-title {
+		font-weight: @headings-font-weight;
+		font-size: 24px;
+		padding: 5px 15px 10px;
+	}
+	.disabled {
+		display: none;
+	}
+}
+
 
 /********************
  * jGrowl

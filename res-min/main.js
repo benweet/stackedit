@@ -4532,28 +4532,21 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
    var t = document.getElementById("wmd-preview-section-" + e.id);
    b.removeChild(t);
   });
-  var n = document.getElementById("wmd-preview"), i = Array.prototype.slice.call(n.childNodes);
-  n.innerHTML = "";
-  var o = document.createDocumentFragment();
+  var n = document.getElementById("wmd-preview"), i = n.firstChild, o = document.createDocumentFragment();
   e.each(p, function(n) {
    for (var r = t("div", {
     id: "wmd-preview-section-" + n.id,
     "class": "wmd-preview-section preview-content"
-   }), a = !0; 0 !== i.length; ) {
-    var s = i[0];
-    if (a === !1 && /(^| )wmd-title($| )/.test(s.className)) break;
-    if (a = !1, "DIV" == s.tagName && "footnotes" == s.className) e.each(s.querySelectorAll("ol > li"), function(e) {
+   }), a = !0; i; ) {
+    var s = i.nextSibling;
+    if (a === !1 && /(^| )wmd-title($| )/.test(i.className)) break;
+    a = !1, "DIV" == i.tagName && "footnotes" == i.className ? e.each(i.querySelectorAll("ol > li"), function(e) {
      var t = e.id.substring(3);
      y[t] = e;
-    }); else try {
-     r.appendChild(s);
-    } catch (l) {
-     r.appendChild(document.createTextNode(s.innerText));
-    }
-    i.shift();
+    }) : r.appendChild(i), i = s;
    }
    o.appendChild(r);
-  });
+  }), n.innerHTML = "";
   var r = v;
   void 0 !== f && (r = document.getElementById("wmd-preview-section-" + f.id)), b.insertBefore(o, r), 
   v.innerHTML = "";

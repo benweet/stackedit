@@ -114,8 +114,7 @@ define([
         });
 
         var wmdPreviewElt = document.getElementById("wmd-preview");
-        var markdownEltList = Array.prototype.slice.call(wmdPreviewElt.childNodes);
-        wmdPreviewElt.innerHTML = '';
+        var childNode = wmdPreviewElt.firstChild;
         var newSectionEltList = document.createDocumentFragment();
         _.each(modifiedSections, function(section) {
             var sectionElt = crel('div', {
@@ -123,33 +122,28 @@ define([
                 class: 'wmd-preview-section preview-content'
             });
             var isFirst = true;
-            while(markdownEltList.length !== 0) {
-                var elt = markdownEltList[0];
-                if(isFirst === false && /(^| )wmd-title($| )/.test(elt.className)) {
+            while(childNode) {
+                var nextNode = childNode.nextSibling;
+                if(isFirst === false && /(^| )wmd-title($| )/.test(childNode.className)) {
                     // Stop when encountered the next wmd-title
                     break;
                 }
                 isFirst = false;
-                if(elt.tagName == 'DIV' && elt.className == 'footnotes') {
-                    _.each(elt.querySelectorAll("ol > li"), function(footnoteElt) {
+                if(childNode.tagName == 'DIV' && childNode.className == 'footnotes') {
+                    _.each(childNode.querySelectorAll("ol > li"), function(footnoteElt) {
                         // Store each footnote in our footnote map
                         var id = footnoteElt.id.substring(3);
                         footnoteMap[id] = footnoteElt;
                     });
                 }
                 else {
-                    try {
-                        sectionElt.appendChild(elt);
-                    }
-                    catch(e) {
-                        // IE fails with text nodes
-                        sectionElt.appendChild(document.createTextNode(elt.innerText));
-                    }
+                    sectionElt.appendChild(childNode);
                 }
-                markdownEltList.shift();
+                childNode = nextNode;
             };
             newSectionEltList.appendChild(sectionElt);
         });
+        wmdPreviewElt.innerHTML = '';
         var insertBeforeElt = footnoteContainerElt;
         if(insertBeforeSection !== undefined) {
             insertBeforeElt = document.getElementById("wmd-preview-section-" + insertBeforeSection.id);

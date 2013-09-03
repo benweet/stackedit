@@ -134,27 +134,28 @@ if(baseDir.indexOf('-min') !== -1) {
 require([
     "jquery",
     "core",
+    "eventMgr",
     "synchronizer",
     "publisher",
     "mediaImporter",
     "css",
     themeModule,
-], function($, core) {
+], function($, core, eventMgr) {
 
     $(function() {
 
+        // Here, all the modules are loaded and the DOM is ready
+        core.onReady();
+        
         // If browser has detected a new application cache.
         if(window.applicationCache) {
             window.applicationCache.addEventListener('updateready', function(e) {
                 if(window.applicationCache.status === window.applicationCache.UPDATEREADY) {
                     window.applicationCache.swapCache();
-                    window.location.reload();
+                    eventMgr.onMessage('New version available! Please refresh the page to upgrade.');
                 }
             }, false);
         }
-
-        // Here, all the modules are loaded and the DOM is ready
-        core.onReady();
     });
 
 });

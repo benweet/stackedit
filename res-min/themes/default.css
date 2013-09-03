@@ -1351,7 +1351,7 @@ body{tab-size:4}
 .navbar{position:static;padding:0;border:0;border-radius:0}
 .navbar .left-space{width:30px;height:38px}
 .navbar .right-space{width:20px;height:38px}
-.navbar .nav{float:left;margin:6px 10px 0}
+.navbar .nav{float:left;margin:6px 10px;height:38px}
 .navbar .nav>li{display:inline-block}
 .navbar .nav.pull-right{float:right}
 .navbar .nav.pull-right>li>.dropdown-menu{right:0;left:auto}

@@ -29,6 +29,13 @@ You can rename the current document by clicking the document title in the naviga
 
 You can delete the current document by clicking the <i class="icon-trash"></i> button in the navigation bar.
 
+#### <i class="icon-hdd"></i> Save a document
+
+You can save the current document to a file using the <i class="icon-hdd"></i> `Save as...` sub-menu.
+
+> **NOTE:** See [<i class="icon-share"></i> Publish a document](#publish-a-document) section for a description of the different outputs.
+
+
 ----------
 
 
@@ -36,6 +43,9 @@ Synchronization
 ---------------
 
 **StackEdit** can be combined with **Google Drive** and **Dropbox** to have your documents centralized in the *Cloud*. The synchronization mechanism will take care of uploading your modifications or downloading the latest version of your documents.
+
+> **NOTE:** Full access to **Google Drive** or **Dropbox** is required to be able to import any document in StackEdit.
+Imported documents are downloaded in your browser and are not transmitted to a server.
 
 #### <i class="icon-download"></i> Import a document
 
@@ -79,7 +89,7 @@ You can publish your document by going to the <i class="icon-share"></i> `Publis
 - HTML, to publish the document converted into HTML (on a blog for instance),
 - Template, to have a full control of the output.
 
-> **NOTE:** The default template is a simple webpage that wraps your document in HTML format. You can customize it in the `Publish` tab of the <i class="icon-cog"></i> `Settings` dialog.
+> **NOTE:** The default template is a simple webpage wrapping your document in HTML format. You can customize it in the `Publish` tab of the <i class="icon-cog"></i> `Settings` dialog.
 
 #### <i class="icon-share"></i> Update a publication
 
@@ -192,6 +202,11 @@ $$
 \Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
 $$
 
+> **NOTE:** When exporting, make sure you include MathJax to render mathematical expression correctly. Your page/template should include something like: 
+
+```
+<script type="text/javascript" src="http://benweet.github.io/stackedit/lib/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+```
 
 > **NOTE:** You can find more information:
 >

@@ -48,7 +48,7 @@ define([
         }
         options = options || {};
         iconClass = iconClass || "icon-info-circled";
-        jGrowl("<i class='icon-white " + iconClass + "'></i> " + _.escape(message), options);
+        jGrowl("<i class='icon-white " + iconClass + "'></i> " + _.escape(message).replace(/\n/g, '<br/>'), options);
     }
 
     notifications.onMessage = function(message) {

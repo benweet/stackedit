@@ -152,7 +152,7 @@ require([
             window.applicationCache.addEventListener('updateready', function(e) {
                 if(window.applicationCache.status === window.applicationCache.UPDATEREADY) {
                     window.applicationCache.swapCache();
-                    eventMgr.onMessage('New version available! Please refresh the page to upgrade.');
+                    eventMgr.onMessage('New version available.\nPlease refresh the page to upgrade.');
                 }
             }, false);
         }

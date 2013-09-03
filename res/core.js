@@ -561,6 +561,8 @@ define([
             // Focus on the editor when modal is gone
             isModalShown = false;
             $editorElt.focus();
+            // Revert to current theme when settings modal is closed
+            applyTheme(localStorage.theme);
         }).keyup(function(e) {
             // Handle enter key in modals
             if(e.which == 13 && !$(e.target).is("textarea")) {
@@ -629,9 +631,6 @@ define([
         $themeInputElt = $("#input-settings-theme");
         $themeInputElt.on("change", function() {
             applyTheme(this.value);
-        });
-        $(".action-apply-theme").click("change", function() {
-            applyTheme(localStorage.theme);
         });
 
         // Import settings

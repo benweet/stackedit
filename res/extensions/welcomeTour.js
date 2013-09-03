@@ -35,7 +35,7 @@ define([
             {
                 element: ".navbar-inner",
                 title: "Welcome to StackEdit 2.0",
-                content: "Please click <code>Next</code> to start a small tour.",
+                content: "Please click <code>Next</code> to take a quick tour.",
                 placement: "bottom",
             },
             {

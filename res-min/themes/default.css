@@ -1378,7 +1378,7 @@ body{tab-size:4}
 .document-panel .panel-content .icon-layers{font-size:135%}
 .document-panel .search-bar{position:absolute;background-color:#f1f1f1;margin:-10px 25px 0;padding:20px 5px 10px 15px;z-index:3;border:1px solid #e7e7e7;border-top:0;border-radius:6px}
 .document-panel .search-bar .form-control{padding:8px 30px 8px 12px}
-.document-panel .search-bar .close{position:absolute;line-height:10px;margin-left:-30px;margin-top:2px;padding:0 8px 4px;font-weight:normal;height:34px}
+.document-panel .search-bar .close{line-height:10px;margin:2px 0 2px -30px;padding:0 8px 4px;font-weight:normal;height:34px}
 .document-panel .list-group-item{margin:0}
 .document-panel .folder{font-weight:bold;color:#545454;font-size:15px;border-bottom-color:#f1f1f1}
 .document-panel .list-group{margin:0}

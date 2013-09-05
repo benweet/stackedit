@@ -116,11 +116,11 @@ define([
             if(parentId) {
                 // Specify the directory
                 metadata.parents = [
-                    {
-                        kind: 'drive#fileLink',
-                        id: parentId
-                    }
-                ];
+                                    {
+                                        kind: 'drive#fileLink',
+                                        id: parentId
+                                    }
+                                    ];
             }
             var path = '/upload/drive/v2/files';
             var method = 'POST';
@@ -137,22 +137,22 @@ define([
             // if(etag !== undefined) {
             // headers["If-Match"] = etag;
             // }
-
+            
             var base64Data = utils.encodeBase64(content);
             var multipartRequestBody = [
-                delimiter,
-                'Content-Type: application/json\r\n\r\n',
-                JSON.stringify(metadata),
-                delimiter,
-                'Content-Type: ',
-                contentType,
-                '\r\n',
-                'Content-Transfer-Encoding: base64\r\n',
-                '\r\n',
-                base64Data,
-                close_delim
-            ].join("");
-
+                                        delimiter,
+                                        'Content-Type: application/json\r\n\r\n',
+                                        JSON.stringify(metadata),
+                                        delimiter,
+                                        'Content-Type: ',
+                                        contentType,
+                                        '\r\n',
+                                        'Content-Transfer-Encoding: base64\r\n',
+                                        '\r\n',
+                                        base64Data,
+                                        close_delim
+                                        ].join("");
+            
             var request = gapi.client.request({
                 'path': path,
                 'method': method,
@@ -180,6 +180,43 @@ define([
                         // We may have missed a file update
                         localStorage.removeItem("gdrive.lastChangeId");
                         error = 'Conflict on file ID "' + fileId + '". Please restart the synchronization.';
+                    }
+                }
+                handleError(error, task);
+            });
+        });
+        task.onSuccess(function() {
+            callback(undefined, result);
+        });
+        task.onError(function(error) {
+            callback(error);
+        });
+        task.enqueue();
+    };
+    
+    googleHelper.rename = function(fileId, title, callback) {
+        var result = undefined;
+        var task = new AsyncTask();
+        connect(task);
+        authenticate(task);
+        task.onRun(function() {
+            var body = {'title': title};
+            var request = gapi.client.drive.files.patch({
+                'fileId': fileId,
+                'resource': body
+              });
+            request.execute(function(response) {
+                if(response && response.id) {
+                    // Rename success
+                    result = response;
+                    task.chain();
+                    return;
+                }
+                var error = response.error;
+                // Handle error
+                if(error !== undefined && fileId !== undefined) {
+                    if(error.code === 404) {
+                        error = 'File ID "' + fileId + '" not found on Google Drive.|removePublish';
                     }
                 }
                 handleError(error, task);

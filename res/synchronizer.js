@@ -75,14 +75,14 @@ define([
         // Dequeue a synchronized location
         var syncAttributes = uploadSyncAttributesList.pop();
 
-        // Skip real time synchronized location
+        var providerSyncUpFunction = syncAttributes.provider.syncUp;
+        // Call a special function in case of a real time synchronized location
         if(syncAttributes.isRealtime === true) {
-            locationUp(callback);
-            return;
+            providerSyncUpFunction = syncAttributes.provider.syncUpRealtime;
         }
 
         // Use the specified provider to perform the upload
-        syncAttributes.provider.syncUp(uploadContent, uploadContentCRC, uploadTitle, uploadTitleCRC, syncAttributes, function(error, uploadFlag) {
+        providerSyncUpFunction(uploadContent, uploadContentCRC, uploadTitle, uploadTitleCRC, syncAttributes, function(error, uploadFlag) {
             if(uploadFlag === true) {
                 // If uploadFlag is true, request another upload cycle
                 uploadCycle = true;

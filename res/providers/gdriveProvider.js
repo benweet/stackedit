@@ -114,10 +114,8 @@ define([
     };
 
     gdriveProvider.syncUp = function(uploadContent, uploadContentCRC, uploadTitle, uploadTitleCRC, syncAttributes, callback) {
-        var syncContentCRC = syncAttributes.contentCRC;
-        var syncTitleCRC = syncAttributes.titleCRC;
         // Skip if CRC has not changed
-        if(uploadContentCRC == syncContentCRC && uploadTitleCRC == syncTitleCRC) {
+        if(uploadContentCRC == syncAttributes.contentCRC && uploadTitleCRC == syncAttributes.titleCRC) {
             callback(undefined, false);
             return;
         }
@@ -128,6 +126,31 @@ define([
             }
             syncAttributes.etag = result.etag;
             syncAttributes.contentCRC = uploadContentCRC;
+            syncAttributes.titleCRC = uploadTitleCRC;
+            callback(undefined, true);
+        });
+    };
+    
+    gdriveProvider.syncUpRealtime = function(uploadContent, uploadContentCRC, uploadTitle, uploadTitleCRC, syncAttributes, callback) {
+        var uploadFlag = false;
+        if(uploadContentCRC != syncAttributes.contentCRC) {
+            // We don't upload the content since it's a realtime file
+            syncAttributes.contentCRC = uploadContentCRC;
+            // But we still inform synchronizer to update syncAttributes
+            uploadFlag = true;
+        }
+
+        // Skip if title CRC has not changed
+        if(uploadTitleCRC == syncAttributes.titleCRC) {
+            callback(undefined, uploadFlag);
+            return;
+        }
+        googleHelper.rename(syncAttributes.id, uploadTitle, function(error, result) {
+            if(error) {
+                callback(error, true);
+                return;
+            }
+            syncAttributes.etag = result.etag;
             syncAttributes.titleCRC = uploadTitleCRC;
             callback(undefined, true);
         });

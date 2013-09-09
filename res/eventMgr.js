@@ -168,6 +168,7 @@ define([
     // Operations on Layout
     addEventHook("onLayoutConfigure");
     addEventHook("onLayoutCreated");
+    addEventHook("onLayoutResize");
 
     // Operations on PageDown
     addEventHook("onEditorConfigure");

@@ -120,7 +120,7 @@ define([
         });
         version = "v6";
     }
-    
+
     // Upgrade from v6 to v7
     if(version == "v6") {
         var currentFileIndex = localStorage["file.current"];
@@ -130,7 +130,7 @@ define([
         }
         version = "v7";
     }
-    
+
     // Upgrade from v7 to v8
     if(version == "v7") {
         _.each(_.keys(localStorage), function(key) {
@@ -142,6 +142,17 @@ define([
             }
         });
         version = "v8";
+    }
+
+    // Upgrade from v8 to v9
+    if(version == "v8") {
+        _.each(_.keys(localStorage), function(key) {
+            var matchResult = key.match(/file\.\S+\.(editorEnd|editorStart)/);
+            if(matchResult) {
+                localStorage.removeItem(key);
+            }
+        });
+        version = "v9";
     }
 
     localStorage["version"] = version;

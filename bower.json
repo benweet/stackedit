@@ -19,6 +19,7 @@
     "FileSaver": "*",
     "stacktrace": "~0.5.3",
     "requirejs-text": "~2.0.10",
-    "bootstrap-tour": "~0.6.0"
+    "bootstrap-tour": "~0.6.0",
+    "ace": "~1.1.1"
   }
 }

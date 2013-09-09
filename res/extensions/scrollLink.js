@@ -166,11 +166,9 @@ define([
         }
     }, 500);
 
-    scrollLink.onLayoutConfigure = function(layoutConfig) {
-        layoutConfig.onresize = function() {
-            isScrollEditor = true;
-            buildSections();
-        };
+    scrollLink.onLayoutResize = function() {
+        isScrollEditor = true;
+        buildSections();
     };
 
     scrollLink.onReady = function() {

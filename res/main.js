@@ -3,6 +3,11 @@ requirejs.config({
     waitSeconds: 0,
     packages: [
         {
+            name: 'ace',
+            location: 'bower-libs/ace/lib/ace',
+            main: 'ace'
+        },
+        {
             name: 'css',
             location: 'bower-libs/require-css',
             main: 'css'
@@ -146,7 +151,7 @@ require([
 
         // Here, all the modules are loaded and the DOM is ready
         core.onReady();
-        
+
         // If browser has detected a new application cache.
         if(window.applicationCache) {
             window.applicationCache.addEventListener('updateready', function(e) {

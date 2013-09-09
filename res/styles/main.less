@@ -16,6 +16,7 @@
 @primary-color: #333;
 @primary-color-light: lighten(@primary-color, 13%);
 @primary-color-lighter: lighten(@primary-color, 20%);
+@primary-color-lightest: lighten(@primary-color, 40%);
 @primary-color-inv: #fff;
 @bg-navbar-hover: @primary-bg-lighter;
 @error-border: #ff8661;
@@ -102,10 +103,13 @@ body {
 	tab-size: 4;
 }
 
+.ui-layout-east, .ui-layout-south {
+	background-color: @body-bg;
+}
+
 #preview-contents {
 	padding: 15px;
 	margin-bottom: 50px;
-	background-color: @body-bg;
 	.ui-layout-east & {
 		padding-left: 5px;
 	}
@@ -904,8 +908,36 @@ ul,ol {
  * Editor
  *****************************/
  
+.ace-tm .ace_marker-layer .ace_active-line {
+	background-color: @primary-bg-lighter;	
+}
+
+.ace-tm .ace_markup.ace_heading {
+	color: @primary-color-light;
+	font-weight: 900;
+}
+
+.ace-tm .ace_markup.ace_list {
+	color: @primary-color-lightest;
+}
+
+.ace-tm .ace_strong {
+	font-weight: 600;
+}
+
+.ace-tm .ace_emphasis {
+	font-style: italic;
+}
+
+.ace-tm .ace_blockquote {
+	color: @primary-color-lightest;
+	font-style: italic;
+}
+
 #wmd-input {
 	.box-shadow(none);
+	padding: 0;
+	font-weight: 300;
 }
 
 #wmd-input,#md-section-helper {

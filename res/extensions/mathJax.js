@@ -62,7 +62,7 @@ define([
     };
 		
     mathJax.onEditorConfigure = function(editorObject) {
-        preview = document.getElementById("preview-contents");
+        t = document.getElementById("preview-contents");
 
         var converter = editorObject.getConverter();
         converter.hooks.chain("preConversion", p);

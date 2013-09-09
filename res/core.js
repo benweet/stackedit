@@ -2,6 +2,7 @@ define([
     "jquery",
     "underscore",
     "crel",
+    "ace",
     "utils",
     "settings",
     "eventMgr",
@@ -14,7 +15,7 @@ define([
     "config",
     "uilayout",
     "libs/Markdown.Editor"
-], function($, _, crel, utils, settings, eventMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
+], function($, _, crel, ace, utils, settings, eventMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
 
@@ -187,7 +188,55 @@ define([
     }
 
     // Create the layout
+    var aceEditor = undefined;
     function createLayout() {
+        aceEditor = ace.edit("wmd-input");
+        aceEditor.renderer.setShowGutter(false);
+        aceEditor.renderer.setShowPrintMargin(false);
+        aceEditor.renderer.setPrintMarginColumn(false);
+        aceEditor.renderer.setPadding(12);
+        aceEditor.session.setUseWrapMode(true);
+        aceEditor.session.setMode("libs/acemode");
+        // Make bold titles...
+        (function(bgTokenizer) {
+            var worker = bgTokenizer.$worker;
+            bgTokenizer.$worker = function() {
+                bgTokenizer.currentLine = bgTokenizer.currentLine ? bgTokenizer.currentLine - 1 : 0;
+                worker();
+                _.each(bgTokenizer.lines, function(line, i) {
+                    if(i !== 0 && line && line.length !== 0 && line[0].type.indexOf("markup.heading.multi") === 0) {
+                        _.each(bgTokenizer.lines[i-1], function(previousLineObject) {
+                            previousLineObject.type = "markup.heading.prev.multi";
+                        });
+                    }
+                });
+            };
+        })(aceEditor.session.bgTokenizer);
+        
+
+        window.wmdInput = {
+            editor: aceEditor,
+            focus: function() {
+                aceEditor.focus();
+            }
+        };
+        Object.defineProperty(window.wmdInput, 'value', {
+            get: function() {
+                return aceEditor.getValue();
+            },
+            set: function(value) {
+                aceEditor.setValue(value);
+            }
+        });
+        Object.defineProperty(window.wmdInput, 'scrollTop', {
+            get: function() {
+                return aceEditor.renderer.getScrollTop();
+            },
+            set: function(value) {
+                aceEditor.renderer.scrollToY(value);
+            }
+        });
+
         var layoutGlobalConfig = {
             closable: true,
             resizable: false,
@@ -215,6 +264,10 @@ define([
                 else if(paneName == 'east') {
                     setPreviewButtonsVisibility(true);
                 }
+            },
+            onresize: function() {
+                aceEditor.resize();
+                eventMgr.onLayoutResize();
             },
         };
         eventMgr.onLayoutConfigure(layoutGlobalConfig);
@@ -274,33 +327,39 @@ define([
         fileDesc = fileDescParam;
         documentContent = undefined;
         var initDocumentContent = fileDesc.content;
-        $editorElt.val(initDocumentContent);
+
+        aceEditor.setValue(initDocumentContent, -1);
+        _.defer(function() {
+            aceEditor.session.getUndoManager().reset();
+        });
         if(editor !== undefined) {
             // If the editor is already created
-            editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
+            aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
+            aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
+            aceEditor.focus();
             eventMgr.onFileOpen(fileDesc);
             editor.refreshPreview();
             return;
         }
+
         var $previewContainerElt = $(".preview-container");
 
         // Store editor scrollTop on scroll event
-        $editorElt.scroll(function() {
+        aceEditor.session.on('changeScrollTop', function() {
             if(documentContent !== undefined) {
-                fileDesc.editorScrollTop = $(this).scrollTop();
+                fileDesc.editorScrollTop = aceEditor.renderer.getScrollTop();
             }
         });
         // Store editor selection on change
-        $editorElt.bind("keyup mouseup", function() {
+        aceEditor.session.selection.on('changeSelection', function() {
             if(documentContent !== undefined) {
-                fileDesc.editorStart = this.selectionStart;
-                fileDesc.editorEnd = this.selectionEnd;
+                fileDesc.editorSelectRange = aceEditor.getSelectionRange();
             }
         });
         // Store preview scrollTop on scroll event
         $previewContainerElt.scroll(function() {
             if(documentContent !== undefined) {
-                fileDesc.previewScrollTop = $(this).scrollTop();
+                fileDesc.previewScrollTop = $previewContainerElt.scrollTop();
             }
         });
 
@@ -347,7 +406,7 @@ define([
         });
 
         function checkDocumentChanges() {
-            var newDocumentContent = $editorElt.val();
+            var newDocumentContent = aceEditor.getValue();
             if(documentContent !== undefined && documentContent != newDocumentContent) {
                 fileDesc.content = newDocumentContent;
                 eventMgr.onContentChanged(fileDesc);
@@ -361,7 +420,7 @@ define([
                 return function() {
                     if(documentContent === undefined) {
                         makePreview();
-                        $editorElt.scrollTop(fileDesc.editorScrollTop);
+                        //$editorElt.scrollTop(fileDesc.editorScrollTop);
                         $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
                     }
                     else {
@@ -385,7 +444,11 @@ define([
         eventMgr.onEditorConfigure(editor);
         editor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
         editor.run(previewWrapper);
-        editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
+        // editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart,
+        // fileDesc.editorEnd, fileDesc.editorScrollTop);
+        aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
+        aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
+        aceEditor.focus();
 
         // Hide default buttons
         $(".wmd-button-row li").addClass("btn btn-success").css("left", 0).find("span").hide();
@@ -731,7 +794,7 @@ define([
         $("div.dropdown-menu").click(function(e) {
             e.stopPropagation();
         });
-        
+
         // Load images
         _.each(document.querySelectorAll('img'), function(imgElt) {
             var $imgElt = $(imgElt);

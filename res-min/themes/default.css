@@ -1477,7 +1477,7 @@ blockquote{border-left-width:10px}
 blockquote p{margin-bottom:15px;font-size:14px;line-height:20px}
 blockquote ul:last-child,blockquote ol:last-child{margin-bottom:0}
 ul,ol{margin-bottom:15px}
-#wmd-input{-webkit-box-shadow:none;box-shadow:none}
+#wmd-input{-webkit-box-shadow:none;box-shadow:none;background-color:transparent}
 #wmd-input,#md-section-helper{resize:none;border:none !important}
 #md-section-helper{position:absolute;top:-100px;height:1px;padding:0 6px;overflow-y:scroll;z-index:-1}
 .gecko #md-section-helper{height:40px}

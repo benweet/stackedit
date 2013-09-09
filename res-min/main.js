@@ -9773,7 +9773,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
   });
  }, c;
 }), define("text!html/mathJaxSettingsBlock.html", [], function() {
- return '<p>Allows StackEdit to interpret LaTeX mathematical expressions.</p>\n<div class="form-horizontal">\n    <div class="form-group">\n        <label class="col-lg-4 control-label"\n            for="input-mathjax-config-tex">TeX configuration</label>\n        <div class="col-lg-7">\n            <input type="text" id="input-mathjax-config-tex" class="form-control">\n        </div>\n    </div>\n    <div class="form-group">\n        <label class="col-lg-4 control-label"\n            for="input-mathjax-config-tex2jax">tex2jax configuration</label>\n        <div class="col-lg-7">\n            <input type="text" id="input-mathjax-config-tex2jax" class="form-control">\n        </div>\n    </div>\n</div>\n<span class="help-block pull-right"><a target="_blank" href="http://docs.mathjax.org/en/latest/options/">More info</a></span>';
+ return '<p>Allows StackEdit to interpret LaTeX mathematical expressions.</p>\n<div class="form-horizontal">\n    <div class="form-group">\n        <label class="col-lg-4 control-label"\n            for="input-mathjax-config-tex">TeX configuration</label>\n        <div class="col-lg-7">\n            <input type="text" id="input-mathjax-config-tex" class="form-control">\n        </div>\n    </div>\n    <div class="form-group">\n        <label class="col-lg-4 control-label"\n            for="input-mathjax-config-tex2jax">tex2jax configuration</label>\n        <div class="col-lg-7">\n            <input type="text" id="input-mathjax-config-tex2jax" class="form-control">\n        </div>\n    </div>\n</div>\n<span class="help-block pull-right"><a target="_blank" href="http://docs.mathjax.org/en/latest/options/index.html">More info</a></span>';
 }), define("extensions/mathJax", [ "utils", "classes/Extension", "text!html/mathJaxSettingsBlock.html", "mathjax" ], function(utils, Extension, mathJaxSettingsBlockHTML) {
  function b(e, t, n) {
   var r = k.slice(e, t + 1).join("").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -11190,6 +11190,18 @@ function(e) {
    t.restart();
   });
  }, n;
+}), define("extensions/richTextarea", [ "jquery", "underscore", "crel", "utils", "classes/Extension" ], function(e, t, n, i, o) {
+ var r = new o("richTextarea", "Rich Textarea", !1, !0), a = [ "box-sizing", "height", "width", "padding-bottom", "padding-left", "padding-right", "padding-top", "font-family", "font-size", "font-style", "font-variant", "font-weight", "word-spacing", "letter-spacing", "line-height", "text-decoration", "text-indent", "text-transform", "direction" ];
+ return r.onReady = function() {
+  var t = n("div", {
+   style: [ "position    : absolute", "overflow    : auto", "white-space : pre-wrap", "word-wrap   : break-word", "top         : 0", "z-index     : -1", "overflow    : hidden" ].join(";")
+  });
+  document.body.appendChild(t);
+  for (var i, o = e("#wmd-input"), r = {}, s = 0; i = a[s]; s++) r[i] = o.css(i);
+  e(t).css(r).unbind().offset(o.offset()), o.on("keyup paste cut mouseup", function() {
+   e(t).text(o.val()).scrollTop(o.scrollTop()).outerWidth(o[0].clientWidth);
+  });
+ }, r;
 }), function(e) {
  var t = "waitForImages";
  e.waitForImages = {
@@ -11230,7 +11242,7 @@ function(e) {
    });
   });
  };
-}(jQuery), define("jquery-waitforimages", function() {}), define("eventMgr", [ "jquery", "underscore", "crel", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/partialRendering", "extensions/userCustom", "extensions/buttonMarkdownSyntax", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentTitle", "extensions/documentSelector", "extensions/documentPanel", "extensions/documentManager", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonViewer", "extensions/welcomeTour", "bootstrap", "jquery-waitforimages" ], function(e, t, n, i, o, r, a) {
+}(jQuery), define("jquery-waitforimages", function() {}), define("eventMgr", [ "jquery", "underscore", "crel", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/partialRendering", "extensions/userCustom", "extensions/buttonMarkdownSyntax", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentTitle", "extensions/documentSelector", "extensions/documentPanel", "extensions/documentManager", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonViewer", "extensions/welcomeTour", "extensions/richTextarea", "bootstrap", "jquery-waitforimages" ], function(e, t, n, i, o, r, a) {
  function s(e) {
   return t.chain(d).map(function(t) {
    return t.enabled && t[e];
@@ -16214,6 +16226,26 @@ function(e) {
   }), p.onError(function(e) {
    u(e);
   }), p.enqueue();
+ }, d.rename = function(e, t, n) {
+  var i = void 0, l = new o();
+  r(l), a(l), l.onRun(function() {
+   var n = {
+    title: t
+   }, o = gapi.client.drive.files.patch({
+    fileId: e,
+    resource: n
+   });
+   o.execute(function(t) {
+    if (t && t.id) return i = t, l.chain(), void 0;
+    var n = t.error;
+    void 0 !== n && void 0 !== e && 404 === n.code && (n = 'File ID "' + e + '" not found on Google Drive.|removePublish'), 
+    s(n, l);
+   });
+  }), l.onSuccess(function() {
+   n(void 0, i);
+  }), l.onError(function(e) {
+   n(e);
+  }), l.enqueue();
  }, d.createRealtimeFile = function(e, t, n) {
   var i = void 0, l = new o();
   r(l), a(l), l.onRun(function() {
@@ -16518,10 +16550,16 @@ function(e) {
    o(void 0, r);
   });
  }, d.syncUp = function(e, t, n, i, o, r) {
-  var s = o.contentCRC, l = o.titleCRC;
-  return t == s && i == l ? (r(void 0, !1), void 0) : (a.upload(o.id, void 0, n, e, o.etag, function(e, n) {
+  return t == o.contentCRC && i == o.titleCRC ? (r(void 0, !1), void 0) : (a.upload(o.id, void 0, n, e, o.etag, function(e, n) {
    return e ? (r(e, !0), void 0) : (o.etag = n.etag, o.contentCRC = t, o.titleCRC = i, 
    r(void 0, !0), void 0);
+  }), void 0);
+ }, d.syncUpRealtime = function(e, t, n, i, o, r) {
+  var s = !1;
+  return t != o.contentCRC && (o.contentCRC = t, s = !0), i == o.titleCRC ? (r(void 0, s), 
+  void 0) : (a.rename(o.id, n, function(e, t) {
+   return e ? (r(e, !0), void 0) : (o.etag = t.etag, o.titleCRC = i, r(void 0, !0), 
+   void 0);
   }), void 0);
  }, d.syncDown = function(n) {
   var i = parseInt(localStorage[u + ".lastChangeId"]);
@@ -16636,11 +16674,11 @@ function(e) {
 }), define("synchronizer", [ "jquery", "underscore", "utils", "eventMgr", "fileSystem", "fileMgr", "classes/Provider", "providers/dropboxProvider", "providers/gdriveProvider" ], function(e, t, n, i, o, r, a) {
  function s(e) {
   if (0 === b.length) return l(e), void 0;
-  var t = b.pop();
-  return t.isRealtime === !0 ? (s(e), void 0) : (t.provider.syncUp(y, x, w, C, t, function(i, o) {
+  var t = b.pop(), i = t.provider.syncUp;
+  t.isRealtime === !0 && (i = t.provider.syncUpRealtime), i(y, x, w, C, t, function(i, o) {
    return o === !0 && (S = !0), i ? (e(i), void 0) : (o && n.storeAttributes(t), s(e), 
    void 0);
-  }), void 0);
+  });
  }
  function l(e) {
   if (0 === k.length) return c(e), void 0;

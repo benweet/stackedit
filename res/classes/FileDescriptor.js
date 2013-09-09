@@ -18,7 +18,7 @@ define([
                 return new Range(rangeComponents[0], rangeComponents[1], rangeComponents[2], rangeComponents[3]);
             }
             catch(e) {
-                return new Range();
+                return new Range(0, 0, 0, 0);
             }
         })();
         this._editorEnd = parseInt(localStorage[fileIndex + ".editorEnd"]) || 0;

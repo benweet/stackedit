@@ -61,7 +61,7 @@ define([
         });
     };
 		
-    mathJax.onEditorConfigure = function(editorObject) {
+    mathJax.onPagedownConfigure = function(editorObject) {
         t = document.getElementById("preview-contents");
 
         var converter = editorObject.getConverter();

@@ -135,11 +135,11 @@
             panels;
 
         var undoManager;
-        this.run = function (previewWrapper) {
+        this.run = function (aceEditor, previewWrapper) {
             if (panels)
                 return; // already initialized
 
-            panels = new PanelCollection(idPostfix);
+            panels = new PanelCollection(idPostfix, aceEditor);
             var commandManager = new CommandManager(hooks, getString);
             var previewManager = new PreviewManager(markdownConverter, panels, function () { hooks.onPreviewRefresh(); }, previewWrapper);
             var uiManager;
@@ -318,10 +318,10 @@
     // This ONLY affects Internet Explorer (tested on versions 6, 7
     // and 8) and ONLY on button clicks.  Keyboard shortcuts work
     // normally since the focus never leaves the textarea.
-    function PanelCollection(postfix) {
+    function PanelCollection(postfix, aceEditor) {
         this.buttonBar = doc.getElementById("wmd-button-bar" + postfix);
         this.preview = doc.getElementById("wmd-preview" + postfix);
-        this.input = window.wmdInput;
+        this.input = aceEditor;
     };
 
     // Returns true if the DOM element is visible, false if it's hidden.
@@ -467,6 +467,7 @@
         return [maxWidth, maxHeight, innerWidth, innerHeight];
     };
 
+    /*benweet
     // Handles pushing and popping TextareaStates for undo/redo commands.
     // I should rename the stack variables to list.
     function UndoManager(callback, panels) {
@@ -717,6 +718,7 @@
     }
 
     // end of UndoManager
+    */
 
     // The input textarea state/contents.
     // This is used to implement undo/redo by the undo manager.
@@ -737,14 +739,14 @@
 
             var Range = require('ace/range').Range;
             (function(range) {
-                stateObj.before = inputArea.editor.session.getTextRange(new Range(0,0,range.start.row, range.start.column));
-                stateObj.selection = inputArea.editor.session.getTextRange();
-                stateObj.after = inputArea.editor.session.getTextRange(new Range(range.end.row, range.end.column, Number.MAX_VALUE, Number.MAX_VALUE));
-            })(inputArea.editor.selection.getRange());
+                stateObj.before = inputArea.session.getTextRange(new Range(0,0,range.start.row, range.start.column));
+                stateObj.selection = inputArea.session.getTextRange();
+                stateObj.after = inputArea.session.getTextRange(new Range(range.end.row, range.end.column, Number.MAX_VALUE, Number.MAX_VALUE));
+            })(inputArea.selection.getRange());
             this.text = [this.before, this.selection, this.after].join('');
             this.length = this.text.length;
             this.setInputAreaSelectionStartEnd();
-            this.scrollTop = inputArea.scrollTop;
+            this.scrollTop = inputArea.renderer.getScrollTop();
             /*benweet
             if (!this.text && inputArea.selectionStart || inputArea.selectionStart === 0) {
                 this.text = inputArea.value;
@@ -757,11 +759,11 @@
         this.setInputAreaSelection = function () {
 
             var Range = require('ace/range').Range;
-            inputArea.editor.selection.setSelectionRange((function(posStart, posEnd) {
+            inputArea.selection.setSelectionRange((function(posStart, posEnd) {
                 return new Range(posStart.row, posStart.column, posEnd.row, posEnd.column);
-            })(inputArea.editor.session.doc.indexToPosition(stateObj.start), inputArea.editor.session.doc.indexToPosition(stateObj.end)));
-            inputArea.editor.renderer.scrollToY(stateObj.scrollTop);
-            inputArea.editor.focus();
+            })(inputArea.session.doc.indexToPosition(stateObj.start), inputArea.session.doc.indexToPosition(stateObj.end)));
+            inputArea.renderer.scrollToY(stateObj.scrollTop);
+            inputArea.focus();
             
             /*benweet
             if (!util.isVisible(inputArea)) {
@@ -871,8 +873,8 @@
             var Range = require('ace/range').Range;
             var range = (function(posStart, posEnd) {
                 return new Range(posStart.row, posStart.column, posEnd.row, posEnd.column);
-            })(inputArea.editor.session.doc.indexToPosition(startIndex), inputArea.editor.session.doc.indexToPosition(stateObj.length - endIndex));
-            inputArea.editor.session.replace(range, stateObj.text.substring(startIndex, afterMaxOffset - endIndex + 1));
+            })(inputArea.session.doc.indexToPosition(startIndex), inputArea.session.doc.indexToPosition(stateObj.length - endIndex));
+            inputArea.session.replace(range, stateObj.text.substring(startIndex, afterMaxOffset - endIndex + 1));
             this.setInputAreaSelection();
 
             /*benweet
@@ -960,7 +962,7 @@
                 return;
 
 
-            var text = panels.input.value;
+            var text = panels.input.getValue();
             if (text && text == oldInputText) {
                 return; // Input text hasn't changed.
             }
@@ -1103,7 +1105,7 @@
             /*benweet
             setupEvents(panels.input, applyTimeout);
             */
-            panels.input.editor.session.on('change', applyTimeout);
+            panels.input.session.on('change', applyTimeout);
             //Not necessary
             //makePreviewHtml();
 
@@ -1330,7 +1332,7 @@
                 return;
             }
             var identifier = identifierList.pop();
-            inputBox.editor.commands.addCommand({
+            inputBox.commands.addCommand({
                 name: getString(identifier),
                 bindKey: {win: 'Ctrl-' + keyStrokes[identifier],  mac: 'Command-' + keyStrokes[identifier]},
                 exec: function(editor) {
@@ -1530,7 +1532,7 @@
                             return;
                         }
                         panels.ieCachedRange = document.selection.createRange();
-                        panels.ieCachedScrollTop = panels.input.scrollTop;
+                        panels.ieCachedScrollTop = panels.input.renderer.getScrollTop();
                     };
                 }
 
@@ -1617,10 +1619,10 @@
             buttons.hr = makeButton("wmd-hr-button", getStringAndKey("hr"), "-180px", bindCommand("doHorizontalRule"));
             makeSpacer(3);
             buttons.undo = makeButton("wmd-undo-button", getStringAndKey("undo"), "-200px", null);
-            buttons.undo.execute = function (manager) { inputBox.editor.session.getUndoManager().undo(); };
+            buttons.undo.execute = function (manager) { inputBox.session.getUndoManager().undo(); };
 
             buttons.redo = makeButton("wmd-redo-button", getStringAndKey("redo"), "-220px", null);
-            buttons.redo.execute = function (manager) { inputBox.editor.session.getUndoManager().redo(); };
+            buttons.redo.execute = function (manager) { inputBox.session.getUndoManager().redo(); };
 
             if (helpOptions) {
                 var helpButton = document.createElement("li");
@@ -1640,7 +1642,7 @@
             }
 
             setUndoRedoButtonStates();
-            inputBox.editor.session.on('change', setUndoRedoButtonStates);
+            inputBox.session.on('change', setUndoRedoButtonStates);
         }
 
         function setUndoRedoButtonStates() {
@@ -1651,8 +1653,8 @@
             }
             */
             setTimeout(function() {
-                setupButton(buttons.undo, inputBox.editor.session.getUndoManager().hasUndo());
-                setupButton(buttons.redo, inputBox.editor.session.getUndoManager().hasRedo());
+                setupButton(buttons.undo, inputBox.session.getUndoManager().hasUndo());
+                setupButton(buttons.redo, inputBox.session.getUndoManager().hasRedo());
             }, 0);
         };
 

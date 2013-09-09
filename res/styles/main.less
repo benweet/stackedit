@@ -16,7 +16,7 @@
 @primary-color: #333;
 @primary-color-light: lighten(@primary-color, 13%);
 @primary-color-lighter: lighten(@primary-color, 20%);
-@primary-color-lightest: lighten(@primary-color, 40%);
+@primary-color-lightest: lighten(@primary-color, 33%);
 @primary-color-inv: #fff;
 @bg-navbar-hover: @primary-bg-lighter;
 @error-border: #ff8661;
@@ -908,6 +908,10 @@ ul,ol {
  * Editor
  *****************************/
  
+.ace_editor {
+	color: @primary-color-light;
+}
+
 .ace-tm .ace_marker-layer .ace_active-line {
 	background-color: @primary-bg-lighter;	
 }
@@ -932,6 +936,10 @@ ul,ol {
 .ace-tm .ace_blockquote {
 	color: @primary-color-lightest;
 	font-style: italic;
+}
+
+.ace-tm .ace_description {
+	color: @primary-color-lightest;
 }
 
 #wmd-input {

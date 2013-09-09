@@ -274,7 +274,7 @@ define([
 
     // Keep a link to the pagedown editor
     var editor = undefined;
-    eventMgr.addListener("onEditorConfigure", function(editorParam) {
+    eventMgr.addListener("onPagedownConfigure", function(editorParam) {
         editor = editorParam;
     });
 

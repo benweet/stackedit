@@ -29,6 +29,11 @@ define([
         newConfig.shortcutNext = utils.getInputTextValue("#input-document-selector-shortcut-next", event);
     };
 
+    var aceEditor = undefined;
+    documentSelector.onAceCreated = function(aceEditorParam) {
+        aceEditor = aceEditorParam;
+    };
+
     var fileMgr = undefined;
     documentSelector.onFileMgrCreated = function(fileMgrParameter) {
         fileMgr = fileMgrParameter;
@@ -41,7 +46,6 @@ define([
         '   </a>',
         '</li>'
     ].join('');
-    var $editorElt = undefined;
     var dropdownElt = undefined;
     var liEltMap = undefined;
     var liEltList = undefined;
@@ -70,7 +74,7 @@ define([
                     fileMgr.selectFile(fileDesc);
                 }
                 else {
-                    $editorElt.focus();
+                    aceEditor.focus();
                 }
             });
         });
@@ -91,8 +95,6 @@ define([
     documentSelector.onPublishRemoved = buildSelector;
 
     documentSelector.onReady = function() {
-        $editorElt = $("#wmd-input");
-
         if(documentSelector.config.orderBy == "title") {
             sortFunction = function(fileDesc) {
                 return fileDesc.title.toLowerCase();

@@ -10,14 +10,17 @@ define([
     var scrollLink = new Extension("scrollLink", "Scroll Link", true, true);
     scrollLink.settingsBlock = scrollLinkSettingsBlockHTML;
 
+    var aceEditor = undefined;
+    scrollLink.onAceCreated = function(aceEditorParam) {
+        aceEditor = aceEditorParam;
+    };
+
     var sectionList = undefined;
     scrollLink.onSectionsCreated = function(sectionListParam) {
         sectionList = sectionListParam;
     };
 
-    var $editorElt = undefined;
     var $previewElt = undefined;
-    var $textareaElt = undefined;
     var mdSectionList = [];
     var htmlSectionList = [];
     function pxToFloat(px) {
@@ -27,57 +30,21 @@ define([
     var lastPreviewScrollTop = undefined;
     var buildSections = _.debounce(function() {
 
-        // Try to find Markdown sections by looking for titles
         mdSectionList = [];
-        // It has to be the same width as wmd-input
-        $textareaElt.width($editorElt.width());
-        // Consider wmd-input top padding (will be used for 1st and last
-        // section)
-        var padding = pxToFloat($editorElt.css('padding-top'));
+        var mdTextOffset = 0;
         var mdSectionOffset = 0;
-        function addMdSection(sectionText) {
-            var sectionHeight = padding;
-            if(sectionText !== undefined) {
-                $textareaElt.val(sectionText);
-                sectionHeight += $textareaElt.prop('scrollHeight');
-            }
-            var newSectionOffset = mdSectionOffset + sectionHeight;
+        _.each(sectionList, function(sectionText) {
+            mdTextOffset += sectionText.length;
+            var documentPosition = aceEditor.session.doc.indexToPosition(mdTextOffset);
+            var screenPosition = aceEditor.session.documentToScreenPosition(documentPosition.row, documentPosition.column);
+            var newSectionOffset = screenPosition.row * aceEditor.renderer.lineHeight;
+            var sectionHeight = newSectionOffset - mdSectionOffset;
             mdSectionList.push({
                 startOffset: mdSectionOffset,
                 endOffset: newSectionOffset,
                 height: sectionHeight
             });
             mdSectionOffset = newSectionOffset;
-            padding = 0;
-        }
-        _.each(sectionList, function(sectionText, index) {
-            if(index !== sectionList.length - 1) {
-                if(sectionText.length === 0) {
-                    sectionText = undefined;
-                }
-                else {
-                    // Remove the last \n preceding the next title
-                    sectionText = sectionText.substring(0, sectionText.length - 1);
-                }
-            }
-            else {
-                // Last section
-                // Consider wmd-input bottom padding and keep last empty line
-                padding += pxToFloat($editorElt.css('padding-bottom'));
-            }
-            addMdSection(sectionText);
-        });
-        
-        // Apply a coef to manage divergence in some browsers
-        var theoricalHeight = _.last(mdSectionList).endOffset;
-        var realHeight = $editorElt[0].scrollHeight;
-        var coef = realHeight/theoricalHeight;
-        mdSectionList = _.map(mdSectionList, function(mdSection) {
-            return {
-                startOffset: mdSection.startOffset * coef,
-                endOffset: mdSection.endOffset * coef,
-                height: mdSection.height * coef,
-            };
         });
 
         // Try to find corresponding sections in the preview
@@ -114,11 +81,13 @@ define([
     var isScrollPreview = false;
     var doScrollLink = _.debounce(function() {
         if(mdSectionList.length === 0 || mdSectionList.length !== htmlSectionList.length) {
+            // Delay
+            doScrollLink();
             return;
         }
-        var editorScrollTop = $editorElt.scrollTop();
+        var editorScrollTop = aceEditor.renderer.getScrollTop();
         var previewScrollTop = $previewElt.scrollTop();
-        function animate(srcScrollTop, srcSectionList, destElt, destSectionList, currentDestScrollTop, callback) {
+        function getDestScrollTop(srcScrollTop, srcSectionList, destSectionList) {
             // Find the section corresponding to the offset
             var sectionIndex = undefined;
             var srcSection = _.find(srcSectionList, function(section, index) {
@@ -131,38 +100,56 @@ define([
             }
             var posInSection = (srcScrollTop - srcSection.startOffset) / srcSection.height;
             var destSection = destSectionList[sectionIndex];
-            var destScrollTop = destSection.startOffset + destSection.height * posInSection;
-            destScrollTop = _.min([
-                destScrollTop,
-                destElt.prop('scrollHeight') - destElt.outerHeight()
-            ]);
-            if(Math.abs(destScrollTop - currentDestScrollTop) <= 9) {
-                // Skip the animation if diff is <= 9
-                callback(currentDestScrollTop);
-                return;
-            }
-            destElt.animate({
-                scrollTop: destScrollTop
-            }, 500, function() {
-                callback(destScrollTop);
-            });
+            return destSection.startOffset + destSection.height * posInSection;
         }
         // Perform the animation if diff > 9px
         if(isScrollEditor === true && Math.abs(editorScrollTop - lastEditorScrollTop) > 9) {
             isScrollEditor = false;
             // Animate the preview
             lastEditorScrollTop = editorScrollTop;
-            animate(editorScrollTop, mdSectionList, $previewElt, htmlSectionList, previewScrollTop, function(destScrollTop) {
-                lastPreviewScrollTop = destScrollTop;
-            });
+            var destScrollTop = getDestScrollTop(editorScrollTop, mdSectionList, htmlSectionList);
+            destScrollTop = _.min([
+                destScrollTop,
+                $previewElt.prop('scrollHeight') - $previewElt.outerHeight()
+            ]);
+            if(Math.abs(destScrollTop - previewScrollTop) <= 9) {
+                // Skip the animation if diff is <= 9
+                lastPreviewScrollTop = previewScrollTop;
+            }
+            else {
+                $previewElt.animate({
+                    scrollTop: destScrollTop
+                }, 'easeOutQuad', function() {
+                    lastPreviewScrollTop = destScrollTop;
+                });
+            }
         }
         else if(isScrollPreview === true && Math.abs(previewScrollTop - lastPreviewScrollTop) > 9) {
             isScrollPreview = false;
             // Animate the editor
             lastPreviewScrollTop = previewScrollTop;
-            animate(previewScrollTop, htmlSectionList, $editorElt, mdSectionList, editorScrollTop, function(destScrollTop) {
-                lastEditorScrollTop = destScrollTop;
-            });
+            var destScrollTop = getDestScrollTop(previewScrollTop, htmlSectionList, mdSectionList);
+            destScrollTop = _.min([
+                destScrollTop,
+                aceEditor.session.getScreenLength() * aceEditor.renderer.lineHeight - aceEditor.renderer.$size.scrollerHeight
+            ]);
+            if(Math.abs(destScrollTop - editorScrollTop) <= 9) {
+                // Skip the animation if diff is <= 9
+                lastEditorScrollTop = editorScrollTop;
+            }
+            else {
+                $("<div>").animate({
+                    value: destScrollTop - editorScrollTop
+                }, {
+                    easing: 'easeOutQuad',
+                    step: function(now) {
+                        aceEditor.session.setScrollTop(editorScrollTop + now);
+                    },
+                    complete: function() {
+                        lastEditorScrollTop = destScrollTop;
+                    }
+                });
+            }
         }
     }, 500);
 
@@ -171,13 +158,13 @@ define([
         buildSections();
     };
 
+    scrollLink.onFileClosed = function() {
+        mdSectionList = [];
+    };
+
     scrollLink.onReady = function() {
-        $editorElt = $("#wmd-input");
         $previewElt = $(".preview-container");
-        
-        // This textarea is used to measure sections height
-        $textareaElt = $("#md-section-helper");
-        
+
         $previewElt.bind("keyup mouseup mousewheel", function() {
             isScrollPreview = true;
             isScrollEditor = false;
@@ -188,15 +175,15 @@ define([
             isScrollEditor = false;
             doScrollLink();
         });
-        $editorElt.bind("keyup mouseup mousewheel", function() {
+        aceEditor.session.on("changeScrollTop", function(e) {
             isScrollEditor = true;
             isScrollPreview = false;
             doScrollLink();
         });
     };
-
+    
     var $previewContentsElt = undefined;
-    scrollLink.onEditorConfigure = function(editor) {
+    scrollLink.onPagedownConfigure = function(editor) {
         $previewContentsElt = $("#preview-contents");
         editor.getConverter().hooks.chain("postConversion", function(text) {
             // To avoid losing scrolling position before elements are fully

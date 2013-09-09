@@ -55,13 +55,13 @@ var MarkdownHighlightRules = function() {
             token : "support.function",
             regex : "(`+)(.*?[^`])(\\1)"
         }, { // reference
-            token : ["text", "constant", "text", "url", "string", "text"],
+            token : ["text", "reference", "text", "markup.underline", "description", "text"],
             regex : "^([ ]{0,3}\\[)([^\\]]+)(\\]:\\s*)([^ ]+)(\\s*(?:[\"][^\"]+[\"])?(\\s*))$"
         }, { // link by reference
-            token : ["text", "string", "text", "constant", "text"],
+            token : ["text", "description", "text", "markup.underline", "text"],
             regex : "(\\[)((?:[[^\\]]*\\]|[^\\[\\]])*)(\\][ ]?(?:\\n[ ]*)?\\[)(.*?)(\\])"
         }, { // link by url
-            token : ["text", "string", "text", "markup.underline", "string", "text"],
+            token : ["text", "description", "text", "markup.underline", "string", "text"],
             regex : "(\\[)"+
                     "(\\[[^\\]]*\\]|[^\\[\\]]*)"+
                     "(\\]\\([ \\t]*)"+

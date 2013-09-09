@@ -172,7 +172,7 @@ define([
         }
     }
 
-    partialRendering.onEditorConfigure = function(editor) {
+    partialRendering.onPagedownConfigure = function(editor) {
         converter = editor.getConverter();
         converter.hooks.chain("preConversion", function(text) {
             var result = _.map(modifiedSections, function(section) {

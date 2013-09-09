@@ -171,8 +171,11 @@ define([
     addEventHook("onLayoutResize");
 
     // Operations on PageDown
-    addEventHook("onEditorConfigure");
+    addEventHook("onPagedownConfigure");
     addEventHook("onSectionsCreated");
+    
+    // Operation on ACE
+    addEventHook("onAceCreated");
 
     var onPreviewFinished = createEventHook("onPreviewFinished");
     var onAsyncPreviewListenerList = getExtensionListenerList("onAsyncPreview");

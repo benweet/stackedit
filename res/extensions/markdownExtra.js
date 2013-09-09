@@ -44,7 +44,7 @@ define([
         newConfig.highlighter = utils.getInputValue("#input-markdownextra-highlighter");
     };
 
-    markdownExtra.onEditorConfigure = function(editor) {
+    markdownExtra.onPagedownConfigure = function(editor) {
         var converter = editor.getConverter();
         var options = {
             extensions: markdownExtra.config.extensions

@@ -114,7 +114,7 @@ define([
         return '<div class="toc">\n<ul>\n' + elementList.join("") + '</ul>\n</div>\n';
     }
 
-    toc.onEditorConfigure = function(editor) {
+    toc.onPagedownConfigure = function(editor) {
         previewContentsElt = document.getElementById('preview-contents');
         var tocEltList = document.querySelectorAll('.table-of-contents');
         var tocExp = new RegExp("^" + toc.config.marker + "$", "g");

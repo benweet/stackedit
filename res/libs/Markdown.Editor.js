@@ -1320,6 +1320,14 @@
         var inputBox = panels.input,
             buttons = {}; // buttons.undo, buttons.link, etc. The actual DOM elements.
 
+        this.setUndoRedoButtonStates = function() {
+            setTimeout(function() {
+                setupButton(buttons.undo, inputBox.session.getUndoManager().hasUndo());
+                setupButton(buttons.redo, inputBox.session.getUndoManager().hasRedo());
+            }, 50);
+        };
+
+        var that = this;
         makeSpritedButtonRow();
 
         var keyEvent = "keydown";
@@ -1641,24 +1649,12 @@
                 buttons.help = helpButton;
             }
 
-            setUndoRedoButtonStates();
-            inputBox.session.on('change', setUndoRedoButtonStates);
+            that.setUndoRedoButtonStates();
+            inputBox.session.on('change', function() {
+                that.setUndoRedoButtonStates();
+            });
         }
 
-        function setUndoRedoButtonStates() {
-            /*benweet
-            if (undoManager) {
-                setupButton(buttons.undo, undoManager.canUndo());
-                setupButton(buttons.redo, undoManager.canRedo());
-            }
-            */
-            setTimeout(function() {
-                setupButton(buttons.undo, inputBox.session.getUndoManager().hasUndo());
-                setupButton(buttons.redo, inputBox.session.getUndoManager().hasRedo());
-            }, 0);
-        };
-
-        this.setUndoRedoButtonStates = setUndoRedoButtonStates;
         this.buttons = buttons;
         this.setButtonState = setupButton;
 

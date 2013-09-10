@@ -455,8 +455,6 @@ define([
         eventMgr.onPagedownConfigure(editor);
         editor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
         editor.run(aceEditor, previewWrapper);
-        // editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart,
-        // fileDesc.editorEnd, fileDesc.editorScrollTop);
         aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
         aceEditor.focus();
 

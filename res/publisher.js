@@ -295,7 +295,7 @@ define([
 
         // Save As menu items
         $(".action-download-md").click(function() {
-            var content = document.getElementById("wmd-input").value;
+            var content = fileMgr.currentFile.content;
             var title = fileMgr.currentFile.title;
             utils.saveAs(content, title + ".md");
         });

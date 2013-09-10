@@ -132,17 +132,9 @@ define([
     };
     
     gdriveProvider.syncUpRealtime = function(uploadContent, uploadContentCRC, uploadTitle, uploadTitleCRC, syncAttributes, callback) {
-        var uploadFlag = false;
-        if(uploadContentCRC != syncAttributes.contentCRC) {
-            // We don't upload the content since it's a realtime file
-            syncAttributes.contentCRC = uploadContentCRC;
-            // But we still inform synchronizer to update syncAttributes
-            uploadFlag = true;
-        }
-
         // Skip if title CRC has not changed
         if(uploadTitleCRC == syncAttributes.titleCRC) {
-            callback(undefined, uploadFlag);
+            callback(undefined, false);
             return;
         }
         googleHelper.rename(syncAttributes.id, uploadTitle, function(error, result) {
@@ -272,17 +264,36 @@ define([
         return publishAttributes;
     };
 
-    // Keep a link to the pagedown editor
-    var editor = undefined;
-    eventMgr.addListener("onPagedownConfigure", function(editorParam) {
-        editor = editorParam;
+    // Keep a link to the Pagedown editor
+    var pagedownEditor = undefined;
+    eventMgr.addListener("onPagedownConfigure", function(pagedownEditorParam) {
+        pagedownEditor = pagedownEditorParam;
     });
 
     // Start realtime synchronization
     var realtimeDocument = undefined;
-    var realtimeBinding = undefined;
+    var realtimeString = undefined;
     var undoExecute = undefined;
     var redoExecute = undefined;
+    var setUndoRedoButtonStates = undefined;
+    // Keep a link to the ACE editor
+    var aceEditor = undefined;
+    var isAceUpToDate = false;
+    eventMgr.addListener('onAceCreated', function(aceEditorParam) {
+        aceEditor = aceEditorParam;
+        // Listen to editor's changes
+        aceEditor.session.on('change', function(e) {
+            if(realtimeString !== undefined) {
+                // Update the real time model]
+                // The flag is used to avoid replaying editor's own modifications (assuming it's synchronous)
+                isAceUpToDate = true;
+                realtimeString.setText(aceEditor.getValue());
+                isAceUpToDate = false;
+            }
+        });
+    });
+
+    var Range = require('ace/range').Range;
     gdriveProvider.startRealtimeSync = function(fileDesc, syncAttributes) {
         googleHelper.loadRealtime(syncAttributes.id, fileDesc.content, function(err, doc) {
             if(err || !doc) {
@@ -298,27 +309,46 @@ define([
             logger.log("Starting Google Drive realtime synchronization");
             realtimeDocument = doc;
             var model = realtimeDocument.getModel();
-            var string = model.getRoot().get('content');
+            realtimeString = model.getRoot().get('content');
 
             // Saves model content checksum
             function updateContentState() {
-                syncAttributes.contentCRC = utils.crc32(string.getText());
+                syncAttributes.contentCRC = utils.crc32(realtimeString.getText());
                 utils.storeAttributes(syncAttributes);
             }
 
-            var debouncedRefreshPreview = _.debounce(editor.refreshPreview, 100);
-            // Called when a modification has been detected
-            function contentChangeListener(e) {
-                // If modification comes down from a collaborator
+            // Listen to insert text events
+            realtimeString.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, function(e) {
+                if(isAceUpToDate === true) {
+                    // Don't need to update ACE if modifications come from the editor
+                    return;
+                }
+                // Update ACE editor
+                var position = aceEditor.session.doc.indexToPosition(e.index);
+                aceEditor.session.insert(position, e.text);
+                // If modifications come down from a collaborator
                 if(e.isLocal === false) {
                     logger.log("Google Drive realtime document updated from server");
                     updateContentState();
-                    debouncedRefreshPreview();
                 }
-            }
-            // Listen to text changed events
-            string.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, contentChangeListener);
-            string.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, contentChangeListener);
+            });
+            // Listen to delete text events
+            realtimeString.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, function(e) {
+                if(isAceUpToDate === true) {
+                    // Don't need to update ACE if modifications come from the editor
+                    return;
+                }
+                // Update ACE editor
+                var range = (function(posStart, posEnd) {
+                    return new Range(posStart.row, posStart.column, posEnd.row, posEnd.column);
+                })(aceEditor.session.doc.indexToPosition(e.index), aceEditor.session.doc.indexToPosition(e.index + e.text.length));
+                aceEditor.session.remove(range);
+                // If modifications come down from a collaborator
+                if(e.isLocal === false) {
+                    logger.log("Google Drive realtime document updated from server");
+                    updateContentState();
+                }
+            });
             realtimeDocument.addEventListener(gapi.drive.realtime.EventType.DOCUMENT_SAVE_STATE_CHANGED, function(e) {
                 // Save success event
                 if(e.isPending === false && e.isSaving === false) {
@@ -330,7 +360,7 @@ define([
             // Try to merge offline modifications
             var localContent = fileDesc.content;
             var localContentChanged = syncAttributes.contentCRC != utils.crc32(localContent);
-            var remoteContent = string.getText();
+            var remoteContent = realtimeString.getText();
             var remoteContentCRC = utils.crc32(remoteContent);
             var remoteContentChanged = syncAttributes.contentCRC != remoteContentCRC;
             var fileContentChanged = localContent != remoteContent;
@@ -342,39 +372,40 @@ define([
                 }
                 else {
                     // Add local modifications if no collaborators change
-                    string.setText(localContent);
+                    realtimeString.setText(localContent);
                 }
             }
-
-            // Binds model with textarea
-            realtimeBinding = gapi.drive.realtime.databinding.bindString(string, document.getElementById("wmd-input"));
-
             // Update content state according to collaborators changes
             if(remoteContentChanged === true) {
                 logger.log("Google Drive realtime document updated from server");
+                aceEditor.setValue(remoteContent);
                 updateContentState();
-                debouncedRefreshPreview();
             }
 
             // Save undo/redo buttons actions
-            undoExecute = editor.uiManager.buttons.undo.execute;
-            redoExecute = editor.uiManager.buttons.redo.execute;
+            undoExecute = pagedownEditor.uiManager.buttons.undo.execute;
+            redoExecute = pagedownEditor.uiManager.buttons.redo.execute;
+            setUndoRedoButtonStates = pagedownEditor.uiManager.setUndoRedoButtonStates;
 
             // Set new actions for undo/redo buttons
-            editor.uiManager.buttons.undo.execute = function() {
+            pagedownEditor.uiManager.buttons.undo.execute = function() {
                 model.canUndo && model.undo();
             };
-            editor.uiManager.buttons.redo.execute = function() {
+            pagedownEditor.uiManager.buttons.redo.execute = function() {
                 model.canRedo && model.redo();
             };
 
             // Add event handler for model's UndoRedoStateChanged events
-            function setUndoRedoState() {
-                editor.uiManager.setButtonState(editor.uiManager.buttons.undo, model.canUndo);
-                editor.uiManager.setButtonState(editor.uiManager.buttons.redo, model.canRedo);
-            }
-            model.addEventListener(gapi.drive.realtime.EventType.UNDO_REDO_STATE_CHANGED, setUndoRedoState);
-            setUndoRedoState();
+            pagedownEditor.uiManager.setUndoRedoButtonStates = function() {
+                setTimeout(function() {
+                    pagedownEditor.uiManager.setButtonState(pagedownEditor.uiManager.buttons.undo, model.canUndo);
+                    pagedownEditor.uiManager.setButtonState(pagedownEditor.uiManager.buttons.redo, model.canRedo);
+                }, 50);
+            };
+            pagedownEditor.uiManager.setUndoRedoButtonStates();
+            model.addEventListener(gapi.drive.realtime.EventType.UNDO_REDO_STATE_CHANGED, function() {
+                pagedownEditor.uiManager.setUndoRedoButtonStates();
+            });
             
         }, function(err) {
             console.error(err);
@@ -397,9 +428,8 @@ define([
     // Stop realtime synchronization
     gdriveProvider.stopRealtimeSync = function() {
         logger.log("Stopping Google Drive realtime synchronization");
-        if(realtimeBinding !== undefined) {
-            realtimeBinding.unbind();
-            realtimeBinding = undefined;
+        if(realtimeString !== undefined) {
+            realtimeString = undefined;
         }
         if(realtimeDocument !== undefined) {
             realtimeDocument.close();
@@ -407,9 +437,10 @@ define([
         }
 
         // Set back original undo/redo actions
-        editor.uiManager.buttons.undo.execute = undoExecute;
-        editor.uiManager.buttons.redo.execute = redoExecute;
-        editor.uiManager.setUndoRedoButtonStates();
+        pagedownEditor.uiManager.buttons.undo.execute = undoExecute;
+        pagedownEditor.uiManager.buttons.redo.execute = redoExecute;
+        pagedownEditor.uiManager.setUndoRedoButtonStates = setUndoRedoButtonStates;
+        pagedownEditor.uiManager.setUndoRedoButtonStates();
     };
 
     eventMgr.addListener("onReady", function() {

@@ -527,6 +527,7 @@ define([
                 isMenuPanelShown = false;
                 menuPanelBackdropElt.parentNode.removeChild(menuPanelBackdropElt);
                 $menuPanelElt.removeClass('move-to-front');
+                aceEditor.focus();
             }
         }).on('hidden.bs.collapse', function(e) {
             if(e.target === $menuPanelElt[0]) {
@@ -554,6 +555,7 @@ define([
                 isDocumentPanelShown = false;
                 documentPanelBackdropElt.parentNode.removeChild(documentPanelBackdropElt);
                 $documentPanelElt.removeClass('move-to-front');
+                aceEditor.focus();
             }
         }).on('hidden.bs.collapse', function(e) {
             if(e.target === $documentPanelElt[0]) {

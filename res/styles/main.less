@@ -16,7 +16,7 @@
 @primary-color: #333;
 @primary-color-light: lighten(@primary-color, 13%);
 @primary-color-lighter: lighten(@primary-color, 20%);
-@primary-color-lightest: lighten(@primary-color, 33%);
+@primary-color-lightest: lighten(@primary-color, 35%);
 @primary-color-inv: #fff;
 @bg-navbar-hover: @primary-bg-lighter;
 @error-border: #ff8661;
@@ -918,7 +918,7 @@ ul,ol {
 
 .ace-tm .ace_markup.ace_heading {
 	color: @primary-color-light;
-	font-weight: 900;
+	font-weight: bold;
 }
 
 .ace-tm .ace_markup.ace_list {
@@ -926,7 +926,7 @@ ul,ol {
 }
 
 .ace-tm .ace_strong {
-	font-weight: 600;
+	font-weight: bold;
 }
 
 .ace-tm .ace_emphasis {
@@ -945,29 +945,8 @@ ul,ol {
 #wmd-input {
 	.box-shadow(none);
 	padding: 0;
-	font-weight: 300;
-}
-
-#wmd-input,#md-section-helper {
 	resize: none;
 	border: none !important;
-}
-
-#md-section-helper {
-	position: absolute;
-	top: -100px;
-	height: 1px;
-	padding: 0 6px;
-	overflow-y: scroll;
-	z-index: -1;
-	.gecko & {
-		/* Firefox doesn't show the scrollbar if height is less than 40px */
-		height: 40px;
-	}	
-	.opera & {
-		/* Opera needs to have the textarea in the viewport to evaluate its size correctly */
-		top: 0;
-	}
 }
 
 .preview-container {

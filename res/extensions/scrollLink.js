@@ -2,9 +2,7 @@ define([
     "jquery",
     "underscore",
     "classes/Extension",
-    "text!html/scrollLinkSettingsBlock.html",
-    "css_browser_selector",
-    'jquery-mousewheel',
+    "text!html/scrollLinkSettingsBlock.html"
 ], function($, _, Extension, scrollLinkSettingsBlockHTML) {
 
     var scrollLink = new Extension("scrollLink", "Scroll Link", true, true);
@@ -79,6 +77,8 @@ define([
 
     var isScrollEditor = false;
     var isScrollPreview = false;
+    var isEditorMoving = false;
+    var isPreviewMoving = false;
     var doScrollLink = _.debounce(function() {
         if(mdSectionList.length === 0 || mdSectionList.length !== htmlSectionList.length) {
             // Delay
@@ -117,10 +117,19 @@ define([
                 lastPreviewScrollTop = previewScrollTop;
             }
             else {
+                isPreviewMoving = true;
                 $previewElt.animate({
                     scrollTop: destScrollTop
-                }, 'easeOutQuad', function() {
-                    lastPreviewScrollTop = destScrollTop;
+                }, {
+                    easing: 'easeOutSine',
+                    complete: function() {
+                        lastPreviewScrollTop = destScrollTop;
+                    },
+                    always: function() {
+                        _.defer(function() {
+                            isPreviewMoving = false;
+                        });
+                    }
                 });
             }
         }
@@ -138,15 +147,21 @@ define([
                 lastEditorScrollTop = editorScrollTop;
             }
             else {
+                isEditorMoving = true;
                 $("<div>").animate({
                     value: destScrollTop - editorScrollTop
                 }, {
-                    easing: 'easeOutQuad',
+                    easing: 'easeOutSine',
                     step: function(now) {
                         aceEditor.session.setScrollTop(editorScrollTop + now);
                     },
                     complete: function() {
                         lastEditorScrollTop = destScrollTop;
+                    },
+                    always: function() {
+                        _.defer(function() {
+                            isEditorMoving = false;
+                        });
                     }
                 });
             }
@@ -165,23 +180,22 @@ define([
     scrollLink.onReady = function() {
         $previewElt = $(".preview-container");
 
-        $previewElt.bind("keyup mouseup mousewheel", function() {
-            isScrollPreview = true;
-            isScrollEditor = false;
-            doScrollLink();
-        });
-        $('.table-of-contents').click(function() {
-            isScrollPreview = true;
-            isScrollEditor = false;
-            doScrollLink();
+        $previewElt.scroll(function() {
+            if(isPreviewMoving === false) {
+                isScrollPreview = true;
+                isScrollEditor = false;
+                doScrollLink();
+            }
         });
         aceEditor.session.on("changeScrollTop", function(e) {
-            isScrollEditor = true;
-            isScrollPreview = false;
-            doScrollLink();
+            if(isEditorMoving === false) {
+                isScrollEditor = true;
+                isScrollPreview = false;
+                doScrollLink();
+            }
         });
     };
-    
+
     var $previewContentsElt = undefined;
     scrollLink.onPagedownConfigure = function(editor) {
         $previewContentsElt = $("#preview-contents");

@@ -192,9 +192,9 @@ define([
     function createAceEditor() {
         aceEditor = ace.edit("wmd-input");
         aceEditor.renderer.setShowGutter(false);
-        aceEditor.renderer.setShowPrintMargin(false);
+        //aceEditor.renderer.setShowPrintMargin(false);
         aceEditor.renderer.setPrintMarginColumn(false);
-        aceEditor.renderer.setPadding(10);
+        aceEditor.renderer.setPadding(15);
         aceEditor.session.setUseWrapMode(true);
         aceEditor.session.setMode("libs/acemode");
         // Make bold titles...
@@ -309,12 +309,13 @@ define([
         // We also move the north toggler to the east or south resizer as the
         // north resizer is very small
         $previewButtonsElt = $('<div class="extension-preview-buttons">');
+        $editorButtonsElt = $('<div class="extension-editor-buttons">');
         if(settings.layoutOrientation == "horizontal") {
             $('.ui-layout-resizer-north').append($previewButtonsElt);
-            $('.ui-layout-resizer-east').append($northTogglerElt);
+            $('.ui-layout-resizer-east').append($northTogglerElt).append($editorButtonsElt);
         }
         else {
-            $('.ui-layout-resizer-south').append($previewButtonsElt).append($northTogglerElt);
+            $('.ui-layout-resizer-south').append($previewButtonsElt).append($northTogglerElt).append($editorButtonsElt);
         }
 
         setPanelVisibility();

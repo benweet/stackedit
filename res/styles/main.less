@@ -580,6 +580,7 @@ body {
 		margin: 0 0 0 1px;
 		.btn {
 			position: initial;
+			background-color: fade(@navbar-default-bg, 50%);
 		}
 		&.open .btn{
 			background-color: @primary-bg-light;
@@ -617,6 +618,28 @@ body {
 }
 
 
+/********************
+ * Editor extensions buttons
+ ********************/
+ 
+.extension-editor-buttons {
+	position: absolute;
+	.ui-layout-resizer-east & {
+		bottom: 0;
+		& .btn {
+			width: 35px;
+			padding: 10px 7px;
+		}
+	}
+	.ui-layout-resizer-south & {
+		right: 0;
+		& .btn {
+			height: 35px;
+		}
+	}
+}
+
+ 
 /**************************
  * Settings dialog
  **************************/
@@ -734,7 +757,6 @@ body {
 	overflow: visible !important;
     font-size: 14px !important;
 	.btn {
-		background-color: fade(@navbar-default-bg, 50%);
 		float: none;
 		i {
 			color: fade(@btn-success-color, 30%);
@@ -751,7 +773,6 @@ body {
 	}
 	.ui-layout-toggler {
 		font-size: 22px !important;
-		background-color: transparent;
 		&.ui-layout-toggler-east {
 			line-height: 55px;
 			&.ui-layout-toggler-east-open i:before {
@@ -912,34 +933,51 @@ ul,ol {
 	color: @primary-color-light;
 }
 
-.ace-tm .ace_marker-layer .ace_active-line {
-	background-color: @primary-bg-lighter;	
-}
+.ace-tm {
+	background-color: @input-bg;
 
-.ace-tm .ace_markup.ace_heading {
-	color: @primary-color-light;
-	font-weight: bold;
-}
-
-.ace-tm .ace_markup.ace_list {
-	color: @primary-color-lightest;
-}
-
-.ace-tm .ace_strong {
-	font-weight: bold;
-}
-
-.ace-tm .ace_emphasis {
-	font-style: italic;
-}
-
-.ace-tm .ace_blockquote {
-	color: @primary-color-lightest;
-	font-style: italic;
-}
-
-.ace-tm .ace_description {
-	color: @primary-color-lightest;
+	.ace_marker-layer .ace_active-line {
+		background-color: @primary-bg-lighter;	
+	}
+	
+	.ace_print-margin {
+		background-color: @primary-bg-lighter;
+	}
+	
+	.ace_markup.ace_heading {
+		color: @primary-color-light;
+		font-weight: bold;
+	}
+	
+	.ace_markup.ace_list {
+		color: @primary-color-lightest;
+	}
+	
+	.ace_strong {
+		font-weight: bold;
+	}
+	
+	.ace_emphasis {
+		font-style: italic;
+	}
+	
+	.ace_blockquote {
+		color: @primary-color-lightest;
+		font-style: italic;
+	}
+	
+	.ace_code {
+		color: @primary-color-lighter;
+		background-color: fade(@secondary-bg, 10%);;	
+	}
+	
+	.ace_code_block {
+		color: @primary-color;
+	}
+	
+	.ace_description {
+		color: @primary-color-lighter;
+	}
 }
 
 #wmd-input {

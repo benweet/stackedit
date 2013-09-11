@@ -34,14 +34,6 @@ define(function(require, exports, module) {
 var oop = require("ace/lib/oop");
 var TextHighlightRules = require("ace/mode/text_highlight_rules").TextHighlightRules;
 
-function github_embed(tag, prefix) {
-    return { // Github style block
-        token : "support.function",
-        regex : "^```" + tag + "\\s*$",
-        next  : prefix + "start"
-    };
-}
-
 var MarkdownHighlightRules = function() {
 
     // regexp must not have capturing parentheses
@@ -52,7 +44,7 @@ var MarkdownHighlightRules = function() {
             token : "constant.language.escape",
             regex : /\\[\\`*_{}\[\]()#+\-.!]/
         }, { // code span `
-            token : "support.function",
+            token : "code",
             regex : "(`+)(.*?[^`])(\\1)"
         }, { // reference
             token : ["text", "reference", "text", "markup.underline", "description", "text"],
@@ -85,7 +77,7 @@ var MarkdownHighlightRules = function() {
 
         // code block
         "allowBlock": [
-            {token : "support.function", regex : "^ {4}.+", next : "allowBlock"},
+            {token : ["text", "code_block"], regex : "^( {4}|\\t)(.+)", next : "allowBlock"},
             {token : "empty", regex : "", next : "start"}
         ],
 
@@ -107,12 +99,12 @@ var MarkdownHighlightRules = function() {
             next : "header"
         },
         { // Github style block
-            token : "support.function",
+            token : "code_block",
             regex : "^```\\s*[a-zA-Z]*(?:{.*?\\})?\\s*$",
             next  : "githubblock"
         }, { // block quote
             token : "blockquote",
-            regex : "^>[ ].+$",
+            regex : "^\\s*>[ ].+$",
             next  : "blockquote"
         }, { // HR * - _
             token : "constant",
@@ -121,7 +113,7 @@ var MarkdownHighlightRules = function() {
         }, { // list
             token : "markup.list",
             regex : "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
-            next  : "listblock-start"
+            next  : "listblock"
         }, {
             include : "basic"
         }],
@@ -135,11 +127,13 @@ var MarkdownHighlightRules = function() {
             defaultToken : "markup.heading"
         } ],
 
+        /* don't need checkbox highlighting...
         "listblock-start" : [{
-            token : "support.variable",
+            token : "checkbox",
             regex : /(?:\[[ x]\])?/,
             next  : "listblock"
         }],
+        */
 
         "listblock" : [ { // Lists only escape on completely blank lines.
             token : "empty_line",
@@ -148,7 +142,7 @@ var MarkdownHighlightRules = function() {
         }, { // list
             token : "markup.list",
             regex : "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
-            next  : "listblock-start"
+            next  : "listblock"
         }, {
             include : "basic", noEscape: true
         }, {
@@ -165,11 +159,11 @@ var MarkdownHighlightRules = function() {
         } ],
 
         "githubblock" : [ {
-            token : "support.function",
+            token : "code_block",
             regex : "^```",
             next  : "start"
         }, {
-            token : "support.function",
+            token : "code_block",
             regex : ".+"
         } ]
     };

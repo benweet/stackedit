@@ -278,17 +278,14 @@ define([
     var setUndoRedoButtonStates = undefined;
     // Keep a link to the ACE editor
     var aceEditor = undefined;
-    var isAceUpToDate = false;
+    var isAceUpToDate = true;
     eventMgr.addListener('onAceCreated', function(aceEditorParam) {
         aceEditor = aceEditorParam;
         // Listen to editor's changes
         aceEditor.session.on('change', function(e) {
             if(realtimeString !== undefined) {
-                // Update the real time model]
-                // The flag is used to avoid replaying editor's own modifications (assuming it's synchronous)
-                isAceUpToDate = true;
+                // Update the real time model
                 realtimeString.setText(aceEditor.getValue());
-                isAceUpToDate = false;
             }
         });
     });
@@ -319,13 +316,12 @@ define([
 
             // Listen to insert text events
             realtimeString.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, function(e) {
-                if(isAceUpToDate === true) {
-                    // Don't need to update ACE if modifications come from the editor
-                    return;
+                if(isAceUpToDate === false || e.isLocal === false) {
+                    // Update ACE editor
+                    var position = aceEditor.session.doc.indexToPosition(e.index);
+                    aceEditor.session.insert(position, e.text);
+                    isAceUpToDate = true;
                 }
-                // Update ACE editor
-                var position = aceEditor.session.doc.indexToPosition(e.index);
-                aceEditor.session.insert(position, e.text);
                 // If modifications come down from a collaborator
                 if(e.isLocal === false) {
                     logger.log("Google Drive realtime document updated from server");
@@ -334,15 +330,14 @@ define([
             });
             // Listen to delete text events
             realtimeString.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, function(e) {
-                if(isAceUpToDate === true) {
-                    // Don't need to update ACE if modifications come from the editor
-                    return;
+                if(isAceUpToDate === false || e.isLocal === false) {
+                    // Update ACE editor
+                    var range = (function(posStart, posEnd) {
+                        return new Range(posStart.row, posStart.column, posEnd.row, posEnd.column);
+                    })(aceEditor.session.doc.indexToPosition(e.index), aceEditor.session.doc.indexToPosition(e.index + e.text.length));
+                    aceEditor.session.remove(range);
+                    isAceUpToDate = true;
                 }
-                // Update ACE editor
-                var range = (function(posStart, posEnd) {
-                    return new Range(posStart.row, posStart.column, posEnd.row, posEnd.column);
-                })(aceEditor.session.doc.indexToPosition(e.index), aceEditor.session.doc.indexToPosition(e.index + e.text.length));
-                aceEditor.session.remove(range);
                 // If modifications come down from a collaborator
                 if(e.isLocal === false) {
                     logger.log("Google Drive realtime document updated from server");
@@ -389,10 +384,18 @@ define([
 
             // Set new actions for undo/redo buttons
             pagedownEditor.uiManager.buttons.undo.execute = function() {
-                model.canUndo && model.undo();
+                if(model.canUndo) {
+                    // This flag is used to avoid replaying editor's own modifications (assuming it's synchronous)
+                    isAceUpToDate = false;
+                    model.undo();
+                }
             };
             pagedownEditor.uiManager.buttons.redo.execute = function() {
-                model.canRedo && model.redo();
+                if(model.canRedo) {
+                    // This flag is used to avoid replaying editor's own modifications (assuming it's synchronous)
+                    isAceUpToDate = false;
+                    model.redo();
+                }
             };
 
             // Add event handler for model's UndoRedoStateChanged events

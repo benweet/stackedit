@@ -25,6 +25,7 @@ define([
     "extensions/mathJax",
     "extensions/emailConverter",
     "extensions/scrollLink",
+    "extensions/focusMode",
     "extensions/buttonSync",
     "extensions/buttonPublish",
     "extensions/buttonShare",
@@ -270,7 +271,16 @@ define([
                     right: -previewButtonsWidth + $btnGroupElt.width() + $btnGroupElt.position().left
                 });
             });
-
+            
+            // Create extension editor buttons
+            logger.log("onCreateEditorButton");
+            var onCreateEditorButtonListenerList = getExtensionListenerList("onCreateEditorButton");
+            var extensionEditorButtonsFragment = document.createDocumentFragment();
+            _.each(onCreateEditorButtonListenerList, function(listener) {
+                extensionEditorButtonsFragment.appendChild(createBtn(listener));
+            });
+            var editorButtonsElt = document.querySelector('.extension-editor-buttons');
+            editorButtonsElt.appendChild(extensionEditorButtonsFragment);
         }
 
         // Call onReady listeners

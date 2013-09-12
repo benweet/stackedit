@@ -5,7 +5,7 @@ define([
     "text!html/scrollLinkSettingsBlock.html"
 ], function($, _, Extension, scrollLinkSettingsBlockHTML) {
 
-    var scrollLink = new Extension("scrollLink", "Scroll Link", true, true);
+    var scrollLink = new Extension("scrollLink", "Scroll Link", true, true, true);
     scrollLink.settingsBlock = scrollLinkSettingsBlockHTML;
 
     var aceEditor = undefined;

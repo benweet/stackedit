@@ -72,7 +72,7 @@ define([
             return undefined;
         }
         value = parseInt(value);
-        if((value === NaN) || (min !== undefined && value < min) || (max !== undefined && value > max)) {
+        if(isNaN(value) || (min !== undefined && value < min) || (max !== undefined && value > max)) {
             inputError(element, event);
             return undefined;
         }

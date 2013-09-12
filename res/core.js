@@ -114,6 +114,8 @@ define([
         utils.setInputValue("#input-settings-editor-font-family", settings.editorFontFamily);
         // Editor font size
         utils.setInputValue("#input-settings-editor-font-size", settings.editorFontSize);
+        // Editor max width
+        utils.setInputValue("#input-settings-editor-max-width", settings.editorMaxWidth);
         // Default content
         utils.setInputValue("#textarea-settings-default-content", settings.defaultContent);
         // Commit message
@@ -141,6 +143,8 @@ define([
         newSettings.editorFontFamily = utils.getInputTextValue("#input-settings-editor-font-family", event);
         // Editor font size
         newSettings.editorFontSize = utils.getInputIntValue("#input-settings-editor-font-size", event, 1, 99);
+        // Editor max width
+        newSettings.editorMaxWidth = utils.getInputIntValue("#input-settings-editor-max-width", event, 1);
         // Default content
         newSettings.defaultContent = utils.getInputValue("#textarea-settings-default-content");
         // Commit message
@@ -190,14 +194,21 @@ define([
     // Create ACE editor
     var aceEditor = undefined;
     function createAceEditor() {
+        if(lightMode) {
+            // In light mode, we replace ACE with a textarea
+            $('#wmd-input').replaceWith(function() {
+                return $('<textarea id="wmd-input">').addClass(this.className).addClass('form-control');
+            });
+            return;
+        }
         aceEditor = ace.edit("wmd-input");
         aceEditor.renderer.setShowGutter(false);
-        //aceEditor.renderer.setShowPrintMargin(false);
+        aceEditor.renderer.setShowPrintMargin(false);
         aceEditor.renderer.setPrintMarginColumn(false);
-        aceEditor.renderer.setPadding(15);
+        aceEditor.renderer.setPadding(EDITOR_DEFAULT_PADDING);
         aceEditor.session.setUseWrapMode(true);
         aceEditor.session.setMode("libs/acemode");
-        // Make bold titles...
+        // Make titles bold...
         (function(self) {
             function customWorker() {
                 if (!self.running) { return; }
@@ -273,9 +284,21 @@ define([
                     setPreviewButtonsVisibility(true);
                 }
             },
-            onresize: function() {
-                aceEditor.resize();
-                eventMgr.onLayoutResize();
+            onresize_end: function(paneName) {
+                if(aceEditor !== undefined && paneName == 'center') {
+                    aceEditor.resize();
+                    setTimeout(function() {
+                        var padding = (aceEditor.renderer.$size.scrollerWidth - settings.editorMaxWidth)/2;
+                        if(padding < EDITOR_DEFAULT_PADDING) {
+                            padding = EDITOR_DEFAULT_PADDING;
+                        }
+                        if(padding !== aceEditor.renderer.$padding) {
+                            aceEditor.renderer.setPadding(padding);
+                            aceEditor.resize(true);
+                        }
+                    }, 5);
+                }                
+                eventMgr.onLayoutResize(paneName);
             },
         };
         eventMgr.onLayoutConfigure(layoutGlobalConfig);
@@ -285,7 +308,7 @@ define([
             layout = $('body').layout($.extend(layoutGlobalConfig, {
                 east__resizable: true,
                 east__size: .5,
-                east__minSize: 250
+                east__minSize: 260
             }));
         }
         else if(settings.layoutOrientation == "vertical") {
@@ -308,14 +331,16 @@ define([
         // have fixed position
         // We also move the north toggler to the east or south resizer as the
         // north resizer is very small
-        $previewButtonsElt = $('<div class="extension-preview-buttons">');
+        var $previewButtonsContainerElt = $('<div class="preview-button-container">');
+        $previewButtonsElt = $('<div class="extension-preview-buttons">').appendTo($previewButtonsContainerElt);
         $editorButtonsElt = $('<div class="extension-editor-buttons">');
         if(settings.layoutOrientation == "horizontal") {
-            $('.ui-layout-resizer-north').append($previewButtonsElt);
+            $('.ui-layout-resizer-north').append($previewButtonsContainerElt);
             $('.ui-layout-resizer-east').append($northTogglerElt).append($editorButtonsElt);
         }
         else {
-            $('.ui-layout-resizer-south').append($previewButtonsElt).append($northTogglerElt).append($editorButtonsElt);
+            $previewButtonsContainerElt.append($editorButtonsElt);
+            $('.ui-layout-resizer-south').append($previewButtonsContainerElt).append($northTogglerElt);
         }
 
         setPanelVisibility();
@@ -326,6 +351,7 @@ define([
 
     // Create the PageDown editor
     var editor = undefined;
+    var $editorElt = undefined;
     var fileDesc = undefined;
     var documentContent = undefined;
     var UndoManager = require("ace/undomanager").UndoManager;
@@ -337,40 +363,52 @@ define([
         documentContent = undefined;
         var initDocumentContent = fileDesc.content;
 
-        aceEditor.setValue(initDocumentContent, -1);
-        aceEditor.getSession().setUndoManager(new UndoManager());
+        if(aceEditor !== undefined) {
+            aceEditor.setValue(initDocumentContent, -1);
+            aceEditor.getSession().setUndoManager(new UndoManager());
+        }
+        else {
+            $editorElt.val(initDocumentContent);
+        }
         
         if(editor !== undefined) {
             // If the editor is already created
-            aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
-            aceEditor.focus();
+            if(aceEditor !== undefined) {
+                aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
+                aceEditor.focus();
+            }
+            else {
+                $editorElt.focus();
+            }
             editor.refreshPreview();
             return;
         }
 
         var $previewContainerElt = $(".preview-container");
 
-        // Store editor scrollTop on scroll event
-        var debouncedUpdateScroll = _.debounce(function() {
-            fileDesc.editorScrollTop = aceEditor.renderer.getScrollTop();
-        }, 100);
-        aceEditor.session.on('changeScrollTop', function() {
-            if(documentContent !== undefined) {
-                debouncedUpdateScroll();
-            }
-        });
-        // Store editor selection on change
-        aceEditor.session.selection.on('changeSelection', function() {
-            if(documentContent !== undefined) {
-                fileDesc.editorSelectRange = aceEditor.getSelectionRange();
-            }
-        });
-        // Store preview scrollTop on scroll event
-        $previewContainerElt.scroll(function() {
-            if(documentContent !== undefined) {
-                fileDesc.previewScrollTop = $previewContainerElt.scrollTop();
-            }
-        });
+        if(!lightMode) {
+            // Store editor scrollTop on scroll event
+            var debouncedUpdateScroll = _.debounce(function() {
+                fileDesc.editorScrollTop = aceEditor.renderer.getScrollTop();
+            }, 100);
+            aceEditor.session.on('changeScrollTop', function() {
+                if(documentContent !== undefined) {
+                    debouncedUpdateScroll();
+                }
+            });
+            // Store editor selection on change
+            aceEditor.session.selection.on('changeSelection', function() {
+                if(documentContent !== undefined) {
+                    fileDesc.editorSelectRange = aceEditor.getSelectionRange();
+                }
+            });
+            // Store preview scrollTop on scroll event
+            $previewContainerElt.scroll(function() {
+                if(documentContent !== undefined) {
+                    fileDesc.previewScrollTop = $previewContainerElt.scrollTop();
+                }
+            });
+        }
 
         // Create the converter and the editor
         var converter = new Markdown.Converter();
@@ -395,24 +433,35 @@ define([
             eventMgr.onSectionsCreated(sectionList);
             return text;
         });
-        editor = new Markdown.Editor(converter);
-        // Custom insert link dialog
-        editor.hooks.set("insertLinkDialog", function(callback) {
-            core.insertLinkCallback = callback;
-            utils.resetModalInputs();
-            $(".modal-insert-link").modal();
-            return true;
-        });
-        // Custom insert image dialog
-        editor.hooks.set("insertImageDialog", function(callback) {
-            core.insertLinkCallback = callback;
-            if(core.catchModal) {
+        
+        if(!lightMode) {
+            editor = new Markdown.Editor(converter);
+            // Custom insert link dialog
+            editor.hooks.set("insertLinkDialog", function(callback) {
+                core.insertLinkCallback = callback;
+                utils.resetModalInputs();
+                $(".modal-insert-link").modal();
                 return true;
-            }
-            utils.resetModalInputs();
-            $(".modal-insert-image").modal();
-            return true;
-        });
+            });
+            // Custom insert image dialog
+            editor.hooks.set("insertImageDialog", function(callback) {
+                core.insertLinkCallback = callback;
+                if(core.catchModal) {
+                    return true;
+                }
+                utils.resetModalInputs();
+                $(".modal-insert-image").modal();
+                return true;
+            });
+        }
+        else {
+            $editor.on("input propertychange", function() {
+                
+            });
+            editor = {
+                
+            };
+        }
 
         function checkDocumentChanges() {
             var newDocumentContent = aceEditor.getValue();
@@ -563,16 +612,17 @@ define([
             }
         });
 
-        // Editor's textarea
-        $("#wmd-input").css({
+        // ACE editor
+        createAceEditor();
+        
+        // Editor's element
+        $editorElt = $("#wmd-input").css({
             // Apply editor font
             "font-family": settings.editorFontFamily,
             "font-size": settings.editorFontSize + "px",
             "line-height": Math.round(settings.editorFontSize * (20 / 12)) + "px"
         });
 
-        // ACE editor
-        createAceEditor();
         // UI layout
         createLayout();
 

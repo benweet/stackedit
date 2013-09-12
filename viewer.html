@@ -15,7 +15,7 @@
 <script>
     // Use http://.../?debug to serve original JavaScript files instead of minified
     var baseDir = 'res';
-    if(!location.search.match(/(\?|&)debug/)) {
+    if(!/(\?|&)debug($|&)/.test(location.search)) {
         baseDir += '-min';
     }
     var require = {

@@ -34,7 +34,7 @@ define([
         tour.addSteps([
             {
                 element: ".navbar-inner",
-                title: "Welcome to StackEdit 2.0",
+                title: "Welcome to StackEdit",
                 content: "Please click <code>Next</code> to take a quick tour.",
                 placement: "bottom",
             },
@@ -42,7 +42,7 @@ define([
                 element: ".navbar .action-create-file",
                 title: "New document",
                 content: "Click the <i class='icon-file'></i> <code>New document</code> button to create a new document.",
-                placement: "left",
+                placement: "bottom",
                 reflex: true,
             },
             {

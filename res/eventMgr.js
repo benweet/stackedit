@@ -25,7 +25,7 @@ define([
     "extensions/mathJax",
     "extensions/emailConverter",
     "extensions/scrollLink",
-    "extensions/focusMode",
+    "extensions/buttonFocusMode",
     "extensions/buttonSync",
     "extensions/buttonPublish",
     "extensions/buttonShare",
@@ -53,6 +53,10 @@ define([
         if(viewerMode === true && extension.disableInViewer === true) {
             // Skip enabling the extension if we are in the viewer and extension
             // doesn't support it
+            extension.enabled = false;
+        }
+        else if(lightMode === true && extension.disableInLight === true) {
+            // Same for light mode
             extension.enabled = false;
         }
         else {

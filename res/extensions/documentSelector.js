@@ -52,6 +52,7 @@ define([
     var sortFunction = undefined;
     var selectFileDesc = undefined;
     var selectedLi = undefined;
+    var $editorElt = undefined;
     var buildSelector = function() {
         var liListHtml = _.chain(fileSystem).sortBy(sortFunction).reduce(function(result, fileDesc) {
             return result + _.template(liEltTmpl, {
@@ -73,8 +74,11 @@ define([
                 if(!$liElt.hasClass("disabled")) {
                     fileMgr.selectFile(fileDesc);
                 }
-                else {
+                else if(aceEditor !== undefined) {
                     aceEditor.focus();
+                }
+                else {
+                    $editorElt.focus();
                 }
             });
         });
@@ -95,6 +99,8 @@ define([
     documentSelector.onPublishRemoved = buildSelector;
 
     documentSelector.onReady = function() {
+        $editorElt = $('#wmd-input');
+        
         if(documentSelector.config.orderBy == "title") {
             sortFunction = function(fileDesc) {
                 return fileDesc.title.toLowerCase();

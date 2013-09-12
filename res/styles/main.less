@@ -561,15 +561,23 @@ body {
 
 
 /********************
- * Preview extensions buttons
+ * Preview/Editor extensions buttons
  ********************/
+
+.preview-button-container {
+    position: absolute;
+    right: 0;
+    .extension-editor-buttons {
+		position: relative;
+	}
+}
  
 .extension-preview-buttons {
-    position: absolute;
-    right: 30px;
+	display: inline-block;
     z-index: 1;
-    top: 6px;
-    .ui-layout-resizer-south-closed > & {
+    margin-top: 6px;
+    margin-right: 30px;
+    .ui-layout-resizer-south-closed & {
     	display: none !important;
     }
 	.dropdown-menu {
@@ -580,7 +588,7 @@ body {
 		margin: 0 0 0 1px;
 		.btn {
 			position: initial;
-			background-color: fade(@navbar-default-bg, 50%);
+			background-color: fade(@navbar-default-bg, 33%);
 		}
 		&.open .btn{
 			background-color: @primary-bg-light;
@@ -617,25 +625,22 @@ body {
 	}
 }
 
-
-/********************
- * Editor extensions buttons
- ********************/
- 
 .extension-editor-buttons {
 	position: absolute;
+	display: inline-block;
+	vertical-align: top;
+	.btn {
+		background-color: fade(@navbar-default-bg, 33%);
+		text-align: center;
+		height: 35px;
+		width: 35px;
+		padding: 0;
+	}
 	.ui-layout-resizer-east & {
 		bottom: 0;
-		& .btn {
-			width: 35px;
-			padding: 10px 7px;
-		}
 	}
 	.ui-layout-resizer-south & {
 		right: 0;
-		& .btn {
-			height: 35px;
-		}
 	}
 }
 
@@ -765,7 +770,7 @@ body {
 		&:focus,
 		&:active,
 		&.active {
-			background-color: fade(@navbar-default-bg, 50%);
+			background-color: mix(@primary-bg-lighter, @navbar-default-bg, 50%);
 			i {
 				color: @btn-success-color
 			}
@@ -945,7 +950,7 @@ ul,ol {
 	}
 	
 	.ace_markup.ace_heading {
-		color: @primary-color-light;
+		color: @primary-color;
 		font-weight: bold;
 	}
 	
@@ -958,6 +963,7 @@ ul,ol {
 	}
 	
 	.ace_emphasis {
+		color: @primary-color;
 		font-style: italic;
 	}
 	
@@ -981,10 +987,13 @@ ul,ol {
 }
 
 #wmd-input {
+	color: @primary-color-light;
 	.box-shadow(none);
-	padding: 0;
 	resize: none;
 	border: none !important;
+	div& {
+		padding: 0;
+	}
 }
 
 .preview-container {
@@ -1169,7 +1178,7 @@ input[type="file"] {
  *********************/
 
 .popover {
-	max-width: 360px;
+	max-width: 350px;
 	padding: 15px;
 	.box-shadow(0 5px 30px rgba(0,0,0,.4));
 	.popover-title {

@@ -8,6 +8,7 @@ define([
         lazyRendering: true,
         editorFontFamily: 'Menlo, Consolas, "Courier New", Courier, monospace',
         editorFontSize: 12,
+        editorMaxWidth: 960,
         defaultContent: "\n\n\n> Written with [StackEdit](" + MAIN_URL + ").",
         commitMsg: "Published with " + MAIN_URL,
         template: [

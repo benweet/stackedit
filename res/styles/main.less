@@ -1,4 +1,7 @@
 @import "../bower-libs/bootstrap/less/bootstrap.less";
+@import "../bower-libs/ace/lib/ace/css/editor.css";
+@import "../bower-libs/ace/lib/ace/ext/searchbox.css";
+@import "../bower-libs/ace/lib/ace/theme/textmate.css";
 @import "../bower-libs/google-code-prettify/src/prettify.css";
 @import "../bower-libs/highlightjs/styles/default.css";
 @import "../bower-libs/bootstrap-tour/src/less/bootstrap-tour.less";
@@ -984,6 +987,11 @@ ul,ol {
 	.ace_description {
 		color: @primary-color-lighter;
 	}
+}
+
+.ace_search {
+	background-color: @primary-bg;
+	border: 0;
 }
 
 #wmd-input {

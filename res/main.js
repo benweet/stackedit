@@ -45,6 +45,12 @@ requirejs.config({
         'requirejs-text': 'bower-libs/requirejs-text/text',
         'bootstrap-tour': 'bower-libs/bootstrap-tour/build/js/bootstrap-tour'
     },
+    map: {
+        'ace': {
+            'ace/requirejs/text': 'libs/ace_text',
+            'ace/commands/default_commands': 'libs/ace_commands'
+        }
+    },
     shim: {
         underscore: {
             exports: '_'
@@ -104,7 +110,7 @@ requirejs.config({
         ],
         'libs/Markdown.Editor': [
             'libs/Markdown.Converter'
-        ]
+        ],
     }
 });
 

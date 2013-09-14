@@ -21,6 +21,7 @@ module.exports = function(grunt) {
                     out: "res-min/main.js",
                     mainConfigFile: 'res/main.js',
                     optimize: "uglify2",
+                    inlineText: true,
                     uglify2: {
                         output: {
                             beautify: true,

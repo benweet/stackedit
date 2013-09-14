@@ -14,7 +14,11 @@ define([
     "storage",
     "config",
     "uilayout",
-    "libs/Markdown.Editor"
+    "libs/Markdown.Editor",
+    'libs/ace_mode',
+    'ace/requirejs/text!ace/css/editor.css',
+    'ace/requirejs/text!ace/theme/textmate.css',
+
 ], function($, _, crel, ace, utils, settings, eventMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
@@ -207,7 +211,7 @@ define([
         aceEditor.renderer.setPrintMarginColumn(false);
         aceEditor.renderer.setPadding(EDITOR_DEFAULT_PADDING);
         aceEditor.session.setUseWrapMode(true);
-        aceEditor.session.setMode("libs/acemode");
+        aceEditor.session.setMode("libs/ace_mode");
         // Make titles bold...
         (function(self) {
             function customWorker() {
@@ -373,13 +377,8 @@ define([
         
         if(editor !== undefined) {
             // If the editor is already created
-            if(aceEditor !== undefined) {
-                aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
-                aceEditor.focus();
-            }
-            else {
-                $editorElt.focus();
-            }
+            aceEditor && aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
+            (aceEditor && aceEditor.focus()) || $editorElt.focus();
             editor.refreshPreview();
             return;
         }
@@ -434,6 +433,18 @@ define([
             return text;
         });
         
+        function checkDocumentChanges() {
+            var newDocumentContent = $editorElt.val();
+            if(aceEditor !== undefined) {
+                newDocumentContent = aceEditor.getValue();
+            }
+            if(documentContent !== undefined && documentContent != newDocumentContent) {
+                fileDesc.content = newDocumentContent;
+                eventMgr.onContentChanged(fileDesc);
+            }
+            documentContent = newDocumentContent;
+        }
+        
         if(!lightMode) {
             editor = new Markdown.Editor(converter);
             // Custom insert link dialog
@@ -455,22 +466,36 @@ define([
             });
         }
         else {
-            $editor.on("input propertychange", function() {
-                
-            });
+            // That's the light Markdown editor replacing the one from pagedown
+            var $wmdPreviewElt = $('#wmd-preview');
+            var hooks = new Markdown.HookCollection();
+            hooks.addNoop("onPreviewRefresh");
+            function makePreviewHtml() {
+                var text = $editorElt.val();
+                text = converter.makeHtml(text);
+                $wmdPreviewElt.html(text);
+                hooks.onPreviewRefresh();
+            }
+            var debouncedMakePreview = _.debounce(makePreviewHtml, 1000);
+            var previewWrapper = function() {
+                if(documentContent === undefined) {
+                    makePreviewHtml();
+                    eventMgr.onFileOpen(fileDesc);
+                }
+                else {
+                    debouncedMakePreview();
+                }
+                checkDocumentChanges();
+            };
+            $editorElt.on("input propertychange", previewWrapper);
             editor = {
-                
+                hooks: hooks,
+                getConverter: function () { return converter; },
+                run: previewWrapper,
+                refreshPreview: previewWrapper
             };
         }
 
-        function checkDocumentChanges() {
-            var newDocumentContent = aceEditor.getValue();
-            if(documentContent !== undefined && documentContent != newDocumentContent) {
-                fileDesc.content = newDocumentContent;
-                eventMgr.onContentChanged(fileDesc);
-            }
-            documentContent = newDocumentContent;
-        }
         var previewWrapper;
         if(settings.lazyRendering === true) {
             previewWrapper = function(makePreview) {
@@ -505,8 +530,8 @@ define([
         eventMgr.onPagedownConfigure(editor);
         editor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
         editor.run(aceEditor, previewWrapper);
-        aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
-        aceEditor.focus();
+        aceEditor && aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
+        (aceEditor && aceEditor.focus()) || $editorElt.focus();
 
         // Hide default buttons
         $(".wmd-button-row li").addClass("btn btn-success").css("left", 0).find("span").hide();
@@ -575,7 +600,7 @@ define([
                 isMenuPanelShown = false;
                 menuPanelBackdropElt.parentNode.removeChild(menuPanelBackdropElt);
                 $menuPanelElt.removeClass('move-to-front');
-                aceEditor.focus();
+                (aceEditor && aceEditor.focus()) || $editorElt.focus();
             }
         }).on('hidden.bs.collapse', function(e) {
             if(e.target === $menuPanelElt[0]) {
@@ -603,7 +628,7 @@ define([
                 isDocumentPanelShown = false;
                 documentPanelBackdropElt.parentNode.removeChild(documentPanelBackdropElt);
                 $documentPanelElt.removeClass('move-to-front');
-                aceEditor.focus();
+                (aceEditor && aceEditor.focus()) || $editorElt.focus();
             }
         }).on('hidden.bs.collapse', function(e) {
             if(e.target === $documentPanelElt[0]) {
@@ -657,7 +682,7 @@ define([
         }).on('hidden.bs.modal', function() {
             // Focus on the editor when modal is gone
             isModalShown = false;
-            aceEditor.focus();
+            (aceEditor && aceEditor.focus()) || $editorElt.focus();
             // Revert to current theme when settings modal is closed
             applyTheme(localStorage.theme);
         }).keyup(function(e) {
@@ -669,7 +694,7 @@ define([
 
         // Configure Mousetrap
         mousetrap.stopCallback = function(e, element, combo) {
-            return uiLocked || isMenuPanelShown || isDocumentPanelShown || isModalShown || $(element).is("input, select, textarea:not(#wmd-input)");
+            return isMenuPanelShown || isDocumentPanelShown || isModalShown || $(element).is("input, select, textarea:not(.ace_text-input)");
         };
 
         // Click events on "insert link" and "insert image" dialog buttons

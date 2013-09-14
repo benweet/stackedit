@@ -81,7 +81,8 @@ define([
     gdriveProvider.exportFile = function(event, title, content, callback) {
         var fileId = utils.getInputTextValue("#input-sync-export-gdrive-fileid");
         if(fileId) {
-            // Check that file is not synchronized with another an existing document
+            // Check that file is not synchronized with another an existing
+            // document
             var syncIndex = createSyncIndex(fileId);
             var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
             if(fileDesc !== undefined) {
@@ -130,7 +131,7 @@ define([
             callback(undefined, true);
         });
     };
-    
+
     gdriveProvider.syncUpRealtime = function(uploadContent, uploadContentCRC, uploadTitle, uploadTitleCRC, syncAttributes, callback) {
         // Skip if title CRC has not changed
         if(uploadTitleCRC == syncAttributes.titleCRC) {
@@ -272,6 +273,7 @@ define([
 
     // Start realtime synchronization
     var realtimeDocument = undefined;
+    var realtimeBinding = undefined;
     var realtimeString = undefined;
     var undoExecute = undefined;
     var redoExecute = undefined;
@@ -296,13 +298,13 @@ define([
             if(err || !doc) {
                 return;
             }
-            
+
             // If user just switched to another document
             if(fileMgr.currentFile !== fileDesc) {
                 doc.close();
                 return;
             }
-            
+
             logger.log("Starting Google Drive realtime synchronization");
             realtimeDocument = doc;
             var model = realtimeDocument.getModel();
@@ -314,9 +316,11 @@ define([
                 utils.storeAttributes(syncAttributes);
             }
 
+            var debouncedRefreshPreview = _.debounce(pagedownEditor.refreshPreview, 100);
+
             // Listen to insert text events
             realtimeString.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, function(e) {
-                if(isAceUpToDate === false || e.isLocal === false) {
+                if(aceEditor !== undefined && (isAceUpToDate === false || e.isLocal === false)) {
                     // Update ACE editor
                     var position = aceEditor.session.doc.indexToPosition(e.index);
                     aceEditor.session.insert(position, e.text);
@@ -326,11 +330,12 @@ define([
                 if(e.isLocal === false) {
                     logger.log("Google Drive realtime document updated from server");
                     updateContentState();
+                    aceEditor === undefined && debouncedRefreshPreview();
                 }
             });
             // Listen to delete text events
             realtimeString.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, function(e) {
-                if(isAceUpToDate === false || e.isLocal === false) {
+                if(aceEditor !== undefined && (isAceUpToDate === false || e.isLocal === false)) {
                     // Update ACE editor
                     var range = (function(posStart, posEnd) {
                         return new Range(posStart.row, posStart.column, posEnd.row, posEnd.column);
@@ -342,6 +347,7 @@ define([
                 if(e.isLocal === false) {
                     logger.log("Google Drive realtime document updated from server");
                     updateContentState();
+                    aceEditor === undefined && debouncedRefreshPreview();
                 }
             });
             realtimeDocument.addEventListener(gapi.drive.realtime.EventType.DOCUMENT_SAVE_STATE_CHANGED, function(e) {
@@ -370,46 +376,57 @@ define([
                     realtimeString.setText(localContent);
                 }
             }
+
+            if(aceEditor === undefined) {
+                // Binds model with textarea
+                realtimeBinding = gapi.drive.realtime.databinding.bindString(realtimeString, document.getElementById("wmd-input"));
+            }
+
             // Update content state according to collaborators changes
             if(remoteContentChanged === true) {
                 logger.log("Google Drive realtime document updated from server");
-                aceEditor.setValue(remoteContent);
+                aceEditor !== undefined && aceEditor.setValue(remoteContent, -1);
                 updateContentState();
+                aceEditor === undefined && debouncedRefreshPreview();
             }
 
-            // Save undo/redo buttons actions
-            undoExecute = pagedownEditor.uiManager.buttons.undo.execute;
-            redoExecute = pagedownEditor.uiManager.buttons.redo.execute;
-            setUndoRedoButtonStates = pagedownEditor.uiManager.setUndoRedoButtonStates;
+            if(aceEditor !== undefined) {
+                // Save undo/redo buttons actions
+                undoExecute = pagedownEditor.uiManager.buttons.undo.execute;
+                redoExecute = pagedownEditor.uiManager.buttons.redo.execute;
+                setUndoRedoButtonStates = pagedownEditor.uiManager.setUndoRedoButtonStates;
 
-            // Set new actions for undo/redo buttons
-            pagedownEditor.uiManager.buttons.undo.execute = function() {
-                if(model.canUndo) {
-                    // This flag is used to avoid replaying editor's own modifications (assuming it's synchronous)
-                    isAceUpToDate = false;
-                    model.undo();
-                }
-            };
-            pagedownEditor.uiManager.buttons.redo.execute = function() {
-                if(model.canRedo) {
-                    // This flag is used to avoid replaying editor's own modifications (assuming it's synchronous)
-                    isAceUpToDate = false;
-                    model.redo();
-                }
-            };
+                // Set new actions for undo/redo buttons
+                pagedownEditor.uiManager.buttons.undo.execute = function() {
+                    if(model.canUndo) {
+                        // This flag is used to avoid replaying editor's own
+                        // modifications (assuming it's synchronous)
+                        isAceUpToDate = false;
+                        model.undo();
+                    }
+                };
+                pagedownEditor.uiManager.buttons.redo.execute = function() {
+                    if(model.canRedo) {
+                        // This flag is used to avoid replaying editor's own
+                        // modifications (assuming it's synchronous)
+                        isAceUpToDate = false;
+                        model.redo();
+                    }
+                };
 
-            // Add event handler for model's UndoRedoStateChanged events
-            pagedownEditor.uiManager.setUndoRedoButtonStates = function() {
-                setTimeout(function() {
-                    pagedownEditor.uiManager.setButtonState(pagedownEditor.uiManager.buttons.undo, model.canUndo);
-                    pagedownEditor.uiManager.setButtonState(pagedownEditor.uiManager.buttons.redo, model.canRedo);
-                }, 50);
-            };
-            pagedownEditor.uiManager.setUndoRedoButtonStates();
-            model.addEventListener(gapi.drive.realtime.EventType.UNDO_REDO_STATE_CHANGED, function() {
+                // Add event handler for model's UndoRedoStateChanged events
+                pagedownEditor.uiManager.setUndoRedoButtonStates = function() {
+                    setTimeout(function() {
+                        pagedownEditor.uiManager.setButtonState(pagedownEditor.uiManager.buttons.undo, model.canUndo);
+                        pagedownEditor.uiManager.setButtonState(pagedownEditor.uiManager.buttons.redo, model.canRedo);
+                    }, 50);
+                };
                 pagedownEditor.uiManager.setUndoRedoButtonStates();
-            });
-            
+                model.addEventListener(gapi.drive.realtime.EventType.UNDO_REDO_STATE_CHANGED, function() {
+                    pagedownEditor.uiManager.setUndoRedoButtonStates();
+                });
+            }
+
         }, function(err) {
             console.error(err);
             if(err.type == "token_refresh_required") {
@@ -434,16 +451,22 @@ define([
         if(realtimeString !== undefined) {
             realtimeString = undefined;
         }
+        if(realtimeBinding !== undefined) {
+            realtimeBinding.unbind();
+            realtimeBinding = undefined;
+        }
         if(realtimeDocument !== undefined) {
             realtimeDocument.close();
             realtimeDocument = undefined;
         }
 
-        // Set back original undo/redo actions
-        pagedownEditor.uiManager.buttons.undo.execute = undoExecute;
-        pagedownEditor.uiManager.buttons.redo.execute = redoExecute;
-        pagedownEditor.uiManager.setUndoRedoButtonStates = setUndoRedoButtonStates;
-        pagedownEditor.uiManager.setUndoRedoButtonStates();
+        if(aceEditor !== undefined) {
+            // Set back original undo/redo actions
+            pagedownEditor.uiManager.buttons.undo.execute = undoExecute;
+            pagedownEditor.uiManager.buttons.redo.execute = redoExecute;
+            pagedownEditor.uiManager.setUndoRedoButtonStates = setUndoRedoButtonStates;
+            pagedownEditor.uiManager.setUndoRedoButtonStates();
+        }
     };
 
     eventMgr.addListener("onReady", function() {
@@ -459,14 +482,14 @@ define([
                 utils.setInputValue('#input-sync-export-gdrive-parentid', docs[0].id);
             }, 'folder');
         });
-        
+
         // On export, disable file ID input if realtime is checked
         var $realtimeCheckboxElt = $('#input-sync-export-gdrive-realtime');
         var $fileIdInputElt = $('#input-sync-export-gdrive-fileid');
         $('#input-sync-export-gdrive-realtime').change(function() {
             $fileIdInputElt.prop('disabled', $realtimeCheckboxElt.prop('checked'));
         });
-        
+
         var state = utils.retrieveIgnoreError(PROVIDER_GDRIVE + ".state");
         if(state === undefined) {
             return;

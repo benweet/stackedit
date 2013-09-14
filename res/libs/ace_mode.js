@@ -34,7 +34,7 @@ define(function(require, exports, module) {
 var oop = require("ace/lib/oop");
 var TextMode = require("ace/mode/text").Mode;
 var Tokenizer = require("ace/tokenizer").Tokenizer;
-var MarkdownHighlightRules = require("./acemode_highlight_rules").MarkdownHighlightRules;
+var MarkdownHighlightRules = require("./ace_mode_highlight_rules").MarkdownHighlightRules;
 var MarkdownFoldMode = require("ace/mode/folding/markdown").FoldMode;
 
 var Mode = function() {

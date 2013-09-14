@@ -156,6 +156,7 @@ define([
     });
 
     eventMgr.addListener("onReady", function() {
+        $editorElt = $("#wmd-input")
         fileMgr.selectFile();
 
         var $fileTitleElt = $('.file-title-navbar');
@@ -188,7 +189,7 @@ define([
                 eventMgr.onTitleChanged(fileDesc);
             }
             $fileTitleInputElt.val(fileDesc.title);
-            aceEditor.focus();
+            (aceEditor && aceEditor.focus()) || $editorElt.focus();
         }
         $fileTitleInputElt.blur(function() {
             applyTitle();
@@ -205,7 +206,10 @@ define([
             window.location.href = ".";
         });
         $(".action-edit-document").click(function() {
-            var content = aceEditor.getValue();
+            var content = $editorElt.val();
+            if(aceEditor !== undefined) {
+                content = aceEditor.getValue();
+            }
             var title = fileMgr.currentFile.title;
             var fileDesc = fileMgr.createFile(title, content);
             fileMgr.selectFile(fileDesc);

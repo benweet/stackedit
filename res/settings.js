@@ -20,7 +20,7 @@ define([
             '<title><%= documentTitle %></title>\n',
             '<link rel="stylesheet" href="',
             MAIN_URL,
-            'css/main-min.css" />\n',
+            'res-min/themes/default.css" />\n',
             '<script type="text/javascript" src="',
             MAIN_URL,
             'lib/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n',

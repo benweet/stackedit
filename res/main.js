@@ -55,6 +55,9 @@ requirejs.config({
         underscore: {
             exports: '_'
         },
+        mathjax: [
+            'libs/mathjax_init'
+        ],
         jgrowl: {
             deps: [
                 'jquery'

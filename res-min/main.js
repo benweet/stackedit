@@ -11935,7 +11935,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
   maxWidth: 960,
   defaultContent: "\n\n\n> Written with [StackEdit](" + MAIN_URL + ").",
   commitMsg: "Published with " + MAIN_URL,
-  template: [ "<!DOCTYPE html>\n", "<html>\n", "<head>\n", '<meta charset="utf-8">\n', "<title><%= documentTitle %></title>\n", '<link rel="stylesheet" href="', MAIN_URL, 'css/main-min.css" />\n', '<script type="text/javascript" src="', MAIN_URL, 'lib/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n', "</head>\n", '<body><div class="container"><%= documentHTML %></div></body>\n', "</html>" ].join(""),
+  template: [ "<!DOCTYPE html>\n", "<html>\n", "<head>\n", '<meta charset="utf-8">\n', "<title><%= documentTitle %></title>\n", '<link rel="stylesheet" href="', MAIN_URL, 'res-min/themes/default.css" />\n', '<script type="text/javascript" src="', MAIN_URL, 'lib/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n', "</head>\n", '<body><div class="container"><%= documentHTML %></div></body>\n', "</html>" ].join(""),
   sshProxy: SSH_PROXY_URL,
   extensionSettings: {}
  };
@@ -17817,15 +17817,23 @@ if (hljs.LANGUAGES.glsl = function(e) {
  }, c;
 }), define("text!html/mathJaxSettingsBlock.html", [], function() {
  return '<p>Allows StackEdit to interpret LaTeX mathematical expressions.</p>\n<div class="form-horizontal">\n    <div class="form-group">\n        <label class="col-lg-4 control-label"\n            for="input-mathjax-config-tex">TeX configuration</label>\n        <div class="col-lg-7">\n            <input type="text" id="input-mathjax-config-tex" class="form-control">\n        </div>\n    </div>\n    <div class="form-group">\n        <label class="col-lg-4 control-label"\n            for="input-mathjax-config-tex2jax">tex2jax configuration</label>\n        <div class="col-lg-7">\n            <input type="text" id="input-mathjax-config-tex2jax" class="form-control">\n        </div>\n    </div>\n</div>\n<span class="help-block pull-right"><a target="_blank" href="http://docs.mathjax.org/en/latest/options/index.html">More info</a></span>';
-}), define("extensions/mathJax", [ "utils", "classes/Extension", "text!html/mathJaxSettingsBlock.html", "mathjax" ], function(utils, Extension, mathJaxSettingsBlockHTML) {
- function b(e, t, n) {
-  var r = k.slice(e, t + 1).join("").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  for (h.Browser.isMSIE && (r = r.replace(/(%[^\n]*)\n/g, "$1<br/>\n")); t > e; ) k[t] = "", 
+}), define("text!libs/mathjax_config.js", [], function() {
+ return 'MathJax.Hub.Config({\n    "HTML-CSS": {\n        preferredFont: "TeX",\n        availableFonts: [\n            "STIX",\n            "TeX"\n        ],\n        linebreaks: {\n            automatic: true\n        },\n        EqnChunk: 10,\n        imageFont: null\n    },\n    tex2jax: <%= tex2jax || \'{ inlineMath: [["$","$"],["\\\\\\\\\\\\\\\\(","\\\\\\\\\\\\\\\\)"]], displayMath: [["$$","$$"],["\\\\\\\\[","\\\\\\\\]"]], processEscapes: true }\' %>,\n    TeX: $.extend({\n        noUndefined: {\n            attributes: {\n                mathcolor: "red",\n                mathbackground: "#FFEEEE",\n                mathsize: "90%"\n            }\n        },\n        Safe: {\n            allow: {\n                URLs: "safe",\n                classes: "safe",\n                cssIDs: "safe",\n                styles: "safe",\n                fontsize: "all"\n            }\n        }\n    }, <%= tex %>),\n    messageStyle: "none"\n});\n';
+}), require([ "settings", "text!libs/mathjax_config.js" ], function(e, t) {
+ var n = document.createElement("script");
+ n.type = "text/x-mathjax-config", n.innerHTML = _.template(t, {
+  tex: e.extensionSettings.mathJax ? e.extensionSettings.mathJax.tex : "undefined",
+  tex2jax: e.extensionSettings.mathJax ? e.extensionSettings.mathJax.tex2jax : void 0
+ }), document.body.appendChild(n);
+}), define("libs/mathjax_init", function() {}), define("extensions/mathJax", [ "utils", "classes/Extension", "text!html/mathJaxSettingsBlock.html", "text!libs/mathjax_config.js", "mathjax" ], function(e, t, n) {
+ function i(e, t, n) {
+  var i = u.slice(e, t + 1).join("").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  for (w.Browser.isMSIE && (i = i.replace(/(%[^\n]*)\n/g, "$1<br/>\n")); t > e; ) u[t] = "", 
   t--;
-  k[e] = "@@" + m.length + "@@", n && (r = n(r)), m.push(r), i = o = l = null;
+  u[e] = "@@" + g.length + "@@", n && (i = n(i)), g.push(i), d = h = p = null;
  }
- function p(e) {
-  i = o = l = null, m = [];
+ function o(e) {
+  d = h = p = null, g = [];
   var t;
   /`/.test(e) ? (e = e.replace(/~/g, "~T").replace(/(^|[^\\])(`+)([^\n]*?[^`\n])\2(?!`)/gm, function(e) {
    return e.replace(/\$/g, "~D");
@@ -17838,80 +17846,47 @@ if (hljs.LANGUAGES.glsl = function(e) {
    });
   }) : t = function(e) {
    return e;
-  }, k = r(e.replace(/\r\n?/g, "\n"), u);
-  for (var e = 1, a = k.length; a > e; e += 2) {
-   var c = k[e];
-   "@" === c.charAt(0) ? (k[e] = "@@" + m.length + "@@", m.push(c)) : i ? c === o ? n ? l = e : b(i, e, t) : c.match(/\n.*\n/) ? (l && (e = l, 
-   b(i, e, t)), i = o = l = null, n = 0) : "{" === c ? n++ : "}" === c && n && n-- : c === s || "$$" === c ? (i = e, 
-   o = c, n = 0) : "begin" === c.substr(1, 5) && (i = e, o = "\\end" + c.substr(6), 
-   n = 0);
+  }, u = C(e.replace(/\r\n?/g, "\n"), x);
+  for (var e = 1, n = u.length; n > e; e += 2) {
+   var o = u[e];
+   "@" === o.charAt(0) ? (u[e] = "@@" + g.length + "@@", g.push(o)) : d ? o === h ? f ? p = e : i(d, e, t) : o.match(/\n.*\n/) ? (p && (e = p, 
+   i(d, e, t)), d = h = p = null, f = 0) : "{" === o ? f++ : "}" === o && f && f-- : o === y || "$$" === o ? (d = e, 
+   h = o, f = 0) : "begin" === o.substr(1, 5) && (d = e, h = "\\end" + o.substr(6), 
+   f = 0);
   }
-  return l && b(i, l, t), t(k.join(""));
+  return p && i(d, p, t), t(u.join(""));
  }
- function d(e) {
+ function r(e) {
   return e = e.replace(/@@(\d+)@@/g, function(e, t) {
-   return m[t];
-  }), m = null, e;
+   return g[t];
+  }), g = null, e;
  }
- function e() {
-  q = !1, h.cancelTypeset = !1, h.Queue([ "Typeset", h, t ]), h.Queue(afterRefreshCallback);
+ function s() {
+  v = !1, w.cancelTypeset = !1, w.Queue([ "Typeset", w, b ]), w.Queue(c);
  }
- function j() {
-  !q && g && (q = !0, h.Cancel(), h.Queue(e));
+ function a() {
+  !v && m && (v = !0, w.Cancel(), w.Queue(s));
  }
- var mathJax = new Extension("mathJax", "MathJax", !0);
- mathJax.settingsBlock = mathJaxSettingsBlockHTML, mathJax.defaultConfig = {
+ var l = new t("mathJax", "MathJax", !0);
+ l.settingsBlock = n, l.defaultConfig = {
   tex: "{}",
   tex2jax: '{ inlineMath: [["$","$"],["\\\\\\\\(","\\\\\\\\)"]], displayMath: [["$$","$$"],["\\\\[","\\\\]"]], processEscapes: true }'
- }, mathJax.onLoadSettings = function() {
-  utils.setInputValue("#input-mathjax-config-tex", mathJax.config.tex), utils.setInputValue("#input-mathjax-config-tex2jax", mathJax.config.tex2jax);
- }, mathJax.onSaveSettings = function(e, t) {
-  e.tex = utils.getInputJsValue("#input-mathjax-config-tex", t), e.tex2jax = utils.getInputJsValue("#input-mathjax-config-tex2jax", t);
- }, mathJax.onReady = function() {
-  eval("var tex = " + mathJax.config.tex), eval("var tex2jax = " + mathJax.config.tex2jax), 
-  MathJax.Hub.Config({
-   "HTML-CSS": {
-    preferredFont: "TeX",
-    availableFonts: [ "STIX", "TeX" ],
-    linebreaks: {
-     automatic: !0
-    },
-    EqnChunk: 10,
-    imageFont: null
-   },
-   tex2jax: tex2jax,
-   TeX: $.extend({
-    noUndefined: {
-     attributes: {
-      mathcolor: "red",
-      mathbackground: "#FFEEEE",
-      mathsize: "90%"
-     }
-    },
-    Safe: {
-     allow: {
-      URLs: "safe",
-      classes: "safe",
-      cssIDs: "safe",
-      styles: "safe",
-      fontsize: "all"
-     }
-    }
-   }, tex),
-   messageStyle: "none"
-  });
- }, mathJax.onPagedownConfigure = function(e) {
-  t = document.getElementById("preview-contents");
-  var n = e.getConverter();
-  n.hooks.chain("preConversion", p), n.hooks.chain("postConversion", d);
+ }, l.onLoadSettings = function() {
+  e.setInputValue("#input-mathjax-config-tex", l.config.tex), e.setInputValue("#input-mathjax-config-tex2jax", l.config.tex2jax);
+ }, l.onSaveSettings = function(t, n) {
+  t.tex = e.getInputJsValue("#input-mathjax-config-tex", n), t.tex2jax = e.getInputJsValue("#input-mathjax-config-tex2jax", n);
+ }, l.onPagedownConfigure = function(e) {
+  b = document.getElementById("preview-contents");
+  var t = e.getConverter();
+  t.hooks.chain("preConversion", o), t.hooks.chain("postConversion", r);
  };
- var afterRefreshCallback = void 0;
- mathJax.onAsyncPreview = function(e) {
-  afterRefreshCallback = e, j();
+ var c = void 0;
+ l.onAsyncPreview = function(e) {
+  c = e, a();
  };
- var g = !1, q = !1, t = null, s = "$", k, i, o, l, n, m, h = MathJax.Hub;
- h.Queue(function() {
-  g = !0, h.processUpdateTime = 50, h.Config({
+ var u, d, h, p, f, g, m = !1, v = !1, b = null, y = "$", w = MathJax.Hub;
+ w.Queue(function() {
+  m = !0, w.processUpdateTime = 50, w.Config({
    "HTML-CSS": {
     EqnChunk: 10,
     EqnChunkFactor: 1
@@ -17922,8 +17897,8 @@ if (hljs.LANGUAGES.glsl = function(e) {
    }
   });
  });
- var u = /(\$\$?|\\(?:begin|end)\{[a-z]*\*?\}|\\[\\{}$]|[{}]|(?:\n\s*)+|@@\d+@@)/i, r;
- return r = 3 === "aba".split(/(b)/).length ? function(e, t) {
+ var C, x = /(\$\$?|\\(?:begin|end)\{[a-z]*\*?\}|\\[\\{}$]|[{}]|(?:\n\s*)+|@@\d+@@)/i;
+ return C = 3 === "aba".split(/(b)/).length ? function(e, t) {
   return e.split(t);
  } : function(e, t) {
   var n, i = [];
@@ -17973,7 +17948,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
     this.cancelTypeset = !0;
    };
   }
- }(), mathJax;
+ }(), l;
 }), define("extensions/emailConverter", [ "classes/Extension" ], function(e) {
  var t = new e("emailConverter", "Markdown Email", !0);
  return t.settingsBlock = "<p>Converts email adresses in the form &lt;email@example.com&gt; into clickable links.</p>", 
@@ -25445,6 +25420,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
   underscore: {
    exports: "_"
   },
+  mathjax: [ "libs/mathjax_init" ],
   jgrowl: {
    deps: [ "jquery" ],
    exports: "jQuery.jGrowl"

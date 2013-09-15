@@ -12894,7 +12894,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
   }));
   var s = l.config.shortcutPrevious.toLowerCase();
   r.bind(s, function() {
-   console.log("keydown"), void 0 === v && (i.dropdown("toggle"), v = p[m.fileIndex]);
+   void 0 === v && (i.dropdown("toggle"), v = p[m.fileIndex]);
    var e = t.indexOf(f, v) - 1;
    return -2 === e && (e = -1), v = f[(e + f.length) % f.length], t.defer(function() {
     v.find("a").focus();
@@ -12902,7 +12902,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
   });
   var a = l.config.shortcutNext.toLowerCase();
   r.bind(l.config.shortcutNext.toLowerCase(), function() {
-   console.log("keydown"), void 0 === v && (i.dropdown("toggle"), v = p[m.fileIndex]);
+   void 0 === v && (i.dropdown("toggle"), v = p[m.fileIndex]);
    var e = t.indexOf(f, v) + 1;
    return v = f[e % f.length], t.defer(function() {
     v.find("a").focus();
@@ -12910,7 +12910,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
   });
   var c = s.indexOf("+"), u = -1 === c ? s : s.substring(0, c), d = a.indexOf("+"), y = -1 === d ? a : a.substring(0, d);
   r.bind([ u, y ], function() {
-   console.log("keyup"), void 0 !== v && v.find("a").click();
+   void 0 !== v && v.find("a").click();
   }, "keyup");
  }, l;
 }), define("classes/FolderDescriptor", [ "underscore", "utils", "fileSystem" ], function(e, t, n) {
@@ -23134,8 +23134,8 @@ if (hljs.LANGUAGES.glsl = function(e) {
    }, 100);
    I.session.on("changeScrollTop", function() {
     void 0 !== j && u();
-   }), I.session.selection.on("changeSelection", function() {
-    void 0 !== j && (z.editorSelectRange = I.getSelectionRange());
+   }), I.session.selection.on("changeCursor", function() {
+    void 0 !== j && (console.log("changeCursor"), z.editorSelectRange = I.getSelectionRange());
    }), c.scroll(function() {
     void 0 !== j && (z.previewScrollTop = c.scrollTop());
    });

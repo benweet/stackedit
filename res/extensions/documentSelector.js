@@ -130,7 +130,6 @@ define([
         // Handle key shortcut
         var shortcutPrevious = documentSelector.config.shortcutPrevious.toLowerCase();
         mousetrap.bind(shortcutPrevious, function() {
-            console.log('keydown')
             if(selectedLi === undefined) {
                 $dropdownElt.dropdown('toggle');
                 selectedLi = liEltMap[selectFileDesc.fileIndex];
@@ -147,7 +146,6 @@ define([
         });
         var shortcutNext = documentSelector.config.shortcutNext.toLowerCase();
         mousetrap.bind(documentSelector.config.shortcutNext.toLowerCase(), function() {
-            console.log('keydown')
             if(selectedLi === undefined) {
                 $dropdownElt.dropdown('toggle');
                 selectedLi = liEltMap[selectFileDesc.fileIndex];
@@ -167,7 +165,6 @@ define([
             shortcutSelect1,
             shortcutSelect2
         ], function() {
-            console.log('keyup')
             if(selectedLi !== undefined) {
                 selectedLi.find("a").click();
             }

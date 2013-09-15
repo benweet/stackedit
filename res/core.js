@@ -207,7 +207,7 @@ define([
         }
         aceEditor = ace.edit("wmd-input");
         aceEditor.renderer.setShowGutter(false);
-        aceEditor.renderer.setShowPrintMargin(false);
+        //aceEditor.renderer.setShowPrintMargin(false);
         aceEditor.renderer.setPrintMarginColumn(false);
         aceEditor.renderer.setPadding(EDITOR_DEFAULT_PADDING);
         aceEditor.session.setUseWrapMode(true);

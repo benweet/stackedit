@@ -13,7 +13,11 @@ Getting started
 
 #### Before debugging
 
-- Download dependencies using [Bower][4]:
+- Download development tools:
+
+		npm install
+
+- Download dependencies:
 
 		bower install
 
@@ -50,6 +54,7 @@ Getting started
 
 #### Build/minify
 
+	npm install
 	grunt
 
 

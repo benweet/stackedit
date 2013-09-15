@@ -25465,7 +25465,7 @@ var viewerMode = /(^| )viewer($| )/.test(document.body.className), lightMode = v
  e(function() {
   t.onReady(), window.applicationCache && window.applicationCache.addEventListener("updateready", function() {
    window.applicationCache.status === window.applicationCache.UPDATEREADY && (window.applicationCache.swapCache(), 
-   n.onMessage("New version available.\nJust refresh the page to upgrade."));
+   n.onMessage("New version available!\nJust refresh the page to upgrade."));
   }, !1);
  });
 }), define("main", function() {});

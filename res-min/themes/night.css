@@ -1428,7 +1428,7 @@ th.visible-print,td.visible-print{display:none !important}
 .popover[class*="tour-"].orphan .arrow{display:none}
 body{tab-size:4}
 .ui-layout-east,.ui-layout-south{background-color:#232323}
-#preview-contents{padding:15px;margin:0 auto 50px}
+#preview-contents{padding:15px;margin:0 auto 180px}
 .ui-layout-east #preview-contents{padding-left:5px}
 .working{cursor:progress}
 .btn,.dropdown-menu{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none}

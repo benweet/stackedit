@@ -69,7 +69,7 @@ define([
             height: scrollHeight - htmlSectionOffset
         });
 
-        // apply Scroll Link (-10 to have a gap > 9 px)
+        // apply Scroll Link (-10 to have a gap > 9px)
         lastEditorScrollTop = -10;
         lastPreviewScrollTop = -10;
         doScrollLink();
@@ -177,15 +177,17 @@ define([
         mdSectionList = [];
     };
 
+    var scrollAdjust = false;
     scrollLink.onReady = function() {
         $previewElt = $(".preview-container");
 
         $previewElt.scroll(function() {
-            if(isPreviewMoving === false) {
+            if(isPreviewMoving === false && scrollAdjust === false) {
                 isScrollPreview = true;
                 isScrollEditor = false;
                 doScrollLink();
             }
+            scrollAdjust = false;
         });
         aceEditor.session.on("changeScrollTop", function(e) {
             if(isEditorMoving === false) {
@@ -209,8 +211,14 @@ define([
 
     scrollLink.onPreviewFinished = function() {
         // Now set the correct height
+        var previousHeight = $previewContentsElt.height();
         $previewContentsElt.height("auto");
+        var newHeight = $previewContentsElt.height();
         isScrollEditor = true;
+        if(newHeight < previousHeight) {
+            // We expect a scroll adjustment
+            scrollAdjust = true;
+        }
         buildSections();
     };
 

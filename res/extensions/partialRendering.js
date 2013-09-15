@@ -48,6 +48,11 @@ define([
                 return true;
             }
         });
+        
+        if(leftIndex !== 0 && leftIndex + rightIndex === 0) {
+            // nothing changed
+            return;
+        }
 
         // Create an array composed of left unmodified, modified, right
         // unmodified sections
@@ -63,7 +68,7 @@ define([
     partialRendering.onSectionsCreated = function(sectionListParam) {
 
         var newSectionList = [];
-        var newLinkDefinition = "";
+        var newLinkDefinition = '\n';
         hasFootnotes = false;
         _.each(sectionListParam, function(text) {
             text += "\n\n";
@@ -73,7 +78,7 @@ define([
                 text = text.replace(/^```.*\n[\s\S]*?\n```|\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|$)/g, function(wholeMatch, footnote) {
                     if(footnote) {
                         hasFootnotes = true;
-                        newLinkDefinition += wholeMatch;
+                        newLinkDefinition += wholeMatch.replace(/^\s*\n/gm, '') + '\n';
                         return "";
                     }
                     return wholeMatch;
@@ -83,7 +88,7 @@ define([
             // Strip link definitions
             text = text.replace(/^```.*\n[\s\S]*?\n```|^[ ]{0,3}\[(.+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?(?=\s|$)[ \t]*\n?[ \t]*((\n*)["(](.+?)[")][ \t]*)?(?:\n+)/gm, function(wholeMatch, link) {
                 if(link) {
-                    newLinkDefinition += wholeMatch;
+                    newLinkDefinition += wholeMatch.replace(/^\s*\n/gm, '') + '\n';
                     return "";
                 }
                 return wholeMatch;
@@ -94,7 +99,7 @@ define([
                 // Add section to the newSectionList
                 newSectionList.push({
                     id: ++sectionCounter,
-                    text: text
+                    text: text + '\n'
                 });
             }
         });
@@ -141,7 +146,6 @@ define([
                 }
                 childNode = nextNode;
             }
-            ;
             newSectionEltList.appendChild(sectionElt);
         });
         wmdPreviewElt.innerHTML = '';

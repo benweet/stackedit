@@ -155,5 +155,17 @@ define([
         version = "v9";
     }
 
+    // Upgrade from v9 to v10
+    if(version == "v9") {
+        if(_.has(localStorage, 'settings')) {
+            settings = JSON.parse(localStorage.settings);
+            delete settings.editorFontFamily;
+            delete settings.editorFontSize;
+            settings.template && (settings.template = settings.template.replace('http://benweet.github.io/stackedit/css/main-min.css', 'http://benweet.github.io/stackedit/res-min/themes/default.css'));
+            localStorage.settings = JSON.stringify(settings);
+        }
+        version = "v10";
+    }
+
     localStorage["version"] = version;
 });

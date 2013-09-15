@@ -14,7 +14,7 @@ define([
     "storage",
     "config",
     "uilayout",
-    "libs/Markdown.Editor",
+    'pagedown-ace',
     'libs/ace_mode',
     'ace/requirejs/text!ace/css/editor.css',
     'ace/requirejs/text!ace/theme/textmate.css',
@@ -549,6 +549,10 @@ define([
                     makePreview();
                     if(documentContent === undefined) {
                         $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
+                        _.defer(function() {
+                            aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
+                            eventMgr.onFileOpen(fileDesc);
+                        });
                     }
                     checkDocumentChanges();
                 };

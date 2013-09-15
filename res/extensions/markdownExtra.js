@@ -4,7 +4,7 @@ define([
     "utils",
     "classes/Extension",
     "text!html/markdownExtraSettingsBlock.html",
-    "libs/Markdown.Extra",
+    'pagedown-extra',
 ], function($, _, utils, Extension, markdownExtraSettingsBlockHTML) {
 
     var markdownExtra = new Extension("markdownExtra", "Markdown Extra", true);

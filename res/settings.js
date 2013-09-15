@@ -1,6 +1,7 @@
 define([
     "underscore",
-    "config"
+    "config",
+    "storage"
 ], function(_) {
 
     var settings = {

@@ -871,7 +871,7 @@ function runDelayedFunction() {
    return e === t !== n;
   });
   if ("string" == typeof t) {
-   if (_t.test(t)) return rt.filter(t, e, n);
+   if ($t.test(t)) return rt.filter(t, e, n);
    t = rt.filter(t, e);
   }
   return rt.grep(e, function(e) {
@@ -885,7 +885,7 @@ function runDelayedFunction() {
   return e.type = (null !== e.getAttribute("type")) + "/" + e.type, e;
  }
  function p(e) {
-  var t = zt.exec(e.type);
+  var t = Ot.exec(e.type);
   return t ? e.type = t[1] : e.removeAttribute("type"), e;
  }
  function f(e, t) {
@@ -907,7 +907,7 @@ function runDelayedFunction() {
  }
  function v(e, t) {
   var n = t.nodeName.toLowerCase();
-  "input" === n && It.test(e.type) ? t.checked = e.checked : ("input" === n || "textarea" === n) && (t.defaultValue = e.defaultValue);
+  "input" === n && Pt.test(e.type) ? t.checked = e.checked : ("input" === n || "textarea" === n) && (t.defaultValue = e.defaultValue);
  }
  function b(e, t) {
   if (t in e) return t;
@@ -962,7 +962,7 @@ function runDelayedFunction() {
    n || tn.test(e) ? i(e, o) : F(e + "[" + ("object" == typeof o ? t : "") + "]", o, n, i);
   }); else if (n || "object" !== rt.type(t)) i(e, t); else for (o in t) F(e + "[" + o + "]", t[o], n, i);
  }
- function _(e) {
+ function $(e) {
   return function(t, n) {
    "string" != typeof t && (n = t, t = "*");
    var i, o = 0, r = t.toLowerCase().match(at) || [];
@@ -970,7 +970,7 @@ function runDelayedFunction() {
    (e[i] = e[i] || []).unshift(n)) : (e[i] = e[i] || []).push(n);
   };
  }
- function $(e, t, n, i) {
+ function _(e, t, n, i) {
   function o(a) {
    var l;
    return r[a] = !0, rt.each(e[a] || [], function(e, a) {
@@ -1031,8 +1031,8 @@ function runDelayedFunction() {
  }
  function B() {
   return setTimeout(function() {
-   _n = t;
-  }), _n = rt.now();
+   $n = t;
+  }), $n = rt.now();
  }
  function M(e, t, n) {
   for (var i, o = (Mn[t] || []).concat(Mn["*"]), r = 0, s = o.length; s > r; r++) if (i = o[r].call(n, t, e)) return i;
@@ -1042,7 +1042,7 @@ function runDelayedFunction() {
    delete l.elem;
   }), l = function() {
    if (o) return !1;
-   for (var t = _n || B(), n = Math.max(0, c.startTime + c.duration - t), i = n / c.duration || 0, r = 1 - i, s = 0, l = c.tweens.length; l > s; s++) c.tweens[s].run(r);
+   for (var t = $n || B(), n = Math.max(0, c.startTime + c.duration - t), i = n / c.duration || 0, r = 1 - i, s = 0, l = c.tweens.length; l > s; s++) c.tweens[s].run(r);
    return a.notifyWith(e, [ c, r, n ]), 1 > r && l ? n : (a.resolveWith(e, [ c ]), 
    !1);
   }, c = a.promise({
@@ -1053,7 +1053,7 @@ function runDelayedFunction() {
    }, n),
    originalProperties: t,
    originalOptions: n,
-   startTime: _n || B(),
+   startTime: $n || B(),
    duration: n.duration,
    tweens: [],
    createTween: function(t, n) {
@@ -1067,7 +1067,7 @@ function runDelayedFunction() {
     return t ? a.resolveWith(e, [ c, t ]) : a.rejectWith(e, [ c, t ]), this;
    }
   }), u = c.props;
-  for (I(u, c.opts.specialEasing); s > r; r++) if (i = Bn[r].call(c, e, u, c.opts)) return i;
+  for (P(u, c.opts.specialEasing); s > r; r++) if (i = Bn[r].call(c, e, u, c.opts)) return i;
   return rt.map(u, M, c), rt.isFunction(c.opts.start) && c.opts.start.call(e, c), 
   rt.fx.timer(rt.extend(l, {
    elem: e,
@@ -1075,7 +1075,7 @@ function runDelayedFunction() {
    queue: c.opts.queue
   })), c.progress(c.opts.progress).done(c.opts.done, c.opts.complete).fail(c.opts.fail).always(c.opts.always);
  }
- function I(e, t) {
+ function P(e, t) {
   var n, i, o, r, s;
   for (n in e) if (i = rt.camelCase(n), o = t[i], r = e[n], rt.isArray(r) && (o = r[1], 
   r = e[n] = r[0]), n !== i && (e[i] = r, delete e[n]), s = rt.cssHooks[i], s && "expand" in s) {
@@ -1083,7 +1083,7 @@ function runDelayedFunction() {
    for (n in r) n in e || (e[n] = r[n], t[n] = o);
   } else t[i] = o;
  }
- function P(e, n, i) {
+ function I(e, n, i) {
   var o, r, s, a, l, c, u = this, d = {}, h = e.style, p = e.nodeType && y(e), f = mt.get(e, "fxshow");
   i.queue || (l = rt._queueHooks(e, "fx"), null == l.unqueued && (l.unqueued = 0, 
   c = l.empty.fire, l.empty.fire = function() {
@@ -1120,14 +1120,14 @@ function runDelayedFunction() {
  function N(e, t, n, i, o) {
   return new N.prototype.init(e, t, n, i, o);
  }
- function z(e, t) {
+ function O(e, t) {
   var n, i = {
    height: e
   }, o = 0;
   for (t = t ? 1 : 0; 4 > o; o += 2 - t) n = Jt[o], i["margin" + n] = i["padding" + n] = e;
   return t && (i.opacity = i.width = e), i;
  }
- function O(e) {
+ function z(e) {
   return rt.isWindow(e) ? e : 9 === e.nodeType && e.defaultView;
  }
  var j, H, q = typeof t, W = e.location, U = e.document, G = U.documentElement, V = e.jQuery, K = e.$, X = {}, Y = [], Z = "2.0.3", J = Y.concat, Q = Y.push, et = Y.slice, tt = Y.indexOf, nt = X.toString, it = X.hasOwnProperty, ot = Z.trim, rt = function(e, t) {
@@ -1353,7 +1353,7 @@ function runDelayedFunction() {
  }), j = rt(U), function(e, t) {
   function n(e, t, n, i) {
    var o, r, s, a, l, c, u, d, f, g;
-   if ((t ? t.ownerDocument || t : O) !== L && T(t), t = t || L, n = n || [], !e || "string" != typeof e) return n;
+   if ((t ? t.ownerDocument || t : z) !== L && T(t), t = t || L, n = n || [], !e || "string" != typeof e) return n;
    if (1 !== (a = t.nodeType) && 9 !== a) return [];
    if (M && !i) {
     if (o = yt.exec(e)) if (s = o[1]) {
@@ -1368,7 +1368,7 @@ function runDelayedFunction() {
      n;
     }
     if (E.qsa && (!R || !R.test(e))) {
-     if (d = u = z, f = t, g = 9 === a && e, 1 === a && "object" !== t.nodeName.toLowerCase()) {
+     if (d = u = O, f = t, g = 9 === a && e, 1 === a && "object" !== t.nodeName.toLowerCase()) {
       for (c = h(e), (u = t.getAttribute("id")) ? d = u.replace(xt, "\\$&") : t.setAttribute("id", d), 
       d = "[id='" + d + "'] ", l = c.length; l--; ) c[l] = d + p(c[l]);
       f = pt.test(e) && t.parentNode || t, g = c.join(",");
@@ -1390,7 +1390,7 @@ function runDelayedFunction() {
    return e;
   }
   function o(e) {
-   return e[z] = !0, e;
+   return e[O] = !0, e;
   }
   function r(e) {
    var t = L.createElement("div");
@@ -1462,7 +1462,7 @@ function runDelayedFunction() {
     var a, l, c, u = j + " " + r;
     if (s) {
      for (;t = t[i]; ) if ((1 === t.nodeType || o) && e(t, n, s)) return !0;
-    } else for (;t = t[i]; ) if (1 === t.nodeType || o) if (c = t[z] || (t[z] = {}), 
+    } else for (;t = t[i]; ) if (1 === t.nodeType || o) if (c = t[O] || (t[O] = {}), 
     (l = c[i]) && l[0] === u) {
      if ((a = l[1]) === !0 || a === A) return a === !0;
     } else if (l = c[i] = [ u ], l[1] = e(t, n, s) || A, l[1] === !0) return !0;
@@ -1480,7 +1480,7 @@ function runDelayedFunction() {
    return s;
   }
   function v(e, t, n, i, r, s) {
-   return i && !i[z] && (i = v(i)), r && !r[z] && (r = v(r, s)), o(function(o, s, a, l) {
+   return i && !i[O] && (i = v(i)), r && !r[O] && (r = v(r, s)), o(function(o, s, a, l) {
     var c, u, d, h = [], p = [], f = s.length, g = o || w(t || "*", a.nodeType ? [ a ] : a, []), v = !e || !o && t ? g : m(g, h, e, a, l), b = n ? r || (o ? e : f || i) ? [] : s : v;
     if (n && n(v, b, a, l), i) for (c = m(b, p), i(c, [], a, l), u = c.length; u--; ) (d = c[u]) && (b[p[u]] = !(v[p[u]] = d));
     if (o) {
@@ -1500,9 +1500,9 @@ function runDelayedFunction() {
    }, s, !0), c = f(function(e) {
     return nt.call(t, e) > -1;
    }, s, !0), u = [ function(e, n, i) {
-    return !r && (i || n !== $) || ((t = n).nodeType ? l(e, n, i) : c(e, n, i));
+    return !r && (i || n !== _) || ((t = n).nodeType ? l(e, n, i) : c(e, n, i));
    } ]; o > a; a++) if (n = S.relative[e[a].type]) u = [ f(g(u), n) ]; else {
-    if (n = S.filter[e[a].type].apply(null, e[a].matches), n[z]) {
+    if (n = S.filter[e[a].type].apply(null, e[a].matches), n[O]) {
      for (i = ++a; o > i && !S.relative[e[i].type]; i++) ;
      return v(a > 1 && g(u), a > 1 && p(e.slice(0, a - 1).concat({
       value: " " === e[a - 2].type ? "*" : ""
@@ -1514,8 +1514,8 @@ function runDelayedFunction() {
   }
   function y(e, t) {
    var i = 0, r = t.length > 0, s = e.length > 0, a = function(o, a, l, c, u) {
-    var d, h, p, f = [], g = 0, v = "0", b = o && [], y = null != u, w = $, C = o || s && S.find.TAG("*", u && a.parentNode || a), x = j += null == w ? 1 : Math.random() || .1;
-    for (y && ($ = a !== L && a, A = i); null != (d = C[v]); v++) {
+    var d, h, p, f = [], g = 0, v = "0", b = o && [], y = null != u, w = _, C = o || s && S.find.TAG("*", u && a.parentNode || a), x = j += null == w ? 1 : Math.random() || .1;
+    for (y && (_ = a !== L && a, A = i); null != (d = C[v]); v++) {
      if (s && d) {
       for (h = 0; p = e[h++]; ) if (p(d, a, l)) {
        c.push(d);
@@ -1533,7 +1533,7 @@ function runDelayedFunction() {
      }
      et.apply(c, f), y && !o && f.length > 0 && g + t.length > 1 && n.uniqueSort(c);
     }
-    return y && (j = x, $ = w), b;
+    return y && (j = x, _ = w), b;
    };
    return r ? o(a) : a;
   }
@@ -1553,9 +1553,9 @@ function runDelayedFunction() {
      break;
     }
    }
-   return _(e, c)(i, t, !M, n, pt.test(e)), n;
+   return $(e, c)(i, t, !M, n, pt.test(e)), n;
   }
-  var x, E, A, S, k, F, _, $, D, T, L, B, M, R, I, P, N, z = "sizzle" + -new Date(), O = e.document, j = 0, H = 0, q = i(), W = i(), U = i(), G = !1, V = function(e, t) {
+  var x, E, A, S, k, F, $, _, D, T, L, B, M, R, P, I, N, O = "sizzle" + -new Date(), z = e.document, j = 0, H = 0, q = i(), W = i(), U = i(), G = !1, V = function(e, t) {
    return e === t ? (G = !0, 0) : 0;
   }, K = typeof t, X = 1 << 31, Y = {}.hasOwnProperty, Z = [], J = Z.pop, Q = Z.push, et = Z.push, tt = Z.slice, nt = Z.indexOf || function(e) {
    for (var t = 0, n = this.length; n > t; t++) if (this[t] === e) return t;
@@ -1574,7 +1574,7 @@ function runDelayedFunction() {
    return i !== i || n ? t : 0 > i ? String.fromCharCode(i + 65536) : String.fromCharCode(55296 | i >> 10, 56320 | 1023 & i);
   };
   try {
-   et.apply(Z = tt.call(O.childNodes), O.childNodes), Z[O.childNodes.length].nodeType;
+   et.apply(Z = tt.call(z.childNodes), z.childNodes), Z[z.childNodes.length].nodeType;
   } catch (St) {
    et = {
     apply: Z.length ? function(e, t) {
@@ -1589,7 +1589,7 @@ function runDelayedFunction() {
    var t = e && (e.ownerDocument || e).documentElement;
    return t ? "HTML" !== t.nodeName : !1;
   }, E = n.support = {}, T = n.setDocument = function(e) {
-   var t = e ? e.ownerDocument || e : O, n = t.defaultView;
+   var t = e ? e.ownerDocument || e : z, n = t.defaultView;
    return t !== L && 9 === t.nodeType && t.documentElement ? (L = t, B = t.documentElement, 
    M = !F(t), n && n.attachEvent && n !== n.top && n.attachEvent("onbeforeunload", function() {
     T();
@@ -1601,7 +1601,7 @@ function runDelayedFunction() {
     return e.innerHTML = "<div class='a'></div><div class='a i'></div>", e.firstChild.className = "i", 
     2 === e.getElementsByClassName("i").length;
    }), E.getById = r(function(e) {
-    return B.appendChild(e).id = z, !t.getElementsByName || !t.getElementsByName(z).length;
+    return B.appendChild(e).id = O, !t.getElementsByName || !t.getElementsByName(O).length;
    }), E.getById ? (S.find.ID = function(e, t) {
     if (typeof t.getElementById !== K && M) {
      var n = t.getElementById(e);
@@ -1629,7 +1629,7 @@ function runDelayedFunction() {
     return r;
    }, S.find.CLASS = E.getElementsByClassName && function(e, t) {
     return typeof t.getElementsByClassName !== K && M ? t.getElementsByClassName(e) : void 0;
-   }, I = [], R = [], (E.qsa = bt.test(t.querySelectorAll)) && (r(function(e) {
+   }, P = [], R = [], (E.qsa = bt.test(t.querySelectorAll)) && (r(function(e) {
     e.innerHTML = "<select><option selected=''></option></select>", e.querySelectorAll("[selected]").length || R.push("\\[" + ot + "*(?:value|" + it + ")"), 
     e.querySelectorAll(":checked").length || R.push(":checked");
    }), r(function(e) {
@@ -1637,9 +1637,9 @@ function runDelayedFunction() {
     n.setAttribute("type", "hidden"), e.appendChild(n).setAttribute("t", ""), e.querySelectorAll("[t^='']").length && R.push("[*^$]=" + ot + "*(?:''|\"\")"), 
     e.querySelectorAll(":enabled").length || R.push(":enabled", ":disabled"), e.querySelectorAll("*,:x"), 
     R.push(",.*:");
-   })), (E.matchesSelector = bt.test(P = B.webkitMatchesSelector || B.mozMatchesSelector || B.oMatchesSelector || B.msMatchesSelector)) && r(function(e) {
-    E.disconnectedMatch = P.call(e, "div"), P.call(e, "[s!='']:x"), I.push("!=", ct);
-   }), R = R.length && new RegExp(R.join("|")), I = I.length && new RegExp(I.join("|")), 
+   })), (E.matchesSelector = bt.test(I = B.webkitMatchesSelector || B.mozMatchesSelector || B.oMatchesSelector || B.msMatchesSelector)) && r(function(e) {
+    E.disconnectedMatch = I.call(e, "div"), I.call(e, "[s!='']:x"), P.push("!=", ct);
+   }), R = R.length && new RegExp(R.join("|")), P = P.length && new RegExp(P.join("|")), 
    N = bt.test(B.contains) || B.compareDocumentPosition ? function(e, t) {
     var n = 9 === e.nodeType ? e.documentElement : e, i = t && t.parentNode;
     return e === i || !(!i || 1 !== i.nodeType || !(n.contains ? n.contains(i) : e.compareDocumentPosition && 16 & e.compareDocumentPosition(i)));
@@ -1649,7 +1649,7 @@ function runDelayedFunction() {
    }, V = B.compareDocumentPosition ? function(e, n) {
     if (e === n) return G = !0, 0;
     var i = n.compareDocumentPosition && e.compareDocumentPosition && e.compareDocumentPosition(n);
-    return i ? 1 & i || !E.sortDetached && n.compareDocumentPosition(e) === i ? e === t || N(O, e) ? -1 : n === t || N(O, n) ? 1 : D ? nt.call(D, e) - nt.call(D, n) : 0 : 4 & i ? -1 : 1 : e.compareDocumentPosition ? -1 : 1;
+    return i ? 1 & i || !E.sortDetached && n.compareDocumentPosition(e) === i ? e === t || N(z, e) ? -1 : n === t || N(z, n) ? 1 : D ? nt.call(D, e) - nt.call(D, n) : 0 : 4 & i ? -1 : 1 : e.compareDocumentPosition ? -1 : 1;
    } : function(e, n) {
     var i, o = 0, r = e.parentNode, s = n.parentNode, l = [ e ], c = [ n ];
     if (e === n) return G = !0, 0;
@@ -1658,13 +1658,13 @@ function runDelayedFunction() {
     for (i = e; i = i.parentNode; ) l.unshift(i);
     for (i = n; i = i.parentNode; ) c.unshift(i);
     for (;l[o] === c[o]; ) o++;
-    return o ? a(l[o], c[o]) : l[o] === O ? -1 : c[o] === O ? 1 : 0;
+    return o ? a(l[o], c[o]) : l[o] === z ? -1 : c[o] === z ? 1 : 0;
    }, t) : L;
   }, n.matches = function(e, t) {
    return n(e, null, null, t);
   }, n.matchesSelector = function(e, t) {
-   if ((e.ownerDocument || e) !== L && T(e), t = t.replace(ft, "='$1']"), !(!E.matchesSelector || !M || I && I.test(t) || R && R.test(t))) try {
-    var i = P.call(e, t);
+   if ((e.ownerDocument || e) !== L && T(e), t = t.replace(ft, "='$1']"), !(!E.matchesSelector || !M || P && P.test(t) || R && R.test(t))) try {
+    var i = I.call(e, t);
     if (i || E.disconnectedMatch || e.document && 11 !== e.document.nodeType) return i;
    } catch (o) {}
    return n(t, L, null, [ e ]).length > 0;
@@ -1766,12 +1766,12 @@ function runDelayedFunction() {
         return !0;
        }
        if (f = [ s ? m.firstChild : m.lastChild ], s && b) {
-        for (u = m[z] || (m[z] = {}), c = u[e] || [], p = c[0] === j && c[1], h = c[0] === j && c[2], 
+        for (u = m[O] || (m[O] = {}), c = u[e] || [], p = c[0] === j && c[1], h = c[0] === j && c[2], 
         d = p && m.childNodes[p]; d = ++p && d && d[g] || (h = p = 0) || f.pop(); ) if (1 === d.nodeType && ++h && d === t) {
          u[e] = [ j, p, h ];
          break;
         }
-       } else if (b && (c = (t[z] || (t[z] = {}))[e]) && c[0] === j) h = c[1]; else for (;(d = ++p && d && d[g] || (h = p = 0) || f.pop()) && ((a ? d.nodeName.toLowerCase() !== v : 1 !== d.nodeType) || !++h || (b && ((d[z] || (d[z] = {}))[e] = [ j, h ]), 
+       } else if (b && (c = (t[O] || (t[O] = {}))[e]) && c[0] === j) h = c[1]; else for (;(d = ++p && d && d[g] || (h = p = 0) || f.pop()) && ((a ? d.nodeName.toLowerCase() !== v : 1 !== d.nodeType) || !++h || (b && ((d[O] || (d[O] = {}))[e] = [ j, h ]), 
        d !== t)); ) ;
        return h -= o, h === i || 0 === h % i && h / i >= 0;
       }
@@ -1779,7 +1779,7 @@ function runDelayedFunction() {
     },
     PSEUDO: function(e, t) {
      var i, r = S.pseudos[e] || S.setFilters[e.toLowerCase()] || n.error("unsupported pseudo: " + e);
-     return r[z] ? r(t) : r.length > 1 ? (i = [ e, e, "", t ], S.setFilters.hasOwnProperty(e.toLowerCase()) ? o(function(e, n) {
+     return r[O] ? r(t) : r.length > 1 ? (i = [ e, e, "", t ], S.setFilters.hasOwnProperty(e.toLowerCase()) ? o(function(e, n) {
       for (var i, o = r(e, t), s = o.length; s--; ) i = nt.call(e, o[s]), e[i] = !(n[i] = o[s]);
      }) : function(e) {
       return r(e, 0, i);
@@ -1788,8 +1788,8 @@ function runDelayedFunction() {
    },
    pseudos: {
     not: o(function(e) {
-     var t = [], n = [], i = _(e.replace(ut, "$1"));
-     return i[z] ? o(function(e, t, n, o) {
+     var t = [], n = [], i = $(e.replace(ut, "$1"));
+     return i[O] ? o(function(e, t, n, o) {
       for (var r, s = i(e, null, o, []), a = e.length; a--; ) (r = s[a]) && (e[a] = !(t[a] = r));
      }) : function(e, o, r) {
       return t[0] = e, i(t, null, r, n), !n.pop();
@@ -1896,14 +1896,14 @@ function runDelayedFunction() {
    submit: !0,
    reset: !0
   }) S.pseudos[x] = c(x);
-  d.prototype = S.filters = S.pseudos, S.setFilters = new d(), _ = n.compile = function(e, t) {
+  d.prototype = S.filters = S.pseudos, S.setFilters = new d(), $ = n.compile = function(e, t) {
    var n, i = [], o = [], r = U[e + " "];
    if (!r) {
-    for (t || (t = h(e)), n = t.length; n--; ) r = b(t[n]), r[z] ? i.push(r) : o.push(r);
+    for (t || (t = h(e)), n = t.length; n--; ) r = b(t[n]), r[O] ? i.push(r) : o.push(r);
     r = U(e, y(o, i));
    }
    return r;
-  }, E.sortStable = z.split("").sort(V).join("") === z, E.detectDuplicates = G, T(), 
+  }, E.sortStable = O.split("").sort(V).join("") === O, E.detectDuplicates = G, T(), 
   E.sortDetached = r(function(e) {
    return 1 & e.compareDocumentPosition(L.createElement("div"));
   }), r(function(e) {
@@ -2596,7 +2596,7 @@ function runDelayedFunction() {
    return n ? rt.event.trigger(e, t, n, !0) : void 0;
   }
  });
- var _t = /^.[^:#\[\.,]*$/, $t = /^(?:parents|prev(?:Until|All))/, Dt = rt.expr.match.needsContext, Tt = {
+ var $t = /^.[^:#\[\.,]*$/, _t = /^(?:parents|prev(?:Until|All))/, Dt = rt.expr.match.needsContext, Tt = {
   children: !0,
   contents: !0,
   next: !0,
@@ -2686,7 +2686,7 @@ function runDelayedFunction() {
   rt.fn[e] = function(n, i) {
    var o = rt.map(this, t, n);
    return "Until" !== e.slice(-5) && (i = n), i && "string" == typeof i && (o = rt.filter(i, o)), 
-   this.length > 1 && (Tt[e] || rt.unique(o), $t.test(e) && o.reverse()), this.pushStack(o);
+   this.length > 1 && (Tt[e] || rt.unique(o), _t.test(e) && o.reverse()), this.pushStack(o);
   };
  }), rt.extend({
   filter: function(e, t, n) {
@@ -2707,7 +2707,7 @@ function runDelayedFunction() {
    return n;
   }
  });
- var Lt = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi, Bt = /<([\w:]+)/, Mt = /<|&#?\w+;/, Rt = /<(?:script|style|link)/i, It = /^(?:checkbox|radio)$/i, Pt = /checked\s*(?:[^=]|=\s*.checked.)/i, Nt = /^$|\/(?:java|ecma)script/i, zt = /^true\/(.*)/, Ot = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g, jt = {
+ var Lt = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi, Bt = /<([\w:]+)/, Mt = /<|&#?\w+;/, Rt = /<(?:script|style|link)/i, Pt = /^(?:checkbox|radio)$/i, It = /checked\s*(?:[^=]|=\s*.checked.)/i, Nt = /^$|\/(?:java|ecma)script/i, Ot = /^true\/(.*)/, zt = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g, jt = {
   option: [ 1, "<select multiple='multiple'>", "</select>" ],
   thead: [ 1, "<table>", "</table>" ],
   col: [ 2, "<table><colgroup>", "</colgroup></table>" ],
@@ -2793,7 +2793,7 @@ function runDelayedFunction() {
   domManip: function(e, t, n) {
    e = J.apply([], e);
    var i, o, r, s, a, l, c = 0, u = this.length, d = this, f = u - 1, g = e[0], v = rt.isFunction(g);
-   if (v || !(1 >= u || "string" != typeof g || rt.support.checkClone) && Pt.test(g)) return this.each(function(i) {
+   if (v || !(1 >= u || "string" != typeof g || rt.support.checkClone) && It.test(g)) return this.each(function(i) {
     var o = d.eq(i);
     v && (e[0] = g.call(this, i, o.html())), o.domManip(e, t, n);
    });
@@ -2802,7 +2802,7 @@ function runDelayedFunction() {
     for (r = rt.map(m(i, "script"), h), s = r.length; u > c; c++) a = i, c !== f && (a = rt.clone(a, !0, !0), 
     s && rt.merge(r, m(a, "script"))), t.call(this[c], a, c);
     if (s) for (l = r[r.length - 1].ownerDocument, rt.map(r, p), c = 0; s > c; c++) a = r[c], 
-    Nt.test(a.type || "") && !mt.access(a, "globalEval") && rt.contains(l, a) && (a.src ? rt._evalUrl(a.src) : rt.globalEval(a.textContent.replace(Ot, "")));
+    Nt.test(a.type || "") && !mt.access(a, "globalEval") && rt.contains(l, a) && (a.src ? rt._evalUrl(a.src) : rt.globalEval(a.textContent.replace(zt, "")));
    }
    return this;
   }
@@ -3021,7 +3021,7 @@ function runDelayedFunction() {
     return e ? rt.makeArray(e) : this;
    }).filter(function() {
     var e = this.type;
-    return this.name && !rt(this).is(":disabled") && rn.test(this.nodeName) && !on.test(e) && (this.checked || !It.test(e));
+    return this.name && !rt(this).is(":disabled") && rn.test(this.nodeName) && !on.test(e) && (this.checked || !Pt.test(e));
    }).map(function(e, t) {
     var n = rt(this).val();
     return null == n ? null : rt.isArray(n) ? rt.map(n, function(e) {
@@ -3131,8 +3131,8 @@ function runDelayedFunction() {
   ajaxSetup: function(e, t) {
    return t ? D(D(e, rt.ajaxSettings), t) : D(rt.ajaxSettings, e);
   },
-  ajaxPrefilter: _(bn),
-  ajaxTransport: _(yn),
+  ajaxPrefilter: $(bn),
+  ajaxTransport: $(yn),
   ajax: function(e, n) {
    function i(e, n, i, a) {
     var c, d, b, y, C, E = n;
@@ -3180,7 +3180,7 @@ function runDelayedFunction() {
    h.type = n.method || n.type || h.method || h.type, h.dataTypes = rt.trim(h.dataType || "*").toLowerCase().match(at) || [ "" ], 
    null == h.crossDomain && (c = mn.exec(h.url.toLowerCase()), h.crossDomain = !(!c || c[1] === sn[1] && c[2] === sn[2] && (c[3] || ("http:" === c[1] ? "80" : "443")) === (sn[3] || ("http:" === sn[1] ? "80" : "443")))), 
    h.data && h.processData && "string" != typeof h.data && (h.data = rt.param(h.data, h.traditional)), 
-   $(bn, h, n, x), 2 === w) return x;
+   _(bn, h, n, x), 2 === w) return x;
    u = h.global, u && 0 === rt.active++ && rt.event.trigger("ajaxStart"), h.type = h.type.toUpperCase(), 
    h.hasContent = !fn.test(h.type), r = h.url, h.hasContent || (h.data && (r = h.url += (cn.test(r) ? "&" : "?") + h.data, 
    delete h.data), h.cache === !1 && (h.url = dn.test(r) ? r.replace(dn, "$1_=" + ln++) : r + (cn.test(r) ? "&" : "?") + "_=" + ln++)), 
@@ -3195,7 +3195,7 @@ function runDelayedFunction() {
     error: 1,
     complete: 1
    }) x[d](h[d]);
-   if (o = $(yn, h, n, x)) {
+   if (o = _(yn, h, n, x)) {
     x.readyState = 1, u && f.trigger("ajaxSend", [ x, h ]), h.async && h.timeout > 0 && (l = setTimeout(function() {
      x.abort("timeout");
     }, h.timeout));
@@ -3310,7 +3310,7 @@ function runDelayedFunction() {
    }
   } : void 0;
  });
- var _n, $n, Dn = /^(?:toggle|show|hide)$/, Tn = new RegExp("^(?:([+-])=|)(" + st + ")([a-z%]*)$", "i"), Ln = /queueHooks$/, Bn = [ P ], Mn = {
+ var $n, _n, Dn = /^(?:toggle|show|hide)$/, Tn = new RegExp("^(?:([+-])=|)(" + st + ")([a-z%]*)$", "i"), Ln = /queueHooks$/, Bn = [ I ], Mn = {
   "*": [ function(e, t) {
    var n = this.createTween(e, t), i = n.cur(), o = Tn.exec(t), r = o && o[3] || (rt.cssNumber[e] ? "" : "px"), s = (rt.cssNumber[e] || "px" !== r && +i) && Tn.exec(rt.css(n.elem, e)), a = 1, l = 20;
    if (s && s[3] !== r) {
@@ -3363,7 +3363,7 @@ function runDelayedFunction() {
  }, rt.each([ "toggle", "show", "hide" ], function(e, t) {
   var n = rt.fn[t];
   rt.fn[t] = function(e, i, o) {
-   return null == e || "boolean" == typeof e ? n.apply(this, arguments) : this.animate(z(t, !0), e, i, o);
+   return null == e || "boolean" == typeof e ? n.apply(this, arguments) : this.animate(O(t, !0), e, i, o);
   };
  }), rt.fn.extend({
   fadeTo: function(e, t, n, i) {
@@ -3403,9 +3403,9 @@ function runDelayedFunction() {
    });
   }
  }), rt.each({
-  slideDown: z("show"),
-  slideUp: z("hide"),
-  slideToggle: z("toggle"),
+  slideDown: O("show"),
+  slideUp: O("hide"),
+  slideToggle: O("toggle"),
   fadeIn: {
    opacity: "show"
   },
@@ -3438,14 +3438,14 @@ function runDelayedFunction() {
   }
  }, rt.timers = [], rt.fx = N.prototype.init, rt.fx.tick = function() {
   var e, n = rt.timers, i = 0;
-  for (_n = rt.now(); i < n.length; i++) e = n[i], e() || n[i] !== e || n.splice(i--, 1);
-  n.length || rt.fx.stop(), _n = t;
+  for ($n = rt.now(); i < n.length; i++) e = n[i], e() || n[i] !== e || n.splice(i--, 1);
+  n.length || rt.fx.stop(), $n = t;
  }, rt.fx.timer = function(e) {
   e() && rt.timers.push(e) && rt.fx.start();
  }, rt.fx.interval = 13, rt.fx.start = function() {
-  $n || ($n = setInterval(rt.fx.tick, rt.fx.interval));
+  _n || (_n = setInterval(rt.fx.tick, rt.fx.interval));
  }, rt.fx.stop = function() {
-  clearInterval($n), $n = null;
+  clearInterval(_n), _n = null;
  }, rt.fx.speeds = {
   slow: 600,
   fast: 200,
@@ -3463,7 +3463,7 @@ function runDelayedFunction() {
    left: 0
   }, s = o && o.ownerDocument;
   if (s) return n = s.documentElement, rt.contains(n, o) ? (typeof o.getBoundingClientRect !== q && (r = o.getBoundingClientRect()), 
-  i = O(s), {
+  i = z(s), {
    top: r.top + i.pageYOffset - n.clientTop,
    left: r.left + i.pageXOffset - n.clientLeft
   }) : r;
@@ -3504,7 +3504,7 @@ function runDelayedFunction() {
   var o = "pageYOffset" === i;
   rt.fn[n] = function(r) {
    return rt.access(this, function(n, r, s) {
-    var a = O(n);
+    var a = z(n);
     return s === t ? a ? a[i] : n[r] : (a ? a.scrollTo(o ? e.pageXOffset : s, o ? s : e.pageYOffset) : n[r] = s, 
     void 0);
    }, n, r, arguments.length, null);
@@ -3675,7 +3675,7 @@ function runDelayedFunction() {
    return e.index < t.index ? -1 : 1;
   }), "value");
  };
- var _ = function(e, t, n, i) {
+ var $ = function(e, t, n, i) {
   var o = {}, r = F(null == t ? E.identity : t);
   return A(e, function(t, s) {
    var a = r.call(n, t, s, e);
@@ -3683,11 +3683,11 @@ function runDelayedFunction() {
   }), o;
  };
  E.groupBy = function(e, t, n) {
-  return _(e, t, n, function(e, t, n) {
+  return $(e, t, n, function(e, t, n) {
    (E.has(e, t) ? e[t] : e[t] = []).push(n);
   });
  }, E.countBy = function(e, t, n) {
-  return _(e, t, n, function(e, t) {
+  return $(e, t, n, function(e, t) {
    E.has(e, t) || (e[t] = 0), e[t]++;
   });
  }, E.sortedIndex = function(e, t, n, i) {
@@ -3712,13 +3712,13 @@ function runDelayedFunction() {
  }, E.compact = function(e) {
   return E.filter(e, E.identity);
  };
- var $ = function(e, t, n) {
+ var _ = function(e, t, n) {
   return t && E.every(e, E.isArray) ? l.apply(n, e) : (A(e, function(e) {
-   E.isArray(e) || E.isArguments(e) ? t ? s.apply(n, e) : $(e, t, n) : n.push(e);
+   E.isArray(e) || E.isArguments(e) ? t ? s.apply(n, e) : _(e, t, n) : n.push(e);
   }), n);
  };
  E.flatten = function(e, t) {
-  return $(e, t, []);
+  return _(e, t, []);
  }, E.without = function(e) {
   return E.difference(e, a.call(arguments, 1));
  }, E.uniq = E.unique = function(e, t, n, i) {
@@ -4014,7 +4014,7 @@ function runDelayedFunction() {
   interpolate: /<%=([\s\S]+?)%>/g,
   escape: /<%-([\s\S]+?)%>/g
  };
- var R = /(.)^/, I = {
+ var R = /(.)^/, P = {
   "'": "'",
   "\\": "\\",
   "\r": "r",
@@ -4022,14 +4022,14 @@ function runDelayedFunction() {
   "	": "t",
   "\u2028": "u2028",
   "\u2029": "u2029"
- }, P = /\\|'|\r|\n|\t|\u2028|\u2029/g;
+ }, I = /\\|'|\r|\n|\t|\u2028|\u2029/g;
  E.template = function(e, t, n) {
   var i;
   n = E.defaults({}, n, E.templateSettings);
   var o = new RegExp([ (n.escape || R).source, (n.interpolate || R).source, (n.evaluate || R).source ].join("|") + "|$", "g"), r = 0, s = "__p+='";
   e.replace(o, function(t, n, i, o, a) {
-   return s += e.slice(r, a).replace(P, function(e) {
-    return "\\" + I[e];
+   return s += e.slice(r, a).replace(I, function(e) {
+    return "\\" + P[e];
    }), n && (s += "'+\n((__t=(" + n + "))==null?'':_.escape(__t))+\n'"), i && (s += "'+\n((__t=(" + i + "))==null?'':__t)+\n'"), 
    o && (s += "';\n" + o + "\n__p+='"), r = a + t.length, t;
   }), s += "';\n", n.variable || (s = "with(obj||{}){\n" + s + "}\n"), s = "var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};\n" + s + "return __p;\n";
@@ -4345,15 +4345,15 @@ function runDelayedFunction() {
   var n = p(e, t);
   return delete e[t], n;
  }), !Object.keys) {
-  var k = !0, F = [ "toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "constructor" ], _ = F.length;
-  for (var $ in {
+  var k = !0, F = [ "toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "constructor" ], $ = F.length;
+  for (var _ in {
    toString: null
   }) k = !1;
   Object.keys = function M(e) {
    if ("object" != typeof e && "function" != typeof e || null === e) throw new TypeError("Object.keys called on a non-object");
    var M = [];
    for (var t in e) p(e, t) && M.push(t);
-   if (k) for (var n = 0, i = _; i > n; n++) {
+   if (k) for (var n = 0, i = $; i > n; n++) {
     var o = F[n];
     p(e, o) && M.push(o);
    }
@@ -4522,6 +4522,7 @@ function runDelayedFunction() {
     103: "Numpad7",
     104: "Numpad8",
     105: "Numpad9",
+    "-13": "NumpadEnter",
     112: "F1",
     113: "F2",
     114: "F3",
@@ -4618,29 +4619,42 @@ function runDelayedFunction() {
  }
 }), define("ace/lib/event", [ "require", "exports", "module", "./keys", "./useragent", "./dom" ], function(e, t) {
  function n(e, t, n) {
-  var s = 0;
-  if (s = !o.isOpera || "KeyboardEvent" in window || !o.isMac ? 0 | (t.ctrlKey ? 1 : 0) | (t.altKey ? 2 : 0) | (t.shiftKey ? 4 : 0) | (t.metaKey ? 8 : 0) : 0 | (t.metaKey ? 1 : 0) | (t.altKey ? 2 : 0) | (t.shiftKey ? 4 : 0) | (t.ctrlKey ? 8 : 0), 
-  n in i.MODIFIER_KEYS) {
+  var a = 0;
+  if (a = !o.isOpera || "KeyboardEvent" in window || !o.isMac ? 0 | (t.ctrlKey ? 1 : 0) | (t.altKey ? 2 : 0) | (t.shiftKey ? 4 : 0) | (t.metaKey ? 8 : 0) : 0 | (t.metaKey ? 1 : 0) | (t.altKey ? 2 : 0) | (t.shiftKey ? 4 : 0) | (t.ctrlKey ? 8 : 0), 
+  !o.isMac && r) {
+   if ((r[91] || r[92]) && (a |= 8), r.altGr) {
+    if (3 == (3 & a)) return;
+    r.altGr = 0;
+   }
+   if (18 === n || 17 === n) {
+    var l = t.location || t.keyLocation;
+    if (17 === n && 1 === l) s = t.timeStamp; else if (18 === n && 3 === a && 2 === l) {
+     var c = -s;
+     s = t.timeStamp, c += s, 3 > c && (r.altGr = !0);
+    }
+   }
+  }
+  if (n in i.MODIFIER_KEYS) {
    switch (i.MODIFIER_KEYS[n]) {
    case "Alt":
-    s = 2;
+    a = 2;
     break;
 
    case "Shift":
-    s = 4;
+    a = 4;
     break;
 
    case "Ctrl":
-    s = 1;
+    a = 1;
     break;
 
    default:
-    s = 8;
+    a = 8;
    }
    n = 0;
   }
-  return (!o.isMac && r[91] || r[92]) && (s |= 8), 8 & s && (91 == n || 93 == n) && (n = 0), 
-  s || n in i.FUNCTION_KEYS || n in i.PRINTABLE_KEYS ? e(t, s, n) : !1;
+  return 8 & a && (91 === n || 93 === n) && (n = 0), a || 13 !== n || !t.location && 3 !== t.keyLocation || (e(t, a, -n), 
+  !t.defaultPrevented) ? a || n in i.FUNCTION_KEYS || n in i.PRINTABLE_KEYS ? e(t, a, n) : !1 : void 0;
  }
  var i = e("./keys"), o = e("./useragent");
  e("./dom"), t.addListener = function(e, t, n) {
@@ -4676,17 +4690,22 @@ function runDelayedFunction() {
   e.setCapture();
  } : function(e, t, n) {
   function i(e) {
-   t && t(e), n && n(e), document.removeEventListener("mousemove", t, !0), document.removeEventListener("mouseup", i, !0), 
-   e.stopPropagation();
+   t && t(e), n && n(e), document.removeEventListener("mousemove", t, !0), document.removeEventListener("mouseup", i, !0);
   }
   document.addEventListener("mousemove", t, !0), document.addEventListener("mouseup", i, !0);
  }, t.addMouseWheelListener = function(e, n) {
-  var i = 8, o = function(e) {
-   void 0 !== e.wheelDelta ? void 0 !== e.wheelDeltaX ? (e.wheelX = -e.wheelDeltaX / i, 
-   e.wheelY = -e.wheelDeltaY / i) : (e.wheelX = 0, e.wheelY = -e.wheelDelta / i) : e.axis && e.axis == e.HORIZONTAL_AXIS ? (e.wheelX = 5 * (e.detail || 0), 
-   e.wheelY = 0) : (e.wheelX = 0, e.wheelY = 5 * (e.detail || 0)), n(e);
-  };
-  t.addListener(e, "DOMMouseScroll", o), t.addListener(e, "mousewheel", o);
+  if ("onmousewheel" in e) {
+   var i = 8;
+   t.addListener(e, "mousewheel", function(e) {
+    void 0 !== e.wheelDeltaX ? (e.wheelX = -e.wheelDeltaX / i, e.wheelY = -e.wheelDeltaY / i) : (e.wheelX = 0, 
+    e.wheelY = -e.wheelDelta / i), n(e);
+   });
+  } else "onwheel" in e ? t.addListener(e, "wheel", function(e) {
+   e.wheelX = 5 * (e.deltaX || 0), e.wheelY = 5 * (e.deltaY || 0), n(e);
+  }) : t.addListener(e, "DOMMouseScroll", function(e) {
+   e.axis && e.axis == e.HORIZONTAL_AXIS ? (e.wheelX = 5 * (e.detail || 0), e.wheelY = 0) : (e.wheelX = 0, 
+   e.wheelY = 5 * (e.detail || 0)), n(e);
+  });
  }, t.addMultiMouseDownListener = function(e, n, i, r) {
   var s, a, l, c = 0, u = {
    2: "dblclick",
@@ -4707,7 +4726,7 @@ function runDelayedFunction() {
    }, n[c - 1] || 600), i[r]("mousedown", e), i[r](u[c], e);
   });
  };
- var r = Object.create(null);
+ var r = null, s = 0;
  if (t.addCommandKeyListener = function(e, i) {
   var s = t.addListener;
   if (o.isOldGecko || o.isOpera && !("KeyboardEvent" in window)) {
@@ -4727,15 +4746,15 @@ function runDelayedFunction() {
     l && (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) && (t.stopEvent(e), l = null);
    }), s(e, "keyup", function(e) {
     r[e.keyCode] = null;
-   }), s(e, "focus", function() {
+   }), r || (r = Object.create(null), s(window, "focus", function() {
     r = Object.create(null);
-   });
+   }));
   }
  }, window.postMessage && !o.isOldIE) {
-  var s = 1;
+  var a = 1;
   t.nextTick = function(e, n) {
    n = n || window;
-   var i = "zero-timeout-message-" + s;
+   var i = "zero-timeout-message-" + a;
    t.addListener(n, "message", function o(r) {
     r.data == i && (t.stopPropagation(r), t.removeListener(n, "message", o), e());
    }), n.postMessage(i, "*");
@@ -4821,7 +4840,7 @@ function runDelayedFunction() {
  var n = e("../lib/event"), i = e("../lib/useragent"), o = e("../lib/dom"), r = e("../lib/lang"), s = i.isChrome < 18, a = function(e, t) {
   function a(e) {
    if (!g) {
-    if (_) t = 0, n = e ? 0 : u.value.length - 1; else var t = e ? 2 : 1, n = 2;
+    if ($) t = 0, n = e ? 0 : u.value.length - 1; else var t = e ? 2 : 1, n = 2;
     try {
      u.setSelectionRange(t, n);
     } catch (i) {}
@@ -4890,22 +4909,26 @@ function runDelayedFunction() {
     27: 1
    };
    n.addListener(u, "keyup", function(e) {
-    !g || u.value && !k[e.keyCode] || setTimeout(P, 0), (u.value.charCodeAt(0) || 0) < 129 || (g ? I() : R());
+    return !g || u.value && !k[e.keyCode] || setTimeout(I, 0), (u.value.charCodeAt(0) || 0) < 129 ? S.call() : (g ? P() : R(), 
+    void 0);
+   }), n.addListener(u, "keydown", function() {
+    S.schedule(50);
    });
   }
   var F = function() {
-   h ? h = !1 : p ? p = !1 : x(u) ? (t.selectAll(), a()) : _ && a(t.selection.isEmpty());
-  }, _ = null;
+   h ? h = !1 : p ? p = !1 : x(u) ? (t.selectAll(), a()) : $ && a(t.selection.isEmpty());
+  }, $ = null;
   this.setInputHandler = function(e) {
-   _ = e;
+   $ = e;
   }, this.getInputHandler = function() {
-   return _;
+   return $;
   };
-  var $ = !1, D = function(e) {
-   _ && (e = _(e), _ = null), f ? (a(), e && t.onPaste(e), f = !1) : e == d[0] ? $ && t.execCommand("del", {
+  var _ = !1, D = function(e) {
+   $ && (e = $(e), $ = null), f ? (a(), e && t.onPaste(e), f = !1) : e == d.charAt(0) ? _ && t.execCommand("del", {
     source: "ace"
-   }) : (e.substring(0, 2) == d ? e = e.substr(2) : e[0] == d[0] ? e = e.substr(1) : e[e.length - 1] == d[0] && (e = e.slice(0, -1)), 
-   e[e.length - 1] == d[0] && (e = e.slice(0, -1)), e && t.onTextInput(e)), $ && ($ = !1);
+   }) : (e.substring(0, 2) == d ? e = e.substr(2) : e.charAt(0) == d.charAt(0) ? e = e.substr(1) : e.charAt(e.length - 1) == d.charAt(0) && (e = e.slice(0, -1)), 
+   e.charAt(e.length - 1) == d.charAt(0) && (e = e.slice(0, -1)), e && t.onTextInput(e)), 
+   _ && (_ = !1);
   }, T = function() {
    if (!g) {
     var e = u.value;
@@ -4957,44 +4980,45 @@ function runDelayedFunction() {
    }
   });
   var R = function() {
-   g || (g = {}, t.onCompositionStart(), setTimeout(I, 0), t.on("mousedown", P), t.selection.isEmpty() || (t.insert(""), 
+   g || (g = {}, t.onCompositionStart(), setTimeout(P, 0), t.on("mousedown", I), t.selection.isEmpty() || (t.insert(""), 
    t.session.markUndoGroup(), t.selection.clearSelection()), t.session.markUndoGroup());
-  }, I = function() {
+  }, P = function() {
    if (g && (t.onCompositionUpdate(u.value), g.lastValue && t.undo(), g.lastValue = u.value.replace(/\x01/g, ""), 
    g.lastValue)) {
     var e = t.selection.getRange();
     t.insert(g.lastValue), t.session.markUndoGroup(), g.range = t.selection.getRange(), 
     t.selection.setRange(e), t.selection.clearSelection();
    }
-  }, P = function(e) {
+  }, I = function(e) {
    var n = g;
    g = !1;
    var i = setTimeout(function() {
     var e = u.value.replace(/\x01/g, "");
     g || (e == n.lastValue ? l() : !n.lastValue && e && (l(), D(e)));
    });
-   _ = function(e) {
+   $ = function(e) {
     return clearTimeout(i), e = e.replace(/\x01/g, ""), e == n.lastValue ? "" : (n.lastValue && t.undo(), 
     e);
-   }, t.onCompositionEnd(), t.removeListener("mousedown", P), "compositionend" == e.type && n.range && t.selection.setRange(n.range);
-  }, N = r.delayedCall(I, 50);
+   }, t.onCompositionEnd(), t.removeListener("mousedown", I), "compositionend" == e.type && n.range && t.selection.setRange(n.range);
+  }, N = r.delayedCall(P, 50);
   n.addListener(u, "compositionstart", R), n.addListener(u, i.isGecko ? "text" : "keyup", function() {
    N.schedule();
-  }), n.addListener(u, "compositionend", P), this.getElement = function() {
+  }), n.addListener(u, "compositionend", I), this.getElement = function() {
    return u;
   }, this.setReadOnly = function(e) {
    u.readOnly = e;
   }, this.onContextMenu = function(e) {
-   $ = !0, m || (m = u.style.cssText), u.style.cssText = "z-index:100000;" + (i.isIE ? "opacity:0.1;" : ""), 
+   _ = !0, m || (m = u.style.cssText), u.style.cssText = "z-index:100000;" + (i.isIE ? "opacity:0.1;" : ""), 
    a(t.selection.isEmpty()), t._emit("nativecontextmenu", {
-    target: t
+    target: t,
+    domEvent: e
    });
    var r = t.container.getBoundingClientRect(), s = o.computedStyle(t.container), l = r.top + (parseInt(s.borderTopWidth) || 0), d = r.left + (parseInt(r.borderLeftWidth) || 0), h = r.bottom - l - u.clientHeight, p = function(e) {
     u.style.left = e.clientX - d - 2 + "px", u.style.top = Math.min(e.clientY - l - 2, h) + "px";
    };
    p(e), "mousedown" == e.type && (t.renderer.$keepTextAreaAtCursor && (t.renderer.$keepTextAreaAtCursor = null), 
    i.isWin && n.capture(t.container, p, c));
-  }, this.onContextMenuClose = c, i.isGecko || n.addListener(u, "contextmenu", function(e) {
+  }, this.onContextMenuClose = c, (!i.isGecko || i.isMac) && n.addListener(u, "contextmenu", function(e) {
    t.textInput.onContextMenu(e), c();
   });
  };
@@ -5157,7 +5181,7 @@ function runDelayedFunction() {
   }
   var a = e.editor, l = a.renderer.$gutterLayer;
   e.editor.setDefaultHandler("guttermousedown", function(t) {
-   if (a.isFocused()) {
+   if (a.isFocused() && 0 == t.getButton()) {
     var n = l.getRegion(t);
     if ("foldWidgets" != n) {
      var i = t.getDocumentPosition().row, o = a.session.selection;
@@ -5179,7 +5203,7 @@ function runDelayedFunction() {
    u = null, h && !c && (c = setTimeout(function() {
     c = null, r();
    }, 50));
-  });
+  }), a.on("changeSession", r);
  }
  var i = e("../lib/dom"), o = e("../lib/event");
  t.GutterHandler = n;
@@ -5285,13 +5309,16 @@ function runDelayedFunction() {
   var n = this._eventRegistry[e] || [], r = this._defaultHandlers[e];
   if (n.length || r) {
    "object" == typeof t && t || (t = {}), t.type || (t.type = e), t.stopPropagation || (t.stopPropagation = i), 
-   t.preventDefault || (t.preventDefault = o);
+   t.preventDefault || (t.preventDefault = o), n = n.slice();
    for (var s = 0; s < n.length && (n[s](t, this), !t.propagationStopped); s++) ;
    return r && !t.defaultPrevented ? r(t, this) : void 0;
   }
  }, n._signal = function(e, t) {
   var n = (this._eventRegistry || {})[e];
-  if (n) for (var i = 0; i < n.length; i++) n[i](t, this);
+  if (n) {
+   n = n.slice();
+   for (var i = 0; i < n.length; i++) n[i](t, this);
+  }
  }, n.once = function(e, t) {
   var n = this;
   t && this.addEventListener(e, function i() {
@@ -5362,10 +5389,15 @@ function runDelayedFunction() {
   if (c.$moduleUrls[e]) return c.$moduleUrls[e];
   var n = e.split("/");
   t = t || n[n.length - 2] || "";
-  var i = n[n.length - 1].replace(t, "").replace(/(^[\-_])|([\-_]$)/, "");
-  !i && n.length > 1 && (i = n[n.length - 2]);
-  var o = c[t + "Path"];
-  return null == o && (o = c.basePath), o && "/" != o.slice(-1) && (o += "/"), o + t + "-" + i + this.get("suffix");
+  var i = "snippets" == t ? "/" : "-", o = n[n.length - 1];
+  if ("-" == i) {
+   var r = new RegExp("^" + t + "[-_]|[-_]" + t + "$", "g");
+   o = o.replace(r, "");
+  }
+  (!o || o == t) && n.length > 1 && (o = n[n.length - 2]);
+  var s = c[t + "Path"];
+  return null == s ? s = c.basePath : "/" == i && (t = i = ""), s && "/" != s.slice(-1) && (s += "/"), 
+  s + t + i + o + this.get("suffix");
  }, t.setModuleUrl = function(e, t) {
   return c.$moduleUrls[e] = t;
  }, t.$loading = {}, t.loadModule = function(n, i) {
@@ -5455,16 +5487,21 @@ function runDelayedFunction() {
  };
 }), define("ace/mouse/mouse_handler", [ "require", "exports", "module", "../lib/event", "../lib/useragent", "./default_handlers", "./default_gutter_handler", "./mouse_event", "./dragdrop", "../config" ], function(e, t) {
  var n = e("../lib/event"), i = e("../lib/useragent"), o = e("./default_handlers").DefaultHandlers, r = e("./default_gutter_handler").GutterHandler, s = e("./mouse_event").MouseEvent, a = e("./dragdrop").DragdropHandler, l = e("../config"), c = function(e) {
-  this.editor = e, new o(this), new r(this), new a(this), n.addListener(e.container, "mousedown", function(t) {
-   return e.focus(), n.preventDefault(t);
-  });
+  this.editor = e, new o(this), new r(this), new a(this);
   var t = e.renderer.getMouseEventTarget();
   n.addListener(t, "click", this.onMouseEvent.bind(this, "click")), n.addListener(t, "mousemove", this.onMouseMove.bind(this, "mousemove")), 
-  n.addMultiMouseDownListener(t, [ 300, 300, 250 ], this, "onMouseEvent"), n.addMouseWheelListener(e.container, this.onMouseWheel.bind(this, "mousewheel"));
+  n.addMultiMouseDownListener(t, [ 300, 300, 250 ], this, "onMouseEvent"), e.renderer.scrollBarV && (n.addMultiMouseDownListener(e.renderer.scrollBarV.inner, [ 300, 300, 250 ], this, "onMouseEvent"), 
+  n.addMultiMouseDownListener(e.renderer.scrollBarH.inner, [ 300, 300, 250 ], this, "onMouseEvent")), 
+  n.addMouseWheelListener(e.container, this.onMouseWheel.bind(this, "mousewheel"));
   var i = e.renderer.$gutter;
   n.addListener(i, "mousedown", this.onMouseEvent.bind(this, "guttermousedown")), 
   n.addListener(i, "click", this.onMouseEvent.bind(this, "gutterclick")), n.addListener(i, "dblclick", this.onMouseEvent.bind(this, "gutterdblclick")), 
-  n.addListener(i, "mousemove", this.onMouseEvent.bind(this, "guttermousemove"));
+  n.addListener(i, "mousemove", this.onMouseEvent.bind(this, "guttermousemove")), 
+  n.addListener(t, "mousedown", function(t) {
+   return e.focus(), n.preventDefault(t);
+  }), n.addListener(i, "mousedown", function(t) {
+   return e.focus(), n.preventDefault(t);
+  });
  };
  (function() {
   this.onMouseEvent = function(e, t) {
@@ -5491,7 +5528,7 @@ function runDelayedFunction() {
     r[r.state] && r[r.state]();
    };
    if (i.isOldIE && "dblclick" == e.domEvent.type) return setTimeout(function() {
-    a(e.domEvent);
+    a(e);
    });
    n.capture(this.editor.container, s, a);
    var c = setInterval(l, 20);
@@ -5566,7 +5603,8 @@ function runDelayedFunction() {
   }, this.$callKeyboardHandlers = function(e, t, n, o) {
    for (var r, s = !1, a = this.$editor.commands, l = this.$handlers.length; l-- && (r = this.$handlers[l].handleKeyboard(this.$data, e, t, n, o), 
    !(r && r.command && (s = "null" == r.command ? !0 : a.exec(r.command, this.$editor, r.args, o), 
-   s && o && -1 != e && 1 != r.passEvent && i.stopEvent(o), s))); ) ;
+   s && o && -1 != e && 1 != r.passEvent && 1 != r.command.passEvent && i.stopEvent(o), 
+   s))); ) ;
    return s;
   }, this.onCommandKey = function(e, t, i) {
    var o = n.keyCodeToString(i);
@@ -5721,7 +5759,8 @@ function runDelayedFunction() {
    this.setSelectionAnchor(0, 0), this.moveCursorTo(e, this.doc.getLine(e).length);
   }, this.setRange = this.setSelectionRange = function(e, t) {
    t ? (this.setSelectionAnchor(e.end.row, e.end.column), this.selectTo(e.start.row, e.start.column)) : (this.setSelectionAnchor(e.start.row, e.start.column), 
-   this.selectTo(e.end.row, e.end.column)), this.$desiredColumn = null;
+   this.selectTo(e.end.row, e.end.column)), this.getRange().isEmpty() && (this.$isEmpty = !0), 
+   this.$desiredColumn = null;
   }, this.$moveSelection = function(e) {
    var t = this.lead;
    this.$isEmpty && this.setSelectionAnchor(t.row, t.column), e.call(this);
@@ -5766,7 +5805,7 @@ function runDelayedFunction() {
    this.setSelectionRange(t);
   }, this.getLineRange = function(e, t) {
    var n, i = "number" == typeof e ? e : this.lead.row, o = this.session.getFoldLine(i);
-   return o ? (i = o.start.row, n = o.end.row) : n = i, t ? new r(i, 0, n, this.session.getLine(n).length) : new r(i, 0, n + 1, 0);
+   return o ? (i = o.start.row, n = o.end.row) : n = i, t === !0 ? new r(i, 0, n, this.session.getLine(n).length) : new r(i, 0, n + 1, 0);
   }, this.selectLine = function() {
    this.setSelectionRange(this.getLineRange());
   }, this.moveCursorUp = function() {
@@ -5830,7 +5869,7 @@ function runDelayedFunction() {
    var t, n, i = 0, o = /\s/, r = this.session.tokenRe;
    if (r.lastIndex = 0, t = this.session.tokenRe.exec(e)) i = this.session.tokenRe.lastIndex; else {
     for (;(n = e[i]) && o.test(n); ) i++;
-    if (1 >= i) for (r.lastIndex = 0; (n = e[i]) && !r.test(n); ) if (r.lastIndex = 0, 
+    if (1 > i) for (r.lastIndex = 0; (n = e[i]) && !r.test(n); ) if (r.lastIndex = 0, 
     i++, o.test(n)) {
      if (i > 2) {
       i--;
@@ -5888,6 +5927,33 @@ function runDelayedFunction() {
    return e ? (e.start.column = t.start.column, e.start.row = t.start.row, e.end.column = t.end.column, 
    e.end.row = t.end.row) : e = t, e.cursor = this.isBackwards() ? e.start : e.end, 
    e.desiredColumn = this.$desiredColumn, e;
+  }, this.toJSON = function() {
+   if (this.rangeCount) var e = this.ranges.map(function(e) {
+    var t = e.clone();
+    return t.isBackwards = e.cursor == e.start, t;
+   }); else {
+    var e = this.getRange();
+    e.isBackwards = this.isBackwards();
+   }
+   return e;
+  }, this.fromJSON = function(e) {
+   if (void 0 == e.start) {
+    if (this.rangeList) {
+     this.toSingleRange(e[0]);
+     for (var t = e.length; t--; ) {
+      var n = r.fromPoints(e[t].start, e[t].end);
+      e.isBackwards && (n.cursor = n.start), this.addRange(n, !0);
+     }
+     return;
+    }
+    e = e[0];
+   }
+   this.rangeList && this.toSingleRange(e), this.setSelectionRange(e, e.isBackwards);
+  }, this.isEqual = function(e) {
+   if ((e.length || this.rangeCount) && e.length != this.rangeCount) return !1;
+   if (!e.length || !this.ranges) return this.getRange().isEqual(e);
+   for (var t = this.ranges.length; t--; ) if (!this.ranges[t].isEqual(e[t])) return !1;
+   return !0;
   };
  }).call(s.prototype), t.Selection = s;
 }), define("ace/tokenizer", [ "require", "exports", "module" ], function(e, t) {
@@ -6018,13 +6084,13 @@ function runDelayedFunction() {
  };
  (function() {
   this.addRules = function(e, t) {
-   for (var n in e) {
+   if (t) for (var n in e) {
     for (var i = e[n], o = 0; o < i.length; o++) {
      var r = i[o];
-     r.next && ("string" != typeof r.next ? r.nextState = t + r.nextState : r.next = t + r.next);
+     r.next && ("string" != typeof r.next ? r.nextState && 0 !== r.nextState.indexOf(t) && (r.nextState = t + r.nextState) : 0 !== r.next.indexOf(t) && (r.next = t + r.next));
     }
     this.$rules[t + n] = i;
-   }
+   } else for (var n in e) this.$rules[n] = e[n];
   }, this.getRules = function() {
    return this.$rules;
   }, this.embedRules = function(e, t, i, o, r) {
@@ -6082,7 +6148,7 @@ function runDelayedFunction() {
     var r = e[t];
     n && (r = r.toLowerCase());
     for (var s = r.split(i || "|"), a = s.length; a--; ) o[s[a]] = t;
-   }), e = null, n ? function(e) {
+   }), this.$keywordList = Object.keys(o), e = null, n ? function(e) {
     return o[e.toLowerCase()] || t;
    } : function(e) {
     return o[e] || t;
@@ -6302,7 +6368,7 @@ function runDelayedFunction() {
    if (this.$embeds) {
     this.$modes = {};
     for (var t = 0; t < this.$embeds.length; t++) e[this.$embeds[t]] && (this.$modes[this.$embeds[t]] = new e[this.$embeds[t]]());
-    for (var n = [ "toggleCommentLines", "getNextLineIndent", "checkOutdent", "autoOutdent", "transformAction" ], t = 0; t < n.length; t++) (function(e) {
+    for (var n = [ "toggleCommentLines", "getNextLineIndent", "checkOutdent", "autoOutdent", "transformAction", "getCompletions" ], t = 0; t < n.length; t++) (function(e) {
      var i = n[t], o = e[i];
      e[n[t]] = function() {
       return this.$delegator(i, arguments, o);
@@ -6330,24 +6396,43 @@ function runDelayedFunction() {
      if (o) return o;
     }
    }
+  }, this.getKeywords = function(e) {
+   if (!this.completionKeywords) {
+    var t = this.$tokenizer.rules, n = [];
+    for (var i in t) for (var o = t[i], r = 0, s = o.length; s > r; r++) if ("string" == typeof o[r].token) /keyword|support|storage/.test(o[r].token) && n.push(o[r].regex); else if ("object" == typeof o[r].token) for (var a = 0, l = o[r].token.length; l > a; a++) if (/keyword|support|storage/.test(o[r].token[a])) {
+     var i = o[r].regex.match(/\(.+?\)/g)[a];
+     n.push(i.substr(1, i.length - 2));
+    }
+    this.completionKeywords = n;
+   }
+   return e ? n.concat(this.$keywordList || []) : this.$keywordList;
+  }, this.getCompletions = function() {
+   var e = this.$keywordList || [];
+   return e.map(function(e) {
+    return {
+     name: e,
+     value: e,
+     score: 0,
+     meta: "keyword"
+    };
+   });
   };
  }).call(c.prototype), t.Mode = c;
 }), define("ace/anchor", [ "require", "exports", "module", "./lib/oop", "./lib/event_emitter" ], function(e, t) {
  var n = e("./lib/oop"), i = e("./lib/event_emitter").EventEmitter, o = t.Anchor = function(e, t, n) {
-  this.document = e, "undefined" == typeof n ? this.setPosition(t.row, t.column) : this.setPosition(t, n), 
-  this.$onChange = this.onChange.bind(this), e.on("change", this.$onChange);
+  this.$onChange = this.onChange.bind(this), this.attach(e), "undefined" == typeof n ? this.setPosition(t.row, t.column) : this.setPosition(t, n);
  };
  (function() {
   n.implement(this, i), this.getPosition = function() {
    return this.$clipPositionToDocument(this.row, this.column);
   }, this.getDocument = function() {
    return this.document;
-  }, this.onChange = function(e) {
+  }, this.$insertRight = !1, this.onChange = function(e) {
    var t = e.data, n = t.range;
    if (!(n.start.row == n.end.row && n.start.row != this.row || n.start.row > this.row || n.start.row == this.row && n.start.column > this.column)) {
     var i = this.row, o = this.column, r = n.start, s = n.end;
-    "insertText" === t.action ? r.row === i && r.column <= o ? r.row === s.row ? o += s.column - r.column : (o -= r.column, 
-    i += s.row - r.row) : r.row !== s.row && r.row < i && (i += s.row - r.row) : "insertLines" === t.action ? r.row <= i && (i += s.row - r.row) : "removeText" === t.action ? r.row === i && r.column < o ? o = s.column >= o ? r.column : Math.max(0, o - (s.column - r.column)) : r.row !== s.row && r.row < i ? (s.row === i && (o = Math.max(0, o - s.column) + r.column), 
+    "insertText" === t.action ? r.row === i && r.column <= o ? r.column === o && this.$insertRight || (r.row === s.row ? o += s.column - r.column : (o -= r.column, 
+    i += s.row - r.row)) : r.row !== s.row && r.row < i && (i += s.row - r.row) : "insertLines" === t.action ? r.row <= i && (i += s.row - r.row) : "removeText" === t.action ? r.row === i && r.column < o ? o = s.column >= o ? r.column : Math.max(0, o - (s.column - r.column)) : r.row !== s.row && r.row < i ? (s.row === i && (o = Math.max(0, o - s.column) + r.column), 
     i -= s.row - r.row) : s.row === i && (i -= s.row - r.row, o = Math.max(0, o - s.column) + r.column) : "removeLines" == t.action && r.row <= i && (s.row <= i ? i -= s.row - r.row : (i = r.row, 
     o = 0)), this.setPosition(i, o, !0);
    }
@@ -6368,6 +6453,8 @@ function runDelayedFunction() {
    }
   }, this.detach = function() {
    this.document.removeEventListener("change", this.$onChange);
+  }, this.attach = function(e) {
+   this.document = e || this.document, this.document.on("change", this.$onChange);
   }, this.$clipPositionToDocument = function(e, t) {
    var n = {};
    return e >= this.document.getLength() ? (n.row = Math.max(0, this.document.getLength() - 1), 
@@ -6427,7 +6514,7 @@ function runDelayedFunction() {
   }, this.getLength = function() {
    return this.$lines.length;
   }, this.getTextRange = function(e) {
-   if (e.start.row == e.end.row) return this.$lines[e.start.row].substring(e.start.column, e.end.column);
+   if (e.start.row == e.end.row) return this.getLine(e.start.row).substring(e.start.column, e.end.column);
    var t = this.getLines(e.start.row, e.end.row);
    t[0] = (t[0] || "").substring(e.start.column);
    var n = t.length - 1;
@@ -6498,11 +6585,12 @@ function runDelayedFunction() {
     data: r
    }), i;
   }, this.remove = function(e) {
-   if (e.start = this.$clipPosition(e.start), e.end = this.$clipPosition(e.end), e.isEmpty()) return e.start;
+   if (!e instanceof o && (e = o.fromPoints(e.start, e.end)), e.start = this.$clipPosition(e.start), 
+   e.end = this.$clipPosition(e.end), e.isEmpty()) return e.start;
    var t = e.start.row, n = e.end.row;
    if (e.isMultiLine()) {
-    var i = 0 == e.start.column ? t : t + 1, o = n - 1;
-    e.end.column > 0 && this.removeInLine(n, 0, e.end.column), o >= i && this._removeLines(i, o), 
+    var i = 0 == e.start.column ? t : t + 1, r = n - 1;
+    e.end.column > 0 && this.removeInLine(n, 0, e.end.column), r >= i && this._removeLines(i, r), 
     i != t && (this.removeInLine(t, e.start.column, this.getLine(t).length), this.removeNewLine(e.start.row));
    } else this.removeInLine(t, e.start.column, e.end.column);
    return e.start;
@@ -6543,7 +6631,7 @@ function runDelayedFunction() {
     data: s
    });
   }, this.replace = function(e, t) {
-   if (0 == t.length && e.isEmpty()) return e.start;
+   if (!e instanceof o && (e = o.fromPoints(e.start, e.end)), 0 == t.length && e.isEmpty()) return e.start;
    if (t == this.getTextRange(e)) return e.end;
    if (this.remove(e), t) var n = this.insert(e.start, t); else n = e.start;
    return n;
@@ -6578,12 +6666,15 @@ function runDelayedFunction() {
   var t = this;
   this.$worker = function() {
    if (t.running) {
-    for (var e = new Date(), n = t.currentLine, i = t.doc, o = 0, r = i.getLength(); t.currentLine < r; ) {
-     for (t.$tokenizeRow(t.currentLine); t.lines[t.currentLine]; ) t.currentLine++;
-     if (o++, 0 == o % 5 && new Date() - e > 20) return t.fireUpdateEvent(n, t.currentLine - 1), 
-     t.running = setTimeout(t.$worker, 20), void 0;
+    for (var e = new Date(), n = t.currentLine, i = -1, o = t.doc; t.lines[n]; ) n++;
+    var r = n, s = o.getLength(), a = 0;
+    for (t.running = !1; s > n; ) {
+     t.$tokenizeRow(n), i = n;
+     do n++; while (t.lines[n]);
+     if (a++, 0 == a % 5 && new Date() - e > 20) return t.running = setTimeout(t.$worker, 20), 
+     t.currentLine = n, void 0;
     }
-    t.running = !1, t.fireUpdateEvent(n, r - 1);
+    t.currentLine = n, i >= r && t.fireUpdateEvent(r, i);
    }
   };
  };
@@ -6603,6 +6694,8 @@ function runDelayedFunction() {
   }, this.start = function(e) {
    this.currentLine = Math.min(e || 0, this.currentLine, this.doc.getLength()), this.lines.splice(this.currentLine, this.lines.length), 
    this.states.splice(this.currentLine, this.states.length), this.stop(), this.running = setTimeout(this.$worker, 700);
+  }, this.scheduleStart = function() {
+   this.running = setTimeout(this.$worker, 700);
   }, this.$updateOnChange = function(e) {
    var t = e.range, n = t.start.row, i = t.end.row - n;
    if (0 === i) this.lines[n] = null; else if ("removeText" == e.action || "removeLines" == e.action) this.lines.splice(n, i + 1, null), 
@@ -6610,8 +6703,7 @@ function runDelayedFunction() {
     var o = Array(i + 1);
     o.unshift(n, 1), this.lines.splice.apply(this.lines, o), this.states.splice.apply(this.states, o);
    }
-   this.currentLine = Math.min(n, this.currentLine, this.doc.getLength()), this.stop(), 
-   this.running = setTimeout(this.$worker, 700);
+   this.currentLine = Math.min(n, this.currentLine, this.doc.getLength()), this.stop();
   }, this.stop = function() {
    this.running && clearTimeout(this.running), this.running = !1;
   }, this.getTokens = function(e) {
@@ -6818,9 +6910,12 @@ function runDelayedFunction() {
     var d = l[c];
     if (!(d.end.row < o)) {
      if (d.start.row > o) break;
-     d.start.row == o && d.start.column >= n.column && (d.start.column += a, d.start.row += s), 
-     d.end.row == o && d.end.column >= n.column && (d.end.column == n.column && a > 0 && u - 1 > c && d.end.column > d.start.column && d.end.column == l[c + 1].start.column && (d.end.column -= a), 
-     d.end.column += a, d.end.row += s);
+     if (d.start.row == o && d.start.column >= n.column && (d.start.column == n.column && this.$insertRight || (d.start.column += a, 
+     d.start.row += s)), d.end.row == o && d.end.column >= n.column) {
+      if (d.end.column == n.column && this.$insertRight) continue;
+      d.end.column == n.column && a > 0 && u - 1 > c && d.end.column > d.start.column && d.end.column == l[c + 1].start.column && (d.end.column -= a), 
+      d.end.column += a, d.end.row += s;
+     }
     }
    }
    if (0 != s && u > c) for (;u > c; c++) {
@@ -6964,7 +7059,7 @@ function runDelayedFunction() {
    e instanceof r ? n = e : (n = new r(t, e), n.collapseChildren = t.collapseChildren), 
    this.$clipRangeToDocument(n.range);
    var a = n.start.row, l = n.start.column, c = n.end.row, u = n.end.column;
-   if (a == c && 2 > u - l) throw "The range has to be at least 2 characters width";
+   if (!(c > a || a == c && u - 2 >= l)) throw "The range has to be at least 2 characters width";
    var d = this.getFoldAt(a, l, 1), h = this.getFoldAt(c, u, -1);
    if (d && h == d) return d.addSubFold(n);
    if (d && !d.range.isStart(a, l) || h && !h.range.isEnd(c, u)) throw "A fold can't intersect already existing fold" + n.range + d.range;
@@ -7106,15 +7201,14 @@ function runDelayedFunction() {
   }, this.foldAll = function(e, t, n) {
    void 0 == n && (n = 1e5);
    var i = this.foldWidgets;
-   t = t || this.getLength();
-   for (var o = e || 0; t > o; o++) if (null == i[o] && (i[o] = this.getFoldWidget(o)), 
+   t = t || this.getLength(), e = e || 0;
+   for (var o = e; t > o; o++) if (null == i[o] && (i[o] = this.getFoldWidget(o)), 
    "start" == i[o]) {
-    var r = this.getFoldWidgetRange(o);
-    if (r && r.end.row <= t) try {
-     var s = this.addFold("...", r);
-     s.collapseChildren = n;
-    } catch (a) {}
-    o = r.end.row;
+    var r = this.getFoldWidgetRange(o), s = r.end.row;
+    if (r && r.isMultiLine() && t >= s && r.start.row >= e) try {
+     var a = this.addFold("...", r);
+     a.collapseChildren = n, o = s;
+    } catch (l) {}
    }
   }, this.$foldStyles = {
    manual: 1,
@@ -7330,8 +7424,9 @@ function runDelayedFunction() {
       deltas: t.$deltasDoc
      }), t.$deltasDoc = []), t.$deltas.length > 0 && e.execute({
       action: "aceupdate",
-      args: [ t.$deltas, t ]
-     }), t.$deltas = [];
+      args: [ t.$deltas, t ],
+      merge: t.mergeUndoDeltas
+     }), t.mergeUndoDeltas = !1, t.$deltas = [];
     }, this.$informUndoManager = i.delayedCall(this.$syncInformUndoManager);
    }
   }, this.markUndoGroup = function() {
@@ -7347,7 +7442,7 @@ function runDelayedFunction() {
   }, this.setUseSoftTabs = function(e) {
    this.setOption("useSoftTabs", e);
   }, this.getUseSoftTabs = function() {
-   return this.$useSoftTabs;
+   return this.$useSoftTabs && !this.$mode.$indentWithTabs;
   }, this.setTabSize = function(e) {
    this.setOption("tabSize", e);
   }, this.getTabSize = function() {
@@ -7447,19 +7542,20 @@ function runDelayedFunction() {
   }, this.onReloadTokenizer = function(e) {
    var t = e.data;
    this.bgTokenizer.start(t.first), this._emit("tokenizerUpdate", e);
-  }, this.$modes = {}, this.$mode = null, this.$modeId = null, this.setMode = function(e) {
+  }, this.$modes = {}, this.$mode = null, this.$modeId = null, this.setMode = function(e, t) {
    if (e && "object" == typeof e) {
     if (e.getTokenizer) return this.$onChangeMode(e);
-    var t = e, n = t.path;
-   } else n = e || "ace/mode/text";
+    var n = e, i = n.path;
+   } else i = e || "ace/mode/text";
    return this.$modes["ace/mode/text"] || (this.$modes["ace/mode/text"] = new a()), 
-   this.$modes[n] && !t ? this.$onChangeMode(this.$modes[n]) : (this.$modeId = n, o.loadModule([ "mode", n ], function(e) {
-    return this.$modeId === n ? this.$modes[n] && !t ? this.$onChangeMode(this.$modes[n]) : (e && e.Mode && (e = new e.Mode(t), 
-    t || (this.$modes[n] = e, e.$id = n), this.$onChangeMode(e)), void 0) : void 0;
+   this.$modes[i] && !n ? this.$onChangeMode(this.$modes[i]) : (this.$modeId = i, o.loadModule([ "mode", i ], function(e) {
+    return this.$modeId !== i ? t && t() : this.$modes[i] && !n ? this.$onChangeMode(this.$modes[i]) : (e && e.Mode && (e = new e.Mode(n), 
+    n || (this.$modes[i] = e, e.$id = i), this.$onChangeMode(e), t && t(this.mode)), 
+    void 0);
    }.bind(this)), this.$mode || this.$onChangeMode(this.$modes["ace/mode/text"], !0), 
    void 0);
   }, this.$onChangeMode = function(e, t) {
-   if (this.$mode !== e) {
+   if (t || (this.$modeId = e.$id), this.$mode !== e) {
     this.$mode = e, this.$stopWorker(), this.$useWorker && this.$startWorker();
     var n = e.getTokenizer();
     if (void 0 !== n.addEventListener) {
@@ -7474,8 +7570,8 @@ function runDelayedFunction() {
      });
     }
     this.bgTokenizer.setDocument(this.getDocument()), this.tokenRe = e.tokenRe, this.nonTokenRe = e.nonTokenRe, 
-    t || (this.$modeId = e.$id, this.$setFolding(e.foldingRules), this._emit("changeMode"), 
-    this.bgTokenizer.start(0));
+    this.$options.wrapMethod.set.call(this, this.$wrapMethod), t || (this.$setFolding(e.foldingRules), 
+    this._emit("changeMode"), this.bgTokenizer.start(0));
    }
   }, this.$stopWorker = function() {
    this.$worker && this.$worker.terminate(), this.$worker = null;
@@ -7488,13 +7584,11 @@ function runDelayedFunction() {
   }, this.getMode = function() {
    return this.$mode;
   }, this.$scrollTop = 0, this.setScrollTop = function(e) {
-   e = Math.round(Math.max(0, e)), this.$scrollTop === e || isNaN(e) || (this.$scrollTop = e, 
-   this._signal("changeScrollTop", e));
+   this.$scrollTop === e || isNaN(e) || (this.$scrollTop = e, this._signal("changeScrollTop", e));
   }, this.getScrollTop = function() {
    return this.$scrollTop;
   }, this.$scrollLeft = 0, this.setScrollLeft = function(e) {
-   e = Math.round(Math.max(0, e)), this.$scrollLeft === e || isNaN(e) || (this.$scrollLeft = e, 
-   this._signal("changeScrollLeft", e));
+   this.$scrollLeft === e || isNaN(e) || (this.$scrollLeft = e, this._signal("changeScrollLeft", e));
   }, this.getScrollLeft = function() {
    return this.$scrollLeft;
   }, this.getScreenWidth = function() {
@@ -7553,13 +7647,15 @@ function runDelayedFunction() {
     return t ? !n : n;
    }
    var o, r, s = e[0], a = !1;
-   i(s) ? (o = s.range.clone(), a = !0) : (o = l.fromPoints(s.range.start, s.range.start), 
+   i(s) ? (o = l.fromPoints(s.range.start, s.range.end), a = !0) : (o = l.fromPoints(s.range.start, s.range.start), 
    a = !1);
    for (var c = 1; c < e.length; c++) s = e[c], i(s) ? (r = s.range.start, -1 == o.compare(r.row, r.column) && o.setStart(s.range.start), 
    r = s.range.end, 1 == o.compare(r.row, r.column) && o.setEnd(s.range.end), a = !0) : (r = s.range.start, 
    -1 == o.compare(r.row, r.column) && (o = l.fromPoints(s.range.start, s.range.start)), 
    a = !1);
    if (null != n) {
+    0 == l.comparePoints(n.start, o.start) && (n.start.column += o.end.column - o.start.column, 
+    n.end.column += o.end.column - o.start.column);
     var u = n.compareRange(o);
     1 == u ? o.setStart(n.start) : -1 == u && o.setEnd(n.end);
    }
@@ -7654,8 +7750,10 @@ function runDelayedFunction() {
   }, this.getUseWrapMode = function() {
    return this.$useWrapMode;
   }, this.setWrapLimitRange = function(e, t) {
-   (this.$wrapLimitRange.min !== e || this.$wrapLimitRange.max !== t) && (this.$wrapLimitRange.min = e, 
-   this.$wrapLimitRange.max = t, this.$modified = !0, this._emit("changeWrapMode"));
+   (this.$wrapLimitRange.min !== e || this.$wrapLimitRange.max !== t) && (this.$wrapLimitRange = {
+    min: e,
+    max: t
+   }, this.$modified = !0, this._emit("changeWrapMode"));
   }, this.adjustWrapLimit = function(e, t) {
    var n = this.$wrapLimitRange;
    n.max < 0 && (n = {
@@ -7725,19 +7823,18 @@ function runDelayedFunction() {
   }, this.$updateRowLengthCache = function(e, t) {
    this.$rowLengthCache[e] = null, this.$rowLengthCache[t] = null;
   }, this.$updateWrapData = function(e, t) {
-   var n, o, r = this.doc.getAllLines(), s = this.getTabSize(), a = this.$wrapData, l = this.$wrapLimit, c = e;
-   for (t = Math.min(t, r.length - 1); t >= c; ) if (o = this.getFoldLine(c, o)) {
-    for (n = [], o.walk(function(e, t, i, o) {
-     var s;
-     if (null != e) {
-      s = this.$getDisplayTokens(e, n.length), s[0] = h;
-      for (var a = 1; a < s.length; a++) s[a] = p;
-     } else s = this.$getDisplayTokens(r[t].substring(o, i), n.length);
-     n = n.concat(s);
-    }.bind(this), o.end.row, r[o.end.row].length + 1); 0 != n.length && n[n.length - 1] >= g; ) n.pop();
-    a[o.start.row] = this.$computeWrapSplits(n, l, s), c = o.end.row + 1;
-   } else n = this.$getDisplayTokens(i.stringTrimRight(r[c])), a[c] = this.$computeWrapSplits(n, l, s), 
-   c++;
+   var n, i, o = this.doc.getAllLines(), r = this.getTabSize(), s = this.$wrapData, a = this.$wrapLimit, l = e;
+   for (t = Math.min(t, o.length - 1); t >= l; ) i = this.getFoldLine(l, i), i ? (n = [], 
+   i.walk(function(e, t, i, r) {
+    var s;
+    if (null != e) {
+     s = this.$getDisplayTokens(e, n.length), s[0] = h;
+     for (var a = 1; a < s.length; a++) s[a] = p;
+    } else s = this.$getDisplayTokens(o[t].substring(r, i), n.length);
+    n = n.concat(s);
+   }.bind(this), i.end.row, o[i.end.row].length + 1), s[i.start.row] = this.$computeWrapSplits(n, a, r), 
+   l = i.end.row + 1) : (n = this.$getDisplayTokens(o[l]), s[l] = this.$computeWrapSplits(n, a, r), 
+   l++);
   };
   var s = 1, c = 2, h = 3, p = 4, f = 9, g = 10, m = 11, v = 12;
   this.$computeWrapSplits = function(e, t) {
@@ -7750,24 +7847,24 @@ function runDelayedFunction() {
     }), s += o, i.push(s), r = t;
    }
    if (0 == e.length) return [];
-   for (var i = [], o = e.length, r = 0, s = 0; o - r > t; ) {
-    var a = r + t;
-    if (e[a] >= g) {
-     for (;e[a] >= g; ) a++;
-     n(a);
-    } else if (e[a] != h && e[a] != p) {
-     for (var l = Math.max(a - 10, r - 1); a > l && e[a] < h; ) a--;
-     for (;a > l && e[a] == f; ) a--;
-     a > l ? n(++a) : (a = r + t, n(a));
+   for (var i = [], o = e.length, r = 0, s = 0, a = this.$wrapAsCode; o - r > t; ) {
+    var l = r + t;
+    if (e[l - 1] >= g && e[l] >= g) n(l); else if (e[l] != h && e[l] != p) {
+     for (var c = Math.max(l - (a ? 10 : t - (t >> 2)), r - 1); l > c && e[l] < h; ) l--;
+     if (a) {
+      for (;l > c && e[l] < h; ) l--;
+      for (;l > c && e[l] == f; ) l--;
+     } else for (;l > c && e[l] < g; ) l--;
+     l > c ? n(++l) : (l = r + t, n(l));
     } else {
-     for (a; a != r - 1 && e[a] != h; a--) ;
-     if (a > r) {
-      n(a);
+     for (l; l != r - 1 && e[l] != h; l--) ;
+     if (l > r) {
+      n(l);
       continue;
      }
-     for (a = r + t; a < e.length && e[a] == p; a++) ;
-     if (a == e.length) break;
-     n(a);
+     for (l = r + t; l < e.length && e[l] == p; l++) ;
+     if (l == e.length) break;
+     n(l);
     }
    }
    return i;
@@ -7888,6 +7985,12 @@ function runDelayedFunction() {
     return this.getUseWrapMode() ? this.getWrapLimitRange().min || "free" : "off";
    },
    handlesSet: !0
+  },
+  wrapMethod: {
+   set: function(e) {
+    this.$wrapAsCode = "auto" == e ? "text" != this.$mode.type : "text" != e;
+   },
+   initialValue: "auto"
   },
   firstLineNumber: {
    set: function() {
@@ -8079,9 +8182,12 @@ function runDelayedFunction() {
   }, this.addCommands = function(e) {
    e && Object.keys(e).forEach(function(t) {
     var n = e[t];
-    return "string" == typeof n ? this.bindKey(n, t) : ("function" == typeof n && (n = {
-     exec: n
-    }), n.name || (n.name = t), this.addCommand(n), void 0);
+    if (n) {
+     if ("string" == typeof n) return this.bindKey(n, t);
+     "function" == typeof n && (n = {
+      exec: n
+     }), n.name || (n.name = t), this.addCommand(n);
+    }
    }, this);
   }, this.removeCommands = function(e) {
    Object.keys(e).forEach(function(t) {
@@ -8172,7 +8278,7 @@ function runDelayedFunction() {
    });
   };
  }.call(r.prototype), t.CommandManager = r;
-}), define("libs/ace_commands", [ "require", "exports", "module", "ace/lib/lang", "ace/config" ], function(e, t) {
+}), define("ace/commands/default_commands", [ "require", "exports", "module", "ace/lib/lang", "ace/config" ], function(e, t) {
  function n(e, t) {
   return {
    win: e,
@@ -8673,17 +8779,65 @@ function runDelayedFunction() {
   this.keyBinding = new c(this), this.$mouseHandler = new a(this), new l(this), this.$blockScrolling = 0, 
   this.$search = new d().set({
    wrap: !0
+  }), this.$historyTracker = this.$historyTracker.bind(this), this.commands.on("exec", this.$historyTracker), 
+  this.$initOperationListeners(), this._$emitInputEvent = o.delayedCall(function() {
+   this._signal("input", {}), this.session.bgTokenizer && this.session.bgTokenizer.scheduleStart();
+  }.bind(this)), this.on("change", function(e, t) {
+   t._$emitInputEvent.schedule(31);
   }), this.setSession(t || new u("")), m.resetOptions(this), m._emit("editor", this);
  };
  (function() {
-  n.implement(this, p), this.setKeyboardHandler = function(e) {
+  n.implement(this, p), this.$initOperationListeners = function() {
+   function e(e) {
+    return e[e.length - 1];
+   }
+   this.selections = [], this.commands.on("exec", function(t) {
+    this.startOperation(t);
+    var n = t.command;
+    if ("fileJump" == n.group) {
+     var i = this.prevOp;
+     i && "fileJump" == i.command.group || (this.lastFileJumpPos = e(this.selections));
+    } else this.lastFileJumpPos = null;
+   }.bind(this), !0), this.commands.on("afterExec", function(e) {
+    var t = e.command;
+    return "fileJump" == t.group && this.lastFileJumpPos && !this.curOp.selectionChanged ? (this.selection.fromJSON(this.lastFileJumpPos), 
+    void 0) : (this.endOperation(e), void 0);
+   }.bind(this), !0), this.$opResetTimer = o.delayedCall(this.endOperation.bind(this)), 
+   this.on("change", function() {
+    this.curOp || this.startOperation(), this.curOp.docChanged = !0;
+   }.bind(this), !0), this.on("changeSelection", function() {
+    this.curOp || this.startOperation(), this.curOp.selectionChanged = !0;
+   }.bind(this), !0);
+  }, this.curOp = null, this.prevOp = {}, this.startOperation = function(e) {
+   if (this.curOp) {
+    if (!e || this.curOp.command) return;
+    this.prevOp = this.curOp;
+   }
+   e || (this.previousCommand = null, e = {}), this.$opResetTimer.schedule(), this.curOp = {
+    command: e.command || {},
+    args: e.args
+   }, this.selections.push(this.selection.toJSON());
+  }, this.endOperation = function() {
+   this.curOp && (this.prevOp = this.curOp, this.curOp = null);
+  }, this.$historyTracker = function(e) {
+   if (this.$mergeUndoDeltas) {
+    var t = this.prevOp, n = [ "backspace", "del", "insertstring" ], i = t.command && e.command.name == t.command.name;
+    if ("insertstring" == e.command.name) {
+     var o = e.args;
+     void 0 === this.mergeNextCommand && (this.mergeNextCommand = !0), i = i && this.mergeNextCommand && (!/\s/.test(o) || /\s/.test(t.args)), 
+     this.mergeNextCommand = !0;
+    } else i = i && -1 !== n.indexOf(e.command.name);
+    "always" != this.$mergeUndoDeltas && Date.now() - this.sequenceStartTime > 2e3 && (i = !1), 
+    i ? this.session.mergeUndoDeltas = !0 : -1 !== n.indexOf(e.command.name) && (this.sequenceStartTime = Date.now());
+   }
+  }, this.setKeyboardHandler = function(e) {
    if (e) if ("string" == typeof e) {
     this.$keybindingId = e;
     var t = this;
     m.loadModule([ "keybinding", e ], function(n) {
      t.$keybindingId == e && t.keyBinding.setKeyboardHandler(n && n.handler);
     });
-   } else delete this.$keybindingId, this.keyBinding.setKeyboardHandler(e); else this.keyBinding.setKeyboardHandler(null);
+   } else this.$keybindingId = null, this.keyBinding.setKeyboardHandler(e); else this.keyBinding.setKeyboardHandler(null);
   }, this.getKeyboardHandler = function() {
    return this.keyBinding.getKeyboardHandler();
   }, this.setSession = function(e) {
@@ -8795,8 +8949,9 @@ function runDelayedFunction() {
    this.$highlightBrackets(), this.$updateHighlightActiveLine(), this._emit("changeSelection");
   }, this.$updateHighlightActiveLine = function() {
    var e, t = this.getSession();
-   if (this.$highlightActiveLine && ("line" == this.$selectionStyle && this.selection.isMultiLine() || (e = this.getCursorPosition())), 
-   t.$highlightLineMarker && !e) t.removeMarker(t.$highlightLineMarker.id), t.$highlightLineMarker = null; else if (!t.$highlightLineMarker && e) {
+   if (this.$highlightActiveLine && ("line" == this.$selectionStyle && this.selection.isMultiLine() || (e = this.getCursorPosition()), 
+   this.renderer.$maxLines && 1 === this.session.getLength() && (e = !1)), t.$highlightLineMarker && !e) t.removeMarker(t.$highlightLineMarker.id), 
+   t.$highlightLineMarker = null; else if (!t.$highlightLineMarker && e) {
     var n = new h(e.row, e.column, e.row, 1/0);
     n.id = t.addMarker(n, "ace_active-line", "screenLine"), t.$highlightLineMarker = n;
    } else e && (t.$highlightLineMarker.start.row = e.row, t.$highlightLineMarker.end.row = e.row, 
@@ -8840,10 +8995,11 @@ function runDelayedFunction() {
    this.renderer.onResize(!0);
   }, this.onChangeFold = function() {
    this.$updateHighlightActiveLine(), this.renderer.updateFull();
+  }, this.getSelectedText = function() {
+   return this.session.getTextRange(this.getSelectionRange());
   }, this.getCopyText = function() {
-   var e = "";
-   return this.selection.isEmpty() || (e = this.session.getTextRange(this.getSelectionRange())), 
-   this._emit("copy", e), e;
+   var e = this.getSelectedText();
+   return this._signal("copy", e), e;
   }, this.onCopy = function() {
    this.commands.exec("copy", this);
   }, this.onCut = function() {
@@ -8856,38 +9012,36 @@ function runDelayedFunction() {
    var t = this.session, n = t.getMode(), i = this.getCursorPosition();
    if (this.getBehavioursEnabled()) {
     var o = n.transformAction(t.getState(i.row), "insertion", this, t, e);
-    o && (e = o.text);
+    o && (e !== o.text && (this.session.mergeUndoDeltas = !1, this.$mergeNextCommand = !1), 
+    e = o.text);
    }
-   if (e = e.replace("	", this.session.getTabString()), this.selection.isEmpty()) {
+   if ("	" == e && (e = this.session.getTabString()), this.selection.isEmpty()) {
     if (this.session.getOverwrite()) {
      var r = new h.fromPoints(i, i);
      r.end.column += e.length, this.session.remove(r);
     }
-   } else i = this.session.remove(this.getSelectionRange()), this.clearSelection();
-   this.clearSelection();
-   var s = i.column, a = t.getState(i.row), l = t.getLine(i.row), c = n.checkOutdent(a, l, e), u = t.insert(i, e);
-   if (o && o.selection && (2 == o.selection.length ? this.selection.setSelectionRange(new h(i.row, s + o.selection[0], i.row, s + o.selection[1])) : this.selection.setSelectionRange(new h(i.row + o.selection[0], o.selection[1], i.row + o.selection[2], o.selection[3]))), 
-   t.getDocument().isNewLine(e)) {
-    var d = n.getNextLineIndent(a, l.slice(0, i.column), t.getTabString());
-    this.moveCursorTo(i.row + 1, 0);
-    for (var p = t.getTabSize(), f = Number.MAX_VALUE, g = i.row + 1; g <= u.row; ++g) {
-     var m = 0;
-     l = t.getLine(g);
-     for (var v = 0; v < l.length; ++v) if ("	" == l.charAt(v)) m += p; else {
-      if (" " != l.charAt(v)) break;
-      m += 1;
-     }
-     /[^\s]/.test(l) && (f = Math.min(m, f));
-    }
-    for (var g = i.row + 1; g <= u.row; ++g) {
-     var b = f;
-     l = t.getLine(g);
-     for (var v = 0; v < l.length && b > 0; ++v) "	" == l.charAt(v) ? b -= p : " " == l.charAt(v) && (b -= 1);
-     t.remove(new h(g, 0, g, v));
-    }
-    t.indentRows(i.row + 1, u.row, d);
+   } else {
+    var r = this.getSelectionRange();
+    i = this.session.remove(r), this.clearSelection();
    }
-   c && n.autoOutdent(a, t, i.row);
+   if ("\n" == e || "\r\n" == e) {
+    var s = t.getLine(i.row);
+    if (i.column > s.search(/\S|$/)) {
+     var a = s.substr(i.column).search(/\S|$/);
+     t.doc.removeInLine(i.row, i.column, i.column + a);
+    }
+   }
+   this.clearSelection();
+   var l = i.column, c = t.getState(i.row), s = t.getLine(i.row), u = n.checkOutdent(c, s, e);
+   if (t.insert(i, e), o && o.selection && (2 == o.selection.length ? this.selection.setSelectionRange(new h(i.row, l + o.selection[0], i.row, l + o.selection[1])) : this.selection.setSelectionRange(new h(i.row + o.selection[0], o.selection[1], i.row + o.selection[2], o.selection[3]))), 
+   t.getDocument().isNewLine(e)) {
+    var d = n.getNextLineIndent(c, s.slice(0, i.column), t.getTabString());
+    t.insert({
+     row: i.row + 1,
+     column: 0
+    }, d);
+   }
+   u && n.autoOutdent(c, t, i.row);
   }, this.onTextInput = function(e) {
    this.keyBinding.onTextInput(e);
   }, this.onCommandKey = function(e, t, n) {
@@ -8967,6 +9121,13 @@ function runDelayedFunction() {
    var t = this.getSelectionRange();
    if (this.getBehavioursEnabled()) {
     var n = this.session, i = n.getState(t.start.row), o = n.getMode().transformAction(i, "deletion", this, n, t);
+    if (0 == t.end.column) {
+     var r = n.getTextRange(t);
+     if ("\n" == r[r.length - 1]) {
+      var s = n.getLine(t.end.row);
+      /^\s+$/.test(s) && (t.end.column = s.length);
+     }
+    }
     o && (t = o);
    }
    this.session.remove(t), this.clearSelection();
@@ -9009,16 +9170,23 @@ function runDelayedFunction() {
    this.session.replace(t, n.toUpperCase()), this.selection.setSelectionRange(e);
   }, this.indent = function() {
    var e = this.session, t = this.getSelectionRange();
-   if (!(t.start.row < t.end.row || t.start.column < t.end.column)) {
-    var n;
-    if (this.session.getUseSoftTabs()) {
-     var i = e.getTabSize(), r = this.getCursorPosition(), s = e.documentToScreenColumn(r.row, r.column), a = i - s % i;
-     n = o.stringRepeat(" ", a);
-    } else n = "	";
-    return this.insert(n);
+   if (t.start.row < t.end.row) {
+    var n = this.$getSelectedRows();
+    return e.indentRows(n.first, n.last, "	"), void 0;
    }
-   var l = this.$getSelectedRows();
-   e.indentRows(l.first, l.last, "	");
+   if (t.start.column < t.end.column) {
+    var i = e.getTextRange(t);
+    if (!/^\s+$/.test(i)) {
+     var n = this.$getSelectedRows();
+     return e.indentRows(n.first, n.last, "	"), void 0;
+    }
+   }
+   var r = e.getLine(t.start.row), s = t.start, a = e.getTabSize(), l = e.documentToScreenColumn(s.row, s.column);
+   if (this.session.getUseSoftTabs()) var c = a - l % a, u = o.stringRepeat(" ", c); else {
+    for (var c = l % a; " " == r[t.start.column] && c; ) t.start.column--, c--;
+    this.selection.setSelectionRange(t), u = "	";
+   }
+   return this.insert(u);
   }, this.blockIndent = function() {
    var e = this.$getSelectedRows();
    this.session.indentRows(e.first, e.last, "	");
@@ -9364,6 +9532,10 @@ function runDelayedFunction() {
    values: [ "ace", "slim", "smooth", "wide" ],
    initialValue: "ace"
   },
+  mergeUndoDeltas: {
+   values: [ !1, !0, "always" ],
+   initialValue: !0
+  },
   behavioursEnabled: {
    initialValue: !0
   },
@@ -9371,6 +9543,7 @@ function runDelayedFunction() {
    initialValue: !0
   },
   hScrollBarAlwaysVisible: "renderer",
+  vScrollBarAlwaysVisible: "renderer",
   highlightGutterLine: "renderer",
   animatedScroll: "renderer",
   showInvisibles: "renderer",
@@ -9383,6 +9556,10 @@ function runDelayedFunction() {
   displayIndentGuides: "renderer",
   fontSize: "renderer",
   fontFamily: "renderer",
+  maxLines: "renderer",
+  minLines: "renderer",
+  scrollPastEnd: "renderer",
+  fixedWidthGutter: "renderer",
   scrollSpeed: "$mouseHandler",
   dragDelay: "$mouseHandler",
   focusTimout: "$mouseHandler",
@@ -9402,7 +9579,8 @@ function runDelayedFunction() {
  (function() {
   this.execute = function(e) {
    var t = e.args[0];
-   this.$doc = e.args[1], this.$undoStack.push(t), this.$redoStack = [], this.dirtyCounter < 0 && (this.dirtyCounter = 0/0), 
+   this.$doc = e.args[1], e.merge && this.hasUndo() && (t = this.$undoStack.pop().concat(t)), 
+   this.$undoStack.push(t), this.$redoStack = [], this.dirtyCounter < 0 && (this.dirtyCounter = 0/0), 
    this.dirtyCounter++;
   }, this.undo = function(e) {
    var t = this.$undoStack.pop(), n = null;
@@ -9428,7 +9606,8 @@ function runDelayedFunction() {
  var n = e("../lib/dom"), i = e("../lib/oop"), o = e("../lib/lang"), r = e("../lib/event_emitter").EventEmitter, s = function(e) {
   this.element = n.createElement("div"), this.element.className = "ace_layer ace_gutter-layer", 
   e.appendChild(this.element), this.setShowFoldWidgets(this.$showFoldWidgets), this.gutterWidth = 0, 
-  this.$annotations = [], this.$updateAnnotations = this.$updateAnnotations.bind(this);
+  this.$annotations = [], this.$updateAnnotations = this.$updateAnnotations.bind(this), 
+  this.$cells = [];
  };
  (function() {
   i.implement(this, r), this.setSession = function(e) {
@@ -9461,25 +9640,42 @@ function runDelayedFunction() {
     }
    }
   }, this.update = function(e) {
-   for (var t = {
-    className: ""
-   }, i = [], o = e.firstRow, r = e.lastRow, s = this.session.getNextFoldLine(o), a = s ? s.start.row : 1/0, l = this.$showFoldWidgets && this.session.foldWidgets, c = this.session.$breakpoints, u = this.session.$decorations, d = this.session.$firstLineNumber, h = 0; ;) {
-    if (o > a && (o = s.end.row + 1, s = this.session.getNextFoldLine(o, s), a = s ? s.start.row : 1/0), 
-    o > r) break;
-    var p = this.$annotations[o] || t;
-    if (i.push("<div class='ace_gutter-cell ", c[o] || "", u[o] || "", p.className, "' style='height:", this.session.getRowLength(o) * e.lineHeight, "px;'>", h = o + d), 
-    l) {
-     var f = l[o];
-     null == f && (f = l[o] = this.session.getFoldWidget(o)), f && i.push("<span class='ace_fold-widget ace_", f, "start" == f && o == a && o < s.end.row ? " ace_closed" : " ace_open", "' style='height:", e.lineHeight, "px", "'></span>");
+   for (var t = e.firstRow, i = e.lastRow, o = this.session.getNextFoldLine(t), r = o ? o.start.row : 1/0, s = this.$showFoldWidgets && this.session.foldWidgets, a = this.session.$breakpoints, l = this.session.$decorations, c = this.session.$firstLineNumber, u = 0, d = null, h = -1, p = t; ;) {
+    if (p > r && (p = o.end.row + 1, o = this.session.getNextFoldLine(p, o), r = o ? o.start.row : 1/0), 
+    p > i) {
+     for (;this.$cells.length > h + 1; ) d = this.$cells.pop(), this.element.removeChild(d.element);
+     break;
     }
-    i.push("</div>"), o++;
+    d = this.$cells[++h], d || (d = {
+     element: null,
+     textNode: null,
+     foldWidget: null
+    }, d.element = n.createElement("div"), d.textNode = document.createTextNode(""), 
+    d.element.appendChild(d.textNode), this.element.appendChild(d.element), this.$cells[h] = d);
+    var f = "ace_gutter-cell";
+    a[p] && (f += a[p]), l[p] && (f += l[p]), this.$annotations[p] && (f += this.$annotations[p].className), 
+    d.element.className != f && (d.element.className = f);
+    var g = this.session.getRowLength(p) * e.lineHeight + "px";
+    g != d.element.style.height && (d.element.style.height = g);
+    var m = u = p + c;
+    if (m != d.textNode.data && (d.textNode.data = m), s) {
+     var v = s[p];
+     null == v && (v = s[p] = this.session.getFoldWidget(p));
+    }
+    if (v) {
+     d.foldWidget || (d.foldWidget = n.createElement("span"), d.element.appendChild(d.foldWidget));
+     var f = "ace_fold-widget ace_" + v;
+     f += "start" == v && p == r && p < o.end.row ? " ace_closed" : " ace_open", d.foldWidget.className != f && (d.foldWidget.className = f);
+     var g = e.lineHeight + "px";
+     d.foldWidget.style.height != g && (d.foldWidget.style.height = g);
+    } else null != d.foldWidget && (d.element.removeChild(d.foldWidget), d.foldWidget = null);
+    p++;
    }
-   this.element = n.setInnerHtml(this.element, i.join("")), this.element.style.height = e.minHeight + "px", 
-   this.session.$useWrapMode && (h = this.session.getLength());
-   var g = ("" + h).length * e.characterWidth, m = this.$padding || this.$computePadding();
-   g += m.left + m.right, g !== this.gutterWidth && (this.gutterWidth = g, this.element.style.width = Math.ceil(this.gutterWidth) + "px", 
-   this._emit("changeGutterWidth", g));
-  }, this.$showFoldWidgets = !0, this.setShowFoldWidgets = function(e) {
+   this.element.style.height = e.minHeight + "px", (this.$fixedWidth || this.session.$useWrapMode) && (u = this.session.getLength());
+   var b = u.toString().length * e.characterWidth, y = this.$padding || this.$computePadding();
+   b += y.left + y.right, b === this.gutterWidth || isNaN(b) || (this.gutterWidth = b, 
+   this.element.style.width = Math.ceil(this.gutterWidth) + "px", this._emit("changeGutterWidth", b));
+  }, this.$fixedWidth = !1, this.$showFoldWidgets = !0, this.setShowFoldWidgets = function(e) {
    e ? n.addCssClass(this.element, "ace_folding-enabled") : n.removeCssClass(this.element, "ace_folding-enabled"), 
    this.$showFoldWidgets = e, this.$padding = null;
   }, this.getShowFoldWidgets = function() {
@@ -9490,8 +9686,8 @@ function runDelayedFunction() {
     right: 0
    };
    var e = n.computedStyle(this.element.firstChild);
-   return this.$padding = {}, this.$padding.left = parseInt(e.paddingLeft) + 1, this.$padding.right = parseInt(e.paddingRight), 
-   this.$padding;
+   return this.$padding = {}, this.$padding.left = parseInt(e.paddingLeft) + 1 || 0, 
+   this.$padding.right = parseInt(e.paddingRight) || 0, this.$padding;
   }, this.getRegion = function(e) {
    var t = this.$padding || this.$computePadding(), n = this.element.getBoundingClientRect();
    return e.x < t.left + n.left ? "markers" : this.$showFoldWidgets && e.x > n.right - t.right ? "foldWidgets" : void 0;
@@ -9612,16 +9808,16 @@ function runDelayedFunction() {
    if (!this.$measureNode) {
     var e = this.$measureNode = i.createElement("div"), t = e.style;
     t.width = t.height = "auto", t.left = t.top = "-100px", t.visibility = "hidden", 
-    t.position = "fixed", t.overflow = "visible", t.whiteSpace = "nowrap", e.innerHTML = "X";
+    t.position = "fixed", t.overflow = "visible", t.whiteSpace = "nowrap", e.innerHTML = o.stringRepeat("X", 100);
     for (var n = this.element.parentNode; n && !i.hasCssClass(n, "ace_editor"); ) n = n.parentNode;
     if (!n) return this.$measureNode = null;
     n.appendChild(e);
    }
-   var o = this.$measureNode.getBoundingClientRect(), r = {
-    height: o.height,
-    width: o.width
+   var r = this.$measureNode.getBoundingClientRect(), s = {
+    height: r.height,
+    width: r.width / 100
    };
-   return 0 == r.width || 0 == r.height ? null : r;
+   return 0 == s.width || 0 == s.height ? null : s;
   }, this.setSession = function(e) {
    this.session = e, this.$computeTabString();
   }, this.showInvisibles = !1, this.setShowInvisibles = function(e) {
@@ -9727,16 +9923,16 @@ function runDelayedFunction() {
     e.push("<span class='", c, "'", u, ">", l, "</span>");
    }
    return t + i.length;
-  }, this.renderIndentGuide = function(e, t) {
-   var n = t.search(this.$indentGuideRe);
-   return 0 >= n ? t : " " == t[0] ? (n -= n % this.tabSize, e.push(o.stringRepeat(this.$tabStrings[" "], n / this.tabSize)), 
-   t.substr(n)) : "	" == t[0] ? (e.push(o.stringRepeat(this.$tabStrings["	"], n)), 
-   t.substr(n)) : t;
+  }, this.renderIndentGuide = function(e, t, n) {
+   var i = t.search(this.$indentGuideRe);
+   return 0 >= i || i >= n ? t : " " == t[0] ? (i -= i % this.tabSize, e.push(o.stringRepeat(this.$tabStrings[" "], i / this.tabSize)), 
+   t.substr(i)) : "	" == t[0] ? (e.push(o.stringRepeat(this.$tabStrings["	"], i)), 
+   t.substr(i)) : t;
   }, this.$renderWrappedLine = function(e, t, n, i) {
    for (var o = 0, r = 0, s = n[0], a = 0, l = 0; l < t.length; l++) {
     var c = t[l], u = c.value;
     if (0 == l && this.displayIndentGuides) {
-     if (o = u.length, u = this.renderIndentGuide(e, u), !u) continue;
+     if (o = u.length, u = this.renderIndentGuide(e, u, s), !u) continue;
      o -= u.length;
     }
     if (o + u.length < s) a = this.$renderToken(e, a, c, u), o += u.length; else {
@@ -9875,27 +10071,52 @@ function runDelayedFunction() {
   };
  }).call(i.prototype), t.Cursor = i;
 }), define("ace/scrollbar", [ "require", "exports", "module", "./lib/oop", "./lib/dom", "./lib/event", "./lib/event_emitter" ], function(e, t) {
- var n = e("./lib/oop"), i = e("./lib/dom"), o = e("./lib/event"), r = e("./lib/event_emitter").EventEmitter, s = function(e) {
+ var n = e("./lib/oop"), i = e("./lib/dom"), o = e("./lib/event"), r = e("./lib/event_emitter").EventEmitter, s = function(e, t) {
   this.element = i.createElement("div"), this.element.className = "ace_scrollbar", 
   this.inner = i.createElement("div"), this.inner.className = "ace_scrollbar-inner", 
-  this.element.appendChild(this.inner), e.appendChild(this.element), this.width = i.scrollbarWidth(e.ownerDocument), 
-  this.element.style.width = (this.width || 15) + 5 + "px", o.addListener(this.element, "scroll", this.onScroll.bind(this));
+  this.element.appendChild(this.inner), e.appendChild(this.element), t.$scrollbarWidth = this.width = i.scrollbarWidth(e.ownerDocument), 
+  t.$scrollbarWidth = this.width = i.scrollbarWidth(e.ownerDocument), this.fullWidth = this.width, 
+  this.inner.style.width = this.element.style.width = (this.width || 15) + 5 + "px", 
+  this.setVisible(!1), this.element.style.overflowY = "scroll", o.addListener(this.element, "scroll", this.onScrollV.bind(this));
+ }, a = function(e, t) {
+  this.element = i.createElement("div"), this.element.className = "ace_scrollbar-h", 
+  this.inner = i.createElement("div"), this.inner.className = "ace_scrollbar-inner", 
+  this.element.appendChild(this.inner), e.appendChild(this.element), this.height = t.$scrollbarWidth, 
+  this.fullHeight = this.height, this.inner.style.height = this.element.style.height = (this.height || 15) + 5 + "px", 
+  this.setVisible(!1), this.element.style.overflowX = "scroll", o.addListener(this.element, "scroll", this.onScrollH.bind(this));
  };
  (function() {
-  n.implement(this, r), this.onScroll = function() {
+  n.implement(this, r), this.setVisible = function(e) {
+   e ? (this.element.style.display = "", this.fullWidth && (this.width = this.fullWidth), 
+   this.fullHeight && (this.height = this.fullHeight)) : (this.element.style.display = "none", 
+   this.height = this.width = 0);
+  }, this.onScrollV = function() {
    this.skipEvent || (this.scrollTop = this.element.scrollTop, this._emit("scroll", {
     data: this.scrollTop
    })), this.skipEvent = !1;
+  }, this.onScrollH = function() {
+   this.skipEvent || (this.scrollLeft = this.element.scrollLeft, this._emit("scroll", {
+    data: this.scrollLeft
+   })), this.skipEvent = !1;
   }, this.getWidth = function() {
    return this.width;
+  }, this.getHeight = function() {
+   return this.height;
   }, this.setHeight = function(e) {
    this.element.style.height = e + "px";
+  }, this.setWidth = function(e) {
+   this.element.style.width = e + "px";
   }, this.setInnerHeight = function(e) {
    this.inner.style.height = e + "px";
+  }, this.setInnerWidth = function(e) {
+   this.inner.style.width = e + "px";
   }, this.setScrollTop = function(e) {
    this.scrollTop != e && (this.skipEvent = !0, this.scrollTop = this.element.scrollTop = e);
+  }, this.setScrollLeft = function(e) {
+   this.scrollLeft != e && (this.skipEvent = !0, this.scrollLeft = this.element.scrollLeft = e);
   };
- }).call(s.prototype), t.ScrollBar = s;
+ }).call(s.prototype), a.prototype = s.prototype, t.ScrollBar = s, t.ScrollBarV = s, 
+ t.ScrollBarH = a;
 }), define("ace/renderloop", [ "require", "exports", "module", "./lib/event" ], function(e, t) {
  var n = e("./lib/event"), i = function(e, t) {
   this.onRender = e, this.pending = !1, this.changes = 0, this.window = t || window;
@@ -9913,36 +10134,36 @@ function runDelayedFunction() {
   };
  }).call(i.prototype), t.RenderLoop = i;
 }), function() {
- define("libs/ace_text", [ "require", "exports", "module" ], function(e, t) {
+ define("ace/requirejs/text", [ "require", "exports", "module" ], function(e, t) {
   t.load = function(e, t, n) {
    n("", "utf8");
   };
  });
-}(), define("ace/virtual_renderer", [ "require", "exports", "module", "./lib/oop", "./lib/dom", "./lib/event", "./lib/useragent", "./config", "./layer/gutter", "./layer/marker", "./layer/text", "./layer/cursor", "./scrollbar", "./renderloop", "./lib/event_emitter", "./requirejs/text!./css/editor.css" ], function(e, t) {
- var n = e("./lib/oop"), i = e("./lib/dom"), o = e("./lib/event"), r = e("./lib/useragent"), s = e("./config"), a = e("./layer/gutter").Gutter, l = e("./layer/marker").Marker, c = e("./layer/text").Text, u = e("./layer/cursor").Cursor, d = e("./scrollbar").ScrollBar, h = e("./renderloop").RenderLoop, p = e("./lib/event_emitter").EventEmitter, f = e("./requirejs/text!./css/editor.css");
+}(), define("ace/virtual_renderer", [ "require", "exports", "module", "./lib/oop", "./lib/dom", "./lib/useragent", "./config", "./layer/gutter", "./layer/marker", "./layer/text", "./layer/cursor", "./scrollbar", "./scrollbar", "./renderloop", "./lib/event_emitter", "./requirejs/text!./css/editor.css" ], function(e, t) {
+ var n = e("./lib/oop"), i = e("./lib/dom"), o = e("./lib/useragent"), r = e("./config"), s = e("./layer/gutter").Gutter, a = e("./layer/marker").Marker, l = e("./layer/text").Text, c = e("./layer/cursor").Cursor, u = e("./scrollbar").ScrollBarH, d = e("./scrollbar").ScrollBarV, h = e("./renderloop").RenderLoop, p = e("./lib/event_emitter").EventEmitter, f = e("./requirejs/text!./css/editor.css");
  i.importCssString(f, "ace_editor");
  var g = function(e, t) {
   var n = this;
-  this.container = e || i.createElement("div"), this.$keepTextAreaAtCursor = !r.isIE, 
+  this.container = e || i.createElement("div"), this.$keepTextAreaAtCursor = !o.isIE, 
   i.addCssClass(this.container, "ace_editor"), this.setTheme(t), this.$gutter = i.createElement("div"), 
   this.$gutter.className = "ace_gutter", this.container.appendChild(this.$gutter), 
   this.scroller = i.createElement("div"), this.scroller.className = "ace_scroller", 
   this.container.appendChild(this.scroller), this.content = i.createElement("div"), 
   this.content.className = "ace_content", this.scroller.appendChild(this.content), 
-  this.$gutterLayer = new a(this.$gutter), this.$gutterLayer.on("changeGutterWidth", this.onGutterResize.bind(this)), 
-  this.$markerBack = new l(this.content);
-  var p = this.$textLayer = new c(this.content);
-  this.canvas = p.element, this.$markerFront = new l(this.content), this.$cursorLayer = new u(this.content), 
-  this.$horizScroll = !1, this.scrollBar = new d(this.container), this.scrollBar.addEventListener("scroll", function(e) {
-   n.$scrollAnimation || n.session.setScrollTop(e.data);
-  }), this.scrollTop = 0, this.scrollLeft = 0, o.addListener(this.scroller, "scroll", function() {
-   var e = n.scroller.scrollLeft;
-   n.scrollLeft = e, n.session.setScrollLeft(e);
-  }), this.cursorPos = {
+  this.$gutterLayer = new s(this.$gutter), this.$gutterLayer.on("changeGutterWidth", this.onGutterResize.bind(this)), 
+  this.$markerBack = new a(this.content);
+  var p = this.$textLayer = new l(this.content);
+  this.canvas = p.element, this.$markerFront = new a(this.content), this.$cursorLayer = new c(this.content), 
+  this.$horizScroll = !1, this.$vScroll = !1, this.scrollBar = this.scrollBarV = new d(this.container, this), 
+  this.scrollBarH = new u(this.container, this), this.scrollBarV.addEventListener("scroll", function(e) {
+   n.$scrollAnimation || n.session.setScrollTop(e.data - n.scrollMargin.top);
+  }), this.scrollBarH.addEventListener("scroll", function(e) {
+   n.$scrollAnimation || n.session.setScrollLeft(e.data - n.scrollMargin.left);
+  }), this.scrollTop = 0, this.scrollLeft = 0, this.cursorPos = {
    row: 0,
    column: 0
   }, this.$textLayer.addEventListener("changeCharacterSize", function() {
-   n.updateCharacterSize(), n.onResize(!0);
+   n.updateCharacterSize(), n.onResize(!0), n._signal("changeCharacterSize");
   }), this.$size = {
    width: 0,
    height: 0,
@@ -9960,9 +10181,16 @@ function runDelayedFunction() {
    maxHeight: 1,
    offset: 0,
    height: 1
+  }, this.scrollMargin = {
+   left: 0,
+   right: 0,
+   top: 0,
+   bottom: 0,
+   v: 0,
+   h: 0
   }, this.$loop = new h(this.$renderChanges.bind(this), this.container.ownerDocument.defaultView), 
   this.$loop.schedule(this.CHANGE_FULL), this.updateCharacterSize(), this.setPadding(4), 
-  s.resetOptions(this), s._emit("renderer", this);
+  r.resetOptions(this), r._emit("renderer", this);
  };
  (function() {
   this.CHANGE_CURSOR = 1, this.CHANGE_MARKER = 2, this.CHANGE_GUTTER = 4, this.CHANGE_SCROLL = 8, 
@@ -9970,8 +10198,9 @@ function runDelayedFunction() {
   this.CHANGE_MARKER_FRONT = 256, this.CHANGE_FULL = 512, this.CHANGE_H_SCROLL = 1024, 
   n.implement(this, p), this.updateCharacterSize = function() {
    this.$textLayer.allowBoldFonts != this.$allowBoldFonts && (this.$allowBoldFonts = this.$textLayer.allowBoldFonts, 
-   this.setStyle("ace_nobold", !this.$allowBoldFonts)), this.characterWidth = this.$textLayer.getCharacterWidth(), 
-   this.lineHeight = this.$textLayer.getLineHeight(), this.$updatePrintMargin();
+   this.setStyle("ace_nobold", !this.$allowBoldFonts)), this.layerConfig.characterWidth = this.characterWidth = this.$textLayer.getCharacterWidth(), 
+   this.layerConfig.lineHeight = this.lineHeight = this.$textLayer.getLineHeight(), 
+   this.$updatePrintMargin();
   }, this.setSession = function(e) {
    this.session = e, this.scroller.className = "ace_scroller", this.$cursorLayer.setSession(e), 
    this.$markerBack.setSession(e), this.$markerFront.setSession(e), this.$gutterLayer.setSession(e), 
@@ -9990,26 +10219,36 @@ function runDelayedFunction() {
    e ? this.$renderChanges(this.CHANGE_FULL, !0) : this.$loop.schedule(this.CHANGE_FULL);
   }, this.updateFontSize = function() {
    this.$textLayer.checkForSizeChanges();
-  }, this.onResize = function(e, t, n, o) {
-   var r = 0, s = this.$size;
+  }, this.$changes = 0, this.onResize = function(e, t, n, i) {
    if (!(this.resizing > 2)) {
-    if (this.resizing > 1 ? this.resizing++ : this.resizing = e ? 1 : 0, o || (o = i.getInnerHeight(this.container)), 
-    o && (e || s.height != o) && (s.height = o, r = this.CHANGE_SIZE, s.scrollerHeight = this.scroller.clientHeight, 
-    (e || !s.scrollerHeight) && (s.scrollerHeight = s.height, this.$horizScroll && (s.scrollerHeight -= this.scrollBar.getWidth())), 
-    this.scrollBar.setHeight(s.scrollerHeight), this.session && (this.session.setScrollTop(this.getScrollTop()), 
-    r |= this.CHANGE_FULL)), n || (n = i.getInnerWidth(this.container)), n && (e || this.resizing > 1 || s.width != n)) {
-     r = this.CHANGE_SIZE, s.width = n;
-     var t = this.$showGutter ? this.$gutter.offsetWidth : 0;
-     this.scroller.style.left = t + "px", s.scrollerWidth = Math.max(0, n - t - this.scrollBar.getWidth()), 
-     this.scroller.style.right = this.scrollBar.getWidth() + "px", (this.session && this.session.getUseWrapMode() && this.adjustWrapLimit() || e) && (r |= this.CHANGE_FULL);
-    }
-    this.$size.scrollerHeight && (e ? this.$renderChanges(r, !0) : this.$loop.schedule(r), 
-    e && (this.$gutterLayer.$padding = null), e && delete this.resizing);
+    this.resizing > 0 ? this.resizing++ : this.resizing = e ? 1 : 0;
+    var o = this.container;
+    i || (i = o.clientHeight || o.scrollHeight), n || (n = o.clientWidth || o.scrollWidth);
+    var r = this.$updateCachedSize(e, t, n, i);
+    if (!this.$size.scrollerHeight || !n && !i) return this.resizing = 0;
+    e && (this.$gutterLayer.$padding = null), e ? this.$renderChanges(r, !0) : this.$loop.schedule(r | this.$changes), 
+    this.resizing && (this.resizing = 0);
    }
+  }, this.$updateCachedSize = function(e, t, n, i) {
+   var o = 0, r = this.$size, s = {
+    width: r.width,
+    height: r.height,
+    scrollerHeight: r.scrollerHeight,
+    scrollerWidth: r.scrollerWidth
+   };
+   return i && (e || r.height != i) && (r.height = i, o = this.CHANGE_SIZE, r.scrollerHeight = r.height, 
+   this.$horizScroll && (r.scrollerHeight -= this.scrollBarH.getHeight()), this.scrollBarV.element.style.bottom = this.scrollBarH.getHeight() + "px", 
+   this.session && (this.session.setScrollTop(this.getScrollTop()), o |= this.CHANGE_SCROLL)), 
+   n && (e || r.width != n) && (o = this.CHANGE_SIZE, r.width = n, null == t && (t = this.$showGutter ? this.$gutter.offsetWidth : 0), 
+   this.gutterWidth = t, this.scrollBarH.element.style.left = this.scroller.style.left = t + "px", 
+   r.scrollerWidth = Math.max(0, n - t - this.scrollBarV.getWidth()), this.scrollBarH.element.style.right = this.scroller.style.right = this.scrollBarV.getWidth() + "px", 
+   this.scroller.style.bottom = this.scrollBarH.getHeight() + "px", (this.session && this.session.getUseWrapMode() && this.adjustWrapLimit() || e) && (o |= this.CHANGE_FULL)), 
+   o && this._signal("resize", s), o;
   }, this.onGutterResize = function() {
-   var e = this.$size.width, t = this.$showGutter ? this.$gutter.offsetWidth : 0;
-   this.scroller.style.left = t + "px", this.$size.scrollerWidth = Math.max(0, e - t - this.scrollBar.getWidth()), 
-   this.session.getUseWrapMode() && this.adjustWrapLimit() ? this.$loop.schedule(this.CHANGE_FULL) : this.$loop.schedule(this.CHANGE_MARKER);
+   var e = this.$showGutter ? this.$gutter.offsetWidth : 0;
+   e != this.gutterWidth && (this.$changes |= this.$updateCachedSize(!0, e, this.$size.width, this.$size.height)), 
+   this.session.getUseWrapMode() && this.adjustWrapLimit() ? this.$loop.schedule(this.CHANGE_FULL) : (this.$computeLayerConfig(), 
+   this.$loop.schedule(this.CHANGE_MARKER));
   }, this.adjustWrapLimit = function() {
    var e = this.$size.scrollerWidth - 2 * this.$padding, t = Math.floor(e / this.characterWidth);
    return this.session.adjustWrapLimit(t, this.$showPrintMargin && this.$printMarginColumn);
@@ -10100,63 +10339,85 @@ function runDelayedFunction() {
    this.$padding = e, this.$textLayer.setPadding(e), this.$cursorLayer.setPadding(e), 
    this.$markerFront.setPadding(e), this.$markerBack.setPadding(e), this.$loop.schedule(this.CHANGE_FULL), 
    this.$updatePrintMargin();
+  }, this.setScrollMargin = function(e, t, n, i) {
+   var o = this.scrollMargin;
+   o.top = 0 | e, o.bottom = 0 | t, o.right = 0 | i, o.left = 0 | n, o.v = o.top + o.bottom, 
+   o.h = o.left + o.right, this.updateFull();
   }, this.getHScrollBarAlwaysVisible = function() {
    return this.$hScrollBarAlwaysVisible;
   }, this.setHScrollBarAlwaysVisible = function(e) {
    this.setOption("hScrollBarAlwaysVisible", e);
-  }, this.$updateScrollBar = function() {
-   this.scrollBar.setInnerHeight(this.layerConfig.maxHeight), this.scrollBar.setScrollTop(this.scrollTop);
+  }, this.getVScrollBarAlwaysVisible = function() {
+   return this.$hScrollBarAlwaysVisible;
+  }, this.setVScrollBarAlwaysVisible = function(e) {
+   this.setOption("vScrollBarAlwaysVisible", e);
+  }, this.$updateScrollBarV = function() {
+   this.scrollBarV.setInnerHeight(this.layerConfig.maxHeight + this.scrollMargin.v), 
+   this.scrollBarV.setScrollTop(this.scrollTop + this.scrollMargin.top);
+  }, this.$updateScrollBarH = function() {
+   this.scrollBarH.setInnerWidth(this.layerConfig.width + 2 * this.$padding + this.scrollMargin.h), 
+   this.scrollBarH.setScrollLeft(this.scrollLeft + this.scrollMargin.left);
   }, this.$renderChanges = function(e, t) {
-   if (t || e && this.session && this.container.offsetWidth) {
-    if (this._signal("beforeRender"), (e & this.CHANGE_FULL || e & this.CHANGE_SIZE || e & this.CHANGE_TEXT || e & this.CHANGE_LINES || e & this.CHANGE_SCROLL) && this.$computeLayerConfig(), 
-    e & this.CHANGE_H_SCROLL) {
-     this.scroller.scrollLeft = this.scrollLeft;
-     var n = this.scroller.scrollLeft;
-     this.scrollLeft = n, this.session.setScrollLeft(n), this.scroller.className = 0 == this.scrollLeft ? "ace_scroller" : "ace_scroller ace_scroll-left";
-    }
-    if (e & this.CHANGE_FULL) return this.$textLayer.checkForSizeChanges(), this.$updateScrollBar(), 
-    this.$textLayer.update(this.layerConfig), this.$showGutter && this.$gutterLayer.update(this.layerConfig), 
-    this.$markerBack.update(this.layerConfig), this.$markerFront.update(this.layerConfig), 
-    this.$cursorLayer.update(this.layerConfig), this.$moveTextAreaToCursor(), this.$highlightGutterLine && this.$updateGutterLineHighlight(), 
-    this._signal("afterRender"), void 0;
-    if (e & this.CHANGE_SCROLL) return e & this.CHANGE_TEXT || e & this.CHANGE_LINES ? this.$textLayer.update(this.layerConfig) : this.$textLayer.scrollLines(this.layerConfig), 
-    this.$showGutter && this.$gutterLayer.update(this.layerConfig), this.$markerBack.update(this.layerConfig), 
-    this.$markerFront.update(this.layerConfig), this.$cursorLayer.update(this.layerConfig), 
-    this.$highlightGutterLine && this.$updateGutterLineHighlight(), this.$moveTextAreaToCursor(), 
-    this.$updateScrollBar(), this._signal("afterRender"), void 0;
-    e & this.CHANGE_TEXT ? (this.$textLayer.update(this.layerConfig), this.$showGutter && this.$gutterLayer.update(this.layerConfig)) : e & this.CHANGE_LINES ? (this.$updateLines() || e & this.CHANGE_GUTTER && this.$showGutter) && this.$gutterLayer.update(this.layerConfig) : (e & this.CHANGE_TEXT || e & this.CHANGE_GUTTER) && this.$showGutter && this.$gutterLayer.update(this.layerConfig), 
-    e & this.CHANGE_CURSOR && (this.$cursorLayer.update(this.layerConfig), this.$moveTextAreaToCursor(), 
-    this.$highlightGutterLine && this.$updateGutterLineHighlight()), e & (this.CHANGE_MARKER | this.CHANGE_MARKER_FRONT) && this.$markerFront.update(this.layerConfig), 
-    e & (this.CHANGE_MARKER | this.CHANGE_MARKER_BACK) && this.$markerBack.update(this.layerConfig), 
-    e & this.CHANGE_SIZE && this.$updateScrollBar(), this._signal("afterRender");
+   return this.$changes && (e |= this.$changes, this.$changes = 0), this.session && this.container.offsetWidth && (e || t) ? this.$size.width ? (this._signal("beforeRender"), 
+   (e & this.CHANGE_FULL || e & this.CHANGE_SIZE || e & this.CHANGE_TEXT || e & this.CHANGE_LINES || e & this.CHANGE_SCROLL || e & this.CHANGE_H_SCROLL) && (e |= this.$computeLayerConfig()), 
+   e & this.CHANGE_H_SCROLL && (this.$updateScrollBarH(), this.content.style.marginLeft = -this.scrollLeft + "px", 
+   this.scroller.className = this.scrollLeft <= 0 ? "ace_scroller" : "ace_scroller ace_scroll-left"), 
+   e & this.CHANGE_FULL ? (this.$textLayer.checkForSizeChanges(), this.$updateScrollBarV(), 
+   this.$updateScrollBarH(), this.$textLayer.update(this.layerConfig), this.$showGutter && this.$gutterLayer.update(this.layerConfig), 
+   this.$markerBack.update(this.layerConfig), this.$markerFront.update(this.layerConfig), 
+   this.$cursorLayer.update(this.layerConfig), this.$moveTextAreaToCursor(), this.$highlightGutterLine && this.$updateGutterLineHighlight(), 
+   this._signal("afterRender"), void 0) : e & this.CHANGE_SCROLL ? (this.$updateScrollBarV(), 
+   e & this.CHANGE_TEXT || e & this.CHANGE_LINES ? this.$textLayer.update(this.layerConfig) : this.$textLayer.scrollLines(this.layerConfig), 
+   this.$showGutter && this.$gutterLayer.update(this.layerConfig), this.$markerBack.update(this.layerConfig), 
+   this.$markerFront.update(this.layerConfig), this.$cursorLayer.update(this.layerConfig), 
+   this.$highlightGutterLine && this.$updateGutterLineHighlight(), this.$moveTextAreaToCursor(), 
+   this._signal("afterRender"), void 0) : (e & this.CHANGE_TEXT ? (this.$textLayer.update(this.layerConfig), 
+   this.$showGutter && this.$gutterLayer.update(this.layerConfig)) : e & this.CHANGE_LINES ? (this.$updateLines() || e & this.CHANGE_GUTTER && this.$showGutter) && this.$gutterLayer.update(this.layerConfig) : (e & this.CHANGE_TEXT || e & this.CHANGE_GUTTER) && this.$showGutter && this.$gutterLayer.update(this.layerConfig), 
+   e & this.CHANGE_CURSOR && (this.$cursorLayer.update(this.layerConfig), this.$moveTextAreaToCursor(), 
+   this.$highlightGutterLine && this.$updateGutterLineHighlight()), e & (this.CHANGE_MARKER | this.CHANGE_MARKER_FRONT) && this.$markerFront.update(this.layerConfig), 
+   e & (this.CHANGE_MARKER | this.CHANGE_MARKER_BACK) && this.$markerBack.update(this.layerConfig), 
+   (e & this.CHANGE_SIZE || e & this.CHANGE_LINES) && (this.$updateScrollBarV(), this.$updateScrollBarH()), 
+   this._signal("afterRender"), void 0)) : (this.$changes |= e, this.onResize(!0)) : (this.$changes |= e, 
+   void 0);
+  }, this.$autosize = function(e) {
+   var e = this.session.getScreenLength() * this.lineHeight, t = this.$maxLines * this.lineHeight, n = Math.max((this.$minLines || 1) * this.lineHeight, Math.min(t, e)), i = e > t;
+   if (n != this.desiredHeight || this.$size.height != this.desiredHeight || i != this.$vScroll) {
+    i != this.$vScroll && (this.$vScroll = i, this.scrollBarV.setVisible(i));
+    var o = this.container.clientWidth;
+    this.container.style.height = n + "px", this.$updateCachedSize(!0, this.$gutterWidth, o, n), 
+    this.desiredHeight = n;
    }
   }, this.$computeLayerConfig = function() {
-   if (!this.$size.scrollerHeight) return this.onResize(!0);
-   var e = this.session, t = this.scrollTop % this.lineHeight, n = this.$size.scrollerHeight + this.lineHeight, i = this.$getLongestLine(), o = this.$hScrollBarAlwaysVisible || this.$size.scrollerWidth - i < 0, r = this.$horizScroll !== o;
-   this.$horizScroll = o, r && (this.scroller.style.overflowX = o ? "scroll" : "hidden", 
-   o || this.session.setScrollLeft(0));
-   var s = this.session.getScreenLength() * this.lineHeight;
-   this.session.setScrollTop(Math.max(0, Math.min(this.scrollTop, s - this.$size.scrollerHeight)));
-   var a, l, c = Math.ceil(n / this.lineHeight) - 1, u = Math.max(0, Math.round((this.scrollTop - t) / this.lineHeight)), d = u + c, h = this.lineHeight;
-   u = e.screenToDocumentRow(u, 0);
-   var p = e.getFoldLine(u);
-   p && (u = p.start.row), a = e.documentToScreenRow(u, 0), l = e.getRowLength(u) * h, 
-   d = Math.min(e.screenToDocumentRow(d, 0), e.getLength() - 1), n = this.$size.scrollerHeight + e.getRowLength(d) * h + l, 
-   t = this.scrollTop - a * h, this.layerConfig = {
-    width: i,
+   this.$maxLines && this.lineHeight > 1 && this.$autosize();
+   var e = this.session, t = this.$size.height <= 2 * this.lineHeight, n = this.session.getScreenLength(), i = n * this.lineHeight, o = this.scrollTop % this.lineHeight, r = this.$size.scrollerHeight + this.lineHeight, s = this.$getLongestLine(), a = !t && (this.$hScrollBarAlwaysVisible || this.$size.scrollerWidth - s - 2 * this.$padding < 0), l = this.$horizScroll !== a;
+   l && (this.$horizScroll = a, this.scrollBarH.setVisible(a)), !this.$maxLines && this.$scrollPastEnd && this.scrollTop > i - this.$size.scrollerHeight && (i += Math.min((this.$size.scrollerHeight - this.lineHeight) * this.$scrollPastEnd, this.scrollTop - i + this.$size.scrollerHeight));
+   var c = !t && (this.$vScrollBarAlwaysVisible || this.$size.scrollerHeight - i < 0), u = this.$vScroll !== c;
+   u && (this.$vScroll = c, this.scrollBarV.setVisible(c)), this.session.setScrollTop(Math.max(-this.scrollMargin.top, Math.min(this.scrollTop, i - this.$size.scrollerHeight + this.scrollMargin.v))), 
+   this.session.setScrollLeft(Math.max(-this.scrollMargin.left, Math.min(this.scrollLeft, s + 2 * this.$padding - this.$size.scrollerWidth + this.scrollMargin.h)));
+   var d, h, p = Math.ceil(r / this.lineHeight) - 1, f = Math.max(0, Math.round((this.scrollTop - o) / this.lineHeight)), g = f + p, m = this.lineHeight;
+   f = e.screenToDocumentRow(f, 0);
+   var v = e.getFoldLine(f);
+   v && (f = v.start.row), d = e.documentToScreenRow(f, 0), h = e.getRowLength(f) * m, 
+   g = Math.min(e.screenToDocumentRow(g, 0), e.getLength() - 1), r = this.$size.scrollerHeight + e.getRowLength(g) * m + h, 
+   o = this.scrollTop - d * m;
+   var b = 0;
+   return (l || u) && (b = this.$updateCachedSize(!0, this.gutterWidth, this.$size.width, this.$size.height), 
+   this._signal("scrollbarVisibilityChanged"), u && (s = this.$getLongestLine())), 
+   this.layerConfig = {
+    width: s,
     padding: this.$padding,
-    firstRow: u,
-    firstRowScreen: a,
-    lastRow: d,
-    lineHeight: h,
+    firstRow: f,
+    firstRowScreen: d,
+    lastRow: g,
+    lineHeight: m,
     characterWidth: this.characterWidth,
-    minHeight: n,
-    maxHeight: s,
-    offset: t,
+    minHeight: r,
+    maxHeight: i,
+    offset: o,
     height: this.$size.scrollerHeight
-   }, this.$gutterLayer.element.style.marginTop = -t + "px", this.content.style.marginTop = -t + "px", 
-   this.content.style.width = i + 2 * this.$padding + "px", this.content.style.height = n + "px", 
-   r && this.onResize(!0);
+   }, this.$gutterLayer.element.style.marginTop = -o + "px", this.content.style.marginTop = -o + "px", 
+   this.content.style.width = s + 2 * this.$padding + "px", this.content.style.height = r + "px", 
+   b;
   }, this.$updateLines = function() {
    var e = this.$changedLines.firstRow, t = this.$changedLines.lastRow;
    this.$changedLines = null;
@@ -10165,7 +10426,7 @@ function runDelayedFunction() {
    this.$textLayer.update(n), void 0) : (this.$textLayer.updateLines(n, e, t), !0);
   }, this.$getLongestLine = function() {
    var e = this.session.getScreenWidth();
-   return this.$textLayer.showInvisibles && (e += 1), Math.max(this.$size.scrollerWidth - 2 * this.$padding, Math.round(e * this.characterWidth));
+   return this.showInvisibles && !this.session.$useWrapMode && (e += 1), Math.max(this.$size.scrollerWidth - 2 * this.$padding, Math.round(e * this.characterWidth));
   }, this.updateFrontMarkers = function() {
    this.$markerFront.setMarkers(this.session.getMarkers(!0)), this.$loop.schedule(this.CHANGE_MARKER_FRONT);
   }, this.updateBackMarkers = function() {
@@ -10188,11 +10449,13 @@ function runDelayedFunction() {
    this.scrollCursorIntoView(e, n), this.scrollCursorIntoView(t, n);
   }, this.scrollCursorIntoView = function(e, t) {
    if (0 !== this.$size.scrollerHeight) {
-    var n = this.$cursorLayer.getPixelPosition(e), i = n.left, o = n.top;
-    this.scrollTop > o ? (t && (o -= t * this.$size.scrollerHeight), this.session.setScrollTop(o)) : this.scrollTop + this.$size.scrollerHeight < o + this.lineHeight && (t && (o += t * this.$size.scrollerHeight), 
+    var n = this.$cursorLayer.getPixelPosition(e), i = n.left, o = n.top, r = this.$scrollAnimation ? this.session.getScrollTop() : this.scrollTop;
+    r > o ? (t && (o -= t * this.$size.scrollerHeight), 0 == o ? o = -this.scrollMargin.top : 0 == o && (o = +this.scrollMargin.bottom), 
+    this.session.setScrollTop(o)) : r + this.$size.scrollerHeight < o + this.lineHeight && (t && (o += t * this.$size.scrollerHeight), 
     this.session.setScrollTop(o + this.lineHeight - this.$size.scrollerHeight));
-    var r = this.scrollLeft;
-    r > i ? (i < this.$padding + 2 * this.layerConfig.characterWidth && (i = 0), this.session.setScrollLeft(i)) : r + this.$size.scrollerWidth < i + this.characterWidth && this.session.setScrollLeft(Math.round(i + this.characterWidth - this.$size.scrollerWidth));
+    var s = this.scrollLeft;
+    s > i ? (i < this.$padding + 2 * this.layerConfig.characterWidth && (i = -this.scrollMargin.left), 
+    this.session.setScrollLeft(i)) : s + this.$size.scrollerWidth < i + this.characterWidth ? this.session.setScrollLeft(Math.round(i + this.characterWidth - this.$size.scrollerWidth)) : s <= this.$padding && i - s < this.characterWidth && this.session.setScrollLeft(0);
    }
   }, this.getScrollTop = function() {
    return this.session.getScrollTop();
@@ -10228,24 +10491,34 @@ function runDelayedFunction() {
   }, this.animateScrolling = function(e, t) {
    var n = this.scrollTop;
    if (this.$animatedScroll) {
-    var i = this, o = i.$calcSteps(e, n);
-    this.$scrollAnimation = {
-     from: e,
-     to: n
-    }, clearInterval(this.$timer), i.session.setScrollTop(o.shift()), this.$timer = setInterval(function() {
-     o.length ? (i.session.setScrollTop(o.shift()), i.session.$scrollTop = n) : null != n ? (i.session.$scrollTop = -1, 
-     i.session.setScrollTop(n), n = null) : (i.$timer = clearInterval(i.$timer), i.$scrollAnimation = null, 
-     t && t());
-    }, 10);
+    var i = this;
+    if (e != n) {
+     if (this.$scrollAnimation) {
+      var o = this.$scrollAnimation.steps;
+      if (o.length && (e = o[0], e == n)) return;
+     }
+     var r = i.$calcSteps(e, n);
+     this.$scrollAnimation = {
+      from: e,
+      to: n,
+      steps: r
+     }, clearInterval(this.$timer), i.session.setScrollTop(r.shift()), this.$timer = setInterval(function() {
+      r.length ? (i.session.setScrollTop(r.shift()), i.session.$scrollTop = n) : null != n ? (i.session.$scrollTop = -1, 
+      i.session.setScrollTop(n), n = null) : (i.$timer = clearInterval(i.$timer), i.$scrollAnimation = null, 
+      t && t());
+     }, 10);
+    }
    }
   }, this.scrollToY = function(e) {
    this.scrollTop !== e && (this.$loop.schedule(this.CHANGE_SCROLL), this.scrollTop = e);
   }, this.scrollToX = function(e) {
-   0 > e && (e = 0), this.scrollLeft !== e && (this.scrollLeft = e), this.$loop.schedule(this.CHANGE_H_SCROLL);
+   this.scrollLeft !== e && (this.scrollLeft = e), this.$loop.schedule(this.CHANGE_H_SCROLL);
+  }, this.scrollTo = function(e, t) {
+   this.session.setScrollTop(t), this.session.setScrollLeft(t);
   }, this.scrollBy = function(e, t) {
    t && this.session.setScrollTop(this.session.getScrollTop() + t), e && this.session.setScrollLeft(this.session.getScrollLeft() + e);
   }, this.isScrollableBy = function(e, t) {
-   return 0 > t && this.session.getScrollTop() >= 1 ? !0 : t > 0 && this.session.getScrollTop() + this.$size.scrollerHeight - this.layerConfig.maxHeight < -1 ? !0 : void 0;
+   return 0 > t && this.session.getScrollTop() >= 1 - this.scrollMargin.top ? !0 : t > 0 && this.session.getScrollTop() + this.$size.scrollerHeight - this.layerConfig.maxHeight - (this.$size.scrollerHeight - this.lineHeight) * this.$scrollPastEnd < -1 + this.scrollMargin.bottom ? !0 : e ? !0 : void 0;
   }, this.pixelToScreenCoordinates = function(e, t) {
    var n = this.scroller.getBoundingClientRect(), i = (e + this.scrollLeft - n.left - this.$padding) / this.characterWidth, o = Math.floor((t + this.scrollTop - n.top) / this.lineHeight), r = Math.round(i);
    return {
@@ -10277,24 +10550,25 @@ function runDelayedFunction() {
   }, this.hideComposition = function() {
    this.$composition && (i.removeCssClass(this.textarea, "ace_composition"), this.$keepTextAreaAtCursor = this.$composition.keepTextAreaAtCursor, 
    this.textarea.style.cssText = this.$composition.cssText, this.$composition = null);
-  }, this.setTheme = function(e) {
-   function t(t) {
-    if (n.$themeValue == e && t.cssClass) {
-     i.importCssString(t.cssText, t.cssClass, n.container.ownerDocument), n.theme && i.removeCssClass(n.container, n.theme.cssClass), 
-     n.$theme = t.cssClass, n.theme = t, i.addCssClass(n.container, t.cssClass), i.setCssClass(n.container, "ace_dark", t.isDark);
-     var o = t.padding || 4;
-     n.$padding && o != n.$padding && n.setPadding(o), n.$size && (n.$size.width = 0, 
-     n.onResize()), n._dispatchEvent("themeLoaded", {
-      theme: t
-     });
+  }, this.setTheme = function(e, t) {
+   function n(n) {
+    if (o.$themeValue != e) return t && t();
+    if (n.cssClass) {
+     i.importCssString(n.cssText, n.cssClass, o.container.ownerDocument), o.theme && i.removeCssClass(o.container, o.theme.cssClass), 
+     o.$theme = n.cssClass, o.theme = n, i.addCssClass(o.container, n.cssClass), i.setCssClass(o.container, "ace_dark", n.isDark);
+     var r = n.padding || 4;
+     o.$padding && r != o.$padding && o.setPadding(r), o.$size && (o.$size.width = 0, 
+     o.onResize()), o._dispatchEvent("themeLoaded", {
+      theme: n
+     }), t && t();
     }
    }
-   var n = this;
-   if (this.$themeValue = e, n._dispatchEvent("themeChange", {
+   var o = this;
+   if (this.$themeValue = e, o._dispatchEvent("themeChange", {
     theme: e
-   }), e && "string" != typeof e) t(e); else {
-    var o = e || "ace/theme/textmate";
-    s.loadModule([ "theme", o ], t);
+   }), e && "string" != typeof e) n(e); else {
+    var s = e || "ace/theme/textmate";
+    r.loadModule([ "theme", s ], n);
    }
   }, this.getTheme = function() {
    return this.$themeValue;
@@ -10302,10 +10576,12 @@ function runDelayedFunction() {
    i.setCssClass(this.container, e, 0 != t);
   }, this.unsetStyle = function(e) {
    i.removeCssClass(this.container, e);
+  }, this.setMouseCursor = function(e) {
+   this.content.style.cursor = e;
   }, this.destroy = function() {
    this.$textLayer.destroy(), this.$cursorLayer.destroy();
   };
- }).call(g.prototype), s.defineOptions(g.prototype, "renderer", {
+ }).call(g.prototype), r.defineOptions(g.prototype, "renderer", {
   animatedScroll: {
    initialValue: !1
   },
@@ -10371,8 +10647,14 @@ function runDelayedFunction() {
    value: !0
   },
   hScrollBarAlwaysVisible: {
-   set: function(e) {
-    this.$hScrollBarAlwaysVisible = e, this.$hScrollBarAlwaysVisible && this.$horizScroll || this.$loop.schedule(this.CHANGE_SCROLL);
+   set: function() {
+    this.$hScrollBarAlwaysVisible && this.$horizScroll || this.$loop.schedule(this.CHANGE_SCROLL);
+   },
+   initialValue: !1
+  },
+  vScrollBarAlwaysVisible: {
+   set: function() {
+    this.$vScrollBarAlwaysVisible && this.$vScroll || this.$loop.schedule(this.CHANGE_SCROLL);
    },
    initialValue: !1
   },
@@ -10385,6 +10667,28 @@ function runDelayedFunction() {
   fontFamily: {
    set: function(e) {
     this.container.style.fontFamily = e, this.updateFontSize();
+   }
+  },
+  maxLines: {
+   set: function() {
+    this.updateFull();
+   }
+  },
+  minLines: {
+   set: function() {
+    this.updateFull();
+   }
+  },
+  scrollPastEnd: {
+   set: function(e) {
+    e = +e || 0, this.$scrollPastEnd != e && (this.$scrollPastEnd = e, this.$loop.schedule(this.CHANGE_SCROLL));
+   },
+   initialValue: 0,
+   handlesSet: !0
+  },
+  fixedWidthGutter: {
+   set: function(e) {
+    this.$gutterLayer.$fixedWidth = !!e, this.$loop.schedule(this.CHANGE_GUTTER);
    }
   }
  }), t.VirtualRenderer = g;
@@ -10551,7 +10855,7 @@ function runDelayedFunction() {
  } ];
  var n = e("../keyboard/hash_handler").HashHandler;
  t.keyboardHandler = new n(t.multiSelectCommands);
-}), define("ace/multi_select", [ "require", "exports", "module", "./range_list", "./range", "./selection", "./mouse/multi_select_handler", "./lib/event", "./lib/lang", "./commands/multi_select_commands", "./search", "./edit_session", "./editor" ], function(e, t) {
+}), define("ace/multi_select", [ "require", "exports", "module", "./range_list", "./range", "./selection", "./mouse/multi_select_handler", "./lib/event", "./lib/lang", "./commands/multi_select_commands", "./search", "./edit_session", "./editor", "./config" ], function(e, t) {
  function n(e, t, n) {
   return f.$options.wrap = !0, f.$options.needle = t, f.$options.backwards = -1 == n, 
   f.find(e);
@@ -10560,18 +10864,19 @@ function runDelayedFunction() {
   return e.row == t.row && e.column == t.column;
  }
  function o(e) {
-  e.$onAddRange = e.$onAddRange.bind(e), e.$onRemoveRange = e.$onRemoveRange.bind(e), 
+  e.$multiselectOnSessionChange || (e.$onAddRange = e.$onAddRange.bind(e), e.$onRemoveRange = e.$onRemoveRange.bind(e), 
   e.$onMultiSelect = e.$onMultiSelect.bind(e), e.$onSingleSelect = e.$onSingleSelect.bind(e), 
-  t.onSessionChange.call(e, e), e.on("changeSession", t.onSessionChange.bind(e)), 
-  e.on("mousedown", c), e.commands.addCommands(h.defaultCommands), r(e);
+  e.$multiselectOnSessionChange = t.onSessionChange.bind(e), e.$multiselectOnSessionChange(e), 
+  e.on("changeSession", e.$multiselectOnSessionChange), e.on("mousedown", c), e.commands.addCommands(h.defaultCommands), 
+  r(e));
  }
  function r(e) {
   function t() {
-   i && (o.style.cursor = "", i = !1);
+   i && (e.renderer.setMouseCursor(""), i = !1);
   }
-  var n = e.textInput.getElement(), i = !1, o = e.renderer.content;
-  u.addListener(n, "keydown", function(e) {
-   18 != e.keyCode || e.ctrlKey || e.shiftKey || e.metaKey ? i && (o.style.cursor = "") : i || (o.style.cursor = "crosshair", 
+  var n = e.textInput.getElement(), i = !1;
+  u.addListener(n, "keydown", function(n) {
+   18 != n.keyCode || n.ctrlKey || n.shiftKey || n.metaKey ? i && t() : i || (e.renderer.setMouseCursor("crosshair"), 
    i = !0);
   }), u.addListener(n, "keyup", t), u.addListener(n, "blur", t);
  }
@@ -10628,7 +10933,7 @@ function runDelayedFunction() {
   }, this.$initRangeList = function() {
    this.rangeList || (this.rangeList = new s(), this.ranges = [], this.rangeCount = 0);
   }, this.getAllRanges = function() {
-   return this.rangeList.ranges.concat();
+   return this.rangeCount ? this.rangeList.ranges.concat() : [ this.getRange() ];
   }, this.splitIntoLines = function() {
    if (this.rangeCount > 1) {
     var e = this.rangeList.ranges, t = e[e.length - 1], n = a.fromPoints(e[0].start, t.end);
@@ -10741,14 +11046,14 @@ function runDelayedFunction() {
    }
   }, this.exitMultiSelectMode = function() {
    this.inMultiSelectMode && !this.inVirtualSelectionMode && this.multiSelect.toSingleRange();
-  }, this.getCopyText = function() {
+  }, this.getSelectedText = function() {
    var e = "";
    if (this.inMultiSelectMode && !this.inVirtualSelectionMode) {
     for (var t = this.multiSelect.rangeList.ranges, n = [], i = 0; i < t.length; i++) n.push(this.session.getTextRange(t[i]));
     var o = this.session.getDocument().getNewLineCharacter();
     e = n.join(o), e.length == (n.length - 1) * o.length && (e = "");
    } else this.selection.isEmpty() || (e = this.session.getTextRange(this.getSelectionRange()));
-   return this._signal("copy", e), e;
+   return e;
   }, this.onPaste = function(e) {
    if (!this.$readOnly) {
     if (this._signal("paste", e), !this.inMultiSelectMode || this.inVirtualSelectionMode) return this.insert(e);
@@ -10863,7 +11168,15 @@ function runDelayedFunction() {
   t.multiSelect.on("addRange", this.$onAddRange), t.multiSelect.on("removeRange", this.$onRemoveRange), 
   t.multiSelect.on("multiSelect", this.$onMultiSelect), t.multiSelect.on("singleSelect", this.$onSingleSelect), 
   this.inMultiSelectMode != t.selection.inMultiSelectMode && (t.selection.inMultiSelectMode ? this.$onMultiSelect() : this.$onSingleSelect());
- }, t.MultiSelect = o;
+ }, t.MultiSelect = o, e("./config").defineOptions(m.prototype, "editor", {
+  enableMultiselect: {
+   set: function(e) {
+    o(this), e ? (this.on("changeSession", this.$multiselectOnSessionChange), this.on("mousedown", c)) : (this.off("changeSession", this.$multiselectOnSessionChange), 
+    this.off("mousedown", c));
+   },
+   value: !0
+  }
+ });
 }), define("ace/worker/worker_client", [ "require", "exports", "module", "../lib/oop", "../lib/event_emitter", "../config" ], function(e, t) {
  var n = e("../lib/oop"), i = e("../lib/event_emitter").EventEmitter, o = e("../config"), r = function(t, n, i) {
   this.$sendDeltaQueue = this.$sendDeltaQueue.bind(this), this.changeListener = this.changeListener.bind(this), 
@@ -10909,8 +11222,8 @@ function runDelayedFunction() {
   }, this.$normalizePath = function(e) {
    return location.host ? (e = e.replace(/^[a-z]+:\/\/[^\/]+/, ""), e = location.protocol + "//" + location.host + ("/" == e.charAt(0) ? "" : location.pathname.replace(/\/[^\/]*$/, "")) + "/" + e.replace(/^[\/]+/, "")) : e;
   }, this.terminate = function() {
-   this._emit("terminate", {}), this.$worker.terminate(), this.$worker = null, this.$doc.removeEventListener("change", this.changeListener), 
-   this.$doc = null;
+   this._emit("terminate", {}), this.deltaQueue = null, this.$worker.terminate(), this.$worker = null, 
+   this.$doc.removeEventListener("change", this.changeListener), this.$doc = null;
   }, this.send = function(e, t) {
    this.$worker.postMessage({
     command: e,
@@ -11557,13 +11870,69 @@ var THEME_LIST = {
  night: "Night"
 };
 
-define("config", function() {}), define("settings", [ "underscore", "config" ], function(e) {
+define("config", function() {}), define("storage", [ "underscore", "utils" ], function(e, t) {
+ var n = t.retrieveIndexArray("file.list"), i = localStorage.version;
+ if (void 0 === i && (localStorage.removeItem("sync.queue"), localStorage.removeItem("sync.current"), 
+ localStorage.removeItem("file.counter"), e.each(n, function(n) {
+  localStorage[n + ".publish"] = ";";
+  var i = t.retrieveIndexArray(n + ".sync");
+  e.each(i, function(e) {
+   localStorage[e + ".contentCRC"] = "0", void 0 !== localStorage[e + ".etag"] && (localStorage[e + ".titleCRC"] = "0");
+  });
+ }), i = "v1"), "v1" == i) {
+  var o = localStorage["sync.gdrive.lastChangeId"];
+  o && (localStorage["gdrive.lastChangeId"] = o, localStorage.removeItem("sync.gdrive.lastChangeId"));
+  var r = localStorage["sync.dropbox.lastChangeId"];
+  r && (localStorage["dropbox.lastChangeId"] = r, localStorage.removeItem("sync.dropbox.lastChangeId"));
+  var s = "gdrive", a = "dropbox", l = "sync." + s + ".", c = "sync." + a + ".";
+  e.each(n, function(n) {
+   var i = t.retrieveIndexArray(n + ".sync");
+   e.each(i, function(e) {
+    var t = {};
+    0 === e.indexOf(l) ? (t.provider = s, t.id = e.substring(l.length), t.etag = localStorage[e + ".etag"], 
+    t.contentCRC = localStorage[e + ".contentCRC"], t.titleCRC = localStorage[e + ".titleCRC"]) : 0 === e.indexOf(c) && (t.provider = a, 
+    t.path = decodeURIComponent(e.substring(c.length)), t.version = localStorage[e + ".version"], 
+    t.contentCRC = localStorage[e + ".contentCRC"]), localStorage[e] = JSON.stringify(t), 
+    localStorage.removeItem(e + ".etag"), localStorage.removeItem(e + ".version"), localStorage.removeItem(e + ".contentCRC"), 
+    localStorage.removeItem(e + ".titleCRC");
+   });
+  }), i = "v2";
+ }
+ if ("v2" == i && (e.each(n, function(n) {
+  e.has(localStorage, n + ".sync") || (localStorage.removeItem(n + ".title"), localStorage.removeItem(n + ".publish"), 
+  localStorage.removeItem(n + ".content"), t.removeIndexFromArray("file.list", n));
+ }), i = "v3"), "v3" == i) {
+  var u = localStorage["file.current"];
+  void 0 !== u && -1 === localStorage["file.list"].indexOf(";" + u + ";") && localStorage.removeItem("file.current"), 
+  i = "v4";
+ }
+ if ("v4" == i && (localStorage.removeItem("githubToken"), i = "v5"), "v5" == i && (e.each(n, function(n) {
+  var i = t.retrieveIndexArray(n + ".publish");
+  e.each(i, function(e) {
+   var t = JSON.parse(localStorage[e]);
+   "gdrive" == t.provider && (t.id = t.fileId, t.fileId = void 0, localStorage[e] = JSON.stringify(t));
+  });
+ }), i = "v6"), "v6" == i) {
+  var u = localStorage["file.current"];
+  void 0 !== u && (localStorage[u + ".selectTime"] = new Date().getTime(), localStorage.removeItem("file.current")), 
+  i = "v7";
+ }
+ "v7" == i && (e.each(e.keys(localStorage), function(t) {
+  var n = t.match(/(file\.\S+\.)\S+/);
+  n && (e.has(localStorage, n[1] + "title") || localStorage.removeItem(t));
+ }), i = "v8"), "v8" == i && (e.each(e.keys(localStorage), function(e) {
+  var t = e.match(/file\.\S+\.(editorEnd|editorStart)/);
+  t && localStorage.removeItem(e);
+ }), i = "v9"), "v9" == i && (e.has(localStorage, "settings") && (settings = JSON.parse(localStorage.settings), 
+ delete settings.editorFontFamily, delete settings.editorFontSize, settings.template && (settings.template = settings.template.replace("http://benweet.github.io/stackedit/css/main-min.css", "http://benweet.github.io/stackedit/res-min/themes/default.css")), 
+ localStorage.settings = JSON.stringify(settings)), i = "v10"), localStorage.version = i;
+}), define("settings", [ "underscore", "config", "storage" ], function(e) {
  var t = {
   layoutOrientation: "horizontal",
   lazyRendering: !0,
   editorFontFamily: 'Menlo, Consolas, "Courier New", Courier, monospace',
   editorFontSize: 12,
-  editorMaxWidth: 960,
+  maxWidth: 960,
   defaultContent: "\n\n\n> Written with [StackEdit](" + MAIN_URL + ").",
   commitMsg: "Published with " + MAIN_URL,
   template: [ "<!DOCTYPE html>\n", "<html>\n", "<head>\n", '<meta charset="utf-8">\n', "<title><%= documentTitle %></title>\n", '<link rel="stylesheet" href="', MAIN_URL, 'css/main-min.css" />\n', '<script type="text/javascript" src="', MAIN_URL, 'lib/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n', "</head>\n", '<body><div class="container"><%= documentHTML %></div></body>\n', "</html>" ].join(""),
@@ -11710,13 +12079,14 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
    return n >= t.length || e.text != t[n].text ? (i = n, !0) : void 0;
   });
   var o = -c.length;
-  e.some(c.slice().reverse(), function(e, n) {
+  if (e.some(c.slice().reverse(), function(e, n) {
    return n >= t.length || e.text != t[t.length - n - 1].text ? (o = -n, !0) : void 0;
-  });
-  var r = c.slice(0, i);
-  h = t.slice(i, t.length + o);
-  var s = c.slice(c.length + o, c.length);
-  p = e.first(s), d = c.slice(i, c.length + o), c = r.concat(h).concat(s);
+  }), 0 === i || 0 !== i + o) {
+   var r = c.slice(0, i);
+   h = t.slice(i, t.length + o);
+   var s = c.slice(c.length + o, c.length);
+   p = e.first(s), d = c.slice(i, c.length + o), c = r.concat(h).concat(s);
+  }
  }
  function r() {
   e.each(d, function(e) {
@@ -11757,15 +12127,15 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  s.settingsBlock = i;
  var a = void 0, l = 0, c = [], u = void 0, d = [], h = [], p = void 0, f = !1, g = !1, m = !1;
  s.onSectionsCreated = function(t) {
-  var n = [], i = "";
+  var n = [], i = "\n";
   m = !1, e.each(t, function(e) {
    e += "\n\n", g && (e = e.replace(/^```.*\n[\s\S]*?\n```|\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|$)/g, function(e, t) {
-    return t ? (m = !0, i += e, "") : e;
+    return t ? (m = !0, i += e.replace(/^\s*\n/gm, "") + "\n", "") : e;
    })), e = e.replace(/^```.*\n[\s\S]*?\n```|^[ ]{0,3}\[(.+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?(?=\s|$)[ \t]*\n?[ \t]*((\n*)["(](.+?)[")][ \t]*)?(?:\n+)/gm, function(e, t) {
-    return t ? (i += e, "") : e;
+    return t ? (i += e.replace(/^\s*\n/gm, "") + "\n", "") : e;
    }), /\S/.test(e) && n.push({
     id: ++l,
-    text: e
+    text: e + "\n"
    });
   }), o(n, i);
  };
@@ -11778,7 +12148,11 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
    return t.push(u + "\n\n"), t.join("");
   }), t.hooks.chain("onPreviewRefresh", function() {
    r();
-  });
+  }), a.setExtraExtension = function(t) {
+   g = e.some(t, function(e) {
+    return "footnotes" == e;
+   });
+  };
  }, s.onReady = function() {
   v = t("div", {
    id: "wmd-preview-section-footnotes",
@@ -11786,192 +12160,11 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   }), b = document.getElementById("preview-contents"), b.appendChild(v);
  }, s.onFileSelected = function() {
   f = !0;
- }, s.onFileOpen = function() {
-  a.extraExtensions && (g = e.some(a.extraExtensions, function(e) {
-   return "footnotes" == e;
-  }));
  }, s;
-}), define("classes/FileDescriptor", [ "underscore", "utils", "ace/range" ], function(e, t, n) {
- function i(t, n, i, r) {
-  this.fileIndex = t, this._title = n || localStorage[t + ".title"], this._editorScrollTop = parseInt(localStorage[t + ".editorScrollTop"]) || 0, 
-  this._editorSelectRange = function() {
-   try {
-    var n = localStorage[t + ".editorSelectRange"].split(";");
-    return n = e.map(n, function(e) {
-     return parseInt(e);
-    }), new o(n[0], n[1], n[2], n[3]);
-   } catch (i) {
-    return new o(0, 0, 0, 0);
-   }
-  }(), this._editorEnd = parseInt(localStorage[t + ".editorEnd"]) || 0, this._previewScrollTop = parseInt(localStorage[t + ".previewScrollTop"]) || 0, 
-  this._selectTime = parseInt(localStorage[t + ".selectTime"]) || 0, this.syncLocations = i || {}, 
-  this.publishLocations = r || {}, Object.defineProperty(this, "title", {
-   get: function() {
-    return this._title;
-   },
-   set: function(e) {
-    this._title = e, localStorage[this.fileIndex + ".title"] = e;
-   }
-  }), Object.defineProperty(this, "content", {
-   get: function() {
-    return localStorage[this.fileIndex + ".content"];
-   },
-   set: function(e) {
-    localStorage[this.fileIndex + ".content"] = e;
-   }
-  }), Object.defineProperty(this, "editorScrollTop", {
-   get: function() {
-    return this._editorScrollTop;
-   },
-   set: function(e) {
-    this._editorScrollTop = e, localStorage[this.fileIndex + ".editorScrollTop"] = e;
-   }
-  }), Object.defineProperty(this, "editorSelectRange", {
-   get: function() {
-    return this._editorSelectRange;
-   },
-   set: function(e) {
-    this._editorSelectRange = e, localStorage[this.fileIndex + ".editorSelectRange"] = [ e.start.row, e.start.column, e.end.row, e.end.column ].join(";");
-   }
-  }), Object.defineProperty(this, "previewScrollTop", {
-   get: function() {
-    return this._previewScrollTop;
-   },
-   set: function(e) {
-    this._previewScrollTop = e, localStorage[this.fileIndex + ".previewScrollTop"] = e;
-   }
-  }), Object.defineProperty(this, "selectTime", {
-   get: function() {
-    return this._selectTime;
-   },
-   set: function(e) {
-    this._selectTime = e, localStorage[this.fileIndex + ".selectTime"] = e;
-   }
-  });
- }
- var o = n.Range;
- return i.prototype.addSyncLocation = function(e) {
-  t.storeAttributes(e), t.appendIndexToArray(this.fileIndex + ".sync", e.syncIndex), 
-  this.syncLocations[e.syncIndex] = e;
- }, i.prototype.removeSyncLocation = function(e) {
-  t.removeIndexFromArray(this.fileIndex + ".sync", e.syncIndex), delete this.syncLocations[e.syncIndex], 
-  localStorage.removeItem(e.syncIndex);
- }, i.prototype.addPublishLocation = function(e) {
-  t.storeAttributes(e), t.appendIndexToArray(this.fileIndex + ".publish", e.publishIndex), 
-  this.publishLocations[e.publishIndex] = e;
- }, i.prototype.removePublishLocation = function(e) {
-  t.removeIndexFromArray(this.fileIndex + ".publish", e.publishIndex), delete this.publishLocations[e.publishIndex], 
-  localStorage.removeItem(e.publishIndex);
- }, i.prototype.composeTitle = function() {
-  var t = [], n = e.values(this.syncLocations), i = e.values(this.publishLocations), o = n.concat(i);
-  return e.chain(o).sortBy(function(e) {
-   return e.provider.providerId;
-  }).each(function(e) {
-   var n = "icon-provider-" + e.provider.providerId;
-   e.isRealtime === !0 && (n += " realtime"), t.push('<i class="' + n + '"></i>');
-  }), t.push(" "), t.push(this.title), t.join("");
- }, i;
-}), define("storage", [ "underscore", "utils" ], function(e, t) {
- var n = t.retrieveIndexArray("file.list"), i = localStorage.version;
- if (void 0 === i && (localStorage.removeItem("sync.queue"), localStorage.removeItem("sync.current"), 
- localStorage.removeItem("file.counter"), e.each(n, function(n) {
-  localStorage[n + ".publish"] = ";";
-  var i = t.retrieveIndexArray(n + ".sync");
-  e.each(i, function(e) {
-   localStorage[e + ".contentCRC"] = "0", void 0 !== localStorage[e + ".etag"] && (localStorage[e + ".titleCRC"] = "0");
-  });
- }), i = "v1"), "v1" == i) {
-  var o = localStorage["sync.gdrive.lastChangeId"];
-  o && (localStorage["gdrive.lastChangeId"] = o, localStorage.removeItem("sync.gdrive.lastChangeId"));
-  var r = localStorage["sync.dropbox.lastChangeId"];
-  r && (localStorage["dropbox.lastChangeId"] = r, localStorage.removeItem("sync.dropbox.lastChangeId"));
-  var s = "gdrive", a = "dropbox", l = "sync." + s + ".", c = "sync." + a + ".";
-  e.each(n, function(n) {
-   var i = t.retrieveIndexArray(n + ".sync");
-   e.each(i, function(e) {
-    var t = {};
-    0 === e.indexOf(l) ? (t.provider = s, t.id = e.substring(l.length), t.etag = localStorage[e + ".etag"], 
-    t.contentCRC = localStorage[e + ".contentCRC"], t.titleCRC = localStorage[e + ".titleCRC"]) : 0 === e.indexOf(c) && (t.provider = a, 
-    t.path = decodeURIComponent(e.substring(c.length)), t.version = localStorage[e + ".version"], 
-    t.contentCRC = localStorage[e + ".contentCRC"]), localStorage[e] = JSON.stringify(t), 
-    localStorage.removeItem(e + ".etag"), localStorage.removeItem(e + ".version"), localStorage.removeItem(e + ".contentCRC"), 
-    localStorage.removeItem(e + ".titleCRC");
-   });
-  }), i = "v2";
- }
- if ("v2" == i && (e.each(n, function(n) {
-  e.has(localStorage, n + ".sync") || (localStorage.removeItem(n + ".title"), localStorage.removeItem(n + ".publish"), 
-  localStorage.removeItem(n + ".content"), t.removeIndexFromArray("file.list", n));
- }), i = "v3"), "v3" == i) {
-  var u = localStorage["file.current"];
-  void 0 !== u && -1 === localStorage["file.list"].indexOf(";" + u + ";") && localStorage.removeItem("file.current"), 
-  i = "v4";
- }
- if ("v4" == i && (localStorage.removeItem("githubToken"), i = "v5"), "v5" == i && (e.each(n, function(n) {
-  var i = t.retrieveIndexArray(n + ".publish");
-  e.each(i, function(e) {
-   var t = JSON.parse(localStorage[e]);
-   "gdrive" == t.provider && (t.id = t.fileId, t.fileId = void 0, localStorage[e] = JSON.stringify(t));
-  });
- }), i = "v6"), "v6" == i) {
-  var u = localStorage["file.current"];
-  void 0 !== u && (localStorage[u + ".selectTime"] = new Date().getTime(), localStorage.removeItem("file.current")), 
-  i = "v7";
- }
- "v7" == i && (e.each(e.keys(localStorage), function(t) {
-  var n = t.match(/(file\.\S+\.)\S+/);
-  n && (e.has(localStorage, n[1] + "title") || localStorage.removeItem(t));
- }), i = "v8"), "v8" == i && (e.each(e.keys(localStorage), function(e) {
-  var t = e.match(/file\.\S+\.(editorEnd|editorStart)/);
-  t && localStorage.removeItem(e);
- }), i = "v9"), localStorage.version = i;
-}), define("fileSystem", [ "underscore", "utils", "classes/FileDescriptor", "storage" ], function(e, t, n) {
- var i = {};
- return e.each(t.retrieveIndexArray("file.list"), function(e) {
-  i[e] = new n(e);
- }), i;
-}), define("text!html/userCustomSettingsBlock.html", [], function() {
- return '<p>Allows users to implement their own extension.</p>\n<div class="form-horizontal">\n	<div class="form-group">\n		<label class="col-lg-4 control-label" for="textarea-usercustom-code">JavaScript code\n			<a href="#" class="tooltip-usercustom-extension">(?)</a>\n		</label>\n		<div class="col-lg-7">\n			<textarea id="textarea-usercustom-code" class="form-control"></textarea>\n		</div>\n	</div>\n</div>\n<span class="help-block pull-right"><a target="_blank" href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">More info</a></span>';
-}), define("extensions/userCustom", [ "jquery", "underscore", "utils", "classes/Extension", "fileSystem", "settings", "text!html/userCustomSettingsBlock.html" ], function($, _, utils, Extension, fileSystem, settings, userCustomSettingsBlockHTML) {
- var userCustom = new Extension("userCustom", "UserCustom extension", !0);
- userCustom.settingsBlock = userCustomSettingsBlockHTML, userCustom.defaultConfig = {
-  code: ""
- };
- var fileMgr = void 0;
- userCustom.onFileMgrCreated = function(e) {
-  fileMgr = e;
- };
- var synchronizer = void 0;
- userCustom.onSynchronizerCreated = function(e) {
-  synchronizer = e;
- };
- var publisher = void 0;
- userCustom.onPublisherCreated = function(e) {
-  publisher = e;
- };
- var eventMgr = void 0;
- return userCustom.onEventMgrCreated = function(e) {
-  eventMgr = e;
- }, userCustom.onLoadSettings = function() {
-  utils.setInputValue("#textarea-usercustom-code", userCustom.config.code);
- }, userCustom.onSaveSettings = function(newConfig, event) {
-  newConfig.code = utils.getInputValue("#textarea-usercustom-code");
-  try {
-   eval(newConfig.code);
-  } catch (e) {
-   eventMgr.onError(e), utils.getInputTextValue("#textarea-usercustom-code", event, /^$/);
-  }
- }, userCustom.onInit = function() {
-  try {
-   eval(userCustom.config.code);
-  } catch (e) {
-   console.error(e);
-  }
- }, userCustom;
 }), define("text!html/buttonMarkdownSyntax.html", [], function() {
  return '<button class="btn btn-default dropdown-toggle" title="Markdown syntax" data-toggle="dropdown">\n	<i class="icon-help-circled"></i>\n</button>\n<div class="dropdown-menu pull-right">\n	<h3>Markdown syntax</h3>\n	<div class="markdown-syntax">\n<h4>Phrase Emphasis</h4>\n\n<pre><code>*italic*   **bold**\n_italic_   __bold__\n</code></pre>\n\n<h4>Links</h4>\n\n<p>Inline:</p>\n\n<pre><code>An [example](http://url.com/ "Title")\n</code></pre>\n\n<p>Reference-style labels (titles are optional):</p>\n\n<pre><code>An [example][id]. Then, anywhere\nelse in the doc, define the link:\n\n  [id]: http://example.com/  "Title"\n</code></pre>\n\n<h4>Images</h4>\n\n<p>Inline (titles are optional):</p>\n\n<pre><code>![alt text](/path/img.jpg "Title")\n</code></pre>\n\n<p>Reference-style:</p>\n\n<pre><code>![alt text][id]\n\n[id]: /url/to/img.jpg "Title"\n</code></pre>\n\n<h4>Headers</h4>\n\n<p>Setext-style:</p>\n\n<pre><code>Header 1\n========\n\nHeader 2\n--------\n</code></pre>\n\n<p>atx-style (closing #\'s are optional):</p>\n\n<pre><code># Header 1 #\n\n## Header 2 ##\n\n###### Header 6\n</code></pre>\n\n<h4>Lists</h4>\n\n<p>Ordered, without paragraphs:</p>\n\n<pre><code>1.  Foo\n2.  Bar\n</code></pre>\n\n<p>Unordered, with paragraphs:</p>\n\n<pre><code>*   A list item.\n\n    With multiple paragraphs.\n\n*   Bar\n</code></pre>\n\n<p>You can nest them:</p>\n\n<pre><code>*   Abacus\n    * answer\n*   Bubbles\n    1.  bunk\n    2.  bupkis\n        * BELITTLER\n    3. burper\n*   Cunning\n</code></pre>\n\n<h4>Blockquotes</h4>\n\n<pre><code>&gt; Email-style angle brackets\n&gt; are used for blockquotes.\n\n&gt; &gt; And, they can be nested.\n\n&gt; #### Headers in blockquotes\n&gt; \n&gt; * You can quote a list.\n&gt; * Etc.\n</code></pre>\n\n<h4>Code Spans</h4>\n\n<pre><code>`&lt;code&gt;` spans are delimited\nby backticks.\n\nYou can include literal backticks\nlike `` `this` ``.\n</code></pre>\n\n<h4>Preformatted Code Blocks</h4>\n\n<p>Indent every line of a code block by at least 4 spaces or 1 tab.</p>\n\n<pre><code>This is a normal paragraph.\n\n    This is a preformatted\n    code block.\n</code></pre>\n\n<h4>Horizontal Rules</h4>\n\n<p>Three or more dashes or asterisks:</p>\n\n<pre><code>---\n\n* * *\n\n- - - - \n</code></pre>\n\n<h4>Manual Line Breaks</h4>\n\n<p>End a line with two or more spaces:</p>\n\n<pre><code>Roses are red,   \nViolets are blue.\n</code></pre>\n\n<blockquote>Based on the <a target="_blank" href="https://github.com/fletcher/MultiMarkdown/blob/master/Documentation/Markdown%20Syntax.md">Markdown syntax guide</a>, by Fletcher T. Penney.</blockquote>\n    </div>\n</div>\n';
 }), define("extensions/buttonMarkdownSyntax", [ "jquery", "classes/Extension", "text!html/buttonMarkdownSyntax.html" ], function(e, t, n) {
- var i = new t("buttonMarkdownSyntax", 'Button "Markdown syntax', !0);
+ var i = new t("buttonMarkdownSyntax", 'Button "Markdown syntax', !0, !0);
  return i.settingsBlock = '<p>Adds a "Markdown syntax" button over the preview.</p>', 
  i.onCreatePreviewButton = function() {
   return n;
@@ -12039,6 +12232,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  return '\n<div class="modal-dialog">\n	<div class="modal-content">\n\n		<div class="modal-header">\n			<button type="button" class="close" data-dismiss="modal"\n				aria-hidden="true">&times;</button>\n			<img data-stackedit-src="stackedit-promo.png" width="240" height="60" />\n		</div>\n		<div class="modal-body">\n			<dl>\n				<dt>About:</dt>\n				<dd>\n					<a target="_blank" href="https://github.com/benweet/stackedit/">GitHub\n						project</a> / <a target="_blank"\n						href="https://github.com/benweet/stackedit/issues">issue\n						tracker</a><br /> <a target="_blank"\n						href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome\n						app</a> (thanks for your review!)<br /> <a target="_blank"\n						href="https://twitter.com/stackedit/">Follow on Twitter</a><br />\n					<a target="_blank" href="https://www.facebook.com/stackedit/">Follow\n						on Facebook</a><br /> <a target="_blank"\n						href="https://plus.google.com/110816046787593496375"\n						rel="publisher">Follow on Google+</a><br />\n				</dd>\n			</dl>\n			<dl>\n				<dt>Developers:</dt>\n				<dd>\n					<a target="_blank" href="http://www.benoitschweblin.com">Benoit\n						Schweblin</a><br /> Pete Eigel (contributor)\n				</dd>\n			</dl>\n			<dl>\n				<dt>Credit:</dt>\n				<dd>\n					<% _.each(libraries, function(url, name) { %> <a target="_blank"\n						href="<%= url %>"><%= name %></a><br /> <% }); %>\n				</dd>\n			</dl>\n			<dl>\n				<dt>Related projects:</dt>\n				<dd>\n					<% _.each(projects, function(url, name) { %> <a target="_blank"\n						href="<%= url %>"><%= name %></a><br /> <% }); %>\n				</dd>\n			</dl>\n			<p>\n				StackEdit <%= version %><br /> Copyright 2013 <a\n					target="_blank" href="http://www.benoitschweblin.com">Benoit\n					Schweblin</a><br /> Licensed under an <a target="_blank"\n					href="http://www.apache.org/licenses/LICENSE-2.0">Apache\n					License</a>\n			</p>\n		</div>\n		<div class="modal-footer">\n			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n		</div>\n	</div>\n</div>\n';
 }), define("extensions/dialogAbout", [ "underscore", "utils", "classes/Extension", "text!html/dialogAbout.html", "config" ], function(e, t, n, i) {
  var o = new n("dialogAbout", 'Dialog "About"'), r = {
+  ACE: "http://ace.c9.io/",
   Bootstrap: "http://getbootstrap.com/",
   "Bootstrap Tour": "http://bootstraptour.com/",
   crel: "https://github.com/KoryNunn/crel",
@@ -12048,15 +12242,14 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   "Font Awesome and others...": "res/libs/fontello/LICENSE.txt",
   Gatekeeper: "https://github.com/prose/gatekeeper",
   "Github.js": "https://github.com/michael/github",
-  Glyphicons: "http://glyphicons.com/",
   "Highlight.js": "http://softwaremaniacs.org/soft/highlight/en/",
   jGrowl: "https://github.com/stanlemon/jGrowl/",
   jQuery: "http://jquery.com/",
   LESS: "http://lesscss.org/",
   MathJax: "http://www.mathjax.org/",
   Mousetrap: "http://craig.is/killing/mice",
-  PageDown: "https://code.google.com/p/pagedown/",
-  "Pagedown-extra": "https://github.com/jmcmanus/pagedown-extra/",
+  "PageDown ACE": "https://github.com/benweet/pagedown-ace",
+  "PageDown Extra": "https://github.com/jmcmanus/pagedown-extra/",
   Prettify: "https://code.google.com/p/google-code-prettify/",
   RequireJS: "http://requirejs.org/",
   "RequireJS LESS plugin": "https://github.com/guybedford/require-less",
@@ -12368,7 +12561,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   e = e || {};
   var t, n = !1;
   for (t in k) e[t] ? n = !0 : k[t] = 0;
-  n || ($ = !1);
+  n || (_ = !1);
  }
  function o(e, t, i, o, r, s) {
   var a, l, u = [], d = i.type;
@@ -12396,8 +12589,8 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
    if (a[r].level != u) continue;
    d = !0, l[a[r].seq] = 1, s(a[r].callback, n, a[r].combo);
   } else d || s(a[r].callback, n, a[r].combo);
-  var h = "keypress" == n.type && _;
-  n.type != $ || c(e) || h || i(l), _ = d && "keydown" == n.type;
+  var h = "keypress" == n.type && $;
+  n.type != _ || c(e) || h || i(l), $ = d && "keydown" == n.type;
  }
  function l(e) {
   "number" != typeof e.which && (e.which = e.keyCode);
@@ -12425,7 +12618,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  function p(e, n, o, r) {
   function a(t) {
    return function() {
-    $ = t, ++k[e], u();
+    _ = t, ++k[e], u();
    };
   }
   function l(n) {
@@ -12534,7 +12727,7 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   "return": "enter",
   escape: "esc",
   mod: /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "meta" : "ctrl"
- }, A = {}, S = {}, k = {}, F = !1, _ = !1, $ = !1, D = 1; 20 > D; ++D) w[111 + D] = "f" + D;
+ }, A = {}, S = {}, k = {}, F = !1, $ = !1, _ = !1, D = 1; 20 > D; ++D) w[111 + D] = "f" + D;
  for (D = 0; 9 >= D; ++D) w[D + 96] = D;
  e(document, "keypress", l), e(document, "keydown", l), e(document, "keyup", l);
  var T = {
@@ -12556,7 +12749,92 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
   handleKey: a
  };
  window.Mousetrap = T, "function" == typeof define && define.amd && define("mousetrap", T);
-}(), define("text!html/documentSelectorSettingsBlock.html", [], function() {
+}(), define("classes/FileDescriptor", [ "underscore", "utils", "ace/range" ], function(e, t, n) {
+ function i(t, n, i, r) {
+  this.fileIndex = t, this._title = n || localStorage[t + ".title"], this._editorScrollTop = parseInt(localStorage[t + ".editorScrollTop"]) || 0, 
+  this._editorSelectRange = function() {
+   try {
+    var n = localStorage[t + ".editorSelectRange"].split(";");
+    return n = e.map(n, function(e) {
+     return parseInt(e);
+    }), new o(n[0], n[1], n[2], n[3]);
+   } catch (i) {
+    return new o(0, 0, 0, 0);
+   }
+  }(), this._editorEnd = parseInt(localStorage[t + ".editorEnd"]) || 0, this._previewScrollTop = parseInt(localStorage[t + ".previewScrollTop"]) || 0, 
+  this._selectTime = parseInt(localStorage[t + ".selectTime"]) || 0, this.syncLocations = i || {}, 
+  this.publishLocations = r || {}, Object.defineProperty(this, "title", {
+   get: function() {
+    return this._title;
+   },
+   set: function(e) {
+    this._title = e, localStorage[this.fileIndex + ".title"] = e;
+   }
+  }), Object.defineProperty(this, "content", {
+   get: function() {
+    return localStorage[this.fileIndex + ".content"];
+   },
+   set: function(e) {
+    localStorage[this.fileIndex + ".content"] = e;
+   }
+  }), Object.defineProperty(this, "editorScrollTop", {
+   get: function() {
+    return this._editorScrollTop;
+   },
+   set: function(e) {
+    this._editorScrollTop = e, localStorage[this.fileIndex + ".editorScrollTop"] = e;
+   }
+  }), Object.defineProperty(this, "editorSelectRange", {
+   get: function() {
+    return this._editorSelectRange;
+   },
+   set: function(e) {
+    this._editorSelectRange = e, localStorage[this.fileIndex + ".editorSelectRange"] = [ e.start.row, e.start.column, e.end.row, e.end.column ].join(";");
+   }
+  }), Object.defineProperty(this, "previewScrollTop", {
+   get: function() {
+    return this._previewScrollTop;
+   },
+   set: function(e) {
+    this._previewScrollTop = e, localStorage[this.fileIndex + ".previewScrollTop"] = e;
+   }
+  }), Object.defineProperty(this, "selectTime", {
+   get: function() {
+    return this._selectTime;
+   },
+   set: function(e) {
+    this._selectTime = e, localStorage[this.fileIndex + ".selectTime"] = e;
+   }
+  });
+ }
+ var o = n.Range;
+ return i.prototype.addSyncLocation = function(e) {
+  t.storeAttributes(e), t.appendIndexToArray(this.fileIndex + ".sync", e.syncIndex), 
+  this.syncLocations[e.syncIndex] = e;
+ }, i.prototype.removeSyncLocation = function(e) {
+  t.removeIndexFromArray(this.fileIndex + ".sync", e.syncIndex), delete this.syncLocations[e.syncIndex], 
+  localStorage.removeItem(e.syncIndex);
+ }, i.prototype.addPublishLocation = function(e) {
+  t.storeAttributes(e), t.appendIndexToArray(this.fileIndex + ".publish", e.publishIndex), 
+  this.publishLocations[e.publishIndex] = e;
+ }, i.prototype.removePublishLocation = function(e) {
+  t.removeIndexFromArray(this.fileIndex + ".publish", e.publishIndex), delete this.publishLocations[e.publishIndex], 
+  localStorage.removeItem(e.publishIndex);
+ }, i.prototype.composeTitle = function() {
+  var t = [], n = e.values(this.syncLocations), i = e.values(this.publishLocations), o = n.concat(i);
+  return e.chain(o).sortBy(function(e) {
+   return e.provider.providerId;
+  }).each(function(e) {
+   var n = "icon-provider-" + e.provider.providerId;
+   e.isRealtime === !0 && (n += " realtime"), t.push('<i class="' + n + '"></i>');
+  }), t.push(" "), t.push(this.title), t.join("");
+ }, i;
+}), define("fileSystem", [ "underscore", "utils", "classes/FileDescriptor", "storage" ], function(e, t, n) {
+ var i = {};
+ return e.each(t.retrieveIndexArray("file.list"), function(e) {
+  i[e] = new n(e);
+ }), i;
+}), define("text!html/documentSelectorSettingsBlock.html", [], function() {
  return '<p>Allows toggling document with keyboard shortcuts.</p>\n<div class="form-horizontal">\n	<div class="form-group">\n		<label class="col-lg-5 control-label" for="select-document-selector-orderby">Order\n			by</label>\n		<div class="col-lg-6">\n			<select id="select-document-selector-orderby" class="form-control">\n				<option value="title">Document title</option>\n				<option value="mru">Most recently used</option>\n			</select>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-5 control-label"\n			for="input-document-selector-shortcut-previous">"Previous"\n			shortcut <a href="http://craig.is/killing/mice#keys" target="_blank">(?)</a></label>\n		<div class="col-lg-6">\n			<input type="text" id="input-document-selector-shortcut-previous"\n				class="form-control">\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-5 control-label"\n			for="input-document-selector-shortcut-next">"Next"\n			shortcut <a href="http://craig.is/killing/mice#keys" target="_blank">(?)</a></label>\n		<div class="col-lg-6">\n			<input type="text" id="input-document-selector-shortcut-next"\n				class="form-control">\n		</div>\n	</div>\n</div>';
 }), define("extensions/documentSelector", [ "jquery", "underscore", "crel", "utils", "classes/Extension", "mousetrap", "fileSystem", "text!html/documentSelectorSettingsBlock.html" ], function(e, t, n, i, o, r, s, a) {
  var l = new o("documentSelector", "Document Selector", !0, !0);
@@ -12789,9 +13067,9 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
  d.onEventMgrCreated = function(e) {
   p = e;
  };
- var f = [ '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>" data-toggle="collapse" data-target=".modal-document-manager .file-list.<%= id %>">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<button class="btn btn-default button-delete" title="Delete"><i class="icon-trash"></i></button>', '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>', '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>', '<div class="name"><i class="icon-folder"></i> ', "<%= folderDesc.name %></div>", '<input type="text" class="input-rename form-control hide"></a>', '<div class="file-list collapse <%= id %> clearfix"><%= fileListHtml %></div>' ].join(""), g = [ '<li class="list-group-item file clearfix" data-file-index="<%= fileDesc.fileIndex %>">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<button class="btn btn-default button-delete" title="Delete"><i class="icon-trash"></i></button>', '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>', '<div class="name"><%= fileDesc.composeTitle() %></div>', '<input type="text" class="input-rename form-control hide"></li>' ].join(""), m = [ '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>">', '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>', '<div class="name"><i class="icon-forward"></i> ', "<%= folderDesc.name %></div></a>" ].join(""), v = [ '<li class="list-group-item file clearfix">', '<div class="name"><%= fileDesc.composeTitle() %></div></li>' ].join(""), b = !1, y = void 0, w = void 0, C = [], x = [], E = void 0, A = void 0, S = void 0, k = void 0, F = void 0, _ = void 0, $ = function() {
+ var f = [ '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>" data-toggle="collapse" data-target=".modal-document-manager .file-list.<%= id %>">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<button class="btn btn-default button-delete" title="Delete"><i class="icon-trash"></i></button>', '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>', '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>', '<div class="name"><i class="icon-folder"></i> ', "<%= folderDesc.name %></div>", '<input type="text" class="input-rename form-control hide"></a>', '<div class="file-list collapse <%= id %> clearfix"><%= fileListHtml %></div>' ].join(""), g = [ '<li class="list-group-item file clearfix" data-file-index="<%= fileDesc.fileIndex %>">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<button class="btn btn-default button-delete" title="Delete"><i class="icon-trash"></i></button>', '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>', '<div class="name"><%= fileDesc.composeTitle() %></div>', '<input type="text" class="input-rename form-control hide"></li>' ].join(""), m = [ '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>">', '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>', '<div class="name"><i class="icon-forward"></i> ', "<%= folderDesc.name %></div></a>" ].join(""), v = [ '<li class="list-group-item file clearfix">', '<div class="name"><%= fileDesc.composeTitle() %></div></li>' ].join(""), b = !1, y = void 0, w = void 0, C = [], x = [], E = void 0, A = void 0, S = void 0, k = void 0, F = void 0, $ = void 0, _ = function() {
   if (b !== !1) {
-   u(), F.text(t.size(s)), _.text(t.size(r) + 1), k = t.filter(s, function(e) {
+   u(), F.text(t.size(s)), $.text(t.size(r) + 1), k = t.filter(s, function(e) {
     return void 0 === e.folder;
    });
    var n = [ '<a href="#" class="list-group-item folder clearfix" data-toggle="collapse" data-target=".modal-document-manager .file-list.root-folder">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<div class="pull-right file-count">', t.size(k), "</div>", '<div class="name"><i class="icon-folder"></i> ', "ROOT folder</div></a>" ].join(""), i = t.chain(k).sortBy(function(e) {
@@ -12855,15 +13133,15 @@ define("config", function() {}), define("settings", [ "underscore", "config" ], 
    }), e(w.querySelectorAll("[type=checkbox]")).change(u);
   }
  };
- return d.onFileCreated = $, d.onFileDeleted = $, d.onTitleChanged = $, d.onSyncExportSuccess = $, 
- d.onSyncRemoved = $, d.onNewPublishSuccess = $, d.onPublishRemoved = $, d.onFoldersChanged = $, 
+ return d.onFileCreated = _, d.onFileDeleted = _, d.onTitleChanged = _, d.onSyncExportSuccess = _, 
+ d.onSyncRemoved = _, d.onNewPublishSuccess = _, d.onPublishRemoved = _, d.onFoldersChanged = _, 
  d.onReady = function() {
   y = document.querySelector(".modal-document-manager"), w = y.querySelector(".list-group.document-list"), 
-  F = e(y.querySelectorAll(".document-count")), _ = e(y.querySelectorAll(".folder-count")), 
+  F = e(y.querySelectorAll(".document-count")), $ = e(y.querySelectorAll(".folder-count")), 
   E = y.querySelector(".list-group.selected-document-list");
   var i = y.querySelector(".list-group.select-folder-list");
   e(y).on("show.bs.modal", function() {
-   b = !0, $();
+   b = !0, _();
   }).on("hide.bs.modal", function() {
    b = !1;
   }), e(y.querySelectorAll(".action-create-folder")).click(function() {
@@ -13145,7 +13423,7 @@ function() {
   }
   function o(e, t) {
    var n = t;
-   return n = n.replace(/^\n+/, ""), n = n.replace(/\n+$/g, ""), n = "\n\n~K" + (I.push(n) - 1) + "K\n\n";
+   return n = n.replace(/^\n+/, ""), n = n.replace(/\n+$/g, ""), n = "\n\n~K" + (P.push(n) - 1) + "K\n\n";
   }
   function r(e, n) {
    e = B.preBlockGamut(e, N), e = p(e);
@@ -13212,7 +13490,7 @@ function() {
   function f(e, t) {
    e += "~0";
    var n = /^(([ ]{0,3}([*+-]|\d+[.])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*+-]|\d+[.])[ \t]+)))/gm;
-   return P ? e = e.replace(n, function(e, n, i) {
+   return I ? e = e.replace(n, function(e, n, i) {
     var o = n, r = i.search(/[*+-]/g) > -1 ? "ul" : "ol", s = g(o, r, t);
     return s = s.replace(/\s+$/, ""), s = "<" + r + ">" + s + "</" + r + ">\n";
    }) : (n = /(\n\n|^\n?)(([ ]{0,3}([*+-]|\d+[.])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*+-]|\d+[.])[ \t]+)))/g, 
@@ -13222,23 +13500,23 @@ function() {
    })), e = e.replace(/~0/, "");
   }
   function g(e, t, n) {
-   P++, e = e.replace(/\n{2,}$/, "\n"), e += "~0";
-   var i = z[t], o = new RegExp("(^[ \\t]*)(" + i + ")[ \\t]+([^\\r]+?(\\n+))(?=(~0|\\1(" + i + ")[ \\t]+))", "gm"), a = !1;
+   I++, e = e.replace(/\n{2,}$/, "\n"), e += "~0";
+   var i = O[t], o = new RegExp("(^[ \\t]*)(" + i + ")[ \\t]+([^\\r]+?(\\n+))(?=(~0|\\1(" + i + ")[ \\t]+))", "gm"), a = !1;
    return e = e.replace(o, function(e, t, i, o) {
     var l = o, c = /\n\n$/.test(l), u = c || l.search(/\n{2,}/) > -1;
-    return u || a ? l = r(_(l), !0) : (l = f(_(l), !0), l = l.replace(/\n$/, ""), n || (l = s(l))), 
+    return u || a ? l = r($(l), !0) : (l = f($(l), !0), l = l.replace(/\n$/, ""), n || (l = s(l))), 
     a = c, "<li>" + l + "</li>\n";
-   }), e = e.replace(/~0/g, ""), P--, e;
+   }), e = e.replace(/~0/g, ""), I--, e;
   }
   function m(e) {
    return e += "~0", e = e.replace(/(?:\n\n|^\n?)((?:(?:[ ]{4}|\t).*\n+)+)(\n*[ ]{0,3}[^ \t\n]|(?=~0))/g, function(e, t, n) {
     var i = t, o = n;
-    return i = y(_(i)), i = $(i), i = i.replace(/^\n+/g, ""), i = i.replace(/\n+$/g, ""), 
+    return i = y($(i)), i = _(i), i = i.replace(/^\n+/g, ""), i = i.replace(/\n+$/g, ""), 
     i = "<pre><code>" + i + "\n</code></pre>", "\n\n" + i + "\n\n" + o;
    }), e = e.replace(/~0/, "");
   }
   function v(e) {
-   return e = e.replace(/(^\n+|\n+$)/g, ""), "\n\n~K" + (I.push(e) - 1) + "K\n\n";
+   return e = e.replace(/(^\n+|\n+$)/g, ""), "\n\n~K" + (P.push(e) - 1) + "K\n\n";
   }
   function b(e) {
    return e = e.replace(/(^|[^\\])(`+)([^\r]*?[^`])\2(?!`)/gm, function(e, t, n, i) {
@@ -13275,7 +13553,7 @@ function() {
    if (!t) {
     r = i.length;
     for (var a = 0; r > a; a++) for (var c = !0; c; ) c = !1, i[a] = i[a].replace(/~K(\d+)K/g, function(e, t) {
-     return c = !0, I[t];
+     return c = !0, P[t];
     });
    }
    return i.join("\n\n");
@@ -13316,10 +13594,10 @@ function() {
     return String.fromCharCode(n);
    });
   }
-  function _(e) {
+  function $(e) {
    return e = e.replace(/^(\t|[ ]{1,4})/gm, "~0"), e = e.replace(/~0/g, "");
   }
-  function $(e) {
+  function _(e) {
    if (!/\t/.test(e)) return e;
    var t, n = [ "    ", "   ", "  ", " " ], i = 0;
    return e.replace(/[\n\t]/g, function(e, o) {
@@ -13345,23 +13623,589 @@ function() {
   B.addNoop("plainLinkText"), B.addNoop("preConversion"), B.addNoop("postNormalization"), 
   B.addNoop("preBlockGamut"), B.addNoop("postBlockGamut"), B.addNoop("preSpanGamut"), 
   B.addNoop("postSpanGamut"), B.addNoop("postConversion");
-  var M, R, I, P;
+  var M, R, P, I;
   this.makeHtml = function(n) {
    if (M) throw new Error("Recursive call to converter.makeHtml");
-   return M = new i(), R = new i(), I = [], P = 0, n = B.preConversion(n), n = n.replace(/~/g, "~T"), 
+   return M = new i(), R = new i(), P = [], I = 0, n = B.preConversion(n), n = n.replace(/~/g, "~T"), 
    n = n.replace(/\$/g, "~D"), n = n.replace(/\r\n/g, "\n"), n = n.replace(/\r/g, "\n"), 
-   n = "\n\n" + n + "\n\n", n = $(n), n = n.replace(/^[ \t]+$/gm, ""), n = B.postNormalization(n), 
+   n = "\n\n" + n + "\n\n", n = _(n), n = n.replace(/^[ \t]+$/gm, ""), n = B.postNormalization(n), 
    n = t(n), n = e(n), n = r(n), n = F(n), n = n.replace(/~D/g, "$$"), n = n.replace(/~T/g, "~"), 
-   n = B.postConversion(n), I = R = M = null, n;
+   n = B.postConversion(n), P = R = M = null, n;
   };
   var N = function(e) {
    return r(e);
-  }, z = {
+  }, O = {
    ol: "\\d+[.]",
    ul: "[*+-]"
-  }, O = "[-A-Z0-9+&@#/%?=~_|[\\]()!:,.;]", j = "[-A-Z0-9+&@#/%=~_|[\\])]", H = new RegExp('(="|<)?\\b(https?|ftp)(://' + O + "*" + j + ")(?=$|\\W)", "gi"), q = new RegExp(j, "i"), W = /(?:["'*()[\]:]|~D)/g;
+  }, z = "[-A-Z0-9+&@#/%?=~_|[\\]()!:,.;]", j = "[-A-Z0-9+&@#/%=~_|[\\])]", H = new RegExp('(="|<)?\\b(https?|ftp)(://' + z + "*" + j + ")(?=$|\\W)", "gi"), q = new RegExp(j, "i"), W = /(?:["'*()[\]:]|~D)/g;
  };
-}(), define("libs/Markdown.Converter", function() {}), window.PR_SHOULD_USE_CONTINUATION = !0;
+}(), define("bower-libs/pagedown-ace/Markdown.Converter", function() {}), function() {
+ function e() {}
+ function t(e, t) {
+  this.buttonBar = u.getElementById("wmd-button-bar" + e), this.preview = u.getElementById("wmd-preview" + e), 
+  this.input = t;
+ }
+ function n(t) {
+  var n = this, i = t.input;
+  this.init = function() {
+   var e = "undefined" != typeof require ? require("ace/range").Range : ace.require("ace/range").Range;
+   (function(t) {
+    n.before = i.session.getTextRange(new e(0, 0, t.start.row, t.start.column)), n.selection = i.session.getTextRange(), 
+    n.after = i.session.getTextRange(new e(t.end.row, t.end.column, Number.MAX_VALUE, Number.MAX_VALUE));
+   })(i.selection.getRange()), this.text = [ this.before, this.selection, this.after ].join(""), 
+   this.length = this.text.length, this.setInputAreaSelectionStartEnd(), this.scrollTop = i.renderer.getScrollTop();
+  }, this.setInputAreaSelection = function() {
+   var e = "undefined" != typeof require ? require("ace/range").Range : ace.require("ace/range").Range;
+   i.selection.setSelectionRange(function(t, n) {
+    return new e(t.row, t.column, n.row, n.column);
+   }(i.session.doc.indexToPosition(n.start), i.session.doc.indexToPosition(n.end))), 
+   i.renderer.scrollToY(n.scrollTop), i.focus();
+  }, this.setInputAreaSelectionStartEnd = function() {
+   n.start = n.before.length, n.end = n.after.length;
+  }, this.restore = function() {
+   for (var e = 0, t = n.before.length; t > e && n.before.charCodeAt(e) === n.text.charCodeAt(e); ) e++;
+   for (var o = 0, r = n.after.length, s = n.after.length - 1, a = n.text.length - 1; r > o && n.after.charCodeAt(s - o) === n.text.charCodeAt(a - o); ) o++;
+   var l = "undefined" != typeof require ? require("ace/range").Range : ace.require("ace/range").Range, c = function(e, t) {
+    return new l(e.row, e.column, t.row, t.column);
+   }(i.session.doc.indexToPosition(e), i.session.doc.indexToPosition(n.length - o));
+   i.session.replace(c, n.text.substring(e, a - o + 1)), this.setInputAreaSelection();
+  }, this.getChunks = function() {
+   var t = new e();
+   return t.before = n.before, t.startTag = "", t.selection = n.selection, t.endTag = "", 
+   t.after = n.after, t.scrollTop = n.scrollTop, t;
+  }, this.setChunks = function(e) {
+   e.before = e.before + e.startTag, e.after = e.endTag + e.after, this.start = e.before.length, 
+   this.end = e.before.length + e.selection.length, this.text = e.before + e.selection + e.after, 
+   this.scrollTop = e.scrollTop;
+  }, this.init();
+ }
+ function i(e, t, n, i) {
+  var o, r, s, a = 3e3, c = "delayed", d = function() {
+   var e = 0;
+   return window.innerHeight ? e = window.pageYOffset : u.documentElement && u.documentElement.scrollTop ? e = u.documentElement.scrollTop : u.body && (e = u.body.scrollTop), 
+   e;
+  }, h = function() {
+   if (t.preview) {
+    var n = t.input.getValue();
+    if (!n || n != s) {
+     s = n;
+     var i = new Date().getTime();
+     n = e.makeHtml(n);
+     var o = new Date().getTime();
+     r = o - i, x(n);
+    }
+   }
+  };
+  void 0 !== i && (h = i(h));
+  var p = function() {
+   if (o && (clearTimeout(o), o = void 0), "manual" !== c) {
+    var e = 0;
+    "delayed" === c && (e = r), e > a && (e = a), o = setTimeout(h, e);
+   }
+  }, g = function(e) {
+   return e.scrollHeight <= e.clientHeight ? 1 : e.scrollTop / (e.scrollHeight - e.clientHeight);
+  }, m = function() {
+   t.preview && (t.preview.scrollTop = (t.preview.scrollHeight - t.preview.clientHeight) * g(t.preview));
+  };
+  this.refresh = function(e) {
+   e ? (s = "", h()) : p();
+  }, this.processingTime = function() {
+   return r;
+  };
+  var v, b = !0, y = function(e) {
+   var n = t.preview, i = n.parentNode, o = n.nextSibling;
+   i.removeChild(n), n.innerHTML = e, o ? i.insertBefore(n, o) : i.appendChild(n);
+  }, w = function(e) {
+   t.preview.innerHTML = e;
+  }, C = function(e) {
+   if (v) return v(e);
+   try {
+    w(e), v = w;
+   } catch (t) {
+    v = y, v(e);
+   }
+  }, x = function(e) {
+   var i = l.getTop(t.input) - d();
+   if (t.preview && (C(e), n()), m(), b) return b = !1, void 0;
+   var o = l.getTop(t.input) - d();
+   f.isIE ? setTimeout(function() {
+    window.scrollBy(0, o - i);
+   }, 0) : window.scrollBy(0, o - i);
+  }, E = function() {
+   t.input.session.on("change", p), t.preview && (t.preview.scrollTop = 0);
+  };
+  E();
+ }
+ function o(e, t, i, o, r, s, a, l) {
+  function c(e) {
+   if (0 !== e.length) {
+    var t = e.pop();
+    b.commands.addCommand({
+     name: a(t),
+     bindKey: {
+      win: "Ctrl-" + m[t],
+      mac: "Command-" + m[t]
+     },
+     exec: function() {
+      d(y[t]);
+     }
+    }), c(e);
+   }
+  }
+  function d(e) {
+   b.focus();
+   var r = "wmd-link-button" == e.id || "wmd-image-button" == e.id;
+   if (e.textOp) {
+    i && !r && i.setCommandMode();
+    var s = new n(t);
+    if (!s) return;
+    var a = s.getChunks(), l = function() {
+     b.focus(), a && s.setChunks(a), s.restore(), o.refresh();
+    }, c = e.textOp(a, l);
+    c || l();
+   }
+   e.execute && e.execute(i);
+  }
+  function h(e, n) {
+   var i = "0px", o = "-20px", r = "-40px", s = e.getElementsByTagName("span")[0];
+   n ? (s.style.backgroundPosition = e.XShift + " " + i, e.onmouseover = function() {
+    s.style.backgroundPosition = this.XShift + " " + r;
+   }, e.onmouseout = function() {
+    s.style.backgroundPosition = this.XShift + " " + i;
+   }, f.isIE && (e.onmousedown = function() {
+    u.activeElement && u.activeElement !== t.input || (t.ieCachedRange = document.selection.createRange(), 
+    t.ieCachedScrollTop = t.input.renderer.getScrollTop());
+   }), e.isHelp || (e.onclick = function() {
+    return this.onmouseout && this.onmouseout(), d(this), !1;
+   }), e.className = e.className.replace(/ disabled/g, "")) : (s.style.backgroundPosition = e.XShift + " " + o, 
+   e.onmouseover = e.onmouseout = e.onclick = function() {}, e.className += " disabled");
+  }
+  function p(e) {
+   return "string" == typeof e && (e = r[e]), function() {
+    e.apply(r, arguments);
+   };
+  }
+  function g() {
+   var n = t.buttonBar, i = document.createElement("ul");
+   i.id = "wmd-button-row" + e, i.className = "wmd-button-row", i = n.appendChild(i);
+   var o = 0, r = function(t, n, r, s) {
+    var a = document.createElement("li");
+    a.className = "wmd-button", a.style.left = o + "px", o += 25;
+    var l = document.createElement("span");
+    return a.id = t + e, a.appendChild(l), a.title = n, a.XShift = r, s && (a.textOp = s), 
+    h(a, !0), i.appendChild(a), a;
+   }, l = function(t) {
+    var n = document.createElement("li");
+    n.className = "wmd-spacer wmd-spacer" + t, n.id = "wmd-spacer" + t + e, i.appendChild(n), 
+    o += 25;
+   };
+   if (y.bold = r("wmd-bold-button", v("bold"), "0px", p("doBold")), y.italic = r("wmd-italic-button", v("italic"), "-20px", p("doItalic")), 
+   l(1), y.link = r("wmd-link-button", v("link"), "-40px", p(function(e, t) {
+    return this.doLinkOrImage(e, t, !1);
+   })), y.quote = r("wmd-quote-button", v("quote"), "-60px", p("doBlockquote")), y.code = r("wmd-code-button", v("code"), "-80px", p("doCode")), 
+   y.image = r("wmd-image-button", v("image"), "-100px", p(function(e, t) {
+    return this.doLinkOrImage(e, t, !0);
+   })), l(2), y.olist = r("wmd-olist-button", v("olist"), "-120px", p(function(e, t) {
+    this.doList(e, t, !0);
+   })), y.ulist = r("wmd-ulist-button", v("ulist"), "-140px", p(function(e, t) {
+    this.doList(e, t, !1);
+   })), y.heading = r("wmd-heading-button", v("heading"), "-160px", p("doHeading")), 
+   y.hr = r("wmd-hr-button", v("hr"), "-180px", p("doHorizontalRule")), l(3), y.undo = r("wmd-undo-button", v("undo"), "-200px", null), 
+   y.undo.execute = function() {
+    b.session.getUndoManager().undo();
+   }, y.redo = r("wmd-redo-button", v("redo"), "-220px", null), y.redo.execute = function() {
+    b.session.getUndoManager().redo();
+   }, s) {
+    var c = document.createElement("li"), u = document.createElement("span");
+    c.appendChild(u), c.className = "wmd-button wmd-help-button", c.id = "wmd-help-button" + e, 
+    c.XShift = "-240px", c.isHelp = !0, c.style.right = "0px", c.title = a("help"), 
+    c.onclick = s.handler, h(c, !0), i.appendChild(c), y.help = c;
+   }
+   w.setUndoRedoButtonStates(), b.session.on("change", function() {
+    w.setUndoRedoButtonStates();
+   });
+  }
+  var v = function(e) {
+   return a(e) + " " + l(e);
+  }, b = t.input, y = {};
+  this.setUndoRedoButtonStates = function() {
+   setTimeout(function() {
+    h(y.undo, b.session.getUndoManager().hasUndo()), h(y.redo, b.session.getUndoManager().hasRedo());
+   }, 50);
+  };
+  var w = this;
+  g();
+  var C = "keydown";
+  f.isOpera && (C = "keypress"), c([ "bold", "italic", "link", "quote", "code", "image", "olist", "ulist", "heading", "hr" ]), 
+  this.buttons = y, this.setButtonState = h;
+ }
+ function r(e, t) {
+  this.hooks = e, this.getString = t;
+ }
+ function s(e) {
+  return e.replace(/^\s*(.*?)(?:\s+"(.+)")?\s*$/, function(e, t, n) {
+   return t = t.replace(/\?.*$/, function(e) {
+    return e.replace(/\+/g, " ");
+   }), t = decodeURIComponent(t), t = encodeURI(t).replace(/'/g, "%27").replace(/\(/g, "%28").replace(/\)/g, "%29"), 
+   t = t.replace(/\?.*$/, function(e) {
+    return e.replace(/\+/g, "%2b");
+   }), n && (n = n.trim ? n.trim() : n.replace(/^\s*/, "").replace(/\s*$/, ""), n = n.replace(/"/g, "quot;").replace(/\(/g, "&#40;").replace(/\)/g, "&#41;").replace(/</g, "&lt;").replace(/>/g, "&gt;")), 
+   n ? t + ' "' + n + '"' : t;
+  });
+ }
+ var a = {}, l = {}, c = {}, u = window.document, d = window.RegExp, h = window.navigator, p = {
+  lineLength: 72
+ }, f = {
+  isIE: /msie/.test(h.userAgent.toLowerCase()),
+  isIE_5or6: /msie 6/.test(h.userAgent.toLowerCase()) || /msie 5/.test(h.userAgent.toLowerCase()),
+  isOpera: /opera/.test(h.userAgent.toLowerCase())
+ }, g = {
+  bold: "Strong <strong>",
+  boldexample: "strong text",
+  italic: "Emphasis <em>",
+  italicexample: "emphasized text",
+  link: "Hyperlink <a>",
+  linkdescription: "enter link description here",
+  linkdialog: '<p><b>Insert Hyperlink</b></p><p>http://example.com/ "optional title"</p>',
+  quote: "Blockquote <blockquote>",
+  quoteexample: "Blockquote",
+  code: "Code Sample <pre><code>",
+  codeexample: "enter code here",
+  image: "Image <img>",
+  imagedescription: "enter image description here",
+  imagedialog: "<p><b>Insert Image</b></p><p>http://example.com/images/diagram.jpg \"optional title\"<br><br>Need <a href='http://www.google.com/search?q=free+image+hosting' target='_blank'>free image hosting?</a></p>",
+  olist: "Numbered List <ol>",
+  ulist: "Bulleted List <ul>",
+  litem: "List item",
+  heading: "Heading <h1>/<h2>",
+  headingexample: "Heading",
+  hr: "Horizontal Rule <hr>",
+  undo: "Undo -",
+  redo: "Redo -",
+  help: "Markdown Editing Help"
+ }, m = {
+  bold: "B",
+  italic: "I",
+  link: "L",
+  quote: "Q",
+  code: "K",
+  image: "G",
+  olist: "O",
+  ulist: "U",
+  heading: "H",
+  hr: "R",
+  undo: "Z",
+  redo: "Y"
+ }, v = "http://", b = "http://";
+ Markdown.Editor = function(e, n, s) {
+  s = s || {}, "function" == typeof s.handler && (s = {
+   helpButton: s
+  }), s.strings = s.strings || {}, s.helpButton && (s.strings.help = s.strings.help || s.helpButton.title);
+  var a = function(e) {
+   return s.strings[e] || g[e];
+  }, l = function(e) {
+   return (/win/.test(h.platform.toLowerCase()) ? "Ctrl+" : "Command+") + m[e];
+  };
+  n = n || "";
+  var c = this.hooks = new Markdown.HookCollection();
+  c.addNoop("onPreviewRefresh"), c.addNoop("postBlockquoteCreation"), c.addFalse("insertImageDialog"), 
+  c.addFalse("insertLinkDialog"), this.getConverter = function() {
+   return e;
+  };
+  var u, d, p = this;
+  this.run = function(h, f) {
+   if (!u) {
+    u = new t(n, h);
+    var g, m = new r(c, a), v = new i(e, u, function() {
+     c.onPreviewRefresh();
+    }, f);
+    g = new o(n, u, d, v, m, s.helpButton, a, l), g.setUndoRedoButtonStates();
+    var b = p.refreshPreview = function() {
+     v.refresh(!0);
+    };
+    b(), p.uiManager = g;
+   }
+  };
+ }, e.prototype.findTags = function(e, t) {
+  var n, i = this;
+  e && (n = a.extendRegExp(e, "", "$"), this.before = this.before.replace(n, function(e) {
+   return i.startTag = i.startTag + e, "";
+  }), n = a.extendRegExp(e, "^", ""), this.selection = this.selection.replace(n, function(e) {
+   return i.startTag = i.startTag + e, "";
+  })), t && (n = a.extendRegExp(t, "", "$"), this.selection = this.selection.replace(n, function(e) {
+   return i.endTag = e + i.endTag, "";
+  }), n = a.extendRegExp(t, "^", ""), this.after = this.after.replace(n, function(e) {
+   return i.endTag = e + i.endTag, "";
+  }));
+ }, e.prototype.trimWhitespace = function(e) {
+  var t, n, i = this;
+  e ? t = n = "" : (t = function(e) {
+   return i.before += e, "";
+  }, n = function(e) {
+   return i.after = e + i.after, "";
+  }), this.selection = this.selection.replace(/^(\s*)/, t).replace(/(\s*)$/, n);
+ }, e.prototype.skipLines = function(e, t, n) {
+  void 0 === e && (e = 1), void 0 === t && (t = 1), e++, t++;
+  var i, o;
+  if (navigator.userAgent.match(/Chrome/) && "X".match(/()./), this.selection = this.selection.replace(/(^\n*)/, ""), 
+  this.startTag = this.startTag + d.$1, this.selection = this.selection.replace(/(\n*$)/, ""), 
+  this.endTag = this.endTag + d.$1, this.startTag = this.startTag.replace(/(^\n*)/, ""), 
+  this.before = this.before + d.$1, this.endTag = this.endTag.replace(/(\n*$)/, ""), 
+  this.after = this.after + d.$1, this.before) {
+   for (i = o = ""; e--; ) i += "\\n?", o += "\n";
+   n && (i = "\\n*"), this.before = this.before.replace(new d(i + "$", ""), o);
+  }
+  if (this.after) {
+   for (i = o = ""; t--; ) i += "\\n?", o += "\n";
+   n && (i = "\\n*"), this.after = this.after.replace(new d(i, ""), o);
+  }
+ }, a.isVisible = function(e) {
+  return window.getComputedStyle ? "none" !== window.getComputedStyle(e, null).getPropertyValue("display") : e.currentStyle ? "none" !== e.currentStyle.display : void 0;
+ }, a.addEvent = function(e, t, n) {
+  e.attachEvent ? e.attachEvent("on" + t, n) : e.addEventListener(t, n, !1);
+ }, a.removeEvent = function(e, t, n) {
+  e.detachEvent ? e.detachEvent("on" + t, n) : e.removeEventListener(t, n, !1);
+ }, a.fixEolChars = function(e) {
+  return e = e.replace(/\r\n/g, "\n"), e = e.replace(/\r/g, "\n");
+ }, a.extendRegExp = function(e, t, n) {
+  (null === t || void 0 === t) && (t = ""), (null === n || void 0 === n) && (n = "");
+  var i, o = e.toString();
+  return o = o.replace(/\/([gim]*)$/, function(e, t) {
+   return i = t, "";
+  }), o = o.replace(/(^\/|\/$)/g, ""), o = t + o + n, new d(o, i);
+ }, l.getTop = function(e, t) {
+  var n = e.offsetTop;
+  if (!t) for (;e = e.offsetParent; ) n += e.offsetTop;
+  return n;
+ }, l.getHeight = function(e) {
+  return e.offsetHeight || e.scrollHeight;
+ }, l.getWidth = function(e) {
+  return e.offsetWidth || e.scrollWidth;
+ }, l.getPageSize = function() {
+  var e, t, n, i;
+  self.innerHeight && self.scrollMaxY ? (e = u.body.scrollWidth, t = self.innerHeight + self.scrollMaxY) : u.body.scrollHeight > u.body.offsetHeight ? (e = u.body.scrollWidth, 
+  t = u.body.scrollHeight) : (e = u.body.offsetWidth, t = u.body.offsetHeight), self.innerHeight ? (n = self.innerWidth, 
+  i = self.innerHeight) : u.documentElement && u.documentElement.clientHeight ? (n = u.documentElement.clientWidth, 
+  i = u.documentElement.clientHeight) : u.body && (n = u.body.clientWidth, i = u.body.clientHeight);
+  var o = Math.max(e, n), r = Math.max(t, i);
+  return [ o, r, n, i ];
+ }, c.createBackground = function() {
+  var e = u.createElement("div"), t = e.style;
+  e.className = "wmd-prompt-background", t.position = "absolute", t.top = "0", t.zIndex = "1000", 
+  f.isIE ? t.filter = "alpha(opacity=50)" : t.opacity = "0.5";
+  var n = l.getPageSize();
+  return t.height = n[1] + "px", f.isIE ? (t.left = u.documentElement.scrollLeft, 
+  t.width = u.documentElement.clientWidth) : (t.left = "0", t.width = "100%"), u.body.appendChild(e), 
+  e;
+ }, c.prompt = function(e, t, n) {
+  var i, o;
+  void 0 === t && (t = "");
+  var r = function(e) {
+   var t = e.charCode || e.keyCode;
+   27 === t && s(!0);
+  }, s = function(e) {
+   a.removeEvent(u.body, "keydown", r);
+   var t = o.value;
+   return e ? t = null : (t = t.replace(/^http:\/\/(https?|ftp):\/\//, "$1://"), /^(?:https?|ftp):\/\//.test(t) || (t = "http://" + t)), 
+   i.parentNode.removeChild(i), n(t), !1;
+  }, c = function() {
+   i = u.createElement("div"), i.className = "wmd-prompt-dialog", i.style.padding = "10px;", 
+   i.style.position = "fixed", i.style.width = "400px", i.style.zIndex = "1001";
+   var n = u.createElement("div");
+   n.innerHTML = e, n.style.padding = "5px", i.appendChild(n);
+   var c = u.createElement("form"), d = c.style;
+   c.onsubmit = function() {
+    return s(!1);
+   }, d.padding = "0", d.margin = "0", d.cssFloat = "left", d.width = "100%", d.textAlign = "center", 
+   d.position = "relative", i.appendChild(c), o = u.createElement("input"), o.type = "text", 
+   o.value = t, d = o.style, d.display = "block", d.width = "80%", d.marginLeft = d.marginRight = "auto", 
+   c.appendChild(o);
+   var h = u.createElement("input");
+   h.type = "button", h.onclick = function() {
+    return s(!1);
+   }, h.value = "OK", d = h.style, d.margin = "10px", d.display = "inline", d.width = "7em";
+   var p = u.createElement("input");
+   p.type = "button", p.onclick = function() {
+    return s(!0);
+   }, p.value = "Cancel", d = p.style, d.margin = "10px", d.display = "inline", d.width = "7em", 
+   c.appendChild(h), c.appendChild(p), a.addEvent(u.body, "keydown", r), i.style.top = "50%", 
+   i.style.left = "50%", i.style.display = "block", f.isIE_5or6 && (i.style.position = "absolute", 
+   i.style.top = u.documentElement.scrollTop + 200 + "px", i.style.left = "50%"), u.body.appendChild(i), 
+   i.style.marginTop = -(l.getHeight(i) / 2) + "px", i.style.marginLeft = -(l.getWidth(i) / 2) + "px";
+  };
+  setTimeout(function() {
+   c();
+   var e = t.length;
+   if (void 0 !== o.selectionStart) o.selectionStart = 0, o.selectionEnd = e; else if (o.createTextRange) {
+    var n = o.createTextRange();
+    n.collapse(!1), n.moveStart("character", -e), n.moveEnd("character", e), n.select();
+   }
+   o.focus();
+  }, 0);
+ };
+ var y = r.prototype;
+ y.prefixes = "(?:\\s{4,}|\\s*>|\\s*-\\s+|\\s*\\d+\\.|=|\\+|-|_|\\*|#|\\s*\\[[^\n]]+\\]:)", 
+ y.unwrap = function(e) {
+  var t = new d("([^\\n])\\n(?!(\\n|" + this.prefixes + "))", "g");
+  e.selection = e.selection.replace(t, "$1 $2");
+ }, y.wrap = function(e, t) {
+  this.unwrap(e);
+  var n = new d("(.{1," + t + "})( +|$\\n?)", "gm"), i = this;
+  e.selection = e.selection.replace(n, function(e, t) {
+   return new d("^" + i.prefixes, "").test(e) ? e : t + "\n";
+  }), e.selection = e.selection.replace(/\s+$/, "");
+ }, y.doBold = function(e, t) {
+  return this.doBorI(e, t, 2, this.getString("boldexample"));
+ }, y.doItalic = function(e, t) {
+  return this.doBorI(e, t, 1, this.getString("italicexample"));
+ }, y.doBorI = function(e, t, n, i) {
+  e.trimWhitespace(), e.selection = e.selection.replace(/\n{2,}/g, "\n");
+  var o = /(\**$)/.exec(e.before)[0], r = /(^\**)/.exec(e.after)[0], s = Math.min(o.length, r.length);
+  if (s >= n && (2 != s || 1 != n)) e.before = e.before.replace(d("[*]{" + n + "}$", ""), ""), 
+  e.after = e.after.replace(d("^[*]{" + n + "}", ""), ""); else if (!e.selection && r) {
+   e.after = e.after.replace(/^([*_]*)/, ""), e.before = e.before.replace(/(\s?)$/, "");
+   var a = d.$1;
+   e.before = e.before + r + a;
+  } else {
+   e.selection || r || (e.selection = i);
+   var l = 1 >= n ? "*" : "**";
+   e.before = e.before + l, e.after = l + e.after;
+  }
+ }, y.stripLinkDefs = function(e, t) {
+  return e = e.replace(/^[ ]{0,3}\[(\d+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?[ \t]*\n?[ \t]*(?:(\n*)["(](.+?)[")][ \t]*)?(?:\n+|$)/gm, function(e, n, i, o, r) {
+   return t[n] = e.replace(/\s*$/, ""), o ? (t[n] = e.replace(/["(](.+?)[")]$/, ""), 
+   o + r) : "";
+  });
+ }, y.addLinkDef = function(e, t) {
+  var n = 0, i = {};
+  e.before = this.stripLinkDefs(e.before, i), e.selection = this.stripLinkDefs(e.selection, i), 
+  e.after = this.stripLinkDefs(e.after, i);
+  var o = "", r = /(\[)((?:\[[^\]]*\]|[^\[\]])*)(\][ ]?(?:\n[ ]*)?\[)(\d+)(\])/g, s = function(e) {
+   n++, e = e.replace(/^[ ]{0,3}\[(\d+)\]:/, "  [" + n + "]:"), o += "\n" + e;
+  }, a = function(e, t, o, l, c, u) {
+   return o = o.replace(r, a), i[c] ? (s(i[c]), t + o + l + n + u) : e;
+  };
+  e.before = e.before.replace(r, a), t ? s(t) : e.selection = e.selection.replace(r, a);
+  var l = n;
+  return e.after = e.after.replace(r, a), e.after && (e.after = e.after.replace(/\n*$/, "")), 
+  e.after || (e.selection = e.selection.replace(/\n*$/, "")), e.after += "\n\n" + o, 
+  l;
+ }, y.doLinkOrImage = function(e, t, n) {
+  e.trimWhitespace(), e.findTags(/\s*!?\[/, /\][ ]?(?:\n[ ]*)?(\[.*?\])?/);
+  var i;
+  if (!(e.endTag.length > 1 && e.startTag.length > 0)) {
+   if (e.selection = e.startTag + e.selection + e.endTag, e.startTag = e.endTag = "", 
+   /\n\n/.test(e.selection)) return this.addLinkDef(e, null), void 0;
+   var o = this, r = function(r) {
+    if (i.parentNode.removeChild(i), null !== r) {
+     e.selection = (" " + e.selection).replace(/([^\\](?:\\\\)*)(?=[[\]])/g, "$1\\").substr(1);
+     var a = " [999]: " + s(r), l = o.addLinkDef(e, a);
+     e.startTag = n ? "![" : "[", e.endTag = "][" + l + "]", e.selection || (e.selection = n ? o.getString("imagedescription") : o.getString("linkdescription"));
+    }
+    t();
+   };
+   return i = c.createBackground(), n ? this.hooks.insertImageDialog(r) || c.prompt(this.getString("imagedialog"), v, r) : this.hooks.insertLinkDialog(r) || c.prompt(this.getString("linkdialog"), b, r), 
+   !0;
+  }
+  e.startTag = e.startTag.replace(/!?\[/, ""), e.endTag = "", this.addLinkDef(e, null);
+ }, y.doAutoindent = function(e) {
+  var t = this, n = !1;
+  e.before = e.before.replace(/(\n|^)[ ]{0,3}([*+-]|\d+[.])[ \t]*\n$/, "\n\n"), e.before = e.before.replace(/(\n|^)[ ]{0,3}>[ \t]*\n$/, "\n\n"), 
+  e.before = e.before.replace(/(\n|^)[ \t]+\n$/, "\n\n"), e.selection || /^[ \t]*(?:\n|$)/.test(e.after) || (e.after = e.after.replace(/^[^\n]*/, function(t) {
+   return e.selection = t, "";
+  }), n = !0), /(\n|^)[ ]{0,3}([*+-]|\d+[.])[ \t]+.*\n$/.test(e.before) && t.doList && t.doList(e), 
+  /(\n|^)[ ]{0,3}>[ \t]+.*\n$/.test(e.before) && t.doBlockquote && t.doBlockquote(e), 
+  /(\n|^)(\t|[ ]{4,}).*\n$/.test(e.before) && t.doCode && t.doCode(e), n && (e.after = e.selection + e.after, 
+  e.selection = "");
+ }, y.doBlockquote = function(e) {
+  e.selection = e.selection.replace(/^(\n*)([^\r]+?)(\n*)$/, function(t, n, i, o) {
+   return e.before += n, e.after = o + e.after, i;
+  }), e.before = e.before.replace(/(>[ \t]*)$/, function(t, n) {
+   return e.selection = n + e.selection, "";
+  }), e.selection = e.selection.replace(/^(\s|>)+$/, ""), e.selection = e.selection || this.getString("quoteexample");
+  var t, n = "", i = "";
+  if (e.before) {
+   for (var o = e.before.replace(/\n$/, "").split("\n"), r = !1, s = 0; s < o.length; s++) {
+    var a = !1;
+    t = o[s], r = r && t.length > 0, /^>/.test(t) ? (a = !0, !r && t.length > 1 && (r = !0)) : a = /^[ \t]*$/.test(t) ? !0 : r, 
+    a ? n += t + "\n" : (i += n + t, n = "\n");
+   }
+   /(^|\n)>/.test(n) || (i += n, n = "");
+  }
+  e.startTag = n, e.before = i, e.after && (e.after = e.after.replace(/^\n?/, "\n")), 
+  e.after = e.after.replace(/^(((\n|^)(\n[ \t]*)*>(.+\n)*.*)+(\n[ \t]*)*)/, function(t) {
+   return e.endTag = t, "";
+  });
+  var l = function(t) {
+   var n = t ? "> " : "";
+   e.startTag && (e.startTag = e.startTag.replace(/\n((>|\s)*)\n$/, function(e, t) {
+    return "\n" + t.replace(/^[ ]{0,3}>?[ \t]*$/gm, n) + "\n";
+   })), e.endTag && (e.endTag = e.endTag.replace(/^\n((>|\s)*)\n/, function(e, t) {
+    return "\n" + t.replace(/^[ ]{0,3}>?[ \t]*$/gm, n) + "\n";
+   }));
+  };
+  /^(?![ ]{0,3}>)/m.test(e.selection) ? (this.wrap(e, p.lineLength - 2), e.selection = e.selection.replace(/^/gm, "> "), 
+  l(!0), e.skipLines()) : (e.selection = e.selection.replace(/^[ ]{0,3}> ?/gm, ""), 
+  this.unwrap(e), l(!1), !/^(\n|^)[ ]{0,3}>/.test(e.selection) && e.startTag && (e.startTag = e.startTag.replace(/\n{0,2}$/, "\n\n")), 
+  !/(\n|^)[ ]{0,3}>.*$/.test(e.selection) && e.endTag && (e.endTag = e.endTag.replace(/^\n{0,2}/, "\n\n"))), 
+  e.selection = this.hooks.postBlockquoteCreation(e.selection), /\n/.test(e.selection) || (e.selection = e.selection.replace(/^(> *)/, function(t, n) {
+   return e.startTag += n, "";
+  }));
+ }, y.doCode = function(e) {
+  var t = /\S[ ]*$/.test(e.before), n = /^[ ]*\S/.test(e.after);
+  if (!n && !t || /\n/.test(e.selection)) {
+   e.before = e.before.replace(/[ ]{4}$/, function(t) {
+    return e.selection = t + e.selection, "";
+   });
+   var i = 1, o = 1;
+   /(\n|^)(\t|[ ]{4,}).*\n$/.test(e.before) && (i = 0), /^\n(\t|[ ]{4,})/.test(e.after) && (o = 0), 
+   e.skipLines(i, o), e.selection ? /^[ ]{0,3}\S/m.test(e.selection) ? /\n/.test(e.selection) ? e.selection = e.selection.replace(/^/gm, "    ") : e.before += "    " : e.selection = e.selection.replace(/^(?:[ ]{4}|[ ]{0,3}\t)/gm, "") : (e.startTag = "    ", 
+   e.selection = this.getString("codeexample"));
+  } else e.trimWhitespace(), e.findTags(/`/, /`/), e.startTag || e.endTag ? e.endTag && !e.startTag ? (e.before += e.endTag, 
+  e.endTag = "") : e.startTag = e.endTag = "" : (e.startTag = e.endTag = "`", e.selection || (e.selection = this.getString("codeexample")));
+ }, y.doList = function(e, t, n) {
+  var i = /(\n|^)(([ ]{0,3}([*+-]|\d+[.])[ \t]+.*)(\n.+|\n{2,}([*+-].*|\d+[.])[ \t]+.*|\n{2,}[ \t]+\S.*)*)\n*$/, o = /^\n*(([ ]{0,3}([*+-]|\d+[.])[ \t]+.*)(\n.+|\n{2,}([*+-].*|\d+[.])[ \t]+.*|\n{2,}[ \t]+\S.*)*)\n*/, r = "-", s = 1, a = function() {
+   var e;
+   return n ? (e = " " + s + ". ", s++) : e = " " + r + " ", e;
+  }, l = function(e) {
+   return void 0 === n && (n = /^\s*\d/.test(e)), e = e.replace(/^[ ]{0,3}([*+-]|\d+[.])\s/gm, function() {
+    return a();
+   });
+  };
+  if (e.findTags(/(\n|^)*[ ]{0,3}([*+-]|\d+[.])\s+/, null), !e.before || /\n$/.test(e.before) || /^\n/.test(e.startTag) || (e.before += e.startTag, 
+  e.startTag = ""), e.startTag) {
+   var c = /\d+[.]/.test(e.startTag);
+   if (e.startTag = "", e.selection = e.selection.replace(/\n[ ]{4}/g, "\n"), this.unwrap(e), 
+   e.skipLines(), c && (e.after = e.after.replace(o, l)), n == c) return;
+  }
+  var u = 1;
+  e.before = e.before.replace(i, function(e) {
+   return /^\s*([*+-])/.test(e) && (r = d.$1), u = /[^\n]\n\n[^\n]/.test(e) ? 1 : 0, 
+   l(e);
+  }), e.selection || (e.selection = this.getString("litem"));
+  var h = a(), f = 1;
+  e.after = e.after.replace(o, function(e) {
+   return f = /[^\n]\n\n[^\n]/.test(e) ? 1 : 0, l(e);
+  }), e.trimWhitespace(!0), e.skipLines(u, f, !0), e.startTag = h;
+  var g = h.replace(/./g, " ");
+  this.wrap(e, p.lineLength - g.length), e.selection = e.selection.replace(/\n/g, "\n" + g);
+ }, y.doHeading = function(e) {
+  if (e.selection = e.selection.replace(/\s+/g, " "), e.selection = e.selection.replace(/(^\s+|\s+$)/g, ""), 
+  !e.selection) return e.startTag = "## ", e.selection = this.getString("headingexample"), 
+  e.endTag = " ##", void 0;
+  var t = 0;
+  e.findTags(/#+[ ]*/, /[ ]*#+/), /#+/.test(e.startTag) && (t = d.lastMatch.length), 
+  e.startTag = e.endTag = "", e.findTags(null, /\s?(-+|=+)/), /=+/.test(e.endTag) && (t = 1), 
+  /-+/.test(e.endTag) && (t = 2), e.startTag = e.endTag = "", e.skipLines(1, 1);
+  var n = 0 == t ? 2 : t - 1;
+  if (n > 0) {
+   var i = n >= 2 ? "-" : "=", o = e.selection.length;
+   for (o > p.lineLength && (o = p.lineLength), e.endTag = "\n"; o--; ) e.endTag += i;
+  }
+ }, y.doHorizontalRule = function(e) {
+  e.startTag = "----------\n", e.selection = "", e.skipLines(2, 1, !0);
+ };
+}(), define("pagedown-ace", function() {}), window.PR_SHOULD_USE_CONTINUATION = !0;
 
 var prettyPrintOne, prettyPrint;
 
@@ -13513,7 +14357,7 @@ var prettyPrintOne, prettyPrint;
       y || (b = M);
      }
      m = b.length >= 5 && "lang-" === b.substring(0, 5), !m || y && "string" == typeof y[1] || (m = !1, 
-     b = P), m || (p[v] = b);
+     b = I), m || (p[v] = b);
     }
     var x = d;
     if (d += v.length, m) {
@@ -13529,11 +14373,11 @@ var prettyPrintOne, prettyPrint;
  }
  function r(e) {
   var t = [], n = [];
-  e.tripleQuotedStrings ? t.push([ _, /^(?:\'\'\'(?:[^\'\\]|\\[\s\S]|\'{1,2}(?=[^\']))*(?:\'\'\'|$)|\"\"\"(?:[^\"\\]|\\[\s\S]|\"{1,2}(?=[^\"]))*(?:\"\"\"|$)|\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$))/, null, "'\"" ]) : e.multiLineStrings ? t.push([ _, /^(?:\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$)|\`(?:[^\\\`]|\\[\s\S])*(?:\`|$))/, null, "'\"`" ]) : t.push([ _, /^(?:\'(?:[^\\\'\r\n]|\\.)*(?:\'|$)|\"(?:[^\\\"\r\n]|\\.)*(?:\"|$))/, null, "\"'" ]), 
-  e.verbatimStrings && n.push([ _, /^@\"(?:[^\"]|\"\")*(?:\"|$)/, null ]);
+  e.tripleQuotedStrings ? t.push([ $, /^(?:\'\'\'(?:[^\'\\]|\\[\s\S]|\'{1,2}(?=[^\']))*(?:\'\'\'|$)|\"\"\"(?:[^\"\\]|\\[\s\S]|\"{1,2}(?=[^\"]))*(?:\"\"\"|$)|\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$))/, null, "'\"" ]) : e.multiLineStrings ? t.push([ $, /^(?:\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$)|\`(?:[^\\\`]|\\[\s\S])*(?:\`|$))/, null, "'\"`" ]) : t.push([ $, /^(?:\'(?:[^\\\'\r\n]|\\.)*(?:\'|$)|\"(?:[^\\\"\r\n]|\\.)*(?:\"|$))/, null, "\"'" ]), 
+  e.verbatimStrings && n.push([ $, /^@\"(?:[^\"]|\"\")*(?:\"|$)/, null ]);
   var i = e.hashComments;
   if (i && (e.cStyleComments ? (i > 1 ? t.push([ D, /^#(?:##(?:[^#]|#(?!##))*(?:###|$)|.*)/, null, "#" ]) : t.push([ D, /^#(?:(?:define|e(?:l|nd)if|else|error|ifn?def|include|line|pragma|undef|warning)\b|[^\r\n]*)/, null, "#" ]), 
-  n.push([ _, /^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h(?:h|pp|\+\+)?|[a-z]\w*)>/, null ])) : t.push([ D, /^#[^\r\n]*/, null, "#" ])), 
+  n.push([ $, /^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h(?:h|pp|\+\+)?|[a-z]\w*)>/, null ])) : t.push([ D, /^#[^\r\n]*/, null, "#" ])), 
   e.cStyleComments && (n.push([ D, /^\/\/[^\r\n]*/, null ]), n.push([ D, /^\/\*[\s\S]*?(?:\*\/|$)/, null ])), 
   e.regexLiterals) {
    var r = "/(?=[^/*])(?:[^/\\x5B\\x5C]|\\x5C[\\s\\S]|\\x5B(?:[^\\x5C\\x5D]|\\x5C[\\s\\S])*(?:\\x5D|$))+/";
@@ -13542,7 +14386,7 @@ var prettyPrintOne, prettyPrint;
   var s = e.types;
   s && n.push([ T, s ]);
   var a = ("" + e.keywords).replace(/^ | $/g, "");
-  a.length && n.push([ $, new RegExp("^(?:" + a.replace(/[\s,]+/g, "|") + ")\\b"), null ]), 
+  a.length && n.push([ _, new RegExp("^(?:" + a.replace(/[\s,]+/g, "|") + ")\\b"), null ]), 
   t.push([ M, /^\s+/, null, " \r\n	 " ]);
   var l = /^.[^\s\w\.$@\'\"\`\/\\]*/;
   return n.push([ L, /^@[a-z_$][a-z_$@0-9]*/i, null ], [ T, /^(?:[@_]?[A-Z]+[a-z][A-Za-z_$@0-9]*|\w+_t\b)/, null ], [ M, /^[a-z_$][a-z_$@0-9]*/i, null ], [ L, new RegExp("^(?:0x[a-f0-9]+|(?:\\d(?:_\\d+)*\\d*(?:\\.\\d*)?|\\.\\d\\+)(?:e[+\\-]?\\d+)?)[a-z]*", "i"), null, "0123456789" ], [ M, /^\\[\s\S]?/, null ], [ B, l, null ]), 
@@ -13706,16 +14550,16 @@ var prettyPrintOne, prettyPrint;
   var h, f = 0, g = /\blang(?:uage)?-([\w.]+)(?!\S)/, m = /\bprettyprint\b/, v = /\bprettyprinted\b/, b = /pre|xmp/i, y = /^code$/i, w = /^(?:pre|code|xmp)$/i;
   n();
  }
- var p = window, f = [ "break,continue,do,else,for,if,return,while" ], g = [ f, "auto,case,char,const,default,double,enum,extern,float,goto,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile" ], m = [ g, "catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof" ], v = [ m, "alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,dynamic_cast,explicit,export,friend,inline,late_check,mutable,namespace,nullptr,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where" ], b = [ m, "abstract,boolean,byte,extends,final,finally,implements,import,instanceof,null,native,package,strictfp,super,synchronized,throws,transient" ], y = [ b, "as,base,by,checked,decimal,delegate,descending,dynamic,event,fixed,foreach,from,group,implicit,in,interface,internal,into,is,let,lock,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where" ], w = "all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes", C = [ m, "debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN" ], x = "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END", E = [ f, "and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None" ], A = [ f, "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END" ], S = [ f, "case,done,elif,esac,eval,fi,function,in,local,set,then,until" ], k = [ v, y, C, x + E, A, S ], F = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/, _ = "str", $ = "kwd", D = "com", T = "typ", L = "lit", B = "pun", M = "pln", R = "tag", I = "dec", P = "src", N = "atn", z = "atv", O = "nocode", j = "(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*", H = /\S/, q = r({
+ var p = window, f = [ "break,continue,do,else,for,if,return,while" ], g = [ f, "auto,case,char,const,default,double,enum,extern,float,goto,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile" ], m = [ g, "catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof" ], v = [ m, "alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,dynamic_cast,explicit,export,friend,inline,late_check,mutable,namespace,nullptr,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where" ], b = [ m, "abstract,boolean,byte,extends,final,finally,implements,import,instanceof,null,native,package,strictfp,super,synchronized,throws,transient" ], y = [ b, "as,base,by,checked,decimal,delegate,descending,dynamic,event,fixed,foreach,from,group,implicit,in,interface,internal,into,is,let,lock,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where" ], w = "all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes", C = [ m, "debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN" ], x = "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END", E = [ f, "and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None" ], A = [ f, "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END" ], S = [ f, "case,done,elif,esac,eval,fi,function,in,local,set,then,until" ], k = [ v, y, C, x + E, A, S ], F = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/, $ = "str", _ = "kwd", D = "com", T = "typ", L = "lit", B = "pun", M = "pln", R = "tag", P = "dec", I = "src", N = "atn", O = "atv", z = "nocode", j = "(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*", H = /\S/, q = r({
   keywords: k,
   hashComments: !0,
   cStyleComments: !0,
   multiLineStrings: !0,
   regexLiterals: !0
  }), W = {};
- l(q, [ "default-code" ]), l(o([], [ [ M, /^[^<?]+/ ], [ I, /^<!\w[^>]*(?:>|$)/ ], [ D, /^<\!--[\s\S]*?(?:-\->|$)/ ], [ "lang-", /^<\?([\s\S]+?)(?:\?>|$)/ ], [ "lang-", /^<%([\s\S]+?)(?:%>|$)/ ], [ B, /^(?:<[%?]|[%?]>)/ ], [ "lang-", /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i ], [ "lang-js", /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i ], [ "lang-css", /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i ], [ "lang-in.tag", /^(<\/?[a-z][^<>]*>)/i ] ]), [ "default-markup", "htm", "html", "mxml", "xhtml", "xml", "xsl" ]), 
- l(o([ [ M, /^[\s]+/, null, " 	\r\n" ], [ z, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, "\"'" ] ], [ [ R, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i ], [ N, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i ], [ "lang-uq.val", /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/ ], [ B, /^[=<>\/]+/ ], [ "lang-js", /^on\w+\s*=\s*\"([^\"]+)\"/i ], [ "lang-js", /^on\w+\s*=\s*\'([^\']+)\'/i ], [ "lang-js", /^on\w+\s*=\s*([^\"\'>\s]+)/i ], [ "lang-css", /^style\s*=\s*\"([^\"]+)\"/i ], [ "lang-css", /^style\s*=\s*\'([^\']+)\'/i ], [ "lang-css", /^style\s*=\s*([^\"\'>\s]+)/i ] ]), [ "in.tag" ]), 
- l(o([], [ [ z, /^[\s\S]+/ ] ]), [ "uq.val" ]), l(r({
+ l(q, [ "default-code" ]), l(o([], [ [ M, /^[^<?]+/ ], [ P, /^<!\w[^>]*(?:>|$)/ ], [ D, /^<\!--[\s\S]*?(?:-\->|$)/ ], [ "lang-", /^<\?([\s\S]+?)(?:\?>|$)/ ], [ "lang-", /^<%([\s\S]+?)(?:%>|$)/ ], [ B, /^(?:<[%?]|[%?]>)/ ], [ "lang-", /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i ], [ "lang-js", /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i ], [ "lang-css", /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i ], [ "lang-in.tag", /^(<\/?[a-z][^<>]*>)/i ] ]), [ "default-markup", "htm", "html", "mxml", "xhtml", "xml", "xsl" ]), 
+ l(o([ [ M, /^[\s]+/, null, " 	\r\n" ], [ O, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, "\"'" ] ], [ [ R, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i ], [ N, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i ], [ "lang-uq.val", /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/ ], [ B, /^[=<>\/]+/ ], [ "lang-js", /^on\w+\s*=\s*\"([^\"]+)\"/i ], [ "lang-js", /^on\w+\s*=\s*\'([^\']+)\'/i ], [ "lang-js", /^on\w+\s*=\s*([^\"\'>\s]+)/i ], [ "lang-css", /^style\s*=\s*\"([^\"]+)\"/i ], [ "lang-css", /^style\s*=\s*\'([^\']+)\'/i ], [ "lang-css", /^style\s*=\s*([^\"\'>\s]+)/i ] ]), [ "in.tag" ]), 
+ l(o([], [ [ O, /^[\s\S]+/ ] ]), [ "uq.val" ]), l(r({
   keywords: v,
   hashComments: !0,
   cStyleComments: !0,
@@ -13761,22 +14605,22 @@ var prettyPrintOne, prettyPrint;
   multilineStrings: !0,
   tripleQuotedStrings: !0,
   regexLiterals: !0
- }), [ "coffee" ]), l(o([], [ [ _, /^[\s\S]+/ ] ]), [ "regex" ]);
+ }), [ "coffee" ]), l(o([], [ [ $, /^[\s\S]+/ ] ]), [ "regex" ]);
  var U = p.PR = {
   createSimpleLexer: o,
   registerLangHandler: l,
   sourceDecorator: r,
   PR_ATTRIB_NAME: N,
-  PR_ATTRIB_VALUE: z,
+  PR_ATTRIB_VALUE: O,
   PR_COMMENT: D,
-  PR_DECLARATION: I,
-  PR_KEYWORD: $,
+  PR_DECLARATION: P,
+  PR_KEYWORD: _,
   PR_LITERAL: L,
-  PR_NOCODE: O,
+  PR_NOCODE: z,
   PR_PLAIN: M,
   PR_PUNCTUATION: B,
-  PR_SOURCE: P,
-  PR_STRING: _,
+  PR_SOURCE: I,
+  PR_STRING: $,
   PR_TAG: R,
   PR_TYPE: T,
   prettyPrintOne: p.prettyPrintOne = d,
@@ -16873,7 +17717,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    s = "\n" + c(s, o) + "\n") : (s = t(s), s = l(n(s), o)), "\n<dd>" + s + "</dd>\n";
   }), a(i);
  };
-}(), define("libs/Markdown.Extra", function() {}), define("extensions/markdownExtra", [ "jquery", "underscore", "utils", "classes/Extension", "text!html/markdownExtraSettingsBlock.html", "libs/Markdown.Extra" ], function(e, t, n, i, o) {
+}(), define("pagedown-extra", function() {}), define("extensions/markdownExtra", [ "jquery", "underscore", "utils", "classes/Extension", "text!html/markdownExtraSettingsBlock.html", "pagedown-extra" ], function(e, t, n, i, o) {
  var r = new i("markdownExtra", "Markdown Extra", !0);
  return r.settingsBlock = o, r.defaultConfig = {
   extensions: [ "fenced_code_gfm", "tables", "def_list", "attr_list", "footnotes" ],
@@ -16907,7 +17751,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
     });
    });
   } else "prettify" == r.config.highlighter && (i.highlighter = "prettify", e.hooks.chain("onPreviewRefresh", prettyPrint));
-  Markdown.Extra.init(n, i), n.extraExtensions = r.config.extensions;
+  Markdown.Extra.init(n, i), n.setExtraExtension && n.setExtraExtension(r.config.extensions);
  }, r;
 }), define("text!html/buttonToc.html", [], function() {
  return '<button class="btn btn-default dropdown-toggle" title="Table of contents" data-toggle="dropdown">\n    <i class="icon-list"></i>\n</button>\n<div class="dropdown-menu pull-right">\n    <h3>Table of contents</h3>\n    <div class="table-of-contents">\n    </div>\n</div>\n';
@@ -17238,20 +18082,25 @@ if (hljs.LANGUAGES.glsl = function(e) {
   f = !0, p();
  }, r.onFileClosed = function() {
   c = [];
- }, r.onReady = function() {
+ };
+ var y = !1;
+ r.onReady = function() {
   l = e(".preview-container"), l.scroll(function() {
-   v === !1 && (g = !0, f = !1, b());
+   v === !1 && y === !1 && (g = !0, f = !1, b()), y = !1;
   }), s.session.on("changeScrollTop", function() {
    m === !1 && (f = !0, g = !1, b());
   });
  };
- var y = void 0;
+ var w = void 0;
  return r.onPagedownConfigure = function(t) {
-  y = e("#preview-contents"), t.getConverter().hooks.chain("postConversion", function(e) {
-   return y.height(y.height()), e;
+  w = e("#preview-contents"), t.getConverter().hooks.chain("postConversion", function(e) {
+   return w.height(w.height()), e;
   });
  }, r.onPreviewFinished = function() {
-  y.height("auto"), f = !0, p();
+  var e = w.height();
+  w.height("auto");
+  var t = w.height();
+  f = !0, e > t && (y = !0), p();
  }, r;
 }), define("extensions/buttonFocusMode", [ "jquery", "underscore", "crel", "classes/Extension" ], function(e, t, n, i) {
  function o() {
@@ -17453,7 +18302,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
 }), define("text!html/buttonViewer.html", [], function() {
  return '<a href="viewer.html" class="btn btn-default dropdown-toggle"\n	title="Open in viewer">\n	<i class="icon-resize-full"></i>\n</a>\n';
 }), define("extensions/buttonViewer", [ "jquery", "classes/Extension", "text!html/buttonViewer.html" ], function(e, t, n) {
- var i = new t("buttonViewer", 'Button "Viewer"', !0);
+ var i = new t("buttonViewer", 'Button "Viewer"', !0, !0);
  return i.settingsBlock = '<p>Adds a "Viewer" button over the preview.</p>', i.onCreatePreviewButton = function() {
   return n;
  }, i;
@@ -18404,6 +19253,44 @@ if (hljs.LANGUAGES.glsl = function(e) {
    t.restart();
   });
  }, n;
+}), define("text!html/userCustomSettingsBlock.html", [], function() {
+ return '<p>Allows users to implement their own extension.</p>\n<div class="form-horizontal">\n	<div class="form-group">\n		<label class="col-lg-4 control-label" for="textarea-usercustom-code">JavaScript code\n			<a href="#" class="tooltip-usercustom-extension">(?)</a>\n		</label>\n		<div class="col-lg-7">\n			<textarea id="textarea-usercustom-code" class="form-control"></textarea>\n		</div>\n	</div>\n</div>\n<span class="help-block pull-right"><a target="_blank" href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">More info</a></span>';
+}), define("extensions/userCustom", [ "jquery", "underscore", "utils", "classes/Extension", "fileSystem", "settings", "text!html/userCustomSettingsBlock.html" ], function($, _, utils, Extension, fileSystem, settings, userCustomSettingsBlockHTML) {
+ var userCustom = new Extension("userCustom", "UserCustom extension", !0);
+ userCustom.settingsBlock = userCustomSettingsBlockHTML, userCustom.defaultConfig = {
+  code: ""
+ };
+ var fileMgr = void 0;
+ userCustom.onFileMgrCreated = function(e) {
+  fileMgr = e;
+ };
+ var synchronizer = void 0;
+ userCustom.onSynchronizerCreated = function(e) {
+  synchronizer = e;
+ };
+ var publisher = void 0;
+ userCustom.onPublisherCreated = function(e) {
+  publisher = e;
+ };
+ var eventMgr = void 0;
+ return userCustom.onEventMgrCreated = function(e) {
+  eventMgr = e;
+ }, userCustom.onLoadSettings = function() {
+  utils.setInputValue("#textarea-usercustom-code", userCustom.config.code);
+ }, userCustom.onSaveSettings = function(newConfig, event) {
+  newConfig.code = utils.getInputValue("#textarea-usercustom-code");
+  try {
+   eval(newConfig.code);
+  } catch (e) {
+   eventMgr.onError(e), utils.getInputTextValue("#textarea-usercustom-code", event, /^$/);
+  }
+ }, userCustom.onInit = function() {
+  try {
+   eval(userCustom.config.code);
+  } catch (e) {
+   console.error(e);
+  }
+ }, userCustom;
 }), function(e) {
  var t = "waitForImages";
  e.waitForImages = {
@@ -18444,7 +19331,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    });
   });
  };
-}(jQuery), define("jquery-waitforimages", function() {}), define("eventMgr", [ "jquery", "underscore", "crel", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/partialRendering", "extensions/userCustom", "extensions/buttonMarkdownSyntax", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentTitle", "extensions/documentSelector", "extensions/documentPanel", "extensions/documentManager", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonFocusMode", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonViewer", "extensions/welcomeTour", "bootstrap", "jquery-waitforimages" ], function(e, t, n, i, o, r, s) {
+}(jQuery), define("jquery-waitforimages", function() {}), define("eventMgr", [ "jquery", "underscore", "crel", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/partialRendering", "extensions/buttonMarkdownSyntax", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentTitle", "extensions/documentSelector", "extensions/documentPanel", "extensions/documentManager", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonFocusMode", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonViewer", "extensions/welcomeTour", "extensions/userCustom", "bootstrap", "jquery-waitforimages" ], function(e, t, n, i, o, r, s) {
  function a(e) {
   return t.chain(d).map(function(t) {
    return t.enabled && t[e];
@@ -18492,32 +19379,35 @@ if (hljs.LANGUAGES.glsl = function(e) {
    var s = o.onSaveSettings;
    s && s(r, n), e[o.extensionId] = r;
   });
- }, c("onMessage"), c("onError"), c("onOfflineChanged"), c("onUserActive"), c("onAsyncRunning", !0), 
- c("onPeriodicRun", !0), c("onFileMgrCreated"), c("onSynchronizerCreated"), c("onPublisherCreated"), 
+ }, c("onMessage"), c("onError"), c("onOfflineChanged"), c("onUserActive"), c("onAsyncRunning"), 
+ c("onPeriodicRun"), c("onFileMgrCreated"), c("onSynchronizerCreated"), c("onPublisherCreated"), 
  c("onEventMgrCreated"), c("onFileCreated"), c("onFileDeleted"), c("onFileSelected"), 
  c("onFileOpen"), c("onFileClosed"), c("onContentChanged"), c("onTitleChanged"), 
  c("onFoldersChanged"), c("onSyncRunning"), c("onSyncSuccess"), c("onSyncImportSuccess"), 
  c("onSyncExportSuccess"), c("onSyncRemoved"), c("onPublishRunning"), c("onPublishSuccess"), 
  c("onNewPublishSuccess"), c("onPublishRemoved"), c("onLayoutConfigure"), c("onLayoutCreated"), 
  c("onLayoutResize"), c("onPagedownConfigure"), c("onSectionsCreated"), c("onAceCreated");
- var p = l("onPreviewFinished"), f = a("onAsyncPreview"), g = f.length + 1, m = void 0, v = void 0;
+ var p = l("onPreviewFinished"), f = a("onAsyncPreview"), g = void 0, m = void 0;
  u.onAsyncPreview = function() {
-  function e() {
-   ++n === g && (logger.log("Preview time: " + (new Date() - u.previewStartTime)), 
-   t.defer(function() {
-    var e = "";
-    t.each(m.children, function(t) {
-     e += t.innerHTML;
-    }), p(i.trim(e));
-   }));
+  function e(n) {
+   var o = n.length ? n.shift() : function() {
+    logger.log("Preview time: " + (new Date() - u.previewStartTime)), t.defer(function() {
+     var e = "";
+     t.each(g.children, function(t) {
+      e += t.innerHTML;
+     }), p(i.trim(e));
+    });
+   };
+   o(function() {
+    e(n);
+   });
   }
-  logger.log("onAsyncPreview"), logger.log("Conversion time: " + (new Date() - u.previewStartTime));
-  var n = 0;
-  v.waitForImages(e), t.each(f, function(t) {
-   t(e);
-  });
+  logger.log("onAsyncPreview"), logger.log("Conversion time: " + (new Date() - u.previewStartTime)), 
+  e(f.concat([ function(e) {
+   m.waitForImages(e);
+  } ]));
  };
- var b = l("onReady");
+ var v = l("onReady");
  return u.onReady = function() {
   function i(e) {
    var i = n("div", {
@@ -18525,7 +19415,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    }), o = e();
    return t.isString(o) ? i.innerHTML = o : t.isElement(o) && i.appendChild(o), i;
   }
-  if (m = document.getElementById("preview-contents"), v = e(m), viewerMode === !1) {
+  if (g = document.getElementById("preview-contents"), m = e(g), viewerMode === !1) {
    var o = t.chain(d).sortBy(function(e) {
     return e.extensionName.toLowerCase();
    }).reduce(function(e, n) {
@@ -18540,31 +19430,31 @@ if (hljs.LANGUAGES.glsl = function(e) {
    var r = a("onCreateButton"), l = document.createDocumentFragment();
    t.each(r, function(e) {
     l.appendChild(i(e));
-   }), document.getElementById("extension-buttons").appendChild(l), logger.log("onCreatePreviewButton");
-   var c = a("onCreatePreviewButton"), u = document.createDocumentFragment();
+   }), document.getElementById("extension-buttons").appendChild(l), logger.log("onCreateEditorButton");
+   var c = a("onCreateEditorButton"), u = document.createDocumentFragment();
    t.each(c, function(e) {
     u.appendChild(i(e));
    });
-   var h = document.querySelector(".extension-preview-buttons");
+   var h = document.querySelector(".extension-editor-buttons");
    h.appendChild(u);
-   var p = e(h), f = p.width();
-   p.find(".btn-group").each(function() {
-    var t = e(this);
-    t.find(".dropdown-menu").css({
-     right: -f + t.width() + t.position().left
-    });
-   }), logger.log("onCreateEditorButton");
-   var g = a("onCreateEditorButton"), y = document.createDocumentFragment();
-   t.each(g, function(e) {
-    y.appendChild(i(e));
-   });
-   var w = document.querySelector(".extension-editor-buttons");
-   w.appendChild(y);
   }
-  b();
+  logger.log("onCreatePreviewButton");
+  var p = a("onCreatePreviewButton"), f = document.createDocumentFragment();
+  t.each(p, function(e) {
+   f.appendChild(i(e));
+  });
+  var b = document.querySelector(".extension-preview-buttons");
+  b.appendChild(f);
+  var y = e(b), w = y.width();
+  y.find(".btn-group").each(function() {
+   var t = e(this);
+   t.find(".dropdown-menu").css({
+    right: -w + t.width() + t.position().left
+   });
+  }), v();
  }, u.onEventMgrCreated(u), u;
 }), define("text!html/bodyIndex.html", [], function() {
- return '<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav left-space"></div>\n		<div class="nav right-space pull-right"></div>\n		<ul class="nav">\n			<li class="wmd-button-group1 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group2 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group3 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group4 btn-group"></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li class="btn-group"><button\n					class="btn btn-success action-create-file" title="New document">\n					<i class="icon-file"></i>\n				</button>\n				<button class="btn btn-success" title="Delete current document"\n					data-toggle="modal" data-target=".modal-remove-file-confirm">\n					<i class="icon-trash"></i>\n				</button></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li id="extension-buttons"></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><a class="btn btn-success file-title-navbar" href="#"\n				title="Rename current document"> </a></li>\n			<li><input type="text"\n				class="col-lg-4 form-control hide input-file-title"\n				placeholder="Document title" /></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><i class="working-indicator icon-none"></i></li>\n		</ul>\n	</div>\n</div>\n<div id="wmd-input" class="ui-layout-center"></div>\n<div class="ui-layout-east preview-container"></div>\n<div class="ui-layout-south preview-container"></div>\n<div id="wmd-button-bar" class="hide"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".menu-panel" title="Menu">\n		<i class="icon-left-open"></i> <img\n			data-stackedit-src="stackedit-64.png" width="32" height="32" />\n	</button>\n	<div class="panel-content">\n		<div class="list-group">\n			<a href="viewer.html" title="StackEdit Viewer"\n				class="list-group-item"><i class="icon-resize-full"></i>\n				StackEdit Viewer</a> <a href="#" data-toggle="collapse"\n				data-target=".collapse-open-from" class="list-group-item"><i\n				class="icon-hdd"></i> Open from...</a>\n			<div class="sub-menu collapse collapse-open-from clearfix">\n				<ul class="nav">\n					<li><a data-toggle="modal" data-target=".modal-import-url"\n						class="action-reset-input" href="#">Open from URL</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-markdown"\n						class="action-reset-input" href="#">Import from hard drive</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-html"\n						class="action-reset-input" href="#">Convert HTML to Markdown</a></li>\n				</ul>\n			</div>\n\n			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"\n				class="list-group-item"><i class="icon-hdd"></i> Save as...</a>\n			<div class="sub-menu collapse collapse-save-as clearfix">\n				<ul class="nav">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n				</ul>\n			</div>\n		</div>\n		<div class=dropdown-header>SYNCHRONIZE</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-gdrive" class="list-group-item"><i\n				class="icon-provider-gdrive"></i> Google Drive</a>\n			<div class="sub-menu collapse collapse-sync-gdrive clearfix">\n				<ul class="nav">\n					<li><a href="#" class="action-sync-import-gdrive"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Google Drive</a></li>\n					<li><a href="#" class="action-sync-export-dialog-gdrive">Export\n							to Google Drive</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-dropbox" class="list-group-item"><i\n				class="icon-provider-dropbox"></i> Dropbox</a>\n			<div class="sub-menu collapse collapse-sync-dropbox clearfix">\n				<ul class="nav">\n					<li><a class="action-sync-import-dropbox" href="#"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Dropbox</a></li>\n					<li><a href="#" class="action-sync-export-dialog-dropbox">Export\n							to Dropbox</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-sync"\n				class="action-reset-input list-group-item"><i\n				class="icon-refresh"></i> Manage synchronization</a>\n		</div>\n		<div class=dropdown-header>PUBLISH</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"\n				class="list-group-item"><i class="icon-share"></i> Publish on...</a>\n			<div class="sub-menu collapse collapse-publish-on clearfix">\n				<ul class="nav">\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-publish"\n				class="action-reset-input list-group-item"><i class="icon-share"></i>\n				Manage publication</a>\n		</div>\n		<ul class="nav">\n			<li><a href="#" data-toggle="modal"\n				data-target=".modal-settings" class="action-load-settings"><i\n					class="icon-cog"></i> Settings</a></li>\n			<li><a href="#" data-toggle="modal" data-target=".modal-about"><i\n					class="icon-help-circled"></i> About</a></li>\n		</ul>\n\n	</div>\n</div>\n\n\n<div class="document-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i> <i class="icon-right-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<button type="button" class="close" title="clear">&times;</button>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n\n<div class="modal modal-document-manager">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Manage documents</h3>\n			</div>\n			<div class="modal-body">\n				<div></div>\n				<ul class="nav nav-pills document-list">\n					<li class="pull-right dropdown"><a href="#"\n						data-toggle="dropdown"><i class="icon-check"></i> Selection <b\n							class="caret"></b></a>\n						<ul class="dropdown-menu">\n							<li><a href="#" class="action-select-all"><i\n									class="icon-check"></i> Select all</a></li>\n							<li><a href="#" class="action-unselect-all"><i\n									class="icon-check-empty"></i> Unselect all</a></li>\n							<li class="divider"></li>\n							<li><a href="#" class="action-move-items"><i\n									class="icon-forward"></i> Move to folder</a></li>\n							<li><a href="#" class="action-delete-items"><i\n									class="icon-trash"></i> Delete</a></li>\n						</ul></li>\n					<li class="pull-right"><a href="#"\n						class="action-create-folder"> <i class="icon-folder"></i>\n							Create folder\n					</a></li>\n					<li class="disabled"><a><i class="icon-file"></i> <span\n							class="document-count"></span></a></li>\n					<li class="disabled"><a><i class="icon-folder"></i> <span\n							class="folder-count"></span></a></li>\n				</ul>\n				<div class="list-group document-list"></div>\n				<p class="confirm-delete hide">The following documents will be\n					deleted locally:</p>\n				<p class="choose-folder hide">Please choose a destination\n					folder:</p>\n				<div class="list-group selected-document-list hide"></div>\n				<div class="list-group select-folder-list hide"></div>\n			</div>\n			<div class="modal-footer">\n				<a href="#"\n					class="btn btn-default confirm-delete choose-folder action-cancel hide">Cancel</a>\n				<a href="#"\n					class="btn btn-primary confirm-delete action-delete-items-confirm hide">OK</a>\n				<a href="#" class="btn btn-primary document-list"\n					data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-link">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Hyperlink</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the link URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-globe"></i></span><input\n						id="input-insert-link" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/ "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-insert-link"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Image</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the image URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-picture"></i></span><input\n						id="input-insert-image" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/image.jpg "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default action-import-image-gplus"\n					data-dismiss="modal"><i class="icon-provider-gplus"></i> Import\n					from Google+</a> <a href="#" class="btn btn-default"\n					data-dismiss="modal">Cancel</a> <a href="#"\n					class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Google+ image import</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group">\n						<div class="col-lg-7">\n							<img>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-title">Title (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-import-image-title"\n								placeholder="Image title" class="form-control">\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-size">Size limit (optional)</label>\n						<div class="col-lg-7 form-inline">\n							<input type="text" id="input-import-image-size" placeholder="123"\n								class="col-lg-3 form-control"> px\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-image"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-remove-file-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Delete</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					Are you sure you want to delete "<span class="file-title"></span>"?\n				</p>\n				<blockquote>\n					<b>NOTE:</b> This will not delete the file on synchronized\n					locations.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-remove-file"\n					data-dismiss="modal">Delete</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-url">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Open from URL</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide a link to a Markdown document.</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label" for="input-import-url">URL</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-import-url"\n								placeholder="http://www.abc.com/xyz.md" class="form-control">\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-import-url">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-markdown">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Import from hard drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your Markdown files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-markdown"\n						multiple class="form-control" />\n				</p>\n				<p>Or drag and drop your Markdown files here:</p>\n				<p id="dropzone-import-harddrive-markdown" class="drop-zone">Drop\n					files here</p>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-html">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Convert HTML to Markdown</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your HTML files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-html" multiple\n						class="form-control" />\n				</p>\n				<p>Or drag and drop your HTML files here:</p>\n				<p id="dropzone-import-harddrive-html" class="drop-zone">Drop\n					files here</p>\n				<p>Or insert your HTML code here:</p>\n				<textarea id="input-convert-html" class="form-control"></textarea>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Close</a> <a\n					href="#" class="btn btn-primary action-convert-html"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-gdrive">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Google Drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-gdrive-parentid">Folder ID\n							(optional)</label>\n						<div class="col-lg-8">\n							<div class="input-group">\n								<input type="text" id="input-sync-export-gdrive-parentid"\n									placeholder="FolderID" class="form-control">\n								<div class="input-group-btn">\n									<a class="btn btn-link export-gdrive-choose-folder"\n										title="Choose folder" data-dismiss="modal"><i\n										class="icon-folder-open"></i></a>\n								</div>\n							</div>\n							<span class="help-block"> If no folder ID is supplied, the\n								file will be created in your root folder. </span>\n						</div>\n					</div>\n					<div class="form-group">\n						<div class="col-lg-3 control-label"></div>\n						<div class="col-lg-8">\n							<label> <input id="input-sync-export-gdrive-realtime"\n								type="checkbox"> Create a real time collaborative\n								document\n							</label>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-gdrive-fileid">Existing file ID\n							(optional)</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block"> This will overwrite the existing file\n								on the server. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>NOTE:</b>\n					<ul>\n						<li>You can move or rename the file afterwards within Google\n							Drive.</li>\n						<li>Real time collaborative documents can\'t be open outside\n							StackEdit.</li>\n						<li>Real time collaborative documents can\'t have multiple\n							synchronized locations.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-gdrive">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-dropbox">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Dropbox</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-dropbox-path">File path</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-dropbox-path"\n								placeholder="/path/to/My Document.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>NOTE:</b>\n					<ul>\n						<li>Dropbox file path does not depend on document title.</li>\n						<li>The title of your document will not be synchronized.</li>\n						<li>Destination folder must exist.</li>\n						<li>Any existing file at this location will be overwritten.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-dropbox">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-sync">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Synchronization</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-sync-list hide">\n					"<span class="file-title"></span>" is synchronized with the\n					following location(s):\n				</p>\n				<div class="msg-sync-list sync-list hide"></div>\n				<blockquote class="msg-sync-list hide">\n					<b>NOTE:</b> Removing a synchronized location will not delete any\n					file.\n				</blockquote>\n				<blockquote class="msg-no-sync hide">\n					"<span class="file-title"></span>" is not synchronized yet. <br />\n					<br /> <b>NOTE:</b> You can add synchronized locations by\n					exporting your document using <i class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					or <i class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">\n					Publish on <span class="publish-provider-name"></span>\n				</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-host">Host</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-host"\n								placeholder="host.name.or.ip" class="form-control"> <span\n								class="help-block"> Host must be accessible publicly,\n								unless you are hosting your own <a target="_blank"\n								href="https://github.com/benweet/stackedit-ssh-proxy">SSH\n									proxy</a>.\n							</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-port">Port\n							(optional)</label>\n						<div class="col-lg-2">\n							<input type="text" id="input-publish-ssh-port" placeholder="22"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-username">Username</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-password">Password</label>\n						<div class="col-lg-7">\n							<input type="password" id="input-publish-ssh-password"\n								placeholder="password" class="form-control"> <span\n								class="help-block"> Passwords are transmitted in clear,\n								unless you are hosting your own <a target="_blank"\n								href="https://github.com/benweet/stackedit-ssh-proxy">SSH\n									proxy</a>.\n							</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-reponame">Repository</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-reponame"\n								placeholder="repository-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-username">Username (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-branch">Branch</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-branch"\n								placeholder="branch-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-file-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-file-path"\n								placeholder="path/to/file.md" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-filename">Filename</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-filename"\n								placeholder="filename" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-gist-id">Existing\n							ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gist-id"\n								placeholder="GistID" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gist-public">Public</label>\n						<div class="col-lg-7">\n							<div class="checkbox">\n								<input type="checkbox" id="input-publish-gist-public"\n									checked="checked" />\n							</div>\n						</div>\n					</div>\n					<div class="form-group modal-publish-blogger">\n						<label class="col-lg-4 control-label"\n							for="input-publish-blogger-url">Blog URL</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-blogger-url"\n								placeholder="http://exemple.blogger.com/" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-tumblr">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">Blog hostname</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-tumblr-hostname"\n								placeholder="exemple.tumblr.com" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-wordpress">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">WordPress site</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-wordpress-site"\n								placeholder="exemple.wordpress.com" class="form-control">\n							<span class="help-block"> <a target="_blank"\n								href="http://jetpack.me/">Jetpack plugin</a> is required for\n								self-hosted sites.\n							</span>\n						</div>\n					</div>\n					<div\n						class="form-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n						<label class="col-lg-4 control-label" for="input-publish-postid">Update\n							existing post ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-postid" placeholder="PostID"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-blogger">\n						<label class="col-lg-4 control-label" for="input-publish-labels">Labels\n							(comma separated)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-labels"\n								placeholder="Label1, Label2" class="form-control">\n						</div>\n					</div>\n					<div\n						class="form-group modal-publish-tumblr modal-publish-wordpress">\n						<label class="col-lg-4 control-label" for="input-publish-tags">Tags\n							(comma separated)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-tags"\n								placeholder="Tag1, Tag2" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-dropbox">\n						<label class="col-lg-4 control-label"\n							for="input-publish-dropbox-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-dropbox-path"\n								placeholder="/path/to/My Document.html" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-fileid">File ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block">If no file ID is supplied, a new file\n								will be created in your Google Drive root folder. You can move\n								the file afterwards within Google Drive.</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-filename">Force filename\n							(optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-filename"\n								placeholder="Filename" class="form-control"> <span\n								class="help-block">If no file name is supplied, the\n								document title will be used.</span>\n						</div>\n					</div>\n\n					<div class="form-group">\n						<label class="col-lg-4 control-label">Format</label>\n						<div class="col-lg-7">\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="markdown"> Markdown\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="html"> HTML\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="template"> Template\n								</label>\n							</div>\n						</div>\n					</div>\n					<div class="collapse publish-custom-template-collapse">\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<div class="checkbox">\n									<label> <input type="checkbox"\n										id="checkbox-publish-custom-template"> Custom template\n									</label> <a href="#" class="tooltip-template">(?)</a>\n								</div>\n							</div>\n						</div>\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<textarea class="form-control"\n									id="textarea-publish-custom-template"></textarea>\n							</div>\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-process-publish">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Publication</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-publish-list hide">\n					"<span class="file-title"></span>" is published on the following\n					location(s):\n				</p>\n				<div class="msg-publish-list publish-list hide"></div>\n				<blockquote>\n					<div class="msg-no-publish hide">\n						"<span class="file-title"></span>" is not published yet. <br /> <br />\n					</div>\n					<b>NOTE:</b> You can add publications using "Publish on" sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Settings</h3>\n				<ul class="nav nav-tabs">\n					<li class="active"><a class="action-load-settings"\n						href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-publish" data-toggle="tab">Publish</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>\n				</ul>\n			</div>\n			<div class="modal-body">\n\n				<div class="tab-content clearfix">\n					<div class="tab-pane active" id="tabpane-settings-editor">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Layout orientation</label>\n								<div class="col-lg-7">\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="horizontal">\n											Horizontal\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="vertical">\n											Vertical\n										</label>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label" for="input-settings-theme">Theme</label>\n								<div class="col-lg-7">\n									<select id="input-settings-theme" class="form-control">\n									</select> <span class="help-block"><a target="_blank"\n										href="https://github.com/benweet/stackedit/blob/master/doc/theming.md#stackedit-theming-guide">Create\n											your own theme...</a></span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-lazy-rendering">Lazy rendering <a\n									href="#" class="tooltip-lazy-rendering">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n										<input type="checkbox" id="input-settings-lazy-rendering" />\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-editor-font-family">Editor font</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-editor-font-family"\n										class="form-control col-lg-7"> <input type="text"\n										id="input-settings-editor-font-size"\n										class="form-control col-lg-2"> px\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-editor-max-width">Editor max width</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text"\n										id="input-settings-editor-max-width"\n										class="form-control col-lg-3"> px\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-default-content">Default content\n									<a href="#" class="tooltip-default-content">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-default-content"\n										class="form-control"></textarea>\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-publish">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-publish-commit-msg">Commit message</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-publish-commit-msg"\n										class="form-control">\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-publish-template">Default\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-publish-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-ssh-proxy">SSH proxy</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-ssh-proxy"\n										class="form-control">\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-extensions">\n						<div class="panel-group accordion-extensions"></div>\n						<span class="help-block pull-right"><a target="_blank"\n							href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">Create\n								your own extension...</a></span>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-utils">\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-primary action-import-settings"><i\n								class="icon-wrench icon-white"></i> Import settings</a> <a href="#"\n								class="btn btn-block btn-primary action-export-settings"\n								data-dismiss="modal"><i class="icon-wrench icon-white"></i>\n								Export settings</a> <a href="#"\n								class="btn btn-block btn-primary action-default-settings"\n								data-dismiss="modal"><i class="icon-wrench icon-white"></i>\n								Load default settings</a> <input type="file"\n								id="input-file-import-settings" class="hide">\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#" class="btn btn-block btn-primary action-welcome-file"\n								data-dismiss="modal"><i class="icon-help-circled icon-white"></i>\n								Welcome document</a> <a href="#"\n								class="btn btn-block btn-primary action-welcome-tour"\n								data-dismiss="modal" data-dismiss="modal"><i\n								class="icon-help-circled icon-white"></i> Welcome tour</a>\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#" class="btn btn-block btn-primary"\n								data-dismiss="modal" data-toggle="modal"\n								data-target=".modal-app-reset"><i\n								class="icon-fire icon-white"></i> Reset application</a>\n						</div>\n					</div>\n				</div>\n\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default"\n					data-dismiss="modal">Cancel</a> <a href="#"\n					class="btn btn-primary action-apply-settings" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-app-reset">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Reset application</h3>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all your local documents.</p>\n				<blockquote>Are you sure?</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-app-reset"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="lock-ui hide"></div>\n<div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>';
+ return '<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav left-space"></div>\n		<div class="nav right-space pull-right"></div>\n		<ul class="nav">\n			<li class="wmd-button-group1 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group2 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group3 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group4 btn-group"></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li class="btn-group"><button\n					class="btn btn-success action-create-file" title="New document">\n					<i class="icon-file"></i>\n				</button>\n				<button class="btn btn-success" title="Delete current document"\n					data-toggle="modal" data-target=".modal-remove-file-confirm">\n					<i class="icon-trash"></i>\n				</button></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li id="extension-buttons"></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><a class="btn btn-success file-title-navbar" href="#"\n				title="Rename current document"> </a></li>\n			<li><input type="text"\n				class="col-lg-4 form-control hide input-file-title"\n				placeholder="Document title" /></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><i class="working-indicator icon-none"></i></li>\n		</ul>\n	</div>\n</div>\n<div id="wmd-input" class="ui-layout-center"></div>\n<div class="ui-layout-east preview-container"></div>\n<div class="ui-layout-south preview-container"></div>\n<div id="wmd-button-bar" class="hide"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".menu-panel" title="Menu">\n		<i class="icon-left-open"></i> <img\n			data-stackedit-src="stackedit-64.png" width="32" height="32" />\n	</button>\n	<div class="panel-content">\n		<div class="list-group">\n			<a href="viewer.html" title="StackEdit Viewer"\n				class="list-group-item"><i class="icon-resize-full"></i>\n				StackEdit Viewer</a> <a href="#" data-toggle="collapse"\n				data-target=".collapse-open-from" class="list-group-item"><i\n				class="icon-hdd"></i> Open from...</a>\n			<div class="sub-menu collapse collapse-open-from clearfix">\n				<ul class="nav">\n					<li><a data-toggle="modal" data-target=".modal-import-url"\n						class="action-reset-input" href="#">Open from URL</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-markdown"\n						class="action-reset-input" href="#">Import from hard drive</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-html"\n						class="action-reset-input" href="#">Convert HTML to Markdown</a></li>\n				</ul>\n			</div>\n\n			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"\n				class="list-group-item"><i class="icon-hdd"></i> Save as...</a>\n			<div class="sub-menu collapse collapse-save-as clearfix">\n				<ul class="nav">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n				</ul>\n			</div>\n		</div>\n		<div class=dropdown-header>SYNCHRONIZE</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-gdrive" class="list-group-item"><i\n				class="icon-provider-gdrive"></i> Google Drive</a>\n			<div class="sub-menu collapse collapse-sync-gdrive clearfix">\n				<ul class="nav">\n					<li><a href="#" class="action-sync-import-gdrive"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Google Drive</a></li>\n					<li><a href="#" class="action-sync-export-dialog-gdrive">Export\n							to Google Drive</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-dropbox" class="list-group-item"><i\n				class="icon-provider-dropbox"></i> Dropbox</a>\n			<div class="sub-menu collapse collapse-sync-dropbox clearfix">\n				<ul class="nav">\n					<li><a class="action-sync-import-dropbox" href="#"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Dropbox</a></li>\n					<li><a href="#" class="action-sync-export-dialog-dropbox">Export\n							to Dropbox</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-sync"\n				class="action-reset-input list-group-item"><i\n				class="icon-refresh"></i> Manage synchronization</a>\n		</div>\n		<div class=dropdown-header>PUBLISH</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"\n				class="list-group-item"><i class="icon-share"></i> Publish on...</a>\n			<div class="sub-menu collapse collapse-publish-on clearfix">\n				<ul class="nav">\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-publish"\n				class="action-reset-input list-group-item"><i class="icon-share"></i>\n				Manage publication</a>\n		</div>\n		<ul class="nav">\n			<li><a href="#" data-toggle="modal"\n				data-target=".modal-settings" class="action-load-settings"><i\n					class="icon-cog"></i> Settings</a></li>\n			<li><a href="#" data-toggle="modal" data-target=".modal-about"><i\n					class="icon-help-circled"></i> About</a></li>\n		</ul>\n\n	</div>\n</div>\n\n\n<div class="document-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i> <i class="icon-right-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<button type="button" class="close" title="clear">&times;</button>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n\n<div class="modal modal-document-manager">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Manage documents</h3>\n			</div>\n			<div class="modal-body">\n				<div></div>\n				<ul class="nav nav-pills document-list">\n					<li class="pull-right dropdown"><a href="#"\n						data-toggle="dropdown"><i class="icon-check"></i> Selection <b\n							class="caret"></b></a>\n						<ul class="dropdown-menu">\n							<li><a href="#" class="action-select-all"><i\n									class="icon-check"></i> Select all</a></li>\n							<li><a href="#" class="action-unselect-all"><i\n									class="icon-check-empty"></i> Unselect all</a></li>\n							<li class="divider"></li>\n							<li><a href="#" class="action-move-items"><i\n									class="icon-forward"></i> Move to folder</a></li>\n							<li><a href="#" class="action-delete-items"><i\n									class="icon-trash"></i> Delete</a></li>\n						</ul></li>\n					<li class="pull-right"><a href="#"\n						class="action-create-folder"> <i class="icon-folder"></i>\n							Create folder\n					</a></li>\n					<li class="disabled"><a><i class="icon-file"></i> <span\n							class="document-count"></span></a></li>\n					<li class="disabled"><a><i class="icon-folder"></i> <span\n							class="folder-count"></span></a></li>\n				</ul>\n				<div class="list-group document-list"></div>\n				<p class="confirm-delete hide">The following documents will be\n					deleted locally:</p>\n				<p class="choose-folder hide">Please choose a destination\n					folder:</p>\n				<div class="list-group selected-document-list hide"></div>\n				<div class="list-group select-folder-list hide"></div>\n			</div>\n			<div class="modal-footer">\n				<a href="#"\n					class="btn btn-default confirm-delete choose-folder action-cancel hide">Cancel</a>\n				<a href="#"\n					class="btn btn-primary confirm-delete action-delete-items-confirm hide">OK</a>\n				<a href="#" class="btn btn-primary document-list"\n					data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-link">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Hyperlink</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the link URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-globe"></i></span><input\n						id="input-insert-link" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/ "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-insert-link"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Image</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the image URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-picture"></i></span><input\n						id="input-insert-image" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/image.jpg "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default action-import-image-gplus"\n					data-dismiss="modal"><i class="icon-provider-gplus"></i> Import\n					from Google+</a> <a href="#" class="btn btn-default"\n					data-dismiss="modal">Cancel</a> <a href="#"\n					class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Google+ image import</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group">\n						<div class="col-lg-7">\n							<img>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-title">Title (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-import-image-title"\n								placeholder="Image title" class="form-control">\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-size">Size limit (optional)</label>\n						<div class="col-lg-7 form-inline">\n							<input type="text" id="input-import-image-size" placeholder="123"\n								class="col-lg-3 form-control"> px\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-image"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-remove-file-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Delete</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					Are you sure you want to delete "<span class="file-title"></span>"?\n				</p>\n				<blockquote>\n					<b>NOTE:</b> This will not delete the file on synchronized\n					locations.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-remove-file"\n					data-dismiss="modal">Delete</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-url">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Open from URL</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide a link to a Markdown document.</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label" for="input-import-url">URL</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-import-url"\n								placeholder="http://www.abc.com/xyz.md" class="form-control">\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-import-url">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-markdown">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Import from hard drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your Markdown files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-markdown"\n						multiple class="form-control" />\n				</p>\n				<p>Or drag and drop your Markdown files here:</p>\n				<p id="dropzone-import-harddrive-markdown" class="drop-zone">Drop\n					files here</p>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-html">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Convert HTML to Markdown</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your HTML files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-html" multiple\n						class="form-control" />\n				</p>\n				<p>Or drag and drop your HTML files here:</p>\n				<p id="dropzone-import-harddrive-html" class="drop-zone">Drop\n					files here</p>\n				<p>Or insert your HTML code here:</p>\n				<textarea id="input-convert-html" class="form-control"></textarea>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Close</a> <a\n					href="#" class="btn btn-primary action-convert-html"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-gdrive">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Google Drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-gdrive-parentid">Folder ID\n							(optional)</label>\n						<div class="col-lg-8">\n							<div class="input-group">\n								<input type="text" id="input-sync-export-gdrive-parentid"\n									placeholder="FolderID" class="form-control">\n								<div class="input-group-btn">\n									<a class="btn btn-link export-gdrive-choose-folder"\n										title="Choose folder" data-dismiss="modal"><i\n										class="icon-folder-open"></i></a>\n								</div>\n							</div>\n							<span class="help-block"> If no folder ID is supplied, the\n								file will be created in your root folder. </span>\n						</div>\n					</div>\n					<div class="form-group">\n						<div class="col-lg-3 control-label"></div>\n						<div class="col-lg-8">\n							<label> <input id="input-sync-export-gdrive-realtime"\n								type="checkbox"> Create a real time collaborative\n								document\n							</label>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-gdrive-fileid">Existing file ID\n							(optional)</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block"> This will overwrite the existing file\n								on the server. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>NOTE:</b>\n					<ul>\n						<li>You can move or rename the file afterwards within Google\n							Drive.</li>\n						<li>Real time collaborative documents can\'t be open outside\n							StackEdit.</li>\n						<li>Real time collaborative documents can\'t have multiple\n							synchronized locations.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-gdrive">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-dropbox">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Dropbox</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-dropbox-path">File path</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-dropbox-path"\n								placeholder="/path/to/My Document.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>NOTE:</b>\n					<ul>\n						<li>Dropbox file path does not depend on document title.</li>\n						<li>The title of your document will not be synchronized.</li>\n						<li>Destination folder must exist.</li>\n						<li>Any existing file at this location will be overwritten.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-dropbox">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-sync">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Synchronization</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-sync-list hide">\n					"<span class="file-title"></span>" is synchronized with the\n					following location(s):\n				</p>\n				<div class="msg-sync-list sync-list hide"></div>\n				<blockquote class="msg-sync-list hide">\n					<b>NOTE:</b> Removing a synchronized location will not delete any\n					file.\n				</blockquote>\n				<blockquote class="msg-no-sync hide">\n					"<span class="file-title"></span>" is not synchronized yet. <br />\n					<br /> <b>NOTE:</b> You can add synchronized locations by\n					exporting your document using <i class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					or <i class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">\n					Publish on <span class="publish-provider-name"></span>\n				</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-host">Host</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-host"\n								placeholder="host.name.or.ip" class="form-control"> <span\n								class="help-block"> Host must be accessible publicly,\n								unless you are hosting your own <a target="_blank"\n								href="https://github.com/benweet/stackedit-ssh-proxy">SSH\n									proxy</a>.\n							</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-port">Port\n							(optional)</label>\n						<div class="col-lg-2">\n							<input type="text" id="input-publish-ssh-port" placeholder="22"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-username">Username</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-password">Password</label>\n						<div class="col-lg-7">\n							<input type="password" id="input-publish-ssh-password"\n								placeholder="password" class="form-control"> <span\n								class="help-block"> Passwords are transmitted in clear,\n								unless you are hosting your own <a target="_blank"\n								href="https://github.com/benweet/stackedit-ssh-proxy">SSH\n									proxy</a>.\n							</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-reponame">Repository</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-reponame"\n								placeholder="repository-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-username">Username (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-branch">Branch</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-branch"\n								placeholder="branch-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-file-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-file-path"\n								placeholder="path/to/file.md" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-filename">Filename</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-filename"\n								placeholder="filename" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-gist-id">Existing\n							ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gist-id"\n								placeholder="GistID" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gist-public">Public</label>\n						<div class="col-lg-7">\n							<div class="checkbox">\n								<input type="checkbox" id="input-publish-gist-public"\n									checked="checked" />\n							</div>\n						</div>\n					</div>\n					<div class="form-group modal-publish-blogger">\n						<label class="col-lg-4 control-label"\n							for="input-publish-blogger-url">Blog URL</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-blogger-url"\n								placeholder="http://exemple.blogger.com/" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-tumblr">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">Blog hostname</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-tumblr-hostname"\n								placeholder="exemple.tumblr.com" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-wordpress">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">WordPress site</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-wordpress-site"\n								placeholder="exemple.wordpress.com" class="form-control">\n							<span class="help-block"> <a target="_blank"\n								href="http://jetpack.me/">Jetpack plugin</a> is required for\n								self-hosted sites.\n							</span>\n						</div>\n					</div>\n					<div\n						class="form-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n						<label class="col-lg-4 control-label" for="input-publish-postid">Update\n							existing post ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-postid" placeholder="PostID"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-blogger">\n						<label class="col-lg-4 control-label" for="input-publish-labels">Labels\n							(comma separated)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-labels"\n								placeholder="Label1, Label2" class="form-control">\n						</div>\n					</div>\n					<div\n						class="form-group modal-publish-tumblr modal-publish-wordpress">\n						<label class="col-lg-4 control-label" for="input-publish-tags">Tags\n							(comma separated)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-tags"\n								placeholder="Tag1, Tag2" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-dropbox">\n						<label class="col-lg-4 control-label"\n							for="input-publish-dropbox-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-dropbox-path"\n								placeholder="/path/to/My Document.html" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-fileid">File ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block">If no file ID is supplied, a new file\n								will be created in your Google Drive root folder. You can move\n								the file afterwards within Google Drive.</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-filename">Force filename\n							(optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-filename"\n								placeholder="Filename" class="form-control"> <span\n								class="help-block">If no file name is supplied, the\n								document title will be used.</span>\n						</div>\n					</div>\n\n					<div class="form-group">\n						<label class="col-lg-4 control-label">Format</label>\n						<div class="col-lg-7">\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="markdown"> Markdown\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="html"> HTML\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="template"> Template\n								</label>\n							</div>\n						</div>\n					</div>\n					<div class="collapse publish-custom-template-collapse">\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<div class="checkbox">\n									<label> <input type="checkbox"\n										id="checkbox-publish-custom-template"> Custom template\n									</label> <a href="#" class="tooltip-template">(?)</a>\n								</div>\n							</div>\n						</div>\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<textarea class="form-control"\n									id="textarea-publish-custom-template"></textarea>\n							</div>\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-process-publish">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Publication</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-publish-list hide">\n					"<span class="file-title"></span>" is published on the following\n					location(s):\n				</p>\n				<div class="msg-publish-list publish-list hide"></div>\n				<blockquote>\n					<div class="msg-no-publish hide">\n						"<span class="file-title"></span>" is not published yet. <br /> <br />\n					</div>\n					<b>NOTE:</b> You can add publications using "Publish on" sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Settings</h3>\n				<ul class="nav nav-tabs">\n					<li class="active"><a class="action-load-settings"\n						href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-publish" data-toggle="tab">Publish</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>\n				</ul>\n			</div>\n			<div class="modal-body">\n\n				<div class="tab-content clearfix">\n					<div class="tab-pane active" id="tabpane-settings-editor">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Layout orientation</label>\n								<div class="col-lg-7">\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="horizontal">\n											Horizontal\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="vertical">\n											Vertical\n										</label>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label" for="input-settings-theme">Theme</label>\n								<div class="col-lg-7">\n									<select id="input-settings-theme" class="form-control">\n									</select> <span class="help-block"><a target="_blank"\n										href="https://github.com/benweet/stackedit/blob/master/doc/theming.md#stackedit-theming-guide">Create\n											your own theme...</a></span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-lazy-rendering">Lazy rendering <a\n									href="#" class="tooltip-lazy-rendering">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n										<input type="checkbox" id="input-settings-lazy-rendering" />\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-editor-font-family">Editor font</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-editor-font-family"\n										class="form-control col-lg-7"> <input type="text"\n										id="input-settings-editor-font-size"\n										class="form-control col-lg-2"> px\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-max-width">Max width</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text"\n										id="input-settings-max-width"\n										class="form-control col-lg-3"> px\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-default-content">Default content\n									<a href="#" class="tooltip-default-content">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-default-content"\n										class="form-control"></textarea>\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-publish">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-publish-commit-msg">Commit message</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-publish-commit-msg"\n										class="form-control">\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-publish-template">Default\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-publish-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-ssh-proxy">SSH proxy</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-ssh-proxy"\n										class="form-control">\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-extensions">\n						<div class="panel-group accordion-extensions"></div>\n						<span class="help-block pull-right"><a target="_blank"\n							href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">Create\n								your own extension...</a></span>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-utils">\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-primary action-import-settings"><i\n								class="icon-wrench icon-white"></i> Import settings</a> <a href="#"\n								class="btn btn-block btn-primary action-export-settings"\n								data-dismiss="modal"><i class="icon-wrench icon-white"></i>\n								Export settings</a> <a href="#"\n								class="btn btn-block btn-primary action-default-settings"\n								data-dismiss="modal"><i class="icon-wrench icon-white"></i>\n								Load default settings</a> <input type="file"\n								id="input-file-import-settings" class="hide">\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#" class="btn btn-block btn-primary action-welcome-file"\n								data-dismiss="modal"><i class="icon-help-circled icon-white"></i>\n								Welcome document</a> <a href="#"\n								class="btn btn-block btn-primary action-welcome-tour"\n								data-dismiss="modal" data-dismiss="modal"><i\n								class="icon-help-circled icon-white"></i> Welcome tour</a>\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#" class="btn btn-block btn-primary"\n								data-dismiss="modal" data-toggle="modal"\n								data-target=".modal-app-reset"><i\n								class="icon-fire icon-white"></i> Reset application</a>\n						</div>\n					</div>\n				</div>\n\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default"\n					data-dismiss="modal">Cancel</a> <a href="#"\n					class="btn btn-primary action-apply-settings" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-app-reset">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Reset application</h3>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all your local documents.</p>\n				<blockquote>Are you sure?</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-app-reset"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="lock-ui hide"></div>\n<div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>';
 }), define("text!html/bodyViewer.html", [], function() {
  return '\n<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav right-space pull-right"></div>\n\n		<ul class="nav pull-right">\n			<li class="btn-group">\n				<button class="btn btn-success action-edit-document hide"\n					title="Edit this document">\n					<i class="icon-pencil"></i>\n				</button>\n			</li>\n			<li class="btn-group">\n				<button class="btn btn-success dropdown-toggle"\n					data-toggle="dropdown" title="Save this document">\n					<i class="icon-download"></i>\n				</button>\n				<ul class="dropdown-menu">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n				</ul>\n			</li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><span class="file-title-navbar"></span></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><i class="working-indicator icon-none"></i></li>\n		</ul>\n\n	</div>\n</div>\n<div id="wmd-button-bar" class="hide"></div>\n<div id="wmd-input" class="hide"></div>\n<div class="ui-layout-center preview-container"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn btn-success collapse-button action-open-stackedit"\n		title="Open StackEdit">\n		<i class="icon-left-dir"></i> <img\n			data-stackedit-src="stackedit-64.png" width="32" height="32" />\n	</button>\n</div>\n\n<div class="document-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i> <i class="icon-right-dir"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<button type="button" class="close" title="clear">&times;</button>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n';
 }), define("text!html/settingsTemplateTooltip.html", [], function() {
@@ -21921,573 +22811,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    return c.msie && u > 8 || !c.msie ? !1 : s.deviceXDPI && s.systemXDPI ? t(s.deviceXDPI, s.systemXDPI) : c.webkit && (n = a.body.getBoundingClientRect) ? t(n.left - n.right, a.body.offsetWidth) : c.webkit && (i = r.outerWidth) ? t(i, r.innerWidth) : (i = s.width) && (o = l.clientWidth) ? t(i, o) : !1;
   }
  }, e.layout.onReady.push(e.layout.browserZoom._init);
-}(jQuery), define("uilayout", function() {}), function() {
- function e() {}
- function t(e, t) {
-  this.buttonBar = u.getElementById("wmd-button-bar" + e), this.preview = u.getElementById("wmd-preview" + e), 
-  this.input = t;
- }
- function n(t) {
-  var n = this, i = t.input;
-  this.init = function() {
-   var e = "undefined" != typeof require ? require("ace/range").Range : ace.require("ace/range").Range;
-   (function(t) {
-    n.before = i.session.getTextRange(new e(0, 0, t.start.row, t.start.column)), n.selection = i.session.getTextRange(), 
-    n.after = i.session.getTextRange(new e(t.end.row, t.end.column, Number.MAX_VALUE, Number.MAX_VALUE));
-   })(i.selection.getRange()), this.text = [ this.before, this.selection, this.after ].join(""), 
-   this.length = this.text.length, this.setInputAreaSelectionStartEnd(), this.scrollTop = i.renderer.getScrollTop();
-  }, this.setInputAreaSelection = function() {
-   var e = "undefined" != typeof require ? require("ace/range").Range : ace.require("ace/range").Range;
-   i.selection.setSelectionRange(function(t, n) {
-    return new e(t.row, t.column, n.row, n.column);
-   }(i.session.doc.indexToPosition(n.start), i.session.doc.indexToPosition(n.end))), 
-   i.renderer.scrollToY(n.scrollTop), i.focus();
-  }, this.setInputAreaSelectionStartEnd = function() {
-   n.start = n.before.length, n.end = n.after.length;
-  }, this.restore = function() {
-   for (var e = 0, t = n.before.length; t > e && n.before.charCodeAt(e) === n.text.charCodeAt(e); ) e++;
-   for (var o = 0, r = n.after.length, s = n.after.length - 1, a = n.text.length - 1; r > o && n.after.charCodeAt(s - o) === n.text.charCodeAt(a - o); ) o++;
-   var l = "undefined" != typeof require ? require("ace/range").Range : ace.require("ace/range").Range, c = function(e, t) {
-    return new l(e.row, e.column, t.row, t.column);
-   }(i.session.doc.indexToPosition(e), i.session.doc.indexToPosition(n.length - o));
-   i.session.replace(c, n.text.substring(e, a - o + 1)), this.setInputAreaSelection();
-  }, this.getChunks = function() {
-   var t = new e();
-   return t.before = n.before, t.startTag = "", t.selection = n.selection, t.endTag = "", 
-   t.after = n.after, t.scrollTop = n.scrollTop, t;
-  }, this.setChunks = function(e) {
-   e.before = e.before + e.startTag, e.after = e.endTag + e.after, this.start = e.before.length, 
-   this.end = e.before.length + e.selection.length, this.text = e.before + e.selection + e.after, 
-   this.scrollTop = e.scrollTop;
-  }, this.init();
- }
- function i(e, t, n, i) {
-  var o, r, s, a = 3e3, c = "delayed", d = function() {
-   var e = 0;
-   return window.innerHeight ? e = window.pageYOffset : u.documentElement && u.documentElement.scrollTop ? e = u.documentElement.scrollTop : u.body && (e = u.body.scrollTop), 
-   e;
-  }, h = function() {
-   if (t.preview) {
-    var n = t.input.getValue();
-    if (!n || n != s) {
-     s = n;
-     var i = new Date().getTime();
-     n = e.makeHtml(n);
-     var o = new Date().getTime();
-     r = o - i, x(n);
-    }
-   }
-  };
-  void 0 !== i && (h = i(h));
-  var p = function() {
-   if (o && (clearTimeout(o), o = void 0), "manual" !== c) {
-    var e = 0;
-    "delayed" === c && (e = r), e > a && (e = a), o = setTimeout(h, e);
-   }
-  }, g = function(e) {
-   return e.scrollHeight <= e.clientHeight ? 1 : e.scrollTop / (e.scrollHeight - e.clientHeight);
-  }, m = function() {
-   t.preview && (t.preview.scrollTop = (t.preview.scrollHeight - t.preview.clientHeight) * g(t.preview));
-  };
-  this.refresh = function(e) {
-   e ? (s = "", h()) : p();
-  }, this.processingTime = function() {
-   return r;
-  };
-  var v, b = !0, y = function(e) {
-   var n = t.preview, i = n.parentNode, o = n.nextSibling;
-   i.removeChild(n), n.innerHTML = e, o ? i.insertBefore(n, o) : i.appendChild(n);
-  }, w = function(e) {
-   t.preview.innerHTML = e;
-  }, C = function(e) {
-   if (v) return v(e);
-   try {
-    w(e), v = w;
-   } catch (t) {
-    v = y, v(e);
-   }
-  }, x = function(e) {
-   var i = l.getTop(t.input) - d();
-   if (t.preview && (C(e), n()), m(), b) return b = !1, void 0;
-   var o = l.getTop(t.input) - d();
-   f.isIE ? setTimeout(function() {
-    window.scrollBy(0, o - i);
-   }, 0) : window.scrollBy(0, o - i);
-  }, E = function() {
-   t.input.session.on("change", p), t.preview && (t.preview.scrollTop = 0);
-  };
-  E();
- }
- function o(e, t, i, o, r, s, a, l) {
-  function c(e) {
-   if (0 !== e.length) {
-    var t = e.pop();
-    b.commands.addCommand({
-     name: a(t),
-     bindKey: {
-      win: "Ctrl-" + m[t],
-      mac: "Command-" + m[t]
-     },
-     exec: function() {
-      d(y[t]);
-     }
-    }), c(e);
-   }
-  }
-  function d(e) {
-   b.focus();
-   var r = "wmd-link-button" == e.id || "wmd-image-button" == e.id;
-   if (e.textOp) {
-    i && !r && i.setCommandMode();
-    var s = new n(t);
-    if (!s) return;
-    var a = s.getChunks(), l = function() {
-     b.focus(), a && s.setChunks(a), s.restore(), o.refresh();
-    }, c = e.textOp(a, l);
-    c || l();
-   }
-   e.execute && e.execute(i);
-  }
-  function h(e, n) {
-   var i = "0px", o = "-20px", r = "-40px", s = e.getElementsByTagName("span")[0];
-   n ? (s.style.backgroundPosition = e.XShift + " " + i, e.onmouseover = function() {
-    s.style.backgroundPosition = this.XShift + " " + r;
-   }, e.onmouseout = function() {
-    s.style.backgroundPosition = this.XShift + " " + i;
-   }, f.isIE && (e.onmousedown = function() {
-    u.activeElement && u.activeElement !== t.input || (t.ieCachedRange = document.selection.createRange(), 
-    t.ieCachedScrollTop = t.input.renderer.getScrollTop());
-   }), e.isHelp || (e.onclick = function() {
-    return this.onmouseout && this.onmouseout(), d(this), !1;
-   }), e.className = e.className.replace(/ disabled/g, "")) : (s.style.backgroundPosition = e.XShift + " " + o, 
-   e.onmouseover = e.onmouseout = e.onclick = function() {}, e.className += " disabled");
-  }
-  function p(e) {
-   return "string" == typeof e && (e = r[e]), function() {
-    e.apply(r, arguments);
-   };
-  }
-  function g() {
-   var n = t.buttonBar, i = document.createElement("ul");
-   i.id = "wmd-button-row" + e, i.className = "wmd-button-row", i = n.appendChild(i);
-   var o = 0, r = function(t, n, r, s) {
-    var a = document.createElement("li");
-    a.className = "wmd-button", a.style.left = o + "px", o += 25;
-    var l = document.createElement("span");
-    return a.id = t + e, a.appendChild(l), a.title = n, a.XShift = r, s && (a.textOp = s), 
-    h(a, !0), i.appendChild(a), a;
-   }, l = function(t) {
-    var n = document.createElement("li");
-    n.className = "wmd-spacer wmd-spacer" + t, n.id = "wmd-spacer" + t + e, i.appendChild(n), 
-    o += 25;
-   };
-   if (y.bold = r("wmd-bold-button", v("bold"), "0px", p("doBold")), y.italic = r("wmd-italic-button", v("italic"), "-20px", p("doItalic")), 
-   l(1), y.link = r("wmd-link-button", v("link"), "-40px", p(function(e, t) {
-    return this.doLinkOrImage(e, t, !1);
-   })), y.quote = r("wmd-quote-button", v("quote"), "-60px", p("doBlockquote")), y.code = r("wmd-code-button", v("code"), "-80px", p("doCode")), 
-   y.image = r("wmd-image-button", v("image"), "-100px", p(function(e, t) {
-    return this.doLinkOrImage(e, t, !0);
-   })), l(2), y.olist = r("wmd-olist-button", v("olist"), "-120px", p(function(e, t) {
-    this.doList(e, t, !0);
-   })), y.ulist = r("wmd-ulist-button", v("ulist"), "-140px", p(function(e, t) {
-    this.doList(e, t, !1);
-   })), y.heading = r("wmd-heading-button", v("heading"), "-160px", p("doHeading")), 
-   y.hr = r("wmd-hr-button", v("hr"), "-180px", p("doHorizontalRule")), l(3), y.undo = r("wmd-undo-button", v("undo"), "-200px", null), 
-   y.undo.execute = function() {
-    b.session.getUndoManager().undo();
-   }, y.redo = r("wmd-redo-button", v("redo"), "-220px", null), y.redo.execute = function() {
-    b.session.getUndoManager().redo();
-   }, s) {
-    var c = document.createElement("li"), u = document.createElement("span");
-    c.appendChild(u), c.className = "wmd-button wmd-help-button", c.id = "wmd-help-button" + e, 
-    c.XShift = "-240px", c.isHelp = !0, c.style.right = "0px", c.title = a("help"), 
-    c.onclick = s.handler, h(c, !0), i.appendChild(c), y.help = c;
-   }
-   w.setUndoRedoButtonStates(), b.session.on("change", function() {
-    w.setUndoRedoButtonStates();
-   });
-  }
-  var v = function(e) {
-   return a(e) + " " + l(e);
-  }, b = t.input, y = {};
-  this.setUndoRedoButtonStates = function() {
-   setTimeout(function() {
-    h(y.undo, b.session.getUndoManager().hasUndo()), h(y.redo, b.session.getUndoManager().hasRedo());
-   }, 50);
-  };
-  var w = this;
-  g();
-  var C = "keydown";
-  f.isOpera && (C = "keypress"), c([ "bold", "italic", "link", "quote", "code", "image", "olist", "ulist", "heading", "hr" ]), 
-  this.buttons = y, this.setButtonState = h;
- }
- function r(e, t) {
-  this.hooks = e, this.getString = t;
- }
- function s(e) {
-  return e.replace(/^\s*(.*?)(?:\s+"(.+)")?\s*$/, function(e, t, n) {
-   return t = t.replace(/\?.*$/, function(e) {
-    return e.replace(/\+/g, " ");
-   }), t = decodeURIComponent(t), t = encodeURI(t).replace(/'/g, "%27").replace(/\(/g, "%28").replace(/\)/g, "%29"), 
-   t = t.replace(/\?.*$/, function(e) {
-    return e.replace(/\+/g, "%2b");
-   }), n && (n = n.trim ? n.trim() : n.replace(/^\s*/, "").replace(/\s*$/, ""), n = n.replace(/"/g, "quot;").replace(/\(/g, "&#40;").replace(/\)/g, "&#41;").replace(/</g, "&lt;").replace(/>/g, "&gt;")), 
-   n ? t + ' "' + n + '"' : t;
-  });
- }
- var a = {}, l = {}, c = {}, u = window.document, d = window.RegExp, h = window.navigator, p = {
-  lineLength: 72
- }, f = {
-  isIE: /msie/.test(h.userAgent.toLowerCase()),
-  isIE_5or6: /msie 6/.test(h.userAgent.toLowerCase()) || /msie 5/.test(h.userAgent.toLowerCase()),
-  isOpera: /opera/.test(h.userAgent.toLowerCase())
- }, g = {
-  bold: "Strong <strong>",
-  boldexample: "strong text",
-  italic: "Emphasis <em>",
-  italicexample: "emphasized text",
-  link: "Hyperlink <a>",
-  linkdescription: "enter link description here",
-  linkdialog: '<p><b>Insert Hyperlink</b></p><p>http://example.com/ "optional title"</p>',
-  quote: "Blockquote <blockquote>",
-  quoteexample: "Blockquote",
-  code: "Code Sample <pre><code>",
-  codeexample: "enter code here",
-  image: "Image <img>",
-  imagedescription: "enter image description here",
-  imagedialog: "<p><b>Insert Image</b></p><p>http://example.com/images/diagram.jpg \"optional title\"<br><br>Need <a href='http://www.google.com/search?q=free+image+hosting' target='_blank'>free image hosting?</a></p>",
-  olist: "Numbered List <ol>",
-  ulist: "Bulleted List <ul>",
-  litem: "List item",
-  heading: "Heading <h1>/<h2>",
-  headingexample: "Heading",
-  hr: "Horizontal Rule <hr>",
-  undo: "Undo -",
-  redo: "Redo -",
-  help: "Markdown Editing Help"
- }, m = {
-  bold: "B",
-  italic: "I",
-  link: "L",
-  quote: "Q",
-  code: "K",
-  image: "G",
-  olist: "O",
-  ulist: "U",
-  heading: "H",
-  hr: "R",
-  undo: "Z",
-  redo: "Y"
- }, v = "http://", b = "http://";
- Markdown.Editor = function(e, n, s) {
-  s = s || {}, "function" == typeof s.handler && (s = {
-   helpButton: s
-  }), s.strings = s.strings || {}, s.helpButton && (s.strings.help = s.strings.help || s.helpButton.title);
-  var a = function(e) {
-   return s.strings[e] || g[e];
-  }, l = function(e) {
-   return (/win/.test(h.platform.toLowerCase()) ? "Ctrl+" : "Command+") + m[e];
-  };
-  n = n || "";
-  var c = this.hooks = new Markdown.HookCollection();
-  c.addNoop("onPreviewRefresh"), c.addNoop("postBlockquoteCreation"), c.addFalse("insertImageDialog"), 
-  c.addFalse("insertLinkDialog"), this.getConverter = function() {
-   return e;
-  };
-  var u, d, p = this;
-  this.run = function(h, f) {
-   if (!u) {
-    u = new t(n, h);
-    var g, m = new r(c, a), v = new i(e, u, function() {
-     c.onPreviewRefresh();
-    }, f);
-    g = new o(n, u, d, v, m, s.helpButton, a, l), g.setUndoRedoButtonStates();
-    var b = p.refreshPreview = function() {
-     v.refresh(!0);
-    };
-    b(), p.uiManager = g;
-   }
-  };
- }, e.prototype.findTags = function(e, t) {
-  var n, i = this;
-  e && (n = a.extendRegExp(e, "", "$"), this.before = this.before.replace(n, function(e) {
-   return i.startTag = i.startTag + e, "";
-  }), n = a.extendRegExp(e, "^", ""), this.selection = this.selection.replace(n, function(e) {
-   return i.startTag = i.startTag + e, "";
-  })), t && (n = a.extendRegExp(t, "", "$"), this.selection = this.selection.replace(n, function(e) {
-   return i.endTag = e + i.endTag, "";
-  }), n = a.extendRegExp(t, "^", ""), this.after = this.after.replace(n, function(e) {
-   return i.endTag = e + i.endTag, "";
-  }));
- }, e.prototype.trimWhitespace = function(e) {
-  var t, n, i = this;
-  e ? t = n = "" : (t = function(e) {
-   return i.before += e, "";
-  }, n = function(e) {
-   return i.after = e + i.after, "";
-  }), this.selection = this.selection.replace(/^(\s*)/, t).replace(/(\s*)$/, n);
- }, e.prototype.skipLines = function(e, t, n) {
-  void 0 === e && (e = 1), void 0 === t && (t = 1), e++, t++;
-  var i, o;
-  if (navigator.userAgent.match(/Chrome/) && "X".match(/()./), this.selection = this.selection.replace(/(^\n*)/, ""), 
-  this.startTag = this.startTag + d.$1, this.selection = this.selection.replace(/(\n*$)/, ""), 
-  this.endTag = this.endTag + d.$1, this.startTag = this.startTag.replace(/(^\n*)/, ""), 
-  this.before = this.before + d.$1, this.endTag = this.endTag.replace(/(\n*$)/, ""), 
-  this.after = this.after + d.$1, this.before) {
-   for (i = o = ""; e--; ) i += "\\n?", o += "\n";
-   n && (i = "\\n*"), this.before = this.before.replace(new d(i + "$", ""), o);
-  }
-  if (this.after) {
-   for (i = o = ""; t--; ) i += "\\n?", o += "\n";
-   n && (i = "\\n*"), this.after = this.after.replace(new d(i, ""), o);
-  }
- }, a.isVisible = function(e) {
-  return window.getComputedStyle ? "none" !== window.getComputedStyle(e, null).getPropertyValue("display") : e.currentStyle ? "none" !== e.currentStyle.display : void 0;
- }, a.addEvent = function(e, t, n) {
-  e.attachEvent ? e.attachEvent("on" + t, n) : e.addEventListener(t, n, !1);
- }, a.removeEvent = function(e, t, n) {
-  e.detachEvent ? e.detachEvent("on" + t, n) : e.removeEventListener(t, n, !1);
- }, a.fixEolChars = function(e) {
-  return e = e.replace(/\r\n/g, "\n"), e = e.replace(/\r/g, "\n");
- }, a.extendRegExp = function(e, t, n) {
-  (null === t || void 0 === t) && (t = ""), (null === n || void 0 === n) && (n = "");
-  var i, o = e.toString();
-  return o = o.replace(/\/([gim]*)$/, function(e, t) {
-   return i = t, "";
-  }), o = o.replace(/(^\/|\/$)/g, ""), o = t + o + n, new d(o, i);
- }, l.getTop = function(e, t) {
-  var n = e.offsetTop;
-  if (!t) for (;e = e.offsetParent; ) n += e.offsetTop;
-  return n;
- }, l.getHeight = function(e) {
-  return e.offsetHeight || e.scrollHeight;
- }, l.getWidth = function(e) {
-  return e.offsetWidth || e.scrollWidth;
- }, l.getPageSize = function() {
-  var e, t, n, i;
-  self.innerHeight && self.scrollMaxY ? (e = u.body.scrollWidth, t = self.innerHeight + self.scrollMaxY) : u.body.scrollHeight > u.body.offsetHeight ? (e = u.body.scrollWidth, 
-  t = u.body.scrollHeight) : (e = u.body.offsetWidth, t = u.body.offsetHeight), self.innerHeight ? (n = self.innerWidth, 
-  i = self.innerHeight) : u.documentElement && u.documentElement.clientHeight ? (n = u.documentElement.clientWidth, 
-  i = u.documentElement.clientHeight) : u.body && (n = u.body.clientWidth, i = u.body.clientHeight);
-  var o = Math.max(e, n), r = Math.max(t, i);
-  return [ o, r, n, i ];
- }, c.createBackground = function() {
-  var e = u.createElement("div"), t = e.style;
-  e.className = "wmd-prompt-background", t.position = "absolute", t.top = "0", t.zIndex = "1000", 
-  f.isIE ? t.filter = "alpha(opacity=50)" : t.opacity = "0.5";
-  var n = l.getPageSize();
-  return t.height = n[1] + "px", f.isIE ? (t.left = u.documentElement.scrollLeft, 
-  t.width = u.documentElement.clientWidth) : (t.left = "0", t.width = "100%"), u.body.appendChild(e), 
-  e;
- }, c.prompt = function(e, t, n) {
-  var i, o;
-  void 0 === t && (t = "");
-  var r = function(e) {
-   var t = e.charCode || e.keyCode;
-   27 === t && s(!0);
-  }, s = function(e) {
-   a.removeEvent(u.body, "keydown", r);
-   var t = o.value;
-   return e ? t = null : (t = t.replace(/^http:\/\/(https?|ftp):\/\//, "$1://"), /^(?:https?|ftp):\/\//.test(t) || (t = "http://" + t)), 
-   i.parentNode.removeChild(i), n(t), !1;
-  }, c = function() {
-   i = u.createElement("div"), i.className = "wmd-prompt-dialog", i.style.padding = "10px;", 
-   i.style.position = "fixed", i.style.width = "400px", i.style.zIndex = "1001";
-   var n = u.createElement("div");
-   n.innerHTML = e, n.style.padding = "5px", i.appendChild(n);
-   var c = u.createElement("form"), d = c.style;
-   c.onsubmit = function() {
-    return s(!1);
-   }, d.padding = "0", d.margin = "0", d.cssFloat = "left", d.width = "100%", d.textAlign = "center", 
-   d.position = "relative", i.appendChild(c), o = u.createElement("input"), o.type = "text", 
-   o.value = t, d = o.style, d.display = "block", d.width = "80%", d.marginLeft = d.marginRight = "auto", 
-   c.appendChild(o);
-   var h = u.createElement("input");
-   h.type = "button", h.onclick = function() {
-    return s(!1);
-   }, h.value = "OK", d = h.style, d.margin = "10px", d.display = "inline", d.width = "7em";
-   var p = u.createElement("input");
-   p.type = "button", p.onclick = function() {
-    return s(!0);
-   }, p.value = "Cancel", d = p.style, d.margin = "10px", d.display = "inline", d.width = "7em", 
-   c.appendChild(h), c.appendChild(p), a.addEvent(u.body, "keydown", r), i.style.top = "50%", 
-   i.style.left = "50%", i.style.display = "block", f.isIE_5or6 && (i.style.position = "absolute", 
-   i.style.top = u.documentElement.scrollTop + 200 + "px", i.style.left = "50%"), u.body.appendChild(i), 
-   i.style.marginTop = -(l.getHeight(i) / 2) + "px", i.style.marginLeft = -(l.getWidth(i) / 2) + "px";
-  };
-  setTimeout(function() {
-   c();
-   var e = t.length;
-   if (void 0 !== o.selectionStart) o.selectionStart = 0, o.selectionEnd = e; else if (o.createTextRange) {
-    var n = o.createTextRange();
-    n.collapse(!1), n.moveStart("character", -e), n.moveEnd("character", e), n.select();
-   }
-   o.focus();
-  }, 0);
- };
- var y = r.prototype;
- y.prefixes = "(?:\\s{4,}|\\s*>|\\s*-\\s+|\\s*\\d+\\.|=|\\+|-|_|\\*|#|\\s*\\[[^\n]]+\\]:)", 
- y.unwrap = function(e) {
-  var t = new d("([^\\n])\\n(?!(\\n|" + this.prefixes + "))", "g");
-  e.selection = e.selection.replace(t, "$1 $2");
- }, y.wrap = function(e, t) {
-  this.unwrap(e);
-  var n = new d("(.{1," + t + "})( +|$\\n?)", "gm"), i = this;
-  e.selection = e.selection.replace(n, function(e, t) {
-   return new d("^" + i.prefixes, "").test(e) ? e : t + "\n";
-  }), e.selection = e.selection.replace(/\s+$/, "");
- }, y.doBold = function(e, t) {
-  return this.doBorI(e, t, 2, this.getString("boldexample"));
- }, y.doItalic = function(e, t) {
-  return this.doBorI(e, t, 1, this.getString("italicexample"));
- }, y.doBorI = function(e, t, n, i) {
-  e.trimWhitespace(), e.selection = e.selection.replace(/\n{2,}/g, "\n");
-  var o = /(\**$)/.exec(e.before)[0], r = /(^\**)/.exec(e.after)[0], s = Math.min(o.length, r.length);
-  if (s >= n && (2 != s || 1 != n)) e.before = e.before.replace(d("[*]{" + n + "}$", ""), ""), 
-  e.after = e.after.replace(d("^[*]{" + n + "}", ""), ""); else if (!e.selection && r) {
-   e.after = e.after.replace(/^([*_]*)/, ""), e.before = e.before.replace(/(\s?)$/, "");
-   var a = d.$1;
-   e.before = e.before + r + a;
-  } else {
-   e.selection || r || (e.selection = i);
-   var l = 1 >= n ? "*" : "**";
-   e.before = e.before + l, e.after = l + e.after;
-  }
- }, y.stripLinkDefs = function(e, t) {
-  return e = e.replace(/^[ ]{0,3}\[(\d+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?[ \t]*\n?[ \t]*(?:(\n*)["(](.+?)[")][ \t]*)?(?:\n+|$)/gm, function(e, n, i, o, r) {
-   return t[n] = e.replace(/\s*$/, ""), o ? (t[n] = e.replace(/["(](.+?)[")]$/, ""), 
-   o + r) : "";
-  });
- }, y.addLinkDef = function(e, t) {
-  var n = 0, i = {};
-  e.before = this.stripLinkDefs(e.before, i), e.selection = this.stripLinkDefs(e.selection, i), 
-  e.after = this.stripLinkDefs(e.after, i);
-  var o = "", r = /(\[)((?:\[[^\]]*\]|[^\[\]])*)(\][ ]?(?:\n[ ]*)?\[)(\d+)(\])/g, s = function(e) {
-   n++, e = e.replace(/^[ ]{0,3}\[(\d+)\]:/, "  [" + n + "]:"), o += "\n" + e;
-  }, a = function(e, t, o, l, c, u) {
-   return o = o.replace(r, a), i[c] ? (s(i[c]), t + o + l + n + u) : e;
-  };
-  e.before = e.before.replace(r, a), t ? s(t) : e.selection = e.selection.replace(r, a);
-  var l = n;
-  return e.after = e.after.replace(r, a), e.after && (e.after = e.after.replace(/\n*$/, "")), 
-  e.after || (e.selection = e.selection.replace(/\n*$/, "")), e.after += "\n\n" + o, 
-  l;
- }, y.doLinkOrImage = function(e, t, n) {
-  e.trimWhitespace(), e.findTags(/\s*!?\[/, /\][ ]?(?:\n[ ]*)?(\[.*?\])?/);
-  var i;
-  if (!(e.endTag.length > 1 && e.startTag.length > 0)) {
-   if (e.selection = e.startTag + e.selection + e.endTag, e.startTag = e.endTag = "", 
-   /\n\n/.test(e.selection)) return this.addLinkDef(e, null), void 0;
-   var o = this, r = function(r) {
-    if (i.parentNode.removeChild(i), null !== r) {
-     e.selection = (" " + e.selection).replace(/([^\\](?:\\\\)*)(?=[[\]])/g, "$1\\").substr(1);
-     var a = " [999]: " + s(r), l = o.addLinkDef(e, a);
-     e.startTag = n ? "![" : "[", e.endTag = "][" + l + "]", e.selection || (e.selection = n ? o.getString("imagedescription") : o.getString("linkdescription"));
-    }
-    t();
-   };
-   return i = c.createBackground(), n ? this.hooks.insertImageDialog(r) || c.prompt(this.getString("imagedialog"), v, r) : this.hooks.insertLinkDialog(r) || c.prompt(this.getString("linkdialog"), b, r), 
-   !0;
-  }
-  e.startTag = e.startTag.replace(/!?\[/, ""), e.endTag = "", this.addLinkDef(e, null);
- }, y.doAutoindent = function(e) {
-  var t = this, n = !1;
-  e.before = e.before.replace(/(\n|^)[ ]{0,3}([*+-]|\d+[.])[ \t]*\n$/, "\n\n"), e.before = e.before.replace(/(\n|^)[ ]{0,3}>[ \t]*\n$/, "\n\n"), 
-  e.before = e.before.replace(/(\n|^)[ \t]+\n$/, "\n\n"), e.selection || /^[ \t]*(?:\n|$)/.test(e.after) || (e.after = e.after.replace(/^[^\n]*/, function(t) {
-   return e.selection = t, "";
-  }), n = !0), /(\n|^)[ ]{0,3}([*+-]|\d+[.])[ \t]+.*\n$/.test(e.before) && t.doList && t.doList(e), 
-  /(\n|^)[ ]{0,3}>[ \t]+.*\n$/.test(e.before) && t.doBlockquote && t.doBlockquote(e), 
-  /(\n|^)(\t|[ ]{4,}).*\n$/.test(e.before) && t.doCode && t.doCode(e), n && (e.after = e.selection + e.after, 
-  e.selection = "");
- }, y.doBlockquote = function(e) {
-  e.selection = e.selection.replace(/^(\n*)([^\r]+?)(\n*)$/, function(t, n, i, o) {
-   return e.before += n, e.after = o + e.after, i;
-  }), e.before = e.before.replace(/(>[ \t]*)$/, function(t, n) {
-   return e.selection = n + e.selection, "";
-  }), e.selection = e.selection.replace(/^(\s|>)+$/, ""), e.selection = e.selection || this.getString("quoteexample");
-  var t, n = "", i = "";
-  if (e.before) {
-   for (var o = e.before.replace(/\n$/, "").split("\n"), r = !1, s = 0; s < o.length; s++) {
-    var a = !1;
-    t = o[s], r = r && t.length > 0, /^>/.test(t) ? (a = !0, !r && t.length > 1 && (r = !0)) : a = /^[ \t]*$/.test(t) ? !0 : r, 
-    a ? n += t + "\n" : (i += n + t, n = "\n");
-   }
-   /(^|\n)>/.test(n) || (i += n, n = "");
-  }
-  e.startTag = n, e.before = i, e.after && (e.after = e.after.replace(/^\n?/, "\n")), 
-  e.after = e.after.replace(/^(((\n|^)(\n[ \t]*)*>(.+\n)*.*)+(\n[ \t]*)*)/, function(t) {
-   return e.endTag = t, "";
-  });
-  var l = function(t) {
-   var n = t ? "> " : "";
-   e.startTag && (e.startTag = e.startTag.replace(/\n((>|\s)*)\n$/, function(e, t) {
-    return "\n" + t.replace(/^[ ]{0,3}>?[ \t]*$/gm, n) + "\n";
-   })), e.endTag && (e.endTag = e.endTag.replace(/^\n((>|\s)*)\n/, function(e, t) {
-    return "\n" + t.replace(/^[ ]{0,3}>?[ \t]*$/gm, n) + "\n";
-   }));
-  };
-  /^(?![ ]{0,3}>)/m.test(e.selection) ? (this.wrap(e, p.lineLength - 2), e.selection = e.selection.replace(/^/gm, "> "), 
-  l(!0), e.skipLines()) : (e.selection = e.selection.replace(/^[ ]{0,3}> ?/gm, ""), 
-  this.unwrap(e), l(!1), !/^(\n|^)[ ]{0,3}>/.test(e.selection) && e.startTag && (e.startTag = e.startTag.replace(/\n{0,2}$/, "\n\n")), 
-  !/(\n|^)[ ]{0,3}>.*$/.test(e.selection) && e.endTag && (e.endTag = e.endTag.replace(/^\n{0,2}/, "\n\n"))), 
-  e.selection = this.hooks.postBlockquoteCreation(e.selection), /\n/.test(e.selection) || (e.selection = e.selection.replace(/^(> *)/, function(t, n) {
-   return e.startTag += n, "";
-  }));
- }, y.doCode = function(e) {
-  var t = /\S[ ]*$/.test(e.before), n = /^[ ]*\S/.test(e.after);
-  if (!n && !t || /\n/.test(e.selection)) {
-   e.before = e.before.replace(/[ ]{4}$/, function(t) {
-    return e.selection = t + e.selection, "";
-   });
-   var i = 1, o = 1;
-   /(\n|^)(\t|[ ]{4,}).*\n$/.test(e.before) && (i = 0), /^\n(\t|[ ]{4,})/.test(e.after) && (o = 0), 
-   e.skipLines(i, o), e.selection ? /^[ ]{0,3}\S/m.test(e.selection) ? /\n/.test(e.selection) ? e.selection = e.selection.replace(/^/gm, "    ") : e.before += "    " : e.selection = e.selection.replace(/^(?:[ ]{4}|[ ]{0,3}\t)/gm, "") : (e.startTag = "    ", 
-   e.selection = this.getString("codeexample"));
-  } else e.trimWhitespace(), e.findTags(/`/, /`/), e.startTag || e.endTag ? e.endTag && !e.startTag ? (e.before += e.endTag, 
-  e.endTag = "") : e.startTag = e.endTag = "" : (e.startTag = e.endTag = "`", e.selection || (e.selection = this.getString("codeexample")));
- }, y.doList = function(e, t, n) {
-  var i = /(\n|^)(([ ]{0,3}([*+-]|\d+[.])[ \t]+.*)(\n.+|\n{2,}([*+-].*|\d+[.])[ \t]+.*|\n{2,}[ \t]+\S.*)*)\n*$/, o = /^\n*(([ ]{0,3}([*+-]|\d+[.])[ \t]+.*)(\n.+|\n{2,}([*+-].*|\d+[.])[ \t]+.*|\n{2,}[ \t]+\S.*)*)\n*/, r = "-", s = 1, a = function() {
-   var e;
-   return n ? (e = " " + s + ". ", s++) : e = " " + r + " ", e;
-  }, l = function(e) {
-   return void 0 === n && (n = /^\s*\d/.test(e)), e = e.replace(/^[ ]{0,3}([*+-]|\d+[.])\s/gm, function() {
-    return a();
-   });
-  };
-  if (e.findTags(/(\n|^)*[ ]{0,3}([*+-]|\d+[.])\s+/, null), !e.before || /\n$/.test(e.before) || /^\n/.test(e.startTag) || (e.before += e.startTag, 
-  e.startTag = ""), e.startTag) {
-   var c = /\d+[.]/.test(e.startTag);
-   if (e.startTag = "", e.selection = e.selection.replace(/\n[ ]{4}/g, "\n"), this.unwrap(e), 
-   e.skipLines(), c && (e.after = e.after.replace(o, l)), n == c) return;
-  }
-  var u = 1;
-  e.before = e.before.replace(i, function(e) {
-   return /^\s*([*+-])/.test(e) && (r = d.$1), u = /[^\n]\n\n[^\n]/.test(e) ? 1 : 0, 
-   l(e);
-  }), e.selection || (e.selection = this.getString("litem"));
-  var h = a(), f = 1;
-  e.after = e.after.replace(o, function(e) {
-   return f = /[^\n]\n\n[^\n]/.test(e) ? 1 : 0, l(e);
-  }), e.trimWhitespace(!0), e.skipLines(u, f, !0), e.startTag = h;
-  var g = h.replace(/./g, " ");
-  this.wrap(e, p.lineLength - g.length), e.selection = e.selection.replace(/\n/g, "\n" + g);
- }, y.doHeading = function(e) {
-  if (e.selection = e.selection.replace(/\s+/g, " "), e.selection = e.selection.replace(/(^\s+|\s+$)/g, ""), 
-  !e.selection) return e.startTag = "## ", e.selection = this.getString("headingexample"), 
-  e.endTag = " ##", void 0;
-  var t = 0;
-  e.findTags(/#+[ ]*/, /[ ]*#+/), /#+/.test(e.startTag) && (t = d.lastMatch.length), 
-  e.startTag = e.endTag = "", e.findTags(null, /\s?(-+|=+)/), /=+/.test(e.endTag) && (t = 1), 
-  /-+/.test(e.endTag) && (t = 2), e.startTag = e.endTag = "", e.skipLines(1, 1);
-  var n = 0 == t ? 2 : t - 1;
-  if (n > 0) {
-   var i = n >= 2 ? "-" : "=", o = e.selection.length;
-   for (o > p.lineLength && (o = p.lineLength), e.endTag = "\n"; o--; ) e.endTag += i;
-  }
- }, y.doHorizontalRule = function(e) {
-  e.startTag = "----------\n", e.selection = "", e.skipLines(2, 1, !0);
- };
-}(), define("libs/Markdown.Editor", function() {}), define("libs/ace_mode_highlight_rules", [ "require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules" ], function(e, t) {
+}(jQuery), define("uilayout", function() {}), define("libs/ace_mode_highlight_rules", [ "require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules" ], function(e, t) {
  var n = e("ace/lib/oop"), i = e("ace/mode/text_highlight_rules").TextHighlightRules, o = function() {
   this.$rules = {
    basic: [ {
@@ -22555,7 +22879,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    }, {
     token: "markup.list",
     regex: "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
-    next: "listblock"
+    next: "listblock-start"
    }, {
     include: "basic"
    } ],
@@ -22567,6 +22891,11 @@ if (hljs.LANGUAGES.glsl = function(e) {
    }, {
     defaultToken: "markup.heading"
    } ],
+   "listblock-start": [ {
+    token: "checkbox",
+    regex: /(?:\[[ x]\])?/,
+    next: "listblock"
+   } ],
    listblock: [ {
     token: "empty_line",
     regex: "^$",
@@ -22574,7 +22903,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    }, {
     token: "markup.list",
     regex: "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
-    next: "listblock"
+    next: "listblock-start"
    }, {
     include: "basic",
     noEscape: !0
@@ -22645,7 +22974,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
   this.$tokenizer = new o(e.getRules()), this.$embeds = e.getEmbeds(), this.foldingRules = new s();
  };
  n.inherits(a, i), function() {
-  this.lineCommentStart = ">", this.getNextLineIndent = function(e, t) {
+  this.type = "text", this.lineCommentStart = ">", this.getNextLineIndent = function(e, t) {
    if ("listblock" == e) {
     var n = /^(\s*)(?:([-+*])|(\d+)\.)(\s+)/.exec(t);
     if (!n) return "";
@@ -22655,27 +22984,20 @@ if (hljs.LANGUAGES.glsl = function(e) {
    return this.$getIndent(t);
   };
  }.call(a.prototype), t.Mode = a;
-}), function() {
- var e = "undefined" != typeof require && require;
- define("ace/requirejs/text", [ "require", "exports", "module", "../lib/net" ], function(t, n) {
-  n.load = function(n, i, o) {
-   e && e.nodeRequire ? o(e.nodeRequire("fs").readFileSync(i.toUrl(n), "utf8")) : t("../lib/net").get(i.toUrl(n), o);
-  };
- });
-}(), define("core", [ "jquery", "underscore", "crel", "ace", "utils", "settings", "eventMgr", "mousetrap", "text!html/bodyIndex.html", "text!html/bodyViewer.html", "text!html/settingsTemplateTooltip.html", "text!html/settingsUserCustomExtensionTooltip.html", "storage", "config", "uilayout", "libs/Markdown.Editor", "libs/ace_mode", "ace/requirejs/text!ace/css/editor.css", "ace/requirejs/text!ace/theme/textmate.css" ], function(e, t, n, i, o, r, s, a, l, c, u, d) {
+}), define("core", [ "jquery", "underscore", "crel", "ace", "utils", "settings", "eventMgr", "mousetrap", "text!html/bodyIndex.html", "text!html/bodyViewer.html", "text!html/settingsTemplateTooltip.html", "text!html/settingsUserCustomExtensionTooltip.html", "storage", "config", "uilayout", "pagedown-ace", "libs/ace_mode", "ace/requirejs/text!ace/css/editor.css", "ace/requirejs/text!ace/theme/textmate.css" ], function(e, t, n, i, o, r, s, a, l, c, u, d) {
  function h() {
   S = !0, k = !0;
   var e = o.currentTime;
-  e > _ + 1e3 && (_ = e, s.onUserActive());
+  e > $ + 1e3 && ($ = e, s.onUserActive());
  }
  function p() {
-  return k === !0 && o.currentTime - _ > USER_IDLE_THRESHOLD && (k = !1), k && F;
+  return k === !0 && o.currentTime - $ > USER_IDLE_THRESHOLD && (k = !1), k && F;
  }
  function f() {
   if (S !== !1 && F !== !1) {
-   void 0 === $ && ($ = o.randomString(), localStorage.frontWindowId = $);
+   void 0 === _ && (_ = o.randomString(), localStorage.frontWindowId = _);
    var t = localStorage.frontWindowId;
-   t != $ && (F = !1, void 0 !== A && clearInterval(A), e(".modal").modal("hide"), 
+   t != _ && (F = !1, void 0 !== A && clearInterval(A), e(".modal").modal("hide"), 
    e(".modal-non-unique").modal({
     backdrop: "static",
     keyboard: !1
@@ -22699,7 +23021,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
   o.setInputRadio("radio-layout-orientation", r.layoutOrientation), o.setInputValue(L, theme), 
   L.change(), o.setInputChecked("#input-settings-lazy-rendering", r.lazyRendering), 
   o.setInputValue("#input-settings-editor-font-family", r.editorFontFamily), o.setInputValue("#input-settings-editor-font-size", r.editorFontSize), 
-  o.setInputValue("#input-settings-editor-max-width", r.editorMaxWidth), o.setInputValue("#textarea-settings-default-content", r.defaultContent), 
+  o.setInputValue("#input-settings-max-width", r.maxWidth), o.setInputValue("#textarea-settings-default-content", r.defaultContent), 
   o.setInputValue("#input-settings-publish-commit-msg", r.commitMsg), o.setInputValue("#textarea-settings-publish-template", r.template), 
   o.setInputValue("#input-settings-ssh-proxy", r.sshProxy), s.onLoadSettings();
  }
@@ -22709,9 +23031,9 @@ if (hljs.LANGUAGES.glsl = function(e) {
   var i = o.getInputValue(L);
   n.lazyRendering = o.getInputChecked("#input-settings-lazy-rendering"), n.editorFontFamily = o.getInputTextValue("#input-settings-editor-font-family", t), 
   n.editorFontSize = o.getInputIntValue("#input-settings-editor-font-size", t, 1, 99), 
-  n.editorMaxWidth = o.getInputIntValue("#input-settings-editor-max-width", t, 1), 
-  n.defaultContent = o.getInputValue("#textarea-settings-default-content"), n.commitMsg = o.getInputTextValue("#input-settings-publish-commit-msg", t), 
-  n.template = o.getInputTextValue("#textarea-settings-publish-template", t), n.sshProxy = o.checkUrl(o.getInputTextValue("#input-settings-ssh-proxy", t), !0), 
+  n.maxWidth = o.getInputIntValue("#input-settings-max-width", t, 1), n.defaultContent = o.getInputValue("#textarea-settings-default-content"), 
+  n.commitMsg = o.getInputTextValue("#input-settings-publish-commit-msg", t), n.template = o.getInputTextValue("#textarea-settings-publish-template", t), 
+  n.sshProxy = o.checkUrl(o.getInputTextValue("#input-settings-ssh-proxy", t), !0), 
   n.extensionSettings = {}, s.onSaveSettings(n.extensionSettings, t), t.isPropagationStopped() || (e.extend(r, n), 
   localStorage.settings = JSON.stringify(r), localStorage.theme = i);
  }
@@ -22719,33 +23041,38 @@ if (hljs.LANGUAGES.glsl = function(e) {
   e === !0 || B.state.north.isClosed ? (M.hide(), R.hide()) : (M.show(), R.show());
  }
  function w(e) {
-  e === !0 || B.state.east.isClosed ? I.hide() : I.show();
+  e === !0 || B.state.east.isClosed ? P.hide() : P.show();
  }
  function C() {
   return lightMode ? (e("#wmd-input").replaceWith(function() {
    return e('<textarea id="wmd-input">').addClass(this.className).addClass("form-control");
-  }), void 0) : (P = i.edit("wmd-input"), P.renderer.setShowGutter(!1), P.renderer.setShowPrintMargin(!1), 
-  P.renderer.setPrintMarginColumn(!1), P.renderer.setPadding(EDITOR_DEFAULT_PADDING), 
-  P.session.setUseWrapMode(!0), P.session.setMode("libs/ace_mode"), function(e) {
-   function n() {
+  }), void 0) : (I = i.edit("wmd-input"), I.renderer.setShowGutter(!1), I.renderer.setShowPrintMargin(!1), 
+  I.renderer.setPrintMarginColumn(!1), I.renderer.setPadding(EDITOR_DEFAULT_PADDING), 
+  I.session.setUseWrapMode(!0), I.session.setMode("libs/ace_mode"), function(e) {
+   function n(n) {
+    var i = e.lines[n];
+    0 !== i.length && 0 === i[0].type.indexOf("markup.heading.multi") && t.each(e.lines[n - 1], function(e) {
+     e.type = "markup.heading.prev.multi";
+    });
+   }
+   function i() {
     if (e.running) {
-     for (var i = new Date(), o = e.currentLine, r = e.doc, s = 0, a = r.getLength(); e.currentLine < a; ) {
-      for (e.$tokenizeRow(e.currentLine); e.lines[e.currentLine]; ) {
-       var l = e.lines[e.currentLine];
-       0 !== l.length && 0 === l[0].type.indexOf("markup.heading.multi") && t.each(e.lines[e.currentLine - 1], function(e) {
-        e.type = "markup.heading.prev.multi";
-       }), e.currentLine++;
-      }
-      if (s++, 0 == s % 5 && new Date() - i > 20) return e.fireUpdateEvent(o, e.currentLine - 1), 
-      e.running = setTimeout(n, 20), void 0;
+     for (var t = new Date(), o = e.currentLine, r = -1, s = e.doc; e.lines[o]; ) o++;
+     var a = o, l = s.getLength(), c = 0;
+     for (e.running = !1; l > o; ) {
+      e.$tokenizeRow(o), r = o;
+      do n(o), o++; while (e.lines[o]);
+      if (c++, 0 == c % 5 && new Date() - t > 20) return e.running = setTimeout(i, 20), 
+      e.currentLine = o, void 0;
      }
-     e.running = !1, e.fireUpdateEvent(o, a - 1);
+     e.currentLine = o, r >= a && e.fireUpdateEvent(a, r);
     }
    }
    e.$worker = function() {
-    e.currentLine = e.currentLine ? e.currentLine - 1 : 0, n();
+    e.lines.splice(0, e.lines.length), e.states.splice(0, e.states.length), e.currentLine = 0, 
+    i();
    };
-  }(P.session.bgTokenizer), s.onAceCreated(P), window.aceEditor = P, void 0);
+  }(I.session.bgTokenizer), s.onAceCreated(I), void 0);
  }
  function x() {
   var t = {
@@ -22771,11 +23098,16 @@ if (hljs.LANGUAGES.glsl = function(e) {
     "north" == e ? y(!0) : "east" == e && w(!0);
    },
    onresize_end: function(e) {
-    void 0 !== P && "center" == e && (P.resize(), setTimeout(function() {
-     var e = (P.renderer.$size.scrollerWidth - r.editorMaxWidth) / 2;
-     EDITOR_DEFAULT_PADDING > e && (e = EDITOR_DEFAULT_PADDING), e !== P.renderer.$padding && (P.renderer.setPadding(e), 
-     P.resize(!0));
-    }, 5)), s.onLayoutResize(e);
+    if (void 0 !== I && "center" == e) {
+     I.resize();
+     var t = (I.renderer.$size.scrollerHeight - I.renderer.lineHeight) / 2;
+     0 > t && (t = 0), I.renderer.setScrollMargin(0, t, 0, 0), setTimeout(function() {
+      var e = (I.renderer.$size.scrollerWidth - r.maxWidth) / 2;
+      EDITOR_DEFAULT_PADDING > e && (e = EDITOR_DEFAULT_PADDING), e !== I.renderer.$padding && (I.renderer.setPadding(e), 
+      I.resize(!0));
+     }, 5);
+    }
+    s.onLayoutResize(e);
    }
   };
   s.onLayoutConfigure(t), "horizontal" == r.layoutOrientation ? (e(".ui-layout-south").remove(), 
@@ -22789,47 +23121,48 @@ if (hljs.LANGUAGES.glsl = function(e) {
    south__resizable: !0,
    south__size: .5,
    south__minSize: 200
-  }))), e(".navbar").click(function() {
+  }))), r.maxWidth && e("#preview-contents").css("max-width", r.maxWidth + 30 + "px"), 
+  e(".navbar").click(function() {
    B.allowOverflow("north");
   }), e(".ui-layout-toggler-south").addClass("btn btn-info").html('<i class="icon-none"></i>'), 
   e(".ui-layout-toggler-east").addClass("btn btn-info").html('<i class="icon-none"></i>');
-  var n = e(".ui-layout-toggler-north").addClass("btn btn-info").html('<i class="icon-none"></i>'), i = e('<div class="preview-button-container">');
-  I = e('<div class="extension-preview-buttons">').appendTo(i), $editorButtonsElt = e('<div class="extension-editor-buttons">'), 
-  "horizontal" == r.layoutOrientation ? (e(".ui-layout-resizer-north").append(i), 
-  e(".ui-layout-resizer-east").append(n).append($editorButtonsElt)) : (i.append($editorButtonsElt), 
-  e(".ui-layout-resizer-south").append(i).append(n)), y(), w(), s.onLayoutCreated(B);
+  var n = e(".ui-layout-toggler-north").addClass("btn btn-info").html('<i class="icon-none"></i>');
+  P = e('<div class="extension-preview-buttons">'), $editorButtonsElt = e('<div class="extension-editor-buttons">'), 
+  viewerMode || "horizontal" == r.layoutOrientation ? (e(".ui-layout-resizer-north").append(P), 
+  e(".ui-layout-resizer-east").append(n).append($editorButtonsElt)) : e(".ui-layout-resizer-south").append(P).append($editorButtonsElt).append(n), 
+  y(), w(), s.onLayoutCreated(B);
  }
- var E = {}, A = void 0, S = !1, k = !1, F = !0, _ = 0, $ = void 0, D = !1, T = o.currentTime;
+ var E = {}, A = void 0, S = !1, k = !1, F = !0, $ = 0, _ = void 0, D = !1, T = o.currentTime;
  E.setOffline = function() {
   T = o.currentTime, D === !1 && (D = !0, s.onOfflineChanged(!0));
  };
- var L = void 0, B = void 0, M = void 0, R = void 0, I = void 0, P = void 0, N = void 0, z = void 0, O = void 0, j = void 0, H = require("ace/undomanager").UndoManager;
+ var L = void 0, B = void 0, M = void 0, R = void 0, P = void 0, I = void 0, N = void 0, O = void 0, z = void 0, j = void 0, H = require("ace/undomanager").UndoManager;
  E.initEditor = function(n) {
   function i() {
-   var e = z.val();
-   void 0 !== P && (e = P.getValue()), void 0 !== j && j != e && (O.content = e, s.onContentChanged(O)), 
+   var e = O.val();
+   void 0 !== I && (e = I.getValue()), void 0 !== j && j != e && (z.content = e, s.onContentChanged(z)), 
    j = e;
   }
   function a() {
-   var e = z.val();
+   var e = O.val();
    e = d.makeHtml(e), h.html(e), p.onPreviewRefresh();
   }
-  void 0 !== O && s.onFileClosed(O), O = n, j = void 0;
-  var l = O.content;
-  if (void 0 !== P ? (P.setValue(l, -1), P.getSession().setUndoManager(new H())) : z.val(l), 
-  void 0 !== N) return P && P.selection.setSelectionRange(O.editorSelectRange), P && P.focus() || z.focus(), 
+  void 0 !== z && s.onFileClosed(z), z = n, j = void 0;
+  var l = z.content;
+  if (void 0 !== I ? (I.setValue(l, -1), I.getSession().setUndoManager(new H())) : O.val(l), 
+  void 0 !== N) return I && I.selection.setSelectionRange(z.editorSelectRange), I && I.focus() || O.focus(), 
   N.refreshPreview(), void 0;
   var c = e(".preview-container");
   if (!lightMode) {
    var u = t.debounce(function() {
-    O.editorScrollTop = P.renderer.getScrollTop();
+    z.editorScrollTop = I.renderer.getScrollTop();
    }, 100);
-   P.session.on("changeScrollTop", function() {
+   I.session.on("changeScrollTop", function() {
     void 0 !== j && u();
-   }), P.session.selection.on("changeSelection", function() {
-    void 0 !== j && (O.editorSelectRange = P.getSelectionRange());
+   }), I.session.selection.on("changeSelection", function() {
+    void 0 !== j && (z.editorSelectRange = I.getSelectionRange());
    }), c.scroll(function() {
-    void 0 !== j && (O.previewScrollTop = c.scrollTop());
+    void 0 !== j && (z.previewScrollTop = c.scrollTop());
    });
   }
   var d = new Markdown.Converter();
@@ -22843,9 +23176,9 @@ if (hljs.LANGUAGES.glsl = function(e) {
    var h = e("#wmd-preview"), p = new Markdown.HookCollection();
    p.addNoop("onPreviewRefresh");
    var f = t.debounce(a, 1e3), g = function() {
-    void 0 === j ? (a(), s.onFileOpen(O)) : f(), i();
+    void 0 === j ? (a(), s.onFileOpen(z)) : f(), i();
    };
-   z.on("input propertychange", g), N = {
+   O.on("input propertychange", g), N = {
     hooks: p,
     getConverter: function() {
      return d;
@@ -22864,17 +23197,18 @@ if (hljs.LANGUAGES.glsl = function(e) {
   g = r.lazyRendering === !0 ? function(e) {
    var n = t.debounce(e, 500);
    return function() {
-    void 0 === j ? (P.renderer.scrollToY(O.editorScrollTop), e(), c.scrollTop(O.previewScrollTop), 
-    t.defer(function() {
-     s.onFileOpen(O);
+    void 0 === j ? (e(), c.scrollTop(z.previewScrollTop), t.defer(function() {
+     I.renderer.scrollToY(z.editorScrollTop), s.onFileOpen(z);
     })) : n(), i();
    };
   } : function(e) {
    return function() {
-    e(), void 0 === j && c.scrollTop(O.previewScrollTop), i();
+    e(), void 0 === j && (c.scrollTop(z.previewScrollTop), t.defer(function() {
+     I.renderer.scrollToY(z.editorScrollTop), s.onFileOpen(z);
+    })), i();
    };
   }, s.onPagedownConfigure(N), N.hooks.chain("onPreviewRefresh", s.onAsyncPreview), 
-  N.run(P, g), P && P.selection.setSelectionRange(O.editorSelectRange), P && P.focus() || z.focus(), 
+  N.run(I, g), I && I.selection.setSelectionRange(z.editorSelectRange), I && I.focus() || O.focus(), 
   e(".wmd-button-row li").addClass("btn btn-success").css("left", 0).find("span").hide();
   var m = e(".wmd-button-group1");
   e("#wmd-bold-button").append(e('<i class="icon-bold">')).appendTo(m), e("#wmd-italic-button").append(e('<i class="icon-italic">')).appendTo(m);
@@ -22902,7 +23236,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    e.target === M[0] ? (W = !0, t = o.createBackdrop("collapse", ".menu-panel"), M.addClass("move-to-front")) : M.find(".in").collapse("hide");
   }).on("hide.bs.collapse", function(e) {
    e.target === M[0] && (W = !1, t.parentNode.removeChild(t), M.removeClass("move-to-front"), 
-   P && P.focus() || z.focus());
+   I && I.focus() || O.focus());
   }).on("hidden.bs.collapse", function(e) {
    e.target === M[0] && M.find(".in").collapse("hide");
   }), R = e(".document-panel").collapse({
@@ -22914,10 +23248,10 @@ if (hljs.LANGUAGES.glsl = function(e) {
    R.addClass("move-to-front")) : R.find(".in").collapse("hide");
   }).on("hide.bs.collapse", function(e) {
    e.target === R[0] && (q = !1, n.parentNode.removeChild(n), R.removeClass("move-to-front"), 
-   P && P.focus() || z.focus());
+   I && I.focus() || O.focus());
   }).on("hidden.bs.collapse", function(e) {
    e.target === R[0] && R.find(".in").collapse("hide");
-  }), C(), z = e("#wmd-input").css({
+  }), C(), O = e("#wmd-input").css({
    "font-family": r.editorFontFamily,
    "font-size": r.editorFontSize + "px",
    "line-height": Math.round(r.editorFontSize * (20 / 12)) + "px"
@@ -22933,6 +23267,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
     l = e;
    }
   }
+  viewerMode || "vertical" != r.layoutOrientation || P.css("right", parseInt(P.css("right")) + $editorButtonsElt.width());
   var i = !1;
   e(".modal").on("show.bs.modal", function() {
    M.collapse("hide"), R.collapse("hide"), i = !0;
@@ -22942,7 +23277,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
     t.find("input:enabled:visible:first").focus();
    }, 50);
   }).on("hidden.bs.modal", function() {
-   i = !1, P && P.focus() || z.focus(), n(localStorage.theme);
+   i = !1, I && I.focus() || O.focus(), n(localStorage.theme);
   }).keyup(function(t) {
    13 != t.which || e(t.target).is("textarea") || e(this).find(".modal-footer a:last").click();
   }), a.stopCallback = function(t, n) {
@@ -24058,15 +24393,15 @@ if (hljs.LANGUAGES.glsl = function(e) {
   S = t.values(v), u(e);
  }
  function h(e) {
-  _ = t.some(e.syncLocations, function(e) {
-   return $ = e, e.isRealtime;
+  $ = t.some(e.syncLocations, function(e) {
+   return _ = e, e.isRealtime;
   }) ? e : void 0, f();
  }
  function p(e) {
   e === !1 ? (D = !0, f()) : (m.tryStopRealtimeSync(), D = !1);
  }
  function f() {
-  void 0 !== _ && D === !0 && $.provider.startRealtimeSync(_, $);
+  void 0 !== $ && D === !0 && _.provider.startRealtimeSync($, _);
  }
  function g(i) {
   n.resetModalInputs();
@@ -24113,9 +24448,9 @@ if (hljs.LANGUAGES.glsl = function(e) {
    });
   }), !0);
  };
- var _ = void 0, $ = void 0, D = !0;
+ var $ = void 0, _ = void 0, D = !0;
  return m.tryStopRealtimeSync = function() {
-  void 0 !== _ && D === !0 && $.provider.stopRealtimeSync();
+  void 0 !== $ && D === !0 && _.provider.stopRealtimeSync();
  }, viewerMode === !1 && (i.addListener("onFileOpen", h), i.addListener("onFileClosed", m.tryStopRealtimeSync), 
  i.addListener("onOfflineChanged", p)), i.addListener("onReady", function() {
   t.each(v, function(o) {
@@ -24129,8 +24464,8 @@ if (hljs.LANGUAGES.glsl = function(e) {
      if (t.size(a.syncLocations) > 0) return i.onError("Real time collaborative document can't be synchronized with multiple locations"), 
      void 0;
      o.exportRealtimeFile(e, a.title, a.content, function(e, t) {
-      e || (t.isRealtime = !0, a.addSyncLocation(t), i.onSyncExportSuccess(a, t), _ = a, 
-      $ = t, f());
+      e || (t.isRealtime = !0, a.addSyncLocation(t), i.onSyncExportSuccess(a, t), $ = a, 
+      _ = t, f());
      });
     } else {
      if (t.size(a.syncLocations) > 0 && t.first(t.values(a.syncLocations)).isRealtime) return i.onError("Real time collaborative document can't be synchronized with multiple locations"), 
@@ -24982,7 +25317,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
  s.linkLoad = function(e, t) {
   var s = setTimeout(function() {
    n && alert("timeout"), t();
-  }, 1e3 * _ - 100), a = function() {
+  }, 1e3 * $ - 100), a = function() {
    clearTimeout(s), l && (l.onload = y), setTimeout(t, 7);
   };
   if (r) if ("webkit" == o) {
@@ -25041,13 +25376,13 @@ if (hljs.LANGUAGES.glsl = function(e) {
  s.normalize = function(e, t) {
   return ".css" == e.substr(e.length - 4, 4) && (e = e.substr(0, e.length - 4)), t(e);
  };
- var _, $ = !1;
+ var $, _ = !1;
  return s.load = function(e, t, i, o, a) {
-  _ = _ || o.waitSeconds || 7;
+  $ = $ || o.waitSeconds || 7;
   var l = e + (a ? ".less" : ".css");
   if (!s.attachBuffer(l, i)) {
    var c = t.toUrl(l);
-   !$ && n && (alert(r ? "hacking links" : "not hacking"), $ = !0), a ? F(c, function(e) {
+   !_ && n && (alert(r ? "hacking links" : "not hacking"), _ = !0), a ? F(c, function(e) {
     a && (e = a(e, function(e) {
      s.inject(e), setTimeout(i, 7);
     }));
@@ -25076,17 +25411,17 @@ if (hljs.LANGUAGES.glsl = function(e) {
  paths: {
   jquery: "bower-libs/jquery/jquery",
   underscore: "bower-libs/underscore/underscore",
-  crel: "libs/crel",
+  crel: "bower-libs/crel/crel",
   jgrowl: "bower-libs/jgrowl/jquery.jgrowl",
   mousetrap: "bower-libs/mousetrap/mousetrap",
-  toMarkdown: "libs/to-markdown",
+  toMarkdown: "bower-libs/to-markdown/src/to-markdown",
   text: "bower-libs/requirejs-text/text",
   mathjax: "../lib/MathJax/MathJax.js?config=TeX-AMS_HTML",
   bootstrap: "bower-libs/bootstrap/dist/js/bootstrap",
   requirejs: "bower-libs/requirejs/require",
   "google-code-prettify": "bower-libs/google-code-prettify/src/prettify",
   highlightjs: "bower-libs/highlightjs/highlight.pack",
-  "jquery-waitforimages": "libs/jquery.waitforimages",
+  "jquery-waitforimages": "bower-libs/waitForImages/src/jquery.waitforimages",
   "jquery-ui": "bower-libs/jquery-ui/ui/jquery-ui",
   "jquery-ui-core": "bower-libs/jquery-ui/ui/jquery.ui.core",
   "jquery-ui-widget": "bower-libs/jquery-ui/ui/jquery.ui.widget",
@@ -25098,13 +25433,13 @@ if (hljs.LANGUAGES.glsl = function(e) {
   FileSaver: "bower-libs/FileSaver/FileSaver",
   stacktrace: "bower-libs/stacktrace/stacktrace",
   "requirejs-text": "bower-libs/requirejs-text/text",
-  "bootstrap-tour": "bower-libs/bootstrap-tour/build/js/bootstrap-tour"
- },
- map: {
-  ace: {
-   "ace/requirejs/text": "libs/ace_text",
-   "ace/commands/default_commands": "libs/ace_commands"
-  }
+  "bootstrap-tour": "bower-libs/bootstrap-tour/build/js/bootstrap-tour",
+  css_browser_selector: "bower-libs/css_browser_selector/css_browser_selector",
+  "jquery-mousewheel": "bower-libs/jquery-mousewheel/jquery.mousewheel",
+  "pagedown-ace": "bower-libs/pagedown-ace/Markdown.Editor",
+  "pagedown-extra": "bower-libs/pagedown-extra/Markdown.Extra",
+  "ace/requirejs/text": "libs/ace_text",
+  "ace/commands/default_commands": "libs/ace_commands"
  },
  shim: {
   underscore: {
@@ -25132,8 +25467,8 @@ if (hljs.LANGUAGES.glsl = function(e) {
   "jquery-ui-mouse": [ "jquery-ui-widget" ],
   "jquery-ui-widget": [ "jquery-ui-core" ],
   "jquery-ui-core": [ "jquery" ],
-  "libs/Markdown.Extra": [ "libs/Markdown.Converter", "google-code-prettify", "highlightjs" ],
-  "libs/Markdown.Editor": [ "libs/Markdown.Converter" ]
+  "pagedown-extra": [ "pagedown-ace", "google-code-prettify", "highlightjs" ],
+  "pagedown-ace": [ "bower-libs/pagedown-ace/Markdown.Converter" ]
  }
 });
 

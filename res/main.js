@@ -21,17 +21,17 @@ requirejs.config({
     paths: {
         jquery: 'bower-libs/jquery/jquery',
         underscore: 'bower-libs/underscore/underscore',
-        crel: 'libs/crel',
+        crel: 'bower-libs/crel/crel',
         jgrowl: 'bower-libs/jgrowl/jquery.jgrowl',
         mousetrap: 'bower-libs/mousetrap/mousetrap',
-        toMarkdown: 'libs/to-markdown',
+        toMarkdown: 'bower-libs/to-markdown/src/to-markdown',
         text: 'bower-libs/requirejs-text/text',
         mathjax: '../lib/MathJax/MathJax.js?config=TeX-AMS_HTML',
         bootstrap: 'bower-libs/bootstrap/dist/js/bootstrap',
         requirejs: 'bower-libs/requirejs/require',
         'google-code-prettify': 'bower-libs/google-code-prettify/src/prettify',
         highlightjs: 'bower-libs/highlightjs/highlight.pack',
-        'jquery-waitforimages': 'libs/jquery.waitforimages',
+        'jquery-waitforimages': 'bower-libs/waitForImages/src/jquery.waitforimages',
         'jquery-ui': 'bower-libs/jquery-ui/ui/jquery-ui',
         'jquery-ui-core': 'bower-libs/jquery-ui/ui/jquery.ui.core',
         'jquery-ui-widget': 'bower-libs/jquery-ui/ui/jquery.ui.widget',
@@ -43,13 +43,13 @@ requirejs.config({
         FileSaver: 'bower-libs/FileSaver/FileSaver',
         stacktrace: 'bower-libs/stacktrace/stacktrace',
         'requirejs-text': 'bower-libs/requirejs-text/text',
-        'bootstrap-tour': 'bower-libs/bootstrap-tour/build/js/bootstrap-tour'
-    },
-    map: {
-        'ace': {
-            'ace/requirejs/text': 'libs/ace_text',
-            'ace/commands/default_commands': 'libs/ace_commands'
-        }
+        'bootstrap-tour': 'bower-libs/bootstrap-tour/build/js/bootstrap-tour',
+        css_browser_selector: 'bower-libs/css_browser_selector/css_browser_selector',
+        'jquery-mousewheel': 'bower-libs/jquery-mousewheel/jquery.mousewheel',
+        'pagedown-ace': 'bower-libs/pagedown-ace/Markdown.Editor',
+        'pagedown-extra': 'bower-libs/pagedown-extra/Markdown.Extra',
+        'ace/requirejs/text': 'libs/ace_text',
+        'ace/commands/default_commands': 'libs/ace_commands'
     },
     shim: {
         underscore: {
@@ -103,14 +103,14 @@ requirejs.config({
         'jquery-ui-core': [
             'jquery'
         ],
-        'libs/Markdown.Extra': [
-            'libs/Markdown.Converter',
+        'pagedown-extra': [
+            'pagedown-ace',
             'google-code-prettify',
             'highlightjs'
         ],
-        'libs/Markdown.Editor': [
-            'libs/Markdown.Converter'
-        ],
+        'pagedown-ace': [
+            'bower-libs/pagedown-ace/Markdown.Converter'
+        ]
     }
 });
 

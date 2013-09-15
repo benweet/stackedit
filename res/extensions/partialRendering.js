@@ -122,7 +122,7 @@ define([
                 class: 'wmd-preview-section preview-content'
             });
             var isFirst = true;
-            while(childNode) {
+            while (childNode) {
                 var nextNode = childNode.nextSibling;
                 if(isFirst === false && /(^| )wmd-title($| )/.test(childNode.className)) {
                     // Stop when encountered the next wmd-title
@@ -140,7 +140,8 @@ define([
                     sectionElt.appendChild(childNode);
                 }
                 childNode = nextNode;
-            };
+            }
+            ;
             newSectionEltList.appendChild(sectionElt);
         });
         wmdPreviewElt.innerHTML = '';
@@ -184,6 +185,11 @@ define([
         editor.hooks.chain("onPreviewRefresh", function() {
             refreshSections();
         });
+        converter.setExtraExtension = function(extraExtensions) {
+            doFootnotes = _.some(extraExtensions, function(extension) {
+                return extension == "footnotes";
+            });
+        };
     };
 
     partialRendering.onReady = function() {
@@ -197,14 +203,6 @@ define([
 
     partialRendering.onFileSelected = function() {
         fileChanged = true;
-    };
-
-    partialRendering.onFileOpen = function() {
-        if(converter.extraExtensions) {
-            doFootnotes = _.some(converter.extraExtensions, function(extension) {
-                return extension == "footnotes";
-            });
-        }
     };
 
     return partialRendering;

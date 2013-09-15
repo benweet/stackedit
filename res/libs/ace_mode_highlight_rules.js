@@ -113,7 +113,7 @@ var MarkdownHighlightRules = function() {
         }, { // list
             token : "markup.list",
             regex : "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
-            next  : "listblock"
+            next  : "listblock-start"
         }, {
             include : "basic"
         }],
@@ -127,13 +127,11 @@ var MarkdownHighlightRules = function() {
             defaultToken : "markup.heading"
         } ],
 
-        /* don't need checkbox highlighting...
         "listblock-start" : [{
             token : "checkbox",
             regex : /(?:\[[ x]\])?/,
             next  : "listblock"
         }],
-        */
 
         "listblock" : [ { // Lists only escape on completely blank lines.
             token : "empty_line",
@@ -142,7 +140,7 @@ var MarkdownHighlightRules = function() {
         }, { // list
             token : "markup.list",
             regex : "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
-            next  : "listblock"
+            next  : "listblock-start"
         }, {
             include : "basic", noEscape: true
         }, {

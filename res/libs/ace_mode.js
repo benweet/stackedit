@@ -48,7 +48,7 @@ var Mode = function() {
 oop.inherits(Mode, TextMode);
 
 (function() {
-   
+    this.type = "text";
     this.lineCommentStart = ">";
     
     this.getNextLineIndent = function(state, line, tab) {

@@ -18,6 +18,6 @@
     "stacktrace": "~0.5.3",
     "requirejs-text": "~2.0.10",
     "bootstrap-tour": "~0.6.0",
-    "ace": "~1.1.1"
+    "ace": "#51b7cb67a63998c9c0b7d089a85c60e032a7cc17"
   }
 }

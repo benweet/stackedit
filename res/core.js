@@ -118,8 +118,8 @@ define([
         utils.setInputValue("#input-settings-editor-font-family", settings.editorFontFamily);
         // Editor font size
         utils.setInputValue("#input-settings-editor-font-size", settings.editorFontSize);
-        // Editor max width
-        utils.setInputValue("#input-settings-editor-max-width", settings.editorMaxWidth);
+        // Max width
+        utils.setInputValue("#input-settings-max-width", settings.maxWidth);
         // Default content
         utils.setInputValue("#textarea-settings-default-content", settings.defaultContent);
         // Commit message
@@ -147,8 +147,8 @@ define([
         newSettings.editorFontFamily = utils.getInputTextValue("#input-settings-editor-font-family", event);
         // Editor font size
         newSettings.editorFontSize = utils.getInputIntValue("#input-settings-editor-font-size", event, 1, 99);
-        // Editor max width
-        newSettings.editorMaxWidth = utils.getInputIntValue("#input-settings-editor-max-width", event, 1);
+        // Max width
+        newSettings.maxWidth = utils.getInputIntValue("#input-settings-max-width", event, 1);
         // Default content
         newSettings.defaultContent = utils.getInputValue("#textarea-settings-default-content");
         // Commit message
@@ -212,52 +212,73 @@ define([
         aceEditor.renderer.setPadding(EDITOR_DEFAULT_PADDING);
         aceEditor.session.setUseWrapMode(true);
         aceEditor.session.setMode("libs/ace_mode");
-        // Make titles bold...
+
+        // Make bold titles...
         (function(self) {
+            function checkLine(currentLine) {
+                var line = self.lines[currentLine];
+                if(line.length !== 0) {
+                    if(line[0].type.indexOf("markup.heading.multi") === 0) {
+                        _.each(self.lines[currentLine - 1], function(previousLineObject) {
+                            previousLineObject.type = "markup.heading.prev.multi";
+                        });
+                    }
+                }
+            }
             function customWorker() {
-                if (!self.running) { return; }
+                // Duplicate from background_tokenizer.js
+                if(!self.running) {
+                    return;
+                }
 
                 var workerStart = new Date();
-                var startLine = self.currentLine;
+                var currentLine = self.currentLine;
+                var endLine = -1;
                 var doc = self.doc;
 
-                var processedLines = 0;
+                while (self.lines[currentLine]) {
+                    currentLine++;
+                }
+
+                var startLine = currentLine;
 
                 var len = doc.getLength();
-                while (self.currentLine < len) {
-                    self.$tokenizeRow(self.currentLine);
-                    while (self.lines[self.currentLine]) {
-                        var line = self.lines[self.currentLine];
-                        if(line.length !== 0 && line[0].type.indexOf("markup.heading.multi") === 0) {
-                            _.each(self.lines[self.currentLine-1], function(previousLineObject) {
-                                previousLineObject.type = "markup.heading.prev.multi";
-                            });
-                        }
-                        self.currentLine++;
-                    }
+                var processedLines = 0;
+                self.running = false;
+                while (currentLine < len) {
+                    self.$tokenizeRow(currentLine);
+                    endLine = currentLine;
+                    do {
+                        checkLine(currentLine); // benweet
+                        currentLine++;
+                    } while (self.lines[currentLine]);
 
                     // only check every 5 lines
-                    processedLines ++;
-                    if ((processedLines % 5 == 0) && (new Date() - workerStart) > 20) {
-                        self.fireUpdateEvent(startLine, self.currentLine-1);
-                        self.running = setTimeout(customWorker, 20);
+                    processedLines++;
+                    if((processedLines % 5 == 0) && (new Date() - workerStart) > 20) {
+                        self.running = setTimeout(customWorker, 20); // benweet
+                        self.currentLine = currentLine;
                         return;
                     }
                 }
+                self.currentLine = currentLine;
 
-                self.running = false;
-
-                self.fireUpdateEvent(startLine, len - 1);
+                if(startLine <= endLine)
+                    self.fireUpdateEvent(startLine, endLine);
             }
+            ;
             self.$worker = function() {
-                self.currentLine = self.currentLine ? self.currentLine - 1 : 0;
+                self.lines.splice(0, self.lines.length);
+                self.states.splice(0, self.states.length);
+                self.currentLine = 0;
                 customWorker();
             };
+
         })(aceEditor.session.bgTokenizer);
+
         eventMgr.onAceCreated(aceEditor);
-        window.aceEditor = aceEditor;
     }
-    
+
     // Create the layout
     function createLayout() {
         var layoutGlobalConfig = {
@@ -291,8 +312,11 @@ define([
             onresize_end: function(paneName) {
                 if(aceEditor !== undefined && paneName == 'center') {
                     aceEditor.resize();
+                    var bottomMargin = (aceEditor.renderer.$size.scrollerHeight - aceEditor.renderer.lineHeight) / 2;
+                    bottomMargin < 0 && (bottomMargin = 0);
+                    aceEditor.renderer.setScrollMargin(0, bottomMargin, 0, 0);
                     setTimeout(function() {
-                        var padding = (aceEditor.renderer.$size.scrollerWidth - settings.editorMaxWidth)/2;
+                        var padding = (aceEditor.renderer.$size.scrollerWidth - settings.maxWidth) / 2;
                         if(padding < EDITOR_DEFAULT_PADDING) {
                             padding = EDITOR_DEFAULT_PADDING;
                         }
@@ -301,7 +325,7 @@ define([
                             aceEditor.resize(true);
                         }
                     }, 5);
-                }                
+                }
                 eventMgr.onLayoutResize(paneName);
             },
         };
@@ -324,6 +348,7 @@ define([
                 south__minSize: 200
             }));
         }
+        settings.maxWidth && $('#preview-contents').css('max-width', (settings.maxWidth + 30) + 'px');
         $(".navbar").click(function() {
             layout.allowOverflow('north');
         });
@@ -335,16 +360,16 @@ define([
         // have fixed position
         // We also move the north toggler to the east or south resizer as the
         // north resizer is very small
-        var $previewButtonsContainerElt = $('<div class="preview-button-container">');
-        $previewButtonsElt = $('<div class="extension-preview-buttons">').appendTo($previewButtonsContainerElt);
+        // var $previewButtonsContainerElt = $('<div
+        // class="preview-button-container">');
+        $previewButtonsElt = $('<div class="extension-preview-buttons">');
         $editorButtonsElt = $('<div class="extension-editor-buttons">');
-        if(settings.layoutOrientation == "horizontal") {
-            $('.ui-layout-resizer-north').append($previewButtonsContainerElt);
+        if(viewerMode || settings.layoutOrientation == "horizontal") {
+            $('.ui-layout-resizer-north').append($previewButtonsElt);
             $('.ui-layout-resizer-east').append($northTogglerElt).append($editorButtonsElt);
         }
         else {
-            $previewButtonsContainerElt.append($editorButtonsElt);
-            $('.ui-layout-resizer-south').append($previewButtonsContainerElt).append($northTogglerElt);
+            $('.ui-layout-resizer-south').append($previewButtonsElt).append($editorButtonsElt).append($northTogglerElt);
         }
 
         setPanelVisibility();
@@ -374,7 +399,7 @@ define([
         else {
             $editorElt.val(initDocumentContent);
         }
-        
+
         if(editor !== undefined) {
             // If the editor is already created
             aceEditor && aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
@@ -432,7 +457,7 @@ define([
             eventMgr.onSectionsCreated(sectionList);
             return text;
         });
-        
+
         function checkDocumentChanges() {
             var newDocumentContent = $editorElt.val();
             if(aceEditor !== undefined) {
@@ -444,7 +469,7 @@ define([
             }
             documentContent = newDocumentContent;
         }
-        
+
         if(!lightMode) {
             editor = new Markdown.Editor(converter);
             // Custom insert link dialog
@@ -490,7 +515,9 @@ define([
             $editorElt.on("input propertychange", previewWrapper);
             editor = {
                 hooks: hooks,
-                getConverter: function () { return converter; },
+                getConverter: function() {
+                    return converter;
+                },
                 run: previewWrapper,
                 refreshPreview: previewWrapper
             };
@@ -502,10 +529,10 @@ define([
                 var debouncedMakePreview = _.debounce(makePreview, 500);
                 return function() {
                     if(documentContent === undefined) {
-                        aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
                         makePreview();
                         $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
                         _.defer(function() {
+                            aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
                             eventMgr.onFileOpen(fileDesc);
                         });
                     }
@@ -639,7 +666,7 @@ define([
 
         // ACE editor
         createAceEditor();
-        
+
         // Editor's element
         $editorElt = $("#wmd-input").css({
             // Apply editor font
@@ -666,6 +693,11 @@ define([
 
     // Other initialization that are not prioritary
     eventMgr.addListener("onReady", function() {
+        
+        // In vertical mode, we have to offset the editor buttons otherwise they hide the editor buttons
+        if(!viewerMode && settings.layoutOrientation == "vertical") {
+            $previewButtonsElt.css('right', parseInt($previewButtonsElt.css('right')) + $editorButtonsElt.width());
+        }
 
         var isModalShown = false;
         $('.modal').on('show.bs.modal', function() {

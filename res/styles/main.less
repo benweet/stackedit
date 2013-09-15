@@ -112,7 +112,7 @@ body {
 
 #preview-contents {
 	padding: 15px;
-	margin-bottom: 50px;
+	margin: 0 auto 50px;
 	.ui-layout-east & {
 		padding-left: 5px;
 	}
@@ -567,19 +567,11 @@ body {
  * Preview/Editor extensions buttons
  ********************/
 
-.preview-button-container {
-    position: absolute;
-    right: 0;
-    .extension-editor-buttons {
-		position: relative;
-	}
-}
- 
 .extension-preview-buttons {
-	display: inline-block;
-    z-index: 1;
+    position: absolute;
+	z-index: 1;
     margin-top: 6px;
-    margin-right: 30px;
+    right: 30px;
     .ui-layout-resizer-south-closed & {
     	display: none !important;
     }
@@ -1231,11 +1223,6 @@ div.jGrowl {
 		line-height: @input-height-base;
 	}
 	
-	#preview-contents {
-		max-width: 1024px;
-		margin: 0 auto;
-	}
-		
 	.document-panel .search-bar {
 		padding: 20px 20px 10px;
 		.input-group-btn {

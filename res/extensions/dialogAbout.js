@@ -9,6 +9,7 @@ define([
     var dialogAbout = new Extension("dialogAbout", 'Dialog "About"');
 
     var libraries = {
+        "ACE": "http://ace.c9.io/",
         "Bootstrap": "http://getbootstrap.com/",
         "Bootstrap Tour": "http://bootstraptour.com/",
         "crel": "https://github.com/KoryNunn/crel",

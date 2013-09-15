@@ -65,7 +65,7 @@ define([
         Markdown.Extra.init(converter, options);
 
         // Store extensions list in converter for partialRendering
-        converter.extraExtensions = markdownExtra.config.extensions;
+        converter.setExtraExtension && converter.setExtraExtension(markdownExtra.config.extensions);
     };
 
     return markdownExtra;

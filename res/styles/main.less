@@ -838,10 +838,6 @@ h4, h5, h6 {
 	margin: 15px 0;
 }
 
-.toc ul {
-	list-style-type: none;
-}
-
 p,
 pre,
 blockquote {
@@ -928,6 +924,11 @@ ul,ol {
 	}
 }
 
+.toc ul {
+	list-style-type: none;
+	margin-bottom: 5px;
+}
+
 /*****************************
  * Editor
  *****************************/
@@ -971,11 +972,13 @@ ul,ol {
 	}
 	
 	.ace_code {
+		font-family: Menlo, Consolas, "Courier New", monospace;
 		color: @primary-color-lighter;
-		background-color: fade(@secondary-bg, 10%);;	
+		background-color: fade(@secondary-bg, 10%);
 	}
 	
 	.ace_code_block {
+		font-family: Menlo, Consolas, "Courier New", monospace;
 		color: @primary-color;
 	}
 	

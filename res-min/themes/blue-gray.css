@@ -1581,7 +1581,6 @@ h1{margin:40px 0}
 h2{margin:30px 0}
 h3{margin:20px 0}
 h4,h5,h6{margin:15px 0}
-.toc ul{list-style-type:none}
 p,pre,blockquote{margin:0 0 15px}
 hr{border-top:1px solid #ddd;margin:30px 0}
 code,pre{font-family:Menlo,Consolas,"Courier New",monospace;font-size:12px !important}
@@ -1600,6 +1599,7 @@ blockquote p{margin-bottom:15px;font-size:14px;line-height:20px}
 blockquote ul:last-child,blockquote ol:last-child{margin-bottom:0}
 ul,ol{margin-bottom:15px}
 ul ul,ol ul,ul ol,ol ol{margin-bottom:15px}
+.toc ul{list-style-type:none;margin-bottom:5px}
 .ace_editor{color:#545454}
 .ace-tm{background-color:#ffffff}
 .ace-tm .ace_marker-layer .ace_active-line{background-color:#f0f3f4}
@@ -1609,8 +1609,8 @@ ul ul,ol ul,ul ol,ol ol{margin-bottom:15px}
 .ace-tm .ace_strong{font-weight:bold}
 .ace-tm .ace_emphasis{color:#333333;font-style:italic}
 .ace-tm .ace_blockquote{color:#8c8c8c;font-style:italic}
-.ace-tm .ace_code{color:#666666;background-color:rgba(136,136,136,0.1)}
-.ace-tm .ace_code_block{color:#333333}
+.ace-tm .ace_code{font-family:Menlo,Consolas,"Courier New",monospace;color:#666666;background-color:rgba(136,136,136,0.1)}
+.ace-tm .ace_code_block{font-family:Menlo,Consolas,"Courier New",monospace;color:#333333}
 .ace-tm .ace_description{color:#666666}
 .ace_search{background-color:#d9dfe3;border:0}
 #wmd-input{color:#545454;-webkit-box-shadow:none;box-shadow:none;resize:none;border:none !important}

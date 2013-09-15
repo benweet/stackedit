@@ -1603,7 +1603,7 @@ ul ul,ol ul,ul ol,ol ol{margin-bottom:15px}
 .ace_editor{color:#545454}
 .ace-tm{background-color:#ffffff}
 .ace-tm .ace_marker-layer .ace_active-line{background-color:#f1f1f1}
-.ace-tm .ace_print-margin{background-color:#f1f1f1}
+.ace-tm .ace_print-margin{background-color:rgba(241,241,241,0.5)}
 .ace-tm .ace_markup.ace_heading{color:#333333;font-weight:bold}
 .ace-tm .ace_markup.ace_list{color:#8c8c8c}
 .ace-tm .ace_strong{font-weight:bold}

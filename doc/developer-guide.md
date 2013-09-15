@@ -54,7 +54,6 @@ Getting started
 
 #### Build/minify
 
-	npm install
 	grunt
 
 

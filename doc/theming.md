@@ -1,35 +1,34 @@
 StackEdit theming guide
 =======================
 
-In **StackEdit**, a theme is pretty much a CSS file that overrides the default look and feel.
+In **StackEdit**, a theme is pretty much a [LESS][1] file that overrides the default look and feel.
 
-*Create your special theme very quickly by following these steps:*
+### Create your special theme very quickly by following these steps
 
- 1. Fork **StackEdit** on [GitHub][1].
+ 1. Fork **StackEdit** on [GitHub][2] and clone the repository localy.
 
- 2. In the `themes` folder, create a sub-folder containing your resources (CSS, images...).
+ 2. Install the development tools as described in the [Development guide][3].
 
-	> The CSS file should have the same name as the sub-folder.
+ 3. In `res/themes`, create a LESS file, just like the other themes.
 
-	> **Example:** `themes/cool-theme/cool-theme.css`
+	> You can put images in `res/img`.
 
- 3. Add an entry in `THEME_LIST` at the end of `config.js` with the folder name as a key and the name of your theme as a value.
+ 4. Add an entry in `THEME_LIST` at the end of `config.js` with the filename as a key and the name of your theme as a value.
 
-	> **Example:** `"cool-theme": "The coolest ever"`
+	> **Example:** `"cool": "The coolest ever"`
 
- 4. Run the application on your machine, go to `Settings -> Editor -> Theme` and select your theme. Check that everything is marvelous (don't forget to test the `viewer.html`).
+ 5. Run the application on your machine using the `?debug` flag. Basically:
+ 
+        http://localhost/stackedit/?debug
+ 
+ 6. Go to `Settings -> Editor -> Theme` and select your theme. Check that everything is fine.
 
- 5. List your resource files in `cache.manifest`, commit, push, create a pull request and wait for publishing...
-
-That's it!
-
-### Please, keep in mind these simple rules
-
- - Avoid using gradients, shadows and other effects as much as possible (for performance concern).
- - Try to create something at least as nice as the default theme...
+ 7. Commit, push, create a pull request and wait for publishing.
 
 
 > Written with [StackEdit](http://benweet.github.io/stackedit/).
 
 
-  [1]: https://github.com/benweet/stackedit
+  [1]: http://lesscss.org/
+  [2]: https://github.com/benweet/stackedit
+  [3]: https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#getting-started

@@ -12079,14 +12079,13 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
    return n >= t.length || e.text != t[n].text ? (i = n, !0) : void 0;
   });
   var o = -c.length;
-  if (e.some(c.slice().reverse(), function(e, n) {
+  e.some(c.slice().reverse(), function(e, n) {
    return n >= t.length || e.text != t[t.length - n - 1].text ? (o = -n, !0) : void 0;
-  }), 0 === i || 0 !== i + o) {
-   var r = c.slice(0, i);
-   h = t.slice(i, t.length + o);
-   var s = c.slice(c.length + o, c.length);
-   p = e.first(s), d = c.slice(i, c.length + o), c = r.concat(h).concat(s);
-  }
+  }), i - o > c.length && (o = i - c.length);
+  var r = c.slice(0, i);
+  h = t.slice(i, t.length + o);
+  var s = c.slice(c.length + o, c.length);
+  p = e.first(s), d = c.slice(i, c.length + o), c = r.concat(h).concat(s);
  }
  function r() {
   e.each(d, function(e) {
@@ -19204,7 +19203,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    element: ".navbar .action-create-file",
    title: "New document",
    content: "Click the <i class='icon-file'></i> <code>New document</code> button to create a new document.",
-   placement: "bottom",
+   placement: "left",
    reflex: !0
   }, {
    element: ".document-panel .collapse-button",
@@ -23120,7 +23119,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
   }
   function a() {
    var e = O.val();
-   e = d.makeHtml(e), h.html(e), p.onPreviewRefresh();
+   e = h.makeHtml(e), p.html(e), f.onPreviewRefresh();
   }
   void 0 !== z && s.onFileClosed(z), z = n, j = void 0;
   var l = z.content;
@@ -23130,46 +23129,47 @@ if (hljs.LANGUAGES.glsl = function(e) {
   var c = e(".preview-container");
   if (!lightMode) {
    var u = t.debounce(function() {
-    z.editorScrollTop = I.renderer.getScrollTop();
+    void 0 !== j && (z.editorScrollTop = I.renderer.getScrollTop());
    }, 100);
-   I.session.on("changeScrollTop", function() {
-    void 0 !== j && u();
-   }), I.session.selection.on("changeCursor", function() {
-    void 0 !== j && (console.log("changeCursor"), z.editorSelectRange = I.getSelectionRange());
-   }), c.scroll(function() {
+   I.session.on("changeScrollTop", u);
+   var d = t.debounce(function() {
+    void 0 !== j && (z.editorSelectRange = I.getSelectionRange());
+   }, 100);
+   I.session.selection.on("changeSelection", d), I.session.selection.on("changeCursor", d), 
+   c.scroll(function() {
     void 0 !== j && (z.previewScrollTop = c.scrollTop());
    });
   }
-  var d = new Markdown.Converter();
-  if (d.hooks.chain("preConversion", function(e) {
+  var h = new Markdown.Converter();
+  if (h.hooks.chain("preConversion", function(e) {
    s.previewStartTime = new Date();
    var t = e + "\n\n", n = [], i = 0;
    return t.replace(/^```.*\n[\s\S]*?\n```|(^.+[ \t]*\n=+[ \t]*\n+|^.+[ \t]*\n-+[ \t]*\n+|^\#{1,6}[ \t]*.+?[ \t]*\#*\n+)/gm, function(e, o, r) {
     return o && (n.push(t.substring(i, r)), i = r), "";
    }), n.push(t.substring(i, e.length)), s.onSectionsCreated(n), e;
   }), lightMode) {
-   var h = e("#wmd-preview"), p = new Markdown.HookCollection();
-   p.addNoop("onPreviewRefresh");
-   var f = t.debounce(a, 1e3), g = function() {
-    void 0 === j ? (a(), s.onFileOpen(z)) : f(), i();
+   var p = e("#wmd-preview"), f = new Markdown.HookCollection();
+   f.addNoop("onPreviewRefresh");
+   var g = t.debounce(a, 1e3), m = function() {
+    void 0 === j ? (a(), s.onFileOpen(z)) : g(), i();
    };
-   O.on("input propertychange", g), N = {
-    hooks: p,
+   O.on("input propertychange", m), N = {
+    hooks: f,
     getConverter: function() {
-     return d;
+     return h;
     },
-    run: g,
-    refreshPreview: g
+    run: m,
+    refreshPreview: m
    };
-  } else N = new Markdown.Editor(d), N.hooks.set("insertLinkDialog", function(t) {
+  } else N = new Markdown.Editor(h), N.hooks.set("insertLinkDialog", function(t) {
    return E.insertLinkCallback = t, o.resetModalInputs(), e(".modal-insert-link").modal(), 
    !0;
   }), N.hooks.set("insertImageDialog", function(t) {
    return E.insertLinkCallback = t, E.catchModal ? !0 : (o.resetModalInputs(), e(".modal-insert-image").modal(), 
    !0);
   });
-  var g;
-  g = r.lazyRendering === !0 ? function(e) {
+  var m;
+  m = r.lazyRendering === !0 ? function(e) {
    var n = t.debounce(e, 500);
    return function() {
     void 0 === j ? (e(), c.scrollTop(z.previewScrollTop), t.defer(function() {
@@ -23183,19 +23183,19 @@ if (hljs.LANGUAGES.glsl = function(e) {
     })), i();
    };
   }, s.onPagedownConfigure(N), N.hooks.chain("onPreviewRefresh", s.onAsyncPreview), 
-  N.run(I, g), I && I.selection.setSelectionRange(z.editorSelectRange), I && I.focus() || O.focus(), 
+  N.run(I, m), I && I.selection.setSelectionRange(z.editorSelectRange), I && I.focus() || O.focus(), 
   e(".wmd-button-row li").addClass("btn btn-success").css("left", 0).find("span").hide();
-  var m = e(".wmd-button-group1");
-  e("#wmd-bold-button").append(e('<i class="icon-bold">')).appendTo(m), e("#wmd-italic-button").append(e('<i class="icon-italic">')).appendTo(m);
-  var m = e(".wmd-button-group2");
-  e("#wmd-link-button").append(e('<i class="icon-globe">')).appendTo(m), e("#wmd-quote-button").append(e('<i class="icon-indent-right">')).appendTo(m), 
-  e("#wmd-code-button").append(e('<i class="icon-code">')).appendTo(m), e("#wmd-image-button").append(e('<i class="icon-picture">')).appendTo(m);
-  var m = e(".wmd-button-group3");
-  e("#wmd-olist-button").append(e('<i class="icon-list-numbered">')).appendTo(m), 
-  e("#wmd-ulist-button").append(e('<i class="icon-list-bullet">')).appendTo(m), e("#wmd-heading-button").append(e('<i class="icon-text-height">')).appendTo(m), 
-  e("#wmd-hr-button").append(e('<i class="icon-ellipsis">')).appendTo(m);
-  var m = e(".wmd-button-group4");
-  e("#wmd-undo-button").append(e('<i class="icon-reply">')).appendTo(m), e("#wmd-redo-button").append(e('<i class="icon-forward">')).appendTo(m);
+  var v = e(".wmd-button-group1");
+  e("#wmd-bold-button").append(e('<i class="icon-bold">')).appendTo(v), e("#wmd-italic-button").append(e('<i class="icon-italic">')).appendTo(v);
+  var v = e(".wmd-button-group2");
+  e("#wmd-link-button").append(e('<i class="icon-globe">')).appendTo(v), e("#wmd-quote-button").append(e('<i class="icon-indent-right">')).appendTo(v), 
+  e("#wmd-code-button").append(e('<i class="icon-code">')).appendTo(v), e("#wmd-image-button").append(e('<i class="icon-picture">')).appendTo(v);
+  var v = e(".wmd-button-group3");
+  e("#wmd-olist-button").append(e('<i class="icon-list-numbered">')).appendTo(v), 
+  e("#wmd-ulist-button").append(e('<i class="icon-list-bullet">')).appendTo(v), e("#wmd-heading-button").append(e('<i class="icon-text-height">')).appendTo(v), 
+  e("#wmd-hr-button").append(e('<i class="icon-ellipsis">')).appendTo(v);
+  var v = e(".wmd-button-group4");
+  e("#wmd-undo-button").append(e('<i class="icon-reply">')).appendTo(v), e("#wmd-redo-button").append(e('<i class="icon-forward">')).appendTo(v);
  };
  var q = !1, W = !1;
  return E.onReady = function() {

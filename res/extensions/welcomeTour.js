@@ -42,7 +42,7 @@ define([
                 element: ".navbar .action-create-file",
                 title: "New document",
                 content: "Click the <i class='icon-file'></i> <code>New document</code> button to create a new document.",
-                placement: "bottom",
+                placement: "left",
                 reflex: true,
             },
             {

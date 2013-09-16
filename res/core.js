@@ -411,21 +411,20 @@ define([
 
         if(!lightMode) {
             // Store editor scrollTop on scroll event
-            var debouncedUpdateScroll = _.debounce(function() {
-                fileDesc.editorScrollTop = aceEditor.renderer.getScrollTop();
-            }, 100);
-            aceEditor.session.on('changeScrollTop', function() {
+            var saveScroll = _.debounce(function() {
                 if(documentContent !== undefined) {
-                    debouncedUpdateScroll();
+                    fileDesc.editorScrollTop = aceEditor.renderer.getScrollTop();
                 }
-            });
+            }, 100);
+            aceEditor.session.on('changeScrollTop', saveScroll);
             // Store editor selection on change
-            aceEditor.session.selection.on('changeCursor', function() {
+            var saveSelection = _.debounce(function() {
                 if(documentContent !== undefined) {
-                    console.log('changeCursor');
                     fileDesc.editorSelectRange = aceEditor.getSelectionRange();
                 }
-            });
+            }, 100);
+            aceEditor.session.selection.on('changeSelection', saveSelection);
+            aceEditor.session.selection.on('changeCursor', saveSelection);
             // Store preview scrollTop on scroll event
             $previewContainerElt.scroll(function() {
                 if(documentContent !== undefined) {

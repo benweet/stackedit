@@ -39,7 +39,7 @@ define([
                 return true;
             }
         });
-
+        
         // Find modified section starting from bottom
         var rightIndex = -sectionList.length;
         _.some(sectionList.slice().reverse(), function(section, index) {
@@ -49,9 +49,9 @@ define([
             }
         });
         
-        if(leftIndex !== 0 && leftIndex + rightIndex === 0) {
-            // nothing changed
-            return;
+        if(leftIndex - rightIndex > sectionList.length) {
+            // Prevent overlap
+            rightIndex = leftIndex - sectionList.length;
         }
 
         // Create an array composed of left unmodified, modified, right

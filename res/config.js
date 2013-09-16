@@ -1,4 +1,4 @@
-var VERSION = "2.1.1";
+var VERSION = "2.1.2";
 
 var MAIN_URL = "http://benweet.github.io/stackedit/";
 var GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1";

@@ -7,7 +7,7 @@ In **StackEdit**, a theme is pretty much a [LESS][1] file that overrides the def
 
  1. Fork **StackEdit** on [GitHub][2] and clone the repository localy.
 
- 2. Install the development tools as described in the [Development guide][3].
+ 2. Install the development tools as described in the [Developer guide][3].
 
  3. In `res/themes`, create a LESS file, just like the other themes.
 

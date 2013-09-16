@@ -1479,7 +1479,7 @@ body{tab-size:4}
 .navbar .working-indicator{width:50px;height:17px;background-position:0 0;margin-top:12px}
 .navbar .working-indicator.show{background-image:url("../img/loader-default.gif")}
 @media only screen and (-webkit-min-device-pixel-ratio:2),only screen and (min--moz-device-pixel-ratio:2),only screen and (-o-min-device-pixel-ratio:2/1),only screen and (min-device-pixel-ratio:2),only screen and (min-resolution:192dpi),only screen and (min-resolution:2dppx){.navbar .working-indicator.show{background-image:url("../img/loader-default2x.gif");background-size:50px 17px}}@media only screen and (-webkit-min-device-pixel-ratio:2),only screen and (min--moz-device-pixel-ratio:2),only screen and (-o-min-device-pixel-ratio:2/1),only screen and (min-device-pixel-ratio:2),only screen and (min-resolution:192dpi),only screen and (min-resolution:2dppx){.navbar .working-indicator.show{background-image:url("../img/loader-default2x.gif");background-size:50px 17px}}.menu-panel,.document-panel{display:block;position:absolute;top:0;height:100%;z-index:10;overflow:initial}
-.menu-panel .collapse-button i,.document-panel .collapse-button i{color:#cccccc;font-size:14px}
+.menu-panel .collapse-button i,.document-panel .collapse-button i{color:#777777;font-size:14px}
 .menu-panel.in .collapse-button,.document-panel.in .collapse-button{background-color:#565656}
 .menu-panel .panel-content,.document-panel .panel-content{-webkit-box-shadow:0 6px 12px rgba(0,0,0,0.175);box-shadow:0 6px 12px rgba(0,0,0,0.175);overflow:auto;padding-bottom:30px;height:100%}
 .menu-panel .panel-content a>i,.document-panel .panel-content a>i{margin-right:3px;color:inherit}

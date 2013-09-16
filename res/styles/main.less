@@ -34,6 +34,7 @@
 @menu-panel-width: 280px;
 @document-panel-width: 350px;
 @jgrowl-width: 260px;
+@title-base-size: 14px;
 
 /* Bootstrap */
 @body-bg: @primary-bg-lighter;
@@ -284,6 +285,9 @@ body {
 			}
 		}
 	}
+	.btn {
+		height: @input-height-base;
+	}
 	.btn-group > .btn {
 		&.disabled,
 		&.blocked,
@@ -295,10 +299,11 @@ body {
 	}
 	
 	.file-title-navbar {
+		display: block;
 		padding: 4px 15px;
 		font-size: 20px;
 		font-weight: 200;
-		color: @primary-color-light;
+		color: @btn-success-color;
 		max-width: 320px;
 		overflow: hidden;
 		i {
@@ -338,6 +343,9 @@ body {
 		color: @panel-button-color;
     	font-size: 14px;
 	}
+	&.in .collapse-button {
+       	background-color: @bg-navbar-hover;
+    }
 	.panel-content {
 		.box-shadow(0 6px 12px rgba(0,0,0,.175));
 		overflow: auto;
@@ -362,9 +370,6 @@ body {
 	}
 	&.in {
         margin-left: 0;
-        .collapse-button {
-        	background-color: @panel-bg;
-        }
     }
     .collapse-button {
 	    right: -83px;
@@ -390,9 +395,6 @@ body {
     transition: margin-right 0.35s ease;
 	&.in {
         margin-right: 0;
-        .collapse-button {
-        	background-color: @panel-bg;
-        }
     }
     .collapse-button {
 	    left: -83px;
@@ -583,12 +585,12 @@ body {
 		margin: 0 0 0 1px;
 		.btn {
 			position: initial;
-			background-color: fade(@navbar-default-bg, 33%);
+			background-color: fade(@primary-bg, 33%);
 		}
 		&.open .btn{
 			background-color: @primary-bg-light;
 			i {
-				color: @btn-success-color
+				color: @primary-color-light
 			}
 		}
 	}
@@ -625,7 +627,7 @@ body {
 	display: inline-block;
 	vertical-align: top;
 	.btn {
-		background-color: fade(@navbar-default-bg, 33%);
+		background-color: fade(@primary-bg, 33%);
 		text-align: center;
 		height: 35px;
 		width: 35px;
@@ -759,15 +761,15 @@ body {
 	.btn {
 		float: none;
 		i {
-			color: fade(@btn-success-color, 30%);
+			color: fade(@primary-color-light, 30%);
 		}
 		&:hover,
 		&:focus,
 		&:active,
 		&.active {
-			background-color: mix(@primary-bg-lighter, @navbar-default-bg, 50%);
+			background-color: mix(@primary-bg-lighter, @primary-bg, 50%);
 			i {
-				color: @btn-success-color
+				color: @primary-color-light
 			}
 		}
 	}
@@ -821,6 +823,13 @@ body {
 a code {
 	color: inherit;
 }
+
+h1 { font-size: floor(@title-base-size * 2.60); }
+h2 { font-size: floor(@title-base-size * 2.15); }
+h3 { font-size: ceil(@title-base-size * 1.70); }
+h4 { font-size: ceil(@title-base-size * 1.25); }
+h5 { font-size:  @title-base-size; }
+h6 { font-size: ceil(@title-base-size * 0.85); }
 
 h1 {
 	margin: 40px 0;
@@ -907,8 +916,8 @@ blockquote {
 	border-left-width: 10px;
 	p {
 	    margin-bottom: 15px;
-	    font-size: 14px;
-	    line-height: 20px;
+	    font-size: @font-size-base;
+	    line-height: @line-height-base;
 	}
 	
 	ul:last-child,
@@ -1213,14 +1222,14 @@ div.jGrowl {
  *******************/
  
 .viewer {
-	.file-title-navbar {
-		line-height: @input-height-base;
-	}
-	
 	.document-panel .search-bar {
 		padding: 20px 20px 10px;
 		.input-group-btn {
 			display: none;
 		}
+	}
+	
+	.ui-layout-toggler {
+		display: none !important;
 	}
 }

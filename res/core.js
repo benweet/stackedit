@@ -677,6 +677,9 @@ define([
             "font-size": settings.editorFontSize + "px",
             "line-height": Math.round(settings.editorFontSize * (20 / 12)) + "px"
         });
+        $editorElt.find('.ace_content').css({
+            "background-size": "64px " + Math.round(settings.editorFontSize * (20 / 12)) + "px",
+        });
 
         // UI layout
         createLayout();

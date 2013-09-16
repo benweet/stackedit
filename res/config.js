@@ -67,5 +67,6 @@ if(location.hostname.indexOf("benweet.insomnia247.nl") === 0) {
 var THEME_LIST = {
     "default": "Default",
     "blue-gray": "Blue-Gray",
-    "night": "Night"
+    "night": "Night",
+    "school": "School",
 };

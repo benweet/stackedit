@@ -1,0 +1,59 @@
+@import "../styles/main.less";
+
+@navbar-default-bg: #315A4B;
+@bg-navbar-hover: lighten(@navbar-default-bg, 8%);
+@primary-color: #174d80;
+@primary-bg: darken(@primary-bg-light, 4%);
+@primary-bg-light: #E2DEDE;
+@primary-bg-lighter: lighten(@primary-bg-light, 4%);
+@btn-success-color: #eee;
+@title-base-size: 18px;
+@resizer-bg: #B1A19A;
+@panel-button-color: mix(#333, @resizer-bg, 50%);
+
+
+@font-face {
+    font-family: 'cursive_standardregular';
+    src: url('../font/cursive_standard-webfont.eot');
+    src: url('../font/cursive_standard-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../font/cursive_standard-webfont.woff') format('woff'),
+         url('../font/cursive_standard-webfont.ttf') format('truetype'),
+         url('../font/cursive_standard-webfont.svg#cursive_standardregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.ui-layout-resizer-north {
+	background-color: @resizer-bg;
+}
+
+.extension-preview-buttons {
+	margin-top: 12px;
+}
+
+.ace-tm {
+	.ace_content {
+	    background-image: url("../img/school-line.png");
+		background-repeat: repeat;
+		background-color: transparent;
+	}
+	.ace_marker-layer .ace_active-line {
+		background-color: fade(#a2bace, 20%);	
+	}
+	.ace_print-margin {
+		background-color: fade(#b56e80, 50%);
+	}
+}
+
+.wmd-title {
+	font-family: 'cursive_standardregular';
+}
+
+.file-title-navbar {
+	font-family: 'cursive_standardregular';
+	line-height: 34px;
+}
+
+.navbar .working-indicator.show {
+	.img-retina('../img/loader-school.gif', '../img/loader-school2x.gif', 50px, 17px);
+}	

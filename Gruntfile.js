@@ -118,6 +118,14 @@ module.exports = function(grunt) {
                     // Fonts
                     {
                         expand: true,
+                        cwd: 'res/font',
+                        src: [
+                            '**'
+                        ],
+                        dest: 'res-min/font/'
+                    },
+                    {
+                        expand: true,
                         cwd: 'res/libs/fontello/font',
                         src: [
                             '**'
@@ -160,7 +168,9 @@ module.exports = function(grunt) {
                 updateConfigs: [
                     'pkg'
                 ],
-                commitFiles: ['-a'],
+                commitFiles: [
+                    '-a'
+                ],
                 pushTo: 'origin'
             }
         },

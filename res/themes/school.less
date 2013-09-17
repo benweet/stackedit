@@ -3,6 +3,9 @@
 @navbar-default-bg: #315A4B;
 @bg-navbar-hover: lighten(@navbar-default-bg, 8%);
 @primary-color: #174d80;
+@primary-color-light: lighten(@primary-color, 13%);
+@primary-color-lighter: lighten(@primary-color, 20%);
+@primary-color-lightest: lighten(@primary-color, 35%);
 @primary-bg: darken(@primary-bg-light, 4%);
 @primary-bg-light: #E2DEDE;
 @primary-bg-lighter: lighten(@primary-bg-light, 4%);
@@ -42,6 +45,44 @@
 	}
 	.ace_print-margin {
 		background-color: fade(#b56e80, 50%);
+	}
+	
+	.ace_markup.ace_heading {
+		color: #444;
+		font-weight: bold;
+	}
+	
+	.ace_markup.ace_list {
+		color: @primary-color-lightest;
+	}
+	
+	.ace_strong {
+		font-weight: bold;
+	}
+	
+	.ace_emphasis {
+		color: @primary-color;
+		font-style: italic;
+	}
+	
+	.ace_blockquote {
+		color: #b56e80;
+		font-style: italic;
+	}
+	
+	.ace_code {
+		font-family: Menlo, Consolas, "Courier New", monospace;
+		color: #66a26d;
+		background-color: fade(@secondary-bg, 10%);
+	}
+	
+	.ace_code_block {
+		font-family: Menlo, Consolas, "Courier New", monospace;
+		color: #66a26d;
+	}
+	
+	.ace_description {
+		color: @primary-color-lighter;
 	}
 }
 

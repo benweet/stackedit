@@ -12069,6 +12069,20 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
  }), t;
 }), define("text!html/settingsExtensionsAccordion.html", [], function() {
  return '<div class="panel">\n	<div class="accordion-heading">\n		<div class="checkbox pull-right">\n			<label> <input id="input-enable-extension-<%= extensionId %>"\n				type="checkbox"<% if(!isOptional) print(\'disabled\') %>>\n				enabled\n			</label>\n		</div>\n		<span data-toggle="collapse" data-parent=".accordion-extensions"\n			class="accordion-toggle" href="#accordion-extensions-collapse-<%= extensionId %>">\n			<%= extensionName %> </span>\n	</div>\n	<div id="accordion-extensions-collapse-<%= extensionId %>" class="collapse">\n		<div class="accordion-inner clearfix"><%= settingsBlock %></div>\n	</div>\n</div>\n';
+}), define("extensions/markdownSectionParser", [ "classes/Extension" ], function(e) {
+ var t = new e("markdownSectionParser", "Markdown section parser"), n = void 0;
+ return t.onEventMgrCreated = function(e) {
+  n = e;
+ }, t.onPagedownConfigure = function(e) {
+  var t = e.getConverter();
+  t.hooks.chain("preConversion", function(e) {
+   n.previewStartTime = new Date();
+   var t = e + "\n\n", i = [], o = 0;
+   return t.replace(/^```.*\n[\s\S]*?\n```|(^.+[ \t]*\n=+[ \t]*\n+|^.+[ \t]*\n-+[ \t]*\n+|^\#{1,6}[ \t]*.+?[ \t]*\#*\n+)/gm, function(e, n, r) {
+    return n && (i.push(t.substring(o, r)), o = r), "";
+   }), i.push(t.substring(o, e.length)), n.onSectionsCreated(i), e;
+  });
+ }, t;
 }), define("text!html/partialRenderingSettingsBlock.html", [], function() {
  return "<p>Renders modified sections only.</p>\n<blockquote>\n	<b>NOTE:</b> Document sections are based on title elements (h1, h2...). Therefore if\n	your document does not contain any title, performance will not be increased.\n</blockquote>";
 }), define("extensions/partialRendering", [ "underscore", "crel", "classes/Extension", "text!html/partialRenderingSettingsBlock.html" ], function(e, t, n, i) {
@@ -12148,11 +12162,11 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
    return t.push(u + "\n\n"), t.join("");
   }), t.hooks.chain("onPreviewRefresh", function() {
    r();
-  }), a.setExtraExtension = function(t) {
-   g = e.some(t, function(e) {
-    return "footnotes" == e;
-   });
-  };
+  });
+ }, s.onExtraExtensions = function(t) {
+  g = e.some(t, function(e) {
+   return "footnotes" == e;
+  });
  }, s.onReady = function() {
   v = t("div", {
    id: "wmd-preview-section-footnotes",
@@ -17719,7 +17733,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
  };
 }(), define("pagedown-extra", function() {}), define("extensions/markdownExtra", [ "jquery", "underscore", "utils", "classes/Extension", "text!html/markdownExtraSettingsBlock.html", "pagedown-extra" ], function(e, t, n, i, o) {
  var r = new i("markdownExtra", "Markdown Extra", !0);
- return r.settingsBlock = o, r.defaultConfig = {
+ r.settingsBlock = o, r.defaultConfig = {
   extensions: [ "fenced_code_gfm", "tables", "def_list", "attr_list", "footnotes" ],
   highlighter: "prettify"
  }, r.onLoadSettings = function() {
@@ -17738,6 +17752,10 @@ if (hljs.LANGUAGES.glsl = function(e) {
   n.getInputChecked("#input-markdownextra-attrlist") && e.extensions.push("attr_list"), 
   n.getInputChecked("#input-markdownextra-footnotes") && e.extensions.push("footnotes"), 
   e.highlighter = n.getInputValue("#input-markdownextra-highlighter");
+ };
+ var s = void 0;
+ return r.onEventMgrCreated = function(e) {
+  s = e;
  }, r.onPagedownConfigure = function(e) {
   var n = e.getConverter(), i = {
    extensions: r.config.extensions
@@ -17751,7 +17769,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
     });
    });
   } else "prettify" == r.config.highlighter && (i.highlighter = "prettify", e.hooks.chain("onPreviewRefresh", prettyPrint));
-  Markdown.Extra.init(n, i), n.setExtraExtension && n.setExtraExtension(r.config.extensions);
+  Markdown.Extra.init(n, i), s.onExtraExtensions(r.config.extensions);
  }, r;
 }), define("text!html/buttonToc.html", [], function() {
  return '<button class="btn btn-default dropdown-toggle" title="Table of contents" data-toggle="dropdown">\n    <i class="icon-list"></i>\n</button>\n<div class="dropdown-menu pull-right">\n    <h3>Table of contents</h3>\n    <div class="table-of-contents">\n    </div>\n</div>\n';
@@ -17975,34 +17993,38 @@ if (hljs.LANGUAGES.glsl = function(e) {
  r.onSectionsCreated = function(e) {
   a = e;
  };
- var l = void 0, c = [], u = [], d = void 0, h = void 0, p = t.debounce(function() {
-  c = [];
-  var n = 0, i = 0;
+ var l = 0;
+ r.onMarkdownTrim = function(e) {
+  l = e;
+ };
+ var c = void 0, u = [], d = [], h = void 0, p = void 0, f = t.debounce(function() {
+  u = [];
+  var n = 0, i = 0, r = l;
   t.each(a, function(e) {
-   n += e.length;
-   var t = s.session.doc.indexToPosition(n), o = s.session.documentToScreenPosition(t.row, t.column), r = o.row * s.renderer.lineHeight, a = r - i;
-   c.push({
-    startOffset: i,
-    endOffset: r,
-    height: a
-   }), i = r;
-  }), u = [];
-  var r = 0, p = l.scrollTop();
-  l.find(".preview-content > .wmd-title").each(function() {
-   var t = e(this), n = t.position().top + p + o(t.css("margin-top"));
+   n += e.length + r, r = 0;
+   var t = s.session.doc.indexToPosition(n), o = s.session.documentToScreenPosition(t.row, t.column), a = o.row * s.renderer.lineHeight, l = a - i;
    u.push({
-    startOffset: r,
+    startOffset: i,
+    endOffset: a,
+    height: l
+   }), i = a;
+  }), d = [];
+  var f = 0, g = c.scrollTop();
+  c.find(".preview-content > .wmd-title").each(function() {
+   var t = e(this), n = t.position().top + g + o(t.css("margin-top"));
+   d.push({
+    startOffset: f,
     endOffset: n,
-    height: n - r
-   }), r = n;
+    height: n - f
+   }), f = n;
   });
-  var f = l.prop("scrollHeight");
-  u.push({
-   startOffset: r,
-   endOffset: f,
-   height: f - r
-  }), d = -10, h = -10, b();
- }, 500), f = !1, g = !1, m = !1, v = !1, b = t.debounce(function() {
+  var m = c.prop("scrollHeight");
+  d.push({
+   startOffset: f,
+   endOffset: m,
+   height: m - f
+  }), h = -10, p = -10, y();
+ }, 500), g = !1, m = !1, v = !1, b = !1, y = t.debounce(function() {
   function n(e, n, i) {
    var o = void 0, r = t.find(n, function(t, n) {
     return o = n, e < t.endOffset;
@@ -18012,16 +18034,36 @@ if (hljs.LANGUAGES.glsl = function(e) {
     return a.startOffset + a.height * s;
    }
   }
-  if (0 === c.length || c.length !== u.length) return b(), void 0;
-  var i = s.renderer.getScrollTop(), o = l.scrollTop();
-  if (f === !0 && Math.abs(i - d) > 9) {
-   f = !1, d = i;
-   var r = n(i, c, u);
-   r = t.min([ r, l.prop("scrollHeight") - l.outerHeight() ]), Math.abs(r - o) <= 9 ? h = o : (v = !0, 
-   l.animate({
+  if (0 === u.length || u.length !== d.length) return y(), void 0;
+  var i = s.renderer.getScrollTop(), o = c.scrollTop();
+  if (g === !0 && Math.abs(i - h) > 9) {
+   g = !1, h = i;
+   var r = n(i, u, d);
+   r = t.min([ r, c.prop("scrollHeight") - c.outerHeight() ]), Math.abs(r - o) <= 9 ? p = o : (b = !0, 
+   c.animate({
     scrollTop: r
    }, {
     easing: "easeOutSine",
+    complete: function() {
+     p = r;
+    },
+    always: function() {
+     t.defer(function() {
+      b = !1;
+     });
+    }
+   }));
+  } else if (m === !0 && Math.abs(o - p) > 9) {
+   m = !1, p = o;
+   var r = n(o, d, u);
+   r = t.min([ r, s.session.getScreenLength() * s.renderer.lineHeight - s.renderer.$size.scrollerHeight ]), 
+   Math.abs(r - i) <= 9 ? h = i : (v = !0, e("<div>").animate({
+    value: r - i
+   }, {
+    easing: "easeOutSine",
+    step: function(e) {
+     s.session.setScrollTop(i + e);
+    },
     complete: function() {
      h = r;
     },
@@ -18031,51 +18073,31 @@ if (hljs.LANGUAGES.glsl = function(e) {
      });
     }
    }));
-  } else if (g === !0 && Math.abs(o - h) > 9) {
-   g = !1, h = o;
-   var r = n(o, u, c);
-   r = t.min([ r, s.session.getScreenLength() * s.renderer.lineHeight - s.renderer.$size.scrollerHeight ]), 
-   Math.abs(r - i) <= 9 ? d = i : (m = !0, e("<div>").animate({
-    value: r - i
-   }, {
-    easing: "easeOutSine",
-    step: function(e) {
-     s.session.setScrollTop(i + e);
-    },
-    complete: function() {
-     d = r;
-    },
-    always: function() {
-     t.defer(function() {
-      m = !1;
-     });
-    }
-   }));
   }
  }, 500);
  r.onLayoutResize = function() {
-  f = !0, p();
+  g = !0, f();
  }, r.onFileClosed = function() {
-  c = [];
+  u = [];
  };
- var y = !1;
+ var w = !1;
  r.onReady = function() {
-  l = e(".preview-container"), l.scroll(function() {
-   v === !1 && y === !1 && (g = !0, f = !1, b()), y = !1;
+  c = e(".preview-container"), c.scroll(function() {
+   b === !1 && w === !1 && (m = !0, g = !1, y()), w = !1;
   }), s.session.on("changeScrollTop", function() {
-   m === !1 && (f = !0, g = !1, b());
+   v === !1 && (g = !0, m = !1, y());
   });
  };
- var w = void 0;
+ var C = void 0;
  return r.onPagedownConfigure = function(t) {
-  w = e("#preview-contents"), t.getConverter().hooks.chain("postConversion", function(e) {
-   return w.height(w.height()), e;
+  C = e("#preview-contents"), t.getConverter().hooks.chain("postConversion", function(e) {
+   return C.height(C.height()), e;
   });
  }, r.onPreviewFinished = function() {
-  var e = w.height();
-  w.height("auto");
-  var t = w.height();
-  f = !0, e > t && (y = !0), p();
+  var e = C.height();
+  C.height("auto");
+  var t = C.height();
+  g = !0, e > t && (w = !0), f();
  }, r;
 }), define("extensions/buttonFocusMode", [ "jquery", "underscore", "crel", "classes/Extension" ], function(e, t, n, i) {
  function o() {
@@ -19306,7 +19328,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    });
   });
  };
-}(jQuery), define("jquery-waitforimages", function() {}), define("eventMgr", [ "jquery", "underscore", "crel", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/partialRendering", "extensions/buttonMarkdownSyntax", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentTitle", "extensions/documentSelector", "extensions/documentPanel", "extensions/documentManager", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonFocusMode", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonViewer", "extensions/welcomeTour", "extensions/userCustom", "bootstrap", "jquery-waitforimages" ], function(e, t, n, i, o, r, s) {
+}(jQuery), define("jquery-waitforimages", function() {}), define("eventMgr", [ "jquery", "underscore", "crel", "utils", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/markdownSectionParser", "extensions/partialRendering", "extensions/buttonMarkdownSyntax", "extensions/googleAnalytics", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogOpenHarddrive", "extensions/documentTitle", "extensions/documentSelector", "extensions/documentPanel", "extensions/documentManager", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollLink", "extensions/buttonFocusMode", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonShare", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonViewer", "extensions/welcomeTour", "extensions/userCustom", "bootstrap", "jquery-waitforimages" ], function(e, t, n, i, o, r, s) {
  function a(e) {
   return t.chain(d).map(function(t) {
    return t.enabled && t[e];
@@ -19361,7 +19383,8 @@ if (hljs.LANGUAGES.glsl = function(e) {
  c("onFoldersChanged"), c("onSyncRunning"), c("onSyncSuccess"), c("onSyncImportSuccess"), 
  c("onSyncExportSuccess"), c("onSyncRemoved"), c("onPublishRunning"), c("onPublishSuccess"), 
  c("onNewPublishSuccess"), c("onPublishRemoved"), c("onLayoutConfigure"), c("onLayoutCreated"), 
- c("onLayoutResize"), c("onPagedownConfigure"), c("onSectionsCreated"), c("onAceCreated");
+ c("onLayoutResize"), c("onPagedownConfigure"), c("onSectionsCreated"), c("onMarkdownTrim"), 
+ c("onExtraExtensions"), c("onAceCreated");
  var p = l("onPreviewFinished"), f = a("onAsyncPreview"), g = void 0, m = void 0;
  u.onAsyncPreview = function() {
   function e(n) {
@@ -22959,7 +22982,43 @@ if (hljs.LANGUAGES.glsl = function(e) {
    return this.$getIndent(t);
   };
  }.call(a.prototype), t.Mode = a;
-}), define("core", [ "jquery", "underscore", "crel", "ace", "utils", "settings", "eventMgr", "mousetrap", "text!html/bodyIndex.html", "text!html/bodyViewer.html", "text!html/settingsTemplateTooltip.html", "text!html/settingsUserCustomExtensionTooltip.html", "storage", "config", "uilayout", "pagedown-ace", "libs/ace_mode", "ace/requirejs/text!ace/css/editor.css", "ace/requirejs/text!ace/theme/textmate.css" ], function(e, t, n, i, o, r, s, a, l, c, u, d) {
+}), define("ace/ext/spellcheck", [ "require", "exports", "module", "../lib/event", "../editor", "../config" ], function(e, t) {
+ var n = e("../lib/event");
+ t.contextMenuHandler = function(e) {
+  var t = e.target, i = t.textInput.getElement();
+  if (t.selection.isEmpty()) {
+   var o = t.getCursorPosition(), r = t.session.getWordRange(o.row, o.column), s = t.session.getTextRange(r);
+   if (t.session.tokenRe.lastIndex = 0, t.session.tokenRe.test(s)) {
+    var a = "", l = s + " " + a;
+    i.value = l, i.setSelectionRange(s.length + 1, s.length + 1), i.setSelectionRange(0, 0);
+    var c = !1;
+    n.addListener(i, "keydown", function u() {
+     n.removeListener(i, "keydown", u), c = !0;
+    }), t.textInput.setInputHandler(function(e) {
+     if (console.log(e, l, i.selectionStart, i.selectionEnd), e == l) return "";
+     if (0 === e.lastIndexOf(l, 0)) return e.slice(l.length);
+     if (e.substr(i.selectionEnd) == l) return e.slice(0, -l.length);
+     if (e.slice(-2) == a) {
+      var n = e.slice(0, -2);
+      if (" " == n.slice(-1)) return c ? n.substring(0, i.selectionEnd) : (n = n.slice(0, -1), 
+      t.session.replace(r, n), "");
+     }
+     return e;
+    });
+   }
+  }
+ };
+ var i = e("../editor").Editor;
+ e("../config").defineOptions(i.prototype, "editor", {
+  spellcheck: {
+   set: function(e) {
+    var n = this.textInput.getElement();
+    n.spellcheck = !!e, e ? this.on("nativecontextmenu", t.contextMenuHandler) : this.removeListener("nativecontextmenu", t.contextMenuHandler);
+   },
+   value: !0
+  }
+ });
+}), define("core", [ "jquery", "underscore", "crel", "ace", "utils", "settings", "eventMgr", "mousetrap", "text!html/bodyIndex.html", "text!html/bodyViewer.html", "text!html/settingsTemplateTooltip.html", "text!html/settingsUserCustomExtensionTooltip.html", "storage", "config", "uilayout", "pagedown-ace", "libs/ace_mode", "ace/requirejs/text!ace/css/editor.css", "ace/requirejs/text!ace/theme/textmate.css", "ace/ext/spellcheck" ], function(e, t, n, i, o, r, s, a, l, c, u, d) {
  function h() {
   S = !0, k = !0;
   var e = o.currentTime;
@@ -23021,9 +23080,9 @@ if (hljs.LANGUAGES.glsl = function(e) {
  function C() {
   return lightMode ? (e("#wmd-input").replaceWith(function() {
    return e('<textarea id="wmd-input">').addClass(this.className).addClass("form-control");
-  }), void 0) : (I = i.edit("wmd-input"), I.renderer.setShowGutter(!1), I.renderer.setPrintMarginColumn(!1), 
-  I.renderer.setPadding(EDITOR_DEFAULT_PADDING), I.session.setUseWrapMode(!0), I.session.setMode("libs/ace_mode"), 
-  function(e) {
+  }), void 0) : (I = i.edit("wmd-input"), require("ace/ext/spellcheck"), I.setOption("spellcheck", !0), 
+  I.renderer.setShowGutter(!1), I.renderer.setPrintMarginColumn(!1), I.renderer.setPadding(EDITOR_DEFAULT_PADDING), 
+  I.session.setUseWrapMode(!0), I.session.setMode("libs/ace_mode"), function(e) {
    function n(n) {
     var i = e.lines[n];
     0 !== i.length && 0 === i[0].type.indexOf("markup.heading.multi") && t.each(e.lines[n - 1], function(e) {
@@ -23102,10 +23161,11 @@ if (hljs.LANGUAGES.glsl = function(e) {
   }), e(".ui-layout-toggler-south").addClass("btn btn-info").html('<i class="icon-none"></i>'), 
   e(".ui-layout-toggler-east").addClass("btn btn-info").html('<i class="icon-none"></i>');
   var n = e(".ui-layout-toggler-north").addClass("btn btn-info").html('<i class="icon-none"></i>');
-  P = e('<div class="extension-preview-buttons">'), $editorButtonsElt = e('<div class="extension-editor-buttons">'), 
-  viewerMode || "horizontal" == r.layoutOrientation ? (e(".ui-layout-resizer-north").append(P), 
-  e(".ui-layout-resizer-east").append(n).append($editorButtonsElt)) : e(".ui-layout-resizer-south").append(P).append($editorButtonsElt).append(n), 
-  y(), w(), s.onLayoutCreated(B);
+  $resizerDecorator = e('<div class="resizer-decorator">'), P = e('<div class="extension-preview-buttons">'), 
+  $editorButtonsElt = e('<div class="extension-editor-buttons">'), viewerMode || "horizontal" == r.layoutOrientation ? (e(".ui-layout-resizer-north").append($resizerDecorator).append(P), 
+  e(".ui-layout-resizer-east").append(n).append($editorButtonsElt)) : (e(".ui-layout-resizer-north").append($resizerDecorator), 
+  e(".ui-layout-resizer-south").append(P).append($editorButtonsElt).append(n)), y(), 
+  w(), s.onLayoutCreated(B);
  }
  var E = {}, A = void 0, S = !1, k = !1, F = !0, $ = 0, _ = void 0, D = !1, T = o.currentTime;
  E.setOffline = function() {
@@ -23142,13 +23202,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    });
   }
   var h = new Markdown.Converter();
-  if (h.hooks.chain("preConversion", function(e) {
-   s.previewStartTime = new Date();
-   var t = e + "\n\n", n = [], i = 0;
-   return t.replace(/^```.*\n[\s\S]*?\n```|(^.+[ \t]*\n=+[ \t]*\n+|^.+[ \t]*\n-+[ \t]*\n+|^\#{1,6}[ \t]*.+?[ \t]*\#*\n+)/gm, function(e, o, r) {
-    return o && (n.push(t.substring(i, r)), i = r), "";
-   }), n.push(t.substring(i, e.length)), s.onSectionsCreated(n), e;
-  }), lightMode) {
+  if (lightMode) {
    var p = e("#wmd-preview"), f = new Markdown.HookCollection();
    f.addNoop("onPreviewRefresh");
    var g = t.debounce(a, 1e3), m = function() {
@@ -24254,29 +24308,27 @@ if (hljs.LANGUAGES.glsl = function(e) {
  var p = void 0, f = void 0, g = void 0, m = void 0, v = void 0, b = void 0, y = void 0, w = !0;
  o.addListener("onAceCreated", function(e) {
   y = e, y.session.on("change", function() {
-   void 0 !== g && g.setText(y.getValue());
+   g && g.setText(y.getValue());
   });
  });
  var C = require("ace/range").Range;
  return d.startRealtimeSync = function(n, i) {
   s.loadRealtime(i.id, n.content, function(s, a) {
    function l() {
-    i.contentCRC = t.crc32(g.getText()), t.storeAttributes(i);
+    i.contentCRC = t.crc32(u.getText()), t.storeAttributes(i);
    }
    if (!s && a) {
     if (r.currentFile !== n) return a.close(), void 0;
     logger.log("Starting Google Drive realtime synchronization"), p = a;
-    var c = p.getModel();
-    g = c.getRoot().get("content");
-    var u = e.debounce(h.refreshPreview, 100);
-    g.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, function(e) {
+    var c = p.getModel(), u = c.getRoot().get("content"), d = e.debounce(h.refreshPreview, 100);
+    u.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, function(e) {
      if (void 0 !== y && (w === !1 || e.isLocal === !1)) {
       var t = y.session.doc.indexToPosition(e.index);
       y.session.insert(t, e.text), w = !0;
      }
      e.isLocal === !1 && (logger.log("Google Drive realtime document updated from server"), 
-     l(), void 0 === y && u());
-    }), g.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, function(e) {
+     l(), void 0 === y && d());
+    }), u.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, function(e) {
      if (void 0 !== y && (w === !1 || e.isLocal === !1)) {
       var t = function(e, t) {
        return new C(e.row, e.column, t.row, t.column);
@@ -24284,16 +24336,16 @@ if (hljs.LANGUAGES.glsl = function(e) {
       y.session.remove(t), w = !0;
      }
      e.isLocal === !1 && (logger.log("Google Drive realtime document updated from server"), 
-     l(), void 0 === y && u());
+     l(), void 0 === y && d());
     }), p.addEventListener(gapi.drive.realtime.EventType.DOCUMENT_SAVE_STATE_CHANGED, function(e) {
      e.isPending === !1 && e.isSaving === !1 && (logger.log("Google Drive realtime document successfully saved on server"), 
      l());
     });
-    var d = n.content, x = i.contentCRC != t.crc32(d), E = g.getText(), A = t.crc32(E), S = i.contentCRC != A, k = d != E;
-    k === !0 && x === !0 && (S === !0 ? (r.createFile(n.title + " (backup)", d), o.onMessage('Conflict detected on "' + n.title + '". A backup has been created locally.')) : g.setText(d)), 
-    void 0 === y && (f = gapi.drive.realtime.databinding.bindString(g, document.getElementById("wmd-input"))), 
-    S === !0 && (logger.log("Google Drive realtime document updated from server"), void 0 !== y && y.setValue(E, -1), 
-    l(), void 0 === y && u()), void 0 !== y && (m = h.uiManager.buttons.undo.execute, 
+    var x = n.content, E = i.contentCRC != t.crc32(x), A = u.getText(), S = t.crc32(A), k = i.contentCRC != S, F = x != A;
+    F === !0 && E === !0 && (k === !0 ? (r.createFile(n.title + " (backup)", x), o.onMessage('Conflict detected on "' + n.title + '". A backup has been created locally.')) : u.setText(x)), 
+    void 0 === y && (f = gapi.drive.realtime.databinding.bindString(u, document.getElementById("wmd-input"))), 
+    k === !0 && (logger.log("Google Drive realtime document updated from server"), void 0 !== y && y.setValue(A, -1), 
+    l(), void 0 === y && d()), void 0 !== y && (g = u, m = h.uiManager.buttons.undo.execute, 
     v = h.uiManager.buttons.redo.execute, b = h.uiManager.setUndoRedoButtonStates, h.uiManager.buttons.undo.execute = function() {
      c.canUndo && (w = !1, c.undo());
     }, h.uiManager.buttons.redo.execute = function() {
@@ -25417,7 +25469,8 @@ if (hljs.LANGUAGES.glsl = function(e) {
   "pagedown-ace": "bower-libs/pagedown-ace/Markdown.Editor",
   "pagedown-extra": "bower-libs/pagedown-extra/Markdown.Extra",
   "ace/requirejs/text": "libs/ace_text",
-  "ace/commands/default_commands": "libs/ace_commands"
+  "ace/commands/default_commands": "libs/ace_commands",
+  "js-yaml": "bower-libs/js-yaml/js-yaml"
  },
  shim: {
   underscore: {

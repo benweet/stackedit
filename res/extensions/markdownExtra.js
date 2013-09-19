@@ -44,6 +44,11 @@ define([
         newConfig.highlighter = utils.getInputValue("#input-markdownextra-highlighter");
     };
 
+    var eventMgr = undefined;
+    markdownExtra.onEventMgrCreated = function(eventMgrParameter) {
+        eventMgr = eventMgrParameter;
+    };
+
     markdownExtra.onPagedownConfigure = function(editor) {
         var converter = editor.getConverter();
         var options = {
@@ -64,8 +69,8 @@ define([
         }
         Markdown.Extra.init(converter, options);
 
-        // Store extensions list in converter for partialRendering
-        converter.setExtraExtension && converter.setExtraExtension(markdownExtra.config.extensions);
+        // Send extensions list to other extensions
+        eventMgr.onExtraExtensions(markdownExtra.config.extensions);
     };
 
     return markdownExtra;

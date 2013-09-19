@@ -18,6 +18,7 @@ define([
     'libs/ace_mode',
     'ace/requirejs/text!ace/css/editor.css',
     'ace/requirejs/text!ace/theme/textmate.css',
+    'ace/ext/spellcheck',
 
 ], function($, _, crel, ace, utils, settings, eventMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
@@ -206,6 +207,8 @@ define([
             return;
         }
         aceEditor = ace.edit("wmd-input");
+        require('ace/ext/spellcheck');
+        aceEditor.setOption("spellcheck", true);
         aceEditor.renderer.setShowGutter(false);
         aceEditor.renderer.setPrintMarginColumn(false);
         aceEditor.renderer.setPadding(EDITOR_DEFAULT_PADDING);
@@ -361,13 +364,15 @@ define([
         // north resizer is very small
         // var $previewButtonsContainerElt = $('<div
         // class="preview-button-container">');
+        $resizerDecorator = $('<div class="resizer-decorator">');
         $previewButtonsElt = $('<div class="extension-preview-buttons">');
         $editorButtonsElt = $('<div class="extension-editor-buttons">');
         if(viewerMode || settings.layoutOrientation == "horizontal") {
-            $('.ui-layout-resizer-north').append($previewButtonsElt);
+            $('.ui-layout-resizer-north').append($resizerDecorator).append($previewButtonsElt);
             $('.ui-layout-resizer-east').append($northTogglerElt).append($editorButtonsElt);
         }
         else {
+            $('.ui-layout-resizer-north').append($resizerDecorator);
             $('.ui-layout-resizer-south').append($previewButtonsElt).append($editorButtonsElt).append($northTogglerElt);
         }
 
@@ -435,27 +440,6 @@ define([
 
         // Create the converter and the editor
         var converter = new Markdown.Converter();
-        // Parse MD sections for extensions
-        converter.hooks.chain("preConversion", function(text) {
-            eventMgr.previewStartTime = new Date();
-            var tmpText = text + "\n\n";
-            var sectionList = [], offset = 0;
-            // Look for titles (excluding gfm blocs)
-            tmpText.replace(/^```.*\n[\s\S]*?\n```|(^.+[ \t]*\n=+[ \t]*\n+|^.+[ \t]*\n-+[ \t]*\n+|^\#{1,6}[ \t]*.+?[ \t]*\#*\n+)/gm, function(match, title, matchOffset) {
-                if(title) {
-                    // We just found a title which means end of the previous
-                    // section
-                    // Exclude last \n of the section
-                    sectionList.push(tmpText.substring(offset, matchOffset));
-                    offset = matchOffset;
-                }
-                return "";
-            });
-            // Last section
-            sectionList.push(tmpText.substring(offset, text.length));
-            eventMgr.onSectionsCreated(sectionList);
-            return text;
-        });
 
         function checkDocumentChanges() {
             var newDocumentContent = $editorElt.val();

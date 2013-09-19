@@ -285,10 +285,8 @@ define([
         aceEditor = aceEditorParam;
         // Listen to editor's changes
         aceEditor.session.on('change', function(e) {
-            if(realtimeString !== undefined) {
-                // Update the real time model
-                realtimeString.setText(aceEditor.getValue());
-            }
+            // Update the real time model if any
+            realtimeString && realtimeString.setText(aceEditor.getValue());
         });
     });
 
@@ -308,18 +306,18 @@ define([
             logger.log("Starting Google Drive realtime synchronization");
             realtimeDocument = doc;
             var model = realtimeDocument.getModel();
-            realtimeString = model.getRoot().get('content');
+            var realtimeStringLocal = model.getRoot().get('content');
 
             // Saves model content checksum
             function updateContentState() {
-                syncAttributes.contentCRC = utils.crc32(realtimeString.getText());
+                syncAttributes.contentCRC = utils.crc32(realtimeStringLocal.getText());
                 utils.storeAttributes(syncAttributes);
             }
 
             var debouncedRefreshPreview = _.debounce(pagedownEditor.refreshPreview, 100);
 
             // Listen to insert text events
-            realtimeString.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, function(e) {
+            realtimeStringLocal.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, function(e) {
                 if(aceEditor !== undefined && (isAceUpToDate === false || e.isLocal === false)) {
                     // Update ACE editor
                     var position = aceEditor.session.doc.indexToPosition(e.index);
@@ -334,7 +332,7 @@ define([
                 }
             });
             // Listen to delete text events
-            realtimeString.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, function(e) {
+            realtimeStringLocal.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, function(e) {
                 if(aceEditor !== undefined && (isAceUpToDate === false || e.isLocal === false)) {
                     // Update ACE editor
                     var range = (function(posStart, posEnd) {
@@ -361,7 +359,7 @@ define([
             // Try to merge offline modifications
             var localContent = fileDesc.content;
             var localContentChanged = syncAttributes.contentCRC != utils.crc32(localContent);
-            var remoteContent = realtimeString.getText();
+            var remoteContent = realtimeStringLocal.getText();
             var remoteContentCRC = utils.crc32(remoteContent);
             var remoteContentChanged = syncAttributes.contentCRC != remoteContentCRC;
             var fileContentChanged = localContent != remoteContent;
@@ -373,13 +371,13 @@ define([
                 }
                 else {
                     // Add local modifications if no collaborators change
-                    realtimeString.setText(localContent);
+                    realtimeStringLocal.setText(localContent);
                 }
             }
 
             if(aceEditor === undefined) {
                 // Binds model with textarea
-                realtimeBinding = gapi.drive.realtime.databinding.bindString(realtimeString, document.getElementById("wmd-input"));
+                realtimeBinding = gapi.drive.realtime.databinding.bindString(realtimeStringLocal, document.getElementById("wmd-input"));
             }
 
             // Update content state according to collaborators changes
@@ -389,8 +387,11 @@ define([
                 updateContentState();
                 aceEditor === undefined && debouncedRefreshPreview();
             }
-
+            
             if(aceEditor !== undefined) {
+                // Tell ACE to update realtime string on each change
+                realtimeString = realtimeStringLocal;
+
                 // Save undo/redo buttons actions
                 undoExecute = pagedownEditor.uiManager.buttons.undo.execute;
                 redoExecute = pagedownEditor.uiManager.buttons.redo.execute;

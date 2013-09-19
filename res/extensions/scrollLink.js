@@ -17,6 +17,11 @@ define([
     scrollLink.onSectionsCreated = function(sectionListParam) {
         sectionList = sectionListParam;
     };
+    
+    var offsetBegin = 0;
+    scrollLink.onMarkdownTrim = function(offsetBeginParam) {
+        offsetBegin = offsetBeginParam;
+    };
 
     var $previewElt = undefined;
     var mdSectionList = [];
@@ -31,8 +36,10 @@ define([
         mdSectionList = [];
         var mdTextOffset = 0;
         var mdSectionOffset = 0;
+        var firstSectionOffset = offsetBegin;
         _.each(sectionList, function(sectionText) {
-            mdTextOffset += sectionText.length;
+            mdTextOffset += sectionText.length + firstSectionOffset;
+            firstSectionOffset = 0;
             var documentPosition = aceEditor.session.doc.indexToPosition(mdTextOffset);
             var screenPosition = aceEditor.session.documentToScreenPosition(documentPosition.row, documentPosition.column);
             var newSectionOffset = screenPosition.row * aceEditor.renderer.lineHeight;

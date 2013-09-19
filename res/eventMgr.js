@@ -6,6 +6,8 @@ define([
     "classes/Extension",
     "settings",
     "text!html/settingsExtensionsAccordion.html",
+//    "extensions/yamlFrontMatterParser",
+    "extensions/markdownSectionParser",
     "extensions/partialRendering",
     "extensions/buttonMarkdownSyntax",
     "extensions/googleAnalytics",
@@ -178,6 +180,8 @@ define([
     // Operations on PageDown
     addEventHook("onPagedownConfigure");
     addEventHook("onSectionsCreated");
+    addEventHook("onMarkdownTrim");
+    addEventHook("onExtraExtensions");
     
     // Operation on ACE
     addEventHook("onAceCreated");

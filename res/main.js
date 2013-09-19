@@ -49,7 +49,8 @@ requirejs.config({
         'pagedown-ace': 'bower-libs/pagedown-ace/Markdown.Editor',
         'pagedown-extra': 'bower-libs/pagedown-extra/Markdown.Extra',
         'ace/requirejs/text': 'libs/ace_text',
-        'ace/commands/default_commands': 'libs/ace_commands'
+        'ace/commands/default_commands': 'libs/ace_commands',
+        'js-yaml': 'bower-libs/js-yaml/js-yaml'
     },
     shim: {
         underscore: {

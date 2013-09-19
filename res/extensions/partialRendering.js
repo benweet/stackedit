@@ -189,13 +189,14 @@ define([
         editor.hooks.chain("onPreviewRefresh", function() {
             refreshSections();
         });
-        converter.setExtraExtension = function(extraExtensions) {
-            doFootnotes = _.some(extraExtensions, function(extension) {
-                return extension == "footnotes";
-            });
-        };
     };
 
+    partialRendering.onExtraExtensions = function(extraExtensions) {
+        doFootnotes = _.some(extraExtensions, function(extension) {
+            return extension == "footnotes";
+        });
+    };
+    
     partialRendering.onReady = function() {
         footnoteContainerElt = crel('div', {
             id: 'wmd-preview-section-footnotes',

@@ -1,18 +1,24 @@
 @import "../styles/main.less";
 
-@navbar-default-bg: #315A4B;
-@bg-navbar-hover: lighten(@navbar-default-bg, 8%);
-@primary-color: #174d80;
+@board-color: #385E50;
+@board-border-color: #B9AA9F;
+@blue-ink: #284F72;
+@black-ink: #444;
+@red-ink: #B56E85;
+@green-ink: #6c9c7f;
+@navbar-default-bg: darken(@board-color, 2%);
+@bg-navbar-hover: lighten(@board-color, 4%);
+@primary-color: @blue-ink;
 @primary-color-light: lighten(@primary-color, 13%);
 @primary-color-lighter: lighten(@primary-color, 20%);
 @primary-color-lightest: lighten(@primary-color, 35%);
-@primary-bg: darken(@primary-bg-light, 4%);
-@primary-bg-light: #E2DEDE;
-@primary-bg-lighter: lighten(@primary-bg-light, 4%);
+@primary-bg: lighten(@board-border-color, 16%);
+@primary-bg-light: lighten(@board-border-color, 20%);
+@primary-bg-lighter: lighten(@board-border-color, 24%);
 @btn-success-color: #eee;
+@btn-success-bg: @transparent;
 @title-base-size: 18px;
-@resizer-bg: #B1A19A;
-@panel-button-color: mix(#444, @resizer-bg, 50%);
+@panel-button-color: #666;
 
 
 @font-face {
@@ -26,67 +32,58 @@
     font-style: normal;
 }
 
-.ui-layout-resizer-north {
-	background-color: @resizer-bg;
+.navbar {
+	#gradient.vertical(@board-color; darken(@board-color, 2%));
+}
+
+.ui-layout-resizer-north .resizer-decorator {
+	position: absolute;
+	width: 100%;
+	height: 7px;
+	background-color: @board-border-color;
+	.box-shadow(0 -1px 15px rgba(0,0,0,.3));
+	z-index: 10;
+	display: block !important;
 }
 
 .extension-preview-buttons {
-	margin-top: 12px;
+	//margin-top: 4px;
+}
+
+.ui-layout-resizer-east {
+	z-index: 1 !important;
 }
 
 .ace-tm {
 	.ace_content {
 	    background-image: url("../img/school-line.png");
 		background-repeat: repeat;
-		background-color: transparent;
 	}
 	.ace_marker-layer .ace_active-line {
-		background-color: fade(#a2bace, 20%);	
+		background-color: fade(@blue-ink, 5%);
 	}
 	.ace_print-margin {
-		background-color: fade(#b56e80, 50%);
+		background-color: fade(@red-ink, 50%);
 	}
 	
 	.ace_markup.ace_heading {
-		color: #444;
-		font-weight: bold;
-	}
-	
-	.ace_markup.ace_list {
-		color: @primary-color-lightest;
-	}
-	
-	.ace_strong {
-		font-weight: bold;
-	}
-	
-	.ace_emphasis {
-		color: @primary-color;
-		font-style: italic;
+		color: @black-ink;
 	}
 	
 	.ace_blockquote {
-		color: #b56e80;
-		font-style: italic;
+		color: @red-ink;
 	}
 	
 	.ace_code {
-		font-family: Menlo, Consolas, "Courier New", monospace;
-		color: #66a26d;
-		background-color: fade(@secondary-bg, 10%);
+		color: @green-ink;
 	}
 	
 	.ace_code_block {
-		font-family: Menlo, Consolas, "Courier New", monospace;
-		color: #66a26d;
-	}
-	
-	.ace_description {
-		color: @primary-color-lighter;
+		color: @green-ink;
 	}
 }
 
-.wmd-title {
+h1, h2, h3, h4, h5, h6 {
 	font-family: 'cursive_standardregular';
 }
 

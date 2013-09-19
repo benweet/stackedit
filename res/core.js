@@ -66,10 +66,7 @@ define([
                 clearInterval(intervalId);
             }
             $(".modal").modal("hide");
-            $('.modal-non-unique').modal({
-                backdrop: "static",
-                keyboard: false
-            });
+            $('.modal-non-unique').modal("show");
         }
     }
 
@@ -876,6 +873,13 @@ define([
             e.stopPropagation();
         });
 
+        // Non unique window dialog
+        $('.modal-non-unique').modal({
+            backdrop: "static",
+            keyboard: false,
+            show: false
+        });
+        
         // Load images
         _.each(document.querySelectorAll('img'), function(imgElt) {
             var $imgElt = $(imgElt);

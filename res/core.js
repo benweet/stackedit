@@ -510,10 +510,10 @@ define([
                 return function() {
                     if(documentContent === undefined) {
                         makePreview();
+                        eventMgr.onFileOpen(fileDesc);
                         $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
                         _.defer(function() {
                             aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
-                            eventMgr.onFileOpen(fileDesc);
                         });
                     }
                     else {
@@ -528,10 +528,10 @@ define([
                 return function() {
                     makePreview();
                     if(documentContent === undefined) {
+                        eventMgr.onFileOpen(fileDesc);
                         $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
                         _.defer(function() {
                             aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
-                            eventMgr.onFileOpen(fileDesc);
                         });
                     }
                     checkDocumentChanges();

@@ -267,18 +267,15 @@ define([
 
     // Keep a link to the Pagedown editor
     var pagedownEditor = undefined;
+    var undoExecute = undefined;
+    var redoExecute = undefined;
+    var setUndoRedoButtonStates = undefined;
     eventMgr.addListener("onPagedownConfigure", function(pagedownEditorParam) {
         pagedownEditor = pagedownEditorParam;
     });
 
-    // Start realtime synchronization
-    var realtimeDocument = undefined;
-    var realtimeBinding = undefined;
-    var realtimeString = undefined;
-    var undoExecute = undefined;
-    var redoExecute = undefined;
-    var setUndoRedoButtonStates = undefined;
     // Keep a link to the ACE editor
+    var realtimeContext = undefined;
     var aceEditor = undefined;
     var isAceUpToDate = true;
     eventMgr.addListener('onAceCreated', function(aceEditorParam) {
@@ -286,38 +283,42 @@ define([
         // Listen to editor's changes
         aceEditor.session.on('change', function(e) {
             // Update the real time model if any
-            realtimeString && realtimeString.setText(aceEditor.getValue());
+            realtimeContext && realtimeContext.string && realtimeContext.string.setText(aceEditor.getValue());
         });
     });
 
+    // Start realtime synchronization
     var Range = require('ace/range').Range;
     gdriveProvider.startRealtimeSync = function(fileDesc, syncAttributes) {
+        var localContext = {};
+        realtimeContext = localContext;
         googleHelper.loadRealtime(syncAttributes.id, fileDesc.content, function(err, doc) {
             if(err || !doc) {
                 return;
             }
 
-            // If user just switched to another document
-            if(fileMgr.currentFile !== fileDesc) {
+            // If user just switched to another document or file has just been
+            // reselected
+            if(localContext.isStopped === true) {
                 doc.close();
                 return;
             }
 
             logger.log("Starting Google Drive realtime synchronization");
-            realtimeDocument = doc;
-            var model = realtimeDocument.getModel();
-            var realtimeStringLocal = model.getRoot().get('content');
+            localContext.document = doc;
+            var model = doc.getModel();
+            var realtimeString = model.getRoot().get('content');
 
             // Saves model content checksum
             function updateContentState() {
-                syncAttributes.contentCRC = utils.crc32(realtimeStringLocal.getText());
+                syncAttributes.contentCRC = utils.crc32(realtimeString.getText());
                 utils.storeAttributes(syncAttributes);
             }
 
             var debouncedRefreshPreview = _.debounce(pagedownEditor.refreshPreview, 100);
 
             // Listen to insert text events
-            realtimeStringLocal.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, function(e) {
+            realtimeString.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, function(e) {
                 if(aceEditor !== undefined && (isAceUpToDate === false || e.isLocal === false)) {
                     // Update ACE editor
                     var position = aceEditor.session.doc.indexToPosition(e.index);
@@ -332,7 +333,7 @@ define([
                 }
             });
             // Listen to delete text events
-            realtimeStringLocal.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, function(e) {
+            realtimeString.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, function(e) {
                 if(aceEditor !== undefined && (isAceUpToDate === false || e.isLocal === false)) {
                     // Update ACE editor
                     var range = (function(posStart, posEnd) {
@@ -348,7 +349,7 @@ define([
                     aceEditor === undefined && debouncedRefreshPreview();
                 }
             });
-            realtimeDocument.addEventListener(gapi.drive.realtime.EventType.DOCUMENT_SAVE_STATE_CHANGED, function(e) {
+            doc.addEventListener(gapi.drive.realtime.EventType.DOCUMENT_SAVE_STATE_CHANGED, function(e) {
                 // Save success event
                 if(e.isPending === false && e.isSaving === false) {
                     logger.log("Google Drive realtime document successfully saved on server");
@@ -359,7 +360,7 @@ define([
             // Try to merge offline modifications
             var localContent = fileDesc.content;
             var localContentChanged = syncAttributes.contentCRC != utils.crc32(localContent);
-            var remoteContent = realtimeStringLocal.getText();
+            var remoteContent = realtimeString.getText();
             var remoteContentCRC = utils.crc32(remoteContent);
             var remoteContentChanged = syncAttributes.contentCRC != remoteContentCRC;
             var fileContentChanged = localContent != remoteContent;
@@ -371,13 +372,13 @@ define([
                 }
                 else {
                     // Add local modifications if no collaborators change
-                    realtimeStringLocal.setText(localContent);
+                    realtimeString.setText(localContent);
                 }
             }
 
             if(aceEditor === undefined) {
                 // Binds model with textarea
-                realtimeBinding = gapi.drive.realtime.databinding.bindString(realtimeStringLocal, document.getElementById("wmd-input"));
+                localContext.binding = gapi.drive.realtime.databinding.bindString(realtimeString, document.getElementById("wmd-input"));
             }
 
             // Update content state according to collaborators changes
@@ -387,17 +388,17 @@ define([
                 updateContentState();
                 aceEditor === undefined && debouncedRefreshPreview();
             }
-            
+
             if(aceEditor !== undefined) {
                 // Tell ACE to update realtime string on each change
-                realtimeString = realtimeStringLocal;
+                localContext.string = realtimeString;
 
-                // Save undo/redo buttons actions
+                // Save undo/redo buttons default actions
                 undoExecute = pagedownEditor.uiManager.buttons.undo.execute;
                 redoExecute = pagedownEditor.uiManager.buttons.redo.execute;
                 setUndoRedoButtonStates = pagedownEditor.uiManager.setUndoRedoButtonStates;
-
-                // Set new actions for undo/redo buttons
+                
+                // Set temporary actions for undo/redo buttons
                 pagedownEditor.uiManager.buttons.undo.execute = function() {
                     if(model.canUndo) {
                         // This flag is used to avoid replaying editor's own
@@ -449,19 +450,14 @@ define([
     // Stop realtime synchronization
     gdriveProvider.stopRealtimeSync = function() {
         logger.log("Stopping Google Drive realtime synchronization");
-        if(realtimeString !== undefined) {
-            realtimeString = undefined;
-        }
-        if(realtimeBinding !== undefined) {
-            realtimeBinding.unbind();
-            realtimeBinding = undefined;
-        }
-        if(realtimeDocument !== undefined) {
-            realtimeDocument.close();
-            realtimeDocument = undefined;
+        if(realtimeContext !== undefined) {
+            realtimeContext.isStopped = true;
+            realtimeContext.binding && realtimeContext.binding.unbind();
+            realtimeContext.document && realtimeContext.document.close();
+            realtimeContext = undefined;
         }
 
-        if(aceEditor !== undefined) {
+        if(setUndoRedoButtonStates !== undefined) {
             // Set back original undo/redo actions
             pagedownEditor.uiManager.buttons.undo.execute = undoExecute;
             pagedownEditor.uiManager.buttons.redo.execute = redoExecute;

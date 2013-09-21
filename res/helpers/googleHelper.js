@@ -99,7 +99,7 @@ define([
         task.enqueue();
     };
 
-    googleHelper.upload = function(fileId, parentId, title, content, etag, callback) {
+    googleHelper.upload = function(fileId, parentId, title, content, contentType, etag, callback) {
         var result = undefined;
         var task = new AsyncTask();
         connect(task);
@@ -108,7 +108,7 @@ define([
             var boundary = '-------314159265358979323846';
             var delimiter = "\r\n--" + boundary + "\r\n";
             var close_delim = "\r\n--" + boundary + "--";
-            var contentType = 'text/x-markdown';
+            contentType = contentType || 'text/x-markdown';
             var metadata = {
                 title: title,
                 mimeType: contentType

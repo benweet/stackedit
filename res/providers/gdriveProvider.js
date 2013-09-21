@@ -92,7 +92,7 @@ define([
             }
         }
         var parentId = utils.getInputTextValue("#input-sync-export-gdrive-parentid");
-        googleHelper.upload(fileId, parentId, title, content, undefined, function(error, result) {
+        googleHelper.upload(fileId, parentId, title, content, undefined, undefined, function(error, result) {
             if(error) {
                 callback(error);
                 return;
@@ -120,7 +120,7 @@ define([
             callback(undefined, false);
             return;
         }
-        googleHelper.upload(syncAttributes.id, undefined, uploadTitle, uploadContent, syncAttributes.etag, function(error, result) {
+        googleHelper.upload(syncAttributes.id, undefined, uploadTitle, uploadContent, undefined, syncAttributes.etag, function(error, result) {
             if(error) {
                 callback(error, true);
                 return;
@@ -245,7 +245,8 @@ define([
     };
 
     gdriveProvider.publish = function(publishAttributes, title, content, callback) {
-        googleHelper.upload(publishAttributes.id, undefined, publishAttributes.fileName || title, content, undefined, function(error, result) {
+        var contentType = publishAttributes.format != "markdown" ? 'text/html' : undefined;
+        googleHelper.upload(publishAttributes.id, undefined, publishAttributes.fileName || title, content, contentType, undefined, function(error, result) {
             if(error) {
                 callback(error);
                 return;
@@ -493,7 +494,7 @@ define([
         }
         localStorage.removeItem(PROVIDER_GDRIVE + ".state");
         if(state.action == "create") {
-            googleHelper.upload(undefined, state.folderId, GDRIVE_DEFAULT_FILE_TITLE, settings.defaultContent, undefined, function(error, file) {
+            googleHelper.upload(undefined, state.folderId, GDRIVE_DEFAULT_FILE_TITLE, settings.defaultContent, undefined, undefined, function(error, file) {
                 if(error) {
                     return;
                 }

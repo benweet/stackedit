@@ -77,6 +77,19 @@ module.exports = function(grunt) {
                         {
                             pattern: /@import /g,
                             replacement: '@import (less) '
+                        },
+                    ]
+                }
+            },
+            'font-parameters': {
+                files: {
+                    './': 'res-min/themes/*.css',
+                },
+                options: {
+                    replacements: [
+                        {
+                            pattern: /(font\/fontello\.\w+)\?\w+/g,
+                            replacement: '$1'
                         }
                     ]
                 }
@@ -220,6 +233,8 @@ module.exports = function(grunt) {
         grunt.task.run('string-replace:css-import');
         // Run less another time with CSS evaluation and compression
         grunt.task.run('less:compress');
+        // Remove fontello checksum arguments
+        grunt.task.run('string-replace:font-parameters');
 
     });
 

@@ -19,6 +19,7 @@ define([
     'ace/requirejs/text!ace/css/editor.css',
     'ace/requirejs/text!ace/theme/textmate.css',
     'ace/ext/spellcheck',
+    'ace/ext/searchbox'
 
 ], function($, _, crel, ace, utils, settings, eventMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 

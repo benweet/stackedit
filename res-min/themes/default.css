@@ -130,7 +130,7 @@ pre .keyword,pre .id,pre .phpdoc,pre .title,pre .built_in,pre .aggregate,pre .cs
 pre .markdown .emphasis{font-style:italic}
 pre .nginx .built_in{font-weight:normal}
 pre .coffeescript .javascript,pre .javascript .xml,pre .tex .formula,pre .xml .javascript,pre .xml .vbscript,pre .xml .css,pre .xml .cdata{opacity:0.5}
-@font-face{font-family:'fontello';src:url('../font/fontello.eot?67080555');src:url('../font/fontello.eot?67080555#iefix') format('embedded-opentype'),url('../font/fontello.woff?67080555') format('woff'),url('../font/fontello.ttf?67080555') format('truetype'),url('../font/fontello.svg?67080555#fontello') format('svg');font-weight:normal;font-style:normal}[class^="icon-"]:before,[class*=" icon-"]:before{font-family:"fontello";font-style:normal;font-weight:normal;speak:none;display:inline-block;text-decoration:inherit;width:1em;margin-right:.2em;text-align:center;font-variant:normal;text-transform:none;line-height:1em;margin-left:.2em;}
+@font-face{font-family:'fontello';src:url('../font/fontello.eot');src:url('../font/fontello.eot#iefix') format('embedded-opentype'),url('../font/fontello.woff') format('woff'),url('../font/fontello.ttf') format('truetype'),url('../font/fontello.svg#fontello') format('svg');font-weight:normal;font-style:normal}[class^="icon-"]:before,[class*=" icon-"]:before{font-family:"fontello";font-style:normal;font-weight:normal;speak:none;display:inline-block;text-decoration:inherit;width:1em;margin-right:.2em;text-align:center;font-variant:normal;text-transform:none;line-height:1em;margin-left:.2em;}
 .icon-plus:before{content:'\e81f'}
 .icon-minus:before{content:'\e823'}
 .icon-left-big:before{content:'\e88a'}
@@ -1023,7 +1023,7 @@ textarea.input-group-sm>.form-control,textarea.input-group-sm>.input-group-addon
 .nav-tabs{border-bottom:1px solid rgba(0,0,0,0)}
 .nav-tabs>li{float:left;margin-bottom:-1px}
 .nav-tabs>li>a{margin-right:2px;line-height:1.428571429;border:1px solid transparent;border-radius:4px 4px 0 0}
-.nav-tabs>li>a:hover{border-color:#f1f1f1 #f1f1f1 rgba(0,0,0,0)}
+.nav-tabs>li>a:hover{border-color:rgba(0,0,0,0) rgba(0,0,0,0) rgba(0,0,0,0)}
 .nav-tabs>li.active>a,.nav-tabs>li.active>a:hover,.nav-tabs>li.active>a:focus{color:#555555;background-color:#f1f1f1;border:1px solid #dddddd;border-bottom-color:transparent;cursor:default}
 .nav-tabs.nav-justified{width:100%;border-bottom:0}
 .nav-tabs.nav-justified>li{float:none}
@@ -1608,6 +1608,7 @@ ul ul,ol ul,ul ol,ol ol{margin-bottom:15px}
 .toc ul{list-style-type:none;margin-bottom:5px}
 .ace_editor{color:#545454}
 .ace-tm{background-color:#ffffff}
+.ace-tm .ace_text-input{box-sizing:initial}
 .ace-tm .ace_marker-layer .ace_active-line{background-color:#f1f1f1}
 .ace-tm .ace_print-margin{background-color:rgba(241,241,241,0.5)}
 .ace-tm .ace_markup.ace_heading{color:#333333;font-weight:bold}
@@ -1619,7 +1620,7 @@ ul ul,ol ul,ul ol,ol ol{margin-bottom:15px}
 .ace-tm .ace_code_block{font-family:Menlo,Consolas,"Courier New",monospace;color:#333333}
 .ace-tm .ace_description{color:#666666}
 .ace_search{background-color:#dddddd;border:0}
-#wmd-input{color:#545454;-webkit-box-shadow:none;box-shadow:none;resize:none;border:none !important}
+#wmd-input{border-radius:4px;color:#545454;-webkit-box-shadow:none;box-shadow:none;resize:none;border:none !important}
 div#wmd-input{padding:0}
 .preview-container{overflow:auto}
 .wmd-prompt-background{display:none}

@@ -948,6 +948,10 @@ ul,ol {
 
 .ace-tm {
 	background-color: @input-bg;
+	
+	.ace_text-input {
+		box-sizing: initial;
+	}
 
 	.ace_marker-layer .ace_active-line {
 		background-color: @primary-bg-lighter;	
@@ -1002,6 +1006,7 @@ ul,ol {
 }
 
 #wmd-input {
+	border-radius: @input-border-radius;
 	color: @primary-color-light;
 	.box-shadow(none);
 	resize: none;

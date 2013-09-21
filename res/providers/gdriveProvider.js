@@ -512,7 +512,7 @@ define([
                 var syncIndex = createSyncIndex(id);
                 var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
                 if(fileDesc !== undefined) {
-                    fileMgr.selectFile(fileDesc);
+                    fileDesc !== fileMgr.currentFile && fileMgr.selectFile(fileDesc);
                 }
                 else {
                     importIds.push(id);

@@ -210,6 +210,7 @@ define([
         aceEditor.renderer.setPrintMarginColumn(false);
         aceEditor.renderer.setPadding(EDITOR_DEFAULT_PADDING);
         aceEditor.session.setUseWrapMode(true);
+        aceEditor.session.setNewLineMode("unix");
         aceEditor.session.setMode("libs/ace_mode");
 
         // Make bold titles...

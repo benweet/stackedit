@@ -150,9 +150,9 @@ define([
     utils.slugify = function(text) {
         return text.toLowerCase().replace(/\s/g, '-') // Replace spaces with -
         .replace(/![\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Pc}]/g, '') // Remove
-                                                                    // all
-                                                                    // non-word
-                                                                    // chars
+        // all
+        // non-word
+        // chars
         .replace(/\-\-+/g, '-') // Replace multiple - with single -
         .replace(/^-+/, '') // Trim - from start of text
         .replace(/-+$/, ''); // Trim - from end of text
@@ -215,12 +215,14 @@ define([
     // Export data on disk
     utils.saveAs = function(content, filename) {
         if(saveAs !== undefined) {
-            var blob = new Blob([
-                content
-            ], {
-                type: "text/plain;charset=utf-8"
-            });
-            saveAs(blob, filename);
+            if(_.isString(content)) {
+                content = new Blob([
+                    content
+                ], {
+                    type: "text/plain;charset=utf-8"
+                });
+            }
+            saveAs(content, filename);
         }
         else {
             var uriContent = "data:application/octet-stream;base64," + utils.encodeBase64(content);

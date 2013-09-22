@@ -1665,6 +1665,7 @@ div.jGrowl div.jGrowl-notification{min-height:80px}
 .viewer .document-panel .search-bar{padding:20px 20px 10px}
 .viewer .document-panel .search-bar .input-group-btn{display:none}
 .viewer .ui-layout-toggler{display:none !important}
+body.pdf{background-color:transparent}
 .form-control:focus{-webkit-box-shadow:inset 0 1px 1px rgba(255,255,255,0),0 0 8px rgba(255,255,255,0.75);box-shadow:inset 0 1px 1px rgba(255,255,255,0),0 0 8px rgba(255,255,255,0.75)}
 .navbar .working-indicator.show{background-image:url("../img/loader-night.gif")}
 @media only screen and (-webkit-min-device-pixel-ratio:2),only screen and (min--moz-device-pixel-ratio:2),only screen and (-o-min-device-pixel-ratio:2/1),only screen and (min-device-pixel-ratio:2),only screen and (min-resolution:192dpi),only screen and (min-resolution:2dppx){.navbar .working-indicator.show{background-image:url("../img/loader-night2x.gif");background-size:50px 17px}}@media only screen and (-webkit-min-device-pixel-ratio:2),only screen and (min--moz-device-pixel-ratio:2),only screen and (-o-min-device-pixel-ratio:2/1),only screen and (min-device-pixel-ratio:2),only screen and (min-resolution:192dpi),only screen and (min-resolution:2dppx){.navbar .working-indicator.show{background-image:url("../img/loader-night2x.gif");background-size:50px 17px}}.ace-tm .ace_cursor{border-left-color:#fff}

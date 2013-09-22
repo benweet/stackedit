@@ -1665,3 +1665,4 @@ div.jGrowl div.jGrowl-notification{min-height:80px}
 .viewer .document-panel .search-bar{padding:20px 20px 10px}
 .viewer .document-panel .search-bar .input-group-btn{display:none}
 .viewer .ui-layout-toggler{display:none !important}
+body.pdf{background-color:transparent}

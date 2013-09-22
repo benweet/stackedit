@@ -8,6 +8,8 @@ define([
     "fileMgr",
     "sharing",
     "classes/Provider",
+    "classes/AsyncTask",
+    "config",
     "providers/bloggerProvider",
     "providers/dropboxProvider",
     "providers/gistProvider",
@@ -16,7 +18,7 @@ define([
     "providers/sshProvider",
     "providers/tumblrProvider",
     "providers/wordpressProvider"
-], function($, _, utils, settings, eventMgr, fileSystem, fileMgr, sharing, Provider) {
+], function($, _, utils, settings, eventMgr, fileSystem, fileMgr, sharing, Provider, AsyncTask) {
 
     var publisher = {};
 
@@ -243,6 +245,12 @@ define([
         localStorage[provider.providerId + ".publishPreferences"] = JSON.stringify(publishPreferences);
     }
 
+    // Listen to offline status changes
+    var isOffline = false;
+    eventMgr.addListener("onOfflineChanged", function(isOfflineParam) {
+        isOffline = isOfflineParam;
+    });
+
     var initPublishButtonTmpl = [
         '<li>',
         '   <a href="#"',
@@ -307,6 +315,43 @@ define([
             var fileDesc = fileMgr.currentFile;
             var content = publisher.applyTemplate(fileDesc, undefined, previewHtml);
             utils.saveAs(content, fileDesc.title + (settings.template.indexOf("documentHTML") === -1 ? ".md" : ".html"));
+        });
+        $(".action-download-pdf").click(function() {
+            var fileDesc = fileMgr.currentFile;
+            var content = publisher.applyTemplate(fileDesc, {
+                customTmpl: settings.pdfTemplate
+            }, previewHtml);
+            var task = new AsyncTask();
+            var pdf = undefined;
+            task.onRun(function() {
+                if(isOffline === true) {
+                    eventMgr.onError("Operation not available in offline mode.");
+                    task.chain();
+                    return;
+                }
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', HTMLTOPDF_URL, true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.responseType = 'blob';
+                xhr.onreadystatechange = function() {
+                    if(this.readyState == 4) {
+                        if(this.status == 200) {
+                            pdf = this.response;
+                        }
+                        else {
+                            eventMgr.onError("Error when trying to generate PDF: " + this.status);
+                        }
+                        task.chain();
+                    }
+                };
+                xhr.send(content);
+            });
+            task.onSuccess(function() {
+                if(pdf !== undefined) {
+                    utils.saveAs(pdf, fileMgr.currentFile.title + ".pdf");
+                }
+            });
+            task.enqueue();
         });
     });
 

@@ -32,6 +32,7 @@ var PICASA_PROXY_URL = "http://stackedit-picasa-proxy.herokuapp.com/";
 var WORDPRESS_CLIENT_ID = '3185';
 var WORDPRESS_PROXY_URL = "http://stackedit-wordpress-proxy.herokuapp.com/";
 var SSH_PROXY_URL = "http://stackedit-ssh-proxy.herokuapp.com/";
+var HTMLTOPDF_URL = "http://benweet.insomnia247.nl/stackedit-htmltopdf/";
 
 // Use by Google's client.js
 var delayedFunction = undefined;

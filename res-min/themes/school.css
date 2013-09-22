@@ -1665,6 +1665,7 @@ div.jGrowl div.jGrowl-notification{min-height:80px}
 .viewer .document-panel .search-bar{padding:20px 20px 10px}
 .viewer .document-panel .search-bar .input-group-btn{display:none}
 .viewer .ui-layout-toggler{display:none !important}
+body.pdf{background-color:transparent}
 @font-face{font-family:'cursive_standardregular';src:url('../font/cursive_standard-webfont.eot');src:url('../font/cursive_standard-webfont.eot?#iefix') format('embedded-opentype'),url('../font/cursive_standard-webfont.woff') format('woff'),url('../font/cursive_standard-webfont.ttf') format('truetype'),url('../font/cursive_standard-webfont.svg#cursive_standardregular') format('svg');font-weight:normal;font-style:normal}.navbar{background-image:-webkit-gradient(linear, left 0, left 100%, from(#385e50), to(#34584b));background-image:-webkit-linear-gradient(top, #385e50, 0, #34584b, 100%);background-image:-moz-linear-gradient(top, #385e50 0, #34584b 100%);background-image:linear-gradient(to bottom, #385e50 0, #34584b 100%);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff385e50', endColorstr='#ff34584b', GradientType=0)}
 .ui-layout-resizer-north .resizer-decorator{position:absolute;width:100%;height:7px;background-color:#b9aa9f;-webkit-box-shadow:0 -1px 15px rgba(0,0,0,0.3);box-shadow:0 -1px 15px rgba(0,0,0,0.3);z-index:10;display:block !important}
 .ui-layout-resizer-east{z-index:1 !important}

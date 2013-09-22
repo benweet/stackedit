@@ -712,6 +712,11 @@ define([
                 $(this).find(".modal-footer a:last").click();
             }
         });
+        
+        // Hide menu panel when clicking 'Save as' button
+        $('.collapse-save-as a').click(function() {
+            $menuPanelElt.collapse('hide');
+        });
 
         // Configure Mousetrap
         mousetrap.stopCallback = function(e, element, combo) {

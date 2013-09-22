@@ -923,7 +923,7 @@ function runDelayedFunction() {
  }
  function C(e, t) {
   for (var n, i, o, r = [], s = 0, a = e.length; a > s; s++) i = e[s], i.style && (r[s] = mt.get(i, "olddisplay"), 
-  n = i.style.display, t ? (r[s] || "none" !== n || (i.style.display = ""), "" === i.style.display && y(i) && (r[s] = mt.access(i, "olddisplay", S(i.nodeName)))) : r[s] || (o = y(i), 
+  n = i.style.display, t ? (r[s] || "none" !== n || (i.style.display = ""), "" === i.style.display && y(i) && (r[s] = mt.access(i, "olddisplay", A(i.nodeName)))) : r[s] || (o = y(i), 
   (n && "none" !== n || !o) && mt.set(i, "olddisplay", o ? n : rt.css(i, "display"))));
   for (s = 0; a > s; s++) i = e[s], i.style && (t && "none" !== i.style.display && "" !== i.style.display || (i.style.display = t ? r[s] || "" : "none"));
   return e;
@@ -933,12 +933,12 @@ function runDelayedFunction() {
   return i ? Math.max(0, i[1] - (n || 0)) + (i[2] || "px") : t;
  }
  function E(e, t, n, i, o) {
-  for (var r = n === (i ? "border" : "content") ? 4 : "width" === t ? 1 : 0, s = 0; 4 > r; r += 2) "margin" === n && (s += rt.css(e, n + Jt[r], !0, o)), 
-  i ? ("content" === n && (s -= rt.css(e, "padding" + Jt[r], !0, o)), "margin" !== n && (s -= rt.css(e, "border" + Jt[r] + "Width", !0, o))) : (s += rt.css(e, "padding" + Jt[r], !0, o), 
-  "padding" !== n && (s += rt.css(e, "border" + Jt[r] + "Width", !0, o)));
+  for (var r = n === (i ? "border" : "content") ? 4 : "width" === t ? 1 : 0, s = 0; 4 > r; r += 2) "margin" === n && (s += rt.css(e, n + Zt[r], !0, o)), 
+  i ? ("content" === n && (s -= rt.css(e, "padding" + Zt[r], !0, o)), "margin" !== n && (s -= rt.css(e, "border" + Zt[r] + "Width", !0, o))) : (s += rt.css(e, "padding" + Zt[r], !0, o), 
+  "padding" !== n && (s += rt.css(e, "border" + Zt[r] + "Width", !0, o)));
   return s;
  }
- function A(e, t, n) {
+ function S(e, t, n) {
   var i = !0, o = "width" === t ? e.offsetWidth : e.offsetHeight, r = w(e), s = rt.support.boxSizing && "border-box" === rt.css(e, "boxSizing", !1, r);
   if (0 >= o || null == o) {
    if (o = Ht(e, t, r), (0 > o || null == o) && (o = e.style[t]), Vt.test(o)) return o;
@@ -946,7 +946,7 @@ function runDelayedFunction() {
   }
   return o + E(e, t, n || (s ? "border" : "content"), i, r) + "px";
  }
- function S(e) {
+ function A(e) {
   var t = U, n = Xt[e];
   return n || (n = k(e, t), "none" !== n && n || (qt = (qt || rt("<iframe frameborder='0' width='0' height='0'/>").css("cssText", "display:block !important")).appendTo(t.documentElement), 
   t = (qt[0].contentWindow || qt[0].contentDocument).document, t.write("<!doctype html><html><body>"), 
@@ -982,12 +982,12 @@ function runDelayedFunction() {
   var r = {}, s = e === yn;
   return o(t.dataTypes[0]) || !r["*"] && o("*");
  }
- function D(e, n) {
+ function T(e, n) {
   var i, o, r = rt.ajaxSettings.flatOptions || {};
   for (i in n) n[i] !== t && ((r[i] ? e : o || (o = {}))[i] = n[i]);
   return o && rt.extend(!0, e, o), e;
  }
- function T(e, n, i) {
+ function D(e, n, i) {
   for (var o, r, s, a, l = e.contents, c = e.dataTypes; "*" === c[0]; ) c.shift(), 
   o === t && (o = e.mimeType || n.getResponseHeader("Content-Type"));
   if (o) for (r in l) if (l[r] && l[r].test(o)) {
@@ -1097,7 +1097,7 @@ function runDelayedFunction() {
   i.overflow && (h.overflow = "hidden", u.always(function() {
    h.overflow = i.overflow[0], h.overflowX = i.overflow[1], h.overflowY = i.overflow[2];
   }));
-  for (o in n) if (r = n[o], Dn.exec(r)) {
+  for (o in n) if (r = n[o], Tn.exec(r)) {
    if (delete n[o], s = s || "toggle" === r, r === (p ? "hide" : "show")) {
     if ("show" !== r || !f || f[o] === t) continue;
     p = !0;
@@ -1124,13 +1124,13 @@ function runDelayedFunction() {
   var n, i = {
    height: e
   }, o = 0;
-  for (t = t ? 1 : 0; 4 > o; o += 2 - t) n = Jt[o], i["margin" + n] = i["padding" + n] = e;
+  for (t = t ? 1 : 0; 4 > o; o += 2 - t) n = Zt[o], i["margin" + n] = i["padding" + n] = e;
   return t && (i.opacity = i.width = e), i;
  }
  function z(e) {
   return rt.isWindow(e) ? e : 9 === e.nodeType && e.defaultView;
  }
- var j, H, q = typeof t, W = e.location, U = e.document, G = U.documentElement, V = e.jQuery, K = e.$, X = {}, Y = [], Z = "2.0.3", J = Y.concat, Q = Y.push, et = Y.slice, tt = Y.indexOf, nt = X.toString, it = X.hasOwnProperty, ot = Z.trim, rt = function(e, t) {
+ var j, H, q = typeof t, W = e.location, U = e.document, G = U.documentElement, V = e.jQuery, K = e.$, X = {}, Y = [], J = "2.0.3", Z = Y.concat, Q = Y.push, et = Y.slice, tt = Y.indexOf, nt = X.toString, it = X.hasOwnProperty, ot = J.trim, rt = function(e, t) {
   return new rt.fn.init(e, t, j);
  }, st = /[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/.source, at = /\S+/g, lt = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/, ct = /^<(\w+)\s*\/?>(?:<\/\1>|)$/, ut = /^-ms-/, dt = /-([\da-z])/gi, ht = function(e, t) {
   return t.toUpperCase();
@@ -1139,7 +1139,7 @@ function runDelayedFunction() {
   rt.ready();
  };
  rt.fn = rt.prototype = {
-  jquery: Z,
+  jquery: J,
   constructor: rt,
   init: function(e, n, i) {
    var o, r;
@@ -1208,7 +1208,7 @@ function runDelayedFunction() {
   s = i && rt.isArray(i) ? i : []) : s = i && rt.isPlainObject(i) ? i : {}, a[n] = rt.extend(u, s, o)) : o !== t && (a[n] = o));
   return a;
  }, rt.extend({
-  expando: "jQuery" + (Z + Math.random()).replace(/\D/g, ""),
+  expando: "jQuery" + (J + Math.random()).replace(/\D/g, ""),
   noConflict: function(t) {
    return e.$ === rt && (e.$ = K), t && e.jQuery === rt && (e.jQuery = V), rt;
   },
@@ -1316,7 +1316,7 @@ function runDelayedFunction() {
    var o, r = 0, s = e.length, a = n(e), l = [];
    if (a) for (;s > r; r++) o = t(e[r], r, i), null != o && (l[l.length] = o); else for (r in e) o = t(e[r], r, i), 
    null != o && (l[l.length] = o);
-   return J.apply([], l);
+   return Z.apply([], l);
   },
   guid: 1,
   proxy: function(e, n) {
@@ -1353,7 +1353,7 @@ function runDelayedFunction() {
  }), j = rt(U), function(e, t) {
   function n(e, t, n, i) {
    var o, r, s, a, l, c, u, d, f, g;
-   if ((t ? t.ownerDocument || t : z) !== L && T(t), t = t || L, n = n || [], !e || "string" != typeof e) return n;
+   if ((t ? t.ownerDocument || t : z) !== L && D(t), t = t || L, n = n || [], !e || "string" != typeof e) return n;
    if (1 !== (a = t.nodeType) && 9 !== a) return [];
    if (M && !i) {
     if (o = yt.exec(e)) if (s = o[1]) {
@@ -1384,7 +1384,7 @@ function runDelayedFunction() {
   }
   function i() {
    function e(n, i) {
-    return t.push(n += " ") > S.cacheLength && delete e[t.shift()], e[n] = i;
+    return t.push(n += " ") > A.cacheLength && delete e[t.shift()], e[n] = i;
    }
    var t = [];
    return e;
@@ -1403,7 +1403,7 @@ function runDelayedFunction() {
    }
   }
   function s(e, t) {
-   for (var n = e.split("|"), i = e.length; i--; ) S.attrHandle[n[i]] = t;
+   for (var n = e.split("|"), i = e.length; i--; ) A.attrHandle[n[i]] = t;
   }
   function a(e, t) {
    var n = t && e, i = n && 1 === e.nodeType && 1 === t.nodeType && (~t.sourceIndex || X) - (~e.sourceIndex || X);
@@ -1434,13 +1434,13 @@ function runDelayedFunction() {
   function h(e, t) {
    var i, o, r, s, a, l, c, u = W[e + " "];
    if (u) return t ? 0 : u.slice(0);
-   for (a = e, l = [], c = S.preFilter; a; ) {
+   for (a = e, l = [], c = A.preFilter; a; ) {
     (!i || (o = dt.exec(a))) && (o && (a = a.slice(o[0].length) || a), l.push(r = [])), 
     i = !1, (o = ht.exec(a)) && (i = o.shift(), r.push({
      value: i,
      type: o[0].replace(ut, " ")
     }), a = a.slice(i.length));
-    for (s in S.filter) !(o = vt[s].exec(a)) || c[s] && !(o = c[s](o)) || (i = o.shift(), 
+    for (s in A.filter) !(o = vt[s].exec(a)) || c[s] && !(o = c[s](o)) || (i = o.shift(), 
     r.push({
      value: i,
      type: s,
@@ -1464,8 +1464,8 @@ function runDelayedFunction() {
      for (;t = t[i]; ) if ((1 === t.nodeType || o) && e(t, n, s)) return !0;
     } else for (;t = t[i]; ) if (1 === t.nodeType || o) if (c = t[O] || (t[O] = {}), 
     (l = c[i]) && l[0] === u) {
-     if ((a = l[1]) === !0 || a === A) return a === !0;
-    } else if (l = c[i] = [ u ], l[1] = e(t, n, s) || A, l[1] === !0) return !0;
+     if ((a = l[1]) === !0 || a === S) return a === !0;
+    } else if (l = c[i] = [ u ], l[1] = e(t, n, s) || S, l[1] === !0) return !0;
    };
   }
   function g(e) {
@@ -1495,15 +1495,15 @@ function runDelayedFunction() {
    });
   }
   function b(e) {
-   for (var t, n, i, o = e.length, r = S.relative[e[0].type], s = r || S.relative[" "], a = r ? 1 : 0, l = f(function(e) {
+   for (var t, n, i, o = e.length, r = A.relative[e[0].type], s = r || A.relative[" "], a = r ? 1 : 0, l = f(function(e) {
     return e === t;
    }, s, !0), c = f(function(e) {
     return nt.call(t, e) > -1;
    }, s, !0), u = [ function(e, n, i) {
     return !r && (i || n !== $) || ((t = n).nodeType ? l(e, n, i) : c(e, n, i));
-   } ]; o > a; a++) if (n = S.relative[e[a].type]) u = [ f(g(u), n) ]; else {
-    if (n = S.filter[e[a].type].apply(null, e[a].matches), n[O]) {
-     for (i = ++a; o > i && !S.relative[e[i].type]; i++) ;
+   } ]; o > a; a++) if (n = A.relative[e[a].type]) u = [ f(g(u), n) ]; else {
+    if (n = A.filter[e[a].type].apply(null, e[a].matches), n[O]) {
+     for (i = ++a; o > i && !A.relative[e[i].type]; i++) ;
      return v(a > 1 && g(u), a > 1 && p(e.slice(0, a - 1).concat({
       value: " " === e[a - 2].type ? "*" : ""
      })).replace(ut, "$1"), n, i > a && b(e.slice(a, i)), o > i && b(e = e.slice(i)), o > i && p(e));
@@ -1514,21 +1514,21 @@ function runDelayedFunction() {
   }
   function y(e, t) {
    var i = 0, r = t.length > 0, s = e.length > 0, a = function(o, a, l, c, u) {
-    var d, h, p, f = [], g = 0, v = "0", b = o && [], y = null != u, w = $, C = o || s && S.find.TAG("*", u && a.parentNode || a), x = j += null == w ? 1 : Math.random() || .1;
-    for (y && ($ = a !== L && a, A = i); null != (d = C[v]); v++) {
+    var d, h, p, f = [], g = 0, v = "0", b = o && [], y = null != u, w = $, C = o || s && A.find.TAG("*", u && a.parentNode || a), x = j += null == w ? 1 : Math.random() || .1;
+    for (y && ($ = a !== L && a, S = i); null != (d = C[v]); v++) {
      if (s && d) {
       for (h = 0; p = e[h++]; ) if (p(d, a, l)) {
        c.push(d);
        break;
       }
-      y && (j = x, A = ++i);
+      y && (j = x, S = ++i);
      }
      r && ((d = !p && d) && g--, o && b.push(d));
     }
     if (g += v, r && v !== g) {
      for (h = 0; p = t[h++]; ) p(b, f, a, l);
      if (o) {
-      if (g > 0) for (;v--; ) b[v] || f[v] || (f[v] = J.call(c));
+      if (g > 0) for (;v--; ) b[v] || f[v] || (f[v] = Z.call(c));
       f = m(f);
      }
      et.apply(c, f), y && !o && f.length > 0 && g + t.length > 1 && n.uniqueSort(c);
@@ -1544,20 +1544,20 @@ function runDelayedFunction() {
   function C(e, t, n, i) {
    var o, r, s, a, l, c = h(e);
    if (!i && 1 === c.length) {
-    if (r = c[0] = c[0].slice(0), r.length > 2 && "ID" === (s = r[0]).type && E.getById && 9 === t.nodeType && M && S.relative[r[1].type]) {
-     if (t = (S.find.ID(s.matches[0].replace(Et, At), t) || [])[0], !t) return n;
+    if (r = c[0] = c[0].slice(0), r.length > 2 && "ID" === (s = r[0]).type && E.getById && 9 === t.nodeType && M && A.relative[r[1].type]) {
+     if (t = (A.find.ID(s.matches[0].replace(Et, St), t) || [])[0], !t) return n;
      e = e.slice(r.shift().value.length);
     }
-    for (o = vt.needsContext.test(e) ? 0 : r.length; o-- && (s = r[o], !S.relative[a = s.type]); ) if ((l = S.find[a]) && (i = l(s.matches[0].replace(Et, At), pt.test(r[0].type) && t.parentNode || t))) {
+    for (o = vt.needsContext.test(e) ? 0 : r.length; o-- && (s = r[o], !A.relative[a = s.type]); ) if ((l = A.find[a]) && (i = l(s.matches[0].replace(Et, St), pt.test(r[0].type) && t.parentNode || t))) {
      if (r.splice(o, 1), e = i.length && p(r), !e) return et.apply(n, i), n;
      break;
     }
    }
    return _(e, c)(i, t, !M, n, pt.test(e)), n;
   }
-  var x, E, A, S, k, F, _, $, D, T, L, B, M, R, I, P, N, O = "sizzle" + -new Date(), z = e.document, j = 0, H = 0, q = i(), W = i(), U = i(), G = !1, V = function(e, t) {
+  var x, E, S, A, k, F, _, $, T, D, L, B, M, R, I, P, N, O = "sizzle" + -new Date(), z = e.document, j = 0, H = 0, q = i(), W = i(), U = i(), G = !1, V = function(e, t) {
    return e === t ? (G = !0, 0) : 0;
-  }, K = typeof t, X = 1 << 31, Y = {}.hasOwnProperty, Z = [], J = Z.pop, Q = Z.push, et = Z.push, tt = Z.slice, nt = Z.indexOf || function(e) {
+  }, K = typeof t, X = 1 << 31, Y = {}.hasOwnProperty, J = [], Z = J.pop, Q = J.push, et = J.push, tt = J.slice, nt = J.indexOf || function(e) {
    for (var t = 0, n = this.length; n > t; t++) if (this[t] === e) return t;
    return -1;
   }, it = "checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped", ot = "[\\x20\\t\\r\\n\\f]", st = "(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+", at = st.replace("w", "w#"), lt = "\\[" + ot + "*(" + st + ")" + ot + "*(?:([*^$|!~]?=)" + ot + "*(?:(['\"])((?:\\\\.|[^\\\\])*?)\\3|(" + at + ")|)|)" + ot + "*\\]", ct = ":(" + st + ")(?:\\(((['\"])((?:\\\\.|[^\\\\])*?)\\3|((?:\\\\.|[^\\\\()[\\]]|" + lt.replace(3, 8) + ")*)|.*)\\)|)", ut = new RegExp("^" + ot + "+|((?:^|[^\\\\])(?:\\\\.)*)" + ot + "+$", "g"), dt = new RegExp("^" + ot + "*," + ot + "*"), ht = new RegExp("^" + ot + "*([>+~]|" + ot + ")" + ot + "*"), pt = new RegExp(ot + "*[+~]"), ft = new RegExp("=" + ot + "*([^\\]'\"]*)" + ot + "*\\]", "g"), gt = new RegExp(ct), mt = new RegExp("^" + at + "$"), vt = {
@@ -1569,15 +1569,15 @@ function runDelayedFunction() {
    CHILD: new RegExp("^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(" + ot + "*(even|odd|(([+-]|)(\\d*)n|)" + ot + "*(?:([+-]|)" + ot + "*(\\d+)|))" + ot + "*\\)|)", "i"),
    bool: new RegExp("^(?:" + it + ")$", "i"),
    needsContext: new RegExp("^" + ot + "*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" + ot + "*((?:-\\d)?\\d*)" + ot + "*\\)|)(?=[^-]|$)", "i")
-  }, bt = /^[^{]+\{\s*\[native \w/, yt = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/, wt = /^(?:input|select|textarea|button)$/i, Ct = /^h\d$/i, xt = /'|\\/g, Et = new RegExp("\\\\([\\da-f]{1,6}" + ot + "?|(" + ot + ")|.)", "ig"), At = function(e, t, n) {
+  }, bt = /^[^{]+\{\s*\[native \w/, yt = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/, wt = /^(?:input|select|textarea|button)$/i, Ct = /^h\d$/i, xt = /'|\\/g, Et = new RegExp("\\\\([\\da-f]{1,6}" + ot + "?|(" + ot + ")|.)", "ig"), St = function(e, t, n) {
    var i = "0x" + t - 65536;
    return i !== i || n ? t : 0 > i ? String.fromCharCode(i + 65536) : String.fromCharCode(55296 | i >> 10, 56320 | 1023 & i);
   };
   try {
-   et.apply(Z = tt.call(z.childNodes), z.childNodes), Z[z.childNodes.length].nodeType;
-  } catch (St) {
+   et.apply(J = tt.call(z.childNodes), z.childNodes), J[z.childNodes.length].nodeType;
+  } catch (At) {
    et = {
-    apply: Z.length ? function(e, t) {
+    apply: J.length ? function(e, t) {
      Q.apply(e, tt.call(t));
     } : function(e, t) {
      for (var n = e.length, i = 0; e[n++] = t[i++]; ) ;
@@ -1588,11 +1588,11 @@ function runDelayedFunction() {
   F = n.isXML = function(e) {
    var t = e && (e.ownerDocument || e).documentElement;
    return t ? "HTML" !== t.nodeName : !1;
-  }, E = n.support = {}, T = n.setDocument = function(e) {
+  }, E = n.support = {}, D = n.setDocument = function(e) {
    var t = e ? e.ownerDocument || e : z, n = t.defaultView;
    return t !== L && 9 === t.nodeType && t.documentElement ? (L = t, B = t.documentElement, 
    M = !F(t), n && n.attachEvent && n !== n.top && n.attachEvent("onbeforeunload", function() {
-    T();
+    D();
    }), E.attributes = r(function(e) {
     return e.className = "i", !e.getAttribute("className");
    }), E.getElementsByTagName = r(function(e) {
@@ -1602,23 +1602,23 @@ function runDelayedFunction() {
     2 === e.getElementsByClassName("i").length;
    }), E.getById = r(function(e) {
     return B.appendChild(e).id = O, !t.getElementsByName || !t.getElementsByName(O).length;
-   }), E.getById ? (S.find.ID = function(e, t) {
+   }), E.getById ? (A.find.ID = function(e, t) {
     if (typeof t.getElementById !== K && M) {
      var n = t.getElementById(e);
      return n && n.parentNode ? [ n ] : [];
     }
-   }, S.filter.ID = function(e) {
-    var t = e.replace(Et, At);
+   }, A.filter.ID = function(e) {
+    var t = e.replace(Et, St);
     return function(e) {
      return e.getAttribute("id") === t;
     };
-   }) : (delete S.find.ID, S.filter.ID = function(e) {
-    var t = e.replace(Et, At);
+   }) : (delete A.find.ID, A.filter.ID = function(e) {
+    var t = e.replace(Et, St);
     return function(e) {
      var n = typeof e.getAttributeNode !== K && e.getAttributeNode("id");
      return n && n.value === t;
     };
-   }), S.find.TAG = E.getElementsByTagName ? function(e, t) {
+   }), A.find.TAG = E.getElementsByTagName ? function(e, t) {
     return typeof t.getElementsByTagName !== K ? t.getElementsByTagName(e) : void 0;
    } : function(e, t) {
     var n, i = [], o = 0, r = t.getElementsByTagName(e);
@@ -1627,7 +1627,7 @@ function runDelayedFunction() {
      return i;
     }
     return r;
-   }, S.find.CLASS = E.getElementsByClassName && function(e, t) {
+   }, A.find.CLASS = E.getElementsByClassName && function(e, t) {
     return typeof t.getElementsByClassName !== K && M ? t.getElementsByClassName(e) : void 0;
    }, I = [], R = [], (E.qsa = bt.test(t.querySelectorAll)) && (r(function(e) {
     e.innerHTML = "<select><option selected=''></option></select>", e.querySelectorAll("[selected]").length || R.push("\\[" + ot + "*(?:value|" + it + ")"), 
@@ -1649,11 +1649,11 @@ function runDelayedFunction() {
    }, V = B.compareDocumentPosition ? function(e, n) {
     if (e === n) return G = !0, 0;
     var i = n.compareDocumentPosition && e.compareDocumentPosition && e.compareDocumentPosition(n);
-    return i ? 1 & i || !E.sortDetached && n.compareDocumentPosition(e) === i ? e === t || N(z, e) ? -1 : n === t || N(z, n) ? 1 : D ? nt.call(D, e) - nt.call(D, n) : 0 : 4 & i ? -1 : 1 : e.compareDocumentPosition ? -1 : 1;
+    return i ? 1 & i || !E.sortDetached && n.compareDocumentPosition(e) === i ? e === t || N(z, e) ? -1 : n === t || N(z, n) ? 1 : T ? nt.call(T, e) - nt.call(T, n) : 0 : 4 & i ? -1 : 1 : e.compareDocumentPosition ? -1 : 1;
    } : function(e, n) {
     var i, o = 0, r = e.parentNode, s = n.parentNode, l = [ e ], c = [ n ];
     if (e === n) return G = !0, 0;
-    if (!r || !s) return e === t ? -1 : n === t ? 1 : r ? -1 : s ? 1 : D ? nt.call(D, e) - nt.call(D, n) : 0;
+    if (!r || !s) return e === t ? -1 : n === t ? 1 : r ? -1 : s ? 1 : T ? nt.call(T, e) - nt.call(T, n) : 0;
     if (r === s) return a(e, n);
     for (i = e; i = i.parentNode; ) l.unshift(i);
     for (i = n; i = i.parentNode; ) c.unshift(i);
@@ -1663,22 +1663,22 @@ function runDelayedFunction() {
   }, n.matches = function(e, t) {
    return n(e, null, null, t);
   }, n.matchesSelector = function(e, t) {
-   if ((e.ownerDocument || e) !== L && T(e), t = t.replace(ft, "='$1']"), !(!E.matchesSelector || !M || I && I.test(t) || R && R.test(t))) try {
+   if ((e.ownerDocument || e) !== L && D(e), t = t.replace(ft, "='$1']"), !(!E.matchesSelector || !M || I && I.test(t) || R && R.test(t))) try {
     var i = P.call(e, t);
     if (i || E.disconnectedMatch || e.document && 11 !== e.document.nodeType) return i;
    } catch (o) {}
    return n(t, L, null, [ e ]).length > 0;
   }, n.contains = function(e, t) {
-   return (e.ownerDocument || e) !== L && T(e), N(e, t);
+   return (e.ownerDocument || e) !== L && D(e), N(e, t);
   }, n.attr = function(e, n) {
-   (e.ownerDocument || e) !== L && T(e);
-   var i = S.attrHandle[n.toLowerCase()], o = i && Y.call(S.attrHandle, n.toLowerCase()) ? i(e, n, !M) : t;
+   (e.ownerDocument || e) !== L && D(e);
+   var i = A.attrHandle[n.toLowerCase()], o = i && Y.call(A.attrHandle, n.toLowerCase()) ? i(e, n, !M) : t;
    return o === t ? E.attributes || !M ? e.getAttribute(n) : (o = e.getAttributeNode(n)) && o.specified ? o.value : null : o;
   }, n.error = function(e) {
    throw new Error("Syntax error, unrecognized expression: " + e);
   }, n.uniqueSort = function(e) {
    var t, n = [], i = 0, o = 0;
-   if (G = !E.detectDuplicates, D = !E.sortStable && e.slice(0), e.sort(V), G) {
+   if (G = !E.detectDuplicates, T = !E.sortStable && e.slice(0), e.sort(V), G) {
     for (;t = e[o++]; ) t === e[o] && (i = n.push(o));
     for (;i--; ) e.splice(n[i], 1);
    }
@@ -1692,7 +1692,7 @@ function runDelayedFunction() {
     } else if (3 === o || 4 === o) return e.nodeValue;
    } else for (;t = e[i]; i++) n += k(t);
    return n;
-  }, S = n.selectors = {
+  }, A = n.selectors = {
    cacheLength: 50,
    createPseudo: o,
    match: vt,
@@ -1716,7 +1716,7 @@ function runDelayedFunction() {
    },
    preFilter: {
     ATTR: function(e) {
-     return e[1] = e[1].replace(Et, At), e[3] = (e[4] || e[5] || "").replace(Et, At), 
+     return e[1] = e[1].replace(Et, St), e[3] = (e[4] || e[5] || "").replace(Et, St), 
      "~=" === e[2] && (e[3] = " " + e[3] + " "), e.slice(0, 4);
     },
     CHILD: function(e) {
@@ -1732,7 +1732,7 @@ function runDelayedFunction() {
    },
    filter: {
     TAG: function(e) {
-     var t = e.replace(Et, At).toLowerCase();
+     var t = e.replace(Et, St).toLowerCase();
      return "*" === e ? function() {
       return !0;
      } : function(e) {
@@ -1778,8 +1778,8 @@ function runDelayedFunction() {
      };
     },
     PSEUDO: function(e, t) {
-     var i, r = S.pseudos[e] || S.setFilters[e.toLowerCase()] || n.error("unsupported pseudo: " + e);
-     return r[O] ? r(t) : r.length > 1 ? (i = [ e, e, "", t ], S.setFilters.hasOwnProperty(e.toLowerCase()) ? o(function(e, n) {
+     var i, r = A.pseudos[e] || A.setFilters[e.toLowerCase()] || n.error("unsupported pseudo: " + e);
+     return r[O] ? r(t) : r.length > 1 ? (i = [ e, e, "", t ], A.setFilters.hasOwnProperty(e.toLowerCase()) ? o(function(e, n) {
       for (var i, o = r(e, t), s = o.length; s--; ) i = nt.call(e, o[s]), e[i] = !(n[i] = o[s]);
      }) : function(e) {
       return r(e, 0, i);
@@ -1806,7 +1806,7 @@ function runDelayedFunction() {
      };
     }),
     lang: o(function(e) {
-     return mt.test(e || "") || n.error("unsupported lang: " + e), e = e.replace(Et, At).toLowerCase(), 
+     return mt.test(e || "") || n.error("unsupported lang: " + e), e = e.replace(Et, St).toLowerCase(), 
      function(t) {
       var n;
       do if (n = M ? t.lang : t.getAttribute("xml:lang") || t.getAttribute("lang")) return n = n.toLowerCase(), 
@@ -1842,7 +1842,7 @@ function runDelayedFunction() {
      return !0;
     },
     parent: function(e) {
-     return !S.pseudos.empty(e);
+     return !A.pseudos.empty(e);
     },
     header: function(e) {
      return Ct.test(e.nodeName);
@@ -1884,26 +1884,26 @@ function runDelayedFunction() {
      return e;
     })
    }
-  }, S.pseudos.nth = S.pseudos.eq;
+  }, A.pseudos.nth = A.pseudos.eq;
   for (x in {
    radio: !0,
    checkbox: !0,
    file: !0,
    password: !0,
    image: !0
-  }) S.pseudos[x] = l(x);
+  }) A.pseudos[x] = l(x);
   for (x in {
    submit: !0,
    reset: !0
-  }) S.pseudos[x] = c(x);
-  d.prototype = S.filters = S.pseudos, S.setFilters = new d(), _ = n.compile = function(e, t) {
+  }) A.pseudos[x] = c(x);
+  d.prototype = A.filters = A.pseudos, A.setFilters = new d(), _ = n.compile = function(e, t) {
    var n, i = [], o = [], r = U[e + " "];
    if (!r) {
     for (t || (t = h(e)), n = t.length; n--; ) r = b(t[n]), r[O] ? i.push(r) : o.push(r);
     r = U(e, y(o, i));
    }
    return r;
-  }, E.sortStable = O.split("").sort(V).join("") === O, E.detectDuplicates = G, T(), 
+  }, E.sortStable = O.split("").sort(V).join("") === O, E.detectDuplicates = G, D(), 
   E.sortDetached = r(function(e) {
    return 1 & e.compareDocumentPosition(L.createElement("div"));
   }), r(function(e) {
@@ -2350,7 +2350,7 @@ function runDelayedFunction() {
    return null === e.getAttribute("value") ? "on" : e.value;
   });
  });
- var At = /^key/, St = /^(?:mouse|contextmenu)|click/, kt = /^(?:focusinfocus|focusoutblur)$/, Ft = /^([^.]*)(?:\.(.+)|)$/;
+ var St = /^key/, At = /^(?:mouse|contextmenu)|click/, kt = /^(?:focusinfocus|focusoutblur)$/, Ft = /^([^.]*)(?:\.(.+)|)$/;
  rt.event = {
   global: {},
   add: function(e, n, i, o, r) {
@@ -2459,7 +2459,7 @@ function runDelayedFunction() {
   fix: function(e) {
    if (e[rt.expando]) return e;
    var t, n, i, o = e.type, r = e, s = this.fixHooks[o];
-   for (s || (this.fixHooks[o] = s = St.test(o) ? this.mouseHooks : At.test(o) ? this.keyHooks : {}), 
+   for (s || (this.fixHooks[o] = s = At.test(o) ? this.mouseHooks : St.test(o) ? this.keyHooks : {}), 
    i = s.props ? this.props.concat(s.props) : this.props, e = new rt.Event(r), t = i.length; t--; ) n = i[t], 
    e[n] = r[n];
    return e.target || (e.target = U), 3 === e.target.nodeType && (e.target = e.target.parentNode), 
@@ -2596,7 +2596,7 @@ function runDelayedFunction() {
    return n ? rt.event.trigger(e, t, n, !0) : void 0;
   }
  });
- var _t = /^.[^:#\[\.,]*$/, $t = /^(?:parents|prev(?:Until|All))/, Dt = rt.expr.match.needsContext, Tt = {
+ var _t = /^.[^:#\[\.,]*$/, $t = /^(?:parents|prev(?:Until|All))/, Tt = rt.expr.match.needsContext, Dt = {
   children: !0,
   contents: !0,
   next: !0,
@@ -2625,10 +2625,10 @@ function runDelayedFunction() {
    return this.pushStack(u(this, e || [], !1));
   },
   is: function(e) {
-   return !!u(this, "string" == typeof e && Dt.test(e) ? rt(e) : e || [], !1).length;
+   return !!u(this, "string" == typeof e && Tt.test(e) ? rt(e) : e || [], !1).length;
   },
   closest: function(e, t) {
-   for (var n, i = 0, o = this.length, r = [], s = Dt.test(e) || "string" != typeof e ? rt(e, t || this.context) : 0; o > i; i++) for (n = this[i]; n && n !== t; n = n.parentNode) if (n.nodeType < 11 && (s ? s.index(n) > -1 : 1 === n.nodeType && rt.find.matchesSelector(n, e))) {
+   for (var n, i = 0, o = this.length, r = [], s = Tt.test(e) || "string" != typeof e ? rt(e, t || this.context) : 0; o > i; i++) for (n = this[i]; n && n !== t; n = n.parentNode) if (n.nodeType < 11 && (s ? s.index(n) > -1 : 1 === n.nodeType && rt.find.matchesSelector(n, e))) {
     n = r.push(n);
     break;
    }
@@ -2686,7 +2686,7 @@ function runDelayedFunction() {
   rt.fn[e] = function(n, i) {
    var o = rt.map(this, t, n);
    return "Until" !== e.slice(-5) && (i = n), i && "string" == typeof i && (o = rt.filter(i, o)), 
-   this.length > 1 && (Tt[e] || rt.unique(o), $t.test(e) && o.reverse()), this.pushStack(o);
+   this.length > 1 && (Dt[e] || rt.unique(o), $t.test(e) && o.reverse()), this.pushStack(o);
   };
  }), rt.extend({
   filter: function(e, t, n) {
@@ -2791,7 +2791,7 @@ function runDelayedFunction() {
    return this.remove(e, !0);
   },
   domManip: function(e, t, n) {
-   e = J.apply([], e);
+   e = Z.apply([], e);
    var i, o, r, s, a, l, c = 0, u = this.length, d = this, f = u - 1, g = e[0], v = rt.isFunction(g);
    if (v || !(1 >= u || "string" != typeof g || rt.support.checkClone) && Pt.test(g)) return this.each(function(i) {
     var o = d.eq(i);
@@ -2894,10 +2894,10 @@ function runDelayedFunction() {
   position: "absolute",
   visibility: "hidden",
   display: "block"
- }, Zt = {
+ }, Jt = {
   letterSpacing: 0,
   fontWeight: 400
- }, Jt = [ "Top", "Right", "Bottom", "Left" ], Qt = [ "Webkit", "O", "Moz", "ms" ];
+ }, Zt = [ "Top", "Right", "Bottom", "Left" ], Qt = [ "Webkit", "O", "Moz", "ms" ];
  rt.fn.extend({
   css: function(e, n) {
    return rt.access(this, function(e, n, i) {
@@ -2960,7 +2960,7 @@ function runDelayedFunction() {
   css: function(e, n, i, o) {
    var r, s, a, l = rt.camelCase(n);
    return n = rt.cssProps[l] || (rt.cssProps[l] = b(e.style, l)), a = rt.cssHooks[n] || rt.cssHooks[l], 
-   a && "get" in a && (r = a.get(e, !0, i)), r === t && (r = Ht(e, n, o)), "normal" === r && n in Zt && (r = Zt[n]), 
+   a && "get" in a && (r = a.get(e, !0, i)), r === t && (r = Ht(e, n, o)), "normal" === r && n in Jt && (r = Jt[n]), 
    "" === i || i ? (s = parseFloat(r), i === !0 || rt.isNumeric(s) ? s || 0 : r) : r;
   }
  }), Ht = function(e, n, i) {
@@ -2972,8 +2972,8 @@ function runDelayedFunction() {
   rt.cssHooks[t] = {
    get: function(e, n, i) {
     return n ? 0 === e.offsetWidth && Wt.test(rt.css(e, "display")) ? rt.swap(e, Yt, function() {
-     return A(e, t, i);
-    }) : A(e, t, i) : void 0;
+     return S(e, t, i);
+    }) : S(e, t, i) : void 0;
    },
    set: function(e, n, i) {
     var o = i && w(e);
@@ -3005,7 +3005,7 @@ function runDelayedFunction() {
  }, function(e, t) {
   rt.cssHooks[e + t] = {
    expand: function(n) {
-    for (var i = 0, o = {}, r = "string" == typeof n ? n.split(" ") : [ n ]; 4 > i; i++) o[e + Jt[i] + t] = r[i] || r[i - 2] || r[0];
+    for (var i = 0, o = {}, r = "string" == typeof n ? n.split(" ") : [ n ]; 4 > i; i++) o[e + Zt[i] + t] = r[i] || r[i - 2] || r[0];
     return o;
    }
   }, Ut.test(e) || (rt.cssHooks[e + t].set = x);
@@ -3129,7 +3129,7 @@ function runDelayedFunction() {
    }
   },
   ajaxSetup: function(e, t) {
-   return t ? D(D(e, rt.ajaxSettings), t) : D(rt.ajaxSettings, e);
+   return t ? T(T(e, rt.ajaxSettings), t) : T(rt.ajaxSettings, e);
   },
   ajaxPrefilter: _(bn),
   ajaxTransport: _(yn),
@@ -3137,7 +3137,7 @@ function runDelayedFunction() {
    function i(e, n, i, a) {
     var c, d, b, y, C, E = n;
     2 !== w && (w = 2, l && clearTimeout(l), o = t, s = a || "", x.readyState = e > 0 ? 4 : 0, 
-    c = e >= 200 && 300 > e || 304 === e, i && (y = T(h, x, i)), y = L(h, y, x, c), 
+    c = e >= 200 && 300 > e || 304 === e, i && (y = D(h, x, i)), y = L(h, y, x, c), 
     c ? (h.ifModified && (C = x.getResponseHeader("Last-Modified"), C && (rt.lastModified[r] = C), 
     C = x.getResponseHeader("etag"), C && (rt.etag[r] = C)), 204 === e || "HEAD" === h.type ? E = "nocontent" : 304 === e ? E = "notmodified" : (E = y.state, 
     d = y.data, b = y.error, c = !b)) : (b = E, (e || !E) && (E = "error", 0 > e && (e = 0))), 
@@ -3281,17 +3281,17 @@ function runDelayedFunction() {
    return new XMLHttpRequest();
   } catch (e) {}
  };
- var An = rt.ajaxSettings.xhr(), Sn = {
+ var Sn = rt.ajaxSettings.xhr(), An = {
   0: 200,
   1223: 204
  }, kn = 0, Fn = {};
  e.ActiveXObject && rt(e).on("unload", function() {
   for (var e in Fn) Fn[e]();
   Fn = t;
- }), rt.support.cors = !!An && "withCredentials" in An, rt.support.ajax = An = !!An, 
+ }), rt.support.cors = !!Sn && "withCredentials" in Sn, rt.support.ajax = Sn = !!Sn, 
  rt.ajaxTransport(function(e) {
   var n;
-  return rt.support.cors || An && !e.crossDomain ? {
+  return rt.support.cors || Sn && !e.crossDomain ? {
    send: function(i, o) {
     var r, s, a = e.xhr();
     if (a.open(e.type, e.url, e.async, e.username, e.password), e.xhrFields) for (r in e.xhrFields) a[r] = e.xhrFields[r];
@@ -3299,7 +3299,7 @@ function runDelayedFunction() {
     for (r in i) a.setRequestHeader(r, i[r]);
     n = function(e) {
      return function() {
-      n && (delete Fn[s], n = a.onload = a.onerror = null, "abort" === e ? a.abort() : "error" === e ? o(a.status || 404, a.statusText) : o(Sn[a.status] || a.status, a.statusText, "string" == typeof a.responseText ? {
+      n && (delete Fn[s], n = a.onload = a.onerror = null, "abort" === e ? a.abort() : "error" === e ? o(a.status || 404, a.statusText) : o(An[a.status] || a.status, a.statusText, "string" == typeof a.responseText ? {
        text: a.responseText
       } : t, a.getAllResponseHeaders()));
      };
@@ -3310,9 +3310,9 @@ function runDelayedFunction() {
    }
   } : void 0;
  });
- var _n, $n, Dn = /^(?:toggle|show|hide)$/, Tn = new RegExp("^(?:([+-])=|)(" + st + ")([a-z%]*)$", "i"), Ln = /queueHooks$/, Bn = [ P ], Mn = {
+ var _n, $n, Tn = /^(?:toggle|show|hide)$/, Dn = new RegExp("^(?:([+-])=|)(" + st + ")([a-z%]*)$", "i"), Ln = /queueHooks$/, Bn = [ P ], Mn = {
   "*": [ function(e, t) {
-   var n = this.createTween(e, t), i = n.cur(), o = Tn.exec(t), r = o && o[3] || (rt.cssNumber[e] ? "" : "px"), s = (rt.cssNumber[e] || "px" !== r && +i) && Tn.exec(rt.css(n.elem, e)), a = 1, l = 20;
+   var n = this.createTween(e, t), i = n.cur(), o = Dn.exec(t), r = o && o[3] || (rt.cssNumber[e] ? "" : "px"), s = (rt.cssNumber[e] || "px" !== r && +i) && Dn.exec(rt.css(n.elem, e)), a = 1, l = 20;
    if (s && s[3] !== r) {
     r = r || s[3], o = o || [], s = +i || 1;
     do a = a || ".5", s /= a, rt.style(n.elem, e, s + r); while (a !== (a = n.cur() / i) && 1 !== a && --l);
@@ -3538,25 +3538,25 @@ function runDelayedFunction() {
  };
  "undefined" != typeof exports ? ("undefined" != typeof module && module.exports && (exports = module.exports = E), 
  exports._ = E) : e._ = E, E.VERSION = "1.5.1";
- var A = E.each = E.forEach = function(e, t, i) {
+ var S = E.each = E.forEach = function(e, t, i) {
   if (null != e) if (d && e.forEach === d) e.forEach(t, i); else if (e.length === +e.length) {
    for (var o = 0, r = e.length; r > o; o++) if (t.call(i, e[o], o, e) === n) return;
   } else for (var s in e) if (E.has(e, s) && t.call(i, e[s], s, e) === n) return;
  };
  E.map = E.collect = function(e, t, n) {
   var i = [];
-  return null == e ? i : h && e.map === h ? e.map(t, n) : (A(e, function(e, o, r) {
+  return null == e ? i : h && e.map === h ? e.map(t, n) : (S(e, function(e, o, r) {
    i.push(t.call(n, e, o, r));
   }), i);
  };
- var S = "Reduce of empty array with no initial value";
+ var A = "Reduce of empty array with no initial value";
  E.reduce = E.foldl = E.inject = function(e, t, n, i) {
   var o = arguments.length > 2;
   if (null == e && (e = []), p && e.reduce === p) return i && (t = E.bind(t, i)), 
   o ? e.reduce(t, n) : e.reduce(t);
-  if (A(e, function(e, r, s) {
+  if (S(e, function(e, r, s) {
    o ? n = t.call(i, n, e, r, s) : (n = e, o = !0);
-  }), !o) throw new TypeError(S);
+  }), !o) throw new TypeError(A);
   return n;
  }, E.reduceRight = E.foldr = function(e, t, n, i) {
   var o = arguments.length > 2;
@@ -3567,9 +3567,9 @@ function runDelayedFunction() {
    var s = E.keys(e);
    r = s.length;
   }
-  if (A(e, function(a, l, c) {
+  if (S(e, function(a, l, c) {
    l = s ? s[--r] : --r, o ? n = t.call(i, n, e[l], l, c) : (n = e[l], o = !0);
-  }), !o) throw new TypeError(S);
+  }), !o) throw new TypeError(A);
   return n;
  }, E.find = E.detect = function(e, t, n) {
   var i;
@@ -3578,7 +3578,7 @@ function runDelayedFunction() {
   }), i;
  }, E.filter = E.select = function(e, t, n) {
   var i = [];
-  return null == e ? i : g && e.filter === g ? e.filter(t, n) : (A(e, function(e, o, r) {
+  return null == e ? i : g && e.filter === g ? e.filter(t, n) : (S(e, function(e, o, r) {
    t.call(n, e, o, r) && i.push(e);
   }), i);
  }, E.reject = function(e, t, n) {
@@ -3588,14 +3588,14 @@ function runDelayedFunction() {
  }, E.every = E.all = function(e, t, i) {
   t || (t = E.identity);
   var o = !0;
-  return null == e ? o : m && e.every === m ? e.every(t, i) : (A(e, function(e, r, s) {
+  return null == e ? o : m && e.every === m ? e.every(t, i) : (S(e, function(e, r, s) {
    return (o = o && t.call(i, e, r, s)) ? void 0 : n;
   }), !!o);
  };
  var k = E.some = E.any = function(e, t, i) {
   t || (t = E.identity);
   var o = !1;
-  return null == e ? o : v && e.some === v ? e.some(t, i) : (A(e, function(e, r, s) {
+  return null == e ? o : v && e.some === v ? e.some(t, i) : (S(e, function(e, r, s) {
    return o || (o = t.call(i, e, r, s)) ? n : void 0;
   }), !!o);
  };
@@ -3626,7 +3626,7 @@ function runDelayedFunction() {
    computed: -1/0,
    value: -1/0
   };
-  return A(e, function(e, o, r) {
+  return S(e, function(e, o, r) {
    var s = t ? t.call(n, e, o, r) : e;
    s > i.computed && (i = {
     value: e,
@@ -3640,7 +3640,7 @@ function runDelayedFunction() {
    computed: 1/0,
    value: 1/0
   };
-  return A(e, function(e, o, r) {
+  return S(e, function(e, o, r) {
    var s = t ? t.call(n, e, o, r) : e;
    s < i.computed && (i = {
     value: e,
@@ -3649,7 +3649,7 @@ function runDelayedFunction() {
   }), i.value;
  }, E.shuffle = function(e) {
   var t, n = 0, i = [];
-  return A(e, function(e) {
+  return S(e, function(e) {
    t = E.random(n++), i[n - 1] = i[t], i[t] = e;
   }), i;
  };
@@ -3677,7 +3677,7 @@ function runDelayedFunction() {
  };
  var _ = function(e, t, n, i) {
   var o = {}, r = F(null == t ? E.identity : t);
-  return A(e, function(t, s) {
+  return S(e, function(t, s) {
    var a = r.call(n, t, s, e);
    i(o, a, t);
   }), o;
@@ -3713,7 +3713,7 @@ function runDelayedFunction() {
   return E.filter(e, E.identity);
  };
  var $ = function(e, t, n) {
-  return t && E.every(e, E.isArray) ? l.apply(n, e) : (A(e, function(e) {
+  return t && E.every(e, E.isArray) ? l.apply(n, e) : (S(e, function(e) {
    E.isArray(e) || E.isArguments(e) ? t ? s.apply(n, e) : $(e, t, n) : n.push(e);
   }), n);
  };
@@ -3724,7 +3724,7 @@ function runDelayedFunction() {
  }, E.uniq = E.unique = function(e, t, n, i) {
   E.isFunction(t) && (i = n, n = t, t = !1);
   var o = n ? E.map(e, n, i) : e, r = [], s = [];
-  return A(o, function(n, i) {
+  return S(o, function(n, i) {
    (t ? i && s[s.length - 1] === n : E.contains(s, n)) || (s.push(n), r.push(e[i]));
   }), r;
  }, E.union = function() {
@@ -3770,16 +3770,16 @@ function runDelayedFunction() {
   e += n;
   return r;
  };
- var D = function() {};
+ var T = function() {};
  E.bind = function(e, t) {
   var n, i;
   if (x && e.bind === x) return x.apply(e, a.call(arguments, 1));
   if (!E.isFunction(e)) throw new TypeError();
   return n = a.call(arguments, 2), i = function() {
    if (!(this instanceof i)) return e.apply(t, n.concat(a.call(arguments)));
-   D.prototype = e.prototype;
-   var o = new D();
-   D.prototype = null;
+   T.prototype = e.prototype;
+   var o = new T();
+   T.prototype = null;
    var r = e.apply(o, n.concat(a.call(arguments)));
    return Object(r) === r ? r : o;
   };
@@ -3791,7 +3791,7 @@ function runDelayedFunction() {
  }, E.bindAll = function(e) {
   var t = a.call(arguments, 1);
   if (0 === t.length) throw new Error("bindAll must be passed function names");
-  return A(t, function(t) {
+  return S(t, function(t) {
    e[t] = E.bind(e[t], e);
   }), e;
  }, E.memoize = function(e, t) {
@@ -3870,12 +3870,12 @@ function runDelayedFunction() {
   for (var n in e) E.isFunction(e[n]) && t.push(n);
   return t.sort();
  }, E.extend = function(e) {
-  return A(a.call(arguments, 1), function(t) {
+  return S(a.call(arguments, 1), function(t) {
    if (t) for (var n in t) e[n] = t[n];
   }), e;
  }, E.pick = function(e) {
   var t = {}, n = l.apply(i, a.call(arguments, 1));
-  return A(n, function(n) {
+  return S(n, function(n) {
    n in e && (t[n] = e[n]);
   }), t;
  }, E.omit = function(e) {
@@ -3883,7 +3883,7 @@ function runDelayedFunction() {
   for (var o in e) E.contains(n, o) || (t[o] = e[o]);
   return t;
  }, E.defaults = function(e) {
-  return A(a.call(arguments, 1), function(t) {
+  return S(a.call(arguments, 1), function(t) {
    if (t) for (var n in t) void 0 === e[n] && (e[n] = t[n]);
   }), e;
  }, E.clone = function(e) {
@@ -3891,7 +3891,7 @@ function runDelayedFunction() {
  }, E.tap = function(e, t) {
   return t(e), e;
  };
- var T = function(e, t, n, i) {
+ var D = function(e, t, n, i) {
   if (e === t) return 0 !== e || 1 / e == 1 / t;
   if (null == e || null == t) return e === t;
   e instanceof E && (e = e._wrapped), t instanceof E && (t = t._wrapped);
@@ -3918,9 +3918,9 @@ function runDelayedFunction() {
   n.push(e), i.push(t);
   var l = 0, u = !0;
   if ("[object Array]" == o) {
-   if (l = e.length, u = l == t.length) for (;l-- && (u = T(e[l], t[l], n, i)); ) ;
+   if (l = e.length, u = l == t.length) for (;l-- && (u = D(e[l], t[l], n, i)); ) ;
   } else {
-   for (var d in e) if (E.has(e, d) && (l++, !(u = E.has(t, d) && T(e[d], t[d], n, i)))) break;
+   for (var d in e) if (E.has(e, d) && (l++, !(u = E.has(t, d) && D(e[d], t[d], n, i)))) break;
    if (u) {
     for (d in t) if (E.has(t, d) && !l--) break;
     u = !l;
@@ -3929,7 +3929,7 @@ function runDelayedFunction() {
   return n.pop(), i.pop(), u;
  };
  E.isEqual = function(e, t) {
-  return T(e, t, [], []);
+  return D(e, t, [], []);
  }, E.isEmpty = function(e) {
   if (null == e) return !0;
   if (E.isArray(e) || E.isString(e)) return 0 === e.length;
@@ -3941,7 +3941,7 @@ function runDelayedFunction() {
   return "[object Array]" == c.call(e);
  }, E.isObject = function(e) {
   return e === Object(e);
- }, A([ "Arguments", "Function", "String", "Number", "Date", "RegExp" ], function(e) {
+ }, S([ "Arguments", "Function", "String", "Number", "Date", "RegExp" ], function(e) {
   E["is" + e] = function(t) {
    return c.call(t) == "[object " + e + "]";
   };
@@ -3997,7 +3997,7 @@ function runDelayedFunction() {
   var n = e[t];
   return E.isFunction(n) ? n.call(e) : n;
  }, E.mixin = function(e) {
-  A(E.functions(e), function(t) {
+  S(E.functions(e), function(t) {
    var n = E[t] = e[t];
    E.prototype[t] = function() {
     var e = [ this._wrapped ];
@@ -4049,14 +4049,14 @@ function runDelayedFunction() {
  var N = function(e) {
   return this._chain ? E(e).chain() : e;
  };
- E.mixin(E), A([ "pop", "push", "reverse", "shift", "sort", "splice", "unshift" ], function(e) {
+ E.mixin(E), S([ "pop", "push", "reverse", "shift", "sort", "splice", "unshift" ], function(e) {
   var t = i[e];
   E.prototype[e] = function() {
    var n = this._wrapped;
    return t.apply(n, arguments), "shift" != e && "splice" != e || 0 !== n.length || delete n[0], 
    N.call(this, n);
   };
- }), A([ "concat", "join", "slice" ], function(e) {
+ }), S([ "concat", "join", "slice" ], function(e) {
   var t = i[e];
   E.prototype[e] = function() {
    return N.call(this, t.apply(this._wrapped, arguments));
@@ -4298,7 +4298,7 @@ function runDelayedFunction() {
   if (!y || !w) var C = Object.defineProperty;
  }
  if (!Object.defineProperty || C) {
-  var x = "Property description must be an object: ", E = "Object.defineProperty called on non-object: ", A = "getters & setters can not be defined on this javascript engine";
+  var x = "Property description must be an object: ", E = "Object.defineProperty called on non-object: ", S = "getters & setters can not be defined on this javascript engine";
   Object.defineProperty = function(e, t, n) {
    if ("object" != typeof e && "function" != typeof e || null === e) throw new TypeError(E + e);
    if ("object" != typeof n && "function" != typeof n || null === n) throw new TypeError(x + n);
@@ -4309,7 +4309,7 @@ function runDelayedFunction() {
     var c = e.__proto__;
     e.__proto__ = u, delete e[t], e[t] = n.value, e.__proto__ = c;
    } else e[t] = n.value; else {
-    if (!a) throw new TypeError(A);
+    if (!a) throw new TypeError(S);
     p(n, "get") && i(e, t, n.get), p(n, "set") && o(e, t, n.set);
    }
    return e;
@@ -4325,7 +4325,7 @@ function runDelayedFunction() {
  });
  try {
   Object.freeze(function() {});
- } catch (S) {
+ } catch (A) {
   Object.freeze = function(e) {
    return function(t) {
     return "function" == typeof t ? t : e(t);
@@ -4363,12 +4363,12 @@ function runDelayedFunction() {
  Date.now || (Date.now = function() {
   return new Date().getTime();
  });
- var D = "	\n\f\r   ᠎             　\u2028\u2029﻿";
- if (!String.prototype.trim || D.trim()) {
-  D = "[" + D + "]";
-  var T = new RegExp("^" + D + D + "*"), L = new RegExp(D + D + "*$");
+ var T = "	\n\f\r   ᠎             　\u2028\u2029﻿";
+ if (!String.prototype.trim || T.trim()) {
+  T = "[" + T + "]";
+  var D = new RegExp("^" + T + T + "*"), L = new RegExp(T + T + "*$");
   String.prototype.trim = function() {
-   return String(this).replace(T, "").replace(L, "");
+   return String(this).replace(D, "").replace(L, "");
   };
  }
  var B = function(e) {
@@ -4894,25 +4894,25 @@ function runDelayedFunction() {
    } catch (n) {}
    return t && t.parentElement() == e ? t.text == e.value : !1;
   }), i.isOldIE) {
-   var E = !1, A = function(e) {
+   var E = !1, S = function(e) {
     if (!E) {
      var t = u.value;
      if (!g && t && t != d) {
-      if (e && t == d[0]) return S.schedule();
-      D(t), E = !0, l(), E = !1;
+      if (e && t == d[0]) return A.schedule();
+      T(t), E = !0, l(), E = !1;
      }
     }
-   }, S = r.delayedCall(A);
-   n.addListener(u, "propertychange", A);
+   }, A = r.delayedCall(S);
+   n.addListener(u, "propertychange", S);
    var k = {
     13: 1,
     27: 1
    };
    n.addListener(u, "keyup", function(e) {
-    return !g || u.value && !k[e.keyCode] || setTimeout(P, 0), (u.value.charCodeAt(0) || 0) < 129 ? S.call() : (g ? I() : R(), 
+    return !g || u.value && !k[e.keyCode] || setTimeout(P, 0), (u.value.charCodeAt(0) || 0) < 129 ? A.call() : (g ? I() : R(), 
     void 0);
    }), n.addListener(u, "keydown", function() {
-    S.schedule(50);
+    A.schedule(50);
    });
   }
   var F = function() {
@@ -4923,16 +4923,16 @@ function runDelayedFunction() {
   }, this.getInputHandler = function() {
    return _;
   };
-  var $ = !1, D = function(e) {
+  var $ = !1, T = function(e) {
    _ && (e = _(e), _ = null), f ? (a(), e && t.onPaste(e), f = !1) : e == d.charAt(0) ? $ && t.execCommand("del", {
     source: "ace"
    }) : (e.substring(0, 2) == d ? e = e.substr(2) : e.charAt(0) == d.charAt(0) ? e = e.substr(1) : e.charAt(e.length - 1) == d.charAt(0) && (e = e.slice(0, -1)), 
    e.charAt(e.length - 1) == d.charAt(0) && (e = e.slice(0, -1)), e && t.onTextInput(e)), 
    $ && ($ = !1);
-  }, T = function() {
+  }, D = function() {
    if (!g) {
     var e = u.value;
-    D(e), l();
+    T(e), l();
    }
   }, L = function(e) {
    var i = t.getCopyText();
@@ -4964,7 +4964,7 @@ function runDelayedFunction() {
    } else u.value = "", f = !0;
   };
   n.addCommandKeyListener(u, t.onCommandKey.bind(t)), n.addListener(u, "select", F), 
-  n.addListener(u, "input", T), n.addListener(u, "cut", L), n.addListener(u, "copy", B), 
+  n.addListener(u, "input", D), n.addListener(u, "cut", L), n.addListener(u, "copy", B), 
   n.addListener(u, "paste", M), "oncut" in u && "oncopy" in u && "onpaste" in u || n.addListener(e, "keydown", function(e) {
    if ((!i.isMac || e.metaKey) && e.ctrlKey) switch (e.keyCode) {
    case 67:
@@ -4994,7 +4994,7 @@ function runDelayedFunction() {
    g = !1;
    var i = setTimeout(function() {
     var e = u.value.replace(/\x01/g, "");
-    g || (e == n.lastValue ? l() : !n.lastValue && e && (l(), D(e)));
+    g || (e == n.lastValue ? l() : !n.lastValue && e && (l(), T(e)));
    });
    _ = function(e) {
     return clearTimeout(i), e = e.replace(/\x01/g, ""), e == n.lastValue ? "" : (n.lastValue && t.undo(), 
@@ -10717,11 +10717,11 @@ function runDelayedFunction() {
     r ? (y = b.documentToScreenPosition(c.lead), v()) : (c.moveCursorToPosition(d), 
     c.clearSelection());
     var x = function() {
-     clearInterval(A), l.removeSelectionMarkers(C);
+     clearInterval(S), l.removeSelectionMarkers(C);
      for (var e = 0; e < C.length; e++) c.addRange(C[e]);
     }, E = v;
     o.capture(l.container, m, x);
-    var A = setInterval(function() {
+    var S = setInterval(function() {
      E();
     }, 20);
     return e.preventDefault();
@@ -10729,14 +10729,14 @@ function runDelayedFunction() {
   } else {
    if (!u && p) return;
    if (!u) {
-    var S = c.toOrientedRange();
-    l.addSelectionMarker(S);
+    var A = c.toOrientedRange();
+    l.addSelectionMarker(A);
    }
    var k = c.rangeList.rangeAtPoint(d);
    l.once("mouseup", function() {
     var e = c.toOrientedRange();
-    k && e.isEmpty() && n(k.cursor, e.cursor) ? c.substractPoint(e.cursor) : (S && (l.removeSelectionMarker(S), 
-    c.addRange(S)), c.addRange(e));
+    k && e.isEmpty() && n(k.cursor, e.cursor) ? c.substractPoint(e.cursor) : (A && (l.removeSelectionMarker(A), 
+    c.addRange(A)), c.addRange(e));
    });
   }
  }
@@ -11787,14 +11787,11 @@ printStackTrace.implementation = function() {}, printStackTrace.implementation.p
   var o = screen.width / 2 - n / 2, r = screen.height / 2 - i / 2;
   return window.open(e, t, [ "toolbar=no, ", "location=no, ", "directories=no, ", "status=no, ", "menubar=no, ", "scrollbars=no, ", "resizable=no, ", "copyhistory=no, ", "width=" + n + ", ", "height=" + i + ", ", "top=" + r + ", ", "left=" + o ].join(""));
  }, utils.saveAs = function(e, t) {
-  if (void 0 !== saveAs) {
-   var n = new Blob([ e ], {
-    type: "text/plain;charset=utf-8"
-   });
-   saveAs(n, t);
-  } else {
-   var i = "data:application/octet-stream;base64," + utils.encodeBase64(e);
-   window.open(i, "file");
+  if (void 0 !== saveAs) _.isString(e) && (e = new Blob([ e ], {
+   type: "text/plain;charset=utf-8"
+  })), saveAs(e, t); else {
+   var n = "data:application/octet-stream;base64," + utils.encodeBase64(e);
+   window.open(n, "file");
   }
  }, utils.randomString = function() {
   return _.random(4294967296).toString(36);
@@ -11856,7 +11853,7 @@ printStackTrace.implementation = function() {}, printStackTrace.implementation.p
  }, utils;
 });
 
-var VERSION = "2.1.6", MAIN_URL = "http://benweet.github.io/stackedit/", GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", GOOGLE_SCOPES = [ "https://www.googleapis.com/auth/drive.install", "https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/blogger", "https://picasaweb.google.com/data/" ], GOOGLE_DRIVE_APP_ID = "241271498917", DROPBOX_APP_KEY = "lq6mwopab8wskas", DROPBOX_APP_SECRET = "851fgnucpezy84t", BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c", DEFAULT_FILE_TITLE = "Title", DEFAULT_FOLDER_NAME = "New folder", GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document", EDITOR_DEFAULT_PADDING = 15, CHECK_ONLINE_PERIOD = 12e4, AJAX_TIMEOUT = 3e4, ASYNC_TASK_DEFAULT_TIMEOUT = 6e4, ASYNC_TASK_LONG_TIMEOUT = 18e4, SYNC_PERIOD = 18e4, USER_IDLE_THRESHOLD = 3e5, IMPORT_FILE_MAX_CONTENT_SIZE = 1e5, IMPORT_IMG_MAX_CONTENT_SIZE = 1e7, TEMPORARY_FILE_INDEX = "file.tempIndex", WELCOME_DOCUMENT_TITLE = "Welcome document", DOWNLOAD_PROXY_URL = "http://stackedit-download-proxy.herokuapp.com/", PICASA_PROXY_URL = "http://stackedit-picasa-proxy.herokuapp.com/", WORDPRESS_CLIENT_ID = "3185", WORDPRESS_PROXY_URL = "http://stackedit-wordpress-proxy.herokuapp.com/", SSH_PROXY_URL = "http://stackedit-ssh-proxy.herokuapp.com/", delayedFunction = void 0, BASE_URL = "http://localhost/stackedit/", GOOGLE_CLIENT_ID = "241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com", GITHUB_CLIENT_ID = "e47fef6055344579799d", GATEKEEPER_URL = "http://stackedit-gatekeeper-localhost.herokuapp.com/", TUMBLR_PROXY_URL = "http://stackedit-tumblr-proxy-local.herokuapp.com/";
+var VERSION = "2.1.6", MAIN_URL = "http://benweet.github.io/stackedit/", GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", GOOGLE_SCOPES = [ "https://www.googleapis.com/auth/drive.install", "https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/blogger", "https://picasaweb.google.com/data/" ], GOOGLE_DRIVE_APP_ID = "241271498917", DROPBOX_APP_KEY = "lq6mwopab8wskas", DROPBOX_APP_SECRET = "851fgnucpezy84t", BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c", DEFAULT_FILE_TITLE = "Title", DEFAULT_FOLDER_NAME = "New folder", GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document", EDITOR_DEFAULT_PADDING = 15, CHECK_ONLINE_PERIOD = 12e4, AJAX_TIMEOUT = 3e4, ASYNC_TASK_DEFAULT_TIMEOUT = 6e4, ASYNC_TASK_LONG_TIMEOUT = 18e4, SYNC_PERIOD = 18e4, USER_IDLE_THRESHOLD = 3e5, IMPORT_FILE_MAX_CONTENT_SIZE = 1e5, IMPORT_IMG_MAX_CONTENT_SIZE = 1e7, TEMPORARY_FILE_INDEX = "file.tempIndex", WELCOME_DOCUMENT_TITLE = "Welcome document", DOWNLOAD_PROXY_URL = "http://stackedit-download-proxy.herokuapp.com/", PICASA_PROXY_URL = "http://stackedit-picasa-proxy.herokuapp.com/", WORDPRESS_CLIENT_ID = "3185", WORDPRESS_PROXY_URL = "http://stackedit-wordpress-proxy.herokuapp.com/", SSH_PROXY_URL = "http://stackedit-ssh-proxy.herokuapp.com/", HTMLTOPDF_URL = "http://benweet.insomnia247.nl/stackedit-htmltopdf/", delayedFunction = void 0, BASE_URL = "http://localhost/stackedit/", GOOGLE_CLIENT_ID = "241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com", GITHUB_CLIENT_ID = "e47fef6055344579799d", GATEKEEPER_URL = "http://stackedit-gatekeeper-localhost.herokuapp.com/", TUMBLR_PROXY_URL = "http://stackedit-tumblr-proxy-local.herokuapp.com/";
 
 0 === location.hostname.indexOf("benweet.github.io") && (BASE_URL = MAIN_URL, GOOGLE_CLIENT_ID = "241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com", 
 GITHUB_CLIENT_ID = "fa0d09514da8377ee32e", GATEKEEPER_URL = "http://stackedit-gatekeeper.herokuapp.com/", 
@@ -11938,6 +11935,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
   defaultContent: "\n\n\n> Written with [StackEdit](" + MAIN_URL + ").",
   commitMsg: "Published with " + MAIN_URL,
   template: [ "<!DOCTYPE html>\n", "<html>\n", "<head>\n", '<meta charset="utf-8">\n', "<title><%= documentTitle %></title>\n", '<link rel="stylesheet" href="', MAIN_URL, 'res-min/themes/default.css" />\n', '<script type="text/javascript" src="', MAIN_URL, 'lib/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n', "</head>\n", '<body><div class="container"><%= documentHTML %></div></body>\n', "</html>" ].join(""),
+  pdfTemplate: [ "<!DOCTYPE html>\n", "<html>\n", "<head>\n", '<meta charset="utf-8">\n', "<title><%= documentTitle %></title>\n", '<link rel="stylesheet" href="', MAIN_URL, 'res-min/themes/default.css" />\n', '<style type="text/css">\n', "@font-face {font-family: MathJax_Main; src: url('", MAIN_URL, "lib/MathJax/fonts/HTML-CSS/TeX/woff/MathJax_Main-Regular.woff') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Main-Regular.otf') format('opentype')}\n", "@font-face {font-family: MathJax_Main; src: url('", MAIN_URL, "lib/MathJax/fonts/HTML-CSS/TeX/woff/MathJax_Main-Bold.woff') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Main-Bold.otf') format('opentype'); font-weight: bold}\n", "@font-face {font-family: MathJax_Main; src: url('", MAIN_URL, "lib/MathJax/fonts/HTML-CSS/TeX/woff/MathJax_Main-Italic.woff') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Main-Italic.otf') format('opentype'); font-style: italic}\n", "@font-face {font-family: MathJax_Math; src: url('", MAIN_URL, "lib/MathJax/fonts/HTML-CSS/TeX/woff/MathJax_Math-Italic.woff') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Math-Italic.otf') format('opentype'); font-style: italic}\n", "@font-face {font-family: MathJax_Caligraphic; src: url('", MAIN_URL, "lib/MathJax/fonts/HTML-CSS/TeX/woff/MathJax_Caligraphic-Regular.woff') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Regular.otf') format('opentype')}\n", "@font-face {font-family: MathJax_Size1; src: url('", MAIN_URL, "lib/MathJax/fonts/HTML-CSS/TeX/woff/MathJax_Size1-Regular.woff') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Size1-Regular.otf') format('opentype')}\n", "@font-face {font-family: MathJax_Size2; src: url('", MAIN_URL, "lib/MathJax/fonts/HTML-CSS/TeX/woff/MathJax_Size2-Regular.woff') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Size2-Regular.otf') format('opentype')}\n", "@font-face {font-family: MathJax_Size3; src: url('", MAIN_URL, "lib/MathJax/fonts/HTML-CSS/TeX/woff/MathJax_Size3-Regular.woff') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Size3-Regular.otf') format('opentype')}\n", "@font-face {font-family: MathJax_Size4; src: url('", MAIN_URL, "lib/MathJax/fonts/HTML-CSS/TeX/woff/MathJax_Size4-Regular.woff') format('woff'), url('http://cdn.mathjax.org/mathjax/latest/fonts/HTML-CSS/TeX/otf/MathJax_Size4-Regular.otf') format('opentype')}\n", "</style>\n", "</head>\n", '<body class="pdf"><%= documentHTML %></body>\n', "</html>" ].join(""),
   sshProxy: SSH_PROXY_URL,
   extensionSettings: {}
  };
@@ -12576,7 +12574,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
   e = e || {};
   var t, n = !1;
   for (t in _) e[t] ? n = !0 : _[t] = 0;
-  n || (T = !1);
+  n || (D = !1);
  }
  function s(e, t, n, i, r, s) {
   var a, l, c = [], u = n.type;
@@ -12604,8 +12602,8 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
    if (o[i].level != c) continue;
    u = !0, a[o[i].seq] = 1, l(o[i].callback, n, o[i].combo);
   } else u || l(o[i].callback, n, o[i].combo);
-  var h = "keypress" == n.type && D;
-  n.type != T || d(e) || h || r(a), D = u && "keydown" == n.type;
+  var h = "keypress" == n.type && T;
+  n.type != D || d(e) || h || r(a), T = u && "keydown" == n.type;
  }
  function u(e) {
   "number" != typeof e.which && (e.which = e.keyCode);
@@ -12633,7 +12631,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
  function g(e, t, n, o) {
   function s(t) {
    return function() {
-    T = t, ++_[e], h();
+    D = t, ++_[e], h();
    };
   }
   function a(t) {
@@ -12650,7 +12648,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
  }
  function v(e, t) {
   var n, i, o, r = [];
-  for (n = m(e), o = 0; o < n.length; ++o) i = n[o], S[i] && (i = S[i]), t && "keypress" != t && A[i] && (i = A[i], 
+  for (n = m(e), o = 0; o < n.length; ++o) i = n[o], A[i] && (i = A[i]), t && "keypress" != t && S[i] && (i = S[i], 
   r.push("shift")), d(i) && r.push(i);
   return t = f(i, r, t), {
    key: i,
@@ -12716,7 +12714,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
   220: "\\",
   221: "]",
   222: "'"
- }, A = {
+ }, S = {
   "~": "`",
   "!": "1",
   "@": "2",
@@ -12736,13 +12734,13 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
   ">": ".",
   "?": "/",
   "|": "\\"
- }, S = {
+ }, A = {
   option: "alt",
   command: "meta",
   "return": "enter",
   escape: "esc",
   mod: /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "meta" : "ctrl"
- }, k = {}, F = {}, _ = {}, $ = !1, D = !1, T = !1, L = 1; 20 > L; ++L) x[111 + L] = "f" + L;
+ }, k = {}, F = {}, _ = {}, $ = !1, T = !1, D = !1, L = 1; 20 > L; ++L) x[111 + L] = "f" + L;
  for (L = 0; 9 >= L; ++L) x[L + 96] = L;
  n(t, "keypress", u), n(t, "keydown", u), n(t, "keyup", u);
  var B = {
@@ -13072,7 +13070,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
   }), p.onFoldersChanged();
  }
  function u() {
-  a(), A.toggleClass("disabled", 0 === t.size(r) || 0 === t.size(C)), S.toggleClass("disabled", 0 === t.size(x) && 0 === t.size(C));
+  a(), S.toggleClass("disabled", 0 === t.size(r) || 0 === t.size(C)), A.toggleClass("disabled", 0 === t.size(x) && 0 === t.size(C));
  }
  var d = new i("documentManager", "Document Manager", !1, !0), h = void 0;
  d.onFileMgrCreated = function(e) {
@@ -13082,7 +13080,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
  d.onEventMgrCreated = function(e) {
   p = e;
  };
- var f = [ '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>" data-toggle="collapse" data-target=".modal-document-manager .file-list.<%= id %>">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<button class="btn btn-default button-delete" title="Delete"><i class="icon-trash"></i></button>', '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>', '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>', '<div class="name"><i class="icon-folder"></i> ', "<%= folderDesc.name %></div>", '<input type="text" class="input-rename form-control hide"></a>', '<div class="file-list collapse <%= id %> clearfix"><%= fileListHtml %></div>' ].join(""), g = [ '<li class="list-group-item file clearfix" data-file-index="<%= fileDesc.fileIndex %>">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<button class="btn btn-default button-delete" title="Delete"><i class="icon-trash"></i></button>', '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>', '<div class="name"><%= fileDesc.composeTitle() %></div>', '<input type="text" class="input-rename form-control hide"></li>' ].join(""), m = [ '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>">', '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>', '<div class="name"><i class="icon-forward"></i> ', "<%= folderDesc.name %></div></a>" ].join(""), v = [ '<li class="list-group-item file clearfix">', '<div class="name"><%= fileDesc.composeTitle() %></div></li>' ].join(""), b = !1, y = void 0, w = void 0, C = [], x = [], E = void 0, A = void 0, S = void 0, k = void 0, F = void 0, _ = void 0, $ = function() {
+ var f = [ '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>" data-toggle="collapse" data-target=".modal-document-manager .file-list.<%= id %>">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<button class="btn btn-default button-delete" title="Delete"><i class="icon-trash"></i></button>', '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>', '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>', '<div class="name"><i class="icon-folder"></i> ', "<%= folderDesc.name %></div>", '<input type="text" class="input-rename form-control hide"></a>', '<div class="file-list collapse <%= id %> clearfix"><%= fileListHtml %></div>' ].join(""), g = [ '<li class="list-group-item file clearfix" data-file-index="<%= fileDesc.fileIndex %>">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<button class="btn btn-default button-delete" title="Delete"><i class="icon-trash"></i></button>', '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>', '<div class="name"><%= fileDesc.composeTitle() %></div>', '<input type="text" class="input-rename form-control hide"></li>' ].join(""), m = [ '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>">', '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>', '<div class="name"><i class="icon-forward"></i> ', "<%= folderDesc.name %></div></a>" ].join(""), v = [ '<li class="list-group-item file clearfix">', '<div class="name"><%= fileDesc.composeTitle() %></div></li>' ].join(""), b = !1, y = void 0, w = void 0, C = [], x = [], E = void 0, S = void 0, A = void 0, k = void 0, F = void 0, _ = void 0, $ = function() {
   if (b !== !1) {
    u(), F.text(t.size(s)), _.text(t.size(r) + 1), k = t.filter(s, function(e) {
     return void 0 === e.folder;
@@ -13173,13 +13171,13 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
    e(w.querySelectorAll('input[type="checkbox"]')).prop("checked", !1).change();
   });
   var s = e(y.querySelectorAll(".action-delete-items")).click(function() {
-   S.hasClass("disabled") || (a(), l());
+   A.hasClass("disabled") || (a(), l());
   });
-  S = s.parent(), e(y.querySelectorAll(".action-delete-items-confirm")).click(function() {
+  A = s.parent(), e(y.querySelectorAll(".action-delete-items-confirm")).click(function() {
    c(), e(y.querySelectorAll(".document-list")).removeClass("hide"), e(y.querySelectorAll(".confirm-delete, .selected-document-list")).addClass("hide");
   });
   var u = e(y.querySelectorAll(".action-move-items")).click(function() {
-   if (!A.hasClass("disabled")) {
+   if (!S.hasClass("disabled")) {
     a();
     var n = [ '<a href="#" class="list-group-item folder clearfix">', '<div class="pull-right file-count">', t.size(k), "</div>", '<div class="name"><i class="icon-forward"></i> ', "ROOT folder</div></a>" ].join("");
     n += t.chain(r).sortBy(function(e) {
@@ -13199,7 +13197,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
     }), e(y.querySelectorAll(".document-list")).addClass("hide"), e(y.querySelectorAll(".choose-folder, .select-folder-list")).removeClass("hide");
    }
   });
-  A = u.parent(), e(y.querySelectorAll(".action-cancel")).click(function() {
+  S = u.parent(), e(y.querySelectorAll(".action-cancel")).click(function() {
    e(y.querySelectorAll(".document-list")).removeClass("hide"), e(y.querySelectorAll(".confirm-delete, .choose-folder, .selected-document-list, .select-folder-list")).addClass("hide");
   });
  }, d;
@@ -13448,7 +13446,7 @@ function() {
    e = B.postBlockGamut(e, N), e = t(e), e = x(e, n);
   }
   function s(e) {
-   return e = B.preSpanGamut(e), e = b(e), e = a(e), e = A(e), e = u(e), e = l(e), 
+   return e = B.preSpanGamut(e), e = b(e), e = a(e), e = S(e), e = u(e), e = l(e), 
    e = k(e), e = e.replace(/~P/g, "://"), e = E(e), e = w(e), e = e.replace(/  +\n/g, " <br>\n"), 
    e = B.postSpanGamut(e);
   }
@@ -13456,7 +13454,7 @@ function() {
    var t = /(<[a-z\/!$]("[^"]*"|'[^']*'|[^'">])*>|<!(--(?:|(?:[^>-]|-[^>])(?:[^-]|-[^-])*)--)>)/gi;
    return e = e.replace(t, function(e) {
     var t = e.replace(/(.)<\/?code>(?=.)/g, "$1`");
-    return t = T(t, "!" == e.charAt(1) ? "\\`*_/" : "\\`*_");
+    return t = D(t, "!" == e.charAt(1) ? "\\`*_/" : "\\`*_");
    });
   }
   function l(e) {
@@ -13472,9 +13470,9 @@ function() {
     if (!(l.search(/\(\s*\)$/m) > -1)) return l;
     h = "";
    }
-   h = D(h), h = T(h, "*_");
+   h = T(h), h = D(h, "*_");
    var f = '<a href="' + h + '"';
-   return "" != p && (p = d(p), p = T(p, "*_"), f += ' title="' + p + '"'), f += ">" + c + "</a>";
+   return "" != p && (p = d(p), p = D(p, "*_"), f += ' title="' + p + '"'), f += ">" + c + "</a>";
   }
   function u(e) {
    return e = e.replace(/(!\[(.*?)\][ ]?(?:\n[ ]*)?\[(.*?)\])()()()()/g, h), e = e.replace(/(!\[(.*?)\]\s?\([ \t]*()<?(\S+?)>?[ \t]*((['"])(.*?)\6[ \t]*)?\))/g, h);
@@ -13488,9 +13486,9 @@ function() {
     if ("" == u && (u = c.toLowerCase().replace(/ ?\n/g, " ")), h = "#" + u, void 0 == M.get(u)) return l;
     h = M.get(u), void 0 != R.get(u) && (p = R.get(u));
    }
-   c = T(d(c), "*_[]()"), h = T(h, "*_");
+   c = D(d(c), "*_[]()"), h = D(h, "*_");
    var f = '<img src="' + h + '" alt="' + c + '"';
-   return p = d(p), p = T(p, "*_"), f += ' title="' + p + '"', f += " />";
+   return p = d(p), p = D(p, "*_"), f += ' title="' + p + '"', f += " />";
   }
   function p(e) {
    return e = e.replace(/^(.+)[ \t]*\n=+[ \t]*\n+/gm, function(e, t) {
@@ -13542,7 +13540,7 @@ function() {
   }
   function y(e) {
    return e = e.replace(/&/g, "&amp;"), e = e.replace(/</g, "&lt;"), e = e.replace(/>/g, "&gt;"), 
-   e = T(e, "*_{}[]\\", !1);
+   e = D(e, "*_{}[]\\", !1);
   }
   function w(e) {
    return e = e.replace(/([\W_]|^)(\*\*|__)(?=\S)([^\r]*?\S[\*_]*)\2([\W_]|$)/g, "$1<strong>$3</strong>$4"), 
@@ -13576,10 +13574,10 @@ function() {
   function E(e) {
    return e = e.replace(/&(?!#?[xX]?(?:[0-9a-fA-F]+|\w+);)/g, "&amp;"), e = e.replace(/<(?![a-z\/?!]|~D)/gi, "&lt;");
   }
-  function A(e) {
+  function S(e) {
    return e = e.replace(/\\(\\)/g, L), e = e.replace(/\\([`*_{}\[\]()>#+-.!])/g, L);
   }
-  function S(e, t, n, i) {
+  function A(e, t, n, i) {
    if (t) return e;
    if (")" !== i.charAt(i.length - 1)) return "<" + n + i + ">";
    for (var o = i.match(/[()]/g), r = 0, s = 0; s < o.length; s++) "(" === o[s] ? 0 >= r ? r = 1 : r++ : r--;
@@ -13597,7 +13595,7 @@ function() {
    return "<" + n + i + ">" + a;
   }
   function k(e) {
-   e = e.replace(H, S);
+   e = e.replace(H, A);
    var t = function(e, t) {
     return '<a href="' + t + '">' + B.plainLinkText(t) + "</a>";
    };
@@ -13619,12 +13617,12 @@ function() {
     return "\n" === e ? (i = o + 1, e) : (t = (o - i) % 4, i = o + 1, n[t]);
    });
   }
-  function D(e) {
+  function T(e) {
    return e ? (e.length, e.replace(W, function(e) {
     return "~D" == e ? "%24" : ":" == e ? ":" : "%" + e.charCodeAt(0).toString(16);
    })) : "";
   }
-  function T(e, t, n) {
+  function D(e, t, n) {
    var i = "([" + t.replace(/([\[\]\\])/g, "\\$1") + "])";
    n && (i = "\\\\" + i);
    var o = new RegExp(i, "g");
@@ -14376,10 +14374,10 @@ var prettyPrintOne, prettyPrint;
     }
     var x = d;
     if (d += v.length, m) {
-     var E = y[1], A = v.indexOf(E), S = A + E.length;
-     y[2] && (S = v.length - y[2].length, A = S - E.length);
+     var E = y[1], S = v.indexOf(E), A = S + E.length;
+     y[2] && (A = v.length - y[2].length, S = A - E.length);
      var k = b.substring(5);
-     n(l + x, v.substring(0, A), a, u), n(l + x + A, E, c(k, E), u), n(l + x + S, v.substring(S), a, u);
+     n(l + x, v.substring(0, S), a, u), n(l + x + S, E, c(k, E), u), n(l + x + A, v.substring(A), a, u);
     } else u.push(l + x, b);
    }
    e.decorations = u;
@@ -14391,20 +14389,20 @@ var prettyPrintOne, prettyPrint;
   e.tripleQuotedStrings ? t.push([ _, /^(?:\'\'\'(?:[^\'\\]|\\[\s\S]|\'{1,2}(?=[^\']))*(?:\'\'\'|$)|\"\"\"(?:[^\"\\]|\\[\s\S]|\"{1,2}(?=[^\"]))*(?:\"\"\"|$)|\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$))/, null, "'\"" ]) : e.multiLineStrings ? t.push([ _, /^(?:\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$)|\`(?:[^\\\`]|\\[\s\S])*(?:\`|$))/, null, "'\"`" ]) : t.push([ _, /^(?:\'(?:[^\\\'\r\n]|\\.)*(?:\'|$)|\"(?:[^\\\"\r\n]|\\.)*(?:\"|$))/, null, "\"'" ]), 
   e.verbatimStrings && n.push([ _, /^@\"(?:[^\"]|\"\")*(?:\"|$)/, null ]);
   var i = e.hashComments;
-  if (i && (e.cStyleComments ? (i > 1 ? t.push([ D, /^#(?:##(?:[^#]|#(?!##))*(?:###|$)|.*)/, null, "#" ]) : t.push([ D, /^#(?:(?:define|e(?:l|nd)if|else|error|ifn?def|include|line|pragma|undef|warning)\b|[^\r\n]*)/, null, "#" ]), 
-  n.push([ _, /^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h(?:h|pp|\+\+)?|[a-z]\w*)>/, null ])) : t.push([ D, /^#[^\r\n]*/, null, "#" ])), 
-  e.cStyleComments && (n.push([ D, /^\/\/[^\r\n]*/, null ]), n.push([ D, /^\/\*[\s\S]*?(?:\*\/|$)/, null ])), 
+  if (i && (e.cStyleComments ? (i > 1 ? t.push([ T, /^#(?:##(?:[^#]|#(?!##))*(?:###|$)|.*)/, null, "#" ]) : t.push([ T, /^#(?:(?:define|e(?:l|nd)if|else|error|ifn?def|include|line|pragma|undef|warning)\b|[^\r\n]*)/, null, "#" ]), 
+  n.push([ _, /^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h(?:h|pp|\+\+)?|[a-z]\w*)>/, null ])) : t.push([ T, /^#[^\r\n]*/, null, "#" ])), 
+  e.cStyleComments && (n.push([ T, /^\/\/[^\r\n]*/, null ]), n.push([ T, /^\/\*[\s\S]*?(?:\*\/|$)/, null ])), 
   e.regexLiterals) {
    var r = "/(?=[^/*])(?:[^/\\x5B\\x5C]|\\x5C[\\s\\S]|\\x5B(?:[^\\x5C\\x5D]|\\x5C[\\s\\S])*(?:\\x5D|$))+/";
    n.push([ "lang-regex", new RegExp("^" + j + "(" + r + ")") ]);
   }
   var s = e.types;
-  s && n.push([ T, s ]);
+  s && n.push([ D, s ]);
   var a = ("" + e.keywords).replace(/^ | $/g, "");
   a.length && n.push([ $, new RegExp("^(?:" + a.replace(/[\s,]+/g, "|") + ")\\b"), null ]), 
   t.push([ M, /^\s+/, null, " \r\n	 " ]);
   var l = /^.[^\s\w\.$@\'\"\`\/\\]*/;
-  return n.push([ L, /^@[a-z_$][a-z_$@0-9]*/i, null ], [ T, /^(?:[@_]?[A-Z]+[a-z][A-Za-z_$@0-9]*|\w+_t\b)/, null ], [ M, /^[a-z_$][a-z_$@0-9]*/i, null ], [ L, new RegExp("^(?:0x[a-f0-9]+|(?:\\d(?:_\\d+)*\\d*(?:\\.\\d*)?|\\.\\d\\+)(?:e[+\\-]?\\d+)?)[a-z]*", "i"), null, "0123456789" ], [ M, /^\\[\s\S]?/, null ], [ B, l, null ]), 
+  return n.push([ L, /^@[a-z_$][a-z_$@0-9]*/i, null ], [ D, /^(?:[@_]?[A-Z]+[a-z][A-Za-z_$@0-9]*|\w+_t\b)/, null ], [ M, /^[a-z_$][a-z_$@0-9]*/i, null ], [ L, new RegExp("^(?:0x[a-f0-9]+|(?:\\d(?:_\\d+)*\\d*(?:\\.\\d*)?|\\.\\d\\+)(?:e[+\\-]?\\d+)?)[a-z]*", "i"), null, "0123456789" ], [ M, /^\\[\s\S]?/, null ], [ B, l, null ]), 
   o(t, n);
  }
  function s(e, t, n) {
@@ -14476,11 +14474,11 @@ var prettyPrintOne, prettyPrint;
     var y, w = s[l + 2] || o, C = c[d + 2] || o, m = Math.min(w, C), x = s[l + 1];
     if (1 !== x.nodeType && (y = i.substring(r, m))) {
      t && (y = y.replace(n, "\r")), x.nodeValue = y;
-     var E = x.ownerDocument, A = E.createElement("span");
-     A.className = c[d + 1];
-     var S = x.parentNode;
-     S.replaceChild(A, x), A.appendChild(x), w > r && (s[l + 1] = x = E.createTextNode(i.substring(m, w)), 
-     S.insertBefore(x, A.nextSibling));
+     var E = x.ownerDocument, S = E.createElement("span");
+     S.className = c[d + 1];
+     var A = x.parentNode;
+     A.replaceChild(S, x), S.appendChild(x), w > r && (s[l + 1] = x = E.createTextNode(i.substring(m, w)), 
+     A.insertBefore(x, S.nextSibling));
     }
     r = m, r >= w && (l += 2), r >= C && (d += 2);
    }
@@ -14537,17 +14535,17 @@ var prettyPrintOne, prettyPrint;
       o.className += " prettyprinted";
       var x, E = a.match(g);
       !E && (x = i(o)) && y.test(x.tagName) && (E = x.className.match(g)), E && (E = E[1]);
-      var A;
-      if (b.test(o.tagName)) A = 1; else {
-       var S = o.currentStyle, k = S ? S.whiteSpace : document.defaultView && document.defaultView.getComputedStyle ? document.defaultView.getComputedStyle(o, null).getPropertyValue("white-space") : 0;
-       A = k && "pre" === k.substring(0, 3);
+      var S;
+      if (b.test(o.tagName)) S = 1; else {
+       var A = o.currentStyle, k = A ? A.whiteSpace : document.defaultView && document.defaultView.getComputedStyle ? document.defaultView.getComputedStyle(o, null).getPropertyValue("white-space") : 0;
+       S = k && "pre" === k.substring(0, 3);
       }
       var F = o.className.match(/\blinenums\b(?::(\d+))?/);
-      F = F ? F[1] && F[1].length ? +F[1] : !0 : !1, F && s(o, F, A), h = {
+      F = F ? F[1] && F[1].length ? +F[1] : !0 : !1, F && s(o, F, S), h = {
        langExtension: E,
        sourceNode: o,
        numberLines: F,
-       pre: A
+       pre: S
       }, u(h);
      }
     }
@@ -14565,14 +14563,14 @@ var prettyPrintOne, prettyPrint;
   var h, f = 0, g = /\blang(?:uage)?-([\w.]+)(?!\S)/, m = /\bprettyprint\b/, v = /\bprettyprinted\b/, b = /pre|xmp/i, y = /^code$/i, w = /^(?:pre|code|xmp)$/i;
   n();
  }
- var p = window, f = [ "break,continue,do,else,for,if,return,while" ], g = [ f, "auto,case,char,const,default,double,enum,extern,float,goto,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile" ], m = [ g, "catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof" ], v = [ m, "alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,dynamic_cast,explicit,export,friend,inline,late_check,mutable,namespace,nullptr,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where" ], b = [ m, "abstract,boolean,byte,extends,final,finally,implements,import,instanceof,null,native,package,strictfp,super,synchronized,throws,transient" ], y = [ b, "as,base,by,checked,decimal,delegate,descending,dynamic,event,fixed,foreach,from,group,implicit,in,interface,internal,into,is,let,lock,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where" ], w = "all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes", C = [ m, "debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN" ], x = "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END", E = [ f, "and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None" ], A = [ f, "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END" ], S = [ f, "case,done,elif,esac,eval,fi,function,in,local,set,then,until" ], k = [ v, y, C, x + E, A, S ], F = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/, _ = "str", $ = "kwd", D = "com", T = "typ", L = "lit", B = "pun", M = "pln", R = "tag", I = "dec", P = "src", N = "atn", O = "atv", z = "nocode", j = "(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*", H = /\S/, q = r({
+ var p = window, f = [ "break,continue,do,else,for,if,return,while" ], g = [ f, "auto,case,char,const,default,double,enum,extern,float,goto,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile" ], m = [ g, "catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof" ], v = [ m, "alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,dynamic_cast,explicit,export,friend,inline,late_check,mutable,namespace,nullptr,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where" ], b = [ m, "abstract,boolean,byte,extends,final,finally,implements,import,instanceof,null,native,package,strictfp,super,synchronized,throws,transient" ], y = [ b, "as,base,by,checked,decimal,delegate,descending,dynamic,event,fixed,foreach,from,group,implicit,in,interface,internal,into,is,let,lock,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where" ], w = "all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes", C = [ m, "debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN" ], x = "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END", E = [ f, "and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None" ], S = [ f, "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END" ], A = [ f, "case,done,elif,esac,eval,fi,function,in,local,set,then,until" ], k = [ v, y, C, x + E, S, A ], F = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/, _ = "str", $ = "kwd", T = "com", D = "typ", L = "lit", B = "pun", M = "pln", R = "tag", I = "dec", P = "src", N = "atn", O = "atv", z = "nocode", j = "(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*", H = /\S/, q = r({
   keywords: k,
   hashComments: !0,
   cStyleComments: !0,
   multiLineStrings: !0,
   regexLiterals: !0
  }), W = {};
- l(q, [ "default-code" ]), l(o([], [ [ M, /^[^<?]+/ ], [ I, /^<!\w[^>]*(?:>|$)/ ], [ D, /^<\!--[\s\S]*?(?:-\->|$)/ ], [ "lang-", /^<\?([\s\S]+?)(?:\?>|$)/ ], [ "lang-", /^<%([\s\S]+?)(?:%>|$)/ ], [ B, /^(?:<[%?]|[%?]>)/ ], [ "lang-", /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i ], [ "lang-js", /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i ], [ "lang-css", /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i ], [ "lang-in.tag", /^(<\/?[a-z][^<>]*>)/i ] ]), [ "default-markup", "htm", "html", "mxml", "xhtml", "xml", "xsl" ]), 
+ l(q, [ "default-code" ]), l(o([], [ [ M, /^[^<?]+/ ], [ I, /^<!\w[^>]*(?:>|$)/ ], [ T, /^<\!--[\s\S]*?(?:-\->|$)/ ], [ "lang-", /^<\?([\s\S]+?)(?:\?>|$)/ ], [ "lang-", /^<%([\s\S]+?)(?:%>|$)/ ], [ B, /^(?:<[%?]|[%?]>)/ ], [ "lang-", /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i ], [ "lang-js", /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i ], [ "lang-css", /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i ], [ "lang-in.tag", /^(<\/?[a-z][^<>]*>)/i ] ]), [ "default-markup", "htm", "html", "mxml", "xhtml", "xml", "xsl" ]), 
  l(o([ [ M, /^[\s]+/, null, " 	\r\n" ], [ O, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, "\"'" ] ], [ [ R, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i ], [ N, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i ], [ "lang-uq.val", /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/ ], [ B, /^[=<>\/]+/ ], [ "lang-js", /^on\w+\s*=\s*\"([^\"]+)\"/i ], [ "lang-js", /^on\w+\s*=\s*\'([^\']+)\'/i ], [ "lang-js", /^on\w+\s*=\s*([^\"\'>\s]+)/i ], [ "lang-css", /^style\s*=\s*\"([^\"]+)\"/i ], [ "lang-css", /^style\s*=\s*\'([^\']+)\'/i ], [ "lang-css", /^style\s*=\s*([^\"\'>\s]+)/i ] ]), [ "in.tag" ]), 
  l(o([], [ [ O, /^[\s\S]+/ ] ]), [ "uq.val" ]), l(r({
   keywords: v,
@@ -14591,7 +14589,7 @@ var prettyPrintOne, prettyPrint;
   keywords: b,
   cStyleComments: !0
  }), [ "java" ]), l(r({
-  keywords: S,
+  keywords: A,
   hashComments: !0,
   multiLineStrings: !0
  }), [ "bsh", "csh", "sh" ]), l(r({
@@ -14605,7 +14603,7 @@ var prettyPrintOne, prettyPrint;
   multiLineStrings: !0,
   regexLiterals: !0
  }), [ "perl", "pl", "pm" ]), l(r({
-  keywords: A,
+  keywords: S,
   hashComments: !0,
   multiLineStrings: !0,
   regexLiterals: !0
@@ -14627,7 +14625,7 @@ var prettyPrintOne, prettyPrint;
   sourceDecorator: r,
   PR_ATTRIB_NAME: N,
   PR_ATTRIB_VALUE: O,
-  PR_COMMENT: D,
+  PR_COMMENT: T,
   PR_DECLARATION: I,
   PR_KEYWORD: $,
   PR_LITERAL: L,
@@ -14637,7 +14635,7 @@ var prettyPrintOne, prettyPrint;
   PR_SOURCE: P,
   PR_STRING: _,
   PR_TAG: R,
-  PR_TYPE: T,
+  PR_TYPE: D,
   prettyPrintOne: p.prettyPrintOne = d,
   prettyPrint: p.prettyPrint = h
  };
@@ -14801,23 +14799,23 @@ var hljs = new function() {
   s(m);
   var v = m, b = "", y = 0, w = 0, C = "";
   try {
-   for (var x, E, A = 0; ;) {
-    if (v.t.lastIndex = A, x = v.t.exec(n), !x) break;
-    E = g(n.substr(A, x.index - A), x[0]), A = x.index + E;
+   for (var x, E, S = 0; ;) {
+    if (v.t.lastIndex = S, x = v.t.exec(n), !x) break;
+    E = g(n.substr(S, x.index - S), x[0]), S = x.index + E;
    }
-   return g(n.substr(A)), {
+   return g(n.substr(S)), {
     r: y,
     keyword_count: w,
     value: C,
     language: t
    };
-  } catch (S) {
-   if ("Illegal" == S) return {
+  } catch (A) {
+   if ("Illegal" == A) return {
     r: 0,
     keyword_count: 0,
     value: e(n)
    };
-   throw S;
+   throw A;
   }
  }
  function l(t) {
@@ -16753,10 +16751,10 @@ if (hljs.LANGUAGES.glsl = function(e) {
   b: "#(line)",
   e: "$",
   r: 5
- }, A = {
+ }, S = {
   cN: "keyword",
   b: "@[a-zA-Z_][a-zA-Z_\\d]*"
- }, S = {
+ }, A = {
   cN: "comment",
   b: "\\/\\+",
   c: [ "self" ],
@@ -16766,7 +16764,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
  return {
   l: e.UIR,
   k: t,
-  c: [ e.CLCM, e.CBLCLM, S, w, v, b, y, C, f, p, g, x, E, A ]
+  c: [ e.CLCM, e.CBLCLM, A, w, v, b, y, C, f, p, g, x, E, S ]
  };
 }(hljs), hljs.LANGUAGES.profile = function(e) {
  return {
@@ -19461,9 +19459,9 @@ if (hljs.LANGUAGES.glsl = function(e) {
   }), v();
  }, u.onEventMgrCreated(u), u;
 }), define("text!html/bodyIndex.html", [], function() {
- return '<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav left-space"></div>\n		<div class="nav right-space pull-right"></div>\n		<ul class="nav">\n			<li class="wmd-button-group1 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group2 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group3 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group4 btn-group"></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li class="btn-group"><button\n					class="btn btn-success action-create-file" title="New document">\n					<i class="icon-file"></i>\n				</button>\n				<button class="btn btn-success" title="Delete current document"\n					data-toggle="modal" data-target=".modal-remove-file-confirm">\n					<i class="icon-trash"></i>\n				</button></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li id="extension-buttons"></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><a class="btn btn-success file-title-navbar" href="#"\n				title="Rename current document"> </a></li>\n			<li><input type="text"\n				class="col-lg-4 form-control hide input-file-title"\n				placeholder="Document title" /></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><i class="working-indicator icon-none"></i></li>\n		</ul>\n	</div>\n</div>\n<div id="wmd-input" class="ui-layout-center"></div>\n<div class="ui-layout-east preview-container"></div>\n<div class="ui-layout-south preview-container"></div>\n<div id="wmd-button-bar" class="hide"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".menu-panel" title="Menu">\n		<i class="icon-left-open"></i> <img\n			data-stackedit-src="stackedit-64.png" width="32" height="32" />\n	</button>\n	<div class="panel-content">\n		<div class="list-group">\n			<a href="viewer.html" title="StackEdit Viewer"\n				class="list-group-item"><i class="icon-resize-full"></i>\n				StackEdit Viewer</a> <a href="#" data-toggle="collapse"\n				data-target=".collapse-open-from" class="list-group-item"><i\n				class="icon-hdd"></i> Open from...</a>\n			<div class="sub-menu collapse collapse-open-from clearfix">\n				<ul class="nav">\n					<li><a data-toggle="modal" data-target=".modal-import-url"\n						class="action-reset-input" href="#">Open from URL</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-markdown"\n						class="action-reset-input" href="#">Import from hard drive</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-html"\n						class="action-reset-input" href="#">Convert HTML to Markdown</a></li>\n				</ul>\n			</div>\n\n			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"\n				class="list-group-item"><i class="icon-hdd"></i> Save as...</a>\n			<div class="sub-menu collapse collapse-save-as clearfix">\n				<ul class="nav">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n				</ul>\n			</div>\n		</div>\n		<div class=dropdown-header>SYNCHRONIZE</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-gdrive" class="list-group-item"><i\n				class="icon-provider-gdrive"></i> Google Drive</a>\n			<div class="sub-menu collapse collapse-sync-gdrive clearfix">\n				<ul class="nav">\n					<li><a href="#" class="action-sync-import-gdrive"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Google Drive</a></li>\n					<li><a href="#" class="action-sync-export-dialog-gdrive">Export\n							to Google Drive</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-dropbox" class="list-group-item"><i\n				class="icon-provider-dropbox"></i> Dropbox</a>\n			<div class="sub-menu collapse collapse-sync-dropbox clearfix">\n				<ul class="nav">\n					<li><a class="action-sync-import-dropbox" href="#"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Dropbox</a></li>\n					<li><a href="#" class="action-sync-export-dialog-dropbox">Export\n							to Dropbox</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-sync"\n				class="action-reset-input list-group-item"><i\n				class="icon-refresh"></i> Manage synchronization</a>\n		</div>\n		<div class=dropdown-header>PUBLISH</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"\n				class="list-group-item"><i class="icon-share"></i> Publish on...</a>\n			<div class="sub-menu collapse collapse-publish-on clearfix">\n				<ul class="nav">\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-publish"\n				class="action-reset-input list-group-item"><i class="icon-share"></i>\n				Manage publication</a>\n		</div>\n		<ul class="nav">\n			<li><a href="#" data-toggle="modal"\n				data-target=".modal-settings" class="action-load-settings"><i\n					class="icon-cog"></i> Settings</a></li>\n			<li><a href="#" data-toggle="modal" data-target=".modal-about"><i\n					class="icon-help-circled"></i> About</a></li>\n		</ul>\n\n	</div>\n</div>\n\n\n<div class="document-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i> <i class="icon-right-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<button type="button" class="close" title="clear">&times;</button>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n\n<div class="modal modal-document-manager">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Manage documents</h3>\n			</div>\n			<div class="modal-body">\n				<div></div>\n				<ul class="nav nav-pills document-list">\n					<li class="pull-right dropdown"><a href="#"\n						data-toggle="dropdown"><i class="icon-check"></i> Selection <b\n							class="caret"></b></a>\n						<ul class="dropdown-menu">\n							<li><a href="#" class="action-select-all"><i\n									class="icon-check"></i> Select all</a></li>\n							<li><a href="#" class="action-unselect-all"><i\n									class="icon-check-empty"></i> Unselect all</a></li>\n							<li class="divider"></li>\n							<li><a href="#" class="action-move-items"><i\n									class="icon-forward"></i> Move to folder</a></li>\n							<li><a href="#" class="action-delete-items"><i\n									class="icon-trash"></i> Delete</a></li>\n						</ul></li>\n					<li class="pull-right"><a href="#"\n						class="action-create-folder"> <i class="icon-folder"></i>\n							Create folder\n					</a></li>\n					<li class="disabled"><a><i class="icon-file"></i> <span\n							class="document-count"></span></a></li>\n					<li class="disabled"><a><i class="icon-folder"></i> <span\n							class="folder-count"></span></a></li>\n				</ul>\n				<div class="list-group document-list"></div>\n				<p class="confirm-delete hide">The following documents will be\n					deleted locally:</p>\n				<p class="choose-folder hide">Please choose a destination\n					folder:</p>\n				<div class="list-group selected-document-list hide"></div>\n				<div class="list-group select-folder-list hide"></div>\n			</div>\n			<div class="modal-footer">\n				<a href="#"\n					class="btn btn-default confirm-delete choose-folder action-cancel hide">Cancel</a>\n				<a href="#"\n					class="btn btn-primary confirm-delete action-delete-items-confirm hide">OK</a>\n				<a href="#" class="btn btn-primary document-list"\n					data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-link">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Hyperlink</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the link URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-globe"></i></span><input\n						id="input-insert-link" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/ "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-insert-link"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Image</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the image URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-picture"></i></span><input\n						id="input-insert-image" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/image.jpg "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default action-import-image-gplus"\n					data-dismiss="modal"><i class="icon-provider-gplus"></i> Import\n					from Google+</a> <a href="#" class="btn btn-default"\n					data-dismiss="modal">Cancel</a> <a href="#"\n					class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Google+ image import</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group">\n						<div class="col-lg-7">\n							<img>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-title">Title (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-import-image-title"\n								placeholder="Image title" class="form-control">\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-size">Size limit (optional)</label>\n						<div class="col-lg-7 form-inline">\n							<input type="text" id="input-import-image-size" placeholder="123"\n								class="col-lg-3 form-control"> px\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-image"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-remove-file-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Delete</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					Are you sure you want to delete "<span class="file-title"></span>"?\n				</p>\n				<blockquote>\n					<b>NOTE:</b> This will not delete the file on synchronized\n					locations.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-remove-file"\n					data-dismiss="modal">Delete</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-url">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Open from URL</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide a link to a Markdown document.</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label" for="input-import-url">URL</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-import-url"\n								placeholder="http://www.abc.com/xyz.md" class="form-control">\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-import-url">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-markdown">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Import from hard drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your Markdown files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-markdown"\n						multiple class="form-control" />\n				</p>\n				<p>Or drag and drop your Markdown files here:</p>\n				<p id="dropzone-import-harddrive-markdown" class="drop-zone">Drop\n					files here</p>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-html">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Convert HTML to Markdown</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your HTML files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-html" multiple\n						class="form-control" />\n				</p>\n				<p>Or drag and drop your HTML files here:</p>\n				<p id="dropzone-import-harddrive-html" class="drop-zone">Drop\n					files here</p>\n				<p>Or insert your HTML code here:</p>\n				<textarea id="input-convert-html" class="form-control"></textarea>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Close</a> <a\n					href="#" class="btn btn-primary action-convert-html"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-gdrive">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Google Drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-gdrive-parentid">Folder ID\n							(optional)</label>\n						<div class="col-lg-8">\n							<div class="input-group">\n								<input type="text" id="input-sync-export-gdrive-parentid"\n									placeholder="FolderID" class="form-control">\n								<div class="input-group-btn">\n									<a class="btn btn-link export-gdrive-choose-folder"\n										title="Choose folder" data-dismiss="modal"><i\n										class="icon-folder-open"></i></a>\n								</div>\n							</div>\n							<span class="help-block"> If no folder ID is supplied, the\n								file will be created in your root folder. </span>\n						</div>\n					</div>\n					<div class="form-group">\n						<div class="col-lg-3 control-label"></div>\n						<div class="col-lg-8">\n							<label> <input id="input-sync-export-gdrive-realtime"\n								type="checkbox"> Create a real time collaborative\n								document\n							</label>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-gdrive-fileid">Existing file ID\n							(optional)</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block"> This will overwrite the existing file\n								on the server. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>NOTE:</b>\n					<ul>\n						<li>You can move or rename the file afterwards within Google\n							Drive.</li>\n						<li>Real time collaborative documents can\'t be open outside\n							StackEdit.</li>\n						<li>Real time collaborative documents can\'t have multiple\n							synchronized locations.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-gdrive">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-dropbox">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Dropbox</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-dropbox-path">File path</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-dropbox-path"\n								placeholder="/path/to/My Document.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>NOTE:</b>\n					<ul>\n						<li>Dropbox file path does not depend on document title.</li>\n						<li>The title of your document will not be synchronized.</li>\n						<li>Destination folder must exist.</li>\n						<li>Any existing file at this location will be overwritten.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-dropbox">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-sync">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Synchronization</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-sync-list hide">\n					"<span class="file-title"></span>" is synchronized with the\n					following location(s):\n				</p>\n				<div class="msg-sync-list sync-list hide"></div>\n				<blockquote class="msg-sync-list hide">\n					<b>NOTE:</b> Removing a synchronized location will not delete any\n					file.\n				</blockquote>\n				<blockquote class="msg-no-sync hide">\n					"<span class="file-title"></span>" is not synchronized yet. <br />\n					<br /> <b>NOTE:</b> You can add synchronized locations by\n					exporting your document using <i class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					or <i class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">\n					Publish on <span class="publish-provider-name"></span>\n				</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-host">Host</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-host"\n								placeholder="host.name.or.ip" class="form-control"> <span\n								class="help-block"> Host must be accessible publicly,\n								unless you are hosting your own <a target="_blank"\n								href="https://github.com/benweet/stackedit-ssh-proxy">SSH\n									proxy</a>.\n							</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-port">Port\n							(optional)</label>\n						<div class="col-lg-2">\n							<input type="text" id="input-publish-ssh-port" placeholder="22"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-username">Username</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-password">Password</label>\n						<div class="col-lg-7">\n							<input type="password" id="input-publish-ssh-password"\n								placeholder="password" class="form-control"> <span\n								class="help-block"> Passwords are transmitted in clear,\n								unless you are hosting your own <a target="_blank"\n								href="https://github.com/benweet/stackedit-ssh-proxy">SSH\n									proxy</a>.\n							</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-reponame">Repository</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-reponame"\n								placeholder="repository-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-username">Username (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-branch">Branch</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-branch"\n								placeholder="branch-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-file-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-file-path"\n								placeholder="path/to/file.md" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-filename">Filename</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-filename"\n								placeholder="filename" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-gist-id">Existing\n							ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gist-id"\n								placeholder="GistID" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gist-public">Public</label>\n						<div class="col-lg-7">\n							<div class="checkbox">\n								<input type="checkbox" id="input-publish-gist-public"\n									checked="checked" />\n							</div>\n						</div>\n					</div>\n					<div class="form-group modal-publish-blogger">\n						<label class="col-lg-4 control-label"\n							for="input-publish-blogger-url">Blog URL</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-blogger-url"\n								placeholder="http://exemple.blogger.com/" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-tumblr">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">Blog hostname</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-tumblr-hostname"\n								placeholder="exemple.tumblr.com" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-wordpress">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">WordPress site</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-wordpress-site"\n								placeholder="exemple.wordpress.com" class="form-control">\n							<span class="help-block"> <a target="_blank"\n								href="http://jetpack.me/">Jetpack plugin</a> is required for\n								self-hosted sites.\n							</span>\n						</div>\n					</div>\n					<div\n						class="form-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n						<label class="col-lg-4 control-label" for="input-publish-postid">Update\n							existing post ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-postid" placeholder="PostID"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-blogger">\n						<label class="col-lg-4 control-label" for="input-publish-labels">Labels\n							(comma separated)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-labels"\n								placeholder="Label1, Label2" class="form-control">\n						</div>\n					</div>\n					<div\n						class="form-group modal-publish-tumblr modal-publish-wordpress">\n						<label class="col-lg-4 control-label" for="input-publish-tags">Tags\n							(comma separated)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-tags"\n								placeholder="Tag1, Tag2" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-dropbox">\n						<label class="col-lg-4 control-label"\n							for="input-publish-dropbox-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-dropbox-path"\n								placeholder="/path/to/My Document.html" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-fileid">File ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block">If no file ID is supplied, a new file\n								will be created in your Google Drive root folder. You can move\n								the file afterwards within Google Drive.</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-filename">Force filename\n							(optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-filename"\n								placeholder="Filename" class="form-control"> <span\n								class="help-block">If no file name is supplied, the\n								document title will be used.</span>\n						</div>\n					</div>\n\n					<div class="form-group">\n						<label class="col-lg-4 control-label">Format</label>\n						<div class="col-lg-7">\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="markdown"> Markdown\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="html"> HTML\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="template"> Template\n								</label>\n							</div>\n						</div>\n					</div>\n					<div class="collapse publish-custom-template-collapse">\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<div class="checkbox">\n									<label> <input type="checkbox"\n										id="checkbox-publish-custom-template"> Custom template\n									</label> <a href="#" class="tooltip-template">(?)</a>\n								</div>\n							</div>\n						</div>\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<textarea class="form-control"\n									id="textarea-publish-custom-template"></textarea>\n							</div>\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-process-publish">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Publication</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-publish-list hide">\n					"<span class="file-title"></span>" is published on the following\n					location(s):\n				</p>\n				<div class="msg-publish-list publish-list hide"></div>\n				<blockquote>\n					<div class="msg-no-publish hide">\n						"<span class="file-title"></span>" is not published yet. <br /> <br />\n					</div>\n					<b>NOTE:</b> You can add publications using "Publish on" sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Settings</h3>\n				<ul class="nav nav-tabs">\n					<li class="active"><a class="action-load-settings"\n						href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-publish" data-toggle="tab">Publish</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>\n				</ul>\n			</div>\n			<div class="modal-body">\n\n				<div class="tab-content clearfix">\n					<div class="tab-pane active" id="tabpane-settings-editor">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Layout orientation</label>\n								<div class="col-lg-7">\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="horizontal">\n											Horizontal\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="vertical">\n											Vertical\n										</label>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label" for="input-settings-theme">Theme</label>\n								<div class="col-lg-7">\n									<select id="input-settings-theme" class="form-control">\n									</select> <span class="help-block"><a target="_blank"\n										href="https://github.com/benweet/stackedit/blob/master/doc/theming.md#stackedit-theming-guide">Create\n											your own theme...</a></span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-lazy-rendering">Lazy rendering <a\n									href="#" class="tooltip-lazy-rendering">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n										<input type="checkbox" id="input-settings-lazy-rendering" />\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-editor-font-family">Editor font</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-editor-font-family"\n										class="form-control col-lg-7"> <input type="text"\n										id="input-settings-editor-font-size"\n										class="form-control col-lg-2"> px <span\n										class="help-block"> Only monospaced fonts are\n										supported.</span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-max-width">Max width</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-max-width"\n										class="form-control col-lg-3"> px\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-default-content">Default content\n									<a href="#" class="tooltip-default-content">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-default-content"\n										class="form-control"></textarea>\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-publish">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-publish-commit-msg">Commit message</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-publish-commit-msg"\n										class="form-control">\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-publish-template">Default\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-publish-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-ssh-proxy">SSH proxy</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-ssh-proxy"\n										class="form-control">\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-extensions">\n						<div class="panel-group accordion-extensions"></div>\n						<span class="help-block pull-right"><a target="_blank"\n							href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">Create\n								your own extension...</a></span>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-utils">\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-primary action-import-settings"><i\n								class="icon-wrench icon-white"></i> Import settings</a> <a href="#"\n								class="btn btn-block btn-primary action-export-settings"\n								data-dismiss="modal"><i class="icon-wrench icon-white"></i>\n								Export settings</a> <a href="#"\n								class="btn btn-block btn-primary action-default-settings"\n								data-dismiss="modal"><i class="icon-wrench icon-white"></i>\n								Load default settings</a> <input type="file"\n								id="input-file-import-settings" class="hide">\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#" class="btn btn-block btn-primary action-welcome-file"\n								data-dismiss="modal"><i class="icon-help-circled icon-white"></i>\n								Welcome document</a> <a href="#"\n								class="btn btn-block btn-primary action-welcome-tour"\n								data-dismiss="modal" data-dismiss="modal"><i\n								class="icon-help-circled icon-white"></i> Welcome tour</a>\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#" class="btn btn-block btn-primary"\n								data-dismiss="modal" data-toggle="modal"\n								data-target=".modal-app-reset"><i\n								class="icon-fire icon-white"></i> Reset application</a>\n						</div>\n					</div>\n				</div>\n\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-apply-settings"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-app-reset">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Reset application</h3>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all your local documents.</p>\n				<blockquote>Are you sure?</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-app-reset"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="lock-ui hide"></div>\n<div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>';
+ return '<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav left-space"></div>\n		<div class="nav right-space pull-right"></div>\n		<ul class="nav">\n			<li class="wmd-button-group1 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group2 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group3 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group4 btn-group"></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li class="btn-group"><button\n					class="btn btn-success action-create-file" title="New document">\n					<i class="icon-file"></i>\n				</button>\n				<button class="btn btn-success" title="Delete current document"\n					data-toggle="modal" data-target=".modal-remove-file-confirm">\n					<i class="icon-trash"></i>\n				</button></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li id="extension-buttons"></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><a class="btn btn-success file-title-navbar" href="#"\n				title="Rename current document"> </a></li>\n			<li><input type="text"\n				class="col-lg-4 form-control hide input-file-title"\n				placeholder="Document title" /></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><i class="working-indicator icon-none"></i></li>\n		</ul>\n	</div>\n</div>\n<div id="wmd-input" class="ui-layout-center"></div>\n<div class="ui-layout-east preview-container"></div>\n<div class="ui-layout-south preview-container"></div>\n<div id="wmd-button-bar" class="hide"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".menu-panel" title="Menu">\n		<i class="icon-left-open"></i> <img\n			data-stackedit-src="stackedit-64.png" width="32" height="32" />\n	</button>\n	<div class="panel-content">\n		<div class="list-group">\n			<a href="viewer.html" title="StackEdit Viewer"\n				class="list-group-item"><i class="icon-resize-full"></i>\n				StackEdit Viewer</a> <a href="#" data-toggle="collapse"\n				data-target=".collapse-open-from" class="list-group-item"><i\n				class="icon-hdd"></i> Open from...</a>\n			<div class="sub-menu collapse collapse-open-from clearfix">\n				<ul class="nav">\n					<li><a data-toggle="modal" data-target=".modal-import-url"\n						class="action-reset-input" href="#">Open from URL</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-markdown"\n						class="action-reset-input" href="#">Import from hard drive</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-html"\n						class="action-reset-input" href="#">Convert HTML to Markdown</a></li>\n				</ul>\n			</div>\n\n			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"\n				class="list-group-item"><i class="icon-hdd"></i> Save as...</a>\n			<div class="sub-menu collapse collapse-save-as clearfix">\n				<ul class="nav">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>\n				</ul>\n			</div>\n		</div>\n		<div class=dropdown-header>SYNCHRONIZE</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-gdrive" class="list-group-item"><i\n				class="icon-provider-gdrive"></i> Google Drive</a>\n			<div class="sub-menu collapse collapse-sync-gdrive clearfix">\n				<ul class="nav">\n					<li><a href="#" class="action-sync-import-gdrive"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Google Drive</a></li>\n					<li><a href="#" class="action-sync-export-dialog-gdrive">Export\n							to Google Drive</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-dropbox" class="list-group-item"><i\n				class="icon-provider-dropbox"></i> Dropbox</a>\n			<div class="sub-menu collapse collapse-sync-dropbox clearfix">\n				<ul class="nav">\n					<li><a class="action-sync-import-dropbox" href="#"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Dropbox</a></li>\n					<li><a href="#" class="action-sync-export-dialog-dropbox">Export\n							to Dropbox</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-sync"\n				class="action-reset-input list-group-item"><i\n				class="icon-refresh"></i> Manage synchronization</a>\n		</div>\n		<div class=dropdown-header>PUBLISH</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"\n				class="list-group-item"><i class="icon-share"></i> Publish on...</a>\n			<div class="sub-menu collapse collapse-publish-on clearfix">\n				<ul class="nav">\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-publish"\n				class="action-reset-input list-group-item"><i class="icon-share"></i>\n				Manage publication</a>\n		</div>\n		<ul class="nav">\n			<li><a href="#" data-toggle="modal"\n				data-target=".modal-settings" class="action-load-settings"><i\n					class="icon-cog"></i> Settings</a></li>\n			<li><a href="#" data-toggle="modal" data-target=".modal-about"><i\n					class="icon-help-circled"></i> About</a></li>\n		</ul>\n\n	</div>\n</div>\n\n\n<div class="document-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i> <i class="icon-right-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<button type="button" class="close" title="clear">&times;</button>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n\n<div class="modal modal-document-manager">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Manage documents</h3>\n			</div>\n			<div class="modal-body">\n				<div></div>\n				<ul class="nav nav-pills document-list">\n					<li class="pull-right dropdown"><a href="#"\n						data-toggle="dropdown"><i class="icon-check"></i> Selection <b\n							class="caret"></b></a>\n						<ul class="dropdown-menu">\n							<li><a href="#" class="action-select-all"><i\n									class="icon-check"></i> Select all</a></li>\n							<li><a href="#" class="action-unselect-all"><i\n									class="icon-check-empty"></i> Unselect all</a></li>\n							<li class="divider"></li>\n							<li><a href="#" class="action-move-items"><i\n									class="icon-forward"></i> Move to folder</a></li>\n							<li><a href="#" class="action-delete-items"><i\n									class="icon-trash"></i> Delete</a></li>\n						</ul></li>\n					<li class="pull-right"><a href="#"\n						class="action-create-folder"> <i class="icon-folder"></i>\n							Create folder\n					</a></li>\n					<li class="disabled"><a><i class="icon-file"></i> <span\n							class="document-count"></span></a></li>\n					<li class="disabled"><a><i class="icon-folder"></i> <span\n							class="folder-count"></span></a></li>\n				</ul>\n				<div class="list-group document-list"></div>\n				<p class="confirm-delete hide">The following documents will be\n					deleted locally:</p>\n				<p class="choose-folder hide">Please choose a destination\n					folder:</p>\n				<div class="list-group selected-document-list hide"></div>\n				<div class="list-group select-folder-list hide"></div>\n			</div>\n			<div class="modal-footer">\n				<a href="#"\n					class="btn btn-default confirm-delete choose-folder action-cancel hide">Cancel</a>\n				<a href="#"\n					class="btn btn-primary confirm-delete action-delete-items-confirm hide">OK</a>\n				<a href="#" class="btn btn-primary document-list"\n					data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-link">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Hyperlink</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the link URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-globe"></i></span><input\n						id="input-insert-link" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/ "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-insert-link"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Image</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the image URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-picture"></i></span><input\n						id="input-insert-image" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/image.jpg "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default action-import-image-gplus"\n					data-dismiss="modal"><i class="icon-provider-gplus"></i> Import\n					from Google+</a> <a href="#" class="btn btn-default"\n					data-dismiss="modal">Cancel</a> <a href="#"\n					class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Google+ image import</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group">\n						<div class="col-lg-7">\n							<img>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-title">Title (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-import-image-title"\n								placeholder="Image title" class="form-control">\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-size">Size limit (optional)</label>\n						<div class="col-lg-7 form-inline">\n							<input type="text" id="input-import-image-size" placeholder="123"\n								class="col-lg-3 form-control"> px\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-image"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-remove-file-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Delete</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					Are you sure you want to delete "<span class="file-title"></span>"?\n				</p>\n				<blockquote>\n					<b>NOTE:</b> This will not delete the file on synchronized\n					locations.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-remove-file"\n					data-dismiss="modal">Delete</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-url">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Open from URL</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide a link to a Markdown document.</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label" for="input-import-url">URL</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-import-url"\n								placeholder="http://www.abc.com/xyz.md" class="form-control">\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-import-url">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-markdown">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Import from hard drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your Markdown files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-markdown"\n						multiple class="form-control" />\n				</p>\n				<p>Or drag and drop your Markdown files here:</p>\n				<p id="dropzone-import-harddrive-markdown" class="drop-zone">Drop\n					files here</p>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-html">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Convert HTML to Markdown</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your HTML files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-html" multiple\n						class="form-control" />\n				</p>\n				<p>Or drag and drop your HTML files here:</p>\n				<p id="dropzone-import-harddrive-html" class="drop-zone">Drop\n					files here</p>\n				<p>Or insert your HTML code here:</p>\n				<textarea id="input-convert-html" class="form-control"></textarea>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Close</a> <a\n					href="#" class="btn btn-primary action-convert-html"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-gdrive">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Google Drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-gdrive-parentid">Folder ID\n							(optional)</label>\n						<div class="col-lg-8">\n							<div class="input-group">\n								<input type="text" id="input-sync-export-gdrive-parentid"\n									placeholder="FolderID" class="form-control">\n								<div class="input-group-btn">\n									<a class="btn btn-link export-gdrive-choose-folder"\n										title="Choose folder" data-dismiss="modal"><i\n										class="icon-folder-open"></i></a>\n								</div>\n							</div>\n							<span class="help-block"> If no folder ID is supplied, the\n								file will be created in your root folder. </span>\n						</div>\n					</div>\n					<div class="form-group">\n						<div class="col-lg-3 control-label"></div>\n						<div class="col-lg-8">\n							<label> <input id="input-sync-export-gdrive-realtime"\n								type="checkbox"> Create a real time collaborative\n								document\n							</label>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-gdrive-fileid">Existing file ID\n							(optional)</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block"> This will overwrite the existing file\n								on the server. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>NOTE:</b>\n					<ul>\n						<li>You can move or rename the file afterwards within Google\n							Drive.</li>\n						<li>Real time collaborative documents can\'t be open outside\n							StackEdit.</li>\n						<li>Real time collaborative documents can\'t have multiple\n							synchronized locations.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-gdrive">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-dropbox">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Dropbox</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-dropbox-path">File path</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-dropbox-path"\n								placeholder="/path/to/My Document.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>NOTE:</b>\n					<ul>\n						<li>Dropbox file path does not depend on document title.</li>\n						<li>The title of your document will not be synchronized.</li>\n						<li>Destination folder must exist.</li>\n						<li>Any existing file at this location will be overwritten.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-dropbox">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-sync">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Synchronization</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-sync-list hide">\n					"<span class="file-title"></span>" is synchronized with the\n					following location(s):\n				</p>\n				<div class="msg-sync-list sync-list hide"></div>\n				<blockquote class="msg-sync-list hide">\n					<b>NOTE:</b> Removing a synchronized location will not delete any\n					file.\n				</blockquote>\n				<blockquote class="msg-no-sync hide">\n					"<span class="file-title"></span>" is not synchronized yet. <br />\n					<br /> <b>NOTE:</b> You can add synchronized locations by\n					exporting your document using <i class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					or <i class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">\n					Publish on <span class="publish-provider-name"></span>\n				</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-host">Host</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-host"\n								placeholder="host.name.or.ip" class="form-control"> <span\n								class="help-block"> Host must be accessible publicly,\n								unless you are hosting your own <a target="_blank"\n								href="https://github.com/benweet/stackedit-ssh-proxy">SSH\n									proxy</a>.\n							</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-port">Port\n							(optional)</label>\n						<div class="col-lg-2">\n							<input type="text" id="input-publish-ssh-port" placeholder="22"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-username">Username</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-password">Password</label>\n						<div class="col-lg-7">\n							<input type="password" id="input-publish-ssh-password"\n								placeholder="password" class="form-control"> <span\n								class="help-block"> Passwords are transmitted in clear,\n								unless you are hosting your own <a target="_blank"\n								href="https://github.com/benweet/stackedit-ssh-proxy">SSH\n									proxy</a>.\n							</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-reponame">Repository</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-reponame"\n								placeholder="repository-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-username">Username (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-branch">Branch</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-branch"\n								placeholder="branch-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-file-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-file-path"\n								placeholder="path/to/file.md" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-filename">Filename</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-filename"\n								placeholder="filename" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-gist-id">Existing\n							ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gist-id"\n								placeholder="GistID" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gist-public">Public</label>\n						<div class="col-lg-7">\n							<div class="checkbox">\n								<input type="checkbox" id="input-publish-gist-public"\n									checked="checked" />\n							</div>\n						</div>\n					</div>\n					<div class="form-group modal-publish-blogger">\n						<label class="col-lg-4 control-label"\n							for="input-publish-blogger-url">Blog URL</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-blogger-url"\n								placeholder="http://exemple.blogger.com/" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-tumblr">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">Blog hostname</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-tumblr-hostname"\n								placeholder="exemple.tumblr.com" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-wordpress">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">WordPress site</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-wordpress-site"\n								placeholder="exemple.wordpress.com" class="form-control">\n							<span class="help-block"> <a target="_blank"\n								href="http://jetpack.me/">Jetpack plugin</a> is required for\n								self-hosted sites.\n							</span>\n						</div>\n					</div>\n					<div\n						class="form-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n						<label class="col-lg-4 control-label" for="input-publish-postid">Update\n							existing post ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-postid" placeholder="PostID"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-blogger">\n						<label class="col-lg-4 control-label" for="input-publish-labels">Labels\n							(comma separated)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-labels"\n								placeholder="Label1, Label2" class="form-control">\n						</div>\n					</div>\n					<div\n						class="form-group modal-publish-tumblr modal-publish-wordpress">\n						<label class="col-lg-4 control-label" for="input-publish-tags">Tags\n							(comma separated)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-tags"\n								placeholder="Tag1, Tag2" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-dropbox">\n						<label class="col-lg-4 control-label"\n							for="input-publish-dropbox-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-dropbox-path"\n								placeholder="/path/to/My Document.html" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-fileid">File ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block">If no file ID is supplied, a new file\n								will be created in your Google Drive root folder. You can move\n								the file afterwards within Google Drive.</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-filename">Force filename\n							(optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-filename"\n								placeholder="Filename" class="form-control"> <span\n								class="help-block">If no file name is supplied, the\n								document title will be used.</span>\n						</div>\n					</div>\n\n					<div class="form-group">\n						<label class="col-lg-4 control-label">Format</label>\n						<div class="col-lg-7">\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="markdown"> Markdown\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="html"> HTML\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="template"> Template\n								</label>\n							</div>\n						</div>\n					</div>\n					<div class="collapse publish-custom-template-collapse">\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<div class="checkbox">\n									<label> <input type="checkbox"\n										id="checkbox-publish-custom-template"> Custom template\n									</label> <a href="#" class="tooltip-template">(?)</a>\n								</div>\n							</div>\n						</div>\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<textarea class="form-control"\n									id="textarea-publish-custom-template"></textarea>\n							</div>\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-process-publish">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Publication</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-publish-list hide">\n					"<span class="file-title"></span>" is published on the following\n					location(s):\n				</p>\n				<div class="msg-publish-list publish-list hide"></div>\n				<blockquote>\n					<div class="msg-no-publish hide">\n						"<span class="file-title"></span>" is not published yet. <br /> <br />\n					</div>\n					<b>NOTE:</b> You can add publications using "Publish on" sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Settings</h3>\n				<ul class="nav nav-tabs">\n					<li class="active"><a class="action-load-settings"\n						href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-publish" data-toggle="tab">Publish</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>\n				</ul>\n			</div>\n			<div class="modal-body">\n\n				<div class="tab-content clearfix">\n					<div class="tab-pane active" id="tabpane-settings-editor">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Layout orientation</label>\n								<div class="col-lg-7">\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="horizontal">\n											Horizontal\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="vertical">\n											Vertical\n										</label>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label" for="input-settings-theme">Theme</label>\n								<div class="col-lg-7">\n									<select id="input-settings-theme" class="form-control">\n									</select> <span class="help-block"><a target="_blank"\n										href="https://github.com/benweet/stackedit/blob/master/doc/theming.md#stackedit-theming-guide">Create\n											your own theme...</a></span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-lazy-rendering">Lazy rendering <a\n									href="#" class="tooltip-lazy-rendering">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n										<input type="checkbox" id="input-settings-lazy-rendering" />\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-editor-font-family">Editor font</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-editor-font-family"\n										class="form-control col-lg-7"> <input type="text"\n										id="input-settings-editor-font-size"\n										class="form-control col-lg-2"> px <span\n										class="help-block"> Only monospaced fonts are\n										supported.</span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-max-width">Max width</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-max-width"\n										class="form-control col-lg-3"> px\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-default-content">Default content\n									<a href="#" class="tooltip-default-content">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-default-content"\n										class="form-control"></textarea>\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-publish">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-publish-commit-msg">Commit message</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-publish-commit-msg"\n										class="form-control">\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-publish-template">Default\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-publish-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-ssh-proxy">SSH proxy</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-ssh-proxy"\n										class="form-control">\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-extensions">\n						<div class="panel-group accordion-extensions"></div>\n						<span class="help-block pull-right"><a target="_blank"\n							href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">Create\n								your own extension...</a></span>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-utils">\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-primary action-import-settings"><i\n								class="icon-wrench icon-white"></i> Import settings</a> <a href="#"\n								class="btn btn-block btn-primary action-export-settings"\n								data-dismiss="modal"><i class="icon-wrench icon-white"></i>\n								Export settings</a> <a href="#"\n								class="btn btn-block btn-primary action-default-settings"\n								data-dismiss="modal"><i class="icon-wrench icon-white"></i>\n								Load default settings</a> <input type="file"\n								id="input-file-import-settings" class="hide">\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#" class="btn btn-block btn-primary action-welcome-file"\n								data-dismiss="modal"><i class="icon-help-circled icon-white"></i>\n								Welcome document</a> <a href="#"\n								class="btn btn-block btn-primary action-welcome-tour"\n								data-dismiss="modal" data-dismiss="modal"><i\n								class="icon-help-circled icon-white"></i> Welcome tour</a>\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#" class="btn btn-block btn-primary"\n								data-dismiss="modal" data-toggle="modal"\n								data-target=".modal-app-reset"><i\n								class="icon-fire icon-white"></i> Reset application</a>\n						</div>\n					</div>\n				</div>\n\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-apply-settings"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-app-reset">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Reset application</h3>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all your local documents.</p>\n				<blockquote>Are you sure?</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-app-reset"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="lock-ui hide"></div>\n<div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>';
 }), define("text!html/bodyViewer.html", [], function() {
- return '\n<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav right-space pull-right"></div>\n\n		<ul class="nav pull-right">\n			<li class="btn-group">\n				<button class="btn btn-success action-edit-document hide"\n					title="Edit this document">\n					<i class="icon-pencil"></i>\n				</button>\n			</li>\n			<li class="btn-group">\n				<button class="btn btn-success dropdown-toggle"\n					data-toggle="dropdown" title="Save this document">\n					<i class="icon-download"></i>\n				</button>\n				<ul class="dropdown-menu">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n				</ul>\n			</li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><span class="file-title-navbar"></span></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><i class="working-indicator icon-none"></i></li>\n		</ul>\n\n	</div>\n</div>\n<div id="wmd-button-bar" class="hide"></div>\n<div id="wmd-input" class="hide"></div>\n<div class="ui-layout-center preview-container"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn btn-success collapse-button action-open-stackedit"\n		title="Open StackEdit">\n		<i class="icon-left-dir"></i> <img\n			data-stackedit-src="stackedit-64.png" width="32" height="32" />\n	</button>\n</div>\n\n<div class="document-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i> <i class="icon-right-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<button type="button" class="close" title="clear">&times;</button>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n';
+ return '\n<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav right-space pull-right"></div>\n\n		<ul class="nav pull-right">\n			<li class="btn-group">\n				<button class="btn btn-success action-edit-document hide"\n					title="Edit this document">\n					<i class="icon-pencil"></i>\n				</button>\n			</li>\n			<li class="btn-group">\n				<button class="btn btn-success dropdown-toggle"\n					data-toggle="dropdown" title="Save this document">\n					<i class="icon-download"></i>\n				</button>\n				<ul class="dropdown-menu">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>\n				</ul>\n			</li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><span class="file-title-navbar"></span></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><i class="working-indicator icon-none"></i></li>\n		</ul>\n\n	</div>\n</div>\n<div id="wmd-button-bar" class="hide"></div>\n<div id="wmd-input" class="hide"></div>\n<div class="ui-layout-center preview-container"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn btn-success collapse-button action-open-stackedit"\n		title="Open StackEdit">\n		<i class="icon-left-dir"></i> <img\n			data-stackedit-src="stackedit-64.png" width="32" height="32" />\n	</button>\n</div>\n\n<div class="document-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i> <i class="icon-right-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<button type="button" class="close" title="clear">&times;</button>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n';
 }), define("text!html/settingsTemplateTooltip.html", [], function() {
  return 'Available variables:\n<br>\n<ul>\n	<li><b>documentTitle</b>: document title</li>\n	<li><b>documentMarkdown</b>: document in Markdown format</li>\n	<li><b>documentHTML</b>: document in HTML format</li>\n	<li><b>publishAttributes</b>: attributes of the publish location\n		(undefined if not publishing)</li>\n</ul>\n<b>Examples:</b>\n<br />\n&lt;title&gt;&lt;%= documentTitle %&gt;&lt;&#x2F;title&gt;\n<br />\n&lt;div&gt;&lt;%- documentHTML %&gt;&lt;&#x2F;div&gt;\n<br />\n&lt;%<br />\nif(publishAttributes.provider.providerId == &quot;github&quot;)\nprint(documentMarkdown);<br />\n%&gt;\n<br />\n<br />\n<a target="_blank" href="http://underscorejs.org/#template">More\n	info</a>\n<br />\n<br />\n<b class="text-danger"><i class="icon-attention"></i> Careful! Template is subject to malicious code. Don\'t copy/paste untrusted content.</b>';
 }), define("text!html/settingsUserCustomExtensionTooltip.html", [], function() {
@@ -21499,7 +21497,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
   }, setSizeLimits = function(e, t) {
    if (isInitialized()) {
     var n = options[e], i = state[e], o = _c[e], r = o.dir, s = (o.sizeType.toLowerCase(), 
-    void 0 != t ? t : i.isSliding), a = ($Ps[e], n.spacing_open), l = _c.oppositeEdge[e], c = state[l], u = $Ps[l], d = !u || c.isVisible === !1 || c.isSliding ? 0 : "horz" == r ? u.outerHeight() : u.outerWidth(), h = (!u || c.isHidden ? 0 : options[l][c.isClosed !== !1 ? "spacing_closed" : "spacing_open"]) || 0, p = "horz" == r ? sC.innerHeight : sC.innerWidth, f = cssMinDims("center"), g = "horz" == r ? max(options.center.minHeight, f.minHeight) : max(options.center.minWidth, f.minWidth), m = p - a - (s ? 0 : _parseSize("center", g, r) + d + h), v = i.minSize = max(_parseSize(e, n.minSize), cssMinDims(e).minSize), b = i.maxSize = min(n.maxSize ? _parseSize(e, n.maxSize) : 1e5, m), y = i.resizerPosition = {}, w = sC.inset.top, C = sC.inset.left, x = sC.innerWidth, E = sC.innerHeight, A = n.spacing_open;
+    void 0 != t ? t : i.isSliding), a = ($Ps[e], n.spacing_open), l = _c.oppositeEdge[e], c = state[l], u = $Ps[l], d = !u || c.isVisible === !1 || c.isSliding ? 0 : "horz" == r ? u.outerHeight() : u.outerWidth(), h = (!u || c.isHidden ? 0 : options[l][c.isClosed !== !1 ? "spacing_closed" : "spacing_open"]) || 0, p = "horz" == r ? sC.innerHeight : sC.innerWidth, f = cssMinDims("center"), g = "horz" == r ? max(options.center.minHeight, f.minHeight) : max(options.center.minWidth, f.minWidth), m = p - a - (s ? 0 : _parseSize("center", g, r) + d + h), v = i.minSize = max(_parseSize(e, n.minSize), cssMinDims(e).minSize), b = i.maxSize = min(n.maxSize ? _parseSize(e, n.maxSize) : 1e5, m), y = i.resizerPosition = {}, w = sC.inset.top, C = sC.inset.left, x = sC.innerWidth, E = sC.innerHeight, S = n.spacing_open;
     switch (e) {
     case "north":
      y.min = w + v, y.max = w + b;
@@ -21510,11 +21508,11 @@ if (hljs.LANGUAGES.glsl = function(e) {
      break;
 
     case "south":
-     y.min = w + E - b - A, y.max = w + E - v - A;
+     y.min = w + E - b - S, y.max = w + E - v - S;
      break;
 
     case "east":
-     y.min = C + x - b - A, y.max = C + x - v - A;
+     y.min = C + x - b - S, y.max = C + x - v - S;
     }
    }
   }, calcNewCenterPaneDims = function() {
@@ -23166,7 +23164,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
  };
 }), define("core", [ "jquery", "underscore", "crel", "ace", "utils", "settings", "eventMgr", "mousetrap", "text!html/bodyIndex.html", "text!html/bodyViewer.html", "text!html/settingsTemplateTooltip.html", "text!html/settingsUserCustomExtensionTooltip.html", "storage", "config", "uilayout", "pagedown-ace", "libs/ace_mode", "ace/requirejs/text!ace/css/editor.css", "ace/requirejs/text!ace/theme/textmate.css", "ace/ext/spellcheck", "ace/ext/searchbox" ], function(e, t, n, i, o, r, s, a, l, c, u, d) {
  function h() {
-  S = !0, k = !0;
+  A = !0, k = !0;
   var e = o.currentTime;
   e > _ + 1e3 && (_ = e, s.onUserActive());
  }
@@ -23174,18 +23172,18 @@ if (hljs.LANGUAGES.glsl = function(e) {
   return k === !0 && o.currentTime - _ > USER_IDLE_THRESHOLD && (k = !1), k && F;
  }
  function f() {
-  if (S !== !1 && F !== !1) {
+  if (A !== !1 && F !== !1) {
    void 0 === $ && ($ = o.randomString(), localStorage.frontWindowId = $);
    var t = localStorage.frontWindowId;
-   t != $ && (F = !1, void 0 !== A && clearInterval(A), e(".modal").modal("hide"), 
+   t != $ && (F = !1, void 0 !== S && clearInterval(S), e(".modal").modal("hide"), 
    e(".modal-non-unique").modal("show"));
   }
  }
  function g() {
-  D === !0 && (D = !1, s.onOfflineChanged(!1));
+  T === !0 && (T = !1, s.onOfflineChanged(!1));
  }
  function m() {
-  D === !0 && navigator.onLine === !0 && T + CHECK_ONLINE_PERIOD < o.currentTime && (T = o.currentTime, 
+  T === !0 && navigator.onLine === !0 && D + CHECK_ONLINE_PERIOD < o.currentTime && (D = o.currentTime, 
   e.ajax({
    url: "//www.google.com/jsapi",
    timeout: AJAX_TIMEOUT,
@@ -23311,9 +23309,9 @@ if (hljs.LANGUAGES.glsl = function(e) {
   e(".ui-layout-resizer-south").append(I).append($editorButtonsElt).append(n)), y(), 
   w(), s.onLayoutCreated(B);
  }
- var E = {}, A = void 0, S = !1, k = !1, F = !0, _ = 0, $ = void 0, D = !1, T = o.currentTime;
+ var E = {}, S = void 0, A = !1, k = !1, F = !0, _ = 0, $ = void 0, T = !1, D = o.currentTime;
  E.setOffline = function() {
-  T = o.currentTime, D === !1 && (D = !0, s.onOfflineChanged(!0));
+  D = o.currentTime, T === !1 && (T = !0, s.onOfflineChanged(!0));
  };
  var L = void 0, B = void 0, M = void 0, R = void 0, I = void 0, P = void 0, N = void 0, O = void 0, z = void 0, j = void 0, H = require("ace/undomanager").UndoManager;
  E.initEditor = function(n) {
@@ -23431,7 +23429,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    "line-height": Math.round(r.editorFontSize * (20 / 12)) + "px"
   }), O.find(".ace_content").css({
    "background-size": "64px " + Math.round(r.editorFontSize * (20 / 12)) + "px"
-  }), x(), A = window.setInterval(function() {
+  }), x(), S = window.setInterval(function() {
    o.updateCurrentTime(), f(), (p() === !0 || viewerMode === !0) && (s.onPeriodicRun(), 
    m());
   }, 1e3), s.onReady();
@@ -23456,6 +23454,8 @@ if (hljs.LANGUAGES.glsl = function(e) {
    i = !1, P && P.focus() || O.focus(), n(localStorage.theme);
   }).keyup(function(t) {
    13 != t.which || e(t.target).is("textarea") || e(this).find(".modal-footer a:last").click();
+  }), e(".collapse-save-as a").click(function() {
+   M.collapse("hide");
   }), a.stopCallback = function(t, n) {
    return W || q || i || e(n).is("input, select, textarea:not(.ace_text-input)");
   }, e(".action-insert-link").click(function(t) {
@@ -24493,10 +24493,10 @@ if (hljs.LANGUAGES.glsl = function(e) {
      e.isPending === !1 && e.isSaving === !1 && (logger.log("Google Drive realtime document successfully saved on server"), 
      c());
     });
-    var w = n.content, C = i.contentCRC != t.crc32(w), x = d.getText(), E = t.crc32(x), A = i.contentCRC != E, S = w != x;
-    S === !0 && C === !0 && (A === !0 ? (r.createFile(n.title + " (backup)", w), o.onMessage('Conflict detected on "' + n.title + '". A backup has been created locally.')) : d.setText(w)), 
+    var w = n.content, C = i.contentCRC != t.crc32(w), x = d.getText(), E = t.crc32(x), S = i.contentCRC != E, A = w != x;
+    A === !0 && C === !0 && (S === !0 ? (r.createFile(n.title + " (backup)", w), o.onMessage('Conflict detected on "' + n.title + '". A backup has been created locally.')) : d.setText(w)), 
     void 0 === v && (a.binding = gapi.drive.realtime.databinding.bindString(d, document.getElementById("wmd-input"))), 
-    A === !0 && (logger.log("Google Drive realtime document updated from server"), void 0 !== v && v.setValue(x, -1), 
+    S === !0 && (logger.log("Google Drive realtime document updated from server"), void 0 !== v && v.setValue(x, -1), 
     c(), void 0 === v && m()), void 0 !== v && (a.string = d, p = h.uiManager.buttons.undo.execute, 
     f = h.uiManager.buttons.redo.execute, g = h.uiManager.setUndoRedoButtonStates, h.uiManager.buttons.undo.execute = function() {
      u.canUndo && (b = !1, u.undo());
@@ -24551,7 +24551,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
   if (0 === b.length) return l(e), void 0;
   var t = b.pop(), i = t.provider.syncUp;
   t.isRealtime === !0 && (i = t.provider.syncUpRealtime), i(y, w, C, x, t, function(i, o) {
-   return o === !0 && (A = !0), i ? (e(i), void 0) : (o && n.storeAttributes(t), a(e), 
+   return o === !0 && (S = !0), i ? (e(i), void 0) : (o && n.storeAttributes(t), a(e), 
    void 0);
   });
  }
@@ -24562,17 +24562,17 @@ if (hljs.LANGUAGES.glsl = function(e) {
   w = n.crc32(y), C = i.title, x = n.crc32(C), a(e), void 0);
  }
  function c(e) {
-  A === !0 ? (A = !1, E = t.values(o), l(e)) : e();
+  S === !0 ? (S = !1, E = t.values(o), l(e)) : e();
  }
  function u(e) {
-  if (0 === S.length) return e(), void 0;
-  var t = S.pop();
+  if (0 === A.length) return e(), void 0;
+  var t = A.pop();
   return m.hasSync(t) ? (t.syncDown(function(t) {
    return t ? (e(t), void 0) : (u(e), void 0);
   }), void 0) : (u(e), void 0);
  }
  function d(e) {
-  S = t.values(v), u(e);
+  A = t.values(v), u(e);
  }
  function h(e) {
   _ = t.some(e.syncLocations, function(e) {
@@ -24580,10 +24580,10 @@ if (hljs.LANGUAGES.glsl = function(e) {
   }) ? e : void 0, f();
  }
  function p(e) {
-  e === !1 ? (D = !0, f()) : (m.tryStopRealtimeSync(), D = !1);
+  e === !1 ? (T = !0, f()) : (m.tryStopRealtimeSync(), T = !1);
  }
  function f() {
-  void 0 !== _ && D === !0 && $.provider.startRealtimeSync(_, $);
+  void 0 !== _ && T === !0 && $.provider.startRealtimeSync(_, $);
  }
  function g(i) {
   n.resetModalInputs();
@@ -24615,7 +24615,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    });
   });
  };
- var b = [], y = void 0, w = void 0, C = void 0, x = void 0, E = [], A = !1, S = [], k = !1;
+ var b = [], y = void 0, w = void 0, C = void 0, x = void 0, E = [], S = !1, A = [], k = !1;
  i.addListener("onOfflineChanged", function(e) {
   k = e;
  });
@@ -24624,15 +24624,15 @@ if (hljs.LANGUAGES.glsl = function(e) {
   function e(e) {
    return void 0 !== e ? (F = !1, i.onSyncRunning(!1), !0) : !1;
   }
-  return F === !0 || k === !0 ? !1 : (F = !0, i.onSyncRunning(!0), A = !0, d(function(t) {
+  return F === !0 || k === !0 ? !1 : (F = !0, i.onSyncRunning(!0), S = !0, d(function(t) {
    e(t) || c(function(t) {
     e(t) || (F = !1, i.onSyncRunning(!1), i.onSyncSuccess());
    });
   }), !0);
  };
- var _ = void 0, $ = void 0, D = !0;
+ var _ = void 0, $ = void 0, T = !0;
  return m.tryStopRealtimeSync = function() {
-  void 0 !== _ && D === !0 && $.provider.stopRealtimeSync();
+  void 0 !== _ && T === !0 && $.provider.stopRealtimeSync();
  }, viewerMode === !1 && (i.addListener("onFileOpen", h), i.addListener("onFileClosed", m.tryStopRealtimeSync), 
  i.addListener("onOfflineChanged", p)), i.addListener("onReady", function() {
   t.each(v, function(o) {
@@ -25175,32 +25175,32 @@ if (hljs.LANGUAGES.glsl = function(e) {
   n.postId = e.getInputTextValue("#input-publish-postid"), n.tags = e.getInputTextValue("#input-publish-tags"), 
   t.isPropagationStopped() ? void 0 : n;
  }, i;
-}), define("publisher", [ "jquery", "underscore", "utils", "settings", "eventMgr", "fileSystem", "fileMgr", "sharing", "classes/Provider", "providers/bloggerProvider", "providers/dropboxProvider", "providers/gistProvider", "providers/githubProvider", "providers/gdriveProvider", "providers/sshProvider", "providers/tumblrProvider", "providers/wordpressProvider" ], function(e, t, n, i, o, r, s, a, l) {
- function c(e, t, i) {
+}), define("publisher", [ "jquery", "underscore", "utils", "settings", "eventMgr", "fileSystem", "fileMgr", "sharing", "classes/Provider", "classes/AsyncTask", "config", "providers/bloggerProvider", "providers/dropboxProvider", "providers/gistProvider", "providers/githubProvider", "providers/gdriveProvider", "providers/sshProvider", "providers/tumblrProvider", "providers/wordpressProvider" ], function(e, t, n, i, o, r, s, a, l, c) {
+ function u(e, t, i) {
   return void 0 === t.format && (t.format = n.getInputRadio("radio-publish-format"), 
   "template" == t.format && n.getInputChecked("#checkbox-publish-custom-template") && (t.customTmpl = n.getInputValue("#textarea-publish-custom-template"))), 
-  "markdown" == t.format ? e.content : "html" == t.format ? i : f.applyTemplate(e, t, i);
+  "markdown" == t.format ? e.content : "html" == t.format ? i : g.applyTemplate(e, t, i);
  }
- function u(e, t) {
-  if (0 === m.length) return e(t), void 0;
-  var n = m.pop(), i = c(v, n, b);
-  n.provider.publish(n, v.title, i, function(i) {
+ function d(e, t) {
+  if (0 === v.length) return e(t), void 0;
+  var n = v.pop(), i = u(b, n, y);
+  n.provider.publish(n, b.title, i, function(i) {
    if (void 0 !== i) {
     var r = i.toString();
-    if (-1 !== r.indexOf("|removePublish") && (v.removePublishLocation(n), o.onPublishRemoved(v, n)), 
+    if (-1 !== r.indexOf("|removePublish") && (b.removePublishLocation(n), o.onPublishRemoved(b, n)), 
     -1 !== r.indexOf("|stopPublish")) return e(i), void 0;
    }
-   u(e, t || i);
+   d(e, t || i);
   });
  }
- function d(e, i) {
+ function h(e, i) {
   var r = void 0;
   do r = "publish." + n.randomString(); while (t.has(localStorage, r));
   i.publishIndex = r, e.addPublishLocation(i), o.onNewPublishSuccess(e, i);
  }
- function h(o) {
+ function p(o) {
   var r = o.defaultPublishFormat || "markdown";
-  x = o, e(".publish-provider-name").text(o.providerName), e('div[class*=" modal-publish-"]').hide().filter(".modal-publish-" + o.providerId).show(), 
+  E = o, e(".publish-provider-name").text(o.providerName), e('div[class*=" modal-publish-"]').hide().filter(".modal-publish-" + o.providerId).show(), 
   n.resetModalInputs(), n.setInputRadio("radio-publish-format", r), n.setInputChecked("#checkbox-publish-custom-template", !1), 
   n.setInputValue("#textarea-publish-custom-template", i.template);
   var s = n.retrieveIgnoreError(o.providerId + ".publishPreferences");
@@ -25211,23 +25211,23 @@ if (hljs.LANGUAGES.glsl = function(e) {
   n.setInputValue("#textarea-publish-custom-template", s.customTmpl || i.template)), 
   e(".modal-publish").modal();
  }
- function p(e) {
-  var n = x, i = n.newPublishAttributes(e);
+ function f(e) {
+  var n = E, i = n.newPublishAttributes(e);
   if (void 0 !== i) {
-   var o = s.currentFile, r = y, l = c(o, i, r);
+   var o = s.currentFile, r = w, l = u(o, i, r);
    n.publish(i, o.title, l, function(e) {
     void 0 === e && (i.provider = n, a.createLink(i, function() {
-     d(o, i);
+     h(o, i);
     }));
    });
-   var u = {};
+   var c = {};
    t.each(n.publishPreferencesInputIds, function(e) {
     var t = document.getElementById("input-publish-" + e);
-    u[e] = "checkbox" == t.type ? t.checked : t.value;
-   }), u.format = i.format, u.customTmpl = i.customTmpl, localStorage[n.providerId + ".publishPreferences"] = JSON.stringify(u);
+    c[e] = "checkbox" == t.type ? t.checked : t.value;
+   }), c.format = i.format, c.customTmpl = i.customTmpl, localStorage[n.providerId + ".publishPreferences"] = JSON.stringify(c);
   }
  }
- var f = {}, g = t.chain(arguments).map(function(e) {
+ var g = {}, m = t.chain(arguments).map(function(e) {
   return e instanceof l && [ e.providerId, e ];
  }).compact().object().value();
  t.each(r, function(e) {
@@ -25235,14 +25235,14 @@ if (hljs.LANGUAGES.glsl = function(e) {
    try {
     var i = JSON.parse(localStorage[t]);
     i.publishIndex = t;
-    var r = g[i.provider];
+    var r = m[i.provider];
     if (!r) throw new Error("Invalid provider ID: " + i.provider);
     i.provider = r, e.publishLocations[t] = i;
    } catch (s) {
     o.onError(s), n.removeIndexFromArray(e.fileIndex + ".publish", t), localStorage.removeItem(t);
    }
   });
- }), f.applyTemplate = function(e, n, r) {
+ }), g.applyTemplate = function(e, n, r) {
   try {
    var s = n && n.customTmpl || i.template;
    return t.template(s, {
@@ -25255,60 +25255,80 @@ if (hljs.LANGUAGES.glsl = function(e) {
    return o.onError(a), a.message;
   }
  };
- var m = [], v = void 0, b = void 0, y = void 0;
+ var v = [], b = void 0, y = void 0, w = void 0;
  o.addListener("onPreviewFinished", function(e) {
-  y = e;
- });
- var w = !1;
- o.addListener("onOfflineChanged", function(e) {
   w = e;
  });
  var C = !1;
- f.publish = function() {
-  C !== !0 && w !== !0 && (C = !0, o.onPublishRunning(!0), v = s.currentFile, b = y, 
-  m = t.values(v.publishLocations), u(function(e) {
-   C = !1, o.onPublishRunning(!1), void 0 === e && o.onPublishSuccess(v);
+ o.addListener("onOfflineChanged", function(e) {
+  C = e;
+ });
+ var x = !1;
+ g.publish = function() {
+  x !== !0 && C !== !0 && (x = !0, o.onPublishRunning(!0), b = s.currentFile, y = w, 
+  v = t.values(b.publishLocations), d(function(e) {
+   x = !1, o.onPublishRunning(!1), void 0 === e && o.onPublishSuccess(b);
   }));
  };
- var x = void 0, E = [ "<li>", '   <a href="#"', '    class="action-init-publish-<%= provider.providerId %>">', '       <i class="icon-provider-<%= provider.providerId %>"></i> <%= provider.providerName %>', "   </a>", "</li>" ].join("");
+ var E = void 0, C = !1;
+ o.addListener("onOfflineChanged", function(e) {
+  C = e;
+ });
+ var S = [ "<li>", '   <a href="#"', '    class="action-init-publish-<%= provider.providerId %>">', '       <i class="icon-provider-<%= provider.providerId %>"></i> <%= provider.providerName %>', "   </a>", "</li>" ].join("");
  return o.addListener("onReady", function() {
   if (viewerMode === !1) {
-   var o = document.querySelector(".menu-panel .collapse-publish-on .nav"), r = t.reduce(g, function(e, n) {
-    return e + t.template(E, {
+   var r = document.querySelector(".menu-panel .collapse-publish-on .nav"), a = t.reduce(m, function(e, n) {
+    return e + t.template(S, {
      provider: n
     });
    }, "");
-   o.innerHTML = r, t.each(g, function(t) {
-    e(o.querySelector(".action-init-publish-" + t.providerId)).click(function() {
-     h(t);
+   r.innerHTML = a, t.each(m, function(t) {
+    e(r.querySelector(".action-init-publish-" + t.providerId)).click(function() {
+     p(t);
     }), e(".action-publish-" + t.providerId).click(function() {
-     h(t);
+     p(t);
     });
    });
   }
-  e(".action-process-publish").click(p);
-  var a = e(".publish-custom-template-collapse").collapse({
+  e(".action-process-publish").click(f);
+  var l = e(".publish-custom-template-collapse").collapse({
    toggle: !1
-  }), l = e("#textarea-publish-custom-template"), c = t.debounce(function() {
-   a.collapse("template" == n.getInputRadio("radio-publish-format") ? "show" : "hide");
+  }), u = e("#textarea-publish-custom-template"), d = t.debounce(function() {
+   l.collapse("template" == n.getInputRadio("radio-publish-format") ? "show" : "hide");
   }, 100);
   e("#checkbox-publish-custom-template").change(function() {
-   l.prop("disabled", !this.checked);
+   u.prop("disabled", !this.checked);
   }), e("input:radio[name=radio-publish-format]").change(function() {
-   c();
+   d();
   }), e(".modal-publish").on("hidden.bs.modal", function() {
-   a.collapse("hide");
+   l.collapse("hide");
   }), e(".action-download-md").click(function() {
    var e = s.currentFile.content, t = s.currentFile.title;
    n.saveAs(e, t + ".md");
   }), e(".action-download-html").click(function() {
    var e = s.currentFile.title;
-   n.saveAs(y, e + ".html");
+   n.saveAs(w, e + ".html");
   }), e(".action-download-template").click(function() {
-   var e = s.currentFile, t = f.applyTemplate(e, void 0, y);
+   var e = s.currentFile, t = g.applyTemplate(e, void 0, w);
    n.saveAs(t, e.title + (-1 === i.template.indexOf("documentHTML") ? ".md" : ".html"));
+  }), e(".action-download-pdf").click(function() {
+   var e = s.currentFile, t = g.applyTemplate(e, {
+    customTmpl: i.pdfTemplate
+   }, w), r = new c(), a = void 0;
+   r.onRun(function() {
+    if (C === !0) return o.onError("Operation not available in offline mode."), r.chain(), 
+    void 0;
+    var e = new XMLHttpRequest();
+    e.open("POST", HTMLTOPDF_URL, !0), e.setRequestHeader("Content-type", "application/x-www-form-urlencoded"), 
+    e.responseType = "blob", e.onreadystatechange = function() {
+     4 == this.readyState && (200 == this.status ? a = this.response : o.onError("Error when trying to generate PDF: " + this.status), 
+     r.chain());
+    }, e.send(t);
+   }), r.onSuccess(function() {
+    void 0 !== a && n.saveAs(a, s.currentFile.title + ".pdf");
+   }), r.enqueue();
   });
- }), o.onPublisherCreated(f), f;
+ }), o.onPublisherCreated(g), g;
 }), define("providers/gplusProvider", [ "underscore", "utils", "classes/Provider", "eventMgr", "helpers/googleHelper" ], function(e, t, n, i, o) {
  function r(t, n) {
   var i = void 0;
@@ -25531,19 +25551,19 @@ if (hljs.LANGUAGES.glsl = function(e) {
    4 === i.readyState && (o = i.status, o > 399 && 600 > o ? (r = new Error(e + " HTTP status: " + o), 
    r.xhr = i, n(r)) : (x[e] = i.responseText, t(i.responseText)));
   }, i.send(null);
- }, A = 0;
+ }, S = 0;
  s.inject = function(e) {
-  31 > A && (w = document.createElement("style"), w.type = "text/css", i.appendChild(w), 
-  A++), w.styleSheet ? w.styleSheet.cssText += e : w.appendChild(document.createTextNode(e));
+  31 > S && (w = document.createElement("style"), w.type = "text/css", i.appendChild(w), 
+  S++), w.styleSheet ? w.styleSheet.cssText += e : w.appendChild(document.createTextNode(e));
  };
- var S = /@import\s*(url)?\s*(('([^']*)'|"([^"]*)")|\(('([^']*)'|"([^"]*)"|([^\)]*))\))\s*;?/g, k = window.location.pathname.split("/");
+ var A = /@import\s*(url)?\s*(('([^']*)'|"([^"]*)")|\(('([^']*)'|"([^"]*)"|([^\)]*))\))\s*;?/g, k = window.location.pathname.split("/");
  k.pop(), k = k.join("/") + "/";
  var F = function(t, n, i) {
   t.match(a) || (t = "/" + e.convertURIBase(t, k, "/")), E(t, function(o) {
    o = e(o, t, k);
-   for (var r, s = [], a = [], l = []; r = S.exec(o); ) {
+   for (var r, s = [], a = [], l = []; r = A.exec(o); ) {
     var c = r[4] || r[5] || r[7] || r[8] || r[9];
-    s.push(c), a.push(S.lastIndex - r[0].length), l.push(r[0].length);
+    s.push(c), a.push(A.lastIndex - r[0].length), l.push(r[0].length);
    }
    for (var u = 0, d = 0; d < s.length; d++) (function(e) {
     F(s[e], function(t) {

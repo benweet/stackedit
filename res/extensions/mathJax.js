@@ -84,7 +84,7 @@ define([
         h.Queue(afterRefreshCallback);
     }
     function j() {
-        !q && g && (q = !0, h.Cancel(), h.Queue(e))
+        !q && /*benweet (we need to call our afterRefreshCallback) g &&*/ (q = !0, h.Cancel(), h.Queue(e))
     }
     var g = !1, q = !1, t = null, s = "$", k, i, o, l, n, m, h = MathJax.Hub;
     h.Queue(function() {

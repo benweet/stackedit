@@ -361,7 +361,7 @@ body {
 
 .menu-panel {
 	width: @menu-panel-width !important;
-	margin-left: (-@menu-panel-width - 35);
+	margin-left: (-@menu-panel-width - 23);
 	-webkit-transition: margin-left 0.35s ease;
 	-moz-transition: margin-left 0.35s ease;
 	-o-transition: margin-left 0.35s ease;
@@ -371,13 +371,23 @@ body {
 	}
 	&.in {
         margin-left: 0;
+        .collapse-button {
+            padding-right: 16px;
+        }
     }
     .collapse-button {
-	    right: -83px;
+	    right: -75px;
 		position: absolute;
 		margin-top: 6px;
-		padding: 2px 20px;
 		z-index: -1;
+		padding: 2px 24px 2px 16px;
+    	-webkit-transition: padding-right 0.35s ease;
+        -moz-transition: padding-right 0.35s ease;
+        -o-transition: padding-right 0.35s ease;
+        transition: padding-right 0.35s ease;
+        &:hover {
+            padding-right: 16px;
+        }
 	}
 	.panel-content {
 		background-color: @panel-bg;
@@ -389,20 +399,30 @@ body {
 .document-panel {
 	right: 0;
 	width: @document-panel-width !important;
-	margin-right: (-@document-panel-width - 35);
+	margin-right: (-@document-panel-width - 27);
 	-webkit-transition: margin-right 0.35s ease;
     -moz-transition: margin-right 0.35s ease;
     -o-transition: margin-right 0.35s ease;
     transition: margin-right 0.35s ease;
 	&.in {
         margin-right: 0;
+        .collapse-button {
+            padding-left: 10px;
+        }
     }
     .collapse-button {
-	    left: -83px;
+	    left: -75px;
 		position: absolute;
 		margin-top: 6px;
-		padding: 7px 18px;
+		padding: 7px 10px 7px 18px;
 		z-index: -1;
+    	-webkit-transition: padding-left 0.35s ease;
+        -moz-transition: padding-left 0.35s ease;
+        -o-transition: padding-left 0.35s ease;
+        transition: padding-left 0.35s ease;
+        &:hover {
+            padding-left: 10px;
+        }
 		i.icon-folder-open {
        		font-size: 22px;
        	}

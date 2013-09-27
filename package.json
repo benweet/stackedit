@@ -6,6 +6,9 @@
   "directories": {
     "doc": "doc"
   },
+  "dependencies": {
+    "express": "3.x"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-requirejs": "~0.4.1",

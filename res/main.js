@@ -24,6 +24,7 @@ requirejs.config({
         crel: 'bower-libs/crel/crel',
         jgrowl: 'bower-libs/jgrowl/jquery.jgrowl',
         mousetrap: 'bower-libs/mousetrap/mousetrap',
+        'mousetrap-record': 'bower-libs/mousetrap/plugins/record/mousetrap-record',
         toMarkdown: 'bower-libs/to-markdown/src/to-markdown',
         text: 'bower-libs/requirejs-text/text',
         mathjax: '../lib/MathJax/MathJax.js?config=TeX-AMS_HTML',
@@ -68,6 +69,9 @@ requirejs.config({
         mousetrap: {
             exports: 'Mousetrap'
         },
+        'bootstrap-record': [
+                           'mousetrap'
+                       ],
         toMarkdown: {
             deps: [
                 'jquery'

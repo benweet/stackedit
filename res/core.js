@@ -130,6 +130,9 @@ define([
         utils.setInputValue("#textarea-settings-publish-pdf-template", settings.pdfTemplate);
         // SSH proxy
         utils.setInputValue("#input-settings-ssh-proxy", settings.sshProxy);
+        
+        // Load shortcuts settings
+        shortcutMgr.loadSettings();
 
         // Load extension settings
         eventMgr.onLoadSettings();
@@ -584,6 +587,9 @@ define([
         else {
             document.body.innerHTML = bodyIndexHTML;
         }
+        
+        // Populate shortcuts in settings
+        shortcutMgr.addSettingEntries();
 
         // listen to online/offline events
         $(window).on('offline', core.setOffline);

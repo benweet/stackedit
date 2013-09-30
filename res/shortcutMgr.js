@@ -2,7 +2,9 @@ define([
     "underscore",
     "eventMgr",
     "settings",
-    ], function(_, eventMgr, settings) {
+    "utils",
+    "text!html/settingsShortcutEntry.html",
+    ], function(_, eventMgr, settings, utils, settingsShortcutEntryHTML) {
 
     var shortcutMgr = {};
 
@@ -16,7 +18,7 @@ define([
             isPageDown: true
         },
         'italic': {
-            name: 'Emphasis',
+            title: 'Emphasis',
             defaultKey: {
                 win: 'Ctrl-I',
                 mac: 'Command-I|Ctrl-I',
@@ -24,7 +26,7 @@ define([
             isPageDown: true
         },
         'link': {
-            name: 'Hyperlink',
+            title: 'Hyperlink',
             defaultKey: {
                 win: 'Ctrl-L',
                 mac: 'Command-L|Ctrl-L',
@@ -32,7 +34,7 @@ define([
             isPageDown: true
         },
         'quote': {
-            name: 'Blockquote',
+            title: 'Blockquote',
             defaultKey: {
                 win: 'Ctrl-Q',
                 mac: 'Command-Q|Ctrl-Q',
@@ -40,7 +42,7 @@ define([
             isPageDown: true
         },
         'code': {
-            name: 'Code Sample',
+            title: 'Code Sample',
             defaultKey: {
                 win: 'Ctrl-K',
                 mac: 'Command-K|Ctrl-K',
@@ -48,7 +50,7 @@ define([
             isPageDown: true
         },
         'image': {
-            name: 'Image',
+            title: 'Image',
             defaultKey: {
                 win: 'Ctrl-G',
                 mac: 'Command-G|Ctrl-G',
@@ -56,7 +58,7 @@ define([
             isPageDown: true
         },
         'olist': {
-            name: 'Numbered List',
+            title: 'Numbered List',
             defaultKey: {
                 win: 'Ctrl-O',
                 mac: 'Command-O|Ctrl-O',
@@ -64,7 +66,7 @@ define([
             isPageDown: true
         },
         'ulist': {
-            name: 'Bulleted List',
+            title: 'Bulleted List',
             defaultKey: {
                 win: 'Ctrl-U',
                 mac: 'Command-U|Ctrl-U',
@@ -72,7 +74,7 @@ define([
             isPageDown: true
         },
         'heading': {
-            name: 'Heading',
+            title: 'Heading',
             defaultKey: {
                 win: 'Ctrl-H',
                 mac: 'Command-H|Ctrl-H',
@@ -80,7 +82,7 @@ define([
             isPageDown: true
         },
         'hr': {
-            name: 'Horizontal Rule',
+            title: 'Horizontal Rule',
             defaultKey: {
                 win: 'Ctrl-R',
                 mac: 'Command-R|Ctrl-R',
@@ -88,7 +90,7 @@ define([
             isPageDown: true
         },
         'undo': {
-            name: 'Undo',
+            title: 'Undo',
             defaultKey: {
                 win: 'Ctrl-Z',
                 mac: 'Command-Z',
@@ -101,8 +103,8 @@ define([
         'redo': {
             title: 'Redo',
             defaultKey: {
-                win: 'Ctrl-Shift-Z|Ctrl-Y',
-                mac: 'Command-Shift-Z|Command-Y',
+                win: 'Ctrl-Y|Ctrl-Shift-Z',
+                mac: 'Command-Y|Command-Shift-Z',
             },
             exec: function(editor) {
                 editor.redo();
@@ -143,17 +145,6 @@ define([
             multiSelectAction: "forEach"
         },
         'sortlines': {
-            title: 'Sort Lines',
-            defaultKey: {
-                win: 'Ctrl-Alt-S',
-                mac: 'Command-Alt-S',
-            },
-            exec: function(editor) {
-                editor.sortLines();
-            },
-            multiSelectAction: "forEachLine"
-        },
-        'indent': {
             title: 'Sort Lines',
             defaultKey: {
                 win: 'Ctrl-Alt-S',
@@ -214,6 +205,28 @@ define([
             },
             readOnly: true
         },
+        'findnext': {
+            title: 'Find Next',
+            defaultKey: {
+                win: 'Ctrl-P',
+                mac: 'Command-P',
+            },
+            exec: function(editor) {
+                editor.findNext();
+            },
+            readOnly: true
+        },
+        'findprevious': {
+            title: 'Find Previous',
+            defaultKey: {
+                win: 'Ctrl-Shift-P',
+                mac: 'Command-Shift-P',
+            },
+            exec: function(editor) {
+                editor.findPrevious();
+            },
+            readOnly: true
+        },
         'togglerecording': {
             title: 'Toggle Recording',
             defaultKey: {
@@ -246,6 +259,23 @@ define([
     shortcutMgr.configureAce = function(aceEditor) {
         _.each(shortcuts, function(shortcut) {
             shortcut.exec && aceEditor.commands.addCommand(_.pick(shortcut, 'name', 'bindKey', 'exec', 'readOnly', 'multiSelectAction'));
+        });
+    };
+
+    shortcutMgr.addSettingEntries = function() {
+        var shortcutEntries = _.reduce(shortcuts, function(result, shortcut) {
+            return result + _.template(settingsShortcutEntryHTML, {
+                shortcut: shortcut
+            });
+        }, '');
+        var settingsFormElement = document.querySelector('#tabpane-settings-shortcuts .form-horizontal');
+        settingsFormElement && (settingsFormElement.innerHTML = shortcutEntries);
+    };
+
+    shortcutMgr.loadSettings = function() {
+        _.each(shortcuts, function(shortcut) {
+            utils.setInputValue("#input-settings-shortcut-" + shortcut.name, shortcut.bindKey.win);
+            utils.setInputValue("#input-settings-shortcut-" + shortcut.name + '-mac', shortcut.bindKey.mac);
         });
     };
 

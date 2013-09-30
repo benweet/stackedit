@@ -1028,7 +1028,36 @@ ul,ol {
 
 .ace_search {
 	background-color: @primary-bg;
-	border: 0;
+	border: 6px solid @panel-bg;
+	border-top: 0;
+	padding: 10px 15px 5px;
+	font-family: @font-family-base;
+	min-width: 318px;
+	.ace_search_field {
+	    width: 200px;
+	}
+	.ace_replacebtn {
+        padding: 0 4px;
+    }
+    .ace_searchbtn_close {
+        background: transparent;
+        margin: 0;
+        font-size: (@font-size-base * 1.5);
+        font-weight: @close-font-weight;
+        text-shadow: @close-text-shadow;
+        .opacity(.3);
+        &:before {
+            content: '\d7';
+        }
+        &:hover,
+        &:focus {
+            color: @close-color;
+            text-decoration: none;
+            cursor: pointer;
+            .opacity(.5);
+            background: transparent;
+        }
+    }
 }
 
 #wmd-input {

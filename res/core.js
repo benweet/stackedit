@@ -6,6 +6,7 @@ define([
     "utils",
     "settings",
     "eventMgr",
+    "shortcutMgr",
     "mousetrap",
     "text!html/bodyIndex.html",
     "text!html/bodyViewer.html",
@@ -21,7 +22,7 @@ define([
     'ace/ext/spellcheck',
     'ace/ext/searchbox'
 
-], function($, _, crel, ace, utils, settings, eventMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
+], function($, _, crel, ace, utils, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
 
@@ -58,9 +59,9 @@ define([
         }
         if(windowId === undefined) {
             windowId = utils.randomString();
-            localStorage["frontWindowId"] = windowId;
+            localStorage.frontWindowId = windowId;
         }
-        var frontWindowId = localStorage["frontWindowId"];
+        var frontWindowId = localStorage.frontWindowId;
         if(frontWindowId != windowId) {
             windowUnique = false;
             if(intervalId !== undefined) {
@@ -260,7 +261,7 @@ define([
 
                     // only check every 5 lines
                     processedLines++;
-                    if((processedLines % 5 == 0) && (new Date() - workerStart) > 20) {
+                    if((processedLines % 5 === 0) && (new Date() - workerStart) > 20) {
                         self.running = setTimeout(customWorker, 20); // benweet
                         self.currentLine = currentLine;
                         return;
@@ -271,7 +272,6 @@ define([
                 if(startLine <= endLine)
                     self.fireUpdateEvent(startLine, endLine);
             }
-            ;
             self.$worker = function() {
                 self.lines.splice(0, self.lines.length);
                 self.states.splice(0, self.states.length);
@@ -281,10 +281,12 @@ define([
 
         })(aceEditor.session.bgTokenizer);
 
+        shortcutMgr.configureAce(aceEditor);
         eventMgr.onAceCreated(aceEditor);
     }
 
     // Create the layout
+    var $editorButtonsElt = undefined;
     function createLayout() {
         var layoutGlobalConfig = {
             closable: true,
@@ -340,7 +342,7 @@ define([
             $(".preview-container").html('<div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>');
             layout = $('body').layout($.extend(layoutGlobalConfig, {
                 east__resizable: true,
-                east__size: .5,
+                east__size: 0.5,
                 east__minSize: 260
             }));
         }
@@ -349,7 +351,7 @@ define([
             $(".preview-container").html('<div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>');
             layout = $('body').layout($.extend(layoutGlobalConfig, {
                 south__resizable: true,
-                south__size: .5,
+                south__size: 0.5,
                 south__minSize: 200
             }));
         }
@@ -367,7 +369,7 @@ define([
         // north resizer is very small
         // var $previewButtonsContainerElt = $('<div
         // class="preview-button-container">');
-        $resizerDecorator = $('<div class="resizer-decorator">');
+        var $resizerDecorator = $('<div class="resizer-decorator">');
         $previewButtonsElt = $('<div class="extension-preview-buttons">');
         $editorButtonsElt = $('<div class="extension-editor-buttons">');
         if(viewerMode || settings.layoutOrientation == "horizontal") {

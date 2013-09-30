@@ -48,6 +48,7 @@ define([
                    '</html>'
         ].join(""),
         sshProxy: SSH_PROXY_URL,
+        shortcuts: {},
         extensionSettings: {}
     };
 

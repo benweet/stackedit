@@ -5,91 +5,91 @@ define([
     ], function(_, eventMgr, settings) {
 
     var shortcutMgr = {};
-    
+
     var shortcuts = {
         'bold': {
             title: 'Strong',
-            defaults: {
+            defaultKey: {
                 win: 'Ctrl-B',
                 mac: 'Command-B|Ctrl-B',
             },
             isPageDown: true
         },
         'italic': {
-            title: 'Emphasis',
-            defaults: {
+            name: 'Emphasis',
+            defaultKey: {
                 win: 'Ctrl-I',
                 mac: 'Command-I|Ctrl-I',
             },
             isPageDown: true
         },
         'link': {
-            title: 'Hyperlink',
-            defaults: {
+            name: 'Hyperlink',
+            defaultKey: {
                 win: 'Ctrl-L',
                 mac: 'Command-L|Ctrl-L',
             },
             isPageDown: true
         },
         'quote': {
-            title: 'Blockquote',
-            defaults: {
+            name: 'Blockquote',
+            defaultKey: {
                 win: 'Ctrl-Q',
                 mac: 'Command-Q|Ctrl-Q',
             },
             isPageDown: true
         },
         'code': {
-            title: 'Code Sample',
-            defaults: {
+            name: 'Code Sample',
+            defaultKey: {
                 win: 'Ctrl-K',
                 mac: 'Command-K|Ctrl-K',
             },
             isPageDown: true
         },
         'image': {
-            title: 'Image',
-            defaults: {
+            name: 'Image',
+            defaultKey: {
                 win: 'Ctrl-G',
                 mac: 'Command-G|Ctrl-G',
             },
             isPageDown: true
         },
         'olist': {
-            title: 'Numbered List',
-            defaults: {
+            name: 'Numbered List',
+            defaultKey: {
                 win: 'Ctrl-O',
                 mac: 'Command-O|Ctrl-O',
             },
             isPageDown: true
         },
         'ulist': {
-            title: 'Bulleted List',
-            defaults: {
+            name: 'Bulleted List',
+            defaultKey: {
                 win: 'Ctrl-U',
                 mac: 'Command-U|Ctrl-U',
             },
             isPageDown: true
         },
         'heading': {
-            title: 'Heading',
-            defaults: {
+            name: 'Heading',
+            defaultKey: {
                 win: 'Ctrl-H',
                 mac: 'Command-H|Ctrl-H',
             },
             isPageDown: true
         },
         'hr': {
-            title: 'Horizontal Rule',
-            defaults: {
+            name: 'Horizontal Rule',
+            defaultKey: {
                 win: 'Ctrl-R',
                 mac: 'Command-R|Ctrl-R',
             },
             isPageDown: true
         },
         'undo': {
-            title: 'Undo',
-            defaults: {
+            name: 'Undo',
+            defaultKey: {
                 win: 'Ctrl-Z',
                 mac: 'Command-Z',
             },
@@ -100,7 +100,7 @@ define([
         },
         'redo': {
             title: 'Redo',
-            defaults: {
+            defaultKey: {
                 win: 'Ctrl-Shift-Z|Ctrl-Y',
                 mac: 'Command-Shift-Z|Command-Y',
             },
@@ -111,7 +111,7 @@ define([
         },
         'selectall': {
             title: 'Select All',
-            defaults: {
+            defaultKey: {
                 win: 'Ctrl-A',
                 mac: 'Command-A',
             },
@@ -122,7 +122,7 @@ define([
         },
         'removeline': {
             title: 'Remove Line',
-            defaults: {
+            defaultKey: {
                 win: 'Ctrl-D',
                 mac: 'Command-D',
             },
@@ -133,7 +133,7 @@ define([
         },
         'duplicateSelection': {
             title: 'Duplicate Selection',
-            defaults: {
+            defaultKey: {
                 win: 'Ctrl-Shift-D',
                 mac: 'Command-Shift-D',
             },
@@ -144,7 +144,7 @@ define([
         },
         'sortlines': {
             title: 'Sort Lines',
-            defaults: {
+            defaultKey: {
                 win: 'Ctrl-Alt-S',
                 mac: 'Command-Alt-S',
             },
@@ -155,7 +155,7 @@ define([
         },
         'indent': {
             title: 'Sort Lines',
-            defaults: {
+            defaultKey: {
                 win: 'Ctrl-Alt-S',
                 mac: 'Command-Alt-S',
             },
@@ -166,7 +166,7 @@ define([
         },
         'modifyNumberUp': {
             title: 'Number Up',
-            defaults: {
+            defaultKey: {
                 win: 'Ctrl-Shift-Up',
                 mac: 'Alt-Shift-Up',
             },
@@ -177,7 +177,7 @@ define([
         },
         'modifyNumberDown': {
             title: 'Number Down',
-            defaults: {
+            defaultKey: {
                 win: 'Ctrl-Shift-Down',
                 mac: 'Alt-Shift-Down',
             },
@@ -188,33 +188,35 @@ define([
         },
         'find': {
             title: 'Find',
-            defaults: {
+            defaultKey: {
                 win: 'Ctrl-F',
                 mac: 'Command-F',
             },
             exec: function(editor) {
                 var config = require("ace/config");
                 config.loadModule("ace/ext/searchbox", function(e) {
-                    e.Search(editor)
+                    e.Search(editor);
                 });
             },
             readOnly: true
         },
         'replace': {
             title: 'Replace',
-            defaults: {
+            defaultKey: {
                 win: 'Ctrl-Shift-F',
                 mac: 'Command-Option-F',
             },
             exec: function(editor) {
                 var config = require("ace/config");
-                config.loadModule("ace/ext/searchbox", function(e) {e.Search(editor, true)});
+                config.loadModule("ace/ext/searchbox", function(e) {
+                    e.Search(editor, true);
+                });
             },
             readOnly: true
         },
         'togglerecording': {
             title: 'Toggle Recording',
-            defaults: {
+            defaultKey: {
                 win: 'Ctrl-Alt-E',
                 mac: 'Command-Option-E',
             },
@@ -225,7 +227,7 @@ define([
         },
         'replaymacro': {
             title: 'Replay Macro',
-            defaults: {
+            defaultKey: {
                 win: 'Ctrl-Shift-E',
                 mac: 'Command-Shift-E',
             },
@@ -235,13 +237,16 @@ define([
             readOnly: true
         },
     };
-    
+
     _.each(shortcuts, function(shortcut, key) {
-        shortcut.values = settings.shortcuts[key] || shortcut.defaults;
+        shortcut.name = key;
+        shortcut.bindKey = settings.shortcuts[key] || shortcut.defaultKey;
     });
 
-    shortcutMgr.configureAce = function() {
-        
+    shortcutMgr.configureAce = function(aceEditor) {
+        _.each(shortcuts, function(shortcut) {
+            shortcut.exec && aceEditor.commands.addCommand(_.pick(shortcut, 'name', 'bindKey', 'exec', 'readOnly', 'multiSelectAction'));
+        });
     };
 
     return shortcutMgr;

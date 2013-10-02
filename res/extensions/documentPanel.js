@@ -99,7 +99,7 @@ define([
         documentListFilteredElt.innerHTML = documentListFilteredHtml;
         
         // Add click listeners
-        _.each(documentListElt.querySelectorAll('.file'), function(fileElt) {
+        _.each(panelElt.querySelectorAll('.file'), function(fileElt) {
             var $fileElt = $(fileElt);
             $fileElt.click(function(e) {
                 var fileDesc = fileSystem[$fileElt.data('fileIndex')];

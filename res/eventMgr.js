@@ -34,6 +34,7 @@ define([
     "extensions/buttonHtmlCode",
     "extensions/buttonViewer",
     "extensions/welcomeTour",
+    "extensions/spellCheck",
     "extensions/userCustom",
     "bootstrap",
     "jquery-waitforimages"

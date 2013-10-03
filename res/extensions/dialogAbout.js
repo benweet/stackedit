@@ -34,7 +34,8 @@ define([
         "to-markdown": "https://github.com/domchristie/to-markdown",
         "UI Layout": "http://layout.jquery-dev.net/",
         "Underscore.js": "http://underscorejs.org/",
-        "waitForImages": "https://github.com/alexanderdickson/waitForImages"
+        "waitForImages": "https://github.com/alexanderdickson/waitForImages",
+        "XRegExp": "https://github.com/slevithan/xregexp"
     };
 
     var projects = {

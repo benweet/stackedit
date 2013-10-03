@@ -24,9 +24,12 @@
     "crel": "git@github.com:KoryNunn/crel.git#8dbda04b129fc0aec01a2a080d1cab26816e11c1",
     "waitForImages": "git@github.com:alexanderdickson/waitForImages.git#~1.4.2",
     "to-markdown": "git@github.com:benweet/to-markdown.git#jquery",
-    "js-yaml": "~2.1.0"
+    "js-yaml": "~2.1.0",
+    "Typo.js": "git@github.com:cfinke/Typo.js.git",
+    "xregexp": "d06eff50f87d81d2dd3afc1e854784c38b17bcc4"
   },
   "resolutions": {
-    "jquery": "2.0.3"
+    "jquery": "2.0.3",
+    "xregexp": "d06eff50f87d81d2dd3afc1e854784c38b17bcc4"
   }
 }

@@ -51,7 +51,12 @@ requirejs.config({
         'pagedown-extra': 'bower-libs/pagedown-extra/Markdown.Extra',
         'ace/requirejs/text': 'libs/ace_text',
         'ace/commands/default_commands': 'libs/ace_commands',
-        'js-yaml': 'bower-libs/js-yaml/js-yaml'
+        'js-yaml': 'bower-libs/js-yaml/js-yaml',
+        'require-css': 'bower-libs/require-css/css',
+        Typo: 'bower-libs/Typo.js',
+        'typo-js': 'bower-libs/Typo.js/typo/typo',
+        xregexp: 'bower-libs/xregexp/xregexp-all',
+        'Typo.js': 'bower-libs/Typo.js'
     },
     shim: {
         underscore: {
@@ -69,9 +74,12 @@ requirejs.config({
         mousetrap: {
             exports: 'Mousetrap'
         },
+        'typo-js': {
+            exports: 'Typo'
+        },
         'bootstrap-record': [
-                           'mousetrap'
-                       ],
+            'mousetrap'
+        ],
         toMarkdown: {
             deps: [
                 'jquery'

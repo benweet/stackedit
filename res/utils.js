@@ -2,9 +2,10 @@ define([
     "jquery",
     "underscore",
     "crel",
+    "xregexp",
     "FileSaver",
     "stacktrace",
-], function($, _, crel) {
+], function($, _, crel, XRegExp) {
 
     var utils = {};
 
@@ -149,7 +150,7 @@ define([
     // Slug function
     utils.slugify = function(text) {
         return text.toLowerCase().replace(/\s/g, '-') // Replace spaces with -
-        .replace(/![\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Pc}]/g, '') // Remove
+        .replace(XRegExp('[^\\p{L}]', 'g'), '') // Remove
         // all
         // non-word
         // chars

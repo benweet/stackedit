@@ -1,0 +1,33 @@
+var dictionary = undefined;
+
+self.init = function(typoJS, lang, aff, dic) {
+    eval([
+        typoJS,
+        'dictionary = new Typo(lang, aff, dic);'
+        ].join('\n'));
+};
+
+var timeoutId = undefined;
+self.check = function(words) {
+    // Check function has priority over Suggest function
+    // This prevents Suggest to run if called just before Check
+    timeoutId && clearTimeout(timeoutId);
+    for (var i = 0; i < words.length; i++) {
+        var word = words[i];
+        word.check = dictionary.check(word.value);
+    }
+    postMessage(JSON.stringify(['check', words]));
+};
+
+var word = undefined;
+
+function delayedSuggest() {
+    timeoutId = undefined;
+    var suggestions = dictionary.suggest(word);
+    postMessage(JSON.stringify(['suggest', suggestions]));
+}
+
+self.suggest = function(wordParam) {
+    word = wordParam;
+    timeoutId = setTimeout(delayedSuggest, 50);
+};

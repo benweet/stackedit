@@ -15,7 +15,8 @@ define([
             "tables",
             "def_list",
             "attr_list",
-            "footnotes"
+            "footnotes",
+            "smartypants",
         ],
         highlighter: "prettify"
     };

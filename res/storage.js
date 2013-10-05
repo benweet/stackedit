@@ -158,13 +158,23 @@ define([
     // Upgrade from v9 to v10
     if(version == "v9") {
         if(_.has(localStorage, 'settings')) {
-            settings = JSON.parse(localStorage.settings);
+            var settings = JSON.parse(localStorage.settings);
             delete settings.editorFontFamily;
             delete settings.editorFontSize;
             settings.template && (settings.template = settings.template.replace('http://benweet.github.io/stackedit/css/main-min.css', 'http://benweet.github.io/stackedit/res-min/themes/default.css'));
             localStorage.settings = JSON.stringify(settings);
         }
         version = "v10";
+    }
+
+    // Upgrade from v10 to v11
+    if(version == "v10") {
+        if(_.has(localStorage, 'settings')) {
+            var settings = JSON.parse(localStorage.settings);
+            settings.extensionSettings && settings.extensionSettings.markdownExtra && settings.extensionSettings.markdownExtra.extensions && settings.extensionSettings.markdownExtra.extensions.push('smartypants');
+            localStorage.settings = JSON.stringify(settings);
+        }
+        version = "v11";
     }
 
     localStorage["version"] = version;

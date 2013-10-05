@@ -32,6 +32,7 @@ define([
         utils.setInputChecked("#input-markdownextra-deflist", hasExtension("def_list"));
         utils.setInputChecked("#input-markdownextra-attrlist", hasExtension("attr_list"));
         utils.setInputChecked("#input-markdownextra-footnotes", hasExtension("footnotes"));
+        utils.setInputChecked("#input-markdownextra-smartypants", hasExtension("smartypants"));
         utils.setInputValue("#input-markdownextra-highlighter", markdownExtra.config.highlighter);
     };
 
@@ -42,6 +43,7 @@ define([
         utils.getInputChecked("#input-markdownextra-deflist") && newConfig.extensions.push("def_list");
         utils.getInputChecked("#input-markdownextra-attrlist") && newConfig.extensions.push("attr_list");
         utils.getInputChecked("#input-markdownextra-footnotes") && newConfig.extensions.push("footnotes");
+        utils.getInputChecked("#input-markdownextra-smartypants") && newConfig.extensions.push("smartypants");
         newConfig.highlighter = utils.getInputValue("#input-markdownextra-highlighter");
     };
 

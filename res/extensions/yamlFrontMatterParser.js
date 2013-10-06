@@ -1,33 +1,37 @@
 define([
     "classes/Extension",
-    "text!html/yamlFrontMatterParserSettingsBlock.html",
     "js-yaml",
-], function(Extension, yamlFrontMatterParserSettingsBlock) {
+    ], function(Extension, yamlFrontMatterParserSettingsBlock) {
 
-    var yamlFrontMatterParser = new Extension("yamlFrontMatterParser", "YAML front matter", true);
-    yamlFrontMatterParser.settingsBlock = yamlFrontMatterParserSettingsBlock;
+    var yamlFrontMatterParser = new Extension("yamlFrontMatterParser", "YAML front matter");
 
     var eventMgr = undefined;
     yamlFrontMatterParser.onEventMgrCreated = function(eventMgrParameter) {
         eventMgr = eventMgrParameter;
     };
 
+    var fileDesc = undefined;
+    yamlFrontMatterParser.onFileSelected = function(fileDescParam) {
+        fileDesc = fileDescParam;
+    };
+
+    var regex = /^(\s*-{3}\s*\n([\w\W]+?)\n\s*-{3}\s*\n)?([\w\W]*)*/;
     yamlFrontMatterParser.onPagedownConfigure = function(editor) {
         var converter = editor.getConverter();
         converter.hooks.chain("preConversion", function(text) {
-            try {
-                var re = /^(\s*-{3}\s*\n([\w\W]+?)\n\s*-{3}\s*\n)?([\w\W]*)*/, results = re.exec(text), conf = {}, yaml;
+            var results = regex.exec(text),
+                yaml;
 
-                if((yaml = results[2])) {
-                    conf = jsyaml.load(yaml);
-                    console.log(conf);
+            if ((yaml = results[2]) && (!fileDesc.frontMatter || fileDesc.frontMatter._yaml != yaml)) {
+                fileDesc.frontMatter = undefined;
+                try {
+                    fileDesc.frontMatter = jsyaml.load(yaml);
+                    fileDesc.frontMatter._yaml = yaml;
                 }
-                eventMgr.onMarkdownTrim(results[1].length);
-                return results[3];
+                catch (e) {}
             }
-            catch(e) {
-                return text;
-            }
+            eventMgr.onMarkdownTrim((results[1] || '').length);
+            return results[3];
         });
     };
 

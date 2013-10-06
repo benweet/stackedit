@@ -6,7 +6,7 @@ define([
     "classes/Extension",
     "settings",
     "text!html/settingsExtensionsAccordion.html",
-//    "extensions/yamlFrontMatterParser",
+    "extensions/yamlFrontMatterParser",
     "extensions/markdownSectionParser",
     "extensions/partialRendering",
     "extensions/buttonMarkdownSyntax",

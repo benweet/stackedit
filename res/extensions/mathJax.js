@@ -2,9 +2,8 @@ define([
     "utils",
     "classes/Extension",
     "text!html/mathJaxSettingsBlock.html",
-    "text!libs/mathjax_config.js",
     "mathjax",
-], function(utils, Extension, mathJaxSettingsBlockHTML, mathjaxConfigJS) {
+], function(utils, Extension, mathJaxSettingsBlockHTML) {
 	
 	var mathJax = new Extension("mathJax", "MathJax", true);
 	mathJax.settingsBlock = mathJaxSettingsBlockHTML;

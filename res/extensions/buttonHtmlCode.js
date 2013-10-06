@@ -41,7 +41,9 @@ define([
             var htmlCode = _.template(buttonHtmlCode.config.template, {
                 documentTitle: selectedFileDesc.title,
                 documentMarkdown: selectedFileDesc.content,
-                documentHTML: html
+                documentHTML: html,
+                frontMatter: selectedFileDesc.frontMatter,
+                publishAttributes: undefined,
             });
             textareaElt.value = htmlCode;
         }

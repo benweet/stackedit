@@ -13,6 +13,7 @@
 @primary-bg: #ddd;
 @primary-bg-light: lighten(@primary-bg, 4%);
 @primary-bg-lighter: lighten(@primary-bg, 8%);
+@primary-bg-lightest: lighten(@primary-bg, 9.5%);
 @secondary-bg: #888;
 @secondary-bg-light: lighten(@secondary-bg, 7%);
 @secondary-bg-dark: darken(@secondary-bg, 7%);
@@ -44,7 +45,7 @@
 @dropdown-border: @primary-bg;
 @pre-border-color: @primary-bg;
 @navbar-default-bg: @primary-bg;
-@nav-link-hover-bg: @primary-bg-lighter;
+@nav-link-hover-bg: @primary-bg-lightest;
 @nav-disabled-link-color: @disabled-color;
 @nav-disabled-link-hover-color: @disabled-color;
 @nav-tabs-border-color: @transparent;
@@ -55,7 +56,7 @@
 @list-group-link-color: @primary-color;
 @list-group-border: @transparent;
 @list-group-active-bg: @dropdown-link-hover-bg;
-@list-group-hover-bg: @primary-bg-lighter;
+@list-group-hover-bg: @primary-bg-lightest;
 @input-color-placeholder: @disabled-color;
 @btn-default-color: @primary-color;
 @btn-default-bg: @transparent;
@@ -396,6 +397,11 @@ body {
 		background-color: @panel-bg;
 		padding-top: 6px;
 		border-right: 5px solid @panel-border-color;
+		& > .nav > li > a {
+		    &:hover, &:active {
+        		background-color: @panel-bg;
+		    }
+		}
 	}
 }
 
@@ -980,7 +986,7 @@ ul,ol {
 	}
 
 	.ace_marker-layer .ace_active-line {
-		background-color: @primary-bg-lighter;	
+		background-color: @primary-bg-lightest;	
 	}
 	
 	.ace_print-margin {

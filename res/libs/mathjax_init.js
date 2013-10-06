@@ -1,4 +1,4 @@
-require([
+define([
     "settings",
     "text!libs/mathjax_config.js"
 ], function(settings, mathjaxConfigJS) {

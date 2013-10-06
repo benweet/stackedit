@@ -244,7 +244,7 @@ define([
         });
     };
 
-    gdriveProvider.publish = function(publishAttributes, title, content, callback) {
+    gdriveProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
         var contentType = publishAttributes.format != "markdown" ? 'text/html' : undefined;
         googleHelper.upload(publishAttributes.id, undefined, publishAttributes.fileName || title, content, contentType, undefined, function(error, result) {
             if(error) {
@@ -433,7 +433,7 @@ define([
         }, function(err) {
             console.error(err);
             if(err.type == "token_refresh_required") {
-                googleHelper.forceAuthenticate();
+                googleHelper.forceGdriveAuthenticate();
             }
             else if(err.type == "not_found") {
                 eventMgr.onError('"' + fileDesc.title + '" has been removed from Google Drive.');

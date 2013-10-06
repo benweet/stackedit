@@ -12,7 +12,7 @@ define([
         "ssh-password"
     ];
 
-    sshProvider.publish = function(publishAttributes, title, content, callback) {
+    sshProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
         sshHelper.upload(publishAttributes.host, publishAttributes.port, publishAttributes.username, publishAttributes.password, publishAttributes.path, title, content, callback);
     };
 

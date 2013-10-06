@@ -3,7 +3,8 @@ define([
     "core",
     "utils",
     "eventMgr",
-    "classes/AsyncTask"
+    "classes/AsyncTask",
+    "config"
 ], function($, core, utils, eventMgr, AsyncTask) {
 
     var connected = undefined;
@@ -55,7 +56,7 @@ define([
                 task.chain();
                 return;
             }
-            var token = localStorage["githubToken"];
+            var token = localStorage.githubToken;
             if(token !== undefined) {
                 github = new Github({
                     token: token,
@@ -64,12 +65,17 @@ define([
                 task.chain();
                 return;
             }
-            eventMgr.onMessage("Please make sure the Github authorization popup is not blocked by your browser.");
             var errorMsg = "Failed to retrieve a token from GitHub.";
             // We add time for user to enter his credentials
             task.timeout = ASYNC_TASK_LONG_TIMEOUT;
             var code = undefined;
+            function oauthRedirect() {
+                core.oauthRedirect('GitHub', function() {
+                    task.chain(getCode);
+                });
+            }
             function getCode() {
+                eventMgr.onMessage("Please make sure the Github authorization popup is not blocked by your browser.");
                 localStorage.removeItem("githubCode");
                 authWindow = utils.popupWindow('github-oauth-client.html?client_id=' + GITHUB_CLIENT_ID, 'stackedit-github-oauth', 960, 600);
                 authWindow.focus();
@@ -78,7 +84,7 @@ define([
                         clearInterval(intervalId);
                         authWindow = undefined;
                         intervalId = undefined;
-                        code = localStorage["githubCode"];
+                        code = localStorage.githubCode;
                         if(code === undefined) {
                             task.error(new Error(errorMsg));
                             return;
@@ -92,7 +98,7 @@ define([
                 $.getJSON(GATEKEEPER_URL + "authenticate/" + code, function(data) {
                     if(data.token !== undefined) {
                         token = data.token;
-                        localStorage["githubToken"] = token;
+                        localStorage.githubToken = token;
                         github = new Github({
                             token: token,
                             auth: "oauth"
@@ -104,7 +110,7 @@ define([
                     }
                 });
             }
-            task.chain(getCode);
+            task.chain(oauthRedirect);
         });
         task.onError(function() {
             if(intervalId !== undefined) {

@@ -36,13 +36,12 @@ define([
                 task.chain();
                 return;
             }
-            var serializedOauthParams = localStorage["tumblrOauthParams"];
+            var serializedOauthParams = localStorage.tumblrOauthParams;
             if(serializedOauthParams !== undefined) {
                 oauthParams = JSON.parse(serializedOauthParams);
                 task.chain();
                 return;
             }
-            eventMgr.onMessage("Please make sure the Tumblr authorization popup is not blocked by your browser.");
             var errorMsg = "Failed to retrieve a token from Tumblr.";
             // We add time for user to enter his credentials
             task.timeout = ASYNC_TASK_LONG_TIMEOUT;
@@ -51,14 +50,20 @@ define([
                 $.getJSON(TUMBLR_PROXY_URL + "request_token", function(data) {
                     if(data.oauth_token !== undefined) {
                         oauth_object = data;
-                        task.chain(getVerifier);
+                        task.chain(oauthRedirect);
                     }
                     else {
                         task.error(new Error(errorMsg));
                     }
                 });
             }
+            function oauthRedirect() {
+                core.oauthRedirect('Tumblr', function() {
+                    task.chain(getVerifier);
+                });
+            }
             function getVerifier() {
+                eventMgr.onMessage("Please make sure the Tumblr authorization popup is not blocked by your browser.");
                 localStorage.removeItem("tumblrVerifier");
                 authWindow = utils.popupWindow('tumblr-oauth-client.html?oauth_token=' + oauth_object.oauth_token, 'stackedit-tumblr-oauth', 800, 600);
                 authWindow.focus();
@@ -67,7 +72,7 @@ define([
                         clearInterval(intervalId);
                         authWindow = undefined;
                         intervalId = undefined;
-                        oauth_object.oauth_verifier = localStorage["tumblrVerifier"];
+                        oauth_object.oauth_verifier = localStorage.tumblrVerifier;
                         if(oauth_object.oauth_verifier === undefined) {
                             task.error(new Error(errorMsg));
                             return;
@@ -80,7 +85,7 @@ define([
             function getAccessToken() {
                 $.getJSON(TUMBLR_PROXY_URL + "access_token", oauth_object, function(data) {
                     if(data.access_token !== undefined && data.access_token_secret !== undefined) {
-                        localStorage["tumblrOauthParams"] = JSON.stringify(data);
+                        localStorage.tumblrOauthParams = JSON.stringify(data);
                         oauthParams = data;
                         task.chain();
                     }

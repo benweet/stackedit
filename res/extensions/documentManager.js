@@ -258,19 +258,23 @@ define([
             });
         });
 
-        // Set folder checkbox special behavior
+        // Set file checkbox behavior
+        _.each(documentListElt.querySelectorAll('.file .checkbox'), function(checkboxElt) {
+            var $checkboxElt = $(checkboxElt);
+            $checkboxElt.click(function(e) {
+                e.stopPropagation();
+            }).find('[type=checkbox]').change(function() {
+                $checkboxElt.parents('.list-group').find('.folder [type=checkbox]').prop('checked', false);
+            });
+        });
+
+        // Set folder checkbox behavior
         _.each(documentListElt.querySelectorAll('.folder .checkbox'), function(checkboxElt) {
             var $checkboxElt = $(checkboxElt);
             $checkboxElt.click(function(e) {
                 e.stopPropagation();
             }).find('[type=checkbox]').change(function() {
-                var documentCheckboxElts = $checkboxElt.parent().next().find('[type=checkbox]');
-                if(this.checked) {
-                    documentCheckboxElts.prop('checked', true).prop('disabled', true);
-                }
-                else {
-                    documentCheckboxElts.prop('checked', false).prop('disabled', false);
-                }
+                $checkboxElt.parent().next().find('[type=checkbox]').prop('checked', this.checked);
             });
         });
 
@@ -327,10 +331,10 @@ define([
 
         // Selection dropdown menu actions
         $(modalElt.querySelectorAll('.action-select-all')).click(function() {
-            $(documentListElt.querySelectorAll('input[type="checkbox"]')).prop('checked', true).change();
+            $(documentListElt.querySelectorAll('input[type="checkbox"]')).prop('checked', true);
         });
         $(modalElt.querySelectorAll('.action-unselect-all')).click(function() {
-            $(documentListElt.querySelectorAll('input[type="checkbox"]')).prop('checked', false).change();
+            $(documentListElt.querySelectorAll('input[type="checkbox"]')).prop('checked', false);
         });
 
         // Delete selection actions

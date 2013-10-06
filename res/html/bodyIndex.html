@@ -745,23 +745,6 @@
 								class="form-control">
 						</div>
 					</div>
-					<div class="form-group modal-publish-blogger">
-						<label class="col-lg-4 control-label" for="input-publish-labels">Labels
-							(comma separated)</label>
-						<div class="col-lg-7">
-							<input type="text" id="input-publish-labels"
-								placeholder="Label1, Label2" class="form-control">
-						</div>
-					</div>
-					<div
-						class="form-group modal-publish-tumblr modal-publish-wordpress">
-						<label class="col-lg-4 control-label" for="input-publish-tags">Tags
-							(comma separated)</label>
-						<div class="col-lg-7">
-							<input type="text" id="input-publish-tags"
-								placeholder="Tag1, Tag2" class="form-control">
-						</div>
-					</div>
 					<div class="form-group modal-publish-dropbox">
 						<label class="col-lg-4 control-label"
 							for="input-publish-dropbox-path">File path</label>
@@ -833,6 +816,12 @@
 						</div>
 					</div>
 				</div>
+				<blockquote class="front-matter-info modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">
+                    <p><b>NOTE:</b> You can use a
+                    <a href="http://jekyllrb.com/docs/frontmatter/"
+                    target="_blank">YAML front matter</a> to specify the title and the tags/labels of your publication.</p>
+                    <p><b>Interpreted variables:</b> <i>title, categories/tags</i></p>
+				</blockquote>
 			</div>
 			<div class="modal-footer">
 				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
@@ -972,11 +961,14 @@
 					<div class="tab-pane" id="tabpane-settings-services">
 						<div class="form-horizontal">
 							<div class="form-group">
-								<label class="col-lg-4 control-label"
-									for="input-settings-publish-commit-msg">Commit message</label>
+								<label class="col-lg-4 control-label">Permission</label>
 								<div class="col-lg-7">
-									<input type="text" id="input-settings-publish-commit-msg"
-										class="form-control">
+									<div class="checkbox">
+									    <label>
+										    <input type="checkbox" id="input-settings-gdrive-full-access" />
+										    Allow StackEdit to open any document in Google Drive
+										</label>
+									</div>
 								</div>
 							</div>
 							<div class="form-group">
@@ -997,6 +989,14 @@
 								<div class="col-lg-7">
 									<textarea id="textarea-settings-publish-pdf-template"
 										class="form-control"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label"
+									for="input-settings-publish-commit-msg">GitHub commit message</label>
+								<div class="col-lg-7">
+									<input type="text" id="input-settings-publish-commit-msg"
+										class="form-control">
 								</div>
 							</div>
 							<div class="form-group">
@@ -1076,6 +1076,24 @@
 			<div class="modal-footer">
 				<a href="javascript:window.location.reload();"
 					class="btn btn-primary">Reload</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal modal-oauth-redirect">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h3 class="modal-title">Authorization</h3>
+			</div>
+			<div class="modal-body">
+				<blockquote><b>NOTE:</b> You are being redirected to <span class="oauth-redirect-provider"></span> authorization page.</blockquote>
+			</div>
+			<div class="modal-footer">
+				<a class="btn btn-primary action-oauth-redirect" data-dismiss="modal">Continue</a>
 			</div>
 		</div>
 	</div>

@@ -22,7 +22,7 @@ define([
     worker.postMessage(JSON.stringify(['init', typoJS, 'en_US', aff, dic]));
 
     var aceEditor = undefined;
-    var wordRegExp = XRegExp('\\p{L}+', 'g');
+    var wordRegExp = XRegExp('\\p{L}+(?:\'\\p{L}+)*', 'g');
     var markers = [];
     var timeoutId = undefined;
     

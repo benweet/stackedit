@@ -1,9 +1,9 @@
 define([
     "jquery",
     "underscore",
+    "crel",
     "classes/Extension",
-    "text!html/buttonPublish.html",
-], function($, _, Extension, buttonPublishHTML) {
+], function($, _, crel, Extension) {
 
     var buttonPublish = new Extension("buttonPublish", 'Button "Publish"');
     // buttonPublish.settingsBlock = '<p>Adds a "Publish document" button in the
@@ -26,7 +26,6 @@ define([
             button.removeClass("disabled");
         }
     }
-    ;
 
     var publisher = undefined;
     buttonPublish.onPublisherCreated = function(publisherParameter) {
@@ -34,13 +33,19 @@ define([
     };
 
     buttonPublish.onCreateButton = function() {
-        var $buttonPublishHTML = $(buttonPublishHTML);
-        button = $buttonPublishHTML.click(function() {
-            if(!$buttonPublishHTML.hasClass("disabled")) {
+        var button = crel('button', {
+            class: 'btn btn-success button-publish',
+            title: 'Publish this document'
+        }, crel('i', {
+            class: 'icon-share'
+        }));
+        var $button = $(button);
+        $button.click(function() {
+            if(!$button.hasClass("disabled")) {
                 publisher.publish();
             }
         });
-        return button[0];
+        return button;
     };
 
     buttonPublish.onPublishRunning = function(isRunning) {

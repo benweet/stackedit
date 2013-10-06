@@ -12,7 +12,7 @@ define([
         "github-branch"
     ];
 
-    githubProvider.publish = function(publishAttributes, title, content, callback) {
+    githubProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
         var commitMsg = settings.commitMsg;
         githubHelper.upload(publishAttributes.repository, publishAttributes.username, publishAttributes.branch, publishAttributes.path, content, commitMsg, callback);
     };

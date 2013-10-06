@@ -11,8 +11,14 @@ define([
         "blogger-url"
     ];
 
-    bloggerProvider.publish = function(publishAttributes, title, content, callback) {
-        googleHelper.uploadBlogger(publishAttributes.blogUrl, publishAttributes.blogId, publishAttributes.postId, publishAttributes.labelList, title, content, function(error, blogId, postId) {
+    bloggerProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
+        var labelList = publishAttributes.labelList || [];
+        if(frontMatter) {
+            frontMatter.categories !== undefined && (labelList = frontMatter.categories);
+            frontMatter.tags !== undefined && (labelList = frontMatter.tags);
+        }
+        _.isString(labelList) && (labelList = _.compact(labelList.split(/[\s,]/)));
+        googleHelper.uploadBlogger(publishAttributes.blogUrl, publishAttributes.blogId, publishAttributes.postId, labelList, title, content, function(error, blogId, postId) {
             if(error) {
                 callback(error);
                 return;
@@ -30,13 +36,6 @@ define([
             publishAttributes.blogUrl = utils.checkUrl(blogUrl);
         }
         publishAttributes.postId = utils.getInputTextValue("#input-publish-postid");
-        publishAttributes.labelList = [];
-        var labels = utils.getInputTextValue("#input-publish-labels");
-        if(labels !== undefined) {
-            publishAttributes.labelList = _.chain(labels.split(",")).map(function(label) {
-                return utils.trim(label);
-            }).compact().value();
-        }
         if(event.isPropagationStopped()) {
             return undefined;
         }

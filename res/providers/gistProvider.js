@@ -13,7 +13,7 @@ define([
         "filename"
     ];
 
-    gistProvider.publish = function(publishAttributes, title, content, callback) {
+    gistProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
         githubHelper.uploadGist(publishAttributes.gistId, publishAttributes.filename, publishAttributes.isPublic, title, content, function(error, gistId) {
             if(error) {
                 callback(error);

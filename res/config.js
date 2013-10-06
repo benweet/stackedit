@@ -3,12 +3,6 @@ var VERSION = "2.1.7";
 var MAIN_URL = "http://benweet.github.io/stackedit/";
 var GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1";
 var GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw";
-var GOOGLE_SCOPES = [
-    "https://www.googleapis.com/auth/drive.install",
-    "https://www.googleapis.com/auth/drive",
-    "https://www.googleapis.com/auth/blogger",
-    "https://picasaweb.google.com/data/"
-];
 var GOOGLE_DRIVE_APP_ID = "241271498917";
 var DROPBOX_APP_KEY = "lq6mwopab8wskas";
 var DROPBOX_APP_SECRET = "851fgnucpezy84t";

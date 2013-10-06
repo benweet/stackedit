@@ -12,6 +12,7 @@ define([
         maxWidth: 960,
         defaultContent: "\n\n\n> Written with [StackEdit](" + MAIN_URL + ").",
         commitMsg: "Published with " + MAIN_URL,
+        gdriveFullAccess: true,
         template: [
                    '<!DOCTYPE html>\n',
                    '<html>\n',

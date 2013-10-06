@@ -34,7 +34,7 @@ define([
         tour.addSteps([
             {
                 element: ".navbar-inner",
-                title: "Welcome to StackEdit",
+                title: "Welcome to StackEdit!",
                 content: "Please click <code>Next</code> to take a quick tour.",
                 placement: "bottom",
             },
@@ -60,18 +60,22 @@ define([
                 title: "Menu",
                 content: [
                     "<p>Use the <i class='icon-provider-stackedit'></i> menu to synchronize your document on <i class='icon-provider-gdrive'></i> <code>Google Drive</code> or <i class='icon-provider-dropbox'></i> <code>Dropbox</code>.</p>",
-                    "Use also this menu to publish your document on <i class='icon-provider-github'></i> <code>GitHub</code>, <i class='icon-provider-blogger'></i> <code>Blogger</code>..."
+                    "Use also this menu to publish your document on <i class='icon-provider-github'></i> <code>GitHub</code>, <i class='icon-provider-blogger'></i> <code>Blogger</code>, <i class='icon-provider-wordpress'></i> <code>WordPress</code>..."
                 ].join(''),
                 placement: "right",
                 reflex: true,
             },
             {
-                element: "#extension-buttons button:first",
-                title: "Synchronize/publish",
-                content: [
-                    "<p>Once imported/exported, use the <i class='icon-refresh'></i> <code>Synchronize</code> button to force the synchronization (this is done automatically every 3 minutes).</p>",
-                    "Use also the <i class='icon-share'></i> <code>Publish</code> button to update your publications."
-                ].join(''),
+                element: "#extension-buttons .button-synchronize",
+                title: "Synchronize",
+                content: "<p>Once imported/exported, use the <i class='icon-refresh'></i> <code>Synchronize</code> button to force the synchronization (this is done automatically every 3 minutes).</p>",
+                placement: "bottom",
+                reflex: true,
+            },
+            {
+                element: "#extension-buttons .button-publish",
+                title: "Update publications",
+                content: "Once published, use the <i class='icon-share'></i> <code>Publish</code> button to update your publications.",
                 placement: "bottom",
                 reflex: true,
             },

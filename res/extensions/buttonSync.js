@@ -55,7 +55,7 @@ define([
 
     buttonSync.onCreateButton = function() {
         var button = crel('button', {
-            class: 'btn btn-success',
+            class: 'btn btn-success button-synchronize',
             title: 'Synchronize all'
         }, crel('i', {
             class: 'icon-refresh'

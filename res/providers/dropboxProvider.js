@@ -207,7 +207,7 @@ define([
         });
     };
 
-    dropboxProvider.publish = function(publishAttributes, title, content, callback) {
+    dropboxProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
         var path = checkPath(publishAttributes.path);
         if(path === undefined) {
             callback(true);

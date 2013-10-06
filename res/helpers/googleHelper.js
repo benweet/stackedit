@@ -1,13 +1,16 @@
 define([
+    "underscore",
     "jquery",
     "core",
     "utils",
+    "settings",
     "eventMgr",
-    "classes/AsyncTask"
-], function($, core, utils, eventMgr, AsyncTask) {
+    "classes/AsyncTask",
+    "config"
+], function(_, $, core, utils, settings, eventMgr, AsyncTask) {
 
     var connected = false;
-    var authenticated = false;
+    var permissionList = {};
 
     var googleHelper = {};
 
@@ -50,23 +53,49 @@ define([
     }
 
     // Try to authenticate with Oauth
-    function authenticate(task) {
+    function authenticate(task, permission) {
         task.onRun(function() {
-            if(authenticated === true) {
+            if(_.has(permissionList, permission)) {
                 task.chain();
                 return;
             }
+            var scopes = undefined;
+            if(permission == 'gdrive' && settings.gdriveFullAccess === true) {
+                scopes = [
+                    "https://www.googleapis.com/auth/drive.install",
+                    "https://www.googleapis.com/auth/drive",
+                ];
+            } 
+            else if(permission == 'gdrive' && settings.gdriveFullAccess === false) {
+                scopes = [
+                    "https://www.googleapis.com/auth/drive.install",
+                    "https://www.googleapis.com/auth/drive.file",
+                ];
+            } 
+            else if(permission == 'blogger') {
+                scopes = [
+                    "https://www.googleapis.com/auth/blogger",
+                ];
+            } 
+            else if(permission == 'picasa') {
+                scopes = [
+                    "https://picasaweb.google.com/data/",
+                ];
+            } 
             var immediate = true;
+            function oauthRedirect() {
+                core.oauthRedirect('Google', function() {
+                    task.chain(localAuthenticate);
+                });
+            }
             function localAuthenticate() {
                 if(immediate === false) {
                     eventMgr.onMessage("Please make sure the Google authorization popup is not blocked by your browser.");
-                    // If not immediate we add time for user to enter his
-                    // credentials
                     task.timeout = ASYNC_TASK_LONG_TIMEOUT;
                 }
                 gapi.auth.authorize({
                     'client_id': GOOGLE_CLIENT_ID,
-                    'scope': GOOGLE_SCOPES,
+                    'scope': scopes,
                     'immediate': immediate
                 }, function(authResult) {
                     gapi.client.load('drive', 'v2', function() {
@@ -75,7 +104,7 @@ define([
                             // flag
                             if(connected === true && immediate === true) {
                                 immediate = false;
-                                task.chain(localAuthenticate);
+                                task.chain(oauthRedirect);
                                 return;
                             }
                             // Error
@@ -83,7 +112,7 @@ define([
                             return;
                         }
                         // Success
-                        authenticated = true;
+                        permissionList[permission] = true;
                         task.chain();
                     });
                 });
@@ -91,11 +120,11 @@ define([
             task.chain(localAuthenticate);
         });
     }
-    googleHelper.forceAuthenticate = function() {
-        authenticated = false;
+    googleHelper.forceGdriveAuthenticate = function() {
+        permissionList = _.omit(permissionList, 'gdrive') ;
         var task = new AsyncTask();
         connect(task);
-        authenticate(task);
+        authenticate(task, 'gdrive');
         task.enqueue();
     };
 
@@ -103,7 +132,7 @@ define([
         var result = undefined;
         var task = new AsyncTask();
         connect(task);
-        authenticate(task);
+        authenticate(task, 'gdrive');
         task.onRun(function() {
             var boundary = '-------314159265358979323846';
             var delimiter = "\r\n--" + boundary + "\r\n";
@@ -198,7 +227,7 @@ define([
         var result = undefined;
         var task = new AsyncTask();
         connect(task);
-        authenticate(task);
+        authenticate(task, 'gdrive');
         task.onRun(function() {
             var body = {'title': title};
             var request = gapi.client.drive.files.patch({
@@ -235,7 +264,7 @@ define([
         var result = undefined;
         var task = new AsyncTask();
         connect(task);
-        authenticate(task);
+        authenticate(task, 'gdrive');
         task.onRun(function() {
             var metadata = {
                 title: title,
@@ -276,7 +305,7 @@ define([
         var result = undefined;
         var task = new AsyncTask();
         connect(task);
-        authenticate(task);
+        authenticate(task, 'picasa');
         task.onRun(function() {
             var headers = {
                 "Slug": name
@@ -331,7 +360,7 @@ define([
         var newChangeId = lastChangeId || 0;
         var task = new AsyncTask();
         connect(task);
-        authenticate(task);
+        authenticate(task, 'gdrive');
         task.onRun(function() {
             var nextPageToken = undefined;
             function retrievePageOfChanges() {
@@ -383,7 +412,7 @@ define([
         var task = new AsyncTask();
         connect(task);
         if(!skipAuth) {
-            authenticate(task);
+            authenticate(task, 'gdrive');
         }
         task.onRun(function() {
             function recursiveDownloadMetadata() {
@@ -439,7 +468,7 @@ define([
         task.timeout = ASYNC_TASK_LONG_TIMEOUT;
         connect(task);
         if(!skipAuth) {
-            authenticate(task);
+            authenticate(task, 'gdrive');
         }
         task.onRun(function() {
             function recursiveDownloadContent() {
@@ -512,7 +541,7 @@ define([
         var doc = undefined;
         var task = new AsyncTask();
         connect(task);
-        authenticate(task);
+        authenticate(task, 'gdrive');
         task.onRun(function() {
             gapi.drive.realtime.load(fileId, function(result) {
                 // onFileLoaded
@@ -552,14 +581,14 @@ define([
                     return;
                 }
                 else if(error.code === 401 || error.code === 403 || error.code == "token_refresh_required") {
-                    authenticated = false;
+                    permissionList = {};
                     errorMsg = "Access to Google account is not authorized.";
                     task.retry(new Error(errorMsg), 1);
                     return;
                 }
                 else if(error.code === 0 || error.code === -1) {
                     connected = false;
-                    authenticated = false;
+                    permissionList = {};
                     core.setOffline();
                     errorMsg = "|stopPublish";
                 }
@@ -670,7 +699,7 @@ define([
     googleHelper.uploadBlogger = function(blogUrl, blogId, postId, labelList, title, content, callback) {
         var task = new AsyncTask();
         connect(task);
-        authenticate(task);
+        authenticate(task, 'blogger');
         task.onRun(function() {
             var headers = {};
             var token = gapi.auth.getToken();

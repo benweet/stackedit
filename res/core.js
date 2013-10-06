@@ -124,6 +124,8 @@ define([
         utils.setInputValue("#textarea-settings-default-content", settings.defaultContent);
         // Commit message
         utils.setInputValue("#input-settings-publish-commit-msg", settings.commitMsg);
+        // Gdrive full access
+        utils.setInputChecked("#input-settings-gdrive-full-access", settings.gdriveFullAccess);
         // Template
         utils.setInputValue("#textarea-settings-publish-template", settings.template);
         // PDF template
@@ -158,6 +160,8 @@ define([
         newSettings.defaultContent = utils.getInputValue("#textarea-settings-default-content");
         // Commit message
         newSettings.commitMsg = utils.getInputTextValue("#input-settings-publish-commit-msg", event);
+        // Gdrive full access
+        newSettings.gdriveFullAccess = utils.getInputChecked("#input-settings-gdrive-full-access");
         // Template
         newSettings.template = utils.getInputTextValue("#textarea-settings-publish-template", event);
         // PDF template
@@ -576,6 +580,14 @@ define([
         $("#wmd-undo-button").append($('<i class="icon-reply">')).appendTo($btnGroupElt);
         $("#wmd-redo-button").append($('<i class="icon-forward">')).appendTo($btnGroupElt);
     };
+    
+    // Shows a dialog to force the user to click a button before opening oauth popup
+    var oauthRedirectCallback = undefined;
+    core.oauthRedirect = function(providerName, callback) {
+        oauthRedirectCallback = callback;
+        $('.oauth-redirect-provider').text(providerName);
+        $('.modal-oauth-redirect').modal("show");
+    };
 
     // Initialize multiple things and then fire eventMgr.onReady
     var isDocumentPanelShown = false;
@@ -855,6 +867,7 @@ define([
             trigger: 'hover',
             title: 'Thanks for supporting StackEdit by adding a backlink in your documents!'
         });
+        var tooltipOpen = false;
         $(".tooltip-usercustom-extension").tooltip({
             html: true,
             container: '.modal-settings',
@@ -864,10 +877,12 @@ define([
         }).click(function(e) {
             $(this).tooltip('show');
             $(document).on("click.tooltip-usercustom-extension", function(e) {
+                tooltipOpen = false;
                 $(".tooltip-usercustom-extension").tooltip('hide');
                 $(document).off("click.tooltip-usercustom-extension");
             });
-            e.stopPropagation();
+            !tooltipOpen && e.stopPropagation();
+            tooltipOpen = true;
         });
         _.each(document.querySelectorAll(".tooltip-template"), function(tooltipElt) {
             var $tooltipElt = $(tooltipElt);
@@ -880,10 +895,12 @@ define([
             }).click(function(e) {
                 $tooltipElt.tooltip('show');
                 $(document).on("click.tooltip-template", function(e) {
+                    tooltipOpen = false;
                     $(".tooltip-template").tooltip('hide');
                     $(document).off("click.tooltip-template");
                 });
-                e.stopPropagation();
+                !tooltipOpen && e.stopPropagation();
+                tooltipOpen = true;
             });
         });
 
@@ -897,6 +914,16 @@ define([
             backdrop: "static",
             keyboard: false,
             show: false
+        });
+        
+        // OAuth redirect dialog
+        $('.modal-oauth-redirect').modal({
+            backdrop: "static",
+            keyboard: false,
+            show: false
+        });
+        $('.action-oauth-redirect').click(function() {
+            oauthRedirectCallback();
         });
         
         // Load images

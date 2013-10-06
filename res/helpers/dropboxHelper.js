@@ -3,7 +3,8 @@ define([
     "underscore",
     "core",
     "eventMgr",
-    "classes/AsyncTask"
+    "classes/AsyncTask",
+    "config",
 ], function($, _, core, eventMgr, AsyncTask) {
 
     var client = undefined;
@@ -61,6 +62,11 @@ define([
                 return;
             }
             var immediate = true;
+            function oauthRedirect() {
+                core.oauthRedirect('Dropbox', function() {
+                    task.chain(localAuthenticate);
+                });
+            }
             function localAuthenticate() {
                 if(immediate === false) {
                     eventMgr.onMessage("Please make sure the Dropbox authorization popup is not blocked by your browser.");
@@ -68,7 +74,6 @@ define([
                     // credentials
                     task.timeout = ASYNC_TASK_LONG_TIMEOUT;
                 }
-                client.reset();
                 client.authenticate({
                     interactive: !immediate
                 }, function(error, client) {
@@ -81,7 +86,7 @@ define([
                     // If immediate did not work retry without immediate flag
                     if(immediate === true) {
                         immediate = false;
-                        task.chain(localAuthenticate);
+                        task.chain(oauthRedirect);
                         return;
                     }
                     // Error

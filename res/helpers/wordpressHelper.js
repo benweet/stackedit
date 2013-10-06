@@ -32,17 +32,22 @@ define([
         var authWindow = undefined;
         var intervalId = undefined;
         task.onRun(function() {
-            token = localStorage["wordpressToken"];
+            token = localStorage.wordpressToken;
             if(token !== undefined) {
                 task.chain();
                 return;
             }
-            eventMgr.onMessage("Please make sure the Wordpress authorization popup is not blocked by your browser.");
             var errorMsg = "Failed to retrieve a token from Wordpress.";
             // We add time for user to enter his credentials
             task.timeout = ASYNC_TASK_LONG_TIMEOUT;
             var code = undefined;
+            function oauthRedirect() {
+                core.oauthRedirect('WordPress', function() {
+                    task.chain(getCode);
+                });
+            }
             function getCode() {
+                eventMgr.onMessage("Please make sure the Wordpress authorization popup is not blocked by your browser.");
                 localStorage.removeItem("wordpressCode");
                 authWindow = utils.popupWindow('wordpress-oauth-client.html?client_id=' + WORDPRESS_CLIENT_ID, 'stackedit-wordpress-oauth', 960, 600);
                 authWindow.focus();
@@ -51,7 +56,7 @@ define([
                         clearInterval(intervalId);
                         authWindow = undefined;
                         intervalId = undefined;
-                        code = localStorage["wordpressCode"];
+                        code = localStorage.wordpressCode;
                         if(code === undefined) {
                             task.error(new Error(errorMsg));
                             return;
@@ -65,7 +70,7 @@ define([
                 $.getJSON(WORDPRESS_PROXY_URL + "authenticate/" + code, function(data) {
                     if(data.token !== undefined) {
                         token = data.token;
-                        localStorage["wordpressToken"] = token;
+                        localStorage.wordpressToken = token;
                         task.chain();
                     }
                     else {
@@ -73,7 +78,7 @@ define([
                     }
                 });
             }
-            task.chain(getCode);
+            task.chain(oauthRedirect);
         });
         task.onError(function() {
             if(intervalId !== undefined) {

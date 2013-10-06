@@ -63,6 +63,7 @@ define([
                 documentTitle: fileDesc.title,
                 documentMarkdown: fileDesc.content,
                 documentHTML: html,
+                frontMatter: fileDesc.frontMatter,
                 publishAttributes: publishAttributes
             });
         }
@@ -108,9 +109,10 @@ define([
 
         // Format the content
         var content = getPublishContent(publishFileDesc, publishAttributes, publishHTML);
+        var title = (publishFileDesc.frontMatter || {}).title || publishFileDesc.title;
 
         // Call the provider
-        publishAttributes.provider.publish(publishAttributes, publishFileDesc.title, content, function(error) {
+        publishAttributes.provider.publish(publishAttributes, publishFileDesc.frontMatter, title, content, function(error) {
             if(error !== undefined) {
                 var errorMsg = error.toString();
                 if(errorMsg.indexOf("|removePublish") !== -1) {
@@ -178,7 +180,7 @@ define([
         $(".publish-provider-name").text(provider.providerName);
 
         // Show/hide controls depending on provider
-        $('div[class*=" modal-publish-"]').hide().filter(".modal-publish-" + provider.providerId).show();
+        $('.modal-publish [class*=" modal-publish-"]').hide().filter(".modal-publish-" + provider.providerId).show();
 
         // Reset fields
         utils.resetModalInputs();
@@ -219,7 +221,8 @@ define([
         var fileDesc = fileMgr.currentFile;
         var html = previewHtml;
         var content = getPublishContent(fileDesc, publishAttributes, html);
-        provider.publish(publishAttributes, fileDesc.title, content, function(error) {
+        var title = (fileDesc.frontMatter && fileDesc.frontMatter.title) || fileDesc.title;
+        provider.publish(publishAttributes, fileDesc.frontMatter, title, content, function(error) {
             if(error === undefined) {
                 publishAttributes.provider = provider;
                 sharing.createLink(publishAttributes, function() {

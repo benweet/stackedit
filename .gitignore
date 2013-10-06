@@ -3,4 +3,4 @@ chrome-app*
 .settings
 node_modules
 Thumbs.db
-res/bower-libs
+public/res/bower-libs

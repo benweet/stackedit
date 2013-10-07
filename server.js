@@ -1,3 +1,12 @@
+ac8aab509fc34e298981297ada8346b166caf10a
+// Nodetime
+if(process.env.NODETIME_ACCOUNT_KEY) {
+  require('nodetime').profile({
+    accountKey: process.env.NODETIME_ACCOUNT_KEY,
+    appName: 'StackEdit'
+  });
+}
+
 var express = require('express');
 var app = express();
 

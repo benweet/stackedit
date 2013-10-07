@@ -1,7 +1,7 @@
 define([
     "classes/Extension",
-    "js-yaml",
-    ], function(Extension, yamlFrontMatterParserSettingsBlock) {
+    "yaml-js",
+    ], function(Extension, YAML) {
 
     var yamlFrontMatterParser = new Extension("yamlFrontMatterParser", "YAML front matter");
 
@@ -25,7 +25,7 @@ define([
             if ((yaml = results[2]) && (!fileDesc.frontMatter || fileDesc.frontMatter._yaml != yaml)) {
                 fileDesc.frontMatter = undefined;
                 try {
-                    fileDesc.frontMatter = jsyaml.load(yaml);
+                    fileDesc.frontMatter = YAML.parse(yaml);
                     fileDesc.frontMatter._yaml = yaml;
                 }
                 catch (e) {}

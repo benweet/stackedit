@@ -172,6 +172,7 @@ define([
         if(_.has(localStorage, 'settings')) {
             var settings = JSON.parse(localStorage.settings);
             settings.extensionSettings && settings.extensionSettings.markdownExtra && settings.extensionSettings.markdownExtra.extensions && settings.extensionSettings.markdownExtra.extensions.push('smartypants');
+            settings.sshProxy == 'http://stackedit-ssh-proxy.herokuapp.com/' && (settings.sshProxy = 'https://stackedit-ssh-proxy.herokuapp.com/');
             localStorage.settings = JSON.stringify(settings);
         }
         version = "v11";

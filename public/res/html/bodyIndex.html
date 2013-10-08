@@ -820,7 +820,11 @@
                     <p><b>NOTE:</b> You can use a
                     <a href="http://jekyllrb.com/docs/frontmatter/"
                     target="_blank">YAML front matter</a> to specify the title and the tags/labels of your publication.</p>
-                    <p><b>Interpreted variables:</b> <i>title, categories/tags</i></p>
+                    <p><b>Interpreted variables:</b></p>
+                    <ul>
+                        <li>title</li>
+                        <li>categories/tags</li>
+                    </ul>
 				</blockquote>
 			</div>
 			<div class="modal-footer">
@@ -967,7 +971,9 @@
 									    <label>
 										    <input type="checkbox" id="input-settings-gdrive-full-access" />
 										    Allow StackEdit to open any document in Google Drive
-										</label>
+										</label> <span class="help-block">You need to revoke any existing token in
+										<a href="https://www.google.com/settings/dashboard" target="_blank">Google Dashboard</a>
+										for this change to take effect.</span>
 									</div>
 								</div>
 							</div>

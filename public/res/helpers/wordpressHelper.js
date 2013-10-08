@@ -49,7 +49,7 @@ define([
             function getCode() {
                 eventMgr.onMessage("Please make sure the Wordpress authorization popup is not blocked by your browser.");
                 localStorage.removeItem("wordpressCode");
-                authWindow = utils.popupWindow('wordpress-oauth-client.html?client_id=' + WORDPRESS_CLIENT_ID, 'stackedit-wordpress-oauth', 960, 600);
+                authWindow = utils.popupWindow('html/wordpress-oauth-client.html?client_id=' + WORDPRESS_CLIENT_ID, 'stackedit-wordpress-oauth', 960, 600);
                 authWindow.focus();
                 intervalId = setInterval(function() {
                     if(authWindow.closed === true) {

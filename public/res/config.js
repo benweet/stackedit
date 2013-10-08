@@ -1,6 +1,6 @@
 var VERSION = "2.1.7";
 
-var MAIN_URL = "http://benweet.github.io/stackedit/";
+var MAIN_URL = "https://stackedit.io/";
 var GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1";
 var GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw";
 var GOOGLE_DRIVE_APP_ID = "241271498917";
@@ -21,11 +21,9 @@ var IMPORT_FILE_MAX_CONTENT_SIZE = 100000;
 var IMPORT_IMG_MAX_CONTENT_SIZE = 10000000;
 var TEMPORARY_FILE_INDEX = "file.tempIndex";
 var WELCOME_DOCUMENT_TITLE = "Welcome document";
-var DOWNLOAD_PROXY_URL = "http://stackedit-download-proxy.herokuapp.com/";
-var PICASA_PROXY_URL = "http://stackedit-picasa-proxy.herokuapp.com/";
-var WORDPRESS_CLIENT_ID = '3185';
-var WORDPRESS_PROXY_URL = "http://stackedit-wordpress-proxy.herokuapp.com/";
-var SSH_PROXY_URL = "http://stackedit-ssh-proxy.herokuapp.com/";
+var DOWNLOAD_PROXY_URL = "https://stackedit-download-proxy.herokuapp.com/";
+var PICASA_PROXY_URL = "https://stackedit-picasa-proxy.herokuapp.com/";
+var SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/";
 var HTMLTOPDF_URL = "http://benweet.insomnia247.nl/stackedit-htmltopdf/";
 
 // Use by Google's client.js
@@ -37,26 +35,38 @@ function runDelayedFunction() {
 }
 
 // Site dependent
-var BASE_URL = "http://localhost/stackedit/";
+var BASE_URL = "http://localhost/";
 var GOOGLE_CLIENT_ID = '241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com';
 var GITHUB_CLIENT_ID = 'e47fef6055344579799d';
-var GATEKEEPER_URL = "http://stackedit-gatekeeper-localhost.herokuapp.com/";
-var TUMBLR_PROXY_URL = "http://stackedit-tumblr-proxy-local.herokuapp.com/";
+var GATEKEEPER_URL = "https://stackedit-gatekeeper-localhost.herokuapp.com/";
+var TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-local.herokuapp.com/";
+var WORDPRESS_CLIENT_ID = '23361';
+var WORDPRESS_PROXY_URL = "https://stackedit-io-wordpress-proxy.herokuapp.com/";
+
+if(location.hostname.indexOf("stackedit.io") === 0) {
+    BASE_URL = MAIN_URL;
+    GOOGLE_CLIENT_ID = '241271498917-t4t7d07qis7oc0ahaskbif3ft6tk63cd.apps.googleusercontent.com';
+    GITHUB_CLIENT_ID = '710fc67886ab1ae8fee6';
+    GATEKEEPER_URL = "https://stackedit-io-gatekeeper.herokuapp.com/";
+    TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy.herokuapp.com/";
+}
 
 if(location.hostname.indexOf("benweet.github.io") === 0) {
-    BASE_URL = MAIN_URL;
+    BASE_URL = 'http://benweet.github.io/stackedit/';
     GOOGLE_CLIENT_ID = '241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com';
     GITHUB_CLIENT_ID = 'fa0d09514da8377ee32e';
-    GATEKEEPER_URL = "http://stackedit-gatekeeper.herokuapp.com/";
-    TUMBLR_PROXY_URL = "http://stackedit-tumblr-proxy.herokuapp.com/";
+    GATEKEEPER_URL = "https://stackedit-gatekeeper.herokuapp.com/";
+    TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy.herokuapp.com/";
+    WORDPRESS_CLIENT_ID = '3185';
+    WORDPRESS_PROXY_URL = "https://stackedit-wordpress-proxy.herokuapp.com/";
 }
 
 if(location.hostname.indexOf("benweet.insomnia247.nl") === 0) {
     BASE_URL = "http://benweet.insomnia247.nl/stackedit/";
     GOOGLE_CLIENT_ID = '241271498917-52hae7a08hv7ltenv7km8h7lghno9sk3.apps.googleusercontent.com';
     GITHUB_CLIENT_ID = 'd2943d6074b2d9c4a830';
-    GATEKEEPER_URL = "http://stackedit-gatekeeper-insomnia.herokuapp.com/";
-    TUMBLR_PROXY_URL = "http://stackedit-tumblr-proxy-beta.herokuapp.com/";
+    GATEKEEPER_URL = "https://stackedit-gatekeeper-insomnia.herokuapp.com/";
+    TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-beta.herokuapp.com/";
 }
 
 var THEME_LIST = {

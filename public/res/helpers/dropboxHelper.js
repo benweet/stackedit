@@ -39,8 +39,8 @@ define([
                     key: DROPBOX_APP_KEY,
                     secret: DROPBOX_APP_SECRET
                 });
-                client.authDriver(new Dropbox.Drivers.Popup({
-                    receiverUrl: BASE_URL + "dropbox-oauth-receiver.html",
+                client.authDriver(new Dropbox.AuthDriver.Popup({
+                    receiverUrl: BASE_URL + "html/dropbox-oauth-receiver.html",
                     rememberUser: true
                 }));
                 task.chain();
@@ -74,11 +74,14 @@ define([
                     // credentials
                     task.timeout = ASYNC_TASK_LONG_TIMEOUT;
                 }
+                else {
+                    client.reset();
+                }
                 client.authenticate({
                     interactive: !immediate
                 }, function(error, client) {
                     // Success
-                    if(client.authState === Dropbox.Client.DONE) {
+                    if(client.isAuthenticated() === true) {
                         authenticated = true;
                         task.chain();
                         return;

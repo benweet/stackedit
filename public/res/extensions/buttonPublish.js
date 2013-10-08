@@ -9,21 +9,21 @@ define([
     // buttonPublish.settingsBlock = '<p>Adds a "Publish document" button in the
     // navigation bar.</p>';
 
-    var button = undefined;
+    var $button = undefined;
     var currentFileDesc = undefined;
     var publishRunning = false;
     var hasPublications = false;
     var isOffline = false;
     // Enable/disable the button
     function updateButtonState() {
-        if(button === undefined) {
+        if($button === undefined) {
             return;
         }
         if(publishRunning === true || hasPublications === false || isOffline === true) {
-            button.addClass("disabled");
+            $button.addClass("disabled");
         }
         else {
-            button.removeClass("disabled");
+            $button.removeClass("disabled");
         }
     }
 
@@ -39,8 +39,7 @@ define([
         }, crel('i', {
             class: 'icon-share'
         }));
-        var $button = $(button);
-        $button.click(function() {
+        $button = $(button).click(function() {
             if(!$button.hasClass("disabled")) {
                 publisher.publish();
             }

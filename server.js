@@ -26,4 +26,7 @@ app.use(express.compress());
 app.use(express.static(__dirname + '/public'));
 
 // Listen on port 3000
-app.listen(process.env.PORT || 3000);
+var port = process.env.PORT || 3000;
+app.listen(port, null, function() {
+    console.log('Server started: http://localhost:' + port);
+});

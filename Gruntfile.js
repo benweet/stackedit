@@ -249,10 +249,11 @@ module.exports = function(grunt) {
         // List resources and inject them in cache.manifest
         var resFolderList = [
             'public/res-min',
-            'public/lib/MathJax/extensions',
-            'public/lib/MathJax/fonts/HTML-CSS/TeX/woff',
-            'public/lib/MathJax/jax/output/HTML-CSS/fonts/TeX',
-            'public/lib/MathJax/jax/output/HTML-CSS/fonts/STIX'
+            'public/libs/dictionaries',
+            'public/libs/MathJax/extensions',
+            'public/libs/MathJax/fonts/HTML-CSS/TeX/woff',
+            'public/libs/MathJax/jax/output/HTML-CSS/fonts/TeX',
+            'public/libs/MathJax/jax/output/HTML-CSS/fonts/STIX'
         ];
         grunt.task.run('list-res:' + resFolderList.join(':'));
         grunt.task.run('string-replace:cache-manifest');

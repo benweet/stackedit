@@ -27,7 +27,7 @@ requirejs.config({
         'mousetrap-record': 'bower-libs/mousetrap/plugins/record/mousetrap-record',
         toMarkdown: 'bower-libs/to-markdown/src/to-markdown',
         text: 'bower-libs/requirejs-text/text',
-        mathjax: '../lib/MathJax/MathJax.js?config=TeX-AMS_HTML',
+        mathjax: '../libs/MathJax/MathJax.js?config=TeX-AMS_HTML',
         bootstrap: 'bower-libs/bootstrap/dist/js/bootstrap',
         requirejs: 'bower-libs/requirejs/require',
         'google-code-prettify': 'bower-libs/google-code-prettify/src/prettify',
@@ -52,13 +52,12 @@ requirejs.config({
         'ace/requirejs/text': 'libs/ace_text',
         'ace/commands/default_commands': 'libs/ace_commands',
         'require-css': 'bower-libs/require-css/css',
-        Typo: 'bower-libs/Typo.js',
-        'typo-js': 'bower-libs/Typo.js/typo/typo',
         xregexp: 'bower-libs/xregexp/xregexp-all',
-        'Typo.js': 'bower-libs/Typo.js',
         yaml: 'bower-libs/yaml.js',
         'yaml.js': 'bower-libs/yaml.js',
-        'yaml-js': 'bower-libs/yaml.js/bin/yaml'
+        'yaml-js': 'bower-libs/yaml.js/bin/yaml',
+        Typo: 'bower-libs/Typo.js',
+        'Typo.js': 'bower-libs/Typo.js'
     },
     shim: {
         underscore: {
@@ -75,9 +74,6 @@ requirejs.config({
         },
         mousetrap: {
             exports: 'Mousetrap'
-        },
-        'typo-js': {
-            exports: 'Typo'
         },
         'yaml-js': {
             exports: 'YAML'

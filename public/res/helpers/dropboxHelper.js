@@ -31,7 +31,7 @@ define([
                 return;
             }
             $.ajax({
-                url: "lib/dropbox.min.js",
+                url: "libs/dropbox.min.js",
                 dataType: "script",
                 timeout: AJAX_TIMEOUT
             }).done(function() {

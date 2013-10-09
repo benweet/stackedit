@@ -1624,6 +1624,7 @@ ul ul,ol ul,ul ol,ol ol{margin-bottom:15px}
 .ace-tm .ace_code{font-family:Menlo,Consolas,"Courier New",monospace;color:#666666;background-color:rgba(136,136,136,0.1)}
 .ace-tm .ace_code_block{font-family:Menlo,Consolas,"Courier New",monospace;color:#333333}
 .ace-tm .ace_description{color:#666666}
+.ace-tm .ace_constant{color:#545454}
 .ace-tm .ace_marker-layer .misspelled{position:absolute;z-index:-2;border-bottom:1px dotted red;margin-bottom:-1px}
 .ace_search{background-color:#d9dfe3;border:6px solid #f0f3f4;border-top:0;padding:10px 15px 5px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;min-width:318px}
 .ace_search .ace_search_field{width:200px}

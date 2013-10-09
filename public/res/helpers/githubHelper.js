@@ -31,7 +31,7 @@ define([
                 return;
             }
             $.ajax({
-                url: "lib/github.js",
+                url: "libs/github.js",
                 dataType: "script",
                 timeout: AJAX_TIMEOUT
             }).done(function() {

@@ -24,7 +24,7 @@ define([
                    'res-min/themes/default.css" />\n',
                    '<script type="text/javascript" src="',
                    MAIN_URL,
-                   'lib/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n',
+                   'libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n',
                    '</head>\n',
                    '<body><div class="container"><%= documentHTML %></div></body>\n',
                    '</html>'
@@ -43,7 +43,7 @@ define([
 	               '</script>\n',
                    '<script type="text/javascript" src="',
                    MAIN_URL,
-                   'lib/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n',
+                   'libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n',
                    '</head>\n',
                    '<body class="pdf"><%= documentHTML %></body>\n',
                    '</html>'

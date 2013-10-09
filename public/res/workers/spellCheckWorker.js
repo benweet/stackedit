@@ -1,8 +1,11 @@
 var dictionary = undefined;
 
-self.init = function(typoJS, lang, aff, dic) {
+self.init = function(typoJS, LZString, lang, aff, dic) {
     eval([
         typoJS,
+        LZString,
+        'aff = LZString.decompressFromUTF16(aff);',
+        'dic = LZString.decompressFromUTF16(dic);',
         'dictionary = new Typo(lang, aff, dic);'
         ].join('\n'));
 };

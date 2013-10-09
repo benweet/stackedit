@@ -4,29 +4,50 @@ define([
     "crel",
     "utils",
     "classes/Extension",
-    "typo-js",
     "xregexp",
     "text!bower-libs/Typo.js/typo/typo.js",
+    "text!bower-libs/lz-string/libs/lz-string-1.3.3.js",
     "text!workers/spellCheckWorker.js",
-    "text!dictionaries/en_US.dic",
-    "text!dictionaries/en_US.aff",
-    "text!html/tocSettingsBlock.html",
-    ], function($, _, crel, utils, Extension, Typo, XRegExp, typoJS, spellCheckWorkerJS, dic, aff, tocSettingsBlockHTML) {
+    "text!html/spellCheckSettingsBlock.html",
+    ], function($, _, crel, utils, Extension, XRegExp, typoJS, LZStringJS, spellCheckWorkerJS, spellCheckSettingsBlockHTML) {
 
     var spellCheck = new Extension("spellCheck", "Spell Check", true, true, true);
-    spellCheck.settingsBlock = tocSettingsBlockHTML;
+    spellCheck.settingsBlock = spellCheckSettingsBlockHTML;
+    spellCheck.defaultConfig = {
+        locale: "en_US",
+    };
+
+    spellCheck.onLoadSettings = function() {
+        utils.setInputValue("#select-spell-check-locale", spellCheck.config.locale);
+    };
+
+    spellCheck.onSaveSettings = function(newConfig, event) {
+        newConfig.locale = utils.getInputValue("#select-spell-check-locale");
+    };
 
     // Create a web worker
     var worker = new Worker('res/worker.js');
     worker.postMessage(spellCheckWorkerJS);
-    worker.postMessage(JSON.stringify(['init', typoJS, 'en_US', aff, dic]));
+
+    var isInited = false;
+    spellCheck.onInit = function() {
+        require([
+            'text!../libs/dictionaries/' + spellCheck.config.locale + '.dic.lz',
+            'text!../libs/dictionaries/' + spellCheck.config.locale + '.aff.lz',
+            ], function(dic, aff) {
+            worker.postMessage(JSON.stringify(['init', typoJS, LZStringJS, spellCheck.config.locale, aff, dic]));
+            isInited = true;
+            start();
+        });
+    };
 
     var aceEditor = undefined;
     var wordRegExp = XRegExp('\\p{L}+(?:\'\\p{L}+)*', 'g');
     var markers = [];
     var timeoutId = undefined;
-    
+
     var currentRowCheck = undefined;
+
     function rowCheck(rowIndex) {
         var tokens = aceEditor.session.getTokens(rowIndex).slice();
         var tokenOffset = 0;
@@ -53,7 +74,7 @@ define([
             }
             worker.onmessage = function(e) {
                 var message = JSON.parse(e.data);
-                if(message[0] != 'check') {
+                if (message[0] != 'check') {
                     return;
                 }
                 var checkedWords = message[1];
@@ -91,6 +112,9 @@ define([
     }
 
     function start() {
+        if(isInited === false || aceEditor === undefined) {
+            return;
+        }
         var savedMarkers = [];
         _.each(markers, function(marker) {
             if (marker.range.start.row < rowIndex) {
@@ -103,7 +127,7 @@ define([
         markers = savedMarkers;
         timeoutId = setTimeout(check, 700);
     }
-    
+
     var dropdownElt = undefined;
     var $dropdownElt = undefined;
     var liEltTmpl = [
@@ -115,13 +139,14 @@ define([
         ].join('');
 
     var currentWordSuggest = undefined;
+
     function wordSuggest(marker) {
         var word = aceEditor.session.getTextRange(marker.range);
         var self = this;
         self.run = function() {
             worker.onmessage = function(e) {
                 var message = JSON.parse(e.data);
-                if(message[0] != 'suggest') {
+                if (message[0] != 'suggest') {
                     return;
                 }
                 var suggestions = message[1];
@@ -153,7 +178,6 @@ define([
         stop();
         start();
     };
-
 
     spellCheck.onAceCreated = function(aceEditorParam) {
         aceEditor = aceEditorParam;

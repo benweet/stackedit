@@ -60,7 +60,7 @@ define([
                 title: "Menu",
                 content: [
                     "<p>Use the <i class='icon-provider-stackedit'></i> menu to synchronize your document on <i class='icon-provider-gdrive'></i> <code>Google Drive</code> or <i class='icon-provider-dropbox'></i> <code>Dropbox</code>.</p>",
-                    "Use also this menu to publish your document on <i class='icon-provider-github'></i> <code>GitHub</code>, <i class='icon-provider-blogger'></i> <code>Blogger</code>, <i class='icon-provider-wordpress'></i> <code>WordPress</code>..."
+                    "Use also this menu to publish your document on <i class='icon-provider-github'></i> <code>GitHub</code>, <i class='icon-provider-blogger'></i> <code>Blogger</code>..."
                 ].join(''),
                 placement: "right",
                 reflex: true,
@@ -75,7 +75,7 @@ define([
             {
                 element: "#extension-buttons .button-publish",
                 title: "Update publications",
-                content: "Once published, use the <i class='icon-share'></i> <code>Publish</code> button to update your publications.",
+                content: "Once published, use the <i class='icon-share'></i> <code>Publish</code> button to update your publication.",
                 placement: "bottom",
                 reflex: true,
             },

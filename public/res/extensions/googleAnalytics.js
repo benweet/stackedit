@@ -21,7 +21,7 @@ define([
                 gaUrl = "/u/ga_debug.js";
             }
             $.ajax({
-                url: "http://www.google-analytics.com" + gaUrl,
+                url: "https://ssl.google-analytics.com" + gaUrl,
                 dataType: "script"
             }).done(function() {
                 isLoaded = true;

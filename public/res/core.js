@@ -169,6 +169,9 @@ define([
         // SSH proxy
         newSettings.sshProxy = utils.checkUrl(utils.getInputTextValue("#input-settings-ssh-proxy", event), true);
 
+        // Save shortcuts settings
+        shortcutMgr.saveSettings(newSettings);
+
         // Save extension settings
         newSettings.extensionSettings = {};
         eventMgr.onSaveSettings(newSettings.extensionSettings, event);
@@ -311,6 +314,10 @@ define([
             stateManagement__enabled: false,
             center__minWidth: 200,
             center__minHeight: 200,
+            fxSettings: {
+                easing: "easeInOutQuad",
+                duration: 350
+            },
             onopen: function() {
                 setPanelVisibility();
                 setPreviewButtonsVisibility();
@@ -855,14 +862,14 @@ define([
 
         // Tooltips
         $(".tooltip-lazy-rendering").tooltip({
-            container: '.modal-settings',
+            container: '.modal-settings .modal-dialog',
             placement: 'right',
             trigger: 'hover',
             title: 'Disable preview rendering while typing in order to offload CPU. Refresh preview after 500 ms of inactivity.'
         });
         $(".tooltip-default-content").tooltip({
             html: true,
-            container: '.modal-settings',
+            container: '.modal-settings .modal-dialog',
             placement: 'right',
             trigger: 'hover',
             title: 'Thanks for supporting StackEdit by adding a backlink in your documents!'
@@ -870,7 +877,7 @@ define([
         var tooltipOpen = false;
         $(".tooltip-usercustom-extension").tooltip({
             html: true,
-            container: '.modal-settings',
+            container: '.modal-settings .modal-dialog',
             placement: 'right',
             trigger: 'manual',
             title: settingsUserCustomExtensionTooltipHTML
@@ -888,7 +895,7 @@ define([
             var $tooltipElt = $(tooltipElt);
             $tooltipElt.tooltip({
                 html: true,
-                container: $tooltipElt.parents('.modal'),
+                container: $tooltipElt.parents('.modal-dialog'),
                 placement: 'right',
                 trigger: 'manual',
                 title: settingsTemplateTooltipHTML

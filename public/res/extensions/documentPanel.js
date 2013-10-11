@@ -186,13 +186,6 @@ define([
         $filterInputElt.bind("propertychange keyup input paste", function() {
             filterFiles($filterInputElt.val());
         });
-        
-        // Clear button
-        $(panelElt.querySelector('.search-bar .close')).click(function() {
-            $filterInputElt.val('');
-            filterFiles('');
-            $filterInputElt.focus();
-        });
     };
 
     return documentPanel;

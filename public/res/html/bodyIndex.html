@@ -146,7 +146,6 @@
 		<div class="input-group">
 			<span class="input-group-addon"><i class="icon-search"></i></span><input
 				type="text" class="form-control"></input>
-			<button type="button" class="close" title="clear">&times;</button>
 			<div class="input-group-btn">
 				<a data-toggle="modal" data-target=".modal-document-manager"
 					class="btn btn-link" title="Manage documents"><i
@@ -643,12 +642,7 @@
 							for="input-publish-ssh-password">Password</label>
 						<div class="col-lg-7">
 							<input type="password" id="input-publish-ssh-password"
-								placeholder="password" class="form-control"> <span
-								class="help-block"> Passwords are transmitted in clear,
-								unless you are hosting your own <a target="_blank"
-								href="https://github.com/benweet/stackedit-ssh-proxy">SSH
-									proxy</a>.
-							</span>
+								placeholder="password" class="form-control">
 						</div>
 					</div>
 					<div class="form-group modal-publish-github">
@@ -820,11 +814,7 @@
                     <p><b>NOTE:</b> You can use a
                     <a href="http://jekyllrb.com/docs/frontmatter/"
                     target="_blank">YAML front matter</a> to specify the title and the tags/labels of your publication.</p>
-                    <p><b>Interpreted variables:</b></p>
-                    <ul>
-                        <li>title</li>
-                        <li>categories/tags</li>
-                    </ul>
+                    <p><b>Interpreted variables:</b> <i>title, categories/tags</i></p>
 				</blockquote>
 			</div>
 			<div class="modal-footer">

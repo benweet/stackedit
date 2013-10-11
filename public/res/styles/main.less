@@ -134,6 +134,14 @@ body {
 	user-select: none;
 }
 
+a {
+    .transition(~"background-color ease-in-out .15s, color ease-in-out .15s, border-color ease-in-out .15s");
+}
+
+.close {
+    .transition(~"opacity ease-in-out .15s");
+}
+
 .list-group .nav {
 	border-left: 10px solid @blockquote-border-color;
 	margin-left: 10px;
@@ -160,6 +168,7 @@ body {
  
 .btn {
 	padding: 8px 11px;
+	.transition(~"background-color ease-in-out .15s, color ease-in-out .15s, z-index ease-in-out .15s");
 } 
 
 .btn-default:hover {
@@ -364,10 +373,7 @@ body {
 .menu-panel {
 	width: @menu-panel-width !important;
 	margin-left: (-@menu-panel-width - 25);
-	-webkit-transition: margin-left 0.35s ease;
-	-moz-transition: margin-left 0.35s ease;
-	-o-transition: margin-left 0.35s ease;
-	transition: margin-left 0.35s ease;
+    .transition(~"margin-left ease-in-out 0.35s");
 	.sub-menu {
 		background-color: @list-group-bg;
 	}
@@ -385,10 +391,7 @@ body {
 		margin-top: 6px;
 		z-index: -1;
 		padding: 2px 27px 2px 50px;
-    	-webkit-transition: padding-right 0.35s ease;
-        -moz-transition: padding-right 0.35s ease;
-        -o-transition: padding-right 0.35s ease;
-        transition: padding-right 0.35s ease;
+        .transition(~"background-color ease-in-out .15s, z-index ease-in-out .15s, padding-right ease-in-out 0.35s");
         &:hover {
             padding-right: 17px;
         }
@@ -399,7 +402,7 @@ body {
 		border-right: 5px solid @panel-border-color;
 		& > .nav > li > a {
 		    &:hover, &:active {
-        		background-color: @panel-bg;
+        		background-color: inherit;
 		    }
 		}
 	}
@@ -409,10 +412,7 @@ body {
 	right: 0;
 	width: @document-panel-width !important;
 	margin-right: (-@document-panel-width - 30);
-	-webkit-transition: margin-right 0.35s ease;
-    -moz-transition: margin-right 0.35s ease;
-    -o-transition: margin-right 0.35s ease;
-    transition: margin-right 0.35s ease;
+    .transition(~"margin-right ease-in-out 0.35s");
 	&.in {
         margin-right: 0;
     }
@@ -427,10 +427,7 @@ body {
 		margin-top: 6px;
 		padding: 7px 50px 7px 20px;
 		z-index: -1;
-    	-webkit-transition: padding-left 0.35s ease;
-        -moz-transition: padding-left 0.35s ease;
-        -o-transition: padding-left 0.35s ease;
-        transition: padding-left 0.35s ease;
+        .transition(~"background-color ease-in-out .15s, z-index ease-in-out .15s, padding-left ease-in-out 0.35s");
         &:hover {
             padding-left: 10px;
         }
@@ -455,18 +452,6 @@ body {
 		border: 1px solid @primary-bg-light;
 		border-top: 0;
 		border-radius: 6px;
-		.form-control {
-			padding: 8px 30px 8px 12px;
-		}
-		.close {
-		    position: absolute;
-		    float: none;
-			line-height: 34px;
-		    margin: 2px 0 2px -30px;
-			padding: 0 8px;
-			font-weight: normal;
-			height: 34px;
-		}
 	}		
 	.list-group-item {
 		margin: 0;
@@ -792,17 +777,13 @@ body {
     font-size: 14px !important;
 	.btn {
 		float: none;
-		i {
-			color: fade(@primary-color-light, 30%);
-		}
+		color: fade(@primary-color-light, 30%);
 		&:hover,
 		&:focus,
 		&:active,
 		&.active {
 			background-color: mix(@primary-bg-lighter, @primary-bg, 50%);
-			i {
-				color: @primary-color-light
-			}
+			color: @primary-color-light
 		}
 	}
 	.ui-layout-toggler {
@@ -1044,15 +1025,40 @@ ul,ol {
 }
 
 .ace_search {
-	background-color: @primary-bg;
+	background-color: @primary-bg-light;
 	border: 6px solid @panel-bg;
 	border-top: 0;
 	padding: 10px 15px 5px;
 	font-family: @font-family-base;
 	min-width: 318px;
-	.ace_search_field {
-	    width: 200px;
+	.ace_search_form, .ace_replace_form {
+	    margin-bottom: 10px;
 	}
+	.ace_search_field {
+	    width: 185px;
+	}
+	.ace_search_field, .ace_searchbtn, .ace_replacebtn {
+        height: @input-height-small;
+        padding: 0 @padding-base-horizontal;
+        font-size: @font-size-base;
+        line-height: @line-height-base;
+        color: @input-color;
+        vertical-align: middle;
+        background-color: @input-bg;
+        .box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+	}
+	.ace_searchbtn {
+        background-image: none;
+        font-family: "fontello";
+        width: auto;
+        font-size: 16px;
+        &.next:before {
+            content: '\e880';
+        }
+        &.prev:before {
+            content: '\e87f';
+        }
+    }
 	.ace_replacebtn {
         padding: 0 4px;
     }
@@ -1063,6 +1069,7 @@ ul,ol {
         font-weight: @close-font-weight;
         text-shadow: @close-text-shadow;
         .opacity(.3);
+        .transition(~"opacity ease-in-out .15s");
         &:before {
             content: '\d7';
         }

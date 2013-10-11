@@ -279,5 +279,15 @@ define([
         });
     };
 
+    shortcutMgr.saveSettings = function(newSettings) {
+        newSettings.shortcuts = {};
+        _.each(shortcuts, function(shortcut, key) {
+            var newShortcut = {};
+            newShortcut.win = utils.getInputValue("#input-settings-shortcut-" + shortcut.name);
+            newShortcut.mac = utils.getInputValue("#input-settings-shortcut-" + shortcut.name + '-mac');
+            newSettings.shortcuts[key] = newShortcut;
+        });
+    };
+
     return shortcutMgr;
 });

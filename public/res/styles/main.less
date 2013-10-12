@@ -171,16 +171,23 @@ a {
 	.transition(~"background-color ease-in-out .15s, color ease-in-out .15s, z-index ease-in-out .15s");
 } 
 
-.btn-default:hover {
+.btn-default:hover,
+.btn-default:focus,
+.btn-default:active {
 	background-color: @btn-default-hover-bg;
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
 	color: @btn-primary-color;
 	background-color: @btn-primary-hover-bg;
 }
 
-.btn-success:hover, .open .dropdown-toggle.btn-success {
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.open .dropdown-toggle.btn-success {
 	color: @btn-success-color;
 	background-color: @bg-navbar-hover !important; // important to override .nav > li > a:hover
 }

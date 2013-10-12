@@ -261,6 +261,14 @@ define([
             shortcut.exec && aceEditor.commands.addCommand(_.pick(shortcut, 'name', 'bindKey', 'exec', 'readOnly', 'multiSelectAction'));
         });
     };
+    
+    shortcutMgr.getPagedownKeyStrokes = function() {
+        return _.chain(shortcuts).where({
+            isPageDown: true
+        }).map(function(shortcut) {
+            return [shortcut.name, shortcut.bindKey];
+        }).object().value();
+    };
 
     shortcutMgr.addSettingEntries = function() {
         var shortcutEntries = _.reduce(shortcuts, function(result, shortcut) {

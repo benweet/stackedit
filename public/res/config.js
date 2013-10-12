@@ -24,7 +24,7 @@ var WELCOME_DOCUMENT_TITLE = "Welcome document";
 var DOWNLOAD_PROXY_URL = "https://stackedit-download-proxy.herokuapp.com/";
 var PICASA_PROXY_URL = "https://stackedit-picasa-proxy.herokuapp.com/";
 var SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/";
-var HTMLTOPDF_URL = "http://benweet.insomnia247.nl/stackedit-htmltopdf/";
+var HTMLTOPDF_URL = "https://stackedit-htmltopdf.herokuapp.com/";
 
 // Use by Google's client.js
 var delayedFunction = undefined;

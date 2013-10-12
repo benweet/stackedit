@@ -473,7 +473,9 @@ define([
         }
 
         if(!lightMode) {
-            editor = new Markdown.Editor(converter);
+            editor = new Markdown.Editor(converter, undefined, {
+                keyStrokes: shortcutMgr.getPagedownKeyStrokes()
+            });
             // Custom insert link dialog
             editor.hooks.set("insertLinkDialog", function(callback) {
                 core.insertLinkCallback = callback;

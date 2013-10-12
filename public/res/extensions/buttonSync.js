@@ -4,21 +4,25 @@ define([
     "crel",
     "utils",
     "classes/Extension",
+    "mousetrap",
     "text!html/buttonSyncSettingsBlock.html",
-], function($, _, crel, utils, Extension, buttonSyncSettingsBlockHTML) {
+], function($, _, crel, utils, Extension, mousetrap, buttonSyncSettingsBlockHTML) {
 
-    var buttonSync = new Extension("buttonSync", 'Button "Synchronize"');
+    var buttonSync = new Extension("buttonSync", 'Button "Synchronize"', false, true);
     buttonSync.settingsBlock = buttonSyncSettingsBlockHTML;
     buttonSync.defaultConfig = {
-        syncPeriod: 180000
+        syncPeriod: 180000,
+        syncShortcut: 'mod+s'
     };
 
     buttonSync.onLoadSettings = function() {
         utils.setInputValue("#input-sync-period", buttonSync.config.syncPeriod);
+        utils.setInputValue("#input-sync-shortcut", buttonSync.config.syncShortcut);
     };
 
     buttonSync.onSaveSettings = function(newConfig, event) {
         newConfig.syncPeriod = utils.getInputIntValue("#input-sync-period", event, 0);
+        newConfig.syncShortcut = utils.getInputTextValue("#input-sync-shortcut", event);
     };
 
     var synchronizer = undefined;
@@ -45,12 +49,10 @@ define([
     // Run sync periodically
     var lastSync = 0;
     buttonSync.onPeriodicRun = function() {
-        if(viewerMode === true || !buttonSync.config.syncPeriod || lastSync + buttonSync.config.syncPeriod > utils.currentTime) {
+        if(!buttonSync.config.syncPeriod || lastSync + buttonSync.config.syncPeriod > utils.currentTime) {
             return;
         }
-        if(synchronizer.sync() === true) {
-            lastSync = utils.currentTime;
-        }
+        synchronizer.sync() && (lastSync = utils.currentTime);
     };
 
     buttonSync.onCreateButton = function() {
@@ -60,9 +62,10 @@ define([
         }, crel('i', {
             class: 'icon-refresh'
         }));
-        $button = $(button).click(function() {
-            if(!$(this).hasClass("disabled")) {
-                synchronizer.sync();
+        $button = $(button);
+        $button.click(function() {
+            if(!$button.hasClass("disabled")) {
+                synchronizer.sync() && (lastSync = utils.currentTime);
             }
         });
         return button;
@@ -83,6 +86,13 @@ define([
     buttonSync.onOfflineChanged = function(isOfflineParameter) {
         isOffline = isOfflineParameter;
         updateButtonState();
+    };
+    
+    buttonSync.onReady = function() {
+        mousetrap.bind(buttonSync.config.syncShortcut, function(e) {
+            synchronizer.sync() && (lastSync = utils.currentTime);
+            e.preventDefault();
+        });
     };
 
     return buttonSync;

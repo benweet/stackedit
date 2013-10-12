@@ -826,18 +826,17 @@ define([
                 var reader = new FileReader();
                 reader.onload = (function(importedFile) {
                     return function(e) {
-                        var content = e.target.result;
                         try {
-                            newLocalStorage = JSON.parse(content);
-                            if(!newLocalStorage.version) {
+                            newLocalStorage = JSON.parse(e.target.result);
+                            if(/^v/.test(newLocalStorage.version) === false) {
                                 throw 1;
                             }
                             $('.modal-import-docs-settings').modal('show');
                         }
                         catch(e) {
                             eventMgr.onError("Wrong format: " + importedFile.name);
-                            return;
                         }
+                        $("#input-file-import-docs-settings").val('');
                     };
                 })(file);
                 reader.readAsText(file);

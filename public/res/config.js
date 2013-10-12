@@ -1,4 +1,4 @@
-var VERSION = "2.1.7";
+var VERSION = "2.2.0";
 
 var MAIN_URL = "https://stackedit.io/";
 var GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1";

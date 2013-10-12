@@ -1440,9 +1440,9 @@ a{-webkit-transition:background-color ease-in-out .15s,color ease-in-out .15s,bo
 .list-group-item.active:hover{background-color:#888888}
 .move-to-front{z-index:1050 !important}
 .btn{padding:8px 11px;-webkit-transition:background-color ease-in-out .15s,color ease-in-out .15s,z-index ease-in-out .15s;transition:background-color ease-in-out .15s,color ease-in-out .15s,z-index ease-in-out .15s}
-.btn-default:hover{background-color:rgba(0,0,0,0.05)}
-.btn-primary:hover{color:#ffffff;background-color:#747474}
-.btn-success:hover,.open .dropdown-toggle.btn-success{color:#545454;background-color:#f1f1f1 !important}
+.btn-default:hover,.btn-default:focus,.btn-default:active{background-color:rgba(0,0,0,0.05)}
+.btn-primary:hover,.btn-primary:focus,.btn-primary:active{color:#ffffff;background-color:#747474}
+.btn-success:hover,.btn-success:focus,.btn-success:active,.open .dropdown-toggle.btn-success{color:#545454;background-color:#f1f1f1 !important}
 .btn-group>.btn+.dropdown-toggle{padding-right:11px;padding-left:11px}
 .form-inline .col-lg-1{width:8.333333333333332%}
 .form-inline .col-lg-2{width:16.666666666666664%}

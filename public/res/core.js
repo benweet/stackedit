@@ -814,11 +814,12 @@ define([
             applyTheme(this.value);
         });
 
-        // Import settings
-        $(".action-import-settings").click(function(e) {
-            $("#input-file-import-settings").click();
+        // Import docs and settings
+        $(".action-import-docs-settings").click(function(e) {
+            $("#input-file-import-docs-settings").click();
         });
-        $("#input-file-import-settings").change(function(evt) {
+        var newLocalStorage = undefined;
+        $("#input-file-import-docs-settings").change(function(evt) {
             var files = (evt.dataTransfer || evt.target).files;
             $(".modal-settings").modal("hide");
             _.each(files, function(file) {
@@ -827,23 +828,34 @@ define([
                     return function(e) {
                         var content = e.target.result;
                         try {
-                            JSON.parse(content);
+                            newLocalStorage = JSON.parse(content);
+                            if(!newLocalStorage.version) {
+                                throw 1;
+                            }
+                            $('.modal-import-docs-settings').modal('show');
                         }
                         catch(e) {
-                            eventMgr.onError(importedFile.name + " is not a valid JSON file.");
+                            eventMgr.onError("Wrong format: " + importedFile.name);
                             return;
                         }
-                        localStorage.settings = content;
-                        window.location.reload();
                     };
                 })(file);
-                var blob = file.slice(0, IMPORT_FILE_MAX_CONTENT_SIZE);
-                reader.readAsText(blob);
+                reader.readAsText(file);
             });
         });
+        $(".action-import-docs-settings-confirm").click(function(e) {
+            localStorage.clear();
+            var allowedKeys = /^file\.|^focusMode$|^folder\.|^publish\.|^settings$|^sync\.|^theme$|^version$|^welcomeTour$/;
+            _.each(newLocalStorage, function(value, key) {
+                if(allowedKeys.test(key)) {
+                    localStorage[key] = value;
+                }
+            });
+            window.location.reload();
+        });
         // Export settings
-        $(".action-export-settings").click(function(e) {
-            utils.saveAs(JSON.stringify(settings), "StackEdit Settings.json");
+        $(".action-export-docs-settings").click(function(e) {
+            utils.saveAs(JSON.stringify(localStorage), "StackEdit local storage.json");
         });
 
         $(".action-default-settings").click(function() {

@@ -1017,18 +1017,6 @@
 					</div>
 					<div class="tab-pane" id="tabpane-settings-utils">
 						<div class="tab-pane-button-container">
-							<a href="#"
-								class="btn btn-block btn-primary action-import-settings"><i
-								class="icon-wrench icon-white"></i> Import settings</a> <a href="#"
-								class="btn btn-block btn-primary action-export-settings"
-								data-dismiss="modal"><i class="icon-wrench icon-white"></i>
-								Export settings</a> <a href="#"
-								class="btn btn-block btn-primary action-default-settings"
-								data-dismiss="modal"><i class="icon-wrench icon-white"></i>
-								Load default settings</a> <input type="file"
-								id="input-file-import-settings" class="hide">
-						</div>
-						<div class="tab-pane-button-container">
 							<a href="#" class="btn btn-block btn-primary action-welcome-file"
 								data-dismiss="modal"><i class="icon-help-circled icon-white"></i>
 								Welcome document</a> <a href="#"
@@ -1037,7 +1025,19 @@
 								class="icon-help-circled icon-white"></i> Welcome tour</a>
 						</div>
 						<div class="tab-pane-button-container">
-							<a href="#" class="btn btn-block btn-primary"
+							<a href="#"
+								class="btn btn-block btn-primary action-import-docs-settings"><i
+								class="icon-cog-alt icon-white"></i> Import docs & settings</a> <a href="#"
+								class="btn btn-block btn-primary action-export-docs-settings"
+								data-dismiss="modal"><i class="icon-cog-alt icon-white"></i>
+								Export docs & settings</a> <input type="file"
+								id="input-file-import-docs-settings" class="hide">
+						</div>
+						<div class="tab-pane-button-container">
+							<a href="#"
+								class="btn btn-block btn-primary action-default-settings"
+								data-dismiss="modal"><i class="icon-wrench icon-white"></i>
+								Load default settings</a> <a href="#" class="btn btn-block btn-primary"
 								data-dismiss="modal" data-toggle="modal"
 								data-target=".modal-app-reset"><i
 								class="icon-fire icon-white"></i> Reset application</a>
@@ -1110,6 +1110,27 @@
 			<div class="modal-footer">
 				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
 				<a href="#" class="btn btn-primary action-app-reset"
+					data-dismiss="modal">OK</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal modal-import-docs-settings">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h3 class="modal-title">Import documents and settings</h3>
+			</div>
+			<div class="modal-body">
+				<p>This will delete all existing local documents.</p>
+				<blockquote>Are you sure?</blockquote>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<a href="#" class="btn btn-primary action-import-docs-settings-confirm"
 					data-dismiss="modal">OK</a>
 			</div>
 		</div>

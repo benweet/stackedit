@@ -139,7 +139,7 @@ a {
 }
 
 .close {
-    .transition(~"opacity ease-in-out .15s");
+    .transition(opacity ease-in-out .15s);
 }
 
 .list-group .nav {
@@ -1293,10 +1293,13 @@ input[type="file"] {
 div.jGrowl {
 	z-index: 1040;
 	font-size: inherit;
+	&.bottom-right {
+	    right: 30px;
+	}
 	div.jGrowl-notification, div.jGrowl-closer {
 		background-color: @jgrowl-bg-color;
 		width: @jgrowl-width;
-		margin: 20px 30px;
+		margin: 20px 0;
 		padding: 15px 20px;
 		-ms-filter: none;
 		filter: none;

@@ -1,11 +1,3 @@
-// Nodetime
-if(process.env.NODETIME_ACCOUNT_KEY) {
-  require('nodetime').profile({
-    accountKey: process.env.NODETIME_ACCOUNT_KEY,
-    appName: 'StackEdit'
-  });
-}
-
 var express = require('express');
 var app = express();
 

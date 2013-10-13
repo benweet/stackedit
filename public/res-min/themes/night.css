@@ -1433,7 +1433,6 @@ body{tab-size:4}
 .working{cursor:progress}
 .btn,.dropdown-menu{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none}
 a{-webkit-transition:background-color ease-in-out .15s,color ease-in-out .15s,border-color ease-in-out .15s;transition:background-color ease-in-out .15s,color ease-in-out .15s,border-color ease-in-out .15s}
-.close{-webkit-transition:opacity ease-in-out .15s;transition:opacity ease-in-out .15s}
 .list-group .nav{border-left:10px solid rgba(255,255,255,0.08);margin-left:10px}
 .list-group-item{padding:10px 15px}
 .list-group .list-group-item{border-radius:0}
@@ -1632,7 +1631,7 @@ ul ul,ol ul,ul ol,ol ol{margin-bottom:15px}
 .ace_search .ace_searchbtn.next:before{content:'\e880'}
 .ace_search .ace_searchbtn.prev:before{content:'\e87f'}
 .ace_search .ace_replacebtn{padding:0 4px}
-.ace_search .ace_searchbtn_close{background:transparent;margin:0;font-size:21px;font-weight:bold;text-shadow:0 1px 0 #ffffff;opacity:0.3;filter:alpha(opacity=30);-webkit-transition:opacity ease-in-out .15s;transition:opacity ease-in-out .15s}
+.ace_search .ace_searchbtn_close{background:transparent;margin:0;font-size:21px;font-weight:bold;text-shadow:0 1px 0 #ffffff;opacity:0.3;filter:alpha(opacity=30)}
 .ace_search .ace_searchbtn_close:before{content:'\d7'}
 .ace_search .ace_searchbtn_close:hover,.ace_search .ace_searchbtn_close:focus{color:#ffffff;text-decoration:none;cursor:pointer;opacity:0.5;filter:alpha(opacity=50);background:transparent}
 #wmd-input{border-radius:4px;color:#dedede;-webkit-box-shadow:none;box-shadow:none;resize:none;border:none !important}
@@ -1674,7 +1673,8 @@ input[type="file"]{line-height:inherit;height:inherit;border:none !important}
 .popover .popover-title{font-weight:500;font-size:24px;padding:10px 15px}
 .popover .disabled{display:none}
 div.jGrowl{z-index:1040;font-size:inherit}
-div.jGrowl div.jGrowl-notification,div.jGrowl div.jGrowl-closer{background-color:rgba(86,86,86,0.9);width:260px;margin:20px 30px;padding:15px 20px;-ms-filter:none;filter:none;border-radius:5px}
+div.jGrowl.bottom-right{right:30px}
+div.jGrowl div.jGrowl-notification,div.jGrowl div.jGrowl-closer{background-color:rgba(86,86,86,0.9);width:260px;margin:20px 0;padding:15px 20px;-ms-filter:none;filter:none;border-radius:5px}
 div.jGrowl div.jGrowl-notification{min-height:80px}
 .viewer .document-panel .search-bar{padding:20px 20px 10px}
 .viewer .document-panel .search-bar .input-group-btn{display:none}

@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "express": "3.x",
-    "nodetime": "~0.8.13"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

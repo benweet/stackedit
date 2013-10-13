@@ -90,7 +90,6 @@ define([
             }
             function localAuthenticate() {
                 if(immediate === false) {
-                    eventMgr.onMessage("Please make sure the Google authorization popup is not blocked by your browser.");
                     task.timeout = ASYNC_TASK_LONG_TIMEOUT;
                 }
                 gapi.auth.authorize({

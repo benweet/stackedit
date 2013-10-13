@@ -45,7 +45,7 @@ define([
             }
             var url = [
                 MAIN_URL,
-                'viewer.html?provider=',
+                'viewer.html#!provider=',
                 provider.providerId
             ];
             _.each(provider.sharingAttributes, function(attributeName) {

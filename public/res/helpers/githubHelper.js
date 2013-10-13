@@ -75,7 +75,6 @@ define([
                 });
             }
             function getCode() {
-                eventMgr.onMessage("Please make sure the Github authorization popup is not blocked by your browser.");
                 localStorage.removeItem("githubCode");
                 authWindow = utils.popupWindow('html/github-oauth-client.html?client_id=' + GITHUB_CLIENT_ID, 'stackedit-github-oauth', 960, 600);
                 authWindow.focus();
@@ -205,7 +204,7 @@ define([
     };
 
     githubHelper.downloadGist = function(gistId, filename, callback) {
-        var task = new AsyncTask();
+        var task = new AsyncTask(true);
         connect(task);
         // No need for authentication
         var title = undefined;

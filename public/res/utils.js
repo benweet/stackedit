@@ -11,9 +11,10 @@ define([
 
     // Return a parameter from the URL
     utils.getURLParameter = function(name) {
-        var regex = new RegExp(name + "=(.+?)(&|$)");
+        // Parameter can be either a search parameter (&name=...) or a hash fragment parameter (#!name=...)
+        var regex = new RegExp("(?:\\?|\\#\\!|&)" + name + "=(.+?)(?:&|\\#|$)");
         try {
-            return decodeURIComponent(regex.exec(location.search)[1]);
+            return decodeURIComponent(regex.exec(location.search + location.hash)[1]);
         }
         catch(e) {
             return undefined;

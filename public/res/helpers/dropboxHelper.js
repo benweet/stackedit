@@ -69,7 +69,6 @@ define([
             }
             function localAuthenticate() {
                 if(immediate === false) {
-                    eventMgr.onMessage("Please make sure the Dropbox authorization popup is not blocked by your browser.");
                     // If not immediate we add time for user to enter his
                     // credentials
                     task.timeout = ASYNC_TASK_LONG_TIMEOUT;

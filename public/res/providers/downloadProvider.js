@@ -15,7 +15,7 @@ define([
     downloadProvider.importPublic = function(importParameters, callback) {
         var title = undefined;
         var content = undefined;
-        var task = new AsyncTask();
+        var task = new AsyncTask(true);
         task.onRun(function() {
             var url = importParameters.url;
             var slashUrl = url.lastIndexOf("/");

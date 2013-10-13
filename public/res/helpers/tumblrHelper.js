@@ -63,7 +63,6 @@ define([
                 });
             }
             function getVerifier() {
-                eventMgr.onMessage("Please make sure the Tumblr authorization popup is not blocked by your browser.");
                 localStorage.removeItem("tumblrVerifier");
                 authWindow = utils.popupWindow('html/tumblr-oauth-client.html?oauth_token=' + oauth_object.oauth_token, 'stackedit-tumblr-oauth', 800, 600);
                 authWindow.focus();

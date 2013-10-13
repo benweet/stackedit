@@ -138,10 +138,6 @@ a {
     .transition(~"background-color ease-in-out .15s, color ease-in-out .15s, border-color ease-in-out .15s");
 }
 
-.close {
-    .transition(opacity ease-in-out .15s);
-}
-
 .list-group .nav {
 	border-left: 10px solid @blockquote-border-color;
 	margin-left: 10px;
@@ -1076,7 +1072,6 @@ ul,ol {
         font-weight: @close-font-weight;
         text-shadow: @close-text-shadow;
         .opacity(.3);
-        .transition(~"opacity ease-in-out .15s");
         &:before {
             content: '\d7';
         }

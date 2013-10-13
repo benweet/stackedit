@@ -7,13 +7,14 @@ define([
     
     var taskQueue = [];
     
-    function AsyncTask() {
+    function AsyncTask(force) {
         this.finished = false;
         this.timeout = ASYNC_TASK_DEFAULT_TIMEOUT;
         this.retryCounter = 0;
         this.runCallbacks = [];
         this.successCallbacks = [];
         this.errorCallbacks = [];
+        this.force = force;
     }
     
     /**
@@ -132,45 +133,36 @@ define([
     
     // Run the next task in the queue if any and no other running
     function runTask() {
-        
-        // Wait for user first interaction before running first task
-        if(isUserReal === false) {
-            return
+    
+        // If there is a task currently running
+        if(currentTaskRunning === true) {
+            // If the current task takes too long
+            if(currentTaskStartTime + currentTask.timeout < utils.currentTime) {
+                currentTask.error(new Error("A timeout occurred."));
+            }
+            return;
         }
-        
-        // Use defer to avoid stack overflow
-        //_.defer(function() {
 
-            // If there is a task currently running
-            if(currentTaskRunning === true) {
-                // If the current task takes too long
-                if(currentTaskStartTime + currentTask.timeout < utils.currentTime) {
-                    currentTask.error(new Error("A timeout occurred."));
-                }
+        if(currentTask === undefined) {
+            // If no task in the queue or user has never interacted
+            if(taskQueue.length === 0 || (!taskQueue[0].force && isUserReal === false)) {
                 return;
             }
 
-            if(currentTask === undefined) {
-                // If no task in the queue
-                if(taskQueue.length === 0) {
-                    return;
-                }
-
-                // Dequeue an enqueued task
-                currentTask = taskQueue.shift();
-                currentTaskStartTime = utils.currentTime;
-                if(asyncRunning === false) {
-                    asyncRunning = true;
-                    eventMgr.onAsyncRunning(true);
-                }
+            // Dequeue an enqueued task
+            currentTask = taskQueue.shift();
+            currentTaskStartTime = utils.currentTime;
+            if(asyncRunning === false) {
+                asyncRunning = true;
+                eventMgr.onAsyncRunning(true);
             }
+        }
 
-            // Run the task
-            if(currentTaskStartTime <= utils.currentTime) {
-                currentTaskRunning = true;
-                currentTask.chain();
-            }
-        //});
+        // Run the task
+        if(currentTaskStartTime <= utils.currentTime) {
+            currentTaskRunning = true;
+            currentTask.chain();
+        }
     }
     
     // Call runTask periodically

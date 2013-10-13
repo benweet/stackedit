@@ -45,7 +45,7 @@ define([
     }
 
     function isUserActive() {
-        if(userActive === true && utils.currentTime - userLastActivity > USER_IDLE_THRESHOLD) {
+        if(utils.currentTime - userLastActivity > USER_IDLE_THRESHOLD) {
             userActive = false;
         }
         return userActive && windowUnique;
@@ -875,14 +875,14 @@ define([
 
         // Tooltips
         $(".tooltip-lazy-rendering").tooltip({
-            container: '.modal-settings .modal-dialog',
+            container: '.modal-settings',
             placement: 'right',
             trigger: 'hover',
             title: 'Disable preview rendering while typing in order to offload CPU. Refresh preview after 500 ms of inactivity.'
         });
         $(".tooltip-default-content").tooltip({
             html: true,
-            container: '.modal-settings .modal-dialog',
+            container: '.modal-settings',
             placement: 'right',
             trigger: 'hover',
             title: 'Thanks for supporting StackEdit by adding a backlink in your documents!'
@@ -890,7 +890,7 @@ define([
         var tooltipOpen = false;
         $(".tooltip-usercustom-extension").tooltip({
             html: true,
-            container: '.modal-settings .modal-dialog',
+            container: '.modal-settings',
             placement: 'right',
             trigger: 'manual',
             title: settingsUserCustomExtensionTooltipHTML
@@ -908,7 +908,7 @@ define([
             var $tooltipElt = $(tooltipElt);
             $tooltipElt.tooltip({
                 html: true,
-                container: $tooltipElt.parents('.modal-dialog'),
+                container: $tooltipElt.parents('.modal'),
                 placement: 'right',
                 trigger: 'manual',
                 title: settingsTemplateTooltipHTML
@@ -962,7 +962,6 @@ define([
             }, '');
             document.getElementById('input-settings-theme').innerHTML = themeOptions;
         }
-
     });
 
     return core;

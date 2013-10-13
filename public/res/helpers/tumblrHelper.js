@@ -58,8 +58,10 @@ define([
                 });
             }
             function oauthRedirect() {
-                core.oauthRedirect('Tumblr', function() {
+                core.redirectConfirm('You are being redirected to <strong>Tumblr</strong> authorization page', function() {
                     task.chain(getVerifier);
+                }, function() {
+                    task.error(new Error('Operation canceled.'));
                 });
             }
             function getVerifier() {

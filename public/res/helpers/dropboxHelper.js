@@ -63,8 +63,10 @@ define([
             }
             var immediate = true;
             function oauthRedirect() {
-                core.oauthRedirect('Dropbox', function() {
+                core.redirectConfirm('You are being redirected to <strong>Dropbox</strong> authorization page.', function() {
                     task.chain(localAuthenticate);
+                }, function() {
+                    task.error(new Error('Operation canceled.'));
                 });
             }
             function localAuthenticate() {
@@ -293,13 +295,20 @@ define([
                 task.chain();
                 return;
             }
+            function chooserRedirect() {
+                core.redirectConfirm('You are being redirected to <strong>Dropbox Chooser</strong> page.', function() {
+                    task.chain();
+                }, function() {
+                    task.error(new Error('Operation canceled.'));
+                });
+            }
             $.ajax({
                 url: "https://www.dropbox.com/static/api/1/dropbox.js",
                 dataType: "script",
                 timeout: AJAX_TIMEOUT
             }).done(function() {
                 pickerLoaded = true;
-                task.chain();
+                task.chain(chooserRedirect);
             }).fail(function(jqXHR) {
                 var error = {
                     status: jqXHR.status,
@@ -333,7 +342,6 @@ define([
                 task.chain();
             };
             Dropbox.choose(options);
-            eventMgr.onMessage("Please make sure the Dropbox chooser popup is not blocked by your browser.");
         });
         task.onSuccess(function() {
             callback(undefined, paths);

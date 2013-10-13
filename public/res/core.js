@@ -591,11 +591,13 @@ define([
     };
     
     // Shows a dialog to force the user to click a button before opening oauth popup
-    var oauthRedirectCallback = undefined;
-    core.oauthRedirect = function(providerName, callback) {
-        oauthRedirectCallback = callback;
-        $('.oauth-redirect-provider').text(providerName);
-        $('.modal-oauth-redirect').modal("show");
+    var redirectCallbackConfirm = undefined;
+    var redirectCallbackCancel = undefined;
+    core.redirectConfirm = function(message, callbackConfirm, callbackCancel) {
+        redirectCallbackConfirm = callbackConfirm;
+        redirectCallbackCancel = callbackCancel;
+        $('.modal-redirect-confirm .redirect-msg').html(message);
+        $('.modal-redirect-confirm').modal("show");
     };
 
     // Initialize multiple things and then fire eventMgr.onReady
@@ -936,14 +938,12 @@ define([
             show: false
         });
         
-        // OAuth redirect dialog
-        $('.modal-oauth-redirect').modal({
-            backdrop: "static",
-            keyboard: false,
-            show: false
+        $('.action-redirect-confirm').click(function() {
+            redirectCallbackCancel = undefined;
+            redirectCallbackConfirm();
         });
-        $('.action-oauth-redirect').click(function() {
-            oauthRedirectCallback();
+        $('.modal-redirect-confirm').on('hidden.bs.modal', function() {
+            redirectCallbackCancel && redirectCallbackCancel();
         });
         
         // Load images

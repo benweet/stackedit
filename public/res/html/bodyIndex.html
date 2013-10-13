@@ -1078,18 +1078,19 @@
 </div>
 
 
-<div class="modal modal-oauth-redirect">
+<div class="modal modal-redirect-confirm">
 	<div class="modal-dialog">
 		<div class="modal-content">
 
 			<div class="modal-header">
-				<h3 class="modal-title">Authorization</h3>
+				<h3 class="modal-title">Redirection</h3>
 			</div>
 			<div class="modal-body">
-				<blockquote><b>NOTE:</b> You are being redirected to <span class="oauth-redirect-provider"></span> authorization page.</blockquote>
+				<blockquote><b>NOTE:</b> <span class="redirect-msg"></span></blockquote>
 			</div>
 			<div class="modal-footer">
-				<a class="btn btn-primary action-oauth-redirect" data-dismiss="modal">Continue</a>
+				<a class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<a class="btn btn-primary action-redirect-confirm" data-dismiss="modal">OK</a>
 			</div>
 		</div>
 	</div>

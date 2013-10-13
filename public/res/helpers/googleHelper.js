@@ -84,8 +84,10 @@ define([
             } 
             var immediate = true;
             function oauthRedirect() {
-                core.oauthRedirect('Google', function() {
+                core.redirectConfirm('You are being redirected to <strong>Google</strong> authorization page', function() {
                     task.chain(localAuthenticate);
+                }, function() {
+                    task.error(new Error('Operation canceled.'));
                 });
             }
             function localAuthenticate() {

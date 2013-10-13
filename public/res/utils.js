@@ -148,12 +148,10 @@ define([
     };
 
     // Slug function
+    var nonWordChars = XRegExp('[^\\p{L}-]', 'g');
     utils.slugify = function(text) {
         return text.toLowerCase().replace(/\s/g, '-') // Replace spaces with -
-        .replace(XRegExp('[^\\p{L}]', 'g'), '') // Remove
-        // all
-        // non-word
-        // chars
+        .replace(nonWordChars, '') // Remove all non-word chars
         .replace(/\-\-+/g, '-') // Replace multiple - with single -
         .replace(/^-+/, '') // Trim - from start of text
         .replace(/-+$/, ''); // Trim - from end of text

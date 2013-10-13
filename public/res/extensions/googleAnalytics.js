@@ -61,6 +61,12 @@ define([
         _gaq.push([
             '_trackEvent',
             "Settings",
+            'theme',
+            "" + theme
+        ]);
+        _gaq.push([
+            '_trackEvent',
+            "Settings",
             'lazyRendering',
             "" + settings.lazyRendering
         ]);

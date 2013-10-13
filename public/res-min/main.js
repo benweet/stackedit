@@ -14659,7 +14659,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
   r();
  }, s.onReady = function() {
   _gaq.push([ "_setAccount", GOOGLE_ANALYTICS_ACCOUNT_ID ]), r(), _gaq.push([ "_trackEvent", "Settings", "layoutOrientation", "" + o.layoutOrientation ]), 
-  _gaq.push([ "_trackEvent", "Settings", "lazyRendering", "" + o.lazyRendering ]), 
+  _gaq.push([ "_trackEvent", "Settings", "theme", "" + theme ]), _gaq.push([ "_trackEvent", "Settings", "lazyRendering", "" + o.lazyRendering ]), 
   _gaq.push([ "_trackEvent", "Settings", "editorFontFamily", "" + o.editorFontFamily ]), 
   _gaq.push([ "_trackEvent", "Settings", "editorFontSize", "" + o.editorFontSize ]), 
   _gaq.push([ "_trackEvent", "Settings", "defaultContent backlink", "" + (-1 !== o.defaultContent.indexOf(MAIN_URL)) ]), 

@@ -27083,7 +27083,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    var o = {
     Slug: e
    };
-   e.match(/.jpe?g$/) ? o["Content-Type"] = "image/jpeg" : e.match(/.png$/) ? o["Content-Type"] = "image/png" : e.match(/.gif$/) && (o["Content-Type"] = "image/gif");
+   e.match(/.jpe?g$/i) ? o["Content-Type"] = "image/jpeg" : e.match(/.png$/i) ? o["Content-Type"] = "image/png" : e.match(/.gif$/i) && (o["Content-Type"] = "image/gif");
    var s = gapi.auth.getToken();
    s && (o.Authorization = "Bearer " + s.access_token), t.ajax({
     url: PICASA_PROXY_URL + "upload/" + i,

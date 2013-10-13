@@ -301,13 +301,13 @@ define([
             var headers = {
                 "Slug": name
             };
-            if(name.match(/.jpe?g$/)) {
+            if(name.match(/.jpe?g$/i)) {
                 headers["Content-Type"] = "image/jpeg";
             }
-            else if(name.match(/.png$/)) {
+            else if(name.match(/.png$/i)) {
                 headers["Content-Type"] = "image/png";
             }
-            else if(name.match(/.gif$/)) {
+            else if(name.match(/.gif$/i)) {
                 headers["Content-Type"] = "image/gif";
             }
             var token = gapi.auth.getToken();

@@ -75,7 +75,7 @@ define([
 
             // Strip footnotes
             if(doFootnotes) {
-                text = text.replace(/^```.*\n[\s\S]*?\n```|\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|$)/g, function(wholeMatch, footnote) {
+                text = text.replace(/^```.*\n[\s\S]*?\n```|\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|$)/gm, function(wholeMatch, footnote) {
                     if(footnote) {
                         hasFootnotes = true;
                         newLinkDefinition += wholeMatch.replace(/^\s*\n/gm, '') + '\n';

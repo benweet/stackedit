@@ -15,7 +15,7 @@ define([
         fileDesc = fileDescParam;
     };
 
-    var regex = /^(\s*-{3}\s*\n([\w\W]+?)\n\s*-{3}\s*\n)?([\w\W]*)*/;
+    var regex = /^(\s*-{3}\s*\n([\w\W]+?)\n\s*-{3}\s*\n)?([\w\W]*)/;
     yamlFrontMatterParser.onPagedownConfigure = function(editor) {
         var converter = editor.getConverter();
         converter.hooks.chain("preConversion", function(text) {

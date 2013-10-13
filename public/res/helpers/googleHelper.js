@@ -53,35 +53,24 @@ define([
     }
 
     // Try to authenticate with Oauth
+    var scopeMap = {
+        gdrive: [
+            'https://www.googleapis.com/auth/drive.install',
+            settings.gdriveFullAccess === true ? 'https://www.googleapis.com/auth/drive' : 'https://www.googleapis.com/auth/drive.file'
+        ],
+        blogger: [
+            'https://www.googleapis.com/auth/blogger'
+        ],
+        picasa: [
+            'https://picasaweb.google.com/data/'
+        ]
+    };
     function authenticate(task, permission) {
         task.onRun(function() {
             if(_.has(permissionList, permission)) {
                 task.chain();
                 return;
             }
-            var scopes = undefined;
-            if(permission == 'gdrive' && settings.gdriveFullAccess === true) {
-                scopes = [
-                    "https://www.googleapis.com/auth/drive.install",
-                    "https://www.googleapis.com/auth/drive",
-                ];
-            } 
-            else if(permission == 'gdrive' && settings.gdriveFullAccess === false) {
-                scopes = [
-                    "https://www.googleapis.com/auth/drive.install",
-                    "https://www.googleapis.com/auth/drive.file",
-                ];
-            } 
-            else if(permission == 'blogger') {
-                scopes = [
-                    "https://www.googleapis.com/auth/blogger",
-                ];
-            } 
-            else if(permission == 'picasa') {
-                scopes = [
-                    "https://picasaweb.google.com/data/",
-                ];
-            } 
             var immediate = true;
             function oauthRedirect() {
                 core.redirectConfirm('You are being redirected to <strong>Google</strong> authorization page.', function() {
@@ -94,9 +83,10 @@ define([
                 if(immediate === false) {
                     task.timeout = ASYNC_TASK_LONG_TIMEOUT;
                 }
+                var scopeList = _.chain(scopeMap).pick(_.keys(permissionList).concat([permission])).flatten().value();
                 gapi.auth.authorize({
                     'client_id': GOOGLE_CLIENT_ID,
-                    'scope': scopes,
+                    'scope': scopeList,
                     'immediate': immediate
                 }, function(authResult) {
                     gapi.client.load('drive', 'v2', function() {

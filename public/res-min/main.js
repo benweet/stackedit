@@ -14941,7 +14941,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
   var i = (n.dataTransfer || n.target).files;
   e(".modal-import-harddrive-markdown, .modal-import-harddrive-html").modal("hide"), 
   t.each(i, function(t) {
-   if (!e(n.target).is("#wmd-input *") || !t.name.match(/.(jpe?g|png|gif)$/)) {
+   if (!e(n.target).is("#wmd-input *") || !t.name.match(/.(jpe?g|png|gif)$/i)) {
     var i = new FileReader();
     i.onload = function(e) {
      return function(t) {
@@ -26924,30 +26924,30 @@ if (hljs.LANGUAGES.glsl = function(e) {
  }
  function l(t, i) {
   t.onRun(function() {
-   function r() {
+   function o() {
     n.redirectConfirm("You are being redirected to <strong>Google</strong> authorization page.", function() {
-     t.chain(s);
+     t.chain(r);
     }, function() {
      t.error(new Error("Operation canceled."));
     });
    }
-   function s() {
-    l === !1 && (t.timeout = ASYNC_TASK_LONG_TIMEOUT), gapi.auth.authorize({
+   function r() {
+    s === !1 && (t.timeout = ASYNC_TASK_LONG_TIMEOUT);
+    var n = e.chain(g).pick(e.keys(h).concat([ i ])).flatten().value();
+    gapi.auth.authorize({
      client_id: GOOGLE_CLIENT_ID,
-     scope: a,
-     immediate: l
+     scope: n,
+     immediate: s
     }, function(e) {
      gapi.client.load("drive", "v2", function() {
-      return !e || e.error ? d === !0 && l === !0 ? (l = !1, t.chain(r), void 0) : (t.error(new Error("Access to Google account is not authorized.")), 
+      return !e || e.error ? d === !0 && s === !0 ? (s = !1, t.chain(o), void 0) : (t.error(new Error("Access to Google account is not authorized.")), 
       void 0) : (h[i] = !0, t.chain(), void 0);
      });
     });
    }
    if (e.has(h, i)) return t.chain(), void 0;
-   var a = void 0;
-   "gdrive" == i && o.gdriveFullAccess === !0 ? a = [ "https://www.googleapis.com/auth/drive.install", "https://www.googleapis.com/auth/drive" ] : "gdrive" == i && o.gdriveFullAccess === !1 ? a = [ "https://www.googleapis.com/auth/drive.install", "https://www.googleapis.com/auth/drive.file" ] : "blogger" == i ? a = [ "https://www.googleapis.com/auth/blogger" ] : "picasa" == i && (a = [ "https://picasaweb.google.com/data/" ]);
-   var l = !0;
-   t.chain(s);
+   var s = !0;
+   t.chain(r);
   });
  }
  function c(e, t) {
@@ -26963,7 +26963,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
  }
  function u(e) {
   e.onRun(function() {
-   return g === !0 ? (e.chain(), void 0) : (t.ajax({
+   return m === !0 ? (e.chain(), void 0) : (t.ajax({
     url: "//www.google.com/jsapi",
     data: {
      key: GOOGLE_API_KEY
@@ -26975,7 +26975,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
      callback: function() {
       e.chain();
      }
-    }), g = !0;
+    }), m = !0;
    }).fail(function(t) {
     var n = {
      code: t.status,
@@ -26988,7 +26988,13 @@ if (hljs.LANGUAGES.glsl = function(e) {
  var d = !1, h = {}, p = {}, f = !1;
  r.addListener("onOfflineChanged", function(e) {
   f = e;
- }), p.forceGdriveAuthenticate = function() {
+ });
+ var g = {
+  gdrive: [ "https://www.googleapis.com/auth/drive.install", o.gdriveFullAccess === !0 ? "https://www.googleapis.com/auth/drive" : "https://www.googleapis.com/auth/drive.file" ],
+  blogger: [ "https://www.googleapis.com/auth/blogger" ],
+  picasa: [ "https://picasaweb.google.com/data/" ]
+ };
+ p.forceGdriveAuthenticate = function() {
   h = e.omit(h, "gdrive");
   var t = new s();
   a(t), l(t, "gdrive"), t.enqueue();
@@ -27206,7 +27212,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    n(e);
   }), r.enqueue();
  };
- var g = !1;
+ var m = !1;
  return p.picker = function(e, n) {
   function o() {
    void 0 !== l && (l.setVisible(!1), t(".modal-backdrop, .picker").remove());
@@ -28341,7 +28347,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
  return o.addListener("onReady", function() {
   function n(n) {
    var o = (n.dataTransfer || n.target).files, r = t.first(o);
-   if (r.name.match(/.(jpe?g|png|gif)$/)) {
+   if (r.name.match(/.(jpe?g|png|gif)$/i)) {
     n.stopPropagation(), n.preventDefault();
     var a = new FileReader();
     a.onload = function() {

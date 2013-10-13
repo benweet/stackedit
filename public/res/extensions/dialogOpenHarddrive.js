@@ -30,7 +30,7 @@ define([
         var files = (evt.dataTransfer || evt.target).files;
         $(".modal-import-harddrive-markdown, .modal-import-harddrive-html").modal("hide");
         _.each(files, function(file) {
-            if($(evt.target).is("#wmd-input *") && file.name.match(/.(jpe?g|png|gif)$/)) {
+            if($(evt.target).is("#wmd-input *") && file.name.match(/.(jpe?g|png|gif)$/i)) {
                 return;
             }
             var reader = new FileReader();

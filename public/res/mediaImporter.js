@@ -38,7 +38,7 @@ define([
         function handleImgImport(evt) {
             var files = (evt.dataTransfer || evt.target).files;
             var file = _.first(files);
-            if(file.name.match(/.(jpe?g|png|gif)$/)) {
+            if(file.name.match(/.(jpe?g|png|gif)$/i)) {
                 evt.stopPropagation();
                 evt.preventDefault();
                 var reader = new FileReader();

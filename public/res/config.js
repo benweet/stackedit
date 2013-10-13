@@ -48,7 +48,7 @@ if(location.hostname.indexOf("stackedit.io") === 0) {
     GOOGLE_CLIENT_ID = '241271498917-t4t7d07qis7oc0ahaskbif3ft6tk63cd.apps.googleusercontent.com';
     GITHUB_CLIENT_ID = '710fc67886ab1ae8fee6';
     GATEKEEPER_URL = "https://stackedit-io-gatekeeper.herokuapp.com/";
-    TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy.herokuapp.com/";
+    TUMBLR_PROXY_URL = "https://stackedit-io-tumblr-proxy.herokuapp.com/";
 }
 
 if(location.hostname.indexOf("benweet.github.io") === 0) {

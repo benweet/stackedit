@@ -13,7 +13,6 @@ define([
     tumblrProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
         var labelList = publishAttributes.tags || [];
         if(frontMatter) {
-            frontMatter.categories !== undefined && (labelList = frontMatter.categories);
             frontMatter.tags !== undefined && (labelList = frontMatter.tags);
         }
         _.isString(labelList) && (labelList = _.compact(labelList.split(/[\s,]/)));

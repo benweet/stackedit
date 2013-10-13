@@ -70,7 +70,7 @@ define([
             task.timeout = ASYNC_TASK_LONG_TIMEOUT;
             var code = undefined;
             function oauthRedirect() {
-                core.redirectConfirm('You are being redirected to <strong>GitHub</strong> authorization page', function() {
+                core.redirectConfirm('You are being redirected to <strong>GitHub</strong> authorization page.', function() {
                     task.chain(getCode);
                 }, function() {
                     task.error(new Error('Operation canceled.'));

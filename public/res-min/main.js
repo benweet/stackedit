@@ -20594,7 +20594,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    m = !1, p = o;
    var r = n(o, d, u);
    r = t.min([ r, s.session.getScreenLength() * s.renderer.lineHeight - s.renderer.$size.scrollerHeight ]), 
-   Math.abs(r - i) <= 9 ? h = i : (v = !0, e("<div>").animate({
+   0 > r && (r = 0), Math.abs(r - i) <= 9 ? h = i : (v = !0, e("<div>").animate({
     value: r - i
    }, {
     easing: "easeOutSine",
@@ -21863,11 +21863,9 @@ if (hljs.LANGUAGES.glsl = function(e) {
  }, f.onSaveSettings = function(e) {
   e.locale = i.getInputValue("#select-spell-check-locale");
  };
- var g = new Worker("res/worker.js");
- g.postMessage(l);
- var m = !1;
+ var g = void 0, m = !1;
  f.onInit = function() {
-  require([ "text!../libs/dictionaries/" + f.config.locale + ".dic.lz", "text!../libs/dictionaries/" + f.config.locale + ".aff.lz" ], function(e, t) {
+  g = new Worker("res/worker.js"), g.postMessage(l), require([ "text!../libs/dictionaries/" + f.config.locale + ".dic.lz", "text!../libs/dictionaries/" + f.config.locale + ".aff.lz" ], function(e, t) {
    g.postMessage(JSON.stringify([ "init", s, a, f.config.locale, t, e ])), m = !0, 
    p();
   });

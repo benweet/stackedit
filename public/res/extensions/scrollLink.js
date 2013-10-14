@@ -149,6 +149,8 @@ define([
                 destScrollTop,
                 aceEditor.session.getScreenLength() * aceEditor.renderer.lineHeight - aceEditor.renderer.$size.scrollerHeight
             ]);
+            // If negative, set it to zero
+            destScrollTop < 0 && (destScrollTop = 0);
             if(Math.abs(destScrollTop - editorScrollTop) <= 9) {
                 // Skip the animation if diff is <= 9
                 lastEditorScrollTop = editorScrollTop;

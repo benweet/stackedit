@@ -25,12 +25,12 @@ define([
         newConfig.locale = utils.getInputValue("#select-spell-check-locale");
     };
 
-    // Create a web worker
-    var worker = new Worker('res/worker.js');
-    worker.postMessage(spellCheckWorkerJS);
-
+    var worker = undefined;
     var isInited = false;
     spellCheck.onInit = function() {
+        // Create a web worker
+        worker = new Worker('res/worker.js');
+        worker.postMessage(spellCheckWorkerJS);
         require([
             'text!../libs/dictionaries/' + spellCheck.config.locale + '.dic.lz',
             'text!../libs/dictionaries/' + spellCheck.config.locale + '.aff.lz',

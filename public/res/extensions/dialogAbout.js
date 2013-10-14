@@ -23,6 +23,7 @@ define([
         "jGrowl": "https://github.com/stanlemon/jGrowl/",
         "jQuery": "http://jquery.com/",
         "LESS": "http://lesscss.org/",
+        "lz-string": "http://pieroxy.net/blog/pages/lz-string/index.html",
         "MathJax": "http://www.mathjax.org/",
         "Mousetrap": "http://craig.is/killing/mice",
         "PageDown ACE": "https://github.com/benweet/pagedown-ace",
@@ -32,10 +33,12 @@ define([
         "RequireJS LESS plugin": "https://github.com/guybedford/require-less",
         "stacktrace.js": "http://stacktracejs.com/",
         "to-markdown": "https://github.com/domchristie/to-markdown",
+        "Typo.js": "https://github.com/cfinke/Typo.js",
         "UI Layout": "http://layout.jquery-dev.net/",
         "Underscore.js": "http://underscorejs.org/",
         "waitForImages": "https://github.com/alexanderdickson/waitForImages",
-        "XRegExp": "https://github.com/slevithan/xregexp"
+        "XRegExp": "https://github.com/slevithan/xregexp",
+        "yaml.js": "https://github.com/jeremyfa/yaml.js"
     };
 
     var projects = {

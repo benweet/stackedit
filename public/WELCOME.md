@@ -11,7 +11,7 @@ Hello, I am your first Markdown document within **StackEdit**[^stackedit]. Don't
 Documents
 ---------
 
-**StackEdit** stores your documents in the browser local storage, which means all your documents are automatically saved locally and are accessible offline.
+**StackEdit** stores your documents in your browser local storage, which means all your documents are automatically saved locally and are accessible offline.
 
 > **NOTE:** This also means that your documents are not shared between different browsers or computers and that clearing your browser's data may **delete all of them!**
 
@@ -70,7 +70,7 @@ If you just have modified your document and you want to force the synchronizatio
 
 #### <i class="icon-refresh"></i> Manage document synchronization
 
-Since one document can be synchronized with multiple locations, you can list and manage synchronized locations by clicking <i class="icon-refresh"></i> `Manage synchronization` in the <i class="icon-stackedit"></i> menu. This will open a dialog box allowing you to add or remove synchronization links that are associated to your document.
+Since one document can be synchronized with multiple locations, you can list and manage synchronized locations by clicking <i class="icon-refresh"></i> `Manage synchronization` in the <i class="icon-provider-stackedit"></i> menu. This will open a dialog box allowing you to add or remove synchronization links that are associated to your document.
 
 > **NOTE:** If you delete the file from **Google Drive** or from **Dropbox**, the document will no longer be synchronized with that location.
 
@@ -90,7 +90,7 @@ You can publish your document by going to the <i class="icon-share"></i> `Publis
 - HTML, to publish the document converted into HTML (on a blog for instance),
 - Template, to have a full control of the output.
 
-> **NOTE:** The default template is a simple webpage wrapping your document in HTML format. You can customize it in the `Publish` tab of the <i class="icon-cog"></i> `Settings` dialog.
+> **NOTE:** The default template is a simple webpage wrapping your document in HTML format. You can customize it in the `Services` tab of the <i class="icon-cog"></i> `Settings` dialog.
 
 #### <i class="icon-share"></i> Update a publication
 
@@ -103,7 +103,7 @@ After publishing, **StackEdit** will keep your document linked to that publish l
 
 #### <i class="icon-share"></i> Manage document publication
 
-Since one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-share"></i> `Manage publication` in the <i class="icon-stackedit"></i> menu. This will open a dialog box allowing you to remove publication links that are associated to your document.
+Since one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-share"></i> `Manage publication` in the <i class="icon-provider-stackedit"></i> menu. This will open a dialog box allowing you to remove publication links that are associated to your document.
 
 > **NOTE:** In some cases, if you remove the file from the website or the post from the blog, the document will no longer be published on that location.
 
@@ -114,6 +114,8 @@ Markdown Extra
 --------------
 
 **StackEdit** supports **Markdown Extra**, which extends **Markdown** syntax with some nice features.
+
+> **NOTE:** You can disable any **Markdown Extra** feature in the `Extensions` tab of the <i class="icon-cog"></i> `Settings` dialog.
 
 
 ### Tables
@@ -155,7 +157,7 @@ Term 3
 
 ### Fenced code blocks
 
-**GitHub**'s fenced code blocks are also supported with **Prettify** syntax highlighting:
+GitHub's fenced code blocks are also supported with **Prettify** syntax highlighting:
 
 ```
 // Foo
@@ -185,6 +187,17 @@ You can create footnotes like this[^footnote].
   [^footnote]: Here is the *text* of the **footnote**.
 
 
+### SmartyPants
+
+SmartyPants converts ASCII punctuation characters into "smart" typographic punctuation HTML entities. For example:
+
+|                  | ASCII                                    | HTML                                |
+ ------------------|------------------------------------------|-------------------------------------
+| Single backticks | `'Isn't this fun?'`                      | &#8216;Isn&#8217;t this fun?&#8217; |
+| Quotes           | `"Isn't this fun?"`                      | &#8220;Isn&#8217;t this fun?&#8221; |
+| Dashes           | `-- is an en-dash and --- is an em-dash` | &#8211; is an en-dash and &#8212; is an em-dash |
+
+
 ### Table of contents
 
 You can insert a table of contents using the marker `[TOC]`:
@@ -206,15 +219,17 @@ $$
 > **NOTE:** When exporting, make sure you include MathJax to render mathematical expression correctly. Your page/template should include something like: 
 
 ```
-<script type="text/javascript" src="http://benweet.github.io/stackedit/lib/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 ```
 
 > **NOTE:** You can find more information:
 >
 > - about **Markdown** syntax [here][2],
 > - about **Markdown Extra** extension [here][3],
-> - about **Prettify** syntax highlighting [here][4].
+> - about **Prettify** syntax highlighting [here][4],
 > - about **Highlight.js** syntax highlighting [here][5].
+
+Written with [StackEdit](https://stackedit.io/).
 
   [^stackedit]: StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.
 

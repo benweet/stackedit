@@ -43,6 +43,7 @@ define([
 
     var projects = {
         "StackEdit Download Proxy": "https://github.com/benweet/stackedit-download-proxy",
+        "StackEdit HTMLtoPDF": "https://github.com/benweet/stackedit-htmltopdf",
         "StackEdit Picasa Proxy": "https://github.com/benweet/stackedit-picasa-proxy",
         "StackEdit SSH Proxy": "https://github.com/benweet/stackedit-ssh-proxy",
         "StackEdit Tumblr Proxy": "https://github.com/benweet/stackedit-tumblr-proxy",

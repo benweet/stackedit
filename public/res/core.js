@@ -943,7 +943,9 @@ define([
             redirectCallbackConfirm();
         });
         $('.modal-redirect-confirm').on('hidden.bs.modal', function() {
-            redirectCallbackCancel && redirectCallbackCancel();
+            _.defer(function() {
+                redirectCallbackCancel && redirectCallbackCancel();
+            });
         });
         
         // Load images

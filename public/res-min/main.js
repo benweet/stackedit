@@ -14731,6 +14731,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
   "yaml.js": "https://github.com/jeremyfa/yaml.js"
  }, s = {
   "StackEdit Download Proxy": "https://github.com/benweet/stackedit-download-proxy",
+  "StackEdit HTMLtoPDF": "https://github.com/benweet/stackedit-htmltopdf",
   "StackEdit Picasa Proxy": "https://github.com/benweet/stackedit-picasa-proxy",
   "StackEdit SSH Proxy": "https://github.com/benweet/stackedit-ssh-proxy",
   "StackEdit Tumblr Proxy": "https://github.com/benweet/stackedit-tumblr-proxy",
@@ -26471,7 +26472,9 @@ if (hljs.LANGUAGES.glsl = function(e) {
   }), e(".action-redirect-confirm").click(function() {
    G = void 0, U();
   }), e(".modal-redirect-confirm").on("hidden.bs.modal", function() {
-   G && G();
+   t.defer(function() {
+    G && G();
+   });
   }), t.each(document.querySelectorAll("img"), function(t) {
    var n = e(t), i = n.data("stackeditSrc");
    i && n.attr("src", baseDir + "/img/" + i);

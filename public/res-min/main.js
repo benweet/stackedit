@@ -13662,7 +13662,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
   }
  }), t;
 }), define("text!html/settingsExtensionsAccordion.html", [], function() {
- return '<div class="panel">\n	<div class="accordion-heading">\n		<div class="checkbox pull-right">\n			<label> <input id="input-enable-extension-<%= extensionId %>"\n				type="checkbox"<% if(!isOptional) print(\'disabled\') %>>\n				enabled\n			</label>\n		</div>\n		<span data-toggle="collapse" data-parent=".accordion-extensions"\n			class="accordion-toggle" href="#accordion-extensions-collapse-<%= extensionId %>">\n			<%= extensionName %> </span>\n	</div>\n	<div id="accordion-extensions-collapse-<%= extensionId %>" class="collapse">\n		<div class="accordion-inner clearfix"><%= settingsBlock %></div>\n	</div>\n</div>\n';
+ return '<div class="panel">\n	<div class="accordion-heading">\n		<div class="checkbox pull-right">\n			<label> <input id="input-enable-extension-<%= extensionId %>"\n				type="checkbox"<% if(!isOptional) print(\'disabled\') %>>\n				enabled\n			</label>\n		</div>\n		<a data-toggle="collapse" data-parent=".accordion-extensions"\n			class="accordion-toggle" href="#accordion-extensions-collapse-<%= extensionId %>">\n			<%= extensionName %> </a>\n	</div>\n	<div id="accordion-extensions-collapse-<%= extensionId %>" class="collapse">\n		<div class="accordion-inner clearfix"><%= settingsBlock %></div>\n	</div>\n</div>\n';
 }), function() {
  var e = function(e, t, n, i) {
   this.rawMessage = e, this.parsedLine = void 0 !== t ? t : -1, this.snippet = void 0 !== n ? n : null, 
@@ -20364,13 +20364,13 @@ if (hljs.LANGUAGES.glsl = function(e) {
  var u = void 0;
  return c.onPagedownConfigure = function(e) {
   u = document.getElementById("preview-contents");
-  var n = document.querySelectorAll(".table-of-contents"), i = new RegExp("^" + c.config.marker + "$", "g");
+  var n = new RegExp("^" + c.config.marker + "$", "g");
   e.hooks.chain("onPreviewRefresh", function() {
-   var e = l();
-   t.each(u.getElementsByTagName("p"), function(t) {
-    i.test(t.innerHTML) && (t.innerHTML = e);
-   }), t.each(n, function(t) {
-    t.innerHTML = e;
+   var e = document.querySelectorAll(".table-of-contents, .toc"), i = l();
+   t.each(u.getElementsByTagName("p"), function(e) {
+    n.test(e.innerHTML) && (e.innerHTML = i);
+   }), t.each(e, function(e) {
+    e.innerHTML = i;
    });
   });
  }, c;
@@ -26926,32 +26926,32 @@ if (hljs.LANGUAGES.glsl = function(e) {
    }), void 0);
   });
  }
- function l(t, i) {
+ function l(t, i, o) {
   t.onRun(function() {
-   function o() {
+   function r() {
     n.redirectConfirm("You are being redirected to <strong>Google</strong> authorization page.", function() {
-     t.chain(r);
+     t.chain(s);
     }, function() {
      t.error(new Error("Operation canceled."));
     });
    }
-   function r() {
-    s === !1 && (t.timeout = ASYNC_TASK_LONG_TIMEOUT);
-    var n = e.chain(g).pick(e.keys(h).concat([ i ])).flatten().value();
+   function s() {
+    a === !1 && (t.timeout = ASYNC_TASK_LONG_TIMEOUT);
+    var n = e.chain(g).pick(h.getListWithNew(i)).flatten().value();
     gapi.auth.authorize({
      client_id: GOOGLE_CLIENT_ID,
      scope: n,
-     immediate: s
+     immediate: a
     }, function(e) {
      gapi.client.load("drive", "v2", function() {
-      return !e || e.error ? d === !0 && s === !0 ? (s = !1, t.chain(o), void 0) : (t.error(new Error("Access to Google account is not authorized.")), 
-      void 0) : (h[i] = !0, t.chain(), void 0);
+      return !e || e.error ? d === !0 && a === !0 ? (a = !1, t.chain(r), void 0) : (t.error(new Error("Access to Google account is not authorized.")), 
+      void 0) : (h.add(i), t.chain(), void 0);
      });
     });
    }
-   if (e.has(h, i)) return t.chain(), void 0;
-   var s = !0;
-   t.chain(r);
+   if (!o && h.isAuthorized(i)) return t.chain(), void 0;
+   var a = !0;
+   t.chain(s);
   });
  }
  function c(e, t) {
@@ -26959,9 +26959,9 @@ if (hljs.LANGUAGES.glsl = function(e) {
   if (e) if (logger.error(e), "string" == typeof e) i = e; else {
    if (i = "Google error (" + e.code + ": " + e.message + ").", e.code >= 500 && e.code < 600) return t.retry(new Error(i)), 
    void 0;
-   if (401 === e.code || 403 === e.code || "token_refresh_required" == e.code) return h = {}, 
+   if (401 === e.code || 403 === e.code || "token_refresh_required" == e.code) return h.reset(), 
    i = "Access to Google account is not authorized.", t.retry(new Error(i), 1), void 0;
-   (0 === e.code || -1 === e.code) && (d = !1, h = {}, n.setOffline(), i = "|stopPublish");
+   (0 === e.code || -1 === e.code) && (d = !1, h.reset(), n.setOffline(), i = "|stopPublish");
   }
   t.error(new Error(i));
  }
@@ -26989,7 +26989,23 @@ if (hljs.LANGUAGES.glsl = function(e) {
    }), void 0);
   });
  }
- var d = !1, h = {}, p = {}, f = !1;
+ var d = !1, h = {};
+ (function() {
+  var t = {}, n = !1;
+  e.each((localStorage.gdrivePermissions || "").split(";"), function(e) {
+   e && (t[e] = !0);
+  }), h.reset = function() {
+   n = !1;
+  }, h.isAuthorized = function(i) {
+   return n && e.has(t, i);
+  }, h.add = function(i) {
+   t[i] = !0, localStorage.gdrivePermissions = e.keys(t).join(";"), n = !0;
+  }, h.getListWithNew = function(n) {
+   var i = e.keys(t);
+   return e.has(t, n) || i.push(n), i;
+  };
+ })();
+ var p = {}, f = !1;
  r.addListener("onOfflineChanged", function(e) {
   f = e;
  });
@@ -26999,9 +27015,8 @@ if (hljs.LANGUAGES.glsl = function(e) {
   picasa: [ "https://picasaweb.google.com/data/" ]
  };
  p.forceGdriveAuthenticate = function() {
-  h = e.omit(h, "gdrive");
-  var t = new s();
-  a(t), l(t, "gdrive"), t.enqueue();
+  var e = new s();
+  a(e), l(e, "gdrive", !0), e.enqueue();
  }, p.upload = function(e, t, n, o, r, u, d) {
   var h = void 0, p = new s();
   a(p), l(p, "gdrive"), p.onRun(function() {

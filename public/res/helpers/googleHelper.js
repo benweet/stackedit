@@ -10,7 +10,32 @@ define([
 ], function(_, $, core, utils, settings, eventMgr, AsyncTask) {
 
     var connected = false;
-    var permissionList = {};
+    var authorizationMgr = {};
+    (function() {
+        var permissionList = {};
+        var isAuthorized = false;
+        _.each((localStorage.gdrivePermissions || '').split(';'), function(permission) {
+            permission && (permissionList[permission] = true);
+        });
+        authorizationMgr.reset = function() {
+            isAuthorized = false;
+        };
+        authorizationMgr.isAuthorized = function(permission) {
+            return isAuthorized && _.has(permissionList, permission);
+        };
+        authorizationMgr.add = function(permission) {
+            permissionList[permission] = true;
+            localStorage.gdrivePermissions = _.keys(permissionList).join(';');
+            isAuthorized = true;
+        };
+        authorizationMgr.getListWithNew = function(permission) {
+            var result = _.keys(permissionList);
+            if(!_.has(permissionList, permission)) {
+                result.push(permission);
+            }
+            return result;
+        };
+    })();
 
     var googleHelper = {};
 
@@ -65,9 +90,9 @@ define([
             'https://picasaweb.google.com/data/'
         ]
     };
-    function authenticate(task, permission) {
+    function authenticate(task, permission, force) {
         task.onRun(function() {
-            if(_.has(permissionList, permission)) {
+            if(!force && authorizationMgr.isAuthorized(permission)) {
                 task.chain();
                 return;
             }
@@ -83,7 +108,7 @@ define([
                 if(immediate === false) {
                     task.timeout = ASYNC_TASK_LONG_TIMEOUT;
                 }
-                var scopeList = _.chain(scopeMap).pick(_.keys(permissionList).concat([permission])).flatten().value();
+                var scopeList = _.chain(scopeMap).pick(authorizationMgr.getListWithNew(permission)).flatten().value();
                 gapi.auth.authorize({
                     'client_id': GOOGLE_CLIENT_ID,
                     'scope': scopeList,
@@ -103,7 +128,7 @@ define([
                             return;
                         }
                         // Success
-                        permissionList[permission] = true;
+                        authorizationMgr.add(permission);
                         task.chain();
                     });
                 });
@@ -112,10 +137,9 @@ define([
         });
     }
     googleHelper.forceGdriveAuthenticate = function() {
-        permissionList = _.omit(permissionList, 'gdrive') ;
         var task = new AsyncTask();
         connect(task);
-        authenticate(task, 'gdrive');
+        authenticate(task, 'gdrive', true);
         task.enqueue();
     };
 
@@ -572,14 +596,14 @@ define([
                     return;
                 }
                 else if(error.code === 401 || error.code === 403 || error.code == "token_refresh_required") {
-                    permissionList = {};
+                    authorizationMgr.reset();
                     errorMsg = "Access to Google account is not authorized.";
                     task.retry(new Error(errorMsg), 1);
                     return;
                 }
                 else if(error.code === 0 || error.code === -1) {
                     connected = false;
-                    permissionList = {};
+                    authorizationMgr.reset();
                     core.setOffline();
                     errorMsg = "|stopPublish";
                 }

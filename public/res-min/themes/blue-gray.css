@@ -1546,8 +1546,6 @@ a{-webkit-transition:background-color ease-in-out .15s,color ease-in-out .15s,bo
 .modal-settings textarea{max-width:100%;min-height:100px}
 .modal-settings .panel{border:0;border-radius:inherit;background:#ffffff;border-bottom:1px solid #f0f3f4;-webkit-box-shadow:none;box-shadow:none}
 .modal-settings .accordion-heading{padding:12px 15px}
-.modal-settings .accordion-heading .accordion-toggle{display:inline;padding:0;font-weight:bold;cursor:pointer}
-.modal-settings .accordion-heading .accordion-toggle:hover{text-decoration:underline}
 .modal-settings .accordion-heading .checkbox{margin-top:0;margin-bottom:0}
 .modal-settings .accordion-inner{border:0;padding:10px 40px 20px}
 .modal-settings .accordion-inner .form-horizontal .control-label{text-align:left}

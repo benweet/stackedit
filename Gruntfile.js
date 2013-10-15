@@ -195,8 +195,8 @@ module.exports = function(grunt) {
                     failOnError: true
                 },
                 command: [
-                    'git branch -f gh-pages master',
-                    'git push --all origin'
+                    //'git branch -f gh-pages master',
+                    'git push origin dev master'
                 ].join('&&')
             }
         }

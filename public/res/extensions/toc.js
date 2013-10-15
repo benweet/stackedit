@@ -116,10 +116,10 @@ define([
 
     toc.onPagedownConfigure = function(editor) {
         previewContentsElt = document.getElementById('preview-contents');
-        var tocEltList = document.querySelectorAll('.table-of-contents');
         var tocExp = new RegExp("^" + toc.config.marker + "$", "g");
         // Run TOC generation when conversion is finished directly on HTML
         editor.hooks.chain("onPreviewRefresh", function() {
+            var tocEltList = document.querySelectorAll('.table-of-contents, .toc');
             var htmlToc = buildToc();
             // Replace toc paragraphs
             _.each(previewContentsElt.getElementsByTagName('p'), function(elt) {

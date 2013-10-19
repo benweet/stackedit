@@ -1669,6 +1669,7 @@ input[type="file"]{line-height:inherit;height:inherit;border:none !important}
 .modal-import-harddrive-html textarea{width:530px;max-width:530px;height:120px}
 .popover{max-width:350px;padding:15px;-webkit-box-shadow:0 5px 30px rgba(0,0,0,0.4);box-shadow:0 5px 30px rgba(0,0,0,0.4)}
 .popover .popover-title{font-weight:500;font-size:24px;padding:10px 15px}
+.popover .icon-lock{font-size:38px;margin:5px}
 .popover .disabled{display:none}
 div.jGrowl{z-index:1040;font-size:inherit}
 div.jGrowl.bottom-right{right:30px}

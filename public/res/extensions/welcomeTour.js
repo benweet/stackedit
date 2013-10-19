@@ -39,7 +39,7 @@ define([
                 title: 'Welcome to StackEdit!',
                 content: [
                     '<i class="icon-lock pull-left"></i>',
-                    '<p><strong>You are using the new secured platform.</strong> If you want to recover your documents from the old platform, <a href="#">click here</a>.</p>',
+                    '<p><strong>You are using the new secured platform.</strong> If you want to recover your documents from the old platform, <a target="_blank" href="http://benweet.github.io/stackedit/recovery.html">click here</a>.</p>',
                     'Please click <code>Next</code> to take a quick tour.'
                 ].join(""),
                 placement: 'bottom',

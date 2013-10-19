@@ -36,6 +36,12 @@ var TextMode = require("ace/mode/text").Mode;
 var Tokenizer = require("ace/tokenizer").Tokenizer;
 var MarkdownHighlightRules = require("./ace_mode_highlight_rules").MarkdownHighlightRules;
 var MarkdownFoldMode = require("ace/mode/folding/markdown").FoldMode;
+var eventMgr = require('eventMgr');
+var Range = require('ace/range').Range
+var editor = undefined;
+eventMgr.addListener('onAceCreated', function(editorParam) {
+    editor = editorParam;
+});
 
 var Mode = function() {
     var highlighter = new MarkdownHighlightRules();
@@ -43,15 +49,30 @@ var Mode = function() {
     this.$tokenizer = new Tokenizer(highlighter.getRules());
     this.$embeds = highlighter.getEmbeds();
     
-    this.foldingRules = new MarkdownFoldMode();
+    //this.foldingRules = new MarkdownFoldMode();
 };
 oop.inherits(Mode, TextMode);
+
+var isIndentingList = false;
 
 (function() {
     this.type = "text";
     this.lineCommentStart = ">";
     
     this.getNextLineIndent = function(state, line, tab) {
+        if(isIndentingList === true && (state == "listblock" || state == "listblock-start") && /^\s*(?:[-+*]|\d+\.)\s+$/.test(line)) {
+            // When hitting enter twice in a listblock, remove the previous line
+            var rows = editor.$getSelectedRows();
+            if (rows.last > 2) {
+                var range = new Range(
+                    rows.last - 2, editor.session.getLine(rows.last - 2).length,
+                    rows.last - 1, editor.session.getLine(rows.last - 1).length);
+                editor.session.remove(range);
+            }
+            isIndentingList = false;
+            return this.$getIndent(line);
+        }
+        isIndentingList = false;
         if (state == "listblock") {
             var match = /^(\s*)(?:([-+*])|(\d+)\.)(\s+)/.exec(line);
             if (!match)
@@ -59,11 +80,13 @@ oop.inherits(Mode, TextMode);
             var marker = match[2];
             if (!marker)
                 marker = parseInt(match[3], 10) + 1 + ".";
+            isIndentingList = true;
             return match[1] + marker + match[4];
         } else {
             return this.$getIndent(line);
         }
     };
+    
 }).call(Mode.prototype);
 
 exports.Mode = Mode;

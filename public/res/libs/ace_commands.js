@@ -282,7 +282,17 @@ exports.commands = [{
 }, {
     name: "indent",
     bindKey: bindKey("Tab", "Tab"),
-    exec: function(editor) { editor.indent(); },
+    exec: function(editor) {
+        var rowIndex = editor.$getSelectedRows().last;
+        var rowText = editor.session.getLine(rowIndex);
+        var rowState = editor.session.getState(rowIndex);
+        if((rowState == "listblock" || rowState == "listblock-start") && /^\s*(?:[-+*]|\d+\.)\s+$/.test(rowText)) {
+            editor.blockIndent();
+        }
+        else {
+            editor.indent();
+        }
+    },
     multiSelectAction: "forEach"
 }, {
     name: "insertstring",

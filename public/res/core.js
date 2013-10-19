@@ -887,7 +887,10 @@ define([
             container: '.modal-settings',
             placement: 'right',
             trigger: 'hover',
-            title: 'Thanks for supporting StackEdit by adding a backlink in your documents!'
+            title: [
+                'Thanks for supporting StackEdit by adding a backlink in your documents!<br/><br/>',
+                '<b class="text-danger">NOTE: Backlinks are not welcome in Stack Exchange Q/A.</b>'
+            ].join('')
         });
         var tooltipOpen = false;
         $(".tooltip-usercustom-extension").tooltip({

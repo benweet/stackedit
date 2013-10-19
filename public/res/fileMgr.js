@@ -7,7 +7,7 @@ define([
     "eventMgr",
     "fileSystem",
     "classes/FileDescriptor",
-    "text!../WELCOME.md"
+    "text!WELCOME.md"
 ], function($, _, core, utils, settings, eventMgr, fileSystem, FileDescriptor, welcomeContent) {
 
     var fileMgr = {};

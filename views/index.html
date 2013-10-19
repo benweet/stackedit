@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html manifest="cache.manifest">
+    
+    <head>
+        <title>StackEdit - Markdown editor</title>
+        <link rel="canonical" href="https://stackedit.io/">
+        <link rel="icon" href="res-min/img/stackedit-32.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="res-min/img/stackedit-32.ico" type="image/x-icon">
+        <meta name="description" content="StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.">
+        <meta name="author" content="Benoit Schweblin">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="msvalidate.01" content="5E47EE6F67B069C17E3CDD418351A612"
+        />
+        <script>
+            // Use ?debug to serve original JavaScript files instead of minified
+            var baseDir = 'res';
+            if (!/(\?|&)debug($|&)/.test(location.search)) {
+                baseDir += '-min';
+            }
+            var require = {
+                baseUrl: baseDir,
+                deps: ['main']
+            };
+        </script>
+        <script src="res-min/require.js"></script>
+    </head>
+    
+    <body></body>
+
+</html>

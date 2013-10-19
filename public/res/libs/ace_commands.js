@@ -33,6 +33,7 @@ define(function(require, exports, module) {
 
 var lang = require("ace/lib/lang");
 var config = require("ace/config");
+var Range = require('ace/range').Range
 
 function bindKey(win, mac) {
     return {
@@ -283,10 +284,12 @@ exports.commands = [{
     name: "indent",
     bindKey: bindKey("Tab", "Tab"),
     exec: function(editor) {
-        var rowIndex = editor.$getSelectedRows().last;
-        var rowText = editor.session.getLine(rowIndex);
-        var rowState = editor.session.getState(rowIndex);
-        if((rowState == "listblock" || rowState == "listblock-start") && /^\s*(?:[-+*]|\d+\.)\s+$/.test(rowText)) {
+        // Perform block indent if the caret is at the begining of a list item
+        var selectionRange = editor.getSelectionRange();
+        var range = new Range(selectionRange.end.row, 0, selectionRange.end.row, selectionRange.end.column);
+        var startText = editor.session.getTextRange(range);
+        var token = editor.session.getTokenAt(selectionRange.end.row, selectionRange.end.column);
+        if(token.type == "markup.list" && /^\s*(?:[-+*]|\d+\.)\s+$/.test(startText)) {
             editor.blockIndent();
         }
         else {

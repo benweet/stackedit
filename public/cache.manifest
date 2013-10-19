@@ -1,9 +1,7 @@
 CACHE MANIFEST
-#Date Wed Oct 16 2013 00:12:59
+#Date Wed Oct 16 2013 00:12:57
 
 CACHE:
-index.html
-viewer.html
 res/worker.js
 libs/MathJax/MathJax.js?config=TeX-AMS_HTML
 libs/MathJax/config/Safe.js

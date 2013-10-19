@@ -830,10 +830,15 @@ define([
                     return function(e) {
                         try {
                             newLocalStorage = JSON.parse(e.target.result);
-                            if(/^v/.test(newLocalStorage.version) === false) {
-                                throw 1;
+                            // Compare localStorage version
+                            var newVersion = parseInt(newLocalStorage.version.match(/^v(\d+)$/)[1], 10);
+                            var currentVersion = parseInt(localStorage.version.match(/^v(\d+)$/)[1], 10);
+                            if(newVersion > currentVersion) {
+                                // We manage localStorage upgrade, not downgrade
+                                eventMgr.onError("Incompatible version. Please upgrade StackEdit.");
+                            } else {
+                                $('.modal-import-docs-settings').modal('show');
                             }
-                            $('.modal-import-docs-settings').modal('show');
                         }
                         catch(e) {
                             eventMgr.onError("Wrong format: " + importedFile.name);
@@ -889,7 +894,7 @@ define([
             trigger: 'hover',
             title: [
                 'Thanks for supporting StackEdit by adding a backlink in your documents!<br/><br/>',
-                '<b class="text-danger">NOTE: Backlinks are not welcome in Stack Exchange Q/A.</b>'
+                '<b class="text-danger">NOTE: Backlinks in Stack Exchange Q/A are not welcome.</b>'
             ].join('')
         });
         var tooltipOpen = false;

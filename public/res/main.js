@@ -138,6 +138,10 @@ if (baseDir.indexOf('-min') !== -1) {
 // media-importer, we are actually loading all the modules
 require(["jquery", "core", "eventMgr", "synchronizer", "publisher", "mediaImporter", "css",
 themeModule, ], function($, core, eventMgr) {
+    
+    if(typeof(noStart) !== 'undefined' && noStart) {
+        return;
+    }
 
     $(function() {
 

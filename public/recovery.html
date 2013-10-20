@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <title>StackEdit - Recovery</title>
+        <link rel="canonical" href="https://stackedit.io/">
+        <link rel="icon" href="res-min/img/stackedit-32.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="res-min/img/stackedit-32.ico" type="image/x-icon">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="res-min/themes/default.css">
+        <script>
+            // Use http://.../?debug to serve original JavaScript files instead of minified
+            var baseDir = 'res-min';
+            var noStart = true;
+            var require = {
+                baseUrl: baseDir,
+                deps: ['main']
+            };
+            setTimeout(function() {
+                try {
+                    // Try to use StackEdit dependencies to save a file
+                    var utils = require('utils');
+                    utils.saveAs(JSON.stringify(localStorage), "StackEdit local storage.json");
+                    $('.download-success').removeClass('hide');
+                }
+                catch (e) {
+                    // Try something safer
+                    document.getElementsByTagName('textarea')[0].value = JSON.stringify(localStorage);
+                    var eltList = document.querySelectorAll('.download-failure');
+                    for (var i = 0; i < eltList.length; ++i) {
+                        var elt = eltList[i];
+                        elt.className = elt.className.replace(/ hide/, '');
+                    }
+                }
+
+            }, 5000);
+
+            function clearLocalStorage() {
+                var ok = confirm('This will remove all your documents and settings. Are you sure?');
+                ok && localStorage.clear();
+            }
+        </script>
+        <script src="res-min/require.js"></script>
+    </head>
+    
+    <body>
+        <div class="container">
+            <br/>
+            <a href="https://stackedit.io/">
+            <img src="res-min/img/stackedit-promo.png" width="240" height="60" />
+            </a>
+            <h3>StackEdit recovery</h3>
+            <p>
+                <strong>The download of your documents and settings will start in 5 seconds...</strong>
+            </p>
+            <p>To import your documents and settings back in StackEdit:</p>
+            <blockquote>
+                <i class="icon-provider-stackedit"></i>
+                <code>Menu</code>
+                <i class="icon-angle-right"></i>
+                <i class="icon-cog"></i>
+                <code>Settings</code>
+                <i class="icon-angle-right"></i>
+                <code>Utils</code>
+                <i class="icon-angle-right"></i>
+                <i class="icon-cog-alt"></i>
+                <code>Import docs & settings</code>
+            </blockquote>
+            <p class="download-success hide text-primary">
+                <strong>
+                    <i class="icon-ok"></i>Documents and settings have been downloaded successfully.</strong>
+            </p>
+            <p class="download-failure hide text-danger">
+                <strong>
+                    <i class="icon-cancel"></i>Download failed. Please copy/paste the following content in a file:</strong>
+            </p>
+            <p>
+                <textarea class="download-failure hide form-control" rows="10"></textarea>
+            </p>
+            <p class="download-success download-failure hide">To clear the local storage
+                <a href="#" onclick="clearLocalStorage()">click here</a>.</p>
+            <p class="download-success download-failure hide">To reopen StackEdit
+                <a href="https://stackedit.io/">click here</a>.</p>
+        </div>
+    </body>
+
+</html>

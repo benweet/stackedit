@@ -63,11 +63,14 @@ var isIndentingList = false;
         if(isIndentingList === true && (state == "listblock" || state == "listblock-start") && /^\s*(?:[-+*]|\d+\.)\s+$/.test(line)) {
             // When hitting enter twice in a listblock, remove the previous line
             var rows = editor.$getSelectedRows();
-            if (rows.last > 2) {
+            if (rows.last > 1) {
                 var range = new Range(
                     rows.last - 2, editor.session.getLine(rows.last - 2).length,
                     rows.last - 1, editor.session.getLine(rows.last - 1).length);
-                editor.session.remove(range);
+                var previousLine = editor.session.getTextRange(range);
+                if(/^\s*(?:[-+*]|\d+\.)\s+$/.test(previousLine)) {
+                    editor.session.remove(range);
+                }
             }
             isIndentingList = false;
             return this.$getIndent(line);

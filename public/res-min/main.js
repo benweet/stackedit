@@ -906,7 +906,7 @@ function runDelayedFunction() {
  void 0 !== delayedFunction && delayedFunction();
 }
 
-(function(e, t) {
+!function(e, t) {
  function n(e) {
   var t = e.length, n = rt.type(e);
   return rt.isWindow(e) ? !1 : 1 === e.nodeType && t ? !0 : "array" === n || "function" !== n && (0 === t || "number" == typeof t && t > 0 && t - 1 in e);
@@ -2022,12 +2022,12 @@ function runDelayedFunction() {
    add: function() {
     if (c) {
      var t = c.length;
-     (function i(t) {
+     !function i(t) {
       rt.each(t, function(t, n) {
        var o = rt.type(n);
        "function" === o ? e.unique && h.has(n) || c.push(n) : n && n.length && "string" !== o && i(n);
       });
-     })(arguments), r ? a = c.length : n && (s = t, d(n));
+     }(arguments), r ? a = c.length : n && (s = t, d(n));
     }
     return this;
    },
@@ -3619,7 +3619,7 @@ function runDelayedFunction() {
  }, rt.fn.andSelf = rt.fn.addBack, "object" == typeof module && module && "object" == typeof module.exports ? module.exports = rt : "function" == typeof define && define.amd && define("jquery", [], function() {
   return rt;
  }), "object" == typeof e && "object" == typeof e.document && (e.jQuery = e.$ = rt);
-})(window), function() {
+}(window), function() {
  var e = this, t = e._, n = {}, i = Array.prototype, o = Object.prototype, r = Function.prototype, s = i.push, a = i.slice, l = i.concat, c = o.toString, u = o.hasOwnProperty, d = i.forEach, h = i.map, p = i.reduce, f = i.reduceRight, g = i.filter, m = i.every, v = i.some, b = i.indexOf, y = i.lastIndexOf, w = Array.isArray, C = Object.keys, x = r.bind, S = function(e) {
   return e instanceof S ? e : this instanceof S ? (this._wrapped = e, void 0) : new S(e);
  };
@@ -6455,12 +6455,12 @@ function runDelayedFunction() {
    if (this.$embeds) {
     this.$modes = {};
     for (var t = 0; t < this.$embeds.length; t++) e[this.$embeds[t]] && (this.$modes[this.$embeds[t]] = new e[this.$embeds[t]]());
-    for (var n = [ "toggleCommentLines", "getNextLineIndent", "checkOutdent", "autoOutdent", "transformAction", "getCompletions" ], t = 0; t < n.length; t++) (function(e) {
+    for (var n = [ "toggleCommentLines", "getNextLineIndent", "checkOutdent", "autoOutdent", "transformAction", "getCompletions" ], t = 0; t < n.length; t++) !function(e) {
      var i = n[t], o = e[i];
      e[n[t]] = function() {
       return this.$delegator(i, arguments, o);
      };
-    })(this);
+    }(this);
    }
   }, this.$delegator = function(e, t, n) {
    var i = t[0];
@@ -11810,7 +11810,7 @@ function runDelayedFunction() {
    var n = u[e], i = "";
    return n.bmp && !n.isBmpLast && (i = "[" + n.bmp + "]" + (n.astral ? "|" : "")), 
    n.astral && (i += n.astral), n.isBmpLast && n.bmp && (i += (n.astral ? "|" : "") + "[" + n.bmp + "]"), 
-   t ? "(?:(?!" + i + ")(?:[í €-í¯¿][í°€-í¿¿]|[\0-ï¿¿]))" : "(?:" + i + ")";
+   t ? "(?:(?!" + i + ")(?:[í €-í¯¿][í°€-í¿¿]|[\x00-ï¿¿]))" : "(?:" + i + ")";
   }
   function c(e, t) {
    var n = t ? "a!" : "a=";
@@ -11906,7 +11906,7 @@ function runDelayedFunction() {
    astral: "í š[í°€-í¸¿]"
   }, {
    name: "InBasic_Latin",
-   bmp: "\0-"
+   bmp: "\x00-"
   }, {
    name: "InBatak",
    bmp: "á¯€-á¯¿"
@@ -12517,12 +12517,12 @@ function runDelayedFunction() {
    name: "C",
    alias: "Other",
    isBmpLast: !0,
-   bmp: "\0--ÂŸÂ­Í¸Í¹Í¿-ÎƒÎ‹ÎÎ¢Ô¨-Ô°Õ—Õ˜Õ ÖˆÖ‹-ÖŽÖ×ˆ-××«-×¯×µ-Ø…ØœØÛÜŽÜÝ‹ÝŒÞ²-Þ¿ß»-ß¿à ®à ¯à ¿à¡œà¡à¡Ÿ-à¢Ÿà¢¡à¢­-à££à£¿à¥¸à¦€à¦„à¦à¦Žà¦‘à¦’à¦©à¦±à¦³-à¦µà¦ºà¦»à§…à§†à§‰à§Šà§-à§–à§˜-à§›à§žà§¤à§¥à§¼-à¨€à¨„à¨‹-à¨Žà¨‘à¨’à¨©à¨±à¨´à¨·à¨ºà¨»à¨½à©ƒ-à©†à©‰à©Šà©Ž-à©à©’-à©˜à©à©Ÿ-à©¥à©¶-àª€àª„àªŽàª’àª©àª±àª´àªºàª»à«†à«Šà«Žà«à«‘-à«Ÿà«¤à«¥à«²-à¬€à¬„à¬à¬Žà¬‘à¬’à¬©à¬±à¬´à¬ºà¬»à­…à­†à­‰à­Šà­Ž-à­•à­˜-à­›à­žà­¤à­¥à­¸-à®à®„à®‹-à®à®‘à®–-à®˜à®›à®à® -à®¢à®¥-à®§à®«-à®­à®º-à®½à¯ƒ-à¯…à¯‰à¯Žà¯à¯‘-à¯–à¯˜-à¯¥à¯»-à°€à°„à°à°‘à°©à°´à°º-à°¼à±…à±‰à±Ž-à±”à±—à±š-à±Ÿà±¤à±¥à±°-à±·à²€à²à²„à²à²‘à²©à²´à²ºà²»à³…à³‰à³Ž-à³”à³—-à³à³Ÿà³¤à³¥à³°à³³-à´à´„à´à´‘à´»à´¼àµ…àµ‰àµ-àµ–àµ˜-àµŸàµ¤àµ¥àµ¶-àµ¸à¶€à¶à¶„à¶—-à¶™à¶²à¶¼à¶¾à¶¿à·‡-à·‰à·‹-à·Žà·•à·—à· -à·±à·µ-à¸€à¸»-à¸¾à¹œ-àº€àºƒàº…àº†àº‰àº‹àºŒàºŽ-àº“àº˜àº àº¤àº¦àº¨àº©àº¬àººàº¾àº¿à»…à»‡à»Žà»à»šà»›à» -à»¿à½ˆà½­-à½°à¾˜à¾½à¿à¿›-à¿¿áƒ†áƒˆ-áƒŒáƒŽáƒá‰‰á‰Žá‰á‰—á‰™á‰žá‰ŸáŠ‰áŠŽáŠáŠ±áŠ¶áŠ·áŠ¿á‹á‹†á‹‡á‹—áŒ‘áŒ–áŒ—á›áœá½-á¿áŽš-áŽŸáµ-á¿áš-ášŸá›±-á›¿áœáœ•-áœŸáœ·-áœ¿á”-áŸá­á±á´-á¿áŸžáŸŸáŸª-áŸ¯áŸº-áŸ¿á á š-á Ÿá¡¸-á¡¿á¢«-á¢¯á£¶-á£¿á¤-á¤Ÿá¤¬-á¤¯á¤¼-á¤¿á¥-á¥ƒá¥®á¥¯á¥µ-á¥¿á¦¬-á¦¯á§Š-á§á§›-á§á¨œá¨á©Ÿá©½á©¾áªŠ-áªáªš-áªŸáª®-á«¿á­Œ-á­á­½-á­¿á¯´-á¯»á°¸-á°ºá±Š-á±Œá²€-á²¿á³ˆ-á³á³·-á³¿á·§-á·»á¼–á¼—á¼žá¼Ÿá½†á½‡á½Žá½á½˜á½šá½œá½žá½¾á½¿á¾µá¿…á¿”á¿•á¿œá¿°á¿±á¿µá¿¿â€‹-â€â€ª-â€®â -â¯â²â³â‚â‚-â‚Ÿâ‚»-âƒâƒ±-âƒ¿â†Š-â†â´-â¿â§-â¿â‘‹-â‘Ÿâœ€â­-â­â­š-â¯¿â°¯â±Ÿâ³´-â³¸â´¦â´¨-â´¬â´®â´¯âµ¨-âµ®âµ±-âµ¾â¶—-â¶Ÿâ¶§â¶¯â¶·â¶¿â·‡â·â·—â·Ÿâ¸¼-â¹¿âºšâ»´-â»¿â¿–-â¿¯â¿¼-â¿¿ã€ã‚—ã‚˜ã„€-ã„„ã„®-ã„°ã†ã†»-ã†¿ã‡¤-ã‡¯ãˆŸã‹¿ä¶¶-ä¶¿é¿-é¿¿ê’-ê’ê“‡-ê“ê˜¬-ê˜¿êš˜-êšžê›¸-ê›¿êžêž”-êžŸêž«-êŸ·ê ¬-ê ¯ê º-ê ¿ê¡¸-ê¡¿ê£…-ê£ê£š-ê£Ÿê£¼-ê£¿ê¥”-ê¥žê¥½-ê¥¿ê§Žê§š-ê§ê§ -ê§¿ê¨·-ê¨¿ê©Žê©ê©šê©›ê©¼-ê©¿ê«ƒ-ê«šê«·-ê¬€ê¬‡ê¬ˆê¬ê¬ê¬—-ê¬Ÿê¬§ê¬¯-ê®¿ê¯®ê¯¯ê¯º-ê¯¿íž¤-íž¯íŸ‡-íŸŠíŸ¼-ï£¿ï©®ï©¯ï«š-ï«¿ï¬‡-ï¬’ï¬˜-ï¬œï¬·ï¬½ï¬¿ï­‚ï­…ï¯‚-ï¯’ïµ€-ïµï¶ï¶‘ï·ˆ-ï·¯ï·¾ï·¿ï¸š-ï¸Ÿï¸§-ï¸¯ï¹“ï¹§ï¹¬-ï¹¯ï¹µï»½-ï¼€ï¾¿-ï¿ï¿ˆï¿‰ï¿ï¿‘ï¿˜ï¿™ï¿-ï¿Ÿï¿§ï¿¯-ï¿»ï¿¾ï¿¿",
+   bmp: "\x00--ÂŸÂ­Í¸Í¹Í¿-ÎƒÎ‹ÎÎ¢Ô¨-Ô°Õ—Õ˜Õ ÖˆÖ‹-ÖŽÖ×ˆ-××«-×¯×µ-Ø…ØœØÛÜŽÜÝ‹ÝŒÞ²-Þ¿ß»-ß¿à ®à ¯à ¿à¡œà¡à¡Ÿ-à¢Ÿà¢¡à¢­-à££à£¿à¥¸à¦€à¦„à¦à¦Žà¦‘à¦’à¦©à¦±à¦³-à¦µà¦ºà¦»à§…à§†à§‰à§Šà§-à§–à§˜-à§›à§žà§¤à§¥à§¼-à¨€à¨„à¨‹-à¨Žà¨‘à¨’à¨©à¨±à¨´à¨·à¨ºà¨»à¨½à©ƒ-à©†à©‰à©Šà©Ž-à©à©’-à©˜à©à©Ÿ-à©¥à©¶-àª€àª„àªŽàª’àª©àª±àª´àªºàª»à«†à«Šà«Žà«à«‘-à«Ÿà«¤à«¥à«²-à¬€à¬„à¬à¬Žà¬‘à¬’à¬©à¬±à¬´à¬ºà¬»à­…à­†à­‰à­Šà­Ž-à­•à­˜-à­›à­žà­¤à­¥à­¸-à®à®„à®‹-à®à®‘à®–-à®˜à®›à®à® -à®¢à®¥-à®§à®«-à®­à®º-à®½à¯ƒ-à¯…à¯‰à¯Žà¯à¯‘-à¯–à¯˜-à¯¥à¯»-à°€à°„à°à°‘à°©à°´à°º-à°¼à±…à±‰à±Ž-à±”à±—à±š-à±Ÿà±¤à±¥à±°-à±·à²€à²à²„à²à²‘à²©à²´à²ºà²»à³…à³‰à³Ž-à³”à³—-à³à³Ÿà³¤à³¥à³°à³³-à´à´„à´à´‘à´»à´¼àµ…àµ‰àµ-àµ–àµ˜-àµŸàµ¤àµ¥àµ¶-àµ¸à¶€à¶à¶„à¶—-à¶™à¶²à¶¼à¶¾à¶¿à·‡-à·‰à·‹-à·Žà·•à·—à· -à·±à·µ-à¸€à¸»-à¸¾à¹œ-àº€àºƒàº…àº†àº‰àº‹àºŒàºŽ-àº“àº˜àº àº¤àº¦àº¨àº©àº¬àººàº¾àº¿à»…à»‡à»Žà»à»šà»›à» -à»¿à½ˆà½­-à½°à¾˜à¾½à¿à¿›-à¿¿áƒ†áƒˆ-áƒŒáƒŽáƒá‰‰á‰Žá‰á‰—á‰™á‰žá‰ŸáŠ‰áŠŽáŠáŠ±áŠ¶áŠ·áŠ¿á‹á‹†á‹‡á‹—áŒ‘áŒ–áŒ—á›áœá½-á¿áŽš-áŽŸáµ-á¿áš-ášŸá›±-á›¿áœáœ•-áœŸáœ·-áœ¿á”-áŸá­á±á´-á¿áŸžáŸŸáŸª-áŸ¯áŸº-áŸ¿á á š-á Ÿá¡¸-á¡¿á¢«-á¢¯á£¶-á£¿á¤-á¤Ÿá¤¬-á¤¯á¤¼-á¤¿á¥-á¥ƒá¥®á¥¯á¥µ-á¥¿á¦¬-á¦¯á§Š-á§á§›-á§á¨œá¨á©Ÿá©½á©¾áªŠ-áªáªš-áªŸáª®-á«¿á­Œ-á­á­½-á­¿á¯´-á¯»á°¸-á°ºá±Š-á±Œá²€-á²¿á³ˆ-á³á³·-á³¿á·§-á·»á¼–á¼—á¼žá¼Ÿá½†á½‡á½Žá½á½˜á½šá½œá½žá½¾á½¿á¾µá¿…á¿”á¿•á¿œá¿°á¿±á¿µá¿¿â€‹-â€â€ª-â€®â -â¯â²â³â‚â‚-â‚Ÿâ‚»-âƒâƒ±-âƒ¿â†Š-â†â´-â¿â§-â¿â‘‹-â‘Ÿâœ€â­-â­â­š-â¯¿â°¯â±Ÿâ³´-â³¸â´¦â´¨-â´¬â´®â´¯âµ¨-âµ®âµ±-âµ¾â¶—-â¶Ÿâ¶§â¶¯â¶·â¶¿â·‡â·â·—â·Ÿâ¸¼-â¹¿âºšâ»´-â»¿â¿–-â¿¯â¿¼-â¿¿ã€ã‚—ã‚˜ã„€-ã„„ã„®-ã„°ã†ã†»-ã†¿ã‡¤-ã‡¯ãˆŸã‹¿ä¶¶-ä¶¿é¿-é¿¿ê’-ê’ê“‡-ê“ê˜¬-ê˜¿êš˜-êšžê›¸-ê›¿êžêž”-êžŸêž«-êŸ·ê ¬-ê ¯ê º-ê ¿ê¡¸-ê¡¿ê£…-ê£ê£š-ê£Ÿê£¼-ê£¿ê¥”-ê¥žê¥½-ê¥¿ê§Žê§š-ê§ê§ -ê§¿ê¨·-ê¨¿ê©Žê©ê©šê©›ê©¼-ê©¿ê«ƒ-ê«šê«·-ê¬€ê¬‡ê¬ˆê¬ê¬ê¬—-ê¬Ÿê¬§ê¬¯-ê®¿ê¯®ê¯¯ê¯º-ê¯¿íž¤-íž¯íŸ‡-íŸŠíŸ¼-ï£¿ï©®ï©¯ï«š-ï«¿ï¬‡-ï¬’ï¬˜-ï¬œï¬·ï¬½ï¬¿ï­‚ï­…ï¯‚-ï¯’ïµ€-ïµï¶ï¶‘ï·ˆ-ï·¯ï·¾ï·¿ï¸š-ï¸Ÿï¸§-ï¸¯ï¹“ï¹§ï¹¬-ï¹¯ï¹µï»½-ï¼€ï¾¿-ï¿ï¿ˆï¿‰ï¿ï¿‘ï¿˜ï¿™ï¿-ï¿Ÿï¿§ï¿¯-ï¿»ï¿¾ï¿¿",
    astral: "í ˆ[í½¯-í¿¿]|í ‰[í±£-í±¯í±´-í¿¿]|í „[í±Ž-í±‘í±°-í±¿í²½í³‚-í³í³©-í³¯í³º-í³¿í´µíµ„-íµ¿í·‰-í·í·š-í¿¿]|í ‚[í°†í°‡í°‰í°¶í°¹-í°»í°½í°¾í±–í± -í³¿í´œ-í´ží´º-í´¾íµ€-íµ¿í¶¸-í¶½í·€-í·¿í¸„í¸‡-í¸‹í¸”í¸˜í¸´-í¸·í¸»-í¸¾í¹ˆ-í¹í¹™-í¹Ÿíº€-í»¿í¼¶-í¼¸í½–í½—í½³-í½·í¾€-í¿¿]|í¡­[í¼µ-í¼¿]|í ›[í°€-í»¿í½…-í½í½¿-í¾Ží¾ -í¿¿]|í¡®[í°ž-í¿¿]|í €[í°Œí°§í°»í°¾í±Ží±í±ž-í±¿í³»-í³¿í´ƒ-í´†í´´-í´¶í¶‹-í¶í¶œ-í·í·¾-í¹¿íº-íºŸí»‘-í»¿í¼Ÿí¼¤-í¼¯í½‹-í½¿í¾ží¿„-í¿‡í¿–-í¿¿]|í¡©[í»—-í»¿]|í »[í°€-í·¿í¸„í¸ í¸£í¸¥í¸¦í¸¨í¸³í¸¸í¸ºí¸¼-í¹í¹ƒ-í¹†í¹ˆí¹Ší¹Œí¹í¹“í¹•í¹–í¹˜í¹ší¹œí¹ží¹ í¹£í¹¥í¹¦í¹«í¹³í¹¸í¹½í¹¿íºŠíºœ-íº íº¤íºªíº¼-í»¯í»²-í¿¿]|í¡¾[í¸ž-í¿¿]|í­€[í°€-í³¿í·°-í¿¿]|í ƒ[í±‰-í¹Ÿí¹¿-í¿¿]|í [í°¯-í¿¿]|[í †í ‡í Ší ‹í Ž-í ™í œ-í «í ­-í ³í ¶-í ºí ¾í ¿í¡¯-í¡½í¡¿-í¬¿í­-í¯¿][í°€-í¿¿]|í ½[í°¿í±í³¸í³½-í³¿í´¾í´¿íµ„-íµíµ¨-í·ºí¹-í¹„í¹-í¹¿í»†-í»¿í½´-í¿¿]|í ¼[í°¬-í°¯í²”-í²Ÿí²¯í²°í²¿í³€í³í³ -í³¿í´‹-í´í´¯íµ¬-íµ¯í¶›-í·¥í¸ƒ-í¸í¸»-í¸¿í¹‰-í¹í¹’-í»¿í¼¡-í¼¯í¼¶í½½-í½¿í¾”-í¾Ÿí¿…í¿‹-í¿Ÿí¿±-í¿¿]|í µ[í±•í²í² í²¡í²£í²¤í²§í²¨í²­í²ºí²¼í³„í´†í´‹í´Œí´•í´í´ºí´¿íµ…íµ‡-íµ‰íµ‘íº¦íº§í¿Œí¿]|í š[í¸¹-í¿¿]|í ´[í³¶-í³¿í´§í´¨íµ³-íµºí·ž-í·¿í¹†-í»¿í½—-í½Ÿí½²-í¿¿]|í [í²ží²Ÿí²ª-í¿¿]|í …[í°€-í¹¿íº¸-íº¿í»Š-í¿¿]|í ¬[í°‚-í¿¿]"
   }, {
    name: "Cc",
    alias: "Control",
-   bmp: "\0--ÂŸ"
+   bmp: "\x00--ÂŸ"
   }, {
    name: "Cf",
    alias: "Format",
@@ -12683,7 +12683,7 @@ function runDelayedFunction() {
   if (!e.addUnicodeData) throw new ReferenceError("Unicode Base must be loaded before Unicode Properties");
   e.addUnicodeData([ {
    name: "ASCII",
-   bmp: "\0-"
+   bmp: "\x00-"
   }, {
    name: "Alphabetic",
    bmp: "A-Za-zÂªÂµÂºÃ€-Ã–Ã˜-Ã¶Ã¸-ËË†-Ë‘Ë -Ë¤Ë¬Ë®Í…Í°-Í´Í¶Í·Íº-Í½Î†Îˆ-ÎŠÎŒÎŽ-Î¡Î£-ÏµÏ·-ÒÒŠ-Ô§Ô±-Õ–Õ™Õ¡-Ö‡Ö°-Ö½Ö¿××‚×„×…×‡×-×ª×°-×²Ø-ØšØ -Ù—Ù™-ÙŸÙ®-Û“Û•-ÛœÛ¡-Û¨Û­-Û¯Ûº-Û¼Û¿Ü-Ü¿Ý-Þ±ßŠ-ßªß´ßµßºà €-à —à š-à ¬à¡€-à¡˜à¢ à¢¢-à¢¬à£¤-à£©à£°-à£¾à¤€-à¤»à¤½-à¥Œà¥Ž-à¥à¥•-à¥£à¥±-à¥·à¥¹-à¥¿à¦-à¦ƒà¦…-à¦Œà¦à¦à¦“-à¦¨à¦ª-à¦°à¦²à¦¶-à¦¹à¦½-à§„à§‡à§ˆà§‹à§Œà§Žà§—à§œà§à§Ÿ-à§£à§°à§±à¨-à¨ƒà¨…-à¨Šà¨à¨à¨“-à¨¨à¨ª-à¨°à¨²à¨³à¨µà¨¶à¨¸à¨¹à¨¾-à©‚à©‡à©ˆà©‹à©Œà©‘à©™-à©œà©žà©°-à©µàª-àªƒàª…-àªàª-àª‘àª“-àª¨àªª-àª°àª²àª³àªµ-àª¹àª½-à«…à«‡-à«‰à«‹à«Œà«à« -à«£à¬-à¬ƒà¬…-à¬Œà¬à¬à¬“-à¬¨à¬ª-à¬°à¬²à¬³à¬µ-à¬¹à¬½-à­„à­‡à­ˆà­‹à­Œà­–à­—à­œà­à­Ÿ-à­£à­±à®‚à®ƒà®…-à®Šà®Ž-à®à®’-à®•à®™à®šà®œà®žà®Ÿà®£à®¤à®¨-à®ªà®®-à®¹à®¾-à¯‚à¯†-à¯ˆà¯Š-à¯Œà¯à¯—à°-à°ƒà°…-à°Œà°Ž-à°à°’-à°¨à°ª-à°³à°µ-à°¹à°½-à±„à±†-à±ˆà±Š-à±Œà±•à±–à±˜à±™à± -à±£à²‚à²ƒà²…-à²Œà²Ž-à²à²’-à²¨à²ª-à²³à²µ-à²¹à²½-à³„à³†-à³ˆà³Š-à³Œà³•à³–à³žà³ -à³£à³±à³²à´‚à´ƒà´…-à´Œà´Ž-à´à´’-à´ºà´½-àµ„àµ†-àµˆàµŠ-àµŒàµŽàµ—àµ -àµ£àµº-àµ¿à¶‚à¶ƒà¶…-à¶–à¶š-à¶±à¶³-à¶»à¶½à·€-à·†à·-à·”à·–à·˜-à·Ÿà·²à·³à¸-à¸ºà¹€-à¹†à¹àºàº‚àº„àº‡àºˆàºŠàºàº”-àº—àº™-àºŸàº¡-àº£àº¥àº§àºªàº«àº­-àº¹àº»-àº½à»€-à»„à»†à»à»œ-à»Ÿà¼€à½€-à½‡à½‰-à½¬à½±-à¾à¾ˆ-à¾—à¾™-à¾¼á€€-á€¶á€¸á€»-á€¿á-á¢á¥-á¨á®-á‚†á‚Žá‚œá‚á‚ -áƒ…áƒ‡áƒáƒ-áƒºáƒ¼-á‰ˆá‰Š-á‰á‰-á‰–á‰˜á‰š-á‰á‰ -áŠˆáŠŠ-áŠáŠ-áŠ°áŠ²-áŠµáŠ¸-áŠ¾á‹€á‹‚-á‹…á‹ˆ-á‹–á‹˜-áŒáŒ’-áŒ•áŒ˜-ášáŸáŽ€-áŽáŽ -á´á-á™¬á™¯-á™¿áš-áššáš -á›ªá›®-á›°áœ€-áœŒáœŽ-áœ“áœ -áœ³á€-á“á -á¬á®-á°á²á³áž€-áž³áž¶-áŸˆáŸ—áŸœá  -á¡·á¢€-á¢ªá¢°-á£µá¤€-á¤œá¤ -á¤«á¤°-á¤¸á¥-á¥­á¥°-á¥´á¦€-á¦«á¦°-á§‰á¨€-á¨›á¨ -á©žá©¡-á©´áª§á¬€-á¬³á¬µ-á­ƒá­…-á­‹á®€-á®©á®¬-á®¯á®º-á¯¥á¯§-á¯±á°€-á°µá±-á±á±š-á±½á³©-á³¬á³®-á³³á³µá³¶á´€-á¶¿á¸€-á¼•á¼˜-á¼á¼ -á½…á½ˆ-á½á½-á½—á½™á½›á½á½Ÿ-á½½á¾€-á¾´á¾¶-á¾¼á¾¾á¿‚-á¿„á¿†-á¿Œá¿-á¿“á¿–-á¿›á¿ -á¿¬á¿²-á¿´á¿¶-á¿¼â±â¿â‚-â‚œâ„‚â„‡â„Š-â„“â„•â„™-â„â„¤â„¦â„¨â„ª-â„­â„¯-â„¹â„¼-â„¿â……-â…‰â…Žâ… -â†ˆâ’¶-â“©â°€-â°®â°°-â±žâ± -â³¤â³«-â³®â³²â³³â´€-â´¥â´§â´­â´°-âµ§âµ¯â¶€-â¶–â¶ -â¶¦â¶¨-â¶®â¶°-â¶¶â¶¸-â¶¾â·€-â·†â·ˆ-â·Žâ·-â·–â·˜-â·žâ· -â·¿â¸¯ã€…-ã€‡ã€¡-ã€©ã€±-ã€µã€¸-ã€¼ã-ã‚–ã‚-ã‚Ÿã‚¡-ãƒºãƒ¼-ãƒ¿ã„…-ã„­ã„±-ã†Žã† -ã†ºã‡°-ã‡¿ã€-ä¶µä¸€-é¿Œê€€-ê’Œê“-ê“½ê”€-ê˜Œê˜-ê˜Ÿê˜ªê˜«ê™€-ê™®ê™´-ê™»ê™¿-êš—êšŸ-ê›¯êœ—-êœŸêœ¢-êžˆêž‹-êžŽêž-êž“êž -êžªêŸ¸-ê ê ƒ-ê …ê ‡-ê Šê Œ-ê §ê¡€-ê¡³ê¢€-ê£ƒê£²-ê£·ê£»ê¤Š-ê¤ªê¤°-ê¥’ê¥ -ê¥¼ê¦€-ê¦²ê¦´-ê¦¿ê§ê¨€-ê¨¶ê©€-ê©ê© -ê©¶ê©ºêª€-êª¾ê«€ê«‚ê«›-ê«ê« -ê«¯ê«²-ê«µê¬-ê¬†ê¬‰-ê¬Žê¬‘-ê¬–ê¬ -ê¬¦ê¬¨-ê¬®ê¯€-ê¯ªê°€-íž£íž°-íŸ†íŸ‹-íŸ»ï¤€-ï©­ï©°-ï«™ï¬€-ï¬†ï¬“-ï¬—ï¬-ï¬¨ï¬ª-ï¬¶ï¬¸-ï¬¼ï¬¾ï­€ï­ï­ƒï­„ï­†-ï®±ï¯“-ï´½ïµ-ï¶ï¶’-ï·‡ï·°-ï·»ï¹°-ï¹´ï¹¶-ï»¼ï¼¡-ï¼ºï½-ï½šï½¦-ï¾¾ï¿‚-ï¿‡ï¿Š-ï¿ï¿’-ï¿—ï¿š-ï¿œ",
@@ -12691,7 +12691,7 @@ function runDelayedFunction() {
   }, {
    name: "Any",
    isBmpLast: !0,
-   bmp: "\0-ï¿¿",
+   bmp: "\x00-ï¿¿",
    astral: "[í €-í¯¿][í°€-í¿¿]"
   }, {
    name: "Assigned",
@@ -12773,7 +12773,7 @@ function runDelayedFunction() {
    bmp: "áŽ -á´"
   }, {
    name: "Common",
-   bmp: "\0-@\\x5B-`\\x7B-Â©Â«-Â¹Â»-Â¿Ã—Ã·Ê¹-ËŸË¥-Ë©Ë¬-Ë¿Í´Í¾Î…Î‡Ö‰ØŒØ›ØŸÙ€Ù -Ù©Ûà¥¤à¥¥à¸¿à¿•-à¿˜áƒ»á›«-á›­áœµáœ¶á ‚á ƒá …á³“á³¡á³©-á³¬á³®-á³³á³µá³¶â€€-â€‹â€Ž-â¤âª-â°â´-â¾â‚€-â‚Žâ‚ -â‚ºâ„€-â„¥â„§-â„©â„¬-â„±â„³-â…â…-â…Ÿâ†‰â†-â³â€-â¦â‘€-â‘Šâ‘ -â›¿âœ-âŸ¿â¤€-â­Œâ­-â­™â¸€-â¸»â¿°-â¿»ã€€-ã€„ã€†ã€ˆ-ã€ ã€°-ã€·ã€¼-ã€¿ã‚›ã‚œã‚ ãƒ»ãƒ¼ã†-ã†Ÿã‡€-ã‡£ãˆ -ã‰Ÿã‰¿-ã‹ã˜-ã¿ä·€-ä·¿êœ€-êœ¡êžˆ-êžŠê °-ê ¹ï´¾ï´¿ï·½ï¸-ï¸™ï¸°-ï¹’ï¹”-ï¹¦ï¹¨-ï¹«ï»¿ï¼-ï¼ ï¼»-ï½€ï½›-ï½¥ï½°ï¾žï¾Ÿï¿ -ï¿¦ï¿¨-ï¿®ï¿¹-ï¿½",
+   bmp: "\x00-@\\x5B-`\\x7B-Â©Â«-Â¹Â»-Â¿Ã—Ã·Ê¹-ËŸË¥-Ë©Ë¬-Ë¿Í´Í¾Î…Î‡Ö‰ØŒØ›ØŸÙ€Ù -Ù©Ûà¥¤à¥¥à¸¿à¿•-à¿˜áƒ»á›«-á›­áœµáœ¶á ‚á ƒá …á³“á³¡á³©-á³¬á³®-á³³á³µá³¶â€€-â€‹â€Ž-â¤âª-â°â´-â¾â‚€-â‚Žâ‚ -â‚ºâ„€-â„¥â„§-â„©â„¬-â„±â„³-â…â…-â…Ÿâ†‰â†-â³â€-â¦â‘€-â‘Šâ‘ -â›¿âœ-âŸ¿â¤€-â­Œâ­-â­™â¸€-â¸»â¿°-â¿»ã€€-ã€„ã€†ã€ˆ-ã€ ã€°-ã€·ã€¼-ã€¿ã‚›ã‚œã‚ ãƒ»ãƒ¼ã†-ã†Ÿã‡€-ã‡£ãˆ -ã‰Ÿã‰¿-ã‹ã˜-ã¿ä·€-ä·¿êœ€-êœ¡êžˆ-êžŠê °-ê ¹ï´¾ï´¿ï·½ï¸-ï¸™ï¸°-ï¹’ï¹”-ï¹¦ï¹¨-ï¹«ï»¿ï¼-ï¼ ï¼»-ï½€ï½›-ï½¥ï½°ï¾žï¾Ÿï¿ -ï¿¦ï¿¨-ï¿®ï¿¹-ï¿½",
    astral: "í €[í´€-í´‚í´‡-í´³í´·-í´¿í¶-í¶›í·-í·¼]|í ¼[í°€-í°«í°°-í²“í² -í²®í²±-í²¾í³-í³í³‘-í³Ÿí´€-í´Ší´-í´®í´°-íµ«íµ°-í¶ší·¦-í·¿í¸í¸‚í¸-í¸ºí¹€-í¹ˆí¹í¹‘í¼€-í¼ í¼°-í¼µí¼·-í½¼í¾€-í¾“í¾ -í¿„í¿†-í¿Ší¿ -í¿°]|í­€[í°í° -í±¿]|í µ[í°€-í±”í±–-í²œí²ží²Ÿí²¢í²¥í²¦í²©-í²¬í²®-í²¹í²»í²½-í³ƒí³…-í´…í´‡-í´Ší´-í´”í´–-í´œí´ž-í´¹í´»-í´¾íµ€-íµ„íµ†íµŠ-íµíµ’-íº¥íº¨-í¿‹í¿Ž-í¿¿]|í ´[í°€-í³µí´€-í´¦í´©-íµ¦íµª-íµºí¶ƒí¶„í¶Œ-í¶©í¶®-í·í¼€-í½–í½ -í½±]|í ½[í°€-í°¾í±€í±‚-í³·í³¹-í³¼í´€-í´½íµ€-íµƒíµ-íµ§í·»-í¹€í¹…-í¹íº€-í»…í¼€-í½³]"
   }, {
    name: "Coptic",
@@ -13424,7 +13424,7 @@ printStackTrace.implementation = function() {}, printStackTrace.implementation.p
  }, utils;
 });
 
-var VERSION = "2.2.0", MAIN_URL = "https://stackedit.io/", GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", GOOGLE_DRIVE_APP_ID = "241271498917", DROPBOX_APP_KEY = "lq6mwopab8wskas", DROPBOX_APP_SECRET = "851fgnucpezy84t", BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c", DEFAULT_FILE_TITLE = "Title", DEFAULT_FOLDER_NAME = "New folder", GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document", EDITOR_DEFAULT_PADDING = 15, CHECK_ONLINE_PERIOD = 12e4, AJAX_TIMEOUT = 3e4, ASYNC_TASK_DEFAULT_TIMEOUT = 6e4, ASYNC_TASK_LONG_TIMEOUT = 18e4, SYNC_PERIOD = 18e4, USER_IDLE_THRESHOLD = 3e5, IMPORT_FILE_MAX_CONTENT_SIZE = 1e5, IMPORT_IMG_MAX_CONTENT_SIZE = 1e7, TEMPORARY_FILE_INDEX = "file.tempIndex", WELCOME_DOCUMENT_TITLE = "Welcome document", DOWNLOAD_PROXY_URL = "https://stackedit-download-proxy.herokuapp.com/", PICASA_PROXY_URL = "https://stackedit-picasa-proxy.herokuapp.com/", SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/", HTMLTOPDF_URL = "https://stackedit-htmltopdf.herokuapp.com/", delayedFunction = void 0, BASE_URL = "http://localhost/", GOOGLE_CLIENT_ID = "241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com", GITHUB_CLIENT_ID = "e47fef6055344579799d", GATEKEEPER_URL = "https://stackedit-gatekeeper-localhost.herokuapp.com/", TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-local.herokuapp.com/", WORDPRESS_CLIENT_ID = "23361", WORDPRESS_PROXY_URL = "https://stackedit-io-wordpress-proxy.herokuapp.com/";
+var VERSION = "2.2.1", MAIN_URL = "https://stackedit.io/", GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", GOOGLE_DRIVE_APP_ID = "241271498917", DROPBOX_APP_KEY = "lq6mwopab8wskas", DROPBOX_APP_SECRET = "851fgnucpezy84t", BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c", DEFAULT_FILE_TITLE = "Title", DEFAULT_FOLDER_NAME = "New folder", GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document", EDITOR_DEFAULT_PADDING = 15, CHECK_ONLINE_PERIOD = 12e4, AJAX_TIMEOUT = 3e4, ASYNC_TASK_DEFAULT_TIMEOUT = 6e4, ASYNC_TASK_LONG_TIMEOUT = 18e4, SYNC_PERIOD = 18e4, USER_IDLE_THRESHOLD = 3e5, IMPORT_FILE_MAX_CONTENT_SIZE = 1e5, IMPORT_IMG_MAX_CONTENT_SIZE = 1e7, TEMPORARY_FILE_INDEX = "file.tempIndex", WELCOME_DOCUMENT_TITLE = "Welcome document", DOWNLOAD_PROXY_URL = "https://stackedit-download-proxy.herokuapp.com/", PICASA_PROXY_URL = "https://stackedit-picasa-proxy.herokuapp.com/", SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/", HTMLTOPDF_URL = "https://stackedit-htmltopdf.herokuapp.com/", delayedFunction = void 0, BASE_URL = "http://localhost/", GOOGLE_CLIENT_ID = "241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com", GITHUB_CLIENT_ID = "e47fef6055344579799d", GATEKEEPER_URL = "https://stackedit-gatekeeper-localhost.herokuapp.com/", TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-local.herokuapp.com/", WORDPRESS_CLIENT_ID = "23361", WORDPRESS_PROXY_URL = "https://stackedit-io-wordpress-proxy.herokuapp.com/";
 
 0 === location.hostname.indexOf("stackedit.io") && (BASE_URL = MAIN_URL, GOOGLE_CLIENT_ID = "241271498917-t4t7d07qis7oc0ahaskbif3ft6tk63cd.apps.googleusercontent.com", 
 GITHUB_CLIENT_ID = "710fc67886ab1ae8fee6", GATEKEEPER_URL = "https://stackedit-io-gatekeeper.herokuapp.com/", 
@@ -14343,7 +14343,7 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
   escapeWithSingleQuotes: function(e) {
    return "'" + e.replace(/'/g, "''") + "'";
   }
- }, YamlEscaper.REGEX_CHARACTER_TO_ESCAPE = "[\\x00-\\x1f]|Ã‚Â…|Ã‚Â |Ã¢Â€Â¨|Ã¢Â€Â©", YamlEscaper.escapees = [ "\\\\", '\\"', '"', "\0", "", "", "", "", "", "", "", "\b", "	", "\n", "", "\f", "\r", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "Ã‚Â…", "Ã‚Â ", "Ã¢Â€Â¨", "Ã¢Â€Â©" ], 
+ }, YamlEscaper.REGEX_CHARACTER_TO_ESCAPE = "[\\x00-\\x1f]|Ã‚Â…|Ã‚Â |Ã¢Â€Â¨|Ã¢Â€Â©", YamlEscaper.escapees = [ "\\\\", '\\"', '"', "\x00", "", "", "", "", "", "", "", "\b", "	", "\n", "", "\f", "\r", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "Ã‚Â…", "Ã‚Â ", "Ã¢Â€Â¨", "Ã¢Â€Â©" ], 
  YamlEscaper.escaped = [ '\\"', "\\\\", '\\"', "\\0", "\\x01", "\\x02", "\\x03", "\\x04", "\\x05", "\\x06", "\\a", "\\b", "\\t", "\\n", "\\v", "\\f", "\\r", "\\x0e", "\\x0f", "\\x10", "\\x11", "\\x12", "\\x13", "\\x14", "\\x15", "\\x16", "\\x17", "\\x18", "\\x19", "\\x1a", "\\e", "\\x1c", "\\x1d", "\\x1e", "\\x1f", "\\N", "\\_", "\\L", "\\P" ];
  var s = function() {};
  s.prototype = {
@@ -14401,10 +14401,10 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
     return "\\";
 
    case "N":
-    return "\0Â…";
+    return "\x00Â…";
 
    case "_":
-    return "\0Â ";
+    return "\x00Â ";
 
    case "L":
     return " (";
@@ -16143,10 +16143,10 @@ function() {
   var n = this, i = t.input;
   this.init = function() {
    var e = "undefined" != typeof require ? require("ace/range").Range : ace.require("ace/range").Range;
-   (function(t) {
+   !function(t) {
     n.before = i.session.getTextRange(new e(0, 0, t.start.row, t.start.column)), n.selection = i.session.getTextRange(), 
     n.after = i.session.getTextRange(new e(t.end.row, t.end.column, Number.MAX_VALUE, Number.MAX_VALUE));
-   })(i.selection.getRange()), this.text = [ this.before, this.selection, this.after ].join(""), 
+   }(i.selection.getRange()), this.text = [ this.before, this.selection, this.after ].join(""), 
    this.length = this.text.length, this.setInputAreaSelectionStartEnd(), this.scrollTop = i.renderer.getScrollTop();
   }, this.setInputAreaSelection = function() {
    var e = "undefined" != typeof require ? require("ace/range").Range : ace.require("ace/range").Range;
@@ -16735,7 +16735,7 @@ function() {
 
 var prettyPrintOne, prettyPrint;
 
-(function() {
+!function() {
  function e(e) {
   function t(e) {
    var t = e.charCodeAt(0);
@@ -16861,7 +16861,7 @@ var prettyPrintOne, prettyPrint;
  }
  function o(t, i) {
   var o, r = {};
-  (function() {
+  !function() {
    for (var n = t.concat(i), s = [], a = {}, l = 0, c = n.length; c > l; ++l) {
     var u = n[l], d = u[3];
     if (d) for (var h = d.length; --h >= 0; ) r[d.charAt(h)] = u;
@@ -16869,7 +16869,7 @@ var prettyPrintOne, prettyPrint;
     a.hasOwnProperty(f) || (s.push(p), a[f] = null);
    }
    s.push(/[\0-\uffff]/), o = e(s);
-  })();
+  }();
   var s = i.length, a = function(e) {
    for (var t = e.sourceCode, l = e.basePos, u = [ l, I ], d = 0, h = t.match(o) || [], p = {}, f = 0, g = h.length; g > f; ++f) {
     var m, v = h[f], b = p[v], y = void 0;
@@ -17155,7 +17155,7 @@ var prettyPrintOne, prettyPrint;
  "function" == typeof define && define.amd && define("google-code-prettify", [], function() {
   return U;
  });
-})();
+}();
 
 var hljs = new function() {
  function e(e) {
@@ -21523,7 +21523,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
   });
  });
 }(window.jQuery), define("bootstrap", function() {}), function() {
- (function(e, t) {
+ !function(e, t) {
   var n, i;
   return i = t.document, n = function() {
    function n(n) {
@@ -21762,7 +21762,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
     this.backdrop.$element = null, this.backdrop.$background = null;
    }, n;
   }(), t.Tour = n;
- })(jQuery, window);
+ }(jQuery, window);
 }.call(this), define("bootstrap-tour", function() {}), define("extensions/welcomeTour", [ "underscore", "jquery", "classes/Extension", "bootstrap-tour" ], function(e, t, n) {
  var i = new n("welcomeTour", "Welcome tour", !1, !0);
  return i.onReady = function() {
@@ -27015,7 +27015,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
   });
  }
  var d = !1, h = {};
- (function() {
+ !function() {
   var t = {}, n = !1;
   e.each((localStorage.gdrivePermissions || "").split(";"), function(e) {
    e && (t[e] = !0);
@@ -27029,7 +27029,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    var i = e.keys(t);
    return e.has(t, n) || i.push(n), i;
   };
- })();
+ }();
  var p = {}, f = !1;
  r.addListener("onOfflineChanged", function(e) {
   f = e;
@@ -28488,7 +28488,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
   var r = o.join("/") + "/";
   r = e.convertURIBase(r, i, "/"), r.match(a) || (r = "/" + r), "/" != r.substr(r.length - 1, 1) && (r += "/"), 
   s.inject(e(t, r, i));
-  for (var u = 0; u < l.length; u++) (n && ".less" == l[u].substr(l[u].length - 5, 5) || !n && ".css" == l[u].substr(l[u].length - 4, 4)) && (function(e) {
+  for (var u = 0; u < l.length; u++) (n && ".less" == l[u].substr(l[u].length - 5, 5) || !n && ".css" == l[u].substr(l[u].length - 4, 4)) && (!function(e) {
    c[e] = c[e] || !0, setTimeout(function() {
     "function" == typeof c[e] && c[e](), delete c[e];
    }, 7);

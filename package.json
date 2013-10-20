@@ -1,6 +1,6 @@
 {
   "name": "stackedit",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.",
   "main": "res/main.js",
   "directories": {
@@ -19,8 +19,7 @@
     "bower": "~1.2.5",
     "grunt-bower-requirejs": "~0.7.1",
     "grunt-bower-task": "~0.3.1",
-    "grunt-bump": "0.0.11",
-    "grunt-shell": "~0.3.1"
+    "grunt-bump": "0.0.11"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

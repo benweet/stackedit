@@ -41,6 +41,7 @@ define([
             var htmlCode = _.template(buttonHtmlCode.config.template, {
                 documentTitle: selectedFileDesc.title,
                 documentMarkdown: selectedFileDesc.content,
+                trimmedDocumentMarkdown: selectedFileDesc.content.substring(selectedFileDesc.frontMatter ? selectedFileDesc.frontMatter._frontMatter.length : 0),
                 documentHTML: html,
                 frontMatter: selectedFileDesc.frontMatter,
                 publishAttributes: undefined,

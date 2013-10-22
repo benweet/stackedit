@@ -15,18 +15,19 @@ define([
         fileDesc = fileDescParam;
     };
 
-    var regex = /^(\s*-{3}\s*\n([\w\W]+?)\n\s*-{3}\s*\n)?([\w\W]*)/;
+    var regex = /^(\s*-{3}\s*\n([\w\W]+?)\n\s*-{3}\s*\n)?([\w\W]*)$/;
     yamlFrontMatterParser.onPagedownConfigure = function(editor) {
         var converter = editor.getConverter();
         converter.hooks.chain("preConversion", function(text) {
-            var results = regex.exec(text),
-                yaml;
+            var results = regex.exec(text);
+            var yaml = results[2];
 
-            if ((yaml = results[2]) && (!fileDesc.frontMatter || fileDesc.frontMatter._yaml != yaml)) {
+            if (yaml && (!fileDesc.frontMatter || fileDesc.frontMatter._yaml != yaml)) {
                 fileDesc.frontMatter = undefined;
                 try {
                     fileDesc.frontMatter = YAML.parse(yaml);
                     fileDesc.frontMatter._yaml = yaml;
+                    fileDesc.frontMatter._frontMatter = results[1];
                 }
                 catch (e) {}
             }

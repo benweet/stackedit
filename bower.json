@@ -18,7 +18,7 @@
     "stacktrace": "~0.5.3",
     "requirejs-text": "~2.0.10",
     "bootstrap-tour": "~0.6.0",
-    "ace": "#51b7cb67a63998c9c0b7d089a85c60e032a7cc17",
+    "ace": "4bbe5346f2ae5ad35c0c47defa244ab27aedd451",
     "pagedown-ace": "git@github.com:benweet/pagedown-ace.git#7805f240f343b5b2a05a5b9c0d4a3f5091e7a49b",
     "pagedown-extra": "git@github.com:jmcmanus/pagedown-extra.git#ae1547d1662e07d6530137bd3dff3a6e6c8aec3b",
     "crel": "git@github.com:KoryNunn/crel.git#8dbda04b129fc0aec01a2a080d1cab26816e11c1",

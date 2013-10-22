@@ -212,15 +212,7 @@ define([
     // Create ACE editor
     var aceEditor = undefined;
     function createAceEditor() {
-        if(lightMode) {
-            // In light mode, we replace ACE with a textarea
-            $('#wmd-input').replaceWith(function() {
-                return $('<textarea id="wmd-input">').addClass(this.className).addClass('form-control');
-            });
-            return;
-        }
         aceEditor = ace.edit("wmd-input");
-        require('ace/ext/spellcheck');
         aceEditor.setOption("spellcheck", true);
         aceEditor.renderer.setShowGutter(false);
         aceEditor.renderer.setPrintMarginColumn(false);
@@ -685,19 +677,30 @@ define([
             }
         });
 
-        // ACE editor
-        createAceEditor();
-
-        // Editor's element
+        // Editor
+        if(lightMode) {
+            // In light mode, we replace ACE with a textarea
+            $('#wmd-input').replaceWith(function() {
+                return $('<textarea id="wmd-input">').addClass(this.className).addClass('form-control');
+            });
+        }
+        
         $editorElt = $("#wmd-input").css({
             // Apply editor font
             "font-family": settings.editorFontFamily,
             "font-size": settings.editorFontSize + "px",
             "line-height": Math.round(settings.editorFontSize * (20 / 12)) + "px"
         });
-        $editorElt.find('.ace_content').css({
-            "background-size": "64px " + Math.round(settings.editorFontSize * (20 / 12)) + "px",
-        });
+        
+        if(!lightMode) {
+            // ACE editor
+            createAceEditor();
+
+            // Editor's element
+            $editorElt.find('.ace_content').css({
+                "background-size": "64px " + Math.round(settings.editorFontSize * (20 / 12)) + "px",
+            });
+        }
 
         // UI layout
         createLayout();

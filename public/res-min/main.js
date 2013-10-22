@@ -4748,7 +4748,7 @@ function runDelayedFunction() {
   if (e.addEventListener) return e.addEventListener(t, n, !1);
   if (e.attachEvent) {
    var i = function() {
-    n(window.event);
+    n.call(e, window.event);
    };
    n._wrapper = i, e.attachEvent("on" + t, i);
   }
@@ -4767,19 +4767,13 @@ function runDelayedFunction() {
    2: 2,
    4: 1
   }[e.button];
- }, t.capture = document.documentElement.setCapture ? function(e, n, i) {
-  function o(s) {
-   n(s), r || (r = !0, i(s)), t.removeListener(e, "mousemove", n), t.removeListener(e, "mouseup", o), 
-   t.removeListener(e, "losecapture", o), e.releaseCapture();
+ }, t.capture = function(e, n, i) {
+  function o(e) {
+   n && n(e), i && i(e), t.removeListener(document, "mousemove", n, !0), t.removeListener(document, "mouseup", o, !0), 
+   t.removeListener(document, "dragstart", o, !0);
   }
-  var r = !1;
-  t.addListener(e, "mousemove", n), t.addListener(e, "mouseup", o), t.addListener(e, "losecapture", o), 
-  e.setCapture();
- } : function(e, t, n) {
-  function i(e) {
-   t && t(e), n && n(e), document.removeEventListener("mousemove", t, !0), document.removeEventListener("mouseup", i, !0);
-  }
-  document.addEventListener("mousemove", t, !0), document.addEventListener("mouseup", i, !0);
+  t.addListener(document, "mousemove", n, !0), t.addListener(document, "mouseup", o, !0), 
+  t.addListener(document, "dragstart", o, !0);
  }, t.addMouseWheelListener = function(e, n) {
   if ("onmousewheel" in e) {
    var i = 8;
@@ -4800,13 +4794,12 @@ function runDelayedFunction() {
    4: "quadclick"
   };
   t.addListener(e, "mousedown", function(e) {
-   if (0 != t.getButton(e)) c = 0; else {
-    var o = Math.abs(e.clientX - s) > 5 || Math.abs(e.clientY - a) > 5;
-    (!l || o) && (c = 0), c += 1, l && clearTimeout(l), l = setTimeout(function() {
-     l = null;
-    }, n[c - 1] || 600);
+   if (0 != t.getButton(e) ? c = 0 : e.detail > 1 ? (c++, c > 4 && (c = 1)) : c = 1, 
+   o.isIE) {
+    var n = Math.abs(e.clientX - s) > 5 || Math.abs(e.clientY - a) > 5;
+    n && (c = 1), 1 == c && (s = e.clientX, a = e.clientY);
    }
-   if (1 == c && (s = e.clientX, a = e.clientY), i[r]("mousedown", e), c > 4) c = 0; else if (c > 1) return i[r](u[c], e);
+   if (i[r]("mousedown", e), c > 4) c = 0; else if (c > 1) return i[r](u[c], e);
   }), o.isOldIE && t.addListener(e, "dblclick", function(e) {
    c = 2, l && clearTimeout(l), l = setTimeout(function() {
     l = null;
@@ -4945,7 +4938,7 @@ function runDelayedFunction() {
   var u = o.createElement("textarea");
   u.className = "ace_text-input", i.isTouchPad && u.setAttribute("x-palm-disable-auto-cap", !0), 
   u.wrap = "off", u.autocorrect = "off", u.autocapitalize = "off", u.spellcheck = !1, 
-  u.style.bottom = "2000em", e.insertBefore(u, e.firstChild);
+  u.style.opacity = "0", e.insertBefore(u, e.firstChild);
   var d = "", h = !1, p = !1, f = !1, g = !1, m = "", v = !0;
   try {
    var b = document.activeElement === u;
@@ -5070,27 +5063,35 @@ function runDelayedFunction() {
    g || (g = {}, t.onCompositionStart(), setTimeout(R, 0), t.on("mousedown", P), t.selection.isEmpty() || (t.insert(""), 
    t.session.markUndoGroup(), t.selection.clearSelection()), t.session.markUndoGroup());
   }, R = function() {
-   if (g && (t.onCompositionUpdate(u.value), g.lastValue && t.undo(), g.lastValue = u.value.replace(/\x01/g, ""), 
-   g.lastValue)) {
-    var e = t.selection.getRange();
-    t.insert(g.lastValue), t.session.markUndoGroup(), g.range = t.selection.getRange(), 
-    t.selection.setRange(e), t.selection.clearSelection();
+   if (g) {
+    var e = u.value.replace(/\x01/g, "");
+    if (g.lastValue !== e && (t.onCompositionUpdate(e), g.lastValue && t.undo(), g.lastValue = e, 
+    g.lastValue)) {
+     var n = t.selection.getRange();
+     t.insert(g.lastValue), t.session.markUndoGroup(), g.range = t.selection.getRange(), 
+     t.selection.setRange(n), t.selection.clearSelection();
+    }
    }
   }, P = function(e) {
    var n = g;
    g = !1;
    var i = setTimeout(function() {
+    i = null;
     var e = u.value.replace(/\x01/g, "");
     g || (e == n.lastValue ? l() : !n.lastValue && e && (l(), $(e)));
    });
    F = function(e) {
-    return clearTimeout(i), e = e.replace(/\x01/g, ""), e == n.lastValue ? "" : (n.lastValue && t.undo(), 
+    return i && clearTimeout(i), e = e.replace(/\x01/g, ""), e == n.lastValue ? "" : (n.lastValue && i && t.undo(), 
     e);
    }, t.onCompositionEnd(), t.removeListener("mousedown", P), "compositionend" == e.type && n.range && t.selection.setRange(n.range);
   }, N = r.delayedCall(R, 50);
-  n.addListener(u, "compositionstart", M), n.addListener(u, i.isGecko ? "text" : "keyup", function() {
+  n.addListener(u, "compositionstart", M), i.isGecko ? n.addListener(u, "text", function() {
    N.schedule();
-  }), n.addListener(u, "compositionend", P), this.getElement = function() {
+  }) : (n.addListener(u, "keyup", function() {
+   N.schedule();
+  }), n.addListener(u, "keydown", function() {
+   N.schedule();
+  })), n.addListener(u, "compositionend", P), this.getElement = function() {
    return u;
   }, this.setReadOnly = function(e) {
    u.readOnly = e;
@@ -5110,14 +5111,14 @@ function runDelayedFunction() {
   });
  };
  t.TextInput = a;
-}), define("ace/mouse/default_handlers", [ "require", "exports", "module", "../lib/dom", "../lib/useragent" ], function(e, t) {
+}), define("ace/mouse/default_handlers", [ "require", "exports", "module", "../lib/dom", "../lib/event", "../lib/useragent" ], function(e, t) {
  function n(e) {
   e.$clickSelection = null;
   var t = e.editor;
   t.setDefaultHandler("mousedown", this.onMouseDown.bind(e)), t.setDefaultHandler("dblclick", this.onDoubleClick.bind(e)), 
   t.setDefaultHandler("tripleclick", this.onTripleClick.bind(e)), t.setDefaultHandler("quadclick", this.onQuadClick.bind(e)), 
   t.setDefaultHandler("mousewheel", this.onMouseWheel.bind(e));
-  var n = [ "select", "startSelect", "drag", "dragEnd", "dragWait", "dragWaitEnd", "startDrag", "focusWait" ];
+  var n = [ "select", "startSelect", "selectEnd", "selectAllEnd", "selectByWordsEnd", "selectByLinesEnd", "dragWait", "dragWaitEnd", "focusWait" ];
   n.forEach(function(t) {
    e[t] = this[t];
   }, this), e.selectByLines = this.extendSelectionBy.bind(e, "getLineRange"), e.selectByWords = this.extendSelectionBy.bind(e, "getWordRange");
@@ -5135,9 +5136,8 @@ function runDelayedFunction() {
    anchor: e.start
   };
  }
- var r = e("../lib/dom");
- e("../lib/useragent");
- var s = 0;
+ e("../lib/dom"), e("../lib/event"), e("../lib/useragent");
+ var r = 0;
  (function() {
   this.onMouseDown = function(e) {
    var t = e.inSelection(), n = e.getDocumentPosition();
@@ -5149,11 +5149,16 @@ function runDelayedFunction() {
     void 0;
    }
    return !t || i.isFocused() || (i.focus(), !this.$focusTimout || this.$clickSelection || i.inMultiSelectMode) ? (!t || this.$clickSelection || e.getShiftKey() || i.inMultiSelectMode ? this.startSelect(n) : t && (this.mousedownEvent.time = new Date().getTime(), 
-   this.setState("dragWait")), this.captureMouse(e), e.preventDefault()) : (this.setState("focusWait"), 
-   this.captureMouse(e), e.preventDefault());
+   this.startSelect(n)), this.captureMouse(e), e.preventDefault()) : (this.mousedownEvent.time = new Date().getTime(), 
+   this.setState("focusWait"), this.captureMouse(e), void 0);
   }, this.startSelect = function(e) {
-   e = e || this.editor.renderer.screenToTextCoordinates(this.x, this.y), this.mousedownEvent.getShiftKey() ? this.editor.selection.selectToPosition(e) : this.$clickSelection || (this.editor.moveCursorToPosition(e), 
-   this.editor.selection.clearSelection()), this.setState("select");
+   e = e || this.editor.renderer.screenToTextCoordinates(this.x, this.y);
+   var t = this.editor;
+   setTimeout(function() {
+    this.mousedownEvent.getShiftKey() ? t.selection.selectToPosition(e) : this.$clickSelection || (t.moveCursorToPosition(e), 
+    t.selection.clearSelection());
+   }.bind(this), 0), t.container.setCapture && t.container.setCapture(), t.setStyle("ace_selecting"), 
+   this.setState("select");
   }, this.select = function() {
    var e, t = this.editor, n = t.renderer.screenToTextCoordinates(this.x, this.y);
    if (this.$clickSelection) {
@@ -5178,49 +5183,11 @@ function runDelayedFunction() {
     n.selection.setSelectionAnchor(t.row, t.column);
    }
    n.selection.selectToPosition(i), n.renderer.scrollCursorIntoView();
-  }, this.startDrag = function() {
-   var e = this.editor;
-   this.setState("drag"), this.dragRange = e.getSelectionRange();
-   var t = e.getSelectionStyle();
-   this.dragSelectionMarker = e.session.addMarker(this.dragRange, "ace_selection", t), 
-   e.clearSelection(), r.addCssClass(e.container, "ace_dragging"), this.$dragKeybinding || (this.$dragKeybinding = {
-    handleKeyboard: function(e, t, n) {
-     return "esc" == n ? {
-      command: this.command
-     } : void 0;
-    },
-    command: {
-     exec: function(e) {
-      var t = e.$mouseHandler;
-      t.dragCursor = null, t.dragEnd(), t.startSelect();
-     }
-    }
-   }), e.keyBinding.addKeyboardHandler(this.$dragKeybinding);
+  }, this.selectEnd = this.selectAllEnd = this.selectByWordsEnd = this.selectByLinesEnd = function() {
+   this.editor.unsetStyle("ace_selecting"), this.editor.container.releaseCapture && this.editor.container.releaseCapture();
   }, this.focusWait = function() {
    var e = i(this.mousedownEvent.x, this.mousedownEvent.y, this.x, this.y), t = new Date().getTime();
-   (e > s || t - this.mousedownEvent.time > this.$focusTimout) && this.startSelect(this.mousedownEvent.getDocumentPosition());
-  }, this.dragWait = function() {
-   var e = i(this.mousedownEvent.x, this.mousedownEvent.y, this.x, this.y), t = new Date().getTime(), n = this.editor;
-   e > s ? this.startSelect(this.mousedownEvent.getDocumentPosition()) : t - this.mousedownEvent.time > n.$mouseHandler.$dragDelay && this.startDrag();
-  }, this.dragWaitEnd = function(e) {
-   this.mousedownEvent.domEvent = e, this.startSelect();
-  }, this.drag = function() {
-   var e = this.editor;
-   this.dragCursor = e.renderer.screenToTextCoordinates(this.x, this.y), e.moveCursorToPosition(this.dragCursor), 
-   e.renderer.scrollCursorIntoView();
-  }, this.dragEnd = function(e) {
-   var t = this.editor, n = this.dragCursor, i = this.dragRange;
-   if (r.removeCssClass(t.container, "ace_dragging"), t.session.removeMarker(this.dragSelectionMarker), 
-   t.keyBinding.removeKeyboardHandler(this.$dragKeybinding), n) {
-    if (t.clearSelection(), e && (e.ctrlKey || e.altKey)) {
-     var o = t.session, s = i;
-     s.end = o.insert(n, o.getTextRange(i)), s.start = n;
-    } else {
-     if (i.contains(n.row, n.column)) return;
-     var s = t.moveText(i, n);
-    }
-    s && t.selection.setSelectionRange(s);
-   }
+   (e > r || t - this.mousedownEvent.time > this.$focusTimout) && this.startSelect(this.mousedownEvent.getDocumentPosition());
   }, this.onDoubleClick = function(e) {
    var t = e.getDocumentPosition(), n = this.editor, i = n.session, o = i.getBracketRange(t);
    return o ? (o.isEmpty() && (o.start.column--, o.end.column++), this.$clickSelection = o, 
@@ -5231,7 +5198,7 @@ function runDelayedFunction() {
    this.setState("selectByLines"), this.$clickSelection = n.selection.getLineRange(t.row);
   }, this.onQuadClick = function() {
    var e = this.editor;
-   e.selectAll(), this.$clickSelection = e.getSelectionRange(), this.setState("null");
+   e.selectAll(), this.$clickSelection = e.getSelectionRange(), this.setState("selectAll");
   }, this.onMouseWheel = function(e) {
    if (!e.getShiftKey() && !e.getAccelKey()) {
     var t = e.domEvent.timeStamp, n = t - (this.$lastScrollTime || 0), i = this.editor, o = i.renderer.isScrollableBy(e.wheelX * e.speed, e.wheelY * e.speed);
@@ -5263,8 +5230,12 @@ function runDelayedFunction() {
   }
   function s(e) {
    var t = a.renderer.$gutter.getBoundingClientRect();
-   d.style.left = e.x + 15 + "px", e.y + 3 * a.renderer.lineHeight + 15 < t.bottom ? (d.style.bottom = "", 
-   d.style.top = e.y + 15 + "px") : (d.style.top = "", d.style.bottom = t.bottom - e.y + 5 + "px");
+   if (d.style.left = e.x + 15 + "px", e.y + 3 * a.renderer.lineHeight + 15 < t.bottom) d.style.bottom = "", 
+   d.style.top = e.y + 15 + "px"; else {
+    d.style.top = "";
+    var n = window.innerHeight || document.documentElement.clientHeight;
+    d.style.bottom = n - e.y + 5 + "px";
+   }
   }
   var a = e.editor, l = a.renderer.$gutterLayer;
   e.editor.setDefaultHandler("guttermousedown", function(t) {
@@ -5276,7 +5247,7 @@ function runDelayedFunction() {
       if (2 == t.domEvent.detail) return a.selectAll(), t.preventDefault();
       e.$clickSelection = a.selection.getLineRange(i);
      }
-     return e.captureMouse(t, "selectByLines"), t.preventDefault();
+     return e.setState("selectByLines"), e.captureMouse(t), t.preventDefault();
     }
    }
   });
@@ -5311,13 +5282,10 @@ function runDelayedFunction() {
    this.$pos);
   }, this.inSelection = function() {
    if (null !== this.$inSelection) return this.$inSelection;
-   var e = this.editor;
-   if (e.getReadOnly()) this.$inSelection = !1; else {
-    var t = e.getSelectionRange();
-    if (t.isEmpty()) this.$inSelection = !1; else {
-     var n = this.getDocumentPosition();
-     this.$inSelection = t.contains(n.row, n.column);
-    }
+   var e = this.editor, t = e.getSelectionRange();
+   if (t.isEmpty()) this.$inSelection = !1; else {
+    var n = this.getDocumentPosition();
+    this.$inSelection = t.contains(n.row, n.column);
    }
    return this.$inSelection;
   }, this.getButton = function() {
@@ -5330,47 +5298,181 @@ function runDelayedFunction() {
    return this.domEvent.ctrlKey;
   };
  }).call(o.prototype);
-}), define("ace/mouse/dragdrop", [ "require", "exports", "module", "../lib/event" ], function(e, t) {
- var n = e("../lib/event"), i = function(e) {
-  function t() {
-   c = d.selection.toOrientedRange(), r = d.session.addMarker(c, "ace_selection", d.getSelectionStyle()), 
-   d.clearSelection(), clearInterval(l), l = setInterval(f, 20), h = 0, n.addListener(document, "mousemove", o);
+}), define("ace/mouse/dragdrop_handler", [ "require", "exports", "module", "../lib/dom", "../lib/event", "../lib/useragent" ], function(e, t) {
+ function n(e) {
+  function t(e, t) {
+   var n = new Date().getTime(), o = !t || e.row != t.row, r = !t || e.column != t.column;
+   if (!_ || o || r) m.$blockScrolling += 1, m.moveCursorToPosition(e), m.$blockScrolling -= 1, 
+   _ = n, F = {
+    x: w,
+    y: C
+   }; else {
+    var s = i(F.x, F.y, w, C);
+    s > c ? _ = null : n - _ >= l && (m.renderer.scrollCursorIntoView(), _ = null);
+   }
   }
-  function i() {
-   clearInterval(l), d.session.removeMarker(r), r = null, d.selection.fromOrientedRange(c), 
-   h = 0, n.removeListener(document, "mousemove", o);
+  function n(e, t) {
+   var n = new Date().getTime(), i = m.renderer.layerConfig.lineHeight, o = m.renderer.layerConfig.characterWidth, r = m.renderer.scroller.getBoundingClientRect(), s = {
+    x: {
+     left: w - r.left,
+     right: r.right - w
+    },
+    y: {
+     top: C - r.top,
+     bottom: r.bottom - C
+    }
+   }, l = Math.min(s.x.left, s.x.right), c = Math.min(s.y.top, s.y.bottom), u = {
+    row: e.row,
+    column: e.column
+   };
+   2 >= l / o && (u.column += s.x.left < s.x.right ? -3 : 2), 1 >= c / i && (u.row += s.y.top < s.y.bottom ? -1 : 1);
+   var d = e.row != u.row, h = e.column != u.column, p = !t || e.row != t.row;
+   d || h && !p ? k ? n - k >= a && m.renderer.scrollCursorIntoView(u) : k = n : k = null;
   }
-  function o() {
-   null == g && (g = setTimeout(function() {
-    null != g && r && i();
+  function u() {
+   var e = E;
+   E = m.renderer.screenToTextCoordinates(w, C), t(E, e), n(E, e);
+  }
+  function d() {
+   S = m.selection.toOrientedRange(), y = m.session.addMarker(S, "ace_selection", m.getSelectionStyle()), 
+   m.clearSelection(), clearInterval(x), x = setInterval(u, 20), $ = 0, r.addListener(document, "mousemove", p);
+  }
+  function h() {
+   clearInterval(x), m.session.removeMarker(y), y = null, m.$blockScrolling += 1, m.selection.fromOrientedRange(S), 
+   m.$blockScrolling -= 1, S = null, $ = 0, k = null, _ = null, r.removeListener(document, "mousemove", p);
+  }
+  function p() {
+   null == D && (D = setTimeout(function() {
+    null != D && y && h();
    }, 20));
   }
-  var r, s, a, l, c, u, d = e.editor, h = 0, p = d.container;
-  n.addListener(p, "dragenter", function(e) {
-   if (!d.getReadOnly()) {
-    var i = e.dataTransfer.types;
-    if (!i || -1 !== Array.prototype.indexOf.call(i, "text/plain")) return r || t(), 
-    h++, n.preventDefault(e);
+  function f(e) {
+   var t = e.types;
+   return !t || Array.prototype.some.call(t, function(e) {
+    return "text/plain" == e || "Text" == e;
+   });
+  }
+  function g(e) {
+   var t = [ "copy", "copymove", "all", "uninitialized" ], n = [ "move", "copymove", "linkmove", "all", "uninitialized" ], i = s.isMac ? e.altKey : e.ctrlKey, o = "uninitialized";
+   try {
+    o = e.dataTransfer.effectAllowed.toLowerCase();
+   } catch (e) {}
+   var r = "none";
+   return i && t.indexOf(o) >= 0 ? r = "copy" : n.indexOf(o) >= 0 ? r = "move" : t.indexOf(o) >= 0 && (r = "copy"), 
+   r;
+  }
+  var m = e.editor, v = o.createElement("img");
+  v.src = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==", 
+  s.isOpera && (v.style.cssText = "width:1px;height:1px;position:fixed;top:0;left:0;z-index:2147483647;opacity:0;visibility:hidden", 
+  m.container.appendChild(v));
+  var b = [ "dragWait", "dragWaitEnd", "startDrag", "dragReadyEnd", "onMouseDrag" ];
+  b.forEach(function(t) {
+   e[t] = this[t];
+  }, this), m.addEventListener("mousedown", this.onMouseDown.bind(e));
+  var y, w, C, x, S, E, A, k, _, F, T = m.container, $ = 0;
+  this.onDragStart = function(e) {
+   if (this.cancelDrag || !T.draggable) {
+    var t = this;
+    return setTimeout(function() {
+     t.startSelect(), t.captureMouse(e);
+    }, 0), e.preventDefault();
    }
-  }), n.addListener(p, "dragover", function(e) {
-   if (!d.getReadOnly()) {
-    var t = e.dataTransfer.types;
-    if (!t || -1 !== Array.prototype.indexOf.call(t, "text/plain")) return null !== g && (g = null), 
-    s = e.clientX, a = e.clientY, n.preventDefault(e);
+   s.isOpera && (v.style.visibility = "visible", setTimeout(function() {
+    v.style.visibility = "hidden";
+   }, 0)), S = m.getSelectionRange();
+   var n = e.dataTransfer;
+   n.effectAllowed = m.getReadOnly() ? "copy" : "copyMove", n.setDragImage && n.setDragImage(v, 0, 0), 
+   n.clearData(), n.setData("Text", m.session.getTextRange()), this.setState("drag");
+  }, this.onDragEnd = function(e) {
+   if (T.draggable = !1, this.setState(null), !m.getReadOnly()) {
+    var t = e.dataTransfer.dropEffect;
+    A || "move" != t || m.session.remove(m.getSelectionRange()), m.renderer.$cursorLayer.setBlinking(!0);
    }
-  });
-  var f = function() {
-   u = d.renderer.screenToTextCoordinates(s, a), d.moveCursorToPosition(u), d.renderer.scrollCursorIntoView();
+   this.editor.unsetStyle("ace_dragging");
+  }, this.onDragEnter = function(e) {
+   return !m.getReadOnly() && f(e.dataTransfer) ? (y || d(), $++, e.dataTransfer.dropEffect = A = g(e), 
+   r.preventDefault(e)) : void 0;
+  }, this.onDragOver = function(e) {
+   return !m.getReadOnly() && f(e.dataTransfer) ? (y || (d(), $++), null !== D && (D = null), 
+   w = e.clientX, C = e.clientY, e.dataTransfer.dropEffect = A = g(e), r.preventDefault(e)) : void 0;
+  }, this.onDragLeave = function(e) {
+   return $--, 0 >= $ && y ? (h(), A = null, r.preventDefault(e)) : void 0;
+  }, this.onDrop = function(e) {
+   if (y) {
+    var t = e.dataTransfer, n = "drag" == this.state;
+    if (n) switch (A) {
+    case "move":
+     S = S.contains(E.row, E.column) ? {
+      start: E,
+      end: E
+     } : m.moveText(S, E);
+     break;
+
+    case "copy":
+     S = m.moveText(S, E, !0);
+    } else {
+     var i = t.getData("Text");
+     S = {
+      start: E,
+      end: m.session.insert(E, i)
+     }, m.focus(), A = null;
+    }
+    return h(), r.preventDefault(e);
+   }
+  }, r.addListener(T, "dragstart", this.onDragStart.bind(e)), r.addListener(T, "dragend", this.onDragEnd.bind(e)), 
+  r.addListener(T, "dragenter", this.onDragEnter.bind(e)), r.addListener(T, "dragover", this.onDragOver.bind(e)), 
+  r.addListener(T, "dragleave", this.onDragLeave.bind(e)), r.addListener(T, "drop", this.onDrop.bind(e));
+  var D = null;
+ }
+ function i(e, t, n, i) {
+  return Math.sqrt(Math.pow(n - e, 2) + Math.pow(i - t, 2));
+ }
+ var o = e("../lib/dom"), r = e("../lib/event"), s = e("../lib/useragent"), a = 200, l = 200, c = 5;
+ (function() {
+  this.dragWait = function() {
+   var e = new Date().getTime() - this.mousedownEvent.time;
+   e > this.editor.getDragDelay() && this.startDrag();
+  }, this.dragWaitEnd = function() {
+   var e = this.editor.container;
+   e.draggable = !1, this.startSelect(this.mousedownEvent.getDocumentPosition()), this.selectEnd();
+  }, this.dragReadyEnd = function() {
+   this.editor.renderer.$cursorLayer.setBlinking(!this.editor.getReadOnly()), this.editor.unsetStyle("ace_dragging"), 
+   this.dragWaitEnd();
+  }, this.startDrag = function() {
+   this.cancelDrag = !1;
+   var e = this.editor.container;
+   e.draggable = !0, this.editor.renderer.$cursorLayer.setBlinking(!1), this.editor.setStyle("ace_dragging"), 
+   this.setState("dragReady");
+  }, this.onMouseDrag = function() {
+   var e = this.editor.container;
+   if (s.isIE && "dragReady" == this.state) {
+    var t = i(this.mousedownEvent.x, this.mousedownEvent.y, this.x, this.y);
+    t > 3 && e.dragDrop();
+   }
+   if ("dragWait" === this.state) {
+    var t = i(this.mousedownEvent.x, this.mousedownEvent.y, this.x, this.y);
+    t > 0 && (e.draggable = !1, this.startSelect(this.mousedownEvent.getDocumentPosition()));
+   }
+  }, this.onMouseDown = function(e) {
+   if (this.$dragEnabled) {
+    this.mousedownEvent = e;
+    var t = this.editor, n = e.inSelection(), i = e.getButton(), o = e.domEvent.detail || 1;
+    if (1 === o && 0 === i && n) {
+     this.mousedownEvent.time = new Date().getTime();
+     var r = e.domEvent.target || e.domEvent.srcElement;
+     if ("unselectable" in r && (r.unselectable = "on"), t.getDragDelay()) {
+      if (s.isWebKit) {
+       self.cancelDrag = !0;
+       var a = t.container;
+       a.draggable = !0;
+      }
+      this.setState("dragWait");
+     } else this.startDrag();
+     this.captureMouse(e, this.onMouseDrag.bind(this)), e.defaultPrevented = !0;
+    }
+   }
   };
-  n.addListener(p, "dragleave", function(e) {
-   return h--, 0 >= h && r ? (i(), n.preventDefault(e)) : void 0;
-  }), n.addListener(p, "drop", function(e) {
-   return r ? (c.end = d.session.insert(u, e.dataTransfer.getData("Text")), c.start = u, 
-   i(), d.focus(), n.preventDefault(e)) : void 0;
-  });
-  var g = null;
- };
- t.DragdropHandler = i;
+ }).call(n.prototype), t.DragdropHandler = n;
 }), define("ace/lib/net", [ "require", "exports", "module", "./dom" ], function(e, t) {
  var n = e("./dom");
  t.get = function(e, t) {
@@ -5478,7 +5580,7 @@ function runDelayedFunction() {
   t = t || n[n.length - 2] || "";
   var i = "snippets" == t ? "/" : "-", o = n[n.length - 1];
   if ("-" == i) {
-   var r = new RegExp("^" + t + "[-_]|[-_]" + t + "$", "g");
+   var r = new RegExp("^" + t + "[\\-_]|[\\-_]" + t + "$", "g");
    o = o.replace(r, "");
   }
   (!o || o == t) && n.length > 1 && (o = n[n.length - 2]);
@@ -5542,14 +5644,16 @@ function runDelayedFunction() {
   setOption: function(e, t) {
    if (this["$" + e] !== t) {
     var n = this.$options[e];
-    if (!n) return void 0;
+    if (!n) return "undefined" != typeof console && console.warn && console.warn('misspelled option "' + e + '"'), 
+    void 0;
     if (n.forwardTo) return this[n.forwardTo] && this[n.forwardTo].setOption(e, t);
     n.handlesSet || (this["$" + e] = t), n && n.set && n.set.call(this, t);
    }
   },
   getOption: function(e) {
    var t = this.$options[e];
-   return t ? t.forwardTo ? this[t.forwardTo] && this[t.forwardTo].getOption(e) : t && t.get ? t.get.call(this) : this["$" + e] : void 0;
+   return t ? t.forwardTo ? this[t.forwardTo] && this[t.forwardTo].getOption(e) : t && t.get ? t.get.call(this) : this["$" + e] : ("undefined" != typeof console && console.warn && console.warn('misspelled option "' + e + '"'), 
+   void 0);
   }
  }, d = {};
  t.defineOptions = function(e, t, n) {
@@ -5572,8 +5676,8 @@ function runDelayedFunction() {
    t.setDefaultValue(e, i, n[i]);
   });
  };
-}), define("ace/mouse/mouse_handler", [ "require", "exports", "module", "../lib/event", "../lib/useragent", "./default_handlers", "./default_gutter_handler", "./mouse_event", "./dragdrop", "../config" ], function(e, t) {
- var n = e("../lib/event"), i = e("../lib/useragent"), o = e("./default_handlers").DefaultHandlers, r = e("./default_gutter_handler").GutterHandler, s = e("./mouse_event").MouseEvent, a = e("./dragdrop").DragdropHandler, l = e("../config"), c = function(e) {
+}), define("ace/mouse/mouse_handler", [ "require", "exports", "module", "../lib/event", "../lib/useragent", "./default_handlers", "./default_gutter_handler", "./mouse_event", "./dragdrop_handler", "../config" ], function(e, t) {
+ var n = e("../lib/event"), i = e("../lib/useragent"), o = e("./default_handlers").DefaultHandlers, r = e("./default_gutter_handler").GutterHandler, s = e("./mouse_event").MouseEvent, a = e("./dragdrop_handler").DragdropHandler, l = e("../config"), c = function(e) {
   this.editor = e, new o(this), new r(this), new a(this);
   var t = e.renderer.getMouseEventTarget();
   n.addListener(t, "click", this.onMouseEvent.bind(this, "click")), n.addListener(t, "mousemove", this.onMouseMove.bind(this, "mousemove")), 
@@ -5584,8 +5688,8 @@ function runDelayedFunction() {
   n.addListener(i, "mousedown", this.onMouseEvent.bind(this, "guttermousedown")), 
   n.addListener(i, "click", this.onMouseEvent.bind(this, "gutterclick")), n.addListener(i, "dblclick", this.onMouseEvent.bind(this, "gutterdblclick")), 
   n.addListener(i, "mousemove", this.onMouseEvent.bind(this, "guttermousemove")), 
-  n.addListener(t, "mousedown", function(t) {
-   return e.focus(), n.preventDefault(t);
+  n.addListener(t, "mousedown", function() {
+   e.focus();
   }), n.addListener(i, "mousedown", function(t) {
    return e.focus(), n.preventDefault(t);
   });
@@ -5602,11 +5706,11 @@ function runDelayedFunction() {
   }, this.setState = function(e) {
    this.state = e;
   }, this.captureMouse = function(e, t) {
-   t && this.setState(t), this.x = e.x, this.y = e.y, this.isMousePressed = !0;
+   this.x = e.x, this.y = e.y, this.isMousePressed = !0;
    var o = this.editor.renderer;
    o.$keepTextAreaAtCursor && (o.$keepTextAreaAtCursor = null);
    var r = this, s = function(e) {
-    r.x = e.clientX, r.y = e.clientY;
+    r.x = e.clientX, r.y = e.clientY, t && t(e);
    }, a = function(e) {
     clearInterval(c), l(), r[r.state + "End"] && r[r.state + "End"](e), r.$clickSelection = null, 
     null == o.$keepTextAreaAtCursor && (o.$keepTextAreaAtCursor = !0, o.$moveTextAreaToCursor()), 
@@ -5626,6 +5730,9 @@ function runDelayedFunction() {
   },
   dragDelay: {
    initialValue: 150
+  },
+  dragEnabled: {
+   initialValue: !0
   },
   focusTimout: {
    initialValue: 0
@@ -6071,7 +6178,9 @@ function runDelayedFunction() {
   }
  };
  (function() {
-  this.$applyToken = function(e) {
+  this.$setMaxTokenCount = function(e) {
+   n = 0 | e;
+  }, this.$applyToken = function(e) {
    var t = this.splitRegex.exec(e).slice(1), n = this.token.apply(this, t);
    if ("string" == typeof n) return [ {
     type: n,
@@ -6235,7 +6344,8 @@ function runDelayedFunction() {
     var r = e[t];
     n && (r = r.toLowerCase());
     for (var s = r.split(i || "|"), a = s.length; a--; ) o[s[a]] = t;
-   }), this.$keywordList = Object.keys(o), e = null, n ? function(e) {
+   }), Object.getPrototypeOf(o) && (o.__proto__ = null), this.$keywordList = Object.keys(o), 
+   e = null, n ? function(e) {
     return o[e.toLowerCase()] || t;
    } : function(e) {
     return o[e] || t;
@@ -6351,13 +6461,14 @@ function runDelayedFunction() {
  }).call(n.prototype), t.TokenIterator = n;
 }), define("ace/mode/text", [ "require", "exports", "module", "../tokenizer", "./text_highlight_rules", "./behaviour", "../unicode", "../lib/lang", "../token_iterator", "../range" ], function(e, t) {
  var n = e("../tokenizer").Tokenizer, i = e("./text_highlight_rules").TextHighlightRules, o = e("./behaviour").Behaviour, r = e("../unicode"), s = e("../lib/lang"), a = e("../token_iterator").TokenIterator, l = e("../range").Range, c = function() {
-  this.$tokenizer = new n(new i().getRules()), this.$behaviour = new o();
+  this.HighlightRules = i, this.$behaviour = new o();
  };
  (function() {
   this.tokenRe = new RegExp("^[" + r.packages.L + r.packages.Mn + r.packages.Mc + r.packages.Nd + r.packages.Pc + "\\$_]+", "g"), 
   this.nonTokenRe = new RegExp("^(?:[^" + r.packages.L + r.packages.Mn + r.packages.Mc + r.packages.Nd + r.packages.Pc + "\\$_]|s])+", "g"), 
   this.getTokenizer = function() {
-   return this.$tokenizer;
+   return this.$tokenizer || (this.$highlightRules = new this.HighlightRules(), this.$tokenizer = new n(this.$highlightRules.getRules())), 
+   this.$tokenizer;
   }, this.lineCommentStart = "", this.blockComment = "", this.toggleCommentLines = function(e, t, n, i) {
    function o(e) {
     for (var t = n; i >= t; t++) e(r.getLine(t), t);
@@ -6452,16 +6563,14 @@ function runDelayedFunction() {
   }, this.createWorker = function() {
    return null;
   }, this.createModeDelegates = function(e) {
-   if (this.$embeds) {
-    this.$modes = {};
-    for (var t = 0; t < this.$embeds.length; t++) e[this.$embeds[t]] && (this.$modes[this.$embeds[t]] = new e[this.$embeds[t]]());
-    for (var n = [ "toggleCommentLines", "getNextLineIndent", "checkOutdent", "autoOutdent", "transformAction", "getCompletions" ], t = 0; t < n.length; t++) !function(e) {
-     var i = n[t], o = e[i];
-     e[n[t]] = function() {
-      return this.$delegator(i, arguments, o);
-     };
-    }(this);
-   }
+   this.$embeds = [], this.$modes = {};
+   for (var t in e) e[t] && (this.$embeds.push(t), this.$modes[t] = new e[t]());
+   for (var n = [ "toggleCommentLines", "getNextLineIndent", "checkOutdent", "autoOutdent", "transformAction", "getCompletions" ], t = 0; t < n.length; t++) !function(e) {
+    var i = n[t], o = e[i];
+    e[n[t]] = function() {
+     return this.$delegator(i, arguments, o);
+    };
+   }(this);
   }, this.$delegator = function(e, t, n) {
    var i = t[0];
    "string" != typeof i && (i = i[0]);
@@ -6493,8 +6602,10 @@ function runDelayedFunction() {
     this.completionKeywords = n;
    }
    return e ? n.concat(this.$keywordList || []) : this.$keywordList;
+  }, this.$createKeywordList = function() {
+   return this.$highlightRules || this.getTokenizer(), this.$keywordList = this.$highlightRules.$keywordList || [];
   }, this.getCompletions = function() {
-   var e = this.$keywordList || [];
+   var e = this.$keywordList || this.$createKeywordList();
    return e.map(function(e) {
     return {
      name: e,
@@ -6782,7 +6893,7 @@ function runDelayedFunction() {
    this.currentLine = Math.min(e || 0, this.currentLine, this.doc.getLength()), this.lines.splice(this.currentLine, this.lines.length), 
    this.states.splice(this.currentLine, this.states.length), this.stop(), this.running = setTimeout(this.$worker, 700);
   }, this.scheduleStart = function() {
-   this.running = setTimeout(this.$worker, 700);
+   this.running || (this.running = setTimeout(this.$worker, 700));
   }, this.$updateOnChange = function(e) {
    var t = e.range, n = t.start.row, i = t.end.row - n;
    if (0 === i) this.lines[n] = null; else if ("removeText" == e.action || "removeLines" == e.action) this.lines.splice(n, i + 1, null), 
@@ -6841,7 +6952,7 @@ function runDelayedFunction() {
    });
   }, this.addFold = function(e) {
    if (e.sameRow) {
-    if (e.start.row < this.startRow || e.endRow > this.endRow) throw "Can't add a fold to this FoldLine as it has no connection";
+    if (e.start.row < this.startRow || e.endRow > this.endRow) throw new Error("Can't add a fold to this FoldLine as it has no connection");
     this.folds.push(e), this.folds.sort(function(e, t) {
      return -e.range.compareEnd(t.start.row, t.start.column);
     }), this.range.compareEnd(e.start.row, e.start.column) > 0 ? (this.end.row = e.end.row, 
@@ -6849,7 +6960,7 @@ function runDelayedFunction() {
     this.start.column = e.start.column);
    } else if (e.start.row == this.end.row) this.folds.push(e), this.end.row = e.end.row, 
    this.end.column = e.end.column; else {
-    if (e.end.row != this.start.row) throw "Trying to add fold to FoldRow that doesn't have a matching row";
+    if (e.end.row != this.start.row) throw new Error("Trying to add fold to FoldRow that doesn't have a matching row");
     this.folds.unshift(e), this.start.row = e.start.row, this.start.column = e.start.column;
    }
    e.foldLine = this;
@@ -7043,7 +7154,7 @@ function runDelayedFunction() {
    }), t.collapseChildren = this.collapseChildren, t;
   }, this.addSubFold = function(e) {
    if (!this.range.isEqual(e)) {
-    if (!this.range.containsRange(e)) throw "A fold can't intersect already existing fold" + e.range + this.range;
+    if (!this.range.containsRange(e)) throw new Error("A fold can't intersect already existing fold" + e.range + this.range);
     i(e, this.start);
     for (var t = e.start.row, n = e.start.column, o = 0, r = -1; o < this.subFolds.length && (r = this.subFolds[o].range.compare(t, n), 
     1 == r); o++) ;
@@ -7051,7 +7162,7 @@ function runDelayedFunction() {
     if (0 == r) return s.addSubFold(e);
     for (var t = e.range.end.row, n = e.range.end.column, a = o, r = -1; a < this.subFolds.length && (r = this.subFolds[a].range.compare(t, n), 
     1 == r); a++) ;
-    if (this.subFolds[a], 0 == r) throw "A fold can't intersect already existing fold" + e.range + this.range;
+    if (this.subFolds[a], 0 == r) throw new Error("A fold can't intersect already existing fold" + e.range + this.range);
     return this.subFolds.splice(o, a - o, e), e.setFoldLine(this.foldLine), e;
    }
   }, this.restoreRange = function(e) {
@@ -7146,10 +7257,10 @@ function runDelayedFunction() {
    e instanceof r ? n = e : (n = new r(t, e), n.collapseChildren = t.collapseChildren), 
    this.$clipRangeToDocument(n.range);
    var a = n.start.row, l = n.start.column, c = n.end.row, u = n.end.column;
-   if (!(c > a || a == c && u - 2 >= l)) throw "The range has to be at least 2 characters width";
+   if (!(c > a || a == c && u - 2 >= l)) throw new Error("The range has to be at least 2 characters width");
    var d = this.getFoldAt(a, l, 1), h = this.getFoldAt(c, u, -1);
    if (d && h == d) return d.addSubFold(n);
-   if (d && !d.range.isStart(a, l) || h && !h.range.isEnd(c, u)) throw "A fold can't intersect already existing fold" + n.range + d.range;
+   if (d && !d.range.isStart(a, l) || h && !h.range.isEnd(c, u)) throw new Error("A fold can't intersect already existing fold" + n.range + d.range);
    var p = this.getFoldsInRange(n.range);
    p.length > 0 && (this.removeFolds(p), p.forEach(function(e) {
     n.addSubFold(e);
@@ -7635,10 +7746,10 @@ function runDelayedFunction() {
     var n = e, i = n.path;
    } else i = e || "ace/mode/text";
    return this.$modes["ace/mode/text"] || (this.$modes["ace/mode/text"] = new a()), 
-   this.$modes[i] && !n ? this.$onChangeMode(this.$modes[i]) : (this.$modeId = i, o.loadModule([ "mode", i ], function(e) {
+   this.$modes[i] && !n ? (this.$onChangeMode(this.$modes[i]), t && t(), void 0) : (this.$modeId = i, 
+   o.loadModule([ "mode", i ], function(e) {
     return this.$modeId !== i ? t && t() : this.$modes[i] && !n ? this.$onChangeMode(this.$modes[i]) : (e && e.Mode && (e = new e.Mode(n), 
-    n || (this.$modes[i] = e, e.$id = i), this.$onChangeMode(e), t && t(this.mode)), 
-    void 0);
+    n || (this.$modes[i] = e, e.$id = i), this.$onChangeMode(e), t && t()), void 0);
    }.bind(this)), this.$mode || this.$onChangeMode(this.$modes["ace/mode/text"], !0), 
    void 0);
   }, this.$onChangeMode = function(e, t) {
@@ -7758,7 +7869,7 @@ function runDelayedFunction() {
     r.end.row == e.end.row && r.end.column > e.end.column && (r.end.column += a)), s && r.start.row >= e.end.row && (r.start.row += s, 
     r.end.row += s);
    }
-   if (this.insert(r.start, i), o.length) {
+   if (r.end = this.insert(r.start, i), o.length) {
     var c = e.start, u = r.start, s = u.row - c.row, a = u.column - c.column;
     this.addFolds(o.map(function(e) {
      return e = e.clone(), e.start.row == c.row && (e.start.column += a), e.end.row == c.row && (e.end.column += a), 
@@ -8241,7 +8352,17 @@ function runDelayedFunction() {
  }).call(r.prototype), t.Search = r;
 }), define("ace/keyboard/hash_handler", [ "require", "exports", "module", "../lib/keys", "../lib/useragent" ], function(e, t) {
  function n(e, t) {
-  this.platform = t || (o.isMac ? "mac" : "win"), this.commands = {}, this.commmandKeyBinding = {}, 
+  if (this.platform = t || (o.isMac ? "mac" : "win"), this.commands = {}, this.commandKeyBinding = {}, 
+  this.__defineGetter__ && this.__defineSetter__ && "undefined" != typeof console && console.error) {
+   var n = !1, i = function() {
+    n || (n = !0, console.error("commmandKeyBinding has too many m's. use commandKeyBinding"));
+   };
+   this.__defineGetter__("commmandKeyBinding", function() {
+    return i(), this.commandKeyBinding;
+   }), this.__defineSetter__("commmandKeyBinding", function(e) {
+    return i(), this.commandKeyBinding = e;
+   });
+  } else this.commmandKeyBinding = this.commandKeyBinding;
   this.addCommands(e);
  }
  var i = e("../lib/keys"), o = e("../lib/useragent");
@@ -8251,7 +8372,7 @@ function runDelayedFunction() {
   }, this.removeCommand = function(e) {
    var t = "string" == typeof e ? e : e.name;
    e = this.commands[t], delete this.commands[t];
-   var n = this.commmandKeyBinding;
+   var n = this.commandKeyBinding;
    for (var i in n) for (var o in n[i]) n[i][o] == e && delete n[i][o];
   }, this.bindKey = function(e, t) {
    if (e) {
@@ -8260,7 +8381,7 @@ function runDelayedFunction() {
      bindKey: e,
      name: t.name || e
     }), void 0;
-    var n = this.commmandKeyBinding;
+    var n = this.commandKeyBinding;
     e.split("|").forEach(function(e) {
      var i = this.parseKeys(e, t), o = i.hashId;
      (n[o] || (n[o] = {}))[i.key] = t;
@@ -8316,7 +8437,7 @@ function runDelayedFunction() {
     hashId: r
    };
   }, this.findKeyCommand = function(e, t) {
-   var n = this.commmandKeyBinding;
+   var n = this.commandKeyBinding;
    return n[e] && n[e][t];
   }, this.handleKeyboard = function(e, t, n) {
    return {
@@ -8326,8 +8447,7 @@ function runDelayedFunction() {
  }).call(n.prototype), t.HashHandler = n;
 }), define("ace/commands/command_manager", [ "require", "exports", "module", "../lib/oop", "../keyboard/hash_handler", "../lib/event_emitter" ], function(e, t) {
  var n = e("../lib/oop"), i = e("../keyboard/hash_handler").HashHandler, o = e("../lib/event_emitter").EventEmitter, r = function(e, t) {
-  this.platform = e, this.commands = this.byName = {}, this.commmandKeyBinding = {}, 
-  this.addCommands(t), this.setDefaultHandler("exec", function(e) {
+  i.call(this, t, e), this.byName = this.commands, this.setDefaultHandler("exec", function(e) {
    return e.command.exec(e.editor, e.args || {});
   });
  };
@@ -8687,7 +8807,7 @@ function runDelayedFunction() {
   bindKey: n("Tab", "Tab"),
   exec: function(e) {
    var t = e.getSelectionRange(), n = new o(t.end.row, 0, t.end.row, t.end.column), i = e.session.getTextRange(n), r = e.session.getTokenAt(t.end.row, t.end.column);
-   "markup.list" == r.type && /^\s*(?:[-+*]|\d+\.)\s+$/.test(i) ? e.blockIndent() : e.indent();
+   r && "markup.list" == r.type && /^\s*(?:[-+*]|\d+\.)\s+$/.test(i) ? e.blockIndent() : e.indent();
   },
   multiSelectAction: "forEach"
  }, {
@@ -9190,8 +9310,8 @@ function runDelayedFunction() {
    this.$moveLines(function(e, t) {
     return this.session.moveLinesUp(e, t);
    });
-  }, this.moveText = function(e, t) {
-   return this.session.moveText(e, t);
+  }, this.moveText = function(e, t, n) {
+   return this.session.moveText(e, t, n);
   }, this.copyLinesUp = function() {
    this.$moveLines(function(e, t) {
     return this.session.duplicateLines(e, t), 0;
@@ -9453,8 +9573,8 @@ function runDelayedFunction() {
    initialValue: !0
   },
   readOnly: {
-   set: function() {
-    this.$resetCursorStyle();
+   set: function(e) {
+    this.textInput.setReadOnly(e), this.$resetCursorStyle();
    },
    initialValue: !1
   },
@@ -9495,6 +9615,7 @@ function runDelayedFunction() {
   fixedWidthGutter: "renderer",
   scrollSpeed: "$mouseHandler",
   dragDelay: "$mouseHandler",
+  dragEnabled: "$mouseHandler",
   focusTimout: "$mouseHandler",
   firstLineNumber: "session",
   overwrite: "session",
@@ -9585,7 +9706,7 @@ function runDelayedFunction() {
      foldWidget: null
     }, d.element = n.createElement("div"), d.textNode = document.createTextNode(""), 
     d.element.appendChild(d.textNode), this.element.appendChild(d.element), this.$cells[h] = d);
-    var f = "ace_gutter-cell";
+    var f = "ace_gutter-cell ";
     a[p] && (f += a[p]), l[p] && (f += l[p]), this.$annotations[p] && (f += this.$annotations[p].className), 
     d.element.className != f && (d.element.className = f);
     var g = this.session.getRowLength(p) * e.lineHeight + "px";
@@ -9694,9 +9815,9 @@ function runDelayedFunction() {
   this.SPACE_CHAR = "·", this.$padding = 0, this.setPadding = function(e) {
    this.$padding = e, this.element.style.padding = "0 " + e + "px";
   }, this.getLineHeight = function() {
-   return this.$characterSize.height || 1;
+   return this.$characterSize.height || 0;
   }, this.getCharacterWidth = function() {
-   return this.$characterSize.width || 1;
+   return this.$characterSize.width || 0;
   }, this.checkForSizeChanges = function() {
    var e = this.$measureSizes();
    if (e && (this.$characterSize.width !== e.width || this.$characterSize.height !== e.height)) {
@@ -10010,13 +10131,15 @@ function runDelayedFunction() {
   this.element.appendChild(this.inner), e.appendChild(this.element), t.$scrollbarWidth = this.width = i.scrollbarWidth(e.ownerDocument), 
   t.$scrollbarWidth = this.width = i.scrollbarWidth(e.ownerDocument), this.fullWidth = this.width, 
   this.inner.style.width = this.element.style.width = (this.width || 15) + 5 + "px", 
-  this.setVisible(!1), this.element.style.overflowY = "scroll", o.addListener(this.element, "scroll", this.onScrollV.bind(this));
+  this.setVisible(!1), this.element.style.overflowY = "scroll", o.addListener(this.element, "scroll", this.onScrollV.bind(this)), 
+  o.addListener(this.element, "mousedown", o.preventDefault);
  }, a = function(e, t) {
   this.element = i.createElement("div"), this.element.className = "ace_scrollbar-h", 
   this.inner = i.createElement("div"), this.inner.className = "ace_scrollbar-inner", 
   this.element.appendChild(this.inner), e.appendChild(this.element), this.height = t.$scrollbarWidth, 
   this.fullHeight = this.height, this.inner.style.height = this.element.style.height = (this.height || 15) + 5 + "px", 
-  this.setVisible(!1), this.element.style.overflowX = "scroll", o.addListener(this.element, "scroll", this.onScrollH.bind(this));
+  this.setVisible(!1), this.element.style.overflowX = "scroll", o.addListener(this.element, "scroll", this.onScrollH.bind(this)), 
+  o.addListener(this.element, "mousedown", o.preventDefault);
  };
  (function() {
   n.implement(this, r), this.setVisible = function(e) {
@@ -10073,22 +10196,23 @@ function runDelayedFunction() {
   };
  });
 }(), define("ace/virtual_renderer", [ "require", "exports", "module", "./lib/oop", "./lib/dom", "./lib/useragent", "./config", "./layer/gutter", "./layer/marker", "./layer/text", "./layer/cursor", "./scrollbar", "./scrollbar", "./renderloop", "./lib/event_emitter", "./requirejs/text!./css/editor.css" ], function(e, t) {
- var n = e("./lib/oop"), i = e("./lib/dom"), o = e("./lib/useragent"), r = e("./config"), s = e("./layer/gutter").Gutter, a = e("./layer/marker").Marker, l = e("./layer/text").Text, c = e("./layer/cursor").Cursor, u = e("./scrollbar").ScrollBarH, d = e("./scrollbar").ScrollBarV, h = e("./renderloop").RenderLoop, p = e("./lib/event_emitter").EventEmitter, f = e("./requirejs/text!./css/editor.css");
- i.importCssString(f, "ace_editor");
- var g = function(e, t) {
+ var n = e("./lib/oop"), i = e("./lib/dom");
+ e("./lib/useragent");
+ var o = e("./config"), r = e("./layer/gutter").Gutter, s = e("./layer/marker").Marker, a = e("./layer/text").Text, l = e("./layer/cursor").Cursor, c = e("./scrollbar").ScrollBarH, u = e("./scrollbar").ScrollBarV, d = e("./renderloop").RenderLoop, h = e("./lib/event_emitter").EventEmitter, p = e("./requirejs/text!./css/editor.css");
+ i.importCssString(p, "ace_editor");
+ var f = function(e, t) {
   var n = this;
-  this.container = e || i.createElement("div"), this.$keepTextAreaAtCursor = !o.isIE, 
-  i.addCssClass(this.container, "ace_editor"), this.setTheme(t), this.$gutter = i.createElement("div"), 
-  this.$gutter.className = "ace_gutter", this.container.appendChild(this.$gutter), 
-  this.scroller = i.createElement("div"), this.scroller.className = "ace_scroller", 
-  this.container.appendChild(this.scroller), this.content = i.createElement("div"), 
-  this.content.className = "ace_content", this.scroller.appendChild(this.content), 
-  this.$gutterLayer = new s(this.$gutter), this.$gutterLayer.on("changeGutterWidth", this.onGutterResize.bind(this)), 
-  this.$markerBack = new a(this.content);
-  var p = this.$textLayer = new l(this.content);
-  this.canvas = p.element, this.$markerFront = new a(this.content), this.$cursorLayer = new c(this.content), 
-  this.$horizScroll = !1, this.$vScroll = !1, this.scrollBar = this.scrollBarV = new d(this.container, this), 
-  this.scrollBarH = new u(this.container, this), this.scrollBarV.addEventListener("scroll", function(e) {
+  this.container = e || i.createElement("div"), this.$keepTextAreaAtCursor = !0, i.addCssClass(this.container, "ace_editor"), 
+  this.setTheme(t), this.$gutter = i.createElement("div"), this.$gutter.className = "ace_gutter", 
+  this.container.appendChild(this.$gutter), this.scroller = i.createElement("div"), 
+  this.scroller.className = "ace_scroller", this.container.appendChild(this.scroller), 
+  this.content = i.createElement("div"), this.content.className = "ace_content", this.scroller.appendChild(this.content), 
+  this.$gutterLayer = new r(this.$gutter), this.$gutterLayer.on("changeGutterWidth", this.onGutterResize.bind(this)), 
+  this.$markerBack = new s(this.content);
+  var h = this.$textLayer = new a(this.content);
+  this.canvas = h.element, this.$markerFront = new s(this.content), this.$cursorLayer = new l(this.content), 
+  this.$horizScroll = !1, this.$vScroll = !1, this.scrollBar = this.scrollBarV = new u(this.container, this), 
+  this.scrollBarH = new c(this.container, this), this.scrollBarV.addEventListener("scroll", function(e) {
    n.$scrollAnimation || n.session.setScrollTop(e.data - n.scrollMargin.top);
   }), this.scrollBarH.addEventListener("scroll", function(e) {
    n.$scrollAnimation || n.session.setScrollLeft(e.data - n.scrollMargin.left);
@@ -10108,8 +10232,8 @@ function runDelayedFunction() {
    firstRow: 0,
    firstRowScreen: 0,
    lastRow: 0,
-   lineHeight: 1,
-   characterWidth: 1,
+   lineHeight: 0,
+   characterWidth: 0,
    minHeight: 1,
    maxHeight: 1,
    offset: 0,
@@ -10121,15 +10245,15 @@ function runDelayedFunction() {
    bottom: 0,
    v: 0,
    h: 0
-  }, this.$loop = new h(this.$renderChanges.bind(this), this.container.ownerDocument.defaultView), 
+  }, this.$loop = new d(this.$renderChanges.bind(this), this.container.ownerDocument.defaultView), 
   this.$loop.schedule(this.CHANGE_FULL), this.updateCharacterSize(), this.setPadding(4), 
-  r.resetOptions(this), r._emit("renderer", this);
+  o.resetOptions(this), o._emit("renderer", this);
  };
  (function() {
   this.CHANGE_CURSOR = 1, this.CHANGE_MARKER = 2, this.CHANGE_GUTTER = 4, this.CHANGE_SCROLL = 8, 
   this.CHANGE_LINES = 16, this.CHANGE_TEXT = 32, this.CHANGE_SIZE = 64, this.CHANGE_MARKER_BACK = 128, 
   this.CHANGE_MARKER_FRONT = 256, this.CHANGE_FULL = 512, this.CHANGE_H_SCROLL = 1024, 
-  n.implement(this, p), this.updateCharacterSize = function() {
+  n.implement(this, h), this.updateCharacterSize = function() {
    this.$textLayer.allowBoldFonts != this.$allowBoldFonts && (this.$allowBoldFonts = this.$textLayer.allowBoldFonts, 
    this.setStyle("ace_nobold", !this.$allowBoldFonts)), this.layerConfig.characterWidth = this.characterWidth = this.$textLayer.getCharacterWidth(), 
    this.layerConfig.lineHeight = this.lineHeight = this.$textLayer.getLineHeight(), 
@@ -10291,14 +10415,14 @@ function runDelayedFunction() {
    this.scrollBarH.setInnerWidth(this.layerConfig.width + 2 * this.$padding + this.scrollMargin.h), 
    this.scrollBarH.setScrollLeft(this.scrollLeft + this.scrollMargin.left);
   }, this.$renderChanges = function(e, t) {
-   return this.$changes && (e |= this.$changes, this.$changes = 0), this.session && this.container.offsetWidth && (e || t) ? this.$size.width ? (this._signal("beforeRender"), 
-   (e & this.CHANGE_FULL || e & this.CHANGE_SIZE || e & this.CHANGE_TEXT || e & this.CHANGE_LINES || e & this.CHANGE_SCROLL || e & this.CHANGE_H_SCROLL) && (e |= this.$computeLayerConfig()), 
+   return this.$changes && (e |= this.$changes, this.$changes = 0), this.session && this.container.offsetWidth && (e || t) ? this.$size.width ? (this.lineHeight || this.$textLayer.checkForSizeChanges(), 
+   this._signal("beforeRender"), (e & this.CHANGE_FULL || e & this.CHANGE_SIZE || e & this.CHANGE_TEXT || e & this.CHANGE_LINES || e & this.CHANGE_SCROLL || e & this.CHANGE_H_SCROLL) && (e |= this.$computeLayerConfig()), 
    e & this.CHANGE_H_SCROLL && (this.$updateScrollBarH(), this.content.style.marginLeft = -this.scrollLeft + "px", 
    this.scroller.className = this.scrollLeft <= 0 ? "ace_scroller" : "ace_scroller ace_scroll-left"), 
-   e & this.CHANGE_FULL ? (this.$textLayer.checkForSizeChanges(), this.$updateScrollBarV(), 
-   this.$updateScrollBarH(), this.$textLayer.update(this.layerConfig), this.$showGutter && this.$gutterLayer.update(this.layerConfig), 
-   this.$markerBack.update(this.layerConfig), this.$markerFront.update(this.layerConfig), 
-   this.$cursorLayer.update(this.layerConfig), this.$moveTextAreaToCursor(), this.$highlightGutterLine && this.$updateGutterLineHighlight(), 
+   e & this.CHANGE_FULL ? (this.$updateScrollBarV(), this.$updateScrollBarH(), this.$textLayer.update(this.layerConfig), 
+   this.$showGutter && this.$gutterLayer.update(this.layerConfig), this.$markerBack.update(this.layerConfig), 
+   this.$markerFront.update(this.layerConfig), this.$cursorLayer.update(this.layerConfig), 
+   this.$moveTextAreaToCursor(), this.$highlightGutterLine && this.$updateGutterLineHighlight(), 
    this._signal("afterRender"), void 0) : e & this.CHANGE_SCROLL ? (this.$updateScrollBarV(), 
    e & this.CHANGE_TEXT || e & this.CHANGE_LINES ? this.$textLayer.update(this.layerConfig) : this.$textLayer.scrollLines(this.layerConfig), 
    this.$showGutter && this.$gutterLayer.update(this.layerConfig), this.$markerBack.update(this.layerConfig), 
@@ -10451,7 +10575,7 @@ function runDelayedFunction() {
   }, this.scrollBy = function(e, t) {
    t && this.session.setScrollTop(this.session.getScrollTop() + t), e && this.session.setScrollLeft(this.session.getScrollLeft() + e);
   }, this.isScrollableBy = function(e, t) {
-   return 0 > t && this.session.getScrollTop() >= 1 - this.scrollMargin.top ? !0 : t > 0 && this.session.getScrollTop() + this.$size.scrollerHeight - this.layerConfig.maxHeight - (this.$size.scrollerHeight - this.lineHeight) * this.$scrollPastEnd < -1 + this.scrollMargin.bottom ? !0 : e ? !0 : void 0;
+   return 0 > t && this.session.getScrollTop() >= 1 - this.scrollMargin.top ? !0 : t > 0 && this.session.getScrollTop() + this.$size.scrollerHeight - this.layerConfig.maxHeight - (this.$size.scrollerHeight - this.lineHeight) * this.$scrollPastEnd < -1 + this.scrollMargin.bottom ? !0 : 0 > e && this.session.getScrollLeft() >= 1 - this.scrollMargin.left ? !0 : e > 0 && this.session.getScrollLeft() + this.$size.scrollerWidth - this.layerConfig.width < -1 + this.scrollMargin.right ? !0 : void 0;
   }, this.pixelToScreenCoordinates = function(e, t) {
    var n = this.scroller.getBoundingClientRect(), i = (e + this.scrollLeft - n.left - this.$padding) / this.characterWidth, o = Math.floor((t + this.scrollTop - n.top) / this.lineHeight), r = Math.round(i);
    return {
@@ -10485,23 +10609,23 @@ function runDelayedFunction() {
    this.textarea.style.cssText = this.$composition.cssText, this.$composition = null);
   }, this.setTheme = function(e, t) {
    function n(n) {
-    if (o.$themeValue != e) return t && t();
+    if (r.$themeValue != e) return t && t();
     if (n.cssClass) {
-     i.importCssString(n.cssText, n.cssClass, o.container.ownerDocument), o.theme && i.removeCssClass(o.container, o.theme.cssClass), 
-     o.$theme = n.cssClass, o.theme = n, i.addCssClass(o.container, n.cssClass), i.setCssClass(o.container, "ace_dark", n.isDark);
-     var r = n.padding || 4;
-     o.$padding && r != o.$padding && o.setPadding(r), o.$size && (o.$size.width = 0, 
-     o.onResize()), o._dispatchEvent("themeLoaded", {
+     i.importCssString(n.cssText, n.cssClass, r.container.ownerDocument), r.theme && i.removeCssClass(r.container, r.theme.cssClass), 
+     r.$theme = n.cssClass, r.theme = n, i.addCssClass(r.container, n.cssClass), i.setCssClass(r.container, "ace_dark", n.isDark);
+     var o = "padding" in n ? n.padding : 4;
+     r.$padding && o != r.$padding && r.setPadding(o), r.$size && (r.$size.width = 0, 
+     r.onResize()), r._dispatchEvent("themeLoaded", {
       theme: n
      }), t && t();
     }
    }
-   var o = this;
-   if (this.$themeValue = e, o._dispatchEvent("themeChange", {
+   var r = this;
+   if (this.$themeValue = e, r._dispatchEvent("themeChange", {
     theme: e
    }), e && "string" != typeof e) n(e); else {
     var s = e || "ace/theme/textmate";
-    r.loadModule([ "theme", s ], n);
+    o.loadModule([ "theme", s ], n);
    }
   }, this.getTheme = function() {
    return this.$themeValue;
@@ -10514,7 +10638,7 @@ function runDelayedFunction() {
   }, this.destroy = function() {
    this.$textLayer.destroy(), this.$cursorLayer.destroy();
   };
- }).call(g.prototype), r.defineOptions(g.prototype, "renderer", {
+ }).call(f.prototype), o.defineOptions(f.prototype, "renderer", {
   animatedScroll: {
    initialValue: !1
   },
@@ -10624,7 +10748,7 @@ function runDelayedFunction() {
     this.$gutterLayer.$fixedWidth = !!e, this.$loop.schedule(this.CHANGE_GUTTER);
    }
   }
- }), t.VirtualRenderer = g;
+ }), t.VirtualRenderer = f;
 }), define("ace/mouse/multi_select_handler", [ "require", "exports", "module", "../lib/event" ], function(e, t) {
  function n(e, t) {
   return e.row == t.row && e.column == t.column;
@@ -11045,7 +11169,7 @@ function runDelayedFunction() {
    var i = this.session, o = i.multiSelect, r = o.toOrientedRange();
    if (r.isEmpty()) {
     var r = i.getWordRange(r.start.row, r.start.column);
-    r.cursor = r.end, this.multiSelect.addRange(r);
+    return r.cursor = -1 == e ? r.start : r.end, this.multiSelect.addRange(r), void 0;
    }
    var s = i.getTextRange(r), a = n(i, s, e);
    a && (a.cursor = -1 == e ? a.start : a.end, this.multiSelect.addRange(a)), t && this.multiSelect.substractPoint(r.cursor);
@@ -11377,7 +11501,7 @@ function runDelayedFunction() {
  e("./theme/textmate"), t.config = e("./config"), t.require = e, t.edit = function(e) {
   if ("string" == typeof e) {
    var r = e, e = document.getElementById(r);
-   if (!e) throw "ace.edit can't find div #" + r;
+   if (!e) throw new Error("ace.edit can't find div #" + r);
   }
   if (e.env && e.env.editor instanceof o) return e.env.editor;
   var s = t.createEditSession(n.getInnerText(e));
@@ -13424,7 +13548,7 @@ printStackTrace.implementation = function() {}, printStackTrace.implementation.p
  }, utils;
 });
 
-var VERSION = "2.2.1", MAIN_URL = "https://stackedit.io/", GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", GOOGLE_DRIVE_APP_ID = "241271498917", DROPBOX_APP_KEY = "lq6mwopab8wskas", DROPBOX_APP_SECRET = "851fgnucpezy84t", BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c", DEFAULT_FILE_TITLE = "Title", DEFAULT_FOLDER_NAME = "New folder", GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document", EDITOR_DEFAULT_PADDING = 15, CHECK_ONLINE_PERIOD = 12e4, AJAX_TIMEOUT = 3e4, ASYNC_TASK_DEFAULT_TIMEOUT = 6e4, ASYNC_TASK_LONG_TIMEOUT = 18e4, SYNC_PERIOD = 18e4, USER_IDLE_THRESHOLD = 3e5, IMPORT_FILE_MAX_CONTENT_SIZE = 1e5, IMPORT_IMG_MAX_CONTENT_SIZE = 1e7, TEMPORARY_FILE_INDEX = "file.tempIndex", WELCOME_DOCUMENT_TITLE = "Welcome document", DOWNLOAD_PROXY_URL = "https://stackedit-download-proxy.herokuapp.com/", PICASA_PROXY_URL = "https://stackedit-picasa-proxy.herokuapp.com/", SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/", HTMLTOPDF_URL = "https://stackedit-htmltopdf.herokuapp.com/", delayedFunction = void 0, BASE_URL = "http://localhost/", GOOGLE_CLIENT_ID = "241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com", GITHUB_CLIENT_ID = "e47fef6055344579799d", GATEKEEPER_URL = "https://stackedit-gatekeeper-localhost.herokuapp.com/", TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-local.herokuapp.com/", WORDPRESS_CLIENT_ID = "23361", WORDPRESS_PROXY_URL = "https://stackedit-io-wordpress-proxy.herokuapp.com/";
+var VERSION = "2.2.2", MAIN_URL = "https://stackedit.io/", GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", GOOGLE_DRIVE_APP_ID = "241271498917", DROPBOX_APP_KEY = "lq6mwopab8wskas", DROPBOX_APP_SECRET = "851fgnucpezy84t", BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c", DEFAULT_FILE_TITLE = "Title", DEFAULT_FOLDER_NAME = "New folder", GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document", EDITOR_DEFAULT_PADDING = 15, CHECK_ONLINE_PERIOD = 12e4, AJAX_TIMEOUT = 3e4, ASYNC_TASK_DEFAULT_TIMEOUT = 6e4, ASYNC_TASK_LONG_TIMEOUT = 18e4, SYNC_PERIOD = 18e4, USER_IDLE_THRESHOLD = 3e5, IMPORT_FILE_MAX_CONTENT_SIZE = 1e5, IMPORT_IMG_MAX_CONTENT_SIZE = 1e7, TEMPORARY_FILE_INDEX = "file.tempIndex", WELCOME_DOCUMENT_TITLE = "Welcome document", DOWNLOAD_PROXY_URL = "https://stackedit-download-proxy.herokuapp.com/", PICASA_PROXY_URL = "https://stackedit-picasa-proxy.herokuapp.com/", SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/", HTMLTOPDF_URL = "https://stackedit-htmltopdf.herokuapp.com/", delayedFunction = void 0, BASE_URL = "http://localhost/", GOOGLE_CLIENT_ID = "241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com", GITHUB_CLIENT_ID = "e47fef6055344579799d", GATEKEEPER_URL = "https://stackedit-gatekeeper-localhost.herokuapp.com/", TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-local.herokuapp.com/", WORDPRESS_CLIENT_ID = "23361", WORDPRESS_PROXY_URL = "https://stackedit-io-wordpress-proxy.herokuapp.com/";
 
 0 === location.hostname.indexOf("stackedit.io") && (BASE_URL = MAIN_URL, GOOGLE_CLIENT_ID = "241271498917-t4t7d07qis7oc0ahaskbif3ft6tk63cd.apps.googleusercontent.com", 
 GITHUB_CLIENT_ID = "710fc67886ab1ae8fee6", GATEKEEPER_URL = "https://stackedit-io-gatekeeper.herokuapp.com/", 
@@ -14511,18 +14635,18 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
  n.onFileSelected = function(e) {
   o = e;
  };
- var r = /^(\s*-{3}\s*\n([\w\W]+?)\n\s*-{3}\s*\n)?([\w\W]*)/;
+ var r = /^(\s*-{3}\s*\n([\w\W]+?)\n\s*-{3}\s*\n)?([\w\W]*)$/;
  return n.onPagedownConfigure = function(e) {
   var n = e.getConverter();
   n.hooks.chain("preConversion", function(e) {
-   var n, s = r.exec(e);
-   if ((n = s[2]) && (!o.frontMatter || o.frontMatter._yaml != n)) {
+   var n = r.exec(e), s = n[2];
+   if (s && (!o.frontMatter || o.frontMatter._yaml != s)) {
     o.frontMatter = void 0;
     try {
-     o.frontMatter = t.parse(n), o.frontMatter._yaml = n;
+     o.frontMatter = t.parse(s), o.frontMatter._yaml = s, o.frontMatter._frontMatter = n[1];
     } catch (a) {}
    }
-   return i.onMarkdownTrim((s[1] || "").length), s[3];
+   return i.onMarkdownTrim((n[1] || "").length), n[3];
   });
  }, n;
 }), define("extensions/markdownSectionParser", [ "classes/Extension" ], function(e) {
@@ -20837,6 +20961,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    var n = t.template(s.config.template, {
     documentTitle: l.title,
     documentMarkdown: l.content,
+    trimmedDocumentMarkdown: l.content.substring(l.frontMatter ? l.frontMatter._frontMatter.length : 0),
     documentHTML: e,
     frontMatter: l.frontMatter,
     publishAttributes: void 0
@@ -22378,7 +22503,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
 }), define("text!html/bodyViewer.html", [], function() {
  return '\n<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav right-space pull-right"></div>\n\n		<ul class="nav pull-right">\n			<li class="btn-group">\n				<button class="btn btn-success action-edit-document hide"\n					title="Edit this document">\n					<i class="icon-pencil"></i>\n				</button>\n			</li>\n			<li class="btn-group">\n				<button class="btn btn-success dropdown-toggle"\n					data-toggle="dropdown" title="Save this document">\n					<i class="icon-download"></i>\n				</button>\n				<ul class="dropdown-menu">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>\n				</ul>\n			</li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><span class="file-title-navbar"></span></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><i class="working-indicator icon-none"></i></li>\n		</ul>\n\n	</div>\n</div>\n<div id="wmd-button-bar" class="hide"></div>\n<div id="wmd-input" class="hide"></div>\n<div class="ui-layout-center preview-container"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn btn-success collapse-button action-open-stackedit"\n		title="Open StackEdit">\n		<i class="icon-left-dir"></i> <img\n			data-stackedit-src="stackedit-64.png" width="32" height="32" />\n	</button>\n</div>\n\n<div class="document-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i> <i class="icon-right-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n';
 }), define("text!html/settingsTemplateTooltip.html", [], function() {
- return 'Available variables:\n<br>\n<ul>\n    <li>\n        <b>documentTitle</b>: document title</li>\n    <li>\n        <b>documentMarkdown</b>: document in Markdown format</li>\n    <li>\n        <b>documentHTML</b>: document in HTML format</li>\n    <li>\n        <b>frontMatter</b>: YAML front matter object (undefined if not present)</li>\n    <li>\n        <b>publishAttributes</b>: attributes of the publish location (undefined if\n        not publishing)</li>\n</ul>\n<b>Examples:</b>\n<br />&lt;title&gt;&lt;%= documentTitle %&gt;&lt;&#x2F;title&gt;\n<br />&lt;div&gt;&lt;%- documentHTML %&gt;&lt;&#x2F;div&gt;\n<br />&lt;%\n<br />if(publishAttributes.provider.providerId == &quot;github&quot;) print(documentMarkdown);\n<br\n/>%&gt;\n<br />\n<br />\n<a target="_blank" href="http://underscorejs.org/#template">More\n	info</a>\n<br />\n<br />\n<b class="text-danger">\n    <i class="icon-attention"></i>Careful! Template is subject to malicious code. Don\'t copy/paste untrusted\n    content.</b>';
+ return 'Available variables:\n<br>\n<ul>\n    <li>\n        <b>documentTitle</b>: document title</li>\n    <li>\n        <b>documentMarkdown</b>: document in Markdown format</li>\n    <li>\n        <b>trimmedDocumentMarkdown</b>: document without front matter</li>\n    <li>\n        <b>documentHTML</b>: document in HTML format</li>\n    <li>\n        <b>frontMatter</b>: YAML front matter object (undefined if not present)</li>\n    <li>\n        <b>publishAttributes</b>: attributes of the publish location (undefined if\n        not publishing)</li>\n</ul>\n<b>Examples:</b>\n<br />&lt;title&gt;&lt;%= documentTitle %&gt;&lt;&#x2F;title&gt;\n<br />&lt;div&gt;&lt;%- documentHTML %&gt;&lt;&#x2F;div&gt;\n<br />&lt;%\n<br />if(publishAttributes.provider.providerId == &quot;github&quot;) print(documentMarkdown);\n<br\n/>%&gt;\n<br />\n<br />\n<a target="_blank" href="http://underscorejs.org/#template">More\n	info</a>\n<br />\n<br />\n<b class="text-danger">\n    <i class="icon-attention"></i>Careful! Template is subject to malicious code. Don\'t copy/paste untrusted\n    content.</b>';
 }), define("text!html/settingsUserCustomExtensionTooltip.html", [], function() {
  return 'Extension variable name:\n<b>userCustom</b>\n<br>\n<br>\n<b>Example:</b>\n<br />\nuserCustom.onPreviewFinished = function() {\n<br />\n&nbsp;&nbsp;eventMgr.onMessage(&quot;Finished!&quot;);\n<br />\n};\n<br />\n<br />\n<a target="_blank"\n	href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">More\n	info</a>\n<br />\n<br />\n<b class="text-danger"><i class="icon-attention"></i> Careful! This is subject to malicious code. Don\'t copy/paste untrusted content.</b>';
 }), function(e, t) {
@@ -25928,7 +26053,8 @@ if (hljs.LANGUAGES.glsl = function(e) {
    var o = t.getCursorPosition(), r = t.session.getWordRange(o.row, o.column), s = t.session.getTextRange(r);
    if (t.session.tokenRe.lastIndex = 0, t.session.tokenRe.test(s)) {
     var a = "", l = s + " " + a;
-    i.value = l, i.setSelectionRange(s.length + 1, s.length + 1), i.setSelectionRange(0, 0);
+    i.value = l, i.setSelectionRange(s.length, s.length + 1), i.setSelectionRange(0, 0), 
+    i.setSelectionRange(0, s.length);
     var c = !1;
     n.addListener(i, "keydown", function u() {
      n.removeListener(i, "keydown", u), c = !0;
@@ -26153,10 +26279,8 @@ if (hljs.LANGUAGES.glsl = function(e) {
   e === !0 || I.state.east.isClosed ? P.hide() : P.show();
  }
  function x() {
-  return lightMode ? (e("#wmd-input").replaceWith(function() {
-   return e('<textarea id="wmd-input">').addClass(this.className).addClass("form-control");
-  }), void 0) : (N = i.edit("wmd-input"), require("ace/ext/spellcheck"), N.setOption("spellcheck", !0), 
-  N.renderer.setShowGutter(!1), N.renderer.setPrintMarginColumn(!1), N.renderer.setPadding(EDITOR_DEFAULT_PADDING), 
+  N = i.edit("wmd-input"), N.setOption("spellcheck", !0), N.renderer.setShowGutter(!1), 
+  N.renderer.setPrintMarginColumn(!1), N.renderer.setPadding(EDITOR_DEFAULT_PADDING), 
   N.session.setUseWrapMode(!0), N.session.setNewLineMode("unix"), N.session.setMode("libs/ace_mode"), 
   function(e) {
    function n(n) {
@@ -26182,7 +26306,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
     e.lines.splice(0, e.lines.length), e.states.splice(0, e.states.length), e.currentLine = 0, 
     i();
    };
-  }(N.session.bgTokenizer), a.configureAce(N), s.onAceCreated(N), void 0);
+  }(N.session.bgTokenizer), a.configureAce(N), s.onAceCreated(N);
  }
  function S() {
   var t = {
@@ -26366,13 +26490,15 @@ if (hljs.LANGUAGES.glsl = function(e) {
    N && N.focus() || j.focus());
   }).on("hidden.bs.collapse", function(e) {
    e.target === R[0] && R.find(".in").collapse("hide");
-  }), x(), j = e("#wmd-input").css({
+  }), lightMode && e("#wmd-input").replaceWith(function() {
+   return e('<textarea id="wmd-input">').addClass(this.className).addClass("form-control");
+  }), j = e("#wmd-input").css({
    "font-family": r.editorFontFamily,
    "font-size": r.editorFontSize + "px",
    "line-height": Math.round(r.editorFontSize * (20 / 12)) + "px"
-  }), j.find(".ace_content").css({
+  }), lightMode || (x(), j.find(".ace_content").css({
    "background-size": "64px " + Math.round(r.editorFontSize * (20 / 12)) + "px"
-  }), S(), A = window.setInterval(function() {
+  })), S(), A = window.setInterval(function() {
    o.updateCurrentTime(), g(), (f() === !0 || viewerMode === !0) && (s.onPeriodicRun(), 
    v());
   }, 1e3), s.onReady();
@@ -28264,6 +28390,7 @@ if (hljs.LANGUAGES.glsl = function(e) {
    return t.template(s, {
     documentTitle: e.title,
     documentMarkdown: e.content,
+    trimmedDocumentMarkdown: e.content.substring(e.frontMatter ? e.frontMatter._frontMatter.length : 0),
     documentHTML: r,
     frontMatter: e.frontMatter,
     publishAttributes: n

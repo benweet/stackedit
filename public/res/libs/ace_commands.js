@@ -289,7 +289,7 @@ exports.commands = [{
         var range = new Range(selectionRange.end.row, 0, selectionRange.end.row, selectionRange.end.column);
         var startText = editor.session.getTextRange(range);
         var token = editor.session.getTokenAt(selectionRange.end.row, selectionRange.end.column);
-        if(token.type == "markup.list" && /^\s*(?:[-+*]|\d+\.)\s+$/.test(startText)) {
+        if(token && token.type == "markup.list" && /^\s*(?:[-+*]|\d+\.)\s+$/.test(startText)) {
             editor.blockIndent();
         }
         else {

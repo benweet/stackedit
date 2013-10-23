@@ -39,6 +39,7 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
  - [Developer guide][3]
  - [Theming guide][4]
 
+### Support StackEdit:
 [![Fund me on Gittip](https://www.gittip.com/assets/gittip.png)](https://www.gittip.com/stackedit/ "Fund me on Gittip")
 
 > **NOTE:** This page has been written and published with [StackEdit][5].

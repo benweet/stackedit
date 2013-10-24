@@ -113,17 +113,33 @@ define([
     FileDescriptor.prototype.composeTitle = function() {
         var result = [];
         var syncAttributesList = _.values(this.syncLocations);
-        var publishAttributesList = _.values(this.publishLocations);
-        var attributesList = syncAttributesList.concat(publishAttributesList);
-        _.chain(attributesList).sortBy(function(attributes) {
+        var syncLocationIcon = [];
+        _.chain(syncAttributesList).sortBy(function(attributes) {
             return attributes.provider.providerId;
         }).each(function(attributes) {
             var classes = 'icon-provider-' + attributes.provider.providerId;
-            if(attributes.isRealtime === true) {
-                classes += ' realtime';
-            }
-            result.push('<i class="' + classes + '"></i>');
+            attributes.isRealtime === true && (classes += ' realtime');
+            syncLocationIcon.push('<i class="' + classes + '"></i>');
         });
+        if(syncLocationIcon.length !== 0) {
+            result.push('<i class="icon-refresh title-icon-category"></i><span class="title-icon-container">');
+            result = result.concat(syncLocationIcon);
+            result.push('</span>');
+        }
+        var publishAttributesList = _.values(this.publishLocations);
+        var publishLocationIcon = [];
+        _.chain(publishAttributesList).sortBy(function(attributes) {
+            return attributes.provider.providerId;
+        }).each(function(attributes) {
+            var classes = 'icon-provider-' + attributes.provider.providerId;
+            attributes.isRealtime === true && (classes += ' realtime');
+            publishLocationIcon.push('<i class="' + classes + '"></i>');
+        });
+        if(publishLocationIcon.length !== 0) {
+            result.push('<i class="icon-share title-icon-category"></i><span class="title-icon-container">');
+            result = result.concat(publishLocationIcon);
+            result.push('</span>');
+        }
         result.push(' ');
         result.push(this.title);
         return result.join('');

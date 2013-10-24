@@ -35,7 +35,7 @@ define([
     buttonPublish.onCreateButton = function() {
         var button = crel('button', {
             class: 'btn btn-success button-publish',
-            title: 'Publish this document'
+            title: 'Publish document'
         }, crel('i', {
             class: 'icon-share'
         }));

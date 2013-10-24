@@ -321,9 +321,6 @@ a {
 		max-width: 280px;
 		overflow: hidden;
 		white-space: nowrap;
-		i {
-			margin-right: 6px;
-		}
 	}
 	
 	.input-file-title {
@@ -367,7 +364,6 @@ a {
 		padding-bottom: 30px;
 		height: 100%;
 		a > i {
-			margin-right: 3px;
 			color: inherit;
 		}
 	}
@@ -1203,6 +1199,25 @@ div.dropdown-menu textarea {
 
 .icon-provider-gplus {
 	background-position: -144px 0;
+}
+
+// File titles
+.title-icon-category {
+    display: none;
+    .file-title-navbar & {
+        display: inline-block;
+        font-size: 16px;
+        opacity: 0.1;
+        margin-left: -8px;
+        margin-right: -8px;
+        margin-top: -2px;
+        vertical-align: top;
+    }
+}
+
+.title-icon-container {
+    display: inline-block;
+    margin-right: 10px;
 }
 
 

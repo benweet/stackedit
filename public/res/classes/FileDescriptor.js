@@ -112,35 +112,26 @@ define([
 
     FileDescriptor.prototype.composeTitle = function() {
         var result = [];
-        var syncAttributesList = _.values(this.syncLocations);
-        var syncLocationIcon = [];
-        _.chain(syncAttributesList).sortBy(function(attributes) {
+        _.chain(this.syncLocations).sortBy(function(attributes) {
             return attributes.provider.providerId;
         }).each(function(attributes) {
             var classes = 'icon-provider-' + attributes.provider.providerId;
             attributes.isRealtime === true && (classes += ' realtime');
-            syncLocationIcon.push('<i class="' + classes + '"></i>');
+            result.push('<i class="' + classes + '"></i>');
         });
-        if(syncLocationIcon.length !== 0) {
-            result.push('<i class="icon-refresh title-icon-category"></i><span class="title-icon-container">');
-            result = result.concat(syncLocationIcon);
-            result.push('</span>');
+        if(_.size(this.syncLocations) !== 0) {
+            result.push('<i class="icon-refresh title-icon-category"></i>');
         }
-        var publishAttributesList = _.values(this.publishLocations);
-        var publishLocationIcon = [];
-        _.chain(publishAttributesList).sortBy(function(attributes) {
+        _.chain(this.publishLocations).sortBy(function(attributes) {
             return attributes.provider.providerId;
         }).each(function(attributes) {
             var classes = 'icon-provider-' + attributes.provider.providerId;
             attributes.isRealtime === true && (classes += ' realtime');
-            publishLocationIcon.push('<i class="' + classes + '"></i>');
+            result.push('<i class="' + classes + '"></i>');
         });
-        if(publishLocationIcon.length !== 0) {
-            result.push('<i class="icon-share title-icon-category"></i><span class="title-icon-container">');
-            result = result.concat(publishLocationIcon);
-            result.push('</span>');
+        if(_.size(this.publishLocations) !== 0) {
+            result.push('<i class="icon-share title-icon-category"></i>');
         }
-        result.push(' ');
         result.push(this.title);
         return result.join('');
     };

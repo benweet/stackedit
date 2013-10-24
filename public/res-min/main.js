@@ -15431,22 +15431,20 @@ define("config", function() {}), define("storage", [ "underscore", "utils" ], fu
   t.removeIndexFromArray(this.fileIndex + ".publish", e.publishIndex), delete this.publishLocations[e.publishIndex], 
   localStorage.removeItem(e.publishIndex);
  }, i.prototype.composeTitle = function() {
-  var t = [], n = e.values(this.syncLocations), i = [];
-  e.chain(n).sortBy(function(e) {
+  var t = [];
+  return e.chain(this.syncLocations).sortBy(function(e) {
    return e.provider.providerId;
   }).each(function(e) {
-   var t = "icon-provider-" + e.provider.providerId;
-   e.isRealtime === !0 && (t += " realtime"), i.push('<i class="' + t + '"></i>');
-  }), 0 !== i.length && (t.push('<i class="icon-refresh title-icon-category"></i><span class="title-icon-container">'), 
-  t = t.concat(i), t.push("</span>"));
-  var o = e.values(this.publishLocations), r = [];
-  return e.chain(o).sortBy(function(e) {
+   var n = "icon-provider-" + e.provider.providerId;
+   e.isRealtime === !0 && (n += " realtime"), t.push('<i class="' + n + '"></i>');
+  }), 0 !== e.size(this.syncLocations) && t.push('<i class="icon-refresh title-icon-category"></i>'), 
+  e.chain(this.publishLocations).sortBy(function(e) {
    return e.provider.providerId;
   }).each(function(e) {
-   var t = "icon-provider-" + e.provider.providerId;
-   e.isRealtime === !0 && (t += " realtime"), r.push('<i class="' + t + '"></i>');
-  }), 0 !== r.length && (t.push('<i class="icon-share title-icon-category"></i><span class="title-icon-container">'), 
-  t = t.concat(r), t.push("</span>")), t.push(" "), t.push(this.title), t.join("");
+   var n = "icon-provider-" + e.provider.providerId;
+   e.isRealtime === !0 && (n += " realtime"), t.push('<i class="' + n + '"></i>');
+  }), 0 !== e.size(this.publishLocations) && t.push('<i class="icon-share title-icon-category"></i>'), 
+  t.push(this.title), t.join("");
  }, i;
 }), define("fileSystem", [ "underscore", "utils", "classes/FileDescriptor", "storage" ], function(e, t, n) {
  var i = {};

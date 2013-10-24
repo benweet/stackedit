@@ -1479,7 +1479,6 @@ a{-webkit-transition:background-color ease-in-out .15s,color ease-in-out .15s,bo
 .navbar .btn{height:38px}
 .navbar .btn-group>.btn.disabled *,.navbar .btn-group>.btn.blocked *,.navbar .btn-group>.btn[disabled] *{color:rgba(238,238,238,0.3)}
 .navbar .file-title-navbar{display:block;padding:4px 15px;font-size:20px;font-weight:200;color:#eeeeee;max-width:280px;overflow:hidden;white-space:nowrap}
-.navbar .file-title-navbar i{margin-right:6px}
 .navbar .input-file-title{margin-right:10px}
 .navbar .working-indicator{width:50px;height:17px;background-position:0 0;margin-top:12px}
 .navbar .working-indicator.show{background-image:url("../img/loader-default.gif")}
@@ -1487,7 +1486,7 @@ a{-webkit-transition:background-color ease-in-out .15s,color ease-in-out .15s,bo
 .menu-panel .collapse-button i,.document-panel .collapse-button i{color:#666666;font-size:14px}
 .menu-panel.in .collapse-button,.document-panel.in .collapse-button{background-color:#406b5b}
 .menu-panel .panel-content,.document-panel .panel-content{-webkit-box-shadow:0 6px 12px rgba(0,0,0,0.175);box-shadow:0 6px 12px rgba(0,0,0,0.175);overflow:auto;padding-bottom:30px;height:100%}
-.menu-panel .panel-content a>i,.document-panel .panel-content a>i{margin-right:3px;color:inherit}
+.menu-panel .panel-content a>i,.document-panel .panel-content a>i{color:inherit}
 .menu-panel{width:280px !important;margin-left:-305px;-webkit-transition:margin-left ease-in-out .35s;transition:margin-left ease-in-out .35s}
 .menu-panel .sub-menu{background-color:#ffffff}
 .menu-panel.in{margin-left:0}
@@ -1663,6 +1662,9 @@ div.dropdown-menu textarea{width:250px;height:150px;resize:none}
 .icon-provider-wordpress{background-position:-108px 0}
 .icon-provider-ssh{background-position:-126px 0}
 .icon-provider-gplus{background-position:-144px 0}
+.title-icon-category{display:none}
+.file-title-navbar .title-icon-category{display:inline-block;font-size:16px;opacity:0.1;margin-left:-8px;margin-right:-8px;margin-top:-2px;vertical-align:top}
+.title-icon-container{display:inline-block;margin-right:10px}
 .picker-dialog{z-index:1050 !important}
 .picker-dialog-bg{z-index:1040 !important}
 .action-import-image-gplus{float:left}

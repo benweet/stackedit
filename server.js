@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 
 // Configure ejs engine
-app.set('views', __dirname + '/views');
+app.set('views', __dirname + '/public');
 app.engine('html', require('ejs').renderFile);
 
 // Force HTTPS on stackedit.io
@@ -21,24 +21,13 @@ app.use(express.compress());
 // Serve static resources
 app.use(express.static(__dirname + '/public'));
 
-// Serve index.html
-app.get('/', function (req, res) {
-    res.render('index.html');
-});
-app.get('/index.html', function (req, res) {
-    res.render('index.html');
-});
-
-// Serve viewer.html
+// Serve viewer.html in /viewer
 app.get('/viewer', function (req, res) {
-    res.render('viewer.html');
-});
-app.get('/viewer.html', function (req, res) {
     res.render('viewer.html');
 });
 
 // Error 404
-app.use(function(req, res, next){
+app.use(function(req, res, next) {
     res.status(404);
     res.render('error_404.html');
 });

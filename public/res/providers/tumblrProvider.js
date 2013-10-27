@@ -1,9 +1,10 @@
 define([
     "underscore",
+    "settings",
     "utils",
     "classes/Provider",
     "helpers/tumblrHelper"
-], function(_, utils, Provider, tumblrHelper) {
+], function(_, settings, utils, Provider, tumblrHelper) {
 
     var tumblrProvider = new Provider("tumblr", "Tumblr");
     tumblrProvider.publishPreferencesInputIds = [
@@ -16,7 +17,22 @@ define([
             frontMatter.tags !== undefined && (labelList = frontMatter.tags);
         }
         _.isString(labelList) && (labelList = _.compact(labelList.split(/[\s,]/)));
-        tumblrHelper.upload(publishAttributes.blogHostname, publishAttributes.postId, labelList.join(','), publishAttributes.format == "markdown" ? "markdown" : "html", title, content, function(error, postId) {
+        
+        // Deduce format from publishAttributes/template
+        var format = (function() {
+            if(publishAttributes.format == 'html') {
+                return 'html';
+            }
+            if(publishAttributes.format == 'template') {
+                var template = publishAttributes.customTmpl || settings.template;
+                if(template.indexOf("documentHTML") !== -1) {
+                    return 'html';
+                }
+            }
+            return 'markdown';
+        })();
+        
+        tumblrHelper.upload(publishAttributes.blogHostname, publishAttributes.postId, labelList.join(','), format, title, content, function(error, postId) {
             if(error) {
                 callback(error);
                 return;

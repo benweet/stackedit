@@ -62,7 +62,7 @@ define([
             return _.template(template, {
                 documentTitle: fileDesc.title,
                 documentMarkdown: fileDesc.content,
-                trimmedDocumentMarkdown: fileDesc.content.substring(fileDesc.frontMatter ? fileDesc.frontMatter._frontMatter.length : 0),
+                strippedDocumentMarkdown: fileDesc.content.substring(fileDesc.frontMatter ? fileDesc.frontMatter._frontMatter.length : 0),
                 documentHTML: html,
                 frontMatter: fileDesc.frontMatter,
                 publishAttributes: publishAttributes

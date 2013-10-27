@@ -78,8 +78,10 @@
 @modal-content-separator-color: @primary-bg-lighter;
 @modal-backdrop-bg: @secondary-bg-light;
 @blockquote-border-color: fade(#000, 5%);
+@blockquote-bg: fade(#000, 3%);
 @code-color: @primary-color;
-@code-bg: fade(#000, 5%);
+@code-bg: fade(#000, 3%);
+@hr-border: #e0e0e0;
 @tooltip-max-width: 240px;
 @close-color: @primary-color;
 @popover-bg: @primary-bg-lighter;
@@ -857,7 +859,6 @@ blockquote {
 }
 
 hr {
-	border-top: 1px solid #ddd;
 	margin: 30px 0;
 }
 
@@ -917,6 +918,10 @@ table tbody+tbody {
 
 blockquote {
 	border-left-width: 10px;
+	background-color: @blockquote-bg;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	padding: 15px 20px;
 	p {
 	    margin-bottom: 15px;
 	    font-size: @font-size-base;
@@ -988,8 +993,8 @@ ul,ol {
 	}
 	
 	.ace_code {
-		color: @primary-color-lighter;
-		background-color: fade(@secondary-bg, 10%);
+		color: @primary-color;
+		background-color: @code-bg;
 	}
 	
 	.ace_code_block {
@@ -1201,6 +1206,11 @@ div.dropdown-menu textarea {
 	background-position: -144px 0;
 }
 
+.btn-gittip {
+    width: 52px;
+    height: 25px;
+}
+
 // File titles
 .title-icon-category {
     display: inline-block;
@@ -1340,12 +1350,12 @@ body.pdf {
 	font-family: "DejaVu Sans";
 	background-color: transparent;
 	
-	& code, & pre {
+	code, pre {
 	    font-family: "DejaVu Sans Mono";
 	}
 	
 	// Bug with PNG when using transparency (See #149)
-	blockquote{
+	blockquote {
 	    border-left: 10px solid #eee;
 	}
 }

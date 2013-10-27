@@ -11,7 +11,7 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
 ### StackEdit can:
  
  - Manage multiple Markdown documents online or offline
- - Export your documents in Markdown or HTML and format it using a template
+ - Export your documents in Markdown, HTML or PDF and format it using a template
  - Synchronize your Markdown documents in the Cloud
  - Edit existing Markdown documents from Google Drive, Dropbox and your local hard drive
  - Post your Markdown document on Blogger/Blogspot, WordPress, Tumblr
@@ -27,7 +27,7 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
  - LaTeX mathematical expressions using MathJax
  - WYSIWYG control buttons
  - Configurable layout
- - Theming support with multiple themes available
+ - Theming support with different themes available
  - A la carte extensions
  - Offline editing
  - Online synchronization using Google Drive and Dropbox
@@ -39,6 +39,8 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
  - [Developer guide][3]
  - [Theming guide][4]
 
+### Support StackEdit:
+[![Fund me on Gittip](https://www.gittip.com/assets/gittip.png)](https://www.gittip.com/stackedit/ "Fund me on Gittip")
 
 > **NOTE:** This page has been written and published with [StackEdit][5].
 
@@ -47,4 +49,4 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
   [2]: https://github.com/benweet/stackedit/blob/master/WELCOME.md#welcome-to-stackedit---welcome "Welcome document"
   [3]: https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#developer-guide "Developer guide"
   [4]: https://github.com/benweet/stackedit/blob/master/doc/theming.md#stackedit-theming-guide "Theming guide"
-  [5]: http://benweet.github.io/stackedit/ "StackEdit"
+  [5]: https://stackedit.io/ "StackEdit"

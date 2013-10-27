@@ -129,7 +129,9 @@ define([
         // Template
         utils.setInputValue("#textarea-settings-publish-template", settings.template);
         // PDF template
-        utils.setInputValue("#textarea-settings-publish-pdf-template", settings.pdfTemplate);
+        utils.setInputValue("#textarea-settings-pdf-template", settings.pdfTemplate);
+        // PDF page size
+        utils.setInputValue("#input-settings-pdf-page-size", settings.pdfPageSize);
         // SSH proxy
         utils.setInputValue("#input-settings-ssh-proxy", settings.sshProxy);
         
@@ -165,7 +167,9 @@ define([
         // Template
         newSettings.template = utils.getInputTextValue("#textarea-settings-publish-template", event);
         // PDF template
-        newSettings.pdfTemplate = utils.getInputTextValue("#textarea-settings-publish-pdf-template", event);
+        newSettings.pdfTemplate = utils.getInputTextValue("#textarea-settings-pdf-template", event);
+        // PDF page size
+        newSettings.pdfPageSize = utils.getInputValue("#input-settings-pdf-page-size");
         // SSH proxy
         newSettings.sshProxy = utils.checkUrl(utils.getInputTextValue("#input-settings-ssh-proxy", event), true);
 

@@ -48,6 +48,7 @@ define([
                    '<body class="pdf"><%= documentHTML %></body>\n',
                    '</html>'
         ].join(""),
+        pdfPageSize: 'A4',
         sshProxy: SSH_PROXY_URL,
         shortcuts: {},
         extensionSettings: {}

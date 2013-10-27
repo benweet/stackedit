@@ -51,6 +51,14 @@ define([
         ]);
         trackPageView();
 
+        // Track StackEdit version
+        _gaq.push([
+            '_trackEvent',
+            "About",
+            'version',
+            VERSION
+        ]);
+        
         // Collect informations about user settings
         _gaq.push([
             '_trackEvent',

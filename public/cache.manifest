@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#Date Thu Oct 24 2013 22:54:22
+#Date Sun Oct 27 2013 22:43:37
 
 CACHE:
 res/worker.js
@@ -19,6 +19,7 @@ res-min/font/fontello.eot
 res-min/font/fontello.svg
 res-min/font/fontello.ttf
 res-min/font/fontello.woff
+res-min/img/gittip.png
 res-min/img/glyphicons-halflings-white.png
 res-min/img/glyphicons-halflings.png
 res-min/img/icons.png

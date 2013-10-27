@@ -518,7 +518,7 @@ img{vertical-align:middle}
 .img-rounded{border-radius:6px}
 .img-thumbnail{padding:4px;line-height:1.428571429;background-color:#232323;border:1px solid #dddddd;border-radius:4px;-webkit-transition:all .2s ease-in-out;transition:all .2s ease-in-out;display:inline-block;max-width:100%;height:auto}
 .img-circle{border-radius:50%}
-hr{margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #232323}
+hr{margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #e0e0e0}
 .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);border:0}
 p{margin:0 0 10px}
 .lead{margin-bottom:20px;font-size:16.099999999999998px;font-weight:200;line-height:1.4}
@@ -1591,7 +1591,7 @@ h2{margin:30px 0}
 h3{margin:20px 0}
 h4,h5,h6{margin:15px 0}
 p,pre,blockquote{margin:0 0 15px}
-hr{border-top:1px solid #ddd;margin:30px 0}
+hr{margin:30px 0}
 code,pre{font-family:Menlo,Consolas,"Courier New",monospace;font-size:12px !important}
 pre{padding:9.5px !important;border:1px solid #444444 !important}
 pre code{background-color:transparent !important}
@@ -1603,7 +1603,7 @@ table th{font-weight:bold}
 table thead th{vertical-align:bottom}
 table caption+thead tr:first-child th,table caption+thead tr:first-child td,table colgroup+thead tr:first-child th,table colgroup+thead tr:first-child td,table thead:first-child tr:first-child th,table thead:first-child tr:first-child td{border-top:0}
 table tbody+tbody{border-top:2px solid #dddddd}
-blockquote{border-left-width:10px}
+blockquote{border-left-width:10px;background-color:rgba(255,255,255,0.05);border-top-right-radius:5px;border-bottom-right-radius:5px;padding:15px 20px}
 blockquote p{margin-bottom:15px;font-size:14px;line-height:1.428571429}
 blockquote ul:last-child,blockquote ol:last-child{margin-bottom:0}
 ul,ol{margin-bottom:15px}
@@ -1619,7 +1619,7 @@ ul ul,ol ul,ul ol,ol ol{margin-bottom:15px}
 .ace-tm .ace_strong{font-weight:bold}
 .ace-tm .ace_emphasis{color:#ffffff;font-style:italic}
 .ace-tm .ace_blockquote{color:#a6a6a6;font-style:italic}
-.ace-tm .ace_code{color:#cccccc;background-color:rgba(68,68,68,0.1)}
+.ace-tm .ace_code{color:#ffffff;background-color:rgba(255,255,255,0.1)}
 .ace-tm .ace_code_block{color:#ffffff}
 .ace-tm .ace_description{color:#cccccc}
 .ace-tm .ace_constant{color:#dedede}
@@ -1662,8 +1662,9 @@ div.dropdown-menu textarea{width:250px;height:150px;resize:none}
 .icon-provider-wordpress{background-position:-108px 0}
 .icon-provider-ssh{background-position:-126px 0}
 .icon-provider-gplus{background-position:-144px 0}
-.title-icon-category{display:inline-block;opacity:0.1;margin-top:-4px;margin-left:-2px;margin-right:3px;font-size:12px;vertical-align:top}
-.file-title-navbar .title-icon-category{font-size:14px;margin-top:-2px;margin-left:-4px;margin-right:4px}
+.btn-gittip{width:52px;height:25px}
+.title-icon-category{display:inline-block;opacity:0.1;margin-top:-2px;margin-left:-2px;margin-right:3px;font-size:14px;vertical-align:top}
+.file-title-navbar .title-icon-category{font-size:16px;margin-left:-3px}
 .picker-dialog{z-index:1050 !important}
 .picker-dialog-bg{z-index:1040 !important}
 .action-import-image-gplus{float:left}

@@ -518,7 +518,7 @@ img{vertical-align:middle}
 .img-rounded{border-radius:6px}
 .img-thumbnail{padding:4px;line-height:1.428571429;background-color:#f0f3f4;border:1px solid #dddddd;border-radius:4px;-webkit-transition:all .2s ease-in-out;transition:all .2s ease-in-out;display:inline-block;max-width:100%;height:auto}
 .img-circle{border-radius:50%}
-hr{margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #f0f3f4}
+hr{margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #e0e0e0}
 .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);border:0}
 p{margin:0 0 10px}
 .lead{margin-bottom:20px;font-size:16.099999999999998px;font-weight:200;line-height:1.4}
@@ -570,7 +570,7 @@ blockquote.pull-right small:after{content:'\00A0 \2014'}
 q:before,q:after,blockquote:before,blockquote:after{content:""}
 address{display:block;margin-bottom:20px;font-style:normal;line-height:1.428571429}
 code,pre{font-family:Monaco,Menlo,Consolas,"Courier New",monospace}
-code{padding:2px 4px;font-size:90%;color:#333333;background-color:rgba(0,0,0,0.05);white-space:nowrap;border-radius:4px}
+code{padding:2px 4px;font-size:90%;color:#333333;background-color:rgba(0,0,0,0.03);white-space:nowrap;border-radius:4px}
 pre{display:block;padding:9.5px;margin:0 0 10px;font-size:13px;line-height:1.428571429;word-break:break-all;word-wrap:break-word;color:#333333;background-color:#f5f5f5;border:1px solid #d9dfe3;border-radius:4px}
 pre.prettyprint{margin-bottom:20px}
 pre code{padding:0;font-size:inherit;color:inherit;white-space:pre-wrap;background-color:transparent;border:0}
@@ -1591,7 +1591,7 @@ h2{margin:30px 0}
 h3{margin:20px 0}
 h4,h5,h6{margin:15px 0}
 p,pre,blockquote{margin:0 0 15px}
-hr{border-top:1px solid #ddd;margin:30px 0}
+hr{margin:30px 0}
 code,pre{font-family:Menlo,Consolas,"Courier New",monospace;font-size:12px !important}
 pre{padding:9.5px !important;border:1px solid #d9dfe3 !important}
 pre code{background-color:transparent !important}
@@ -1603,7 +1603,7 @@ table th{font-weight:bold}
 table thead th{vertical-align:bottom}
 table caption+thead tr:first-child th,table caption+thead tr:first-child td,table colgroup+thead tr:first-child th,table colgroup+thead tr:first-child td,table thead:first-child tr:first-child th,table thead:first-child tr:first-child td{border-top:0}
 table tbody+tbody{border-top:2px solid #dddddd}
-blockquote{border-left-width:10px}
+blockquote{border-left-width:10px;background-color:rgba(0,0,0,0.03);border-top-right-radius:5px;border-bottom-right-radius:5px;padding:15px 20px}
 blockquote p{margin-bottom:15px;font-size:14px;line-height:1.428571429}
 blockquote ul:last-child,blockquote ol:last-child{margin-bottom:0}
 ul,ol{margin-bottom:15px}
@@ -1619,7 +1619,7 @@ ul ul,ol ul,ul ol,ol ol{margin-bottom:15px}
 .ace-tm .ace_strong{font-weight:bold}
 .ace-tm .ace_emphasis{color:#333333;font-style:italic}
 .ace-tm .ace_blockquote{color:#8c8c8c;font-style:italic}
-.ace-tm .ace_code{color:#666666;background-color:rgba(136,136,136,0.1)}
+.ace-tm .ace_code{color:#333333;background-color:rgba(0,0,0,0.03)}
 .ace-tm .ace_code_block{color:#333333}
 .ace-tm .ace_description{color:#666666}
 .ace-tm .ace_constant{color:#545454}
@@ -1662,8 +1662,9 @@ div.dropdown-menu textarea{width:250px;height:150px;resize:none}
 .icon-provider-wordpress{background-position:-108px 0}
 .icon-provider-ssh{background-position:-126px 0}
 .icon-provider-gplus{background-position:-144px 0}
-.title-icon-category{display:inline-block;opacity:0.1;margin-top:-4px;margin-left:-2px;margin-right:3px;font-size:12px;vertical-align:top}
-.file-title-navbar .title-icon-category{font-size:14px;margin-top:-2px;margin-left:-4px;margin-right:4px}
+.btn-gittip{width:52px;height:25px}
+.title-icon-category{display:inline-block;opacity:0.1;margin-top:-2px;margin-left:-2px;margin-right:3px;font-size:14px;vertical-align:top}
+.file-title-navbar .title-icon-category{font-size:16px;margin-left:-3px}
 .picker-dialog{z-index:1050 !important}
 .picker-dialog-bg{z-index:1040 !important}
 .action-import-image-gplus{float:left}

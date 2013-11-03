@@ -17,27 +17,68 @@
                 deps: ['main']
             };
             setTimeout(function() {
+                var failure = false;
                 try {
                     // Try to use StackEdit dependencies to save a file
                     var utils = require('utils');
                     utils.saveAs(JSON.stringify(localStorage), "StackEdit local storage.json");
-                    $('.download-success').removeClass('hide');
                 }
                 catch (e) {
                     // Try something safer
                     document.getElementsByTagName('textarea')[0].value = JSON.stringify(localStorage);
-                    var eltList = document.querySelectorAll('.download-failure');
-                    for (var i = 0; i < eltList.length; ++i) {
-                        var elt = eltList[i];
-                        elt.className = elt.className.replace(/ hide/, '');
-                    }
+                    failure = true;
                 }
-
+                listFiles();
+                
+                // Show finish messages
+                var eltList = document.querySelectorAll(failure ? '.download-failure' : '.download-success');
+                for (var i = 0; i < eltList.length; ++i) {
+                    var elt = eltList[i];
+                    show(elt);
+                }
             }, 5000);
 
+            function show(elt) {
+                elt.className = elt.className.replace(/ hide/, '');
+            }
+
+            function listFiles() {      
+                // List files
+                var fileListElt = document.querySelector('.file-list');
+                fileListElt.innerHTML = '';
+                var fileIndexList = (localStorage['file.list'] || '').split(';');
+                for (var i = 0; i < fileIndexList.length; ++i) {
+                    var fileIndex = fileIndexList[i];
+                    if(!fileIndex) continue;
+                    var fileTitle = localStorage[fileIndex + '.title'];
+                    var divElt = document.createElement('div');
+                    divElt.innerHTML = [
+                        '<a href="javascript:removeFile(\'',
+                        fileIndex,
+                        '\')" class="icon-trash"></a> ',
+                        fileTitle,
+                    ].join('');
+                    fileListElt.appendChild(divElt);
+                }
+            }
+                
+            function removeFile(fileIndex) {
+                var ok = confirm('Are you sure you want to remove "' + localStorage[fileIndex + '.title'] + '"?');
+                if(ok) {
+                    localStorage['file.list'] = localStorage['file.list'].replace(';' + fileIndex + ';', ';');
+                    for (var key in localStorage){
+                        key.indexOf(fileIndex) === 0 && localStorage.removeItem(key);
+                    }
+                    listFiles();
+                }
+            }
+            
             function clearLocalStorage() {
                 var ok = confirm('This will remove all your documents and settings. Are you sure?');
-                ok && localStorage.clear();
+                if(ok) {
+                    localStorage.clear();
+                    listFiles();
+                }
             }
         </script>
         <script src="res-min/require.js"></script>
@@ -77,8 +118,11 @@
             <p>
                 <textarea class="download-failure hide form-control" rows="10"></textarea>
             </p>
-            <p class="download-success download-failure hide">To clear the local storage
-                <a href="#" onclick="clearLocalStorage()">click here</a>.</p>
+            <p class="download-success download-failure hide">To remove one document from the local storage
+                <a href="javascript:void(0)" onclick="show(document.querySelector('.file-list'))">click here</a>.</p>
+            <p class="file-list hide"></p>
+            <p class="download-success download-failure hide">To fully clear the local storage
+                <a href="javascript:void(0)" onclick="clearLocalStorage()">click here</a>.</p>
             <p class="download-success download-failure hide">To reopen StackEdit
                 <a href="https://stackedit.io/">click here</a>.</p>
         </div>

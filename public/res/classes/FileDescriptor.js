@@ -132,7 +132,7 @@ define([
         if(_.size(this.publishLocations) !== 0) {
             result.push('<i class="icon-share title-icon-category"></i>');
         }
-        result.push(this.title);
+        result.push(_.escape(this.title));
         return result.join('');
     };
 

@@ -65,6 +65,8 @@
             function removeFile(fileIndex) {
                 var ok = confirm('Are you sure you want to remove "' + localStorage[fileIndex + '.title'] + '"?');
                 if(ok) {
+                    // Protect against multiple windows
+                    localStorage.removeItem('frontWindowId');
                     localStorage['file.list'] = localStorage['file.list'].replace(';' + fileIndex + ';', ';');
                     for (var key in localStorage){
                         key.indexOf(fileIndex) === 0 && localStorage.removeItem(key);

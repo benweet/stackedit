@@ -42,6 +42,21 @@
                 elt.className = elt.className.replace(/ hide/, '');
             }
 
+            var entityMap = {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': '&quot;',
+                "'": '&#39;',
+                "/": '&#x2F;'
+            };
+            
+            function escapeHtml(string) {
+                return String(string).replace(/[&<>"'\/]/g, function(s) {
+                    return entityMap[s];
+                });
+            }
+            
             function listFiles() {      
                 // List files
                 var fileListElt = document.querySelector('.file-list');
@@ -56,7 +71,7 @@
                         '<a href="javascript:removeFile(\'',
                         fileIndex,
                         '\')" class="icon-trash"></a> ',
-                        fileTitle,
+                        escapeHtml(fileTitle),
                     ].join('');
                     fileListElt.appendChild(divElt);
                 }

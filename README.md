@@ -40,6 +40,9 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
  - [Theming guide][4]
 
 ### Support StackEdit:
+
+<a href="https://flattr.com/submit/auto?user_id=benweet&url=https%3A%2F%2Fgithub.com%2Fbenweet%2Fstackedit" target="_blank"><img src="//api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0"></a>
+
 [![Fund me on Gittip](https://www.gittip.com/assets/gittip.png)](https://www.gittip.com/stackedit/ "Fund me on Gittip")
 
 > **NOTE:** This page has been written and published with [StackEdit][5].

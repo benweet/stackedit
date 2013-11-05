@@ -1,12 +1,17 @@
+/*global gapi */
 define([
+    "jquery",
     "underscore",
+    "constants",
     "utils",
+    "storage",
+    "logger",
     "classes/Provider",
     "settings",
     "eventMgr",
     "fileMgr",
     "helpers/googleHelper"
-], function(_, utils, Provider, settings, eventMgr, fileMgr, googleHelper) {
+], function($, _, constants, utils, storage, logger, Provider, settings, eventMgr, fileMgr, googleHelper) {
 
     var PROVIDER_GDRIVE = "gdrive";
 
@@ -42,7 +47,7 @@ define([
                     return;
                 }
                 var fileDescList = [];
-                var fileDesc = undefined;
+                var fileDesc;
                 _.each(result, function(file) {
                     var syncAttributes = createSyncAttributes(file.id, file.etag, file.content, file.title);
                     syncAttributes.isRealtime = file.isRealtime;
@@ -150,7 +155,7 @@ define([
     };
 
     gdriveProvider.syncDown = function(callback) {
-        var lastChangeId = parseInt(localStorage[PROVIDER_GDRIVE + ".lastChangeId"]);
+        var lastChangeId = parseInt(storage[PROVIDER_GDRIVE + ".lastChangeId"], 10);
         googleHelper.checkChanges(lastChangeId, function(error, changes, newChangeId) {
             if(error) {
                 callback(error);
@@ -238,7 +243,7 @@ define([
                     syncAttributes.titleCRC = remoteTitleCRC;
                     utils.storeAttributes(syncAttributes);
                 });
-                localStorage[PROVIDER_GDRIVE + ".lastChangeId"] = newChangeId;
+                storage[PROVIDER_GDRIVE + ".lastChangeId"] = newChangeId;
                 callback();
             });
         });
@@ -267,22 +272,22 @@ define([
     };
 
     // Keep a link to the Pagedown editor
-    var pagedownEditor = undefined;
-    var undoExecute = undefined;
-    var redoExecute = undefined;
-    var setUndoRedoButtonStates = undefined;
+    var pagedownEditor;
+    var undoExecute;
+    var redoExecute;
+    var setUndoRedoButtonStates;
     eventMgr.addListener("onPagedownConfigure", function(pagedownEditorParam) {
         pagedownEditor = pagedownEditorParam;
     });
 
     // Keep a link to the ACE editor
-    var realtimeContext = undefined;
-    var aceEditor = undefined;
+    var realtimeContext;
+    var aceEditor;
     var isAceUpToDate = true;
     eventMgr.addListener('onAceCreated', function(aceEditorParam) {
         aceEditor = aceEditorParam;
         // Listen to editor's changes
-        aceEditor.session.on('change', function(e) {
+        aceEditor.session.on('change', function() {
             // Update the real time model if any
             realtimeContext && realtimeContext.string && realtimeContext.string.setText(aceEditor.getValue());
         });
@@ -492,9 +497,9 @@ define([
         if(state === undefined) {
             return;
         }
-        localStorage.removeItem(PROVIDER_GDRIVE + ".state");
+        storage.removeItem(PROVIDER_GDRIVE + ".state");
         if(state.action == "create") {
-            googleHelper.upload(undefined, state.folderId, GDRIVE_DEFAULT_FILE_TITLE, settings.defaultContent, undefined, undefined, function(error, file) {
+            googleHelper.upload(undefined, state.folderId, constants.GDRIVE_DEFAULT_FILE_TITLE, settings.defaultContent, undefined, undefined, function(error, file) {
                 if(error) {
                     return;
                 }

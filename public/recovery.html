@@ -10,10 +10,10 @@
         <link rel="stylesheet" type="text/css" href="res-min/themes/default.css">
         <script>
             // Use http://.../?debug to serve original JavaScript files instead of minified
-            var baseDir = 'res-min';
-            var noStart = true;
-            var require = {
-                baseUrl: baseDir,
+            window.baseDir = 'res-min';
+            window.noStart = true;
+            window.require = {
+                baseUrl: window.baseDir,
                 deps: ['main']
             };
             setTimeout(function() {

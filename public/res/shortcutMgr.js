@@ -4,7 +4,7 @@ define([
     "settings",
     "utils",
     "text!html/settingsShortcutEntry.html",
-    ], function(_, eventMgr, settings, utils, settingsShortcutEntryHTML) {
+], function(_, eventMgr, settings, utils, settingsShortcutEntryHTML) {
 
     var shortcutMgr = {};
 

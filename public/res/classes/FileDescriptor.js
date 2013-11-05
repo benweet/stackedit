@@ -1,17 +1,18 @@
 define([
     "underscore",
     "utils",
+    "storage",
     "ace/range"
-], function(_, utils, range) {
+], function(_, utils, storage, range) {
     var Range = range.Range;
 
     function FileDescriptor(fileIndex, title, syncLocations, publishLocations) {
         this.fileIndex = fileIndex;
-        this._title = title || localStorage[fileIndex + ".title"];
-        this._editorScrollTop = parseInt(localStorage[fileIndex + ".editorScrollTop"]) || 0;
+        this._title = title || storage[fileIndex + ".title"];
+        this._editorScrollTop = parseInt(storage[fileIndex + ".editorScrollTop"]) || 0;
         this._editorSelectRange = (function() {
             try {
-                var rangeComponents = localStorage[fileIndex + ".editorSelectRange"].split(';');
+                var rangeComponents = storage[fileIndex + ".editorSelectRange"].split(';');
                 rangeComponents = _.map(rangeComponents, function(component) {
                     return parseInt(component);
                 });
@@ -21,9 +22,9 @@ define([
                 return new Range(0, 0, 0, 0);
             }
         })();
-        this._editorEnd = parseInt(localStorage[fileIndex + ".editorEnd"]) || 0;
-        this._previewScrollTop = parseInt(localStorage[fileIndex + ".previewScrollTop"]) || 0;
-        this._selectTime = parseInt(localStorage[fileIndex + ".selectTime"]) || 0;
+        this._editorEnd = parseInt(storage[fileIndex + ".editorEnd"]) || 0;
+        this._previewScrollTop = parseInt(storage[fileIndex + ".previewScrollTop"]) || 0;
+        this._selectTime = parseInt(storage[fileIndex + ".selectTime"]) || 0;
         this.syncLocations = syncLocations || {};
         this.publishLocations = publishLocations || {};
         Object.defineProperty(this, 'title', {
@@ -32,15 +33,15 @@ define([
             },
             set: function(title) {
                 this._title = title;
-                localStorage[this.fileIndex + ".title"] = title;
+                storage[this.fileIndex + ".title"] = title;
             }
         });
         Object.defineProperty(this, 'content', {
             get: function() {
-                return localStorage[this.fileIndex + ".content"];
+                return storage[this.fileIndex + ".content"];
             },
             set: function(content) {
-                localStorage[this.fileIndex + ".content"] = content;
+                storage[this.fileIndex + ".content"] = content;
             }
         });
         Object.defineProperty(this, 'editorScrollTop', {
@@ -49,7 +50,7 @@ define([
             },
             set: function(editorScrollTop) {
                 this._editorScrollTop = editorScrollTop;
-                localStorage[this.fileIndex + ".editorScrollTop"] = editorScrollTop;
+                storage[this.fileIndex + ".editorScrollTop"] = editorScrollTop;
             }
         });
         Object.defineProperty(this, 'editorSelectRange', {
@@ -58,7 +59,7 @@ define([
             },
             set: function(range) {
                 this._editorSelectRange = range;
-                localStorage[this.fileIndex + ".editorSelectRange"] = [
+                storage[this.fileIndex + ".editorSelectRange"] = [
                     range.start.row,
                     range.start.column,
                     range.end.row,
@@ -72,7 +73,7 @@ define([
             },
             set: function(previewScrollTop) {
                 this._previewScrollTop = previewScrollTop;
-                localStorage[this.fileIndex + ".previewScrollTop"] = previewScrollTop;
+                storage[this.fileIndex + ".previewScrollTop"] = previewScrollTop;
             }
         });
         Object.defineProperty(this, 'selectTime', {
@@ -81,7 +82,7 @@ define([
             },
             set: function(selectTime) {
                 this._selectTime = selectTime;
-                localStorage[this.fileIndex + ".selectTime"] = selectTime;
+                storage[this.fileIndex + ".selectTime"] = selectTime;
             }
         });
     }
@@ -95,7 +96,7 @@ define([
     FileDescriptor.prototype.removeSyncLocation = function(syncAttributes) {
         utils.removeIndexFromArray(this.fileIndex + ".sync", syncAttributes.syncIndex);
         delete this.syncLocations[syncAttributes.syncIndex];
-        localStorage.removeItem(syncAttributes.syncIndex);
+        storage.removeItem(syncAttributes.syncIndex);
     };
 
     FileDescriptor.prototype.addPublishLocation = function(publishAttributes) {
@@ -107,7 +108,7 @@ define([
     FileDescriptor.prototype.removePublishLocation = function(publishAttributes) {
         utils.removeIndexFromArray(this.fileIndex + ".publish", publishAttributes.publishIndex);
         delete this.publishLocations[publishAttributes.publishIndex];
-        localStorage.removeItem(publishAttributes.publishIndex);
+        storage.removeItem(publishAttributes.publishIndex);
     };
 
     FileDescriptor.prototype.composeTitle = function() {

@@ -1,20 +1,24 @@
+/*global gapi, google */
 define([
     "underscore",
     "jquery",
+    "constants",
     "core",
     "utils",
+    "storage",
+    "logger",
     "settings",
     "eventMgr",
     "classes/AsyncTask",
     "config"
-], function(_, $, core, utils, settings, eventMgr, AsyncTask) {
+], function(_, $, constants, core, utils, storage, logger, settings, eventMgr, AsyncTask) {
 
     var connected = false;
     var authorizationMgr = {};
     (function() {
         var permissionList = {};
         var isAuthorized = false;
-        _.each((localStorage.gdrivePermissions || '').split(';'), function(permission) {
+        _.each((storage.gdrivePermissions || '').split(';'), function(permission) {
             permission && (permissionList[permission] = true);
         });
         authorizationMgr.reset = function() {
@@ -25,7 +29,7 @@ define([
         };
         authorizationMgr.add = function(permission) {
             permissionList[permission] = true;
-            localStorage.gdrivePermissions = _.keys(permissionList).join(';');
+            storage.gdrivePermissions = _.keys(permissionList).join(';');
             isAuthorized = true;
         };
         authorizationMgr.getListWithNew = function(permission) {
@@ -57,7 +61,7 @@ define([
                 task.chain();
                 return;
             }
-            delayedFunction = function() {
+            window.delayedFunction = function() {
                 gapi.load("client,drive-realtime", function() {
                     connected = true;
                     task.chain();
@@ -66,7 +70,7 @@ define([
             $.ajax({
                 url: "https://apis.google.com/js/api.js?onload=runDelayedFunction",
                 dataType: "script",
-                timeout: AJAX_TIMEOUT
+                timeout: constants.AJAX_TIMEOUT
             }).fail(function(jqXHR) {
                 var error = {
                     code: jqXHR.status,
@@ -106,11 +110,11 @@ define([
             }
             function localAuthenticate() {
                 if(immediate === false) {
-                    task.timeout = ASYNC_TASK_LONG_TIMEOUT;
+                    task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
                 }
                 var scopeList = _.chain(scopeMap).pick(authorizationMgr.getListWithNew(permission)).flatten().value();
                 gapi.auth.authorize({
-                    'client_id': GOOGLE_CLIENT_ID,
+                    'client_id': constants.GOOGLE_CLIENT_ID,
                     'scope': scopeList,
                     'immediate': immediate
                 }, function(authResult) {
@@ -144,7 +148,7 @@ define([
     };
 
     googleHelper.upload = function(fileId, parentId, title, content, contentType, etag, callback) {
-        var result = undefined;
+        var result;
         var task = new AsyncTask();
         connect(task);
         authenticate(task, 'gdrive');
@@ -160,11 +164,11 @@ define([
             if(parentId) {
                 // Specify the directory
                 metadata.parents = [
-                                    {
-                                        kind: 'drive#fileLink',
-                                        id: parentId
-                                    }
-                                    ];
+                    {
+                        kind: 'drive#fileLink',
+                        id: parentId
+                    }
+                ];
             }
             var path = '/upload/drive/v2/files';
             var method = 'POST';
@@ -184,18 +188,18 @@ define([
             
             var base64Data = utils.encodeBase64(content);
             var multipartRequestBody = [
-                                        delimiter,
-                                        'Content-Type: application/json\r\n\r\n',
-                                        JSON.stringify(metadata),
-                                        delimiter,
-                                        'Content-Type: ',
-                                        contentType,
-                                        '\r\n',
-                                        'Content-Transfer-Encoding: base64\r\n',
-                                        '\r\n',
-                                        base64Data,
-                                        close_delim
-                                        ].join("");
+                delimiter,
+                'Content-Type: application/json\r\n\r\n',
+                JSON.stringify(metadata),
+                delimiter,
+                'Content-Type: ',
+                contentType,
+                '\r\n',
+                'Content-Transfer-Encoding: base64\r\n',
+                '\r\n',
+                base64Data,
+                close_delim
+            ].join("");
             
             var request = gapi.client.request({
                 'path': path,
@@ -222,7 +226,7 @@ define([
                     }
                     else if(error.code === 412) {
                         // We may have missed a file update
-                        localStorage.removeItem("gdrive.lastChangeId");
+                        storage.removeItem("gdrive.lastChangeId");
                         error = 'Conflict on file ID "' + fileId + '". Please restart the synchronization.';
                     }
                 }
@@ -239,7 +243,7 @@ define([
     };
     
     googleHelper.rename = function(fileId, title, callback) {
-        var result = undefined;
+        var result;
         var task = new AsyncTask();
         connect(task);
         authenticate(task, 'gdrive');
@@ -248,7 +252,7 @@ define([
             var request = gapi.client.drive.files.patch({
                 'fileId': fileId,
                 'resource': body
-              });
+            });
             request.execute(function(response) {
                 if(response && response.id) {
                     // Rename success
@@ -276,7 +280,7 @@ define([
     };
 
     googleHelper.createRealtimeFile = function(parentId, title, callback) {
-        var result = undefined;
+        var result;
         var task = new AsyncTask();
         connect(task);
         authenticate(task, 'gdrive');
@@ -317,7 +321,7 @@ define([
     };
 
     googleHelper.uploadImg = function(name, content, albumId, callback) {
-        var result = undefined;
+        var result;
         var task = new AsyncTask();
         connect(task);
         authenticate(task, 'picasa');
@@ -340,14 +344,14 @@ define([
             }
 
             $.ajax({
-                url: PICASA_PROXY_URL + "upload/" + albumId,
+                url: constants.PICASA_PROXY_URL + "upload/" + albumId,
                 headers: headers,
                 data: content,
                 processData: false,
                 dataType: "xml",
-                timeout: AJAX_TIMEOUT,
+                timeout: constants.AJAX_TIMEOUT,
                 type: "POST"
-            }).done(function(data, textStatus, jqXHR) {
+            }).done(function(data) {
                 result = data;
                 task.chain();
             }).fail(function(jqXHR) {
@@ -377,9 +381,9 @@ define([
         connect(task);
         authenticate(task, 'gdrive');
         task.onRun(function() {
-            var nextPageToken = undefined;
+            var nextPageToken;
             function retrievePageOfChanges() {
-                var request = undefined;
+                var request;
                 if(nextPageToken === undefined) {
                     request = gapi.client.drive.changes.list({
                         'startChangeId': newChangeId + 1
@@ -445,11 +449,11 @@ define([
                     url: "https://www.googleapis.com/drive/v2/files/" + id,
                     headers: headers,
                     data: {
-                        key: GOOGLE_API_KEY
+                        key: constants.GOOGLE_API_KEY
                     },
                     dataType: "json",
-                    timeout: AJAX_TIMEOUT
-                }).done(function(data, textStatus, jqXHR) {
+                    timeout: constants.AJAX_TIMEOUT
+                }).done(function(data) {
                     result.push(data);
                     ids.shift();
                     task.chain(recursiveDownloadMetadata);
@@ -480,7 +484,7 @@ define([
         var result = [];
         var task = new AsyncTask();
         // Add some time for user to choose his files
-        task.timeout = ASYNC_TASK_LONG_TIMEOUT;
+        task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
         connect(task);
         if(!skipAuth) {
             authenticate(task, 'gdrive');
@@ -493,7 +497,7 @@ define([
                 }
                 var object = objects[0];
                 result.push(object);
-                var file = undefined;
+                var file;
                 // object may be a file
                 if(object.kind == "drive#file") {
                     file = object;
@@ -524,11 +528,11 @@ define([
                     url: file.downloadUrl,
                     headers: headers,
                     data: {
-                        key: GOOGLE_API_KEY
+                        key: constants.GOOGLE_API_KEY
                     },
                     dataType: "text",
-                    timeout: AJAX_TIMEOUT
-                }).done(function(data, textStatus, jqXHR) {
+                    timeout: constants.AJAX_TIMEOUT
+                }).done(function(data) {
                     file.content = data;
                     objects.shift();
                     task.chain(recursiveDownloadContent);
@@ -553,7 +557,7 @@ define([
     };
 
     googleHelper.loadRealtime = function(fileId, content, callback, errorCallback) {
-        var doc = undefined;
+        var doc;
         var task = new AsyncTask();
         connect(task);
         authenticate(task, 'gdrive');
@@ -581,7 +585,7 @@ define([
     };
 
     function handleError(error, task) {
-        var errorMsg = undefined;
+        var errorMsg;
         if(error) {
             logger.error(error);
             // Try to analyze the error
@@ -622,10 +626,10 @@ define([
             $.ajax({
                 url: "//www.google.com/jsapi",
                 data: {
-                    key: GOOGLE_API_KEY
+                    key: constants.GOOGLE_API_KEY
                 },
                 dataType: "script",
-                timeout: AJAX_TIMEOUT
+                timeout: constants.AJAX_TIMEOUT
             }).done(function() {
                 google.load('picker', '1', {
                     callback: function() {
@@ -645,7 +649,7 @@ define([
 
     googleHelper.picker = function(callback, pickerType) {
         var docs = [];
-        var picker = undefined;
+        var picker;
         function hidePicker() {
             if(picker !== undefined) {
                 picker.setVisible(false);
@@ -654,27 +658,28 @@ define([
         }
         var task = new AsyncTask();
         // Add some time for user to choose his files
-        task.timeout = ASYNC_TASK_LONG_TIMEOUT;
+        task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
         connect(task);
         loadPicker(task);
         task.onRun(function() {
             var pickerBuilder = new google.picker.PickerBuilder();
-            pickerBuilder.setAppId(GOOGLE_DRIVE_APP_ID);
+            pickerBuilder.setAppId(constants.GOOGLE_DRIVE_APP_ID);
+            var view;
             if(pickerType == 'doc') {
-                var view = new google.picker.DocsView(google.picker.ViewId.DOCS);
+                view = new google.picker.DocsView(google.picker.ViewId.DOCS);
                 view.setIncludeFolders(true);
                 view.setMimeTypes([
                     "text/x-markdown",
                     "text/plain",
                     "application/octet-stream",
-                    "application/vnd.google-apps.drive-sdk." + GOOGLE_DRIVE_APP_ID
+                    "application/vnd.google-apps.drive-sdk." + constants.GOOGLE_DRIVE_APP_ID
                 ].join(","));
                 pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
                 pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);
                 pickerBuilder.addView(view);
             }
             else if(pickerType == 'folder') {
-                var view = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
+                view = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
                 view.setIncludeFolders(true);
                 view.setSelectFolderEnabled(true);
                 view.setMimeTypes('application/vnd.google-apps.folder');
@@ -746,8 +751,8 @@ define([
                     type: type,
                     contentType: "application/json",
                     dataType: "json",
-                    timeout: AJAX_TIMEOUT
-                }).done(function(post, textStatus, jqXHR) {
+                    timeout: constants.AJAX_TIMEOUT
+                }).done(function(post) {
                     postId = post.id;
                     task.chain();
                 }).fail(function(jqXHR) {
@@ -774,8 +779,8 @@ define([
                     },
                     headers: headers,
                     dataType: "json",
-                    timeout: AJAX_TIMEOUT
-                }).done(function(blog, textStatus, jqXHR) {
+                    timeout: constants.AJAX_TIMEOUT
+                }).done(function(blog) {
                     blogId = blog.id;
                     task.chain(publish);
                 }).fail(function(jqXHR) {

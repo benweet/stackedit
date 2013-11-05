@@ -1,11 +1,12 @@
 define([
     "underscore",
     "utils",
+    "storage",
     "classes/Provider",
     "eventMgr",
     "fileMgr",
     "helpers/dropboxHelper"
-], function(_, utils, Provider, eventMgr, fileMgr, dropboxHelper) {
+], function(_, utils, storage, Provider, eventMgr, fileMgr, dropboxHelper) {
 
     var PROVIDER_DROPBOX = "dropbox";
 
@@ -129,7 +130,7 @@ define([
     };
 
     dropboxProvider.syncDown = function(callback) {
-        var lastChangeId = localStorage[PROVIDER_DROPBOX + ".lastChangeId"];
+        var lastChangeId = storage[PROVIDER_DROPBOX + ".lastChangeId"];
         dropboxHelper.checkChanges(lastChangeId, function(error, changes, newChangeId) {
             if(error) {
                 callback(error);
@@ -201,7 +202,7 @@ define([
                     syncAttributes.contentCRC = remoteContentCRC;
                     utils.storeAttributes(syncAttributes);
                 });
-                localStorage[PROVIDER_DROPBOX + ".lastChangeId"] = newChangeId;
+                storage[PROVIDER_DROPBOX + ".lastChangeId"] = newChangeId;
                 callback();
             });
         });

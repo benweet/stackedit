@@ -2,13 +2,14 @@ define([
     "jquery",
     "underscore",
     "utils",
+    "storage",
     "eventMgr",
     "fileSystem",
     "fileMgr",
     "classes/Provider",
     "providers/dropboxProvider",
     "providers/gdriveProvider"
-], function($, _, utils, eventMgr, fileSystem, fileMgr, Provider) {
+], function($, _, utils, storage, eventMgr, fileSystem, fileMgr, Provider) {
 
     var synchronizer = {};
 
@@ -20,11 +21,11 @@ define([
         ];
     }).compact().object().value();
 
-    // Retrieve sync locations from localStorage
+    // Retrieve sync locations from storage
     _.each(fileSystem, function(fileDesc) {
         _.each(utils.retrieveIndexArray(fileDesc.fileIndex + ".sync"), function(syncIndex) {
             try {
-                var syncAttributes = JSON.parse(localStorage[syncIndex]);
+                var syncAttributes = JSON.parse(storage[syncIndex]);
                 // Store syncIndex
                 syncAttributes.syncIndex = syncIndex;
                 // Replace provider ID by provider module in attributes
@@ -36,11 +37,11 @@ define([
                 fileDesc.syncLocations[syncIndex] = syncAttributes;
             }
             catch(e) {
-                // localStorage can be corrupted
+                // storage can be corrupted
                 eventMgr.onError(e);
                 // Remove sync location
                 utils.removeIndexFromArray(fileDesc.fileIndex + ".sync", syncIndex);
-                localStorage.removeItem(syncIndex);
+                storage.removeItem(syncIndex);
             }
         });
     });
@@ -60,10 +61,10 @@ define([
 
     // Recursive function to upload a single file on multiple locations
     var uploadSyncAttributesList = [];
-    var uploadContent = undefined;
-    var uploadContentCRC = undefined;
-    var uploadTitle = undefined;
-    var uploadTitleCRC = undefined;
+    var uploadContent;
+    var uploadContentCRC;
+    var uploadTitle;
+    var uploadTitleCRC;
     function locationUp(callback) {
 
         // No more synchronized location for this document
@@ -92,7 +93,7 @@ define([
                 return;
             }
             if(uploadFlag) {
-                // Update syncAttributes in localStorage
+                // Update syncAttributes in storage
                 utils.storeAttributes(syncAttributes);
             }
             locationUp(callback);
@@ -216,8 +217,8 @@ define([
      * Realtime synchronization
      **************************************************************************/
 
-    var realtimeFileDesc = undefined;
-    var realtimeSyncAttributes = undefined;
+    var realtimeFileDesc;
+    var realtimeSyncAttributes;
     var isOnline = true;
 
     // Determines if open file has real time sync location and tries to start
@@ -259,7 +260,7 @@ define([
     };
 
     // Triggers realtime synchronization from eventMgr events
-    if(viewerMode === false) {
+    if(window.viewerMode === false) {
         eventMgr.addListener("onFileOpen", onFileOpen);
         eventMgr.addListener("onFileClosed", synchronizer.tryStopRealtimeSync);
         eventMgr.addListener("onOfflineChanged", onOfflineChanged);
@@ -355,7 +356,7 @@ define([
                         exportPreferences[inputId] = inputElt.value;
                     }
                 });
-                localStorage[provider.providerId + ".exportPreferences"] = JSON.stringify(exportPreferences);
+                storage[provider.providerId + ".exportPreferences"] = JSON.stringify(exportPreferences);
             });
         });
     });

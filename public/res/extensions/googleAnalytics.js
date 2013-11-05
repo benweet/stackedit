@@ -1,11 +1,12 @@
 define([
     "jquery",
     "underscore",
+    "constants",
     "utils",
     "classes/Extension",
     "settings",
     "config",
-], function($, _, utils, Extension, settings) {
+], function($, _, constants, utils, Extension, settings) {
 
     var googleAnalytics = new Extension("googleAnalytics", "Google Analytics", true);
     googleAnalytics.settingsBlock = '<p>Sends anonymous statistics about usage and errors to help improve StackEdit.</p>';
@@ -47,7 +48,7 @@ define([
         // First configure GA
         _gaq.push([
             '_setAccount',
-            GOOGLE_ANALYTICS_ACCOUNT_ID
+            constants.GOOGLE_ANALYTICS_ACCOUNT_ID
         ]);
         trackPageView();
 
@@ -56,7 +57,7 @@ define([
             '_trackEvent',
             "About",
             'version',
-            VERSION
+            constants.VERSION
         ]);
         
         // Collect informations about user settings
@@ -95,20 +96,20 @@ define([
             '_trackEvent',
             "Settings",
             'defaultContent backlink',
-            "" + (settings.defaultContent.indexOf(MAIN_URL) !== -1)
+            "" + (settings.defaultContent.indexOf(constants.MAIN_URL) !== -1)
         ]);
         _gaq.push([
             '_trackEvent',
             "Settings",
             'commitMsg backlink',
-            "" + (settings.commitMsg.indexOf(MAIN_URL) !== -1)
+            "" + (settings.commitMsg.indexOf(constants.MAIN_URL) !== -1)
         ]);
         // Check if user has changed sshProxy
         _gaq.push([
             '_trackEvent',
             "Settings",
             'sshProxy unchanged',
-            "" + (settings.sshProxy == SSH_PROXY_URL)
+            "" + (settings.sshProxy == constants.SSH_PROXY_URL)
         ]);
         // Check if extensions have been disabled
         _.each(settings.extensionSettings, function(config, extensionId) {

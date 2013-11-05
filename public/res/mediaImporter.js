@@ -1,11 +1,12 @@
 define([
     "jquery",
     "underscore",
+    "constants",
     "classes/Provider",
     "core",
     "eventMgr",
     "providers/gplusProvider"
-], function($, _, Provider, core, eventMgr) {
+], function($, _, constants, Provider, core, eventMgr) {
 
     var mediaImporter = {};
 
@@ -45,7 +46,7 @@ define([
                 reader.onload = (function(importedFile) {
                     return function(e) {
                         var content = new Uint8Array(e.target.result);
-                        providerMap["gplus"].uploadImage(file.name, content, function(error, imageLink) {
+                        providerMap.gplus.uploadImage(importedFile.name, content, function(error, imageLink) {
                             if(error) {
                                 return;
                             }
@@ -62,7 +63,7 @@ define([
                         });
                     };
                 })(file);
-                var blob = file.slice(0, IMPORT_IMG_MAX_CONTENT_SIZE);
+                var blob = file.slice(0, constants.IMPORT_IMG_MAX_CONTENT_SIZE);
                 reader.readAsArrayBuffer(blob);
             }
         }

@@ -1,7 +1,9 @@
 define([
     "jquery",
     "underscore",
+    "constants",
     "utils",
+    "storage",
     "settings",
     "eventMgr",
     "fileSystem",
@@ -18,7 +20,7 @@ define([
     "providers/sshProvider",
     "providers/tumblrProvider",
     "providers/wordpressProvider"
-], function($, _, utils, settings, eventMgr, fileSystem, fileMgr, sharing, Provider, AsyncTask) {
+], function($, _, constants, utils, storage, settings, eventMgr, fileSystem, fileMgr, sharing, Provider, AsyncTask) {
 
     var publisher = {};
 
@@ -30,11 +32,11 @@ define([
         ];
     }).compact().object().value();
 
-    // Retrieve publish locations from localStorage
+    // Retrieve publish locations from storage
     _.each(fileSystem, function(fileDesc) {
         _.each(utils.retrieveIndexArray(fileDesc.fileIndex + ".publish"), function(publishIndex) {
             try {
-                var publishAttributes = JSON.parse(localStorage[publishIndex]);
+                var publishAttributes = JSON.parse(storage[publishIndex]);
                 // Store publishIndex
                 publishAttributes.publishIndex = publishIndex;
                 // Replace provider ID by provider module in attributes
@@ -46,11 +48,11 @@ define([
                 fileDesc.publishLocations[publishIndex] = publishAttributes;
             }
             catch(e) {
-                // localStorage can be corrupted
+                // storage can be corrupted
                 eventMgr.onError(e);
                 // Remove publish location
                 utils.removeIndexFromArray(fileDesc.fileIndex + ".publish", publishIndex);
-                localStorage.removeItem(publishIndex);
+                storage.removeItem(publishIndex);
             }
         });
     });
@@ -95,8 +97,8 @@ define([
 
     // Recursive function to publish a file on multiple locations
     var publishAttributesList = [];
-    var publishFileDesc = undefined;
-    var publishHTML = undefined;
+    var publishFileDesc;
+    var publishHTML;
     function publishLocation(callback, errorFlag) {
 
         // No more publish location for this document
@@ -130,7 +132,7 @@ define([
     }
 
     // Get the html from the onPreviewFinished callback
-    var previewHtml = undefined;
+    var previewHtml;
     eventMgr.addListener("onPreviewFinished", function(html) {
         previewHtml = html;
     });
@@ -164,17 +166,17 @@ define([
 
     // Generate a publishIndex associated to a file and store publishAttributes
     function createPublishIndex(fileDesc, publishAttributes) {
-        var publishIndex = undefined;
+        var publishIndex;
         do {
             publishIndex = "publish." + utils.randomString();
-        } while (_.has(localStorage, publishIndex));
+        } while (_.has(storage, publishIndex));
         publishAttributes.publishIndex = publishIndex;
         fileDesc.addPublishLocation(publishAttributes);
         eventMgr.onNewPublishSuccess(fileDesc, publishAttributes);
     }
 
     // Initialize the "New publication" dialog
-    var newLocationProvider = undefined;
+    var newLocationProvider;
     function initNewLocation(provider) {
         var defaultPublishFormat = provider.defaultPublishFormat || "markdown";
         newLocationProvider = provider;
@@ -246,14 +248,8 @@ define([
         });
         publishPreferences.format = publishAttributes.format;
         publishPreferences.customTmpl = publishAttributes.customTmpl;
-        localStorage[provider.providerId + ".publishPreferences"] = JSON.stringify(publishPreferences);
+        storage[provider.providerId + ".publishPreferences"] = JSON.stringify(publishPreferences);
     }
-
-    // Listen to offline status changes
-    var isOffline = false;
-    eventMgr.addListener("onOfflineChanged", function(isOfflineParam) {
-        isOffline = isOfflineParam;
-    });
 
     var initPublishButtonTmpl = [
         '<li>',
@@ -264,7 +260,7 @@ define([
         '</li>'
     ].join('');
     eventMgr.addListener("onReady", function() {
-        if(viewerMode === false) {
+        if(window.viewerMode === false) {
             // Add every provider in the panel menu
             var publishMenuElt = document.querySelector('.menu-panel .collapse-publish-on .nav');
             var publishMenuHtml = _.reduce(providerMap, function(result, provider) {
@@ -326,7 +322,7 @@ define([
                 customTmpl: settings.pdfTemplate
             }, previewHtml);
             var task = new AsyncTask();
-            var pdf = undefined;
+            var pdf;
             task.onRun(function() {
                 if(isOffline === true) {
                     eventMgr.onError("Operation not available in offline mode.");
@@ -334,7 +330,7 @@ define([
                     return;
                 }
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', HTMLTOPDF_URL, true);
+                xhr.open('POST', constants.HTMLTOPDF_URL, true);
                 xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 xhr.setRequestHeader('page-size', settings.pdfPageSize);
                 xhr.responseType = 'blob';

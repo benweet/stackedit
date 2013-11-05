@@ -1,6 +1,7 @@
 define([
     "jquery",
     "underscore",
+    "constants",
     "utils",
     "eventMgr",
     "fileMgr",
@@ -8,7 +9,7 @@ define([
     "classes/Provider",
     "providers/downloadProvider",
     "providers/gistProvider"
-], function($, _, utils, eventMgr, fileMgr, AsyncTask, Provider) {
+], function($, _, constants, utils, eventMgr, fileMgr, AsyncTask, Provider) {
 
     var sharing = {};
 
@@ -30,21 +31,21 @@ define([
         var provider = providerMap[attributes.provider.providerId];
         // Don't create link if link already exists or provider is not
         // compatible for sharing
-        if(attributes.sharingLink !== undefined || provider === undefined
+        if(attributes.sharingLink !== undefined || provider === undefined ||
         // Or document is not published in markdown format
-        || attributes.format != "markdown") {
+        attributes.format != "markdown") {
             callback();
             return;
         }
         var task = new AsyncTask();
-        var shortUrl = undefined;
+        var shortUrl;
         task.onRun(function() {
             if(isOffline === true) {
                 task.chain();
                 return;
             }
             var url = [
-                MAIN_URL,
+                constants.MAIN_URL,
                 'viewer#!provider=',
                 provider.providerId
             ];
@@ -56,7 +57,7 @@ define([
             });
             url = url.join("");
             $.getJSON("https://api-ssl.bitly.com/v3/shorten", {
-                "access_token": BITLY_ACCESS_TOKEN,
+                "access_token": constants.BITLY_ACCESS_TOKEN,
                 "longUrl": url
             }, function(response) {
                 if(response.data) {
@@ -79,7 +80,7 @@ define([
     };
 
     eventMgr.addListener("onReady", function() {
-        if(viewerMode === false) {
+        if(window.viewerMode === false) {
             return;
         }
         // Check parameters to see if we have to download a shared document

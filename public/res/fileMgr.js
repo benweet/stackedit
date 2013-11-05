@@ -1,14 +1,16 @@
 define([
     "jquery",
     "underscore",
+    "constants",
     "core",
     "utils",
+    "storage",
     "settings",
     "eventMgr",
     "fileSystem",
     "classes/FileDescriptor",
     "text!WELCOME.md"
-], function($, _, core, utils, settings, eventMgr, fileSystem, FileDescriptor, welcomeContent) {
+], function($, _, constants, core, utils, storage, settings, eventMgr, fileSystem, FileDescriptor, welcomeContent) {
 
     var fileMgr = {};
 
@@ -23,7 +25,7 @@ define([
             var fileSystemSize = _.size(fileSystem);
             if(fileSystemSize === 0) {
                 // If fileSystem empty create one file
-                fileDesc = fileMgr.createFile(WELCOME_DOCUMENT_TITLE, welcomeContent);
+                fileDesc = fileMgr.createFile(constants.WELCOME_DOCUMENT_TITLE, welcomeContent);
             }
             else {
                 // Select the last selected file
@@ -41,7 +43,7 @@ define([
             eventMgr.onFileSelected(fileDesc);
 
             // Hide the viewer pencil button
-            $(".action-edit-document").toggleClass("hide", fileDesc.fileIndex != TEMPORARY_FILE_INDEX);
+            $(".action-edit-document").toggleClass("hide", fileDesc.fileIndex != constants.TEMPORARY_FILE_INDEX);
         }
 
         // Refresh the editor (even if it's the same file)
@@ -52,17 +54,18 @@ define([
         content = content !== undefined ? content : settings.defaultContent;
         if(!title) {
             // Create a file title
-            title = DEFAULT_FILE_TITLE;
+            title = constants.DEFAULT_FILE_TITLE;
             var indicator = 2;
-            while (_.some(fileSystem, function(fileDesc) {
+            var checkTitle = function (fileDesc) {
                 return fileDesc.title == title;
-            })) {
-                title = DEFAULT_FILE_TITLE + indicator++;
+            };
+            while (_.some(fileSystem, checkTitle)) {
+                title = constants.DEFAULT_FILE_TITLE + indicator++;
             }
         }
 
         // Generate a unique fileIndex
-        var fileIndex = TEMPORARY_FILE_INDEX;
+        var fileIndex = constants.TEMPORARY_FILE_INDEX;
         if(!isTemporary) {
             do {
                 fileIndex = "file." + utils.randomString();
@@ -76,10 +79,10 @@ define([
             return sync + syncAttributes.syncIndex + ";";
         }, ";");
 
-        localStorage[fileIndex + ".title"] = title;
-        localStorage[fileIndex + ".content"] = content;
-        localStorage[fileIndex + ".sync"] = sync;
-        localStorage[fileIndex + ".publish"] = ";";
+        storage[fileIndex + ".title"] = title;
+        storage[fileIndex + ".content"] = content;
+        storage[fileIndex + ".sync"] = sync;
+        storage[fileIndex + ".publish"] = ";";
 
         // Create the file descriptor
         var fileDesc = new FileDescriptor(fileIndex, title, syncLocations);
@@ -107,25 +110,25 @@ define([
             fileMgr.selectFile();
         }
 
-        // Remove synchronized locations from localStorage
+        // Remove synchronized locations from storage
         _.each(fileDesc.syncLocations, function(syncAttributes) {
-            localStorage.removeItem(syncAttributes.syncIndex);
+            storage.removeItem(syncAttributes.syncIndex);
         });
 
-        // Remove publish locations from localStorage
+        // Remove publish locations from storage
         _.each(fileDesc.publishLocations, function(publishAttributes) {
-            localStorage.removeItem(publishAttributes.publishIndex);
+            storage.removeItem(publishAttributes.publishIndex);
         });
 
-        localStorage.removeItem(fileDesc.fileIndex + ".title");
-        localStorage.removeItem(fileDesc.fileIndex + ".content");
-        localStorage.removeItem(fileDesc.fileIndex + ".sync");
-        localStorage.removeItem(fileDesc.fileIndex + ".publish");
-        localStorage.removeItem(fileDesc.fileIndex + ".selectTime");
-        localStorage.removeItem(fileDesc.fileIndex + ".editorStart");
-        localStorage.removeItem(fileDesc.fileIndex + ".editorEnd");
-        localStorage.removeItem(fileDesc.fileIndex + ".editorScrollTop");
-        localStorage.removeItem(fileDesc.fileIndex + ".previewScrollTop");
+        storage.removeItem(fileDesc.fileIndex + ".title");
+        storage.removeItem(fileDesc.fileIndex + ".content");
+        storage.removeItem(fileDesc.fileIndex + ".sync");
+        storage.removeItem(fileDesc.fileIndex + ".publish");
+        storage.removeItem(fileDesc.fileIndex + ".selectTime");
+        storage.removeItem(fileDesc.fileIndex + ".editorStart");
+        storage.removeItem(fileDesc.fileIndex + ".editorEnd");
+        storage.removeItem(fileDesc.fileIndex + ".editorScrollTop");
+        storage.removeItem(fileDesc.fileIndex + ".previewScrollTop");
 
         eventMgr.onFileDeleted(fileDesc);
     };
@@ -150,13 +153,13 @@ define([
         });
     };
 
-    var aceEditor = undefined;
+    var aceEditor;
     eventMgr.addListener('onAceCreated', function(aceEditorParam) {
         aceEditor = aceEditorParam;
     });
 
     eventMgr.addListener("onReady", function() {
-        $editorElt = $("#wmd-input")
+        var $editorElt = $("#wmd-input");
         fileMgr.selectFile();
 
         var $fileTitleElt = $('.file-title-navbar');
@@ -170,7 +173,7 @@ define([
             fileMgr.deleteFile();
         });
         $fileTitleElt.click(function() {
-            if(viewerMode === true) {
+            if(window.viewerMode === true) {
                 return;
             }
             $fileTitleElt.addClass('hide');
@@ -216,7 +219,7 @@ define([
             window.location.href = ".";
         });
         $(".action-welcome-file").click(function() {
-            var fileDesc = fileMgr.createFile(WELCOME_DOCUMENT_TITLE, welcomeContent);
+            var fileDesc = fileMgr.createFile(constants.WELCOME_DOCUMENT_TITLE, welcomeContent);
             fileMgr.selectFile(fileDesc);
         });
     });

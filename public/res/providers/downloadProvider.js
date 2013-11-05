@@ -1,11 +1,12 @@
 define([
     "jquery",
+    "constants",
     "eventMgr",
     "utils",
     "fileMgr",
     "classes/Provider",
     "classes/AsyncTask"
-], function($, eventMgr, utils, fileMgr, Provider, AsyncTask) {
+], function($, constants, eventMgr, utils, fileMgr, Provider, AsyncTask) {
 
     var downloadProvider = new Provider("download");
     downloadProvider.sharingAttributes = [
@@ -13,8 +14,8 @@ define([
     ];
 
     downloadProvider.importPublic = function(importParameters, callback) {
-        var title = undefined;
-        var content = undefined;
+        var title;
+        var content;
         var task = new AsyncTask(true);
         task.onRun(function() {
             var url = importParameters.url;
@@ -25,14 +26,14 @@ define([
             }
             title = url.substring(slashUrl + 1);
             $.ajax({
-                url: DOWNLOAD_PROXY_URL + "download?url=" + url,
+                url: constants.DOWNLOAD_PROXY_URL + "download?url=" + url,
                 type: "GET",
                 dataType: "text",
-                timeout: AJAX_TIMEOUT
-            }).done(function(result, textStatus, jqXHR) {
+                timeout: constants.AJAX_TIMEOUT
+            }).done(function(result) {
                 content = result;
                 task.chain();
-            }).fail(function(jqXHR) {
+            }).fail(function() {
                 task.error(new Error("Unable to access URL " + url));
             });
         });

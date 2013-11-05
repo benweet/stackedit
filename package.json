@@ -19,7 +19,8 @@
     "bower": "~1.2.5",
     "grunt-bower-requirejs": "~0.7.1",
     "grunt-bower-task": "~0.3.1",
-    "grunt-bump": "0.0.11"
+    "grunt-bump": "0.0.11",
+    "grunt-contrib-jshint": "~0.7.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

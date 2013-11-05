@@ -1,5 +1,7 @@
-var dictionary = undefined;
+/*jshint worker:true */
+var dictionary;
 
+/*jshint evil:true, unused:false */
 self.init = function(typoJS, LZString, lang, aff, dic) {
     eval([
         typoJS,
@@ -7,10 +9,11 @@ self.init = function(typoJS, LZString, lang, aff, dic) {
         'aff = LZString.decompressFromUTF16(aff);',
         'dic = LZString.decompressFromUTF16(dic);',
         'dictionary = new Typo(lang, aff, dic);'
-        ].join('\n'));
+    ].join('\n'));
 };
+/*jshint evil:false, unused:true */
 
-var timeoutId = undefined;
+var timeoutId;
 self.check = function(words) {
     // Check function has priority over Suggest function
     // This prevents Suggest to run if called just before Check
@@ -22,7 +25,7 @@ self.check = function(words) {
     postMessage(JSON.stringify(['check', words]));
 };
 
-var word = undefined;
+var word;
 
 function delayedSuggest() {
     timeoutId = undefined;

@@ -1,15 +1,16 @@
 define([
     "underscore",
+    "constants",
     "utils",
     "eventMgr",
     "config"
-], function(_, utils, eventMgr) {
+], function(_, constants, utils, eventMgr) {
     
     var taskQueue = [];
     
     function AsyncTask(force) {
         this.finished = false;
-        this.timeout = ASYNC_TASK_DEFAULT_TIMEOUT;
+        this.timeout = constants.ASYNC_TASK_DEFAULT_TIMEOUT;
         this.retryCounter = 0;
         this.runCallbacks = [];
         this.successCallbacks = [];
@@ -123,7 +124,7 @@ define([
     };
 
     var asyncRunning = false;
-    var currentTask = undefined;
+    var currentTask;
 
     // Determine if user is real by listening to his activity
     var isUserReal = false;

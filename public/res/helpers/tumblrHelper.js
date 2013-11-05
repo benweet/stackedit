@@ -1,12 +1,15 @@
 define([
     "jquery",
+    "constants",
     "core",
     "utils",
+    "storage",
+    "logger",
     "eventMgr",
     "classes/AsyncTask"
-], function($, core, utils, eventMgr, AsyncTask) {
+], function($, constants, core, utils, storage, logger, eventMgr, AsyncTask) {
 
-    var oauthParams = undefined;
+    var oauthParams;
 
     var tumblrHelper = {};
 
@@ -29,14 +32,14 @@ define([
 
     // Try to authenticate with OAuth
     function authenticate(task) {
-        var authWindow = undefined;
-        var intervalId = undefined;
+        var authWindow;
+        var intervalId;
         task.onRun(function() {
             if(oauthParams !== undefined) {
                 task.chain();
                 return;
             }
-            var serializedOauthParams = localStorage.tumblrOauthParams;
+            var serializedOauthParams = storage.tumblrOauthParams;
             if(serializedOauthParams !== undefined) {
                 oauthParams = JSON.parse(serializedOauthParams);
                 task.chain();
@@ -44,10 +47,10 @@ define([
             }
             var errorMsg = "Failed to retrieve a token from Tumblr.";
             // We add time for user to enter his credentials
-            task.timeout = ASYNC_TASK_LONG_TIMEOUT;
-            var oauth_object = undefined;
+            task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
+            var oauth_object;
             function getOauthToken() {
-                $.getJSON(TUMBLR_PROXY_URL + "request_token", function(data) {
+                $.getJSON(constants.TUMBLR_PROXY_URL + "request_token", function(data) {
                     if(data.oauth_token !== undefined) {
                         oauth_object = data;
                         task.chain(oauthRedirect);
@@ -65,7 +68,7 @@ define([
                 });
             }
             function getVerifier() {
-                localStorage.removeItem("tumblrVerifier");
+                storage.removeItem("tumblrVerifier");
                 authWindow = utils.popupWindow('html/tumblr-oauth-client.html?oauth_token=' + oauth_object.oauth_token, 'stackedit-tumblr-oauth', 800, 600);
                 authWindow.focus();
                 intervalId = setInterval(function() {
@@ -73,20 +76,20 @@ define([
                         clearInterval(intervalId);
                         authWindow = undefined;
                         intervalId = undefined;
-                        oauth_object.oauth_verifier = localStorage.tumblrVerifier;
+                        oauth_object.oauth_verifier = storage.tumblrVerifier;
                         if(oauth_object.oauth_verifier === undefined) {
                             task.error(new Error(errorMsg));
                             return;
                         }
-                        localStorage.removeItem("tumblrVerifier");
+                        storage.removeItem("tumblrVerifier");
                         task.chain(getAccessToken);
                     }
                 }, 500);
             }
             function getAccessToken() {
-                $.getJSON(TUMBLR_PROXY_URL + "access_token", oauth_object, function(data) {
+                $.getJSON(constants.TUMBLR_PROXY_URL + "access_token", oauth_object, function(data) {
                     if(data.access_token !== undefined && data.access_token_secret !== undefined) {
-                        localStorage.tumblrOauthParams = JSON.stringify(data);
+                        storage.tumblrOauthParams = JSON.stringify(data);
                         oauthParams = data;
                         task.chain();
                     }
@@ -121,12 +124,12 @@ define([
                 content: content
             }, oauthParams);
             $.ajax({
-                url: TUMBLR_PROXY_URL + "post",
+                url: constants.TUMBLR_PROXY_URL + "post",
                 data: data,
                 type: "POST",
                 dataType: "json",
-                timeout: AJAX_TIMEOUT
-            }).done(function(post, textStatus, jqXHR) {
+                timeout: constants.AJAX_TIMEOUT
+            }).done(function(post) {
                 postId = post.id;
                 task.chain();
             }).fail(function(jqXHR) {
@@ -151,7 +154,7 @@ define([
     };
 
     function handleError(error, task) {
-        var errorMsg = undefined;
+        var errorMsg;
         if(error) {
             logger.error(error);
             // Try to analyze the error
@@ -162,7 +165,7 @@ define([
                 errorMsg = "Could not publish on Tumblr.";
                 if(error.code === 401 || error.code === 403) {
                     oauthParams = undefined;
-                    localStorage.removeItem("tumblrOauthParams");
+                    storage.removeItem("tumblrOauthParams");
                     errorMsg = "Access to Tumblr account is not authorized.";
                     task.retry(new Error(errorMsg), 1);
                     return;

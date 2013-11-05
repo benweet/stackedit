@@ -2,8 +2,9 @@ define([
     "jquery",
     "underscore",
     "crel",
+    "storage",
     "classes/Extension"
-], function($, _, crel, Extension) {
+], function($, _, crel, storage, Extension) {
 
     var buttonFocusMode = new Extension("buttonFocusMode", 'Button "Focus Mode"', true, true, true);
     buttonFocusMode.settingsBlock = "When typing, scrolls automatically the editor to always have the caret centered verticaly.";
@@ -33,7 +34,7 @@ define([
         aceEditor.container.addEventListener('mousedown', function() {
             isMouseActive = true;
         }, true);
-        if(localStorage.focusMode == 'on') {
+        if(storage.focusMode == 'on') {
             $button.click();
         }
     };
@@ -47,7 +48,7 @@ define([
         $button.click(function() {
             _.defer(function() {
                 isFocusModeOn = $button.is('.active');
-                localStorage.focusMode = isFocusModeOn ? 'on' : 'off';
+                storage.focusMode = isFocusModeOn ? 'on' : 'off';
                 isMouseActive = false;
                 aceEditor.focus();
                 doFocusMode();

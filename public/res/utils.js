@@ -1,11 +1,12 @@
 define([
     "jquery",
     "underscore",
+    "storage",
     "crel",
     "xregexp",
-    "FileSaver",
     "stacktrace",
-], function($, _, crel, XRegExp) {
+    "FileSaver",
+], function($, _, storage, crel, XRegExp, printStackTrace, saveAs) {
 
     var utils = {};
 
@@ -106,7 +107,9 @@ define([
             return undefined;
         }
         try {
+            /*jshint evil:true */
             eval("var test=" + value);
+            /*jshint evil:false */
         }
         catch(e) {
             inputError(element, event);
@@ -241,41 +244,41 @@ define([
     };
     utils.updateCurrentTime();
 
-    // Serialize sync/publish attributes and store it in the localStorage
+    // Serialize sync/publish attributes and store it in the storage
     utils.storeAttributes = function(attributes) {
         var storeIndex = attributes.syncIndex || attributes.publishIndex;
         // Don't store sync/publish index
         var storedAttributes = _.omit(attributes, "syncIndex", "publishIndex", "provider");
         // Store providerId instead of provider
         storedAttributes.provider = attributes.provider.providerId;
-        localStorage[storeIndex] = JSON.stringify(storedAttributes);
+        storage[storeIndex] = JSON.stringify(storedAttributes);
     };
 
-    // Retrieve/parse an index array from localStorage
+    // Retrieve/parse an index array from storage
     utils.retrieveIndexArray = function(storeIndex) {
         try {
-            return _.compact(localStorage[storeIndex].split(";"));
+            return _.compact(storage[storeIndex].split(";"));
         }
         catch(e) {
-            localStorage[storeIndex] = ";";
+            storage[storeIndex] = ";";
             return [];
         }
     };
 
-    // Append an index to an array in localStorage
+    // Append an index to an array in storage
     utils.appendIndexToArray = function(storeIndex, index) {
-        localStorage[storeIndex] += index + ";";
+        storage[storeIndex] += index + ";";
     };
 
-    // Remove an index from an array in localStorage
+    // Remove an index from an array in storage
     utils.removeIndexFromArray = function(storeIndex, index) {
-        localStorage[storeIndex] = localStorage[storeIndex].replace(";" + index + ";", ";");
+        storage[storeIndex] = storage[storeIndex].replace(";" + index + ";", ";");
     };
 
-    // Retrieve/parse an object from localStorage. Returns undefined if error.
+    // Retrieve/parse an object from storage. Returns undefined if error.
     utils.retrieveIgnoreError = function(storeIndex) {
         try {
-            return JSON.parse(localStorage[storeIndex]);
+            return JSON.parse(storage[storeIndex]);
         }
         catch(e) {
             return undefined;

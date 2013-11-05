@@ -1,14 +1,18 @@
+/*global Github */
 define([
     "jquery",
+    "constants",
     "core",
     "utils",
+    "storage",
+    "logger",
     "eventMgr",
     "classes/AsyncTask",
     "config"
-], function($, core, utils, eventMgr, AsyncTask) {
+], function($, constants, core, utils, storage, logger, eventMgr, AsyncTask) {
 
-    var connected = undefined;
-    var github = undefined;
+    var connected;
+    var github;
 
     var githubHelper = {};
 
@@ -33,7 +37,7 @@ define([
             $.ajax({
                 url: "libs/github.js",
                 dataType: "script",
-                timeout: AJAX_TIMEOUT
+                timeout: constants.AJAX_TIMEOUT
             }).done(function() {
                 connected = true;
                 task.chain();
@@ -49,14 +53,14 @@ define([
 
     // Try to authenticate with Oauth
     function authenticate(task) {
-        var authWindow = undefined;
-        var intervalId = undefined;
+        var authWindow;
+        var intervalId;
         task.onRun(function() {
             if(github !== undefined) {
                 task.chain();
                 return;
             }
-            var token = localStorage.githubToken;
+            var token = storage.githubToken;
             if(token !== undefined) {
                 github = new Github({
                     token: token,
@@ -67,8 +71,8 @@ define([
             }
             var errorMsg = "Failed to retrieve a token from GitHub.";
             // We add time for user to enter his credentials
-            task.timeout = ASYNC_TASK_LONG_TIMEOUT;
-            var code = undefined;
+            task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
+            var code;
             function oauthRedirect() {
                 core.redirectConfirm('You are being redirected to <strong>GitHub</strong> authorization page.', function() {
                     task.chain(getCode);
@@ -77,29 +81,29 @@ define([
                 });
             }
             function getCode() {
-                localStorage.removeItem("githubCode");
-                authWindow = utils.popupWindow('html/github-oauth-client.html?client_id=' + GITHUB_CLIENT_ID, 'stackedit-github-oauth', 960, 600);
+                storage.removeItem("githubCode");
+                authWindow = utils.popupWindow('html/github-oauth-client.html?client_id=' + constants.GITHUB_CLIENT_ID, 'stackedit-github-oauth', 960, 600);
                 authWindow.focus();
                 intervalId = setInterval(function() {
                     if(authWindow.closed === true) {
                         clearInterval(intervalId);
                         authWindow = undefined;
                         intervalId = undefined;
-                        code = localStorage.githubCode;
+                        code = storage.githubCode;
                         if(code === undefined) {
                             task.error(new Error(errorMsg));
                             return;
                         }
-                        localStorage.removeItem("githubCode");
+                        storage.removeItem("githubCode");
                         task.chain(getToken);
                     }
                 }, 500);
             }
             function getToken() {
-                $.getJSON(GATEKEEPER_URL + "authenticate/" + code, function(data) {
+                $.getJSON(constants.GATEKEEPER_URL + "authenticate/" + code, function(data) {
                     if(data.token !== undefined) {
                         token = data.token;
-                        localStorage.githubToken = token;
+                        storage.githubToken = token;
                         github = new Github({
                             token: token,
                             auth: "oauth"
@@ -175,7 +179,7 @@ define([
             files[filename] = {
                 content: content
             };
-            githubFunction = gist.update;
+            var githubFunction = gist.update;
             if(gistId === undefined) {
                 githubFunction = gist.create;
             }
@@ -209,8 +213,8 @@ define([
         var task = new AsyncTask(true);
         connect(task);
         // No need for authentication
-        var title = undefined;
-        var content = undefined;
+        var title;
+        var content;
         task.onRun(function() {
             var github = new Github({});
             var gist = github.getGist(gistId);
@@ -240,7 +244,7 @@ define([
     };
 
     function handleError(error, task) {
-        var errorMsg = undefined;
+        var errorMsg;
         if(error) {
             logger.error(error);
             // Try to analyze the error
@@ -251,7 +255,7 @@ define([
                 errorMsg = "Could not publish on GitHub.";
                 if(error.error === 401 || error.error === 403) {
                     github = undefined;
-                    localStorage.removeItem("githubToken");
+                    storage.removeItem("githubToken");
                     errorMsg = "Access to GitHub account is not authorized.";
                     task.retry(new Error(errorMsg), 1);
                     return;

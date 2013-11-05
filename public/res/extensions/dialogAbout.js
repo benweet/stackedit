@@ -1,10 +1,11 @@
 define([
     "underscore",
+    "constants",
     "utils",
     "classes/Extension",
     "text!html/dialogAbout.html",
     "config"
-], function(_, utils, Extension, dialogAboutHTML) {
+], function(_, constants, utils, Extension, dialogAboutHTML) {
 
     var dialogAbout = new Extension("dialogAbout", 'Dialog "About"');
 
@@ -54,7 +55,7 @@ define([
         utils.addModal('modal-about', _.template(dialogAboutHTML, {
             libraries: libraries,
             projects: projects,
-            version: VERSION
+            version: constants.VERSION
         }));
     };
 

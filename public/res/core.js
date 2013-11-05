@@ -3,7 +3,9 @@ define([
     "underscore",
     "crel",
     "ace",
+    "constants",
     "utils",
+    "storage",
     "settings",
     "eventMgr",
     "shortcutMgr",
@@ -22,7 +24,7 @@ define([
     'ace/ext/spellcheck',
     'ace/ext/searchbox'
 
-], function($, _, crel, ace, utils, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
+], function($, _, crel, ace, constants, utils, storage, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
 
@@ -45,7 +47,7 @@ define([
     }
 
     function isUserActive() {
-        if(utils.currentTime - userLastActivity > USER_IDLE_THRESHOLD) {
+        if(utils.currentTime - userLastActivity > constants.USER_IDLE_THRESHOLD) {
             userActive = false;
         }
         return userActive && windowUnique;
@@ -59,9 +61,9 @@ define([
         }
         if(windowId === undefined) {
             windowId = utils.randomString();
-            localStorage.frontWindowId = windowId;
+            storage.frontWindowId = windowId;
         }
-        var frontWindowId = localStorage.frontWindowId;
+        var frontWindowId = storage.frontWindowId;
         if(frontWindowId != windowId) {
             windowUnique = false;
             if(intervalId !== undefined) {
@@ -90,12 +92,12 @@ define([
     }
     function checkOnline() {
         // Try to reconnect if we are offline but we have some network
-        if(isOffline === true && navigator.onLine === true && offlineTime + CHECK_ONLINE_PERIOD < utils.currentTime) {
+        if(isOffline === true && navigator.onLine === true && offlineTime + constants.CHECK_ONLINE_PERIOD < utils.currentTime) {
             offlineTime = utils.currentTime;
             // Try to download anything to test the connection
             $.ajax({
                 url: "//www.google.com/jsapi",
-                timeout: AJAX_TIMEOUT,
+                timeout: constants.AJAX_TIMEOUT,
                 dataType: "script"
             }).done(function() {
                 setOnline();
@@ -182,8 +184,8 @@ define([
 
         if(!event.isPropagationStopped()) {
             $.extend(settings, newSettings);
-            localStorage.settings = JSON.stringify(settings);
-            localStorage.theme = theme;
+            storage.settings = JSON.stringify(settings);
+            storage.theme = theme;
         }
     }
 
@@ -220,7 +222,7 @@ define([
         aceEditor.setOption("spellcheck", true);
         aceEditor.renderer.setShowGutter(false);
         aceEditor.renderer.setPrintMarginColumn(false);
-        aceEditor.renderer.setPadding(EDITOR_DEFAULT_PADDING);
+        aceEditor.renderer.setPadding(constants.EDITOR_DEFAULT_PADDING);
         aceEditor.session.setUseWrapMode(true);
         aceEditor.session.setNewLineMode("unix");
         aceEditor.session.setMode("libs/ace_mode");
@@ -334,8 +336,8 @@ define([
                     aceEditor.renderer.setScrollMargin(0, bottomMargin, 0, 0);
                     setTimeout(function() {
                         var padding = (aceEditor.renderer.$size.scrollerWidth - settings.maxWidth) / 2;
-                        if(padding < EDITOR_DEFAULT_PADDING) {
-                            padding = EDITOR_DEFAULT_PADDING;
+                        if(padding < constants.EDITOR_DEFAULT_PADDING) {
+                            padding = constants.EDITOR_DEFAULT_PADDING;
                         }
                         if(padding !== aceEditor.renderer.$padding) {
                             aceEditor.renderer.setPadding(padding);
@@ -747,7 +749,7 @@ define([
             isModalShown = false;
             (aceEditor && aceEditor.focus()) || $editorElt.focus();
             // Revert to current theme when settings modal is closed
-            applyTheme(localStorage.theme);
+            applyTheme(storage.theme);
         }).keyup(function(e) {
             // Handle enter key in modals
             if(e.which == 13 && !$(e.target).is("textarea")) {
@@ -827,7 +829,7 @@ define([
         $(".action-import-docs-settings").click(function(e) {
             $("#input-file-import-docs-settings").click();
         });
-        var newLocalStorage = undefined;
+        var newstorage = undefined;
         $("#input-file-import-docs-settings").change(function(evt) {
             var files = (evt.dataTransfer || evt.target).files;
             $(".modal-settings").modal("hide");
@@ -836,12 +838,12 @@ define([
                 reader.onload = (function(importedFile) {
                     return function(e) {
                         try {
-                            newLocalStorage = JSON.parse(e.target.result);
-                            // Compare localStorage version
-                            var newVersion = parseInt(newLocalStorage.version.match(/^v(\d+)$/)[1], 10);
-                            var currentVersion = parseInt(localStorage.version.match(/^v(\d+)$/)[1], 10);
+                            newstorage = JSON.parse(e.target.result);
+                            // Compare storage version
+                            var newVersion = parseInt(newstorage.version.match(/^v(\d+)$/)[1], 10);
+                            var currentVersion = parseInt(storage.version.match(/^v(\d+)$/)[1], 10);
                             if(newVersion > currentVersion) {
-                                // We manage localStorage upgrade, not downgrade
+                                // We manage storage upgrade, not downgrade
                                 eventMgr.onError("Incompatible version. Please upgrade StackEdit.");
                             } else {
                                 $('.modal-import-docs-settings').modal('show');
@@ -857,28 +859,28 @@ define([
             });
         });
         $(".action-import-docs-settings-confirm").click(function(e) {
-            localStorage.clear();
+            storage.clear();
             var allowedKeys = /^file\.|^focusMode$|^folder\.|^publish\.|^settings$|^sync\.|^theme$|^version$|^welcomeTour$/;
-            _.each(newLocalStorage, function(value, key) {
+            _.each(newstorage, function(value, key) {
                 if(allowedKeys.test(key)) {
-                    localStorage[key] = value;
+                    storage[key] = value;
                 }
             });
             window.location.reload();
         });
         // Export settings
         $(".action-export-docs-settings").click(function(e) {
-            utils.saveAs(JSON.stringify(localStorage), "StackEdit local storage.json");
+            utils.saveAs(JSON.stringify(storage), "StackEdit local storage.json");
         });
 
         $(".action-default-settings").click(function() {
-            localStorage.removeItem("settings");
-            localStorage.removeItem("theme");
+            storage.removeItem("settings");
+            storage.removeItem("theme");
             window.location.reload();
         });
 
         $(".action-app-reset").click(function() {
-            localStorage.clear();
+            storage.clear();
             window.location.reload();
         });
 
@@ -974,7 +976,7 @@ define([
 
         if(viewerMode === false) {
             // Load theme list
-            var themeOptions = _.reduce(THEME_LIST, function(themeOptions, name, value) {
+            var themeOptions = _.reduce(constants.THEME_LIST, function(themeOptions, name, value) {
                 return themeOptions + '<option value="' + value + '">' + name + '</option>';
             }, '');
             document.getElementById('input-settings-theme').innerHTML = themeOptions;

@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
 
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-string-replace');
@@ -12,6 +13,30 @@ module.exports = function(grunt) {
      */
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        jshint: {
+            options: {
+                curly: true,
+                browser: true,
+                devel: true,
+                indent: 4,
+                latedef: true,
+                undef: true,
+                unused: true,
+                expr: true,
+                globals: {
+                    "define": false,
+                    "require": false,
+                },
+                ignores: [
+                    'node_modules/**/*.js',
+                    'public/libs/**/*.js',
+                    'public/res/libs/**/*.js',
+                    'public/res/bower-libs/**/*.js',
+                    'public/res-min/**/*.js'
+                ]
+            },
+            client: ['public/**/*.js'],
+        },
         requirejs: {
             compile: {
                 options: {
@@ -100,8 +125,8 @@ module.exports = function(grunt) {
                 options: {
                     replacements: [
                         {
-                            pattern: /(var VERSION = ).*/,
-                            replacement: 'var VERSION = "<%= pkg.version %>";'
+                            pattern: /(constants\.VERSION = ).*/,
+                            replacement: 'constants.VERSION = "<%= pkg.version %>";'
                         },
                     ]
                 }

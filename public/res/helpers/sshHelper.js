@@ -1,10 +1,12 @@
 define([
     "jquery",
+    "constants",
     "core",
+    "logger",
     "eventMgr",
     "settings",
     "classes/AsyncTask"
-], function($, core, eventMgr, settings, AsyncTask) {
+], function($, constants, core, logger, eventMgr, settings, AsyncTask) {
 
     var sshHelper = {};
 
@@ -44,8 +46,8 @@ define([
                 data: data,
                 type: "POST",
                 dataType: "json",
-                timeout: AJAX_TIMEOUT
-            }).done(function(response, textStatus, jqXHR) {
+                timeout: constants.AJAX_TIMEOUT
+            }).done(function(response) {
                 if(response.error === undefined) {
                     task.chain();
                     return;
@@ -69,7 +71,7 @@ define([
     };
 
     function handleError(error, task) {
-        var errorMsg = undefined;
+        var errorMsg;
         if(error) {
             logger.error(error);
             // Try to analyze the error

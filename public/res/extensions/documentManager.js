@@ -1,13 +1,15 @@
 define([
     "jquery",
     "underscore",
+    "constants",
     "utils",
+    "storage",
     "classes/Extension",
     "classes/FolderDescriptor",
     "folderList",
     "fileSystem",
     "config"
-], function($, _, utils, Extension, FolderDescriptor, folderList, fileSystem) {
+], function($, _, constants, utils, storage, Extension, FolderDescriptor, folderList, fileSystem) {
 
     var documentManager = new Extension("documentManager", 'Document Manager', false, true);
 
@@ -105,8 +107,8 @@ define([
         // Delete folders
         _.each(selectedFolderList, function(folderDesc) {
             utils.removeIndexFromArray("folder.list", folderDesc.folderIndex);
-            localStorage.removeItem(folderDesc.folderIndex + ".name");
-            localStorage.removeItem(folderDesc.folderIndex + ".files");
+            storage.removeItem(folderDesc.folderIndex + ".name");
+            storage.removeItem(folderDesc.folderIndex + ".files");
             delete folderList[folderDesc.folderIndex];
         });
         eventMgr.onFoldersChanged();
@@ -314,10 +316,10 @@ define([
                 folderIndex = "folder." + utils.randomString();
             } while (_.has(folderList, folderIndex));
 
-            localStorage[folderIndex + ".name"] = DEFAULT_FOLDER_NAME;
+            storage[folderIndex + ".name"] = constants.DEFAULT_FOLDER_NAME;
 
             // Create the folder descriptor
-            var folderDesc = new FolderDescriptor(folderIndex, DEFAULT_FOLDER_NAME);
+            var folderDesc = new FolderDescriptor(folderIndex, constants.DEFAULT_FOLDER_NAME);
 
             // Add the index to the folder list
             utils.appendIndexToArray("folder.list", folderIndex);

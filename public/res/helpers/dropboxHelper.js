@@ -1,13 +1,17 @@
+/*global Dropbox */
 define([
     "jquery",
     "underscore",
+    "constants",
     "core",
+    "storage",
+    "logger",
     "eventMgr",
     "classes/AsyncTask",
     "config",
-], function($, _, core, eventMgr, AsyncTask) {
+], function($, _, constants, core, storage, logger, eventMgr, AsyncTask) {
 
-    var client = undefined;
+    var client;
     var authenticated = false;
 
     var dropboxHelper = {};
@@ -33,14 +37,14 @@ define([
             $.ajax({
                 url: "libs/dropbox.min.js",
                 dataType: "script",
-                timeout: AJAX_TIMEOUT
+                timeout: constants.AJAX_TIMEOUT
             }).done(function() {
                 client = new Dropbox.Client({
-                    key: DROPBOX_APP_KEY,
-                    secret: DROPBOX_APP_SECRET
+                    key: constants.DROPBOX_APP_KEY,
+                    secret: constants.DROPBOX_APP_SECRET
                 });
                 client.authDriver(new Dropbox.AuthDriver.Popup({
-                    receiverUrl: BASE_URL + "html/dropbox-oauth-receiver.html",
+                    receiverUrl: constants.BASE_URL + "html/dropbox-oauth-receiver.html",
                     rememberUser: true
                 }));
                 task.chain();
@@ -73,7 +77,7 @@ define([
                 if(immediate === false) {
                     // If not immediate we add time for user to enter his
                     // credentials
-                    task.timeout = ASYNC_TASK_LONG_TIMEOUT;
+                    task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
                 }
                 else {
                     client.reset();
@@ -102,7 +106,7 @@ define([
     }
 
     dropboxHelper.upload = function(path, content, callback) {
-        var result = undefined;
+        var result;
         var task = new AsyncTask();
         connect(task);
         authenticate(task);
@@ -212,7 +216,7 @@ define([
                 }
                 var object = objects[0];
                 result.push(object);
-                var file = undefined;
+                var file;
                 // object may be a file
                 if(object.isFile === true) {
                     file = object;
@@ -266,11 +270,11 @@ define([
                 }
                 else if(error.status === 400 && error.responseText.indexOf("oauth_nonce") !== -1) {
                     // A bug I guess...
-                    _.each(_.keys(localStorage), function(key) {
+                    _.each(_.keys(storage), function(key) {
                         // We have to remove the Oauth cache from the
-                        // localStorage
+                        // storage
                         if(key.indexOf("dropbox-auth") === 0) {
-                            localStorage.removeItem(key);
+                            storage.removeItem(key);
                         }
                     });
                     authenticated = false;
@@ -305,7 +309,7 @@ define([
             $.ajax({
                 url: "https://www.dropbox.com/static/api/1/dropbox.js",
                 dataType: "script",
-                timeout: AJAX_TIMEOUT
+                timeout: constants.AJAX_TIMEOUT
             }).done(function() {
                 pickerLoaded = true;
                 task.chain(chooserRedirect);
@@ -323,7 +327,7 @@ define([
         var paths = [];
         var task = new AsyncTask();
         // Add some time for user to choose his files
-        task.timeout = ASYNC_TASK_LONG_TIMEOUT;
+        task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
         connect(task);
         loadPicker(task);
         task.onRun(function() {

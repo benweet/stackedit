@@ -1,12 +1,15 @@
 define([
     "jquery",
+    "constants",
     "core",
     "utils",
+    "storage",
+    "logger",
     "eventMgr",
     "classes/AsyncTask"
-], function($, core, utils, eventMgr, AsyncTask) {
+], function($, constants, core, utils, storage, logger, eventMgr, AsyncTask) {
 
-    var token = undefined;
+    var token;
 
     var wordpressHelper = {};
 
@@ -29,18 +32,18 @@ define([
 
     // Try to authenticate with OAuth
     function authenticate(task) {
-        var authWindow = undefined;
-        var intervalId = undefined;
+        var authWindow;
+        var intervalId;
         task.onRun(function() {
-            token = localStorage.wordpressToken;
+            token = storage.wordpressToken;
             if(token !== undefined) {
                 task.chain();
                 return;
             }
             var errorMsg = "Failed to retrieve a token from Wordpress.";
             // We add time for user to enter his credentials
-            task.timeout = ASYNC_TASK_LONG_TIMEOUT;
-            var code = undefined;
+            task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
+            var code;
             function oauthRedirect() {
                 core.redirectConfirm('You are being redirected to <strong>WordPress</strong> authorization page.', function() {
                     task.chain(getCode);
@@ -49,29 +52,29 @@ define([
                 });
             }
             function getCode() {
-                localStorage.removeItem("wordpressCode");
-                authWindow = utils.popupWindow('html/wordpress-oauth-client.html?client_id=' + WORDPRESS_CLIENT_ID, 'stackedit-wordpress-oauth', 960, 600);
+                storage.removeItem("wordpressCode");
+                authWindow = utils.popupWindow('html/wordpress-oauth-client.html?client_id=' + constants.WORDPRESS_CLIENT_ID, 'stackedit-wordpress-oauth', 960, 600);
                 authWindow.focus();
                 intervalId = setInterval(function() {
                     if(authWindow.closed === true) {
                         clearInterval(intervalId);
                         authWindow = undefined;
                         intervalId = undefined;
-                        code = localStorage.wordpressCode;
+                        code = storage.wordpressCode;
                         if(code === undefined) {
                             task.error(new Error(errorMsg));
                             return;
                         }
-                        localStorage.removeItem("wordpressCode");
+                        storage.removeItem("wordpressCode");
                         task.chain(getToken);
                     }
                 }, 500);
             }
             function getToken() {
-                $.getJSON(WORDPRESS_PROXY_URL + "authenticate/" + code, function(data) {
+                $.getJSON(constants.WORDPRESS_PROXY_URL + "authenticate/" + code, function(data) {
                     if(data.token !== undefined) {
                         token = data.token;
-                        localStorage.wordpressToken = token;
+                        storage.wordpressToken = token;
                         task.chain();
                     }
                     else {
@@ -96,7 +99,7 @@ define([
         connect(task);
         authenticate(task);
         task.onRun(function() {
-            var url = WORDPRESS_PROXY_URL + "post";
+            var url = constants.WORDPRESS_PROXY_URL + "post";
             var data = {
                 token: token,
                 site: site,
@@ -110,8 +113,8 @@ define([
                 data: data,
                 type: "POST",
                 dataType: "json",
-                timeout: AJAX_TIMEOUT
-            }).done(function(response, textStatus, jqXHR) {
+                timeout: constants.AJAX_TIMEOUT
+            }).done(function(response) {
                 if(response.body.ID) {
                     postId = response.body.ID;
                     task.chain();
@@ -149,7 +152,7 @@ define([
     };
 
     function handleError(error, task) {
-        var errorMsg = undefined;
+        var errorMsg;
         if(error) {
             logger.error(error);
             // Try to analyze the error
@@ -159,7 +162,7 @@ define([
             else {
                 errorMsg = "Could not publish on WordPress.";
                 if((error.code === 400 && error.message == "invalid_token") || error.code === 401 || error.code === 403) {
-                    localStorage.removeItem("wordpressToken");
+                    storage.removeItem("wordpressToken");
                     errorMsg = "Access to WordPress account is not authorized.";
                     task.retry(new Error(errorMsg), 1);
                     return;

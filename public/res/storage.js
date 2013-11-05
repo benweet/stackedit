@@ -1,13 +1,23 @@
 // Setup an empty localStorage or upgrade an existing one
 define([
-    "underscore",
-    "utils"
-], function(_, utils) {
+    "underscore"
+], function(_) {
+    
+    function retrieveIndexArray(storeIndex) {
+        try {
+            return _.compact(localStorage[storeIndex].split(";"));
+        }
+        catch(e) {
+            localStorage[storeIndex] = ";";
+            return [];
+        }
+    }
 
-    var fileIndexList = utils.retrieveIndexArray("file.list");
+    var fileIndexList = retrieveIndexArray("file.list");
+    var currentFileIndex, settings;
 
     // localStorage versioning
-    var version = localStorage["version"];
+    var version = localStorage.version;
 
     // Upgrade from v0 to v1
     if(version === undefined) {
@@ -19,7 +29,7 @@ define([
 
         _.each(fileIndexList, function(fileIndex) {
             localStorage[fileIndex + ".publish"] = ";";
-            var syncIndexList = utils.retrieveIndexArray(fileIndex + ".sync");
+            var syncIndexList = retrieveIndexArray(fileIndex + ".sync");
             _.each(syncIndexList, function(syncIndex) {
                 localStorage[syncIndex + ".contentCRC"] = "0";
                 // We store title CRC only for Google Drive synchronization
@@ -49,7 +59,7 @@ define([
         var SYNC_PROVIDER_GDRIVE = "sync." + PROVIDER_GDRIVE + ".";
         var SYNC_PROVIDER_DROPBOX = "sync." + PROVIDER_DROPBOX + ".";
         _.each(fileIndexList, function(fileIndex) {
-            var syncIndexList = utils.retrieveIndexArray(fileIndex + ".sync");
+            var syncIndexList = retrieveIndexArray(fileIndex + ".sync");
             _.each(syncIndexList, function(syncIndex) {
                 var syncAttributes = {};
                 if(syncIndex.indexOf(SYNC_PROVIDER_GDRIVE) === 0) {
@@ -82,7 +92,7 @@ define([
                 localStorage.removeItem(fileIndex + ".title");
                 localStorage.removeItem(fileIndex + ".publish");
                 localStorage.removeItem(fileIndex + ".content");
-                utils.removeIndexFromArray("file.list", fileIndex);
+                localStorage["file.list"].replace(";" + fileIndex + ";", ";");
             }
         });
         version = "v3";
@@ -90,7 +100,7 @@ define([
 
     // Upgrade from v3 to v4
     if(version == "v3") {
-        var currentFileIndex = localStorage["file.current"];
+        currentFileIndex = localStorage["file.current"];
         if(currentFileIndex !== undefined && localStorage["file.list"].indexOf(";" + currentFileIndex + ";") === -1) {
             localStorage.removeItem("file.current");
         }
@@ -107,7 +117,7 @@ define([
     // Upgrade from v5 to v6
     if(version == "v5") {
         _.each(fileIndexList, function(fileIndex) {
-            var publishIndexList = utils.retrieveIndexArray(fileIndex + ".publish");
+            var publishIndexList = retrieveIndexArray(fileIndex + ".publish");
             _.each(publishIndexList, function(publishIndex) {
                 var publishAttributes = JSON.parse(localStorage[publishIndex]);
                 if(publishAttributes.provider == "gdrive") {
@@ -123,7 +133,7 @@ define([
 
     // Upgrade from v6 to v7
     if(version == "v6") {
-        var currentFileIndex = localStorage["file.current"];
+        currentFileIndex = localStorage["file.current"];
         if(currentFileIndex !== undefined) {
             localStorage[currentFileIndex + ".selectTime"] = new Date().getTime();
             localStorage.removeItem("file.current");
@@ -158,7 +168,7 @@ define([
     // Upgrade from v9 to v10
     if(version == "v9") {
         if(_.has(localStorage, 'settings')) {
-            var settings = JSON.parse(localStorage.settings);
+            settings = JSON.parse(localStorage.settings);
             delete settings.editorFontFamily;
             delete settings.editorFontSize;
             settings.template && (settings.template = settings.template.replace('http://benweet.github.io/stackedit/css/main-min.css', 'http://benweet.github.io/stackedit/res-min/themes/default.css'));
@@ -170,7 +180,7 @@ define([
     // Upgrade from v10 to v11
     if(version == "v10") {
         if(_.has(localStorage, 'settings')) {
-            var settings = JSON.parse(localStorage.settings);
+            settings = JSON.parse(localStorage.settings);
             ((settings.extensionSettings || {}).markdownExtra || {}).extensions && settings.extensionSettings.markdownExtra.extensions.push('smartypants');
             settings.sshProxy == 'http://stackedit-ssh-proxy.herokuapp.com/' && (settings.sshProxy = 'https://stackedit-ssh-proxy.herokuapp.com/');
             settings.template && (settings.template = settings.template.replace('http://benweet.github.io/stackedit/lib/', 'https://stackedit.io/libs/'));
@@ -184,5 +194,6 @@ define([
         version = "v11";
     }
 
-    localStorage["version"] = version;
+    localStorage.version = version;
+    return localStorage;
 });

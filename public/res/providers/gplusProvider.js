@@ -1,17 +1,19 @@
 define([
+    "jquery",
     "underscore",
     "utils",
+    "storage",
     "classes/Provider",
     "eventMgr",
     "helpers/googleHelper"
-], function(_, utils, Provider, eventMgr, googleHelper) {
+], function($, _, utils, storage, Provider, eventMgr, googleHelper) {
 
     var PROVIDER_GPLUS = "gplus";
 
     var gplusProvider = new Provider(PROVIDER_GPLUS, "Google+");
 
     function getThumbnailUrl(doc, size) {
-        var result = undefined;
+        var result;
         _.find(doc.thumbnails, function(thumbnail) {
             var found = false;
             thumbnail.url.replace(/(.*\/s)\d.*?(\/[^\/]+)/, function(match, sub1, sub2) {
@@ -23,12 +25,13 @@ define([
         return result;
     }
     
-    var imageDoc = undefined;
+    var imageDoc;
     var importImagePreferences = utils.retrieveIgnoreError(PROVIDER_GPLUS + ".importImagePreferences");
+    var importImageCallback;
     function showImportImgDialog() {
         if(!imageDoc.thumbnails) {
             eventMgr.onError("Image " + imageDoc.name + " is not accessible.");
-            callback(true);
+            importImageCallback(true);
             return;
         }
         utils.resetModalInputs();
@@ -43,7 +46,6 @@ define([
         $(".modal-import-image").modal();
     }
 
-    var importImageCallback = undefined;
     gplusProvider.importImage = function(callback) {
         importImageCallback = callback;
         googleHelper.picker(function(error, docs) {
@@ -77,7 +79,7 @@ define([
     };
 
     eventMgr.addListener("onReady", function() {
-        $(".action-import-image").click(function(e) {
+        $(".action-import-image").click(function() {
             var size = utils.getInputIntValue("#input-import-image-size", undefined, 0) || 0;
             var title = utils.getInputTextValue("#input-import-image-title");
             var image = getThumbnailUrl(imageDoc, size);
@@ -91,7 +93,7 @@ define([
             if(size) {
                 importImagePreferences.size = size;
             }
-            localStorage[PROVIDER_GPLUS + ".importImagePreferences"] = JSON.stringify(importImagePreferences);
+            storage[PROVIDER_GPLUS + ".importImagePreferences"] = JSON.stringify(importImagePreferences);
         });
     });
 

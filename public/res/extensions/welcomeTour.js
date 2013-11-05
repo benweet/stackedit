@@ -1,9 +1,10 @@
 define([
     'underscore',
     'jquery',
+    'storage',
     'classes/Extension',
     'bootstrap-tour'
-], function(_, $, Extension) {
+], function(_, $, storage, Extension) {
 
     var welcomeTour = new Extension('welcomeTour', 'Welcome tour', false, true);
 
@@ -19,7 +20,7 @@ define([
                 }
             },
             onEnd: function(tour) {
-                localStorage.welcomeTour = 'done';
+                storage.welcomeTour = 'done';
             },
             template: [
                 '<div class="popover tour">',
@@ -86,7 +87,7 @@ define([
                 reflex: true,
             },
         ]);
-        if(!_.has(localStorage, 'welcomeTour')) {
+        if(!_.has(storage, 'welcomeTour')) {
             tour.start();
         }
         $('.action-welcome-tour').click(function() {

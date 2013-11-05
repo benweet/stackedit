@@ -1,13 +1,14 @@
 define([
     "underscore",
     "utils",
+    "storage",
     "fileSystem"
-], function(_, utils, fileSystem) {
+], function(_, utils, storage, fileSystem) {
 
     function FolderDescriptor(folderIndex, name, fileList) {
         this.folderIndex = folderIndex;
-        this._name = name || localStorage[folderIndex + ".name"];
-        // Retrieve file list from localStorage
+        this._name = name || storage[folderIndex + ".name"];
+        // Retrieve file list from storage
         this.fileList = {};
         _.each(utils.retrieveIndexArray(folderIndex + ".files"), function(fileIndex) {
             try {
@@ -16,7 +17,7 @@ define([
                 this.fileList[fileIndex] = fileDesc;
             }
             catch(e) {
-                // localStorage can be corrupted
+                // storage can be corrupted
                 // Remove file from folder
                 utils.removeIndexFromArray(folderIndex + ".files", fileIndex);
             }
@@ -27,7 +28,7 @@ define([
             },
             set: function(name) {
                 this._name = name;
-                localStorage[this.folderIndex + ".name"] = name;
+                storage[this.folderIndex + ".name"] = name;
             }
         });
     }

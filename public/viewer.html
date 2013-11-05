@@ -13,12 +13,12 @@
         />
         <script>
             // Use ?debug to serve original JavaScript files instead of minified
-            var baseDir = 'res';
+            window.baseDir = 'res';
             if (!/(\?|&)debug($|&)/.test(location.search)) {
-                baseDir += '-min';
+                window.baseDir += '-min';
             }
-            var require = {
-                baseUrl: baseDir,
+            window.require = {
+                baseUrl: window.baseDir,
                 deps: ['main']
             };
         </script>

@@ -1,4 +1,4 @@
-# Dockerfile for cloud9
+# Dockerfile for StackEdit
 
 FROM shykes/nodejs
 

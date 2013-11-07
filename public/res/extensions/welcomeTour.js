@@ -4,7 +4,7 @@ define([
     'storage',
     'classes/Extension',
     'bootstrap-tour'
-], function(_, $, storage, Extension) {
+], function(_, $, storage, Extension, Tour) {
 
     var welcomeTour = new Extension('welcomeTour', 'Welcome tour', false, true);
 
@@ -19,7 +19,7 @@ define([
                 removeItem: function() {
                 }
             },
-            onEnd: function(tour) {
+            onEnd: function() {
                 storage.welcomeTour = 'done';
             },
             template: [

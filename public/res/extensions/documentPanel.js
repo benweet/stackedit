@@ -9,7 +9,7 @@ define([
 
     var documentPanel = new Extension("documentPanel", 'Document Panel');
 
-    var fileMgr = undefined;
+    var fileMgr;
     documentPanel.onFileMgrCreated = function(fileMgrParameter) {
         fileMgr = fileMgrParameter;
     };
@@ -39,12 +39,12 @@ define([
         '</a>',
     ].join('');
 
-    var panelElt = undefined;
-    var documentListElt = undefined;
-    var $documentListElt = undefined;
-    var documentListFilteredElt = undefined;
-    var $documentListFilteredElt = undefined;
-    var selectedFileDesc = undefined;
+    var panelElt;
+    var documentListElt;
+    var $documentListElt;
+    var documentListFilteredElt;
+    var $documentListFilteredElt;
+    var selectedFileDesc;
     var refreshPanel = function() {
 
         // List orphan documents
@@ -101,7 +101,7 @@ define([
         // Add click listeners
         _.each(panelElt.querySelectorAll('.file'), function(fileElt) {
             var $fileElt = $(fileElt);
-            $fileElt.click(function(e) {
+            $fileElt.click(function() {
                 var fileDesc = fileSystem[$fileElt.data('fileIndex')];
                 if(fileDesc && fileDesc !== selectedFileDesc) {
                     fileMgr.selectFile(fileDesc);
@@ -126,7 +126,7 @@ define([
     documentPanel.onFoldersChanged = refreshPanel;
 
     // Filter for search input in file selector
-    var panelContentElt = undefined;
+    var panelContentElt;
     var previousFilterValue = '';
     function filterFiles(filterValue) {
         if(filterValue == previousFilterValue) {

@@ -3,6 +3,7 @@ define([
     "underscore",
     "crel",
     "utils",
+    "logger",
     "classes/Extension",
     "settings",
     "text!html/settingsExtensionsAccordion.html",
@@ -38,7 +39,7 @@ define([
     "extensions/userCustom",
     "bootstrap",
     "jquery-waitforimages"
-], function($, _, crel, utils, Extension, settings, settingsExtensionsAccordionHTML) {
+], function($, _, crel, utils, logger, Extension, settings, settingsExtensionsAccordionHTML) {
 
     var eventMgr = {};
 
@@ -48,17 +49,17 @@ define([
     }).compact().value();
 
     // Configure extensions
-    extensionSettings = settings.extensionSettings || {};
+    var extensionSettings = settings.extensionSettings || {};
     _.each(extensionList, function(extension) {
         // Set the extension.config attribute from settings or default
         // configuration
         extension.config = _.extend({}, extension.defaultConfig, extensionSettings[extension.extensionId]);
-        if(viewerMode === true && extension.disableInViewer === true) {
+        if(window.viewerMode === true && extension.disableInViewer === true) {
             // Skip enabling the extension if we are in the viewer and extension
             // doesn't support it
             extension.enabled = false;
         }
-        else if(lightMode === true && extension.disableInLight === true) {
+        else if(window.lightMode === true && extension.disableInLight === true) {
             // Same for light mode
             extension.enabled = false;
         }
@@ -116,7 +117,7 @@ define([
     createEventHook("onInit")();
 
     // Load/Save extension config from/to settings
-    eventMgr["onLoadSettings"] = function() {
+    eventMgr.onLoadSettings = function() {
         logger.log("onLoadSettings");
         _.each(extensionList, function(extension) {
             utils.setInputChecked("#input-enable-extension-" + extension.extensionId, extension.enabled === true);
@@ -124,7 +125,7 @@ define([
             onLoadSettingsListener && onLoadSettingsListener();
         });
     };
-    eventMgr["onSaveSettings"] = function(newExtensionSettings, event) {
+    eventMgr.onSaveSettings = function(newExtensionSettings, event) {
         logger.log("onSaveSettings");
         _.each(extensionList, function(extension) {
             var newExtensionConfig = _.extend({}, extension.defaultConfig);
@@ -189,9 +190,9 @@ define([
 
     var onPreviewFinished = createEventHook("onPreviewFinished");
     var onAsyncPreviewListenerList = getExtensionListenerList("onAsyncPreview");
-    var previewContentsElt = undefined;
-    var $previewContentsElt = undefined;
-    eventMgr["onAsyncPreview"] = function() {
+    var previewContentsElt;
+    var $previewContentsElt;
+    eventMgr.onAsyncPreview = function() {
         logger.log("onAsyncPreview");
         logger.log("Conversion time: " + (new Date() - eventMgr.previewStartTime));
         function recursiveCall(callbackList) {
@@ -216,11 +217,11 @@ define([
     };
 
     var onReady = createEventHook("onReady");
-    eventMgr["onReady"] = function() {
+    eventMgr.onReady = function() {
         previewContentsElt = document.getElementById('preview-contents');
         $previewContentsElt = $(previewContentsElt);
 
-        if(viewerMode === false) {
+        if(window.viewerMode === false) {
             // Create accordion in settings dialog
             var accordionHtml = _.chain(extensionList).sortBy(function(extension) {
                 return extension.extensionName.toLowerCase();
@@ -235,7 +236,7 @@ define([
             document.querySelector('.accordion-extensions').innerHTML = accordionHtml;
 
             // Create a button from an extension listener
-            function createBtn(listener) {
+            var createBtn = function(listener) {
                 var buttonGrpElt = crel('div', {
                     class: 'btn-group'
                 });
@@ -247,7 +248,7 @@ define([
                     buttonGrpElt.appendChild(btnElt);
                 }
                 return buttonGrpElt;
-            }
+            };
 
             // Create extension buttons
             logger.log("onCreateButton");

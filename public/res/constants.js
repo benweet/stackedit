@@ -29,11 +29,11 @@ define([], function() {
     
     // Use by Google's client.js
     window.delayedFunction = undefined;
-    function runDelayedFunction() {
+    window.runDelayedFunction = function() {
         if(window.delayedFunction !== undefined) {
             window.delayedFunction();
         }
-    }
+    };
     
     // Site dependent
     constants.BASE_URL = "http://localhost/";

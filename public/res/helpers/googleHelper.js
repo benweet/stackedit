@@ -10,7 +10,6 @@ define([
     "settings",
     "eventMgr",
     "classes/AsyncTask",
-    "config"
 ], function(_, $, constants, core, utils, storage, logger, settings, eventMgr, AsyncTask) {
 
     var connected = false;

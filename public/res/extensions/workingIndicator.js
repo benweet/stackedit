@@ -6,8 +6,8 @@ define([
 
     var workingIndicator = new Extension("workingIndicator", "Working Indicator");
 
-    var $bodyElt = undefined;
-    var $workingIndicatorElt = undefined;
+    var $bodyElt;
+    var $workingIndicatorElt;
     workingIndicator.onAsyncRunning = function(isRunning) {
         $bodyElt.toggleClass("working", isRunning);
         $workingIndicatorElt.toggleClass("show", isRunning);

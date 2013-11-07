@@ -3,7 +3,6 @@ define([
     "constants",
     "utils",
     "eventMgr",
-    "config"
 ], function(_, constants, utils, eventMgr) {
     
     var taskQueue = [];

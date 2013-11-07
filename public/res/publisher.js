@@ -11,7 +11,6 @@ define([
     "sharing",
     "classes/Provider",
     "classes/AsyncTask",
-    "config",
     "providers/bloggerProvider",
     "providers/dropboxProvider",
     "providers/gistProvider",

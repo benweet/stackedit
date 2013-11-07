@@ -44,10 +44,10 @@ define([
         return _.template(buttonStatHTML, buttonStat.config);
     };
     
-    var previewContentsElt = undefined;
-    var value1Elt = undefined;
-    var value2Elt = undefined;
-    var value3Elt = undefined;
+    var previewContentsElt;
+    var value1Elt;
+    var value2Elt;
+    var value3Elt;
     buttonStat.onReady = function() {
         previewContentsElt = document.getElementById('preview-contents');
         value1Elt = document.getElementById('span-stat-value1');

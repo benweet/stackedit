@@ -9,7 +9,7 @@ define([
     var buttonFocusMode = new Extension("buttonFocusMode", 'Button "Focus Mode"', true, true, true);
     buttonFocusMode.settingsBlock = "When typing, scrolls automatically the editor to always have the caret centered verticaly.";
 
-    var aceEditor = undefined;
+    var aceEditor;
     buttonFocusMode.onAceCreated = function(aceEditorParam) {
         aceEditor = aceEditorParam;
     };
@@ -25,7 +25,7 @@ define([
         aceEditor.session.setScrollTop((positionInScreen.row + 0.5) * aceEditor.renderer.lineHeight - aceEditor.renderer.$size.scrollerHeight / 2);
     }
 
-    var $button = undefined;
+    var $button;
     buttonFocusMode.onReady = function() {
         aceEditor.getSession().selection.on('changeCursor', doFocusMode);
         aceEditor.container.addEventListener('keydown', function() {

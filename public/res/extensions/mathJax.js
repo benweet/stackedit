@@ -1,3 +1,4 @@
+/*defines MathJax */
 define([
     "utils",
     "classes/Extension",
@@ -22,6 +23,7 @@ define([
         newConfig.tex2jax = utils.getInputJsValue("#input-mathjax-config-tex2jax", event);
     };
     
+    /*jshint ignore:start */
     mathJax.onPagedownConfigure = function(editorObject) {
         t = document.getElementById("preview-contents");
 
@@ -30,7 +32,7 @@ define([
         converter.hooks.chain("postConversion", d);
     };
     
-    var afterRefreshCallback = undefined;
+    var afterRefreshCallback;
     mathJax.onAsyncPreview = function(callback) {
         afterRefreshCallback = callback;
         j();
@@ -157,7 +159,7 @@ define([
             }
         }
     })();
-
+    /*jshint ignore:end */
 
 	return mathJax;
 });

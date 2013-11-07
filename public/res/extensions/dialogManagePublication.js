@@ -7,15 +7,15 @@ define([
 
     var dialogManagePublication = new Extension("dialogManagePublication", 'Dialog "Manage publication"', false, true);
 
-    var eventMgr = undefined;
+    var eventMgr;
     dialogManagePublication.onEventMgrCreated = function(eventMgrParameter) {
         eventMgr = eventMgrParameter;
     };
 
-    var fileDesc = undefined;
-    var publishListElt = undefined;
-    var $msgPublishListElt = undefined;
-    var $msgNoPublishElt = undefined;
+    var fileDesc;
+    var publishListElt;
+    var $msgPublishListElt;
+    var $msgNoPublishElt;
     var refreshDialog = function(fileDescParameter) {
         if(fileDescParameter !== undefined && fileDescParameter !== fileDesc) {
             return;

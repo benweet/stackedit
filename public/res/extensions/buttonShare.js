@@ -13,9 +13,9 @@ define([
         return buttonShareHTML;
     };
 
-    var fileDesc = undefined;
-    var linkListElt = undefined;
-    var $noLinkElt = undefined;
+    var fileDesc;
+    var linkListElt;
+    var $noLinkElt;
     var refreshDocumentSharing = function(fileDescParameter) {
         if(fileDescParameter !== undefined && fileDescParameter !== fileDesc) {
             return;

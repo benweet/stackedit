@@ -8,13 +8,13 @@ define([
     var partialRendering = new Extension("partialRendering", "Partial Rendering", true);
     partialRendering.settingsBlock = partialRenderingSettingsBlockHTML;
 
-    var converter = undefined;
+    var converter;
     var sectionCounter = 0;
     var sectionList = [];
-    var linkDefinition = undefined;
+    var linkDefinition;
     var sectionsToRemove = [];
     var modifiedSections = [];
-    var insertBeforeSection = undefined;
+    var insertBeforeSection;
     var fileChanged = false;
     function updateSectionList(newSectionList, newLinkDefinition) {
         modifiedSections = [];
@@ -107,9 +107,15 @@ define([
         updateSectionList(newSectionList, newLinkDefinition);
     };
 
-    var footnoteContainerElt = undefined;
-    var previewContentsElt = undefined;
     var footnoteMap = {};
+    // Store one footnote elt in the footnote map
+    function storeFootnote(footnoteElt) {
+        var id = footnoteElt.id.substring(3);
+        footnoteMap[id] = footnoteElt;
+    }
+    
+    var footnoteContainerElt;
+    var previewContentsElt;
     function refreshSections() {
 
         // Remove outdated sections
@@ -117,11 +123,10 @@ define([
             var sectionElt = document.getElementById("wmd-preview-section-" + section.id);
             previewContentsElt.removeChild(sectionElt);
         });
-
+        
         var wmdPreviewElt = document.getElementById("wmd-preview");
         var childNode = wmdPreviewElt.firstChild;
-        var newSectionEltList = document.createDocumentFragment();
-        _.each(modifiedSections, function(section) {
+        function createSectionElt(section) {
             var sectionElt = crel('div', {
                 id: 'wmd-preview-section-' + section.id,
                 class: 'wmd-preview-section preview-content'
@@ -135,18 +140,19 @@ define([
                 }
                 isFirst = false;
                 if(childNode.tagName == 'DIV' && childNode.className == 'footnotes') {
-                    _.each(childNode.querySelectorAll("ol > li"), function(footnoteElt) {
-                        // Store each footnote in our footnote map
-                        var id = footnoteElt.id.substring(3);
-                        footnoteMap[id] = footnoteElt;
-                    });
+                    _.each(childNode.querySelectorAll("ol > li"), storeFootnote);
                 }
                 else {
                     sectionElt.appendChild(childNode);
                 }
                 childNode = nextNode;
             }
-            newSectionEltList.appendChild(sectionElt);
+            return sectionElt;
+        }
+
+        var newSectionEltList = document.createDocumentFragment();
+        _.each(modifiedSections, function(section) {
+            newSectionEltList.appendChild(createSectionElt(section));
         });
         wmdPreviewElt.innerHTML = '';
         var insertBeforeElt = footnoteContainerElt;
@@ -179,7 +185,7 @@ define([
 
     partialRendering.onPagedownConfigure = function(editor) {
         converter = editor.getConverter();
-        converter.hooks.chain("preConversion", function(text) {
+        converter.hooks.chain("preConversion", function() {
             var result = _.map(modifiedSections, function(section) {
                 return section.text;
             });

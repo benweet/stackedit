@@ -4,7 +4,7 @@ define([
 
     var markdownSectionParser = new Extension("markdownSectionParser", "Markdown section parser");
 
-    var eventMgr = undefined;
+    var eventMgr;
     markdownSectionParser.onEventMgrCreated = function(eventMgrParameter) {
         eventMgr = eventMgrParameter;
     };

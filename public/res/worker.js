@@ -1,9 +1,9 @@
 /*jshint worker:true */
 var isConfigured = false;
 
-/*jshint evil:true, unused:false */
 self.onmessage = function(e) {
     if(isConfigured === false) {
+        /*jshint evil:true */
         eval(e.data);
         isConfigured = true;
     }
@@ -13,4 +13,3 @@ self.onmessage = function(e) {
         self[functionName].apply(this, data);
     }
 };
-/*jshint evil:false, unused:true */

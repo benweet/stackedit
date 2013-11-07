@@ -8,12 +8,12 @@ define([
     var scrollLink = new Extension("scrollLink", "Scroll Link", true, true, true);
     scrollLink.settingsBlock = scrollLinkSettingsBlockHTML;
 
-    var aceEditor = undefined;
+    var aceEditor;
     scrollLink.onAceCreated = function(aceEditorParam) {
         aceEditor = aceEditorParam;
     };
 
-    var sectionList = undefined;
+    var sectionList;
     scrollLink.onSectionsCreated = function(sectionListParam) {
         sectionList = sectionListParam;
     };
@@ -23,14 +23,14 @@ define([
         offsetBegin = offsetBeginParam;
     };
 
-    var $previewElt = undefined;
+    var $previewElt;
     var mdSectionList = [];
     var htmlSectionList = [];
     function pxToFloat(px) {
         return parseFloat(px.substring(0, px.length - 2));
     }
-    var lastEditorScrollTop = undefined;
-    var lastPreviewScrollTop = undefined;
+    var lastEditorScrollTop;
+    var lastPreviewScrollTop;
     var buildSections = _.debounce(function() {
 
         mdSectionList = [];
@@ -96,7 +96,7 @@ define([
         var previewScrollTop = $previewElt.scrollTop();
         function getDestScrollTop(srcScrollTop, srcSectionList, destSectionList) {
             // Find the section corresponding to the offset
-            var sectionIndex = undefined;
+            var sectionIndex;
             var srcSection = _.find(srcSectionList, function(section, index) {
                 sectionIndex = index;
                 return srcScrollTop < section.endOffset;
@@ -109,12 +109,13 @@ define([
             var destSection = destSectionList[sectionIndex];
             return destSection.startOffset + destSection.height * posInSection;
         }
+        var destScrollTop;
         // Perform the animation if diff > 9px
         if(isScrollEditor === true && Math.abs(editorScrollTop - lastEditorScrollTop) > 9) {
             isScrollEditor = false;
             // Animate the preview
             lastEditorScrollTop = editorScrollTop;
-            var destScrollTop = getDestScrollTop(editorScrollTop, mdSectionList, htmlSectionList);
+            destScrollTop = getDestScrollTop(editorScrollTop, mdSectionList, htmlSectionList);
             destScrollTop = _.min([
                 destScrollTop,
                 $previewElt.prop('scrollHeight') - $previewElt.outerHeight()
@@ -144,7 +145,7 @@ define([
             isScrollPreview = false;
             // Animate the editor
             lastPreviewScrollTop = previewScrollTop;
-            var destScrollTop = getDestScrollTop(previewScrollTop, htmlSectionList, mdSectionList);
+            destScrollTop = getDestScrollTop(previewScrollTop, htmlSectionList, mdSectionList);
             destScrollTop = _.min([
                 destScrollTop,
                 aceEditor.session.getScreenLength() * aceEditor.renderer.lineHeight - aceEditor.renderer.$size.scrollerHeight
@@ -198,7 +199,7 @@ define([
             }
             scrollAdjust = false;
         });
-        aceEditor.session.on("changeScrollTop", function(e) {
+        aceEditor.session.on("changeScrollTop", function() {
             if(isEditorMoving === false) {
                 isScrollEditor = true;
                 isScrollPreview = false;
@@ -207,7 +208,7 @@ define([
         });
     };
 
-    var $previewContentsElt = undefined;
+    var $previewContentsElt;
     scrollLink.onPagedownConfigure = function(editor) {
         $previewContentsElt = $("#preview-contents");
         editor.getConverter().hooks.chain("postConversion", function(text) {

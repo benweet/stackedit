@@ -63,7 +63,7 @@ define([
         var tagName = "H" + level;
         var result = [];
 
-        var currentElement = undefined;
+        var currentElement;
         function pushCurrentElement() {
             if(currentElement !== undefined) {
                 if(currentElement.children.length > 0) {
@@ -73,7 +73,7 @@ define([
             }
         }
 
-        _.each(array, function(element, index) {
+        _.each(array, function(element) {
             if(element.tagName != tagName) {
                 if(currentElement === undefined) {
                     currentElement = new TocElement();
@@ -90,7 +90,7 @@ define([
     }
 
     // Build the TOC
-    var previewContentsElt = undefined;
+    var previewContentsElt;
     function buildToc() {
         var anchorList = {};
         function createAnchor(element) {

@@ -49,7 +49,7 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
 
 
   [1]: https://developer.mozilla.org/en-US/docs/Web/Guide/DOM/Storage#localStorage
-  [2]: https://github.com/benweet/stackedit/blob/master/WELCOME.md#welcome-to-stackedit---welcome "Welcome document"
+  [2]: https://github.com/benweet/stackedit/blob/master/public/res/WELCOME.md#welcome-to-stackedit---welcome "Welcome document"
   [3]: https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#developer-guide "Developer guide"
   [4]: https://github.com/benweet/stackedit/blob/master/doc/theming.md#stackedit-theming-guide "Theming guide"
   [5]: https://stackedit.io/ "StackEdit"

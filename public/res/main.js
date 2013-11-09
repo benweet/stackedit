@@ -85,9 +85,6 @@ requirejs.config({
         highlightjs: {
             exports: 'hljs'
         },
-        'google-code-prettify': {
-            exports: 'prettyPrint'
-        },
         'bootstrap-tour': {
             deps: ['bootstrap'],
             exports: 'Tour'

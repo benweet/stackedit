@@ -221,6 +221,21 @@ define([
         previewContentsElt = document.getElementById('preview-contents');
         $previewContentsElt = $(previewContentsElt);
 
+        // Create a button from an extension listener
+        var createBtn = function(listener) {
+            var buttonGrpElt = crel('div', {
+                class: 'btn-group'
+            });
+            var btnElt = listener();
+            if(_.isString(btnElt)) {
+                buttonGrpElt.innerHTML = btnElt;
+            }
+            else if(_.isElement(btnElt)) {
+                buttonGrpElt.appendChild(btnElt);
+            }
+            return buttonGrpElt;
+        };
+
         if(window.viewerMode === false) {
             // Create accordion in settings dialog
             var accordionHtml = _.chain(extensionList).sortBy(function(extension) {
@@ -234,21 +249,6 @@ define([
                 }) : "");
             }, "").value();
             document.querySelector('.accordion-extensions').innerHTML = accordionHtml;
-
-            // Create a button from an extension listener
-            var createBtn = function(listener) {
-                var buttonGrpElt = crel('div', {
-                    class: 'btn-group'
-                });
-                var btnElt = listener();
-                if(_.isString(btnElt)) {
-                    buttonGrpElt.innerHTML = btnElt;
-                }
-                else if(_.isElement(btnElt)) {
-                    buttonGrpElt.appendChild(btnElt);
-                }
-                return buttonGrpElt;
-            };
 
             // Create extension buttons
             logger.log("onCreateButton");

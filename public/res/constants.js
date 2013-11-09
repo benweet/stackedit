@@ -76,4 +76,6 @@ define([], function() {
         "night": "Night",
         "school": "School",
     };
+    
+    return constants;
 });

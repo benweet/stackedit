@@ -8,7 +8,7 @@ define([
     'google-code-prettify',
     'highlightjs',
     'pagedown-extra',
-], function($, _, utils, Extension, markdownExtraSettingsBlockHTML, prettyPrint, hljs) {
+], function($, _, utils, Extension, markdownExtraSettingsBlockHTML, prettify, hljs) {
 
     var markdownExtra = new Extension("markdownExtra", "Markdown Extra", true);
     markdownExtra.settingsBlock = markdownExtraSettingsBlockHTML;
@@ -71,7 +71,7 @@ define([
         }
         else if(markdownExtra.config.highlighter == "prettify") {
             options.highlighter = "prettify";
-            editor.hooks.chain("onPreviewRefresh", prettyPrint);
+            editor.hooks.chain("onPreviewRefresh", prettify.prettyPrint);
         }
         Markdown.Extra.init(converter, options);
 

@@ -61,7 +61,7 @@ define([
             options.highlighter = "prettify";
             var previewContentsElt = document.getElementById('preview-contents');
             editor.hooks.chain("onPreviewRefresh", function() {
-                _.each(previewContentsElt.querySelectorAll('.prettyprint'), function(elt) {
+                _.each(previewContentsElt.querySelectorAll('.prettyprint > code'), function(elt) {
                     hljs.highlightBlock(elt);
                 });
             });

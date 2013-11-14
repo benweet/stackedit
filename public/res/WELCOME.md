@@ -1,4 +1,3 @@
-
 Welcome to StackEdit!	{#welcome}
 =====================
 
@@ -46,7 +45,7 @@ Synchronization
 
 **StackEdit** can be combined with **Google Drive** and **Dropbox** to have your documents centralized in the *Cloud*. The synchronization mechanism will take care of uploading your modifications or downloading the latest version of your documents.
 
-> **NOTE:** Full access to **Google Drive** or **Dropbox** is required to be able to import any document in StackEdit. Imported documents are downloaded in your browser and are not transmitted to a server.
+> **NOTE:** Full access to **Google Drive** or **Dropbox** is required to be able to import any document in StackEdit. Imported documents are downloaded in your browser and are not transmitted to a server. If you experience problems exporting documents to Google Drive, check and optionally disable browser extensions, such as Disconnect.
 
 #### <i class="icon-download"></i> Import a document
 

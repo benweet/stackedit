@@ -148,7 +148,7 @@ define([
             destScrollTop = getDestScrollTop(previewScrollTop, htmlSectionList, mdSectionList);
             destScrollTop = _.min([
                 destScrollTop,
-                aceEditor.session.getScreenLength() * aceEditor.renderer.lineHeight - aceEditor.renderer.$size.scrollerHeight
+                aceEditor.session.getScreenLength() * aceEditor.renderer.lineHeight + aceEditor.renderer.scrollMargin.bottom - aceEditor.renderer.$size.scrollerHeight
             ]);
             // If negative, set it to zero
             destScrollTop < 0 && (destScrollTop = 0);

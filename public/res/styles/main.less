@@ -330,12 +330,22 @@ a {
 	}
 
 	.working-indicator {
-		width: 50px;
-		height: 17px;
-		background-position: 0 0;
-		margin-top: 12px;
-		&.show {
-			.img-retina('../img/loader-default.gif', '../img/loader-default2x.gif', 50px, 17px);
+		margin: 12px -2px 0;
+		div {
+		    display: inline-block;
+		    visibility: hidden;
+		    width: 14px;
+            height: 14px;
+            border-radius: 6px;
+            margin: 0 2px;
+            background-color: fade(@btn-success-color, 25%);
+            .transition(~"background-color linear .15s");
+            &.highlighted {
+                background-color: fade(@btn-success-color, 75%);
+            }
+		}
+		&.show div {
+		    visibility: visible;
 		}
 	}
 }

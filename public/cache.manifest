@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#Date Thu Nov 07 2013 23:09:02
+#Date Sat Nov 16 2013 18:10:31
 
 CACHE:
 res/worker.js
@@ -24,14 +24,6 @@ res-min/img/glyphicons-halflings-white.png
 res-min/img/glyphicons-halflings.png
 res-min/img/icons.png
 res-min/img/icons2x.png
-res-min/img/loader-blue-gray.gif
-res-min/img/loader-blue-gray2x.gif
-res-min/img/loader-default.gif
-res-min/img/loader-default2x.gif
-res-min/img/loader-night.gif
-res-min/img/loader-night2x.gif
-res-min/img/loader-school.gif
-res-min/img/loader-school2x.gif
 res-min/img/school-line.png
 res-min/img/stackedit-32.ico
 res-min/img/stackedit-64.png

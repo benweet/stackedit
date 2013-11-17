@@ -330,19 +330,22 @@ a {
 	}
 
 	.working-indicator {
-		margin: 12px -2px 0;
-		div {
+	    overflow: hidden;
+        height: @input-height-base;
+        padding-top: 10px;
+        padding-right: 8px;
+        vertical-align: middle;
+		.bar {
 		    display: inline-block;
 		    visibility: hidden;
-		    width: 14px;
-            height: 14px;
-            border-radius: 6px;
+		    width: 8px;
+            height: 7px;
+            border-radius: 1px;
             margin: 0 2px;
-            background-color: fade(@btn-success-color, 25%);
-            .transition(~"background-color linear .15s");
-            &.highlighted {
-                background-color: fade(@btn-success-color, 75%);
-            }
+            background-color: @btn-success-color;
+            opacity: 0;
+            animation: indicator 0.6s ease-out infinite;
+            -webkit-animation: indicator 0.6s ease-out infinite; /* Safari and Chrome */
 		}
 		&.show div {
 		    visibility: visible;
@@ -350,6 +353,15 @@ a {
 	}
 }
 
+@keyframes indicator {
+    from {opacity: 1;}
+    to {opacity: 0.25;}
+}
+
+@-webkit-keyframes indicator /* Safari and Chrome */ {
+    from {opacity: 1;}
+    to {opacity: 0.25;}
+}
 
 /*********************
  * Menu/Document panels

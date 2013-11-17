@@ -18,8 +18,8 @@ define([
         $workingIndicatorElt = $(".working-indicator");
         for (var i = 0; i < 4; i++) {
             $workingIndicatorElt.append($('<div class="bar">').css({
-                'animation-delay': '0.' + (i*2) + 's',
-                '-webkit-animation-delay': '0.' + (i*2) + 's',
+                'animation-delay': (i*2/10).toPrecision(3) + 's',
+                '-webkit-animation-delay': (i*2/10).toPrecision(3) + 's',
             }));
         }
     };

@@ -37,8 +37,8 @@ define([
         var mdTextOffset = 0;
         var mdSectionOffset = 0;
         var firstSectionOffset = offsetBegin;
-        _.each(sectionList, function(sectionText) {
-            mdTextOffset += sectionText.length + firstSectionOffset;
+        _.each(sectionList, function(section) {
+            mdTextOffset += section.text.length + firstSectionOffset;
             firstSectionOffset = 0;
             var documentPosition = aceEditor.session.doc.indexToPosition(mdTextOffset);
             var screenPosition = aceEditor.session.documentToScreenPosition(documentPosition.row, documentPosition.column);
@@ -54,18 +54,19 @@ define([
 
         // Try to find corresponding sections in the preview
         htmlSectionList = [];
-        var htmlSectionOffset = 0;
+        var htmlSectionOffset;
         var previewScrollTop = $previewElt.scrollTop();
-        // Each title element is a section separator
-        $previewElt.find(".preview-content > .wmd-title").each(function() {
-            var $titleElt = $(this);
+        $previewElt.find(".preview-content > .se-section-delimiter + *").each(function() {
+            var $delimiterElt = $(this);
             // Consider div scroll position and header element top margin
-            var newSectionOffset = $titleElt.position().top + previewScrollTop + pxToFloat($titleElt.css('margin-top'));
-            htmlSectionList.push({
-                startOffset: htmlSectionOffset,
-                endOffset: newSectionOffset,
-                height: newSectionOffset - htmlSectionOffset
-            });
+            var newSectionOffset = $delimiterElt.position().top + previewScrollTop + pxToFloat($delimiterElt.css('margin-top'));
+            if(htmlSectionOffset !== undefined) {
+                htmlSectionList.push({
+                    startOffset: htmlSectionOffset,
+                    endOffset: newSectionOffset,
+                    height: newSectionOffset - htmlSectionOffset
+                });
+            }
             htmlSectionOffset = newSectionOffset;
         });
         // Last section

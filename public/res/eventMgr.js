@@ -98,7 +98,7 @@ define([
         };
     }
 
-    // Add a Hook to the eventMgr that we can fire using eventMgr.eventName()
+    // Declare an event Hook in the eventMgr that we can fire using eventMgr.eventName()
     function addEventHook(eventName) {
         eventMgr[eventName] = createEventHook(eventName);
     }
@@ -113,7 +113,7 @@ define([
         }
     };
 
-    // Call every onInit listeners (extensions only)
+    // Call every onInit listeners (enabled extensions only)
     createEventHook("onInit")();
 
     // Load/Save extension config from/to settings
@@ -183,8 +183,7 @@ define([
     addEventHook("onPagedownConfigure");
     addEventHook("onSectionsCreated");
     addEventHook("onMarkdownTrim");
-    addEventHook("onExtraExtensions");
-    
+
     // Operation on ACE
     addEventHook("onAceCreated");
 

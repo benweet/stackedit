@@ -74,9 +74,6 @@ define([
             editor.hooks.chain("onPreviewRefresh", prettify.prettyPrint);
         }
         Markdown.Extra.init(converter, options);
-
-        // Send extensions list to other extensions
-        eventMgr.onExtraExtensions(markdownExtra.config.extensions);
     };
 
     return markdownExtra;

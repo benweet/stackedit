@@ -218,7 +218,7 @@ $$
 > **NOTE:** When exporting, make sure you include MathJax to render mathematical expression correctly. Your page/template should include something like: 
 
 ```
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+<script type="text/javascript" src="https://stackedit.io/libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
 ```
 
 > **NOTE:** You can find more information:

@@ -33,14 +33,62 @@ define(function(require, exports, module) {
 
 var oop = require("ace/lib/oop");
 var TextHighlightRules = require("ace/mode/text_highlight_rules").TextHighlightRules;
-var LatexHighlightRules = require("ace/mode/latex_highlight_rules").LatexHighlightRules;
+var HtmlHighlightRules = require("ace/mode/html_highlight_rules").HtmlHighlightRules;
 
 var MarkdownHighlightRules = function() {
+    HtmlHighlightRules.call(this);
 
     // regexp must not have capturing parentheses
     // regexps are ordered -> the first match is used
+    this.$rules["start"].unshift({
+        token : "empty_line",
+        regex : '^$',
+        next: "allowBlock"
+    }, { // h1
+        token: "markup.heading.multi.1",
+        regex: "^=+(?=\\s*$)"
+    }, { // h2
+        token: "markup.heading.multi.2",
+        regex: "^\\-+(?=\\s*$)"
+    }, {
+        token : function(value) {
+            return "markup.heading." + value.length;
+        },
+        regex : /^#{1,6}(?=\s*[^ #]|\s+#.)/,
+        next : "header"
+    },
+    { // Github style block
+        token : "code_block",
+        regex : "^```\\s*[a-zA-Z]*(?:{.*?\\})?\\s*$",
+        next  : "githubblock"
+    }, { // block quote
+        token : "blockquote",
+        regex : "^\\s*>[ ].+$",
+        next  : "blockquote"
+    }, { // HR * - _
+        token : "constant",
+        regex : "^ {0,2}(?:(?: ?\\* ?){3,}|(?: ?\\- ?){3,}|(?: ?\\_ ?){3,})\\s*$",
+        next: "allowBlock"
+    }, { // list
+        token : "markup.list",
+        regex : "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
+        next  : "listblock-start"
+    }, { // Math inline
+        token : ["constant.language.escape", "keyword", "constant.language.escape"],
+        regex : "(\\$)(.*)(\\$)"
+    }, { // Math block
+        token : "constant.language.escape",
+        regex : "\\$\\$|\\\\\\\\\\[|\\\\\\\\\\\\\\\\\\(",
+        next  : "mathblock"
+    }, { // LaTeX block
+        token : "keyword",
+        regex : "\\\\?\\\\begin\\{[a-z]*\\*?\\}",
+        next  : "latexblock"
+    }, {
+        include : "basic"
+    });
 
-    this.$rules = {
+    this.addRules({
         "basic" : [{
             token : "constant.language.escape",
             regex : /\\[\\`*_{}\[\]()#+\-.!]/
@@ -82,54 +130,6 @@ var MarkdownHighlightRules = function() {
             {token : "empty", regex : "", next : "start"}
         ],
 
-        "start" : [{
-            token : "empty_line",
-            regex : '^$',
-            next: "allowBlock"
-        }, { // h1
-            token: "markup.heading.multi.1",
-            regex: "^=+(?=\\s*$)"
-        }, { // h2
-            token: "markup.heading.multi.2",
-            regex: "^\\-+(?=\\s*$)"
-        }, {
-            token : function(value) {
-                return "markup.heading." + value.length;
-            },
-            regex : /^#{1,6}(?=\s*[^ #]|\s+#.)/,
-            next : "header"
-        },
-        { // Github style block
-            token : "code_block",
-            regex : "^```\\s*[a-zA-Z]*(?:{.*?\\})?\\s*$",
-            next  : "githubblock"
-        }, { // block quote
-            token : "blockquote",
-            regex : "^\\s*>[ ].+$",
-            next  : "blockquote"
-        }, { // HR * - _
-            token : "constant",
-            regex : "^ {0,2}(?:(?: ?\\* ?){3,}|(?: ?\\- ?){3,}|(?: ?\\_ ?){3,})\\s*$",
-            next: "allowBlock"
-        }, { // list
-            token : "markup.list",
-            regex : "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
-            next  : "listblock-start"
-        }, { // Math inline
-            token : ["constant.language.escape", "keyword", "constant.language.escape"],
-            regex : "(\\$)(.*)(\\$)"
-        }, { // Math block
-            token : "constant.language.escape",
-            regex : "\\$\\$|\\\\\\\\\\[|\\\\\\\\\\\\\\\\\\(",
-            next  : "mathblock"
-        }, { // LaTeX block
-            token : "keyword",
-            regex : "\\\\?\\\\begin\\{[a-z]*\\*?\\}",
-            next  : "latexblock"
-        }, {
-            include : "basic"
-        }],
-        
         "header" : [{
             regex: "$",
             next : "start"
@@ -211,7 +211,7 @@ var MarkdownHighlightRules = function() {
             token : "comment",
             regex : "%.*$"
         }]
-    };
+    });
 
     this.normalizeRules();
 };

@@ -1003,10 +1003,28 @@ ul,ol {
 	    color: @primary-color-lightest;
 	}
 	
+	.ace_meta.ace_tag {
+		color: @primary-color;
+		font-style: italic;
+		font-weight: bold;
+		background-color: @code-bg;
+	}
+	
+	.ace_keyword.ace_operator {
+	    color: @primary-color-light;
+		background-color: transparent;
+	}
+	
 	.ace_keyword {
 		color: @primary-color;
 		background-color: @code-bg;
 		font-weight: bold;
+	}
+	
+	.ace_string {
+		color: @primary-color;
+		font-style: italic;
+		background-color: @code-bg;
 	}
 	
 	.ace_strong {

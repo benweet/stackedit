@@ -56,10 +56,10 @@ define([
         htmlSectionList = [];
         var htmlSectionOffset;
         var previewScrollTop = $previewElt.scrollTop();
-        $previewElt.find(".preview-content > .se-section-delimiter + *").each(function() {
+        $previewElt.find(".preview-content > .se-section-delimiter").each(function() {
             var $delimiterElt = $(this);
-            // Consider div scroll position and header element top margin
-            var newSectionOffset = $delimiterElt.position().top + previewScrollTop + pxToFloat($delimiterElt.css('margin-top'));
+            // Consider div scroll position
+            var newSectionOffset = $delimiterElt.position().top + previewScrollTop;
             if(htmlSectionOffset !== undefined) {
                 htmlSectionList.push({
                     startOffset: htmlSectionOffset,

@@ -25,9 +25,9 @@ define([
         }
         if(mathJax.config.enabled) {
             // Math delimiter has to follow 1 empty line to be considered as a section delimiter
-            regexp = '^[ \\t]*\\n[ \\t]*\\$\\$[\\s\\S]*\\$\\$|' + regexp; // $$ math delimiters
-            regexp = '^[ \\t]*\\n[ \\t]*\\\\\\\\\\[[\\s\\S]*\\\\\\\\\\]|' + regexp; // \\[ \\] math delimiters
-            regexp = '^[ \\t]*\\n[ \\t]*\\\\\\\\begin\\{[a-z]*\\*?\\}[\\s\\S]*\\\\\\\\end\\{[a-z]*\\*?\\}|' + regexp; // \\begin{...} \\end{...} math delimiters
+            regexp = '^[ \\t]*\\n[ \\t]*\\$\\$[\\s\\S]*?\\$\\$|' + regexp; // $$ math delimiters
+            regexp = '^[ \\t]*\\n[ \\t]*\\\\\\\\[[\\s\\S]*?\\\\\\\\]|' + regexp; // \\[ \\] math delimiters
+            regexp = '^[ \\t]*\\n[ \\t]*\\\\?\\\\begin\\{[a-z]*\\*?\\}[\\s\\S]*?\\\\end\\{[a-z]*\\*?\\}|' + regexp; // \\begin{...} \\end{...} math delimiters
         }
         regexp = new RegExp(regexp, 'gmi');
         

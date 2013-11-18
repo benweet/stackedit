@@ -33,6 +33,7 @@ define(function(require, exports, module) {
 
 var oop = require("ace/lib/oop");
 var TextHighlightRules = require("ace/mode/text_highlight_rules").TextHighlightRules;
+var LatexHighlightRules = require("ace/mode/latex_highlight_rules").LatexHighlightRules;
 
 var MarkdownHighlightRules = function() {
 
@@ -40,7 +41,18 @@ var MarkdownHighlightRules = function() {
     // regexps are ordered -> the first match is used
 
     this.$rules = {
-        "basic" : [{
+        "basic" : [{ // Math inline
+            token : ["constant.language.escape", "keyword", "constant.language.escape"],
+            regex : "(\\$)(.*)(\\$)"
+        }, { // Math block
+            token : "constant.language.escape",
+            regex : "\\$\\$|\\\\\\\\\\[|\\\\\\\\\\\\\\\\\\(",
+            next  : "mathblock"
+        }, { // LaTeX block
+            token : "keyword",
+            regex : "\\\\?\\\\begin\\{[a-z]*\\*?\\}",
+            next  : "latexblock"
+        }, {
             token : "constant.language.escape",
             regex : /\\[\\`*_{}\[\]()#+\-.!]/
         }, { // code span `
@@ -163,7 +175,42 @@ var MarkdownHighlightRules = function() {
         }, {
             token : "code_block",
             regex : ".+"
-        } ]
+        } ],
+
+        "mathblock" : [ {
+            token : "constant.language.escape",
+            regex : "\\$\\$|\\\\\\\\\\]|\\\\\\\\\\\\\\\\\\)",
+            next  : "basic"
+        }, {
+            include : "latex"
+        } ],
+
+        "latexblock" : [{
+            token : "keyword",
+            regex : "\\\\?\\\\end\\{[a-z]*\\*?\\}",
+            next  : "basic"
+        }, {
+            include : "latex"
+        }],
+        
+        "latex" : [{
+            // A tex command e.g. \foo
+            token : "keyword",
+            regex : "\\\\(?:[^a-zA-Z]|[a-zA-Z]+)"
+        }, {
+            // Curly and square braces
+            token : "lparen",
+            regex : "[[({]"
+        }, {
+            // Curly and square braces
+            token : "rparen",
+            regex : "[\\])}]"
+        }, {
+            // A comment. Tex comments start with % and go to 
+            // the end of the line
+            token : "comment",
+            regex : "%.*$"
+        }]
     };
 
     this.normalizeRules();

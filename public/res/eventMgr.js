@@ -202,6 +202,7 @@ define([
                     _.each(previewContentsElt.children, function(elt) {
                         html += elt.innerHTML;
                     });
+                    html = html.replace(/^<div class="se-section-delimiter"><\/div>\n\n/gm, '');
                     onPreviewFinished(utils.trim(html));
                 });
             };

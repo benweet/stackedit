@@ -41,18 +41,7 @@ var MarkdownHighlightRules = function() {
     // regexps are ordered -> the first match is used
 
     this.$rules = {
-        "basic" : [{ // Math inline
-            token : ["constant.language.escape", "keyword", "constant.language.escape"],
-            regex : "(\\$)(.*)(\\$)"
-        }, { // Math block
-            token : "constant.language.escape",
-            regex : "\\$\\$|\\\\\\\\\\[|\\\\\\\\\\\\\\\\\\(",
-            next  : "mathblock"
-        }, { // LaTeX block
-            token : "keyword",
-            regex : "\\\\?\\\\begin\\{[a-z]*\\*?\\}",
-            next  : "latexblock"
-        }, {
+        "basic" : [{
             token : "constant.language.escape",
             regex : /\\[\\`*_{}\[\]()#+\-.!]/
         }, { // code span `
@@ -126,6 +115,17 @@ var MarkdownHighlightRules = function() {
             token : "markup.list",
             regex : "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
             next  : "listblock-start"
+        }, { // Math inline
+            token : ["constant.language.escape", "keyword", "constant.language.escape"],
+            regex : "(\\$)(.*)(\\$)"
+        }, { // Math block
+            token : "constant.language.escape",
+            regex : "\\$\\$|\\\\\\\\\\[|\\\\\\\\\\\\\\\\\\(",
+            next  : "mathblock"
+        }, { // LaTeX block
+            token : "keyword",
+            regex : "\\\\?\\\\begin\\{[a-z]*\\*?\\}",
+            next  : "latexblock"
         }, {
             include : "basic"
         }],
@@ -180,7 +180,7 @@ var MarkdownHighlightRules = function() {
         "mathblock" : [ {
             token : "constant.language.escape",
             regex : "\\$\\$|\\\\\\\\\\]|\\\\\\\\\\\\\\\\\\)",
-            next  : "basic"
+            next  : "start"
         }, {
             include : "latex"
         } ],
@@ -188,7 +188,7 @@ var MarkdownHighlightRules = function() {
         "latexblock" : [{
             token : "keyword",
             regex : "\\\\?\\\\end\\{[a-z]*\\*?\\}",
-            next  : "basic"
+            next  : "start"
         }, {
             include : "latex"
         }],

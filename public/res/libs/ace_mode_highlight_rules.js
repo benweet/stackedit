@@ -81,8 +81,8 @@ var MarkdownHighlightRules = function() {
         regex : "\\$\\$|\\\\\\\\\\[|\\\\\\\\\\\\\\\\\\(",
         next  : "mathblock"
     }, { // LaTeX block
-        token : "keyword",
-        regex : "\\\\?\\\\begin\\{[a-z]*\\*?\\}",
+        token : ["keyword", "text"],
+        regex : "(\\\\?\\\\begin)(\\{[a-z]*\\*?\\})",
         next  : "latexblock"
     }, {
         include : "basic"
@@ -96,13 +96,13 @@ var MarkdownHighlightRules = function() {
             token : "code",
             regex : "(`+)(.*?[^`])(\\1)"
         }, { // reference
-            token : ["text", "reference", "text", "markup.underline", "description", "text"],
+            token : ["text", "reference", "text", "link", "description", "text"],
             regex : "^([ ]{0,3}\\[)([^\\]]+)(\\]:\\s*)([^ ]+)(\\s*(?:[\"][^\"]+[\"])?(\\s*))$"
         }, { // link by reference
-            token : ["text", "description", "text", "markup.underline", "text"],
+            token : ["text", "markup.underline", "text", "reference", "text"],
             regex : "(\\[)((?:[[^\\]]*\\]|[^\\[\\]])*)(\\][ ]?(?:\\n[ ]*)?\\[)(.*?)(\\])"
         }, { // link by url
-            token : ["text", "description", "text", "markup.underline", "string", "text"],
+            token : ["text", "markup.underline", "text", "link", "description", "text"],
             regex : "(\\[)"+
                     "(\\[[^\\]]*\\]|[^\\[\\]]*)"+
                     "(\\]\\([ \\t]*)"+
@@ -186,8 +186,8 @@ var MarkdownHighlightRules = function() {
         } ],
 
         "latexblock" : [{
-            token : "keyword",
-            regex : "\\\\?\\\\end\\{[a-z]*\\*?\\}",
+            token : ["keyword", "text"],
+            regex : "(\\\\?\\\\end)(\\{[a-z]*\\*?\\})",
             next  : "start"
         }, {
             include : "latex"

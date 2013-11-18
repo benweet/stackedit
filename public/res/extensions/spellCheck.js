@@ -59,7 +59,7 @@ define([
             }
             var token = tokens.shift();
             var words = [];
-            if (!/code|code_block|reference|markup\.underline/.test(token.type)) {
+            if (!/code|code_block|link|reference|string|keyword|tag|markup\.underline/.test(token.type)) {
                 token.value.replace(wordRegExp, function(word, offset) {
                     words.push({
                         value: word,

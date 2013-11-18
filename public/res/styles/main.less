@@ -18,9 +18,9 @@
 @secondary-bg-light: lighten(@secondary-bg, 7%);
 @secondary-bg-dark: darken(@secondary-bg, 7%);
 @primary-color: #333;
-@primary-color-light: lighten(@primary-color, 13%);
-@primary-color-lighter: lighten(@primary-color, 20%);
-@primary-color-lightest: lighten(@primary-color, 35%);
+@primary-color-light: lighten(@primary-color, 12.5%);
+@primary-color-lighter: lighten(@primary-color, 25%);
+@primary-color-lightest: lighten(@primary-color, 37.5%);
 @primary-color-inv: #fff;
 @bg-navbar-hover: @primary-bg-lighter;
 @error-border: #ff8661;
@@ -972,7 +972,7 @@ ul,ol {
  *****************************/
  
 .ace_editor {
-	color: @primary-color-light;
+	color: @primary-color-lighter;
 }
 
 .ace-tm {
@@ -996,7 +996,7 @@ ul,ol {
 	}
 	
 	.ace_markup.ace_list {
-		color: @primary-color-lightest;
+		color: @primary-color;
 	}
 	
 	.ace_constant.ace_language {
@@ -1051,11 +1051,16 @@ ul,ol {
 	}
 	
 	.ace_description {
-		color: @primary-color-lighter;
+		color: @primary-color-lightest;
 	}
 	
 	.ace_constant {
 	    color: @primary-color-light;
+	}
+	
+	.ace_comment {
+	    color: fade(@primary-color-lighter, 50%);
+		font-style: italic;
 	}
 	
 	.ace_marker-layer .misspelled {

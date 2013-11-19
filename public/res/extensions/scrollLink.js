@@ -54,16 +54,19 @@ define([
         var htmlSectionOffset;
         var previewScrollTop = $previewElt.scrollTop();
         $previewElt.find(".preview-content > .se-section-delimiter").each(function() {
+            if(htmlSectionOffset === undefined) {
+                // Force start to 0 for the first section
+                htmlSectionOffset = 0;
+                return;
+            }
             var $delimiterElt = $(this);
             // Consider div scroll position
             var newSectionOffset = $delimiterElt.position().top + previewScrollTop;
-            if(htmlSectionOffset !== undefined) {
-                htmlSectionList.push({
-                    startOffset: htmlSectionOffset,
-                    endOffset: newSectionOffset,
-                    height: newSectionOffset - htmlSectionOffset
-                });
-            }
+            htmlSectionList.push({
+                startOffset: htmlSectionOffset,
+                endOffset: newSectionOffset,
+                height: newSectionOffset - htmlSectionOffset
+            });
             htmlSectionOffset = newSectionOffset;
         });
         // Last section

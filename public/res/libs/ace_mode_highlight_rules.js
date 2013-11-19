@@ -63,7 +63,7 @@ var MarkdownHighlightRules = function() {
         next  : "githubblock"
     }, { // block quote
         token : "blockquote",
-        regex : "^\\s*>[ ].+$",
+        regex : "^\\s*>[ ]",
         next  : "blockquote"
     }, { // HR * - _
         token : "constant",
@@ -73,6 +73,9 @@ var MarkdownHighlightRules = function() {
         token : "markup.list",
         regex : "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
         next  : "listblock-start"
+    }, { // Escaped $
+        token : "text",
+        regex : "\\\\\\$",
     }, { // Math inline
         token : ["constant.language.escape", "keyword", "constant.language.escape"],
         regex : "(\\$)(.*)(\\$)"
@@ -164,8 +167,9 @@ var MarkdownHighlightRules = function() {
             regex : "^\\s*$",
             next  : "start"
         }, {
-            token : "blockquote",
-            regex : ".+"
+            include : "basic", noEscape: true
+        }, {
+            defaultToken : "blockquote"
         } ],
 
         "githubblock" : [ {

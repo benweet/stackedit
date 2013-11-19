@@ -107,7 +107,7 @@ define([
         }
 
         var elementList = [];
-        _.each(previewContentsElt.querySelectorAll('.preview-content > .wmd-title'), function(elt) {
+        _.each(previewContentsElt.querySelectorAll('h1, h2, h3, h4, h5, h6'), function(elt) {
             elementList.push(new TocElement(elt.tagName, createAnchor(elt), elt.textContent));
         });
         elementList = groupTags(elementList);

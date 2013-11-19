@@ -20656,7 +20656,7 @@ function() {
    return i[r] = !0, e.id = r, r;
   }
   var i = {}, o = [];
-  return t.each(u.querySelectorAll(".preview-content > .wmd-title"), function(t) {
+  return t.each(u.querySelectorAll("h1, h2, h3, h4, h5, h6"), function(t) {
    o.push(new s(t.tagName, e(t), t.textContent));
   }), o = a(o), '<div class="toc">\n<ul>\n' + o.join("") + "</ul>\n</div>\n";
  }

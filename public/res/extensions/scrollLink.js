@@ -106,7 +106,7 @@ define([
                 // Something wrong in the algorithm...
                 return;
             }
-            var posInSection = (srcScrollTop - srcSection.startOffset) / srcSection.height;
+            var posInSection = (srcScrollTop - srcSection.startOffset) / (srcSection.height || 1);
             var destSection = destSectionList[sectionIndex];
             return destSection.startOffset + destSection.height * posInSection;
         }

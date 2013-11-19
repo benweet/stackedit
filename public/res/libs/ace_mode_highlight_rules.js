@@ -76,13 +76,13 @@ var MarkdownHighlightRules = function() {
     }, { // Escaped $
         token : "text",
         regex : "\\\\\\$",
-    }, { // Math inline
-        token : ["constant.language.escape", "keyword", "constant.language.escape"],
-        regex : "(\\$)(.*)(\\$)"
     }, { // Math block
         token : "constant.language.escape",
         regex : "\\$\\$|\\\\\\\\\\[|\\\\\\\\\\\\\\\\\\(",
         next  : "mathblock"
+    }, { // Math inline
+        token : ["constant.language.escape", "keyword", "constant.language.escape"],
+        regex : "(\\$)(.*)(\\$)"
     }, { // LaTeX block
         token : ["keyword", "text"],
         regex : "(\\\\?\\\\begin)(\\{[a-z]*\\*?\\})",

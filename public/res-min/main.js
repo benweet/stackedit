@@ -307,6 +307,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+// Copyright (C) 2006 Google Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 /*
  * to-markdown - an HTML to Markdown converter
  *
@@ -454,20 +468,6 @@ THE SOFTWARE.
  * - Removed dependency on metadata plugin in favor of .data()
  * - Namespaced all events
  */
-
-// Copyright (C) 2006 Google Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
 
 /**
 * bootstrap.js v3.0.0 by @fat and @mdo
@@ -1004,38 +1004,38 @@ function printStackTrace(e) {
  function w(t) {
   return e.getComputedStyle(t, null);
  }
- function C(e, t) {
+ function x(e, t) {
   for (var n, i, o, r = [], s = 0, a = e.length; a > s; s++) i = e[s], i.style && (r[s] = mt.get(i, "olddisplay"), 
-  n = i.style.display, t ? (r[s] || "none" !== n || (i.style.display = ""), "" === i.style.display && y(i) && (r[s] = mt.access(i, "olddisplay", A(i.nodeName)))) : r[s] || (o = y(i), 
+  n = i.style.display, t ? (r[s] || "none" !== n || (i.style.display = ""), "" === i.style.display && y(i) && (r[s] = mt.access(i, "olddisplay", S(i.nodeName)))) : r[s] || (o = y(i), 
   (n && "none" !== n || !o) && mt.set(i, "olddisplay", o ? n : rt.css(i, "display"))));
   for (s = 0; a > s; s++) i = e[s], i.style && (t && "none" !== i.style.display && "" !== i.style.display || (i.style.display = t ? r[s] || "" : "none"));
   return e;
  }
- function x(e, t, n) {
+ function C(e, t, n) {
   var i = Gt.exec(t);
   return i ? Math.max(0, i[1] - (n || 0)) + (i[2] || "px") : t;
  }
- function E(e, t, n, i, o) {
+ function k(e, t, n, i, o) {
   for (var r = n === (i ? "border" : "content") ? 4 : "width" === t ? 1 : 0, s = 0; 4 > r; r += 2) "margin" === n && (s += rt.css(e, n + Jt[r], !0, o)), 
   i ? ("content" === n && (s -= rt.css(e, "padding" + Jt[r], !0, o)), "margin" !== n && (s -= rt.css(e, "border" + Jt[r] + "Width", !0, o))) : (s += rt.css(e, "padding" + Jt[r], !0, o), 
   "padding" !== n && (s += rt.css(e, "border" + Jt[r] + "Width", !0, o)));
   return s;
  }
- function S(e, t, n) {
+ function E(e, t, n) {
   var i = !0, o = "width" === t ? e.offsetWidth : e.offsetHeight, r = w(e), s = rt.support.boxSizing && "border-box" === rt.css(e, "boxSizing", !1, r);
   if (0 >= o || null == o) {
    if (o = Ht(e, t, r), (0 > o || null == o) && (o = e.style[t]), Vt.test(o)) return o;
    i = s && (rt.support.boxSizingReliable || o === e.style[t]), o = parseFloat(o) || 0;
   }
-  return o + E(e, t, n || (s ? "border" : "content"), i, r) + "px";
+  return o + k(e, t, n || (s ? "border" : "content"), i, r) + "px";
  }
- function A(e) {
+ function S(e) {
   var t = U, n = Xt[e];
-  return n || (n = k(e, t), "none" !== n && n || (Wt = (Wt || rt("<iframe frameborder='0' width='0' height='0'/>").css("cssText", "display:block !important")).appendTo(t.documentElement), 
-  t = (Wt[0].contentWindow || Wt[0].contentDocument).document, t.write("<!doctype html><html><body>"), 
-  t.close(), n = k(e, t), Wt.detach()), Xt[e] = n), n;
+  return n || (n = A(e, t), "none" !== n && n || (qt = (qt || rt("<iframe frameborder='0' width='0' height='0'/>").css("cssText", "display:block !important")).appendTo(t.documentElement), 
+  t = (qt[0].contentWindow || qt[0].contentDocument).document, t.write("<!doctype html><html><body>"), 
+  t.close(), n = A(e, t), qt.detach()), Xt[e] = n), n;
  }
- function k(e, t) {
+ function A(e, t) {
   var n = rt(t.createElement(e)).appendTo(t.body), i = rt.css(n[0], "display");
   return n.remove(), i;
  }
@@ -1213,7 +1213,7 @@ function printStackTrace(e) {
  function z(e) {
   return rt.isWindow(e) ? e : 9 === e.nodeType && e.defaultView;
  }
- var j, H, W = typeof t, q = e.location, U = e.document, G = U.documentElement, V = e.jQuery, K = e.$, X = {}, Y = [], Z = "2.0.3", J = Y.concat, Q = Y.push, et = Y.slice, tt = Y.indexOf, nt = X.toString, it = X.hasOwnProperty, ot = Z.trim, rt = function(e, t) {
+ var j, H, q = typeof t, W = e.location, U = e.document, G = U.documentElement, V = e.jQuery, K = e.$, X = {}, Y = [], Z = "2.0.3", J = Y.concat, Q = Y.push, et = Y.slice, tt = Y.indexOf, nt = X.toString, it = X.hasOwnProperty, ot = Z.trim, rt = function(e, t) {
   return new rt.fn.init(e, t, j);
  }, st = /[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/.source, at = /\S+/g, lt = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/, ct = /^<(\w+)\s*\/?>(?:<\/\1>|)$/, ut = /^-ms-/, dt = /-([\da-z])/gi, ht = function(e, t) {
   return t.toUpperCase();
@@ -1447,12 +1447,12 @@ function printStackTrace(e) {
      n;
     } else {
      if (o[2]) return et.apply(n, t.getElementsByTagName(e)), n;
-     if ((s = o[3]) && E.getElementsByClassName && t.getElementsByClassName) return et.apply(n, t.getElementsByClassName(s)), 
+     if ((s = o[3]) && k.getElementsByClassName && t.getElementsByClassName) return et.apply(n, t.getElementsByClassName(s)), 
      n;
     }
-    if (E.qsa && (!M || !M.test(e))) {
+    if (k.qsa && (!M || !M.test(e))) {
      if (d = u = O, f = t, g = 9 === a && e, 1 === a && "object" !== t.nodeName.toLowerCase()) {
-      for (c = h(e), (u = t.getAttribute("id")) ? d = u.replace(xt, "\\$&") : t.setAttribute("id", d), 
+      for (c = h(e), (u = t.getAttribute("id")) ? d = u.replace(Ct, "\\$&") : t.setAttribute("id", d), 
       d = "[id='" + d + "'] ", l = c.length; l--; ) c[l] = d + p(c[l]);
       f = pt.test(e) && t.parentNode || t, g = c.join(",");
      }
@@ -1463,11 +1463,11 @@ function printStackTrace(e) {
      }
     }
    }
-   return C(e.replace(ut, "$1"), t, n, i);
+   return x(e.replace(ut, "$1"), t, n, i);
   }
   function i() {
    function e(n, i) {
-    return t.push(n += " ") > A.cacheLength && delete e[t.shift()], e[n] = i;
+    return t.push(n += " ") > S.cacheLength && delete e[t.shift()], e[n] = i;
    }
    var t = [];
    return e;
@@ -1486,7 +1486,7 @@ function printStackTrace(e) {
    }
   }
   function s(e, t) {
-   for (var n = e.split("|"), i = e.length; i--; ) A.attrHandle[n[i]] = t;
+   for (var n = e.split("|"), i = e.length; i--; ) S.attrHandle[n[i]] = t;
   }
   function a(e, t) {
    var n = t && e, i = n && 1 === e.nodeType && 1 === t.nodeType && (~t.sourceIndex || X) - (~e.sourceIndex || X);
@@ -1515,15 +1515,15 @@ function printStackTrace(e) {
   }
   function d() {}
   function h(e, t) {
-   var i, o, r, s, a, l, c, u = q[e + " "];
+   var i, o, r, s, a, l, c, u = W[e + " "];
    if (u) return t ? 0 : u.slice(0);
-   for (a = e, l = [], c = A.preFilter; a; ) {
+   for (a = e, l = [], c = S.preFilter; a; ) {
     (!i || (o = dt.exec(a))) && (o && (a = a.slice(o[0].length) || a), l.push(r = [])), 
     i = !1, (o = ht.exec(a)) && (i = o.shift(), r.push({
      value: i,
      type: o[0].replace(ut, " ")
     }), a = a.slice(i.length));
-    for (s in A.filter) !(o = vt[s].exec(a)) || c[s] && !(o = c[s](o)) || (i = o.shift(), 
+    for (s in S.filter) !(o = vt[s].exec(a)) || c[s] && !(o = c[s](o)) || (i = o.shift(), 
     r.push({
      value: i,
      type: s,
@@ -1531,7 +1531,7 @@ function printStackTrace(e) {
     }), a = a.slice(i.length));
     if (!i) break;
    }
-   return t ? a.length : a ? n.error(e) : q(e, l).slice(0);
+   return t ? a.length : a ? n.error(e) : W(e, l).slice(0);
   }
   function p(e) {
    for (var t = 0, n = e.length, i = ""; n > t; t++) i += e[t].value;
@@ -1547,8 +1547,8 @@ function printStackTrace(e) {
      for (;t = t[i]; ) if ((1 === t.nodeType || o) && e(t, n, s)) return !0;
     } else for (;t = t[i]; ) if (1 === t.nodeType || o) if (c = t[O] || (t[O] = {}), 
     (l = c[i]) && l[0] === u) {
-     if ((a = l[1]) === !0 || a === S) return a === !0;
-    } else if (l = c[i] = [ u ], l[1] = e(t, n, s) || S, l[1] === !0) return !0;
+     if ((a = l[1]) === !0 || a === E) return a === !0;
+    } else if (l = c[i] = [ u ], l[1] = e(t, n, s) || E, l[1] === !0) return !0;
    };
   }
   function g(e) {
@@ -1578,15 +1578,15 @@ function printStackTrace(e) {
    });
   }
   function b(e) {
-   for (var t, n, i, o = e.length, r = A.relative[e[0].type], s = r || A.relative[" "], a = r ? 1 : 0, l = f(function(e) {
+   for (var t, n, i, o = e.length, r = S.relative[e[0].type], s = r || S.relative[" "], a = r ? 1 : 0, l = f(function(e) {
     return e === t;
    }, s, !0), c = f(function(e) {
     return nt.call(t, e) > -1;
    }, s, !0), u = [ function(e, n, i) {
     return !r && (i || n !== T) || ((t = n).nodeType ? l(e, n, i) : c(e, n, i));
-   } ]; o > a; a++) if (n = A.relative[e[a].type]) u = [ f(g(u), n) ]; else {
-    if (n = A.filter[e[a].type].apply(null, e[a].matches), n[O]) {
-     for (i = ++a; o > i && !A.relative[e[i].type]; i++) ;
+   } ]; o > a; a++) if (n = S.relative[e[a].type]) u = [ f(g(u), n) ]; else {
+    if (n = S.filter[e[a].type].apply(null, e[a].matches), n[O]) {
+     for (i = ++a; o > i && !S.relative[e[i].type]; i++) ;
      return v(a > 1 && g(u), a > 1 && p(e.slice(0, a - 1).concat({
       value: " " === e[a - 2].type ? "*" : ""
      })).replace(ut, "$1"), n, i > a && b(e.slice(a, i)), o > i && b(e = e.slice(i)), o > i && p(e));
@@ -1597,14 +1597,14 @@ function printStackTrace(e) {
   }
   function y(e, t) {
    var i = 0, r = t.length > 0, s = e.length > 0, a = function(o, a, l, c, u) {
-    var d, h, p, f = [], g = 0, v = "0", b = o && [], y = null != u, w = T, C = o || s && A.find.TAG("*", u && a.parentNode || a), x = j += null == w ? 1 : Math.random() || .1;
-    for (y && (T = a !== L && a, S = i); null != (d = C[v]); v++) {
+    var d, h, p, f = [], g = 0, v = "0", b = o && [], y = null != u, w = T, x = o || s && S.find.TAG("*", u && a.parentNode || a), C = j += null == w ? 1 : Math.random() || .1;
+    for (y && (T = a !== L && a, E = i); null != (d = x[v]); v++) {
      if (s && d) {
       for (h = 0; p = e[h++]; ) if (p(d, a, l)) {
        c.push(d);
        break;
       }
-      y && (j = x, S = ++i);
+      y && (j = C, E = ++i);
      }
      r && ((d = !p && d) && g--, o && b.push(d));
     }
@@ -1616,7 +1616,7 @@ function printStackTrace(e) {
      }
      et.apply(c, f), y && !o && f.length > 0 && g + t.length > 1 && n.uniqueSort(c);
     }
-    return y && (j = x, T = w), b;
+    return y && (j = C, T = w), b;
    };
    return r ? o(a) : a;
   }
@@ -1624,21 +1624,21 @@ function printStackTrace(e) {
    for (var o = 0, r = t.length; r > o; o++) n(e, t[o], i);
    return i;
   }
-  function C(e, t, n, i) {
+  function x(e, t, n, i) {
    var o, r, s, a, l, c = h(e);
    if (!i && 1 === c.length) {
-    if (r = c[0] = c[0].slice(0), r.length > 2 && "ID" === (s = r[0]).type && E.getById && 9 === t.nodeType && I && A.relative[r[1].type]) {
-     if (t = (A.find.ID(s.matches[0].replace(Et, St), t) || [])[0], !t) return n;
+    if (r = c[0] = c[0].slice(0), r.length > 2 && "ID" === (s = r[0]).type && k.getById && 9 === t.nodeType && I && S.relative[r[1].type]) {
+     if (t = (S.find.ID(s.matches[0].replace(kt, Et), t) || [])[0], !t) return n;
      e = e.slice(r.shift().value.length);
     }
-    for (o = vt.needsContext.test(e) ? 0 : r.length; o-- && (s = r[o], !A.relative[a = s.type]); ) if ((l = A.find[a]) && (i = l(s.matches[0].replace(Et, St), pt.test(r[0].type) && t.parentNode || t))) {
+    for (o = vt.needsContext.test(e) ? 0 : r.length; o-- && (s = r[o], !S.relative[a = s.type]); ) if ((l = S.find[a]) && (i = l(s.matches[0].replace(kt, Et), pt.test(r[0].type) && t.parentNode || t))) {
      if (r.splice(o, 1), e = i.length && p(r), !e) return et.apply(n, i), n;
      break;
     }
    }
    return F(e, c)(i, t, !I, n, pt.test(e)), n;
   }
-  var x, E, S, A, k, _, F, T, $, D, L, B, I, M, R, P, N, O = "sizzle" + -new Date(), z = e.document, j = 0, H = 0, W = i(), q = i(), U = i(), G = !1, V = function(e, t) {
+  var C, k, E, S, A, _, F, T, $, D, L, B, I, M, R, P, N, O = "sizzle" + -new Date(), z = e.document, j = 0, H = 0, q = i(), W = i(), U = i(), G = !1, V = function(e, t) {
    return e === t ? (G = !0, 0) : 0;
   }, K = typeof t, X = 1 << 31, Y = {}.hasOwnProperty, Z = [], J = Z.pop, Q = Z.push, et = Z.push, tt = Z.slice, nt = Z.indexOf || function(e) {
    for (var t = 0, n = this.length; n > t; t++) if (this[t] === e) return t;
@@ -1652,13 +1652,13 @@ function printStackTrace(e) {
    CHILD: new RegExp("^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(" + ot + "*(even|odd|(([+-]|)(\\d*)n|)" + ot + "*(?:([+-]|)" + ot + "*(\\d+)|))" + ot + "*\\)|)", "i"),
    bool: new RegExp("^(?:" + it + ")$", "i"),
    needsContext: new RegExp("^" + ot + "*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" + ot + "*((?:-\\d)?\\d*)" + ot + "*\\)|)(?=[^-]|$)", "i")
-  }, bt = /^[^{]+\{\s*\[native \w/, yt = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/, wt = /^(?:input|select|textarea|button)$/i, Ct = /^h\d$/i, xt = /'|\\/g, Et = new RegExp("\\\\([\\da-f]{1,6}" + ot + "?|(" + ot + ")|.)", "ig"), St = function(e, t, n) {
+  }, bt = /^[^{]+\{\s*\[native \w/, yt = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/, wt = /^(?:input|select|textarea|button)$/i, xt = /^h\d$/i, Ct = /'|\\/g, kt = new RegExp("\\\\([\\da-f]{1,6}" + ot + "?|(" + ot + ")|.)", "ig"), Et = function(e, t, n) {
    var i = "0x" + t - 65536;
    return i !== i || n ? t : 0 > i ? String.fromCharCode(i + 65536) : String.fromCharCode(55296 | i >> 10, 56320 | 1023 & i);
   };
   try {
    et.apply(Z = tt.call(z.childNodes), z.childNodes), Z[z.childNodes.length].nodeType;
-  } catch (At) {
+  } catch (St) {
    et = {
     apply: Z.length ? function(e, t) {
      Q.apply(e, tt.call(t));
@@ -1671,37 +1671,37 @@ function printStackTrace(e) {
   _ = n.isXML = function(e) {
    var t = e && (e.ownerDocument || e).documentElement;
    return t ? "HTML" !== t.nodeName : !1;
-  }, E = n.support = {}, D = n.setDocument = function(e) {
+  }, k = n.support = {}, D = n.setDocument = function(e) {
    var t = e ? e.ownerDocument || e : z, n = t.defaultView;
    return t !== L && 9 === t.nodeType && t.documentElement ? (L = t, B = t.documentElement, 
    I = !_(t), n && n.attachEvent && n !== n.top && n.attachEvent("onbeforeunload", function() {
     D();
-   }), E.attributes = r(function(e) {
+   }), k.attributes = r(function(e) {
     return e.className = "i", !e.getAttribute("className");
-   }), E.getElementsByTagName = r(function(e) {
+   }), k.getElementsByTagName = r(function(e) {
     return e.appendChild(t.createComment("")), !e.getElementsByTagName("*").length;
-   }), E.getElementsByClassName = r(function(e) {
+   }), k.getElementsByClassName = r(function(e) {
     return e.innerHTML = "<div class='a'></div><div class='a i'></div>", e.firstChild.className = "i", 
     2 === e.getElementsByClassName("i").length;
-   }), E.getById = r(function(e) {
+   }), k.getById = r(function(e) {
     return B.appendChild(e).id = O, !t.getElementsByName || !t.getElementsByName(O).length;
-   }), E.getById ? (A.find.ID = function(e, t) {
+   }), k.getById ? (S.find.ID = function(e, t) {
     if (typeof t.getElementById !== K && I) {
      var n = t.getElementById(e);
      return n && n.parentNode ? [ n ] : [];
     }
-   }, A.filter.ID = function(e) {
-    var t = e.replace(Et, St);
+   }, S.filter.ID = function(e) {
+    var t = e.replace(kt, Et);
     return function(e) {
      return e.getAttribute("id") === t;
     };
-   }) : (delete A.find.ID, A.filter.ID = function(e) {
-    var t = e.replace(Et, St);
+   }) : (delete S.find.ID, S.filter.ID = function(e) {
+    var t = e.replace(kt, Et);
     return function(e) {
      var n = typeof e.getAttributeNode !== K && e.getAttributeNode("id");
      return n && n.value === t;
     };
-   }), A.find.TAG = E.getElementsByTagName ? function(e, t) {
+   }), S.find.TAG = k.getElementsByTagName ? function(e, t) {
     return typeof t.getElementsByTagName !== K ? t.getElementsByTagName(e) : void 0;
    } : function(e, t) {
     var n, i = [], o = 0, r = t.getElementsByTagName(e);
@@ -1710,9 +1710,9 @@ function printStackTrace(e) {
      return i;
     }
     return r;
-   }, A.find.CLASS = E.getElementsByClassName && function(e, t) {
+   }, S.find.CLASS = k.getElementsByClassName && function(e, t) {
     return typeof t.getElementsByClassName !== K && I ? t.getElementsByClassName(e) : void 0;
-   }, R = [], M = [], (E.qsa = bt.test(t.querySelectorAll)) && (r(function(e) {
+   }, R = [], M = [], (k.qsa = bt.test(t.querySelectorAll)) && (r(function(e) {
     e.innerHTML = "<select><option selected=''></option></select>", e.querySelectorAll("[selected]").length || M.push("\\[" + ot + "*(?:value|" + it + ")"), 
     e.querySelectorAll(":checked").length || M.push(":checked");
    }), r(function(e) {
@@ -1720,8 +1720,8 @@ function printStackTrace(e) {
     n.setAttribute("type", "hidden"), e.appendChild(n).setAttribute("t", ""), e.querySelectorAll("[t^='']").length && M.push("[*^$]=" + ot + "*(?:''|\"\")"), 
     e.querySelectorAll(":enabled").length || M.push(":enabled", ":disabled"), e.querySelectorAll("*,:x"), 
     M.push(",.*:");
-   })), (E.matchesSelector = bt.test(P = B.webkitMatchesSelector || B.mozMatchesSelector || B.oMatchesSelector || B.msMatchesSelector)) && r(function(e) {
-    E.disconnectedMatch = P.call(e, "div"), P.call(e, "[s!='']:x"), R.push("!=", ct);
+   })), (k.matchesSelector = bt.test(P = B.webkitMatchesSelector || B.mozMatchesSelector || B.oMatchesSelector || B.msMatchesSelector)) && r(function(e) {
+    k.disconnectedMatch = P.call(e, "div"), P.call(e, "[s!='']:x"), R.push("!=", ct);
    }), M = M.length && new RegExp(M.join("|")), R = R.length && new RegExp(R.join("|")), 
    N = bt.test(B.contains) || B.compareDocumentPosition ? function(e, t) {
     var n = 9 === e.nodeType ? e.documentElement : e, i = t && t.parentNode;
@@ -1732,7 +1732,7 @@ function printStackTrace(e) {
    }, V = B.compareDocumentPosition ? function(e, n) {
     if (e === n) return G = !0, 0;
     var i = n.compareDocumentPosition && e.compareDocumentPosition && e.compareDocumentPosition(n);
-    return i ? 1 & i || !E.sortDetached && n.compareDocumentPosition(e) === i ? e === t || N(z, e) ? -1 : n === t || N(z, n) ? 1 : $ ? nt.call($, e) - nt.call($, n) : 0 : 4 & i ? -1 : 1 : e.compareDocumentPosition ? -1 : 1;
+    return i ? 1 & i || !k.sortDetached && n.compareDocumentPosition(e) === i ? e === t || N(z, e) ? -1 : n === t || N(z, n) ? 1 : $ ? nt.call($, e) - nt.call($, n) : 0 : 4 & i ? -1 : 1 : e.compareDocumentPosition ? -1 : 1;
    } : function(e, n) {
     var i, o = 0, r = e.parentNode, s = n.parentNode, l = [ e ], c = [ n ];
     if (e === n) return G = !0, 0;
@@ -1746,36 +1746,36 @@ function printStackTrace(e) {
   }, n.matches = function(e, t) {
    return n(e, null, null, t);
   }, n.matchesSelector = function(e, t) {
-   if ((e.ownerDocument || e) !== L && D(e), t = t.replace(ft, "='$1']"), !(!E.matchesSelector || !I || R && R.test(t) || M && M.test(t))) try {
+   if ((e.ownerDocument || e) !== L && D(e), t = t.replace(ft, "='$1']"), !(!k.matchesSelector || !I || R && R.test(t) || M && M.test(t))) try {
     var i = P.call(e, t);
-    if (i || E.disconnectedMatch || e.document && 11 !== e.document.nodeType) return i;
+    if (i || k.disconnectedMatch || e.document && 11 !== e.document.nodeType) return i;
    } catch (o) {}
    return n(t, L, null, [ e ]).length > 0;
   }, n.contains = function(e, t) {
    return (e.ownerDocument || e) !== L && D(e), N(e, t);
   }, n.attr = function(e, n) {
    (e.ownerDocument || e) !== L && D(e);
-   var i = A.attrHandle[n.toLowerCase()], o = i && Y.call(A.attrHandle, n.toLowerCase()) ? i(e, n, !I) : t;
-   return o === t ? E.attributes || !I ? e.getAttribute(n) : (o = e.getAttributeNode(n)) && o.specified ? o.value : null : o;
+   var i = S.attrHandle[n.toLowerCase()], o = i && Y.call(S.attrHandle, n.toLowerCase()) ? i(e, n, !I) : t;
+   return o === t ? k.attributes || !I ? e.getAttribute(n) : (o = e.getAttributeNode(n)) && o.specified ? o.value : null : o;
   }, n.error = function(e) {
    throw new Error("Syntax error, unrecognized expression: " + e);
   }, n.uniqueSort = function(e) {
    var t, n = [], i = 0, o = 0;
-   if (G = !E.detectDuplicates, $ = !E.sortStable && e.slice(0), e.sort(V), G) {
+   if (G = !k.detectDuplicates, $ = !k.sortStable && e.slice(0), e.sort(V), G) {
     for (;t = e[o++]; ) t === e[o] && (i = n.push(o));
     for (;i--; ) e.splice(n[i], 1);
    }
    return e;
-  }, k = n.getText = function(e) {
+  }, A = n.getText = function(e) {
    var t, n = "", i = 0, o = e.nodeType;
    if (o) {
     if (1 === o || 9 === o || 11 === o) {
      if ("string" == typeof e.textContent) return e.textContent;
-     for (e = e.firstChild; e; e = e.nextSibling) n += k(e);
+     for (e = e.firstChild; e; e = e.nextSibling) n += A(e);
     } else if (3 === o || 4 === o) return e.nodeValue;
-   } else for (;t = e[i]; i++) n += k(t);
+   } else for (;t = e[i]; i++) n += A(t);
    return n;
-  }, A = n.selectors = {
+  }, S = n.selectors = {
    cacheLength: 50,
    createPseudo: o,
    match: vt,
@@ -1799,7 +1799,7 @@ function printStackTrace(e) {
    },
    preFilter: {
     ATTR: function(e) {
-     return e[1] = e[1].replace(Et, St), e[3] = (e[4] || e[5] || "").replace(Et, St), 
+     return e[1] = e[1].replace(kt, Et), e[3] = (e[4] || e[5] || "").replace(kt, Et), 
      "~=" === e[2] && (e[3] = " " + e[3] + " "), e.slice(0, 4);
     },
     CHILD: function(e) {
@@ -1815,7 +1815,7 @@ function printStackTrace(e) {
    },
    filter: {
     TAG: function(e) {
-     var t = e.replace(Et, St).toLowerCase();
+     var t = e.replace(kt, Et).toLowerCase();
      return "*" === e ? function() {
       return !0;
      } : function(e) {
@@ -1823,8 +1823,8 @@ function printStackTrace(e) {
      };
     },
     CLASS: function(e) {
-     var t = W[e + " "];
-     return t || (t = new RegExp("(^|" + ot + ")" + e + "(" + ot + "|$)")) && W(e, function(e) {
+     var t = q[e + " "];
+     return t || (t = new RegExp("(^|" + ot + ")" + e + "(" + ot + "|$)")) && q(e, function(e) {
       return t.test("string" == typeof e.className && e.className || typeof e.getAttribute !== K && e.getAttribute("class") || "");
      });
     },
@@ -1861,8 +1861,8 @@ function printStackTrace(e) {
      };
     },
     PSEUDO: function(e, t) {
-     var i, r = A.pseudos[e] || A.setFilters[e.toLowerCase()] || n.error("unsupported pseudo: " + e);
-     return r[O] ? r(t) : r.length > 1 ? (i = [ e, e, "", t ], A.setFilters.hasOwnProperty(e.toLowerCase()) ? o(function(e, n) {
+     var i, r = S.pseudos[e] || S.setFilters[e.toLowerCase()] || n.error("unsupported pseudo: " + e);
+     return r[O] ? r(t) : r.length > 1 ? (i = [ e, e, "", t ], S.setFilters.hasOwnProperty(e.toLowerCase()) ? o(function(e, n) {
       for (var i, o = r(e, t), s = o.length; s--; ) i = nt.call(e, o[s]), e[i] = !(n[i] = o[s]);
      }) : function(e) {
       return r(e, 0, i);
@@ -1885,11 +1885,11 @@ function printStackTrace(e) {
     }),
     contains: o(function(e) {
      return function(t) {
-      return (t.textContent || t.innerText || k(t)).indexOf(e) > -1;
+      return (t.textContent || t.innerText || A(t)).indexOf(e) > -1;
      };
     }),
     lang: o(function(e) {
-     return mt.test(e || "") || n.error("unsupported lang: " + e), e = e.replace(Et, St).toLowerCase(), 
+     return mt.test(e || "") || n.error("unsupported lang: " + e), e = e.replace(kt, Et).toLowerCase(), 
      function(t) {
       var n;
       do if (n = I ? t.lang : t.getAttribute("xml:lang") || t.getAttribute("lang")) return n = n.toLowerCase(), 
@@ -1925,10 +1925,10 @@ function printStackTrace(e) {
      return !0;
     },
     parent: function(e) {
-     return !A.pseudos.empty(e);
+     return !S.pseudos.empty(e);
     },
     header: function(e) {
-     return Ct.test(e.nodeName);
+     return xt.test(e.nodeName);
     },
     input: function(e) {
      return wt.test(e.nodeName);
@@ -1967,33 +1967,33 @@ function printStackTrace(e) {
      return e;
     })
    }
-  }, A.pseudos.nth = A.pseudos.eq;
-  for (x in {
+  }, S.pseudos.nth = S.pseudos.eq;
+  for (C in {
    radio: !0,
    checkbox: !0,
    file: !0,
    password: !0,
    image: !0
-  }) A.pseudos[x] = l(x);
-  for (x in {
+  }) S.pseudos[C] = l(C);
+  for (C in {
    submit: !0,
    reset: !0
-  }) A.pseudos[x] = c(x);
-  d.prototype = A.filters = A.pseudos, A.setFilters = new d(), F = n.compile = function(e, t) {
+  }) S.pseudos[C] = c(C);
+  d.prototype = S.filters = S.pseudos, S.setFilters = new d(), F = n.compile = function(e, t) {
    var n, i = [], o = [], r = U[e + " "];
    if (!r) {
     for (t || (t = h(e)), n = t.length; n--; ) r = b(t[n]), r[O] ? i.push(r) : o.push(r);
     r = U(e, y(o, i));
    }
    return r;
-  }, E.sortStable = O.split("").sort(V).join("") === O, E.detectDuplicates = G, D(), 
-  E.sortDetached = r(function(e) {
+  }, k.sortStable = O.split("").sort(V).join("") === O, k.detectDuplicates = G, D(), 
+  k.sortDetached = r(function(e) {
    return 1 & e.compareDocumentPosition(L.createElement("div"));
   }), r(function(e) {
    return e.innerHTML = "<a href='#'></a>", "#" === e.firstChild.getAttribute("href");
   }) || s("type|href|height|width", function(e, t, n) {
    return n ? void 0 : e.getAttribute(t, "type" === t.toLowerCase() ? 1 : 2);
-  }), E.attributes && r(function(e) {
+  }), k.attributes && r(function(e) {
    return e.innerHTML = "<input/>", e.firstChild.setAttribute("value", ""), "" === e.firstChild.getAttribute("value");
   }) || s("value", function(e, t, n) {
    return n || "input" !== e.nodeName.toLowerCase() ? void 0 : e.defaultValue;
@@ -2279,7 +2279,7 @@ function printStackTrace(e) {
    return l(), r.promise(n);
   }
  });
- var yt, wt, Ct = /[\t\r\n\f]/g, xt = /\r/g, Et = /^(?:input|select|textarea|button)$/i;
+ var yt, wt, xt = /[\t\r\n\f]/g, Ct = /\r/g, kt = /^(?:input|select|textarea|button)$/i;
  rt.fn.extend({
   attr: function(e, t) {
    return rt.access(this, rt.attr, e, t, arguments.length > 1);
@@ -2302,7 +2302,7 @@ function printStackTrace(e) {
    if (rt.isFunction(e)) return this.each(function(t) {
     rt(this).addClass(e.call(this, t, this.className));
    });
-   if (l) for (t = (e || "").match(at) || []; a > s; s++) if (n = this[s], i = 1 === n.nodeType && (n.className ? (" " + n.className + " ").replace(Ct, " ") : " ")) {
+   if (l) for (t = (e || "").match(at) || []; a > s; s++) if (n = this[s], i = 1 === n.nodeType && (n.className ? (" " + n.className + " ").replace(xt, " ") : " ")) {
     for (r = 0; o = t[r++]; ) i.indexOf(" " + o + " ") < 0 && (i += o + " ");
     n.className = rt.trim(i);
    }
@@ -2313,7 +2313,7 @@ function printStackTrace(e) {
    if (rt.isFunction(e)) return this.each(function(t) {
     rt(this).removeClass(e.call(this, t, this.className));
    });
-   if (l) for (t = (e || "").match(at) || []; a > s; s++) if (n = this[s], i = 1 === n.nodeType && (n.className ? (" " + n.className + " ").replace(Ct, " ") : "")) {
+   if (l) for (t = (e || "").match(at) || []; a > s; s++) if (n = this[s], i = 1 === n.nodeType && (n.className ? (" " + n.className + " ").replace(xt, " ") : "")) {
     for (r = 0; o = t[r++]; ) for (;i.indexOf(" " + o + " ") >= 0; ) i = i.replace(" " + o + " ", " ");
     n.className = e ? rt.trim(i) : "";
    }
@@ -2324,12 +2324,12 @@ function printStackTrace(e) {
    return "boolean" == typeof t && "string" === n ? t ? this.addClass(e) : this.removeClass(e) : rt.isFunction(e) ? this.each(function(n) {
     rt(this).toggleClass(e.call(this, n, this.className, t), t);
    }) : this.each(function() {
-    if ("string" === n) for (var t, i = 0, o = rt(this), r = e.match(at) || []; t = r[i++]; ) o.hasClass(t) ? o.removeClass(t) : o.addClass(t); else (n === W || "boolean" === n) && (this.className && mt.set(this, "__className__", this.className), 
+    if ("string" === n) for (var t, i = 0, o = rt(this), r = e.match(at) || []; t = r[i++]; ) o.hasClass(t) ? o.removeClass(t) : o.addClass(t); else (n === q || "boolean" === n) && (this.className && mt.set(this, "__className__", this.className), 
     this.className = this.className || e === !1 ? "" : mt.get(this, "__className__") || "");
    });
   },
   hasClass: function(e) {
-   for (var t = " " + e + " ", n = 0, i = this.length; i > n; n++) if (1 === this[n].nodeType && (" " + this[n].className + " ").replace(Ct, " ").indexOf(t) >= 0) return !0;
+   for (var t = " " + e + " ", n = 0, i = this.length; i > n; n++) if (1 === this[n].nodeType && (" " + this[n].className + " ").replace(xt, " ").indexOf(t) >= 0) return !0;
    return !1;
   },
   val: function(e) {
@@ -2342,7 +2342,7 @@ function printStackTrace(e) {
      })), n = rt.valHooks[this.type] || rt.valHooks[this.nodeName.toLowerCase()], n && "set" in n && n.set(this, r, "value") !== t || (this.value = r));
     });
     if (r) return n = rt.valHooks[r.type] || rt.valHooks[r.nodeName.toLowerCase()], 
-    n && "get" in n && (i = n.get(r, "value")) !== t ? i : (i = r.value, "string" == typeof i ? i.replace(xt, "") : null == i ? "" : i);
+    n && "get" in n && (i = n.get(r, "value")) !== t ? i : (i = r.value, "string" == typeof i ? i.replace(Ct, "") : null == i ? "" : i);
    }
   }
  }), rt.extend({
@@ -2371,7 +2371,7 @@ function printStackTrace(e) {
   },
   attr: function(e, n, i) {
    var o, r, s = e.nodeType;
-   if (e && 3 !== s && 8 !== s && 2 !== s) return typeof e.getAttribute === W ? rt.prop(e, n, i) : (1 === s && rt.isXMLDoc(e) || (n = n.toLowerCase(), 
+   if (e && 3 !== s && 8 !== s && 2 !== s) return typeof e.getAttribute === q ? rt.prop(e, n, i) : (1 === s && rt.isXMLDoc(e) || (n = n.toLowerCase(), 
    o = rt.attrHooks[n] || (rt.expr.match.bool.test(n) ? wt : yt)), i === t ? o && "get" in o && null !== (r = o.get(e, n)) ? r : (r = rt.find.attr(e, n), 
    null == r ? t : r) : null !== i ? o && "set" in o && (r = o.set(e, i, n)) !== t ? r : (e.setAttribute(n, i + ""), 
    i) : (rt.removeAttr(e, n), void 0));
@@ -2403,7 +2403,7 @@ function printStackTrace(e) {
   propHooks: {
    tabIndex: {
     get: function(e) {
-     return e.hasAttribute("tabindex") || Et.test(e.nodeName) || e.href ? e.tabIndex : -1;
+     return e.hasAttribute("tabindex") || kt.test(e.nodeName) || e.href ? e.tabIndex : -1;
     }
    }
   }
@@ -2433,7 +2433,7 @@ function printStackTrace(e) {
    return null === e.getAttribute("value") ? "on" : e.value;
   });
  });
- var St = /^key/, At = /^(?:mouse|contextmenu)|click/, kt = /^(?:focusinfocus|focusoutblur)$/, _t = /^([^.]*)(?:\.(.+)|)$/;
+ var Et = /^key/, St = /^(?:mouse|contextmenu)|click/, At = /^(?:focusinfocus|focusoutblur)$/, _t = /^([^.]*)(?:\.(.+)|)$/;
  rt.event = {
   global: {},
   add: function(e, n, i, o, r) {
@@ -2441,7 +2441,7 @@ function printStackTrace(e) {
    if (v) {
     for (i.handler && (s = i, i = s.handler, r = s.selector), i.guid || (i.guid = rt.guid++), 
     (c = v.events) || (c = v.events = {}), (a = v.handle) || (a = v.handle = function(e) {
-     return typeof rt === W || e && rt.event.triggered === e.type ? t : rt.event.dispatch.apply(a.elem, arguments);
+     return typeof rt === q || e && rt.event.triggered === e.type ? t : rt.event.dispatch.apply(a.elem, arguments);
     }, a.elem = e), n = (n || "").match(at) || [ "" ], u = n.length; u--; ) l = _t.exec(n[u]) || [], 
     f = m = l[1], g = (l[2] || "").split(".").sort(), f && (h = rt.event.special[f] || {}, 
     f = (r ? h.delegateType : h.bindType) || f, h = rt.event.special[f] || {}, d = rt.extend({
@@ -2476,13 +2476,13 @@ function printStackTrace(e) {
   },
   trigger: function(n, i, o, r) {
    var s, a, l, c, u, d, h, p = [ o || U ], f = it.call(n, "type") ? n.type : n, g = it.call(n, "namespace") ? n.namespace.split(".") : [];
-   if (a = l = o = o || U, 3 !== o.nodeType && 8 !== o.nodeType && !kt.test(f + rt.event.triggered) && (f.indexOf(".") >= 0 && (g = f.split("."), 
+   if (a = l = o = o || U, 3 !== o.nodeType && 8 !== o.nodeType && !At.test(f + rt.event.triggered) && (f.indexOf(".") >= 0 && (g = f.split("."), 
    f = g.shift(), g.sort()), u = f.indexOf(":") < 0 && "on" + f, n = n[rt.expando] ? n : new rt.Event(f, "object" == typeof n && n), 
    n.isTrigger = r ? 2 : 3, n.namespace = g.join("."), n.namespace_re = n.namespace ? new RegExp("(^|\\.)" + g.join("\\.(?:.*\\.|)") + "(\\.|$)") : null, 
    n.result = t, n.target || (n.target = o), i = null == i ? [ n ] : rt.makeArray(i, [ n ]), 
    h = rt.event.special[f] || {}, r || !h.trigger || h.trigger.apply(o, i) !== !1)) {
     if (!r && !h.noBubble && !rt.isWindow(o)) {
-     for (c = h.delegateType || f, kt.test(c + f) || (a = a.parentNode); a; a = a.parentNode) p.push(a), 
+     for (c = h.delegateType || f, At.test(c + f) || (a = a.parentNode); a; a = a.parentNode) p.push(a), 
      l = a;
      l === (o.ownerDocument || U) && p.push(l.defaultView || l.parentWindow || e);
     }
@@ -2542,7 +2542,7 @@ function printStackTrace(e) {
   fix: function(e) {
    if (e[rt.expando]) return e;
    var t, n, i, o = e.type, r = e, s = this.fixHooks[o];
-   for (s || (this.fixHooks[o] = s = At.test(o) ? this.mouseHooks : St.test(o) ? this.keyHooks : {}), 
+   for (s || (this.fixHooks[o] = s = St.test(o) ? this.mouseHooks : Et.test(o) ? this.keyHooks : {}), 
    i = s.props ? this.props.concat(s.props) : this.props, e = new rt.Event(r), t = i.length; t--; ) n = i[t], 
    e[n] = r[n];
    return e.target || (e.target = U), 3 === e.target.nodeType && (e.target = e.target.parentNode), 
@@ -2971,7 +2971,7 @@ function printStackTrace(e) {
    }).end();
   }
  });
- var Ht, Wt, qt = /^(none|table(?!-c[ea]).+)/, Ut = /^margin/, Gt = new RegExp("^(" + st + ")(.*)$", "i"), Vt = new RegExp("^(" + st + ")(?!px)[a-z%]+$", "i"), Kt = new RegExp("^([+-])=(" + st + ")", "i"), Xt = {
+ var Ht, qt, Wt = /^(none|table(?!-c[ea]).+)/, Ut = /^margin/, Gt = new RegExp("^(" + st + ")(.*)$", "i"), Vt = new RegExp("^(" + st + ")(?!px)[a-z%]+$", "i"), Kt = new RegExp("^([+-])=(" + st + ")", "i"), Xt = {
   BODY: "block"
  }, Yt = {
   position: "absolute",
@@ -2993,10 +2993,10 @@ function printStackTrace(e) {
    }, e, n, arguments.length > 1);
   },
   show: function() {
-   return C(this, !0);
+   return x(this, !0);
   },
   hide: function() {
-   return C(this);
+   return x(this);
   },
   toggle: function(e) {
    return "boolean" == typeof e ? e ? this.show() : this.hide() : this.each(function() {
@@ -3054,13 +3054,13 @@ function printStackTrace(e) {
  }, rt.each([ "height", "width" ], function(e, t) {
   rt.cssHooks[t] = {
    get: function(e, n, i) {
-    return n ? 0 === e.offsetWidth && qt.test(rt.css(e, "display")) ? rt.swap(e, Yt, function() {
-     return S(e, t, i);
-    }) : S(e, t, i) : void 0;
+    return n ? 0 === e.offsetWidth && Wt.test(rt.css(e, "display")) ? rt.swap(e, Yt, function() {
+     return E(e, t, i);
+    }) : E(e, t, i) : void 0;
    },
    set: function(e, n, i) {
     var o = i && w(e);
-    return x(e, n, i ? E(e, t, i, rt.support.boxSizing && "border-box" === rt.css(e, "boxSizing", !1, o), o) : 0);
+    return C(e, n, i ? k(e, t, i, rt.support.boxSizing && "border-box" === rt.css(e, "boxSizing", !1, o), o) : 0);
    }
   };
  }), rt(function() {
@@ -3091,7 +3091,7 @@ function printStackTrace(e) {
     for (var i = 0, o = {}, r = "string" == typeof n ? n.split(" ") : [ n ]; 4 > i; i++) o[e + Jt[i] + t] = r[i] || r[i - 2] || r[0];
     return o;
    }
-  }, Ut.test(e) || (rt.cssHooks[e + t].set = x);
+  }, Ut.test(e) || (rt.cssHooks[e + t].set = C);
  });
  var en = /%20/g, tn = /\[\]$/, nn = /\r?\n/g, on = /^(?:submit|button|image|reset|file)$/i, rn = /^(?:input|select|textarea|keygen)/i;
  rt.fn.extend({
@@ -3149,8 +3149,8 @@ function printStackTrace(e) {
  });
  var sn, an, ln = rt.now(), cn = /\?/, un = /#.*$/, dn = /([?&])_=[^&]*/, hn = /^(.*?):[ \t]*([^\r\n]*)$/gm, pn = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/, fn = /^(?:GET|HEAD)$/, gn = /^\/\//, mn = /^([\w.+-]+:)(?:\/\/([^\/?#:]*)(?::(\d+)|)|)/, vn = rt.fn.load, bn = {}, yn = {}, wn = "*/".concat("*");
  try {
-  an = q.href;
- } catch (Cn) {
+  an = W.href;
+ } catch (xn) {
   an = U.createElement("a"), an.href = "", an = an.href;
  }
  sn = mn.exec(an.toLowerCase()) || [], rt.fn.load = function(e, n, i) {
@@ -3218,18 +3218,18 @@ function printStackTrace(e) {
   ajaxTransport: F(yn),
   ajax: function(e, n) {
    function i(e, n, i, a) {
-    var c, d, b, y, C, E = n;
-    2 !== w && (w = 2, l && clearTimeout(l), o = t, s = a || "", x.readyState = e > 0 ? 4 : 0, 
-    c = e >= 200 && 300 > e || 304 === e, i && (y = D(h, x, i)), y = L(h, y, x, c), 
-    c ? (h.ifModified && (C = x.getResponseHeader("Last-Modified"), C && (rt.lastModified[r] = C), 
-    C = x.getResponseHeader("etag"), C && (rt.etag[r] = C)), 204 === e || "HEAD" === h.type ? E = "nocontent" : 304 === e ? E = "notmodified" : (E = y.state, 
-    d = y.data, b = y.error, c = !b)) : (b = E, (e || !E) && (E = "error", 0 > e && (e = 0))), 
-    x.status = e, x.statusText = (n || E) + "", c ? g.resolveWith(p, [ d, E, x ]) : g.rejectWith(p, [ x, E, b ]), 
-    x.statusCode(v), v = t, u && f.trigger(c ? "ajaxSuccess" : "ajaxError", [ x, h, c ? d : b ]), 
-    m.fireWith(p, [ x, E ]), u && (f.trigger("ajaxComplete", [ x, h ]), --rt.active || rt.event.trigger("ajaxStop")));
+    var c, d, b, y, x, k = n;
+    2 !== w && (w = 2, l && clearTimeout(l), o = t, s = a || "", C.readyState = e > 0 ? 4 : 0, 
+    c = e >= 200 && 300 > e || 304 === e, i && (y = D(h, C, i)), y = L(h, y, C, c), 
+    c ? (h.ifModified && (x = C.getResponseHeader("Last-Modified"), x && (rt.lastModified[r] = x), 
+    x = C.getResponseHeader("etag"), x && (rt.etag[r] = x)), 204 === e || "HEAD" === h.type ? k = "nocontent" : 304 === e ? k = "notmodified" : (k = y.state, 
+    d = y.data, b = y.error, c = !b)) : (b = k, (e || !k) && (k = "error", 0 > e && (e = 0))), 
+    C.status = e, C.statusText = (n || k) + "", c ? g.resolveWith(p, [ d, k, C ]) : g.rejectWith(p, [ C, k, b ]), 
+    C.statusCode(v), v = t, u && f.trigger(c ? "ajaxSuccess" : "ajaxError", [ C, h, c ? d : b ]), 
+    m.fireWith(p, [ C, k ]), u && (f.trigger("ajaxComplete", [ C, h ]), --rt.active || rt.event.trigger("ajaxStop")));
    }
    "object" == typeof e && (n = e, e = t), n = n || {};
-   var o, r, s, a, l, c, u, d, h = rt.ajaxSetup({}, n), p = h.context || h, f = h.context && (p.nodeType || p.jquery) ? rt(p) : rt.event, g = rt.Deferred(), m = rt.Callbacks("once memory"), v = h.statusCode || {}, b = {}, y = {}, w = 0, C = "canceled", x = {
+   var o, r, s, a, l, c, u, d, h = rt.ajaxSetup({}, n), p = h.context || h, f = h.context && (p.nodeType || p.jquery) ? rt(p) : rt.event, g = rt.Deferred(), m = rt.Callbacks("once memory"), v = h.statusCode || {}, b = {}, y = {}, w = 0, x = "canceled", C = {
     readyState: 0,
     getResponseHeader: function(e) {
      var t;
@@ -3251,45 +3251,45 @@ function printStackTrace(e) {
     },
     statusCode: function(e) {
      var t;
-     if (e) if (2 > w) for (t in e) v[t] = [ v[t], e[t] ]; else x.always(e[x.status]);
+     if (e) if (2 > w) for (t in e) v[t] = [ v[t], e[t] ]; else C.always(e[C.status]);
      return this;
     },
     abort: function(e) {
-     var t = e || C;
+     var t = e || x;
      return o && o.abort(t), i(0, t), this;
     }
    };
-   if (g.promise(x).complete = m.add, x.success = x.done, x.error = x.fail, h.url = ((e || h.url || an) + "").replace(un, "").replace(gn, sn[1] + "//"), 
+   if (g.promise(C).complete = m.add, C.success = C.done, C.error = C.fail, h.url = ((e || h.url || an) + "").replace(un, "").replace(gn, sn[1] + "//"), 
    h.type = n.method || n.type || h.method || h.type, h.dataTypes = rt.trim(h.dataType || "*").toLowerCase().match(at) || [ "" ], 
    null == h.crossDomain && (c = mn.exec(h.url.toLowerCase()), h.crossDomain = !(!c || c[1] === sn[1] && c[2] === sn[2] && (c[3] || ("http:" === c[1] ? "80" : "443")) === (sn[3] || ("http:" === sn[1] ? "80" : "443")))), 
    h.data && h.processData && "string" != typeof h.data && (h.data = rt.param(h.data, h.traditional)), 
-   T(bn, h, n, x), 2 === w) return x;
+   T(bn, h, n, C), 2 === w) return C;
    u = h.global, u && 0 === rt.active++ && rt.event.trigger("ajaxStart"), h.type = h.type.toUpperCase(), 
    h.hasContent = !fn.test(h.type), r = h.url, h.hasContent || (h.data && (r = h.url += (cn.test(r) ? "&" : "?") + h.data, 
    delete h.data), h.cache === !1 && (h.url = dn.test(r) ? r.replace(dn, "$1_=" + ln++) : r + (cn.test(r) ? "&" : "?") + "_=" + ln++)), 
-   h.ifModified && (rt.lastModified[r] && x.setRequestHeader("If-Modified-Since", rt.lastModified[r]), 
-   rt.etag[r] && x.setRequestHeader("If-None-Match", rt.etag[r])), (h.data && h.hasContent && h.contentType !== !1 || n.contentType) && x.setRequestHeader("Content-Type", h.contentType), 
-   x.setRequestHeader("Accept", h.dataTypes[0] && h.accepts[h.dataTypes[0]] ? h.accepts[h.dataTypes[0]] + ("*" !== h.dataTypes[0] ? ", " + wn + "; q=0.01" : "") : h.accepts["*"]);
-   for (d in h.headers) x.setRequestHeader(d, h.headers[d]);
-   if (h.beforeSend && (h.beforeSend.call(p, x, h) === !1 || 2 === w)) return x.abort();
-   C = "abort";
+   h.ifModified && (rt.lastModified[r] && C.setRequestHeader("If-Modified-Since", rt.lastModified[r]), 
+   rt.etag[r] && C.setRequestHeader("If-None-Match", rt.etag[r])), (h.data && h.hasContent && h.contentType !== !1 || n.contentType) && C.setRequestHeader("Content-Type", h.contentType), 
+   C.setRequestHeader("Accept", h.dataTypes[0] && h.accepts[h.dataTypes[0]] ? h.accepts[h.dataTypes[0]] + ("*" !== h.dataTypes[0] ? ", " + wn + "; q=0.01" : "") : h.accepts["*"]);
+   for (d in h.headers) C.setRequestHeader(d, h.headers[d]);
+   if (h.beforeSend && (h.beforeSend.call(p, C, h) === !1 || 2 === w)) return C.abort();
+   x = "abort";
    for (d in {
     success: 1,
     error: 1,
     complete: 1
-   }) x[d](h[d]);
-   if (o = T(yn, h, n, x)) {
-    x.readyState = 1, u && f.trigger("ajaxSend", [ x, h ]), h.async && h.timeout > 0 && (l = setTimeout(function() {
-     x.abort("timeout");
+   }) C[d](h[d]);
+   if (o = T(yn, h, n, C)) {
+    C.readyState = 1, u && f.trigger("ajaxSend", [ C, h ]), h.async && h.timeout > 0 && (l = setTimeout(function() {
+     C.abort("timeout");
     }, h.timeout));
     try {
      w = 1, o.send(b, i);
-    } catch (E) {
-     if (!(2 > w)) throw E;
-     i(-1, E);
+    } catch (k) {
+     if (!(2 > w)) throw k;
+     i(-1, k);
     }
    } else i(-1, "No Transport");
-   return x;
+   return C;
   },
   getJSON: function(e, t, n) {
    return rt.get(e, t, n, "json");
@@ -3340,23 +3340,23 @@ function printStackTrace(e) {
    };
   }
  });
- var xn = [], En = /(=)\?(?=&|$)|\?\?/;
+ var Cn = [], kn = /(=)\?(?=&|$)|\?\?/;
  rt.ajaxSetup({
   jsonp: "callback",
   jsonpCallback: function() {
-   var e = xn.pop() || rt.expando + "_" + ln++;
+   var e = Cn.pop() || rt.expando + "_" + ln++;
    return this[e] = !0, e;
   }
  }), rt.ajaxPrefilter("json jsonp", function(n, i, o) {
-  var r, s, a, l = n.jsonp !== !1 && (En.test(n.url) ? "url" : "string" == typeof n.data && !(n.contentType || "").indexOf("application/x-www-form-urlencoded") && En.test(n.data) && "data");
+  var r, s, a, l = n.jsonp !== !1 && (kn.test(n.url) ? "url" : "string" == typeof n.data && !(n.contentType || "").indexOf("application/x-www-form-urlencoded") && kn.test(n.data) && "data");
   return l || "jsonp" === n.dataTypes[0] ? (r = n.jsonpCallback = rt.isFunction(n.jsonpCallback) ? n.jsonpCallback() : n.jsonpCallback, 
-  l ? n[l] = n[l].replace(En, "$1" + r) : n.jsonp !== !1 && (n.url += (cn.test(n.url) ? "&" : "?") + n.jsonp + "=" + r), 
+  l ? n[l] = n[l].replace(kn, "$1" + r) : n.jsonp !== !1 && (n.url += (cn.test(n.url) ? "&" : "?") + n.jsonp + "=" + r), 
   n.converters["script json"] = function() {
    return a || rt.error(r + " was not called"), a[0];
   }, n.dataTypes[0] = "json", s = e[r], e[r] = function() {
    a = arguments;
   }, o.always(function() {
-   e[r] = s, n[r] && (n.jsonpCallback = i.jsonpCallback, xn.push(r)), a && rt.isFunction(s) && s(a[0]), 
+   e[r] = s, n[r] && (n.jsonpCallback = i.jsonpCallback, Cn.push(r)), a && rt.isFunction(s) && s(a[0]), 
    a = s = t;
   }), "script") : void 0;
  }), rt.ajaxSettings.xhr = function() {
@@ -3364,17 +3364,17 @@ function printStackTrace(e) {
    return new XMLHttpRequest();
   } catch (e) {}
  };
- var Sn = rt.ajaxSettings.xhr(), An = {
+ var En = rt.ajaxSettings.xhr(), Sn = {
   0: 200,
   1223: 204
- }, kn = 0, _n = {};
+ }, An = 0, _n = {};
  e.ActiveXObject && rt(e).on("unload", function() {
   for (var e in _n) _n[e]();
   _n = t;
- }), rt.support.cors = !!Sn && "withCredentials" in Sn, rt.support.ajax = Sn = !!Sn, 
+ }), rt.support.cors = !!En && "withCredentials" in En, rt.support.ajax = En = !!En, 
  rt.ajaxTransport(function(e) {
   var n;
-  return rt.support.cors || Sn && !e.crossDomain ? {
+  return rt.support.cors || En && !e.crossDomain ? {
    send: function(i, o) {
     var r, s, a = e.xhr();
     if (a.open(e.type, e.url, e.async, e.username, e.password), e.xhrFields) for (r in e.xhrFields) a[r] = e.xhrFields[r];
@@ -3382,11 +3382,11 @@ function printStackTrace(e) {
     for (r in i) a.setRequestHeader(r, i[r]);
     n = function(e) {
      return function() {
-      n && (delete _n[s], n = a.onload = a.onerror = null, "abort" === e ? a.abort() : "error" === e ? o(a.status || 404, a.statusText) : o(An[a.status] || a.status, a.statusText, "string" == typeof a.responseText ? {
+      n && (delete _n[s], n = a.onload = a.onerror = null, "abort" === e ? a.abort() : "error" === e ? o(a.status || 404, a.statusText) : o(Sn[a.status] || a.status, a.statusText, "string" == typeof a.responseText ? {
        text: a.responseText
       } : t, a.getAllResponseHeaders()));
      };
-    }, a.onload = n(), a.onerror = n("error"), n = _n[s = kn++] = n("abort"), a.send(e.hasContent && e.data || null);
+    }, a.onload = n(), a.onerror = n("error"), n = _n[s = An++] = n("abort"), a.send(e.hasContent && e.data || null);
    },
    abort: function() {
     n && n();
@@ -3545,7 +3545,7 @@ function printStackTrace(e) {
    top: 0,
    left: 0
   }, s = o && o.ownerDocument;
-  if (s) return n = s.documentElement, rt.contains(n, o) ? (typeof o.getBoundingClientRect !== W && (r = o.getBoundingClientRect()), 
+  if (s) return n = s.documentElement, rt.contains(n, o) ? (typeof o.getBoundingClientRect !== q && (r = o.getBoundingClientRect()), 
   i = z(s), {
    top: r.top + i.pageYOffset - n.clientTop,
    left: r.left + i.pageXOffset - n.clientLeft
@@ -3616,134 +3616,134 @@ function printStackTrace(e) {
   return rt;
  }), "object" == typeof e && "object" == typeof e.document && (e.jQuery = e.$ = rt);
 }(window), function() {
- var e = this, t = e._, n = {}, i = Array.prototype, o = Object.prototype, r = Function.prototype, s = i.push, a = i.slice, l = i.concat, c = o.toString, u = o.hasOwnProperty, d = i.forEach, h = i.map, p = i.reduce, f = i.reduceRight, g = i.filter, m = i.every, v = i.some, b = i.indexOf, y = i.lastIndexOf, w = Array.isArray, C = Object.keys, x = r.bind, E = function(e) {
-  return e instanceof E ? e : this instanceof E ? (this._wrapped = e, void 0) : new E(e);
+ var e = this, t = e._, n = {}, i = Array.prototype, o = Object.prototype, r = Function.prototype, s = i.push, a = i.slice, l = i.concat, c = o.toString, u = o.hasOwnProperty, d = i.forEach, h = i.map, p = i.reduce, f = i.reduceRight, g = i.filter, m = i.every, v = i.some, b = i.indexOf, y = i.lastIndexOf, w = Array.isArray, x = Object.keys, C = r.bind, k = function(e) {
+  return e instanceof k ? e : this instanceof k ? (this._wrapped = e, void 0) : new k(e);
  };
- "undefined" != typeof exports ? ("undefined" != typeof module && module.exports && (exports = module.exports = E), 
- exports._ = E) : e._ = E, E.VERSION = "1.5.1";
- var S = E.each = E.forEach = function(e, t, i) {
+ "undefined" != typeof exports ? ("undefined" != typeof module && module.exports && (exports = module.exports = k), 
+ exports._ = k) : e._ = k, k.VERSION = "1.5.1";
+ var E = k.each = k.forEach = function(e, t, i) {
   if (null != e) if (d && e.forEach === d) e.forEach(t, i); else if (e.length === +e.length) {
    for (var o = 0, r = e.length; r > o; o++) if (t.call(i, e[o], o, e) === n) return;
-  } else for (var s in e) if (E.has(e, s) && t.call(i, e[s], s, e) === n) return;
+  } else for (var s in e) if (k.has(e, s) && t.call(i, e[s], s, e) === n) return;
  };
- E.map = E.collect = function(e, t, n) {
+ k.map = k.collect = function(e, t, n) {
   var i = [];
-  return null == e ? i : h && e.map === h ? e.map(t, n) : (S(e, function(e, o, r) {
+  return null == e ? i : h && e.map === h ? e.map(t, n) : (E(e, function(e, o, r) {
    i.push(t.call(n, e, o, r));
   }), i);
  };
- var A = "Reduce of empty array with no initial value";
- E.reduce = E.foldl = E.inject = function(e, t, n, i) {
+ var S = "Reduce of empty array with no initial value";
+ k.reduce = k.foldl = k.inject = function(e, t, n, i) {
   var o = arguments.length > 2;
-  if (null == e && (e = []), p && e.reduce === p) return i && (t = E.bind(t, i)), 
+  if (null == e && (e = []), p && e.reduce === p) return i && (t = k.bind(t, i)), 
   o ? e.reduce(t, n) : e.reduce(t);
-  if (S(e, function(e, r, s) {
+  if (E(e, function(e, r, s) {
    o ? n = t.call(i, n, e, r, s) : (n = e, o = !0);
-  }), !o) throw new TypeError(A);
+  }), !o) throw new TypeError(S);
   return n;
- }, E.reduceRight = E.foldr = function(e, t, n, i) {
+ }, k.reduceRight = k.foldr = function(e, t, n, i) {
   var o = arguments.length > 2;
-  if (null == e && (e = []), f && e.reduceRight === f) return i && (t = E.bind(t, i)), 
+  if (null == e && (e = []), f && e.reduceRight === f) return i && (t = k.bind(t, i)), 
   o ? e.reduceRight(t, n) : e.reduceRight(t);
   var r = e.length;
   if (r !== +r) {
-   var s = E.keys(e);
+   var s = k.keys(e);
    r = s.length;
   }
-  if (S(e, function(a, l, c) {
+  if (E(e, function(a, l, c) {
    l = s ? s[--r] : --r, o ? n = t.call(i, n, e[l], l, c) : (n = e[l], o = !0);
-  }), !o) throw new TypeError(A);
+  }), !o) throw new TypeError(S);
   return n;
- }, E.find = E.detect = function(e, t, n) {
+ }, k.find = k.detect = function(e, t, n) {
   var i;
-  return k(e, function(e, o, r) {
+  return A(e, function(e, o, r) {
    return t.call(n, e, o, r) ? (i = e, !0) : void 0;
   }), i;
- }, E.filter = E.select = function(e, t, n) {
+ }, k.filter = k.select = function(e, t, n) {
   var i = [];
-  return null == e ? i : g && e.filter === g ? e.filter(t, n) : (S(e, function(e, o, r) {
+  return null == e ? i : g && e.filter === g ? e.filter(t, n) : (E(e, function(e, o, r) {
    t.call(n, e, o, r) && i.push(e);
   }), i);
- }, E.reject = function(e, t, n) {
-  return E.filter(e, function(e, i, o) {
+ }, k.reject = function(e, t, n) {
+  return k.filter(e, function(e, i, o) {
    return !t.call(n, e, i, o);
   }, n);
- }, E.every = E.all = function(e, t, i) {
-  t || (t = E.identity);
+ }, k.every = k.all = function(e, t, i) {
+  t || (t = k.identity);
   var o = !0;
-  return null == e ? o : m && e.every === m ? e.every(t, i) : (S(e, function(e, r, s) {
+  return null == e ? o : m && e.every === m ? e.every(t, i) : (E(e, function(e, r, s) {
    return (o = o && t.call(i, e, r, s)) ? void 0 : n;
   }), !!o);
  };
- var k = E.some = E.any = function(e, t, i) {
-  t || (t = E.identity);
+ var A = k.some = k.any = function(e, t, i) {
+  t || (t = k.identity);
   var o = !1;
-  return null == e ? o : v && e.some === v ? e.some(t, i) : (S(e, function(e, r, s) {
+  return null == e ? o : v && e.some === v ? e.some(t, i) : (E(e, function(e, r, s) {
    return o || (o = t.call(i, e, r, s)) ? n : void 0;
   }), !!o);
  };
- E.contains = E.include = function(e, t) {
-  return null == e ? !1 : b && e.indexOf === b ? -1 != e.indexOf(t) : k(e, function(e) {
+ k.contains = k.include = function(e, t) {
+  return null == e ? !1 : b && e.indexOf === b ? -1 != e.indexOf(t) : A(e, function(e) {
    return e === t;
   });
- }, E.invoke = function(e, t) {
-  var n = a.call(arguments, 2), i = E.isFunction(t);
-  return E.map(e, function(e) {
+ }, k.invoke = function(e, t) {
+  var n = a.call(arguments, 2), i = k.isFunction(t);
+  return k.map(e, function(e) {
    return (i ? t : e[t]).apply(e, n);
   });
- }, E.pluck = function(e, t) {
-  return E.map(e, function(e) {
+ }, k.pluck = function(e, t) {
+  return k.map(e, function(e) {
    return e[t];
   });
- }, E.where = function(e, t, n) {
-  return E.isEmpty(t) ? n ? void 0 : [] : E[n ? "find" : "filter"](e, function(e) {
+ }, k.where = function(e, t, n) {
+  return k.isEmpty(t) ? n ? void 0 : [] : k[n ? "find" : "filter"](e, function(e) {
    for (var n in t) if (t[n] !== e[n]) return !1;
    return !0;
   });
- }, E.findWhere = function(e, t) {
-  return E.where(e, t, !0);
- }, E.max = function(e, t, n) {
-  if (!t && E.isArray(e) && e[0] === +e[0] && e.length < 65535) return Math.max.apply(Math, e);
-  if (!t && E.isEmpty(e)) return -1/0;
+ }, k.findWhere = function(e, t) {
+  return k.where(e, t, !0);
+ }, k.max = function(e, t, n) {
+  if (!t && k.isArray(e) && e[0] === +e[0] && e.length < 65535) return Math.max.apply(Math, e);
+  if (!t && k.isEmpty(e)) return -1/0;
   var i = {
    computed: -1/0,
    value: -1/0
   };
-  return S(e, function(e, o, r) {
+  return E(e, function(e, o, r) {
    var s = t ? t.call(n, e, o, r) : e;
    s > i.computed && (i = {
     value: e,
     computed: s
    });
   }), i.value;
- }, E.min = function(e, t, n) {
-  if (!t && E.isArray(e) && e[0] === +e[0] && e.length < 65535) return Math.min.apply(Math, e);
-  if (!t && E.isEmpty(e)) return 1/0;
+ }, k.min = function(e, t, n) {
+  if (!t && k.isArray(e) && e[0] === +e[0] && e.length < 65535) return Math.min.apply(Math, e);
+  if (!t && k.isEmpty(e)) return 1/0;
   var i = {
    computed: 1/0,
    value: 1/0
   };
-  return S(e, function(e, o, r) {
+  return E(e, function(e, o, r) {
    var s = t ? t.call(n, e, o, r) : e;
    s < i.computed && (i = {
     value: e,
     computed: s
    });
   }), i.value;
- }, E.shuffle = function(e) {
+ }, k.shuffle = function(e) {
   var t, n = 0, i = [];
-  return S(e, function(e) {
-   t = E.random(n++), i[n - 1] = i[t], i[t] = e;
+  return E(e, function(e) {
+   t = k.random(n++), i[n - 1] = i[t], i[t] = e;
   }), i;
  };
  var _ = function(e) {
-  return E.isFunction(e) ? e : function(t) {
+  return k.isFunction(e) ? e : function(t) {
    return t[e];
   };
  };
- E.sortBy = function(e, t, n) {
+ k.sortBy = function(e, t, n) {
   var i = _(t);
-  return E.pluck(E.map(e, function(e, t, o) {
+  return k.pluck(k.map(e, function(e, t, o) {
    return {
     value: e,
     index: t,
@@ -3759,105 +3759,105 @@ function printStackTrace(e) {
   }), "value");
  };
  var F = function(e, t, n, i) {
-  var o = {}, r = _(null == t ? E.identity : t);
-  return S(e, function(t, s) {
+  var o = {}, r = _(null == t ? k.identity : t);
+  return E(e, function(t, s) {
    var a = r.call(n, t, s, e);
    i(o, a, t);
   }), o;
  };
- E.groupBy = function(e, t, n) {
+ k.groupBy = function(e, t, n) {
   return F(e, t, n, function(e, t, n) {
-   (E.has(e, t) ? e[t] : e[t] = []).push(n);
+   (k.has(e, t) ? e[t] : e[t] = []).push(n);
   });
- }, E.countBy = function(e, t, n) {
+ }, k.countBy = function(e, t, n) {
   return F(e, t, n, function(e, t) {
-   E.has(e, t) || (e[t] = 0), e[t]++;
+   k.has(e, t) || (e[t] = 0), e[t]++;
   });
- }, E.sortedIndex = function(e, t, n, i) {
-  n = null == n ? E.identity : _(n);
+ }, k.sortedIndex = function(e, t, n, i) {
+  n = null == n ? k.identity : _(n);
   for (var o = n.call(i, t), r = 0, s = e.length; s > r; ) {
    var a = r + s >>> 1;
    n.call(i, e[a]) < o ? r = a + 1 : s = a;
   }
   return r;
- }, E.toArray = function(e) {
-  return e ? E.isArray(e) ? a.call(e) : e.length === +e.length ? E.map(e, E.identity) : E.values(e) : [];
- }, E.size = function(e) {
-  return null == e ? 0 : e.length === +e.length ? e.length : E.keys(e).length;
- }, E.first = E.head = E.take = function(e, t, n) {
+ }, k.toArray = function(e) {
+  return e ? k.isArray(e) ? a.call(e) : e.length === +e.length ? k.map(e, k.identity) : k.values(e) : [];
+ }, k.size = function(e) {
+  return null == e ? 0 : e.length === +e.length ? e.length : k.keys(e).length;
+ }, k.first = k.head = k.take = function(e, t, n) {
   return null == e ? void 0 : null == t || n ? e[0] : a.call(e, 0, t);
- }, E.initial = function(e, t, n) {
+ }, k.initial = function(e, t, n) {
   return a.call(e, 0, e.length - (null == t || n ? 1 : t));
- }, E.last = function(e, t, n) {
+ }, k.last = function(e, t, n) {
   return null == e ? void 0 : null == t || n ? e[e.length - 1] : a.call(e, Math.max(e.length - t, 0));
- }, E.rest = E.tail = E.drop = function(e, t, n) {
+ }, k.rest = k.tail = k.drop = function(e, t, n) {
   return a.call(e, null == t || n ? 1 : t);
- }, E.compact = function(e) {
-  return E.filter(e, E.identity);
+ }, k.compact = function(e) {
+  return k.filter(e, k.identity);
  };
  var T = function(e, t, n) {
-  return t && E.every(e, E.isArray) ? l.apply(n, e) : (S(e, function(e) {
-   E.isArray(e) || E.isArguments(e) ? t ? s.apply(n, e) : T(e, t, n) : n.push(e);
+  return t && k.every(e, k.isArray) ? l.apply(n, e) : (E(e, function(e) {
+   k.isArray(e) || k.isArguments(e) ? t ? s.apply(n, e) : T(e, t, n) : n.push(e);
   }), n);
  };
- E.flatten = function(e, t) {
+ k.flatten = function(e, t) {
   return T(e, t, []);
- }, E.without = function(e) {
-  return E.difference(e, a.call(arguments, 1));
- }, E.uniq = E.unique = function(e, t, n, i) {
-  E.isFunction(t) && (i = n, n = t, t = !1);
-  var o = n ? E.map(e, n, i) : e, r = [], s = [];
-  return S(o, function(n, i) {
-   (t ? i && s[s.length - 1] === n : E.contains(s, n)) || (s.push(n), r.push(e[i]));
+ }, k.without = function(e) {
+  return k.difference(e, a.call(arguments, 1));
+ }, k.uniq = k.unique = function(e, t, n, i) {
+  k.isFunction(t) && (i = n, n = t, t = !1);
+  var o = n ? k.map(e, n, i) : e, r = [], s = [];
+  return E(o, function(n, i) {
+   (t ? i && s[s.length - 1] === n : k.contains(s, n)) || (s.push(n), r.push(e[i]));
   }), r;
- }, E.union = function() {
-  return E.uniq(E.flatten(arguments, !0));
- }, E.intersection = function(e) {
+ }, k.union = function() {
+  return k.uniq(k.flatten(arguments, !0));
+ }, k.intersection = function(e) {
   var t = a.call(arguments, 1);
-  return E.filter(E.uniq(e), function(e) {
-   return E.every(t, function(t) {
-    return E.indexOf(t, e) >= 0;
+  return k.filter(k.uniq(e), function(e) {
+   return k.every(t, function(t) {
+    return k.indexOf(t, e) >= 0;
    });
   });
- }, E.difference = function(e) {
+ }, k.difference = function(e) {
   var t = l.apply(i, a.call(arguments, 1));
-  return E.filter(e, function(e) {
-   return !E.contains(t, e);
+  return k.filter(e, function(e) {
+   return !k.contains(t, e);
   });
- }, E.zip = function() {
-  for (var e = E.max(E.pluck(arguments, "length").concat(0)), t = new Array(e), n = 0; e > n; n++) t[n] = E.pluck(arguments, "" + n);
+ }, k.zip = function() {
+  for (var e = k.max(k.pluck(arguments, "length").concat(0)), t = new Array(e), n = 0; e > n; n++) t[n] = k.pluck(arguments, "" + n);
   return t;
- }, E.object = function(e, t) {
+ }, k.object = function(e, t) {
   if (null == e) return {};
   for (var n = {}, i = 0, o = e.length; o > i; i++) t ? n[e[i]] = t[i] : n[e[i][0]] = e[i][1];
   return n;
- }, E.indexOf = function(e, t, n) {
+ }, k.indexOf = function(e, t, n) {
   if (null == e) return -1;
   var i = 0, o = e.length;
   if (n) {
-   if ("number" != typeof n) return i = E.sortedIndex(e, t), e[i] === t ? i : -1;
+   if ("number" != typeof n) return i = k.sortedIndex(e, t), e[i] === t ? i : -1;
    i = 0 > n ? Math.max(0, o + n) : n;
   }
   if (b && e.indexOf === b) return e.indexOf(t, n);
   for (;o > i; i++) if (e[i] === t) return i;
   return -1;
- }, E.lastIndexOf = function(e, t, n) {
+ }, k.lastIndexOf = function(e, t, n) {
   if (null == e) return -1;
   var i = null != n;
   if (y && e.lastIndexOf === y) return i ? e.lastIndexOf(t, n) : e.lastIndexOf(t);
   for (var o = i ? n : e.length; o--; ) if (e[o] === t) return o;
   return -1;
- }, E.range = function(e, t, n) {
+ }, k.range = function(e, t, n) {
   arguments.length <= 1 && (t = e || 0, e = 0), n = arguments[2] || 1;
   for (var i = Math.max(Math.ceil((t - e) / n), 0), o = 0, r = new Array(i); i > o; ) r[o++] = e, 
   e += n;
   return r;
  };
  var $ = function() {};
- E.bind = function(e, t) {
+ k.bind = function(e, t) {
   var n, i;
-  if (x && e.bind === x) return x.apply(e, a.call(arguments, 1));
-  if (!E.isFunction(e)) throw new TypeError();
+  if (C && e.bind === C) return C.apply(e, a.call(arguments, 1));
+  if (!k.isFunction(e)) throw new TypeError();
   return n = a.call(arguments, 2), i = function() {
    if (!(this instanceof i)) return e.apply(t, n.concat(a.call(arguments)));
    $.prototype = e.prototype;
@@ -3866,31 +3866,31 @@ function printStackTrace(e) {
    var r = e.apply(o, n.concat(a.call(arguments)));
    return Object(r) === r ? r : o;
   };
- }, E.partial = function(e) {
+ }, k.partial = function(e) {
   var t = a.call(arguments, 1);
   return function() {
    return e.apply(this, t.concat(a.call(arguments)));
   };
- }, E.bindAll = function(e) {
+ }, k.bindAll = function(e) {
   var t = a.call(arguments, 1);
   if (0 === t.length) throw new Error("bindAll must be passed function names");
-  return S(t, function(t) {
-   e[t] = E.bind(e[t], e);
+  return E(t, function(t) {
+   e[t] = k.bind(e[t], e);
   }), e;
- }, E.memoize = function(e, t) {
+ }, k.memoize = function(e, t) {
   var n = {};
-  return t || (t = E.identity), function() {
+  return t || (t = k.identity), function() {
    var i = t.apply(this, arguments);
-   return E.has(n, i) ? n[i] : n[i] = e.apply(this, arguments);
+   return k.has(n, i) ? n[i] : n[i] = e.apply(this, arguments);
   };
- }, E.delay = function(e, t) {
+ }, k.delay = function(e, t) {
   var n = a.call(arguments, 2);
   return setTimeout(function() {
    return e.apply(null, n);
   }, t);
- }, E.defer = function(e) {
-  return E.delay.apply(E, [ e, 1 ].concat(a.call(arguments, 1)));
- }, E.throttle = function(e, t, n) {
+ }, k.defer = function(e) {
+  return k.delay.apply(k, [ e, 1 ].concat(a.call(arguments, 1)));
+ }, k.throttle = function(e, t, n) {
   var i, o, r, s = null, a = 0;
   n || (n = {});
   var l = function() {
@@ -3903,7 +3903,7 @@ function printStackTrace(e) {
    return i = this, o = arguments, 0 >= u ? (clearTimeout(s), s = null, a = c, r = e.apply(i, o)) : s || n.trailing === !1 || (s = setTimeout(l, u)), 
    r;
   };
- }, E.debounce = function(e, t, n) {
+ }, k.debounce = function(e, t, n) {
   var i, o = null;
   return function() {
    var r = this, s = arguments, a = function() {
@@ -3911,73 +3911,73 @@ function printStackTrace(e) {
    }, l = n && !o;
    return clearTimeout(o), o = setTimeout(a, t), l && (i = e.apply(r, s)), i;
   };
- }, E.once = function(e) {
+ }, k.once = function(e) {
   var t, n = !1;
   return function() {
    return n ? t : (n = !0, t = e.apply(this, arguments), e = null, t);
   };
- }, E.wrap = function(e, t) {
+ }, k.wrap = function(e, t) {
   return function() {
    var n = [ e ];
    return s.apply(n, arguments), t.apply(this, n);
   };
- }, E.compose = function() {
+ }, k.compose = function() {
   var e = arguments;
   return function() {
    for (var t = arguments, n = e.length - 1; n >= 0; n--) t = [ e[n].apply(this, t) ];
    return t[0];
   };
- }, E.after = function(e, t) {
+ }, k.after = function(e, t) {
   return function() {
    return --e < 1 ? t.apply(this, arguments) : void 0;
   };
- }, E.keys = C || function(e) {
+ }, k.keys = x || function(e) {
   if (e !== Object(e)) throw new TypeError("Invalid object");
   var t = [];
-  for (var n in e) E.has(e, n) && t.push(n);
+  for (var n in e) k.has(e, n) && t.push(n);
   return t;
- }, E.values = function(e) {
+ }, k.values = function(e) {
   var t = [];
-  for (var n in e) E.has(e, n) && t.push(e[n]);
+  for (var n in e) k.has(e, n) && t.push(e[n]);
   return t;
- }, E.pairs = function(e) {
+ }, k.pairs = function(e) {
   var t = [];
-  for (var n in e) E.has(e, n) && t.push([ n, e[n] ]);
+  for (var n in e) k.has(e, n) && t.push([ n, e[n] ]);
   return t;
- }, E.invert = function(e) {
+ }, k.invert = function(e) {
   var t = {};
-  for (var n in e) E.has(e, n) && (t[e[n]] = n);
+  for (var n in e) k.has(e, n) && (t[e[n]] = n);
   return t;
- }, E.functions = E.methods = function(e) {
+ }, k.functions = k.methods = function(e) {
   var t = [];
-  for (var n in e) E.isFunction(e[n]) && t.push(n);
+  for (var n in e) k.isFunction(e[n]) && t.push(n);
   return t.sort();
- }, E.extend = function(e) {
-  return S(a.call(arguments, 1), function(t) {
+ }, k.extend = function(e) {
+  return E(a.call(arguments, 1), function(t) {
    if (t) for (var n in t) e[n] = t[n];
   }), e;
- }, E.pick = function(e) {
+ }, k.pick = function(e) {
   var t = {}, n = l.apply(i, a.call(arguments, 1));
-  return S(n, function(n) {
+  return E(n, function(n) {
    n in e && (t[n] = e[n]);
   }), t;
- }, E.omit = function(e) {
+ }, k.omit = function(e) {
   var t = {}, n = l.apply(i, a.call(arguments, 1));
-  for (var o in e) E.contains(n, o) || (t[o] = e[o]);
+  for (var o in e) k.contains(n, o) || (t[o] = e[o]);
   return t;
- }, E.defaults = function(e) {
-  return S(a.call(arguments, 1), function(t) {
+ }, k.defaults = function(e) {
+  return E(a.call(arguments, 1), function(t) {
    if (t) for (var n in t) void 0 === e[n] && (e[n] = t[n]);
   }), e;
- }, E.clone = function(e) {
-  return E.isObject(e) ? E.isArray(e) ? e.slice() : E.extend({}, e) : e;
- }, E.tap = function(e, t) {
+ }, k.clone = function(e) {
+  return k.isObject(e) ? k.isArray(e) ? e.slice() : k.extend({}, e) : e;
+ }, k.tap = function(e, t) {
   return t(e), e;
  };
  var D = function(e, t, n, i) {
   if (e === t) return 0 !== e || 1 / e == 1 / t;
   if (null == e || null == t) return e === t;
-  e instanceof E && (e = e._wrapped), t instanceof E && (t = t._wrapped);
+  e instanceof k && (e = e._wrapped), t instanceof k && (t = t._wrapped);
   var o = c.call(e);
   if (o != c.call(t)) return !1;
   switch (o) {
@@ -3997,61 +3997,61 @@ function printStackTrace(e) {
   if ("object" != typeof e || "object" != typeof t) return !1;
   for (var r = n.length; r--; ) if (n[r] == e) return i[r] == t;
   var s = e.constructor, a = t.constructor;
-  if (s !== a && !(E.isFunction(s) && s instanceof s && E.isFunction(a) && a instanceof a)) return !1;
+  if (s !== a && !(k.isFunction(s) && s instanceof s && k.isFunction(a) && a instanceof a)) return !1;
   n.push(e), i.push(t);
   var l = 0, u = !0;
   if ("[object Array]" == o) {
    if (l = e.length, u = l == t.length) for (;l-- && (u = D(e[l], t[l], n, i)); ) ;
   } else {
-   for (var d in e) if (E.has(e, d) && (l++, !(u = E.has(t, d) && D(e[d], t[d], n, i)))) break;
+   for (var d in e) if (k.has(e, d) && (l++, !(u = k.has(t, d) && D(e[d], t[d], n, i)))) break;
    if (u) {
-    for (d in t) if (E.has(t, d) && !l--) break;
+    for (d in t) if (k.has(t, d) && !l--) break;
     u = !l;
    }
   }
   return n.pop(), i.pop(), u;
  };
- E.isEqual = function(e, t) {
+ k.isEqual = function(e, t) {
   return D(e, t, [], []);
- }, E.isEmpty = function(e) {
+ }, k.isEmpty = function(e) {
   if (null == e) return !0;
-  if (E.isArray(e) || E.isString(e)) return 0 === e.length;
-  for (var t in e) if (E.has(e, t)) return !1;
+  if (k.isArray(e) || k.isString(e)) return 0 === e.length;
+  for (var t in e) if (k.has(e, t)) return !1;
   return !0;
- }, E.isElement = function(e) {
+ }, k.isElement = function(e) {
   return !(!e || 1 !== e.nodeType);
- }, E.isArray = w || function(e) {
+ }, k.isArray = w || function(e) {
   return "[object Array]" == c.call(e);
- }, E.isObject = function(e) {
+ }, k.isObject = function(e) {
   return e === Object(e);
- }, S([ "Arguments", "Function", "String", "Number", "Date", "RegExp" ], function(e) {
-  E["is" + e] = function(t) {
+ }, E([ "Arguments", "Function", "String", "Number", "Date", "RegExp" ], function(e) {
+  k["is" + e] = function(t) {
    return c.call(t) == "[object " + e + "]";
   };
- }), E.isArguments(arguments) || (E.isArguments = function(e) {
-  return !(!e || !E.has(e, "callee"));
- }), "function" != typeof /./ && (E.isFunction = function(e) {
+ }), k.isArguments(arguments) || (k.isArguments = function(e) {
+  return !(!e || !k.has(e, "callee"));
+ }), "function" != typeof /./ && (k.isFunction = function(e) {
   return "function" == typeof e;
- }), E.isFinite = function(e) {
+ }), k.isFinite = function(e) {
   return isFinite(e) && !isNaN(parseFloat(e));
- }, E.isNaN = function(e) {
-  return E.isNumber(e) && e != +e;
- }, E.isBoolean = function(e) {
+ }, k.isNaN = function(e) {
+  return k.isNumber(e) && e != +e;
+ }, k.isBoolean = function(e) {
   return e === !0 || e === !1 || "[object Boolean]" == c.call(e);
- }, E.isNull = function(e) {
+ }, k.isNull = function(e) {
   return null === e;
- }, E.isUndefined = function(e) {
+ }, k.isUndefined = function(e) {
   return void 0 === e;
- }, E.has = function(e, t) {
+ }, k.has = function(e, t) {
   return u.call(e, t);
- }, E.noConflict = function() {
+ }, k.noConflict = function() {
   return e._ = t, this;
- }, E.identity = function(e) {
+ }, k.identity = function(e) {
   return e;
- }, E.times = function(e, t, n) {
+ }, k.times = function(e, t, n) {
   for (var i = Array(Math.max(0, e)), o = 0; e > o; o++) i[o] = t.call(n, o);
   return i;
- }, E.random = function(e, t) {
+ }, k.random = function(e, t) {
   return null == t && (t = e, e = 0), e + Math.floor(Math.random() * (t - e + 1));
  };
  var L = {
@@ -4064,35 +4064,35 @@ function printStackTrace(e) {
    "/": "&#x2F;"
   }
  };
- L.unescape = E.invert(L.escape);
+ L.unescape = k.invert(L.escape);
  var B = {
-  escape: new RegExp("[" + E.keys(L.escape).join("") + "]", "g"),
-  unescape: new RegExp("(" + E.keys(L.unescape).join("|") + ")", "g")
+  escape: new RegExp("[" + k.keys(L.escape).join("") + "]", "g"),
+  unescape: new RegExp("(" + k.keys(L.unescape).join("|") + ")", "g")
  };
- E.each([ "escape", "unescape" ], function(e) {
-  E[e] = function(t) {
+ k.each([ "escape", "unescape" ], function(e) {
+  k[e] = function(t) {
    return null == t ? "" : ("" + t).replace(B[e], function(t) {
     return L[e][t];
    });
   };
- }), E.result = function(e, t) {
+ }), k.result = function(e, t) {
   if (null == e) return void 0;
   var n = e[t];
-  return E.isFunction(n) ? n.call(e) : n;
- }, E.mixin = function(e) {
-  S(E.functions(e), function(t) {
-   var n = E[t] = e[t];
-   E.prototype[t] = function() {
+  return k.isFunction(n) ? n.call(e) : n;
+ }, k.mixin = function(e) {
+  E(k.functions(e), function(t) {
+   var n = k[t] = e[t];
+   k.prototype[t] = function() {
     var e = [ this._wrapped ];
-    return s.apply(e, arguments), N.call(this, n.apply(E, e));
+    return s.apply(e, arguments), N.call(this, n.apply(k, e));
    };
   });
  };
  var I = 0;
- E.uniqueId = function(e) {
+ k.uniqueId = function(e) {
   var t = ++I + "";
   return e ? e + t : t;
- }, E.templateSettings = {
+ }, k.templateSettings = {
   evaluate: /<%([\s\S]+?)%>/g,
   interpolate: /<%=([\s\S]+?)%>/g,
   escape: /<%-([\s\S]+?)%>/g
@@ -4106,9 +4106,9 @@ function printStackTrace(e) {
   "\u2028": "u2028",
   "\u2029": "u2029"
  }, P = /\\|'|\r|\n|\t|\u2028|\u2029/g;
- E.template = function(e, t, n) {
+ k.template = function(e, t, n) {
   var i;
-  n = E.defaults({}, n, E.templateSettings);
+  n = k.defaults({}, n, k.templateSettings);
   var o = new RegExp([ (n.escape || M).source, (n.interpolate || M).source, (n.evaluate || M).source ].join("|") + "|$", "g"), r = 0, s = "__p+='";
   e.replace(o, function(t, n, i, o, a) {
    return s += e.slice(r, a).replace(P, function(e) {
@@ -4121,30 +4121,30 @@ function printStackTrace(e) {
   } catch (a) {
    throw a.source = s, a;
   }
-  if (t) return i(t, E);
+  if (t) return i(t, k);
   var l = function(e) {
-   return i.call(this, e, E);
+   return i.call(this, e, k);
   };
   return l.source = "function(" + (n.variable || "obj") + "){\n" + s + "}", l;
- }, E.chain = function(e) {
-  return E(e).chain();
+ }, k.chain = function(e) {
+  return k(e).chain();
  };
  var N = function(e) {
-  return this._chain ? E(e).chain() : e;
+  return this._chain ? k(e).chain() : e;
  };
- E.mixin(E), S([ "pop", "push", "reverse", "shift", "sort", "splice", "unshift" ], function(e) {
+ k.mixin(k), E([ "pop", "push", "reverse", "shift", "sort", "splice", "unshift" ], function(e) {
   var t = i[e];
-  E.prototype[e] = function() {
+  k.prototype[e] = function() {
    var n = this._wrapped;
    return t.apply(n, arguments), "shift" != e && "splice" != e || 0 !== n.length || delete n[0], 
    N.call(this, n);
   };
- }), S([ "concat", "join", "slice" ], function(e) {
+ }), E([ "concat", "join", "slice" ], function(e) {
   var t = i[e];
-  E.prototype[e] = function() {
+  k.prototype[e] = function() {
    return N.call(this, t.apply(this._wrapped, arguments));
   };
- }), E.extend(E.prototype, {
+ }), k.extend(k.prototype, {
   chain: function() {
    return this._chain = !0, this;
   },
@@ -4378,21 +4378,21 @@ function printStackTrace(e) {
  }
  if (Object.defineProperty) {
   var y = t({}), w = "undefined" == typeof document || t(document.createElement("div"));
-  if (!y || !w) var C = Object.defineProperty;
+  if (!y || !w) var x = Object.defineProperty;
  }
- if (!Object.defineProperty || C) {
-  var x = "Property description must be an object: ", E = "Object.defineProperty called on non-object: ", S = "getters & setters can not be defined on this javascript engine";
+ if (!Object.defineProperty || x) {
+  var C = "Property description must be an object: ", k = "Object.defineProperty called on non-object: ", E = "getters & setters can not be defined on this javascript engine";
   Object.defineProperty = function(e, t, n) {
-   if ("object" != typeof e && "function" != typeof e || null === e) throw new TypeError(E + e);
-   if ("object" != typeof n && "function" != typeof n || null === n) throw new TypeError(x + n);
-   if (C) try {
-    return C.call(Object, e, t, n);
+   if ("object" != typeof e && "function" != typeof e || null === e) throw new TypeError(k + e);
+   if ("object" != typeof n && "function" != typeof n || null === n) throw new TypeError(C + n);
+   if (x) try {
+    return x.call(Object, e, t, n);
    } catch (l) {}
    if (p(n, "value")) if (a && (r(e, t) || s(e, t))) {
     var c = e.__proto__;
     e.__proto__ = u, delete e[t], e[t] = n.value, e.__proto__ = c;
    } else e[t] = n.value; else {
-    if (!a) throw new TypeError(S);
+    if (!a) throw new TypeError(E);
     p(n, "get") && i(e, t, n.get), p(n, "set") && o(e, t, n.set);
    }
    return e;
@@ -4408,7 +4408,7 @@ function printStackTrace(e) {
  });
  try {
   Object.freeze(function() {});
- } catch (A) {
+ } catch (S) {
   Object.freeze = function(e) {
    return function(t) {
     return "function" == typeof t ? t : e(t);
@@ -4428,15 +4428,15 @@ function printStackTrace(e) {
   var n = p(e, t);
   return delete e[t], n;
  }), !Object.keys) {
-  var k = !0, _ = [ "toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "constructor" ], F = _.length;
+  var A = !0, _ = [ "toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "constructor" ], F = _.length;
   for (var T in {
    toString: null
-  }) k = !1;
+  }) A = !1;
   Object.keys = function I(e) {
    if ("object" != typeof e && "function" != typeof e || null === e) throw new TypeError("Object.keys called on a non-object");
    var I = [];
    for (var t in e) p(e, t) && I.push(t);
-   if (k) for (var n = 0, i = F; i > n; n++) {
+   if (A) for (var n = 0, i = F; i > n; n++) {
     var o = _[n];
     p(e, o) && I.push(o);
    }
@@ -4923,7 +4923,7 @@ function printStackTrace(e) {
    }
   }
   function l() {
-   g || (u.value = d, i.isWebKit && C.schedule());
+   g || (u.value = d, i.isWebKit && x.schedule());
   }
   function c() {
    setTimeout(function() {
@@ -4952,47 +4952,47 @@ function printStackTrace(e) {
   };
   var w = r.delayedCall(function() {
    b && a(v);
-  }), C = r.delayedCall(function() {
+  }), x = r.delayedCall(function() {
    g || (u.value = d, b && a());
   });
   i.isWebKit || t.addEventListener("changeSelection", function() {
    t.selection.isEmpty() != v && (v = !v, w.schedule());
   }), l(), b && t.onFocus();
-  var x = function(e) {
+  var C = function(e) {
    return 0 === e.selectionStart && e.selectionEnd === e.value.length;
   };
   if (!u.setSelectionRange && u.createTextRange && (u.setSelectionRange = function(e, t) {
    var n = this.createTextRange();
    n.collapse(!0), n.moveStart("character", e), n.moveEnd("character", t), n.select();
-  }, x = function(e) {
+  }, C = function(e) {
    try {
     var t = e.ownerDocument.selection.createRange();
    } catch (n) {}
    return t && t.parentElement() == e ? t.text == e.value : !1;
   }), i.isOldIE) {
-   var E = !1, S = function(e) {
-    if (!E) {
+   var k = !1, E = function(e) {
+    if (!k) {
      var t = u.value;
      if (!g && t && t != d) {
-      if (e && t == d[0]) return A.schedule();
-      $(t), E = !0, l(), E = !1;
+      if (e && t == d[0]) return S.schedule();
+      $(t), k = !0, l(), k = !1;
      }
     }
-   }, A = r.delayedCall(S);
-   n.addListener(u, "propertychange", S);
-   var k = {
+   }, S = r.delayedCall(E);
+   n.addListener(u, "propertychange", E);
+   var A = {
     13: 1,
     27: 1
    };
    n.addListener(u, "keyup", function(e) {
-    return !g || u.value && !k[e.keyCode] || setTimeout(P, 0), (u.value.charCodeAt(0) || 0) < 129 ? A.call() : (g ? R() : M(), 
+    return !g || u.value && !A[e.keyCode] || setTimeout(P, 0), (u.value.charCodeAt(0) || 0) < 129 ? S.call() : (g ? R() : M(), 
     void 0);
    }), n.addListener(u, "keydown", function() {
-    A.schedule(50);
+    S.schedule(50);
    });
   }
   var _ = function() {
-   h ? h = !1 : p ? p = !1 : x(u) ? (t.selectAll(), a()) : F && a(t.selection.isEmpty());
+   h ? h = !1 : p ? p = !1 : C(u) ? (t.selectAll(), a()) : F && a(t.selection.isEmpty());
   }, F = null;
   this.setInputHandler = function(e) {
    F = e;
@@ -5301,9 +5301,9 @@ function printStackTrace(e) {
    if (!_ || o || r) m.$blockScrolling += 1, m.moveCursorToPosition(e), m.$blockScrolling -= 1, 
    _ = n, F = {
     x: w,
-    y: C
+    y: x
    }; else {
-    var s = i(F.x, F.y, w, C);
+    var s = i(F.x, F.y, w, x);
     s > c ? _ = null : n - _ >= l && (m.renderer.scrollCursorIntoView(), _ = null);
    }
   }
@@ -5314,8 +5314,8 @@ function printStackTrace(e) {
      right: r.right - w
     },
     y: {
-     top: C - r.top,
-     bottom: r.bottom - C
+     top: x - r.top,
+     bottom: r.bottom - x
     }
    }, l = Math.min(s.x.left, s.x.right), c = Math.min(s.y.top, s.y.bottom), u = {
     row: e.row,
@@ -5323,19 +5323,19 @@ function printStackTrace(e) {
    };
    2 >= l / o && (u.column += s.x.left < s.x.right ? -3 : 2), 1 >= c / i && (u.row += s.y.top < s.y.bottom ? -1 : 1);
    var d = e.row != u.row, h = e.column != u.column, p = !t || e.row != t.row;
-   d || h && !p ? k ? n - k >= a && m.renderer.scrollCursorIntoView(u) : k = n : k = null;
+   d || h && !p ? A ? n - A >= a && m.renderer.scrollCursorIntoView(u) : A = n : A = null;
   }
   function u() {
-   var e = S;
-   S = m.renderer.screenToTextCoordinates(w, C), t(S, e), n(S, e);
+   var e = E;
+   E = m.renderer.screenToTextCoordinates(w, x), t(E, e), n(E, e);
   }
   function d() {
-   E = m.selection.toOrientedRange(), y = m.session.addMarker(E, "ace_selection", m.getSelectionStyle()), 
-   m.clearSelection(), clearInterval(x), x = setInterval(u, 20), $ = 0, r.addListener(document, "mousemove", p);
+   k = m.selection.toOrientedRange(), y = m.session.addMarker(k, "ace_selection", m.getSelectionStyle()), 
+   m.clearSelection(), clearInterval(C), C = setInterval(u, 20), $ = 0, r.addListener(document, "mousemove", p);
   }
   function h() {
-   clearInterval(x), m.session.removeMarker(y), y = null, m.$blockScrolling += 1, m.selection.fromOrientedRange(E), 
-   m.$blockScrolling -= 1, E = null, $ = 0, k = null, _ = null, r.removeListener(document, "mousemove", p);
+   clearInterval(C), m.session.removeMarker(y), y = null, m.$blockScrolling += 1, m.selection.fromOrientedRange(k), 
+   m.$blockScrolling -= 1, k = null, $ = 0, A = null, _ = null, r.removeListener(document, "mousemove", p);
   }
   function p() {
    null == D && (D = setTimeout(function() {
@@ -5365,7 +5365,7 @@ function printStackTrace(e) {
   b.forEach(function(t) {
    e[t] = this[t];
   }, this), m.addEventListener("mousedown", this.onMouseDown.bind(e));
-  var y, w, C, x, E, S, A, k, _, F, T = m.container, $ = 0;
+  var y, w, x, C, k, E, S, A, _, F, T = m.container, $ = 0;
   this.onDragStart = function(e) {
    if (this.cancelDrag || !T.draggable) {
     var t = this;
@@ -5375,43 +5375,43 @@ function printStackTrace(e) {
    }
    s.isOpera && (v.style.visibility = "visible", setTimeout(function() {
     v.style.visibility = "hidden";
-   }, 0)), E = m.getSelectionRange();
+   }, 0)), k = m.getSelectionRange();
    var n = e.dataTransfer;
    n.effectAllowed = m.getReadOnly() ? "copy" : "copyMove", n.setDragImage && n.setDragImage(v, 0, 0), 
    n.clearData(), n.setData("Text", m.session.getTextRange()), this.setState("drag");
   }, this.onDragEnd = function(e) {
    if (T.draggable = !1, this.setState(null), !m.getReadOnly()) {
     var t = e.dataTransfer.dropEffect;
-    A || "move" != t || m.session.remove(m.getSelectionRange()), m.renderer.$cursorLayer.setBlinking(!0);
+    S || "move" != t || m.session.remove(m.getSelectionRange()), m.renderer.$cursorLayer.setBlinking(!0);
    }
    this.editor.unsetStyle("ace_dragging");
   }, this.onDragEnter = function(e) {
-   return !m.getReadOnly() && f(e.dataTransfer) ? (y || d(), $++, e.dataTransfer.dropEffect = A = g(e), 
+   return !m.getReadOnly() && f(e.dataTransfer) ? (y || d(), $++, e.dataTransfer.dropEffect = S = g(e), 
    r.preventDefault(e)) : void 0;
   }, this.onDragOver = function(e) {
    return !m.getReadOnly() && f(e.dataTransfer) ? (y || (d(), $++), null !== D && (D = null), 
-   w = e.clientX, C = e.clientY, e.dataTransfer.dropEffect = A = g(e), r.preventDefault(e)) : void 0;
+   w = e.clientX, x = e.clientY, e.dataTransfer.dropEffect = S = g(e), r.preventDefault(e)) : void 0;
   }, this.onDragLeave = function(e) {
-   return $--, 0 >= $ && y ? (h(), A = null, r.preventDefault(e)) : void 0;
+   return $--, 0 >= $ && y ? (h(), S = null, r.preventDefault(e)) : void 0;
   }, this.onDrop = function(e) {
    if (y) {
     var t = e.dataTransfer, n = "drag" == this.state;
-    if (n) switch (A) {
+    if (n) switch (S) {
     case "move":
-     E = E.contains(S.row, S.column) ? {
-      start: S,
-      end: S
-     } : m.moveText(E, S);
+     k = k.contains(E.row, E.column) ? {
+      start: E,
+      end: E
+     } : m.moveText(k, E);
      break;
 
     case "copy":
-     E = m.moveText(E, S, !0);
+     k = m.moveText(k, E, !0);
     } else {
      var i = t.getData("Text");
-     E = {
-      start: S,
-      end: m.session.insert(S, i)
-     }, m.focus(), A = null;
+     k = {
+      start: E,
+      end: m.session.insert(E, i)
+     }, m.focus(), S = null;
     }
     return h(), r.preventDefault(e);
    }
@@ -6513,11 +6513,11 @@ function printStackTrace(e) {
      for (var i = t.getTokens(n), o = 0; o < i.length; o++) if ("comment" === i[o].type) return !0;
     };
    }
-   var C = 1/0;
+   var x = 1/0;
    o(function(e, t) {
     var n = e.search(/\S/);
-    -1 !== n ? (c > n && (c = n), l && !v(e, t) && (l = !1)) : C > e.length && (C = e.length);
-   }), 1/0 == c && (c = C, a = !1, l = !1), d && 0 != c % u && (c = Math.floor(c / u) * u), 
+    -1 !== n ? (c > n && (c = n), l && !v(e, t) && (l = !1)) : x > e.length && (x = e.length);
+   }), 1/0 == c && (c = x, a = !1, l = !1), d && 0 != c % u && (c = Math.floor(c / u) * u), 
    o(l ? f : m);
   }, this.toggleBlockComment = function(e, t, n, i) {
    var o = this.blockComment;
@@ -10760,36 +10760,36 @@ function printStackTrace(e) {
   }, v = function() {
    var e = l.renderer.pixelToScreenCoordinates(f, g), t = b.screenToDocumentPosition(e.row, e.column);
    n(w, e) && n(t, c.selectionLead) || (w = e, l.selection.moveCursorToPosition(t), 
-   l.selection.clearSelection(), l.renderer.scrollCursorIntoView(), l.removeSelectionMarkers(C), 
-   C = c.rectangularRangeBlock(w, y), C.forEach(l.addSelectionMarker, l), l.updateSelectionMarkers());
+   l.selection.clearSelection(), l.renderer.scrollCursorIntoView(), l.removeSelectionMarkers(x), 
+   x = c.rectangularRangeBlock(w, y), x.forEach(l.addSelectionMarker, l), l.updateSelectionMarkers());
   }, b = l.session, y = l.renderer.pixelToScreenCoordinates(f, g), w = y;
   if (!s || r || i || 0 != a) {
    if (i && 0 == a) {
     e.stop(), u && !s ? c.toSingleRange() : !u && s && c.addRange();
-    var C = [];
+    var x = [];
     r ? (y = b.documentToScreenPosition(c.lead), v()) : (c.moveCursorToPosition(d), 
     c.clearSelection());
-    var x = function() {
-     clearInterval(S), l.removeSelectionMarkers(C);
-     for (var e = 0; e < C.length; e++) c.addRange(C[e]);
-    }, E = v;
-    o.capture(l.container, m, x);
-    var S = setInterval(function() {
-     E();
+    var C = function() {
+     clearInterval(E), l.removeSelectionMarkers(x);
+     for (var e = 0; e < x.length; e++) c.addRange(x[e]);
+    }, k = v;
+    o.capture(l.container, m, C);
+    var E = setInterval(function() {
+     k();
     }, 20);
     return e.preventDefault();
    }
   } else {
    if (!u && p) return;
    if (!u) {
-    var A = c.toOrientedRange();
-    l.addSelectionMarker(A);
+    var S = c.toOrientedRange();
+    l.addSelectionMarker(S);
    }
-   var k = c.rangeList.rangeAtPoint(d);
+   var A = c.rangeList.rangeAtPoint(d);
    l.once("mouseup", function() {
     var e = c.toOrientedRange();
-    k && e.isEmpty() && n(k.cursor, e.cursor) ? c.substractPoint(e.cursor) : (A && (l.removeSelectionMarker(A), 
-    c.addRange(A)), c.addRange(e));
+    A && e.isEmpty() && n(A.cursor, e.cursor) ? c.substractPoint(e.cursor) : (S && (l.removeSelectionMarker(S), 
+    c.addRange(S)), c.addRange(e));
    });
   }
  }
@@ -11681,7 +11681,7 @@ function printStackTrace(e) {
    D[e] = !0;
   }
   function h(e, t, n, i, o) {
-   for (var r, s, a = S.length, l = null; a--; ) if (s = S[a], (s.scope === i || "all" === s.scope) && (!s.flag || t.indexOf(s.flag) > -1) && (r = m.exec(e, s.regex, n, "sticky"))) {
+   for (var r, s, a = E.length, l = null; a--; ) if (s = E[a], (s.scope === i || "all" === s.scope) && (!s.flag || t.indexOf(s.flag) > -1) && (r = m.exec(e, s.regex, n, "sticky"))) {
     l = {
      matchLength: r[0].length,
      output: s.handler.call(o, r, i, t),
@@ -11695,9 +11695,9 @@ function printStackTrace(e) {
    m.cache.flush("patterns"), y.astral = e;
   }
   function f(e) {
-   RegExp.prototype.exec = (e ? C : w).exec, RegExp.prototype.test = (e ? C : w).test, 
-   String.prototype.match = (e ? C : w).match, String.prototype.replace = (e ? C : w).replace, 
-   String.prototype.split = (e ? C : w).split, y.natives = e;
+   RegExp.prototype.exec = (e ? x : w).exec, RegExp.prototype.test = (e ? x : w).test, 
+   String.prototype.match = (e ? x : w).match, String.prototype.replace = (e ? x : w).replace, 
+   String.prototype.split = (e ? x : w).split, y.natives = e;
   }
   function g(e) {
    if (null == e) throw new TypeError("Cannot convert null or undefined to object");
@@ -11712,7 +11712,7 @@ function printStackTrace(e) {
    match: String.prototype.match,
    replace: String.prototype.replace,
    split: String.prototype.split
-  }, C = {}, x = {}, E = {}, S = [], A = "default", k = "class", _ = {
+  }, x = {}, C = {}, k = {}, E = [], S = "default", A = "class", _ = {
    "default": /\\(?:0(?:[0-3][0-7]{0,2}|[4-7][0-7]?)?|[1-9]\d*|x[\dA-Fa-f]{2}|u[\dA-Fa-f]{4}|c[A-Za-z]|[\s\S])|\(\?[:=!]|[?*+]\?|{\d+(?:,\d*)?}\??|[\s\S]/,
    "class": /\\(?:[0-3][0-7]{0,2}|[4-7][0-7]?|x[\dA-Fa-f]{2}|u[\dA-Fa-f]{4}|c[A-Za-z]|[\s\S])|[\s\S]/
   }, F = /\$(?:{([\w$]+)}|(\d\d?|[\s\S]))/g, T = w.exec.call(/()??/, "")[1] === e, $ = RegExp.prototype.sticky !== e, D = {
@@ -11725,7 +11725,7 @@ function printStackTrace(e) {
    var r, s, a, l = {
     hasNamedCapture: !1,
     captureNames: []
-   }, u = A, d = "", p = 0;
+   }, u = S, d = "", p = 0;
    if (m.isRegExp(n)) {
     if (o !== e) throw new TypeError("Cannot supply flags when copying a RegExp");
     return i(n, {
@@ -11733,37 +11733,37 @@ function printStackTrace(e) {
     });
    }
    if (n = n === e ? "" : String(n), o = o === e ? "" : String(o), a = n + "***" + o, 
-   !E[a]) {
+   !k[a]) {
     for (r = c(n, o), n = r.pattern, o = r.flags; p < n.length; ) {
      do r = h(n, o, p, u, l), r && r.reparse && (n = n.slice(0, p) + r.output + n.slice(p + r.matchLength)); while (r && r.reparse);
      r ? (d += r.output, p += r.matchLength || 1) : (s = m.exec(n, _[u], p, "sticky")[0], 
-     d += s, p += s.length, "[" === s && u === A ? u = k : "]" === s && u === k && (u = A));
+     d += s, p += s.length, "[" === s && u === S ? u = A : "]" === s && u === A && (u = S));
     }
-    E[a] = {
+    k[a] = {
      pattern: w.replace.call(d, /\(\?:\)(?=\(\?:\))|^\(\?:\)|\(\?:\)$/g, ""),
      flags: w.replace.call(o, /[^gimy]+/g, ""),
      captures: l.hasNamedCapture ? l.captureNames : null
     };
    }
-   return a = E[a], t(new RegExp(a.pattern, a.flags), a.captures, !0);
+   return a = k[a], t(new RegExp(a.pattern, a.flags), a.captures, !0);
   }, m.prototype = new RegExp(), m.version = "3.0.0-pre", m.addToken = function(e, t, n) {
    n = n || {};
    var o, r = n.optionalFlags;
    if (n.flag && d(n.flag), r) for (r = w.split.call(r, ""), o = 0; o < r.length; ++o) d(r[o]);
-   S.push({
+   E.push({
     regex: i(e, {
      add: "g" + ($ ? "y" : "")
     }),
     handler: t,
-    scope: n.scope || A,
+    scope: n.scope || S,
     flag: n.flag,
     reparse: n.reparse
    }), m.cache.flush("patterns");
   }, m.cache = function(e, t) {
    var n = e + "***" + (t || "");
-   return x[n] || (x[n] = m(e, t));
+   return C[n] || (C[n] = m(e, t));
   }, m.cache.flush = function(e) {
-   "patterns" === e ? E = {} : x = {};
+   "patterns" === e ? k = {} : C = {};
   }, m.escape = function(e) {
    return w.replace.call(g(e), /[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
   }, m.exec = function(e, t, n, r) {
@@ -11771,7 +11771,7 @@ function printStackTrace(e) {
    return $ && (r || t.sticky && r !== !1) && (l += "y"), t[b] = t[b] || o(), a = t[b][l] || (t[b][l] = i(t, {
     add: l,
     remove: r === !1 ? "y" : ""
-   })), a.lastIndex = n = n || 0, s = C.exec.call(a, e), r && s && s.index !== n && (s = null), 
+   })), a.lastIndex = n = n || 0, s = x.exec.call(a, e), r && s && s.index !== n && (s = null), 
    t.global && (t.lastIndex = s ? a.lastIndex : 0), s;
   }, m.forEach = function(e, t, n, i) {
    for (var o, r = 0, s = -1; o = m.exec(e, t, r); ) n.call(i, o, ++s, e, t), r = o.index + (o[0].length || 1);
@@ -11812,14 +11812,14 @@ function printStackTrace(e) {
    return a ? (t[b] = t[b] || o(), u = t[b][c || "noGY"] || (t[b][c || "noGY"] = i(t, {
     add: c,
     remove: "one" === r ? "g" : ""
-   }))) : l && (u = new RegExp(m.escape(String(t)), "g")), s = C.replace.call(g(e), u, n), 
+   }))) : l && (u = new RegExp(m.escape(String(t)), "g")), s = x.replace.call(g(e), u, n), 
    a && t.global && (t.lastIndex = 0), s;
   }, m.replaceEach = function(e, t) {
    var n, i;
    for (n = 0; n < t.length; ++n) i = t[n], e = m.replace(e, i[0], i[1], i[2]);
    return e;
   }, m.split = function(e, t, n) {
-   return C.split.call(g(e), t, n);
+   return x.split.call(g(e), t, n);
   }, m.test = function(e, t, n, i) {
    return !!m.exec(e, t, n, i);
   }, m.uninstall = function(e) {
@@ -11836,7 +11836,7 @@ function printStackTrace(e) {
    for (r = 0; r < e.length; ++r) o = e[r], m.isRegExp(o) ? (n = c, i = o[b] && o[b].captureNames || [], 
    l.push(w.replace.call(m(o.source).source, s, u))) : l.push(m.escape(o));
    return m(l.join("|"), t);
-  }, C.exec = function(t) {
+  }, x.exec = function(t) {
    var n, o, r, a = this.lastIndex, l = w.exec.apply(this, arguments);
    if (l) {
     if (!T && l.length > 1 && s(l, "") > -1 && (o = i(this, {
@@ -11849,15 +11849,15 @@ function printStackTrace(e) {
     this.global && !l[0].length && this.lastIndex > l.index && (this.lastIndex = l.index);
    }
    return this.global || (this.lastIndex = a), l;
-  }, C.test = function(e) {
-   return !!C.exec.call(this, e);
-  }, C.match = function(e) {
+  }, x.test = function(e) {
+   return !!x.exec.call(this, e);
+  }, x.match = function(e) {
    var t;
    if (m.isRegExp(e)) {
     if (e.global) return t = w.match.apply(this, arguments), e.lastIndex = 0, t;
    } else e = new RegExp(e);
-   return C.exec.call(e, g(this));
-  }, C.replace = function(t, n) {
+   return x.exec.call(e, g(this));
+  }, x.replace = function(t, n) {
    var i, o, r, l = m.isRegExp(t);
    return l ? (t[b] && (o = t[b].captureNames), i = t.lastIndex) : t += "", r = a(n, "Function") ? w.replace.call(String(this), t, function() {
     var i, r = arguments;
@@ -11883,7 +11883,7 @@ function printStackTrace(e) {
      throw new SyntaxError("Invalid token " + t);
     });
    }), l && (t.lastIndex = t.global ? 0 : i), r;
-  }, C.split = function(t, n) {
+  }, x.split = function(t, n) {
    if (!m.isRegExp(t)) return w.split.apply(this, arguments);
    var i, o = String(this), r = [], s = t.lastIndex, a = 0;
    return n = (n === e ? -1 : n) >>> 0, m.forEach(o, t, function(e) {
@@ -11892,7 +11892,7 @@ function printStackTrace(e) {
    }), a === o.length ? (!w.test.call(t, "") || i) && r.push("") : r.push(o.slice(a)), 
    t.lastIndex = s, r.length > n ? r.slice(0, n) : r;
   }, v = m.addToken, v(/\\([ABCE-RTUVXYZaeg-mopqyz]|c(?![A-Za-z])|u(?![\dA-Fa-f]{4})|x(?![\dA-Fa-f]{2}))/, function(e, t) {
-   if ("B" === e[1] && t === A) return e[0];
+   if ("B" === e[1] && t === S) return e[0];
    throw new SyntaxError("Invalid escape " + e[0]);
   }, {
    scope: "all"
@@ -11913,7 +11913,7 @@ function printStackTrace(e) {
    if (!t || t > this.captureNames.length) throw new SyntaxError("Backreference to undefined group " + e[0]);
    return "\\" + t + (n === e.input.length || isNaN(e.input.charAt(n)) ? "" : "(?:)");
   }), v(/\\(\d+)/, function(e, t) {
-   if (!(t === A && /^[1-9]/.test(e[1]) && +e[1] <= this.captureNames.length) && "0" !== e[1]) throw new SyntaxError("Cannot use octal escape or backreference to undefined group " + e[0]);
+   if (!(t === S && /^[1-9]/.test(e[1]) && +e[1] <= this.captureNames.length) && "0" !== e[1]) throw new SyntaxError("Cannot use octal escape or backreference to undefined group " + e[0]);
    return e[0];
   }, {
    scope: "all"
@@ -11975,7 +11975,7 @@ function printStackTrace(e) {
   }
   e.matchRecursive = function(n, i, o, r, s) {
    r = r || "", s = s || {};
-   var a, l, c, u, d, h = r.indexOf("g") > -1, p = r.indexOf("y") > -1, f = r.replace(/y/g, ""), g = s.escapeChar, m = s.valueNames, v = [], b = 0, y = 0, w = 0, C = 0;
+   var a, l, c, u, d, h = r.indexOf("g") > -1, p = r.indexOf("y") > -1, f = r.replace(/y/g, ""), g = s.escapeChar, m = s.valueNames, v = [], b = 0, y = 0, w = 0, x = 0;
    if (i = e(i, f), o = e(o, f), g) {
     if (g.length > 1) throw new Error("Cannot use more than one escape character");
     g = e.escape(g), d = new RegExp("(?:" + g + "[\\S\\s]|(?:(?!" + e.union([ i, o ]).source + ")[^" + g + "])+)+", r.replace(/[^im]+/g, ""));
@@ -11984,16 +11984,16 @@ function printStackTrace(e) {
     if (g && (w += (e.exec(n, d, w, "sticky") || [ "" ])[0].length), c = e.exec(n, i, w), 
     u = e.exec(n, o, w), c && u && (c.index <= u.index ? u = null : c = null), c || u) y = (c || u).index, 
     w = y + (c || u)[0].length; else if (!b) break;
-    if (p && !b && y > C) break;
+    if (p && !b && y > x) break;
     if (c) b || (a = y, l = w), ++b; else {
      if (!u || !b) throw new Error("Unbalanced delimiter found in string");
-     if (!--b && (m ? (m[0] && a > C && v.push(t(m[0], n.slice(C, a), C, a)), m[1] && v.push(t(m[1], n.slice(a, l), a, l)), 
+     if (!--b && (m ? (m[0] && a > x && v.push(t(m[0], n.slice(x, a), x, a)), m[1] && v.push(t(m[1], n.slice(a, l), a, l)), 
      m[2] && v.push(t(m[2], n.slice(l, y), l, y)), m[3] && v.push(t(m[3], n.slice(y, w), y, w))) : v.push(n.slice(l, y)), 
-     C = w, !h)) break;
+     x = w, !h)) break;
     }
     y === w && ++w;
    }
-   return h && !p && m && m[0] && n.length > C && v.push(t(m[0], n.slice(C), C, n.length)), 
+   return h && !p && m && m[0] && n.length > x && v.push(t(m[0], n.slice(x), x, n.length)), 
    v;
   };
  }(e), function(e) {
@@ -13441,53 +13441,53 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
    return d.push(e), e;
   }, w = function() {
    p(m, "writestart progress write writeend".split(" "));
-  }, C = function() {
+  }, x = function() {
    (b || !h) && (h = y(i)), f ? f.location.href = h : window.open(h, "_blank"), m.readyState = m.DONE, 
    w();
-  }, x = function(e) {
+  }, C = function(e) {
    return function() {
     return m.readyState !== m.DONE ? e.apply(this, arguments) : void 0;
    };
-  }, E = {
+  }, k = {
    create: !0,
    exclusive: !1
   };
   if (m.readyState = m.INIT, l || (l = "download"), r) {
    h = y(i), t = e.document, o = t.createElementNS("http://www.w3.org/1999/xhtml", "a"), 
    o.href = h, o.download = l;
-   var S = t.createEvent("MouseEvents");
-   return S.initMouseEvent("click", !0, !1, e, 0, 0, 0, 0, 0, !1, !1, !1, !1, 0, null), 
-   o.dispatchEvent(S), m.readyState = m.DONE, w(), void 0;
+   var E = t.createEvent("MouseEvents");
+   return E.initMouseEvent("click", !0, !1, e, 0, 0, 0, 0, 0, !1, !1, !1, !1, 0, null), 
+   o.dispatchEvent(E), m.readyState = m.DONE, w(), void 0;
   }
   return e.chrome && v && v !== c && (g = i.slice || i.webkitSlice, i = g.call(i, 0, i.size, c), 
   b = !0), s && "download" !== l && (l += ".download"), (v === c || s) && (f = e), 
-  a ? (u += i.size, a(e.TEMPORARY, u, x(function(e) {
-   e.root.getDirectory("saved", E, x(function(e) {
+  a ? (u += i.size, a(e.TEMPORARY, u, C(function(e) {
+   e.root.getDirectory("saved", k, C(function(e) {
     var t = function() {
-     e.getFile(l, E, x(function(e) {
-      e.createWriter(x(function(t) {
+     e.getFile(l, k, C(function(e) {
+      e.createWriter(C(function(t) {
        t.onwriteend = function(t) {
         f.location.href = e.toURL(), d.push(e), m.readyState = m.DONE, p(m, "writeend", t);
        }, t.onerror = function() {
         var e = t.error;
-        e.code !== e.ABORT_ERR && C();
+        e.code !== e.ABORT_ERR && x();
        }, "writestart progress write abort".split(" ").forEach(function(e) {
         t["on" + e] = m["on" + e];
        }), t.write(i), m.abort = function() {
         t.abort(), m.readyState = m.DONE;
        }, m.readyState = m.WRITING;
-      }), C);
-     }), C);
+      }), x);
+     }), x);
     };
     e.getFile(l, {
      create: !1
-    }, x(function(e) {
+    }, C(function(e) {
      e.remove(), t();
-    }), x(function(e) {
-     e.code === e.NOT_FOUND_ERR ? t() : C();
+    }), C(function(e) {
+     e.code === e.NOT_FOUND_ERR ? t() : x();
     }));
-   }), C);
-  }), C), void 0) : (C(), void 0);
+   }), x);
+  }), x), void 0) : (x(), void 0);
  }, g = f.prototype, m = function(e, t) {
   return new f(e, t);
  };
@@ -14264,16 +14264,16 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
       t = this.isDefined(c.value) && "" != c.value ? c.value : this.getNextEmbedBlock(), 
       d = this.getRealCurrentLineNb() + 1, h = new r(d), h.refs = this.refs, g = h.parse(t), 
       this.refs = h.refs;
-      var C = [];
+      var x = [];
       if (!this.isObject(g)) throw new e("YAML merge keys used with a scalar value instead of an array", this.getRealCurrentLineNb() + 1, this.currentLine);
       if (this.isDefined(g[0])) {
        v = this.reverseArray(g), m = v.length;
        for (var w = 0; m > w; w++) {
         if (v[w], !this.isObject(v[w])) throw new e("Merge items must be arrays", this.getRealCurrentLineNb() + 1, this.currentLine);
-        C = this.mergeObject(v[w], C);
+        x = this.mergeObject(v[w], x);
        }
-      } else C = this.mergeObject(C, g);
-      l = C;
+      } else x = this.mergeObject(x, g);
+      l = x;
      } else this.isDefined(c.value) && (u = /^&([^ ]+) *(.*)/.exec(c.value)) && (u = {
       ref: u[1],
       value: u[2]
@@ -14282,9 +14282,9 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
      h = new r(d), h.refs = this.refs, n[f] = h.parse(this.getNextEmbedBlock()), this.refs = h.refs);
     }
     if (s) if (n instanceof Array) this.refs[s] = n[n.length - 1]; else {
-     var x = null;
-     for (var E in n) n.hasOwnProperty(E) && (x = E);
-     this.refs[s] = n[E];
+     var C = null;
+     for (var k in n) n.hasOwnProperty(k) && (C = k);
+     this.refs[s] = n[k];
     }
    }
    return this.isEmpty(n) ? null : n;
@@ -14666,1359 +14666,6 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
    return n.onMarkdownTrim((i[1] || "").length), i[3];
   });
  }, i;
-}), define("extensions/markdownSectionParser", [ "classes/Extension" ], function(e) {
- var t, n = new e("markdownSectionParser", "Markdown section parser");
- return n.onEventMgrCreated = function(e) {
-  t = e;
- }, n.onPagedownConfigure = function(e) {
-  var n = e.getConverter();
-  n.hooks.chain("preConversion", function(e) {
-   t.previewStartTime = new Date();
-   var n = e + "\n\n", i = [], o = 0;
-   return n.replace(/^```.*\n[\s\S]*?\n```|(^.+[ \t]*\n=+[ \t]*\n+|^.+[ \t]*\n-+[ \t]*\n+|^\#{1,6}[ \t]*.+?[ \t]*\#*\n+)/gm, function(e, t, r) {
-    return t && (i.push(n.substring(o, r)), o = r), "";
-   }), i.push(n.substring(o, e.length)), t.onSectionsCreated(i), e;
-  });
- }, n;
-}), define("text!html/partialRenderingSettingsBlock.html", [], function() {
- return "<p>Renders modified sections only.</p>\n<blockquote>\n	<b>NOTE:</b> Document sections are based on title elements (h1, h2...). Therefore if\n	your document does not contain any title, performance will not be increased.\n</blockquote>";
-}), define("extensions/partialRendering", [ "underscore", "crel", "classes/Extension", "text!html/partialRenderingSettingsBlock.html" ], function(e, t, n, i) {
- function o(t, n) {
-  if (f = [], p = [], u = void 0, g === !0 || c != n) return g = !1, c = n, p = h, 
-  h = t, f = t, void 0;
-  var i = h.length;
-  e.some(h, function(e, n) {
-   return n >= t.length || e.text != t[n].text ? (i = n, !0) : void 0;
-  });
-  var o = -h.length;
-  e.some(h.slice().reverse(), function(e, n) {
-   return n >= t.length || e.text != t[t.length - n - 1].text ? (o = -n, !0) : void 0;
-  }), i - o > h.length && (o = i - h.length);
-  var r = h.slice(0, i);
-  f = t.slice(i, t.length + o);
-  var s = h.slice(h.length + o, h.length);
-  u = e.first(s), p = h.slice(i, h.length + o), h = r.concat(f).concat(s);
- }
- function r(e) {
-  var t = e.id.substring(3);
-  w[t] = e;
- }
- function s() {
-  function n(n) {
-   for (var i = t("div", {
-    id: "wmd-preview-section-" + n.id,
-    "class": "wmd-preview-section preview-content"
-   }), s = !0; o; ) {
-    var a = o.nextSibling;
-    if (s === !1 && /(^| )wmd-title($| )/.test(o.className)) break;
-    s = !1, "DIV" == o.tagName && "footnotes" == o.className ? e.each(o.querySelectorAll("ol > li"), r) : i.appendChild(o), 
-    o = a;
-   }
-   return i;
-  }
-  e.each(p, function(e) {
-   var t = document.getElementById("wmd-preview-section-" + e.id);
-   y.removeChild(t);
-  });
-  var i = document.getElementById("wmd-preview"), o = i.firstChild, s = document.createDocumentFragment();
-  e.each(f, function(e) {
-   s.appendChild(n(e));
-  }), i.innerHTML = "";
-  var a = b;
-  void 0 !== u && (a = document.getElementById("wmd-preview-section-" + u.id)), y.insertBefore(s, a), 
-  b.innerHTML = "";
-  var l = [];
-  if (v === !0) {
-   var c = t("ol");
-   e.each(y.querySelectorAll("a.footnote"), function(e, t) {
-    e.textContent = t + 1;
-    var n = e.id.substring(6);
-    l.push(n), c.appendChild(w[n].cloneNode(!0));
-   }), l.length > 0 && b.appendChild(t("div", {
-    "class": "footnotes"
-   }, t("hr"), c)), w = e.pick(w, l);
-  }
- }
- var a = new n("partialRendering", "Partial Rendering", !0);
- a.settingsBlock = i;
- var l, c, u, d = 0, h = [], p = [], f = [], g = !1, m = !1, v = !1;
- a.onSectionsCreated = function(t) {
-  var n = [], i = "\n";
-  v = !1, e.each(t, function(e) {
-   e += "\n\n", m && (e = e.replace(/^```.*\n[\s\S]*?\n```|\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|$)/gm, function(e, t) {
-    return t ? (v = !0, i += e.replace(/^\s*\n/gm, "") + "\n", "") : e;
-   })), e = e.replace(/^```.*\n[\s\S]*?\n```|^[ ]{0,3}\[(.+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?(?=\s|$)[ \t]*\n?[ \t]*((\n*)["(](.+?)[")][ \t]*)?(?:\n+)/gm, function(e, t) {
-    return t ? (i += e.replace(/^\s*\n/gm, "") + "\n", "") : e;
-   }), /\S/.test(e) && n.push({
-    id: ++d,
-    text: e + "\n"
-   });
-  }), o(n, i);
- };
- var b, y, w = {};
- return a.onPagedownConfigure = function(t) {
-  l = t.getConverter(), l.hooks.chain("preConversion", function() {
-   var t = e.map(f, function(e) {
-    return e.text;
-   });
-   return t.push(c + "\n\n"), t.join("");
-  }), t.hooks.chain("onPreviewRefresh", function() {
-   s();
-  });
- }, a.onExtraExtensions = function(t) {
-  m = e.some(t, function(e) {
-   return "footnotes" == e;
-  });
- }, a.onReady = function() {
-  b = t("div", {
-   id: "wmd-preview-section-footnotes",
-   "class": "preview-content"
-  }), y = document.getElementById("preview-contents"), y.appendChild(b);
- }, a.onFileSelected = function() {
-  g = !0;
- }, a;
-}), define("text!html/buttonMarkdownSyntax.html", [], function() {
- return '<button class="btn btn-default dropdown-toggle" title="Markdown syntax" data-toggle="dropdown">\n	<i class="icon-help-circled"></i>\n</button>\n<div class="dropdown-menu pull-right">\n	<h3>Markdown syntax</h3>\n	<div class="markdown-syntax">\n<h4>Phrase Emphasis</h4>\n\n<pre><code>*italic*   **bold**\n_italic_   __bold__\n</code></pre>\n\n<h4>Links</h4>\n\n<p>Inline:</p>\n\n<pre><code>An [example](http://url.com/ "Title")\n</code></pre>\n\n<p>Reference-style labels (titles are optional):</p>\n\n<pre><code>An [example][id]. Then, anywhere\nelse in the doc, define the link:\n\n  [id]: http://example.com/  "Title"\n</code></pre>\n\n<h4>Images</h4>\n\n<p>Inline (titles are optional):</p>\n\n<pre><code>![alt text](/path/img.jpg "Title")\n</code></pre>\n\n<p>Reference-style:</p>\n\n<pre><code>![alt text][id]\n\n[id]: /url/to/img.jpg "Title"\n</code></pre>\n\n<h4>Headers</h4>\n\n<p>Setext-style:</p>\n\n<pre><code>Header 1\n========\n\nHeader 2\n--------\n</code></pre>\n\n<p>atx-style (closing #\'s are optional):</p>\n\n<pre><code># Header 1 #\n\n## Header 2 ##\n\n###### Header 6\n</code></pre>\n\n<h4>Lists</h4>\n\n<p>Ordered, without paragraphs:</p>\n\n<pre><code>1.  Foo\n2.  Bar\n</code></pre>\n\n<p>Unordered, with paragraphs:</p>\n\n<pre><code>*   A list item.\n\n    With multiple paragraphs.\n\n*   Bar\n</code></pre>\n\n<p>You can nest them:</p>\n\n<pre><code>*   Abacus\n    * answer\n*   Bubbles\n    1.  bunk\n    2.  bupkis\n        * BELITTLER\n    3. burper\n*   Cunning\n</code></pre>\n\n<h4>Blockquotes</h4>\n\n<pre><code>&gt; Email-style angle brackets\n&gt; are used for blockquotes.\n\n&gt; &gt; And, they can be nested.\n\n&gt; #### Headers in blockquotes\n&gt; \n&gt; * You can quote a list.\n&gt; * Etc.\n</code></pre>\n\n<h4>Code Spans</h4>\n\n<pre><code>`&lt;code&gt;` spans are delimited\nby backticks.\n\nYou can include literal backticks\nlike `` `this` ``.\n</code></pre>\n\n<h4>Preformatted Code Blocks</h4>\n\n<p>Indent every line of a code block by at least 4 spaces or 1 tab.</p>\n\n<pre><code>This is a normal paragraph.\n\n    This is a preformatted\n    code block.\n</code></pre>\n\n<h4>Horizontal Rules</h4>\n\n<p>Three or more dashes or asterisks:</p>\n\n<pre><code>---\n\n* * *\n\n- - - - \n</code></pre>\n\n<h4>Manual Line Breaks</h4>\n\n<p>End a line with two or more spaces:</p>\n\n<pre><code>Roses are red,   \nViolets are blue.\n</code></pre>\n\n<blockquote>Based on the <a target="_blank" href="https://github.com/fletcher/MultiMarkdown/blob/master/Documentation/Markdown%20Syntax.md">Markdown syntax guide</a>, by Fletcher T. Penney.</blockquote>\n    </div>\n</div>\n';
-}), define("extensions/buttonMarkdownSyntax", [ "jquery", "classes/Extension", "text!html/buttonMarkdownSyntax.html" ], function(e, t, n) {
- var i = new t("buttonMarkdownSyntax", 'Button "Markdown syntax', !0, !0);
- return i.settingsBlock = '<p>Adds a "Markdown syntax" button over the preview.</p>', 
- i.onCreatePreviewButton = function() {
-  return n;
- }, i;
-}), define("extensions/googleAnalytics", [ "jquery", "underscore", "constants", "utils", "classes/Extension", "settings" ], function(e, t, n, i, o, r) {
- function s() {
-  i.currentTime - d > 18e4 && (_gaq.push([ "_trackPageview" ]), d = i.currentTime);
- }
- var a = new o("googleAnalytics", "Google Analytics", !0);
- a.settingsBlock = "<p>Sends anonymous statistics about usage and errors to help improve StackEdit.</p>";
- var l = !1, c = !1;
- window._gaq = [];
- var u = function() {
-  if (l === !1 && c === !1) {
-   var t = "/ga.js";
-   location.search.match(/(\?|&)console/) && (t = "/u/ga_debug.js"), e.ajax({
-    url: "https://ssl.google-analytics.com" + t,
-    dataType: "script"
-   }).done(function() {
-    l = !0;
-   });
-  }
- }, d = 0;
- a.onPeriodicRun = function() {
-  s();
- }, a.onReady = function() {
-  _gaq.push([ "_setAccount", n.GOOGLE_ANALYTICS_ACCOUNT_ID ]), s(), _gaq.push([ "_trackEvent", "About", "version", n.VERSION ]), 
-  _gaq.push([ "_trackEvent", "Settings", "layoutOrientation", "" + r.layoutOrientation ]), 
-  _gaq.push([ "_trackEvent", "Settings", "theme", "" + window.theme ]), _gaq.push([ "_trackEvent", "Settings", "lazyRendering", "" + r.lazyRendering ]), 
-  _gaq.push([ "_trackEvent", "Settings", "editorFontFamily", "" + r.editorFontFamily ]), 
-  _gaq.push([ "_trackEvent", "Settings", "editorFontSize", "" + r.editorFontSize ]), 
-  _gaq.push([ "_trackEvent", "Settings", "defaultContent backlink", "" + (-1 !== r.defaultContent.indexOf(n.MAIN_URL)) ]), 
-  _gaq.push([ "_trackEvent", "Settings", "commitMsg backlink", "" + (-1 !== r.commitMsg.indexOf(n.MAIN_URL)) ]), 
-  _gaq.push([ "_trackEvent", "Settings", "sshProxy unchanged", "" + (r.sshProxy == n.SSH_PROXY_URL) ]), 
-  t.each(r.extensionSettings, function(e, t) {
-   _gaq.push([ "_trackEvent", "Extensions", t + " enabled", "" + (e.enabled === !0) ]);
-  }), window.onerror = function(e, t, n) {
-   _gaq.push([ "_trackEvent", "Error", e, t + ":" + n + i.formatEventList() ]);
-  }, u();
- }, a.onOfflineChanged = function(e) {
-  c = e, u();
- };
- var h = 0;
- return a.onSyncRunning = function(e) {
-  e === !0 && (h = new Date().getTime());
- }, a.onPublishRunning = function(e) {
-  e === !0 && (h = new Date().getTime());
- }, a.onSyncSuccess = function() {
-  var e = new Date().getTime();
-  _gaq.push([ "_trackTiming", "Sync", "SyncTime", e - h ]);
- }, a.onSyncImportSuccess = function(e, t) {
-  _gaq.push([ "_trackEvent", "Sync", "SyncImport" ]), _gaq.push([ "_trackEvent", "Sync", "SyncImport provider", t.providerId ]);
- }, a.onSyncExportSuccess = function(e, t) {
-  _gaq.push([ "_trackEvent", "Sync", "SyncExport" ]), _gaq.push([ "_trackEvent", "Sync", "SyncExport provider", t.provider.providerId ]);
- }, a.onPublishSuccess = function(e) {
-  var n = new Date().getTime();
-  _gaq.push([ "_trackTiming", "Publish", "PublishSuccess", n - h ]), t.each(e.publishLocations, function(e) {
-   _gaq.push([ "_trackEvent", "Publish", "PublishSuccess provider", e.provider.providerId ]);
-  });
- }, a.onNewPublishSuccess = function(e, t) {
-  _gaq.push([ "_trackEvent", "Publish", "NewPublish provider", t.provider.providerId ]);
- }, a.onError = function(e) {
-  !t.isString(e) && e.message && _gaq.push([ "_trackEvent", "Error", "message", e.message + i.formatEventList() ]);
- }, a;
-}), define("text!html/dialogAbout.html", [], function() {
- return '<div class="modal-dialog">\n    <div class="modal-content">\n        <div class="modal-header">\n            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>\n            <img data-stackedit-src="stackedit-promo.png" width="240"\n            height="60" />\n        </div>\n        <div class="modal-body">\n            <dl>\n                <dt>About:</dt>\n                <dd>\n                    <a target="_blank" href="https://github.com/benweet/stackedit/">GitHub\n						project</a> /\n                    <a target="_blank" href="https://github.com/benweet/stackedit/issues">issue\n						tracker</a>\n                    <br />\n                    <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome\n						app</a> (thanks for your review!)\n                    <br />\n                    <a target="_blank" href="https://twitter.com/stackedit/">Follow on Twitter</a>\n                    <br />\n                    <a target="_blank" href="https://www.facebook.com/stackedit/">Follow\n						on Facebook</a>\n                    <br />\n                    <a target="_blank" href="https://plus.google.com/110816046787593496375"\n                    rel="publisher">Follow on Google+</a>\n                    <br />\n				</dd>\n			</dl>\n			<dl>\n				<dt>Developers:</dt>\n				<dd>\n					<a target="_blank" href="http://www.benoitschweblin.com">Benoit\n						Schweblin</a><br /> Pete Eigel (contributor)\n				</dd>\n			</dl>\n			<dl>\n				<dt>Credit:</dt>\n				<dd>\n					<% _.each(libraries, function(url, name) { %> <a target="_blank"\n						href="<%= url %>"><%= name %></a><br /> <% }); %>\n				</dd>\n			</dl>\n			<dl>\n				<dt>Related projects:</dt>\n				<dd>\n					<% _.each(projects, function(url, name) { %> <a target="_blank"\n						href="<%= url %>"><%= name %></a><br /> <% }); %>\n				</dd>\n			</dl>\n			<dl>\n				<dt>Support StackEdit:</dt>\n				<dd>\n                    <a target="_blank" href="https://www.gittip.com/stackedit/"><img class="btn-gittip" data-stackedit-src="gittip.png" /></a>\n				</dd>\n			</dl>\n			<p>\n				StackEdit <%= version %><br /> Copyright 2013 <a\n					target="_blank" href="http://www.benoitschweblin.com">Benoit\n					Schweblin</a><br /> Licensed under an <a target="_blank"\n					href="http://www.apache.org/licenses/LICENSE-2.0">Apache\n					License</a>\n			</p>\n		</div>\n		<div class="modal-footer">\n			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n		</div>\n	</div>\n</div>\n';
-}), define("extensions/dialogAbout", [ "underscore", "constants", "utils", "classes/Extension", "text!html/dialogAbout.html" ], function(e, t, n, i, o) {
- var r = new i("dialogAbout", 'Dialog "About"'), s = {
-  ACE: "http://ace.c9.io/",
-  Bootstrap: "http://getbootstrap.com/",
-  "Bootstrap Tour": "http://bootstraptour.com/",
-  crel: "https://github.com/KoryNunn/crel",
-  "Dropbox-js": "https://github.com/dropbox/dropbox-js",
-  "FileSaver.js": "https://github.com/eligrey/FileSaver.js/",
-  Fontello: "http://fontello.com/",
-  "Font Awesome and others...": "res/libs/fontello/LICENSE.txt",
-  Gatekeeper: "https://github.com/prose/gatekeeper",
-  "Github.js": "https://github.com/michael/github",
-  "Highlight.js": "http://softwaremaniacs.org/soft/highlight/en/",
-  jGrowl: "https://github.com/stanlemon/jGrowl/",
-  jQuery: "http://jquery.com/",
-  "lz-string": "http://pieroxy.net/blog/pages/lz-string/index.html",
-  MathJax: "http://www.mathjax.org/",
-  Mousetrap: "http://craig.is/killing/mice",
-  "PageDown ACE": "https://github.com/benweet/pagedown-ace",
-  "PageDown Extra": "https://github.com/jmcmanus/pagedown-extra/",
-  Prettify: "https://code.google.com/p/google-code-prettify/",
-  RequireJS: "http://requirejs.org/",
-  "RequireJS LESS plugin": "https://github.com/guybedford/require-less",
-  "stacktrace.js": "http://stacktracejs.com/",
-  "to-markdown": "https://github.com/domchristie/to-markdown",
-  "Typo.js": "https://github.com/cfinke/Typo.js",
-  "UI Layout": "http://layout.jquery-dev.net/",
-  "Underscore.js": "http://underscorejs.org/",
-  waitForImages: "https://github.com/alexanderdickson/waitForImages",
-  XRegExp: "https://github.com/slevithan/xregexp",
-  "yaml.js": "https://github.com/jeremyfa/yaml.js"
- }, a = {
-  "StackEdit Download Proxy": "https://github.com/benweet/stackedit-download-proxy",
-  "StackEdit HTMLtoPDF": "https://github.com/benweet/stackedit-htmltopdf",
-  "StackEdit Picasa Proxy": "https://github.com/benweet/stackedit-picasa-proxy",
-  "StackEdit SSH Proxy": "https://github.com/benweet/stackedit-ssh-proxy",
-  "StackEdit Tumblr Proxy": "https://github.com/benweet/stackedit-tumblr-proxy",
-  "StackEdit WordPress Proxy": "https://github.com/benweet/stackedit-wordpress-proxy"
- };
- return r.onReady = function() {
-  n.addModal("modal-about", e.template(o, {
-   libraries: s,
-   projects: a,
-   version: t.VERSION
-  }));
- }, r;
-}), define("text!html/dialogManagePublicationLocation.html", [], function() {
- return '<div class="input-group">\n	<span class="input-group-addon" title="<%= publishAttributes.provider.providerName %>">\n		<i class="icon-provider-<%= publishAttributes.provider.providerId %>"></i>\n	</span> <input class="form-control" type="text"\n		value="<%= publishDesc %>" disabled />\n	<div class="input-group-btn">\n		<a class="btn btn-link remove-button" title="Remove this location"\n			data-publish-index="<%= publishAttributes.publishIndex %>"><i\n			class="icon-trash"></i></a>\n	</div>\n</div>\n';
-}), define("extensions/dialogManagePublication", [ "jquery", "underscore", "classes/Extension", "text!html/dialogManagePublicationLocation.html" ], function(e, t, n, i) {
- var o, r = new n("dialogManagePublication", 'Dialog "Manage publication"', !1, !0);
- r.onEventMgrCreated = function(e) {
-  o = e;
- };
- var s, a, l, c, u = function(n) {
-  if (void 0 === n || n === s) {
-   t.size(s.publishLocations) > 0 ? (l.removeClass("hide"), c.addClass("hide")) : (l.addClass("hide"), 
-   c.removeClass("hide"));
-   var r = t.reduce(s.publishLocations, function(e, n) {
-    var o = t.omit(n, "provider", "publishIndex", "sharingLink");
-    return o.password && (o.password = "********"), o = JSON.stringify(o).replace(/{|}|"/g, "").replace(/,/g, ", "), 
-    e + t.template(i, {
-     publishAttributes: n,
-     publishDesc: o
-    });
-   }, "");
-   a.innerHTML = r, t.each(a.querySelectorAll(".remove-button"), function(t) {
-    var n = e(t), i = s.publishLocations[n.data("publishIndex")];
-    n.click(function() {
-     s.removePublishLocation(i), o.onPublishRemoved(s, i);
-    });
-   });
-  }
- };
- return r.onFileSelected = function(e) {
-  s = e, u(e);
- }, r.onNewPublishSuccess = u, r.onPublishRemoved = u, r.onReady = function() {
-  var t = document.querySelector(".modal-manage-publish");
-  a = t.querySelector(".publish-list"), l = e(t.querySelectorAll(".msg-publish-list")), 
-  c = e(t.querySelectorAll(".msg-no-publish"));
- }, r;
-}), define("text!html/dialogManageSynchronizationLocation.html", [], function() {
- return '<div class="input-group">\n	<span class="input-group-addon"\n		title="<%= syncAttributes.provider.providerName %><%= syncAttributes.isRealtime ? \' (real time)\' : \'\' %>">\n		<i\n		class="icon-provider-<%= syncAttributes.provider.providerId %><%= syncAttributes.isRealtime ? \' realtime\' : \'\' %>"></i>\n	</span> <input class="form-control" type="text"\n		value="<%= syncDesc %>" disabled />\n	<div class="input-group-btn">\n		<a class="btn btn-link remove-button" title="Remove this location"\n			data-sync-index="<%= syncAttributes.syncIndex %>"><i class="icon-trash"></i></a>\n	</div>\n</div>\n';
-}), define("extensions/dialogManageSynchronization", [ "jquery", "underscore", "classes/Extension", "text!html/dialogManageSynchronizationLocation.html" ], function(e, t, n, i) {
- var o, r = new n("dialogManageSynchronization", 'Dialog "Manage synchronization"', !1, !0);
- r.onEventMgrCreated = function(e) {
-  o = e;
- };
- var s;
- r.onSynchronizerCreated = function(e) {
-  s = e;
- };
- var a, l, c, u, d = function(n) {
-  if (void 0 === n || n === a) {
-   t.size(a.syncLocations) > 0 ? (c.removeClass("hide"), u.addClass("hide")) : (c.addClass("hide"), 
-   u.removeClass("hide"));
-   var r = t.reduce(a.syncLocations, function(e, n) {
-    return e + t.template(i, {
-     syncAttributes: n,
-     syncDesc: n.id || n.path
-    });
-   }, "");
-   l.innerHTML = r, t.each(l.querySelectorAll(".remove-button"), function(t) {
-    var n = e(t), i = a.syncLocations[n.data("syncIndex")];
-    n.click(function() {
-     s.tryStopRealtimeSync(), a.removeSyncLocation(i), o.onSyncRemoved(a, i);
-    });
-   });
-  }
- };
- return r.onFileSelected = function(e) {
-  a = e, d(e);
- }, r.onSyncExportSuccess = d, r.onSyncRemoved = d, r.onReady = function() {
-  var t = document.querySelector(".modal-manage-sync");
-  l = t.querySelector(".sync-list"), c = e(t.querySelectorAll(".msg-sync-list")), 
-  u = e(t.querySelectorAll(".msg-no-sync"));
- }, r;
-}), function() {
- var e = this, t = {}, n = !1;
- "undefined" != typeof module && module.exports ? (module.exports = t, e.toMarkdown = t, 
- n = !0) : e.toMarkdown = t, t.converter = function(e) {
-  e && e.elements && $.isArray(e.elements) && (c = c.concat(e.elements)), this.makeMd = function(e, t) {
-   var o;
-   if (n) {
-    var r = require("jsdom");
-    r.env({
-     html: e,
-     scripts: [ "http://code.jquery.com/jquery-1.6.4.min.js" ],
-     done: function(n, o) {
-      "function" == typeof t && t(i(e, o.$));
-     }
-    });
-   } else o = i(e, $);
-   return o;
-  };
- };
- var i = function(e, t) {
-  e = e.replace(/(\d+)\. /g, "$1\\. ");
-  var n = t("<div/>"), i = n.html(e);
-  i.find("*:not(pre, code)").contents().filter(function() {
-   return 3 === this.nodeType && /^\s+$/.test(this.nodeValue);
-  }).remove();
-  for (var o = [], r = 0, a = c.length; a > r; r++) o.push(c[r].selector);
-  for (o = o.join(","); i.find(o).length; ) for (var r = 0, a = c.length; a > r; r++) $matches = i.find(c[r].selector + ':not(:has("' + o + '"))'), 
-  $matches.each(function(e, n) {
-   var i = t(n);
-   i.before(c[r].replacement(i.html(), i)).remove();
-  });
-  return s(i.html());
- }, o = function(e) {
-  return e.replace(/^[\n\r\f]+|[\n\r\f]+$/g, "");
- }, r = function(e) {
-  return String(e).replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"');
- }, s = function(e) {
-  return e = e.replace(/^[\t\r\n]+|[\t\r\n]+$/g, ""), e = e.replace(/\n\s+\n/g, "\n\n"), 
-  e = e.replace(/\n{3,}/g, "\n\n"), e = r(e);
- }, a = function(e) {
-  return e = o(e), e ? "**" + e + "**" : "";
- }, l = function(e) {
-  return e = o(e), e ? "_" + e + "_" : "";
- }, c = [ {
-  selector: "p",
-  replacement: function(e) {
-   return e = $.trim(e), e ? "\n\n" + e + "\n\n" : "";
-  }
- }, {
-  selector: "br",
-  replacement: function() {
-   return "\n";
-  }
- }, {
-  selector: "h1,h2,h3,h4,h5,h6",
-  replacement: function(e, t) {
-   e = $.trim(e);
-   for (var n = t.prop("nodeName").charAt(1), i = "", o = 0; n > o; o++) i += "#";
-   return e ? "\n\n" + i + " " + e + "\n\n" : "";
-  }
- }, {
-  selector: "hr",
-  replacement: function() {
-   return "\n\n* * *\n\n";
-  }
- }, {
-  selector: "a[href]",
-  replacement: function(e, t) {
-   if (e) {
-    e = o(e);
-    var n = t.attr("href"), i = t.attr("title") || "";
-    return "[" + e + "]" + "(" + n + (i ? ' "' + i + '"' : "") + ")";
-   }
-   return !1;
-  }
- }, {
-  selector: "b",
-  replacement: a
- }, {
-  selector: "strong",
-  replacement: a
- }, {
-  selector: "i",
-  replacement: l
- }, {
-  selector: "em",
-  replacement: l
- }, {
-  selector: "code",
-  replacement: function(e) {
-   return e = o(e), e ? "`" + e + "`" : "";
-  }
- }, {
-  selector: "img",
-  replacement: function(e, t) {
-   var n = t.attr("alt") || "", i = t.attr("src") || "", o = t.attr("title") || "";
-   return "![" + n + "]" + "(" + i + (o ? ' "' + o + '"' : "") + ")";
-  }
- }, {
-  selector: "pre",
-  replacement: function(e) {
-   return /^\s*\`/.test(e) ? (e = e.replace(/\`/g, ""), "    " + e.replace(/\n/g, "\n    ")) : "";
-  }
- }, {
-  selector: "li",
-  replacement: function(e, t) {
-   e = e.replace(/^\s+|\s+$/, "").replace(/\n/gm, "\n    ");
-   var n = "*   ", i = "", o = t.parent(), r = o.contents().filter(function() {
-    return 1 === this.nodeType && "LI" === this.nodeName || 3 === this.nodeType;
-   }), s = r.index(t) + 1;
-   return n = o.is("ol") ? s + ".  " : "*   ", s == r.length && (t.parents("li").length || (i = "\n"), 
-   e = e.replace(/\s+$/, ""), t.unwrap()), n + e + i + "\n";
-  }
- }, {
-  selector: "blockquote",
-  replacement: function(e) {
-   return e = e = $.trim(e).replace(/\n{3,}/g, "\n\n"), e = e.replace(/\n/g, "\n&gt; "), 
-   "&gt; " + e;
-  }
- } ];
-}(), define("toMarkdown", [ "jquery" ], function(e) {
- return function() {
-  var t;
-  return t || e.toMarkdown;
- };
-}(this)), define("extensions/dialogOpenHarddrive", [ "jquery", "underscore", "constants", "utils", "classes/Extension", "toMarkdown" ], function(e, t, n, i, o, r) {
- function s(i) {
-  i.stopPropagation(), i.preventDefault();
-  var o = (i.dataTransfer || i.target).files;
-  e(".modal-import-harddrive-markdown, .modal-import-harddrive-html").modal("hide"), 
-  t.each(o, function(t) {
-   if (!e(i.target).is("#wmd-input *") || !t.name.match(/.(jpe?g|png|gif)$/i)) {
-    var o = new FileReader();
-    o.onload = function(e) {
-     return function(t) {
-      var n = t.target.result;
-      if (n.match(/\uFFFD/)) return h.onError(e.name + " is a binary file."), void 0;
-      if (n = p ? p(n) : n, void 0 === n) return h.onError(e.name + " is not a valid HTML file."), 
-      void 0;
-      var i = e.name, o = i.lastIndexOf(".");
-      i = -1 !== o ? i.substring(0, o) : i;
-      var r = u.createFile(i, n);
-      u.selectFile(r);
-     };
-    }(t);
-    var r = t.slice(0, n.IMPORT_FILE_MAX_CONTENT_SIZE);
-    o.readAsText(r);
-   }
-  });
- }
- function a(e) {
-  p = void 0, s(e);
- }
- function l(e) {
-  p = g, s(e);
- }
- function c(e) {
-  e.stopPropagation(), e.preventDefault(), e.dataTransfer.dropEffect = "copy";
- }
- var u, d = new o("dialogOpenHarddrive", 'Dialog "Open from"');
- d.onFileMgrCreated = function(e) {
-  u = e;
- };
- var h;
- d.onEventMgrCreated = function(e) {
-  h = e;
- };
- var p, f, g = function(e) {
-  return f.makeMd(e);
- };
- return d.onReady = function() {
-  f = new r.converter(), e("#input-file-import-harddrive-markdown").change(a), e("#dropzone-import-harddrive-markdown, #wmd-input").each(function() {
-   this.addEventListener("dragover", c, !1), this.addEventListener("drop", a, !1);
-  }), e("#input-file-import-harddrive-html").change(l), e("#dropzone-import-harddrive-html").each(function() {
-   this.addEventListener("dragover", c, !1), this.addEventListener("drop", l, !1);
-  }), e(".action-convert-html").click(function(e) {
-   var t = i.getInputTextValue("#input-convert-html", e);
-   if (void 0 !== t) {
-    if (t = f.makeMd(t), void 0 === t) return h.onError("Invalid HTML code."), void 0;
-    var n = u.createFile(void 0, t);
-    u.selectFile(n);
-   }
-  });
- }, d;
-}), define("extensions/documentTitle", [ "jquery", "underscore", "classes/Extension" ], function(e, t, n) {
- var i, o = new n("documentTitle", "Document Title");
- o.onLayoutCreated = function(e) {
-  i = e;
- };
- var r, s, a = function(n) {
-  if (n === r) {
-   var o = r.title;
-   document.title = "StackEdit - " + o, s.html(r.composeTitle()), e(".file-title").text(o), 
-   e(".input-file-title").val(o), void 0 !== i && t.defer(i.resizeAll);
-  }
- };
- return o.onFileSelected = function(e) {
-  r = e, a(e);
- }, o.onTitleChanged = a, o.onSyncExportSuccess = a, o.onSyncRemoved = a, o.onNewPublishSuccess = a, 
- o.onPublishRemoved = a, o.onReady = function() {
-  s = e(".file-title-navbar"), s.hover(function() {
-   var e = s[0].scrollWidth - s.outerWidth();
-   s.stop(!0, !0).animate({
-    scrollLeft: e
-   }, 15 * e, "linear");
-  }, function() {
-   s.stop(!0, !0).scrollLeft(0);
-  }).click(function() {
-   s.stop(!0, !0).scrollLeft(0);
-  });
- }, o;
-}), function(e, t) {
- function n(e, t, n) {
-  return e.addEventListener ? (e.addEventListener(t, n, !1), void 0) : (e.attachEvent("on" + t, n), 
-  void 0);
- }
- function i(e) {
-  if ("keypress" == e.type) {
-   var t = String.fromCharCode(e.which);
-   return e.shiftKey || (t = t.toLowerCase()), t;
-  }
-  return x[e.which] ? x[e.which] : E[e.which] ? E[e.which] : String.fromCharCode(e.which).toLowerCase();
- }
- function o(e, t) {
-  return e.sort().join(",") === t.sort().join(",");
- }
- function r(e) {
-  e = e || {};
-  var t, n = !1;
-  for (t in F) e[t] ? n = !0 : F[t] = 0;
-  n || (D = !1);
- }
- function s(e, t, n, i, r, s) {
-  var a, l, c = [], u = n.type;
-  if (!k[e]) return [];
-  for ("keyup" == u && d(e) && (t = [ e ]), a = 0; a < k[e].length; ++a) if (l = k[e][a], 
-  (i || !l.seq || F[l.seq] == l.level) && u == l.action && ("keypress" == u && !n.metaKey && !n.ctrlKey || o(t, l.modifiers))) {
-   var h = !i && l.combo == r, p = i && l.seq == i && l.level == s;
-   (h || p) && k[e].splice(a, 1), c.push(l);
-  }
-  return c;
- }
- function a(e) {
-  var t = [];
-  return e.shiftKey && t.push("shift"), e.altKey && t.push("alt"), e.ctrlKey && t.push("ctrl"), 
-  e.metaKey && t.push("meta"), t;
- }
- function l(e, t, n) {
-  B.stopCallback(t, t.target || t.srcElement, n) || e(t, n) === !1 && (t.preventDefault && t.preventDefault(), 
-  t.stopPropagation && t.stopPropagation(), t.returnValue = !1, t.cancelBubble = !0);
- }
- function c(e, t, n) {
-  var i, o = s(e, t, n), a = {}, c = 0, u = !1;
-  for (i = 0; i < o.length; ++i) o[i].seq && (c = Math.max(c, o[i].level));
-  for (i = 0; i < o.length; ++i) if (o[i].seq) {
-   if (o[i].level != c) continue;
-   u = !0, a[o[i].seq] = 1, l(o[i].callback, n, o[i].combo);
-  } else u || l(o[i].callback, n, o[i].combo);
-  var h = "keypress" == n.type && $;
-  n.type != D || d(e) || h || r(a), $ = u && "keydown" == n.type;
- }
- function u(e) {
-  "number" != typeof e.which && (e.which = e.keyCode);
-  var t = i(e);
-  if (t) return "keyup" == e.type && T === t ? (T = !1, void 0) : (B.handleKey(t, a(e), e), 
-  void 0);
- }
- function d(e) {
-  return "shift" == e || "ctrl" == e || "alt" == e || "meta" == e;
- }
- function h() {
-  clearTimeout(C), C = setTimeout(r, 1e3);
- }
- function p() {
-  if (!w) {
-   w = {};
-   for (var e in x) e > 95 && 112 > e || x.hasOwnProperty(e) && (w[x[e]] = e);
-  }
-  return w;
- }
- function f(e, t, n) {
-  return n || (n = p()[e] ? "keydown" : "keypress"), "keypress" == n && t.length && (n = "keydown"), 
-  n;
- }
- function g(e, t, n, o) {
-  function s(t) {
-   return function() {
-    D = t, ++F[e], h();
-   };
-  }
-  function a(t) {
-   l(n, t, e), "keyup" !== o && (T = i(t)), setTimeout(r, 10);
-  }
-  F[e] = 0;
-  for (var c = 0; c < t.length; ++c) {
-   var u = c + 1 === t.length, d = u ? a : s(o || v(t[c + 1]).action);
-   b(t[c], d, o, e, c);
-  }
- }
- function m(e) {
-  return "+" === e ? [ "+" ] : e.split("+");
- }
- function v(e, t) {
-  var n, i, o, r = [];
-  for (n = m(e), o = 0; o < n.length; ++o) i = n[o], A[i] && (i = A[i]), t && "keypress" != t && S[i] && (i = S[i], 
-  r.push("shift")), d(i) && r.push(i);
-  return t = f(i, r, t), {
-   key: i,
-   modifiers: r,
-   action: t
-  };
- }
- function b(e, t, n, i, o) {
-  _[e + ":" + n] = t, e = e.replace(/\s+/g, " ");
-  var r, a = e.split(" ");
-  return a.length > 1 ? (g(e, a, t, n), void 0) : (r = v(e, n), k[r.key] = k[r.key] || [], 
-  s(r.key, r.modifiers, {
-   type: r.action
-  }, i, e, o), k[r.key][i ? "unshift" : "push"]({
-   callback: t,
-   modifiers: r.modifiers,
-   action: r.action,
-   seq: i,
-   level: o,
-   combo: e
-  }), void 0);
- }
- function y(e, t, n) {
-  for (var i = 0; i < e.length; ++i) b(e[i], t, n);
- }
- for (var w, C, x = {
-  8: "backspace",
-  9: "tab",
-  13: "enter",
-  16: "shift",
-  17: "ctrl",
-  18: "alt",
-  20: "capslock",
-  27: "esc",
-  32: "space",
-  33: "pageup",
-  34: "pagedown",
-  35: "end",
-  36: "home",
-  37: "left",
-  38: "up",
-  39: "right",
-  40: "down",
-  45: "ins",
-  46: "del",
-  91: "meta",
-  93: "meta",
-  224: "meta"
- }, E = {
-  106: "*",
-  107: "+",
-  109: "-",
-  110: ".",
-  111: "/",
-  186: ";",
-  187: "=",
-  188: ",",
-  189: "-",
-  190: ".",
-  191: "/",
-  192: "`",
-  219: "[",
-  220: "\\",
-  221: "]",
-  222: "'"
- }, S = {
-  "~": "`",
-  "!": "1",
-  "@": "2",
-  "#": "3",
-  $: "4",
-  "%": "5",
-  "^": "6",
-  "&": "7",
-  "*": "8",
-  "(": "9",
-  ")": "0",
-  _: "-",
-  "+": "=",
-  ":": ";",
-  '"': "'",
-  "<": ",",
-  ">": ".",
-  "?": "/",
-  "|": "\\"
- }, A = {
-  option: "alt",
-  command: "meta",
-  "return": "enter",
-  escape: "esc",
-  mod: /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "meta" : "ctrl"
- }, k = {}, _ = {}, F = {}, T = !1, $ = !1, D = !1, L = 1; 20 > L; ++L) x[111 + L] = "f" + L;
- for (L = 0; 9 >= L; ++L) x[L + 96] = L;
- n(t, "keypress", u), n(t, "keydown", u), n(t, "keyup", u);
- var B = {
-  bind: function(e, t, n) {
-   return e = e instanceof Array ? e : [ e ], y(e, t, n), this;
-  },
-  unbind: function(e, t) {
-   return B.bind(e, function() {}, t);
-  },
-  trigger: function(e, t) {
-   return _[e + ":" + t] && _[e + ":" + t]({}, e), this;
-  },
-  reset: function() {
-   return k = {}, _ = {}, this;
-  },
-  stopCallback: function(e, t) {
-   return (" " + t.className + " ").indexOf(" mousetrap ") > -1 ? !1 : "INPUT" == t.tagName || "SELECT" == t.tagName || "TEXTAREA" == t.tagName || t.isContentEditable;
-  },
-  handleKey: c
- };
- e.Mousetrap = B, "function" == typeof define && define.amd && define("mousetrap", B);
-}(window, document), define("classes/FileDescriptor", [ "underscore", "utils", "storage", "ace/range" ], function(e, t, n, i) {
- function o(t, i, o, s) {
-  this.fileIndex = t, this._title = i || n[t + ".title"], this._editorScrollTop = parseInt(n[t + ".editorScrollTop"]) || 0, 
-  this._editorSelectRange = function() {
-   try {
-    var i = n[t + ".editorSelectRange"].split(";");
-    return i = e.map(i, function(e) {
-     return parseInt(e);
-    }), new r(i[0], i[1], i[2], i[3]);
-   } catch (o) {
-    return new r(0, 0, 0, 0);
-   }
-  }(), this._editorEnd = parseInt(n[t + ".editorEnd"]) || 0, this._previewScrollTop = parseInt(n[t + ".previewScrollTop"]) || 0, 
-  this._selectTime = parseInt(n[t + ".selectTime"]) || 0, this.syncLocations = o || {}, 
-  this.publishLocations = s || {}, Object.defineProperty(this, "title", {
-   get: function() {
-    return this._title;
-   },
-   set: function(e) {
-    this._title = e, n[this.fileIndex + ".title"] = e;
-   }
-  }), Object.defineProperty(this, "content", {
-   get: function() {
-    return n[this.fileIndex + ".content"];
-   },
-   set: function(e) {
-    n[this.fileIndex + ".content"] = e;
-   }
-  }), Object.defineProperty(this, "editorScrollTop", {
-   get: function() {
-    return this._editorScrollTop;
-   },
-   set: function(e) {
-    this._editorScrollTop = e, n[this.fileIndex + ".editorScrollTop"] = e;
-   }
-  }), Object.defineProperty(this, "editorSelectRange", {
-   get: function() {
-    return this._editorSelectRange;
-   },
-   set: function(e) {
-    this._editorSelectRange = e, n[this.fileIndex + ".editorSelectRange"] = [ e.start.row, e.start.column, e.end.row, e.end.column ].join(";");
-   }
-  }), Object.defineProperty(this, "previewScrollTop", {
-   get: function() {
-    return this._previewScrollTop;
-   },
-   set: function(e) {
-    this._previewScrollTop = e, n[this.fileIndex + ".previewScrollTop"] = e;
-   }
-  }), Object.defineProperty(this, "selectTime", {
-   get: function() {
-    return this._selectTime;
-   },
-   set: function(e) {
-    this._selectTime = e, n[this.fileIndex + ".selectTime"] = e;
-   }
-  });
- }
- var r = i.Range;
- return o.prototype.addSyncLocation = function(e) {
-  t.storeAttributes(e), t.appendIndexToArray(this.fileIndex + ".sync", e.syncIndex), 
-  this.syncLocations[e.syncIndex] = e;
- }, o.prototype.removeSyncLocation = function(e) {
-  t.removeIndexFromArray(this.fileIndex + ".sync", e.syncIndex), delete this.syncLocations[e.syncIndex], 
-  n.removeItem(e.syncIndex);
- }, o.prototype.addPublishLocation = function(e) {
-  t.storeAttributes(e), t.appendIndexToArray(this.fileIndex + ".publish", e.publishIndex), 
-  this.publishLocations[e.publishIndex] = e;
- }, o.prototype.removePublishLocation = function(e) {
-  t.removeIndexFromArray(this.fileIndex + ".publish", e.publishIndex), delete this.publishLocations[e.publishIndex], 
-  n.removeItem(e.publishIndex);
- }, o.prototype.composeTitle = function() {
-  var t = [];
-  return e.chain(this.syncLocations).sortBy(function(e) {
-   return e.provider.providerId;
-  }).each(function(e) {
-   var n = "icon-provider-" + e.provider.providerId;
-   e.isRealtime === !0 && (n += " realtime"), t.push('<i class="' + n + '"></i>');
-  }), 0 !== e.size(this.syncLocations) && t.push('<i class="icon-refresh title-icon-category"></i>'), 
-  e.chain(this.publishLocations).sortBy(function(e) {
-   return e.provider.providerId;
-  }).each(function(e) {
-   var n = "icon-provider-" + e.provider.providerId;
-   e.isRealtime === !0 && (n += " realtime"), t.push('<i class="' + n + '"></i>');
-  }), 0 !== e.size(this.publishLocations) && t.push('<i class="icon-share title-icon-category"></i>'), 
-  t.push(e.escape(this.title)), t.join("");
- }, o;
-}), define("fileSystem", [ "underscore", "utils", "classes/FileDescriptor", "storage" ], function(e, t, n) {
- var i = {};
- return e.each(t.retrieveIndexArray("file.list"), function(e) {
-  i[e] = new n(e);
- }), i;
-}), define("text!html/documentSelectorSettingsBlock.html", [], function() {
- return '<p>Allows toggling document with keyboard shortcuts.</p>\n<div class="form-horizontal">\n	<div class="form-group">\n		<label class="col-lg-5 control-label" for="select-document-selector-orderby">Order\n			by</label>\n		<div class="col-lg-6">\n			<select id="select-document-selector-orderby" class="form-control">\n				<option value="title">Document title</option>\n				<option value="mru">Most recently used</option>\n			</select>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-5 control-label"\n			for="input-document-selector-shortcut-previous">"Previous"\n			shortcut <a href="http://craig.is/killing/mice#keys" target="_blank">(?)</a></label>\n		<div class="col-lg-6">\n			<input type="text" id="input-document-selector-shortcut-previous"\n				class="form-control">\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-5 control-label"\n			for="input-document-selector-shortcut-next">"Next"\n			shortcut <a href="http://craig.is/killing/mice#keys" target="_blank">(?)</a></label>\n		<div class="col-lg-6">\n			<input type="text" id="input-document-selector-shortcut-next"\n				class="form-control">\n		</div>\n	</div>\n</div>';
-}), define("extensions/documentSelector", [ "jquery", "underscore", "crel", "utils", "classes/Extension", "mousetrap", "fileSystem", "text!html/documentSelectorSettingsBlock.html" ], function(e, t, n, i, o, r, s, a) {
- var l = new o("documentSelector", "Document Selector", !0, !0);
- l.settingsBlock = a, l.defaultConfig = {
-  orderBy: "mru",
-  shortcutPrevious: "Ctrl+[",
-  shortcutNext: "Ctrl+]"
- }, l.onLoadSettings = function() {
-  i.setInputValue("#select-document-selector-orderby", l.config.orderBy), i.setInputValue("#input-document-selector-shortcut-previous", l.config.shortcutPrevious), 
-  i.setInputValue("#input-document-selector-shortcut-next", l.config.shortcutNext);
- }, l.onSaveSettings = function(e, t) {
-  e.orderBy = i.getInputValue("#select-document-selector-orderby"), e.shortcutPrevious = i.getInputTextValue("#input-document-selector-shortcut-previous", t), 
-  e.shortcutNext = i.getInputTextValue("#input-document-selector-shortcut-next", t);
- };
- var c;
- l.onAceCreated = function(e) {
-  c = e;
- };
- var u;
- l.onFileMgrCreated = function(e) {
-  u = e;
- };
- var d, h, p, f, g, m, v, b = [ '<li class="<%= isCurrent ? "disabled" : "" %>" data-file-index="<%= fileDesc.fileIndex %>">', '   <a href="#">', "       <%= fileDesc.composeTitle() %>", "   </a>", "</li>" ].join(""), y = function() {
-  var n = t.chain(s).sortBy(f).reduce(function(e, n) {
-   return e + t.template(b, {
-    fileDesc: n,
-    isCurrent: n === g
-   });
-  }, "").value();
-  d.innerHTML = n, p = [], h = {}, t.each(d.querySelectorAll("li"), function(t) {
-   var n = e(t);
-   p.push(n);
-   var i = s[n.data("fileIndex")];
-   h[i.fileIndex] = n, n.find("a").click(function() {
-    m = void 0, n.hasClass("disabled") ? void 0 !== c ? c.focus() : v.focus() : u.selectFile(i);
-   });
-  });
- };
- return l.onFileSelected = function(e) {
-  g = e, y();
- }, l.onFileCreated = y, l.onFileDeleted = y, l.onTitleChanged = y, l.onSyncExportSuccess = y, 
- l.onSyncRemoved = y, l.onNewPublishSuccess = y, l.onPublishRemoved = y, l.onReady = function() {
-  v = e("#wmd-input"), "title" == l.config.orderBy ? f = function(e) {
-   return e.title.toLowerCase();
-  } : "mru" == l.config.orderBy && (f = function(e) {
-   return -e.selectTime;
-  }), d = n("ul", {
-   "class": "dropdown-menu dropdown-file-selector"
-  }), document.querySelector(".ui-layout-resizer-north").appendChild(n("div", n("div", {
-   "data-toggle": "dropdown"
-  }), d));
-  var i = e(d).dropdown(), o = e(".document-panel .collapse-button");
-  o.prop("title", t.template("<%= title %>  <%= shortcutPrevious %>  <%= shortcutNext %>", {
-   title: o.prop("title"),
-   shortcutPrevious: l.config.shortcutPrevious,
-   shortcutNext: l.config.shortcutNext
-  }));
-  var s = l.config.shortcutPrevious.toLowerCase();
-  r.bind(s, function() {
-   void 0 === m && (i.dropdown("toggle"), m = h[g.fileIndex]);
-   var e = t.indexOf(p, m) - 1;
-   return -2 === e && (e = -1), m = p[(e + p.length) % p.length], t.defer(function() {
-    m.find("a").focus();
-   }), !1;
-  });
-  var a = l.config.shortcutNext.toLowerCase();
-  r.bind(l.config.shortcutNext.toLowerCase(), function() {
-   void 0 === m && (i.dropdown("toggle"), m = h[g.fileIndex]);
-   var e = t.indexOf(p, m) + 1;
-   return m = p[e % p.length], t.defer(function() {
-    m.find("a").focus();
-   }), !1;
-  });
-  var c = s.indexOf("+"), u = -1 === c ? s : s.substring(0, c), b = a.indexOf("+"), y = -1 === b ? a : a.substring(0, b);
-  r.bind([ u, y ], function() {
-   void 0 !== m && m.find("a").click();
-  }, "keyup");
- }, l;
-}), define("classes/FolderDescriptor", [ "underscore", "utils", "storage", "fileSystem" ], function(e, t, n, i) {
- function o(o, r) {
-  this.folderIndex = o, this._name = r || n[o + ".name"], this.fileList = {}, e.each(t.retrieveIndexArray(o + ".files"), function(e) {
-   try {
-    var n = i[e];
-    n.folder = this, this.fileList[e] = n;
-   } catch (r) {
-    t.removeIndexFromArray(o + ".files", e);
-   }
-  }, this), Object.defineProperty(this, "name", {
-   get: function() {
-    return this._name;
-   },
-   set: function(e) {
-    this._name = e, n[this.folderIndex + ".name"] = e;
-   }
-  });
- }
- return o.prototype.addFile = function(e) {
-  e.folder = this, t.appendIndexToArray(this.folderIndex + ".files", e.fileIndex), 
-  this.fileList[e.fileIndex] = e;
- }, o.prototype.removeFile = function(e) {
-  e.folder = void 0, t.removeIndexFromArray(this.folderIndex + ".files", e.fileIndex), 
-  delete this.fileList[e.fileIndex];
- }, o;
-}), define("folderList", [ "underscore", "utils", "classes/FolderDescriptor", "storage" ], function(e, t, n) {
- var i = {};
- return e.each(t.retrieveIndexArray("folder.list"), function(e) {
-  i[e] = new n(e);
- }), i;
-}), define("extensions/documentPanel", [ "jquery", "underscore", "utils", "classes/Extension", "folderList", "fileSystem" ], function(e, t, n, i, o, r) {
- function s(n) {
-  if (n != y) {
-   if (y = n, b.scrollTop = 0, !n) return p.addClass("hide"), d.removeClass("hide"), 
-   void 0;
-   var i = n.toLowerCase().split(/\s+/);
-   t.each(h.querySelectorAll(".file"), function(n) {
-    var o = e(n), r = o.text().toLowerCase();
-    o.toggle(!t.some(i, function(e) {
-     return -1 === r.indexOf(e);
-    }));
-   }), p.removeClass("hide"), d.addClass("hide");
-  }
- }
- var a, l = new i("documentPanel", "Document Panel");
- l.onFileMgrCreated = function(e) {
-  a = e;
- };
- var c, u, d, h, p, f, g = [ '<a href="#"', ' class="list-group-item folder clearfix"', ' data-folder-index="<%= folderDesc.folderIndex %>"', ' data-toggle="collapse"', ' data-target=".document-panel .file-list.<%= id %>">', '   <div class="pull-right file-count">', "       <%= _.size(folderDesc.fileList) %>", "   </div>", '   <i class="icon-folder"></i> <%= folderDesc.name %>', "</a>", '<div class="file-list collapse <%= id %> clearfix">', "   <%= fileListHtml %>", "</div>" ].join(""), m = [ '<a href="#"', ' class="list-group-item file<%= fileDesc === selectedFileDesc ? " active" : "" %>"', ' data-file-index="<%= fileDesc.fileIndex %>"', ' data-toggle="collapse"', ' data-target=".document-panel">', "   <%= fileDesc.composeTitle() %>", "</a>" ].join(""), v = function() {
-  var n = t.filter(r, function(e) {
-   return void 0 === e.folder;
-  }), i = t.chain(n).sortBy(function(e) {
-   return e.title.toLowerCase();
-  }).reduce(function(e, n) {
-   return e + "<li>" + t.template(m, {
-    fileDesc: n,
-    selectedFileDesc: f
-   }) + "</li>";
-  }, "").value();
-  i = i && '<ul class="nav">' + i + "</ul>", t.chain(o).sortBy(function(e) {
-   return e.name.toLowerCase();
-  }).each(function(e) {
-   var n = t.chain(e.fileList).sortBy(function(e) {
-    return e.title.toLowerCase();
-   }).reduce(function(e, n) {
-    return e + "<li>" + t.template(m, {
-     fileDesc: n,
-     selectedFileDesc: f
-    }) + "</li>";
-   }, "").value();
-   n = n && '<ul class="nav">' + n + "</ul>", i += t.template(g, {
-    folderDesc: e,
-    fileListHtml: n,
-    id: e.folderIndex.replace(".", "")
-   });
-  }), u.innerHTML = i;
-  var s = t.chain(r).sortBy(function(e) {
-   return e.title.toLowerCase();
-  }).reduce(function(e, n) {
-   return e + "<li>" + t.template(m, {
-    fileDesc: n,
-    selectedFileDesc: f
-   }) + "</li>";
-  }, "").value();
-  s = '<ul class="nav">' + s + "</ul>", h.innerHTML = s, t.each(c.querySelectorAll(".file"), function(t) {
-   var n = e(t);
-   n.click(function() {
-    var e = r[n.data("fileIndex")];
-    e && e !== f && a.selectFile(e);
-   });
-  });
- };
- l.onFileSelected = function(e) {
-  f = e, v();
- }, l.onFileCreated = v, l.onFileDeleted = v, l.onTitleChanged = v, l.onSyncExportSuccess = v, 
- l.onSyncRemoved = v, l.onNewPublishSuccess = v, l.onPublishRemoved = v, l.onFoldersChanged = v;
- var b, y = "";
- return l.onReady = function() {
-  c = document.querySelector(".document-panel"), b = c.querySelector(".panel-content"), 
-  u = c.querySelector(".document-list"), d = e(u), h = c.querySelector(".document-list-filtered"), 
-  p = e(h), e(c).on("show.bs.collapse", function(t) {
-   if (t.target === c) {
-    var n = f.folder;
-    void 0 !== n && e(c.querySelector(".file-list." + n.folderIndex.replace(".", ""))).collapse("show");
-   }
-  }).on("shown.bs.collapse", function(e) {
-   if (e.target === c) {
-    t.val(""), s("");
-    var n = u.querySelector(".file.active");
-    n && (b.scrollTop += n.getBoundingClientRect().top - 120);
-   }
-  });
-  var t = e(c.querySelector(".search-bar .form-control"));
-  t.bind("propertychange keyup input paste", function() {
-   s(t.val());
-  });
- }, l;
-}), define("extensions/documentManager", [ "jquery", "underscore", "constants", "utils", "storage", "classes/Extension", "classes/FolderDescriptor", "folderList", "fileSystem" ], function(e, t, n, i, o, r, s, a, l) {
- function c() {
-  $ = [], T = [], t.each(b.querySelectorAll('input[type="checkbox"]:checked'), function(t) {
-   var n = e(t.parentNode.parentNode), i = a[n.data("folderIndex")], o = l[n.data("fileIndex")];
-   void 0 !== i ? $.push(i) : void 0 !== o && T.push(o);
-  });
- }
- function u() {
-  if (0 === t.size(T)) return d(), void 0;
-  var n = t.chain(T).sortBy(function(e) {
-   return e.title.toLowerCase();
-  }).reduce(function(e, n) {
-   return e + t.template(F, {
-    fileDesc: n
-   });
-  }, "").value();
-  y.innerHTML = '<ul class="file-list nav">' + n + "</ul>", e(v.querySelectorAll(".document-list")).addClass("hide"), 
-  e(v.querySelectorAll(".confirm-delete, .selected-document-list")).removeClass("hide");
- }
- function d() {
-  t.each(T, function(e) {
-   e.folder && e.folder.removeFile(e), p.deleteFile(e);
-  }), t.each($, function(e) {
-   i.removeIndexFromArray("folder.list", e.folderIndex), o.removeItem(e.folderIndex + ".name"), 
-   o.removeItem(e.folderIndex + ".files"), delete a[e.folderIndex];
-  }), g.onFoldersChanged();
- }
- function h() {
-  c(), w.toggleClass("disabled", 0 === t.size(a) || 0 === t.size(T)), C.toggleClass("disabled", 0 === t.size($) && 0 === t.size(T));
- }
- var p, f = new r("documentManager", "Document Manager", !1, !0);
- f.onFileMgrCreated = function(e) {
-  p = e;
- };
- var g;
- f.onEventMgrCreated = function(e) {
-  g = e;
- };
- var m, v, b, y, w, C, x, E, S, A = [ '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>" data-toggle="collapse" data-target=".modal-document-manager .file-list.<%= id %>">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<button class="btn btn-default button-delete" title="Delete"><i class="icon-trash"></i></button>', '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>', '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>', '<div class="name"><i class="icon-folder"></i> ', "<%= folderDesc.name %></div>", '<input type="text" class="input-rename form-control hide"></a>', '<div class="file-list collapse <%= id %> clearfix"><%= fileListHtml %></div>' ].join(""), k = [ '<li class="list-group-item file clearfix" data-file-index="<%= fileDesc.fileIndex %>">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<button class="btn btn-default button-delete" title="Delete"><i class="icon-trash"></i></button>', '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>', '<div class="name"><%= fileDesc.composeTitle() %></div>', '<input type="text" class="input-rename form-control hide"></li>' ].join(""), _ = [ '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>">', '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>', '<div class="name"><i class="icon-forward"></i> ', "<%= folderDesc.name %></div></a>" ].join(""), F = [ '<li class="list-group-item file clearfix">', '<div class="name"><%= fileDesc.composeTitle() %></div></li>' ].join(""), T = [], $ = [], D = function() {
-  if (m !== !1) {
-   h(), E.text(t.size(l)), S.text(t.size(a) + 1), x = t.filter(l, function(e) {
-    return void 0 === e.folder;
-   });
-   var n = [ '<a href="#" class="list-group-item folder clearfix" data-toggle="collapse" data-target=".modal-document-manager .file-list.root-folder">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<div class="pull-right file-count">', t.size(x), "</div>", '<div class="name"><i class="icon-folder"></i> ', "ROOT folder</div></a>" ].join(""), i = t.chain(x).sortBy(function(e) {
-    return e.title.toLowerCase();
-   }).reduce(function(e, n) {
-    return e + t.template(k, {
-     fileDesc: n
-    });
-   }, "").value();
-   i = i && '<ul class="nav">' + i + "</ul>", n += '<div class="file-list collapse root-folder clearfix">' + i + "</div>", 
-   t.chain(a).sortBy(function(e) {
-    return e.name.toLowerCase();
-   }).each(function(e) {
-    var i = t.chain(e.fileList).sortBy(function(e) {
-     return e.title.toLowerCase();
-    }).reduce(function(e, n) {
-     return e + t.template(k, {
-      fileDesc: n
-     });
-    }, "").value();
-    i = i && '<ul class="nav">' + i + "</ul>", n += t.template(A, {
-     folderDesc: e,
-     fileListHtml: i,
-     id: e.folderIndex.replace(".", "")
-    });
-   }), b.innerHTML = n, t.each(b.querySelectorAll(".button-delete"), function(t) {
-    var n = e(t);
-    n.click(function(e) {
-     e.stopPropagation();
-     var t = n.parent(), i = a[t.data("folderIndex")], o = l[t.data("fileIndex")];
-     T = [], $ = [], i ? ($.push(i), T = i.fileList) : o && T.push(o), u();
-    });
-   }), t.each(b.querySelectorAll(".button-rename"), function(t) {
-    var n = e(t);
-    n.click(function(e) {
-     e.stopPropagation();
-     var t, i = n.parent(), o = a[i.data("folderIndex")], r = l[i.data("fileIndex")];
-     o ? t = o.name : r && (t = r.title), i.find(".name").addClass("hide"), i.find(".input-rename").removeClass("hide").val(t)[0].select();
-    });
-   }), t.each(b.querySelectorAll(".input-rename"), function(t) {
-    function n() {
-     var t = i.parent(), n = e.trim(i.val()), o = a[t.data("folderIndex")], r = l[t.data("fileIndex")];
-     n && o && n != o.name ? (o.name = n, g.onFoldersChanged()) : n && r && n != r.title ? (r.title = n, 
-     g.onTitleChanged(r)) : (i.addClass("hide"), t.find(".name").removeClass("hide"));
-    }
-    var i = e(t);
-    i.blur(function() {
-     n();
-    }).keyup(function(e) {
-     13 == e.keyCode && (n(), e.stopPropagation()), 27 == e.keyCode && (i.val(""), n(), 
-     e.stopPropagation());
-    });
-   }), t.each(b.querySelectorAll(".file .checkbox"), function(t) {
-    var n = e(t);
-    n.click(function(e) {
-     e.stopPropagation();
-    }).find("[type=checkbox]").change(function() {
-     n.parents(".list-group").find(".folder [type=checkbox]").prop("checked", !1);
-    });
-   }), t.each(b.querySelectorAll(".folder .checkbox"), function(t) {
-    var n = e(t);
-    n.click(function(e) {
-     e.stopPropagation();
-    }).find("[type=checkbox]").change(function() {
-     n.parent().next().find("[type=checkbox]").prop("checked", this.checked);
-    });
-   }), e(b.querySelectorAll("[type=checkbox]")).change(h);
-  }
- };
- return f.onFileCreated = D, f.onFileDeleted = D, f.onTitleChanged = D, f.onSyncExportSuccess = D, 
- f.onSyncRemoved = D, f.onNewPublishSuccess = D, f.onPublishRemoved = D, f.onFoldersChanged = D, 
- f.onReady = function() {
-  v = document.querySelector(".modal-document-manager"), b = v.querySelector(".list-group.document-list"), 
-  E = e(v.querySelectorAll(".document-count")), S = e(v.querySelectorAll(".folder-count")), 
-  y = v.querySelector(".list-group.selected-document-list");
-  var r = v.querySelector(".list-group.select-folder-list");
-  e(v).on("show.bs.modal", function() {
-   m = !0, D();
-  }).on("hide.bs.modal", function() {
-   m = !1;
-  }), e(v.querySelectorAll(".action-create-folder")).click(function() {
-   var r;
-   do r = "folder." + i.randomString(); while (t.has(a, r));
-   o[r + ".name"] = n.DEFAULT_FOLDER_NAME;
-   var l = new s(r, n.DEFAULT_FOLDER_NAME);
-   i.appendIndexToArray("folder.list", r), a[r] = l, g.onFoldersChanged();
-   var c = e(v.querySelector('[data-folder-index="' + r + '"] .button-rename')).click();
-   v.scrollTop += c.offset().top - 50;
-  }), e(v.querySelectorAll(".action-select-all")).click(function() {
-   e(b.querySelectorAll('input[type="checkbox"]')).prop("checked", !0);
-  }), e(v.querySelectorAll(".action-unselect-all")).click(function() {
-   e(b.querySelectorAll('input[type="checkbox"]')).prop("checked", !1);
-  });
-  var l = e(v.querySelectorAll(".action-delete-items")).click(function() {
-   C.hasClass("disabled") || (c(), u());
-  });
-  C = l.parent(), e(v.querySelectorAll(".action-delete-items-confirm")).click(function() {
-   d(), e(v.querySelectorAll(".document-list")).removeClass("hide"), e(v.querySelectorAll(".confirm-delete, .selected-document-list")).addClass("hide");
-  });
-  var h = e(v.querySelectorAll(".action-move-items")).click(function() {
-   if (!w.hasClass("disabled")) {
-    c();
-    var n = [ '<a href="#" class="list-group-item folder clearfix">', '<div class="pull-right file-count">', t.size(x), "</div>", '<div class="name"><i class="icon-forward"></i> ', "ROOT folder</div></a>" ].join("");
-    n += t.chain(a).sortBy(function(e) {
-     return e.name.toLowerCase();
-    }).reduce(function(e, n) {
-     return e + t.template(_, {
-      folderDesc: n
-     });
-    }, "").value(), r.innerHTML = n, t.each(r.querySelectorAll(".folder"), function(n) {
-     n = e(n), n.click(function() {
-      var i = a[n.data("folderIndex")];
-      t.each(T, function(e) {
-       e.folder && e.folder.removeFile(e), i && i.addFile(e);
-      }), g.onFoldersChanged(), e(v.querySelectorAll(".document-list")).removeClass("hide"), 
-      e(v.querySelectorAll(".choose-folder, .select-folder-list")).addClass("hide");
-     });
-    }), e(v.querySelectorAll(".document-list")).addClass("hide"), e(v.querySelectorAll(".choose-folder, .select-folder-list")).removeClass("hide");
-   }
-  });
-  w = h.parent(), e(v.querySelectorAll(".action-cancel")).click(function() {
-   e(v.querySelectorAll(".document-list")).removeClass("hide"), e(v.querySelectorAll(".confirm-delete, .choose-folder, .selected-document-list, .select-folder-list")).addClass("hide");
-  });
- }, f;
-}), define("extensions/workingIndicator", [ "jquery", "underscore", "classes/Extension", "crel" ], function(e, t, n, i) {
- function o() {
-  c[u].className = "", u = (u + 1) % 3, c[u].className = "highlighted";
- }
- var r, s, a, l = new n("workingIndicator", "Working Indicator");
- l.onAsyncRunning = function(e) {
-  r.toggleClass("working", e), s.toggleClass("show", e), e ? (o(), a = setInterval(o, 200)) : clearInterval(a);
- };
- var c = [], u = 0;
- return l.onReady = function() {
-  r = e(document.body), s = e(".working-indicator");
-  for (var t = 0; 3 > t; t++) c.push(i("div"));
-  s.append(c);
- }, l;
-}), function(e) {
- var t = function() {
-  return !1 === e.support.boxModel && e.support.objectAll && $support.leadingWhitespace;
- }();
- e.jGrowl = function(t, n) {
-  0 == e("#jGrowl").size() && e('<div id="jGrowl"></div>').addClass(n && n.position ? n.position : e.jGrowl.defaults.position).appendTo("body"), 
-  e("#jGrowl").jGrowl(t, n);
- }, e.fn.jGrowl = function(t, n) {
-  if (e.isFunction(this.each)) {
-   var i = arguments;
-   return this.each(function() {
-    void 0 == e(this).data("jGrowl.instance") && (e(this).data("jGrowl.instance", e.extend(new e.fn.jGrowl(), {
-     notifications: [],
-     element: null,
-     interval: null
-    })), e(this).data("jGrowl.instance").startup(this)), e.isFunction(e(this).data("jGrowl.instance")[t]) ? e(this).data("jGrowl.instance")[t].apply(e(this).data("jGrowl.instance"), e.makeArray(i).slice(1)) : e(this).data("jGrowl.instance").create(t, n);
-   });
-  }
- }, e.extend(e.fn.jGrowl.prototype, {
-  defaults: {
-   pool: 0,
-   header: "",
-   group: "",
-   sticky: !1,
-   position: "top-right",
-   glue: "after",
-   theme: "default",
-   themeState: "highlight",
-   corners: "10px",
-   check: 250,
-   life: 3e3,
-   closeDuration: "normal",
-   openDuration: "normal",
-   easing: "swing",
-   closer: !0,
-   closeTemplate: "&times;",
-   closerTemplate: "<div>[ close all ]</div>",
-   log: function() {},
-   beforeOpen: function() {},
-   afterOpen: function() {},
-   open: function() {},
-   beforeClose: function() {},
-   close: function() {},
-   animateOpen: {
-    opacity: "show"
-   },
-   animateClose: {
-    opacity: "hide"
-   }
-  },
-  notifications: [],
-  element: null,
-  interval: null,
-  create: function(t, n) {
-   var n = e.extend({}, this.defaults, n);
-   "undefined" != typeof n.speed && (n.openDuration = n.speed, n.closeDuration = n.speed), 
-   this.notifications.push({
-    message: t,
-    options: n
-   }), n.log.apply(this.element, [ this.element, t, n ]);
-  },
-  render: function(t) {
-   var n = this, i = t.message, o = t.options;
-   o.themeState = "" == o.themeState ? "" : "ui-state-" + o.themeState;
-   var t = e('<div class="jGrowl-notification ' + o.themeState + " ui-corner-all" + (void 0 != o.group && "" != o.group ? " " + o.group : "") + '">' + '<div class="jGrowl-close">' + o.closeTemplate + "</div>" + '<div class="jGrowl-header">' + o.header + "</div>" + '<div class="jGrowl-message">' + i + "</div></div>").data("jGrowl", o).addClass(o.theme).children("div.jGrowl-close").bind("click.jGrowl", function() {
-    e(this).parent().trigger("jGrowl.beforeClose");
-   }).parent();
-   e(t).bind("mouseover.jGrowl", function() {
-    e("div.jGrowl-notification", n.element).data("jGrowl.pause", !0);
-   }).bind("mouseout.jGrowl", function() {
-    e("div.jGrowl-notification", n.element).data("jGrowl.pause", !1);
-   }).bind("jGrowl.beforeOpen", function() {
-    0 != o.beforeOpen.apply(t, [ t, i, o, n.element ]) && e(this).trigger("jGrowl.open");
-   }).bind("jGrowl.open", function() {
-    0 != o.open.apply(t, [ t, i, o, n.element ]) && ("after" == o.glue ? e("div.jGrowl-notification:last", n.element).after(t) : e("div.jGrowl-notification:first", n.element).before(t), 
-    e(this).animate(o.animateOpen, o.openDuration, o.easing, function() {
-     e.support.opacity === !1 && this.style.removeAttribute("filter"), null != e(this).data("jGrowl") && (e(this).data("jGrowl").created = new Date()), 
-     e(this).trigger("jGrowl.afterOpen");
-    }));
-   }).bind("jGrowl.afterOpen", function() {
-    o.afterOpen.apply(t, [ t, i, o, n.element ]);
-   }).bind("jGrowl.beforeClose", function() {
-    0 != o.beforeClose.apply(t, [ t, i, o, n.element ]) && e(this).trigger("jGrowl.close");
-   }).bind("jGrowl.close", function() {
-    e(this).data("jGrowl.pause", !0), e(this).animate(o.animateClose, o.closeDuration, o.easing, function() {
-     e.isFunction(o.close) ? o.close.apply(t, [ t, i, o, n.element ]) !== !1 && e(this).remove() : e(this).remove();
-    });
-   }).trigger("jGrowl.beforeOpen"), "" != o.corners && void 0 != e.fn.corner && e(t).corner(o.corners), 
-   e("div.jGrowl-notification:parent", n.element).size() > 1 && 0 == e("div.jGrowl-closer", n.element).size() && 0 != this.defaults.closer && e(this.defaults.closerTemplate).addClass("jGrowl-closer " + this.defaults.themeState + " ui-corner-all").addClass(this.defaults.theme).appendTo(n.element).animate(this.defaults.animateOpen, this.defaults.speed, this.defaults.easing).bind("click.jGrowl", function() {
-    e(this).siblings().trigger("jGrowl.beforeClose"), e.isFunction(n.defaults.closer) && n.defaults.closer.apply(e(this).parent()[0], [ e(this).parent()[0] ]);
-   });
-  },
-  update: function() {
-   e(this.element).find("div.jGrowl-notification:parent").each(function() {
-    void 0 != e(this).data("jGrowl") && void 0 != e(this).data("jGrowl").created && e(this).data("jGrowl").created.getTime() + parseInt(e(this).data("jGrowl").life) < new Date().getTime() && 1 != e(this).data("jGrowl").sticky && (void 0 == e(this).data("jGrowl.pause") || 1 != e(this).data("jGrowl.pause")) && e(this).trigger("jGrowl.beforeClose");
-   }), this.notifications.length > 0 && (0 == this.defaults.pool || e(this.element).find("div.jGrowl-notification:parent").size() < this.defaults.pool) && this.render(this.notifications.shift()), 
-   e(this.element).find("div.jGrowl-notification:parent").size() < 2 && e(this.element).find("div.jGrowl-closer").animate(this.defaults.animateClose, this.defaults.speed, this.defaults.easing, function() {
-    e(this).remove();
-   });
-  },
-  startup: function(n) {
-   this.element = e(n).addClass("jGrowl").append('<div class="jGrowl-notification"></div>'), 
-   this.interval = setInterval(function() {
-    e(n).data("jGrowl.instance").update();
-   }, parseInt(this.defaults.check)), t && e(this.element).addClass("ie6");
-  },
-  shutdown: function() {
-   e(this.element).removeClass("jGrowl").find("div.jGrowl-notification").remove(), 
-   clearInterval(this.interval);
-  },
-  close: function() {
-   e(this.element).find("div.jGrowl-notification").each(function() {
-    e(this).trigger("jGrowl.beforeClose");
-   });
-  }
- }), e.jGrowl.defaults = e.fn.jGrowl.prototype.defaults;
-}(jQuery), define("jgrowl", [ "jquery" ], function(e) {
- return function() {
-  var t;
-  return t || e.jQuery.jGrowl;
- };
-}(this)), define("text!html/notificationsSettingsBlock.html", [], function() {
- return '<p>Shows notification messages in the bottom-right corner of the\n	screen.</p>\n<div class="form-horizontal">\n	<div class="form-group">\n		<label class="col-lg-4 control-label" for="input-notifications-timeout">Timeout</label>\n		<div class="col-lg-7 form-inline">\n			<input type="text" id="input-notifications-timeout"\n				class="col-lg-5 form-control"> <span class="help-inline">ms</span>\n		</div>\n	</div>\n</div>';
-}), define("extensions/notifications", [ "jquery", "underscore", "utils", "logger", "classes/Extension", "jgrowl", "text!html/notificationsSettingsBlock.html" ], function(e, t, n, i, o, r, s) {
- function a() {
-  u === !1 && (r.defaults.life = c.config.timeout, r.defaults.closer = !1, r.defaults.closeTemplate = "", 
-  r.defaults.position = "bottom-right", u = !0);
- }
- function l(e, n, o) {
-  if (i.info(e), a(), e) {
-   var s = e.indexOf("|");
-   (-1 === s || (e = e.substring(0, s))) && (o = o || {}, n = n || "icon-info-circled", 
-   r("<i class='icon-white " + n + "'></i> " + t.escape(e).replace(/\n/g, "<br/>"), o));
-  }
- }
- var c = new o("notifications", "Notifications");
- c.settingsBlock = s, c.defaultConfig = {
-  timeout: 8e3
- }, c.onLoadSettings = function() {
-  n.setInputValue("#input-notifications-timeout", c.config.timeout);
- }, c.onSaveSettings = function(e, t) {
-  e.timeout = n.getInputIntValue("#input-notifications-timeout", t, 1, 6e4);
- };
- var u = !1;
- return c.onMessage = function(e) {
-  l(e);
- }, c.onError = function(e) {
-  i.error(e), t.isString(e) ? l(e, "icon-attention") : t.isObject(e) && l(e.message, "icon-attention");
- }, c.onOfflineChanged = function(t) {
-  t === !0 ? l("You are offline.", "icon-attention-circled msg-offline", {
-   sticky: !0,
-   close: function() {
-    l("You are back online!", "icon-signal");
-   }
-  }) : e(".msg-offline").parents(".jGrowl-notification").trigger("jGrowl.beforeClose");
- }, c.onSyncImportSuccess = function(e, n) {
-  var i = t.map(e, function(e) {
-   return e.title;
-  }).join(", ");
-  l(i + " imported successfully from " + n.providerName + ".");
- }, c.onSyncExportSuccess = function(e, t) {
-  l('"' + e.title + '" will now be synchronized on ' + t.provider.providerName + ".");
- }, c.onSyncRemoved = function(e, t) {
-  l(t.provider.providerName + " synchronized location has been removed.");
- }, c.onPublishSuccess = function(e) {
-  l('"' + e.title + '" successfully published.');
- }, c.onNewPublishSuccess = function(e, t) {
-  l('"' + e.title + '" is now published on ' + t.provider.providerName + ".");
- }, c.onPublishRemoved = function(e, t) {
-  l(t.provider.providerName + " publish location has been removed.");
- }, c;
 }), define("text!html/markdownExtraSettingsBlock.html", [], function() {
  return '<p>Adds extra features to the original Markdown syntax.</p>\n<div class="form-horizontal">\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-fencedcodegfm">GFM fenced code\n			blocks</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-fencedcodegfm">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label" for="input-markdownextra-tables">Tables</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-tables">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-deflist">Definition lists</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-deflist">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-attrlist">Special attributes</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-attrlist">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-footnotes">Footnotes</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-footnotes">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-smartypants">SmartyPants</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-smartypants">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-highlighter">Syntax highlighter</label>\n		<div class="col-lg-7">\n			<select id="input-markdownextra-highlighter" class="form-control"><option>None</option>\n				<option value="prettify">Prettify</option>\n				<option value="highlight">Highlight.js</option>\n			</select>\n		</div>\n	</div>\n</div>\n<span class="help-block pull-right"><a target="_blank"\n	href="https://github.com/jmcmanus/pagedown-extra">More info</a></span>';
 }), window.PR_SHOULD_USE_CONTINUATION = !0;
@@ -16166,7 +14813,7 @@ var prettyPrintOne, prettyPrint;
     if ("string" == typeof b) m = !1; else {
      var w = r[v.charAt(0)];
      if (w) y = v.match(w[1]), b = w[0]; else {
-      for (var C = 0; s > C; ++C) if (w = i[C], y = v.match(w[1])) {
+      for (var x = 0; s > x; ++x) if (w = i[x], y = v.match(w[1])) {
        b = w[0];
        break;
       }
@@ -16175,13 +14822,13 @@ var prettyPrintOne, prettyPrint;
      m = b.length >= 5 && "lang-" === b.substring(0, 5), !m || y && "string" == typeof y[1] || (m = !1, 
      b = P), m || (p[v] = b);
     }
-    var x = d;
+    var C = d;
     if (d += v.length, m) {
-     var E = y[1], S = v.indexOf(E), A = S + E.length;
-     y[2] && (A = v.length - y[2].length, S = A - E.length);
-     var k = b.substring(5);
-     n(l + x, v.substring(0, S), a, u), n(l + x + S, E, c(k, E), u), n(l + x + A, v.substring(A), a, u);
-    } else u.push(l + x, b);
+     var k = y[1], E = v.indexOf(k), S = E + k.length;
+     y[2] && (S = v.length - y[2].length, E = S - k.length);
+     var A = b.substring(5);
+     n(l + C, v.substring(0, E), a, u), n(l + C + E, k, c(A, k), u), n(l + C + S, v.substring(S), a, u);
+    } else u.push(l + C, b);
    }
    e.decorations = u;
   };
@@ -16274,16 +14921,16 @@ var prettyPrintOne, prettyPrint;
   try {
    for (;a > l; ) {
     s[l];
-    var y, w = s[l + 2] || o, C = c[d + 2] || o, m = Math.min(w, C), x = s[l + 1];
-    if (1 !== x.nodeType && (y = i.substring(r, m))) {
-     t && (y = y.replace(n, "\r")), x.nodeValue = y;
-     var E = x.ownerDocument, S = E.createElement("span");
-     S.className = c[d + 1];
-     var A = x.parentNode;
-     A.replaceChild(S, x), S.appendChild(x), w > r && (s[l + 1] = x = E.createTextNode(i.substring(m, w)), 
-     A.insertBefore(x, S.nextSibling));
+    var y, w = s[l + 2] || o, x = c[d + 2] || o, m = Math.min(w, x), C = s[l + 1];
+    if (1 !== C.nodeType && (y = i.substring(r, m))) {
+     t && (y = y.replace(n, "\r")), C.nodeValue = y;
+     var k = C.ownerDocument, E = k.createElement("span");
+     E.className = c[d + 1];
+     var S = C.parentNode;
+     S.replaceChild(E, C), E.appendChild(C), w > r && (s[l + 1] = C = k.createTextNode(i.substring(m, w)), 
+     S.insertBefore(C, E.nextSibling));
     }
-    r = m, r >= w && (l += 2), r >= C && (d += 2);
+    r = m, r >= w && (l += 2), r >= x && (d += 2);
    }
   } finally {
    b && (b.style.display = v);
@@ -16292,12 +14939,12 @@ var prettyPrintOne, prettyPrint;
  function l(e, t) {
   for (var n = t.length; --n >= 0; ) {
    var i = t[n];
-   q.hasOwnProperty(i) ? p.console && console.warn("cannot override language handler %s", i) : q[i] = e;
+   W.hasOwnProperty(i) ? p.console && console.warn("cannot override language handler %s", i) : W[i] = e;
   }
  }
  function c(e, t) {
-  return e && q.hasOwnProperty(e) || (e = /^\s*</.test(t) ? "default-markup" : "default-code"), 
-  q[e];
+  return e && W.hasOwnProperty(e) || (e = /^\s*</.test(t) ? "default-markup" : "default-code"), 
+  W[e];
  }
  function u(e) {
   var n = e.langExtension;
@@ -16328,27 +14975,27 @@ var prettyPrintOne, prettyPrint;
     var o = r[f], a = o.className;
     if (m.test(a) && !v.test(a)) {
      for (var l = !1, c = o.parentNode; c; c = c.parentNode) {
-      var C = c.tagName;
-      if (w.test(C) && c.className && m.test(c.className)) {
+      var x = c.tagName;
+      if (w.test(x) && c.className && m.test(c.className)) {
        l = !0;
        break;
       }
      }
      if (!l) {
       o.className += " prettyprinted";
-      var x, E = a.match(g);
-      !E && (x = i(o)) && y.test(x.tagName) && (E = x.className.match(g)), E && (E = E[1]);
-      var S;
-      if (b.test(o.tagName)) S = 1; else {
-       var A = o.currentStyle, k = A ? A.whiteSpace : document.defaultView && document.defaultView.getComputedStyle ? document.defaultView.getComputedStyle(o, null).getPropertyValue("white-space") : 0;
-       S = k && "pre" === k.substring(0, 3);
+      var C, k = a.match(g);
+      !k && (C = i(o)) && y.test(C.tagName) && (k = C.className.match(g)), k && (k = k[1]);
+      var E;
+      if (b.test(o.tagName)) E = 1; else {
+       var S = o.currentStyle, A = S ? S.whiteSpace : document.defaultView && document.defaultView.getComputedStyle ? document.defaultView.getComputedStyle(o, null).getPropertyValue("white-space") : 0;
+       E = A && "pre" === A.substring(0, 3);
       }
       var _ = o.className.match(/\blinenums\b(?::(\d+))?/);
-      _ = _ ? _[1] && _[1].length ? +_[1] : !0 : !1, _ && s(o, _, S), h = {
-       langExtension: E,
+      _ = _ ? _[1] && _[1].length ? +_[1] : !0 : !1, _ && s(o, _, E), h = {
+       langExtension: k,
        sourceNode: o,
        numberLines: _,
-       pre: S
+       pre: E
       }, u(h);
      }
     }
@@ -16366,14 +15013,14 @@ var prettyPrintOne, prettyPrint;
   var h, f = 0, g = /\blang(?:uage)?-([\w.]+)(?!\S)/, m = /\bprettyprint\b/, v = /\bprettyprinted\b/, b = /pre|xmp/i, y = /^code$/i, w = /^(?:pre|code|xmp)$/i;
   n();
  }
- var p = window, f = [ "break,continue,do,else,for,if,return,while" ], g = [ f, "auto,case,char,const,default,double,enum,extern,float,goto,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile" ], m = [ g, "catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof" ], v = [ m, "alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,dynamic_cast,explicit,export,friend,inline,late_check,mutable,namespace,nullptr,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where" ], b = [ m, "abstract,boolean,byte,extends,final,finally,implements,import,instanceof,null,native,package,strictfp,super,synchronized,throws,transient" ], y = [ b, "as,base,by,checked,decimal,delegate,descending,dynamic,event,fixed,foreach,from,group,implicit,in,interface,internal,into,is,let,lock,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where" ], w = "all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes", C = [ m, "debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN" ], x = "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END", E = [ f, "and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None" ], S = [ f, "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END" ], A = [ f, "case,done,elif,esac,eval,fi,function,in,local,set,then,until" ], k = [ v, y, C, x + E, S, A ], _ = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/, F = "str", T = "kwd", $ = "com", D = "typ", L = "lit", B = "pun", I = "pln", M = "tag", R = "dec", P = "src", N = "atn", O = "atv", z = "nocode", j = "(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*", H = /\S/, W = r({
-  keywords: k,
+ var p = window, f = [ "break,continue,do,else,for,if,return,while" ], g = [ f, "auto,case,char,const,default,double,enum,extern,float,goto,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile" ], m = [ g, "catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof" ], v = [ m, "alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,dynamic_cast,explicit,export,friend,inline,late_check,mutable,namespace,nullptr,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where" ], b = [ m, "abstract,boolean,byte,extends,final,finally,implements,import,instanceof,null,native,package,strictfp,super,synchronized,throws,transient" ], y = [ b, "as,base,by,checked,decimal,delegate,descending,dynamic,event,fixed,foreach,from,group,implicit,in,interface,internal,into,is,let,lock,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where" ], w = "all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes", x = [ m, "debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN" ], C = "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END", k = [ f, "and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None" ], E = [ f, "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END" ], S = [ f, "case,done,elif,esac,eval,fi,function,in,local,set,then,until" ], A = [ v, y, x, C + k, E, S ], _ = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/, F = "str", T = "kwd", $ = "com", D = "typ", L = "lit", B = "pun", I = "pln", M = "tag", R = "dec", P = "src", N = "atn", O = "atv", z = "nocode", j = "(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*", H = /\S/, q = r({
+  keywords: A,
   hashComments: !0,
   cStyleComments: !0,
   multiLineStrings: !0,
   regexLiterals: !0
- }), q = {};
- l(W, [ "default-code" ]), l(o([], [ [ I, /^[^<?]+/ ], [ R, /^<!\w[^>]*(?:>|$)/ ], [ $, /^<\!--[\s\S]*?(?:-\->|$)/ ], [ "lang-", /^<\?([\s\S]+?)(?:\?>|$)/ ], [ "lang-", /^<%([\s\S]+?)(?:%>|$)/ ], [ B, /^(?:<[%?]|[%?]>)/ ], [ "lang-", /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i ], [ "lang-js", /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i ], [ "lang-css", /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i ], [ "lang-in.tag", /^(<\/?[a-z][^<>]*>)/i ] ]), [ "default-markup", "htm", "html", "mxml", "xhtml", "xml", "xsl" ]), 
+ }), W = {};
+ l(q, [ "default-code" ]), l(o([], [ [ I, /^[^<?]+/ ], [ R, /^<!\w[^>]*(?:>|$)/ ], [ $, /^<\!--[\s\S]*?(?:-\->|$)/ ], [ "lang-", /^<\?([\s\S]+?)(?:\?>|$)/ ], [ "lang-", /^<%([\s\S]+?)(?:%>|$)/ ], [ B, /^(?:<[%?]|[%?]>)/ ], [ "lang-", /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i ], [ "lang-js", /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i ], [ "lang-css", /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i ], [ "lang-in.tag", /^(<\/?[a-z][^<>]*>)/i ] ]), [ "default-markup", "htm", "html", "mxml", "xhtml", "xml", "xsl" ]), 
  l(o([ [ I, /^[\s]+/, null, " 	\r\n" ], [ O, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, "\"'" ] ], [ [ M, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i ], [ N, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i ], [ "lang-uq.val", /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/ ], [ B, /^[=<>\/]+/ ], [ "lang-js", /^on\w+\s*=\s*\"([^\"]+)\"/i ], [ "lang-js", /^on\w+\s*=\s*\'([^\']+)\'/i ], [ "lang-js", /^on\w+\s*=\s*([^\"\'>\s]+)/i ], [ "lang-css", /^style\s*=\s*\"([^\"]+)\"/i ], [ "lang-css", /^style\s*=\s*\'([^\']+)\'/i ], [ "lang-css", /^style\s*=\s*([^\"\'>\s]+)/i ] ]), [ "in.tag" ]), 
  l(o([], [ [ O, /^[\s\S]+/ ] ]), [ "uq.val" ]), l(r({
   keywords: v,
@@ -16392,26 +15039,26 @@ var prettyPrintOne, prettyPrint;
   keywords: b,
   cStyleComments: !0
  }), [ "java" ]), l(r({
-  keywords: A,
+  keywords: S,
   hashComments: !0,
   multiLineStrings: !0
  }), [ "bsh", "csh", "sh" ]), l(r({
-  keywords: E,
+  keywords: k,
   hashComments: !0,
   multiLineStrings: !0,
   tripleQuotedStrings: !0
  }), [ "cv", "py" ]), l(r({
-  keywords: x,
+  keywords: C,
   hashComments: !0,
   multiLineStrings: !0,
   regexLiterals: !0
  }), [ "perl", "pl", "pm" ]), l(r({
-  keywords: S,
+  keywords: E,
   hashComments: !0,
   multiLineStrings: !0,
   regexLiterals: !0
  }), [ "rb" ]), l(r({
-  keywords: C,
+  keywords: x,
   cStyleComments: !0,
   regexLiterals: !0
  }), [ "js" ]), l(r({
@@ -16579,46 +15226,46 @@ var hljs = new function() {
   }
   function f(t, n) {
    var i = t.cN ? '<span class="' + t.cN + '">' : "";
-   t.rB ? (C += i, b = "") : t.eB ? (C += e(n) + i, b = "") : (C += i, b = n), v = Object.create(t, {
+   t.rB ? (x += i, b = "") : t.eB ? (x += e(n) + i, b = "") : (x += i, b = n), v = Object.create(t, {
     parent: {
      value: v
     }
    }), y += t.r;
   }
   function g(t, n) {
-   if (b += t, void 0 === n) return C += h(), 0;
+   if (b += t, void 0 === n) return x += h(), 0;
    var s = i(n, v);
-   if (s) return C += h(), f(s, n), s.rB ? 0 : n.length;
+   if (s) return x += h(), f(s, n), s.rB ? 0 : n.length;
    var a = o(v, n);
    if (a) {
-    a.rE || a.eE || (b += n), C += h();
-    do v.cN && (C += "</span>"), v = v.parent; while (v != a.parent);
-    return a.eE && (C += e(n)), b = "", a.starts && f(a.starts, ""), a.rE ? 0 : n.length;
+    a.rE || a.eE || (b += n), x += h();
+    do v.cN && (x += "</span>"), v = v.parent; while (v != a.parent);
+    return a.eE && (x += e(n)), b = "", a.starts && f(a.starts, ""), a.rE ? 0 : n.length;
    }
    if (r(n, v)) throw "Illegal";
    return b += n, n.length || 1;
   }
   var m = p[t];
   s(m);
-  var v = m, b = "", y = 0, w = 0, C = "";
+  var v = m, b = "", y = 0, w = 0, x = "";
   try {
-   for (var x, E, S = 0; ;) {
-    if (v.t.lastIndex = S, x = v.t.exec(n), !x) break;
-    E = g(n.substr(S, x.index - S), x[0]), S = x.index + E;
+   for (var C, k, E = 0; ;) {
+    if (v.t.lastIndex = E, C = v.t.exec(n), !C) break;
+    k = g(n.substr(E, C.index - E), C[0]), E = C.index + k;
    }
-   return g(n.substr(S)), {
+   return g(n.substr(E)), {
     r: y,
     keyword_count: w,
-    value: C,
+    value: x,
     language: t
    };
-  } catch (A) {
-   if ("Illegal" == A) return {
+  } catch (S) {
+   if ("Illegal" == S) return {
     r: 0,
     keyword_count: 0,
     value: e(n)
    };
-   throw A;
+   throw S;
   }
  }
  function l(t) {
@@ -18540,24 +17187,24 @@ hljs.LANGUAGES.glsl = function(e) {
   cN: "string",
   b: 'x"[\\da-fA-F\\s\\n\\r]*"[cwd]?',
   r: 10
- }, C = {
+ }, x = {
   cN: "string",
   b: 'q"\\{',
   e: '\\}"'
- }, x = {
+ }, C = {
   cN: "shebang",
   b: "^#!",
   e: "$",
   r: 5
- }, E = {
+ }, k = {
   cN: "preprocessor",
   b: "#(line)",
   e: "$",
   r: 5
- }, S = {
+ }, E = {
   cN: "keyword",
   b: "@[a-zA-Z_][a-zA-Z_\\d]*"
- }, A = {
+ }, S = {
   cN: "comment",
   b: "\\/\\+",
   c: [ "self" ],
@@ -18567,7 +17214,7 @@ hljs.LANGUAGES.glsl = function(e) {
  return {
   l: e.UIR,
   k: t,
-  c: [ e.CLCM, e.CBLCLM, A, w, v, b, y, C, f, p, g, x, E, S ]
+  c: [ e.CLCM, e.CBLCLM, S, w, v, b, y, x, f, p, g, C, k, E ]
  };
 }(hljs), hljs.LANGUAGES.profile = function(e) {
  return {
@@ -19378,7 +18025,7 @@ function() {
  }, Markdown.Converter = function() {
   function e(e) {
    return e = e.replace(/^[ ]{0,3}\[(.+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?(?=\s|$)[ \t]*\n?[ \t]*((\n*)["(](.+?)[")][ \t]*)?(?:\n+)/gm, function(e, t, n, i, o, r) {
-    return t = t.toLowerCase(), I.set(t, E(n)), o ? i : (r && M.set(t, r.replace(/"/g, "&quot;")), 
+    return t = t.toLowerCase(), I.set(t, k(n)), o ? i : (r && M.set(t, r.replace(/"/g, "&quot;")), 
     "");
    });
   }
@@ -19396,12 +18043,12 @@ function() {
    e = B.preBlockGamut(e, N), e = p(e);
    var i = "<hr />\n";
    return e = e.replace(/^[ ]{0,2}([ ]?\*[ ]?){3,}[ \t]*$/gm, i), e = e.replace(/^[ ]{0,2}([ ]?-[ ]?){3,}[ \t]*$/gm, i), 
-   e = e.replace(/^[ ]{0,2}([ ]?_[ ]?){3,}[ \t]*$/gm, i), e = f(e), e = m(e), e = C(e), 
-   e = B.postBlockGamut(e, N), e = t(e), e = x(e, n);
+   e = e.replace(/^[ ]{0,2}([ ]?_[ ]?){3,}[ \t]*$/gm, i), e = f(e), e = m(e), e = x(e), 
+   e = B.postBlockGamut(e, N), e = t(e), e = C(e, n);
   }
   function s(e) {
-   return e = B.preSpanGamut(e), e = b(e), e = a(e), e = S(e), e = u(e), e = l(e), 
-   e = k(e), e = e.replace(/~P/g, "://"), e = E(e), e = w(e), e = e.replace(/  +\n/g, " <br>\n"), 
+   return e = B.preSpanGamut(e), e = b(e), e = a(e), e = E(e), e = u(e), e = l(e), 
+   e = A(e), e = e.replace(/~P/g, "://"), e = k(e), e = w(e), e = e.replace(/  +\n/g, " <br>\n"), 
    e = B.postSpanGamut(e);
   }
   function a(e) {
@@ -19446,12 +18093,12 @@ function() {
   }
   function p(e) {
    return e = e.replace(/^(.+)[ \t]*\n=+[ \t]*\n+/gm, function(e, t) {
-    return '<h1 class="wmd-title">' + s(t) + "</h1>\n\n";
+    return "<h1>" + s(t) + "</h1>\n\n";
    }), e = e.replace(/^(.+)[ \t]*\n-+[ \t]*\n+/gm, function(e, t) {
-    return '<h2 class="wmd-title">' + s(t) + "</h2>\n\n";
+    return "<h2>" + s(t) + "</h2>\n\n";
    }), e = e.replace(/^(\#{1,6})[ \t]*(.+?)[ \t]*\#*\n+/gm, function(e, t, n) {
     var i = t.length;
-    return "<h" + i + ' class="wmd-title">' + s(n) + "</h" + i + ">\n\n";
+    return "<h" + i + ">" + s(n) + "</h" + i + ">\n\n";
    });
   }
   function f(e, t) {
@@ -19500,7 +18147,7 @@ function() {
    return e = e.replace(/([\W_]|^)(\*\*|__)(?=\S)([^\r]*?\S[\*_]*)\2([\W_]|$)/g, "$1<strong>$3</strong>$4"), 
    e = e.replace(/([\W_]|^)(\*|_)(?=\S)([^\r\*_]*?\S)\2([\W_]|$)/g, "$1<em>$3</em>$4");
   }
-  function C(e) {
+  function x(e) {
    return e = e.replace(/((^[ \t]*>[ \t]?.+\n(.+\n)*\n*)+)/gm, function(e, t) {
     var n = t;
     return n = n.replace(/^[ \t]*>[ \t]?/gm, "~0"), n = n.replace(/~0/g, ""), n = n.replace(/^[ \t]+$/gm, ""), 
@@ -19510,7 +18157,7 @@ function() {
     }), v("<blockquote>\n" + n + "\n</blockquote>");
    });
   }
-  function x(e, t) {
+  function C(e, t) {
    e = e.replace(/^\n+/g, ""), e = e.replace(/\n+$/g, "");
    for (var n = e.split(/\n{2,}/g), i = [], o = /~K(\d+)K/, r = n.length, a = 0; r > a; a++) {
     var l = n[a];
@@ -19525,13 +18172,13 @@ function() {
    }
    return i.join("\n\n");
   }
-  function E(e) {
+  function k(e) {
    return e = e.replace(/&(?!#?[xX]?(?:[0-9a-fA-F]+|\w+);)/g, "&amp;"), e = e.replace(/<(?![a-z\/?!]|~D)/gi, "&lt;");
   }
-  function S(e) {
+  function E(e) {
    return e = e.replace(/\\(\\)/g, L), e = e.replace(/\\([`*_{}\[\]()>#+-.!])/g, L);
   }
-  function A(e, t, n, i) {
+  function S(e, t, n, i) {
    if (t) return e;
    if (")" !== i.charAt(i.length - 1)) return "<" + n + i + ">";
    for (var o = i.match(/[()]/g), r = 0, s = 0; s < o.length; s++) "(" === o[s] ? 0 >= r ? r = 1 : r++ : r--;
@@ -19544,12 +18191,12 @@ function() {
    }
    if (a) {
     var c = i.charAt(i.length - 1);
-    W.test(c) || (a = c + a, i = i.substr(0, i.length - 1));
+    q.test(c) || (a = c + a, i = i.substr(0, i.length - 1));
    }
    return "<" + n + i + ">" + a;
   }
-  function k(e) {
-   e = e.replace(H, A);
+  function A(e) {
+   e = e.replace(H, S);
    var t = function(e, t) {
     return '<a href="' + t + '">' + B.plainLinkText(t) + "</a>";
    };
@@ -19572,7 +18219,7 @@ function() {
    });
   }
   function $(e) {
-   return e ? (e.length, e.replace(q, function(e) {
+   return e ? (e.length, e.replace(W, function(e) {
     return "~D" == e ? "%24" : ":" == e ? ":" : "%" + e.charCodeAt(0).toString(16);
    })) : "";
   }
@@ -19604,7 +18251,7 @@ function() {
   }, O = {
    ol: "\\d+[.]",
    ul: "[*+-]"
-  }, z = "[-A-Z0-9+&@#/%?=~_|[\\]()!:,.;]", j = "[-A-Z0-9+&@#/%=~_|[\\])]", H = new RegExp('(="|<)?\\b(https?|ftp)(://' + z + "*" + j + ")(?=$|\\W)", "gi"), W = new RegExp(j, "i"), q = /(?:["'*()[\]:]|~D)/g;
+  }, z = "[-A-Z0-9+&@#/%?=~_|[\\]()!:,.;]", j = "[-A-Z0-9+&@#/%=~_|[\\])]", H = new RegExp('(="|<)?\\b(https?|ftp)(://' + z + "*" + j + ")(?=$|\\W)", "gi"), q = new RegExp(j, "i"), W = /(?:["'*()[\]:]|~D)/g;
  };
 }(), define("bower-libs/pagedown-ace/Markdown.Converter", function() {}), function() {
  function e() {}
@@ -19659,7 +18306,7 @@ function() {
      var i = new Date().getTime();
      n = e.makeHtml(n);
      var o = new Date().getTime();
-     r = o - i, x(n);
+     r = o - i, C(n);
     }
    }
   };
@@ -19684,24 +18331,24 @@ function() {
    i.removeChild(n), n.innerHTML = e, o ? i.insertBefore(n, o) : i.appendChild(n);
   }, w = function(e) {
    t.preview.innerHTML = e;
-  }, C = function(e) {
+  }, x = function(e) {
    if (v) return v(e);
    try {
     w(e), v = w;
    } catch (t) {
     v = y, v(e);
    }
-  }, x = function(e) {
+  }, C = function(e) {
    var i = l.getTop(t.input) - d();
-   if (t.preview && (C(e), n()), m(), b) return b = !1, void 0;
+   if (t.preview && (x(e), n()), m(), b) return b = !1, void 0;
    var o = l.getTop(t.input) - d();
    f.isIE ? setTimeout(function() {
     window.scrollBy(0, o - i);
    }, 0) : window.scrollBy(0, o - i);
-  }, E = function() {
+  }, k = function() {
    t.input.session.on("change", p), t.preview && (t.preview.scrollTop = 0);
   };
-  E();
+  k();
  }
  function o(e, t, i, o, r, s, a, l) {
   function c(e) {
@@ -19799,8 +18446,8 @@ function() {
   };
   var w = this;
   g();
-  var C = "keydown";
-  f.isOpera && (C = "keypress"), c([ "bold", "italic", "link", "quote", "code", "image", "olist", "ulist", "heading", "hr" ]), 
+  var x = "keydown";
+  f.isOpera && (x = "keypress"), c([ "bold", "italic", "link", "quote", "code", "image", "olist", "ulist", "heading", "hr" ]), 
   this.buttons = y, this.setButtonState = h;
  }
  function r(e, t) {
@@ -19917,7 +18564,7 @@ function() {
     u = new t(n, a);
     var f, g = new r(c, l), v = new i(e, u, function() {
      c.onPreviewRefresh();
-    }, p), b = "undefined" != typeof require ? require("ace/lib/useragent") : a.require("ace/lib/useragent"), y = function(e) {
+    }, p), b = "undefined" != typeof require ? require("ace/lib/useragent") : ace.require("ace/lib/useragent"), y = function(e) {
      var t = m[e][b.isMac ? "mac" : "win"], n = t.indexOf("|");
      return t.substring(0, n > 0 ? n : t.length);
     };
@@ -20476,13 +19123,1515 @@ function() {
    i.highlighter = "prettify";
    var o = document.getElementById("preview-contents");
    e.hooks.chain("onPreviewRefresh", function() {
-    t.each(o.querySelectorAll(".prettyprint"), function(e) {
+    t.each(o.querySelectorAll(".prettyprint > code"), function(e) {
      s.highlightBlock(e);
     });
    });
   } else "prettify" == a.config.highlighter && (i.highlighter = "prettify", e.hooks.chain("onPreviewRefresh", r.prettyPrint));
-  Markdown.Extra.init(n, i), l.onExtraExtensions(a.config.extensions);
+  Markdown.Extra.init(n, i);
  }, a;
+}), define("text!html/mathJaxSettingsBlock.html", [], function() {
+ return '<p>Allows StackEdit to interpret LaTeX mathematical expressions.</p>\n<div class="form-horizontal">\n    <div class="form-group">\n        <label class="col-lg-4 control-label"\n            for="input-mathjax-config-tex">TeX configuration</label>\n        <div class="col-lg-7">\n            <input type="text" id="input-mathjax-config-tex" class="form-control">\n        </div>\n    </div>\n    <div class="form-group">\n        <label class="col-lg-4 control-label"\n            for="input-mathjax-config-tex2jax">tex2jax configuration</label>\n        <div class="col-lg-7">\n            <input type="text" id="input-mathjax-config-tex2jax" class="form-control">\n        </div>\n    </div>\n</div>\n<span class="help-block pull-right"><a target="_blank" href="http://docs.mathjax.org/en/latest/options/index.html">More info</a></span>';
+}), define("text!libs/mathjax_config.js", [], function() {
+ return 'MathJax.Hub.Config({\n    "HTML-CSS": {\n        preferredFont: "TeX",\n        availableFonts: [\n            "STIX",\n            "TeX"\n        ],\n        linebreaks: {\n            automatic: true\n        },\n        EqnChunk: 10,\n        imageFont: null\n    },\n    tex2jax: <%= tex2jax || \'{ inlineMath: [["$","$"],["\\\\\\\\\\\\\\\\(","\\\\\\\\\\\\\\\\)"]], displayMath: [["$$","$$"],["\\\\\\\\[","\\\\\\\\]"]], processEscapes: true }\' %>,\n    TeX: $.extend({\n        noUndefined: {\n            attributes: {\n                mathcolor: "red",\n                mathbackground: "#FFEEEE",\n                mathsize: "90%"\n            }\n        },\n        Safe: {\n            allow: {\n                URLs: "safe",\n                classes: "safe",\n                cssIDs: "safe",\n                styles: "safe",\n                fontsize: "all"\n            }\n        }\n    }, <%= tex %>),\n    messageStyle: "none"\n});\n';
+}), define("libs/mathjax_init", [ "settings", "text!libs/mathjax_config.js" ], function(e, t) {
+ var n = document.createElement("script");
+ n.type = "text/x-mathjax-config", n.innerHTML = _.template(t, {
+  tex: e.extensionSettings.mathJax ? e.extensionSettings.mathJax.tex : "undefined",
+  tex2jax: e.extensionSettings.mathJax ? e.extensionSettings.mathJax.tex2jax : void 0
+ }), document.getElementsByTagName("head")[0].appendChild(n);
+}), define("extensions/mathJax", [ "utils", "classes/Extension", "text!html/mathJaxSettingsBlock.html", "mathjax" ], function(e, t, n) {
+ function i(e, t, n) {
+  var i = u.slice(e, t + 1).join("").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  for (w.Browser.isMSIE && (i = i.replace(/(%[^\n]*)\n/g, "$1<br/>\n")); t > e; ) u[t] = "", 
+  t--;
+  u[e] = "@@" + g.length + "@@", n && (i = n(i)), g.push(i), d = h = p = null;
+ }
+ function o(e) {
+  d = h = p = null, g = [];
+  var t;
+  /`/.test(e) ? (e = e.replace(/~/g, "~T").replace(/(^|[^\\])(`+)([^\n]*?[^`\n])\2(?!`)/gm, function(e) {
+   return e.replace(/\$/g, "~D");
+  }), t = function(e) {
+   return e.replace(/~([TD])/g, function(e, t) {
+    return {
+     T: "~",
+     D: "$"
+    }[t];
+   });
+  }) : t = function(e) {
+   return e;
+  }, u = x(e.replace(/\r\n?/g, "\n"), C);
+  for (var e = 1, n = u.length; n > e; e += 2) {
+   var o = u[e];
+   "@" === o.charAt(0) ? (u[e] = "@@" + g.length + "@@", g.push(o)) : d ? o === h ? f ? p = e : i(d, e, t) : o.match(/\n.*\n/) ? (p && (e = p, 
+   i(d, e, t)), d = h = p = null, f = 0) : "{" === o ? f++ : "}" === o && f && f-- : o === y || "$$" === o ? (d = e, 
+   h = o, f = 0) : "begin" === o.substr(1, 5) && (d = e, h = "\\end" + o.substr(6), 
+   f = 0);
+  }
+  return p && i(d, p, t), t(u.join(""));
+ }
+ function r(e) {
+  return e = e.replace(/@@(\d+)@@/g, function(e, t) {
+   return g[t];
+  }), g = null, e;
+ }
+ function s() {
+  v = !1, w.cancelTypeset = !1, w.Queue([ "Typeset", w, b ]), w.Queue(c);
+ }
+ function a() {
+  !v && (v = !0, w.Cancel(), w.Queue(s));
+ }
+ var l = new t("mathJax", "MathJax", !0);
+ l.settingsBlock = n, l.defaultConfig = {
+  tex: "{}",
+  tex2jax: '{ inlineMath: [["$","$"],["\\\\\\\\(","\\\\\\\\)"]], displayMath: [["$$","$$"],["\\\\[","\\\\]"]], processEscapes: true }'
+ }, l.onLoadSettings = function() {
+  e.setInputValue("#input-mathjax-config-tex", l.config.tex), e.setInputValue("#input-mathjax-config-tex2jax", l.config.tex2jax);
+ }, l.onSaveSettings = function(t, n) {
+  t.tex = e.getInputJsValue("#input-mathjax-config-tex", n), t.tex2jax = e.getInputJsValue("#input-mathjax-config-tex2jax", n);
+ }, l.onPagedownConfigure = function(e) {
+  b = document.getElementById("preview-contents");
+  var t = e.getConverter();
+  t.hooks.chain("preConversion", o), t.hooks.chain("postConversion", r);
+ };
+ var c;
+ l.onAsyncPreview = function(e) {
+  c = e, a();
+ };
+ var u, d, h, p, f, g, m = !1, v = !1, b = null, y = "$", w = MathJax.Hub;
+ w.Queue(function() {
+  m = !0, w.processUpdateTime = 50, w.Config({
+   "HTML-CSS": {
+    EqnChunk: 10,
+    EqnChunkFactor: 1
+   },
+   SVG: {
+    EqnChunk: 10,
+    EqnChunkFactor: 1
+   }
+  });
+ });
+ var x, C = /(\$\$?|\\(?:begin|end)\{[a-z]*\*?\}|\\[\\{}$]|[{}]|(?:\n\s*)+|@@\d+@@)/i;
+ return x = 3 === "aba".split(/(b)/).length ? function(e, t) {
+  return e.split(t);
+ } : function(e, t) {
+  var n, i = [];
+  if (!t.global) {
+   n = t.toString();
+   var o = "";
+   n = n.replace(/^\/(.*)\/([im]*)$/, function(e, t, n) {
+    return o = n, t;
+   }), t = RegExp(n, o + "g");
+  }
+  for (var r = t.lastIndex = 0; n = t.exec(e); ) i.push(e.substring(r, n.index)), 
+  i.push.apply(i, n.slice(1)), r = n.index + n[0].length;
+  return i.push(e.substring(r)), i;
+ }, function() {
+  var e = MathJax.Hub;
+  if (!e.Cancel) {
+   e.cancelTypeset = !1, e.Register.StartupHook("HTML-CSS Jax Config", function() {
+    var t = MathJax.OutputJax["HTML-CSS"], n = t.Translate;
+    t.Augment({
+     Translate: function(i, o) {
+      if (e.cancelTypeset || o.cancelled) throw Error("MathJax Canceled");
+      return n.call(t, i, o);
+     }
+    });
+   }), e.Register.StartupHook("SVG Jax Config", function() {
+    var t = MathJax.OutputJax.SVG, n = t.Translate;
+    t.Augment({
+     Translate: function(i, o) {
+      if (e.cancelTypeset || o.cancelled) throw Error("MathJax Canceled");
+      return n.call(t, i, o);
+     }
+    });
+   }), e.Register.StartupHook("TeX Jax Config", function() {
+    var t = MathJax.InputJax.TeX, n = t.Translate;
+    t.Augment({
+     Translate: function(i, o) {
+      if (e.cancelTypeset || o.cancelled) throw Error("MathJax Canceled");
+      return n.call(t, i, o);
+     }
+    });
+   });
+   var t = e.processError;
+   e.processError = function(n, i, o) {
+    return "MathJax Canceled" !== n.message ? t.call(e, n, i, o) : (MathJax.Message.Clear(0, 0), 
+    i.jaxIDs = [], i.jax = {}, i.scripts = [], i.i = i.j = 0, i.cancelled = !0, null);
+   }, e.Cancel = function() {
+    this.cancelTypeset = !0;
+   };
+  }
+ }(), l;
+}), define("extensions/markdownSectionParser", [ "underscore", "extensions/markdownExtra", "extensions/mathJax", "classes/Extension" ], function(e, t, n, i) {
+ var o, r = new i("markdownSectionParser", "Markdown section parser");
+ return r.onEventMgrCreated = function(e) {
+  o = e;
+ }, r.onPagedownConfigure = function(i) {
+  var r = "^.+[ \\t]*\\n=+[ \\t]*\\n+|^.+[ \\t]*\\n-+[ \\t]*\\n+|^\\#{1,6}[ \\t]*.+?[ \\t]*\\#*\\n+";
+  t.config.enabled && e.some(t.config.extensions, function(e) {
+   return "fenced_code_gfm" == e;
+  }) && (r = "^```.*\\n[\\s\\S]*?\\n```|" + r), n.config.enabled && (r = "^[ \\t]*\\n[ \\t]*\\$\\$[\\s\\S]*?\\$\\$|" + r, 
+  r = "^[ \\t]*\\n[ \\t]*\\\\\\\\[[\\s\\S]*?\\\\\\\\]|" + r, r = "^[ \\t]*\\n[ \\t]*\\\\?\\\\begin\\{[a-z]*\\*?\\}[\\s\\S]*?\\\\end\\{[a-z]*\\*?\\}|" + r), 
+  r = new RegExp(r, "gmi");
+  var s = i.getConverter();
+  s.hooks.chain("preConversion", function(t) {
+   o.previewStartTime = new Date();
+   var n = t + "\n\n", i = [], s = 0;
+   n.replace(r, function(e, t) {
+    var o = n.substring(s, t);
+    i.push({
+     text: o,
+     textWithDelimiter: '\n<div class="se-section-delimiter"></div>\n\n' + o + "\n"
+    }), s = t;
+   });
+   var a = n.substring(s, t.length);
+   return i.push({
+    text: a,
+    textWithDelimiter: '\n<div class="se-section-delimiter"></div>\n\n' + a + "\n"
+   }), o.onSectionsCreated(i), e.reduce(i, function(e, t) {
+    return e + t.textWithDelimiter;
+   }, "");
+  });
+ }, r;
+}), define("text!html/partialRenderingSettingsBlock.html", [], function() {
+ return "<p>Renders modified sections only.</p>\n<blockquote>\n	<b>NOTE:</b> Document sections are based on title elements (h1, h2...). Therefore if\n	your document does not contain any title, performance will not be increased.\n</blockquote>";
+}), define("extensions/partialRendering", [ "underscore", "crel", "extensions/markdownExtra", "classes/Extension", "text!html/partialRenderingSettingsBlock.html" ], function(e, t, n, i, o) {
+ function r(t, n) {
+  if (g = [], f = [], d = void 0, m === !0 || u != n) return m = !1, u = n, f = p, 
+  p = t, g = t, void 0;
+  var i = p.length;
+  e.some(p, function(e, n) {
+   return n >= t.length || e.text != t[n].text ? (i = n, !0) : void 0;
+  });
+  var o = -p.length;
+  e.some(p.slice().reverse(), function(e, n) {
+   return n >= t.length || e.text != t[t.length - n - 1].text ? (o = -n, !0) : void 0;
+  }), i - o > p.length && (o = i - p.length);
+  var r = p.slice(0, i);
+  g = t.slice(i, t.length + o);
+  var s = p.slice(p.length + o, p.length);
+  d = e.first(s), f = p.slice(i, p.length + o), p = r.concat(g).concat(s);
+ }
+ function s(e) {
+  var t = e.id.substring(3);
+  x[t] = e;
+ }
+ function a() {
+  function n(n) {
+   for (var i = t("div", {
+    id: "wmd-preview-section-" + n.id,
+    "class": "wmd-preview-section preview-content"
+   }), r = !1; o; ) {
+    var a = o.nextSibling;
+    if (r === !0 && "DIV" == o.tagName && "se-section-delimiter" == o.className) break;
+    r = !0, "DIV" == o.tagName && "footnotes" == o.className ? e.each(o.querySelectorAll("ol > li"), s) : i.appendChild(o), 
+    o = a;
+   }
+   return i;
+  }
+  e.each(f, function(e) {
+   var t = document.getElementById("wmd-preview-section-" + e.id);
+   w.removeChild(t);
+  });
+  var i = document.getElementById("wmd-preview"), o = i.firstChild, r = document.createDocumentFragment();
+  e.each(g, function(e) {
+   r.appendChild(n(e));
+  }), i.innerHTML = "";
+  var a = y;
+  void 0 !== d && (a = document.getElementById("wmd-preview-section-" + d.id)), w.insertBefore(r, a), 
+  y.innerHTML = "";
+  var l = [];
+  if (b === !0) {
+   var c = t("ol");
+   e.each(w.querySelectorAll("a.footnote"), function(e, t) {
+    e.textContent = t + 1;
+    var n = e.id.substring(6);
+    l.push(n), c.appendChild(x[n].cloneNode(!0));
+   }), l.length > 0 && y.appendChild(t("div", {
+    "class": "footnotes"
+   }, t("hr"), c)), x = e.pick(x, l);
+  }
+ }
+ var l = new i("partialRendering", "Partial Rendering", !0);
+ l.settingsBlock = o;
+ var c, u, d, h = 0, p = [], f = [], g = [], m = !1, v = !1, b = !1;
+ l.onSectionsCreated = function(t) {
+  var n = [], i = "\n";
+  b = !1, e.each(t, function(e) {
+   var t = e.textWithDelimiter + "\n";
+   v && (t = t.replace(/^```.*\n[\s\S]*?\n```|\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|$)/gm, function(e, t) {
+    return t ? (b = !0, i += e.replace(/^\s*\n/gm, "") + "\n", "") : e;
+   })), t = t.replace(/^```.*\n[\s\S]*?\n```|^[ ]{0,3}\[(.+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?(?=\s|$)[ \t]*\n?[ \t]*((\n*)["(](.+?)[")][ \t]*)?(?:\n+)/gm, function(e, t) {
+    return t ? (i += e.replace(/^\s*\n/gm, "") + "\n", "") : e;
+   }), n.push({
+    id: ++h,
+    text: t + "\n"
+   });
+  }), r(n, i);
+ };
+ var y, w, x = {};
+ return l.onPagedownConfigure = function(t) {
+  c = t.getConverter(), c.hooks.chain("preConversion", function() {
+   var t = e.map(g, function(e) {
+    return e.text;
+   });
+   return t.push(u + "\n\n"), t.join("");
+  }), t.hooks.chain("onPreviewRefresh", function() {
+   a();
+  });
+ }, l.onInit = function() {
+  n.config.enabled && e.some(n.config.extensions, function(e) {
+   return "footnotes" == e;
+  }) && (v = !0);
+ }, l.onReady = function() {
+  y = t("div", {
+   id: "wmd-preview-section-footnotes",
+   "class": "preview-content"
+  }), w = document.getElementById("preview-contents"), w.appendChild(y);
+ }, l.onFileSelected = function() {
+  m = !0;
+ }, l;
+}), define("text!html/buttonMarkdownSyntax.html", [], function() {
+ return '<button class="btn btn-default dropdown-toggle" title="Markdown syntax" data-toggle="dropdown">\n	<i class="icon-help-circled"></i>\n</button>\n<div class="dropdown-menu pull-right">\n	<h3>Markdown syntax</h3>\n	<div class="markdown-syntax">\n<h4>Phrase Emphasis</h4>\n\n<pre><code>*italic*   **bold**\n_italic_   __bold__\n</code></pre>\n\n<h4>Links</h4>\n\n<p>Inline:</p>\n\n<pre><code>An [example](http://url.com/ "Title")\n</code></pre>\n\n<p>Reference-style labels (titles are optional):</p>\n\n<pre><code>An [example][id]. Then, anywhere\nelse in the doc, define the link:\n\n  [id]: http://example.com/  "Title"\n</code></pre>\n\n<h4>Images</h4>\n\n<p>Inline (titles are optional):</p>\n\n<pre><code>![alt text](/path/img.jpg "Title")\n</code></pre>\n\n<p>Reference-style:</p>\n\n<pre><code>![alt text][id]\n\n[id]: /url/to/img.jpg "Title"\n</code></pre>\n\n<h4>Headers</h4>\n\n<p>Setext-style:</p>\n\n<pre><code>Header 1\n========\n\nHeader 2\n--------\n</code></pre>\n\n<p>atx-style (closing #\'s are optional):</p>\n\n<pre><code># Header 1 #\n\n## Header 2 ##\n\n###### Header 6\n</code></pre>\n\n<h4>Lists</h4>\n\n<p>Ordered, without paragraphs:</p>\n\n<pre><code>1.  Foo\n2.  Bar\n</code></pre>\n\n<p>Unordered, with paragraphs:</p>\n\n<pre><code>*   A list item.\n\n    With multiple paragraphs.\n\n*   Bar\n</code></pre>\n\n<p>You can nest them:</p>\n\n<pre><code>*   Abacus\n    * answer\n*   Bubbles\n    1.  bunk\n    2.  bupkis\n        * BELITTLER\n    3. burper\n*   Cunning\n</code></pre>\n\n<h4>Blockquotes</h4>\n\n<pre><code>&gt; Email-style angle brackets\n&gt; are used for blockquotes.\n\n&gt; &gt; And, they can be nested.\n\n&gt; #### Headers in blockquotes\n&gt; \n&gt; * You can quote a list.\n&gt; * Etc.\n</code></pre>\n\n<h4>Code Spans</h4>\n\n<pre><code>`&lt;code&gt;` spans are delimited\nby backticks.\n\nYou can include literal backticks\nlike `` `this` ``.\n</code></pre>\n\n<h4>Preformatted Code Blocks</h4>\n\n<p>Indent every line of a code block by at least 4 spaces or 1 tab.</p>\n\n<pre><code>This is a normal paragraph.\n\n    This is a preformatted\n    code block.\n</code></pre>\n\n<h4>Horizontal Rules</h4>\n\n<p>Three or more dashes or asterisks:</p>\n\n<pre><code>---\n\n* * *\n\n- - - - \n</code></pre>\n\n<h4>Manual Line Breaks</h4>\n\n<p>End a line with two or more spaces:</p>\n\n<pre><code>Roses are red,   \nViolets are blue.\n</code></pre>\n\n<blockquote>Based on the <a target="_blank" href="https://github.com/fletcher/MultiMarkdown/blob/master/Documentation/Markdown%20Syntax.md">Markdown syntax guide</a>, by Fletcher T. Penney.</blockquote>\n    </div>\n</div>\n';
+}), define("extensions/buttonMarkdownSyntax", [ "jquery", "classes/Extension", "text!html/buttonMarkdownSyntax.html" ], function(e, t, n) {
+ var i = new t("buttonMarkdownSyntax", 'Button "Markdown syntax', !0, !0);
+ return i.settingsBlock = '<p>Adds a "Markdown syntax" button over the preview.</p>', 
+ i.onCreatePreviewButton = function() {
+  return n;
+ }, i;
+}), define("extensions/googleAnalytics", [ "jquery", "underscore", "constants", "utils", "classes/Extension", "settings" ], function(e, t, n, i, o, r) {
+ function s() {
+  i.currentTime - d > 18e4 && (_gaq.push([ "_trackPageview" ]), d = i.currentTime);
+ }
+ var a = new o("googleAnalytics", "Google Analytics", !0);
+ a.settingsBlock = "<p>Sends anonymous statistics about usage and errors to help improve StackEdit.</p>";
+ var l = !1, c = !1;
+ window._gaq = [];
+ var u = function() {
+  if (l === !1 && c === !1) {
+   var t = "/ga.js";
+   location.search.match(/(\?|&)console/) && (t = "/u/ga_debug.js"), e.ajax({
+    url: "https://ssl.google-analytics.com" + t,
+    dataType: "script"
+   }).done(function() {
+    l = !0;
+   });
+  }
+ }, d = 0;
+ a.onPeriodicRun = function() {
+  s();
+ }, a.onReady = function() {
+  _gaq.push([ "_setAccount", n.GOOGLE_ANALYTICS_ACCOUNT_ID ]), s(), _gaq.push([ "_trackEvent", "About", "version", n.VERSION ]), 
+  _gaq.push([ "_trackEvent", "Settings", "layoutOrientation", "" + r.layoutOrientation ]), 
+  _gaq.push([ "_trackEvent", "Settings", "theme", "" + window.theme ]), _gaq.push([ "_trackEvent", "Settings", "lazyRendering", "" + r.lazyRendering ]), 
+  _gaq.push([ "_trackEvent", "Settings", "editorFontFamily", "" + r.editorFontFamily ]), 
+  _gaq.push([ "_trackEvent", "Settings", "editorFontSize", "" + r.editorFontSize ]), 
+  _gaq.push([ "_trackEvent", "Settings", "defaultContent backlink", "" + (-1 !== r.defaultContent.indexOf(n.MAIN_URL)) ]), 
+  _gaq.push([ "_trackEvent", "Settings", "commitMsg backlink", "" + (-1 !== r.commitMsg.indexOf(n.MAIN_URL)) ]), 
+  _gaq.push([ "_trackEvent", "Settings", "sshProxy unchanged", "" + (r.sshProxy == n.SSH_PROXY_URL) ]), 
+  t.each(r.extensionSettings, function(e, t) {
+   _gaq.push([ "_trackEvent", "Extensions", t + " enabled", "" + (e.enabled === !0) ]);
+  }), window.onerror = function(e, t, n) {
+   _gaq.push([ "_trackEvent", "Error", e, t + ":" + n + i.formatEventList() ]);
+  }, u();
+ }, a.onOfflineChanged = function(e) {
+  c = e, u();
+ };
+ var h = 0;
+ return a.onSyncRunning = function(e) {
+  e === !0 && (h = new Date().getTime());
+ }, a.onPublishRunning = function(e) {
+  e === !0 && (h = new Date().getTime());
+ }, a.onSyncSuccess = function() {
+  var e = new Date().getTime();
+  _gaq.push([ "_trackTiming", "Sync", "SyncTime", e - h ]);
+ }, a.onSyncImportSuccess = function(e, t) {
+  _gaq.push([ "_trackEvent", "Sync", "SyncImport" ]), _gaq.push([ "_trackEvent", "Sync", "SyncImport provider", t.providerId ]);
+ }, a.onSyncExportSuccess = function(e, t) {
+  _gaq.push([ "_trackEvent", "Sync", "SyncExport" ]), _gaq.push([ "_trackEvent", "Sync", "SyncExport provider", t.provider.providerId ]);
+ }, a.onPublishSuccess = function(e) {
+  var n = new Date().getTime();
+  _gaq.push([ "_trackTiming", "Publish", "PublishSuccess", n - h ]), t.each(e.publishLocations, function(e) {
+   _gaq.push([ "_trackEvent", "Publish", "PublishSuccess provider", e.provider.providerId ]);
+  });
+ }, a.onNewPublishSuccess = function(e, t) {
+  _gaq.push([ "_trackEvent", "Publish", "NewPublish provider", t.provider.providerId ]);
+ }, a.onError = function(e) {
+  !t.isString(e) && e.message && _gaq.push([ "_trackEvent", "Error", "message", e.message + i.formatEventList() ]);
+ }, a;
+}), define("text!html/dialogAbout.html", [], function() {
+ return '<div class="modal-dialog">\n    <div class="modal-content">\n        <div class="modal-header">\n            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>\n            <img data-stackedit-src="stackedit-promo.png" width="240"\n            height="60" />\n        </div>\n        <div class="modal-body">\n            <dl>\n                <dt>About:</dt>\n                <dd>\n                    <a target="_blank" href="https://github.com/benweet/stackedit/">GitHub\n						project</a> /\n                    <a target="_blank" href="https://github.com/benweet/stackedit/issues">issue\n						tracker</a>\n                    <br />\n                    <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome\n						app</a> (thanks for your review!)\n                    <br />\n                    <a target="_blank" href="https://twitter.com/stackedit/">Follow on Twitter</a>\n                    <br />\n                    <a target="_blank" href="https://www.facebook.com/stackedit/">Follow\n						on Facebook</a>\n                    <br />\n                    <a target="_blank" href="https://plus.google.com/110816046787593496375"\n                    rel="publisher">Follow on Google+</a>\n                    <br />\n				</dd>\n			</dl>\n			<dl>\n				<dt>Developers:</dt>\n				<dd>\n					<a target="_blank" href="http://www.benoitschweblin.com">Benoit\n						Schweblin</a><br /> Pete Eigel (contributor)\n				</dd>\n			</dl>\n			<dl>\n				<dt>Credit:</dt>\n				<dd>\n					<% _.each(libraries, function(url, name) { %> <a target="_blank"\n						href="<%= url %>"><%= name %></a><br /> <% }); %>\n				</dd>\n			</dl>\n			<dl>\n				<dt>Related projects:</dt>\n				<dd>\n					<% _.each(projects, function(url, name) { %> <a target="_blank"\n						href="<%= url %>"><%= name %></a><br /> <% }); %>\n				</dd>\n			</dl>\n			<dl>\n				<dt>Support StackEdit:</dt>\n				<dd>\n                    <a target="_blank" href="https://www.gittip.com/stackedit/"><img class="btn-gittip" data-stackedit-src="gittip.png" /></a>\n				</dd>\n			</dl>\n			<p>\n				StackEdit <%= version %><br /> Copyright 2013 <a\n					target="_blank" href="http://www.benoitschweblin.com">Benoit\n					Schweblin</a><br /> Licensed under an <a target="_blank"\n					href="http://www.apache.org/licenses/LICENSE-2.0">Apache\n					License</a>\n			</p>\n		</div>\n		<div class="modal-footer">\n			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n		</div>\n	</div>\n</div>\n';
+}), define("extensions/dialogAbout", [ "underscore", "constants", "utils", "classes/Extension", "text!html/dialogAbout.html" ], function(e, t, n, i, o) {
+ var r = new i("dialogAbout", 'Dialog "About"'), s = {
+  ACE: "http://ace.c9.io/",
+  Bootstrap: "http://getbootstrap.com/",
+  "Bootstrap Tour": "http://bootstraptour.com/",
+  crel: "https://github.com/KoryNunn/crel",
+  "Dropbox-js": "https://github.com/dropbox/dropbox-js",
+  "FileSaver.js": "https://github.com/eligrey/FileSaver.js/",
+  Fontello: "http://fontello.com/",
+  "Font Awesome and others...": "res/libs/fontello/LICENSE.txt",
+  Gatekeeper: "https://github.com/prose/gatekeeper",
+  "Github.js": "https://github.com/michael/github",
+  "Highlight.js": "http://softwaremaniacs.org/soft/highlight/en/",
+  jGrowl: "https://github.com/stanlemon/jGrowl/",
+  jQuery: "http://jquery.com/",
+  "lz-string": "http://pieroxy.net/blog/pages/lz-string/index.html",
+  MathJax: "http://www.mathjax.org/",
+  Mousetrap: "http://craig.is/killing/mice",
+  "PageDown ACE": "https://github.com/benweet/pagedown-ace",
+  "PageDown Extra": "https://github.com/jmcmanus/pagedown-extra/",
+  Prettify: "https://code.google.com/p/google-code-prettify/",
+  RequireJS: "http://requirejs.org/",
+  "RequireJS LESS plugin": "https://github.com/guybedford/require-less",
+  "stacktrace.js": "http://stacktracejs.com/",
+  "to-markdown": "https://github.com/domchristie/to-markdown",
+  "Typo.js": "https://github.com/cfinke/Typo.js",
+  "UI Layout": "http://layout.jquery-dev.net/",
+  "Underscore.js": "http://underscorejs.org/",
+  waitForImages: "https://github.com/alexanderdickson/waitForImages",
+  XRegExp: "https://github.com/slevithan/xregexp",
+  "yaml.js": "https://github.com/jeremyfa/yaml.js"
+ }, a = {
+  "StackEdit Download Proxy": "https://github.com/benweet/stackedit-download-proxy",
+  "StackEdit HTMLtoPDF": "https://github.com/benweet/stackedit-htmltopdf",
+  "StackEdit Picasa Proxy": "https://github.com/benweet/stackedit-picasa-proxy",
+  "StackEdit SSH Proxy": "https://github.com/benweet/stackedit-ssh-proxy",
+  "StackEdit Tumblr Proxy": "https://github.com/benweet/stackedit-tumblr-proxy",
+  "StackEdit WordPress Proxy": "https://github.com/benweet/stackedit-wordpress-proxy"
+ };
+ return r.onReady = function() {
+  n.addModal("modal-about", e.template(o, {
+   libraries: s,
+   projects: a,
+   version: t.VERSION
+  }));
+ }, r;
+}), define("text!html/dialogManagePublicationLocation.html", [], function() {
+ return '<div class="input-group">\n	<span class="input-group-addon" title="<%= publishAttributes.provider.providerName %>">\n		<i class="icon-provider-<%= publishAttributes.provider.providerId %>"></i>\n	</span> <input class="form-control" type="text"\n		value="<%= publishDesc %>" disabled />\n	<div class="input-group-btn">\n		<a class="btn btn-link remove-button" title="Remove this location"\n			data-publish-index="<%= publishAttributes.publishIndex %>"><i\n			class="icon-trash"></i></a>\n	</div>\n</div>\n';
+}), define("extensions/dialogManagePublication", [ "jquery", "underscore", "classes/Extension", "text!html/dialogManagePublicationLocation.html" ], function(e, t, n, i) {
+ var o, r = new n("dialogManagePublication", 'Dialog "Manage publication"', !1, !0);
+ r.onEventMgrCreated = function(e) {
+  o = e;
+ };
+ var s, a, l, c, u = function(n) {
+  if (void 0 === n || n === s) {
+   t.size(s.publishLocations) > 0 ? (l.removeClass("hide"), c.addClass("hide")) : (l.addClass("hide"), 
+   c.removeClass("hide"));
+   var r = t.reduce(s.publishLocations, function(e, n) {
+    var o = t.omit(n, "provider", "publishIndex", "sharingLink");
+    return o.password && (o.password = "********"), o = JSON.stringify(o).replace(/{|}|"/g, "").replace(/,/g, ", "), 
+    e + t.template(i, {
+     publishAttributes: n,
+     publishDesc: o
+    });
+   }, "");
+   a.innerHTML = r, t.each(a.querySelectorAll(".remove-button"), function(t) {
+    var n = e(t), i = s.publishLocations[n.data("publishIndex")];
+    n.click(function() {
+     s.removePublishLocation(i), o.onPublishRemoved(s, i);
+    });
+   });
+  }
+ };
+ return r.onFileSelected = function(e) {
+  s = e, u(e);
+ }, r.onNewPublishSuccess = u, r.onPublishRemoved = u, r.onReady = function() {
+  var t = document.querySelector(".modal-manage-publish");
+  a = t.querySelector(".publish-list"), l = e(t.querySelectorAll(".msg-publish-list")), 
+  c = e(t.querySelectorAll(".msg-no-publish"));
+ }, r;
+}), define("text!html/dialogManageSynchronizationLocation.html", [], function() {
+ return '<div class="input-group">\n	<span class="input-group-addon"\n		title="<%= syncAttributes.provider.providerName %><%= syncAttributes.isRealtime ? \' (real time)\' : \'\' %>">\n		<i\n		class="icon-provider-<%= syncAttributes.provider.providerId %><%= syncAttributes.isRealtime ? \' realtime\' : \'\' %>"></i>\n	</span> <input class="form-control" type="text"\n		value="<%= syncDesc %>" disabled />\n	<div class="input-group-btn">\n		<a class="btn btn-link remove-button" title="Remove this location"\n			data-sync-index="<%= syncAttributes.syncIndex %>"><i class="icon-trash"></i></a>\n	</div>\n</div>\n';
+}), define("extensions/dialogManageSynchronization", [ "jquery", "underscore", "classes/Extension", "text!html/dialogManageSynchronizationLocation.html" ], function(e, t, n, i) {
+ var o, r = new n("dialogManageSynchronization", 'Dialog "Manage synchronization"', !1, !0);
+ r.onEventMgrCreated = function(e) {
+  o = e;
+ };
+ var s;
+ r.onSynchronizerCreated = function(e) {
+  s = e;
+ };
+ var a, l, c, u, d = function(n) {
+  if (void 0 === n || n === a) {
+   t.size(a.syncLocations) > 0 ? (c.removeClass("hide"), u.addClass("hide")) : (c.addClass("hide"), 
+   u.removeClass("hide"));
+   var r = t.reduce(a.syncLocations, function(e, n) {
+    return e + t.template(i, {
+     syncAttributes: n,
+     syncDesc: n.id || n.path
+    });
+   }, "");
+   l.innerHTML = r, t.each(l.querySelectorAll(".remove-button"), function(t) {
+    var n = e(t), i = a.syncLocations[n.data("syncIndex")];
+    n.click(function() {
+     s.tryStopRealtimeSync(), a.removeSyncLocation(i), o.onSyncRemoved(a, i);
+    });
+   });
+  }
+ };
+ return r.onFileSelected = function(e) {
+  a = e, d(e);
+ }, r.onSyncExportSuccess = d, r.onSyncRemoved = d, r.onReady = function() {
+  var t = document.querySelector(".modal-manage-sync");
+  l = t.querySelector(".sync-list"), c = e(t.querySelectorAll(".msg-sync-list")), 
+  u = e(t.querySelectorAll(".msg-no-sync"));
+ }, r;
+}), function() {
+ var e = this, t = {}, n = !1;
+ "undefined" != typeof module && module.exports ? (module.exports = t, e.toMarkdown = t, 
+ n = !0) : e.toMarkdown = t, t.converter = function(e) {
+  e && e.elements && $.isArray(e.elements) && (c = c.concat(e.elements)), this.makeMd = function(e, t) {
+   var o;
+   if (n) {
+    var r = require("jsdom");
+    r.env({
+     html: e,
+     scripts: [ "http://code.jquery.com/jquery-1.6.4.min.js" ],
+     done: function(n, o) {
+      "function" == typeof t && t(i(e, o.$));
+     }
+    });
+   } else o = i(e, $);
+   return o;
+  };
+ };
+ var i = function(e, t) {
+  e = e.replace(/(\d+)\. /g, "$1\\. ");
+  var n = t("<div/>"), i = n.html(e);
+  i.find("*:not(pre, code)").contents().filter(function() {
+   return 3 === this.nodeType && /^\s+$/.test(this.nodeValue);
+  }).remove();
+  for (var o = [], r = 0, a = c.length; a > r; r++) o.push(c[r].selector);
+  for (o = o.join(","); i.find(o).length; ) for (var r = 0, a = c.length; a > r; r++) $matches = i.find(c[r].selector + ':not(:has("' + o + '"))'), 
+  $matches.each(function(e, n) {
+   var i = t(n);
+   i.before(c[r].replacement(i.html(), i)).remove();
+  });
+  return s(i.html());
+ }, o = function(e) {
+  return e.replace(/^[\n\r\f]+|[\n\r\f]+$/g, "");
+ }, r = function(e) {
+  return String(e).replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"');
+ }, s = function(e) {
+  return e = e.replace(/^[\t\r\n]+|[\t\r\n]+$/g, ""), e = e.replace(/\n\s+\n/g, "\n\n"), 
+  e = e.replace(/\n{3,}/g, "\n\n"), e = r(e);
+ }, a = function(e) {
+  return e = o(e), e ? "**" + e + "**" : "";
+ }, l = function(e) {
+  return e = o(e), e ? "_" + e + "_" : "";
+ }, c = [ {
+  selector: "p",
+  replacement: function(e) {
+   return e = $.trim(e), e ? "\n\n" + e + "\n\n" : "";
+  }
+ }, {
+  selector: "br",
+  replacement: function() {
+   return "\n";
+  }
+ }, {
+  selector: "h1,h2,h3,h4,h5,h6",
+  replacement: function(e, t) {
+   e = $.trim(e);
+   for (var n = t.prop("nodeName").charAt(1), i = "", o = 0; n > o; o++) i += "#";
+   return e ? "\n\n" + i + " " + e + "\n\n" : "";
+  }
+ }, {
+  selector: "hr",
+  replacement: function() {
+   return "\n\n* * *\n\n";
+  }
+ }, {
+  selector: "a[href]",
+  replacement: function(e, t) {
+   if (e) {
+    e = o(e);
+    var n = t.attr("href"), i = t.attr("title") || "";
+    return "[" + e + "]" + "(" + n + (i ? ' "' + i + '"' : "") + ")";
+   }
+   return !1;
+  }
+ }, {
+  selector: "b",
+  replacement: a
+ }, {
+  selector: "strong",
+  replacement: a
+ }, {
+  selector: "i",
+  replacement: l
+ }, {
+  selector: "em",
+  replacement: l
+ }, {
+  selector: "code",
+  replacement: function(e) {
+   return e = o(e), e ? "`" + e + "`" : "";
+  }
+ }, {
+  selector: "img",
+  replacement: function(e, t) {
+   var n = t.attr("alt") || "", i = t.attr("src") || "", o = t.attr("title") || "";
+   return "![" + n + "]" + "(" + i + (o ? ' "' + o + '"' : "") + ")";
+  }
+ }, {
+  selector: "pre",
+  replacement: function(e) {
+   return /^\s*\`/.test(e) ? (e = e.replace(/\`/g, ""), "    " + e.replace(/\n/g, "\n    ")) : "";
+  }
+ }, {
+  selector: "li",
+  replacement: function(e, t) {
+   e = e.replace(/^\s+|\s+$/, "").replace(/\n/gm, "\n    ");
+   var n = "*   ", i = "", o = t.parent(), r = o.contents().filter(function() {
+    return 1 === this.nodeType && "LI" === this.nodeName || 3 === this.nodeType;
+   }), s = r.index(t) + 1;
+   return n = o.is("ol") ? s + ".  " : "*   ", s == r.length && (t.parents("li").length || (i = "\n"), 
+   e = e.replace(/\s+$/, ""), t.unwrap()), n + e + i + "\n";
+  }
+ }, {
+  selector: "blockquote",
+  replacement: function(e) {
+   return e = e = $.trim(e).replace(/\n{3,}/g, "\n\n"), e = e.replace(/\n/g, "\n&gt; "), 
+   "&gt; " + e;
+  }
+ } ];
+}(), define("toMarkdown", [ "jquery" ], function(e) {
+ return function() {
+  var t;
+  return t || e.toMarkdown;
+ };
+}(this)), define("extensions/dialogOpenHarddrive", [ "jquery", "underscore", "constants", "utils", "classes/Extension", "toMarkdown" ], function(e, t, n, i, o, r) {
+ function s(i) {
+  i.stopPropagation(), i.preventDefault();
+  var o = (i.dataTransfer || i.target).files;
+  e(".modal-import-harddrive-markdown, .modal-import-harddrive-html").modal("hide"), 
+  t.each(o, function(t) {
+   if (!e(i.target).is("#wmd-input *") || !t.name.match(/.(jpe?g|png|gif)$/i)) {
+    var o = new FileReader();
+    o.onload = function(e) {
+     return function(t) {
+      var n = t.target.result;
+      if (n.match(/\uFFFD/)) return h.onError(e.name + " is a binary file."), void 0;
+      if (n = p ? p(n) : n, void 0 === n) return h.onError(e.name + " is not a valid HTML file."), 
+      void 0;
+      var i = e.name, o = i.lastIndexOf(".");
+      i = -1 !== o ? i.substring(0, o) : i;
+      var r = u.createFile(i, n);
+      u.selectFile(r);
+     };
+    }(t);
+    var r = t.slice(0, n.IMPORT_FILE_MAX_CONTENT_SIZE);
+    o.readAsText(r);
+   }
+  });
+ }
+ function a(e) {
+  p = void 0, s(e);
+ }
+ function l(e) {
+  p = g, s(e);
+ }
+ function c(e) {
+  e.stopPropagation(), e.preventDefault(), e.dataTransfer.dropEffect = "copy";
+ }
+ var u, d = new o("dialogOpenHarddrive", 'Dialog "Open from"');
+ d.onFileMgrCreated = function(e) {
+  u = e;
+ };
+ var h;
+ d.onEventMgrCreated = function(e) {
+  h = e;
+ };
+ var p, f, g = function(e) {
+  return f.makeMd(e);
+ };
+ return d.onReady = function() {
+  f = new r.converter(), e("#input-file-import-harddrive-markdown").change(a), e("#dropzone-import-harddrive-markdown, #wmd-input").each(function() {
+   this.addEventListener("dragover", c, !1), this.addEventListener("drop", a, !1);
+  }), e("#input-file-import-harddrive-html").change(l), e("#dropzone-import-harddrive-html").each(function() {
+   this.addEventListener("dragover", c, !1), this.addEventListener("drop", l, !1);
+  }), e(".action-convert-html").click(function(e) {
+   var t = i.getInputTextValue("#input-convert-html", e);
+   if (void 0 !== t) {
+    if (t = f.makeMd(t), void 0 === t) return h.onError("Invalid HTML code."), void 0;
+    var n = u.createFile(void 0, t);
+    u.selectFile(n);
+   }
+  });
+ }, d;
+}), define("extensions/documentTitle", [ "jquery", "underscore", "classes/Extension" ], function(e, t, n) {
+ var i, o = new n("documentTitle", "Document Title");
+ o.onLayoutCreated = function(e) {
+  i = e;
+ };
+ var r, s, a = function(n) {
+  if (n === r) {
+   var o = r.title;
+   document.title = "StackEdit - " + o, s.html(r.composeTitle()), e(".file-title").text(o), 
+   e(".input-file-title").val(o), void 0 !== i && t.defer(i.resizeAll);
+  }
+ };
+ return o.onFileSelected = function(e) {
+  r = e, a(e);
+ }, o.onTitleChanged = a, o.onSyncExportSuccess = a, o.onSyncRemoved = a, o.onNewPublishSuccess = a, 
+ o.onPublishRemoved = a, o.onReady = function() {
+  s = e(".file-title-navbar"), s.hover(function() {
+   var e = s[0].scrollWidth - s.outerWidth();
+   s.stop(!0, !0).animate({
+    scrollLeft: e
+   }, 15 * e, "linear");
+  }, function() {
+   s.stop(!0, !0).scrollLeft(0);
+  }).click(function() {
+   s.stop(!0, !0).scrollLeft(0);
+  });
+ }, o;
+}), function(e, t) {
+ function n(e, t, n) {
+  return e.addEventListener ? (e.addEventListener(t, n, !1), void 0) : (e.attachEvent("on" + t, n), 
+  void 0);
+ }
+ function i(e) {
+  if ("keypress" == e.type) {
+   var t = String.fromCharCode(e.which);
+   return e.shiftKey || (t = t.toLowerCase()), t;
+  }
+  return C[e.which] ? C[e.which] : k[e.which] ? k[e.which] : String.fromCharCode(e.which).toLowerCase();
+ }
+ function o(e, t) {
+  return e.sort().join(",") === t.sort().join(",");
+ }
+ function r(e) {
+  e = e || {};
+  var t, n = !1;
+  for (t in F) e[t] ? n = !0 : F[t] = 0;
+  n || (D = !1);
+ }
+ function s(e, t, n, i, r, s) {
+  var a, l, c = [], u = n.type;
+  if (!A[e]) return [];
+  for ("keyup" == u && d(e) && (t = [ e ]), a = 0; a < A[e].length; ++a) if (l = A[e][a], 
+  (i || !l.seq || F[l.seq] == l.level) && u == l.action && ("keypress" == u && !n.metaKey && !n.ctrlKey || o(t, l.modifiers))) {
+   var h = !i && l.combo == r, p = i && l.seq == i && l.level == s;
+   (h || p) && A[e].splice(a, 1), c.push(l);
+  }
+  return c;
+ }
+ function a(e) {
+  var t = [];
+  return e.shiftKey && t.push("shift"), e.altKey && t.push("alt"), e.ctrlKey && t.push("ctrl"), 
+  e.metaKey && t.push("meta"), t;
+ }
+ function l(e, t, n) {
+  B.stopCallback(t, t.target || t.srcElement, n) || e(t, n) === !1 && (t.preventDefault && t.preventDefault(), 
+  t.stopPropagation && t.stopPropagation(), t.returnValue = !1, t.cancelBubble = !0);
+ }
+ function c(e, t, n) {
+  var i, o = s(e, t, n), a = {}, c = 0, u = !1;
+  for (i = 0; i < o.length; ++i) o[i].seq && (c = Math.max(c, o[i].level));
+  for (i = 0; i < o.length; ++i) if (o[i].seq) {
+   if (o[i].level != c) continue;
+   u = !0, a[o[i].seq] = 1, l(o[i].callback, n, o[i].combo);
+  } else u || l(o[i].callback, n, o[i].combo);
+  var h = "keypress" == n.type && $;
+  n.type != D || d(e) || h || r(a), $ = u && "keydown" == n.type;
+ }
+ function u(e) {
+  "number" != typeof e.which && (e.which = e.keyCode);
+  var t = i(e);
+  if (t) return "keyup" == e.type && T === t ? (T = !1, void 0) : (B.handleKey(t, a(e), e), 
+  void 0);
+ }
+ function d(e) {
+  return "shift" == e || "ctrl" == e || "alt" == e || "meta" == e;
+ }
+ function h() {
+  clearTimeout(x), x = setTimeout(r, 1e3);
+ }
+ function p() {
+  if (!w) {
+   w = {};
+   for (var e in C) e > 95 && 112 > e || C.hasOwnProperty(e) && (w[C[e]] = e);
+  }
+  return w;
+ }
+ function f(e, t, n) {
+  return n || (n = p()[e] ? "keydown" : "keypress"), "keypress" == n && t.length && (n = "keydown"), 
+  n;
+ }
+ function g(e, t, n, o) {
+  function s(t) {
+   return function() {
+    D = t, ++F[e], h();
+   };
+  }
+  function a(t) {
+   l(n, t, e), "keyup" !== o && (T = i(t)), setTimeout(r, 10);
+  }
+  F[e] = 0;
+  for (var c = 0; c < t.length; ++c) {
+   var u = c + 1 === t.length, d = u ? a : s(o || v(t[c + 1]).action);
+   b(t[c], d, o, e, c);
+  }
+ }
+ function m(e) {
+  return "+" === e ? [ "+" ] : e.split("+");
+ }
+ function v(e, t) {
+  var n, i, o, r = [];
+  for (n = m(e), o = 0; o < n.length; ++o) i = n[o], S[i] && (i = S[i]), t && "keypress" != t && E[i] && (i = E[i], 
+  r.push("shift")), d(i) && r.push(i);
+  return t = f(i, r, t), {
+   key: i,
+   modifiers: r,
+   action: t
+  };
+ }
+ function b(e, t, n, i, o) {
+  _[e + ":" + n] = t, e = e.replace(/\s+/g, " ");
+  var r, a = e.split(" ");
+  return a.length > 1 ? (g(e, a, t, n), void 0) : (r = v(e, n), A[r.key] = A[r.key] || [], 
+  s(r.key, r.modifiers, {
+   type: r.action
+  }, i, e, o), A[r.key][i ? "unshift" : "push"]({
+   callback: t,
+   modifiers: r.modifiers,
+   action: r.action,
+   seq: i,
+   level: o,
+   combo: e
+  }), void 0);
+ }
+ function y(e, t, n) {
+  for (var i = 0; i < e.length; ++i) b(e[i], t, n);
+ }
+ for (var w, x, C = {
+  8: "backspace",
+  9: "tab",
+  13: "enter",
+  16: "shift",
+  17: "ctrl",
+  18: "alt",
+  20: "capslock",
+  27: "esc",
+  32: "space",
+  33: "pageup",
+  34: "pagedown",
+  35: "end",
+  36: "home",
+  37: "left",
+  38: "up",
+  39: "right",
+  40: "down",
+  45: "ins",
+  46: "del",
+  91: "meta",
+  93: "meta",
+  224: "meta"
+ }, k = {
+  106: "*",
+  107: "+",
+  109: "-",
+  110: ".",
+  111: "/",
+  186: ";",
+  187: "=",
+  188: ",",
+  189: "-",
+  190: ".",
+  191: "/",
+  192: "`",
+  219: "[",
+  220: "\\",
+  221: "]",
+  222: "'"
+ }, E = {
+  "~": "`",
+  "!": "1",
+  "@": "2",
+  "#": "3",
+  $: "4",
+  "%": "5",
+  "^": "6",
+  "&": "7",
+  "*": "8",
+  "(": "9",
+  ")": "0",
+  _: "-",
+  "+": "=",
+  ":": ";",
+  '"': "'",
+  "<": ",",
+  ">": ".",
+  "?": "/",
+  "|": "\\"
+ }, S = {
+  option: "alt",
+  command: "meta",
+  "return": "enter",
+  escape: "esc",
+  mod: /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "meta" : "ctrl"
+ }, A = {}, _ = {}, F = {}, T = !1, $ = !1, D = !1, L = 1; 20 > L; ++L) C[111 + L] = "f" + L;
+ for (L = 0; 9 >= L; ++L) C[L + 96] = L;
+ n(t, "keypress", u), n(t, "keydown", u), n(t, "keyup", u);
+ var B = {
+  bind: function(e, t, n) {
+   return e = e instanceof Array ? e : [ e ], y(e, t, n), this;
+  },
+  unbind: function(e, t) {
+   return B.bind(e, function() {}, t);
+  },
+  trigger: function(e, t) {
+   return _[e + ":" + t] && _[e + ":" + t]({}, e), this;
+  },
+  reset: function() {
+   return A = {}, _ = {}, this;
+  },
+  stopCallback: function(e, t) {
+   return (" " + t.className + " ").indexOf(" mousetrap ") > -1 ? !1 : "INPUT" == t.tagName || "SELECT" == t.tagName || "TEXTAREA" == t.tagName || t.isContentEditable;
+  },
+  handleKey: c
+ };
+ e.Mousetrap = B, "function" == typeof define && define.amd && define("mousetrap", B);
+}(window, document), define("classes/FileDescriptor", [ "underscore", "utils", "storage", "ace/range" ], function(e, t, n, i) {
+ function o(t, i, o, s) {
+  this.fileIndex = t, this._title = i || n[t + ".title"], this._editorScrollTop = parseInt(n[t + ".editorScrollTop"]) || 0, 
+  this._editorSelectRange = function() {
+   try {
+    var i = n[t + ".editorSelectRange"].split(";");
+    return i = e.map(i, function(e) {
+     return parseInt(e);
+    }), new r(i[0], i[1], i[2], i[3]);
+   } catch (o) {
+    return new r(0, 0, 0, 0);
+   }
+  }(), this._editorEnd = parseInt(n[t + ".editorEnd"]) || 0, this._previewScrollTop = parseInt(n[t + ".previewScrollTop"]) || 0, 
+  this._selectTime = parseInt(n[t + ".selectTime"]) || 0, this.syncLocations = o || {}, 
+  this.publishLocations = s || {}, Object.defineProperty(this, "title", {
+   get: function() {
+    return this._title;
+   },
+   set: function(e) {
+    this._title = e, n[this.fileIndex + ".title"] = e;
+   }
+  }), Object.defineProperty(this, "content", {
+   get: function() {
+    return n[this.fileIndex + ".content"];
+   },
+   set: function(e) {
+    n[this.fileIndex + ".content"] = e;
+   }
+  }), Object.defineProperty(this, "editorScrollTop", {
+   get: function() {
+    return this._editorScrollTop;
+   },
+   set: function(e) {
+    this._editorScrollTop = e, n[this.fileIndex + ".editorScrollTop"] = e;
+   }
+  }), Object.defineProperty(this, "editorSelectRange", {
+   get: function() {
+    return this._editorSelectRange;
+   },
+   set: function(e) {
+    this._editorSelectRange = e, n[this.fileIndex + ".editorSelectRange"] = [ e.start.row, e.start.column, e.end.row, e.end.column ].join(";");
+   }
+  }), Object.defineProperty(this, "previewScrollTop", {
+   get: function() {
+    return this._previewScrollTop;
+   },
+   set: function(e) {
+    this._previewScrollTop = e, n[this.fileIndex + ".previewScrollTop"] = e;
+   }
+  }), Object.defineProperty(this, "selectTime", {
+   get: function() {
+    return this._selectTime;
+   },
+   set: function(e) {
+    this._selectTime = e, n[this.fileIndex + ".selectTime"] = e;
+   }
+  });
+ }
+ var r = i.Range;
+ return o.prototype.addSyncLocation = function(e) {
+  t.storeAttributes(e), t.appendIndexToArray(this.fileIndex + ".sync", e.syncIndex), 
+  this.syncLocations[e.syncIndex] = e;
+ }, o.prototype.removeSyncLocation = function(e) {
+  t.removeIndexFromArray(this.fileIndex + ".sync", e.syncIndex), delete this.syncLocations[e.syncIndex], 
+  n.removeItem(e.syncIndex);
+ }, o.prototype.addPublishLocation = function(e) {
+  t.storeAttributes(e), t.appendIndexToArray(this.fileIndex + ".publish", e.publishIndex), 
+  this.publishLocations[e.publishIndex] = e;
+ }, o.prototype.removePublishLocation = function(e) {
+  t.removeIndexFromArray(this.fileIndex + ".publish", e.publishIndex), delete this.publishLocations[e.publishIndex], 
+  n.removeItem(e.publishIndex);
+ }, o.prototype.composeTitle = function() {
+  var t = [];
+  return e.chain(this.syncLocations).sortBy(function(e) {
+   return e.provider.providerId;
+  }).each(function(e) {
+   var n = "icon-provider-" + e.provider.providerId;
+   e.isRealtime === !0 && (n += " realtime"), t.push('<i class="' + n + '"></i>');
+  }), 0 !== e.size(this.syncLocations) && t.push('<i class="icon-refresh title-icon-category"></i>'), 
+  e.chain(this.publishLocations).sortBy(function(e) {
+   return e.provider.providerId;
+  }).each(function(e) {
+   var n = "icon-provider-" + e.provider.providerId;
+   e.isRealtime === !0 && (n += " realtime"), t.push('<i class="' + n + '"></i>');
+  }), 0 !== e.size(this.publishLocations) && t.push('<i class="icon-share title-icon-category"></i>'), 
+  t.push(e.escape(this.title)), t.join("");
+ }, o;
+}), define("fileSystem", [ "underscore", "utils", "classes/FileDescriptor", "storage" ], function(e, t, n) {
+ var i = {};
+ return e.each(t.retrieveIndexArray("file.list"), function(e) {
+  i[e] = new n(e);
+ }), i;
+}), define("text!html/documentSelectorSettingsBlock.html", [], function() {
+ return '<p>Allows toggling document with keyboard shortcuts.</p>\n<div class="form-horizontal">\n	<div class="form-group">\n		<label class="col-lg-5 control-label" for="select-document-selector-orderby">Order\n			by</label>\n		<div class="col-lg-6">\n			<select id="select-document-selector-orderby" class="form-control">\n				<option value="title">Document title</option>\n				<option value="mru">Most recently used</option>\n			</select>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-5 control-label"\n			for="input-document-selector-shortcut-previous">"Previous"\n			shortcut <a href="http://craig.is/killing/mice#keys" target="_blank">(?)</a></label>\n		<div class="col-lg-6">\n			<input type="text" id="input-document-selector-shortcut-previous"\n				class="form-control">\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-5 control-label"\n			for="input-document-selector-shortcut-next">"Next"\n			shortcut <a href="http://craig.is/killing/mice#keys" target="_blank">(?)</a></label>\n		<div class="col-lg-6">\n			<input type="text" id="input-document-selector-shortcut-next"\n				class="form-control">\n		</div>\n	</div>\n</div>';
+}), define("extensions/documentSelector", [ "jquery", "underscore", "crel", "utils", "classes/Extension", "mousetrap", "fileSystem", "text!html/documentSelectorSettingsBlock.html" ], function(e, t, n, i, o, r, s, a) {
+ var l = new o("documentSelector", "Document Selector", !0, !0);
+ l.settingsBlock = a, l.defaultConfig = {
+  orderBy: "mru",
+  shortcutPrevious: "Ctrl+[",
+  shortcutNext: "Ctrl+]"
+ }, l.onLoadSettings = function() {
+  i.setInputValue("#select-document-selector-orderby", l.config.orderBy), i.setInputValue("#input-document-selector-shortcut-previous", l.config.shortcutPrevious), 
+  i.setInputValue("#input-document-selector-shortcut-next", l.config.shortcutNext);
+ }, l.onSaveSettings = function(e, t) {
+  e.orderBy = i.getInputValue("#select-document-selector-orderby"), e.shortcutPrevious = i.getInputTextValue("#input-document-selector-shortcut-previous", t), 
+  e.shortcutNext = i.getInputTextValue("#input-document-selector-shortcut-next", t);
+ };
+ var c;
+ l.onAceCreated = function(e) {
+  c = e;
+ };
+ var u;
+ l.onFileMgrCreated = function(e) {
+  u = e;
+ };
+ var d, h, p, f, g, m, v, b = [ '<li class="<%= isCurrent ? "disabled" : "" %>" data-file-index="<%= fileDesc.fileIndex %>">', '   <a href="#">', "       <%= fileDesc.composeTitle() %>", "   </a>", "</li>" ].join(""), y = function() {
+  var n = t.chain(s).sortBy(f).reduce(function(e, n) {
+   return e + t.template(b, {
+    fileDesc: n,
+    isCurrent: n === g
+   });
+  }, "").value();
+  d.innerHTML = n, p = [], h = {}, t.each(d.querySelectorAll("li"), function(t) {
+   var n = e(t);
+   p.push(n);
+   var i = s[n.data("fileIndex")];
+   h[i.fileIndex] = n, n.find("a").click(function() {
+    m = void 0, n.hasClass("disabled") ? void 0 !== c ? c.focus() : v.focus() : u.selectFile(i);
+   });
+  });
+ };
+ return l.onFileSelected = function(e) {
+  g = e, y();
+ }, l.onFileCreated = y, l.onFileDeleted = y, l.onTitleChanged = y, l.onSyncExportSuccess = y, 
+ l.onSyncRemoved = y, l.onNewPublishSuccess = y, l.onPublishRemoved = y, l.onReady = function() {
+  v = e("#wmd-input"), "title" == l.config.orderBy ? f = function(e) {
+   return e.title.toLowerCase();
+  } : "mru" == l.config.orderBy && (f = function(e) {
+   return -e.selectTime;
+  }), d = n("ul", {
+   "class": "dropdown-menu dropdown-file-selector"
+  }), document.querySelector(".ui-layout-resizer-north").appendChild(n("div", n("div", {
+   "data-toggle": "dropdown"
+  }), d));
+  var i = e(d).dropdown(), o = e(".document-panel .collapse-button");
+  o.prop("title", t.template("<%= title %>  <%= shortcutPrevious %>  <%= shortcutNext %>", {
+   title: o.prop("title"),
+   shortcutPrevious: l.config.shortcutPrevious,
+   shortcutNext: l.config.shortcutNext
+  }));
+  var s = l.config.shortcutPrevious.toLowerCase();
+  r.bind(s, function() {
+   void 0 === m && (i.dropdown("toggle"), m = h[g.fileIndex]);
+   var e = t.indexOf(p, m) - 1;
+   return -2 === e && (e = -1), m = p[(e + p.length) % p.length], t.defer(function() {
+    m.find("a").focus();
+   }), !1;
+  });
+  var a = l.config.shortcutNext.toLowerCase();
+  r.bind(l.config.shortcutNext.toLowerCase(), function() {
+   void 0 === m && (i.dropdown("toggle"), m = h[g.fileIndex]);
+   var e = t.indexOf(p, m) + 1;
+   return m = p[e % p.length], t.defer(function() {
+    m.find("a").focus();
+   }), !1;
+  });
+  var c = s.indexOf("+"), u = -1 === c ? s : s.substring(0, c), b = a.indexOf("+"), y = -1 === b ? a : a.substring(0, b);
+  r.bind([ u, y ], function() {
+   void 0 !== m && m.find("a").click();
+  }, "keyup");
+ }, l;
+}), define("classes/FolderDescriptor", [ "underscore", "utils", "storage", "fileSystem" ], function(e, t, n, i) {
+ function o(o, r) {
+  this.folderIndex = o, this._name = r || n[o + ".name"], this.fileList = {}, e.each(t.retrieveIndexArray(o + ".files"), function(e) {
+   try {
+    var n = i[e];
+    n.folder = this, this.fileList[e] = n;
+   } catch (r) {
+    t.removeIndexFromArray(o + ".files", e);
+   }
+  }, this), Object.defineProperty(this, "name", {
+   get: function() {
+    return this._name;
+   },
+   set: function(e) {
+    this._name = e, n[this.folderIndex + ".name"] = e;
+   }
+  });
+ }
+ return o.prototype.addFile = function(e) {
+  e.folder = this, t.appendIndexToArray(this.folderIndex + ".files", e.fileIndex), 
+  this.fileList[e.fileIndex] = e;
+ }, o.prototype.removeFile = function(e) {
+  e.folder = void 0, t.removeIndexFromArray(this.folderIndex + ".files", e.fileIndex), 
+  delete this.fileList[e.fileIndex];
+ }, o;
+}), define("folderList", [ "underscore", "utils", "classes/FolderDescriptor", "storage" ], function(e, t, n) {
+ var i = {};
+ return e.each(t.retrieveIndexArray("folder.list"), function(e) {
+  i[e] = new n(e);
+ }), i;
+}), define("extensions/documentPanel", [ "jquery", "underscore", "utils", "classes/Extension", "folderList", "fileSystem" ], function(e, t, n, i, o, r) {
+ function s(n) {
+  if (n != y) {
+   if (y = n, b.scrollTop = 0, !n) return p.addClass("hide"), d.removeClass("hide"), 
+   void 0;
+   var i = n.toLowerCase().split(/\s+/);
+   t.each(h.querySelectorAll(".file"), function(n) {
+    var o = e(n), r = o.text().toLowerCase();
+    o.toggle(!t.some(i, function(e) {
+     return -1 === r.indexOf(e);
+    }));
+   }), p.removeClass("hide"), d.addClass("hide");
+  }
+ }
+ var a, l = new i("documentPanel", "Document Panel");
+ l.onFileMgrCreated = function(e) {
+  a = e;
+ };
+ var c, u, d, h, p, f, g = [ '<a href="#"', ' class="list-group-item folder clearfix"', ' data-folder-index="<%= folderDesc.folderIndex %>"', ' data-toggle="collapse"', ' data-target=".document-panel .file-list.<%= id %>">', '   <div class="pull-right file-count">', "       <%= _.size(folderDesc.fileList) %>", "   </div>", '   <i class="icon-folder"></i> <%= folderDesc.name %>', "</a>", '<div class="file-list collapse <%= id %> clearfix">', "   <%= fileListHtml %>", "</div>" ].join(""), m = [ '<a href="#"', ' class="list-group-item file<%= fileDesc === selectedFileDesc ? " active" : "" %>"', ' data-file-index="<%= fileDesc.fileIndex %>"', ' data-toggle="collapse"', ' data-target=".document-panel">', "   <%= fileDesc.composeTitle() %>", "</a>" ].join(""), v = function() {
+  var n = t.filter(r, function(e) {
+   return void 0 === e.folder;
+  }), i = t.chain(n).sortBy(function(e) {
+   return e.title.toLowerCase();
+  }).reduce(function(e, n) {
+   return e + "<li>" + t.template(m, {
+    fileDesc: n,
+    selectedFileDesc: f
+   }) + "</li>";
+  }, "").value();
+  i = i && '<ul class="nav">' + i + "</ul>", t.chain(o).sortBy(function(e) {
+   return e.name.toLowerCase();
+  }).each(function(e) {
+   var n = t.chain(e.fileList).sortBy(function(e) {
+    return e.title.toLowerCase();
+   }).reduce(function(e, n) {
+    return e + "<li>" + t.template(m, {
+     fileDesc: n,
+     selectedFileDesc: f
+    }) + "</li>";
+   }, "").value();
+   n = n && '<ul class="nav">' + n + "</ul>", i += t.template(g, {
+    folderDesc: e,
+    fileListHtml: n,
+    id: e.folderIndex.replace(".", "")
+   });
+  }), u.innerHTML = i;
+  var s = t.chain(r).sortBy(function(e) {
+   return e.title.toLowerCase();
+  }).reduce(function(e, n) {
+   return e + "<li>" + t.template(m, {
+    fileDesc: n,
+    selectedFileDesc: f
+   }) + "</li>";
+  }, "").value();
+  s = '<ul class="nav">' + s + "</ul>", h.innerHTML = s, t.each(c.querySelectorAll(".file"), function(t) {
+   var n = e(t);
+   n.click(function() {
+    var e = r[n.data("fileIndex")];
+    e && e !== f && a.selectFile(e);
+   });
+  });
+ };
+ l.onFileSelected = function(e) {
+  f = e, v();
+ }, l.onFileCreated = v, l.onFileDeleted = v, l.onTitleChanged = v, l.onSyncExportSuccess = v, 
+ l.onSyncRemoved = v, l.onNewPublishSuccess = v, l.onPublishRemoved = v, l.onFoldersChanged = v;
+ var b, y = "";
+ return l.onReady = function() {
+  c = document.querySelector(".document-panel"), b = c.querySelector(".panel-content"), 
+  u = c.querySelector(".document-list"), d = e(u), h = c.querySelector(".document-list-filtered"), 
+  p = e(h), e(c).on("show.bs.collapse", function(t) {
+   if (t.target === c) {
+    var n = f.folder;
+    void 0 !== n && e(c.querySelector(".file-list." + n.folderIndex.replace(".", ""))).collapse("show");
+   }
+  }).on("shown.bs.collapse", function(e) {
+   if (e.target === c) {
+    t.val(""), s("");
+    var n = u.querySelector(".file.active");
+    n && (b.scrollTop += n.getBoundingClientRect().top - 120);
+   }
+  });
+  var t = e(c.querySelector(".search-bar .form-control"));
+  t.bind("propertychange keyup input paste", function() {
+   s(t.val());
+  });
+ }, l;
+}), define("extensions/documentManager", [ "jquery", "underscore", "constants", "utils", "storage", "classes/Extension", "classes/FolderDescriptor", "folderList", "fileSystem" ], function(e, t, n, i, o, r, s, a, l) {
+ function c() {
+  $ = [], T = [], t.each(b.querySelectorAll('input[type="checkbox"]:checked'), function(t) {
+   var n = e(t.parentNode.parentNode), i = a[n.data("folderIndex")], o = l[n.data("fileIndex")];
+   void 0 !== i ? $.push(i) : void 0 !== o && T.push(o);
+  });
+ }
+ function u() {
+  if (0 === t.size(T)) return d(), void 0;
+  var n = t.chain(T).sortBy(function(e) {
+   return e.title.toLowerCase();
+  }).reduce(function(e, n) {
+   return e + t.template(F, {
+    fileDesc: n
+   });
+  }, "").value();
+  y.innerHTML = '<ul class="file-list nav">' + n + "</ul>", e(v.querySelectorAll(".document-list")).addClass("hide"), 
+  e(v.querySelectorAll(".confirm-delete, .selected-document-list")).removeClass("hide");
+ }
+ function d() {
+  t.each(T, function(e) {
+   e.folder && e.folder.removeFile(e), p.deleteFile(e);
+  }), t.each($, function(e) {
+   i.removeIndexFromArray("folder.list", e.folderIndex), o.removeItem(e.folderIndex + ".name"), 
+   o.removeItem(e.folderIndex + ".files"), delete a[e.folderIndex];
+  }), g.onFoldersChanged();
+ }
+ function h() {
+  c(), w.toggleClass("disabled", 0 === t.size(a) || 0 === t.size(T)), x.toggleClass("disabled", 0 === t.size($) && 0 === t.size(T));
+ }
+ var p, f = new r("documentManager", "Document Manager", !1, !0);
+ f.onFileMgrCreated = function(e) {
+  p = e;
+ };
+ var g;
+ f.onEventMgrCreated = function(e) {
+  g = e;
+ };
+ var m, v, b, y, w, x, C, k, E, S = [ '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>" data-toggle="collapse" data-target=".modal-document-manager .file-list.<%= id %>">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<button class="btn btn-default button-delete" title="Delete"><i class="icon-trash"></i></button>', '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>', '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>', '<div class="name"><i class="icon-folder"></i> ', "<%= folderDesc.name %></div>", '<input type="text" class="input-rename form-control hide"></a>', '<div class="file-list collapse <%= id %> clearfix"><%= fileListHtml %></div>' ].join(""), A = [ '<li class="list-group-item file clearfix" data-file-index="<%= fileDesc.fileIndex %>">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<button class="btn btn-default button-delete" title="Delete"><i class="icon-trash"></i></button>', '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>', '<div class="name"><%= fileDesc.composeTitle() %></div>', '<input type="text" class="input-rename form-control hide"></li>' ].join(""), _ = [ '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>">', '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>', '<div class="name"><i class="icon-forward"></i> ', "<%= folderDesc.name %></div></a>" ].join(""), F = [ '<li class="list-group-item file clearfix">', '<div class="name"><%= fileDesc.composeTitle() %></div></li>' ].join(""), T = [], $ = [], D = function() {
+  if (m !== !1) {
+   h(), k.text(t.size(l)), E.text(t.size(a) + 1), C = t.filter(l, function(e) {
+    return void 0 === e.folder;
+   });
+   var n = [ '<a href="#" class="list-group-item folder clearfix" data-toggle="collapse" data-target=".modal-document-manager .file-list.root-folder">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<div class="pull-right file-count">', t.size(C), "</div>", '<div class="name"><i class="icon-folder"></i> ', "ROOT folder</div></a>" ].join(""), i = t.chain(C).sortBy(function(e) {
+    return e.title.toLowerCase();
+   }).reduce(function(e, n) {
+    return e + t.template(A, {
+     fileDesc: n
+    });
+   }, "").value();
+   i = i && '<ul class="nav">' + i + "</ul>", n += '<div class="file-list collapse root-folder clearfix">' + i + "</div>", 
+   t.chain(a).sortBy(function(e) {
+    return e.name.toLowerCase();
+   }).each(function(e) {
+    var i = t.chain(e.fileList).sortBy(function(e) {
+     return e.title.toLowerCase();
+    }).reduce(function(e, n) {
+     return e + t.template(A, {
+      fileDesc: n
+     });
+    }, "").value();
+    i = i && '<ul class="nav">' + i + "</ul>", n += t.template(S, {
+     folderDesc: e,
+     fileListHtml: i,
+     id: e.folderIndex.replace(".", "")
+    });
+   }), b.innerHTML = n, t.each(b.querySelectorAll(".button-delete"), function(t) {
+    var n = e(t);
+    n.click(function(e) {
+     e.stopPropagation();
+     var t = n.parent(), i = a[t.data("folderIndex")], o = l[t.data("fileIndex")];
+     T = [], $ = [], i ? ($.push(i), T = i.fileList) : o && T.push(o), u();
+    });
+   }), t.each(b.querySelectorAll(".button-rename"), function(t) {
+    var n = e(t);
+    n.click(function(e) {
+     e.stopPropagation();
+     var t, i = n.parent(), o = a[i.data("folderIndex")], r = l[i.data("fileIndex")];
+     o ? t = o.name : r && (t = r.title), i.find(".name").addClass("hide"), i.find(".input-rename").removeClass("hide").val(t)[0].select();
+    });
+   }), t.each(b.querySelectorAll(".input-rename"), function(t) {
+    function n() {
+     var t = i.parent(), n = e.trim(i.val()), o = a[t.data("folderIndex")], r = l[t.data("fileIndex")];
+     n && o && n != o.name ? (o.name = n, g.onFoldersChanged()) : n && r && n != r.title ? (r.title = n, 
+     g.onTitleChanged(r)) : (i.addClass("hide"), t.find(".name").removeClass("hide"));
+    }
+    var i = e(t);
+    i.blur(function() {
+     n();
+    }).keyup(function(e) {
+     13 == e.keyCode && (n(), e.stopPropagation()), 27 == e.keyCode && (i.val(""), n(), 
+     e.stopPropagation());
+    });
+   }), t.each(b.querySelectorAll(".file .checkbox"), function(t) {
+    var n = e(t);
+    n.click(function(e) {
+     e.stopPropagation();
+    }).find("[type=checkbox]").change(function() {
+     n.parents(".list-group").find(".folder [type=checkbox]").prop("checked", !1);
+    });
+   }), t.each(b.querySelectorAll(".folder .checkbox"), function(t) {
+    var n = e(t);
+    n.click(function(e) {
+     e.stopPropagation();
+    }).find("[type=checkbox]").change(function() {
+     n.parent().next().find("[type=checkbox]").prop("checked", this.checked);
+    });
+   }), e(b.querySelectorAll("[type=checkbox]")).change(h);
+  }
+ };
+ return f.onFileCreated = D, f.onFileDeleted = D, f.onTitleChanged = D, f.onSyncExportSuccess = D, 
+ f.onSyncRemoved = D, f.onNewPublishSuccess = D, f.onPublishRemoved = D, f.onFoldersChanged = D, 
+ f.onReady = function() {
+  v = document.querySelector(".modal-document-manager"), b = v.querySelector(".list-group.document-list"), 
+  k = e(v.querySelectorAll(".document-count")), E = e(v.querySelectorAll(".folder-count")), 
+  y = v.querySelector(".list-group.selected-document-list");
+  var r = v.querySelector(".list-group.select-folder-list");
+  e(v).on("show.bs.modal", function() {
+   m = !0, D();
+  }).on("hide.bs.modal", function() {
+   m = !1;
+  }), e(v.querySelectorAll(".action-create-folder")).click(function() {
+   var r;
+   do r = "folder." + i.randomString(); while (t.has(a, r));
+   o[r + ".name"] = n.DEFAULT_FOLDER_NAME;
+   var l = new s(r, n.DEFAULT_FOLDER_NAME);
+   i.appendIndexToArray("folder.list", r), a[r] = l, g.onFoldersChanged();
+   var c = e(v.querySelector('[data-folder-index="' + r + '"] .button-rename')).click();
+   v.scrollTop += c.offset().top - 50;
+  }), e(v.querySelectorAll(".action-select-all")).click(function() {
+   e(b.querySelectorAll('input[type="checkbox"]')).prop("checked", !0);
+  }), e(v.querySelectorAll(".action-unselect-all")).click(function() {
+   e(b.querySelectorAll('input[type="checkbox"]')).prop("checked", !1);
+  });
+  var l = e(v.querySelectorAll(".action-delete-items")).click(function() {
+   x.hasClass("disabled") || (c(), u());
+  });
+  x = l.parent(), e(v.querySelectorAll(".action-delete-items-confirm")).click(function() {
+   d(), e(v.querySelectorAll(".document-list")).removeClass("hide"), e(v.querySelectorAll(".confirm-delete, .selected-document-list")).addClass("hide");
+  });
+  var h = e(v.querySelectorAll(".action-move-items")).click(function() {
+   if (!w.hasClass("disabled")) {
+    c();
+    var n = [ '<a href="#" class="list-group-item folder clearfix">', '<div class="pull-right file-count">', t.size(C), "</div>", '<div class="name"><i class="icon-forward"></i> ', "ROOT folder</div></a>" ].join("");
+    n += t.chain(a).sortBy(function(e) {
+     return e.name.toLowerCase();
+    }).reduce(function(e, n) {
+     return e + t.template(_, {
+      folderDesc: n
+     });
+    }, "").value(), r.innerHTML = n, t.each(r.querySelectorAll(".folder"), function(n) {
+     n = e(n), n.click(function() {
+      var i = a[n.data("folderIndex")];
+      t.each(T, function(e) {
+       e.folder && e.folder.removeFile(e), i && i.addFile(e);
+      }), g.onFoldersChanged(), e(v.querySelectorAll(".document-list")).removeClass("hide"), 
+      e(v.querySelectorAll(".choose-folder, .select-folder-list")).addClass("hide");
+     });
+    }), e(v.querySelectorAll(".document-list")).addClass("hide"), e(v.querySelectorAll(".choose-folder, .select-folder-list")).removeClass("hide");
+   }
+  });
+  w = h.parent(), e(v.querySelectorAll(".action-cancel")).click(function() {
+   e(v.querySelectorAll(".document-list")).removeClass("hide"), e(v.querySelectorAll(".confirm-delete, .choose-folder, .selected-document-list, .select-folder-list")).addClass("hide");
+  });
+ }, f;
+}), define("extensions/workingIndicator", [ "jquery", "underscore", "classes/Extension" ], function(e, t, n) {
+ var i, o, r = new n("workingIndicator", "Working Indicator");
+ return r.onAsyncRunning = function(e) {
+  i.toggleClass("working", e), o.toggleClass("show", e);
+ }, r.onReady = function() {
+  i = e(document.body), o = e(".working-indicator");
+  for (var t = 0; 4 > t; t++) o.append(e('<div class="bar">').css({
+   "animation-delay": (2 * t / 10).toPrecision(3) + "s",
+   "-webkit-animation-delay": (2 * t / 10).toPrecision(3) + "s"
+  }));
+ }, r;
+}), function(e) {
+ var t = function() {
+  return !1 === e.support.boxModel && e.support.objectAll && $support.leadingWhitespace;
+ }();
+ e.jGrowl = function(t, n) {
+  0 == e("#jGrowl").size() && e('<div id="jGrowl"></div>').addClass(n && n.position ? n.position : e.jGrowl.defaults.position).appendTo("body"), 
+  e("#jGrowl").jGrowl(t, n);
+ }, e.fn.jGrowl = function(t, n) {
+  if (e.isFunction(this.each)) {
+   var i = arguments;
+   return this.each(function() {
+    void 0 == e(this).data("jGrowl.instance") && (e(this).data("jGrowl.instance", e.extend(new e.fn.jGrowl(), {
+     notifications: [],
+     element: null,
+     interval: null
+    })), e(this).data("jGrowl.instance").startup(this)), e.isFunction(e(this).data("jGrowl.instance")[t]) ? e(this).data("jGrowl.instance")[t].apply(e(this).data("jGrowl.instance"), e.makeArray(i).slice(1)) : e(this).data("jGrowl.instance").create(t, n);
+   });
+  }
+ }, e.extend(e.fn.jGrowl.prototype, {
+  defaults: {
+   pool: 0,
+   header: "",
+   group: "",
+   sticky: !1,
+   position: "top-right",
+   glue: "after",
+   theme: "default",
+   themeState: "highlight",
+   corners: "10px",
+   check: 250,
+   life: 3e3,
+   closeDuration: "normal",
+   openDuration: "normal",
+   easing: "swing",
+   closer: !0,
+   closeTemplate: "&times;",
+   closerTemplate: "<div>[ close all ]</div>",
+   log: function() {},
+   beforeOpen: function() {},
+   afterOpen: function() {},
+   open: function() {},
+   beforeClose: function() {},
+   close: function() {},
+   animateOpen: {
+    opacity: "show"
+   },
+   animateClose: {
+    opacity: "hide"
+   }
+  },
+  notifications: [],
+  element: null,
+  interval: null,
+  create: function(t, n) {
+   var n = e.extend({}, this.defaults, n);
+   "undefined" != typeof n.speed && (n.openDuration = n.speed, n.closeDuration = n.speed), 
+   this.notifications.push({
+    message: t,
+    options: n
+   }), n.log.apply(this.element, [ this.element, t, n ]);
+  },
+  render: function(t) {
+   var n = this, i = t.message, o = t.options;
+   o.themeState = "" == o.themeState ? "" : "ui-state-" + o.themeState;
+   var t = e('<div class="jGrowl-notification ' + o.themeState + " ui-corner-all" + (void 0 != o.group && "" != o.group ? " " + o.group : "") + '">' + '<div class="jGrowl-close">' + o.closeTemplate + "</div>" + '<div class="jGrowl-header">' + o.header + "</div>" + '<div class="jGrowl-message">' + i + "</div></div>").data("jGrowl", o).addClass(o.theme).children("div.jGrowl-close").bind("click.jGrowl", function() {
+    e(this).parent().trigger("jGrowl.beforeClose");
+   }).parent();
+   e(t).bind("mouseover.jGrowl", function() {
+    e("div.jGrowl-notification", n.element).data("jGrowl.pause", !0);
+   }).bind("mouseout.jGrowl", function() {
+    e("div.jGrowl-notification", n.element).data("jGrowl.pause", !1);
+   }).bind("jGrowl.beforeOpen", function() {
+    0 != o.beforeOpen.apply(t, [ t, i, o, n.element ]) && e(this).trigger("jGrowl.open");
+   }).bind("jGrowl.open", function() {
+    0 != o.open.apply(t, [ t, i, o, n.element ]) && ("after" == o.glue ? e("div.jGrowl-notification:last", n.element).after(t) : e("div.jGrowl-notification:first", n.element).before(t), 
+    e(this).animate(o.animateOpen, o.openDuration, o.easing, function() {
+     e.support.opacity === !1 && this.style.removeAttribute("filter"), null != e(this).data("jGrowl") && (e(this).data("jGrowl").created = new Date()), 
+     e(this).trigger("jGrowl.afterOpen");
+    }));
+   }).bind("jGrowl.afterOpen", function() {
+    o.afterOpen.apply(t, [ t, i, o, n.element ]);
+   }).bind("jGrowl.beforeClose", function() {
+    0 != o.beforeClose.apply(t, [ t, i, o, n.element ]) && e(this).trigger("jGrowl.close");
+   }).bind("jGrowl.close", function() {
+    e(this).data("jGrowl.pause", !0), e(this).animate(o.animateClose, o.closeDuration, o.easing, function() {
+     e.isFunction(o.close) ? o.close.apply(t, [ t, i, o, n.element ]) !== !1 && e(this).remove() : e(this).remove();
+    });
+   }).trigger("jGrowl.beforeOpen"), "" != o.corners && void 0 != e.fn.corner && e(t).corner(o.corners), 
+   e("div.jGrowl-notification:parent", n.element).size() > 1 && 0 == e("div.jGrowl-closer", n.element).size() && 0 != this.defaults.closer && e(this.defaults.closerTemplate).addClass("jGrowl-closer " + this.defaults.themeState + " ui-corner-all").addClass(this.defaults.theme).appendTo(n.element).animate(this.defaults.animateOpen, this.defaults.speed, this.defaults.easing).bind("click.jGrowl", function() {
+    e(this).siblings().trigger("jGrowl.beforeClose"), e.isFunction(n.defaults.closer) && n.defaults.closer.apply(e(this).parent()[0], [ e(this).parent()[0] ]);
+   });
+  },
+  update: function() {
+   e(this.element).find("div.jGrowl-notification:parent").each(function() {
+    void 0 != e(this).data("jGrowl") && void 0 != e(this).data("jGrowl").created && e(this).data("jGrowl").created.getTime() + parseInt(e(this).data("jGrowl").life) < new Date().getTime() && 1 != e(this).data("jGrowl").sticky && (void 0 == e(this).data("jGrowl.pause") || 1 != e(this).data("jGrowl.pause")) && e(this).trigger("jGrowl.beforeClose");
+   }), this.notifications.length > 0 && (0 == this.defaults.pool || e(this.element).find("div.jGrowl-notification:parent").size() < this.defaults.pool) && this.render(this.notifications.shift()), 
+   e(this.element).find("div.jGrowl-notification:parent").size() < 2 && e(this.element).find("div.jGrowl-closer").animate(this.defaults.animateClose, this.defaults.speed, this.defaults.easing, function() {
+    e(this).remove();
+   });
+  },
+  startup: function(n) {
+   this.element = e(n).addClass("jGrowl").append('<div class="jGrowl-notification"></div>'), 
+   this.interval = setInterval(function() {
+    e(n).data("jGrowl.instance").update();
+   }, parseInt(this.defaults.check)), t && e(this.element).addClass("ie6");
+  },
+  shutdown: function() {
+   e(this.element).removeClass("jGrowl").find("div.jGrowl-notification").remove(), 
+   clearInterval(this.interval);
+  },
+  close: function() {
+   e(this.element).find("div.jGrowl-notification").each(function() {
+    e(this).trigger("jGrowl.beforeClose");
+   });
+  }
+ }), e.jGrowl.defaults = e.fn.jGrowl.prototype.defaults;
+}(jQuery), define("jgrowl", [ "jquery" ], function(e) {
+ return function() {
+  var t;
+  return t || e.jQuery.jGrowl;
+ };
+}(this)), define("text!html/notificationsSettingsBlock.html", [], function() {
+ return '<p>Shows notification messages in the bottom-right corner of the\n	screen.</p>\n<div class="form-horizontal">\n	<div class="form-group">\n		<label class="col-lg-4 control-label" for="input-notifications-timeout">Timeout</label>\n		<div class="col-lg-7 form-inline">\n			<input type="text" id="input-notifications-timeout"\n				class="col-lg-5 form-control"> <span class="help-inline">ms</span>\n		</div>\n	</div>\n</div>';
+}), define("extensions/notifications", [ "jquery", "underscore", "utils", "logger", "classes/Extension", "jgrowl", "text!html/notificationsSettingsBlock.html" ], function(e, t, n, i, o, r, s) {
+ function a() {
+  u === !1 && (r.defaults.life = c.config.timeout, r.defaults.closer = !1, r.defaults.closeTemplate = "", 
+  r.defaults.position = "bottom-right", u = !0);
+ }
+ function l(e, n, o) {
+  if (i.info(e), a(), e) {
+   var s = e.indexOf("|");
+   (-1 === s || (e = e.substring(0, s))) && (o = o || {}, n = n || "icon-info-circled", 
+   r("<i class='icon-white " + n + "'></i> " + t.escape(e).replace(/\n/g, "<br/>"), o));
+  }
+ }
+ var c = new o("notifications", "Notifications");
+ c.settingsBlock = s, c.defaultConfig = {
+  timeout: 8e3
+ }, c.onLoadSettings = function() {
+  n.setInputValue("#input-notifications-timeout", c.config.timeout);
+ }, c.onSaveSettings = function(e, t) {
+  e.timeout = n.getInputIntValue("#input-notifications-timeout", t, 1, 6e4);
+ };
+ var u = !1;
+ return c.onMessage = function(e) {
+  l(e);
+ }, c.onError = function(e) {
+  i.error(e), t.isString(e) ? l(e, "icon-attention") : t.isObject(e) && l(e.message, "icon-attention");
+ }, c.onOfflineChanged = function(t) {
+  t === !0 ? l("You are offline.", "icon-attention-circled msg-offline", {
+   sticky: !0,
+   close: function() {
+    l("You are back online!", "icon-signal");
+   }
+  }) : e(".msg-offline").parents(".jGrowl-notification").trigger("jGrowl.beforeClose");
+ }, c.onSyncImportSuccess = function(e, n) {
+  var i = t.map(e, function(e) {
+   return e.title;
+  }).join(", ");
+  l(i + " imported successfully from " + n.providerName + ".");
+ }, c.onSyncExportSuccess = function(e, t) {
+  l('"' + e.title + '" will now be synchronized on ' + t.provider.providerName + ".");
+ }, c.onSyncRemoved = function(e, t) {
+  l(t.provider.providerName + " synchronized location has been removed.");
+ }, c.onPublishSuccess = function(e) {
+  l('"' + e.title + '" successfully published.');
+ }, c.onNewPublishSuccess = function(e, t) {
+  l('"' + e.title + '" is now published on ' + t.provider.providerName + ".");
+ }, c.onPublishRemoved = function(e, t) {
+  l(t.provider.providerName + " publish location has been removed.");
+ }, c;
 }), define("text!html/buttonToc.html", [], function() {
  return '<button class="btn btn-default dropdown-toggle" title="Table of contents" data-toggle="dropdown">\n    <i class="icon-list"></i>\n</button>\n<div class="dropdown-menu pull-right">\n    <h3>Table of contents</h3>\n    <div class="table-of-contents">\n    </div>\n</div>\n';
 }), define("text!html/tocSettingsBlock.html", [], function() {
@@ -20545,140 +20694,6 @@ function() {
    });
   });
  }, c;
-}), define("text!html/mathJaxSettingsBlock.html", [], function() {
- return '<p>Allows StackEdit to interpret LaTeX mathematical expressions.</p>\n<div class="form-horizontal">\n    <div class="form-group">\n        <label class="col-lg-4 control-label"\n            for="input-mathjax-config-tex">TeX configuration</label>\n        <div class="col-lg-7">\n            <input type="text" id="input-mathjax-config-tex" class="form-control">\n        </div>\n    </div>\n    <div class="form-group">\n        <label class="col-lg-4 control-label"\n            for="input-mathjax-config-tex2jax">tex2jax configuration</label>\n        <div class="col-lg-7">\n            <input type="text" id="input-mathjax-config-tex2jax" class="form-control">\n        </div>\n    </div>\n</div>\n<span class="help-block pull-right"><a target="_blank" href="http://docs.mathjax.org/en/latest/options/index.html">More info</a></span>';
-}), define("text!libs/mathjax_config.js", [], function() {
- return 'MathJax.Hub.Config({\n    "HTML-CSS": {\n        preferredFont: "TeX",\n        availableFonts: [\n            "STIX",\n            "TeX"\n        ],\n        linebreaks: {\n            automatic: true\n        },\n        EqnChunk: 10,\n        imageFont: null\n    },\n    tex2jax: <%= tex2jax || \'{ inlineMath: [["$","$"],["\\\\\\\\\\\\\\\\(","\\\\\\\\\\\\\\\\)"]], displayMath: [["$$","$$"],["\\\\\\\\[","\\\\\\\\]"]], processEscapes: true }\' %>,\n    TeX: $.extend({\n        noUndefined: {\n            attributes: {\n                mathcolor: "red",\n                mathbackground: "#FFEEEE",\n                mathsize: "90%"\n            }\n        },\n        Safe: {\n            allow: {\n                URLs: "safe",\n                classes: "safe",\n                cssIDs: "safe",\n                styles: "safe",\n                fontsize: "all"\n            }\n        }\n    }, <%= tex %>),\n    messageStyle: "none"\n});\n';
-}), define("libs/mathjax_init", [ "settings", "text!libs/mathjax_config.js" ], function(e, t) {
- var n = document.createElement("script");
- n.type = "text/x-mathjax-config", n.innerHTML = _.template(t, {
-  tex: e.extensionSettings.mathJax ? e.extensionSettings.mathJax.tex : "undefined",
-  tex2jax: e.extensionSettings.mathJax ? e.extensionSettings.mathJax.tex2jax : void 0
- }), document.getElementsByTagName("head")[0].appendChild(n);
-}), define("extensions/mathJax", [ "utils", "classes/Extension", "text!html/mathJaxSettingsBlock.html", "mathjax" ], function(e, t, n) {
- function i(e, t, n) {
-  var i = u.slice(e, t + 1).join("").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  for (w.Browser.isMSIE && (i = i.replace(/(%[^\n]*)\n/g, "$1<br/>\n")); t > e; ) u[t] = "", 
-  t--;
-  u[e] = "@@" + g.length + "@@", n && (i = n(i)), g.push(i), d = h = p = null;
- }
- function o(e) {
-  d = h = p = null, g = [];
-  var t;
-  /`/.test(e) ? (e = e.replace(/~/g, "~T").replace(/(^|[^\\])(`+)([^\n]*?[^`\n])\2(?!`)/gm, function(e) {
-   return e.replace(/\$/g, "~D");
-  }), t = function(e) {
-   return e.replace(/~([TD])/g, function(e, t) {
-    return {
-     T: "~",
-     D: "$"
-    }[t];
-   });
-  }) : t = function(e) {
-   return e;
-  }, u = C(e.replace(/\r\n?/g, "\n"), x);
-  for (var e = 1, n = u.length; n > e; e += 2) {
-   var o = u[e];
-   "@" === o.charAt(0) ? (u[e] = "@@" + g.length + "@@", g.push(o)) : d ? o === h ? f ? p = e : i(d, e, t) : o.match(/\n.*\n/) ? (p && (e = p, 
-   i(d, e, t)), d = h = p = null, f = 0) : "{" === o ? f++ : "}" === o && f && f-- : o === y || "$$" === o ? (d = e, 
-   h = o, f = 0) : "begin" === o.substr(1, 5) && (d = e, h = "\\end" + o.substr(6), 
-   f = 0);
-  }
-  return p && i(d, p, t), t(u.join(""));
- }
- function r(e) {
-  return e = e.replace(/@@(\d+)@@/g, function(e, t) {
-   return g[t];
-  }), g = null, e;
- }
- function s() {
-  v = !1, w.cancelTypeset = !1, w.Queue([ "Typeset", w, b ]), w.Queue(c);
- }
- function a() {
-  !v && (v = !0, w.Cancel(), w.Queue(s));
- }
- var l = new t("mathJax", "MathJax", !0);
- l.settingsBlock = n, l.defaultConfig = {
-  tex: "{}",
-  tex2jax: '{ inlineMath: [["$","$"],["\\\\\\\\(","\\\\\\\\)"]], displayMath: [["$$","$$"],["\\\\[","\\\\]"]], processEscapes: true }'
- }, l.onLoadSettings = function() {
-  e.setInputValue("#input-mathjax-config-tex", l.config.tex), e.setInputValue("#input-mathjax-config-tex2jax", l.config.tex2jax);
- }, l.onSaveSettings = function(t, n) {
-  t.tex = e.getInputJsValue("#input-mathjax-config-tex", n), t.tex2jax = e.getInputJsValue("#input-mathjax-config-tex2jax", n);
- }, l.onPagedownConfigure = function(e) {
-  b = document.getElementById("preview-contents");
-  var t = e.getConverter();
-  t.hooks.chain("preConversion", o), t.hooks.chain("postConversion", r);
- };
- var c;
- l.onAsyncPreview = function(e) {
-  c = e, a();
- };
- var u, d, h, p, f, g, m = !1, v = !1, b = null, y = "$", w = MathJax.Hub;
- w.Queue(function() {
-  m = !0, w.processUpdateTime = 50, w.Config({
-   "HTML-CSS": {
-    EqnChunk: 10,
-    EqnChunkFactor: 1
-   },
-   SVG: {
-    EqnChunk: 10,
-    EqnChunkFactor: 1
-   }
-  });
- });
- var C, x = /(\$\$?|\\(?:begin|end)\{[a-z]*\*?\}|\\[\\{}$]|[{}]|(?:\n\s*)+|@@\d+@@)/i;
- return C = 3 === "aba".split(/(b)/).length ? function(e, t) {
-  return e.split(t);
- } : function(e, t) {
-  var n, i = [];
-  if (!t.global) {
-   n = t.toString();
-   var o = "";
-   n = n.replace(/^\/(.*)\/([im]*)$/, function(e, t, n) {
-    return o = n, t;
-   }), t = RegExp(n, o + "g");
-  }
-  for (var r = t.lastIndex = 0; n = t.exec(e); ) i.push(e.substring(r, n.index)), 
-  i.push.apply(i, n.slice(1)), r = n.index + n[0].length;
-  return i.push(e.substring(r)), i;
- }, function() {
-  var e = MathJax.Hub;
-  if (!e.Cancel) {
-   e.cancelTypeset = !1, e.Register.StartupHook("HTML-CSS Jax Config", function() {
-    var t = MathJax.OutputJax["HTML-CSS"], n = t.Translate;
-    t.Augment({
-     Translate: function(i, o) {
-      if (e.cancelTypeset || o.cancelled) throw Error("MathJax Canceled");
-      return n.call(t, i, o);
-     }
-    });
-   }), e.Register.StartupHook("SVG Jax Config", function() {
-    var t = MathJax.OutputJax.SVG, n = t.Translate;
-    t.Augment({
-     Translate: function(i, o) {
-      if (e.cancelTypeset || o.cancelled) throw Error("MathJax Canceled");
-      return n.call(t, i, o);
-     }
-    });
-   }), e.Register.StartupHook("TeX Jax Config", function() {
-    var t = MathJax.InputJax.TeX, n = t.Translate;
-    t.Augment({
-     Translate: function(i, o) {
-      if (e.cancelTypeset || o.cancelled) throw Error("MathJax Canceled");
-      return n.call(t, i, o);
-     }
-    });
-   });
-   var t = e.processError;
-   e.processError = function(n, i, o) {
-    return "MathJax Canceled" !== n.message ? t.call(e, n, i, o) : (MathJax.Message.Clear(0, 0), 
-    i.jaxIDs = [], i.jax = {}, i.scripts = [], i.i = i.j = 0, i.cancelled = !0, null);
-   }, e.Cancel = function() {
-    this.cancelTypeset = !0;
-   };
-  }
- }(), l;
 }), define("extensions/emailConverter", [ "classes/Extension" ], function(e) {
  var t = new e("emailConverter", "Markdown Email", !0);
  return t.settingsBlock = "<p>Converts email adresses in the form &lt;email@example.com&gt; into clickable links.</p>", 
@@ -20692,51 +20707,48 @@ function() {
 }), define("text!html/scrollLinkSettingsBlock.html", [], function() {
  return "<p>Binds together editor and preview scrollbars.</p>\n<blockquote>\n	<b>NOTE:</b> The mapping between Markdown and HTML is based on the\n	position of the title elements (h1, h2...) in the page. Therefore if\n	your document does not contain any title, the mapping will be linear and\n	consequently less accurate.\n</blockquote>";
 }), define("extensions/scrollLink", [ "jquery", "underscore", "classes/Extension", "text!html/scrollLinkSettingsBlock.html" ], function(e, t, n, i) {
- function o(e) {
-  return parseFloat(e.substring(0, e.length - 2));
- }
- var r = new n("scrollLink", "Scroll Link", !0, !0, !0);
- r.settingsBlock = i;
+ var o = new n("scrollLink", "Scroll Link", !0, !0, !0);
+ o.settingsBlock = i;
+ var r;
+ o.onAceCreated = function(e) {
+  r = e;
+ };
  var s;
- r.onAceCreated = function(e) {
+ o.onSectionsCreated = function(e) {
   s = e;
  };
- var a;
- r.onSectionsCreated = function(e) {
+ var a = 0;
+ o.onMarkdownTrim = function(e) {
   a = e;
  };
- var l = 0;
- r.onMarkdownTrim = function(e) {
-  l = e;
- };
- var c, u, d, h = [], p = [], f = t.debounce(function() {
-  h = [];
-  var n = 0, i = 0, r = l;
-  t.each(a, function(e) {
-   n += e.length + r, r = 0;
-   var t = s.session.doc.indexToPosition(n), o = s.session.documentToScreenPosition(t.row, t.column), a = o.row * s.renderer.lineHeight, l = a - i;
-   h.push({
+ var l, c, u, d = [], h = [], p = t.debounce(function() {
+  d = [];
+  var n = 0, i = 0, o = a;
+  t.each(s, function(e) {
+   n += e.text.length + o, o = 0;
+   var t = r.session.doc.indexToPosition(n), s = r.session.documentToScreenPosition(t.row, t.column), a = s.row * r.renderer.lineHeight, l = a - i;
+   d.push({
     startOffset: i,
     endOffset: a,
     height: l
    }), i = a;
-  }), p = [];
-  var f = 0, g = c.scrollTop();
-  c.find(".preview-content > .wmd-title").each(function() {
-   var t = e(this), n = t.position().top + g + o(t.css("margin-top"));
-   p.push({
-    startOffset: f,
+  }), h = [];
+  var p, f = l.scrollTop();
+  l.find(".preview-content > .se-section-delimiter").each(function() {
+   var t = e(this), n = t.position().top + f;
+   void 0 !== p && h.push({
+    startOffset: p,
     endOffset: n,
-    height: n - f
-   }), f = n;
+    height: n - p
+   }), p = n;
   });
-  var m = c.prop("scrollHeight");
-  p.push({
-   startOffset: f,
-   endOffset: m,
-   height: m - f
-  }), u = -10, d = -10, y();
- }, 500), g = !1, m = !1, v = !1, b = !1, y = t.debounce(function() {
+  var g = l.prop("scrollHeight");
+  h.push({
+   startOffset: p,
+   endOffset: g,
+   height: g - p
+  }), c = -10, u = -10, b();
+ }, 500), f = !1, g = !1, m = !1, v = !1, b = t.debounce(function() {
   function n(e, n, i) {
    var o, r = t.find(n, function(t, n) {
     return o = n, e < t.endOffset;
@@ -20746,29 +20758,13 @@ function() {
     return a.startOffset + a.height * s;
    }
   }
-  if (0 === h.length || h.length !== p.length) return y(), void 0;
-  var i, o = s.renderer.getScrollTop(), r = c.scrollTop();
-  g === !0 && Math.abs(o - u) > 9 ? (g = !1, u = o, i = n(o, h, p), i = t.min([ i, c.prop("scrollHeight") - c.outerHeight() ]), 
-  Math.abs(i - r) <= 9 ? d = r : (b = !0, c.animate({
+  if (0 === d.length || d.length !== h.length) return b(), void 0;
+  var i, o = r.renderer.getScrollTop(), s = l.scrollTop();
+  f === !0 && Math.abs(o - c) > 9 ? (f = !1, c = o, i = n(o, d, h), i = t.min([ i, l.prop("scrollHeight") - l.outerHeight() ]), 
+  Math.abs(i - s) <= 9 ? u = s : (v = !0, l.animate({
    scrollTop: i
   }, {
    easing: "easeOutSine",
-   complete: function() {
-    d = i;
-   },
-   always: function() {
-    t.defer(function() {
-     b = !1;
-    });
-   }
-  }))) : m === !0 && Math.abs(r - d) > 9 && (m = !1, d = r, i = n(r, p, h), i = t.min([ i, s.session.getScreenLength() * s.renderer.lineHeight - s.renderer.$size.scrollerHeight ]), 
-  0 > i && (i = 0), Math.abs(i - o) <= 9 ? u = o : (v = !0, e("<div>").animate({
-   value: i - o
-  }, {
-   easing: "easeOutSine",
-   step: function(e) {
-    s.session.setScrollTop(o + e);
-   },
    complete: function() {
     u = i;
    },
@@ -20777,32 +20773,48 @@ function() {
      v = !1;
     });
    }
+  }))) : g === !0 && Math.abs(s - u) > 9 && (g = !1, u = s, i = n(s, h, d), i = t.min([ i, r.session.getScreenLength() * r.renderer.lineHeight + r.renderer.scrollMargin.bottom - r.renderer.$size.scrollerHeight ]), 
+  0 > i && (i = 0), Math.abs(i - o) <= 9 ? c = o : (m = !0, e("<div>").animate({
+   value: i - o
+  }, {
+   easing: "easeOutSine",
+   step: function(e) {
+    r.session.setScrollTop(o + e);
+   },
+   complete: function() {
+    c = i;
+   },
+   always: function() {
+    t.defer(function() {
+     m = !1;
+    });
+   }
   })));
  }, 500);
- r.onLayoutResize = function() {
-  g = !0, f();
- }, r.onFileClosed = function() {
-  h = [];
+ o.onLayoutResize = function() {
+  f = !0, p();
+ }, o.onFileClosed = function() {
+  d = [];
  };
- var w = !1;
- r.onReady = function() {
-  c = e(".preview-container"), c.scroll(function() {
-   b === !1 && w === !1 && (m = !0, g = !1, y()), w = !1;
-  }), s.session.on("changeScrollTop", function() {
-   v === !1 && (g = !0, m = !1, y());
+ var y = !1;
+ o.onReady = function() {
+  l = e(".preview-container"), l.scroll(function() {
+   v === !1 && y === !1 && (g = !0, f = !1, b()), y = !1;
+  }), r.session.on("changeScrollTop", function() {
+   m === !1 && (f = !0, g = !1, b());
   });
  };
- var C;
- return r.onPagedownConfigure = function(t) {
-  C = e("#preview-contents"), t.getConverter().hooks.chain("postConversion", function(e) {
-   return C.height(C.height()), e;
+ var w;
+ return o.onPagedownConfigure = function(t) {
+  w = e("#preview-contents"), t.getConverter().hooks.chain("postConversion", function(e) {
+   return w.height(w.height()), e;
   });
- }, r.onPreviewFinished = function() {
-  var e = C.height();
-  C.height("auto");
-  var t = C.height();
-  g = !0, e > t && (w = !0), f();
- }, r;
+ }, o.onPreviewFinished = function() {
+  var e = w.height();
+  w.height("auto");
+  var t = w.height();
+  f = !0, e > t && (y = !0), p();
+ }, o;
 }), define("extensions/buttonFocusMode", [ "jquery", "underscore", "crel", "storage", "classes/Extension" ], function(e, t, n, i, o) {
  function r() {
   if (c !== !1 && u !== !0) {
@@ -21992,7 +22004,7 @@ function() {
   o.checkToken = function() {
    if (0 === n.length) return !b && (b = setTimeout(d, 5)), void 0;
    var r = n.shift(), s = [];
-   return /code|code_block|reference|markup\.underline/.test(r.type) || r.value.replace(w, function(e, t) {
+   return /code|code_block|link|reference|string|keyword|tag|markup\.underline/.test(r.type) || r.value.replace(w, function(e, t) {
     s.push({
      value: e,
      offset: t + i
@@ -22006,7 +22018,7 @@ function() {
       t.each(r, function(t) {
        if (!t.check) {
         var n = new s(e, t.offset, e, t.offset + t.value.length), i = v.session.addMarker(n, "misspelled", "typo", !0), o = v.session.getMarkers(!0)[i];
-        C.push(o);
+        x.push(o);
        }
       }), o.checkToken();
      }
@@ -22015,7 +22027,7 @@ function() {
   };
  }
  function d() {
-  b = void 0, y && (y.stopped = !0), y = new u(x++), y.checkToken();
+  b = void 0, y && (y.stopped = !0), y = new u(C++), y.checkToken();
  }
  function h() {
   y && (y.stopped = !0), b && clearTimeout(b), b = void 0;
@@ -22023,9 +22035,9 @@ function() {
  function p() {
   if (m !== !1 && void 0 !== v) {
    var e = [];
-   t.each(C, function(t) {
-    t.range.start.row < x ? e.push(t) : v.session.removeMarker(t.id);
-   }), C = e, b = setTimeout(d, 700);
+   t.each(x, function(t) {
+    t.range.start.row < C ? e.push(t) : v.session.removeMarker(t.id);
+   }), x = e, b = setTimeout(d, 700);
   }
  }
  var f = new o("spellCheck", "Spell Check", !0, !0, !0);
@@ -22043,16 +22055,16 @@ function() {
    p();
   });
  };
- var v, b, y, w = r("\\p{L}+(?:'\\p{L}+)*", "g"), C = [], x = 0, E = !1;
+ var v, b, y, w = r("\\p{L}+(?:'\\p{L}+)*", "g"), x = [], C = 0, k = !1;
  return f.onFileClose = function() {
-  h(), E = !1;
+  h(), k = !1;
  }, f.onFileOpen = function() {
-  E = !0, x = 0, h(), p();
+  k = !0, C = 0, h(), p();
  }, f.onAceCreated = function(e) {
   v = e, v.session.on("change", function(e) {
-   if (E === !0) {
+   if (k === !0) {
     var t = e.data.range.start.row;
-    x > t && (x = t), h(), p();
+    C > t && (C = t), h(), p();
    }
   });
  }, f;
@@ -22190,7 +22202,7 @@ function() {
  u("onSyncExportSuccess"), u("onSyncRemoved"), u("onPublishRunning"), u("onPublishSuccess"), 
  u("onNewPublishSuccess"), u("onPublishRemoved"), u("onLayoutConfigure"), u("onLayoutCreated"), 
  u("onLayoutResize"), u("onPagedownConfigure"), u("onSectionsCreated"), u("onMarkdownTrim"), 
- u("onExtraExtensions"), u("onAceCreated");
+ u("onAceCreated");
  var g, m, v = c("onPreviewFinished"), b = l("onAsyncPreview");
  d.onAsyncPreview = function() {
   function e(n) {
@@ -22199,7 +22211,7 @@ function() {
      var e = "";
      t.each(g.children, function(t) {
       e += t.innerHTML;
-     }), v(i.trim(e));
+     }), e = e.replace(/^<div class="se-section-delimiter"><\/div>\n\n/gm, ""), v(i.trim(e));
     });
    };
    r(function() {
@@ -22250,11 +22262,11 @@ function() {
   });
   var b = document.querySelector(".extension-preview-buttons");
   b.appendChild(v);
-  var w = e(b), C = w.width();
+  var w = e(b), x = w.width();
   w.find(".btn-group").each(function() {
    var t = e(this);
    t.find(".dropdown-menu").css({
-    right: -C + t.width() + t.position().left
+    right: -x + t.width() + t.position().left
    });
   }), y();
  }, d.onEventMgrCreated(d), d;
@@ -22534,9 +22546,9 @@ function() {
   });
  }, r;
 }), define("text!html/bodyIndex.html", [], function() {
- return '<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav left-space"></div>\n		<div class="nav right-space pull-right"></div>\n		<ul class="nav">\n			<li class="wmd-button-group1 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group2 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group3 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group4 btn-group"></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li class="btn-group"><button\n					class="btn btn-success action-create-file" title="New document">\n					<i class="icon-file"></i>\n				</button>\n				<button class="btn btn-success" title="Delete document"\n					data-toggle="modal" data-target=".modal-remove-file-confirm">\n					<i class="icon-trash"></i>\n				</button></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li id="extension-buttons"></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><a class="btn btn-success file-title-navbar" href="#"\n				title="Rename document"> </a></li>\n			<li><input type="text"\n				class="col-lg-4 form-control hide input-file-title"\n				placeholder="Document title" /></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><div class="working-indicator"></div></li>\n		</ul>\n	</div>\n</div>\n<div id="wmd-input" class="ui-layout-center"></div>\n<div class="ui-layout-east preview-container"></div>\n<div class="ui-layout-south preview-container"></div>\n<div id="wmd-button-bar" class="hide"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".menu-panel" title="Menu">\n		<i class="icon-left-open"></i> <img\n			data-stackedit-src="stackedit-64.png" width="32" height="32" />\n	</button>\n	<div class="panel-content">\n		<div class="list-group">\n			<a href="viewer" title="StackEdit Viewer"\n				class="list-group-item"><i class="icon-resize-full"></i>\n				StackEdit Viewer</a> <a href="#" data-toggle="collapse"\n				data-target=".collapse-open-from" class="list-group-item"><i\n				class="icon-hdd"></i> Open from...</a>\n			<div class="sub-menu collapse collapse-open-from clearfix">\n				<ul class="nav">\n					<li><a data-toggle="modal" data-target=".modal-import-url"\n						class="action-reset-input" href="#">Open from URL</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-markdown"\n						class="action-reset-input" href="#">Import from hard drive</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-html"\n						class="action-reset-input" href="#">Convert HTML to Markdown</a></li>\n				</ul>\n			</div>\n\n			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"\n				class="list-group-item"><i class="icon-hdd"></i> Save as...</a>\n			<div class="sub-menu collapse collapse-save-as clearfix">\n				<ul class="nav">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>\n				</ul>\n			</div>\n		</div>\n		<div class=dropdown-header>SYNCHRONIZE</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-gdrive" class="list-group-item"><i\n				class="icon-provider-gdrive"></i> Google Drive</a>\n			<div class="sub-menu collapse collapse-sync-gdrive clearfix">\n				<ul class="nav">\n					<li><a href="#" class="action-sync-import-gdrive"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Google Drive</a></li>\n					<li><a href="#" class="action-sync-export-dialog-gdrive">Export\n							to Google Drive</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-dropbox" class="list-group-item"><i\n				class="icon-provider-dropbox"></i> Dropbox</a>\n			<div class="sub-menu collapse collapse-sync-dropbox clearfix">\n				<ul class="nav">\n					<li><a class="action-sync-import-dropbox" href="#"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Dropbox</a></li>\n					<li><a href="#" class="action-sync-export-dialog-dropbox">Export\n							to Dropbox</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-sync"\n				class="action-reset-input list-group-item"><i\n				class="icon-refresh"></i> Manage synchronization</a>\n		</div>\n		<div class=dropdown-header>PUBLISH</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"\n				class="list-group-item"><i class="icon-share"></i> Publish on...</a>\n			<div class="sub-menu collapse collapse-publish-on clearfix">\n				<ul class="nav">\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-publish"\n				class="action-reset-input list-group-item"><i class="icon-share"></i>\n				Manage publication</a>\n		</div>\n		<ul class="nav">\n			<li><a href="#" data-toggle="modal"\n				data-target=".modal-settings" class="action-load-settings"><i\n					class="icon-cog"></i> Settings</a></li>\n			<li><a href="#" data-toggle="modal" data-target=".modal-about"><i\n					class="icon-help-circled"></i> About</a></li>\n		</ul>\n\n	</div>\n</div>\n\n\n<div class="document-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i> <i class="icon-right-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n\n<div class="modal modal-document-manager">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Manage documents</h3>\n			</div>\n			<div class="modal-body">\n				<div></div>\n				<ul class="nav nav-pills document-list">\n					<li class="pull-right dropdown"><a href="#"\n						data-toggle="dropdown"><i class="icon-check"></i> Selection <b\n							class="caret"></b></a>\n						<ul class="dropdown-menu">\n							<li><a href="#" class="action-select-all"><i\n									class="icon-check"></i> Select all</a></li>\n							<li><a href="#" class="action-unselect-all"><i\n									class="icon-check-empty"></i> Unselect all</a></li>\n							<li class="divider"></li>\n							<li><a href="#" class="action-move-items"><i\n									class="icon-forward"></i> Move to folder</a></li>\n							<li><a href="#" class="action-delete-items"><i\n									class="icon-trash"></i> Delete</a></li>\n						</ul></li>\n					<li class="pull-right"><a href="#"\n						class="action-create-folder"> <i class="icon-folder"></i>\n							Create folder\n					</a></li>\n					<li class="disabled"><a><i class="icon-file"></i> <span\n							class="document-count"></span></a></li>\n					<li class="disabled"><a><i class="icon-folder"></i> <span\n							class="folder-count"></span></a></li>\n				</ul>\n				<div class="list-group document-list"></div>\n				<p class="confirm-delete hide">The following documents will be\n					deleted locally:</p>\n				<p class="choose-folder hide">Please choose a destination\n					folder:</p>\n				<div class="list-group selected-document-list hide"></div>\n				<div class="list-group select-folder-list hide"></div>\n			</div>\n			<div class="modal-footer">\n				<a href="#"\n					class="btn btn-default confirm-delete choose-folder action-cancel hide">Cancel</a>\n				<a href="#"\n					class="btn btn-primary confirm-delete action-delete-items-confirm hide">OK</a>\n				<a href="#" class="btn btn-primary document-list"\n					data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-link">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Hyperlink</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the link URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-globe"></i></span><input\n						id="input-insert-link" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/ "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-insert-link"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Image</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the image URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-picture"></i></span><input\n						id="input-insert-image" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/image.jpg "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default action-import-image-gplus"\n					data-dismiss="modal"><i class="icon-provider-gplus"></i> Import\n					from Google+</a> <a href="#" class="btn btn-default"\n					data-dismiss="modal">Cancel</a> <a href="#"\n					class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Google+ image import</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group">\n						<div class="col-lg-7">\n							<img>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-title">Title (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-import-image-title"\n								placeholder="Image title" class="form-control">\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-size">Size limit (optional)</label>\n						<div class="col-lg-7 form-inline">\n							<input type="text" id="input-import-image-size" placeholder="123"\n								class="col-lg-3 form-control"> px\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-image"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-remove-file-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Delete</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					Are you sure you want to delete "<span class="file-title"></span>"?\n				</p>\n				<blockquote>\n					<b>NOTE:</b> This will not delete the file on synchronized\n					locations.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-remove-file"\n					data-dismiss="modal">Delete</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-url">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Open from URL</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide a link to a Markdown document.</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label" for="input-import-url">URL</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-import-url"\n								placeholder="http://www.abc.com/xyz.md" class="form-control">\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-import-url">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-markdown">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Import from hard drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your Markdown files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-markdown"\n						multiple class="form-control" />\n				</p>\n				<p>Or drag and drop your Markdown files here:</p>\n				<p id="dropzone-import-harddrive-markdown" class="drop-zone">Drop\n					files here</p>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-html">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Convert HTML to Markdown</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your HTML files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-html" multiple\n						class="form-control" />\n				</p>\n				<p>Or drag and drop your HTML files here:</p>\n				<p id="dropzone-import-harddrive-html" class="drop-zone">Drop\n					files here</p>\n				<p>Or insert your HTML code here:</p>\n				<textarea id="input-convert-html" class="form-control"></textarea>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Close</a> <a\n					href="#" class="btn btn-primary action-convert-html"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-gdrive">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Google Drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-gdrive-parentid">Folder ID\n							(optional)</label>\n						<div class="col-lg-8">\n							<div class="input-group">\n								<input type="text" id="input-sync-export-gdrive-parentid"\n									placeholder="FolderID" class="form-control">\n								<div class="input-group-btn">\n									<a class="btn btn-link export-gdrive-choose-folder"\n										title="Choose folder" data-dismiss="modal"><i\n										class="icon-folder-open"></i></a>\n								</div>\n							</div>\n							<span class="help-block"> If no folder ID is supplied, the\n								file will be created in your root folder. </span>\n						</div>\n					</div>\n					<div class="form-group">\n						<div class="col-lg-3 control-label"></div>\n						<div class="col-lg-8">\n							<label> <input id="input-sync-export-gdrive-realtime"\n								type="checkbox"> Create a real time collaborative\n								document\n							</label>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-gdrive-fileid">Existing file ID\n							(optional)</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block"> This will overwrite the existing file\n								on the server. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>NOTE:</b>\n					<ul>\n						<li>You can move or rename the file afterwards within Google\n							Drive.</li>\n						<li>Real time collaborative documents can\'t be open outside\n							StackEdit.</li>\n						<li>Real time collaborative documents can\'t have multiple\n							synchronized locations.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-gdrive">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-dropbox">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Dropbox</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-dropbox-path">File path</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-dropbox-path"\n								placeholder="/path/to/My Document.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>NOTE:</b>\n					<ul>\n						<li>Dropbox file path does not depend on document title.</li>\n						<li>The title of your document will not be synchronized.</li>\n						<li>Destination folder must exist.</li>\n						<li>Any existing file at this location will be overwritten.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-dropbox">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-sync">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Synchronization</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-sync-list hide">\n					"<span class="file-title"></span>" is synchronized with the\n					following location(s):\n				</p>\n				<div class="msg-sync-list sync-list hide"></div>\n				<blockquote class="msg-sync-list hide">\n					<b>NOTE:</b> Removing a synchronized location will not delete any\n					file.\n				</blockquote>\n				<blockquote class="msg-no-sync hide">\n					"<span class="file-title"></span>" is not synchronized yet. <br />\n					<br /> <b>NOTE:</b> You can add synchronized locations by\n					exporting your document using <i class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					or <i class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">\n					Publish on <span class="publish-provider-name"></span>\n				</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-host">Host</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-host"\n								placeholder="host.name.or.ip" class="form-control"> <span\n								class="help-block"> Host must be accessible publicly,\n								unless you are hosting your own <a target="_blank"\n								href="https://github.com/benweet/stackedit-ssh-proxy">SSH\n									proxy</a>.\n							</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-port">Port\n							(optional)</label>\n						<div class="col-lg-2">\n							<input type="text" id="input-publish-ssh-port" placeholder="22"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-username">Username</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-password">Password</label>\n						<div class="col-lg-7">\n							<input type="password" id="input-publish-ssh-password"\n								placeholder="password" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-reponame">Repository</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-reponame"\n								placeholder="repository-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-username">Username (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-branch">Branch</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-branch"\n								placeholder="branch-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-file-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-file-path"\n								placeholder="path/to/file.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-filename">Filename</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-filename"\n								placeholder="filename" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-gist-id">Existing\n							ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gist-id"\n								placeholder="GistID" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gist-public">Public</label>\n						<div class="col-lg-7">\n							<div class="checkbox">\n								<input type="checkbox" id="input-publish-gist-public"\n									checked="checked" />\n							</div>\n						</div>\n					</div>\n					<div class="form-group modal-publish-blogger">\n						<label class="col-lg-4 control-label"\n							for="input-publish-blogger-url">Blog URL</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-blogger-url"\n								placeholder="http://exemple.blogger.com/" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-tumblr">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">Blog hostname</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-tumblr-hostname"\n								placeholder="exemple.tumblr.com" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-wordpress">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">WordPress site</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-wordpress-site"\n								placeholder="exemple.wordpress.com" class="form-control">\n							<span class="help-block"> <a target="_blank"\n								href="http://jetpack.me/">Jetpack plugin</a> is required for\n								self-hosted sites.\n							</span>\n						</div>\n					</div>\n					<div\n						class="form-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n						<label class="col-lg-4 control-label" for="input-publish-postid">Update\n							existing post ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-postid" placeholder="PostID"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-dropbox">\n						<label class="col-lg-4 control-label"\n							for="input-publish-dropbox-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-dropbox-path"\n								placeholder="/path/to/My Document.html" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-fileid">File ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block">If no file ID is supplied, a new file\n								will be created in your Google Drive root folder. You can move\n								the file afterwards within Google Drive.</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-filename">Force filename\n							(optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-filename"\n								placeholder="Filename" class="form-control"> <span\n								class="help-block">If no file name is supplied, the\n								document title will be used.</span>\n						</div>\n					</div>\n\n					<div class="form-group">\n						<label class="col-lg-4 control-label">Format</label>\n						<div class="col-lg-7">\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="markdown"> Markdown\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="html"> HTML\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="template"> Template\n								</label>\n							</div>\n						</div>\n					</div>\n					<div class="collapse publish-custom-template-collapse">\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<div class="checkbox">\n									<label> <input type="checkbox"\n										id="checkbox-publish-custom-template"> Custom template\n									</label> <a href="#" class="tooltip-template">(?)</a>\n								</div>\n							</div>\n						</div>\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<textarea class="form-control"\n									id="textarea-publish-custom-template"></textarea>\n							</div>\n						</div>\n					</div>\n				</div>\n				<blockquote class="front-matter-info modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n                    <p><b>NOTE:</b> You can use a\n                    <a href="http://jekyllrb.com/docs/frontmatter/"\n                    target="_blank">YAML front matter</a> to specify the title and the tags/labels of your publication.</p>\n                    <p><b>Interpreted variables:</b> <i>title, tags</i></p>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-process-publish">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Publication</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-publish-list hide">\n					"<span class="file-title"></span>" is published on the following\n					location(s):\n				</p>\n				<div class="msg-publish-list publish-list hide"></div>\n				<blockquote>\n					<div class="msg-no-publish hide">\n						"<span class="file-title"></span>" is not published yet. <br /> <br />\n					</div>\n					<b>NOTE:</b> You can add publications using the <i class="icon-share"></i> <code>Publish on</code> sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Settings</h3>\n				<ul class="nav nav-tabs">\n					<li class="active"><a class="action-load-settings"\n						href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-services" data-toggle="tab">Services</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-shortcuts" data-toggle="tab">Shortcuts</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>\n				</ul>\n			</div>\n			<div class="modal-body">\n\n				<div class="tab-content clearfix">\n					<div class="tab-pane active" id="tabpane-settings-editor">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Layout orientation</label>\n								<div class="col-lg-7">\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="horizontal">\n											Horizontal\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="vertical">\n											Vertical\n										</label>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label" for="input-settings-theme">Theme</label>\n								<div class="col-lg-7">\n									<select id="input-settings-theme" class="form-control">\n									</select> <span class="help-block"><a target="_blank"\n										href="https://github.com/benweet/stackedit/blob/master/doc/theming.md#stackedit-theming-guide">Create\n											your own theme...</a></span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-lazy-rendering">Lazy rendering <a\n									href="#" class="tooltip-lazy-rendering">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n										<input type="checkbox" id="input-settings-lazy-rendering" />\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-editor-font-family">Editor font</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-editor-font-family"\n										class="form-control col-lg-7"> <input type="text"\n										id="input-settings-editor-font-size"\n										class="form-control col-lg-2"> px <span\n										class="help-block"> Only monospaced fonts are\n										supported.</span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-max-width">Max width</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-max-width"\n										class="form-control col-lg-3"> px\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-default-content">Default content\n									<a href="#" class="tooltip-default-content">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-default-content"\n										class="form-control"></textarea>\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-services">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Permission</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n									    <label>\n										    <input type="checkbox" id="input-settings-gdrive-full-access" />\n										    Allow StackEdit to open any document in Google Drive\n										</label> <span class="help-block">You need to revoke any existing token in\n										<a href="https://www.google.com/settings/dashboard" target="_blank">Google Dashboard</a>\n										for this change to take effect.</span>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-publish-template">Default\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-publish-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-pdf-template">PDF\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-pdf-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label" for="input-settings-pdf-page-size">PDF page size</label>\n								<div class="col-lg-7">\n									<select id="input-settings-pdf-page-size" class="form-control">\n									    <option value="A3">A3</option>\n									    <option value="A4">A4</option>\n									    <option value="Legal">Legal</option>\n									    <option value="Letter">Letter</option>\n									</select>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-publish-commit-msg">GitHub commit message</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-publish-commit-msg"\n										class="form-control">\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-ssh-proxy">SSH proxy</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-ssh-proxy"\n										class="form-control">\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-shortcuts">\n						<div class="form-horizontal">\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-extensions">\n						<div class="panel-group accordion-extensions"></div>\n						<span class="help-block pull-right"><a target="_blank"\n							href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">Create\n								your own extension...</a></span>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-utils">\n						<div class="tab-pane-button-container">\n							<a href="#" class="btn btn-block btn-primary action-welcome-file"\n								data-dismiss="modal"><i class="icon-help-circled icon-white"></i>\n								Welcome document</a> <a href="#"\n								class="btn btn-block btn-primary action-welcome-tour"\n								data-dismiss="modal" data-dismiss="modal"><i\n								class="icon-help-circled icon-white"></i> Welcome tour</a>\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-primary action-import-docs-settings"><i\n								class="icon-cog-alt icon-white"></i> Import docs & settings</a> <a href="#"\n								class="btn btn-block btn-primary action-export-docs-settings"\n								data-dismiss="modal"><i class="icon-cog-alt icon-white"></i>\n								Export docs & settings</a> <input type="file"\n								id="input-file-import-docs-settings" class="hide">\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-primary action-default-settings"\n								data-dismiss="modal"><i class="icon-wrench icon-white"></i>\n								Load default settings</a> <a href="#" class="btn btn-block btn-primary"\n								data-dismiss="modal" data-toggle="modal"\n								data-target=".modal-app-reset"><i\n								class="icon-fire icon-white"></i> Reset application</a> <a target="_blank" href="recovery.html" class="btn btn-block btn-primary"><i\n								class="icon-medkit icon-white"></i> StackEdit recovery</a>\n						</div>\n						<span class="help-block text-center"><a target="_blank"\n							href="http://benweet.github.io/stackedit/recovery.html">Old platform recovery</a></span>\n					</div>\n				</div>\n\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-apply-settings"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-redirect-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Redirection</h3>\n			</div>\n			<div class="modal-body">\n				<blockquote><b>NOTE:</b> <span class="redirect-msg"></span></blockquote>\n			</div>\n			<div class="modal-footer">\n				<a class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a class="btn btn-primary action-redirect-confirm" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-app-reset">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Reset application</h3>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all your local documents.</p>\n				<blockquote>Are you sure?</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-app-reset"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-docs-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Import documents and settings</h3>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all existing local documents.</p>\n				<blockquote>Are you sure?</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-docs-settings-confirm"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="lock-ui hide"></div>\n<div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>';
+ return '<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav left-space"></div>\n		<div class="nav right-space pull-right"></div>\n		<ul class="nav">\n			<li class="wmd-button-group1 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group2 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group3 btn-group"></li>\n		</ul>\n		<ul class="nav">\n			<li class="wmd-button-group4 btn-group"></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li class="btn-group"><button\n					class="btn btn-success action-create-file" title="New document">\n					<i class="icon-file"></i>\n				</button>\n				<button class="btn btn-success" title="Delete document"\n					data-toggle="modal" data-target=".modal-remove-file-confirm">\n					<i class="icon-trash"></i>\n				</button></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li id="extension-buttons"></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><div class="working-indicator"></div></li>\n			<li><a class="btn btn-success file-title-navbar" href="#"\n				title="Rename document"> </a></li>\n			<li><input type="text"\n				class="col-lg-4 form-control hide input-file-title"\n				placeholder="Document title" /></li>\n		</ul>\n	</div>\n</div>\n<div id="wmd-input" class="ui-layout-center"></div>\n<div class="ui-layout-east preview-container"></div>\n<div class="ui-layout-south preview-container"></div>\n<div id="wmd-button-bar" class="hide"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".menu-panel" title="Menu">\n		<i class="icon-left-open"></i> <img\n			data-stackedit-src="stackedit-64.png" width="32" height="32" />\n	</button>\n	<div class="panel-content">\n		<div class="list-group">\n			<a href="viewer" title="StackEdit Viewer"\n				class="list-group-item"><i class="icon-resize-full"></i>\n				StackEdit Viewer</a> <a href="#" data-toggle="collapse"\n				data-target=".collapse-open-from" class="list-group-item"><i\n				class="icon-hdd"></i> Open from...</a>\n			<div class="sub-menu collapse collapse-open-from clearfix">\n				<ul class="nav">\n					<li><a data-toggle="modal" data-target=".modal-import-url"\n						class="action-reset-input" href="#">Open from URL</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-markdown"\n						class="action-reset-input" href="#">Import from hard drive</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-html"\n						class="action-reset-input" href="#">Convert HTML to Markdown</a></li>\n				</ul>\n			</div>\n\n			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"\n				class="list-group-item"><i class="icon-hdd"></i> Save as...</a>\n			<div class="sub-menu collapse collapse-save-as clearfix">\n				<ul class="nav">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>\n				</ul>\n			</div>\n		</div>\n		<div class=dropdown-header>SYNCHRONIZE</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-gdrive" class="list-group-item"><i\n				class="icon-provider-gdrive"></i> Google Drive</a>\n			<div class="sub-menu collapse collapse-sync-gdrive clearfix">\n				<ul class="nav">\n					<li><a href="#" class="action-sync-import-gdrive"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Google Drive</a></li>\n					<li><a href="#" class="action-sync-export-dialog-gdrive">Export\n							to Google Drive</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-dropbox" class="list-group-item"><i\n				class="icon-provider-dropbox"></i> Dropbox</a>\n			<div class="sub-menu collapse collapse-sync-dropbox clearfix">\n				<ul class="nav">\n					<li><a class="action-sync-import-dropbox" href="#"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Dropbox</a></li>\n					<li><a href="#" class="action-sync-export-dialog-dropbox">Export\n							to Dropbox</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-sync"\n				class="action-reset-input list-group-item"><i\n				class="icon-refresh"></i> Manage synchronization</a>\n		</div>\n		<div class=dropdown-header>PUBLISH</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"\n				class="list-group-item"><i class="icon-share"></i> Publish on...</a>\n			<div class="sub-menu collapse collapse-publish-on clearfix">\n				<ul class="nav">\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-publish"\n				class="action-reset-input list-group-item"><i class="icon-share"></i>\n				Manage publication</a>\n		</div>\n		<ul class="nav">\n			<li><a href="#" data-toggle="modal"\n				data-target=".modal-settings" class="action-load-settings"><i\n					class="icon-cog"></i> Settings</a></li>\n			<li><a href="#" data-toggle="modal" data-target=".modal-about"><i\n					class="icon-help-circled"></i> About</a></li>\n		</ul>\n\n	</div>\n</div>\n\n\n<div class="document-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i> <i class="icon-right-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n\n<div class="modal modal-document-manager">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Manage documents</h3>\n			</div>\n			<div class="modal-body">\n				<div></div>\n				<ul class="nav nav-pills document-list">\n					<li class="pull-right dropdown"><a href="#"\n						data-toggle="dropdown"><i class="icon-check"></i> Selection <b\n							class="caret"></b></a>\n						<ul class="dropdown-menu">\n							<li><a href="#" class="action-select-all"><i\n									class="icon-check"></i> Select all</a></li>\n							<li><a href="#" class="action-unselect-all"><i\n									class="icon-check-empty"></i> Unselect all</a></li>\n							<li class="divider"></li>\n							<li><a href="#" class="action-move-items"><i\n									class="icon-forward"></i> Move to folder</a></li>\n							<li><a href="#" class="action-delete-items"><i\n									class="icon-trash"></i> Delete</a></li>\n						</ul></li>\n					<li class="pull-right"><a href="#"\n						class="action-create-folder"> <i class="icon-folder"></i>\n							Create folder\n					</a></li>\n					<li class="disabled"><a><i class="icon-file"></i> <span\n							class="document-count"></span></a></li>\n					<li class="disabled"><a><i class="icon-folder"></i> <span\n							class="folder-count"></span></a></li>\n				</ul>\n				<div class="list-group document-list"></div>\n				<p class="confirm-delete hide">The following documents will be\n					deleted locally:</p>\n				<p class="choose-folder hide">Please choose a destination\n					folder:</p>\n				<div class="list-group selected-document-list hide"></div>\n				<div class="list-group select-folder-list hide"></div>\n			</div>\n			<div class="modal-footer">\n				<a href="#"\n					class="btn btn-default confirm-delete choose-folder action-cancel hide">Cancel</a>\n				<a href="#"\n					class="btn btn-primary confirm-delete action-delete-items-confirm hide">OK</a>\n				<a href="#" class="btn btn-primary document-list"\n					data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-link">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Hyperlink</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the link URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-globe"></i></span><input\n						id="input-insert-link" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/ "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-insert-link"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Image</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the image URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-picture"></i></span><input\n						id="input-insert-image" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/image.jpg "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default action-import-image-gplus"\n					data-dismiss="modal"><i class="icon-provider-gplus"></i> Import\n					from Google+</a> <a href="#" class="btn btn-default"\n					data-dismiss="modal">Cancel</a> <a href="#"\n					class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Google+ image import</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group">\n						<div class="col-lg-7">\n							<img>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-title">Title (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-import-image-title"\n								placeholder="Image title" class="form-control">\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-size">Size limit (optional)</label>\n						<div class="col-lg-7 form-inline">\n							<input type="text" id="input-import-image-size" placeholder="123"\n								class="col-lg-3 form-control"> px\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-image"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-remove-file-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Delete</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					Are you sure you want to delete "<span class="file-title"></span>"?\n				</p>\n				<blockquote>\n					<b>NOTE:</b> This will not delete the file on synchronized\n					locations.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-remove-file"\n					data-dismiss="modal">Delete</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-url">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Open from URL</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide a link to a Markdown document.</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label" for="input-import-url">URL</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-import-url"\n								placeholder="http://www.abc.com/xyz.md" class="form-control">\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-import-url">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-markdown">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Import from hard drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your Markdown files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-markdown"\n						multiple class="form-control" />\n				</p>\n				<p>Or drag and drop your Markdown files here:</p>\n				<p id="dropzone-import-harddrive-markdown" class="drop-zone">Drop\n					files here</p>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-html">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Convert HTML to Markdown</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your HTML files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-html" multiple\n						class="form-control" />\n				</p>\n				<p>Or drag and drop your HTML files here:</p>\n				<p id="dropzone-import-harddrive-html" class="drop-zone">Drop\n					files here</p>\n				<p>Or insert your HTML code here:</p>\n				<textarea id="input-convert-html" class="form-control"></textarea>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Close</a> <a\n					href="#" class="btn btn-primary action-convert-html"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-gdrive">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Google Drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-gdrive-parentid">Folder ID\n							(optional)</label>\n						<div class="col-lg-8">\n							<div class="input-group">\n								<input type="text" id="input-sync-export-gdrive-parentid"\n									placeholder="FolderID" class="form-control">\n								<div class="input-group-btn">\n									<a class="btn btn-link export-gdrive-choose-folder"\n										title="Choose folder" data-dismiss="modal"><i\n										class="icon-folder-open"></i></a>\n								</div>\n							</div>\n							<span class="help-block"> If no folder ID is supplied, the\n								file will be created in your root folder. </span>\n						</div>\n					</div>\n					<div class="form-group">\n						<div class="col-lg-3 control-label"></div>\n						<div class="col-lg-8">\n							<label> <input id="input-sync-export-gdrive-realtime"\n								type="checkbox"> Create a real time collaborative\n								document\n							</label>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-gdrive-fileid">Existing file ID\n							(optional)</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block"> This will overwrite the existing file\n								on the server. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>NOTE:</b>\n					<ul>\n						<li>You can move or rename the file afterwards within Google\n							Drive.</li>\n						<li>Real time collaborative documents can\'t be open outside\n							StackEdit.</li>\n						<li>Real time collaborative documents can\'t have multiple\n							synchronized locations.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-gdrive">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-dropbox">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Dropbox</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-dropbox-path">File path</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-dropbox-path"\n								placeholder="/path/to/My Document.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>NOTE:</b>\n					<ul>\n						<li>Dropbox file path does not depend on document title.</li>\n						<li>The title of your document will not be synchronized.</li>\n						<li>Destination folder must exist.</li>\n						<li>Any existing file at this location will be overwritten.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-dropbox">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-sync">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Synchronization</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-sync-list hide">\n					"<span class="file-title"></span>" is synchronized with the\n					following location(s):\n				</p>\n				<div class="msg-sync-list sync-list hide"></div>\n				<blockquote class="msg-sync-list hide">\n					<b>NOTE:</b> Removing a synchronized location will not delete any\n					file.\n				</blockquote>\n				<blockquote class="msg-no-sync hide">\n					"<span class="file-title"></span>" is not synchronized yet. <br />\n					<br /> <b>NOTE:</b> You can add synchronized locations by\n					exporting your document using <i class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					or <i class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">\n					Publish on <span class="publish-provider-name"></span>\n				</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-host">Host</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-host"\n								placeholder="host.name.or.ip" class="form-control"> <span\n								class="help-block"> Host must be accessible publicly,\n								unless you are hosting your own <a target="_blank"\n								href="https://github.com/benweet/stackedit-ssh-proxy">SSH\n									proxy</a>.\n							</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-port">Port\n							(optional)</label>\n						<div class="col-lg-2">\n							<input type="text" id="input-publish-ssh-port" placeholder="22"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-username">Username</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-password">Password</label>\n						<div class="col-lg-7">\n							<input type="password" id="input-publish-ssh-password"\n								placeholder="password" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-reponame">Repository</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-reponame"\n								placeholder="repository-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-username">Username (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-branch">Branch</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-branch"\n								placeholder="branch-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-file-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-file-path"\n								placeholder="path/to/file.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-filename">Filename</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-filename"\n								placeholder="filename" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-gist-id">Existing\n							ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gist-id"\n								placeholder="GistID" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gist-public">Public</label>\n						<div class="col-lg-7">\n							<div class="checkbox">\n								<input type="checkbox" id="input-publish-gist-public"\n									checked="checked" />\n							</div>\n						</div>\n					</div>\n					<div class="form-group modal-publish-blogger">\n						<label class="col-lg-4 control-label"\n							for="input-publish-blogger-url">Blog URL</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-blogger-url"\n								placeholder="http://exemple.blogger.com/" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-tumblr">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">Blog hostname</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-tumblr-hostname"\n								placeholder="exemple.tumblr.com" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-wordpress">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">WordPress site</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-wordpress-site"\n								placeholder="exemple.wordpress.com" class="form-control">\n							<span class="help-block"> <a target="_blank"\n								href="http://jetpack.me/">Jetpack plugin</a> is required for\n								self-hosted sites.\n							</span>\n						</div>\n					</div>\n					<div\n						class="form-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n						<label class="col-lg-4 control-label" for="input-publish-postid">Update\n							existing post ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-postid" placeholder="PostID"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-dropbox">\n						<label class="col-lg-4 control-label"\n							for="input-publish-dropbox-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-dropbox-path"\n								placeholder="/path/to/My Document.html" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-fileid">File ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block">If no file ID is supplied, a new file\n								will be created in your Google Drive root folder. You can move\n								the file afterwards within Google Drive.</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-filename">Force filename\n							(optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-filename"\n								placeholder="Filename" class="form-control"> <span\n								class="help-block">If no file name is supplied, the\n								document title will be used.</span>\n						</div>\n					</div>\n\n					<div class="form-group">\n						<label class="col-lg-4 control-label">Format</label>\n						<div class="col-lg-7">\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="markdown"> Markdown\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="html"> HTML\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="template"> Template\n								</label>\n							</div>\n						</div>\n					</div>\n					<div class="collapse publish-custom-template-collapse">\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<div class="checkbox">\n									<label> <input type="checkbox"\n										id="checkbox-publish-custom-template"> Custom template\n									</label> <a href="#" class="tooltip-template">(?)</a>\n								</div>\n							</div>\n						</div>\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<textarea class="form-control"\n									id="textarea-publish-custom-template"></textarea>\n							</div>\n						</div>\n					</div>\n				</div>\n				<blockquote class="front-matter-info modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n                    <p><b>NOTE:</b> You can use a\n                    <a href="http://jekyllrb.com/docs/frontmatter/"\n                    target="_blank">YAML front matter</a> to specify the title and the tags/labels of your publication.</p>\n                    <p><b>Interpreted variables:</b> <i>title, tags</i></p>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-process-publish">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Publication</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-publish-list hide">\n					"<span class="file-title"></span>" is published on the following\n					location(s):\n				</p>\n				<div class="msg-publish-list publish-list hide"></div>\n				<blockquote>\n					<div class="msg-no-publish hide">\n						"<span class="file-title"></span>" is not published yet. <br /> <br />\n					</div>\n					<b>NOTE:</b> You can add publications using the <i class="icon-share"></i> <code>Publish on</code> sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Settings</h3>\n				<ul class="nav nav-tabs">\n					<li class="active"><a class="action-load-settings"\n						href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-services" data-toggle="tab">Services</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-shortcuts" data-toggle="tab">Shortcuts</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>\n				</ul>\n			</div>\n			<div class="modal-body">\n\n				<div class="tab-content clearfix">\n					<div class="tab-pane active" id="tabpane-settings-editor">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Layout orientation</label>\n								<div class="col-lg-7">\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="horizontal">\n											Horizontal\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="vertical">\n											Vertical\n										</label>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label" for="input-settings-theme">Theme</label>\n								<div class="col-lg-7">\n									<select id="input-settings-theme" class="form-control">\n									</select> <span class="help-block"><a target="_blank"\n										href="https://github.com/benweet/stackedit/blob/master/doc/theming.md#stackedit-theming-guide">Create\n											your own theme...</a></span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-lazy-rendering">Lazy rendering <a\n									href="#" class="tooltip-lazy-rendering">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n										<input type="checkbox" id="input-settings-lazy-rendering" />\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-editor-font-family">Editor font</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-editor-font-family"\n										class="form-control col-lg-7"> <input type="text"\n										id="input-settings-editor-font-size"\n										class="form-control col-lg-2"> px <span\n										class="help-block"> Only monospaced fonts are\n										supported.</span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-max-width">Max width</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-max-width"\n										class="form-control col-lg-3"> px\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-default-content">Default content\n									<a href="#" class="tooltip-default-content">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-default-content"\n										class="form-control"></textarea>\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-services">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Permission</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n									    <label>\n										    <input type="checkbox" id="input-settings-gdrive-full-access" />\n										    Allow StackEdit to open any document in Google Drive\n										</label> <span class="help-block">You need to revoke any existing token in\n										<a href="https://www.google.com/settings/dashboard" target="_blank">Google Dashboard</a>\n										for this change to take effect.</span>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-publish-template">Default\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-publish-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-pdf-template">PDF\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-pdf-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label" for="input-settings-pdf-page-size">PDF page size</label>\n								<div class="col-lg-7">\n									<select id="input-settings-pdf-page-size" class="form-control">\n									    <option value="A3">A3</option>\n									    <option value="A4">A4</option>\n									    <option value="Legal">Legal</option>\n									    <option value="Letter">Letter</option>\n									</select>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-publish-commit-msg">GitHub commit message</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-publish-commit-msg"\n										class="form-control">\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-ssh-proxy">SSH proxy</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-ssh-proxy"\n										class="form-control">\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-shortcuts">\n						<div class="form-horizontal">\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-extensions">\n						<div class="panel-group accordion-extensions"></div>\n						<span class="help-block pull-right"><a target="_blank"\n							href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">Create\n								your own extension...</a></span>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-utils">\n						<div class="tab-pane-button-container">\n							<a href="#" class="btn btn-block btn-primary action-welcome-file"\n								data-dismiss="modal"><i class="icon-help-circled icon-white"></i>\n								Welcome document</a> <a href="#"\n								class="btn btn-block btn-primary action-welcome-tour"\n								data-dismiss="modal" data-dismiss="modal"><i\n								class="icon-help-circled icon-white"></i> Welcome tour</a>\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-primary action-import-docs-settings"><i\n								class="icon-cog-alt icon-white"></i> Import docs & settings</a> <a href="#"\n								class="btn btn-block btn-primary action-export-docs-settings"\n								data-dismiss="modal"><i class="icon-cog-alt icon-white"></i>\n								Export docs & settings</a> <input type="file"\n								id="input-file-import-docs-settings" class="hide">\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-primary action-default-settings"\n								data-dismiss="modal"><i class="icon-wrench icon-white"></i>\n								Load default settings</a> <a href="#" class="btn btn-block btn-primary"\n								data-dismiss="modal" data-toggle="modal"\n								data-target=".modal-app-reset"><i\n								class="icon-fire icon-white"></i> Reset application</a> <a target="_blank" href="recovery.html" class="btn btn-block btn-primary"><i\n								class="icon-medkit icon-white"></i> StackEdit recovery</a>\n						</div>\n						<span class="help-block text-center"><a target="_blank"\n							href="http://benweet.github.io/stackedit/recovery.html">Old platform recovery</a></span>\n					</div>\n				</div>\n\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-apply-settings"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-redirect-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Redirection</h3>\n			</div>\n			<div class="modal-body">\n				<blockquote><b>NOTE:</b> <span class="redirect-msg"></span></blockquote>\n			</div>\n			<div class="modal-footer">\n				<a class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a class="btn btn-primary action-redirect-confirm" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-app-reset">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Reset application</h3>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all your local documents.</p>\n				<blockquote>Are you sure?</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-app-reset"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-docs-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Import documents and settings</h3>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all existing local documents.</p>\n				<blockquote>Are you sure?</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-docs-settings-confirm"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="lock-ui hide"></div>\n<div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>';
 }), define("text!html/bodyViewer.html", [], function() {
- return '\n<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav right-space pull-right"></div>\n\n		<ul class="nav pull-right">\n			<li class="btn-group">\n				<button class="btn btn-success action-edit-document hide"\n					title="Edit this document">\n					<i class="icon-pencil"></i>\n				</button>\n			</li>\n			<li class="btn-group">\n				<button class="btn btn-success dropdown-toggle"\n					data-toggle="dropdown" title="Save this document">\n					<i class="icon-download"></i>\n				</button>\n				<ul class="dropdown-menu">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>\n				</ul>\n			</li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><span class="file-title-navbar"></span></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><div class="working-indicator"></div></li>\n		</ul>\n\n	</div>\n</div>\n<div id="wmd-button-bar" class="hide"></div>\n<div id="wmd-input" class="hide"></div>\n<div class="ui-layout-center preview-container"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn btn-success collapse-button action-open-stackedit"\n		title="Open StackEdit">\n		<i class="icon-left-dir"></i> <img\n			data-stackedit-src="stackedit-64.png" width="32" height="32" />\n	</button>\n</div>\n\n<div class="document-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i> <i class="icon-right-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n';
+ return '\n<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav right-space pull-right"></div>\n\n		<ul class="nav pull-right">\n			<li class="btn-group">\n				<button class="btn btn-success action-edit-document hide"\n					title="Edit this document">\n					<i class="icon-pencil"></i>\n				</button>\n			</li>\n			<li class="btn-group">\n				<button class="btn btn-success dropdown-toggle"\n					data-toggle="dropdown" title="Save this document">\n					<i class="icon-download"></i>\n				</button>\n				<ul class="dropdown-menu">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>\n				</ul>\n			</li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><div class="working-indicator"></div></li>\n			<li><span class="file-title-navbar"></span></li>\n		</ul>\n	</div>\n</div>\n<div id="wmd-button-bar" class="hide"></div>\n<div id="wmd-input" class="hide"></div>\n<div class="ui-layout-center preview-container"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn btn-success collapse-button action-open-stackedit"\n		title="Open StackEdit">\n		<i class="icon-left-dir"></i> <img\n			data-stackedit-src="stackedit-64.png" width="32" height="32" />\n	</button>\n</div>\n\n<div class="document-panel collapse width">\n	<button class="btn btn-success collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i> <i class="icon-right-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n';
 }), define("text!html/settingsTemplateTooltip.html", [], function() {
  return 'Available variables:\n<br>\n<ul>\n    <li>\n        <b>documentTitle</b>: document title</li>\n    <li>\n        <b>documentMarkdown</b>: document in Markdown format</li>\n    <li>\n        <b>strippedDocumentMarkdown</b>: document without front matter</li>\n    <li>\n        <b>documentHTML</b>: document in HTML format</li>\n    <li>\n        <b>frontMatter</b>: YAML front matter object (undefined if not present)</li>\n    <li>\n        <b>publishAttributes</b>: attributes of the publish location (undefined if\n        not publishing)</li>\n</ul>\n<b>Examples:</b>\n<br />&lt;title&gt;&lt;%= documentTitle %&gt;&lt;&#x2F;title&gt;\n<br />&lt;div&gt;&lt;%- documentHTML %&gt;&lt;&#x2F;div&gt;\n<br />&lt;%\n<br />if(publishAttributes.provider.providerId == &quot;github&quot;) print(documentMarkdown);\n<br\n/>%&gt;\n<br />\n<br />\n<a target="_blank" href="http://underscorejs.org/#template">More\n	info</a>\n<br />\n<br />\n<b class="text-danger">\n    <i class="icon-attention"></i>Careful! Template is subject to malicious code. Don\'t copy/paste untrusted\n    content.</b>';
 }), define("text!html/settingsUserCustomExtensionTooltip.html", [], function() {
@@ -24572,22 +24584,22 @@ function() {
   }, setSizeLimits = function(e, t) {
    if (isInitialized()) {
     var n = options[e], i = state[e], o = _c[e], r = o.dir, s = (o.sizeType.toLowerCase(), 
-    void 0 != t ? t : i.isSliding), a = ($Ps[e], n.spacing_open), l = _c.oppositeEdge[e], c = state[l], u = $Ps[l], d = !u || c.isVisible === !1 || c.isSliding ? 0 : "horz" == r ? u.outerHeight() : u.outerWidth(), h = (!u || c.isHidden ? 0 : options[l][c.isClosed !== !1 ? "spacing_closed" : "spacing_open"]) || 0, p = "horz" == r ? sC.innerHeight : sC.innerWidth, f = cssMinDims("center"), g = "horz" == r ? max(options.center.minHeight, f.minHeight) : max(options.center.minWidth, f.minWidth), m = p - a - (s ? 0 : _parseSize("center", g, r) + d + h), v = i.minSize = max(_parseSize(e, n.minSize), cssMinDims(e).minSize), b = i.maxSize = min(n.maxSize ? _parseSize(e, n.maxSize) : 1e5, m), y = i.resizerPosition = {}, w = sC.inset.top, C = sC.inset.left, x = sC.innerWidth, E = sC.innerHeight, S = n.spacing_open;
+    void 0 != t ? t : i.isSliding), a = ($Ps[e], n.spacing_open), l = _c.oppositeEdge[e], c = state[l], u = $Ps[l], d = !u || c.isVisible === !1 || c.isSliding ? 0 : "horz" == r ? u.outerHeight() : u.outerWidth(), h = (!u || c.isHidden ? 0 : options[l][c.isClosed !== !1 ? "spacing_closed" : "spacing_open"]) || 0, p = "horz" == r ? sC.innerHeight : sC.innerWidth, f = cssMinDims("center"), g = "horz" == r ? max(options.center.minHeight, f.minHeight) : max(options.center.minWidth, f.minWidth), m = p - a - (s ? 0 : _parseSize("center", g, r) + d + h), v = i.minSize = max(_parseSize(e, n.minSize), cssMinDims(e).minSize), b = i.maxSize = min(n.maxSize ? _parseSize(e, n.maxSize) : 1e5, m), y = i.resizerPosition = {}, w = sC.inset.top, x = sC.inset.left, C = sC.innerWidth, k = sC.innerHeight, E = n.spacing_open;
     switch (e) {
     case "north":
      y.min = w + v, y.max = w + b;
      break;
 
     case "west":
-     y.min = C + v, y.max = C + b;
+     y.min = x + v, y.max = x + b;
      break;
 
     case "south":
-     y.min = w + E - b - S, y.max = w + E - v - S;
+     y.min = w + k - b - E, y.max = w + k - v - E;
      break;
 
     case "east":
-     y.min = C + x - b - S, y.max = C + x - v - S;
+     y.min = x + C - b - E, y.max = x + C - v - E;
     }
    }
   }, calcNewCenterPaneDims = function() {
@@ -25084,8 +25096,8 @@ function() {
     if (f && g && ($.each(p, function(e, t) {
      t.destroyed || t.destroy(!0), t.destroyed && delete p[e];
     }), $.isEmptyObject(p) && (p = children[o] = null, f = !1)), r && t && !f) r.remove(); else if (r && r[0]) {
-     var m = c.paneClass, v = m + "-" + o, b = "-open", y = "-sliding", w = "-closed", C = [ m, m + b, m + w, m + y, v, v + b, v + w, v + y ];
-     $.merge(C, getHoverClasses(r, !0)), r.removeClass(C.join(" ")).removeData("parentLayout").removeData("layoutPane").removeData("layoutRole").removeData("layoutEdge").removeData("autoHidden").unbind("." + sID), 
+     var m = c.paneClass, v = m + "-" + o, b = "-open", y = "-sliding", w = "-closed", x = [ m, m + b, m + w, m + y, v, v + b, v + w, v + y ];
+     $.merge(x, getHoverClasses(r, !0)), r.removeClass(x.join(" ")).removeData("parentLayout").removeData("layoutPane").removeData("layoutRole").removeData("layoutEdge").removeData("autoHidden").unbind("." + sID), 
      f && s ? (s.width(s.width()), $.each(p, function(e, t) {
       t.resizeAll();
      })) : s && s.css(s.data(h)).removeData(h).removeData("layoutRole"), r.data(d) || r.css(r.data(h)).removeData(h);
@@ -25891,9 +25903,775 @@ function() {
    return c.msie && u > 8 || !c.msie ? !1 : s.deviceXDPI && s.systemXDPI ? t(s.deviceXDPI, s.systemXDPI) : c.webkit && (n = a.body.getBoundingClientRect) ? t(n.left - n.right, a.body.offsetWidth) : c.webkit && (i = r.outerWidth) ? t(i, r.innerWidth) : (i = s.width) && (o = l.clientWidth) ? t(i, o) : !1;
   }
  }, e.layout.onReady.push(e.layout.browserZoom._init);
-}(jQuery), define("uilayout", function() {}), define("libs/ace_mode_highlight_rules", [ "require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules" ], function(e, t) {
- var n = e("ace/lib/oop"), i = e("ace/mode/text_highlight_rules").TextHighlightRules, o = function() {
+}(jQuery), define("uilayout", function() {}), define("ace/mode/css_highlight_rules", [ "require", "exports", "module", "../lib/oop", "../lib/lang", "./text_highlight_rules" ], function(e, t) {
+ var n = e("../lib/oop");
+ e("../lib/lang");
+ var i = e("./text_highlight_rules").TextHighlightRules, o = t.supportType = "animation-fill-mode|alignment-adjust|alignment-baseline|animation-delay|animation-direction|animation-duration|animation-iteration-count|animation-name|animation-play-state|animation-timing-function|animation|appearance|azimuth|backface-visibility|background-attachment|background-break|background-clip|background-color|background-image|background-origin|background-position|background-repeat|background-size|background|baseline-shift|binding|bleed|bookmark-label|bookmark-level|bookmark-state|bookmark-target|border-bottom|border-bottom-color|border-bottom-left-radius|border-bottom-right-radius|border-bottom-style|border-bottom-width|border-collapse|border-color|border-image|border-image-outset|border-image-repeat|border-image-slice|border-image-source|border-image-width|border-left|border-left-color|border-left-style|border-left-width|border-radius|border-right|border-right-color|border-right-style|border-right-width|border-spacing|border-style|border-top|border-top-color|border-top-left-radius|border-top-right-radius|border-top-style|border-top-width|border-width|border|bottom|box-align|box-decoration-break|box-direction|box-flex-group|box-flex|box-lines|box-ordinal-group|box-orient|box-pack|box-shadow|box-sizing|break-after|break-before|break-inside|caption-side|clear|clip|color-profile|color|column-count|column-fill|column-gap|column-rule|column-rule-color|column-rule-style|column-rule-width|column-span|column-width|columns|content|counter-increment|counter-reset|crop|cue-after|cue-before|cue|cursor|direction|display|dominant-baseline|drop-initial-after-adjust|drop-initial-after-align|drop-initial-before-adjust|drop-initial-before-align|drop-initial-size|drop-initial-value|elevation|empty-cells|fit|fit-position|float-offset|float|font-family|font-size|font-size-adjust|font-stretch|font-style|font-variant|font-weight|font|grid-columns|grid-rows|hanging-punctuation|height|hyphenate-after|hyphenate-before|hyphenate-character|hyphenate-lines|hyphenate-resource|hyphens|icon|image-orientation|image-rendering|image-resolution|inline-box-align|left|letter-spacing|line-height|line-stacking-ruby|line-stacking-shift|line-stacking-strategy|line-stacking|list-style-image|list-style-position|list-style-type|list-style|margin-bottom|margin-left|margin-right|margin-top|margin|mark-after|mark-before|mark|marks|marquee-direction|marquee-play-count|marquee-speed|marquee-style|max-height|max-width|min-height|min-width|move-to|nav-down|nav-index|nav-left|nav-right|nav-up|opacity|orphans|outline-color|outline-offset|outline-style|outline-width|outline|overflow-style|overflow-x|overflow-y|overflow|padding-bottom|padding-left|padding-right|padding-top|padding|page-break-after|page-break-before|page-break-inside|page-policy|page|pause-after|pause-before|pause|perspective-origin|perspective|phonemes|pitch-range|pitch|play-during|position|presentation-level|punctuation-trim|quotes|rendering-intent|resize|rest-after|rest-before|rest|richness|right|rotation-point|rotation|ruby-align|ruby-overhang|ruby-position|ruby-span|size|speak-header|speak-numeral|speak-punctuation|speak|speech-rate|stress|string-set|table-layout|target-name|target-new|target-position|target|text-align-last|text-align|text-decoration|text-emphasis|text-height|text-indent|text-justify|text-outline|text-shadow|text-transform|text-wrap|top|transform-origin|transform-style|transform|transition-delay|transition-duration|transition-property|transition-timing-function|transition|unicode-bidi|vertical-align|visibility|voice-balance|voice-duration|voice-family|voice-pitch-range|voice-pitch|voice-rate|voice-stress|voice-volume|volume|white-space-collapse|white-space|widows|width|word-break|word-spacing|word-wrap|z-index", r = t.supportFunction = "rgb|rgba|url|attr|counter|counters", s = t.supportConstant = "absolute|after-edge|after|all-scroll|all|alphabetic|always|antialiased|armenian|auto|avoid-column|avoid-page|avoid|balance|baseline|before-edge|before|below|bidi-override|block-line-height|block|bold|bolder|border-box|both|bottom|box|break-all|break-word|capitalize|caps-height|caption|center|central|char|circle|cjk-ideographic|clone|close-quote|col-resize|collapse|column|consider-shifts|contain|content-box|cover|crosshair|cubic-bezier|dashed|decimal-leading-zero|decimal|default|disabled|disc|disregard-shifts|distribute-all-lines|distribute-letter|distribute-space|distribute|dotted|double|e-resize|ease-in|ease-in-out|ease-out|ease|ellipsis|end|exclude-ruby|fill|fixed|georgian|glyphs|grid-height|groove|hand|hanging|hebrew|help|hidden|hiragana-iroha|hiragana|horizontal|icon|ideograph-alpha|ideograph-numeric|ideograph-parenthesis|ideograph-space|ideographic|inactive|include-ruby|inherit|initial|inline-block|inline-box|inline-line-height|inline-table|inline|inset|inside|inter-ideograph|inter-word|invert|italic|justify|katakana-iroha|katakana|keep-all|last|left|lighter|line-edge|line-through|line|linear|list-item|local|loose|lower-alpha|lower-greek|lower-latin|lower-roman|lowercase|lr-tb|ltr|mathematical|max-height|max-size|medium|menu|message-box|middle|move|n-resize|ne-resize|newspaper|no-change|no-close-quote|no-drop|no-open-quote|no-repeat|none|normal|not-allowed|nowrap|nw-resize|oblique|open-quote|outset|outside|overline|padding-box|page|pointer|pre-line|pre-wrap|pre|preserve-3d|progress|relative|repeat-x|repeat-y|repeat|replaced|reset-size|ridge|right|round|row-resize|rtl|s-resize|scroll|se-resize|separate|slice|small-caps|small-caption|solid|space|square|start|static|status-bar|step-end|step-start|steps|stretch|strict|sub|super|sw-resize|table-caption|table-cell|table-column-group|table-column|table-footer-group|table-header-group|table-row-group|table-row|table|tb-rl|text-after-edge|text-before-edge|text-bottom|text-size|text-top|text|thick|thin|transparent|underline|upper-alpha|upper-latin|upper-roman|uppercase|use-script|vertical-ideographic|vertical-text|visible|w-resize|wait|whitespace|z-index|zero", a = t.supportConstantColor = "aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow", l = t.supportConstantFonts = "arial|century|comic|courier|garamond|georgia|helvetica|impact|lucida|symbol|system|tahoma|times|trebuchet|utopia|verdana|webdings|sans-serif|serif|monospace", c = t.numRe = "\\-?(?:(?:[0-9]+)|(?:[0-9]*\\.[0-9]+))", u = t.pseudoElements = "(\\:+)\\b(after|before|first-letter|first-line|moz-selection|selection)\\b", d = t.pseudoClasses = "(:)\\b(active|checked|disabled|empty|enabled|first-child|first-of-type|focus|hover|indeterminate|invalid|last-child|last-of-type|link|not|nth-child|nth-last-child|nth-last-of-type|nth-of-type|only-child|only-of-type|required|root|target|valid|visited)\\b", h = function() {
+  var e = this.createKeywordMapper({
+   "support.function": r,
+   "support.constant": s,
+   "support.type": o,
+   "support.constant.color": a,
+   "support.constant.fonts": l
+  }, "text", !0);
   this.$rules = {
+   start: [ {
+    token: "comment",
+    regex: "\\/\\*",
+    push: "comment"
+   }, {
+    token: "paren.lparen",
+    regex: "\\{",
+    push: "ruleset"
+   }, {
+    token: "string",
+    regex: "@.*?{",
+    push: "media"
+   }, {
+    token: "keyword",
+    regex: "#[a-z0-9-_]+"
+   }, {
+    token: "variable",
+    regex: "\\.[a-z0-9-_]+"
+   }, {
+    token: "string",
+    regex: ":[a-z0-9-_]+"
+   }, {
+    token: "constant",
+    regex: "[a-z0-9-_]+"
+   }, {
+    caseInsensitive: !0
+   } ],
+   media: [ {
+    token: "comment",
+    regex: "\\/\\*",
+    push: "comment"
+   }, {
+    token: "paren.lparen",
+    regex: "\\{",
+    push: "ruleset"
+   }, {
+    token: "string",
+    regex: "\\}",
+    next: "pop"
+   }, {
+    token: "keyword",
+    regex: "#[a-z0-9-_]+"
+   }, {
+    token: "variable",
+    regex: "\\.[a-z0-9-_]+"
+   }, {
+    token: "string",
+    regex: ":[a-z0-9-_]+"
+   }, {
+    token: "constant",
+    regex: "[a-z0-9-_]+"
+   }, {
+    caseInsensitive: !0
+   } ],
+   comment: [ {
+    token: "comment",
+    regex: "\\*\\/",
+    next: "pop"
+   }, {
+    defaultToken: "comment"
+   } ],
+   ruleset: [ {
+    token: "paren.rparen",
+    regex: "\\}",
+    next: "pop"
+   }, {
+    token: "comment",
+    regex: "\\/\\*",
+    push: "comment"
+   }, {
+    token: "string",
+    regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'
+   }, {
+    token: "string",
+    regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"
+   }, {
+    token: [ "constant.numeric", "keyword" ],
+    regex: "(" + c + ")(ch|cm|deg|em|ex|fr|gd|grad|Hz|in|kHz|mm|ms|pc|pt|px|rad|rem|s|turn|vh|vm|vw|%)"
+   }, {
+    token: "constant.numeric",
+    regex: c
+   }, {
+    token: "constant.numeric",
+    regex: "#[a-f0-9]{6}"
+   }, {
+    token: "constant.numeric",
+    regex: "#[a-f0-9]{3}"
+   }, {
+    token: [ "punctuation", "entity.other.attribute-name.pseudo-element.css" ],
+    regex: u
+   }, {
+    token: [ "punctuation", "entity.other.attribute-name.pseudo-class.css" ],
+    regex: d
+   }, {
+    token: [ "support.function", "string", "support.function" ],
+    regex: "(url\\()(.*)(\\))"
+   }, {
+    token: e,
+    regex: "\\-?[a-zA-Z_][a-zA-Z0-9_\\-]*"
+   }, {
+    caseInsensitive: !0
+   } ]
+  }, this.normalizeRules();
+ };
+ n.inherits(h, i), t.CssHighlightRules = h;
+}), define("ace/mode/doc_comment_highlight_rules", [ "require", "exports", "module", "../lib/oop", "./text_highlight_rules" ], function(e, t) {
+ var n = e("../lib/oop"), i = e("./text_highlight_rules").TextHighlightRules, o = function() {
+  this.$rules = {
+   start: [ {
+    token: "comment.doc.tag",
+    regex: "@[\\w\\d_]+"
+   }, {
+    token: "comment.doc.tag",
+    regex: "\\bTODO\\b"
+   }, {
+    defaultToken: "comment.doc"
+   } ]
+  };
+ };
+ n.inherits(o, i), o.getStartRule = function(e) {
+  return {
+   token: "comment.doc",
+   regex: "\\/\\*(?=\\*)",
+   next: e
+  };
+ }, o.getEndRule = function(e) {
+  return {
+   token: "comment.doc",
+   regex: "\\*\\/",
+   next: e
+  };
+ }, t.DocCommentHighlightRules = o;
+}), define("ace/mode/javascript_highlight_rules", [ "require", "exports", "module", "../lib/oop", "./doc_comment_highlight_rules", "./text_highlight_rules" ], function(e, t) {
+ var n = e("../lib/oop"), i = e("./doc_comment_highlight_rules").DocCommentHighlightRules, o = e("./text_highlight_rules").TextHighlightRules, r = function() {
+  var e = this.createKeywordMapper({
+   "variable.language": "Array|Boolean|Date|Function|Iterator|Number|Object|RegExp|String|Proxy|Namespace|QName|XML|XMLList|ArrayBuffer|Float32Array|Float64Array|Int16Array|Int32Array|Int8Array|Uint16Array|Uint32Array|Uint8Array|Uint8ClampedArray|Error|EvalError|InternalError|RangeError|ReferenceError|StopIteration|SyntaxError|TypeError|URIError|decodeURI|decodeURIComponent|encodeURI|encodeURIComponent|eval|isFinite|isNaN|parseFloat|parseInt|JSON|Math|this|arguments|prototype|window|document",
+   keyword: "const|yield|import|get|set|break|case|catch|continue|default|delete|do|else|finally|for|function|if|in|instanceof|new|return|switch|throw|try|typeof|let|var|while|with|debugger|__parent__|__count__|escape|unescape|with|__proto__|class|enum|extends|super|export|implements|private|public|interface|package|protected|static",
+   "storage.type": "const|let|var|function",
+   "constant.language": "null|Infinity|NaN|undefined",
+   "support.function": "alert",
+   "constant.language.boolean": "true|false"
+  }, "identifier"), t = "case|do|else|finally|in|instanceof|return|throw|try|typeof|yield|void", n = "[a-zA-Z\\$_¡-￿][a-zA-Z\\d\\$_¡-￿]*\\b", o = "\\\\(?:x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.)";
+  this.$rules = {
+   no_regex: [ {
+    token: "comment",
+    regex: "\\/\\/",
+    next: "line_comment"
+   }, i.getStartRule("doc-start"), {
+    token: "comment",
+    regex: /\/\*/,
+    next: "comment"
+   }, {
+    token: "string",
+    regex: "'(?=.)",
+    next: "qstring"
+   }, {
+    token: "string",
+    regex: '"(?=.)',
+    next: "qqstring"
+   }, {
+    token: "constant.numeric",
+    regex: /0[xX][0-9a-fA-F]+\b/
+   }, {
+    token: "constant.numeric",
+    regex: /[+-]?\d+(?:(?:\.\d*)?(?:[eE][+-]?\d+)?)?\b/
+   }, {
+    token: [ "storage.type", "punctuation.operator", "support.function", "punctuation.operator", "entity.name.function", "text", "keyword.operator" ],
+    regex: "(" + n + ")(\\.)(prototype)(\\.)(" + n + ")(\\s*)(=)",
+    next: "function_arguments"
+   }, {
+    token: [ "storage.type", "punctuation.operator", "entity.name.function", "text", "keyword.operator", "text", "storage.type", "text", "paren.lparen" ],
+    regex: "(" + n + ")(\\.)(" + n + ")(\\s*)(=)(\\s*)(function)(\\s*)(\\()",
+    next: "function_arguments"
+   }, {
+    token: [ "entity.name.function", "text", "keyword.operator", "text", "storage.type", "text", "paren.lparen" ],
+    regex: "(" + n + ")(\\s*)(=)(\\s*)(function)(\\s*)(\\()",
+    next: "function_arguments"
+   }, {
+    token: [ "storage.type", "punctuation.operator", "entity.name.function", "text", "keyword.operator", "text", "storage.type", "text", "entity.name.function", "text", "paren.lparen" ],
+    regex: "(" + n + ")(\\.)(" + n + ")(\\s*)(=)(\\s*)(function)(\\s+)(\\w+)(\\s*)(\\()",
+    next: "function_arguments"
+   }, {
+    token: [ "storage.type", "text", "entity.name.function", "text", "paren.lparen" ],
+    regex: "(function)(\\s+)(" + n + ")(\\s*)(\\()",
+    next: "function_arguments"
+   }, {
+    token: [ "entity.name.function", "text", "punctuation.operator", "text", "storage.type", "text", "paren.lparen" ],
+    regex: "(" + n + ")(\\s*)(:)(\\s*)(function)(\\s*)(\\()",
+    next: "function_arguments"
+   }, {
+    token: [ "text", "text", "storage.type", "text", "paren.lparen" ],
+    regex: "(:)(\\s*)(function)(\\s*)(\\()",
+    next: "function_arguments"
+   }, {
+    token: "keyword",
+    regex: "(?:" + t + ")\\b",
+    next: "start"
+   }, {
+    token: [ "punctuation.operator", "support.function" ],
+    regex: /(\.)(s(?:h(?:ift|ow(?:Mod(?:elessDialog|alDialog)|Help))|croll(?:X|By(?:Pages|Lines)?|Y|To)?|t(?:op|rike)|i(?:n|zeToContent|debar|gnText)|ort|u(?:p|b(?:str(?:ing)?)?)|pli(?:ce|t)|e(?:nd|t(?:Re(?:sizable|questHeader)|M(?:i(?:nutes|lliseconds)|onth)|Seconds|Ho(?:tKeys|urs)|Year|Cursor|Time(?:out)?|Interval|ZOptions|Date|UTC(?:M(?:i(?:nutes|lliseconds)|onth)|Seconds|Hours|Date|FullYear)|FullYear|Active)|arch)|qrt|lice|avePreferences|mall)|h(?:ome|andleEvent)|navigate|c(?:har(?:CodeAt|At)|o(?:s|n(?:cat|textual|firm)|mpile)|eil|lear(?:Timeout|Interval)?|a(?:ptureEvents|ll)|reate(?:StyleSheet|Popup|EventObject))|t(?:o(?:GMTString|S(?:tring|ource)|U(?:TCString|pperCase)|Lo(?:caleString|werCase))|est|a(?:n|int(?:Enabled)?))|i(?:s(?:NaN|Finite)|ndexOf|talics)|d(?:isableExternalCapture|ump|etachEvent)|u(?:n(?:shift|taint|escape|watch)|pdateCommands)|j(?:oin|avaEnabled)|p(?:o(?:p|w)|ush|lugins.refresh|a(?:ddings|rse(?:Int|Float)?)|r(?:int|ompt|eference))|e(?:scape|nableExternalCapture|val|lementFromPoint|x(?:p|ec(?:Script|Command)?))|valueOf|UTC|queryCommand(?:State|Indeterm|Enabled|Value)|f(?:i(?:nd|le(?:ModifiedDate|Size|CreatedDate|UpdatedDate)|xed)|o(?:nt(?:size|color)|rward)|loor|romCharCode)|watch|l(?:ink|o(?:ad|g)|astIndexOf)|a(?:sin|nchor|cos|t(?:tachEvent|ob|an(?:2)?)|pply|lert|b(?:s|ort))|r(?:ou(?:nd|teEvents)|e(?:size(?:By|To)|calc|turnValue|place|verse|l(?:oad|ease(?:Capture|Events)))|andom)|g(?:o|et(?:ResponseHeader|M(?:i(?:nutes|lliseconds)|onth)|Se(?:conds|lection)|Hours|Year|Time(?:zoneOffset)?|Da(?:y|te)|UTC(?:M(?:i(?:nutes|lliseconds)|onth)|Seconds|Hours|Da(?:y|te)|FullYear)|FullYear|A(?:ttention|llResponseHeaders)))|m(?:in|ove(?:B(?:y|elow)|To(?:Absolute)?|Above)|ergeAttributes|a(?:tch|rgins|x))|b(?:toa|ig|o(?:ld|rderWidths)|link|ack))\b(?=\()/
+   }, {
+    token: [ "punctuation.operator", "support.function.dom" ],
+    regex: /(\.)(s(?:ub(?:stringData|mit)|plitText|e(?:t(?:NamedItem|Attribute(?:Node)?)|lect))|has(?:ChildNodes|Feature)|namedItem|c(?:l(?:ick|o(?:se|neNode))|reate(?:C(?:omment|DATASection|aption)|T(?:Head|extNode|Foot)|DocumentFragment|ProcessingInstruction|E(?:ntityReference|lement)|Attribute))|tabIndex|i(?:nsert(?:Row|Before|Cell|Data)|tem)|open|delete(?:Row|C(?:ell|aption)|T(?:Head|Foot)|Data)|focus|write(?:ln)?|a(?:dd|ppend(?:Child|Data))|re(?:set|place(?:Child|Data)|move(?:NamedItem|Child|Attribute(?:Node)?)?)|get(?:NamedItem|Element(?:sBy(?:Name|TagName)|ById)|Attribute(?:Node)?)|blur)\b(?=\()/
+   }, {
+    token: [ "punctuation.operator", "support.constant" ],
+    regex: /(\.)(s(?:ystemLanguage|cr(?:ipts|ollbars|een(?:X|Y|Top|Left))|t(?:yle(?:Sheets)?|atus(?:Text|bar)?)|ibling(?:Below|Above)|ource|uffixes|e(?:curity(?:Policy)?|l(?:ection|f)))|h(?:istory|ost(?:name)?|as(?:h|Focus))|y|X(?:MLDocument|SLDocument)|n(?:ext|ame(?:space(?:s|URI)|Prop))|M(?:IN_VALUE|AX_VALUE)|c(?:haracterSet|o(?:n(?:structor|trollers)|okieEnabled|lorDepth|mp(?:onents|lete))|urrent|puClass|l(?:i(?:p(?:boardData)?|entInformation)|osed|asses)|alle(?:e|r)|rypto)|t(?:o(?:olbar|p)|ext(?:Transform|Indent|Decoration|Align)|ags)|SQRT(?:1_2|2)|i(?:n(?:ner(?:Height|Width)|put)|ds|gnoreCase)|zIndex|o(?:scpu|n(?:readystatechange|Line)|uter(?:Height|Width)|p(?:sProfile|ener)|ffscreenBuffering)|NEGATIVE_INFINITY|d(?:i(?:splay|alog(?:Height|Top|Width|Left|Arguments)|rectories)|e(?:scription|fault(?:Status|Ch(?:ecked|arset)|View)))|u(?:ser(?:Profile|Language|Agent)|n(?:iqueID|defined)|pdateInterval)|_content|p(?:ixelDepth|ort|ersonalbar|kcs11|l(?:ugins|atform)|a(?:thname|dding(?:Right|Bottom|Top|Left)|rent(?:Window|Layer)?|ge(?:X(?:Offset)?|Y(?:Offset)?))|r(?:o(?:to(?:col|type)|duct(?:Sub)?|mpter)|e(?:vious|fix)))|e(?:n(?:coding|abledPlugin)|x(?:ternal|pando)|mbeds)|v(?:isibility|endor(?:Sub)?|Linkcolor)|URLUnencoded|P(?:I|OSITIVE_INFINITY)|f(?:ilename|o(?:nt(?:Size|Family|Weight)|rmName)|rame(?:s|Element)|gColor)|E|whiteSpace|l(?:i(?:stStyleType|n(?:eHeight|kColor))|o(?:ca(?:tion(?:bar)?|lName)|wsrc)|e(?:ngth|ft(?:Context)?)|a(?:st(?:M(?:odified|atch)|Index|Paren)|yer(?:s|X)|nguage))|a(?:pp(?:MinorVersion|Name|Co(?:deName|re)|Version)|vail(?:Height|Top|Width|Left)|ll|r(?:ity|guments)|Linkcolor|bove)|r(?:ight(?:Context)?|e(?:sponse(?:XML|Text)|adyState))|global|x|m(?:imeTypes|ultiline|enubar|argin(?:Right|Bottom|Top|Left))|L(?:N(?:10|2)|OG(?:10E|2E))|b(?:o(?:ttom|rder(?:Width|RightWidth|BottomWidth|Style|Color|TopWidth|LeftWidth))|ufferDepth|elow|ackground(?:Color|Image)))\b/
+   }, {
+    token: [ "storage.type", "punctuation.operator", "support.function.firebug" ],
+    regex: /(console)(\.)(warn|info|log|error|time|timeEnd|assert)\b/
+   }, {
+    token: e,
+    regex: n
+   }, {
+    token: "keyword.operator",
+    regex: /--|\+\+|[!$%&*+\-~]|===|==|=|!=|!==|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\|\||\?\:|\*=|%=|\+=|\-=|&=|\^=/,
+    next: "start"
+   }, {
+    token: "punctuation.operator",
+    regex: /\?|\:|\,|\;|\./,
+    next: "start"
+   }, {
+    token: "paren.lparen",
+    regex: /[\[({]/,
+    next: "start"
+   }, {
+    token: "paren.rparen",
+    regex: /[\])}]/
+   }, {
+    token: "keyword.operator",
+    regex: /\/=?/,
+    next: "start"
+   }, {
+    token: "comment",
+    regex: /^#!.*$/
+   } ],
+   start: [ i.getStartRule("doc-start"), {
+    token: "comment",
+    regex: "\\/\\*",
+    next: "comment_regex_allowed"
+   }, {
+    token: "comment",
+    regex: "\\/\\/",
+    next: "line_comment_regex_allowed"
+   }, {
+    token: "string.regexp",
+    regex: "\\/",
+    next: "regex"
+   }, {
+    token: "text",
+    regex: "\\s+|^$",
+    next: "start"
+   }, {
+    token: "empty",
+    regex: "",
+    next: "no_regex"
+   } ],
+   regex: [ {
+    token: "regexp.keyword.operator",
+    regex: "\\\\(?:u[\\da-fA-F]{4}|x[\\da-fA-F]{2}|.)"
+   }, {
+    token: "string.regexp",
+    regex: "/\\w*",
+    next: "no_regex"
+   }, {
+    token: "invalid",
+    regex: /\{\d+\b,?\d*\}[+*]|[+*$^?][+*]|[$^][?]|\?{3,}/
+   }, {
+    token: "constant.language.escape",
+    regex: /\(\?[:=!]|\)|\{\d+\b,?\d*\}|[+*]\?|[()$^+*?]/
+   }, {
+    token: "constant.language.delimiter",
+    regex: /\|/
+   }, {
+    token: "constant.language.escape",
+    regex: /\[\^?/,
+    next: "regex_character_class"
+   }, {
+    token: "empty",
+    regex: "$",
+    next: "no_regex"
+   }, {
+    defaultToken: "string.regexp"
+   } ],
+   regex_character_class: [ {
+    token: "regexp.keyword.operator",
+    regex: "\\\\(?:u[\\da-fA-F]{4}|x[\\da-fA-F]{2}|.)"
+   }, {
+    token: "constant.language.escape",
+    regex: "]",
+    next: "regex"
+   }, {
+    token: "constant.language.escape",
+    regex: "-"
+   }, {
+    token: "empty",
+    regex: "$",
+    next: "no_regex"
+   }, {
+    defaultToken: "string.regexp.charachterclass"
+   } ],
+   function_arguments: [ {
+    token: "variable.parameter",
+    regex: n
+   }, {
+    token: "punctuation.operator",
+    regex: "[, ]+"
+   }, {
+    token: "punctuation.operator",
+    regex: "$"
+   }, {
+    token: "empty",
+    regex: "",
+    next: "no_regex"
+   } ],
+   comment_regex_allowed: [ {
+    token: "comment",
+    regex: "\\*\\/",
+    next: "start"
+   }, {
+    defaultToken: "comment"
+   } ],
+   comment: [ {
+    token: "comment",
+    regex: "\\*\\/",
+    next: "no_regex"
+   }, {
+    defaultToken: "comment"
+   } ],
+   line_comment_regex_allowed: [ {
+    token: "comment",
+    regex: "$|^",
+    next: "start"
+   }, {
+    defaultToken: "comment"
+   } ],
+   line_comment: [ {
+    token: "comment",
+    regex: "$|^",
+    next: "no_regex"
+   }, {
+    defaultToken: "comment"
+   } ],
+   qqstring: [ {
+    token: "constant.language.escape",
+    regex: o
+   }, {
+    token: "string",
+    regex: "\\\\$",
+    next: "qqstring"
+   }, {
+    token: "string",
+    regex: '"|$',
+    next: "no_regex"
+   }, {
+    defaultToken: "string"
+   } ],
+   qstring: [ {
+    token: "constant.language.escape",
+    regex: o
+   }, {
+    token: "string",
+    regex: "\\\\$",
+    next: "qstring"
+   }, {
+    token: "string",
+    regex: "'|$",
+    next: "no_regex"
+   }, {
+    defaultToken: "string"
+   } ]
+  }, this.embedRules(i, "doc-", [ i.getEndRule("no_regex") ]);
+ };
+ n.inherits(r, o), t.JavaScriptHighlightRules = r;
+}), define("ace/mode/xml_util", [ "require", "exports", "module" ], function(e, t) {
+ function n(e) {
+  return [ {
+   token: "string",
+   regex: '"',
+   next: e + "_qqstring"
+  }, {
+   token: "string",
+   regex: "'",
+   next: e + "_qstring"
+  } ];
+ }
+ function i(e, t) {
+  return [ {
+   token: "string",
+   regex: e,
+   next: t
+  }, {
+   token: "constant.language.escape",
+   regex: "(?:&#[0-9]+;)|(?:&#x[0-9a-fA-F]+;)|(?:&[a-zA-Z0-9_:\\.-]+;)"
+  }, {
+   defaultToken: "string"
+  } ];
+ }
+ t.tag = function(e, t, o, r) {
+  e[t] = [ {
+   token: "text",
+   regex: "\\s+"
+  }, {
+   token: r ? function(e) {
+    return r[e] ? "meta.tag.tag-name." + r[e] : "meta.tag.tag-name";
+   } : "meta.tag.tag-name",
+   regex: "[-_a-zA-Z0-9:]+",
+   next: t + "_embed_attribute_list"
+  }, {
+   token: "empty",
+   regex: "",
+   next: t + "_embed_attribute_list"
+  } ], e[t + "_qstring"] = i("'", t + "_embed_attribute_list"), e[t + "_qqstring"] = i('"', t + "_embed_attribute_list"), 
+  e[t + "_embed_attribute_list"] = [ {
+   token: "meta.tag.r",
+   regex: "/?>",
+   next: o
+  }, {
+   token: "keyword.operator",
+   regex: "="
+  }, {
+   token: "entity.other.attribute-name",
+   regex: "[-_a-zA-Z0-9:]+"
+  }, {
+   token: "constant.numeric",
+   regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
+  }, {
+   token: "text",
+   regex: "\\s+"
+  } ].concat(n(t));
+ };
+}), define("ace/mode/xml_highlight_rules", [ "require", "exports", "module", "../lib/oop", "./xml_util", "./text_highlight_rules" ], function(e, t) {
+ var n = e("../lib/oop");
+ e("./xml_util");
+ var i = e("./text_highlight_rules").TextHighlightRules, o = function() {
+  this.$rules = {
+   start: [ {
+    token: "punctuation.string.begin",
+    regex: "<\\!\\[CDATA\\[",
+    next: "cdata"
+   }, {
+    token: [ "punctuation.instruction.begin", "keyword.instruction" ],
+    regex: "(<\\?)(xml)(?=[\\s])",
+    next: "xml_declaration"
+   }, {
+    token: [ "punctuation.instruction.begin", "keyword.instruction" ],
+    regex: "(<\\?)([-_a-zA-Z0-9]+)",
+    next: "instruction"
+   }, {
+    token: "comment",
+    regex: "<\\!--",
+    next: "comment"
+   }, {
+    token: [ "punctuation.doctype.begin", "meta.tag.doctype" ],
+    regex: "(<\\!)(DOCTYPE)(?=[\\s])",
+    next: "doctype"
+   }, {
+    include: "tag"
+   }, {
+    include: "reference"
+   } ],
+   xml_declaration: [ {
+    include: "attributes"
+   }, {
+    include: "instruction"
+   } ],
+   instruction: [ {
+    token: "punctuation.instruction.end",
+    regex: "\\?>",
+    next: "start"
+   } ],
+   doctype: [ {
+    include: "space"
+   }, {
+    include: "string"
+   }, {
+    token: "punctuation.doctype.end",
+    regex: ">",
+    next: "start"
+   }, {
+    token: "xml-pe",
+    regex: "[-_a-zA-Z0-9:]+"
+   }, {
+    token: "punctuation.begin",
+    regex: "\\[",
+    push: "declarations"
+   } ],
+   declarations: [ {
+    token: "text",
+    regex: "\\s+"
+   }, {
+    token: "punctuation.end",
+    regex: "]",
+    next: "pop"
+   }, {
+    token: [ "punctuation.begin", "keyword" ],
+    regex: "(<\\!)([-_a-zA-Z0-9]+)",
+    push: [ {
+     token: "text",
+     regex: "\\s+"
+    }, {
+     token: "punctuation.end",
+     regex: ">",
+     next: "pop"
+    }, {
+     include: "string"
+    } ]
+   } ],
+   cdata: [ {
+    token: "string.end",
+    regex: "\\]\\]>",
+    next: "start"
+   }, {
+    token: "text",
+    regex: "\\s+"
+   }, {
+    token: "text",
+    regex: "(?:[^\\]]|\\](?!\\]>))+"
+   } ],
+   comment: [ {
+    token: "comment",
+    regex: "-->",
+    next: "start"
+   }, {
+    defaultToken: "comment"
+   } ],
+   tag: [ {
+    token: [ "meta.tag.punctuation.begin", "meta.tag.name" ],
+    regex: "(<)((?:[-_a-zA-Z0-9]+:)?[-_a-zA-Z0-9]+)",
+    next: [ {
+     include: "attributes"
+    }, {
+     token: "meta.tag.punctuation.end",
+     regex: "/?>",
+     next: "start"
+    } ]
+   }, {
+    token: [ "meta.tag.punctuation.begin", "meta.tag.name" ],
+    regex: "(</)((?:[-_a-zA-Z0-9]+:)?[-_a-zA-Z0-9]+)",
+    next: [ {
+     include: "space"
+    }, {
+     token: "meta.tag.punctuation.end",
+     regex: ">",
+     next: "start"
+    } ]
+   } ],
+   space: [ {
+    token: "text",
+    regex: "\\s+"
+   } ],
+   reference: [ {
+    token: "constant.language.escape",
+    regex: "(?:&#[0-9]+;)|(?:&#x[0-9a-fA-F]+;)|(?:&[a-zA-Z0-9_:\\.-]+;)"
+   }, {
+    token: "invalid.illegal",
+    regex: "&"
+   } ],
+   string: [ {
+    token: "string",
+    regex: "'",
+    push: "qstring_inner"
+   }, {
+    token: "string",
+    regex: '"',
+    push: "qqstring_inner"
+   } ],
+   qstring_inner: [ {
+    token: "string",
+    regex: "'",
+    next: "pop"
+   }, {
+    include: "reference"
+   }, {
+    defaultToken: "string"
+   } ],
+   qqstring_inner: [ {
+    token: "string",
+    regex: '"',
+    next: "pop"
+   }, {
+    include: "reference"
+   }, {
+    defaultToken: "string"
+   } ],
+   attributes: [ {
+    token: "entity.other.attribute-name",
+    regex: "(?:[-_a-zA-Z0-9]+:)?[-_a-zA-Z0-9]+"
+   }, {
+    token: "keyword.operator.separator",
+    regex: "="
+   }, {
+    include: "space"
+   }, {
+    include: "string"
+   } ]
+  }, this.constructor === o && this.normalizeRules();
+ };
+ (function() {
+  this.embedTagRules = function(e, t, n) {
+   this.$rules.tag.unshift({
+    token: [ "meta.tag.punctuation.begin", "meta.tag.name." + n ],
+    regex: "(<)(" + n + ")",
+    next: [ {
+     include: "space"
+    }, {
+     include: "attributes"
+    }, {
+     token: "meta.tag.punctuation.end",
+     regex: "/?>",
+     next: t + "start"
+    } ]
+   }), this.$rules[n + "-end"] = [ {
+    include: "space"
+   }, {
+    token: "meta.tag.punctuation.end",
+    regex: ">",
+    next: "start",
+    onMatch: function(e, t, n) {
+     return n.splice(0), this.token;
+    }
+   } ], this.embedRules(e, t, [ {
+    token: [ "meta.tag.punctuation.begin", "meta.tag.name." + n ],
+    regex: "(</)(" + n + ")",
+    next: n + "-end"
+   }, {
+    token: "string.begin",
+    regex: "<\\!\\[CDATA\\["
+   }, {
+    token: "string.end",
+    regex: "\\]\\]>"
+   } ]);
+  };
+ }).call(i.prototype), n.inherits(o, i), t.XmlHighlightRules = o;
+}), define("ace/mode/html_highlight_rules", [ "require", "exports", "module", "../lib/oop", "../lib/lang", "./css_highlight_rules", "./javascript_highlight_rules", "./xml_highlight_rules" ], function(e, t) {
+ var n = e("../lib/oop"), i = e("../lib/lang"), o = e("./css_highlight_rules").CssHighlightRules, r = e("./javascript_highlight_rules").JavaScriptHighlightRules, s = e("./xml_highlight_rules").XmlHighlightRules, a = i.createMap({
+  a: "anchor",
+  button: "form",
+  form: "form",
+  img: "image",
+  input: "form",
+  label: "form",
+  option: "form",
+  script: "script",
+  select: "form",
+  textarea: "form",
+  style: "style",
+  table: "table",
+  tbody: "table",
+  td: "table",
+  tfoot: "table",
+  th: "table",
+  tr: "table"
+ }), l = function() {
+  s.call(this), this.addRules({
+   attributes: [ {
+    include: "space"
+   }, {
+    token: "entity.other.attribute-name",
+    regex: "[-_a-zA-Z0-9:]+"
+   }, {
+    token: "keyword.operator.separator",
+    regex: "=",
+    push: [ {
+     include: "space"
+    }, {
+     token: "string",
+     regex: "[^<>='\"`\\s]+",
+     next: "pop"
+    }, {
+     token: "empty",
+     regex: "",
+     next: "pop"
+    } ]
+   }, {
+    include: "string"
+   } ],
+   tag: [ {
+    token: function(e, t) {
+     var n = a[t];
+     return [ "meta.tag.punctuation.begin", "meta.tag.name" + (n ? "." + n : "") ];
+    },
+    regex: "(<)([-_a-zA-Z0-9:]+)",
+    next: "start_tag_stuff"
+   }, {
+    token: function(e, t) {
+     var n = a[t];
+     return [ "meta.tag.punctuation.begin", "meta.tag.name" + (n ? "." + n : "") ];
+    },
+    regex: "(</)([-_a-zA-Z0-9:]+)",
+    next: "end_tag_stuff"
+   } ],
+   start_tag_stuff: [ {
+    include: "attributes"
+   }, {
+    token: "meta.tag.punctuation.end",
+    regex: "/?>",
+    next: "start"
+   } ],
+   end_tag_stuff: [ {
+    include: "space"
+   }, {
+    token: "meta.tag.punctuation.end",
+    regex: ">",
+    next: "start"
+   } ]
+  }), this.embedTagRules(o, "css-", "style"), this.embedTagRules(r, "js-", "script"), 
+  this.constructor === l && this.normalizeRules();
+ };
+ n.inherits(l, s), t.HtmlHighlightRules = l;
+}), define("libs/ace_mode_highlight_rules", [ "require", "exports", "module", "ace/lib/oop", "ace/mode/text_highlight_rules", "ace/mode/html_highlight_rules" ], function(e, t) {
+ var n = e("ace/lib/oop"), i = e("ace/mode/text_highlight_rules").TextHighlightRules, o = e("ace/mode/html_highlight_rules").HtmlHighlightRules, r = function() {
+  o.call(this), this.$rules.start.unshift({
+   token: "empty_line",
+   regex: "^$",
+   next: "allowBlock"
+  }, {
+   token: "markup.heading.multi.1",
+   regex: "^=+(?=\\s*$)"
+  }, {
+   token: "markup.heading.multi.2",
+   regex: "^\\-+(?=\\s*$)"
+  }, {
+   token: function(e) {
+    return "markup.heading." + e.length;
+   },
+   regex: /^#{1,6}(?=\s*[^ #]|\s+#.)/,
+   next: "header"
+  }, {
+   token: "code_block",
+   regex: "^```\\s*[a-zA-Z]*(?:{.*?\\})?\\s*$",
+   next: "githubblock"
+  }, {
+   token: "blockquote",
+   regex: "^\\s*>[ ].+$",
+   next: "blockquote"
+  }, {
+   token: "constant",
+   regex: "^ {0,2}(?:(?: ?\\* ?){3,}|(?: ?\\- ?){3,}|(?: ?\\_ ?){3,})\\s*$",
+   next: "allowBlock"
+  }, {
+   token: "markup.list",
+   regex: "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
+   next: "listblock-start"
+  }, {
+   token: [ "constant.language.escape", "keyword", "constant.language.escape" ],
+   regex: "(\\$)(.*)(\\$)"
+  }, {
+   token: "constant.language.escape",
+   regex: "\\$\\$|\\\\\\\\\\[|\\\\\\\\\\\\\\\\\\(",
+   next: "mathblock"
+  }, {
+   token: [ "keyword", "text" ],
+   regex: "(\\\\?\\\\begin)(\\{[a-z]*\\*?\\})",
+   next: "latexblock"
+  }, {
+   include: "basic"
+  }), this.addRules({
    basic: [ {
     token: "constant.language.escape",
     regex: /\\[\\`*_{}\[\]()#+\-.!]/
@@ -25901,13 +26679,13 @@ function() {
     token: "code",
     regex: "(`+)(.*?[^`])(\\1)"
    }, {
-    token: [ "text", "reference", "text", "markup.underline", "description", "text" ],
+    token: [ "text", "reference", "text", "link", "description", "text" ],
     regex: '^([ ]{0,3}\\[)([^\\]]+)(\\]:\\s*)([^ ]+)(\\s*(?:["][^"]+["])?(\\s*))$'
    }, {
-    token: [ "text", "description", "text", "markup.underline", "text" ],
+    token: [ "text", "markup.underline", "text", "reference", "text" ],
     regex: "(\\[)((?:[[^\\]]*\\]|[^\\[\\]])*)(\\][ ]?(?:\\n[ ]*)?\\[)(.*?)(\\])"
    }, {
-    token: [ "text", "description", "text", "markup.underline", "string", "text" ],
+    token: [ "text", "markup.underline", "text", "link", "description", "text" ],
     regex: '(\\[)(\\[[^\\]]*\\]|[^\\[\\]]*)(\\]\\([ \\t]*)(<?(?:(?:[^\\(]*?\\([^\\)]*?\\)\\S*?)|(?:.*?))>?)((?:[ 	]*"(?:.*?)"[ \\t]*)?)(\\))'
    }, {
     token: "strong",
@@ -25927,41 +26705,6 @@ function() {
     token: "empty",
     regex: "",
     next: "start"
-   } ],
-   start: [ {
-    token: "empty_line",
-    regex: "^$",
-    next: "allowBlock"
-   }, {
-    token: "markup.heading.multi.1",
-    regex: "^=+(?=\\s*$)"
-   }, {
-    token: "markup.heading.multi.2",
-    regex: "^\\-+(?=\\s*$)"
-   }, {
-    token: function(e) {
-     return "markup.heading." + e.length;
-    },
-    regex: /^#{1,6}(?=\s*[^ #]|\s+#.)/,
-    next: "header"
-   }, {
-    token: "code_block",
-    regex: "^```\\s*[a-zA-Z]*(?:{.*?\\})?\\s*$",
-    next: "githubblock"
-   }, {
-    token: "blockquote",
-    regex: "^\\s*>[ ].+$",
-    next: "blockquote"
-   }, {
-    token: "constant",
-    regex: "^ {0,2}(?:(?: ?\\* ?){3,}|(?: ?\\- ?){3,}|(?: ?\\_ ?){3,})\\s*$",
-    next: "allowBlock"
-   }, {
-    token: "markup.list",
-    regex: "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
-    next: "listblock-start"
-   }, {
-    include: "basic"
    } ],
    header: [ {
     regex: "$",
@@ -26005,10 +26748,37 @@ function() {
    }, {
     token: "code_block",
     regex: ".+"
+   } ],
+   mathblock: [ {
+    token: "constant.language.escape",
+    regex: "\\$\\$|\\\\\\\\\\]|\\\\\\\\\\\\\\\\\\)",
+    next: "start"
+   }, {
+    include: "latex"
+   } ],
+   latexblock: [ {
+    token: [ "keyword", "text" ],
+    regex: "(\\\\?\\\\end)(\\{[a-z]*\\*?\\})",
+    next: "start"
+   }, {
+    include: "latex"
+   } ],
+   latex: [ {
+    token: "keyword",
+    regex: "\\\\(?:[^a-zA-Z]|[a-zA-Z]+)"
+   }, {
+    token: "lparen",
+    regex: "[[({]"
+   }, {
+    token: "rparen",
+    regex: "[\\])}]"
+   }, {
+    token: "comment",
+    regex: "%.*$"
    } ]
-  }, this.normalizeRules();
+  }), this.normalizeRules();
  };
- n.inherits(o, i), t.MarkdownHighlightRules = o;
+ n.inherits(r, i), t.MarkdownHighlightRules = r;
 }), define("ace/mode/folding/markdown", [ "require", "exports", "module", "../../lib/oop", "./fold_mode", "../../range" ], function(e, t) {
  var n = e("../../lib/oop"), i = e("./fold_mode").FoldMode, o = e("../../range").Range, r = t.FoldMode = function() {};
  n.inherits(r, i), function() {
@@ -26267,7 +27037,7 @@ function() {
   if (T !== !1 && D !== !1) {
    void 0 === _ && (_ = r.randomString(), s.frontWindowId = _);
    var t = s.frontWindowId;
-   t != _ && (D = !1, void 0 !== k && clearInterval(k), e(".modal").modal("hide"), 
+   t != _ && (D = !1, void 0 !== A && clearInterval(A), e(".modal").modal("hide"), 
    e(".modal-non-unique").modal("show"));
   }
  }
@@ -26294,7 +27064,7 @@ function() {
   r.setInputValue("#input-settings-pdf-page-size", a.pdfPageSize), r.setInputValue("#input-settings-ssh-proxy", a.sshProxy), 
   c.loadSettings(), l.onLoadSettings();
  }
- function C(t) {
+ function x(t) {
   var n = {};
   n.layoutOrientation = r.getInputRadio("radio-layout-orientation");
   var i = r.getInputValue(M);
@@ -26307,13 +27077,13 @@ function() {
   c.saveSettings(n), n.extensionSettings = {}, l.onSaveSettings(n.extensionSettings, t), 
   t.isPropagationStopped() || (e.extend(a, n), s.settings = JSON.stringify(a), s.theme = i);
  }
- function x(e) {
+ function C(e) {
   e === !0 || R.state.north.isClosed ? (P.hide(), N.hide()) : (P.show(), N.show());
  }
- function E(e) {
+ function k(e) {
   e === !0 || R.state.east.isClosed ? O.hide() : O.show();
  }
- function S() {
+ function E() {
   z = i.edit("wmd-input"), z.setOption("spellcheck", !0), z.renderer.setShowGutter(!1), 
   z.renderer.setPrintMarginColumn(!1), z.renderer.setPadding(o.EDITOR_DEFAULT_PADDING), 
   z.session.setUseWrapMode(!0), z.session.setNewLineMode("unix"), z.session.setMode("libs/ace_mode"), 
@@ -26343,7 +27113,7 @@ function() {
    };
   }(z.session.bgTokenizer), c.configureAce(z), l.onAceCreated(z);
  }
- function A() {
+ function S() {
   var t = {
    closable: !0,
    resizable: !1,
@@ -26365,10 +27135,10 @@ function() {
     duration: 350
    },
    onopen: function() {
-    x(), E();
+    C(), k();
    },
    onclose_start: function(e) {
-    "north" == e ? x(!0) : "east" == e && E(!0);
+    "north" == e ? C(!0) : "east" == e && k(!0);
    },
    onresize_end: function(e) {
     if (void 0 !== z && "center" == e) {
@@ -26403,36 +27173,36 @@ function() {
   O = e('<div class="extension-preview-buttons">'), j = e('<div class="extension-editor-buttons">'), 
   window.viewerMode || "horizontal" == a.layoutOrientation ? (e(".ui-layout-resizer-north").append(i).append(O), 
   e(".ui-layout-resizer-east").append(n).append(j)) : (e(".ui-layout-resizer-north").append(i), 
-  e(".ui-layout-resizer-south").append(O).append(j).append(n)), x(), E(), l.onLayoutCreated(R);
+  e(".ui-layout-resizer-south").append(O).append(j).append(n)), C(), k(), l.onLayoutCreated(R);
  }
- var k, _, F = {}, T = !1, $ = !1, D = !0, L = 0, B = !1, I = r.currentTime;
+ var A, _, F = {}, T = !1, $ = !1, D = !0, L = 0, B = !1, I = r.currentTime;
  F.setOffline = function() {
   I = r.currentTime, B === !1 && (B = !0, l.onOfflineChanged(!0));
  };
- var M, R, P, N, O, z, j, H, W, q, U, G = require("ace/undomanager").UndoManager;
+ var M, R, P, N, O, z, j, H, q, W, U, G = require("ace/undomanager").UndoManager;
  F.initEditor = function(n) {
   function i() {
-   var e = W.val();
-   void 0 !== z && (e = z.getValue()), void 0 !== U && U != e && (q.content = e, l.onContentChanged(q)), 
+   var e = q.val();
+   void 0 !== z && (e = z.getValue()), void 0 !== U && U != e && (W.content = e, l.onContentChanged(W)), 
    U = e;
   }
-  void 0 !== q && l.onFileClosed(q), q = n, U = void 0;
-  var o = q.content;
-  if (void 0 !== z ? (z.setValue(o, -1), z.getSession().setUndoManager(new G())) : W.val(o), 
-  void 0 !== H) return z && z.selection.setSelectionRange(q.editorSelectRange), z && z.focus() || W.focus(), 
+  void 0 !== W && l.onFileClosed(W), W = n, U = void 0;
+  var o = W.content;
+  if (void 0 !== z ? (z.setValue(o, -1), z.getSession().setUndoManager(new G())) : q.val(o), 
+  void 0 !== H) return z && z.selection.setSelectionRange(W.editorSelectRange), z && z.focus() || q.focus(), 
   H.refreshPreview(), void 0;
   var s = e(".preview-container");
   if (!window.lightMode) {
    var u = t.debounce(function() {
-    void 0 !== U && (q.editorScrollTop = z.renderer.getScrollTop());
+    void 0 !== U && (W.editorScrollTop = z.renderer.getScrollTop());
    }, 100);
    z.session.on("changeScrollTop", u);
    var d = t.debounce(function() {
-    void 0 !== U && (q.editorSelectRange = z.getSelectionRange());
+    void 0 !== U && (W.editorSelectRange = z.getSelectionRange());
    }, 100);
    z.session.selection.on("changeSelection", d), z.session.selection.on("changeCursor", d), 
    s.scroll(function() {
-    void 0 !== U && (q.previewScrollTop = s.scrollTop());
+    void 0 !== U && (W.previewScrollTop = s.scrollTop());
    });
   }
   var h, p = new Markdown.Converter();
@@ -26440,12 +27210,12 @@ function() {
    var f = e("#wmd-preview"), g = new Markdown.HookCollection();
    g.addNoop("onPreviewRefresh");
    var m = function() {
-    var e = W.val();
+    var e = q.val();
     e = p.makeHtml(e), f.html(e), g.onPreviewRefresh();
    }, v = t.debounce(m, 1e3), b = function() {
-    void 0 === U ? (m(), l.onFileOpen(q)) : v(), i();
+    void 0 === U ? (m(), l.onFileOpen(W)) : v(), i();
    };
-   W.on("input propertychange", b), H = {
+   q.on("input propertychange", b), H = {
     hooks: g,
     getConverter: function() {
      return p;
@@ -26464,19 +27234,19 @@ function() {
   }), h = a.lazyRendering === !0 ? function(e) {
    var n = t.debounce(e, 500);
    return function() {
-    void 0 === U ? (e(), l.onFileOpen(q), s.scrollTop(q.previewScrollTop), t.defer(function() {
-     z.renderer.scrollToY(q.editorScrollTop);
+    void 0 === U ? (e(), l.onFileOpen(W), s.scrollTop(W.previewScrollTop), t.defer(function() {
+     z.renderer.scrollToY(W.editorScrollTop);
     })) : n(), i();
    };
   } : function(e) {
    return function() {
-    e(), void 0 === U && (l.onFileOpen(q), s.scrollTop(q.previewScrollTop), t.defer(function() {
-     z.renderer.scrollToY(q.editorScrollTop);
+    e(), void 0 === U && (l.onFileOpen(W), s.scrollTop(W.previewScrollTop), t.defer(function() {
+     z.renderer.scrollToY(W.editorScrollTop);
     })), i();
    };
   };
   l.onPagedownConfigure(H), H.hooks.chain("onPreviewRefresh", l.onAsyncPreview), H.run(z, h), 
-  z && z.selection.setSelectionRange(q.editorSelectRange), z && z.focus() || W.focus(), 
+  z && z.selection.setSelectionRange(W.editorSelectRange), z && z.focus() || q.focus(), 
   e(".wmd-button-row li").addClass("btn btn-success").css("left", 0).find("span").hide();
   var y = e(".wmd-button-group1");
   e("#wmd-bold-button").append(e('<i class="icon-bold">')).appendTo(y), e("#wmd-italic-button").append(e('<i class="icon-italic">')).appendTo(y), 
@@ -26506,7 +27276,7 @@ function() {
    e.target === P[0] ? (Y = !0, t = r.createBackdrop("collapse", ".menu-panel"), P.addClass("move-to-front")) : P.find(".in").collapse("hide");
   }).on("hide.bs.collapse", function(e) {
    e.target === P[0] && (Y = !1, t.parentNode.removeChild(t), P.removeClass("move-to-front"), 
-   z && z.focus() || W.focus());
+   z && z.focus() || q.focus());
   }).on("hidden.bs.collapse", function(e) {
    e.target === P[0] && P.find(".in").collapse("hide");
   }), N = e(".document-panel").collapse({
@@ -26518,18 +27288,18 @@ function() {
    N.addClass("move-to-front")) : N.find(".in").collapse("hide");
   }).on("hide.bs.collapse", function(e) {
    e.target === N[0] && (X = !1, n.parentNode.removeChild(n), N.removeClass("move-to-front"), 
-   z && z.focus() || W.focus());
+   z && z.focus() || q.focus());
   }).on("hidden.bs.collapse", function(e) {
    e.target === N[0] && N.find(".in").collapse("hide");
   }), window.lightMode && e("#wmd-input").replaceWith(function() {
    return e('<textarea id="wmd-input">').addClass(this.className).addClass("form-control");
-  }), W = e("#wmd-input").css({
+  }), q = e("#wmd-input").css({
    "font-family": a.editorFontFamily,
    "font-size": a.editorFontSize + "px",
    "line-height": Math.round(a.editorFontSize * (20 / 12)) + "px"
-  }), window.lightMode || (S(), W.find(".ace_content").css({
+  }), window.lightMode || (E(), q.find(".ace_content").css({
    "background-size": "64px " + Math.round(a.editorFontSize * (20 / 12)) + "px"
-  })), A(), k = window.setInterval(function() {
+  })), S(), A = window.setInterval(function() {
    r.updateCurrentTime(), v(), (m() === !0 || window.viewerMode === !0) && (l.onPeriodicRun(), 
    y());
   }, 1e3), l.onReady();
@@ -26551,7 +27321,7 @@ function() {
     t.find("input:enabled:visible:first").focus();
    }, 50);
   }).on("hidden.bs.modal", function() {
-   i = !1, z && z.focus() || W.focus(), n(s.theme);
+   i = !1, z && z.focus() || q.focus(), n(s.theme);
   }).keyup(function(t) {
    13 != t.which || e(t.target).is("textarea") || e(this).find(".modal-footer a:last").click();
   }), e(".collapse-save-as a").click(function() {
@@ -26569,7 +27339,7 @@ function() {
   }), e(".action-load-settings").click(function() {
    w();
   }), e(".action-apply-settings").click(function(e) {
-   C(e), e.isPropagationStopped() || window.location.reload();
+   x(e), e.isPropagationStopped() || window.location.reload();
   });
   var c = window.theme;
   M = e("#input-settings-theme"), M.on("change", function() {
@@ -26668,7 +27438,7 @@ function() {
   }
  }), F;
 }), define("text!WELCOME.md", [], function() {
- return '\nWelcome to StackEdit!	{#welcome}\n=====================\n\n\nHello, I am your first Markdown document within **StackEdit**[^stackedit]. Don\'t delete me, I can be helpful. I can be recovered anyway in the `Utils` tab of the <i class="icon-cog"></i> `Settings` dialog.\n\n----------\n\n\nDocuments\n---------\n\n**StackEdit** stores your documents in your browser local storage, which means all your documents are automatically saved locally and are accessible offline.\n\n> **NOTE:** This also means that your documents are not shared between different browsers or computers and that clearing your browser\'s data may **delete all of them!**\n\n#### <i class="icon-file"></i> Create a document\n\nYou can create a new document by clicking the <i class="icon-file"></i> button in the navigation bar. This will switch from the current document to the new one.\n\n#### <i class="icon-folder-open"></i> Switch to another document\n\nYou can list all your local documents and switch from one to another by clicking the <i class="icon-folder-open"></i> button in the navigation bar.\n\n#### <i class="icon-pencil"></i> Rename a document\n\nYou can rename the current document by clicking the document title in the navigation bar.\n\n#### <i class="icon-trash"></i> Delete a document\n\nYou can delete the current document by clicking the <i class="icon-trash"></i> button in the navigation bar.\n\n#### <i class="icon-hdd"></i> Save a document\n\nYou can save the current document to a file using the <i class="icon-hdd"></i> `Save as...` sub-menu.\n\n> **NOTE:** See [<i class="icon-share"></i> Publish a document](#publish-a-document) section for a description of the different outputs.\n\n\n----------\n\n\nSynchronization\n---------------\n\n**StackEdit** can be combined with **Google Drive** and **Dropbox** to have your documents centralized in the *Cloud*. The synchronization mechanism will take care of uploading your modifications or downloading the latest version of your documents.\n\n> **NOTE:** Full access to **Google Drive** or **Dropbox** is required to be able to import any document in StackEdit. Imported documents are downloaded in your browser and are not transmitted to a server.\n\n#### <i class="icon-download"></i> Import a document\n\nYou can import a document from the *Cloud* by going to the <i class="icon-provider-gdrive"></i> `Google Drive` or the <i class="icon-provider-dropbox"></i> `Dropbox` sub-menu and by clicking `Import from...`. Once imported, your document will be automatically synchronized with the **Google Drive** / **Dropbox** file.\n\n#### <i class="icon-upload"></i> Export a document\n\nYou can export any document by going to the <i class="icon-provider-gdrive"></i> `Google Drive` or the <i class="icon-provider-dropbox"></i> `Dropbox` sub-menu and by clicking `Export to...`. Even if your document is already synchronized with **Google Drive** or **Dropbox**, you can export it to a another location. **StackEdit** can synchronize one document with multiple locations.\n\n#### <i class="icon-refresh"></i> Synchronize a document\n\nOnce your document is linked to a **Google Drive** or a **Dropbox** file, **StackEdit** will periodically (every 3 minutes) synchronize it by downloading/uploading any modification. Any conflict will be detected, and a local copy of your document will be created as a backup if necessary.\n\nIf you just have modified your document and you want to force the synchronization, click the <i class="icon-refresh"></i> button in the navigation bar.\n\n> **NOTE:** The <i class="icon-refresh"></i> button is disabled when:\n> \n> - you are offline,\n> - or the document is not synchronized with any location,\n> - or the document has not been modified since the last synchronization.\n\n#### <i class="icon-refresh"></i> Manage document synchronization\n\nSince one document can be synchronized with multiple locations, you can list and manage synchronized locations by clicking <i class="icon-refresh"></i> `Manage synchronization` in the <i class="icon-provider-stackedit"></i> menu. This will open a dialog box allowing you to add or remove synchronization links that are associated to your document.\n\n> **NOTE:** If you delete the file from **Google Drive** or from **Dropbox**, the document will no longer be synchronized with that location.\n\n----------\n\n\nPublication\n-----------\n\nOnce you are happy with your document, you can publish it on different websites directly from **StackEdit**. As for now, **StackEdit** can publish on **Blogger**, **Dropbox**, **Gist**, **GitHub**, **Google Drive**, **Tumblr**, **WordPress** and on any SSH server.\n\n#### <i class="icon-share"></i> Publish a document\n\nYou can publish your document by going to the <i class="icon-share"></i> `Publish on` sub-menu and by choosing a website. In the dialog box, you can choose the publication format:\n\n- Markdown, to publish the Markdown text on a website that can interpret it (**GitHub** for instance),\n- HTML, to publish the document converted into HTML (on a blog for instance),\n- Template, to have a full control of the output.\n\n> **NOTE:** The default template is a simple webpage wrapping your document in HTML format. You can customize it in the `Services` tab of the <i class="icon-cog"></i> `Settings` dialog.\n\n#### <i class="icon-share"></i> Update a publication\n\nAfter publishing, **StackEdit** will keep your document linked to that publish location so that you can update it easily. Once you have modified your document and you want to update your publication, click on the <i class="icon-share"></i> button in the navigation bar.\n\n> **NOTE:** The <i class="icon-share"></i> button is disabled when:\n> \n> - you are offline,\n> - or the document has not been published anywhere.\n\n#### <i class="icon-share"></i> Manage document publication\n\nSince one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-share"></i> `Manage publication` in the <i class="icon-provider-stackedit"></i> menu. This will open a dialog box allowing you to remove publication links that are associated to your document.\n\n> **NOTE:** In some cases, if you remove the file from the website or the post from the blog, the document will no longer be published on that location.\n\n----------\n\n\nMarkdown Extra\n--------------\n\n**StackEdit** supports **Markdown Extra**, which extends **Markdown** syntax with some nice features.\n\n> **NOTE:** You can disable any **Markdown Extra** feature in the `Extensions` tab of the <i class="icon-cog"></i> `Settings` dialog.\n\n\n### Tables\n\n**Markdown Extra** has a special syntax for tables:\n\nItem      | Value\n--------- | -----\nComputer  | \\$1600\nPhone     | \\$12\nPipe      | \\$1\n\nYou can specify column alignment with one or two colons:\n\n| Item      |  Value | Qty  |\n| :-------- | ------:| :--: |\n| Computer  | \\$1600 |  5   |\n| Phone     |   \\$12 |  12  |\n| Pipe      |    \\$1 | 234  |\n\n\n### Definition Lists\n\n**Markdown Extra** has a special syntax for definition lists too:\n\nTerm 1\nTerm 2\n:   Definition A\n:   Definition B\n\nTerm 3\n\n:   Definition C\n\n:   Definition D\n\n	> part of definition D\n\n\n### Fenced code blocks\n\nGitHub\'s fenced code blocks are also supported with **Prettify** syntax highlighting:\n\n```\n// Foo\nvar bar = 0;\n```\n\n> **NOTE:** To use **Highlight.js** instead of **Prettify**, just configure the `Markdown Extra` extension in the <i class="icon-cog"></i> `Settings` dialog.\n\n\n### Special Attributes\n\nWith **Markdown Extra**, you can specify `class` and `id` attributes on headers and fenced code blocks just like this:\n\n##### Header example {#my-header}\n\n``` {#my-id .my-class}\nvar foo = bar;\n```\n\nThen you can create cross-references like this: [beginning of the document](#welcome).\n\n\n### Footnotes\n\nYou can create footnotes like this[^footnote].\n\n  [^footnote]: Here is the *text* of the **footnote**.\n\n\n### SmartyPants\n\nSmartyPants converts ASCII punctuation characters into "smart" typographic punctuation HTML entities. For example:\n\n|                  | ASCII                                    | HTML                                |\n ------------------|------------------------------------------|-------------------------------------\n| Single backticks | `\'Isn\'t this fun?\'`                      | &#8216;Isn&#8217;t this fun?&#8217; |\n| Quotes           | `"Isn\'t this fun?"`                      | &#8220;Isn&#8217;t this fun?&#8221; |\n| Dashes           | `-- is an en-dash and --- is an em-dash` | &#8211; is an en-dash and &#8212; is an em-dash |\n\n\n### Table of contents\n\nYou can insert a table of contents using the marker `[TOC]`:\n\n[TOC]\n\n\n### MathJax\n \nYou can render *LaTeX* mathematical expressions using **MathJax**, as on [math.stackexchange.com][1]:\n\nThe *Gamma function* satisfying $\\Gamma(n) = (n-1)!\\quad\\forall\nn\\in\\mathbb N$ is via through the Euler integral\n\n$$\n\\Gamma(z) = \\int_0^\\infty t^{z-1}e^{-t}dt\\,.\n$$\n\n> **NOTE:** When exporting, make sure you include MathJax to render mathematical expression correctly. Your page/template should include something like: \n\n```\n<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>\n```\n\n> **NOTE:** You can find more information:\n>\n> - about **Markdown** syntax [here][2],\n> - about **Markdown Extra** extension [here][3],\n> - about **Prettify** syntax highlighting [here][4],\n> - about **Highlight.js** syntax highlighting [here][5].\n\nWritten with [StackEdit](https://stackedit.io/).\n\n  [^stackedit]: StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.\n\n\n  [1]: http://math.stackexchange.com/\n  [2]: http://daringfireball.net/projects/markdown/syntax "Markdown"\n  [3]: https://github.com/jmcmanus/pagedown-extra "Pagedown Extra"\n  [4]: https://code.google.com/p/google-code-prettify/\n  [5]: http://softwaremaniacs.org/soft/highlight/en/';
+ return 'Welcome to StackEdit!	{#welcome}\n=====================\n\n\nHello, I am your first Markdown document within **StackEdit**[^stackedit]. Don\'t delete me, I can be helpful. I can be recovered anyway in the `Utils` tab of the <i class="icon-cog"></i> `Settings` dialog.\n\n----------\n\n\nDocuments\n---------\n\n**StackEdit** stores your documents in your browser local storage, which means all your documents are automatically saved locally and are accessible offline.\n\n> **NOTE:** This also means that your documents are not shared between different browsers or computers and that clearing your browser\'s data may **delete all of them!**\n\n#### <i class="icon-file"></i> Create a document\n\nYou can create a new document by clicking the <i class="icon-file"></i> button in the navigation bar. This will switch from the current document to the new one.\n\n#### <i class="icon-folder-open"></i> Switch to another document\n\nYou can list all your local documents and switch from one to another by clicking the <i class="icon-folder-open"></i> button in the navigation bar.\n\n#### <i class="icon-pencil"></i> Rename a document\n\nYou can rename the current document by clicking the document title in the navigation bar.\n\n#### <i class="icon-trash"></i> Delete a document\n\nYou can delete the current document by clicking the <i class="icon-trash"></i> button in the navigation bar.\n\n#### <i class="icon-hdd"></i> Save a document\n\nYou can save the current document to a file using the <i class="icon-hdd"></i> `Save as...` sub-menu.\n\n> **NOTE:** See [<i class="icon-share"></i> Publish a document](#publish-a-document) section for a description of the different outputs.\n\n\n----------\n\n\nSynchronization\n---------------\n\n**StackEdit** can be combined with **Google Drive** and **Dropbox** to have your documents centralized in the *Cloud*. The synchronization mechanism will take care of uploading your modifications or downloading the latest version of your documents.\n\n> **NOTE:**\n> \n> - Full access to **Google Drive** or **Dropbox** is required to be able to import any document in StackEdit.\n> - Imported documents are downloaded in your browser and are not transmitted to a server.\n> - If you experience problems exporting documents to Google Drive, check and optionally disable browser extensions, such as Disconnect.\n\n#### <i class="icon-download"></i> Import a document\n\nYou can import a document from the *Cloud* by going to the <i class="icon-provider-gdrive"></i> `Google Drive` or the <i class="icon-provider-dropbox"></i> `Dropbox` sub-menu and by clicking `Import from...`. Once imported, your document will be automatically synchronized with the **Google Drive** / **Dropbox** file.\n\n#### <i class="icon-upload"></i> Export a document\n\nYou can export any document by going to the <i class="icon-provider-gdrive"></i> `Google Drive` or the <i class="icon-provider-dropbox"></i> `Dropbox` sub-menu and by clicking `Export to...`. Even if your document is already synchronized with **Google Drive** or **Dropbox**, you can export it to a another location. **StackEdit** can synchronize one document with multiple locations.\n\n#### <i class="icon-refresh"></i> Synchronize a document\n\nOnce your document is linked to a **Google Drive** or a **Dropbox** file, **StackEdit** will periodically (every 3 minutes) synchronize it by downloading/uploading any modification. Any conflict will be detected, and a local copy of your document will be created as a backup if necessary.\n\nIf you just have modified your document and you want to force the synchronization, click the <i class="icon-refresh"></i> button in the navigation bar.\n\n> **NOTE:** The <i class="icon-refresh"></i> button is disabled when:\n> \n> - you are offline,\n> - or the document is not synchronized with any location,\n> - or the document has not been modified since the last synchronization.\n\n#### <i class="icon-refresh"></i> Manage document synchronization\n\nSince one document can be synchronized with multiple locations, you can list and manage synchronized locations by clicking <i class="icon-refresh"></i> `Manage synchronization` in the <i class="icon-provider-stackedit"></i> menu. This will open a dialog box allowing you to add or remove synchronization links that are associated to your document.\n\n> **NOTE:** If you delete the file from **Google Drive** or from **Dropbox**, the document will no longer be synchronized with that location.\n\n----------\n\n\nPublication\n-----------\n\nOnce you are happy with your document, you can publish it on different websites directly from **StackEdit**. As for now, **StackEdit** can publish on **Blogger**, **Dropbox**, **Gist**, **GitHub**, **Google Drive**, **Tumblr**, **WordPress** and on any SSH server.\n\n#### <i class="icon-share"></i> Publish a document\n\nYou can publish your document by going to the <i class="icon-share"></i> `Publish on` sub-menu and by choosing a website. In the dialog box, you can choose the publication format:\n\n- Markdown, to publish the Markdown text on a website that can interpret it (**GitHub** for instance),\n- HTML, to publish the document converted into HTML (on a blog for instance),\n- Template, to have a full control of the output.\n\n> **NOTE:** The default template is a simple webpage wrapping your document in HTML format. You can customize it in the `Services` tab of the <i class="icon-cog"></i> `Settings` dialog.\n\n#### <i class="icon-share"></i> Update a publication\n\nAfter publishing, **StackEdit** will keep your document linked to that publish location so that you can update it easily. Once you have modified your document and you want to update your publication, click on the <i class="icon-share"></i> button in the navigation bar.\n\n> **NOTE:** The <i class="icon-share"></i> button is disabled when:\n> \n> - you are offline,\n> - or the document has not been published anywhere.\n\n#### <i class="icon-share"></i> Manage document publication\n\nSince one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-share"></i> `Manage publication` in the <i class="icon-provider-stackedit"></i> menu. This will open a dialog box allowing you to remove publication links that are associated to your document.\n\n> **NOTE:** In some cases, if you remove the file from the website or the post from the blog, the document will no longer be published on that location.\n\n----------\n\n\nMarkdown Extra\n--------------\n\n**StackEdit** supports **Markdown Extra**, which extends **Markdown** syntax with some nice features.\n\n> **NOTE:** You can disable any **Markdown Extra** feature in the `Extensions` tab of the <i class="icon-cog"></i> `Settings` dialog.\n\n\n### Tables\n\n**Markdown Extra** has a special syntax for tables:\n\nItem      | Value\n--------- | -----\nComputer  | \\$1600\nPhone     | \\$12\nPipe      | \\$1\n\nYou can specify column alignment with one or two colons:\n\n| Item      |  Value | Qty  |\n| :-------- | ------:| :--: |\n| Computer  | \\$1600 |  5   |\n| Phone     |   \\$12 |  12  |\n| Pipe      |    \\$1 | 234  |\n\n\n### Definition Lists\n\n**Markdown Extra** has a special syntax for definition lists too:\n\nTerm 1\nTerm 2\n:   Definition A\n:   Definition B\n\nTerm 3\n\n:   Definition C\n\n:   Definition D\n\n	> part of definition D\n\n\n### Fenced code blocks\n\nGitHub\'s fenced code blocks are also supported with **Prettify** syntax highlighting:\n\n```\n// Foo\nvar bar = 0;\n```\n\n> **NOTE:** To use **Highlight.js** instead of **Prettify**, just configure the `Markdown Extra` extension in the <i class="icon-cog"></i> `Settings` dialog.\n\n\n### Special Attributes\n\nWith **Markdown Extra**, you can specify `class` and `id` attributes on headers and fenced code blocks just like this:\n\n##### Header example {#my-header}\n\n``` {#my-id .my-class}\nvar foo = bar;\n```\n\nThen you can create cross-references like this: [beginning of the document](#welcome).\n\n\n### Footnotes\n\nYou can create footnotes like this[^footnote].\n\n  [^footnote]: Here is the *text* of the **footnote**.\n\n\n### SmartyPants\n\nSmartyPants converts ASCII punctuation characters into "smart" typographic punctuation HTML entities. For example:\n\n|                  | ASCII                                    | HTML                                |\n ------------------|------------------------------------------|-------------------------------------\n| Single backticks | `\'Isn\'t this fun?\'`                      | &#8216;Isn&#8217;t this fun?&#8217; |\n| Quotes           | `"Isn\'t this fun?"`                      | &#8220;Isn&#8217;t this fun?&#8221; |\n| Dashes           | `-- is an en-dash and --- is an em-dash` | &#8211; is an en-dash and &#8212; is an em-dash |\n\n\n### Table of contents\n\nYou can insert a table of contents using the marker `[TOC]`:\n\n[TOC]\n\n\n### MathJax\n \nYou can render *LaTeX* mathematical expressions using **MathJax**, as on [math.stackexchange.com][1]:\n\nThe *Gamma function* satisfying $\\Gamma(n) = (n-1)!\\quad\\forall\nn\\in\\mathbb N$ is via the Euler integral\n\n$$\n\\Gamma(z) = \\int_0^\\infty t^{z-1}e^{-t}dt\\,.\n$$\n\n> **NOTE:** When exporting, make sure you include MathJax to render mathematical expression correctly. Your page/template should include something like: \n\n```\n<script type="text/javascript" src="https://stackedit.io/libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n```\n\n> **NOTE:** You can find more information:\n>\n> - about **Markdown** syntax [here][2],\n> - about **Markdown Extra** extension [here][3],\n> - about **LaTeX** mathematical expressions [here][4],\n> - about **Prettify** syntax highlighting [here][5],\n> - about **Highlight.js** syntax highlighting [here][6].\n\nWritten with [StackEdit](https://stackedit.io/).\n\n  [^stackedit]: StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.\n\n\n  [1]: http://math.stackexchange.com/\n  [2]: http://daringfireball.net/projects/markdown/syntax "Markdown"\n  [3]: https://github.com/jmcmanus/pagedown-extra "Pagedown Extra"\n  [4]: http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference\n  [5]: https://code.google.com/p/google-code-prettify/\n  [6]: http://softwaremaniacs.org/soft/highlight/en/';
 }), define("fileMgr", [ "jquery", "underscore", "constants", "core", "utils", "storage", "settings", "eventMgr", "fileSystem", "classes/FileDescriptor", "text!WELCOME.md" ], function(e, t, n, i, o, r, s, a, l, c, u) {
  var d = {};
  d.currentFile = void 0, d.selectFile = function(o) {
@@ -27428,8 +28198,9 @@ function() {
    e.enableFeature(google.picker.Feature.NAV_HIDDEN), e.enableFeature(google.picker.Feature.MULTISELECT_ENABLED), 
    e.addView(c)) : "folder" == i ? (c = new google.picker.DocsView(google.picker.ViewId.FOLDERS), 
    c.setIncludeFolders(!0), c.setSelectFolderEnabled(!0), c.setMimeTypes("application/vnd.google-apps.folder"), 
-   e.enableFeature(google.picker.Feature.NAV_HIDDEN), e.addView(c)) : "img" == i && (e.addView(google.picker.ViewId.PHOTOS), 
-   e.addView(google.picker.ViewId.PHOTO_UPLOAD)), e.setCallback(function(e) {
+   e.enableFeature(google.picker.Feature.NAV_HIDDEN), e.addView(c)) : "img" == i && (c = new google.picker.PhotosView(), 
+   c.setType("flat"), e.addView(c), c = new google.picker.PhotosView(), c.setType("ofuser"), 
+   e.addView(c), e.addView(google.picker.ViewId.PHOTO_UPLOAD)), e.setCallback(function(e) {
     (e.action == google.picker.Action.PICKED || e.action == google.picker.Action.CANCEL) && (e.action == google.picker.Action.PICKED && (a = e.docs), 
     r(), l.chain());
    }), s = e.build(), t(o.createBackdrop()).click(function() {
@@ -27609,13 +28380,13 @@ function() {
  l.addListener("onPagedownConfigure", function(e) {
   m = e;
  });
- var w, C, x = !0;
+ var w, x, C = !0;
  l.addListener("onAceCreated", function(e) {
-  C = e, C.session.on("change", function() {
-   w && w.string && w.string.setText(C.getValue());
+  x = e, x.session.on("change", function() {
+   w && w.string && w.string.setText(x.getValue());
   });
  });
- var E = require("ace/range").Range;
+ var k = require("ace/range").Range;
  return g.startRealtimeSync = function(e, n) {
   var o = {};
   w = o, u.loadRealtime(n.id, e.content, function(s, a) {
@@ -27627,34 +28398,34 @@ function() {
     r.log("Starting Google Drive realtime synchronization"), o.document = a;
     var d = a.getModel(), h = d.getRoot().get("content"), p = t.debounce(m.refreshPreview, 100);
     h.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, function(e) {
-     if (void 0 !== C && (x === !1 || e.isLocal === !1)) {
-      var t = C.session.doc.indexToPosition(e.index);
-      C.session.insert(t, e.text), x = !0;
+     if (void 0 !== x && (C === !1 || e.isLocal === !1)) {
+      var t = x.session.doc.indexToPosition(e.index);
+      x.session.insert(t, e.text), C = !0;
      }
      e.isLocal === !1 && (r.log("Google Drive realtime document updated from server"), 
-     u(), void 0 === C && p());
+     u(), void 0 === x && p());
     }), h.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, function(e) {
-     if (void 0 !== C && (x === !1 || e.isLocal === !1)) {
+     if (void 0 !== x && (C === !1 || e.isLocal === !1)) {
       var t = function(e, t) {
-       return new E(e.row, e.column, t.row, t.column);
-      }(C.session.doc.indexToPosition(e.index), C.session.doc.indexToPosition(e.index + e.text.length));
-      C.session.remove(t), x = !0;
+       return new k(e.row, e.column, t.row, t.column);
+      }(x.session.doc.indexToPosition(e.index), x.session.doc.indexToPosition(e.index + e.text.length));
+      x.session.remove(t), C = !0;
      }
      e.isLocal === !1 && (r.log("Google Drive realtime document updated from server"), 
-     u(), void 0 === C && p());
+     u(), void 0 === x && p());
     }), a.addEventListener(gapi.drive.realtime.EventType.DOCUMENT_SAVE_STATE_CHANGED, function(e) {
      e.isPending === !1 && e.isSaving === !1 && (r.log("Google Drive realtime document successfully saved on server"), 
      u());
     });
-    var f = e.content, g = n.contentCRC != i.crc32(f), w = h.getText(), S = i.crc32(w), A = n.contentCRC != S, k = f != w;
-    k === !0 && g === !0 && (A === !0 ? (c.createFile(e.title + " (backup)", f), l.onMessage('Conflict detected on "' + e.title + '". A backup has been created locally.')) : h.setText(f)), 
-    void 0 === C && (o.binding = gapi.drive.realtime.databinding.bindString(h, document.getElementById("wmd-input"))), 
-    A === !0 && (r.log("Google Drive realtime document updated from server"), void 0 !== C && C.setValue(w, -1), 
-    u(), void 0 === C && p()), void 0 !== C && (o.string = h, v = m.uiManager.buttons.undo.execute, 
+    var f = e.content, g = n.contentCRC != i.crc32(f), w = h.getText(), E = i.crc32(w), S = n.contentCRC != E, A = f != w;
+    A === !0 && g === !0 && (S === !0 ? (c.createFile(e.title + " (backup)", f), l.onMessage('Conflict detected on "' + e.title + '". A backup has been created locally.')) : h.setText(f)), 
+    void 0 === x && (o.binding = gapi.drive.realtime.databinding.bindString(h, document.getElementById("wmd-input"))), 
+    S === !0 && (r.log("Google Drive realtime document updated from server"), void 0 !== x && x.setValue(w, -1), 
+    u(), void 0 === x && p()), void 0 !== x && (o.string = h, v = m.uiManager.buttons.undo.execute, 
     b = m.uiManager.buttons.redo.execute, y = m.uiManager.setUndoRedoButtonStates, m.uiManager.buttons.undo.execute = function() {
-     d.canUndo && (x = !1, d.undo());
+     d.canUndo && (C = !1, d.undo());
     }, m.uiManager.buttons.redo.execute = function() {
-     d.canRedo && (x = !1, d.redo());
+     d.canRedo && (C = !1, d.redo());
     }, m.uiManager.setUndoRedoButtonStates = function() {
      setTimeout(function() {
       m.uiManager.setButtonState(m.uiManager.buttons.undo, d.canUndo), m.uiManager.setButtonState(m.uiManager.buttons.redo, d.canRedo);
@@ -27701,31 +28472,31 @@ function() {
  }), g;
 }), define("synchronizer", [ "jquery", "underscore", "utils", "storage", "eventMgr", "fileSystem", "fileMgr", "classes/Provider", "providers/dropboxProvider", "providers/gdriveProvider" ], function(e, t, n, i, o, r, s, a) {
  function l(e) {
-  if (0 === E.length) return c(e), void 0;
-  var t = E.pop(), i = t.provider.syncUp;
-  t.isRealtime === !0 && (i = t.provider.syncUpRealtime), i(y, w, C, x, t, function(i, o) {
-   return o === !0 && (A = !0), i ? (e(i), void 0) : (o && n.storeAttributes(t), l(e), 
+  if (0 === k.length) return c(e), void 0;
+  var t = k.pop(), i = t.provider.syncUp;
+  t.isRealtime === !0 && (i = t.provider.syncUpRealtime), i(y, w, x, C, t, function(i, o) {
+   return o === !0 && (S = !0), i ? (e(i), void 0) : (o && n.storeAttributes(t), l(e), 
    void 0);
   });
  }
  function c(e) {
-  if (0 === S.length) return u(e), void 0;
-  var i = S.pop();
-  return E = t.values(i.syncLocations), 0 === E.length ? (c(e), void 0) : (y = i.content, 
-  w = n.crc32(y), C = i.title, x = n.crc32(C), l(e), void 0);
+  if (0 === E.length) return u(e), void 0;
+  var i = E.pop();
+  return k = t.values(i.syncLocations), 0 === k.length ? (c(e), void 0) : (y = i.content, 
+  w = n.crc32(y), x = i.title, C = n.crc32(x), l(e), void 0);
  }
  function u(e) {
-  A === !0 ? (A = !1, S = t.values(r), c(e)) : e();
+  S === !0 ? (S = !1, E = t.values(r), c(e)) : e();
  }
  function d(e) {
-  if (0 === k.length) return e(), void 0;
-  var t = k.pop();
+  if (0 === A.length) return e(), void 0;
+  var t = A.pop();
   return v.hasSync(t) ? (t.syncDown(function(t) {
    return t ? (e(t), void 0) : (d(e), void 0);
   }), void 0) : (d(e), void 0);
  }
  function h(e) {
-  k = t.values(b), d(e);
+  A = t.values(b), d(e);
  }
  function p(e) {
   T = t.some(e.syncLocations, function(e) {
@@ -27768,7 +28539,7 @@ function() {
    });
   });
  };
- var y, w, C, x, E = [], S = [], A = !1, k = [], _ = !1;
+ var y, w, x, C, k = [], E = [], S = !1, A = [], _ = !1;
  o.addListener("onOfflineChanged", function(e) {
   _ = e;
  });
@@ -27777,7 +28548,7 @@ function() {
   function e(e) {
    return void 0 !== e ? (F = !1, o.onSyncRunning(!1), !0) : !1;
   }
-  return F === !0 || _ === !0 ? !1 : (F = !0, o.onSyncRunning(!0), A = !0, h(function(t) {
+  return F === !0 || _ === !0 ? !1 : (F = !0, o.onSyncRunning(!0), S = !0, h(function(t) {
    e(t) || u(function(t) {
     e(t) || (F = !1, o.onSyncRunning(!1), o.onSyncSuccess());
    });
@@ -28363,8 +29134,8 @@ function() {
   "markdown" == t.format ? e.content : "html" == t.format ? n : v.applyTemplate(e, t, n);
  }
  function p(e, t) {
-  if (0 === x.length) return e(t), void 0;
-  var n = x.pop(), i = h(y, n, w), o = (y.frontMatter || {}).title || y.title;
+  if (0 === C.length) return e(t), void 0;
+  var n = C.pop(), i = h(y, n, w), o = (y.frontMatter || {}).title || y.title;
   n.provider.publish(n, y.frontMatter, o, i, function(i) {
    if (void 0 !== i) {
     var o = i.toString();
@@ -28381,7 +29152,7 @@ function() {
  }
  function g(n) {
   var o = n.defaultPublishFormat || "markdown";
-  A = n, e(".publish-provider-name").text(n.providerName), e('.modal-publish [class*=" modal-publish-"]').hide().filter(".modal-publish-" + n.providerId).show(), 
+  S = n, e(".publish-provider-name").text(n.providerName), e('.modal-publish [class*=" modal-publish-"]').hide().filter(".modal-publish-" + n.providerId).show(), 
   i.resetModalInputs(), i.setInputRadio("radio-publish-format", o), i.setInputChecked("#checkbox-publish-custom-template", !1), 
   i.setInputValue("#textarea-publish-custom-template", r.template);
   var s = i.retrieveIgnoreError(n.providerId + ".publishPreferences");
@@ -28393,9 +29164,9 @@ function() {
   e(".modal-publish").modal();
  }
  function m(e) {
-  var n = A, i = n.newPublishAttributes(e);
+  var n = S, i = n.newPublishAttributes(e);
   if (void 0 !== i) {
-   var r = l.currentFile, s = C, a = h(r, i, s), u = r.frontMatter && r.frontMatter.title || r.title;
+   var r = l.currentFile, s = x, a = h(r, i, s), u = r.frontMatter && r.frontMatter.title || r.title;
    n.publish(i, r.frontMatter, u, a, function(e) {
     void 0 === e && (i.provider = n, c.createLink(i, function() {
      f(r, i);
@@ -28438,26 +29209,26 @@ function() {
    return s.onError(a), a.message;
   }
  };
- var y, w, C, x = [];
+ var y, w, x, C = [];
  s.addListener("onPreviewFinished", function(e) {
-  C = e;
+  x = e;
+ });
+ var k = !1;
+ s.addListener("onOfflineChanged", function(e) {
+  k = e;
  });
  var E = !1;
- s.addListener("onOfflineChanged", function(e) {
-  E = e;
- });
- var S = !1;
  v.publish = function() {
-  S !== !0 && E !== !0 && (S = !0, s.onPublishRunning(!0), y = l.currentFile, w = C, 
-  x = t.values(y.publishLocations), p(function(e) {
-   S = !1, s.onPublishRunning(!1), void 0 === e && s.onPublishSuccess(y);
+  E !== !0 && k !== !0 && (E = !0, s.onPublishRunning(!0), y = l.currentFile, w = x, 
+  C = t.values(y.publishLocations), p(function(e) {
+   E = !1, s.onPublishRunning(!1), void 0 === e && s.onPublishSuccess(y);
   }));
  };
- var A, k = [ "<li>", '   <a href="#"', '    class="action-init-publish-<%= provider.providerId %>">', '       <i class="icon-provider-<%= provider.providerId %>"></i> <%= provider.providerName %>', "   </a>", "</li>" ].join("");
+ var S, A = [ "<li>", '   <a href="#"', '    class="action-init-publish-<%= provider.providerId %>">', '       <i class="icon-provider-<%= provider.providerId %>"></i> <%= provider.providerName %>', "   </a>", "</li>" ].join("");
  return s.addListener("onReady", function() {
   if (window.viewerMode === !1) {
    var o = document.querySelector(".menu-panel .collapse-publish-on .nav"), a = t.reduce(b, function(e, n) {
-    return e + t.template(k, {
+    return e + t.template(A, {
      provider: n
     });
    }, "");
@@ -28486,16 +29257,16 @@ function() {
    i.saveAs(e, t + ".md");
   }), e(".action-download-html").click(function() {
    var e = l.currentFile.title;
-   i.saveAs(C, e + ".html");
+   i.saveAs(x, e + ".html");
   }), e(".action-download-template").click(function() {
-   var e = l.currentFile, t = v.applyTemplate(e, void 0, C);
+   var e = l.currentFile, t = v.applyTemplate(e, void 0, x);
    i.saveAs(t, e.title + (-1 === r.template.indexOf("documentHTML") ? ".md" : ".html"));
   }), e(".action-download-pdf").click(function() {
    var e, t = l.currentFile, o = v.applyTemplate(t, {
     customTmpl: r.pdfTemplate
-   }, C), a = new d();
+   }, x), a = new d();
    a.onRun(function() {
-    if (E === !0) return s.onError("Operation not available in offline mode."), a.chain(), 
+    if (k === !0) return s.onError("Operation not available in offline mode."), a.chain(), 
     void 0;
     var t = new XMLHttpRequest();
     t.open("POST", n.HTMLTOPDF_URL, !0), t.setRequestHeader("Content-type", "application/x-www-form-urlencoded"), 
@@ -28513,8 +29284,8 @@ function() {
   var i;
   return t.find(e.thumbnails, function(e) {
    var t = !1;
-   return e.url.replace(/(.*\/s)\d.*?(\/[^\/]+)/, function(e, o, r) {
-    i = o + n + r, t = !0;
+   return e.url.replace(/^(.*[\/=]s)\d.*?(\/[^\/]+)?$/, function(e, o, r) {
+    i = o + n + (r || ""), t = !0;
    }), t;
   }), i;
  }
@@ -28712,37 +29483,37 @@ function() {
    l.onload = a, i.appendChild(l);
   }
  };
- var w, C = [ "Msxml2.XMLHTTP", "Microsoft.XMLHTTP", "Msxml2.XMLHTTP.4.0" ], x = {}, E = function(e, t, n) {
-  if (x[e]) return t(x[e]), void 0;
+ var w, x = [ "Msxml2.XMLHTTP", "Microsoft.XMLHTTP", "Msxml2.XMLHTTP.4.0" ], C = {}, k = function(e, t, n) {
+  if (C[e]) return t(C[e]), void 0;
   var i, o, r;
   if ("undefined" != typeof XMLHttpRequest) i = new XMLHttpRequest(); else if ("undefined" != typeof ActiveXObject) for (o = 0; 3 > o; o += 1) {
-   r = C[o];
+   r = x[o];
    try {
     i = new ActiveXObject(r);
    } catch (s) {}
    if (i) {
-    C = [ r ];
+    x = [ r ];
     break;
    }
   }
   i.open("GET", e, requirejs.inlineRequire ? !1 : !0), i.onreadystatechange = function() {
    var o, r;
    4 === i.readyState && (o = i.status, o > 399 && 600 > o ? (r = new Error(e + " HTTP status: " + o), 
-   r.xhr = i, n(r)) : (x[e] = i.responseText, t(i.responseText)));
+   r.xhr = i, n(r)) : (C[e] = i.responseText, t(i.responseText)));
   }, i.send(null);
- }, S = 0;
+ }, E = 0;
  s.inject = function(e) {
-  31 > S && (w = document.createElement("style"), w.type = "text/css", i.appendChild(w), 
-  S++), w.styleSheet ? w.styleSheet.cssText += e : w.appendChild(document.createTextNode(e));
+  31 > E && (w = document.createElement("style"), w.type = "text/css", i.appendChild(w), 
+  E++), w.styleSheet ? w.styleSheet.cssText += e : w.appendChild(document.createTextNode(e));
  };
- var A = /@import\s*(url)?\s*(('([^']*)'|"([^"]*)")|\(('([^']*)'|"([^"]*)"|([^\)]*))\))\s*;?/g, k = window.location.pathname.split("/");
- k.pop(), k = k.join("/") + "/";
+ var S = /@import\s*(url)?\s*(('([^']*)'|"([^"]*)")|\(('([^']*)'|"([^"]*)"|([^\)]*))\))\s*;?/g, A = window.location.pathname.split("/");
+ A.pop(), A = A.join("/") + "/";
  var _ = function(t, n, i) {
-  t.match(a) || (t = "/" + e.convertURIBase(t, k, "/")), E(t, function(o) {
-   o = e(o, t, k);
-   for (var r, s = [], a = [], l = []; r = A.exec(o); ) {
+  t.match(a) || (t = "/" + e.convertURIBase(t, A, "/")), k(t, function(o) {
+   o = e(o, t, A);
+   for (var r, s = [], a = [], l = []; r = S.exec(o); ) {
     var c = r[4] || r[5] || r[7] || r[8] || r[9];
-    s.push(c), a.push(A.lastIndex - r[0].length), l.push(r[0].length);
+    s.push(c), a.push(S.lastIndex - r[0].length), l.push(r[0].length);
    }
    for (var u = 0, d = 0; d < s.length; d++) (function(e) {
     _(s[e], function(t) {

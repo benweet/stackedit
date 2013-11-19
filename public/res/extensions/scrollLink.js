@@ -26,9 +26,6 @@ define([
     var $previewElt;
     var mdSectionList = [];
     var htmlSectionList = [];
-    function pxToFloat(px) {
-        return parseFloat(px.substring(0, px.length - 2));
-    }
     var lastEditorScrollTop;
     var lastPreviewScrollTop;
     var buildSections = _.debounce(function() {

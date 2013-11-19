@@ -1480,11 +1480,10 @@ a{-webkit-transition:background-color ease-in-out .15s,color ease-in-out .15s,bo
 .navbar .btn-group>.btn.disabled *,.navbar .btn-group>.btn.blocked *,.navbar .btn-group>.btn[disabled] *{color:rgba(238,238,238,0.3)}
 .navbar .file-title-navbar{display:block;padding:4px 15px;font-size:20px;font-weight:200;color:#eeeeee;max-width:280px;overflow:hidden;white-space:nowrap}
 .navbar .input-file-title{margin-right:10px}
-.navbar .working-indicator{margin:12px -2px 0}
-.navbar .working-indicator div{display:inline-block;visibility:hidden;width:14px;height:14px;border-radius:6px;margin:0 2px;background-color:rgba(238,238,238,0.25);-webkit-transition:background-color linear .15s;transition:background-color linear .15s}
-.navbar .working-indicator div.highlighted{background-color:rgba(238,238,238,0.75)}
+.navbar .working-indicator{overflow:hidden;height:38px;padding-top:10px;padding-right:8px;vertical-align:middle}
+.navbar .working-indicator .bar{display:inline-block;visibility:hidden;width:8px;height:8px;border-radius:1px;margin:0 2px;background-color:#eeeeee;animation:indicator .6s ease-out infinite;-webkit-animation:indicator .6s ease-out infinite;}
 .navbar .working-indicator.show div{visibility:visible}
-.menu-panel,.document-panel{display:block;position:absolute;top:0;height:100%;z-index:10;overflow:initial}
+@keyframes indicator{from{opacity:1} to{opacity:0.25}}@-webkit-keyframes indicator /* Safari and Chrome */{from{opacity:1} to{opacity:0.25}}.menu-panel,.document-panel{display:block;position:absolute;top:0;height:100%;z-index:10;overflow:initial}
 .menu-panel .collapse-button i,.document-panel .collapse-button i{color:#666666;font-size:14px}
 .menu-panel.in .collapse-button,.document-panel.in .collapse-button{background-color:#406b5b}
 .menu-panel .panel-content,.document-panel .panel-content{-webkit-box-shadow:0 6px 12px rgba(0,0,0,0.175);box-shadow:0 6px 12px rgba(0,0,0,0.175);overflow:auto;padding-bottom:30px;height:100%}
@@ -1507,7 +1506,7 @@ a{-webkit-transition:background-color ease-in-out .15s,color ease-in-out .15s,bo
 .document-panel .panel-content .icon-layers{font-size:135%}
 .document-panel .search-bar{position:absolute;background-color:#ede9e6;margin:-10px 25px 0;padding:20px 5px 10px 15px;z-index:3;border:1px solid #e4deda;border-top:0;border-radius:6px}
 .document-panel .list-group-item{margin:0}
-.document-panel .folder{font-weight:bold;color:#3971a3;font-size:15px;border-bottom-color:#ede9e6}
+.document-panel .folder{font-weight:bold;color:#3970a1;font-size:15px;border-bottom-color:#ede9e6}
 .document-panel .list-group{margin:0}
 .document-panel .list-group .nav{border:0;margin:0 20px 20px}
 .dropdown-file-selector{top:6px;right:30px;left:auto;margin:0;min-width:280px;max-width:400px;overflow-x:hidden;max-height:400px;overflow-y:auto}
@@ -1519,7 +1518,7 @@ a{-webkit-transition:background-color ease-in-out .15s,color ease-in-out .15s,bo
 .modal-document-manager .list-group-item .btn i{margin:0;font-size:105%}
 .modal-document-manager .list-group-item .btn i.icon-pencil{font-size:115%}
 .modal-document-manager .file-list .list-group-item{padding:0 3px}
-.modal-document-manager .folder{font-weight:bold;color:#3971a3;font-size:15px;border-bottom-color:#ede9e6}
+.modal-document-manager .folder{font-weight:bold;color:#3970a1;font-size:15px;border-bottom-color:#ede9e6}
 .modal-document-manager .checkbox{float:right;margin:0;padding:0;cursor:pointer}
 .modal-document-manager .checkbox input{cursor:pointer;margin:0 16px;height:38px}
 .modal-document-manager .input-rename{width:220px}
@@ -1537,7 +1536,7 @@ a{-webkit-transition:background-color ease-in-out .15s,color ease-in-out .15s,bo
 .extension-preview-buttons .btn-group{margin:0 0 0 1px}
 .extension-preview-buttons .btn-group .btn{position:initial;background-color:rgba(219,212,206,0.33)}
 .extension-preview-buttons .btn-group.open .btn{background-color:#e4deda}
-.extension-preview-buttons .btn-group.open .btn i{color:#3971a3}
+.extension-preview-buttons .btn-group.open .btn i{color:#3970a1}
 .extension-preview-buttons .dropdown-menu{background-color:#e4deda;padding-bottom:20px}
 .extension-preview-buttons .markdown-syntax,.extension-preview-buttons .table-of-contents{overflow-y:auto;overflow-x:hidden;padding-right:20px;margin-right:-20px;width:320px}
 .extension-preview-buttons .markdown-syntax{white-space:normal;max-height:350px}
@@ -1567,8 +1566,8 @@ a{-webkit-transition:background-color ease-in-out .15s,color ease-in-out .15s,bo
 .publish-custom-template-collapse{margin-bottom:0}
 .publish-custom-template-collapse textarea{max-width:100%;min-height:100px}
 .ui-layout-resizer{overflow:visible !important;font-size:14px !important}
-.ui-layout-resizer .btn{float:none;color:rgba(57,113,163,0.3)}
-.ui-layout-resizer .btn:hover,.ui-layout-resizer .btn:focus,.ui-layout-resizer .btn:active,.ui-layout-resizer .btn.active{background-color:#e4deda;color:#3971a3}
+.ui-layout-resizer .btn{float:none;color:rgba(57,112,161,0.3)}
+.ui-layout-resizer .btn:hover,.ui-layout-resizer .btn:focus,.ui-layout-resizer .btn:active,.ui-layout-resizer .btn.active{background-color:#e4deda;color:#3970a1}
 .ui-layout-resizer .ui-layout-toggler{font-size:22px !important}
 .ui-layout-resizer .ui-layout-toggler.ui-layout-toggler-east{line-height:55px}
 .ui-layout-resizer .ui-layout-toggler.ui-layout-toggler-east.ui-layout-toggler-east-open i:before{content:'\e87e'}
@@ -1611,20 +1610,26 @@ blockquote ul:last-child,blockquote ol:last-child{margin-bottom:0}
 ul,ol{margin-bottom:15px}
 ul ul,ol ul,ul ol,ol ol{margin-bottom:15px}
 .toc ul{list-style-type:none;margin-bottom:5px}
-.ace_editor{color:#3971a3}
+.ace_editor{color:#5690c4}
 .ace-tm{background-color:#ffffff}
 .ace-tm .ace_text-input{box-sizing:initial}
 .ace-tm .ace_marker-layer .ace_active-line{background-color:#f0edea}
 .ace-tm .ace_print-margin{background-color:rgba(237,233,230,0.5)}
 .ace-tm .ace_markup.ace_heading{color:#284f72;font-weight:bold}
-.ace-tm .ace_markup.ace_list{color:#7ca9d1}
+.ace-tm .ace_markup.ace_list{color:#284f72}
+.ace-tm .ace_constant.ace_language{color:#85afd4}
+.ace-tm .ace_meta.ace_tag{color:#284f72;font-style:italic;font-weight:bold;background-color:rgba(0,0,0,0.03)}
+.ace-tm .ace_keyword.ace_operator{color:#3970a1;background-color:transparent}
+.ace-tm .ace_keyword{color:#284f72;background-color:rgba(0,0,0,0.03);font-weight:bold}
+.ace-tm .ace_string{color:#284f72;font-style:italic;background-color:rgba(0,0,0,0.03)}
 .ace-tm .ace_strong{font-weight:bold}
 .ace-tm .ace_emphasis{color:#284f72;font-style:italic}
-.ace-tm .ace_blockquote{color:#7ca9d1;font-style:italic}
+.ace-tm .ace_blockquote{color:#85afd4;font-style:italic}
 .ace-tm .ace_code{color:#284f72;background-color:rgba(0,0,0,0.03)}
 .ace-tm .ace_code_block{color:#284f72}
-.ace-tm .ace_description{color:#4383bd}
-.ace-tm .ace_constant{color:#3971a3}
+.ace-tm .ace_description{color:#85afd4}
+.ace-tm .ace_constant{color:#3970a1}
+.ace-tm .ace_comment{color:rgba(86,144,196,0.5);font-style:italic}
 .ace-tm .ace_marker-layer .misspelled{position:absolute;z-index:-2;border-bottom:1px dotted red;margin-bottom:-1px}
 .ace_search{background-color:#e4deda;border:6px solid #ede9e6;border-top:0;padding:10px 15px 5px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;min-width:318px}
 .ace_search .ace_search_form,.ace_search .ace_replace_form{margin-bottom:10px}
@@ -1637,7 +1642,7 @@ ul ul,ol ul,ul ol,ol ol{margin-bottom:15px}
 .ace_search .ace_searchbtn_close{background:transparent;margin:0;font-size:21px;font-weight:bold;text-shadow:0 1px 0 #ffffff;opacity:0.3;filter:alpha(opacity=30)}
 .ace_search .ace_searchbtn_close:before{content:'\d7'}
 .ace_search .ace_searchbtn_close:hover,.ace_search .ace_searchbtn_close:focus{color:#284f72;text-decoration:none;cursor:pointer;opacity:0.5;filter:alpha(opacity=50);background:transparent}
-#wmd-input{border-radius:4px;color:#3971a3;-webkit-box-shadow:none;box-shadow:none;resize:none;border:none !important}
+#wmd-input{border-radius:4px;color:#3970a1;-webkit-box-shadow:none;box-shadow:none;resize:none;border:none !important}
 div#wmd-input{padding:0}
 .preview-container{overflow:auto}
 .wmd-prompt-background{display:none}
@@ -1700,5 +1705,6 @@ body.pdf blockquote{border-left:10px solid #eee}
 .ace-tm .ace_blockquote{color:#b56e85}
 .ace-tm .ace_code{color:#6c9c7f}
 .ace-tm .ace_code_block{color:#6c9c7f}
+.ace-tm .ace_comment{color:#6c9c7f}
 h1,h2,h3,h4,h5,h6{font-family:'cursive_standardregular'}
 .file-title-navbar{font-family:'cursive_standardregular';line-height:34px}

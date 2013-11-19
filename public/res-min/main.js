@@ -26648,7 +26648,7 @@ function() {
    next: "githubblock"
   }, {
    token: "blockquote",
-   regex: "^\\s*>[ ].+$",
+   regex: "^\\s*>[ ]",
    next: "blockquote"
   }, {
    token: "constant",
@@ -26658,6 +26658,9 @@ function() {
    token: "markup.list",
    regex: "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
    next: "listblock-start"
+  }, {
+   token: "text",
+   regex: "\\\\\\$"
   }, {
    token: [ "constant.language.escape", "keyword", "constant.language.escape" ],
    regex: "(\\$)(.*)(\\$)"
@@ -26738,8 +26741,10 @@ function() {
     regex: "^\\s*$",
     next: "start"
    }, {
-    token: "blockquote",
-    regex: ".+"
+    include: "basic",
+    noEscape: !0
+   }, {
+    defaultToken: "blockquote"
    } ],
    githubblock: [ {
     token: "code_block",

@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#Date Tue Nov 19 2013 00:58:39
+#Date Tue Nov 19 2013 22:03:57
 
 CACHE:
 res/worker.js
@@ -46,7 +46,9 @@ libs/dictionaries/fr_FR.dic.lz
 libs/MathJax/extensions/FontWarnings.js
 libs/MathJax/extensions/HTML-CSS/handle-floats.js
 libs/MathJax/extensions/HelpDialog.js
+libs/MathJax/extensions/MatchWebFonts.js
 libs/MathJax/extensions/MathEvents.js
+libs/MathJax/extensions/MathML/content-mathml.js
 libs/MathJax/extensions/MathMenu.js
 libs/MathJax/extensions/MathZoom.js
 libs/MathJax/extensions/Safe.js

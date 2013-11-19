@@ -1624,9 +1624,10 @@ ul ul,ol ul,ul ol,ol ol{margin-bottom:15px}
 .ace-tm .ace_string{color:#ffffff;font-style:italic;background-color:rgba(255,255,255,0.1)}
 .ace-tm .ace_strong{font-weight:bold}
 .ace-tm .ace_emphasis{color:#ffffff;font-style:italic}
-.ace-tm .ace_blockquote{color:#9f9f9f;font-style:italic}
+.ace-tm .ace_blockquote{color:#9f9f9f}
 .ace-tm .ace_code{color:#ffffff;background-color:rgba(255,255,255,0.1)}
 .ace-tm .ace_code_block{color:#ffffff}
+.ace-tm .ace_link{color:#ffffff;background-color:rgba(255,255,255,0.1)}
 .ace-tm .ace_description{color:#9f9f9f}
 .ace-tm .ace_constant{color:#dfdfdf}
 .ace-tm .ace_comment{color:rgba(191,191,191,0.5);font-style:italic}

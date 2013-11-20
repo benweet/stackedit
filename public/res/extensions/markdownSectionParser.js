@@ -35,27 +35,31 @@ define([
         converter.hooks.chain("preConversion", function(text) {
             eventMgr.previewStartTime = new Date();
             var tmpText = text + "\n\n";
+            function addSection(startOffset, endOffset) {
+                var sectionText = tmpText.substring(offset, endOffset);
+                sectionList.push({
+                    text: sectionText,
+                    textWithDelimiter: '\n~~~SectionDelimiter~~~\n\n' + sectionText + '\n'
+                });
+            }
             var sectionList = [], offset = 0;
             // Look for delimiters
             tmpText.replace(regexp, function(match, matchOffset) {
                 // Create a new section with the text preceding the delimiter
-                var sectionText = tmpText.substring(offset, matchOffset);
-                sectionList.push({
-                    text: sectionText,
-                    textWithDelimiter: '\n<div class="se-section-delimiter"></div>\n\n' + sectionText + '\n'
-                });
+                addSection(offset, matchOffset);
                 offset = matchOffset;
             });
             // Last section
-            var sectionText = tmpText.substring(offset, text.length);
-            sectionList.push({
-                text: sectionText,
-                textWithDelimiter: '\n<div class="se-section-delimiter"></div>\n\n' + sectionText + '\n'
-            });
+            addSection(offset, text.length);
             eventMgr.onSectionsCreated(sectionList);
             return _.reduce(sectionList, function(result, section) {
                 return result + section.textWithDelimiter;
             }, '');
+        });
+        
+        converter.hooks.chain("postConversion", function(text) {
+            // Convert delimiters into hidden elements
+            return text.replace(/<p>~~~SectionDelimiter~~~<\/p>/g, '<div class="se-section-delimiter"></div>');
         });
     };
 

@@ -118,14 +118,14 @@ module.exports = function(grunt) {
                     ]
                 }
             },
-            'config': {
+            'constants': {
                 files: {
-                    'public/res/config.js': 'public/res/config.js'
+                    'public/res/constants.js': 'public/res/constants.js'
                 },
                 options: {
                     replacements: [
                         {
-                            pattern: /(constants\.VERSION = ).*/,
+                            pattern: /constants\.VERSION = .*/,
                             replacement: 'constants.VERSION = "<%= pkg.version %>";'
                         },
                     ]
@@ -302,7 +302,7 @@ module.exports = function(grunt) {
      */
     grunt.registerTask('tag', function(versionType) {
         grunt.task.run('bump-only:' + (versionType || 'patch'));
-        grunt.task.run('string-replace:config');
+        grunt.task.run('string-replace:constants');
         grunt.task.run('default');
         grunt.task.run('bump-commit');
     });

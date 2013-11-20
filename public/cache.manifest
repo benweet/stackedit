@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#Date Sun Nov 03 2013 22:25:18
+#Date Wed Nov 20 2013 19:00:09
 
 CACHE:
 res/worker.js
@@ -24,14 +24,6 @@ res-min/img/glyphicons-halflings-white.png
 res-min/img/glyphicons-halflings.png
 res-min/img/icons.png
 res-min/img/icons2x.png
-res-min/img/loader-blue-gray.gif
-res-min/img/loader-blue-gray2x.gif
-res-min/img/loader-default.gif
-res-min/img/loader-default2x.gif
-res-min/img/loader-night.gif
-res-min/img/loader-night2x.gif
-res-min/img/loader-school.gif
-res-min/img/loader-school2x.gif
 res-min/img/school-line.png
 res-min/img/stackedit-32.ico
 res-min/img/stackedit-64.png
@@ -53,7 +45,9 @@ libs/dictionaries/fr_FR.dic.lz
 libs/MathJax/extensions/FontWarnings.js
 libs/MathJax/extensions/HTML-CSS/handle-floats.js
 libs/MathJax/extensions/HelpDialog.js
+libs/MathJax/extensions/MatchWebFonts.js
 libs/MathJax/extensions/MathEvents.js
+libs/MathJax/extensions/MathML/content-mathml.js
 libs/MathJax/extensions/MathMenu.js
 libs/MathJax/extensions/MathZoom.js
 libs/MathJax/extensions/Safe.js
@@ -103,6 +97,34 @@ libs/MathJax/fonts/HTML-CSS/TeX/woff/MathJax_Size2-Regular.woff
 libs/MathJax/fonts/HTML-CSS/TeX/woff/MathJax_Size3-Regular.woff
 libs/MathJax/fonts/HTML-CSS/TeX/woff/MathJax_Size4-Regular.woff
 libs/MathJax/fonts/HTML-CSS/TeX/woff/MathJax_Typewriter-Regular.woff
+libs/MathJax/jax/element/mml/jax.js
+libs/MathJax/jax/element/mml/optable/Arrows.js
+libs/MathJax/jax/element/mml/optable/BasicLatin.js
+libs/MathJax/jax/element/mml/optable/CombDiacritMarks.js
+libs/MathJax/jax/element/mml/optable/CombDiactForSymbols.js
+libs/MathJax/jax/element/mml/optable/Dingbats.js
+libs/MathJax/jax/element/mml/optable/GeneralPunctuation.js
+libs/MathJax/jax/element/mml/optable/GeometricShapes.js
+libs/MathJax/jax/element/mml/optable/GreekAndCoptic.js
+libs/MathJax/jax/element/mml/optable/Latin1Supplement.js
+libs/MathJax/jax/element/mml/optable/LetterlikeSymbols.js
+libs/MathJax/jax/element/mml/optable/MathOperators.js
+libs/MathJax/jax/element/mml/optable/MiscMathSymbolsA.js
+libs/MathJax/jax/element/mml/optable/MiscMathSymbolsB.js
+libs/MathJax/jax/element/mml/optable/MiscSymbolsAndArrows.js
+libs/MathJax/jax/element/mml/optable/MiscTechnical.js
+libs/MathJax/jax/element/mml/optable/SpacingModLetters.js
+libs/MathJax/jax/element/mml/optable/SuppMathOperators.js
+libs/MathJax/jax/element/mml/optable/SupplementalArrowsA.js
+libs/MathJax/jax/element/mml/optable/SupplementalArrowsB.js
+libs/MathJax/jax/output/HTML-CSS/autoload/annotation-xml.js
+libs/MathJax/jax/output/HTML-CSS/autoload/maction.js
+libs/MathJax/jax/output/HTML-CSS/autoload/menclose.js
+libs/MathJax/jax/output/HTML-CSS/autoload/mglyph.js
+libs/MathJax/jax/output/HTML-CSS/autoload/mmultiscripts.js
+libs/MathJax/jax/output/HTML-CSS/autoload/ms.js
+libs/MathJax/jax/output/HTML-CSS/autoload/mtable.js
+libs/MathJax/jax/output/HTML-CSS/autoload/multiline.js
 libs/MathJax/jax/output/HTML-CSS/fonts/TeX/AMS/Regular/Arrows.js
 libs/MathJax/jax/output/HTML-CSS/fonts/TeX/AMS/Regular/BBBold.js
 libs/MathJax/jax/output/HTML-CSS/fonts/TeX/AMS/Regular/BoxDrawing.js

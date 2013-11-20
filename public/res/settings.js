@@ -2,7 +2,6 @@ define([
     "underscore",
     "constants",
     "storage",
-    "config",
 ], function (_, constants, storage) {
 
     var settings = {

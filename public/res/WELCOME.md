@@ -1,4 +1,3 @@
-
 Welcome to StackEdit!	{#welcome}
 =====================
 
@@ -46,7 +45,11 @@ Synchronization
 
 **StackEdit** can be combined with **Google Drive** and **Dropbox** to have your documents centralized in the *Cloud*. The synchronization mechanism will take care of uploading your modifications or downloading the latest version of your documents.
 
-> **NOTE:** Full access to **Google Drive** or **Dropbox** is required to be able to import any document in StackEdit. Imported documents are downloaded in your browser and are not transmitted to a server.
+> **NOTE:**
+> 
+> - Full access to **Google Drive** or **Dropbox** is required to be able to import any document in StackEdit.
+> - Imported documents are downloaded in your browser and are not transmitted to a server.
+> - If you experience problems exporting documents to Google Drive, check and optionally disable browser extensions, such as Disconnect.
 
 #### <i class="icon-download"></i> Import a document
 
@@ -210,7 +213,7 @@ You can insert a table of contents using the marker `[TOC]`:
 You can render *LaTeX* mathematical expressions using **MathJax**, as on [math.stackexchange.com][1]:
 
 The *Gamma function* satisfying $\Gamma(n) = (n-1)!\quad\forall
-n\in\mathbb N$ is via through the Euler integral
+n\in\mathbb N$ is via the Euler integral
 
 $$
 \Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
@@ -219,15 +222,16 @@ $$
 > **NOTE:** When exporting, make sure you include MathJax to render mathematical expression correctly. Your page/template should include something like: 
 
 ```
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+<script type="text/javascript" src="https://stackedit.io/libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
 ```
 
 > **NOTE:** You can find more information:
 >
 > - about **Markdown** syntax [here][2],
 > - about **Markdown Extra** extension [here][3],
-> - about **Prettify** syntax highlighting [here][4],
-> - about **Highlight.js** syntax highlighting [here][5].
+> - about **LaTeX** mathematical expressions [here][4],
+> - about **Prettify** syntax highlighting [here][5],
+> - about **Highlight.js** syntax highlighting [here][6].
 
 Written with [StackEdit](https://stackedit.io/).
 
@@ -237,5 +241,6 @@ Written with [StackEdit](https://stackedit.io/).
   [1]: http://math.stackexchange.com/
   [2]: http://daringfireball.net/projects/markdown/syntax "Markdown"
   [3]: https://github.com/jmcmanus/pagedown-extra "Pagedown Extra"
-  [4]: https://code.google.com/p/google-code-prettify/
-  [5]: http://softwaremaniacs.org/soft/highlight/en/
+  [4]: http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference
+  [5]: https://code.google.com/p/google-code-prettify/
+  [6]: http://softwaremaniacs.org/soft/highlight/en/

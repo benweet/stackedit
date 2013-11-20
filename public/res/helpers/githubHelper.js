@@ -8,7 +8,6 @@ define([
     "logger",
     "eventMgr",
     "classes/AsyncTask",
-    "config"
 ], function($, constants, core, utils, storage, logger, eventMgr, AsyncTask) {
 
     var connected;

@@ -8,17 +8,16 @@ define([
     "classes/FolderDescriptor",
     "folderList",
     "fileSystem",
-    "config"
 ], function($, _, constants, utils, storage, Extension, FolderDescriptor, folderList, fileSystem) {
 
     var documentManager = new Extension("documentManager", 'Document Manager', false, true);
 
-    var fileMgr = undefined;
+    var fileMgr;
     documentManager.onFileMgrCreated = function(fileMgrParameter) {
         fileMgr = fileMgrParameter;
     };
 
-    var eventMgr = undefined;
+    var eventMgr;
     documentManager.onEventMgrCreated = function(eventMgrParameter) {
         eventMgr = eventMgrParameter;
     };
@@ -53,9 +52,9 @@ define([
         '<div class="name"><%= fileDesc.composeTitle() %></div></li>',
     ].join('');
 
-    var isVisible = false;
-    var modalElt = undefined;
-    var documentListElt = undefined;
+    var isVisible;
+    var modalElt;
+    var documentListElt;
     var selectedDocumentList = [];
     var selectedFolderList = [];
     function doSelect() {
@@ -74,7 +73,7 @@ define([
         });
     }
 
-    var selectedDocumentListElt = undefined;
+    var selectedDocumentListElt;
     function doDeleteConfirmation() {
         // Don't ask user confirmation if we delete only folders
         if(_.size(selectedDocumentList) === 0) {
@@ -114,8 +113,8 @@ define([
         eventMgr.onFoldersChanged();
     }
 
-    var $liMoveElt = undefined;
-    var $liDeleteElt = undefined;
+    var $liMoveElt;
+    var $liDeleteElt;
     function doActiveButtons() {
         doSelect();
 
@@ -123,9 +122,9 @@ define([
         $liDeleteElt.toggleClass('disabled', _.size(selectedFolderList) === 0 && _.size(selectedDocumentList) === 0);
     }
 
-    var orphanDocumentList = undefined;
-    var $documentCountElt = undefined;
-    var $folderCountElt = undefined;
+    var orphanDocumentList;
+    var $documentCountElt;
+    var $folderCountElt;
     var refreshManager = function() {
         if(isVisible === false) {
             return;
@@ -212,7 +211,7 @@ define([
             $buttonElt.click(function(e) {
                 e.stopPropagation();
                 var $parentElt = $buttonElt.parent();
-                var name = undefined;
+                var name;
                 var folderDesc = folderList[$parentElt.data('folderIndex')];
                 var fileDesc = fileSystem[$parentElt.data('fileIndex')];
                 if(folderDesc) {
@@ -311,7 +310,7 @@ define([
 
         // Create folder action
         $(modalElt.querySelectorAll('.action-create-folder')).click(function() {
-            var folderIndex = undefined;
+            var folderIndex;
             do {
                 folderIndex = "folder." + utils.randomString();
             } while (_.has(folderList, folderIndex));

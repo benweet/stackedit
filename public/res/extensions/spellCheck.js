@@ -9,7 +9,7 @@ define([
     "text!bower-libs/lz-string/libs/lz-string-1.3.3.js",
     "text!workers/spellCheckWorker.js",
     "text!html/spellCheckSettingsBlock.html",
-    ], function($, _, crel, utils, Extension, XRegExp, typoJS, LZStringJS, spellCheckWorkerJS, spellCheckSettingsBlockHTML) {
+], function($, _, crel, utils, Extension, XRegExp, typoJS, LZStringJS, spellCheckWorkerJS, spellCheckSettingsBlockHTML) {
 
     var spellCheck = new Extension("spellCheck", "Spell Check", true, true, true);
     spellCheck.settingsBlock = spellCheckSettingsBlockHTML;
@@ -21,11 +21,11 @@ define([
         utils.setInputValue("#select-spell-check-locale", spellCheck.config.locale);
     };
 
-    spellCheck.onSaveSettings = function(newConfig, event) {
+    spellCheck.onSaveSettings = function(newConfig) {
         newConfig.locale = utils.getInputValue("#select-spell-check-locale");
     };
 
-    var worker = undefined;
+    var worker;
     var isInited = false;
     spellCheck.onInit = function() {
         // Create a web worker
@@ -34,19 +34,19 @@ define([
         require([
             'text!../libs/dictionaries/' + spellCheck.config.locale + '.dic.lz',
             'text!../libs/dictionaries/' + spellCheck.config.locale + '.aff.lz',
-            ], function(dic, aff) {
+        ], function(dic, aff) {
             worker.postMessage(JSON.stringify(['init', typoJS, LZStringJS, spellCheck.config.locale, aff, dic]));
             isInited = true;
             start();
         });
     };
 
-    var aceEditor = undefined;
+    var aceEditor;
     var wordRegExp = XRegExp('\\p{L}+(?:\'\\p{L}+)*', 'g');
     var markers = [];
-    var timeoutId = undefined;
+    var timeoutId;
 
-    var currentRowCheck = undefined;
+    var currentRowCheck;
 
     function rowCheck(rowIndex) {
         var tokens = aceEditor.session.getTokens(rowIndex).slice();
@@ -59,7 +59,7 @@ define([
             }
             var token = tokens.shift();
             var words = [];
-            if (!/code|code_block|reference|markup\.underline/.test(token.type)) {
+            if (!/code|code_block|link|reference|string|keyword|tag|markup\.underline/.test(token.type)) {
                 token.value.replace(wordRegExp, function(word, offset) {
                     words.push({
                         value: word,
@@ -128,8 +128,9 @@ define([
         timeoutId = setTimeout(check, 700);
     }
 
-    var dropdownElt = undefined;
-    var $dropdownElt = undefined;
+/*
+    var dropdownElt;
+    var $dropdownElt;
     var liEltTmpl = [
         '<li>',
         '   <a href="#">',
@@ -165,6 +166,7 @@ define([
             worker.postMessage(JSON.stringify(['suggest', word]));
         };
     }
+*/
 
     var fileOpen = false;
     spellCheck.onFileClose = function() {

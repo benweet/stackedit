@@ -29,12 +29,12 @@ define([
         newConfig.shortcutNext = utils.getInputTextValue("#input-document-selector-shortcut-next", event);
     };
 
-    var aceEditor = undefined;
+    var aceEditor;
     documentSelector.onAceCreated = function(aceEditorParam) {
         aceEditor = aceEditorParam;
     };
 
-    var fileMgr = undefined;
+    var fileMgr;
     documentSelector.onFileMgrCreated = function(fileMgrParameter) {
         fileMgr = fileMgrParameter;
     };
@@ -46,13 +46,13 @@ define([
         '   </a>',
         '</li>'
     ].join('');
-    var dropdownElt = undefined;
-    var liEltMap = undefined;
-    var liEltList = undefined;
-    var sortFunction = undefined;
-    var selectFileDesc = undefined;
-    var selectedLi = undefined;
-    var $editorElt = undefined;
+    var dropdownElt;
+    var liEltMap;
+    var liEltList;
+    var sortFunction;
+    var selectFileDesc;
+    var selectedLi;
+    var $editorElt;
     var buildSelector = function() {
         var liListHtml = _.chain(fileSystem).sortBy(sortFunction).reduce(function(result, fileDesc) {
             return result + _.template(liEltTmpl, {

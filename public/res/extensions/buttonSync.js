@@ -25,12 +25,12 @@ define([
         newConfig.syncShortcut = utils.getInputTextValue("#input-sync-shortcut", event);
     };
 
-    var synchronizer = undefined;
+    var synchronizer;
     buttonSync.onSynchronizerCreated = function(synchronizerParameter) {
         synchronizer = synchronizerParameter;
     };
 
-    var $button = undefined;
+    var $button;
     var syncRunning = false;
     var isOffline = false;
     // Enable/disable the button

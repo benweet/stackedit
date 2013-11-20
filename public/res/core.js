@@ -1,3 +1,4 @@
+/*globals Markdown, requirejs */
 define([
     "jquery",
     "underscore",
@@ -15,7 +16,6 @@ define([
     "text!html/settingsTemplateTooltip.html",
     "text!html/settingsUserCustomExtensionTooltip.html",
     "storage",
-    "config",
     "uilayout",
     'pagedown-ace',
     'libs/ace_mode',
@@ -29,7 +29,7 @@ define([
     var core = {};
 
     // Used for periodic tasks
-    var intervalId = undefined;
+    var intervalId;
 
     // Used to detect user activity
     var isUserReal = false;
@@ -54,7 +54,7 @@ define([
     }
 
     // Used to only have 1 window of the application in the same browser
-    var windowId = undefined;
+    var windowId;
     function checkWindowUnique() {
         if(isUserReal === false || windowUnique === false) {
             return;
@@ -106,13 +106,13 @@ define([
     }
 
     // Load settings in settings dialog
-    var $themeInputElt = undefined;
+    var $themeInputElt;
     function loadSettings() {
 
         // Layout orientation
         utils.setInputRadio("radio-layout-orientation", settings.layoutOrientation);
         // Theme
-        utils.setInputValue($themeInputElt, theme);
+        utils.setInputValue($themeInputElt, window.theme);
         $themeInputElt.change();
         // Lazy rendering
         utils.setInputChecked("#input-settings-lazy-rendering", settings.lazyRendering);
@@ -190,9 +190,9 @@ define([
     }
 
     // Set the panels visibility
-    var layout = undefined;
-    var $menuPanelElt = undefined;
-    var $documentPanelElt = undefined;
+    var layout;
+    var $menuPanelElt;
+    var $documentPanelElt;
     function setPanelVisibility(forceHide) {
         if(forceHide === true || layout.state.north.isClosed) {
             $menuPanelElt.hide();
@@ -205,7 +205,7 @@ define([
     }
 
     // Set the preview button visibility
-    var $previewButtonsElt = undefined;
+    var $previewButtonsElt;
     function setPreviewButtonsVisibility(forceHide) {
         if(forceHide === true || layout.state.east.isClosed) {
             $previewButtonsElt.hide();
@@ -216,7 +216,7 @@ define([
     }
 
     // Create ACE editor
-    var aceEditor = undefined;
+    var aceEditor;
     function createAceEditor() {
         aceEditor = ace.edit("wmd-input");
         aceEditor.setOption("spellcheck", true);
@@ -277,8 +277,9 @@ define([
                 }
                 self.currentLine = currentLine;
 
-                if(startLine <= endLine)
+                if(startLine <= endLine) {
                     self.fireUpdateEvent(startLine, endLine);
+                }
             }
             self.$worker = function() {
                 self.lines.splice(0, self.lines.length);
@@ -294,7 +295,7 @@ define([
     }
 
     // Create the layout
-    var $editorButtonsElt = undefined;
+    var $editorButtonsElt;
     function createLayout() {
         var layoutGlobalConfig = {
             closable: true,
@@ -384,7 +385,7 @@ define([
         var $resizerDecorator = $('<div class="resizer-decorator">');
         $previewButtonsElt = $('<div class="extension-preview-buttons">');
         $editorButtonsElt = $('<div class="extension-editor-buttons">');
-        if(viewerMode || settings.layoutOrientation == "horizontal") {
+        if(window.viewerMode || settings.layoutOrientation == "horizontal") {
             $('.ui-layout-resizer-north').append($resizerDecorator).append($previewButtonsElt);
             $('.ui-layout-resizer-east').append($northTogglerElt).append($editorButtonsElt);
         }
@@ -400,10 +401,10 @@ define([
     }
 
     // Create the PageDown editor
-    var editor = undefined;
-    var $editorElt = undefined;
-    var fileDesc = undefined;
-    var documentContent = undefined;
+    var editor;
+    var $editorElt;
+    var fileDesc;
+    var documentContent;
     var UndoManager = require("ace/undomanager").UndoManager;
     core.initEditor = function(fileDescParam) {
         if(fileDesc !== undefined) {
@@ -431,7 +432,7 @@ define([
 
         var $previewContainerElt = $(".preview-container");
 
-        if(!lightMode) {
+        if(!window.lightMode) {
             // Store editor scrollTop on scroll event
             var saveScroll = _.debounce(function() {
                 if(documentContent !== undefined) {
@@ -469,8 +470,9 @@ define([
             }
             documentContent = newDocumentContent;
         }
-
-        if(!lightMode) {
+        
+        var previewWrapper;
+        if(!window.lightMode) {
             editor = new Markdown.Editor(converter, undefined, {
                 keyStrokes: shortcutMgr.getPagedownKeyStrokes()
             });
@@ -491,20 +493,55 @@ define([
                 $(".modal-insert-image").modal();
                 return true;
             });
+            
+            if(settings.lazyRendering === true) {
+                previewWrapper = function(makePreview) {
+                    var debouncedMakePreview = _.debounce(makePreview, 500);
+                    return function() {
+                        if(documentContent === undefined) {
+                            makePreview();
+                            eventMgr.onFileOpen(fileDesc);
+                            $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
+                            _.defer(function() {
+                                aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
+                            });
+                        }
+                        else {
+                            debouncedMakePreview();
+                        }
+                        checkDocumentChanges();
+                    };
+                };
+            }
+            else {
+                previewWrapper = function(makePreview) {
+                    return function() {
+                        makePreview();
+                        if(documentContent === undefined) {
+                            eventMgr.onFileOpen(fileDesc);
+                            $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
+                            _.defer(function() {
+                                aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
+                            });
+                        }
+                        checkDocumentChanges();
+                    };
+                };
+            }
         }
         else {
             // That's the light Markdown editor replacing the one from pagedown
             var $wmdPreviewElt = $('#wmd-preview');
             var hooks = new Markdown.HookCollection();
             hooks.addNoop("onPreviewRefresh");
-            function makePreviewHtml() {
+            var makePreviewHtml = function() {
                 var text = $editorElt.val();
                 text = converter.makeHtml(text);
                 $wmdPreviewElt.html(text);
                 hooks.onPreviewRefresh();
-            }
+            };
             var debouncedMakePreview = _.debounce(makePreviewHtml, 1000);
-            var previewWrapper = function() {
+            var lightPreviewWrapper = function() {
                 if(documentContent === undefined) {
                     makePreviewHtml();
                     eventMgr.onFileOpen(fileDesc);
@@ -514,52 +551,17 @@ define([
                 }
                 checkDocumentChanges();
             };
-            $editorElt.on("input propertychange", previewWrapper);
+            $editorElt.on("input propertychange", lightPreviewWrapper);
             editor = {
                 hooks: hooks,
                 getConverter: function() {
                     return converter;
                 },
-                run: previewWrapper,
-                refreshPreview: previewWrapper
+                run: lightPreviewWrapper,
+                refreshPreview: lightPreviewWrapper
             };
         }
 
-        var previewWrapper;
-        if(settings.lazyRendering === true) {
-            previewWrapper = function(makePreview) {
-                var debouncedMakePreview = _.debounce(makePreview, 500);
-                return function() {
-                    if(documentContent === undefined) {
-                        makePreview();
-                        eventMgr.onFileOpen(fileDesc);
-                        $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
-                        _.defer(function() {
-                            aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
-                        });
-                    }
-                    else {
-                        debouncedMakePreview();
-                    }
-                    checkDocumentChanges();
-                };
-            };
-        }
-        else {
-            previewWrapper = function(makePreview) {
-                return function() {
-                    makePreview();
-                    if(documentContent === undefined) {
-                        eventMgr.onFileOpen(fileDesc);
-                        $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
-                        _.defer(function() {
-                            aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
-                        });
-                    }
-                    checkDocumentChanges();
-                };
-            };
-        }
         eventMgr.onPagedownConfigure(editor);
         editor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
         editor.run(aceEditor, previewWrapper);
@@ -573,24 +575,24 @@ define([
         var $btnGroupElt = $('.wmd-button-group1');
         $("#wmd-bold-button").append($('<i class="icon-bold">')).appendTo($btnGroupElt);
         $("#wmd-italic-button").append($('<i class="icon-italic">')).appendTo($btnGroupElt);
-        var $btnGroupElt = $('.wmd-button-group2');
+        $btnGroupElt = $('.wmd-button-group2');
         $("#wmd-link-button").append($('<i class="icon-globe">')).appendTo($btnGroupElt);
         $("#wmd-quote-button").append($('<i class="icon-indent-right">')).appendTo($btnGroupElt);
         $("#wmd-code-button").append($('<i class="icon-code">')).appendTo($btnGroupElt);
         $("#wmd-image-button").append($('<i class="icon-picture">')).appendTo($btnGroupElt);
-        var $btnGroupElt = $('.wmd-button-group3');
+        $btnGroupElt = $('.wmd-button-group3');
         $("#wmd-olist-button").append($('<i class="icon-list-numbered">')).appendTo($btnGroupElt);
         $("#wmd-ulist-button").append($('<i class="icon-list-bullet">')).appendTo($btnGroupElt);
         $("#wmd-heading-button").append($('<i class="icon-text-height">')).appendTo($btnGroupElt);
         $("#wmd-hr-button").append($('<i class="icon-ellipsis">')).appendTo($btnGroupElt);
-        var $btnGroupElt = $('.wmd-button-group4');
+        $btnGroupElt = $('.wmd-button-group4');
         $("#wmd-undo-button").append($('<i class="icon-reply">')).appendTo($btnGroupElt);
         $("#wmd-redo-button").append($('<i class="icon-forward">')).appendTo($btnGroupElt);
     };
     
     // Shows a dialog to force the user to click a button before opening oauth popup
-    var redirectCallbackConfirm = undefined;
-    var redirectCallbackCancel = undefined;
+    var redirectCallbackConfirm;
+    var redirectCallbackCancel;
     core.redirectConfirm = function(message, callbackConfirm, callbackCancel) {
         redirectCallbackConfirm = callbackConfirm;
         redirectCallbackCancel = callbackCancel;
@@ -602,7 +604,7 @@ define([
     var isDocumentPanelShown = false;
     var isMenuPanelShown = false;
     core.onReady = function() {
-        if(viewerMode === true) {
+        if(window.viewerMode === true) {
             document.body.innerHTML = bodyViewerHTML;
         }
         else {
@@ -630,7 +632,7 @@ define([
         $menuPanelElt = $('.menu-panel').collapse({
             toggle: false
         });
-        var menuPanelBackdropElt = undefined;
+        var menuPanelBackdropElt;
         $menuPanelElt.on('show.bs.collapse', function(e) {
             if(e.target === $menuPanelElt[0]) {
                 isMenuPanelShown = true;
@@ -658,7 +660,7 @@ define([
         $documentPanelElt = $('.document-panel').collapse({
             toggle: false
         });
-        var documentPanelBackdropElt = undefined;
+        var documentPanelBackdropElt;
         $documentPanelElt.on('show.bs.collapse', function(e) {
             if(e.target === $documentPanelElt[0]) {
                 isDocumentPanelShown = true;
@@ -684,7 +686,7 @@ define([
         });
 
         // Editor
-        if(lightMode) {
+        if(window.lightMode) {
             // In light mode, we replace ACE with a textarea
             $('#wmd-input').replaceWith(function() {
                 return $('<textarea id="wmd-input">').addClass(this.className).addClass('form-control');
@@ -698,7 +700,7 @@ define([
             "line-height": Math.round(settings.editorFontSize * (20 / 12)) + "px"
         });
         
-        if(!lightMode) {
+        if(!window.lightMode) {
             // ACE editor
             createAceEditor();
 
@@ -715,7 +717,7 @@ define([
         intervalId = window.setInterval(function() {
             utils.updateCurrentTime();
             checkWindowUnique();
-            if(isUserActive() === true || viewerMode === true) {
+            if(isUserActive() === true || window.viewerMode === true) {
                 eventMgr.onPeriodicRun();
                 checkOnline();
             }
@@ -728,7 +730,7 @@ define([
     eventMgr.addListener("onReady", function() {
         
         // In vertical mode, we have to offset the editor buttons otherwise they hide the editor buttons
-        if(!viewerMode && settings.layoutOrientation == "vertical") {
+        if(!window.viewerMode && settings.layoutOrientation == "vertical") {
             $previewButtonsElt.css('right', parseInt($previewButtonsElt.css('right')) + $editorButtonsElt.width());
         }
 
@@ -763,7 +765,7 @@ define([
         });
 
         // Configure Mousetrap
-        mousetrap.stopCallback = function(e, element, combo) {
+        mousetrap.stopCallback = function(e, element) {
             return isMenuPanelShown || isDocumentPanelShown || isModalShown || $(element).is("input, select, textarea:not(.ace_text-input)");
         };
 
@@ -803,12 +805,12 @@ define([
         });
 
         // Hot theme switcher in the settings
-        var currentTheme = theme;
+        var currentTheme = window.theme;
         function applyTheme(theme) {
             theme = theme || 'default';
             if(currentTheme != theme) {
                 var themeModule = "less!themes/" + theme;
-                if(baseDir.indexOf('-min') !== -1) {
+                if(window.baseDir.indexOf('-min') !== -1) {
                     themeModule = "css!themes/" + theme;
                 }
                 // Undefine the module in RequireJS
@@ -826,10 +828,10 @@ define([
         });
 
         // Import docs and settings
-        $(".action-import-docs-settings").click(function(e) {
+        $(".action-import-docs-settings").click(function() {
             $("#input-file-import-docs-settings").click();
         });
-        var newstorage = undefined;
+        var newstorage;
         $("#input-file-import-docs-settings").change(function(evt) {
             var files = (evt.dataTransfer || evt.target).files;
             $(".modal-settings").modal("hide");
@@ -849,7 +851,7 @@ define([
                                 $('.modal-import-docs-settings').modal('show');
                             }
                         }
-                        catch(e) {
+                        catch(exc) {
                             eventMgr.onError("Wrong format: " + importedFile.name);
                         }
                         $("#input-file-import-docs-settings").val('');
@@ -858,7 +860,7 @@ define([
                 reader.readAsText(file);
             });
         });
-        $(".action-import-docs-settings-confirm").click(function(e) {
+        $(".action-import-docs-settings-confirm").click(function() {
             storage.clear();
             var allowedKeys = /^file\.|^focusMode$|^folder\.|^publish\.|^settings$|^sync\.|^theme$|^version$|^welcomeTour$/;
             _.each(newstorage, function(value, key) {
@@ -869,7 +871,7 @@ define([
             window.location.reload();
         });
         // Export settings
-        $(".action-export-docs-settings").click(function(e) {
+        $(".action-export-docs-settings").click(function() {
             utils.saveAs(JSON.stringify(storage), "StackEdit local storage.json");
         });
 
@@ -915,7 +917,7 @@ define([
             title: settingsUserCustomExtensionTooltipHTML
         }).click(function(e) {
             $(this).tooltip('show');
-            $(document).on("click.tooltip-usercustom-extension", function(e) {
+            $(document).on("click.tooltip-usercustom-extension", function() {
                 tooltipOpen = false;
                 $(".tooltip-usercustom-extension").tooltip('hide');
                 $(document).off("click.tooltip-usercustom-extension");
@@ -933,7 +935,7 @@ define([
                 title: settingsTemplateTooltipHTML
             }).click(function(e) {
                 $tooltipElt.tooltip('show');
-                $(document).on("click.tooltip-template", function(e) {
+                $(document).on("click.tooltip-template", function() {
                     tooltipOpen = false;
                     $(".tooltip-template").tooltip('hide');
                     $(document).off("click.tooltip-template");
@@ -970,11 +972,11 @@ define([
             var $imgElt = $(imgElt);
             var src = $imgElt.data('stackeditSrc');
             if(src) {
-                $imgElt.attr('src', baseDir + '/img/' + src);
+                $imgElt.attr('src', window.baseDir + '/img/' + src);
             }
         });
 
-        if(viewerMode === false) {
+        if(window.viewerMode === false) {
             // Load theme list
             var themeOptions = _.reduce(constants.THEME_LIST, function(themeOptions, name, value) {
                 return themeOptions + '<option value="' + value + '">' + name + '</option>';

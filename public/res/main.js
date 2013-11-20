@@ -82,7 +82,13 @@ requirejs.config({
         FileSaver: {
             exports: 'saveAs'
         },
-        'bootstrap-tour': ['bootstrap'],
+        highlightjs: {
+            exports: 'hljs'
+        },
+        'bootstrap-tour': {
+            deps: ['bootstrap'],
+            exports: 'Tour'
+        },
         bootstrap: ['jquery'],
         'jquery-waitforimages': ['jquery'],
         'jquery-mousewheel': ['jquery'],
@@ -93,7 +99,7 @@ requirejs.config({
         'jquery-ui-mouse': ['jquery-ui-widget'],
         'jquery-ui-widget': ['jquery-ui-core'],
         'jquery-ui-core': ['jquery'],
-        'pagedown-extra': ['pagedown-ace', 'google-code-prettify', 'highlightjs'],
+        'pagedown-extra': ['pagedown-ace'],
         'pagedown-ace': ['bower-libs/pagedown-ace/Markdown.Converter']
     }
 });
@@ -125,10 +131,10 @@ window.lightMode = window.viewerMode || /(\?|&)light($|&)/.test(location.search)
 })(navigator.userAgent || navigator.vendor || window.opera);
 
 // Keep the theme in a global variable
-var theme = localStorage.theme || 'default';
-var themeModule = "less!themes/" + theme;
+window.theme = localStorage.theme || 'default';
+var themeModule = "less!themes/" + window.theme;
 if (window.baseDir.indexOf('-min') !== -1) {
-    themeModule = "css!themes/" + theme;
+    themeModule = "css!themes/" + window.theme;
 }
 
 // RequireJS entry point. By requiring synchronizer, publisher and

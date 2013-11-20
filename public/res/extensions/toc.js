@@ -63,7 +63,7 @@ define([
         var tagName = "H" + level;
         var result = [];
 
-        var currentElement = undefined;
+        var currentElement;
         function pushCurrentElement() {
             if(currentElement !== undefined) {
                 if(currentElement.children.length > 0) {
@@ -73,7 +73,7 @@ define([
             }
         }
 
-        _.each(array, function(element, index) {
+        _.each(array, function(element) {
             if(element.tagName != tagName) {
                 if(currentElement === undefined) {
                     currentElement = new TocElement();
@@ -90,7 +90,7 @@ define([
     }
 
     // Build the TOC
-    var previewContentsElt = undefined;
+    var previewContentsElt;
     function buildToc() {
         var anchorList = {};
         function createAnchor(element) {
@@ -107,7 +107,7 @@ define([
         }
 
         var elementList = [];
-        _.each(previewContentsElt.querySelectorAll('.preview-content > .wmd-title'), function(elt) {
+        _.each(previewContentsElt.querySelectorAll('h1, h2, h3, h4, h5, h6'), function(elt) {
             elementList.push(new TocElement(elt.tagName, createAnchor(elt), elt.textContent));
         });
         elementList = groupTags(elementList);

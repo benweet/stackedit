@@ -14,22 +14,22 @@ define([
         code: "",
     };
 
-    var fileMgr = undefined;
+    var fileMgr;
     userCustom.onFileMgrCreated = function(fileMgrParameter) {
         fileMgr = fileMgrParameter;
     };
 
-    var synchronizer = undefined;
+    var synchronizer;
     userCustom.onSynchronizerCreated = function(synchronizerParameter) {
         synchronizer = synchronizerParameter;
     };
 
-    var publisher = undefined;
+    var publisher;
     userCustom.onPublisherCreated = function(publisherParameter) {
         publisher = publisherParameter;
     };
 
-    var eventMgr = undefined;
+    var eventMgr;
     userCustom.onEventMgrCreated = function(eventMgrParameter) {
         eventMgr = eventMgrParameter;
     };
@@ -41,6 +41,7 @@ define([
     userCustom.onSaveSettings = function(newConfig, event) {
         newConfig.code = utils.getInputValue("#textarea-usercustom-code");
         try {
+            /*jshint evil: true */
             eval(newConfig.code);
         }
         catch(e) {
@@ -52,6 +53,7 @@ define([
 
     userCustom.onInit = function() {
         try {
+            /*jshint evil: true */
             eval(userCustom.config.code);
         }
         catch(e) {

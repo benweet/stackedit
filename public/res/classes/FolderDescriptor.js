@@ -5,7 +5,7 @@ define([
     "fileSystem"
 ], function(_, utils, storage, fileSystem) {
 
-    function FolderDescriptor(folderIndex, name, fileList) {
+    function FolderDescriptor(folderIndex, name) {
         this.folderIndex = folderIndex;
         this._name = name || storage[folderIndex + ".name"];
         // Retrieve file list from storage

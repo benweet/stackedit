@@ -17,11 +17,11 @@ define([
         utils.setInputValue("#textarea-html-code-template", buttonHtmlCode.config.template);
     };
 
-    buttonHtmlCode.onSaveSettings = function(newConfig, event) {
+    buttonHtmlCode.onSaveSettings = function(newConfig) {
         newConfig.template = utils.getInputValue("#textarea-html-code-template");
     };
 
-    var eventMgr = undefined;
+    var eventMgr;
     buttonHtmlCode.onEventMgrCreated = function(eventMgrParameter) {
         eventMgr = eventMgrParameter;
     };
@@ -30,12 +30,12 @@ define([
         return buttonHtmlCodeHTML;
     };
 
-    var selectedFileDesc = undefined;
+    var selectedFileDesc;
     buttonHtmlCode.onFileSelected = function(fileDesc) {
         selectedFileDesc = fileDesc;
     };
 
-    var textareaElt = undefined;
+    var textareaElt;
     buttonHtmlCode.onPreviewFinished = function(html) {
         try {
             var htmlCode = _.template(buttonHtmlCode.config.template, {
@@ -59,8 +59,9 @@ define([
         $(".action-html-code").click(function() {
             _.defer(function() {
                 $("#input-html-code").each(function() {
-                    if($(this).is(":hidden"))
+                    if($(this).is(":hidden")) {
                         return;
+                    }
                     this.select();
                 });
             });

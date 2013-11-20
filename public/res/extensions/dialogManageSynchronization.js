@@ -7,20 +7,20 @@ define([
 
     var dialogManageSynchronization = new Extension("dialogManageSynchronization", 'Dialog "Manage synchronization"', false, true);
 
-    var eventMgr = undefined;
+    var eventMgr;
     dialogManageSynchronization.onEventMgrCreated = function(eventMgrParameter) {
         eventMgr = eventMgrParameter;
     };
     
-    var synchronizer = undefined;
+    var synchronizer;
     dialogManageSynchronization.onSynchronizerCreated = function(synchronizerParameter) {
         synchronizer = synchronizerParameter;
     };
 
-    var fileDesc = undefined;
-    var syncListElt = undefined;
-    var $msgSyncListElt = undefined;
-    var $msgNoSyncElt = undefined;
+    var fileDesc;
+    var syncListElt;
+    var $msgSyncListElt;
+    var $msgNoSyncElt;
     var refreshDialog = function(fileDescParameter) {
         if(fileDescParameter !== undefined && fileDescParameter !== fileDesc) {
             return;

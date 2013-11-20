@@ -10,7 +10,6 @@ define([
     "settings",
     "eventMgr",
     "classes/AsyncTask",
-    "config"
 ], function(_, $, constants, core, utils, storage, logger, settings, eventMgr, AsyncTask) {
 
     var connected = false;
@@ -687,7 +686,12 @@ define([
                 pickerBuilder.addView(view);
             }
             else if(pickerType == 'img') {
-                pickerBuilder.addView(google.picker.ViewId.PHOTOS);
+                view = new google.picker.PhotosView();
+                view.setType('flat');
+                pickerBuilder.addView(view);
+                view = new google.picker.PhotosView();
+                view.setType('ofuser');
+                pickerBuilder.addView(view);
                 pickerBuilder.addView(google.picker.ViewId.PHOTO_UPLOAD);
             }
             pickerBuilder.setCallback(function(data) {

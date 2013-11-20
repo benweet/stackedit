@@ -1,35 +1,65 @@
 define([
-    "classes/Extension"
-], function(Extension) {
+    "underscore",
+    "extensions/markdownExtra",
+    "extensions/mathJax",
+    "classes/Extension",
+], function(_, markdownExtra, mathJax, Extension) {
 
     var markdownSectionParser = new Extension("markdownSectionParser", "Markdown section parser");
 
-    var eventMgr = undefined;
+    var eventMgr;
     markdownSectionParser.onEventMgrCreated = function(eventMgrParameter) {
         eventMgr = eventMgrParameter;
     };
 
     markdownSectionParser.onPagedownConfigure = function(editor) {
+        
+        // Build a regexp to look for section delimiters
+        var regexp = '^.+[ \\t]*\\n=+[ \\t]*\\n+|^.+[ \\t]*\\n-+[ \\t]*\\n+|^\\#{1,6}[ \\t]*.+?[ \\t]*\\#*\\n+'; // Title delimiters
+        if(markdownExtra.config.enabled) {
+            if(_.some(markdownExtra.config.extensions, function(extension) {
+                return extension == "fenced_code_gfm";
+            })) {
+                regexp = '^```.*\\n[\\s\\S]*?\\n```|' + regexp; // Fenced block delimiters
+            }
+        }
+        if(mathJax.config.enabled) {
+            // Math delimiter has to follow 1 empty line to be considered as a section delimiter
+            regexp = '^[ \\t]*\\n\\$\\$[\\s\\S]*?\\$\\$|' + regexp; // $$ math block delimiters
+            regexp = '^[ \\t]*\\n\\\\\\\\[[\\s\\S]*?\\\\\\\\]|' + regexp; // \\[ \\] math block delimiters
+            regexp = '^[ \\t]*\\n\\\\?\\\\begin\\{[a-z]*\\*?\\}[\\s\\S]*?\\\\end\\{[a-z]*\\*?\\}|' + regexp; // \\begin{...} \\end{...} math block delimiters
+        }
+        regexp = new RegExp(regexp, 'gm');
+        
         var converter = editor.getConverter();
         converter.hooks.chain("preConversion", function(text) {
             eventMgr.previewStartTime = new Date();
             var tmpText = text + "\n\n";
+            function addSection(startOffset, endOffset) {
+                var sectionText = tmpText.substring(offset, endOffset);
+                sectionList.push({
+                    text: sectionText,
+                    textWithDelimiter: '\n~~~SectionDelimiter~~~\n\n' + sectionText + '\n'
+                });
+            }
             var sectionList = [], offset = 0;
-            // Look for titles (excluding gfm blocs)
-            tmpText.replace(/^```.*\n[\s\S]*?\n```|(^.+[ \t]*\n=+[ \t]*\n+|^.+[ \t]*\n-+[ \t]*\n+|^\#{1,6}[ \t]*.+?[ \t]*\#*\n+)/gm, function(match, title, matchOffset) {
-                if(title) {
-                    // We just found a title which means end of the previous
-                    // section
-                    // Exclude last \n of the section
-                    sectionList.push(tmpText.substring(offset, matchOffset));
-                    offset = matchOffset;
-                }
-                return "";
+            // Look for delimiters
+            tmpText.replace(regexp, function(match, matchOffset) {
+                // Create a new section with the text preceding the delimiter
+                addSection(offset, matchOffset);
+                offset = matchOffset;
             });
             // Last section
-            sectionList.push(tmpText.substring(offset, text.length));
+            addSection(offset, text.length);
             eventMgr.onSectionsCreated(sectionList);
-            return text;
+            return _.reduce(sectionList, function(result, section) {
+                return result + section.textWithDelimiter;
+            }, '');
+        });
+        
+        converter.hooks.chain("postConversion", function(text) {
+            // Convert delimiters into hidden elements
+            return text.replace(/<p>~~~SectionDelimiter~~~<\/p>/g, '<div class="se-section-delimiter"></div>');
         });
     };
 

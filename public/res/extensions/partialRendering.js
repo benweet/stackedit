@@ -1,20 +1,21 @@
 define([
     "underscore",
     "crel",
+    "extensions/markdownExtra",
     "classes/Extension",
     "text!html/partialRenderingSettingsBlock.html",
-], function(_, crel, Extension, partialRenderingSettingsBlockHTML) {
+], function(_, crel, markdownExtra, Extension, partialRenderingSettingsBlockHTML) {
 
     var partialRendering = new Extension("partialRendering", "Partial Rendering", true);
     partialRendering.settingsBlock = partialRenderingSettingsBlockHTML;
 
-    var converter = undefined;
+    var converter;
     var sectionCounter = 0;
     var sectionList = [];
-    var linkDefinition = undefined;
+    var linkDefinition;
     var sectionsToRemove = [];
     var modifiedSections = [];
-    var insertBeforeSection = undefined;
+    var insertBeforeSection;
     var fileChanged = false;
     function updateSectionList(newSectionList, newLinkDefinition) {
         modifiedSections = [];
@@ -63,6 +64,7 @@ define([
         sectionsToRemove = sectionList.slice(leftIndex, sectionList.length + rightIndex);
         sectionList = leftSections.concat(modifiedSections).concat(rightSections);
     }
+    
     var doFootnotes = false;
     var hasFootnotes = false;
     partialRendering.onSectionsCreated = function(sectionListParam) {
@@ -70,8 +72,8 @@ define([
         var newSectionList = [];
         var newLinkDefinition = '\n';
         hasFootnotes = false;
-        _.each(sectionListParam, function(text) {
-            text += "\n\n";
+        _.each(sectionListParam, function(section) {
+            var text = section.textWithDelimiter + '\n';
 
             // Strip footnotes
             if(doFootnotes) {
@@ -94,22 +96,25 @@ define([
                 return wholeMatch;
             });
 
-            // Skip space only sections
-            if(/\S/.test(text)) {
-                // Add section to the newSectionList
-                newSectionList.push({
-                    id: ++sectionCounter,
-                    text: text + '\n'
-                });
-            }
+            // Add section to the newSectionList
+            newSectionList.push({
+                id: ++sectionCounter,
+                text: text + '\n'
+            });
         });
 
         updateSectionList(newSectionList, newLinkDefinition);
     };
 
-    var footnoteContainerElt = undefined;
-    var previewContentsElt = undefined;
     var footnoteMap = {};
+    // Store one footnote elt in the footnote map
+    function storeFootnote(footnoteElt) {
+        var id = footnoteElt.id.substring(3);
+        footnoteMap[id] = footnoteElt;
+    }
+    
+    var footnoteContainerElt;
+    var previewContentsElt;
     function refreshSections() {
 
         // Remove outdated sections
@@ -117,36 +122,36 @@ define([
             var sectionElt = document.getElementById("wmd-preview-section-" + section.id);
             previewContentsElt.removeChild(sectionElt);
         });
-
+        
         var wmdPreviewElt = document.getElementById("wmd-preview");
         var childNode = wmdPreviewElt.firstChild;
-        var newSectionEltList = document.createDocumentFragment();
-        _.each(modifiedSections, function(section) {
+        function createSectionElt(section) {
             var sectionElt = crel('div', {
                 id: 'wmd-preview-section-' + section.id,
                 class: 'wmd-preview-section preview-content'
             });
-            var isFirst = true;
+            var isNextDelimiter = false;
             while (childNode) {
                 var nextNode = childNode.nextSibling;
-                if(isFirst === false && /(^| )wmd-title($| )/.test(childNode.className)) {
-                    // Stop when encountered the next wmd-title
+                if(isNextDelimiter === true && childNode.tagName == 'DIV' && childNode.className == 'se-section-delimiter') {
+                    // Stop when encountered the next delimiter
                     break;
                 }
-                isFirst = false;
+                isNextDelimiter = true;
                 if(childNode.tagName == 'DIV' && childNode.className == 'footnotes') {
-                    _.each(childNode.querySelectorAll("ol > li"), function(footnoteElt) {
-                        // Store each footnote in our footnote map
-                        var id = footnoteElt.id.substring(3);
-                        footnoteMap[id] = footnoteElt;
-                    });
+                    _.each(childNode.querySelectorAll("ol > li"), storeFootnote);
                 }
                 else {
                     sectionElt.appendChild(childNode);
                 }
                 childNode = nextNode;
             }
-            newSectionEltList.appendChild(sectionElt);
+            return sectionElt;
+        }
+
+        var newSectionEltList = document.createDocumentFragment();
+        _.each(modifiedSections, function(section) {
+            newSectionEltList.appendChild(createSectionElt(section));
         });
         wmdPreviewElt.innerHTML = '';
         var insertBeforeElt = footnoteContainerElt;
@@ -179,7 +184,7 @@ define([
 
     partialRendering.onPagedownConfigure = function(editor) {
         converter = editor.getConverter();
-        converter.hooks.chain("preConversion", function(text) {
+        converter.hooks.chain("preConversion", function() {
             var result = _.map(modifiedSections, function(section) {
                 return section.text;
             });
@@ -191,10 +196,14 @@ define([
         });
     };
 
-    partialRendering.onExtraExtensions = function(extraExtensions) {
-        doFootnotes = _.some(extraExtensions, function(extension) {
-            return extension == "footnotes";
-        });
+    partialRendering.onInit = function() {
+        if(markdownExtra.config.enabled) {
+            if(_.some(markdownExtra.config.extensions, function(extension) {
+                return extension == "footnotes";
+            })) {
+                doFootnotes = true;
+            }
+        }
     };
     
     partialRendering.onReady = function() {

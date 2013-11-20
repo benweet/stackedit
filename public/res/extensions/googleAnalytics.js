@@ -1,3 +1,4 @@
+/*globals _gaq */
 define([
     "jquery",
     "underscore",
@@ -5,7 +6,6 @@ define([
     "utils",
     "classes/Extension",
     "settings",
-    "config",
 ], function($, _, constants, utils, Extension, settings) {
 
     var googleAnalytics = new Extension("googleAnalytics", "Google Analytics", true);
@@ -13,7 +13,7 @@ define([
 
     var isLoaded = false;
     var isOffline = false;
-    window["_gaq"] = [];
+    window._gaq = [];
 
     var init = function() {
         if(isLoaded === false && isOffline === false) {
@@ -71,7 +71,7 @@ define([
             '_trackEvent',
             "Settings",
             'theme',
-            "" + theme
+            "" + window.theme
         ]);
         _gaq.push([
             '_trackEvent',
@@ -86,11 +86,11 @@ define([
             "" + settings.editorFontFamily
         ]);
         _gaq.push([
-                   '_trackEvent',
-                   "Settings",
-                   'editorFontSize',
-                   "" + settings.editorFontSize
-                   ]);
+            '_trackEvent',
+            "Settings",
+            'editorFontSize',
+            "" + settings.editorFontSize
+        ]);
         // Check if user has removed back links
         _gaq.push([
             '_trackEvent',

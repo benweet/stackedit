@@ -6,13 +6,13 @@ define([
 
     var documentTitle = new Extension("documentTitle", "Document Title");
 
-    var layout = undefined;
+    var layout;
     documentTitle.onLayoutCreated = function(layoutParameter) {
         layout = layoutParameter;
     };
 
-    var fileDesc = undefined;
-    var $fileTitleNavbar = undefined;
+    var fileDesc;
+    var $fileTitleNavbar;
     var updateTitle = function(fileDescParameter) {
         if(fileDescParameter !== fileDesc) {
             return;

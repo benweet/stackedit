@@ -8,7 +8,6 @@ define([
     "logger",
     "eventMgr",
     "classes/AsyncTask",
-    "config",
 ], function($, _, constants, core, storage, logger, eventMgr, AsyncTask) {
 
     var client;

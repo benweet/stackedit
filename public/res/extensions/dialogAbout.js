@@ -4,7 +4,6 @@ define([
     "utils",
     "classes/Extension",
     "text!html/dialogAbout.html",
-    "config"
 ], function(_, constants, utils, Extension, dialogAboutHTML) {
 
     var dialogAbout = new Extension("dialogAbout", 'Dialog "About"');
@@ -23,7 +22,6 @@ define([
         "Highlight.js": "http://softwaremaniacs.org/soft/highlight/en/",
         "jGrowl": "https://github.com/stanlemon/jGrowl/",
         "jQuery": "http://jquery.com/",
-        "LESS": "http://lesscss.org/",
         "lz-string": "http://pieroxy.net/blog/pages/lz-string/index.html",
         "MathJax": "http://www.mathjax.org/",
         "Mousetrap": "http://craig.is/killing/mice",

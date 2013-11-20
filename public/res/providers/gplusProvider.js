@@ -16,8 +16,8 @@ define([
         var result;
         _.find(doc.thumbnails, function(thumbnail) {
             var found = false;
-            thumbnail.url.replace(/(.*\/s)\d.*?(\/[^\/]+)/, function(match, sub1, sub2) {
-                result = sub1 + size + sub2;
+            thumbnail.url.replace(/^(.*[\/=]s)\d.*?(\/[^\/]+)?$/, function(match, sub1, sub2) {
+                result = sub1 + size + (sub2 || '');
                 found = true;
             });
             return found;

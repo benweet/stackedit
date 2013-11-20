@@ -4,7 +4,7 @@ define([
     'storage',
     'classes/Extension',
     'bootstrap-tour'
-], function(_, $, storage, Extension) {
+], function(_, $, storage, Extension, Tour) {
 
     var welcomeTour = new Extension('welcomeTour', 'Welcome tour', false, true);
 
@@ -19,7 +19,7 @@ define([
                 removeItem: function() {
                 }
             },
-            onEnd: function(tour) {
+            onEnd: function() {
                 storage.welcomeTour = 'done';
             },
             template: [
@@ -85,6 +85,14 @@ define([
                 content: 'Once published, use the <i class="icon-share"></i> <code>Publish</code> button to update your publication.',
                 placement: 'bottom',
                 reflex: true,
+            },
+            {
+                element: '.navbar-inner',
+                title: 'Happy StackWriting!',
+                content: [
+                    'Enjoy, and don\'t forget to rate <b>StackEdit</b> on <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg/reviews">Chrome Web Store</a>.',
+                ].join(""),
+                placement: 'bottom',
             },
         ]);
         if(!_.has(storage, 'welcomeTour')) {

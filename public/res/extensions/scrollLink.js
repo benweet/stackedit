@@ -8,12 +8,12 @@ define([
     var scrollLink = new Extension("scrollLink", "Scroll Link", true, true, true);
     scrollLink.settingsBlock = scrollLinkSettingsBlockHTML;
 
-    var aceEditor = undefined;
+    var aceEditor;
     scrollLink.onAceCreated = function(aceEditorParam) {
         aceEditor = aceEditorParam;
     };
 
-    var sectionList = undefined;
+    var sectionList;
     scrollLink.onSectionsCreated = function(sectionListParam) {
         sectionList = sectionListParam;
     };
@@ -23,22 +23,19 @@ define([
         offsetBegin = offsetBeginParam;
     };
 
-    var $previewElt = undefined;
+    var $previewElt;
     var mdSectionList = [];
     var htmlSectionList = [];
-    function pxToFloat(px) {
-        return parseFloat(px.substring(0, px.length - 2));
-    }
-    var lastEditorScrollTop = undefined;
-    var lastPreviewScrollTop = undefined;
+    var lastEditorScrollTop;
+    var lastPreviewScrollTop;
     var buildSections = _.debounce(function() {
 
         mdSectionList = [];
         var mdTextOffset = 0;
         var mdSectionOffset = 0;
         var firstSectionOffset = offsetBegin;
-        _.each(sectionList, function(sectionText) {
-            mdTextOffset += sectionText.length + firstSectionOffset;
+        _.each(sectionList, function(section) {
+            mdTextOffset += section.text.length + firstSectionOffset;
             firstSectionOffset = 0;
             var documentPosition = aceEditor.session.doc.indexToPosition(mdTextOffset);
             var screenPosition = aceEditor.session.documentToScreenPosition(documentPosition.row, documentPosition.column);
@@ -54,13 +51,17 @@ define([
 
         // Try to find corresponding sections in the preview
         htmlSectionList = [];
-        var htmlSectionOffset = 0;
+        var htmlSectionOffset;
         var previewScrollTop = $previewElt.scrollTop();
-        // Each title element is a section separator
-        $previewElt.find(".preview-content > .wmd-title").each(function() {
-            var $titleElt = $(this);
-            // Consider div scroll position and header element top margin
-            var newSectionOffset = $titleElt.position().top + previewScrollTop + pxToFloat($titleElt.css('margin-top'));
+        $previewElt.find(".preview-content > .se-section-delimiter").each(function() {
+            if(htmlSectionOffset === undefined) {
+                // Force start to 0 for the first section
+                htmlSectionOffset = 0;
+                return;
+            }
+            var $delimiterElt = $(this);
+            // Consider div scroll position
+            var newSectionOffset = $delimiterElt.position().top + previewScrollTop;
             htmlSectionList.push({
                 startOffset: htmlSectionOffset,
                 endOffset: newSectionOffset,
@@ -96,7 +97,7 @@ define([
         var previewScrollTop = $previewElt.scrollTop();
         function getDestScrollTop(srcScrollTop, srcSectionList, destSectionList) {
             // Find the section corresponding to the offset
-            var sectionIndex = undefined;
+            var sectionIndex;
             var srcSection = _.find(srcSectionList, function(section, index) {
                 sectionIndex = index;
                 return srcScrollTop < section.endOffset;
@@ -105,16 +106,17 @@ define([
                 // Something wrong in the algorithm...
                 return;
             }
-            var posInSection = (srcScrollTop - srcSection.startOffset) / srcSection.height;
+            var posInSection = (srcScrollTop - srcSection.startOffset) / (srcSection.height || 1);
             var destSection = destSectionList[sectionIndex];
             return destSection.startOffset + destSection.height * posInSection;
         }
+        var destScrollTop;
         // Perform the animation if diff > 9px
         if(isScrollEditor === true && Math.abs(editorScrollTop - lastEditorScrollTop) > 9) {
             isScrollEditor = false;
             // Animate the preview
             lastEditorScrollTop = editorScrollTop;
-            var destScrollTop = getDestScrollTop(editorScrollTop, mdSectionList, htmlSectionList);
+            destScrollTop = getDestScrollTop(editorScrollTop, mdSectionList, htmlSectionList);
             destScrollTop = _.min([
                 destScrollTop,
                 $previewElt.prop('scrollHeight') - $previewElt.outerHeight()
@@ -144,10 +146,10 @@ define([
             isScrollPreview = false;
             // Animate the editor
             lastPreviewScrollTop = previewScrollTop;
-            var destScrollTop = getDestScrollTop(previewScrollTop, htmlSectionList, mdSectionList);
+            destScrollTop = getDestScrollTop(previewScrollTop, htmlSectionList, mdSectionList);
             destScrollTop = _.min([
                 destScrollTop,
-                aceEditor.session.getScreenLength() * aceEditor.renderer.lineHeight - aceEditor.renderer.$size.scrollerHeight
+                aceEditor.session.getScreenLength() * aceEditor.renderer.lineHeight + aceEditor.renderer.scrollMargin.bottom - aceEditor.renderer.$size.scrollerHeight
             ]);
             // If negative, set it to zero
             destScrollTop < 0 && (destScrollTop = 0);
@@ -198,7 +200,7 @@ define([
             }
             scrollAdjust = false;
         });
-        aceEditor.session.on("changeScrollTop", function(e) {
+        aceEditor.session.on("changeScrollTop", function() {
             if(isEditorMoving === false) {
                 isScrollEditor = true;
                 isScrollPreview = false;
@@ -207,7 +209,7 @@ define([
         });
     };
 
-    var $previewContentsElt = undefined;
+    var $previewContentsElt;
     scrollLink.onPagedownConfigure = function(editor) {
         $previewContentsElt = $("#preview-contents");
         editor.getConverter().hooks.chain("postConversion", function(text) {

@@ -1,16 +1,16 @@
 define([
     "classes/Extension",
     "yaml-js",
-    ], function(Extension, YAML) {
+], function(Extension, YAML) {
 
     var yamlFrontMatterParser = new Extension("yamlFrontMatterParser", "YAML front matter");
 
-    var eventMgr = undefined;
+    var eventMgr;
     yamlFrontMatterParser.onEventMgrCreated = function(eventMgrParameter) {
         eventMgr = eventMgrParameter;
     };
 
-    var fileDesc = undefined;
+    var fileDesc;
     yamlFrontMatterParser.onFileSelected = function(fileDescParam) {
         fileDesc = fileDescParam;
     };

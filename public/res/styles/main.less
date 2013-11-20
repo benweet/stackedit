@@ -18,9 +18,9 @@
 @secondary-bg-light: lighten(@secondary-bg, 7%);
 @secondary-bg-dark: darken(@secondary-bg, 7%);
 @primary-color: #333;
-@primary-color-light: lighten(@primary-color, 13%);
-@primary-color-lighter: lighten(@primary-color, 20%);
-@primary-color-lightest: lighten(@primary-color, 35%);
+@primary-color-light: lighten(@primary-color, 12.5%);
+@primary-color-lighter: lighten(@primary-color, 25%);
+@primary-color-lightest: lighten(@primary-color, 37.5%);
 @primary-color-inv: #fff;
 @bg-navbar-hover: @primary-bg-lighter;
 @error-border: #ff8661;
@@ -330,16 +330,37 @@ a {
 	}
 
 	.working-indicator {
-		width: 50px;
-		height: 17px;
-		background-position: 0 0;
-		margin-top: 12px;
-		&.show {
-			.img-retina('../img/loader-default.gif', '../img/loader-default2x.gif', 50px, 17px);
+	    overflow: hidden;
+        height: @input-height-base;
+        padding-top: 10px;
+        padding-right: 8px;
+        vertical-align: middle;
+		.bar {
+		    display: inline-block;
+		    visibility: hidden;
+		    width: 8px;
+            height: 8px;
+            border-radius: 1px;
+            margin: 0 2px;
+            background-color: @btn-success-color;
+            animation: indicator 0.6s ease-out infinite;
+            -webkit-animation: indicator 0.6s ease-out infinite; /* Safari and Chrome */
+		}
+		&.show div {
+		    visibility: visible;
 		}
 	}
 }
 
+@keyframes indicator {
+    from {opacity: 1;}
+    to {opacity: 0.25;}
+}
+
+@-webkit-keyframes indicator /* Safari and Chrome */ {
+    from {opacity: 1;}
+    to {opacity: 0.25;}
+}
 
 /*********************
  * Menu/Document panels
@@ -951,7 +972,7 @@ ul,ol {
  *****************************/
  
 .ace_editor {
-	color: @primary-color-light;
+	color: @primary-color-lighter;
 }
 
 .ace-tm {
@@ -975,7 +996,35 @@ ul,ol {
 	}
 	
 	.ace_markup.ace_list {
-		color: @primary-color-lightest;
+		color: @primary-color;
+	}
+	
+	.ace_constant.ace_language {
+	    color: @primary-color-lightest;
+	}
+	
+	.ace_meta.ace_tag {
+		color: @primary-color;
+		font-style: italic;
+		font-weight: bold;
+		background-color: @code-bg;
+	}
+	
+	.ace_keyword.ace_operator {
+	    color: @primary-color-light;
+		background-color: transparent;
+	}
+	
+	.ace_keyword {
+		color: @primary-color;
+		background-color: @code-bg;
+		font-weight: bold;
+	}
+	
+	.ace_string {
+		color: @primary-color;
+		font-style: italic;
+		background-color: @code-bg;
 	}
 	
 	.ace_strong {
@@ -989,7 +1038,6 @@ ul,ol {
 	
 	.ace_blockquote {
 		color: @primary-color-lightest;
-		font-style: italic;
 	}
 	
 	.ace_code {
@@ -1001,12 +1049,22 @@ ul,ol {
 		color: @primary-color;
 	}
 	
+	.ace_link {
+	    color: @primary-color;
+		background-color: @code-bg;
+	}
+	
 	.ace_description {
-		color: @primary-color-lighter;
+		color: @primary-color-lightest;
 	}
 	
 	.ace_constant {
 	    color: @primary-color-light;
+	}
+	
+	.ace_comment {
+	    color: fade(@primary-color-lighter, 50%);
+		font-style: italic;
 	}
 	
 	.ace_marker-layer .misspelled {

@@ -1,11 +1,14 @@
+/*globals Markdown */
 define([
     "jquery",
     "underscore",
     "utils",
     "classes/Extension",
     "text!html/markdownExtraSettingsBlock.html",
+    'google-code-prettify',
+    'highlightjs',
     'pagedown-extra',
-], function($, _, utils, Extension, markdownExtraSettingsBlockHTML) {
+], function($, _, utils, Extension, markdownExtraSettingsBlockHTML, prettify, hljs) {
 
     var markdownExtra = new Extension("markdownExtra", "Markdown Extra", true);
     markdownExtra.settingsBlock = markdownExtraSettingsBlockHTML;
@@ -36,7 +39,7 @@ define([
         utils.setInputValue("#input-markdownextra-highlighter", markdownExtra.config.highlighter);
     };
 
-    markdownExtra.onSaveSettings = function(newConfig, event) {
+    markdownExtra.onSaveSettings = function(newConfig) {
         newConfig.extensions = [];
         utils.getInputChecked("#input-markdownextra-fencedcodegfm") && newConfig.extensions.push("fenced_code_gfm");
         utils.getInputChecked("#input-markdownextra-tables") && newConfig.extensions.push("tables");
@@ -47,7 +50,7 @@ define([
         newConfig.highlighter = utils.getInputValue("#input-markdownextra-highlighter");
     };
 
-    var eventMgr = undefined;
+    var eventMgr;
     markdownExtra.onEventMgrCreated = function(eventMgrParameter) {
         eventMgr = eventMgrParameter;
     };
@@ -61,19 +64,16 @@ define([
             options.highlighter = "prettify";
             var previewContentsElt = document.getElementById('preview-contents');
             editor.hooks.chain("onPreviewRefresh", function() {
-                _.each(previewContentsElt.querySelectorAll('.prettyprint'), function(elt) {
+                _.each(previewContentsElt.querySelectorAll('.prettyprint > code'), function(elt) {
                     hljs.highlightBlock(elt);
                 });
             });
         }
         else if(markdownExtra.config.highlighter == "prettify") {
             options.highlighter = "prettify";
-            editor.hooks.chain("onPreviewRefresh", prettyPrint);
+            editor.hooks.chain("onPreviewRefresh", prettify.prettyPrint);
         }
         Markdown.Extra.init(converter, options);
-
-        // Send extensions list to other extensions
-        eventMgr.onExtraExtensions(markdownExtra.config.extensions);
     };
 
     return markdownExtra;

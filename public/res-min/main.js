@@ -20895,7 +20895,7 @@ function() {
  }, l.onCreateButton = function() {
   var t = n("button", {
    "class": "btn btn-success button-publish",
-   title: "Publish document"
+   title: "Update document publication"
   }, n("i", {
    "class": "icon-share"
   }));

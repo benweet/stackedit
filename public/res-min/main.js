@@ -20684,7 +20684,7 @@ function() {
  var u;
  return c.onPagedownConfigure = function(e) {
   u = document.getElementById("preview-contents");
-  var n = new RegExp("^" + c.config.marker + "$", "g");
+  var n = new RegExp("^" + c.config.marker + "$");
   e.hooks.chain("onPreviewRefresh", function() {
    var e = document.querySelectorAll(".table-of-contents, .toc"), i = l();
    t.each(u.getElementsByTagName("p"), function(e) {
@@ -21987,6 +21987,11 @@ function() {
    content: 'Once published, use the <i class="icon-share"></i> <code>Publish</code> button to update your publication.',
    placement: "bottom",
    reflex: !0
+  }, {
+   element: ".navbar-inner",
+   title: "Happy StackWriting!",
+   content: [ 'Enjoy, and don\'t forget to rate <b>StackEdit</b> on <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg/reviews">Chrome Web Store</a>.' ].join(""),
+   placement: "bottom"
   } ]), e.has(n, "welcomeTour") || i.start(), t(".action-welcome-tour").click(function() {
    i.restart();
   });

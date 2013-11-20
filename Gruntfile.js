@@ -300,8 +300,8 @@ module.exports = function(grunt) {
     /***************************************************************************
      * Tag task
      */
-    grunt.registerTask('tag', function() {
-        grunt.task.run('bump-only');
+    grunt.registerTask('tag', function(versionType) {
+        grunt.task.run('bump-only:' + (versionType || 'patch'));
         grunt.task.run('string-replace:config');
         grunt.task.run('default');
         grunt.task.run('bump-commit');

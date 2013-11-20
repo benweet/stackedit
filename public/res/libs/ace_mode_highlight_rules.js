@@ -63,7 +63,7 @@ var MarkdownHighlightRules = function() {
         next  : "githubblock"
     }, { // block quote
         token : "blockquote",
-        regex : "^\\s*>[ ]",
+        regex : "^\\s*>\\s*(?:[*+-]|\\d+\\.)?\\s+",
         next  : "blockquote"
     }, { // HR * - _
         token : "constant",
@@ -166,6 +166,10 @@ var MarkdownHighlightRules = function() {
             token : "empty_line",
             regex : "^\\s*$",
             next  : "start"
+        }, { // block quote
+            token : "blockquote",
+            regex : "^\\s*>\\s*(?:[*+-]|\\d+\\.)?\\s+",
+            next  : "blockquote"
         }, {
             include : "basic", noEscape: true
         }, {

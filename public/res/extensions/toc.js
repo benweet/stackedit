@@ -116,7 +116,7 @@ define([
 
     toc.onPagedownConfigure = function(editor) {
         previewContentsElt = document.getElementById('preview-contents');
-        var tocExp = new RegExp("^" + toc.config.marker + "$", "g");
+        var tocExp = new RegExp("^" + toc.config.marker + "$");
         // Run TOC generation when conversion is finished directly on HTML
         editor.hooks.chain("onPreviewRefresh", function() {
             var tocEltList = document.querySelectorAll('.table-of-contents, .toc');

@@ -266,6 +266,8 @@ module.exports = function(grunt) {
             'public/libs/dictionaries',
             'public/libs/MathJax/extensions',
             'public/libs/MathJax/fonts/HTML-CSS/TeX/woff',
+            'public/libs/MathJax/jax/element',
+            'public/libs/MathJax/jax/output/HTML-CSS/autoload',
             'public/libs/MathJax/jax/output/HTML-CSS/fonts/TeX',
             'public/libs/MathJax/jax/output/HTML-CSS/fonts/STIX'
         ];

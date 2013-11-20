@@ -86,6 +86,14 @@ define([
                 placement: 'bottom',
                 reflex: true,
             },
+            {
+                element: '.navbar-inner',
+                title: 'Happy StackWriting!',
+                content: [
+                    'Enjoy, and don\'t forget to rate <b>StackEdit</b> on <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg/reviews">Chrome Web Store</a>.',
+                ].join(""),
+                placement: 'bottom',
+            },
         ]);
         if(!_.has(storage, 'welcomeTour')) {
             tour.start();

@@ -1481,7 +1481,7 @@ a{-webkit-transition:background-color ease-in-out .15s,color ease-in-out .15s,bo
 .navbar .file-title-navbar{display:block;padding:4px 15px;font-size:20px;font-weight:200;color:#dfdfdf;max-width:280px;overflow:hidden;white-space:nowrap}
 .navbar .input-file-title{margin-right:10px}
 .navbar .working-indicator{overflow:hidden;height:38px;padding-top:10px;padding-right:8px;vertical-align:middle}
-.navbar .working-indicator .bar{display:inline-block;visibility:hidden;width:8px;height:8px;border-radius:1px;margin:0 2px;background-color:#dfdfdf;animation:indicator .6s ease-out infinite;-webkit-animation:indicator .6s ease-out infinite;}
+.navbar .working-indicator .bar{display:inline-block;visibility:hidden;width:10px;height:10px;border-radius:1px;margin:0 2px;background-color:#dfdfdf;animation:indicator .6s ease-out infinite;-webkit-animation:indicator .6s ease-out infinite;}
 .navbar .working-indicator.show div{visibility:visible}
 @keyframes indicator{from{opacity:1} to{opacity:0.25}}@-webkit-keyframes indicator /* Safari and Chrome */{from{opacity:1} to{opacity:0.25}}.menu-panel,.document-panel{display:block;position:absolute;top:0;height:100%;z-index:10;overflow:initial}
 .menu-panel .collapse-button i,.document-panel .collapse-button i{color:#777777;font-size:14px}
@@ -1622,6 +1622,7 @@ ul ul,ol ul,ul ol,ol ol{margin-bottom:15px}
 .ace-tm .ace_keyword.ace_operator{color:#dfdfdf;background-color:transparent}
 .ace-tm .ace_keyword{color:#ffffff;background-color:rgba(255,255,255,0.1);font-weight:bold}
 .ace-tm .ace_string{color:#ffffff;font-style:italic;background-color:rgba(255,255,255,0.1)}
+.ace-tm .ace_invalid{color:inherit;background:inherit}
 .ace-tm .ace_strong{font-weight:bold}
 .ace-tm .ace_emphasis{color:#ffffff;font-style:italic}
 .ace-tm .ace_blockquote{color:#9f9f9f}

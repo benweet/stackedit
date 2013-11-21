@@ -11520,7 +11520,7 @@ function printStackTrace(e) {
  return e;
 }), define("constants", [], function() {
  var e = {};
- return e.VERSION = "2.3.1", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", 
+ return e.VERSION = "2.3.2", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", 
  e.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", e.GOOGLE_DRIVE_APP_ID = "241271498917", 
  e.DROPBOX_APP_KEY = "lq6mwopab8wskas", e.DROPBOX_APP_SECRET = "851fgnucpezy84t", 
  e.BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c", e.DEFAULT_FILE_TITLE = "Title", 
@@ -19060,15 +19060,15 @@ function() {
    return n.hashExtraBlock(c);
   });
  };
- var m = function(e, t, n, i, o, r, s) {
-  var a = r, l = 0, c = "";
-  return a.replace(/(<)([a-zA-Z1-6]*)([^\n>]?)(>)(.*?)(<\/\2>)/gm, function(e, t, n, i, o, r, s, u) {
-   c += f(a.substring(l, u)) + m(e, t, n, i, o, r, s), l = u + e.length;
-  }), c += f(a.substring(l)), t + n + i + o + c + s;
+ var m = function(e) {
+  var t = "", n = 0;
+  return e.replace(/(<)([a-zA-Z1-6]+)([^\n]*?>)([\s\S]*?)(<\/\2>)/g, function(i, o, r, s, a, l, c) {
+   t += f(e.substring(n, c)), n = c + i.length, /code|kbd|pre|script|noscript|iframe|math|ins|del|pre/i.test(r) || (a = m(a)), 
+   t += o + r + s + a + l;
+  }), t + f(e.substring(n));
  };
  Markdown.Extra.prototype.runSmartyPants = function(e) {
-  return e = e.replace(/(<)([a-zA-Z1-6]+)([^\n>]*?)(>)(.*?)(<\/\2>)/gm, m), e = e.replace(/(<([a-zA-Z1-6]+)\b([^\n>]*?)(\/)?>)/g, p), 
-  e = e.replace(/((<)(code|kbd|pre|script|noscript|iframe|math|ins|del|pre)(.?)(>)(.*?)(<\/)(code|kbd|pre|script|noscript|iframe|math|ins|del|pre)(>))/gm, p);
+  return e = m(e), e = e.replace(/(<([a-zA-Z1-6]+)\b([^\n>]*?)(\/)?>)/g, p);
  }, Markdown.Extra.prototype.definitionLists = function(t) {
   var n = new RegExp([ "(\\x02\\n?|\\n\\n)", "(?:", "(", "(", "[ ]{0,3}", "((?:[ \\t]*\\S.*\\n)+)", "\\n?", "[ ]{0,3}:[ ]+", ")", "([\\s\\S]+?)", "(", "(?=\\0x03)", "|", "(?=", "\\n{2,}", "(?=\\S)", "(?!", "[ ]{0,3}", "(?:\\S.*\\n)+?", "\\n?", "[ ]{0,3}:[ ]+", ")", "(?!", "[ ]{0,3}:[ ]+", ")", ")", ")", ")", ")" ].join(""), "gm"), i = this;
   return t = s(t), t = t.replace(n, function(t, n, o) {
@@ -19270,9 +19270,9 @@ function() {
   o = e;
  }, r.onPagedownConfigure = function(i) {
   var r = "^.+[ \\t]*\\n=+[ \\t]*\\n+|^.+[ \\t]*\\n-+[ \\t]*\\n+|^\\#{1,6}[ \\t]*.+?[ \\t]*\\#*\\n+";
-  t.config.enabled && e.some(t.config.extensions, function(e) {
+  t.enabled && e.some(t.config.extensions, function(e) {
    return "fenced_code_gfm" == e;
-  }) && (r = "^```.*\\n[\\s\\S]*?\\n```|" + r), n.config.enabled && (r = "^[ \\t]*\\n\\$\\$[\\s\\S]*?\\$\\$|" + r, 
+  }) && (r = "^```.*\\n[\\s\\S]*?\\n```|" + r), n.enabled && (r = "^[ \\t]*\\n\\$\\$[\\s\\S]*?\\$\\$|" + r, 
   r = "^[ \\t]*\\n\\\\\\\\[[\\s\\S]*?\\\\\\\\]|" + r, r = "^[ \\t]*\\n\\\\?\\\\begin\\{[a-z]*\\*?\\}[\\s\\S]*?\\\\end\\{[a-z]*\\*?\\}|" + r), 
   r = new RegExp(r, "gm");
   var s = i.getConverter();
@@ -19382,7 +19382,7 @@ function() {
    a();
   });
  }, l.onInit = function() {
-  n.config.enabled && e.some(n.config.extensions, function(e) {
+  n.enabled && e.some(n.config.extensions, function(e) {
    return "footnotes" == e;
   }) && (v = !0);
  }, l.onReady = function() {

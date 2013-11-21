@@ -197,7 +197,7 @@ define([
     };
 
     partialRendering.onInit = function() {
-        if(markdownExtra.config.enabled) {
+        if(markdownExtra.enabled) {
             if(_.some(markdownExtra.config.extensions, function(extension) {
                 return extension == "footnotes";
             })) {

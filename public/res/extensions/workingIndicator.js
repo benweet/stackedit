@@ -10,12 +10,13 @@ define([
     var $workingIndicatorElt;
     workingIndicator.onAsyncRunning = function (isRunning) {
         $bodyElt.toggleClass("working", isRunning);
-        $workingIndicatorElt.toggleClass("show", isRunning);
+        $workingIndicatorElt.toggleClass("hide", !isRunning);
     };
     
     workingIndicator.onReady = function () {
         $bodyElt = $(document.body);
-        $workingIndicatorElt = $(".working-indicator");
+        $workingIndicatorElt = $('<div class="hide">');
+        $('.working-indicator').append($workingIndicatorElt);
         for (var i = 0; i < 4; i++) {
             $workingIndicatorElt.append($('<div class="bar">').css({
                 'animation-delay': (i*2/10).toPrecision(3) + 's',
@@ -25,5 +26,4 @@ define([
     };
 
     return workingIndicator;
-
 });

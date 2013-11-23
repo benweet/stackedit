@@ -11520,7 +11520,7 @@ function printStackTrace(e) {
  return e;
 }), define("constants", [], function() {
  var e = {};
- return e.VERSION = "2.3.2", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", 
+ return e.VERSION = "2.3.3", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", 
  e.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", e.GOOGLE_DRIVE_APP_ID = "241271498917", 
  e.DROPBOX_APP_KEY = "lq6mwopab8wskas", e.DROPBOX_APP_SECRET = "851fgnucpezy84t", 
  e.BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c", e.DEFAULT_FILE_TITLE = "Title", 
@@ -20453,9 +20453,9 @@ function() {
 }), define("extensions/workingIndicator", [ "jquery", "underscore", "classes/Extension" ], function(e, t, n) {
  var i, o, r = new n("workingIndicator", "Working Indicator");
  return r.onAsyncRunning = function(e) {
-  i.toggleClass("working", e), o.toggleClass("show", e);
+  i.toggleClass("working", e), o.toggleClass("hide", !e);
  }, r.onReady = function() {
-  i = e(document.body), o = e(".working-indicator");
+  i = e(document.body), o = e('<div class="hide">'), e(".working-indicator").append(o);
   for (var t = 0; 4 > t; t++) o.append(e('<div class="bar">').css({
    "animation-delay": (2 * t / 10).toPrecision(3) + "s",
    "-webkit-animation-delay": (2 * t / 10).toPrecision(3) + "s"

@@ -1480,9 +1480,8 @@ a{-webkit-transition:background-color ease-in-out .15s,color ease-in-out .15s,bo
 .navbar .btn-group>.btn.disabled *,.navbar .btn-group>.btn.blocked *,.navbar .btn-group>.btn[disabled] *{color:rgba(83,83,83,0.3)}
 .navbar .file-title-navbar{display:block;padding:4px 15px;font-size:20px;font-weight:200;color:#535353;max-width:280px;overflow:hidden;white-space:nowrap}
 .navbar .input-file-title{margin-right:10px}
-.navbar .working-indicator{overflow:hidden;height:38px;padding-top:10px;padding-right:8px;vertical-align:middle}
-.navbar .working-indicator .bar{display:inline-block;visibility:hidden;width:10px;height:10px;border-radius:1px;margin:0 2px;background-color:#535353;animation:indicator .6s ease-out infinite;-webkit-animation:indicator .6s ease-out infinite;}
-.navbar .working-indicator.show div{visibility:visible}
+.navbar .working-indicator{overflow:hidden;height:38px;width:65px;padding-top:10px;padding-right:8px}
+.navbar .working-indicator .bar{display:inline-block;width:10px;height:10px;border-radius:1px;margin:0 2px;opacity:0.25;background-color:#535353;animation:indicator .8s ease-out infinite;-webkit-animation:indicator .8s ease-out infinite;}
 @keyframes indicator{from{opacity:1} to{opacity:0.25}}@-webkit-keyframes indicator /* Safari and Chrome */{from{opacity:1} to{opacity:0.25}}.menu-panel,.document-panel{display:block;position:absolute;top:0;height:100%;z-index:10;overflow:initial}
 .menu-panel .collapse-button i,.document-panel .collapse-button i{color:#737373;font-size:14px}
 .menu-panel.in .collapse-button,.document-panel.in .collapse-button{background-color:#f0f3f4}

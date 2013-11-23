@@ -68,13 +68,21 @@ Getting started
 Architecture
 ------------
 
-![Architecture diagram][13]
+![Architecture diagram][12]
 
 The modules are loaded in the following order:
 
-1. 3rd party libraries (jQuery, underscore.js...)
-2. `Extension` class and objects
-3. 
+1. The 3rd party libraries (jQuery, underscore.js...)
+2. The `Extension` objects
+3. The `EventMgr` module
+4. The `core` module
+5. The `fileMgr` module and the `helpers` modules
+6. The `provider` modules
+7. The `publisher` and `synchronizer` modules
+
+This is important to emphasize in order to avoid circular dependencies. For instance, if an `Extension` is declared with the `core` module as a dependency, RequireJS will inject `undefined` instead of the actual module.
+
+Any module though can access any dependencies by implementing the proper [injection callback][13] provided by the `eventMgr`.
 
 ----------
 
@@ -96,7 +104,7 @@ The `core` module is responsible for:
 **Methods:**
 
 - `onReady(callback)`: sets a callback to be called when all modules have been loaded and the DOM is ready.
-> **NOTE:** This is preferred over [jQuery's `.ready()`][17] because it ensures that all AMD modules are loaded by [RequireJS][18]).
+> **NOTE:** This is preferred over [jQuery's `.ready()`][17] because it ensures that all AMD modules are loaded by [RequireJS][18].
 
 - `runPeriodically(callback)`: sets a callback to be called every second.
 > **NOTE:** The callback will not run if the user is inactive or in StackEdit Viewer. User is considered inactive after 5 minutes of inactivity (mouse or keyboard).
@@ -248,12 +256,12 @@ The `eventMgr` module is responsible for receiving and dispatching events in **S
     
     > Triggered by the `core` module.
 
-- **`onAsyncRunning()`**
+- **`onAsyncRunning(isRunning)`**
 
     Some asynchronous tasks have just started or stopped.
     - `isRunning`: true if started, false if stopped.
     
-    >  Triggered by the `AsyncTask` module.
+    > Triggered by the `AsyncTask` module.
 
 - **`onPeriodicRun()`**
 
@@ -280,9 +288,11 @@ The `eventMgr` module is responsible for receiving and dispatching events in **S
     A hook allowing enabled extensions to initialize.
     
     > Triggered by the `eventMgr` module. Only `Extension` objects can handle this event.
+    
+    > This event is triggered before `onReady` event and just after the `config` and `enabled` extensions properties have been set by the `eventMgr`.
 
 
-#### Module creation events:
+#### Module injection
 
 - **`onFileMgrCreated(fileMgr)`**
 
@@ -314,7 +324,7 @@ The `eventMgr` module is responsible for receiving and dispatching events in **S
     > Triggered by the `eventMgr` module.
 
 
-#### Operations on files:
+#### Operations on files
 
 - **`onFileCreated(fileDesc)`**
 
@@ -354,44 +364,81 @@ The `eventMgr` module is responsible for receiving and dispatching events in **S
 - **`onContentChanged(fileDesc)`**
 
     The content of a [`FileDescriptor`][51] object has been modified.
+    - `fileDesc`: the [`FileDescriptor`][52] object.
     
-- **`onTitleChanged()`**
+- **`onTitleChanged(fileDesc)`**
 
-    The content of a [`FileDescriptor`][52] object has been modified.
+    The content of a [`FileDescriptor`][53] object has been modified.
+    - `fileDesc`: the [`FileDescriptor`][54] object.
+
+
+#### Operations on folders
+
+- **`onFoldersChanged()`**
+
+    The folders structure has changed.
+
+
+#### Sync events
+
+- **`onSyncRunning()`**
+
+    A synchronization job has just started or stopped.
+    - `isRunning`: true if started, false if stopped.
+    
+    > Triggered by the `synchronizer` module.
+
+- **`onSyncSuccess()`**
+
+    A synchronization job has successfully finished.
+    
+    > Triggered by the `synchronizer` module.
+    
+- **`onSyncImportSuccess(fileDescList, provider)`**
+
+    The import of documents has successfully finished.
+    - `fileDescList`: the list of [`FileDescriptor`][55] objects that have been created.
+    - `provider`: the [`provider`][56] module that handled the import.
+    
+    > Triggered by the [`provider`][57] module that handled the import.
+
+- **`onSyncExportSuccess(fileDesc, syncAttributes)`**
+
+    The export of one document has successfully finished.
+    - `fileDesc`: the [`FileDescriptor`][58] object that has been exported.
+    - `syncAttributes`: the descriptor object of new sync location.
+    
+    > Triggered by the `synchronizer` module.
+
+- **`onSyncRemoved(fileDesc, syncAttributes)`**
+
+    A sync location has been removed from a [`FileDescriptor`][59] object.
+    - `fileDesc`: the [`FileDescriptor`][60] object.
+    - `syncAttributes`: the descriptor object of the removed sync location.
     
 
+#### Publish events
 
-#### Operations on folders:
-- `onFoldersChanged()`: 
+- **`onPublishRunning()`**
+- **`onPublishSuccess()`**
+- **`onNewPublishSuccess()`**
+- **`onPublishRemoved()`**
 
-#### Sync events:
-- `onSyncRunning()`: 
-- `onSyncSuccess()`: 
-- `onSyncImportSuccess()`: 
-- `onSyncExportSuccess()`: 
-- `onSyncRemoved()`: 
+#### Operations on Layout
+- **`onLayoutConfigure()`**
+- **`onLayoutCreated()`**
+- **`onLayoutResize()`**
+- **`onCreateButton()`**
+- **`onCreateEditorButton()`**
+- **`onCreatePreviewButton()`**
 
-#### Publish events:
-- `onPublishRunning()`: 
-- `onPublishSuccess()`: 
-- `onNewPublishSuccess()`: 
-- `onPublishRemoved()`: 
+#### Operations on PageDown
+- **`onPagedownConfigure()`**
+- **`onSectionsCreated()`**
+- **`onMarkdownTrim()`**
 
-#### Operations on Layout:
-- `onLayoutConfigure()`: 
-- `onLayoutCreated()`: 
-- `onLayoutResize()`: 
-- `onCreateButton()`: 
-- `onCreateEditorButton()`: 
-- `onCreatePreviewButton()`: 
-
-#### Operations on PageDown:
-- `onPagedownConfigure()`: 
-- `onSectionsCreated()`: 
-- `onMarkdownTrim()`: 
-
-#### Operation on ACE:
-- `onAceCreated()`:
+#### Operation on ACE
+- **`onAceCreated()`**
 
 
 
@@ -411,8 +458,8 @@ The `eventMgr` module is responsible for receiving and dispatching events in **S
   [9]: https://github.com/benweet/stackedit-wordpress-proxy
   [10]: https://github.com/benweet/stackedit-tumblr-proxy
   [11]: https://github.com/prose/gatekeeper
-  [12]: http://benweet.github.io/stackedit/doc/img/architecture.png "Architecture diagram"
-  [13]: https://lh6.googleusercontent.com/-sr6zRtyaoUk/Un5qSakOzPI/AAAAAAAAFC0/oI5If5fI9Gw/s0/StackEdit%252520architecture%252520-%252520New%252520Page%252520%2525283%252529.png "StackEdit architecture"
+  [12]: https://lh6.googleusercontent.com/-sr6zRtyaoUk/Un5qSakOzPI/AAAAAAAAFC0/oI5If5fI9Gw/s0/StackEdit%252520architecture%252520-%252520New%252520Page%252520%2525283%252529.png "StackEdit architecture"
+  [13]: #module-injection
   [14]: http://layout.jquery-dev.net/ "UI Layout"
   [15]: http://ace.c9.io
   [16]: https://code.google.com/p/pagedown/ "PageDown"
@@ -452,3 +499,11 @@ The `eventMgr` module is responsible for receiving and dispatching events in **S
   [50]: #filedescriptor
   [51]: #filedescriptor
   [52]: #filedescriptor
+  [53]: #filedescriptor
+  [54]: #filedescriptor
+  [55]: #filedescriptor
+  [56]: #provider
+  [57]: #provider
+  [58]: #filedescriptor
+  [59]: #filedescriptor
+  [60]: #filedescriptor

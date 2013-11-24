@@ -62,7 +62,7 @@ Getting started
         docker build -t my-stackedit-image .
         docker run -p 3000 my-stackedit-image
 
-> **NOTE:** OAuth authorizations work out of the box for address http://localhost/ except for WordPress. To allow an other address, you have to add specific keys at the end of `constants.js` and eventually to set up specific proxies with the corresponding key/secret pairs ([WordPress Proxy][9], [Tumblr Proxy][10] and [Gatekeeper][11]).
+> **NOTE:** OAuth authorizations work out of the box for address `http://localhost/` except for WordPress. To allow an other address, you have to add specific keys at the end of `constants.js` and eventually to set up specific proxies with the corresponding key/secret pairs ([WordPress Proxy][9], [Tumblr Proxy][10] and [Gatekeeper][11]).
 
 
 Architecture
@@ -70,7 +70,7 @@ Architecture
 
 ![Architecture diagram][12]
 
-The modules are loaded in the following order:
+The modules are loaded by RequireJS in the following order:
 
 1. The 3rd party libraries (jQuery, underscore.js...)
 2. The `Extension` objects
@@ -80,9 +80,9 @@ The modules are loaded in the following order:
 6. The `provider` modules
 7. The `publisher` and `synchronizer` modules
 
-This is important to emphasize in order to avoid circular dependencies. For instance, if an `Extension` is declared with the `core` module as a dependency, RequireJS will inject `undefined` instead of the actual module.
+This is important to notice in order to avoid circular dependencies. For instance, if an `Extension` is declared with the `core` module as a dependency, RequireJS will inject `undefined` instead of the actual module.
 
-Any module though can access any dependencies by implementing the proper [injection callback][13] provided by the `eventMgr`.
+Any module though can access any dependencies by implementing the proper [injection listener][13] provided by the `eventMgr`.
 
 ----------
 
@@ -220,10 +220,34 @@ A `publishAttributes` object is an object that describes a publish location. Att
 
 ### eventMgr
 
-The `eventMgr` module is responsible for receiving and dispatching events in **StackEdit**. The following functions of the `eventMgr` module will trigger events of the same name. Extensions can listen to these events by implementing functions with the same name. The function `addListener(eventName, callback)` of the `eventMgr` module can be used by any other module to listen to these events.
+The `eventMgr` module is responsible for receiving and dispatching events. Below is the list of all events signatures.
+
+Most events (those that are triggered outside the `eventMgr` module) can be triggered by calling methods of the same name in the `eventMgr` module. For example:
+
+```js
+eventMgr.onMessage('StackEdit is awesome!');
+```
+
+The method `addListener(eventName, callback)` of the `eventMgr` module can be used to listen to these events (except those that can only be handled by `Extension` objects). For example:
+
+```js
+eventMgr.addListener('onMessage', function(message) {
+    alert(message);
+});
+```
+
+`Extension` objects have the possibility to listen to those events by implementing methods of the same name. For example:
+
+```js
+userCustom.onMessage = function(message) {
+    alert(message);
+};
+```
 
 
-#### Core events:
+----------
+
+#### Core events
 
 - **`onReady()`**
 
@@ -231,7 +255,7 @@ The `eventMgr` module is responsible for receiving and dispatching events in **S
     
     > Triggered by the `core` module.
     
-    > This is preferred over [jQuery's `.ready()`][39] because it ensures that all modules are loaded by [RequireJS][40].
+    > This is preferred over [jQuery's `.ready()`][39] because it ensures that all modules have been loaded by RequireJS.
 
 - **`onMessage(message)`**
 
@@ -292,6 +316,8 @@ The `eventMgr` module is responsible for receiving and dispatching events in **S
     > This event is triggered before `onReady` event and just after the `config` and `enabled` extensions properties have been set by the `eventMgr`.
 
 
+----------
+
 #### Module injection
 
 - **`onFileMgrCreated(fileMgr)`**
@@ -323,6 +349,8 @@ The `eventMgr` module is responsible for receiving and dispatching events in **S
     
     > Triggered by the `eventMgr` module.
 
+
+----------
 
 #### Operations on files
 
@@ -371,28 +399,31 @@ The `eventMgr` module is responsible for receiving and dispatching events in **S
     The content of a [`FileDescriptor`][53] object has been modified.
     - `fileDesc`: the [`FileDescriptor`][54] object.
 
-
-#### Operations on folders
-
 - **`onFoldersChanged()`**
 
     The folders structure has changed.
 
 
+----------
+
 #### Sync events
 
-- **`onSyncRunning()`**
+- **`onSyncRunning(isRunning)`**
 
     A synchronization job has just started or stopped.
     - `isRunning`: true if started, false if stopped.
     
     > Triggered by the `synchronizer` module.
+    
+    > A synchronization job is the action to download and upload all detected changes for all sync locations of all documents.
 
 - **`onSyncSuccess()`**
 
     A synchronization job has successfully finished.
     
     > Triggered by the `synchronizer` module.
+    
+    > A synchronization job is the action to download and upload all detected changes for all sync locations of all documents.
     
 - **`onSyncImportSuccess(fileDescList, provider)`**
 
@@ -401,14 +432,18 @@ The `eventMgr` module is responsible for receiving and dispatching events in **S
     - `provider`: the [`provider`][56] module that handled the import.
     
     > Triggered by the [`provider`][57] module that handled the import.
+    
+    > An import is the action to download multiple files and to create, for each, one [`FileDescriptor`][55] objects with one sync location.
 
 - **`onSyncExportSuccess(fileDesc, syncAttributes)`**
 
     The export of one document has successfully finished.
     - `fileDesc`: the [`FileDescriptor`][58] object that has been exported.
-    - `syncAttributes`: the descriptor object of new sync location.
+    - `syncAttributes`: the descriptor object of the new sync location.
     
     > Triggered by the `synchronizer` module.
+    
+    > An export is the action to upload one file and to create one new sync location associated with one existing `FileDescriptor`][55] object.
 
 - **`onSyncRemoved(fileDesc, syncAttributes)`**
 
@@ -417,30 +452,147 @@ The `eventMgr` module is responsible for receiving and dispatching events in **S
     - `syncAttributes`: the descriptor object of the removed sync location.
     
 
+----------
+
 #### Publish events
 
-- **`onPublishRunning()`**
-- **`onPublishSuccess()`**
-- **`onNewPublishSuccess()`**
-- **`onPublishRemoved()`**
+- **`onPublishRunning(isRunning)`**
 
-#### Operations on Layout
-- **`onLayoutConfigure()`**
-- **`onLayoutCreated()`**
-- **`onLayoutResize()`**
+    A document publication job has just started or stopped.
+    - `isRunning`: true if started, false if stopped.
+    
+    > Triggered by the `publisher` module.
+    
+    > A publication job is the action to upload changes on multiple publish locations associated with one `FileDescriptor`][55] object.
+
+- **`onPublishSuccess(fileDesc)`**
+
+    A document publication job has successfully finished.
+    - `fileDesc`: the [`FileDescriptor`][60] object that has been published.
+    
+    > Triggered by the `publisher` module.
+    
+    > A publication job is the action to upload changes on multiple publish locations associated with one `FileDescriptor`][55] object.
+    
+- **`onNewPublishSuccess(fileDesc, publishAttributes)`**
+
+    A new publish location has been successfully created.
+    - `fileDesc`: the [`FileDescriptor`][60] object that has been published.
+    - `publishAttributes`: the descriptor object of the new publish location.
+    
+    > Triggered by the `publisher` module.
+
+- **`onPublishRemoved(fileDesc, publishAttributes)`**
+
+    A publish location has been removed from a [`FileDescriptor`][59] object.
+    - `fileDesc`: the [`FileDescriptor`][60] object.
+    - `publishAttributes`: the descriptor object of the removed publish location.
+    
+    > Triggered by the `publisher` module.
+
+
+----------
+
+#### Operations on UI Layout
+
+- **`onLayoutConfigure(layoutConfig)`**
+
+    The layout is about to be configured.
+    - `layoutConfig`: the configuration object of the UI Layout library.
+    
+    > Triggered by the `core` module.
+
+- **`onLayoutCreated(layout)`**
+
+    The layout has just been created.
+    - `layout`: the layout object of the UI Layout library.
+    
+    > Triggered by the `core` module.
+
+- **`onLayoutResize(paneName)`**
+
+    One pane of the layout has been resized.
+    - `paneName`: the name of the resized layout pane.
+    
+    > Triggered by the `core` module.
+    
 - **`onCreateButton()`**
+
+    Allows extensions to add their own buttons in the navigation bar. Implemented listeners have to return an HTML button element. For example:
+
+        userCustom.onCreateButton = function() {
+            var button = $('<button class="btn btn-success"><i class="icon-rocket"></i></button>');
+            button.click(function() {
+                eventMgr.onMessage('Booom!');
+            });
+            return button[0];
+        };
+    
+    > Triggered by the `eventMgr` module. Only `Extension` objects can handle this event.
+
 - **`onCreateEditorButton()`**
+
+    Allows extensions to add their own buttons in the side bar. Implemented listeners have to return an HTML button element. See `onCreateButton` for a concrete example.
+    
+    > Triggered by the `eventMgr` module. Only `Extension` objects can handle this event.
+
 - **`onCreatePreviewButton()`**
 
+    Allows extensions to add their own buttons over the preview. Implemented listeners have to return an HTML button element. See `onCreateButton` for a concrete example.
+    
+    > Triggered by the `eventMgr` module. Only `Extension` objects can handle this event.
+
+
+----------
+
 #### Operations on PageDown
-- **`onPagedownConfigure()`**
-- **`onSectionsCreated()`**
-- **`onMarkdownTrim()`**
+
+- **`onPagedownConfigure(editor)`**
+
+    The Pagedown editor is about to be created.
+    - `editor`: the Pagedown editor object before `run` has been called.
+    
+    > Triggered by the `core` module.
+    
+- **`onAsyncPreview(callback)`**
+
+    Called after Pagedown's synchronous rendering to trigger extra asynchronous rendering (such as MathJax). Implemented listeners have to call the callback parameter after processing in order other `onAsyncPreview` listeners to run.
+    - `callback`: the callback to call at the end of the asynchronous processing.
+    
+    > Triggered by the `eventMgr` module. Only `Extension` objects can handle this event.
+    
+- **`onPreviewFinished(html)`**
+
+    Called after every `onAsyncPreview` listeners have been called.
+    - `html`: the finally rendered HTML.
+
+- **`onSectionsCreated(sectionList)`**
+
+    The Markdown has been split into sections before rendering.
+    - `sectionList`: the list of section objects. Each section object contains:
+        - `text`: the markdown substring contained in the section.
+        - `textWithDelimiter`: the text with an added delimiter.
+    
+    > Triggered by the `markdownSectionParser` extension.
+
+- **`onMarkdownTrim(offset)`**
+
+    The Markdown has been left trimmed by a certain number of character.
+    - `offset`: the number of characters that have been removed.
+    
+    > Triggered by the `yamlFrontMatterParser` extension.
+
+
+----------
 
 #### Operation on ACE
-- **`onAceCreated()`**
 
+- **`onAceCreated(aceEditor)`**
 
+    The ACE editor has just been created.
+    - `aceEditor`: the ACE editor object.
+    
+    > Triggered by the `core` module.
 
 
 

@@ -73,16 +73,10 @@ var MarkdownHighlightRules = function() {
         token : "markup.list",
         regex : "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
         next  : "listblock-start"
-    }, { // Escaped $
-        token : "text",
-        regex : "\\\\\\$",
     }, { // Math block
         token : "constant.language.escape",
         regex : "\\$\\$|\\\\\\\\\\[|\\\\\\\\\\\\\\\\\\(",
         next  : "mathblock"
-    }, { // Math inline
-        token : ["constant.language.escape", "keyword", "constant.language.escape"],
-        regex : "(\\$)(.*)(\\$)"
     }, { // LaTeX block
         token : ["keyword", "text"],
         regex : "(\\\\?\\\\begin)(\\{[a-z]*\\*?\\})",
@@ -95,6 +89,12 @@ var MarkdownHighlightRules = function() {
         "basic" : [{
             token : "constant.language.escape",
             regex : /\\[\\`*_{}\[\]()#+\-.!]/
+        }, { // Escaped $
+            token : "text",
+            regex : "\\\\\\$",
+        }, { // Math inline
+            token : ["constant.language.escape", "keyword", "constant.language.escape"],
+            regex : "(\\$)(.*?)(\\$)"
         }, { // code span `
             token : "code",
             regex : "(`+)(.*?[^`])(\\1)"

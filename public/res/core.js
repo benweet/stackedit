@@ -304,8 +304,8 @@ define([
             livePaneResizing: true,
             enableCursorHotkey: false,
             resizerDblClickToggle: false,
-            north__spacing_open: 6,
-            north__spacing_closed: 6,
+            north__spacing_open: 0.001,
+            north__spacing_closed: 0.001,
             spacing_open: 35,
             spacing_closed: 35,
             togglerLength_open: 60,
@@ -386,12 +386,11 @@ define([
         $previewButtonsElt = $('<div class="extension-preview-buttons">');
         $editorButtonsElt = $('<div class="extension-editor-buttons">');
         if(window.viewerMode || settings.layoutOrientation == "horizontal") {
-            $('.ui-layout-resizer-north').append($resizerDecorator).append($previewButtonsElt);
-            $('.ui-layout-resizer-east').append($northTogglerElt).append($editorButtonsElt);
+            $('.ui-layout-resizer-north').append($previewButtonsElt);
+            $('.ui-layout-resizer-east').append($resizerDecorator).append($northTogglerElt).append($editorButtonsElt);
         }
         else {
-            $('.ui-layout-resizer-north').append($resizerDecorator);
-            $('.ui-layout-resizer-south').append($previewButtonsElt).append($editorButtonsElt).append($northTogglerElt);
+            $('.ui-layout-resizer-south').append($resizerDecorator).append($previewButtonsElt).append($editorButtonsElt).append($northTogglerElt);
         }
 
         setPanelVisibility();

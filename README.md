@@ -9,7 +9,7 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
 > - Full access to Dropbox or Google Drive is required to be able to import any document in StackEdit. Imported documents are downloaded in your browser and are not transmitted to a server.
 
 ### StackEdit can:
- 
+
  - Manage multiple Markdown documents online or offline
  - Export your documents in Markdown, HTML or PDF and format it using a template
  - Synchronize your Markdown documents in the Cloud
@@ -47,7 +47,7 @@ StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown
 
 
   [1]: https://developer.mozilla.org/en-US/docs/Web/Guide/DOM/Storage#localStorage
-  [2]: https://github.com/benweet/stackedit/blob/master/WELCOME.md#welcome-to-stackedit---welcome "Welcome document"
+  [2]: https://github.com/benweet/stackedit/blob/master/public/res/WELCOME.md#welcome-to-stackedit---welcome "Welcome document"
   [3]: https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#developer-guide "Developer guide"
   [4]: https://github.com/benweet/stackedit/blob/master/doc/theming.md#stackedit-theming-guide "Theming guide"
   [5]: https://stackedit.io/ "StackEdit"

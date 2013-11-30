@@ -125,7 +125,7 @@ define([
             }
         });
         markers = savedMarkers;
-        timeoutId = setTimeout(check, 700);
+        timeoutId = setTimeout(check, 2000);
     }
 
 /*

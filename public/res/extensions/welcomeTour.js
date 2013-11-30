@@ -57,7 +57,7 @@ define([
                 title: 'Toggle document',
                 content: [
                     '<p>Click the <i class="icon-folder-open"></i> <code>Select document</code> button to switch to another document.</p>',
-                    '<b>NOTE: </b>Use <code>Ctrl+[</code> and <code>Ctrl+]</code> shortcuts to toggle quickly.'
+                    'Use <code>Ctrl+[</code> and <code>Ctrl+]</code> shortcuts to toggle quickly.'
                 ].join(""),
                 placement: 'left',
                 reflex: true,
@@ -75,14 +75,14 @@ define([
             {
                 element: '#extension-buttons .button-synchronize',
                 title: 'Synchronize',
-                content: '<p>Once imported/exported, use the <i class="icon-refresh"></i> <code>Synchronize</code> button to force the synchronization (this is done automatically every 3 minutes).</p>',
+                content: '<p>Once imported or exported, use the <i class="icon-refresh"></i> <code>Synchronize</code> button to force the synchronization</p>This is done automatically every 3 minutes.',
                 placement: 'bottom',
                 reflex: true,
             },
             {
                 element: '#extension-buttons .button-publish',
-                title: 'Update publications',
-                content: 'Once published, use the <i class="icon-share"></i> <code>Publish</code> button to update your publication.',
+                title: 'Update publication',
+                content: 'Once published, use the <i class="icon-share"></i> <code>Publish</code> button to update the publication.',
                 placement: 'bottom',
                 reflex: true,
             },
@@ -90,7 +90,7 @@ define([
                 element: '.navbar-inner',
                 title: 'Happy StackWriting!',
                 content: [
-                    'Enjoy, and don\'t forget to rate <b>StackEdit</b> on <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg/reviews">Chrome Web Store</a>.',
+                    'Enjoy, and don\'t forget to rate <b>StackEdit</b> on <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg/reviews">Chrome Web Store</a>...',
                 ].join(""),
                 placement: 'bottom',
             },

@@ -32,9 +32,7 @@ define([
         
         var publishListHtml = _.reduce(fileDesc.publishLocations, function(result, publishAttributes) {
             var formattedAttributes = _.omit(publishAttributes, "provider", "publishIndex", "sharingLink");
-            if(formattedAttributes.password) {
-                formattedAttributes.password = "********";
-            }
+            formattedAttributes.password && (formattedAttributes.password = "********");
             formattedAttributes = JSON.stringify(formattedAttributes).replace(/{|}|"/g, "").replace(/,/g, ", ");
             return result + _.template(dialogManagePublicationLocationHTML, {
                 publishAttributes: publishAttributes,

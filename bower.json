@@ -3,7 +3,7 @@
   "version": "2.3.3",
   "description": "StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.",
   "dependencies": {
-    "bootstrap": "~3.0.2",
+    "bootstrap": "v3.0.0",
     "jquery": "2.0.3",
     "underscore": "1.5.1",
     "requirejs": "~2.1.8",
@@ -17,10 +17,10 @@
     "FileSaver": "*",
     "stacktrace": "~0.5.3",
     "requirejs-text": "~2.0.10",
-    "bootstrap-tour": "~0.6.0",
+    "bootstrap-tour": "~0.7.1",
     "ace": "4bbe5346f2ae5ad35c0c47defa244ab27aedd451",
     "pagedown-ace": "https://github.com/benweet/pagedown-ace.git#72a27932f6f4f78e93a186aa2947d1f15c1cd7d5",
-    "pagedown-extra": "https://github.com/jmcmanus/pagedown-extra.git#c7f99ad0b8abfa0b9c9b8d406253b6d6695c4fb3",
+    "pagedown-extra": "https://github.com/jmcmanus/pagedown-extra.git#bb1d4ec19edd01e4364e98dd4ec149a31f2f5c9a",
     "crel": "git@github.com:KoryNunn/crel.git#8dbda04b129fc0aec01a2a080d1cab26816e11c1",
     "waitForImages": "git@github.com:alexanderdickson/waitForImages.git#~1.4.2",
     "to-markdown": "git@github.com:benweet/to-markdown.git#jquery",
@@ -31,6 +31,6 @@
   },
   "resolutions": {
     "jquery": "2.0.3",
-    "bootstrap": "~3.0.2"
+    "bootstrap": "v3.0.0"
   }
 }

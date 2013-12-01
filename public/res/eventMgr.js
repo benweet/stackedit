@@ -15,6 +15,7 @@ define([
     "extensions/dialogAbout",
     "extensions/dialogManagePublication",
     "extensions/dialogManageSynchronization",
+    "extensions/dialogManageSharing",
     "extensions/dialogOpenHarddrive",
     "extensions/documentTitle",
     "extensions/documentSelector",
@@ -30,7 +31,6 @@ define([
     "extensions/buttonFocusMode",
     "extensions/buttonSync",
     "extensions/buttonPublish",
-    "extensions/buttonShare",
     "extensions/buttonStat",
     "extensions/buttonHtmlCode",
     "extensions/buttonViewer",
@@ -257,7 +257,7 @@ define([
             _.each(onCreateButtonListenerList, function(listener) {
                 extensionButtonsFragment.appendChild(createBtn(listener));
             });
-            document.getElementById('extension-buttons').appendChild(extensionButtonsFragment);
+            document.querySelector('.extension-buttons').appendChild(extensionButtonsFragment);
 
             // Create extension editor buttons
             logger.log("onCreateEditorButton");

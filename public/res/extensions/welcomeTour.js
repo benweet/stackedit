@@ -46,7 +46,7 @@ define([
                 placement: 'bottom',
             },
             {
-                element: '.navbar .action-create-file',
+                element: '.navbar-inner > .nav .action-create-file, .navbar .right-buttons-dropdown > .nav > .btn:not(:hidden)',
                 title: 'New document',
                 content: 'Click the <i class="icon-file"></i> <code>New document</code> button to create a new document.',
                 placement: 'left',
@@ -73,17 +73,17 @@ define([
                 reflex: true,
             },
             {
-                element: '#extension-buttons .button-synchronize',
+                element: '.navbar-inner > .nav .button-synchronize, .navbar .right-buttons-dropdown > .nav > .btn:not(:hidden)',
                 title: 'Synchronize',
                 content: '<p>Once imported or exported, use the <i class="icon-refresh"></i> <code>Synchronize</code> button to force the synchronization</p>This is done automatically every 3 minutes.',
-                placement: 'bottom',
+                placement: 'left',
                 reflex: true,
             },
             {
-                element: '#extension-buttons .button-publish',
+                element: '.navbar-inner > .nav .button-publish, .navbar .right-buttons-dropdown > .nav > .btn:not(:hidden)',
                 title: 'Update publication',
                 content: 'Once published, use the <i class="icon-share"></i> <code>Publish</code> button to update the publication.',
-                placement: 'bottom',
+                placement: 'left',
                 reflex: true,
             },
             {

@@ -304,6 +304,7 @@ define([
             livePaneResizing: true,
             enableCursorHotkey: false,
             resizerDblClickToggle: false,
+            resizeWithWindow: false,
             north__spacing_open: 1,
             north__spacing_closed: 1,
             spacing_open: 35,
@@ -311,8 +312,9 @@ define([
             togglerLength_open: 60,
             togglerLength_closed: 60,
             stateManagement__enabled: false,
-            center__minWidth: 200,
-            center__minHeight: 200,
+            north__minSize: 49,
+            center__minWidth: 300,
+            center__minHeight: 300,
             fxSettings: {
                 easing: "easeInOutQuad",
                 duration: 350
@@ -356,7 +358,7 @@ define([
             layout = $('body').layout($.extend(layoutGlobalConfig, {
                 east__resizable: true,
                 east__size: 0.5,
-                east__minSize: 260
+                east__minSize: 300
             }));
         }
         else if(settings.layoutOrientation == "vertical") {
@@ -399,6 +401,38 @@ define([
         eventMgr.onLayoutCreated(layout);
     }
 
+    var $navbarElt;
+    var $leftBtnElts;
+    var $rightBtnElts;
+    var $leftBtnDropdown;
+    var $rightBtnDropdown;
+    var marginWidth = 40 + 25 + 25;
+    var titleWidth = 20 + 353;
+    var leftButtonsWidth = window.lightMode ? 0 : 80 + 87 + 174 + 175 + 87;
+    var rightButtonsWidth = 40 + 88 + 87;
+    var rightButtonsDropdown = 44;
+    function adjustWindow() {
+        var maxWidth = $navbarElt.width() - 10;
+        if(marginWidth + titleWidth + leftButtonsWidth + rightButtonsWidth > maxWidth) {
+            $rightBtnDropdown.show().find('.dropdown-menu').append($rightBtnElts);
+            if(marginWidth + titleWidth + leftButtonsWidth + rightButtonsDropdown > maxWidth) {
+                $leftBtnDropdown.show().find('.dropdown-menu').append($leftBtnElts);
+            }
+            else {
+                $leftBtnDropdown.hide().after($leftBtnElts);
+            }
+        }
+        else {
+            $leftBtnDropdown.hide().after($leftBtnElts);
+            $rightBtnDropdown.hide().after($rightBtnElts);
+        }
+        if(window.lightMode) {
+            $leftBtnElts.hide();
+            $leftBtnDropdown.hide();
+        }
+        layout.resizeAll();
+    }
+    
     // Create the PageDown editor
     var editor;
     var $editorElt;
@@ -609,6 +643,12 @@ define([
         else {
             document.body.innerHTML = bodyIndexHTML;
         }
+        $navbarElt = $('.navbar');
+        $leftBtnElts = $navbarElt.find('.left-buttons');
+        $rightBtnElts = $navbarElt.find('.right-buttons');
+        $leftBtnDropdown = $navbarElt.find('.left-buttons-dropdown');
+        $rightBtnDropdown = $navbarElt.find('.right-buttons-dropdown');
+        $(window).bind("resize", adjustWindow);
         
         // Populate shortcuts in settings
         shortcutMgr.addSettingEntries();
@@ -723,6 +763,8 @@ define([
         }, 1000);
 
         eventMgr.onReady();
+        // Adjust the layout after the dom has changed
+        adjustWindow();
     };
 
     // Other initialization that are not prioritary
@@ -740,10 +782,14 @@ define([
             $documentPanelElt.collapse('hide');
             isModalShown = true;
         }).on('shown.bs.modal', function() {
-            // Focus on the first input when modal opens
-            var elt = $(this);
+            var $elt = $(this);
             setTimeout(function() {
-                elt.find("input:enabled:visible:first").focus();
+                // When modal opens focus on the first button
+                $elt.find('.btn:first').focus();
+                // Or on the first link if any
+                $elt.find('button:first').focus();
+                // Or on the first input if any
+                $elt.find("input:enabled:visible:first").focus();
             }, 50);
         }).on('hidden.bs.modal', function() {
             // Focus on the editor when modal is gone
@@ -891,6 +937,19 @@ define([
         });
 
         // Tooltips
+        var openedTooltip;
+        function openTooltip(e) {
+            var elt = this;
+            if(openedTooltip && openedTooltip[0] === elt) return;
+            _.defer(function() {
+                $(document).on("click.close-tooltip", function() {
+                    openedTooltip && openedTooltip.tooltip('hide');
+                    openedTooltip = undefined;
+                    $(document).off("click.close-tooltip");
+                });
+                openedTooltip = $(elt).tooltip('show');
+            });
+        }
         $(".tooltip-lazy-rendering").tooltip({
             container: '.modal-settings',
             placement: 'right',
@@ -907,23 +966,13 @@ define([
                 '<b class="text-danger">NOTE: Backlinks in Stack Exchange Q/A are not welcome.</b>'
             ].join('')
         });
-        var tooltipOpen = false;
         $(".tooltip-usercustom-extension").tooltip({
             html: true,
             container: '.modal-settings',
             placement: 'right',
             trigger: 'manual',
             title: settingsUserCustomExtensionTooltipHTML
-        }).click(function(e) {
-            $(this).tooltip('show');
-            $(document).on("click.tooltip-usercustom-extension", function() {
-                tooltipOpen = false;
-                $(".tooltip-usercustom-extension").tooltip('hide');
-                $(document).off("click.tooltip-usercustom-extension");
-            });
-            !tooltipOpen && e.stopPropagation();
-            tooltipOpen = true;
-        });
+        }).click(openTooltip);
         _.each(document.querySelectorAll(".tooltip-template"), function(tooltipElt) {
             var $tooltipElt = $(tooltipElt);
             $tooltipElt.tooltip({
@@ -932,16 +981,7 @@ define([
                 placement: 'right',
                 trigger: 'manual',
                 title: settingsTemplateTooltipHTML
-            }).click(function(e) {
-                $tooltipElt.tooltip('show');
-                $(document).on("click.tooltip-template", function() {
-                    tooltipOpen = false;
-                    $(".tooltip-template").tooltip('hide');
-                    $(document).off("click.tooltip-template");
-                });
-                !tooltipOpen && e.stopPropagation();
-                tooltipOpen = true;
-            });
+            }).click(openTooltip);
         });
 
         // Avoid dropdown panels to close on click

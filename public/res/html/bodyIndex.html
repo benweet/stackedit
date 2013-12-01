@@ -2,19 +2,39 @@
 	<div class="navbar-inner">
 		<div class="nav left-space"></div>
 		<div class="nav right-space pull-right"></div>
-		<ul class="nav">
+		<div class="left-buttons-dropdown dropdown">
+    		<div class="nav">
+        		<button class="btn btn-success" data-toggle="dropdown"
+            		title="Show buttons">
+            		<i class="icon-th-large"></i>
+            	</button>
+    		    <div class="dropdown-menu">
+        		</div>
+        	</div>
+		</div>
+		<ul class="nav left-buttons">
 			<li class="wmd-button-group1 btn-group"></li>
 		</ul>
-		<ul class="nav">
+		<ul class="nav left-buttons">
 			<li class="wmd-button-group2 btn-group"></li>
 		</ul>
-		<ul class="nav">
+		<ul class="nav left-buttons">
 			<li class="wmd-button-group3 btn-group"></li>
 		</ul>
-		<ul class="nav">
+		<ul class="nav left-buttons">
 			<li class="wmd-button-group4 btn-group"></li>
 		</ul>
-		<ul class="nav pull-right">
+		<div class="right-buttons-dropdown dropdown">
+    		<div class="nav pull-right">
+        		<button class="btn btn-success" data-toggle="dropdown"
+            		title="Show buttons">
+            		<i class="icon-th-large"></i>
+            	</button>
+    		    <div class="dropdown-menu">
+        		</div>
+        	</div>
+		</div>
+		<ul class="nav pull-right right-buttons">
 			<li class="btn-group"><button
 					class="btn btn-success action-create-file" title="New document">
 					<i class="icon-file"></i>
@@ -24,8 +44,8 @@
 					<i class="icon-trash"></i>
 				</button></li>
 		</ul>
-		<ul class="nav pull-right">
-			<li id="extension-buttons"></li>
+		<ul class="nav pull-right right-buttons">
+			<li class="extension-buttons"></li>
 		</ul>
 		<ul class="nav pull-right">
 			<li><div class="working-indicator"></div></li>
@@ -122,6 +142,9 @@
 			<a href="#" data-toggle="modal" data-target=".modal-manage-publish"
 				class="action-reset-input list-group-item"><i class="icon-share"></i>
 				Manage publication</a>
+			<a href="#" data-toggle="modal" data-target=".modal-manage-sharing"
+				class="action-reset-input list-group-item"><i class="icon-link"></i>
+				Sharing</a>
 		</div>
 		<ul class="nav">
 			<li><a href="#" data-toggle="modal"
@@ -578,7 +601,7 @@
 				</blockquote>
 				<blockquote class="msg-no-sync hide">
 					"<span class="file-title"></span>" is not synchronized yet. <br />
-					<br /> <b>NOTE:</b> You can add synchronized locations by
+					<br /> <b>Tip:</b> You can add synchronized locations by
 					exporting your document using <i class="icon-provider-gdrive"></i>
 					<code>Google Drive</code>
 					or <i class="icon-provider-dropbox"></i>
@@ -813,7 +836,7 @@
 					</div>
 				</div>
 				<blockquote class="front-matter-info modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">
-                    <p><b>NOTE:</b> You can use a
+                    <p><b>Tip:</b> You can use a
                     <a href="http://jekyllrb.com/docs/frontmatter/"
                     target="_blank">YAML front matter</a> to specify the title and the tags/labels of your publication.</p>
                     <p><b>Interpreted variables:</b> <i>title, tags</i></p>
@@ -848,8 +871,40 @@
 					<div class="msg-no-publish hide">
 						"<span class="file-title"></span>" is not published yet. <br /> <br />
 					</div>
-					<b>NOTE:</b> You can add publications using the <i class="icon-share"></i> <code>Publish on</code> sub-menu.
+					<b>Tip:</b> You can add publications using the <i class="icon-share"></i> <code>Publish on</code> sub-menu.
 				</blockquote>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal modal-manage-sharing">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3 class="modal-title">Sharing</h3>
+			</div>
+			<div class="modal-body">
+				<p class="msg-share-list hide">
+					"<span class="file-title"></span>" can be shared using the following link(s):
+				</p>
+            	<div class="msg-share-list share-list hide"></div>
+            	<p class="msg-no-share hide">To share this document within StackEdit you need first to <a
+            		href="#" class="action-publish-gist" data-dismiss="modal">publish it as a Gist</a> in
+            		Markdown format.
+            	</p>
+            	<blockquote>
+            		<b>Tip:</b> You can open any URL within StackEdit using <a
+            			href="viewer#!url=https://raw.github.com/benweet/stackedit/master/README.md"
+            			title="Sharing example"><code>viewer#!url=</code></a>.
+            	</blockquote>
 			</div>
 			<div class="modal-footer">
 				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
@@ -906,9 +961,7 @@
 								<label class="col-lg-4 control-label" for="input-settings-theme">Theme</label>
 								<div class="col-lg-7">
 									<select id="input-settings-theme" class="form-control">
-									</select> <span class="help-block"><a target="_blank"
-										href="https://github.com/benweet/stackedit/blob/master/doc/theming.md#stackedit-theming-guide">Create
-											your own theme...</a></span>
+									</select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -963,7 +1016,7 @@
 									    <label>
 										    <input type="checkbox" id="input-settings-gdrive-full-access" />
 										    Allow StackEdit to open any document in Google Drive
-										</label> <span class="help-block">You need to revoke any existing token in
+										</label> <span class="help-block">You have to revoke any existing token in
 										<a href="https://www.google.com/settings/dashboard" target="_blank">Google Dashboard</a>
 										for this change to take effect.</span>
 									</div>
@@ -1025,7 +1078,7 @@
 					<div class="tab-pane" id="tabpane-settings-extensions">
 						<div class="panel-group accordion-extensions"></div>
 						<span class="help-block pull-right"><a target="_blank"
-							href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">Create
+							href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#developer-guide">Create
 								your own extension...</a></span>
 					</div>
 					<div class="tab-pane" id="tabpane-settings-utils">
@@ -1102,7 +1155,8 @@
 				<h3 class="modal-title">Redirection</h3>
 			</div>
 			<div class="modal-body">
-				<blockquote><b>NOTE:</b> <span class="redirect-msg"></span></blockquote>
+			    <p class="redirect-msg"></p>
+				<blockquote>Please click <b>OK</b> to proceed.</blockquote>
 			</div>
 			<div class="modal-footer">
 				<a class="btn btn-default" data-dismiss="modal">Cancel</a>

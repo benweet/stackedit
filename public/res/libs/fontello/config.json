@@ -3,6 +3,8 @@
   "css_prefix_text": "icon-",
   "css_use_suffix": false,
   "hinting": true,
+  "units_per_em": 1000,
+  "ascent": 850,
   "glyphs": [
     {
       "uid": "cfaa8fbbdcc7bb8d636cb974aad1f9b9",
@@ -266,6 +268,12 @@
       "uid": "d7271d490b71df4311e32cdacae8b331",
       "css": "home",
       "code": 59708,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "0ddd3e8201ccc7d41f7b7c9d27eca6c1",
+      "css": "link",
+      "code": 59455,
       "src": "fontawesome"
     },
     {
@@ -1863,12 +1871,6 @@
       "css": "chart-bar",
       "code": 59663,
       "src": "iconic"
-    },
-    {
-      "uid": "1fb8776fe6f1d3bbf970996fdfcf0f94",
-      "css": "link",
-      "code": 59455,
-      "src": "mfglabs"
     },
     {
       "uid": "d4824d88566b0ac66d2cdcff3408690b",

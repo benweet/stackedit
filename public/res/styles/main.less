@@ -10,7 +10,7 @@
 @logo-blue: #3399FF;
 @logo-orange: #FF610D;
 @logo-green: #8DC213;
-@primary: #0084FF;
+@primary: #0080FF;
 @secondary: @primary;
 @tertiary: @primary;
 @primary-desaturated: desaturate(@primary, 70%);
@@ -37,7 +37,7 @@
 @secondary-color-darkest: darken(@primary-desaturated, 40%);
 @secondary-color-inv: #fff;
 @error-border: #FF6161;
-@disabled-color: #ccc;
+@disabled-color: mix(@primary-color, @input-bg, 33%);
 @panel-button-color: @primary-color-dark;
 @panel-button-border-fade: 75%;
 @panel-bg: @primary-bg-lighter;
@@ -72,6 +72,7 @@
 @dropdown-link-hover-color: darken(@primary-desaturated, 25%);
 @dropdown-link-hover-bg: @btn-default-hover-bg;
 @dropdown-header-color: fade(@primary-color, 50%);
+@dropdown-link-disabled-color: @disabled-color;
 @list-group-link-color: @primary-color-darkest;
 @list-group-bg: @primary-bg-lighter;
 @list-group-border: @transparent;
@@ -80,6 +81,7 @@
 @list-group-active-border: fade(@secondary, 5%);
 @list-group-hover-bg: @btn-default-hover-bg;
 @list-group-hover-border-color: fade(@secondary, 10%);
+@input-color: @primary-color-dark;
 @input-color-placeholder: @disabled-color;
 @btn-default-color: @primary-color-darker;
 @btn-default-bg: @transparent;
@@ -89,7 +91,7 @@
 @btn-primary-bg: @primary-bg;
 @btn-primary-border: fade(@secondary, 5%);
 @btn-success-color: darken(@primary-desaturated, 25%);
-@btn-success-bg: @navbar-default-bg;
+@btn-success-bg: @transparent;
 @btn-success-border: @transparent;
 @btn-info-color: fade(@secondary-desaturated, 35%);
 @btn-info-bg: @transparent;
@@ -141,13 +143,21 @@ body {
 	.box-shadow(0 6px 12px rgba(0,0,0,.125));
 }
 
-.dropdown-menu > li > a {
-    padding: 5px 20px;
-    border-top: 1px solid transparent;
-    border-bottom: 1px solid transparent;
-    &:hover,
-    &:focus {
-        border-color: @list-group-hover-border-color;
+.dropdown-menu {
+    > li > a {
+        padding: 5px 20px;
+        border-top: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+        &:hover,
+        &:focus {
+            border-color: @list-group-hover-border-color;
+        }
+    }
+    > .disabled > a {
+        &:hover,
+        &:focus {
+            border-color: transparent;
+        }
     }
 }
 
@@ -280,19 +290,22 @@ a {
  
 // Fix form-inline broken since Bootstrap v3
 .form-inline {
-  .col-lg-1  { width: percentage((1 / @grid-columns)); }
-  .col-lg-2  { width: percentage((2 / @grid-columns)); }
-  .col-lg-3  { width: percentage((3 / @grid-columns)); }
-  .col-lg-4  { width: percentage((4 / @grid-columns)); }
-  .col-lg-5  { width: percentage((5 / @grid-columns)); }
-  .col-lg-6  { width: percentage((6 / @grid-columns)); }
-  .col-lg-7  { width: percentage((7 / @grid-columns)); }
-  .col-lg-8  { width: percentage((8 / @grid-columns)); }
-  .col-lg-9  { width: percentage((9 / @grid-columns)); }
-  .col-lg-10 { width: percentage((10/ @grid-columns)); }
-  .col-lg-11 { width: percentage((11/ @grid-columns)); }
-  .col-lg-12 { width: 100%; }
-  * {float:none;}
+    .form-control {
+        display: inline-block;
+    }
+    .col-lg-1  { width: percentage((1 / @grid-columns)); }
+    .col-lg-2  { width: percentage((2 / @grid-columns)); }
+    .col-lg-3  { width: percentage((3 / @grid-columns)); }
+    .col-lg-4  { width: percentage((4 / @grid-columns)); }
+    .col-lg-5  { width: percentage((5 / @grid-columns)); }
+    .col-lg-6  { width: percentage((6 / @grid-columns)); }
+    .col-lg-7  { width: percentage((7 / @grid-columns)); }
+    .col-lg-8  { width: percentage((8 / @grid-columns)); }
+    .col-lg-9  { width: percentage((9 / @grid-columns)); }
+    .col-lg-10 { width: percentage((10/ @grid-columns)); }
+    .col-lg-11 { width: percentage((11/ @grid-columns)); }
+    .col-lg-12 { width: 100%; }
+    * {float:none;}
 }
 
 .form-control-focus(@color: @secondary-desaturated) {
@@ -315,7 +328,10 @@ a {
 
 // Input add-on
 .input-group-addon {
-	.box-shadow(inset 0 1px 1px rgba(0,0,0,.075));	
+	.box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+	a& {
+	    color: @link-color;
+	}
 }
 
 .input-group-btn {
@@ -344,12 +360,8 @@ a {
 	border: 0;
 	border-top: 1px solid @primary-border-color;
 	border-radius: 0;
-	.left-space {
+	.left-space, .right-space {
 		width: 25px;
-		height: @input-height-base;
-	}
-	.right-space {
-		width: 20px;
 		height: @input-height-base;
 	}
 	.nav {
@@ -405,28 +417,40 @@ a {
 	    overflow: hidden;
         height: @input-height-base;
         width: 65px;
-        padding-top: 10px;
+        padding-top: 8px;
 		.bar {
 		    display: inline-block;
 		    width: 10px;
-            height: 10px;
+            height: 6px;
             border-radius: 1px;
             margin: 0 2px;
             opacity: 0.25;
             background-color: @btn-success-color;
-            animation: indicator 0.8s ease-out infinite;
-            -webkit-animation: indicator 0.8s ease-out infinite; /* Safari and Chrome */
+            animation: indicator 0.6s ease-out infinite;
+            -webkit-animation: indicator 0.6s ease-out infinite; /* Safari and Chrome */
 		}
+	}
+	
+	.left-buttons-dropdown, .right-buttons-dropdown {
+	    > .nav {
+    	    margin-left: 0;
+    	    margin-right: 0;
+	    }
+	}
+	
+	div.dropdown-menu {
+	    top: initial;
+	    padding: 5px;
 	}
 }
 
 @keyframes indicator {
-    from {opacity: 0.75;}
+    from {opacity: 1;}
     to {opacity: 0.25;}
 }
 
 @-webkit-keyframes indicator /* Safari and Chrome */ {
-    from {opacity: 0.75;}
+    from {opacity: 1;}
     to {opacity: 0.25;}
 }
 
@@ -827,21 +851,20 @@ a {
 
 
 /********************************
- * Publish/Sync dialogs
+ * Publish/Sync/Share dialogs
  ********************************/
  
-.modal-manage-sync .sync-list {
+.modal-manage-sync .sync-list,
+.modal-manage-publish .publish-list,
+.modal-manage-sharing .share-list {
 	margin-bottom: 20px;
 	.input-group {
 		margin-bottom: 10px;
 	}
 }
 
-.modal-manage-publish .publish-list {
-	margin-bottom: 20px;
-	.input-group {
-		margin-bottom: 10px;
-	}
+.share-list .form-control {
+    width: 280px
 }
 
 .publish-custom-template-collapse {
@@ -851,6 +874,7 @@ a {
 		min-height: 100px;
 	}
 }
+
 
 
 /*********************************
@@ -864,7 +888,9 @@ a {
 		float: none;
 	}
 	.ui-layout-toggler {
-		font-size: 22px !important;
+	    i {
+    		font-size: 22px;
+	    }
 		&.ui-layout-toggler-east {
 			line-height: 55px;
 			&.ui-layout-toggler-east-open i:before {
@@ -886,13 +912,12 @@ a {
 			left: 0 !important;
 			line-height: 0;
 			i {
-				margin-top: -5px;
-			}
-			&.ui-layout-toggler-north-open i:before {
-				content: '\e87f';
-			}
-			&.ui-layout-toggler-north-closed i:before {
-				content: '\e880';
+    			font-size: 16px;
+                height: 10px;
+                overflow: hidden;
+    			&:before {
+    				content: '\e816';
+    			}
 			}
 		}
 	}

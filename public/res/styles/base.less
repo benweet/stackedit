@@ -204,21 +204,35 @@ ul,ol {
 // Custom icons (not from Font Awesome)
 .icon-code {
 	font-size: 80%;
-	padding-right: 5px;
+	&:before {
+    	margin-left: 0.1em;
+    	margin-right: 0.6em;
+	}
 }
 
 .icon-folder-open {
 	font-size: 80%;
-	padding-right: 5px;
+	&:before {
+    	margin-right: 0.6em;
+	}
 }
 
 .icon-chart-bar {
 	font-size: 90%;
-	padding-right: 2px;
+	&:before {
+    	margin-left: 0.3em;
+    	margin-right: 0.3em;
+	}
 }
 
 .icon-folder {
 	margin-top: -2px;
+}
+
+.icon-file {
+    font-size: 104%;
+	margin-left: 0;
+	margin-right: 0;
 }
 
 // Provider's icons (the colored ones)

@@ -194,6 +194,22 @@ define([
         version = "v11";
     }
 
+    // Upgrade from v11 to v12
+    if(version == "v11") {
+        // Force new theme by using themeV3 variable
+        localStorage.removeItem("theme");
+        if(_.has(localStorage, 'settings')) {
+            settings = JSON.parse(localStorage.settings);
+            // Force new font
+            delete settings.editorFontFamily;
+            delete settings.editorFontSize;
+            settings.template && (settings.template = settings.template.replace('https://stackedit.io/res-min/themes/default.css', 'https://stackedit.io/res-min/themes/base.css'));
+            settings.pdfTemplate && (settings.pdfTemplate = settings.pdfTemplate.replace('https://stackedit.io/res-min/themes/default.css', 'https://stackedit.io/res-min/themes/base.css'));
+            localStorage.settings = JSON.stringify(settings);
+        }
+        version = "v12";
+    }
+
     localStorage.version = version;
     return localStorage;
 });

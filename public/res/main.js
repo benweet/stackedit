@@ -131,7 +131,7 @@ window.lightMode = window.viewerMode || /(\?|&)light($|&)/.test(location.search)
 })(navigator.userAgent || navigator.vendor || window.opera);
 
 // Keep the theme in a global variable
-window.theme = localStorage.theme || 'default';
+window.theme = localStorage.themeV3 || 'default';
 var themeModule = "less!themes/" + window.theme;
 if (window.baseDir.indexOf('-min') !== -1) {
     themeModule = "css!themes/" + window.theme;

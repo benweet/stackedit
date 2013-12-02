@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#Date Mon Dec 02 2013 23:04:50
+#Date Mon Dec 02 2013 23:29:02
 
 CACHE:
 res/worker.js
@@ -41,9 +41,6 @@ res-min/themes/night.css
 res-min/themes/school.css
 libs/dictionaries/de_DE.aff.lz
 libs/dictionaries/de_DE.dic.lz
-libs/dictionaries/el_GR.aff
-libs/dictionaries/el_GR.dic
-libs/dictionaries/el_GR.dic.lz
 libs/dictionaries/en_US.aff.lz
 libs/dictionaries/en_US.dic.lz
 libs/dictionaries/es_ES.aff.lz

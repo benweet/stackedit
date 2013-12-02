@@ -185,7 +185,7 @@ define([
         if(!event.isPropagationStopped()) {
             $.extend(settings, newSettings);
             storage.settings = JSON.stringify(settings);
-            storage.theme = theme;
+            storage.themeV3 = theme;
         }
     }
 
@@ -806,7 +806,7 @@ define([
             isModalShown = false;
             (aceEditor && aceEditor.focus()) || $editorElt.focus();
             // Revert to current theme when settings modal is closed
-            applyTheme(storage.theme);
+            applyTheme(window.theme);
         }).keyup(function(e) {
             // Handle enter key in modals
             if(e.which == 13 && !$(e.target).is("textarea")) {

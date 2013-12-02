@@ -1487,7 +1487,8 @@ a.list-group-item:hover,a.list-group-item:focus{color:#b3b3b3;border-top-color:r
 .ui-layout-resizer.ui-layout-resizer-east .ui-layout-toggler-north{width:35px !important;height:60px !important}
 .ui-layout-resizer.ui-layout-resizer-south .ui-layout-toggler-north{height:35px !important}
 .ui-layout-resizer-north{background-color:#444;border-bottom:1px solid rgba(255,255,255,0.1)}
-.ui-layout-resizer-east .resizer-decorator{position:absolute;height:100%;width:35px;border-left:1px solid rgba(255,255,255,0.06);display:block !important}
+.resizer-decorator{position:absolute;display:block !important}.ui-layout-resizer-east .resizer-decorator{width:35px;height:100%;border-left:1px solid rgba(255,255,255,0.06)}
+.ui-layout-resizer-south .resizer-decorator{height:35px;width:100%;border-top:1px solid rgba(255,255,255,0.06)}
 .ace_editor{color:#bfbfbf}
 .ace-tm{background-color:#1e1e1e}.ace-tm .ace_text-input{box-sizing:initial}
 .ace-tm .ace_marker-layer .ace_active-line{background-color:rgba(255,255,255,0.05)}

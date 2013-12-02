@@ -13661,7 +13661,7 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
   layoutOrientation: "horizontal",
   lazyRendering: !0,
   editorFontFamily: '"Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace',
-  editorFontSize: 12,
+  editorFontSize: 13,
   maxWidth: 960,
   defaultContent: "\n\n\n> Written with [StackEdit](" + t.MAIN_URL + ").",
   commitMsg: "Published with " + t.MAIN_URL,

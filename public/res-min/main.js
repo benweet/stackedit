@@ -11549,8 +11549,7 @@ function printStackTrace(e) {
  e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-beta.herokuapp.com/"), e.THEME_LIST = {
   "default": "Default",
   gray: "Gray",
-  night: "Night",
-  school: "School"
+  night: "Night"
  }, e;
 }), define("storage", [ "underscore" ], function(e) {
  function t(t) {
@@ -13657,8 +13656,8 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
  var i = {
   layoutOrientation: "horizontal",
   lazyRendering: !0,
-  editorFontFamily: '"Courier New", Courier, monospace',
-  editorFontSize: 14,
+  editorFontFamily: '"Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace',
+  editorFontSize: 12,
   maxWidth: 960,
   defaultContent: "\n\n\n> Written with [StackEdit](" + t.MAIN_URL + ").",
   commitMsg: "Published with " + t.MAIN_URL,
@@ -20780,9 +20779,9 @@ function() {
    startOffset: p,
    endOffset: g,
    height: g - p
-  }), c = -10, u = -10, b();
- }, 500), f = !1, g = !1, m = !1, v = !1, b = t.debounce(function() {
-  function n(e, n, i) {
+  }), c = -10, u = -10, y();
+ }, 500), f = !1, g = !1, m = !1, v = !1, b = e("<div>"), y = t.throttle(function() {
+  function e(e, n, i) {
    var o, r = t.find(n, function(t, n) {
     return o = n, e < t.endOffset;
    });
@@ -20791,62 +20790,69 @@ function() {
     return a.startOffset + a.height * s;
    }
   }
-  if (0 === d.length || d.length !== h.length) return b(), void 0;
-  var i, o = r.renderer.getScrollTop(), s = l.scrollTop();
-  f === !0 && Math.abs(o - c) > 9 ? (f = !1, c = o, i = n(o, d, h), i = t.min([ i, l.prop("scrollHeight") - l.outerHeight() ]), 
-  Math.abs(i - s) <= 9 ? u = s : (v = !0, l.animate({
-   scrollTop: i
-  }, {
-   easing: "easeOutSine",
-   complete: function() {
-    u = i;
-   },
-   always: function() {
-    t.defer(function() {
-     v = !1;
-    });
-   }
-  }))) : g === !0 && Math.abs(s - u) > 9 && (g = !1, u = s, i = n(s, h, d), i = t.min([ i, r.session.getScreenLength() * r.renderer.lineHeight + r.renderer.scrollMargin.bottom - r.renderer.$size.scrollerHeight ]), 
-  0 > i && (i = 0), Math.abs(i - o) <= 9 ? c = o : (m = !0, e("<div>").animate({
-   value: i - o
-  }, {
-   easing: "easeOutSine",
-   step: function(e) {
-    r.session.setScrollTop(o + e);
-   },
-   complete: function() {
-    c = i;
-   },
-   always: function() {
-    t.defer(function() {
-     m = !1;
-    });
-   }
-  })));
- }, 500);
+  if (0 === d.length || d.length !== h.length) return y(), void 0;
+  var n, i = r.renderer.getScrollTop(), o = l.scrollTop();
+  if (f === !0) {
+   if (Math.abs(i - c) <= 9) return;
+   if (f = !1, c = i, n = e(i, d, h), n = t.min([ n, l.prop("scrollHeight") - l.outerHeight() ]), 
+   Math.abs(n - o) <= 9) return u = o, void 0;
+   l.stop(!0).animate({
+    scrollTop: n
+   }, {
+    easing: "easeOutSine",
+    duration: 200,
+    step: function(e) {
+     v = !0, u = o + e;
+    },
+    done: function() {
+     t.defer(function() {
+      v = !1;
+     });
+    }
+   });
+  } else if (g === !0) {
+   if (Math.abs(o - u) <= 9) return;
+   if (g = !1, u = o, n = e(o, h, d), n = t.min([ n, r.session.getScreenLength() * r.renderer.lineHeight + r.renderer.scrollMargin.bottom - r.renderer.$size.scrollerHeight ]), 
+   0 > n && (n = 0), Math.abs(n - i) <= 9) return c = i, void 0;
+   b.stop(!0).css("value", 0).animate({
+    value: n - i
+   }, {
+    easing: "easeOutSine",
+    duration: 200,
+    step: function(e) {
+     m = !0, c = i + e, r.session.setScrollTop(c);
+    },
+    done: function() {
+     setTimeout(function() {
+      m = !1;
+     });
+    }
+   });
+  }
+ }, 100);
  o.onLayoutResize = function() {
   f = !0, p();
  }, o.onFileClosed = function() {
   d = [];
  };
- var y = !1;
+ var w = !1;
  o.onReady = function() {
   l = e(".preview-container"), l.scroll(function() {
-   v === !1 && y === !1 && (g = !0, f = !1, b()), y = !1;
+   v === !1 && w === !1 && (g = !0, f = !1, y()), w = !1;
   }), r.session.on("changeScrollTop", function() {
-   m === !1 && (f = !0, g = !1, b());
+   m === !1 && (f = !0, g = !1, y());
   });
  };
- var w;
+ var x;
  return o.onPagedownConfigure = function(t) {
-  w = e("#preview-contents"), t.getConverter().hooks.chain("postConversion", function(e) {
-   return w.height(w.height()), e;
+  x = e("#preview-contents"), t.getConverter().hooks.chain("postConversion", function(e) {
+   return x.height(x.height()), e;
   });
  }, o.onPreviewFinished = function() {
-  var e = w.height();
-  w.height("auto");
-  var t = w.height();
-  f = !0, e > t && (y = !0), p();
+  var e = x.height();
+  x.height("auto");
+  var t = x.height();
+  f = !0, e > t && (w = !0), p();
  }, o;
 }), define("extensions/buttonFocusMode", [ "jquery", "underscore", "crel", "storage", "classes/Extension" ], function(e, t, n, i, o) {
  function r() {
@@ -27325,8 +27331,11 @@ function() {
    toggle: !1
   });
   var t;
-  N.on("show.bs.collapse", function(e) {
-   e.target === N[0] ? (at = !0, t = r.createBackdrop("collapse", ".menu-panel"), N.addClass("move-to-front")) : N.find(".in").collapse("hide");
+  N.on("show.bs.collapse", function(n) {
+   n.target === N[0] ? (at = !0, t = r.createBackdrop("collapse", ".menu-panel"), N.addClass("move-to-front"), 
+   setTimeout(function() {
+    N.trigger(e.support.transition.end);
+   }, 50)) : N.find(".in").collapse("hide");
   }).on("hide.bs.collapse", function(e) {
    e.target === N[0] && (at = !1, t.parentNode.removeChild(t), N.removeClass("move-to-front"), 
    j && j.focus() || X.focus());
@@ -27336,9 +27345,11 @@ function() {
    toggle: !1
   });
   var n;
-  O.on("show.bs.collapse", function(e) {
-   e.target === O[0] ? (st = !0, n = r.createBackdrop("collapse", ".document-panel"), 
-   O.addClass("move-to-front")) : O.find(".in").collapse("hide");
+  O.on("show.bs.collapse", function(t) {
+   t.target === O[0] ? (st = !0, n = r.createBackdrop("collapse", ".document-panel"), 
+   O.addClass("move-to-front"), setTimeout(function() {
+    O.trigger(e.support.transition.end);
+   }, 50)) : O.find(".in").collapse("hide");
   }).on("hide.bs.collapse", function(e) {
    e.target === O[0] && (st = !1, n.parentNode.removeChild(n), O.removeClass("move-to-front"), 
    j && j.focus() || X.focus());

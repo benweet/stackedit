@@ -17,28 +17,38 @@
 @secondary-desaturated: desaturate(@secondary, 85%);
 @tertiary-desaturated: desaturate(@tertiary, 90%);
 @transparent: fade(#000, 0%);
+
+// Navbar
 @primary-bg: lighten(@primary-desaturated, 42%);
-@primary-bg-light: lighten(@secondary-desaturated, 46%);
-@primary-bg-lighter: lighten(@secondary-desaturated, 48%);
-@primary-bg-lightest: #fff;
 @primary-border-color: fade(@primary, 10%);
-@primary-color: @primary-desaturated;
-@primary-color-dark: darken(@primary-color, 12.5%);
-@primary-color-darker: darken(@primary-color, 25%);
-@primary-color-darkest: darken(@primary-color, 37.5%);
-@secondary-bg: @tertiary-desaturated;
-@secondary-border-color: lighten(@primary-desaturated, 40%);
+
+// Preview and menus
+@secondary-bg: lighten(@secondary-desaturated, 46%);
+@secondary-bg-light: lighten(@secondary-desaturated, 48%);
+@secondary-bg-lighter: #fff;
 @secondary-color: @primary-desaturated;
-@secondary-color-dark: darken(@primary-desaturated, 5%);
-@secondary-color-darker: darken(@primary-desaturated, 15%);
-@secondary-color-darkest: darken(@primary-desaturated, 40%);
-@error-border: #FF6161;
-@disabled-color: mix(@primary-color, @input-bg, 33%);
+@secondary-color-dark: darken(@secondary-color, 12.5%);
+@secondary-color-darker: darken(@secondary-color, 25%);
+@secondary-color-darkest: darken(@secondary-color, 37.5%);
+@secondary-border-color: lighten(@primary-desaturated, 40%);
+@secondary-border-color-light: lighten(@primary-desaturated, 44%);
+@secondary-border-color-lighter: lighten(@primary-desaturated, 46%);
+
+// Editor
+@tertiary-bg: #fff;
+@tertiary-color: @primary-desaturated;
+@tertiary-color-dark: darken(@tertiary-color, 5%);
+@tertiary-color-darker: darken(@tertiary-color, 15%);
+@tertiary-color-darkest: darken(@tertiary-color, 40%);
+
+// Panel buttons
 @panel-button-bg-color: #FFF;
 @panel-button-border-fade: 75%;
-@panel-bg: @primary-bg-lighter;
 @panel-border-color: fade(@primary-desaturated, 10%);
-@folder-color: @primary-color-darker;
+
+@error-border: #FF6161;
+@disabled-color: mix(@secondary-color, @input-bg, 33%);
+@folder-color: @secondary-color-darker;
 @jgrowl-bg-color: fade(@modal-backdrop-bg, 90%);
 
 /* Sizes */
@@ -48,15 +58,15 @@
 @resizer-size: 35px;
 
 /* Bootstrap */
-@body-bg: @primary-bg-lighter;
-@text-color: @primary-color-darkest;
+@body-bg: @secondary-bg-light;
+@text-color: @secondary-color-darkest;
 @link-color: desaturate(#0080FF, 25%);
-@input-bg: @primary-bg-lightest;
+@input-bg: @secondary-bg-lighter;
 @input-border: @secondary-border-color;
 @input-height-base: 38px;
 @blockquote-border-color: fade(@secondary-desaturated, 7.5%);
 @blockquote-bg: fade(@secondary-desaturated, 5%);
-@code-color: @primary-color-darkest;
+@code-color: @secondary-color-darkest;
 @code-bg: fade(@secondary-desaturated, 5%);
 @pre-bg: fade(@secondary-desaturated, 5%);
 @pre-border-color: @secondary-border-color;
@@ -68,49 +78,50 @@
 @nav-disabled-link-hover-color: @disabled-color;
 @nav-tabs-border-color: @transparent;
 @nav-tabs-link-hover-border-color: @transparent; 
-@dropdown-bg: @primary-bg-lightest;
+@dropdown-bg: @secondary-bg-lighter;
 @dropdown-border: @secondary-border-color;
-@dropdown-link-color: @primary-color-darkest;
+@dropdown-link-color: @secondary-color-darkest;
 @dropdown-link-hover-color: darken(@primary-desaturated, 25%);
 @dropdown-link-hover-bg: @btn-default-hover-bg;
-@dropdown-header-color: fade(@primary-color, 50%);
+@dropdown-header-color: fade(@secondary-color, 50%);
 @dropdown-link-disabled-color: @disabled-color;
 @dropdown-divider-bg: @dropdown-border;
-@list-group-link-color: @primary-color-darkest;
-@list-group-bg: @primary-bg-lighter;
+@list-group-link-color: @secondary-color-darkest;
+@list-group-bg: @secondary-bg-light;
 @list-group-border: @transparent;
 @list-group-active-color: darken(@primary-desaturated, 25%);
 @list-group-active-bg: @primary-bg;
 @list-group-active-border: fade(@secondary, 5%);
 @list-group-hover-bg: @btn-default-hover-bg;
 @list-group-hover-border-color: fade(@secondary, 10%);
-@input-color: @primary-color-dark;
+@input-color: @secondary-color-dark;
 @input-color-placeholder: @disabled-color;
-@btn-default-color: @primary-color-darker;
+@btn-default-color: @secondary-color-darker;
 @btn-default-bg: @transparent;
 @btn-default-border: @transparent;
 @btn-default-hover-bg: fade(@secondary-desaturated, 4%);
-@btn-primary-color: @primary-color-darker;
+@btn-primary-color: @secondary-color-darker;
 @btn-primary-bg: @primary-bg;
 @btn-primary-border: fade(@secondary, 5%);
 @btn-success-color: darken(@primary-desaturated, 25%);
 @btn-success-bg: @transparent;
 @btn-success-border: @transparent;
+@btn-success-hover-bg: fade(@primary-desaturated, 7.5%);
 @btn-info-color: fade(@secondary-desaturated, 35%);
 @btn-info-bg: @transparent;
 @btn-info-border: @transparent;
 @gray-lighter: @body-bg;
-@modal-header-border-color: @primary-bg;
-@modal-content-bg: @primary-bg-lightest;
-@modal-content-border-color: fade(@primary-desaturated, 25%);
-@modal-footer-border-color: @primary-bg;
-@modal-content-separator-color: @primary-bg-light;
-@modal-backdrop-bg: @secondary-bg;
+@modal-header-border-color: @secondary-border-color-light;
+@modal-content-bg: @secondary-bg-lighter;
+@modal-content-border-color: @secondary-border-color;
+@modal-footer-border-color: @secondary-border-color-light;
+@modal-content-separator-color: @secondary-border-color-lighter;
+@modal-backdrop-bg: @tertiary-desaturated;
 @tooltip-max-width: 240px;
-@close-color: @primary-color-darkest;
-@popover-bg: @primary-bg-light;
+@close-color: @secondary-color-darkest;
+@popover-bg: @secondary-bg;
 @popover-border-color: @secondary-border-color;
-@popover-arrow-color: @primary-bg-light;
+@popover-arrow-color: @secondary-bg;
 @popover-arrow-outer-color: @secondary-border-color;
 @popover-title-bg: @transparent;
 
@@ -160,11 +171,11 @@ body {
 }
 
 .modal-content {
-    background-color: @primary-bg-lighter;
+    background-color: @secondary-bg-light;
 }
 
 .modal-body {
-    background-color: @primary-bg-lightest;
+    background-color: @secondary-bg-lighter;
     padding-bottom: 30px;
 }
 
@@ -267,6 +278,7 @@ a {
     }
 }
 
+// Navbar buttons
 .btn-success {
     &:hover,
     &:focus,
@@ -274,10 +286,11 @@ a {
     .open &.dropdown-toggle {
     	color: darken(@primary, 30%);
     	border-color: @primary-border-color;
-    	background-color: fade(@primary-desaturated, 7.5%) !important; // important to override .nav > li > a:hover
+    	background-color: @btn-success-hover-bg !important; // important to override .nav > li > a:hover
     }
 }
 
+// Buttons over preview
 .btn-info {
     &:hover,
     &:focus,
@@ -285,7 +298,7 @@ a {
     .open &.dropdown-toggle {
     	color: darken(@secondary, 30%);
     	border-color: fade(@secondary, 10%);
-    	background-color: @primary-bg-light !important; // important to override .nav > li > a:hover
+    	background-color: @secondary-bg !important; // important to override .nav > li > a:hover
     }
 }
 
@@ -494,6 +507,8 @@ a {
        	background-color: @panel-button-bg-color;
         height: @input-height-base;
         border-radius: 8px;
+		position: absolute;
+		margin-top: 6px;
         .box-shadow(~"0 0 1px rgba(0,0,0,.5)");
         &:active {
             .box-shadow(~"inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 1px rgba(0,0,0,.5)");
@@ -527,23 +542,21 @@ a {
         margin-left: 0;
     }
     .collapse-button {
-        border-top: 5px solid fade(@logo-yellow, @panel-button-border-fade);
-        border-right: 6px solid fade(@logo-blue, @panel-button-border-fade);
-        border-bottom: 5px solid fade(@logo-orange, @panel-button-border-fade);
+        border-top: 4px solid fade(@logo-yellow, @panel-button-border-fade);
+        border-right: 5px solid fade(@logo-blue, @panel-button-border-fade);
+        border-bottom: 4px solid fade(@logo-orange, @panel-button-border-fade);
 	    right: -50px;
-		position: absolute;
-		margin-top: 6px;
 		z-index: -1;
-		padding: 0 12px 0 50px;
+		padding: 0 13px 0 50px;
         .transition(~"border-width ease-in-out .15s, right ease-in-out 0.15s");
 	}
     .collapse-button:hover, &.in .collapse-button, &.collapsing .collapse-button {
         right: -55px;
 	}
 	.panel-content {
-		background-color: @panel-bg;
+		background-color: @secondary-bg-light;
 		padding-top: 6px;
-		border-right: 1px solid @panel-border-color;
+		border-right: 1px solid @secondary-border-color-light;
 		& > .nav > li > a {
 		    &:hover, &:active {
         		background-color: inherit;
@@ -561,12 +574,10 @@ a {
         margin-right: 0;
     }
     .collapse-button {
-        border-top: 5px solid fade(@logo-yellow, @panel-button-border-fade);
-        border-left: 6px solid fade(@logo-green, @panel-button-border-fade);
-        border-bottom: 5px solid fade(@logo-orange, @panel-button-border-fade);
+        border-top: 4px solid fade(@logo-yellow, @panel-button-border-fade);
+        border-left: 5px solid fade(@logo-green, @panel-button-border-fade);
+        border-bottom: 4px solid fade(@logo-orange, @panel-button-border-fade);
 	    left: -50px;
-		position: absolute;
-		margin-top: 6px;
 		padding: 0 50px 0 6px;
 		z-index: -1;
         .transition(~"border-width ease-in-out .15s, left ease-in-out 0.15s");
@@ -581,18 +592,18 @@ a {
 	.panel-content {
 		background-color: @list-group-bg;
 		padding-top: 80px;
-		border-left: 1px solid @panel-border-color;
+		border-left: 1px solid @secondary-border-color-light;
 		.icon-layers {
 			font-size: 135%;
 		}	
 	}
 	.search-bar {
 		position: absolute;
-		background-color: @primary-bg-light;
+		background-color: @secondary-bg;
 		margin: -10px 25px 0;
 		padding: 20px 5px 10px 15px;
 		z-index: 3;
-		border: 1px solid @primary-bg;
+		border: 1px solid @secondary-border-color;
 		border-top: 0;
 		border-radius: 6px;
 	}
@@ -951,11 +962,11 @@ a {
  *****************************/
  
 .ace_editor {
-	color: @secondary-color-dark;
+	color: @tertiary-color-dark;
 }
 
 .ace-tm {
-	background-color: @primary-bg-lightest;
+	background-color: @tertiary-bg;
 	
 	.ace_text-input {
 		box-sizing: initial;
@@ -970,42 +981,42 @@ a {
 	}
 	
 	.ace_print-margin {
-		background-color: fade(@primary-bg, 25%);
+		background-color: fade(@primary-desaturated, 5%);
 	}
 	
 	.ace_markup.ace_heading {
-		color: @secondary-color-darkest;
+		color: @tertiary-color-darkest;
 		font-weight: bold;
 	}
 	
 	.ace_markup.ace_list {
-		color: @secondary-color-darkest;
+		color: @tertiary-color-darkest;
 	}
 	
 	.ace_constant.ace_language {
-	    color: @secondary-color;
+	    color: @tertiary-color;
 	}
 	
 	.ace_meta.ace_tag {
-		color: @secondary-color-darkest;
+		color: @tertiary-color-darkest;
 		font-style: italic;
 		font-weight: bold;
 		background-color: @code-bg;
 	}
 	
 	.ace_keyword.ace_operator {
-	    color: @secondary-color-darker;
+	    color: @tertiary-color-darker;
 		background-color: transparent;
 	}
 	
 	.ace_keyword {
-		color: @secondary-color-darkest;
+		color: @tertiary-color-darkest;
 		background-color: @code-bg;
 		font-weight: bold;
 	}
 	
 	.ace_string {
-		color: @secondary-color-darkest;
+		color: @tertiary-color-darkest;
 		font-style: italic;
 		background-color: @code-bg;
 	}
@@ -1020,38 +1031,38 @@ a {
 	}
 	
 	.ace_emphasis {
-		color: @secondary-color-darkest;
+		color: @tertiary-color-darkest;
 		font-style: italic;
 	}
 	
 	.ace_blockquote {
-		color: @secondary-color;
+		color: @tertiary-color;
 	}
 	
 	.ace_code {
-		color: @secondary-color-darkest;
+		color: @tertiary-color-darkest;
 		background-color: @code-bg;
 	}
 	
 	.ace_code_block {
-		color: @secondary-color-darkest;
+		color: @tertiary-color-darkest;
 	}
 	
 	.ace_link {
-	    color: @secondary-color-darkest;
+	    color: @tertiary-color-darkest;
 		background-color: @code-bg;
 	}
 	
 	.ace_description {
-		color: @secondary-color;
+		color: @tertiary-color;
 	}
 	
 	.ace_constant {
-	    color: @secondary-color-darker;
+	    color: @tertiary-color-darker;
 	}
 	
 	.ace_comment {
-	    color: fade(@secondary-color-dark, 50%);
+	    color: fade(@tertiary-color-dark, 50%);
 		font-style: italic;
 	}
 	
@@ -1064,13 +1075,14 @@ a {
 }
 
 .ace_search {
-	background-color: @primary-bg;
-	border: 6px solid @primary-bg-lighter;
+	background-color: @secondary-bg-light;
+	border: 1px solid @secondary-border-color-light;
 	border-top: 0;
 	padding: 10px 15px 5px;
 	font-family: @font-family-base;
 	min-width: 318px;
 	.ace_search_form, .ace_replace_form {
+        border-color: @input-border;
 	    margin-bottom: 10px;
 	}
 	.ace_search_field {
@@ -1083,7 +1095,8 @@ a {
         line-height: @line-height-base;
         color: @input-color;
         vertical-align: middle;
-        background-color: @primary-bg-lightest;
+        background-color: @secondary-bg-lighter;
+        border-color: @input-border;
         .box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
 	}
 	.ace_searchbtn {
@@ -1124,7 +1137,7 @@ a {
 
 #wmd-input {
 	border-radius: 0;
-	color: @secondary-color-darker;
+	color: @tertiary-color-darker;
 	.box-shadow(none);
 	resize: none;
 	border: none;
@@ -1135,7 +1148,7 @@ a {
 
 .preview-container {
 	overflow: auto;
-	background-color: @primary-bg-lighter;
+	background-color: @secondary-bg-light;
 }
 
 .wmd-prompt-background {
@@ -1144,7 +1157,7 @@ a {
 
 div.dropdown-menu {
 	padding: 5px 20px;
-	background-color: @primary-bg-light;
+	background-color: @secondary-bg;
     p,
     blockquote {
     	margin: 10px 0;

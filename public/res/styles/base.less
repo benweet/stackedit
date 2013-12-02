@@ -1,11 +1,14 @@
+@import "../bower-libs/bootstrap/less/bootstrap.less";
 @import (less) "../bower-libs/google-code-prettify/src/prettify.css";
 @import (less) "../bower-libs/highlightjs/styles/default.css";
-@import "../bower-libs/bootstrap/less/bootstrap.less";
 @import (less) "../libs/fontello/css/fontello.css";
 
 @blockquote-border-color: #eee;
 @blockquote-bg: #f8f8f8;
 @title-base-size: 14px;
+@code-color: @text-color;
+@code-bg: darken(@body-bg, 3%);
+
 
 @font-face {
   font-family: 'Open Sans';
@@ -61,6 +64,10 @@
     background-image: url("@{file-2x}");
     background-size: @width-1x @height-1x;
   }
+}
+
+.container {
+    margin-bottom: 100px;
 }
 
 a code {
@@ -281,16 +288,4 @@ ul,ol {
 
 .icon-provider-gplus {
 	background-position: -144px 0;
-}
-
-/*******************
- * PDF
- *******************/
-body.pdf {
-	font-family: "DejaVu Sans";
-	background-color: transparent;
-	
-	code, pre {
-	    font-family: "DejaVu Sans Mono";
-	}
 }

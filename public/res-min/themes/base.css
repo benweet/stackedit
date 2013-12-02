@@ -1,18 +1,4 @@
-.pln{color:#000}
-@media screen{.str{color:#080} .kwd{color:#008} .com{color:#800} .typ{color:#606} .lit{color:#066} .pun,.opn,.clo{color:#660} .tag{color:#008} .atn{color:#606} .atv{color:#080} .dec,.var{color:#606} .fun{color:#f00}}@media print,projection{.str{color:#060} .kwd{color:#006;font-weight:bold} .com{color:#600;font-style:italic} .typ{color:#404;font-weight:bold} .lit{color:#044} .pun,.opn,.clo{color:#440} .tag{color:#006;font-weight:bold} .atn{color:#404} .atv{color:#060}}pre.prettyprint{padding:2px;border:1px solid #888}
-ol.linenums{margin-top:0;margin-bottom:0}
-li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style-type:none}
-li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}
-pre code{display:block;padding:0.5em;background:#F0F0F0}
-pre code,pre .subst,pre .tag .title,pre .lisp .title,pre .clojure .built_in,pre .nginx .title{color:black}
-pre .string,pre .title,pre .constant,pre .parent,pre .tag .value,pre .rules .value,pre .rules .value .number,pre .preprocessor,pre .ruby .symbol,pre .ruby .symbol .string,pre .aggregate,pre .template_tag,pre .django .variable,pre .smalltalk .class,pre .addition,pre .flow,pre .stream,pre .bash .variable,pre .apache .tag,pre .apache .cbracket,pre .tex .command,pre .tex .special,pre .erlang_repl .function_or_atom,pre .markdown .header{color:#800}
-pre .comment,pre .annotation,pre .template_comment,pre .diff .header,pre .chunk,pre .markdown .blockquote{color:#888}
-pre .number,pre .date,pre .regexp,pre .literal,pre .smalltalk .symbol,pre .smalltalk .char,pre .go .constant,pre .change,pre .markdown .bullet,pre .markdown .link_url{color:#080}
-pre .label,pre .javadoc,pre .ruby .string,pre .decorator,pre .filter .argument,pre .localvars,pre .array,pre .attr_selector,pre .important,pre .pseudo,pre .pi,pre .doctype,pre .deletion,pre .envvar,pre .shebang,pre .apache .sqbracket,pre .nginx .built_in,pre .tex .formula,pre .erlang_repl .reserved,pre .prompt,pre .markdown .link_label,pre .vhdl .attribute,pre .clojure .attribute,pre .coffeescript .property{color:#88f}
-pre .keyword,pre .id,pre .phpdoc,pre .title,pre .built_in,pre .aggregate,pre .css .tag,pre .javadoctag,pre .phpdoc,pre .yardoctag,pre .smalltalk .class,pre .winutils,pre .bash .variable,pre .apache .tag,pre .go .typename,pre .tex .command,pre .markdown .strong,pre .request,pre .status{font-weight:bold}
-pre .markdown .emphasis{font-style:italic}
-pre .nginx .built_in{font-weight:normal}
-pre .coffeescript .javascript,pre .javascript .xml,pre .tex .formula,pre .xml .javascript,pre .xml .vbscript,pre .xml .css,pre .xml .cdata{opacity:0.5}
+
 article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}
 audio,canvas,video{display:inline-block}
 audio:not([controls]){display:none;height:0}
@@ -108,7 +94,7 @@ blockquote.pull-right small:after{content:'\00A0 \2014'}
 q:before,q:after,blockquote:before,blockquote:after{content:""}
 address{display:block;margin-bottom:20px;font-style:normal;line-height:1.428571429}
 code,pre{font-family:Monaco,Menlo,Consolas,"Courier New",monospace}
-code{padding:2px 4px;font-size:90%;color:#c7254e;background-color:#f9f2f4;white-space:nowrap;border-radius:4px}
+code{padding:2px 4px;font-size:90%;color:#333;background-color:#f7f7f7;white-space:nowrap;border-radius:4px}
 pre{display:block;padding:9.5px;margin:0 0 10px;font-size:13px;line-height:1.428571429;word-break:break-all;word-wrap:break-word;color:#333;background-color:#f5f5f5;border:1px solid #ccc;border-radius:4px}pre.prettyprint{margin-bottom:20px}
 pre code{padding:0;font-size:inherit;color:inherit;white-space:pre-wrap;background-color:transparent;border:0}
 .pre-scrollable{max-height:340px;overflow-y:scroll}
@@ -847,7 +833,22 @@ th.hidden-lg,td.hidden-lg{display:table-cell !important}
 @media (min-width:1200px){.hidden-lg{display:none !important}tr.hidden-lg{display:none !important} th.hidden-lg,td.hidden-lg{display:none !important}}
 .visible-print{display:none !important}tr.visible-print{display:none !important}
 th.visible-print,td.visible-print{display:none !important}
-@media print{.visible-print{display:block !important}tr.visible-print{display:table-row !important} th.visible-print,td.visible-print{display:table-cell !important} .hidden-print{display:none !important}tr.hidden-print{display:none !important} th.hidden-print,td.hidden-print{display:none !important}}@font-face{font-family:'fontello';src:url('../font/fontello.eot');src:url('../font/fontello.eot#iefix') format('embedded-opentype'),url('../font/fontello.woff') format('woff'),url('../font/fontello.ttf') format('truetype'),url('../font/fontello.svg#fontello') format('svg');font-weight:normal;font-style:normal}[class^="icon-"]:before,[class*=" icon-"]:before{font-family:"fontello";font-style:normal;font-weight:normal;speak:none;display:inline-block;text-decoration:inherit;width:1em;margin-right:.2em;text-align:center;font-variant:normal;text-transform:none;line-height:1em;margin-left:.2em;}
+@media print{.visible-print{display:block !important}tr.visible-print{display:table-row !important} th.visible-print,td.visible-print{display:table-cell !important} .hidden-print{display:none !important}tr.hidden-print{display:none !important} th.hidden-print,td.hidden-print{display:none !important}}.pln{color:#000}
+@media screen{.str{color:#080} .kwd{color:#008} .com{color:#800} .typ{color:#606} .lit{color:#066} .pun,.opn,.clo{color:#660} .tag{color:#008} .atn{color:#606} .atv{color:#080} .dec,.var{color:#606} .fun{color:#f00}}@media print,projection{.str{color:#060} .kwd{color:#006;font-weight:bold} .com{color:#600;font-style:italic} .typ{color:#404;font-weight:bold} .lit{color:#044} .pun,.opn,.clo{color:#440} .tag{color:#006;font-weight:bold} .atn{color:#404} .atv{color:#060}}pre.prettyprint{padding:2px;border:1px solid #888}
+ol.linenums{margin-top:0;margin-bottom:0}
+li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style-type:none}
+li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}
+pre code{display:block;padding:0.5em;background:#F0F0F0}
+pre code,pre .subst,pre .tag .title,pre .lisp .title,pre .clojure .built_in,pre .nginx .title{color:black}
+pre .string,pre .title,pre .constant,pre .parent,pre .tag .value,pre .rules .value,pre .rules .value .number,pre .preprocessor,pre .ruby .symbol,pre .ruby .symbol .string,pre .aggregate,pre .template_tag,pre .django .variable,pre .smalltalk .class,pre .addition,pre .flow,pre .stream,pre .bash .variable,pre .apache .tag,pre .apache .cbracket,pre .tex .command,pre .tex .special,pre .erlang_repl .function_or_atom,pre .markdown .header{color:#800}
+pre .comment,pre .annotation,pre .template_comment,pre .diff .header,pre .chunk,pre .markdown .blockquote{color:#888}
+pre .number,pre .date,pre .regexp,pre .literal,pre .smalltalk .symbol,pre .smalltalk .char,pre .go .constant,pre .change,pre .markdown .bullet,pre .markdown .link_url{color:#080}
+pre .label,pre .javadoc,pre .ruby .string,pre .decorator,pre .filter .argument,pre .localvars,pre .array,pre .attr_selector,pre .important,pre .pseudo,pre .pi,pre .doctype,pre .deletion,pre .envvar,pre .shebang,pre .apache .sqbracket,pre .nginx .built_in,pre .tex .formula,pre .erlang_repl .reserved,pre .prompt,pre .markdown .link_label,pre .vhdl .attribute,pre .clojure .attribute,pre .coffeescript .property{color:#88f}
+pre .keyword,pre .id,pre .phpdoc,pre .title,pre .built_in,pre .aggregate,pre .css .tag,pre .javadoctag,pre .phpdoc,pre .yardoctag,pre .smalltalk .class,pre .winutils,pre .bash .variable,pre .apache .tag,pre .go .typename,pre .tex .command,pre .markdown .strong,pre .request,pre .status{font-weight:bold}
+pre .markdown .emphasis{font-style:italic}
+pre .nginx .built_in{font-weight:normal}
+pre .coffeescript .javascript,pre .javascript .xml,pre .tex .formula,pre .xml .javascript,pre .xml .vbscript,pre .xml .css,pre .xml .cdata{opacity:0.5}
+@font-face{font-family:'fontello';src:url('../font/fontello.eot');src:url('../font/fontello.eot#iefix') format('embedded-opentype'),url('../font/fontello.woff') format('woff'),url('../font/fontello.ttf') format('truetype'),url('../font/fontello.svg#fontello') format('svg');font-weight:normal;font-style:normal}[class^="icon-"]:before,[class*=" icon-"]:before{font-family:"fontello";font-style:normal;font-weight:normal;speak:none;display:inline-block;text-decoration:inherit;width:1em;margin-right:.2em;text-align:center;font-variant:normal;text-transform:none;line-height:1em;margin-left:.2em;}
 .icon-glass:before{content:'\e801'}
 .icon-archive:before{content:'\e859'}
 .icon-search:before{content:'\e803'}
@@ -1166,7 +1167,8 @@ th.visible-print,td.visible-print{display:none !important}
 .icon-code:before{content:'\e844'}
 .icon-folder-open:before{content:'\e81e'}
 .icon-left-big:before{content:'\e88a'}
-@font-face{font-family:'Open Sans';font-style:normal;font-weight:300;src:local('Open Sans Light'),local('OpenSans-Light'),url("../font/OpenSans-Light.woff") format('woff')}@font-face{font-family:'Open Sans';font-style:normal;font-weight:400;src:local('Open Sans'),local('OpenSans'),url("../font/OpenSans.woff") format('woff')}@font-face{font-family:'Open Sans';font-style:normal;font-weight:700;src:local('Open Sans Bold'),local('OpenSans-Bold'),url("../font/OpenSans-Bold.woff") format('woff')}@font-face{font-family:'Open Sans';font-style:italic;font-weight:300;src:local('Open Sans Light Italic'),local('OpenSansLight-Italic'),url("../font/OpenSansLight-Italic.woff") format('woff')}@font-face{font-family:'Open Sans';font-style:italic;font-weight:400;src:local('Open Sans Italic'),local('OpenSans-Italic'),url("../font/OpenSans-Italic.woff") format('woff')}@font-face{font-family:'Open Sans';font-style:italic;font-weight:700;src:local('Open Sans Bold Italic'),local('OpenSans-BoldItalic'),url("../font/OpenSans-BoldItalic.woff") format('woff')}a code{color:inherit}
+@font-face{font-family:'Open Sans';font-style:normal;font-weight:300;src:local('Open Sans Light'),local('OpenSans-Light'),url("../font/OpenSans-Light.woff") format('woff')}@font-face{font-family:'Open Sans';font-style:normal;font-weight:400;src:local('Open Sans'),local('OpenSans'),url("../font/OpenSans.woff") format('woff')}@font-face{font-family:'Open Sans';font-style:normal;font-weight:700;src:local('Open Sans Bold'),local('OpenSans-Bold'),url("../font/OpenSans-Bold.woff") format('woff')}@font-face{font-family:'Open Sans';font-style:italic;font-weight:300;src:local('Open Sans Light Italic'),local('OpenSansLight-Italic'),url("../font/OpenSansLight-Italic.woff") format('woff')}@font-face{font-family:'Open Sans';font-style:italic;font-weight:400;src:local('Open Sans Italic'),local('OpenSans-Italic'),url("../font/OpenSans-Italic.woff") format('woff')}@font-face{font-family:'Open Sans';font-style:italic;font-weight:700;src:local('Open Sans Bold Italic'),local('OpenSans-BoldItalic'),url("../font/OpenSans-BoldItalic.woff") format('woff')}.container{margin-bottom:100px}
+a code{color:inherit}
 h1{font-size:36px}
 h2{font-size:30px}
 h3{font-size:24px}
@@ -1210,4 +1212,3 @@ ul,ol{margin-bottom:15px}ul ul,ol ul,ul ol,ol ol{margin-bottom:15px}
 .icon-provider-wordpress{background-position:-108px 0}
 .icon-provider-ssh{background-position:-126px 0}
 .icon-provider-gplus{background-position:-144px 0}
-body.pdf{font-family:"DejaVu Sans";background-color:transparent}body.pdf code,body.pdf pre{font-family:"DejaVu Sans Mono"}

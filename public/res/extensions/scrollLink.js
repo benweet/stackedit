@@ -87,7 +87,8 @@ define([
     var isScrollPreview = false;
     var isEditorMoving = false;
     var isPreviewMoving = false;
-    var doScrollLink = _.debounce(function() {
+    var scrollingHelper = $('<div>');
+    var doScrollLink = _.throttle(function() {
         if(mdSectionList.length === 0 || mdSectionList.length !== htmlSectionList.length) {
             // Delay
             doScrollLink();
@@ -112,7 +113,10 @@ define([
         }
         var destScrollTop;
         // Perform the animation if diff > 9px
-        if(isScrollEditor === true && Math.abs(editorScrollTop - lastEditorScrollTop) > 9) {
+        if(isScrollEditor === true) {
+            if(Math.abs(editorScrollTop - lastEditorScrollTop) <= 9) {
+                return;
+            }
             isScrollEditor = false;
             // Animate the preview
             lastEditorScrollTop = editorScrollTop;
@@ -124,25 +128,28 @@ define([
             if(Math.abs(destScrollTop - previewScrollTop) <= 9) {
                 // Skip the animation if diff is <= 9
                 lastPreviewScrollTop = previewScrollTop;
+                return;
             }
-            else {
-                isPreviewMoving = true;
-                $previewElt.animate({
-                    scrollTop: destScrollTop
-                }, {
-                    easing: 'easeOutSine',
-                    complete: function() {
-                        lastPreviewScrollTop = destScrollTop;
-                    },
-                    always: function() {
-                        _.defer(function() {
-                            isPreviewMoving = false;
-                        });
-                    }
-                });
-            }
+            $previewElt.stop(true).animate({
+                scrollTop: destScrollTop
+            }, {
+                easing: 'easeOutSine',
+                duration: 200,
+                step: function(now) {
+                    isPreviewMoving = true;
+                    lastPreviewScrollTop = previewScrollTop + now;
+                },
+                done: function() {
+                    _.defer(function() {
+                        isPreviewMoving = false;
+                    });
+                },
+            });
         }
-        else if(isScrollPreview === true && Math.abs(previewScrollTop - lastPreviewScrollTop) > 9) {
+        else if(isScrollPreview === true) {
+            if(Math.abs(previewScrollTop - lastPreviewScrollTop) <= 9) {
+                return;
+            }
             isScrollPreview = false;
             // Animate the editor
             lastPreviewScrollTop = previewScrollTop;
@@ -156,28 +163,26 @@ define([
             if(Math.abs(destScrollTop - editorScrollTop) <= 9) {
                 // Skip the animation if diff is <= 9
                 lastEditorScrollTop = editorScrollTop;
+                return;
             }
-            else {
-                isEditorMoving = true;
-                $("<div>").animate({
-                    value: destScrollTop - editorScrollTop
-                }, {
-                    easing: 'easeOutSine',
-                    step: function(now) {
-                        aceEditor.session.setScrollTop(editorScrollTop + now);
-                    },
-                    complete: function() {
-                        lastEditorScrollTop = destScrollTop;
-                    },
-                    always: function() {
-                        _.defer(function() {
-                            isEditorMoving = false;
-                        });
-                    }
-                });
-            }
+            scrollingHelper.stop(true).css('value', 0).animate({
+                value: destScrollTop - editorScrollTop
+            }, {
+                easing: 'easeOutSine',
+                duration: 200,
+                step: function(now) {
+                    isEditorMoving = true;
+                    lastEditorScrollTop = editorScrollTop + now;
+                    aceEditor.session.setScrollTop(lastEditorScrollTop);
+                },
+                done: function() {
+                    setTimeout(function() {
+                        isEditorMoving = false;
+                    });
+                },
+            });
         }
-    }, 500);
+    }, 100);
 
     scrollLink.onLayoutResize = function() {
         isScrollEditor = true;

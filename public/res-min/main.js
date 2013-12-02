@@ -27212,7 +27212,7 @@ function() {
    P.allowOverflow("north");
   }), e(".ui-layout-toggler-south").addClass("btn btn-info").html('<i class="icon-none"></i>'), 
   e(".ui-layout-toggler-east").addClass("btn btn-info").html('<i class="icon-none"></i>');
-  var n = e(".ui-layout-toggler-north").addClass("btn btn-info").html('<i class="icon-none"></i>'), i = e('<div class="resizer-decorator">');
+  var n = e(".ui-layout-toggler-north").addClass("btn btn-info").html('<i class="icon-th"></i>'), i = e('<div class="resizer-decorator">');
   z = e('<div class="extension-preview-buttons">'), H = e('<div class="extension-editor-buttons">'), 
   window.viewerMode || "horizontal" == a.layoutOrientation ? (e(".ui-layout-resizer-north").append(z), 
   e(".ui-layout-resizer-east").append(i).append(n).append(H)) : e(".ui-layout-resizer-south").append(i).append(z).append(H).append(n), 

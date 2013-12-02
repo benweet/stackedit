@@ -376,7 +376,7 @@ define([
         });
         $(".ui-layout-toggler-south").addClass("btn btn-info").html('<i class="icon-none"></i>');
         $(".ui-layout-toggler-east").addClass("btn btn-info").html('<i class="icon-none"></i>');
-        var $northTogglerElt = $(".ui-layout-toggler-north").addClass("btn btn-info").html('<i class="icon-none"></i>');
+        var $northTogglerElt = $(".ui-layout-toggler-north").addClass("btn btn-info").html('<i class="icon-th"></i>');
 
         // We attach the preview buttons to the UI layout resizer in order to
         // have fixed position

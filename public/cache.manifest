@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#Date Sat Nov 23 2013 15:42:13
+#Date Mon Dec 02 2013 00:08:34
 
 CACHE:
 res/worker.js
@@ -11,6 +11,12 @@ libs/MathJax/images/MenuArrow-15.png
 libs/MathJax/jax/output/HTML-CSS/jax.js
 
 #DynamicResourcesBegin
+res-min/font/OpenSans-Bold.woff
+res-min/font/OpenSans-BoldItalic.woff
+res-min/font/OpenSans-Italic.woff
+res-min/font/OpenSans-Light.woff
+res-min/font/OpenSans.woff
+res-min/font/OpenSansLight-Italic.woff
 res-min/font/cursive_standard-webfont.eot
 res-min/font/cursive_standard-webfont.svg
 res-min/font/cursive_standard-webfont.ttf
@@ -24,14 +30,15 @@ res-min/img/glyphicons-halflings-white.png
 res-min/img/glyphicons-halflings.png
 res-min/img/icons.png
 res-min/img/icons2x.png
+res-min/img/logo-promo-128.png
+res-min/img/menu-icon.png
 res-min/img/school-line.png
 res-min/img/stackedit-32.ico
-res-min/img/stackedit-64.png
-res-min/img/stackedit-promo.png
 res-min/main.js
 res-min/require.js
-res-min/themes/blue-gray.css
+res-min/themes/base.css
 res-min/themes/default.css
+res-min/themes/gray.css
 res-min/themes/night.css
 res-min/themes/school.css
 libs/dictionaries/de_DE.aff.lz

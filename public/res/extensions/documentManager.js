@@ -125,7 +125,7 @@ define([
     var orphanDocumentList;
     var $documentCountElt;
     var $folderCountElt;
-    var refreshManager = function() {
+    var refreshManager = _.debounce(function() {
         if(isVisible === false) {
             return;
         }
@@ -281,7 +281,7 @@ define([
 
         // Set checkbox event listeners
         $(documentListElt.querySelectorAll('[type=checkbox]')).change(doActiveButtons);
-    };
+    }, 50);
 
     documentManager.onFileCreated = refreshManager;
     documentManager.onFileDeleted = refreshManager;

@@ -98,6 +98,12 @@ define([
 
     fileMgr.deleteFile = function(fileDesc) {
         fileDesc = fileDesc || fileMgr.currentFile;
+        
+        // Unassociate file from folder
+        if(fileDesc.folder) {
+            fileDesc.folder.removeFile(fileDesc);
+            eventMgr.onFoldersChanged();
+        }
 
         // Remove the index from the file list
         utils.removeIndexFromArray("file.list", fileDesc.fileIndex);

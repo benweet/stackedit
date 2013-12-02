@@ -62,6 +62,9 @@ module.exports = function(grunt) {
         },
         less: {
             compile: {
+                options: {
+                    compress: true,
+                },
                 files: [
                     {
                         expand: true,
@@ -71,40 +74,15 @@ module.exports = function(grunt) {
                         ],
                         dest: 'public/res-min/themes',
                         ext: '.css',
-                    }
-                ]
-            },
-            compress: {
-                options: {
-                    compress: true,
-                    paths: 'public/res/styles'
-                },
-                files: [
+                    },
                     {
-                        expand: true,
-                        cwd: 'public/res-min/themes',
-                        src: [
-                            '*.css'
-                        ],
-                        dest: 'public/res-min/themes',
+                        src: 'public/res/styles/base.less',
+                        dest: 'public/res-min/themes/base.css',
                     }
-                ]
+                ],
             },
         },
         'string-replace': {
-            'css-import': {
-                files: {
-                    './': 'public/res-min/themes/*.css',
-                },
-                options: {
-                    replacements: [
-                        {
-                            pattern: /@import /g,
-                            replacement: '@import (less) '
-                        },
-                    ]
-                }
-            },
             'font-parameters': {
                 files: {
                     './': 'public/res-min/themes/*.css',
@@ -156,14 +134,6 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         cwd: 'public/res/font',
-                        src: [
-                            '**'
-                        ],
-                        dest: 'public/res-min/font/'
-                    },
-                    {
-                        expand: true,
-                        cwd: 'public/res/libs/fontello/font',
                         src: [
                             '**'
                         ],
@@ -243,10 +213,6 @@ module.exports = function(grunt) {
 
         // First compile less files
         grunt.task.run('less:compile');
-        // Then force evaluation of CSS imports
-        grunt.task.run('string-replace:css-import');
-        // Run less another time with CSS evaluation and compression
-        grunt.task.run('less:compress');
         // Remove fontello checksum arguments
         grunt.task.run('string-replace:font-parameters');
 

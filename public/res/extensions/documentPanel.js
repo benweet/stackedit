@@ -45,7 +45,7 @@ define([
     var documentListFilteredElt;
     var $documentListFilteredElt;
     var selectedFileDesc;
-    var refreshPanel = function() {
+    var refreshPanel = _.debounce(function() {
 
         // List orphan documents
         var orphanDocumentList = _.filter(fileSystem, function(fileDesc) {
@@ -109,7 +109,7 @@ define([
             });
         });
 
-    };
+    }, 50);
 
     documentPanel.onFileSelected = function(fileDesc) {
         selectedFileDesc = fileDesc;

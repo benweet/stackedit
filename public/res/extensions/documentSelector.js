@@ -53,7 +53,7 @@ define([
     var selectFileDesc;
     var selectedLi;
     var $editorElt;
-    var buildSelector = function() {
+    var buildSelector = _.debounce(function() {
         var liListHtml = _.chain(fileSystem).sortBy(sortFunction).reduce(function(result, fileDesc) {
             return result + _.template(liEltTmpl, {
                 fileDesc: fileDesc,
@@ -82,8 +82,7 @@ define([
                 }
             });
         });
-
-    };
+    }, 50);
 
     documentSelector.onFileSelected = function(fileDesc) {
         selectFileDesc = fileDesc;

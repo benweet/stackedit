@@ -1,10 +1,11 @@
 @import "../bower-libs/bootstrap/less/bootstrap.less";
-@import "../bower-libs/google-code-prettify/src/prettify.css";
-@import "../bower-libs/highlightjs/styles/default.css";
-@import "../libs/fontello/css/fontello.css";
+@import (less) "../bower-libs/google-code-prettify/src/prettify.css";
+@import (less) "../bower-libs/highlightjs/styles/default.css";
+@import (less) "../libs/fontello/css/fontello.css";
 
 @blockquote-border-color: #eee;
 @blockquote-bg: #f8f8f8;
+@title-base-size: 14px;
 
 @font-face {
   font-family: 'Open Sans';
@@ -223,10 +224,6 @@ ul,ol {
     	margin-left: 0.3em;
     	margin-right: 0.3em;
 	}
-}
-
-.icon-folder {
-	margin-top: -2px;
 }
 
 .icon-file {

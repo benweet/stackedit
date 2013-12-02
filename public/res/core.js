@@ -412,23 +412,25 @@ define([
     var rightButtonsWidth = 40 + 88 + 87;
     var rightButtonsDropdown = 44;
     function adjustWindow() {
-        var maxWidth = $navbarElt.width() - 10;
-        if(marginWidth + titleWidth + leftButtonsWidth + rightButtonsWidth > maxWidth) {
-            $rightBtnDropdown.show().find('.dropdown-menu').append($rightBtnElts);
-            if(marginWidth + titleWidth + leftButtonsWidth + rightButtonsDropdown > maxWidth) {
-                $leftBtnDropdown.show().find('.dropdown-menu').append($leftBtnElts);
+        if(!window.viewerMode) {
+            var maxWidth = $navbarElt.width() - 10;
+            if(marginWidth + titleWidth + leftButtonsWidth + rightButtonsWidth > maxWidth) {
+                $rightBtnDropdown.show().find('.dropdown-menu').append($rightBtnElts);
+                if(marginWidth + titleWidth + leftButtonsWidth + rightButtonsDropdown > maxWidth) {
+                    $leftBtnDropdown.show().find('.dropdown-menu').append($leftBtnElts);
+                }
+                else {
+                    $leftBtnDropdown.hide().after($leftBtnElts);
+                }
             }
             else {
                 $leftBtnDropdown.hide().after($leftBtnElts);
+                $rightBtnDropdown.hide().after($rightBtnElts);
             }
-        }
-        else {
-            $leftBtnDropdown.hide().after($leftBtnElts);
-            $rightBtnDropdown.hide().after($rightBtnElts);
-        }
-        if(window.lightMode) {
-            $leftBtnElts.hide();
-            $leftBtnDropdown.hide();
+            if(window.lightMode) {
+                $leftBtnElts.hide();
+                $leftBtnDropdown.hide();
+            }
         }
         layout.resizeAll();
     }
@@ -938,51 +940,39 @@ define([
 
         // Tooltips
         var openedTooltip;
-        function openTooltip(e) {
-            var elt = this;
-            if(openedTooltip && openedTooltip[0] === elt) return;
-            _.defer(function() {
-                $(document).on("click.close-tooltip", function() {
-                    openedTooltip && openedTooltip.tooltip('hide');
-                    openedTooltip = undefined;
-                    $(document).off("click.close-tooltip");
+        function createTooltip(selector, content) {
+            _.each(document.querySelectorAll(selector), function(tooltipElt) {
+                var $tooltipElt = $(tooltipElt);
+                $tooltipElt.tooltip({
+                    html: true,
+                    container: $tooltipElt.parents('.modal-content'),
+                    placement: 'right',
+                    trigger: 'manual',
+                    title: content
+                }).click(function() {
+                    var elt = this;
+                    if(openedTooltip && openedTooltip[0] === elt) {
+                        return;
+                    }
+                    _.defer(function() {
+                        $(document).on("click.close-tooltip", function() {
+                            openedTooltip && openedTooltip.tooltip('hide');
+                            openedTooltip = undefined;
+                            $(document).off("click.close-tooltip");
+                        });
+                        openedTooltip = $(elt).tooltip('show');
+                    });
                 });
-                openedTooltip = $(elt).tooltip('show');
             });
         }
-        $(".tooltip-lazy-rendering").tooltip({
-            container: '.modal-settings',
-            placement: 'right',
-            trigger: 'hover',
-            title: 'Disable preview rendering while typing in order to offload CPU. Refresh preview after 500 ms of inactivity.'
-        });
-        $(".tooltip-default-content").tooltip({
-            html: true,
-            container: '.modal-settings',
-            placement: 'right',
-            trigger: 'hover',
-            title: [
-                'Thanks for supporting StackEdit by adding a backlink in your documents!<br/><br/>',
-                '<b class="text-danger">NOTE: Backlinks in Stack Exchange Q/A are not welcome.</b>'
-            ].join('')
-        });
-        $(".tooltip-usercustom-extension").tooltip({
-            html: true,
-            container: '.modal-settings',
-            placement: 'right',
-            trigger: 'manual',
-            title: settingsUserCustomExtensionTooltipHTML
-        }).click(openTooltip);
-        _.each(document.querySelectorAll(".tooltip-template"), function(tooltipElt) {
-            var $tooltipElt = $(tooltipElt);
-            $tooltipElt.tooltip({
-                html: true,
-                container: $tooltipElt.parents('.modal'),
-                placement: 'right',
-                trigger: 'manual',
-                title: settingsTemplateTooltipHTML
-            }).click(openTooltip);
-        });
+        
+        createTooltip(".tooltip-lazy-rendering", 'Disable preview rendering while typing in order to offload CPU. Refresh preview after 500 ms of inactivity.');
+        createTooltip(".tooltip-default-content", [
+            'Thanks for supporting StackEdit by adding a backlink in your documents!<br/><br/>',
+            '<b class="text-danger">NOTE: Backlinks in Stack Exchange Q/A are not welcome.</b>'
+        ].join(''));
+        createTooltip(".tooltip-usercustom-extension", settingsUserCustomExtensionTooltipHTML);
+        createTooltip(".tooltip-template", settingsTemplateTooltipHTML);
 
         // Avoid dropdown panels to close on click
         $("div.dropdown-menu").click(function(e) {

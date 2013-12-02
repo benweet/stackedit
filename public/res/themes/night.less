@@ -1,55 +1,34 @@
 @import "../styles/main.less";
 
+@primary: #FFF;
 @primary-bg: #444;
 @primary-bg-light: darken(@primary-bg, 7%);
 @primary-bg-lighter: darken(@primary-bg, 13%);
 @primary-bg-lightest: darken(@primary-bg, 15%);
-@secondary-bg: #444;
-@secondary-bg-light: darken(@secondary-bg, 7%);
-@secondary-bg-dark: lighten(@secondary-bg, 7%);
-@primary-color: #fff;
+@primary-color: @primary;
 @primary-color-light: darken(@primary-color, 12.5%);
 @primary-color-lighter: darken(@primary-color, 25%);
 @primary-color-lightest: darken(@primary-color, 37.5%);
-@primary-color-inv: #fff;
-@disabled-color: #999;
-@panel-button-color: #777;
+@secondary-bg: #444;
+@secondary-border-color: darken(@primary-desaturated, 40%);
+@panel-button-bg-color: #aaa;
 
-@bg-navbar-hover: @secondary-bg-dark;
-@panel-border-color: @primary-bg;
 @link-color: #f73;
-@input-color: @primary-color;
 @input-border: @primary-bg;
 @input-bg: #111;
-@list-group-bg: @primary-bg-light;
-@list-group-hover-bg: @primary-bg;
 @blockquote-bg: fade(#fff, 5%);
 @code-bg: fade(#fff, 10%);
-@modal-content-bg: @primary-bg-light;
-@modal-header-border-color: @primary-bg;
-@modal-content-border-color: @primary-bg;
-@modal-footer-border-color: @primary-bg;
-@modal-content-separator-color: @primary-bg;
-@nav-link-hover-bg: @primary-bg;
-@nav-tabs-link-hover-border-color: @primary-bg;
-@list-group-hover-bg: @primary-bg;
-@btn-default-hover-bg: fade(#fff, 8%);
-@btn-primary-hover-bg: lighten(@secondary-bg, 8%);
+@pre-bg: #bbb;
 @blockquote-border-color: fade(#fff, 8%);
-@modal-backdrop-bg: #000;
+@modal-backdrop-bg: #444;
 @dropdown-border: @primary-bg;
-@dropdown-bg: @primary-bg-light;
 
 .form-control:focus {
-    .box-shadow(~"inset 0 1px 1px rgba(255, 255, 255, 0), 0 0 8px rgba(255, 255, 255, 0.75)");
+    .box-shadow(~"inset 0 1px 1px rgba(255, 255, 255, 0), 0 0 12px rgba(255, 255, 255, 1)");
 }
 
 .ace-tm {
 	.ace_cursor {
 		border-left-color: #fff;
-	}
-	
-	.ace_print-margin {
-		background-color: @primary-bg-lighter;
 	}
 }	

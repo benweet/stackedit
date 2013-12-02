@@ -1,9 +1,9 @@
 @import "base.less";
-@import "../bower-libs/ace/lib/ace/css/editor.css";
-@import "../bower-libs/ace/lib/ace/ext/searchbox.css";
-@import "../bower-libs/ace/lib/ace/theme/textmate.css";
+@import (less) "../bower-libs/ace/lib/ace/css/editor.css";
+@import (less) "../bower-libs/ace/lib/ace/ext/searchbox.css";
+@import (less) "../bower-libs/ace/lib/ace/theme/textmate.css";
 @import "../bower-libs/bootstrap-tour/src/less/bootstrap-tour.less";
-@import "jquery.jgrowl.css";
+@import (less) "jquery.jgrowl.css";
 
 /* Colors */
 @logo-yellow: #FFD900;
@@ -22,44 +22,45 @@
 @primary-bg-lighter: lighten(@secondary-desaturated, 48%);
 @primary-bg-lightest: #fff;
 @primary-border-color: fade(@primary, 10%);
-@secondary-bg: lighten(@tertiary-desaturated, 10%);
-@secondary-bg-light: lighten(@tertiary-desaturated, 15%);
-@secondary-bg-dark: lighten(@tertiary-desaturated, 5%);
-@secondary-border-color: lighten(@primary-desaturated, 38%);
 @primary-color: @primary-desaturated;
 @primary-color-dark: darken(@primary-color, 12.5%);
 @primary-color-darker: darken(@primary-color, 25%);
 @primary-color-darkest: darken(@primary-color, 37.5%);
-@primary-color-inv: #fff;
-@secondary-color: lighten(@primary-desaturated, 10%);
-@secondary-color-dark: @primary-desaturated;
+@secondary-bg: @tertiary-desaturated;
+@secondary-border-color: lighten(@primary-desaturated, 40%);
+@secondary-color: @primary-desaturated;
+@secondary-color-dark: darken(@primary-desaturated, 5%);
 @secondary-color-darker: darken(@primary-desaturated, 15%);
 @secondary-color-darkest: darken(@primary-desaturated, 40%);
-@secondary-color-inv: #fff;
 @error-border: #FF6161;
 @disabled-color: mix(@primary-color, @input-bg, 33%);
-@panel-button-color: @primary-color-dark;
+@panel-button-bg-color: #FFF;
 @panel-button-border-fade: 75%;
 @panel-bg: @primary-bg-lighter;
 @panel-border-color: fade(@primary-desaturated, 10%);
 @folder-color: @primary-color-darker;
-@jgrowl-bg-color: fade(@secondary-bg-dark, 90%);
+@jgrowl-bg-color: fade(@modal-backdrop-bg, 90%);
 
 /* Sizes */
 @menu-panel-width: 280px;
 @document-panel-width: 340px;
 @jgrowl-width: 260px;
-@title-base-size: 14px;
 @resizer-size: 35px;
 
 /* Bootstrap */
 @body-bg: @primary-bg-lighter;
 @text-color: @primary-color-darkest;
-@link-color: desaturate(@secondary, 25%);
+@link-color: desaturate(#0080FF, 25%);
 @input-bg: @primary-bg-lightest;
 @input-border: @secondary-border-color;
 @input-height-base: 38px;
+@blockquote-border-color: fade(@secondary-desaturated, 7.5%);
+@blockquote-bg: fade(@secondary-desaturated, 5%);
+@code-color: @primary-color-darkest;
+@code-bg: fade(@secondary-desaturated, 5%);
+@pre-bg: fade(@secondary-desaturated, 5%);
 @pre-border-color: @secondary-border-color;
+@hr-border: fade(@secondary-desaturated, 10%);
 @navbar-height: 49px;
 @navbar-default-bg: @primary-bg;
 @nav-link-hover-bg: @btn-default-hover-bg;
@@ -67,12 +68,14 @@
 @nav-disabled-link-hover-color: @disabled-color;
 @nav-tabs-border-color: @transparent;
 @nav-tabs-link-hover-border-color: @transparent; 
+@dropdown-bg: @primary-bg-lightest;
 @dropdown-border: @secondary-border-color;
 @dropdown-link-color: @primary-color-darkest;
 @dropdown-link-hover-color: darken(@primary-desaturated, 25%);
 @dropdown-link-hover-bg: @btn-default-hover-bg;
 @dropdown-header-color: fade(@primary-color, 50%);
 @dropdown-link-disabled-color: @disabled-color;
+@dropdown-divider-bg: @dropdown-border;
 @list-group-link-color: @primary-color-darkest;
 @list-group-bg: @primary-bg-lighter;
 @list-group-border: @transparent;
@@ -98,16 +101,11 @@
 @btn-info-border: @transparent;
 @gray-lighter: @body-bg;
 @modal-header-border-color: @primary-bg;
+@modal-content-bg: @primary-bg-lightest;
 @modal-content-border-color: fade(@primary-desaturated, 25%);
 @modal-footer-border-color: @primary-bg;
 @modal-content-separator-color: @primary-bg-light;
-@modal-backdrop-bg: @secondary-bg-light;
-@blockquote-border-color: fade(@secondary-desaturated, 7.5%);
-@blockquote-bg: fade(@secondary-desaturated, 5%);
-@code-color: @primary-color-darkest;
-@code-bg: fade(@secondary-desaturated, 5%);
-@hr-border: fade(@secondary-desaturated, 10%);
-@pre-bg: fade(@secondary-desaturated, 5%);
+@modal-backdrop-bg: @secondary-bg;
 @tooltip-max-width: 240px;
 @close-color: @primary-color-darkest;
 @popover-bg: @primary-bg-light;
@@ -194,6 +192,29 @@ a {
     	    border-bottom-color: @list-group-active-border;
     	}
 	}
+}
+
+.nav-pills > li {
+    > a {
+        border: 1px solid @transparent;
+        &:hover,
+        &:focus {
+    	    border-color: @list-group-hover-border-color;
+        }
+    }
+    &.disabled > a {
+        &:hover,
+        &:focus {
+    	    border-color: @transparent;
+        }
+    }
+    &.open > a {
+        &,
+        &:hover,
+        &:focus {
+    	    border-color: @list-group-hover-border-color;
+        }
+    }
 }
 
 .list-group-item {
@@ -467,7 +488,7 @@ a {
 	z-index: 10;
 	overflow: initial;
     .collapse-button {
-       	background-color: #fff;
+       	background-color: @panel-button-bg-color;
         height: @input-height-base;
         border-radius: 8px;
         .box-shadow(~"0 0 1px rgba(0,0,0,.5)");
@@ -968,7 +989,7 @@ a {
 	}
 	
 	.ace_print-margin {
-		background-color: fade(@primary-desaturated, 10%);
+		background-color: fade(@primary-bg, 25%);
 	}
 	
 	.ace_markup.ace_heading {
@@ -1063,7 +1084,7 @@ a {
 
 .ace_search {
 	background-color: @primary-bg;
-	border: 6px solid @panel-bg;
+	border: 6px solid @primary-bg-lighter;
 	border-top: 0;
 	padding: 10px 15px 5px;
 	font-family: @font-family-base;
@@ -1306,6 +1327,7 @@ div.jGrowl {
 	}
 	
 	.navbar .file-title-navbar {
-	    max-width: 500px;
+	    cursor: initial;
+	    .box-shadow(none);
 	}
 }

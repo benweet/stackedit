@@ -27,7 +27,7 @@ define([
 ], function($, _, crel, ace, constants, utils, storage, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
-
+    
     // Used for periodic tasks
     var intervalId;
 
@@ -679,6 +679,10 @@ define([
                 isMenuPanelShown = true;
                 menuPanelBackdropElt = utils.createBackdrop('collapse', '.menu-panel');
                 $menuPanelElt.addClass('move-to-front');
+                // To avoid opening delay
+                setTimeout(function() {
+                    $menuPanelElt.trigger($.support.transition.end);
+                }, 50);
             }
             else {
                 // Close all open sub-menus when one submenu opens
@@ -707,6 +711,10 @@ define([
                 isDocumentPanelShown = true;
                 documentPanelBackdropElt = utils.createBackdrop('collapse', '.document-panel');
                 $documentPanelElt.addClass('move-to-front');
+                // To avoid opening delay
+                setTimeout(function() {
+                    $documentPanelElt.trigger($.support.transition.end);
+                }, 50);
             }
             else {
                 // Close all open sub-menus when one submenu opens

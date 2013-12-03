@@ -10,7 +10,7 @@ define([
     var $workingIndicatorElt;
     workingIndicator.onAsyncRunning = function (isRunning) {
         $bodyElt.toggleClass("working", isRunning);
-        $workingIndicatorElt.toggleClass("hide", !true);
+        $workingIndicatorElt.toggleClass("hide", !isRunning);
     };
     
     workingIndicator.onReady = function () {
@@ -19,8 +19,8 @@ define([
         $('.working-indicator').append($workingIndicatorElt);
         for (var i = 0; i < 3; i++) {
             $workingIndicatorElt.append($('<div class="bar">').css({
-                'animation-delay': (i*15/100).toPrecision(3) + 's',
-                '-webkit-animation-delay': (i*15/100).toPrecision(3) + 's',
+                'animation-delay': (i*2/10).toPrecision(3) + 's',
+                '-webkit-animation-delay': (i*2/10).toPrecision(3) + 's',
             }));
         }
     };

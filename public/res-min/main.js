@@ -20484,12 +20484,12 @@ function() {
 }), define("extensions/workingIndicator", [ "jquery", "underscore", "classes/Extension" ], function(e, t, n) {
  var i, o, r = new n("workingIndicator", "Working Indicator");
  return r.onAsyncRunning = function(e) {
-  i.toggleClass("working", e), o.toggleClass("hide", !1);
+  i.toggleClass("working", e), o.toggleClass("hide", !e);
  }, r.onReady = function() {
   i = e(document.body), o = e('<div class="hide">'), e(".working-indicator").append(o);
   for (var t = 0; 3 > t; t++) o.append(e('<div class="bar">').css({
-   "animation-delay": (15 * t / 100).toPrecision(3) + "s",
-   "-webkit-animation-delay": (15 * t / 100).toPrecision(3) + "s"
+   "animation-delay": (2 * t / 10).toPrecision(3) + "s",
+   "-webkit-animation-delay": (2 * t / 10).toPrecision(3) + "s"
   }));
  }, r;
 }), function(e) {

@@ -10,7 +10,7 @@ define([
     var $workingIndicatorElt;
     workingIndicator.onAsyncRunning = function (isRunning) {
         $bodyElt.toggleClass("working", isRunning);
-        $workingIndicatorElt.toggleClass("hide", !true);
+        $workingIndicatorElt.toggleClass("hide", !isRunning);
     };
     
     workingIndicator.onReady = function () {

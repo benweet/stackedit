@@ -7,23 +7,40 @@
 @red-ink: #B56E85;
 @green-ink: #6c9c7f;
 @navbar-default-bg: @board-color;
-@bg-navbar-hover: lighten(@board-color, 4%);
-@primary: darken(@board-border-color, 20%);
+@bg-navbar-hover: darken(@board-color, 4%);
+@primary: desaturate(darken(@board-border-color, 20%), 20%);
 @primary-color: lighten(@blue-ink, 30%);
+@secondary-color: lighten(@blue-ink, 20%);
 @tertiary-color: lighten(@blue-ink, 30%);
 @secondary: @primary;
 @tertiary: @primary;
 @primary-desaturated: @primary;
-@secondary-desaturated: darken(@board-border-color, 20%);
+@secondary-desaturated: darken(@board-border-color, 19%);
 @tertiary-desaturated: @tertiary;
-//@primary-bg: lighten(@board-border-color, 16%);
-//@primary-bg-light: lighten(@board-border-color, 20%);
-//@primary-bg-lighter: lighten(@board-border-color, 24%);
+@primary-border-color: darken(@primary, 5%);
+@modal-backdrop-bg: @primary;
 @btn-success-color: #eee;
-//@btn-success-bg: @transparent;
-//@title-base-size: 18px;
-//@panel-button-color: #666;
+@btn-success-bg: @transparent;
+@btn-success-border: @transparent;
+@btn-success-hover-bg: lighten(@bg-navbar-hover, 15%);
+@panel-button-bg-color: #ccc;
 
+
+// Navbar buttons
+.btn-success {
+    &:hover,
+    &:focus,
+    &:active,
+    .open &.dropdown-toggle {
+    	color: @btn-success-color;
+    	border-color: lighten(@bg-navbar-hover, 20%);
+    }
+}
+
+.navbar .dropdown-menu {
+    background-color: lighten(@bg-navbar-hover, 7.5%);
+    border-color: @primary-border-color;
+}
 
 @font-face {
     font-family: 'cursive_standardregular';

@@ -11549,7 +11549,8 @@ function printStackTrace(e) {
  e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-beta.herokuapp.com/"), e.THEME_LIST = {
   "default": "Default",
   gray: "Gray",
-  night: "Night"
+  night: "Night",
+  school: "School"
  }, e;
 }), define("storage", [ "underscore" ], function(e) {
  function t(t) {
@@ -20484,7 +20485,7 @@ function() {
 }), define("extensions/workingIndicator", [ "jquery", "underscore", "classes/Extension" ], function(e, t, n) {
  var i, o, r = new n("workingIndicator", "Working Indicator");
  return r.onAsyncRunning = function(e) {
-  i.toggleClass("working", e), o.toggleClass("hide", !1);
+  i.toggleClass("working", e), o.toggleClass("hide", !e);
  }, r.onReady = function() {
   i = e(document.body), o = e('<div class="hide">'), e(".working-indicator").append(o);
   for (var t = 0; 3 > t; t++) o.append(e('<div class="bar">').css({

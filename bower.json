@@ -20,7 +20,7 @@
     "bootstrap-tour": "~0.7.1",
     "ace": "4bbe5346f2ae5ad35c0c47defa244ab27aedd451",
     "pagedown-ace": "https://github.com/benweet/pagedown-ace.git#72a27932f6f4f78e93a186aa2947d1f15c1cd7d5",
-    "pagedown-extra": "https://github.com/jmcmanus/pagedown-extra.git#bb1d4ec19edd01e4364e98dd4ec149a31f2f5c9a",
+    "pagedown-extra": "https://github.com/jmcmanus/pagedown-extra.git#161c003a733b96644bf67eecc73296ab48558394",
     "crel": "git@github.com:KoryNunn/crel.git#8dbda04b129fc0aec01a2a080d1cab26816e11c1",
     "waitForImages": "git@github.com:alexanderdickson/waitForImages.git#~1.4.2",
     "to-markdown": "git@github.com:benweet/to-markdown.git#jquery",

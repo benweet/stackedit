@@ -407,7 +407,7 @@ define([
     var $leftBtnDropdown;
     var $rightBtnDropdown;
     var marginWidth = 40 + 25 + 25;
-    var titleWidth = 20 + 353;
+    var titleWidth = 20 + 348;
     var leftButtonsWidth = window.lightMode ? 0 : 80 + 87 + 174 + 175 + 87;
     var rightButtonsWidth = 40 + 88 + 87;
     var rightButtonsDropdown = 44;

@@ -20484,10 +20484,10 @@ function() {
 }), define("extensions/workingIndicator", [ "jquery", "underscore", "classes/Extension" ], function(e, t, n) {
  var i, o, r = new n("workingIndicator", "Working Indicator");
  return r.onAsyncRunning = function(e) {
-  i.toggleClass("working", e), o.toggleClass("hide", !e);
+  i.toggleClass("working", e), o.toggleClass("hide", !1);
  }, r.onReady = function() {
   i = e(document.body), o = e('<div class="hide">'), e(".working-indicator").append(o);
-  for (var t = 0; 4 > t; t++) o.append(e('<div class="bar">').css({
+  for (var t = 0; 3 > t; t++) o.append(e('<div class="bar">').css({
    "animation-delay": (15 * t / 100).toPrecision(3) + "s",
    "-webkit-animation-delay": (15 * t / 100).toPrecision(3) + "s"
   }));
@@ -27240,7 +27240,7 @@ function() {
  T.setOffline = function() {
   M = r.currentTime, I === !1 && (I = !0, l.onOfflineChanged(!0));
  };
- var R, P, N, O, z, j, H, q, W, U, G, V, K, X, Y, Z, J = 90, Q = 373, et = window.lightMode ? 0 : 603, tt = 215, nt = 44, it = require("ace/undomanager").UndoManager;
+ var R, P, N, O, z, j, H, q, W, U, G, V, K, X, Y, Z, J = 90, Q = 368, et = window.lightMode ? 0 : 603, tt = 215, nt = 44, it = require("ace/undomanager").UndoManager;
  T.initEditor = function(n) {
   function i() {
    var e = X.val();

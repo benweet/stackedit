@@ -210,6 +210,17 @@ define([
         version = "v12";
     }
 
+    // Upgrade from v12 to v13
+    if(version == "v12") {
+        if(_.has(localStorage, 'settings')) {
+            settings = JSON.parse(localStorage.settings);
+            // Have to reset the font because of Monaco issue with ACE
+            delete settings.editorFontFamily;
+            localStorage.settings = JSON.stringify(settings);
+        }
+        version = "v13";
+    }
+
     localStorage.version = version;
     return localStorage;
 });

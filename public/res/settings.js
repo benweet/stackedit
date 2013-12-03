@@ -7,7 +7,7 @@ define([
     var settings = {
         layoutOrientation: "horizontal",
         lazyRendering: true,
-        editorFontFamily: '"Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace',
+        editorFontFamily: '"Lucida Sans Typewriter", "Lucida Console", Menlo, "Bitstream Vera Sans Mono", Courier, monospace',
         editorFontSize: 13,
         maxWidth: 960,
         defaultContent: "\n\n\n> Written with [StackEdit](" + constants.MAIN_URL + ").",

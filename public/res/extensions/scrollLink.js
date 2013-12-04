@@ -95,6 +95,7 @@ define([
             return;
         }
         var editorScrollTop = aceEditor.renderer.getScrollTop();
+        editorScrollTop < 0 && (editorScrollTop = 0);
         var previewScrollTop = $previewElt.scrollTop();
         function getDestScrollTop(srcScrollTop, srcSectionList, destSectionList) {
             // Find the section corresponding to the offset

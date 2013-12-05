@@ -198,7 +198,7 @@ define([
                 eventMgr.onTitleChanged(fileDesc);
             }
             $fileTitleInputElt.val(fileDesc.title);
-            (aceEditor && aceEditor.focus()) || $editorElt.focus();
+            aceEditor ? aceEditor.focus() : $editorElt.focus();
         }
         $fileTitleInputElt.blur(function() {
             applyTitle();

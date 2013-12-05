@@ -123,10 +123,10 @@ define([
         utils.setInputValue("#input-settings-editor-font-size", settings.editorFontSize);
         // Max width
         utils.setInputValue("#input-settings-max-width", settings.maxWidth);
-        // RTL
-        utils.setInputChecked("#input-settings-rtl", storage.rtl == 'true');
         // Default content
         utils.setInputValue("#textarea-settings-default-content", settings.defaultContent);
+        // Mode
+        utils.setInputRadio("radio-settings-mode", storage.mode || '_ace_');
         // Commit message
         utils.setInputValue("#input-settings-publish-commit-msg", settings.commitMsg);
         // Gdrive full access
@@ -163,10 +163,10 @@ define([
         newSettings.editorFontSize = utils.getInputIntValue("#input-settings-editor-font-size", event, 1, 99);
         // Max width
         newSettings.maxWidth = utils.getInputIntValue("#input-settings-max-width", event, 1);
-        // RTL
-        var rtl = utils.getInputChecked("#input-settings-rtl");
         // Default content
         newSettings.defaultContent = utils.getInputValue("#textarea-settings-default-content");
+        // Mode
+        var mode = utils.getInputRadio("radio-settings-mode");
         // Commit message
         newSettings.commitMsg = utils.getInputTextValue("#input-settings-publish-commit-msg", event);
         // Gdrive full access
@@ -191,7 +191,7 @@ define([
             $.extend(settings, newSettings);
             storage.settings = JSON.stringify(settings);
             storage.themeV3 = theme;
-            storage.rtl = rtl;
+            storage.mode = mode;
         }
     }
 
@@ -412,14 +412,14 @@ define([
     var $rightBtnElts;
     var $leftBtnDropdown;
     var $rightBtnDropdown;
-    var marginWidth = 40 + 25 + 25;
-    var titleWidth = 20 + 348;
-    var leftButtonsWidth = 80 + 87 + 174 + 175 + 87;
-    var rightButtonsWidth = 40 + 88 + 87;
-    var rightButtonsDropdown = 44;
+    var marginWidth = 36 + 25 + 25;
+    var titleWidth = 18 + 348;
+    var leftButtonsWidth = 72 + 83 + 166 + 167 + 83;
+    var rightButtonsWidth = 36 + 84 + 83;
+    var rightButtonsDropdown = 42;
     function adjustWindow() {
         if(!window.viewerMode) {
-            var maxWidth = $navbarElt.width() - 10;
+            var maxWidth = $navbarElt.width() - 5;
             if(marginWidth + titleWidth + leftButtonsWidth + rightButtonsWidth > maxWidth) {
                 $rightBtnDropdown.show().find('.dropdown-menu').append($rightBtnElts);
                 if(marginWidth + titleWidth + leftButtonsWidth + rightButtonsDropdown > maxWidth) {
@@ -462,7 +462,7 @@ define([
         if(editor !== undefined) {
             // If the editor is already created
             aceEditor && aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
-            (aceEditor && aceEditor.focus()) || $editorElt.focus();
+            aceEditor ? aceEditor.focus() : $editorElt.focus();
             editor.refreshPreview();
             return;
         }
@@ -698,7 +698,7 @@ define([
                 isMenuPanelShown = false;
                 menuPanelBackdropElt.parentNode.removeChild(menuPanelBackdropElt);
                 $menuPanelElt.removeClass('move-to-front');
-                (aceEditor && aceEditor.focus()) || $editorElt.focus();
+                aceEditor ? aceEditor.focus() : $editorElt.focus();
             }
         }).on('hidden.bs.collapse', function(e) {
             if(e.target === $menuPanelElt[0]) {
@@ -730,7 +730,7 @@ define([
                 isDocumentPanelShown = false;
                 documentPanelBackdropElt.parentNode.removeChild(documentPanelBackdropElt);
                 $documentPanelElt.removeClass('move-to-front');
-                (aceEditor && aceEditor.focus()) || $editorElt.focus();
+                aceEditor ? aceEditor.focus() : $editorElt.focus();
             }
         }).on('hidden.bs.collapse', function(e) {
             if(e.target === $documentPanelElt[0]) {
@@ -809,7 +809,7 @@ define([
         }).on('hidden.bs.modal', function() {
             // Focus on the editor when modal is gone
             isModalShown = false;
-            (aceEditor && aceEditor.focus()) || $editorElt.focus();
+            aceEditor ? aceEditor.focus() : $editorElt.focus();
             // Revert to current theme when settings modal is closed
             applyTheme(window.theme);
         }).keyup(function(e) {

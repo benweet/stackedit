@@ -996,23 +996,35 @@
 							</div>
 							<div class="form-group">
 								<label class="col-lg-4 control-label"
-									for="input-settings-rtl">Right-to-left
-								</label>
-								<div class="col-lg-7">
-									<div class="checkbox">
-										<input type="checkbox" id="input-settings-rtl" />
-									</div> <span
-										class="help-block"> Limited mode.</span>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-lg-4 control-label"
 									for="textarea-settings-default-content">Default content
 									<a href="#" class="tooltip-default-content">(?)</a>
 								</label>
 								<div class="col-lg-7">
 									<textarea id="textarea-settings-default-content"
 										class="form-control"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label">Mode</label>
+								<div class="col-lg-7">
+									<div class="radio">
+										<label> <input type="radio"
+											name="radio-settings-mode" value="_ace_">
+											Normal (ACE)
+										</label>
+									</div>
+									<div class="radio">
+										<label> <input type="radio"
+											name="radio-settings-mode" value="_light_">
+											Light (textarea)
+										</label>
+									</div>
+									<div class="radio">
+										<label> <input type="radio"
+											name="radio-settings-mode" value="_light_rtl_">
+											Light + Right-to-left
+										</label>
+									</div>
 								</div>
 							</div>
 						</div>

@@ -36,10 +36,12 @@ define([
         var mdTextOffset = 0;
         var mdSectionOffset = 0;
         var firstSectionOffset = offsetBegin;
+        var padding = 0;
         function addTextareaSection(sectionText) {
-            var sectionHeight = 0;
+            var sectionHeight = padding;
             if(sectionText !== undefined) {
-                $textareaHelperElt.text(sectionText);
+                var textNode = document.createTextNode(sectionText);
+                $textareaHelperElt.empty().append(textNode);
                 sectionHeight += $textareaHelperElt.prop('scrollHeight');
             }
             var newSectionOffset = mdSectionOffset + sectionHeight;
@@ -58,6 +60,12 @@ define([
                 if(index !== sectionList.length - 1) {
                     if(sectionText.length === 0) {
                         sectionText = undefined;
+                    }
+                }
+                else {
+                    if(/\n$/.test(sectionText)) {
+                        // Need to add a line break to take into account a final empty line
+                        sectionText += '\n';
                     }
                 }
                 addTextareaSection(sectionText);

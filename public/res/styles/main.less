@@ -141,11 +141,7 @@ body {
 
 .btn,
 .dropdown-menu {
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
-	user-select: none;
+	.user-select(none);
 }
 
 .dropdown-menu, .modal-content, .panel-content, .search-bar {
@@ -400,7 +396,7 @@ a {
 	}
 	.nav {
 		float: left;
-		margin: 5px 10px;
+		margin: 5px 9px;
 		height: @input-height-base;
 		& > li {
 			display: inline-block;
@@ -422,6 +418,7 @@ a {
 	}
 	.btn {
 		height: @input-height-base;
+		padding: 8px 10px;
 	}
 	.btn-group > .btn {
 		&.disabled,

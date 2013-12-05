@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#Date Thu Dec 05 2013 00:42:44
+#Date Thu Dec 05 2013 01:35:03
 
 CACHE:
 res/worker.js
@@ -11,12 +11,6 @@ libs/MathJax/images/MenuArrow-15.png
 libs/MathJax/jax/output/HTML-CSS/jax.js
 
 #DynamicResourcesBegin
-res-min/font/OpenSans-Bold.woff
-res-min/font/OpenSans-BoldItalic.woff
-res-min/font/OpenSans-Italic.woff
-res-min/font/OpenSans-Light.woff
-res-min/font/OpenSans.woff
-res-min/font/OpenSansLight-Italic.woff
 res-min/font/cursive_standard-webfont.eot
 res-min/font/cursive_standard-webfont.svg
 res-min/font/cursive_standard-webfont.ttf
@@ -25,6 +19,18 @@ res-min/font/fontello.eot
 res-min/font/fontello.svg
 res-min/font/fontello.ttf
 res-min/font/fontello.woff
+res-min/font/opensans-bold-webfont.svg
+res-min/font/opensans-bold-webfont.woff
+res-min/font/opensans-bolditalic-webfont.svg
+res-min/font/opensans-bolditalic-webfont.woff
+res-min/font/opensans-italic-webfont.svg
+res-min/font/opensans-italic-webfont.woff
+res-min/font/opensans-light-webfont.svg
+res-min/font/opensans-light-webfont.woff
+res-min/font/opensans-lightitalic-webfont.svg
+res-min/font/opensans-lightitalic-webfont.woff
+res-min/font/opensans-regular-webfont.svg
+res-min/font/opensans-regular-webfont.woff
 res-min/img/gittip.png
 res-min/img/icons.png
 res-min/img/icons2x.png

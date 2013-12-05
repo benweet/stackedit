@@ -1166,7 +1166,7 @@ function printStackTrace(e) {
    for (n in r) n in e || (e[n] = r[n], t[n] = o);
   } else t[i] = o;
  }
- function P(e, n, i) {
+ function N(e, n, i) {
   var o, r, s, a, l, c, u = this, d = {}, h = e.style, p = e.nodeType && y(e), f = mt.get(e, "fxshow");
   i.queue || (l = rt._queueHooks(e, "fx"), null == l.unqueued && (l.unqueued = 0, 
   c = l.empty.fire, l.empty.fire = function() {
@@ -1200,8 +1200,8 @@ function printStackTrace(e) {
    a.start = "width" === o || "height" === o ? 1 : 0));
   }
  }
- function N(e, t, n, i, o) {
-  return new N.prototype.init(e, t, n, i, o);
+ function P(e, t, n, i, o) {
+  return new P.prototype.init(e, t, n, i, o);
  }
  function O(e, t) {
   var n, i = {
@@ -1443,7 +1443,7 @@ function printStackTrace(e) {
      if (9 === a) {
       if (r = t.getElementById(s), !r || !r.parentNode) return n;
       if (r.id === s) return n.push(r), n;
-     } else if (t.ownerDocument && (r = t.ownerDocument.getElementById(s)) && N(t, r) && r.id === s) return n.push(r), 
+     } else if (t.ownerDocument && (r = t.ownerDocument.getElementById(s)) && P(t, r) && r.id === s) return n.push(r), 
      n;
     } else {
      if (o[2]) return et.apply(n, t.getElementsByTagName(e)), n;
@@ -1638,7 +1638,7 @@ function printStackTrace(e) {
    }
    return F(e, c)(i, t, !I, n, pt.test(e)), n;
   }
-  var C, k, E, S, A, _, F, T, $, D, L, B, I, M, R, P, N, O = "sizzle" + -new Date(), z = e.document, j = 0, H = 0, q = i(), W = i(), U = i(), G = !1, V = function(e, t) {
+  var C, k, E, S, A, _, F, T, $, D, L, B, I, M, R, N, P, O = "sizzle" + -new Date(), z = e.document, j = 0, H = 0, q = i(), W = i(), U = i(), G = !1, V = function(e, t) {
    return e === t ? (G = !0, 0) : 0;
   }, K = typeof t, X = 1 << 31, Y = {}.hasOwnProperty, Z = [], J = Z.pop, Q = Z.push, et = Z.push, tt = Z.slice, nt = Z.indexOf || function(e) {
    for (var t = 0, n = this.length; n > t; t++) if (this[t] === e) return t;
@@ -1720,10 +1720,10 @@ function printStackTrace(e) {
     n.setAttribute("type", "hidden"), e.appendChild(n).setAttribute("t", ""), e.querySelectorAll("[t^='']").length && M.push("[*^$]=" + ot + "*(?:''|\"\")"), 
     e.querySelectorAll(":enabled").length || M.push(":enabled", ":disabled"), e.querySelectorAll("*,:x"), 
     M.push(",.*:");
-   })), (k.matchesSelector = bt.test(P = B.webkitMatchesSelector || B.mozMatchesSelector || B.oMatchesSelector || B.msMatchesSelector)) && r(function(e) {
-    k.disconnectedMatch = P.call(e, "div"), P.call(e, "[s!='']:x"), R.push("!=", ct);
+   })), (k.matchesSelector = bt.test(N = B.webkitMatchesSelector || B.mozMatchesSelector || B.oMatchesSelector || B.msMatchesSelector)) && r(function(e) {
+    k.disconnectedMatch = N.call(e, "div"), N.call(e, "[s!='']:x"), R.push("!=", ct);
    }), M = M.length && new RegExp(M.join("|")), R = R.length && new RegExp(R.join("|")), 
-   N = bt.test(B.contains) || B.compareDocumentPosition ? function(e, t) {
+   P = bt.test(B.contains) || B.compareDocumentPosition ? function(e, t) {
     var n = 9 === e.nodeType ? e.documentElement : e, i = t && t.parentNode;
     return e === i || !(!i || 1 !== i.nodeType || !(n.contains ? n.contains(i) : e.compareDocumentPosition && 16 & e.compareDocumentPosition(i)));
    } : function(e, t) {
@@ -1732,7 +1732,7 @@ function printStackTrace(e) {
    }, V = B.compareDocumentPosition ? function(e, n) {
     if (e === n) return G = !0, 0;
     var i = n.compareDocumentPosition && e.compareDocumentPosition && e.compareDocumentPosition(n);
-    return i ? 1 & i || !k.sortDetached && n.compareDocumentPosition(e) === i ? e === t || N(z, e) ? -1 : n === t || N(z, n) ? 1 : $ ? nt.call($, e) - nt.call($, n) : 0 : 4 & i ? -1 : 1 : e.compareDocumentPosition ? -1 : 1;
+    return i ? 1 & i || !k.sortDetached && n.compareDocumentPosition(e) === i ? e === t || P(z, e) ? -1 : n === t || P(z, n) ? 1 : $ ? nt.call($, e) - nt.call($, n) : 0 : 4 & i ? -1 : 1 : e.compareDocumentPosition ? -1 : 1;
    } : function(e, n) {
     var i, o = 0, r = e.parentNode, s = n.parentNode, l = [ e ], c = [ n ];
     if (e === n) return G = !0, 0;
@@ -1747,12 +1747,12 @@ function printStackTrace(e) {
    return n(e, null, null, t);
   }, n.matchesSelector = function(e, t) {
    if ((e.ownerDocument || e) !== L && D(e), t = t.replace(ft, "='$1']"), !(!k.matchesSelector || !I || R && R.test(t) || M && M.test(t))) try {
-    var i = P.call(e, t);
+    var i = N.call(e, t);
     if (i || k.disconnectedMatch || e.document && 11 !== e.document.nodeType) return i;
    } catch (o) {}
    return n(t, L, null, [ e ]).length > 0;
   }, n.contains = function(e, t) {
-   return (e.ownerDocument || e) !== L && D(e), N(e, t);
+   return (e.ownerDocument || e) !== L && D(e), P(e, t);
   }, n.attr = function(e, n) {
    (e.ownerDocument || e) !== L && D(e);
    var i = S.attrHandle[n.toLowerCase()], o = i && Y.call(S.attrHandle, n.toLowerCase()) ? i(e, n, !I) : t;
@@ -2790,7 +2790,7 @@ function printStackTrace(e) {
    return n;
   }
  });
- var Lt = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi, Bt = /<([\w:]+)/, It = /<|&#?\w+;/, Mt = /<(?:script|style|link)/i, Rt = /^(?:checkbox|radio)$/i, Pt = /checked\s*(?:[^=]|=\s*.checked.)/i, Nt = /^$|\/(?:java|ecma)script/i, Ot = /^true\/(.*)/, zt = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g, jt = {
+ var Lt = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi, Bt = /<([\w:]+)/, It = /<|&#?\w+;/, Mt = /<(?:script|style|link)/i, Rt = /^(?:checkbox|radio)$/i, Nt = /checked\s*(?:[^=]|=\s*.checked.)/i, Pt = /^$|\/(?:java|ecma)script/i, Ot = /^true\/(.*)/, zt = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g, jt = {
   option: [ 1, "<select multiple='multiple'>", "</select>" ],
   thead: [ 1, "<table>", "</table>" ],
   col: [ 2, "<table><colgroup>", "</colgroup></table>" ],
@@ -2876,7 +2876,7 @@ function printStackTrace(e) {
   domManip: function(e, t, n) {
    e = J.apply([], e);
    var i, o, r, s, a, l, c = 0, u = this.length, d = this, f = u - 1, g = e[0], v = rt.isFunction(g);
-   if (v || !(1 >= u || "string" != typeof g || rt.support.checkClone) && Pt.test(g)) return this.each(function(i) {
+   if (v || !(1 >= u || "string" != typeof g || rt.support.checkClone) && Nt.test(g)) return this.each(function(i) {
     var o = d.eq(i);
     v && (e[0] = g.call(this, i, o.html())), o.domManip(e, t, n);
    });
@@ -2885,7 +2885,7 @@ function printStackTrace(e) {
     for (r = rt.map(m(i, "script"), h), s = r.length; u > c; c++) a = i, c !== f && (a = rt.clone(a, !0, !0), 
     s && rt.merge(r, m(a, "script"))), t.call(this[c], a, c);
     if (s) for (l = r[r.length - 1].ownerDocument, rt.map(r, p), c = 0; s > c; c++) a = r[c], 
-    Nt.test(a.type || "") && !mt.access(a, "globalEval") && rt.contains(l, a) && (a.src ? rt._evalUrl(a.src) : rt.globalEval(a.textContent.replace(zt, "")));
+    Pt.test(a.type || "") && !mt.access(a, "globalEval") && rt.contains(l, a) && (a.src ? rt._evalUrl(a.src) : rt.globalEval(a.textContent.replace(zt, "")));
    }
    return this;
   }
@@ -2918,7 +2918,7 @@ function printStackTrace(e) {
     rt.merge(p, r.childNodes), r = h.firstChild, r.textContent = "";
    } else p.push(t.createTextNode(o));
    for (h.textContent = "", u = 0; o = p[u++]; ) if ((!i || -1 === rt.inArray(o, i)) && (l = rt.contains(o.ownerDocument, o), 
-   r = m(h.appendChild(o), "script"), l && f(r), n)) for (c = 0; o = r[c++]; ) Nt.test(o.type || "") && n.push(o);
+   r = m(h.appendChild(o), "script"), l && f(r), n)) for (c = 0; o = r[c++]; ) Pt.test(o.type || "") && n.push(o);
    return h;
   },
   cleanData: function(e) {
@@ -3393,7 +3393,7 @@ function printStackTrace(e) {
    }
   } : void 0;
  });
- var Fn, Tn, $n = /^(?:toggle|show|hide)$/, Dn = new RegExp("^(?:([+-])=|)(" + st + ")([a-z%]*)$", "i"), Ln = /queueHooks$/, Bn = [ P ], In = {
+ var Fn, Tn, $n = /^(?:toggle|show|hide)$/, Dn = new RegExp("^(?:([+-])=|)(" + st + ")([a-z%]*)$", "i"), Ln = /queueHooks$/, Bn = [ N ], In = {
   "*": [ function(e, t) {
    var n = this.createTween(e, t), i = n.cur(), o = Dn.exec(t), r = o && o[3] || (rt.cssNumber[e] ? "" : "px"), s = (rt.cssNumber[e] || "px" !== r && +i) && Dn.exec(rt.css(n.elem, e)), a = 1, l = 20;
    if (s && s[3] !== r) {
@@ -3412,23 +3412,23 @@ function printStackTrace(e) {
   prefilter: function(e, t) {
    t ? Bn.unshift(e) : Bn.push(e);
   }
- }), rt.Tween = N, N.prototype = {
-  constructor: N,
+ }), rt.Tween = P, P.prototype = {
+  constructor: P,
   init: function(e, t, n, i, o, r) {
    this.elem = e, this.prop = n, this.easing = o || "swing", this.options = t, this.start = this.now = this.cur(), 
    this.end = i, this.unit = r || (rt.cssNumber[n] ? "" : "px");
   },
   cur: function() {
-   var e = N.propHooks[this.prop];
-   return e && e.get ? e.get(this) : N.propHooks._default.get(this);
+   var e = P.propHooks[this.prop];
+   return e && e.get ? e.get(this) : P.propHooks._default.get(this);
   },
   run: function(e) {
-   var t, n = N.propHooks[this.prop];
+   var t, n = P.propHooks[this.prop];
    return this.pos = t = this.options.duration ? rt.easing[this.easing](e, this.options.duration * e, 0, 1, this.options.duration) : e, 
    this.now = (this.end - this.start) * t + this.start, this.options.step && this.options.step.call(this.elem, this.now, this), 
-   n && n.set ? n.set(this) : N.propHooks._default.set(this), this;
+   n && n.set ? n.set(this) : P.propHooks._default.set(this), this;
   }
- }, N.prototype.init.prototype = N.prototype, N.propHooks = {
+ }, P.prototype.init.prototype = P.prototype, P.propHooks = {
   _default: {
    get: function(e) {
     var t;
@@ -3439,7 +3439,7 @@ function printStackTrace(e) {
     rt.fx.step[e.prop] ? rt.fx.step[e.prop](e) : e.elem.style && (null != e.elem.style[rt.cssProps[e.prop]] || rt.cssHooks[e.prop]) ? rt.style(e.elem, e.prop, e.now + e.unit) : e.elem[e.prop] = e.now;
    }
   }
- }, N.propHooks.scrollTop = N.propHooks.scrollLeft = {
+ }, P.propHooks.scrollTop = P.propHooks.scrollLeft = {
   set: function(e) {
    e.elem.nodeType && e.elem.parentNode && (e.elem[e.prop] = e.now);
   }
@@ -3519,7 +3519,7 @@ function printStackTrace(e) {
   swing: function(e) {
    return .5 - Math.cos(e * Math.PI) / 2;
   }
- }, rt.timers = [], rt.fx = N.prototype.init, rt.fx.tick = function() {
+ }, rt.timers = [], rt.fx = P.prototype.init, rt.fx.tick = function() {
   var e, n = rt.timers, i = 0;
   for (Fn = rt.now(); i < n.length; i++) e = n[i], e() || n[i] !== e || n.splice(i--, 1);
   n.length || rt.fx.stop(), Fn = t;
@@ -4084,7 +4084,7 @@ function printStackTrace(e) {
    var n = k[t] = e[t];
    k.prototype[t] = function() {
     var e = [ this._wrapped ];
-    return s.apply(e, arguments), N.call(this, n.apply(k, e));
+    return s.apply(e, arguments), P.call(this, n.apply(k, e));
    };
   });
  };
@@ -4105,13 +4105,13 @@ function printStackTrace(e) {
   "	": "t",
   "\u2028": "u2028",
   "\u2029": "u2029"
- }, P = /\\|'|\r|\n|\t|\u2028|\u2029/g;
+ }, N = /\\|'|\r|\n|\t|\u2028|\u2029/g;
  k.template = function(e, t, n) {
   var i;
   n = k.defaults({}, n, k.templateSettings);
   var o = new RegExp([ (n.escape || M).source, (n.interpolate || M).source, (n.evaluate || M).source ].join("|") + "|$", "g"), r = 0, s = "__p+='";
   e.replace(o, function(t, n, i, o, a) {
-   return s += e.slice(r, a).replace(P, function(e) {
+   return s += e.slice(r, a).replace(N, function(e) {
     return "\\" + R[e];
    }), n && (s += "'+\n((__t=(" + n + "))==null?'':_.escape(__t))+\n'"), i && (s += "'+\n((__t=(" + i + "))==null?'':__t)+\n'"), 
    o && (s += "';\n" + o + "\n__p+='"), r = a + t.length, t;
@@ -4129,7 +4129,7 @@ function printStackTrace(e) {
  }, k.chain = function(e) {
   return k(e).chain();
  };
- var N = function(e) {
+ var P = function(e) {
   return this._chain ? k(e).chain() : e;
  };
  k.mixin(k), E([ "pop", "push", "reverse", "shift", "sort", "splice", "unshift" ], function(e) {
@@ -4137,12 +4137,12 @@ function printStackTrace(e) {
   k.prototype[e] = function() {
    var n = this._wrapped;
    return t.apply(n, arguments), "shift" != e && "splice" != e || 0 !== n.length || delete n[0], 
-   N.call(this, n);
+   P.call(this, n);
   };
  }), E([ "concat", "join", "slice" ], function(e) {
   var t = i[e];
   k.prototype[e] = function() {
-   return N.call(this, t.apply(this._wrapped, arguments));
+   return P.call(this, t.apply(this._wrapped, arguments));
   };
  }), k.extend(k.prototype, {
   chain: function() {
@@ -4985,7 +4985,7 @@ function printStackTrace(e) {
     27: 1
    };
    n.addListener(u, "keyup", function(e) {
-    return !g || u.value && !A[e.keyCode] || setTimeout(P, 0), (u.value.charCodeAt(0) || 0) < 129 ? S.call() : (g ? R() : M(), 
+    return !g || u.value && !A[e.keyCode] || setTimeout(N, 0), (u.value.charCodeAt(0) || 0) < 129 ? S.call() : (g ? R() : M(), 
     void 0);
    }), n.addListener(u, "keydown", function() {
     S.schedule(50);
@@ -5056,7 +5056,7 @@ function printStackTrace(e) {
    }
   });
   var M = function() {
-   g || (g = {}, t.onCompositionStart(), setTimeout(R, 0), t.on("mousedown", P), t.selection.isEmpty() || (t.insert(""), 
+   g || (g = {}, t.onCompositionStart(), setTimeout(R, 0), t.on("mousedown", N), t.selection.isEmpty() || (t.insert(""), 
    t.session.markUndoGroup(), t.selection.clearSelection()), t.session.markUndoGroup());
   }, R = function() {
    if (g) {
@@ -5068,7 +5068,7 @@ function printStackTrace(e) {
      t.selection.setRange(n), t.selection.clearSelection();
     }
    }
-  }, P = function(e) {
+  }, N = function(e) {
    var n = g;
    g = !1;
    var i = setTimeout(function() {
@@ -5079,15 +5079,15 @@ function printStackTrace(e) {
    F = function(e) {
     return i && clearTimeout(i), e = e.replace(/\x01/g, ""), e == n.lastValue ? "" : (n.lastValue && i && t.undo(), 
     e);
-   }, t.onCompositionEnd(), t.removeListener("mousedown", P), "compositionend" == e.type && n.range && t.selection.setRange(n.range);
-  }, N = r.delayedCall(R, 50);
+   }, t.onCompositionEnd(), t.removeListener("mousedown", N), "compositionend" == e.type && n.range && t.selection.setRange(n.range);
+  }, P = r.delayedCall(R, 50);
   n.addListener(u, "compositionstart", M), i.isGecko ? n.addListener(u, "text", function() {
-   N.schedule();
+   P.schedule();
   }) : (n.addListener(u, "keyup", function() {
-   N.schedule();
+   P.schedule();
   }), n.addListener(u, "keydown", function() {
-   N.schedule();
-  })), n.addListener(u, "compositionend", P), this.getElement = function() {
+   P.schedule();
+  })), n.addListener(u, "compositionend", N), this.getElement = function() {
    return u;
   }, this.setReadOnly = function(e) {
    u.readOnly = e;
@@ -11619,8 +11619,8 @@ function printStackTrace(e) {
  e.has(localStorage, "settings") && (i = JSON.parse(localStorage.settings), delete i.editorFontFamily, 
  delete i.editorFontSize, i.template && (i.template = i.template.replace("https://stackedit.io/res-min/themes/default.css", "https://stackedit.io/res-min/themes/base.css")), 
  i.pdfTemplate && (i.pdfTemplate = i.pdfTemplate.replace("https://stackedit.io/res-min/themes/default.css", "https://stackedit.io/res-min/themes/base.css")), 
- localStorage.settings = JSON.stringify(i)), r = "v12"), "v12" == r && (e.has(localStorage, "settings") && (i = JSON.parse(localStorage.settings), 
- delete i.editorFontFamily, localStorage.settings = JSON.stringify(i)), r = "v13"), 
+ localStorage.settings = JSON.stringify(i)), r = "v12"), ("v12" == r || "v13" == r) && (e.has(localStorage, "settings") && (i = JSON.parse(localStorage.settings), 
+ delete i.editorFontFamily, localStorage.settings = JSON.stringify(i)), r = "v14"), 
  localStorage.version = r, localStorage;
 }), function(e) {
  var t;
@@ -13662,7 +13662,7 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
  var i = {
   layoutOrientation: "horizontal",
   lazyRendering: !0,
-  editorFontFamily: '"Lucida Sans Typewriter", "Lucida Console", Menlo, "Bitstream Vera Sans Mono", Courier, monospace',
+  editorFontFamily: 'Menlo, Consolas, "Courier New", Courier, monospace',
   editorFontSize: 13,
   maxWidth: 960,
   defaultContent: "\n\n\n> Written with [StackEdit](" + t.MAIN_URL + ").",
@@ -14825,7 +14825,7 @@ var prettyPrintOne, prettyPrint;
       y || (b = I);
      }
      m = b.length >= 5 && "lang-" === b.substring(0, 5), !m || y && "string" == typeof y[1] || (m = !1, 
-     b = P), m || (p[v] = b);
+     b = N), m || (p[v] = b);
     }
     var C = d;
     if (d += v.length, m) {
@@ -15018,7 +15018,7 @@ var prettyPrintOne, prettyPrint;
   var h, f = 0, g = /\blang(?:uage)?-([\w.]+)(?!\S)/, m = /\bprettyprint\b/, v = /\bprettyprinted\b/, b = /pre|xmp/i, y = /^code$/i, w = /^(?:pre|code|xmp)$/i;
   n();
  }
- var p = window, f = [ "break,continue,do,else,for,if,return,while" ], g = [ f, "auto,case,char,const,default,double,enum,extern,float,goto,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile" ], m = [ g, "catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof" ], v = [ m, "alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,dynamic_cast,explicit,export,friend,inline,late_check,mutable,namespace,nullptr,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where" ], b = [ m, "abstract,boolean,byte,extends,final,finally,implements,import,instanceof,null,native,package,strictfp,super,synchronized,throws,transient" ], y = [ b, "as,base,by,checked,decimal,delegate,descending,dynamic,event,fixed,foreach,from,group,implicit,in,interface,internal,into,is,let,lock,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where" ], w = "all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes", x = [ m, "debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN" ], C = "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END", k = [ f, "and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None" ], E = [ f, "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END" ], S = [ f, "case,done,elif,esac,eval,fi,function,in,local,set,then,until" ], A = [ v, y, x, C + k, E, S ], _ = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/, F = "str", T = "kwd", $ = "com", D = "typ", L = "lit", B = "pun", I = "pln", M = "tag", R = "dec", P = "src", N = "atn", O = "atv", z = "nocode", j = "(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*", H = /\S/, q = r({
+ var p = window, f = [ "break,continue,do,else,for,if,return,while" ], g = [ f, "auto,case,char,const,default,double,enum,extern,float,goto,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile" ], m = [ g, "catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof" ], v = [ m, "alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,dynamic_cast,explicit,export,friend,inline,late_check,mutable,namespace,nullptr,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where" ], b = [ m, "abstract,boolean,byte,extends,final,finally,implements,import,instanceof,null,native,package,strictfp,super,synchronized,throws,transient" ], y = [ b, "as,base,by,checked,decimal,delegate,descending,dynamic,event,fixed,foreach,from,group,implicit,in,interface,internal,into,is,let,lock,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where" ], w = "all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes", x = [ m, "debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN" ], C = "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END", k = [ f, "and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None" ], E = [ f, "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END" ], S = [ f, "case,done,elif,esac,eval,fi,function,in,local,set,then,until" ], A = [ v, y, x, C + k, E, S ], _ = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/, F = "str", T = "kwd", $ = "com", D = "typ", L = "lit", B = "pun", I = "pln", M = "tag", R = "dec", N = "src", P = "atn", O = "atv", z = "nocode", j = "(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*", H = /\S/, q = r({
   keywords: A,
   hashComments: !0,
   cStyleComments: !0,
@@ -15026,7 +15026,7 @@ var prettyPrintOne, prettyPrint;
   regexLiterals: !0
  }), W = {};
  l(q, [ "default-code" ]), l(o([], [ [ I, /^[^<?]+/ ], [ R, /^<!\w[^>]*(?:>|$)/ ], [ $, /^<\!--[\s\S]*?(?:-\->|$)/ ], [ "lang-", /^<\?([\s\S]+?)(?:\?>|$)/ ], [ "lang-", /^<%([\s\S]+?)(?:%>|$)/ ], [ B, /^(?:<[%?]|[%?]>)/ ], [ "lang-", /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i ], [ "lang-js", /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i ], [ "lang-css", /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i ], [ "lang-in.tag", /^(<\/?[a-z][^<>]*>)/i ] ]), [ "default-markup", "htm", "html", "mxml", "xhtml", "xml", "xsl" ]), 
- l(o([ [ I, /^[\s]+/, null, " 	\r\n" ], [ O, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, "\"'" ] ], [ [ M, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i ], [ N, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i ], [ "lang-uq.val", /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/ ], [ B, /^[=<>\/]+/ ], [ "lang-js", /^on\w+\s*=\s*\"([^\"]+)\"/i ], [ "lang-js", /^on\w+\s*=\s*\'([^\']+)\'/i ], [ "lang-js", /^on\w+\s*=\s*([^\"\'>\s]+)/i ], [ "lang-css", /^style\s*=\s*\"([^\"]+)\"/i ], [ "lang-css", /^style\s*=\s*\'([^\']+)\'/i ], [ "lang-css", /^style\s*=\s*([^\"\'>\s]+)/i ] ]), [ "in.tag" ]), 
+ l(o([ [ I, /^[\s]+/, null, " 	\r\n" ], [ O, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, "\"'" ] ], [ [ M, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i ], [ P, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i ], [ "lang-uq.val", /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/ ], [ B, /^[=<>\/]+/ ], [ "lang-js", /^on\w+\s*=\s*\"([^\"]+)\"/i ], [ "lang-js", /^on\w+\s*=\s*\'([^\']+)\'/i ], [ "lang-js", /^on\w+\s*=\s*([^\"\'>\s]+)/i ], [ "lang-css", /^style\s*=\s*\"([^\"]+)\"/i ], [ "lang-css", /^style\s*=\s*\'([^\']+)\'/i ], [ "lang-css", /^style\s*=\s*([^\"\'>\s]+)/i ] ]), [ "in.tag" ]), 
  l(o([], [ [ O, /^[\s\S]+/ ] ]), [ "uq.val" ]), l(r({
   keywords: v,
   hashComments: !0,
@@ -15078,7 +15078,7 @@ var prettyPrintOne, prettyPrint;
   createSimpleLexer: o,
   registerLangHandler: l,
   sourceDecorator: r,
-  PR_ATTRIB_NAME: N,
+  PR_ATTRIB_NAME: P,
   PR_ATTRIB_VALUE: O,
   PR_COMMENT: $,
   PR_DECLARATION: R,
@@ -15087,7 +15087,7 @@ var prettyPrintOne, prettyPrint;
   PR_NOCODE: z,
   PR_PLAIN: I,
   PR_PUNCTUATION: B,
-  PR_SOURCE: P,
+  PR_SOURCE: N,
   PR_STRING: F,
   PR_TAG: M,
   PR_TYPE: D,
@@ -18045,11 +18045,11 @@ function() {
    return n = n.replace(/^\n+/, ""), n = n.replace(/\n+$/g, ""), n = "\n\n~K" + (R.push(n) - 1) + "K\n\n";
   }
   function r(e, n) {
-   e = B.preBlockGamut(e, N), e = p(e);
+   e = B.preBlockGamut(e, P), e = p(e);
    var i = "<hr />\n";
    return e = e.replace(/^[ ]{0,2}([ ]?\*[ ]?){3,}[ \t]*$/gm, i), e = e.replace(/^[ ]{0,2}([ ]?-[ ]?){3,}[ \t]*$/gm, i), 
    e = e.replace(/^[ ]{0,2}([ ]?_[ ]?){3,}[ \t]*$/gm, i), e = f(e), e = m(e), e = x(e), 
-   e = B.postBlockGamut(e, N), e = t(e), e = C(e, n);
+   e = B.postBlockGamut(e, P), e = t(e), e = C(e, n);
   }
   function s(e) {
    return e = B.preSpanGamut(e), e = b(e), e = a(e), e = E(e), e = u(e), e = l(e), 
@@ -18109,7 +18109,7 @@ function() {
   function f(e, t) {
    e += "~0";
    var n = /^(([ ]{0,3}([*+-]|\d+[.])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*+-]|\d+[.])[ \t]+)))/gm;
-   return P ? e = e.replace(n, function(e, n, i) {
+   return N ? e = e.replace(n, function(e, n, i) {
     var o = n, r = i.search(/[*+-]/g) > -1 ? "ul" : "ol", s = g(o, r, t);
     return s = s.replace(/\s+$/, ""), s = "<" + r + ">" + s + "</" + r + ">\n";
    }) : (n = /(\n\n|^\n?)(([ ]{0,3}([*+-]|\d+[.])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*+-]|\d+[.])[ \t]+)))/g, 
@@ -18119,13 +18119,13 @@ function() {
    })), e = e.replace(/~0/, "");
   }
   function g(e, t, n) {
-   P++, e = e.replace(/\n{2,}$/, "\n"), e += "~0";
+   N++, e = e.replace(/\n{2,}$/, "\n"), e += "~0";
    var i = O[t], o = new RegExp("(^[ \\t]*)(" + i + ")[ \\t]+([^\\r]+?(\\n+))(?=(~0|\\1(" + i + ")[ \\t]+))", "gm"), a = !1;
    return e = e.replace(o, function(e, t, i, o) {
     var l = o, c = /\n\n$/.test(l), u = c || l.search(/\n{2,}/) > -1;
     return u || a ? l = r(F(l), !0) : (l = f(F(l), !0), l = l.replace(/\n$/, ""), n || (l = s(l))), 
     a = c, "<li>" + l + "</li>\n";
-   }), e = e.replace(/~0/g, ""), P--, e;
+   }), e = e.replace(/~0/g, ""), N--, e;
   }
   function m(e) {
    return e += "~0", e = e.replace(/(?:\n\n|^\n?)((?:(?:[ ]{4}|\t).*\n+)+)(\n*[ ]{0,3}[^ \t\n]|(?=~0))/g, function(e, t, n) {
@@ -18242,16 +18242,16 @@ function() {
   B.addNoop("plainLinkText"), B.addNoop("preConversion"), B.addNoop("postNormalization"), 
   B.addNoop("preBlockGamut"), B.addNoop("postBlockGamut"), B.addNoop("preSpanGamut"), 
   B.addNoop("postSpanGamut"), B.addNoop("postConversion");
-  var I, M, R, P;
+  var I, M, R, N;
   this.makeHtml = function(n) {
    if (I) throw new Error("Recursive call to converter.makeHtml");
-   return I = new i(), M = new i(), R = [], P = 0, n = B.preConversion(n), n = n.replace(/~/g, "~T"), 
+   return I = new i(), M = new i(), R = [], N = 0, n = B.preConversion(n), n = n.replace(/~/g, "~T"), 
    n = n.replace(/\$/g, "~D"), n = n.replace(/\r\n/g, "\n"), n = n.replace(/\r/g, "\n"), 
    n = "\n\n" + n + "\n\n", n = T(n), n = n.replace(/^[ \t]+$/gm, ""), n = B.postNormalization(n), 
    n = t(n), n = e(n), n = r(n), n = _(n), n = n.replace(/~D/g, "$$"), n = n.replace(/~T/g, "~"), 
    n = B.postConversion(n), R = M = I = null, n;
   };
-  var N = function(e) {
+  var P = function(e) {
    return r(e);
   }, O = {
    ol: "\\d+[.]",
@@ -20747,7 +20747,7 @@ function() {
 }), define("text!html/scrollLinkSettingsBlock.html", [], function() {
  return "<p>Binds together editor and preview scrollbars.</p>\n<blockquote>\n	<b>NOTE:</b> The mapping between Markdown and HTML is based on the\n	position of the title elements (h1, h2...) in the page. Therefore if\n	your document does not contain any title, the mapping will be linear and\n	consequently less accurate.\n</blockquote>";
 }), define("extensions/scrollLink", [ "jquery", "underscore", "classes/Extension", "text!html/scrollLinkSettingsBlock.html" ], function(e, t, n, i) {
- var o = new n("scrollLink", "Scroll Link", !0, !0, !0);
+ var o = new n("scrollLink", "Scroll Link", !0, !0);
  o.settingsBlock = i;
  var r;
  o.onAceCreated = function(e) {
@@ -20761,35 +20761,59 @@ function() {
  o.onMarkdownTrim = function(e) {
   a = e;
  };
- var l, c, u, d = [], h = [], p = t.debounce(function() {
-  d = [];
-  var n = 0, i = 0, o = a;
-  t.each(s, function(e) {
-   n += e.text.length + o, o = 0;
-   var t = r.session.doc.indexToPosition(n), s = r.session.documentToScreenPosition(t.row, t.column), a = s.row * r.renderer.lineHeight, l = a - i;
-   d.push({
-    startOffset: i,
-    endOffset: a,
-    height: l
-   }), i = a;
-  }), h = [];
-  var p, f = l.scrollTop();
-  l.find(".preview-content > .se-section-delimiter").each(function() {
-   if (void 0 === p) return p = 0, void 0;
-   var t = e(this), n = t.position().top + f;
-   h.push({
-    startOffset: p,
+ var l, c, u, d, h, p = [], f = [], g = t.debounce(function() {
+  function n(e) {
+   var t = 0;
+   void 0 !== e && (c.text(e), t += c.prop("scrollHeight"));
+   var n = o + t;
+   p.push({
+    startOffset: o,
     endOffset: n,
-    height: n - p
-   }), p = n;
+    height: t
+   }), o = n;
+  }
+  p = [];
+  var i = 0, o = 0, g = a;
+  if (window.lightMode) {
+   c.innerWidth(l.innerWidth()), t.each(s, function(e, t) {
+    var i = e.text;
+    t !== s.length - 1 && 0 === i.length && (i = void 0), n(i);
+   });
+   var m = t.last(p).endOffset, v = l[0].scrollHeight, b = v / m;
+   p = t.map(p, function(e) {
+    return {
+     startOffset: e.startOffset * b,
+     endOffset: e.endOffset * b,
+     height: e.height * b
+    };
+   });
+  } else t.each(s, function(e) {
+   i += e.text.length + g, g = 0;
+   var t = r.session.doc.indexToPosition(i), n = r.session.documentToScreenPosition(t.row, t.column), s = n.row * r.renderer.lineHeight, a = s - o;
+   p.push({
+    startOffset: o,
+    endOffset: s,
+    height: a
+   }), o = s;
   });
-  var g = l.prop("scrollHeight");
-  h.push({
-   startOffset: p,
-   endOffset: g,
-   height: g - p
-  }), c = -10, u = -10, y();
- }, 500), f = !1, g = !1, m = !1, v = !1, b = e("<div>"), y = t.throttle(function() {
+  f = [];
+  var y, w = u.scrollTop();
+  u.find(".preview-content > .se-section-delimiter").each(function() {
+   if (void 0 === y) return y = 0, void 0;
+   var t = e(this), n = t.position().top + w;
+   f.push({
+    startOffset: y,
+    endOffset: n,
+    height: n - y
+   }), y = n;
+  });
+  var C = u.prop("scrollHeight");
+  f.push({
+   startOffset: y,
+   endOffset: C,
+   height: C - y
+  }), d = -10, h = -10, x();
+ }, 500), m = !1, v = !1, b = !1, y = !1, w = e("<div>"), x = t.throttle(function() {
   function e(e, n, i) {
    var o, r = t.find(n, function(t, n) {
     return o = n, e < t.endOffset;
@@ -20799,69 +20823,86 @@ function() {
     return a.startOffset + a.height * s;
    }
   }
-  if (0 === d.length || d.length !== h.length) return y(), void 0;
-  var n, i = r.renderer.getScrollTop(), o = l.scrollTop();
-  if (f === !0) {
-   if (Math.abs(i - c) <= 9) return;
-   if (f = !1, c = i, n = e(i, d, h), n = t.min([ n, l.prop("scrollHeight") - l.outerHeight() ]), 
-   Math.abs(n - o) <= 9) return u = o, void 0;
-   l.stop(!0).animate({
-    scrollTop: n
+  if (0 === p.length || p.length !== f.length) return x(), void 0;
+  var n = window.lightMode ? l.scrollTop() : r.renderer.getScrollTop();
+  0 > n && (n = 0);
+  var i, o = u.scrollTop();
+  if (m === !0) {
+   if (Math.abs(n - d) <= 9) return;
+   if (m = !1, d = n, i = e(n, p, f), i = t.min([ i, u.prop("scrollHeight") - u.outerHeight() ]), 
+   Math.abs(i - o) <= 9) return h = o, void 0;
+   u.stop(!0).animate({
+    scrollTop: i
    }, {
     easing: "easeOutSine",
     duration: 200,
     step: function(e) {
-     v = !0, u = o + e;
+     y = !0, h = o + e;
     },
     done: function() {
      t.defer(function() {
-      v = !1;
+      y = !1;
      });
     }
    });
-  } else if (g === !0) {
-   if (Math.abs(o - u) <= 9) return;
-   if (g = !1, u = o, n = e(o, h, d), n = t.min([ n, r.session.getScreenLength() * r.renderer.lineHeight + r.renderer.scrollMargin.bottom - r.renderer.$size.scrollerHeight ]), 
-   0 > n && (n = 0), Math.abs(n - i) <= 9) return c = i, void 0;
-   b.stop(!0).css("value", 0).animate({
-    value: n - i
+  } else if (v === !0) {
+   if (Math.abs(o - h) <= 9) return;
+   if (v = !1, h = o, i = e(o, f, p), window.lightMode ? i = t.min([ i, l.prop("scrollHeight") - l.outerHeight() ]) : (i = t.min([ i, r.session.getScreenLength() * r.renderer.lineHeight + r.renderer.scrollMargin.bottom - r.renderer.$size.scrollerHeight ]), 
+   0 > i && (i = 0)), Math.abs(i - n) <= 9) return d = n, void 0;
+   window.lightMode ? l.stop(!0).animate({
+    scrollTop: i
    }, {
     easing: "easeOutSine",
     duration: 200,
     step: function(e) {
-     m = !0, c = i + e, r.session.setScrollTop(c);
+     b = !0, d = n + e;
     },
     done: function() {
-     setTimeout(function() {
-      m = !1;
+     t.defer(function() {
+      b = !1;
+     });
+    }
+   }) : w.stop(!0).css("value", 0).animate({
+    value: i - n
+   }, {
+    easing: "easeOutSine",
+    duration: 200,
+    step: function(e) {
+     b = !0, d = n + e, r.session.setScrollTop(d);
+    },
+    done: function() {
+     t.defer(function() {
+      b = !1;
      });
     }
    });
   }
  }, 100);
  o.onLayoutResize = function() {
-  f = !0, p();
+  m = !0, g();
  }, o.onFileClosed = function() {
-  d = [];
+  p = [];
  };
- var w = !1;
+ var C = !1;
  o.onReady = function() {
-  l = e(".preview-container"), l.scroll(function() {
-   v === !1 && w === !1 && (g = !0, f = !1, y()), w = !1;
-  }), r.session.on("changeScrollTop", function() {
-   m === !1 && (f = !0, g = !1, y());
+  u = e(".preview-container"), l = e("#wmd-input"), c = e(".textarea-helper"), u.scroll(function() {
+   y === !1 && C === !1 && (v = !0, m = !1, x()), C = !1;
   });
+  var t = function() {
+   b === !1 && (m = !0, v = !1, x());
+  };
+  window.lightMode ? l.scroll(t) : r.session.on("changeScrollTop", t);
  };
- var x;
+ var k;
  return o.onPagedownConfigure = function(t) {
-  x = e("#preview-contents"), t.getConverter().hooks.chain("postConversion", function(e) {
-   return x.height(x.height()), e;
+  k = e("#preview-contents"), t.getConverter().hooks.chain("postConversion", function(e) {
+   return k.height(k.height()), e;
   });
  }, o.onPreviewFinished = function() {
-  var e = x.height();
-  x.height("auto");
-  var t = x.height();
-  f = !0, e > t && (w = !0), p();
+  var e = k.height();
+  k.height("auto");
+  var t = k.height();
+  m = !0, e > t && (C = !0), g();
  }, o;
 }), define("extensions/buttonFocusMode", [ "jquery", "underscore", "crel", "storage", "classes/Extension" ], function(e, t, n, i, o) {
  function r() {
@@ -22229,10 +22270,11 @@ function() {
    console.error("No event listener called " + e);
   }
  }, c("onInit")(), d.onLoadSettings = function() {
-  o.log("onLoadSettings"), t.each(h, function(e) {
-   i.setInputChecked("#input-enable-extension-" + e.extensionId, e.enabled === !0);
-   var t = e.onLoadSettings;
-   t && t();
+  o.log("onLoadSettings"), t.each(h, function(t) {
+   var n = !t.isOptional || void 0 === t.config.enabled || t.config.enabled === !0;
+   i.setInputChecked(e("#input-enable-extension-" + t.extensionId), n);
+   var o = t.onLoadSettings;
+   o && o();
   });
  }, d.onSaveSettings = function(e, n) {
   o.log("onSaveSettings"), t.each(h, function(o) {
@@ -22593,7 +22635,7 @@ function() {
   });
  }, r;
 }), define("text!html/bodyIndex.html", [], function() {
- return '<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav left-space"></div>\n		<div class="nav right-space pull-right"></div>\n		<div class="left-buttons-dropdown dropdown">\n    		<div class="nav">\n        		<button class="btn btn-success" data-toggle="dropdown"\n            		title="Show buttons">\n            		<i class="icon-th-large"></i>\n            	</button>\n    		    <div class="dropdown-menu">\n        		</div>\n        	</div>\n		</div>\n		<ul class="nav left-buttons">\n			<li class="wmd-button-group1 btn-group"></li>\n		</ul>\n		<ul class="nav left-buttons">\n			<li class="wmd-button-group2 btn-group"></li>\n		</ul>\n		<ul class="nav left-buttons">\n			<li class="wmd-button-group3 btn-group"></li>\n		</ul>\n		<ul class="nav left-buttons">\n			<li class="wmd-button-group4 btn-group"></li>\n		</ul>\n		<div class="right-buttons-dropdown dropdown">\n    		<div class="nav pull-right">\n        		<button class="btn btn-success" data-toggle="dropdown"\n            		title="Show buttons">\n            		<i class="icon-th-large"></i>\n            	</button>\n    		    <div class="dropdown-menu">\n        		</div>\n        	</div>\n		</div>\n		<ul class="nav pull-right right-buttons">\n			<li class="btn-group"><button\n					class="btn btn-success action-create-file" title="New document">\n					<i class="icon-file"></i>\n				</button>\n				<button class="btn btn-success" title="Delete document"\n					data-toggle="modal" data-target=".modal-remove-file-confirm">\n					<i class="icon-trash"></i>\n				</button></li>\n		</ul>\n		<ul class="nav pull-right right-buttons">\n			<li class="extension-buttons"></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><div class="working-indicator"></div></li>\n			<li><a class="btn btn-success file-title-navbar" href="#"\n				title="Rename document"> </a></li>\n			<li><div class="input-file-title-container"><input type="text"\n				class="col-lg-4 form-control hide input-file-title"\n				placeholder="Document title" /></div></li>\n		</ul>\n	</div>\n</div>\n<div id="wmd-input" class="ui-layout-center"></div>\n<div class="ui-layout-east preview-container"></div>\n<div class="ui-layout-south preview-container"></div>\n<div id="wmd-button-bar" class="hide"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn collapse-button" data-toggle="collapse"\n		data-target=".menu-panel" title="Menu">\n		<img\n			data-stackedit-src="menu-icon.png" width="24" height="24" />\n	</button>\n	<div class="panel-content">\n		<div class="list-group">\n			<a href="viewer" title="StackEdit Viewer"\n				class="list-group-item"><i class="icon-resize-full"></i>\n				StackEdit Viewer</a> <a href="#" data-toggle="collapse"\n				data-target=".collapse-open-from" class="list-group-item"><i\n				class="icon-hdd"></i> Open from...</a>\n			<div class="sub-menu collapse collapse-open-from clearfix">\n				<ul class="nav">\n					<li><a data-toggle="modal" data-target=".modal-import-url"\n						class="action-reset-input" href="#">Open from URL</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-markdown"\n						class="action-reset-input" href="#">Import from hard drive</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-html"\n						class="action-reset-input" href="#">Convert HTML to Markdown</a></li>\n				</ul>\n			</div>\n\n			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"\n				class="list-group-item"><i class="icon-hdd"></i> Save as...</a>\n			<div class="sub-menu collapse collapse-save-as clearfix">\n				<ul class="nav">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>\n				</ul>\n			</div>\n		</div>\n		<div class=dropdown-header>SYNCHRONIZE</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-gdrive" class="list-group-item"><i\n				class="icon-provider-gdrive"></i> Google Drive</a>\n			<div class="sub-menu collapse collapse-sync-gdrive clearfix">\n				<ul class="nav">\n					<li><a href="#" class="action-sync-import-gdrive"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Google Drive</a></li>\n					<li><a href="#" class="action-sync-export-dialog-gdrive">Export\n							to Google Drive</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-dropbox" class="list-group-item"><i\n				class="icon-provider-dropbox"></i> Dropbox</a>\n			<div class="sub-menu collapse collapse-sync-dropbox clearfix">\n				<ul class="nav">\n					<li><a class="action-sync-import-dropbox" href="#"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Dropbox</a></li>\n					<li><a href="#" class="action-sync-export-dialog-dropbox">Export\n							to Dropbox</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-sync"\n				class="action-reset-input list-group-item"><i\n				class="icon-refresh"></i> Manage synchronization</a>\n		</div>\n		<div class=dropdown-header>PUBLISH</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"\n				class="list-group-item"><i class="icon-share"></i> Publish on...</a>\n			<div class="sub-menu collapse collapse-publish-on clearfix">\n				<ul class="nav">\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-publish"\n				class="action-reset-input list-group-item"><i class="icon-share"></i>\n				Manage publication</a>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-sharing"\n				class="action-reset-input list-group-item"><i class="icon-link"></i>\n				Sharing</a>\n		</div>\n		<ul class="nav">\n			<li><a href="#" data-toggle="modal"\n				data-target=".modal-settings" class="action-load-settings"><i\n					class="icon-cog"></i> Settings</a></li>\n			<li><a href="#" data-toggle="modal" data-target=".modal-about"><i\n					class="icon-help-circled"></i> About</a></li>\n		</ul>\n\n	</div>\n</div>\n\n\n<div class="document-panel collapse width">\n	<button class="btn collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n\n<div class="modal modal-document-manager">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Manage documents</h3>\n			</div>\n			<div class="modal-body">\n				<div></div>\n				<ul class="nav nav-pills document-list">\n					<li class="pull-right dropdown"><a href="#"\n						data-toggle="dropdown"><i class="icon-check"></i> Selection <b\n							class="caret"></b></a>\n						<ul class="dropdown-menu">\n							<li><a href="#" class="action-select-all"><i\n									class="icon-check"></i> Select all</a></li>\n							<li><a href="#" class="action-unselect-all"><i\n									class="icon-check-empty"></i> Unselect all</a></li>\n							<li class="divider"></li>\n							<li><a href="#" class="action-move-items"><i\n									class="icon-forward"></i> Move to folder</a></li>\n							<li><a href="#" class="action-delete-items"><i\n									class="icon-trash"></i> Delete</a></li>\n						</ul></li>\n					<li class="pull-right"><a href="#"\n						class="action-create-folder"> <i class="icon-folder"></i>\n							Create folder\n					</a></li>\n					<li class="disabled"><a><i class="icon-file"></i> <span\n							class="document-count"></span></a></li>\n					<li class="disabled"><a><i class="icon-folder"></i> <span\n							class="folder-count"></span></a></li>\n				</ul>\n				<div class="list-group document-list"></div>\n				<p class="confirm-delete hide">The following documents will be\n					deleted locally:</p>\n				<p class="choose-folder hide">Please choose a destination\n					folder:</p>\n				<div class="list-group selected-document-list hide"></div>\n				<div class="list-group select-folder-list hide"></div>\n			</div>\n			<div class="modal-footer">\n				<a href="#"\n					class="btn btn-default confirm-delete choose-folder action-cancel hide">Cancel</a>\n				<a href="#"\n					class="btn btn-primary confirm-delete action-delete-items-confirm hide">OK</a>\n				<a href="#" class="btn btn-primary document-list"\n					data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-link">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Hyperlink</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the link URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-globe"></i></span><input\n						id="input-insert-link" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/ "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-insert-link"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Image</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the image URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-picture"></i></span><input\n						id="input-insert-image" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/image.jpg "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default action-import-image-gplus"\n					data-dismiss="modal"><i class="icon-provider-gplus"></i> Import\n					from Google+</a> <a href="#" class="btn btn-default"\n					data-dismiss="modal">Cancel</a> <a href="#"\n					class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Google+ image import</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group">\n						<div class="col-lg-7">\n							<img>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-title">Title (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-import-image-title"\n								placeholder="Image title" class="form-control">\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-size">Size limit (optional)</label>\n						<div class="col-lg-7 form-inline">\n							<input type="text" id="input-import-image-size" placeholder="0"\n								class="col-lg-3 form-control"> px\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-image"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-remove-file-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Delete</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					Are you sure you want to delete "<span class="file-title"></span>"?\n				</p>\n				<blockquote>\n					<b>NOTE:</b> This will not delete the file on synchronized\n					locations.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-remove-file"\n					data-dismiss="modal">Delete</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-url">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Open from URL</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide a link to a Markdown document.</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label" for="input-import-url">URL</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-import-url"\n								placeholder="http://www.abc.com/xyz.md" class="form-control">\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-import-url">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-markdown">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Import from hard drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your Markdown files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-markdown"\n						multiple class="form-control" />\n				</p>\n				<p>Or drag and drop your Markdown files here:</p>\n				<p id="dropzone-import-harddrive-markdown" class="drop-zone">Drop\n					files here</p>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-html">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Convert HTML to Markdown</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your HTML files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-html" multiple\n						class="form-control" />\n				</p>\n				<p>Or drag and drop your HTML files here:</p>\n				<p id="dropzone-import-harddrive-html" class="drop-zone">Drop\n					files here</p>\n				<p>Or insert your HTML code here:</p>\n				<textarea id="input-convert-html" class="form-control"></textarea>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Close</a> <a\n					href="#" class="btn btn-primary action-convert-html"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-gdrive">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Google Drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					account and keep it synchronized.\n				</p>\n				<div class="collapse form-horizontal sync-export-gdrive-options-collapse">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-gdrive-parentid">Folder ID\n							(optional)</label>\n						<div class="col-lg-8">\n							<div class="input-group">\n								<input type="text" id="input-sync-export-gdrive-parentid"\n									placeholder="FolderID" class="form-control">\n								<div class="input-group-btn">\n									<a class="btn btn-link export-gdrive-choose-folder"\n										title="Choose folder" data-dismiss="modal"><i\n										class="icon-folder-open"></i></a>\n								</div>\n							</div>\n							<span class="help-block"> If no folder ID is supplied, the\n								file will be created in your root folder. </span>\n						</div>\n					</div>\n					<div class="form-group">\n						<div class="col-lg-3 control-label"></div>\n						<div class="col-lg-8">\n							<label> <input id="input-sync-export-gdrive-realtime"\n								type="checkbox"> Create a real time collaborative\n								document\n							</label>\n							<span class="help-block"> Collaborative documents cannot be open outside\n							StackEdit nor have multiple synchronized locations. </span>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-gdrive-fileid">Existing file ID\n							(optional)</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block"> This will overwrite the existing file\n								on the server. </span>\n						</div>\n					</div>\n				</div>\n				<p class="align-right"><a href="#" data-toggle="collapse" data-target=".sync-export-gdrive-options-collapse">Options...</a></p>\n				<blockquote>\n					<b>Tip:</b> You can move or rename the file afterwards within Google\n							Drive.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-gdrive">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-dropbox">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Dropbox</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-dropbox-path">File path</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-dropbox-path"\n								placeholder="/path/to/My Document.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>NOTE:</b>\n					<ul>\n						<li>Dropbox file path does not depend on document title.</li>\n						<li>The title of your document will not be synchronized.</li>\n						<li>Destination folder must exist.</li>\n						<li>Any existing file at this location will be overwritten.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-dropbox">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-sync">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Synchronization</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-sync-list hide">\n					"<span class="file-title"></span>" is synchronized with the\n					following location(s):\n				</p>\n				<div class="msg-sync-list sync-list hide"></div>\n				<blockquote class="msg-sync-list hide">\n					<b>NOTE:</b> Removing a synchronized location will not delete any\n					file.\n				</blockquote>\n				<p class="msg-no-sync hide">"<span class="file-title"></span>" is not synchronized yet.</p>\n				<blockquote class="msg-no-sync hide">\n					<b>Tip:</b> You can add synchronized locations by\n					exporting your document using <i class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					or <i class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">\n					Publish on <span class="publish-provider-name"></span>\n				</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-host">Host</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-host"\n								placeholder="host.name.or.ip" class="form-control"> <span\n								class="help-block"> Host must be accessible publicly,\n								unless you are hosting your own <a target="_blank"\n								href="https://github.com/benweet/stackedit-ssh-proxy">SSH\n									proxy</a>.\n							</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-port">Port\n							(optional)</label>\n						<div class="col-lg-2">\n							<input type="text" id="input-publish-ssh-port" placeholder="22"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-username">Username</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-password">Password</label>\n						<div class="col-lg-7">\n							<input type="password" id="input-publish-ssh-password"\n								placeholder="password" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-reponame">Repository</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-reponame"\n								placeholder="repository-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-username">Username (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-branch">Branch</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-branch"\n								placeholder="branch-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-file-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-file-path"\n								placeholder="path/to/file.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-filename">Filename</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-filename"\n								placeholder="filename" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-gist-id">Existing\n							ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gist-id"\n								placeholder="GistID" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gist-public">Public</label>\n						<div class="col-lg-7">\n							<div class="checkbox">\n								<input type="checkbox" id="input-publish-gist-public"\n									checked="checked" />\n							</div>\n						</div>\n					</div>\n					<div class="form-group modal-publish-blogger">\n						<label class="col-lg-4 control-label"\n							for="input-publish-blogger-url">Blog URL</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-blogger-url"\n								placeholder="http://exemple.blogger.com/" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-tumblr">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">Blog hostname</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-tumblr-hostname"\n								placeholder="exemple.tumblr.com" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-wordpress">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">WordPress site</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-wordpress-site"\n								placeholder="exemple.wordpress.com" class="form-control">\n							<span class="help-block"> <a target="_blank"\n								href="http://jetpack.me/">Jetpack plugin</a> is required for\n								self-hosted sites.\n							</span>\n						</div>\n					</div>\n					<div\n						class="form-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n						<label class="col-lg-4 control-label" for="input-publish-postid">Update\n							existing post ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-postid" placeholder="PostID"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-dropbox">\n						<label class="col-lg-4 control-label"\n							for="input-publish-dropbox-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-dropbox-path"\n								placeholder="/path/to/My Document.html" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-fileid">File ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block">If no file ID is supplied, a new file\n								will be created in your Google Drive root folder. You can move\n								the file afterwards within Google Drive.</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-filename">Force filename\n							(optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-filename"\n								placeholder="Filename" class="form-control"> <span\n								class="help-block">If no file name is supplied, the\n								document title will be used.</span>\n						</div>\n					</div>\n\n					<div class="form-group">\n						<label class="col-lg-4 control-label">Format</label>\n						<div class="col-lg-7">\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="markdown"> Markdown\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="html"> HTML\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="template"> Template\n								</label>\n							</div>\n						</div>\n					</div>\n					<div class="collapse publish-custom-template-collapse">\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<div class="checkbox">\n									<label> <input type="checkbox"\n										id="checkbox-publish-custom-template"> Custom template\n									</label> <a href="#" class="tooltip-template">(?)</a>\n								</div>\n							</div>\n						</div>\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<textarea class="form-control"\n									id="textarea-publish-custom-template"></textarea>\n							</div>\n						</div>\n					</div>\n				</div>\n				<blockquote class="front-matter-info modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n                    <p><b>Tip:</b> You can use a\n                    <a href="http://jekyllrb.com/docs/frontmatter/"\n                    target="_blank">YAML front matter</a> to specify the title and the tags/labels of your publication.</p>\n                    <p><b>Interpreted variables:</b> <i>title, tags</i></p>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-process-publish">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Publication</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-publish-list hide">\n					"<span class="file-title"></span>" is published on the following\n					location(s):\n				</p>\n				<div class="msg-publish-list publish-list hide"></div>\n				<blockquote class="msg-publish-list hide">\n					<b>NOTE:</b> Removing a publish location will not delete the actual publication.\n				</blockquote>\n				<p class="msg-no-publish hide">\n					"<span class="file-title"></span>" is not published yet.\n				</p>\n				<blockquote class="msg-no-publish hide">\n					<b>Tip:</b> You can add publications using the <i class="icon-share"></i> <code>Publish on</code> sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-sharing">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Sharing</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-share-list hide">\n					"<span class="file-title"></span>" can be shared using the following link(s):\n				</p>\n            	<div class="msg-share-list share-list hide"></div>\n            	<p class="msg-no-share hide">To share this document within StackEdit you need first to <a\n            		href="#" class="action-publish-gist" data-dismiss="modal">publish it as a Gist</a> in\n            		Markdown format.\n            	</p>\n            	<blockquote>\n            		<b>Tip:</b> You can open any URL within StackEdit using <a\n            			href="viewer#!url=https://raw.github.com/benweet/stackedit/master/README.md"\n            			title="Sharing example"><code>viewer#!url=</code></a>.\n            	</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Settings</h3>\n				<ul class="nav nav-tabs">\n					<li class="active"><a class="action-load-settings"\n						href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-services" data-toggle="tab">Services</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-shortcuts" data-toggle="tab">Shortcuts</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>\n				</ul>\n			</div>\n			<div class="modal-body">\n\n				<div class="tab-content clearfix">\n					<div class="tab-pane active" id="tabpane-settings-editor">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Layout orientation</label>\n								<div class="col-lg-7">\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="horizontal">\n											Horizontal\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="vertical">\n											Vertical\n										</label>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label" for="input-settings-theme">Theme</label>\n								<div class="col-lg-7">\n									<select id="input-settings-theme" class="form-control">\n									</select>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-lazy-rendering">Lazy rendering <a\n									href="#" class="tooltip-lazy-rendering">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n										<input type="checkbox" id="input-settings-lazy-rendering" />\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-editor-font-family">Editor font</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-editor-font-family"\n										class="form-control col-lg-7"> <input type="text"\n										id="input-settings-editor-font-size"\n										class="form-control col-lg-2"> px <span\n										class="help-block"> Only monospaced fonts are\n										supported.</span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-max-width">Max width</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-max-width"\n										class="form-control col-lg-3"> px\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-default-content">Default content\n									<a href="#" class="tooltip-default-content">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-default-content"\n										class="form-control"></textarea>\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-services">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Permission</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n									    <label>\n										    <input type="checkbox" id="input-settings-gdrive-full-access" />\n										    Allow StackEdit to open any document in Google Drive\n										</label> <span class="help-block">You have to revoke any existing token in\n										<a href="https://www.google.com/settings/dashboard" target="_blank">Google Dashboard</a>\n										for this change to take effect.</span>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-publish-template">Default\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-publish-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-pdf-template">PDF\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-pdf-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label" for="input-settings-pdf-page-size">PDF page size</label>\n								<div class="col-lg-7">\n									<select id="input-settings-pdf-page-size" class="form-control">\n									    <option value="A3">A3</option>\n									    <option value="A4">A4</option>\n									    <option value="Legal">Legal</option>\n									    <option value="Letter">Letter</option>\n									</select>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-publish-commit-msg">GitHub commit message</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-publish-commit-msg"\n										class="form-control">\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-ssh-proxy">SSH proxy</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-ssh-proxy"\n										class="form-control">\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-shortcuts">\n						<div class="form-horizontal">\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-extensions">\n						<div class="panel-group accordion-extensions"></div>\n						<span class="help-block pull-right"><a target="_blank"\n							href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#developer-guide">Create\n								your own extension...</a></span>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-utils">\n						<div class="tab-pane-button-container">\n							<a href="#" class="btn btn-block btn-primary action-welcome-file"\n								data-dismiss="modal"><i class="icon-help-circled"></i>\n								Welcome document</a> <a href="#"\n								class="btn btn-block btn-primary action-welcome-tour"\n								data-dismiss="modal" data-dismiss="modal"><i\n								class="icon-help-circled"></i> Welcome tour</a>\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-primary action-import-docs-settings"><i\n								class="icon-cog-alt"></i> Import docs & settings</a> <a href="#"\n								class="btn btn-block btn-primary action-export-docs-settings"\n								data-dismiss="modal"><i class="icon-cog-alt"></i>\n								Export docs & settings</a> <input type="file"\n								id="input-file-import-docs-settings" class="hide">\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-primary action-default-settings"\n								data-dismiss="modal"><i class="icon-wrench"></i>\n								Load default settings</a> <a href="#" class="btn btn-block btn-primary"\n								data-dismiss="modal" data-toggle="modal"\n								data-target=".modal-app-reset"><i\n								class="icon-fire"></i> Reset application</a> <a target="_blank" href="recovery.html" class="btn btn-block btn-primary"><i\n								class="icon-medkit"></i> StackEdit recovery</a>\n						</div>\n						<span class="help-block text-center"><a target="_blank"\n							href="http://benweet.github.io/stackedit/recovery.html">Old platform recovery</a></span>\n					</div>\n				</div>\n\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-apply-settings"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-redirect-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Redirection</h3>\n			</div>\n			<div class="modal-body">\n			    <p class="redirect-msg"></p>\n				<blockquote>Please click <b>OK</b> to proceed.</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a class="btn btn-primary action-redirect-confirm" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-app-reset">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Reset application</h3>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all your local documents.</p>\n				<blockquote>Are you sure?</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-app-reset"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-docs-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Import documents and settings</h3>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all existing local documents.</p>\n				<blockquote>Are you sure?</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-docs-settings-confirm"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="lock-ui hide"></div>\n<div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>';
+ return '<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav left-space"></div>\n		<div class="nav right-space pull-right"></div>\n		<div class="left-buttons-dropdown dropdown">\n    		<div class="nav">\n        		<button class="btn btn-success" data-toggle="dropdown"\n            		title="Show buttons">\n            		<i class="icon-th-large"></i>\n            	</button>\n    		    <div class="dropdown-menu">\n        		</div>\n        	</div>\n		</div>\n		<ul class="nav left-buttons">\n			<li class="wmd-button-group1 btn-group"></li>\n		</ul>\n		<ul class="nav left-buttons">\n			<li class="wmd-button-group2 btn-group"></li>\n		</ul>\n		<ul class="nav left-buttons">\n			<li class="wmd-button-group3 btn-group"></li>\n		</ul>\n		<ul class="nav left-buttons">\n			<li class="wmd-button-group4 btn-group"></li>\n		</ul>\n		<div class="right-buttons-dropdown dropdown">\n    		<div class="nav pull-right">\n        		<button class="btn btn-success" data-toggle="dropdown"\n            		title="Show buttons">\n            		<i class="icon-th-large"></i>\n            	</button>\n    		    <div class="dropdown-menu">\n        		</div>\n        	</div>\n		</div>\n		<ul class="nav pull-right right-buttons">\n			<li class="btn-group"><button\n					class="btn btn-success action-create-file" title="New document">\n					<i class="icon-file"></i>\n				</button>\n				<button class="btn btn-success" title="Delete document"\n					data-toggle="modal" data-target=".modal-remove-file-confirm">\n					<i class="icon-trash"></i>\n				</button></li>\n		</ul>\n		<ul class="nav pull-right right-buttons">\n			<li class="extension-buttons"></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><div class="working-indicator"></div></li>\n			<li><a class="btn btn-success file-title-navbar" href="#"\n				title="Rename document"> </a></li>\n			<li><div class="input-file-title-container"><input type="text"\n				class="col-lg-4 form-control hide input-file-title"\n				placeholder="Document title" /></div></li>\n		</ul>\n	</div>\n</div>\n<div id="wmd-input" class="ui-layout-center"></div>\n<div class="ui-layout-east preview-container"></div>\n<div class="ui-layout-south preview-container"></div>\n<div id="wmd-button-bar" class="hide"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn collapse-button" data-toggle="collapse"\n		data-target=".menu-panel" title="Menu">\n		<img\n			data-stackedit-src="menu-icon.png" width="24" height="24" />\n	</button>\n	<div class="panel-content">\n		<div class="list-group">\n			<a href="viewer" title="StackEdit Viewer"\n				class="list-group-item"><i class="icon-resize-full"></i>\n				StackEdit Viewer</a> <a href="#" data-toggle="collapse"\n				data-target=".collapse-open-from" class="list-group-item"><i\n				class="icon-hdd"></i> Open from...</a>\n			<div class="sub-menu collapse collapse-open-from clearfix">\n				<ul class="nav">\n					<li><a data-toggle="modal" data-target=".modal-import-url"\n						class="action-reset-input" href="#">Open from URL</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-markdown"\n						class="action-reset-input" href="#">Import from hard drive</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-html"\n						class="action-reset-input" href="#">Convert HTML to Markdown</a></li>\n				</ul>\n			</div>\n\n			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"\n				class="list-group-item"><i class="icon-hdd"></i> Save as...</a>\n			<div class="sub-menu collapse collapse-save-as clearfix">\n				<ul class="nav">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>\n				</ul>\n			</div>\n		</div>\n		<div class=dropdown-header>SYNCHRONIZE</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-gdrive" class="list-group-item"><i\n				class="icon-provider-gdrive"></i> Google Drive</a>\n			<div class="sub-menu collapse collapse-sync-gdrive clearfix">\n				<ul class="nav">\n					<li><a href="#" class="action-sync-import-gdrive"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Google Drive</a></li>\n					<li><a href="#" class="action-sync-export-dialog-gdrive">Export\n							to Google Drive</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-dropbox" class="list-group-item"><i\n				class="icon-provider-dropbox"></i> Dropbox</a>\n			<div class="sub-menu collapse collapse-sync-dropbox clearfix">\n				<ul class="nav">\n					<li><a class="action-sync-import-dropbox" href="#"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Dropbox</a></li>\n					<li><a href="#" class="action-sync-export-dialog-dropbox">Export\n							to Dropbox</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-sync"\n				class="action-reset-input list-group-item"><i\n				class="icon-refresh"></i> Manage synchronization</a>\n		</div>\n		<div class=dropdown-header>PUBLISH</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"\n				class="list-group-item"><i class="icon-share"></i> Publish on...</a>\n			<div class="sub-menu collapse collapse-publish-on clearfix">\n				<ul class="nav">\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-publish"\n				class="action-reset-input list-group-item"><i class="icon-share"></i>\n				Manage publication</a>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-sharing"\n				class="action-reset-input list-group-item"><i class="icon-link"></i>\n				Sharing</a>\n		</div>\n		<ul class="nav">\n			<li><a href="#" data-toggle="modal"\n				data-target=".modal-settings" class="action-load-settings"><i\n					class="icon-cog"></i> Settings</a></li>\n			<li><a href="#" data-toggle="modal" data-target=".modal-about"><i\n					class="icon-help-circled"></i> About</a></li>\n		</ul>\n\n	</div>\n</div>\n\n\n<div class="document-panel collapse width">\n	<button class="btn collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n\n<div class="modal modal-document-manager">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Manage documents</h3>\n			</div>\n			<div class="modal-body">\n				<div></div>\n				<ul class="nav nav-pills document-list">\n					<li class="pull-right dropdown"><a href="#"\n						data-toggle="dropdown"><i class="icon-check"></i> Selection <b\n							class="caret"></b></a>\n						<ul class="dropdown-menu">\n							<li><a href="#" class="action-select-all"><i\n									class="icon-check"></i> Select all</a></li>\n							<li><a href="#" class="action-unselect-all"><i\n									class="icon-check-empty"></i> Unselect all</a></li>\n							<li class="divider"></li>\n							<li><a href="#" class="action-move-items"><i\n									class="icon-forward"></i> Move to folder</a></li>\n							<li><a href="#" class="action-delete-items"><i\n									class="icon-trash"></i> Delete</a></li>\n						</ul></li>\n					<li class="pull-right"><a href="#"\n						class="action-create-folder"> <i class="icon-folder"></i>\n							Create folder\n					</a></li>\n					<li class="disabled"><a><i class="icon-file"></i> <span\n							class="document-count"></span></a></li>\n					<li class="disabled"><a><i class="icon-folder"></i> <span\n							class="folder-count"></span></a></li>\n				</ul>\n				<div class="list-group document-list"></div>\n				<p class="confirm-delete hide">The following documents will be\n					deleted locally:</p>\n				<p class="choose-folder hide">Please choose a destination\n					folder:</p>\n				<div class="list-group selected-document-list hide"></div>\n				<div class="list-group select-folder-list hide"></div>\n			</div>\n			<div class="modal-footer">\n				<a href="#"\n					class="btn btn-default confirm-delete choose-folder action-cancel hide">Cancel</a>\n				<a href="#"\n					class="btn btn-primary confirm-delete action-delete-items-confirm hide">OK</a>\n				<a href="#" class="btn btn-primary document-list"\n					data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-link">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Hyperlink</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the link URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-globe"></i></span><input\n						id="input-insert-link" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/ "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-insert-link"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Image</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the image URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-picture"></i></span><input\n						id="input-insert-image" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/image.jpg "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default action-import-image-gplus"\n					data-dismiss="modal"><i class="icon-provider-gplus"></i> Import\n					from Google+</a> <a href="#" class="btn btn-default"\n					data-dismiss="modal">Cancel</a> <a href="#"\n					class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Google+ image import</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group">\n						<div class="col-lg-7">\n							<img>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-title">Title (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-import-image-title"\n								placeholder="Image title" class="form-control">\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-size">Size limit (optional)</label>\n						<div class="col-lg-7 form-inline">\n							<input type="text" id="input-import-image-size" placeholder="0"\n								class="col-lg-3 form-control"> px\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-image"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-remove-file-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Delete</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					Are you sure you want to delete "<span class="file-title"></span>"?\n				</p>\n				<blockquote>\n					<b>NOTE:</b> This will not delete the file on synchronized\n					locations.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-remove-file"\n					data-dismiss="modal">Delete</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-url">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Open from URL</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide a link to a Markdown document.</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label" for="input-import-url">URL</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-import-url"\n								placeholder="http://www.abc.com/xyz.md" class="form-control">\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-import-url">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-markdown">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Import from hard drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your Markdown files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-markdown"\n						multiple class="form-control" />\n				</p>\n				<p>Or drag and drop your Markdown files here:</p>\n				<p id="dropzone-import-harddrive-markdown" class="drop-zone">Drop\n					files here</p>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-html">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Convert HTML to Markdown</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your HTML files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-html" multiple\n						class="form-control" />\n				</p>\n				<p>Or drag and drop your HTML files here:</p>\n				<p id="dropzone-import-harddrive-html" class="drop-zone">Drop\n					files here</p>\n				<p>Or insert your HTML code here:</p>\n				<textarea id="input-convert-html" class="form-control"></textarea>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Close</a> <a\n					href="#" class="btn btn-primary action-convert-html"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-gdrive">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Google Drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					account and keep it synchronized.\n				</p>\n				<div class="collapse form-horizontal sync-export-gdrive-options-collapse">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-gdrive-parentid">Folder ID\n							(optional)</label>\n						<div class="col-lg-8">\n							<div class="input-group">\n								<input type="text" id="input-sync-export-gdrive-parentid"\n									placeholder="FolderID" class="form-control">\n								<div class="input-group-btn">\n									<a class="btn btn-link export-gdrive-choose-folder"\n										title="Choose folder" data-dismiss="modal"><i\n										class="icon-folder-open"></i></a>\n								</div>\n							</div>\n							<span class="help-block"> If no folder ID is supplied, the\n								file will be created in your root folder. </span>\n						</div>\n					</div>\n					<div class="form-group">\n						<div class="col-lg-3 control-label"></div>\n						<div class="col-lg-8">\n							<label> <input id="input-sync-export-gdrive-realtime"\n								type="checkbox"> Create a real time collaborative\n								document\n							</label>\n							<span class="help-block"> Collaborative documents cannot be open outside\n							StackEdit nor have multiple synchronized locations. </span>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-gdrive-fileid">Existing file ID\n							(optional)</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block"> This will overwrite the existing file\n								on the server. </span>\n						</div>\n					</div>\n				</div>\n				<p class="align-right"><a href="#" data-toggle="collapse" data-target=".sync-export-gdrive-options-collapse">Options...</a></p>\n				<blockquote>\n					<b>Tip:</b> You can move or rename the file afterwards within Google\n							Drive.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-gdrive">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-dropbox">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Dropbox</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-dropbox-path">File path</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-dropbox-path"\n								placeholder="/path/to/My Document.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>NOTE:</b>\n					<ul>\n						<li>Dropbox file path does not depend on document title.</li>\n						<li>The title of your document will not be synchronized.</li>\n						<li>Destination folder must exist.</li>\n						<li>Any existing file at this location will be overwritten.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-dropbox">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-sync">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Synchronization</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-sync-list hide">\n					"<span class="file-title"></span>" is synchronized with the\n					following location(s):\n				</p>\n				<div class="msg-sync-list sync-list hide"></div>\n				<blockquote class="msg-sync-list hide">\n					<b>NOTE:</b> Removing a synchronized location will not delete any\n					file.\n				</blockquote>\n				<p class="msg-no-sync hide">"<span class="file-title"></span>" is not synchronized yet.</p>\n				<blockquote class="msg-no-sync hide">\n					<b>Tip:</b> You can add synchronized locations by\n					exporting your document using <i class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					or <i class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">\n					Publish on <span class="publish-provider-name"></span>\n				</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-host">Host</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-host"\n								placeholder="host.name.or.ip" class="form-control"> <span\n								class="help-block"> Host must be accessible publicly,\n								unless you are hosting your own <a target="_blank"\n								href="https://github.com/benweet/stackedit-ssh-proxy">SSH\n									proxy</a>.\n							</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-port">Port\n							(optional)</label>\n						<div class="col-lg-2">\n							<input type="text" id="input-publish-ssh-port" placeholder="22"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-username">Username</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-password">Password</label>\n						<div class="col-lg-7">\n							<input type="password" id="input-publish-ssh-password"\n								placeholder="password" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-reponame">Repository</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-reponame"\n								placeholder="repository-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-username">Username (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-branch">Branch</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-branch"\n								placeholder="branch-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-file-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-file-path"\n								placeholder="path/to/file.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-filename">Filename</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-filename"\n								placeholder="filename" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-gist-id">Existing\n							ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gist-id"\n								placeholder="GistID" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gist-public">Public</label>\n						<div class="col-lg-7">\n							<div class="checkbox">\n								<input type="checkbox" id="input-publish-gist-public"\n									checked="checked" />\n							</div>\n						</div>\n					</div>\n					<div class="form-group modal-publish-blogger">\n						<label class="col-lg-4 control-label"\n							for="input-publish-blogger-url">Blog URL</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-blogger-url"\n								placeholder="http://exemple.blogger.com/" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-tumblr">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">Blog hostname</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-tumblr-hostname"\n								placeholder="exemple.tumblr.com" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-wordpress">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">WordPress site</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-wordpress-site"\n								placeholder="exemple.wordpress.com" class="form-control">\n							<span class="help-block"> <a target="_blank"\n								href="http://jetpack.me/">Jetpack plugin</a> is required for\n								self-hosted sites.\n							</span>\n						</div>\n					</div>\n					<div\n						class="form-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n						<label class="col-lg-4 control-label" for="input-publish-postid">Update\n							existing post ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-postid" placeholder="PostID"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-dropbox">\n						<label class="col-lg-4 control-label"\n							for="input-publish-dropbox-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-dropbox-path"\n								placeholder="/path/to/My Document.html" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-fileid">File ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block">If no file ID is supplied, a new file\n								will be created in your Google Drive root folder. You can move\n								the file afterwards within Google Drive.</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-filename">Force filename\n							(optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-filename"\n								placeholder="Filename" class="form-control"> <span\n								class="help-block">If no file name is supplied, the\n								document title will be used.</span>\n						</div>\n					</div>\n\n					<div class="form-group">\n						<label class="col-lg-4 control-label">Format</label>\n						<div class="col-lg-7">\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="markdown"> Markdown\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="html"> HTML\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="template"> Template\n								</label>\n							</div>\n						</div>\n					</div>\n					<div class="collapse publish-custom-template-collapse">\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<div class="checkbox">\n									<label> <input type="checkbox"\n										id="checkbox-publish-custom-template"> Custom template\n									</label> <a href="#" class="tooltip-template">(?)</a>\n								</div>\n							</div>\n						</div>\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<textarea class="form-control"\n									id="textarea-publish-custom-template"></textarea>\n							</div>\n						</div>\n					</div>\n				</div>\n				<blockquote class="front-matter-info modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n                    <p><b>Tip:</b> You can use a\n                    <a href="http://jekyllrb.com/docs/frontmatter/"\n                    target="_blank">YAML front matter</a> to specify the title and the tags/labels of your publication.</p>\n                    <p><b>Interpreted variables:</b> <i>title, tags</i></p>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-process-publish">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Publication</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-publish-list hide">\n					"<span class="file-title"></span>" is published on the following\n					location(s):\n				</p>\n				<div class="msg-publish-list publish-list hide"></div>\n				<blockquote class="msg-publish-list hide">\n					<b>NOTE:</b> Removing a publish location will not delete the actual publication.\n				</blockquote>\n				<p class="msg-no-publish hide">\n					"<span class="file-title"></span>" is not published yet.\n				</p>\n				<blockquote class="msg-no-publish hide">\n					<b>Tip:</b> You can add publications using the <i class="icon-share"></i> <code>Publish on</code> sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-sharing">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Sharing</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-share-list hide">\n					"<span class="file-title"></span>" can be shared using the following link(s):\n				</p>\n            	<div class="msg-share-list share-list hide"></div>\n            	<p class="msg-no-share hide">To share this document within StackEdit you need first to <a\n            		href="#" class="action-publish-gist" data-dismiss="modal">publish it as a Gist</a> in\n            		Markdown format.\n            	</p>\n            	<blockquote>\n            		<b>Tip:</b> You can open any URL within StackEdit using <a\n            			href="viewer#!url=https://raw.github.com/benweet/stackedit/master/README.md"\n            			title="Sharing example"><code>viewer#!url=</code></a>.\n            	</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Settings</h3>\n				<ul class="nav nav-tabs">\n					<li class="active"><a class="action-load-settings"\n						href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-services" data-toggle="tab">Services</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-shortcuts" data-toggle="tab">Shortcuts</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>\n				</ul>\n			</div>\n			<div class="modal-body">\n\n				<div class="tab-content clearfix">\n					<div class="tab-pane active" id="tabpane-settings-editor">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Layout orientation</label>\n								<div class="col-lg-7">\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="horizontal">\n											Horizontal\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="vertical">\n											Vertical\n										</label>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label" for="input-settings-theme">Theme</label>\n								<div class="col-lg-7">\n									<select id="input-settings-theme" class="form-control">\n									</select>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-lazy-rendering">Lazy rendering <a\n									href="#" class="tooltip-lazy-rendering">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n										<input type="checkbox" id="input-settings-lazy-rendering" />\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-editor-font-family">Editor font</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-editor-font-family"\n										class="form-control col-lg-7"> <input type="text"\n										id="input-settings-editor-font-size"\n										class="form-control col-lg-2"> px <span\n										class="help-block"> Only monospaced fonts are\n										supported.</span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-max-width">Max width</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-max-width"\n										class="form-control col-lg-3"> px\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-rtl">Right-to-left\n								</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n										<input type="checkbox" id="input-settings-rtl" />\n									</div> <span\n										class="help-block"> Limited mode.</span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-default-content">Default content\n									<a href="#" class="tooltip-default-content">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-default-content"\n										class="form-control"></textarea>\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-services">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Permission</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n									    <label>\n										    <input type="checkbox" id="input-settings-gdrive-full-access" />\n										    Allow StackEdit to open any document in Google Drive\n										</label> <span class="help-block">You have to revoke any existing token in\n										<a href="https://www.google.com/settings/dashboard" target="_blank">Google Dashboard</a>\n										for this change to take effect.</span>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-publish-template">Default\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-publish-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-pdf-template">PDF\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-pdf-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label" for="input-settings-pdf-page-size">PDF page size</label>\n								<div class="col-lg-7">\n									<select id="input-settings-pdf-page-size" class="form-control">\n									    <option value="A3">A3</option>\n									    <option value="A4">A4</option>\n									    <option value="Legal">Legal</option>\n									    <option value="Letter">Letter</option>\n									</select>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-publish-commit-msg">GitHub commit message</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-publish-commit-msg"\n										class="form-control">\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-ssh-proxy">SSH proxy</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-ssh-proxy"\n										class="form-control">\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-shortcuts">\n						<div class="form-horizontal">\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-extensions">\n						<div class="panel-group accordion-extensions"></div>\n						<span class="help-block pull-right"><a target="_blank"\n							href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#developer-guide">Create\n								your own extension...</a></span>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-utils">\n						<div class="tab-pane-button-container">\n							<a href="#" class="btn btn-block btn-primary action-welcome-file"\n								data-dismiss="modal"><i class="icon-help-circled"></i>\n								Welcome document</a> <a href="#"\n								class="btn btn-block btn-primary action-welcome-tour"\n								data-dismiss="modal" data-dismiss="modal"><i\n								class="icon-help-circled"></i> Welcome tour</a>\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-primary action-import-docs-settings"><i\n								class="icon-cog-alt"></i> Import docs & settings</a> <a href="#"\n								class="btn btn-block btn-primary action-export-docs-settings"\n								data-dismiss="modal"><i class="icon-cog-alt"></i>\n								Export docs & settings</a> <input type="file"\n								id="input-file-import-docs-settings" class="hide">\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-primary action-default-settings"\n								data-dismiss="modal"><i class="icon-wrench"></i>\n								Load default settings</a> <a href="#" class="btn btn-block btn-primary"\n								data-dismiss="modal" data-toggle="modal"\n								data-target=".modal-app-reset"><i\n								class="icon-fire"></i> Reset application</a> <a target="_blank" href="recovery.html" class="btn btn-block btn-primary"><i\n								class="icon-medkit"></i> StackEdit recovery</a>\n						</div>\n						<span class="help-block text-center"><a target="_blank"\n							href="http://benweet.github.io/stackedit/recovery.html">Old platform recovery</a></span>\n					</div>\n				</div>\n\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-apply-settings"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-redirect-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Redirection</h3>\n			</div>\n			<div class="modal-body">\n			    <p class="redirect-msg"></p>\n				<blockquote>Please click <b>OK</b> to proceed.</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a class="btn btn-primary action-redirect-confirm" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-app-reset">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Reset application</h3>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all your local documents.</p>\n				<blockquote>Are you sure?</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-app-reset"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-docs-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Import documents and settings</h3>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all existing local documents.</p>\n				<blockquote>Are you sure?</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-docs-settings-confirm"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="lock-ui hide"></div>\n<div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>\n<div class="textarea-helper"></div>';
 }), define("text!html/bodyViewer.html", [], function() {
  return '\n<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav right-space pull-right"></div>\n\n		<ul class="nav pull-right">\n			<li class="btn-group">\n				<button class="btn btn-success action-edit-document hide"\n					title="Edit this document">\n					<i class="icon-pencil"></i>\n				</button>\n			</li>\n			<li class="btn-group">\n				<button class="btn btn-success dropdown-toggle"\n					data-toggle="dropdown" title="Save this document">\n					<i class="icon-download"></i>\n				</button>\n				<ul class="dropdown-menu">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>\n				</ul>\n			</li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><div class="working-indicator"></div></li>\n			<li><span class="btn btn-success file-title-navbar"></span></li>\n		</ul>\n	</div>\n</div>\n<div id="wmd-button-bar" class="hide"></div>\n<div id="wmd-input" class="hide"></div>\n<div class="ui-layout-center preview-container"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn collapse-button action-open-stackedit"\n		title="Open StackEdit">\n		<img\n			data-stackedit-src="menu-icon.png" width="24" height="24" />\n	</button>\n</div>\n\n<div class="document-panel collapse width">\n	<button class="btn collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n';
 }), define("text!html/settingsTemplateTooltip.html", [], function() {
@@ -25950,7 +25992,674 @@ function() {
    return c.msie && u > 8 || !c.msie ? !1 : s.deviceXDPI && s.systemXDPI ? t(s.deviceXDPI, s.systemXDPI) : c.webkit && (n = a.body.getBoundingClientRect) ? t(n.left - n.right, a.body.offsetWidth) : c.webkit && (i = r.outerWidth) ? t(i, r.innerWidth) : (i = s.width) && (o = l.clientWidth) ? t(i, o) : !1;
   }
  }, e.layout.onReady.push(e.layout.browserZoom._init);
-}(jQuery), define("uilayout", function() {}), define("ace/mode/css_highlight_rules", [ "require", "exports", "module", "../lib/oop", "../lib/lang", "./text_highlight_rules" ], function(e, t) {
+}(jQuery), define("uilayout", function() {}), function() {
+ function e() {}
+ function t(e) {
+  this.buttonBar = d.getElementById("wmd-button-bar" + e), this.preview = d.getElementById("wmd-preview" + e), 
+  this.input = d.getElementById("wmd-input" + e);
+ }
+ function n(e, t) {
+  var n, o, r, s = this, a = [], c = 0, u = "none", d = function(e, t) {
+   u != e && (u = e, t || p()), g.isIE && "moving" == u ? r = null : o = setTimeout(h, 1);
+  }, h = function(e) {
+   r = new i(t, e), o = void 0;
+  };
+  this.setCommandMode = function() {
+   u = "command", p(), o = setTimeout(h, 0);
+  }, this.canUndo = function() {
+   return c > 1;
+  }, this.canRedo = function() {
+   return a[c + 1] ? !0 : !1;
+  }, this.undo = function() {
+   s.canUndo() && (n ? (n.restore(), n = null) : (a[c] = new i(t), a[--c].restore(), 
+   e && e())), u = "none", t.input.focus(), h();
+  }, this.redo = function() {
+   s.canRedo() && (a[++c].restore(), e && e()), u = "none", t.input.focus(), h();
+  };
+  var p = function() {
+   var o = r || new i(t);
+   return o ? "moving" == u ? (n || (n = o), void 0) : (n && (a[c - 1].text != n.text && (a[c++] = n), 
+   n = null), a[c++] = o, a[c + 1] = null, e && e(), void 0) : !1;
+  }, f = function(e) {
+   if (!e.ctrlKey && !e.metaKey) {
+    var t = e.keyCode;
+    t >= 33 && 40 >= t || t >= 63232 && 63235 >= t ? d("moving") : 8 == t || 46 == t || 127 == t ? d("deleting") : 13 == t ? d("newlines") : 27 == t ? d("escape") : (16 > t || t > 20) && 91 != t && d("typing");
+   }
+  }, m = function() {
+   l.addEvent(t.input, "keypress", function(e) {
+    !e.ctrlKey && !e.metaKey || e.altKey || 89 != e.keyCode && 90 != e.keyCode || e.preventDefault();
+   });
+   var e = function() {
+    (g.isIE || r && r.text != t.input.value) && void 0 == o && (u = "paste", p(), h());
+   };
+   l.addEvent(t.input, "keydown", f), l.addEvent(t.input, "mousedown", function() {
+    d("moving");
+   }), t.input.onpaste = e, t.input.ondrop = e;
+  }, v = function() {
+   m(), h(!0);
+  };
+  this.reinit = function(e, t, i, s) {
+   a = [], c = 0, u = "none", n = void 0, o = void 0, h(), r.text = e, r.start = t, 
+   r.end = i, r.scrollTop = s, r.setInputAreaSelection(), p();
+  }, this.setMode = d, v();
+ }
+ function i(t, n) {
+  var i = this, o = t.input;
+  this.init = function() {
+   l.isVisible(o) && (n || !d.activeElement || d.activeElement === o) && (this.setInputAreaSelectionStartEnd(), 
+   this.scrollTop = o.scrollTop, (!this.text && o.selectionStart || 0 === o.selectionStart) && (this.text = o.value));
+  }, this.setInputAreaSelection = function() {
+   if (l.isVisible(o)) if (void 0 === o.selectionStart || g.isOpera) {
+    if (d.selection) {
+     if (d.activeElement && d.activeElement !== o) return;
+     o.focus();
+     var e = o.createTextRange();
+     e.moveStart("character", -o.value.length), e.moveEnd("character", -o.value.length), 
+     e.moveEnd("character", i.end), e.moveStart("character", i.start), e.select();
+    }
+   } else o.focus(), o.selectionStart = i.start, o.selectionEnd = i.end, o.scrollTop = i.scrollTop;
+  }, this.setInputAreaSelectionStartEnd = function() {
+   if (t.ieCachedRange || !o.selectionStart && 0 !== o.selectionStart) {
+    if (d.selection) {
+     i.text = l.fixEolChars(o.value);
+     var e = t.ieCachedRange || d.selection.createRange(), n = l.fixEolChars(e.text), r = "", s = r + n + r;
+     e.text = s;
+     var a = l.fixEolChars(o.value);
+     e.moveStart("character", -s.length), e.text = n, i.start = a.indexOf(r), i.end = a.lastIndexOf(r) - r.length;
+     var c = i.text.length - l.fixEolChars(o.value).length;
+     if (c) {
+      for (e.moveStart("character", -n.length); c--; ) n += "\n", i.end += 1;
+      e.text = n;
+     }
+     t.ieCachedRange && (i.scrollTop = t.ieCachedScrollTop), t.ieCachedRange = null, 
+     this.setInputAreaSelection();
+    }
+   } else i.start = o.selectionStart, i.end = o.selectionEnd;
+  }, this.restore = function() {
+   void 0 != i.text && i.text != o.value && (o.value = i.text), this.setInputAreaSelection(), 
+   o.scrollTop = i.scrollTop;
+  }, this.getChunks = function() {
+   var t = new e();
+   return t.before = l.fixEolChars(i.text.substring(0, i.start)), t.startTag = "", 
+   t.selection = l.fixEolChars(i.text.substring(i.start, i.end)), t.endTag = "", t.after = l.fixEolChars(i.text.substring(i.end)), 
+   t.scrollTop = i.scrollTop, t;
+  }, this.setChunks = function(e) {
+   e.before = e.before + e.startTag, e.after = e.endTag + e.after, this.start = e.before.length, 
+   this.end = e.before.length + e.selection.length, this.text = e.before + e.selection + e.after, 
+   this.scrollTop = e.scrollTop;
+  }, this.init();
+ }
+ function o(e, t, n, i) {
+  var o, r, s, a = 3e3, u = "delayed", h = function(e, t) {
+   l.addEvent(e, "input", t), e.onpaste = t, e.ondrop = t, l.addEvent(e, "keypress", t), 
+   l.addEvent(e, "keydown", t);
+  }, p = function() {
+   var e = 0;
+   return window.innerHeight ? e = window.pageYOffset : d.documentElement && d.documentElement.scrollTop ? e = d.documentElement.scrollTop : d.body && (e = d.body.scrollTop), 
+   e;
+  }, f = function() {
+   if (t.preview) {
+    var n = t.input.value;
+    if (!n || n != s) {
+     s = n;
+     var i = new Date().getTime();
+     n = e.makeHtml(n);
+     var o = new Date().getTime();
+     r = o - i, E(n);
+    }
+   }
+  };
+  void 0 !== i && (f = i(f));
+  var m = function() {
+   if (o && (clearTimeout(o), o = void 0), "manual" !== u) {
+    var e = 0;
+    "delayed" === u && (e = r), e > a && (e = a), o = setTimeout(f, e);
+   }
+  }, v = function(e) {
+   return e.scrollHeight <= e.clientHeight ? 1 : e.scrollTop / (e.scrollHeight - e.clientHeight);
+  }, b = function() {
+   t.preview && (t.preview.scrollTop = (t.preview.scrollHeight - t.preview.clientHeight) * v(t.preview));
+  };
+  this.refresh = function(e) {
+   e ? (s = "", f()) : m();
+  }, this.processingTime = function() {
+   return r;
+  };
+  var y, w = !0, x = function(e) {
+   var n = t.preview, i = n.parentNode, o = n.nextSibling;
+   i.removeChild(n), n.innerHTML = e, o ? i.insertBefore(n, o) : i.appendChild(n);
+  }, C = function(e) {
+   t.preview.innerHTML = e;
+  }, k = function(e) {
+   if (y) return y(e);
+   try {
+    C(e), y = C;
+   } catch (t) {
+    y = x, y(e);
+   }
+  }, E = function(e) {
+   var i = c.getTop(t.input) - p();
+   if (t.preview && (k(e), n()), b(), w) return w = !1, void 0;
+   var o = c.getTop(t.input) - p();
+   g.isIE ? setTimeout(function() {
+    window.scrollBy(0, o - i);
+   }, 0) : window.scrollBy(0, o - i);
+  }, S = function() {
+   h(t.input, m), t.preview && (t.preview.scrollTop = 0);
+  };
+  S();
+ }
+ function r(e, t, n, o, r, s, a) {
+  function c(e) {
+   v.focus();
+   var r = "wmd-link-button" == e.id || "wmd-image-button" == e.id;
+   if (e.textOp) {
+    n && !r && n.setCommandMode();
+    var s = new i(t);
+    if (!s) return;
+    var a = s.getChunks(), l = function() {
+     v.focus(), a && s.setChunks(a), s.restore(), o.refresh();
+    }, c = e.textOp(a, l);
+    c || (l(), r || v.dispatchEvent(new Event("input")));
+   }
+   e.execute && e.execute(n);
+  }
+  function u(e, n) {
+   var i = "0px", o = "-20px", r = "-40px", s = e.getElementsByTagName("span")[0];
+   n ? (s.style.backgroundPosition = e.XShift + " " + i, e.onmouseover = function() {
+    s.style.backgroundPosition = this.XShift + " " + r;
+   }, e.onmouseout = function() {
+    s.style.backgroundPosition = this.XShift + " " + i;
+   }, g.isIE && (e.onmousedown = function() {
+    d.activeElement && d.activeElement !== t.input || (t.ieCachedRange = document.selection.createRange(), 
+    t.ieCachedScrollTop = t.input.scrollTop);
+   }), e.isHelp || (e.onclick = function() {
+    return this.onmouseout && this.onmouseout(), c(this), !1;
+   }), e.className = e.className.replace(/ disabled/g, "")) : (s.style.backgroundPosition = e.XShift + " " + o, 
+   e.onmouseover = e.onmouseout = e.onclick = function() {}, e.className += " disabled");
+  }
+  function h(e) {
+   return "string" == typeof e && (e = r[e]), function() {
+    e.apply(r, arguments);
+   };
+  }
+  function f() {
+   var n = t.buttonBar, i = document.createElement("ul");
+   i.id = "wmd-button-row" + e, i.className = "wmd-button-row", i = n.appendChild(i);
+   var o = 0, r = function(t, n, r, s) {
+    var a = document.createElement("li");
+    a.className = "wmd-button", a.style.left = o + "px", o += 25;
+    var l = document.createElement("span");
+    return a.id = t + e, a.appendChild(l), a.title = n, a.XShift = r, s && (a.textOp = s), 
+    u(a, !0), i.appendChild(a), a;
+   }, l = function(t) {
+    var n = document.createElement("li");
+    n.className = "wmd-spacer wmd-spacer" + t, n.id = "wmd-spacer" + t + e, i.appendChild(n), 
+    o += 25;
+   };
+   b.bold = r("wmd-bold-button", a("bold"), "0px", h("doBold")), b.italic = r("wmd-italic-button", a("italic"), "-20px", h("doItalic")), 
+   l(1), b.link = r("wmd-link-button", a("link"), "-40px", h(function(e, t) {
+    return this.doLinkOrImage(e, t, !1);
+   })), b.quote = r("wmd-quote-button", a("quote"), "-60px", h("doBlockquote")), b.code = r("wmd-code-button", a("code"), "-80px", h("doCode")), 
+   b.image = r("wmd-image-button", a("image"), "-100px", h(function(e, t) {
+    return this.doLinkOrImage(e, t, !0);
+   })), l(2), b.olist = r("wmd-olist-button", a("olist"), "-120px", h(function(e, t) {
+    this.doList(e, t, !0);
+   })), b.ulist = r("wmd-ulist-button", a("ulist"), "-140px", h(function(e, t) {
+    this.doList(e, t, !1);
+   })), b.heading = r("wmd-heading-button", a("heading"), "-160px", h("doHeading")), 
+   b.hr = r("wmd-hr-button", a("hr"), "-180px", h("doHorizontalRule")), l(3), b.undo = r("wmd-undo-button", a("undo"), "-200px", null), 
+   b.undo.execute = function(e) {
+    e && e.undo();
+   };
+   var c = /win/.test(p.platform.toLowerCase()) ? a("redo") : a("redomac");
+   if (b.redo = r("wmd-redo-button", c, "-220px", null), b.redo.execute = function(e) {
+    e && e.redo();
+   }, s) {
+    var d = document.createElement("li"), f = document.createElement("span");
+    d.appendChild(f), d.className = "wmd-button wmd-help-button", d.id = "wmd-help-button" + e, 
+    d.XShift = "-240px", d.isHelp = !0, d.style.right = "0px", d.title = a("help"), 
+    d.onclick = s.handler, u(d, !0), i.appendChild(d), b.help = d;
+   }
+   m();
+  }
+  function m() {
+   n && (u(b.undo, n.canUndo()), u(b.redo, n.canRedo()));
+  }
+  var v = t.input, b = {};
+  f();
+  var y = "keydown";
+  g.isOpera && (y = "keypress"), l.addEvent(v, y, function(e) {
+   if ((e.ctrlKey || e.metaKey) && !e.altKey) {
+    var t = e.charCode || e.keyCode, i = String.fromCharCode(t).toLowerCase();
+    switch (i) {
+    case "b":
+     c(b.bold);
+     break;
+
+    case "i":
+     c(b.italic);
+     break;
+
+    case "l":
+     c(b.link);
+     break;
+
+    case "q":
+     c(b.quote);
+     break;
+
+    case "k":
+     c(b.code);
+     break;
+
+    case "g":
+     c(b.image);
+     break;
+
+    case "o":
+     c(b.olist);
+     break;
+
+    case "u":
+     c(b.ulist);
+     break;
+
+    case "h":
+     c(b.heading);
+     break;
+
+    case "r":
+     c(b.hr);
+     break;
+
+    case "y":
+     c(b.redo);
+     break;
+
+    case "z":
+     e.shiftKey ? c(b.redo) : c(b.undo);
+     break;
+
+    case "v":
+     return n.setMode("typing"), void 0;
+
+    case "x":
+     return n.setMode("deleting"), void 0;
+
+    default:
+     return;
+    }
+    e.preventDefault && e.preventDefault(), window.event && (window.event.returnValue = !1);
+   }
+  }), l.addEvent(v, "keyup", function(e) {
+   if (e.shiftKey && !e.ctrlKey && !e.metaKey) {
+    var t = e.charCode || e.keyCode;
+    if (13 === t) {
+     var n = {};
+     n.textOp = h("doAutoindent"), c(n);
+    }
+   }
+  }), g.isIE && l.addEvent(v, "keydown", function(e) {
+   var t = e.keyCode;
+   return 27 === t ? !1 : void 0;
+  }), this.setUndoRedoButtonStates = m, this.buttons = b, this.setButtonState = u;
+ }
+ function s(e, t) {
+  this.hooks = e, this.getString = t;
+ }
+ function a(e) {
+  return e.replace(/^\s*(.*?)(?:\s+"(.+)")?\s*$/, function(e, t, n) {
+   return t = t.replace(/\?.*$/, function(e) {
+    return e.replace(/\+/g, " ");
+   }), t = decodeURIComponent(t), t = encodeURI(t).replace(/'/g, "%27").replace(/\(/g, "%28").replace(/\)/g, "%29"), 
+   t = t.replace(/\?.*$/, function(e) {
+    return e.replace(/\+/g, "%2b");
+   }), n && (n = n.trim ? n.trim() : n.replace(/^\s*/, "").replace(/\s*$/, ""), n = n.replace(/"/g, "quot;").replace(/\(/g, "&#40;").replace(/\)/g, "&#41;").replace(/</g, "&lt;").replace(/>/g, "&gt;")), 
+   n ? t + ' "' + n + '"' : t;
+  });
+ }
+ var l = {}, c = {}, u = {}, d = window.document, h = window.RegExp, p = window.navigator, f = {
+  lineLength: 72
+ }, g = {
+  isIE: /msie/.test(p.userAgent.toLowerCase()),
+  isIE_5or6: /msie 6/.test(p.userAgent.toLowerCase()) || /msie 5/.test(p.userAgent.toLowerCase()),
+  isOpera: /opera/.test(p.userAgent.toLowerCase())
+ }, m = {
+  bold: "Strong <strong> Ctrl+B",
+  boldexample: "strong text",
+  italic: "Emphasis <em> Ctrl+I",
+  italicexample: "emphasized text",
+  link: "Hyperlink <a> Ctrl+L",
+  linkdescription: "enter link description here",
+  linkdialog: '<p><b>Insert Hyperlink</b></p><p>http://example.com/ "optional title"</p>',
+  quote: "Blockquote <blockquote> Ctrl+Q",
+  quoteexample: "Blockquote",
+  code: "Code Sample <pre><code> Ctrl+K",
+  codeexample: "enter code here",
+  image: "Image <img> Ctrl+G",
+  imagedescription: "enter image description here",
+  imagedialog: "<p><b>Insert Image</b></p><p>http://example.com/images/diagram.jpg \"optional title\"<br><br>Need <a href='http://www.google.com/search?q=free+image+hosting' target='_blank'>free image hosting?</a></p>",
+  olist: "Numbered List <ol> Ctrl+O",
+  ulist: "Bulleted List <ul> Ctrl+U",
+  litem: "List item",
+  heading: "Heading <h1>/<h2> Ctrl+H",
+  headingexample: "Heading",
+  hr: "Horizontal Rule <hr> Ctrl+R",
+  undo: "Undo - Ctrl+Z",
+  redo: "Redo - Ctrl+Y",
+  redomac: "Redo - Ctrl+Shift+Z",
+  help: "Markdown Editing Help"
+ }, v = "http://", b = "http://";
+ Markdown.EditorLight = function(e, i, a) {
+  a = a || {}, "function" == typeof a.handler && (a = {
+   helpButton: a
+  }), a.strings = a.strings || {}, a.helpButton && (a.strings.help = a.strings.help || a.helpButton.title);
+  var l = function(e) {
+   return a.strings[e] || m[e];
+  };
+  i = i || "";
+  var c = this.hooks = new Markdown.HookCollection();
+  c.addNoop("onPreviewRefresh"), c.addNoop("postBlockquoteCreation"), c.addFalse("insertImageDialog"), 
+  c.addFalse("insertLinkDialog"), this.getConverter = function() {
+   return e;
+  };
+  var u, h, p = this;
+  this.run = function(f) {
+   if (!u) {
+    u = new t(i);
+    var g, m = new s(c, l), v = new o(e, u, function() {
+     c.onPreviewRefresh();
+    }, f);
+    /\?noundo/.test(d.location.href) || (h = new n(function() {
+     v.refresh(), g && g.setUndoRedoButtonStates();
+    }, u), this.textOperation = function(e) {
+     h.setCommandMode(), e(), p.refreshPreview();
+    }), g = new r(i, u, h, v, m, a.helpButton, l), g.setUndoRedoButtonStates(), p.refreshPreview = function() {
+     v.refresh(!0);
+    }, p.undoManager = h, p.uiManager = g;
+   }
+  };
+ }, e.prototype.findTags = function(e, t) {
+  var n, i = this;
+  e && (n = l.extendRegExp(e, "", "$"), this.before = this.before.replace(n, function(e) {
+   return i.startTag = i.startTag + e, "";
+  }), n = l.extendRegExp(e, "^", ""), this.selection = this.selection.replace(n, function(e) {
+   return i.startTag = i.startTag + e, "";
+  })), t && (n = l.extendRegExp(t, "", "$"), this.selection = this.selection.replace(n, function(e) {
+   return i.endTag = e + i.endTag, "";
+  }), n = l.extendRegExp(t, "^", ""), this.after = this.after.replace(n, function(e) {
+   return i.endTag = e + i.endTag, "";
+  }));
+ }, e.prototype.trimWhitespace = function(e) {
+  var t, n, i = this;
+  e ? t = n = "" : (t = function(e) {
+   return i.before += e, "";
+  }, n = function(e) {
+   return i.after = e + i.after, "";
+  }), this.selection = this.selection.replace(/^(\s*)/, t).replace(/(\s*)$/, n);
+ }, e.prototype.skipLines = function(e, t, n) {
+  void 0 === e && (e = 1), void 0 === t && (t = 1), e++, t++;
+  var i, o;
+  if (navigator.userAgent.match(/Chrome/) && "X".match(/()./), this.selection = this.selection.replace(/(^\n*)/, ""), 
+  this.startTag = this.startTag + h.$1, this.selection = this.selection.replace(/(\n*$)/, ""), 
+  this.endTag = this.endTag + h.$1, this.startTag = this.startTag.replace(/(^\n*)/, ""), 
+  this.before = this.before + h.$1, this.endTag = this.endTag.replace(/(\n*$)/, ""), 
+  this.after = this.after + h.$1, this.before) {
+   for (i = o = ""; e--; ) i += "\\n?", o += "\n";
+   n && (i = "\\n*"), this.before = this.before.replace(new h(i + "$", ""), o);
+  }
+  if (this.after) {
+   for (i = o = ""; t--; ) i += "\\n?", o += "\n";
+   n && (i = "\\n*"), this.after = this.after.replace(new h(i, ""), o);
+  }
+ }, l.isVisible = function(e) {
+  return window.getComputedStyle ? "none" !== window.getComputedStyle(e, null).getPropertyValue("display") : e.currentStyle ? "none" !== e.currentStyle.display : void 0;
+ }, l.addEvent = function(e, t, n) {
+  e.attachEvent ? e.attachEvent("on" + t, n) : e.addEventListener(t, n, !1);
+ }, l.removeEvent = function(e, t, n) {
+  e.detachEvent ? e.detachEvent("on" + t, n) : e.removeEventListener(t, n, !1);
+ }, l.fixEolChars = function(e) {
+  return e = e.replace(/\r\n/g, "\n"), e = e.replace(/\r/g, "\n");
+ }, l.extendRegExp = function(e, t, n) {
+  (null === t || void 0 === t) && (t = ""), (null === n || void 0 === n) && (n = "");
+  var i, o = e.toString();
+  return o = o.replace(/\/([gim]*)$/, function(e, t) {
+   return i = t, "";
+  }), o = o.replace(/(^\/|\/$)/g, ""), o = t + o + n, new h(o, i);
+ }, c.getTop = function(e, t) {
+  var n = e.offsetTop;
+  if (!t) for (;e = e.offsetParent; ) n += e.offsetTop;
+  return n;
+ }, c.getHeight = function(e) {
+  return e.offsetHeight || e.scrollHeight;
+ }, c.getWidth = function(e) {
+  return e.offsetWidth || e.scrollWidth;
+ }, c.getPageSize = function() {
+  var e, t, n, i;
+  self.innerHeight && self.scrollMaxY ? (e = d.body.scrollWidth, t = self.innerHeight + self.scrollMaxY) : d.body.scrollHeight > d.body.offsetHeight ? (e = d.body.scrollWidth, 
+  t = d.body.scrollHeight) : (e = d.body.offsetWidth, t = d.body.offsetHeight), self.innerHeight ? (n = self.innerWidth, 
+  i = self.innerHeight) : d.documentElement && d.documentElement.clientHeight ? (n = d.documentElement.clientWidth, 
+  i = d.documentElement.clientHeight) : d.body && (n = d.body.clientWidth, i = d.body.clientHeight);
+  var o = Math.max(e, n), r = Math.max(t, i);
+  return [ o, r, n, i ];
+ }, u.createBackground = function() {
+  var e = d.createElement("div"), t = e.style;
+  e.className = "wmd-prompt-background", t.position = "absolute", t.top = "0", t.zIndex = "1000", 
+  g.isIE ? t.filter = "alpha(opacity=50)" : t.opacity = "0.5";
+  var n = c.getPageSize();
+  return t.height = n[1] + "px", g.isIE ? (t.left = d.documentElement.scrollLeft, 
+  t.width = d.documentElement.clientWidth) : (t.left = "0", t.width = "100%"), d.body.appendChild(e), 
+  e;
+ }, u.prompt = function(e, t, n) {
+  var i, o;
+  void 0 === t && (t = "");
+  var r = function(e) {
+   var t = e.charCode || e.keyCode;
+   27 === t && s(!0);
+  }, s = function(e) {
+   l.removeEvent(d.body, "keydown", r);
+   var t = o.value;
+   return e ? t = null : (t = t.replace(/^http:\/\/(https?|ftp):\/\//, "$1://"), /^(?:https?|ftp):\/\//.test(t) || (t = "http://" + t)), 
+   i.parentNode.removeChild(i), n(t), !1;
+  }, a = function() {
+   i = d.createElement("div"), i.className = "wmd-prompt-dialog", i.style.padding = "10px;", 
+   i.style.position = "fixed", i.style.width = "400px", i.style.zIndex = "1001";
+   var n = d.createElement("div");
+   n.innerHTML = e, n.style.padding = "5px", i.appendChild(n);
+   var a = d.createElement("form"), u = a.style;
+   a.onsubmit = function() {
+    return s(!1);
+   }, u.padding = "0", u.margin = "0", u.cssFloat = "left", u.width = "100%", u.textAlign = "center", 
+   u.position = "relative", i.appendChild(a), o = d.createElement("input"), o.type = "text", 
+   o.value = t, u = o.style, u.display = "block", u.width = "80%", u.marginLeft = u.marginRight = "auto", 
+   a.appendChild(o);
+   var h = d.createElement("input");
+   h.type = "button", h.onclick = function() {
+    return s(!1);
+   }, h.value = "OK", u = h.style, u.margin = "10px", u.display = "inline", u.width = "7em";
+   var p = d.createElement("input");
+   p.type = "button", p.onclick = function() {
+    return s(!0);
+   }, p.value = "Cancel", u = p.style, u.margin = "10px", u.display = "inline", u.width = "7em", 
+   a.appendChild(h), a.appendChild(p), l.addEvent(d.body, "keydown", r), i.style.top = "50%", 
+   i.style.left = "50%", i.style.display = "block", g.isIE_5or6 && (i.style.position = "absolute", 
+   i.style.top = d.documentElement.scrollTop + 200 + "px", i.style.left = "50%"), d.body.appendChild(i), 
+   i.style.marginTop = -(c.getHeight(i) / 2) + "px", i.style.marginLeft = -(c.getWidth(i) / 2) + "px";
+  };
+  setTimeout(function() {
+   a();
+   var e = t.length;
+   if (void 0 !== o.selectionStart) o.selectionStart = 0, o.selectionEnd = e; else if (o.createTextRange) {
+    var n = o.createTextRange();
+    n.collapse(!1), n.moveStart("character", -e), n.moveEnd("character", e), n.select();
+   }
+   o.focus();
+  }, 0);
+ };
+ var y = s.prototype;
+ y.prefixes = "(?:\\s{4,}|\\s*>|\\s*-\\s+|\\s*\\d+\\.|=|\\+|-|_|\\*|#|\\s*\\[[^\n]]+\\]:)", 
+ y.unwrap = function(e) {
+  var t = new h("([^\\n])\\n(?!(\\n|" + this.prefixes + "))", "g");
+  e.selection = e.selection.replace(t, "$1 $2");
+ }, y.wrap = function(e, t) {
+  this.unwrap(e);
+  var n = new h("(.{1," + t + "})( +|$\\n?)", "gm"), i = this;
+  e.selection = e.selection.replace(n, function(e, t) {
+   return new h("^" + i.prefixes, "").test(e) ? e : t + "\n";
+  }), e.selection = e.selection.replace(/\s+$/, "");
+ }, y.doBold = function(e, t) {
+  return this.doBorI(e, t, 2, this.getString("boldexample"));
+ }, y.doItalic = function(e, t) {
+  return this.doBorI(e, t, 1, this.getString("italicexample"));
+ }, y.doBorI = function(e, t, n, i) {
+  e.trimWhitespace(), e.selection = e.selection.replace(/\n{2,}/g, "\n");
+  var o = /(\**$)/.exec(e.before)[0], r = /(^\**)/.exec(e.after)[0], s = Math.min(o.length, r.length);
+  if (s >= n && (2 != s || 1 != n)) e.before = e.before.replace(h("[*]{" + n + "}$", ""), ""), 
+  e.after = e.after.replace(h("^[*]{" + n + "}", ""), ""); else if (!e.selection && r) {
+   e.after = e.after.replace(/^([*_]*)/, ""), e.before = e.before.replace(/(\s?)$/, "");
+   var a = h.$1;
+   e.before = e.before + r + a;
+  } else {
+   e.selection || r || (e.selection = i);
+   var l = 1 >= n ? "*" : "**";
+   e.before = e.before + l, e.after = l + e.after;
+  }
+ }, y.stripLinkDefs = function(e, t) {
+  return e = e.replace(/^[ ]{0,3}\[(\d+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?[ \t]*\n?[ \t]*(?:(\n*)["(](.+?)[")][ \t]*)?(?:\n+|$)/gm, function(e, n, i, o, r) {
+   return t[n] = e.replace(/\s*$/, ""), o ? (t[n] = e.replace(/["(](.+?)[")]$/, ""), 
+   o + r) : "";
+  });
+ }, y.addLinkDef = function(e, t) {
+  var n = 0, i = {};
+  e.before = this.stripLinkDefs(e.before, i), e.selection = this.stripLinkDefs(e.selection, i), 
+  e.after = this.stripLinkDefs(e.after, i);
+  var o = "", r = /(\[)((?:\[[^\]]*\]|[^\[\]])*)(\][ ]?(?:\n[ ]*)?\[)(\d+)(\])/g, s = function(e) {
+   n++, e = e.replace(/^[ ]{0,3}\[(\d+)\]:/, "  [" + n + "]:"), o += "\n" + e;
+  }, a = function(e, t, o, l, c, u) {
+   return o = o.replace(r, a), i[c] ? (s(i[c]), t + o + l + n + u) : e;
+  };
+  e.before = e.before.replace(r, a), t ? s(t) : e.selection = e.selection.replace(r, a);
+  var l = n;
+  return e.after = e.after.replace(r, a), e.after && (e.after = e.after.replace(/\n*$/, "")), 
+  e.after || (e.selection = e.selection.replace(/\n*$/, "")), e.after += "\n\n" + o, 
+  l;
+ }, y.doLinkOrImage = function(e, t, n) {
+  e.trimWhitespace(), e.findTags(/\s*!?\[/, /\][ ]?(?:\n[ ]*)?(\[.*?\])?/);
+  var i;
+  if (!(e.endTag.length > 1 && e.startTag.length > 0)) {
+   if (e.selection = e.startTag + e.selection + e.endTag, e.startTag = e.endTag = "", 
+   /\n\n/.test(e.selection)) return this.addLinkDef(e, null), void 0;
+   var o = this, r = function(r) {
+    if (i.parentNode.removeChild(i), null !== r) {
+     e.selection = (" " + e.selection).replace(/([^\\](?:\\\\)*)(?=[[\]])/g, "$1\\").substr(1);
+     var s = " [999]: " + a(r), l = o.addLinkDef(e, s);
+     e.startTag = n ? "![" : "[", e.endTag = "][" + l + "]", e.selection || (e.selection = n ? o.getString("imagedescription") : o.getString("linkdescription"));
+    }
+    t();
+   };
+   return i = u.createBackground(), n ? this.hooks.insertImageDialog(r) || u.prompt(this.getString("imagedialog"), v, r) : this.hooks.insertLinkDialog(r) || u.prompt(this.getString("linkdialog"), b, r), 
+   !0;
+  }
+  e.startTag = e.startTag.replace(/!?\[/, ""), e.endTag = "", this.addLinkDef(e, null);
+ }, y.doAutoindent = function(e) {
+  var t = this, n = !1;
+  e.before = e.before.replace(/(\n|^)[ ]{0,3}([*+-]|\d+[.])[ \t]*\n$/, "\n\n"), e.before = e.before.replace(/(\n|^)[ ]{0,3}>[ \t]*\n$/, "\n\n"), 
+  e.before = e.before.replace(/(\n|^)[ \t]+\n$/, "\n\n"), e.selection || /^[ \t]*(?:\n|$)/.test(e.after) || (e.after = e.after.replace(/^[^\n]*/, function(t) {
+   return e.selection = t, "";
+  }), n = !0), /(\n|^)[ ]{0,3}([*+-]|\d+[.])[ \t]+.*\n$/.test(e.before) && t.doList && t.doList(e), 
+  /(\n|^)[ ]{0,3}>[ \t]+.*\n$/.test(e.before) && t.doBlockquote && t.doBlockquote(e), 
+  /(\n|^)(\t|[ ]{4,}).*\n$/.test(e.before) && t.doCode && t.doCode(e), n && (e.after = e.selection + e.after, 
+  e.selection = "");
+ }, y.doBlockquote = function(e) {
+  e.selection = e.selection.replace(/^(\n*)([^\r]+?)(\n*)$/, function(t, n, i, o) {
+   return e.before += n, e.after = o + e.after, i;
+  }), e.before = e.before.replace(/(>[ \t]*)$/, function(t, n) {
+   return e.selection = n + e.selection, "";
+  }), e.selection = e.selection.replace(/^(\s|>)+$/, ""), e.selection = e.selection || this.getString("quoteexample");
+  var t, n = "", i = "";
+  if (e.before) {
+   for (var o = e.before.replace(/\n$/, "").split("\n"), r = !1, s = 0; s < o.length; s++) {
+    var a = !1;
+    t = o[s], r = r && t.length > 0, /^>/.test(t) ? (a = !0, !r && t.length > 1 && (r = !0)) : a = /^[ \t]*$/.test(t) ? !0 : r, 
+    a ? n += t + "\n" : (i += n + t, n = "\n");
+   }
+   /(^|\n)>/.test(n) || (i += n, n = "");
+  }
+  e.startTag = n, e.before = i, e.after && (e.after = e.after.replace(/^\n?/, "\n")), 
+  e.after = e.after.replace(/^(((\n|^)(\n[ \t]*)*>(.+\n)*.*)+(\n[ \t]*)*)/, function(t) {
+   return e.endTag = t, "";
+  });
+  var l = function(t) {
+   var n = t ? "> " : "";
+   e.startTag && (e.startTag = e.startTag.replace(/\n((>|\s)*)\n$/, function(e, t) {
+    return "\n" + t.replace(/^[ ]{0,3}>?[ \t]*$/gm, n) + "\n";
+   })), e.endTag && (e.endTag = e.endTag.replace(/^\n((>|\s)*)\n/, function(e, t) {
+    return "\n" + t.replace(/^[ ]{0,3}>?[ \t]*$/gm, n) + "\n";
+   }));
+  };
+  /^(?![ ]{0,3}>)/m.test(e.selection) ? (this.wrap(e, f.lineLength - 2), e.selection = e.selection.replace(/^/gm, "> "), 
+  l(!0), e.skipLines()) : (e.selection = e.selection.replace(/^[ ]{0,3}> ?/gm, ""), 
+  this.unwrap(e), l(!1), !/^(\n|^)[ ]{0,3}>/.test(e.selection) && e.startTag && (e.startTag = e.startTag.replace(/\n{0,2}$/, "\n\n")), 
+  !/(\n|^)[ ]{0,3}>.*$/.test(e.selection) && e.endTag && (e.endTag = e.endTag.replace(/^\n{0,2}/, "\n\n"))), 
+  e.selection = this.hooks.postBlockquoteCreation(e.selection), /\n/.test(e.selection) || (e.selection = e.selection.replace(/^(> *)/, function(t, n) {
+   return e.startTag += n, "";
+  }));
+ }, y.doCode = function(e) {
+  var t = /\S[ ]*$/.test(e.before), n = /^[ ]*\S/.test(e.after);
+  if (!n && !t || /\n/.test(e.selection)) {
+   e.before = e.before.replace(/[ ]{4}$/, function(t) {
+    return e.selection = t + e.selection, "";
+   });
+   var i = 1, o = 1;
+   /(\n|^)(\t|[ ]{4,}).*\n$/.test(e.before) && (i = 0), /^\n(\t|[ ]{4,})/.test(e.after) && (o = 0), 
+   e.skipLines(i, o), e.selection ? /^[ ]{0,3}\S/m.test(e.selection) ? /\n/.test(e.selection) ? e.selection = e.selection.replace(/^/gm, "    ") : e.before += "    " : e.selection = e.selection.replace(/^(?:[ ]{4}|[ ]{0,3}\t)/gm, "") : (e.startTag = "    ", 
+   e.selection = this.getString("codeexample"));
+  } else e.trimWhitespace(), e.findTags(/`/, /`/), e.startTag || e.endTag ? e.endTag && !e.startTag ? (e.before += e.endTag, 
+  e.endTag = "") : e.startTag = e.endTag = "" : (e.startTag = e.endTag = "`", e.selection || (e.selection = this.getString("codeexample")));
+ }, y.doList = function(e, t, n) {
+  var i = /(\n|^)(([ ]{0,3}([*+-]|\d+[.])[ \t]+.*)(\n.+|\n{2,}([*+-].*|\d+[.])[ \t]+.*|\n{2,}[ \t]+\S.*)*)\n*$/, o = /^\n*(([ ]{0,3}([*+-]|\d+[.])[ \t]+.*)(\n.+|\n{2,}([*+-].*|\d+[.])[ \t]+.*|\n{2,}[ \t]+\S.*)*)\n*/, r = "-", s = 1, a = function() {
+   var e;
+   return n ? (e = " " + s + ". ", s++) : e = " " + r + " ", e;
+  }, l = function(e) {
+   return void 0 === n && (n = /^\s*\d/.test(e)), e = e.replace(/^[ ]{0,3}([*+-]|\d+[.])\s/gm, function() {
+    return a();
+   });
+  };
+  if (e.findTags(/(\n|^)*[ ]{0,3}([*+-]|\d+[.])\s+/, null), !e.before || /\n$/.test(e.before) || /^\n/.test(e.startTag) || (e.before += e.startTag, 
+  e.startTag = ""), e.startTag) {
+   var c = /\d+[.]/.test(e.startTag);
+   if (e.startTag = "", e.selection = e.selection.replace(/\n[ ]{4}/g, "\n"), this.unwrap(e), 
+   e.skipLines(), c && (e.after = e.after.replace(o, l)), n == c) return;
+  }
+  var u = 1;
+  e.before = e.before.replace(i, function(e) {
+   return /^\s*([*+-])/.test(e) && (r = h.$1), u = /[^\n]\n\n[^\n]/.test(e) ? 1 : 0, 
+   l(e);
+  }), e.selection || (e.selection = this.getString("litem"));
+  var d = a(), p = 1;
+  e.after = e.after.replace(o, function(e) {
+   return p = /[^\n]\n\n[^\n]/.test(e) ? 1 : 0, l(e);
+  }), e.trimWhitespace(!0), e.skipLines(u, p, !0), e.startTag = d;
+  var g = d.replace(/./g, " ");
+  this.wrap(e, f.lineLength - g.length), e.selection = e.selection.replace(/\n/g, "\n" + g);
+ }, y.doHeading = function(e) {
+  if (e.selection = e.selection.replace(/\s+/g, " "), e.selection = e.selection.replace(/(^\s+|\s+$)/g, ""), 
+  !e.selection) return e.startTag = "## ", e.selection = this.getString("headingexample"), 
+  e.endTag = " ##", void 0;
+  var t = 0;
+  e.findTags(/#+[ ]*/, /[ ]*#+/), /#+/.test(e.startTag) && (t = h.lastMatch.length), 
+  e.startTag = e.endTag = "", e.findTags(null, /\s?(-+|=+)/), /=+/.test(e.endTag) && (t = 1), 
+  /-+/.test(e.endTag) && (t = 2), e.startTag = e.endTag = "", e.skipLines(1, 1);
+  var n = 0 == t ? 2 : t - 1;
+  if (n > 0) {
+   var i = n >= 2 ? "-" : "=", o = e.selection.length;
+   for (o > f.lineLength && (o = f.lineLength), e.endTag = "\n"; o--; ) e.endTag += i;
+  }
+ }, y.doHorizontalRule = function(e) {
+  e.startTag = "----------\n", e.selection = "", e.skipLines(2, 1, !0);
+ };
+}(), define("pagedown-light", function() {}), define("ace/mode/css_highlight_rules", [ "require", "exports", "module", "../lib/oop", "../lib/lang", "./text_highlight_rules" ], function(e, t) {
  var n = e("../lib/oop");
  e("../lib/lang");
  var i = e("./text_highlight_rules").TextHighlightRules, o = t.supportType = "animation-fill-mode|alignment-adjust|alignment-baseline|animation-delay|animation-direction|animation-duration|animation-iteration-count|animation-name|animation-play-state|animation-timing-function|animation|appearance|azimuth|backface-visibility|background-attachment|background-break|background-clip|background-color|background-image|background-origin|background-position|background-repeat|background-size|background|baseline-shift|binding|bleed|bookmark-label|bookmark-level|bookmark-state|bookmark-target|border-bottom|border-bottom-color|border-bottom-left-radius|border-bottom-right-radius|border-bottom-style|border-bottom-width|border-collapse|border-color|border-image|border-image-outset|border-image-repeat|border-image-slice|border-image-source|border-image-width|border-left|border-left-color|border-left-style|border-left-width|border-radius|border-right|border-right-color|border-right-style|border-right-width|border-spacing|border-style|border-top|border-top-color|border-top-left-radius|border-top-right-radius|border-top-style|border-top-width|border-width|border|bottom|box-align|box-decoration-break|box-direction|box-flex-group|box-flex|box-lines|box-ordinal-group|box-orient|box-pack|box-shadow|box-sizing|break-after|break-before|break-inside|caption-side|clear|clip|color-profile|color|column-count|column-fill|column-gap|column-rule|column-rule-color|column-rule-style|column-rule-width|column-span|column-width|columns|content|counter-increment|counter-reset|crop|cue-after|cue-before|cue|cursor|direction|display|dominant-baseline|drop-initial-after-adjust|drop-initial-after-align|drop-initial-before-adjust|drop-initial-before-align|drop-initial-size|drop-initial-value|elevation|empty-cells|fit|fit-position|float-offset|float|font-family|font-size|font-size-adjust|font-stretch|font-style|font-variant|font-weight|font|grid-columns|grid-rows|hanging-punctuation|height|hyphenate-after|hyphenate-before|hyphenate-character|hyphenate-lines|hyphenate-resource|hyphens|icon|image-orientation|image-rendering|image-resolution|inline-box-align|left|letter-spacing|line-height|line-stacking-ruby|line-stacking-shift|line-stacking-strategy|line-stacking|list-style-image|list-style-position|list-style-type|list-style|margin-bottom|margin-left|margin-right|margin-top|margin|mark-after|mark-before|mark|marks|marquee-direction|marquee-play-count|marquee-speed|marquee-style|max-height|max-width|min-height|min-width|move-to|nav-down|nav-index|nav-left|nav-right|nav-up|opacity|orphans|outline-color|outline-offset|outline-style|outline-width|outline|overflow-style|overflow-x|overflow-y|overflow|padding-bottom|padding-left|padding-right|padding-top|padding|page-break-after|page-break-before|page-break-inside|page-policy|page|pause-after|pause-before|pause|perspective-origin|perspective|phonemes|pitch-range|pitch|play-during|position|presentation-level|punctuation-trim|quotes|rendering-intent|resize|rest-after|rest-before|rest|richness|right|rotation-point|rotation|ruby-align|ruby-overhang|ruby-position|ruby-span|size|speak-header|speak-numeral|speak-punctuation|speak|speech-rate|stress|string-set|table-layout|target-name|target-new|target-position|target|text-align-last|text-align|text-decoration|text-emphasis|text-height|text-indent|text-justify|text-outline|text-shadow|text-transform|text-wrap|top|transform-origin|transform-style|transform|transition-delay|transition-duration|transition-property|transition-timing-function|transition|unicode-bidi|vertical-align|visibility|voice-balance|voice-duration|voice-family|voice-pitch-range|voice-pitch|voice-rate|voice-stress|voice-volume|volume|white-space-collapse|white-space|widows|width|word-break|word-spacing|word-wrap|z-index", r = t.supportFunction = "rgb|rgba|url|attr|counter|counters", s = t.supportConstant = "absolute|after-edge|after|all-scroll|all|alphabetic|always|antialiased|armenian|auto|avoid-column|avoid-page|avoid|balance|baseline|before-edge|before|below|bidi-override|block-line-height|block|bold|bolder|border-box|both|bottom|box|break-all|break-word|capitalize|caps-height|caption|center|central|char|circle|cjk-ideographic|clone|close-quote|col-resize|collapse|column|consider-shifts|contain|content-box|cover|crosshair|cubic-bezier|dashed|decimal-leading-zero|decimal|default|disabled|disc|disregard-shifts|distribute-all-lines|distribute-letter|distribute-space|distribute|dotted|double|e-resize|ease-in|ease-in-out|ease-out|ease|ellipsis|end|exclude-ruby|fill|fixed|georgian|glyphs|grid-height|groove|hand|hanging|hebrew|help|hidden|hiragana-iroha|hiragana|horizontal|icon|ideograph-alpha|ideograph-numeric|ideograph-parenthesis|ideograph-space|ideographic|inactive|include-ruby|inherit|initial|inline-block|inline-box|inline-line-height|inline-table|inline|inset|inside|inter-ideograph|inter-word|invert|italic|justify|katakana-iroha|katakana|keep-all|last|left|lighter|line-edge|line-through|line|linear|list-item|local|loose|lower-alpha|lower-greek|lower-latin|lower-roman|lowercase|lr-tb|ltr|mathematical|max-height|max-size|medium|menu|message-box|middle|move|n-resize|ne-resize|newspaper|no-change|no-close-quote|no-drop|no-open-quote|no-repeat|none|normal|not-allowed|nowrap|nw-resize|oblique|open-quote|outset|outside|overline|padding-box|page|pointer|pre-line|pre-wrap|pre|preserve-3d|progress|relative|repeat-x|repeat-y|repeat|replaced|reset-size|ridge|right|round|row-resize|rtl|s-resize|scroll|se-resize|separate|slice|small-caps|small-caption|solid|space|square|start|static|status-bar|step-end|step-start|steps|stretch|strict|sub|super|sw-resize|table-caption|table-cell|table-column-group|table-column|table-footer-group|table-header-group|table-row-group|table-row|table|tb-rl|text-after-edge|text-before-edge|text-bottom|text-size|text-top|text|thick|thin|transparent|underline|upper-alpha|upper-latin|upper-roman|uppercase|use-script|vertical-ideographic|vertical-text|visible|w-resize|wait|whitespace|z-index|zero", a = t.supportConstantColor = "aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow", l = t.supportConstantFonts = "arial|century|comic|courier|garamond|georgia|helvetica|impact|lucida|symbol|system|tahoma|times|trebuchet|utopia|verdana|webdings|sans-serif|serif|monospace", c = t.numRe = "\\-?(?:(?:[0-9]+)|(?:[0-9]*\\.[0-9]+))", u = t.pseudoElements = "(\\:+)\\b(after|before|first-letter|first-line|moz-selection|selection)\\b", d = t.pseudoClasses = "(:)\\b(active|checked|disabled|empty|enabled|first-child|first-of-type|focus|hover|indeterminate|invalid|last-child|last-of-type|link|not|nth-child|nth-last-child|nth-last-of-type|nth-of-type|only-child|only-of-type|required|root|target|valid|visited)\\b", h = function() {
@@ -27080,7 +27789,7 @@ function() {
   var n = e.searchBox || new c(e);
   n.show(e.session.getTextRange(), t);
  };
-}), define("core", [ "jquery", "underscore", "crel", "ace", "constants", "utils", "storage", "settings", "eventMgr", "shortcutMgr", "mousetrap", "text!html/bodyIndex.html", "text!html/bodyViewer.html", "text!html/settingsTemplateTooltip.html", "text!html/settingsUserCustomExtensionTooltip.html", "storage", "uilayout", "pagedown-ace", "libs/ace_mode", "ace/requirejs/text!ace/css/editor.css", "ace/requirejs/text!ace/theme/textmate.css", "ace/ext/spellcheck", "ace/ext/searchbox" ], function(e, t, n, i, o, r, s, a, l, c, u, d, h, p, f) {
+}), define("core", [ "jquery", "underscore", "crel", "ace", "constants", "utils", "storage", "settings", "eventMgr", "shortcutMgr", "mousetrap", "text!html/bodyIndex.html", "text!html/bodyViewer.html", "text!html/settingsTemplateTooltip.html", "text!html/settingsUserCustomExtensionTooltip.html", "storage", "uilayout", "pagedown-ace", "pagedown-light", "libs/ace_mode", "ace/requirejs/text!ace/css/editor.css", "ace/requirejs/text!ace/theme/textmate.css", "ace/ext/spellcheck", "ace/ext/searchbox" ], function(e, t, n, i, o, r, s, a, l, c, u, d, h, p, f) {
  function g() {
   $ = !0, D = !0;
   var e = r.currentTime;
@@ -27114,11 +27823,11 @@ function() {
   r.setInputRadio("radio-layout-orientation", a.layoutOrientation), r.setInputValue(R, window.theme), 
   R.change(), r.setInputChecked("#input-settings-lazy-rendering", a.lazyRendering), 
   r.setInputValue("#input-settings-editor-font-family", a.editorFontFamily), r.setInputValue("#input-settings-editor-font-size", a.editorFontSize), 
-  r.setInputValue("#input-settings-max-width", a.maxWidth), r.setInputValue("#textarea-settings-default-content", a.defaultContent), 
-  r.setInputValue("#input-settings-publish-commit-msg", a.commitMsg), r.setInputChecked("#input-settings-gdrive-full-access", a.gdriveFullAccess), 
-  r.setInputValue("#textarea-settings-publish-template", a.template), r.setInputValue("#textarea-settings-pdf-template", a.pdfTemplate), 
-  r.setInputValue("#input-settings-pdf-page-size", a.pdfPageSize), r.setInputValue("#input-settings-ssh-proxy", a.sshProxy), 
-  c.loadSettings(), l.onLoadSettings();
+  r.setInputValue("#input-settings-max-width", a.maxWidth), r.setInputChecked("#input-settings-rtl", "true" == s.rtl), 
+  r.setInputValue("#textarea-settings-default-content", a.defaultContent), r.setInputValue("#input-settings-publish-commit-msg", a.commitMsg), 
+  r.setInputChecked("#input-settings-gdrive-full-access", a.gdriveFullAccess), r.setInputValue("#textarea-settings-publish-template", a.template), 
+  r.setInputValue("#textarea-settings-pdf-template", a.pdfTemplate), r.setInputValue("#input-settings-pdf-page-size", a.pdfPageSize), 
+  r.setInputValue("#input-settings-ssh-proxy", a.sshProxy), c.loadSettings(), l.onLoadSettings();
  }
  function x(t) {
   var n = {};
@@ -27126,18 +27835,21 @@ function() {
   var i = r.getInputValue(R);
   n.lazyRendering = r.getInputChecked("#input-settings-lazy-rendering"), n.editorFontFamily = r.getInputTextValue("#input-settings-editor-font-family", t), 
   n.editorFontSize = r.getInputIntValue("#input-settings-editor-font-size", t, 1, 99), 
-  n.maxWidth = r.getInputIntValue("#input-settings-max-width", t, 1), n.defaultContent = r.getInputValue("#textarea-settings-default-content"), 
-  n.commitMsg = r.getInputTextValue("#input-settings-publish-commit-msg", t), n.gdriveFullAccess = r.getInputChecked("#input-settings-gdrive-full-access"), 
-  n.template = r.getInputTextValue("#textarea-settings-publish-template", t), n.pdfTemplate = r.getInputTextValue("#textarea-settings-pdf-template", t), 
-  n.pdfPageSize = r.getInputValue("#input-settings-pdf-page-size"), n.sshProxy = r.checkUrl(r.getInputTextValue("#input-settings-ssh-proxy", t), !0), 
+  n.maxWidth = r.getInputIntValue("#input-settings-max-width", t, 1);
+  var o = r.getInputChecked("#input-settings-rtl");
+  n.defaultContent = r.getInputValue("#textarea-settings-default-content"), n.commitMsg = r.getInputTextValue("#input-settings-publish-commit-msg", t), 
+  n.gdriveFullAccess = r.getInputChecked("#input-settings-gdrive-full-access"), n.template = r.getInputTextValue("#textarea-settings-publish-template", t), 
+  n.pdfTemplate = r.getInputTextValue("#textarea-settings-pdf-template", t), n.pdfPageSize = r.getInputValue("#input-settings-pdf-page-size"), 
+  n.sshProxy = r.checkUrl(r.getInputTextValue("#input-settings-ssh-proxy", t), !0), 
   c.saveSettings(n), n.extensionSettings = {}, l.onSaveSettings(n.extensionSettings, t), 
-  t.isPropagationStopped() || (e.extend(a, n), s.settings = JSON.stringify(a), s.themeV3 = i);
+  t.isPropagationStopped() || (e.extend(a, n), s.settings = JSON.stringify(a), s.themeV3 = i, 
+  s.rtl = o);
  }
  function C(e) {
-  e === !0 || P.state.north.isClosed ? (N.hide(), O.hide()) : (N.show(), O.show());
+  e === !0 || N.state.north.isClosed ? (P.hide(), O.hide()) : (P.show(), O.show());
  }
  function k(e) {
-  e === !0 || P.state.east.isClosed ? z.hide() : z.show();
+  e === !0 || N.state.east.isClosed ? z.hide() : z.show();
  }
  function E() {
   j = i.edit("wmd-input"), j.setOption("spellcheck", !0), j.renderer.setShowGutter(!1), 
@@ -27213,39 +27925,39 @@ function() {
   };
   l.onLayoutConfigure(t), "horizontal" == a.layoutOrientation ? (e(".ui-layout-south").remove(), 
   e(".preview-container").html('<div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>'), 
-  P = e("body").layout(e.extend(t, {
+  N = e("body").layout(e.extend(t, {
    east__resizable: !0,
    east__size: .5,
    east__minSize: 300
   }))) : "vertical" == a.layoutOrientation && (e(".ui-layout-east").remove(), e(".preview-container").html('<div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>'), 
-  P = e("body").layout(e.extend(t, {
+  N = e("body").layout(e.extend(t, {
    south__resizable: !0,
    south__size: .5,
    south__minSize: 200
   }))), a.maxWidth && e("#preview-contents").css("max-width", a.maxWidth + 30 + "px"), 
   e(".navbar").click(function() {
-   P.allowOverflow("north");
+   N.allowOverflow("north");
   }), e(".ui-layout-toggler-south").addClass("btn btn-info").html('<i class="icon-none"></i>'), 
   e(".ui-layout-toggler-east").addClass("btn btn-info").html('<i class="icon-none"></i>');
   var n = e(".ui-layout-toggler-north").addClass("btn btn-info").html('<i class="icon-th"></i>'), i = e('<div class="resizer-decorator">');
   z = e('<div class="extension-preview-buttons">'), H = e('<div class="extension-editor-buttons">'), 
   window.viewerMode || "horizontal" == a.layoutOrientation ? (e(".ui-layout-resizer-north").append(z), 
   e(".ui-layout-resizer-east").append(i).append(n).append(H)) : e(".ui-layout-resizer-south").append(i).append(z).append(H).append(n), 
-  C(), k(), l.onLayoutCreated(P);
+  C(), k(), l.onLayoutCreated(N);
  }
  function A() {
   if (!window.viewerMode) {
    var e = q.width() - 10;
    J + Q + et + tt > e ? (V.show().find(".dropdown-menu").append(U), J + Q + et + nt > e ? G.show().find(".dropdown-menu").append(W) : G.hide().after(W)) : (G.hide().after(W), 
-   V.hide().after(U)), window.lightMode && (W.hide(), G.hide());
+   V.hide().after(U));
   }
-  P.resizeAll();
+  N.resizeAll();
  }
  var _, F, T = {}, $ = !1, D = !1, L = !0, B = 0, I = !1, M = r.currentTime;
  T.setOffline = function() {
   M = r.currentTime, I === !1 && (I = !0, l.onOfflineChanged(!0));
  };
- var R, P, N, O, z, j, H, q, W, U, G, V, K, X, Y, Z, J = 90, Q = 368, et = window.lightMode ? 0 : 603, tt = 215, nt = 44, it = require("ace/undomanager").UndoManager;
+ var R, N, P, O, z, j, H, q, W, U, G, V, K, X, Y, Z, J = 90, Q = 368, et = 603, tt = 215, nt = 44, it = require("ace/undomanager").UndoManager;
  T.initEditor = function(n) {
   function i() {
    var e = X.val();
@@ -27258,7 +27970,11 @@ function() {
   void 0 !== K) return j && j.selection.setSelectionRange(Y.editorSelectRange), j && j.focus() || X.focus(), 
   K.refreshPreview(), void 0;
   var s = e(".preview-container");
-  if (!window.lightMode) {
+  if (window.lightMode) X.scroll(function() {
+   void 0 !== Z && (Y.editorScrollTop = e(this).scrollTop());
+  }), X.bind("keyup mouseup", function() {
+   void 0 !== Z && (Y.editorStart = this.selectionStart, Y.editorEnd = this.selectionEnd);
+  }); else {
    var u = t.debounce(function() {
     void 0 !== Z && (Y.editorScrollTop = j.renderer.getScrollTop());
    }, 100);
@@ -27266,30 +27982,13 @@ function() {
    var d = t.debounce(function() {
     void 0 !== Z && (Y.editorSelectRange = j.getSelectionRange());
    }, 100);
-   j.session.selection.on("changeSelection", d), j.session.selection.on("changeCursor", d), 
-   s.scroll(function() {
-    void 0 !== Z && (Y.previewScrollTop = s.scrollTop());
-   });
+   j.session.selection.on("changeSelection", d), j.session.selection.on("changeCursor", d);
   }
+  s.scroll(function() {
+   void 0 !== Z && (Y.previewScrollTop = s.scrollTop());
+  });
   var h, p = new Markdown.Converter();
-  if (window.lightMode) {
-   var f = e("#wmd-preview"), g = new Markdown.HookCollection();
-   g.addNoop("onPreviewRefresh");
-   var m = function() {
-    var e = X.val();
-    e = p.makeHtml(e), f.html(e), g.onPreviewRefresh();
-   }, v = t.debounce(m, 1e3), b = function() {
-    void 0 === Z ? (m(), l.onFileOpen(Y)) : v(), i();
-   };
-   X.on("input propertychange", b), K = {
-    hooks: g,
-    getConverter: function() {
-     return p;
-    },
-    run: b,
-    refreshPreview: b
-   };
-  } else K = new Markdown.Editor(p, void 0, {
+  K = window.lightMode ? new Markdown.EditorLight(p) : new Markdown.Editor(p, void 0, {
    keyStrokes: c.getPagedownKeyStrokes()
   }), K.hooks.set("insertLinkDialog", function(t) {
    return T.insertLinkCallback = t, r.resetModalInputs(), e(".modal-insert-link").modal(), 
@@ -27300,29 +27999,29 @@ function() {
   }), h = a.lazyRendering === !0 ? function(e) {
    var n = t.debounce(e, 500);
    return function() {
-    void 0 === Z ? (e(), l.onFileOpen(Y), s.scrollTop(Y.previewScrollTop), t.defer(function() {
+    void 0 === Z ? (e(), l.onFileOpen(Y), s.scrollTop(Y.previewScrollTop), window.lightMode ? X.scrollTop(Y.editorScrollTop) : t.defer(function() {
      j.renderer.scrollToY(Y.editorScrollTop);
     })) : n(), i();
    };
   } : function(e) {
    return function() {
-    e(), void 0 === Z && (l.onFileOpen(Y), s.scrollTop(Y.previewScrollTop), t.defer(function() {
+    e(), void 0 === Z && (l.onFileOpen(Y), s.scrollTop(Y.previewScrollTop), window.lightMode ? X.scrollTop(Y.editorScrollTop) : t.defer(function() {
      j.renderer.scrollToY(Y.editorScrollTop);
     })), i();
    };
-  };
-  l.onPagedownConfigure(K), K.hooks.chain("onPreviewRefresh", l.onAsyncPreview), K.run(j, h), 
-  j && j.selection.setSelectionRange(Y.editorSelectRange), j && j.focus() || X.focus(), 
+  }, l.onPagedownConfigure(K), K.hooks.chain("onPreviewRefresh", l.onAsyncPreview), 
+  window.lightMode ? (K.run(h), K.undoManager.reinit(o, Y.editorStart, Y.editorEnd, Y.editorScrollTop), 
+  X.focus()) : (K.run(j, h), j.selection.setSelectionRange(Y.editorSelectRange), j.focus()), 
   e(".wmd-button-row li").addClass("btn btn-success").css("left", 0).find("span").hide();
-  var y = e(".wmd-button-group1");
-  e("#wmd-bold-button").append(e('<i class="icon-bold">')).appendTo(y), e("#wmd-italic-button").append(e('<i class="icon-italic">')).appendTo(y), 
-  y = e(".wmd-button-group2"), e("#wmd-link-button").append(e('<i class="icon-globe">')).appendTo(y), 
-  e("#wmd-quote-button").append(e('<i class="icon-indent-right">')).appendTo(y), e("#wmd-code-button").append(e('<i class="icon-code">')).appendTo(y), 
-  e("#wmd-image-button").append(e('<i class="icon-picture">')).appendTo(y), y = e(".wmd-button-group3"), 
-  e("#wmd-olist-button").append(e('<i class="icon-list-numbered">')).appendTo(y), 
-  e("#wmd-ulist-button").append(e('<i class="icon-list-bullet">')).appendTo(y), e("#wmd-heading-button").append(e('<i class="icon-text-height">')).appendTo(y), 
-  e("#wmd-hr-button").append(e('<i class="icon-ellipsis">')).appendTo(y), y = e(".wmd-button-group4"), 
-  e("#wmd-undo-button").append(e('<i class="icon-reply">')).appendTo(y), e("#wmd-redo-button").append(e('<i class="icon-forward">')).appendTo(y);
+  var f = e(".wmd-button-group1");
+  e("#wmd-bold-button").append(e('<i class="icon-bold">')).appendTo(f), e("#wmd-italic-button").append(e('<i class="icon-italic">')).appendTo(f), 
+  f = e(".wmd-button-group2"), e("#wmd-link-button").append(e('<i class="icon-globe">')).appendTo(f), 
+  e("#wmd-quote-button").append(e('<i class="icon-indent-right">')).appendTo(f), e("#wmd-code-button").append(e('<i class="icon-code">')).appendTo(f), 
+  e("#wmd-image-button").append(e('<i class="icon-picture">')).appendTo(f), f = e(".wmd-button-group3"), 
+  e("#wmd-olist-button").append(e('<i class="icon-list-numbered">')).appendTo(f), 
+  e("#wmd-ulist-button").append(e('<i class="icon-list-bullet">')).appendTo(f), e("#wmd-heading-button").append(e('<i class="icon-text-height">')).appendTo(f), 
+  e("#wmd-hr-button").append(e('<i class="icon-ellipsis">')).appendTo(f), f = e(".wmd-button-group4"), 
+  e("#wmd-undo-button").append(e('<i class="icon-reply">')).appendTo(f), e("#wmd-redo-button").append(e('<i class="icon-forward">')).appendTo(f);
  };
  var ot, rt;
  T.redirectConfirm = function(t, n, i) {
@@ -27336,20 +28035,20 @@ function() {
   e(window).on("online", b), navigator.onLine === !1 && T.setOffline(), e(document).mousemove(g).keypress(g), 
   e(".dropdown-submenu > a").click(function(e) {
    e.stopPropagation();
-  }), N = e(".menu-panel").collapse({
+  }), P = e(".menu-panel").collapse({
    toggle: !1
   });
   var t;
-  N.on("show.bs.collapse", function(n) {
-   n.target === N[0] ? (at = !0, t = r.createBackdrop("collapse", ".menu-panel"), N.addClass("move-to-front"), 
+  P.on("show.bs.collapse", function(n) {
+   n.target === P[0] ? (at = !0, t = r.createBackdrop("collapse", ".menu-panel"), P.addClass("move-to-front"), 
    setTimeout(function() {
-    N.trigger(e.support.transition.end);
-   }, 50)) : N.find(".in").collapse("hide");
+    P.trigger(e.support.transition.end);
+   }, 50)) : P.find(".in").collapse("hide");
   }).on("hide.bs.collapse", function(e) {
-   e.target === N[0] && (at = !1, t.parentNode.removeChild(t), N.removeClass("move-to-front"), 
+   e.target === P[0] && (at = !1, t.parentNode.removeChild(t), P.removeClass("move-to-front"), 
    j && j.focus() || X.focus());
   }).on("hidden.bs.collapse", function(e) {
-   e.target === N[0] && N.find(".in").collapse("hide");
+   e.target === P[0] && P.find(".in").collapse("hide");
   }), O = e(".document-panel").collapse({
    toggle: !1
   });
@@ -27366,7 +28065,7 @@ function() {
    e.target === O[0] && O.find(".in").collapse("hide");
   }), window.lightMode && e("#wmd-input").replaceWith(function() {
    return e('<textarea id="wmd-input">').addClass(this.className).addClass("form-control");
-  }), X = e("#wmd-input").css({
+  }), X = e("#wmd-input, .textarea-helper").css({
    "font-family": a.editorFontFamily,
    "font-size": a.editorFontSize + "px",
    "line-height": Math.round(a.editorFontSize * (20 / 12)) + "px"
@@ -27406,7 +28105,7 @@ function() {
   window.viewerMode || "vertical" != a.layoutOrientation || z.css("right", parseInt(z.css("right")) + H.width());
   var c = !1;
   e(".modal").on("show.bs.modal", function() {
-   N.collapse("hide"), O.collapse("hide"), c = !0;
+   P.collapse("hide"), O.collapse("hide"), c = !0;
   }).on("shown.bs.modal", function() {
    var t = e(this);
    setTimeout(function() {
@@ -27417,7 +28116,7 @@ function() {
   }).keyup(function(t) {
    13 != t.which || e(t.target).is("textarea") || e(this).find(".modal-footer a:last").click();
   }), e(".collapse-save-as a").click(function() {
-   N.collapse("hide");
+   P.collapse("hide");
   }), u.stopCallback = function(t, n) {
    return at || st || c || e(n).is("input, select, textarea:not(.ace_text-input)");
   }, e(".action-insert-link").click(function(t) {
@@ -27459,7 +28158,7 @@ function() {
    });
   }), e(".action-import-docs-settings-confirm").click(function() {
    s.clear();
-   var e = /^file\.|^focusMode$|^folder\.|^publish\.|^settings$|^sync\.|^theme$|^version$|^welcomeTour$/;
+   var e = /^file\.|^focusMode$|^folder\.|^publish\.|^settings$|^sync\.|^themeV3$|^rtl$|^version$|^welcomeTour$/;
    t.each(h, function(t, n) {
     e.test(n) && (s[n] = t);
    }), window.location.reload();
@@ -28482,7 +29181,7 @@ function() {
     A === !0 && g === !0 && (S === !0 ? (c.createFile(e.title + " (backup)", f), l.onMessage('Conflict detected on "' + e.title + '". A backup has been created locally.')) : h.setText(f)), 
     void 0 === x && (o.binding = gapi.drive.realtime.databinding.bindString(h, document.getElementById("wmd-input"))), 
     S === !0 && (r.log("Google Drive realtime document updated from server"), void 0 !== x && x.setValue(w, -1), 
-    u(), void 0 === x && p()), void 0 !== x && (o.string = h, v = m.uiManager.buttons.undo.execute, 
+    u(), void 0 === x && p()), void 0 !== x && (o.string = h), v = m.uiManager.buttons.undo.execute, 
     b = m.uiManager.buttons.redo.execute, y = m.uiManager.setUndoRedoButtonStates, m.uiManager.buttons.undo.execute = function() {
      d.canUndo && (C = !1, d.undo());
     }, m.uiManager.buttons.redo.execute = function() {
@@ -28493,7 +29192,7 @@ function() {
      }, 50);
     }, m.uiManager.setUndoRedoButtonStates(), d.addEventListener(gapi.drive.realtime.EventType.UNDO_REDO_STATE_CHANGED, function() {
      m.uiManager.setUndoRedoButtonStates();
-    }));
+    });
    }
   }, function(t) {
    console.error(t), "token_refresh_required" == t.type ? u.forceGdriveAuthenticate() : "not_found" == t.type ? (l.onError('"' + e.title + '" has been removed from Google Drive.'), 
@@ -29505,6 +30204,7 @@ function() {
   css_browser_selector: "bower-libs/css_browser_selector/css_browser_selector",
   "jquery-mousewheel": "bower-libs/jquery-mousewheel/jquery.mousewheel",
   "pagedown-ace": "bower-libs/pagedown-ace/Markdown.Editor",
+  "pagedown-light": "libs/Markdown.Editor.light",
   "pagedown-extra": "bower-libs/pagedown-extra/Markdown.Extra",
   "ace/requirejs/text": "libs/ace_text",
   "ace/commands/default_commands": "libs/ace_commands",
@@ -29560,7 +30260,8 @@ function() {
   "jquery-ui-widget": [ "jquery-ui-core" ],
   "jquery-ui-core": [ "jquery" ],
   "pagedown-extra": [ "pagedown-ace" ],
-  "pagedown-ace": [ "bower-libs/pagedown-ace/Markdown.Converter" ]
+  "pagedown-ace": [ "bower-libs/pagedown-ace/Markdown.Converter" ],
+  "pagedown-light": [ "bower-libs/pagedown-ace/Markdown.Converter" ]
  }
 });
 
@@ -29576,7 +30277,7 @@ try {
  throw alert("Your browser is not supported, sorry!"), e;
 }
 
-window.viewerMode = /(^| )viewer($| )/.test(document.body.className), window.lightMode = window.viewerMode || /(\?|&)light($|&)/.test(location.search) || function(e) {
+window.viewerMode = /(^| )viewer($| )/.test(document.body.className), window.lightMode = window.viewerMode || "true" == localStorage.rtl || /(\?|&)light($|&)/.test(location.search) || function(e) {
  return /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i.test(e) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(e.substr(0, 4)) ? !0 : void 0;
 }(navigator.userAgent || navigator.vendor || window.opera), window.theme = localStorage.themeV3 || "default";
 
@@ -29585,7 +30286,7 @@ var themeModule = "less!themes/" + window.theme;
 -1 !== window.baseDir.indexOf("-min") && (themeModule = "css!themes/" + window.theme), 
 require([ "jquery", "core", "eventMgr", "synchronizer", "publisher", "mediaImporter", "css", themeModule ], function(e, t, n) {
  window.noStart || e(function() {
-  t.onReady(), window.applicationCache && window.applicationCache.addEventListener("updateready", function() {
+  "true" == localStorage.rtl && e(document.body).addClass("rtl"), t.onReady(), window.applicationCache && window.applicationCache.addEventListener("updateready", function() {
    window.applicationCache.status === window.applicationCache.UPDATEREADY && (window.applicationCache.swapCache(), 
    n.onMessage("New version available!\nJust refresh the page to upgrade."));
   }, !1);

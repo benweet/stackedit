@@ -120,7 +120,8 @@ define([
     eventMgr.onLoadSettings = function() {
         logger.log("onLoadSettings");
         _.each(extensionList, function(extension) {
-            utils.setInputChecked("#input-enable-extension-" + extension.extensionId, extension.enabled === true);
+            var isChecked = !extension.isOptional || extension.config.enabled === undefined || extension.config.enabled === true;
+            utils.setInputChecked($("#input-enable-extension-" + extension.extensionId), isChecked);
             var onLoadSettingsListener = extension.onLoadSettings;
             onLoadSettingsListener && onLoadSettingsListener();
         });

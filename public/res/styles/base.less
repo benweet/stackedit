@@ -18,37 +18,37 @@
   font-family: 'Open Sans';
   font-style: normal;
   font-weight: 300;
-  src: local('Open Sans Light'), local('OpenSans-Light'), url("../font/OpenSans-Light.woff") format('woff');
+  src: url("../font/OpenSans-Light.woff") format('woff');
 }
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
   font-weight: 400;
-  src: local('Open Sans'), local('OpenSans'), url("../font/OpenSans.woff") format('woff');
+  src: url("../font/OpenSans.woff") format('woff');
 }
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
   font-weight: 700;
-  src: local('Open Sans Bold'), local('OpenSans-Bold'), url("../font/OpenSans-Bold.woff") format('woff');
+  src: url("../font/OpenSans-Bold.woff") format('woff');
 }
 @font-face {
   font-family: 'Open Sans';
   font-style: italic;
   font-weight: 300;
-  src: local('Open Sans Light Italic'), local('OpenSansLight-Italic'), url("../font/OpenSansLight-Italic.woff") format('woff');
+  src: url("../font/OpenSansLight-Italic.woff") format('woff');
 }
 @font-face {
   font-family: 'Open Sans';
   font-style: italic;
   font-weight: 400;
-  src: local('Open Sans Italic'), local('OpenSans-Italic'), url("../font/OpenSans-Italic.woff") format('woff');
+  src: url("../font/OpenSans-Italic.woff") format('woff');
 }
 @font-face {
   font-family: 'Open Sans';
   font-style: italic;
   font-weight: 700;
-  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url("../font/OpenSans-BoldItalic.woff") format('woff');
+  src: url("../font/OpenSans-BoldItalic.woff") format('woff');
 }
 
 @font-family-sans-serif: 'Open Sans', "Trebuchet MS", Helvetica, sans-serif;;
@@ -306,6 +306,20 @@ kbd {
 
 .icon-provider-gplus {
 	background-position: -144px 0;
+}
+
+/*******************
+ * RTL
+ *******************/
+body.rtl {
+    #wmd-input,
+    #preview-contents,
+    .input-file-title,
+    .search-bar input,
+    .modal-document-manager input,
+    .container {
+        direction: rtl;
+    }
 }
 
 /*******************

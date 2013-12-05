@@ -18,6 +18,7 @@ define([
     "storage",
     "uilayout",
     'pagedown-ace',
+    'pagedown-light',
     'libs/ace_mode',
     'ace/requirejs/text!ace/css/editor.css',
     'ace/requirejs/text!ace/theme/textmate.css',
@@ -122,6 +123,8 @@ define([
         utils.setInputValue("#input-settings-editor-font-size", settings.editorFontSize);
         // Max width
         utils.setInputValue("#input-settings-max-width", settings.maxWidth);
+        // RTL
+        utils.setInputChecked("#input-settings-rtl", storage.rtl == 'true');
         // Default content
         utils.setInputValue("#textarea-settings-default-content", settings.defaultContent);
         // Commit message
@@ -160,6 +163,8 @@ define([
         newSettings.editorFontSize = utils.getInputIntValue("#input-settings-editor-font-size", event, 1, 99);
         // Max width
         newSettings.maxWidth = utils.getInputIntValue("#input-settings-max-width", event, 1);
+        // RTL
+        var rtl = utils.getInputChecked("#input-settings-rtl");
         // Default content
         newSettings.defaultContent = utils.getInputValue("#textarea-settings-default-content");
         // Commit message
@@ -186,6 +191,7 @@ define([
             $.extend(settings, newSettings);
             storage.settings = JSON.stringify(settings);
             storage.themeV3 = theme;
+            storage.rtl = rtl;
         }
     }
 
@@ -408,7 +414,7 @@ define([
     var $rightBtnDropdown;
     var marginWidth = 40 + 25 + 25;
     var titleWidth = 20 + 348;
-    var leftButtonsWidth = window.lightMode ? 0 : 80 + 87 + 174 + 175 + 87;
+    var leftButtonsWidth = 80 + 87 + 174 + 175 + 87;
     var rightButtonsWidth = 40 + 88 + 87;
     var rightButtonsDropdown = 44;
     function adjustWindow() {
@@ -426,10 +432,6 @@ define([
             else {
                 $leftBtnDropdown.hide().after($leftBtnElts);
                 $rightBtnDropdown.hide().after($rightBtnElts);
-            }
-            if(window.lightMode) {
-                $leftBtnElts.hide();
-                $leftBtnDropdown.hide();
             }
         }
         layout.resizeAll();
@@ -467,7 +469,22 @@ define([
 
         var $previewContainerElt = $(".preview-container");
 
-        if(!window.lightMode) {
+        if(window.lightMode) {
+            // Store editor scrollTop on scroll event
+            $editorElt.scroll(function() {
+                if(documentContent !== undefined) {
+                    fileDesc.editorScrollTop = $(this).scrollTop();
+                }
+            });
+            // Store editor selection on change
+            $editorElt.bind("keyup mouseup", function() {
+                if(documentContent !== undefined) {
+                    fileDesc.editorStart = this.selectionStart;
+                    fileDesc.editorEnd = this.selectionEnd;
+                }
+            });
+        }
+        else {
             // Store editor scrollTop on scroll event
             var saveScroll = _.debounce(function() {
                 if(documentContent !== undefined) {
@@ -483,13 +500,13 @@ define([
             }, 100);
             aceEditor.session.selection.on('changeSelection', saveSelection);
             aceEditor.session.selection.on('changeCursor', saveSelection);
-            // Store preview scrollTop on scroll event
-            $previewContainerElt.scroll(function() {
-                if(documentContent !== undefined) {
-                    fileDesc.previewScrollTop = $previewContainerElt.scrollTop();
-                }
-            });
         }
+        // Store preview scrollTop on scroll event
+        $previewContainerElt.scroll(function() {
+            if(documentContent !== undefined) {
+                fileDesc.previewScrollTop = $previewContainerElt.scrollTop();
+            }
+        });
 
         // Create the converter and the editor
         var converter = new Markdown.Converter();
@@ -507,101 +524,89 @@ define([
         }
         
         var previewWrapper;
-        if(!window.lightMode) {
+        if(window.lightMode) {
+            editor = new Markdown.EditorLight(converter);
+        }
+        else {
             editor = new Markdown.Editor(converter, undefined, {
                 keyStrokes: shortcutMgr.getPagedownKeyStrokes()
             });
-            // Custom insert link dialog
-            editor.hooks.set("insertLinkDialog", function(callback) {
-                core.insertLinkCallback = callback;
-                utils.resetModalInputs();
-                $(".modal-insert-link").modal();
+        }
+        // Custom insert link dialog
+        editor.hooks.set("insertLinkDialog", function(callback) {
+            core.insertLinkCallback = callback;
+            utils.resetModalInputs();
+            $(".modal-insert-link").modal();
+            return true;
+        });
+        // Custom insert image dialog
+        editor.hooks.set("insertImageDialog", function(callback) {
+            core.insertLinkCallback = callback;
+            if(core.catchModal) {
                 return true;
-            });
-            // Custom insert image dialog
-            editor.hooks.set("insertImageDialog", function(callback) {
-                core.insertLinkCallback = callback;
-                if(core.catchModal) {
-                    return true;
-                }
-                utils.resetModalInputs();
-                $(".modal-insert-image").modal();
-                return true;
-            });
+            }
+            utils.resetModalInputs();
+            $(".modal-insert-image").modal();
+            return true;
+        });
             
-            if(settings.lazyRendering === true) {
-                previewWrapper = function(makePreview) {
-                    var debouncedMakePreview = _.debounce(makePreview, 500);
-                    return function() {
-                        if(documentContent === undefined) {
-                            makePreview();
-                            eventMgr.onFileOpen(fileDesc);
-                            $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
-                            _.defer(function() {
-                                aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
-                            });
+        if(settings.lazyRendering === true) {
+            previewWrapper = function(makePreview) {
+                var debouncedMakePreview = _.debounce(makePreview, 500);
+                return function() {
+                    if(documentContent === undefined) {
+                        makePreview();
+                        eventMgr.onFileOpen(fileDesc);
+                        $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
+                        if(window.lightMode) {
+                            $editorElt.scrollTop(fileDesc.editorScrollTop);
                         }
                         else {
-                            debouncedMakePreview();
-                        }
-                        checkDocumentChanges();
-                    };
-                };
-            }
-            else {
-                previewWrapper = function(makePreview) {
-                    return function() {
-                        makePreview();
-                        if(documentContent === undefined) {
-                            eventMgr.onFileOpen(fileDesc);
-                            $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
                             _.defer(function() {
                                 aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
                             });
                         }
-                        checkDocumentChanges();
-                    };
+                    }
+                    else {
+                        debouncedMakePreview();
+                    }
+                    checkDocumentChanges();
                 };
-            }
+            };
         }
         else {
-            // That's the light Markdown editor replacing the one from pagedown
-            var $wmdPreviewElt = $('#wmd-preview');
-            var hooks = new Markdown.HookCollection();
-            hooks.addNoop("onPreviewRefresh");
-            var makePreviewHtml = function() {
-                var text = $editorElt.val();
-                text = converter.makeHtml(text);
-                $wmdPreviewElt.html(text);
-                hooks.onPreviewRefresh();
-            };
-            var debouncedMakePreview = _.debounce(makePreviewHtml, 1000);
-            var lightPreviewWrapper = function() {
-                if(documentContent === undefined) {
-                    makePreviewHtml();
-                    eventMgr.onFileOpen(fileDesc);
-                }
-                else {
-                    debouncedMakePreview();
-                }
-                checkDocumentChanges();
-            };
-            $editorElt.on("input propertychange", lightPreviewWrapper);
-            editor = {
-                hooks: hooks,
-                getConverter: function() {
-                    return converter;
-                },
-                run: lightPreviewWrapper,
-                refreshPreview: lightPreviewWrapper
+            previewWrapper = function(makePreview) {
+                return function() {
+                    makePreview();
+                    if(documentContent === undefined) {
+                        eventMgr.onFileOpen(fileDesc);
+                        $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
+                        if(window.lightMode) {
+                            $editorElt.scrollTop(fileDesc.editorScrollTop);
+                        }
+                        else {
+                            _.defer(function() {
+                                aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
+                            });
+                        }
+                    }
+                    checkDocumentChanges();
+                };
             };
         }
 
         eventMgr.onPagedownConfigure(editor);
         editor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
-        editor.run(aceEditor, previewWrapper);
-        aceEditor && aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
-        (aceEditor && aceEditor.focus()) || $editorElt.focus();
+        if(window.lightMode) {
+            editor.run(previewWrapper);
+            editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
+            $editorElt.focus();
+        }
+        else {
+            editor.run(aceEditor, previewWrapper);
+            aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
+            aceEditor.focus();
+        }
 
         // Hide default buttons
         $(".wmd-button-row li").addClass("btn btn-success").css("left", 0).find("span").hide();
@@ -742,7 +747,7 @@ define([
             });
         }
         
-        $editorElt = $("#wmd-input").css({
+        $editorElt = $("#wmd-input, .textarea-helper").css({
             // Apply editor font
             "font-family": settings.editorFontFamily,
             "font-size": settings.editorFontSize + "px",
@@ -917,7 +922,7 @@ define([
         });
         $(".action-import-docs-settings-confirm").click(function() {
             storage.clear();
-            var allowedKeys = /^file\.|^focusMode$|^folder\.|^publish\.|^settings$|^sync\.|^theme$|^version$|^welcomeTour$/;
+            var allowedKeys = /^file\.|^focusMode$|^folder\.|^publish\.|^settings$|^sync\.|^themeV3$|^rtl$|^version$|^welcomeTour$/;
             _.each(newstorage, function(value, key) {
                 if(allowedKeys.test(key)) {
                     storage[key] = value;

@@ -398,42 +398,42 @@ define([
             if(aceEditor !== undefined) {
                 // Tell ACE to update realtime string on each change
                 localContext.string = realtimeString;
-
-                // Save undo/redo buttons default actions
-                undoExecute = pagedownEditor.uiManager.buttons.undo.execute;
-                redoExecute = pagedownEditor.uiManager.buttons.redo.execute;
-                setUndoRedoButtonStates = pagedownEditor.uiManager.setUndoRedoButtonStates;
-                
-                // Set temporary actions for undo/redo buttons
-                pagedownEditor.uiManager.buttons.undo.execute = function() {
-                    if(model.canUndo) {
-                        // This flag is used to avoid replaying editor's own
-                        // modifications (assuming it's synchronous)
-                        isAceUpToDate = false;
-                        model.undo();
-                    }
-                };
-                pagedownEditor.uiManager.buttons.redo.execute = function() {
-                    if(model.canRedo) {
-                        // This flag is used to avoid replaying editor's own
-                        // modifications (assuming it's synchronous)
-                        isAceUpToDate = false;
-                        model.redo();
-                    }
-                };
-
-                // Add event handler for model's UndoRedoStateChanged events
-                pagedownEditor.uiManager.setUndoRedoButtonStates = function() {
-                    setTimeout(function() {
-                        pagedownEditor.uiManager.setButtonState(pagedownEditor.uiManager.buttons.undo, model.canUndo);
-                        pagedownEditor.uiManager.setButtonState(pagedownEditor.uiManager.buttons.redo, model.canRedo);
-                    }, 50);
-                };
-                pagedownEditor.uiManager.setUndoRedoButtonStates();
-                model.addEventListener(gapi.drive.realtime.EventType.UNDO_REDO_STATE_CHANGED, function() {
-                    pagedownEditor.uiManager.setUndoRedoButtonStates();
-                });
             }
+
+            // Save undo/redo buttons default actions
+            undoExecute = pagedownEditor.uiManager.buttons.undo.execute;
+            redoExecute = pagedownEditor.uiManager.buttons.redo.execute;
+            setUndoRedoButtonStates = pagedownEditor.uiManager.setUndoRedoButtonStates;
+            
+            // Set temporary actions for undo/redo buttons
+            pagedownEditor.uiManager.buttons.undo.execute = function() {
+                if(model.canUndo) {
+                    // This flag is used to avoid replaying editor's own
+                    // modifications (assuming it's synchronous)
+                    isAceUpToDate = false;
+                    model.undo();
+                }
+            };
+            pagedownEditor.uiManager.buttons.redo.execute = function() {
+                if(model.canRedo) {
+                    // This flag is used to avoid replaying editor's own
+                    // modifications (assuming it's synchronous)
+                    isAceUpToDate = false;
+                    model.redo();
+                }
+            };
+
+            // Add event handler for model's UndoRedoStateChanged events
+            pagedownEditor.uiManager.setUndoRedoButtonStates = function() {
+                setTimeout(function() {
+                    pagedownEditor.uiManager.setButtonState(pagedownEditor.uiManager.buttons.undo, model.canUndo);
+                    pagedownEditor.uiManager.setButtonState(pagedownEditor.uiManager.buttons.redo, model.canRedo);
+                }, 50);
+            };
+            pagedownEditor.uiManager.setUndoRedoButtonStates();
+            model.addEventListener(gapi.drive.realtime.EventType.UNDO_REDO_STATE_CHANGED, function() {
+                pagedownEditor.uiManager.setUndoRedoButtonStates();
+            });
 
         }, function(err) {
             console.error(err);

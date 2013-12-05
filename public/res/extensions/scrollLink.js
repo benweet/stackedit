@@ -5,7 +5,7 @@ define([
     "text!html/scrollLinkSettingsBlock.html"
 ], function($, _, Extension, scrollLinkSettingsBlockHTML) {
 
-    var scrollLink = new Extension("scrollLink", "Scroll Link", true, true, true);
+    var scrollLink = new Extension("scrollLink", "Scroll Link", true, true);
     scrollLink.settingsBlock = scrollLinkSettingsBlockHTML;
 
     var aceEditor;
@@ -23,6 +23,8 @@ define([
         offsetBegin = offsetBeginParam;
     };
 
+    var $textareaElt;
+    var $textareaHelperElt;
     var $previewElt;
     var mdSectionList = [];
     var htmlSectionList = [];
@@ -34,20 +36,62 @@ define([
         var mdTextOffset = 0;
         var mdSectionOffset = 0;
         var firstSectionOffset = offsetBegin;
-        _.each(sectionList, function(section) {
-            mdTextOffset += section.text.length + firstSectionOffset;
-            firstSectionOffset = 0;
-            var documentPosition = aceEditor.session.doc.indexToPosition(mdTextOffset);
-            var screenPosition = aceEditor.session.documentToScreenPosition(documentPosition.row, documentPosition.column);
-            var newSectionOffset = screenPosition.row * aceEditor.renderer.lineHeight;
-            var sectionHeight = newSectionOffset - mdSectionOffset;
+        function addTextareaSection(sectionText) {
+            var sectionHeight = 0;
+            if(sectionText !== undefined) {
+                $textareaHelperElt.text(sectionText);
+                sectionHeight += $textareaHelperElt.prop('scrollHeight');
+            }
+            var newSectionOffset = mdSectionOffset + sectionHeight;
             mdSectionList.push({
                 startOffset: mdSectionOffset,
                 endOffset: newSectionOffset,
                 height: sectionHeight
             });
             mdSectionOffset = newSectionOffset;
-        });
+        }
+        if(window.lightMode) {
+            // Special treatment for light mode
+            $textareaHelperElt.innerWidth($textareaElt.innerWidth());
+            _.each(sectionList, function(section, index) {
+                var sectionText = section.text;
+                if(index !== sectionList.length - 1) {
+                    if(sectionText.length === 0) {
+                        sectionText = undefined;
+                    }
+                }
+                addTextareaSection(sectionText);
+            });
+            
+            // Apply a coef to manage divergence in some browsers
+            var theoricalHeight = _.last(mdSectionList).endOffset;
+            var realHeight = $textareaElt[0].scrollHeight;
+            var coef = realHeight/theoricalHeight;
+            mdSectionList = _.map(mdSectionList, function(mdSection) {
+                return {
+                    startOffset: mdSection.startOffset * coef,
+                    endOffset: mdSection.endOffset * coef,
+                    height: mdSection.height * coef,
+                };
+            });
+        }
+        else {
+            // Everything's much simpler with ACE
+            _.each(sectionList, function(section) {
+                mdTextOffset += section.text.length + firstSectionOffset;
+                firstSectionOffset = 0;
+                var documentPosition = aceEditor.session.doc.indexToPosition(mdTextOffset);
+                var screenPosition = aceEditor.session.documentToScreenPosition(documentPosition.row, documentPosition.column);
+                var newSectionOffset = screenPosition.row * aceEditor.renderer.lineHeight;
+                var sectionHeight = newSectionOffset - mdSectionOffset;
+                mdSectionList.push({
+                    startOffset: mdSectionOffset,
+                    endOffset: newSectionOffset,
+                    height: sectionHeight
+                });
+                mdSectionOffset = newSectionOffset;
+            });
+        }
 
         // Try to find corresponding sections in the preview
         htmlSectionList = [];
@@ -94,7 +138,7 @@ define([
             doScrollLink();
             return;
         }
-        var editorScrollTop = aceEditor.renderer.getScrollTop();
+        var editorScrollTop = window.lightMode ? $textareaElt.scrollTop() : aceEditor.renderer.getScrollTop();
         editorScrollTop < 0 && (editorScrollTop = 0);
         var previewScrollTop = $previewElt.scrollTop();
         function getDestScrollTop(srcScrollTop, srcSectionList, destSectionList) {
@@ -155,33 +199,60 @@ define([
             // Animate the editor
             lastPreviewScrollTop = previewScrollTop;
             destScrollTop = getDestScrollTop(previewScrollTop, htmlSectionList, mdSectionList);
-            destScrollTop = _.min([
-                destScrollTop,
-                aceEditor.session.getScreenLength() * aceEditor.renderer.lineHeight + aceEditor.renderer.scrollMargin.bottom - aceEditor.renderer.$size.scrollerHeight
-            ]);
-            // If negative, set it to zero
-            destScrollTop < 0 && (destScrollTop = 0);
+            if(window.lightMode) {
+                destScrollTop = _.min([
+                    destScrollTop,
+                    $textareaElt.prop('scrollHeight') - $textareaElt.outerHeight()
+                ]);
+            }
+            else {
+                destScrollTop = _.min([
+                    destScrollTop,
+                    aceEditor.session.getScreenLength() * aceEditor.renderer.lineHeight + aceEditor.renderer.scrollMargin.bottom - aceEditor.renderer.$size.scrollerHeight
+                ]);
+                // If negative, set it to zero
+                destScrollTop < 0 && (destScrollTop = 0);
+            }
             if(Math.abs(destScrollTop - editorScrollTop) <= 9) {
                 // Skip the animation if diff is <= 9
                 lastEditorScrollTop = editorScrollTop;
                 return;
             }
-            scrollingHelper.stop(true).css('value', 0).animate({
-                value: destScrollTop - editorScrollTop
-            }, {
-                easing: 'easeOutSine',
-                duration: 200,
-                step: function(now) {
-                    isEditorMoving = true;
-                    lastEditorScrollTop = editorScrollTop + now;
-                    aceEditor.session.setScrollTop(lastEditorScrollTop);
-                },
-                done: function() {
-                    setTimeout(function() {
-                        isEditorMoving = false;
-                    });
-                },
-            });
+            if(window.lightMode) {
+                $textareaElt.stop(true).animate({
+                    scrollTop: destScrollTop
+                }, {
+                    easing: 'easeOutSine',
+                    duration: 200,
+                    step: function(now) {
+                        isEditorMoving = true;
+                        lastEditorScrollTop = editorScrollTop + now;
+                    },
+                    done: function() {
+                        _.defer(function() {
+                            isEditorMoving = false;
+                        });
+                    },
+                });
+            }
+            else {
+                scrollingHelper.stop(true).css('value', 0).animate({
+                    value: destScrollTop - editorScrollTop
+                }, {
+                    easing: 'easeOutSine',
+                    duration: 200,
+                    step: function(now) {
+                        isEditorMoving = true;
+                        lastEditorScrollTop = editorScrollTop + now;
+                        aceEditor.session.setScrollTop(lastEditorScrollTop);
+                    },
+                    done: function() {
+                        _.defer(function() {
+                            isEditorMoving = false;
+                        });
+                    },
+                });
+            }
         }
     }, 100);
 
@@ -197,6 +268,9 @@ define([
     var scrollAdjust = false;
     scrollLink.onReady = function() {
         $previewElt = $(".preview-container");
+        $textareaElt = $("#wmd-input");
+        // This helper is used to measure sections height in light mode
+        $textareaHelperElt = $('.textarea-helper');
 
         $previewElt.scroll(function() {
             if(isPreviewMoving === false && scrollAdjust === false) {
@@ -206,13 +280,19 @@ define([
             }
             scrollAdjust = false;
         });
-        aceEditor.session.on("changeScrollTop", function() {
+        var handleEditorScroll = function() {
             if(isEditorMoving === false) {
                 isScrollEditor = true;
                 isScrollPreview = false;
                 doScrollLink();
             }
-        });
+        };
+        if(window.lightMode) {
+            $textareaElt.scroll(handleEditorScroll);
+        }
+        else {
+            aceEditor.session.on("changeScrollTop", handleEditorScroll);
+        }
     };
 
     var $previewContentsElt;

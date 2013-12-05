@@ -1152,9 +1152,23 @@ a {
 	.box-shadow(none);
 	resize: none;
 	border: none;
+    padding: 0 @padding-base-horizontal;
 	div& {
 		padding: 0;
 	}
+}
+
+.textarea-helper {
+    position: absolute;
+    top: -100px;
+    height: 1px;
+    padding: 0 @padding-base-horizontal;
+    font-size: @font-size-base;
+    line-height: @line-height-base;
+    position: absolute;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 .preview-container {

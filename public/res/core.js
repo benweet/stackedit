@@ -319,8 +319,8 @@ define([
             togglerLength_closed: 60,
             stateManagement__enabled: false,
             north__minSize: 49,
-            center__minWidth: 300,
-            center__minHeight: 300,
+            center__minWidth: 250,
+            center__minHeight: 250,
             fxSettings: {
                 easing: "easeInOutQuad",
                 duration: 350
@@ -922,7 +922,7 @@ define([
         });
         $(".action-import-docs-settings-confirm").click(function() {
             storage.clear();
-            var allowedKeys = /^file\.|^focusMode$|^folder\.|^publish\.|^settings$|^sync\.|^themeV3$|^rtl$|^version$|^welcomeTour$/;
+            var allowedKeys = /^file\.|^focusMode$|^folder\.|^publish\.|^settings$|^sync\.|^themeV3$|^mode$|^version$|^welcomeTour$/;
             _.each(newstorage, function(value, key) {
                 if(allowedKeys.test(key)) {
                     storage[key] = value;

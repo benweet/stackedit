@@ -221,6 +221,17 @@ define([
         version = "v14";
     }
 
+    // Upgrade from v14 to v15
+    if(version == "v14") {
+        if(_.has(localStorage, 'settings')) {
+            settings = JSON.parse(localStorage.settings);
+            settings.template && (settings.template = settings.template.replace('https://stackedit.io/res-min/themes/default.css', 'https://stackedit.io/res-min/themes/base.css'));
+            settings.pdfTemplate && (settings.pdfTemplate = settings.pdfTemplate.replace('https://stackedit.io/res-min/themes/default.css', 'https://stackedit.io/res-min/themes/base.css'));
+            localStorage.settings = JSON.stringify(settings);
+        }
+        version = "v15";
+    }
+
     localStorage.version = version;
     return localStorage;
 });

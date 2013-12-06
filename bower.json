@@ -12,7 +12,6 @@
     "mousetrap": "~1.4.4",
     "jgrowl": "~1.2.10",
     "google-code-prettify": "~1.0.0",
-    "highlightjs": "~7.3.0",
     "jquery-ui": "~1.10.3",
     "FileSaver": "*",
     "stacktrace": "~0.5.3",

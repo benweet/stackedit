@@ -2,19 +2,23 @@
 /*global requirejs */
 requirejs.config({
     waitSeconds: 0,
-    packages: [{
-        name: 'ace',
-        location: 'bower-libs/ace/lib/ace',
-        main: 'ace'
-    }, {
-        name: 'css',
-        location: 'bower-libs/require-css',
-        main: 'css'
-    }, {
-        name: 'less',
-        location: 'bower-libs/require-less',
-        main: 'less'
-    }],
+    packages: [
+        {
+            name: 'ace',
+            location: 'bower-libs/ace/lib/ace',
+            main: 'ace'
+        },
+        {
+            name: 'css',
+            location: 'bower-libs/require-css',
+            main: 'css'
+        },
+        {
+            name: 'less',
+            location: 'bower-libs/require-less',
+            main: 'less'
+        }
+    ],
     paths: {
         jquery: 'bower-libs/jquery/jquery',
         underscore: 'bower-libs/underscore/underscore',
@@ -28,7 +32,7 @@ requirejs.config({
         bootstrap: 'bower-libs/bootstrap/dist/js/bootstrap',
         requirejs: 'bower-libs/requirejs/require',
         'google-code-prettify': 'bower-libs/google-code-prettify/src/prettify',
-        highlightjs: 'bower-libs/highlightjs/highlight.pack',
+        highlightjs: 'libs/highlight/highlight.pack',
         'jquery-waitforimages': 'bower-libs/waitForImages/src/jquery.waitforimages',
         'jquery-ui': 'bower-libs/jquery-ui/ui/jquery-ui',
         'jquery-ui-core': 'bower-libs/jquery-ui/ui/jquery.ui.core',
@@ -55,15 +59,22 @@ requirejs.config({
         'yaml.js': 'bower-libs/yaml.js',
         'yaml-js': 'bower-libs/yaml.js/bin/yaml',
         Typo: 'bower-libs/Typo.js',
-        'Typo.js': 'bower-libs/Typo.js'
+        'Typo.js': 'bower-libs/Typo.js',
+        css: 'bower-libs/require-css/css',
+        'css-builder': 'bower-libs/require-css/css-builder',
+        normalize: 'bower-libs/require-css/normalize'
     },
     shim: {
         underscore: {
             exports: '_'
         },
-        mathjax: ['libs/mathjax_init'],
+        mathjax: [
+            'libs/mathjax_init'
+        ],
         jgrowl: {
-            deps: ['jquery'],
+            deps: [
+                'jquery'
+            ],
             exports: 'jQuery.jGrowl'
         },
         mousetrap: {
@@ -72,9 +83,13 @@ requirejs.config({
         'yaml-js': {
             exports: 'YAML'
         },
-        'bootstrap-record': ['mousetrap'],
+        'bootstrap-record': [
+            'mousetrap'
+        ],
         toMarkdown: {
-            deps: ['jquery'],
+            deps: [
+                'jquery'
+            ],
             exports: 'toMarkdown'
         },
         stacktrace: {
@@ -87,22 +102,50 @@ requirejs.config({
             exports: 'hljs'
         },
         'bootstrap-tour': {
-            deps: ['bootstrap'],
+            deps: [
+                'bootstrap'
+            ],
             exports: 'Tour'
         },
-        bootstrap: ['jquery'],
-        'jquery-waitforimages': ['jquery'],
-        'jquery-mousewheel': ['jquery'],
-        uilayout: ['jquery-ui-effect-slide'],
-        'jquery-ui-effect-slide': ['jquery-ui-effect'],
-        'jquery-ui-effect': ['jquery-ui-draggable'],
-        'jquery-ui-draggable': ['jquery-ui-mouse'],
-        'jquery-ui-mouse': ['jquery-ui-widget'],
-        'jquery-ui-widget': ['jquery-ui-core'],
-        'jquery-ui-core': ['jquery'],
-        'pagedown-extra': ['pagedown-ace'],
-        'pagedown-ace': ['bower-libs/pagedown-ace/Markdown.Converter'],
-        'pagedown-light': ['bower-libs/pagedown-ace/Markdown.Converter']
+        bootstrap: [
+            'jquery'
+        ],
+        'jquery-waitforimages': [
+            'jquery'
+        ],
+        'jquery-mousewheel': [
+            'jquery'
+        ],
+        uilayout: [
+            'jquery-ui-effect-slide'
+        ],
+        'jquery-ui-effect-slide': [
+            'jquery-ui-effect'
+        ],
+        'jquery-ui-effect': [
+            'jquery-ui-draggable'
+        ],
+        'jquery-ui-draggable': [
+            'jquery-ui-mouse'
+        ],
+        'jquery-ui-mouse': [
+            'jquery-ui-widget'
+        ],
+        'jquery-ui-widget': [
+            'jquery-ui-core'
+        ],
+        'jquery-ui-core': [
+            'jquery'
+        ],
+        'pagedown-extra': [
+            'pagedown-ace'
+        ],
+        'pagedown-ace': [
+            'bower-libs/pagedown-ace/Markdown.Converter'
+        ],
+        'pagedown-light': [
+            'bower-libs/pagedown-ace/Markdown.Converter'
+        ]
     }
 });
 

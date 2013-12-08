@@ -788,7 +788,7 @@ define([
                     type: 'POST',
                     dataType: "json",
                     timeout: constants.AJAX_TIMEOUT
-                }).done(function(post) {
+                }).done(function() {
                     task.chain();
                 }).fail(function(jqXHR) {
                     var error = {

@@ -243,4 +243,4 @@ Written with [StackEdit](https://stackedit.io/).
   [3]: https://github.com/jmcmanus/pagedown-extra "Pagedown Extra"
   [4]: http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference
   [5]: https://code.google.com/p/google-code-prettify/
-  [6]: http://softwaremaniacs.org/soft/highlight/en/
+  [6]: http://highlightjs.org/

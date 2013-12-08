@@ -45,6 +45,11 @@
 				</button></li>
 		</ul>
 		<ul class="nav pull-right right-buttons">
+			<li class="offline-status hide">
+			    <div class="text-danger">
+			        <i class="icon-attention-circled"></i>offline
+			    </div>
+			</li>
 			<li class="extension-buttons"></li>
 		</ul>
 		<ul class="nav pull-right">
@@ -835,7 +840,7 @@
                     <p><b>Tip:</b> You can use a
                     <a href="http://jekyllrb.com/docs/frontmatter/"
                     target="_blank">YAML front matter</a> to specify the title and the tags/labels of your publication.</p>
-                    <p><b>Interpreted variables:</b> <i>title, tags</i></p>
+                    <p><b>Interpreted variables:</b> <code>title</code>, <code>tags</code>, <code>published</code>, <code>date</code>.</p>
 				</blockquote>
 			</div>
 			<div class="modal-footer">

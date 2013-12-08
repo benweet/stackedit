@@ -52,6 +52,13 @@ define([
         jGrowl("<i class='icon-white " + iconClass + "'></i> " + _.escape(message).replace(/\n/g, '<br/>'), options);
     }
 
+    var $offlineStatusElt;
+    var $extensionButtonsElt;
+    notifications.onReady = function() {
+        $offlineStatusElt = $('.navbar .offline-status');
+        $extensionButtonsElt = $('.navbar .extension-buttons');
+    };
+
     notifications.onMessage = function(message) {
         showMessage(message);
     };
@@ -67,16 +74,13 @@ define([
     };
 
     notifications.onOfflineChanged = function(isOffline) {
+        $offlineStatusElt.toggleClass('hide', !isOffline);
+        $extensionButtonsElt.toggleClass('hide', isOffline);
         if(isOffline === true) {
-            showMessage("You are offline.", "icon-attention-circled msg-offline", {
-                sticky: true,
-                close: function() {
-                    showMessage("You are back online!", "icon-signal");
-                }
-            });
+            showMessage("You are offline.", "icon-attention-circled msg-offline");
         }
         else {
-            $(".msg-offline").parents(".jGrowl-notification").trigger('jGrowl.beforeClose');
+            showMessage("You are back online!", "icon-signal");
         }
     };
 

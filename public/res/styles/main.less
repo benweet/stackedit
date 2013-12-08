@@ -7,9 +7,9 @@
 
 /* Colors */
 @logo-yellow: #FFD900;
-@logo-blue: #3399FF;
-@logo-orange: #FF610D;
-@logo-green: #8DC213;
+@logo-blue: #53a9ff;
+@logo-orange: #ff7606;
+@logo-green: #a5cc0a;
 @primary: #0080FF;
 @secondary: @primary;
 @tertiary: @primary;
@@ -43,7 +43,7 @@
 
 // Panel buttons
 @panel-button-bg-color: #FFF;
-@panel-button-border-fade: 75%;
+@panel-button-border-fade: 80%;
 @panel-border-color: fade(@primary-desaturated, 10%);
 
 @error-border: #FF6161;
@@ -467,6 +467,13 @@ a {
             animation: indicator 0.6s ease-out infinite;
             -webkit-animation: indicator 0.6s ease-out infinite; /* Safari and Chrome */
 		}
+	}
+	
+	.offline-status > div {
+		display: inline-block;
+		vertical-align: middle;
+		height: @input-height-base;
+		padding: 9px 10px;
 	}
 	
 	.left-buttons-dropdown, .right-buttons-dropdown {

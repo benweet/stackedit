@@ -38,6 +38,7 @@ define([
         if(event.isPropagationStopped()) {
             return undefined;
         }
+        publishAttributes.isDraft = utils.getInputChecked("#input-publish-blogger-draft");
         return publishAttributes;
     };
 

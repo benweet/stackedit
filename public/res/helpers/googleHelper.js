@@ -720,7 +720,7 @@ define([
         task.enqueue();
     };
 
-    googleHelper.uploadBlogger = function(blogUrl, blogId, postId, labelList, title, content, callback) {
+    googleHelper.uploadBlogger = function(blogUrl, blogId, postId, isDraft, labelList, title, content, callback) {
         var task = new AsyncTask();
         connect(task);
         authenticate(task, 'blogger');
@@ -747,6 +747,10 @@ define([
                     url += postId;
                     data.id = postId;
                     type = "PUT";
+                }
+                // isDraft must be a URL param (vice data)
+                if(isDraft) {
+                  url += "?isDraft=true";
                 }
                 $.ajax({
                     url: url,

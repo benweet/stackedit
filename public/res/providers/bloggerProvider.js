@@ -17,7 +17,7 @@ define([
             frontMatter.tags !== undefined && (labelList = frontMatter.tags);
         }
         _.isString(labelList) && (labelList = _.compact(labelList.split(/[\s,]/)));
-        googleHelper.uploadBlogger(publishAttributes.blogUrl, publishAttributes.blogId, publishAttributes.postId, labelList, title, content, function(error, blogId, postId) {
+        googleHelper.uploadBlogger(publishAttributes.blogUrl, publishAttributes.blogId, publishAttributes.postId, publishAttributes.isDraft, labelList, title, content, function(error, blogId, postId) {
             if(error) {
                 callback(error);
                 return;
@@ -38,6 +38,7 @@ define([
         if(event.isPropagationStopped()) {
             return undefined;
         }
+        publishAttributes.isDraft = utils.getInputChecked("#input-publish-blogger-draft");
         return publishAttributes;
     };
 

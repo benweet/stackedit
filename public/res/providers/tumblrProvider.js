@@ -32,7 +32,9 @@ define([
             return 'markdown';
         })();
         
-        tumblrHelper.upload(publishAttributes.blogHostname, publishAttributes.postId, labelList.join(','), format, title, content, function(error, postId) {
+        var state = (frontMatter && frontMatter.published === false) ? 'draft' : 'published';
+        var date = frontMatter && frontMatter.date;
+        tumblrHelper.upload(publishAttributes.blogHostname, publishAttributes.postId, labelList.join(','), format, state, date, title, content, function(error, postId) {
             if(error) {
                 callback(error);
                 return;

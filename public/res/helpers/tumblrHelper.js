@@ -110,7 +110,7 @@ define([
         });
     }
 
-    tumblrHelper.upload = function(blogHostname, postId, tags, format, title, content, callback) {
+    tumblrHelper.upload = function(blogHostname, postId, tags, format, state, date, title, content, callback) {
         var task = new AsyncTask();
         connect(task);
         authenticate(task);
@@ -120,6 +120,8 @@ define([
                 post_id: postId,
                 tags: tags,
                 format: format,
+                state: state,
+                date: date,
                 title: title,
                 content: content
             }, oauthParams);

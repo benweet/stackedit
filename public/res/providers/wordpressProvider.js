@@ -16,8 +16,10 @@ define([
         if(frontMatter) {
             frontMatter.tags !== undefined && (labelList = frontMatter.tags);
         }
+        var status = (frontMatter && frontMatter.published === false) ? 'draft' : 'publish';
+        var date = frontMatter && frontMatter.date;
         _.isString(labelList) && (labelList = _.compact(labelList.split(/[\s,]/)));
-        wordpressHelper.upload(publishAttributes.site, publishAttributes.postId, labelList.join(','), title, content, function(error, postId) {
+        wordpressHelper.upload(publishAttributes.site, publishAttributes.postId, labelList.join(','), status, date, title, content, function(error, postId) {
             if(error) {
                 callback(error);
                 return;

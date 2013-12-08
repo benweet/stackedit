@@ -17,7 +17,9 @@ define([
             frontMatter.tags !== undefined && (labelList = frontMatter.tags);
         }
         _.isString(labelList) && (labelList = _.compact(labelList.split(/[\s,]/)));
-        googleHelper.uploadBlogger(publishAttributes.blogUrl, publishAttributes.blogId, publishAttributes.postId, labelList, title, content, function(error, blogId, postId) {
+        var isDraft = frontMatter && frontMatter.published === false;
+        var publishDate = frontMatter && frontMatter.date;
+        googleHelper.uploadBlogger(publishAttributes.blogUrl, publishAttributes.blogId, publishAttributes.postId, labelList, isDraft, publishDate, title, content, function(error, blogId, postId) {
             if(error) {
                 callback(error);
                 return;

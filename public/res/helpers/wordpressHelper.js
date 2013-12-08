@@ -94,7 +94,7 @@ define([
         });
     }
 
-    wordpressHelper.upload = function(site, postId, tags, title, content, callback) {
+    wordpressHelper.upload = function(site, postId, tags, status, date, title, content, callback) {
         var task = new AsyncTask();
         connect(task);
         authenticate(task);
@@ -105,6 +105,8 @@ define([
                 site: site,
                 postId: postId,
                 tags: tags,
+                status: status,
+                date: date,
                 title: title,
                 content: content
             };

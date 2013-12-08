@@ -720,7 +720,7 @@ define([
         task.enqueue();
     };
 
-    googleHelper.uploadBlogger = function(blogUrl, blogId, postId, labelList, title, content, callback) {
+    googleHelper.uploadBlogger = function(blogUrl, blogId, postId, labelList, isDraft, publishDate, title, content, callback) {
         var task = new AsyncTask();
         connect(task);
         authenticate(task, 'blogger');
@@ -730,7 +730,7 @@ define([
             if(token) {
                 headers.Authorization = "Bearer " + token.access_token;
             }
-            function publish() {
+            function uploadPost() {
                 var url = "https://www.googleapis.com/blogger/v3/blogs/" + blogId + "/posts/";
                 var data = {
                     kind: "blogger#post",
@@ -758,7 +758,7 @@ define([
                     timeout: constants.AJAX_TIMEOUT
                 }).done(function(post) {
                     postId = post.id;
-                    task.chain();
+                    task.chain(publish);
                 }).fail(function(jqXHR) {
                     var error = {
                         code: jqXHR.status,
@@ -771,9 +771,40 @@ define([
                     handleError(error, task);
                 });
             }
+            function publish() {
+                var url = "https://www.googleapis.com/blogger/v3/blogs/" + blogId + "/posts/" + postId;
+                if(isDraft) {
+                    url += "/revert";
+                }
+                else {
+                    url += "/publish";
+                    if(publishDate) {
+                        url += '?publishDate=' + publishDate.toISOString();
+                    }
+                }
+                $.ajax({
+                    url: url,
+                    headers: headers,
+                    type: 'POST',
+                    dataType: "json",
+                    timeout: constants.AJAX_TIMEOUT
+                }).done(function(post) {
+                    task.chain();
+                }).fail(function(jqXHR) {
+                    var error = {
+                        code: jqXHR.status,
+                        message: jqXHR.statusText
+                    };
+                    // Handle error
+                    if(error.code === 404) {
+                        error = 'Post ' + postId + ' not found on Blogger.|removePublish';
+                    }
+                    handleError(error, task);
+                });
+            }
             function getBlogId() {
                 if(blogId !== undefined) {
-                    task.chain(publish);
+                    task.chain(uploadPost);
                     return;
                 }
                 $.ajax({
@@ -786,7 +817,7 @@ define([
                     timeout: constants.AJAX_TIMEOUT
                 }).done(function(blog) {
                     blogId = blog.id;
-                    task.chain(publish);
+                    task.chain(uploadPost);
                 }).fail(function(jqXHR) {
                     var error = {
                         code: jqXHR.status,

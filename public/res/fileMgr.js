@@ -175,6 +175,9 @@ define([
             fileMgr.selectFile(fileDesc);
             $fileTitleElt.click();
         });
+        $('.action-remove-file-confirm').click(function() {
+            $('.modal-remove-file-confirm').modal('show');
+        });
         $(".action-remove-file").click(function() {
             fileMgr.deleteFile();
         });

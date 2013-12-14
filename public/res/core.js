@@ -320,7 +320,7 @@ define([
             stateManagement__enabled: false,
             north__minSize: 49,
             center__minWidth: 250,
-            center__minHeight: 250,
+            center__minHeight: 180,
             fxSettings: {
                 easing: "easeInOutQuad",
                 duration: 350

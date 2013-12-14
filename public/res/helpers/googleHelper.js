@@ -840,6 +840,14 @@ define([
         });
         task.enqueue();
     };
-
+    
+    // Use by Google's client.js
+    window.delayedFunction = undefined;
+    window.runDelayedFunction = function() {
+        if(window.delayedFunction !== undefined) {
+            window.delayedFunction();
+        }
+    };
+    
     return googleHelper;
 });

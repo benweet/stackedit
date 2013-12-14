@@ -53,7 +53,7 @@ define([
         }
         return userActive && windowUnique;
     }
-
+    
     // Used to only have 1 window of the application in the same browser
     var windowId;
     function checkWindowUnique() {
@@ -72,6 +72,8 @@ define([
             }
             $(".modal").modal("hide");
             $('.modal-non-unique').modal("show");
+            // Attempt to close the window
+            window.close();
         }
     }
 

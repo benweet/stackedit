@@ -27,14 +27,6 @@ define([], function() {
     constants.SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/";
     constants.HTMLTOPDF_URL = "https://stackedit-htmltopdf.herokuapp.com/";
     
-    // Use by Google's client.js
-    window.delayedFunction = undefined;
-    window.runDelayedFunction = function() {
-        if(window.delayedFunction !== undefined) {
-            window.delayedFunction();
-        }
-    };
-    
     // Site dependent
     constants.BASE_URL = "http://localhost/";
     constants.GOOGLE_CLIENT_ID = '241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com';

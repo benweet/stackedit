@@ -130,6 +130,13 @@ body {
 	tab-size: 4;
 }
 
+// Bug with SVG font on Windows
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    select {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+}
+
 #preview-contents {
 	padding: 15px;
 	margin: 0 auto 180px;

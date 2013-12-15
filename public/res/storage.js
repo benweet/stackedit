@@ -232,6 +232,19 @@ define([
         version = "v15";
     }
 
+    // Upgrade from v15 to v16
+    if(version == "v15") {
+        if(_.has(localStorage, 'gdrivePermissions')) {
+            localStorage['google.0.permissions'] = localStorage.gdrivePermissions;
+            localStorage.removeItem('gdrivePermissions');
+        }
+        if(_.has(localStorage, 'gdrive.lastChangeId')) {
+            localStorage['google.0.gdrive.lastChangeId'] = localStorage['gdrive.lastChangeId'];
+            localStorage.removeItem('gdrive.lastChangeId');
+        }
+        version = "v16";
+    }
+
     localStorage.version = version;
     return localStorage;
 });

@@ -13,32 +13,42 @@ define([
 ], function(_, $, constants, core, utils, storage, logger, settings, eventMgr, AsyncTask) {
 
     var connected = false;
-    var authorizationMgr = {};
-    (function() {
+    var authorizationMgrMap = {};
+    function AuthorizationMgr(accountId) {
         var permissionList = {};
         var isAuthorized = false;
-        _.each((storage.gdrivePermissions || '').split(';'), function(permission) {
+        _.each((storage[accountId + '.permissions'] || '').split(';'), function(permission) {
             permission && (permissionList[permission] = true);
         });
-        authorizationMgr.reset = function() {
+        this.reset = function() {
             isAuthorized = false;
         };
-        authorizationMgr.isAuthorized = function(permission) {
+        this.isAuthorized = function(permission) {
             return isAuthorized && _.has(permissionList, permission);
         };
-        authorizationMgr.add = function(permission) {
+        this.add = function(permission) {
             permissionList[permission] = true;
-            storage.gdrivePermissions = _.keys(permissionList).join(';');
+            storage[accountId + '.permissions'] = _.keys(permissionList).join(';');
             isAuthorized = true;
         };
-        authorizationMgr.getListWithNew = function(permission) {
+        this.getListWithNew = function(permission) {
             var result = _.keys(permissionList);
             if(!_.has(permissionList, permission)) {
                 result.push(permission);
             }
             return result;
         };
-    })();
+        var token = {
+            access_token: storage[accountId + '.token']
+        };
+        this.saveToken = function() {
+            token = gapi.auth.getToken();
+            storage[accountId + '.token'] = token.access_token;
+        };
+        this.getToken = function() {
+            return token;
+        };
+    }
 
     var googleHelper = {};
 
@@ -93,14 +103,29 @@ define([
             'https://picasaweb.google.com/data/'
         ]
     };
-    function authenticate(task, permission, force) {
+    function authenticate(task, permission, accountId, refresh) {
+        accountId = accountId || 'google.0';
+        var authorizationMgr = authorizationMgrMap[accountId];
+        if(!authorizationMgr) {
+            authorizationMgr = new AuthorizationMgr(accountId);
+            authorizationMgrMap[accountId] = authorizationMgr;
+        }
         task.onRun(function() {
-            if(!force && authorizationMgr.isAuthorized(permission)) {
-                task.chain();
-                return;
+            var immediate = false;
+            var token = authorizationMgr.getToken();
+            if(token.access_token) {
+                immediate = true;
+                gapi.auth.setToken(token);
+                if(!refresh && authorizationMgr.isAuthorized(permission)) {
+                    task.chain();
+                    return;
+                }
             }
-            var immediate = true;
             function oauthRedirect() {
+                if(immediate === true) {
+                    task.chain(localAuthenticate);
+                    return;
+                }
                 core.redirectConfirm('You are being redirected to <strong>Google</strong> authorization page.', function() {
                     task.chain(localAuthenticate);
                 }, function() {
@@ -132,25 +157,26 @@ define([
                         }
                         // Success
                         authorizationMgr.add(permission);
+                        authorizationMgr.saveToken();
                         task.chain();
                     });
                 });
             }
-            task.chain(localAuthenticate);
+            task.chain(oauthRedirect);
         });
     }
-    googleHelper.forceGdriveAuthenticate = function() {
+    googleHelper.refreshGdriveToken = function(accountId) {
         var task = new AsyncTask();
         connect(task);
-        authenticate(task, 'gdrive', true);
+        authenticate(task, 'gdrive', accountId, true);
         task.enqueue();
     };
 
-    googleHelper.upload = function(fileId, parentId, title, content, contentType, etag, callback) {
+    googleHelper.upload = function(fileId, parentId, title, content, contentType, etag, accountId, callback) {
         var result;
         var task = new AsyncTask();
         connect(task);
-        authenticate(task, 'gdrive');
+        authenticate(task, 'gdrive', accountId);
         task.onRun(function() {
             var boundary = '-------314159265358979323846';
             var delimiter = "\r\n--" + boundary + "\r\n";
@@ -225,7 +251,7 @@ define([
                     }
                     else if(error.code === 412) {
                         // We may have missed a file update
-                        storage.removeItem("gdrive.lastChangeId");
+                        storage.removeItem(accountId + ".gdrive.lastChangeId");
                         error = 'Conflict on file ID "' + fileId + '". Please restart the synchronization.';
                     }
                 }
@@ -241,11 +267,11 @@ define([
         task.enqueue();
     };
     
-    googleHelper.rename = function(fileId, title, callback) {
+    googleHelper.rename = function(fileId, title, accountId, callback) {
         var result;
         var task = new AsyncTask();
         connect(task);
-        authenticate(task, 'gdrive');
+        authenticate(task, 'gdrive', accountId);
         task.onRun(function() {
             var body = {'title': title};
             var request = gapi.client.drive.files.patch({
@@ -278,11 +304,11 @@ define([
         task.enqueue();
     };
 
-    googleHelper.createRealtimeFile = function(parentId, title, callback) {
+    googleHelper.createRealtimeFile = function(parentId, title, accountId, callback) {
         var result;
         var task = new AsyncTask();
         connect(task);
-        authenticate(task, 'gdrive');
+        authenticate(task, 'gdrive', accountId);
         task.onRun(function() {
             var metadata = {
                 title: title,
@@ -373,12 +399,12 @@ define([
         task.enqueue();
     };
 
-    googleHelper.checkChanges = function(lastChangeId, callback) {
+    googleHelper.checkChanges = function(lastChangeId, accountId, callback) {
         var changes = [];
         var newChangeId = lastChangeId || 0;
         var task = new AsyncTask();
         connect(task);
-        authenticate(task, 'gdrive');
+        authenticate(task, 'gdrive', accountId);
         task.onRun(function() {
             var nextPageToken;
             function retrievePageOfChanges() {
@@ -425,12 +451,12 @@ define([
         task.enqueue();
     };
 
-    googleHelper.downloadMetadata = function(ids, callback, skipAuth) {
+    googleHelper.downloadMetadata = function(ids, accountId, callback, skipAuth) {
         var result = [];
         var task = new AsyncTask();
         connect(task);
         if(!skipAuth) {
-            authenticate(task, 'gdrive');
+            authenticate(task, 'gdrive', accountId);
         }
         task.onRun(function() {
             function recursiveDownloadMetadata() {
@@ -479,14 +505,14 @@ define([
         task.enqueue();
     };
 
-    googleHelper.downloadContent = function(objects, callback, skipAuth) {
+    googleHelper.downloadContent = function(objects, accountId, callback, skipAuth) {
         var result = [];
         var task = new AsyncTask();
         // Add some time for user to choose his files
         task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
         connect(task);
         if(!skipAuth) {
-            authenticate(task, 'gdrive');
+            authenticate(task, 'gdrive', accountId);
         }
         task.onRun(function() {
             function recursiveDownloadContent() {
@@ -555,11 +581,11 @@ define([
         task.enqueue();
     };
 
-    googleHelper.loadRealtime = function(fileId, content, callback, errorCallback) {
+    googleHelper.loadRealtime = function(fileId, content, accountId, callback, errorCallback) {
         var doc;
         var task = new AsyncTask();
         connect(task);
-        authenticate(task, 'gdrive');
+        authenticate(task, 'gdrive', accountId);
         task.onRun(function() {
             gapi.drive.realtime.load(fileId, function(result) {
                 // onFileLoaded
@@ -599,14 +625,18 @@ define([
                     return;
                 }
                 else if(error.code === 401 || error.code === 403 || error.code == "token_refresh_required") {
-                    authorizationMgr.reset();
+                    _.each(authorizationMgrMap, function(authorizationMgr) {
+                        authorizationMgr.reset();
+                    });
                     errorMsg = "Access to Google account is not authorized.";
                     task.retry(new Error(errorMsg), 1);
                     return;
                 }
                 else if(error.code === 0 || error.code === -1) {
                     connected = false;
-                    authorizationMgr.reset();
+                    _.each(authorizationMgrMap, function(authorizationMgr) {
+                        authorizationMgr.reset();
+                    });
                     core.setOffline();
                     errorMsg = "|stopPublish";
                 }
@@ -646,7 +676,7 @@ define([
         });
     }
 
-    googleHelper.picker = function(callback, pickerType) {
+    googleHelper.picker = function(callback, pickerType, accountId) {
         var docs = [];
         var picker;
         function hidePicker() {
@@ -659,6 +689,9 @@ define([
         // Add some time for user to choose his files
         task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
         connect(task);
+        if(pickerType == 'doc' || pickerType == 'folder') {
+            authenticate(task, 'gdrive', accountId);
+        }
         loadPicker(task);
         task.onRun(function() {
             var pickerBuilder = new google.picker.PickerBuilder();
@@ -676,6 +709,7 @@ define([
                 pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
                 pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);
                 pickerBuilder.addView(view);
+                pickerBuilder.setOAuthToken(gapi.auth.getToken());
             }
             else if(pickerType == 'folder') {
                 view = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
@@ -684,6 +718,7 @@ define([
                 view.setMimeTypes('application/vnd.google-apps.folder');
                 pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
                 pickerBuilder.addView(view);
+                pickerBuilder.setOAuthToken(gapi.auth.getToken());
             }
             else if(pickerType == 'img') {
                 view = new google.picker.PhotosView();

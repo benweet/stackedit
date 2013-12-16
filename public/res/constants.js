@@ -43,8 +43,7 @@ define([], function() {
         constants.GATEKEEPER_URL = "https://stackedit-io-gatekeeper.herokuapp.com/";
         constants.TUMBLR_PROXY_URL = "https://stackedit-io-tumblr-proxy.herokuapp.com/";
     }
-    
-    if(location.hostname.indexOf("benweet.github.io") === 0) {
+    else if(location.hostname.indexOf("benweet.github.io") === 0) {
         constants.BASE_URL = 'http://benweet.github.io/stackedit/';
         constants.GOOGLE_CLIENT_ID = '241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com';
         constants.GITHUB_CLIENT_ID = 'fa0d09514da8377ee32e';
@@ -53,8 +52,7 @@ define([], function() {
         constants.WORDPRESS_CLIENT_ID = '3185';
         constants.WORDPRESS_PROXY_URL = "https://stackedit-wordpress-proxy.herokuapp.com/";
     }
-    
-    if(location.hostname.indexOf("benweet.insomnia247.nl") === 0) {
+    else if(location.hostname.indexOf("benweet.insomnia247.nl") === 0) {
         constants.BASE_URL = "http://benweet.insomnia247.nl/stackedit/";
         constants.GOOGLE_CLIENT_ID = '241271498917-52hae7a08hv7ltenv7km8h7lghno9sk3.apps.googleusercontent.com';
         constants.GITHUB_CLIENT_ID = 'd2943d6074b2d9c4a830';

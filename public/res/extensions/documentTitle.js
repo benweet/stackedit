@@ -13,7 +13,7 @@ define([
 
     var fileDesc;
     var $fileTitleNavbar;
-    var updateTitle = function(fileDescParameter) {
+    var updateTitle = _.debounce(function(fileDescParameter) {
         if(fileDescParameter !== fileDesc) {
             return;
         }
@@ -24,11 +24,8 @@ define([
         $(".file-title").text(title);
         $(".input-file-title").val(title);
 
-        if(layout !== undefined) {
-            // Use defer to make sure UI has been updated
-            _.defer(layout.resizeAll);
-        }
-    };
+        layout && layout.resizeAll();
+    }, 50);
 
     documentTitle.onFileSelected = function(fileDescParameter) {
         fileDesc = fileDescParameter;
@@ -40,6 +37,7 @@ define([
     documentTitle.onSyncRemoved = updateTitle;
     documentTitle.onNewPublishSuccess = updateTitle;
     documentTitle.onPublishRemoved = updateTitle;
+    documentTitle.onReady = updateTitle;
     
     documentTitle.onReady = function() {
         $fileTitleNavbar = $(".file-title-navbar");

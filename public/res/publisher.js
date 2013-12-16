@@ -16,6 +16,7 @@ define([
     "providers/gistProvider",
     "providers/githubProvider",
     "providers/gdriveProvider",
+    "providers/gdrivesecProvider",
     "providers/sshProvider",
     "providers/tumblrProvider",
     "providers/wordpressProvider"

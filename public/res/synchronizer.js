@@ -8,7 +8,8 @@ define([
     "fileMgr",
     "classes/Provider",
     "providers/dropboxProvider",
-    "providers/gdriveProvider"
+    "providers/gdriveProvider",
+    "providers/gdrivesecProvider"
 ], function($, _, utils, storage, eventMgr, fileSystem, fileMgr, Provider) {
 
     var synchronizer = {};

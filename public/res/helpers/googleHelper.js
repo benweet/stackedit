@@ -16,20 +16,20 @@ define([
     var authorizationMgrMap = {};
     function AuthorizationMgr(accountId) {
         var permissionList = {};
-        var isAuthorized = false;
+        var refreshFlag = true;
         _.each((storage[accountId + '.permissions'] || '').split(';'), function(permission) {
             permission && (permissionList[permission] = true);
         });
-        this.reset = function() {
-            isAuthorized = false;
+        this.setRefreshFlag = function() {
+            refreshFlag = true;
         };
         this.isAuthorized = function(permission) {
-            return isAuthorized && _.has(permissionList, permission);
+            return refreshFlag === false && _.has(permissionList, permission);
         };
         this.add = function(permission) {
             permissionList[permission] = true;
             storage[accountId + '.permissions'] = _.keys(permissionList).join(';');
-            isAuthorized = true;
+            refreshFlag = false;
         };
         this.getListWithNew = function(permission) {
             var result = _.keys(permissionList);
@@ -103,7 +103,7 @@ define([
             'https://picasaweb.google.com/data/'
         ]
     };
-    function authenticate(task, permission, accountId, refresh) {
+    function authenticate(task, permission, accountId) {
         accountId = accountId || 'google.0';
         var authorizationMgr = authorizationMgrMap[accountId];
         if(!authorizationMgr) {
@@ -116,7 +116,7 @@ define([
             if(token.access_token) {
                 immediate = true;
                 gapi.auth.setToken(token);
-                if(!refresh && authorizationMgr.isAuthorized(permission)) {
+                if(authorizationMgr.isAuthorized(permission)) {
                     task.chain();
                     return;
                 }
@@ -138,9 +138,10 @@ define([
                 }
                 var scopeList = _.chain(scopeMap).pick(authorizationMgr.getListWithNew(permission)).flatten().value();
                 gapi.auth.authorize({
-                    'client_id': constants.GOOGLE_CLIENT_ID,
-                    'scope': scopeList,
-                    'immediate': immediate
+                    client_id: constants.GOOGLE_CLIENT_ID,
+                    scope: scopeList,
+                    immediate: immediate,
+                    authuser: immediate ? undefined : ''
                 }, function(authResult) {
                     gapi.client.load('drive', 'v2', function() {
                         if(!authResult || authResult.error) {
@@ -157,7 +158,7 @@ define([
                         }
                         // Success
                         authorizationMgr.add(permission);
-                        authorizationMgr.saveToken();
+                        immediate === false && authorizationMgr.saveToken();
                         task.chain();
                     });
                 });
@@ -168,7 +169,9 @@ define([
     googleHelper.refreshGdriveToken = function(accountId) {
         var task = new AsyncTask();
         connect(task);
-        authenticate(task, 'gdrive', accountId, true);
+        var authorizationMgr = authorizationMgrMap[accountId];
+        authorizationMgr && authorizationMgr.setRefreshFlag();
+        authenticate(task, 'gdrive', accountId);
         task.enqueue();
     };
 
@@ -626,7 +629,7 @@ define([
                 }
                 else if(error.code === 401 || error.code === 403 || error.code == "token_refresh_required") {
                     _.each(authorizationMgrMap, function(authorizationMgr) {
-                        authorizationMgr.reset();
+                        authorizationMgr.setRefreshFlag();
                     });
                     errorMsg = "Access to Google account is not authorized.";
                     task.retry(new Error(errorMsg), 1);
@@ -635,7 +638,7 @@ define([
                 else if(error.code === 0 || error.code === -1) {
                     connected = false;
                     _.each(authorizationMgrMap, function(authorizationMgr) {
-                        authorizationMgr.reset();
+                        authorizationMgr.setRefreshFlag();
                     });
                     core.setOffline();
                     errorMsg = "|stopPublish";
@@ -709,7 +712,7 @@ define([
                 pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
                 pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);
                 pickerBuilder.addView(view);
-                pickerBuilder.setOAuthToken(gapi.auth.getToken());
+                pickerBuilder.setOAuthToken(gapi.auth.getToken().access_token);
             }
             else if(pickerType == 'folder') {
                 view = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
@@ -718,7 +721,7 @@ define([
                 view.setMimeTypes('application/vnd.google-apps.folder');
                 pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
                 pickerBuilder.addView(view);
-                pickerBuilder.setOAuthToken(gapi.auth.getToken());
+                pickerBuilder.setOAuthToken(gapi.auth.getToken().access_token);
             }
             else if(pickerType == 'img') {
                 view = new google.picker.PhotosView();

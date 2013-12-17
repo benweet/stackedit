@@ -924,7 +924,7 @@ define([
         });
         $(".action-import-docs-settings-confirm").click(function() {
             storage.clear();
-            var allowedKeys = /^file\.|^focusMode$|^folder\.|^publish\.|^settings$|^sync\.|^themeV3$|^mode$|^version$|^welcomeTour$/;
+            var allowedKeys = /^file\.|^focusMode$|^folder\.|^publish\.|^settings$|^sync\.|^google\.\d+\.|^themeV3$|^mode$|^version$|^welcomeTour$/;
             _.each(newstorage, function(value, key) {
                 if(allowedKeys.test(key)) {
                     storage[key] = value;

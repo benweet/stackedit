@@ -15,7 +15,9 @@ define([
     var connected = false;
     var authorizationMgrMap = {};
     function AuthorizationMgr(accountId) {
-        var permissionList = {};
+        var permissionList = {
+            profile: true
+        };
         var refreshFlag = true;
         _.each((storage[accountId + '.permissions'] || '').split(';'), function(permission) {
             permission && (permissionList[permission] = true);
@@ -38,15 +40,13 @@ define([
             }
             return result;
         };
-        var token = {
-            access_token: storage[accountId + '.token']
+        var userId = storage[accountId + '.userId'];
+        this.setUserId = function(value) {
+            userId = value;
+            storage[accountId + '.userId'] = userId;
         };
-        this.saveToken = function() {
-            token = gapi.auth.getToken();
-            storage[accountId + '.token'] = token.access_token;
-        };
-        this.getToken = function() {
-            return token;
+        this.getUserId = function() {
+            return userId;
         };
     }
 
@@ -92,6 +92,9 @@ define([
 
     // Try to authenticate with Oauth
     var scopeMap = {
+        profile: [
+            'https://www.googleapis.com/auth/userinfo.profile'
+        ],
         gdrive: [
             'https://www.googleapis.com/auth/drive.install',
             settings.gdriveFullAccess === true ? 'https://www.googleapis.com/auth/drive' : 'https://www.googleapis.com/auth/drive.file'
@@ -111,15 +114,73 @@ define([
             authorizationMgrMap[accountId] = authorizationMgr;
         }
         task.onRun(function() {
-            var immediate = false;
-            var token = authorizationMgr.getToken();
-            if(token.access_token) {
-                immediate = true;
-                gapi.auth.setToken(token);
-                if(authorizationMgr.isAuthorized(permission)) {
+            function loadGdriveClient() {
+                if(gapi.client.drive) {
                     task.chain();
                     return;
                 }
+                gapi.client.load('drive', 'v2', function() {
+                    task.chain();
+                });
+            }
+            function getTokenInfo() {
+                $.ajax({
+                    url: 'https://www.googleapis.com/oauth2/v1/tokeninfo',
+                    data: {
+                        access_token: gapi.auth.getToken().access_token
+                    },
+                    timeout: constants.AJAX_TIMEOUT,
+                    type: "GET"
+                }).done(function(data) {
+                    var currentUserId = authorizationMgr.getUserId();
+                    if(currentUserId && currentUserId != data.user_id) {
+                        doAuthenticate();
+                    }
+                    else {
+                        authorizationMgr.setUserId(data.user_id);
+                        authorizationMgr.token = gapi.auth.getToken();
+                        task.chain(loadGdriveClient);
+                    }
+                }).fail(function(jqXHR) {
+                    var error = {
+                        code: jqXHR.status,
+                        message: jqXHR.statusText
+                    };
+                    handleError(error, task);
+                });
+            }
+            var authuser = 0;
+            var immediate;
+            function localAuthenticate() {
+                if(immediate === false) {
+                    task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
+                }
+                var scopeList = _.chain(scopeMap).pick(authorizationMgr.getListWithNew(permission)).flatten().value();
+                gapi.auth.authorize({
+                    client_id: constants.GOOGLE_CLIENT_ID,
+                    scope: scopeList,
+                    immediate: immediate,
+                    authuser: immediate === false ? '' : authuser
+                }, function(authResult) {
+                    if(!authResult || authResult.error) {
+                        if(connected === true && immediate === true) {
+                            // If immediate did not work retry without immediate
+                            // flag
+                            immediate = false;
+                            task.chain(oauthRedirect);
+                        }
+                        else {
+                            // Error
+                            task.error(new Error("Access to Google account is not authorized."));
+                        }
+                    }
+                    else {
+                        // Success
+                        authuser++;
+                        authorizationMgr.add(permission);
+                        task.chain(getTokenInfo);
+                    }
+                });
             }
             function oauthRedirect() {
                 if(immediate === true) {
@@ -132,38 +193,19 @@ define([
                     task.error(new Error('Operation canceled.'));
                 });
             }
-            function localAuthenticate() {
-                if(immediate === false) {
-                    task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
+            function doAuthenticate() {
+                immediate = true;
+                if(authorizationMgr.token && authorizationMgr.isAuthorized(permission)) {
+                    gapi.auth.setToken(authorizationMgr.token);
+                    task.chain();
+                    return;
                 }
-                var scopeList = _.chain(scopeMap).pick(authorizationMgr.getListWithNew(permission)).flatten().value();
-                gapi.auth.authorize({
-                    client_id: constants.GOOGLE_CLIENT_ID,
-                    scope: scopeList,
-                    immediate: immediate,
-                    authuser: immediate ? undefined : ''
-                }, function(authResult) {
-                    gapi.client.load('drive', 'v2', function() {
-                        if(!authResult || authResult.error) {
-                            // If immediate did not work retry without immediate
-                            // flag
-                            if(connected === true && immediate === true) {
-                                immediate = false;
-                                task.chain(oauthRedirect);
-                                return;
-                            }
-                            // Error
-                            task.error(new Error("Access to Google account is not authorized."));
-                            return;
-                        }
-                        // Success
-                        authorizationMgr.add(permission);
-                        immediate === false && authorizationMgr.saveToken();
-                        task.chain();
-                    });
-                });
+                if(!authorizationMgr.getUserId()) {
+                    immediate = false;
+                }
+                task.chain(oauthRedirect);
             }
-            task.chain(oauthRedirect);
+            doAuthenticate();
         });
     }
     googleHelper.refreshGdriveToken = function(accountId) {

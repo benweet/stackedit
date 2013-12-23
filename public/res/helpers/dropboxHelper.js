@@ -6,9 +6,10 @@ define([
     "core",
     "storage",
     "logger",
+    "settings",
     "eventMgr",
     "classes/AsyncTask",
-], function($, _, constants, core, storage, logger, eventMgr, AsyncTask) {
+], function($, _, constants, core, storage, logger, settings, eventMgr, AsyncTask) {
 
     var client;
     var authenticated = false;
@@ -39,8 +40,8 @@ define([
                 timeout: constants.AJAX_TIMEOUT
             }).done(function() {
                 client = new Dropbox.Client({
-                    key: constants.DROPBOX_APP_KEY,
-                    secret: constants.DROPBOX_APP_SECRET
+                    key: settings.dropboxFullAccess === true ? constants.DROPBOX_APP_KEY : constants.DROPBOX_RESTRICTED_APP_KEY,
+                    secret: settings.dropboxFullAccess === true ? constants.DROPBOX_APP_SECRET : constants.DROPBOX_RESTRICTED_APP_SECRET
                 });
                 client.authDriver(new Dropbox.AuthDriver.Popup({
                     receiverUrl: constants.BASE_URL + "html/dropbox-oauth-receiver.html",

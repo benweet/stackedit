@@ -131,8 +131,12 @@ define([
         utils.setInputRadio("radio-settings-mode", storage.mode || '_ace_');
         // Commit message
         utils.setInputValue("#input-settings-publish-commit-msg", settings.commitMsg);
+        // Gdrive multi-accounts
+        utils.setInputValue("#input-settings-gdrive-multiaccount", settings.gdriveMultiAccount);
         // Gdrive full access
         utils.setInputChecked("#input-settings-gdrive-full-access", settings.gdriveFullAccess);
+        // Dropbox full access
+        utils.setInputChecked("#input-settings-dropbox-full-access", settings.dropboxFullAccess);
         // Template
         utils.setInputValue("#textarea-settings-publish-template", settings.template);
         // PDF template
@@ -171,8 +175,12 @@ define([
         var mode = utils.getInputRadio("radio-settings-mode");
         // Commit message
         newSettings.commitMsg = utils.getInputTextValue("#input-settings-publish-commit-msg", event);
+        // Gdrive multi-accounts
+        newSettings.gdriveMultiAccount = utils.getInputIntValue("#input-settings-gdrive-multiaccount");
         // Gdrive full access
         newSettings.gdriveFullAccess = utils.getInputChecked("#input-settings-gdrive-full-access");
+        // Drobox full access
+        newSettings.dropboxFullAccess = utils.getInputChecked("#input-settings-dropbox-full-access");
         // Template
         newSettings.template = utils.getInputTextValue("#textarea-settings-publish-template", event);
         // PDF template
@@ -190,6 +198,9 @@ define([
         eventMgr.onSaveSettings(newSettings.extensionSettings, event);
 
         if(!event.isPropagationStopped()) {
+            if(settings.dropboxFullAccess !== newSettings.dropboxFullAccess) {
+                storage.removeItem('dropbox.lastChangeId');
+            }
             $.extend(settings, newSettings);
             storage.settings = JSON.stringify(settings);
             storage.themeV3 = theme;
@@ -924,7 +935,7 @@ define([
         });
         $(".action-import-docs-settings-confirm").click(function() {
             storage.clear();
-            var allowedKeys = /^file\.|^focusMode$|^folder\.|^publish\.|^settings$|^sync\.|^google\.\d+\.|^themeV3$|^mode$|^version$|^welcomeTour$/;
+            var allowedKeys = /^file\.|^focusMode$|^folder\.|^publish\.|^settings$|^sync\.|^google\.|^themeV3$|^mode$|^version$|^welcomeTour$/;
             _.each(newstorage, function(value, key) {
                 if(allowedKeys.test(key)) {
                     storage[key] = value;

@@ -39,7 +39,7 @@ define([
                 var sectionText = tmpText.substring(offset, endOffset);
                 sectionList.push({
                     text: sectionText,
-                    textWithDelimiter: '\n~~~SectionDelimiter~~~\n\n' + sectionText + '\n'
+                    textWithDelimiter: '\n<div class="se-section-delimiter"></div>\n\n' + sectionText + '\n'
                 });
             }
             var sectionList = [], offset = 0;
@@ -55,11 +55,6 @@ define([
             return _.reduce(sectionList, function(result, section) {
                 return result + section.textWithDelimiter;
             }, '');
-        });
-        
-        converter.hooks.chain("postConversion", function(text) {
-            // Convert delimiters into hidden elements
-            return text.replace(/<p>~~~SectionDelimiter~~~<\/p>/g, '<div class="se-section-delimiter"></div>');
         });
     };
 

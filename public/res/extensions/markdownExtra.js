@@ -20,6 +20,8 @@ define([
             "attr_list",
             "footnotes",
             "smartypants",
+            "strikethrough",
+            "newlines",
         ],
         highlighter: "prettify"
     };
@@ -36,6 +38,8 @@ define([
         utils.setInputChecked("#input-markdownextra-attrlist", hasExtension("attr_list"));
         utils.setInputChecked("#input-markdownextra-footnotes", hasExtension("footnotes"));
         utils.setInputChecked("#input-markdownextra-smartypants", hasExtension("smartypants"));
+        utils.setInputChecked("#input-markdownextra-strikethrough", hasExtension("strikethrough"));
+        utils.setInputChecked("#input-markdownextra-newlines", hasExtension("newlines"));
         utils.setInputValue("#input-markdownextra-highlighter", markdownExtra.config.highlighter);
     };
 
@@ -47,6 +51,8 @@ define([
         utils.getInputChecked("#input-markdownextra-attrlist") && newConfig.extensions.push("attr_list");
         utils.getInputChecked("#input-markdownextra-footnotes") && newConfig.extensions.push("footnotes");
         utils.getInputChecked("#input-markdownextra-smartypants") && newConfig.extensions.push("smartypants");
+        utils.getInputChecked("#input-markdownextra-strikethrough") && newConfig.extensions.push("strikethrough");
+        utils.getInputChecked("#input-markdownextra-newlines") && newConfig.extensions.push("newlines");
         newConfig.highlighter = utils.getInputValue("#input-markdownextra-highlighter");
     };
 

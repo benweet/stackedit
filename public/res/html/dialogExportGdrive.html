@@ -1,0 +1,70 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">&times;</button>
+			<h3 class="modal-title">Export to <%= providerName %></h3>
+		</div>
+		<div class="modal-body">
+			<p>
+				This will save "<span class="file-title"></span>" to your <i
+					class="icon-provider-<%= providerId %>"></i>
+				<code><%= providerName %></code>
+				account and keep it synchronized.
+			</p>
+			<div class="collapse form-horizontal sync-export-<%= providerId %>-options-collapse">
+				<div class="form-group">
+					<label class="col-lg-3 control-label"
+						for="input-sync-export-<%= providerId %>-parentid">Folder ID
+						(optional)</label>
+					<div class="col-lg-8">
+						<div class="input-group">
+							<input type="text" id="input-sync-export-<%= providerId %>-parentid"
+								placeholder="FolderID" class="form-control">
+							<div class="input-group-btn">
+								<a class="btn btn-link export-<%= providerId %>-choose-folder"
+									title="Choose folder" data-dismiss="modal"><i
+									class="icon-folder-open"></i></a>
+							</div>
+						</div>
+						<span class="help-block"> If no folder ID is supplied, the
+							file will be created in your root folder. </span>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-lg-3 control-label"></div>
+					<div class="col-lg-8">
+						<label> <input id="input-sync-export-<%= providerId %>-realtime"
+							type="checkbox"> Create a real time collaborative
+							document
+						</label>
+						<span class="help-block"> Collaborative documents cannot be open outside
+						StackEdit nor have multiple synchronized locations. </span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label"
+						for="input-sync-export-<%= providerId %>-fileid">Existing file ID
+						(optional)</label>
+					<div class="col-lg-8">
+						<input type="text" id="input-sync-export-<%= providerId %>-fileid"
+							placeholder="FileID" class="form-control"> <span
+							class="help-block"> This will overwrite the existing file
+							on the server. </span>
+					</div>
+				</div>
+			</div>
+			<p class="align-right"><a href="#" data-toggle="collapse" data-target=".sync-export-<%= providerId %>-options-collapse">Options...</a></p>
+			<blockquote>
+				<b>Tip:</b> You can move or rename the file afterwards within Google
+						Drive.
+			</blockquote>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+			<a href="#" data-dismiss="modal"
+				class="btn btn-primary action-sync-export-<%= providerId %>">OK</a>
+		</div>
+	</div>
+</div>

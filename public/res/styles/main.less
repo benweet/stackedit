@@ -15,7 +15,6 @@
 @tertiary: @primary;
 @primary-desaturated: desaturate(@primary, 70%);
 @secondary-desaturated: desaturate(@secondary, 80%);
-@tertiary-desaturated: desaturate(@tertiary, 90%);
 @transparent: fade(#000, 0%);
 
 // Navbar
@@ -36,10 +35,10 @@
 
 // Editor
 @tertiary-bg: #fff;
-@tertiary-color: @secondary-desaturated;
-@tertiary-color-dark: darken(@tertiary-color, 5%);
-@tertiary-color-darker: darken(@tertiary-color, 20%);
-@tertiary-color-darkest: darken(@tertiary-color, 40%);
+@tertiary-color-light: fade(@tertiary-color, 75%);
+@tertiary-color: desaturate(@tertiary, 85%);
+@tertiary-color-dark: darken(@tertiary-color, 20%);
+@tertiary-color-darker: darken(@tertiary-color, 40%);
 
 // Panel buttons
 @panel-button-bg-color: #FFF;
@@ -52,6 +51,7 @@
 @jgrowl-bg-color: fade(@modal-backdrop-bg, 90%);
 
 /* Sizes */
+@file-title-width: 280px;
 @menu-panel-width: 280px;
 @document-panel-width: 340px;
 @jgrowl-width: 260px;
@@ -67,8 +67,8 @@
 @blockquote-border-color: fade(@secondary-desaturated, 7.5%);
 @blockquote-bg: fade(@secondary-desaturated, 5%);
 @code-color: @secondary-color-darkest;
-@code-bg: fade(@secondary-desaturated, 5%);
-@pre-bg: fade(@secondary-desaturated, 5%);
+@code-bg: fade(@secondary-desaturated, 7.5%);
+@pre-bg: fade(@secondary-desaturated, 7.5%);
 @pre-border-color: @secondary-border-color;
 @hr-border: fade(@secondary-desaturated, 10%);
 @navbar-height: 49px;
@@ -116,7 +116,7 @@
 @modal-content-border-color: @secondary-border-color;
 @modal-footer-border-color: @secondary-border-color-light;
 @modal-content-separator-color: @secondary-border-color-lighter;
-@modal-backdrop-bg: @tertiary-desaturated;
+@modal-backdrop-bg: desaturate(@tertiary, 90%);
 @tooltip-max-width: 240px;
 @close-color: @secondary-color-darkest;
 @popover-bg: @secondary-bg;
@@ -443,7 +443,7 @@ a {
 		padding: 4px 15px;
 		font-size: 20px;
 		font-weight: 200;
-		max-width: 280px;
+		max-width: @file-title-width;
 		overflow: hidden;
 		white-space: nowrap;
 	}
@@ -452,7 +452,7 @@ a {
 		display: inline-block;
         vertical-align: middle;
         .input-file-title {
-    		width: 220px;
+    		width: @file-title-width;
         }
 	}
 
@@ -1007,38 +1007,39 @@ a {
 	}
 	
 	.ace_markup.ace_heading {
-		color: @tertiary-color-darkest;
+		color: @tertiary-color-darker;
 		font-weight: bold;
 	}
 	
 	.ace_markup.ace_list {
-		color: @tertiary-color-darker;
+		color: @tertiary-color;
 	}
 	
 	.ace_constant.ace_language {
-	    color: @tertiary-color;
+	    color: @tertiary-color-light;
+		font-weight: normal;
 	}
 	
 	.ace_meta.ace_tag {
-		color: @tertiary-color-darker;
+		color: @tertiary-color-dark;
 		font-style: italic;
 		font-weight: bold;
 		background-color: @code-bg;
 	}
 	
 	.ace_keyword.ace_operator {
-	    color: @tertiary-color-darker;
+	    color: @tertiary-color-dark;
 		background-color: transparent;
 	}
 	
 	.ace_keyword {
-		color: @tertiary-color-darker;
+		color: @tertiary-color-dark;
 		background-color: @code-bg;
 		font-weight: bold;
 	}
 	
 	.ace_string {
-		color: @tertiary-color-darker;
+		color: @tertiary-color-dark;
 		font-style: italic;
 		background-color: @code-bg;
 	}
@@ -1049,11 +1050,12 @@ a {
 	}
 	
 	.ace_strong {
+		color: @tertiary-color-dark;
 		font-weight: bold;
 	}
 	
 	.ace_emphasis {
-		color: @tertiary-color-darkest;
+		color: @tertiary-color-darker;
 		font-style: italic;
 	}
 	
@@ -1067,7 +1069,7 @@ a {
 	}
 	
 	.ace_code_block {
-		color: @tertiary-color-darkest;
+		color: @tertiary-color-darker;
 	}
 	
 	.ace_link {
@@ -1080,11 +1082,11 @@ a {
 	}
 	
 	.ace_constant {
-	    color: @tertiary-color-darker;
+	    color: @tertiary-color-dark;
 	}
 	
 	.ace_comment {
-	    color: fade(@tertiary-color-dark, 50%);
+	    color: @tertiary-color-light;
 		font-style: italic;
 	}
 	
@@ -1159,7 +1161,7 @@ a {
 
 #wmd-input {
 	border-radius: 0;
-	color: @tertiary-color-darker;
+	color: @tertiary-color-dark;
 	.box-shadow(none);
 	resize: none;
 	border: none;

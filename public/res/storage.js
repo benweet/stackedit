@@ -234,13 +234,18 @@ define([
 
     // Upgrade from v15 to v16
     if(version == "v15") {
-        if(_.has(localStorage, 'gdrivePermissions')) {
-            localStorage['google.0.permissions'] = localStorage.gdrivePermissions;
-            localStorage.removeItem('gdrivePermissions');
-        }
+        localStorage.removeItem('gdrivePermissions');
         if(_.has(localStorage, 'gdrive.lastChangeId')) {
-            localStorage['google.0.gdrive.lastChangeId'] = localStorage['gdrive.lastChangeId'];
+            localStorage['google.gdrive0.gdrive.lastChangeId'] = localStorage['gdrive.lastChangeId'];
             localStorage.removeItem('gdrive.lastChangeId');
+        }
+        if(_.has(localStorage, 'settings')) {
+            settings = JSON.parse(localStorage.settings);
+            if(((settings.extensionSettings || {}).markdownExtra || {}).extensions) {
+                settings.extensionSettings.markdownExtra.extensions.push('newlines');
+                settings.extensionSettings.markdownExtra.extensions.push('strikethrough');
+            }
+            localStorage.settings = JSON.stringify(settings);
         }
         version = "v16";
     }

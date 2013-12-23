@@ -51,9 +51,7 @@ var MarkdownHighlightRules = function() {
         token: "markup.heading.multi.2",
         regex: "^\\-+(?=\\s*$)"
     }, {
-        token : function(value) {
-            return "markup.heading." + value.length;
-        },
+        token : "constant.language.escape",
         regex : /^#{1,6}(?=\s*[^ #]|\s+#.)/,
         next : "header"
     },
@@ -96,16 +94,16 @@ var MarkdownHighlightRules = function() {
             token : ["constant.language.escape", "keyword", "constant.language.escape"],
             regex : "(\\$)(.*?)(\\$)"
         }, { // code span `
-            token : "code",
+            token : ["constant.language.escape", "code", "constant.language.escape"],
             regex : "(`+)(.*?[^`])(\\1)"
         }, { // reference
-            token : ["text", "reference", "text", "link", "description", "text"],
+            token : ["constant.language.escape", "reference", "constant.language.escape", "link", "description", "constant.language.escape"],
             regex : "^([ ]{0,3}\\[)([^\\]]+)(\\]:\\s*)([^ ]+)(\\s*(?:[\"][^\"]+[\"])?(\\s*))$"
         }, { // link by reference
-            token : ["text", "markup.underline", "text", "reference", "text"],
+            token : ["constant.language.escape", "markup.underline", "constant.language.escape", "reference", "constant.language.escape"],
             regex : "(\\[)((?:[[^\\]]*\\]|[^\\[\\]])*)(\\][ ]?(?:\\n[ ]*)?\\[)(.*?)(\\])"
         }, { // link by url
-            token : ["text", "markup.underline", "text", "link", "description", "text"],
+            token : ["constant.language.escape", "markup.underline", "constant.language.escape", "link", "description", "constant.language.escape"],
             regex : "(\\[)"+
                     "(\\[[^\\]]*\\]|[^\\[\\]]*)"+
                     "(\\]\\([ \\t]*)"+
@@ -113,10 +111,10 @@ var MarkdownHighlightRules = function() {
                     "((?:[ \t]*\"(?:.*?)\"[ \\t]*)?)"+
                     "(\\))"
         }, { // strong ** __
-            token : "strong",
+            token : ["constant.language.escape", "strong", "constant.language.escape"],
             regex : "([*]{2}|[_]{2}(?=\\S))(.*?\\S[*_]*)(\\1)"
         }, { // emphasis * _
-            token : "emphasis",
+            token : ["constant.language.escape", "emphasis", "constant.language.escape"],
             regex : "([*]|[_](?=\\S))(.*?\\S[*_]*)(\\1)"
         }, { //
             token : ["text", "url", "text"],

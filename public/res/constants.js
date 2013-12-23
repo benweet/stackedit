@@ -8,6 +8,8 @@ define([], function() {
     constants.GOOGLE_DRIVE_APP_ID = "241271498917";
     constants.DROPBOX_APP_KEY = "lq6mwopab8wskas";
     constants.DROPBOX_APP_SECRET = "851fgnucpezy84t";
+    constants.DROPBOX_RESTRICTED_APP_KEY = "sw0hlixhr8q1xk0";
+    constants.DROPBOX_RESTRICTED_APP_SECRET = "1r808p2xygs6lbg";
     constants.BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c";
     constants.DEFAULT_FILE_TITLE = "Title";
     constants.DEFAULT_FOLDER_NAME = "New folder";

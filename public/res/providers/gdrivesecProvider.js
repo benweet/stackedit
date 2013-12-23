@@ -1,5 +1,5 @@
 define([
     "providers/gdriveProviderBuilder"
 ], function(gdriveProviderBuilder) {
-    return gdriveProviderBuilder("gdrive", "Google Drive", 0);
+    return gdriveProviderBuilder("gdrivesec", "Google Drive (2nd account)", 1);
 });

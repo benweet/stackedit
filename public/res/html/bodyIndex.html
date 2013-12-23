@@ -108,7 +108,7 @@
 		<div class=dropdown-header>SYNCHRONIZE</div>
 		<div class="list-group">
 			<a href="#" data-toggle="collapse"
-				data-target=".collapse-sync-gdrive" class="list-group-item"><i
+				data-target=".collapse-sync-gdrive" class="list-group-item submenu-sync-gdrive"><i
 				class="icon-provider-gdrive"></i> Google Drive</a>
 			<div class="sub-menu collapse collapse-sync-gdrive clearfix">
 				<ul class="nav">
@@ -117,11 +117,30 @@
 							Google Drive</a></li>
 					<li><a href="#" class="action-sync-export-dialog-gdrive">Export
 							to Google Drive</a></li>
+				</ul>
+			</div>
+			<a href="#" data-toggle="collapse"
+				data-target=".collapse-sync-gdrivesec" class="list-group-item submenu-sync-gdrivesec"><i
+				class="icon-provider-gdrive"></i> Google Drive (2nd account)</a>
+			<div class="sub-menu collapse collapse-sync-gdrivesec clearfix">
+				<ul class="nav">
 					<li><a href="#" class="action-sync-import-gdrivesec"
 						data-toggle="collapse" data-target=".menu-panel">Import from
-							Google Drive (secondary)</a></li>
+							Google Drive</a></li>
 					<li><a href="#" class="action-sync-export-dialog-gdrivesec">Export
-							to Google Drive (secondary)</a></li>
+							to Google Drive</a></li>
+				</ul>
+			</div>
+			<a href="#" data-toggle="collapse"
+				data-target=".collapse-sync-gdriveter" class="list-group-item submenu-sync-gdriveter"><i
+				class="icon-provider-gdrive"></i> Google Drive (3rd account)</a>
+			<div class="sub-menu collapse collapse-sync-gdriveter clearfix">
+				<ul class="nav">
+					<li><a href="#" class="action-sync-import-gdriveter"
+						data-toggle="collapse" data-target=".menu-panel">Import from
+							Google Drive</a></li>
+					<li><a href="#" class="action-sync-export-dialog-gdriveter">Export
+							to Google Drive</li>
 				</ul>
 			</div>
 			<a href="#" data-toggle="collapse"
@@ -466,6 +485,8 @@
 <div class="modal modal-upload-gdrive">
 </div>
 <div class="modal modal-upload-gdrivesec">
+</div>
+<div class="modal modal-upload-gdriveter">
 </div>
 
 
@@ -973,19 +994,6 @@
 					<div class="tab-pane" id="tabpane-settings-services">
 						<div class="form-horizontal">
 							<div class="form-group">
-								<label class="col-lg-4 control-label">Permission</label>
-								<div class="col-lg-7">
-									<div class="checkbox">
-									    <label>
-										    <input type="checkbox" id="input-settings-gdrive-full-access" />
-										    Allow StackEdit to open any document in Google Drive
-										</label> <span class="help-block">You have to revoke any existing token in
-										<a href="https://www.google.com/settings/dashboard" target="_blank">Google Dashboard</a>
-										for this change to take effect.</span>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
 								<label class="col-lg-4 control-label"
 									for="textarea-settings-publish-template">Default
 									template <a href="#" class="tooltip-template">(?)</a>
@@ -1014,6 +1022,43 @@
 									    <option value="Legal">Legal</option>
 									    <option value="Letter">Letter</option>
 									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label"
+									for="input-settings-gdrive-multiaccount">Google Drive multi-accounts</a>
+								</label>
+								<div class="col-lg-7">
+									<select id="input-settings-gdrive-multiaccount" class="form-control">
+    									<option value="1">1 account</option>
+    									<option value="2">2 accounts</option>
+    									<option value="3">3 accounts</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label">Permissions</label>
+								<div class="col-lg-7">
+									<div class="checkbox">
+									    <label>
+										    <input type="checkbox" id="input-settings-gdrive-full-access" />
+										    Allow StackEdit to open any document in Google Drive
+										</label> <span class="help-block">Any existing token has to be revoked in
+										<a href="https://www.google.com/settings/dashboard" target="_blank">Google Dashboard</a>
+										for this change to take effect.</span>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-lg-4"></div>
+								<div class="col-lg-7">
+									<div class="checkbox">
+									    <label>
+										    <input type="checkbox" id="input-settings-dropbox-full-access" />
+										    Allow StackEdit to open any document in Dropbox
+										</label> <span class="help-block">If unchecked, access will be restricted to folder
+										<b>/Applications/StackEdit</b> for existing files.</span>
+									</div>
 								</div>
 							</div>
 							<div class="form-group">

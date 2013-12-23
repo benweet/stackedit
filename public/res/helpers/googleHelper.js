@@ -58,7 +58,7 @@ define([
         isOffline = isOfflineParam;
     });
 
-    // Try to connect Gdrive by downloading client.js
+    // Try to connect by downloading client.js
     function connect(task) {
         task.onRun(function() {
             if(isOffline === true) {
@@ -107,7 +107,6 @@ define([
         ]
     };
     function authenticate(task, permission, accountId) {
-        accountId = accountId || 'google.0';
         var authorizationMgr = authorizationMgrMap[accountId];
         if(!authorizationMgr) {
             authorizationMgr = new AuthorizationMgr(accountId);
@@ -132,12 +131,13 @@ define([
                     timeout: constants.AJAX_TIMEOUT,
                     type: "GET"
                 }).done(function(data) {
-                    var currentUserId = authorizationMgr.getUserId();
-                    if(currentUserId && currentUserId != data.user_id) {
-                        doAuthenticate();
+                    if(authorizationMgr.getUserId() && authorizationMgr.getUserId() != data.user_id) {
+                        // Wrong user id, try again
+                        startAuthenticate();
                     }
                     else {
                         authorizationMgr.setUserId(data.user_id);
+                        authorizationMgr.add(permission);
                         authorizationMgr.token = gapi.auth.getToken();
                         task.chain(loadGdriveClient);
                     }
@@ -152,6 +152,11 @@ define([
             var authuser = 0;
             var immediate;
             function localAuthenticate() {
+                if(authuser > 5) {
+                    authuser = 0;
+                    immediate = false;
+                    eventMgr.onError('Unable to authenticate user ' + authorizationMgr.getUserId() + ', please use login form.');
+                }
                 if(immediate === false) {
                     task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
                 }
@@ -175,9 +180,8 @@ define([
                         }
                     }
                     else {
-                        // Success
-                        authuser++;
-                        authorizationMgr.add(permission);
+                        // Success but we need to check the user id
+                        immediate === true && authuser++;
                         task.chain(getTokenInfo);
                     }
                 });
@@ -193,7 +197,7 @@ define([
                     task.error(new Error('Operation canceled.'));
                 });
             }
-            function doAuthenticate() {
+            function startAuthenticate() {
                 immediate = true;
                 if(authorizationMgr.token && authorizationMgr.isAuthorized(permission)) {
                     gapi.auth.setToken(authorizationMgr.token);
@@ -205,7 +209,7 @@ define([
                 }
                 task.chain(oauthRedirect);
             }
-            doAuthenticate();
+            startAuthenticate();
         });
     }
     googleHelper.refreshGdriveToken = function(accountId) {
@@ -379,60 +383,6 @@ define([
                     return;
                 }
                 handleError(response.error, task);
-            });
-        });
-        task.onSuccess(function() {
-            callback(undefined, result);
-        });
-        task.onError(function(error) {
-            callback(error);
-        });
-        task.enqueue();
-    };
-
-    googleHelper.uploadImg = function(name, content, albumId, callback) {
-        var result;
-        var task = new AsyncTask();
-        connect(task);
-        authenticate(task, 'picasa');
-        task.onRun(function() {
-            var headers = {
-                "Slug": name
-            };
-            if(name.match(/.jpe?g$/i)) {
-                headers["Content-Type"] = "image/jpeg";
-            }
-            else if(name.match(/.png$/i)) {
-                headers["Content-Type"] = "image/png";
-            }
-            else if(name.match(/.gif$/i)) {
-                headers["Content-Type"] = "image/gif";
-            }
-            var token = gapi.auth.getToken();
-            if(token) {
-                headers.Authorization = "Bearer " + token.access_token;
-            }
-
-            $.ajax({
-                url: constants.PICASA_PROXY_URL + "upload/" + albumId,
-                headers: headers,
-                data: content,
-                processData: false,
-                dataType: "xml",
-                timeout: constants.AJAX_TIMEOUT,
-                type: "POST"
-            }).done(function(data) {
-                result = data;
-                task.chain();
-            }).fail(function(jqXHR) {
-                var error = {
-                    code: jqXHR.status,
-                    message: jqXHR.statusText
-                };
-                if(error.code == 200) {
-                    error.message = jqXHR.responseText;
-                }
-                handleError(error, task);
             });
         });
         task.onSuccess(function() {
@@ -654,6 +604,60 @@ define([
         task.enqueue();
     };
 
+    googleHelper.uploadImg = function(name, content, albumId, callback) {
+        var result;
+        var task = new AsyncTask();
+        connect(task);
+        authenticate(task, 'picasa', 'google.picasa0');
+        task.onRun(function() {
+            var headers = {
+                "Slug": name
+            };
+            if(name.match(/.jpe?g$/i)) {
+                headers["Content-Type"] = "image/jpeg";
+            }
+            else if(name.match(/.png$/i)) {
+                headers["Content-Type"] = "image/png";
+            }
+            else if(name.match(/.gif$/i)) {
+                headers["Content-Type"] = "image/gif";
+            }
+            var token = gapi.auth.getToken();
+            if(token) {
+                headers.Authorization = "Bearer " + token.access_token;
+            }
+
+            $.ajax({
+                url: constants.PICASA_PROXY_URL + "upload/" + albumId,
+                headers: headers,
+                data: content,
+                processData: false,
+                dataType: "xml",
+                timeout: constants.AJAX_TIMEOUT,
+                type: "POST"
+            }).done(function(data) {
+                result = data;
+                task.chain();
+            }).fail(function(jqXHR) {
+                var error = {
+                    code: jqXHR.status,
+                    message: jqXHR.statusText
+                };
+                if(error.code == 200) {
+                    error.message = jqXHR.responseText;
+                }
+                handleError(error, task);
+            });
+        });
+        task.onSuccess(function() {
+            callback(undefined, result);
+        });
+        task.onError(function(error) {
+            callback(error);
+        });
+        task.enqueue();
+    };
+
     function handleError(error, task) {
         var errorMsg;
         if(error) {
@@ -803,7 +807,7 @@ define([
     googleHelper.uploadBlogger = function(blogUrl, blogId, postId, labelList, isDraft, publishDate, title, content, callback) {
         var task = new AsyncTask();
         connect(task);
-        authenticate(task, 'blogger');
+        authenticate(task, 'blogger', 'google.blogger0');
         task.onRun(function() {
             var headers = {};
             var token = gapi.auth.getToken();

@@ -508,7 +508,7 @@ define([
             });
     
             var state = utils.retrieveIgnoreError(providerId + ".state");
-            if(state === undefined) {
+            if(state === undefined || state.userId != storage[accountId + '.userId']) {
                 return;
             }
             storage.removeItem(providerId + ".state");

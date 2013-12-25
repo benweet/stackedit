@@ -153,9 +153,8 @@ define([
             var immediate;
             function localAuthenticate() {
                 if(authuser > 5) {
-                    authuser = 0;
-                    immediate = false;
-                    eventMgr.onError('Unable to authenticate user ' + authorizationMgr.getUserId() + ', please use login form.');
+                    task.error(new Error('Unable to authenticate user ' + authorizationMgr.getUserId() + ', please sign in with Google.'));
+                    return;
                 }
                 if(immediate === false) {
                     task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
@@ -748,6 +747,7 @@ define([
             var view;
             if(pickerType == 'doc') {
                 view = new google.picker.DocsView(google.picker.ViewId.DOCS);
+                view.setParent('root');
                 view.setIncludeFolders(true);
                 view.setMimeTypes([
                     "text/x-markdown",
@@ -762,6 +762,7 @@ define([
             }
             else if(pickerType == 'folder') {
                 view = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
+                view.setParent('root');
                 view.setIncludeFolders(true);
                 view.setSelectFolderEnabled(true);
                 view.setMimeTypes('application/vnd.google-apps.folder');

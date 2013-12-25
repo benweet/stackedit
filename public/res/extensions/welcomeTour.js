@@ -21,6 +21,19 @@ define([
             },
             onEnd: function() {
                 storage.welcomeTour = 'done';
+                var tooltip = $('.button-markdown-syntax').parent().tooltip({
+                    html: true,
+                    container: $('.extension-preview-buttons'),
+                    placement: 'bottom',
+                    trigger: 'manual',
+                    title: 'Need help with Markdown syntax?'
+                }).tooltip('show').addClass('info-tooltip');
+                tooltip.one('click', function() {
+                    tooltip.tooltip('hide').removeClass('info-tooltip');
+                });
+                setTimeout(function() {
+                    tooltip.tooltip('hide').removeClass('info-tooltip');
+                }, 10000);
             },
             template: [
                 '<div class="popover tour">',
@@ -32,7 +45,7 @@ define([
                 '       <button class="btn btn-default" data-role="end">Got it!</button>',
                 '   </nav>',
                 '</div>'
-            ].join("")
+            ].join(""),
         });
         tour.addSteps([
             {

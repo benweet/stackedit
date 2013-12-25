@@ -1396,7 +1396,7 @@ a.list-group-item:hover,a.list-group-item:focus{color:#b3b3b3;border-top-color:r
 .btn-default:hover,.btn-default:focus,.btn-default:active,.open .btn-default.dropdown-toggle{color:#b3b3b3;border-color:rgba(255,255,255,0.1);background-color:rgba(255,255,255,0.04) !important}
 .btn-primary:hover,.btn-primary:focus,.btn-primary:active,.open .btn-primary.dropdown-toggle{color:#b3b3b3;border-color:rgba(255,255,255,0.1);background-color:#525252 !important}
 .btn-success:hover,.btn-success:focus,.btn-success:active,.open .btn-success.dropdown-toggle{color:#b3b3b3;border-color:rgba(255,255,255,0.1);background-color:rgba(255,255,255,0.075) !important}
-.btn-info:hover,.btn-info:focus,.btn-info:active,.open .btn-info.dropdown-toggle{color:#b3b3b3;border-color:rgba(255,255,255,0.1);background-color:#3a3a3a !important}
+.btn-info:hover,.btn-info:focus,.btn-info:active,.info-tooltip .btn-info,.open .btn-info.dropdown-toggle{color:#b3b3b3;border-color:rgba(255,255,255,0.1);background-color:#3a3a3a !important}
 .btn-group .btn+.btn,.btn-group .btn+.btn-group,.btn-group .btn-group+.btn,.btn-group .btn-group+.btn-group{margin-left:0}
 .btn-group>.btn+.dropdown-toggle{padding-right:11px;padding-left:11px}
 .form-inline .form-control{display:inline-block}

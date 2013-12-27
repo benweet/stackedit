@@ -1500,7 +1500,7 @@ a.list-group-item:hover,a.list-group-item:focus{color:#b3b3b3;border-top-color:r
 .ace-tm .ace_print-margin{background-color:rgba(255,255,255,0.05)}
 .ace-tm .ace_markup.ace_heading{color:#fff;font-weight:bold}
 .ace-tm .ace_markup.ace_list{color:#9f9f9f}
-.ace-tm .ace_constant.ace_language{color:rgba(159,159,159,0.75);font-weight:normal}
+.ace-tm .ace_constant.ace_language{color:rgba(159,159,159,0.6);font-weight:normal}
 .ace-tm .ace_meta.ace_tag{color:#dfdfdf;font-style:italic;font-weight:bold;background-color:rgba(255,255,255,0.1)}
 .ace-tm .ace_keyword.ace_operator{color:#dfdfdf;background-color:transparent}
 .ace-tm .ace_keyword{color:#dfdfdf;background-color:rgba(255,255,255,0.1);font-weight:bold}
@@ -1511,10 +1511,10 @@ a.list-group-item:hover,a.list-group-item:focus{color:#b3b3b3;border-top-color:r
 .ace-tm .ace_blockquote{color:#9f9f9f}
 .ace-tm .ace_code{color:#fff;background-color:rgba(255,255,255,0.1)}
 .ace-tm .ace_code_block{color:#fff}
-.ace-tm .ace_link{color:#9f9f9f;background-color:rgba(255,255,255,0.1)}
+.ace-tm .ace_link{color:rgba(159,159,159,0.6)}
 .ace-tm .ace_description{color:#9f9f9f}
 .ace-tm .ace_constant{color:#dfdfdf}
-.ace-tm .ace_comment{color:rgba(159,159,159,0.75);font-style:italic}
+.ace-tm .ace_comment{color:rgba(159,159,159,0.6);font-style:italic}
 .ace-tm .ace_marker-layer .misspelled{position:absolute;z-index:-2;border-bottom:1px dotted red;margin-bottom:-1px}
 .ace_search{background-color:#232323;border:1px solid #404040;border-top:0;padding:10px 15px 5px;font-family:'Open Sans',"Trebuchet MS",Helvetica,sans-serif;min-width:318px}.ace_search .ace_search_form,.ace_search .ace_replace_form{border-color:#444;margin-bottom:10px}
 .ace_search .ace_search_field{width:185px}

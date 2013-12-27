@@ -13677,6 +13677,7 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
   gdriveMultiAccount: 1,
   gdriveFullAccess: !0,
   dropboxFullAccess: !0,
+  githubFullAccess: !0,
   template: [ "<!DOCTYPE html>\n", "<html>\n", "<head>\n", '<meta charset="utf-8">\n', "<title><%= documentTitle %></title>\n", '<link rel="stylesheet" href="', t.MAIN_URL, 'res-min/themes/base.css" />\n', '<script type="text/javascript" src="', t.MAIN_URL, 'libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n', "</head>\n", '<body><div class="container"><%= documentHTML %></div></body>\n', "</html>" ].join(""),
   pdfTemplate: [ "<!DOCTYPE html>\n", "<html>\n", "<head>\n", '<meta charset="utf-8">\n', "<title><%= documentTitle %></title>\n", '<link rel="stylesheet" href="', t.MAIN_URL, 'res-min/themes/base.css" />\n', '<script type="text/x-mathjax-config">\n', 'MathJax.Hub.Config({ messageStyle: "none" });\n', "</script>\n", '<script type="text/javascript" src="', t.MAIN_URL, 'libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n', "</head>\n", '<body class="pdf"><%= documentHTML %></body>\n', "</html>" ].join(""),
   pdfPageSize: "A4",
@@ -14681,7 +14682,7 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
   });
  }, i;
 }), define("text!html/markdownExtraSettingsBlock.html", [], function() {
- return '<p>Adds extra features to the original Markdown syntax.</p>\n<div class="form-horizontal">\n	<div class="form-group">\n		<label class="col-lg-4 control-label" for="input-markdownextra-tables">Tables</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-tables">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-deflist">Definition lists</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-deflist">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-attrlist">Special attributes</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-attrlist">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-footnotes">Footnotes</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-footnotes">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-smartypants">SmartyPants</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-smartypants">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-newlines">GFM newlines</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-newlines">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-strikethrough">GFM strikethrough</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-strikethrough">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-fencedcodegfm">GFM fenced code\n			blocks</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-fencedcodegfm">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-highlighter">Syntax highlighter</label>\n		<div class="col-lg-7">\n			<select id="input-markdownextra-highlighter" class="form-control"><option>None</option>\n				<option value="prettify">Prettify</option>\n				<option value="highlight">Highlight.js</option>\n			</select>\n		</div>\n	</div>\n</div>\n<span class="help-block pull-right"><a target="_blank"\n	href="https://github.com/jmcmanus/pagedown-extra">More info</a></span>';
+ return '<p>Adds extra features to the original Markdown syntax.</p>\n<div class="form-horizontal">\n	<div class="form-group">\n		<label class="col-lg-4 control-label" for="input-markdownextra-tables">Tables</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-tables">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-deflist">Definition lists</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-deflist">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-attrlist">Special attributes</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-attrlist">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-footnotes">Footnotes</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-footnotes">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-smartypants">SmartyPants</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-smartypants">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-newlines">GFM newlines</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-newlines">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-intraword">GFM intra-word stars/underscores</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-intraword">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-strikethrough">GFM strikethrough</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-strikethrough">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-fencedcodegfm">GFM fenced code\n			blocks</label>\n		<div class="col-lg-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-fencedcodegfm">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-lg-4 control-label"\n			for="input-markdownextra-highlighter">Syntax highlighter</label>\n		<div class="col-lg-7">\n			<select id="input-markdownextra-highlighter" class="form-control"><option>None</option>\n				<option value="prettify">Prettify</option>\n				<option value="highlight">Highlight.js</option>\n			</select>\n		</div>\n	</div>\n</div>\n<span class="help-block pull-right"><a target="_blank"\n	href="https://github.com/jmcmanus/pagedown-extra">More info</a></span>';
 }), window.PR_SHOULD_USE_CONTINUATION = !0;
 
 var prettyPrintOne, prettyPrint;
@@ -18917,7 +18918,7 @@ function() {
  }, Markdown.Converter = function() {
   function e(e) {
    return e = e.replace(/^[ ]{0,3}\[(.+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?(?=\s|$)[ \t]*\n?[ \t]*((\n*)["(](.+?)[")][ \t]*)?(?:\n+)/gm, function(e, t, n, i, o, r) {
-    return t = t.toLowerCase(), R.set(t, E(n)), o ? i : (r && M.set(t, r.replace(/"/g, "&quot;")), 
+    return t = t.toLowerCase(), M.set(t, E(n)), o ? i : (r && N.set(t, r.replace(/"/g, "&quot;")), 
     "");
    });
   }
@@ -18929,19 +18930,19 @@ function() {
   }
   function o(e, t) {
    var n = t;
-   return n = n.replace(/^\n+/, ""), n = n.replace(/\n+$/g, ""), n = "\n\n~K" + (N.push(n) - 1) + "K\n\n";
+   return n = n.replace(/^\n+/, ""), n = n.replace(/\n+$/g, ""), n = "\n\n~K" + (B.push(n) - 1) + "K\n\n";
   }
   function r(e, n) {
-   e = I.preBlockGamut(e, P), e = p(e);
+   e = R.preBlockGamut(e, O), e = p(e);
    var i = "<hr />\n";
    return e = e.replace(/^[ ]{0,2}([ ]?\*[ ]?){3,}[ \t]*$/gm, i), e = e.replace(/^[ ]{0,2}([ ]?-[ ]?){3,}[ \t]*$/gm, i), 
    e = e.replace(/^[ ]{0,2}([ ]?_[ ]?){3,}[ \t]*$/gm, i), e = f(e), e = m(e), e = x(e), 
-   e = I.postBlockGamut(e, P), e = t(e), e = C(e, n);
+   e = R.postBlockGamut(e, O), e = t(e), e = C(e, n);
   }
   function s(e) {
-   return e = I.preSpanGamut(e), e = b(e), e = a(e), e = k(e), e = u(e), e = l(e), 
-   e = S(e), e = e.replace(/~P/g, "://"), e = E(e), e = w(e), e = e.replace(/  +\n/g, " <br>\n"), 
-   e = I.postSpanGamut(e);
+   return e = R.preSpanGamut(e), e = b(e), e = a(e), e = k(e), e = u(e), e = l(e), 
+   e = S(e), e = e.replace(/~P/g, "://"), e = E(e), e = I._DoItalicsAndBold ? I._DoItalicsAndBold(e) : w(e), 
+   e = e.replace(/  +\n/g, " <br>\n"), e = R.postSpanGamut(e);
   }
   function a(e) {
    var t = /(<[a-z\/!$]("[^"]*"|'[^']*'|[^'">])*>|<!(--(?:|(?:[^>-]|-[^>])(?:[^-]|-[^-])*)--)>)/gi;
@@ -18959,7 +18960,7 @@ function() {
    void 0 == a && (a = "");
    var l = t, c = n.replace(/:\/\//g, "~P"), u = i.toLowerCase(), h = o, p = a;
    if ("" == h) if ("" == u && (u = c.toLowerCase().replace(/ ?\n/g, " ")), h = "#" + u, 
-   void 0 != R.get(u)) h = R.get(u), void 0 != M.get(u) && (p = M.get(u)); else {
+   void 0 != M.get(u)) h = M.get(u), void 0 != N.get(u) && (p = N.get(u)); else {
     if (!(l.search(/\(\s*\)$/m) > -1)) return l;
     h = "";
    }
@@ -18976,8 +18977,8 @@ function() {
   function h(e, t, n, i, o, r, s, a) {
    var l = t, c = n, u = i.toLowerCase(), h = o, p = a;
    if (p || (p = ""), "" == h) {
-    if ("" == u && (u = c.toLowerCase().replace(/ ?\n/g, " ")), h = "#" + u, void 0 == R.get(u)) return l;
-    h = R.get(u), void 0 != M.get(u) && (p = M.get(u));
+    if ("" == u && (u = c.toLowerCase().replace(/ ?\n/g, " ")), h = "#" + u, void 0 == M.get(u)) return l;
+    h = M.get(u), void 0 != N.get(u) && (p = N.get(u));
    }
    c = L(d(c), "*_[]()"), h = L(h, "*_");
    var f = '<img src="' + h + '" alt="' + c + '"';
@@ -18996,7 +18997,7 @@ function() {
   function f(e, t) {
    e += "~0";
    var n = /^(([ ]{0,3}([*+-]|\d+[.])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*+-]|\d+[.])[ \t]+)))/gm;
-   return B ? e = e.replace(n, function(e, n, i) {
+   return P ? e = e.replace(n, function(e, n, i) {
     var o = n, r = i.search(/[*+-]/g) > -1 ? "ul" : "ol", s = g(o, r, t);
     return s = s.replace(/\s+$/, ""), s = "<" + r + ">" + s + "</" + r + ">\n";
    }) : (n = /(\n\n|^\n?)(([ ]{0,3}([*+-]|\d+[.])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*+-]|\d+[.])[ \t]+)))/g, 
@@ -19006,13 +19007,13 @@ function() {
    })), e = e.replace(/~0/, "");
   }
   function g(e, t, n) {
-   B++, e = e.replace(/\n{2,}$/, "\n"), e += "~0";
-   var i = O[t], o = new RegExp("(^[ \\t]*)(" + i + ")[ \\t]+([^\\r]+?(\\n+))(?=(~0|\\1(" + i + ")[ \\t]+))", "gm"), a = !1;
+   P++, e = e.replace(/\n{2,}$/, "\n"), e += "~0";
+   var i = z[t], o = new RegExp("(^[ \\t]*)(" + i + ")[ \\t]+([^\\r]+?(\\n+))(?=(~0|\\1(" + i + ")[ \\t]+))", "gm"), a = !1;
    return e = e.replace(o, function(e, t, i, o) {
     var l = o, c = /\n\n$/.test(l), u = c || l.search(/\n{2,}/) > -1;
     return u || a ? l = r(F(l), !0) : (l = f(F(l), !0), l = l.replace(/\n$/, ""), n || (l = s(l))), 
     a = c, "<li>" + l + "</li>\n";
-   }), e = e.replace(/~0/g, ""), B--, e;
+   }), e = e.replace(/~0/g, ""), P--, e;
   }
   function m(e) {
    return e += "~0", e = e.replace(/(?:\n\n|^\n?)((?:(?:[ ]{4}|\t).*\n+)+)(\n*[ ]{0,3}[^ \t\n]|(?=~0))/g, function(e, t, n) {
@@ -19022,7 +19023,7 @@ function() {
    }), e = e.replace(/~0/, "");
   }
   function v(e) {
-   return e = e.replace(/(^\n+|\n+$)/g, ""), "\n\n~K" + (N.push(e) - 1) + "K\n\n";
+   return e = e.replace(/(^\n+|\n+$)/g, ""), "\n\n~K" + (B.push(e) - 1) + "K\n\n";
   }
   function b(e) {
    return e = e.replace(/(^|[^\\])(`+)([^\r]*?[^`])\2(?!`)/gm, function(e, t, n, i) {
@@ -19059,7 +19060,7 @@ function() {
    if (!t) {
     r = i.length;
     for (var a = 0; r > a; a++) for (var c = !0; c; ) c = !1, i[a] = i[a].replace(/~K(\d+)K/g, function(e, t) {
-     return c = !0, N[t];
+     return c = !0, B[t];
     });
    }
    return i.join("\n\n");
@@ -19083,14 +19084,14 @@ function() {
    }
    if (a) {
     var c = i.charAt(i.length - 1);
-    U.test(c) || (a = c + a, i = i.substr(0, i.length - 1));
+    W.test(c) || (a = c + a, i = i.substr(0, i.length - 1));
    }
    return "<" + n + i + ">" + a;
   }
   function S(e) {
-   e = e.replace(H, A);
+   e = e.replace(U, A);
    var t = function(e, t) {
-    return '<a href="' + t + '">' + I.plainLinkText(t) + "</a>";
+    return '<a href="' + t + '">' + R.plainLinkText(t) + "</a>";
    };
    return e = e.replace(/<((https?|ftp):[^'">\s]+)>/gi, t);
   }
@@ -19111,7 +19112,7 @@ function() {
    });
   }
   function D(e) {
-   return e ? (e.length, e.replace(W, function(e) {
+   return e ? (e.length, e.replace(q, function(e) {
     return "~D" == e ? "%24" : ":" == e ? ":" : "%" + e.charCodeAt(0).toString(16);
    })) : "";
   }
@@ -19125,25 +19126,29 @@ function() {
    var n = t.charCodeAt(0);
    return "~E" + n + "E";
   }
-  var I = this.hooks = new n();
-  I.addNoop("plainLinkText"), I.addNoop("preConversion"), I.addNoop("postNormalization"), 
-  I.addNoop("preBlockGamut"), I.addNoop("postBlockGamut"), I.addNoop("preSpanGamut"), 
-  I.addNoop("postSpanGamut"), I.addNoop("postConversion");
-  var R, M, N, B;
-  this.makeHtml = function(n) {
-   if (R) throw new Error("Recursive call to converter.makeHtml");
-   return R = new i(), M = new i(), N = [], B = 0, n = I.preConversion(n), n = n.replace(/~/g, "~T"), 
-   n = n.replace(/\$/g, "~D"), n = n.replace(/\r\n/g, "\n"), n = n.replace(/\r/g, "\n"), 
-   n = "\n\n" + n + "\n\n", n = T(n), n = n.replace(/^[ \t]+$/gm, ""), n = I.postNormalization(n), 
-   n = t(n), n = e(n), n = r(n), n = _(n), n = n.replace(/~D/g, "$$"), n = n.replace(/~T/g, "~"), 
-   n = I.postConversion(n), N = M = R = null, n;
+  var I = {};
+  this.setOptions = function(e) {
+   I = e;
   };
-  var P = function(e) {
+  var R = this.hooks = new n();
+  R.addNoop("plainLinkText"), R.addNoop("preConversion"), R.addNoop("postNormalization"), 
+  R.addNoop("preBlockGamut"), R.addNoop("postBlockGamut"), R.addNoop("preSpanGamut"), 
+  R.addNoop("postSpanGamut"), R.addNoop("postConversion");
+  var M, N, B, P;
+  this.makeHtml = function(n) {
+   if (M) throw new Error("Recursive call to converter.makeHtml");
+   return M = new i(), N = new i(), B = [], P = 0, n = R.preConversion(n), n = n.replace(/~/g, "~T"), 
+   n = n.replace(/\$/g, "~D"), n = n.replace(/\r\n/g, "\n"), n = n.replace(/\r/g, "\n"), 
+   n = "\n\n" + n + "\n\n", n = T(n), n = n.replace(/^[ \t]+$/gm, ""), n = R.postNormalization(n), 
+   n = t(n), n = e(n), n = r(n), n = _(n), n = n.replace(/~D/g, "$$"), n = n.replace(/~T/g, "~"), 
+   n = R.postConversion(n), B = N = M = null, n;
+  };
+  var O = function(e) {
    return r(e);
-  }, O = {
+  }, z = {
    ol: "\\d+[.]",
    ul: "[*+-]"
-  }, z = "[-A-Z0-9+&@#/%?=~_|[\\]()!:,.;]", j = "[-A-Z0-9+&@#/%=~_|[\\])]", H = new RegExp('(="|<)?\\b(https?|ftp)(://' + z + "*" + j + ")(?=$|\\W)", "gi"), U = new RegExp(j, "i"), W = /(?:["'*()[\]:]|~D)/g;
+  }, j = "[-A-Z0-9+&@#/%?=~_|[\\]()!:,.;]", H = "[-A-Z0-9+&@#/%=~_|[\\])]", U = new RegExp('(="|<)?\\b(https?|ftp)(://' + j + "*" + H + ")(?=$|\\W)", "gi"), W = new RegExp(H, "i"), q = /(?:["'*()[\]:]|~D)/g;
  };
 }(), define("bower-libs/pagedown-ace/Markdown.Converter", function() {}), function() {
  function e() {}
@@ -20000,6 +20005,7 @@ function() {
  var a = new i("markdownExtra", "Markdown Extra", !0);
  a.settingsBlock = o, a.defaultConfig = {
   extensions: [ "fenced_code_gfm", "tables", "def_list", "attr_list", "footnotes", "smartypants", "strikethrough", "newlines" ],
+  intraword: !0,
   highlighter: "prettify"
  }, a.onLoadSettings = function() {
   function e(e) {
@@ -20011,7 +20017,7 @@ function() {
   n.setInputChecked("#input-markdownextra-deflist", e("def_list")), n.setInputChecked("#input-markdownextra-attrlist", e("attr_list")), 
   n.setInputChecked("#input-markdownextra-footnotes", e("footnotes")), n.setInputChecked("#input-markdownextra-smartypants", e("smartypants")), 
   n.setInputChecked("#input-markdownextra-strikethrough", e("strikethrough")), n.setInputChecked("#input-markdownextra-newlines", e("newlines")), 
-  n.setInputValue("#input-markdownextra-highlighter", a.config.highlighter);
+  n.setInputChecked("#input-markdownextra-intraword", a.config.intraword), n.setInputValue("#input-markdownextra-highlighter", a.config.highlighter);
  }, a.onSaveSettings = function(e) {
   e.extensions = [], n.getInputChecked("#input-markdownextra-fencedcodegfm") && e.extensions.push("fenced_code_gfm"), 
   n.getInputChecked("#input-markdownextra-tables") && e.extensions.push("tables"), 
@@ -20021,25 +20027,35 @@ function() {
   n.getInputChecked("#input-markdownextra-smartypants") && e.extensions.push("smartypants"), 
   n.getInputChecked("#input-markdownextra-strikethrough") && e.extensions.push("strikethrough"), 
   n.getInputChecked("#input-markdownextra-newlines") && e.extensions.push("newlines"), 
-  e.highlighter = n.getInputValue("#input-markdownextra-highlighter");
+  e.intraword = n.getInputChecked("#input-markdownextra-intraword"), e.highlighter = n.getInputValue("#input-markdownextra-highlighter");
  };
  var l;
  return a.onEventMgrCreated = function(e) {
   l = e;
  }, a.onPagedownConfigure = function(e) {
-  var n = e.getConverter(), i = {
+  var n = e.getConverter();
+  if (a.config.intraword === !0) {
+   var i = {
+    _DoItalicsAndBold: function(e) {
+     return e = e.replace(/([^\w*]|^)(\*\*|__)(?=\S)(.+?[*_]*)(?=\S)\2(?=[^\w*]|$)/g, "$1<strong>$3</strong>"), 
+     e = e.replace(/([^\w*]|^)(\*|_)(?=\S)(.+?)(?=\S)\2(?=[^\w*]|$)/g, "$1<em>$3</em>");
+    }
+   };
+   n.setOptions(i);
+  }
+  var o = {
    extensions: a.config.extensions
   };
   if ("highlight" == a.config.highlighter) {
-   i.highlighter = "prettify";
-   var o = document.getElementById("preview-contents");
+   o.highlighter = "prettify";
+   var l = document.getElementById("preview-contents");
    e.hooks.chain("onPreviewRefresh", function() {
-    t.each(o.querySelectorAll(".prettyprint > code"), function(e) {
+    t.each(l.querySelectorAll(".prettyprint > code"), function(e) {
      s.highlightBlock(e);
     });
    });
-  } else "prettify" == a.config.highlighter && (i.highlighter = "prettify", e.hooks.chain("onPreviewRefresh", r.prettyPrint));
-  Markdown.Extra.init(n, i);
+  } else "prettify" == a.config.highlighter && (o.highlighter = "prettify", e.hooks.chain("onPreviewRefresh", r.prettyPrint));
+  Markdown.Extra.init(n, o);
  }, a;
 }), define("text!html/mathJaxSettingsBlock.html", [], function() {
  return '<p>Allows StackEdit to interpret LaTeX mathematical expressions.</p>\n<div class="form-horizontal">\n    <div class="form-group">\n        <label class="col-lg-4 control-label"\n            for="input-mathjax-config-tex">TeX configuration</label>\n        <div class="col-lg-7">\n            <input type="text" id="input-mathjax-config-tex" class="form-control">\n        </div>\n    </div>\n    <div class="form-group">\n        <label class="col-lg-4 control-label"\n            for="input-mathjax-config-tex2jax">tex2jax configuration</label>\n        <div class="col-lg-7">\n            <input type="text" id="input-mathjax-config-tex2jax" class="form-control">\n        </div>\n    </div>\n</div>\n<span class="help-block pull-right"><a target="_blank" href="http://docs.mathjax.org/en/latest/options/index.html">More info</a></span>';
@@ -20489,7 +20505,7 @@ function() {
   u = e(t.querySelectorAll(".msg-no-sync"));
  }, r;
 }), define("text!html/dialogManageSharingLocation.html", [], function() {
- return '<div class="input-group">\n	<a href="<%= link %>" class="input-group-addon" title="Sharing location"><i\n		class="icon-link"></i></a> <input class="form-control" type="text"\n		value="<%= link %>" disabled />\n</div>\n';
+ return '<div class="input-group">\n	<a href="<%= link %>" class="input-group-addon" title="Sharing location"><i\n		class="icon-provider-stackedit"></i></a> <input class="form-control" type="text"\n		value="<%= link %>" disabled />\n</div>\n';
 }), define("extensions/dialogManageSharing", [ "jquery", "underscore", "classes/Extension", "text!html/dialogManageSharingLocation.html" ], function(e, t, n, i) {
  var o, r, s, a, l = new n("dialogManageSharing", 'Button "Share"', !1, !0), c = function(e) {
   if (void 0 === e || e === o) {
@@ -21263,7 +21279,7 @@ function() {
    h(), E.text(t.size(l)), k.text(t.size(a) + 1), C = t.filter(l, function(e) {
     return void 0 === e.folder;
    });
-   var n = [ '<a href="#" class="list-group-item folder clearfix" data-toggle="collapse" data-target=".modal-document-manager .file-list.root-folder">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<div class="pull-right file-count">', t.size(C), "</div>", '<div class="name"><i class="icon-folder"></i> ', "ROOT folder</div></a>" ].join(""), i = t.chain(C).sortBy(function(e) {
+   var n = [ '<a href="#" class="list-group-item folder root-folder clearfix" data-toggle="collapse" data-target=".modal-document-manager .file-list.root-folder">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<div class="pull-right file-count">', t.size(C), "</div>", '<div class="name"><i class="icon-folder"></i> ', "ROOT folder</div></a>" ].join(""), i = t.chain(C).sortBy(function(e) {
     return e.title.toLowerCase();
    }).reduce(function(e, n) {
     return e + t.template(S, {
@@ -21327,7 +21343,7 @@ function() {
     }).find("[type=checkbox]").change(function() {
      n.parent().next().find("[type=checkbox]").prop("checked", this.checked);
     });
-   }), e(b.querySelectorAll("[type=checkbox]")).change(h);
+   }), e(b.querySelectorAll("[type=checkbox]")).change(h), e(b.querySelectorAll(".root-folder")).click();
   }
  }, 50);
  return f.onFileCreated = L, f.onFileDeleted = L, f.onTitleChanged = L, f.onSyncExportSuccess = L, 
@@ -23552,7 +23568,7 @@ function() {
   });
  }, r;
 }), define("text!html/bodyIndex.html", [], function() {
- return '<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav left-space"></div>\n		<div class="nav right-space pull-right"></div>\n		<div class="left-buttons-dropdown dropdown">\n    		<div class="nav">\n        		<button class="btn btn-success" data-toggle="dropdown"\n            		title="Show buttons">\n            		<i class="icon-th-large"></i>\n            	</button>\n    		    <div class="dropdown-menu">\n        		</div>\n        	</div>\n		</div>\n		<ul class="nav left-buttons">\n			<li class="wmd-button-group1 btn-group"></li>\n		</ul>\n		<ul class="nav left-buttons">\n			<li class="wmd-button-group2 btn-group"></li>\n		</ul>\n		<ul class="nav left-buttons">\n			<li class="wmd-button-group3 btn-group"></li>\n		</ul>\n		<ul class="nav left-buttons">\n			<li class="wmd-button-group4 btn-group"></li>\n		</ul>\n		<div class="right-buttons-dropdown dropdown">\n    		<div class="nav pull-right">\n        		<button class="btn btn-success" data-toggle="dropdown"\n            		title="Show buttons">\n            		<i class="icon-th-large"></i>\n            	</button>\n    		    <div class="dropdown-menu">\n        		</div>\n        	</div>\n		</div>\n		<ul class="nav pull-right right-buttons">\n			<li class="btn-group"><button\n					class="btn btn-success action-create-file" title="New document">\n					<i class="icon-file"></i>\n				</button>\n				<button class="btn btn-success action-remove-file-confirm" title="Delete document">\n					<i class="icon-trash"></i>\n				</button></li>\n		</ul>\n		<ul class="nav pull-right right-buttons">\n			<li class="offline-status hide">\n			    <div class="text-danger">\n			        <i class="icon-attention-circled"></i>offline\n			    </div>\n			</li>\n			<li class="extension-buttons"></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><div class="working-indicator"></div></li>\n			<li><a class="btn btn-success file-title-navbar" href="#"\n				title="Rename document"> </a></li>\n			<li><div class="input-file-title-container"><input type="text"\n				class="col-lg-4 form-control hide input-file-title"\n				placeholder="Document title" /></div></li>\n		</ul>\n	</div>\n</div>\n<div id="wmd-input" class="ui-layout-center"></div>\n<div class="ui-layout-east preview-container"></div>\n<div class="ui-layout-south preview-container"></div>\n<div id="wmd-button-bar" class="hide"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn collapse-button" data-toggle="collapse"\n		data-target=".menu-panel" title="Menu">\n		<img\n			data-stackedit-src="menu-icon.png" width="24" height="24" />\n	</button>\n	<div class="panel-content">\n		<div class="list-group">\n			<a href="viewer" title="StackEdit Viewer"\n				class="list-group-item"><i class="icon-resize-full"></i>\n				StackEdit Viewer</a> <a href="#" data-toggle="collapse"\n				data-target=".collapse-open-from" class="list-group-item"><i\n				class="icon-hdd"></i> Open from...</a>\n			<div class="sub-menu collapse collapse-open-from clearfix">\n				<ul class="nav">\n					<li><a data-toggle="modal" data-target=".modal-import-url"\n						class="action-reset-input" href="#">Open from URL</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-markdown"\n						class="action-reset-input" href="#">Import from hard drive</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-html"\n						class="action-reset-input" href="#">Convert HTML to Markdown</a></li>\n				</ul>\n			</div>\n\n			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"\n				class="list-group-item"><i class="icon-hdd"></i> Save as...</a>\n			<div class="sub-menu collapse collapse-save-as clearfix">\n				<ul class="nav">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>\n				</ul>\n			</div>\n		</div>\n		<div class=dropdown-header>SYNCHRONIZE</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-gdrive" class="list-group-item submenu-sync-gdrive"><i\n				class="icon-provider-gdrive"></i> Google Drive</a>\n			<div class="sub-menu collapse collapse-sync-gdrive clearfix">\n				<ul class="nav">\n					<li><a href="#" class="action-sync-import-gdrive"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Google Drive</a></li>\n					<li><a href="#" class="action-sync-export-dialog-gdrive">Export\n							to Google Drive</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-gdrivesec" class="list-group-item submenu-sync-gdrivesec"><i\n				class="icon-provider-gdrive"></i> Google Drive (2nd account)</a>\n			<div class="sub-menu collapse collapse-sync-gdrivesec clearfix">\n				<ul class="nav">\n					<li><a href="#" class="action-sync-import-gdrivesec"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Google Drive</a></li>\n					<li><a href="#" class="action-sync-export-dialog-gdrivesec">Export\n							to Google Drive</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-gdriveter" class="list-group-item submenu-sync-gdriveter"><i\n				class="icon-provider-gdrive"></i> Google Drive (3rd account)</a>\n			<div class="sub-menu collapse collapse-sync-gdriveter clearfix">\n				<ul class="nav">\n					<li><a href="#" class="action-sync-import-gdriveter"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Google Drive</a></li>\n					<li><a href="#" class="action-sync-export-dialog-gdriveter">Export\n							to Google Drive</li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-dropbox" class="list-group-item"><i\n				class="icon-provider-dropbox"></i> Dropbox</a>\n			<div class="sub-menu collapse collapse-sync-dropbox clearfix">\n				<ul class="nav">\n					<li><a class="action-sync-import-dropbox" href="#"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Dropbox</a></li>\n					<li><a href="#" class="action-sync-export-dialog-dropbox">Export\n							to Dropbox</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-sync"\n				class="action-reset-input list-group-item"><i\n				class="icon-refresh"></i> Manage synchronization</a>\n		</div>\n		<div class=dropdown-header>PUBLISH</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"\n				class="list-group-item"><i class="icon-share"></i> Publish on...</a>\n			<div class="sub-menu collapse collapse-publish-on clearfix">\n				<ul class="nav">\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-publish"\n				class="action-reset-input list-group-item"><i class="icon-share"></i>\n				Manage publication</a>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-sharing"\n				class="action-reset-input list-group-item"><i class="icon-link"></i>\n				Sharing</a>\n		</div>\n		<ul class="nav">\n			<li><a href="#" data-toggle="modal"\n				data-target=".modal-settings" class="action-load-settings"><i\n					class="icon-cog"></i> Settings</a></li>\n			<li><a href="#" data-toggle="modal" data-target=".modal-about"><i\n					class="icon-help-circled"></i> About</a></li>\n		</ul>\n\n	</div>\n</div>\n\n\n<div class="document-panel collapse width">\n	<button class="btn collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n\n<div class="modal modal-document-manager">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Manage documents</h3>\n			</div>\n			<div class="modal-body">\n				<div></div>\n				<ul class="nav nav-pills document-list">\n					<li class="pull-right dropdown"><a href="#"\n						data-toggle="dropdown"><i class="icon-check"></i> Selection <b\n							class="caret"></b></a>\n						<ul class="dropdown-menu">\n							<li><a href="#" class="action-select-all"><i\n									class="icon-check"></i> Select all</a></li>\n							<li><a href="#" class="action-unselect-all"><i\n									class="icon-check-empty"></i> Unselect all</a></li>\n							<li class="divider"></li>\n							<li><a href="#" class="action-move-items"><i\n									class="icon-forward"></i> Move to folder</a></li>\n							<li><a href="#" class="action-delete-items"><i\n									class="icon-trash"></i> Delete</a></li>\n						</ul></li>\n					<li class="pull-right"><a href="#"\n						class="action-create-folder"> <i class="icon-folder"></i>\n							Create folder\n					</a></li>\n					<li class="disabled"><a><i class="icon-file"></i> <span\n							class="document-count"></span></a></li>\n					<li class="disabled"><a><i class="icon-folder"></i> <span\n							class="folder-count"></span></a></li>\n				</ul>\n				<div class="list-group document-list"></div>\n				<p class="confirm-delete hide">The following documents will be\n					deleted locally:</p>\n				<p class="choose-folder hide">Please choose a destination\n					folder:</p>\n				<div class="list-group selected-document-list hide"></div>\n				<div class="list-group select-folder-list hide"></div>\n			</div>\n			<div class="modal-footer">\n				<a href="#"\n					class="btn btn-default confirm-delete choose-folder action-cancel hide">Cancel</a>\n				<a href="#"\n					class="btn btn-primary confirm-delete action-delete-items-confirm hide">OK</a>\n				<a href="#" class="btn btn-primary document-list"\n					data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-link">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Hyperlink</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the link URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-globe"></i></span><input\n						id="input-insert-link" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/ "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-insert-link"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Image</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the image URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-picture"></i></span><input\n						id="input-insert-image" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/image.jpg "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default action-import-image-gplus"\n					data-dismiss="modal"><i class="icon-provider-gplus"></i> Import\n					from Google+</a> <a href="#" class="btn btn-default"\n					data-dismiss="modal">Cancel</a> <a href="#"\n					class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Google+ image import</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group">\n						<div class="col-lg-7">\n							<img>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-title">Title (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-import-image-title"\n								placeholder="Image title" class="form-control">\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-size">Size limit (optional)</label>\n						<div class="col-lg-7 form-inline">\n							<input type="text" id="input-import-image-size" placeholder="0"\n								class="col-lg-3 form-control"> px\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-image"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-remove-file-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Delete</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					Are you sure you want to delete "<span class="file-title"></span>"?\n				</p>\n				<blockquote>\n					<b>NOTE:</b> This will not delete the file on synchronized\n					locations.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-remove-file"\n					data-dismiss="modal">Delete</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-url">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Open from URL</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide a link to a Markdown document.</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label" for="input-import-url">URL</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-import-url"\n								placeholder="http://www.abc.com/xyz.md" class="form-control">\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-import-url">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-markdown">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Import from hard drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your Markdown files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-markdown"\n						multiple class="form-control" />\n				</p>\n				<p>Or drag and drop your Markdown files here:</p>\n				<p id="dropzone-import-harddrive-markdown" class="drop-zone">Drop\n					files here</p>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-html">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Convert HTML to Markdown</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your HTML files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-html" multiple\n						class="form-control" />\n				</p>\n				<p>Or drag and drop your HTML files here:</p>\n				<p id="dropzone-import-harddrive-html" class="drop-zone">Drop\n					files here</p>\n				<p>Or insert your HTML code here:</p>\n				<textarea id="input-convert-html" class="form-control"></textarea>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Close</a> <a\n					href="#" class="btn btn-primary action-convert-html"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-gdrive">\n</div>\n<div class="modal modal-upload-gdrivesec">\n</div>\n<div class="modal modal-upload-gdriveter">\n</div>\n\n\n<div class="modal modal-upload-dropbox">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Dropbox</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-dropbox-path">File path</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-dropbox-path"\n								placeholder="/path/to/My Document.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>NOTE:</b>\n					<ul>\n						<li>Dropbox file path does not depend on document title.</li>\n						<li>The title of your document will not be synchronized.</li>\n						<li>Destination folder must exist.</li>\n						<li>Any existing file at this location will be overwritten.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-dropbox">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-sync">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Synchronization</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-sync-list hide">\n					"<span class="file-title"></span>" is synchronized with the\n					following location(s):\n				</p>\n				<div class="msg-sync-list sync-list hide"></div>\n				<blockquote class="msg-sync-list hide">\n					<b>NOTE:</b> Removing a synchronized location will not delete any\n					file.\n				</blockquote>\n				<p class="msg-no-sync hide">"<span class="file-title"></span>" is not synchronized yet.</p>\n				<blockquote class="msg-no-sync hide">\n					<b>Tip:</b> You can add synchronized locations by\n					exporting your document using <i class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					or <i class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">\n					Publish on <span class="publish-provider-name"></span>\n				</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-host">Host</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-host"\n								placeholder="host.name.or.ip" class="form-control"> <span\n								class="help-block"> Host must be accessible publicly,\n								unless you are hosting your own <a target="_blank"\n								href="https://github.com/benweet/stackedit-ssh-proxy">SSH\n									proxy</a>.\n							</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-port">Port\n							(optional)</label>\n						<div class="col-lg-2">\n							<input type="text" id="input-publish-ssh-port" placeholder="22"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-username">Username</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-password">Password</label>\n						<div class="col-lg-7">\n							<input type="password" id="input-publish-ssh-password"\n								placeholder="password" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-reponame">Repository</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-reponame"\n								placeholder="repository-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-username">Username (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-branch">Branch</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-branch"\n								placeholder="branch-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-file-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-file-path"\n								placeholder="path/to/file.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-filename">Filename</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-filename"\n								placeholder="filename" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-gist-id">Existing\n							ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gist-id"\n								placeholder="GistID" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gist-public">Public</label>\n						<div class="col-lg-7">\n							<div class="checkbox">\n								<input type="checkbox" id="input-publish-gist-public"\n									checked="checked" />\n							</div>\n						</div>\n					</div>\n					<div class="form-group modal-publish-blogger">\n						<label class="col-lg-4 control-label"\n							for="input-publish-blogger-url">Blog URL</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-blogger-url"\n								placeholder="http://exemple.blogger.com/" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-tumblr">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">Blog hostname</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-tumblr-hostname"\n								placeholder="exemple.tumblr.com" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-wordpress">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">WordPress site</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-wordpress-site"\n								placeholder="exemple.wordpress.com" class="form-control">\n							<span class="help-block"> <a target="_blank"\n								href="http://jetpack.me/">Jetpack plugin</a> is required for\n								self-hosted sites.\n							</span>\n						</div>\n					</div>\n					<div\n						class="form-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n						<label class="col-lg-4 control-label" for="input-publish-postid">Update\n							existing post ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-postid" placeholder="PostID"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-dropbox">\n						<label class="col-lg-4 control-label"\n							for="input-publish-dropbox-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-dropbox-path"\n								placeholder="/path/to/My Document.html" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-fileid">File ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block">If no file ID is supplied, a new file\n								will be created in your Google Drive root folder. You can move\n								the file afterwards within Google Drive.</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-filename">Force filename\n							(optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-filename"\n								placeholder="Filename" class="form-control"> <span\n								class="help-block">If no file name is supplied, the\n								document title will be used.</span>\n						</div>\n					</div>\n\n					<div class="form-group">\n						<label class="col-lg-4 control-label">Format</label>\n						<div class="col-lg-7">\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="markdown"> Markdown\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="html"> HTML\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="template"> Template\n								</label>\n							</div>\n						</div>\n					</div>\n					<div class="collapse publish-custom-template-collapse">\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<div class="checkbox">\n									<label> <input type="checkbox"\n										id="checkbox-publish-custom-template"> Custom template\n									</label> <a href="#" class="tooltip-template">(?)</a>\n								</div>\n							</div>\n						</div>\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<textarea class="form-control"\n									id="textarea-publish-custom-template"></textarea>\n							</div>\n						</div>\n					</div>\n				</div>\n				<blockquote class="front-matter-info modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n                    <p><b>Tip:</b> You can use a\n                    <a href="http://jekyllrb.com/docs/frontmatter/"\n                    target="_blank">YAML front matter</a> to specify the title and the tags/labels of your publication.</p>\n                    <p><b>Interpreted variables:</b> <code>title</code>, <code>tags</code>, <code>published</code>, <code>date</code>.</p>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-process-publish">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Publication</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-publish-list hide">\n					"<span class="file-title"></span>" is published on the following\n					location(s):\n				</p>\n				<div class="msg-publish-list publish-list hide"></div>\n				<blockquote class="msg-publish-list hide">\n					<b>NOTE:</b> Removing a publish location will not delete the actual publication.\n				</blockquote>\n				<p class="msg-no-publish hide">\n					"<span class="file-title"></span>" is not published yet.\n				</p>\n				<blockquote class="msg-no-publish hide">\n					<b>Tip:</b> You can add publications using the <i class="icon-share"></i> <code>Publish on</code> sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-sharing">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Sharing</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-share-list hide">\n					"<span class="file-title"></span>" can be shared using the following link(s):\n				</p>\n            	<div class="msg-share-list share-list hide"></div>\n            	<p class="msg-no-share hide">To share this document within StackEdit you need first to <a\n            		href="#" class="action-publish-gist" data-dismiss="modal">publish it as a Gist</a> in\n            		Markdown format.\n            	</p>\n            	<blockquote>\n            		<b>Tip:</b> You can open any URL within StackEdit using <a\n            			href="viewer#!url=https://raw.github.com/benweet/stackedit/master/README.md"\n            			title="Sharing example"><code>viewer#!url=</code></a>.\n            	</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Settings</h3>\n				<ul class="nav nav-tabs">\n					<li class="active"><a class="action-load-settings"\n						href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-services" data-toggle="tab">Services</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-shortcuts" data-toggle="tab">Shortcuts</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>\n				</ul>\n			</div>\n			<div class="modal-body">\n\n				<div class="tab-content clearfix">\n					<div class="tab-pane active" id="tabpane-settings-editor">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Layout orientation</label>\n								<div class="col-lg-7">\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="horizontal">\n											Horizontal\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="vertical">\n											Vertical\n										</label>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label" for="input-settings-theme">Theme</label>\n								<div class="col-lg-7">\n									<select id="input-settings-theme" class="form-control">\n									</select>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-lazy-rendering">Lazy rendering <a\n									href="#" class="tooltip-lazy-rendering">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n										<input type="checkbox" id="input-settings-lazy-rendering" />\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-editor-font-family">Editor font</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-editor-font-family"\n										class="form-control col-lg-7"> <input type="text"\n										id="input-settings-editor-font-size"\n										class="form-control col-lg-2"> px <span\n										class="help-block"> Only monospaced fonts are\n										supported.</span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-max-width">Max width</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-max-width"\n										class="form-control col-lg-3"> px\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-default-content">Default content\n									<a href="#" class="tooltip-default-content">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-default-content"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Mode</label>\n								<div class="col-lg-7">\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-settings-mode" value="_ace_">\n											Normal (ACE)\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-settings-mode" value="_light_">\n											Light (textarea)\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-settings-mode" value="_light_rtl_">\n											Light + Right-to-left\n										</label>\n									</div>\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-services">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-publish-template">Default\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-publish-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-pdf-template">PDF\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-pdf-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label" for="input-settings-pdf-page-size">PDF page size</label>\n								<div class="col-lg-7">\n									<select id="input-settings-pdf-page-size" class="form-control">\n									    <option value="A3">A3</option>\n									    <option value="A4">A4</option>\n									    <option value="Legal">Legal</option>\n									    <option value="Letter">Letter</option>\n									</select>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-gdrive-multiaccount">Google Drive multi-accounts</a>\n								</label>\n								<div class="col-lg-7">\n									<select id="input-settings-gdrive-multiaccount" class="form-control">\n    									<option value="1">1 account</option>\n    									<option value="2">2 accounts</option>\n    									<option value="3">3 accounts</option>\n									</select>\n									<span class="help-block"><b>Please sign in with Google first.</b> Once linked with your Google accounts, changing account is not possible unless you reset the application.</span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Permissions</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n									    <label>\n										    <input type="checkbox" id="input-settings-gdrive-full-access" />\n										    Allow StackEdit to open any document in Google Drive\n										</label> <span class="help-block">Any existing token has to be revoked in\n										<a href="https://www.google.com/settings/dashboard" target="_blank">Google Dashboard</a>\n										for this change to take effect.</span>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<div class="col-lg-4"></div>\n								<div class="col-lg-7">\n									<div class="checkbox">\n									    <label>\n										    <input type="checkbox" id="input-settings-dropbox-full-access" />\n										    Allow StackEdit to open any document in Dropbox\n										</label> <span class="help-block">If unchecked, access will be restricted to folder\n										<b>/Applications/StackEdit</b> for existing files.</span>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-publish-commit-msg">GitHub commit message</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-publish-commit-msg"\n										class="form-control">\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-ssh-proxy">SSH proxy</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-ssh-proxy"\n										class="form-control">\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-shortcuts">\n						<div class="form-horizontal">\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-extensions">\n						<div class="panel-group accordion-extensions"></div>\n						<span class="help-block pull-right"><a target="_blank"\n							href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#developer-guide">Create\n								your own extension...</a></span>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-utils">\n						<div class="tab-pane-button-container">\n							<a href="#" class="btn btn-block btn-primary action-welcome-file"\n								data-dismiss="modal"><i class="icon-help-circled"></i>\n								Welcome document</a> <a href="#"\n								class="btn btn-block btn-primary action-welcome-tour"\n								data-dismiss="modal" data-dismiss="modal"><i\n								class="icon-help-circled"></i> Welcome tour</a>\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-primary action-import-docs-settings"><i\n								class="icon-cog-alt"></i> Import docs & settings</a> <a href="#"\n								class="btn btn-block btn-primary action-export-docs-settings"\n								data-dismiss="modal"><i class="icon-cog-alt"></i>\n								Export docs & settings</a> <input type="file"\n								id="input-file-import-docs-settings" class="hide">\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-primary action-default-settings"\n								data-dismiss="modal"><i class="icon-wrench"></i>\n								Load default settings</a> <a href="#" class="btn btn-block btn-primary"\n								data-dismiss="modal" data-toggle="modal"\n								data-target=".modal-app-reset"><i\n								class="icon-fire"></i> Reset application</a> <a target="_blank" href="recovery.html" class="btn btn-block btn-primary"><i\n								class="icon-medkit"></i> StackEdit recovery</a>\n						</div>\n						<span class="help-block text-center"><a target="_blank"\n							href="http://benweet.github.io/stackedit/recovery.html">Old platform recovery</a></span>\n					</div>\n				</div>\n\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-apply-settings"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-redirect-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Redirection</h3>\n			</div>\n			<div class="modal-body">\n			    <p class="redirect-msg"></p>\n				<blockquote>Please click <b>OK</b> to proceed.</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a class="btn btn-primary action-redirect-confirm" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-app-reset">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Reset application</h3>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all your local documents.</p>\n				<blockquote>Are you sure?</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-app-reset"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-docs-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Import documents and settings</h3>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all existing local documents.</p>\n				<blockquote>Are you sure?</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-docs-settings-confirm"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="lock-ui hide"></div>\n<div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>\n<div class="textarea-helper"></div>';
+ return '<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav left-space"></div>\n		<div class="nav right-space pull-right"></div>\n		<div class="left-buttons-dropdown dropdown">\n    		<div class="nav">\n        		<button class="btn btn-success" data-toggle="dropdown"\n            		title="Show buttons">\n            		<i class="icon-th-large"></i>\n            	</button>\n    		    <div class="dropdown-menu">\n        		</div>\n        	</div>\n		</div>\n		<ul class="nav left-buttons">\n			<li class="wmd-button-group1 btn-group"></li>\n		</ul>\n		<ul class="nav left-buttons">\n			<li class="wmd-button-group2 btn-group"></li>\n		</ul>\n		<ul class="nav left-buttons">\n			<li class="wmd-button-group3 btn-group"></li>\n		</ul>\n		<ul class="nav left-buttons">\n			<li class="wmd-button-group4 btn-group"></li>\n		</ul>\n		<div class="right-buttons-dropdown dropdown">\n    		<div class="nav pull-right">\n        		<button class="btn btn-success" data-toggle="dropdown"\n            		title="Show buttons">\n            		<i class="icon-th-large"></i>\n            	</button>\n    		    <div class="dropdown-menu">\n        		</div>\n        	</div>\n		</div>\n		<ul class="nav pull-right right-buttons">\n			<li class="btn-group"><button\n					class="btn btn-success action-create-file" title="New document">\n					<i class="icon-file"></i>\n				</button>\n				<button class="btn btn-success action-remove-file-confirm" title="Delete document">\n					<i class="icon-trash"></i>\n				</button></li>\n		</ul>\n		<ul class="nav pull-right right-buttons">\n			<li class="offline-status hide">\n			    <div class="text-danger">\n			        <i class="icon-attention-circled"></i>offline\n			    </div>\n			</li>\n			<li class="extension-buttons"></li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><div class="working-indicator"></div></li>\n			<li><a class="btn btn-success file-title-navbar" href="#"\n				title="Rename document"> </a></li>\n			<li><div class="input-file-title-container"><input type="text"\n				class="col-lg-4 form-control hide input-file-title"\n				placeholder="Document title" /></div></li>\n		</ul>\n	</div>\n</div>\n<div id="wmd-input" class="ui-layout-center"></div>\n<div class="ui-layout-east preview-container"></div>\n<div class="ui-layout-south preview-container"></div>\n<div id="wmd-button-bar" class="hide"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn collapse-button" data-toggle="collapse"\n		data-target=".menu-panel" title="Menu">\n		<img\n			data-stackedit-src="menu-icon.png" width="24" height="24" />\n	</button>\n	<div class="panel-content">\n		<div class="list-group">\n			<a href="viewer" title="StackEdit Viewer"\n				class="list-group-item"><i class="icon-resize-full"></i>\n				StackEdit Viewer</a> <a href="#" data-toggle="collapse"\n				data-target=".collapse-open-from" class="list-group-item"><i\n				class="icon-hdd"></i> Open from...</a>\n			<div class="sub-menu collapse collapse-open-from clearfix">\n				<ul class="nav">\n					<li><a data-toggle="modal" data-target=".modal-import-url"\n						class="action-reset-input" href="#">Open from URL</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-markdown"\n						class="action-reset-input" href="#">Import from hard drive</a></li>\n					<li><a data-toggle="modal"\n						data-target=".modal-import-harddrive-html"\n						class="action-reset-input" href="#">Convert HTML to Markdown</a></li>\n				</ul>\n			</div>\n\n			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"\n				class="list-group-item"><i class="icon-hdd"></i> Save as...</a>\n			<div class="sub-menu collapse collapse-save-as clearfix">\n				<ul class="nav">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>\n				</ul>\n			</div>\n		</div>\n		<div class=dropdown-header>SYNCHRONIZE</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-gdrive" class="list-group-item submenu-sync-gdrive"><i\n				class="icon-provider-gdrive"></i> Google Drive</a>\n			<div class="sub-menu collapse collapse-sync-gdrive clearfix">\n				<ul class="nav">\n					<li><a href="#" class="action-sync-import-gdrive"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Google Drive</a></li>\n					<li><a href="#" class="action-sync-export-dialog-gdrive">Export\n							to Google Drive</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-gdrivesec" class="list-group-item submenu-sync-gdrivesec"><i\n				class="icon-provider-gdrive"></i> Google Drive (2nd account)</a>\n			<div class="sub-menu collapse collapse-sync-gdrivesec clearfix">\n				<ul class="nav">\n					<li><a href="#" class="action-sync-import-gdrivesec"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Google Drive</a></li>\n					<li><a href="#" class="action-sync-export-dialog-gdrivesec">Export\n							to Google Drive</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-gdriveter" class="list-group-item submenu-sync-gdriveter"><i\n				class="icon-provider-gdrive"></i> Google Drive (3rd account)</a>\n			<div class="sub-menu collapse collapse-sync-gdriveter clearfix">\n				<ul class="nav">\n					<li><a href="#" class="action-sync-import-gdriveter"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Google Drive</a></li>\n					<li><a href="#" class="action-sync-export-dialog-gdriveter">Export\n							to Google Drive</li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="collapse"\n				data-target=".collapse-sync-dropbox" class="list-group-item"><i\n				class="icon-provider-dropbox"></i> Dropbox</a>\n			<div class="sub-menu collapse collapse-sync-dropbox clearfix">\n				<ul class="nav">\n					<li><a class="action-sync-import-dropbox" href="#"\n						data-toggle="collapse" data-target=".menu-panel">Import from\n							Dropbox</a></li>\n					<li><a href="#" class="action-sync-export-dialog-dropbox">Export\n							to Dropbox</a></li>\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-sync"\n				class="action-reset-input list-group-item"><i\n				class="icon-refresh"></i> Manage synchronization</a>\n		</div>\n		<div class=dropdown-header>PUBLISH</div>\n		<div class="list-group">\n			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"\n				class="list-group-item"><i class="icon-share"></i> Publish on...</a>\n			<div class="sub-menu collapse collapse-publish-on clearfix">\n				<ul class="nav">\n				</ul>\n			</div>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-publish"\n				class="action-reset-input list-group-item"><i class="icon-share"></i>\n				Manage publication</a>\n			<a href="#" data-toggle="modal" data-target=".modal-manage-sharing"\n				class="action-reset-input list-group-item"><i class="icon-provider-stackedit"></i>\n				Sharing...</a>\n		</div>\n		<ul class="nav">\n			<li><a href="#" data-toggle="modal"\n				data-target=".modal-settings" class="action-load-settings"><i\n					class="icon-cog"></i> Settings</a></li>\n			<li><a href="#" data-toggle="modal" data-target=".modal-about"><i\n					class="icon-help-circled"></i> About</a></li>\n		</ul>\n\n	</div>\n</div>\n\n\n<div class="document-panel collapse width">\n	<button class="btn collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n\n<div class="modal modal-document-manager">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Manage documents</h3>\n			</div>\n			<div class="modal-body">\n				<div></div>\n				<ul class="nav nav-pills document-list">\n					<li class="pull-right dropdown"><a href="#"\n						data-toggle="dropdown"><i class="icon-check"></i> Selection <b\n							class="caret"></b></a>\n						<ul class="dropdown-menu">\n							<li><a href="#" class="action-select-all"><i\n									class="icon-check"></i> Select all</a></li>\n							<li><a href="#" class="action-unselect-all"><i\n									class="icon-check-empty"></i> Unselect all</a></li>\n							<li class="divider"></li>\n							<li><a href="#" class="action-move-items"><i\n									class="icon-forward"></i> Move to folder</a></li>\n							<li><a href="#" class="action-delete-items"><i\n									class="icon-trash"></i> Delete</a></li>\n						</ul></li>\n					<li class="pull-right"><a href="#"\n						class="action-create-folder"> <i class="icon-folder"></i>\n							Create folder\n					</a></li>\n					<li class="disabled"><a><i class="icon-file"></i> <span\n							class="document-count"></span></a></li>\n					<li class="disabled"><a><i class="icon-folder"></i> <span\n							class="folder-count"></span></a></li>\n				</ul>\n				<div class="list-group document-list"></div>\n				<p class="confirm-delete hide">The following documents will be\n					deleted locally:</p>\n				<p class="choose-folder hide">Please choose a destination\n					folder:</p>\n				<div class="list-group selected-document-list hide"></div>\n				<div class="list-group select-folder-list hide"></div>\n			</div>\n			<div class="modal-footer">\n				<a href="#"\n					class="btn btn-default confirm-delete choose-folder action-cancel hide">Cancel</a>\n				<a href="#"\n					class="btn btn-primary confirm-delete action-delete-items-confirm hide">OK</a>\n				<a href="#" class="btn btn-primary document-list"\n					data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-link">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Hyperlink</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the link URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-globe"></i></span><input\n						id="input-insert-link" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/ "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-insert-link"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-insert-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Image</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the image URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-picture"></i></span><input\n						id="input-insert-image" type="text" class="col-lg-5 form-control"\n						placeholder=\'http://example.com/image.jpg "optional title"\'></input>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default action-import-image-gplus"\n					data-dismiss="modal"><i class="icon-provider-gplus"></i> Import\n					from Google+</a> <a href="#" class="btn btn-default"\n					data-dismiss="modal">Cancel</a> <a href="#"\n					class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Google+ image import</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group">\n						<div class="col-lg-7">\n							<img>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-title">Title (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-import-image-title"\n								placeholder="Image title" class="form-control">\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-lg-4 control-label"\n							for="input-import-image-size">Size limit (optional)</label>\n						<div class="col-lg-7 form-inline">\n							<input type="text" id="input-import-image-size" placeholder="0"\n								class="col-lg-3 form-control"> px\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-image"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-remove-file-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Delete</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					Are you sure you want to delete "<span class="file-title"></span>"?\n				</p>\n				<blockquote>\n					<b>NOTE:</b> This will not delete the file on synchronized\n					locations.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-remove-file"\n					data-dismiss="modal">Delete</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-url">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Open from URL</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please provide a link to a Markdown document.</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label" for="input-import-url">URL</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-import-url"\n								placeholder="http://www.abc.com/xyz.md" class="form-control">\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-import-url">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-markdown">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Import from hard drive</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your Markdown files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-markdown"\n						multiple class="form-control" />\n				</p>\n				<p>Or drag and drop your Markdown files here:</p>\n				<p id="dropzone-import-harddrive-markdown" class="drop-zone">Drop\n					files here</p>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-harddrive-html">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Convert HTML to Markdown</h3>\n			</div>\n			<div class="modal-body">\n				<p>Please select your HTML files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-html" multiple\n						class="form-control" />\n				</p>\n				<p>Or drag and drop your HTML files here:</p>\n				<p id="dropzone-import-harddrive-html" class="drop-zone">Drop\n					files here</p>\n				<p>Or insert your HTML code here:</p>\n				<textarea id="input-convert-html" class="form-control"></textarea>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Close</a> <a\n					href="#" class="btn btn-primary action-convert-html"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-upload-gdrive">\n</div>\n<div class="modal modal-upload-gdrivesec">\n</div>\n<div class="modal modal-upload-gdriveter">\n</div>\n\n\n<div class="modal modal-upload-dropbox">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Export to Dropbox</h3>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-lg-3 control-label"\n							for="input-sync-export-dropbox-path">File path</label>\n						<div class="col-lg-8">\n							<input type="text" id="input-sync-export-dropbox-path"\n								placeholder="/path/to/My Document.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>NOTE:</b>\n					<ul>\n						<li>Dropbox file path does not depend on document title.</li>\n						<li>The title of your document will not be synchronized.</li>\n						<li>Destination folder must exist.</li>\n						<li>Any existing file at this location will be overwritten.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-dropbox">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-sync">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Synchronization</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-sync-list hide">\n					"<span class="file-title"></span>" is synchronized with the\n					following location(s):\n				</p>\n				<div class="msg-sync-list sync-list hide"></div>\n				<blockquote class="msg-sync-list hide">\n					<b>NOTE:</b> Removing a synchronized location will not delete any\n					file.\n				</blockquote>\n				<p class="msg-no-sync hide">"<span class="file-title"></span>" is not synchronized yet.</p>\n				<blockquote class="msg-no-sync hide">\n					<b>Tip:</b> You can add synchronized locations by\n					exporting your document using <i class="icon-provider-gdrive"></i>\n					<code>Google Drive</code>\n					or <i class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">\n					Publish on <span class="publish-provider-name"></span>\n				</h3>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-host">Host</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-host"\n								placeholder="host.name.or.ip" class="form-control"> <span\n								class="help-block"> Host must be accessible publicly,\n								unless you are hosting your own <a target="_blank"\n								href="https://github.com/benweet/stackedit-ssh-proxy">SSH\n									proxy</a>.\n							</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label" for="input-publish-ssh-port">Port\n							(optional)</label>\n						<div class="col-lg-2">\n							<input type="text" id="input-publish-ssh-port" placeholder="22"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-username">Username</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-ssh-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-lg-4 control-label"\n							for="input-publish-ssh-password">Password</label>\n						<div class="col-lg-7">\n							<input type="password" id="input-publish-ssh-password"\n								placeholder="password" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-reponame">Repository</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-reponame"\n								placeholder="repository-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-username">Username (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-github-branch">Branch</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-github-branch"\n								placeholder="branch-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh modal-publish-github">\n						<label class="col-lg-4 control-label"\n							for="input-publish-file-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-file-path"\n								placeholder="path/to/file.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-filename">Filename</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-filename"\n								placeholder="filename" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label" for="input-publish-gist-id">Existing\n							ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gist-id"\n								placeholder="GistID" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gist-public">Public</label>\n						<div class="col-lg-7">\n							<div class="checkbox">\n								<input type="checkbox" id="input-publish-gist-public"\n									checked="checked" />\n							</div>\n						</div>\n					</div>\n					<div class="form-group modal-publish-blogger">\n						<label class="col-lg-4 control-label"\n							for="input-publish-blogger-url">Blog URL</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-blogger-url"\n								placeholder="http://exemple.blogger.com/" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-tumblr">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">Blog hostname</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-tumblr-hostname"\n								placeholder="exemple.tumblr.com" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-wordpress">\n						<label class="col-lg-4 control-label"\n							for="input-publish-tumblr-hostname">WordPress site</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-wordpress-site"\n								placeholder="exemple.wordpress.com" class="form-control">\n							<span class="help-block"> <a target="_blank"\n								href="http://jetpack.me/">Jetpack plugin</a> is required for\n								self-hosted sites.\n							</span>\n						</div>\n					</div>\n					<div\n						class="form-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n						<label class="col-lg-4 control-label" for="input-publish-postid">Update\n							existing post ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-postid" placeholder="PostID"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-dropbox">\n						<label class="col-lg-4 control-label"\n							for="input-publish-dropbox-path">File path</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-dropbox-path"\n								placeholder="/path/to/My Document.html" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-fileid">File ID (optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block">If no file ID is supplied, a new file\n								will be created in your Google Drive root folder. You can move\n								the file afterwards within Google Drive.</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-lg-4 control-label"\n							for="input-publish-gdrive-filename">Force filename\n							(optional)</label>\n						<div class="col-lg-7">\n							<input type="text" id="input-publish-gdrive-filename"\n								placeholder="Filename" class="form-control"> <span\n								class="help-block">If no file name is supplied, the\n								document title will be used.</span>\n						</div>\n					</div>\n\n					<div class="form-group">\n						<label class="col-lg-4 control-label">Format</label>\n						<div class="col-lg-7">\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="markdown"> Markdown\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="html"> HTML\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="template"> Template\n								</label>\n							</div>\n						</div>\n					</div>\n					<div class="collapse publish-custom-template-collapse">\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<div class="checkbox">\n									<label> <input type="checkbox"\n										id="checkbox-publish-custom-template"> Custom template\n									</label> <a href="#" class="tooltip-template">(?)</a>\n								</div>\n							</div>\n						</div>\n						<div class="form-group">\n							<div class="col-lg-4"></div>\n							<div class="col-lg-7">\n								<textarea class="form-control"\n									id="textarea-publish-custom-template"></textarea>\n							</div>\n						</div>\n					</div>\n				</div>\n				<blockquote class="front-matter-info modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n                    <p><b>Tip:</b> You can use a\n                    <a href="http://jekyllrb.com/docs/frontmatter/"\n                    target="_blank">YAML front matter</a> to specify the title and the tags/labels of your publication.</p>\n                    <p><b>Interpreted variables:</b> <code>title</code>, <code>tags</code>, <code>published</code>, <code>date</code>.</p>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-process-publish">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Publication</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-publish-list hide">\n					"<span class="file-title"></span>" is published on the following\n					location(s):\n				</p>\n				<div class="msg-publish-list publish-list hide"></div>\n				<blockquote class="msg-publish-list hide">\n					<b>NOTE:</b> Removing a publish location will not delete the actual publication.\n				</blockquote>\n				<p class="msg-no-publish hide">\n					"<span class="file-title"></span>" is not published yet.\n				</p>\n				<blockquote class="msg-no-publish hide">\n					<b>Tip:</b> You can add publications using the <i class="icon-share"></i> <code>Publish on</code> sub-menu.\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-manage-sharing">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Sharing</h3>\n			</div>\n			<div class="modal-body">\n				<p class="msg-share-list hide">\n					"<span class="file-title"></span>" can be shared using the following link(s):\n				</p>\n            	<div class="msg-share-list share-list hide"></div>\n            	<p class="msg-no-share hide">To share this document within StackEdit you need first to <a\n            		href="#" class="action-publish-gist" data-dismiss="modal">publish it as a Gist</a> in\n            		Markdown format.\n            	</p>\n            	<blockquote>\n            		<b>Tip:</b> You can open any URL within StackEdit using <a\n            			href="viewer#!url=https://raw.github.com/benweet/stackedit/master/README.md"\n            			title="Sharing example"><code>viewer#!url=</code></a>.\n            	</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h3 class="modal-title">Settings</h3>\n				<ul class="nav nav-tabs">\n					<li class="active"><a class="action-load-settings"\n						href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-services" data-toggle="tab">Services</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-shortcuts" data-toggle="tab">Shortcuts</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>\n				</ul>\n			</div>\n			<div class="modal-body">\n\n				<div class="tab-content clearfix">\n					<div class="tab-pane active" id="tabpane-settings-editor">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Layout orientation</label>\n								<div class="col-lg-7">\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="horizontal">\n											Horizontal\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="vertical">\n											Vertical\n										</label>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label" for="input-settings-theme">Theme</label>\n								<div class="col-lg-7">\n									<select id="input-settings-theme" class="form-control">\n									</select>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-lazy-rendering">Lazy rendering <a\n									href="#" class="tooltip-lazy-rendering">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n										<input type="checkbox" id="input-settings-lazy-rendering" />\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-editor-font-family">Editor font</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-editor-font-family"\n										class="form-control col-lg-7"> <input type="text"\n										id="input-settings-editor-font-size"\n										class="form-control col-lg-2"> px <span\n										class="help-block"> Only monospaced fonts are\n										supported.</span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-max-width">Max width</label>\n								<div class="col-lg-8 form-inline">\n									<input type="text" id="input-settings-max-width"\n										class="form-control col-lg-3"> px\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-default-content">Default content\n									<a href="#" class="tooltip-default-content">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-default-content"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Mode</label>\n								<div class="col-lg-7">\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-settings-mode" value="_ace_">\n											Normal (ACE)\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-settings-mode" value="_light_">\n											Light (textarea)\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-settings-mode" value="_light_rtl_">\n											Light + Right-to-left\n										</label>\n									</div>\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-services">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-gdrive-multiaccount">Google Drive multi-accounts</a>\n								</label>\n								<div class="col-lg-7">\n									<select id="input-settings-gdrive-multiaccount" class="form-control">\n    									<option value="1">1 account</option>\n    									<option value="2">2 accounts</option>\n    									<option value="3">3 accounts</option>\n									</select>\n									<span class="help-block"><b>Please sign in first with Google.</b> Once linked with your Google accounts, changing account is not possible unless you reset the application.</span>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label">Permissions</label>\n								<div class="col-lg-7">\n									<div class="checkbox">\n									    <label>\n										    <input type="checkbox" id="input-settings-gdrive-full-access" />\n										    Allow StackEdit to open any document in Google Drive\n										</label> <span class="help-block">Existing authorization has to be revoked in\n										<a href="https://www.google.com/settings/dashboard" target="_blank">Google Dashboard</a>\n										for this change to take effect.</span>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<div class="col-lg-4"></div>\n								<div class="col-lg-7">\n									<div class="checkbox">\n									    <label>\n										    <input type="checkbox" id="input-settings-dropbox-full-access" />\n										    Allow StackEdit to open any document in Dropbox\n										</label> <span class="help-block">If unchecked, access will be restricted to folder\n										<b>/Applications/StackEdit</b> for existing files.</span>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<div class="col-lg-4"></div>\n								<div class="col-lg-7">\n									<div class="checkbox">\n									    <label>\n										    <input type="checkbox" id="input-settings-github-full-access" />\n										    Allow StackEdit to access private repositories in GitHub\n										</label> <span class="help-block">Existing authorization has to be revoked in\n										<a href="https://github.com/settings/applications" target="_blank">GitHub settings</a>\n										for this change to take effect.</span>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-publish-commit-msg">GitHub commit message</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-publish-commit-msg"\n										class="form-control">\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="input-settings-ssh-proxy">SSH proxy</label>\n								<div class="col-lg-7">\n									<input type="text" id="input-settings-ssh-proxy"\n										class="form-control">\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-publish-template">Default\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-publish-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label"\n									for="textarea-settings-pdf-template">PDF\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-lg-7">\n									<textarea id="textarea-settings-pdf-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-lg-4 control-label" for="input-settings-pdf-page-size">PDF page size</label>\n								<div class="col-lg-7">\n									<select id="input-settings-pdf-page-size" class="form-control">\n									    <option value="A3">A3</option>\n									    <option value="A4">A4</option>\n									    <option value="Legal">Legal</option>\n									    <option value="Letter">Letter</option>\n									</select>\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-shortcuts">\n						<div class="form-horizontal">\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-extensions">\n						<div class="panel-group accordion-extensions"></div>\n						<span class="help-block pull-right"><a target="_blank"\n							href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#developer-guide">Create\n								your own extension...</a></span>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-utils">\n						<div class="tab-pane-button-container">\n							<a href="#" class="btn btn-block btn-primary action-welcome-file"\n								data-dismiss="modal"><i class="icon-help-circled"></i>\n								Welcome document</a> <a href="#"\n								class="btn btn-block btn-primary action-welcome-tour"\n								data-dismiss="modal" data-dismiss="modal"><i\n								class="icon-help-circled"></i> Welcome tour</a>\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-primary action-import-docs-settings"><i\n								class="icon-cog-alt"></i> Import docs & settings</a> <a href="#"\n								class="btn btn-block btn-primary action-export-docs-settings"\n								data-dismiss="modal"><i class="icon-cog-alt"></i>\n								Export docs & settings</a> <input type="file"\n								id="input-file-import-docs-settings" class="hide">\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-primary action-default-settings"\n								data-dismiss="modal"><i class="icon-wrench"></i>\n								Load default settings</a> <a href="#" class="btn btn-block btn-primary"\n								data-dismiss="modal" data-toggle="modal"\n								data-target=".modal-app-reset"><i\n								class="icon-fire"></i> Reset application</a> <a target="_blank" href="recovery.html" class="btn btn-block btn-primary"><i\n								class="icon-medkit"></i> StackEdit recovery</a>\n						</div>\n						<span class="help-block text-center"><a target="_blank"\n							href="http://benweet.github.io/stackedit/recovery.html">Old platform recovery</a></span>\n					</div>\n				</div>\n\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-apply-settings"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-redirect-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Redirection</h3>\n			</div>\n			<div class="modal-body">\n			    <p class="redirect-msg"></p>\n				<blockquote>Please click <b>OK</b> to proceed.</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a class="btn btn-primary action-redirect-confirm" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-app-reset">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Reset application</h3>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all your local documents.</p>\n				<blockquote>Are you sure?</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-app-reset"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal modal-import-docs-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Import documents and settings</h3>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all existing local documents.</p>\n				<blockquote>Are you sure?</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-docs-settings-confirm"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="lock-ui hide"></div>\n<div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>\n<div class="textarea-helper"></div>';
 }), define("text!html/bodyViewer.html", [], function() {
  return '\n<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav right-space pull-right"></div>\n\n		<ul class="nav pull-right">\n			<li class="btn-group">\n				<button class="btn btn-success action-edit-document hide"\n					title="Edit this document">\n					<i class="icon-pencil"></i>\n				</button>\n			</li>\n			<li class="btn-group">\n				<button class="btn btn-success dropdown-toggle"\n					data-toggle="dropdown" title="Save this document">\n					<i class="icon-download"></i>\n				</button>\n				<ul class="dropdown-menu">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>\n				</ul>\n			</li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><div class="working-indicator"></div></li>\n			<li><span class="btn btn-success file-title-navbar"></span></li>\n		</ul>\n	</div>\n</div>\n<div id="wmd-button-bar" class="hide"></div>\n<div id="wmd-input" class="hide"></div>\n<div class="ui-layout-center preview-container"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn collapse-button action-open-stackedit"\n		title="Open StackEdit">\n		<img\n			data-stackedit-src="menu-icon.png" width="24" height="24" />\n	</button>\n</div>\n\n<div class="document-panel collapse width">\n	<button class="btn collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n';
 }), define("text!html/settingsTemplateTooltip.html", [], function() {
@@ -28314,20 +28330,20 @@ function() {
    regex: /^#{1,6}(?=\s*[^ #]|\s+#.)/,
    next: "header"
   }, {
-   token: "code_block",
+   token: "constant.language.escape",
    regex: "^```\\s*[a-zA-Z]*(?:{.*?\\})?\\s*$",
    next: "githubblock"
   }, {
-   token: "blockquote",
-   regex: "^\\s*>\\s*(?:[*+-]|\\d+\\.)?\\s+",
+   token: [ "constant.language.escape", "blockquote" ],
+   regex: "(^\\s*>\\s*(?:[*+-]|\\d+\\.)?)(\\s+)",
    next: "blockquote"
   }, {
    token: "constant",
    regex: "^ {0,2}(?:(?: ?\\* ?){3,}|(?: ?\\- ?){3,}|(?: ?\\_ ?){3,})\\s*$",
    next: "allowBlock"
   }, {
-   token: "markup.list",
-   regex: "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
+   token: [ "constant.language.escape", "markup.list" ],
+   regex: "(^\\s{0,3}(?:[*+-]|\\d+\\.))(\\s+)",
    next: "listblock-start"
   }, {
    token: "constant.language.escape",
@@ -28398,8 +28414,8 @@ function() {
     regex: "^$",
     next: "start"
    }, {
-    token: "markup.list",
-    regex: "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
+    token: [ "constant.language.escape", "markup.list" ],
+    regex: "(^\\s{0,3}(?:[*+-]|\\d+\\.))(\\s+)",
     next: "listblock-start"
    }, {
     include: "basic",
@@ -28412,8 +28428,8 @@ function() {
     regex: "^\\s*$",
     next: "start"
    }, {
-    token: "blockquote",
-    regex: "^\\s*>\\s*(?:[*+-]|\\d+\\.)?\\s+",
+    token: [ "constant.language.escape", "blockquote" ],
+    regex: "(^\\s*>\\s*(?:[*+-]|\\d+\\.)?)(\\s+)",
     next: "blockquote"
    }, {
     include: "basic",
@@ -28422,7 +28438,7 @@ function() {
     defaultToken: "blockquote"
    } ],
    githubblock: [ {
-    token: "code_block",
+    token: "constant.language.escape",
     regex: "^```",
     next: "start"
    }, {
@@ -28741,9 +28757,10 @@ function() {
   r.setInputValue("#input-settings-max-width", a.maxWidth), r.setInputValue("#textarea-settings-default-content", a.defaultContent), 
   r.setInputRadio("radio-settings-mode", s.mode || "_ace_"), r.setInputValue("#input-settings-publish-commit-msg", a.commitMsg), 
   r.setInputValue("#input-settings-gdrive-multiaccount", a.gdriveMultiAccount), r.setInputChecked("#input-settings-gdrive-full-access", a.gdriveFullAccess), 
-  r.setInputChecked("#input-settings-dropbox-full-access", a.dropboxFullAccess), r.setInputValue("#textarea-settings-publish-template", a.template), 
-  r.setInputValue("#textarea-settings-pdf-template", a.pdfTemplate), r.setInputValue("#input-settings-pdf-page-size", a.pdfPageSize), 
-  r.setInputValue("#input-settings-ssh-proxy", a.sshProxy), c.loadSettings(), l.onLoadSettings();
+  r.setInputChecked("#input-settings-dropbox-full-access", a.dropboxFullAccess), r.setInputChecked("#input-settings-github-full-access", a.githubFullAccess), 
+  r.setInputValue("#textarea-settings-publish-template", a.template), r.setInputValue("#textarea-settings-pdf-template", a.pdfTemplate), 
+  r.setInputValue("#input-settings-pdf-page-size", a.pdfPageSize), r.setInputValue("#input-settings-ssh-proxy", a.sshProxy), 
+  c.loadSettings(), l.onLoadSettings();
  }
  function x(t) {
   var n = {};
@@ -28755,8 +28772,9 @@ function() {
   var o = r.getInputRadio("radio-settings-mode");
   n.commitMsg = r.getInputTextValue("#input-settings-publish-commit-msg", t), n.gdriveMultiAccount = r.getInputIntValue("#input-settings-gdrive-multiaccount"), 
   n.gdriveFullAccess = r.getInputChecked("#input-settings-gdrive-full-access"), n.dropboxFullAccess = r.getInputChecked("#input-settings-dropbox-full-access"), 
-  n.template = r.getInputTextValue("#textarea-settings-publish-template", t), n.pdfTemplate = r.getInputTextValue("#textarea-settings-pdf-template", t), 
-  n.pdfPageSize = r.getInputValue("#input-settings-pdf-page-size"), n.sshProxy = r.checkUrl(r.getInputTextValue("#input-settings-ssh-proxy", t), !0), 
+  n.githubFullAccess = r.getInputChecked("#input-settings-github-full-access"), n.template = r.getInputTextValue("#textarea-settings-publish-template", t), 
+  n.pdfTemplate = r.getInputTextValue("#textarea-settings-pdf-template", t), n.pdfPageSize = r.getInputValue("#input-settings-pdf-page-size"), 
+  n.sshProxy = r.checkUrl(r.getInputTextValue("#input-settings-ssh-proxy", t), !0), 
   c.saveSettings(n), n.extensionSettings = {}, l.onSaveSettings(n.extensionSettings, t), 
   t.isPropagationStopped() || (a.dropboxFullAccess !== n.dropboxFullAccess && s.removeItem("dropbox.lastChangeId"), 
   e.extend(a, n), s.settings = JSON.stringify(a), s.themeV3 = i, s.mode = o);
@@ -28771,7 +28789,7 @@ function() {
   j = i.edit("wmd-input"), j.setOption("spellcheck", !0), j.renderer.setShowGutter(!1), 
   j.renderer.setPrintMarginColumn(!1), j.renderer.setPadding(o.EDITOR_DEFAULT_PADDING), 
   j.session.setUseWrapMode(!0), j.session.setNewLineMode("unix"), j.session.setMode("libs/ace_mode"), 
-  function(e) {
+  j.session.$selectLongWords = !0, function(e) {
    function n(n) {
     var i = e.lines[n];
     0 !== i.length && 0 === i[0].type.indexOf("markup.heading.multi") && t.each(e.lines[n - 1], function(e) {
@@ -28903,8 +28921,15 @@ function() {
   s.scroll(function() {
    void 0 !== Z && (Y.previewScrollTop = s.scrollTop());
   });
-  var h, p = new Markdown.Converter();
-  K = window.lightMode ? new Markdown.EditorLight(p) : new Markdown.Editor(p, void 0, {
+  var h = new Markdown.Converter(), p = {
+   _DoItalicsAndBold: function(e) {
+    return e = e.replace(/(\*\*|__)(?=\S)(.+?[*_]*)(?=\S)\1/g, "<strong>$2</strong>"), 
+    e = e.replace(/(\*|_)(?=\S)(.+?)(?=\S)\1/g, "<em>$2</em>");
+   }
+  };
+  h.setOptions(p);
+  var f;
+  K = window.lightMode ? new Markdown.EditorLight(h) : new Markdown.Editor(h, void 0, {
    keyStrokes: c.getPagedownKeyStrokes()
   }), K.hooks.set("insertLinkDialog", function(t) {
    return T.insertLinkCallback = t, r.resetModalInputs(), e(".modal-insert-link").modal(), 
@@ -28912,7 +28937,7 @@ function() {
   }), K.hooks.set("insertImageDialog", function(t) {
    return T.insertLinkCallback = t, T.catchModal ? !0 : (r.resetModalInputs(), e(".modal-insert-image").modal(), 
    !0);
-  }), h = a.lazyRendering === !0 ? function(e) {
+  }), f = a.lazyRendering === !0 ? function(e) {
    var n = t.debounce(e, 500);
    return function() {
     void 0 === Z ? (e(), l.onFileOpen(Y), s.scrollTop(Y.previewScrollTop), window.lightMode ? X.scrollTop(Y.editorScrollTop) : t.defer(function() {
@@ -28926,18 +28951,18 @@ function() {
     })), i();
    };
   }, l.onPagedownConfigure(K), K.hooks.chain("onPreviewRefresh", l.onAsyncPreview), 
-  window.lightMode ? (K.run(h), K.undoManager.reinit(o, Y.editorStart, Y.editorEnd, Y.editorScrollTop), 
-  X.focus()) : (K.run(j, h), j.selection.setSelectionRange(Y.editorSelectRange), j.focus()), 
+  window.lightMode ? (K.run(f), K.undoManager.reinit(o, Y.editorStart, Y.editorEnd, Y.editorScrollTop), 
+  X.focus()) : (K.run(j, f), j.selection.setSelectionRange(Y.editorSelectRange), j.focus()), 
   e(".wmd-button-row li").addClass("btn btn-success").css("left", 0).find("span").hide();
-  var f = e(".wmd-button-group1");
-  e("#wmd-bold-button").append(e('<i class="icon-bold">')).appendTo(f), e("#wmd-italic-button").append(e('<i class="icon-italic">')).appendTo(f), 
-  f = e(".wmd-button-group2"), e("#wmd-link-button").append(e('<i class="icon-globe">')).appendTo(f), 
-  e("#wmd-quote-button").append(e('<i class="icon-indent-right">')).appendTo(f), e("#wmd-code-button").append(e('<i class="icon-code">')).appendTo(f), 
-  e("#wmd-image-button").append(e('<i class="icon-picture">')).appendTo(f), f = e(".wmd-button-group3"), 
-  e("#wmd-olist-button").append(e('<i class="icon-list-numbered">')).appendTo(f), 
-  e("#wmd-ulist-button").append(e('<i class="icon-list-bullet">')).appendTo(f), e("#wmd-heading-button").append(e('<i class="icon-text-height">')).appendTo(f), 
-  e("#wmd-hr-button").append(e('<i class="icon-ellipsis">')).appendTo(f), f = e(".wmd-button-group4"), 
-  e("#wmd-undo-button").append(e('<i class="icon-reply">')).appendTo(f), e("#wmd-redo-button").append(e('<i class="icon-forward">')).appendTo(f);
+  var g = e(".wmd-button-group1");
+  e("#wmd-bold-button").append(e('<i class="icon-bold">')).appendTo(g), e("#wmd-italic-button").append(e('<i class="icon-italic">')).appendTo(g), 
+  g = e(".wmd-button-group2"), e("#wmd-link-button").append(e('<i class="icon-globe">')).appendTo(g), 
+  e("#wmd-quote-button").append(e('<i class="icon-indent-right">')).appendTo(g), e("#wmd-code-button").append(e('<i class="icon-code">')).appendTo(g), 
+  e("#wmd-image-button").append(e('<i class="icon-picture">')).appendTo(g), g = e(".wmd-button-group3"), 
+  e("#wmd-olist-button").append(e('<i class="icon-list-numbered">')).appendTo(g), 
+  e("#wmd-ulist-button").append(e('<i class="icon-list-bullet">')).appendTo(g), e("#wmd-heading-button").append(e('<i class="icon-text-height">')).appendTo(g), 
+  e("#wmd-hr-button").append(e('<i class="icon-ellipsis">')).appendTo(g), g = e(".wmd-button-group4"), 
+  e("#wmd-undo-button").append(e('<i class="icon-reply">')).appendTo(g), e("#wmd-redo-button").append(e('<i class="icon-forward">')).appendTo(g);
  };
  var ot, rt;
  T.redirectConfirm = function(t, n, i) {
@@ -29561,10 +29586,12 @@ function() {
  }
  function d(e) {
   e.onRun(function() {
-   return b === !0 ? (g = !1, e.error(new Error("Operation not available in offline mode.|stopPublish")), 
-   void 0) : g === !0 ? (e.chain(), void 0) : (window.delayedFunction = function() {
+   return y === !0 ? (m = !1, e.error(new Error("Operation not available in offline mode.|stopPublish")), 
+   void 0) : m === !0 ? (e.chain(), void 0) : (window.delayedFunction = function() {
     gapi.load("client,drive-realtime", function() {
-     g = !0, e.chain();
+     gapi.client.load("drive", "v2", function() {
+      m = !0, e.chain();
+     });
     });
    }, t.ajax({
     url: "https://apis.google.com/js/api.js?onload=runDelayedFunction",
@@ -29575,85 +29602,85 @@ function() {
      code: t.status,
      message: t.statusText
     };
-    p(n, e);
+    f(n, e);
    }), void 0);
   });
  }
  function h(o, r, s) {
-  var a = m[s];
-  a || (a = new u(s), m[s] = a), o.onRun(function() {
+  var a = v[s];
+  a || (a = new u(s), v[s] = a), o.onRun(function() {
    function s() {
-    return gapi.client.drive ? (o.chain(), void 0) : (gapi.client.load("drive", "v2", function() {
-     o.chain();
-    }), void 0);
-   }
-   function l() {
     t.ajax({
      url: "https://www.googleapis.com/oauth2/v1/tokeninfo",
      data: {
-      access_token: gapi.auth.getToken().access_token
+      access_token: d.access_token
      },
      timeout: n.AJAX_TIMEOUT,
      type: "GET"
     }).done(function(e) {
-     a.getUserId() && a.getUserId() != e.user_id ? d() : (a.setUserId(e.user_id), a.add(r), 
-     a.token = gapi.auth.getToken(), o.chain(s));
+     a.getUserId() && a.getUserId() != e.user_id ? u() : (a.setUserId(e.user_id), a.add(r), 
+     a.token = d, o.chain());
     }).fail(function(e) {
      var t = {
       code: e.status,
       message: e.statusText
      };
-     p(t, o);
+     f(t, o);
     });
    }
-   function c() {
-    if (f > 5) return o.error(new Error("Unable to authenticate user " + a.getUserId() + ", please sign in with Google.")), 
+   function l() {
+    if (g > 5) return o.error(new Error("Unable to authenticate user " + a.getUserId() + ", please sign in with Google.")), 
     void 0;
     h === !1 && (o.timeout = n.ASYNC_TASK_LONG_TIMEOUT);
-    var t = e.chain(y).pick(a.getListWithNew(r)).flatten().value();
+    var t = e.chain(w).pick(a.getListWithNew(r)).flatten().value();
     gapi.auth.authorize({
      client_id: n.GOOGLE_CLIENT_ID,
      scope: t,
      immediate: h,
-     authuser: h === !1 ? "" : f
+     authuser: h === !1 ? "" : g
     }, function(e) {
-     !e || e.error ? g === !0 && h === !0 ? (h = !1, o.chain(u)) : o.error(new Error("Access to Google account is not authorized.")) : (h === !0 && f++, 
-     o.chain(l));
+     d = gapi.auth.getToken(), gapi.auth.setToken(p), !e || e.error ? m === !0 && h === !0 ? (h = !1, 
+     o.chain(c)) : o.error(new Error("Access to Google account is not authorized.")) : (h === !0 && g++, 
+     o.chain(s));
     });
    }
-   function u() {
-    return h === !0 ? (o.chain(c), void 0) : (i.redirectConfirm("You are being redirected to <strong>Google</strong> authorization page.", function() {
-     o.chain(c);
+   function c() {
+    return h === !0 ? (o.chain(l), void 0) : (i.redirectConfirm("You are being redirected to <strong>Google</strong> authorization page.", function() {
+     o.chain(l);
     }, function() {
      o.error(new Error("Operation canceled."));
     }), void 0);
    }
-   function d() {
-    return h = !0, a.token && a.isAuthorized(r) ? (gapi.auth.setToken(a.token), o.chain(), 
-    void 0) : (a.getUserId() || (h = !1), o.chain(u), void 0);
+   function u() {
+    return h = !0, a.token && a.isAuthorized(r) ? (o.chain(), void 0) : (a.getUserId() || (h = !1), 
+    o.chain(c), void 0);
    }
-   var h, f = 0;
-   d();
+   var d, h, p = gapi.auth.getToken(), g = 0;
+   u();
   });
  }
- function p(t, n) {
+ function p(e, t) {
+  var n = gapi.auth.getToken(), i = v[e];
+  gapi.auth.setToken(i.token), t(), gapi.auth.setToken(n);
+ }
+ function f(t, n) {
   var o;
   if (t) if (s.error(t), "string" == typeof t) o = t; else {
    if (o = "Google error (" + t.code + ": " + t.message + ").", t.code >= 500 && t.code < 600) return n.retry(new Error(o)), 
    void 0;
-   if (401 === t.code || 403 === t.code || "token_refresh_required" == t.code) return e.each(m, function(e) {
+   if (401 === t.code || 403 === t.code || "token_refresh_required" == t.code) return e.each(v, function(e) {
     e.setRefreshFlag();
    }), o = "Access to Google account is not authorized.", n.retry(new Error(o), 1), 
    void 0;
-   (0 === t.code || -1 === t.code) && (g = !1, e.each(m, function(e) {
+   (0 === t.code || -1 === t.code) && (m = !1, e.each(v, function(e) {
     e.setRefreshFlag();
    }), i.setOffline(), o = "|stopPublish");
   }
   n.error(new Error(o));
  }
- function f(e) {
+ function g(e) {
   e.onRun(function() {
-   return w === !0 ? (e.chain(), void 0) : (t.ajax({
+   return x === !0 ? (e.chain(), void 0) : (t.ajax({
     url: "//www.google.com/jsapi",
     data: {
      key: n.GOOGLE_API_KEY
@@ -29665,34 +29692,34 @@ function() {
      callback: function() {
       e.chain();
      }
-    }), w = !0;
+    }), x = !0;
    }).fail(function(t) {
     var n = {
      code: t.status,
      message: t.statusText
     };
-    p(n, e);
+    f(n, e);
    }), void 0);
   });
  }
- var g = !1, m = {}, v = {}, b = !1;
+ var m = !1, v = {}, b = {}, y = !1;
  l.addListener("onOfflineChanged", function(e) {
-  b = e;
+  y = e;
  });
- var y = {
+ var w = {
   profile: [ "https://www.googleapis.com/auth/userinfo.profile" ],
   gdrive: [ "https://www.googleapis.com/auth/drive.install", a.gdriveFullAccess === !0 ? "https://www.googleapis.com/auth/drive" : "https://www.googleapis.com/auth/drive.file" ],
   blogger: [ "https://www.googleapis.com/auth/blogger" ],
   picasa: [ "https://picasaweb.google.com/data/" ]
  };
- v.refreshGdriveToken = function(e) {
+ b.refreshGdriveToken = function(e) {
   var t = new c();
   d(t);
-  var n = m[e];
+  var n = v[e];
   n && n.setRefreshFlag(), h(t, "gdrive", e), t.enqueue();
- }, v.upload = function(e, t, n, i, s, a, l, u) {
-  var f, g = new c();
-  d(g), h(g, "gdrive", l), g.onRun(function() {
+ }, b.upload = function(e, t, n, i, s, a, l, u) {
+  var g, m = new c();
+  d(m), h(m, "gdrive", l), m.onRun(function() {
    var a = "-------314159265358979323846", c = "\r\n--" + a + "\r\n", u = "\r\n--" + a + "--";
    s = s || "text/x-markdown";
    var d = {
@@ -29703,164 +29730,174 @@ function() {
     kind: "drive#fileLink",
     id: t
    } ]);
-   var h = "/upload/drive/v2/files", m = "POST";
-   e && (h += "/" + e, m = "PUT");
-   var v = {
+   var h = "/upload/drive/v2/files", v = "POST";
+   e && (h += "/" + e, v = "PUT");
+   var b = {
     "Content-Type": 'multipart/mixed; boundary="' + a + '"'
-   }, b = o.encodeBase64(i), y = [ c, "Content-Type: application/json\r\n\r\n", JSON.stringify(d), c, "Content-Type: ", s, "\r\n", "Content-Transfer-Encoding: base64\r\n", "\r\n", b, u ].join(""), w = gapi.client.request({
-    path: h,
-    method: m,
-    params: {
-     uploadType: "multipart"
-    },
-    headers: v,
-    body: y
+   }, y = o.encodeBase64(i), w = [ c, "Content-Type: application/json\r\n\r\n", JSON.stringify(d), c, "Content-Type: ", s, "\r\n", "Content-Transfer-Encoding: base64\r\n", "\r\n", y, u ].join("");
+   p(l, function() {
+    var t = gapi.client.request({
+     path: h,
+     method: v,
+     params: {
+      uploadType: "multipart"
+     },
+     headers: b,
+     body: w
+    });
+    t.execute(function(t) {
+     if (t && t.id) return g = t, g.content = i, m.chain(), void 0;
+     var n = t.error;
+     void 0 !== n && void 0 !== e && (404 === n.code ? n = 'File ID "' + e + '" not found on Google Drive.|removePublish' : 412 === n.code && (r.removeItem(l + ".gdrive.lastChangeId"), 
+     n = 'Conflict on file ID "' + e + '". Please restart the synchronization.')), f(n, m);
+    });
    });
-   w.execute(function(t) {
-    if (t && t.id) return f = t, f.content = i, g.chain(), void 0;
-    var n = t.error;
-    void 0 !== n && void 0 !== e && (404 === n.code ? n = 'File ID "' + e + '" not found on Google Drive.|removePublish' : 412 === n.code && (r.removeItem(l + ".gdrive.lastChangeId"), 
-    n = 'Conflict on file ID "' + e + '". Please restart the synchronization.')), p(n, g);
-   });
-  }), g.onSuccess(function() {
-   u(void 0, f);
-  }), g.onError(function(e) {
+  }), m.onSuccess(function() {
+   u(void 0, g);
+  }), m.onError(function(e) {
    u(e);
-  }), g.enqueue();
- }, v.rename = function(e, t, n, i) {
+  }), m.enqueue();
+ }, b.rename = function(e, t, n, i) {
   var o, r = new c();
   d(r), h(r, "gdrive", n), r.onRun(function() {
-   var n = {
+   var i = {
     title: t
-   }, i = gapi.client.drive.files.patch({
-    fileId: e,
-    resource: n
-   });
-   i.execute(function(t) {
-    if (t && t.id) return o = t, r.chain(), void 0;
-    var n = t.error;
-    void 0 !== n && void 0 !== e && 404 === n.code && (n = 'File ID "' + e + '" not found on Google Drive.|removePublish'), 
-    p(n, r);
+   };
+   p(n, function() {
+    var t = gapi.client.drive.files.patch({
+     fileId: e,
+     resource: i
+    });
+    t.execute(function(t) {
+     if (t && t.id) return o = t, r.chain(), void 0;
+     var n = t.error;
+     void 0 !== n && void 0 !== e && 404 === n.code && (n = 'File ID "' + e + '" not found on Google Drive.|removePublish'), 
+     f(n, r);
+    });
    });
   }), r.onSuccess(function() {
    i(void 0, o);
   }), r.onError(function(e) {
    i(e);
   }), r.enqueue();
- }, v.createRealtimeFile = function(e, t, n, i) {
+ }, b.createRealtimeFile = function(e, t, n, i) {
   var o, r = new c();
   d(r), h(r, "gdrive", n), r.onRun(function() {
-   var n = {
+   var i = {
     title: t,
     mimeType: "application/vnd.google-apps.drive-sdk"
    };
-   void 0 !== e && (n.parents = [ {
+   void 0 !== e && (i.parents = [ {
     kind: "drive#fileLink",
     id: e
-   } ]);
-   var i = gapi.client.drive.files.insert({
-    resource: n
-   });
-   i.execute(function(e) {
-    return e && e.id ? (o = e, r.chain(), void 0) : (p(e.error, r), void 0);
+   } ]), p(n, function() {
+    var e = gapi.client.drive.files.insert({
+     resource: i
+    });
+    e.execute(function(e) {
+     return e && e.id ? (o = e, r.chain(), void 0) : (f(e.error, r), void 0);
+    });
    });
   }), r.onSuccess(function() {
    i(void 0, o);
   }), r.onError(function(e) {
    i(e);
   }), r.enqueue();
- }, v.checkChanges = function(e, t, n) {
+ }, b.checkChanges = function(e, t, n) {
   var i = [], o = e || 0, r = new c();
   d(r), h(r, "gdrive", t), r.onRun(function() {
    function e() {
-    var n;
-    n = void 0 === t ? gapi.client.drive.changes.list({
-     startChangeId: o + 1
-    }) : gapi.client.drive.changes.list({
-     pageToken: t
-    }), n.execute(function(n) {
-     return n && n.largestChangeId ? (o = n.largestChangeId, t = n.nextPageToken, void 0 !== n.items && (i = i.concat(n.items)), 
-     void 0 !== t ? r.chain(e) : r.chain(), void 0) : (p(n.error, r), void 0);
+    p(t, function() {
+     var t;
+     t = void 0 === n ? gapi.client.drive.changes.list({
+      startChangeId: o + 1
+     }) : gapi.client.drive.changes.list({
+      pageToken: n
+     }), t.execute(function(t) {
+      return t && t.largestChangeId ? (o = t.largestChangeId, n = t.nextPageToken, void 0 !== t.items && (i = i.concat(t.items)), 
+      void 0 !== n ? r.chain(e) : r.chain(), void 0) : (f(t.error, r), void 0);
+     });
     });
    }
-   var t;
+   var n;
    r.chain(e);
   }), r.onSuccess(function() {
    n(void 0, i, o);
   }), r.onError(function(e) {
    n(e);
   }), r.enqueue();
- }, v.downloadMetadata = function(e, i, o, r) {
+ }, b.downloadMetadata = function(e, i, o, r) {
   var s = [], a = new c();
   d(a), r || h(a, "gdrive", i), a.onRun(function() {
-   function i() {
+   function o() {
     if (0 === e.length) return a.chain(), void 0;
-    var o = e[0], r = {}, l = gapi.auth.getToken();
-    l && (r.Authorization = "Bearer " + l.access_token), t.ajax({
-     url: "https://www.googleapis.com/drive/v2/files/" + o,
-     headers: r,
+    var r = e[0], l = {}, c = v[i];
+    c && c.token && (l.Authorization = "Bearer " + c.token.access_token), t.ajax({
+     url: "https://www.googleapis.com/drive/v2/files/" + r,
+     headers: l,
      data: {
       key: n.GOOGLE_API_KEY
      },
      dataType: "json",
      timeout: n.AJAX_TIMEOUT
     }).done(function(t) {
-     s.push(t), e.shift(), a.chain(i);
+     s.push(t), e.shift(), a.chain(o);
     }).fail(function(e) {
      var t = {
       code: e.status,
       message: e.statusText
      };
-     404 === t.code && (t = 'File ID "' + o + '" not found on Google Drive.'), p(t, a);
+     404 === t.code && (t = 'File ID "' + r + '" not found on Google Drive.'), f(t, a);
     });
    }
-   a.chain(i);
+   a.chain(o);
   }), a.onSuccess(function() {
    o(void 0, s);
   }), a.onError(function(e) {
    o(e);
   }), a.enqueue();
- }, v.downloadContent = function(e, i, o, r) {
+ }, b.downloadContent = function(e, i, o, r) {
   var s = [], a = new c();
   a.timeout = n.ASYNC_TASK_LONG_TIMEOUT, d(a), r || h(a, "gdrive", i), a.onRun(function() {
-   function i() {
+   function o() {
     if (0 === e.length) return a.chain(), void 0;
-    var o = e[0];
-    s.push(o);
-    var r;
-    if ("drive#file" == o.kind ? r = o : "drive#change" == o.kind && (r = o.file), !r) return e.shift(), 
-    a.chain(i), void 0;
-    if (0 === r.mimeType.indexOf("application/vnd.google-apps.drive-sdk")) return r.content = "", 
-    r.isRealtime = !0, e.shift(), a.chain(i), void 0;
-    var l = {}, c = gapi.auth.getToken();
-    c && (l.Authorization = "Bearer " + c.access_token), t.ajax({
-     url: r.downloadUrl,
-     headers: l,
+    var r = e[0];
+    s.push(r);
+    var l;
+    if ("drive#file" == r.kind ? l = r : "drive#change" == r.kind && (l = r.file), !l) return e.shift(), 
+    a.chain(o), void 0;
+    if (0 === l.mimeType.indexOf("application/vnd.google-apps.drive-sdk")) return l.content = "", 
+    l.isRealtime = !0, e.shift(), a.chain(o), void 0;
+    var c = {}, u = v[i];
+    u && u.token && (c.Authorization = "Bearer " + u.token.access_token), t.ajax({
+     url: l.downloadUrl,
+     headers: c,
      data: {
       key: n.GOOGLE_API_KEY
      },
      dataType: "text",
      timeout: n.AJAX_TIMEOUT
     }).done(function(t) {
-     r.content = t, e.shift(), a.chain(i);
+     l.content = t, e.shift(), a.chain(o);
     }).fail(function(e) {
      var t = {
       code: e.status,
       message: e.statusText
      };
-     p(t, a);
+     f(t, a);
     });
    }
-   a.chain(i);
+   a.chain(o);
   }), a.onSuccess(function() {
    o(void 0, s);
   }), a.onError(function(e) {
    o(e);
   }), a.enqueue();
- }, v.loadRealtime = function(e, t, n, i, o) {
+ }, b.loadRealtime = function(e, t, n, i, o) {
   var r, s = new c();
   d(s), h(s, "gdrive", n), s.onRun(function() {
-   gapi.drive.realtime.load(e, function(e) {
+   var i = v[n];
+   gapi.auth.setToken(i.token), gapi.drive.realtime.load(e, function(e) {
     r = e, s.chain();
    }, function(e) {
     var n = e.createString(t);
@@ -29873,15 +29910,15 @@ function() {
   }), s.onError(function(e) {
    i(e);
   }), s.enqueue();
- }, v.uploadImg = function(e, i, o, r) {
-  var s, a = new c();
-  d(a), h(a, "picasa", "google.picasa0"), a.onRun(function() {
+ }, b.uploadImg = function(e, i, o, r) {
+  var s, a = "google.picasa0", l = new c();
+  d(l), h(l, "picasa", a), l.onRun(function() {
    var r = {
     Slug: e
    };
    e.match(/.jpe?g$/i) ? r["Content-Type"] = "image/jpeg" : e.match(/.png$/i) ? r["Content-Type"] = "image/png" : e.match(/.gif$/i) && (r["Content-Type"] = "image/gif");
-   var l = gapi.auth.getToken();
-   l && (r.Authorization = "Bearer " + l.access_token), t.ajax({
+   var c = v[a];
+   c && c.token && (r.Authorization = "Bearer " + c.token.access_token), t.ajax({
     url: n.PICASA_PROXY_URL + "upload/" + o,
     headers: r,
     data: i,
@@ -29890,42 +29927,42 @@ function() {
     timeout: n.AJAX_TIMEOUT,
     type: "POST"
    }).done(function(e) {
-    s = e, a.chain();
+    s = e, l.chain();
    }).fail(function(e) {
     var t = {
      code: e.status,
      message: e.statusText
     };
-    200 == t.code && (t.message = e.responseText), p(t, a);
+    200 == t.code && (t.message = e.responseText), f(t, l);
    });
-  }), a.onSuccess(function() {
+  }), l.onSuccess(function() {
    r(void 0, s);
-  }), a.onError(function(e) {
+  }), l.onError(function(e) {
    r(e);
-  }), a.enqueue();
+  }), l.enqueue();
  };
- var w = !1;
- return v.picker = function(e, i, r) {
+ var x = !1;
+ return b.picker = function(e, i, r) {
   function s() {
    void 0 !== a && (a.setVisible(!1), t(".modal-backdrop, .picker").remove());
   }
   var a, l = [], u = new c();
   u.timeout = n.ASYNC_TASK_LONG_TIMEOUT, d(u), ("doc" == i || "folder" == i) && h(u, "gdrive", r), 
-  f(u), u.onRun(function() {
-   var e = new google.picker.PickerBuilder();
-   e.setAppId(n.GOOGLE_DRIVE_APP_ID);
-   var r;
-   "doc" == i ? (r = new google.picker.DocsView(google.picker.ViewId.DOCS), r.setParent("root"), 
-   r.setIncludeFolders(!0), r.setMimeTypes([ "text/x-markdown", "text/plain", "application/octet-stream", "application/vnd.google-apps.drive-sdk." + n.GOOGLE_DRIVE_APP_ID ].join(",")), 
-   e.enableFeature(google.picker.Feature.NAV_HIDDEN), e.enableFeature(google.picker.Feature.MULTISELECT_ENABLED), 
-   e.addView(r), e.setOAuthToken(gapi.auth.getToken().access_token)) : "folder" == i ? (r = new google.picker.DocsView(google.picker.ViewId.FOLDERS), 
-   r.setParent("root"), r.setIncludeFolders(!0), r.setSelectFolderEnabled(!0), r.setMimeTypes("application/vnd.google-apps.folder"), 
-   e.enableFeature(google.picker.Feature.NAV_HIDDEN), e.addView(r), e.setOAuthToken(gapi.auth.getToken().access_token)) : "img" == i && (r = new google.picker.PhotosView(), 
-   r.setType("flat"), e.addView(r), r = new google.picker.PhotosView(), r.setType("ofuser"), 
-   e.addView(r), e.addView(google.picker.ViewId.PHOTO_UPLOAD)), e.setCallback(function(e) {
+  g(u), u.onRun(function() {
+   var e = v[r], c = new google.picker.PickerBuilder();
+   c.setAppId(n.GOOGLE_DRIVE_APP_ID);
+   var d;
+   "doc" == i ? (d = new google.picker.DocsView(google.picker.ViewId.DOCS), d.setParent("root"), 
+   d.setIncludeFolders(!0), d.setMimeTypes([ "text/x-markdown", "text/plain", "application/octet-stream", "application/vnd.google-apps.drive-sdk." + n.GOOGLE_DRIVE_APP_ID ].join(",")), 
+   c.enableFeature(google.picker.Feature.NAV_HIDDEN), c.enableFeature(google.picker.Feature.MULTISELECT_ENABLED), 
+   c.addView(d), e && e.token && c.setOAuthToken(e.token.access_token)) : "folder" == i ? (d = new google.picker.DocsView(google.picker.ViewId.FOLDERS), 
+   d.setParent("root"), d.setIncludeFolders(!0), d.setSelectFolderEnabled(!0), d.setMimeTypes("application/vnd.google-apps.folder"), 
+   c.enableFeature(google.picker.Feature.NAV_HIDDEN), c.addView(d), e && e.token && c.setOAuthToken(e.token.access_token)) : "img" == i && (d = new google.picker.PhotosView(), 
+   d.setType("flat"), c.addView(d), d = new google.picker.PhotosView(), d.setType("ofuser"), 
+   c.addView(d), c.addView(google.picker.ViewId.PHOTO_UPLOAD)), c.setCallback(function(e) {
     (e.action == google.picker.Action.PICKED || e.action == google.picker.Action.CANCEL) && (e.action == google.picker.Action.PICKED && (l = e.docs), 
     s(), u.chain());
-   }), a = e.build(), t(o.createBackdrop()).click(function() {
+   }), a = c.build(), t(o.createBackdrop()).click(function() {
     s(), u.chain();
    }), a.setVisible(!0);
   }), u.onSuccess(function() {
@@ -29933,9 +29970,9 @@ function() {
   }), u.onError(function(t) {
    s(), e(t);
   }), u.enqueue();
- }, v.uploadBlogger = function(e, i, o, r, s, a, l, u, f) {
-  var g = new c();
-  d(g), h(g, "blogger", "google.blogger0"), g.onRun(function() {
+ }, b.uploadBlogger = function(e, i, o, r, s, a, l, u, p) {
+  var g = "google.blogger0", m = new c();
+  d(m), h(m, "blogger", g), m.onRun(function() {
    function c() {
     var e = "https://www.googleapis.com/blogger/v3/blogs/" + i + "/posts/", s = {
      kind: "blogger#post",
@@ -29949,20 +29986,20 @@ function() {
     void 0 !== o && (e += o, s.id = o, a = "PUT"), t.ajax({
      url: e,
      data: JSON.stringify(s),
-     headers: f,
+     headers: p,
      type: a,
      contentType: "application/json",
      dataType: "json",
      timeout: n.AJAX_TIMEOUT
     }).done(function(e) {
-     o = e.id, g.chain(d);
+     o = e.id, m.chain(d);
     }).fail(function(e) {
      var t = {
       code: e.status,
       message: e.statusText
      };
      404 === t.code && void 0 !== o && (t = "Post " + o + " not found on Blogger.|removePublish"), 
-     p(t, g);
+     f(t, m);
     });
    }
    function d() {
@@ -29970,50 +30007,50 @@ function() {
     s ? e += "/revert" : (e += "/publish", a && (e += "?publishDate=" + a.toISOString())), 
     t.ajax({
      url: e,
-     headers: f,
+     headers: p,
      type: "POST",
      dataType: "json",
      timeout: n.AJAX_TIMEOUT
     }).done(function() {
-     g.chain();
+     m.chain();
     }).fail(function(e) {
      var t = {
       code: e.status,
       message: e.statusText
      };
-     404 === t.code && (t = "Post " + o + " not found on Blogger.|removePublish"), p(t, g);
+     404 === t.code && (t = "Post " + o + " not found on Blogger.|removePublish"), f(t, m);
     });
    }
    function h() {
-    return void 0 !== i ? (g.chain(c), void 0) : (t.ajax({
+    return void 0 !== i ? (m.chain(c), void 0) : (t.ajax({
      url: "https://www.googleapis.com/blogger/v3/blogs/byurl",
      data: {
       url: e
      },
-     headers: f,
+     headers: p,
      dataType: "json",
      timeout: n.AJAX_TIMEOUT
     }).done(function(e) {
-     i = e.id, g.chain(c);
+     i = e.id, m.chain(c);
     }).fail(function(t) {
      var n = {
       code: t.status,
       message: t.statusText
      };
      404 === n.code && (n = 'Blog "' + e + '" not found on Blogger.|removePublish'), 
-     p(n, g);
+     f(n, m);
     }), void 0);
    }
-   var f = {}, m = gapi.auth.getToken();
-   m && (f.Authorization = "Bearer " + m.access_token), g.chain(h);
-  }), g.onSuccess(function() {
-   f(void 0, i, o);
-  }), g.onError(function(e) {
-   f(e);
-  }), g.enqueue();
+   var p = {}, b = v[g];
+   b && b.token && (p.Authorization = "Bearer " + b.token.access_token), m.chain(h);
+  }), m.onSuccess(function() {
+   p(void 0, i, o);
+  }), m.onError(function(e) {
+   p(e);
+  }), m.enqueue();
  }, window.delayedFunction = void 0, window.runDelayedFunction = function() {
   void 0 !== window.delayedFunction && window.delayedFunction();
- }, v;
+ }, b;
 }), define("text!html/dialogExportGdrive.html", [], function() {
  return '<div class="modal-dialog">\n	<div class="modal-content">\n\n		<div class="modal-header">\n			<button type="button" class="close" data-dismiss="modal"\n				aria-hidden="true">&times;</button>\n			<h3 class="modal-title">Export to <%= providerName %></h3>\n		</div>\n		<div class="modal-body">\n			<p>\n				This will save "<span class="file-title"></span>" to your <i\n					class="icon-provider-<%= providerId %>"></i>\n				<code><%= providerName %></code>\n				account and keep it synchronized.\n			</p>\n			<div class="collapse form-horizontal sync-export-<%= providerId %>-options-collapse">\n				<div class="form-group">\n					<label class="col-lg-3 control-label"\n						for="input-sync-export-<%= providerId %>-parentid">Folder ID\n						(optional)</label>\n					<div class="col-lg-8">\n						<div class="input-group">\n							<input type="text" id="input-sync-export-<%= providerId %>-parentid"\n								placeholder="FolderID" class="form-control">\n							<div class="input-group-btn">\n								<a class="btn btn-link export-<%= providerId %>-choose-folder"\n									title="Choose folder" data-dismiss="modal"><i\n									class="icon-folder-open"></i></a>\n							</div>\n						</div>\n						<span class="help-block"> If no folder ID is supplied, the\n							file will be created in your root folder. </span>\n					</div>\n				</div>\n				<div class="form-group">\n					<div class="col-lg-3 control-label"></div>\n					<div class="col-lg-8">\n						<label> <input id="input-sync-export-<%= providerId %>-realtime"\n							type="checkbox"> Create a real time collaborative\n							document\n						</label>\n						<span class="help-block"> Collaborative documents cannot be open outside\n						StackEdit nor have multiple synchronized locations. </span>\n					</div>\n				</div>\n				<div class="form-group">\n					<label class="col-lg-3 control-label"\n						for="input-sync-export-<%= providerId %>-fileid">Existing file ID\n						(optional)</label>\n					<div class="col-lg-8">\n						<input type="text" id="input-sync-export-<%= providerId %>-fileid"\n							placeholder="FileID" class="form-control"> <span\n							class="help-block"> This will overwrite the existing file\n							on the server. </span>\n					</div>\n				</div>\n			</div>\n			<p class="align-right"><a href="#" data-toggle="collapse" data-target=".sync-export-<%= providerId %>-options-collapse">Options...</a></p>\n			<blockquote>\n				<b>Tip:</b> You can move or rename the file afterwards within Google\n						Drive.\n			</blockquote>\n		</div>\n		<div class="modal-footer">\n			<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n			<a href="#" data-dismiss="modal"\n				class="btn btn-primary action-sync-export-<%= providerId %>">OK</a>\n		</div>\n	</div>\n</div>\n';
 }), define("providers/gdriveProviderBuilder", [ "jquery", "underscore", "constants", "utils", "storage", "logger", "classes/Provider", "settings", "eventMgr", "fileMgr", "helpers/googleHelper", "text!html/dialogExportGdrive.html" ], function(e, t, n, i, o, r, s, a, l, c, u, d) {
@@ -30098,16 +30135,16 @@ function() {
       var t = e.syncAttributes, n = t.syncIndex, o = c.getFileFromSyncIndex(n);
       if (void 0 !== o) {
        var r = o.title;
-       if (e.deleted === !0) return l.onError('"' + r + '" has been removed from Google Drive.'), 
+       if (e.deleted === !0) return l.onError('"' + r + '" has been removed from ' + p + "."), 
        o.removeSyncLocation(t), l.onSyncRemoved(o, t), t.isRealtime === !0 && c.currentFile === o && y.stopRealtimeSync(), 
        void 0;
-       var s = t.titleCRC != i.crc32(r), a = o.content, u = t.contentCRC != i.crc32(a), d = e.file, h = i.crc32(d.title), p = t.titleCRC != h, f = r != d.title, g = i.crc32(d.content), m = t.contentCRC != g, v = a != d.content;
-       (f === !0 && s === !0 && p === !0 || !t.isRealtime && v === !0 && u === !0 && m === !0) && (c.createFile(r + " (backup)", a), 
+       var s = t.titleCRC != i.crc32(r), a = o.content, u = t.contentCRC != i.crc32(a), d = e.file, h = i.crc32(d.title), f = t.titleCRC != h, g = r != d.title, m = i.crc32(d.content), v = t.contentCRC != m, b = a != d.content;
+       (g === !0 && s === !0 && f === !0 || !t.isRealtime && b === !0 && u === !0 && v === !0) && (c.createFile(r + " (backup)", a), 
        l.onMessage('Conflict detected on "' + r + '". A backup has been created locally.')), 
-       f && p === !0 && (o.title = d.title, l.onTitleChanged(o), l.onMessage('"' + r + '" has been renamed to "' + d.title + '" on Google Drive.')), 
-       !t.isRealtime && v && m === !0 && (o.content = d.content, l.onContentChanged(o), 
-       l.onMessage('"' + d.title + '" has been updated from Google Drive.'), c.currentFile === o && c.selectFile()), 
-       t.etag = d.etag, t.isRealtime || (t.contentCRC = g), t.titleCRC = h, i.storeAttributes(t);
+       g && f === !0 && (o.title = d.title, l.onTitleChanged(o), l.onMessage('"' + r + '" has been renamed to "' + d.title + '" on ' + p + ".")), 
+       !t.isRealtime && b && v === !0 && (o.content = d.content, l.onContentChanged(o), 
+       l.onMessage('"' + d.title + '" has been updated from ' + p + "."), c.currentFile === o && c.selectFile()), 
+       t.etag = d.etag, t.isRealtime || (t.contentCRC = m), t.titleCRC = h, i.storeAttributes(t);
       }
      }), o[b + ".gdrive.lastChangeId"] = s, e(), void 0);
     });
@@ -30181,7 +30218,7 @@ function() {
      });
     }
    }, function(t) {
-    console.error(t), "token_refresh_required" == t.type ? u.refreshGdriveToken(b) : "not_found" == t.type ? (l.onError('"' + e.title + '" has been removed from Google Drive.'), 
+    console.error(t), "token_refresh_required" == t.type ? u.refreshGdriveToken(b) : "not_found" == t.type ? (l.onError('"' + e.title + '" has been removed from ' + p + "."), 
     e.removeSyncLocation(n), l.onSyncRemoved(e, n), y.stopRealtimeSync()) : t.isFatal && (l.onError("An error has forced real time synchronization to stop."), 
     y.stopRealtimeSync());
    });
@@ -30191,33 +30228,35 @@ function() {
    void 0 !== E && (w.uiManager.buttons.undo.execute = x, w.uiManager.buttons.redo.execute = C, 
    w.uiManager.setUndoRedoButtonStates = E, w.uiManager.setUndoRedoButtonStates());
   }, y.isPublishEnabled = a.gdriveMultiAccount > f, l.addListener("onReady", function() {
-   e(".submenu-sync-" + h).toggle(a.gdriveMultiAccount > f), document.querySelector(".modal-upload-" + h).innerHTML = t.template(d, {
+   e(".submenu-sync-" + h).toggle(a.gdriveMultiAccount > f);
+   var r = document.querySelector(".modal-upload-" + h);
+   r && (r.innerHTML = t.template(d, {
     providerId: h,
     providerName: p
-   }), e(".export-" + h + "-choose-folder").click(function() {
+   })), e(".export-" + h + "-choose-folder").click(function() {
     u.picker(function(t, n) {
      t || 0 === n.length || (e(".modal-upload-" + h).modal(), i.setInputValue("#input-sync-export-" + h + "-parentid", n[0].id));
     }, "folder", b);
    });
-   var r = e("#input-sync-export-" + h + "-realtime"), s = e("#input-sync-export-" + h + "-fileid");
+   var s = e("#input-sync-export-" + h + "-realtime"), y = e("#input-sync-export-" + h + "-fileid");
    e("#input-sync-export-" + h + "-realtime").change(function() {
-    s.prop("disabled", r.prop("checked"));
+    y.prop("disabled", s.prop("checked"));
    });
-   var y = i.retrieveIgnoreError(h + ".state");
-   if (void 0 !== y && y.userId == o[b + ".userId"]) if (o.removeItem(h + ".state"), 
-   "create" == y.action) u.upload(void 0, y.folderId, n.GDRIVE_DEFAULT_FILE_TITLE, a.defaultContent, void 0, void 0, b, function(e, t) {
+   var w = i.retrieveIgnoreError(h + ".state");
+   if (void 0 !== w && w.userId == o[b + ".userId"]) if (o.removeItem(h + ".state"), 
+   "create" == w.action) u.upload(void 0, w.folderId, n.GDRIVE_DEFAULT_FILE_TITLE, a.defaultContent, void 0, void 0, b, function(e, t) {
     if (!e) {
      var n = m(t.id, t.etag, t.content, t.title), i = {};
      i[n.syncIndex] = n;
      var o = c.createFile(t.title, t.content, i);
-     c.selectFile(o), l.onMessage('"' + t.title + '" created successfully on Google Drive.');
+     c.selectFile(o), l.onMessage('"' + t.title + '" created successfully on ' + p + ".");
     }
-   }); else if ("open" == y.action) {
-    var w = [];
-    t.each(y.ids, function(e) {
+   }); else if ("open" == w.action) {
+    var x = [];
+    t.each(w.ids, function(e) {
      var t = g(e), n = c.getFileFromSyncIndex(t);
-     void 0 !== n ? n !== c.currentFile && c.selectFile(n) : w.push(e);
-    }), v(w);
+     void 0 !== n ? n !== c.currentFile && c.selectFile(n) : x.push(e);
+    }), v(x);
    }
   }), y;
  };
@@ -30380,105 +30419,107 @@ function() {
    });
   });
  }), a;
-}), define("helpers/githubHelper", [ "jquery", "constants", "core", "utils", "storage", "logger", "eventMgr", "classes/AsyncTask" ], function(e, t, n, i, o, r, s, a) {
- function l(n) {
+}), define("helpers/githubHelper", [ "jquery", "constants", "core", "utils", "storage", "logger", "settings", "eventMgr", "classes/AsyncTask" ], function(e, t, n, i, o, r, s, a, l) {
+ function c(n) {
   n.onRun(function() {
-   return f === !0 ? (d = !1, n.error(new Error("Operation not available in offline mode.|stopPublish")), 
-   void 0) : d === !0 ? (n.chain(), void 0) : (e.ajax({
+   return g === !0 ? (h = !1, n.error(new Error("Operation not available in offline mode.|stopPublish")), 
+   void 0) : h === !0 ? (n.chain(), void 0) : (e.ajax({
     url: "libs/github.js",
     dataType: "script",
     timeout: t.AJAX_TIMEOUT
    }).done(function() {
-    d = !0, n.chain();
+    h = !0, n.chain();
    }).fail(function(e) {
     var t = {
      error: e.status,
      message: e.statusText
     };
-    u(t, n);
+    d(t, n);
    }), void 0);
   });
  }
- function c(r) {
-  var s, a;
+ function u(r) {
+  var a, l;
   r.onRun(function() {
-   function l() {
+   function c() {
     n.redirectConfirm("You are being redirected to <strong>GitHub</strong> authorization page.", function() {
-     r.chain(c);
+     r.chain(u);
     }, function() {
      r.error(new Error("Operation canceled."));
     });
    }
-   function c() {
-    o.removeItem("githubCode"), s = i.popupWindow("html/github-oauth-client.html?client_id=" + t.GITHUB_CLIENT_ID, "stackedit-github-oauth", 960, 600), 
-    s.focus(), a = setInterval(function() {
-     if (s.closed === !0) {
-      if (clearInterval(a), s = void 0, a = void 0, f = o.githubCode, void 0 === f) return r.error(new Error(p)), 
+   function u() {
+    o.removeItem("githubCode");
+    var e = s.githubFullAccess ? "repo,gist" : "public_repo,gist";
+    a = i.popupWindow("html/github-oauth-client.html?client_id=" + t.GITHUB_CLIENT_ID + "&scope=" + e, "stackedit-github-oauth", 960, 600), 
+    a.focus(), l = setInterval(function() {
+     if (a.closed === !0) {
+      if (clearInterval(l), a = void 0, l = void 0, g = o.githubCode, void 0 === g) return r.error(new Error(f)), 
       void 0;
-      o.removeItem("githubCode"), r.chain(u);
+      o.removeItem("githubCode"), r.chain(d);
      }
     }, 500);
    }
-   function u() {
-    e.getJSON(t.GATEKEEPER_URL + "authenticate/" + f, function(e) {
-     void 0 !== e.token ? (d = e.token, o.githubToken = d, h = new Github({
-      token: d,
+   function d() {
+    e.getJSON(t.GATEKEEPER_URL + "authenticate/" + g, function(e) {
+     void 0 !== e.token ? (h = e.token, o.githubToken = h, p = new Github({
+      token: h,
       auth: "oauth"
-     }), r.chain()) : r.error(new Error(p));
+     }), r.chain()) : r.error(new Error(f));
     });
    }
-   if (void 0 !== h) return r.chain(), void 0;
-   var d = o.githubToken;
-   if (void 0 !== d) return h = new Github({
-    token: d,
+   if (void 0 !== p) return r.chain(), void 0;
+   var h = o.githubToken;
+   if (void 0 !== h) return p = new Github({
+    token: h,
     auth: "oauth"
    }), r.chain(), void 0;
-   var p = "Failed to retrieve a token from GitHub.";
+   var f = "Failed to retrieve a token from GitHub.";
    r.timeout = t.ASYNC_TASK_LONG_TIMEOUT;
-   var f;
-   r.chain(l);
+   var g;
+   r.chain(c);
   }), r.onError(function() {
-   void 0 !== a && clearInterval(a), void 0 !== s && s.close();
+   void 0 !== l && clearInterval(l), void 0 !== a && a.close();
   });
  }
- function u(e, t) {
+ function d(e, t) {
   var i;
   if (e) if (r.error(e), "string" == typeof e) i = e; else {
-   if (i = "Could not publish on GitHub.", 401 === e.error || 403 === e.error) return h = void 0, 
+   if (i = "Could not publish on GitHub.", 401 === e.error || 403 === e.error) return p = void 0, 
    o.removeItem("githubToken"), i = "Access to GitHub account is not authorized.", 
    t.retry(new Error(i), 1), void 0;
-   e.error <= 0 && (d = !1, h = void 0, n.setOffline(), i = "|stopPublish");
+   e.error <= 0 && (h = !1, p = void 0, n.setOffline(), i = "|stopPublish");
   }
   t.error(new Error(i));
  }
- var d, h, p = {}, f = !1;
- return s.addListener("onOfflineChanged", function(e) {
-  f = e;
- }), p.upload = function(e, t, n, i, o, r, s) {
-  var d = new a();
-  l(d), c(d), d.onRun(function() {
+ var h, p, f = {}, g = !1;
+ return a.addListener("onOfflineChanged", function(e) {
+  g = e;
+ }), f.upload = function(e, t, n, i, o, r, s) {
+  var a = new l();
+  c(a), u(a), a.onRun(function() {
    function s() {
-    var e = h.getUser();
+    var e = p.getUser();
     e.show(void 0, function(e, n) {
-     return e ? (u(e, d), void 0) : (t = n.login, d.chain(a), void 0);
+     return e ? (d(e, a), void 0) : (t = n.login, a.chain(l), void 0);
     });
    }
-   function a() {
-    var s = h.getRepo(t, e);
+   function l() {
+    var s = p.getRepo(t, e);
     s.write(n, i, o, r, function(e) {
-     return e ? (u(e, d), void 0) : (d.chain(), void 0);
+     return e ? (d(e, a), void 0) : (a.chain(), void 0);
     });
    }
-   t ? d.chain(a) : d.chain(s);
-  }), d.onSuccess(function() {
+   t ? a.chain(l) : a.chain(s);
+  }), a.onSuccess(function() {
    s();
-  }), d.onError(function(e) {
+  }), a.onError(function(e) {
    s(e);
-  }), d.enqueue();
- }, p.uploadGist = function(e, t, n, i, o, r) {
-  var s = new a();
-  l(s), c(s), s.onRun(function() {
-   var r = h.getGist(e), a = {};
+  }), a.enqueue();
+ }, f.uploadGist = function(e, t, n, i, o, r) {
+  var s = new l();
+  c(s), u(s), s.onRun(function() {
+   var r = p.getGist(e), a = {};
    a[t] = {
     content: o
    };
@@ -30489,16 +30530,16 @@ function() {
     files: a
    }, function(t, n) {
     return t ? (404 === t.error && void 0 !== e && (t = "Gist " + e + " not found on GitHub.|removePublish"), 
-    u(t, s), void 0) : (e = n.id, s.chain(), void 0);
+    d(t, s), void 0) : (e = n.id, s.chain(), void 0);
    });
   }), s.onSuccess(function() {
    r(void 0, e);
   }), s.onError(function(e) {
    r(e);
   }), s.enqueue();
- }, p.downloadGist = function(e, t, n) {
-  var i = new a(!0);
-  l(i);
+ }, f.downloadGist = function(e, t, n) {
+  var i = new l(!0);
+  c(i);
   var o, r;
   i.onRun(function() {
    var n = new Github({}), s = n.getGist(e);
@@ -30514,7 +30555,7 @@ function() {
   }), i.onError(function(e) {
    n(e);
   }), i.enqueue();
- }, p;
+ }, f;
 }), define("providers/gistProvider", [ "utils", "classes/Provider", "helpers/githubHelper" ], function(e, t, n) {
  var i = new t("gist", "Gist");
  return i.publishPreferencesInputIds = [ "gist-public" ], i.sharingAttributes = [ "gistId", "filename" ], 

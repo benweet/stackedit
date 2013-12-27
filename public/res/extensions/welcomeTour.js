@@ -33,7 +33,7 @@ define([
                 });
                 setTimeout(function() {
                     tooltip.tooltip('hide').removeClass('info-tooltip');
-                }, 10000);
+                }, 30000);
             },
             template: [
                 '<div class="popover tour">',

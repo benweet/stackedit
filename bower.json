@@ -18,7 +18,7 @@
     "requirejs-text": "~2.0.10",
     "bootstrap-tour": "~0.7.1",
     "ace": "4bbe5346f2ae5ad35c0c47defa244ab27aedd451",
-    "pagedown-ace": "https://github.com/benweet/pagedown-ace.git#72a27932f6f4f78e93a186aa2947d1f15c1cd7d5",
+    "pagedown-ace": "git@github.com:benweet/pagedown-ace.git#84d5e1b7ff233a1c8cafa9716e825228d275120c",
     "pagedown-extra": "git@github.com:jmcmanus/pagedown-extra.git#9c77f3ad718fec32935f092a560c0023355caf9a",
     "crel": "git@github.com:KoryNunn/crel.git#8dbda04b129fc0aec01a2a080d1cab26816e11c1",
     "waitForImages": "git@github.com:alexanderdickson/waitForImages.git#~1.4.2",
@@ -30,7 +30,6 @@
   },
   "resolutions": {
     "jquery": "2.0.3",
-    "bootstrap": "v3.0.0",
-    "pagedown-extra": "05e56619f8fd74421575677c64eb895264f4c375"
+    "bootstrap": "v3.0.0"
   }
 }

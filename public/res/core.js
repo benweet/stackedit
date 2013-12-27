@@ -524,6 +524,17 @@ define([
 
         // Create the converter and the editor
         var converter = new Markdown.Converter();
+        var options = {
+            _DoItalicsAndBold: function(text) {
+                // Restore original markdown implementation
+                text = text.replace(/(\*\*|__)(?=\S)(.+?[*_]*)(?=\S)\1/g,
+                "<strong>$2</strong>");
+                text = text.replace(/(\*|_)(?=\S)(.+?)(?=\S)\1/g,
+                "<em>$2</em>");
+                return text;
+            }
+        };
+        converter.setOptions(options);
 
         function checkDocumentChanges() {
             var newDocumentContent = $editorElt.val();

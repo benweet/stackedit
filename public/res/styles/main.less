@@ -35,10 +35,10 @@
 
 // Editor
 @tertiary-bg: #fff;
-@tertiary-color-light: fade(@tertiary-color, 75%);
-@tertiary-color: desaturate(@tertiary, 85%);
-@tertiary-color-dark: darken(@tertiary-color, 20%);
-@tertiary-color-darker: darken(@tertiary-color, 40%);
+@tertiary-color-light: fade(@tertiary-color, 60%);
+@tertiary-color: darken(@secondary-desaturated, 7.5%);
+@tertiary-color-dark: darken(@tertiary-color, 15%);
+@tertiary-color-darker: darken(@tertiary-color, 30%);
 
 // Panel buttons
 @panel-button-bg-color: #FFF;
@@ -1074,8 +1074,7 @@ a {
 	}
 	
 	.ace_link {
-	    color: @tertiary-color;
-		background-color: @code-bg;
+	    color: @tertiary-color-light;
 	}
 	
 	.ace_description {

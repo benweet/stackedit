@@ -1,7 +1,7 @@
 @import "../styles/main.less";
 
 @board-color: #385E50;
-@board-border-color: #B9AA9F;
+@board-border-color: #B9B39F;
 @blue-ink: #284F72;
 @black-ink: #444;
 @red-ink: #B56E85;
@@ -10,12 +10,11 @@
 @primary: desaturate(darken(@board-border-color, 20%), 20%);
 @primary-color: lighten(@blue-ink, 30%);
 @secondary-color: lighten(@blue-ink, 20%);
-@tertiary-color: lighten(@blue-ink, 30%);
+@tertiary-color: desaturate(lighten(@blue-ink, 20%), 20%);
 @secondary: @primary;
 @tertiary: @primary;
 @primary-desaturated: @primary;
 @secondary-desaturated: darken(@board-border-color, 19%);
-@tertiary-desaturated: @tertiary;
 @primary-border-color: @navbar-default-bg;
 @modal-backdrop-bg: @primary;
 @btn-success-color: #eee;

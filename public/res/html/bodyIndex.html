@@ -171,8 +171,8 @@
 				class="action-reset-input list-group-item"><i class="icon-share"></i>
 				Manage publication</a>
 			<a href="#" data-toggle="modal" data-target=".modal-manage-sharing"
-				class="action-reset-input list-group-item"><i class="icon-link"></i>
-				Sharing</a>
+				class="action-reset-input list-group-item"><i class="icon-provider-stackedit"></i>
+				Sharing...</a>
 		</div>
 		<ul class="nav">
 			<li><a href="#" data-toggle="modal"
@@ -995,6 +995,44 @@
 						<div class="form-horizontal">
 							<div class="form-group">
 								<label class="col-lg-4 control-label"
+									for="input-settings-gdrive-multiaccount">Google Drive multi-accounts</a>
+								</label>
+								<div class="col-lg-7">
+									<select id="input-settings-gdrive-multiaccount" class="form-control">
+    									<option value="1">1 account</option>
+    									<option value="2">2 accounts</option>
+    									<option value="3">3 accounts</option>
+									</select>
+									<span class="help-block"><b>Please sign in first with Google.</b> Once linked with your Google accounts, changing account is not possible unless you reset the application.</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label">Permissions</label>
+								<div class="col-lg-7">
+									<div class="checkbox">
+									    <label>
+										    <input type="checkbox" id="input-settings-gdrive-full-access" />
+										    Allow StackEdit to open any document in Google Drive
+										</label> <span class="help-block">Any existing token has to be revoked in
+										<a href="https://www.google.com/settings/dashboard" target="_blank">Google Dashboard</a>
+										for this change to take effect.</span>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-lg-4"></div>
+								<div class="col-lg-7">
+									<div class="checkbox">
+									    <label>
+										    <input type="checkbox" id="input-settings-dropbox-full-access" />
+										    Allow StackEdit to open any document in Dropbox
+										</label> <span class="help-block">If unchecked, access will be restricted to folder
+										<b>/Applications/StackEdit</b> for existing files.</span>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label"
 									for="textarea-settings-publish-template">Default
 									template <a href="#" class="tooltip-template">(?)</a>
 								</label>
@@ -1022,44 +1060,6 @@
 									    <option value="Legal">Legal</option>
 									    <option value="Letter">Letter</option>
 									</select>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-lg-4 control-label"
-									for="input-settings-gdrive-multiaccount">Google Drive multi-accounts</a>
-								</label>
-								<div class="col-lg-7">
-									<select id="input-settings-gdrive-multiaccount" class="form-control">
-    									<option value="1">1 account</option>
-    									<option value="2">2 accounts</option>
-    									<option value="3">3 accounts</option>
-									</select>
-									<span class="help-block"><b>Please sign in with Google first.</b> Once linked with your Google accounts, changing account is not possible unless you reset the application.</span>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-lg-4 control-label">Permissions</label>
-								<div class="col-lg-7">
-									<div class="checkbox">
-									    <label>
-										    <input type="checkbox" id="input-settings-gdrive-full-access" />
-										    Allow StackEdit to open any document in Google Drive
-										</label> <span class="help-block">Any existing token has to be revoked in
-										<a href="https://www.google.com/settings/dashboard" target="_blank">Google Dashboard</a>
-										for this change to take effect.</span>
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="col-lg-4"></div>
-								<div class="col-lg-7">
-									<div class="checkbox">
-									    <label>
-										    <input type="checkbox" id="input-settings-dropbox-full-access" />
-										    Allow StackEdit to open any document in Dropbox
-										</label> <span class="help-block">If unchecked, access will be restricted to folder
-										<b>/Applications/StackEdit</b> for existing files.</span>
-									</div>
 								</div>
 							</div>
 							<div class="form-group">

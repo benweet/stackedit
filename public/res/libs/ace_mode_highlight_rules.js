@@ -56,20 +56,20 @@ var MarkdownHighlightRules = function() {
         next : "header"
     },
     { // Github style block
-        token : "code_block",
+        token : "constant.language.escape",
         regex : "^```\\s*[a-zA-Z]*(?:{.*?\\})?\\s*$",
         next  : "githubblock"
     }, { // block quote
-        token : "blockquote",
-        regex : "^\\s*>\\s*(?:[*+-]|\\d+\\.)?\\s+",
+        token : ["constant.language.escape", "blockquote"],
+        regex : "(^\\s*>\\s*(?:[*+-]|\\d+\\.)?)(\\s+)",
         next  : "blockquote"
     }, { // HR * - _
         token : "constant",
         regex : "^ {0,2}(?:(?: ?\\* ?){3,}|(?: ?\\- ?){3,}|(?: ?\\_ ?){3,})\\s*$",
         next: "allowBlock"
     }, { // list
-        token : "markup.list",
-        regex : "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
+        token : ["constant.language.escape", "markup.list"],
+        regex : "(^\\s{0,3}(?:[*+-]|\\d+\\.))(\\s+)",
         next  : "listblock-start"
     }, { // Math block
         token : "constant.language.escape",
@@ -151,8 +151,8 @@ var MarkdownHighlightRules = function() {
             regex : "^$",
             next  : "start"
         }, { // list
-            token : "markup.list",
-            regex : "^\\s{0,3}(?:[*+-]|\\d+\\.)\\s+",
+            token : ["constant.language.escape", "markup.list"],
+            regex : "(^\\s{0,3}(?:[*+-]|\\d+\\.))(\\s+)",
             next  : "listblock-start"
         }, {
             include : "basic", noEscape: true
@@ -165,8 +165,8 @@ var MarkdownHighlightRules = function() {
             regex : "^\\s*$",
             next  : "start"
         }, { // block quote
-            token : "blockquote",
-            regex : "^\\s*>\\s*(?:[*+-]|\\d+\\.)?\\s+",
+            token : ["constant.language.escape", "blockquote"],
+            regex : "(^\\s*>\\s*(?:[*+-]|\\d+\\.)?)(\\s+)",
             next  : "blockquote"
         }, {
             include : "basic", noEscape: true
@@ -175,7 +175,7 @@ var MarkdownHighlightRules = function() {
         } ],
 
         "githubblock" : [ {
-            token : "code_block",
+            token : "constant.language.escape",
             regex : "^```",
             next  : "start"
         }, {

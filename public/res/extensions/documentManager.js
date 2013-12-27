@@ -143,7 +143,7 @@ define([
 
         // Root folder
         var documentListHtml = [
-            '<a href="#" class="list-group-item folder clearfix" data-toggle="collapse" data-target=".modal-document-manager .file-list.root-folder">',
+            '<a href="#" class="list-group-item folder root-folder clearfix" data-toggle="collapse" data-target=".modal-document-manager .file-list.root-folder">',
             '<label class="checkbox" title="Select"><input type="checkbox"></label>',
             '<div class="pull-right file-count">',
             _.size(orphanDocumentList),
@@ -281,6 +281,9 @@ define([
 
         // Set checkbox event listeners
         $(documentListElt.querySelectorAll('[type=checkbox]')).change(doActiveButtons);
+        
+        // Open root folder by default
+        $(documentListElt.querySelectorAll('.root-folder')).click();
     }, 50);
 
     documentManager.onFileCreated = refreshManager;

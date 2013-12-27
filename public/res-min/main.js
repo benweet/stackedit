@@ -11520,7 +11520,7 @@ function printStackTrace(e) {
  return e;
 }), define("constants", [], function() {
  var e = {};
- return e.VERSION = "3.0.3", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", 
+ return e.VERSION = "3.1.0", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", 
  e.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", e.GOOGLE_DRIVE_APP_ID = "241271498917", 
  e.DROPBOX_APP_KEY = "lq6mwopab8wskas", e.DROPBOX_APP_SECRET = "851fgnucpezy84t", 
  e.DROPBOX_RESTRICTED_APP_KEY = "sw0hlixhr8q1xk0", e.DROPBOX_RESTRICTED_APP_SECRET = "1r808p2xygs6lbg", 
@@ -22963,7 +22963,7 @@ function() {
      e.tooltip("hide").removeClass("info-tooltip");
     }), setTimeout(function() {
      e.tooltip("hide").removeClass("info-tooltip");
-    }, 1e4);
+    }, 3e4);
    },
    template: [ '<div class="popover tour">', '   <div class="arrow"></div>', '   <h3 class="popover-title"></h3>', '   <div class="popover-content"></div>', '   <nav class="popover-navigation">', '       <button class="btn btn-primary" data-role="next">Next</button>', '       <button class="btn btn-default" data-role="end">Got it!</button>', "   </nav>", "</div>" ].join("")
   });

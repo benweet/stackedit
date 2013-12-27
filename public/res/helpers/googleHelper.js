@@ -113,6 +113,8 @@ define([
             authorizationMgrMap[accountId] = authorizationMgr;
         }
         task.onRun(function() {
+            var currentToken = gapi.auth.getToken();
+            var newToken;
             function loadGdriveClient() {
                 if(gapi.client.drive) {
                     task.chain();
@@ -126,7 +128,7 @@ define([
                 $.ajax({
                     url: 'https://www.googleapis.com/oauth2/v1/tokeninfo',
                     data: {
-                        access_token: gapi.auth.getToken().access_token
+                        access_token: newToken.access_token
                     },
                     timeout: constants.AJAX_TIMEOUT,
                     type: "GET"
@@ -138,7 +140,7 @@ define([
                     else {
                         authorizationMgr.setUserId(data.user_id);
                         authorizationMgr.add(permission);
-                        authorizationMgr.token = gapi.auth.getToken();
+                        authorizationMgr.token = newToken;
                         task.chain(loadGdriveClient);
                     }
                 }).fail(function(jqXHR) {
@@ -166,6 +168,8 @@ define([
                     immediate: immediate,
                     authuser: immediate === false ? '' : authuser
                 }, function(authResult) {
+                    newToken = gapi.auth.getToken();
+                    gapi.auth.setToken(currentToken);
                     if(!authResult || authResult.error) {
                         if(connected === true && immediate === true) {
                             // If immediate did not work retry without immediate
@@ -199,7 +203,6 @@ define([
             function startAuthenticate() {
                 immediate = true;
                 if(authorizationMgr.token && authorizationMgr.isAuthorized(permission)) {
-                    gapi.auth.setToken(authorizationMgr.token);
                     task.chain();
                     return;
                 }
@@ -219,6 +222,14 @@ define([
         authenticate(task, 'gdrive', accountId);
         task.enqueue();
     };
+    
+    function runWithToken(accountId, functionToRun) {
+        var currentToken = gapi.auth.getToken();
+        var authorizationMgr = authorizationMgrMap[accountId];
+        gapi.auth.setToken(authorizationMgr.token);
+        functionToRun();
+        gapi.auth.setToken(currentToken);
+    }
 
     googleHelper.upload = function(fileId, parentId, title, content, contentType, etag, accountId, callback) {
         var result;
@@ -274,36 +285,38 @@ define([
                 close_delim
             ].join("");
             
-            var request = gapi.client.request({
-                'path': path,
-                'method': method,
-                'params': {
-                    'uploadType': 'multipart',
-                },
-                'headers': headers,
-                'body': multipartRequestBody,
-            });
-            request.execute(function(response) {
-                if(response && response.id) {
-                    // Upload success
-                    result = response;
-                    result.content = content;
-                    task.chain();
-                    return;
-                }
-                var error = response.error;
-                // Handle error
-                if(error !== undefined && fileId !== undefined) {
-                    if(error.code === 404) {
-                        error = 'File ID "' + fileId + '" not found on Google Drive.|removePublish';
+            runWithToken(accountId, function() {
+                var request = gapi.client.request({
+                    'path': path,
+                    'method': method,
+                    'params': {
+                        'uploadType': 'multipart',
+                    },
+                    'headers': headers,
+                    'body': multipartRequestBody,
+                });
+                request.execute(function(response) {
+                    if(response && response.id) {
+                        // Upload success
+                        result = response;
+                        result.content = content;
+                        task.chain();
+                        return;
                     }
-                    else if(error.code === 412) {
-                        // We may have missed a file update
-                        storage.removeItem(accountId + ".gdrive.lastChangeId");
-                        error = 'Conflict on file ID "' + fileId + '". Please restart the synchronization.';
+                    var error = response.error;
+                    // Handle error
+                    if(error !== undefined && fileId !== undefined) {
+                        if(error.code === 404) {
+                            error = 'File ID "' + fileId + '" not found on Google Drive.|removePublish';
+                        }
+                        else if(error.code === 412) {
+                            // We may have missed a file update
+                            storage.removeItem(accountId + ".gdrive.lastChangeId");
+                            error = 'Conflict on file ID "' + fileId + '". Please restart the synchronization.';
+                        }
                     }
-                }
-                handleError(error, task);
+                    handleError(error, task);
+                });
             });
         });
         task.onSuccess(function() {
@@ -322,25 +335,27 @@ define([
         authenticate(task, 'gdrive', accountId);
         task.onRun(function() {
             var body = {'title': title};
-            var request = gapi.client.drive.files.patch({
-                'fileId': fileId,
-                'resource': body
-            });
-            request.execute(function(response) {
-                if(response && response.id) {
-                    // Rename success
-                    result = response;
-                    task.chain();
-                    return;
-                }
-                var error = response.error;
-                // Handle error
-                if(error !== undefined && fileId !== undefined) {
-                    if(error.code === 404) {
-                        error = 'File ID "' + fileId + '" not found on Google Drive.|removePublish';
+            runWithToken(accountId, function() {
+                var request = gapi.client.drive.files.patch({
+                    'fileId': fileId,
+                    'resource': body
+                });
+                request.execute(function(response) {
+                    if(response && response.id) {
+                        // Rename success
+                        result = response;
+                        task.chain();
+                        return;
                     }
-                }
-                handleError(error, task);
+                    var error = response.error;
+                    // Handle error
+                    if(error !== undefined && fileId !== undefined) {
+                        if(error.code === 404) {
+                            error = 'File ID "' + fileId + '" not found on Google Drive.|removePublish';
+                        }
+                    }
+                    handleError(error, task);
+                });
             });
         });
         task.onSuccess(function() {
@@ -371,17 +386,19 @@ define([
                     }
                 ];
             }
-            var request = gapi.client.drive.files.insert({
-                'resource': metadata
-            });
-            request.execute(function(response) {
-                if(response && response.id) {
-                    // Upload success
-                    result = response;
-                    task.chain();
-                    return;
-                }
-                handleError(response.error, task);
+            runWithToken(accountId, function() {
+                var request = gapi.client.drive.files.insert({
+                    'resource': metadata
+                });
+                request.execute(function(response) {
+                    if(response && response.id) {
+                        // Upload success
+                        result = response;
+                        task.chain();
+                        return;
+                    }
+                    handleError(response.error, task);
+                });
             });
         });
         task.onSuccess(function() {
@@ -402,36 +419,38 @@ define([
         task.onRun(function() {
             var nextPageToken;
             function retrievePageOfChanges() {
-                var request;
-                if(nextPageToken === undefined) {
-                    request = gapi.client.drive.changes.list({
-                        'startChangeId': newChangeId + 1
-                    });
-                }
-                else {
-                    request = gapi.client.drive.changes.list({
-                        'pageToken': nextPageToken
-                    });
-                }
-
-                request.execute(function(response) {
-                    if(!response || !response.largestChangeId) {
-                        // Handle error
-                        handleError(response.error, task);
-                        return;
-                    }
-                    // Retrieve success
-                    newChangeId = response.largestChangeId;
-                    nextPageToken = response.nextPageToken;
-                    if(response.items !== undefined) {
-                        changes = changes.concat(response.items);
-                    }
-                    if(nextPageToken !== undefined) {
-                        task.chain(retrievePageOfChanges);
+                runWithToken(accountId, function() {
+                    var request;
+                    if(nextPageToken === undefined) {
+                        request = gapi.client.drive.changes.list({
+                            'startChangeId': newChangeId + 1
+                        });
                     }
                     else {
-                        task.chain();
+                        request = gapi.client.drive.changes.list({
+                            'pageToken': nextPageToken
+                        });
                     }
+    
+                    request.execute(function(response) {
+                        if(!response || !response.largestChangeId) {
+                            // Handle error
+                            handleError(response.error, task);
+                            return;
+                        }
+                        // Retrieve success
+                        newChangeId = response.largestChangeId;
+                        nextPageToken = response.nextPageToken;
+                        if(response.items !== undefined) {
+                            changes = changes.concat(response.items);
+                        }
+                        if(nextPageToken !== undefined) {
+                            task.chain(retrievePageOfChanges);
+                        }
+                        else {
+                            task.chain();
+                        }
+                    });
                 });
             }
             task.chain(retrievePageOfChanges);
@@ -460,9 +479,9 @@ define([
                 }
                 var id = ids[0];
                 var headers = {};
-                var token = gapi.auth.getToken();
-                if(token) {
-                    headers.Authorization = "Bearer " + token.access_token;
+                var authorizationMgr = authorizationMgrMap[accountId];
+                if(authorizationMgr && authorizationMgr.token) {
+                    headers.Authorization = "Bearer " + authorizationMgr.token.access_token;
                 }
                 $.ajax({
                     url: "https://www.googleapis.com/drive/v2/files/" + id,
@@ -539,9 +558,9 @@ define([
                     return;
                 }
                 var headers = {};
-                var token = gapi.auth.getToken();
-                if(token) {
-                    headers.Authorization = "Bearer " + token.access_token;
+                var authorizationMgr = authorizationMgrMap[accountId];
+                if(authorizationMgr && authorizationMgr.token) {
+                    headers.Authorization = "Bearer " + authorizationMgr.token.access_token;
                 }
                 $.ajax({
                     url: file.downloadUrl,
@@ -581,6 +600,8 @@ define([
         connect(task);
         authenticate(task, 'gdrive', accountId);
         task.onRun(function() {
+            var authorizationMgr = authorizationMgrMap[accountId];
+            gapi.auth.setToken(authorizationMgr.token);
             gapi.drive.realtime.load(fileId, function(result) {
                 // onFileLoaded
                 doc = result;
@@ -604,10 +625,11 @@ define([
     };
 
     googleHelper.uploadImg = function(name, content, albumId, callback) {
+        var accountId = 'google.picasa0';
         var result;
         var task = new AsyncTask();
         connect(task);
-        authenticate(task, 'picasa', 'google.picasa0');
+        authenticate(task, 'picasa', accountId);
         task.onRun(function() {
             var headers = {
                 "Slug": name
@@ -621,9 +643,9 @@ define([
             else if(name.match(/.gif$/i)) {
                 headers["Content-Type"] = "image/gif";
             }
-            var token = gapi.auth.getToken();
-            if(token) {
-                headers.Authorization = "Bearer " + token.access_token;
+            var authorizationMgr = authorizationMgrMap[accountId];
+            if(authorizationMgr && authorizationMgr.token) {
+                headers.Authorization = "Bearer " + authorizationMgr.token.access_token;
             }
 
             $.ajax({
@@ -742,6 +764,7 @@ define([
         }
         loadPicker(task);
         task.onRun(function() {
+            var authorizationMgr = authorizationMgrMap[accountId];
             var pickerBuilder = new google.picker.PickerBuilder();
             pickerBuilder.setAppId(constants.GOOGLE_DRIVE_APP_ID);
             var view;
@@ -758,7 +781,7 @@ define([
                 pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
                 pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);
                 pickerBuilder.addView(view);
-                pickerBuilder.setOAuthToken(gapi.auth.getToken().access_token);
+                authorizationMgr && authorizationMgr.token && pickerBuilder.setOAuthToken(authorizationMgr.token.access_token);
             }
             else if(pickerType == 'folder') {
                 view = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
@@ -768,7 +791,7 @@ define([
                 view.setMimeTypes('application/vnd.google-apps.folder');
                 pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
                 pickerBuilder.addView(view);
-                pickerBuilder.setOAuthToken(gapi.auth.getToken().access_token);
+                authorizationMgr && authorizationMgr.token && pickerBuilder.setOAuthToken(authorizationMgr.token.access_token);
             }
             else if(pickerType == 'img') {
                 view = new google.picker.PhotosView();
@@ -806,14 +829,15 @@ define([
     };
 
     googleHelper.uploadBlogger = function(blogUrl, blogId, postId, labelList, isDraft, publishDate, title, content, callback) {
+        var accountId = 'google.blogger0';
         var task = new AsyncTask();
         connect(task);
-        authenticate(task, 'blogger', 'google.blogger0');
+        authenticate(task, 'blogger', accountId);
         task.onRun(function() {
             var headers = {};
-            var token = gapi.auth.getToken();
-            if(token) {
-                headers.Authorization = "Bearer " + token.access_token;
+            var authorizationMgr = authorizationMgrMap[accountId];
+            if(authorizationMgr && authorizationMgr.token) {
+                headers.Authorization = "Bearer " + authorizationMgr.token.access_token;
             }
             function uploadPost() {
                 var url = "https://www.googleapis.com/blogger/v3/blogs/" + blogId + "/posts/";

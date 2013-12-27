@@ -199,7 +199,7 @@ define([
                         var localTitle = fileDesc.title;
                         // File deleted
                         if(change.deleted === true) {
-                            eventMgr.onError('"' + localTitle + '" has been removed from Google Drive.');
+                            eventMgr.onError('"' + localTitle + '" has been removed from ' + providerName + '.');
                             fileDesc.removeSyncLocation(syncAttributes);
                             eventMgr.onSyncRemoved(fileDesc, syncAttributes);
                             if(syncAttributes.isRealtime === true && fileMgr.currentFile === fileDesc) {
@@ -226,13 +226,13 @@ define([
                         if(fileTitleChanged && remoteTitleChanged === true) {
                             fileDesc.title = file.title;
                             eventMgr.onTitleChanged(fileDesc);
-                            eventMgr.onMessage('"' + localTitle + '" has been renamed to "' + file.title + '" on Google Drive.');
+                            eventMgr.onMessage('"' + localTitle + '" has been renamed to "' + file.title + '" on ' + providerName + '.');
                         }
                         // If file content changed
                         if(!syncAttributes.isRealtime && fileContentChanged && remoteContentChanged === true) {
                             fileDesc.content = file.content;
                             eventMgr.onContentChanged(fileDesc);
-                            eventMgr.onMessage('"' + file.title + '" has been updated from Google Drive.');
+                            eventMgr.onMessage('"' + file.title + '" has been updated from ' + providerName + '.');
                             if(fileMgr.currentFile === fileDesc) {
                                 fileMgr.selectFile(); // Refresh editor
                             }
@@ -443,7 +443,7 @@ define([
                     googleHelper.refreshGdriveToken(accountId);
                 }
                 else if(err.type == "not_found") {
-                    eventMgr.onError('"' + fileDesc.title + '" has been removed from Google Drive.');
+                    eventMgr.onError('"' + fileDesc.title + '" has been removed from ' + providerName + '.');
                     fileDesc.removeSyncLocation(syncAttributes);
                     eventMgr.onSyncRemoved(fileDesc, syncAttributes);
                     gdriveProvider.stopRealtimeSync();
@@ -482,10 +482,11 @@ define([
             $('.submenu-sync-' + providerId).toggle(settings.gdriveMultiAccount > accountIndex);
 
             // Create export dialog
-            document.querySelector('.modal-upload-' + providerId).innerHTML = _.template(dialogExportGdriveHTML, {
+            var modalUploadElt = document.querySelector('.modal-upload-' + providerId);
+            modalUploadElt && (modalUploadElt.innerHTML = _.template(dialogExportGdriveHTML, {
                 providerId: providerId,
                 providerName: providerName
-            });
+            }));
             
             // Choose folder button in export modal
             $('.export-' + providerId + '-choose-folder').click(function() {
@@ -522,7 +523,7 @@ define([
                     syncLocations[syncAttributes.syncIndex] = syncAttributes;
                     var fileDesc = fileMgr.createFile(file.title, file.content, syncLocations);
                     fileMgr.selectFile(fileDesc);
-                    eventMgr.onMessage('"' + file.title + '" created successfully on Google Drive.');
+                    eventMgr.onMessage('"' + file.title + '" created successfully on ' + providerName + '.');
                 });
             }
             else if(state.action == "open") {

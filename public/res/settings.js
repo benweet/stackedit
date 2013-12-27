@@ -15,6 +15,7 @@ define([
         gdriveMultiAccount: 1,
         gdriveFullAccess: true,
         dropboxFullAccess: true,
+        githubFullAccess: true,
         template: [
             '<!DOCTYPE html>\n',
             '<html>\n',

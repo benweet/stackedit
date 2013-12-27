@@ -11,10 +11,11 @@
 		}
 	}
 	var client_id = getParameter("client_id");
+	var scope = getParameter("scope") || 'repo,gist';
 	var code = getParameter("code");
 	if (client_id) {
 		window.location.href = "https://github.com/login/oauth/authorize?client_id="
-			+ client_id + "&scope=repo,gist";
+			+ client_id + "&scope=" + scope;
 	} else {
 		if (code) {
 			localStorage["githubCode"] = code;

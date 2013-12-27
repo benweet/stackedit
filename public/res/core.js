@@ -137,6 +137,8 @@ define([
         utils.setInputChecked("#input-settings-gdrive-full-access", settings.gdriveFullAccess);
         // Dropbox full access
         utils.setInputChecked("#input-settings-dropbox-full-access", settings.dropboxFullAccess);
+        // GitHub full access
+        utils.setInputChecked("#input-settings-github-full-access", settings.githubFullAccess);
         // Template
         utils.setInputValue("#textarea-settings-publish-template", settings.template);
         // PDF template
@@ -181,6 +183,8 @@ define([
         newSettings.gdriveFullAccess = utils.getInputChecked("#input-settings-gdrive-full-access");
         // Drobox full access
         newSettings.dropboxFullAccess = utils.getInputChecked("#input-settings-dropbox-full-access");
+        // GitHub full access
+        newSettings.githubFullAccess = utils.getInputChecked("#input-settings-github-full-access");
         // Template
         newSettings.template = utils.getInputTextValue("#textarea-settings-publish-template", event);
         // PDF template

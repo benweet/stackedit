@@ -1013,7 +1013,7 @@
 									    <label>
 										    <input type="checkbox" id="input-settings-gdrive-full-access" />
 										    Allow StackEdit to open any document in Google Drive
-										</label> <span class="help-block">Any existing token has to be revoked in
+										</label> <span class="help-block">Existing authorization has to be revoked in
 										<a href="https://www.google.com/settings/dashboard" target="_blank">Google Dashboard</a>
 										for this change to take effect.</span>
 									</div>
@@ -1029,6 +1029,35 @@
 										</label> <span class="help-block">If unchecked, access will be restricted to folder
 										<b>/Applications/StackEdit</b> for existing files.</span>
 									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-lg-4"></div>
+								<div class="col-lg-7">
+									<div class="checkbox">
+									    <label>
+										    <input type="checkbox" id="input-settings-github-full-access" />
+										    Allow StackEdit to access private repositories in GitHub
+										</label> <span class="help-block">Existing authorization has to be revoked in
+										<a href="https://github.com/settings/applications" target="_blank">GitHub settings</a>
+										for this change to take effect.</span>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label"
+									for="input-settings-publish-commit-msg">GitHub commit message</label>
+								<div class="col-lg-7">
+									<input type="text" id="input-settings-publish-commit-msg"
+										class="form-control">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label"
+									for="input-settings-ssh-proxy">SSH proxy</label>
+								<div class="col-lg-7">
+									<input type="text" id="input-settings-ssh-proxy"
+										class="form-control">
 								</div>
 							</div>
 							<div class="form-group">
@@ -1060,22 +1089,6 @@
 									    <option value="Legal">Legal</option>
 									    <option value="Letter">Letter</option>
 									</select>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-lg-4 control-label"
-									for="input-settings-publish-commit-msg">GitHub commit message</label>
-								<div class="col-lg-7">
-									<input type="text" id="input-settings-publish-commit-msg"
-										class="form-control">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-lg-4 control-label"
-									for="input-settings-ssh-proxy">SSH proxy</label>
-								<div class="col-lg-7">
-									<input type="text" id="input-settings-ssh-proxy"
-										class="form-control">
 								</div>
 							</div>
 						</div>

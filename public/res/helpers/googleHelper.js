@@ -72,8 +72,10 @@ define([
             }
             window.delayedFunction = function() {
                 gapi.load("client,drive-realtime", function() {
-                    connected = true;
-                    task.chain();
+                    gapi.client.load('drive', 'v2', function() {
+                        connected = true;
+                        task.chain();
+                    });
                 });
             };
             $.ajax({
@@ -115,15 +117,6 @@ define([
         task.onRun(function() {
             var currentToken = gapi.auth.getToken();
             var newToken;
-            function loadGdriveClient() {
-                if(gapi.client.drive) {
-                    task.chain();
-                    return;
-                }
-                gapi.client.load('drive', 'v2', function() {
-                    task.chain();
-                });
-            }
             function getTokenInfo() {
                 $.ajax({
                     url: 'https://www.googleapis.com/oauth2/v1/tokeninfo',
@@ -141,7 +134,7 @@ define([
                         authorizationMgr.setUserId(data.user_id);
                         authorizationMgr.add(permission);
                         authorizationMgr.token = newToken;
-                        task.chain(loadGdriveClient);
+                        task.chain();
                     }
                 }).fail(function(jqXHR) {
                     var error = {

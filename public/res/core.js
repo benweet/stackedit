@@ -245,6 +245,7 @@ define([
         aceEditor.session.setUseWrapMode(true);
         aceEditor.session.setNewLineMode("unix");
         aceEditor.session.setMode("libs/ace_mode");
+        aceEditor.session.$selectLongWords = true;
 
         // Make bold titles...
         (function(self) {

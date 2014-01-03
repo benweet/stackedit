@@ -82,7 +82,7 @@ define([
         q = !1;
         h.cancelTypeset = !1;
         h.Queue(["Typeset", h, t])
-        h.Queue(afterRefreshCallback);
+        h.Queue(afterRefreshCallback); //benweet
     }
     function j() {
         !q && /*benweet (we need to call our afterRefreshCallback) g &&*/ (q = !0, h.Cancel(), h.Queue(e))

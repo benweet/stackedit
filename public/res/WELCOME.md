@@ -10,13 +10,17 @@ Hello, I am your first Markdown document within **StackEdit**[^stackedit]. Don't
 Documents
 ---------
 
-**StackEdit** stores your documents in your browser local storage, which means all your documents are automatically saved locally and are accessible offline.
+**StackEdit** stores your documents in your browser local storage, which means all your documents are automatically saved locally and are accessible **offline!**
 
-> **NOTE:** This also means that your documents are not shared between different browsers or computers and that clearing your browser's data may **delete all of them!**
+> **NOTE:**
+> 
+> - StackEdit is accessible offline once the HTML5 application cache has been fully loaded.
+> - Your local documents are not shared between different browsers or computers.
+> - Clearing your browser's data may **delete all your local documents!**
 
 #### <i class="icon-file"></i> Create a document
 
-You can create a new document by clicking the <i class="icon-file"></i> button in the navigation bar. This will switch from the current document to the new one.
+You can create a new document by clicking the <i class="icon-file"></i> button in the navigation bar. It will switch from the current document to the new one.
 
 #### <i class="icon-folder-open"></i> Switch to another document
 
@@ -32,7 +36,7 @@ You can delete the current document by clicking the <i class="icon-trash"></i> b
 
 #### <i class="icon-hdd"></i> Save a document
 
-You can save the current document to a file using the <i class="icon-hdd"></i> `Save as...` sub-menu.
+You can save the current document to a file using the <i class="icon-hdd"></i> `Save as...` sub-menu from the <i class="icon-provider-stackedit"></i> menu.
 
 > **NOTE:** See [<i class="icon-share"></i> Publish a document](#publish-a-document) section for a description of the different outputs.
 
@@ -65,11 +69,7 @@ Once your document is linked to a **Google Drive** or a **Dropbox** file, **Stac
 
 If you just have modified your document and you want to force the synchronization, click the <i class="icon-refresh"></i> button in the navigation bar.
 
-> **NOTE:** The <i class="icon-refresh"></i> button is disabled when:
-> 
-> - you are offline,
-> - or the document is not synchronized with any location,
-> - or the document has not been modified since the last synchronization.
+> **NOTE:** The <i class="icon-refresh"></i> button is disabled when you have no document to synchronize.
 
 #### <i class="icon-refresh"></i> Manage document synchronization
 
@@ -99,16 +99,13 @@ You can publish your document by going to the <i class="icon-share"></i> `Publis
 
 After publishing, **StackEdit** will keep your document linked to that publish location so that you can update it easily. Once you have modified your document and you want to update your publication, click on the <i class="icon-share"></i> button in the navigation bar.
 
-> **NOTE:** The <i class="icon-share"></i> button is disabled when:
-> 
-> - you are offline,
-> - or the document has not been published anywhere.
+> **NOTE:** The <i class="icon-share"></i> button is disabled when the document has not been published yet.
 
 #### <i class="icon-share"></i> Manage document publication
 
 Since one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-share"></i> `Manage publication` in the <i class="icon-provider-stackedit"></i> menu. This will open a dialog box allowing you to remove publication links that are associated to your document.
 
-> **NOTE:** In some cases, if you remove the file from the website or the post from the blog, the document will no longer be published on that location.
+> **NOTE:** In some cases, if the file from has been removed from the website or the blog, the document will no longer be published on that location.
 
 ----------
 
@@ -170,19 +167,6 @@ var bar = 0;
 > **NOTE:** To use **Highlight.js** instead of **Prettify**, just configure the `Markdown Extra` extension in the <i class="icon-cog"></i> `Settings` dialog.
 
 
-### Special Attributes
-
-With **Markdown Extra**, you can specify `class` and `id` attributes on headers and fenced code blocks just like this:
-
-##### Header example {#my-header}
-
-``` {#my-id .my-class}
-var foo = bar;
-```
-
-Then you can create cross-references like this: [beginning of the document](#welcome).
-
-
 ### Footnotes
 
 You can create footnotes like this[^footnote].
@@ -219,7 +203,7 @@ $$
 \Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
 $$
 
-> **NOTE:** When exporting, make sure you include MathJax to render mathematical expression correctly. Your page/template should include something like: 
+> **NOTE:** Make sure you include MathJax into your publications to render mathematical expression correctly. Your page/template should include something like: 
 
 ```
 <script type="text/javascript" src="https://stackedit.io/libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
@@ -235,7 +219,7 @@ $$
 
 Written with [StackEdit](https://stackedit.io/).
 
-  [^stackedit]: StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.
+  [^stackedit]: StackEdit is a full-featured, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.
 
 
   [1]: http://math.stackexchange.com/

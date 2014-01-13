@@ -252,11 +252,14 @@ define([
 
     // Upgrade from v16 to v17
     if(version == "v16") {
-        if(_.has(localStorage, 'settings')) {
-            settings = JSON.parse(localStorage.settings);
-            settings.pdfTemplate && (settings.pdfTemplate = settings.pdfTemplate.replace(/https:\/\/stackedit.io/g, 'file:///app/stackedit/public'));
-            localStorage.settings = JSON.stringify(settings);
-        }
+        _.each(_.keys(localStorage), function(key) {
+            var matchResult = key.match(/(file\.\S+\.)\S+/);
+            if(matchResult) {
+                if(!_.has(localStorage, matchResult[1] + 'title')) {
+                    localStorage.removeItem(key);
+                }
+            }
+        });
         version = "v17";
     }
     

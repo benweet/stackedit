@@ -45,7 +45,7 @@ define([
             task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
             var code;
             function oauthRedirect() {
-                core.redirectConfirm('You are being redirected to <strong>WordPress</strong> authorization page.', function() {
+                utils.redirectConfirm('You are being redirected to <strong>WordPress</strong> authorization page.', function() {
                     task.chain(getCode);
                 }, function() {
                     task.error(new Error('Operation canceled.'));

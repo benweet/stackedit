@@ -215,9 +215,31 @@ define([
         ].join(""));
     };
 
+    // Shows a dialog to force the user to click a button before opening oauth popup
+    var redirectCallbackConfirm;
+    var redirectCallbackCancel;
+    utils.redirectConfirm = function(message, callbackConfirm, callbackCancel) {
+        redirectCallbackConfirm = callbackConfirm;
+        redirectCallbackCancel = callbackCancel;
+        $('.modal-redirect-confirm .redirect-msg').html(message);
+        $('.modal-redirect-confirm').modal("show");
+    };
+    
+    utils.init = function() {
+        $('.action-redirect-confirm').click(function() {
+            redirectCallbackCancel = undefined;
+            redirectCallbackConfirm();
+        });
+        $('.modal-redirect-confirm').on('hidden.bs.modal', function() {
+            _.defer(function() {
+                redirectCallbackCancel && redirectCallbackCancel();
+            });
+        });
+    };
+
     // Export data on disk
-    utils.saveAs = function(content, filename, redirectConfirm) {
-        if(saveAs !== undefined && !/constructor/i.test(window.HTMLElement) /* safari does not support saveAs*/) {
+    utils.saveAs = function(content, filename) {
+        if(saveAs !== undefined && !/constructor/i.test(window.HTMLElement) /* safari does not support saveAs */) {
             if(_.isString(content)) {
                 content = new Blob([
                     content
@@ -235,12 +257,12 @@ define([
             else {
                 var reader = new FileReader();
                 reader.onload = function(event) {
-                    redirectConfirm('You are being downloading a PDF file.', function() {
+                    utils.redirectConfirm('You are opening a PDF document.', function() {
                         var uriContent = 'data:application/pdf;' + event.target.result.substring(event.target.result.indexOf('base64'));
                         window.open(uriContent, 'file');
                     });
                 };
-                reader.readAsDataURL(content);//Convert the blob from clipboard to base64
+                reader.readAsDataURL(content); // Convert the blob to base64
             }
         }
     };

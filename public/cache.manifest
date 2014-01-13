@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#Date Fri Jan 03 2014 00:24:45
+#Date Mon Jan 13 2014 18:56:01
 
 CACHE:
 res/worker.js
@@ -11,6 +11,18 @@ libs/MathJax/images/MenuArrow-15.png
 libs/MathJax/jax/output/HTML-CSS/jax.js
 
 #DynamicResourcesBegin
+res-min/font/OpenSans-Bold-webfont.svg
+res-min/font/OpenSans-Bold-webfont.woff
+res-min/font/OpenSans-BoldItalic-webfont.svg
+res-min/font/OpenSans-BoldItalic-webfont.woff
+res-min/font/OpenSans-Italic-webfont.svg
+res-min/font/OpenSans-Italic-webfont.woff
+res-min/font/OpenSans-Light-webfont.svg
+res-min/font/OpenSans-Light-webfont.woff
+res-min/font/OpenSans-LightItalic-webfont.svg
+res-min/font/OpenSans-LightItalic-webfont.woff
+res-min/font/OpenSans-Regular-webfont.svg
+res-min/font/OpenSans-Regular-webfont.woff
 res-min/font/cursive_standard-webfont.eot
 res-min/font/cursive_standard-webfont.svg
 res-min/font/cursive_standard-webfont.ttf
@@ -19,18 +31,6 @@ res-min/font/fontello.eot
 res-min/font/fontello.svg
 res-min/font/fontello.ttf
 res-min/font/fontello.woff
-res-min/font/opensans-bold-webfont.svg
-res-min/font/opensans-bold-webfont.woff
-res-min/font/opensans-bolditalic-webfont.svg
-res-min/font/opensans-bolditalic-webfont.woff
-res-min/font/opensans-italic-webfont.svg
-res-min/font/opensans-italic-webfont.woff
-res-min/font/opensans-light-webfont.svg
-res-min/font/opensans-light-webfont.woff
-res-min/font/opensans-lightitalic-webfont.svg
-res-min/font/opensans-lightitalic-webfont.woff
-res-min/font/opensans-regular-webfont.svg
-res-min/font/opensans-regular-webfont.woff
 res-min/img/gittip.png
 res-min/img/icons.png
 res-min/img/icons2x.png

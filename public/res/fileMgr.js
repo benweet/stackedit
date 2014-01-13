@@ -135,6 +135,7 @@ define([
         storage.removeItem(fileDesc.fileIndex + ".editorEnd");
         storage.removeItem(fileDesc.fileIndex + ".editorScrollTop");
         storage.removeItem(fileDesc.fileIndex + ".previewScrollTop");
+        storage.removeItem(fileDesc.fileIndex + ".editorSelectRange");
 
         eventMgr.onFileDeleted(fileDesc);
     };

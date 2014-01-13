@@ -187,7 +187,7 @@ define([
                     task.chain(localAuthenticate);
                     return;
                 }
-                core.redirectConfirm('You are being redirected to <strong>Google</strong> authorization page.', function() {
+                utils.redirectConfirm('You are being redirected to <strong>Google</strong> authorization page.', function() {
                     task.chain(localAuthenticate);
                 }, function() {
                     task.error(new Error('Operation canceled.'));

@@ -659,16 +659,6 @@ define([
         $("#wmd-redo-button").append($('<i class="icon-forward">')).appendTo($btnGroupElt);
     };
     
-    // Shows a dialog to force the user to click a button before opening oauth popup
-    var redirectCallbackConfirm;
-    var redirectCallbackCancel;
-    core.redirectConfirm = function(message, callbackConfirm, callbackCancel) {
-        redirectCallbackConfirm = callbackConfirm;
-        redirectCallbackCancel = callbackCancel;
-        $('.modal-redirect-confirm .redirect-msg').html(message);
-        $('.modal-redirect-confirm').modal("show");
-    };
-
     // Initialize multiple things and then fire eventMgr.onReady
     var isDocumentPanelShown = false;
     var isMenuPanelShown = false;
@@ -685,6 +675,9 @@ define([
         $leftBtnDropdown = $navbarElt.find('.left-buttons-dropdown');
         $rightBtnDropdown = $navbarElt.find('.right-buttons-dropdown');
         $(window).bind("resize", adjustWindow);
+        
+        // Initialize utils library
+        utils.init();
         
         // Populate shortcuts in settings
         shortcutMgr.addSettingEntries();
@@ -1029,16 +1022,6 @@ define([
             backdrop: "static",
             keyboard: false,
             show: false
-        });
-        
-        $('.action-redirect-confirm').click(function() {
-            redirectCallbackCancel = undefined;
-            redirectCallbackConfirm();
-        });
-        $('.modal-redirect-confirm').on('hidden.bs.modal', function() {
-            _.defer(function() {
-                redirectCallbackCancel && redirectCallbackCancel();
-            });
         });
         
         // Load images

@@ -12,6 +12,8 @@
 @title-base-size: 14px;
 @code-color: @text-color;
 @code-bg: fade(@text-color, 4%);
+@pre-bg: @blockquote-bg;
+@pre-border-color: @blockquote-border-color;
 
 
 @font-face {
@@ -167,10 +169,14 @@ code, pre {
 	font-size: 12px !important;
 }
 
-// Need to force these values because of prettify
 pre {
-	padding: ((@line-height-computed - 1) / 2) !important;
-	border: 1px solid @pre-border-color !important;
+    // Need to force these values because of prettify
+	border-width: 0 !important;
+    border-left: 10px solid @pre-border-color !important;
+	border-radius: 0;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	padding: 10px 15px !important;
 	code {
 	    background-color: transparent !important;
 	}
@@ -232,7 +238,7 @@ blockquote {
 	ol:last-child {
 		margin-bottom: 0;
 	}
-} 
+}
 
 ul,ol {
 	margin-bottom: 15px;

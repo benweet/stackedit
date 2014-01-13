@@ -3,6 +3,8 @@ StackEdit
 
 StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.
 
+Showcase: https://stackedit.io
+
 > **NOTE:**
 >
 > - Documents are stored in the [browser's local storage][1], which means they are not shared between different browsers/computers. Furthermore, clearing your browser's data may delete all your local documents.

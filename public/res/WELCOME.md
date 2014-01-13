@@ -217,9 +217,7 @@ $$
 > - about **Prettify** syntax highlighting [here][5],
 > - about **Highlight.js** syntax highlighting [here][6].
 
-Written with [StackEdit](https://stackedit.io/).
-
-  [^stackedit]: StackEdit is a full-featured, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.
+  [^stackedit]: [StackEdit](https://stackedit.io/) is a full-featured, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.
 
 
   [1]: http://math.stackexchange.com/

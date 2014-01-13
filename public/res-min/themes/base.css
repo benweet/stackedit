@@ -1183,7 +1183,7 @@ h4,h5,h6{margin:25px 0 15px}
 p,pre,blockquote{margin:0 0 15px}
 hr{margin:30px 0}
 code,pre{font-family:Menlo,Consolas,"Courier New",monospace;font-size:12px !important}
-pre{border-width:0 !important;border-left:10px solid #eee !important;border-radius:0;border-top-right-radius:5px;border-bottom-right-radius:5px;padding:10px 15px !important}pre code{background-color:transparent !important}
+pre{border:0 solid #eee !important;border-left:10px solid #eee !important;border-radius:0;border-top-right-radius:5px;border-bottom-right-radius:5px;padding:10px 15px !important}pre code{background-color:transparent !important}
 dt,dd{margin-top:5px;margin-bottom:5px}
 dd{margin-left:40px}
 table{margin-bottom:20px}

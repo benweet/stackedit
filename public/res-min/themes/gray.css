@@ -1198,7 +1198,7 @@ h4,h5,h6{margin:25px 0 15px}
 p,pre,blockquote{margin:0 0 15px}
 hr{margin:30px 0}
 code,pre{font-family:Menlo,Consolas,"Courier New",monospace;font-size:12px !important}
-pre{border-width:0 !important;border-left:10px solid rgba(128,128,128,0.075) !important;border-radius:0;border-top-right-radius:5px;border-bottom-right-radius:5px;padding:10px 15px !important}pre code{background-color:transparent !important}
+pre{border:0 solid rgba(128,128,128,0.075) !important;border-left:10px solid rgba(128,128,128,0.075) !important;border-radius:0;border-top-right-radius:5px;border-bottom-right-radius:5px;padding:10px 15px !important}pre code{background-color:transparent !important}
 dt,dd{margin-top:5px;margin-bottom:5px}
 dd{margin-left:40px}
 table{margin-bottom:20px}
@@ -1511,7 +1511,7 @@ a.list-group-item:hover,a.list-group-item:focus{color:#343434;border-top-color:r
 .ace-tm .ace_blockquote{color:#6d6d6d}
 .ace-tm .ace_code{color:#202020;background-color:rgba(128,128,128,0.075)}
 .ace-tm .ace_code_block{color:#202020}
-.ace-tm .ace_link{color:rgba(109,109,109,0.6)}
+.ace-tm .ace_link{color:#6d6d6d;background-color:rgba(128,128,128,0.075)}
 .ace-tm .ace_description{color:#6d6d6d}
 .ace-tm .ace_constant{color:#474747}
 .ace-tm .ace_comment{color:rgba(109,109,109,0.6);font-style:italic}

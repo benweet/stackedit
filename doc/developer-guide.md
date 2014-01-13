@@ -24,6 +24,8 @@ Getting started
 - Serve **StackEdit** at `http://localhost/`:
 
 		(export PORT=80 && node server.js)
+		
+	> **NOTE:** StackEdit project itself has no back end. It can run on any apache server.
 
 - Run Chrome without application cache:
 
@@ -53,8 +55,7 @@ Getting started
 
 - on Heroku:
 
-        heroku create
-        heroku rename my-stackedit-instance
+        heroku create my-stackedit-instance
         git push heroku master
 
 - in a Docker container:
@@ -62,7 +63,7 @@ Getting started
         docker build -t my-stackedit-image .
         docker run -p 3000 my-stackedit-image
 
-> **NOTE:** OAuth authorizations work out of the box for address `http://localhost/` except for WordPress. To allow an other address, you have to add specific keys at the end of `constants.js` and eventually to set up specific proxies with the corresponding key/secret pairs ([WordPress Proxy][9], [Tumblr Proxy][10] and [Gatekeeper][11]).
+> **NOTE:** OAuth authorizations work out of the box for address `http://localhost/` except for WordPress. To allow another address, you have to add specific keys at the end of `constants.js` and eventually to set up specific proxies with the corresponding key/secret pairs ([WordPress Proxy][9], [Tumblr Proxy][10] and [Gatekeeper][11]).
 
 
 Architecture
@@ -73,11 +74,11 @@ Architecture
 The modules are loaded by RequireJS in the following order:
 
 1. The 3rd party libraries (jQuery, underscore.js...)
-2. The `Extension` objects
-3. The `EventMgr` module
+2. The `Extension` modules
+3. The `eventMgr` module
 4. The `core` module
-5. The `fileMgr` module and the `helpers` modules
-6. The `provider` modules
+5. The `fileMgr` module and the helpers modules
+6. The `Provider` modules
 7. The `publisher` and `synchronizer` modules
 
 This is important to notice in order to avoid circular dependencies. For instance, if an `Extension` is declared with the `core` module as a dependency, RequireJS will inject `undefined` instead of the actual module.
@@ -222,13 +223,13 @@ A `publishAttributes` object is an object that describes a publish location. Att
 
 The `eventMgr` module is responsible for receiving and dispatching events. Below is the list of all events signatures.
 
-Most events (those that are triggered outside the `eventMgr` module) can be triggered by calling methods of the same name in the `eventMgr` module. For example:
+Most events (those that are not triggered by the `eventMgr` module) can be triggered by calling methods of the same name in the `eventMgr` module. For example:
 
 ```js
 eventMgr.onMessage('StackEdit is awesome!');
 ```
 
-The method `addListener(eventName, callback)` of the `eventMgr` module can be used to listen to these events (except those that can only be handled by `Extension` objects). For example:
+The method `addListener(eventName, callback)` of the `eventMgr` module can be used to listen to these events (except those that can only be handled by `Extension` modules). For example:
 
 ```js
 eventMgr.addListener('onMessage', function(message) {
@@ -236,10 +237,10 @@ eventMgr.addListener('onMessage', function(message) {
 });
 ```
 
-`Extension` objects have the possibility to listen to those events by implementing methods of the same name. For example:
+`Extension` modules have the possibility to listen to those events by implementing methods of the same name. For example:
 
 ```js
-userCustom.onMessage = function(message) {
+myExtension.onMessage = function(message) {
     alert(message);
 };
 ```
@@ -295,30 +296,30 @@ userCustom.onMessage = function(message) {
 
 - **`onLoadSettings()`**
 
-    A hook that is called when the settings dialog has to be refreshed. Each extension that has configuration inputs in the settings dialog has to implement a listener for this event.
+    A hook that is called when the settings dialog has to be refreshed. Every `Extension` module that has configuration inputs in the settings dialog has to implement a listener for this event.
     
-    > Triggered by the `core` module. Only `Extension` objects can handle this event.
+    > Triggered by the `core` module. Only `Extension` modules can handle this event.
 
 - **`onSaveSettings(newConfig, event)`**
 
-    A hook that is called when the settings dialog has to be validated. Each extension that has configuration is the settings dialog has to implement a listener for this event.
+    A hook that is called when the settings dialog has to be validated. Every `Extension` module that has configuration inputs in the settings dialog has to implement a listener for this event.
     - `newConfig`: the new configuration object, deduced from the settings dialog inputs.
     - `event`: the submit event object. `stopPropagation` has to be called in case of an error when parsing settings dialog inputs.
     
-    > Triggered by the `core` module. Only `Extension` objects can handle this event.
+    > Triggered by the `core` module. Only `Extension` modules can handle this event.
 
 - **`onInit()`**
 
     A hook allowing enabled extensions to initialize.
     
-    > Triggered by the `eventMgr` module. Only `Extension` objects can handle this event.
+    > Triggered by the `eventMgr` module. Only `Extension` modules can handle this event.
     
     > This event is triggered before `onReady` event and just after the `config` and `enabled` extensions properties have been set by the `eventMgr`.
 
 
 ----------
 
-#### Module injection
+#### Module injection events
 
 - **`onFileMgrCreated(fileMgr)`**
 
@@ -352,7 +353,7 @@ userCustom.onMessage = function(message) {
 
 ----------
 
-#### Operations on files
+#### file operation events
 
 - **`onFileCreated(fileDesc)`**
 
@@ -493,7 +494,7 @@ userCustom.onMessage = function(message) {
 
 ----------
 
-#### Operations on UI Layout
+#### UI Layout events
 
 - **`onLayoutConfigure(layoutConfig)`**
 
@@ -520,7 +521,7 @@ userCustom.onMessage = function(message) {
 
     Allows extensions to add their own buttons in the navigation bar. Implemented listeners have to return an HTML button element. For example:
 
-        userCustom.onCreateButton = function() {
+        myExtension.onCreateButton = function() {
             var button = $('<button class="btn btn-success"><i class="icon-rocket"></i></button>');
             button.click(function() {
                 eventMgr.onMessage('Booom!');
@@ -528,24 +529,24 @@ userCustom.onMessage = function(message) {
             return button[0];
         };
     
-    > Triggered by the `eventMgr` module. Only `Extension` objects can handle this event.
+    > Triggered by the `eventMgr` module. Only `Extension` modules can handle this event.
 
 - **`onCreateEditorButton()`**
 
     Allows extensions to add their own buttons in the side bar. Implemented listeners have to return an HTML button element. See `onCreateButton` for a concrete example.
     
-    > Triggered by the `eventMgr` module. Only `Extension` objects can handle this event.
+    > Triggered by the `eventMgr` module. Only `Extension` modules can handle this event.
 
 - **`onCreatePreviewButton()`**
 
     Allows extensions to add their own buttons over the preview. Implemented listeners have to return an HTML button element. See `onCreateButton` for a concrete example.
     
-    > Triggered by the `eventMgr` module. Only `Extension` objects can handle this event.
+    > Triggered by the `eventMgr` module. Only `Extension` modules can handle this event.
 
 
 ----------
 
-#### Operations on PageDown
+#### PageDown events
 
 - **`onPagedownConfigure(editor)`**
 
@@ -559,7 +560,7 @@ userCustom.onMessage = function(message) {
     Called after Pagedown's synchronous rendering to trigger extra asynchronous rendering (such as MathJax). Implemented listeners have to call the callback parameter after processing in order other `onAsyncPreview` listeners to run.
     - `callback`: the callback to call at the end of the asynchronous processing.
     
-    > Triggered by the `eventMgr` module. Only `Extension` objects can handle this event.
+    > Triggered by the `eventMgr` module. Only `Extension` modules can handle this event.
     
 - **`onPreviewFinished(html)`**
 
@@ -585,7 +586,7 @@ userCustom.onMessage = function(message) {
 
 ----------
 
-#### Operation on ACE
+#### ACE events
 
 - **`onAceCreated(aceEditor)`**
 

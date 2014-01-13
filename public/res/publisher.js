@@ -7,6 +7,7 @@ define([
     "settings",
     "eventMgr",
     "fileSystem",
+    "core",
     "fileMgr",
     "sharing",
     "classes/Provider",
@@ -21,7 +22,7 @@ define([
     "providers/sshProvider",
     "providers/tumblrProvider",
     "providers/wordpressProvider"
-], function($, _, constants, utils, storage, settings, eventMgr, fileSystem, fileMgr, sharing, Provider, AsyncTask) {
+], function($, _, constants, utils, storage, settings, eventMgr, fileSystem, core, fileMgr, sharing, Provider, AsyncTask) {
 
     var publisher = {};
 
@@ -350,7 +351,7 @@ define([
             });
             task.onSuccess(function() {
                 if(pdf !== undefined) {
-                    utils.saveAs(pdf, fileMgr.currentFile.title + ".pdf");
+                    utils.saveAs(pdf, fileMgr.currentFile.title + ".pdf", core.redirectConfirm);
                 }
             });
             task.enqueue();

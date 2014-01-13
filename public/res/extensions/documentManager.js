@@ -282,18 +282,23 @@ define([
         // Set checkbox event listeners
         $(documentListElt.querySelectorAll('[type=checkbox]')).change(doActiveButtons);
         
-        // Open root folder by default
-        $(documentListElt.querySelectorAll('.root-folder')).click();
     }, 50);
-
+    
     documentManager.onFileCreated = refreshManager;
     documentManager.onFileDeleted = refreshManager;
-    documentManager.onTitleChanged = refreshManager;
     documentManager.onSyncExportSuccess = refreshManager;
     documentManager.onSyncRemoved = refreshManager;
     documentManager.onNewPublishSuccess = refreshManager;
     documentManager.onPublishRemoved = refreshManager;
     documentManager.onFoldersChanged = refreshManager;
+
+    documentManager.onTitleChanged = function(fileDesc) {
+        if(isVisible === false) {
+            return;
+        }
+        $(documentListElt).find('[data-file-index="' + fileDesc.fileIndex + '"] .name').html(fileDesc.composeTitle()).removeClass('hide');
+        $(documentListElt.querySelectorAll('.input-rename')).addClass('hide');
+    };
 
     documentManager.onReady = function() {
         modalElt = document.querySelector('.modal-document-manager');
@@ -307,8 +312,13 @@ define([
         $(modalElt).on('show.bs.modal', function() {
             isVisible = true;
             refreshManager();
+            // Open root folder
+            setTimeout(function() {
+                $(documentListElt.querySelectorAll('.root-folder')).click();
+            }, 250);
         }).on('hide.bs.modal', function() {
             isVisible = false;
+            documentListElt.innerHTML = '';
         });
 
         // Create folder action
@@ -329,16 +339,18 @@ define([
             eventMgr.onFoldersChanged();
 
             // Edit the name when folder has just been created
-            var renameButtonElt = $(modalElt.querySelector('[data-folder-index="' + folderIndex + '"] .button-rename')).click();
-            modalElt.scrollTop += renameButtonElt.offset().top - 50;
+            setTimeout(function() {
+                var renameButtonElt = $(modalElt.querySelector('[data-folder-index="' + folderIndex + '"] .button-rename')).click();
+                modalElt.scrollTop += renameButtonElt.offset().top - 50;
+            }, 60);
         });
 
         // Selection dropdown menu actions
         $(modalElt.querySelectorAll('.action-select-all')).click(function() {
-            $(documentListElt.querySelectorAll('input[type="checkbox"]')).prop('checked', true);
+            $(documentListElt.querySelectorAll('input[type="checkbox"]')).prop('checked', true).change();
         });
         $(modalElt.querySelectorAll('.action-unselect-all')).click(function() {
-            $(documentListElt.querySelectorAll('input[type="checkbox"]')).prop('checked', false);
+            $(documentListElt.querySelectorAll('input[type="checkbox"]')).prop('checked', false).change();
         });
 
         // Delete selection actions

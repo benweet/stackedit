@@ -250,6 +250,16 @@ define([
         version = "v16";
     }
 
+    // Upgrade from v16 to v17
+    if(version == "v16") {
+        if(_.has(localStorage, 'settings')) {
+            settings = JSON.parse(localStorage.settings);
+            settings.pdfTemplate && (settings.pdfTemplate = settings.pdfTemplate.replace(/https:\/\/stackedit.io/g, 'file:///app/stackedit/public'));
+            localStorage.settings = JSON.stringify(settings);
+        }
+        version = "v17";
+    }
+    
     localStorage.version = version;
     return localStorage;
 });

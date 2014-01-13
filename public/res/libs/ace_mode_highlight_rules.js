@@ -51,7 +51,9 @@ var MarkdownHighlightRules = function() {
         token: "markup.heading.multi.2",
         regex: "^\\-+(?=\\s*$)"
     }, {
-        token : "constant.language.escape",
+        token : function(value) {
+            return "markup.heading." + value.length;
+        },
         regex : /^#{1,6}(?=\s*[^ #]|\s+#.)/,
         next : "header"
     },

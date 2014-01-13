@@ -183,11 +183,12 @@ define([
                 lastPreviewScrollTop = previewScrollTop;
                 return;
             }
-            $previewElt.stop(true).animate({
+            $previewElt.stop('scrollLinkFx', true).animate({
                 scrollTop: destScrollTop
             }, {
                 easing: 'easeOutSine',
                 duration: 200,
+                queue: 'scrollLinkFx',
                 step: function(now) {
                     isPreviewMoving = true;
                     lastPreviewScrollTop = previewScrollTop + now;
@@ -197,7 +198,7 @@ define([
                         isPreviewMoving = false;
                     });
                 },
-            });
+            }).dequeue('scrollLinkFx');
         }
         else if(isScrollPreview === true) {
             if(Math.abs(previewScrollTop - lastPreviewScrollTop) <= 9) {
@@ -227,11 +228,12 @@ define([
                 return;
             }
             if(window.lightMode) {
-                $textareaElt.stop(true).animate({
+                $textareaElt.stop('scrollLinkFx', true).animate({
                     scrollTop: destScrollTop
                 }, {
                     easing: 'easeOutSine',
                     duration: 200,
+                    queue: 'scrollLinkFx',
                     step: function(now) {
                         isEditorMoving = true;
                         lastEditorScrollTop = editorScrollTop + now;
@@ -241,14 +243,15 @@ define([
                             isEditorMoving = false;
                         });
                     },
-                });
+                }).dequeue('scrollLinkFx');
             }
             else {
-                scrollingHelper.stop(true).css('value', 0).animate({
+                scrollingHelper.stop('scrollLinkFx', true).css('value', 0).animate({
                     value: destScrollTop - editorScrollTop
                 }, {
                     easing: 'easeOutSine',
                     duration: 200,
+                    queue: 'scrollLinkFx',
                     step: function(now) {
                         isEditorMoving = true;
                         lastEditorScrollTop = editorScrollTop + now;
@@ -259,7 +262,7 @@ define([
                             isEditorMoving = false;
                         });
                     },
-                });
+                }).dequeue('scrollLinkFx');
             }
         }
     }, 100);

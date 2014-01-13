@@ -967,6 +967,9 @@ define([
         $(".action-default-settings").click(function() {
             storage.removeItem("settings");
             storage.removeItem("theme");
+            if(!settings.dropboxFullAccess) {
+                storage.removeItem('dropbox.lastChangeId');
+            }
             window.location.reload();
         });
 

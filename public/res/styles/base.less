@@ -156,6 +156,7 @@ h4, h5, h6 {
 
 p,
 pre,
+pre.prettyprint,
 blockquote {
 	margin: 0 0 15px;
 }
@@ -169,14 +170,13 @@ code, pre {
 	font-size: 12px !important;
 }
 
-pre {
-    // Need to force these values because of prettify
-	border: 0 solid @pre-border-color !important;
-    border-left: 10px solid @pre-border-color !important;
+pre, pre.prettyprint {
+	border: 0 solid @pre-border-color;
+    border-left: 10px solid @pre-border-color;
 	border-radius: 0;
 	border-top-right-radius: 5px;
 	border-bottom-right-radius: 5px;
-	padding: 10px 15px !important;
+	padding: 10px 15px;
 	code {
 	    background-color: transparent !important;
 	}

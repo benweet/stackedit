@@ -13,7 +13,7 @@ In **StackEdit**, a theme is pretty much a [LESS][1] file that overrides the def
 
 	> You can put images in `res/img`.
 
- 4. Add an entry in `THEME_LIST` at the end of `config.js` with the filename as a key and the name of your theme as a value.
+ 4. Add an entry in `THEME_LIST` at the end of `public/res/constants.js` with the filename as a key and the name of your theme as a value.
 
 	> **Example:** `"cool": "The coolest ever"`
 

@@ -1,0 +1,124 @@
+/**
+ * Theme name: Spacegray
+ * Author: Ammar Alakkad <am.alakkad@gmail.com>
+ * Author Website: http://aalakkad.github.com
+ * License: MIT License
+ *
+ * Resources:
+ * - http://kkga.github.io/spacegray/
+ * - http://chriskempson.github.io/base16/#ocean
+ */
+@import "../styles/main.less";
+@import url(http://fonts.googleapis.com/css?family=PT+Mono);
+
+@board-color: #1C1F26;
+@blue-ink: #2b303b;
+@black-ink: #EFF1F5;
+@red-ink: #BF616A;
+@green-ink: #A3BE8C;
+@navbar-default-bg: darken(@board-color, 4%);
+@primary-border-color: @navbar-default-bg;
+
+// Navbar buttons
+.btn-success {
+    color: #8FA1B3;
+    &:hover,
+    &:focus,
+    &:active,
+    .open &.dropdown-toggle {
+        color: #8FA1B3;
+        border-color: lighten(@navbar-default-bg, 10%);
+    }
+}
+
+.navbar .dropdown-menu {
+    background-color: lighten(@navbar-default-bg, 5%);
+    border-color: @primary-border-color;
+}
+
+.ace-tm {
+    .ace_content {
+        background: #2b303b;
+        color: @black-ink;
+        font-family: 'PT Mono', Monaco, Menlo, Consolas, "Courier New", Courier, monospace;
+    }
+    .ace_marker-layer .ace_active-line {
+        background-color: lighten(@blue-ink, 5%);
+    }
+    .ace_print-margin {
+        background-color: #2b303b; //fade(@red-ink, 50%);
+    }
+
+    .ace_markup.ace_heading {
+        color: #C0C5CE;//@black-ink;
+    }
+
+    .ace_blockquote {
+        color: #D08770; //@red-ink;
+    }
+
+    .ace_code {
+        color: @green-ink;
+    }
+
+    .ace_code_block {
+        color: @green-ink;
+    }
+
+    .ace_comment {
+        color: #A7ADBA;//@green-ink;
+    }
+    .ace_strong {
+        color: #EBCB8B;
+    }
+    .ace_emphasis {
+        color: #B48EAD;
+    }
+    .ace_meta.ace_tag {
+        color: @black-ink;
+    }
+    .ace_name {
+        color: @red-ink;
+    }
+    .ace_attribute-name {
+        color: #D08770;
+    }
+    .ace_keyword.ace_operator {
+        color: @black-ink;
+    }
+    .ace_operator, .ace_keyword {
+        color: @black-ink;
+    }
+    .ace_string {
+        color: @green-ink;
+    }
+    .ace_punctuation {
+        color: @black-ink;
+    }
+    .ace_constant.ace_language {
+        color: #DFE1E8;
+    }
+    .ace_markup.ace_heading {
+        color: #8FA1B3
+    }
+}
+
+.ui-layout-resizer, .preview-container{
+    background: #EFF1F5;
+}
+
+.preview-content {
+    color: #343D46;
+}
+
+blockquote, pre {
+    border-left: 10px solid darken(#DFE1E8, 5%);
+    background-color: darken(#EFF1F5, 3%);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 15px 20px;
+}
+
+code {
+    color: #8FA1B3;
+}

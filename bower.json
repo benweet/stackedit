@@ -27,9 +27,5 @@
     "xregexp": "d06eff50f87d81d2dd3afc1e854784c38b17bcc4",
     "yaml.js": "git@github.com:jeremyfa/yaml.js.git#~0.1.4",
     "lz-string": "git@github.com:pieroxy/lz-string.git"
-  },
-  "resolutions": {
-    "jquery": "2.0.3",
-    "bootstrap": "v3.0.0"
   }
 }

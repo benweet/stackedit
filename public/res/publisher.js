@@ -12,6 +12,7 @@ define([
     "classes/Provider",
     "classes/AsyncTask",
     "providers/bloggerProvider",
+    "providers/bloggerPageProvider",
     "providers/dropboxProvider",
     "providers/gistProvider",
     "providers/githubProvider",

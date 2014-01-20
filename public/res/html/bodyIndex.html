@@ -683,7 +683,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group modal-publish-blogger">
+					<div class="form-group modal-publish-blogger modal-publish-bloggerpage">
 						<label class="col-lg-4 control-label"
 							for="input-publish-blogger-url">Blog URL</label>
 						<div class="col-lg-7">
@@ -717,6 +717,15 @@
 							existing post ID (optional)</label>
 						<div class="col-lg-7">
 							<input type="text" id="input-publish-postid" placeholder="PostID"
+								class="form-control">
+						</div>
+					</div>
+					<div
+						class="form-group modal-publish-bloggerpage">
+						<label class="col-lg-4 control-label" for="input-publish-pageid">Update
+							existing page ID (optional)</label>
+						<div class="col-lg-7">
+							<input type="text" id="input-publish-pageid" placeholder="PageID"
 								class="form-control">
 						</div>
 					</div>
@@ -798,6 +807,18 @@
                     <a href="http://jekyllrb.com/docs/frontmatter/"
                     target="_blank">YAML front matter</a> to specify the title and the tags/labels of your publication.</p>
                     <p><b>Interpreted variables:</b> <code>title</code>, <code>tags</code>, <code>published</code>, <code>date</code>.</p>
+				</blockquote>
+				<blockquote class="front-matter-info modal-publish-bloggerpage">
+                    <p><b>Tip:</b> You can use a
+                    <a href="http://jekyllrb.com/docs/frontmatter/"
+                    target="_blank">YAML front matter</a> to specify the title of your page.</p>
+                    <p><b>Interpreted variables:</b> <code>title</code>.</p>
+				</blockquote>
+				<blockquote class="url-info modal-publish-bloggerpage">
+                    <p><b>About URL:</b> For newly created page , Blogger API will append a generated number to the url like <code>about-me-1234.html</code>, if you deeply care about your URL naming, you should first create the page on Blogger and then update them with StackEdit specifying the pageId when publishing.
+                    </p>
+                    <p><b>About page visibility:</b> Blogger API does not respect published status for pages.When publishing the page to Blogger, the page will be <strong>live</strong> but not added to the page listing. You should arrange the page listing from Blogger dashboard.
+                    </p>
 				</blockquote>
 			</div>
 			<div class="modal-footer">

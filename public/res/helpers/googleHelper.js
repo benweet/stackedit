@@ -942,6 +942,96 @@ define([
         });
         task.enqueue();
     };
+
+    googleHelper.uploadBloggerPage = function(blogUrl, blogId, pageId, isDraft, publishDate, title, content, callback) {
+        var accountId = 'google.blogger0';
+        var task = new AsyncTask();
+        connect(task);
+        authenticate(task, 'blogger', accountId);
+        task.onRun(function() {
+            var headers = {};
+            var authorizationMgr = authorizationMgrMap[accountId];
+            if(authorizationMgr && authorizationMgr.token) {
+                headers.Authorization = "Bearer " + authorizationMgr.token.access_token;
+            }
+            function uploadPage() {
+                var url = "https://www.googleapis.com/blogger/v3/blogs/" + blogId + "/pages/";
+                var data = {
+                    kind: "blogger#page",
+                    blog: {
+                        id: blogId
+                    },
+                    title: title,
+                    content: content
+                };
+                var type = "POST";
+                // If it's an update
+                if(pageId !== undefined) {
+                    url += pageId;
+                    data.id = pageId;
+                    type = "PUT";
+                }
+                $.ajax({
+                    url: url,
+                    data: JSON.stringify(data),
+                    headers: headers,
+                    type: type,
+                    contentType: "application/json",
+                    dataType: "json",
+                    timeout: constants.AJAX_TIMEOUT
+                }).done(function(page) {
+                    pageId = page.id;
+                    task.chain();
+                }).fail(function(jqXHR) {
+                    var error = {
+                        code: jqXHR.status,
+                        message: jqXHR.statusText
+                    };
+                    // Handle error
+                    if(error.code === 404 && pageId !== undefined) {
+                        error = 'Page ' + pageId + ' not found on Blogger.|removePublish';
+                    }
+                    handleError(error, task);
+                });
+            }
+            function getBlogId() {
+                if(blogId !== undefined) {
+                    task.chain(uploadPage);
+                    return;
+                }
+                $.ajax({
+                    url: "https://www.googleapis.com/blogger/v3/blogs/byurl",
+                    data: {
+                        url: blogUrl
+                    },
+                    headers: headers,
+                    dataType: "json",
+                    timeout: constants.AJAX_TIMEOUT
+                }).done(function(blog) {
+                    blogId = blog.id;
+                    task.chain(uploadPage);
+                }).fail(function(jqXHR) {
+                    var error = {
+                        code: jqXHR.status,
+                        message: jqXHR.statusText
+                    };
+                    // Handle error
+                    if(error.code === 404) {
+                        error = 'Blog "' + blogUrl + '" not found on Blogger.|removePublish';
+                    }
+                    handleError(error, task);
+                });
+            }
+            task.chain(getBlogId);
+        });
+        task.onSuccess(function() {
+            callback(undefined, blogId, pageId);
+        });
+        task.onError(function(error) {
+            callback(error);
+        });
+        task.enqueue();
+    };
     
     // Use by Google's client.js
     window.delayedFunction = undefined;

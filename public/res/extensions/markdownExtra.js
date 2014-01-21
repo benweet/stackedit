@@ -24,6 +24,7 @@ define([
             "newlines",
         ],
         intraword: true,
+        comments: true,
         highlighter: "prettify"
     };
 
@@ -42,6 +43,7 @@ define([
         utils.setInputChecked("#input-markdownextra-strikethrough", hasExtension("strikethrough"));
         utils.setInputChecked("#input-markdownextra-newlines", hasExtension("newlines"));
         utils.setInputChecked("#input-markdownextra-intraword", markdownExtra.config.intraword);
+        utils.setInputChecked("#input-markdownextra-comments", markdownExtra.config.comments);
         utils.setInputValue("#input-markdownextra-highlighter", markdownExtra.config.highlighter);
     };
 
@@ -56,6 +58,7 @@ define([
         utils.getInputChecked("#input-markdownextra-strikethrough") && newConfig.extensions.push("strikethrough");
         utils.getInputChecked("#input-markdownextra-newlines") && newConfig.extensions.push("newlines");
         newConfig.intraword = utils.getInputChecked("#input-markdownextra-intraword");
+        newConfig.comments = utils.getInputChecked("#input-markdownextra-comments");
         newConfig.highlighter = utils.getInputValue("#input-markdownextra-highlighter");
     };
 
@@ -76,7 +79,14 @@ define([
             };
             converter.setOptions(converterOptions);
         }
-
+        if(markdownExtra.config.comments === true) {
+            converter.hooks.chain("postConversion", function(text) {
+                return text.replace(/<!--.*?-->/g, function(wholeMatch) {
+                    return wholeMatch.replace(/^<!---(.+?)-?-->$/, ' <span class="comment label label-danger">$1</span> ');
+                });
+            });
+        }
+        
         var extraOptions = {
             extensions: markdownExtra.config.extensions
         };

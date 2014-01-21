@@ -681,6 +681,11 @@ define([
         
         // Populate shortcuts in settings
         shortcutMgr.addSettingEntries();
+        
+        // Hide shortcuts settings if light mode
+        if(window.lightMode) {
+            $('.tab-settings-shortcuts').hide();
+        }
 
         // listen to online/offline events
         $(window).on('offline', core.setOffline);

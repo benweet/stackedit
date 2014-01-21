@@ -906,10 +906,10 @@
 				<h3 class="modal-title">Settings</h3>
 				<ul class="nav nav-tabs">
 					<li class="active"><a class="action-load-settings"
-						href="#tabpane-settings-editor" data-toggle="tab">Editor</a></li>
+						href="#tabpane-settings-basic" data-toggle="tab">Basic</a></li>
 					<li><a class="action-load-settings"
-						href="#tabpane-settings-services" data-toggle="tab">Services</a></li>
-					<li><a class="action-load-settings"
+						href="#tabpane-settings-advanced" data-toggle="tab">Advanced</a></li>
+					<li><a class="action-load-settings tab-settings-shortcuts"
 						href="#tabpane-settings-shortcuts" data-toggle="tab">Shortcuts</a></li>
 					<li><a class="action-load-settings"
 						href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>
@@ -920,7 +920,7 @@
 			<div class="modal-body">
 
 				<div class="tab-content clearfix">
-					<div class="tab-pane active" id="tabpane-settings-editor">
+					<div class="tab-pane active" id="tabpane-settings-basic">
 						<div class="form-horizontal">
 							<div class="form-group">
 								<label class="col-lg-4 control-label">Layout orientation</label>
@@ -944,6 +944,68 @@
 								<div class="col-lg-7">
 									<select id="input-settings-theme" class="form-control">
 									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-lg-4"></div>
+								<div class="col-lg-7">
+									<div class="checkbox">
+									    <label>
+										    <input type="checkbox" id="input-settings-markdown-extra" />
+										    Use <b>Markdown Extra/GitHub Flavored Markdown</b> syntax
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-lg-4"></div>
+								<div class="col-lg-7">
+									<div class="checkbox">
+									    <label>
+										    <input type="checkbox" id="input-settings-mathjax" />
+										    <b>LaTeX mathematical expressions</b> using <code>$</code> and <code>$$</code> delimiters
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label"
+									for="input-settings-gdrive-multiaccount">Google Drive multi-accounts</a>
+								</label>
+								<div class="col-lg-7">
+									<select id="input-settings-gdrive-multiaccount" class="form-control">
+    									<option value="1">1 account</option>
+    									<option value="2">2 accounts</option>
+    									<option value="3">3 accounts</option>
+									</select>
+									<span class="help-block"><b>Please sign in first with Google.</b> Once linked with your Google accounts, changing account is not possible unless you reset the application.</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="tabpane-settings-advanced">
+						<div class="form-horizontal">
+							<div class="form-group">
+								<label class="col-lg-4 control-label">Mode</label>
+								<div class="col-lg-7">
+									<div class="radio">
+										<label> <input type="radio"
+											name="radio-settings-mode" value="_ace_">
+											Normal (ACE)
+										</label>
+									</div>
+									<div class="radio">
+										<label> <input type="radio"
+											name="radio-settings-mode" value="_light_">
+											Light (textarea)
+										</label>
+									</div>
+									<div class="radio">
+										<label> <input type="radio"
+											name="radio-settings-mode" value="_light_rtl_">
+											Light + Right-to-left
+										</label>
+									</div>
 								</div>
 							</div>
 							<div class="form-group">
@@ -988,43 +1050,34 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-lg-4 control-label">Mode</label>
-								<div class="col-lg-7">
-									<div class="radio">
-										<label> <input type="radio"
-											name="radio-settings-mode" value="_ace_">
-											Normal (ACE)
-										</label>
-									</div>
-									<div class="radio">
-										<label> <input type="radio"
-											name="radio-settings-mode" value="_light_">
-											Light (textarea)
-										</label>
-									</div>
-									<div class="radio">
-										<label> <input type="radio"
-											name="radio-settings-mode" value="_light_rtl_">
-											Light + Right-to-left
-										</label>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="tab-pane" id="tabpane-settings-services">
-						<div class="form-horizontal">
-							<div class="form-group">
 								<label class="col-lg-4 control-label"
-									for="input-settings-gdrive-multiaccount">Google Drive multi-accounts</a>
+									for="textarea-settings-publish-template">Default
+									template <a href="#" class="tooltip-template">(?)</a>
 								</label>
 								<div class="col-lg-7">
-									<select id="input-settings-gdrive-multiaccount" class="form-control">
-    									<option value="1">1 account</option>
-    									<option value="2">2 accounts</option>
-    									<option value="3">3 accounts</option>
+									<textarea id="textarea-settings-publish-template"
+										class="form-control"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label"
+									for="textarea-settings-pdf-template">PDF
+									template <a href="#" class="tooltip-template">(?)</a>
+								</label>
+								<div class="col-lg-7">
+									<textarea id="textarea-settings-pdf-template"
+										class="form-control"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-4 control-label" for="input-settings-pdf-page-size">PDF page size</label>
+								<div class="col-lg-7">
+									<select id="input-settings-pdf-page-size" class="form-control">
+									    <option value="A3">A3</option>
+									    <option value="A4">A4</option>
+									    <option value="Legal">Legal</option>
+									    <option value="Letter">Letter</option>
 									</select>
-									<span class="help-block"><b>Please sign in first with Google.</b> Once linked with your Google accounts, changing account is not possible unless you reset the application.</span>
 								</div>
 							</div>
 							<div class="form-group">
@@ -1079,37 +1132,6 @@
 								<div class="col-lg-7">
 									<input type="text" id="input-settings-ssh-proxy"
 										class="form-control">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-lg-4 control-label"
-									for="textarea-settings-publish-template">Default
-									template <a href="#" class="tooltip-template">(?)</a>
-								</label>
-								<div class="col-lg-7">
-									<textarea id="textarea-settings-publish-template"
-										class="form-control"></textarea>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-lg-4 control-label"
-									for="textarea-settings-pdf-template">PDF
-									template <a href="#" class="tooltip-template">(?)</a>
-								</label>
-								<div class="col-lg-7">
-									<textarea id="textarea-settings-pdf-template"
-										class="form-control"></textarea>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-lg-4 control-label" for="input-settings-pdf-page-size">PDF page size</label>
-								<div class="col-lg-7">
-									<select id="input-settings-pdf-page-size" class="form-control">
-									    <option value="A3">A3</option>
-									    <option value="A4">A4</option>
-									    <option value="Legal">Legal</option>
-									    <option value="Letter">Letter</option>
-									</select>
 								</div>
 							</div>
 						</div>

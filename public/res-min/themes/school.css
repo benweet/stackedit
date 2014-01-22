@@ -1195,10 +1195,10 @@ h1{margin:60px 0 40px}
 h2{margin:50px 0 30px}
 h3{margin:35px 0 20px}
 h4,h5,h6{margin:25px 0 15px}
-p,pre,blockquote{margin:0 0 15px}
+p,pre,pre.prettyprint,blockquote{margin:0 0 15px}
 hr{margin:30px 0}
 code,pre{font-family:Menlo,Consolas,"Courier New",monospace;font-size:12px !important}
-pre{border:0 solid rgba(143,134,104,0.075) !important;border-left:10px solid rgba(143,134,104,0.075) !important;border-radius:0;border-top-right-radius:5px;border-bottom-right-radius:5px;padding:10px 15px !important}pre code{background-color:transparent !important}
+pre,pre.prettyprint{border:0 solid rgba(143,134,104,0.075);border-left:10px solid rgba(143,134,104,0.075);border-radius:0;border-top-right-radius:5px;border-bottom-right-radius:5px;padding:10px 15px}pre code,pre.prettyprint code{background-color:transparent !important}
 dt,dd{margin-top:5px;margin-bottom:5px}
 dd{margin-left:40px}
 table{margin-bottom:20px}
@@ -1224,7 +1224,7 @@ kbd{padding:0.1em 0.6em;border:1px solid rgba(17,33,48,0.25);-webkit-box-shadow:
 .icon-provider-gdrive,.icon-provider-gdrivesec,.icon-provider-gdriveter{background-position:-18px 0}.icon-provider-gdrive.realtime,.icon-provider-gdrivesec.realtime,.icon-provider-gdriveter.realtime{background-position:-162px 0}
 .icon-provider-dropbox{background-position:-37px 0}
 .icon-provider-github,.icon-provider-gist{background-position:-54px 0}
-.icon-provider-blogger{background-position:-72px 0}
+.icon-provider-blogger,.icon-provider-bloggerpage{background-position:-72px 0}
 .icon-provider-tumblr{background-position:-90px 0}
 .icon-provider-wordpress{background-position:-108px 0}
 .icon-provider-ssh{background-position:-126px 0}
@@ -1546,6 +1546,7 @@ div.dropdown-menu h4,div.dropdown-menu h5,div.dropdown-menu h6{margin:15px 0}
 input[type="file"]{line-height:inherit;height:inherit;border:none !important}
 .drop-zone{border:2px dashed #bbb;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;padding:40px;text-align:center;font-size:24px;color:#bbb}
 .modal-import-harddrive-html textarea{width:530px;max-width:530px;height:120px}
+.label.comment{white-space:inherit}
 .popover{max-width:350px;padding:15px;-webkit-box-shadow:0 5px 30px rgba(0,0,0,0.175);box-shadow:0 5px 30px rgba(0,0,0,0.175)}.popover .popover-title{font-weight:500;font-size:24px;padding:10px 15px}
 .popover .icon-lock{font-size:38px;margin:5px}
 .popover .disabled{display:none}

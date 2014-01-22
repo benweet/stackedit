@@ -10,13 +10,13 @@ Hello, I am your first Markdown document within **StackEdit**[^stackedit]. Don't
 Documents
 ---------
 
-**StackEdit** stores your documents in your browser local storage, which means all your documents are automatically saved locally and are accessible **offline!**
+**StackEdit** stores your documents in your browser, which means all your documents are automatically saved locally and are accessible **offline!**
 
 > **NOTE:**
 > 
-> - StackEdit is accessible offline once the HTML5 application cache has been fully loaded.
+> - StackEdit is accessible offline after the application has been loaded for the first time.
 > - Your local documents are not shared between different browsers or computers.
-> - Clearing your browser's data may **delete all your local documents!**
+> - Clearing your browser's data may **delete all your local documents!** Make sure your documents are backed up using **Google Drive** or **Dropbox** synchronization (see [<i class="icon-share"></i> Synchronization](#synchronization) section).
 
 #### <i class="icon-file"></i> Create a document
 
@@ -38,7 +38,7 @@ You can delete the current document by clicking the <i class="icon-trash"></i> b
 
 You can save the current document to a file using the <i class="icon-hdd"></i> `Save as...` sub-menu from the <i class="icon-provider-stackedit"></i> menu.
 
-> **NOTE:** See [<i class="icon-share"></i> Publish a document](#publish-a-document) section for a description of the different outputs.
+> **Tip:** See [<i class="icon-share"></i> Publish a document](#publish-a-document) section for a description of the different output formats.
 
 
 ----------
@@ -62,6 +62,8 @@ You can import a document from the *Cloud* by going to the <i class="icon-provid
 #### <i class="icon-upload"></i> Export a document
 
 You can export any document by going to the <i class="icon-provider-gdrive"></i> `Google Drive` or the <i class="icon-provider-dropbox"></i> `Dropbox` sub-menu and by clicking `Export to...`. Even if your document is already synchronized with **Google Drive** or **Dropbox**, you can export it to a another location. **StackEdit** can synchronize one document with multiple locations.
+
+> **Tip:** Using **Google Drive**, you can create collaborative documents to work in real time with multiple users on the same document. Just check the box `Create a real time collaborative document` in the dialog options when exporting to Google Drive.
 
 #### <i class="icon-refresh"></i> Synchronize a document
 
@@ -105,7 +107,7 @@ After publishing, **StackEdit** will keep your document linked to that publish l
 
 Since one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-share"></i> `Manage publication` in the <i class="icon-provider-stackedit"></i> menu. This will open a dialog box allowing you to remove publication links that are associated to your document.
 
-> **NOTE:** In some cases, if the file from has been removed from the website or the blog, the document will no longer be published on that location.
+> **NOTE:** In some cases, if the file has been removed from the website or the blog, the document will no longer be published on that location.
 
 ----------
 
@@ -115,7 +117,7 @@ Markdown Extra
 
 **StackEdit** supports **Markdown Extra**, which extends **Markdown** syntax with some nice features.
 
-> **NOTE:** You can disable any **Markdown Extra** feature in the `Extensions` tab of the <i class="icon-cog"></i> `Settings` dialog.
+> **Tip:** You can disable any **Markdown Extra** feature in the `Extensions` tab of the <i class="icon-cog"></i> `Settings` dialog.
 
 
 ### Tables
@@ -157,14 +159,14 @@ Term 3
 
 ### Fenced code blocks
 
-GitHub's fenced code blocks are also supported with **Prettify** syntax highlighting:
+GitHub's fenced code blocks[^gfm] are also supported with **Prettify** syntax highlighting:
 
 ```
 // Foo
 var bar = 0;
 ```
 
-> **NOTE:** To use **Highlight.js** instead of **Prettify**, just configure the `Markdown Extra` extension in the <i class="icon-cog"></i> `Settings` dialog.
+> **Tip:** To use **Highlight.js** instead of **Prettify**, just configure the `Markdown Extra` extension in the <i class="icon-cog"></i> `Settings` dialog.
 
 
 ### Footnotes
@@ -192,6 +194,12 @@ You can insert a table of contents using the marker `[TOC]`:
 [TOC]
 
 
+### Comments
+
+Usually, comments in Markdown are just standard HTML comments. <!-- like this -->
+**StackEdit** extends HTML comments in order to produce useful, highlighted comments in the preview but not in your exported documents. <!--- This is very useful for collecting feedback from other users in a collaborative document. -->
+
+
 ### MathJax
  
 You can render *LaTeX* mathematical expressions using **MathJax**, as on [math.stackexchange.com][1]:
@@ -203,7 +211,7 @@ $$
 \Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
 $$
 
-> **NOTE:** Make sure you include MathJax into your publications to render mathematical expression correctly. Your page/template should include something like: 
+> **Tip:** Make sure you include MathJax into your publications to render mathematical expression correctly. Your page/template should include something like: 
 
 ```
 <script type="text/javascript" src="https://stackedit.io/libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
@@ -218,6 +226,8 @@ $$
 > - about **Highlight.js** syntax highlighting [here][6].
 
   [^stackedit]: [StackEdit](https://stackedit.io/) is a full-featured, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.
+
+  [^gfm]: **GitHub Flavored Markdown** (GFM) is supported by StackEdit.
 
 
   [1]: http://math.stackexchange.com/

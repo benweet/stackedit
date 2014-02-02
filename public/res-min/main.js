@@ -11520,7 +11520,7 @@ function printStackTrace(e) {
  return e;
 }), define("constants", [], function() {
  var e = {};
- return e.VERSION = "3.1.6", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", 
+ return e.VERSION = "3.1.7", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", 
  e.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", e.GOOGLE_DRIVE_APP_ID = "241271498917", 
  e.DROPBOX_APP_KEY = "lq6mwopab8wskas", e.DROPBOX_APP_SECRET = "851fgnucpezy84t", 
  e.DROPBOX_RESTRICTED_APP_KEY = "sw0hlixhr8q1xk0", e.DROPBOX_RESTRICTED_APP_SECRET = "1r808p2xygs6lbg", 
@@ -20422,7 +20422,7 @@ function() {
 }), define("extensions/twitter", [ "jquery", "underscore", "constants", "utils", "classes/Extension" ], function(e, t, n, i, o) {
  var r = new o("twitter", "Twitter", !1, !0), s = !1, a = !1, l = function() {
   s === !1 && a === !1 && e.ajax({
-   url: "http://platform.twitter.com/widgets.js",
+   url: "https://platform.twitter.com/widgets.js",
    dataType: "script"
   }).done(function() {
    s = !0;

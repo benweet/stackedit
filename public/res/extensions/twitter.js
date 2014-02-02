@@ -14,7 +14,7 @@ define([
     var init = function() {
         if(isLoaded === false && isOffline === false) {
             $.ajax({
-                url: 'http://platform.twitter.com/widgets.js',
+                url: 'https://platform.twitter.com/widgets.js',
                 dataType: "script"
             }).done(function() {
                 isLoaded = true;

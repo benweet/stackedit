@@ -197,7 +197,7 @@ You can insert a table of contents using the marker `[TOC]`:
 ### Comments
 
 Usually, comments in Markdown are just standard HTML comments. <!-- like this -->
-**StackEdit** extends HTML comments in order to produce useful, highlighted comments in the preview but not in your exported documents. <!--- This is very useful for collecting feedback from other users in a collaborative document. -->
+**StackEdit** extends HTML comments in order to produce useful, highlighted comments in the preview but not in your exported documents. <!--- This is very useful for collecting feedback in a collaborative document. -->
 
 
 ### MathJax

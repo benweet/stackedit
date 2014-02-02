@@ -12,6 +12,7 @@ define([
     "extensions/partialRendering",
     "extensions/buttonMarkdownSyntax",
     "extensions/googleAnalytics",
+    "extensions/twitter",
     "extensions/dialogAbout",
     "extensions/dialogManagePublication",
     "extensions/dialogManageSynchronization",
@@ -136,6 +137,10 @@ define([
     eventMgr.onSaveSettings = function(newExtensionSettings, event) {
         logger.log("onSaveSettings");
         _.each(extensionList, function(extension) {
+            if(window.lightMode === true && extension.disableInLight === true) {
+                newExtensionSettings[extension.extensionId] = extension.config;
+                return;
+            }
             var newExtensionConfig = _.extend({}, extension.defaultConfig);
             newExtensionConfig.enabled = utils.getInputChecked("#input-enable-extension-" + extension.extensionId);
             var isChecked;
@@ -208,6 +213,10 @@ define([
 
     // Operation on ACE
     addEventHook("onAceCreated");
+    
+    // Refresh twitter buttons
+    addEventHook("onTweet");
+    
 
     var onPreviewFinished = createEventHook("onPreviewFinished");
     var onAsyncPreviewListenerList = getExtensionListenerList("onAsyncPreview");

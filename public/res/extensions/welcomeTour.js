@@ -7,6 +7,11 @@ define([
 ], function(_, $, storage, Extension, Tour) {
 
     var welcomeTour = new Extension('welcomeTour', 'Welcome tour', false, true);
+    
+    var eventMgr;
+    welcomeTour.onEventMgrCreated = function(eventMgrParam) {
+        eventMgr = eventMgrParam;
+    };
 
     welcomeTour.onReady = function() {
         var tour = new Tour({
@@ -103,9 +108,13 @@ define([
                 element: '.navbar-inner',
                 title: 'Happy StackWriting!',
                 content: [
-                    'Enjoy, and don\'t forget to rate <b>StackEdit</b> on <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg/reviews">Chrome Web Store</a>...',
+                    '<p>Enjoy, and don\'t forget to rate <b>StackEdit</b> on <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg/reviews">Chrome Web Store</a>...</p>',
+                    '<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://stackedit.io" data-text="StackEdit – markdown editor" data-via="stackedit" data-size="large"></a>',
                 ].join(""),
                 placement: 'bottom',
+                onShown: function() {
+                    eventMgr.onTweet();
+                }
             },
         ]);
         if(!_.has(storage, 'welcomeTour')) {

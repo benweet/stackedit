@@ -7,6 +7,11 @@ define([
 
     var dialogManageSharing = new Extension("dialogManageSharing", 'Button "Share"', false, true);
 
+    var eventMgr;
+    dialogManageSharing.onEventMgrCreated = function(eventMgrParam) {
+        eventMgr = eventMgrParam;
+    };
+
     var fileDesc;
     var shareListElt;
     var $msgShareListElt;
@@ -19,12 +24,15 @@ define([
         var linkListHtml = _.reduce(fileDesc.publishLocations, function(result, attributes) {
             if(attributes.sharingLink) {
                 result += _.template(dialogManageSharingLocationHTML, {
-                    link: attributes.sharingLink
+                    link: attributes.sharingLink,
+                    title: fileDesc.title
                 });
             }
             return result;
         }, '');
         shareListElt.innerHTML = linkListHtml;
+        
+        eventMgr.onTweet();
         
         $msgShareListElt.toggleClass('hide', linkListHtml.length === 0);
         $msgNoShareElt.toggleClass('hide', linkListHtml.length !== 0);
@@ -35,7 +43,14 @@ define([
         refreshDocumentSharing(fileDescParameter);
     };
 
-    dialogManageSharing.onNewPublishSuccess = refreshDocumentSharing;
+    dialogManageSharing.onNewPublishSuccess = function(fileDescParameter, publishAttributes) {
+        refreshDocumentSharing(fileDescParameter);
+        if(publishAttributes.sharingLink) {
+            $('.modal').modal('hide');
+            $('.modal-manage-sharing').modal('show');
+        }
+    };
+
     dialogManageSharing.onPublishRemoved = refreshDocumentSharing;
     
     dialogManageSharing.onReady = function() {

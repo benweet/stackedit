@@ -1547,6 +1547,7 @@ input[type="file"]{line-height:inherit;height:inherit;border:none !important}
 .drop-zone{border:2px dashed #bbb;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;padding:40px;text-align:center;font-size:24px;color:#bbb}
 .modal-import-harddrive-html textarea{width:530px;max-width:530px;height:120px}
 .label.comment{white-space:inherit}
+.sharing-tweet{float:left;margin:5px 10px 0 0}
 .popover{max-width:350px;padding:15px;-webkit-box-shadow:0 5px 30px rgba(0,0,0,0.175);box-shadow:0 5px 30px rgba(0,0,0,0.175)}.popover .popover-title{font-weight:500;font-size:24px;padding:10px 15px}
 .popover .icon-lock{font-size:38px;margin:5px}
 .popover .disabled{display:none}

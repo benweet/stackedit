@@ -507,9 +507,14 @@ define([
             $('#input-sync-export-' + providerId + '-realtime').change(function() {
                 $fileIdInputElt.prop('disabled', $realtimeCheckboxElt.prop('checked'));
             });
-    
+            
+            // Skip gdrive action if provider is not enabled in the settings
+            if(accountIndex >= settings.gdriveMultiAccount) {
+                return;
+            }
             var state = utils.retrieveIgnoreError(providerId + ".state");
-            if(state === undefined || state.userId != storage[accountId + '.userId']) {
+            var userId = storage[accountId + '.userId'];
+            if(state === undefined || (userId && state.userId != userId)) {
                 return;
             }
             storage.removeItem(providerId + ".state");

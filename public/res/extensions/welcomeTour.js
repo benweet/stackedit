@@ -109,7 +109,7 @@ define([
                 title: 'Happy StackWriting!',
                 content: [
                     '<p>Enjoy, and don\'t forget to rate <b>StackEdit</b> on <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg/reviews">Chrome Web Store</a>...</p>',
-                    '<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://stackedit.io" data-text="StackEdit – markdown editor" data-via="stackedit" data-size="large"></a>',
+                    '<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://stackedit.io" data-text="Great #markdown editor!" data-via="stackedit" data-size="large"></a>',
                 ].join(""),
                 placement: 'bottom',
                 onShown: function() {

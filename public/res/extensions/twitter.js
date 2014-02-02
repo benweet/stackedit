@@ -1,12 +1,10 @@
-/*globals _gaq */
 define([
     "jquery",
     "underscore",
     "constants",
     "utils",
     "classes/Extension",
-    "settings",
-], function($, _, constants, utils, Extension, settings) {
+], function($, _, constants, utils, Extension) {
 
     var twitter = new Extension("twitter", "Twitter", false, true);
 

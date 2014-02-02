@@ -63,7 +63,7 @@ You can import a document from the *Cloud* by going to the <i class="icon-provid
 
 You can export any document by going to the <i class="icon-provider-gdrive"></i> `Google Drive` or the <i class="icon-provider-dropbox"></i> `Dropbox` sub-menu and by clicking `Export to...`. Even if your document is already synchronized with **Google Drive** or **Dropbox**, you can export it to a another location. **StackEdit** can synchronize one document with multiple locations.
 
-> **Tip:** Using **Google Drive**, you can create collaborative documents to work in real time with multiple users on the same document. Just check the box `Create a real time collaborative document` in the dialog options when exporting to Google Drive.
+> **Tip:** Using **Google Drive**, you can create collaborative documents to work in real time with other users. Just check the box `Create a real time collaborative document` in the dialog options when exporting to Google Drive.
 
 #### <i class="icon-refresh"></i> Synchronize a document
 

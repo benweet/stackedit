@@ -152,7 +152,7 @@ define([
     };
 
     // Slug function
-    var nonWordChars = XRegExp('[^\\p{L}-]', 'g');
+    var nonWordChars = XRegExp('[^\\p{L}\\p{N}-]', 'g');
     utils.slugify = function(text) {
         return text.toLowerCase().replace(/\s/g, '-') // Replace spaces with -
         .replace(nonWordChars, '') // Remove all non-word chars

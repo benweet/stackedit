@@ -22047,19 +22047,20 @@ function() {
   l = e;
  };
  var c;
- return s.onPreviewFinished = function(e) {
+ return s.onPreviewFinished = function(e, n) {
   try {
-   var n = t.template(s.config.template, {
+   var i = t.template(s.config.template, {
     documentTitle: l.title,
     documentMarkdown: l.content,
     strippedDocumentMarkdown: l.content.substring(l.frontMatter ? l.frontMatter._frontMatter.length : 0),
-    documentHTML: e,
+    documentHTML: n,
+    documentHTMLWithComments: e,
     frontMatter: l.frontMatter,
     publishAttributes: void 0
    });
-   c.value = n;
-  } catch (i) {
-   return a.onError(i), i.message;
+   c.value = i;
+  } catch (o) {
+   return a.onError(o), o.message;
   }
  }, s.onReady = function() {
   c = document.getElementById("input-html-code"), e(".action-html-code").click(function() {
@@ -23308,8 +23309,9 @@ function() {
      var e = "";
      t.each(g.children, function(t) {
       e += t.innerHTML;
-     }), e = e.replace(/^<div class="se-section-delimiter"><\/div>\n\n/gm, ""), e = e.replace(/ <span class="comment label label-danger">.*<\/span> /g, ""), 
-     v(i.trim(e));
+     }), e = e.replace(/^<div class="se-section-delimiter"><\/div>\n\n/gm, "");
+     var n = i.trim(e), o = n.replace(/ <span class="comment label label-danger">.*?<\/span> /g, "");
+     v(n, o);
     });
    };
    r(function() {
@@ -23648,7 +23650,7 @@ function() {
 }), define("text!html/bodyViewer.html", [], function() {
  return '\n<div class="navbar navbar-default ui-layout-north">\n	<div class="navbar-inner">\n		<div class="nav right-space pull-right"></div>\n\n		<ul class="nav pull-right">\n			<li class="btn-group">\n				<button class="btn btn-success action-edit-document hide"\n					title="Edit this document">\n					<i class="icon-pencil"></i>\n				</button>\n			</li>\n			<li class="btn-group">\n				<button class="btn btn-success dropdown-toggle"\n					data-toggle="dropdown" title="Save this document">\n					<i class="icon-download"></i>\n				</button>\n				<ul class="dropdown-menu">\n					<li><a class="action-download-md" href="#">Save as\n							Markdown</a></li>\n					<li><a class="action-download-html" href="#">Save as HTML</a></li>\n					<li><a class="action-download-template" href="#">Save\n							using template</a></li>\n					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>\n				</ul>\n			</li>\n		</ul>\n		<ul class="nav pull-right">\n			<li><div class="working-indicator"></div></li>\n			<li><span class="btn btn-success file-title-navbar"></span></li>\n		</ul>\n	</div>\n</div>\n<div id="wmd-button-bar" class="hide"></div>\n<div id="wmd-input" class="hide"></div>\n<div class="ui-layout-center preview-container"></div>\n\n<div class="menu-panel collapse width">\n	<button class="btn collapse-button action-open-stackedit"\n		title="Open StackEdit">\n		<img\n			data-stackedit-src="menu-icon.png" width="24" height="24" />\n	</button>\n</div>\n\n<div class="document-panel collapse width">\n	<button class="btn collapse-button" data-toggle="collapse"\n		data-target=".document-panel" title="Select document">\n		<i class="icon-folder-open"></i>\n	</button>\n	<div class="search-bar clearfix">\n		<div class="input-group">\n			<span class="input-group-addon"><i class="icon-search"></i></span><input\n				type="text" class="form-control"></input>\n			<div class="input-group-btn">\n				<a data-toggle="modal" data-target=".modal-document-manager"\n					class="btn btn-link" title="Manage documents"><i\n					class="icon-layers"></i></a>\n			</div>\n		</div>\n	</div>\n	<div class="panel-content">\n		<div class="list-group document-list"></div>\n		<div class="list-group document-list-filtered hide"></div>\n	</div>\n</div>\n\n<div class="modal modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h3 class="modal-title">Ooops...</h3>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>If you want to reopen StackEdit, click on\n					"Reload".</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n';
 }), define("text!html/settingsTemplateTooltip.html", [], function() {
- return 'Available variables:\n<br>\n<ul>\n    <li>\n        <b>documentTitle</b>: document title</li>\n    <li>\n        <b>documentMarkdown</b>: document in Markdown format</li>\n    <li>\n        <b>strippedDocumentMarkdown</b>: document without front matter</li>\n    <li>\n        <b>documentHTML</b>: document in HTML format</li>\n    <li>\n        <b>frontMatter</b>: YAML front matter object (undefined if not present)</li>\n    <li>\n        <b>publishAttributes</b>: attributes of the publish location (undefined if\n        not publishing)</li>\n</ul>\n<b>Examples:</b>\n<br />&lt;title&gt;&lt;%= documentTitle %&gt;&lt;&#x2F;title&gt;\n<br />&lt;div&gt;&lt;%- documentHTML %&gt;&lt;&#x2F;div&gt;\n<br />&lt;%\n<br />if(publishAttributes.provider.providerId == &quot;github&quot;) print(documentMarkdown);\n<br\n/>%&gt;\n<br />\n<br />\n<a target="_blank" href="http://underscorejs.org/#template">More\n	info</a>\n<br />\n<br />\n<b class="text-danger">\n    <i class="icon-attention"></i>Careful! Template is subject to malicious code. Don\'t copy/paste untrusted\n    content.</b>';
+ return 'Available variables:\n<br>\n<ul>\n    <li>\n        <b>documentTitle</b>: document title</li>\n    <li>\n        <b>documentMarkdown</b>: document in Markdown format</li>\n    <li>\n        <b>strippedDocumentMarkdown</b>: document without front matter</li>\n    <li>\n        <b>documentHTML</b>: document in HTML format</li>\n    <li>\n        <b>documentHTMLWithComments</b>: HTML format with comments</li>\n    <li>\n        <b>frontMatter</b>: YAML front matter object (undefined if not present)</li>\n    <li>\n        <b>publishAttributes</b>: attributes of the publish location (undefined if\n        not publishing)</li>\n</ul>\n<b>Examples:</b>\n<br />&lt;title&gt;&lt;%= documentTitle %&gt;&lt;&#x2F;title&gt;\n<br />&lt;div&gt;&lt;%- documentHTML %&gt;&lt;&#x2F;div&gt;\n<br />&lt;%\n<br />if(publishAttributes.provider.providerId == &quot;github&quot;) print(documentMarkdown);\n<br\n/>%&gt;\n<br />\n<br />\n<a target="_blank" href="http://underscorejs.org/#template">More\n	info</a>\n<br />\n<br />\n<b class="text-danger">\n    <i class="icon-attention"></i>Careful! Template is subject to malicious code. Don\'t copy/paste untrusted\n    content.</b>';
 }), define("text!html/settingsUserCustomExtensionTooltip.html", [], function() {
  return 'Extension variable name:\n<b>userCustom</b>\n<br>\n<br>\n<b>Example:</b>\n<br />\nuserCustom.onPreviewFinished = function() {\n<br />\n&nbsp;&nbsp;eventMgr.onMessage(&quot;Finished!&quot;);\n<br />\n};\n<br />\n<br />\n<a target="_blank"\n	href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#architecture">More\n	info</a>\n<br />\n<br />\n<b class="text-danger"><i class="icon-attention"></i> Careful! This is subject to malicious code. Don\'t copy/paste untrusted content.</b>';
 }), function(e, t) {
@@ -31075,7 +31077,7 @@ function() {
  function h(e, t, n) {
   return void 0 === t.format && (t.format = i.getInputRadio("radio-publish-format"), 
   "template" == t.format && i.getInputChecked("#checkbox-publish-custom-template") && (t.customTmpl = i.getInputValue("#textarea-publish-custom-template"))), 
-  "markdown" == t.format ? e.content : "html" == t.format ? n : v.applyTemplate(e, t, n);
+  "markdown" == t.format ? e.content : "html" == t.format ? n.withoutComments : v.applyTemplate(e, t, n);
  }
  function p(e, t) {
   if (0 === C.length) return e(t), void 0;
@@ -31110,17 +31112,17 @@ function() {
  function m(e) {
   var n = A, i = n.newPublishAttributes(e);
   if (void 0 !== i) {
-   var r = l.currentFile, s = x, a = h(r, i, s), u = r.frontMatter && r.frontMatter.title || r.title;
-   n.publish(i, r.frontMatter, u, a, function(e) {
+   var r = l.currentFile, s = h(r, i, x), a = r.frontMatter && r.frontMatter.title || r.title;
+   n.publish(i, r.frontMatter, a, s, function(e) {
     void 0 === e && (i.provider = n, c.createLink(i, function() {
      f(r, i);
     }));
    });
-   var d = {};
+   var u = {};
    t.each(n.publishPreferencesInputIds, function(e) {
     var t = document.getElementById("input-publish-" + e);
-    d[e] = "checkbox" == t.type ? t.checked : t.value;
-   }), d.format = i.format, d.customTmpl = i.customTmpl, o[n.providerId + ".publishPreferences"] = JSON.stringify(d);
+    u[e] = "checkbox" == t.type ? t.checked : t.value;
+   }), u.format = i.format, u.customTmpl = i.customTmpl, o[n.providerId + ".publishPreferences"] = JSON.stringify(u);
   }
  }
  var v = {}, b = t.chain(arguments).map(function(e) {
@@ -31145,7 +31147,8 @@ function() {
     documentTitle: e.title,
     documentMarkdown: e.content,
     strippedDocumentMarkdown: e.content.substring(e.frontMatter ? e.frontMatter._frontMatter.length : 0),
-    documentHTML: i,
+    documentHTML: i.withoutComments,
+    documentHTMLWithComments: i.withComments,
     frontMatter: e.frontMatter,
     publishAttributes: n
    });
@@ -31154,8 +31157,11 @@ function() {
   }
  };
  var y, w, x, C = [];
- s.addListener("onPreviewFinished", function(e) {
-  x = e;
+ s.addListener("onPreviewFinished", function(e, t) {
+  x = {
+   withComments: e,
+   withoutComments: t
+  };
  });
  var E = !1;
  s.addListener("onOfflineChanged", function(e) {
@@ -31201,7 +31207,7 @@ function() {
    i.saveAs(e, t + ".md");
   }), e(".action-download-html").click(function() {
    var e = l.currentFile.title;
-   i.saveAs(x, e + ".html");
+   i.saveAs(x.withoutComments, e + ".html");
   }), e(".action-download-template").click(function() {
    var e = l.currentFile, t = v.applyTemplate(e, void 0, x);
    i.saveAs(t, e.title + (-1 === r.template.indexOf("documentHTML") ? ".md" : ".html"));

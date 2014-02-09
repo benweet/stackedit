@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#Date Sun Feb 02 2014 22:08:12
+#Date Sun Feb 09 2014 13:28:14
 
 CACHE:
 res/worker.js
@@ -34,6 +34,7 @@ res-min/font/fontello.woff
 res-min/img/gittip.png
 res-min/img/icons.png
 res-min/img/icons2x.png
+res-min/img/logo-192.png
 res-min/img/logo-promo-128.png
 res-min/img/menu-icon.png
 res-min/img/school-line.png

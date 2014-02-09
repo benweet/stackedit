@@ -751,7 +751,7 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .tooltip.right{margin-left:3px;padding:0 5px}
 .tooltip.bottom{margin-top:3px;padding:5px 0}
 .tooltip.left{margin-left:-3px;padding:0 5px}
-.tooltip-inner{max-width:240px;padding:3px 8px;color:#fff;text-align:center;text-decoration:none;background-color:#000;border-radius:4px}
+.tooltip-inner{max-width:250px;padding:3px 8px;color:#fff;text-align:center;text-decoration:none;background-color:#000;border-radius:4px}
 .tooltip-arrow{position:absolute;width:0;height:0;border-color:transparent;border-style:solid}
 .tooltip.top .tooltip-arrow{bottom:0;left:50%;margin-left:-5px;border-width:5px 5px 0;border-top-color:#000}
 .tooltip.top-left .tooltip-arrow{bottom:0;left:5px;border-width:5px 5px 0;border-top-color:#000}

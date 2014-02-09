@@ -48,6 +48,11 @@ define([
         });
     });
     
+    // AutoSync configuration
+    _.each(providerMap, function(provider) {
+        provider.autosyncConfig = utils.retrieveIgnoreError(provider.providerId + ".autosyncConfig") || {};
+    });
+    
     // Returns true if at least one file has synchronized location
     synchronizer.hasSync = function(provider) {
         return _.some(fileSystem, function(fileDesc) {
@@ -292,9 +297,23 @@ define([
             });
         }
 
-        // Open dialog box
+        // Open dialog
         $(".modal-upload-" + provider.providerId).modal();
     }
+
+    eventMgr.addListener("onFileCreated", function(fileDesc) {
+        if(_.size(fileDesc.syncLocations) === 0) {
+            _.each(providerMap, function(provider) {
+                provider.autosyncConfig.enabled && provider.autosyncFile(fileDesc.title, fileDesc.content, provider.autosyncConfig, function(error, syncAttributes) {
+                    if(error) {
+                        return;
+                    }
+                    fileDesc.addSyncLocation(syncAttributes);
+                    eventMgr.onSyncExportSuccess(fileDesc, syncAttributes);
+                });
+            });
+        }
+    });
 
     eventMgr.addListener("onReady", function() {
         // Init each provider
@@ -306,6 +325,15 @@ define([
             // Provider's export action
             $(".action-sync-export-dialog-" + provider.providerId).click(function() {
                 initExportDialog(provider);
+            });
+            // Provider's autosync action
+            $(".action-autosync-dialog-" + provider.providerId).click(function() {
+                // Reset fields
+                utils.resetModalInputs();
+                // Load config
+                provider.setAutosyncDialogConfig(provider);
+                // Open dialog
+                $(".modal-autosync-" + provider.providerId).modal();
             });
             $(".action-sync-export-" + provider.providerId).click(function(event) {
                 var isRealtime = utils.getInputChecked("#input-sync-export-" + provider.providerId + "-realtime");
@@ -359,6 +387,13 @@ define([
                     }
                 });
                 storage[provider.providerId + ".exportPreferences"] = JSON.stringify(exportPreferences);
+            });
+            $(".action-autosync-" + provider.providerId).click(function(event) {
+                var config = provider.getAutosyncDialogConfig(event);
+                if(config !== undefined) {
+                    storage[provider.providerId + ".autosyncConfig"] = JSON.stringify(config);
+                    provider.autosyncConfig = config;
+                }
             });
         });
     });

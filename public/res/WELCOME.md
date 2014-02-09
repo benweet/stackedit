@@ -126,17 +126,17 @@ Markdown Extra
 
 Item      | Value
 --------- | -----
-Computer  | \$1600
-Phone     | \$12
-Pipe      | \$1
+Computer  | 1600 USD
+Phone     | 12 USD
+Pipe      | 1 USD
 
 You can specify column alignment with one or two colons:
 
-| Item      |  Value | Qty  |
-| :-------- | ------:| :--: |
-| Computer  | \$1600 |  5   |
-| Phone     |   \$12 |  12  |
-| Pipe      |    \$1 | 234  |
+| Item      |    Value | Qty  |
+| :-------- | --------:| :--: |
+| Computer  | 1600 USD |  5   |
+| Phone     |   12 USD |  12  |
+| Pipe      |    1 USD | 234  |
 
 
 ### Definition Lists

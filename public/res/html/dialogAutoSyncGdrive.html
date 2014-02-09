@@ -1,0 +1,57 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">&times;</button>
+			<h3 class="modal-title">AutoSync to <%= providerName %></h3>
+		</div>
+		<div class="modal-body">
+			<p>
+				<b>AutoSync</b> feature automatically exports every new document to your <i
+					class="icon-provider-<%= providerId %>"></i>
+				<code>Google Drive</code>
+				account and keep it synchronized.
+			</p>
+			<div class="form-horizontal">
+			    <br/>
+    			<div class="form-group">
+    				<div class="col-lg-3 control-label"></div>
+    				<div class="col-lg-8">
+    					<label> <input id="input-autosync-<%= providerId %>-enabled"
+    						type="checkbox"> Enable AutoSync for <%= providerName %>
+    					</label>
+    				</div>
+    			</div>
+			    <br/>
+    			<div class="form-group">
+    				<label class="col-lg-3 control-label"
+    					for="input-autosync-<%= providerId %>-parentid">Folder ID
+    					(optional)</label>
+    				<div class="col-lg-8">
+    					<div class="input-group">
+    						<input type="text" id="input-autosync-<%= providerId %>-parentid"
+    							placeholder="FolderID" class="form-control">
+    						<div class="input-group-btn">
+    							<a class="btn btn-link action-autosync-<%= providerId %>-choose-folder"
+    								title="Choose folder" data-dismiss="modal"><i
+    								class="icon-folder-open"></i></a>
+    						</div>
+    					</div>
+    					<span class="help-block"> If no folder ID is supplied,
+    						files will be created in your root folder. </span>
+    				</div>
+    			</div>
+    		</div>
+			<blockquote>
+				<b>NOTE:</b> Removing a local document will not delete the linked file on Google
+						Drive.
+			</blockquote>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+			<a href="#" data-dismiss="modal"
+				class="btn btn-primary action-autosync-<%= providerId %>">OK</a>
+		</div>
+	</div>
+</div>

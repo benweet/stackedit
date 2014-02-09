@@ -11,8 +11,9 @@ define([
     "eventMgr",
     "fileMgr",
     "helpers/googleHelper",
-    "text!html/dialogExportGdrive.html"
-], function($, _, constants, utils, storage, logger, Provider, settings, eventMgr, fileMgr, googleHelper, dialogExportGdriveHTML) {
+    "text!html/dialogExportGdrive.html",
+    "text!html/dialogAutoSyncGdrive.html",
+], function($, _, constants, utils, storage, logger, Provider, settings, eventMgr, fileMgr, googleHelper, dialogExportGdriveHTML, dialogAutoSyncGdriveHTML) {
     
     return function(providerId, providerName, accountIndex) {
         var accountId = 'google.gdrive' + accountIndex;
@@ -474,6 +475,34 @@ define([
             }
         };
         
+        // Initialize the AutoSync dialog fields
+        gdriveProvider.setAutosyncDialogConfig = function() {
+            var config = gdriveProvider.autosyncConfig;
+            utils.setInputChecked('#input-autosync-' + providerId + '-enabled', config.enabled);
+            utils.setInputValue('#input-autosync-' + providerId + '-parentid', config.parentId);
+        };
+        
+        // Retrieve the AutoSync dialog fields
+        gdriveProvider.getAutosyncDialogConfig = function() {
+            var config = {};
+            config.enabled = utils.getInputChecked('#input-autosync-' + providerId + '-enabled');
+            config.parentId = utils.getInputTextValue('#input-autosync-' + providerId + '-parentid');
+            return config;
+        };
+        
+        // Perform AutoSync
+        gdriveProvider.autosyncFile = function(title, content, config, callback) {
+            var parentId = config.parentId;
+            googleHelper.upload(undefined, parentId, title, content, undefined, undefined, accountId, function(error, result) {
+                if(error) {
+                    callback(error);
+                    return;
+                }
+                var syncAttributes = createSyncAttributes(result.id, result.etag, content, title);
+                callback(undefined, syncAttributes);
+            });
+        };
+        
         // Disable publish on optional multi-account
         gdriveProvider.isPublishEnabled = settings.gdriveMultiAccount > accountIndex;
     
@@ -488,8 +517,15 @@ define([
                 providerName: providerName
             }));
             
+            // Create autosync dialog
+            var modalAutosyncElt = document.querySelector('.modal-autosync-' + providerId);
+            modalAutosyncElt && (modalAutosyncElt.innerHTML = _.template(dialogAutoSyncGdriveHTML, {
+                providerId: providerId,
+                providerName: providerName
+            }));
+            
             // Choose folder button in export modal
-            $('.export-' + providerId + '-choose-folder').click(function() {
+            $('.action-export-' + providerId + '-choose-folder').click(function() {
                 googleHelper.picker(function(error, docs) {
                     if(error || docs.length === 0) {
                         return;
@@ -498,6 +534,19 @@ define([
                     $(".modal-upload-" + providerId).modal();
                     // Set parent ID
                     utils.setInputValue('#input-sync-export-' + providerId + '-parentid', docs[0].id);
+                }, 'folder', accountId);
+            });
+    
+            // Choose folder button in autosync modal
+            $('.action-autosync-' + providerId + '-choose-folder').click(function() {
+                googleHelper.picker(function(error, docs) {
+                    if(error || docs.length === 0) {
+                        return;
+                    }
+                    // Open export dialog
+                    $(".modal-autosync-" + providerId).modal();
+                    // Set parent ID
+                    utils.setInputValue('#input-autosync-' + providerId + '-parentid', docs[0].id);
                 }, 'folder', accountId);
             });
     

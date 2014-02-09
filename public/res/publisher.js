@@ -67,7 +67,8 @@ define([
                 documentTitle: fileDesc.title,
                 documentMarkdown: fileDesc.content,
                 strippedDocumentMarkdown: fileDesc.content.substring(fileDesc.frontMatter ? fileDesc.frontMatter._frontMatter.length : 0),
-                documentHTML: html,
+                documentHTML: html.withoutComments,
+                documentHTMLWithComments: html.withComments,
                 frontMatter: fileDesc.frontMatter,
                 publishAttributes: publishAttributes
             });
@@ -90,7 +91,7 @@ define([
             return fileDesc.content;
         }
         else if(publishAttributes.format == "html") {
-            return html;
+            return html.withoutComments;
         }
         else {
             return publisher.applyTemplate(fileDesc, publishAttributes, html);
@@ -134,9 +135,12 @@ define([
     }
 
     // Get the html from the onPreviewFinished callback
-    var previewHtml;
-    eventMgr.addListener("onPreviewFinished", function(html) {
-        previewHtml = html;
+    var currentHTML;
+    eventMgr.addListener("onPreviewFinished", function(htmlWithComments, htmlWithoutComments) {
+        currentHTML = {
+            withComments: htmlWithComments,
+            withoutComments: htmlWithoutComments
+        };
     });
 
     // Listen to offline status changes
@@ -155,7 +159,7 @@ define([
         publishRunning = true;
         eventMgr.onPublishRunning(true);
         publishFileDesc = fileMgr.currentFile;
-        publishHTML = previewHtml;
+        publishHTML = currentHTML;
         publishAttributesList = _.values(publishFileDesc.publishLocations);
         publishLocation(function(errorFlag) {
             publishRunning = false;
@@ -224,8 +228,7 @@ define([
 
         // Perform provider's publishing
         var fileDesc = fileMgr.currentFile;
-        var html = previewHtml;
-        var content = getPublishContent(fileDesc, publishAttributes, html);
+        var content = getPublishContent(fileDesc, publishAttributes, currentHTML);
         var title = (fileDesc.frontMatter && fileDesc.frontMatter.title) || fileDesc.title;
         provider.publish(publishAttributes, fileDesc.frontMatter, title, content, function(error) {
             if(error === undefined) {
@@ -311,18 +314,18 @@ define([
         });
         $(".action-download-html").click(function() {
             var title = fileMgr.currentFile.title;
-            utils.saveAs(previewHtml, title + ".html");
+            utils.saveAs(currentHTML.withoutComments, title + ".html");
         });
         $(".action-download-template").click(function() {
             var fileDesc = fileMgr.currentFile;
-            var content = publisher.applyTemplate(fileDesc, undefined, previewHtml);
+            var content = publisher.applyTemplate(fileDesc, undefined, currentHTML);
             utils.saveAs(content, fileDesc.title + (settings.template.indexOf("documentHTML") === -1 ? ".md" : ".html"));
         });
         $(".action-download-pdf").click(function() {
             var fileDesc = fileMgr.currentFile;
             var content = publisher.applyTemplate(fileDesc, {
                 customTmpl: settings.pdfTemplate
-            }, previewHtml);
+            }, currentHTML);
             var task = new AsyncTask();
             var pdf;
             task.onRun(function() {

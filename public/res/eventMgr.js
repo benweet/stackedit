@@ -234,8 +234,9 @@ define([
                         html += elt.innerHTML;
                     });
                     html = html.replace(/^<div class="se-section-delimiter"><\/div>\n\n/gm, '');
-                    html = html.replace(/ <span class="comment label label-danger">.*<\/span> /g, '');
-                    onPreviewFinished(utils.trim(html));
+                    var htmlWithComments = utils.trim(html);
+                    var htmlWithoutComments = htmlWithComments.replace(/ <span class="comment label label-danger">.*?<\/span> /g, '');
+                    onPreviewFinished(htmlWithComments, htmlWithoutComments);
                 });
             };
             callback(function() {

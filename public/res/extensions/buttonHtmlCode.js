@@ -36,13 +36,14 @@ define([
     };
 
     var textareaElt;
-    buttonHtmlCode.onPreviewFinished = function(html) {
+    buttonHtmlCode.onPreviewFinished = function(htmlWithComments, htmlWithoutComments) {
         try {
             var htmlCode = _.template(buttonHtmlCode.config.template, {
                 documentTitle: selectedFileDesc.title,
                 documentMarkdown: selectedFileDesc.content,
                 strippedDocumentMarkdown: selectedFileDesc.content.substring(selectedFileDesc.frontMatter ? selectedFileDesc.frontMatter._frontMatter.length : 0),
-                documentHTML: html,
+                documentHTML: htmlWithoutComments,
+                documentHTMLWithComments: htmlWithComments,
                 frontMatter: selectedFileDesc.frontMatter,
                 publishAttributes: undefined,
             });

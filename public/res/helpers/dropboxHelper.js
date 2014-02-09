@@ -232,7 +232,7 @@ define([
                     return;
                 }
                 client.readFile(file.path, function(error, data) {
-                    if(data) {
+                    if(_.isString(data)) {
                         file.content = data;
                         objects.shift();
                         task.chain(recursiveDownloadContent);

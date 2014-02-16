@@ -1031,9 +1031,14 @@ a {
 		background-color: transparent;
 	}
 	
-	.ace_keyword {
+	.ace_storage, .ace_keyword {
 		color: @tertiary-color-dark;
 		background-color: @code-bg;
+		font-weight: bold;
+	}
+	
+	.ace_entity.ace_name.ace_function {
+		color: @tertiary-color-darker;
 		font-weight: bold;
 	}
 	

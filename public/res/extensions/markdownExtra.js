@@ -95,7 +95,8 @@ define([
             var previewContentsElt = document.getElementById('preview-contents');
             editor.hooks.chain("onPreviewRefresh", function() {
                 _.each(previewContentsElt.querySelectorAll('.prettyprint > code'), function(elt) {
-                    hljs.highlightBlock(elt);
+                    !elt.highlighted && hljs.highlightBlock(elt);
+                    elt.highlighted = true;
                 });
             });
         }

@@ -37,6 +37,8 @@ define([
             callback();
             return;
         }
+        // Twitter does that for us
+        /*
         var task = new AsyncTask();
         var shortUrl;
         task.onRun(function() {
@@ -77,6 +79,20 @@ define([
         task.onSuccess(onFinish);
         task.onError(onFinish);
         task.enqueue();
+        */
+        var url = [
+            constants.MAIN_URL,
+            'viewer#!provider=',
+            provider.providerId
+        ];
+        _.each(provider.sharingAttributes, function(attributeName) {
+            url.push('&');
+            url.push(attributeName);
+            url.push('=');
+            url.push(encodeURIComponent(attributes[attributeName]));
+        });
+        attributes.sharingLink = url.join('');
+        callback();
     };
 
     eventMgr.addListener("onReady", function() {

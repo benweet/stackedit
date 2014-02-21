@@ -863,7 +863,7 @@ li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}
 .asciidoc .hljs-emphasis,.markdown .hljs-emphasis{font-style:italic}
 .nginx .hljs-built_in{font-weight:normal}
 .coffeescript .javascript,.javascript .xml,.lasso .markup,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:0.5}
-@font-face{font-family:'fontello';src:url('../font/fontello.eot');src:url('../font/fontello.eot#iefix') format('embedded-opentype'),url('../font/fontello.woff') format('woff'),url('../font/fontello.ttf') format('truetype'),url('../font/fontello.svg#fontello') format('svg');font-weight:normal;font-style:normal}[class^="icon-"]:before,[class*=" icon-"]:before{font-family:"fontello";font-style:normal;font-weight:normal;speak:none;display:inline-block;text-decoration:inherit;width:1em;margin-right:.2em;text-align:center;font-variant:normal;text-transform:none;line-height:1em;margin-left:.2em;}
+@font-face{font-family:'fontello';src:url('../font/fontello.eot?9145552');src:url('../font/fontello.eot?9145552#iefix') format('embedded-opentype'),url('../font/fontello.woff?9145552') format('woff'),url('../font/fontello.ttf?9145552') format('truetype'),url('../font/fontello.svg?9145552#fontello') format('svg');font-weight:normal;font-style:normal}[class^="icon-"]:before,[class*=" icon-"]:before{font-family:"fontello";font-style:normal;font-weight:normal;speak:none;display:inline-block;text-decoration:inherit;width:1em;margin-right:.2em;text-align:center;font-variant:normal;text-transform:none;line-height:1em;margin-left:.2em;}
 .icon-glass:before{content:'\e801'}
 .icon-archive:before{content:'\e859'}
 .icon-search:before{content:'\e803'}

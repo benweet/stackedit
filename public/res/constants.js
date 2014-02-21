@@ -67,6 +67,7 @@ define([], function() {
         "gray": "Gray",
         "night": "Night",
         "school": "School",
+        "clean": "Clean Theme",
     };
     
     return constants;

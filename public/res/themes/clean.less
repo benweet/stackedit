@@ -1,0 +1,262 @@
+@import "../styles/main.less";
+
+@board-color: #003366;
+@board-border-color: #E0E0E0;
+@blue-ink: #000066;
+@black-ink: #444;
+@red-ink: #CC3300;
+@green-ink: #006600;
+@navbar-default-bg: darken(@board-color, 4%);
+@primary: desaturate(darken(@board-border-color, 20%), 20%);
+@primary-color: lighten(@blue-ink, 50%);
+@secondary-color: lighten(@blue-ink, 30%);
+@tertiary-color: desaturate(lighten(@blue-ink, 20%), 20%);
+@secondary: @primary;
+@tertiary: @primary;
+@primary-desaturated: @primary;
+@secondary-desaturated: darken(@board-border-color, 19%);
+@primary-border-color: @navbar-default-bg;
+@modal-backdrop-bg: @primary;
+@btn-success-color: #eee;
+@btn-success-bg: @transparent;
+@btn-success-border: @transparent;
+@btn-success-hover-bg: lighten(@navbar-default-bg, 10%);
+@panel-button-bg-color: #ddd;
+
+
+// Preview and menus
+@secondary-bg: lighten(@secondary-desaturated, 75%);
+@secondary-bg-light: lighten(@secondary-desaturated, 17%);
+@secondary-bg-lighter: #fff;
+@secondary-color: @primary-desaturated;
+@secondary-color-dark: darken(@secondary-color, 12.5%);
+@secondary-color-darker: darken(@secondary-color, 25%);
+@secondary-color-darkest: darken(@secondary-color, 37.5%);
+@secondary-border-color: lighten(@primary-desaturated, 40%);
+@secondary-border-color-light: lighten(@primary-desaturated, 44%);
+@secondary-border-color-lighter: lighten(@primary-desaturated, 46%);
+
+
+// Navbar buttons
+.btn-success {
+    &:hover,
+    &:focus,
+    &:active,
+    .open &.dropdown-toggle {
+    	color: @btn-success-color;
+    	border-color: lighten(@navbar-default-bg, 10%);
+    }
+}
+
+.navbar .dropdown-menu {
+    background-color: lighten(@navbar-default-bg, 5%);
+    border-color: @primary-border-color;
+}
+
+@font-face {
+    font-family: 'OpenSans-Regular';
+    src: url('../font/OpenSans-Regular-webfont.woff');
+    src: url('../font/OpenSans-Regular-webfont.woff') format('woff'),
+         url('../font/OpenSans-Regular-webfont.svg#OpenSans-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#wmd-input {
+	color: darken(@black-ink, 50%);
+}
+
+.ace-tm {
+	.ace_content {
+	    background-color: @secondary-bg;
+	}
+	.ace_marker-layer .ace_active-line {
+		background-color: fade(@blue-ink, 5%);
+	}
+	.ace_print-margin {
+		background-color: fade(@red-ink, 10%);
+	}
+	
+	.ace_markup.ace_heading {
+		color: darken(@red-ink, 30%);
+	}
+	
+	.ace_blockquote {
+		color: @blue-ink;
+	}
+	
+	.ace_code {
+		color: @green-ink;
+	}
+	
+	.ace_code_block {
+		color: @green-ink;
+	}
+	
+	.ace_comment {
+		color: @green-ink;
+	}
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'OpenSans-Regular';
+}
+
+.navbar .file-title-navbar {
+	font-family: 'OpenSans-Regular';
+	line-height: 34px;
+}
+
+.extension-preview-buttons {
+	background: desaturate(lighten(@board-color, 75%), 70%);
+	opacity: 0.9;
+}
+
+
+.menu-panel, .document-panel {
+	display: block;
+	position: absolute;
+	top: 0;
+	height: 100%;
+	z-index: 10;
+	overflow: initial;
+    .collapse-button {
+       	background-color: @panel-button-bg-color;
+        height: @input-height-base;
+        border-radius: 8px;
+		position: absolute;
+		margin-top: 6px;
+        .box-shadow(~"0 0 1px rgba(0,0,0,.5)");
+        &:active {
+            .box-shadow(~"inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 1px rgba(0,0,0,.5)");
+        }
+        i {
+    		color: lighten(@board-color, 22%);
+        	font-size: 14px;
+        }
+	}
+    .collapse-button:hover, &.in .collapse-button, &.collapsing .collapse-button {
+        border-width: 1px;
+	}
+	.panel-content {
+		overflow: auto;
+		padding-bottom: 30px;
+		height: 100%;
+		a > i {
+			color: inherit;
+		}
+	}
+}
+
+.menu-panel {
+	width: @menu-panel-width !important;
+	margin-left: (-@menu-panel-width - 15);
+    .transition(~"margin-left ease-in-out 0.35s");
+	.sub-menu {
+		background-color: @list-group-bg;
+	}
+	&.in {
+        margin-left: 0;
+    }
+    .collapse-button {
+        border-top: 4px solid fade(lighten(@board-color, 22%), @panel-button-border-fade);
+        border-right: 5px solid fade(lighten(@board-color, 22%), @panel-button-border-fade);
+        border-bottom: 4px solid fade(lighten(@board-color, 22%), @panel-button-border-fade);
+	    right: -50px;
+		z-index: -1;
+		padding: 0 10px 0 50px;
+        .transition(~"border-width ease-in-out .15s, right ease-in-out 0.15s");
+	}
+    .collapse-button:hover, &.in .collapse-button, &.collapsing .collapse-button {
+        right: -55px;
+	}
+	.panel-content {
+		background-color: @secondary-bg-light;
+		padding-top: 6px;
+		border-right: 1px solid @secondary-border-color-light;
+		& > .nav > li > a {
+		    &:hover, &:active {
+        		background-color: inherit;
+		    }
+		}
+	}
+}
+
+.document-panel {
+	right: 0;
+	width: @document-panel-width !important;
+	margin-right: (-@document-panel-width - 15);
+    .transition(~"margin-right ease-in-out 0.35s");
+	&.in {
+        margin-right: 0;
+    }
+    .collapse-button {
+        border-top: 4px solid fade(lighten(@board-color, 22%), @panel-button-border-fade);
+        border-left: 5px solid fade(lighten(@board-color, 22%), @panel-button-border-fade);
+        border-bottom: 4px solid fade(lighten(@board-color, 22%), @panel-button-border-fade);
+	    left: -50px;
+		padding: 0 50px 0 3px;
+		z-index: -1;
+        .transition(~"border-width ease-in-out .15s, left ease-in-out 0.15s");
+		i.icon-folder-open {
+       		font-size: 19px;
+       		padding-bottom: 1px;
+       	}
+	}
+    .collapse-button:hover, &.in .collapse-button, &.collapsing .collapse-button {
+        left: -55px;
+	}
+	.panel-content {
+		background-color: @list-group-bg;
+		padding-top: 80px;
+		border-left: 1px solid @secondary-border-color-light;
+		.icon-layers {
+			font-size: 135%;
+		}	
+	}
+	.search-bar {
+		position: absolute;
+		background-color: @secondary-bg;
+		margin: -10px 25px 0;
+		padding: 20px 5px 10px 15px;
+		z-index: 3;
+		border: 1px solid @secondary-border-color;
+		border-top: 0;
+		border-radius: 6px;
+	}
+	.list-group-item {
+		margin: 0;
+	}
+	.folder {
+		font-weight: bold;
+		color: @folder-color;
+		border-top-color: @modal-content-separator-color;
+	}
+	.list-group {
+		margin: 0;
+		.nav {
+			border: 0;
+			margin: 0;
+			.file {
+			    padding-left: 30px;
+			    padding-right: 30px;
+			}
+		}		
+	} 
+}
+
+.dropdown-header {
+	color: lighten(@board-color, 22%);
+}
+
+
+.extension-preview-buttons {
+	.btn-group {
+		.btn {
+			color: lighten(@board-color, 42%);
+		}
+		.btn:hover {
+			color: darken(@board-color, 11%);
+		}
+	}
+}

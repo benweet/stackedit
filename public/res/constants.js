@@ -2,7 +2,7 @@ define([], function() {
     var constants = {};
     constants.VERSION = "3.1.9";
     
-    constants.MAIN_URL = "https://stackedit.io/";
+    constants.MAIN_URL = "http://mospaw.com/edit/public/";
     constants.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1";
     constants.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw";
     constants.GOOGLE_DRIVE_APP_ID = "241271498917";
@@ -60,6 +60,10 @@ define([], function() {
         constants.GITHUB_CLIENT_ID = 'd2943d6074b2d9c4a830';
         constants.GATEKEEPER_URL = "https://stackedit-gatekeeper-insomnia.herokuapp.com/";
         constants.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-beta.herokuapp.com/";
+    }
+    else if(location.hostname.indexOf("mospaw.com") === 0) {
+        constants.BASE_URL = "http://mospaw.com/edit/public/";
+        constants.GOOGLE_CLIENT_ID = '50371628984-k3drccemss9o4pacde8dkes9jdds438i.apps.googleusercontent.com';
     }
     
     constants.THEME_LIST = {

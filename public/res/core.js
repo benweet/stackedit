@@ -28,7 +28,7 @@ define([
 ], function($, _, crel, ace, constants, utils, storage, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
-    
+
     // Used for periodic tasks
     var intervalId;
 
@@ -53,7 +53,7 @@ define([
         }
         return userActive && windowUnique;
     }
-    
+
     // Used to only have 1 window of the application in the same browser
     var windowId;
     function checkWindowUnique() {
@@ -147,7 +147,7 @@ define([
         utils.setInputValue("#input-settings-pdf-page-size", settings.pdfPageSize);
         // SSH proxy
         utils.setInputValue("#input-settings-ssh-proxy", settings.sshProxy);
-        
+
         // Load shortcuts settings
         shortcutMgr.loadSettings();
 
@@ -250,6 +250,14 @@ define([
         aceEditor.session.setNewLineMode("unix");
         aceEditor.session.setMode("libs/ace_mode");
         aceEditor.session.$selectLongWords = true;
+        aceEditor.setHighlightActiveLine(true);
+        aceEditor.setHighlightGutterLine(false);
+        aceEditor.setHighlightSelectedWord(false);
+        aceEditor.setDisplayIndentGuides(false);
+        aceEditor.setShowFoldWidgets(false);
+        aceEditor.setWrapBehavioursEnabled(false);
+        // Hack to disable bracket highlighting
+        aceEditor.$highlightBrackets = function() {};
 
         // Make bold titles...
         (function(self) {
@@ -454,7 +462,7 @@ define([
         }
         layout.resizeAll();
     }
-    
+
     // Create the PageDown editor
     var editor;
     var $editorElt;
@@ -551,7 +559,7 @@ define([
             }
             documentContent = newDocumentContent;
         }
-        
+
         var previewWrapper;
         if(window.lightMode) {
             editor = new Markdown.EditorLight(converter);
@@ -578,7 +586,7 @@ define([
             $(".modal-insert-image").modal();
             return true;
         });
-            
+
         if(settings.lazyRendering === true) {
             previewWrapper = function(makePreview) {
                 var debouncedMakePreview = _.debounce(makePreview, 500);
@@ -658,7 +666,7 @@ define([
         $("#wmd-undo-button").append($('<i class="icon-reply">')).appendTo($btnGroupElt);
         $("#wmd-redo-button").append($('<i class="icon-forward">')).appendTo($btnGroupElt);
     };
-    
+
     // Initialize multiple things and then fire eventMgr.onReady
     var isDocumentPanelShown = false;
     var isMenuPanelShown = false;
@@ -675,13 +683,13 @@ define([
         $leftBtnDropdown = $navbarElt.find('.left-buttons-dropdown');
         $rightBtnDropdown = $navbarElt.find('.right-buttons-dropdown');
         $(window).bind("resize", adjustWindow);
-        
+
         // Initialize utils library
         utils.init();
-        
+
         // Populate shortcuts in settings
         shortcutMgr.addSettingEntries();
-        
+
         // Hide shortcuts settings if light mode
         if(window.lightMode) {
             $('.tab-settings-shortcuts').hide();
@@ -773,14 +781,14 @@ define([
                 return $('<textarea id="wmd-input">').addClass(this.className).addClass('form-control');
             });
         }
-        
+
         $editorElt = $("#wmd-input, .textarea-helper").css({
             // Apply editor font
             "font-family": settings.editorFontFamily,
             "font-size": settings.editorFontSize + "px",
             "line-height": Math.round(settings.editorFontSize * (20 / 12)) + "px"
         });
-        
+
         if(!window.lightMode) {
             // ACE editor
             createAceEditor();
@@ -811,7 +819,7 @@ define([
 
     // Other initialization that are not prioritary
     eventMgr.addListener("onReady", function() {
-        
+
         // In vertical mode, we have to offset the editor buttons otherwise they hide the editor buttons
         if(!window.viewerMode && settings.layoutOrientation == "vertical") {
             $previewButtonsElt.css('right', parseInt($previewButtonsElt.css('right')) + $editorButtonsElt.width());
@@ -845,7 +853,7 @@ define([
                 $(this).find(".modal-footer a:last").click();
             }
         });
-        
+
         // Hide menu panel when clicking 'Save as' button
         $('.collapse-save-as a').click(function() {
             $menuPanelElt.collapse('hide');
@@ -1008,7 +1016,7 @@ define([
                 });
             });
         }
-        
+
         createTooltip(".tooltip-lazy-rendering", 'Disable preview rendering while typing in order to offload CPU. Refresh preview after 500 ms of inactivity.');
         createTooltip(".tooltip-default-content", [
             'Thanks for supporting StackEdit by adding a backlink in your documents!<br/><br/>',
@@ -1028,7 +1036,7 @@ define([
             keyboard: false,
             show: false
         });
-        
+
         // Load images
         _.each(document.querySelectorAll('img'), function(imgElt) {
             var $imgElt = $(imgElt);

@@ -1,0 +1,136 @@
+@import "../styles/main.less";
+
+/*
+@primary: #FFF;
+@primary-bg: #444;
+@secondary-bg: darken(@primary-bg, 4%);
+@secondary-bg-light: darken(@primary-bg, 13%);
+@secondary-bg-lighter: darken(@primary-bg, 15%);
+@secondary-border-color: darken(@primary-desaturated, 70%);
+@secondary-border-color-light: darken(@primary-desaturated, 75%);
+@secondary-border-color-lighter: darken(@primary-desaturated, 80%);
+@tertiary-bg: darken(@primary-bg, 15%);
+@tertiary-color-darker: @primary;
+@tertiary-color-dark: darken(@primary, 12.5%);
+@tertiary-color: darken(@primary, 37.5%);
+@panel-button-bg-color: #aaa;
+
+@link-color: #f73;
+@input-border: @primary-bg;
+@input-bg: #111;
+@blockquote-bg: fade(#fff, 5%);
+@code-bg: fade(#fff, 10%);
+@pre-bg: #bbb;
+@pre-border-color: darken(@pre-bg, 30%);
+@blockquote-border-color: fade(#fff, 8%);
+@modal-backdrop-bg: #444;
+@dropdown-border: @primary-bg;
+
+@kbd-bg-color: @pre-bg;
+@kbd-border-color: fade(@text-color, 40%);
+
+.form-control:focus {
+    .box-shadow(~"inset 0 1px 1px rgba(255, 255, 255, 0), 0 0 12px rgba(255, 255, 255, 1)");
+}
+
+.ace-tm {
+	.ace_cursor {
+		border-left-color: #fff;
+	}
+}	
+*/
+
+@primary: #a0a0a0;
+@navbar-default-bg: #474747;
+@btn-default-hover-bg: fade(@primary, 14%);
+@btn-primary-bg: #e2e2e2;
+@btn-primary-hover-bg: darken(@btn-primary-bg, 4%);
+//@btn-primary-color: #bbb;
+//@btn-primary-hover-bg: fade(@primary, 25%);
+@btn-success-color: #C0C0C0;
+@btn-success-hover-bg: darken(@navbar-default-bg, 10%);
+@panel-button-bg-color: #E6E6E6;
+@panel-button-box-shadow: ~"0 0 1px rgba(255,255,255,0.75)";
+@input-bg: #fff;
+
+
+@list-group-border: @transparent;
+@list-group-active-border: @transparent;
+@list-group-hover-border-color: @transparent;
+/*
+@list-group-link-color: @btn-success-color;
+@list-group-bg: lighten(@navbar-default-bg, 2%);
+@list-group-active-color: lighten(@btn-success-color, 20%);
+@list-group-active-bg: darken(@navbar-default-bg, 2%);
+@list-group-hover-bg: @btn-success-hover-bg;
+*/
+
+
+@tertiary-bg: #fcfcfc;
+@secondary-bg: #ededed;
+@secondary-bg-light: #f6f6f6;
+@secondary-bg-lighter: @tertiary-bg;
+@secondary-border-color: #e2e2e2;
+@secondary-border-color-light: #eee;
+@secondary-border-color-lighter: #eee;
+
+
+// Navbar buttons
+.btn-success {
+    border-width: 0;
+    &:hover,
+    &:focus,
+    &:active,
+    .open &.dropdown-toggle {
+    	color: #fff;
+    }
+}
+
+
+.dropdown-menu > .disabled > a,
+.list-group-item.active {
+    &,
+    &:hover,
+    &:focus {
+        background-color: lighten(@navbar-default-bg, 8%);
+        color: #fff;
+        .box-shadow(inset -1px 2px 4px rgba(0,0,0,0.25));
+    }
+}
+
+.ace-tm {
+	.ace_cursor {
+		border-left-color: #555;
+	}
+}	
+
+.ui-layout-resizer-north {
+	background-color: fade(@navbar-default-bg, 50%);
+    border-bottom: 0;
+    //.box-shadow(~"0 0 1px 1px rgba(0,0,0,0.15), 0 3px 8px rgba(0,0,0,0.15)");
+}
+
+.resizer-decorator {
+	.ui-layout-resizer-east & {
+        border-left: 1px solid fade(@secondary, 4%);
+	}
+	.ui-layout-resizer-south & {
+        border-top: 1px solid fade(@secondary, 4%);
+	}
+}
+
+.menu-panel, .document-panel {
+    .collapse-button:hover, &.in .collapse-button, &.collapsing .collapse-button {
+       	background-color: lighten(@panel-button-bg-color, 10%);
+    }
+}
+/*
+.menu-panel {
+	.sub-menu {
+		background-color: @navbar-default-bg;
+	}
+    .panel-content {
+        background-color: @navbar-default-bg;
+    }
+}
+*/

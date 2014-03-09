@@ -43,6 +43,7 @@
 // Panel buttons
 @panel-button-bg-color: #FFF;
 @panel-button-border-fade: 80%;
+@panel-button-box-shadow: ~"0 0 1px rgba(0,0,0,.5)";
 @panel-border-color: fade(@primary-desaturated, 10%);
 
 @error-border: #FF6161;
@@ -55,12 +56,13 @@
 @menu-panel-width: 280px;
 @document-panel-width: 340px;
 @jgrowl-width: 260px;
-@resizer-size: 35px;
+@resizer-size: 30px;
 
 /* Bootstrap */
 @body-bg: @secondary-bg-light;
 @text-color: @secondary-color-darkest;
 @link-color: desaturate(#0080FF, 25%);
+@link-hover-color: darken(@link-color, 20%);
 @input-bg: @secondary-bg-lighter;
 @input-border: @secondary-border-color;
 @input-height-base: 38px;
@@ -81,7 +83,7 @@
 @dropdown-link-color: @secondary-color-darkest;
 @dropdown-link-hover-color: darken(@primary-desaturated, 25%);
 @dropdown-link-hover-bg: @btn-default-hover-bg;
-@dropdown-header-color: fade(@secondary-color, 50%);
+@dropdown-header-color: fade(@secondary-color, 60%);
 @dropdown-link-disabled-color: @disabled-color;
 @dropdown-divider-bg: @dropdown-border;
 @list-group-link-color: @secondary-color-darkest;
@@ -101,6 +103,7 @@
 @btn-primary-color: @secondary-color-darker;
 @btn-primary-bg: @primary-bg;
 @btn-primary-border: fade(@secondary, 5%);
+@btn-primary-hover-bg: mix(@primary-desaturated, @btn-primary-bg, 7.5%);
 @btn-success-color: darken(@primary-desaturated, 25%);
 @btn-success-bg: @transparent;
 @btn-success-border: @transparent;
@@ -188,24 +191,6 @@ a {
     .transition(~"background-color ease-in-out .15s, color ease-in-out .15s, border-color ease-in-out .15s");
 }
 
-.list-group .nav {
-	border-left: 10px solid @primary-bg;
-	margin-left: 15px;
-	> li > a {
-        border-top: 1px solid @transparent;
-        border-bottom: 1px solid @transparent;
-        &:hover,
-        &:focus {
-    	    border-top-color: @list-group-hover-border-color;
-    	    border-bottom-color: @list-group-hover-border-color;
-        }
-    	&.active {
-    	    border-top-color: @list-group-active-border;
-    	    border-bottom-color: @list-group-active-border;
-    	}
-	}
-}
-
 .nav-pills > li {
     > a {
         border: 1px solid @transparent;
@@ -275,7 +260,7 @@ a {
     .open &.dropdown-toggle {
     	color: darken(@secondary, 30%);
     	border-color: fade(@secondary, 10%);
-    	background-color: mix(@primary-desaturated, @btn-primary-bg, 7.5%) !important; // important to override .nav > li > a:hover
+    	background-color: @btn-primary-hover-bg !important; // important to override .nav > li > a:hover
     }
 }
 
@@ -299,7 +284,7 @@ a {
     .info-tooltip &,
     .open &.dropdown-toggle {
     	color: darken(@secondary, 30%);
-    	border-color: fade(@secondary, 10%);
+    	border-color: fade(@secondary, 8%);
     	background-color: @secondary-bg !important; // important to override .nav > li > a:hover
     }
 }
@@ -523,7 +508,8 @@ a {
         border-radius: 8px;
 		position: absolute;
 		margin-top: 6px;
-        .box-shadow(~"0 0 1px rgba(0,0,0,.5)");
+        .transition(~"border-width ease-in-out .15s, left ease-in-out 0.15s, right ease-in-out 0.15s, background-color ease-in-out 0.15s");
+        .box-shadow(@panel-button-box-shadow);
         &:active {
             .box-shadow(~"inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 1px rgba(0,0,0,.5)");
         }
@@ -550,7 +536,19 @@ a {
 	margin-left: (-@menu-panel-width - 15);
     .transition(~"margin-left ease-in-out 0.35s");
 	.sub-menu {
-		background-color: @list-group-bg;
+        background-color: @secondary-bg-lighter;
+        padding-bottom: 20px;
+        .box-shadow(~"inset 1px 0 1px rgba(0,0,0,.05), inset 2px 2px 6px rgba(0,0,0,.075)");
+        .nav {
+            padding-top: 20px;
+            > li > a {
+                padding-left: 30px;
+                &:hover,
+                &:focus {
+                    background-color: @transparent;
+                }
+            }
+        }
 	}
 	&.in {
         margin-left: 0;
@@ -562,7 +560,6 @@ a {
 	    right: -50px;
 		z-index: -1;
 		padding: 0 10px 0 50px;
-        .transition(~"border-width ease-in-out .15s, right ease-in-out 0.15s");
 	}
     .collapse-button:hover, &.in .collapse-button, &.collapsing .collapse-button {
         right: -55px;
@@ -571,11 +568,6 @@ a {
 		background-color: @secondary-bg-light;
 		padding-top: 6px;
 		border-right: 1px solid @secondary-border-color-light;
-		& > .nav > li > a {
-		    &:hover, &:active {
-        		background-color: inherit;
-		    }
-		}
 	}
 }
 
@@ -594,7 +586,6 @@ a {
 	    left: -50px;
 		padding: 0 50px 0 3px;
 		z-index: -1;
-        .transition(~"border-width ease-in-out .15s, left ease-in-out 0.15s");
 		i.icon-folder-open {
        		font-size: 19px;
        		padding-bottom: 1px;
@@ -871,9 +862,11 @@ a {
 		& > li.active > a {
 			&, &:hover, &:focus {
 				color: @btn-primary-color;
-				background-color: @btn-primary-bg;
-				border-color: @btn-primary-border;
+				background-color: @modal-content-bg;
+				border-color: @modal-header-border-color;
 				border-bottom-color: @transparent;
+                margin-bottom: -1px;
+                padding: 10px 15px 11px;
 			}
 		}
 	}
@@ -993,17 +986,17 @@ a {
 		box-sizing: initial;
 	}
 
-	.ace_marker-layer .ace_active-line {
-	    background-color: fade(@primary-desaturated, 5%);
-	}
-	
 	.ace_cursor {
 	    color: darken(@primary-desaturated, 30%);
 	}
 	
-	.ace_print-margin {
-		background-color: fade(@primary-desaturated, 5%);
+    .ace_print-margin-layer {
+		display: none;
 	}
+    
+    .ace_marker-layer .ace_bracket {
+        display: none;
+    }
 	
 	.ace_markup.ace_heading {
 		color: @tertiary-color-darker;
@@ -1021,7 +1014,6 @@ a {
 	
 	.ace_meta.ace_tag {
 		color: @tertiary-color-dark;
-		font-style: italic;
 		font-weight: bold;
 		background-color: @code-bg;
 	}
@@ -1044,7 +1036,6 @@ a {
 	
 	.ace_string {
 		color: @tertiary-color-dark;
-		font-style: italic;
 		background-color: @code-bg;
 	}
 	

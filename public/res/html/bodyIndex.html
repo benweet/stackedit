@@ -76,103 +76,93 @@
 		<div class="list-group">
 			<a href="viewer" title="StackEdit Viewer"
 				class="list-group-item"><i class="icon-resize-full"></i>
-				StackEdit Viewer</a> <a href="#" data-toggle="collapse"
-				data-target=".collapse-open-from" class="list-group-item"><i
-				class="icon-hdd"></i> Open from...</a>
-			<div class="sub-menu collapse collapse-open-from clearfix">
-				<ul class="nav">
-					<li><a data-toggle="modal" data-target=".modal-import-url"
-						class="action-reset-input" href="#">Open from URL</a></li>
-					<li><a data-toggle="modal"
-						data-target=".modal-import-harddrive-markdown"
-						class="action-reset-input" href="#">Import from hard drive</a></li>
-					<li><a data-toggle="modal"
-						data-target=".modal-import-harddrive-html"
-						class="action-reset-input" href="#">Convert HTML to Markdown</a></li>
-				</ul>
-			</div>
-
+				StackEdit Viewer</a>
+            
+		</div>
+        <div class=dropdown-header>IMPORT</div>
+		<div class="list-group">
+            <a data-toggle="modal"
+                data-target=".modal-import-harddrive-markdown"
+                class="list-group-item action-reset-input" href="#"><i
+				class="icon-hdd"></i> Open from disk</a>
+            <a data-toggle="modal" data-target=".modal-import-url"
+                class="list-group-item action-reset-input" href="#"><i
+				class="icon-globe"></i> Open from URL</a>
+            <a data-toggle="modal"
+				data-target=".modal-import-harddrive-html"
+				class="list-group-item action-reset-input" href="#"><i
+				class="icon-code"></i> Convert HTML to Markdown</a>
+            <a class="list-group-item action-sync-import-dropbox" href="#"
+                data-toggle="collapse" data-target=".menu-panel"><i
+				class="icon-provider-dropbox"></i> Import from
+                    Dropbox</a>
+            <a href="#" class="list-group-item submenu-sync-gdrive action-sync-import-gdrive"
+                data-toggle="collapse" data-target=".menu-panel"><i
+				class="icon-provider-gdrive"></i> Import from
+                    Google Drive</a>
+            <a href="#" class="list-group-item submenu-sync-gdrivesec action-sync-import-gdrivesec"
+                data-toggle="collapse" data-target=".menu-panel"><i
+				class="icon-provider-gdrive"></i> Import from
+                    Google Drive<br>(2nd account)</a>
+            <a href="#" class="list-group-item submenu-sync-gdriveter action-sync-import-gdriveter"
+                data-toggle="collapse" data-target=".menu-panel"><i
+				class="icon-provider-gdrive"></i> Import from
+                    Google Drive<br>(3rd account)</a>
+		</div>
+        <div class=dropdown-header>EXPORT</div>
+		<div class="list-group">
 			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"
-				class="list-group-item"><i class="icon-hdd"></i> Save as...</a>
+				class="list-group-item"><i class="icon-hdd"></i> Save...</a>
 			<div class="sub-menu collapse collapse-save-as clearfix">
 				<ul class="nav">
-					<li><a class="action-download-md" href="#">Save as
-							Markdown</a></li>
-					<li><a class="action-download-html" href="#">Save as HTML</a></li>
-					<li><a class="action-download-template" href="#">Save
-							using template</a></li>
-					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>
+					<li><a class="action-download-md" href="#"><i
+				        class="icon-download"></i> Save as Markdown</a></li>
+					<li><a class="action-download-html" href="#"><i
+				        class="icon-download"></i> Save as HTML</a></li>
+					<li><a class="action-download-template" href="#"><i
+				        class="icon-download"></i> Save using template</a></li>
+					<li><a class="action-download-pdf" href="#"><i
+				        class="icon-download"></i> Save as PDF</a></li>
 				</ul>
 			</div>
-		</div>
-		<div class=dropdown-header>SYNCHRONIZE</div>
-		<div class="list-group">
-			<a href="#" data-toggle="collapse"
-				data-target=".collapse-sync-gdrive" class="list-group-item submenu-sync-gdrive"><i
-				class="icon-provider-gdrive"></i> Google Drive</a>
-			<div class="sub-menu collapse collapse-sync-gdrive clearfix">
+			<a href="#" data-toggle="collapse" data-target=".collapse-synchronize"
+				class="list-group-item"><i
+				class="icon-refresh"></i> Synchronize...</a>
+			<div class="sub-menu collapse collapse-synchronize clearfix">
 				<ul class="nav">
-					<li><a href="#" class="action-sync-import-gdrive"
-						data-toggle="collapse" data-target=".menu-panel">Import from
-							Google Drive</a></li>
-					<li><a href="#" class="action-sync-export-dialog-gdrive">Export
-							to Google Drive</a></li>
-					<li><a href="#" class="action-autosync-dialog-gdrive">AutoSync...</a></li>
+                    <li><a href="#" data-toggle="modal" data-target=".modal-manage-sync"
+                        class="action-reset-input"><i
+                        class="icon-refresh"></i> Manage synchronization</a>
+					<li><a href="#" class="action-sync-export-dialog-dropbox"><i
+				        class="icon-provider-dropbox"></i> Export to Dropbox</a></li>
+					<li><a href="#" class="submenu-sync-gdrive action-sync-export-dialog-gdrive"><i
+				        class="icon-provider-gdrive"></i> Export to Google Drive</a></li>
+					<li><a href="#" class="submenu-sync-gdrive action-autosync-dialog-gdrive"><i
+				        class="icon-provider-gdrive"></i> Google Drive AutoSync</a></li>
+					<li><a href="#" class="submenu-sync-gdrivesec action-sync-export-dialog-gdrivesec"><i
+				        class="icon-provider-gdrive"></i> Export to Google Drive<br>(2nd account)</a></li>
+					<li><a href="#" class="submenu-sync-gdrivesec action-autosync-dialog-gdrivesec"><i
+				        class="icon-provider-gdrive"></i> Google Drive AutoSync<br>(2nd account)</a></li>
+					<li><a href="#" class="submenu-sync-gdriveter action-sync-export-dialog-gdriveter"><i
+				        class="icon-provider-gdrive"></i> Export to Google Drive<br>(3rd account)</a></li>
+					<li><a href="#" class="submenu-sync-gdriveter action-autosync-dialog-gdriveter"><i
+				        class="icon-provider-gdrive"></i> Google Drive AutoSync<br>(3rd account)</a></li>
 				</ul>
 			</div>
-			<a href="#" data-toggle="collapse"
-				data-target=".collapse-sync-gdrivesec" class="list-group-item submenu-sync-gdrivesec"><i
-				class="icon-provider-gdrive"></i> Google Drive (2nd account)</a>
-			<div class="sub-menu collapse collapse-sync-gdrivesec clearfix">
-				<ul class="nav">
-					<li><a href="#" class="action-sync-import-gdrivesec"
-						data-toggle="collapse" data-target=".menu-panel">Import from
-							Google Drive</a></li>
-					<li><a href="#" class="action-sync-export-dialog-gdrivesec">Export
-							to Google Drive</a></li>
-					<li><a href="#" class="action-autosync-dialog-gdrivesec">AutoSync...</a></li>
-				</ul>
-			</div>
-			<a href="#" data-toggle="collapse"
-				data-target=".collapse-sync-gdriveter" class="list-group-item submenu-sync-gdriveter"><i
-				class="icon-provider-gdrive"></i> Google Drive (3rd account)</a>
-			<div class="sub-menu collapse collapse-sync-gdriveter clearfix">
-				<ul class="nav">
-					<li><a href="#" class="action-sync-import-gdriveter"
-						data-toggle="collapse" data-target=".menu-panel">Import from
-							Google Drive</a></li>
-					<li><a href="#" class="action-sync-export-dialog-gdriveter">Export
-							to Google Drive</li>
-					<li><a href="#" class="action-autosync-dialog-gdriveter">AutoSync...</a></li>
-				</ul>
-			</div>
-			<a href="#" data-toggle="collapse"
-				data-target=".collapse-sync-dropbox" class="list-group-item"><i
-				class="icon-provider-dropbox"></i> Dropbox</a>
-			<div class="sub-menu collapse collapse-sync-dropbox clearfix">
-				<ul class="nav">
-					<li><a class="action-sync-import-dropbox" href="#"
-						data-toggle="collapse" data-target=".menu-panel">Import from
-							Dropbox</a></li>
-					<li><a href="#" class="action-sync-export-dialog-dropbox">Export
-							to Dropbox</a></li>
-				</ul>
-			</div>
-			<a href="#" data-toggle="modal" data-target=".modal-manage-sync"
-				class="action-reset-input list-group-item"><i
-				class="icon-refresh"></i> Manage synchronization</a>
-		</div>
-		<div class=dropdown-header>PUBLISH</div>
-		<div class="list-group">
 			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"
-				class="list-group-item"><i class="icon-share"></i> Publish on...</a>
+				class="list-group-item"><i class="icon-share"></i> Publish...</a>
 			<div class="sub-menu collapse collapse-publish-on clearfix">
 				<ul class="nav">
+                    <li><a href="#" class="action-update-publication"
+                        data-toggle="collapse" data-target=".menu-panel"><i class="icon-share"></i>
+                        Update publication</a></li>
+                    <li><a href="#" data-toggle="modal" data-target=".modal-manage-publish"
+                        class="action-reset-input"><i class="icon-share"></i>
+                        Manage publication</a></li>
+				</ul>
+				<ul class="nav publish-on-provider-list">
 				</ul>
 			</div>
-			<a href="#" data-toggle="modal" data-target=".modal-manage-publish"
-				class="action-reset-input list-group-item"><i class="icon-share"></i>
-				Manage publication</a>
 			<a href="#" data-toggle="modal" data-target=".modal-manage-sharing"
 				class="action-reset-input list-group-item"><i class="icon-provider-stackedit"></i>
 				Sharing...</a>
@@ -434,7 +424,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h3 class="modal-title">Import from hard drive</h3>
+				<h3 class="modal-title">Import from disk</h3>
 			</div>
 			<div class="modal-body">
 				<p>Please select your Markdown files here:</p>

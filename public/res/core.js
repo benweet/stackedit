@@ -250,7 +250,8 @@ define([
         aceEditor.session.setNewLineMode("unix");
         aceEditor.session.setMode("libs/ace_mode");
         aceEditor.session.$selectLongWords = true;
-        aceEditor.setHighlightActiveLine(true);
+        aceEditor.setShowPrintMargin(true);
+        aceEditor.setHighlightActiveLine(false);
         aceEditor.setHighlightGutterLine(false);
         aceEditor.setHighlightSelectedWord(false);
         aceEditor.setDisplayIndentGuides(false);
@@ -339,8 +340,8 @@ define([
             resizeWithWindow: false,
             north__spacing_open: 1,
             north__spacing_closed: 1,
-            spacing_open: 35,
-            spacing_closed: 35,
+            spacing_open: 30,
+            spacing_closed: 30,
             togglerLength_open: 60,
             togglerLength_closed: 60,
             stateManagement__enabled: false,

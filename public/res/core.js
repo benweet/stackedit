@@ -260,7 +260,7 @@ define([
         // Hack to disable bracket highlighting
         aceEditor.$highlightBrackets = function() {};
 
-        // Make bold titles...
+        // Hack to make bold titles
         (function(self) {
             function checkLine(currentLine) {
                 var line = self.lines[currentLine];
@@ -340,8 +340,8 @@ define([
             resizeWithWindow: false,
             north__spacing_open: 1,
             north__spacing_closed: 1,
-            spacing_open: 30,
-            spacing_closed: 30,
+            spacing_open: 32,
+            spacing_closed: 32,
             togglerLength_open: 60,
             togglerLength_closed: 60,
             stateManagement__enabled: false,
@@ -437,28 +437,28 @@ define([
     var $navbarElt;
     var $leftBtnElts;
     var $rightBtnElts;
-    var $leftBtnDropdown;
-    var $rightBtnDropdown;
-    var marginWidth = 36 + 25 + 25;
+    var $btnDropdown;
+    var $titleContainer;
+    var marginWidth = 18 * 2 + 25 + 25;
     var titleWidth = 18 + 348;
-    var leftButtonsWidth = 72 + 83 + 166 + 167 + 83;
-    var rightButtonsWidth = 36 + 84 + 83;
-    var rightButtonsDropdown = 42;
+    var leftButtonsWidth = 18 * 4 + 79 + 158 + 159 + 79;
+    var rightButtonsWidth = 18 + 79;
+    var buttonsDropdownWidth = 40;
     function adjustWindow() {
         if(!window.viewerMode) {
-            var maxWidth = $navbarElt.width() - 5;
+            var maxWidth = $navbarElt.width();
             if(marginWidth + titleWidth + leftButtonsWidth + rightButtonsWidth > maxWidth) {
-                $rightBtnDropdown.show().find('.dropdown-menu').append($rightBtnElts);
-                if(marginWidth + titleWidth + leftButtonsWidth + rightButtonsDropdown > maxWidth) {
-                    $leftBtnDropdown.show().find('.dropdown-menu').append($leftBtnElts);
+                $btnDropdown.show().find('.dropdown-menu').append($leftBtnElts);
+                if(marginWidth + titleWidth + rightButtonsWidth + buttonsDropdownWidth > maxWidth) {
+                    $btnDropdown.find('.dropdown-menu').append($rightBtnElts);
                 }
                 else {
-                    $leftBtnDropdown.hide().after($leftBtnElts);
+                    $titleContainer.before($rightBtnElts);
                 }
             }
             else {
-                $leftBtnDropdown.hide().after($leftBtnElts);
-                $rightBtnDropdown.hide().after($rightBtnElts);
+                $btnDropdown.hide().after($leftBtnElts);
+                $titleContainer.before($rightBtnElts);
             }
         }
         layout.resizeAll();
@@ -681,8 +681,8 @@ define([
         $navbarElt = $('.navbar');
         $leftBtnElts = $navbarElt.find('.left-buttons');
         $rightBtnElts = $navbarElt.find('.right-buttons');
-        $leftBtnDropdown = $navbarElt.find('.left-buttons-dropdown');
-        $rightBtnDropdown = $navbarElt.find('.right-buttons-dropdown');
+        $btnDropdown = $navbarElt.find('.buttons-dropdown');
+        $titleContainer = $navbarElt.find('.title-container');
         $(window).bind("resize", adjustWindow);
 
         // Initialize utils library

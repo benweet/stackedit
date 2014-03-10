@@ -82,6 +82,10 @@ var MarkdownHighlightRules = function() {
         regex : "(\\\\?\\\\begin)(\\{[a-z]*\\*?\\})",
         next  : "latexblock"
     }, {
+        token : "doccomment",
+        regex : "<\\!---", next :
+        "doccomment"
+    }, {
         include : "basic"
     });
 
@@ -218,7 +222,13 @@ var MarkdownHighlightRules = function() {
             // the end of the line
             token : "comment",
             regex : "%.*$"
-        }]
+        }],
+        
+        doccomment : [
+            {token : "doccomment", regex : "-->", next : "start"},
+            {defaultToken : "doccomment"}
+        ],
+
     });
 
     this.normalizeRules();

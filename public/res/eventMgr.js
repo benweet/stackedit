@@ -323,6 +323,9 @@ define([
                 $btnGroupElt.find('.dropdown-menu').css({
                     right: -previewButtonsWidth + $btnGroupElt.width() + $btnGroupElt.position().left
                 });
+                $btnGroupElt.find('.markdown-syntax, .table-of-contents').css({
+                    'max-height': $(document).height() - $btnGroupElt.offset().top - 190
+                });
             });
         });
         

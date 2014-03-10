@@ -40,23 +40,29 @@
 }	
 */
 
-@primary: #a0a0a0;
+@primary: #9d9d9d;
+@secondary-color: #a8a8a8;
 @navbar-default-bg: #474747;
-@btn-default-hover-bg: fade(@primary, 14%);
-@btn-primary-bg: #e2e2e2;
+@btn-default-hover-bg: fade(@primary, 16%);
+@btn-primary-bg: #e6e6e6;
 @btn-primary-hover-bg: darken(@btn-primary-bg, 4%);
 //@btn-primary-color: #bbb;
 //@btn-primary-hover-bg: fade(@primary, 25%);
-@btn-success-color: #C0C0C0;
+@btn-success-color: #a0a0a0;
 @btn-success-hover-bg: darken(@navbar-default-bg, 10%);
-@panel-button-bg-color: #E6E6E6;
+@btn-info-hover-bg: #ededed;
+@panel-button-bg-color: #e0e0e0;
 @panel-button-box-shadow: ~"0 0 1px rgba(255,255,255,0.75)";
 @input-bg: #fff;
+@modal-backdrop-bg: #505050;
+@input-color: @secondary-color-darkest;
+@disabled-color: mix(@secondary-color, @input-bg, 50%);
 
 
-@list-group-border: @transparent;
-@list-group-active-border: @transparent;
-@list-group-hover-border-color: @transparent;
+//@list-group-active-color: @text-color;
+//@list-group-border: @transparent;
+//@list-group-active-border: fade(@secondary, 8%);
+//@list-group-hover-border-color: fade(@secondary, 8%);
 /*
 @list-group-link-color: @btn-success-color;
 @list-group-bg: lighten(@navbar-default-bg, 2%);
@@ -67,7 +73,7 @@
 
 
 @tertiary-bg: #fcfcfc;
-@secondary-bg: #ededed;
+@secondary-bg: #f9f9f9;
 @secondary-bg-light: #f6f6f6;
 @secondary-bg-lighter: @tertiary-bg;
 @secondary-border-color: #e2e2e2;
@@ -78,23 +84,41 @@
 // Navbar buttons
 .btn-success {
     border-width: 0;
+    .buttons-dropdown & {
+        color: #777;
+        &:hover,
+        &:focus,
+        &:active {
+            background-color: #777 !important;
+        }
+    }
     &:hover,
     &:focus,
     &:active,
-    .open &.dropdown-toggle {
+    .open &.dropdown-toggle {        
     	color: #fff;
     }
 }
 
+a.list-group-item,
+.dropdown-menu a {
+    &:hover,
+    &:focus {
+        color: #333;
+        border-top-color: fade(@secondary, 10%);
+        border-bottom-color: fade(#fff, 85%);
+    }
+}
 
-.dropdown-menu > .disabled > a,
 .list-group-item.active {
     &,
     &:hover,
     &:focus {
-        background-color: lighten(@navbar-default-bg, 8%);
-        color: #fff;
-        .box-shadow(inset -1px 2px 4px rgba(0,0,0,0.25));
+        background-color: fade(@primary, 8%);
+        color: #606060;
+        border-top-color: fade(@secondary, 10%);
+        border-bottom-color: fade(#fff, 80%);
+        
     }
 }
 
@@ -105,7 +129,7 @@
 }	
 
 .ui-layout-resizer-north {
-	background-color: fade(@navbar-default-bg, 50%);
+	background-color: fade(@navbar-default-bg, 75%);
     border-bottom: 0;
     //.box-shadow(~"0 0 1px 1px rgba(0,0,0,0.15), 0 3px 8px rgba(0,0,0,0.15)");
 }
@@ -121,9 +145,10 @@
 
 .menu-panel, .document-panel {
     .collapse-button:hover, &.in .collapse-button, &.collapsing .collapse-button {
-       	background-color: lighten(@panel-button-bg-color, 10%);
+       	background-color: @tertiary-bg;
     }
 }
+
 /*
 .menu-panel {
 	.sub-menu {

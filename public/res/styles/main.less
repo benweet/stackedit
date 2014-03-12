@@ -57,6 +57,7 @@
 @document-panel-width: 320px;
 @jgrowl-width: 260px;
 @resizer-size: 32px;
+@editor-line-weight: 1.7;
 
 /* Bootstrap */
 @body-bg: @secondary-bg-light;
@@ -65,7 +66,8 @@
 @link-hover-color: darken(@link-color, 20%);
 @input-bg: @secondary-bg-lighter;
 @input-border: @secondary-border-color;
-@input-height-base: 38px;
+@input-height-base: 42px;
+@input-height-slim: 38px;
 @blockquote-border-color: fade(@secondary-desaturated, 7.5%);
 @blockquote-bg: fade(@secondary-desaturated, 5%);
 @code-color: @secondary-color-darkest;
@@ -136,26 +138,10 @@ body {
     outline: none !important;
 }
 
-// Bug with SVG font on Windows
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    select {
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    }
-}
-
 #preview-contents {
 	padding: 15px;
 	margin: 0 auto 180px;
-    font-size: 15px;
-    line-height: 1.6;
-    blockquote p {
-        font-size: 15px;
-        line-height: 1.6;
-    }
-    code, pre {
-        font-size: 13px !important;
-        line-height: 1.6;
-    }
+    text-align: justify;
 }
 
 .working {
@@ -407,12 +393,12 @@ a {
 	border-radius: 0;
 	.left-space, .right-space {
 		width: 25px;
-		height: @input-height-base;
+		height: @input-height-slim;
 	}
 	.nav {
 		float: left;
 		margin: 5px 9px;
-		height: @input-height-base;
+		height: @input-height-slim;
 		& > li {
 			display: inline-block;
 		}
@@ -432,8 +418,8 @@ a {
 		}
 	}
 	.btn {
-		height: @input-height-base;
-		padding: 8px 10px;
+		height: @input-height-slim;
+		padding: 6px 8px;
 	}
 	.btn-group > .btn {
 		&.disabled,
@@ -448,8 +434,9 @@ a {
 	.file-title-navbar {
 		display: inline-block;
 		vertical-align: middle;
-		padding: 4px 15px;
-		font-size: 20px;
+		padding: 1px 15px;
+		font-size: 1.5em;
+        line-height: 1.4em;
 		font-weight: 200;
 		max-width: @file-title-width;
 		overflow: hidden;
@@ -462,6 +449,7 @@ a {
         .input-file-title {
     		width: @file-title-width;
             font-size: 16px;
+            height: @input-height-slim;
         }
 	}
 
@@ -469,7 +457,7 @@ a {
 		display: inline-block;
 		vertical-align: middle;
 	    overflow: hidden;
-        height: @input-height-base;
+        height: @input-height-slim;
         width: 60px;
         padding-top: 9px;
 		.bar {
@@ -488,7 +476,7 @@ a {
 	.offline-status > div {
 		display: inline-block;
 		vertical-align: middle;
-		height: @input-height-base;
+		height: @input-height-slim;
 		padding: 9px 10px;
 	}
 	
@@ -530,7 +518,7 @@ a {
 	overflow: initial;
     .collapse-button {
        	background-color: @panel-button-bg-color;
-        height: @input-height-base;
+        height: @input-height-slim;
         border-radius: 8px;
 		position: absolute;
 		margin-top: 6px;
@@ -738,11 +726,12 @@ a {
 		input {
 			cursor: pointer;
 			margin: 0 16px;
-			height: @input-height-base;
+			height: @input-height-slim;
 		}
 	}
 	.input-rename {
 		width: 220px;
+		height: @input-height-slim;
 	}
 	.name, .file-count {
 		padding: 9px 20px 9px 15px;		
@@ -978,7 +967,7 @@ a {
 			line-height: 0;
 			i {
     			font-size: 16px;
-                height: 9.5px;
+                height: 10.5px;
                 overflow: hidden;
 			}
 		}
@@ -1202,24 +1191,29 @@ a {
 }
 
 #wmd-input {
-	border-radius: 0;
+    font-family: @font-family-monospace;
+    letter-spacing: @font-family-monospace-letter-spacing;
+	font-size: @font-size-base;
+    border-radius: 0;
 	color: @tertiary-color-dark;
 	.box-shadow(none);
 	resize: none;
 	border: none;
     padding: 0 @padding-base-horizontal;
+    line-height: @editor-line-weight;
 	div& {
 		padding: 0;
 	}
 }
 
 .textarea-helper {
+    font-family: @font-family-monospace;
+    font-size: @font-size-base;
     position: absolute;
     top: -100px;
     height: 1px;
     padding: 0 @padding-base-horizontal;
-    font-size: @font-size-base;
-    line-height: @line-height-base;
+    line-height: @editor-line-weight;
     position: absolute;
     overflow: auto;
     white-space: pre-wrap;
@@ -1260,17 +1254,8 @@ div.dropdown-menu,  {
     a:focus {
         color: @link-hover-color;
     }
-    h1 {
-    	margin: 40px 0;
-    }
-    h2 {
-    	margin: 30px 0;
-    }
-    h3 {
-    	margin: 20px 0;
-    }
-    h4, h5, h6 {
-    	margin: 15px 0;
+    h1, h2, h3, h4, h5, h6 {
+    	margin: 1em 0;
     }
 }
     
@@ -1286,7 +1271,7 @@ div.dropdown-menu,  {
     margin-top: -2px;
     margin-left: -2px;
     margin-right: 3px;
-    font-size: 14px;
+    font-size: 1em;
     vertical-align: top;
     .file-title-navbar & {
         font-size: 16px;

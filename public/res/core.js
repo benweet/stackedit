@@ -329,6 +329,19 @@ define([
 
     // Create the layout
     var $editorButtonsElt;
+    var maxWidthMap = [
+        { screenWidth: 0, maxWidth: 600 },
+        { screenWidth: 1000, maxWidth: 700 },
+        { screenWidth: 1200, maxWidth: 800 },
+        { screenWidth: 1400, maxWidth: 900 },
+    ];
+    var maxWidthMapReversed = maxWidthMap.slice(0).reverse();
+    function getMaxWidth() {
+        var actualWidth = $(window).width();
+        return _.find(maxWidthMapReversed, function(value) {
+            return actualWidth > value.screenWidth;
+        }).maxWidth;
+    }
     function createLayout() {
         var layoutGlobalConfig = {
             closable: true,
@@ -348,6 +361,12 @@ define([
             north__minSize: 49,
             center__minWidth: 250,
             center__minHeight: 180,
+            east__onAlert: function() {
+                window.location.href = 'viewer';
+            },
+            south__onAlert: function() {
+                window.location.href = 'viewer';
+            },
             fxSettings: {
                 easing: "easeInOutQuad",
                 duration: 350
@@ -371,7 +390,7 @@ define([
                     bottomMargin < 0 && (bottomMargin = 0);
                     aceEditor.renderer.setScrollMargin(0, bottomMargin, 0, 0);
                     setTimeout(function() {
-                        var padding = (aceEditor.renderer.$size.scrollerWidth - settings.maxWidth) / 2;
+                        var padding = (aceEditor.renderer.$size.scrollerWidth - getMaxWidth()) / 2;
                         if(padding < constants.EDITOR_DEFAULT_PADDING) {
                             padding = constants.EDITOR_DEFAULT_PADDING;
                         }
@@ -403,7 +422,6 @@ define([
                 south__minSize: 200
             }));
         }
-        settings.maxWidth && $('#preview-contents').css('max-width', (settings.maxWidth + 30) + 'px');
         $(".navbar").click(function() {
             layout.allowOverflow('north');
         });
@@ -441,8 +459,8 @@ define([
     var $titleContainer;
     var marginWidth = 18 * 2 + 25 + 25;
     var titleWidth = 18 + 348;
-    var leftButtonsWidth = 18 * 4 + 79 + 158 + 159 + 79;
-    var rightButtonsWidth = 18 + 79;
+    var leftButtonsWidth = 18 * 4 + 80 + 160 + 160 + 80;
+    var rightButtonsWidth = 18 + 80;
     var buttonsDropdownWidth = 40;
     function adjustWindow() {
         if(!window.viewerMode) {
@@ -678,6 +696,49 @@ define([
         else {
             document.body.innerHTML = bodyIndexHTML;
         }
+        
+        var styleContent = '';
+
+        // Apply font
+        function applyFont(size, screenWidth) {
+            screenWidth = screenWidth || 0;
+            //var codeFontSize = settings.editorFontSize;
+            //var codeLineHeight = Math.round(codeFontSize * 20 / 12);
+            var previewFontSize = Math.round(size * 8 / 7);
+            styleContent += [
+                '@media (min-width: ' + screenWidth + 'px) {',
+                '#wmd-input, .textarea-helper {',
+                '   font-size: ' + size + 'px;',
+                //'   font-family: ' + settings.editorFontFamily + ';',
+                '}',
+                '#preview-contents {',
+                '   font-size: ' + previewFontSize + 'px;',
+                '}',
+                '}',
+            ].join('\n');
+        }
+        applyFont(14);
+        applyFont(15, 600);
+        applyFont(16, 1200);
+                
+        function applyMaxWidth(maxWidth, screenWidth) {
+            styleContent += [
+                '@media (min-width: ' + screenWidth + 'px) {',
+                '#preview-contents {',
+                '   max-width: ' + (maxWidth + 30) + 'px;',
+                '}',
+                '}',
+            ].join('\n');
+        }
+        _.each(maxWidthMap, function(entry) {
+            applyMaxWidth(entry.maxWidth, entry.screenWidth);
+        });
+        
+        // Apply dynamic stylesheet
+        var style = document.createElement("style");
+        style.innerHTML = styleContent;
+        document.head.appendChild(style);
+
         $navbarElt = $('.navbar');
         $leftBtnElts = $navbarElt.find('.left-buttons');
         $rightBtnElts = $navbarElt.find('.right-buttons');
@@ -781,27 +842,18 @@ define([
             $('#wmd-input').replaceWith(function() {
                 return $('<textarea id="wmd-input">').addClass(this.className).addClass('form-control');
             });
+            
+            // Create UI layout after textarea
+            createLayout();
         }
+        else {
+            // Create UI layout before ACE editor
+            createLayout();
 
-        $editorElt = $("#wmd-input, .textarea-helper").css({
-            // Apply editor font
-            "font-family": settings.editorFontFamily,
-            "font-size": settings.editorFontSize + "px",
-            "line-height": Math.round(settings.editorFontSize * (20 / 12)) + "px"
-        });
-
-        if(!window.lightMode) {
             // ACE editor
             createAceEditor();
-
-            // Editor's element
-            $editorElt.find('.ace_content').css({
-                "background-size": "64px " + Math.round(settings.editorFontSize * (20 / 12)) + "px",
-            });
         }
-
-        // UI layout
-        createLayout();
+        $editorElt = $('#wmd-input');
 
         // Do periodic tasks
         intervalId = window.setInterval(function() {

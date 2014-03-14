@@ -704,7 +704,7 @@ define([
             screenWidth = screenWidth || 0;
             //var codeFontSize = settings.editorFontSize;
             //var codeLineHeight = Math.round(codeFontSize * 20 / 12);
-            var previewFontSize = Math.round(size * 8 / 7);
+            var previewFontSize = size * 13 / 12;
             styleContent += [
                 '@media (min-width: ' + screenWidth + 'px) {',
                 '#wmd-input, .textarea-helper {',
@@ -717,9 +717,9 @@ define([
                 '}',
             ].join('\n');
         }
-        applyFont(14);
-        applyFont(15, 600);
-        applyFont(16, 1200);
+        applyFont(15);
+        applyFont(16, 600);
+        applyFont(17, 1200);
                 
         function applyMaxWidth(maxWidth, screenWidth) {
             styleContent += [
@@ -837,7 +837,14 @@ define([
         });
 
         // Editor
-        if(window.lightMode) {
+        if(window.preMode) {
+            // In light mode, we replace ACE with a textarea
+            $('#wmd-input').addClass('form-control').attr('contenteditable', true);
+            
+            // Create UI layout after textarea
+            createLayout();
+        }
+        else if(window.lightMode) {
             // In light mode, we replace ACE with a textarea
             $('#wmd-input').replaceWith(function() {
                 return $('<textarea id="wmd-input">').addClass(this.className).addClass('form-control');

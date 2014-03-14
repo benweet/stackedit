@@ -90,22 +90,23 @@
 				        class="icon-provider-dropbox"></i> Export to Dropbox</a></li>
 					<li><a href="#" class="submenu-sync-gdrive action-sync-export-dialog-gdrive"><i
 				        class="icon-provider-gdrive"></i> Export to Google Drive</a></li>
+					<li><a href="#" class="submenu-sync-gdrivesec action-sync-export-dialog-gdrivesec"><i
+				        class="icon-provider-gdrive"></i> Export to Google Drive <small>(2nd account)</small></a></li>
+					<li><a href="#" class="submenu-sync-gdriveter action-sync-export-dialog-gdriveter"><i
+				        class="icon-provider-gdrive"></i> Export to Google Drive <small>(3rd account)</small></a></li>
 					<li><a href="#" class="submenu-sync-gdrive action-autosync-dialog-gdrive"><i
 				        class="icon-provider-gdrive"></i> Google Drive AutoSync</a></li>
-					<li><a href="#" class="submenu-sync-gdrivesec action-sync-export-dialog-gdrivesec"><i
-				        class="icon-provider-gdrive"></i> Export to Google Drive<br>(2nd account)</a></li>
 					<li><a href="#" class="submenu-sync-gdrivesec action-autosync-dialog-gdrivesec"><i
-				        class="icon-provider-gdrive"></i> Google Drive AutoSync<br>(2nd account)</a></li>
-					<li><a href="#" class="submenu-sync-gdriveter action-sync-export-dialog-gdriveter"><i
-				        class="icon-provider-gdrive"></i> Export to Google Drive<br>(3rd account)</a></li>
+				        class="icon-provider-gdrive"></i> Google Drive AutoSync <small>(2nd account)</small></a></li>
 					<li><a href="#" class="submenu-sync-gdriveter action-autosync-dialog-gdriveter"><i
-				        class="icon-provider-gdrive"></i> Google Drive AutoSync<br>(3rd account)</a></li>
+				        class="icon-provider-gdrive"></i> Google Drive AutoSync <small>(3rd account)</small></a></li>
 				</ul>
 			</div>
 			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"
 				class="list-group-item"><i class="icon-share"></i> Publish...</a>
 			<div class="sub-menu collapse collapse-publish-on clearfix">
-				<ul class="nav">
+				<ul class="nav alert alert-danger show-already-published">
+                    <li><div>"<span class="file-title"></span>" is already published.</div></li>
                     <li><a href="#" class="action-update-publication"
                         data-toggle="collapse" data-target=".menu-panel"><i class="icon-share"></i>
                         Update publication</a></li>
@@ -144,11 +145,11 @@
             <a href="#" class="list-group-item submenu-sync-gdrivesec action-sync-import-gdrivesec"
                 data-toggle="collapse" data-target=".menu-panel"><i
 				class="icon-provider-gdrive"></i> Import from
-                    Google Drive<br>(2nd account)</a>
+                    Google Drive <small>(2nd account)</small></a>
             <a href="#" class="list-group-item submenu-sync-gdriveter action-sync-import-gdriveter"
                 data-toggle="collapse" data-target=".menu-panel"><i
 				class="icon-provider-gdrive"></i> Import from
-                    Google Drive<br>(3rd account)</a>
+                    Google Drive <small>(3rd account)</small></a>
 		</div>
 		<ul class="nav">
 			<li><a href="#" data-toggle="modal"
@@ -358,7 +359,7 @@
 					Are you sure you want to delete "<span class="file-title"></span>"?
 				</p>
 				<blockquote>
-					<b>NOTE:</b> This will not delete the file on synchronized
+					<b>Note:</b> This will not delete the file on synchronized
 					locations.
 				</blockquote>
 			</div>
@@ -506,7 +507,7 @@
 					</div>
 				</div>
 				<blockquote>
-					<b>NOTE:</b>
+					<b>Note:</b>
 					<ul>
 						<li>Dropbox file path does not depend on document title.</li>
 						<li>The title of your document will not be synchronized.</li>
@@ -541,7 +542,7 @@
 				</p>
 				<div class="msg-sync-list sync-list hide"></div>
 				<blockquote class="msg-sync-list hide">
-					<b>NOTE:</b> Removing a synchronized location will not delete any
+					<b>Note:</b> Removing a synchronized location will not delete any
 					file.
 				</blockquote>
 				<p class="msg-no-sync hide">"<span class="file-title"></span>" is not synchronized yet.</p>
@@ -828,19 +829,13 @@
 				<h2 class="modal-title">Publication</h2>
 			</div>
 			<div class="modal-body">
-				<p class="msg-publish-list hide">
+				<p>
 					"<span class="file-title"></span>" is published on the following
 					location(s):
 				</p>
-				<div class="msg-publish-list publish-list hide"></div>
-				<blockquote class="msg-publish-list hide">
-					<b>NOTE:</b> Removing a publish location will not delete the actual publication.
-				</blockquote>
-				<p class="msg-no-publish hide">
-					"<span class="file-title"></span>" is not published yet.
-				</p>
-				<blockquote class="msg-no-publish hide">
-					<b>Tip:</b> You can add publications using the <i class="icon-share"></i> <code>Publish on</code> sub-menu.
+				<div class="publish-list"></div>
+				<blockquote>
+					<b>Note:</b> Removing a publish location will not delete the actual publication.
 				</blockquote>
 			</div>
 			<div class="modal-footer">

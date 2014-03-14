@@ -57,7 +57,7 @@
 @document-panel-width: 320px;
 @jgrowl-width: 260px;
 @resizer-size: 32px;
-@editor-line-weight: 1.7;
+@editor-line-weight: 1.6;
 
 /* Bootstrap */
 @body-bg: @secondary-bg-light;
@@ -128,6 +128,7 @@
 @popover-arrow-color: @secondary-bg;
 @popover-arrow-outer-color: @secondary-border-color;
 @popover-title-bg: @transparent;
+@alert-border-radius: 0;
 
 
 body {
@@ -318,7 +319,12 @@ a {
 /********************
  * Input
  ********************/
- 
+
+@form-control-inset-shadow: inset 0 1px 1px rgba(0,0,0,.025);
+.form-control {
+    .box-shadow(~"@{form-control-inset-shadow}");
+}
+
 // Fix form-inline broken since Bootstrap v3
 .form-inline {
     .form-control {
@@ -344,13 +350,13 @@ a {
     &:focus {
         border-color: @input-border;  
         outline: 0;
-        .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.05), 0 0 12px -1px @{color-rgba}");
+        .box-shadow(~"@{form-control-inset-shadow}, 0 0 12px -1px @{color-rgba}");
     }
 }
 
 .form-control.error {
 	border-color: @error-border;
-    .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.05), 0 0 8px rgba(255, 134, 97, 0.6)");
+    .box-shadow(~"@{form-control-inset-shadow}, 0 0 8px rgba(255, 134, 97, 0.6)");
 }
 
 .help-block {
@@ -359,7 +365,7 @@ a {
 
 // Input add-on
 .input-group-addon {
-	.box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+	.box-shadow(~"@{form-control-inset-shadow}");
 	a& {
 	    color: @link-color;
 	}
@@ -459,7 +465,7 @@ a {
 	    overflow: hidden;
         height: @input-height-slim;
         width: 60px;
-        padding-top: 9px;
+        padding-top: 8px;
 		.bar {
 		    display: inline-block;
 		    width: 14px;
@@ -553,10 +559,15 @@ a {
         background-color: @secondary-bg-lighter;
         .box-shadow(~"inset 1px 0 1px rgba(0,0,0,.1), inset 1px 1px 4px rgba(0,0,0,.025)");
 	}
+    .alert {
+        padding: 15px 0;
+    }
     .nav {
         margin: 20px 0;
+        > li > * {
+            padding: 8px 30px;
+        }
         > li > a {
-            padding: 8px 15px 8px 25px;
             &:hover,
             &:focus {
                 background-color: @transparent;
@@ -1152,7 +1163,7 @@ a {
         vertical-align: middle;
         background-color: @secondary-bg-lighter;
         border-color: @input-border;
-        .box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+        .box-shadow(~"@{form-control-inset-shadow}");
 	}
 	.ace_searchbtn {
         background-image: none;

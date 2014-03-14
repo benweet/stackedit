@@ -178,7 +178,7 @@ define([
                 
                 // Scroll to the active file
                 var activeElt = documentListElt.querySelector('.file.active');
-                activeElt && (panelContentElt.scrollTop += activeElt.getBoundingClientRect().top - 120);
+                activeElt && (panelContentElt.scrollTop += activeElt.getBoundingClientRect().top - 240);
             }
         });
         

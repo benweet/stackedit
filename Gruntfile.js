@@ -15,18 +15,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
             options: {
-                curly: true,
-                browser: true,
-                devel: true,
-                indent: 4,
-                latedef: true,
-                undef: true,
-                unused: true,
-                expr: true,
-                globals: {
-                    "define": false,
-                    "require": false,
-                },
+                jshintrc: true,
                 ignores: [
                     'node_modules/**/*.js',
                     'public/libs/**/*.js',

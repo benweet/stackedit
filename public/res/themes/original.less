@@ -54,7 +54,7 @@
 @panel-button-bg-color: #e0e0e0;
 @panel-button-box-shadow: ~"0 0 1px rgba(255,255,255,0.75)";
 @input-bg: #fff;
-@modal-backdrop-bg: #505050;
+@modal-backdrop-bg: #606060;
 @input-color: @secondary-color-darkest;
 @disabled-color: mix(@secondary-color, @input-bg, 50%);
 
@@ -103,8 +103,9 @@ a.list-group-item,
     &:hover,
     &:focus {
         color: #333;
-        border-top-color: fade(@secondary, 10%);
+        border-top-color: fade(@secondary, 15%);
         border-bottom-color: fade(#fff, 85%);
+        .box-shadow(inset 1px 1px 4px rgba(0,0,0,.025))
     }
 }
 
@@ -116,7 +117,7 @@ a.list-group-item,
         color: #606060;
         border-top-color: fade(@secondary, 10%);
         border-bottom-color: fade(#fff, 80%);
-        
+        .box-shadow(inset 1px 1px 4px rgba(0,0,0,.025))
     }
 }
 

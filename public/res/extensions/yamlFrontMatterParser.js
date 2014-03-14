@@ -1,7 +1,8 @@
 define([
+    "underscore",
     "classes/Extension",
     "yaml-js",
-], function(Extension, YAML) {
+], function(_, Extension, YAML) {
 
     var yamlFrontMatterParser = new Extension("yamlFrontMatterParser", "YAML front matter");
 
@@ -26,10 +27,16 @@ define([
                 fileDesc.frontMatter = undefined;
                 try {
                     fileDesc.frontMatter = YAML.parse(yaml);
+                    if(!_.isObject(fileDesc.frontMatter)) {
+                        fileDesc.frontMatter = undefined;
+                    }
                     fileDesc.frontMatter._yaml = yaml;
                     fileDesc.frontMatter._frontMatter = results[1];
                 }
-                catch (e) {}
+                catch (e) {
+                    eventMgr.onMarkdownTrim(0);
+                    return text;
+                }
             }
             eventMgr.onMarkdownTrim((results[1] || '').length);
             return results[3];

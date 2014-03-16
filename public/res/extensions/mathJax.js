@@ -93,7 +93,11 @@ define([
         h.processUpdateTime = 50;
         h.Config({"HTML-CSS": {EqnChunk: 10,EqnChunkFactor: 1},SVG: {EqnChunk: 10,EqnChunkFactor: 1}})
     });
+    /*benweet
+    Don't hash inline math $...$ (see https://github.com/benweet/stackedit/issues/136)
     var u = /(\$\$?|\\(?:begin|end)\{[a-z]*\*?\}|\\[\\{}$]|[{}]|(?:\n\s*)+|@@\d+@@)/i, r;
+    */
+    var u = /(\$\$|\\(?:begin|end)\{[a-z]*\*?\}|\\[\\{}$]|[{}]|(?:\n\s*)+|@@\d+@@)/i, r;
     r = 3 === "aba".split(/(b)/).length ? function(a, f) {
         return a.split(f)
     } : function(a, f) {

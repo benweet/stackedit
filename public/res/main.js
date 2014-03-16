@@ -62,7 +62,9 @@ requirejs.config({
         'Typo.js': 'bower-libs/Typo.js',
         css: 'bower-libs/require-css/css',
         'css-builder': 'bower-libs/require-css/css-builder',
-        normalize: 'bower-libs/require-css/normalize'
+        normalize: 'bower-libs/require-css/normalize',
+        prism: 'bower-libs/prism/prism',
+        'prism-core': 'bower-libs/prism/components/prism-core',
     },
     shim: {
         underscore: {
@@ -83,6 +85,19 @@ requirejs.config({
         'yaml-js': {
             exports: 'YAML'
         },
+        'prism-core': {
+            exports: 'Prism'
+        },
+        'bower-libs/prism/components/prism-markup': [
+            'prism-core'
+        ],
+        'libs/prism-latex': [
+            'prism-core'
+        ],
+        'libs/prism-markdown': [
+            'bower-libs/prism/components/prism-markup',
+            'libs/prism-latex'
+        ],
         'bootstrap-record': [
             'mousetrap'
         ],

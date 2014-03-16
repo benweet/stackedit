@@ -713,7 +713,7 @@
             if (!util.isVisible(inputArea)) {
                 return;
             }
-            if (!isInitialState && doc.activeElement && doc.activeElement !== inputArea) { // this happens when tabbing out of the input box
+            if (!isInitialState && !inputArea.focused) { // this happens when tabbing out of the input box
                 return;
             }
 
@@ -742,7 +742,7 @@
             }
             else if (doc.selection) {
 
-                if (doc.activeElement && doc.activeElement !== inputArea) {
+                if (!inputArea.focused) {
                     return;
                 }
 
@@ -811,7 +811,9 @@
                 inputArea.value = stateObj.text;
             }
             this.setInputAreaSelection();
-            inputArea.scrollTop = stateObj.scrollTop;
+            setTimeout(function() {
+                inputArea.scrollTop = stateObj.scrollTop;
+            }, 0);
         };
 
         // Gets a collection of HTML chunks from the inptut textarea.
@@ -1431,7 +1433,7 @@
                 // on mousedown.
                 if (uaSniffed.isIE) {
                     button.onmousedown = function () {
-                        if (doc.activeElement && doc.activeElement !== panels.input) { // we're not even in the input box, so there's no selection
+                        if (!panels.input.focused) { // we're not even in the input box, so there's no selection
                             return;
                         }
                         panels.ieCachedRange = document.selection.createRange();

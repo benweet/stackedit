@@ -4,6 +4,7 @@ define([
     "underscore",
     "crel",
     "ace",
+    "classes/PreEditor",
     "constants",
     "utils",
     "storage",
@@ -25,7 +26,7 @@ define([
     'ace/ext/spellcheck',
     'ace/ext/searchbox'
 
-], function($, _, crel, ace, constants, utils, storage, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
+], function($, _, crel, ace, PreEditor, constants, utils, storage, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
 
@@ -384,6 +385,16 @@ define([
                 }
             },
             onresize_end: function(paneName) {
+                if(preEditor.$preContentElt !== undefined && paneName == 'center') {
+                    var padding = ($editorElt.width() - getMaxWidth()) / 2;
+                    if(padding < constants.EDITOR_DEFAULT_PADDING) {
+                        padding = constants.EDITOR_DEFAULT_PADDING;
+                    }
+                    preEditor.$preContentElt.css({
+                        'padding-left': padding + 'px',
+                        'padding-right': padding + 'px'
+                    });
+                }
                 if(aceEditor !== undefined && paneName == 'center') {
                     aceEditor.resize();
                     var bottomMargin = (aceEditor.renderer.$size.scrollerHeight - aceEditor.renderer.lineHeight) / 2;
@@ -488,6 +499,7 @@ define([
     var fileDesc;
     var documentContent;
     var UndoManager = require("ace/undomanager").UndoManager;
+    var preEditor;
     core.initEditor = function(fileDescParam) {
         if(fileDesc !== undefined) {
             eventMgr.onFileClosed(fileDesc);
@@ -518,11 +530,14 @@ define([
             // Store editor scrollTop on scroll event
             $editorElt.scroll(function() {
                 if(documentContent !== undefined) {
-                    fileDesc.editorScrollTop = $(this).scrollTop();
+                    preEditor.scrollTop = this.scrollTop;
+                    fileDesc.editorScrollTop = preEditor.scrollTop;
                 }
             });
             // Store editor selection on change
             $editorElt.bind("keyup mouseup", function() {
+                preEditor.selectionStart = this.selectionStart;
+                preEditor.selectionEnd = this.selectionEnd;
                 if(documentContent !== undefined) {
                     fileDesc.editorStart = this.selectionStart;
                     fileDesc.editorEnd = this.selectionEnd;
@@ -572,9 +587,13 @@ define([
             if(aceEditor !== undefined) {
                 newDocumentContent = aceEditor.getValue();
             }
-            if(documentContent !== undefined && documentContent != newDocumentContent) {
+            if(documentContent === undefined) {
+                preEditor.highlight();
+            }
+            else if(documentContent != newDocumentContent) {
                 fileDesc.content = newDocumentContent;
                 eventMgr.onContentChanged(fileDesc);
+                preEditor.highlight();
             }
             documentContent = newDocumentContent;
         }
@@ -615,7 +634,8 @@ define([
                         eventMgr.onFileOpen(fileDesc);
                         $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
                         if(window.lightMode) {
-                            $editorElt.scrollTop(fileDesc.editorScrollTop);
+                            preEditor.scrollTop = fileDesc.editorScrollTop;
+                            $editorElt.scrollTop(preEditor.scrollTop);
                         }
                         else {
                             _.defer(function() {
@@ -704,7 +724,7 @@ define([
             screenWidth = screenWidth || 0;
             //var codeFontSize = settings.editorFontSize;
             //var codeLineHeight = Math.round(codeFontSize * 20 / 12);
-            var previewFontSize = size * 13 / 12;
+            var previewFontSize = size; // * 13 / 12;
             styleContent += [
                 '@media (min-width: ' + screenWidth + 'px) {',
                 '#wmd-input, .textarea-helper {',
@@ -717,9 +737,9 @@ define([
                 '}',
             ].join('\n');
         }
-        applyFont(15);
-        applyFont(16, 600);
-        applyFont(17, 1200);
+        applyFont(16);
+        applyFont(17, 600);
+        applyFont(18, 1200);
                 
         function applyMaxWidth(maxWidth, screenWidth) {
             styleContent += [
@@ -837,17 +857,12 @@ define([
         });
 
         // Editor
-        if(window.preMode) {
-            // In light mode, we replace ACE with a textarea
-            $('#wmd-input').addClass('form-control').attr('contenteditable', true);
-            
-            // Create UI layout after textarea
-            createLayout();
-        }
-        else if(window.lightMode) {
-            // In light mode, we replace ACE with a textarea
+        if(window.lightMode) {
+            // In pre mode, we replace ACE with an editable pre
             $('#wmd-input').replaceWith(function() {
-                return $('<textarea id="wmd-input">').addClass(this.className).addClass('form-control');
+                var result = $('<pre id="wmd-input">').addClass(this.className).addClass('form-control');
+                preEditor = new PreEditor(result[0]);
+                return result;
             });
             
             // Create UI layout after textarea

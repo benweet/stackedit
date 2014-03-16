@@ -17,6 +17,7 @@
 @font-size-base: 15px;
 @line-height-base: 1.45;
 @p-margin: 1.1em;
+@headings-font-family: inherit;
 
 @font-face {
     font-family: 'Source Sans Pro';
@@ -66,6 +67,19 @@
     font-style: normal;
     font-weight: 700;
     src: local('Source Code Pro Bold'), local('SourceCodePro-Bold'), url("../font/SourceCodePro-Bold-webfont.woff") format('woff');
+}
+
+@font-face {
+    font-family: 'Inconsolata';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Inconsolata'), url("../font/Inconsolata-Regular-webfont.woff") format('woff');
+}
+@font-face {
+    font-family: 'Inconsolata';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Inconsolata Bold'), local('Inconsolata-Bold'), url("../font/Inconsolata-Bold-webfont.woff") format('woff');
 }
 
 @font-face {
@@ -136,6 +150,10 @@ h1, h2, h3, h4, h5, h6 {
 	margin: 1.3em 0;
 }
 
+pre {
+    word-break: break-all;
+}
+
 p,
 pre,
 pre.prettyprint,
@@ -150,7 +168,7 @@ hr {
 code, pre {
 	font-family: @font-family-monospace;
     letter-spacing: @font-family-monospace-letter-spacing;
-	font-size: 0.95em !important;
+	font-size: 0.9em;
 }
 
 pre, pre.prettyprint {

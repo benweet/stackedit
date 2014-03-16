@@ -14,7 +14,7 @@ define([], function() {
     constants.DEFAULT_FILE_TITLE = "Title";
     constants.DEFAULT_FOLDER_NAME = "New folder";
     constants.GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document";
-    constants.EDITOR_DEFAULT_PADDING = 15;
+    constants.EDITOR_DEFAULT_PADDING = 30;
     constants.CHECK_ONLINE_PERIOD = 120000;
     constants.AJAX_TIMEOUT = 30000;
     constants.ASYNC_TASK_DEFAULT_TIMEOUT = 60000;

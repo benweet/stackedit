@@ -35,6 +35,7 @@
 
 // Editor
 @tertiary-bg: #fff;
+@tertiary-color-lighter: fade(@tertiary-color, 40%);
 @tertiary-color-light: fade(@tertiary-color, 60%);
 @tertiary-color: darken(@secondary-desaturated, 7.5%);
 @tertiary-color-dark: darken(@tertiary-color, 15%);
@@ -57,7 +58,7 @@
 @document-panel-width: 320px;
 @jgrowl-width: 260px;
 @resizer-size: 32px;
-@editor-line-weight: 1.6;
+@editor-line-weight: 1.65;
 
 /* Bootstrap */
 @body-bg: @secondary-bg-light;
@@ -140,7 +141,7 @@ body {
 }
 
 #preview-contents {
-	padding: 15px;
+	padding: 30px;
 	margin: 0 auto 180px;
     text-align: justify;
 }
@@ -1201,20 +1202,233 @@ a {
     }
 }
 
+
+
+@font-face {
+    font-family: 'PT Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('PT Sans'), local('PTSans'), url("../font/PTSans-Regular-webfont.woff") format('woff');
+}
+@font-face {
+    font-family: 'PT Sans';
+    font-style: normal;
+    font-weight: 700;
+    src: local('PT Sans Bold'), local('PTSans-Bold'), url("../font/PTSans-Bold-webfont.woff") format('woff');
+}
+@font-face {
+    font-family: 'PT Sans';
+    font-style: italic;
+    font-weight: 400;
+    src: local('PT Sans Italic'), local('PTSans-Italic'), url("../font/PTSans-Italic-webfont.woff") format('woff');
+}
+@font-face {
+    font-family: 'PT Sans';
+    font-style: italic;
+    font-weight: 700;
+    src: local('PT Sans Bold Italic'), local('PTSans-BoldItalic'), url("../font/PTSans-BoldItalic-webfont.woff") format('woff');
+}
+
+
 #wmd-input {
     font-family: @font-family-monospace;
-    letter-spacing: @font-family-monospace-letter-spacing;
+    letter-spacing: normal;
 	font-size: @font-size-base;
     border-radius: 0;
 	color: @tertiary-color-dark;
 	.box-shadow(none);
 	resize: none;
 	border: none;
-    padding: 0 @padding-base-horizontal;
+    padding: 0;
     line-height: @editor-line-weight;
 	div& {
 		padding: 0;
 	}
+    pre& {
+        background-color: @tertiary-bg;
+        font-family: "PT Sans", sans-serif;
+        overflow: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+        > div {
+            margin: 0 auto;
+        }
+    }
+    
+    .code,
+    .pre {
+		color: @tertiary-color-darker;
+        font: normal 0.9em @font-family-monospace
+    }
+    
+    .tag {
+        color: @tertiary-color-darker;
+        font: bold 0.9em @font-family-monospace;
+        .punctuation,
+        .attr-value,
+        .attr-name {
+            font-weight: normal;
+        }
+    }
+    
+    .latex, .math {
+        color: @tertiary-color;
+    }
+    
+    .entity {
+        font: italic 0.9em @font-family-monospace;
+        color: @tertiary-color;
+    }
+
+    .comment {
+        font-size: 0.9em;
+        color: @tertiary-color-light;
+    }
+    
+    .keyword {
+		color: @tertiary-color-dark;
+		font-weight: bold;
+	}
+    
+    .code, .img, .imgref, .md-toc {
+		background-color: @code-bg;
+        border-radius: @border-radius-base;
+        padding: 0.15em 0;
+    }
+    
+    .md-toc {
+        font-size: 2.5em;
+        padding: 0.2em;
+    }
+    
+    /*
+    .pre {
+        line-height: 1.8;
+        margin-left: 1.8em
+    }
+    */
+
+    .link, .linkref {
+        .md-underlined-text {
+            color: inherit;
+        }
+    }
+
+    .blockquote {
+        color: @tertiary-color;
+        padding-left: 2em;
+        .li {
+            padding-left: 0;
+        }
+    }
+
+    .h1, .h2, .h3, .h4, .h5, .h6 {
+        font-weight: 600;
+        .md-hash {
+            color: @tertiary-color-lighter;
+        }
+    }
+    
+    .h1, .h11 { font-size: 1.4em; }
+    .h2, .h22 { font-size: 1.3em; }
+    .h3 { font-size: 1.2em; }
+    .h4 { font-size: 1.1em; }
+    .h5 { font-size: 1em; }
+    .h6 { font-size: 0.9em; }
+
+
+    .url,.email {
+        color: @tertiary-color-light;
+    }
+
+    .md {
+        color: @tertiary-color-light;
+        font-style: normal;
+        font-weight: 400
+    }
+
+    .em,.em .md {
+        font-style: italic
+    }
+
+    .strong,.strong .md {
+        font-weight: 600
+    }
+
+    .md-strike-text {
+        text-decoration: line-through
+    }
+
+    .md-underlined-text {
+        text-decoration: underline;
+    }
+
+    .li {
+        padding-left: 0.8em;
+        .li {
+            padding-left: 0;
+        }
+    }
+
+    .md-li,.md-li2,.md-li3,.md-li4,.md-li5,.md-li6,.md-li7,.md-li8,.md-li9,.md-li10,.md-li11 {
+        white-space: pre-line;
+    }
+
+    .md-li {
+        padding-left: 1.2em
+    }
+
+    .md-li2 {
+        padding-left: 2.4em
+    }
+
+    .md-li3 {
+        padding-left: 3.6em
+    }
+
+    .md-li4 {
+        padding-left: 4.8em
+    }
+
+    .md-li5 {
+        padding-left: 6em
+    }
+
+    .md-li6 {
+        padding-left: 7.2em
+    }
+
+    .md-li7 {
+        padding-left: 8.4em
+    }
+
+    .md-li8 {
+        padding-left: 9.6em
+    }
+
+    .md-li9 {
+        padding-left: 10.8em
+    }
+
+    .md-li10 {
+        padding-left: 12em
+    }
+
+    .md-li11 {
+        padding-left: 13.2em
+    }
+
+    .img,
+    .imgref {
+        padding: 0.2em 0.4em;
+        padding-right: 0
+    }
+
+    .md-bang,
+    .md-alt,
+    .md-title {
+        color: #666
+    }
 }
 
 .textarea-helper {
@@ -1223,7 +1437,7 @@ a {
     position: absolute;
     top: -100px;
     height: 1px;
-    padding: 0 @padding-base-horizontal;
+    padding: 0;
     line-height: @editor-line-weight;
     position: absolute;
     overflow: auto;

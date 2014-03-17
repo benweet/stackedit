@@ -11,11 +11,12 @@ define([
     markdownSectionParser.onEventMgrCreated = function(eventMgrParameter) {
         eventMgr = eventMgrParameter;
     };
-
+    
+    var sectionList = [];
+    
+    // Regexp to look for section delimiters
+    var regexp = '^.+[ \\t]*\\n=+[ \\t]*\\n+|^.+[ \\t]*\\n-+[ \\t]*\\n+|^\\#{1,6}[ \\t]*.+?[ \\t]*\\#*\\n+'; // Title delimiters
     markdownSectionParser.onPagedownConfigure = function(editor) {
-        
-        // Build a regexp to look for section delimiters
-        var regexp = '^.+[ \\t]*\\n=+[ \\t]*\\n+|^.+[ \\t]*\\n-+[ \\t]*\\n+|^\\#{1,6}[ \\t]*.+?[ \\t]*\\#*\\n+'; // Title delimiters
         if(markdownExtra.enabled) {
             if(_.some(markdownExtra.config.extensions, function(extension) {
                 return extension == "fenced_code_gfm";
@@ -32,31 +33,44 @@ define([
         regexp = new RegExp(regexp, 'gm');
         
         var converter = editor.getConverter();
-        converter.hooks.chain("preConversion", function(text) {
-            eventMgr.previewStartTime = new Date();
-            var tmpText = text + "\n\n";
-            function addSection(startOffset, endOffset) {
-                var sectionText = tmpText.substring(offset, endOffset);
-                sectionList.push({
-                    text: sectionText,
-                    textWithDelimiter: '\n<div class="se-section-delimiter"></div>\n\n' + sectionText + '\n'
-                });
-            }
-            var sectionList = [], offset = 0;
-            // Look for delimiters
-            tmpText.replace(regexp, function(match, matchOffset) {
-                // Create a new section with the text preceding the delimiter
-                addSection(offset, matchOffset);
-                offset = matchOffset;
-            });
-            // Last section
-            addSection(offset, text.length);
-            eventMgr.onSectionsCreated(sectionList);
+        converter.hooks.chain("preConversion", function() {
             return _.reduce(sectionList, function(result, section) {
-                return result + section.textWithDelimiter;
+                return result + section.previewText;
             }, '');
         });
     };
+    
+    var trimLen;
+    markdownSectionParser.onMarkdownTrim = function(len) {
+        trimLen = len;
+    };
+
+    var sectionCounter = 0;
+    function parseFileContent(fileDesc) {
+        var text = fileDesc.content.substring(trimLen);
+        var tmpText = text + "\n\n";
+        function addSection(startOffset, endOffset) {
+            var sectionText = tmpText.substring(offset, endOffset);
+            sectionList.push({
+                id: ++sectionCounter,
+                text: sectionText
+            });
+        }
+        sectionList = [];
+        var offset = 0;
+        // Look for delimiters
+        tmpText.replace(regexp, function(match, matchOffset) {
+            // Create a new section with the text preceding the delimiter
+            addSection(offset, matchOffset);
+            offset = matchOffset;
+        });
+        // Last section
+        addSection(offset, text.length);
+        eventMgr.onSectionsCreated(sectionList);
+    }
+    
+    markdownSectionParser.onFileOpen = parseFileContent;
+    markdownSectionParser.onContentChanged = parseFileContent;
 
     return markdownSectionParser;
 });

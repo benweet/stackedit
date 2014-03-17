@@ -100,15 +100,10 @@ Prism.languages.md = (function() {
             linktitle: /['\"\(][^\'\"\)]*['\"\)]/
         }
     };
-    md.tocmarker = {
-        pattern: /(^|(?:^|\n)\s*\n)[ \t]*\[(toc|TOC)\]($|\n($|\s*\n))$/g,
-        inside: {
-            "md md-toc": /\[(toc|TOC)\]/
-        }
-    };
     md.p = {
-        pattern: /^[^\n]+(?:\n|$)/gm,
+        pattern: /.+/g,
         inside: {
+            'md md-toc': /^\s*\[(toc|TOC)\]\s*$/g
         }
     };
     md.img = {

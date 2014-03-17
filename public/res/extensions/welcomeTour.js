@@ -100,7 +100,7 @@ define([
             {
                 element: '.navbar-inner > .nav .button-publish, .navbar .right-buttons-dropdown > .nav > .btn:not(:hidden)',
                 title: 'Update publication',
-                content: 'Once published, use the <i class="icon-share"></i> <code>Publish</code> button to update the publication.',
+                content: 'Once published, use the <i class="icon-upload"></i> <code>Publish</code> button to update the publication.',
                 placement: 'left',
                 reflex: true,
             },

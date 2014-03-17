@@ -4,7 +4,7 @@ define([
     "underscore",
     "crel",
     "ace",
-    "classes/PreEditor",
+    "preEditor",
     "constants",
     "utils",
     "storage",
@@ -26,7 +26,7 @@ define([
     'ace/ext/spellcheck',
     'ace/ext/searchbox'
 
-], function($, _, crel, ace, PreEditor, constants, utils, storage, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
+], function($, _, crel, ace, preEditor, constants, utils, storage, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
 
@@ -362,10 +362,10 @@ define([
             north__minSize: 49,
             center__minWidth: 250,
             center__minHeight: 180,
-            east__onAlert: function() {
+            east__onalert: function() {
                 window.location.href = 'viewer';
             },
-            south__onAlert: function() {
+            south__onalert: function() {
                 window.location.href = 'viewer';
             },
             fxSettings: {
@@ -385,12 +385,12 @@ define([
                 }
             },
             onresize_end: function(paneName) {
-                if(preEditor.$preContentElt !== undefined && paneName == 'center') {
+                if(preEditor.$contentElt !== undefined && paneName == 'center') {
                     var padding = ($editorElt.width() - getMaxWidth()) / 2;
                     if(padding < constants.EDITOR_DEFAULT_PADDING) {
                         padding = constants.EDITOR_DEFAULT_PADDING;
                     }
-                    preEditor.$preContentElt.css({
+                    preEditor.$contentElt.css({
                         'padding-left': padding + 'px',
                         'padding-right': padding + 'px'
                     });
@@ -499,7 +499,6 @@ define([
     var fileDesc;
     var documentContent;
     var UndoManager = require("ace/undomanager").UndoManager;
-    var preEditor;
     core.initEditor = function(fileDescParam) {
         if(fileDesc !== undefined) {
             eventMgr.onFileClosed(fileDesc);
@@ -587,15 +586,30 @@ define([
             if(aceEditor !== undefined) {
                 newDocumentContent = aceEditor.getValue();
             }
-            if(documentContent === undefined) {
-                preEditor.highlight();
+            if(documentContent == newDocumentContent) {
+                return false;
             }
-            else if(documentContent != newDocumentContent) {
+        
+            if(documentContent !== undefined) {
                 fileDesc.content = newDocumentContent;
                 eventMgr.onContentChanged(fileDesc);
-                preEditor.highlight();
             }
+            else {
+                eventMgr.onFileOpen(fileDesc);
+                $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
+                if(window.lightMode) {
+                    $editorElt.scrollTop(fileDesc.editorScrollTop);
+                }
+                else {
+                    preEditor.scrollTop = fileDesc.editorScrollTop;
+                    _.defer(function() {
+                        aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
+                    });
+                }
+            }
+        
             documentContent = newDocumentContent;
+            return true;
         }
 
         var previewWrapper;
@@ -629,44 +643,17 @@ define([
             previewWrapper = function(makePreview) {
                 var debouncedMakePreview = _.debounce(makePreview, 500);
                 return function() {
-                    if(documentContent === undefined) {
-                        makePreview();
-                        eventMgr.onFileOpen(fileDesc);
-                        $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
-                        if(window.lightMode) {
-                            preEditor.scrollTop = fileDesc.editorScrollTop;
-                            $editorElt.scrollTop(preEditor.scrollTop);
-                        }
-                        else {
-                            _.defer(function() {
-                                aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
-                            });
-                        }
+                    var debounce = documentContent !== undefined;
+                    if(checkDocumentChanges()) {
+                        debounce ? debouncedMakePreview() : makePreview();
                     }
-                    else {
-                        debouncedMakePreview();
-                    }
-                    checkDocumentChanges();
                 };
             };
         }
         else {
             previewWrapper = function(makePreview) {
                 return function() {
-                    makePreview();
-                    if(documentContent === undefined) {
-                        eventMgr.onFileOpen(fileDesc);
-                        $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
-                        if(window.lightMode) {
-                            $editorElt.scrollTop(fileDesc.editorScrollTop);
-                        }
-                        else {
-                            _.defer(function() {
-                                aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
-                            });
-                        }
-                    }
-                    checkDocumentChanges();
+                    checkDocumentChanges() && makePreview();
                 };
             };
         }
@@ -861,7 +848,7 @@ define([
             // In pre mode, we replace ACE with an editable pre
             $('#wmd-input').replaceWith(function() {
                 var result = $('<pre id="wmd-input">').addClass(this.className).addClass('form-control');
-                preEditor = new PreEditor(result[0]);
+                preEditor.init(result[0]);
                 return result;
             });
             
@@ -1032,7 +1019,7 @@ define([
         });
         $(".action-import-docs-settings-confirm").click(function() {
             storage.clear();
-            var allowedKeys = /^file\.|^focusMode$|^folder\.|^publish\.|^settings$|^sync\.|^google\.|^themeV3$|^mode$|^version$|^welcomeTour$/;
+            var allowedKeys = /^file\.|^folder\.|^publish\.|^settings$|^sync\.|^google\.|^themeV3$|^mode$|^version$|^welcomeTour$/;
             _.each(newstorage, function(value, key) {
                 if(allowedKeys.test(key)) {
                     storage[key] = value;

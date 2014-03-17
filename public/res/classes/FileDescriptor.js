@@ -131,7 +131,7 @@ define([
             result.push('<i class="' + classes + '"></i>');
         });
         if(_.size(this.publishLocations) !== 0) {
-            result.push('<i class="icon-share title-icon-category"></i>');
+            result.push('<i class="icon-upload title-icon-category"></i>');
         }
         result.push(_.escape(this.title));
         return result.join('');

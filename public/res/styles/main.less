@@ -1341,18 +1341,20 @@ a {
         color: @tertiary-color-light;
     }
 
-    .md {
+    .md, .hr {
         color: @tertiary-color-light;
         font-style: normal;
-        font-weight: 400
+        font-weight: normal
     }
 
-    .em,.em .md {
-        font-style: italic
+    .em,
+    .em .md {
+        font-style: italic;
     }
 
-    .strong,.strong .md {
-        font-weight: 600
+    .strong,
+    .strong .md {
+        font-weight: bold;
     }
 
     .md-strike-text {
@@ -1370,64 +1372,64 @@ a {
         }
     }
 
-    .md-li,.md-li2,.md-li3,.md-li4,.md-li5,.md-li6,.md-li7,.md-li8,.md-li9,.md-li10,.md-li11 {
+    .md-li, .md-li2, .md-li3, .md-li4, .md-li5, .md-li6, .md-li7, .md-li8, .md-li9, .md-li10, .md-li11 {
         white-space: pre-line;
     }
 
     .md-li {
-        padding-left: 1.2em
+        padding-left: 1.2em;
     }
 
     .md-li2 {
-        padding-left: 2.4em
+        padding-left: 2.4em;
     }
 
     .md-li3 {
-        padding-left: 3.6em
+        padding-left: 3.6em;
     }
 
     .md-li4 {
-        padding-left: 4.8em
+        padding-left: 4.8em;
     }
 
     .md-li5 {
-        padding-left: 6em
+        padding-left: 6em;
     }
 
     .md-li6 {
-        padding-left: 7.2em
+        padding-left: 7.2em;
     }
 
     .md-li7 {
-        padding-left: 8.4em
+        padding-left: 8.4em;
     }
 
     .md-li8 {
-        padding-left: 9.6em
+        padding-left: 9.6em;
     }
 
     .md-li9 {
-        padding-left: 10.8em
+        padding-left: 10.8em;
     }
 
     .md-li10 {
-        padding-left: 12em
+        padding-left: 12em;
     }
 
     .md-li11 {
-        padding-left: 13.2em
+        padding-left: 13.2em;
     }
 
     .img,
     .imgref {
         padding: 0.2em 0.4em;
-        padding-right: 0
+        padding-right: 0;
     }
 
     .md-bang,
     .md-alt,
     .md-title {
-        color: #666
+        color: @secondary-color-dark;
     }
 }
 

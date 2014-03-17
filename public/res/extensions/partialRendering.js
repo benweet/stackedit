@@ -10,14 +10,51 @@ define([
     partialRendering.settingsBlock = partialRenderingSettingsBlockHTML;
 
     var converter;
-    var sectionCounter = 0;
+    var doFootnotes = false;
+    var hasFootnotes = false;
+    var currentSectionList = [];
+    
     var sectionList = [];
     var linkDefinition;
     var sectionsToRemove = [];
     var modifiedSections = [];
     var insertBeforeSection;
     var fileChanged = false;
-    function updateSectionList(newSectionList, newLinkDefinition) {
+    function updateSectionList() {
+        var newSectionList = [];
+        var newLinkDefinition = '\n';
+        hasFootnotes = false;
+        _.each(currentSectionList, function(section) {
+            var text = '\n<div class="se-preview-section-delimiter"></div>\n\n' + section.text + '\n\n';
+
+            // Strip footnotes
+            if(doFootnotes) {
+                text = text.replace(/^```.*\n[\s\S]*?\n```|\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|$)/gm, function(wholeMatch, footnote) {
+                    if(footnote) {
+                        hasFootnotes = true;
+                        newLinkDefinition += wholeMatch.replace(/^\s*\n/gm, '') + '\n';
+                        return "";
+                    }
+                    return wholeMatch;
+                });
+            }
+
+            // Strip link definitions
+            text = text.replace(/^```.*\n[\s\S]*?\n```|^[ ]{0,3}\[(.+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?(?=\s|$)[ \t]*\n?[ \t]*((\n*)["(](.+?)[")][ \t]*)?(?:\n+)/gm, function(wholeMatch, link) {
+                if(link) {
+                    newLinkDefinition += wholeMatch.replace(/^\s*\n/gm, '') + '\n';
+                    return "";
+                }
+                return wholeMatch;
+            });
+
+            // Add section to the newSectionList
+            newSectionList.push({
+                id: section.id,
+                text: text + '\n'
+            });
+        });
+
         modifiedSections = [];
         sectionsToRemove = [];
         insertBeforeSection = undefined;
@@ -65,47 +102,6 @@ define([
         sectionList = leftSections.concat(modifiedSections).concat(rightSections);
     }
     
-    var doFootnotes = false;
-    var hasFootnotes = false;
-    partialRendering.onSectionsCreated = function(sectionListParam) {
-
-        var newSectionList = [];
-        var newLinkDefinition = '\n';
-        hasFootnotes = false;
-        _.each(sectionListParam, function(section) {
-            var text = section.textWithDelimiter + '\n';
-
-            // Strip footnotes
-            if(doFootnotes) {
-                text = text.replace(/^```.*\n[\s\S]*?\n```|\n[ ]{0,3}\[\^(.+?)\]\:[ \t]*\n?([\s\S]*?)\n{1,2}((?=\n[ ]{0,3}\S)|$)/gm, function(wholeMatch, footnote) {
-                    if(footnote) {
-                        hasFootnotes = true;
-                        newLinkDefinition += wholeMatch.replace(/^\s*\n/gm, '') + '\n';
-                        return "";
-                    }
-                    return wholeMatch;
-                });
-            }
-
-            // Strip link definitions
-            text = text.replace(/^```.*\n[\s\S]*?\n```|^[ ]{0,3}\[(.+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?(?=\s|$)[ \t]*\n?[ \t]*((\n*)["(](.+?)[")][ \t]*)?(?:\n+)/gm, function(wholeMatch, link) {
-                if(link) {
-                    newLinkDefinition += wholeMatch.replace(/^\s*\n/gm, '') + '\n';
-                    return "";
-                }
-                return wholeMatch;
-            });
-
-            // Add section to the newSectionList
-            newSectionList.push({
-                id: ++sectionCounter,
-                text: text + '\n'
-            });
-        });
-
-        updateSectionList(newSectionList, newLinkDefinition);
-    };
-
     var footnoteMap = {};
     // Store one footnote elt in the footnote map
     function storeFootnote(footnoteElt) {
@@ -133,7 +129,8 @@ define([
             var isNextDelimiter = false;
             while (childNode) {
                 var nextNode = childNode.nextSibling;
-                if(isNextDelimiter === true && childNode.tagName == 'DIV' && childNode.className == 'se-section-delimiter') {
+                var isDelimiter = childNode.className == 'se-preview-section-delimiter';
+                if(isNextDelimiter === true && childNode.tagName == 'DIV' && isDelimiter) {
                     // Stop when encountered the next delimiter
                     break;
                 }
@@ -142,7 +139,7 @@ define([
                     _.each(childNode.querySelectorAll("ol > li"), storeFootnote);
                 }
                 else {
-                    sectionElt.appendChild(childNode);
+                    isDelimiter || sectionElt.appendChild(childNode);
                 }
                 childNode = nextNode;
             }
@@ -182,9 +179,14 @@ define([
         }
     }
 
+    partialRendering.onSectionsCreated = function(sectionListParam) {
+        currentSectionList = sectionListParam;
+    };
+
     partialRendering.onPagedownConfigure = function(editor) {
         converter = editor.getConverter();
         converter.hooks.chain("preConversion", function() {
+            updateSectionList();
             var result = _.map(modifiedSections, function(section) {
                 return section.text;
             });

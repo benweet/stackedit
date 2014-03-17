@@ -62,20 +62,6 @@
 		</div>
         <div class=dropdown-header>EXPORT</div>
 		<div class="list-group">
-			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"
-				class="list-group-item"><i class="icon-hdd"></i> Save...</a>
-			<div class="sub-menu collapse collapse-save-as clearfix">
-				<ul class="nav">
-					<li><a class="action-download-md" href="#"><i
-				        class="icon-download"></i> Save as Markdown</a></li>
-					<li><a class="action-download-html" href="#"><i
-				        class="icon-download"></i> Save as HTML</a></li>
-					<li><a class="action-download-template" href="#"><i
-				        class="icon-download"></i> Save using template</a></li>
-					<li><a class="action-download-pdf" href="#"><i
-				        class="icon-download"></i> Save as PDF</a></li>
-				</ul>
-			</div>
 			<a href="#" data-toggle="collapse" data-target=".collapse-synchronize"
 				class="list-group-item"><i
 				class="icon-refresh"></i> Synchronize...</a>
@@ -87,13 +73,13 @@
                 </ul>
 				<ul class="nav">
 					<li><a href="#" class="action-sync-export-dialog-dropbox"><i
-				        class="icon-provider-dropbox"></i> Export to Dropbox</a></li>
+				        class="icon-provider-dropbox"></i> Save on Dropbox</a></li>
 					<li><a href="#" class="submenu-sync-gdrive action-sync-export-dialog-gdrive"><i
-				        class="icon-provider-gdrive"></i> Export to Google Drive</a></li>
+				        class="icon-provider-gdrive"></i> Save on Google Drive</a></li>
 					<li><a href="#" class="submenu-sync-gdrivesec action-sync-export-dialog-gdrivesec"><i
-				        class="icon-provider-gdrive"></i> Export to Google Drive <small>(2nd account)</small></a></li>
+				        class="icon-provider-gdrive"></i> Save on Google Drive <small>(2nd account)</small></a></li>
 					<li><a href="#" class="submenu-sync-gdriveter action-sync-export-dialog-gdriveter"><i
-				        class="icon-provider-gdrive"></i> Export to Google Drive <small>(3rd account)</small></a></li>
+				        class="icon-provider-gdrive"></i> Save on Google Drive <small>(3rd account)</small></a></li>
 					<li><a href="#" class="submenu-sync-gdrive action-autosync-dialog-gdrive"><i
 				        class="icon-provider-gdrive"></i> Google Drive AutoSync</a></li>
 					<li><a href="#" class="submenu-sync-gdrivesec action-autosync-dialog-gdrivesec"><i
@@ -103,15 +89,15 @@
 				</ul>
 			</div>
 			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"
-				class="list-group-item"><i class="icon-share"></i> Publish...</a>
+				class="list-group-item"><i class="icon-upload"></i> Publish...</a>
 			<div class="sub-menu collapse collapse-publish-on clearfix">
 				<ul class="nav alert alert-danger show-already-published">
                     <li><div>"<span class="file-title"></span>" is already published.</div></li>
                     <li><a href="#" class="action-update-publication"
-                        data-toggle="collapse" data-target=".menu-panel"><i class="icon-share"></i>
+                        data-toggle="collapse" data-target=".menu-panel"><i class="icon-upload"></i>
                         Update publication</a></li>
                     <li><a href="#" data-toggle="modal" data-target=".modal-manage-publish"
-                        class="action-reset-input"><i class="icon-share"></i>
+                        class="action-reset-input"><i class="icon-upload"></i>
                         Manage publishing</a></li>
 				</ul>
 				<ul class="nav publish-on-provider-list">
@@ -119,17 +105,31 @@
 			</div>
 			<a href="#" data-toggle="modal" data-target=".modal-manage-sharing"
 				class="action-reset-input list-group-item"><i class="icon-provider-stackedit"></i>
-				Sharing...</a>
+				Sharing links</a>
+			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"
+				class="list-group-item"><i class="icon-hdd"></i> Export to disk</a>
+			<div class="sub-menu collapse collapse-save-as clearfix">
+				<ul class="nav">
+					<li><a class="action-download-md" href="#"><i
+				        class="icon-download"></i> Export as Markdown</a></li>
+					<li><a class="action-download-html" href="#"><i
+				        class="icon-download"></i> Export as HTML</a></li>
+					<li><a class="action-download-template" href="#"><i
+				        class="icon-download"></i> Export using template</a></li>
+					<li><a class="action-download-pdf" href="#"><i
+				        class="icon-download"></i> Export as PDF</a></li>
+				</ul>
+			</div>
 		</div>
         <div class=dropdown-header>IMPORT</div>
 		<div class="list-group">
             <a data-toggle="modal"
                 data-target=".modal-import-harddrive-markdown"
                 class="list-group-item action-reset-input" href="#"><i
-				class="icon-hdd"></i> Open from disk</a>
+				class="icon-hdd"></i> Import from disk</a>
             <a data-toggle="modal" data-target=".modal-import-url"
                 class="list-group-item action-reset-input" href="#"><i
-				class="icon-globe"></i> Open from URL</a>
+				class="icon-globe"></i> Import from URL</a>
             <a data-toggle="modal"
 				data-target=".modal-import-harddrive-html"
 				class="list-group-item action-reset-input" href="#"><i
@@ -380,7 +380,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h2 class="modal-title">Open from URL</h2>
+				<h2 class="modal-title">Import from URL</h2>
 			</div>
 			<div class="modal-body">
 				<p>Please provide a link to a Markdown document.</p>
@@ -485,7 +485,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h2 class="modal-title">Export to Dropbox</h2>
+				<h2 class="modal-title">Save on Dropbox</h2>
 			</div>
 			<div class="modal-body">
 				<p>

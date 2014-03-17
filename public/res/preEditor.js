@@ -1,55 +1,57 @@
 /* jshint -W084, -W099 */
 define([
     'jquery',
+    'underscore',
     'eventMgr',
     'prism-core',
+    'crel',
     'libs/prism-markdown'
-], function ($, eventMgr, Prism) {
+], function ($, _, eventMgr, Prism, crel) {
+    
+    String.prototype.splice = function (i, remove, add) {
+        remove = +remove || 0;
+        add = add || '';
+        return this.slice(0, i) + add + this.slice(i + remove);
+    };
+
+    var preEditor = {};
 
     var undoManager;
-    eventMgr.addListener('onPagedownConfigure', function (pagedownEditor) {
+    eventMgr.addListener('onPagedownConfigure', function(pagedownEditor) {
         // Undo manager does exist at the moment
         setTimeout(function () {
             undoManager = pagedownEditor.undoManager;
         }, 0);
     });
 
-    String.prototype.splice = function (i, remove, add) {
-        remove = +remove || 0;
-        add = add || '';
+    eventMgr.addListener('onSectionsCreated', function(newSectionList) {
+        updateSectionList(newSectionList);
+        highlightSections();
+    });
 
-        return this.slice(0, i) + add + this.slice(i + remove);
-    };
+    var fileChanged = false;
+    eventMgr.addListener('onFileSelected', function() {
+        fileChanged = true;
+    });
 
-    function PreEditor(preElt) {
-        var preEditor = this;
-        preEditor.selectionStart = 0;
-        preEditor.selectionEnd = 0;
-        preEditor.scrollTop = 0;
-        preEditor.$preContentElt = $('<div contenteditable class="pre-content language-md">');
+    preEditor.selectionStart = 0;
+    preEditor.selectionEnd = 0;
+    preEditor.scrollTop = 0;
+    var preElt;
+    preEditor.init = function(elt) {
+        preElt = elt;
+        preEditor.$contentElt = $('<div contenteditable class="pre-content language-md">');
+        preElt.appendChild(preEditor.$contentElt[0]);
 
-        preElt.appendChild(preEditor.$preContentElt[0]);
-        preEditor.highlight = function () {
-            setTimeout(function () {
-                preEditor.selectionStart = preElt.selectionStart;
-                preEditor.selectionEnd = preElt.selectionEnd;
-                var startDate = Date.now();
-                Prism.highlightElement(preEditor.$preContentElt[0], false, function () {
-                    console.log(Date.now() - startDate);
-                    preElt.setSelectionRange(preEditor.selectionStart, preEditor.selectionEnd);
-                });
-            }, 0);
-        };
-
-        preElt.focus = function () {
-            preEditor.$preContentElt.focus();
+        preElt.focus = function() {
+            preEditor.$contentElt.focus();
             this.setSelectionRange(preEditor.selectionStart, preEditor.selectionEnd);
             preElt.scrollTop = preEditor.scrollTop;
         };
-        preEditor.$preContentElt.focus(function () {
+        preEditor.$contentElt.focus(function () {
             preElt.focused = true;
         });
-        preEditor.$preContentElt.blur(function () {
+        preEditor.$contentElt.blur(function () {
             preElt.focused = false;
         });
         Object.defineProperty(preElt, 'value', {
@@ -57,7 +59,7 @@ define([
                 return this.textContent;
             },
             set: function (value) {
-                //return preEditor.$preContentElt.text(value);
+                //return preEditor.$contentElt.text(value);
                 var currentValue = this.textContent;
 
                 // Find the first modified char
@@ -70,7 +72,7 @@ define([
                     startIndex++;
                 }
                 if (startIndex === startIndexMax) {
-                    return preEditor.$preContentElt.text(value);
+                    return preEditor.$contentElt.text(value);
                 }
 
                 // Find the last modified char
@@ -385,7 +387,7 @@ define([
             }
         };
 
-        preEditor.$preContentElt.on('keydown', function (evt) {
+        preEditor.$contentElt.on('keydown', function (evt) {
             var cmdOrCtrl = evt.metaKey || evt.ctrlKey;
 
             switch (evt.keyCode) {
@@ -411,8 +413,144 @@ define([
                 break;
             }
         });
+    };
 
+    
+    var sectionList = [];
+    var sectionsToRemove = [];
+    var modifiedSections = [];
+    var insertBeforeSection;
+    function updateSectionList(newSectionList) {
+
+        modifiedSections = [];
+        sectionsToRemove = [];
+        insertBeforeSection = undefined;
+
+        // Render everything if file changed
+        if(fileChanged === true) {
+            sectionsToRemove = sectionList;
+            sectionList = newSectionList;
+            modifiedSections = newSectionList;
+            return;
+        }
+
+        // Find modified section starting from top
+        var leftIndex = sectionList.length;
+        _.some(sectionList, function(section, index) {
+            if(index >= newSectionList.length || section.text != newSectionList[index].text) {
+                leftIndex = index;
+                return true;
+            }
+        });
+        
+        // Find modified section starting from bottom
+        var rightIndex = -sectionList.length;
+        _.some(sectionList.slice().reverse(), function(section, index) {
+            if(index >= newSectionList.length || section.text != newSectionList[newSectionList.length - index - 1].text) {
+                rightIndex = -index;
+                return true;
+            }
+        });
+        
+        if(leftIndex - rightIndex > sectionList.length) {
+            // Prevent overlap
+            rightIndex = leftIndex - sectionList.length;
+        }
+
+        // Create an array composed of left unmodified, modified, right
+        // unmodified sections
+        var leftSections = sectionList.slice(0, leftIndex);
+        modifiedSections = newSectionList.slice(leftIndex, newSectionList.length + rightIndex);
+        var rightSections = sectionList.slice(sectionList.length + rightIndex, sectionList.length);
+        insertBeforeSection = _.first(rightSections);
+        sectionsToRemove = sectionList.slice(leftIndex, sectionList.length + rightIndex);
+        sectionList = leftSections.concat(modifiedSections).concat(rightSections);
+    }
+    
+    var elapsedTime = 0;
+    var timeoutId;
+    function highlightSections() {
+        
+        if(fileChanged === true) {
+            fileChanged = false;
+            // Perform a synchronous transformation
+            preEditor.selectionStart = preElt.selectionStart;
+            preEditor.selectionEnd = preElt.selectionEnd;
+            var newSectionEltList = document.createDocumentFragment();
+            modifiedSections.forEach(function(section) {
+                highlight(section);
+                newSectionEltList.appendChild(section.highlightedContent);
+            });
+            preEditor.$contentElt.html('');
+            preEditor.$contentElt[0].appendChild(newSectionEltList);
+            preElt.setSelectionRange(preEditor.selectionStart, preEditor.selectionEnd);
+            return;
+        }
+        
+        // Perform an asynchronous transformation on each modified sections
+        clearTimeout(timeoutId);
+        //timeoutId = setTimeout(asyncHighlightSections, elapsedTime);
+        preEditor.selectionStart = preElt.selectionStart;
+        preEditor.selectionEnd = preElt.selectionEnd;
+        Prism.highlightElement(preEditor.$contentElt[0]);
+        //preElt.setSelectionRange(preEditor.selectionStart, preEditor.selectionEnd);
     }
 
-    return PreEditor;
+    function asyncHighlightSections() {
+        var startTime = Date.now();
+        var deferredList = [];
+        modifiedSections.forEach(function(section) {
+            var deferred = $.Deferred();
+            setTimeout(function() {
+                highlight(section);
+                deferred.resolve();
+            }, 0);
+            deferredList.push(deferred);
+        });
+        $.when.apply($, deferredList).then(function() {
+            var text = _.reduce(sectionList, function(text, section) {
+                return text + section.text;
+            }, '');
+            
+            // Check that the editor has the actual value
+            if(preElt.textContent == text) {
+                preEditor.selectionStart = preElt.selectionStart;
+                preEditor.selectionEnd = preElt.selectionEnd;
+                
+                // Remove outdated sections
+                _.each(sectionsToRemove, function(section) {
+                    var sectionElt = document.getElementById("wmd-input-section-" + section.id);
+                    preEditor.$contentElt[0].removeChild(sectionElt);
+                });
+
+                var newSectionEltList = document.createDocumentFragment();
+                modifiedSections.forEach(function(section) {
+                    newSectionEltList.appendChild(section.highlightedContent);
+                });
+                
+                if(insertBeforeSection !== undefined) {
+                    var insertBeforeElt = document.getElementById("wmd-input-section-" + insertBeforeSection.id);
+                    preEditor.$contentElt[0].insertBefore(newSectionEltList, insertBeforeElt);
+                }
+                else {
+                    preEditor.$contentElt[0].appendChild(newSectionEltList);
+                }
+                
+                preElt.setSelectionRange(preEditor.selectionStart, preEditor.selectionEnd);
+                elapsedTime = Date.now() - startTime;
+            }
+        });
+    }
+
+    function highlight(section) {
+        var text = section.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
+        var sectionElt = crel('div', {
+            id: 'wmd-input-section-' + section.id,
+            class: 'wmd-input-section'
+        });
+        sectionElt.innerHTML = Prism.highlight(text, Prism.languages.md);
+        section.highlightedContent = sectionElt;
+    }
+
+    return preEditor;
 });

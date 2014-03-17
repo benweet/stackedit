@@ -793,7 +793,7 @@ $.layout.defaults = {
 	,	onswap_end:				null		// CALLBACK when pane ENDS being Swapped
 	,	ondrag_start:			null		// CALLBACK when pane STARTS being ***MANUALLY*** Resized
 	,	ondrag_end:				null		// CALLBACK when pane ENDS being ***MANUALLY*** Resized
-    ,   onAlert:                null
+    ,   onalert:                null
 	}
 /*
  *	PANE-SPECIFIC SETTINGS
@@ -3479,7 +3479,7 @@ $.fn.layout = function (opts) {
 			if (s.minSize > s.maxSize) { // INSUFFICIENT ROOM FOR PANE TO OPEN!
 				syncPinBtns(pane, false); // make sure pin-buttons are reset
 				if (!noAlert && o.tips.noRoomToOpen)
-					o.onAlert ? o.onAlert(o.tips.noRoomToOpen) : alert(o.tips.noRoomToOpen);
+					o.onalert ? o.onalert(o.tips.noRoomToOpen) : alert(o.tips.noRoomToOpen);
 				return queueNext(); // ABORT
 			}
 

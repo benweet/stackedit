@@ -19,7 +19,6 @@ define([
     // localStorage versioning
     var version = localStorage.version;
 
-    // Upgrade from v0 to v1
     if(version === undefined) {
 
         // Not used anymore
@@ -41,7 +40,6 @@ define([
         version = "v1";
     }
 
-    // Upgrade from v1 to v2
     if(version == "v1") {
         var gdriveLastChangeId = localStorage["sync.gdrive.lastChangeId"];
         if(gdriveLastChangeId) {
@@ -85,7 +83,6 @@ define([
         version = "v2";
     }
 
-    // Upgrade from v2 to v3
     if(version == "v2") {
         _.each(fileIndexList, function(fileIndex) {
             if(!_.has(localStorage, fileIndex + ".sync")) {
@@ -98,7 +95,6 @@ define([
         version = "v3";
     }
 
-    // Upgrade from v3 to v4
     if(version == "v3") {
         currentFileIndex = localStorage["file.current"];
         if(currentFileIndex !== undefined && localStorage["file.list"].indexOf(";" + currentFileIndex + ";") === -1) {
@@ -107,14 +103,12 @@ define([
         version = "v4";
     }
 
-    // Upgrade from v4 to v5
     if(version == "v4") {
         // Recreate GitHub token
         localStorage.removeItem("githubToken");
         version = "v5";
     }
 
-    // Upgrade from v5 to v6
     if(version == "v5") {
         _.each(fileIndexList, function(fileIndex) {
             var publishIndexList = retrieveIndexArray(fileIndex + ".publish");
@@ -131,7 +125,6 @@ define([
         version = "v6";
     }
 
-    // Upgrade from v6 to v7
     if(version == "v6") {
         currentFileIndex = localStorage["file.current"];
         if(currentFileIndex !== undefined) {
@@ -141,7 +134,6 @@ define([
         version = "v7";
     }
 
-    // Upgrade from v7 to v8
     if(version == "v7") {
         _.each(_.keys(localStorage), function(key) {
             var matchResult = key.match(/(file\.\S+\.)\S+/);
@@ -154,7 +146,6 @@ define([
         version = "v8";
     }
 
-    // Upgrade from v8 to v9
     if(version == "v8") {
         _.each(_.keys(localStorage), function(key) {
             var matchResult = key.match(/file\.\S+\.(editorEnd|editorStart)/);
@@ -165,7 +156,6 @@ define([
         version = "v9";
     }
 
-    // Upgrade from v9 to v10
     if(version == "v9") {
         if(_.has(localStorage, 'settings')) {
             settings = JSON.parse(localStorage.settings);
@@ -177,7 +167,6 @@ define([
         version = "v10";
     }
 
-    // Upgrade from v10 to v11
     if(version == "v10") {
         if(_.has(localStorage, 'settings')) {
             settings = JSON.parse(localStorage.settings);
@@ -194,7 +183,6 @@ define([
         version = "v11";
     }
 
-    // Upgrade from v11 to v12
     if(version == "v11") {
         // Force new theme by using themeV3 variable
         localStorage.removeItem("theme");
@@ -210,7 +198,6 @@ define([
         version = "v12";
     }
 
-    // Upgrade from v12/v13 to v14
     if(version == "v12" || version == "v13") {
         if(_.has(localStorage, 'settings')) {
             settings = JSON.parse(localStorage.settings);
@@ -221,7 +208,6 @@ define([
         version = "v14";
     }
 
-    // Upgrade from v14 to v15
     if(version == "v14") {
         if(_.has(localStorage, 'settings')) {
             settings = JSON.parse(localStorage.settings);
@@ -232,7 +218,6 @@ define([
         version = "v15";
     }
 
-    // Upgrade from v15 to v16
     if(version == "v15") {
         localStorage.removeItem('gdrivePermissions');
         if(_.has(localStorage, 'gdrive.lastChangeId')) {
@@ -250,7 +235,6 @@ define([
         version = "v16";
     }
 
-    // Upgrade from v16 to v17
     if(version == "v16") {
         _.each(_.keys(localStorage), function(key) {
             var matchResult = key.match(/(file\.\S+\.)\S+/);
@@ -261,6 +245,11 @@ define([
             }
         });
         version = "v17";
+    }
+    
+    if(version == "v17") {
+        localStorage.removeItem('focusMode');
+        version = "v18";
     }
     
     localStorage.version = version;

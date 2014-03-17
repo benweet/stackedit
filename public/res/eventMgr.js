@@ -39,7 +39,7 @@ define([
     "extensions/spellCheck",
     "extensions/userCustom",
     "bootstrap",
-    "jquery-waitforimages"
+    "jquery-waitforimages",
 ], function($, _, crel, utils, logger, Extension, settings, settingsExtensionsAccordionHTML) {
 
     var eventMgr = {};
@@ -233,7 +233,6 @@ define([
                     _.each(previewContentsElt.children, function(elt) {
                         html += elt.innerHTML;
                     });
-                    html = html.replace(/^<div class="se-section-delimiter"><\/div>\n\n/gm, '');
                     var htmlWithComments = utils.trim(html);
                     var htmlWithoutComments = htmlWithComments.replace(/ <span class="comment label label-danger">.*?<\/span> /g, '');
                     onPreviewFinished(htmlWithComments, htmlWithoutComments);

@@ -119,13 +119,13 @@
             panels;
 
         var undoManager;
-        this.run = function (previewWrapper) {
+        this.run = function () {
             if (panels)
                 return; // already initialized
 
             panels = new PanelCollection(idPostfix);
             var commandManager = new CommandManager(hooks, getString);
-            var previewManager = new PreviewManager(markdownConverter, panels, function () { hooks.onPreviewRefresh(); }, previewWrapper);
+            var previewManager = new PreviewManager(markdownConverter, panels, function () { hooks.onPreviewRefresh(); });
             var uiManager;
 
             if (!/\?noundo/.test(doc.location.href)) {
@@ -844,14 +844,14 @@
         this.init();
     };
 
-    function PreviewManager(converter, panels, previewRefreshCallback, previewWrapper) {
+    function PreviewManager(converter, panels, previewRefreshCallback) {
 
         var managerObj = this;
         var timeout;
         var elapsedTime;
         var oldInputText;
         var maxDelay = 3000;
-        var startType = "delayed"; // The other legal value is "manual"
+        var startType = "manual"; // The other legal value is "manual"
 
         // Adds event listeners to elements
         var setupEvents = function (inputElem, listener) {
@@ -910,9 +910,6 @@
 
             pushPreviewHtml(text);
         };
-        if(previewWrapper !== undefined) {
-        	makePreviewHtml = previewWrapper(makePreviewHtml);
-        }
 
         // setTimeout is already used.  Used as an event listener.
         var applyTimeout = function () {

@@ -2,11 +2,12 @@
 define([
     'jquery',
     'underscore',
+    'settings',
     'eventMgr',
     'prism-core',
     'crel',
     'libs/prism-markdown'
-], function ($, _, eventMgr, Prism, crel) {
+], function ($, _, settings, eventMgr, Prism, crel) {
     
     String.prototype.splice = function (i, remove, add) {
         remove = +remove || 0;
@@ -14,52 +15,118 @@ define([
         return this.slice(0, i) + add + this.slice(i + remove);
     };
 
-    var preEditor = {};
-
-    var undoManager;
-    eventMgr.addListener('onPagedownConfigure', function(pagedownEditor) {
-        // Undo manager does exist at the moment
-        setTimeout(function () {
-            undoManager = pagedownEditor.undoManager;
-        }, 0);
+    var editor = {};
+    var selectionStart = 0;
+    var selectionEnd = 0;
+    var scrollTop = 0;
+    var inputElt;
+    var previewElt;
+    var pagedownEditor;
+    var refreshPreviewLater = (function() {
+        var elapsedTime = 0;
+        var refreshPreview = function() {
+            var startTime = Date.now();
+            pagedownEditor.refreshPreview();
+            elapsedTime = Date.now() - startTime;
+        };
+        if(settings.lazyRendering === true) {
+            return _.debounce(refreshPreview, 500);
+        }
+        return function() {
+            setTimeout(refreshPreview, elapsedTime < 2000 ? elapsedTime : 2000);
+        };
+    })();
+    eventMgr.addListener('onPagedownConfigure', function(editor) {
+        pagedownEditor = editor;
     });
 
     eventMgr.addListener('onSectionsCreated', function(newSectionList) {
         updateSectionList(newSectionList);
         highlightSections();
+        if(fileChanged === true) {
+            // Refresh preview synchronously
+            pagedownEditor.refreshPreview();
+        }
+        else {
+            refreshPreviewLater();
+        }
     });
 
-    var fileChanged = false;
-    eventMgr.addListener('onFileSelected', function() {
+    var fileChanged = true;
+    var fileDesc;
+    eventMgr.addListener('onFileSelected', function(selectedFileDesc) {
         fileChanged = true;
+        fileDesc = selectedFileDesc;
     });
 
-    preEditor.selectionStart = 0;
-    preEditor.selectionEnd = 0;
-    preEditor.scrollTop = 0;
-    var preElt;
-    preEditor.init = function(elt) {
-        preElt = elt;
-        preEditor.$contentElt = $('<div contenteditable class="pre-content language-md">');
-        preElt.appendChild(preEditor.$contentElt[0]);
-
-        preElt.focus = function() {
-            preEditor.$contentElt.focus();
-            this.setSelectionRange(preEditor.selectionStart, preEditor.selectionEnd);
-            preElt.scrollTop = preEditor.scrollTop;
+    var previousTextContent;
+    function onInputChange() {
+        selectionStart = inputElt.selectionStart;
+        selectionEnd = inputElt.selectionEnd;
+        var currentTextContent = inputElt.textContent;
+        if(!/\n$/.test(currentTextContent)) {
+            currentTextContent += '\n';
+        }
+        if(fileChanged === false) {
+            fileDesc.editorStart = selectionStart;
+            fileDesc.editorEnd = selectionEnd;
+            if(currentTextContent == previousTextContent) {
+                return;
+            }
+            fileDesc.content = currentTextContent;
+            eventMgr.onContentChanged(fileDesc);
+        }
+        else {
+            eventMgr.onFileOpen(fileDesc);
+            previewElt.scrollTop = fileDesc.previewScrollTop;
+            selectionStart = fileDesc.editorStart;
+            selectionEnd = fileDesc.editorEnd;
+            scrollTop = fileDesc.editorScrollTop;
+            inputElt.scrollTop = scrollTop;
+            fileChanged = false;
+        }
+        previousTextContent = currentTextContent;
+    }
+    
+    editor.init = function(elt1, elt2) {
+        inputElt = elt1;
+        previewElt = elt2;
+        editor.contentElt = crel('div', {
+            class: 'pre-content',
+            contenteditable: true
+        });
+        editor.$contentElt = $(editor.contentElt);
+        inputElt.appendChild(editor.contentElt);
+        
+        $(inputElt).scroll(function() {
+            scrollTop = this.scrollTop;
+            if(fileChanged === false) {
+                fileDesc.editorScrollTop = scrollTop;
+            }
+        }).bind("keyup mouseup", onInputChange);
+        $(previewElt).scroll(function() {
+            if(fileChanged === false) {
+                fileDesc.previewScrollTop = previewElt.scrollTop;
+            }
+        });
+        
+        inputElt.focus = function() {
+            editor.$contentElt.focus();
+            this.setSelectionRange(selectionStart, selectionEnd);
+            inputElt.scrollTop = scrollTop;
         };
-        preEditor.$contentElt.focus(function () {
-            preElt.focused = true;
+        editor.$contentElt.focus(function() {
+            inputElt.focused = true;
         });
-        preEditor.$contentElt.blur(function () {
-            preElt.focused = false;
+        editor.$contentElt.blur(function() {
+            inputElt.focused = false;
         });
-        Object.defineProperty(preElt, 'value', {
+        
+        Object.defineProperty(inputElt, 'value', {
             get: function () {
                 return this.textContent;
             },
             set: function (value) {
-                //return preEditor.$contentElt.text(value);
                 var currentValue = this.textContent;
 
                 // Find the first modified char
@@ -71,10 +138,6 @@ define([
                     }
                     startIndex++;
                 }
-                if (startIndex === startIndexMax) {
-                    return preEditor.$contentElt.text(value);
-                }
-
                 // Find the last modified char
                 var endIndex = 1;
                 var endIndexMax = Math.min(currentValue.length - startIndex, value.length - startIndex);
@@ -88,12 +151,14 @@ define([
                 var replacementText = value.substring(startIndex, value.length - endIndex + 1);
                 endIndex = currentValue.length - endIndex + 1;
 
-                var range = createRange(preElt, startIndex, endIndex);
+                var range = createRange(inputElt, startIndex, endIndex);
                 range.deleteContents();
                 range.insertNode(document.createTextNode(replacementText));
+                onInputChange();
             }
         });
-        Object.defineProperty(preElt, 'selectionStart', {
+        
+        Object.defineProperty(inputElt, 'selectionStart', {
             get: function () {
                 var selection = window.getSelection();
 
@@ -123,14 +188,14 @@ define([
                 }
             },
             set: function (value) {
-                preElt.setSelectionRange(value, preEditor.selectionEnd);
+                inputElt.setSelectionRange(value, selectionEnd);
             },
 
             enumerable: true,
             configurable: true
         });
 
-        Object.defineProperty(preElt, 'selectionEnd', {
+        Object.defineProperty(inputElt, 'selectionEnd', {
             get: function () {
                 var selection = window.getSelection();
 
@@ -141,7 +206,7 @@ define([
                 }
             },
             set: function (value) {
-                preElt.setSelectionRange(preEditor.selectionStart, value);
+                inputElt.setSelectionRange(selectionStart, value);
             },
 
             enumerable: true,
@@ -225,22 +290,63 @@ define([
             return range;
         }
 
-        preElt.setSelectionRange = function (ss, se) {
-            preEditor.selectionStart = ss;
-            preEditor.selectionEnd = se;
-            var range = createRange(this, ss, se);
+        inputElt.setSelectionRange = function (ss, se) {
+            selectionStart = ss;
+            selectionEnd = se;
+            var range = createRange(editor.contentElt, ss, se);
 
             var selection = window.getSelection();
             selection.removeAllRanges();
             selection.addRange(range);
         };
 
+        editor.$contentElt.on('keydown', function (evt) {
+            var cmdOrCtrl = evt.metaKey || evt.ctrlKey;
+
+            switch (evt.keyCode) {
+            case 9: // Tab
+                if (!cmdOrCtrl) {
+                    action('indent', {
+                        inverse: evt.shiftKey
+                    });
+                    evt.preventDefault();
+                }
+                break;
+            case 13:
+                action('newline');
+                evt.preventDefault();
+                break;
+            case 191:
+                if (cmdOrCtrl && !evt.altKey) {
+                    action('comment', {
+                        lang: this.id
+                    });
+                    evt.preventDefault();
+                }
+                break;
+            }
+        });
+
+        editor.$contentElt.on('paste', function () {
+            pagedownEditor.undoManager.setMode("paste");
+            setTimeout(function() {
+                onInputChange();
+            }, 0);
+        });
+        
+        editor.$contentElt.on('cut', function () {
+            pagedownEditor.undoManager.setMode("cut");
+            setTimeout(function() {
+                onInputChange();
+            }, 0);
+        });
+        
         var action = function (action, options) {
             options = options || {};
 
-            var text = preElt.value,
-                ss = options.start || preEditor.selectionStart,
-                se = options.end || preEditor.selectionEnd,
+            var text = inputElt.value,
+                ss = options.start || selectionStart,
+                se = options.end || selectionEnd,
                 state = {
                     ss: ss,
                     se: se,
@@ -251,18 +357,18 @@ define([
 
             actions[action](state, options);
 
-            preElt.value = state.before + state.selection + state.after;
+            inputElt.value = state.before + state.selection + state.after;
 
-            preElt.setSelectionRange(state.ss, state.se);
+            inputElt.setSelectionRange(state.ss, state.se);
 
-            preElt.dispatchEvent(new window.Event('input'));
+            inputElt.dispatchEvent(new window.Event('input'));
         };
 
         var actions = {
             indent: function (state, options) {
                 var lf = state.before.lastIndexOf('\n') + 1;
 
-                undoManager && undoManager.setMode("typing");
+                pagedownEditor.undoManager.setMode("typing");
 
                 if (options.inverse) {
                     if (/\s/.test(state.before.charAt(lf))) {
@@ -295,9 +401,9 @@ define([
                 var lf = state.before.lastIndexOf('\n') + 1;
                 var indent = (state.before.slice(lf).match(/^\s+/) || [''])[0];
 
-                undoManager && undoManager.setMode("newlines");
+                pagedownEditor.undoManager.setMode("newlines");
 
-                state.before += '\n' + indent;
+                state.before += '\n'// + indent;
 
                 state.selection = '';
 
@@ -315,7 +421,7 @@ define([
                     closeBefore = state.before.lastIndexOf(close),
                     openAfter = state.after.indexOf(start);
 
-                undoManager && undoManager.setMode("typing");
+                pagedownEditor.undoManager.setMode("typing");
 
                 if (start > -1 && end > -1 && (start > closeBefore || closeBefore === -1) && (end < openAfter || openAfter === -1)) {
                     // Uncomment
@@ -386,33 +492,6 @@ define([
                 }
             }
         };
-
-        preEditor.$contentElt.on('keydown', function (evt) {
-            var cmdOrCtrl = evt.metaKey || evt.ctrlKey;
-
-            switch (evt.keyCode) {
-            case 9: // Tab
-                if (!cmdOrCtrl) {
-                    action('indent', {
-                        inverse: evt.shiftKey
-                    });
-                    return false;
-                }
-                break;
-            case 13:
-                action('newline');
-                return false;
-            case 191:
-                if (cmdOrCtrl && !evt.altKey) {
-                    action('comment', {
-                        lang: this.id
-                    });
-                    return false;
-                }
-
-                break;
-            }
-        });
     };
 
     
@@ -446,7 +525,9 @@ define([
         // Find modified section starting from bottom
         var rightIndex = -sectionList.length;
         _.some(sectionList.slice().reverse(), function(section, index) {
-            if(index >= newSectionList.length || section.text != newSectionList[newSectionList.length - index - 1].text) {
+            var newSectionText = newSectionList[newSectionList.length - index - 1].text;
+            // Check also the content of the node since new lines can be added just at the beggining
+            if(index >= newSectionList.length || section.text != newSectionText || section.highlightedContent.textContent != newSectionText) {
                 rightIndex = -index;
                 return true;
             }
@@ -456,7 +537,7 @@ define([
             // Prevent overlap
             rightIndex = leftIndex - sectionList.length;
         }
-
+        
         // Create an array composed of left unmodified, modified, right
         // unmodified sections
         var leftSections = sectionList.slice(0, leftIndex);
@@ -467,35 +548,51 @@ define([
         sectionList = leftSections.concat(modifiedSections).concat(rightSections);
     }
     
-    var elapsedTime = 0;
-    var timeoutId;
-    function highlightSections() {
-        
+    function highlightSections() {        
+        selectionStart = inputElt.selectionStart;
+        selectionEnd = inputElt.selectionEnd;
+        var newSectionEltList = document.createDocumentFragment();
+        modifiedSections.forEach(function(section) {
+            highlight(section);
+            newSectionEltList.appendChild(section.highlightedContent);
+        });
         if(fileChanged === true) {
-            fileChanged = false;
-            // Perform a synchronous transformation
-            preEditor.selectionStart = preElt.selectionStart;
-            preEditor.selectionEnd = preElt.selectionEnd;
-            var newSectionEltList = document.createDocumentFragment();
-            modifiedSections.forEach(function(section) {
-                highlight(section);
-                newSectionEltList.appendChild(section.highlightedContent);
-            });
-            preEditor.$contentElt.html('');
-            preEditor.$contentElt[0].appendChild(newSectionEltList);
-            preElt.setSelectionRange(preEditor.selectionStart, preEditor.selectionEnd);
-            return;
+            editor.contentElt.innerHTML = '';
+            editor.contentElt.appendChild(newSectionEltList);
+            inputElt.setSelectionRange(selectionStart, selectionEnd);
         }
-        
-        // Perform an asynchronous transformation on each modified sections
-        clearTimeout(timeoutId);
-        //timeoutId = setTimeout(asyncHighlightSections, elapsedTime);
-        preEditor.selectionStart = preElt.selectionStart;
-        preEditor.selectionEnd = preElt.selectionEnd;
-        Prism.highlightElement(preEditor.$contentElt[0]);
-        //preElt.setSelectionRange(preEditor.selectionStart, preEditor.selectionEnd);
+        else {
+            // Remove outdated sections
+            sectionsToRemove.forEach(function(section) {
+                var sectionElt = document.getElementById("wmd-input-section-" + section.id);
+                // section can be already removed
+                sectionElt && editor.contentElt.removeChild(sectionElt);
+            });
+            
+            if(insertBeforeSection !== undefined) {
+                var insertBeforeElt = document.getElementById("wmd-input-section-" + insertBeforeSection.id);
+                editor.contentElt.insertBefore(newSectionEltList, insertBeforeElt);
+            }
+            else {
+                editor.contentElt.appendChild(newSectionEltList);
+            }
+            
+            //var dummyTextNode = document.createTextNode('\n');
+            //editor.contentElt.appendChild(dummyTextNode);
+            inputElt.setSelectionRange(selectionStart, selectionEnd);
+            
+            // Remove textNodes created outside sections
+            var childNode = editor.contentElt.firstChild;
+            while(childNode) {
+                var nextNode = childNode.nextSibling;
+                if(childNode.nodeType == 3) {
+                    editor.contentElt.removeChild(childNode);
+                }
+                childNode = nextNode;
+            }
+        }
     }
-
+/*
     function asyncHighlightSections() {
         var startTime = Date.now();
         var deferredList = [];
@@ -513,16 +610,10 @@ define([
             }, '');
             
             // Check that the editor has the actual value
-            if(preElt.textContent == text) {
-                preEditor.selectionStart = preElt.selectionStart;
-                preEditor.selectionEnd = preElt.selectionEnd;
+            if(inputElt.textContent == text) {
+                selectionStart = inputElt.selectionStart;
+                selectionEnd = inputElt.selectionEnd;
                 
-                // Remove outdated sections
-                _.each(sectionsToRemove, function(section) {
-                    var sectionElt = document.getElementById("wmd-input-section-" + section.id);
-                    preEditor.$contentElt[0].removeChild(sectionElt);
-                });
-
                 var newSectionEltList = document.createDocumentFragment();
                 modifiedSections.forEach(function(section) {
                     newSectionEltList.appendChild(section.highlightedContent);
@@ -530,21 +621,21 @@ define([
                 
                 if(insertBeforeSection !== undefined) {
                     var insertBeforeElt = document.getElementById("wmd-input-section-" + insertBeforeSection.id);
-                    preEditor.$contentElt[0].insertBefore(newSectionEltList, insertBeforeElt);
+                    editor.$contentElt[0].insertBefore(newSectionEltList, insertBeforeElt);
                 }
                 else {
-                    preEditor.$contentElt[0].appendChild(newSectionEltList);
+                    editor.$contentElt[0].appendChild(newSectionEltList);
                 }
                 
-                preElt.setSelectionRange(preEditor.selectionStart, preEditor.selectionEnd);
+                inputElt.setSelectionRange(selectionStart, selectionEnd);
                 elapsedTime = Date.now() - startTime;
             }
         });
     }
-
+*/
     function highlight(section) {
         var text = section.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
-        var sectionElt = crel('div', {
+        var sectionElt = crel('span', {
             id: 'wmd-input-section-' + section.id,
             class: 'wmd-input-section'
         });
@@ -552,5 +643,5 @@ define([
         section.highlightedContent = sectionElt;
     }
 
-    return preEditor;
+    return editor;
 });

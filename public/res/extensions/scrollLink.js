@@ -45,7 +45,7 @@ define([
                     mdSectionOffset = 0;
                     return;
                 }
-                var $delimiterElt = $(this);
+                var $delimiterElt = $(this.firstChild);
                 // Consider div scroll position
                 var newSectionOffset = $delimiterElt.position().top + editorScrollTop;
                 mdSectionList.push({

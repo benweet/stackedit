@@ -755,6 +755,10 @@ define([
         if(pickerType == 'doc' || pickerType == 'folder') {
             authenticate(task, 'gdrive', accountId);
         }
+        else {
+            accountId = 'google.picasa0';
+            authenticate(task, 'picasa', accountId);
+        }
         loadPicker(task);
         task.onRun(function() {
             var authorizationMgr = authorizationMgrMap[accountId];
@@ -794,6 +798,7 @@ define([
                 view.setType('ofuser');
                 pickerBuilder.addView(view);
                 pickerBuilder.addView(google.picker.ViewId.PHOTO_UPLOAD);
+                authorizationMgr && authorizationMgr.token && pickerBuilder.setOAuthToken(authorizationMgr.token.access_token);
             }
             pickerBuilder.setCallback(function(data) {
                 if(data.action == google.picker.Action.PICKED || data.action == google.picker.Action.CANCEL) {

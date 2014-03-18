@@ -4,7 +4,7 @@ define([
     "underscore",
     "crel",
     "ace",
-    "preEditor",
+    "editor",
     "constants",
     "utils",
     "storage",
@@ -26,7 +26,7 @@ define([
     'ace/ext/spellcheck',
     'ace/ext/searchbox'
 
-], function($, _, crel, ace, preEditor, constants, utils, storage, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
+], function($, _, crel, ace, editor, constants, utils, storage, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
 
@@ -385,12 +385,12 @@ define([
                 }
             },
             onresize_end: function(paneName) {
-                if(preEditor.$contentElt !== undefined && paneName == 'center') {
+                if(editor.$contentElt !== undefined && paneName == 'center') {
                     var padding = ($editorElt.width() - getMaxWidth()) / 2;
                     if(padding < constants.EDITOR_DEFAULT_PADDING) {
                         padding = constants.EDITOR_DEFAULT_PADDING;
                     }
-                    preEditor.$contentElt.css({
+                    editor.$contentElt.css({
                         'padding-left': padding + 'px',
                         'padding-right': padding + 'px'
                     });
@@ -494,7 +494,7 @@ define([
     }
 
     // Create the PageDown editor
-    var editor;
+    var pagedownEditor;
     var $editorElt;
     var fileDesc;
     var documentContent;
@@ -512,38 +512,21 @@ define([
             aceEditor.getSession().setUndoManager(new UndoManager());
         }
         else {
-            $editorElt.val(initDocumentContent);
+            //$editorElt.val(initDocumentContent);
         }
 
-        if(editor !== undefined) {
+        if(pagedownEditor !== undefined) {
             // If the editor is already created
+            $editorElt.val(initDocumentContent);
             aceEditor && aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
             aceEditor ? aceEditor.focus() : $editorElt.focus();
-            editor.refreshPreview();
+            //pagedownEditor.refreshPreview();
             return;
         }
 
         var $previewContainerElt = $(".preview-container");
 
-        if(window.lightMode) {
-            // Store editor scrollTop on scroll event
-            $editorElt.scroll(function() {
-                if(documentContent !== undefined) {
-                    preEditor.scrollTop = this.scrollTop;
-                    fileDesc.editorScrollTop = preEditor.scrollTop;
-                }
-            });
-            // Store editor selection on change
-            $editorElt.bind("keyup mouseup", function() {
-                preEditor.selectionStart = this.selectionStart;
-                preEditor.selectionEnd = this.selectionEnd;
-                if(documentContent !== undefined) {
-                    fileDesc.editorStart = this.selectionStart;
-                    fileDesc.editorEnd = this.selectionEnd;
-                }
-            });
-        }
-        else {
+        if(!window.lightMode) {
             // Store editor scrollTop on scroll event
             var saveScroll = _.debounce(function() {
                 if(documentContent !== undefined) {
@@ -582,7 +565,7 @@ define([
         converter.setOptions(options);
 
         function checkDocumentChanges() {
-            var newDocumentContent = $editorElt.val();
+            var newDocumentContent = $editorElt.text();
             if(aceEditor !== undefined) {
                 newDocumentContent = aceEditor.getValue();
             }
@@ -601,7 +584,6 @@ define([
                     $editorElt.scrollTop(fileDesc.editorScrollTop);
                 }
                 else {
-                    preEditor.scrollTop = fileDesc.editorScrollTop;
                     _.defer(function() {
                         aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
                     });
@@ -614,22 +596,22 @@ define([
 
         var previewWrapper;
         if(window.lightMode) {
-            editor = new Markdown.EditorLight(converter);
+            pagedownEditor = new Markdown.EditorLight(converter);
         }
         else {
-            editor = new Markdown.Editor(converter, undefined, {
+            pagedownEditor = new Markdown.Editor(converter, undefined, {
                 keyStrokes: shortcutMgr.getPagedownKeyStrokes()
             });
         }
         // Custom insert link dialog
-        editor.hooks.set("insertLinkDialog", function(callback) {
+        pagedownEditor.hooks.set("insertLinkDialog", function(callback) {
             core.insertLinkCallback = callback;
             utils.resetModalInputs();
             $(".modal-insert-link").modal();
             return true;
         });
         // Custom insert image dialog
-        editor.hooks.set("insertImageDialog", function(callback) {
+        pagedownEditor.hooks.set("insertImageDialog", function(callback) {
             core.insertLinkCallback = callback;
             if(core.catchModal) {
                 return true;
@@ -658,15 +640,16 @@ define([
             };
         }
 
-        eventMgr.onPagedownConfigure(editor);
-        editor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
+        eventMgr.onPagedownConfigure(pagedownEditor);
+        pagedownEditor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
         if(window.lightMode) {
-            editor.run(previewWrapper);
-            editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
+            pagedownEditor.run();
+            $editorElt.val(initDocumentContent);
+            pagedownEditor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
             $editorElt.focus();
         }
         else {
-            editor.run(aceEditor, previewWrapper);
+            pagedownEditor.run(aceEditor, previewWrapper);
             aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
             aceEditor.focus();
         }
@@ -847,13 +830,13 @@ define([
         if(window.lightMode) {
             // In pre mode, we replace ACE with an editable pre
             $('#wmd-input').replaceWith(function() {
-                var result = $('<pre id="wmd-input">').addClass(this.className).addClass('form-control');
-                preEditor.init(result[0]);
-                return result;
+                return $('<pre id="wmd-input">').addClass(this.className).addClass('form-control');
             });
             
             // Create UI layout after textarea
             createLayout();
+            
+            editor.init(document.querySelector('#wmd-input'), document.querySelector('.preview-container'));
         }
         else {
             // Create UI layout before ACE editor

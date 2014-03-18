@@ -22,6 +22,7 @@ define([
                 return new Range(0, 0, 0, 0);
             }
         })();
+        this._editorStart = parseInt(storage[fileIndex + ".editorEnd"]) || 0;
         this._editorEnd = parseInt(storage[fileIndex + ".editorEnd"]) || 0;
         this._previewScrollTop = parseInt(storage[fileIndex + ".previewScrollTop"]) || 0;
         this._selectTime = parseInt(storage[fileIndex + ".selectTime"]) || 0;
@@ -51,6 +52,24 @@ define([
             set: function(editorScrollTop) {
                 this._editorScrollTop = editorScrollTop;
                 storage[this.fileIndex + ".editorScrollTop"] = editorScrollTop;
+            }
+        });
+        Object.defineProperty(this, 'editorStart', {
+            get: function() {
+                return this._editorStart;
+            },
+            set: function(editorStart) {
+                this._editorStart = editorStart;
+                storage[this.fileIndex + ".editorStart"] = editorStart;
+            }
+        });
+        Object.defineProperty(this, 'editorEnd', {
+            get: function() {
+                return this._editorEnd;
+            },
+            set: function(editorEnd) {
+                this._editorEnd = editorEnd;
+                storage[this.fileIndex + ".editorEnd"] = editorEnd;
             }
         });
         Object.defineProperty(this, 'editorSelectRange', {

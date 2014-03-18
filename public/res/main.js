@@ -65,6 +65,7 @@ requirejs.config({
         normalize: 'bower-libs/require-css/normalize',
         prism: 'bower-libs/prism/prism',
         'prism-core': 'bower-libs/prism/components/prism-core',
+        caret: 'bower-libs/caret.js/src/jquery.caret'
     },
     shim: {
         underscore: {
@@ -123,6 +124,9 @@ requirejs.config({
             exports: 'Tour'
         },
         bootstrap: [
+            'jquery'
+        ],
+        'caret': [
             'jquery'
         ],
         'jquery-waitforimages': [

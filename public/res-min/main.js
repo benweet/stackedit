@@ -212,6 +212,36 @@ Example usage:
     \p{Cn}
 */
 
+/* ***** BEGIN LICENSE BLOCK *****
+ * Distributed under the BSD license:
+ *
+ * Copyright (c) 2012, Ajax.org B.V.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of Ajax.org B.V. nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL AJAX.ORG B.V. BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
 /*!
  * XRegExp-All 3.0.0-pre
  * <http://xregexp.com/>
@@ -4548,12 +4578,16 @@ function printStackTrace(e) {
   };
  }
 }), define("ace/lib/oop", [ "require", "exports", "module" ], function(e, t) {
- t.inherits = function() {
-  var e = function() {};
-  return function(t, n) {
-   e.prototype = n.prototype, t.super_ = n.prototype, t.prototype = new e(), t.prototype.constructor = t;
-  };
- }(), t.mixin = function(e, t) {
+ t.inherits = function(e, t) {
+  e.super_ = t, e.prototype = Object.create(t.prototype, {
+   constructor: {
+    value: e,
+    enumerable: !1,
+    writable: !0,
+    configurable: !0
+   }
+  });
+ }, t.mixin = function(e, t) {
   for (var n in t) e[n] = t[n];
   return e;
  }, t.implement = function(e, n) {
@@ -4561,7 +4595,7 @@ function printStackTrace(e) {
  };
 }), define("ace/lib/keys", [ "require", "exports", "module", "./oop" ], function(e, t) {
  var n = e("./oop"), i = function() {
-  var e = {
+  var e, t, i = {
    MODIFIER_KEYS: {
     16: "Shift",
     17: "Ctrl",
@@ -4573,6 +4607,7 @@ function printStackTrace(e) {
     alt: 2,
     option: 2,
     shift: 4,
+    "super": 8,
     meta: 8,
     command: 8,
     cmd: 8
@@ -4674,12 +4709,10 @@ function printStackTrace(e) {
     222: "'"
    }
   };
-  for (var t in e.FUNCTION_KEYS) {
-   var i = e.FUNCTION_KEYS[t].toLowerCase();
-   e[i] = parseInt(t, 10);
-  }
-  return n.mixin(e, e.MODIFIER_KEYS), n.mixin(e, e.PRINTABLE_KEYS), n.mixin(e, e.FUNCTION_KEYS), 
-  e.enter = e["return"], e.escape = e.esc, e.del = e["delete"], e[173] = "-", e;
+  for (t in i.FUNCTION_KEYS) e = i.FUNCTION_KEYS[t].toLowerCase(), i[e] = parseInt(t, 10);
+  for (t in i.PRINTABLE_KEYS) e = i.PRINTABLE_KEYS[t].toLowerCase(), i[e] = parseInt(t, 10);
+  return n.mixin(i, i.MODIFIER_KEYS), n.mixin(i, i.PRINTABLE_KEYS), n.mixin(i, i.FUNCTION_KEYS), 
+  i.enter = i["return"], i.escape = i.esc, i.del = i["delete"], i[173] = "-", i;
  }();
  n.mixin(t, i), t.keyCodeToString = function(e) {
   return (i[e] || String.fromCharCode(e)).toLowerCase();
@@ -4693,7 +4726,7 @@ function printStackTrace(e) {
   return t.isMac ? t.OS.MAC : t.isLinux ? t.OS.LINUX : t.OS.WINDOWS;
  }, "object" == typeof navigator) {
   var n = (navigator.platform.match(/mac|win|linux/i) || [ "other" ])[0].toLowerCase(), i = navigator.userAgent;
-  t.isWin = "win" == n, t.isMac = "mac" == n, t.isLinux = "linux" == n, t.isIE = ("Microsoft Internet Explorer" == navigator.appName || navigator.appName.indexOf("MSAppHost") >= 0) && parseFloat(navigator.userAgent.match(/MSIE ([0-9]+[\.0-9]+)/)[1]), 
+  t.isWin = "win" == n, t.isMac = "mac" == n, t.isLinux = "linux" == n, t.isIE = ("Microsoft Internet Explorer" == navigator.appName || navigator.appName.indexOf("MSAppHost") >= 0) && parseFloat(navigator.userAgent.match(/(?:Trident\/[0-9]+[\.0-9]+;.*rv:|MSIE )([0-9]+[\.0-9]+)/)[1]), 
   t.isOldIE = t.isIE && t.isIE < 9, t.isGecko = t.isMozilla = window.controllers && "Gecko" === window.navigator.product, 
   t.isOldGecko = t.isGecko && parseInt((navigator.userAgent.match(/rv\:(\d+)/) || [])[1], 10) < 4, 
   t.isOpera = window.opera && "[object Opera]" == Object.prototype.toString.call(window.opera), 
@@ -4734,9 +4767,9 @@ function printStackTrace(e) {
    default:
     a = 8;
    }
-   n = 0;
+   n = -1;
   }
-  return 8 & a && (91 === n || 93 === n) && (n = 0), a || 13 !== n || !t.location && 3 !== t.keyLocation || (e(t, a, -n), 
+  return 8 & a && (91 === n || 93 === n) && (n = -1), a || 13 !== n || !t.location && 3 !== t.keyLocation || (e(t, a, -n), 
   !t.defaultPrevented) ? a || n in i.FUNCTION_KEYS || n in i.PRINTABLE_KEYS ? e(t, a, n) : !1 : void 0;
  }
  var i = e("./keys"), o = e("./useragent");
@@ -4768,17 +4801,25 @@ function printStackTrace(e) {
    n && n(e), i && i(e), t.removeListener(document, "mousemove", n, !0), t.removeListener(document, "mouseup", o, !0), 
    t.removeListener(document, "dragstart", o, !0);
   }
-  t.addListener(document, "mousemove", n, !0), t.addListener(document, "mouseup", o, !0), 
-  t.addListener(document, "dragstart", o, !0);
+  return t.addListener(document, "mousemove", n, !0), t.addListener(document, "mouseup", o, !0), 
+  t.addListener(document, "dragstart", o, !0), o;
  }, t.addMouseWheelListener = function(e, n) {
-  if ("onmousewheel" in e) {
-   var i = 8;
-   t.addListener(e, "mousewheel", function(e) {
-    void 0 !== e.wheelDeltaX ? (e.wheelX = -e.wheelDeltaX / i, e.wheelY = -e.wheelDeltaY / i) : (e.wheelX = 0, 
-    e.wheelY = -e.wheelDelta / i), n(e);
-   });
-  } else "onwheel" in e ? t.addListener(e, "wheel", function(e) {
-   e.wheelX = 5 * (e.deltaX || 0), e.wheelY = 5 * (e.deltaY || 0), n(e);
+  "onmousewheel" in e ? t.addListener(e, "mousewheel", function(e) {
+   var t = 8;
+   void 0 !== e.wheelDeltaX ? (e.wheelX = -e.wheelDeltaX / t, e.wheelY = -e.wheelDeltaY / t) : (e.wheelX = 0, 
+   e.wheelY = -e.wheelDelta / t), n(e);
+  }) : "onwheel" in e ? t.addListener(e, "wheel", function(e) {
+   var t = .35;
+   switch (e.deltaMode) {
+   case e.DOM_DELTA_PIXEL:
+    e.wheelX = e.deltaX * t || 0, e.wheelY = e.deltaY * t || 0;
+    break;
+
+   case e.DOM_DELTA_LINE:
+   case e.DOM_DELTA_PAGE:
+    e.wheelX = 5 * (e.deltaX || 0), e.wheelY = 5 * (e.deltaY || 0);
+   }
+   n(e);
   }) : t.addListener(e, "DOMMouseScroll", function(e) {
    e.axis && e.axis == e.HORIZONTAL_AXIS ? (e.wheelX = 5 * (e.detail || 0), e.wheelY = 0) : (e.wheelX = 0, 
    e.wheelY = 5 * (e.detail || 0)), n(e);
@@ -4841,7 +4882,9 @@ function printStackTrace(e) {
   setTimeout(e, 17);
  };
 }), define("ace/lib/lang", [ "require", "exports", "module" ], function(e, t) {
- t.stringReverse = function(e) {
+ t.last = function(e) {
+  return e[e.length - 1];
+ }, t.stringReverse = function(e) {
   return e.split("").reverse().join("");
  }, t.stringRepeat = function(e, t) {
   for (var n = ""; t > 0; ) 1 & t && (n += e), (t >>= 1) && (e += e);
@@ -4860,10 +4903,12 @@ function printStackTrace(e) {
   for (var t = [], n = 0, i = e.length; i > n; n++) t[n] = e[n] && "object" == typeof e[n] ? this.copyObject(e[n]) : e[n];
   return t;
  }, t.deepCopy = function(e) {
-  if ("object" != typeof e) return e;
-  var t = e.constructor();
-  for (var n in e) t[n] = "object" == typeof e[n] ? this.deepCopy(e[n]) : e[n];
-  return t;
+  if ("object" != typeof e || !e) return e;
+  var n = e.constructor;
+  if (n === RegExp) return e;
+  var i = n();
+  for (var o in e) i[o] = "object" == typeof e[o] ? t.deepCopy(e[o]) : e[o];
+  return i;
  }, t.arrayToMap = function(e) {
   for (var t = {}, n = 0; n < e.length; n++) t[e[n]] = 1;
   return t;
@@ -4895,16 +4940,18 @@ function printStackTrace(e) {
    return this.cancel(), e(), i;
   }, i.cancel = function() {
    return clearTimeout(t), t = null, i;
+  }, i.isPending = function() {
+   return t;
   }, i;
  }, t.delayedCall = function(e, t) {
   var n = null, i = function() {
    n = null, e();
   }, o = function(e) {
-   n && clearTimeout(n), n = setTimeout(i, e || t);
+   null == n && (n = setTimeout(i, e || t));
   };
-  return o.delay = o, o.schedule = function(e) {
-   null == n && (n = setTimeout(i, e || 0));
-  }, o.call = function() {
+  return o.delay = function(e) {
+   n && clearTimeout(n), n = setTimeout(i, e || t);
+  }, o.schedule = o, o.call = function() {
    this.cancel(), e();
   }, o.cancel = function() {
    n && clearTimeout(n), n = null;
@@ -5000,7 +5047,9 @@ function printStackTrace(e) {
    return T;
   };
   var D = !1, _ = function(e) {
-   T && (e = T(e), T = null), f ? (a(), e && t.onPaste(e), f = !1) : e == d.charAt(0) ? D && t.execCommand("del", {
+   T && (e = T(e), T = null), f ? (a(), e && t.onPaste(e), f = !1) : e == d.charAt(0) ? D ? t.execCommand("del", {
+    source: "ace"
+   }) : t.execCommand("backspace", {
     source: "ace"
    }) : (e.substring(0, 2) == d ? e = e.substr(2) : e.charAt(0) == d.charAt(0) ? e = e.substr(1) : e.charAt(e.length - 1) == d.charAt(0) && (e = e.slice(0, -1)), 
    e.charAt(e.length - 1) == d.charAt(0) && (e = e.slice(0, -1)), e && t.onTextInput(e)), 
@@ -5056,10 +5105,11 @@ function printStackTrace(e) {
    }
   });
   var R = function() {
-   g || (g = {}, t.onCompositionStart(), setTimeout(B, 0), t.on("mousedown", P), t.selection.isEmpty() || (t.insert(""), 
-   t.session.markUndoGroup(), t.selection.clearSelection()), t.session.markUndoGroup());
+   !g && t.onCompositionStart && (g = {}, t.onCompositionStart(), setTimeout(B, 0), 
+   t.on("mousedown", P), t.selection.isEmpty() || (t.insert(""), t.session.markUndoGroup(), 
+   t.selection.clearSelection()), t.session.markUndoGroup());
   }, B = function() {
-   if (g) {
+   if (g && t.onCompositionUpdate) {
     var e = u.value.replace(/\x01/g, "");
     if (g.lastValue !== e && (t.onCompositionUpdate(e), g.lastValue && t.undo(), g.lastValue = e, 
     g.lastValue)) {
@@ -5069,19 +5119,21 @@ function printStackTrace(e) {
     }
    }
   }, P = function(e) {
-   var n = g;
-   g = !1;
-   var i = setTimeout(function() {
-    i = null;
-    var e = u.value.replace(/\x01/g, "");
-    g || (e == n.lastValue ? l() : !n.lastValue && e && (l(), _(e)));
-   });
-   T = function(e) {
-    return i && clearTimeout(i), e = e.replace(/\x01/g, ""), e == n.lastValue ? "" : (n.lastValue && i && t.undo(), 
-    e);
-   }, t.onCompositionEnd(), t.removeListener("mousedown", P), "compositionend" == e.type && n.range && t.selection.setRange(n.range);
+   if (t.onCompositionEnd) {
+    var n = g;
+    g = !1;
+    var i = setTimeout(function() {
+     i = null;
+     var e = u.value.replace(/\x01/g, "");
+     g || (e == n.lastValue ? l() : !n.lastValue && e && (l(), _(e)));
+    });
+    T = function(e) {
+     return i && clearTimeout(i), e = e.replace(/\x01/g, ""), e == n.lastValue ? "" : (n.lastValue && i && t.undo(), 
+     e);
+    }, t.onCompositionEnd(), t.removeListener("mousedown", P), "compositionend" == e.type && n.range && t.selection.setRange(n.range);
+   }
   }, N = r.delayedCall(B, 50);
-  n.addListener(u, "compositionstart", R), i.isGecko ? n.addListener(u, "text", function() {
+  if (n.addListener(u, "compositionstart", R), i.isGecko ? n.addListener(u, "text", function() {
    N.schedule();
   }) : (n.addListener(u, "keyup", function() {
    N.schedule();
@@ -5102,9 +5154,12 @@ function printStackTrace(e) {
    };
    p(e), "mousedown" == e.type && (t.renderer.$keepTextAreaAtCursor && (t.renderer.$keepTextAreaAtCursor = null), 
    i.isWin && n.capture(t.container, p, c));
-  }, this.onContextMenuClose = c, (!i.isGecko || i.isMac) && n.addListener(u, "contextmenu", function(e) {
-   t.textInput.onContextMenu(e), c();
-  });
+  }, this.onContextMenuClose = c, !i.isGecko || i.isMac) {
+   var O = function(e) {
+    t.textInput.onContextMenu(e), c();
+   };
+   n.addListener(t.renderer.scroller, "contextmenu", O), n.addListener(u, "contextmenu", O);
+  }
  };
  t.TextInput = a;
 }), define("ace/mouse/default_handlers", [ "require", "exports", "module", "../lib/dom", "../lib/event", "../lib/useragent" ], function(e, t) {
@@ -5144,17 +5199,15 @@ function printStackTrace(e) {
     return s && (i.moveCursorToPosition(n), i.selection.clearSelection()), i.textInput.onContextMenu(e.domEvent), 
     void 0;
    }
-   return !t || i.isFocused() || (i.focus(), !this.$focusTimout || this.$clickSelection || i.inMultiSelectMode) ? (!t || this.$clickSelection || e.getShiftKey() || i.inMultiSelectMode ? this.startSelect(n) : t && (this.mousedownEvent.time = new Date().getTime(), 
-   this.startSelect(n)), this.captureMouse(e), e.preventDefault()) : (this.mousedownEvent.time = new Date().getTime(), 
+   return !t || i.isFocused() || (i.focus(), !this.$focusTimout || this.$clickSelection || i.inMultiSelectMode) ? (!t || this.$clickSelection || e.getShiftKey() || i.inMultiSelectMode ? this.startSelect(n) : t && (this.mousedownEvent.time = Date.now(), 
+   this.startSelect(n)), this.captureMouse(e), e.preventDefault()) : (this.mousedownEvent.time = Date.now(), 
    this.setState("focusWait"), this.captureMouse(e), void 0);
   }, this.startSelect = function(e) {
    e = e || this.editor.renderer.screenToTextCoordinates(this.x, this.y);
-   var t = this.editor;
-   setTimeout(function() {
-    this.mousedownEvent.getShiftKey() ? t.selection.selectToPosition(e) : this.$clickSelection || (t.moveCursorToPosition(e), 
-    t.selection.clearSelection());
-   }.bind(this), 0), t.container.setCapture && t.container.setCapture(), t.setStyle("ace_selecting"), 
-   this.setState("select");
+   var t = this.editor, n = this.mousedownEvent.getShiftKey();
+   n ? t.selection.selectToPosition(e) : this.$clickSelection || (t.moveCursorToPosition(e), 
+   t.selection.clearSelection()), t.renderer.scroller.setCapture && t.renderer.scroller.setCapture(), 
+   t.setStyle("ace_selecting"), this.setState("select");
   }, this.select = function() {
    var e, t = this.editor, n = t.renderer.screenToTextCoordinates(this.x, this.y);
    if (this.$clickSelection) {
@@ -5180,60 +5233,85 @@ function printStackTrace(e) {
    }
    n.selection.selectToPosition(i), n.renderer.scrollCursorIntoView();
   }, this.selectEnd = this.selectAllEnd = this.selectByWordsEnd = this.selectByLinesEnd = function() {
-   this.editor.unsetStyle("ace_selecting"), this.editor.container.releaseCapture && this.editor.container.releaseCapture();
+   this.editor.unsetStyle("ace_selecting"), this.editor.renderer.scroller.releaseCapture && this.editor.renderer.scroller.releaseCapture();
   }, this.focusWait = function() {
-   var e = i(this.mousedownEvent.x, this.mousedownEvent.y, this.x, this.y), t = new Date().getTime();
+   var e = i(this.mousedownEvent.x, this.mousedownEvent.y, this.x, this.y), t = Date.now();
    (e > r || t - this.mousedownEvent.time > this.$focusTimout) && this.startSelect(this.mousedownEvent.getDocumentPosition());
   }, this.onDoubleClick = function(e) {
    var t = e.getDocumentPosition(), n = this.editor, i = n.session, o = i.getBracketRange(t);
-   return o ? (o.isEmpty() && (o.start.column--, o.end.column++), this.$clickSelection = o, 
-   this.setState("select"), void 0) : (this.$clickSelection = n.selection.getWordRange(t.row, t.column), 
-   this.setState("selectByWords"), void 0);
+   o ? (o.isEmpty() && (o.start.column--, o.end.column++), this.setState("select")) : (o = n.selection.getWordRange(t.row, t.column), 
+   this.setState("selectByWords")), this.$clickSelection = o, this[this.state] && this[this.state](e);
   }, this.onTripleClick = function(e) {
    var t = e.getDocumentPosition(), n = this.editor;
-   this.setState("selectByLines"), this.$clickSelection = n.selection.getLineRange(t.row);
+   this.setState("selectByLines"), this.$clickSelection = n.selection.getLineRange(t.row), 
+   this[this.state] && this[this.state](e);
   }, this.onQuadClick = function() {
    var e = this.editor;
    e.selectAll(), this.$clickSelection = e.getSelectionRange(), this.setState("selectAll");
   }, this.onMouseWheel = function(e) {
-   if (!e.getShiftKey() && !e.getAccelKey()) {
+   if (!e.getAccelKey()) {
+    e.getShiftKey() && e.wheelY && !e.wheelX && (e.wheelX = e.wheelY, e.wheelY = 0);
     var t = e.domEvent.timeStamp, n = t - (this.$lastScrollTime || 0), i = this.editor, o = i.renderer.isScrollableBy(e.wheelX * e.speed, e.wheelY * e.speed);
     return o || 200 > n ? (this.$lastScrollTime = t, i.renderer.scrollBy(e.wheelX * e.speed, e.wheelY * e.speed), 
     e.stop()) : void 0;
    }
   };
  }).call(n.prototype), t.DefaultHandlers = n;
-}), define("ace/mouse/default_gutter_handler", [ "require", "exports", "module", "../lib/dom", "../lib/event" ], function(e, t) {
+}), define("ace/tooltip", [ "require", "exports", "module", "./lib/oop", "./lib/dom" ], function(e, t) {
+ function n(e) {
+  this.isOpen = !1, this.$element = null, this.$parentNode = e;
+ }
+ e("./lib/oop");
+ var i = e("./lib/dom");
+ (function() {
+  this.$init = function() {
+   return this.$element = i.createElement("div"), this.$element.className = "ace_tooltip", 
+   this.$element.style.display = "none", this.$parentNode.appendChild(this.$element), 
+   this.$element;
+  }, this.getElement = function() {
+   return this.$element || this.$init();
+  }, this.setText = function(e) {
+   i.setInnerText(this.getElement(), e);
+  }, this.setHtml = function(e) {
+   this.getElement().innerHTML = e;
+  }, this.setPosition = function(e, t) {
+   this.getElement().style.left = e + "px", this.getElement().style.top = t + "px";
+  }, this.setClassName = function(e) {
+   i.addCssClass(this.getElement(), e);
+  }, this.show = function(e, t, n) {
+   null != e && this.setText(e), null != t && null != n && this.setPosition(t, n), 
+   this.isOpen || (this.getElement().style.display = "block", this.isOpen = !0);
+  }, this.hide = function() {
+   this.isOpen && (this.getElement().style.display = "none", this.isOpen = !1);
+  }, this.getHeight = function() {
+   return this.getElement().offsetHeight;
+  }, this.getWidth = function() {
+   return this.getElement().offsetWidth;
+  };
+ }).call(n.prototype), t.Tooltip = n;
+}), define("ace/mouse/default_gutter_handler", [ "require", "exports", "module", "../lib/dom", "../lib/oop", "../lib/event", "../tooltip" ], function(e, t) {
  function n(e) {
   function t() {
-   d = i.createElement("div"), d.className = "ace_gutter-tooltip", d.style.display = "none", 
-   a.container.appendChild(d);
+   var t = d.getDocumentPosition().row, i = l.$annotations[t];
+   if (!i) return n();
+   var o = a.session.getLength();
+   if (t == o) {
+    var s = a.renderer.pixelToScreenCoordinates(0, d.y).row, u = d.$pos;
+    if (s > a.session.documentToScreenRow(u.row, u.column)) return n();
+   }
+   if (h != i) if (h = i.text.join("<br/>"), c.setHtml(h), c.show(), a.on("mousewheel", n), 
+   e.$tooltipFollowsMouse) r(d); else {
+    var p = l.$cells[t].element, f = p.getBoundingClientRect(), g = c.getElement().style;
+    g.left = f.right + "px", g.top = f.bottom + "px";
+   }
   }
   function n() {
-   d || t();
-   var e = u.getDocumentPosition().row, n = l.$annotations[e];
-   if (!n) return r();
-   var i = a.session.getLength();
-   if (e == i) {
-    var o = a.renderer.pixelToScreenCoordinates(0, u.y).row, c = u.$pos;
-    if (o > a.session.documentToScreenRow(c.row, c.column)) return r();
-   }
-   h != n && (h = n.text.join("<br/>"), d.style.display = "block", d.innerHTML = h, 
-   a.on("mousewheel", r), s(u));
+   u && (u = clearTimeout(u)), h && (c.hide(), h = null, a.removeEventListener("mousewheel", n));
   }
-  function r() {
-   c && (c = clearTimeout(c)), h && (d.style.display = "none", h = null, a.removeEventListener("mousewheel", r));
+  function r(e) {
+   c.setPosition(e.x, e.y);
   }
-  function s(e) {
-   var t = a.renderer.$gutter.getBoundingClientRect();
-   if (d.style.left = e.x + 15 + "px", e.y + 3 * a.renderer.lineHeight + 15 < t.bottom) d.style.bottom = "", 
-   d.style.top = e.y + 15 + "px"; else {
-    d.style.top = "";
-    var n = window.innerHeight || document.documentElement.clientHeight;
-    d.style.bottom = n - e.y + 5 + "px";
-   }
-  }
-  var a = e.editor, l = a.renderer.$gutterLayer;
+  var a = e.editor, l = a.renderer.$gutterLayer, c = new i(a.container);
   e.editor.setDefaultHandler("guttermousedown", function(t) {
    if (a.isFocused() && 0 == t.getButton()) {
     var n = l.getRegion(t);
@@ -5247,20 +5325,29 @@ function printStackTrace(e) {
     }
    }
   });
-  var c, u, d, h;
-  e.editor.setDefaultHandler("guttermousemove", function(t) {
-   var o = t.domEvent.target || t.domEvent.srcElement;
-   return i.hasCssClass(o, "ace_fold-widget") ? r() : (h && s(t), u = t, c || (c = setTimeout(function() {
-    c = null, u && !e.isMousePressed ? n() : r();
+  var u, d, h;
+  e.editor.setDefaultHandler("guttermousemove", function(i) {
+   var s = i.domEvent.target || i.domEvent.srcElement;
+   return o.hasCssClass(s, "ace_fold-widget") ? n() : (h && e.$tooltipFollowsMouse && r(i), 
+   d = i, u || (u = setTimeout(function() {
+    u = null, d && !e.isMousePressed ? t() : n();
    }, 50)), void 0);
-  }), o.addListener(a.renderer.$gutter, "mouseout", function() {
-   u = null, h && !c && (c = setTimeout(function() {
-    c = null, r();
+  }), s.addListener(a.renderer.$gutter, "mouseout", function() {
+   d = null, h && !u && (u = setTimeout(function() {
+    u = null, n();
    }, 50));
-  }), a.on("changeSession", r);
+  }), a.on("changeSession", n);
  }
- var i = e("../lib/dom"), o = e("../lib/event");
- t.GutterHandler = n;
+ function i(e) {
+  a.call(this, e);
+ }
+ var o = e("../lib/dom"), r = e("../lib/oop"), s = e("../lib/event"), a = e("../tooltip").Tooltip;
+ r.inherits(i, a), function() {
+  this.setPosition = function(e, t) {
+   var n = window.innerWidth || document.documentElement.clientWidth, i = window.innerHeight || document.documentElement.clientHeight, o = this.getWidth(), r = this.getHeight();
+   e += 15, t += 15, e + o > n && (e -= e + o - n), t + r > i && (t -= 20 + r), a.prototype.setPosition.call(this, e, t);
+  };
+ }.call(i.prototype), t.GutterHandler = n;
 }), define("ace/mouse/mouse_event", [ "require", "exports", "module", "../lib/event", "../lib/useragent" ], function(e, t) {
  var n = e("../lib/event"), i = e("../lib/useragent"), o = t.MouseEvent = function(e, t) {
   this.domEvent = e, this.editor = t, this.x = this.clientX = e.clientX, this.y = this.clientY = e.clientY, 
@@ -5297,18 +5384,18 @@ function printStackTrace(e) {
 }), define("ace/mouse/dragdrop_handler", [ "require", "exports", "module", "../lib/dom", "../lib/event", "../lib/useragent" ], function(e, t) {
  function n(e) {
   function t(e, t) {
-   var n = new Date().getTime(), o = !t || e.row != t.row, r = !t || e.column != t.column;
-   if (!F || o || r) m.$blockScrolling += 1, m.moveCursorToPosition(e), m.$blockScrolling -= 1, 
-   F = n, T = {
+   var n = Date.now(), o = !t || e.row != t.row, r = !t || e.column != t.column;
+   if (!T || o || r) m.$blockScrolling += 1, m.moveCursorToPosition(e), m.$blockScrolling -= 1, 
+   T = n, D = {
     x: w,
     y: C
    }; else {
-    var s = i(T.x, T.y, w, C);
-    s > c ? F = null : n - F >= l && (m.renderer.scrollCursorIntoView(), F = null);
+    var s = i(D.x, D.y, w, C);
+    s > c ? T = null : n - T >= l && (m.renderer.scrollCursorIntoView(), T = null);
    }
   }
   function n(e, t) {
-   var n = new Date().getTime(), i = m.renderer.layerConfig.lineHeight, o = m.renderer.layerConfig.characterWidth, r = m.renderer.scroller.getBoundingClientRect(), s = {
+   var n = Date.now(), i = m.renderer.layerConfig.lineHeight, o = m.renderer.layerConfig.characterWidth, r = m.renderer.scroller.getBoundingClientRect(), s = {
     x: {
      left: w - r.left,
      right: r.right - w
@@ -5323,7 +5410,7 @@ function printStackTrace(e) {
    };
    2 >= l / o && (u.column += s.x.left < s.x.right ? -3 : 2), 1 >= c / i && (u.row += s.y.top < s.y.bottom ? -1 : 1);
    var d = e.row != u.row, h = e.column != u.column, p = !t || e.row != t.row;
-   d || h && !p ? A ? n - A >= a && m.renderer.scrollCursorIntoView(u) : A = n : A = null;
+   d || h && !p ? F ? n - F >= a && m.renderer.scrollCursorIntoView(u) : F = n : F = null;
   }
   function u() {
    var e = E;
@@ -5331,15 +5418,17 @@ function printStackTrace(e) {
   }
   function d() {
    S = m.selection.toOrientedRange(), y = m.session.addMarker(S, "ace_selection", m.getSelectionStyle()), 
-   m.clearSelection(), clearInterval(x), x = setInterval(u, 20), _ = 0, r.addListener(document, "mousemove", p);
+   m.clearSelection(), m.isFocused() && m.renderer.$cursorLayer.setBlinking(!1), clearInterval(x), 
+   x = setInterval(u, 20), L = 0, r.addListener(document, "mousemove", p);
   }
   function h() {
    clearInterval(x), m.session.removeMarker(y), y = null, m.$blockScrolling += 1, m.selection.fromOrientedRange(S), 
-   m.$blockScrolling -= 1, S = null, _ = 0, A = null, F = null, r.removeListener(document, "mousemove", p);
+   m.$blockScrolling -= 1, m.isFocused() && !A && m.renderer.$cursorLayer.setBlinking(!m.getReadOnly()), 
+   S = null, L = 0, F = null, T = null, r.removeListener(document, "mousemove", p);
   }
   function p() {
-   null == L && (L = setTimeout(function() {
-    null != L && y && h();
+   null == I && (I = setTimeout(function() {
+    null != I && y && h();
    }, 20));
   }
   function f(e) {
@@ -5359,44 +5448,42 @@ function printStackTrace(e) {
   }
   var m = e.editor, v = o.createElement("img");
   v.src = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==", 
-  s.isOpera && (v.style.cssText = "width:1px;height:1px;position:fixed;top:0;left:0;z-index:2147483647;opacity:0;visibility:hidden", 
-  m.container.appendChild(v));
+  s.isOpera && (v.style.cssText = "width:1px;height:1px;position:fixed;top:0;left:0;z-index:2147483647;opacity:0;");
   var b = [ "dragWait", "dragWaitEnd", "startDrag", "dragReadyEnd", "onMouseDrag" ];
   b.forEach(function(t) {
    e[t] = this[t];
   }, this), m.addEventListener("mousedown", this.onMouseDown.bind(e));
-  var y, w, C, x, S, E, k, A, F, T, D = m.container, _ = 0;
+  var y, w, C, x, S, E, k, A, F, T, D, _ = m.container, L = 0;
   this.onDragStart = function(e) {
-   if (this.cancelDrag || !D.draggable) {
+   if (this.cancelDrag || !_.draggable) {
     var t = this;
     return setTimeout(function() {
      t.startSelect(), t.captureMouse(e);
     }, 0), e.preventDefault();
    }
-   s.isOpera && (v.style.visibility = "visible", setTimeout(function() {
-    v.style.visibility = "hidden";
-   }, 0)), S = m.getSelectionRange();
+   S = m.getSelectionRange();
    var n = e.dataTransfer;
-   n.effectAllowed = m.getReadOnly() ? "copy" : "copyMove", n.setDragImage && n.setDragImage(v, 0, 0), 
-   n.clearData(), n.setData("Text", m.session.getTextRange()), this.setState("drag");
+   n.effectAllowed = m.getReadOnly() ? "copy" : "copyMove", s.isOpera && (m.container.appendChild(v), 
+   v._top = v.offsetTop), n.setDragImage && n.setDragImage(v, 0, 0), s.isOpera && m.container.removeChild(v), 
+   n.clearData(), n.setData("Text", m.session.getTextRange()), A = !0, this.setState("drag");
   }, this.onDragEnd = function(e) {
-   if (D.draggable = !1, this.setState(null), !m.getReadOnly()) {
+   if (_.draggable = !1, A = !1, this.setState(null), !m.getReadOnly()) {
     var t = e.dataTransfer.dropEffect;
     k || "move" != t || m.session.remove(m.getSelectionRange()), m.renderer.$cursorLayer.setBlinking(!0);
    }
    this.editor.unsetStyle("ace_dragging");
   }, this.onDragEnter = function(e) {
-   return !m.getReadOnly() && f(e.dataTransfer) ? (y || d(), _++, e.dataTransfer.dropEffect = k = g(e), 
+   return !m.getReadOnly() && f(e.dataTransfer) ? (y || d(), L++, e.dataTransfer.dropEffect = k = g(e), 
    r.preventDefault(e)) : void 0;
   }, this.onDragOver = function(e) {
-   return !m.getReadOnly() && f(e.dataTransfer) ? (y || (d(), _++), null !== L && (L = null), 
+   return !m.getReadOnly() && f(e.dataTransfer) ? (y || (d(), L++), null !== I && (I = null), 
    w = e.clientX, C = e.clientY, e.dataTransfer.dropEffect = k = g(e), r.preventDefault(e)) : void 0;
   }, this.onDragLeave = function(e) {
-   return _--, 0 >= _ && y ? (h(), k = null, r.preventDefault(e)) : void 0;
+   return L--, 0 >= L && y ? (h(), k = null, r.preventDefault(e)) : void 0;
   }, this.onDrop = function(e) {
    if (y) {
-    var t = e.dataTransfer, n = "drag" == this.state;
-    if (n) switch (k) {
+    var t = e.dataTransfer;
+    if (A) switch (k) {
     case "move":
      S = S.contains(E.row, E.column) ? {
       start: E,
@@ -5407,18 +5494,18 @@ function printStackTrace(e) {
     case "copy":
      S = m.moveText(S, E, !0);
     } else {
-     var i = t.getData("Text");
+     var n = t.getData("Text");
      S = {
       start: E,
-      end: m.session.insert(E, i)
+      end: m.session.insert(E, n)
      }, m.focus(), k = null;
     }
     return h(), r.preventDefault(e);
    }
-  }, r.addListener(D, "dragstart", this.onDragStart.bind(e)), r.addListener(D, "dragend", this.onDragEnd.bind(e)), 
-  r.addListener(D, "dragenter", this.onDragEnter.bind(e)), r.addListener(D, "dragover", this.onDragOver.bind(e)), 
-  r.addListener(D, "dragleave", this.onDragLeave.bind(e)), r.addListener(D, "drop", this.onDrop.bind(e));
-  var L = null;
+  }, r.addListener(_, "dragstart", this.onDragStart.bind(e)), r.addListener(_, "dragend", this.onDragEnd.bind(e)), 
+  r.addListener(_, "dragenter", this.onDragEnter.bind(e)), r.addListener(_, "dragover", this.onDragOver.bind(e)), 
+  r.addListener(_, "dragleave", this.onDragLeave.bind(e)), r.addListener(_, "drop", this.onDrop.bind(e));
+  var I = null;
  }
  function i(e, t, n, i) {
   return Math.sqrt(Math.pow(n - e, 2) + Math.pow(i - t, 2));
@@ -5426,7 +5513,7 @@ function printStackTrace(e) {
  var o = e("../lib/dom"), r = e("../lib/event"), s = e("../lib/useragent"), a = 200, l = 200, c = 5;
  (function() {
   this.dragWait = function() {
-   var e = new Date().getTime() - this.mousedownEvent.time;
+   var e = Date.now() - this.mousedownEvent.time;
    e > this.editor.getDragDelay() && this.startDrag();
   }, this.dragWaitEnd = function() {
    var e = this.editor.container;
@@ -5454,11 +5541,12 @@ function printStackTrace(e) {
     this.mousedownEvent = e;
     var t = this.editor, n = e.inSelection(), i = e.getButton(), o = e.domEvent.detail || 1;
     if (1 === o && 0 === i && n) {
-     this.mousedownEvent.time = new Date().getTime();
+     if (e.editor.inMultiSelectMode && (e.getAccelKey() || e.getShiftKey())) return;
+     this.mousedownEvent.time = Date.now();
      var r = e.domEvent.target || e.domEvent.srcElement;
      if ("unselectable" in r && (r.unselectable = "on"), t.getDragDelay()) {
       if (s.isWebKit) {
-       self.cancelDrag = !0;
+       this.cancelDrag = !0;
        var a = t.container;
        a.draggable = !0;
       }
@@ -5705,21 +5793,22 @@ function printStackTrace(e) {
    this.x = e.x, this.y = e.y, this.isMousePressed = !0;
    var o = this.editor.renderer;
    o.$keepTextAreaAtCursor && (o.$keepTextAreaAtCursor = null);
-   var r = this, s = function(e) {
-    r.x = e.clientX, r.y = e.clientY, t && t(e);
-   }, a = function(e) {
-    clearInterval(c), l(), r[r.state + "End"] && r[r.state + "End"](e), r.$clickSelection = null, 
+   var r = this, a = function(e) {
+    r.x = e.clientX, r.y = e.clientY, t && t(e), r.mouseEvent = new s(e, r.editor), 
+    r.$mouseMoved = !0;
+   }, l = function(e) {
+    clearInterval(u), c(), r[r.state + "End"] && r[r.state + "End"](e), r.$clickSelection = null, 
     null == o.$keepTextAreaAtCursor && (o.$keepTextAreaAtCursor = !0, o.$moveTextAreaToCursor()), 
-    r.isMousePressed = !1, r.onMouseEvent("mouseup", e);
-   }, l = function() {
-    r[r.state] && r[r.state]();
+    r.isMousePressed = !1, r.$onCaptureMouseMove = r.releaseMouse = null, r.onMouseEvent("mouseup", e);
+   }, c = function() {
+    r[r.state] && r[r.state](), r.$mouseMoved = !1;
    };
    if (i.isOldIE && "dblclick" == e.domEvent.type) return setTimeout(function() {
-    a(e);
+    l(e);
    });
-   n.capture(this.editor.container, s, a);
-   var c = setInterval(l, 20);
-  };
+   r.$onCaptureMouseMove = a, r.releaseMouse = n.capture(this.editor.container, a, l);
+   var u = setInterval(c, 20);
+  }, this.releaseMouse = null;
  }).call(c.prototype), l.defineOptions(c.prototype, "mouseHandler", {
   scrollSpeed: {
    initialValue: 2
@@ -5732,6 +5821,9 @@ function printStackTrace(e) {
   },
   focusTimout: {
    initialValue: 0
+  },
+  tooltipFollowsMouse: {
+   initialValue: !0
   }
  }), t.MouseHandler = c;
 }), define("ace/mouse/fold_handler", [ "require", "exports", "module" ], function(e, t) {
@@ -5751,7 +5843,8 @@ function printStackTrace(e) {
    if ("foldWidgets" == n) {
     var i = t.getDocumentPosition().row, o = e.session, r = o.getParentFoldRangeData(i, !0), s = r.range || r.firstRange;
     if (s) {
-     var i = s.start.row, a = o.getFoldAt(i, o.getLine(i).length, 1);
+     i = s.start.row;
+     var a = o.getFoldAt(i, o.getLine(i).length, 1);
      a ? o.removeFold(a) : (o.addFold("...", s), e.renderer.scrollCursorIntoView({
       row: s.start.row,
       column: 0
@@ -5780,6 +5873,7 @@ function printStackTrace(e) {
    }
   }, this.addKeyboardHandler = function(e, t) {
    if (e) {
+    "function" != typeof e || e.handleKeyboard || (e.handleKeyboard = e);
     var n = this.$handlers.indexOf(e);
     -1 != n && this.$handlers.splice(n, 1), void 0 == t ? this.$handlers.push(e) : this.$handlers.splice(t, 0, e), 
     -1 == n && e.attach && e.attach(this.$editor);
@@ -5895,8 +5989,9 @@ function printStackTrace(e) {
   }, this.collapseRows = function() {
    return 0 == this.end.column ? new i(this.start.row, 0, Math.max(this.start.row, this.end.row - 1), 0) : new i(this.start.row, 0, this.end.row, 0);
   }, this.toScreenRange = function(e) {
-   var t = e.documentToScreenPosition(this.start), n = e.documentToScreenPosition(this.end);
-   return new i(t.row, t.column, n.row, n.column);
+   var t = e.documentToScreenPosition(this.start), n = e.documentToScreenPosition(this.end), o = new i(t.row, t.column, n.row, n.column);
+   return o.start.columnOffset = t.columnOffset, o.end.columnOffset = n.columnOffset, 
+   o;
   }, this.moveBy = function(e, t) {
    this.start.row += e, this.start.column += t, this.end.row += e, this.end.column += t;
   };
@@ -6094,11 +6189,14 @@ function printStackTrace(e) {
    this.session.$selectLongWords ? this.moveCursorLongWordRight() : this.moveCursorShortWordRight();
   }, this.moveCursorWordLeft = function() {
    this.session.$selectLongWords ? this.moveCursorLongWordLeft() : this.moveCursorShortWordLeft();
-  }, this.moveCursorBy = function(e, t) {
-   var n = this.session.documentToScreenPosition(this.lead.row, this.lead.column);
-   0 === t && (this.$desiredColumn ? n.column = this.$desiredColumn : this.$desiredColumn = n.column);
-   var i = this.session.screenToDocumentPosition(n.row + e, n.column);
-   this.moveCursorTo(i.row, i.column + t, 0 === t);
+  }, this.moveCursorBy = function(e, t, n) {
+   var i, o = this.session.documentToScreenPosition(this.lead.row, this.lead.column);
+   void 0 !== n && 0 !== e ? (i = n.$textLayer.textWidth(this.lead.row, o.column, o.columnOffset), 
+   o.column = 0, 0 === t && (this.$desiredColumn ? i = this.$desiredColumn : this.$desiredColumn = i)) : 0 === t && (this.$desiredColumn ? o.column = this.$desiredColumn : this.$desiredColumn = o.column);
+   var r = this.session.screenToDocumentPosition(o.row + e, o.column);
+   0 !== e && 0 === t && r.row === this.lead.row && r.column === this.lead.column && this.session.lineWidgets && this.session.lineWidgets[r.row] && r.row++, 
+   void 0 !== n && 0 !== e && (r.column += n.$findColumn(r.row, i, r.column, r.rowLength)), 
+   this.moveCursorTo(r.row, r.column + t, 0 === t);
   }, this.moveCursorToPosition = function(e) {
    this.moveCursorTo(e.row, e.column);
   }, this.moveCursorTo = function(e, t, n) {
@@ -6215,7 +6313,9 @@ function printStackTrace(e) {
     var i = t.slice(0);
     t = i[0];
    } else var i = [];
-   var o = t || "start", r = this.states[o], s = this.matchMappings[o], a = this.regExps[o];
+   var o = t || "start", r = this.states[o];
+   r || (o = "start", r = this.states[o]);
+   var s = this.matchMappings[o], a = this.regExps[o];
    a.lastIndex = 0;
    for (var l, c = [], u = 0, d = {
     type: null,
@@ -6257,7 +6357,7 @@ function printStackTrace(e) {
      break;
     }
    }
-   return d.type && c.push(d), {
+   return d.type && c.push(d), i.length > 1 && i[0] !== o && i.unshift(o), {
     tokens: c,
     state: i.length ? i : o
    };
@@ -6286,7 +6386,7 @@ function printStackTrace(e) {
   }, this.getRules = function() {
    return this.$rules;
   }, this.embedRules = function(e, t, i, o, r) {
-   var s = new e().getRules();
+   var s = "function" == typeof e ? new e().getRules() : e;
    if (o) for (var a = 0; a < o.length; a++) o[a] = t + o[a]; else {
     o = [];
     for (var l in s) o.push(t + l);
@@ -6297,9 +6397,9 @@ function printStackTrace(e) {
    return this.$embeds;
   };
   var e = function(e, t) {
-   return "start" != e && t.unshift(this.nextState, e), this.nextState;
+   return ("start" != e || t.length) && t.unshift(this.nextState, e), this.nextState;
   }, t = function(e, t) {
-   return t[0] !== e ? "start" : (t.shift(), t.shift());
+   return t.shift(), t.shift() || "start";
   };
   this.normalizeRules = function() {
    function n(r) {
@@ -6461,7 +6561,7 @@ function printStackTrace(e) {
  };
  (function() {
   this.tokenRe = new RegExp("^[" + r.packages.L + r.packages.Mn + r.packages.Mc + r.packages.Nd + r.packages.Pc + "\\$_]+", "g"), 
-  this.nonTokenRe = new RegExp("^(?:[^" + r.packages.L + r.packages.Mn + r.packages.Mc + r.packages.Nd + r.packages.Pc + "\\$_]|s])+", "g"), 
+  this.nonTokenRe = new RegExp("^(?:[^" + r.packages.L + r.packages.Mn + r.packages.Mc + r.packages.Nd + r.packages.Pc + "\\$_]|\\s])+", "g"), 
   this.getTokenizer = function() {
    return this.$tokenizer || (this.$highlightRules = new this.HighlightRules(), this.$tokenizer = new n(this.$highlightRules.getRules())), 
    this.$tokenizer;
@@ -6561,7 +6661,7 @@ function printStackTrace(e) {
   }, this.createModeDelegates = function(e) {
    this.$embeds = [], this.$modes = {};
    for (var t in e) e[t] && (this.$embeds.push(t), this.$modes[t] = new e[t]());
-   for (var n = [ "toggleCommentLines", "getNextLineIndent", "checkOutdent", "autoOutdent", "transformAction", "getCompletions" ], t = 0; t < n.length; t++) !function(e) {
+   for (var n = [ "toggleBlockComment", "toggleCommentLines", "getNextLineIndent", "checkOutdent", "autoOutdent", "transformAction", "getCompletions" ], t = 0; t < n.length; t++) !function(e) {
     var i = n[t], o = e[i];
     e[n[t]] = function() {
      return this.$delegator(i, arguments, o);
@@ -6610,7 +6710,7 @@ function printStackTrace(e) {
      meta: "keyword"
     };
    });
-  };
+  }, this.$id = "ace/mode/text";
  }).call(c.prototype), t.Mode = c;
 }), define("ace/anchor", [ "require", "exports", "module", "./lib/oop", "./lib/event_emitter" ], function(e, t) {
  var n = e("./lib/oop"), i = e("./lib/event_emitter").EventEmitter, o = t.Anchor = function(e, t, n) {
@@ -6640,7 +6740,7 @@ function printStackTrace(e) {
      row: this.row,
      column: this.column
     };
-    this.row = i.row, this.column = i.column, this._emit("change", {
+    this.row = i.row, this.column = i.column, this._signal("change", {
      old: o,
      value: i
     });
@@ -6745,7 +6845,7 @@ function printStackTrace(e) {
     range: r,
     lines: t
    };
-   return this._emit("change", {
+   return this._signal("change", {
     data: s
    }), n || r.end;
   }, this.insertNewLine = function(e) {
@@ -6760,7 +6860,7 @@ function printStackTrace(e) {
     range: o.fromPoints(e, n),
     text: this.getNewLineCharacter()
    };
-   return this._emit("change", {
+   return this._signal("change", {
     data: i
    }), n;
   }, this.insertInLine = function(e, t) {
@@ -6775,11 +6875,11 @@ function printStackTrace(e) {
     range: o.fromPoints(e, i),
     text: t
    };
-   return this._emit("change", {
+   return this._signal("change", {
     data: r
    }), i;
   }, this.remove = function(e) {
-   if (!e instanceof o && (e = o.fromPoints(e.start, e.end)), e.start = this.$clipPosition(e.start), 
+   if (e instanceof o || (e = o.fromPoints(e.start, e.end)), e.start = this.$clipPosition(e.start), 
    e.end = this.$clipPosition(e.end), e.isEmpty()) return e.start;
    var t = e.start.row, n = e.end.row;
    if (e.isMultiLine()) {
@@ -6797,7 +6897,7 @@ function printStackTrace(e) {
      range: i,
      text: s
     };
-    return this._emit("change", {
+    return this._signal("change", {
      data: l
     }), i.start;
    }
@@ -6810,7 +6910,7 @@ function printStackTrace(e) {
     nl: this.getNewLineCharacter(),
     lines: i
    };
-   return this._emit("change", {
+   return this._signal("change", {
     data: r
    }), i;
   }, this.removeNewLine = function(e) {
@@ -6821,11 +6921,11 @@ function printStackTrace(e) {
     range: i,
     text: this.getNewLineCharacter()
    };
-   this._emit("change", {
+   this._signal("change", {
     data: s
    });
   }, this.replace = function(e, t) {
-   if (!e instanceof o && (e = o.fromPoints(e.start, e.end)), 0 == t.length && e.isEmpty()) return e.start;
+   if (e instanceof o || (e = o.fromPoints(e.start, e.end)), 0 == t.length && e.isEmpty()) return e.start;
    if (t == this.getTextRange(e)) return e.end;
    if (this.remove(e), t) var n = this.insert(e.start, t); else n = e.start;
    return n;
@@ -6882,7 +6982,7 @@ function printStackTrace(e) {
     first: e,
     last: t
    };
-   this._emit("update", {
+   this._signal("update", {
     data: n
    });
   }, this.start = function(e) {
@@ -7196,12 +7296,17 @@ function printStackTrace(e) {
     }
    }
    return t.column -= 1, n.column += 1, o;
-  }, this.getAllFolds = function() {
-   function e(e) {
-    t.push(e);
-   }
-   for (var t = [], n = this.$foldData, i = 0; i < n.length; i++) for (var o = 0; o < n[i].folds.length; o++) e(n[i].folds[o]);
+  }, this.getFoldsInRangeList = function(e) {
+   if (Array.isArray(e)) {
+    var t = [];
+    e.forEach(function(e) {
+     t = t.concat(this.getFoldsInRange(e));
+    }, this);
+   } else var t = this.getFoldsInRange(e);
    return t;
+  }, this.getAllFolds = function() {
+   for (var e = [], t = this.$foldData, n = 0; n < t.length; n++) for (var i = 0; i < t[n].folds.length; i++) e.push(t[n].folds[i]);
+   return e;
   }, this.getFoldStringAt = function(e, t, n, i) {
    if (i = i || this.getFoldLine(e), !i) return null;
    for (var o, r, s = {
@@ -7318,8 +7423,9 @@ function printStackTrace(e) {
   }, this.unfold = function(e, t) {
    var n, o;
    if (null == e ? (n = new i(0, 0, this.getLength(), 0), t = !0) : n = "number" == typeof e ? new i(e, 0, e, this.getLine(e).length) : "row" in e ? i.fromPoints(e, e) : e, 
-   o = this.getFoldsInRange(n), t) this.removeFolds(o); else for (;o.length; ) this.expandFolds(o), 
-   o = this.getFoldsInRange(n);
+   o = this.getFoldsInRangeList(n), t) this.removeFolds(o); else for (var r = o; r.length; ) this.expandFolds(r), 
+   r = this.getFoldsInRangeList(n);
+   return o.length ? o : void 0;
   }, this.isRowFolded = function(e, t) {
    return !!this.getFoldLine(e, t);
   }, this.getRowFoldEnd = function(e, t) {
@@ -7395,14 +7501,19 @@ function printStackTrace(e) {
   }, this.foldAll = function(e, t, n) {
    void 0 == n && (n = 1e5);
    var i = this.foldWidgets;
-   t = t || this.getLength(), e = e || 0;
-   for (var o = e; t > o; o++) if (null == i[o] && (i[o] = this.getFoldWidget(o)), 
-   "start" == i[o]) {
-    var r = this.getFoldWidgetRange(o), s = r.end.row;
-    if (r && r.isMultiLine() && t >= s && r.start.row >= e) try {
-     var a = this.addFold("...", r);
-     a.collapseChildren = n, o = s;
-    } catch (l) {}
+   if (i) {
+    t = t || this.getLength(), e = e || 0;
+    for (var o = e; t > o; o++) if (null == i[o] && (i[o] = this.getFoldWidget(o)), 
+    "start" == i[o]) {
+     var r = this.getFoldWidgetRange(o);
+     if (r && r.isMultiLine() && r.end.row <= t && r.start.row >= e) {
+      o = r.end.row;
+      try {
+       var s = this.addFold("...", r);
+       s && (s.collapseChildren = n);
+      } catch (a) {}
+     }
+    }
    }
   }, this.$foldStyles = {
    manual: 1,
@@ -7440,22 +7551,43 @@ function printStackTrace(e) {
     firstRange: i
    };
   }, this.onFoldWidgetClick = function(e, t) {
-   var n = this.getFoldWidget(e), i = this.getLine(e);
    t = t.domEvent;
-   var o = t.shiftKey, r = t.ctrlKey || t.metaKey, s = t.altKey, a = "end" === n ? -1 : 1, l = this.getFoldAt(e, -1 === a ? 0 : i.length, a);
-   if (l) return o || r ? this.removeFold(l) : this.expandFold(l), void 0;
-   var c = this.getFoldWidgetRange(e);
-   if (c && !c.isMultiLine() && (l = this.getFoldAt(c.start.row, c.start.column, 1), 
-   l && c.isEqual(l.range))) return this.removeFold(l), void 0;
-   if (s) {
-    var u = this.getParentFoldRangeData(e);
-    if (u.range) var d = u.range.start.row + 1, h = u.range.end.row;
-    this.foldAll(d, h, r ? 1e4 : 0);
-   } else if (o) {
-    var h = c ? c.end.row : this.getLength();
-    this.foldAll(e + 1, c.end.row, r ? 1e4 : 0);
-   } else c && (r && (c.collapseChildren = 1e4), this.addFold("...", c));
-   c || ((t.target || t.srcElement).className += " ace_invalid");
+   var n = {
+    children: t.shiftKey,
+    all: t.ctrlKey || t.metaKey,
+    siblings: t.altKey
+   }, i = this.$toggleFoldWidget(e, n);
+   if (!i) {
+    var o = t.target || t.srcElement;
+    o && /ace_fold-widget/.test(o.className) && (o.className += " ace_invalid");
+   }
+  }, this.$toggleFoldWidget = function(e, t) {
+   if (this.getFoldWidget) {
+    var n = this.getFoldWidget(e), i = this.getLine(e), o = "end" === n ? -1 : 1, r = this.getFoldAt(e, -1 === o ? 0 : i.length, o);
+    if (r) return t.children || t.all ? this.removeFold(r) : this.expandFold(r), void 0;
+    var s = this.getFoldWidgetRange(e, !0);
+    if (s && !s.isMultiLine() && (r = this.getFoldAt(s.start.row, s.start.column, 1), 
+    r && s.isEqual(r.range))) return this.removeFold(r), void 0;
+    if (t.siblings) {
+     var a = this.getParentFoldRangeData(e);
+     if (a.range) var l = a.range.start.row + 1, c = a.range.end.row;
+     this.foldAll(l, c, t.all ? 1e4 : 0);
+    } else t.children ? (c = s ? s.end.row : this.getLength(), this.foldAll(e + 1, s.end.row, t.all ? 1e4 : 0)) : s && (t.all && (s.collapseChildren = 1e4), 
+    this.addFold("...", s));
+    return s;
+   }
+  }, this.toggleFoldWidget = function() {
+   var e = this.selection.getCursor().row;
+   e = this.getRowFoldStart(e);
+   var t = this.$toggleFoldWidget(e, {});
+   if (!t) {
+    var n = this.getParentFoldRangeData(e, !0);
+    if (t = n.range || n.firstRange) {
+     e = t.start.row;
+     var i = this.getFoldAt(e, this.getLine(e).length, 1);
+     i ? this.removeFold(i) : this.addFold("...", t);
+    }
+   }
   }, this.updateFoldWidgets = function(e) {
    var t = e.data, n = t.range, i = n.start.row, o = n.end.row - i;
    if (0 === o) this.foldWidgets[i] = null; else if ("removeText" == t.action || "removeLines" == t.action) this.foldWidgets.splice(i, o + 1, null); else {
@@ -7550,12 +7682,9 @@ function printStackTrace(e) {
    return this.join("\n");
   }, this.on("changeFold", this.onChangeFold.bind(this)), this.$onChange = this.onChange.bind(this), 
   "object" == typeof e && e.getLine || (e = new c(e)), this.setDocument(e), this.selection = new s(this), 
-  o.resetOptions(this), this.setMode(t), o._emit("session", this);
+  o.resetOptions(this), this.setMode(t), o._signal("session", this);
  };
  (function() {
-  function t(e) {
-   return 4352 > e ? !1 : e >= 4352 && 4447 >= e || e >= 4515 && 4519 >= e || e >= 4602 && 4607 >= e || e >= 9001 && 9002 >= e || e >= 11904 && 11929 >= e || e >= 11931 && 12019 >= e || e >= 12032 && 12245 >= e || e >= 12272 && 12283 >= e || e >= 12288 && 12350 >= e || e >= 12353 && 12438 >= e || e >= 12441 && 12543 >= e || e >= 12549 && 12589 >= e || e >= 12593 && 12686 >= e || e >= 12688 && 12730 >= e || e >= 12736 && 12771 >= e || e >= 12784 && 12830 >= e || e >= 12832 && 12871 >= e || e >= 12880 && 13054 >= e || e >= 13056 && 19903 >= e || e >= 19968 && 42124 >= e || e >= 42128 && 42182 >= e || e >= 43360 && 43388 >= e || e >= 44032 && 55203 >= e || e >= 55216 && 55238 >= e || e >= 55243 && 55291 >= e || e >= 63744 && 64255 >= e || e >= 65040 && 65049 >= e || e >= 65072 && 65106 >= e || e >= 65108 && 65126 >= e || e >= 65128 && 65131 >= e || e >= 65281 && 65376 >= e || e >= 65504 && 65510 >= e;
-  }
   n.implement(this, r), this.setDocument = function(e) {
    this.doc && this.doc.removeListener("change", this.$onChange), this.doc = e, e.on("change", this.$onChange), 
    this.bgTokenizer && this.bgTokenizer.setDocument(this.getDocument()), this.resetCaches();
@@ -7587,7 +7716,7 @@ function printStackTrace(e) {
    this.$fromUndo || !this.$undoManager || t.ignore || (this.$deltasDoc.push(t), n && 0 != n.length && this.$deltasFold.push({
     action: "removeFolds",
     folds: n
-   }), this.$informUndoManager.schedule()), this.bgTokenizer.$updateOnChange(t), this._emit("change", e);
+   }), this.$informUndoManager.schedule()), this.bgTokenizer.$updateOnChange(t), this._signal("change", e);
   }, this.setValue = function(e) {
    this.doc.setValue(e), this.selection.moveCursorTo(0, 0), this.selection.clearSelection(), 
    this.$resetRowCache(0), this.$deltas = [], this.$deltasDoc = [], this.$deltasFold = [], 
@@ -7651,22 +7780,22 @@ function printStackTrace(e) {
    this.setOverwrite(!this.$overwrite);
   }, this.addGutterDecoration = function(e, t) {
    this.$decorations[e] || (this.$decorations[e] = ""), this.$decorations[e] += " " + t, 
-   this._emit("changeBreakpoint", {});
+   this._signal("changeBreakpoint", {});
   }, this.removeGutterDecoration = function(e, t) {
-   this.$decorations[e] = (this.$decorations[e] || "").replace(" " + t, ""), this._emit("changeBreakpoint", {});
+   this.$decorations[e] = (this.$decorations[e] || "").replace(" " + t, ""), this._signal("changeBreakpoint", {});
   }, this.getBreakpoints = function() {
    return this.$breakpoints;
   }, this.setBreakpoints = function(e) {
    this.$breakpoints = [];
    for (var t = 0; t < e.length; t++) this.$breakpoints[e[t]] = "ace_breakpoint";
-   this._emit("changeBreakpoint", {});
+   this._signal("changeBreakpoint", {});
   }, this.clearBreakpoints = function() {
-   this.$breakpoints = [], this._emit("changeBreakpoint", {});
+   this.$breakpoints = [], this._signal("changeBreakpoint", {});
   }, this.setBreakpoint = function(e, t) {
    void 0 === t && (t = "ace_breakpoint"), t ? this.$breakpoints[e] = t : delete this.$breakpoints[e], 
-   this._emit("changeBreakpoint", {});
+   this._signal("changeBreakpoint", {});
   }, this.clearBreakpoint = function(e) {
-   delete this.$breakpoints[e], this._emit("changeBreakpoint", {});
+   delete this.$breakpoints[e], this._signal("changeBreakpoint", {});
   }, this.addMarker = function(e, t, n, i) {
    var o = this.$markerId++, r = {
     range: e,
@@ -7676,19 +7805,19 @@ function printStackTrace(e) {
     inFront: !!i,
     id: o
    };
-   return i ? (this.$frontMarkers[o] = r, this._emit("changeFrontMarker")) : (this.$backMarkers[o] = r, 
-   this._emit("changeBackMarker")), o;
+   return i ? (this.$frontMarkers[o] = r, this._signal("changeFrontMarker")) : (this.$backMarkers[o] = r, 
+   this._signal("changeBackMarker")), o;
   }, this.addDynamicMarker = function(e, t) {
    if (e.update) {
     var n = this.$markerId++;
-    return e.id = n, e.inFront = !!t, t ? (this.$frontMarkers[n] = e, this._emit("changeFrontMarker")) : (this.$backMarkers[n] = e, 
-    this._emit("changeBackMarker")), e;
+    return e.id = n, e.inFront = !!t, t ? (this.$frontMarkers[n] = e, this._signal("changeFrontMarker")) : (this.$backMarkers[n] = e, 
+    this._signal("changeBackMarker")), e;
    }
   }, this.removeMarker = function(e) {
    var t = this.$frontMarkers[e] || this.$backMarkers[e];
    if (t) {
     var n = t.inFront ? this.$frontMarkers : this.$backMarkers;
-    t && (delete n[e], this._emit(t.inFront ? "changeFrontMarker" : "changeBackMarker"));
+    t && (delete n[e], this._signal(t.inFront ? "changeFrontMarker" : "changeBackMarker"));
    }
   }, this.getMarkers = function(e) {
    return e ? this.$frontMarkers : this.$backMarkers;
@@ -7703,7 +7832,7 @@ function printStackTrace(e) {
    var o = new l(e, 0, t, 1/0);
    return o.id = this.addMarker(o, n, "fullLine", i), o;
   }, this.setAnnotations = function(e) {
-   this.$annotations = e, this._emit("changeAnnotation", {});
+   this.$annotations = e, this._signal("changeAnnotation", {});
   }, this.getAnnotations = function() {
    return this.$annotations || [];
   }, this.clearAnnotations = function() {
@@ -7735,7 +7864,7 @@ function printStackTrace(e) {
    return this.$useWorker;
   }, this.onReloadTokenizer = function(e) {
    var t = e.data;
-   this.bgTokenizer.start(t.first), this._emit("tokenizerUpdate", e);
+   this.bgTokenizer.start(t.first), this._signal("tokenizerUpdate", e);
   }, this.$modes = {}, this.$mode = null, this.$modeId = null, this.setMode = function(e, t) {
    if (e && "object" == typeof e) {
     if (e.getTokenizer) return this.$onChangeMode(e);
@@ -7760,12 +7889,12 @@ function printStackTrace(e) {
      this.bgTokenizer = new u(n);
      var o = this;
      this.bgTokenizer.addEventListener("update", function(e) {
-      o._emit("tokenizerUpdate", e);
+      o._signal("tokenizerUpdate", e);
      });
     }
     this.bgTokenizer.setDocument(this.getDocument()), this.tokenRe = e.tokenRe, this.nonTokenRe = e.nonTokenRe, 
-    this.$options.wrapMethod.set.call(this, this.$wrapMethod), t || (this.$setFolding(e.foldingRules), 
-    this._emit("changeMode"), this.bgTokenizer.start(0));
+    t || (this.$options.wrapMethod.set.call(this, this.$wrapMethod), this.$setFolding(e.foldingRules), 
+    this.bgTokenizer.start(0), this._emit("changeMode"));
    }
   }, this.$stopWorker = function() {
    this.$worker && this.$worker.terminate(), this.$worker = null;
@@ -7786,7 +7915,13 @@ function printStackTrace(e) {
   }, this.getScrollLeft = function() {
    return this.$scrollLeft;
   }, this.getScreenWidth = function() {
-   return this.$computeWidth(), this.screenWidth;
+   return this.$computeWidth(), this.lineWidgets ? Math.max(this.getLineWidgetMaxWidth(), this.screenWidth) : this.screenWidth;
+  }, this.getLineWidgetMaxWidth = function() {
+   if (null != this.lineWidgetsWidth) return this.lineWidgetsWidth;
+   var e = 0;
+   return this.lineWidgets.forEach(function(t) {
+    t && t.screenWidth > e && (e = t.screenWidth);
+   }), this.lineWidgetWidth = e;
   }, this.$computeWidth = function(e) {
    if (this.$modified || e) {
     if (this.$modified = !1, this.$useWrapMode) return this.screenWidth = this.$wrapLimit;
@@ -7939,7 +8074,7 @@ function printStackTrace(e) {
      for (var n = 0; t > n; n++) this.$wrapData.push([]);
      this.$updateWrapData(0, t - 1);
     }
-    this._emit("changeWrapMode");
+    this._signal("changeWrapMode");
    }
   }, this.getUseWrapMode = function() {
    return this.$useWrapMode;
@@ -7947,7 +8082,7 @@ function printStackTrace(e) {
    (this.$wrapLimitRange.min !== e || this.$wrapLimitRange.max !== t) && (this.$wrapLimitRange = {
     min: e,
     max: t
-   }, this.$modified = !0, this._emit("changeWrapMode"));
+   }, this.$modified = !0, this._signal("changeWrapMode"));
   }, this.adjustWrapLimit = function(e, t) {
    var n = this.$wrapLimitRange;
    n.max < 0 && (n = {
@@ -7957,7 +8092,7 @@ function printStackTrace(e) {
    var i = this.$constrainWrapLimit(e, n.min, n.max);
    return i != this.$wrapLimit && i > 1 ? (this.$wrapLimit = i, this.$modified = !0, 
    this.$useWrapMode && (this.$updateWrapData(0, this.getLength() - 1), this.$resetRowCache(0), 
-   this._emit("changeWrapLimit")), !0) : !1;
+   this._signal("changeWrapLimit")), !0) : !1;
   }, this.$constrainWrapLimit = function(e, t, n) {
    return t && (e = Math.max(t, e)), n && (e = Math.min(n, e)), e;
   }, this.getWrapLimit = function() {
@@ -8017,48 +8152,46 @@ function printStackTrace(e) {
   }, this.$updateRowLengthCache = function(e, t) {
    this.$rowLengthCache[e] = null, this.$rowLengthCache[t] = null;
   }, this.$updateWrapData = function(e, t) {
-   var n, i, o = this.doc.getAllLines(), r = this.getTabSize(), s = this.$wrapData, a = this.$wrapLimit, l = e;
-   for (t = Math.min(t, o.length - 1); t >= l; ) i = this.getFoldLine(l, i), i ? (n = [], 
+   var n, i, o = this.doc.getAllLines(), r = this.getTabSize(), a = this.$wrapData, l = this.$wrapLimit, u = e;
+   for (t = Math.min(t, o.length - 1); t >= u; ) i = this.getFoldLine(u, i), i ? (n = [], 
    i.walk(function(e, t, i, r) {
-    var s;
+    var a;
     if (null != e) {
-     s = this.$getDisplayTokens(e, n.length), s[0] = h;
-     for (var a = 1; a < s.length; a++) s[a] = p;
-    } else s = this.$getDisplayTokens(o[t].substring(r, i), n.length);
-    n = n.concat(s);
-   }.bind(this), i.end.row, o[i.end.row].length + 1), s[i.start.row] = this.$computeWrapSplits(n, a, r), 
-   l = i.end.row + 1) : (n = this.$getDisplayTokens(o[l]), s[l] = this.$computeWrapSplits(n, a, r), 
-   l++);
+     a = this.$getDisplayTokens(e, n.length), a[0] = s;
+     for (var l = 1; l < a.length; l++) a[l] = c;
+    } else a = this.$getDisplayTokens(o[t].substring(r, i), n.length);
+    n = n.concat(a);
+   }.bind(this), i.end.row, o[i.end.row].length + 1), a[i.start.row] = this.$computeWrapSplits(n, l, r), 
+   u = i.end.row + 1) : (n = this.$getDisplayTokens(o[u]), a[u] = this.$computeWrapSplits(n, l, r), 
+   u++);
   };
-  var s = 1, c = 2, h = 3, p = 4, f = 9, g = 10, m = 11, v = 12;
+  var t = 1, s = 3, c = 4, h = 9, p = 10, f = 11, g = 12;
   this.$computeWrapSplits = function(e, t) {
    function n(t) {
     var n = e.slice(r, t), o = n.length;
     n.join("").replace(/12/g, function() {
      o -= 1;
-    }).replace(/2/g, function() {
-     o -= 1;
-    }), s += o, i.push(s), r = t;
+    }), a += o, i.push(a), r = t;
    }
    if (0 == e.length) return [];
-   for (var i = [], o = e.length, r = 0, s = 0, a = this.$wrapAsCode; o - r > t; ) {
-    var l = r + t;
-    if (e[l - 1] >= g && e[l] >= g) n(l); else if (e[l] != h && e[l] != p) {
-     for (var c = Math.max(l - (a ? 10 : t - (t >> 2)), r - 1); l > c && e[l] < h; ) l--;
-     if (a) {
-      for (;l > c && e[l] < h; ) l--;
-      for (;l > c && e[l] == f; ) l--;
-     } else for (;l > c && e[l] < g; ) l--;
-     l > c ? n(++l) : (l = r + t, n(l));
+   for (var i = [], o = e.length, r = 0, a = 0, l = this.$wrapAsCode; o - r > t; ) {
+    var u = r + t;
+    if (e[u - 1] >= p && e[u] >= p) n(u); else if (e[u] != s && e[u] != c) {
+     for (var d = Math.max(u - (l ? 10 : t - (t >> 2)), r - 1); u > d && e[u] < s; ) u--;
+     if (l) {
+      for (;u > d && e[u] < s; ) u--;
+      for (;u > d && e[u] == h; ) u--;
+     } else for (;u > d && e[u] < p; ) u--;
+     u > d ? n(++u) : (u = r + t, n(u));
     } else {
-     for (l; l != r - 1 && e[l] != h; l--) ;
-     if (l > r) {
-      n(l);
+     for (u; u != r - 1 && e[u] != s; u--) ;
+     if (u > r) {
+      n(u);
       continue;
      }
-     for (l = r + t; l < e.length && e[l] == p; l++) ;
-     if (l == e.length) break;
-     n(l);
+     for (u = r + t; u < e.length && e[u] == c; u++) ;
+     if (u == e.length) break;
+     n(u);
     }
    }
    return i;
@@ -8066,21 +8199,24 @@ function printStackTrace(e) {
    var i, o = [];
    n = n || 0;
    for (var r = 0; r < e.length; r++) {
-    var a = e.charCodeAt(r);
-    if (9 == a) {
-     i = this.getScreenTabSize(o.length + n), o.push(m);
-     for (var l = 1; i > l; l++) o.push(v);
-    } else 32 == a ? o.push(g) : a > 39 && 48 > a || a > 57 && 64 > a ? o.push(f) : a >= 4352 && t(a) ? o.push(s, c) : o.push(s);
+    var s = e.charCodeAt(r);
+    if (9 == s) {
+     i = this.getScreenTabSize(o.length + n), o.push(f);
+     for (var a = 1; i > a; a++) o.push(g);
+    } else 32 == s ? o.push(p) : s > 39 && 48 > s || s > 57 && 64 > s ? o.push(h) : o.push(t);
    }
    return o;
-  }, this.$getStringScreenWidth = function(e, n, i) {
-   if (0 == n) return [ 0, 0 ];
-   null == n && (n = 1/0), i = i || 0;
-   var o, r;
-   for (r = 0; r < e.length && (o = e.charCodeAt(r), i += 9 == o ? this.getScreenTabSize(i) : o >= 4352 && t(o) ? 2 : 1, 
-   !(i > n)); r++) ;
-   return [ i, r ];
-  }, this.getRowLength = function(e) {
+  }, this.$getStringScreenWidth = function(e, t, n) {
+   if (0 == t) return [ 0, 0 ];
+   null == t && (t = 1/0), n = n || 0;
+   var i, o;
+   for (o = 0; o < e.length && (i = e.charCodeAt(o), 9 == i && (n += this.getScreenTabSize(n)), 
+   n += 1, !(n > t)); o++) ;
+   return [ n, o ];
+  }, this.lineWidgets = null, this.getRowLength = function(e) {
+   if (this.lineWidgets) var t = this.lineWidgets[e] && this.lineWidgets[e].rowCount || 0; else t = 0;
+   return this.$useWrapMode && this.$wrapData[e] ? this.$wrapData[e].length + 1 + t : 1 + t;
+  }, this.getRowLineCount = function(e) {
    return this.$useWrapMode && this.$wrapData[e] ? this.$wrapData[e].length + 1 : 1;
   }, this.getScreenLastRowColumn = function(e) {
    var t = this.screenToDocumentPosition(e, Number.MAX_VALUE);
@@ -8107,23 +8243,28 @@ function printStackTrace(e) {
    var n, i, o = 0, r = 0, s = 0, a = 0, l = this.$screenRowCache, c = this.$getRowCacheIndex(l, e), u = l.length;
    if (u && c >= 0) var s = l[c], o = this.$docRowCache[c], d = e > l[u - 1]; else var d = !u;
    for (var h = this.getLength() - 1, p = this.getNextFoldLine(o), f = p ? p.start.row : 1/0; e >= s && (a = this.getRowLength(o), 
-   !(s + a - 1 >= e || o >= h)); ) s += a, o++, o > f && (o = p.end.row + 1, p = this.getNextFoldLine(o, p), 
+   !(s + a > e || o >= h)); ) s += a, o++, o > f && (o = p.end.row + 1, p = this.getNextFoldLine(o, p), 
    f = p ? p.start.row : 1/0), d && (this.$docRowCache.push(o), this.$screenRowCache.push(s));
    if (p && p.start.row <= o) n = this.getFoldDisplayLine(p), o = p.start.row; else {
     if (e >= s + a || o > h) return {
      row: h,
-     column: this.getLine(h).length
+     column: this.getLine(h).length,
+     rowLength: i
     };
     n = this.getLine(o), p = null;
    }
    if (this.$useWrapMode) {
     var g = this.$wrapData[o];
-    g && (i = g[e - s], e > s && g.length && (r = g[e - s - 1] || g[g.length - 1], n = n.substring(r)));
+    if (g) {
+     var m = Math.floor(e - s);
+     i = g[m], m > 0 && g.length && (r = g[m - 1] || g[g.length - 1], n = n.substring(r));
+    }
    }
    return r += this.$getStringScreenWidth(n, t)[1], this.$useWrapMode && r >= i && (r = i - 1), 
    p ? p.idxToPosition(r) : {
     row: o,
-    column: r
+    column: r,
+    rowLength: i
    };
   }, this.documentToScreenPosition = function(e, t) {
    if ("undefined" == typeof t) var n = this.$clipPositionToDocument(e.row, e.column); else n = this.$clipPositionToDocument(e, t);
@@ -8140,14 +8281,17 @@ function printStackTrace(e) {
     i += this.getRowLength(a), a = s, d && (this.$docRowCache.push(a), this.$screenRowCache.push(i));
    }
    var f = "";
-   if (h && a >= p ? (f = this.getFoldDisplayLine(h, e, t), o = h.start.row) : (f = this.getLine(e).substring(0, t), 
-   o = e), this.$useWrapMode) {
-    for (var g = this.$wrapData[o], m = 0; f.length >= g[m]; ) i++, m++;
-    f = f.substring(g[m - 1] || 0, f.length);
+   h && a >= p ? (f = this.getFoldDisplayLine(h, e, t), o = h.start.row) : (f = this.getLine(e).substring(0, t), 
+   o = e);
+   var g = 0;
+   if (this.$useWrapMode) {
+    for (var m = this.$wrapData[o], v = 0; f.length >= m[v]; ) g = m[v], i++, v++;
+    f = f.substring(m[v - 1] || 0, f.length);
    }
    return {
     row: i,
-    column: this.$getStringScreenWidth(f)[0]
+    column: this.$getStringScreenWidth(f)[0],
+    columnOffset: g
    };
   }, this.documentToScreenColumn = function(e, t) {
    return this.documentToScreenPosition(e, t).column;
@@ -8160,7 +8304,7 @@ function printStackTrace(e) {
     e = this.getLength();
     for (var s = this.$foldData, o = 0; o < s.length; o++) t = s[o], e -= t.end.row - t.start.row;
    }
-   return e;
+   return this.lineWidgets && (e += this.$getWidgetScreenLength()), e;
   };
  }).call(h.prototype), e("./edit_session/folding").Folding.call(h.prototype), e("./edit_session/bracket_match").BracketMatch.call(h.prototype), 
  o.defineOptions(h.prototype, "session", {
@@ -8176,19 +8320,20 @@ function printStackTrace(e) {
     }
    },
    get: function() {
-    return this.getUseWrapMode() ? this.getWrapLimitRange().min || "free" : "off";
+    return this.getUseWrapMode() ? -1 == this.$wrap ? "printMargin" : this.getWrapLimitRange().min ? this.$wrap : "free" : "off";
    },
    handlesSet: !0
   },
   wrapMethod: {
    set: function(e) {
-    this.$wrapAsCode = "auto" == e ? "text" != this.$mode.type : "text" != e;
+    e = "auto" == e ? "text" != this.$mode.type : "text" != e, e != this.$wrapAsCode && (this.$wrapAsCode = e, 
+    this.$useWrapMode && (this.$modified = !0, this.$resetRowCache(0), this.$updateWrapData(0, this.getLength() - 1)));
    },
    initialValue: "auto"
   },
   firstLineNumber: {
    set: function() {
-    this._emit("changeBreakpoint");
+    this._signal("changeBreakpoint");
    },
    initialValue: 1
   },
@@ -8204,14 +8349,14 @@ function printStackTrace(e) {
   tabSize: {
    set: function(e) {
     isNaN(e) || this.$tabSize === e || (this.$modified = !0, this.$rowLengthCache = [], 
-    this.$tabSize = e, this._emit("changeTabSize"));
+    this.$tabSize = e, this._signal("changeTabSize"));
    },
    initialValue: 4,
    handlesSet: !0
   },
   overwrite: {
    set: function() {
-    this._emit("changeOverwrite");
+    this._signal("changeOverwrite");
    },
    initialValue: !1
   },
@@ -8223,6 +8368,14 @@ function printStackTrace(e) {
     return this.doc.getNewLineMode();
    },
    handlesSet: !0
+  },
+  mode: {
+   set: function(e) {
+    this.setMode(e);
+   },
+   get: function() {
+    return this.$modeId;
+   }
   }
  }), t.EditSession = h;
 }), define("ace/search", [ "require", "exports", "module", "./lib/lang", "./lib/oop", "./range" ], function(e, t) {
@@ -8252,19 +8405,23 @@ function printStackTrace(e) {
    if (!t.needle) return [];
    this.$assembleRegExp(t);
    var i = t.range, r = i ? e.getLines(i.start.row, i.end.row) : e.doc.getAllLines(), s = [], a = t.re;
-   if (t.$isMultiLine) for (var l = a.length, c = r.length - l, u = a.offset || 0; c >= u; u++) {
-    for (var d = 0; l > d && -1 != r[u + d].search(a[d]); d++) ;
-    var h = r[u], p = r[u + l - 1], f = h.match(a[0])[0].length, g = p.match(a[l - 1])[0].length;
-    s.push(new o(u, h.length - f, u + l - 1, g));
-   } else for (var m = 0; m < r.length; m++) for (var v = n.getMatchOffsets(r[m], a), d = 0; d < v.length; d++) {
-    var b = v[d];
-    s.push(new o(m, b.offset, m, b.offset + b.length));
+   if (t.$isMultiLine) {
+    var l, c = a.length, u = r.length - c;
+    e: for (var d = a.offset || 0; u >= d; d++) {
+     for (var h = 0; c > h; h++) if (-1 == r[d + h].search(a[h])) continue e;
+     var p = r[d], f = r[d + c - 1], g = p.length - p.match(a[0])[0].length, m = f.match(a[c - 1])[0].length;
+     l && l.end.row === d && l.end.column > g || (s.push(l = new o(d, g, d + c - 1, m)), 
+     c > 2 && (d = d + c - 2));
+    }
+   } else for (var v = 0; v < r.length; v++) for (var b = n.getMatchOffsets(r[v], a), h = 0; h < b.length; h++) {
+    var y = b[h];
+    s.push(new o(v, y.offset, v, y.offset + y.length));
    }
    if (i) {
-    for (var y = i.start.column, w = i.start.column, m = 0, d = s.length - 1; d > m && s[m].start.column < y && s[m].start.row == i.start.row; ) m++;
-    for (;d > m && s[d].end.column > w && s[d].end.row == i.end.row; ) d--;
-    for (s = s.slice(m, d + 1), m = 0, d = s.length; d > m; m++) s[m].start.row += i.start.row, 
-    s[m].end.row += i.start.row;
+    for (var w = i.start.column, C = i.start.column, v = 0, h = s.length - 1; h > v && s[v].start.column < w && s[v].start.row == i.start.row; ) v++;
+    for (;h > v && s[h].end.column > C && s[h].end.row == i.end.row; ) h--;
+    for (s = s.slice(v, h + 1), v = 0, h = s.length; h > v; v++) s[v].start.row += i.start.row, 
+    s[v].end.row += i.start.row;
    }
    return s;
   }, this.replace = function(e, t) {
@@ -8390,7 +8547,7 @@ function printStackTrace(e) {
      if ("string" == typeof n) return this.bindKey(n, t);
      "function" == typeof n && (n = {
       exec: n
-     }), n.name || (n.name = t), this.addCommand(n);
+     }), "object" == typeof n && (n.name || (n.name = t), this.addCommand(n));
     }
    }, this);
   }, this.removeCommands = function(e) {
@@ -8833,7 +8990,7 @@ function printStackTrace(e) {
    this._signal("input", {}), this.session.bgTokenizer && this.session.bgTokenizer.scheduleStart();
   }.bind(this)), this.on("change", function(e, t) {
    t._$emitInputEvent.schedule(31);
-  }), this.setSession(t || new u("")), m.resetOptions(this), m._emit("editor", this);
+  }), this.setSession(t || new u("")), m.resetOptions(this), m._signal("editor", this);
  };
  (function() {
   n.implement(this, p), this.$initOperationListeners = function() {
@@ -8843,14 +9000,14 @@ function printStackTrace(e) {
    this.selections = [], this.commands.on("exec", function(t) {
     this.startOperation(t);
     var n = t.command;
-    if ("fileJump" == n.group) {
+    if ("fileJump" == n.aceCommandGroup) {
      var i = this.prevOp;
-     i && "fileJump" == i.command.group || (this.lastFileJumpPos = e(this.selections));
+     i && "fileJump" == i.command.aceCommandGroup || (this.lastFileJumpPos = e(this.selections));
     } else this.lastFileJumpPos = null;
    }.bind(this), !0), this.commands.on("afterExec", function(e) {
     var t = e.command;
-    return "fileJump" == t.group && this.lastFileJumpPos && !this.curOp.selectionChanged ? (this.selection.fromJSON(this.lastFileJumpPos), 
-    void 0) : (this.endOperation(e), void 0);
+    "fileJump" == t.aceCommandGroup && this.lastFileJumpPos && !this.curOp.selectionChanged && this.selection.fromJSON(this.lastFileJumpPos), 
+    this.endOperation(e);
    }.bind(this), !0), this.$opResetTimer = o.delayedCall(this.endOperation.bind(this)), 
    this.on("change", function() {
     this.curOp || this.startOperation(), this.curOp.docChanged = !0;
@@ -8864,10 +9021,33 @@ function printStackTrace(e) {
    }
    e || (this.previousCommand = null, e = {}), this.$opResetTimer.schedule(), this.curOp = {
     command: e.command || {},
-    args: e.args
-   }, this.selections.push(this.selection.toJSON());
+    args: e.args,
+    scrollTop: this.renderer.scrollTop
+   };
+   var t = this.curOp.command;
+   t && t.scrollIntoView && this.$blockScrolling++, this.selections.push(this.selection.toJSON());
   }, this.endOperation = function() {
-   this.curOp && (this.prevOp = this.curOp, this.curOp = null);
+   if (this.curOp) {
+    var e = this.curOp.command;
+    if (e && e.scrollIntoView) {
+     switch (this.$blockScrolling--, e.scrollIntoView) {
+     case "center":
+      this.renderer.scrollCursorIntoView(null, .5);
+      break;
+
+     case "animate":
+     case "cursor":
+      this.renderer.scrollCursorIntoView();
+      break;
+
+     case "selectionPart":
+      var t = this.selection.getRange(), n = this.renderer.layerConfig;
+      (t.start.row >= n.lastRow || t.end.row <= n.firstRow) && this.renderer.scrollSelectionIntoView(this.selection.anchor, this.selection.lead);
+     }
+     "animate" == e.scrollIntoView && this.renderer.animateScrolling(this.curOp.scrollTop);
+    }
+    this.prevOp = this.curOp, this.curOp = null;
+   }
   }, this.$historyTracker = function(e) {
    if (this.$mergeUndoDeltas) {
     var t = this.prevOp, n = [ "backspace", "del", "insertstring" ], i = t.command && e.command.name == t.command.name;
@@ -8905,28 +9085,28 @@ function printStackTrace(e) {
      var n = this.session.getSelection();
      n.removeEventListener("changeCursor", this.$onCursorChange), n.removeEventListener("changeSelection", this.$onSelectionChange);
     }
-    this.session = e, this.$onDocumentChange = this.onDocumentChange.bind(this), e.addEventListener("change", this.$onDocumentChange), 
-    this.renderer.setSession(e), this.$onChangeMode = this.onChangeMode.bind(this), 
-    e.addEventListener("changeMode", this.$onChangeMode), this.$onTokenizerUpdate = this.onTokenizerUpdate.bind(this), 
-    e.addEventListener("tokenizerUpdate", this.$onTokenizerUpdate), this.$onChangeTabSize = this.renderer.onChangeTabSize.bind(this.renderer), 
-    e.addEventListener("changeTabSize", this.$onChangeTabSize), this.$onChangeWrapLimit = this.onChangeWrapLimit.bind(this), 
-    e.addEventListener("changeWrapLimit", this.$onChangeWrapLimit), this.$onChangeWrapMode = this.onChangeWrapMode.bind(this), 
-    e.addEventListener("changeWrapMode", this.$onChangeWrapMode), this.$onChangeFold = this.onChangeFold.bind(this), 
-    e.addEventListener("changeFold", this.$onChangeFold), this.$onChangeFrontMarker = this.onChangeFrontMarker.bind(this), 
-    this.session.addEventListener("changeFrontMarker", this.$onChangeFrontMarker), this.$onChangeBackMarker = this.onChangeBackMarker.bind(this), 
-    this.session.addEventListener("changeBackMarker", this.$onChangeBackMarker), this.$onChangeBreakpoint = this.onChangeBreakpoint.bind(this), 
-    this.session.addEventListener("changeBreakpoint", this.$onChangeBreakpoint), this.$onChangeAnnotation = this.onChangeAnnotation.bind(this), 
-    this.session.addEventListener("changeAnnotation", this.$onChangeAnnotation), this.$onCursorChange = this.onCursorChange.bind(this), 
-    this.session.addEventListener("changeOverwrite", this.$onCursorChange), this.$onScrollTopChange = this.onScrollTopChange.bind(this), 
-    this.session.addEventListener("changeScrollTop", this.$onScrollTopChange), this.$onScrollLeftChange = this.onScrollLeftChange.bind(this), 
-    this.session.addEventListener("changeScrollLeft", this.$onScrollLeftChange), this.selection = e.getSelection(), 
-    this.selection.addEventListener("changeCursor", this.$onCursorChange), this.$onSelectionChange = this.onSelectionChange.bind(this), 
-    this.selection.addEventListener("changeSelection", this.$onSelectionChange), this.onChangeMode(), 
-    this.$blockScrolling += 1, this.onCursorChange(), this.$blockScrolling -= 1, this.onScrollTopChange(), 
-    this.onScrollLeftChange(), this.onSelectionChange(), this.onChangeFrontMarker(), 
+    this.session = e, e.$renderer = this.renderer, this.$onDocumentChange = this.onDocumentChange.bind(this), 
+    e.addEventListener("change", this.$onDocumentChange), this.renderer.setSession(e), 
+    this.$onChangeMode = this.onChangeMode.bind(this), e.addEventListener("changeMode", this.$onChangeMode), 
+    this.$onTokenizerUpdate = this.onTokenizerUpdate.bind(this), e.addEventListener("tokenizerUpdate", this.$onTokenizerUpdate), 
+    this.$onChangeTabSize = this.renderer.onChangeTabSize.bind(this.renderer), e.addEventListener("changeTabSize", this.$onChangeTabSize), 
+    this.$onChangeWrapLimit = this.onChangeWrapLimit.bind(this), e.addEventListener("changeWrapLimit", this.$onChangeWrapLimit), 
+    this.$onChangeWrapMode = this.onChangeWrapMode.bind(this), e.addEventListener("changeWrapMode", this.$onChangeWrapMode), 
+    this.$onChangeFold = this.onChangeFold.bind(this), e.addEventListener("changeFold", this.$onChangeFold), 
+    this.$onChangeFrontMarker = this.onChangeFrontMarker.bind(this), this.session.addEventListener("changeFrontMarker", this.$onChangeFrontMarker), 
+    this.$onChangeBackMarker = this.onChangeBackMarker.bind(this), this.session.addEventListener("changeBackMarker", this.$onChangeBackMarker), 
+    this.$onChangeBreakpoint = this.onChangeBreakpoint.bind(this), this.session.addEventListener("changeBreakpoint", this.$onChangeBreakpoint), 
+    this.$onChangeAnnotation = this.onChangeAnnotation.bind(this), this.session.addEventListener("changeAnnotation", this.$onChangeAnnotation), 
+    this.$onCursorChange = this.onCursorChange.bind(this), this.session.addEventListener("changeOverwrite", this.$onCursorChange), 
+    this.$onScrollTopChange = this.onScrollTopChange.bind(this), this.session.addEventListener("changeScrollTop", this.$onScrollTopChange), 
+    this.$onScrollLeftChange = this.onScrollLeftChange.bind(this), this.session.addEventListener("changeScrollLeft", this.$onScrollLeftChange), 
+    this.selection = e.getSelection(), this.selection.addEventListener("changeCursor", this.$onCursorChange), 
+    this.$onSelectionChange = this.onSelectionChange.bind(this), this.selection.addEventListener("changeSelection", this.$onSelectionChange), 
+    this.onChangeMode(), this.$blockScrolling += 1, this.onCursorChange(), this.$blockScrolling -= 1, 
+    this.onScrollTopChange(), this.onScrollLeftChange(), this.onSelectionChange(), this.onChangeFrontMarker(), 
     this.onChangeBackMarker(), this.onChangeBreakpoint(), this.onChangeAnnotation(), 
     this.session.getUseWrapMode() && this.renderer.adjustWrapLimit(), this.renderer.updateFull(), 
-    this._emit("changeSession", {
+    this._signal("changeSession", {
      session: e,
      oldSession: t
     });
@@ -8985,7 +9165,7 @@ function printStackTrace(e) {
   }, this.onDocumentChange = function(e) {
    var t, n = e.data, i = n.range;
    t = i.start.row == i.end.row && "insertLines" != n.action && "removeLines" != n.action ? i.end.row : 1/0, 
-   this.renderer.updateLines(i.start.row, t), this._emit("change", e), this.$cursorChange();
+   this.renderer.updateLines(i.start.row, t), this._signal("change", e), this.$cursorChange();
   }, this.onTokenizerUpdate = function(e) {
    var t = e.data;
    this.renderer.updateLines(t.first, t.last);
@@ -8995,7 +9175,7 @@ function printStackTrace(e) {
    this.renderer.scrollToX(this.session.getScrollLeft());
   }, this.onCursorChange = function() {
    this.$cursorChange(), this.$blockScrolling || this.renderer.scrollCursorIntoView(), 
-   this.$highlightBrackets(), this.$updateHighlightActiveLine(), this._emit("changeSelection");
+   this.$highlightBrackets(), this.$updateHighlightActiveLine(), this._signal("changeSelection");
   }, this.$updateHighlightActiveLine = function() {
    var e, t = this.getSession();
    if (this.$highlightActiveLine && ("line" == this.$selectionStyle && this.selection.isMultiLine() || (e = this.getCursorPosition()), 
@@ -9004,7 +9184,7 @@ function printStackTrace(e) {
     var n = new h(e.row, e.column, e.row, 1/0);
     n.id = t.addMarker(n, "ace_active-line", "screenLine"), t.$highlightLineMarker = n;
    } else e && (t.$highlightLineMarker.start.row = e.row, t.$highlightLineMarker.end.row = e.row, 
-   t.$highlightLineMarker.start.column = e.column, t._emit("changeBackMarker"));
+   t.$highlightLineMarker.start.column = e.column, t._signal("changeBackMarker"));
   }, this.onSelectionChange = function() {
    var e = this.session;
    if (e.$selectionMarker && e.removeMarker(e.$selectionMarker), e.$selectionMarker = null, 
@@ -9013,7 +9193,7 @@ function printStackTrace(e) {
     e.$selectionMarker = e.addMarker(t, "ace_selection", n);
    }
    var i = this.$highlightSelectedWord && this.$getSelectionHighLightRegexp();
-   this.session.highlight(i), this._emit("changeSelection");
+   this.session.highlight(i), this._signal("changeSelection");
   }, this.$getSelectionHighLightRegexp = function() {
    var e = this.session, t = this.getSelectionRange();
    if (!t.isEmpty() && !t.isMultiLine()) {
@@ -9054,7 +9234,12 @@ function printStackTrace(e) {
   }, this.onCut = function() {
    this.commands.exec("cut", this);
   }, this.onPaste = function(e) {
-   this.$readOnly || (this._emit("paste", e), this.insert(e));
+   if (!this.$readOnly) {
+    var t = {
+     text: e
+    };
+    this._signal("paste", t), this.insert(t.text, !0);
+   }
   }, this.execCommand = function(e, t) {
    this.commands.exec(e, this, t);
   }, this.insert = function(e) {
@@ -9170,7 +9355,7 @@ function printStackTrace(e) {
    var t = this.getSelectionRange();
    if (this.getBehavioursEnabled()) {
     var n = this.session, i = n.getState(t.start.row), o = n.getMode().transformAction(i, "deletion", this, n, t);
-    if (0 == t.end.column) {
+    if (0 === t.end.column) {
      var r = n.getTextRange(t);
      if ("\n" == r[r.length - 1]) {
       var s = n.getLine(t.end.row);
@@ -9325,11 +9510,8 @@ function printStackTrace(e) {
     var r = t.rangeList.ranges;
     t.rangeList.detach(this.session);
     for (var s = r.length; s--; ) {
-     for (var a = s, i = r[s].collapseRows(), l = i.end.row, c = i.start.row; s--; ) {
-      var i = r[s].collapseRows();
-      if (!(c - i.end.row <= 1)) break;
-      c = i.end.row;
-     }
+     for (var a = s, i = r[s].collapseRows(), l = i.end.row, c = i.start.row; s-- && (i = r[s].collapseRows(), 
+     c - i.end.row <= 1); ) c = i.end.row;
      s++;
      for (var o = e.call(this, c, l); a >= s; ) r[a].moveBy(o, 0), a--;
     }
@@ -9338,8 +9520,8 @@ function printStackTrace(e) {
   }, this.$getSelectedRows = function() {
    var e = this.getSelectionRange().collapseRows();
    return {
-    first: e.start.row,
-    last: e.end.row
+    first: this.session.getRowFoldStart(e.start.row),
+    last: this.session.getRowFoldEnd(e.end.row)
    };
   }, this.onCompositionStart = function() {
    this.renderer.showComposition(this.getCursorPosition());
@@ -9359,9 +9541,9 @@ function printStackTrace(e) {
    return this.renderer.getScrollBottomRow() - this.renderer.getScrollTopRow() + 1;
   }, this.$moveByPage = function(e, t) {
    var n = this.renderer, i = this.renderer.layerConfig, o = e * Math.floor(i.height / i.lineHeight);
-   this.$blockScrolling++, 1 == t ? this.selection.$moveSelection(function() {
+   this.$blockScrolling++, t === !0 ? this.selection.$moveSelection(function() {
     this.moveCursorBy(o, 0);
-   }) : 0 == t && (this.selection.moveCursorBy(o, 0), this.selection.clearSelection()), 
+   }) : t === !1 && (this.selection.moveCursorBy(o, 0), this.selection.clearSelection()), 
    this.$blockScrolling--;
    var r = n.scrollTop;
    n.scrollBy(0, o * i.lineHeight), null != t && n.scrollCursorIntoView(null, .5), 
@@ -9431,13 +9613,13 @@ function printStackTrace(e) {
     var t = this.selection.anchor.getPosition();
     return this.moveCursorToPosition(t);
    }
-   this.selection.clearSelection(), e = e || 1, this.selection.moveCursorBy(-e, 0);
+   this.selection.clearSelection(), e = e || 1, this.selection.moveCursorBy(-e, 0, this.renderer);
   }, this.navigateDown = function(e) {
    if (this.selection.isMultiLine() && this.selection.isBackwards()) {
     var t = this.selection.anchor.getPosition();
     return this.moveCursorToPosition(t);
    }
-   this.selection.clearSelection(), e = e || 1, this.selection.moveCursorBy(e, 0);
+   this.selection.clearSelection(), e = e || 1, this.selection.moveCursorBy(e, 0, this.renderer);
   }, this.navigateLeft = function(e) {
    if (this.selection.isEmpty()) for (e = e || 1; e--; ) this.selection.moveCursorLeft(); else {
     var t = this.getSelectionRange().start;
@@ -9455,11 +9637,9 @@ function printStackTrace(e) {
   }, this.navigateLineEnd = function() {
    this.selection.moveCursorLineEnd(), this.clearSelection();
   }, this.navigateFileEnd = function() {
-   var e = this.renderer.scrollTop;
-   this.selection.moveCursorFileEnd(), this.clearSelection(), this.renderer.animateScrolling(e);
+   this.selection.moveCursorFileEnd(), this.clearSelection();
   }, this.navigateFileStart = function() {
-   var e = this.renderer.scrollTop;
-   this.selection.moveCursorFileStart(), this.clearSelection(), this.renderer.animateScrolling(e);
+   this.selection.moveCursorFileStart(), this.clearSelection();
   }, this.navigateWordRight = function() {
    this.selection.moveCursorWordRight(), this.clearSelection();
   }, this.navigateWordLeft = function() {
@@ -9511,7 +9691,7 @@ function printStackTrace(e) {
    this.$blockScrolling += 1, this.session.unfold(e), this.selection.setSelectionRange(e), 
    this.$blockScrolling -= 1;
    var n = this.renderer.scrollTop;
-   this.renderer.scrollSelectionIntoView(e.start, e.end, .5), 0 != t && this.renderer.animateScrolling(n);
+   this.renderer.scrollSelectionIntoView(e.start, e.end, .5), t !== !1 && this.renderer.animateScrolling(n);
   }, this.undo = function() {
    this.$blockScrolling++, this.session.getUndoManager().undo(), this.$blockScrolling--, 
    this.renderer.scrollCursorIntoView(null, .5);
@@ -9519,9 +9699,9 @@ function printStackTrace(e) {
    this.$blockScrolling++, this.session.getUndoManager().redo(), this.$blockScrolling--, 
    this.renderer.scrollCursorIntoView(null, .5);
   }, this.destroy = function() {
-   this.renderer.destroy(), this._emit("destroy", this);
+   this.renderer.destroy(), this._signal("destroy", this);
   }, this.setAutoScrollEditorIntoView = function(e) {
-   if (e !== !1) {
+   if (e) {
     var t, n = this, i = !1;
     this.$scrollAnchor || (this.$scrollAnchor = document.createElement("div"));
     var o = this.$scrollAnchor;
@@ -9539,7 +9719,7 @@ function printStackTrace(e) {
      }
     });
     this.setAutoScrollEditorIntoView = function(e) {
-     e !== !0 && (delete this.setAutoScrollEditorIntoView, this.removeEventListener("changeSelection", r), 
+     e || (delete this.setAutoScrollEditorIntoView, this.removeEventListener("changeSelection", r), 
      this.renderer.removeEventListener("afterRender", a), this.renderer.removeEventListener("beforeRender", s));
     };
    }
@@ -9550,7 +9730,7 @@ function printStackTrace(e) {
  }).call(v.prototype), m.defineOptions(v.prototype, "editor", {
   selectionStyle: {
    set: function(e) {
-    this.onSelectionChange(), this._emit("changeSelectionStyle", {
+    this.onSelectionChange(), this._signal("changeSelectionStyle", {
      data: e
     });
    },
@@ -9591,6 +9771,11 @@ function printStackTrace(e) {
   wrapBehavioursEnabled: {
    initialValue: !0
   },
+  autoScrollEditorIntoView: {
+   set: function(e) {
+    this.setAutoScrollEditorIntoView(e);
+   }
+  },
   hScrollBarAlwaysVisible: "renderer",
   vScrollBarAlwaysVisible: "renderer",
   highlightGutterLine: "renderer",
@@ -9601,6 +9786,7 @@ function printStackTrace(e) {
   printMargin: "renderer",
   fadeFoldWidgets: "renderer",
   showFoldWidgets: "renderer",
+  showLineNumbers: "renderer",
   showGutter: "renderer",
   displayIndentGuides: "renderer",
   fontSize: "renderer",
@@ -9609,10 +9795,12 @@ function printStackTrace(e) {
   minLines: "renderer",
   scrollPastEnd: "renderer",
   fixedWidthGutter: "renderer",
+  theme: "renderer",
   scrollSpeed: "$mouseHandler",
   dragDelay: "$mouseHandler",
   dragEnabled: "$mouseHandler",
   focusTimout: "$mouseHandler",
+  tooltipFollowsMouse: "$mouseHandler",
   firstLineNumber: "session",
   overwrite: "session",
   newLineMode: "session",
@@ -9620,7 +9808,8 @@ function printStackTrace(e) {
   useSoftTabs: "session",
   tabSize: "session",
   wrap: "session",
-  foldStyle: "session"
+  foldStyle: "session",
+  mode: "session"
  }), t.Editor = v;
 }), define("ace/undomanager", [ "require", "exports", "module" ], function(e, t) {
  var n = function() {
@@ -9629,7 +9818,7 @@ function printStackTrace(e) {
  (function() {
   this.execute = function(e) {
    var t = e.args[0];
-   this.$doc = e.args[1], e.merge && this.hasUndo() && (t = this.$undoStack.pop().concat(t)), 
+   this.$doc = e.args[1], e.merge && this.hasUndo() && (this.dirtyCounter--, t = this.$undoStack.pop().concat(t)), 
    this.$undoStack.push(t), this.$redoStack = [], this.dirtyCounter < 0 && (this.dirtyCounter = 0/0), 
    this.dirtyCounter++;
   }, this.undo = function(e) {
@@ -9671,61 +9860,71 @@ function printStackTrace(e) {
    this.session.removeGutterDecoration(e, t);
   }, this.setAnnotations = function(e) {
    this.$annotations = [];
-   for (var t, n, i = 0; i < e.length; i++) {
-    var r = e[i], n = r.row, t = this.$annotations[n];
-    t || (t = this.$annotations[n] = {
+   for (var t = 0; t < e.length; t++) {
+    var n = e[t], i = n.row, r = this.$annotations[i];
+    r || (r = this.$annotations[i] = {
      text: []
     });
-    var s = r.text;
-    s = s ? o.escapeHTML(s) : r.html || "", -1 === t.text.indexOf(s) && t.text.push(s);
-    var a = r.type;
-    "error" == a ? t.className = " ace_error" : "warning" == a && " ace_error" != t.className ? t.className = " ace_warning" : "info" != a || t.className || (t.className = " ace_info");
+    var s = n.text;
+    s = s ? o.escapeHTML(s) : n.html || "", -1 === r.text.indexOf(s) && r.text.push(s);
+    var a = n.type;
+    "error" == a ? r.className = " ace_error" : "warning" == a && " ace_error" != r.className ? r.className = " ace_warning" : "info" != a || r.className || (r.className = " ace_info");
    }
   }, this.$updateAnnotations = function(e) {
    if (this.$annotations.length) {
     var t = e.data, n = t.range, i = n.start.row, o = n.end.row - i;
     if (0 === o) ; else if ("removeText" == t.action || "removeLines" == t.action) this.$annotations.splice(i, o + 1, null); else {
-     var r = Array(o + 1);
+     var r = new Array(o + 1);
      r.unshift(i, 1), this.$annotations.splice.apply(this.$annotations, r);
     }
    }
   }, this.update = function(e) {
-   for (var t = e.firstRow, i = e.lastRow, o = this.session.getNextFoldLine(t), r = o ? o.start.row : 1/0, s = this.$showFoldWidgets && this.session.foldWidgets, a = this.session.$breakpoints, l = this.session.$decorations, c = this.session.$firstLineNumber, u = 0, d = null, h = -1, p = t; ;) {
-    if (p > r && (p = o.end.row + 1, o = this.session.getNextFoldLine(p, o), r = o ? o.start.row : 1/0), 
-    p > i) {
-     for (;this.$cells.length > h + 1; ) d = this.$cells.pop(), this.element.removeChild(d.element);
+   for (var t = this.session, i = e.firstRow, o = Math.min(e.lastRow + 1, t.getLength() - 1), r = t.getNextFoldLine(i), s = r ? r.start.row : 1/0, a = this.$showFoldWidgets && t.foldWidgets, l = t.$breakpoints, c = t.$decorations, u = t.$firstLineNumber, d = 0, h = t.gutterRenderer || this.$renderer, p = null, f = -1, g = i; ;) {
+    if (g > s && (g = r.end.row + 1, r = t.getNextFoldLine(g, r), s = r ? r.start.row : 1/0), 
+    g > o) {
+     for (;this.$cells.length > f + 1; ) p = this.$cells.pop(), this.element.removeChild(p.element);
      break;
     }
-    d = this.$cells[++h], d || (d = {
+    p = this.$cells[++f], p || (p = {
      element: null,
      textNode: null,
      foldWidget: null
-    }, d.element = n.createElement("div"), d.textNode = document.createTextNode(""), 
-    d.element.appendChild(d.textNode), this.element.appendChild(d.element), this.$cells[h] = d);
-    var f = "ace_gutter-cell ";
-    a[p] && (f += a[p]), l[p] && (f += l[p]), this.$annotations[p] && (f += this.$annotations[p].className), 
-    d.element.className != f && (d.element.className = f);
-    var g = this.session.getRowLength(p) * e.lineHeight + "px";
-    g != d.element.style.height && (d.element.style.height = g);
-    var m = u = p + c;
-    if (m != d.textNode.data && (d.textNode.data = m), s) {
-     var v = s[p];
-     null == v && (v = s[p] = this.session.getFoldWidget(p));
+    }, p.element = n.createElement("div"), p.textNode = document.createTextNode(""), 
+    p.element.appendChild(p.textNode), this.element.appendChild(p.element), this.$cells[f] = p);
+    var m = "ace_gutter-cell ";
+    l[g] && (m += l[g]), c[g] && (m += c[g]), this.$annotations[g] && (m += this.$annotations[g].className), 
+    p.element.className != m && (p.element.className = m);
+    var v = t.getRowLength(g) * e.lineHeight + "px";
+    if (v != p.element.style.height && (p.element.style.height = v), a) {
+     var b = a[g];
+     null == b && (b = a[g] = t.getFoldWidget(g));
     }
-    if (v) {
-     d.foldWidget || (d.foldWidget = n.createElement("span"), d.element.appendChild(d.foldWidget));
-     var f = "ace_fold-widget ace_" + v;
-     f += "start" == v && p == r && p < o.end.row ? " ace_closed" : " ace_open", d.foldWidget.className != f && (d.foldWidget.className = f);
-     var g = e.lineHeight + "px";
-     d.foldWidget.style.height != g && (d.foldWidget.style.height = g);
-    } else null != d.foldWidget && (d.element.removeChild(d.foldWidget), d.foldWidget = null);
-    p++;
+    if (b) {
+     p.foldWidget || (p.foldWidget = n.createElement("span"), p.element.appendChild(p.foldWidget));
+     var m = "ace_fold-widget ace_" + b;
+     m += "start" == b && g == s && g < r.end.row ? " ace_closed" : " ace_open", p.foldWidget.className != m && (p.foldWidget.className = m);
+     var v = e.lineHeight + "px";
+     p.foldWidget.style.height != v && (p.foldWidget.style.height = v);
+    } else p.foldWidget && (p.element.removeChild(p.foldWidget), p.foldWidget = null);
+    var y = d = h ? h.getText(t, g) : g + u;
+    y != p.textNode.data && (p.textNode.data = y), g++;
    }
-   this.element.style.height = e.minHeight + "px", (this.$fixedWidth || this.session.$useWrapMode) && (u = this.session.getLength());
-   var b = u.toString().length * e.characterWidth, y = this.$padding || this.$computePadding();
-   b += y.left + y.right, b === this.gutterWidth || isNaN(b) || (this.gutterWidth = b, 
-   this.element.style.width = Math.ceil(this.gutterWidth) + "px", this._emit("changeGutterWidth", b));
-  }, this.$fixedWidth = !1, this.$showFoldWidgets = !0, this.setShowFoldWidgets = function(e) {
+   this.element.style.height = e.minHeight + "px", (this.$fixedWidth || t.$useWrapMode) && (d = t.getLength() + u);
+   var w = h ? h.getWidth(t, d, e) : d.toString().length * e.characterWidth, C = this.$padding || this.$computePadding();
+   w += C.left + C.right, w === this.gutterWidth || isNaN(w) || (this.gutterWidth = w, 
+   this.element.style.width = Math.ceil(this.gutterWidth) + "px", this._emit("changeGutterWidth", w));
+  }, this.$fixedWidth = !1, this.$showLineNumbers = !0, this.$renderer = "", this.setShowLineNumbers = function(e) {
+   this.$renderer = !e && {
+    getWidth: function() {
+     return "";
+    },
+    getText: function() {
+     return "";
+    }
+   };
+  }, this.getShowLineNumbers = function() {
+   return this.$showLineNumbers;
+  }, this.$showFoldWidgets = !0, this.setShowFoldWidgets = function(e) {
    e ? n.addCssClass(this.element, "ace_folding-enabled") : n.removeCssClass(this.element, "ace_folding-enabled"), 
    this.$showFoldWidgets = e, this.$padding = null;
   }, this.getShowFoldWidgets = function() {
@@ -9764,38 +9963,42 @@ function printStackTrace(e) {
      var o = this.markers[n];
      if (o.range) {
       var r = o.range.clipRows(e.firstRow, e.lastRow);
-      if (!r.isEmpty()) if (r = r.toScreenRange(this.session), o.renderer) {
-       var s = this.$getTop(r.start.row, e), a = this.$padding + r.start.column * e.characterWidth;
-       o.renderer(t, r, a, s, e);
-      } else "fullLine" == o.type ? this.drawFullLineMarker(t, r, o.clazz, e) : "screenLine" == o.type ? this.drawScreenLineMarker(t, r, o.clazz, e) : r.isMultiLine() ? "text" == o.type ? this.drawTextMarker(t, r, o.clazz, e) : this.drawMultiLineMarker(t, r, o.clazz, e) : this.drawSingleLineMarker(t, r, o.clazz + " ace_start", e);
+      if (!r.isEmpty()) {
+       var s = r;
+       if (r = r.toScreenRange(this.session), o.renderer) {
+        var a = this.$getTop(r.start.row, e), l = this.$padding + e.textWidth(s.start.row, r.start.column, r.start.columnOffset);
+        o.renderer(t, r, l, a, e);
+       } else "fullLine" == o.type ? this.drawFullLineMarker(t, s, r, o.clazz, e) : "screenLine" == o.type ? this.drawScreenLineMarker(t, s, r, o.clazz, e) : r.isMultiLine() ? "text" == o.type ? this.drawTextMarker(t, s, r, o.clazz, e) : this.drawMultiLineMarker(t, s, r, o.clazz, e) : this.drawSingleLineMarker(t, s, r, o.clazz + " ace_start", e);
+      }
      } else o.update(t, this, this.session, e);
     }
     this.element = i.setInnerHtml(this.element, t.join(""));
    }
   }, this.$getTop = function(e, t) {
    return (e - t.firstRowScreen) * t.lineHeight;
-  }, this.drawTextMarker = function(e, t, i, o, r) {
-   var s = t.start.row, a = new n(s, t.start.column, s, this.session.getScreenLastRowColumn(s));
-   for (this.drawSingleLineMarker(e, a, i + " ace_start", o, 1, r), s = t.end.row, 
-   a = new n(s, 0, s, t.end.column), this.drawSingleLineMarker(e, a, i, o, 0, r), s = t.start.row + 1; s < t.end.row; s++) a.start.row = s, 
-   a.end.row = s, a.end.column = this.session.getScreenLastRowColumn(s), this.drawSingleLineMarker(e, a, i, o, 1, r);
-  }, this.drawMultiLineMarker = function(e, t, n, i, o) {
-   var r = this.$padding, s = i.lineHeight, a = this.$getTop(t.start.row, i), l = r + t.start.column * i.characterWidth;
-   o = o || "", e.push("<div class='", n, " ace_start' style='", "height:", s, "px;", "right:0;", "top:", a, "px;", "left:", l, "px;", o, "'></div>"), 
-   a = this.$getTop(t.end.row, i);
-   var c = t.end.column * i.characterWidth;
-   e.push("<div class='", n, "' style='", "height:", s, "px;", "width:", c, "px;", "top:", a, "px;", "left:", r, "px;", o, "'></div>"), 
-   s = (t.end.row - t.start.row - 1) * i.lineHeight, 0 > s || (a = this.$getTop(t.start.row + 1, i), 
-   e.push("<div class='", n, "' style='", "height:", s, "px;", "right:0;", "top:", a, "px;", "left:", r, "px;", o, "'></div>"));
-  }, this.drawSingleLineMarker = function(e, t, n, i, o, r) {
-   var s = i.lineHeight, a = (t.end.column + (o || 0) - t.start.column) * i.characterWidth, l = this.$getTop(t.start.row, i), c = this.$padding + t.start.column * i.characterWidth;
-   e.push("<div class='", n, "' style='", "height:", s, "px;", "width:", a, "px;", "top:", l, "px;", "left:", c, "px;", r || "", "'></div>");
-  }, this.drawFullLineMarker = function(e, t, n, i, o) {
-   var r = this.$getTop(t.start.row, i), s = i.lineHeight;
-   t.start.row != t.end.row && (s += this.$getTop(t.end.row, i) - r), e.push("<div class='", n, "' style='", "height:", s, "px;", "top:", r, "px;", "left:0;right:0;", o || "", "'></div>");
-  }, this.drawScreenLineMarker = function(e, t, n, i, o) {
-   var r = this.$getTop(t.start.row, i), s = i.lineHeight;
-   e.push("<div class='", n, "' style='", "height:", s, "px;", "top:", r, "px;", "left:0;right:0;", o || "", "'></div>");
+  }, this.drawTextMarker = function(e, t, i, o, r, s) {
+   var a = i.start.row, l = new n(a, i.start.column, a, this.session.getScreenLastRowColumn(a));
+   for (this.drawSingleLineMarker(e, t, l, o + " ace_start", r, 1, s), a = i.end.row, 
+   l = new n(a, 0, a, i.end.column), this.drawSingleLineMarker(e, t, l, o, r, 0, s), 
+   a = i.start.row + 1; a < i.end.row; a++) l.start.row = a, l.end.row = a, l.end.column = this.session.getScreenLastRowColumn(a), 
+   this.drawSingleLineMarker(e, t, l, o, r, 1, s);
+  }, this.drawMultiLineMarker = function(e, t, n, i, o, r) {
+   var s = this.$padding, a = o.lineHeight, l = o.textWidth(t.start.row, n.start.column, n.start.columnOffset), c = s + l, u = o.width - l, d = this.$getTop(n.start.row, o);
+   r = r || "", e.push("<div class='", i, " ace_start' style='", "height:", a, "px;", "right:0;", "top:", d, "px;", "left:", c, "px;", r, "'></div>"), 
+   d = this.$getTop(n.end.row, o);
+   var u = o.textWidth(t.end.row, n.end.column, n.end.columnOffset);
+   e.push("<div class='", i, "' style='", "height:", a, "px;", "width:", u, "px;", "top:", d, "px;", "left:", s, "px;", r, "'></div>"), 
+   a = (n.end.row - n.start.row - 1) * o.lineHeight, 0 > a || (d = this.$getTop(n.start.row + 1, o), 
+   e.push("<div class='", i, "' style='", "height:", a, "px;", "right:0;", "top:", d, "px;", "left:", s, "px;", r, "'></div>"));
+  }, this.drawSingleLineMarker = function(e, t, n, i, o, r, s) {
+   var a = o.lineHeight, l = o.textWidth(t.start.row, n.start.column, n.start.columnOffset), c = o.textWidth(t.start.row, n.end.column + (r || 0), n.start.columnOffset) - l, u = this.$getTop(n.start.row, o), d = this.$padding + l;
+   e.push("<div class='", i, "' style='", "height:", a, "px;", "width:", c, "px;", "top:", u, "px;", "left:", d, "px;", s || "", "'></div>");
+  }, this.drawFullLineMarker = function(e, t, n, i, o, r) {
+   var s = this.$getTop(n.start.row, o), a = o.lineHeight;
+   n.start.row != n.end.row && (a += this.$getTop(n.end.row, o) - s), e.push("<div class='", i, "' style='", "height:", a, "px;", "top:", s, "px;", "left:0;right:0;", r || "", "'></div>");
+  }, this.drawScreenLineMarker = function(e, t, n, i, o, r) {
+   var s = this.$getTop(n.start.row, o), a = o.lineHeight;
+   e.push("<div class='", i, "' style='", "height:", a, "px;", "top:", s, "px;", "left:0;right:0;", r || "", "'></div>");
   };
  }).call(o.prototype), t.Marker = o;
 }), define("ace/layer/text", [ "require", "exports", "module", "../lib/oop", "../lib/dom", "../lib/lang", "../lib/useragent", "../lib/event_emitter" ], function(e, t) {
@@ -9909,7 +10112,8 @@ function printStackTrace(e) {
     var d = s[a++];
     if (d) {
      var h = [];
-     this.$renderLine(h, l, !this.$useLineGroups(), l == u ? c : !1), i.setInnerHtml(d, h.join(""));
+     this.$renderLine(h, l, !this.$useLineGroups(), l == u ? c : !1), d.style.height = e.lineHeight * this.session.getRowLength(l) + "px", 
+     i.setInnerHtml(d, h.join(""));
     }
     l++;
    }
@@ -9934,7 +10138,7 @@ function printStackTrace(e) {
     r > n) break;
     var l = i.createElement("div"), c = [];
     if (this.$renderLine(c, r, !1, r == a ? s : !1), l.innerHTML = c.join(""), this.$useLineGroups()) l.className = "ace_line_group", 
-    o.appendChild(l); else for (var u = l.childNodes; u.length; ) o.appendChild(u[0]);
+    o.appendChild(l), l.style.height = e.lineHeight * this.session.getRowLength(r) + "px"; else for (;l.firstChild; ) o.appendChild(l.firstChild);
     r++;
    }
    return o;
@@ -9943,8 +10147,9 @@ function printStackTrace(e) {
    for (var t = [], n = e.firstRow, o = e.lastRow, r = n, s = this.session.getNextFoldLine(r), a = s ? s.start.row : 1/0; ;) {
     if (r > a && (r = s.end.row + 1, s = this.session.getNextFoldLine(r, s), a = s ? s.start.row : 1/0), 
     r > o) break;
-    this.$useLineGroups() && t.push("<div class='ace_line_group'>"), this.$renderLine(t, r, !1, r == a ? s : !1), 
-    this.$useLineGroups() && t.push("</div>"), r++;
+    this.$useLineGroups() && t.push("<div class='ace_line_group' style='height:", e.lineHeight * this.session.getRowLength(r), "px'>"), 
+    this.$renderLine(t, r, !1, r == a ? s : !1), this.$useLineGroups() && t.push("</div>"), 
+    r++;
    }
    this.element = i.setInnerHtml(this.element, t.join(""));
   }, this.$textToken = {
@@ -9952,7 +10157,7 @@ function printStackTrace(e) {
    rparen: !0,
    lparen: !0
   }, this.$renderToken = function(e, t, n, i) {
-   var r = this, s = /\t|&|<|( +)|([\x00-\x1f\x80-\xa0\u1680\u180E\u2000-\u200f\u2028\u2029\u202F\u205F\u3000\uFEFF])|[\u1100-\u115F\u11A3-\u11A7\u11FA-\u11FF\u2329-\u232A\u2E80-\u2E99\u2E9B-\u2EF3\u2F00-\u2FD5\u2FF0-\u2FFB\u3000-\u303E\u3041-\u3096\u3099-\u30FF\u3105-\u312D\u3131-\u318E\u3190-\u31BA\u31C0-\u31E3\u31F0-\u321E\u3220-\u3247\u3250-\u32FE\u3300-\u4DBF\u4E00-\uA48C\uA490-\uA4C6\uA960-\uA97C\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFAFF\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE66\uFE68-\uFE6B\uFF01-\uFF60\uFFE0-\uFFE6]/g, a = function(e, n, i, s) {
+   var r = this, s = /\t|&|<|( +)|([\x00-\x1f\x80-\xa0\u1680\u180E\u2000-\u200f\u2028\u2029\u202F\u205F\uFEFF])]/g, a = function(e, n, i, s) {
     if (n) return r.showInvisibles ? "<span class='ace_invisible'>" + o.stringRepeat(r.SPACE_CHAR, e.length) + "</span>" : o.stringRepeat(" ", e.length);
     if ("&" == e) return "&#38;";
     if ("<" == e) return "&#60;";
@@ -9960,12 +10165,7 @@ function printStackTrace(e) {
      var a = r.session.getScreenTabSize(t + s);
      return t += a - 1, r.$tabStrings[a];
     }
-    if ("　" == e) {
-     var l = r.showInvisibles ? "ace_cjk ace_invisible" : "ace_cjk", c = r.showInvisibles ? r.SPACE_CHAR : "";
-     return t += 1, "<span class='" + l + "' style='width:" + 2 * r.config.characterWidth + "px'>" + c + "</span>";
-    }
-    return i ? "<span class='ace_invisible ace_invalid'>" + r.SPACE_CHAR + "</span>" : (t += 1, 
-    "<span class='ace_cjk' style='width:" + 2 * r.config.characterWidth + "px'>" + e + "</span>");
+    return i ? "<span class='ace_invisible ace_invalid'>" + r.SPACE_CHAR + "</span>" : void 0;
    }, l = i.replace(s, a);
    if (this.$textToken[n.type]) e.push(l); else {
     var c = "ace_" + n.type.replace(/\./g, " ace_"), u = "";
@@ -9973,6 +10173,51 @@ function printStackTrace(e) {
     e.push("<span class='", c, "'", u, ">", l, "</span>");
    }
    return t + i.length;
+  }, this.$measureText = function(e, t, n) {
+   var i = [];
+   t += n;
+   for (var o = 0, s = 0; t > o && s < e.length; ) {
+    var a = e[s++], l = this, c = /\t|&|<|( +)|([\v\f \u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000])/g, u = function(e, t, i, o) {
+     if (32 == e.charCodeAt(0)) return new Array(e.length + 1).join("&#160;");
+     if ("	" == e) {
+      var s = l.session.getScreenTabSize(n + o);
+      return n += s - 1, l.$tabStrings[s];
+     }
+     if ("&" == e) return r.isOldGecko ? "&" : "&amp;";
+     if ("<" == e) return "&lt;";
+     if (e.match(/[\v\f \u00a0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000]/)) {
+      if (l.showInvisibles) {
+       var a = new Array(e.length + 1).join(l.SPACE_CHAR);
+       return "<span class='ace_invisible'>" + a + "</span>";
+      }
+      return "&#160;";
+     }
+    }, d = a.value, h = n - o;
+    if (h = h > 0 ? h : 0, o += d.length, !(n > o)) {
+     o > t ? d = d.substring(h, d.length - (o - t)) : h && (d = d.substring(h));
+     var p = d.replace(c, u);
+     if (this.$textToken[a.type]) i.push(p); else {
+      var f = "ace_" + a.type.replace(/\./g, " ace_");
+      i.push("<span class='", f, "'>", p, "</span>");
+     }
+    }
+   }
+   var g = document.createElement("div"), m = g.style;
+   m.position = "absolute", m.top = "-1000px", g.className = "ace_line", g.innerHTML = i.join(""), 
+   this.element.appendChild(g);
+   var v = g.offsetWidth;
+   return this.element.removeChild(g), v;
+  }, this.textWidth = function(e, t, n) {
+   n = n || 0;
+   var i = this.session.getTokens(e), o = i.widthCache && i.widthCache[t] && i.widthCache[t][n];
+   if (o) {
+    if (i.widthCache.rowHeight == this.getLineHeight()) return o;
+    delete i.widthCache;
+   }
+   var r = this.$measureText(i, t, n);
+   return i.widthCache || (i.widthCache = {
+    rowHeight: this.getLineHeight()
+   }), i.widthCache[t] || (i.widthCache[t] = {}), i.widthCache[t][n] = r, r;
   }, this.renderIndentGuide = function(e, t, n) {
    var i = t.search(this.$indentGuideRe);
    return 0 >= i || i >= n ? t : " " == t[0] ? (i -= i % this.tabSize, e.push(o.stringRepeat(this.$tabStrings[" "], i / this.tabSize)), 
@@ -9998,7 +10243,7 @@ function printStackTrace(e) {
    for (var r = 1; r < t.length; r++) i = t[r], o = i.value, n = this.$renderToken(e, n, i, o);
   }, this.$renderLine = function(e, t, n, i) {
    if (i || 0 == i || (i = this.session.getFoldLine(t)), i) var o = this.$getFoldLineTokens(t, i); else var o = this.session.getTokens(t);
-   if (n || e.push("<div class='ace_line' style='height:", this.config.lineHeight, "px'>"), 
+   if (n || e.push("<div class='ace_line' style='height:", this.config.lineHeight * (this.$useLineGroups() ? 1 : this.session.getRowLength(t)), "px'>"), 
    o.length) {
     var r = this.session.getRowSplitData(t);
     r && r.length ? this.$renderWrappedLine(e, o, r, n) : this.$renderSimpleLine(e, o);
@@ -10039,13 +10284,19 @@ function printStackTrace(e) {
   };
  }).call(a.prototype), t.Text = a;
 }), define("ace/layer/cursor", [ "require", "exports", "module", "../lib/dom" ], function(e, t) {
- var n = e("../lib/dom"), i = function(e) {
-  this.element = n.createElement("div"), this.element.className = "ace_layer ace_cursor-layer", 
-  e.appendChild(this.element), this.isVisible = !1, this.isBlinking = !0, this.blinkInterval = 1e3, 
-  this.smoothBlinking = !1, this.cursors = [], this.cursor = this.addCursor(), n.addCssClass(this.element, "ace_hidden-cursors");
+ var n, i = e("../lib/dom"), o = function(e) {
+  this.element = i.createElement("div"), this.element.className = "ace_layer ace_cursor-layer", 
+  e.appendChild(this.element), void 0 === n && (n = "opacity" in this.element), this.isVisible = !1, 
+  this.isBlinking = !0, this.blinkInterval = 1e3, this.smoothBlinking = !1, this.cursors = [], 
+  this.cursor = this.addCursor(), i.addCssClass(this.element, "ace_hidden-cursors"), 
+  this.$updateCursors = this.$updateVisibility.bind(this);
  };
  (function() {
-  this.$padding = 0, this.setPadding = function(e) {
+  this.$updateVisibility = function(e) {
+   for (var t = this.cursors, n = t.length; n--; ) t[n].style.visibility = e ? "" : "hidden";
+  }, this.$updateOpacity = function(e) {
+   for (var t = this.cursors, n = t.length; n--; ) t[n].style.opacity = e ? "" : "0";
+  }, this.$padding = 0, this.setPadding = function(e) {
    this.$padding = e;
   }, this.setSession = function(e) {
    this.session = e;
@@ -10054,10 +10305,11 @@ function printStackTrace(e) {
   }, this.setBlinkInterval = function(e) {
    e != this.blinkInterval && (this.blinkInterval = e, this.restartTimer());
   }, this.setSmoothBlinking = function(e) {
-   e != this.smoothBlinking && (this.smoothBlinking = e, e ? n.addCssClass(this.element, "ace_smooth-blinking") : n.removeCssClass(this.element, "ace_smooth-blinking"), 
+   e == this.smoothBlinking || n || (this.smoothBlinking = e, i.setCssClass(this.element, "ace_smooth-blinking", e), 
+   this.$updateCursors(!0), this.$updateCursors = (e ? this.$updateOpacity : this.$updateVisibility).bind(this), 
    this.restartTimer());
   }, this.addCursor = function() {
-   var e = n.createElement("div");
+   var e = i.createElement("div");
    return e.className = "ace_cursor", this.element.appendChild(e), this.cursors.push(e), 
    e;
   }, this.removeCursor = function() {
@@ -10066,25 +10318,24 @@ function printStackTrace(e) {
     return e.parentNode.removeChild(e), e;
    }
   }, this.hideCursor = function() {
-   this.isVisible = !1, n.addCssClass(this.element, "ace_hidden-cursors"), this.restartTimer();
+   this.isVisible = !1, i.addCssClass(this.element, "ace_hidden-cursors"), this.restartTimer();
   }, this.showCursor = function() {
-   this.isVisible = !0, n.removeCssClass(this.element, "ace_hidden-cursors"), this.restartTimer();
+   this.isVisible = !0, i.removeCssClass(this.element, "ace_hidden-cursors"), this.restartTimer();
   }, this.restartTimer = function() {
-   clearInterval(this.intervalId), clearTimeout(this.timeoutId), this.smoothBlinking && n.removeCssClass(this.element, "ace_smooth-blinking");
-   for (var e = this.cursors.length; e--; ) this.cursors[e].style.opacity = "";
-   if (this.isBlinking && this.blinkInterval && this.isVisible) {
+   var e = this.$updateCursors;
+   if (clearInterval(this.intervalId), clearTimeout(this.timeoutId), this.smoothBlinking && i.removeCssClass(this.element, "ace_smooth-blinking"), 
+   e(!0), this.isBlinking && this.blinkInterval && this.isVisible) {
     this.smoothBlinking && setTimeout(function() {
-     n.addCssClass(this.element, "ace_smooth-blinking");
+     i.addCssClass(this.element, "ace_smooth-blinking");
     }.bind(this));
     var t = function() {
      this.timeoutId = setTimeout(function() {
-      for (var e = this.cursors.length; e--; ) this.cursors[e].style.opacity = 0;
-     }.bind(this), .6 * this.blinkInterval);
+      e(!1);
+     }, .6 * this.blinkInterval);
     }.bind(this);
     this.intervalId = setInterval(function() {
-     for (var e = this.cursors.length; e--; ) this.cursors[e].style.opacity = "";
-     t();
-    }.bind(this), this.blinkInterval), t();
+     e(!0), t();
+    }, this.blinkInterval), t();
    }
   }, this.getPixelPosition = function(e, t) {
    if (!this.config || !this.session) return {
@@ -10092,10 +10343,11 @@ function printStackTrace(e) {
     top: 0
    };
    e || (e = this.session.selection.getCursor());
-   var n = this.session.documentToScreenPosition(e), i = this.$padding + n.column * this.config.characterWidth, o = (n.row - (t ? this.config.firstRowScreen : 0)) * this.config.lineHeight;
+   var n = this.session.documentToScreenPosition(e), i = this.config.textWidth(e.row, n.column, n.columnOffset), o = this.$padding + i, r = (n.row - (t ? this.config.firstRowScreen : 0)) * this.config.lineHeight, s = this.config.textWidth(e.row, n.column + 1, n.columnOffset) - i || this.config.characterWidth;
    return {
-    left: i,
-    top: o
+    left: o,
+    top: r,
+    width: s
    };
   }, this.update = function(e) {
    this.config = e;
@@ -10107,75 +10359,80 @@ function printStackTrace(e) {
     var r = this.getPixelPosition(t[n].cursor, !0);
     if (!((r.top > e.height + e.offset || r.top < -e.offset) && n > 1)) {
      var s = (this.cursors[i++] || this.addCursor()).style;
-     s.left = r.left + "px", s.top = r.top + "px", s.width = e.characterWidth + "px", 
-     s.height = e.lineHeight + "px";
+     s.left = r.left + "px", s.top = r.top + "px", s.width = r.width + "px", s.height = e.lineHeight + "px";
     }
    }
    for (;this.cursors.length > i; ) this.removeCursor();
    var a = this.session.getOverwrite();
    this.$setOverwrite(a), this.$pixelPos = r, this.restartTimer();
   }, this.$setOverwrite = function(e) {
-   e != this.overwrite && (this.overwrite = e, e ? n.addCssClass(this.element, "ace_overwrite-cursors") : n.removeCssClass(this.element, "ace_overwrite-cursors"));
+   e != this.overwrite && (this.overwrite = e, e ? i.addCssClass(this.element, "ace_overwrite-cursors") : i.removeCssClass(this.element, "ace_overwrite-cursors"));
   }, this.destroy = function() {
    clearInterval(this.intervalId), clearTimeout(this.timeoutId);
   };
- }).call(i.prototype), t.Cursor = i;
+ }).call(o.prototype), t.Cursor = o;
 }), define("ace/scrollbar", [ "require", "exports", "module", "./lib/oop", "./lib/dom", "./lib/event", "./lib/event_emitter" ], function(e, t) {
- var n = e("./lib/oop"), i = e("./lib/dom"), o = e("./lib/event"), r = e("./lib/event_emitter").EventEmitter, s = function(e, t) {
-  this.element = i.createElement("div"), this.element.className = "ace_scrollbar", 
+ var n = e("./lib/oop"), i = e("./lib/dom"), o = e("./lib/event"), r = e("./lib/event_emitter").EventEmitter, s = function(e) {
+  this.element = i.createElement("div"), this.element.className = "ace_scrollbar ace_scrollbar" + this.classSuffix, 
   this.inner = i.createElement("div"), this.inner.className = "ace_scrollbar-inner", 
-  this.element.appendChild(this.inner), e.appendChild(this.element), t.$scrollbarWidth = this.width = i.scrollbarWidth(e.ownerDocument), 
-  t.$scrollbarWidth = this.width = i.scrollbarWidth(e.ownerDocument), this.fullWidth = this.width, 
-  this.inner.style.width = this.element.style.width = (this.width || 15) + 5 + "px", 
-  this.setVisible(!1), this.element.style.overflowY = "scroll", o.addListener(this.element, "scroll", this.onScrollV.bind(this)), 
-  o.addListener(this.element, "mousedown", o.preventDefault);
- }, a = function(e, t) {
-  this.element = i.createElement("div"), this.element.className = "ace_scrollbar-h", 
-  this.inner = i.createElement("div"), this.inner.className = "ace_scrollbar-inner", 
-  this.element.appendChild(this.inner), e.appendChild(this.element), this.height = t.$scrollbarWidth, 
-  this.fullHeight = this.height, this.inner.style.height = this.element.style.height = (this.height || 15) + 5 + "px", 
-  this.setVisible(!1), this.element.style.overflowX = "scroll", o.addListener(this.element, "scroll", this.onScrollH.bind(this)), 
+  this.element.appendChild(this.inner), e.appendChild(this.element), this.setVisible(!1), 
+  this.skipEvent = !1, o.addListener(this.element, "scroll", this.onScroll.bind(this)), 
   o.addListener(this.element, "mousedown", o.preventDefault);
  };
  (function() {
   n.implement(this, r), this.setVisible = function(e) {
-   e ? (this.element.style.display = "", this.fullWidth && (this.width = this.fullWidth), 
-   this.fullHeight && (this.height = this.fullHeight)) : (this.element.style.display = "none", 
-   this.height = this.width = 0);
-  }, this.onScrollV = function() {
+   this.element.style.display = e ? "" : "none", this.isVisible = e;
+  };
+ }).call(s.prototype);
+ var a = function(e, t) {
+  s.call(this, e), this.scrollTop = 0, t.$scrollbarWidth = this.width = i.scrollbarWidth(e.ownerDocument), 
+  this.inner.style.width = this.element.style.width = (this.width || 15) + 5 + "px";
+ };
+ n.inherits(a, s), function() {
+  this.classSuffix = "-v", this.onScroll = function() {
    this.skipEvent || (this.scrollTop = this.element.scrollTop, this._emit("scroll", {
     data: this.scrollTop
    })), this.skipEvent = !1;
-  }, this.onScrollH = function() {
+  }, this.getWidth = function() {
+   return this.isVisible ? this.width : 0;
+  }, this.setHeight = function(e) {
+   this.element.style.height = e + "px";
+  }, this.setInnerHeight = function(e) {
+   this.inner.style.height = e + "px";
+  }, this.setScrollHeight = function(e) {
+   this.inner.style.height = e + "px";
+  }, this.setScrollTop = function(e) {
+   this.scrollTop != e && (this.skipEvent = !0, this.scrollTop = this.element.scrollTop = e);
+  };
+ }.call(a.prototype);
+ var l = function(e, t) {
+  s.call(this, e), this.scrollLeft = 0, this.height = t.$scrollbarWidth, this.inner.style.height = this.element.style.height = (this.height || 15) + 5 + "px";
+ };
+ n.inherits(l, s), function() {
+  this.classSuffix = "-h", this.onScroll = function() {
    this.skipEvent || (this.scrollLeft = this.element.scrollLeft, this._emit("scroll", {
     data: this.scrollLeft
    })), this.skipEvent = !1;
-  }, this.getWidth = function() {
-   return this.width;
   }, this.getHeight = function() {
-   return this.height;
-  }, this.setHeight = function(e) {
-   this.element.style.height = e + "px";
+   return this.isVisible ? this.height : 0;
   }, this.setWidth = function(e) {
    this.element.style.width = e + "px";
-  }, this.setInnerHeight = function(e) {
-   this.inner.style.height = e + "px";
   }, this.setInnerWidth = function(e) {
    this.inner.style.width = e + "px";
-  }, this.setScrollTop = function(e) {
-   this.scrollTop != e && (this.skipEvent = !0, this.scrollTop = this.element.scrollTop = e);
+  }, this.setScrollWidth = function(e) {
+   this.inner.style.width = e + "px";
   }, this.setScrollLeft = function(e) {
    this.scrollLeft != e && (this.skipEvent = !0, this.scrollLeft = this.element.scrollLeft = e);
   };
- }).call(s.prototype), a.prototype = s.prototype, t.ScrollBar = s, t.ScrollBarV = s, 
- t.ScrollBarH = a;
+ }.call(l.prototype), t.ScrollBar = a, t.ScrollBarV = a, t.ScrollBarH = l, t.VScrollBar = a, 
+ t.HScrollBar = l;
 }), define("ace/renderloop", [ "require", "exports", "module", "./lib/event" ], function(e, t) {
  var n = e("./lib/event"), i = function(e, t) {
   this.onRender = e, this.pending = !1, this.changes = 0, this.window = t || window;
  };
  (function() {
   this.schedule = function(e) {
-   if (this.changes = this.changes | e, !this.pending) {
+   if (this.changes = this.changes | e, !this.pending && this.changes) {
     this.pending = !0;
     var t = this;
     n.nextFrame(function() {
@@ -10194,7 +10451,7 @@ function printStackTrace(e) {
 }(), define("ace/virtual_renderer", [ "require", "exports", "module", "./lib/oop", "./lib/dom", "./lib/useragent", "./config", "./layer/gutter", "./layer/marker", "./layer/text", "./layer/cursor", "./scrollbar", "./scrollbar", "./renderloop", "./lib/event_emitter", "./requirejs/text!./css/editor.css" ], function(e, t) {
  var n = e("./lib/oop"), i = e("./lib/dom");
  e("./lib/useragent");
- var o = e("./config"), r = e("./layer/gutter").Gutter, s = e("./layer/marker").Marker, a = e("./layer/text").Text, l = e("./layer/cursor").Cursor, c = e("./scrollbar").ScrollBarH, u = e("./scrollbar").ScrollBarV, d = e("./renderloop").RenderLoop, h = e("./lib/event_emitter").EventEmitter, p = e("./requirejs/text!./css/editor.css");
+ var o = e("./config"), r = e("./layer/gutter").Gutter, s = e("./layer/marker").Marker, a = e("./layer/text").Text, l = e("./layer/cursor").Cursor, c = e("./scrollbar").HScrollBar, u = e("./scrollbar").VScrollBar, d = e("./renderloop").RenderLoop, h = e("./lib/event_emitter").EventEmitter, p = e("./requirejs/text!./css/editor.css");
  i.importCssString(p, "ace_editor");
  var f = function(e, t) {
   var n = this;
@@ -10216,12 +10473,14 @@ function printStackTrace(e) {
    row: 0,
    column: 0
   }, this.$textLayer.addEventListener("changeCharacterSize", function() {
-   n.updateCharacterSize(), n.onResize(!0), n._signal("changeCharacterSize");
+   n.updateCharacterSize(), n.onResize(!0, n.gutterWidth, n.$size.width, n.$size.height), 
+   n._signal("changeCharacterSize");
   }), this.$size = {
    width: 0,
    height: 0,
    scrollerHeight: 0,
-   scrollerWidth: 0
+   scrollerWidth: 0,
+   $dirty: !0
   }, this.layerConfig = {
    width: 1,
    padding: 0,
@@ -10230,6 +10489,9 @@ function printStackTrace(e) {
    lastRow: 0,
    lineHeight: 0,
    characterWidth: 0,
+   textWidth: function() {
+    return 1;
+   },
    minHeight: 1,
    maxHeight: 1,
    offset: 0,
@@ -10255,9 +10517,9 @@ function printStackTrace(e) {
    this.layerConfig.lineHeight = this.lineHeight = this.$textLayer.getLineHeight(), 
    this.$updatePrintMargin();
   }, this.setSession = function(e) {
-   this.session = e, this.scroller.className = "ace_scroller", this.$cursorLayer.setSession(e), 
-   this.$markerBack.setSession(e), this.$markerFront.setSession(e), this.$gutterLayer.setSession(e), 
-   this.$textLayer.setSession(e), this.$loop.schedule(this.CHANGE_FULL);
+   this.session = e, this.scrollMargin.top && e.getScrollTop() <= 0 && e.setScrollTop(-this.scrollMargin.top), 
+   this.$cursorLayer.setSession(e), this.$markerBack.setSession(e), this.$markerFront.setSession(e), 
+   this.$gutterLayer.setSession(e), this.$textLayer.setSession(e), this.$loop.schedule(this.CHANGE_FULL);
   }, this.updateLines = function(e, t) {
    void 0 === t && (t = 1/0), this.$changedLines ? (this.$changedLines.firstRow > e && (this.$changedLines.firstRow = e), 
    this.$changedLines.lastRow < t && (this.$changedLines.lastRow = t)) : this.$changedLines = {
@@ -10272,35 +10534,38 @@ function printStackTrace(e) {
    e ? this.$renderChanges(this.CHANGE_FULL, !0) : this.$loop.schedule(this.CHANGE_FULL);
   }, this.updateFontSize = function() {
    this.$textLayer.checkForSizeChanges();
-  }, this.$changes = 0, this.onResize = function(e, t, n, i) {
+  }, this.$changes = 0, this.$updateSizeAsync = function() {
+   this.$loop.pending ? this.$size.$dirty = !0 : this.onResize();
+  }, this.onResize = function(e, t, n, i) {
    if (!(this.resizing > 2)) {
     this.resizing > 0 ? this.resizing++ : this.resizing = e ? 1 : 0;
     var o = this.container;
     i || (i = o.clientHeight || o.scrollHeight), n || (n = o.clientWidth || o.scrollWidth);
     var r = this.$updateCachedSize(e, t, n, i);
     if (!this.$size.scrollerHeight || !n && !i) return this.resizing = 0;
-    e && (this.$gutterLayer.$padding = null), e ? this.$renderChanges(r, !0) : this.$loop.schedule(r | this.$changes), 
+    e && (this.$gutterLayer.$padding = null), e ? this.$renderChanges(r | this.$changes, !0) : this.$loop.schedule(r | this.$changes), 
     this.resizing && (this.resizing = 0);
    }
   }, this.$updateCachedSize = function(e, t, n, i) {
+   i -= this.$extraHeight || 0;
    var o = 0, r = this.$size, s = {
     width: r.width,
     height: r.height,
     scrollerHeight: r.scrollerHeight,
     scrollerWidth: r.scrollerWidth
    };
-   return i && (e || r.height != i) && (r.height = i, o = this.CHANGE_SIZE, r.scrollerHeight = r.height, 
+   return i && (e || r.height != i) && (r.height = i, o |= this.CHANGE_SIZE, r.scrollerHeight = r.height, 
    this.$horizScroll && (r.scrollerHeight -= this.scrollBarH.getHeight()), this.scrollBarV.element.style.bottom = this.scrollBarH.getHeight() + "px", 
-   this.session && (this.session.setScrollTop(this.getScrollTop()), o |= this.CHANGE_SCROLL)), 
-   n && (e || r.width != n) && (o = this.CHANGE_SIZE, r.width = n, null == t && (t = this.$showGutter ? this.$gutter.offsetWidth : 0), 
-   this.gutterWidth = t, this.scrollBarH.element.style.left = this.scroller.style.left = t + "px", 
-   r.scrollerWidth = Math.max(0, n - t - this.scrollBarV.getWidth()), this.scrollBarH.element.style.right = this.scroller.style.right = this.scrollBarV.getWidth() + "px", 
+   o |= this.CHANGE_SCROLL), n && (e || r.width != n) && (o |= this.CHANGE_SIZE, r.width = n, 
+   null == t && (t = this.$showGutter ? this.$gutter.offsetWidth : 0), this.gutterWidth = t, 
+   this.scrollBarH.element.style.left = this.scroller.style.left = t + "px", r.scrollerWidth = Math.max(0, n - t - this.scrollBarV.getWidth()), 
+   this.scrollBarH.element.style.right = this.scroller.style.right = this.scrollBarV.getWidth() + "px", 
    this.scroller.style.bottom = this.scrollBarH.getHeight() + "px", (this.session && this.session.getUseWrapMode() && this.adjustWrapLimit() || e) && (o |= this.CHANGE_FULL)), 
-   o && this._signal("resize", s), o;
+   r.$dirty = !n || !i, o && this._signal("resize", s), o;
   }, this.onGutterResize = function() {
    var e = this.$showGutter ? this.$gutter.offsetWidth : 0;
    e != this.gutterWidth && (this.$changes |= this.$updateCachedSize(!0, e, this.$size.width, this.$size.height)), 
-   this.session.getUseWrapMode() && this.adjustWrapLimit() ? this.$loop.schedule(this.CHANGE_FULL) : (this.$computeLayerConfig(), 
+   this.session.getUseWrapMode() && this.adjustWrapLimit() ? this.$loop.schedule(this.CHANGE_FULL) : this.$size.$dirty ? this.$loop.schedule(this.CHANGE_FULL) : (this.$computeLayerConfig(), 
    this.$loop.schedule(this.CHANGE_MARKER));
   }, this.adjustWrapLimit = function() {
    var e = this.$size.scrollerWidth - 2 * this.$padding, t = Math.floor(e / this.characterWidth);
@@ -10395,7 +10660,8 @@ function printStackTrace(e) {
   }, this.setScrollMargin = function(e, t, n, i) {
    var o = this.scrollMargin;
    o.top = 0 | e, o.bottom = 0 | t, o.right = 0 | i, o.left = 0 | n, o.v = o.top + o.bottom, 
-   o.h = o.left + o.right, this.updateFull();
+   o.h = o.left + o.right, o.top && this.scrollTop <= 0 && this.session && this.session.setScrollTop(o.top), 
+   this.updateFull();
   }, this.getHScrollBarAlwaysVisible = function() {
    return this.$hScrollBarAlwaysVisible;
   }, this.setHScrollBarAlwaysVisible = function(e) {
@@ -10405,35 +10671,41 @@ function printStackTrace(e) {
   }, this.setVScrollBarAlwaysVisible = function(e) {
    this.setOption("vScrollBarAlwaysVisible", e);
   }, this.$updateScrollBarV = function() {
-   this.scrollBarV.setInnerHeight(this.layerConfig.maxHeight + this.scrollMargin.v), 
+   this.scrollBarV.setScrollHeight(this.layerConfig.maxHeight + this.scrollMargin.v), 
    this.scrollBarV.setScrollTop(this.scrollTop + this.scrollMargin.top);
   }, this.$updateScrollBarH = function() {
-   this.scrollBarH.setInnerWidth(this.layerConfig.width + 2 * this.$padding + this.scrollMargin.h), 
+   this.scrollBarH.setScrollWidth(this.layerConfig.width + 2 * this.$padding + this.scrollMargin.h), 
    this.scrollBarH.setScrollLeft(this.scrollLeft + this.scrollMargin.left);
+  }, this.$frozen = !1, this.freeze = function() {
+   this.$frozen = !0;
+  }, this.unfreeze = function() {
+   this.$frozen = !1;
   }, this.$renderChanges = function(e, t) {
-   return this.$changes && (e |= this.$changes, this.$changes = 0), this.session && this.container.offsetWidth && (e || t) ? this.$size.width ? (this.lineHeight || this.$textLayer.checkForSizeChanges(), 
-   this._signal("beforeRender"), (e & this.CHANGE_FULL || e & this.CHANGE_SIZE || e & this.CHANGE_TEXT || e & this.CHANGE_LINES || e & this.CHANGE_SCROLL || e & this.CHANGE_H_SCROLL) && (e |= this.$computeLayerConfig()), 
-   e & this.CHANGE_H_SCROLL && (this.$updateScrollBarH(), this.content.style.marginLeft = -this.scrollLeft + "px", 
+   if (this.$changes && (e |= this.$changes, this.$changes = 0), !this.session || !this.container.offsetWidth || this.$frozen || !e && !t) return this.$changes |= e, 
+   void 0;
+   if (this.$size.$dirty) return this.$changes |= e, this.onResize(!0);
+   this.lineHeight || this.$textLayer.checkForSizeChanges(), this._signal("beforeRender");
+   var n = this.layerConfig;
+   return (e & this.CHANGE_FULL || e & this.CHANGE_SIZE || e & this.CHANGE_TEXT || e & this.CHANGE_LINES || e & this.CHANGE_SCROLL || e & this.CHANGE_H_SCROLL) && (e |= this.$computeLayerConfig(), 
+   n = this.layerConfig, this.$updateScrollBarV(), e & this.CHANGE_H_SCROLL && this.$updateScrollBarH(), 
+   this.$gutterLayer.element.style.marginTop = -n.offset + "px", this.content.style.marginTop = -n.offset + "px", 
+   this.content.style.width = n.width + 2 * this.$padding + "px", this.content.style.height = n.minHeight + "px"), 
+   e & this.CHANGE_H_SCROLL && (this.content.style.marginLeft = -this.scrollLeft + "px", 
    this.scroller.className = this.scrollLeft <= 0 ? "ace_scroller" : "ace_scroller ace_scroll-left"), 
-   e & this.CHANGE_FULL ? (this.$updateScrollBarV(), this.$updateScrollBarH(), this.$textLayer.update(this.layerConfig), 
-   this.$showGutter && this.$gutterLayer.update(this.layerConfig), this.$markerBack.update(this.layerConfig), 
-   this.$markerFront.update(this.layerConfig), this.$cursorLayer.update(this.layerConfig), 
+   e & this.CHANGE_FULL ? (this.$textLayer.update(n), this.$showGutter && this.$gutterLayer.update(n), 
+   this.$markerBack.update(n), this.$markerFront.update(n), this.$cursorLayer.update(n), 
    this.$moveTextAreaToCursor(), this.$highlightGutterLine && this.$updateGutterLineHighlight(), 
-   this._signal("afterRender"), void 0) : e & this.CHANGE_SCROLL ? (this.$updateScrollBarV(), 
-   e & this.CHANGE_TEXT || e & this.CHANGE_LINES ? this.$textLayer.update(this.layerConfig) : this.$textLayer.scrollLines(this.layerConfig), 
-   this.$showGutter && this.$gutterLayer.update(this.layerConfig), this.$markerBack.update(this.layerConfig), 
-   this.$markerFront.update(this.layerConfig), this.$cursorLayer.update(this.layerConfig), 
-   this.$highlightGutterLine && this.$updateGutterLineHighlight(), this.$moveTextAreaToCursor(), 
-   this._signal("afterRender"), void 0) : (e & this.CHANGE_TEXT ? (this.$textLayer.update(this.layerConfig), 
-   this.$showGutter && this.$gutterLayer.update(this.layerConfig)) : e & this.CHANGE_LINES ? (this.$updateLines() || e & this.CHANGE_GUTTER && this.$showGutter) && this.$gutterLayer.update(this.layerConfig) : (e & this.CHANGE_TEXT || e & this.CHANGE_GUTTER) && this.$showGutter && this.$gutterLayer.update(this.layerConfig), 
-   e & this.CHANGE_CURSOR && (this.$cursorLayer.update(this.layerConfig), this.$moveTextAreaToCursor(), 
-   this.$highlightGutterLine && this.$updateGutterLineHighlight()), e & (this.CHANGE_MARKER | this.CHANGE_MARKER_FRONT) && this.$markerFront.update(this.layerConfig), 
-   e & (this.CHANGE_MARKER | this.CHANGE_MARKER_BACK) && this.$markerBack.update(this.layerConfig), 
-   (e & this.CHANGE_SIZE || e & this.CHANGE_LINES) && (this.$updateScrollBarV(), this.$updateScrollBarH()), 
-   this._signal("afterRender"), void 0)) : (this.$changes |= e, this.onResize(!0)) : (this.$changes |= e, 
-   void 0);
-  }, this.$autosize = function(e) {
-   var e = this.session.getScreenLength() * this.lineHeight, t = this.$maxLines * this.lineHeight, n = Math.max((this.$minLines || 1) * this.lineHeight, Math.min(t, e)), i = e > t;
+   this._signal("afterRender"), void 0) : e & this.CHANGE_SCROLL ? (e & this.CHANGE_TEXT || e & this.CHANGE_LINES ? this.$textLayer.update(n) : this.$textLayer.scrollLines(n), 
+   this.$showGutter && this.$gutterLayer.update(n), this.$markerBack.update(n), this.$markerFront.update(n), 
+   this.$cursorLayer.update(n), this.$highlightGutterLine && this.$updateGutterLineHighlight(), 
+   this.$moveTextAreaToCursor(), this._signal("afterRender"), void 0) : (e & this.CHANGE_TEXT ? (this.$textLayer.update(n), 
+   this.$showGutter && this.$gutterLayer.update(n)) : e & this.CHANGE_LINES ? (this.$updateLines() || e & this.CHANGE_GUTTER && this.$showGutter) && this.$gutterLayer.update(n) : (e & this.CHANGE_TEXT || e & this.CHANGE_GUTTER) && this.$showGutter && this.$gutterLayer.update(n), 
+   e & this.CHANGE_CURSOR && (this.$cursorLayer.update(n), this.$moveTextAreaToCursor(), 
+   this.$highlightGutterLine && this.$updateGutterLineHighlight()), e & (this.CHANGE_MARKER | this.CHANGE_MARKER_FRONT) && this.$markerFront.update(n), 
+   e & (this.CHANGE_MARKER | this.CHANGE_MARKER_BACK) && this.$markerBack.update(n), 
+   this._signal("afterRender"), void 0);
+  }, this.$autosize = function() {
+   var e = this.session.getScreenLength() * this.lineHeight, t = this.$maxLines * this.lineHeight, n = Math.max((this.$minLines || 1) * this.lineHeight, Math.min(t, e)) + this.scrollMargin.v + (this.$extraHeight || 0), i = e > t;
    if (n != this.desiredHeight || this.$size.height != this.desiredHeight || i != this.$vScroll) {
     i != this.$vScroll && (this.$vScroll = i, this.scrollBarV.setVisible(i));
     var o = this.container.clientWidth;
@@ -10442,35 +10714,35 @@ function printStackTrace(e) {
    }
   }, this.$computeLayerConfig = function() {
    this.$maxLines && this.lineHeight > 1 && this.$autosize();
-   var e = this.session, t = this.$size.height <= 2 * this.lineHeight, n = this.session.getScreenLength(), i = n * this.lineHeight, o = this.scrollTop % this.lineHeight, r = this.$size.scrollerHeight + this.lineHeight, s = this.$getLongestLine(), a = !t && (this.$hScrollBarAlwaysVisible || this.$size.scrollerWidth - s - 2 * this.$padding < 0), l = this.$horizScroll !== a;
-   l && (this.$horizScroll = a, this.scrollBarH.setVisible(a)), !this.$maxLines && this.$scrollPastEnd && this.scrollTop > i - this.$size.scrollerHeight && (i += Math.min((this.$size.scrollerHeight - this.lineHeight) * this.$scrollPastEnd, this.scrollTop - i + this.$size.scrollerHeight));
-   var c = !t && (this.$vScrollBarAlwaysVisible || this.$size.scrollerHeight - i < 0), u = this.$vScroll !== c;
-   u && (this.$vScroll = c, this.scrollBarV.setVisible(c)), this.session.setScrollTop(Math.max(-this.scrollMargin.top, Math.min(this.scrollTop, i - this.$size.scrollerHeight + this.scrollMargin.v))), 
-   this.session.setScrollLeft(Math.max(-this.scrollMargin.left, Math.min(this.scrollLeft, s + 2 * this.$padding - this.$size.scrollerWidth + this.scrollMargin.h)));
-   var d, h, p = Math.ceil(r / this.lineHeight) - 1, f = Math.max(0, Math.round((this.scrollTop - o) / this.lineHeight)), g = f + p, m = this.lineHeight;
-   f = e.screenToDocumentRow(f, 0);
-   var v = e.getFoldLine(f);
-   v && (f = v.start.row), d = e.documentToScreenRow(f, 0), h = e.getRowLength(f) * m, 
-   g = Math.min(e.screenToDocumentRow(g, 0), e.getLength() - 1), r = this.$size.scrollerHeight + e.getRowLength(g) * m + h, 
-   o = this.scrollTop - d * m;
-   var b = 0;
-   return (l || u) && (b = this.$updateCachedSize(!0, this.gutterWidth, this.$size.width, this.$size.height), 
-   this._signal("scrollbarVisibilityChanged"), u && (s = this.$getLongestLine())), 
+   var e = this.session, t = this.$size, n = t.height <= 2 * this.lineHeight, i = this.session.getScreenLength(), o = i * this.lineHeight, r = this.scrollTop % this.lineHeight, s = t.scrollerHeight + this.lineHeight, a = this.$getLongestLine(), l = !n && (this.$hScrollBarAlwaysVisible || t.scrollerWidth - a - 2 * this.$padding < 0), c = this.$horizScroll !== l;
+   c && (this.$horizScroll = l, this.scrollBarH.setVisible(l)), !this.$maxLines && this.$scrollPastEnd && this.scrollTop > o - t.scrollerHeight && (o += Math.min((t.scrollerHeight - this.lineHeight) * this.$scrollPastEnd, this.scrollTop - o + t.scrollerHeight));
+   var u = !n && (this.$vScrollBarAlwaysVisible || t.scrollerHeight - o < 0), d = this.$vScroll !== u;
+   d && (this.$vScroll = u, this.scrollBarV.setVisible(u)), this.session.setScrollTop(Math.max(-this.scrollMargin.top, Math.min(this.scrollTop, o - t.scrollerHeight + this.scrollMargin.bottom))), 
+   this.session.setScrollLeft(Math.max(-this.scrollMargin.left, Math.min(this.scrollLeft, a + 2 * this.$padding - t.scrollerWidth + this.scrollMargin.right)));
+   var h, p, f = Math.ceil(s / this.lineHeight) - 1, g = Math.max(0, Math.round((this.scrollTop - r) / this.lineHeight)), m = g + f, v = this.lineHeight;
+   g = e.screenToDocumentRow(g, 0);
+   var b = e.getFoldLine(g);
+   b && (g = b.start.row), h = e.documentToScreenRow(g, 0), p = e.getRowLength(g) * v, 
+   m = Math.min(e.screenToDocumentRow(m, 0), e.getLength() - 1), s = t.scrollerHeight + e.getRowLength(m) * v + p, 
+   r = this.scrollTop - h * v;
+   var y = 0;
+   return this.layerConfig.width != a && (y = this.CHANGE_H_SCROLL), (c || d) && (y = this.$updateCachedSize(!0, this.gutterWidth, t.width, t.height), 
+   this._signal("scrollbarVisibilityChanged"), d && (a = this.$getLongestLine())), 
    this.layerConfig = {
-    width: s,
+    width: a,
     padding: this.$padding,
-    firstRow: f,
-    firstRowScreen: d,
-    lastRow: g,
-    lineHeight: m,
+    firstRow: g,
+    firstRowScreen: h,
+    lastRow: m,
+    lineHeight: v,
     characterWidth: this.characterWidth,
-    minHeight: r,
-    maxHeight: i,
-    offset: o,
+    textWidth: this.$textLayer.textWidth.bind(this.$textLayer),
+    minHeight: s,
+    maxHeight: o,
+    offset: r,
+    gutterOffset: Math.ceil((r + t.height - t.scrollerHeight) / v),
     height: this.$size.scrollerHeight
-   }, this.$gutterLayer.element.style.marginTop = -o + "px", this.content.style.marginTop = -o + "px", 
-   this.content.style.width = s + 2 * this.$padding + "px", this.content.style.height = r + "px", 
-   b;
+   }, y;
   }, this.$updateLines = function() {
    var e = this.$changedLines.firstRow, t = this.$changedLines.lastRow;
    this.$changedLines = null;
@@ -10500,15 +10772,15 @@ function printStackTrace(e) {
    this.$cursorLayer.showCursor();
   }, this.scrollSelectionIntoView = function(e, t, n) {
    this.scrollCursorIntoView(e, n), this.scrollCursorIntoView(t, n);
-  }, this.scrollCursorIntoView = function(e, t) {
+  }, this.scrollCursorIntoView = function(e, t, n) {
    if (0 !== this.$size.scrollerHeight) {
-    var n = this.$cursorLayer.getPixelPosition(e), i = n.left, o = n.top, r = this.$scrollAnimation ? this.session.getScrollTop() : this.scrollTop;
-    r > o ? (t && (o -= t * this.$size.scrollerHeight), 0 == o ? o = -this.scrollMargin.top : 0 == o && (o = +this.scrollMargin.bottom), 
-    this.session.setScrollTop(o)) : r + this.$size.scrollerHeight < o + this.lineHeight && (t && (o += t * this.$size.scrollerHeight), 
-    this.session.setScrollTop(o + this.lineHeight - this.$size.scrollerHeight));
-    var s = this.scrollLeft;
-    s > i ? (i < this.$padding + 2 * this.layerConfig.characterWidth && (i = -this.scrollMargin.left), 
-    this.session.setScrollLeft(i)) : s + this.$size.scrollerWidth < i + this.characterWidth ? this.session.setScrollLeft(Math.round(i + this.characterWidth - this.$size.scrollerWidth)) : s <= this.$padding && i - s < this.characterWidth && this.session.setScrollLeft(0);
+    var i = this.$cursorLayer.getPixelPosition(e), o = i.left, r = i.top, s = n && n.top || 0, a = n && n.bottom || 0, l = this.$scrollAnimation ? this.session.getScrollTop() : this.scrollTop;
+    l + s > r ? (t && (r -= t * this.$size.scrollerHeight), 0 === r && (r = -this.scrollMargin.top), 
+    this.session.setScrollTop(r)) : l + this.$size.scrollerHeight - a < r + this.lineHeight && (t && (r += t * this.$size.scrollerHeight), 
+    this.session.setScrollTop(r + this.lineHeight - this.$size.scrollerHeight));
+    var c = this.scrollLeft;
+    c > o ? (o < this.$padding + 2 * this.layerConfig.characterWidth && (o = -this.scrollMargin.left), 
+    this.session.setScrollLeft(o)) : c + this.$size.scrollerWidth < o + this.characterWidth ? this.session.setScrollLeft(Math.round(o + this.characterWidth - this.$size.scrollerWidth)) : c <= this.$padding && o - c < this.characterWidth && this.session.setScrollLeft(0);
    }
   }, this.getScrollTop = function() {
    return this.session.getScrollTop();
@@ -10555,7 +10827,8 @@ function printStackTrace(e) {
       from: e,
       to: n,
       steps: r
-     }, clearInterval(this.$timer), i.session.setScrollTop(r.shift()), this.$timer = setInterval(function() {
+     }, clearInterval(this.$timer), i.session.setScrollTop(r.shift()), i.session.$scrollTop = n, 
+     this.$timer = setInterval(function() {
       r.length ? (i.session.setScrollTop(r.shift()), i.session.$scrollTop = n) : null != n ? (i.session.$scrollTop = -1, 
       i.session.setScrollTop(n), n = null) : (i.$timer = clearInterval(i.$timer), i.$scrollAnimation = null, 
       t && t());
@@ -10579,9 +10852,21 @@ function printStackTrace(e) {
     column: r,
     side: i - r > 0 ? 1 : -1
    };
+  }, this.$findColumn = function(e, t, n, i) {
+   var o = 0;
+   for (i = i ? i - n - 1 : this.session.getLine(e).length - n; ;) {
+    if (0 >= i) return null;
+    if (1 == i - o) {
+     var r = this.$textLayer.textWidth(e, o, n), s = this.$textLayer.textWidth(e, i, n);
+     return Math.abs(r - t) < Math.abs(s - t) ? o : i;
+    }
+    var a = o + (i - o >> 1), l = this.$textLayer.textWidth(e, a, n);
+    if (l == t) return a;
+    l > t ? i = a : o = a;
+   }
   }, this.screenToTextCoordinates = function(e, t) {
-   var n = this.scroller.getBoundingClientRect(), i = Math.round((e + this.scrollLeft - n.left - this.$padding) / this.characterWidth), o = Math.floor((t + this.scrollTop - n.top) / this.lineHeight);
-   return this.session.screenToDocumentPosition(o, Math.max(i, 0));
+   var n = this.scroller.getBoundingClientRect(), o = (t + this.scrollTop - n.top) / this.lineHeight, r = e + this.scroller.scrollLeft - n.left - this.$padding - i.getPageScrollLeft(), s = this.session.screenToDocumentPosition(o, 0);
+   return s.column += this.$findColumn(s.row, r, s.column, s.rowLength), s;
   }, this.textToScreenCoordinates = function(e, t) {
    var n = this.scroller.getBoundingClientRect(), i = this.session.documentToScreenPosition(e, t), o = this.$padding + Math.round(i.column * this.characterWidth), r = i.row * this.lineHeight;
    return {
@@ -10605,30 +10890,32 @@ function printStackTrace(e) {
    this.textarea.style.cssText = this.$composition.cssText, this.$composition = null);
   }, this.setTheme = function(e, t) {
    function n(n) {
-    if (r.$themeValue != e) return t && t();
+    if (r.$themeId != e) return t && t();
     if (n.cssClass) {
-     i.importCssString(n.cssText, n.cssClass, r.container.ownerDocument), r.theme && i.removeCssClass(r.container, r.theme.cssClass), 
-     r.$theme = n.cssClass, r.theme = n, i.addCssClass(r.container, n.cssClass), i.setCssClass(r.container, "ace_dark", n.isDark);
-     var o = "padding" in n ? n.padding : 4;
-     r.$padding && o != r.$padding && r.setPadding(o), r.$size && (r.$size.width = 0, 
-     r.onResize()), r._dispatchEvent("themeLoaded", {
+     i.importCssString(n.cssText, n.cssClass, r.container.ownerDocument), r.theme && i.removeCssClass(r.container, r.theme.cssClass);
+     var o = "padding" in n ? n.padding : "padding" in (r.theme || {}) ? 4 : r.$padding;
+     r.$padding && o != r.$padding && r.setPadding(o), r.$theme = n.cssClass, r.theme = n, 
+     i.addCssClass(r.container, n.cssClass), i.setCssClass(r.container, "ace_dark", n.isDark), 
+     r.$size && (r.$size.width = 0, r.$updateSizeAsync()), r._dispatchEvent("themeLoaded", {
       theme: n
      }), t && t();
     }
    }
    var r = this;
-   if (this.$themeValue = e, r._dispatchEvent("themeChange", {
+   if (this.$themeId = e, r._dispatchEvent("themeChange", {
     theme: e
    }), e && "string" != typeof e) n(e); else {
-    var s = e || "ace/theme/textmate";
+    var s = e || this.$options.theme.initialValue;
     o.loadModule([ "theme", s ], n);
    }
   }, this.getTheme = function() {
-   return this.$themeValue;
+   return this.$themeId;
   }, this.setStyle = function(e, t) {
-   i.setCssClass(this.container, e, 0 != t);
+   i.setCssClass(this.container, e, t !== !1);
   }, this.unsetStyle = function(e) {
    i.removeCssClass(this.container, e);
+  }, this.setCursorStyle = function(e) {
+   this.content.style.cursor != e && (this.content.style.cursor = e);
   }, this.setMouseCursor = function(e) {
    this.content.style.cursor = e;
   }, this.destroy = function() {
@@ -10680,6 +10967,12 @@ function printStackTrace(e) {
   showFoldWidgets: {
    set: function(e) {
     this.$gutterLayer.setShowFoldWidgets(e);
+   },
+   initialValue: !0
+  },
+  showLineNumbers: {
+   set: function(e) {
+    this.$gutterLayer.setShowLineNumbers(e), this.$loop.schedule(this.CHANGE_GUTTER);
    },
    initialValue: !0
   },
@@ -10743,6 +11036,16 @@ function printStackTrace(e) {
    set: function(e) {
     this.$gutterLayer.$fixedWidth = !!e, this.$loop.schedule(this.CHANGE_GUTTER);
    }
+  },
+  theme: {
+   set: function(e) {
+    this.setTheme(e);
+   },
+   get: function() {
+    return this.$themeId || this.theme;
+   },
+   initialValue: "./theme/textmate",
+   handlesSet: !0
   }
  }), t.VirtualRenderer = f;
 }), define("ace/mouse/multi_select_handler", [ "require", "exports", "module", "../lib/event" ], function(e, t) {
@@ -10786,10 +11089,10 @@ function printStackTrace(e) {
     l.addSelectionMarker(k);
    }
    var A = c.rangeList.rangeAtPoint(d);
-   l.once("mouseup", function() {
+   l.$blockScrolling++, l.once("mouseup", function() {
     var e = c.toOrientedRange();
     A && e.isEmpty() && n(A.cursor, e.cursor) ? c.substractPoint(e.cursor) : (k && (l.removeSelectionMarker(k), 
-    c.addRange(k)), c.addRange(e));
+    c.addRange(k)), c.addRange(e)), l.$blockScrolling--;
    });
   }
  }
@@ -10951,7 +11254,7 @@ function printStackTrace(e) {
     }
     e.cursor || (e.cursor = e.end);
     var i = this.rangeList.add(e);
-    return this.$onAddRange(e), i.length && this.$onRemoveRange(i), this.rangeCount > 1 && !this.inMultiSelectMode && (this._emit("multiSelect"), 
+    return this.$onAddRange(e), i.length && this.$onRemoveRange(i), this.rangeCount > 1 && !this.inMultiSelectMode && (this._signal("multiSelect"), 
     this.inMultiSelectMode = !0, this.session.$undoSelect = !1, this.rangeList.attach(this.session)), 
     t || this.fromOrientedRange(e);
    }
@@ -10966,7 +11269,7 @@ function printStackTrace(e) {
    var e = this.rangeList.merge();
    e.length ? this.$onRemoveRange(e) : this.ranges[0] && this.fromOrientedRange(this.ranges[0]);
   }, this.$onAddRange = function(e) {
-   this.rangeCount = this.rangeList.ranges.length, this.ranges.unshift(e), this._emit("addRange", {
+   this.rangeCount = this.rangeList.ranges.length, this.ranges.unshift(e), this._signal("addRange", {
     range: e
    });
   }, this.$onRemoveRange = function(e) {
@@ -10978,10 +11281,10 @@ function printStackTrace(e) {
     var i = this.ranges.indexOf(e[n]);
     this.ranges.splice(i, 1);
    }
-   this._emit("removeRange", {
+   this._signal("removeRange", {
     ranges: e
    }), 0 == this.rangeCount && this.inMultiSelectMode && (this.inMultiSelectMode = !1, 
-   this._emit("singleSelect"), this.session.$undoSelect = !0, this.rangeList.detach(this.session)), 
+   this._signal("singleSelect"), this.session.$undoSelect = !0, this.rangeList.detach(this.session)), 
    t = t || this.ranges[0], t && !t.isEqual(this.getRange()) && this.fromOrientedRange(t);
   }, this.$initRangeList = function() {
    this.rangeList || (this.rangeList = new s(), this.ranges = [], this.rangeCount = 0);
@@ -11109,12 +11412,15 @@ function printStackTrace(e) {
    return e;
   }, this.onPaste = function(e) {
    if (!this.$readOnly) {
-    if (this._signal("paste", e), !this.inMultiSelectMode || this.inVirtualSelectionMode) return this.insert(e);
-    var t = e.split(/\r\n|\r|\n/), n = this.selection.rangeList.ranges;
-    if (t.length > n.length || t.length < 2 || !t[1]) return this.commands.exec("insertstring", this, e);
-    for (var i = n.length; i--; ) {
-     var o = n[i];
-     o.isEmpty() || this.session.remove(o), this.session.insert(o.start, t[i]);
+    var t = {
+     text: e
+    };
+    if (this._signal("paste", t), e = t.text, !this.inMultiSelectMode || this.inVirtualSelectionMode) return this.insert(e);
+    var n = e.split(/\r\n|\r|\n/), i = this.selection.rangeList.ranges;
+    if (n.length > i.length || n.length < 2 || !n[1]) return this.commands.exec("insertstring", this, e);
+    for (var o = i.length; o--; ) {
+     var r = i[o];
+     r.isEmpty() || this.session.remove(r), this.session.insert(r.start, n[o]);
     }
    }
   }, this.findAll = function(e, t, n) {
@@ -11163,12 +11469,12 @@ function printStackTrace(e) {
    }
   }, this.selectMore = function(e, t) {
    var i = this.session, o = i.multiSelect, r = o.toOrientedRange();
-   if (r.isEmpty()) {
-    var r = i.getWordRange(r.start.row, r.start.column);
-    return r.cursor = -1 == e ? r.start : r.end, this.multiSelect.addRange(r), void 0;
-   }
+   r.isEmpty() && (r = i.getWordRange(r.start.row, r.start.column), r.cursor = -1 == e ? r.start : r.end, 
+   this.multiSelect.addRange(r));
    var s = i.getTextRange(r), a = n(i, s, e);
-   a && (a.cursor = -1 == e ? a.start : a.end, this.multiSelect.addRange(a)), t && this.multiSelect.substractPoint(r.cursor);
+   a && (a.cursor = -1 == e ? a.start : a.end, this.$blockScrolling += 1, this.session.unfold(a), 
+   this.multiSelect.addRange(a), this.$blockScrolling -= 1, this.renderer.scrollCursorIntoView(null, .5)), 
+   t && this.multiSelect.substractPoint(r.cursor);
   }, this.alignCursors = function() {
    var e = this.session, t = e.multiSelect, n = t.ranges;
    if (n.length) {
@@ -11186,30 +11492,40 @@ function printStackTrace(e) {
      t.start.column = t.end.column = r, t.start.row = t.end.row = i.row, t.cursor = t.end;
     }), t.fromOrientedRange(n[0]), this.renderer.updateCursor(), this.renderer.updateBackMarkers();
    } else {
-    var c = this.selection.getRange(), u = c.start.row, h = c.end.row, p = this.session.doc.removeLines(u, h);
-    p = this.$reAlignText(p), this.session.doc.insertLines(u, p), c.start.column = 0, 
-    c.end.column = p[p.length - 1].length, this.selection.setRange(c);
+    var c = this.selection.getRange(), u = c.start.row, h = c.end.row, p = u == h;
+    if (p) {
+     var f, g = this.session.getLength();
+     do f = this.session.getLine(h); while (/[=:]/.test(f) && ++h < g);
+     do f = this.session.getLine(u); while (/[=:]/.test(f) && --u > 0);
+     0 > u && (u = 0), h >= g && (h = g - 1);
+    }
+    var m = this.session.doc.removeLines(u, h);
+    m = this.$reAlignText(m, p), this.session.doc.insert({
+     row: u,
+     column: 0
+    }, m.join("\n") + "\n"), p || (c.start.column = 0, c.end.column = m[m.length - 1].length), 
+    this.selection.setRange(c);
    }
-  }, this.$reAlignText = function(e) {
-   function t(e) {
+  }, this.$reAlignText = function(e, t) {
+   function n(e) {
     return d.stringRepeat(" ", e);
    }
-   function n(e) {
-    return e[2] ? t(r) + e[2] + t(s - e[2].length + a) + e[4].replace(/^([=:])\s+/, "$1 ") : e[0];
-   }
    function i(e) {
-    return e[2] ? t(r + s - e[2].length) + e[2] + t(a, " ") + e[4].replace(/^([=:])\s+/, "$1 ") : e[0];
+    return e[2] ? n(s) + e[2] + n(a - e[2].length + l) + e[4].replace(/^([=:])\s+/, "$1 ") : e[0];
    }
    function o(e) {
-    return e[2] ? t(r) + e[2] + t(a) + e[4].replace(/^([=:])\s+/, "$1 ") : e[0];
+    return e[2] ? n(s + a - e[2].length) + e[2] + n(l, " ") + e[4].replace(/^([=:])\s+/, "$1 ") : e[0];
    }
-   var r, s, a, l = !0, c = !0;
+   function r(e) {
+    return e[2] ? n(s) + e[2] + n(l) + e[4].replace(/^([=:])\s+/, "$1 ") : e[0];
+   }
+   var s, a, l, c = !0, u = !0;
    return e.map(function(e) {
     var t = e.match(/(\s*)(.*?)(\s*)([=:].*)/);
-    return t ? null == r ? (r = t[1].length, s = t[2].length, a = t[3].length, t) : (r + s + a != t[1].length + t[2].length + t[3].length && (c = !1), 
-    r != t[1].length && (l = !1), r > t[1].length && (r = t[1].length), s < t[2].length && (s = t[2].length), 
-    a > t[3].length && (a = t[3].length), t) : [ e ];
-   }).map(l ? c ? i : n : o);
+    return t ? null == s ? (s = t[1].length, a = t[2].length, l = t[3].length, t) : (s + a + l != t[1].length + t[2].length + t[3].length && (u = !1), 
+    s != t[1].length && (c = !1), s > t[1].length && (s = t[1].length), a < t[2].length && (a = t[2].length), 
+    l > t[3].length && (l = t[3].length), t) : [ e ];
+   }).map(t ? i : c ? u ? o : i : r);
   };
  }).call(m.prototype), t.onSessionChange = function(e) {
   var t = e.session;
@@ -11231,31 +11547,33 @@ function printStackTrace(e) {
   }
  });
 }), define("ace/worker/worker_client", [ "require", "exports", "module", "../lib/oop", "../lib/event_emitter", "../config" ], function(e, t) {
- var n = e("../lib/oop"), i = e("../lib/event_emitter").EventEmitter, o = e("../config"), r = function(t, n, i) {
-  this.$sendDeltaQueue = this.$sendDeltaQueue.bind(this), this.changeListener = this.changeListener.bind(this), 
-  this.onMessage = this.onMessage.bind(this), this.onError = this.onError.bind(this), 
-  e.nameToUrl && !e.toUrl && (e.toUrl = e.nameToUrl);
-  var r;
-  if (o.get("packaged") || !e.toUrl) r = o.moduleUrl(n, "worker"); else {
+ var n = e("../lib/oop"), i = e("../lib/event_emitter").EventEmitter, o = e("../config"), r = function(t, n, i, r) {
+  if (this.$sendDeltaQueue = this.$sendDeltaQueue.bind(this), this.changeListener = this.changeListener.bind(this), 
+  this.onMessage = this.onMessage.bind(this), e.nameToUrl && !e.toUrl && (e.toUrl = e.nameToUrl), 
+  o.get("packaged") || !e.toUrl) r = r || o.moduleUrl(n, "worker"); else {
    var s = this.$normalizePath;
-   r = s(e.toUrl("ace/worker/worker.js", null, "_"));
+   r = r || s(e.toUrl("ace/worker/worker.js", null, "_"));
    var a = {};
    t.forEach(function(t) {
     a[t] = s(e.toUrl(t, null, "_").replace(/(\.js)?(\?.*)?$/, ""));
    });
   }
-  this.$worker = new Worker(r), this.$worker.postMessage({
+  try {
+   this.$worker = new Worker(r);
+  } catch (l) {
+   if (!(l instanceof window.DOMException)) throw l;
+   var c = this.$workerBlob(r), u = window.URL || window.webkitURL, d = u.createObjectURL(c);
+   this.$worker = new Worker(d), u.revokeObjectURL(d);
+  }
+  this.$worker.postMessage({
    init: !0,
    tlns: a,
    module: n,
    classname: i
-  }), this.callbackId = 1, this.callbacks = {}, this.$worker.onerror = this.onError, 
-  this.$worker.onmessage = this.onMessage;
+  }), this.callbackId = 1, this.callbacks = {}, this.$worker.onmessage = this.onMessage;
  };
  (function() {
-  n.implement(this, i), this.onError = function(e) {
-   throw window.console && console.log && console.log(e), e;
-  }, this.onMessage = function(e) {
+  n.implement(this, i), this.onMessage = function(e) {
    var t = e.data;
    switch (t.type) {
    case "log":
@@ -11263,7 +11581,7 @@ function printStackTrace(e) {
     break;
 
    case "event":
-    this._emit(t.name, {
+    this._signal(t.name, {
      data: t.data
     });
     break;
@@ -11275,8 +11593,9 @@ function printStackTrace(e) {
   }, this.$normalizePath = function(e) {
    return location.host ? (e = e.replace(/^[a-z]+:\/\/[^\/]+/, ""), e = location.protocol + "//" + location.host + ("/" == e.charAt(0) ? "" : location.pathname.replace(/\/[^\/]*$/, "")) + "/" + e.replace(/^[\/]+/, "")) : e;
   }, this.terminate = function() {
-   this._emit("terminate", {}), this.deltaQueue = null, this.$worker.terminate(), this.$worker = null, 
-   this.$doc.removeEventListener("change", this.changeListener), this.$doc = null;
+   this._signal("terminate", {}), this.deltaQueue = null, this.$worker.terminate(), 
+   this.$worker = null, this.$doc.removeEventListener("change", this.changeListener), 
+   this.$doc = null;
   }, this.send = function(e, t) {
    this.$worker.postMessage({
     command: e,
@@ -11302,12 +11621,23 @@ function printStackTrace(e) {
    e.on("change", this.changeListener);
   }, this.changeListener = function(e) {
    this.deltaQueue ? this.deltaQueue.push(e.data) : (this.deltaQueue = [ e.data ], 
-   setTimeout(this.$sendDeltaQueue, 1));
+   setTimeout(this.$sendDeltaQueue, 0));
   }, this.$sendDeltaQueue = function() {
    var e = this.deltaQueue;
    e && (this.deltaQueue = null, e.length > 20 && e.length > this.$doc.getLength() >> 1 ? this.call("setValue", [ this.$doc.getValue() ]) : this.emit("change", {
     data: e
    }));
+  }, this.$workerBlob = function(e) {
+   var t = 'importScripts("' + e + '");';
+   try {
+    var n = new Blob([ t ], {
+     type: "application/javascript"
+    });
+   } catch (i) {
+    var o = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder, r = new o();
+    r.append(t), n = r.getBlob("application/javascript");
+   }
+   return n;
   };
  }).call(r.prototype);
  var s = function(e, t, n) {
@@ -11319,7 +11649,7 @@ function printStackTrace(e) {
   };
   var l = function() {
    var e = a.messageBuffer.shift();
-   e.command ? r[e.command].apply(r, e.args) : e.event && s._emit(e.event, e.data);
+   e.command ? r[e.command].apply(r, e.args) : e.event && s._signal(e.event, e.data);
   };
   s.postMessage = function(e) {
    a.onMessage({
@@ -11475,7 +11805,7 @@ function printStackTrace(e) {
    }, a = e.$findClosingBracket(t, s, r);
    if (a) {
     var l = e.foldWidgets[a.row];
-    return null == l && (l = this.getFoldWidget(e, a.row)), "start" == l && a.row > s.row && (a.row--, 
+    return null == l && (l = e.getFoldWidget(a.row)), "start" == l && a.row > s.row && (a.row--, 
     a.column = e.getLine(a.row).length), n.fromPoints(s, a);
    }
   }, this.closingBracketBlock = function(e, t, i, o) {
@@ -11490,11 +11820,215 @@ function printStackTrace(e) {
  t.isDark = !1, t.cssClass = "ace-tm", t.cssText = e("../requirejs/text!./textmate.css");
  var n = e("../lib/dom");
  n.importCssString(t.cssText, t.cssClass);
-}), define("ace/ace", [ "require", "exports", "module", "./lib/fixoldbrowsers", "./lib/dom", "./lib/event", "./editor", "./edit_session", "./undomanager", "./virtual_renderer", "./multi_select", "./worker/worker_client", "./keyboard/hash_handler", "./placeholder", "./mode/folding/fold_mode", "./theme/textmate", "./config" ], function(e, t) {
+}), define("ace/line_widgets", [ "require", "exports", "module", "./lib/oop", "./lib/dom", "./range" ], function(e, t) {
+ function n(e) {
+  this.session = e, this.session.widgetManager = this, this.session.getRowLength = this.getRowLength, 
+  this.session.$getWidgetScreenLength = this.$getWidgetScreenLength, this.updateOnChange = this.updateOnChange.bind(this), 
+  this.renderWidgets = this.renderWidgets.bind(this), this.measureWidgets = this.measureWidgets.bind(this), 
+  this.session._changedWidgets = [], this.detach = this.detach.bind(this), this.session.on("change", this.updateOnChange);
+ }
+ e("./lib/oop");
+ var i = e("./lib/dom");
+ e("./range").Range, function() {
+  this.getRowLength = function(e) {
+   var t;
+   return t = this.lineWidgets ? this.lineWidgets[e] && this.lineWidgets[e].rowCount || 0 : 0, 
+   this.$useWrapMode && this.$wrapData[e] ? this.$wrapData[e].length + 1 + t : 1 + t;
+  }, this.$getWidgetScreenLength = function() {
+   var e = 0;
+   return this.lineWidgets.forEach(function(t) {
+    t && t.rowCount && (e += t.rowCount);
+   }), e;
+  }, this.attach = function(e) {
+   e.widgetManager && e.widgetManager != this && e.widgetManager.detach(), this.editor != e && (this.detach(), 
+   this.editor = e, this.editor.on("changeSession", this.detach), e.widgetManager = this, 
+   e.setOption("enableLineWidgets", !0), e.renderer.on("beforeRender", this.measureWidgets), 
+   e.renderer.on("afterRender", this.renderWidgets));
+  }, this.detach = function(e) {
+   if (!e || e.session != this.session) {
+    var t = this.editor;
+    if (t) {
+     t.off("changeSession", this.detach), this.editor = null, t.widgetManager = null, 
+     t.renderer.off("beforeRender", this.measureWidgets), t.renderer.off("afterRender", this.renderWidgets);
+     var n = this.session.lineWidgets;
+     n && n.forEach(function(e) {
+      e && e.el && e.el.parentNode && (e._inDocument = !1, e.el.parentNode.removeChild(e.el));
+     });
+    }
+   }
+  }, this.updateOnChange = function(e) {
+   var t = this.session.lineWidgets;
+   if (t) {
+    var n = e.data, i = n.range, o = i.start.row, r = i.end.row - o;
+    if (0 === r) ; else if ("removeText" == n.action || "removeLines" == n.action) {
+     var s = t.splice(o + 1, r);
+     s.forEach(function(e) {
+      e && this.removeLineWidget(e);
+     }, this), this.$updateRows();
+    } else {
+     var a = new Array(r);
+     a.unshift(o, 0), t.splice.apply(t, a), this.$updateRows();
+    }
+   }
+  }, this.$updateRows = function() {
+   var e = this.session.lineWidgets;
+   if (e) {
+    var t = !0;
+    e.forEach(function(e, n) {
+     e && (t = !1, e.row = n);
+    }), t && (this.session.lineWidgets = null);
+   }
+  }, this.addLineWidget = function(e) {
+   this.session.lineWidgets || (this.session.lineWidgets = new Array(this.session.getLength())), 
+   this.session.lineWidgets[e.row] = e;
+   var t = this.editor.renderer;
+   return e.html && !e.el && (e.el = i.createElement("div"), e.el.innerHTML = e.html), 
+   e.el && (i.addCssClass(e.el, "ace_lineWidgetContainer"), e.el.style.position = "absolute", 
+   e.el.style.zIndex = 5, t.container.appendChild(e.el), e._inDocument = !0), e.coverGutter || (e.el.style.zIndex = 3), 
+   e.pixelHeight || (e.pixelHeight = e.el.offsetHeight), null == e.rowCount && (e.rowCount = e.pixelHeight / t.layerConfig.lineHeight), 
+   this.session._emit("changeFold", {
+    data: {
+     start: {
+      row: e.row
+     }
+    }
+   }), this.$updateRows(), this.renderWidgets(null, t), e;
+  }, this.removeLineWidget = function(e) {
+   if (e._inDocument = !1, e.el && e.el.parentNode && e.el.parentNode.removeChild(e.el), 
+   e.editor && e.editor.destroy) try {
+    e.editor.destroy();
+   } catch (t) {}
+   this.session.lineWidgets && (this.session.lineWidgets[e.row] = void 0), this.session._emit("changeFold", {
+    data: {
+     start: {
+      row: e.row
+     }
+    }
+   }), this.$updateRows();
+  }, this.onWidgetChanged = function(e) {
+   this.session._changedWidgets.push(e), this.editor && this.editor.renderer.updateFull();
+  }, this.measureWidgets = function(e, t) {
+   var n = this.session._changedWidgets, i = t.layerConfig;
+   if (n && n.length) {
+    for (var o = 1/0, r = 0; r < n.length; r++) {
+     var s = n[r];
+     s._inDocument || (s._inDocument = !0, t.container.appendChild(s.el)), s.h = s.el.offsetHeight, 
+     s.fixedWidth || (s.w = s.el.offsetWidth, s.screenWidth = Math.ceil(s.w / i.characterWidth));
+     var a = s.h / i.lineHeight;
+     s.coverLine && (a -= this.session.getRowLineCount(s.row), 0 > a && (a = 0)), s.rowCount != a && (s.rowCount = a, 
+     s.row < o && (o = s.row));
+    }
+    1/0 != o && (this.session._emit("changeFold", {
+     data: {
+      start: {
+       row: o
+      }
+     }
+    }), this.session.lineWidgetWidth = null), this.session._changedWidgets = [];
+   }
+  }, this.renderWidgets = function(e, t) {
+   var n = t.layerConfig, i = this.session.lineWidgets;
+   if (i) {
+    for (var o = Math.min(this.firstRow, n.firstRow), r = Math.max(this.lastRow, n.lastRow, i.length); o > 0 && !i[o]; ) o--;
+    this.firstRow = n.firstRow, this.lastRow = n.lastRow, t.$cursorLayer.config = n;
+    for (var s = o; r >= s; s++) {
+     var a = i[s];
+     if (a && a.el) {
+      a._inDocument || (a._inDocument = !0, t.container.appendChild(a.el));
+      var l = t.$cursorLayer.getPixelPosition({
+       row: s,
+       column: 0
+      }, !0).top;
+      a.coverLine || (l += n.lineHeight * this.session.getRowLineCount(a.row)), a.el.style.top = l - n.offset + "px";
+      var c = a.coverGutter ? 0 : t.gutterWidth;
+      a.fixedWidth || (c -= t.scrollLeft), a.el.style.left = c + "px", a.el.style.right = a.fixedWidth ? t.scrollBar.getWidth() + "px" : "";
+     }
+    }
+   }
+  };
+ }.call(n.prototype), t.LineWidgets = n;
+}), define("ace/ext/error_marker", [ "require", "exports", "module", "ace/line_widgets", "ace/lib/dom", "ace/range" ], function(e, t) {
+ function n(e, t, n) {
+  for (var i = 0, o = e.length - 1; o >= i; ) {
+   var r = i + o >> 1, s = n(t, e[r]);
+   if (s > 0) i = r + 1; else {
+    if (!(0 > s)) return r;
+    o = r - 1;
+   }
+  }
+  return -(i + 1);
+ }
+ function i(e, t, i) {
+  var o = e.getAnnotations().sort(s.comparePoints);
+  if (o.length) {
+   var r = n(o, {
+    row: t,
+    column: -1
+   }, s.comparePoints);
+   0 > r && (r = -r - 1), r >= o.length - 1 ? r = i > 0 ? 0 : o.length - 1 : 0 === r && 0 > i && (r = o.length - 1);
+   var a = o[r];
+   if (a && i) {
+    if (a.row === t) {
+     do a = o[r += i]; while (a && a.row === t);
+     if (!a) return o.slice();
+    }
+    var l = [];
+    t = a.row;
+    do l[0 > i ? "unshift" : "push"](a), a = o[r += i]; while (a && a.row == t);
+    return l.length && l;
+   }
+  }
+ }
+ var o = e("ace/line_widgets").LineWidgets, r = e("ace/lib/dom"), s = e("ace/range").Range;
+ t.showErrorMarker = function(e, t) {
+  var n = e.session;
+  n.widgetManager || (n.widgetManager = new o(n), n.widgetManager.attach(e));
+  var s = e.getCursorPosition(), a = s.row, l = n.lineWidgets && n.lineWidgets[a];
+  l ? l.destroy() : a -= t;
+  var c, u = i(n, a, t);
+  if (u) {
+   var d = u[0];
+   s.column = (d.pos && "number" != typeof d.column ? d.pos.sc : d.column) || 0, s.row = d.row, 
+   c = e.renderer.$gutterLayer.$annotations[s.row];
+  } else {
+   if (l) return;
+   c = {
+    text: [ "Looks good!" ],
+    className: "ace_ok"
+   };
+  }
+  e.session.unfold(s.row), e.selection.moveCursorToPosition(s), e.selection.clearSelection();
+  var h = {
+   row: s.row,
+   fixedWidth: !0,
+   coverGutter: !0,
+   el: r.createElement("div")
+  }, p = h.el.appendChild(r.createElement("div")), f = h.el.appendChild(r.createElement("div"));
+  f.className = "error_widget_arrow " + c.className;
+  var g = e.renderer.$cursorLayer.getPixelPosition(s).left;
+  f.style.left = g + e.renderer.gutterWidth - 5 + "px", h.el.className = "error_widget_wrapper", 
+  p.className = "error_widget " + c.className, p.innerHTML = c.text.join("<br>");
+  var m = {
+   handleKeyboard: function(e, t, n) {
+    return 0 === t && "esc" === n ? (h.destroy(), !0) : void 0;
+   }
+  };
+  h.destroy = function() {
+   e.$mouseHandler.isMousePressed || (e.keyBinding.removeKeyboardHandler(m), n.widgetManager.removeLineWidget(h), 
+   e.off("changeSelection", h.destroy), e.off("changeSession", h.destroy), e.off("mouseup", h.destroy), 
+   e.off("change", h.destroy));
+  }, e.keyBinding.addKeyboardHandler(m), e.on("changeSelection", h.destroy), e.on("changeSession", h.destroy), 
+  e.on("mouseup", h.destroy), e.on("change", h.destroy), e.session.widgetManager.addLineWidget(h), 
+  h.el.onmousedown = e.focus.bind(e), e.renderer.scrollCursorIntoView(null, .5, {
+   bottom: h.el.offsetHeight
+  });
+ }, r.importCssString("    .error_widget_wrapper {        background: inherit;        color: inherit;        border:none    }    .error_widget {        border-top: solid 2px;        border-bottom: solid 2px;        margin: 5px 0;        padding: 10px 40px;        white-space: pre-wrap;    }    .error_widget.ace_error, .error_widget_arrow.ace_error{        border-color: #ff5a5a    }    .error_widget.ace_warning, .error_widget_arrow.ace_warning{        border-color: #F1D817    }    .error_widget.ace_info, .error_widget_arrow.ace_info{        border-color: #5a5a5a    }    .error_widget.ace_ok, .error_widget_arrow.ace_ok{        border-color: #5aaa5a    }    .error_widget_arrow {        position: absolute;        border: solid 5px;        border-top-color: transparent!important;        border-right-color: transparent!important;        border-left-color: transparent!important;        top: -5px;    }", "");
+}), define("ace/ace", [ "require", "exports", "module", "./lib/fixoldbrowsers", "./lib/dom", "./lib/event", "./editor", "./edit_session", "./undomanager", "./virtual_renderer", "./multi_select", "./worker/worker_client", "./keyboard/hash_handler", "./placeholder", "./mode/folding/fold_mode", "./theme/textmate", "./ext/error_marker", "./config" ], function(e, t) {
  e("./lib/fixoldbrowsers");
  var n = e("./lib/dom"), i = e("./lib/event"), o = e("./editor").Editor, r = e("./edit_session").EditSession, s = e("./undomanager").UndoManager, a = e("./virtual_renderer").VirtualRenderer, l = e("./multi_select").MultiSelect;
  e("./worker/worker_client"), e("./keyboard/hash_handler"), e("./placeholder"), e("./mode/folding/fold_mode"), 
- e("./theme/textmate"), t.config = e("./config"), t.require = e, t.edit = function(e) {
+ e("./theme/textmate"), e("./ext/error_marker"), t.config = e("./config"), t.require = e, 
+ t.edit = function(e) {
   if ("string" == typeof e) {
    var r = e, e = document.getElementById(r);
    if (!e) throw new Error("ace.edit can't find div #" + r);
@@ -11520,7 +12054,7 @@ function printStackTrace(e) {
  return e;
 }), define("constants", [], function() {
  var e = {};
- return e.VERSION = "3.1.9", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", 
+ return e.VERSION = "3.1.10", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", 
  e.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", e.GOOGLE_DRIVE_APP_ID = "241271498917", 
  e.DROPBOX_APP_KEY = "lq6mwopab8wskas", e.DROPBOX_APP_SECRET = "851fgnucpezy84t", 
  e.DROPBOX_RESTRICTED_APP_KEY = "sw0hlixhr8q1xk0", e.DROPBOX_RESTRICTED_APP_SECRET = "1r808p2xygs6lbg", 
@@ -21873,47 +22407,33 @@ function() {
    if (Math.abs(n - d) <= 9) return;
    if (m = !1, d = n, i = e(n, p, f), i = t.min([ i, u.prop("scrollHeight") - u.outerHeight() ]), 
    Math.abs(i - o) <= 9) return h = o, void 0;
-   u.stop("scrollLinkFx", !0).animate({
-    scrollTop: i
+   w.stop("scrollLinkFx", !0).css("value", 0).animate({
+    value: i - o
    }, {
     easing: "easeOutSine",
     duration: 200,
     queue: "scrollLinkFx",
     step: function(e) {
-     y = !0, h = o + e;
+     y = !0, h = o + e, u.scrollTop(h);
     },
     done: function() {
-     setTimeout(function() {
+     t.defer(function() {
       y = !1;
-     }, 100);
+     });
     }
    }).dequeue("scrollLinkFx");
   } else if (v === !0) {
    if (Math.abs(o - h) <= 9) return;
    if (v = !1, h = o, i = e(o, f, p), window.lightMode ? i = t.min([ i, l.prop("scrollHeight") - l.outerHeight() ]) : (i = t.min([ i, r.session.getScreenLength() * r.renderer.lineHeight + r.renderer.scrollMargin.bottom - r.renderer.$size.scrollerHeight ]), 
    0 > i && (i = 0)), Math.abs(i - n) <= 9) return d = n, void 0;
-   window.lightMode ? l.stop("scrollLinkFx", !0).animate({
-    scrollTop: i
-   }, {
-    easing: "easeOutSine",
-    duration: 200,
-    queue: "scrollLinkFx",
-    step: function(e) {
-     b = !0, d = n + e;
-    },
-    done: function() {
-     setTimeout(function() {
-      b = !1;
-     }, 100);
-    }
-   }).dequeue("scrollLinkFx") : w.stop("scrollLinkFx", !0).css("value", 0).animate({
+   w.stop("scrollLinkFx", !0).css("value", 0).animate({
     value: i - n
    }, {
     easing: "easeOutSine",
     duration: 200,
     queue: "scrollLinkFx",
     step: function(e) {
-     b = !0, d = n + e, r.session.setScrollTop(d);
+     b = !0, d = n + e, window.lightMode || r.session.setScrollTop(d), window.lightMode && l.scrollTop(d);
     },
     done: function() {
      t.defer(function() {
@@ -27733,7 +28253,7 @@ function() {
 }(), define("pagedown-light", function() {}), define("ace/mode/css_highlight_rules", [ "require", "exports", "module", "../lib/oop", "../lib/lang", "./text_highlight_rules" ], function(e, t) {
  var n = e("../lib/oop");
  e("../lib/lang");
- var i = e("./text_highlight_rules").TextHighlightRules, o = t.supportType = "animation-fill-mode|alignment-adjust|alignment-baseline|animation-delay|animation-direction|animation-duration|animation-iteration-count|animation-name|animation-play-state|animation-timing-function|animation|appearance|azimuth|backface-visibility|background-attachment|background-break|background-clip|background-color|background-image|background-origin|background-position|background-repeat|background-size|background|baseline-shift|binding|bleed|bookmark-label|bookmark-level|bookmark-state|bookmark-target|border-bottom|border-bottom-color|border-bottom-left-radius|border-bottom-right-radius|border-bottom-style|border-bottom-width|border-collapse|border-color|border-image|border-image-outset|border-image-repeat|border-image-slice|border-image-source|border-image-width|border-left|border-left-color|border-left-style|border-left-width|border-radius|border-right|border-right-color|border-right-style|border-right-width|border-spacing|border-style|border-top|border-top-color|border-top-left-radius|border-top-right-radius|border-top-style|border-top-width|border-width|border|bottom|box-align|box-decoration-break|box-direction|box-flex-group|box-flex|box-lines|box-ordinal-group|box-orient|box-pack|box-shadow|box-sizing|break-after|break-before|break-inside|caption-side|clear|clip|color-profile|color|column-count|column-fill|column-gap|column-rule|column-rule-color|column-rule-style|column-rule-width|column-span|column-width|columns|content|counter-increment|counter-reset|crop|cue-after|cue-before|cue|cursor|direction|display|dominant-baseline|drop-initial-after-adjust|drop-initial-after-align|drop-initial-before-adjust|drop-initial-before-align|drop-initial-size|drop-initial-value|elevation|empty-cells|fit|fit-position|float-offset|float|font-family|font-size|font-size-adjust|font-stretch|font-style|font-variant|font-weight|font|grid-columns|grid-rows|hanging-punctuation|height|hyphenate-after|hyphenate-before|hyphenate-character|hyphenate-lines|hyphenate-resource|hyphens|icon|image-orientation|image-rendering|image-resolution|inline-box-align|left|letter-spacing|line-height|line-stacking-ruby|line-stacking-shift|line-stacking-strategy|line-stacking|list-style-image|list-style-position|list-style-type|list-style|margin-bottom|margin-left|margin-right|margin-top|margin|mark-after|mark-before|mark|marks|marquee-direction|marquee-play-count|marquee-speed|marquee-style|max-height|max-width|min-height|min-width|move-to|nav-down|nav-index|nav-left|nav-right|nav-up|opacity|orphans|outline-color|outline-offset|outline-style|outline-width|outline|overflow-style|overflow-x|overflow-y|overflow|padding-bottom|padding-left|padding-right|padding-top|padding|page-break-after|page-break-before|page-break-inside|page-policy|page|pause-after|pause-before|pause|perspective-origin|perspective|phonemes|pitch-range|pitch|play-during|position|presentation-level|punctuation-trim|quotes|rendering-intent|resize|rest-after|rest-before|rest|richness|right|rotation-point|rotation|ruby-align|ruby-overhang|ruby-position|ruby-span|size|speak-header|speak-numeral|speak-punctuation|speak|speech-rate|stress|string-set|table-layout|target-name|target-new|target-position|target|text-align-last|text-align|text-decoration|text-emphasis|text-height|text-indent|text-justify|text-outline|text-shadow|text-transform|text-wrap|top|transform-origin|transform-style|transform|transition-delay|transition-duration|transition-property|transition-timing-function|transition|unicode-bidi|vertical-align|visibility|voice-balance|voice-duration|voice-family|voice-pitch-range|voice-pitch|voice-rate|voice-stress|voice-volume|volume|white-space-collapse|white-space|widows|width|word-break|word-spacing|word-wrap|z-index", r = t.supportFunction = "rgb|rgba|url|attr|counter|counters", s = t.supportConstant = "absolute|after-edge|after|all-scroll|all|alphabetic|always|antialiased|armenian|auto|avoid-column|avoid-page|avoid|balance|baseline|before-edge|before|below|bidi-override|block-line-height|block|bold|bolder|border-box|both|bottom|box|break-all|break-word|capitalize|caps-height|caption|center|central|char|circle|cjk-ideographic|clone|close-quote|col-resize|collapse|column|consider-shifts|contain|content-box|cover|crosshair|cubic-bezier|dashed|decimal-leading-zero|decimal|default|disabled|disc|disregard-shifts|distribute-all-lines|distribute-letter|distribute-space|distribute|dotted|double|e-resize|ease-in|ease-in-out|ease-out|ease|ellipsis|end|exclude-ruby|fill|fixed|georgian|glyphs|grid-height|groove|hand|hanging|hebrew|help|hidden|hiragana-iroha|hiragana|horizontal|icon|ideograph-alpha|ideograph-numeric|ideograph-parenthesis|ideograph-space|ideographic|inactive|include-ruby|inherit|initial|inline-block|inline-box|inline-line-height|inline-table|inline|inset|inside|inter-ideograph|inter-word|invert|italic|justify|katakana-iroha|katakana|keep-all|last|left|lighter|line-edge|line-through|line|linear|list-item|local|loose|lower-alpha|lower-greek|lower-latin|lower-roman|lowercase|lr-tb|ltr|mathematical|max-height|max-size|medium|menu|message-box|middle|move|n-resize|ne-resize|newspaper|no-change|no-close-quote|no-drop|no-open-quote|no-repeat|none|normal|not-allowed|nowrap|nw-resize|oblique|open-quote|outset|outside|overline|padding-box|page|pointer|pre-line|pre-wrap|pre|preserve-3d|progress|relative|repeat-x|repeat-y|repeat|replaced|reset-size|ridge|right|round|row-resize|rtl|s-resize|scroll|se-resize|separate|slice|small-caps|small-caption|solid|space|square|start|static|status-bar|step-end|step-start|steps|stretch|strict|sub|super|sw-resize|table-caption|table-cell|table-column-group|table-column|table-footer-group|table-header-group|table-row-group|table-row|table|tb-rl|text-after-edge|text-before-edge|text-bottom|text-size|text-top|text|thick|thin|transparent|underline|upper-alpha|upper-latin|upper-roman|uppercase|use-script|vertical-ideographic|vertical-text|visible|w-resize|wait|whitespace|z-index|zero", a = t.supportConstantColor = "aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow", l = t.supportConstantFonts = "arial|century|comic|courier|garamond|georgia|helvetica|impact|lucida|symbol|system|tahoma|times|trebuchet|utopia|verdana|webdings|sans-serif|serif|monospace", c = t.numRe = "\\-?(?:(?:[0-9]+)|(?:[0-9]*\\.[0-9]+))", u = t.pseudoElements = "(\\:+)\\b(after|before|first-letter|first-line|moz-selection|selection)\\b", d = t.pseudoClasses = "(:)\\b(active|checked|disabled|empty|enabled|first-child|first-of-type|focus|hover|indeterminate|invalid|last-child|last-of-type|link|not|nth-child|nth-last-child|nth-last-of-type|nth-of-type|only-child|only-of-type|required|root|target|valid|visited)\\b", h = function() {
+ var i = e("./text_highlight_rules").TextHighlightRules, o = t.supportType = "animation-fill-mode|alignment-adjust|alignment-baseline|animation-delay|animation-direction|animation-duration|animation-iteration-count|animation-name|animation-play-state|animation-timing-function|animation|appearance|azimuth|backface-visibility|background-attachment|background-break|background-clip|background-color|background-image|background-origin|background-position|background-repeat|background-size|background|baseline-shift|binding|bleed|bookmark-label|bookmark-level|bookmark-state|bookmark-target|border-bottom|border-bottom-color|border-bottom-left-radius|border-bottom-right-radius|border-bottom-style|border-bottom-width|border-collapse|border-color|border-image|border-image-outset|border-image-repeat|border-image-slice|border-image-source|border-image-width|border-left|border-left-color|border-left-style|border-left-width|border-radius|border-right|border-right-color|border-right-style|border-right-width|border-spacing|border-style|border-top|border-top-color|border-top-left-radius|border-top-right-radius|border-top-style|border-top-width|border-width|border|bottom|box-align|box-decoration-break|box-direction|box-flex-group|box-flex|box-lines|box-ordinal-group|box-orient|box-pack|box-shadow|box-sizing|break-after|break-before|break-inside|caption-side|clear|clip|color-profile|color|column-count|column-fill|column-gap|column-rule|column-rule-color|column-rule-style|column-rule-width|column-span|column-width|columns|content|counter-increment|counter-reset|crop|cue-after|cue-before|cue|cursor|direction|display|dominant-baseline|drop-initial-after-adjust|drop-initial-after-align|drop-initial-before-adjust|drop-initial-before-align|drop-initial-size|drop-initial-value|elevation|empty-cells|fit|fit-position|float-offset|float|font-family|font-size|font-size-adjust|font-stretch|font-style|font-variant|font-weight|font|grid-columns|grid-rows|hanging-punctuation|height|hyphenate-after|hyphenate-before|hyphenate-character|hyphenate-lines|hyphenate-resource|hyphens|icon|image-orientation|image-rendering|image-resolution|inline-box-align|left|letter-spacing|line-height|line-stacking-ruby|line-stacking-shift|line-stacking-strategy|line-stacking|list-style-image|list-style-position|list-style-type|list-style|margin-bottom|margin-left|margin-right|margin-top|margin|mark-after|mark-before|mark|marks|marquee-direction|marquee-play-count|marquee-speed|marquee-style|max-height|max-width|min-height|min-width|move-to|nav-down|nav-index|nav-left|nav-right|nav-up|opacity|orphans|outline-color|outline-offset|outline-style|outline-width|outline|overflow-style|overflow-x|overflow-y|overflow|padding-bottom|padding-left|padding-right|padding-top|padding|page-break-after|page-break-before|page-break-inside|page-policy|page|pause-after|pause-before|pause|perspective-origin|perspective|phonemes|pitch-range|pitch|play-during|pointer-events|position|presentation-level|punctuation-trim|quotes|rendering-intent|resize|rest-after|rest-before|rest|richness|right|rotation-point|rotation|ruby-align|ruby-overhang|ruby-position|ruby-span|size|speak-header|speak-numeral|speak-punctuation|speak|speech-rate|stress|string-set|table-layout|target-name|target-new|target-position|target|text-align-last|text-align|text-decoration|text-emphasis|text-height|text-indent|text-justify|text-outline|text-shadow|text-transform|text-wrap|top|transform-origin|transform-style|transform|transition-delay|transition-duration|transition-property|transition-timing-function|transition|unicode-bidi|vertical-align|visibility|voice-balance|voice-duration|voice-family|voice-pitch-range|voice-pitch|voice-rate|voice-stress|voice-volume|volume|white-space-collapse|white-space|widows|width|word-break|word-spacing|word-wrap|z-index", r = t.supportFunction = "rgb|rgba|url|attr|counter|counters", s = t.supportConstant = "absolute|after-edge|after|all-scroll|all|alphabetic|always|antialiased|armenian|auto|avoid-column|avoid-page|avoid|balance|baseline|before-edge|before|below|bidi-override|block-line-height|block|bold|bolder|border-box|both|bottom|box|break-all|break-word|capitalize|caps-height|caption|center|central|char|circle|cjk-ideographic|clone|close-quote|col-resize|collapse|column|consider-shifts|contain|content-box|cover|crosshair|cubic-bezier|dashed|decimal-leading-zero|decimal|default|disabled|disc|disregard-shifts|distribute-all-lines|distribute-letter|distribute-space|distribute|dotted|double|e-resize|ease-in|ease-in-out|ease-out|ease|ellipsis|end|exclude-ruby|fill|fixed|georgian|glyphs|grid-height|groove|hand|hanging|hebrew|help|hidden|hiragana-iroha|hiragana|horizontal|icon|ideograph-alpha|ideograph-numeric|ideograph-parenthesis|ideograph-space|ideographic|inactive|include-ruby|inherit|initial|inline-block|inline-box|inline-line-height|inline-table|inline|inset|inside|inter-ideograph|inter-word|invert|italic|justify|katakana-iroha|katakana|keep-all|last|left|lighter|line-edge|line-through|line|linear|list-item|local|loose|lower-alpha|lower-greek|lower-latin|lower-roman|lowercase|lr-tb|ltr|mathematical|max-height|max-size|medium|menu|message-box|middle|move|n-resize|ne-resize|newspaper|no-change|no-close-quote|no-drop|no-open-quote|no-repeat|none|normal|not-allowed|nowrap|nw-resize|oblique|open-quote|outset|outside|overline|padding-box|page|pointer|pre-line|pre-wrap|pre|preserve-3d|progress|relative|repeat-x|repeat-y|repeat|replaced|reset-size|ridge|right|round|row-resize|rtl|s-resize|scroll|se-resize|separate|slice|small-caps|small-caption|solid|space|square|start|static|status-bar|step-end|step-start|steps|stretch|strict|sub|super|sw-resize|table-caption|table-cell|table-column-group|table-column|table-footer-group|table-header-group|table-row-group|table-row|table|tb-rl|text-after-edge|text-before-edge|text-bottom|text-size|text-top|text|thick|thin|transparent|underline|upper-alpha|upper-latin|upper-roman|uppercase|use-script|vertical-ideographic|vertical-text|visible|w-resize|wait|whitespace|z-index|zero", a = t.supportConstantColor = "aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow", l = t.supportConstantFonts = "arial|century|comic|courier|garamond|georgia|helvetica|impact|lucida|symbol|system|tahoma|times|trebuchet|utopia|verdana|webdings|sans-serif|serif|monospace", c = t.numRe = "\\-?(?:(?:[0-9]+)|(?:[0-9]*\\.[0-9]+))", u = t.pseudoElements = "(\\:+)\\b(after|before|first-letter|first-line|moz-selection|selection)\\b", d = t.pseudoClasses = "(:)\\b(active|checked|disabled|empty|enabled|first-child|first-of-type|focus|hover|indeterminate|invalid|last-child|last-of-type|link|not|nth-child|nth-last-child|nth-last-of-type|nth-of-type|only-child|only-of-type|required|root|target|valid|visited)\\b", h = function() {
   var e = this.createKeywordMapper({
    "support.function": r,
    "support.constant": s,
@@ -28003,14 +28523,14 @@ function() {
     regex: "\\\\(?:u[\\da-fA-F]{4}|x[\\da-fA-F]{2}|.)"
    }, {
     token: "string.regexp",
-    regex: "/\\w*",
+    regex: "/[sxngimy]*",
     next: "no_regex"
    }, {
     token: "invalid",
     regex: /\{\d+\b,?\d*\}[+*]|[+*$^?][+*]|[$^][?]|\?{3,}/
    }, {
     token: "constant.language.escape",
-    regex: /\(\?[:=!]|\)|\{\d+\b,?\d*\}|[+*]\?|[()$^+*?]/
+    regex: /\(\?[:=!]|\)|\{\d+\b,?\d*\}|[+*]\?|[()$^+*?.]/
    }, {
     token: "constant.language.delimiter",
     regex: /\|/
@@ -28296,7 +28816,7 @@ function() {
     token: "constant.language.escape",
     regex: "(?:&#[0-9]+;)|(?:&#x[0-9a-fA-F]+;)|(?:&[a-zA-Z0-9_:\\.-]+;)"
    }, {
-    token: "invalid.illegal",
+    token: "text",
     regex: "&"
    } ],
    string: [ {
@@ -30079,8 +30599,8 @@ function() {
    void 0 !== a && (a.setVisible(!1), t(".modal-backdrop, .picker").remove());
   }
   var a, l = [], u = new c();
-  u.timeout = n.ASYNC_TASK_LONG_TIMEOUT, d(u), ("doc" == i || "folder" == i) && h(u, "gdrive", r), 
-  g(u), u.onRun(function() {
+  u.timeout = n.ASYNC_TASK_LONG_TIMEOUT, d(u), "doc" == i || "folder" == i ? h(u, "gdrive", r) : (r = "google.picasa0", 
+  h(u, "picasa", r)), g(u), u.onRun(function() {
    var e = v[r], c = new google.picker.PickerBuilder();
    c.setAppId(n.GOOGLE_DRIVE_APP_ID);
    var d;
@@ -30091,7 +30611,8 @@ function() {
    d.setParent("root"), d.setIncludeFolders(!0), d.setSelectFolderEnabled(!0), d.setMimeTypes("application/vnd.google-apps.folder"), 
    c.enableFeature(google.picker.Feature.NAV_HIDDEN), c.addView(d), e && e.token && c.setOAuthToken(e.token.access_token)) : "img" == i && (d = new google.picker.PhotosView(), 
    d.setType("flat"), c.addView(d), d = new google.picker.PhotosView(), d.setType("ofuser"), 
-   c.addView(d), c.addView(google.picker.ViewId.PHOTO_UPLOAD)), c.setCallback(function(e) {
+   c.addView(d), c.addView(google.picker.ViewId.PHOTO_UPLOAD), e && e.token && c.setOAuthToken(e.token.access_token)), 
+   c.setCallback(function(e) {
     (e.action == google.picker.Action.PICKED || e.action == google.picker.Action.CANCEL) && (e.action == google.picker.Action.PICKED && (l = e.docs), 
     s(), u.chain());
    }), a = c.build(), t(o.createBackdrop()).click(function() {

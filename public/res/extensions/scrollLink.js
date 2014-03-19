@@ -17,7 +17,7 @@ define([
     scrollLink.onSectionsCreated = function(sectionListParam) {
         sectionList = sectionListParam;
     };
-    
+
     var offsetBegin = 0;
     scrollLink.onMarkdownTrim = function(offsetBeginParam) {
         offsetBegin = offsetBeginParam;
@@ -161,8 +161,8 @@ define([
                 lastPreviewScrollTop = previewScrollTop;
                 return;
             }
-            $previewElt.stop('scrollLinkFx', true).animate({
-                scrollTop: destScrollTop
+            scrollingHelper.stop('scrollLinkFx', true).css('value', 0).animate({
+                value: destScrollTop - previewScrollTop
             }, {
                 easing: 'easeOutSine',
                 duration: 200,
@@ -170,13 +170,15 @@ define([
                 step: function(now) {
                     isPreviewMoving = true;
                     lastPreviewScrollTop = previewScrollTop + now;
+                    $previewElt.scrollTop(lastPreviewScrollTop);
                 },
                 done: function() {
-                    setTimeout(function() {
+                    _.defer(function() {
                         isPreviewMoving = false;
-                    }, 100);
+                    });
                 },
             }).dequeue('scrollLinkFx');
+
         }
         else if(isScrollPreview === true) {
             if(Math.abs(previewScrollTop - lastPreviewScrollTop) <= 9) {
@@ -205,43 +207,28 @@ define([
                 lastEditorScrollTop = editorScrollTop;
                 return;
             }
-            if(window.lightMode) {
-                $editorElt.stop('scrollLinkFx', true).animate({
-                    scrollTop: destScrollTop
-                }, {
-                    easing: 'easeOutSine',
-                    duration: 200,
-                    queue: 'scrollLinkFx',
-                    step: function(now) {
-                        isEditorMoving = true;
-                        lastEditorScrollTop = editorScrollTop + now;
-                    },
-                    done: function() {
-                        setTimeout(function() {
-                            isEditorMoving = false;
-                        }, 100);
-                    },
-                }).dequeue('scrollLinkFx');
-            }
-            else {
-                scrollingHelper.stop('scrollLinkFx', true).css('value', 0).animate({
-                    value: destScrollTop - editorScrollTop
-                }, {
-                    easing: 'easeOutSine',
-                    duration: 200,
-                    queue: 'scrollLinkFx',
-                    step: function(now) {
-                        isEditorMoving = true;
-                        lastEditorScrollTop = editorScrollTop + now;
+            scrollingHelper.stop('scrollLinkFx', true).css('value', 0).animate({
+                value: destScrollTop - editorScrollTop
+            }, {
+                easing: 'easeOutSine',
+                duration: 200,
+                queue: 'scrollLinkFx',
+                step: function(now) {
+                    isEditorMoving = true;
+                    lastEditorScrollTop = editorScrollTop + now;
+                    if(window.lightMode) {
+                        $editorElt.scrollTop(lastEditorScrollTop);
+                    }
+                    else {
                         aceEditor.session.setScrollTop(lastEditorScrollTop);
-                    },
-                    done: function() {
-                        _.defer(function() {
-                            isEditorMoving = false;
-                        });
-                    },
-                }).dequeue('scrollLinkFx');
-            }
+                    }
+                },
+                done: function() {
+                    _.defer(function() {
+                        isEditorMoving = false;
+                    });
+                },
+            }).dequeue('scrollLinkFx');
         }
     }, 100);
 
@@ -249,7 +236,7 @@ define([
         isScrollEditor = true;
         buildSections();
     };
-    
+
     var isPreviewVisible = true;
     function setPreviewHidden() {
         isPreviewVisible = false;
@@ -259,7 +246,7 @@ define([
         isPreviewVisible = true;
         console.log(isPreviewVisible);
     }
-    
+
     scrollLink.onLayoutConfigure = function(layoutGlobalConfig) {
         layoutGlobalConfig.east__onclose = setPreviewHidden;
         layoutGlobalConfig.south__onclose = setPreviewHidden;

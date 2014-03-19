@@ -17,7 +17,8 @@ define([
     };
 
     var regex = /^(\s*-{3}\s*\n([\w\W]+?)\n\s*-{3}\s*\n)?([\w\W]*)$/;
-    yamlFrontMatterParser.onContentChanged = function(fileDesc) {
+
+    function parseFrontMatter(fileDesc) {
         var text = fileDesc.content;
         var results = regex.exec(text);
         var yaml = results[2];
@@ -34,11 +35,14 @@ define([
             }
             catch (e) {
                 eventMgr.onMarkdownTrim(0);
-                return text;
+                return;
             }
         }
         eventMgr.onMarkdownTrim((results[1] || '').length);
-    };
+    }
+
+    yamlFrontMatterParser.onFileOpen = parseFrontMatter;
+    yamlFrontMatterParser.onContentChanged = parseFrontMatter;
 
     return yamlFrontMatterParser;
 });

@@ -519,6 +519,7 @@ define([
             // If the editor is already created
             $editorElt.val(initDocumentContent);
             aceEditor && aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
+            aceEditor || pagedownEditor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
             aceEditor ? aceEditor.focus() : $editorElt.focus();
             //pagedownEditor.refreshPreview();
             return;
@@ -572,7 +573,7 @@ define([
             if(documentContent == newDocumentContent) {
                 return false;
             }
-        
+
             if(documentContent !== undefined) {
                 fileDesc.content = newDocumentContent;
                 eventMgr.onContentChanged(fileDesc);
@@ -589,7 +590,7 @@ define([
                     });
                 }
             }
-        
+
             documentContent = newDocumentContent;
             return true;
         }
@@ -686,7 +687,7 @@ define([
         else {
             document.body.innerHTML = bodyIndexHTML;
         }
-        
+
         var styleContent = '';
 
         // Apply font
@@ -710,7 +711,7 @@ define([
         applyFont(16);
         applyFont(17, 600);
         applyFont(18, 1200);
-                
+
         function applyMaxWidth(maxWidth, screenWidth) {
             styleContent += [
                 '@media (min-width: ' + screenWidth + 'px) {',
@@ -723,7 +724,7 @@ define([
         _.each(maxWidthMap, function(entry) {
             applyMaxWidth(entry.maxWidth, entry.screenWidth);
         });
-        
+
         // Apply dynamic stylesheet
         var style = document.createElement("style");
         style.innerHTML = styleContent;
@@ -832,10 +833,10 @@ define([
             $('#wmd-input').replaceWith(function() {
                 return $('<pre id="wmd-input">').addClass(this.className).addClass('form-control');
             });
-            
+
             // Create UI layout after textarea
             createLayout();
-            
+
             editor.init(document.querySelector('#wmd-input'), document.querySelector('.preview-container'));
         }
         else {

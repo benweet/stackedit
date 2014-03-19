@@ -11,9 +11,9 @@ define([
     markdownSectionParser.onEventMgrCreated = function(eventMgrParameter) {
         eventMgr = eventMgrParameter;
     };
-    
+
     var sectionList = [];
-    
+
     // Regexp to look for section delimiters
     var regexp = '^.+[ \\t]*\\n=+[ \\t]*\\n+|^.+[ \\t]*\\n-+[ \\t]*\\n+|^\\#{1,6}[ \\t]*.+?[ \\t]*\\#*\\n+'; // Title delimiters
     markdownSectionParser.onPagedownConfigure = function(editor) {
@@ -31,7 +31,7 @@ define([
             regexp = '^[ \\t]*\\n\\\\?\\\\begin\\{[a-z]*\\*?\\}[\\s\\S]*?\\\\end\\{[a-z]*\\*?\\}|' + regexp; // \\begin{...} \\end{...} math block delimiters
         }
         regexp = new RegExp(regexp, 'gm');
-        
+
         var converter = editor.getConverter();
         converter.hooks.chain("preConversion", function() {
             return _.reduce(sectionList, function(result, section) {
@@ -39,8 +39,8 @@ define([
             }, '');
         });
     };
-    
-    var trimLen;
+
+    var trimLen = 0;
     markdownSectionParser.onMarkdownTrim = function(len) {
         trimLen = len;
     };
@@ -48,13 +48,16 @@ define([
     var sectionCounter = 0;
     function parseFileContent(fileDesc) {
         var text = fileDesc.content.substring(trimLen);
+        var frontMatter = fileDesc.content.substring(0, trimLen);
         var tmpText = text + "\n\n";
         function addSection(startOffset, endOffset) {
             var sectionText = tmpText.substring(offset, endOffset);
             sectionList.push({
                 id: ++sectionCounter,
-                text: sectionText
+                text: sectionText,
+                textWithFrontMatter: frontMatter + sectionText
             });
+            frontMatter = '';
         }
         sectionList = [];
         var offset = 0;
@@ -68,7 +71,7 @@ define([
         addSection(offset, text.length);
         eventMgr.onSectionsCreated(sectionList);
     }
-    
+
     markdownSectionParser.onFileOpen = parseFileContent;
     markdownSectionParser.onContentChanged = parseFileContent;
 

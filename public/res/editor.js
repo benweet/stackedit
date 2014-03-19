@@ -8,7 +8,7 @@ define([
     'crel',
     'libs/prism-markdown'
 ], function ($, _, settings, eventMgr, Prism, crel) {
-    
+
     String.prototype.splice = function (i, remove, add) {
         remove = +remove || 0;
         add = add || '';
@@ -60,23 +60,27 @@ define([
     });
 
     var previousTextContent;
-    function onInputChange() {
+    function onInputContentChange() {
         selectionStart = inputElt.selectionStart;
         selectionEnd = inputElt.selectionEnd;
         var currentTextContent = inputElt.textContent;
-        if(!/\n$/.test(currentTextContent)) {
-            currentTextContent += '\n';
-        }
         if(fileChanged === false) {
             fileDesc.editorStart = selectionStart;
             fileDesc.editorEnd = selectionEnd;
             if(currentTextContent == previousTextContent) {
                 return;
             }
+            if(!/\n$/.test(currentTextContent)) {
+                currentTextContent += '\n';
+            }
             fileDesc.content = currentTextContent;
             eventMgr.onContentChanged(fileDesc);
         }
         else {
+            if(!/\n$/.test(currentTextContent)) {
+                currentTextContent += '\n';
+                fileDesc.content = currentTextContent;
+            }
             eventMgr.onFileOpen(fileDesc);
             previewElt.scrollTop = fileDesc.previewScrollTop;
             selectionStart = fileDesc.editorStart;
@@ -87,7 +91,59 @@ define([
         }
         previousTextContent = currentTextContent;
     }
-    
+
+    function adjustCursorPosition() {
+        setTimeout(function() {
+            selectionStart = inputElt.selectionStart;
+            selectionEnd = inputElt.selectionEnd;
+
+            var backwards = false;
+            var selection = window.getSelection();
+            if (!selection.isCollapsed) {
+                var range = document.createRange();
+                range.setStart(selection.anchorNode, selection.anchorOffset);
+                range.setEnd(selection.focusNode, selection.focusOffset);
+                backwards = range.collapsed;
+                range.detach();
+            }
+
+            var selectionRange = selection.getRangeAt(0);
+            var container = backwards ? selectionRange.startContainer : selectionRange.endContainer;
+            var cursorY;
+            if(container.textContent == '\n') {
+                cursorY = container.parentNode.offsetTop + container.parentNode.offsetHeight / 2 - inputElt.scrollTop;
+            }
+            else {
+                if(selectionStart === selectionEnd) {
+                    var selectedChar = inputElt.textContent[selectionStart];
+                    if(selectedChar === undefined || selectedChar == '\n') {
+                        selectionRange = createRange(selectionStart - 1, selectionEnd);
+                    }
+                    else {
+                        selectionRange = createRange(selectionStart, selectionEnd + 1);
+                    }
+                }
+                var selectionRect = selectionRange.getBoundingClientRect();
+                cursorY = selectionRect.top + selectionRect.height / 2 - inputElt.offsetTop;
+                selectionRange.detach();
+            }
+
+            var adjust = inputElt.offsetHeight / 2;
+            if(adjust > 130) {
+                adjust = 130;
+            }
+            var cursorMinY = adjust;
+            var cursorMaxY = inputElt.offsetHeight - adjust;
+            if(cursorY < cursorMinY) {
+                inputElt.scrollTop += cursorY - cursorMinY;
+            }
+            else if(cursorY > cursorMaxY) {
+                inputElt.scrollTop += cursorY - cursorMaxY;
+            }
+        }, 0);
+    }
+    eventMgr.addListener('onLayoutResize', adjustCursorPosition);
+
     editor.init = function(elt1, elt2) {
         inputElt = elt1;
         previewElt = elt2;
@@ -97,19 +153,19 @@ define([
         });
         editor.$contentElt = $(editor.contentElt);
         inputElt.appendChild(editor.contentElt);
-        
+
         $(inputElt).scroll(function() {
             scrollTop = this.scrollTop;
             if(fileChanged === false) {
                 fileDesc.editorScrollTop = scrollTop;
             }
-        }).bind("keyup mouseup", onInputChange);
+        }).bind("keyup mouseup", onInputContentChange);
         $(previewElt).scroll(function() {
             if(fileChanged === false) {
                 fileDesc.previewScrollTop = previewElt.scrollTop;
             }
         });
-        
+
         inputElt.focus = function() {
             editor.$contentElt.focus();
             this.setSelectionRange(selectionStart, selectionEnd);
@@ -121,7 +177,7 @@ define([
         editor.$contentElt.blur(function() {
             inputElt.focused = false;
         });
-        
+
         Object.defineProperty(inputElt, 'value', {
             get: function () {
                 return this.textContent;
@@ -151,13 +207,13 @@ define([
                 var replacementText = value.substring(startIndex, value.length - endIndex + 1);
                 endIndex = currentValue.length - endIndex + 1;
 
-                var range = createRange(inputElt, startIndex, endIndex);
+                var range = createRange(startIndex, endIndex);
                 range.deleteContents();
                 range.insertNode(document.createTextNode(replacementText));
-                onInputChange();
+                onInputContentChange();
             }
         });
-        
+
         Object.defineProperty(inputElt, 'selectionStart', {
             get: function () {
                 var selection = window.getSelection();
@@ -213,87 +269,10 @@ define([
             configurable: true
         });
 
-        function findOffset(root, ss) {
-            if (!root) {
-                return null;
-            }
-
-            var offset = 0,
-                element = root,
-                container;
-
-            do {
-                container = element;
-                element = element.firstChild;
-
-                if (element) {
-                    do {
-                        var len = element.textContent.length;
-
-                        if (offset <= ss && offset + len > ss) {
-                            break;
-                        }
-
-                        offset += len;
-                    } while (element = element.nextSibling);
-                }
-
-                if (!element) {
-                    // It's the container's lastChild
-                    break;
-                }
-            } while (element && element.hasChildNodes() && element.nodeType != 3);
-
-            if (element) {
-                return {
-                    element: element,
-                    offset: ss - offset
-                };
-            } else if (container) {
-                element = container;
-
-                while (element && element.lastChild) {
-                    element = element.lastChild;
-                }
-
-                if (element.nodeType === 3) {
-                    return {
-                        element: element,
-                        offset: element.textContent.length
-                    };
-                } else {
-                    return {
-                        element: element,
-                        offset: 0
-                    };
-                }
-            }
-
-            return {
-                element: root,
-                offset: 0,
-                error: true
-            };
-        }
-
-        function createRange(root, ss, se) {
-            var range = document.createRange(),
-                offset = findOffset(root, ss);
-
-            range.setStart(offset.element, offset.offset);
-
-            if (se && se != ss) {
-                offset = findOffset(root, se);
-            }
-
-            range.setEnd(offset.element, offset.offset);
-            return range;
-        }
-
         inputElt.setSelectionRange = function (ss, se) {
             selectionStart = ss;
             selectionEnd = se;
-            var range = createRange(editor.contentElt, ss, se);
+            var range = createRange(ss, se);
 
             var selection = window.getSelection();
             selection.removeAllRanges();
@@ -302,6 +281,10 @@ define([
 
         editor.$contentElt.on('keydown', function (evt) {
             var cmdOrCtrl = evt.metaKey || evt.ctrlKey;
+
+            if(!cmdOrCtrl && !event.altKey && !event.shiftKey) {
+                adjustCursorPosition();
+            }
 
             switch (evt.keyCode) {
             case 9: // Tab
@@ -330,17 +313,17 @@ define([
         editor.$contentElt.on('paste', function () {
             pagedownEditor.undoManager.setMode("paste");
             setTimeout(function() {
-                onInputChange();
+                onInputContentChange();
             }, 0);
         });
-        
+
         editor.$contentElt.on('cut', function () {
             pagedownEditor.undoManager.setMode("cut");
             setTimeout(function() {
-                onInputChange();
+                onInputContentChange();
             }, 0);
         });
-        
+
         var action = function (action, options) {
             options = options || {};
 
@@ -403,98 +386,17 @@ define([
 
                 pagedownEditor.undoManager.setMode("newlines");
 
-                state.before += '\n'// + indent;
+                state.before += '\n' + indent;
 
                 state.selection = '';
 
                 state.ss += indent.length + 1;
                 state.se = state.ss;
             },
-
-            comment: function (state) {
-                var textAction;
-                var open = '<!--',
-                    close = '-->';
-
-                var start = state.before.lastIndexOf(open),
-                    end = state.after.indexOf(close),
-                    closeBefore = state.before.lastIndexOf(close),
-                    openAfter = state.after.indexOf(start);
-
-                pagedownEditor.undoManager.setMode("typing");
-
-                if (start > -1 && end > -1 && (start > closeBefore || closeBefore === -1) && (end < openAfter || openAfter === -1)) {
-                    // Uncomment
-                    state.before = state.before.splice(start, open.length);
-                    state.after = state.after.splice(end, close.length);
-
-                    textAction = [{
-                        add: '',
-                        del: open,
-                        start: start
-                    }, {
-                        add: '',
-                        del: close,
-                        start: state.before.length + state.selection.length + end
-                    }];
-
-                    state.ss -= open.length;
-                    state.se -= open.length;
-
-                    return textAction;
-                } else {
-                    // Comment
-                    if (state.selection) {
-                        // Comment selection
-                        state.selection = open + state.selection + close;
-
-                        textAction = [{
-                            add: open,
-                            del: '',
-                            start: state.ss
-                        }, {
-                            add: close,
-                            del: '',
-                            start: open.length + state.se
-                        }];
-                    } else {
-                        // Comment whole line
-                        start = state.before.lastIndexOf('\n') + 1;
-                        end = state.after.indexOf('\n');
-
-                        if (end === -1) {
-                            end = state.after.length;
-                        }
-
-                        while (/\s/.test(state.before.charAt(start))) {
-                            start++;
-                        }
-
-                        state.before = state.before.splice(start, 0, open);
-
-                        state.after = state.after.splice(end, 0, close);
-
-                        textAction = [{
-                            add: open,
-                            del: '',
-                            start: start
-                        }, {
-                            add: close,
-                            del: '',
-                            start: state.before.length + end
-                        }];
-                    }
-
-                    state.ss += open.length;
-                    state.se += open.length;
-
-                    return textAction;
-                }
-            }
         };
     };
 
-    
+
     var sectionList = [];
     var sectionsToRemove = [];
     var modifiedSections = [];
@@ -516,28 +418,38 @@ define([
         // Find modified section starting from top
         var leftIndex = sectionList.length;
         _.some(sectionList, function(section, index) {
-            if(index >= newSectionList.length || section.text != newSectionList[index].text) {
+            var newSection = newSectionList[index];
+            if(index >= newSectionList.length ||
+                // Check modified
+                section.textWithFrontMatter != newSection.textWithFrontMatter ||
+                // Check that section has not been detached from the DOM with backspace
+                !section.highlightedContent.parentNode) {
                 leftIndex = index;
                 return true;
             }
         });
-        
+
         // Find modified section starting from bottom
         var rightIndex = -sectionList.length;
         _.some(sectionList.slice().reverse(), function(section, index) {
-            var newSectionText = newSectionList[newSectionList.length - index - 1].text;
-            // Check also the content of the node since new lines can be added just at the beggining
-            if(index >= newSectionList.length || section.text != newSectionText || section.highlightedContent.textContent != newSectionText) {
+            var newSection = newSectionList[newSectionList.length - index - 1];
+            if(index >= newSectionList.length ||
+                // Check modified
+                section.textWithFrontMatter != newSection.textWithFrontMatter ||
+                // Check that section has not been detached from the DOM with backspace
+                !section.highlightedContent.parentNode ||
+                // Check also the content of the node since new lines can be added just at the beggining
+                section.highlightedContent.textContent != newSection.textWithFrontMatter) {
                 rightIndex = -index;
                 return true;
             }
         });
-        
+
         if(leftIndex - rightIndex > sectionList.length) {
             // Prevent overlap
             rightIndex = leftIndex - sectionList.length;
         }
-        
+
         // Create an array composed of left unmodified, modified, right
         // unmodified sections
         var leftSections = sectionList.slice(0, leftIndex);
@@ -547,8 +459,8 @@ define([
         sectionsToRemove = sectionList.slice(leftIndex, sectionList.length + rightIndex);
         sectionList = leftSections.concat(modifiedSections).concat(rightSections);
     }
-    
-    function highlightSections() {        
+
+    function highlightSections() {
         selectionStart = inputElt.selectionStart;
         selectionEnd = inputElt.selectionEnd;
         var newSectionEltList = document.createDocumentFragment();
@@ -568,7 +480,7 @@ define([
                 // section can be already removed
                 sectionElt && editor.contentElt.removeChild(sectionElt);
             });
-            
+
             if(insertBeforeSection !== undefined) {
                 var insertBeforeElt = document.getElementById("wmd-input-section-" + insertBeforeSection.id);
                 editor.contentElt.insertBefore(newSectionEltList, insertBeforeElt);
@@ -576,11 +488,9 @@ define([
             else {
                 editor.contentElt.appendChild(newSectionEltList);
             }
-            
-            //var dummyTextNode = document.createTextNode('\n');
-            //editor.contentElt.appendChild(dummyTextNode);
+
             inputElt.setSelectionRange(selectionStart, selectionEnd);
-            
+
             // Remove textNodes created outside sections
             var childNode = editor.contentElt.firstChild;
             while(childNode) {
@@ -592,55 +502,89 @@ define([
             }
         }
     }
-/*
-    function asyncHighlightSections() {
-        var startTime = Date.now();
-        var deferredList = [];
-        modifiedSections.forEach(function(section) {
-            var deferred = $.Deferred();
-            setTimeout(function() {
-                highlight(section);
-                deferred.resolve();
-            }, 0);
-            deferredList.push(deferred);
-        });
-        $.when.apply($, deferredList).then(function() {
-            var text = _.reduce(sectionList, function(text, section) {
-                return text + section.text;
-            }, '');
-            
-            // Check that the editor has the actual value
-            if(inputElt.textContent == text) {
-                selectionStart = inputElt.selectionStart;
-                selectionEnd = inputElt.selectionEnd;
-                
-                var newSectionEltList = document.createDocumentFragment();
-                modifiedSections.forEach(function(section) {
-                    newSectionEltList.appendChild(section.highlightedContent);
-                });
-                
-                if(insertBeforeSection !== undefined) {
-                    var insertBeforeElt = document.getElementById("wmd-input-section-" + insertBeforeSection.id);
-                    editor.$contentElt[0].insertBefore(newSectionEltList, insertBeforeElt);
-                }
-                else {
-                    editor.$contentElt[0].appendChild(newSectionEltList);
-                }
-                
-                inputElt.setSelectionRange(selectionStart, selectionEnd);
-                elapsedTime = Date.now() - startTime;
-            }
-        });
-    }
-*/
+
     function highlight(section) {
-        var text = section.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
+        var text = section.textWithFrontMatter.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
         var sectionElt = crel('span', {
             id: 'wmd-input-section-' + section.id,
             class: 'wmd-input-section'
         });
         sectionElt.innerHTML = Prism.highlight(text, Prism.languages.md);
         section.highlightedContent = sectionElt;
+    }
+
+
+    function createRange(ss, se) {
+        function findOffset(ss) {
+            var offset = 0,
+                element = editor.contentElt,
+                container;
+
+            do {
+                container = element;
+                element = element.firstChild;
+
+                if (element) {
+                    do {
+                        var len = element.textContent.length;
+
+                        if (offset <= ss && offset + len > ss) {
+                            break;
+                        }
+
+                        offset += len;
+                    } while (element = element.nextSibling);
+                }
+
+                if (!element) {
+                    // It's the container's lastChild
+                    break;
+                }
+            } while (element && element.hasChildNodes() && element.nodeType != 3);
+
+            if (element) {
+                return {
+                    element: element,
+                    offset: ss - offset
+                };
+            } else if (container) {
+                element = container;
+
+                while (element && element.lastChild) {
+                    element = element.lastChild;
+                }
+
+                if (element.nodeType === 3) {
+                    return {
+                        element: element,
+                        offset: element.textContent.length
+                    };
+                } else {
+                    return {
+                        element: element,
+                        offset: 0
+                    };
+                }
+            }
+
+            return {
+                element: editor.contentElt,
+                offset: 0,
+                error: true
+            };
+        }
+
+        var range = document.createRange(),
+            offset = findOffset(ss);
+
+        range.setStart(offset.element, offset.offset);
+
+        if (se && se != ss) {
+            offset = findOffset(se);
+        }
+
+        range.setEnd(offset.element, offset.offset);
+        return range;
     }
 
     return editor;

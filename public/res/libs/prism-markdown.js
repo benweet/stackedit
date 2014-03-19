@@ -106,6 +106,7 @@ Prism.languages.md = (function() {
             'md md-toc': /^\s*\[(toc|TOC)\]\s*$/g
         }
     };
+    md.br = /^\n$/gm;
     md.img = {
         pattern: /!\[[^\]]*\]\([^\)]+\)/g,
         inside: {

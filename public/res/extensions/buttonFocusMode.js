@@ -43,7 +43,8 @@ define([
             var cursorMinY = coef*editorHeight;
             var cursorMaxY = (1-coef)*editorHeight;
             var cursorY = $editorElt.caret('offset').top - $editorElt.offset().top;
-            console.log($editorElt.caret('offset'));
+            //console.log($editorElt.find('.pre-content').caret('offset'));
+            //console.log(window.getSelection().getRangeAt(0).getBoundingClientRect());
             //$positionHelper.detach();
             //parentNode.normalize();
             /*

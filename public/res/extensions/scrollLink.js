@@ -17,7 +17,7 @@ define([
     scrollLink.onSectionsCreated = function(sectionListParam) {
         sectionList = sectionListParam;
     };
-    
+
     var offsetBegin = 0;
     scrollLink.onMarkdownTrim = function(offsetBeginParam) {
         offsetBegin = offsetBeginParam;
@@ -70,7 +70,7 @@ define([
                 }
                 addTextareaSection(sectionText);
             });
-            
+
             // Apply a coef to manage divergence in some browsers
             var theoricalHeight = _.last(mdSectionList).endOffset;
             var realHeight = $textareaElt[0].scrollHeight;
@@ -183,8 +183,8 @@ define([
                 lastPreviewScrollTop = previewScrollTop;
                 return;
             }
-            $previewElt.stop('scrollLinkFx', true).animate({
-                scrollTop: destScrollTop
+            scrollingHelper.stop('scrollLinkFx', true).css('value', 0).animate({
+                value: destScrollTop - previewScrollTop
             }, {
                 easing: 'easeOutSine',
                 duration: 200,
@@ -192,11 +192,12 @@ define([
                 step: function(now) {
                     isPreviewMoving = true;
                     lastPreviewScrollTop = previewScrollTop + now;
+                    $previewElt.scrollTop(lastPreviewScrollTop);
                 },
                 done: function() {
-                    setTimeout(function() {
+                    _.defer(function() {
                         isPreviewMoving = false;
-                    }, 100);
+                    });
                 },
             }).dequeue('scrollLinkFx');
         }
@@ -227,43 +228,24 @@ define([
                 lastEditorScrollTop = editorScrollTop;
                 return;
             }
-            if(window.lightMode) {
-                $textareaElt.stop('scrollLinkFx', true).animate({
-                    scrollTop: destScrollTop
-                }, {
-                    easing: 'easeOutSine',
-                    duration: 200,
-                    queue: 'scrollLinkFx',
-                    step: function(now) {
-                        isEditorMoving = true;
-                        lastEditorScrollTop = editorScrollTop + now;
-                    },
-                    done: function() {
-                        setTimeout(function() {
-                            isEditorMoving = false;
-                        }, 100);
-                    },
-                }).dequeue('scrollLinkFx');
-            }
-            else {
-                scrollingHelper.stop('scrollLinkFx', true).css('value', 0).animate({
-                    value: destScrollTop - editorScrollTop
-                }, {
-                    easing: 'easeOutSine',
-                    duration: 200,
-                    queue: 'scrollLinkFx',
-                    step: function(now) {
-                        isEditorMoving = true;
-                        lastEditorScrollTop = editorScrollTop + now;
-                        aceEditor.session.setScrollTop(lastEditorScrollTop);
-                    },
-                    done: function() {
-                        _.defer(function() {
-                            isEditorMoving = false;
-                        });
-                    },
-                }).dequeue('scrollLinkFx');
-            }
+            scrollingHelper.stop('scrollLinkFx', true).css('value', 0).animate({
+                value: destScrollTop - editorScrollTop
+            }, {
+                easing: 'easeOutSine',
+                duration: 200,
+                queue: 'scrollLinkFx',
+                step: function(now) {
+                    isEditorMoving = true;
+                    lastEditorScrollTop = editorScrollTop + now;
+                    window.lightMode || aceEditor.session.setScrollTop(lastEditorScrollTop);
+                    window.lightMode && $textareaElt.scrollTop(lastEditorScrollTop);
+                },
+                done: function() {
+                    _.defer(function() {
+                        isEditorMoving = false;
+                    });
+                },
+            }).dequeue('scrollLinkFx');
         }
     }, 100);
 

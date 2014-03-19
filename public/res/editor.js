@@ -20,6 +20,7 @@ define([
     var selectionEnd = 0;
     var scrollTop = 0;
     var inputElt;
+    var $inputElt;
     var previewElt;
     var pagedownEditor;
     var refreshPreviewLater = (function() {
@@ -93,7 +94,7 @@ define([
     }
 
     function adjustCursorPosition() {
-        setTimeout(function() {
+        inputElt && setTimeout(function() {
             selectionStart = inputElt.selectionStart;
             selectionEnd = inputElt.selectionEnd;
 
@@ -114,14 +115,13 @@ define([
                 cursorY = container.parentNode.offsetTop + container.parentNode.offsetHeight / 2 - inputElt.scrollTop;
             }
             else {
-                if(selectionStart === selectionEnd) {
-                    var selectedChar = inputElt.textContent[selectionStart];
-                    if(selectedChar === undefined || selectedChar == '\n') {
-                        selectionRange = createRange(selectionStart - 1, selectionEnd);
-                    }
-                    else {
-                        selectionRange = createRange(selectionStart, selectionEnd + 1);
-                    }
+                var cursorOffset = backwards ? selectionStart : selectionEnd;
+                var selectedChar = inputElt.textContent[cursorOffset];
+                if(selectedChar === undefined || selectedChar == '\n') {
+                    selectionRange = createRange(cursorOffset - 1, cursorOffset);
+                }
+                else {
+                    selectionRange = createRange(cursorOffset, cursorOffset + 1);
                 }
                 var selectionRect = selectionRange.getBoundingClientRect();
                 cursorY = selectionRect.top + selectionRect.height / 2 - inputElt.offsetTop;
@@ -146,9 +146,10 @@ define([
 
     editor.init = function(elt1, elt2) {
         inputElt = elt1;
+        $inputElt = $(inputElt);
         previewElt = elt2;
         editor.contentElt = crel('div', {
-            class: 'pre-content',
+            class: 'editor-content',
             contenteditable: true
         });
         editor.$contentElt = $(editor.contentElt);
@@ -279,10 +280,11 @@ define([
             selection.addRange(range);
         };
 
+        var clearNewline = false;
         editor.$contentElt.on('keydown', function (evt) {
             var cmdOrCtrl = evt.metaKey || evt.ctrlKey;
 
-            if(!cmdOrCtrl && !event.altKey && !event.shiftKey) {
+            if(!cmdOrCtrl && !event.altKey && !(event.shiftKey && evt.keyCode === 16)) {
                 adjustCursorPosition();
             }
 
@@ -307,6 +309,9 @@ define([
                     evt.preventDefault();
                 }
                 break;
+            }
+            if(evt.keyCode !== 13) {
+                clearNewline = false;
             }
         });
 
@@ -339,12 +344,9 @@ define([
                 };
 
             actions[action](state, options);
-
             inputElt.value = state.before + state.selection + state.after;
-
             inputElt.setSelectionRange(state.ss, state.se);
-
-            inputElt.dispatchEvent(new window.Event('input'));
+            $inputElt.trigger('input');
         };
 
         var actions = {
@@ -382,14 +384,30 @@ define([
 
             newline: function (state) {
                 var lf = state.before.lastIndexOf('\n') + 1;
-                var indent = (state.before.slice(lf).match(/^\s+/) || [''])[0];
+                if(clearNewline) {
+                    state.before = state.before.substring(0, lf);
+                    state.selection = '';
+                    state.ss = lf;
+                    state.se = lf;
+                    clearNewline = false;
+                    return;
+                }
+                clearNewline = false;
+                var previousLine = state.before.slice(lf);
+                var indentMatch = previousLine.match(/^ {0,3}>[ ]*|^[ \t]*(?:[*+\-]|(\d+)\.)[ \t]|^\s+/);
+                var indent = (indentMatch || [''])[0];
+                if(indentMatch && indentMatch[1]) {
+                    var number = parseInt(indentMatch[1], 10);
+                    indent = indent.replace(/\d+/, number + 1);
+                }
+                if(indent.length) {
+                    clearNewline = true;
+                }
 
                 pagedownEditor.undoManager.setMode("newlines");
 
                 state.before += '\n' + indent;
-
                 state.selection = '';
-
                 state.ss += indent.length + 1;
                 state.se = state.ss;
             },
@@ -504,12 +522,20 @@ define([
     }
 
     function highlight(section) {
-        var text = section.textWithFrontMatter.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
+        var text = section.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
+        text = Prism.highlight(text, Prism.languages.md);
+        var frontMatter = section.textWithFrontMatter.substring(0, section.textWithFrontMatter.length-section.text.length);
+        if(frontMatter.length) {
+            // Custom front matter highlighting
+            frontMatter = frontMatter.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
+            frontMatter = frontMatter.replace(/\n/g, '<span class="token lf">\n</span>');
+            text = '<span class="token md">' + frontMatter + '</span>' + text;
+        }
         var sectionElt = crel('span', {
             id: 'wmd-input-section-' + section.id,
             class: 'wmd-input-section'
         });
-        sectionElt.innerHTML = Prism.highlight(text, Prism.languages.md);
+        sectionElt.innerHTML = text;
         section.highlightedContent = sectionElt;
     }
 

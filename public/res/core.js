@@ -726,7 +726,9 @@ define([
         });
 
         // Apply dynamic stylesheet
-        var style = document.createElement("style");
+        var style = crel('style', {
+            type : 'text/css'
+        });
         style.innerHTML = styleContent;
         document.head.appendChild(style);
 
@@ -773,7 +775,7 @@ define([
                 menuPanelBackdropElt = utils.createBackdrop('collapse', '.menu-panel');
                 $menuPanelElt.addClass('move-to-front');
                 // To avoid opening delay
-                setTimeout(function() {
+                $.support.transition && setTimeout(function() {
                     $menuPanelElt.trigger($.support.transition.end);
                 }, 50);
             }
@@ -784,7 +786,7 @@ define([
         }).on('hide.bs.collapse', function(e) {
             if(e.target === $menuPanelElt[0]) {
                 isMenuPanelShown = false;
-                menuPanelBackdropElt.parentNode.removeChild(menuPanelBackdropElt);
+                menuPanelBackdropElt.removeBackdrop();
                 $menuPanelElt.removeClass('move-to-front');
                 aceEditor ? aceEditor.focus() : $editorElt.focus();
             }
@@ -805,7 +807,7 @@ define([
                 documentPanelBackdropElt = utils.createBackdrop('collapse', '.document-panel');
                 $documentPanelElt.addClass('move-to-front');
                 // To avoid opening delay
-                setTimeout(function() {
+                $.support.transition && setTimeout(function() {
                     $documentPanelElt.trigger($.support.transition.end);
                 }, 50);
             }
@@ -816,7 +818,7 @@ define([
         }).on('hide.bs.collapse', function(e) {
             if(e.target === $documentPanelElt[0]) {
                 isDocumentPanelShown = false;
-                documentPanelBackdropElt.parentNode.removeChild(documentPanelBackdropElt);
+                documentPanelBackdropElt.removeBackdrop();
                 $documentPanelElt.removeClass('move-to-front');
                 aceEditor ? aceEditor.focus() : $editorElt.focus();
             }

@@ -1,10 +1,9 @@
 define([
     "jquery",
     "underscore",
-    "caret",
     "crel",
     "classes/Extension"
-], function($, _, caret, crel, Extension) {
+], function($, _, crel, Extension) {
 
     var buttonFocusMode = new Extension("buttonFocusMode", 'Button "Focus Mode"', true, true);
     buttonFocusMode.settingsBlock = "When typing, scrolls automatically the editor to always have the caret centered verticaly.";
@@ -25,41 +24,7 @@ define([
             aceEditor.session.setScrollTop((positionInScreen.row + 0.5) * aceEditor.renderer.lineHeight - aceEditor.renderer.$size.scrollerHeight / 2);
         }
     }
-    
-    var $editorElt;
-    //var $positionHelper = $('<span>').css('display', 'inline-block');
-    var coef = 0.2;
-    function doFocus() {
-        setTimeout(function() {
-            if(!($editorElt && $editorElt[0].focused)) {
-                return;
-            }
-            /*
-            var range = window.getSelection().getRangeAt(0); 
-            range.insertNode($positionHelper[0]);
-            var parentNode = $positionHelper[0].parentNode;
-            */
-            var editorHeight = $editorElt.height();
-            var cursorMinY = coef*editorHeight;
-            var cursorMaxY = (1-coef)*editorHeight;
-            var cursorY = $editorElt.caret('offset').top - $editorElt.offset().top;
-            //console.log($editorElt.find('.pre-content').caret('offset'));
-            //console.log(window.getSelection().getRangeAt(0).getBoundingClientRect());
-            //$positionHelper.detach();
-            //parentNode.normalize();
-            /*
-            if(cursorY < cursorMinY) {
-                $editorElt.scrollTop($editorElt.scrollTop() - cursorMinY + cursorY);
-            }
-            else if(cursorY > cursorMaxY) {
-                $editorElt.scrollTop($editorElt.scrollTop() + cursorY - cursorMaxY);
-            }
-            */
-        }, 0);
-    }
 
-    buttonFocusMode.onLayoutResize = doFocus;
-    
     buttonFocusMode.onReady = function() {
         if(aceEditor) {
             aceEditor.getSession().selection.on('changeCursor', doFocusMode);
@@ -71,15 +36,7 @@ define([
             }, true);
             return;
         }
-        $editorElt = $('#wmd-input').on('keydown', function(event) {
-            if(event.altKey || event.ctrlKey || event.shiftKey || event.metaKey) {
-                return;
-            }
-            doFocus();
-        });
     };
 
     return buttonFocusMode;
 });
-
-

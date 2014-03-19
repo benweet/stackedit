@@ -177,17 +177,23 @@ body {
     }
 }
 
-.modal-content {
-    background-color: @secondary-bg-light;
-}
+.modal {
+	&.fade .modal-dialog {
+		.translate(0, 0);
+	}
 
-.modal-body {
-    background-color: @secondary-bg-lighter;
-    padding-bottom: 30px;
-}
+	.modal-content {
+		background-color: @secondary-bg-light;
+	}
 
-.modal-footer {
-    margin-top: 0;
+	.modal-body {
+		background-color: @secondary-bg-lighter;
+		padding-bottom: 30px;
+	}
+
+	.modal-footer {
+		margin-top: 0;
+	}
 }
 
 a {
@@ -475,8 +481,6 @@ a {
             margin: 0 2px;
             opacity: 0.25;
             background-color: @btn-success-color;
-            animation: indicator 0.6s ease-out infinite;
-            -webkit-animation: indicator 0.6s ease-out infinite; /* Safari and Chrome */
 		}
 	}
 
@@ -501,15 +505,6 @@ a {
 	}
 }
 
-@keyframes indicator {
-    from {opacity: 1;}
-    to {opacity: 0.25;}
-}
-
-@-webkit-keyframes indicator /* Safari and Chrome */ {
-    from {opacity: 1;}
-    to {opacity: 0.25;}
-}
 
 /*********************
  * Menu/Document panels
@@ -1250,8 +1245,7 @@ a {
         overflow: auto;
         white-space: pre-wrap;
         word-break: break-word;
-        > div {
-            margin: 0 auto;
+        > .editor-content {
             padding-bottom: 230px;
         }
     }
@@ -1374,7 +1368,7 @@ a {
     }
 
     .md-li, .md-li2, .md-li3, .md-li4, .md-li5, .md-li6, .md-li7, .md-li8, .md-li9, .md-li10, .md-li11 {
-        white-space: pre-line;
+        //white-space: pre-line;
     }
 
     .md-li {

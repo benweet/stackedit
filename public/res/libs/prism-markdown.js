@@ -1,11 +1,11 @@
 Prism.languages.md = (function() {
-    
+
     var urlPattern = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>\[\]'"]+|\([^\s()<>\[\]'"]*\))+(?:\([^\s()<>\[\]'"]*\)|[^\s`!()\[\]{}:'".,<>?«»“”‘’]))/gi;
     var emailPattern = /[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)\b/gi;
 
     var md = {};
     md.pre = {
-        pattern: /(^|(?:^|(?:^|\n)(?![ \t]*([*+\-]|\d+\.)[ \t]).*\n)\s*?\n)(\s*(?:[ ]{4}|\t).*(?:\n|$))+/g,
+        pattern: /(^|(?:^|(?:^|\n)(?![ \t]*([*+\-]|\d+\.)[ \t]).*\n)\s*?\n)(\s*(?: {4}|\t).*(?:\n|$))+/g,
         lookbehind: true,
         inside: {
         }
@@ -32,17 +32,17 @@ Prism.languages.md = (function() {
     md.li = {
         pattern: /^[ \t]*([*+\-]|\d+\.)[ \t].+$/gm,
         inside: {
-            "md md-li": /^[ ]?([*+\-]|\d+\.)[ \t]/m,
-            "md md-li2": /^[ ]?(?:[ ]{2}|[	]{1})([*+\-]|\d+\.)[ \t]/m,
-            "md md-li3": /^[ ]?(?:[ ]{4}|[	]{2})([*+\-]|\d+\.)[ \t]/m,
-            "md md-li4": /^[ ]?(?:[ ]{6}|[	]{3})([*+\-]|\d+\.)[ \t]/m,
-            "md md-li5": /^[ ]?(?:[ ]{8}|[	]{4})([*+\-]|\d+\.)[ \t]/m,
-            "md md-li6": /^[ ]?(?:[ ]{10}|[	]{5})([*+\-]|\d+\.)[ \t]/m,
-            "md md-li7": /^[ ]?(?:[ ]{12}|[	]{6})([*+\-]|\d+\.)[ \t]/m,
-            "md md-li8": /^[ ]?(?:[ ]{14}|[	]{7})([*+\-]|\d+\.)[ \t]/m,
-            "md md-li9": /^[ ]?(?:[ ]{16}|[	]{8})([*+\-]|\d+\.)[ \t]/m,
-            "md md-li10": /^[ ]?(?:[ ]{18}|[	]{9})([*+\-]|\d+\.)[ \t]/m,
-            "md md-li11": /^[ ]?(?:[ ]{20}|[	]{10})([*+\-]|\d+\.)[ \t]/m
+            "md md-li": /^ ?([*+\-]|\d+\.)[ \t]/m,
+            "md md-li2": /^ ?(?: {2}|\t{1})([*+\-]|\d+\.)[ \t]/m,
+            "md md-li3": /^ ?(?: {4}|\t{2})([*+\-]|\d+\.)[ \t]/m,
+            "md md-li4": /^ ?(?: {6}|\t{3})([*+\-]|\d+\.)[ \t]/m,
+            "md md-li5": /^ ?(?: {8}|\t{4})([*+\-]|\d+\.)[ \t]/m,
+            "md md-li6": /^ ?(?: {10}|\t{5})([*+\-]|\d+\.)[ \t]/m,
+            "md md-li7": /^ ?(?: {12}|\t{6})([*+\-]|\d+\.)[ \t]/m,
+            "md md-li8": /^ ?(?: {14}|\t{7})([*+\-]|\d+\.)[ \t]/m,
+            "md md-li9": /^ ?(?: {16}|\t{8})([*+\-]|\d+\.)[ \t]/m,
+            "md md-li10": /^ ?(?: {18}|\t{9})([*+\-]|\d+\.)[ \t]/m,
+            "md md-li11": /^ ?(?: {20}|\t{10})([*+\-]|\d+\.)[ \t]/m
         }
     };
     for (var i = 6; i >= 1; i--) {
@@ -54,9 +54,9 @@ Prism.languages.md = (function() {
         };
     }
     md.blockquote = {
-        pattern: /^>[ ]*[^\n]+$/gm,
+        pattern: /^ {0,3}> *[^\n]+$/gm,
         inside: {
-            "md md-gt": /^>[ ]*/
+            "md md-gt": /^ {0,3}> */
         }
     };
     md['math block'] = {
@@ -106,7 +106,7 @@ Prism.languages.md = (function() {
             'md md-toc': /^\s*\[(toc|TOC)\]\s*$/g
         }
     };
-    md.br = /^\n$/gm;
+    md.lf = /^\n$/gm;
     md.img = {
         pattern: /!\[[^\]]*\]\([^\)]+\)/g,
         inside: {
@@ -265,7 +265,7 @@ Prism.languages.md = (function() {
     md.blockquote.inside.rest = rest;
     md.li.inside.rest = rest;
     md.fndef.inside.rest = rest;
-    
+
     md.blockquote.inside.rest.li = md.li;
 
     rest = {
@@ -277,7 +277,7 @@ Prism.languages.md = (function() {
     md.strong.inside.rest = rest;
     md.em.inside.rest = rest;
     md.strike.inside.rest = rest;
-    
+
     var inside = {
         code: md.code,
         strong: md.strong,
@@ -289,7 +289,7 @@ Prism.languages.md = (function() {
     };
     md.link.inside["md md-underlined-text"].inside = inside;
     md.linkref.inside["ref-start"].inside["md md-underlined-text"].inside = inside;
-    
+
     return md;
     /*
     Prism.hooks.add("wrap", function (t) {

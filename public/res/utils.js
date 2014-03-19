@@ -187,11 +187,19 @@ define([
     // Create a backdrop and add to the body
     utils.createBackdrop = function(toggle, target) {
         var result = crel('div', {
-            'class': 'modal-backdrop in',
+            'class': 'modal-backdrop fade',
             'data-toggle': toggle,
             'data-target': target,
         });
         document.body.appendChild(result);
+        result.offsetWidth; // force reflow
+        result.className = result.className + ' in';
+        result.removeBackdrop = function() {
+            result.className = 'modal-backdrop fade';
+            setTimeout(function() {
+                result.parentNode.removeChild(result);
+            }, 150);
+        };
         return result;
     };
 
@@ -224,7 +232,7 @@ define([
         $('.modal-redirect-confirm .redirect-msg').html(message);
         $('.modal-redirect-confirm').modal("show");
     };
-    
+
     utils.init = function() {
         $('.action-redirect-confirm').click(function() {
             redirectCallbackCancel = undefined;

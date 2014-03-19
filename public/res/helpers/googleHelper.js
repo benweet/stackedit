@@ -215,7 +215,7 @@ define([
         authenticate(task, 'gdrive', accountId);
         task.enqueue();
     };
-    
+
     function runWithToken(accountId, functionToRun) {
         var currentToken = gapi.auth.getToken();
         var authorizationMgr = authorizationMgrMap[accountId];
@@ -262,7 +262,7 @@ define([
             // if(etag !== undefined) {
             // headers["If-Match"] = etag;
             // }
-            
+
             var base64Data = utils.encodeBase64(content);
             var multipartRequestBody = [
                 delimiter,
@@ -277,7 +277,7 @@ define([
                 base64Data,
                 close_delim
             ].join("");
-            
+
             runWithToken(accountId, function() {
                 var request = gapi.client.request({
                     'path': path,
@@ -320,7 +320,7 @@ define([
         });
         task.enqueue();
     };
-    
+
     googleHelper.rename = function(fileId, title, accountId, callback) {
         var result;
         var task = new AsyncTask();
@@ -424,7 +424,7 @@ define([
                             'pageToken': nextPageToken
                         });
                     }
-    
+
                     request.execute(function(response) {
                         if(!response || !response.largestChangeId) {
                             // Handle error
@@ -755,6 +755,10 @@ define([
         if(pickerType == 'doc' || pickerType == 'folder') {
             authenticate(task, 'gdrive', accountId);
         }
+        else {
+            accountId = 'google.picasa0';
+            authenticate(task, 'picasa', accountId);
+        }
         loadPicker(task);
         task.onRun(function() {
             var authorizationMgr = authorizationMgrMap[accountId];
@@ -794,6 +798,7 @@ define([
                 view.setType('ofuser');
                 pickerBuilder.addView(view);
                 pickerBuilder.addView(google.picker.ViewId.PHOTO_UPLOAD);
+                authorizationMgr && authorizationMgr.token && pickerBuilder.setOAuthToken(authorizationMgr.token.access_token);
             }
             pickerBuilder.setCallback(function(data) {
                 if(data.action == google.picker.Action.PICKED || data.action == google.picker.Action.CANCEL) {
@@ -1032,7 +1037,7 @@ define([
         });
         task.enqueue();
     };
-    
+
     // Use by Google's client.js
     window.delayedFunction = undefined;
     window.runDelayedFunction = function() {
@@ -1040,6 +1045,6 @@ define([
             window.delayedFunction();
         }
     };
-    
+
     return googleHelper;
 });

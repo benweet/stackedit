@@ -8,11 +8,6 @@ define([
     var scrollLink = new Extension("scrollLink", "Scroll Link", true, true);
     scrollLink.settingsBlock = scrollLinkSettingsBlockHTML;
 
-    var aceEditor;
-    scrollLink.onAceCreated = function(aceEditorParam) {
-        aceEditor = aceEditorParam;
-    };
-
     var sectionList;
     scrollLink.onSectionsCreated = function(sectionListParam) {
         sectionList = sectionListParam;
@@ -35,51 +30,31 @@ define([
         }
         mdSectionList = [];
         var mdSectionOffset;
-        var firstSectionOffset = offsetBegin;
         var scrollHeight;
-        if(window.lightMode) {
-            var editorScrollTop = $editorElt.scrollTop();
-            $editorElt.find(".wmd-input-section").each(function() {
-                if(mdSectionOffset === undefined) {
-                    // Force start to 0 for the first section
-                    mdSectionOffset = 0;
-                    return;
-                }
-                var $delimiterElt = $(this.firstChild);
-                // Consider div scroll position
-                var newSectionOffset = $delimiterElt.position().top + editorScrollTop;
-                mdSectionList.push({
-                    startOffset: mdSectionOffset,
-                    endOffset: newSectionOffset,
-                    height: newSectionOffset - mdSectionOffset
-                });
-                mdSectionOffset = newSectionOffset;
-            });
-            // Last section
-            scrollHeight = $editorElt.prop('scrollHeight');
+        var editorScrollTop = $editorElt.scrollTop();
+        $editorElt.find(".wmd-input-section").each(function() {
+            if(mdSectionOffset === undefined) {
+                // Force start to 0 for the first section
+                mdSectionOffset = 0;
+                return;
+            }
+            var $delimiterElt = $(this.firstChild);
+            // Consider div scroll position
+            var newSectionOffset = $delimiterElt.position().top + editorScrollTop;
             mdSectionList.push({
                 startOffset: mdSectionOffset,
-                endOffset: scrollHeight,
-                height: scrollHeight - mdSectionOffset
+                endOffset: newSectionOffset,
+                height: newSectionOffset - mdSectionOffset
             });
-        }
-        else {
-            var mdTextOffset = 0;
-            _.each(sectionList, function(section) {
-                mdTextOffset += section.text.length + firstSectionOffset;
-                firstSectionOffset = 0;
-                var documentPosition = aceEditor.session.doc.indexToPosition(mdTextOffset);
-                var screenPosition = aceEditor.session.documentToScreenPosition(documentPosition.row, documentPosition.column);
-                var newSectionOffset = screenPosition.row * aceEditor.renderer.lineHeight;
-                var sectionHeight = newSectionOffset - mdSectionOffset;
-                mdSectionList.push({
-                    startOffset: mdSectionOffset,
-                    endOffset: newSectionOffset,
-                    height: sectionHeight
-                });
-                mdSectionOffset = newSectionOffset;
-            });
-        }
+            mdSectionOffset = newSectionOffset;
+        });
+        // Last section
+        scrollHeight = $editorElt.prop('scrollHeight');
+        mdSectionList.push({
+            startOffset: mdSectionOffset,
+            endOffset: scrollHeight,
+            height: scrollHeight - mdSectionOffset
+        });
 
         // Find corresponding sections in the preview
         htmlSectionList = [];
@@ -124,7 +99,7 @@ define([
         if(!isPreviewVisible || mdSectionList.length === 0 || mdSectionList.length !== htmlSectionList.length) {
             return;
         }
-        var editorScrollTop = window.lightMode ? $editorElt.scrollTop() : aceEditor.renderer.getScrollTop();
+        var editorScrollTop = $editorElt.scrollTop();
         editorScrollTop < 0 && (editorScrollTop = 0);
         var previewScrollTop = $previewElt.scrollTop();
         function getDestScrollTop(srcScrollTop, srcSectionList, destSectionList) {
@@ -188,20 +163,10 @@ define([
             // Animate the editor
             lastPreviewScrollTop = previewScrollTop;
             destScrollTop = getDestScrollTop(previewScrollTop, htmlSectionList, mdSectionList);
-            if(window.lightMode) {
-                destScrollTop = _.min([
-                    destScrollTop,
-                    $editorElt.prop('scrollHeight') - $editorElt.outerHeight()
-                ]);
-            }
-            else {
-                destScrollTop = _.min([
-                    destScrollTop,
-                    aceEditor.session.getScreenLength() * aceEditor.renderer.lineHeight + aceEditor.renderer.scrollMargin.bottom - aceEditor.renderer.$size.scrollerHeight
-                ]);
-                // If negative, set it to zero
-                destScrollTop < 0 && (destScrollTop = 0);
-            }
+            destScrollTop = _.min([
+                destScrollTop,
+                $editorElt.prop('scrollHeight') - $editorElt.outerHeight()
+            ]);
             if(Math.abs(destScrollTop - editorScrollTop) <= 9) {
                 // Skip the animation if diff is <= 9
                 lastEditorScrollTop = editorScrollTop;
@@ -216,12 +181,7 @@ define([
                 step: function(now) {
                     isEditorMoving = true;
                     lastEditorScrollTop = editorScrollTop + now;
-                    if(window.lightMode) {
-                        $editorElt.scrollTop(lastEditorScrollTop);
-                    }
-                    else {
-                        aceEditor.session.setScrollTop(lastEditorScrollTop);
-                    }
+                    $editorElt.scrollTop(lastEditorScrollTop);
                 },
                 done: function() {
                     _.defer(function() {
@@ -278,12 +238,7 @@ define([
                 doScrollLink();
             }
         };
-        if(window.lightMode) {
-            $editorElt.scroll(handleEditorScroll);
-        }
-        else {
-            aceEditor.session.on("changeScrollTop", handleEditorScroll);
-        }
+        $editorElt.scroll(handleEditorScroll);
     };
 
     var $previewContentsElt;

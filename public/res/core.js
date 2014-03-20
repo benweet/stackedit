@@ -3,7 +3,6 @@ define([
     "jquery",
     "underscore",
     "crel",
-    "ace",
     "editor",
     "constants",
     "utils",
@@ -18,15 +17,8 @@ define([
     "text!html/settingsUserCustomExtensionTooltip.html",
     "storage",
     "uilayout",
-    'pagedown-ace',
-    'pagedown-light',
-    'libs/ace_mode',
-    'ace/requirejs/text!ace/css/editor.css',
-    'ace/requirejs/text!ace/theme/textmate.css',
-    'ace/ext/spellcheck',
-    'ace/ext/searchbox'
-
-], function($, _, crel, ace, editor, constants, utils, storage, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
+    'pagedown',
+], function($, _, crel, editor, constants, utils, storage, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
 
@@ -128,8 +120,8 @@ define([
         utils.setInputValue("#input-settings-max-width", settings.maxWidth);
         // Default content
         utils.setInputValue("#textarea-settings-default-content", settings.defaultContent);
-        // Mode
-        utils.setInputRadio("radio-settings-mode", storage.mode || '_ace_');
+        // Edit mode
+        utils.setInputRadio("radio-settings-mode", settings.editMode);
         // Commit message
         utils.setInputValue("#input-settings-publish-commit-msg", settings.commitMsg);
         // Gdrive multi-accounts
@@ -174,8 +166,8 @@ define([
         newSettings.maxWidth = utils.getInputIntValue("#input-settings-max-width", event, 1);
         // Default content
         newSettings.defaultContent = utils.getInputValue("#textarea-settings-default-content");
-        // Mode
-        var mode = utils.getInputRadio("radio-settings-mode");
+        // Edit mode
+        newSettings.editMode = utils.getInputRadio("radio-settings-mode");
         // Commit message
         newSettings.commitMsg = utils.getInputTextValue("#input-settings-publish-commit-msg", event);
         // Gdrive multi-accounts
@@ -209,7 +201,6 @@ define([
             $.extend(settings, newSettings);
             storage.settings = JSON.stringify(settings);
             storage.themeV3 = theme;
-            storage.mode = mode;
         }
     }
 
@@ -237,95 +228,6 @@ define([
         else {
             $previewButtonsElt.show();
         }
-    }
-
-    // Create ACE editor
-    var aceEditor;
-    function createAceEditor() {
-        aceEditor = ace.edit("wmd-input");
-        aceEditor.setOption("spellcheck", true);
-        aceEditor.renderer.setShowGutter(false);
-        aceEditor.renderer.setPrintMarginColumn(false);
-        aceEditor.renderer.setPadding(constants.EDITOR_DEFAULT_PADDING);
-        aceEditor.session.setUseWrapMode(true);
-        aceEditor.session.setNewLineMode("unix");
-        aceEditor.session.setMode("libs/ace_mode");
-        aceEditor.session.$selectLongWords = true;
-        aceEditor.setShowPrintMargin(true);
-        aceEditor.setHighlightActiveLine(false);
-        aceEditor.setHighlightGutterLine(false);
-        aceEditor.setHighlightSelectedWord(false);
-        aceEditor.setDisplayIndentGuides(false);
-        aceEditor.setShowFoldWidgets(false);
-        aceEditor.setWrapBehavioursEnabled(false);
-        // Hack to disable bracket highlighting
-        aceEditor.$highlightBrackets = function() {};
-
-        // Hack to make bold titles
-        (function(self) {
-            function checkLine(currentLine) {
-                var line = self.lines[currentLine];
-                if(line.length !== 0) {
-                    if(line[0].type.indexOf("markup.heading.multi") === 0) {
-                        _.each(self.lines[currentLine - 1], function(previousLineObject) {
-                            previousLineObject.type = "markup.heading.prev.multi";
-                        });
-                    }
-                }
-            }
-            function customWorker() {
-                // Duplicate from background_tokenizer.js
-                if(!self.running) {
-                    return;
-                }
-
-                var workerStart = new Date();
-                var currentLine = self.currentLine;
-                var endLine = -1;
-                var doc = self.doc;
-
-                while (self.lines[currentLine]) {
-                    currentLine++;
-                }
-
-                var startLine = currentLine;
-
-                var len = doc.getLength();
-                var processedLines = 0;
-                self.running = false;
-                while (currentLine < len) {
-                    self.$tokenizeRow(currentLine);
-                    endLine = currentLine;
-                    do {
-                        checkLine(currentLine); // benweet
-                        currentLine++;
-                    } while (self.lines[currentLine]);
-
-                    // only check every 5 lines
-                    processedLines++;
-                    if((processedLines % 5 === 0) && (new Date() - workerStart) > 20) {
-                        self.running = setTimeout(customWorker, 20); // benweet
-                        self.currentLine = currentLine;
-                        return;
-                    }
-                }
-                self.currentLine = currentLine;
-
-                if(startLine <= endLine) {
-                    self.fireUpdateEvent(startLine, endLine);
-                }
-            }
-            self.$worker = function() {
-                self.lines.splice(0, self.lines.length);
-                self.states.splice(0, self.states.length);
-                self.currentLine = 0;
-                customWorker();
-            };
-
-        })(aceEditor.session.bgTokenizer);
-
-        shortcutMgr.configureAce(aceEditor);
-        eventMgr.onAceCreated(aceEditor);
     }
 
     // Create the layout
@@ -394,22 +296,6 @@ define([
                         'padding-left': padding + 'px',
                         'padding-right': padding + 'px'
                     });
-                }
-                if(aceEditor !== undefined && paneName == 'center') {
-                    aceEditor.resize();
-                    var bottomMargin = (aceEditor.renderer.$size.scrollerHeight - aceEditor.renderer.lineHeight) / 2;
-                    bottomMargin < 0 && (bottomMargin = 0);
-                    aceEditor.renderer.setScrollMargin(0, bottomMargin, 0, 0);
-                    setTimeout(function() {
-                        var padding = (aceEditor.renderer.$size.scrollerWidth - getMaxWidth()) / 2;
-                        if(padding < constants.EDITOR_DEFAULT_PADDING) {
-                            padding = constants.EDITOR_DEFAULT_PADDING;
-                        }
-                        if(padding !== aceEditor.renderer.$padding) {
-                            aceEditor.renderer.setPadding(padding);
-                            aceEditor.resize(true);
-                        }
-                    }, 5);
                 }
                 eventMgr.onLayoutResize(paneName);
             },
@@ -498,7 +384,6 @@ define([
     var $editorElt;
     var fileDesc;
     var documentContent;
-    var UndoManager = require("ace/undomanager").UndoManager;
     core.initEditor = function(fileDescParam) {
         if(fileDesc !== undefined) {
             eventMgr.onFileClosed(fileDesc);
@@ -507,43 +392,16 @@ define([
         documentContent = undefined;
         var initDocumentContent = fileDesc.content;
 
-        if(aceEditor !== undefined) {
-            aceEditor.setValue(initDocumentContent, -1);
-            aceEditor.getSession().setUndoManager(new UndoManager());
-        }
-        else {
-            //$editorElt.val(initDocumentContent);
-        }
-
         if(pagedownEditor !== undefined) {
             // If the editor is already created
             $editorElt.val(initDocumentContent);
-            aceEditor && aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
-            aceEditor || pagedownEditor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
-            aceEditor ? aceEditor.focus() : $editorElt.focus();
-            //pagedownEditor.refreshPreview();
+            pagedownEditor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
+            $editorElt.focus();
             return;
         }
 
         var $previewContainerElt = $(".preview-container");
 
-        if(!window.lightMode) {
-            // Store editor scrollTop on scroll event
-            var saveScroll = _.debounce(function() {
-                if(documentContent !== undefined) {
-                    fileDesc.editorScrollTop = aceEditor.renderer.getScrollTop();
-                }
-            }, 100);
-            aceEditor.session.on('changeScrollTop', saveScroll);
-            // Store editor selection on change
-            var saveSelection = _.debounce(function() {
-                if(documentContent !== undefined) {
-                    fileDesc.editorSelectRange = aceEditor.getSelectionRange();
-                }
-            }, 100);
-            aceEditor.session.selection.on('changeSelection', saveSelection);
-            aceEditor.session.selection.on('changeCursor', saveSelection);
-        }
         // Store preview scrollTop on scroll event
         $previewContainerElt.scroll(function() {
             if(documentContent !== undefined) {
@@ -565,37 +423,6 @@ define([
         };
         converter.setOptions(options);
 
-        function checkDocumentChanges() {
-            var newDocumentContent = $editorElt.text();
-            if(aceEditor !== undefined) {
-                newDocumentContent = aceEditor.getValue();
-            }
-            if(documentContent == newDocumentContent) {
-                return false;
-            }
-
-            if(documentContent !== undefined) {
-                fileDesc.content = newDocumentContent;
-                eventMgr.onContentChanged(fileDesc);
-            }
-            else {
-                eventMgr.onFileOpen(fileDesc);
-                $previewContainerElt.scrollTop(fileDesc.previewScrollTop);
-                if(window.lightMode) {
-                    $editorElt.scrollTop(fileDesc.editorScrollTop);
-                }
-                else {
-                    _.defer(function() {
-                        aceEditor.renderer.scrollToY(fileDesc.editorScrollTop);
-                    });
-                }
-            }
-
-            documentContent = newDocumentContent;
-            return true;
-        }
-
-        var previewWrapper;
         if(window.lightMode) {
             pagedownEditor = new Markdown.EditorLight(converter);
         }
@@ -622,38 +449,12 @@ define([
             return true;
         });
 
-        if(settings.lazyRendering === true) {
-            previewWrapper = function(makePreview) {
-                var debouncedMakePreview = _.debounce(makePreview, 500);
-                return function() {
-                    var debounce = documentContent !== undefined;
-                    if(checkDocumentChanges()) {
-                        debounce ? debouncedMakePreview() : makePreview();
-                    }
-                };
-            };
-        }
-        else {
-            previewWrapper = function(makePreview) {
-                return function() {
-                    checkDocumentChanges() && makePreview();
-                };
-            };
-        }
-
         eventMgr.onPagedownConfigure(pagedownEditor);
         pagedownEditor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
-        if(window.lightMode) {
-            pagedownEditor.run();
-            $editorElt.val(initDocumentContent);
-            pagedownEditor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
-            $editorElt.focus();
-        }
-        else {
-            pagedownEditor.run(aceEditor, previewWrapper);
-            aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
-            aceEditor.focus();
-        }
+        pagedownEditor.run();
+        $editorElt.val(initDocumentContent);
+        pagedownEditor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
+        $editorElt.focus();
 
         // Hide default buttons
         $(".wmd-button-row li").addClass("btn btn-success").css("left", 0).find("span").hide();
@@ -681,6 +482,9 @@ define([
     var isDocumentPanelShown = false;
     var isMenuPanelShown = false;
     core.onReady = function() {
+        // Add RTL class
+        settings.editMode == 'rtl' && $(document.body).addClass('rtl');
+
         if(window.viewerMode === true) {
             document.body.innerHTML = bodyViewerHTML;
         }
@@ -788,7 +592,7 @@ define([
                 isMenuPanelShown = false;
                 menuPanelBackdropElt.removeBackdrop();
                 $menuPanelElt.removeClass('move-to-front');
-                aceEditor ? aceEditor.focus() : $editorElt.focus();
+                $editorElt.focus();
             }
         }).on('hidden.bs.collapse', function(e) {
             if(e.target === $menuPanelElt[0]) {
@@ -820,7 +624,7 @@ define([
                 isDocumentPanelShown = false;
                 documentPanelBackdropElt.removeBackdrop();
                 $documentPanelElt.removeClass('move-to-front');
-                aceEditor ? aceEditor.focus() : $editorElt.focus();
+                $editorElt.focus();
             }
         }).on('hidden.bs.collapse', function(e) {
             if(e.target === $documentPanelElt[0]) {
@@ -829,26 +633,13 @@ define([
             }
         });
 
+        // Create UI layout
+        createLayout();
+
         // Editor
-        if(window.lightMode) {
-            // In pre mode, we replace ACE with an editable pre
-            $('#wmd-input').replaceWith(function() {
-                return $('<pre id="wmd-input">').addClass(this.className).addClass('form-control');
-            });
-
-            // Create UI layout after textarea
-            createLayout();
-
-            editor.init(document.querySelector('#wmd-input'), document.querySelector('.preview-container'));
-        }
-        else {
-            // Create UI layout before ACE editor
-            createLayout();
-
-            // ACE editor
-            createAceEditor();
-        }
         $editorElt = $('#wmd-input');
+
+        editor.init(document.querySelector('#wmd-input'), document.querySelector('.preview-container'));
 
         // Do periodic tasks
         intervalId = window.setInterval(function() {
@@ -892,7 +683,7 @@ define([
         }).on('hidden.bs.modal', function() {
             // Focus on the editor when modal is gone
             isModalShown = false;
-            aceEditor ? aceEditor.focus() : $editorElt.focus();
+            $editorElt.focus();
             // Revert to current theme when settings modal is closed
             applyTheme(window.theme);
         }).keyup(function(e) {

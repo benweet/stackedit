@@ -29,14 +29,12 @@ define([
     "extensions/mathJax",
     "extensions/emailConverter",
     "extensions/scrollLink",
-    "extensions/buttonFocusMode",
     "extensions/buttonSync",
     "extensions/buttonPublish",
     "extensions/buttonStat",
     "extensions/buttonHtmlCode",
     "extensions/buttonViewer",
     "extensions/welcomeTour",
-    "extensions/spellCheck",
     "extensions/userCustom",
     "bootstrap",
     "jquery-waitforimages",
@@ -211,12 +209,9 @@ define([
     addEventHook("onSectionsCreated");
     addEventHook("onMarkdownTrim");
 
-    // Operation on ACE
-    addEventHook("onAceCreated");
-    
     // Refresh twitter buttons
     addEventHook("onTweet");
-    
+
 
     var onPreviewFinished = createEventHook("onPreviewFinished");
     var onAsyncPreviewListenerList = getExtensionListenerList("onAsyncPreview");
@@ -281,7 +276,7 @@ define([
                 }) : "");
             }, "").value();
             document.querySelector('.accordion-extensions').innerHTML = accordionHtml;
-            
+
             // Create extension buttons
             logger.log("onCreateButton");
             var onCreateButtonListenerList = getExtensionListenerList("onCreateButton");
@@ -327,7 +322,7 @@ define([
                 });
             });
         });
-        
+
         // Call onReady listeners
         onReady();
     };

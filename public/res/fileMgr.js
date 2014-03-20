@@ -98,7 +98,7 @@ define([
 
     fileMgr.deleteFile = function(fileDesc) {
         fileDesc = fileDesc || fileMgr.currentFile;
-        
+
         // Unassociate file from folder
         if(fileDesc.folder) {
             fileDesc.folder.removeFile(fileDesc);
@@ -160,11 +160,6 @@ define([
         });
     };
 
-    var aceEditor;
-    eventMgr.addListener('onAceCreated', function(aceEditorParam) {
-        aceEditor = aceEditorParam;
-    });
-
     eventMgr.addListener("onReady", function() {
         var $editorElt = $("#wmd-input");
         fileMgr.selectFile();
@@ -204,7 +199,7 @@ define([
                 eventMgr.onTitleChanged(fileDesc);
             }
             $fileTitleInputElt.val(fileDesc.title);
-            aceEditor ? aceEditor.focus() : $editorElt.focus();
+            $editorElt.focus();
         }
         $fileTitleInputElt.blur(function() {
             applyTitle();
@@ -222,9 +217,6 @@ define([
         });
         $(".action-edit-document").click(function() {
             var content = $editorElt.val();
-            if(aceEditor !== undefined) {
-                content = aceEditor.getValue();
-            }
             var title = fileMgr.currentFile.title;
             var fileDesc = fileMgr.createFile(title, content);
             fileMgr.selectFile(fileDesc);

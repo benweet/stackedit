@@ -2,7 +2,7 @@
 define([
     "underscore"
 ], function(_) {
-    
+
     function retrieveIndexArray(storeIndex) {
         try {
             return _.compact(localStorage[storeIndex].split(";"));
@@ -246,12 +246,18 @@ define([
         });
         version = "v17";
     }
-    
+
     if(version == "v17") {
         localStorage.removeItem('focusMode');
+        localStorage.removeItem('mode');
+        _.each(_.keys(localStorage), function(key) {
+            if(key.match(/file\.\S+\.editorSelectRange/)); {
+                localStorage.removeItem(key);
+            }
+        });
         version = "v18";
     }
-    
+
     localStorage.version = version;
     return localStorage;
 });

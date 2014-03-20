@@ -29,11 +29,6 @@ define([
         newConfig.shortcutNext = utils.getInputTextValue("#input-document-selector-shortcut-next", event);
     };
 
-    var aceEditor;
-    documentSelector.onAceCreated = function(aceEditorParam) {
-        aceEditor = aceEditorParam;
-    };
-
     var fileMgr;
     documentSelector.onFileMgrCreated = function(fileMgrParameter) {
         fileMgr = fileMgrParameter;
@@ -74,9 +69,6 @@ define([
                 if(!$liElt.hasClass("disabled")) {
                     fileMgr.selectFile(fileDesc);
                 }
-                else if(aceEditor !== undefined) {
-                    aceEditor.focus();
-                }
                 else {
                     $editorElt.focus();
                 }
@@ -99,7 +91,7 @@ define([
 
     documentSelector.onReady = function() {
         $editorElt = $('#wmd-input');
-        
+
         if(documentSelector.config.orderBy == "title") {
             sortFunction = function(fileDesc) {
                 return fileDesc.title.toLowerCase();

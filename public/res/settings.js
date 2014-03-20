@@ -6,6 +6,7 @@ define([
 
     var settings = {
         layoutOrientation: "horizontal",
+        mode: 'ltr',
         lazyRendering: true,
         editorFontFamily: 'Menlo, Consolas, "Courier New", Courier, monospace',
         editorFontSize: 13,

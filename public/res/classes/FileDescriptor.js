@@ -2,26 +2,12 @@ define([
     "underscore",
     "utils",
     "storage",
-    "ace/range"
-], function(_, utils, storage, range) {
-    var Range = range.Range;
+], function(_, utils, storage) {
 
     function FileDescriptor(fileIndex, title, syncLocations, publishLocations) {
         this.fileIndex = fileIndex;
         this._title = title || storage[fileIndex + ".title"];
         this._editorScrollTop = parseInt(storage[fileIndex + ".editorScrollTop"]) || 0;
-        this._editorSelectRange = (function() {
-            try {
-                var rangeComponents = storage[fileIndex + ".editorSelectRange"].split(';');
-                rangeComponents = _.map(rangeComponents, function(component) {
-                    return parseInt(component);
-                });
-                return new Range(rangeComponents[0], rangeComponents[1], rangeComponents[2], rangeComponents[3]);
-            }
-            catch(e) {
-                return new Range(0, 0, 0, 0);
-            }
-        })();
         this._editorStart = parseInt(storage[fileIndex + ".editorEnd"]) || 0;
         this._editorEnd = parseInt(storage[fileIndex + ".editorEnd"]) || 0;
         this._previewScrollTop = parseInt(storage[fileIndex + ".previewScrollTop"]) || 0;
@@ -70,20 +56,6 @@ define([
             set: function(editorEnd) {
                 this._editorEnd = editorEnd;
                 storage[this.fileIndex + ".editorEnd"] = editorEnd;
-            }
-        });
-        Object.defineProperty(this, 'editorSelectRange', {
-            get: function() {
-                return this._editorSelectRange;
-            },
-            set: function(range) {
-                this._editorSelectRange = range;
-                storage[this.fileIndex + ".editorSelectRange"] = [
-                    range.start.row,
-                    range.start.column,
-                    range.end.row,
-                    range.end.column
-                ].join(';');
             }
         });
         Object.defineProperty(this, 'previewScrollTop', {

@@ -56,7 +56,8 @@ Prism.languages.md = (function() {
     md.blockquote = {
         pattern: /^ {0,3}> *[^\n]+$/gm,
         inside: {
-            "md md-gt": /^ {0,3}> */
+            "md md-gt": /^ {0,3}> */,
+            "li": md.li
         }
     };
     md['math block'] = {
@@ -265,8 +266,6 @@ Prism.languages.md = (function() {
     md.blockquote.inside.rest = rest;
     md.li.inside.rest = rest;
     md.fndef.inside.rest = rest;
-
-    md.blockquote.inside.rest.li = md.li;
 
     rest = {
         code: md.code,

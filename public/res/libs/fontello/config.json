@@ -463,12 +463,6 @@
       "src": "fontawesome"
     },
     {
-      "uid": "85528017f1e6053b2253785c31047f44",
-      "css": "comment",
-      "code": 59466,
-      "src": "fontawesome"
-    },
-    {
       "uid": "dcedf50ab1ede3283d7a6c70e2fe32f3",
       "css": "chat",
       "code": 59467,
@@ -1888,6 +1882,12 @@
       "uid": "838db85de51df09e2d0c34a17dc30ff6",
       "css": "code",
       "code": 59460,
+      "src": "websymbols"
+    },
+    {
+      "uid": "889a8bd0b481e3523ede8a7d75164cd1",
+      "css": "comment",
+      "code": 59451,
       "src": "websymbols"
     },
     {

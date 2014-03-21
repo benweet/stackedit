@@ -13,11 +13,6 @@ define([
         sectionList = sectionListParam;
     };
 
-    var offsetBegin = 0;
-    scrollLink.onMarkdownTrim = function(offsetBeginParam) {
-        offsetBegin = offsetBeginParam;
-    };
-
     var $editorElt;
     var $previewElt;
     var mdSectionList = [];

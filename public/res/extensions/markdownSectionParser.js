@@ -40,15 +40,10 @@ define([
         });
     };
 
-    var trimLen = 0;
-    markdownSectionParser.onMarkdownTrim = function(len) {
-        trimLen = len;
-    };
-
     var sectionCounter = 0;
     function parseFileContent(fileDesc) {
-        var text = fileDesc.content.substring(trimLen);
-        var frontMatter = fileDesc.content.substring(0, trimLen);
+        var frontMatter = (fileDesc.frontMatter || {})._frontMatter || '';
+        var text = fileDesc.content.substring(frontMatter.length);
         var tmpText = text + "\n\n";
         function addSection(startOffset, endOffset) {
             var sectionText = tmpText.substring(offset, endOffset);

@@ -6,6 +6,7 @@ define([
     'eventMgr',
     'prism-core',
     'crel',
+    'MutationObservers',
     'libs/prism-markdown'
 ], function ($, _, settings, eventMgr, Prism, crel) {
 
@@ -60,14 +61,23 @@ define([
         fileDesc = selectedFileDesc;
     });
 
-    var previousTextContent;
-    function onInputContentChange() {
+    function saveEditorState() {
+        setTimeout
         selectionStart = inputElt.selectionStart;
         selectionEnd = inputElt.selectionEnd;
-        var currentTextContent = inputElt.textContent;
+        scrollTop = inputElt.scrollTop;
         if(fileChanged === false) {
             fileDesc.editorStart = selectionStart;
             fileDesc.editorEnd = selectionEnd;
+            fileDesc.editorScrollTop = scrollTop;
+        }
+    }
+
+    var previousTextContent;
+    function checkContentChange() {
+        saveEditorState();
+        var currentTextContent = inputElt.textContent;
+        if(fileChanged === false) {
             if(currentTextContent == previousTextContent) {
                 return;
             }
@@ -93,47 +103,54 @@ define([
         previousTextContent = currentTextContent;
     }
 
-    function adjustCursorPosition() {
-        inputElt && setTimeout(function() {
-            selectionStart = inputElt.selectionStart;
-            selectionEnd = inputElt.selectionEnd;
+    var cursorY = 0;
+    function saveCursorCoordinates() {
+        saveEditorState();
 
-            var backwards = false;
-            var selection = window.getSelection();
-            if (!selection.isCollapsed) {
-                var range = document.createRange();
-                range.setStart(selection.anchorNode, selection.anchorOffset);
-                range.setEnd(selection.focusNode, selection.focusOffset);
-                backwards = range.collapsed;
-                range.detach();
-            }
+        var backwards = false;
+        var selection = window.getSelection();
+        if(!selection.rangeCount) {
+            return;
+        }
+        if (!selection.isCollapsed) {
+            var range = document.createRange();
+            range.setStart(selection.anchorNode, selection.anchorOffset);
+            range.setEnd(selection.focusNode, selection.focusOffset);
+            backwards = range.collapsed;
+            range.detach();
+        }
 
-            var selectionRange = selection.getRangeAt(0);
-            var container = backwards ? selectionRange.startContainer : selectionRange.endContainer;
-            var cursorY;
-            if(container.textContent == '\n') {
-                cursorY = container.parentNode.offsetTop + container.parentNode.offsetHeight / 2 - inputElt.scrollTop;
+        var selectionRange = selection.getRangeAt(0);
+        var container = backwards ? selectionRange.startContainer : selectionRange.endContainer;
+        if(container.textContent == '\n') {
+            cursorY = container.parentNode.offsetTop + container.parentNode.offsetHeight / 2;
+        }
+        else {
+            var cursorOffset = backwards ? selectionStart : selectionEnd;
+            var selectedChar = inputElt.textContent[cursorOffset];
+            if(selectedChar === undefined || selectedChar == '\n') {
+                selectionRange = createRange(cursorOffset - 1, cursorOffset);
             }
             else {
-                var cursorOffset = backwards ? selectionStart : selectionEnd;
-                var selectedChar = inputElt.textContent[cursorOffset];
-                if(selectedChar === undefined || selectedChar == '\n') {
-                    selectionRange = createRange(cursorOffset - 1, cursorOffset);
-                }
-                else {
-                    selectionRange = createRange(cursorOffset, cursorOffset + 1);
-                }
-                var selectionRect = selectionRange.getBoundingClientRect();
-                cursorY = selectionRect.top + selectionRect.height / 2 - inputElt.offsetTop;
-                selectionRange.detach();
+                selectionRange = createRange(cursorOffset, cursorOffset + 1);
             }
+            var selectionRect = selectionRange.getBoundingClientRect();
+            cursorY = selectionRect.top + selectionRect.height / 2 - inputElt.offsetTop + inputElt.scrollTop;
+            selectionRange.detach();
+        }
+        eventMgr.onCursorCoordinates(0, cursorY);
+    }
+
+    function adjustCursorPosition() {
+        inputElt && setTimeout(function() {
+            saveCursorCoordinates();
 
             var adjust = inputElt.offsetHeight / 2;
             if(adjust > 130) {
                 adjust = 130;
             }
-            var cursorMinY = adjust;
-            var cursorMaxY = inputElt.offsetHeight - adjust;
+            var cursorMinY = inputElt.scrollTop + adjust;
+            var cursorMaxY = inputElt.scrollTop + inputElt.offsetHeight - adjust;
             if(cursorY < cursorMinY) {
                 inputElt.scrollTop += cursorY - cursorMinY;
             }
@@ -148,19 +165,28 @@ define([
         inputElt = elt1;
         $inputElt = $(inputElt);
         previewElt = elt2;
+
         editor.contentElt = crel('div', {
             class: 'editor-content',
             contenteditable: true
         });
-        editor.$contentElt = $(editor.contentElt);
         inputElt.appendChild(editor.contentElt);
+        editor.$contentElt = $(editor.contentElt);
 
-        $(inputElt).scroll(function() {
-            scrollTop = this.scrollTop;
-            if(fileChanged === false) {
-                fileDesc.editorScrollTop = scrollTop;
-            }
-        }).bind("keyup mouseup", onInputContentChange);
+        editor.marginElt = crel('div', {
+            class: 'editor-margin'
+        });
+        inputElt.appendChild(editor.marginElt);
+        editor.$marginElt = $(editor.marginElt);
+
+        var observer = new MutationObserver(checkContentChange);
+        observer.observe(editor.contentElt, {
+            childList: true,
+            subtree: true,
+            characterData: true
+        });
+
+        $(inputElt).scroll(saveEditorState);
         $(previewElt).scroll(function() {
             if(fileChanged === false) {
                 fileDesc.previewScrollTop = previewElt.scrollTop;
@@ -211,7 +237,6 @@ define([
                 var range = createRange(startIndex, endIndex);
                 range.deleteContents();
                 range.insertNode(document.createTextNode(replacementText));
-                onInputContentChange();
             }
         });
 
@@ -282,13 +307,20 @@ define([
 
         var clearNewline = false;
         editor.$contentElt.on('keydown', function (evt) {
+            if(
+                evt.which === 17 || // Ctrl
+                evt.which === 91 || // Cmd
+                evt.which === 18 || // Alt
+                evt.which === 16 // Shift
+            ) {
+                return;
+            }
+            saveEditorState();
+            adjustCursorPosition();
+
             var cmdOrCtrl = evt.metaKey || evt.ctrlKey;
 
-            if(!cmdOrCtrl && !event.altKey && !(event.shiftKey && evt.keyCode === 16)) {
-                adjustCursorPosition();
-            }
-
-            switch (evt.keyCode) {
+            switch (evt.which) {
             case 9: // Tab
                 if (!cmdOrCtrl) {
                     action('indent', {
@@ -301,32 +333,19 @@ define([
                 action('newline');
                 evt.preventDefault();
                 break;
-            case 191:
-                if (cmdOrCtrl && !evt.altKey) {
-                    action('comment', {
-                        lang: this.id
-                    });
-                    evt.preventDefault();
-                }
-                break;
             }
-            if(evt.keyCode !== 13) {
+            if(evt.which !== 13) {
                 clearNewline = false;
             }
-        });
-
-        editor.$contentElt.on('paste', function () {
+        })
+        .on('mouseup', saveCursorCoordinates)
+        .on('paste', function () {
             pagedownEditor.undoManager.setMode("paste");
-            setTimeout(function() {
-                onInputContentChange();
-            }, 0);
-        });
-
-        editor.$contentElt.on('cut', function () {
+            adjustCursorPosition();
+        })
+        .on('cut', function () {
             pagedownEditor.undoManager.setMode("cut");
-            setTimeout(function() {
-                onInputContentChange();
-            }, 0);
+            adjustCursorPosition();
         });
 
         var action = function (action, options) {
@@ -441,7 +460,9 @@ define([
                 // Check modified
                 section.textWithFrontMatter != newSection.textWithFrontMatter ||
                 // Check that section has not been detached from the DOM with backspace
-                !section.highlightedContent.parentNode) {
+                !section.highlightedContent.parentNode ||
+                // Check also the content since nodes can be injected in sections via copy/paste
+                section.highlightedContent.textContent != newSection.textWithFrontMatter) {
                 leftIndex = index;
                 return true;
             }
@@ -456,7 +477,7 @@ define([
                 section.textWithFrontMatter != newSection.textWithFrontMatter ||
                 // Check that section has not been detached from the DOM with backspace
                 !section.highlightedContent.parentNode ||
-                // Check also the content of the node since new lines can be added just at the beggining
+                // Check also the content since nodes can be injected in sections via copy/paste
                 section.highlightedContent.textContent != newSection.textWithFrontMatter) {
                 rightIndex = -index;
                 return true;
@@ -479,8 +500,6 @@ define([
     }
 
     function highlightSections() {
-        selectionStart = inputElt.selectionStart;
-        selectionEnd = inputElt.selectionEnd;
         var newSectionEltList = document.createDocumentFragment();
         modifiedSections.forEach(function(section) {
             highlight(section);
@@ -507,17 +526,17 @@ define([
                 editor.contentElt.appendChild(newSectionEltList);
             }
 
-            inputElt.setSelectionRange(selectionStart, selectionEnd);
-
-            // Remove textNodes created outside sections
+            // Remove unauthorized nodes (text nodes outside of sections or duplicated sections via copy/paste)
             var childNode = editor.contentElt.firstChild;
             while(childNode) {
                 var nextNode = childNode.nextSibling;
-                if(childNode.nodeType == 3) {
+                if(!childNode.generated) {
                     editor.contentElt.removeChild(childNode);
                 }
                 childNode = nextNode;
             }
+
+            inputElt.setSelectionRange(selectionStart, selectionEnd);
         }
     }
 
@@ -526,7 +545,7 @@ define([
         text = Prism.highlight(text, Prism.languages.md);
         var frontMatter = section.textWithFrontMatter.substring(0, section.textWithFrontMatter.length-section.text.length);
         if(frontMatter.length) {
-            // Custom front matter highlighting
+            // Front matter highlighting
             frontMatter = frontMatter.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
             frontMatter = frontMatter.replace(/\n/g, '<span class="token lf">\n</span>');
             text = '<span class="token md">' + frontMatter + '</span>' + text;
@@ -535,6 +554,7 @@ define([
             id: 'wmd-input-section-' + section.id,
             class: 'wmd-input-section'
         });
+        sectionElt.generated = true;
         sectionElt.innerHTML = text;
         section.highlightedContent = sectionElt;
     }

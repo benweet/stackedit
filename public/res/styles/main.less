@@ -1036,7 +1036,8 @@ a {
 }
 
 #wmd-input {
-    font-family: @font-family-monospace;
+	font-family: "PT Sans", sans-serif;
+	line-height: @editor-line-weight;
     letter-spacing: normal;
 	font-size: @font-size-base;
     border-radius: 0;
@@ -1045,19 +1046,25 @@ a {
 	resize: none;
 	border: none;
     padding: 0;
-    line-height: @editor-line-weight;
-	div& {
-		padding: 0;
-	}
-    pre& {
-        background-color: @tertiary-bg;
-        font-family: "PT Sans", sans-serif;
-        overflow: auto;
-        white-space: pre-wrap;
-        word-break: break-word;
-        > .editor-content {
-            padding-bottom: 230px;
-        }
+    background-color: @tertiary-bg;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    > .editor-content {
+        padding-bottom: 230px;
+    }
+    > .editor-margin {
+        position: absolute;
+		top: 0;
+		.icon-comment {
+			position: absolute;
+			color: fade(@tertiary-color, 12%);
+			cursor: pointer;
+			&:hover {
+				color: fade(@tertiary-color, 30%);
+				text-decoration: none;
+			}
+		}
     }
 
     .code,

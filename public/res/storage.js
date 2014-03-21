@@ -251,7 +251,7 @@ define([
         localStorage.removeItem('focusMode');
         localStorage.removeItem('mode');
         _.each(_.keys(localStorage), function(key) {
-            if(key.match(/file\.\S+\.editorSelectRange/)); {
+            if(key.match(/file\.\S+\.editorSelectRange/)) {
                 localStorage.removeItem(key);
             }
         });

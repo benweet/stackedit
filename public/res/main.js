@@ -44,7 +44,7 @@ requirejs.config({
         css_browser_selector: 'bower-libs/css_browser_selector/css_browser_selector',
         'jquery-mousewheel': 'bower-libs/jquery-mousewheel/jquery.mousewheel',
         'pagedown-extra': 'bower-libs/pagedown-extra/Markdown.Extra',
-        'pagedown': 'bower-libs/stackedit-pagedown/Markdown.Editor',
+        pagedown: 'bower-libs/stackedit-pagedown/Markdown.Editor',
         'require-css': 'bower-libs/require-css/css',
         xregexp: 'bower-libs/xregexp/xregexp-all',
         yaml: 'bower-libs/yaml.js',
@@ -54,7 +54,9 @@ requirejs.config({
         'css-builder': 'bower-libs/require-css/css-builder',
         normalize: 'bower-libs/require-css/normalize',
         prism: 'bower-libs/prism/prism',
-        'prism-core': 'bower-libs/prism/components/prism-core'
+        'prism-core': 'bower-libs/prism/components/prism-core',
+        MutationObservers: 'bower-libs/MutationObservers/MutationObserver',
+        WeakMap: 'bower-libs/WeakMap/weakmap'
     },
     shim: {
         underscore: {
@@ -103,6 +105,9 @@ requirejs.config({
         FileSaver: {
             exports: 'saveAs'
         },
+        MutationObservers: [
+            'WeakMap'
+        ],
         highlightjs: {
             exports: 'hljs'
         },
@@ -142,12 +147,12 @@ requirejs.config({
         'jquery-ui-core': [
             'jquery'
         ],
-        'pagedown': [
+        pagedown: [
             'bower-libs/stackedit-pagedown/Markdown.Converter'
         ],
         'pagedown-extra': [
             'bower-libs/stackedit-pagedown/Markdown.Converter'
-        ],
+        ]
     }
 });
 

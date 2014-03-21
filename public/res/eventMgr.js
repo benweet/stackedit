@@ -36,6 +36,7 @@ define([
     "extensions/buttonViewer",
     "extensions/welcomeTour",
     "extensions/userCustom",
+    "extensions/comments",
     "bootstrap",
     "jquery-waitforimages",
 ], function($, _, crel, utils, logger, Extension, settings, settingsExtensionsAccordionHTML) {
@@ -204,10 +205,10 @@ define([
     addEventHook("onLayoutCreated");
     addEventHook("onLayoutResize");
 
-    // Operations on PageDown
+    // Operations on editor
     addEventHook("onPagedownConfigure");
     addEventHook("onSectionsCreated");
-    addEventHook("onMarkdownTrim");
+    addEventHook("onCursorCoordinates");
 
     // Refresh twitter buttons
     addEventHook("onTweet");

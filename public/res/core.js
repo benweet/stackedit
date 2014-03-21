@@ -296,6 +296,9 @@ define([
                         'padding-left': padding + 'px',
                         'padding-right': padding + 'px'
                     });
+                    editor.$marginElt.css({
+                        'width': padding + 'px',
+                    });
                 }
                 eventMgr.onLayoutResize(paneName);
             },

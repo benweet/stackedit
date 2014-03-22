@@ -62,7 +62,9 @@ define([
     });
 
     function saveEditorState() {
-        setTimeout
+        if(!inputElt.focused) {
+            return;
+        }
         selectionStart = inputElt.selectionStart;
         selectionEnd = inputElt.selectionEnd;
         scrollTop = inputElt.scrollTop;
@@ -106,6 +108,7 @@ define([
     var cursorY = 0;
     function saveCursorCoordinates() {
         saveEditorState();
+        $inputElt.toggleClass('has-selection', selectionStart !== selectionEnd);
 
         var backwards = false;
         var selection = window.getSelection();
@@ -129,10 +132,10 @@ define([
             var cursorOffset = backwards ? selectionStart : selectionEnd;
             var selectedChar = inputElt.textContent[cursorOffset];
             if(selectedChar === undefined || selectedChar == '\n') {
-                selectionRange = createRange(cursorOffset - 1, cursorOffset);
+                selectionRange = inputElt.createRange(cursorOffset - 1, cursorOffset);
             }
             else {
-                selectionRange = createRange(cursorOffset, cursorOffset + 1);
+                selectionRange = inputElt.createRange(cursorOffset, cursorOffset + 1);
             }
             var selectionRect = selectionRange.getBoundingClientRect();
             cursorY = selectionRect.top + selectionRect.height / 2 - inputElt.offsetTop + inputElt.scrollTop;
@@ -195,7 +198,7 @@ define([
 
         inputElt.focus = function() {
             editor.$contentElt.focus();
-            this.setSelectionRange(selectionStart, selectionEnd);
+            this.setSelectionStartEnd(selectionStart, selectionEnd);
             inputElt.scrollTop = scrollTop;
         };
         editor.$contentElt.focus(function() {
@@ -234,7 +237,7 @@ define([
                 var replacementText = value.substring(startIndex, value.length - endIndex + 1);
                 endIndex = currentValue.length - endIndex + 1;
 
-                var range = createRange(startIndex, endIndex);
+                var range = inputElt.createRange(startIndex, endIndex);
                 range.deleteContents();
                 range.insertNode(document.createTextNode(replacementText));
             }
@@ -270,7 +273,7 @@ define([
                 }
             },
             set: function (value) {
-                inputElt.setSelectionRange(value, selectionEnd);
+                inputElt.setSelectionStartEnd(value, selectionEnd);
             },
 
             enumerable: true,
@@ -288,21 +291,101 @@ define([
                 }
             },
             set: function (value) {
-                inputElt.setSelectionRange(selectionStart, value);
+                inputElt.setSelectionStartEnd(selectionStart, value);
             },
 
             enumerable: true,
             configurable: true
         });
 
-        inputElt.setSelectionRange = function (ss, se) {
+        inputElt.setSelectionStartEnd = function (ss, se) {
             selectionStart = ss;
             selectionEnd = se;
-            var range = createRange(ss, se);
+            var range = inputElt.createRange(ss, se);
 
             var selection = window.getSelection();
             selection.removeAllRanges();
             selection.addRange(range);
+        };
+
+        inputElt.getSelectionStartEnd = function () {
+            return {
+                selectionStart: selectionStart,
+                selectionEnd: selectionEnd
+            }
+        };
+
+        inputElt.createRange = function(ss, se) {
+            function findOffset(ss) {
+                var offset = 0,
+                    element = editor.contentElt,
+                    container;
+
+                do {
+                    container = element;
+                    element = element.firstChild;
+
+                    if (element) {
+                        do {
+                            var len = element.textContent.length;
+
+                            if (offset <= ss && offset + len > ss) {
+                                break;
+                            }
+
+                            offset += len;
+                        } while (element = element.nextSibling);
+                    }
+
+                    if (!element) {
+                        // It's the container's lastChild
+                        break;
+                    }
+                } while (element && element.hasChildNodes() && element.nodeType != 3);
+
+                if (element) {
+                    return {
+                        element: element,
+                        offset: ss - offset
+                    };
+                } else if (container) {
+                    element = container;
+
+                    while (element && element.lastChild) {
+                        element = element.lastChild;
+                    }
+
+                    if (element.nodeType === 3) {
+                        return {
+                            element: element,
+                            offset: element.textContent.length
+                        };
+                    } else {
+                        return {
+                            element: element,
+                            offset: 0
+                        };
+                    }
+                }
+
+                return {
+                    element: editor.contentElt,
+                    offset: 0,
+                    error: true
+                };
+            }
+
+            var range = document.createRange(),
+                offset = findOffset(ss);
+
+            range.setStart(offset.element, offset.offset);
+
+            if (se && se != ss) {
+                offset = findOffset(se);
+            }
+
+            range.setEnd(offset.element, offset.offset);
+            return range;
         };
 
         var clearNewline = false;
@@ -338,7 +421,11 @@ define([
                 clearNewline = false;
             }
         })
-        .on('mouseup', saveCursorCoordinates)
+        .on('mouseup', function() {
+            setTimeout(function() {
+                saveCursorCoordinates();
+            }, 0);
+        })
         .on('paste', function () {
             pagedownEditor.undoManager.setMode("paste");
             adjustCursorPosition();
@@ -364,7 +451,7 @@ define([
 
             actions[action](state, options);
             inputElt.value = state.before + state.selection + state.after;
-            inputElt.setSelectionRange(state.ss, state.se);
+            inputElt.setSelectionStartEnd(state.ss, state.se);
             $inputElt.trigger('input');
         };
 
@@ -508,7 +595,7 @@ define([
         if(fileChanged === true) {
             editor.contentElt.innerHTML = '';
             editor.contentElt.appendChild(newSectionEltList);
-            inputElt.setSelectionRange(selectionStart, selectionEnd);
+            inputElt.setSelectionStartEnd(selectionStart, selectionEnd);
         }
         else {
             // Remove outdated sections
@@ -536,7 +623,7 @@ define([
                 childNode = nextNode;
             }
 
-            inputElt.setSelectionRange(selectionStart, selectionEnd);
+            inputElt.setSelectionStartEnd(selectionStart, selectionEnd);
         }
     }
 
@@ -557,80 +644,6 @@ define([
         sectionElt.generated = true;
         sectionElt.innerHTML = text;
         section.highlightedContent = sectionElt;
-    }
-
-
-    function createRange(ss, se) {
-        function findOffset(ss) {
-            var offset = 0,
-                element = editor.contentElt,
-                container;
-
-            do {
-                container = element;
-                element = element.firstChild;
-
-                if (element) {
-                    do {
-                        var len = element.textContent.length;
-
-                        if (offset <= ss && offset + len > ss) {
-                            break;
-                        }
-
-                        offset += len;
-                    } while (element = element.nextSibling);
-                }
-
-                if (!element) {
-                    // It's the container's lastChild
-                    break;
-                }
-            } while (element && element.hasChildNodes() && element.nodeType != 3);
-
-            if (element) {
-                return {
-                    element: element,
-                    offset: ss - offset
-                };
-            } else if (container) {
-                element = container;
-
-                while (element && element.lastChild) {
-                    element = element.lastChild;
-                }
-
-                if (element.nodeType === 3) {
-                    return {
-                        element: element,
-                        offset: element.textContent.length
-                    };
-                } else {
-                    return {
-                        element: element,
-                        offset: 0
-                    };
-                }
-            }
-
-            return {
-                element: editor.contentElt,
-                offset: 0,
-                error: true
-            };
-        }
-
-        var range = document.createRange(),
-            offset = findOffset(ss);
-
-        range.setStart(offset.element, offset.offset);
-
-        if (se && se != ss) {
-            offset = findOffset(se);
-        }
-
-        range.setEnd(offset.element, offset.offset);
-        return range;
     }
 
     return editor;

@@ -25,6 +25,7 @@
     "yaml.js": "https://github.com/jeremyfa/yaml.js.git#~0.1.4",
     "stackedit-pagedown": "https://github.com/benweet/stackedit-pagedown.git#d81b3689a99c84832d8885f607e6de860fb7d94a",
     "prism": "gh-pages",
-    "MutationObservers": "https://github.com/Polymer/MutationObservers.git#~0.2.1"
+    "MutationObservers": "https://github.com/Polymer/MutationObservers.git#~0.2.1",
+    "rangy": "~1.2.3"
   }
 }

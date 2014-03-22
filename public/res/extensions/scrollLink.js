@@ -195,11 +195,9 @@ define([
     var isPreviewVisible = true;
     function setPreviewHidden() {
         isPreviewVisible = false;
-        console.log(isPreviewVisible);
     }
     function setPreviewVisible() {
         isPreviewVisible = true;
-        console.log(isPreviewVisible);
     }
 
     scrollLink.onLayoutConfigure = function(layoutGlobalConfig) {

@@ -24,7 +24,7 @@ define([
 
     // Transform a selector into a jQuery object
     function jqElt(element) {
-        if(_.isString(element)) {
+        if(_.isString(element) || !element.val) {
             return $(element);
         }
         return element;

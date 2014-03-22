@@ -56,7 +56,9 @@ requirejs.config({
         prism: 'bower-libs/prism/prism',
         'prism-core': 'bower-libs/prism/components/prism-core',
         MutationObservers: 'bower-libs/MutationObservers/MutationObserver',
-        WeakMap: 'bower-libs/WeakMap/weakmap'
+        WeakMap: 'bower-libs/WeakMap/weakmap',
+        rangy: 'bower-libs/rangy/rangy-core',
+        'rangy-cssclassapplier': 'bower-libs/rangy/rangy-cssclassapplier'
     },
     shim: {
         underscore: {
@@ -71,6 +73,12 @@ requirejs.config({
             ],
             exports: 'jQuery.jGrowl'
         },
+        rangy: {
+            exports: 'rangy'
+        },
+        'rangy-cssclassapplier': [
+            'rangy'
+        ],
         mousetrap: {
             exports: 'Mousetrap'
         },
@@ -184,14 +192,16 @@ if (window.baseDir.indexOf('-min') !== -1) {
 
 // RequireJS entry point. By requiring synchronizer, publisher and
 // media-importer, we are actually loading all the modules
-require(["jquery", "core", "eventMgr", "synchronizer", "publisher", "mediaImporter", "css",
-themeModule, ], function($, core, eventMgr) {
+require(["jquery", "rangy", "core", "eventMgr", "synchronizer", "publisher", "mediaImporter", "css", "rangy-cssclassapplier",
+themeModule, ], function($, rangy, core, eventMgr) {
 
     if(window.noStart) {
         return;
     }
 
     $(function() {
+        rangy.init();
+
         // Here, all the modules are loaded and the DOM is ready
         core.onReady();
 

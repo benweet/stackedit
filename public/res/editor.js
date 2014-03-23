@@ -10,11 +10,11 @@ define([
     'libs/prism-markdown'
 ], function ($, _, settings, eventMgr, Prism, crel) {
 
-    String.prototype.splice = function (i, remove, add) {
+    function strSplice(str, i, remove, add) {
         remove = +remove || 0;
         add = add || '';
-        return this.slice(0, i) + add + this.slice(i + remove);
-    };
+        return str.slice(0, i) + add + str.slice(i + remove);
+    }
 
     var editor = {};
     var selectionStart = 0;
@@ -87,14 +87,14 @@ define([
                 currentTextContent += '\n';
             }
             fileDesc.content = currentTextContent;
-            eventMgr.onContentChanged(fileDesc);
+            eventMgr.onContentChanged(fileDesc, currentTextContent);
         }
         else {
             if(!/\n$/.test(currentTextContent)) {
                 currentTextContent += '\n';
                 fileDesc.content = currentTextContent;
             }
-            eventMgr.onFileOpen(fileDesc);
+            eventMgr.onFileOpen(fileDesc, currentTextContent);
             previewElt.scrollTop = fileDesc.previewScrollTop;
             selectionStart = fileDesc.editorStart;
             selectionEnd = fileDesc.editorEnd;
@@ -105,48 +105,138 @@ define([
         previousTextContent = currentTextContent;
     }
 
+    function findOffset(ss) {
+        var offset = 0,
+            element = editor.contentElt,
+            container;
+
+        do {
+            container = element;
+            element = element.firstChild;
+
+            if (element) {
+                do {
+                    var len = element.textContent.length;
+
+                    if (offset <= ss && offset + len > ss) {
+                        break;
+                    }
+
+                    offset += len;
+                } while (element = element.nextSibling);
+            }
+
+            if (!element) {
+                // It's the container's lastChild
+                break;
+            }
+        } while (element && element.hasChildNodes() && element.nodeType != 3);
+
+        if (element) {
+            return {
+                element: element,
+                offset: ss - offset
+            };
+        } else if (container) {
+            element = container;
+
+            while (element && element.lastChild) {
+                element = element.lastChild;
+            }
+
+            if (element.nodeType === 3) {
+                return {
+                    element: element,
+                    offset: element.textContent.length
+                };
+            } else {
+                return {
+                    element: element,
+                    offset: 0
+                };
+            }
+        }
+
+        return {
+            element: editor.contentElt,
+            offset: 0,
+            error: true
+        };
+    }
+
+    function getCoordinates(inputOffset, element, offset) {
+        var x = 0;
+        var y = 0;
+        if(element.textContent == '\n') {
+            y = element.parentNode.offsetTop + element.parentNode.offsetHeight / 2;
+        }
+        else {
+            var selectedChar = inputElt.textContent[inputOffset];
+            var selectionRange;
+            if(selectedChar === undefined || selectedChar == '\n') {
+                selectionRange = inputElt.createRange(inputOffset - 1, {
+                    element: element,
+                    offset: offset
+                });
+            }
+            else {
+                selectionRange = inputElt.createRange({
+                    element: element,
+                    offset: offset
+                }, inputOffset + 1);
+            }
+            var selectionRect = selectionRange.getBoundingClientRect();
+            y = selectionRect.top + selectionRect.height / 2 - inputElt.offsetTop + inputElt.scrollTop;
+            selectionRange.detach();
+        }
+        return {
+            x: x,
+            y: y
+        };
+
+    }
+
     var cursorY = 0;
-    function saveCursorCoordinates() {
+    var isBackwardSelection = false;
+    function updateCursorCoordinates() {
         saveEditorState();
         $inputElt.toggleClass('has-selection', selectionStart !== selectionEnd);
 
-        var backwards = false;
-        var selection = window.getSelection();
-        if(!selection.rangeCount) {
-            return;
-        }
-        if (!selection.isCollapsed) {
-            var range = document.createRange();
-            range.setStart(selection.anchorNode, selection.anchorOffset);
-            range.setEnd(selection.focusNode, selection.focusOffset);
-            backwards = range.collapsed;
-            range.detach();
-        }
-
-        var selectionRange = selection.getRangeAt(0);
-        var container = backwards ? selectionRange.startContainer : selectionRange.endContainer;
-        if(container.textContent == '\n') {
-            cursorY = container.parentNode.offsetTop + container.parentNode.offsetHeight / 2;
+        var element;
+        var offset;
+        var inputOffset;
+        if(inputElt.focused) {
+            isBackwardSelection = false;
+            var selection = window.getSelection();
+            if(!selection.rangeCount) {
+                return;
+            }
+            if (!selection.isCollapsed) {
+                var range = document.createRange();
+                range.setStart(selection.anchorNode, selection.anchorOffset);
+                range.setEnd(selection.focusNode, selection.focusOffset);
+                isBackwardSelection = range.collapsed;
+                range.detach();
+            }
+            var selectionRange = selection.getRangeAt(0);
+            element = isBackwardSelection ? selectionRange.startContainer : selectionRange.endContainer;
+            offset = isBackwardSelection ? selectionRange.startOffset : selectionRange.endOffset;
+            inputOffset = isBackwardSelection ? selectionStart : selectionEnd;
         }
         else {
-            var cursorOffset = backwards ? selectionStart : selectionEnd;
-            var selectedChar = inputElt.textContent[cursorOffset];
-            if(selectedChar === undefined || selectedChar == '\n') {
-                selectionRange = inputElt.createRange(cursorOffset - 1, cursorOffset);
-            }
-            else {
-                selectionRange = inputElt.createRange(cursorOffset, cursorOffset + 1);
-            }
-            var selectionRect = selectionRange.getBoundingClientRect();
-            cursorY = selectionRect.top + selectionRect.height / 2 - inputElt.offsetTop + inputElt.scrollTop;
-            selectionRange.detach();
+            inputOffset = isBackwardSelection ? selectionStart : selectionEnd;
+            var elementOffset = findOffset(inputOffset);
+            element = elementOffset.element;
+            offset = elementOffset.offset;
         }
-        eventMgr.onCursorCoordinates(0, cursorY);
+        var coordinates = getCoordinates(inputOffset, element, offset);
+        cursorY = coordinates.y;
+        eventMgr.onCursorCoordinates(coordinates.x, coordinates.y);
     }
 
     function adjustCursorPosition() {
         inputElt && setTimeout(function() {
-            saveCursorCoordinates();
+            updateCursorCoordinates();
 
             var adjust = inputElt.offsetHeight / 2;
             if(adjust > 130) {
@@ -254,7 +344,7 @@ define([
                         offset = range.startOffset;
 
                     if (!(this.compareDocumentPosition(element) & 0x10)) {
-                        return 0;
+                        return selectionStart;
                     }
 
                     do {
@@ -269,7 +359,7 @@ define([
 
                     return offset;
                 } else {
-                    return 0;
+                    return selectionStart;
                 }
             },
             set: function (value) {
@@ -287,7 +377,7 @@ define([
                 if (selection.rangeCount) {
                     return this.selectionStart + (selection.getRangeAt(0) + '').length;
                 } else {
-                    return 0;
+                    return selectionEnd;
                 }
             },
             set: function (value) {
@@ -312,80 +402,27 @@ define([
             return {
                 selectionStart: selectionStart,
                 selectionEnd: selectionEnd
-            }
+            };
         };
 
         inputElt.createRange = function(ss, se) {
-            function findOffset(ss) {
-                var offset = 0,
-                    element = editor.contentElt,
-                    container;
-
-                do {
-                    container = element;
-                    element = element.firstChild;
-
-                    if (element) {
-                        do {
-                            var len = element.textContent.length;
-
-                            if (offset <= ss && offset + len > ss) {
-                                break;
-                            }
-
-                            offset += len;
-                        } while (element = element.nextSibling);
-                    }
-
-                    if (!element) {
-                        // It's the container's lastChild
-                        break;
-                    }
-                } while (element && element.hasChildNodes() && element.nodeType != 3);
-
-                if (element) {
-                    return {
-                        element: element,
-                        offset: ss - offset
-                    };
-                } else if (container) {
-                    element = container;
-
-                    while (element && element.lastChild) {
-                        element = element.lastChild;
-                    }
-
-                    if (element.nodeType === 3) {
-                        return {
-                            element: element,
-                            offset: element.textContent.length
-                        };
-                    } else {
-                        return {
-                            element: element,
-                            offset: 0
-                        };
-                    }
-                }
-
-                return {
-                    element: editor.contentElt,
-                    offset: 0,
-                    error: true
-                };
-            }
 
             var range = document.createRange(),
-                offset = findOffset(ss);
+                offset = _.isObject(ss) ? ss : findOffset(ss);
 
             range.setStart(offset.element, offset.offset);
 
             if (se && se != ss) {
-                offset = findOffset(se);
+                offset = _.isObject(se) ? se : findOffset(se);
             }
 
             range.setEnd(offset.element, offset.offset);
             return range;
+        };
+
+        inputElt.getOffsetCoordinates = function(ss) {
+            var offset = findOffset(ss);
+            return getCoordinates(ss, offset.element, offset.offset);
         };
 
         var clearNewline = false;
@@ -423,7 +460,7 @@ define([
         })
         .on('mouseup', function() {
             setTimeout(function() {
-                saveCursorCoordinates();
+                updateCursorCoordinates();
             }, 0);
         })
         .on('paste', function () {
@@ -463,7 +500,7 @@ define([
 
                 if (options.inverse) {
                     if (/\s/.test(state.before.charAt(lf))) {
-                        state.before = state.before.splice(lf, 1);
+                        state.before = strSplice(state.before, lf, 1);
 
                         state.ss--;
                         state.se--;
@@ -471,7 +508,7 @@ define([
 
                     state.selection = state.selection.replace(/^[ \t]/gm, '');
                 } else if (state.selection) {
-                    state.before = state.before.splice(lf, 0, '\t');
+                    state.before = strSplice(state.before, lf, 0, '\t');
                     state.selection = state.selection.replace(/\r?\n(?=[\s\S])/g, '\n\t');
 
                     state.ss++;
@@ -630,7 +667,7 @@ define([
     function highlight(section) {
         var text = section.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
         text = Prism.highlight(text, Prism.languages.md);
-        var frontMatter = section.textWithFrontMatter.substring(0, section.textWithFrontMatter.length-section.text.length);
+        var frontMatter = section.textWithFrontMatter.substring(0, section.textWithFrontMatter.length - section.text.length);
         if(frontMatter.length) {
             // Front matter highlighting
             frontMatter = frontMatter.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');

@@ -127,6 +127,8 @@
 @popover-arrow-outer-color: @secondary-border-color;
 @popover-title-bg: @transparent;
 @alert-border-radius: 0;
+@label-warning-bg: #d90;
+@label-danger-bg: #d00;
 
 
 body {
@@ -1057,23 +1059,33 @@ a {
         position: absolute;
 		top: 0;
 		.icon-comment {
-			.opacity(0.4);
+			&.new {
+				color: fade(@tertiary-color, 12%);
+				&:hover {
+					color: fade(@tertiary-color, 35%) !important;
+				}
+			}
+			&.replied {
+				color: fade(@label-danger-bg, 30%);
+				&:hover, &.active, &.active:hover {
+					color: fade(@label-danger-bg, 45%) !important;
+				}
+			}
 			position: absolute;
-			color: fade(@tertiary-color, 25%);
+			color: fade(@label-warning-bg, 40%);
 			cursor: pointer;
-			&:hover, &.active {
-				.opacity(1);
-				color: fade(@tertiary-color, 35%);
+			&:hover, &.active, &.active:hover {
+				color: fade(@label-warning-bg, 60%) !important;
 				text-decoration: none;
 			}
 		}
     }
-	&.has-selection > .editor-margin .icon-comment {
-		.opacity(1);
+	&.has-selection > .editor-margin .icon-comment.new {
+		color: fade(@tertiary-color, 25%);
 	}
 
 	.comment-highlight {
-		background-color: fade(@label-danger-bg, 25%);
+		background-color: fade(@label-warning-bg, 25%);
 		//border-radius: @border-radius-base;
 	}
 
@@ -1387,7 +1399,7 @@ input[type="file"] {
  *********************/
 
 .popover {
-	max-width: 350px;
+	max-width: 240px;
 	padding: 10px 20px 0;
 	//.box-shadow(0 5px 30px rgba(0,0,0,.175));
 	.popover-title {
@@ -1395,6 +1407,7 @@ input[type="file"] {
 		font-size: 24px;
 		padding: 5px 0 15px;
 		border-bottom: 1px solid @hr-border;
+		line-height: @headings-line-height;
 	}
 	.icon-lock {
         font-size: 38px;

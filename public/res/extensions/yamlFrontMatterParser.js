@@ -18,8 +18,8 @@ define([
 
     var regex = /^(\s*-{3}\s*\n([\w\W]+?)\n\s*-{3}\s*?\n)?([\w\W]*)$/;
 
-    function parseFrontMatter(fileDesc) {
-        var results = regex.exec(fileDesc.content);
+    function parseFrontMatter(fileDesc, content) {
+        var results = regex.exec(content);
         var yaml = results[2];
 
         if(!yaml) {

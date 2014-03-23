@@ -16,13 +16,6 @@ module.exports = function(grunt) {
         jshint: {
             options: {
                 jshintrc: true,
-                ignores: [
-                    'node_modules/**/*.js',
-                    'public/libs/**/*.js',
-                    'public/res/libs/**/*.js',
-                    'public/res/bower-libs/**/*.js',
-                    'public/res-min/**/*.js'
-                ]
             },
             client: ['public/**/*.js'],
         },

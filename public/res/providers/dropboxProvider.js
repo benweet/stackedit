@@ -191,7 +191,7 @@ define([
                     // If file content changed
                     if(fileContentChanged && remoteContentChanged === true) {
                         fileDesc.content = file.content;
-                        eventMgr.onContentChanged(fileDesc);
+                        eventMgr.onContentChanged(fileDesc, file.content);
                         eventMgr.onMessage('"' + localTitle + '" has been updated from Dropbox.');
                         if(fileMgr.currentFile === fileDesc) {
                             fileMgr.selectFile(); // Refresh editor

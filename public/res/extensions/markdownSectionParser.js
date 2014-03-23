@@ -41,9 +41,9 @@ define([
     };
 
     var sectionCounter = 0;
-    function parseFileContent(fileDesc) {
+    function parseFileContent(fileDesc, content) {
         var frontMatter = (fileDesc.frontMatter || {})._frontMatter || '';
-        var text = fileDesc.content.substring(frontMatter.length);
+        var text = content.substring(frontMatter.length);
         var tmpText = text + "\n\n";
         function addSection(startOffset, endOffset) {
             var sectionText = tmpText.substring(offset, endOffset);

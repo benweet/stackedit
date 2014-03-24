@@ -1,7 +1,7 @@
 define([], function() {
     var constants = {};
     constants.VERSION = "3.1.9";
-    
+
     constants.MAIN_URL = "https://stackedit.io/";
     constants.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1";
     constants.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw";
@@ -14,7 +14,7 @@ define([], function() {
     constants.DEFAULT_FILE_TITLE = "Title";
     constants.DEFAULT_FOLDER_NAME = "New folder";
     constants.GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document";
-    constants.EDITOR_DEFAULT_PADDING = 30;
+    constants.EDITOR_DEFAULT_PADDING = 35;
     constants.CHECK_ONLINE_PERIOD = 120000;
     constants.AJAX_TIMEOUT = 30000;
     constants.ASYNC_TASK_DEFAULT_TIMEOUT = 60000;
@@ -28,7 +28,7 @@ define([], function() {
     constants.PICASA_PROXY_URL = "https://stackedit-picasa-proxy.herokuapp.com/";
     constants.SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/";
     constants.HTMLTOPDF_URL = "https://stackedit-htmltopdf.herokuapp.com/";
-    
+
     // Site dependent
     constants.BASE_URL = "http://localhost/";
     constants.GOOGLE_CLIENT_ID = '241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com';
@@ -37,7 +37,7 @@ define([], function() {
     constants.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-local.herokuapp.com/";
     constants.WORDPRESS_CLIENT_ID = '23361';
     constants.WORDPRESS_PROXY_URL = "https://stackedit-io-wordpress-proxy.herokuapp.com/";
-    
+
     if(location.hostname.indexOf("stackedit.io") === 0) {
         constants.BASE_URL = constants.MAIN_URL;
         constants.GOOGLE_CLIENT_ID = '241271498917-t4t7d07qis7oc0ahaskbif3ft6tk63cd.apps.googleusercontent.com';
@@ -61,7 +61,7 @@ define([], function() {
         constants.GATEKEEPER_URL = "https://stackedit-gatekeeper-insomnia.herokuapp.com/";
         constants.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-beta.herokuapp.com/";
     }
-    
+
     constants.THEME_LIST = {
         "default": "Default",
         "gray": "Gray",
@@ -69,6 +69,6 @@ define([], function() {
         "night": "Night",
         "school": "School",
     };
-    
+
     return constants;
 });

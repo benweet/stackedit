@@ -61,23 +61,66 @@ define([
         fileDesc = selectedFileDesc;
     });
 
-    function saveEditorState() {
-        if(!inputElt.focused) {
-            return;
+    function saveSelectionState() {
+        var selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            var range = selection.getRangeAt(0);
+            var element = range.startContainer;
+
+            if ((inputElt.compareDocumentPosition(element) & 0x10)) {
+                var container = element;
+                var offset = range.startOffset;
+                do {
+                    while (element = element.previousSibling) {
+                        if (element.textContent) {
+                            offset += element.textContent.length;
+                        }
+                    }
+
+                    element = container = container.parentNode;
+                } while (element && element != inputElt);
+                selectionStart = offset;
+                selectionEnd = offset + (range + '').length;
+            }
         }
-        selectionStart = inputElt.selectionStart;
-        selectionEnd = inputElt.selectionEnd;
-        scrollTop = inputElt.scrollTop;
         if(fileChanged === false) {
             fileDesc.editorStart = selectionStart;
             fileDesc.editorEnd = selectionEnd;
-            fileDesc.editorScrollTop = scrollTop;
         }
     }
 
     var previousTextContent;
+    function getContentChange(textContent) {
+        // Find the first modified char
+        var startIndex = 0;
+        var startIndexMax = Math.min(previousTextContent.length, textContent.length);
+        while (startIndex < startIndexMax) {
+            if (previousTextContent.charCodeAt(startIndex) !== textContent.charCodeAt(startIndex)) {
+                break;
+            }
+            startIndex++;
+        }
+        // Find the last modified char
+        var endIndex = 1;
+        var endIndexMax = Math.min(previousTextContent.length - startIndex, textContent.length - startIndex);
+        while (endIndex <= endIndexMax) {
+            if (previousTextContent.charCodeAt(previousTextContent.length - endIndex) !== textContent.charCodeAt(textContent.length - endIndex)) {
+                break;
+            }
+            endIndex++;
+        }
+
+        var replacement = textContent.substring(startIndex, textContent.length - endIndex + 1);
+        endIndex = previousTextContent.length - endIndex + 1;
+        return {
+            startIndex: startIndex,
+            endIndex: endIndex,
+            replacement: replacement
+        };
+    }
+
     function checkContentChange() {
-        saveEditorState();
+        saveSelectionState();
         var currentTextContent = inputElt.textContent;
         if(fileChanged === false) {
             if(currentTextContent == previousTextContent) {
@@ -85,6 +128,37 @@ define([
             }
             if(!/\n$/.test(currentTextContent)) {
                 currentTextContent += '\n';
+            }
+            var change = getContentChange(currentTextContent);
+            var endOffset = change.startIndex + change.replacement.length - change.endIndex;
+
+            // Move comments according to change
+            var updateDiscussionList = false;
+            _.each(fileDesc.discussionList, function(discussion) {
+                if(discussion.isRemoved === true) {
+                    return;
+                }
+                // selectionEnd
+                if(discussion.selectionEnd >= change.endIndex) {
+                    discussion.selectionEnd += endOffset;
+                    updateDiscussionList = true;
+                }
+                else if(discussion.selectionEnd > change.startIndex) {
+                    discussion.selectionEnd = change.startIndex;
+                    updateDiscussionList = true;
+                }
+                // selectionStart
+                if(discussion.selectionStart >= change.endIndex) {
+                    discussion.selectionStart += endOffset;
+                    updateDiscussionList = true;
+                }
+                else if(discussion.selectionStart > change.startIndex) {
+                    discussion.selectionStart = change.startIndex;
+                    updateDiscussionList = true;
+                }
+            });
+            if(updateDiscussionList === true) {
+                fileDesc.discussionList = fileDesc.discussionList; // Write discussionList in localStorage
             }
             fileDesc.content = currentTextContent;
             eventMgr.onContentChanged(fileDesc, currentTextContent);
@@ -199,7 +273,7 @@ define([
     var cursorY = 0;
     var isBackwardSelection = false;
     function updateCursorCoordinates() {
-        saveEditorState();
+        saveSelectionState();
         $inputElt.toggleClass('has-selection', selectionStart !== selectionEnd);
 
         var element;
@@ -234,24 +308,25 @@ define([
         eventMgr.onCursorCoordinates(coordinates.x, coordinates.y);
     }
 
-    function adjustCursorPosition() {
-        inputElt && setTimeout(function() {
-            updateCursorCoordinates();
+    var adjustCursorPosition = _.debounce(function() {
+        if(inputElt === undefined) {
+            return;
+        }
+        updateCursorCoordinates();
 
-            var adjust = inputElt.offsetHeight / 2;
-            if(adjust > 130) {
-                adjust = 130;
-            }
-            var cursorMinY = inputElt.scrollTop + adjust;
-            var cursorMaxY = inputElt.scrollTop + inputElt.offsetHeight - adjust;
-            if(cursorY < cursorMinY) {
-                inputElt.scrollTop += cursorY - cursorMinY;
-            }
-            else if(cursorY > cursorMaxY) {
-                inputElt.scrollTop += cursorY - cursorMaxY;
-            }
-        }, 0);
-    }
+        var adjust = inputElt.offsetHeight / 2;
+        if(adjust > 130) {
+            adjust = 130;
+        }
+        var cursorMinY = inputElt.scrollTop + adjust;
+        var cursorMaxY = inputElt.scrollTop + inputElt.offsetHeight - adjust;
+        if(cursorY < cursorMinY) {
+            inputElt.scrollTop += cursorY - cursorMinY;
+        }
+        else if(cursorY > cursorMaxY) {
+            inputElt.scrollTop += cursorY - cursorMaxY;
+        }
+    }, 0);
     eventMgr.addListener('onLayoutResize', adjustCursorPosition);
 
     editor.init = function(elt1, elt2) {
@@ -279,7 +354,12 @@ define([
             characterData: true
         });
 
-        $(inputElt).scroll(saveEditorState);
+        $(inputElt).scroll(function() {
+            scrollTop = inputElt.scrollTop;
+            if(fileChanged === false) {
+                fileDesc.editorScrollTop = scrollTop;
+            }
+        });
         $(previewElt).scroll(function() {
             if(fileChanged === false) {
                 fileDesc.previewScrollTop = previewElt.scrollTop;
@@ -303,64 +383,16 @@ define([
                 return this.textContent;
             },
             set: function (value) {
-                var currentValue = this.textContent;
-
-                // Find the first modified char
-                var startIndex = 0;
-                var startIndexMax = Math.min(currentValue.length, value.length);
-                while (startIndex < startIndexMax) {
-                    if (currentValue.charCodeAt(startIndex) !== value.charCodeAt(startIndex)) {
-                        break;
-                    }
-                    startIndex++;
-                }
-                // Find the last modified char
-                var endIndex = 1;
-                var endIndexMax = Math.min(currentValue.length - startIndex, value.length - startIndex);
-                while (endIndex <= endIndexMax) {
-                    if (currentValue.charCodeAt(currentValue.length - endIndex) !== value.charCodeAt(value.length - endIndex)) {
-                        break;
-                    }
-                    endIndex++;
-                }
-
-                var replacementText = value.substring(startIndex, value.length - endIndex + 1);
-                endIndex = currentValue.length - endIndex + 1;
-
-                var range = inputElt.createRange(startIndex, endIndex);
+                var contentChange = getContentChange(value);
+                var range = inputElt.createRange(contentChange.startIndex, contentChange.endIndex);
                 range.deleteContents();
-                range.insertNode(document.createTextNode(replacementText));
+                range.insertNode(document.createTextNode(contentChange.replacement));
             }
         });
 
         Object.defineProperty(inputElt, 'selectionStart', {
             get: function () {
-                var selection = window.getSelection();
-
-                if (selection.rangeCount) {
-                    var range = selection.getRangeAt(0),
-                        element = range.startContainer,
-                        container = element,
-                        offset = range.startOffset;
-
-                    if (!(this.compareDocumentPosition(element) & 0x10)) {
-                        return selectionStart;
-                    }
-
-                    do {
-                        while (element = element.previousSibling) {
-                            if (element.textContent) {
-                                offset += element.textContent.length;
-                            }
-                        }
-
-                        element = container = container.parentNode;
-                    } while (element && element != this);
-
-                    return offset;
-                } else {
-                    return selectionStart;
-                }
+                return selectionStart;
             },
             set: function (value) {
                 inputElt.setSelectionStartEnd(value, selectionEnd);
@@ -372,13 +404,7 @@ define([
 
         Object.defineProperty(inputElt, 'selectionEnd', {
             get: function () {
-                var selection = window.getSelection();
-
-                if (selection.rangeCount) {
-                    return this.selectionStart + (selection.getRangeAt(0) + '').length;
-                } else {
-                    return selectionEnd;
-                }
+                return selectionEnd;
             },
             set: function (value) {
                 inputElt.setSelectionStartEnd(selectionStart, value);
@@ -388,34 +414,24 @@ define([
             configurable: true
         });
 
-        inputElt.setSelectionStartEnd = function (ss, se) {
-            selectionStart = ss;
-            selectionEnd = se;
-            var range = inputElt.createRange(ss, se);
-
+        inputElt.setSelectionStartEnd = function (start, end) {
+            selectionStart = start;
+            selectionEnd = end;
+            var range = inputElt.createRange(start, end);
             var selection = window.getSelection();
             selection.removeAllRanges();
             selection.addRange(range);
         };
 
-        inputElt.getSelectionStartEnd = function () {
-            return {
-                selectionStart: selectionStart,
-                selectionEnd: selectionEnd
-            };
-        };
+        inputElt.createRange = function(start, end) {
 
-        inputElt.createRange = function(ss, se) {
-
-            var range = document.createRange(),
-                offset = _.isObject(ss) ? ss : findOffset(ss);
-
+            var range = document.createRange();
+            var offset = _.isObject(start) ? start : findOffset(start);
             range.setStart(offset.element, offset.offset);
 
-            if (se && se != ss) {
-                offset = _.isObject(se) ? se : findOffset(se);
+            if (end && end != start) {
+                offset = _.isObject(end) ? end : findOffset(end);
             }
-
             range.setEnd(offset.element, offset.offset);
             return range;
         };
@@ -435,7 +451,7 @@ define([
             ) {
                 return;
             }
-            saveEditorState();
+            saveSelectionState();
             adjustCursorPosition();
 
             var cmdOrCtrl = evt.metaKey || evt.ctrlKey;

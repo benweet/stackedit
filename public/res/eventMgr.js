@@ -210,6 +210,11 @@ define([
     addEventHook("onSectionsCreated");
     addEventHook("onCursorCoordinates");
 
+    // Operations on comments
+    addEventHook("onDiscussionCreated");
+    addEventHook("onDiscussionRemoved");
+    addEventHook("onCommentAdded");
+
     // Refresh twitter buttons
     addEventHook("onTweet");
 

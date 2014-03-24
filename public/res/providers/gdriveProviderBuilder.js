@@ -451,6 +451,18 @@ define([
         };
 
         function mergeDiscussion(localDiscussion, realtimeDiscussion, takeServer) {
+            if(localDiscussion.isRemoved === true) {
+                realtimeDiscussion.set('isRemoved');
+                realtimeDiscussion.delete('selectionStart');
+                realtimeDiscussion.delete('selectionEnd');
+                return realtimeDiscussion.delete('commentList');
+            }
+            if(realtimeDiscussion.get('isRemoved') === true) {
+                localDiscussion.isRemoved = true;
+                delete localDiscussion.selectionStart;
+                delete localDiscussion.selectionEnd;
+                return delete localDiscussion.commentList;
+            }
             if(takeServer) {
                 localDiscussion.selectionStart = realtimeDiscussion.get('selectionStart');
                 localDiscussion.selectionEnd = realtimeDiscussion.get('selectionEnd');

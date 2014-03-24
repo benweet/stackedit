@@ -127,7 +127,7 @@
 @popover-arrow-outer-color: @secondary-border-color;
 @popover-title-bg: @transparent;
 @alert-border-radius: 0;
-@label-warning-bg: #d90;
+@label-warning-bg: #da0;
 @label-danger-bg: #d00;
 
 
@@ -140,7 +140,7 @@ body {
 }
 
 #preview-contents {
-	padding: 30px;
+	padding: 35px;
 	margin: 0 auto 200px;
     text-align: justify;
 }
@@ -362,7 +362,7 @@ a {
 
 .form-control.error {
 	border-color: @error-border;
-    .box-shadow(~"@{form-control-inset-shadow}, 0 0 8px rgba(255, 134, 97, 0.6)");
+    .box-shadow(~"@{form-control-inset-shadow}, 0 0 8px rgba(255, 0, 0, 0.6)");
 }
 
 .help-block {
@@ -773,7 +773,7 @@ a {
     position: absolute;
 	z-index: 1;
     margin-top: 6px;
-    right: 30px;
+    right: 35px;
     .ui-layout-resizer-south-closed & {
     	display: none !important;
     }
@@ -1060,22 +1060,28 @@ a {
 		top: 0;
 		.icon-comment {
 			&.new {
-				color: fade(@tertiary-color, 12%);
-				&:hover {
+				color: fade(@tertiary-color, 10%);
+				&:hover, &.active, &.active:hover {
 					color: fade(@tertiary-color, 35%) !important;
 				}
 			}
 			&.replied {
-				color: fade(@label-danger-bg, 30%);
+				color: fade(@label-danger-bg, 35%);
 				&:hover, &.active, &.active:hover {
 					color: fade(@label-danger-bg, 45%) !important;
 				}
 			}
+			&.added {
+				color: fade(@label-warning-bg, 40%);
+				&:hover, &.active, &.active:hover {
+					color: fade(@label-warning-bg, 60%) !important;
+				}
+			}
+			.transition(~"color ease-in-out .25s");
 			position: absolute;
-			color: fade(@label-warning-bg, 40%);
+			color: fade(#fff, 0%);
 			cursor: pointer;
-			&:hover, &.active, &.active:hover {
-				color: fade(@label-warning-bg, 60%) !important;
+			&:hover, &.active {
 				text-decoration: none;
 			}
 		}
@@ -1399,7 +1405,7 @@ input[type="file"] {
  *********************/
 
 .popover {
-	max-width: 240px;
+	max-width: 230px;
 	padding: 10px 20px 0;
 	//.box-shadow(0 5px 30px rgba(0,0,0,.175));
 	.popover-title {
@@ -1408,6 +1414,10 @@ input[type="file"] {
 		padding: 5px 0 15px;
 		border-bottom: 1px solid @hr-border;
 		line-height: @headings-line-height;
+		.action-remove-discussion {
+			font-size: 16px;
+			line-height: 22px;
+		}
 	}
 	.icon-lock {
         font-size: 38px;
@@ -1417,9 +1427,19 @@ input[type="file"] {
 		display: none;
 	}
 	.popover-content {
-		padding-bottom: 0;
+		padding: 10px 20px 0;
+		overflow: auto;
+		max-height: 230px;
+		margin: 0 -20px;
 		.btn {
 			padding: 6px 11px;
+		}
+		.comment-block {
+			margin-bottom: 5px;
+		}
+		.comment-author {
+			padding-left: 12px;
+			font-weight: bold;
 		}
 		.input-comment-author {
 			border: none;

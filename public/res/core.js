@@ -397,7 +397,7 @@ define([
 
         if(pagedownEditor !== undefined) {
             // If the editor is already created
-            $editorElt.val(initDocumentContent);
+            editor.contentElt.textContent = initDocumentContent;
             pagedownEditor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
             $editorElt.focus();
             return;
@@ -455,7 +455,7 @@ define([
         eventMgr.onPagedownConfigure(pagedownEditor);
         pagedownEditor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
         pagedownEditor.run();
-        $editorElt.val(initDocumentContent);
+        editor.contentElt.textContent = initDocumentContent;
         pagedownEditor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
         $editorElt.focus();
 
@@ -799,7 +799,7 @@ define([
         });
         $(".action-import-docs-settings-confirm").click(function() {
             storage.clear();
-            var allowedKeys = /^file\.|^folder\.|^publish\.|^settings$|^sync\.|^google\.|^themeV3$|^version$/;
+            var allowedKeys = /^file\.|^folder\.|^publish\.|^settings$|^sync\.|^google\.|^author\.|^themeV3$|^version$/;
             _.each(newstorage, function(value, key) {
                 if(allowedKeys.test(key)) {
                     storage[key] = value;

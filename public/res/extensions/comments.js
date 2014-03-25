@@ -18,6 +18,14 @@ define([
         '    <div class="comment-content"><%= content %></div>',
         '</div>',
     ].join('');
+    var popoverTitleTmpl = [
+        '<span class="clearfix">',
+        '    <a href="#" class="action-remove-discussion pull-right">',
+        '        <i class="icon-trash"></i>',
+        '    </a>',
+        '    <%- title %>',
+        '</span>',
+    ].join('');
 
     var eventMgr;
     comments.onEventMgrCreated = function(eventMgrParam) {
@@ -61,13 +69,10 @@ define([
         offsetMap = {};
         var discussionList = _.map(currentFileDesc.discussionList, _.identity);
         function refreshOne() {
-            var discussion;
-            do {
-                if(discussionList.length === 0) {
-                    return;
-                }
-                discussion = discussionList.pop();
-            } while(discussion.isRemoved);
+            if(discussionList.length === 0) {
+                return;
+            }
+            var discussion = discussionList.pop();
             var commentElt = crel('a', {
                 class: 'icon-comment'
             });
@@ -159,8 +164,9 @@ define([
                 if(titleLength > 20) {
                     title += '...';
                 }
-                title = title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
-                return '<a href="#" class="action-remove-discussion pull-right"><i class="icon-trash"></i></a>' + title;
+                return _.template(popoverTitleTmpl, {
+                    title: title
+                });
             },
             content: function() {
                 var content = _.template(commentsPopoverContentHTML, {
@@ -172,7 +178,8 @@ define([
         }).on('show.bs.popover', '#wmd-input > .editor-margin', function(evt) {
             closeCurrentPopover();
             var context = {
-                $commentElt: $(evt.target).addClass('active')
+                $commentElt: $(evt.target).addClass('active'),
+                fileDesc: currentFileDesc
             };
             currentContext = context;
             inputElt.scrollTop += parseInt(evt.target.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
@@ -247,7 +254,7 @@ define([
                 context.$contentInputElt.val('');
                 closeCurrentPopover();
 
-                var discussionList = currentFileDesc.discussionList || {};
+                var discussionList = context.fileDesc.discussionList || {};
                 var isNew = false;
                 if(!context.discussion.discussionIndex) {
                     isNew = true;
@@ -263,10 +270,10 @@ define([
                     author: author,
                     content: content
                 });
-                currentFileDesc.discussionList = discussionList; // Write discussionList in localStorage
+                context.fileDesc.discussionList = discussionList; // Write discussionList in localStorage
                 isNew ?
-                    eventMgr.onDiscussionCreated(currentFileDesc, context.discussion) :
-                    eventMgr.onCommentAdded(currentFileDesc, context.discussion);
+                    eventMgr.onDiscussionCreated(context.fileDesc, context.discussion) :
+                    eventMgr.onCommentAdded(context.fileDesc, context.discussion);
                 inputElt.focus();
             });
 
@@ -288,12 +295,9 @@ define([
                 });
                 $removeConfirmButton.click(function() {
                     closeCurrentPopover();
-                    context.discussion.isRemoved = true;
-                    delete context.discussion.selectionStart;
-                    delete context.discussion.selectionEnd;
-                    delete context.discussion.commentList;
-                    currentFileDesc.discussionList = currentFileDesc.discussionList; // Write discussionList in localStorage
-                    eventMgr.onDiscussionRemoved(currentFileDesc, context.discussion);
+                    delete context.fileDesc.discussionList[context.discussion.discussionIndex];
+                    context.fileDesc.discussionList = context.fileDesc.discussionList; // Write discussionList in localStorage
+                    eventMgr.onDiscussionRemoved(context.fileDesc, context.discussion);
                     inputElt.focus();
                 });
             }

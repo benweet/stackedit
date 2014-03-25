@@ -42,7 +42,6 @@ requirejs.config({
         'requirejs-text': 'bower-libs/requirejs-text/text',
         'bootstrap-tour': 'bower-libs/bootstrap-tour/build/js/bootstrap-tour',
         css_browser_selector: 'bower-libs/css_browser_selector/css_browser_selector',
-        'jquery-mousewheel': 'bower-libs/jquery-mousewheel/jquery.mousewheel',
         'pagedown-extra': 'bower-libs/pagedown-extra/Markdown.Extra',
         pagedown: 'bower-libs/stackedit-pagedown/Markdown.Editor',
         'require-css': 'bower-libs/require-css/css',
@@ -58,7 +57,9 @@ requirejs.config({
         MutationObservers: 'bower-libs/MutationObservers/MutationObserver',
         WeakMap: 'bower-libs/WeakMap/weakmap',
         rangy: 'bower-libs/rangy/rangy-core',
-        'rangy-cssclassapplier': 'bower-libs/rangy/rangy-cssclassapplier'
+        'rangy-cssclassapplier': 'bower-libs/rangy/rangy-cssclassapplier',
+        diff_match_patch: 'bower-libs/google-diff-match-patch-js/diff_match_patch',
+        diff_match_patch_uncompressed: 'bower-libs/google-diff-match-patch-js/diff_match_patch_uncompressed'
     },
     shim: {
         underscore: {
@@ -72,6 +73,9 @@ requirejs.config({
                 'jquery'
             ],
             exports: 'jQuery.jGrowl'
+        },
+        diff_match_patch_uncompressed: {
+            exports: 'diff_match_patch'
         },
         rangy: {
             exports: 'rangy'
@@ -129,9 +133,6 @@ requirejs.config({
             'jquery'
         ],
         'jquery-waitforimages': [
-            'jquery'
-        ],
-        'jquery-mousewheel': [
             'jquery'
         ],
         uilayout: [

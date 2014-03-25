@@ -5,10 +5,12 @@ define([
     'settings',
     'eventMgr',
     'prism-core',
+    'diff_match_patch_uncompressed',
     'crel',
     'MutationObservers',
     'libs/prism-markdown'
-], function ($, _, settings, eventMgr, Prism, crel) {
+], function ($, _, settings, eventMgr, Prism, diff_match_patch, crel) {
+    var diffMatchPatch = new diff_match_patch();
 
     function strSplice(str, i, remove, add) {
         remove = +remove || 0;
@@ -61,6 +63,35 @@ define([
         fileDesc = selectedFileDesc;
     });
 
+    var previousTextContent;
+    var undoManager = {};
+    (function() {
+        var undoStack = []; // A stack of undo states
+        var stackPtr = 0; // The index of the current state
+        var lastTime;
+        function saveState(mode) {
+            var currentTime = Date.now();
+            var newState = {
+                selectionStart: selectionStart,
+                selectionEnd: selectionEnd,
+                scrollTop: scrollTop,
+                mode: mode
+            }
+            if(!stackPtr && (currentTime - lastTime > 1000 || mode != undoStack[stackPtr - 1].mode)) {
+                undoStack.push(lastState);
+                stackPtr++;
+            }
+            if(mode != 'move') {
+                lastState.content = previousTextContent;
+                lastState.discussionList = $.extend(true, {}, fileDesc.discussionList);
+            }
+        }
+        undoManager.setCommandMode = function() {
+            saveState('command');
+        };
+
+    });
+
     function saveSelectionState() {
         var selection = window.getSelection();
         if (selection.rangeCount > 0) {
@@ -89,36 +120,6 @@ define([
         }
     }
 
-    var previousTextContent;
-    function getContentChange(textContent) {
-        // Find the first modified char
-        var startIndex = 0;
-        var startIndexMax = Math.min(previousTextContent.length, textContent.length);
-        while (startIndex < startIndexMax) {
-            if (previousTextContent.charCodeAt(startIndex) !== textContent.charCodeAt(startIndex)) {
-                break;
-            }
-            startIndex++;
-        }
-        // Find the last modified char
-        var endIndex = 1;
-        var endIndexMax = Math.min(previousTextContent.length - startIndex, textContent.length - startIndex);
-        while (endIndex <= endIndexMax) {
-            if (previousTextContent.charCodeAt(previousTextContent.length - endIndex) !== textContent.charCodeAt(textContent.length - endIndex)) {
-                break;
-            }
-            endIndex++;
-        }
-
-        var replacement = textContent.substring(startIndex, textContent.length - endIndex + 1);
-        endIndex = previousTextContent.length - endIndex + 1;
-        return {
-            startIndex: startIndex,
-            endIndex: endIndex,
-            replacement: replacement
-        };
-    }
-
     function checkContentChange() {
         saveSelectionState();
         var currentTextContent = inputElt.textContent;
@@ -129,33 +130,44 @@ define([
             if(!/\n$/.test(currentTextContent)) {
                 currentTextContent += '\n';
             }
-            var change = getContentChange(currentTextContent);
-            var endOffset = change.startIndex + change.replacement.length - change.endIndex;
-
-            // Move comments according to change
+            var changes = diffMatchPatch.diff_main(previousTextContent, currentTextContent);
+            // Move comments according to changes
             var updateDiscussionList = false;
-            _.each(fileDesc.discussionList, function(discussion) {
-                if(discussion.isRemoved === true) {
+            var startOffset = 0;
+            changes.forEach(function(change) {
+                var changeType = change[0];
+                var changeText = change[1];
+                if(changeType === 0) {
+                    startOffset += changeText.length;
                     return;
                 }
-                // selectionEnd
-                if(discussion.selectionEnd >= change.endIndex) {
-                    discussion.selectionEnd += endOffset;
-                    updateDiscussionList = true;
+                var endOffset = startOffset;
+                var diffOffset = changeText.length;
+                if(changeType === -1) {
+                    endOffset += diffOffset;
+                    diffOffset = -diffOffset;
                 }
-                else if(discussion.selectionEnd > change.startIndex) {
-                    discussion.selectionEnd = change.startIndex;
-                    updateDiscussionList = true;
-                }
-                // selectionStart
-                if(discussion.selectionStart >= change.endIndex) {
-                    discussion.selectionStart += endOffset;
-                    updateDiscussionList = true;
-                }
-                else if(discussion.selectionStart > change.startIndex) {
-                    discussion.selectionStart = change.startIndex;
-                    updateDiscussionList = true;
-                }
+                _.each(fileDesc.discussionList, function(discussion) {
+                    // selectionEnd
+                    if(discussion.selectionEnd >= endOffset) {
+                        discussion.selectionEnd += diffOffset;
+                        updateDiscussionList = true;
+                    }
+                    else if(discussion.selectionEnd > startOffset) {
+                        discussion.selectionEnd = startOffset;
+                        updateDiscussionList = true;
+                    }
+                    // selectionStart
+                    if(discussion.selectionStart >= endOffset) {
+                        discussion.selectionStart += diffOffset;
+                        updateDiscussionList = true;
+                    }
+                    else if(discussion.selectionStart > startOffset) {
+                        discussion.selectionStart = startOffset;
+                        updateDiscussionList = true;
+                    }
+                });
+                startOffset = endOffset;
             });
             if(updateDiscussionList === true) {
                 fileDesc.discussionList = fileDesc.discussionList; // Write discussionList in localStorage
@@ -329,6 +341,7 @@ define([
     }, 0);
     eventMgr.addListener('onLayoutResize', adjustCursorPosition);
 
+    var contentObserver;
     editor.init = function(elt1, elt2) {
         inputElt = elt1;
         $inputElt = $(inputElt);
@@ -347,8 +360,8 @@ define([
         inputElt.appendChild(editor.marginElt);
         editor.$marginElt = $(editor.marginElt);
 
-        var observer = new MutationObserver(checkContentChange);
-        observer.observe(editor.contentElt, {
+        contentObserver = new MutationObserver(checkContentChange);
+        contentObserver.observe(editor.contentElt, {
             childList: true,
             subtree: true,
             characterData: true
@@ -383,10 +396,16 @@ define([
                 return this.textContent;
             },
             set: function (value) {
-                var contentChange = getContentChange(value);
-                var range = inputElt.createRange(contentChange.startIndex, contentChange.endIndex);
+                var startOffset = diffMatchPatch.diff_commonPrefix(previousTextContent, value);
+                var endOffset = Math.min(
+                    diffMatchPatch.diff_commonSuffix(previousTextContent, value),
+                    previousTextContent.length - startOffset,
+                    value.length - startOffset
+                );
+                var replacement = value.substring(startOffset, value.length - endOffset);
+                var range = inputElt.createRange(startOffset, previousTextContent.length - endOffset);
                 range.deleteContents();
-                range.insertNode(document.createTextNode(contentChange.replacement));
+                range.insertNode(document.createTextNode(replacement));
             }
         });
 
@@ -599,10 +618,10 @@ define([
             if(index >= newSectionList.length ||
                 // Check modified
                 section.textWithFrontMatter != newSection.textWithFrontMatter ||
-                // Check that section has not been detached from the DOM with backspace
-                !section.highlightedContent.parentNode ||
+                // Check that section has not been detached or moved
+                section.elt.parentNode !== editor.contentElt ||
                 // Check also the content since nodes can be injected in sections via copy/paste
-                section.highlightedContent.textContent != newSection.textWithFrontMatter) {
+                section.elt.textContent != newSection.textWithFrontMatter) {
                 leftIndex = index;
                 return true;
             }
@@ -615,10 +634,10 @@ define([
             if(index >= newSectionList.length ||
                 // Check modified
                 section.textWithFrontMatter != newSection.textWithFrontMatter ||
-                // Check that section has not been detached from the DOM with backspace
-                !section.highlightedContent.parentNode ||
+                // Check that section has not been detached or moved
+                section.elt.parentNode !== editor.contentElt ||
                 // Check also the content since nodes can be injected in sections via copy/paste
-                section.highlightedContent.textContent != newSection.textWithFrontMatter) {
+                section.elt.textContent != newSection.textWithFrontMatter) {
                 rightIndex = -index;
                 return true;
             }
@@ -643,8 +662,9 @@ define([
         var newSectionEltList = document.createDocumentFragment();
         modifiedSections.forEach(function(section) {
             highlight(section);
-            newSectionEltList.appendChild(section.highlightedContent);
+            newSectionEltList.appendChild(section.elt);
         });
+        contentObserver.disconnect();
         if(fileChanged === true) {
             editor.contentElt.innerHTML = '';
             editor.contentElt.appendChild(newSectionEltList);
@@ -653,14 +673,12 @@ define([
         else {
             // Remove outdated sections
             sectionsToRemove.forEach(function(section) {
-                var sectionElt = document.getElementById("wmd-input-section-" + section.id);
                 // section can be already removed
-                sectionElt && editor.contentElt.removeChild(sectionElt);
+                section.elt.parentNode === editor.contentElt && editor.contentElt.removeChild(section.elt);
             });
 
             if(insertBeforeSection !== undefined) {
-                var insertBeforeElt = document.getElementById("wmd-input-section-" + insertBeforeSection.id);
-                editor.contentElt.insertBefore(newSectionEltList, insertBeforeElt);
+                editor.contentElt.insertBefore(newSectionEltList, insertBeforeSection.elt);
             }
             else {
                 editor.contentElt.appendChild(newSectionEltList);
@@ -678,6 +696,11 @@ define([
 
             inputElt.setSelectionStartEnd(selectionStart, selectionEnd);
         }
+        contentObserver.observe(editor.contentElt, {
+            childList: true,
+            subtree: true,
+            characterData: true
+        });
     }
 
     function highlight(section) {
@@ -696,7 +719,7 @@ define([
         });
         sectionElt.generated = true;
         sectionElt.innerHTML = text;
-        section.highlightedContent = sectionElt;
+        section.elt = sectionElt;
     }
 
     return editor;

@@ -127,8 +127,8 @@
 @popover-arrow-outer-color: @secondary-border-color;
 @popover-title-bg: @transparent;
 @alert-border-radius: 0;
-@label-warning-bg: #da0;
-@label-danger-bg: #d00;
+@label-warning-bg: darken(@logo-yellow, 4%);
+@label-danger-bg: darken(@logo-orange, 4%);
 
 
 body {
@@ -154,8 +154,8 @@ body {
 	.user-select(none);
 }
 
-.dropdown-menu, .modal-content, .panel-content, .search-bar .popover {
-	.box-shadow(0 4px 12px rgba(0,0,0,.125));
+.dropdown-menu, .modal-content, .panel-content, .search-bar, .popover {
+	.box-shadow(0 4px 16px rgba(0,0,0,.225));
 }
 
 .dropdown-menu {
@@ -1066,15 +1066,15 @@ a {
 				}
 			}
 			&.replied {
-				color: fade(@label-danger-bg, 35%);
+				color: fade(@label-danger-bg, 45%);
 				&:hover, &.active, &.active:hover {
-					color: fade(@label-danger-bg, 45%) !important;
+					color: fade(@label-danger-bg, 80%) !important;
 				}
 			}
 			&.added {
-				color: fade(@label-warning-bg, 40%);
+				color: fade(@label-warning-bg, 45%);
 				&:hover, &.active, &.active:hover {
-					color: fade(@label-warning-bg, 60%) !important;
+					color: fade(@label-warning-bg, 80%) !important;
 				}
 			}
 			.transition(~"color ease-in-out .25s");

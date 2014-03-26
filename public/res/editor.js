@@ -64,60 +64,138 @@ define([
     });
 
     var previousTextContent;
-    var undoManager = {};
-    (function() {
-        var undoStack = []; // A stack of undo states
-        var stackPtr = 0; // The index of the current state
-        var lastTime;
-        function saveState(mode) {
-            var currentTime = Date.now();
-            var newState = {
-                selectionStart: selectionStart,
-                selectionEnd: selectionEnd,
-                scrollTop: scrollTop,
-                mode: mode
-            }
-            if(!stackPtr && (currentTime - lastTime > 1000 || mode != undoStack[stackPtr - 1].mode)) {
-                undoStack.push(lastState);
-                stackPtr++;
-            }
-            if(mode != 'move') {
-                lastState.content = previousTextContent;
-                lastState.discussionList = $.extend(true, {}, fileDesc.discussionList);
-            }
-        }
-        undoManager.setCommandMode = function() {
-            saveState('command');
+    var currentMode;
+    editor.undoManager = (function() {
+        var undoManager = {
+            onButtonStateChange: function() {}
         };
-
-    });
+        var undoStack = [];
+        var redoStack = [];
+        var lastTime;
+        var lastMode;
+        var currentState;
+        var selectionStartBefore;
+        var selectionEndBefore;
+        undoManager.setCommandMode = function() {
+            currentMode = 'command';
+        };
+        undoManager.setMode = function() {}; // For compatibility with PageDown
+        undoManager.saveState = function() {
+            if(currentMode == 'undoredo') {
+                currentMode = undefined;
+                return;
+            }
+            redoStack = [];
+            var currentTime = Date.now();
+            if((currentMode != lastMode && lastMode != 'newlines') || currentTime - lastTime > 1000) {
+                undoStack.push(currentState);
+                // Limit the size of the stack
+                if(undoStack.length === 100) {
+                    undoStack.shift();
+                }
+            }
+            else {
+                selectionStartBefore = currentState.selectionStartBefore;
+                selectionEndBefore = currentState.selectionEndBefore;
+            }
+            currentState = {
+                selectionStartBefore: selectionStartBefore,
+                selectionEndBefore: selectionEndBefore,
+                selectionStartAfter: selectionStart,
+                selectionEndAfter: selectionEnd,
+                content: previousTextContent,
+                discussionList: JSON.stringify(fileDesc.discussionList)
+            };
+            lastTime = currentTime;
+            lastMode = currentMode;
+            currentMode = undefined;
+            undoManager.onButtonStateChange();
+        };
+        undoManager.saveSelectionState = _.debounce(function() {
+            if(currentMode === undefined) {
+                selectionStartBefore = selectionStart;
+                selectionEndBefore = selectionEnd;
+            }
+        }, 10);
+        undoManager.canUndo = function() {
+            return undoStack.length;
+        };
+        undoManager.canRedo = function() {
+            return redoStack.length;
+        };
+        function restoreState(state, selectionStart, selectionEnd) {
+            currentMode = 'undoredo';
+            inputElt.value = state.content;
+            fileDesc.discussionList = JSON.parse(state.discussionList);
+            selectionStartBefore = selectionStart;
+            selectionEndBefore = selectionEnd;
+            inputElt.setSelectionStartEnd(selectionStart, selectionEnd);
+            currentState = state;
+            lastMode = undefined;
+            undoManager.onButtonStateChange();
+            adjustCursorPosition();
+        }
+        undoManager.undo = function() {
+            var state = undoStack.pop();
+            if(!state) {
+                return;
+            }
+            redoStack.push(currentState);
+            restoreState(state, currentState.selectionStartBefore, currentState.selectionEndBefore);
+        };
+        undoManager.redo = function() {
+            var state = redoStack.pop();
+            if(!state) {
+                return;
+            }
+            undoStack.push(currentState);
+            restoreState(state, state.selectionStartAfter, state.selectionEndAfter);
+        };
+        undoManager.init = function() {
+            var content = fileDesc.content;
+            undoStack = [];
+            redoStack = [];
+            lastTime = 0;
+            currentState = {
+                selectionStartAfter: fileDesc.selectionStart,
+                selectionEndAfter: fileDesc.selectionEnd,
+                content: content,
+                discussionList: JSON.stringify(fileDesc.discussionList)
+            };
+            currentMode = undefined;
+            lastMode = undefined;
+            editor.contentElt.textContent = content;
+        };
+        return undoManager;
+    })();
 
     function saveSelectionState() {
-        var selection = window.getSelection();
-        if (selection.rangeCount > 0) {
-            var range = selection.getRangeAt(0);
-            var element = range.startContainer;
-
-            if ((inputElt.compareDocumentPosition(element) & 0x10)) {
-                var container = element;
-                var offset = range.startOffset;
-                do {
-                    while (element = element.previousSibling) {
-                        if (element.textContent) {
-                            offset += element.textContent.length;
-                        }
-                    }
-
-                    element = container = container.parentNode;
-                } while (element && element != inputElt);
-                selectionStart = offset;
-                selectionEnd = offset + (range + '').length;
-            }
-        }
         if(fileChanged === false) {
+            var selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                var range = selection.getRangeAt(0);
+                var element = range.startContainer;
+
+                if ((inputElt.compareDocumentPosition(element) & 0x10)) {
+                    var container = element;
+                    var offset = range.startOffset;
+                    do {
+                        while (element = element.previousSibling) {
+                            if (element.textContent) {
+                                offset += element.textContent.length;
+                            }
+                        }
+
+                        element = container = container.parentNode;
+                    } while (element && element != inputElt);
+                    selectionStart = offset;
+                    selectionEnd = offset + (range + '').length;
+                }
+            }
             fileDesc.editorStart = selectionStart;
             fileDesc.editorEnd = selectionEnd;
         }
+        editor.undoManager.saveSelectionState();
     }
 
     function checkContentChange() {
@@ -130,65 +208,77 @@ define([
             if(!/\n$/.test(currentTextContent)) {
                 currentTextContent += '\n';
             }
-            var changes = diffMatchPatch.diff_main(previousTextContent, currentTextContent);
-            // Move comments according to changes
-            var updateDiscussionList = false;
-            var startOffset = 0;
-            changes.forEach(function(change) {
-                var changeType = change[0];
-                var changeText = change[1];
-                if(changeType === 0) {
-                    startOffset += changeText.length;
-                    return;
-                }
-                var endOffset = startOffset;
-                var diffOffset = changeText.length;
-                if(changeType === -1) {
-                    endOffset += diffOffset;
-                    diffOffset = -diffOffset;
-                }
-                _.each(fileDesc.discussionList, function(discussion) {
-                    // selectionEnd
-                    if(discussion.selectionEnd >= endOffset) {
-                        discussion.selectionEnd += diffOffset;
-                        updateDiscussionList = true;
+            if(currentMode != 'undoredo') {
+                var changes = diffMatchPatch.diff_main(previousTextContent, currentTextContent);
+                // Move comments according to changes
+                var updateDiscussionList = false;
+                var startOffset = 0;
+                var discussionList = _.map(fileDesc.discussionList, _.identity);
+                fileDesc.newDiscussion && discussionList.push(fileDesc.newDiscussion);
+                changes.forEach(function(change) {
+                    var changeType = change[0];
+                    var changeText = change[1];
+                    if(changeType === 0) {
+                        startOffset += changeText.length;
+                        return;
                     }
-                    else if(discussion.selectionEnd > startOffset) {
-                        discussion.selectionEnd = startOffset;
-                        updateDiscussionList = true;
+                    var endOffset = startOffset;
+                    var diffOffset = changeText.length;
+                    if(changeType === -1) {
+                        endOffset += diffOffset;
+                        diffOffset = -diffOffset;
                     }
-                    // selectionStart
-                    if(discussion.selectionStart >= endOffset) {
-                        discussion.selectionStart += diffOffset;
-                        updateDiscussionList = true;
-                    }
-                    else if(discussion.selectionStart > startOffset) {
-                        discussion.selectionStart = startOffset;
-                        updateDiscussionList = true;
-                    }
+                    _.each(discussionList, function(discussion) {
+                        // selectionEnd
+                        if(discussion.selectionEnd >= endOffset) {
+                            discussion.selectionEnd += diffOffset;
+                            updateDiscussionList = true;
+                        }
+                        else if(discussion.selectionEnd > startOffset) {
+                            discussion.selectionEnd = startOffset;
+                            updateDiscussionList = true;
+                        }
+                        // selectionStart
+                        if(discussion.selectionStart >= endOffset) {
+                            discussion.selectionStart += diffOffset;
+                            updateDiscussionList = true;
+                        }
+                        else if(discussion.selectionStart > startOffset) {
+                            discussion.selectionStart = startOffset;
+                            updateDiscussionList = true;
+                        }
+                    });
+                    startOffset = endOffset;
                 });
-                startOffset = endOffset;
-            });
-            if(updateDiscussionList === true) {
-                fileDesc.discussionList = fileDesc.discussionList; // Write discussionList in localStorage
+                if(updateDiscussionList === true) {
+                    fileDesc.discussionList = fileDesc.discussionList; // Write discussionList in localStorage
+                    eventMgr.onCommentsChanged(fileDesc);
+                }
+            }
+            else {
+                // Comments have been restored by undo/redo
+                eventMgr.onCommentsChanged(fileDesc);
             }
             fileDesc.content = currentTextContent;
             eventMgr.onContentChanged(fileDesc, currentTextContent);
+            currentMode = currentMode || 'typing';
+            previousTextContent = currentTextContent;
+            editor.undoManager.saveState();
         }
         else {
             if(!/\n$/.test(currentTextContent)) {
                 currentTextContent += '\n';
                 fileDesc.content = currentTextContent;
             }
-            eventMgr.onFileOpen(fileDesc, currentTextContent);
-            previewElt.scrollTop = fileDesc.previewScrollTop;
             selectionStart = fileDesc.editorStart;
             selectionEnd = fileDesc.editorEnd;
+            eventMgr.onFileOpen(fileDesc, currentTextContent);
+            previewElt.scrollTop = fileDesc.previewScrollTop;
             scrollTop = fileDesc.editorScrollTop;
             inputElt.scrollTop = scrollTop;
+            previousTextContent = currentTextContent;
             fileChanged = false;
         }
-        previousTextContent = currentTextContent;
     }
 
     function findOffset(ss) {
@@ -203,11 +293,9 @@ define([
             if (element) {
                 do {
                     var len = element.textContent.length;
-
                     if (offset <= ss && offset + len > ss) {
                         break;
                     }
-
                     offset += len;
                 } while (element = element.nextSibling);
             }
@@ -499,11 +587,11 @@ define([
             }, 0);
         })
         .on('paste', function () {
-            pagedownEditor.undoManager.setMode("paste");
+            currentMode = 'paste';
             adjustCursorPosition();
         })
         .on('cut', function () {
-            pagedownEditor.undoManager.setMode("cut");
+            currentMode = 'cut';
             adjustCursorPosition();
         });
 
@@ -530,8 +618,6 @@ define([
         var actions = {
             indent: function (state, options) {
                 var lf = state.before.lastIndexOf('\n') + 1;
-
-                pagedownEditor.undoManager.setMode("typing");
 
                 if (options.inverse) {
                     if (/\s/.test(state.before.charAt(lf))) {
@@ -582,7 +668,7 @@ define([
                     clearNewline = true;
                 }
 
-                pagedownEditor.undoManager.setMode("newlines");
+                currentMode = 'newlines';
 
                 state.before += '\n' + indent;
                 state.selection = '';

@@ -386,31 +386,16 @@ define([
     var pagedownEditor;
     var $editorElt;
     var fileDesc;
-    var documentContent;
     core.initEditor = function(fileDescParam) {
         if(fileDesc !== undefined) {
             eventMgr.onFileClosed(fileDesc);
         }
         fileDesc = fileDescParam;
-        documentContent = undefined;
-        var initDocumentContent = fileDesc.content;
 
         if(pagedownEditor !== undefined) {
             // If the editor is already created
-            editor.contentElt.textContent = initDocumentContent;
-            pagedownEditor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
-            $editorElt.focus();
-            return;
+            return editor.undoManager.init();
         }
-
-        var $previewContainerElt = $(".preview-container");
-
-        // Store preview scrollTop on scroll event
-        $previewContainerElt.scroll(function() {
-            if(documentContent !== undefined) {
-                fileDesc.previewScrollTop = $previewContainerElt.scrollTop();
-            }
-        });
 
         // Create the converter and the editor
         var converter = new Markdown.Converter();
@@ -425,15 +410,10 @@ define([
             }
         };
         converter.setOptions(options);
+        pagedownEditor = new Markdown.Editor(converter, undefined, {
+            undoManager: editor.undoManager
+        });
 
-        if(window.lightMode) {
-            pagedownEditor = new Markdown.EditorLight(converter);
-        }
-        else {
-            pagedownEditor = new Markdown.Editor(converter, undefined, {
-                keyStrokes: shortcutMgr.getPagedownKeyStrokes()
-            });
-        }
         // Custom insert link dialog
         pagedownEditor.hooks.set("insertLinkDialog", function(callback) {
             core.insertLinkCallback = callback;
@@ -455,9 +435,7 @@ define([
         eventMgr.onPagedownConfigure(pagedownEditor);
         pagedownEditor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
         pagedownEditor.run();
-        editor.contentElt.textContent = initDocumentContent;
-        pagedownEditor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
-        $editorElt.focus();
+        editor.undoManager.init();
 
         // Hide default buttons
         $(".wmd-button-row li").addClass("btn btn-success").css("left", 0).find("span").hide();

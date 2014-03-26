@@ -514,13 +514,13 @@ define([
                         commentList: realtimeDiscussion.get('commentList').asArray()
                     };
                     localDiscussionList[discussionIndex] = discussion;
-                    eventMgr.onDiscussionCreated(context.fileDesc, discussion);
+                    eventMgr.onCommentsChanged(context.fileDesc);
                 }
             });
             context.fileDesc.discussionList = localDiscussionList; // Write in localStorage
         }
 
-        eventMgr.addListener('onDiscussionCreated', function(fileDesc, discussion) {
+        eventMgr.addListener('onCommentsChanged', function(fileDesc, discussion) {
             if(realtimeContext === undefined || realtimeContext.fileDesc !== fileDesc) {
                 return;
             }

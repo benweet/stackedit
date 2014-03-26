@@ -211,9 +211,7 @@ define([
     addEventHook("onCursorCoordinates");
 
     // Operations on comments
-    addEventHook("onDiscussionCreated");
-    addEventHook("onDiscussionRemoved");
-    addEventHook("onCommentAdded");
+    addEventHook("onCommentsChanged");
 
     // Refresh twitter buttons
     addEventHook("onTweet");

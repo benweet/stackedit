@@ -55,11 +55,35 @@ define([
     };
 
     var refreshId;
+    var cssApplier;
     var currentFileDesc;
+    var currentContext;
     function refreshDiscussions() {
         if(currentFileDesc === undefined) {
             return;
         }
+
+        if(currentContext !== undefined) {
+            // Refresh conversation if popover is open
+            var context = currentContext;
+            if(context.discussion.discussionIndex) {
+                context.discussion = currentFileDesc.discussionList[context.discussion.discussionIndex];
+                context.popoverElt.querySelector('.discussion-comment-list').innerHTML = getDiscussionComments();
+            }
+            cssApplier.undoToRange(context.rangyRange);
+            context.selectionRange = inputElt.createRange(context.discussion.selectionStart, context.discussion.selectionEnd);
+
+            // Highlight selected text
+            context.rangyRange = rangy.createRange();
+            context.rangyRange.setStart(context.selectionRange.startContainer, context.selectionRange.startOffset);
+            context.rangyRange.setEnd(context.selectionRange.endContainer, context.selectionRange.endOffset);
+            setTimeout(function() { // Need to delay this because it's not refreshed properly
+                if(currentContext === context) {
+                    cssApplier.applyToRange(context.rangyRange);
+                }
+            }, 50);
+        }
+        
         var author = storage['author.name'];
         clearTimeout(refreshId);
         commentEltList.forEach(function(commentElt) {
@@ -105,24 +129,15 @@ define([
         currentFileDesc === fileDesc && debouncedRefreshDiscussions();
     };
 
-    var currentContext;
+    comments.onCommentsChanged = function(fileDesc) {
+        currentFileDesc === fileDesc && refreshDiscussions();
+    };
+
     function closeCurrentPopover() {
         currentContext && currentContext.$commentElt.popover('toggle').popover('destroy');
     }
     comments.onLayoutResize = function() {
         closeCurrentPopover();
-        refreshDiscussions();
-    };
-
-    comments.onDiscussionCreated = function() {
-        refreshDiscussions();
-    };
-
-    comments.onDiscussionRemoved = function() {
-        refreshDiscussions();
-    };
-
-    comments.onCommentAdded = function() {
         refreshDiscussions();
     };
 
@@ -136,7 +151,7 @@ define([
     }
 
     comments.onReady = function() {
-        var cssApplier = rangy.createCssClassApplier("comment-highlight", {
+        cssApplier = rangy.createCssClassApplier("comment-highlight", {
             normalize: false
         });
         var previousContent = '';
@@ -213,6 +228,7 @@ define([
                 selectionEnd: selectionEnd,
                 commentList: []
             };
+            currentFileDesc.newDiscussion = context.discussion;
         }).on('shown.bs.popover', '#wmd-input > .editor-margin', function(evt) {
             // Move the popover in the margin
             var context = currentContext;
@@ -255,9 +271,7 @@ define([
                 closeCurrentPopover();
 
                 var discussionList = context.fileDesc.discussionList || {};
-                var isNew = false;
                 if(!context.discussion.discussionIndex) {
-                    isNew = true;
                     // Create discussion index
                     var discussionIndex;
                     do {
@@ -271,9 +285,7 @@ define([
                     content: content
                 });
                 context.fileDesc.discussionList = discussionList; // Write discussionList in localStorage
-                isNew ?
-                    eventMgr.onDiscussionCreated(context.fileDesc, context.discussion) :
-                    eventMgr.onCommentAdded(context.fileDesc, context.discussion);
+                eventMgr.onCommentsChanged(context.fileDesc);
                 inputElt.focus();
             });
 
@@ -297,7 +309,7 @@ define([
                     closeCurrentPopover();
                     delete context.fileDesc.discussionList[context.discussion.discussionIndex];
                     context.fileDesc.discussionList = context.fileDesc.discussionList; // Write discussionList in localStorage
-                    eventMgr.onDiscussionRemoved(context.fileDesc, context.discussion);
+                    eventMgr.onCommentsChanged(context.fileDesc);
                     inputElt.focus();
                 });
             }
@@ -336,6 +348,7 @@ define([
             // Remove highlight
             cssApplier.undoToRange(currentContext.rangyRange);
             currentContext = undefined;
+            delete currentFileDesc.newDiscussion;
         });
     };
 

@@ -6,11 +6,23 @@ define([
     'eventMgr',
     'prism-core',
     'diff_match_patch_uncompressed',
+    'jsondiffpatch',
     'crel',
     'MutationObservers',
     'libs/prism-markdown'
-], function ($, _, settings, eventMgr, Prism, diff_match_patch, crel) {
+], function ($, _, settings, eventMgr, Prism, diff_match_patch, jsondiffpatch, crel) {
     var diffMatchPatch = new diff_match_patch();
+    var jsonDiffPatch = jsondiffpatch.create({
+        objectHash: function(obj) {
+            return JSON.stringify(obj);
+        },
+        arrays: {
+            detectMove: false,
+        },
+        textDiff: {
+            minLength: 9999999
+        }
+    });
 
     function strSplice(str, i, remove, add) {
         remove = +remove || 0;
@@ -63,6 +75,17 @@ define([
         fileDesc = selectedFileDesc;
     });
 
+    var contentObserver;
+    function noWatch(cb) {
+        contentObserver.disconnect();
+        cb();
+        contentObserver.observe(editor.contentElt, {
+            childList: true,
+            subtree: true,
+            characterData: true
+        });
+    }
+
     var previousTextContent;
     var currentMode;
     editor.undoManager = (function() {
@@ -81,13 +104,9 @@ define([
         };
         undoManager.setMode = function() {}; // For compatibility with PageDown
         undoManager.saveState = function() {
-            if(currentMode == 'undoredo') {
-                currentMode = undefined;
-                return;
-            }
             redoStack = [];
             var currentTime = Date.now();
-            if((currentMode != lastMode && lastMode != 'newlines') || currentTime - lastTime > 1000) {
+            if(currentMode == 'comment' || (currentMode != lastMode && lastMode != 'newlines') || currentTime - lastTime > 1000) {
                 undoStack.push(currentState);
                 // Limit the size of the stack
                 if(undoStack.length === 100) {
@@ -104,7 +123,7 @@ define([
                 selectionStartAfter: selectionStart,
                 selectionEndAfter: selectionEnd,
                 content: previousTextContent,
-                discussionList: JSON.stringify(fileDesc.discussionList)
+                discussionListJSON: fileDesc.discussionListJSON
             };
             lastTime = currentTime;
             lastMode = currentMode;
@@ -124,13 +143,42 @@ define([
             return redoStack.length;
         };
         function restoreState(state, selectionStart, selectionEnd) {
-            currentMode = 'undoredo';
-            inputElt.value = state.content;
-            fileDesc.discussionList = JSON.parse(state.discussionList);
+            // Update editor
+            noWatch(function() {
+                if(previousTextContent != state.content) {
+                    inputElt.value = state.content;
+                    fileDesc.content = state.content;
+                    eventMgr.onContentChanged(fileDesc, state.content);
+                    previousTextContent = state.content;
+                }
+                inputElt.setSelectionStartEnd(selectionStart, selectionEnd);
+                var discussionListJSON = fileDesc.discussionListJSON;
+                if(discussionListJSON != state.discussionListJSON) {
+                    currentMode = 'undoredo'; // In order to avoid saveState
+                    var oldDiscussionList = fileDesc.discussionList;
+                    fileDesc.discussionListJSON = state.discussionListJSON;
+                    var newDiscussionList = fileDesc.discussionList;
+                    var diff = jsonDiffPatch.diff(oldDiscussionList, newDiscussionList);
+                    var commentsChanged = false;
+                    _.each(diff, function(discussionDiff, discussionIndex) {
+                        if(!_.isArray(discussionDiff)) {
+                            commentsChanged = true;
+                        }
+                        else if(discussionDiff.length === 1) {
+                            eventMgr.onDiscussionCreated(fileDesc, newDiscussionList[discussionIndex]);
+                        }
+                        else {
+                            eventMgr.onDiscussionRemoved(fileDesc, oldDiscussionList[discussionIndex]);
+                        }
+                    });
+                    commentsChanged && eventMgr.onCommentsChanged(fileDesc);
+                }
+            });
+
             selectionStartBefore = selectionStart;
             selectionEndBefore = selectionEnd;
-            inputElt.setSelectionStartEnd(selectionStart, selectionEnd);
             currentState = state;
+            currentMode = undefined;
             lastMode = undefined;
             undoManager.onButtonStateChange();
             adjustCursorPosition();
@@ -160,7 +208,7 @@ define([
                 selectionStartAfter: fileDesc.selectionStart,
                 selectionEndAfter: fileDesc.selectionEnd,
                 content: content,
-                discussionList: JSON.stringify(fileDesc.discussionList)
+                discussionListJSON: fileDesc.discussionListJSON
             };
             currentMode = undefined;
             lastMode = undefined;
@@ -168,6 +216,16 @@ define([
         };
         return undoManager;
     })();
+
+    function onComment() {
+        if(!currentMode) {
+            currentMode = 'comment';
+            editor.undoManager.saveState();
+        }
+    }
+    eventMgr.addListener('onDiscussionCreated', onComment);
+    eventMgr.addListener('onDiscussionRemoved', onComment);
+    eventMgr.addListener('onCommentsChanged', onComment);
 
     function saveSelectionState() {
         if(fileChanged === false) {
@@ -208,60 +266,54 @@ define([
             if(!/\n$/.test(currentTextContent)) {
                 currentTextContent += '\n';
             }
-            if(currentMode != 'undoredo') {
-                var changes = diffMatchPatch.diff_main(previousTextContent, currentTextContent);
-                // Move comments according to changes
-                var updateDiscussionList = false;
-                var startOffset = 0;
-                var discussionList = _.map(fileDesc.discussionList, _.identity);
-                fileDesc.newDiscussion && discussionList.push(fileDesc.newDiscussion);
-                changes.forEach(function(change) {
-                    var changeType = change[0];
-                    var changeText = change[1];
-                    if(changeType === 0) {
-                        startOffset += changeText.length;
-                        return;
-                    }
-                    var endOffset = startOffset;
-                    var diffOffset = changeText.length;
-                    if(changeType === -1) {
-                        endOffset += diffOffset;
-                        diffOffset = -diffOffset;
-                    }
-                    _.each(discussionList, function(discussion) {
-                        // selectionEnd
-                        if(discussion.selectionEnd >= endOffset) {
-                            discussion.selectionEnd += diffOffset;
-                            updateDiscussionList = true;
-                        }
-                        else if(discussion.selectionEnd > startOffset) {
-                            discussion.selectionEnd = startOffset;
-                            updateDiscussionList = true;
-                        }
-                        // selectionStart
-                        if(discussion.selectionStart >= endOffset) {
-                            discussion.selectionStart += diffOffset;
-                            updateDiscussionList = true;
-                        }
-                        else if(discussion.selectionStart > startOffset) {
-                            discussion.selectionStart = startOffset;
-                            updateDiscussionList = true;
-                        }
-                    });
-                    startOffset = endOffset;
-                });
-                if(updateDiscussionList === true) {
-                    fileDesc.discussionList = fileDesc.discussionList; // Write discussionList in localStorage
-                    eventMgr.onCommentsChanged(fileDesc);
+            currentMode = currentMode || 'typing';
+            var changes = diffMatchPatch.diff_main(previousTextContent, currentTextContent);
+            // Move comments according to changes
+            var updateDiscussionList = false;
+            var startOffset = 0;
+            var discussionList = _.values(fileDesc.discussionList);
+            fileDesc.newDiscussion && discussionList.push(fileDesc.newDiscussion);
+            changes.forEach(function(change) {
+                var changeType = change[0];
+                var changeText = change[1];
+                if(changeType === 0) {
+                    startOffset += changeText.length;
+                    return;
                 }
-            }
-            else {
-                // Comments have been restored by undo/redo
-                eventMgr.onCommentsChanged(fileDesc);
+                var endOffset = startOffset;
+                var diffOffset = changeText.length;
+                if(changeType === -1) {
+                    endOffset += diffOffset;
+                    diffOffset = -diffOffset;
+                }
+                discussionList.forEach(function(discussion) {
+                    // selectionEnd
+                    if(discussion.selectionEnd >= endOffset) {
+                        discussion.selectionEnd += diffOffset;
+                        updateDiscussionList = true;
+                    }
+                    else if(discussion.selectionEnd > startOffset) {
+                        discussion.selectionEnd = startOffset;
+                        updateDiscussionList = true;
+                    }
+                    // selectionStart
+                    if(discussion.selectionStart >= endOffset) {
+                        discussion.selectionStart += diffOffset;
+                        updateDiscussionList = true;
+                    }
+                    else if(discussion.selectionStart > startOffset) {
+                        discussion.selectionStart = startOffset;
+                        updateDiscussionList = true;
+                    }
+                });
+                startOffset = endOffset;
+            });
+            if(updateDiscussionList === true) {
+                fileDesc.discussionList = fileDesc.discussionList; // Write discussionList in localStorage
             }
             fileDesc.content = currentTextContent;
             eventMgr.onContentChanged(fileDesc, currentTextContent);
-            currentMode = currentMode || 'typing';
+            updateDiscussionList && eventMgr.onCommentsChanged(fileDesc);
             previousTextContent = currentTextContent;
             editor.undoManager.saveState();
         }
@@ -429,7 +481,6 @@ define([
     }, 0);
     eventMgr.addListener('onLayoutResize', adjustCursorPosition);
 
-    var contentObserver;
     editor.init = function(elt1, elt2) {
         inputElt = elt1;
         $inputElt = $(inputElt);
@@ -524,6 +575,8 @@ define([
         inputElt.setSelectionStartEnd = function (start, end) {
             selectionStart = start;
             selectionEnd = end;
+            fileDesc.editorStart = selectionStart;
+            fileDesc.editorEnd = selectionEnd;
             var range = inputElt.createRange(start, end);
             var selection = window.getSelection();
             selection.removeAllRanges();
@@ -750,42 +803,38 @@ define([
             highlight(section);
             newSectionEltList.appendChild(section.elt);
         });
-        contentObserver.disconnect();
-        if(fileChanged === true) {
-            editor.contentElt.innerHTML = '';
-            editor.contentElt.appendChild(newSectionEltList);
-            inputElt.setSelectionStartEnd(selectionStart, selectionEnd);
-        }
-        else {
-            // Remove outdated sections
-            sectionsToRemove.forEach(function(section) {
-                // section can be already removed
-                section.elt.parentNode === editor.contentElt && editor.contentElt.removeChild(section.elt);
-            });
-
-            if(insertBeforeSection !== undefined) {
-                editor.contentElt.insertBefore(newSectionEltList, insertBeforeSection.elt);
+        noWatch(function() {
+            if(fileChanged === true) {
+                editor.contentElt.innerHTML = '';
+                editor.contentElt.appendChild(newSectionEltList);
+                inputElt.setSelectionStartEnd(selectionStart, selectionEnd);
             }
             else {
-                editor.contentElt.appendChild(newSectionEltList);
-            }
+                // Remove outdated sections
+                sectionsToRemove.forEach(function(section) {
+                    // section can be already removed
+                    section.elt.parentNode === editor.contentElt && editor.contentElt.removeChild(section.elt);
+                });
 
-            // Remove unauthorized nodes (text nodes outside of sections or duplicated sections via copy/paste)
-            var childNode = editor.contentElt.firstChild;
-            while(childNode) {
-                var nextNode = childNode.nextSibling;
-                if(!childNode.generated) {
-                    editor.contentElt.removeChild(childNode);
+                if(insertBeforeSection !== undefined) {
+                    editor.contentElt.insertBefore(newSectionEltList, insertBeforeSection.elt);
                 }
-                childNode = nextNode;
-            }
+                else {
+                    editor.contentElt.appendChild(newSectionEltList);
+                }
 
-            inputElt.setSelectionStartEnd(selectionStart, selectionEnd);
-        }
-        contentObserver.observe(editor.contentElt, {
-            childList: true,
-            subtree: true,
-            characterData: true
+                // Remove unauthorized nodes (text nodes outside of sections or duplicated sections via copy/paste)
+                var childNode = editor.contentElt.firstChild;
+                while(childNode) {
+                    var nextNode = childNode.nextSibling;
+                    if(!childNode.generated) {
+                        editor.contentElt.removeChild(childNode);
+                    }
+                    childNode = nextNode;
+                }
+
+                inputElt.setSelectionStartEnd(selectionStart, selectionEnd);
+            }
         });
     }
 

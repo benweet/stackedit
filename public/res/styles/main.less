@@ -127,8 +127,8 @@
 @popover-arrow-outer-color: @secondary-border-color;
 @popover-title-bg: @transparent;
 @alert-border-radius: 0;
-@label-warning-bg: darken(@logo-yellow, 4%);
-@label-danger-bg: darken(@logo-orange, 4%);
+@label-warning-bg: spin(darken(@logo-yellow, 4%), -4);
+@label-danger-bg: spin(darken(@logo-orange, 4%), -4);
 
 
 body {
@@ -615,7 +615,7 @@ a {
 	}
 	.panel-content {
 		background-color: @list-group-bg;
-		padding-top: 200px;
+		padding-top: 210px;
         .viewer & {
             padding-top: 75px;
         }
@@ -1077,9 +1077,7 @@ a {
 					color: fade(@label-warning-bg, 80%) !important;
 				}
 			}
-			.transition(~"color ease-in-out .25s");
 			position: absolute;
-			color: fade(#fff, 0%);
 			cursor: pointer;
 			&:hover, &.active {
 				text-decoration: none;
@@ -1091,7 +1089,7 @@ a {
 	}
 
 	.comment-highlight {
-		background-color: fade(@label-warning-bg, 25%);
+		background-color: fade(@label-warning-bg, 30%);
 		//border-radius: @border-radius-base;
 	}
 
@@ -1177,7 +1175,8 @@ a {
     .h6 { font-size: 0.9em; }
 
 
-    .url,.email {
+    .url,
+	.email {
         color: @tertiary-color-light;
     }
 

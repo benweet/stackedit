@@ -47,7 +47,7 @@ Prism.languages.md = (function() {
     };
     for (var i = 6; i >= 1; i--) {
         md["h" + i] = {
-            pattern: new RegExp("^#{" + i + "} .*$", "gm"),
+            pattern: new RegExp("^#{" + i + "}.+$", "gm"),
             inside: {
                 "md md-hash": new RegExp("^#{" + i + "} ")
             }
@@ -196,9 +196,6 @@ Prism.languages.md = (function() {
                 }
             }
         }
-    };
-    md.url = {
-        pattern: urlPattern
     };
     md.email = {
         pattern: emailPattern

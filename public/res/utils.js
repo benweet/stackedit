@@ -682,5 +682,13 @@ define([
         return crc.toString(16);
     };
 
+    window.perfTest = function(cb) {
+        var startTime = Date.now();
+        for(var i=0; i<10000; i++) {
+            cb();
+        }
+        console.log('Run 10,000 times in ' + (Date.now() - startTime) + 'ms');
+    }
+
     return utils;
 });

@@ -54,15 +54,71 @@ define([
         setCommentEltCoordinates(newCommentElt, cursorY);
     };
 
-    var refreshId;
+    var currentContext;
+    function movePopover(commentElt) {
+        // Move popover in the margin
+        var context = currentContext;
+        context.popoverElt = document.querySelector('.comments-popover .popover:last-child');
+        var left = 0;
+        if(context.popoverElt.offsetWidth < marginElt.offsetWidth - 10) {
+            left = marginElt.offsetWidth - 10 - context.popoverElt.offsetWidth;
+        }
+        context.popoverElt.style.left = left + 'px';
+        context.popoverElt.querySelector('.arrow').style.left = (marginElt.offsetWidth - parseInt(commentElt.style.right) - commentElt.offsetWidth / 2 - left) + 'px';
+    }
+
     var cssApplier;
     var currentFileDesc;
-    var currentContext;
-    function refreshDiscussions() {
+    var refreshDiscussions = _.debounce(function() {
         if(currentFileDesc === undefined) {
             return;
         }
 
+        var author = storage['author.name'];
+        commentEltList.forEach(function(commentElt) {
+            marginElt.removeChild(commentElt);
+        });
+        commentEltList = [];
+        offsetMap = {};
+        _.each(currentFileDesc.discussionList, function(discussion) {
+            var isReplied = _.last(discussion.commentList).author != author;
+            var commentElt = crel('a', {
+                class: 'icon-comment' + (isReplied ? ' replied' : ' added')
+            });
+            commentElt.discussionIndex = discussion.discussionIndex;
+            var coordinates = inputElt.getOffsetCoordinates(discussion.selectionEnd);
+            var lineIndex = setCommentEltCoordinates(commentElt, coordinates.y);
+            offsetMap[lineIndex] = (offsetMap[lineIndex] || 0) + 1;
+            marginElt.appendChild(commentElt);
+            commentEltList.push(commentElt);
+
+            if(currentContext && currentContext.discussion == discussion) {
+                inputElt.scrollTop += parseInt(commentElt.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
+                movePopover(commentElt);
+            }
+        });
+
+        // Move newCommentElt
+        setCommentEltCoordinates(newCommentElt, cursorY);
+        if(currentContext && !currentContext.discussion.discussionIndex) {
+            inputElt.scrollTop += parseInt(newCommentElt.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
+            movePopover(newCommentElt);
+        }
+    }, 50);
+
+    comments.onFileOpen = function(fileDesc) {
+        currentFileDesc = fileDesc;
+        refreshDiscussions();
+    };
+
+    comments.onContentChanged = function(fileDesc, content) {
+        currentFileDesc === fileDesc && refreshDiscussions();
+    };
+
+    comments.onCommentsChanged = function(fileDesc) {
+        if(currentFileDesc !== fileDesc) {
+            return;
+        }
         if(currentContext !== undefined) {
             // Refresh conversation if popover is open
             var context = currentContext;
@@ -70,7 +126,10 @@ define([
                 context.discussion = currentFileDesc.discussionList[context.discussion.discussionIndex];
                 context.popoverElt.querySelector('.discussion-comment-list').innerHTML = getDiscussionComments();
             }
-            cssApplier.undoToRange(context.rangyRange);
+            try {
+                cssApplier.undoToRange(context.rangyRange);
+            }
+            catch(e) {}
             context.selectionRange = inputElt.createRange(context.discussion.selectionStart, context.discussion.selectionEnd);
 
             // Highlight selected text
@@ -83,61 +142,28 @@ define([
                 }
             }, 50);
         }
-        
-        var author = storage['author.name'];
-        clearTimeout(refreshId);
-        commentEltList.forEach(function(commentElt) {
-            marginElt.removeChild(commentElt);
-        });
-        commentEltList = [];
-        offsetMap = {};
-        var discussionList = _.map(currentFileDesc.discussionList, _.identity);
-        function refreshOne() {
-            if(discussionList.length === 0) {
-                return;
-            }
-            var discussion = discussionList.pop();
-            var commentElt = crel('a', {
-                class: 'icon-comment'
-            });
-            commentElt.discussion = discussion;
-            var coordinates = inputElt.getOffsetCoordinates(discussion.selectionEnd);
-            var lineIndex = setCommentEltCoordinates(commentElt, coordinates.y);
-            offsetMap[lineIndex] = (offsetMap[lineIndex] || 0) + 1;
-            marginElt.appendChild(commentElt);
-            commentEltList.push(commentElt);
-
-            // Move newCommentElt
-            setCommentEltCoordinates(newCommentElt, cursorY);
-
-            // Apply class later for fade effect
-            commentElt.offsetWidth; // Refresh
-            var isReplied = _.last(discussion.commentList).author != author;
-            commentElt.className += isReplied ? ' replied' : ' added';
-            refreshId = setTimeout(refreshOne, 50);
-        }
-        refreshId = setTimeout(refreshOne, 50);
-    }
-    var debouncedRefreshDiscussions = _.debounce(refreshDiscussions, 2000);
-
-    comments.onFileOpen = function(fileDesc) {
-        currentFileDesc = fileDesc;
         refreshDiscussions();
-    };
-
-    comments.onContentChanged = function(fileDesc, content) {
-        currentFileDesc === fileDesc && debouncedRefreshDiscussions();
-    };
-
-    comments.onCommentsChanged = function(fileDesc) {
-        currentFileDesc === fileDesc && refreshDiscussions();
     };
 
     function closeCurrentPopover() {
         currentContext && currentContext.$commentElt.popover('toggle').popover('destroy');
     }
+
+    comments.onDiscussionCreated = function(fileDesc) {
+        currentFileDesc === fileDesc && refreshDiscussions();
+    };
+
+    comments.onDiscussionRemoved = function(fileDesc, discussion) {
+        if(currentFileDesc === fileDesc) {
+            // Close popover if the discussion has removed
+            if(currentContext !== undefined && currentContext.discussion.discussionIndex == discussion.discussionIndex) {
+                closeCurrentPopover();
+            }
+            refreshDiscussions();
+        }
+    };
+
     comments.onLayoutResize = function() {
-        closeCurrentPopover();
         refreshDiscussions();
     };
 
@@ -200,8 +226,8 @@ define([
             inputElt.scrollTop += parseInt(evt.target.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
 
             // If it's an existing discussion
-            if(evt.target.discussion) {
-                context.discussion = evt.target.discussion;
+            if(evt.target.discussionIndex) {
+                context.discussion = currentFileDesc.discussionList[evt.target.discussionIndex];
                 context.selectionRange = inputElt.createRange(context.discussion.selectionStart, context.discussion.selectionEnd);
                 return;
             }
@@ -230,15 +256,9 @@ define([
             };
             currentFileDesc.newDiscussion = context.discussion;
         }).on('shown.bs.popover', '#wmd-input > .editor-margin', function(evt) {
-            // Move the popover in the margin
             var context = currentContext;
             context.popoverElt = document.querySelector('.comments-popover .popover:last-child');
-            var left = -5;
-            if(context.popoverElt.offsetWidth < marginElt.offsetWidth - 5) {
-                left = marginElt.offsetWidth - 10 - context.popoverElt.offsetWidth;
-            }
-            context.popoverElt.style.left = left + 'px';
-            context.popoverElt.querySelector('.arrow').style.left = (marginElt.offsetWidth - parseInt(evt.target.style.right) - evt.target.offsetWidth / 2 - left) + 'px';
+            movePopover(evt.target);
 
             // Scroll to the bottom of the discussion
             context.popoverElt.querySelector('.popover-content').scrollTop = 9999999;
@@ -270,6 +290,10 @@ define([
                 context.$contentInputElt.val('');
                 closeCurrentPopover();
 
+                context.discussion.commentList.push({
+                    author: author,
+                    content: content
+                });
                 var discussionList = context.fileDesc.discussionList || {};
                 if(!context.discussion.discussionIndex) {
                     // Create discussion index
@@ -279,18 +303,18 @@ define([
                     } while(_.has(discussionList, discussionIndex));
                     context.discussion.discussionIndex = discussionIndex;
                     discussionList[discussionIndex] = context.discussion;
+                    context.fileDesc.discussionList = discussionList; // Write discussionList in localStorage
+                    eventMgr.onDiscussionCreated(context.fileDesc, context.discussion);
                 }
-                context.discussion.commentList.push({
-                    author: author,
-                    content: content
-                });
-                context.fileDesc.discussionList = discussionList; // Write discussionList in localStorage
-                eventMgr.onCommentsChanged(context.fileDesc);
+                else {
+                    context.fileDesc.discussionList = discussionList; // Write discussionList in localStorage
+                    eventMgr.onCommentsChanged(context.fileDesc);
+                }
                 inputElt.focus();
             });
 
             var $removeButton = $(context.popoverElt.querySelector('.action-remove-discussion'));
-            if(evt.target.discussion) {
+            if(evt.target.discussionIndex) {
                 // If it's an existing discussion
                 var $removeCancelButton = $(context.popoverElt.querySelector('.action-remove-discussion-cancel'));
                 var $removeConfirmButton = $(context.popoverElt.querySelector('.action-remove-discussion-confirm'));

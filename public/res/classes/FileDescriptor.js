@@ -88,7 +88,7 @@ define([
         });
         Object.defineProperty(this, 'discussionListJSON', {
             get: function() {
-                return storage[this.fileIndex + ".discussionList"];
+                return storage[this.fileIndex + ".discussionList"] || '{}';
             },
             set: function(discussionList) {
                 this._discussionList = JSON.parse(discussionList);

@@ -111,7 +111,7 @@ define([
         refreshDiscussions();
     };
 
-    comments.onContentChanged = function(fileDesc, content) {
+    comments.onContentChanged = function(fileDesc) {
         currentFileDesc === fileDesc && refreshDiscussions();
     };
 
@@ -359,7 +359,7 @@ define([
 
             // Focus on textarea
             context.$contentInputElt.focus().val(previousContent);
-        }).on('hide.bs.popover', '#wmd-input > .editor-margin', function(evt) {
+        }).on('hide.bs.popover', '#wmd-input > .editor-margin', function() {
             if(!currentContext) {
                 return;
             }

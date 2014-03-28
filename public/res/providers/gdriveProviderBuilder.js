@@ -56,7 +56,8 @@ define([
                         syncAttributes.isRealtime = file.isRealtime;
                         var syncLocations = {};
                         syncLocations[syncAttributes.syncIndex] = syncAttributes;
-                        fileDesc = fileMgr.createFile(file.title, file.content, syncLocations);
+                        var parsingResult = gdriveProvider.parseSerializedContent(file.content);
+                        fileDesc = fileMgr.createFile(file.title, parsingResult.content, parsingResult.discussionList, syncLocations);
                         fileDescList.push(fileDesc);
                     });
                     if(fileDesc !== undefined) {
@@ -122,37 +123,48 @@ define([
             });
         };
 
-        gdriveProvider.syncUp = function(uploadContent, uploadContentCRC, uploadTitle, uploadTitleCRC, syncAttributes, callback) {
-            // Skip if CRC has not changed
-            if(uploadContentCRC == syncAttributes.contentCRC && uploadTitleCRC == syncAttributes.titleCRC) {
-                callback(undefined, false);
-                return;
+        var merge = settings.conflictMode == 'merge';
+        gdriveProvider.syncUp = function(content, contentCRC, title, titleCRC, discussionList, discussionListCRC, syncAttributes, callback) {
+            if(
+                (syncAttributes.contentCRC == contentCRC) && // Content CRC hasn't changed
+                (syncAttributes.titleCRC == titleCRC) && // Content CRC hasn't changed
+                (syncAttributes.discussionListCRC == discussionListCRC) // Discussion list CRC hasn't changed
+            ) {
+                return callback(undefined, false);
             }
-            googleHelper.upload(syncAttributes.id, undefined, uploadTitle, uploadContent, undefined, syncAttributes.etag, accountId, function(error, result) {
+            var uploadedContent = gdriveProvider.serializeContent(content, discussionList);
+            googleHelper.upload(syncAttributes.id, undefined, title, uploadedContent, undefined, syncAttributes.etag, accountId, function(error, result) {
                 if(error) {
                     callback(error, true);
                     return;
                 }
                 syncAttributes.etag = result.etag;
-                syncAttributes.contentCRC = uploadContentCRC;
-                syncAttributes.titleCRC = uploadTitleCRC;
+                if(merge === true) {
+                    // Need to store the whole content for merge
+                    syncAttributes.content = content;
+                    syncAttributes.title = title;
+                    syncAttributes.discussionList = discussionList;
+                }
+                syncAttributes.contentCRC = contentCRC;
+                syncAttributes.titleCRC = titleCRC;
+                syncAttributes.discussionListCRC = discussionListCRC;
                 callback(undefined, true);
             });
         };
 
-        gdriveProvider.syncUpRealtime = function(uploadContent, uploadContentCRC, uploadTitle, uploadTitleCRC, syncAttributes, callback) {
+        gdriveProvider.syncUpRealtime = function(content, contentCRC, title, titleCRC, discussionList, discussionListCRC, syncAttributes, callback) {
             // Skip if title CRC has not changed
-            if(uploadTitleCRC == syncAttributes.titleCRC) {
+            if(titleCRC == syncAttributes.titleCRC) {
                 callback(undefined, false);
                 return;
             }
-            googleHelper.rename(syncAttributes.id, uploadTitle, accountId, function(error, result) {
+            googleHelper.rename(syncAttributes.id, title, accountId, function(error, result) {
                 if(error) {
                     callback(error, true);
                     return;
                 }
                 syncAttributes.etag = result.etag;
-                syncAttributes.titleCRC = uploadTitleCRC;
+                syncAttributes.titleCRC = titleCRC;
                 callback(undefined, true);
             });
         };
@@ -646,7 +658,7 @@ define([
                     var syncAttributes = createSyncAttributes(file.id, file.etag, file.content, file.title);
                     var syncLocations = {};
                     syncLocations[syncAttributes.syncIndex] = syncAttributes;
-                    var fileDesc = fileMgr.createFile(file.title, file.content, syncLocations);
+                    var fileDesc = fileMgr.createFile(file.title, file.content, undefined, syncLocations);
                     fileMgr.selectFile(fileDesc);
                     eventMgr.onMessage('"' + file.title + '" created successfully on ' + providerName + '.');
                 });

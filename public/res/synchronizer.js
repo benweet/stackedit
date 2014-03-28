@@ -47,12 +47,12 @@ define([
             }
         });
     });
-    
+
     // AutoSync configuration
     _.each(providerMap, function(provider) {
         provider.autosyncConfig = utils.retrieveIgnoreError(provider.providerId + ".autosyncConfig") || {};
     });
-    
+
     // Returns true if at least one file has synchronized location
     synchronizer.hasSync = function(provider) {
         return _.some(fileSystem, function(fileDesc) {
@@ -72,6 +72,8 @@ define([
     var uploadContentCRC;
     var uploadTitle;
     var uploadTitleCRC;
+    var uploadDiscussionList;
+    var uploadDiscussionListCRC;
     function locationUp(callback) {
 
         // No more synchronized location for this document
@@ -90,21 +92,30 @@ define([
         }
 
         // Use the specified provider to perform the upload
-        providerSyncUpFunction(uploadContent, uploadContentCRC, uploadTitle, uploadTitleCRC, syncAttributes, function(error, uploadFlag) {
-            if(uploadFlag === true) {
-                // If uploadFlag is true, request another upload cycle
-                uploadCycle = true;
+        providerSyncUpFunction(
+            uploadContent,
+            uploadContentCRC,
+            uploadTitle,
+            uploadTitleCRC,
+            uploadDiscussionList,
+            uploadTitleCRC,
+            uploadDiscussionListCRC,
+            function(error, uploadFlag) {
+                if(uploadFlag === true) {
+                    // If uploadFlag is true, request another upload cycle
+                    uploadCycle = true;
+                }
+                if(error) {
+                    callback(error);
+                    return;
+                }
+                if(uploadFlag) {
+                    // Update syncAttributes in storage
+                    utils.storeAttributes(syncAttributes);
+                }
+                locationUp(callback);
             }
-            if(error) {
-                callback(error);
-                return;
-            }
-            if(uploadFlag) {
-                // Update syncAttributes in storage
-                utils.storeAttributes(syncAttributes);
-            }
-            locationUp(callback);
-        });
+        );
     }
 
     // Recursive function to upload multiple files
@@ -130,6 +141,8 @@ define([
         uploadContentCRC = utils.crc32(uploadContent);
         uploadTitle = fileDesc.title;
         uploadTitleCRC = utils.crc32(uploadTitle);
+        uploadDiscussionList = fileDesc.discussionListJSON;
+        uploadDiscussionListCRC = utils.crc32(uploadDiscussionList);
         locationUp(callback);
     }
 

@@ -126,7 +126,7 @@ define([
             if(error) {
                 return;
             }
-            var fileDesc = fileMgr.createFile(title, content, undefined, true);
+            var fileDesc = fileMgr.createFile(title, content, undefined, undefined, true);
             fileMgr.selectFile(fileDesc);
         });
     });

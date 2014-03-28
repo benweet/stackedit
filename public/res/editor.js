@@ -11,18 +11,6 @@ define([
     'MutationObservers',
     'libs/prism-markdown'
 ], function ($, _, settings, eventMgr, Prism, diff_match_patch, jsondiffpatch, crel) {
-    var diffMatchPatch = new diff_match_patch();
-    var jsonDiffPatch = jsondiffpatch.create({
-        objectHash: function(obj) {
-            return JSON.stringify(obj);
-        },
-        arrays: {
-            detectMove: false,
-        },
-        textDiff: {
-            minLength: 9999999
-        }
-    });
 
     function strSplice(str, i, remove, add) {
         remove = +remove || 0;
@@ -85,6 +73,19 @@ define([
             characterData: true
         });
     }
+
+    var diffMatchPatch = new diff_match_patch();
+    var jsonDiffPatch = jsondiffpatch.create({
+        objectHash: function(obj) {
+            return JSON.stringify(obj);
+        },
+        arrays: {
+            detectMove: false,
+        },
+        textDiff: {
+            minLength: 9999999
+        }
+    });
 
     var previousTextContent;
     var currentMode;

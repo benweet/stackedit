@@ -2,11 +2,12 @@ define([
     "underscore",
     "utils",
     "storage",
+    "settings",
     "classes/Provider",
     "eventMgr",
     "fileMgr",
     "helpers/dropboxHelper"
-], function(_, utils, storage, Provider, eventMgr, fileMgr, dropboxHelper) {
+], function(_, utils, storage, settings, Provider, eventMgr, fileMgr, dropboxHelper) {
 
     var PROVIDER_DROPBOX = "dropbox";
 
@@ -55,7 +56,8 @@ define([
                     var syncAttributes = createSyncAttributes(file.path, file.versionTag, file.content);
                     var syncLocations = {};
                     syncLocations[syncAttributes.syncIndex] = syncAttributes;
-                    var fileDesc = fileMgr.createFile(file.name, file.content, syncLocations);
+                    var parsingResult = dropboxProvider.parseSerializedContent(file.content);
+                    var fileDesc = fileMgr.createFile(file.name, parsingResult.content, parsingResult.discussionList, syncLocations);
                     fileMgr.selectFile(fileDesc);
                     fileDescList.push(fileDesc);
                 });
@@ -76,8 +78,7 @@ define([
                 var syncIndex = createSyncIndex(path);
                 var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
                 if(fileDesc !== undefined) {
-                    eventMgr.onError('"' + fileDesc.title + '" was already imported.');
-                    return;
+                    return eventMgr.onError('"' + fileDesc.title + '" was already imported.');
                 }
                 importPaths.push(path);
             });
@@ -89,8 +90,7 @@ define([
         var path = utils.getInputTextValue("#input-sync-export-dropbox-path", event);
         path = checkPath(path);
         if(path === undefined) {
-            callback(true);
-            return;
+            return callback(true);
         }
         // Check that file is not synchronized with another one
         var syncIndex = createSyncIndex(path);
@@ -98,33 +98,39 @@ define([
         if(fileDesc !== undefined) {
             var existingTitle = fileDesc.title;
             eventMgr.onError('File path is already synchronized with "' + existingTitle + '".');
-            callback(true);
-            return;
+            return callback(true);
         }
         dropboxHelper.upload(path, content, function(error, result) {
             if(error) {
-                callback(error);
-                return;
+                return callback(error);
             }
             var syncAttributes = createSyncAttributes(result.path, result.versionTag, content);
             callback(undefined, syncAttributes);
         });
     };
 
-    dropboxProvider.syncUp = function(uploadContent, uploadContentCRC, uploadTitle, uploadTitleCRC, syncAttributes, callback) {
-        var syncContentCRC = syncAttributes.contentCRC;
-        // Skip if CRC has not changed
-        if(uploadContentCRC == syncContentCRC) {
-            callback(undefined, false);
-            return;
+    var merge = settings.conflictMode == 'merge';
+    dropboxProvider.syncUp = function(content, contentCRC, title, titleCRC, discussionList, discussionListCRC, syncAttributes, callback) {
+        if(
+            (syncAttributes.contentCRC == contentCRC) && // Content CRC hasn't changed
+            (syncAttributes.discussionListCRC == discussionListCRC) // Discussion list CRC hasn't changed
+        ) {
+            return callback(undefined, false);
         }
-        dropboxHelper.upload(syncAttributes.path, uploadContent, function(error, result) {
+        var uploadedContent = dropboxProvider.serializeContent(content, discussionList);
+        dropboxHelper.upload(syncAttributes.path, uploadedContent, function(error, result) {
             if(error) {
-                callback(error, true);
-                return;
+                return callback(error, true);
             }
             syncAttributes.version = result.versionTag;
-            syncAttributes.contentCRC = uploadContentCRC;
+            if(merge === true) {
+                // Need to store the whole content for merge
+                syncAttributes.content = content;
+                syncAttributes.discussionList = discussionList;
+            }
+            syncAttributes.contentCRC = contentCRC;
+            syncAttributes.discussionListCRC = discussionListCRC;
+
             callback(undefined, true);
         });
     };
@@ -133,8 +139,7 @@ define([
         var lastChangeId = storage[PROVIDER_DROPBOX + ".lastChangeId"];
         dropboxHelper.checkChanges(lastChangeId, function(error, changes, newChangeId) {
             if(error) {
-                callback(error);
-                return;
+                return callback(error);
             }
             var interestingChanges = [];
             _.each(changes, function(change) {
@@ -164,8 +169,7 @@ define([
                     var syncAttributes = change.syncAttributes;
                     var syncIndex = syncAttributes.syncIndex;
                     var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
-                    // No file corresponding (file may have been deleted
-                    // locally)
+                    // No file corresponding (file may have been deleted locally)
                     if(fileDesc === undefined) {
                         return;
                     }
@@ -174,15 +178,22 @@ define([
                     if(change.wasRemoved === true) {
                         eventMgr.onError('"' + localTitle + '" has been removed from Dropbox.');
                         fileDesc.removeSyncLocation(syncAttributes);
-                        eventMgr.onSyncRemoved(fileDesc, syncAttributes);
-                        return;
+                        return eventMgr.onSyncRemoved(fileDesc, syncAttributes);
                     }
                     var localContent = fileDesc.content;
                     var localContentChanged = syncAttributes.contentCRC != utils.crc32(localContent);
+                    var localDiscussionList = fileDesc.discussionListJSON;
+                    var localDiscussionListChanged = syncAttributes.discussionListCRC != utils.crc32(localDiscussionList);
                     var file = change.stat;
-                    var remoteContentCRC = utils.crc32(file.content);
+                    var parsingResult = dropboxProvider.parseSerializedContent(file.content);
+                    var remoteContent = parsingResult.content;
+                    var remoteDiscussionList = parsingResult.discussionList;
+                    var remoteContentCRC = utils.crc32(remoteContent);
                     var remoteContentChanged = syncAttributes.contentCRC != remoteContentCRC;
-                    var fileContentChanged = localContent != file.content;
+                    var remoteDiscussionListCRC = utils.crc32(remoteDiscussionList);
+                    var remoteDiscussionListChanged = syncAttributes.discussionListCRC != remoteDiscussionListCRC;
+                    var fileContentChanged = localContent != remoteContent;
+                    var fileDiscussionListChanged = localDiscussionList != remoteDiscussionList;
                     // Conflict detection
                     if(fileContentChanged === true && localContentChanged === true && remoteContentChanged === true) {
                         fileMgr.createFile(localTitle + " (backup)", localContent);
@@ -211,8 +222,7 @@ define([
     dropboxProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
         var path = checkPath(publishAttributes.path);
         if(path === undefined) {
-            callback(true);
-            return;
+            return callback(true);
         }
         dropboxHelper.upload(path, content, callback);
     };

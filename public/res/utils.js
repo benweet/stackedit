@@ -671,10 +671,10 @@ define([
     ];
     utils.crc32 = function(str) {
         var n = 0, crc = -1;
-        for ( var i = 0; i < str.length; i++) {
-            n = (crc ^ str.charCodeAt(i)) & 0xFF;
+        str.split('').forEach(function(char) {
+            n = (crc ^ char.charCodeAt(0)) & 0xFF;
             crc = (crc >>> 8) ^ mHash[n];
-        }
+        });
         crc = crc ^ (-1);
         if(crc < 0) {
             crc = 0xFFFFFFFF + crc + 1;
@@ -688,7 +688,7 @@ define([
             cb();
         }
         console.log('Run 10,000 times in ' + (Date.now() - startTime) + 'ms');
-    }
+    };
 
     return utils;
 });

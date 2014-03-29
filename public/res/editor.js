@@ -64,14 +64,22 @@ define([
     });
 
     var contentObserver;
+    var isWatching = false;
     function noWatch(cb) {
-        contentObserver.disconnect();
-        cb();
-        contentObserver.observe(editor.contentElt, {
-            childList: true,
-            subtree: true,
-            characterData: true
-        });
+        if(isWatching === true) {
+            contentObserver.disconnect();
+            isWatching = false;
+            cb();
+            isWatching = true;
+            contentObserver.observe(editor.contentElt, {
+                childList: true,
+                subtree: true,
+                characterData: true
+            });
+        }
+        else {
+            cb();
+        }
     }
 
     var diffMatchPatch = new diff_match_patch();
@@ -147,10 +155,7 @@ define([
             // Update editor
             noWatch(function() {
                 if(previousTextContent != state.content) {
-                    inputElt.value = state.content;
-                    fileDesc.content = state.content;
-                    eventMgr.onContentChanged(fileDesc, state.content);
-                    previousTextContent = state.content;
+                    inputElt.setValueSilently(state.content);
                 }
                 inputElt.setSelectionStartEnd(selectionStart, selectionEnd);
                 var discussionListJSON = fileDesc.discussionListJSON;
@@ -501,6 +506,7 @@ define([
         editor.$marginElt = $(editor.marginElt);
 
         contentObserver = new MutationObserver(checkContentChange);
+        isWatching = true;
         contentObserver.observe(editor.contentElt, {
             childList: true,
             subtree: true,
@@ -549,6 +555,18 @@ define([
             }
         });
 
+        inputElt.setValueSilently = function(value) {
+            noWatch(function() {
+                if(!/\n$/.test(value)) {
+                    value += '\n';
+                }
+                inputElt.value = value;
+                fileDesc.content = value;
+                previousTextContent = value;
+                eventMgr.onContentChanged(fileDesc, value);
+            });
+        };
+
         Object.defineProperty(inputElt, 'selectionStart', {
             get: function () {
                 return selectionStart;
@@ -573,7 +591,7 @@ define([
             configurable: true
         });
 
-        inputElt.setSelectionStartEnd = function (start, end) {
+        inputElt.setSelectionStartEnd = function(start, end) {
             selectionStart = start;
             selectionEnd = end;
             fileDesc.editorStart = selectionStart;

@@ -40,8 +40,16 @@ define([
         });
     };
 
+    var fileDesc;
+    markdownSectionParser.onFileSelected = function(fileDescParam) {
+        fileDesc = fileDescParam;
+    };
+
     var sectionCounter = 0;
-    function parseFileContent(fileDesc, content) {
+    function parseFileContent(fileDescParam, content) {
+        if(fileDescParam !== fileDesc) {
+            return;
+        }
         var frontMatter = (fileDesc.frontMatter || {})._frontMatter || '';
         var text = content.substring(frontMatter.length);
         var tmpText = text + "\n\n";

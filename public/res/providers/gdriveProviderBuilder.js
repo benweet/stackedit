@@ -56,8 +56,8 @@ define([
                         syncAttributes.isRealtime = file.isRealtime;
                         var syncLocations = {};
                         syncLocations[syncAttributes.syncIndex] = syncAttributes;
-                        var parsingResult = gdriveProvider.parseSerializedContent(file.content);
-                        fileDesc = fileMgr.createFile(file.title, parsingResult.content, parsingResult.discussionList, syncLocations);
+                        var parsedContent = gdriveProvider.parseSerializedContent(file.content);
+                        fileDesc = fileMgr.createFile(file.title, parsedContent.content, parsedContent.discussionList, syncLocations);
                         fileDescList.push(fileDesc);
                     });
                     if(fileDesc !== undefined) {
@@ -200,19 +200,22 @@ define([
                         callback(error);
                         return;
                     }
-                    _.each(changes, function(change) {
+                    function merge() {
+                        if(changes.length === 0) {
+                            storage[accountId + ".gdrive.lastChangeId"] = newChangeId;
+                            return callback();
+                        }
+                        var change = changes.pop();
                         var syncAttributes = change.syncAttributes;
                         var syncIndex = syncAttributes.syncIndex;
                         var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
-                        // No file corresponding (file may have been deleted
-                        // locally)
+                        // No file corresponding (file may have been deleted locally)
                         if(fileDesc === undefined) {
                             return;
                         }
-                        var localTitle = fileDesc.title;
                         // File deleted
                         if(change.deleted === true) {
-                            eventMgr.onError('"' + localTitle + '" has been removed from ' + providerName + '.');
+                            eventMgr.onError('"' + fileDesc.title + '" has been removed from ' + providerName + '.');
                             fileDesc.removeSyncLocation(syncAttributes);
                             eventMgr.onSyncRemoved(fileDesc, syncAttributes);
                             if(syncAttributes.isRealtime === true && fileMgr.currentFile === fileDesc) {
@@ -220,46 +223,28 @@ define([
                             }
                             return;
                         }
-                        var localTitleChanged = syncAttributes.titleCRC != utils.crc32(localTitle);
-                        var localContent = fileDesc.content;
-                        var localContentChanged = syncAttributes.contentCRC != utils.crc32(localContent);
                         var file = change.file;
-                        var remoteTitleCRC = utils.crc32(file.title);
-                        var remoteTitleChanged = syncAttributes.titleCRC != remoteTitleCRC;
-                        var fileTitleChanged = localTitle != file.title;
-                        var remoteContentCRC = utils.crc32(file.content);
-                        var remoteContentChanged = syncAttributes.contentCRC != remoteContentCRC;
-                        var fileContentChanged = localContent != file.content;
-                        // Conflict detection
-                        if((fileTitleChanged === true && localTitleChanged === true && remoteTitleChanged === true) || (!syncAttributes.isRealtime && fileContentChanged === true && localContentChanged === true && remoteContentChanged === true)) {
-                            fileMgr.createFile(localTitle + " (backup)", localContent);
-                            eventMgr.onMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
-                        }
-                        // If file title changed
-                        if(fileTitleChanged && remoteTitleChanged === true) {
-                            fileDesc.title = file.title;
-                            eventMgr.onTitleChanged(fileDesc);
-                            eventMgr.onMessage('"' + localTitle + '" has been renamed to "' + file.title + '" on ' + providerName + '.');
-                        }
-                        // If file content changed
-                        if(!syncAttributes.isRealtime && fileContentChanged && remoteContentChanged === true) {
-                            fileDesc.content = file.content;
-                            eventMgr.onContentChanged(fileDesc, file.content);
-                            eventMgr.onMessage('"' + file.title + '" has been updated from ' + providerName + '.');
-                            if(fileMgr.currentFile === fileDesc) {
-                                fileMgr.selectFile(); // Refresh editor
-                            }
-                        }
+                        var parsedContent = gdriveProvider.parseSerializedContent(file.content);
+                        var remoteContent = parsedContent.content;
+                        var remoteTitle = file.title;
+                        var remoteDiscussionList = parsedContent.discussionList;
+                        var remoteCRC = gdriveProvider.syncMerge(fileDesc, syncAttributes, remoteContent, remoteTitle, remoteDiscussionList);
+
                         // Update syncAttributes
                         syncAttributes.etag = file.etag;
-                        if(!syncAttributes.isRealtime) {
-                            syncAttributes.contentCRC = remoteContentCRC;
+                        if(merge === true) {
+                            // Need to store the whole content for merge
+                            syncAttributes.content = remoteContent;
+                            syncAttributes.title = remoteTitle;
+                            syncAttributes.discussionList = remoteDiscussionList;
                         }
-                        syncAttributes.titleCRC = remoteTitleCRC;
+                        syncAttributes.contentCRC = remoteCRC.contentCRC;
+                        syncAttributes.titleCRC = remoteCRC.titleCRC;
+                        syncAttributes.discussionListCRC = remoteCRC.discussionListCRC;
                         utils.storeAttributes(syncAttributes);
-                    });
-                    storage[accountId + ".gdrive.lastChangeId"] = newChangeId;
-                    callback();
+                        setTimeout(merge, 5);
+                    }
+                    setTimeout(merge, 5);
                 });
             });
         };

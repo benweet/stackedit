@@ -225,10 +225,8 @@ define([
     var $previewContentsElt;
     eventMgr.onAsyncPreview = function() {
         logger.log("onAsyncPreview");
-        logger.log("Conversion time: " + (new Date() - eventMgr.previewStartTime));
         function recursiveCall(callbackList) {
             var callback = callbackList.length ? callbackList.shift() : function() {
-                logger.log("Preview time: " + (new Date() - eventMgr.previewStartTime));
                 _.defer(function() {
                     var html = "";
                     _.each(previewContentsElt.children, function(elt) {

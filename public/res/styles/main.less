@@ -22,7 +22,7 @@
 @secondary-bg: lighten(@secondary-desaturated, 45%);
 @secondary-bg-light: lighten(@secondary-desaturated, 47%);
 @secondary-bg-lighter: #fff;
-@secondary-color: @primary-desaturated;
+@secondary-color: lighten(@primary-desaturated, 10%);
 @secondary-color-dark: darken(@secondary-color, 12.5%);
 @secondary-color-darker: darken(@secondary-color, 25%);
 @secondary-color-darkest: darken(@secondary-color, 37.5%);
@@ -34,7 +34,7 @@
 @tertiary-bg: #fff;
 @tertiary-color-lighter: fade(@tertiary-color, 40%);
 @tertiary-color-light: fade(@tertiary-color, 60%);
-@tertiary-color: darken(@secondary-desaturated, 7.5%);
+@tertiary-color: darken(@secondary-desaturated, 5%);
 @tertiary-color-dark: darken(@tertiary-color, 15%);
 @tertiary-color-darker: darken(@tertiary-color, 30%);
 
@@ -1050,18 +1050,25 @@ a {
     background-color: @tertiary-bg;
     overflow: auto;
     white-space: pre-wrap;
-    word-break: break-word;
+    word-wrap: break-word;
     > .editor-content {
         padding-bottom: 230px;
     }
     > .editor-margin {
         position: absolute;
 		top: 0;
-		.icon-comment {
+		.discussion {
+			font-size: 18px;
 			&.new {
 				color: fade(@tertiary-color, 10%);
 				&:hover, &.active, &.active:hover {
 					color: fade(@tertiary-color, 35%) !important;
+				}
+			}
+			&.added {
+				color: fade(@label-warning-bg, 45%);
+				&:hover, &.active, &.active:hover {
+					color: fade(@label-warning-bg, 80%) !important;
 				}
 			}
 			&.replied {
@@ -1070,10 +1077,14 @@ a {
 					color: fade(@label-danger-bg, 80%) !important;
 				}
 			}
-			&.added {
-				color: fade(@label-warning-bg, 45%);
+			&.icon-fork {
+				font-size: 22px;
+				color: fade(@label-danger-bg, 70%);
 				&:hover, &.active, &.active:hover {
-					color: fade(@label-warning-bg, 80%) !important;
+					color: @label-danger-bg !important;
+				}
+				&:before {
+					margin-right: 0;
 				}
 			}
 			position: absolute;

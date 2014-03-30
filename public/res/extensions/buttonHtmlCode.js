@@ -12,7 +12,7 @@ define([
     buttonHtmlCode.defaultConfig = {
         template: "<%= documentHTML %>",
     };
-    
+
     buttonHtmlCode.onLoadSettings = function() {
         utils.setInputValue("#textarea-html-code-template", buttonHtmlCode.config.template);
     };
@@ -35,28 +35,14 @@ define([
         selectedFileDesc = fileDesc;
     };
 
-    var textareaElt;
-    buttonHtmlCode.onPreviewFinished = function(htmlWithComments, htmlWithoutComments) {
-        try {
-            var htmlCode = _.template(buttonHtmlCode.config.template, {
-                documentTitle: selectedFileDesc.title,
-                documentMarkdown: selectedFileDesc.content,
-                strippedDocumentMarkdown: selectedFileDesc.content.substring(selectedFileDesc.frontMatter ? selectedFileDesc.frontMatter._frontMatter.length : 0),
-                documentHTML: htmlWithoutComments,
-                documentHTMLWithComments: htmlWithComments,
-                frontMatter: selectedFileDesc.frontMatter,
-                publishAttributes: undefined,
-            });
-            textareaElt.value = htmlCode;
-        }
-        catch(e) {
-            eventMgr.onError(e);
-            return e.message;
-        }
+    var htmlWithComments, htmlWithoutComments;
+    buttonHtmlCode.onPreviewFinished = function(htmlWithCommentsParam, htmlWithoutCommentsParam) {
+        htmlWithComments = htmlWithCommentsParam;
+        htmlWithoutComments = htmlWithoutCommentsParam;
     };
 
     buttonHtmlCode.onReady = function() {
-        textareaElt = document.getElementById('input-html-code');
+        var textareaElt = document.getElementById('input-html-code');
         $(".action-html-code").click(function() {
             _.defer(function() {
                 $("#input-html-code").each(function() {
@@ -66,6 +52,22 @@ define([
                     this.select();
                 });
             });
+        }).parent().on('show.bs.dropdown', function() {
+            try {
+                var htmlCode = _.template(buttonHtmlCode.config.template, {
+                    documentTitle: selectedFileDesc.title,
+                    documentMarkdown: selectedFileDesc.content,
+                    strippedDocumentMarkdown: selectedFileDesc.content.substring(selectedFileDesc.frontMatter ? selectedFileDesc.frontMatter._frontMatter.length : 0),
+                    documentHTML: htmlWithoutComments,
+                    documentHTMLWithComments: htmlWithComments,
+                    frontMatter: selectedFileDesc.frontMatter,
+                    publishAttributes: undefined,
+                });
+                textareaElt.value = htmlCode;
+            }
+            catch(e) {
+                eventMgr.onError(e);
+            }
         });
     };
 

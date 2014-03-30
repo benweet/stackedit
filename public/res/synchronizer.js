@@ -78,8 +78,7 @@ define([
 
         // No more synchronized location for this document
         if(uploadSyncAttributesList.length === 0) {
-            fileUp(callback);
-            return;
+            return fileUp(callback);
         }
 
         // Dequeue a synchronized location
@@ -98,16 +97,15 @@ define([
             uploadTitle,
             uploadTitleCRC,
             uploadDiscussionList,
-            uploadTitleCRC,
             uploadDiscussionListCRC,
+            syncAttributes,
             function(error, uploadFlag) {
                 if(uploadFlag === true) {
                     // If uploadFlag is true, request another upload cycle
                     uploadCycle = true;
                 }
                 if(error) {
-                    callback(error);
-                    return;
+                    return callback(error);
                 }
                 if(uploadFlag) {
                     // Update syncAttributes in storage
@@ -124,16 +122,14 @@ define([
 
         // No more fileDesc to synchronize
         if(uploadFileList.length === 0) {
-            syncUp(callback);
-            return;
+            return syncUp(callback);
         }
 
         // Dequeue a fileDesc to synchronize
         var fileDesc = uploadFileList.pop();
         uploadSyncAttributesList = _.values(fileDesc.syncLocations);
         if(uploadSyncAttributesList.length === 0) {
-            fileUp(callback);
-            return;
+            return fileUp(callback);
         }
 
         // Get document title/content
@@ -164,22 +160,19 @@ define([
     var providerList = [];
     function providerDown(callback) {
         if(providerList.length === 0) {
-            callback();
-            return;
+            return callback();
         }
         var provider = providerList.pop();
 
         // Check that provider has files to sync
         if(!synchronizer.hasSync(provider)) {
-            providerDown(callback);
-            return;
+            return providerDown(callback);
         }
 
         // Perform provider's syncDown
         provider.syncDown(function(error) {
             if(error) {
-                callback(error);
-                return;
+                return callback(error);
             }
             providerDown(callback);
         });
@@ -354,8 +347,7 @@ define([
 
                 if(isRealtime) {
                     if(_.size(fileDesc.syncLocations) > 0) {
-                        eventMgr.onError("Real time collaborative document can't be synchronized with multiple locations");
-                        return;
+                        return eventMgr.onError("Real time collaborative document can't be synchronized with multiple locations");
                     }
                     // Perform the provider's real time export
                     provider.exportRealtimeFile(event, fileDesc.title, fileDesc.content, function(error, syncAttributes) {

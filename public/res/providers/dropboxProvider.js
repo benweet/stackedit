@@ -56,8 +56,8 @@ define([
                     var syncAttributes = createSyncAttributes(file.path, file.versionTag, file.content);
                     var syncLocations = {};
                     syncLocations[syncAttributes.syncIndex] = syncAttributes;
-                    var parsingResult = dropboxProvider.parseSerializedContent(file.content);
-                    var fileDesc = fileMgr.createFile(file.name, parsingResult.content, parsingResult.discussionList, syncLocations);
+                    var parsedContent = dropboxProvider.parseSerializedContent(file.content);
+                    var fileDesc = fileMgr.createFile(file.name, parsedContent.content, parsedContent.discussionList, syncLocations);
                     fileMgr.selectFile(fileDesc);
                     fileDescList.push(fileDesc);
                 });
@@ -165,7 +165,12 @@ define([
                     callback(error);
                     return;
                 }
-                _.each(changes, function(change) {
+                function merge() {
+                    if(changes.length === 0) {
+                        storage[PROVIDER_DROPBOX + ".lastChangeId"] = newChangeId;
+                        return callback();
+                    }
+                    var change = changes.pop();
                     var syncAttributes = change.syncAttributes;
                     var syncIndex = syncAttributes.syncIndex;
                     var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
@@ -173,48 +178,30 @@ define([
                     if(fileDesc === undefined) {
                         return;
                     }
-                    var localTitle = fileDesc.title;
                     // File deleted
                     if(change.wasRemoved === true) {
-                        eventMgr.onError('"' + localTitle + '" has been removed from Dropbox.');
+                        eventMgr.onError('"' + fileDesc.title + '" has been removed from Dropbox.');
                         fileDesc.removeSyncLocation(syncAttributes);
                         return eventMgr.onSyncRemoved(fileDesc, syncAttributes);
                     }
-                    var localContent = fileDesc.content;
-                    var localContentChanged = syncAttributes.contentCRC != utils.crc32(localContent);
-                    var localDiscussionList = fileDesc.discussionListJSON;
-                    var localDiscussionListChanged = syncAttributes.discussionListCRC != utils.crc32(localDiscussionList);
                     var file = change.stat;
-                    var parsingResult = dropboxProvider.parseSerializedContent(file.content);
-                    var remoteContent = parsingResult.content;
-                    var remoteDiscussionList = parsingResult.discussionList;
-                    var remoteContentCRC = utils.crc32(remoteContent);
-                    var remoteContentChanged = syncAttributes.contentCRC != remoteContentCRC;
-                    var remoteDiscussionListCRC = utils.crc32(remoteDiscussionList);
-                    var remoteDiscussionListChanged = syncAttributes.discussionListCRC != remoteDiscussionListCRC;
-                    var fileContentChanged = localContent != remoteContent;
-                    var fileDiscussionListChanged = localDiscussionList != remoteDiscussionList;
-                    // Conflict detection
-                    if(fileContentChanged === true && localContentChanged === true && remoteContentChanged === true) {
-                        fileMgr.createFile(localTitle + " (backup)", localContent);
-                        eventMgr.onMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
-                    }
-                    // If file content changed
-                    if(fileContentChanged && remoteContentChanged === true) {
-                        fileDesc.content = file.content;
-                        eventMgr.onContentChanged(fileDesc, file.content);
-                        eventMgr.onMessage('"' + localTitle + '" has been updated from Dropbox.');
-                        if(fileMgr.currentFile === fileDesc) {
-                            fileMgr.selectFile(); // Refresh editor
-                        }
-                    }
+                    var parsedContent = dropboxProvider.parseSerializedContent(file.content);
+                    var remoteContent = parsedContent.content;
+                    var remoteDiscussionList = parsedContent.discussionList;
+                    var remoteCRC = dropboxProvider.syncMerge(fileDesc, syncAttributes, remoteContent, fileDesc.title, remoteDiscussionList);
                     // Update syncAttributes
                     syncAttributes.version = file.versionTag;
-                    syncAttributes.contentCRC = remoteContentCRC;
+                    if(merge === true) {
+                        // Need to store the whole content for merge
+                        syncAttributes.content = remoteContent;
+                        syncAttributes.discussionList = remoteDiscussionList;
+                    }
+                    syncAttributes.contentCRC = remoteCRC.contentCRC;
+                    syncAttributes.discussionListCRC = remoteCRC.discussionListCRC;
                     utils.storeAttributes(syncAttributes);
-                });
-                storage[PROVIDER_DROPBOX + ".lastChangeId"] = newChangeId;
-                callback();
+                    setTimeout(merge, 5);
+                }
+                setTimeout(merge, 5);
             });
         });
     };

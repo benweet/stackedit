@@ -1,11 +1,17 @@
 <div class="discussion-comment-list"><%= commentList %></div>
-<div class="new-comment-block">
+<div class="new-comment-block<%= !type ? '': ' hide' %>">
     <div class="form-group">
         <input class="form-control input-comment-author" placeholder="Your name"></input>
         <textarea class="form-control input-comment-content"></textarea>
     </div>
     <div class="form-group text-right">
         <button class="btn btn-primary action-add-comment">Add</button>
+    </div>
+</div>
+<div class="conflict-review<%= type == 'conflict' ? '': ' hide' %>">
+    <p>Multiple users have made conflicting modifications that you have to review.</p>
+    <div class="form-group text-right">
+        <button class="btn btn-primary action-remove-discussion-confirm">Mark as resolved</button>
     </div>
 </div>
 <div class="remove-discussion-confirm hide">

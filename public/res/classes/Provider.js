@@ -72,9 +72,6 @@ define([
         objectHash: function(obj) {
             return JSON.stringify(obj);
         },
-        arrays: {
-            detectMove: false,
-        },
         textDiff: {
             minLength: 9999999
         }
@@ -82,25 +79,75 @@ define([
 
     var merge = settings.conflictMode == 'merge';
     Provider.prototype.syncMerge = function(fileDesc, syncAttributes, remoteContent, remoteTitle, remoteDiscussionListJSON) {
-        var lineArray = [];
-        var lineHash = {};
 
-        function linesToChars(text) {
-            var chars = '';
-            var lineArrayLength = lineArray.length;
-            text.split('\n').forEach(function(line) {
-                if(lineHash.hasOwnProperty(line)) {
-                    chars += String.fromCharCode(lineHash[line]);
-                } else {
-                    chars += String.fromCharCode(lineArrayLength);
-                    lineHash[line] = lineArrayLength;
-                    lineArray[lineArrayLength++] = line;
+        function cleanupDiffs(diffs) {
+            var result = [];
+            var removeDiff = [-1, ''];
+            var addDiff = [1, ''];
+            var distance = 20;
+            diffs.forEach(function(diff) {
+                var diffType = diff[0];
+                var diffText = diff[1];
+                if(diffType === 0) {
+                    if(diffText.length > distance) {
+                        if(removeDiff[1] || addDiff[1]) {
+                            var match = /\S+/.exec(diffText);
+                            if(match) {
+                                var prefixOffset = match.index + match[0].length;
+                                var prefix = diffText.substring(0, prefixOffset);
+                                diffText = diffText.substring(prefixOffset);
+                                removeDiff[1] += prefix;
+                                addDiff[1] += prefix;
+                            }
+                        }
+                        if(diffText) {
+                            var suffixOffset = diffText.length;
+                            while(suffixOffset && /\S/.test(diffText[suffixOffset - 1])) {
+                                suffixOffset--;
+                            }
+                            var suffix = diffText.substring(suffixOffset);
+                            diffText = diffText.substring(0, suffixOffset);
+                            if(diffText.length > distance) {
+                                removeDiff[1] && result.push(removeDiff);
+                                removeDiff = [-1, ''];
+                                addDiff[1] && result.push(addDiff);
+                                addDiff = [1, ''];
+                                result.push([0, diffText]);
+                            }
+                            else {
+                                removeDiff[1] += diffText;
+                                addDiff[1] += diffText;
+                            }
+                            removeDiff[1] += suffix;
+                            addDiff[1] += suffix;
+                        }
+                    }
+                    else {
+                        removeDiff[1] += diffText;
+                        addDiff[1] += diffText;
+                    }
+                }
+                else if(diffType === -1) {
+                    removeDiff[1] += diffText;
+                }
+                else if(diffType === 1) {
+                    addDiff[1] += diffText;
                 }
             });
-            return chars;
+            if(removeDiff[1] == addDiff[1]) {
+                result.push([0, addDiff[1]]);
+            }
+            else {
+                removeDiff[1] && result.push(removeDiff);
+                addDiff[1] && result.push(addDiff);
+            }
+            return result;
         }
 
         function moveComments(oldTextContent, newTextContent, discussionList) {
+            if(!discussionList.length) {
+                return;
+            }
             var changes = diffMatchPatch.diff_main(oldTextContent, newTextContent);
             var changed = false;
             var startOffset = 0;
@@ -121,20 +168,20 @@ define([
                     // selectionEnd
                     if(discussion.selectionEnd >= endOffset) {
                         discussion.selectionEnd += diffOffset;
-                        changed = true;
+                        discussion.discussionIndex && (changed = true);
                     }
                     else if(discussion.selectionEnd > startOffset) {
                         discussion.selectionEnd = startOffset;
-                        changed = true;
+                        discussion.discussionIndex && (changed = true);
                     }
                     // selectionStart
                     if(discussion.selectionStart >= endOffset) {
                         discussion.selectionStart += diffOffset;
-                        changed = true;
+                        discussion.discussionIndex && (changed = true);
                     }
                     else if(discussion.selectionStart > startOffset) {
                         discussion.selectionStart = startOffset;
-                        changed = true;
+                        discussion.discussionIndex && (changed = true);
                     }
                 });
                 startOffset = endOffset;
@@ -157,28 +204,32 @@ define([
         var remoteDiscussionListCRC = utils.crc32(remoteDiscussionListJSON);
 
         // Check content
-        var contentChanged = localContent != remoteContent;
         var localContentChanged = syncAttributes.contentCRC != localContentCRC;
         var remoteContentChanged = syncAttributes.contentCRC != remoteContentCRC;
-        var contentConflict = contentChanged && localContentChanged && remoteContentChanged;
-        contentChanged = contentChanged && remoteContentChanged;
+        var contentChanged = localContent != remoteContent && remoteContentChanged;
+        var contentConflict = contentChanged && localContentChanged;
 
         // Check title
         syncAttributes.titleCRC = syncAttributes.titleCRC || localTitleCRC; // Not synchronized with Dropbox
-        var titleChanged = localTitle != remoteTitle;
         var localTitleChanged = syncAttributes.titleCRC != localTitleCRC;
         var remoteTitleChanged = syncAttributes.titleCRC != remoteTitleCRC;
-        var titleConflict = titleChanged && localTitleChanged && remoteTitleChanged;
-        titleChanged = titleChanged && remoteTitleChanged;
+        var titleChanged = localTitle != remoteTitle && remoteTitleChanged;
+        var titleConflict = titleChanged && localTitleChanged;
 
         // Check discussionList
-        var discussionListChanged = localDiscussionListJSON != remoteDiscussionListJSON;
         var localDiscussionListChanged = syncAttributes.discussionListCRC != localDiscussionListCRC;
         var remoteDiscussionListChanged = syncAttributes.discussionListCRC != remoteDiscussionListCRC;
-        var discussionListConflict = discussionListChanged && localDiscussionListChanged && remoteDiscussionListChanged;
-        discussionListChanged = discussionListChanged && remoteDiscussionListChanged;
+        var discussionListChanged = localDiscussionListJSON != remoteDiscussionListJSON && remoteDiscussionListChanged;
+        var discussionListConflict = discussionListChanged && localDiscussionListChanged;
 
         var conflictList = [];
+        var newContent = remoteContent;
+        var newTitle = remoteTitle;
+        var newDiscussionList = remoteDiscussionList;
+        var adjustLocalDiscussionList = false;
+        var adjustRemoteDiscussionList = false;
+        var mergeDiscussionList = false;
+        var diffs, patch;
         if(
             (!merge && (contentConflict || titleConflict || discussionListConflict)) ||
             (contentConflict && syncAttributes.content === undefined) ||
@@ -189,25 +240,21 @@ define([
             eventMgr.onMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
         }
         else {
-            var oldDiscussionList;
-            var patch, delta;
             if(contentConflict) {
-                // Patch content (line mode)
+                // Patch content
                 var oldContent = syncAttributes.content;
-                /*
-                var oldContentLines = linesToChars(syncAttributes.content);
-                var localContentLines = linesToChars(localContent);
-                var remoteContentLines = linesToChars(remoteContent);
-                */
-                patch = diffMatchPatch.patch_make(oldContent, localContent);
+                diffs = diffMatchPatch.diff_main(oldContent, localContent);
+                diffMatchPatch.diff_cleanupSemantic(diffs);
+                patch = diffMatchPatch.patch_make(oldContent, diffs);
                 var patchResult = diffMatchPatch.patch_apply(patch, remoteContent);
-                var newContent = patchResult[0];
+                newContent = patchResult[0];
                 if(patchResult[1].some(function(patchSuccess) {
                     return !patchSuccess;
                 })) {
-                    // Conflicts (some modifications have not been applied properly)
-                    var diffs = diffMatchPatch.diff_main(localContent, newContent);
-                    diffMatchPatch.diff_cleanupSemantic(diffs);
+                    // Remaining conflicts
+                    diffs = diffMatchPatch.diff_main(localContent, newContent);
+                    diffs = cleanupDiffs(diffs);
+
                     newContent = '';
                     var conflict;
                     diffs.forEach(function(diff) {
@@ -231,84 +278,105 @@ define([
                         conflictList.push(conflict);
                     }
                 }
-                /*
-                remoteContentLines = diffMatchPatch.patch_apply(patch, remoteContentLines)[0];
-                var newContent = remoteContentLines.split('').map(function(char) {
-                    return lineArray[char.charCodeAt(0)];
-                }).join('\n');
-                */
+            }
 
-                // Whether we take the local discussionList into account
-                if(localDiscussionListChanged || !remoteDiscussionListChanged) {
-                    // Move local discussion according to content patch
-                    var localDiscussionArray = _.values(localDiscussionList);
-                    fileDesc.newDiscussion && localDiscussionArray.push(fileDesc.newDiscussion);
-                    discussionListChanged |= moveComments(localContent, newContent, localDiscussionArray);
+            if(contentChanged) {
+                if(localDiscussionListChanged) {
+                    adjustLocalDiscussionList = true;
                 }
-
                 if(remoteDiscussionListChanged) {
-                    // Move remote discussion according to content patch
-                    var remoteDiscussionArray = _.values(remoteDiscussionList);
-                    moveComments(remoteContent, newContent, remoteDiscussionArray);
-
-                    if(localDiscussionListChanged) {
-                        // Patch remote discussionList with local modifications
-                        oldDiscussionList = JSON.parse(syncAttributes.discussionList);
-                        delta = jsonDiffPatch.diff(oldDiscussionList, localDiscussionList);
-                        jsonDiffPatch.patch(remoteDiscussionList, delta);
-                    }
+                    adjustRemoteDiscussionList = true;
                 }
                 else {
-                    remoteDiscussionList = localDiscussionList;
+                    adjustLocalDiscussionList = true;
+                    newDiscussionList = localDiscussionList;
                 }
-
-                if(conflictList.length) {
-                    discussionListChanged = true;
-                    // Add conflicts to discussionList
-                    conflictList.forEach(function(conflict) {
-                        // Create discussion index
-                        var discussionIndex;
-                        do {
-                            discussionIndex = utils.randomString() + utils.randomString(); // Increased size to prevent collision
-                        } while(_.has(remoteDiscussionList, discussionIndex));
-                        conflict.discussionIndex = discussionIndex;
-                        remoteDiscussionList[discussionIndex] = conflict;
-                    });
-                }
-
-                remoteContent = newContent;
             }
-            else if(discussionListConflict) {
-                // Patch remote discussionList with local modifications
-                oldDiscussionList = JSON.parse(syncAttributes.discussionList);
-                delta = jsonDiffPatch.diff(oldDiscussionList, localDiscussionList);
-                jsonDiffPatch.patch(remoteDiscussionList, delta);
+
+            if(discussionListConflict) {
+                mergeDiscussionList = true;
             }
+
             if(titleConflict) {
                 // Patch title
                 patch = diffMatchPatch.patch_make(syncAttributes.title, localTitle);
-                remoteTitle = diffMatchPatch.patch_apply(patch, remoteTitle)[0];
+                newTitle = diffMatchPatch.patch_apply(patch, remoteTitle)[0];
             }
         }
 
+        // Adjust local discussions offset
+        var editorSelection;
+        if(contentChanged) {
+            var localDiscussionArray = [];
+            // Adjust editor's cursor position and local discussions at the same time
+            if(fileMgr.currentFile === fileDesc) {
+                editorSelection = {
+                    selectionStart: editor.inputElt.selectionStart,
+                    selectionEnd: editor.inputElt.selectionEnd
+                };
+                localDiscussionArray.push(editorSelection);
+                fileDesc.newDiscussion && localDiscussionArray.push(fileDesc.newDiscussion);
+            }
+            if(adjustLocalDiscussionList) {
+                localDiscussionArray = localDiscussionArray.concat(_.values(localDiscussionList));
+            }
+            discussionListChanged |= moveComments(localContent, newContent, localDiscussionArray);
+        }
+
+        // Adjust remote discussions offset
+        if(adjustRemoteDiscussionList) {
+            var remoteDiscussionArray = _.values(remoteDiscussionList);
+            moveComments(remoteContent, newContent, remoteDiscussionArray);
+        }
+
+        // Patch remote discussionList with local modifications
+        if(mergeDiscussionList) {
+            var oldDiscussionList = JSON.parse(syncAttributes.discussionList);
+            diffs = jsonDiffPatch.diff(oldDiscussionList, localDiscussionList);
+            jsonDiffPatch.patch(remoteDiscussionList, diffs);
+            _.each(remoteDiscussionList, function(discussion, discussionIndex) {
+                if(!discussion) {
+                    delete remoteDiscussionList[discussionIndex];
+                }
+            });
+        }
+
+        if(conflictList.length) {
+            discussionListChanged = true;
+            // Add conflicts to discussionList
+            conflictList.forEach(function(conflict) {
+                // Create discussion index
+                var discussionIndex;
+                do {
+                    discussionIndex = utils.randomString() + utils.randomString(); // Increased size to prevent collision
+                } while(_.has(newDiscussionList, discussionIndex));
+                conflict.discussionIndex = discussionIndex;
+                newDiscussionList[discussionIndex] = conflict;
+            });
+        }
+
         if(titleChanged) {
-            fileDesc.title = remoteTitle;
+            fileDesc.title = newTitle;
             eventMgr.onTitleChanged(fileDesc);
-            eventMgr.onMessage('"' + localTitle + '" has been renamed to "' + remoteTitle + '" on ' + this.providerName + '.');
+            eventMgr.onMessage('"' + localTitle + '" has been renamed to "' + newTitle + '" on ' + this.providerName + '.');
         }
 
         if(contentChanged || discussionListChanged) {
             var self = this;
             editor.watcher.noWatch(function() {
                 if(contentChanged) {
-                    if(!/\n$/.test(remoteContent)) {
-                        remoteContent += '\n';
+                    if(!/\n$/.test(newContent)) {
+                        newContent += '\n';
                     }
                     if(fileMgr.currentFile === fileDesc) {
-                        editor.setValueNoWatch(remoteContent);
+                        editor.setValueNoWatch(newContent);
+                        editorSelection && editor.inputElt.setSelectionStartEnd(
+                            editorSelection.selectionStart,
+                            editorSelection.selectionEnd
+                        );
                     }
-                    fileDesc.content = remoteContent;
-                    eventMgr.onContentChanged(fileDesc, remoteContent);
+                    fileDesc.content = newContent;
+                    eventMgr.onContentChanged(fileDesc, newContent);
                 }
                 if(discussionListChanged) {
                     fileDesc.discussionList = remoteDiscussionList;
@@ -331,7 +399,7 @@ define([
                 editor.undoManager.saveState();
                 eventMgr.onMessage('"' + remoteTitle + '" has been updated from ' + self.providerName + '.');
                 if(conflictList.length) {
-                    eventMgr.onMessage('"' + remoteTitle + '" contains conflicts you need to review.');
+                    eventMgr.onMessage('"' + remoteTitle + '" has conflicts that you have to review.');
                 }
             });
         }

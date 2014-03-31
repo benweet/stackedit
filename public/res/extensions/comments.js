@@ -13,8 +13,8 @@ define([
     var comments = new Extension("comments", 'Comments');
 
     var commentTmpl = [
-        '<div class="comment-block">',
-        '    <div class="comment-author"><%= author %></div>',
+        '<div class="comment-block<%= reply ? \' reply\' : \'\' %>">',
+        '    <div class="comment-author"><i class="icon-comment"></i> <%= author %></div>',
         '    <div class="comment-content"><%= content %></div>',
         '</div>',
     ].join('');
@@ -23,7 +23,7 @@ define([
         '    <a href="#" class="action-remove-discussion pull-right<%= !type ? \'\': \' hide\' %>">',
         '        <i class="icon-trash"></i>',
         '    </a>',
-        '    <%- title %>',
+        '    “<%- title %>”',
         '</span>',
     ].join('');
 
@@ -35,7 +35,7 @@ define([
     var offsetMap = {};
     function setCommentEltCoordinates(commentElt, y) {
         var lineIndex = Math.round(y / 10);
-        var yOffset = -8;
+        var yOffset = -10;
         if(commentElt.className.indexOf(' icon-fork') !== -1) {
             yOffset = -12;
         }
@@ -48,9 +48,8 @@ define([
 
     var inputElt;
     var marginElt;
-    var commentEltList = [];
     var newCommentElt = crel('a', {
-        class: 'discussion icon-comment new'
+        class: 'discussion icon-quote-left new'
     });
     var cursorY;
     comments.onCursorCoordinates = function(x, y) {
@@ -58,39 +57,56 @@ define([
         setCommentEltCoordinates(newCommentElt, cursorY);
     };
 
+    function Context(commentElt, fileDesc) {
+        this.commentElt = commentElt;
+        this.$commentElt = $(commentElt).addClass('active');
+        this.fileDesc = fileDesc;
+        this.discussionIndex = commentElt.discussionIndex;
+    }
+    Context.prototype.getDiscussion = function() {
+        if(!this.discussionIndex) {
+            return this.fileDesc.newDiscussion;
+        }
+        return this.fileDesc.discussionList[this.discussionIndex];
+    };
+    Context.prototype.getPopoverElt = function() {
+        return document.querySelector('.comments-popover .popover:last-child');
+    };
     var currentContext;
     function movePopover(commentElt) {
         // Move popover in the margin
-        var context = currentContext;
-        context.popoverElt = document.querySelector('.comments-popover .popover:last-child');
+        var popoverElt = currentContext.getPopoverElt();
         var left = 0;
-        if(context.popoverElt.offsetWidth < marginElt.offsetWidth - 10) {
-            left = marginElt.offsetWidth - 10 - context.popoverElt.offsetWidth;
+        if(popoverElt.offsetWidth < marginElt.offsetWidth - 10) {
+            left = marginElt.offsetWidth - 10 - popoverElt.offsetWidth;
         }
-        context.popoverElt.style.left = left + 'px';
-        context.popoverElt.querySelector('.arrow').style.left = (marginElt.offsetWidth - parseInt(commentElt.style.right) - commentElt.offsetWidth / 2 - left) + 'px';
+        popoverElt.style.left = left + 'px';
+        popoverElt.querySelector('.arrow').style.left = (marginElt.offsetWidth - parseInt(commentElt.style.right) - commentElt.offsetWidth / 2 - left) + 'px';
     }
 
     var cssApplier;
     var currentFileDesc;
     var refreshTimeoutId;
+    var commentEltMap = {};
     var refreshDiscussions = _.debounce(function() {
         if(currentFileDesc === undefined) {
             return;
         }
 
         var author = storage['author.name'];
-        commentEltList.forEach(function(commentElt) {
-            marginElt.removeChild(commentElt);
-        });
-        commentEltList = [];
         offsetMap = {};
         var discussionList = _.values(currentFileDesc.discussionList);
         function refreshOne() {
             if(discussionList.length === 0) {
+                // Remove outdated commentElt
+                _.filter(commentEltMap, function(commentElt, discussionIndex) {
+                    return !_.has(currentFileDesc.discussionList, discussionIndex);
+                }).forEach(function(commentElt) {
+                    marginElt.removeChild(commentElt);
+                });
                 // Move newCommentElt
                 setCommentEltCoordinates(newCommentElt, cursorY);
-                if(currentContext && !currentContext.discussion.discussionIndex) {
+                if(currentContext && !currentContext.discussionIndex) {
                     inputElt.scrollTop += parseInt(newCommentElt.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
                     movePopover(newCommentElt);
                 }
@@ -105,16 +121,19 @@ define([
             }
             else {
                 var isReplied = _.last(discussion.commentList).author != author;
-                commentElt.className += ' icon-comment' + (isReplied ? ' replied' : ' added');
+                commentElt.className += ' icon-quote-left' + (isReplied ? ' replied' : ' added');
             }
             commentElt.discussionIndex = discussion.discussionIndex;
             var coordinates = inputElt.getOffsetCoordinates(discussion.selectionEnd);
             var lineIndex = setCommentEltCoordinates(commentElt, coordinates.y);
             offsetMap[lineIndex] = (offsetMap[lineIndex] || 0) + 1;
-            marginElt.appendChild(commentElt);
-            commentEltList.push(commentElt);
 
-            if(currentContext && currentContext.discussion == discussion) {
+            var oldCommentElt = commentEltMap[discussion.discussionIndex];
+            oldCommentElt && marginElt.removeChild(oldCommentElt);
+            marginElt.appendChild(commentElt);
+            commentEltMap[discussion.discussionIndex] = commentElt;
+
+            if(currentContext && currentContext.getDiscussion() == discussion) {
                 inputElt.scrollTop += parseInt(commentElt.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
                 movePopover(commentElt);
             }
@@ -140,15 +159,15 @@ define([
         if(currentContext !== undefined) {
             // Refresh conversation if popover is open
             var context = currentContext;
-            if(context.discussion.discussionIndex) {
-                context.discussion = currentFileDesc.discussionList[context.discussion.discussionIndex];
+            if(context.discussionIndex) {
                 context.popoverElt.querySelector('.discussion-comment-list').innerHTML = getDiscussionComments();
             }
             try {
                 cssApplier.undoToRange(context.rangyRange);
             }
             catch(e) {}
-            context.selectionRange = inputElt.createRange(context.discussion.selectionStart, context.discussion.selectionEnd);
+            var discussion = context.getDiscussion();
+            context.selectionRange = inputElt.createRange(discussion.selectionStart, discussion.selectionEnd);
 
             // Highlight selected text
             context.rangyRange = rangy.createRange();
@@ -174,7 +193,7 @@ define([
     comments.onDiscussionRemoved = function(fileDesc, discussion) {
         if(currentFileDesc === fileDesc) {
             // Close popover if the discussion has been removed
-            if(currentContext !== undefined && currentContext.discussion.discussionIndex == discussion.discussionIndex) {
+            if(currentContext !== undefined && currentContext.discussionIndex == discussion.discussionIndex) {
                 closeCurrentPopover();
             }
             refreshDiscussions();
@@ -186,13 +205,17 @@ define([
     };
 
     function getDiscussionComments() {
-        if(currentContext.discussion.type == 'conflict') {
+        var discussion = currentContext.getDiscussion();
+        var author = storage['author.name'];
+        if(discussion.type == 'conflict') {
             return '';
         }
-        return currentContext.discussion.commentList.map(function(comment) {
+        return discussion.commentList.map(function(comment) {
+            var commentAuthor = comment.author || 'Anonymous';
             return _.template(commentTmpl, {
-                author: comment.author || 'Anonymous',
-                content: comment.content
+                author: commentAuthor,
+                content: comment.content,
+                reply: comment.author != author
             });
         }).join('');
     }
@@ -221,37 +244,36 @@ define([
                 if(!currentContext) {
                     return true;
                 }
-                var titleLength = currentContext.discussion.selectionEnd - currentContext.discussion.selectionStart;
-                var title = inputElt.textContent.substr(currentContext.discussion.selectionStart, titleLength > 20 ? 20 : titleLength);
+                var discussion = currentContext.getDiscussion();
+                var titleLength = discussion.selectionEnd - discussion.selectionStart;
+                var title = inputElt.textContent.substr(discussion.selectionStart, titleLength > 20 ? 20 : titleLength);
                 if(titleLength > 20) {
                     title += '...';
                 }
                 return _.template(popoverTitleTmpl, {
                     title: title,
-                    type: currentContext.discussion.type
+                    type: discussion.type
                 });
             },
             content: function() {
                 var content = _.template(commentsPopoverContentHTML, {
                     commentList: getDiscussionComments(),
-                    type: currentContext.discussion.type
+                    type: currentContext.getDiscussion().type
                 });
                 return content;
             },
             selector: '#wmd-input > .editor-margin > .discussion'
         }).on('show.bs.popover', '#wmd-input > .editor-margin', function(evt) {
             closeCurrentPopover();
-            var context = {
-                $commentElt: $(evt.target).addClass('active'),
-                fileDesc: currentFileDesc
-            };
+            var context = new Context(evt.target, currentFileDesc);
             currentContext = context;
             inputElt.scrollTop += parseInt(evt.target.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
 
             // If it's an existing discussion
-            if(evt.target.discussionIndex) {
-                context.discussion = currentFileDesc.discussionList[evt.target.discussionIndex];
-                context.selectionRange = inputElt.createRange(context.discussion.selectionStart, context.discussion.selectionEnd);
+            var discussion = context.getDiscussion();
+            if(discussion) {
+                context.selectionRange = inputElt.createRange(discussion.selectionStart, discussion.selectionEnd);
+                inputElt.setSelectionStartEnd(discussion.selectionStart, discussion.selectionEnd, false);
                 return;
             }
 
@@ -272,24 +294,23 @@ define([
                 }
             }
             context.selectionRange = inputElt.createRange(selectionStart, selectionEnd);
-            context.discussion = {
+            currentFileDesc.newDiscussion = {
                 selectionStart: selectionStart,
                 selectionEnd: selectionEnd,
                 commentList: []
             };
-            currentFileDesc.newDiscussion = context.discussion;
         }).on('shown.bs.popover', '#wmd-input > .editor-margin', function(evt) {
             var context = currentContext;
-            context.popoverElt = document.querySelector('.comments-popover .popover:last-child');
-            movePopover(evt.target);
+            movePopover(context.commentElt);
+            var popoverElt = context.getPopoverElt();
 
             // Scroll to the bottom of the discussion
-            context.popoverElt.querySelector('.popover-content').scrollTop = 9999999;
+            popoverElt.querySelector('.popover-content').scrollTop = 9999999;
 
-            context.$authorInputElt = $(context.popoverElt.querySelector('.input-comment-author')).val(storage['author.name']);
-            context.$contentInputElt = $(context.popoverElt.querySelector('.input-comment-content'));
-            var $addButton = $(context.popoverElt.querySelector('.action-add-comment'));
-            context.$contentInputElt.keydown(function(evt) {
+            context.$authorInputElt = $(popoverElt.querySelector('.input-comment-author')).val(storage['author.name']);
+            context.$contentInputElt = $(popoverElt.querySelector('.input-comment-content'));
+            var $addButton = $(popoverElt.querySelector('.action-add-comment'));
+            $().add(context.$contentInputElt).add(context.$authorInputElt).keydown(function(evt) {
                 // Enter key
                 switch(evt.which) {
                 case 13:
@@ -310,24 +331,25 @@ define([
                     return;
                 }
 
+                var discussion = context.getDiscussion();
                 context.$contentInputElt.val('');
                 closeCurrentPopover();
 
-                context.discussion.commentList.push({
+                discussion.commentList.push({
                     author: author,
                     content: content
                 });
                 var discussionList = context.fileDesc.discussionList || {};
-                if(!context.discussion.discussionIndex) {
+                if(!discussion.discussionIndex) {
                     // Create discussion index
                     var discussionIndex;
                     do {
                         discussionIndex = utils.randomString() + utils.randomString(); // Increased size to prevent collision
                     } while(_.has(discussionList, discussionIndex));
-                    context.discussion.discussionIndex = discussionIndex;
-                    discussionList[discussionIndex] = context.discussion;
+                    discussion.discussionIndex = discussionIndex;
+                    discussionList[discussionIndex] = discussion;
                     context.fileDesc.discussionList = discussionList; // Write discussionList in localStorage
-                    eventMgr.onDiscussionCreated(context.fileDesc, context.discussion);
+                    eventMgr.onDiscussionCreated(context.fileDesc, discussion);
                 }
                 else {
                     context.fileDesc.discussionList = discussionList; // Write discussionList in localStorage
@@ -336,33 +358,28 @@ define([
                 inputElt.focus();
             });
 
-            var $removeButton = $(context.popoverElt.querySelector('.action-remove-discussion'));
+            var $removeButton = $(popoverElt.querySelector('.action-remove-discussion'));
             if(evt.target.discussionIndex) {
                 // If it's an existing discussion
-                /*
-                if(context.discussion.type == 'conflict') {
-                    $(context.popoverElt.querySelector('.conflict-review')).removeClass('hide');
-                    $(context.popoverElt.querySelector('.new-comment-block')).addClass('hide');
-                }
-                */
-                var $removeCancelButton = $(context.popoverElt.querySelectorAll('.action-remove-discussion-cancel'));
-                var $removeConfirmButton = $(context.popoverElt.querySelectorAll('.action-remove-discussion-confirm'));
+                var $removeCancelButton = $(popoverElt.querySelectorAll('.action-remove-discussion-cancel'));
+                var $removeConfirmButton = $(popoverElt.querySelectorAll('.action-remove-discussion-confirm'));
                 $removeButton.click(function() {
-                    $(context.popoverElt.querySelector('.new-comment-block')).addClass('hide');
-                    $(context.popoverElt.querySelector('.remove-discussion-confirm')).removeClass('hide');
-                    context.popoverElt.querySelector('.popover-content').scrollTop = 9999999;
+                    $(popoverElt.querySelector('.new-comment-block')).addClass('hide');
+                    $(popoverElt.querySelector('.remove-discussion-confirm')).removeClass('hide');
+                    popoverElt.querySelector('.popover-content').scrollTop = 9999999;
                 });
                 $removeCancelButton.click(function() {
-                    $(context.popoverElt.querySelector('.new-comment-block')).removeClass('hide');
-                    $(context.popoverElt.querySelector('.remove-discussion-confirm')).addClass('hide');
-                    context.popoverElt.querySelector('.popover-content').scrollTop = 9999999;
+                    $(popoverElt.querySelector('.new-comment-block')).removeClass('hide');
+                    $(popoverElt.querySelector('.remove-discussion-confirm')).addClass('hide');
+                    popoverElt.querySelector('.popover-content').scrollTop = 9999999;
                     context.$contentInputElt.focus();
                 });
                 $removeConfirmButton.click(function() {
                     closeCurrentPopover();
-                    delete context.fileDesc.discussionList[context.discussion.discussionIndex];
+                    var discussion = context.getDiscussion();
+                    delete context.fileDesc.discussionList[discussion.discussionIndex];
                     context.fileDesc.discussionList = context.fileDesc.discussionList; // Write discussionList in localStorage
-                    eventMgr.onCommentsChanged(context.fileDesc);
+                    eventMgr.onDiscussionRemoved(context.fileDesc, discussion);
                     inputElt.focus();
                 });
             }
@@ -372,7 +389,7 @@ define([
             }
 
             // Prevent from closing on click inside the popover
-            $(context.popoverElt).on('click', function(evt) {
+            $(popoverElt).on('click', function(evt) {
                 evt.stopPropagation();
             });
 

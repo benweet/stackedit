@@ -129,6 +129,7 @@ define([
                 syncAttributes.discussionList = discussionList;
             }
             syncAttributes.contentCRC = contentCRC;
+            syncAttributes.titleCRC = titleCRC; // Not synchronized but has to be there for syncMerge
             syncAttributes.discussionListCRC = discussionListCRC;
 
             callback(undefined, true);

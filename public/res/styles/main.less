@@ -94,7 +94,7 @@
 @list-group-active-border: fade(@secondary, 5%);
 @list-group-hover-bg: @btn-default-hover-bg;
 @list-group-hover-border-color: fade(@secondary, 10%);
-@input-color: @secondary-color-dark;
+@input-color: @secondary-color-darkest;
 @input-color-placeholder: @disabled-color;
 @btn-default-color: @secondary-color-darker;
 @btn-default-bg: @transparent;
@@ -1059,6 +1059,9 @@ a {
 		top: 0;
 		.discussion {
 			font-size: 18px;
+			&:before {
+				margin-right: 0;
+			}
 			&.new {
 				color: fade(@tertiary-color, 10%);
 				&:hover, &.active, &.active:hover {
@@ -1072,7 +1075,7 @@ a {
 				}
 			}
 			&.replied {
-				color: fade(@label-danger-bg, 45%);
+				color: fade(@label-danger-bg, 55%);
 				&:hover, &.active, &.active:hover {
 					color: fade(@label-danger-bg, 80%) !important;
 				}
@@ -1083,9 +1086,6 @@ a {
 				&:hover, &.active, &.active:hover {
 					color: @label-danger-bg !important;
 				}
-				&:before {
-					margin-right: 0;
-				}
 			}
 			position: absolute;
 			cursor: pointer;
@@ -1094,7 +1094,7 @@ a {
 			}
 		}
     }
-	&.has-selection > .editor-margin .icon-comment.new {
+	&.has-selection > .editor-margin .discussion.new {
 		color: fade(@tertiary-color, 25%);
 	}
 
@@ -1423,6 +1423,7 @@ input[type="file"] {
 		padding: 5px 0 15px;
 		border-bottom: 1px solid @hr-border;
 		line-height: @headings-line-height;
+		overflow: hidden;
 		.action-remove-discussion {
 			font-size: 16px;
 			line-height: 22px;
@@ -1447,15 +1448,25 @@ input[type="file"] {
 			margin-bottom: 5px;
 		}
 		.comment-author {
-			padding-left: 12px;
 			font-weight: bold;
+			color: @input-color;
+		}
+		.icon-comment {
+			font-size: 14px;
+			color: fade(@label-warning-bg, 60%);
+		}
+		.reply .icon-comment {
+			color: fade(@label-danger-bg, 70%);
 		}
 		.input-comment-author {
 			border: none;
 			background: none;
 			.box-shadow(none);
 			font-weight: bold;
-			height: 32px;
+			height: 28px;
+			padding: 0 0 5px;
+			width: 150px;
+			display: inline-block;
 		}
 	}
 

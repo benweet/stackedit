@@ -24,6 +24,10 @@ define([
     var scrollTop = 0;
     var inputElt;
     var $inputElt;
+    var contentElt;
+    var $contentElt;
+    var marginElt;
+    var $marginElt;
     var previewElt;
     var pagedownEditor;
     var refreshPreviewLater = (function() {
@@ -70,7 +74,7 @@ define([
         this.startWatching = function() {
             this.isWatching = true;
             contentObserver = contentObserver || new MutationObserver(checkContentChange);
-            contentObserver.observe(editor.contentElt, {
+            contentObserver.observe(contentElt, {
                 childList: true,
                 subtree: true,
                 characterData: true
@@ -113,11 +117,14 @@ define([
     }
     editor.setValueNoWatch = setValueNoWatch;
 
-    function setSelectionStartEnd(start, end) {
+    function setSelectionStartEnd(start, end, applySelection) {
         selectionStart = start;
         selectionEnd = end;
         fileDesc.editorStart = selectionStart;
         fileDesc.editorEnd = selectionEnd;
+        if(applySelection === false) {
+            return;
+        }
         var range = createRange(start, end);
         var selection = window.getSelection();
         selection.removeAllRanges();
@@ -270,7 +277,7 @@ define([
             };
             this.currentMode = undefined;
             lastMode = undefined;
-            editor.contentElt.textContent = content;
+            contentElt.textContent = content;
         };
     }
     var undoManager = new UndoManager();
@@ -393,7 +400,7 @@ define([
     }
 
     function findOffset(offset) {
-        var walker = document.createTreeWalker(editor.contentElt, 4);
+        var walker = document.createTreeWalker(contentElt, 4);
         while(walker.nextNode()) {
             var text = walker.currentNode.nodeValue || '';
             if (text.length > offset) {
@@ -405,7 +412,7 @@ define([
             offset -= text.length;
         }
         return {
-            element: editor.contentElt,
+            element: contentElt,
             offset: 0,
             error: true
         };
@@ -505,20 +512,26 @@ define([
     editor.init = function(elt1, elt2) {
         inputElt = elt1;
         $inputElt = $(inputElt);
+        editor.inputElt = inputElt;
+        editor.$inputElt = $inputElt;
+        
         previewElt = elt2;
 
-        editor.contentElt = crel('div', {
+        contentElt = crel('div', {
             class: 'editor-content',
             contenteditable: true
         });
-        inputElt.appendChild(editor.contentElt);
-        editor.$contentElt = $(editor.contentElt);
+        inputElt.appendChild(contentElt);
+        editor.contentElt = contentElt;
+        $contentElt = $(contentElt);
+        editor.$contentElt = $contentElt;
 
-        editor.marginElt = crel('div', {
+        marginElt = crel('div', {
             class: 'editor-margin'
         });
-        inputElt.appendChild(editor.marginElt);
-        editor.$marginElt = $(editor.marginElt);
+        inputElt.appendChild(marginElt);
+        $marginElt = $(marginElt);
+        editor.$marginElt = $marginElt;
 
         watcher.startWatching();
 
@@ -535,14 +548,14 @@ define([
         });
 
         inputElt.focus = function() {
-            editor.$contentElt.focus();
+            $contentElt.focus();
             setSelectionStartEnd(selectionStart, selectionEnd);
             inputElt.scrollTop = scrollTop;
         };
-        editor.$contentElt.focus(function() {
+        $contentElt.focus(function() {
             inputElt.focused = true;
         });
-        editor.$contentElt.blur(function() {
+        $contentElt.blur(function() {
             inputElt.focused = false;
         });
 
@@ -585,7 +598,7 @@ define([
         };
 
         var clearNewline = false;
-        editor.$contentElt.on('keydown', function (evt) {
+        $contentElt.on('keydown', function (evt) {
             if(
                 evt.which === 17 || // Ctrl
                 evt.which === 91 || // Cmd
@@ -742,7 +755,7 @@ define([
                 // Check modified
                 section.textWithFrontMatter != newSection.textWithFrontMatter ||
                 // Check that section has not been detached or moved
-                section.elt.parentNode !== editor.contentElt ||
+                section.elt.parentNode !== contentElt ||
                 // Check also the content since nodes can be injected in sections via copy/paste
                 section.elt.textContent != newSection.textWithFrontMatter) {
                 leftIndex = index;
@@ -758,7 +771,7 @@ define([
                 // Check modified
                 section.textWithFrontMatter != newSection.textWithFrontMatter ||
                 // Check that section has not been detached or moved
-                section.elt.parentNode !== editor.contentElt ||
+                section.elt.parentNode !== contentElt ||
                 // Check also the content since nodes can be injected in sections via copy/paste
                 section.elt.textContent != newSection.textWithFrontMatter) {
                 rightIndex = -index;
@@ -789,30 +802,30 @@ define([
         });
         watcher.noWatch(function() {
             if(fileChanged === true) {
-                editor.contentElt.innerHTML = '';
-                editor.contentElt.appendChild(newSectionEltList);
+                contentElt.innerHTML = '';
+                contentElt.appendChild(newSectionEltList);
                 setSelectionStartEnd(selectionStart, selectionEnd);
             }
             else {
                 // Remove outdated sections
                 sectionsToRemove.forEach(function(section) {
                     // section can be already removed
-                    section.elt.parentNode === editor.contentElt && editor.contentElt.removeChild(section.elt);
+                    section.elt.parentNode === contentElt && contentElt.removeChild(section.elt);
                 });
 
                 if(insertBeforeSection !== undefined) {
-                    editor.contentElt.insertBefore(newSectionEltList, insertBeforeSection.elt);
+                    contentElt.insertBefore(newSectionEltList, insertBeforeSection.elt);
                 }
                 else {
-                    editor.contentElt.appendChild(newSectionEltList);
+                    contentElt.appendChild(newSectionEltList);
                 }
 
                 // Remove unauthorized nodes (text nodes outside of sections or duplicated sections via copy/paste)
-                var childNode = editor.contentElt.firstChild;
+                var childNode = contentElt.firstChild;
                 while(childNode) {
                     var nextNode = childNode.nextSibling;
                     if(!childNode.generated) {
-                        editor.contentElt.removeChild(childNode);
+                        contentElt.removeChild(childNode);
                     }
                     childNode = nextNode;
                 }

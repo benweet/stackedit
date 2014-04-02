@@ -20,7 +20,7 @@ define([
     ].join('');
     var popoverTitleTmpl = [
         '<span class="clearfix">',
-        '    <a href="#" class="action-remove-discussion pull-right<%= !type ? \'\': \' hide\' %>">',
+        '    <a href="#" class="action-remove-discussion pull-right">',
         '        <i class="icon-trash"></i>',
         '    </a>',
         '    “<%- title %>”',
@@ -36,7 +36,7 @@ define([
     function setCommentEltCoordinates(commentElt, y) {
         var lineIndex = Math.round(y / 10);
         var yOffset = -10;
-        if(commentElt.className.indexOf(' icon-fork') !== -1) {
+        if(commentElt.className.indexOf(' icon-split') !== -1) {
             yOffset = -12;
         }
         var top = (y + yOffset) + 'px';
@@ -103,6 +103,7 @@ define([
                     return !_.has(currentFileDesc.discussionList, discussionIndex);
                 }).forEach(function(commentElt) {
                     marginElt.removeChild(commentElt);
+                    delete commentEltMap[commentElt.discussionIndex];
                 });
                 // Move newCommentElt
                 setCommentEltCoordinates(newCommentElt, cursorY);
@@ -116,12 +117,10 @@ define([
             var commentElt = crel('a', {
                 class: 'discussion'
             });
+            var isReplied = !discussion.commentList || _.last(discussion.commentList).author != author;
+            commentElt.className += ' icon-quote-left' + (isReplied ? ' replied' : ' added');
             if(discussion.type == 'conflict') {
-                commentElt.className += ' icon-fork';
-            }
-            else {
-                var isReplied = _.last(discussion.commentList).author != author;
-                commentElt.className += ' icon-quote-left' + (isReplied ? ' replied' : ' added');
+                commentElt.className += ' icon-split';
             }
             commentElt.discussionIndex = discussion.discussionIndex;
             var coordinates = inputElt.getOffsetCoordinates(discussion.selectionEnd);
@@ -207,17 +206,25 @@ define([
     function getDiscussionComments() {
         var discussion = currentContext.getDiscussion();
         var author = storage['author.name'];
-        if(discussion.type == 'conflict') {
-            return '';
-        }
-        return discussion.commentList.map(function(comment) {
-            var commentAuthor = comment.author || 'Anonymous';
-            return _.template(commentTmpl, {
-                author: commentAuthor,
-                content: comment.content,
-                reply: comment.author != author
+        var result = [];
+        if(discussion.commentList) {
+            result = discussion.commentList.map(function(comment) {
+                var commentAuthor = comment.author || 'Anonymous';
+                return _.template(commentTmpl, {
+                    author: commentAuthor,
+                    content: comment.content,
+                    reply: comment.author != author
+                });
             });
-        }).join('');
+        }
+        if(discussion.type == 'conflict') {
+            result.unshift(_.template(commentTmpl, {
+                author: 'StackEdit',
+                content: 'Multiple users have made conflicting modifications that you have to review.',
+                reply: true
+            }));
+        }
+        return result.join('');
     }
 
     comments.onReady = function() {
@@ -252,13 +259,11 @@ define([
                 }
                 return _.template(popoverTitleTmpl, {
                     title: title,
-                    type: discussion.type
                 });
             },
             content: function() {
                 var content = _.template(commentsPopoverContentHTML, {
                     commentList: getDiscussionComments(),
-                    type: currentContext.getDiscussion().type
                 });
                 return content;
             },
@@ -335,6 +340,7 @@ define([
                 context.$contentInputElt.val('');
                 closeCurrentPopover();
 
+                discussion.commentList = discussion.commentList || [];
                 discussion.commentList.push({
                     author: author,
                     content: content

@@ -85,15 +85,29 @@ define([
             var removeDiff = [-1, ''];
             var addDiff = [1, ''];
             var distance = 20;
+            function pushDiff() {
+                var separator = '///';
+                if(removeDiff[1]) {
+                    removeDiff[1] = '///' + removeDiff[1] + separator;
+                    separator = '';
+                    result.push(removeDiff);
+                }
+                if(addDiff[1]) {
+                    addDiff[1] = separator + addDiff[1] + '///';
+                    result.push(addDiff);
+                }
+                removeDiff = [-1, ''];
+                addDiff = [1, ''];
+            }
             diffs.forEach(function(diff) {
                 var diffType = diff[0];
                 var diffText = diff[1];
                 if(diffType === 0) {
                     if(diffText.length > distance) {
                         if(removeDiff[1] || addDiff[1]) {
-                            var match = /\S+/.exec(diffText);
+                            var match = /\s/.exec(diffText);
                             if(match) {
-                                var prefixOffset = match.index + match[0].length;
+                                var prefixOffset = match.index;
                                 var prefix = diffText.substring(0, prefixOffset);
                                 diffText = diffText.substring(prefixOffset);
                                 removeDiff[1] += prefix;
@@ -108,10 +122,7 @@ define([
                             var suffix = diffText.substring(suffixOffset);
                             diffText = diffText.substring(0, suffixOffset);
                             if(diffText.length > distance) {
-                                removeDiff[1] && result.push(removeDiff);
-                                removeDiff = [-1, ''];
-                                addDiff[1] && result.push(addDiff);
-                                addDiff = [1, ''];
+                                pushDiff();
                                 result.push([0, diffText]);
                             }
                             else {
@@ -138,8 +149,7 @@ define([
                 result.push([0, addDiff[1]]);
             }
             else {
-                removeDiff[1] && result.push(removeDiff);
-                addDiff[1] && result.push(addDiff);
+                pushDiff();
             }
             return result;
         }
@@ -379,15 +389,15 @@ define([
                     eventMgr.onContentChanged(fileDesc, newContent);
                 }
                 if(discussionListChanged) {
-                    fileDesc.discussionList = remoteDiscussionList;
-                    var diff = jsonDiffPatch.diff(localDiscussionList, remoteDiscussionList);
+                    fileDesc.discussionList = newDiscussionList;
+                    var diff = jsonDiffPatch.diff(localDiscussionList, newDiscussionList);
                     var commentsChanged = false;
                     _.each(diff, function(discussionDiff, discussionIndex) {
                         if(!_.isArray(discussionDiff)) {
                             commentsChanged = true;
                         }
                         else if(discussionDiff.length === 1) {
-                            eventMgr.onDiscussionCreated(fileDesc, remoteDiscussionList[discussionIndex]);
+                            eventMgr.onDiscussionCreated(fileDesc, newDiscussionList[discussionIndex]);
                         }
                         else {
                             eventMgr.onDiscussionRemoved(fileDesc, localDiscussionList[discussionIndex]);

@@ -514,7 +514,7 @@ define([
         $inputElt = $(inputElt);
         editor.inputElt = inputElt;
         editor.$inputElt = $inputElt;
-        
+
         previewElt = elt2;
 
         contentElt = crel('div', {
@@ -835,13 +835,25 @@ define([
         });
     }
 
+    var entityMap = {
+        "&": "&amp;",
+        "<": "&lt;",
+        "\u00a0": ' ',
+    };
+
+    function escape(str) {
+        return str.replace(/[&<\u00a0]/g, function(s) {
+            return entityMap[s];
+        });
+    }
+
     function highlight(section) {
-        var text = section.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
+        var text = escape(section.text);
         text = Prism.highlight(text, Prism.languages.md);
         var frontMatter = section.textWithFrontMatter.substring(0, section.textWithFrontMatter.length - section.text.length);
         if(frontMatter.length) {
             // Front matter highlighting
-            frontMatter = frontMatter.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
+            frontMatter = escape(frontMatter);
             frontMatter = frontMatter.replace(/\n/g, '<span class="token lf">\n</span>');
             text = '<span class="token md">' + frontMatter + '</span>' + text;
         }

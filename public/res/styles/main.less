@@ -1069,23 +1069,19 @@ a {
 				}
 			}
 			&.added {
-				color: fade(@label-warning-bg, 45%);
+				color: fade(@label-warning-bg, 50%);
 				&:hover, &.active, &.active:hover {
 					color: fade(@label-warning-bg, 80%) !important;
 				}
 			}
 			&.replied {
-				color: fade(@label-danger-bg, 55%);
-				&:hover, &.active, &.active:hover {
-					color: fade(@label-danger-bg, 80%) !important;
-				}
-			}
-			&.icon-fork {
-				font-size: 22px;
 				color: fade(@label-danger-bg, 70%);
 				&:hover, &.active, &.active:hover {
-					color: @label-danger-bg !important;
+					color: fade(@label-danger-bg, 100%) !important;
 				}
+			}
+			&.icon-split {
+				font-size: 22px;
 			}
 			position: absolute;
 			cursor: pointer;
@@ -1101,6 +1097,11 @@ a {
 	.comment-highlight {
 		background-color: fade(@label-warning-bg, 30%);
 		//border-radius: @border-radius-base;
+	}
+
+	.conflict {
+		font-weight: bold;
+		color: @label-danger-bg;
 	}
 
     .code,

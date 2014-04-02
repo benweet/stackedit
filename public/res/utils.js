@@ -245,6 +245,23 @@ define([
         });
     };
 
+    var entityMap = {
+        "&": "&amp;",
+        "<": "&lt;",
+        //">": "&gt;",
+        '"': '&quot;',
+        "'": '&#39;',
+        "/": '&#x2F;',
+        "\u00a0": ' ',
+    };
+
+    // Escape HTML entities
+    utils.escape = function(str) {
+        return String(str).replace(/[&<"'\/\u00a0]/g, function(s) {
+            return entityMap[s];
+        });
+    };
+
     // Export data on disk
     utils.saveAs = function(content, filename) {
         if(saveAs !== undefined && !/constructor/i.test(window.HTMLElement) /* safari does not support saveAs */) {

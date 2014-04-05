@@ -170,6 +170,7 @@ define([
     addEventHook("onPeriodicRun");
 
     // To access modules that are loaded after extensions
+    addEventHook("onEditorCreated");
     addEventHook("onFileMgrCreated");
     addEventHook("onSynchronizerCreated");
     addEventHook("onPublisherCreated");

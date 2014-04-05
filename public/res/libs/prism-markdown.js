@@ -3,6 +3,8 @@ Prism.languages.md = (function() {
     var urlPattern = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>\[\]'"]+|\([^\s()<>\[\]'"]*\))+(?:\([^\s()<>\[\]'"]*\)|[^\s`!()\[\]{}:'".,<>?«»“”‘’]))/gi;
     var emailPattern = /[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)\b/gi;
 
+    var latex = Prism.languages.latex;
+
     var md = {};
     md.pre = {
         pattern: /(^|(?:^|(?:^|\n)(?![ \t]*([*+\-]|\d+\.)[ \t]).*\n)\s*?\n)(\s*(?: {4}|\t).*(?:\n|$))+/g,
@@ -65,14 +67,16 @@ Prism.languages.md = (function() {
         inside: {
             "md md-bracket-start": /^(\$\$|\\\\\[|\\\\\\\\\()/,
             "md md-bracket-end": /(\$\$|\\\\\]|\\\\\\\\\))/,
-            rest: Prism.languages.latex
+            lf: /\n/gm,
+            rest: latex
         }
     };
     md['latex block'] = {
         pattern: /\\?\\begin\{[a-z]*\*?\}[\s\S]*?\\?\\end\{[a-z]*\*?\}/g,
         inside: {
             "keyword": /\\?\\(begin|end)/,
-            rest: Prism.languages.latex
+            lf: /\n/gm,
+            rest: latex
         }
     };
     md.fndef = {
@@ -212,7 +216,7 @@ Prism.languages.md = (function() {
         inside: {
             "md md-bracket-start": /^\$/,
             "md md-bracket-end": /\$$/,
-            rest: Prism.languages.latex
+            rest: latex
         }
     };
     md.strong = {
@@ -290,14 +294,4 @@ Prism.languages.md = (function() {
     md.linkref.inside["ref-start"].inside["md md-underlined-text"].inside = inside;
 
     return md;
-    /*
-    Prism.hooks.add("wrap", function (t) {
-        var i = -1 !== document.getElementsByTagName("body")[0].className.indexOf("tmpl-diffs") ? true : false;
-        if (0 === t.type.indexOf("img") && !i) {
-            var s = t.content.match(/md\-src"\s>([^<]+)/),
-                a = t.content.match(/md\-alt"\s>([^<]+)/);
-            s && s[1] && s[1].match(n) && (a = ' alt="' + (a ? e(a[1]) : "") + '"', t.content += "<span class='img-preview' contenteditable='false'><img src='" + s[1] + "' " + a + " /></span>");
-        }
-    });
-    */
 })();

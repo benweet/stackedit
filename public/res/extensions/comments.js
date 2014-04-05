@@ -32,6 +32,11 @@ define([
         eventMgr = eventMgrParam;
     };
 
+    var editor;
+    comments.onEditorCreated = function(editorParam) {
+        editor = editorParam;
+    };
+
     var offsetMap = {};
     function setCommentEltCoordinates(commentElt, y) {
         var lineIndex = Math.round(y / 10);
@@ -123,7 +128,7 @@ define([
                 commentElt.className += ' icon-split';
             }
             commentElt.discussionIndex = discussion.discussionIndex;
-            var coordinates = inputElt.getOffsetCoordinates(discussion.selectionEnd);
+            var coordinates = editor.selectionMgr.getCoordinates(discussion.selectionEnd);
             var lineIndex = setCommentEltCoordinates(commentElt, coordinates.y);
             offsetMap[lineIndex] = (offsetMap[lineIndex] || 0) + 1;
 
@@ -166,7 +171,7 @@ define([
             }
             catch(e) {}
             var discussion = context.getDiscussion();
-            context.selectionRange = inputElt.createRange(discussion.selectionStart, discussion.selectionEnd);
+            context.selectionRange = editor.selectionMgr.createRange(discussion.selectionStart, discussion.selectionEnd);
 
             // Highlight selected text
             context.rangyRange = rangy.createRange();
@@ -253,7 +258,7 @@ define([
                 }
                 var discussion = currentContext.getDiscussion();
                 var titleLength = discussion.selectionEnd - discussion.selectionStart;
-                var title = inputElt.textContent.substr(discussion.selectionStart, titleLength > 20 ? 20 : titleLength);
+                var title = editor.getValue().substr(discussion.selectionStart, titleLength > 20 ? 20 : titleLength);
                 if(titleLength > 20) {
                     title += '...';
                 }
@@ -277,28 +282,28 @@ define([
             // If it's an existing discussion
             var discussion = context.getDiscussion();
             if(discussion) {
-                context.selectionRange = inputElt.createRange(discussion.selectionStart, discussion.selectionEnd);
-                inputElt.setSelectionStartEnd(discussion.selectionStart, discussion.selectionEnd, false);
+                context.selectionRange = editor.selectionMgr.setSelectionStartEnd(discussion.selectionStart, discussion.selectionEnd, undefined, true);
                 return;
             }
 
             // Get selected text
-            var selectionStart = inputElt.selectionStart;
-            var selectionEnd = inputElt.selectionEnd;
+            var selectionStart = editor.selectionMgr.selectionStart;
+            var selectionEnd = editor.selectionMgr.selectionEnd;
             if(selectionStart === selectionEnd) {
-                var after = inputElt.textContent.substring(selectionStart);
+                var textContent = editor.getValue();
+                var after = textContent.substring(selectionStart);
                 var match = /\S+/.exec(after);
                 if(match) {
                     selectionStart += match.index;
                     if(match.index === 0) {
-                        while(selectionStart && /\S/.test(inputElt.textContent[selectionStart - 1])) {
+                        while(selectionStart && /\S/.test(textContent[selectionStart - 1])) {
                             selectionStart--;
                         }
                     }
                     selectionEnd += match.index + match[0].length;
                 }
             }
-            context.selectionRange = inputElt.createRange(selectionStart, selectionEnd);
+            context.selectionRange = editor.selectionMgr.createRange(selectionStart, selectionEnd);
             currentFileDesc.newDiscussion = {
                 selectionStart: selectionStart,
                 selectionEnd: selectionEnd,

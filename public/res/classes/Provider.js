@@ -321,8 +321,8 @@ define([
             // Adjust editor's cursor position and local discussions at the same time
             if(fileMgr.currentFile === fileDesc) {
                 editorSelection = {
-                    selectionStart: editor.inputElt.selectionStart,
-                    selectionEnd: editor.inputElt.selectionEnd
+                    selectionStart: editor.selectionMgr.selectionStart,
+                    selectionEnd: editor.selectionMgr.selectionEnd
                 };
                 localDiscussionArray.push(editorSelection);
                 fileDesc.newDiscussion && localDiscussionArray.push(fileDesc.newDiscussion);
@@ -380,7 +380,7 @@ define([
                     }
                     if(fileMgr.currentFile === fileDesc) {
                         editor.setValueNoWatch(newContent);
-                        editorSelection && editor.inputElt.setSelectionStartEnd(
+                        editorSelection && editor.selectionMgr.setSelectionStartEnd(
                             editorSelection.selectionStart,
                             editorSelection.selectionEnd
                         );
@@ -405,8 +405,8 @@ define([
                     });
                     commentsChanged && eventMgr.onCommentsChanged(fileDesc);
                 }
-                editor.undoManager.currentMode = 'sync';
-                editor.undoManager.saveState();
+                editor.undoMgr.currentMode = 'sync';
+                editor.undoMgr.saveState();
                 eventMgr.onMessage('"' + remoteTitle + '" has been updated from ' + self.providerName + '.');
                 if(conflictList.length) {
                     eventMgr.onMessage('"' + remoteTitle + '" has conflicts that you have to review.');

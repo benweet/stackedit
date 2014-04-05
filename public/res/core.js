@@ -394,7 +394,7 @@ define([
 
         if(pagedownEditor !== undefined) {
             // If the editor is already created
-            return editor.undoManager.init();
+            return editor.undoMgr.init();
         }
 
         // Create the converter and the editor
@@ -411,7 +411,7 @@ define([
         };
         converter.setOptions(options);
         pagedownEditor = new Markdown.Editor(converter, undefined, {
-            undoManager: editor.undoManager
+            undoManager: editor.undoMgr
         });
 
         // Custom insert link dialog
@@ -435,7 +435,7 @@ define([
         eventMgr.onPagedownConfigure(pagedownEditor);
         pagedownEditor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
         pagedownEditor.run();
-        editor.undoManager.init();
+        editor.undoMgr.init();
 
         // Hide default buttons
         $(".wmd-button-row li").addClass("btn btn-success").css("left", 0).find("span").hide();

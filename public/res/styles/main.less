@@ -827,10 +827,19 @@ a {
 	}
 	
 	.accordion-heading {
-		padding: 12px 15px;
 		.checkbox {
-			margin-top: 0;
+			margin-top: 12px;
 			margin-bottom: 0;
+		}
+	}
+
+	.accordion-toggle {
+		display: block;
+		width: 80%;
+		padding: 12px 15px;
+		text-decoration: none;
+		&:after {
+			content: " ▼";
 		}
 	}
 	

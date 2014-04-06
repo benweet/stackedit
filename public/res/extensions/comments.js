@@ -10,7 +10,7 @@ define([
     "bootstrap"
 ], function($, _, utils, storage, crel, rangy, Extension, commentsPopoverContentHTML) {
 
-    var comments = new Extension("comments", 'Comments');
+    var comments = new Extension("comments", 'Comments', false, true);
 
     var commentTmpl = [
         '<div class="comment-block<%= reply ? \' reply\' : \'\' %>">',
@@ -40,14 +40,15 @@ define([
     var offsetMap = {};
     function setCommentEltCoordinates(commentElt, y) {
         var lineIndex = Math.round(y / 10);
-        var yOffset = -10;
+        var yOffset = -9;
         if(commentElt.className.indexOf(' icon-split') !== -1) {
             yOffset = -12;
         }
-        var top = (y + yOffset) + 'px';
-        var right = ((offsetMap[lineIndex] || 0) * 25 + 10) + 'px';
-        commentElt.style.top = top;
-        commentElt.style.right = right;
+        var top = y + yOffset;
+        var right = (offsetMap[lineIndex] || 0) * 25 + 10;
+        commentElt.orderedIndex = lineIndex * 10000 + right;
+        commentElt.style.top = top + 'px';
+        commentElt.style.right = right + 'px';
         return lineIndex;
     }
 
@@ -87,17 +88,27 @@ define([
         }
         popoverElt.style.left = left + 'px';
         popoverElt.querySelector('.arrow').style.left = (marginElt.offsetWidth - parseInt(commentElt.style.right) - commentElt.offsetWidth / 2 - left) + 'px';
+        var $contentInputElt = currentContext.$contentInputElt;
+        var popoverTopOffset = document.body.offsetHeight - $contentInputElt.offset().top - $contentInputElt.outerHeight();
+        if(popoverTopOffset < 0) {
+            popoverElt.style.top = (parseInt(popoverElt.style.top) + popoverTopOffset) + 'px';
+        }
     }
 
     var cssApplier;
     var currentFileDesc;
     var refreshTimeoutId;
     var commentEltMap = {};
+    var sortedCommentEltList = [];
+    var someReplies = false;
+    var $openDiscussionElt;
+    var $openDiscussionIconElt;
     var refreshDiscussions = _.debounce(function() {
         if(currentFileDesc === undefined) {
             return;
         }
-
+        someReplies = false;
+        sortedCommentEltList = [];
         var author = storage['author.name'];
         offsetMap = {};
         var discussionList = _.values(currentFileDesc.discussionList);
@@ -116,24 +127,32 @@ define([
                     inputElt.scrollTop += parseInt(newCommentElt.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
                     movePopover(newCommentElt);
                 }
+                sortedCommentEltList = _.sortBy(commentEltMap, function(commentElt) {
+                    return commentElt.orderedIndex;
+                });
+                $openDiscussionElt.toggleClass('some', sortedCommentEltList.length !== 0);
+                $openDiscussionElt.toggleClass('replied', someReplies);
+                $openDiscussionIconElt.toggleClass('icon-chat', sortedCommentEltList.length !== 0);
                 return;
             }
             var discussion = discussionList.pop();
-            var commentElt = crel('a', {
-                class: 'discussion'
-            });
-            var isReplied = !discussion.commentList || _.last(discussion.commentList).author != author;
-            commentElt.className += ' icon-quote-left' + (isReplied ? ' replied' : ' added');
-            if(discussion.type == 'conflict') {
-                commentElt.className += ' icon-split';
+            var commentElt = commentEltMap[discussion.discussionIndex];
+            if(!commentElt) {
+                commentElt = crel('a');
             }
+            var className = 'discussion';
+            var isReplied = !discussion.commentList || _.last(discussion.commentList).author != author;
+            isReplied && (someReplies = true);
+            className += ' icon-quote-left' + (isReplied ? ' replied' : ' added');
+            if(discussion.type == 'conflict') {
+                className += ' icon-split';
+            }
+            commentElt.className = className;
             commentElt.discussionIndex = discussion.discussionIndex;
             var coordinates = editor.selectionMgr.getCoordinates(discussion.selectionEnd);
             var lineIndex = setCommentEltCoordinates(commentElt, coordinates.y);
             offsetMap[lineIndex] = (offsetMap[lineIndex] || 0) + 1;
 
-            var oldCommentElt = commentEltMap[discussion.discussionIndex];
-            oldCommentElt && marginElt.removeChild(oldCommentElt);
             marginElt.appendChild(commentElt);
             commentEltMap[discussion.discussionIndex] = commentElt;
 
@@ -225,7 +244,7 @@ define([
         if(discussion.type == 'conflict') {
             result.unshift(_.template(commentTmpl, {
                 author: 'StackEdit',
-                content: 'Multiple users have made conflicting modifications that you have to review.',
+                content: 'Multiple users have made conflicting modifications.',
                 reply: true
             }));
         }
@@ -276,6 +295,9 @@ define([
         }).on('show.bs.popover', '#wmd-input > .editor-margin', function(evt) {
             closeCurrentPopover();
             var context = new Context(evt.target, currentFileDesc);
+            if(evt.target !== newCommentElt) {
+                $newCommentElt.addClass('hide');
+            }
             currentContext = context;
             inputElt.scrollTop += parseInt(evt.target.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
 
@@ -295,15 +317,15 @@ define([
                 var match = /\S+/.exec(after);
                 if(match) {
                     selectionStart += match.index;
-                    if(match.index === 0) {
-                        while(selectionStart && /\S/.test(textContent[selectionStart - 1])) {
-                            selectionStart--;
-                        }
+                    selectionEnd = selectionStart + match[0].length;
+                }
+                if(!match || match.index === 0) {
+                    while(selectionStart && /\S/.test(textContent[selectionStart - 1])) {
+                        selectionStart--;
                     }
-                    selectionEnd += match.index + match[0].length;
                 }
             }
-            context.selectionRange = editor.selectionMgr.createRange(selectionStart, selectionEnd);
+            context.selectionRange = editor.selectionMgr.setSelectionStartEnd(selectionStart, selectionEnd, undefined, true);
             currentFileDesc.newDiscussion = {
                 selectionStart: selectionStart,
                 selectionEnd: selectionEnd,
@@ -311,14 +333,14 @@ define([
             };
         }).on('shown.bs.popover', '#wmd-input > .editor-margin', function(evt) {
             var context = currentContext;
-            movePopover(context.commentElt);
             var popoverElt = context.getPopoverElt();
-
-            // Scroll to the bottom of the discussion
-            popoverElt.querySelector('.popover-content').scrollTop = 9999999;
-
             context.$authorInputElt = $(popoverElt.querySelector('.input-comment-author')).val(storage['author.name']);
             context.$contentInputElt = $(popoverElt.querySelector('.input-comment-content'));
+            movePopover(context.commentElt);
+
+            // Scroll to the bottom of the discussion
+            popoverElt.querySelector('.scrollport').scrollTop = 9999999;
+
             var $addButton = $(popoverElt.querySelector('.action-add-comment'));
             $().add(context.$contentInputElt).add(context.$authorInputElt).keydown(function(evt) {
                 // Enter key
@@ -377,12 +399,12 @@ define([
                 $removeButton.click(function() {
                     $(popoverElt.querySelector('.new-comment-block')).addClass('hide');
                     $(popoverElt.querySelector('.remove-discussion-confirm')).removeClass('hide');
-                    popoverElt.querySelector('.popover-content').scrollTop = 9999999;
+                    popoverElt.querySelector('.scrollport').scrollTop = 9999999;
                 });
                 $removeCancelButton.click(function() {
                     $(popoverElt.querySelector('.new-comment-block')).removeClass('hide');
                     $(popoverElt.querySelector('.remove-discussion-confirm')).addClass('hide');
-                    popoverElt.querySelector('.popover-content').scrollTop = 9999999;
+                    popoverElt.querySelector('.scrollport').scrollTop = 9999999;
                     context.$contentInputElt.focus();
                 });
                 $removeConfirmButton.click(function() {
@@ -421,6 +443,7 @@ define([
                 return;
             }
             currentContext.$commentElt.removeClass('active');
+            $newCommentElt.removeClass('hide');
 
             // Save content and author for later
             previousContent = currentContext.$contentInputElt.val();
@@ -431,6 +454,29 @@ define([
             currentContext = undefined;
             delete currentFileDesc.newDiscussion;
         });
+
+        var $newCommentElt = $(newCommentElt);
+        $openDiscussionElt = $('.button-open-discussion').click(function(evt) {
+            var $commentElt = $newCommentElt;
+            if(sortedCommentEltList.length) {
+                if(!currentContext) {
+                    $commentElt = $(_.first(sortedCommentEltList));
+                }
+                else {
+                    var curentIndex = -1;
+                    sortedCommentEltList.some(function(elt, index) {
+                        if(elt === currentContext.commentElt) {
+                            curentIndex = index;
+                            return true;
+                        }
+                    });
+                    $commentElt = $(sortedCommentEltList[(curentIndex + 1) % sortedCommentEltList.length]);
+                }
+            }
+            $commentElt.click();
+            evt.stopPropagation();
+        });
+        $openDiscussionIconElt = $openDiscussionElt.find('i');
     };
 
     return comments;

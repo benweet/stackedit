@@ -1,18 +1,20 @@
-<div class="discussion-comment-list"><%= commentList %></div>
-<div class="new-comment-block">
-    <div class="form-group">
-        <i class="icon-comment"></i> <input class="form-control input-comment-author" placeholder="Your name"></input>
-        <textarea class="form-control input-comment-content"></textarea>
+<div class="scrollport">
+    <div class="discussion-comment-list"><%= commentList %></div>
+    <div class="new-comment-block">
+        <div class="form-group">
+            <i class="icon-comment"></i> <input class="form-control input-comment-author" placeholder="Your name"></input>
+            <textarea class="form-control input-comment-content"></textarea>
+        </div>
+        <div class="form-group text-right">
+            <button class="btn btn-primary action-add-comment">Add</button>
+        </div>
     </div>
-    <div class="form-group text-right">
-        <button class="btn btn-primary action-add-comment">Add</button>
+    <div class="remove-discussion-confirm hide">
+        <blockquote>Remove this discussion, really?</blockquote>
+        <div class="form-group text-right">
+            <button class="btn btn-default action-remove-discussion-cancel">No</button>
+            <button class="btn btn-primary action-remove-discussion-confirm">Yes</button>
+        </div>
     </div>
 </div>
-<div class="remove-discussion-confirm hide">
-    <br/>
-    <blockquote>Remove this discussion, really?</blockquote>
-    <div class="form-group text-right">
-        <button class="btn btn-default action-remove-discussion-cancel">No</button>
-        <button class="btn btn-primary action-remove-discussion-confirm">Yes</button>
-    </div>
-</div>
+<hr/>

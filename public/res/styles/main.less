@@ -19,7 +19,7 @@
 @primary-border-color: fade(@primary, 10%);
 
 // Preview and menus
-@secondary-bg: lighten(@secondary-desaturated, 45%);
+@secondary-bg: lighten(@secondary-desaturated, 48%);
 @secondary-bg-light: lighten(@secondary-desaturated, 47%);
 @secondary-bg-lighter: #fff;
 @secondary-color: lighten(@primary-desaturated, 10%);
@@ -111,7 +111,7 @@
 @btn-info-color: fade(@secondary-desaturated, 35%);
 @btn-info-bg: @transparent;
 @btn-info-border: @transparent;
-@btn-info-hover-bg: @secondary-bg;
+@btn-info-hover-bg: lighten(@secondary-desaturated, 45%);
 @gray-lighter: @body-bg;
 @modal-header-border-color: @secondary-border-color-light;
 @modal-content-bg: @secondary-bg-lighter;
@@ -127,8 +127,14 @@
 @popover-arrow-outer-color: @secondary-border-color;
 @popover-title-bg: @transparent;
 @alert-border-radius: 0;
-@label-warning-bg: spin(darken(@logo-yellow, 4%), -4);
+@label-warning-bg: spin(darken(@logo-yellow, 4%), -6);
 @label-danger-bg: spin(darken(@logo-orange, 4%), -4);
+@state-warning-text: spin(darken(@logo-yellow, 18%), -6);
+@state-warning-bg: fade(spin(@logo-yellow, -6), 12%);
+@state-warning-border: fade(spin(@logo-yellow, -6), 24%);
+@state-danger-text: spin(darken(@logo-orange, 20%), -4);
+@state-danger-bg: fade(spin(@logo-orange, -4), 10%);
+@state-danger-border: fade(spin(@logo-orange, -4), 20%);
 
 
 body {
@@ -439,6 +445,25 @@ a {
 		&[disabled] {
 			* {
 				color: fade(@btn-success-color, 30%);
+			}
+		}
+	}
+
+	.button-open-discussion {
+		&.some {
+			color: lighten(@alert-warning-text, 10%);
+			&:hover,
+			&:focus {
+				.alert-variant(@alert-warning-bg; @alert-warning-border; @alert-warning-text);
+				background-color: @alert-warning-bg !important;
+			}
+		}
+		&.replied {
+			color: lighten(@alert-danger-text, 10%);
+			&:hover,
+			&:focus {
+				.alert-variant(@alert-danger-bg; @alert-danger-border; @alert-danger-text);
+				background-color: @alert-danger-bg !important;
 			}
 		}
 	}
@@ -1058,12 +1083,13 @@ a {
         position: absolute;
 		top: 0;
 		.discussion {
-			font-size: 18px;
+			font-size: 17px;
 			&:before {
 				margin-right: 0;
 			}
 			&.new {
-				color: fade(@tertiary-color, 10%);
+				display: none;
+				color: fade(@tertiary-color, 20%);
 				&:hover, &.active, &.active:hover {
 					color: fade(@tertiary-color, 35%) !important;
 				}
@@ -1091,12 +1117,11 @@ a {
 		}
     }
 	&.has-selection > .editor-margin .discussion.new {
-		color: fade(@tertiary-color, 25%);
+		display: inline-block;
 	}
 
 	.comment-highlight {
 		background-color: fade(@label-warning-bg, 30%);
-		//border-radius: @border-radius-base;
 	}
 
 	.conflict {
@@ -1149,13 +1174,6 @@ a {
         font-size: 2.5em;
         padding: 0.2em;
     }
-
-    /*
-    .pre {
-        line-height: 1.8;
-        margin-left: 1.8em
-    }
-    */
 
     .link, .linkref {
         .md-underlined-text {
@@ -1438,15 +1456,22 @@ input[type="file"] {
 		display: none;
 	}
 	.popover-content {
-		padding: 10px 20px 0;
-		overflow: auto;
-		max-height: 230px;
-		margin: 0 -20px;
+		margin: 0;
+		padding: 0;
+		.scrollport {
+			overflow: auto;
+			max-height: 230px;
+			padding: 10px 20px 0;
+			margin: 0 -20px;
+		}
 		.btn {
 			padding: 6px 11px;
 		}
 		.comment-block {
 			margin-bottom: 5px;
+		}
+		.form-group, blockquote {
+			margin-bottom: 10px;
 		}
 		.comment-author {
 			font-weight: bold;
@@ -1466,8 +1491,11 @@ input[type="file"] {
 			font-weight: bold;
 			height: 28px;
 			padding: 0 0 5px;
-			width: 150px;
+			width: 140px;
 			display: inline-block;
+		}
+		hr {
+			margin: 0 0 10px;
 		}
 	}
 

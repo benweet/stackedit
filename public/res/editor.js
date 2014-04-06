@@ -1,4 +1,5 @@
 /* jshint -W084, -W099 */
+// Credit to http://dabblet.com/
 define([
     'jquery',
     'underscore',
@@ -8,15 +9,10 @@ define([
     'diff_match_patch_uncompressed',
     'jsondiffpatch',
     'crel',
+    'rangy',
     'MutationObservers',
     'libs/prism-markdown'
-], function ($, _, settings, eventMgr, Prism, diff_match_patch, jsondiffpatch, crel) {
-
-    function strSplice(str, i, remove, add) {
-        remove = +remove || 0;
-        add = add || '';
-        return str.slice(0, i) + add + str.slice(i + remove);
-    }
+], function ($, _, settings, eventMgr, Prism, diff_match_patch, jsondiffpatch, crel, rangy) {
 
     var editor = {};
     var scrollTop = 0;
@@ -110,6 +106,7 @@ define([
     });
 
     function SelectionMgr() {
+        var self = this;
         this.selectionStart = 0;
         this.selectionEnd = 0;
         this.cursorY = 0;
@@ -147,21 +144,26 @@ define([
             if(end === undefined) {
                 end = this.selectionEnd;
             }
+            var maxOffset = inputElt.textContent.length - 1;
+            if(start > maxOffset) {
+                start = maxOffset;
+                range = undefined;
+                skipSelectionUpdate = false;
+            }
+            if(end > maxOffset) {
+                end = maxOffset;
+                range = undefined;
+                skipSelectionUpdate = false;
+            }
+            this.selectionStart = start;
+            this.selectionEnd = end;
             var min = Math.min(start, end);
             var max = Math.max(start, end);
             range = range || this.createRange(min, max);
-            if(start < end || !skipSelectionUpdate) {
-                this.selectionStart = min;
-                this.selectionEnd = max;
-            }
-            else {
-                this.selectionStart = max;
-                this.selectionEnd = min;
-            }
             if(!skipSelectionUpdate) {
-                var selection = window.getSelection();
+                var selection = rangy.getSelection();
                 selection.removeAllRanges();
-                selection.addRange(range);
+                selection.addRange(range, start > end);
             }
             fileDesc.editorStart = this.selectionStart;
             fileDesc.editorEnd = this.selectionEnd;
@@ -174,47 +176,42 @@ define([
             }
             return range;
         };
-        this.saveSelectionState = function(skipSelectionUpdate) {
-            if(fileChanged === false) {
-                var selection = window.getSelection();
-                if(!skipSelectionUpdate && selection.rangeCount > 0) {
-                    var range = selection.getRangeAt(0);
-                    var element = range.startContainer;
+        this.saveSelectionState = (function() {
+            function save() {
+                if(fileChanged === false) {
+                    var selection = rangy.getSelection();
+                    if(selection.rangeCount > 0) {
+                        var range = selection.getRangeAt(0);
+                        var element = range.startContainer;
 
-                    if ((inputElt.compareDocumentPosition(element) & 0x10)) {
-                        var container = element;
-                        var offset = range.startOffset;
-                        do {
-                            while (element = element.previousSibling) {
-                                if (element.textContent) {
-                                    offset += element.textContent.length;
+                        if ((contentElt.compareDocumentPosition(element) & 0x10)) {
+                            var container = element;
+                            var offset = range.startOffset;
+                            do {
+                                while (element = element.previousSibling) {
+                                    if (element.textContent) {
+                                        offset += element.textContent.length;
+                                    }
                                 }
+                                element = container = container.parentNode;
+                            } while (element && element != inputElt);
+
+                            if(selection.isBackwards()) {
+                                self.setSelectionStartEnd(offset + (range + '').length, offset, range, true);
                             }
-
-                            element = container = container.parentNode;
-                        } while (element && element != inputElt);
-
-                        // Determine if it's a backward selection
-                        var isBackwardSelection = false;
-                        if (!selection.isCollapsed) {
-                            var tmpRange = document.createRange();
-                            tmpRange.setStart(selection.anchorNode, selection.anchorOffset);
-                            tmpRange.setEnd(selection.focusNode, selection.focusOffset);
-                            isBackwardSelection = tmpRange.collapsed;
-                            tmpRange.detach();
-                        }
-
-                        if(isBackwardSelection) {
-                            this.setSelectionStartEnd(offset + (range + '').length, offset, range, true);
-                        }
-                        else {
-                            this.setSelectionStartEnd(offset, offset + (range + '').length, range, true);
+                            else {
+                                self.setSelectionStartEnd(offset, offset + (range + '').length, range, true);
+                            }
                         }
                     }
                 }
+                undoMgr.saveSelectionState();
             }
-            undoMgr.saveSelectionState();
-        };
+            var debouncedSave = _.debounce(save, 0);
+            return function(debounced) {
+                debounced ? debouncedSave() : save();
+            };
+        })();
         this.getCoordinates = function(inputOffset, container, offset) {
             if(!container) {
                 offset = this.findOffset(inputOffset);
@@ -236,7 +233,7 @@ define([
                     container: container,
                     offset: offset
                 };
-                if(selectedChar === undefined || selectedChar == '\n') {
+                if(inputOffset > 0 && (selectedChar === undefined || selectedChar == '\n')) {
                     if(startOffset.offset === 0) {
                         startOffset = inputOffset - 1;
                     }
@@ -265,31 +262,41 @@ define([
     }
     var selectionMgr = new SelectionMgr();
     editor.selectionMgr = selectionMgr;
+    $(document).on('selectionchange', function() {
+        selectionMgr.saveSelectionState(true);
+    });
 
-    var adjustCursorPosition = _.debounce(function() {
-        if(inputElt === undefined) {
-            return;
-        }
-        selectionMgr.saveSelectionState();
-
-        var adjust = inputElt.offsetHeight / 2;
-        if(adjust > 130) {
-            adjust = 130;
-        }
-        var cursorMinY = inputElt.scrollTop + adjust;
-        var cursorMaxY = inputElt.scrollTop + inputElt.offsetHeight - adjust;
-        if(selectionMgr.cursorY < cursorMinY) {
-            inputElt.scrollTop += selectionMgr.cursorY - cursorMinY;
-        }
-        else if(selectionMgr.cursorY > cursorMaxY) {
-            inputElt.scrollTop += selectionMgr.cursorY - cursorMaxY;
-        }
-    }, 0);
+    var adjustCursorPosition = (function() {
+        var adjust = _.debounce(function() {
+            var adjust = inputElt.offsetHeight / 2;
+            if(adjust > 130) {
+                adjust = 130;
+            }
+            var cursorMinY = inputElt.scrollTop + adjust;
+            var cursorMaxY = inputElt.scrollTop + inputElt.offsetHeight - adjust;
+            if(selectionMgr.cursorY < cursorMinY) {
+                inputElt.scrollTop += selectionMgr.cursorY - cursorMinY;
+            }
+            else if(selectionMgr.cursorY > cursorMaxY) {
+                inputElt.scrollTop += selectionMgr.cursorY - cursorMaxY;
+            }
+        }, 0);
+        return function() {
+            if(inputElt === undefined) {
+                return;
+            }
+            selectionMgr.saveSelectionState(true);
+            adjust();
+        };
+    })();
     eventMgr.addListener('onLayoutResize', adjustCursorPosition);
 
     var textContent;
     function setValue(value) {
         var startOffset = diffMatchPatch.diff_commonPrefix(textContent, value);
+        if(startOffset === textContent.length) {
+            startOffset--;
+        }
         var endOffset = Math.min(
             diffMatchPatch.diff_commonSuffix(textContent, value),
             textContent.length - startOffset,
@@ -310,7 +317,7 @@ define([
     function getValue() {
         return textContent;
     }
-    editor.setValueNoWatch = getValue;
+    editor.getValue = getValue;
 
     function UndoMgr() {
         var undoStack = [];
@@ -459,48 +466,10 @@ define([
                 currentTextContent += '\n';
             }
             undoMgr.currentMode = undoMgr.currentMode || 'typing';
-            var changes = diffMatchPatch.diff_main(textContent, currentTextContent);
-            textContent = currentTextContent;
-            // Move comments according to changes
-            var updateDiscussionList = false;
-            var startOffset = 0;
             var discussionList = _.values(fileDesc.discussionList);
             fileDesc.newDiscussion && discussionList.push(fileDesc.newDiscussion);
-            changes.forEach(function(change) {
-                var changeType = change[0];
-                var changeText = change[1];
-                if(changeType === 0) {
-                    startOffset += changeText.length;
-                    return;
-                }
-                var endOffset = startOffset;
-                var diffOffset = changeText.length;
-                if(changeType === -1) {
-                    endOffset += diffOffset;
-                    diffOffset = -diffOffset;
-                }
-                discussionList.forEach(function(discussion) {
-                    // selectionEnd
-                    if(discussion.selectionEnd >= endOffset) {
-                        discussion.selectionEnd += diffOffset;
-                        updateDiscussionList = true;
-                    }
-                    else if(discussion.selectionEnd > startOffset) {
-                        discussion.selectionEnd = startOffset;
-                        updateDiscussionList = true;
-                    }
-                    // selectionStart
-                    if(discussion.selectionStart >= endOffset) {
-                        discussion.selectionStart += diffOffset;
-                        updateDiscussionList = true;
-                    }
-                    else if(discussion.selectionStart > startOffset) {
-                        discussion.selectionStart = startOffset;
-                        updateDiscussionList = true;
-                    }
-                });
-                startOffset = endOffset;
-            });
+            var updateDiscussionList = adjustCommentOffsets(textContent, currentTextContent, discussionList);
+            textContent = currentTextContent;
             if(updateDiscussionList === true) {
                 fileDesc.discussionList = fileDesc.discussionList; // Write discussionList in localStorage
             }
@@ -525,12 +494,57 @@ define([
         }
     }
 
+    function adjustCommentOffsets(oldTextContent, newTextContent, discussionList) {
+        if(!discussionList.length) {
+            return;
+        }
+        var changes = diffMatchPatch.diff_main(oldTextContent, newTextContent);
+        var changed = false;
+        var startOffset = 0;
+        changes.forEach(function(change) {
+            var changeType = change[0];
+            var changeText = change[1];
+            if(changeType === 0) {
+                startOffset += changeText.length;
+                return;
+            }
+            var endOffset = startOffset;
+            var diffOffset = changeText.length;
+            if(changeType === -1) {
+                endOffset += diffOffset;
+                diffOffset = -diffOffset;
+            }
+            discussionList.forEach(function(discussion) {
+                // selectionEnd
+                if(discussion.selectionEnd > endOffset) {
+                    discussion.selectionEnd += diffOffset;
+                    discussion.discussionIndex && (changed = true);
+                }
+                else if(discussion.selectionEnd > startOffset) {
+                    discussion.selectionEnd = startOffset;
+                    discussion.discussionIndex && (changed = true);
+                }
+                // selectionStart
+                if(discussion.selectionStart >= endOffset) {
+                    discussion.selectionStart += diffOffset;
+                    discussion.discussionIndex && (changed = true);
+                }
+                else if(discussion.selectionStart > startOffset) {
+                    discussion.selectionStart = startOffset;
+                    discussion.discussionIndex && (changed = true);
+                }
+            });
+            if(changeType === 1) {
+                startOffset += changeText.length;
+            }
+        });
+        return changed;
+    }
+    editor.adjustCommentOffsets = adjustCommentOffsets;
+
     editor.init = function(elt1, elt2) {
         inputElt = elt1;
         $inputElt = $(inputElt);
-        editor.inputElt = inputElt;
-        editor.$inputElt = $inputElt;
-
         previewElt = elt2;
 
         contentElt = crel('div', {
@@ -538,10 +552,8 @@ define([
             contenteditable: true
         });
         inputElt.appendChild(contentElt);
-        editor.contentElt = contentElt;
         $contentElt = $(contentElt);
         editor.$contentElt = $contentElt;
-
         marginElt = crel('div', {
             class: 'editor-margin'
         });
@@ -568,12 +580,6 @@ define([
             selectionMgr.setSelectionStartEnd();
             inputElt.scrollTop = scrollTop;
         };
-        $contentElt.focus(function() {
-            inputElt.focused = true;
-        });
-        $contentElt.blur(function() {
-            inputElt.focused = false;
-        });
 
         Object.defineProperty(inputElt, 'value', {
             get: function () {
@@ -584,7 +590,7 @@ define([
 
         Object.defineProperty(inputElt, 'selectionStart', {
             get: function () {
-                return selectionMgr.selectionStart;
+                return Math.min(selectionMgr.selectionStart, selectionMgr.selectionEnd);
             },
             set: function (value) {
                 selectionMgr.setSelectionStartEnd(value);
@@ -596,7 +602,7 @@ define([
 
         Object.defineProperty(inputElt, 'selectionEnd', {
             get: function () {
-                return selectionMgr.selectionEnd;
+                return Math.max(selectionMgr.selectionStart, selectionMgr.selectionEnd);
             },
             set: function (value) {
                 selectionMgr.setSelectionStartEnd(undefined, value);
@@ -642,9 +648,7 @@ define([
             }
         })
         .on('mouseup', function() {
-            setTimeout(function() {
-                selectionMgr.saveSelectionState();
-            }, 0);
+            selectionMgr.saveSelectionState(true);
         })
         .on('paste', function () {
             undoMgr.currentMode = 'paste';
@@ -658,52 +662,52 @@ define([
         var action = function (action, options) {
             options = options || {};
 
-            var text = inputElt.value,
-                ss = options.start || selectionMgr.selectionStart,
-                se = options.end || selectionMgr.selectionEnd,
-                state = {
-                    ss: ss,
-                    se: se,
-                    before: text.slice(0, ss),
-                    after: text.slice(se),
-                    selection: text.slice(ss, se)
-                };
+            var textContent = getValue();
+            var selectionStart = options.start || selectionMgr.selectionStart;
+            var selectionEnd = options.end || selectionMgr.selectionEnd;
+            var state = {
+                selectionStart: selectionStart,
+                selectionEnd: selectionEnd,
+                before: textContent.slice(0, selectionStart),
+                after: textContent.slice(selectionEnd),
+                selection: textContent.slice(selectionStart, selectionEnd)
+            };
 
             actions[action](state, options);
-            inputElt.value = state.before + state.selection + state.after;
-            selectionMgr.setSelectionStartEnd(state.ss, state.se);
+            setValue(state.before + state.selection + state.after);
+            selectionMgr.setSelectionStartEnd(state.selectionStart, state.selectionEnd);
             $inputElt.trigger('input');
         };
 
         var actions = {
             indent: function (state, options) {
+                function strSplice(str, i, remove, add) {
+                    remove = +remove || 0;
+                    add = add || '';
+                    return str.slice(0, i) + add + str.slice(i + remove);
+                }
                 var lf = state.before.lastIndexOf('\n') + 1;
-
                 if (options.inverse) {
                     if (/\s/.test(state.before.charAt(lf))) {
                         state.before = strSplice(state.before, lf, 1);
 
-                        state.ss--;
-                        state.se--;
+                        state.selectionStart--;
+                        state.selectionEnd--;
                     }
-
                     state.selection = state.selection.replace(/^[ \t]/gm, '');
                 } else if (state.selection) {
                     state.before = strSplice(state.before, lf, 0, '\t');
                     state.selection = state.selection.replace(/\r?\n(?=[\s\S])/g, '\n\t');
-
-                    state.ss++;
-                    state.se++;
+                    state.selectionStart++;
+                    state.selectionEnd++;
                 } else {
                     state.before += '\t';
-
-                    state.ss++;
-                    state.se++;
-
+                    state.selectionStart++;
+                    state.selectionEnd++;
                     return;
                 }
 
-                state.se = state.ss + state.selection.length;
+                state.selectionEnd = state.selectionStart + state.selection.length;
             },
 
             newline: function (state) {
@@ -711,8 +715,8 @@ define([
                 if(clearNewline) {
                     state.before = state.before.substring(0, lf);
                     state.selection = '';
-                    state.ss = lf;
-                    state.se = lf;
+                    state.selectionStart = lf;
+                    state.selectionEnd = lf;
                     clearNewline = false;
                     return;
                 }
@@ -732,8 +736,8 @@ define([
 
                 state.before += '\n' + indent;
                 state.selection = '';
-                state.ss += indent.length + 1;
-                state.se = state.ss;
+                state.selectionStart += indent.length + 1;
+                state.selectionEnd = state.selectionStart;
             },
         };
     };
@@ -843,17 +847,18 @@ define([
         });
     }
 
-    var entityMap = {
-        "&": "&amp;",
-        "<": "&lt;",
-        "\u00a0": ' ',
-    };
-
-    function escape(str) {
-        return str.replace(/[&<\u00a0]/g, function(s) {
-            return entityMap[s];
-        });
-    }
+    var escape = (function() {
+        var entityMap = {
+            "&": "&amp;",
+            "<": "&lt;",
+            "\u00a0": ' ',
+        };
+        return function(str) {
+            return str.replace(/[&<\u00a0]/g, function(s) {
+                return entityMap[s];
+            });
+        };
+    })();
 
     function highlight(section) {
         var text = escape(section.text);

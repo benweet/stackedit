@@ -27,12 +27,9 @@ define([
                 ) {
                     throw 'invalid';
                 }
-                if(discussion.type == 'conflict') {
-                    return;
-                }
-                discussion.commentList.forEach(function(comment) {
+                discussion.commentList && discussion.commentList.forEach(function(comment) {
                     if(
-                        (!_.isString(comment.author)) ||
+                        (!(!comment.author || _.isString(comment.author))) ||
                         (!_.isString(comment.content))
                     ) {
                         throw 'invalid';
@@ -46,7 +43,7 @@ define([
     };
 
     Provider.prototype.serializeContent = function(content, discussionList) {
-        if(discussionList.length > 2) { // It's a serialized JSON
+        if(discussionList.length > 2) { // Serialized JSON
             return content + '<!--se_discussion_list:' + discussionList + '-->';
         }
         return content;
@@ -86,24 +83,29 @@ define([
             var addDiff = [1, ''];
             var distance = 20;
             function pushDiff() {
-                var separator = '///';
-                if(removeDiff[1]) {
-                    removeDiff[1] = '///' + removeDiff[1] + separator;
-                    separator = '';
-                    result.push(removeDiff);
+                if(!removeDiff[1] && !addDiff[1]) {
+                    return;
                 }
-                if(addDiff[1]) {
-                    addDiff[1] = separator + addDiff[1] + '///';
+                if(!removeDiff[1] || !addDiff[1]) {
+                    result.push([0, removeDiff[1] + addDiff[1]]);
+                }
+                else {
+                    removeDiff[1] = '///' + removeDiff[1] + '///';
+                    addDiff[1] += '///';
+                    result.push(removeDiff);
                     result.push(addDiff);
                 }
                 removeDiff = [-1, ''];
                 addDiff = [1, ''];
             }
-            diffs.forEach(function(diff) {
+            diffs.forEach(function(diff, index) {
+                function firstOrLast() {
+                    return index === 0 || index === diffs.length - 1;
+                }
                 var diffType = diff[0];
                 var diffText = diff[1];
                 if(diffType === 0) {
-                    if(diffText.length > distance) {
+                    if(firstOrLast() || diffText.length > distance) {
                         if(removeDiff[1] || addDiff[1]) {
                             var match = /\s/.exec(diffText);
                             if(match) {
@@ -121,7 +123,7 @@ define([
                             }
                             var suffix = diffText.substring(suffixOffset);
                             diffText = diffText.substring(0, suffixOffset);
-                            if(diffText.length > distance) {
+                            if(firstOrLast() || diffText.length > distance) {
                                 pushDiff();
                                 result.push([0, diffText]);
                             }
@@ -152,51 +154,6 @@ define([
                 pushDiff();
             }
             return result;
-        }
-
-        function moveComments(oldTextContent, newTextContent, discussionList) {
-            if(!discussionList.length) {
-                return;
-            }
-            var changes = diffMatchPatch.diff_main(oldTextContent, newTextContent);
-            var changed = false;
-            var startOffset = 0;
-            changes.forEach(function(change) {
-                var changeType = change[0];
-                var changeText = change[1];
-                if(changeType === 0) {
-                    startOffset += changeText.length;
-                    return;
-                }
-                var endOffset = startOffset;
-                var diffOffset = changeText.length;
-                if(changeType === -1) {
-                    endOffset += diffOffset;
-                    diffOffset = -diffOffset;
-                }
-                discussionList.forEach(function(discussion) {
-                    // selectionEnd
-                    if(discussion.selectionEnd >= endOffset) {
-                        discussion.selectionEnd += diffOffset;
-                        discussion.discussionIndex && (changed = true);
-                    }
-                    else if(discussion.selectionEnd > startOffset) {
-                        discussion.selectionEnd = startOffset;
-                        discussion.discussionIndex && (changed = true);
-                    }
-                    // selectionStart
-                    if(discussion.selectionStart >= endOffset) {
-                        discussion.selectionStart += diffOffset;
-                        discussion.discussionIndex && (changed = true);
-                    }
-                    else if(discussion.selectionStart > startOffset) {
-                        discussion.selectionStart = startOffset;
-                        discussion.discussionIndex && (changed = true);
-                    }
-                });
-                startOffset = endOffset;
-            });
-            return changed;
         }
 
         var localContent = fileDesc.content;
@@ -314,7 +271,7 @@ define([
             }
         }
 
-        // Adjust local discussions offset
+        // Adjust local discussions offsets
         var editorSelection;
         if(contentChanged) {
             var localDiscussionArray = [];
@@ -330,13 +287,13 @@ define([
             if(adjustLocalDiscussionList) {
                 localDiscussionArray = localDiscussionArray.concat(_.values(localDiscussionList));
             }
-            discussionListChanged |= moveComments(localContent, newContent, localDiscussionArray);
+            discussionListChanged |= editor.adjustCommentOffsets(localContent, newContent, localDiscussionArray);
         }
 
-        // Adjust remote discussions offset
+        // Adjust remote discussions offsets
         if(adjustRemoteDiscussionList) {
             var remoteDiscussionArray = _.values(remoteDiscussionList);
-            moveComments(remoteContent, newContent, remoteDiscussionArray);
+            editor.adjustCommentOffsets(remoteContent, newContent, remoteDiscussionArray);
         }
 
         // Patch remote discussionList with local modifications

@@ -1,3 +1,4 @@
+// Credit to https://editorially.com/
 Prism.languages.md = (function() {
 
     var urlPattern = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>\[\]'"]+|\([^\s()<>\[\]'"]*\))+(?:\([^\s()<>\[\]'"]*\)|[^\s`!()\[\]{}:'".,<>?«»“”‘’]))/gi;
@@ -254,7 +255,7 @@ Prism.languages.md = (function() {
         strong: md.strong,
         em: md.em,
         strike: md.strike,
-        conflict: /\/\/\//g,
+        conflict: /\/\//g,
         comment: Prism.languages.markup.comment,
         tag: Prism.languages.markup.tag,
         entity: Prism.languages.markup.entity
@@ -274,7 +275,7 @@ Prism.languages.md = (function() {
         fn: md.fn,
         link: md.link,
         linkref: md.linkref,
-        conflict: /\/\/\//g,
+        conflict: /\/\//g,
     };
     md.strong.inside.rest = rest;
     md.em.inside.rest = rest;
@@ -285,7 +286,7 @@ Prism.languages.md = (function() {
         strong: md.strong,
         em: md.em,
         strike: md.strike,
-        conflict: /\/\/\//g,
+        conflict: /\/\//g,
         comment: Prism.languages.markup.comment,
         tag: Prism.languages.markup.tag,
         entity: Prism.languages.markup.entity

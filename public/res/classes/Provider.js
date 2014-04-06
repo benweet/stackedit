@@ -90,8 +90,8 @@ define([
                     result.push([0, removeDiff[1] + addDiff[1]]);
                 }
                 else {
-                    removeDiff[1] = '///' + removeDiff[1] + '///';
-                    addDiff[1] += '///';
+                    removeDiff[1] = '//' + removeDiff[1] + '//';
+                    addDiff[1] += '//';
                     result.push(removeDiff);
                     result.push(addDiff);
                 }

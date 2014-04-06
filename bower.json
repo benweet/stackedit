@@ -3,7 +3,7 @@
   "version": "3.1.9",
   "description": "StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.",
   "dependencies": {
-    "bootstrap": "v3.0.0",
+    "bootstrap": "3.0.3",
     "jquery": "2.0.3",
     "underscore": "1.5.1",
     "requirejs": "~2.1.8",

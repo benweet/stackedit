@@ -576,7 +576,7 @@ define([
                 isMenuPanelShown = false;
                 menuPanelBackdropElt.removeBackdrop();
                 $menuPanelElt.removeClass('move-to-front');
-                $editorElt.focus();
+                editor.focus();
             }
         }).on('hidden.bs.collapse', function(e) {
             if(e.target === $menuPanelElt[0]) {
@@ -608,7 +608,7 @@ define([
                 isDocumentPanelShown = false;
                 documentPanelBackdropElt.removeBackdrop();
                 $documentPanelElt.removeClass('move-to-front');
-                $editorElt.focus();
+                editor.focus();
             }
         }).on('hidden.bs.collapse', function(e) {
             if(e.target === $documentPanelElt[0]) {
@@ -667,7 +667,7 @@ define([
         }).on('hidden.bs.modal', function() {
             // Focus on the editor when modal is gone
             isModalShown = false;
-            $editorElt.focus();
+            editor.focus();
             // Revert to current theme when settings modal is closed
             applyTheme(window.theme);
         }).keyup(function(e) {

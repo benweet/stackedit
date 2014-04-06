@@ -33,14 +33,26 @@ define([
     };
 
     var editor;
+    var selectionMgr;
     comments.onEditorCreated = function(editorParam) {
         editor = editorParam;
+        selectionMgr = editor.selectionMgr;
     };
 
     var offsetMap = {};
     function setCommentEltCoordinates(commentElt, y) {
-        var lineIndex = Math.round(y / 10);
-        var yOffset = -9;
+        var lineIndex = Math.round(y / 5);
+        // Try to find the nearest existing lineIndex
+        if(offsetMap.hasOwnProperty(lineIndex)) {
+            // Keep current lineIndex
+        }
+        else if(offsetMap.hasOwnProperty(lineIndex - 1)) {
+            lineIndex--;
+        }
+        else if(offsetMap.hasOwnProperty(lineIndex + 1)) {
+            lineIndex++;
+        }
+        var yOffset = -8;
         if(commentElt.className.indexOf(' icon-split') !== -1) {
             yOffset = -12;
         }
@@ -55,7 +67,7 @@ define([
     var inputElt;
     var marginElt;
     var newCommentElt = crel('a', {
-        class: 'discussion icon-quote-left new'
+        class: 'discussion icon-comment new'
     });
     var cursorY;
     comments.onCursorCoordinates = function(x, y) {
@@ -88,8 +100,7 @@ define([
         }
         popoverElt.style.left = left + 'px';
         popoverElt.querySelector('.arrow').style.left = (marginElt.offsetWidth - parseInt(commentElt.style.right) - commentElt.offsetWidth / 2 - left) + 'px';
-        var $contentInputElt = currentContext.$contentInputElt;
-        var popoverTopOffset = document.body.offsetHeight - $contentInputElt.offset().top - $contentInputElt.outerHeight();
+        var popoverTopOffset = document.body.offsetHeight - currentContext.hr.getBoundingClientRect().top;
         if(popoverTopOffset < 0) {
             popoverElt.style.top = (parseInt(popoverElt.style.top) + popoverTopOffset) + 'px';
         }
@@ -143,13 +154,16 @@ define([
             var className = 'discussion';
             var isReplied = !discussion.commentList || _.last(discussion.commentList).author != author;
             isReplied && (someReplies = true);
-            className += ' icon-quote-left' + (isReplied ? ' replied' : ' added');
             if(discussion.type == 'conflict') {
                 className += ' icon-split';
             }
+            else {
+                className += ' icon-comment';
+            }
+            className += isReplied ? ' replied' : ' added';
             commentElt.className = className;
             commentElt.discussionIndex = discussion.discussionIndex;
-            var coordinates = editor.selectionMgr.getCoordinates(discussion.selectionEnd);
+            var coordinates = selectionMgr.getCoordinates(discussion.selectionEnd);
             var lineIndex = setCommentEltCoordinates(commentElt, coordinates.y);
             offsetMap[lineIndex] = (offsetMap[lineIndex] || 0) + 1;
 
@@ -190,7 +204,7 @@ define([
             }
             catch(e) {}
             var discussion = context.getDiscussion();
-            context.selectionRange = editor.selectionMgr.createRange(discussion.selectionStart, discussion.selectionEnd);
+            context.selectionRange = selectionMgr.createRange(discussion.selectionStart, discussion.selectionEnd);
 
             // Highlight selected text
             context.rangyRange = rangy.createRange();
@@ -295,37 +309,25 @@ define([
         }).on('show.bs.popover', '#wmd-input > .editor-margin', function(evt) {
             closeCurrentPopover();
             var context = new Context(evt.target, currentFileDesc);
-            if(evt.target !== newCommentElt) {
-                $newCommentElt.addClass('hide');
-            }
             currentContext = context;
             inputElt.scrollTop += parseInt(evt.target.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
 
             // If it's an existing discussion
             var discussion = context.getDiscussion();
             if(discussion) {
-                context.selectionRange = editor.selectionMgr.setSelectionStartEnd(discussion.selectionStart, discussion.selectionEnd, undefined, true);
+                context.selectionRange = selectionMgr.setSelectionStartEnd(discussion.selectionStart, discussion.selectionEnd, undefined, true);
                 return;
             }
 
             // Get selected text
-            var selectionStart = editor.selectionMgr.selectionStart;
-            var selectionEnd = editor.selectionMgr.selectionEnd;
+            var selectionStart = Math.min(selectionMgr.selectionStart, selectionMgr.selectionEnd);
+            var selectionEnd = Math.max(selectionMgr.selectionStart, selectionMgr.selectionEnd);
             if(selectionStart === selectionEnd) {
-                var textContent = editor.getValue();
-                var after = textContent.substring(selectionStart);
-                var match = /\S+/.exec(after);
-                if(match) {
-                    selectionStart += match.index;
-                    selectionEnd = selectionStart + match[0].length;
-                }
-                if(!match || match.index === 0) {
-                    while(selectionStart && /\S/.test(textContent[selectionStart - 1])) {
-                        selectionStart--;
-                    }
-                }
+                var offset = selectionMgr.getClosestWordOffset(selectionStart);
+                selectionStart = offset.start;
+                selectionEnd = offset.end;
             }
-            context.selectionRange = editor.selectionMgr.setSelectionStartEnd(selectionStart, selectionEnd, undefined, true);
+            context.selectionRange = selectionMgr.setSelectionStartEnd(selectionStart, selectionEnd, undefined, true);
             currentFileDesc.newDiscussion = {
                 selectionStart: selectionStart,
                 selectionEnd: selectionEnd,
@@ -336,6 +338,7 @@ define([
             var popoverElt = context.getPopoverElt();
             context.$authorInputElt = $(popoverElt.querySelector('.input-comment-author')).val(storage['author.name']);
             context.$contentInputElt = $(popoverElt.querySelector('.input-comment-content'));
+            context.hr = popoverElt.querySelector('hr');
             movePopover(context.commentElt);
 
             // Scroll to the bottom of the discussion
@@ -443,7 +446,6 @@ define([
                 return;
             }
             currentContext.$commentElt.removeClass('active');
-            $newCommentElt.removeClass('hide');
 
             // Save content and author for later
             previousContent = currentContext.$contentInputElt.val();
@@ -458,9 +460,9 @@ define([
         var $newCommentElt = $(newCommentElt);
         $openDiscussionElt = $('.button-open-discussion').click(function(evt) {
             var $commentElt = $newCommentElt;
-            if(sortedCommentEltList.length) {
-                if(!currentContext) {
-                    $commentElt = $(_.first(sortedCommentEltList));
+            if(currentContext) {
+                if(!currentContext.discussionIndex) {
+                    $commentElt = $(_.first(sortedCommentEltList) || newCommentElt);
                 }
                 else {
                     var curentIndex = -1;

@@ -129,10 +129,10 @@
 @alert-border-radius: 0;
 @label-warning-bg: spin(darken(@logo-yellow, 4%), -6);
 @label-danger-bg: spin(darken(@logo-orange, 4%), -4);
-@state-warning-text: spin(darken(@logo-yellow, 18%), -6);
+@state-warning-text: spin(darken(@logo-yellow, 15%), -6);
 @state-warning-bg: fade(spin(@logo-yellow, -6), 12%);
 @state-warning-border: fade(spin(@logo-yellow, -6), 24%);
-@state-danger-text: spin(darken(@logo-orange, 20%), -4);
+@state-danger-text: spin(darken(@logo-orange, 18%), -4);
 @state-danger-bg: fade(spin(@logo-orange, -4), 10%);
 @state-danger-border: fade(spin(@logo-orange, -4), 20%);
 
@@ -451,19 +451,17 @@ a {
 
 	.button-open-discussion {
 		&.some {
-			color: lighten(@alert-warning-text, 10%);
+			color: lighten(@alert-warning-text, 8%);
 			&:hover,
 			&:focus {
-				.alert-variant(@alert-warning-bg; @alert-warning-border; @alert-warning-text);
-				background-color: @alert-warning-bg !important;
+				//color: @alert-warning-text;
 			}
 		}
 		&.replied {
-			color: lighten(@alert-danger-text, 10%);
+			color: lighten(@alert-danger-text, 8%);
 			&:hover,
 			&:focus {
-				.alert-variant(@alert-danger-bg; @alert-danger-border; @alert-danger-text);
-				background-color: @alert-danger-bg !important;
+				//color: @alert-danger-text;
 			}
 		}
 	}
@@ -1084,13 +1082,10 @@ a {
 		top: 0;
 		.discussion {
 			font-size: 17px;
-			&:before {
-				margin-right: 0;
-			}
 			&.new {
 				display: none;
-				color: fade(@tertiary-color, 20%);
 				&:hover, &.active, &.active:hover {
+					display: inline-block;
 					color: fade(@tertiary-color, 35%) !important;
 				}
 			}
@@ -1108,6 +1103,9 @@ a {
 			}
 			&.icon-split {
 				font-size: 22px;
+				&:before {
+					margin-right: 0;
+				}
 			}
 			position: absolute;
 			cursor: pointer;
@@ -1116,9 +1114,6 @@ a {
 			}
 		}
     }
-	&.has-selection > .editor-margin .discussion.new {
-		display: inline-block;
-	}
 
 	.comment-highlight {
 		background-color: fade(@label-warning-bg, 30%);

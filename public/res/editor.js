@@ -144,14 +144,14 @@ define([
             if(end === undefined) {
                 end = this.selectionEnd;
             }
-            var maxOffset = inputElt.textContent.length - 1;
-            if(start > maxOffset) {
-                start = maxOffset;
+            var textContent = inputElt.textContent;
+            if(start === textContent.length && textContent[textContent.length -1 ] == '\n') {
+                start--;
                 range = undefined;
                 skipSelectionUpdate = false;
             }
-            if(end > maxOffset) {
-                end = maxOffset;
+            if(end === textContent.length && textContent[textContent.length - 1] == '\n') {
+                end--;
                 range = undefined;
                 skipSelectionUpdate = false;
             }
@@ -179,9 +179,12 @@ define([
         this.saveSelectionState = (function() {
             function save() {
                 if(fileChanged === false) {
+                    var selectionStart = self.selectionStart;
+                    var selectionEnd = self.selectionEnd;
+                    var range;
                     var selection = rangy.getSelection();
                     if(selection.rangeCount > 0) {
-                        var range = selection.getRangeAt(0);
+                        range = selection.getRangeAt(0);
                         var element = range.startContainer;
 
                         if ((contentElt.compareDocumentPosition(element) & 0x10)) {
@@ -197,13 +200,16 @@ define([
                             } while (element && element != inputElt);
 
                             if(selection.isBackwards()) {
-                                self.setSelectionStartEnd(offset + (range + '').length, offset, range, true);
+                                selectionStart = offset + (range + '').length;
+                                selectionEnd = offset;
                             }
                             else {
-                                self.setSelectionStartEnd(offset, offset + (range + '').length, range, true);
+                                selectionStart = offset;
+                                selectionEnd = offset + (range + '').length;
                             }
                         }
                     }
+                    self.setSelectionStartEnd(selectionStart, selectionEnd, range, true);
                 }
                 undoMgr.saveSelectionState();
             }
@@ -257,6 +263,25 @@ define([
             return {
                 x: x,
                 y: y
+            };
+        };
+        this.getClosestWordOffset = function(offset) {
+            var offsetStart = 0;
+            var offsetEnd = 0;
+            var nextOffset = 0;
+            textContent.split(/\s/).some(function(word) {
+                if(word) {
+                    offsetStart = nextOffset;
+                    offsetEnd = nextOffset + word.length;
+                    if(offsetEnd > offset) {
+                        return true;
+                    }
+                }
+                nextOffset += word.length + 1;
+            });
+            return {
+                start: offsetStart,
+                end: offsetEnd
             };
         };
     }
@@ -318,6 +343,13 @@ define([
         return textContent;
     }
     editor.getValue = getValue;
+
+    function focus() {
+        $contentElt.focus();
+        selectionMgr.setSelectionStartEnd();
+        inputElt.scrollTop = scrollTop;
+    }
+    editor.focus = focus;
 
     function UndoMgr() {
         var undoStack = [];
@@ -575,11 +607,7 @@ define([
             }
         });
 
-        inputElt.focus = function() {
-            $contentElt.focus();
-            selectionMgr.setSelectionStartEnd();
-            inputElt.scrollTop = scrollTop;
-        };
+        inputElt.focus = focus;
 
         Object.defineProperty(inputElt, 'value', {
             get: function () {

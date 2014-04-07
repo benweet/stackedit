@@ -50,15 +50,15 @@ define([
     };
 
     Provider.prototype.parseSerializedContent = function(content) {
-        var discussionList = '{}';
+        var discussionListJSON = '{}';
         var discussionExtractor = /<!--se_discussion_list:([\s\S]+)-->$/.exec(content);
         if(discussionExtractor && this.parseDiscussionList(discussionExtractor[1])) {
             content = content.substring(0, discussionExtractor.index);
-            discussionList = discussionExtractor[1];
+            discussionListJSON = discussionExtractor[1];
         }
         return {
             content: content,
-            discussionList: discussionList
+            discussionListJSON: discussionListJSON
         };
     };
 
@@ -75,7 +75,7 @@ define([
     });
 
     var merge = settings.conflictMode == 'merge';
-    Provider.prototype.syncMerge = function(fileDesc, syncAttributes, remoteContent, remoteTitle, remoteDiscussionListJSON) {
+    Provider.prototype.syncMerge = function(fileDesc, syncAttributes, remoteContent, remoteTitle, remoteDiscussionList, remoteDiscussionListJSON) {
 
         function cleanupDiffs(diffs) {
             var result = [];
@@ -160,7 +160,6 @@ define([
         var localTitle = fileDesc.title;
         var localDiscussionListJSON = fileDesc.discussionListJSON;
         var localDiscussionList = fileDesc.discussionList;
-        var remoteDiscussionList = JSON.parse(remoteDiscussionListJSON);
 
         // Local/Remote CRCs
         var localContentCRC = utils.crc32(localContent);

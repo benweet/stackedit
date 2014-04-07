@@ -30,14 +30,23 @@ define([
             return "sync." + providerId + "." + id;
         }
 
-        function createSyncAttributes(id, etag, content, title) {
+        var merge = settings.conflictMode == 'merge';
+        function createSyncAttributes(id, etag, content, title, discussionListJSON) {
+            discussionListJSON = discussionListJSON || '{}';
             var syncAttributes = {};
             syncAttributes.provider = gdriveProvider;
             syncAttributes.id = id;
             syncAttributes.etag = etag;
             syncAttributes.contentCRC = utils.crc32(content);
             syncAttributes.titleCRC = utils.crc32(title);
+            syncAttributes.discussionListCRC = utils.crc32(discussionListJSON);
             syncAttributes.syncIndex = createSyncIndex(id);
+            if(merge === true) {
+                // Need to store the whole content for merge
+                syncAttributes.content = content;
+                syncAttributes.title = title;
+                syncAttributes.discussionList = discussionListJSON;
+            }
             return syncAttributes;
         }
 
@@ -53,12 +62,12 @@ define([
                     var fileDescList = [];
                     var fileDesc;
                     _.each(result, function(file) {
-                        var syncAttributes = createSyncAttributes(file.id, file.etag, file.content, file.title);
+                        var parsedContent = gdriveProvider.parseSerializedContent(file.content);
+                        var syncAttributes = createSyncAttributes(file.id, file.etag, parsedContent.content, file.title, parsedContent.discussionListJSON);
                         syncAttributes.isRealtime = file.isRealtime;
                         var syncLocations = {};
                         syncLocations[syncAttributes.syncIndex] = syncAttributes;
-                        var parsedContent = gdriveProvider.parseSerializedContent(file.content);
-                        fileDesc = fileMgr.createFile(file.title, parsedContent.content, parsedContent.discussionList, syncLocations);
+                        fileDesc = fileMgr.createFile(file.title, parsedContent.content, parsedContent.discussionListJSON, syncLocations);
                         fileDescList.push(fileDesc);
                     });
                     if(fileDesc !== undefined) {
@@ -88,7 +97,7 @@ define([
             }, 'doc', accountId);
         };
 
-        gdriveProvider.exportFile = function(event, title, content, callback) {
+        gdriveProvider.exportFile = function(event, title, content, discussionListJSON, callback) {
             var fileId = utils.getInputTextValue('#input-sync-export-' + providerId + '-fileid');
             if(fileId) {
                 // Check that file is not synchronized with another an existing
@@ -107,24 +116,23 @@ define([
                     callback(error);
                     return;
                 }
-                var syncAttributes = createSyncAttributes(result.id, result.etag, content, title);
+                var syncAttributes = createSyncAttributes(result.id, result.etag, content, title, discussionListJSON);
                 callback(undefined, syncAttributes);
             });
         };
 
-        gdriveProvider.exportRealtimeFile = function(event, title, content, callback) {
+        gdriveProvider.exportRealtimeFile = function(event, title, content, discussionListJSON, callback) {
             var parentId = utils.getInputTextValue('#input-sync-export-' + providerId + '-parentid');
             googleHelper.createRealtimeFile(parentId, title, accountId, function(error, result) {
                 if(error) {
                     callback(error);
                     return;
                 }
-                var syncAttributes = createSyncAttributes(result.id, result.etag, content, title);
+                var syncAttributes = createSyncAttributes(result.id, result.etag, content, title, discussionListJSON);
                 callback(undefined, syncAttributes);
             });
         };
 
-        var merge = settings.conflictMode == 'merge';
         gdriveProvider.syncUp = function(content, contentCRC, title, titleCRC, discussionList, discussionListCRC, syncAttributes, callback) {
             if(
                 (syncAttributes.contentCRC == contentCRC) && // Content CRC hasn't changed
@@ -228,8 +236,9 @@ define([
                         var parsedContent = gdriveProvider.parseSerializedContent(file.content);
                         var remoteContent = parsedContent.content;
                         var remoteTitle = file.title;
-                        var remoteDiscussionList = parsedContent.discussionList;
-                        var remoteCRC = gdriveProvider.syncMerge(fileDesc, syncAttributes, remoteContent, remoteTitle, remoteDiscussionList);
+                        var remoteDiscussionListJSON = parsedContent.discussionListJSON;
+                        var remoteDiscussionList = JSON.parse(remoteDiscussionListJSON);
+                        var remoteCRC = gdriveProvider.syncMerge(fileDesc, syncAttributes, remoteContent, remoteTitle, remoteDiscussionList, remoteDiscussionListJSON);
 
                         // Update syncAttributes
                         syncAttributes.etag = file.etag;
@@ -237,7 +246,7 @@ define([
                             // Need to store the whole content for merge
                             syncAttributes.content = remoteContent;
                             syncAttributes.title = remoteTitle;
-                            syncAttributes.discussionList = remoteDiscussionList;
+                            syncAttributes.discussionList = remoteDiscussionListJSON;
                         }
                         syncAttributes.contentCRC = remoteCRC.contentCRC;
                         syncAttributes.titleCRC = remoteCRC.titleCRC;
@@ -286,9 +295,12 @@ define([
             var realtimeContext;
 
             function toRealtimeDiscussion(context, discussion) {
-                var commentList = context.model.createList();
+                var realtimeCommentList = context.model.createList();
+                realtimeCommentList.addEventListener(gapi.drive.realtime.EventType.VALUES_ADDED, modelEventListener);
+                realtimeCommentList.addEventListener(gapi.drive.realtime.EventType.VALUES_REMOVED, modelEventListener);
+                realtimeCommentList.addEventListener(gapi.drive.realtime.EventType.VALUES_SET, modelEventListener);
                 discussion.commentList && discussion.commentList.forEach(function(comment) {
-                    commentList.push({
+                    realtimeCommentList.push({
                         author: comment.author,
                         content: comment.content
                     });
@@ -298,9 +310,18 @@ define([
                     selectionStart: discussion.selectionStart,
                     selectionEnd: discussion.selectionEnd,
                     type: discussion.type,
-                    commentList: commentList
+                    commentList: realtimeCommentList
                 });
                 return realtimeDiscussion;
+            }
+
+            function toRealtimeDiscussionList(context) {
+                var realtimeDiscussionList = context.model.createMap();
+                _.each(context.fileDesc.discussionList, function(localDiscussion) {
+                    var realtimeDiscussion = toRealtimeDiscussion(context, localDiscussion);
+                    realtimeDiscussionList.set(localDiscussion.discussionIndex, realtimeDiscussion);
+                });
+                return realtimeDiscussionList;
             }
 
             function fromRealtimeDiscussion(realtimeDiscussion) {
@@ -311,13 +332,25 @@ define([
                 };
                 var type = realtimeDiscussion.get('type');
                 type && (discussion.type = type);
-                var commentList = realtimeDiscussion.get('discussionIndex').asArray();
+                var commentList = realtimeDiscussion.get('commentList').asArray();
                 commentList.length && (discussion.commentList = commentList);
                 return discussion;
             }
 
-            function mergeDiscussion(localDiscussion, realtimeDiscussion, takeServer) {
-                if(!takeServer) {
+            function fromRealtimeDiscussionList(realtimeDiscussionList) {
+                var localDiscussionList = {};
+                realtimeDiscussionList.keys().forEach(function(discussionIndex) {
+                    var realtimeDiscussion = realtimeDiscussionList.get(discussionIndex);
+                    var discussion = fromRealtimeDiscussion(realtimeDiscussion);
+                    localDiscussionList[discussionIndex] = discussion;
+                });
+                return localDiscussionList;
+            }
+
+            function mergeDiscussion(localDiscussion, realtimeDiscussion, isServerChange) {
+                var commentsChanged = false;
+                // We only pay attention to local selection modifications
+                if(!isServerChange) {
                     realtimeDiscussion.set('selectionStart', localDiscussion.selectionStart);
                     realtimeDiscussion.set('selectionEnd', localDiscussion.selectionEnd);
                 }
@@ -329,62 +362,72 @@ define([
                     });
                 }
                 var realtimeCommentList = realtimeDiscussion.get('commentList');
+                var localCommentList = localDiscussion.commentList;
                 function checkLocalComment(comment, index) {
                     if(!isInDiscussion(comment, realtimeCommentList.asArray())) {
-                        if(takeServer) {
-                            localDiscussion.splice(index, 1);
+                        if(isServerChange) {
+                            localCommentList.splice(index, 1);
+                            commentsChanged = true;
                             return true;
                         }
                         else {
-                            realtimeDiscussion.get('commentList').push(comment);
+                            realtimeCommentList.push(comment);
                         }
                     }
                 }
-                while(localDiscussion.commentList.some(checkLocalComment)) {}
+                while(localCommentList.some(checkLocalComment)) {}
                 function checkRealtimeComment(comment, index) {
-                    if(!isInDiscussion(comment, localDiscussion.commentList)) {
-                        if(!takeServer) {
+                    if(!isInDiscussion(comment, localCommentList)) {
+                        if(!isServerChange) {
                             realtimeCommentList.remove(index);
                             return true;
                         }
                         else {
-                            localDiscussion.commentList.push(comment);
+                            localCommentList.push(comment);
+                            commentsChanged = true;
                         }
                     }
                 }
                 while(realtimeCommentList.asArray().some(checkRealtimeComment)) {}
+                return commentsChanged;
             }
 
-            function mergeDiscussionList(context, takeServer) {
+            function mergeDiscussionList(context, isServerChange) {
+                var commentsChanged = false;
                 var localDiscussionList = context.fileDesc.discussionList;
-                _.each(localDiscussionList, function(localDiscussion) {
-                    var realtimeDiscussion = context.discussionList.get(localDiscussion.discussionIndex);
+                _.values(localDiscussionList).forEach(function(localDiscussion) {
+                    var realtimeDiscussion = context.realtimeDiscussionList.get(localDiscussion.discussionIndex);
                     if(realtimeDiscussion) {
-                        mergeDiscussion(localDiscussion, realtimeDiscussion, takeServer);
+                        commentsChanged |= mergeDiscussion(localDiscussion, realtimeDiscussion, isServerChange);
+                    }
+                    else if(!isServerChange) {
+                        realtimeDiscussion = toRealtimeDiscussion(context, localDiscussion);
+                        context.realtimeDiscussionList.set(localDiscussion.discussionIndex, realtimeDiscussion);
                     }
                     else {
-                        realtimeDiscussion = toRealtimeDiscussion(context, localDiscussion);
-                        context.discussionList.set(localDiscussion.discussionIndex, realtimeDiscussion);
+                        delete localDiscussionList[localDiscussion.discussionIndex];
+                        eventMgr.onDiscussionRemoved(context.fileDesc, localDiscussion);
                     }
                 });
-                context.discussionList.keys().forEach(function(discussionIndex) {
-                    var realtimeDiscussion = context.discussionList.get(discussionIndex);
+                context.realtimeDiscussionList.keys().forEach(function(discussionIndex) {
+                    var realtimeDiscussion = context.realtimeDiscussionList.get(discussionIndex);
                     var localDiscussion = localDiscussionList[discussionIndex];
                     if(localDiscussion) {
-                        mergeDiscussion(localDiscussion, realtimeDiscussion, takeServer);
+                        commentsChanged |= mergeDiscussion(localDiscussion, realtimeDiscussion, isServerChange);
+                    }
+                    else if(isServerChange) {
+                        var discussion = fromRealtimeDiscussion(realtimeDiscussion);
+                        localDiscussionList[discussionIndex] = discussion;
+                        eventMgr.onDiscussionCreated(context.fileDesc, discussion);
                     }
                     else {
-                        var discussion = {
-                            discussionIndex: discussionIndex,
-                            selectionStart: realtimeDiscussion.get('selectionStart'),
-                            selectionEnd: realtimeDiscussion.get('selectionEnd'),
-                            commentList: realtimeDiscussion.get('commentList').asArray()
-                        };
-                        localDiscussionList[discussionIndex] = discussion;
-                        eventMgr.onCommentsChanged(context.fileDesc);
+                        context.realtimeDiscussionList.delete(discussionIndex);
                     }
                 });
                 context.fileDesc.discussionList = localDiscussionList; // Write in localStorage
+                if(commentsChanged) {
+                    eventMgr.onCommentsChanged(context.fileDesc);
+                }
             }
 
             function updateCRCs() {
@@ -392,27 +435,84 @@ define([
                 if(!context) {
                     return;
                 }
-                context.syncAttributes.contentCRC = utils.crc32(context.string.getText());
+                var syncAttributes = context.syncAttributes;
+                var content = context.realtimeString.getText();
+                syncAttributes.contentCRC = utils.crc32(content);
                 var discussionList = {};
-                context.discussionList.keys().forEach(function(discussionIndex) {
-                    var discussion = fromRealtimeDiscussion(context.discussionList.get(discussionIndex));
+                context.realtimeDiscussionList.keys().forEach(function(discussionIndex) {
+                    var discussion = fromRealtimeDiscussion(context.realtimeDiscussionList.get(discussionIndex));
                     discussionList[discussion.discussionIndex] = discussion;
                 });
-                context.syncAttributes.discussionListCRC = utils.crc32(JSON.stringify(discussionList));
+                var discussionListJSON = JSON.stringify(discussionList);
+                syncAttributes.discussionListCRC = utils.crc32(discussionListJSON);
+                if(merge === true) {
+                    // Need to store the whole content for merge
+                    syncAttributes.content = content;
+                    syncAttributes.discussionList = discussionListJSON;
+                }
                 utils.storeAttributes(context.syncAttributes);
             }
-            var onChanges = _.debounce(function() {
-                var context = realtimeContext;
-                if(!context) {
+
+            var onChange = (function() {
+                var debouncedOnChange = _.debounce(function() {
+                    var context = realtimeContext;
+                    if(!context) {
+                        return;
+                    }
+                    if(context.isServerChange) {
+                        logger.log('Realtime syncing remote changes');
+                    }
+                    else {
+                        // Model is supposed to be updated on local modifications
+                        context.model.beginCompoundOperation();
+                        logger.log('Realtime syncing local changes');
+                    }
+
+                    // Check content modifications
+                    var localContent = context.fileDesc.content;
+                    var remoteContent = context.realtimeString.getText();
+                    var contentChanged = localContent != remoteContent;
+                    if(contentChanged) {
+                        if(context.isServerChange) {
+                            editor.setValue(remoteContent);
+                        }
+                        else {
+                            context.realtimeString.setText(localContent);
+                        }
+                    }
+
+                    // Check discussion modifications
+                    mergeDiscussionList(context, context.isServerChange);
+
+
+                    // For local changes, CRCs are updated on "save success" event
+                    if(context.isServerChange) {
+                        updateCRCs();
+                    }
+                    else {
+                        context.model.endCompoundOperation();
+                    }
+                    context.isServerChange = false;
+                }, 0);
+                return function(fileDesc) {
+                    if(realtimeContext && realtimeContext.fileDesc === fileDesc) {
+                        debouncedOnChange();
+                    }
+                };
+            })();
+            function modelEventListener(evt) {
+                if(!realtimeContext) {
                     return;
                 }
-                context.isServerChange = false;
-            }, 0);
-
-            eventMgr.addListener('onContentChanged', onChanges);
-            eventMgr.addListener('onDiscussionCreated', onChanges);
-            eventMgr.addListener('onDiscussionRemoved', onChanges);
-            eventMgr.addListener('onCommentsChanged', onChanges);
+                if(evt.isLocal === false) {
+                    realtimeContext.isServerChange = true;
+                }
+                onChange(realtimeContext.fileDesc);
+            }
+            eventMgr.addListener('onContentChanged', onChange);
+            eventMgr.addListener('onDiscussionCreated', onChange);
+            eventMgr.addListener('onDiscussionRemoved', onChange);
+            eventMgr.addListener('onCommentsChanged', onChange);
 
             // Start realtime synchronization
             gdriveProvider.startRealtimeSync = function(fileDesc, syncAttributes) {
@@ -421,13 +521,12 @@ define([
                     syncAttributes: syncAttributes
                 };
                 realtimeContext = context;
-                googleHelper.loadRealtime(syncAttributes.id, fileDesc.content, accountId, function(err, doc) {
+                googleHelper.loadRealtime(syncAttributes.id, accountId, function(err, doc) {
                     if(err || !doc) {
                         return;
                     }
 
-                    // If user just switched to another document or file has just been
-                    // reselected
+                    // If user just switched to another document or file has just been reselected
                     if(context !== realtimeContext) {
                         return doc.close();
                     }
@@ -436,94 +535,51 @@ define([
                     context.document = doc;
                     var model = doc.getModel();
                     context.model = model;
+
+                    // Get or create content string
                     var realtimeString = model.getRoot().get('content');
-                    context.string = realtimeString;
-
-                    // Saves model content checksum
-                    function updateContentState() {
-                        syncAttributes.contentCRC = utils.crc32(realtimeString.getText());
-                        utils.storeAttributes(syncAttributes);
+                    if(!realtimeString) {
+                        // Initial value
+                        realtimeString = model.createString(fileDesc.content);
+                        model.getRoot().set('content', realtimeString);
                     }
+                    context.realtimeString = realtimeString;
+                    // Listen to content modifications
+                    realtimeString.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, modelEventListener);
+                    realtimeString.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, modelEventListener);
 
-                    var debouncedRefreshPreview = _.debounce(pagedownEditor.refreshPreview, 100);
-
-                    // Listen to insert text events
-                    realtimeString.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, function(evt) {
-                        if(aceEditor !== undefined && (isAceUpToDate === false || e.isLocal === false)) {
-                            // Update ACE editor
-                            var position = aceEditor.session.doc.indexToPosition(e.index);
-                            aceEditor.session.insert(position, e.text);
-                            isAceUpToDate = true;
-                        }
-                        // If modifications come down from a collaborator
-                        if(e.isLocal === false) {
-                            logger.log("Google Drive realtime document updated from server");
-                            updateContentState();
-                            aceEditor === undefined && debouncedRefreshPreview();
-                        }
-                    });
-                    // Listen to delete text events
-                    realtimeString.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, function(e) {
-                        if(aceEditor !== undefined && (isAceUpToDate === false || e.isLocal === false)) {
-                            // Update ACE editor
-                            var range = (function(posStart, posEnd) {
-                                return new Range(posStart.row, posStart.column, posEnd.row, posEnd.column);
-                            })(aceEditor.session.doc.indexToPosition(e.index), aceEditor.session.doc.indexToPosition(e.index + e.text.length));
-                            aceEditor.session.remove(range);
-                            isAceUpToDate = true;
-                        }
-                        // If modifications come down from a collaborator
-                        if(e.isLocal === false) {
-                            logger.log("Google Drive realtime document updated from server");
-                            updateContentState();
-                            aceEditor === undefined && debouncedRefreshPreview();
-                        }
-                    });
-                    doc.addEventListener(gapi.drive.realtime.EventType.DOCUMENT_SAVE_STATE_CHANGED, function(e) {
-                        // Save success event
-                        if(e.isPending === false && e.isSaving === false) {
-                            logger.log("Google Drive realtime document successfully saved on server");
-                            updateContentState();
-                        }
-                    });
-
-                    // Try to merge offline modifications
-                    var localContent = fileDesc.content;
-                    var localContentChanged = syncAttributes.contentCRC != utils.crc32(localContent);
-                    var remoteContent = realtimeString.getText();
-                    var remoteContentCRC = utils.crc32(remoteContent);
-                    var remoteContentChanged = syncAttributes.contentCRC != remoteContentCRC;
-                    var fileContentChanged = localContent != remoteContent;
-                    model.beginCompoundOperation('Open and merge');
-                    if(fileContentChanged === true && localContentChanged === true) {
-                        if(remoteContentChanged === true) {
-                            // Conflict detected
-                            fileMgr.createFile(fileDesc.title + " (backup)", localContent);
-                            eventMgr.onMessage('Conflict detected on "' + fileDesc.title + '". A backup has been created locally.');
-                        }
-                        else {
-                            // Add local modifications if no collaborators change
-                            realtimeString.setText(localContent);
-                        }
-                    }
-
-                    // Update content state according to collaborators changes
-                    if(remoteContentChanged === true) {
-                        logger.log("Google Drive realtime document updated from server");
-                        aceEditor !== undefined && aceEditor.setValue(remoteContent, -1);
-                        updateContentState();
-                        aceEditor === undefined && debouncedRefreshPreview();
-                    }
-
+                    // Get or create discussion map
                     var realtimeDiscussionList = model.getRoot().get('discussionList');
-
                     if(!realtimeDiscussionList) {
-                        realtimeDiscussionList = model.createMap();
+                        // Initial value
+                        realtimeDiscussionList = toRealtimeDiscussionList(context);
                         model.getRoot().set('discussionList', realtimeDiscussionList);
                     }
-                    context.discussionList = realtimeDiscussionList;
-                    mergeDiscussionList(context, remoteContentChanged === true);
-                    model.endCompoundOperation();
+                    context.realtimeDiscussionList = realtimeDiscussionList;
+                    // Listen to discussion modifications
+                    realtimeDiscussionList.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, modelEventListener);
+                    realtimeDiscussionList.keys().forEach(function(discussionIndex) {
+                        var realtimeDiscussion = context.realtimeDiscussionList.get(discussionIndex);
+                        var realtimeCommentList = realtimeDiscussion.get('commentList');
+                        // Listen to comment modifications in every discussion
+                        realtimeCommentList.addEventListener(gapi.drive.realtime.EventType.VALUES_ADDED, modelEventListener);
+                        realtimeCommentList.addEventListener(gapi.drive.realtime.EventType.VALUES_REMOVED, modelEventListener);
+                        realtimeCommentList.addEventListener(gapi.drive.realtime.EventType.VALUES_SET, modelEventListener);
+                    });
+
+                    // Also listen to "save success" event
+                    doc.addEventListener(gapi.drive.realtime.EventType.DOCUMENT_SAVE_STATE_CHANGED, function(e) {
+                        if(e.isPending === false && e.isSaving === false) {
+                            updateCRCs();
+                        }
+                    });
+
+                    // Merge offline modifications
+                    var remoteContent = realtimeString.getText();
+                    var remoteTitle = fileDesc.title; // Not synchronized, so make sure no changes will be detected
+                    var remoteDiscussionList = fromRealtimeDiscussionList(realtimeDiscussionList);
+                    var remoteDiscussionListJSON = JSON.stringify(remoteDiscussionList);
+                    gdriveProvider.syncMerge(fileDesc, syncAttributes, remoteContent, remoteTitle, remoteDiscussionList, remoteDiscussionListJSON);
 
                     // Save undo/redo buttons default actions
                     undoExecute = pagedownEditor.uiManager.buttons.undo.execute;
@@ -533,28 +589,20 @@ define([
                     // Set temporary actions for undo/redo buttons
                     pagedownEditor.uiManager.buttons.undo.execute = function() {
                         if(model.canUndo) {
-                            // This flag is used to avoid replaying editor's own
-                            // modifications (assuming it's synchronous)
-                            isAceUpToDate = false;
                             model.undo();
                         }
                     };
                     pagedownEditor.uiManager.buttons.redo.execute = function() {
                         if(model.canRedo) {
-                            // This flag is used to avoid replaying editor's own
-                            // modifications (assuming it's synchronous)
-                            isAceUpToDate = false;
                             model.redo();
                         }
                     };
 
                     // Add event handler for model's UndoRedoStateChanged events
-                    pagedownEditor.uiManager.setUndoRedoButtonStates = function() {
-                        setTimeout(function() {
-                            pagedownEditor.uiManager.setButtonState(pagedownEditor.uiManager.buttons.undo, model.canUndo);
-                            pagedownEditor.uiManager.setButtonState(pagedownEditor.uiManager.buttons.redo, model.canRedo);
-                        }, 50);
-                    };
+                    pagedownEditor.uiManager.setUndoRedoButtonStates = _.debounce(function() {
+                        pagedownEditor.uiManager.setButtonState(pagedownEditor.uiManager.buttons.undo, model.canUndo);
+                        pagedownEditor.uiManager.setButtonState(pagedownEditor.uiManager.buttons.redo, model.canRedo);
+                    }, 10);
                     pagedownEditor.uiManager.setUndoRedoButtonStates();
                     model.addEventListener(gapi.drive.realtime.EventType.UNDO_REDO_STATE_CHANGED, function() {
                         pagedownEditor.uiManager.setUndoRedoButtonStates();
@@ -611,14 +659,14 @@ define([
         };
 
         // Perform AutoSync
-        gdriveProvider.autosyncFile = function(title, content, config, callback) {
+        gdriveProvider.autosyncFile = function(title, content, discussionListJSON, config, callback) {
             var parentId = config.parentId;
             googleHelper.upload(undefined, parentId, title, content, undefined, undefined, accountId, function(error, result) {
                 if(error) {
                     callback(error);
                     return;
                 }
-                var syncAttributes = createSyncAttributes(result.id, result.etag, content, title);
+                var syncAttributes = createSyncAttributes(result.id, result.etag, content, title, discussionListJSON);
                 callback(undefined, syncAttributes);
             });
         };

@@ -359,7 +359,7 @@ define([
     var $titleContainer;
     var marginWidth = 18 * 2 + 25 + 25;
     var titleWidth = 18 + 348;
-    var leftButtonsWidth = 18 * 4 + 80 + 160 + 200 + 80;
+    var leftButtonsWidth = 18 * 5 + 80 + 160 + 160 + 40 + 80;
     var rightButtonsWidth = 18 + 80;
     var buttonsDropdownWidth = 40;
     function adjustWindow() {
@@ -451,13 +451,11 @@ define([
         $("#wmd-code-button").append($('<i class="icon-code">')).appendTo($btnGroupElt);
         $("#wmd-image-button").append($('<i class="icon-picture">')).appendTo($btnGroupElt);
         $btnGroupElt = $('.wmd-button-group3');
-        var $openDiscussionElt = $btnGroupElt.find('.button-open-discussion');
         $("#wmd-olist-button").append($('<i class="icon-list-numbered">')).appendTo($btnGroupElt);
         $("#wmd-ulist-button").append($('<i class="icon-list-bullet">')).appendTo($btnGroupElt);
         $("#wmd-heading-button").append($('<i class="icon-text-height">')).appendTo($btnGroupElt);
         $("#wmd-hr-button").append($('<i class="icon-ellipsis">')).appendTo($btnGroupElt);
-        $openDiscussionElt.appendTo($btnGroupElt);
-        $btnGroupElt = $('.wmd-button-group4');
+        $btnGroupElt = $('.wmd-button-group5');
         $("#wmd-undo-button").append($('<i class="icon-reply">')).appendTo($btnGroupElt);
         $("#wmd-redo-button").append($('<i class="icon-forward">')).appendTo($btnGroupElt);
     };

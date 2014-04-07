@@ -32,13 +32,21 @@ define([
         return "sync." + PROVIDER_DROPBOX + "." + encodeURIComponent(path.toLowerCase());
     }
 
-    function createSyncAttributes(path, versionTag, content) {
+    var merge = settings.conflictMode == 'merge';
+    function createSyncAttributes(path, versionTag, content, discussionListJSON) {
+        discussionListJSON = discussionListJSON || '{}';
         var syncAttributes = {};
         syncAttributes.provider = dropboxProvider;
         syncAttributes.path = path;
         syncAttributes.version = versionTag;
         syncAttributes.contentCRC = utils.crc32(content);
+        syncAttributes.discussionListCRC = utils.crc32(discussionListJSON);
         syncAttributes.syncIndex = createSyncIndex(path);
+        if(merge === true) {
+            // Need to store the whole content for merge
+            syncAttributes.content = content;
+            syncAttributes.discussionList = discussionListJSON;
+        }
         return syncAttributes;
     }
 
@@ -53,11 +61,11 @@ define([
                 }
                 var fileDescList = [];
                 _.each(result, function(file) {
-                    var syncAttributes = createSyncAttributes(file.path, file.versionTag, file.content);
+                    var parsedContent = dropboxProvider.parseSerializedContent(file.content);
+                    var syncAttributes = createSyncAttributes(file.path, file.versionTag, parsedContent.content, parsedContent.discussionListJSON);
                     var syncLocations = {};
                     syncLocations[syncAttributes.syncIndex] = syncAttributes;
-                    var parsedContent = dropboxProvider.parseSerializedContent(file.content);
-                    var fileDesc = fileMgr.createFile(file.name, parsedContent.content, parsedContent.discussionList, syncLocations);
+                    var fileDesc = fileMgr.createFile(file.name, parsedContent.content, parsedContent.discussionListJSON, syncLocations);
                     fileMgr.selectFile(fileDesc);
                     fileDescList.push(fileDesc);
                 });
@@ -86,7 +94,7 @@ define([
         });
     };
 
-    dropboxProvider.exportFile = function(event, title, content, callback) {
+    dropboxProvider.exportFile = function(event, title, content, discussionListJSON, callback) {
         var path = utils.getInputTextValue("#input-sync-export-dropbox-path", event);
         path = checkPath(path);
         if(path === undefined) {
@@ -104,12 +112,11 @@ define([
             if(error) {
                 return callback(error);
             }
-            var syncAttributes = createSyncAttributes(result.path, result.versionTag, content);
+            var syncAttributes = createSyncAttributes(result.path, result.versionTag, content, discussionListJSON);
             callback(undefined, syncAttributes);
         });
     };
 
-    var merge = settings.conflictMode == 'merge';
     dropboxProvider.syncUp = function(content, contentCRC, title, titleCRC, discussionList, discussionListCRC, syncAttributes, callback) {
         if(
             (syncAttributes.contentCRC == contentCRC) && // Content CRC hasn't changed
@@ -188,8 +195,9 @@ define([
                     var file = change.stat;
                     var parsedContent = dropboxProvider.parseSerializedContent(file.content);
                     var remoteContent = parsedContent.content;
-                    var remoteDiscussionList = parsedContent.discussionList;
-                    var remoteCRC = dropboxProvider.syncMerge(fileDesc, syncAttributes, remoteContent, fileDesc.title, remoteDiscussionList);
+                    var remoteDiscussionListJSON = parsedContent.discussionListJSON;
+                    var remoteDiscussionList = JSON.parse(remoteDiscussionListJSON);
+                    var remoteCRC = dropboxProvider.syncMerge(fileDesc, syncAttributes, remoteContent, fileDesc.title, remoteDiscussionList, remoteDiscussionListJSON);
                     // Update syncAttributes
                     syncAttributes.version = file.versionTag;
                     if(merge === true) {

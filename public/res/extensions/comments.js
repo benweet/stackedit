@@ -397,20 +397,7 @@ define([
             var $removeButton = $(popoverElt.querySelector('.action-remove-discussion'));
             if(evt.target.discussionIndex) {
                 // If it's an existing discussion
-                var $removeCancelButton = $(popoverElt.querySelectorAll('.action-remove-discussion-cancel'));
-                var $removeConfirmButton = $(popoverElt.querySelectorAll('.action-remove-discussion-confirm'));
                 $removeButton.click(function() {
-                    $(popoverElt.querySelector('.new-comment-block')).addClass('hide');
-                    $(popoverElt.querySelector('.remove-discussion-confirm')).removeClass('hide');
-                    popoverElt.querySelector('.scrollport').scrollTop = 9999999;
-                });
-                $removeCancelButton.click(function() {
-                    $(popoverElt.querySelector('.new-comment-block')).removeClass('hide');
-                    $(popoverElt.querySelector('.remove-discussion-confirm')).addClass('hide');
-                    popoverElt.querySelector('.scrollport').scrollTop = 9999999;
-                    context.$contentInputElt.focus();
-                });
-                $removeConfirmButton.click(function() {
                     closeCurrentPopover();
                     var discussion = context.getDiscussion();
                     delete context.fileDesc.discussionList[discussion.discussionIndex];

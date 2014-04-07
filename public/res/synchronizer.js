@@ -310,7 +310,7 @@ define([
     eventMgr.addListener("onFileCreated", function(fileDesc) {
         if(_.size(fileDesc.syncLocations) === 0) {
             _.each(providerMap, function(provider) {
-                provider.autosyncConfig.enabled && provider.autosyncFile(fileDesc.title, fileDesc.content, provider.autosyncConfig, function(error, syncAttributes) {
+                provider.autosyncConfig.enabled && provider.autosyncFile(fileDesc.title, fileDesc.content, fileDesc.discussionListJSON, provider.autosyncConfig, function(error, syncAttributes) {
                     if(error) {
                         return;
                     }
@@ -350,7 +350,7 @@ define([
                         return eventMgr.onError("Real time collaborative document can't be synchronized with multiple locations");
                     }
                     // Perform the provider's real time export
-                    provider.exportRealtimeFile(event, fileDesc.title, fileDesc.content, function(error, syncAttributes) {
+                    provider.exportRealtimeFile(event, fileDesc.title, fileDesc.content, fileDesc.discussionListJSON, function(error, syncAttributes) {
                         if(error) {
                             return;
                         }
@@ -370,7 +370,7 @@ define([
                         return;
                     }
                     // Perform the provider's standard export
-                    provider.exportFile(event, fileDesc.title, fileDesc.content, function(error, syncAttributes) {
+                    provider.exportFile(event, fileDesc.title, fileDesc.content, fileDesc.discussionListJSON, function(error, syncAttributes) {
                         if(error) {
                             return;
                         }

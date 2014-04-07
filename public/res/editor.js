@@ -332,6 +332,7 @@ define([
         range.deleteContents();
         range.insertNode(document.createTextNode(replacement));
     }
+    editor.setValue = setValue;
 
     function setValueNoWatch(value) {
         setValue(value);

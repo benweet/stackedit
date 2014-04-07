@@ -587,7 +587,7 @@ define([
         task.enqueue();
     };
 
-    googleHelper.loadRealtime = function(fileId, content, accountId, callback, errorCallback) {
+    googleHelper.loadRealtime = function(fileId, accountId, callback, errorCallback) {
         var doc;
         var task = new AsyncTask();
         connect(task);
@@ -599,11 +599,7 @@ define([
                 // onFileLoaded
                 doc = result;
                 task.chain();
-            }, function(model) {
-                // initializeModel
-                var string = model.createString(content);
-                model.getRoot().set('content', string);
-            }, function(err) {
+            }, undefined, function(err) {
                 errorCallback(err);
                 task.error(new Error(err.message));
             });

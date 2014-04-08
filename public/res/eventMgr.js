@@ -228,7 +228,7 @@ define([
         logger.log("onAsyncPreview");
         function recursiveCall(callbackList) {
             var callback = callbackList.length ? callbackList.shift() : function() {
-                _.defer(function() {
+                setTimeout(function() {
                     var html = "";
                     _.each(previewContentsElt.children, function(elt) {
                         html += elt.innerHTML;
@@ -236,7 +236,7 @@ define([
                     var htmlWithComments = utils.trim(html);
                     var htmlWithoutComments = htmlWithComments.replace(/ <span class="comment label label-danger">.*?<\/span> /g, '');
                     onPreviewFinished(htmlWithComments, htmlWithoutComments);
-                });
+                }, 10);
             };
             callback(function() {
                 recursiveCall(callbackList);

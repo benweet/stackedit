@@ -44,14 +44,14 @@ define([
     buttonHtmlCode.onReady = function() {
         var textareaElt = document.getElementById('input-html-code');
         $(".action-html-code").click(function() {
-            _.defer(function() {
+            setTimeout(function() {
                 $("#input-html-code").each(function() {
                     if($(this).is(":hidden")) {
                         return;
                     }
                     this.select();
                 });
-            });
+            }, 10);
         }).parent().on('show.bs.dropdown', function() {
             try {
                 var htmlCode = _.template(buttonHtmlCode.config.template, {

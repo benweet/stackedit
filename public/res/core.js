@@ -826,7 +826,7 @@ define([
                     if(openedTooltip && openedTooltip[0] === elt) {
                         return;
                     }
-                    _.defer(function() {
+                    utils.defer(function() {
                         $(document).on("click.close-tooltip", function() {
                             openedTooltip && openedTooltip.tooltip('hide');
                             openedTooltip = undefined;

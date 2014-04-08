@@ -186,9 +186,9 @@ define([
             }
             $fileTitleElt.addClass('hide');
             var fileTitleInput = $fileTitleInputElt.removeClass('hide');
-            _.defer(function() {
+            setTimeout(function() {
                 fileTitleInput.focus().get(0).select();
-            });
+            }, 10);
         });
         function applyTitle() {
             $fileTitleInputElt.addClass('hide');

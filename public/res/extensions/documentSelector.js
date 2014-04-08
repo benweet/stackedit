@@ -130,9 +130,9 @@ define([
                 liIndex = -1;
             }
             selectedLi = liEltList[(liIndex + liEltList.length) % liEltList.length];
-            _.defer(function() {
+            setTimeout(function() {
                 selectedLi.find("a").focus();
-            });
+            }, 10);
             return false;
         });
         var shortcutNext = documentSelector.config.shortcutNext.toLowerCase();
@@ -143,9 +143,9 @@ define([
             }
             var liIndex = _.indexOf(liEltList, selectedLi) + 1;
             selectedLi = liEltList[liIndex % liEltList.length];
-            _.defer(function() {
+            setTimeout(function() {
                 selectedLi.find("a").focus();
-            });
+            }, 10);
             return false;
         });
         var delimiter1 = shortcutPrevious.indexOf("+");

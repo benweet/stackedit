@@ -568,8 +568,8 @@ define([
                     });
 
                     // Also listen to "save success" event
-                    doc.addEventListener(gapi.drive.realtime.EventType.DOCUMENT_SAVE_STATE_CHANGED, function(e) {
-                        if(e.isPending === false && e.isSaving === false) {
+                    doc.addEventListener(gapi.drive.realtime.EventType.DOCUMENT_SAVE_STATE_CHANGED, function(evt) {
+                        if(evt.isPending === false && evt.isSaving === false) {
                             updateCRCs();
                         }
                     });
@@ -587,16 +587,8 @@ define([
                     setUndoRedoButtonStates = pagedownEditor.uiManager.setUndoRedoButtonStates;
 
                     // Set temporary actions for undo/redo buttons
-                    pagedownEditor.uiManager.buttons.undo.execute = function() {
-                        if(model.canUndo) {
-                            model.undo();
-                        }
-                    };
-                    pagedownEditor.uiManager.buttons.redo.execute = function() {
-                        if(model.canRedo) {
-                            model.redo();
-                        }
-                    };
+                    pagedownEditor.uiManager.buttons.undo.execute = model.undo;
+                    pagedownEditor.uiManager.buttons.redo.execute = model.redo;
 
                     // Add event handler for model's UndoRedoStateChanged events
                     pagedownEditor.uiManager.setUndoRedoButtonStates = _.debounce(function() {
@@ -620,7 +612,7 @@ define([
                         gdriveProvider.stopRealtimeSync();
                     }
                     else if(err.isFatal) {
-                        eventMgr.onError('An error has forced real time synchronization to stop.');
+                        eventMgr.onError('Real time synchronization is temporarily unavailable.');
                         gdriveProvider.stopRealtimeSync();
                     }
                 });

@@ -143,9 +143,9 @@ define([
                     $previewElt.scrollTop(lastPreviewScrollTop);
                 },
                 done: function() {
-                    _.defer(function() {
+                    setTimeout(function() {
                         isPreviewMoving = false;
-                    });
+                    }, 10);
                 },
             }).dequeue('scrollLinkFx');
 
@@ -179,9 +179,9 @@ define([
                     $editorElt.scrollTop(lastEditorScrollTop);
                 },
                 done: function() {
-                    _.defer(function() {
+                    setTimeout(function() {
                         isEditorMoving = false;
-                    });
+                    }, 10);
                 },
             }).dequeue('scrollLinkFx');
         }

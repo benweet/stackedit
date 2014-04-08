@@ -3,6 +3,7 @@
 define([
     'jquery',
     'underscore',
+    'utils',
     'settings',
     'eventMgr',
     'prism-core',
@@ -12,7 +13,7 @@ define([
     'rangy',
     'MutationObservers',
     'libs/prism-markdown'
-], function ($, _, settings, eventMgr, Prism, diff_match_patch, jsondiffpatch, crel, rangy) {
+], function ($, _, utils, settings, eventMgr, Prism, diff_match_patch, jsondiffpatch, crel, rangy) {
 
     var editor = {};
     var scrollTop = 0;
@@ -213,7 +214,7 @@ define([
                 }
                 undoMgr.saveSelectionState();
             }
-            var debouncedSave = _.debounce(save, 0);
+            var debouncedSave = utils.debounce(save);
             return function(debounced) {
                 debounced ? debouncedSave() : save();
             };
@@ -287,12 +288,10 @@ define([
     }
     var selectionMgr = new SelectionMgr();
     editor.selectionMgr = selectionMgr;
-    $(document).on('selectionchange', function() {
-        selectionMgr.saveSelectionState(true);
-    });
+    $(document).on('selectionchange', _.bind(selectionMgr.saveSelectionState, selectionMgr, true));
 
     var adjustCursorPosition = (function() {
-        var adjust = _.debounce(function() {
+        var adjust = utils.debounce(function() {
             var adjust = inputElt.offsetHeight / 2;
             if(adjust > 130) {
                 adjust = 130;
@@ -305,7 +304,7 @@ define([
             else if(selectionMgr.cursorY > cursorMaxY) {
                 inputElt.scrollTop += selectionMgr.cursorY - cursorMaxY;
             }
-        }, 0);
+        });
         return function() {
             if(inputElt === undefined) {
                 return;
@@ -365,7 +364,7 @@ define([
         };
         this.setMode = function() {}; // For compatibility with PageDown
         this.onButtonStateChange = function() {}; // To be overridden by PageDown
-        this.saveState = _.debounce(function() {
+        this.saveState = utils.debounce(function() {
             redoStack = [];
             var currentTime = Date.now();
             if(this.currentMode == 'comment' || (this.currentMode != lastMode && lastMode != 'newlines') || currentTime - lastTime > 1000) {
@@ -391,7 +390,7 @@ define([
             lastMode = this.currentMode;
             this.currentMode = undefined;
             this.onButtonStateChange();
-        }, 0);
+        }, this);
         this.saveSelectionState = _.debounce(function() {
             if(this.currentMode === undefined) {
                 selectionStartBefore = selectionMgr.selectionStart;
@@ -404,7 +403,6 @@ define([
         this.canRedo = function() {
             return redoStack.length;
         };
-        var self = this;
         function restoreState(state, selectionStart, selectionEnd) {
             // Update editor
             watcher.noWatch(function() {
@@ -439,9 +437,9 @@ define([
             selectionStartBefore = selectionStart;
             selectionEndBefore = selectionEnd;
             currentState = state;
-            self.currentMode = undefined;
+            this.currentMode = undefined;
             lastMode = undefined;
-            self.onButtonStateChange();
+            this.onButtonStateChange();
             adjustCursorPosition();
         }
         this.undo = function() {
@@ -450,7 +448,7 @@ define([
                 return;
             }
             redoStack.push(currentState);
-            restoreState(state, currentState.selectionStartBefore, currentState.selectionEndBefore);
+            restoreState.call(this, state, currentState.selectionStartBefore, currentState.selectionEndBefore);
         };
         this.redo = function() {
             var state = redoStack.pop();
@@ -458,7 +456,7 @@ define([
                 return;
             }
             undoStack.push(currentState);
-            restoreState(state, state.selectionStartAfter, state.selectionEndAfter);
+            restoreState.call(this, state, state.selectionStartAfter, state.selectionEndAfter);
         };
         this.init = function() {
             var content = fileDesc.content;
@@ -481,7 +479,7 @@ define([
 
     function onComment() {
         if(watcher.isWatching === true) {
-            undoMgr.currentMode = 'comment';
+            undoMgr.currentMode = undoMgr.currentMode || 'comment';
             undoMgr.saveState();
         }
     }
@@ -490,19 +488,19 @@ define([
     eventMgr.addListener('onCommentsChanged', onComment);
 
     function checkContentChange() {
-        var currentTextContent = inputElt.textContent;
+        var newTextContent = inputElt.textContent;
         if(fileChanged === false) {
-            if(currentTextContent == textContent) {
+            if(newTextContent == textContent) {
                 return;
             }
-            if(!/\n$/.test(currentTextContent)) {
-                currentTextContent += '\n';
+            if(!/\n$/.test(newTextContent)) {
+                newTextContent += '\n';
             }
             undoMgr.currentMode = undoMgr.currentMode || 'typing';
             var discussionList = _.values(fileDesc.discussionList);
             fileDesc.newDiscussion && discussionList.push(fileDesc.newDiscussion);
-            var updateDiscussionList = adjustCommentOffsets(textContent, currentTextContent, discussionList);
-            textContent = currentTextContent;
+            var updateDiscussionList = adjustCommentOffsets(textContent, newTextContent, discussionList);
+            textContent = newTextContent;
             if(updateDiscussionList === true) {
                 fileDesc.discussionList = fileDesc.discussionList; // Write discussionList in localStorage
             }
@@ -513,11 +511,11 @@ define([
             undoMgr.saveState();
         }
         else {
-            if(!/\n$/.test(currentTextContent)) {
-                currentTextContent += '\n';
-                fileDesc.content = currentTextContent;
+            textContent = newTextContent;
+            if(!/\n$/.test(textContent)) {
+                textContent += '\n';
+                fileDesc.content = textContent;
             }
-            textContent = currentTextContent;
             selectionMgr.setSelectionStartEnd(fileDesc.editorStart, fileDesc.editorEnd);
             eventMgr.onFileOpen(fileDesc, textContent);
             previewElt.scrollTop = fileDesc.previewScrollTop;
@@ -575,10 +573,10 @@ define([
     }
     editor.adjustCommentOffsets = adjustCommentOffsets;
 
-    editor.init = function(elt1, elt2) {
-        inputElt = elt1;
+    editor.init = function(inputEltParam, previewEltParam) {
+        inputElt = inputEltParam;
         $inputElt = $(inputElt);
-        previewElt = elt2;
+        previewElt = previewEltParam;
 
         contentElt = crel('div', {
             class: 'editor-content',
@@ -676,9 +674,7 @@ define([
                 clearNewline = false;
             }
         })
-        .on('mouseup', function() {
-            selectionMgr.saveSelectionState(true);
-        })
+        .on('mouseup', _.bind(selectionMgr.saveSelectionState, selectionMgr, true))
         .on('paste', function () {
             undoMgr.currentMode = 'paste';
             adjustCursorPosition();

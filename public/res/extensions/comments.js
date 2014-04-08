@@ -170,7 +170,7 @@ define([
             marginElt.appendChild(commentElt);
             commentEltMap[discussion.discussionIndex] = commentElt;
 
-            if(currentContext && currentContext.getDiscussion() == discussion) {
+            if(currentContext && currentContext.getDiscussion() === discussion) {
                 inputElt.scrollTop += parseInt(commentElt.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
                 movePopover(commentElt);
             }
@@ -179,6 +179,7 @@ define([
         clearTimeout(refreshTimeoutId);
         refreshTimeoutId = setTimeout(refreshOne, 5);
     }, 50);
+    comments.onLayoutResize = refreshDiscussions;
 
     comments.onFileOpen = function(fileDesc) {
         currentFileDesc = fileDesc;
@@ -235,10 +236,6 @@ define([
             }
             refreshDiscussions();
         }
-    };
-
-    comments.onLayoutResize = function() {
-        refreshDiscussions();
     };
 
     function getDiscussionComments() {
@@ -310,29 +307,28 @@ define([
             closeCurrentPopover();
             var context = new Context(evt.target, currentFileDesc);
             currentContext = context;
+
+            // If it's not an existing discussion
+            var discussion = context.getDiscussion();
+            if(!discussion) {
+                // Get selected text
+                var selectionStart = Math.min(selectionMgr.selectionStart, selectionMgr.selectionEnd);
+                var selectionEnd = Math.max(selectionMgr.selectionStart, selectionMgr.selectionEnd);
+                if(selectionStart === selectionEnd) {
+                    var offset = selectionMgr.getClosestWordOffset(selectionStart);
+                    selectionStart = offset.start;
+                    selectionEnd = offset.end;
+                }
+                discussion = {
+                    selectionStart: selectionStart,
+                    selectionEnd: selectionEnd,
+                    commentList: []
+                };
+                currentFileDesc.newDiscussion = discussion;
+            }
+            context.selectionRange = selectionMgr.setSelectionStartEnd(discussion.selectionStart, discussion.selectionEnd, undefined, true);
             inputElt.scrollTop += parseInt(evt.target.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
 
-            // If it's an existing discussion
-            var discussion = context.getDiscussion();
-            if(discussion) {
-                context.selectionRange = selectionMgr.setSelectionStartEnd(discussion.selectionStart, discussion.selectionEnd, undefined, true);
-                return;
-            }
-
-            // Get selected text
-            var selectionStart = Math.min(selectionMgr.selectionStart, selectionMgr.selectionEnd);
-            var selectionEnd = Math.max(selectionMgr.selectionStart, selectionMgr.selectionEnd);
-            if(selectionStart === selectionEnd) {
-                var offset = selectionMgr.getClosestWordOffset(selectionStart);
-                selectionStart = offset.start;
-                selectionEnd = offset.end;
-            }
-            context.selectionRange = selectionMgr.setSelectionStartEnd(selectionStart, selectionEnd, undefined, true);
-            currentFileDesc.newDiscussion = {
-                selectionStart: selectionStart,
-                selectionEnd: selectionEnd,
-                commentList: []
-            };
         }).on('shown.bs.popover', '#wmd-input > .editor-margin', function(evt) {
             var context = currentContext;
             var popoverElt = context.getPopoverElt();

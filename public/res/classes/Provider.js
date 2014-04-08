@@ -214,9 +214,7 @@ define([
                 patch = diffMatchPatch.patch_make(oldContent, diffs);
                 var patchResult = diffMatchPatch.patch_apply(patch, remoteContent);
                 newContent = patchResult[0];
-                if(patchResult[1].some(function(patchSuccess) {
-                    return !patchSuccess;
-                })) {
+                if(!patchResult[1].every(_.identity)) {
                     // Remaining conflicts
                     diffs = diffMatchPatch.diff_main(localContent, newContent);
                     diffs = cleanupDiffs(diffs);
@@ -328,8 +326,7 @@ define([
         }
 
         if(contentChanged || discussionListChanged) {
-            var self = this;
-            editor.watcher.noWatch(function() {
+            editor.watcher.noWatch(_.bind(function() {
                 if(contentChanged) {
                     if(!/\n$/.test(newContent)) {
                         newContent += '\n';
@@ -363,11 +360,11 @@ define([
                 }
                 editor.undoMgr.currentMode = 'sync';
                 editor.undoMgr.saveState();
-                eventMgr.onMessage('"' + remoteTitle + '" has been updated from ' + self.providerName + '.');
+                eventMgr.onMessage('"' + remoteTitle + '" has been updated from ' + this.providerName + '.');
                 if(conflictList.length) {
                     eventMgr.onMessage('"' + remoteTitle + '" has conflicts that you have to review.');
                 }
-            });
+            }), this);
         }
 
         // Return remote CRCs

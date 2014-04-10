@@ -44,6 +44,18 @@ define([
         };
     };
 
+    // Generates a 24 chars length random string (should be enough to prevent collisions)
+    utils.randomString = (function() {
+        var max = Math.pow(36, 6);
+        function s6() {
+            // Linear [0-9a-z]{6} random string
+            return ('000000' + (Math.random() * max | 0).toString(36)).slice(-6);
+        }
+        return function() {
+            return [s6(), s6(), s6(), s6()].join('');
+        };
+    })();
+
     // Return a parameter from the URL
     utils.getURLParameter = function(name) {
         // Parameter can be either a search parameter (&name=...) or a hash fragment parameter (#!name=...)
@@ -326,14 +338,9 @@ define([
         }
     };
 
-    // Generates a random string
-    utils.randomString = function() {
-        return _.random(4294967296).toString(36);
-    };
-
     // Time shared by others modules
     utils.updateCurrentTime = function() {
-        utils.currentTime = new Date().getTime();
+        utils.currentTime = Date.now();
     };
     utils.updateCurrentTime();
 

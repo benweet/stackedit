@@ -376,7 +376,7 @@ define([
                     // Create discussion index
                     var discussionIndex;
                     do {
-                        discussionIndex = utils.randomString() + utils.randomString(); // Increased size to prevent collision
+                        discussionIndex = utils.randomString();
                     } while(_.has(discussionList, discussionIndex));
                     discussion.discussionIndex = discussionIndex;
                     discussionList[discussionIndex] = discussion;

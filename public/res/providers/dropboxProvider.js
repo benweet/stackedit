@@ -61,7 +61,7 @@ define([
                 }
                 var fileDescList = [];
                 _.each(result, function(file) {
-                    var parsedContent = dropboxProvider.parseSerializedContent(file.content);
+                    var parsedContent = dropboxProvider.parseContent(file.content);
                     var syncAttributes = createSyncAttributes(file.path, file.versionTag, parsedContent.content, parsedContent.discussionListJSON);
                     var syncLocations = {};
                     syncLocations[syncAttributes.syncIndex] = syncAttributes;
@@ -152,11 +152,13 @@ define([
             var interestingChanges = [];
             _.each(changes, function(change) {
                 var syncIndex = createSyncIndex(change.path);
-                var syncAttributes = fileMgr.getSyncAttributes(syncIndex);
-                if(syncAttributes === undefined) {
+                var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
+                var syncAttributes = fileDesc && fileDesc.syncLocations[syncIndex];
+                if(!syncAttributes) {
                     return;
                 }
-                // Store syncAttributes to avoid 2 times searching
+                // Store fileDesc and syncAttributes references to avoid 2 times search
+                change.fileDesc = fileDesc;
                 change.syncAttributes = syncAttributes;
                 // Delete
                 if(change.wasRemoved === true) {
@@ -179,13 +181,8 @@ define([
                         return callback();
                     }
                     var change = changes.pop();
+                    var fileDesc = change.fileDesc;
                     var syncAttributes = change.syncAttributes;
-                    var syncIndex = syncAttributes.syncIndex;
-                    var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
-                    // No file corresponding (file may have been deleted locally)
-                    if(fileDesc === undefined) {
-                        return;
-                    }
                     // File deleted
                     if(change.wasRemoved === true) {
                         eventMgr.onError('"' + fileDesc.title + '" has been removed from Dropbox.');
@@ -193,10 +190,10 @@ define([
                         return eventMgr.onSyncRemoved(fileDesc, syncAttributes);
                     }
                     var file = change.stat;
-                    var parsedContent = dropboxProvider.parseSerializedContent(file.content);
+                    var parsedContent = dropboxProvider.parseContent(file.content);
                     var remoteContent = parsedContent.content;
                     var remoteDiscussionListJSON = parsedContent.discussionListJSON;
-                    var remoteDiscussionList = JSON.parse(remoteDiscussionListJSON);
+                    var remoteDiscussionList = parsedContent.discussionList;
                     var remoteCRC = dropboxProvider.syncMerge(fileDesc, syncAttributes, remoteContent, fileDesc.title, remoteDiscussionList, remoteDiscussionListJSON);
                     // Update syncAttributes
                     syncAttributes.version = file.versionTag;

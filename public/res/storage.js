@@ -134,29 +134,7 @@ define([
         version = "v7";
     }
 
-    if(version == "v7") {
-        _.each(_.keys(localStorage), function(key) {
-            var matchResult = key.match(/(file\.\S+\.)\S+/);
-            if(matchResult) {
-                if(!_.has(localStorage, matchResult[1] + 'title')) {
-                    localStorage.removeItem(key);
-                }
-            }
-        });
-        version = "v8";
-    }
-
-    if(version == "v8") {
-        _.each(_.keys(localStorage), function(key) {
-            var matchResult = key.match(/file\.\S+\.(editorEnd|editorStart)/);
-            if(matchResult) {
-                localStorage.removeItem(key);
-            }
-        });
-        version = "v9";
-    }
-
-    if(version == "v9") {
+    if(version == "v7" || version == "v8" || version == "v9") {
         if(_.has(localStorage, 'settings')) {
             settings = JSON.parse(localStorage.settings);
             delete settings.editorFontFamily;
@@ -235,26 +213,9 @@ define([
         version = "v16";
     }
 
-    if(version == "v16") {
-        _.each(_.keys(localStorage), function(key) {
-            var matchResult = key.match(/(file\.\S+\.)\S+/);
-            if(matchResult) {
-                if(!_.has(localStorage, matchResult[1] + 'title')) {
-                    localStorage.removeItem(key);
-                }
-            }
-        });
-        version = "v17";
-    }
-
-    if(version == "v17") {
+    if(version == "v16" || version == "v17") {
         localStorage.removeItem('focusMode');
         localStorage.removeItem('mode');
-        _.each(_.keys(localStorage), function(key) {
-            if(key.match(/file\.\S+\.editorSelectRange/)) {
-                localStorage.removeItem(key);
-            }
-        });
         version = "v18";
     }
 

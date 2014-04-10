@@ -49,15 +49,25 @@ define([
         return content;
     };
 
-    Provider.prototype.parseSerializedContent = function(content) {
+    Provider.prototype.parseContent = function(content) {
+        if(!_.isString(content)) {
+            // Real time content is already an object
+            return {
+                content: content.content,
+                discussionList: content.discussionList,
+                discussionListJSON: JSON.stringify(content.discussionList)
+            };
+        }
+        var discussionList;
         var discussionListJSON = '{}';
         var discussionExtractor = /<!--se_discussion_list:([\s\S]+)-->$/.exec(content);
-        if(discussionExtractor && this.parseDiscussionList(discussionExtractor[1])) {
+        if(discussionExtractor && (discussionList = this.parseDiscussionList(discussionExtractor[1]))) {
             content = content.substring(0, discussionExtractor.index);
             discussionListJSON = discussionExtractor[1];
         }
         return {
             content: content,
+            discussionList: discussionList || {},
             discussionListJSON: discussionListJSON
         };
     };

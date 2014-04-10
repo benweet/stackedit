@@ -106,8 +106,6 @@ define([
         // Delete folders
         _.each(selectedFolderList, function(folderDesc) {
             utils.removeIndexFromArray("folder.list", folderDesc.folderIndex);
-            storage.removeItem(folderDesc.folderIndex + ".name");
-            storage.removeItem(folderDesc.folderIndex + ".files");
             delete folderList[folderDesc.folderIndex];
         });
         eventMgr.onFoldersChanged();
@@ -281,9 +279,9 @@ define([
 
         // Set checkbox event listeners
         $(documentListElt.querySelectorAll('[type=checkbox]')).change(doActiveButtons);
-        
+
     }, 50);
-    
+
     documentManager.onFileCreated = refreshManager;
     documentManager.onFileDeleted = refreshManager;
     documentManager.onSyncExportSuccess = refreshManager;

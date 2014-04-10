@@ -24,29 +24,40 @@ define([
     }).compact().object().value();
 
     // Retrieve sync locations from storage
-    _.each(fileSystem, function(fileDesc) {
-        _.each(utils.retrieveIndexArray(fileDesc.fileIndex + ".sync"), function(syncIndex) {
-            try {
-                var syncAttributes = JSON.parse(storage[syncIndex]);
-                // Store syncIndex
-                syncAttributes.syncIndex = syncIndex;
-                // Replace provider ID by provider module in attributes
-                var provider = providerMap[syncAttributes.provider];
-                if(!provider) {
-                    throw new Error("Invalid provider ID: " + syncAttributes.provider);
+    (function() {
+        var syncIndexMap = {};
+        _.each(fileSystem, function(fileDesc) {
+            utils.retrieveIndexArray(fileDesc.fileIndex + ".sync").forEach(function(syncIndex) {
+                try {
+                    var syncAttributes = JSON.parse(storage[syncIndex]);
+                    // Store syncIndex
+                    syncAttributes.syncIndex = syncIndex;
+                    // Replace provider ID by provider module in attributes
+                    var provider = providerMap[syncAttributes.provider];
+                    if(!provider) {
+                        throw new Error("Invalid provider ID: " + syncAttributes.provider);
+                    }
+                    syncAttributes.provider = provider;
+                    fileDesc.syncLocations[syncIndex] = syncAttributes;
+                    syncIndexMap[syncIndex] = syncAttributes;
                 }
-                syncAttributes.provider = provider;
-                fileDesc.syncLocations[syncIndex] = syncAttributes;
-            }
-            catch(e) {
-                // storage can be corrupted
-                eventMgr.onError(e);
-                // Remove sync location
-                utils.removeIndexFromArray(fileDesc.fileIndex + ".sync", syncIndex);
-                storage.removeItem(syncIndex);
+                catch(e) {
+                    // storage can be corrupted
+                    eventMgr.onError(e);
+                    // Remove sync location
+                    utils.removeIndexFromArray(fileDesc.fileIndex + ".sync", syncIndex);
+                }
+            });
+        });
+
+        // Clean fields from deleted files in local storage
+        Object.keys(storage).forEach(function(key) {
+            var match = key.match(/(sync\.\S+?)\.\S+/);
+            if(match && !syncIndexMap.hasOwnProperty(match[1])) {
+                storage.removeItem(key);
             }
         });
-    });
+    })();
 
     // AutoSync configuration
     _.each(providerMap, function(provider) {

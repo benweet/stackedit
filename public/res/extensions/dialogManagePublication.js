@@ -21,7 +21,7 @@ define([
         }
 
         $showAlreadyPublishedElt.toggleClass("hide", _.size(fileDesc.publishLocations) === 0);
-        
+
         var publishListHtml = _.reduce(fileDesc.publishLocations, function(result, publishAttributes) {
             var formattedAttributes = _.omit(publishAttributes, "provider", "publishIndex", "sharingLink");
             formattedAttributes.password && (formattedAttributes.password = "********");
@@ -32,7 +32,7 @@ define([
             });
         }, '');
         publishListElt.innerHTML = publishListHtml;
-        
+
         _.each(publishListElt.querySelectorAll('.remove-button'), function(removeButtonElt) {
             var $removeButtonElt = $(removeButtonElt);
             var publishAttributes = fileDesc.publishLocations[$removeButtonElt.data('publishIndex')];

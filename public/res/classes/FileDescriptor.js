@@ -106,7 +106,6 @@ define([
     FileDescriptor.prototype.removeSyncLocation = function(syncAttributes) {
         utils.removeIndexFromArray(this.fileIndex + ".sync", syncAttributes.syncIndex);
         delete this.syncLocations[syncAttributes.syncIndex];
-        storage.removeItem(syncAttributes.syncIndex);
     };
 
     FileDescriptor.prototype.addPublishLocation = function(publishAttributes) {
@@ -118,7 +117,6 @@ define([
     FileDescriptor.prototype.removePublishLocation = function(publishAttributes) {
         utils.removeIndexFromArray(this.fileIndex + ".publish", publishAttributes.publishIndex);
         delete this.publishLocations[publishAttributes.publishIndex];
-        storage.removeItem(publishAttributes.publishIndex);
     };
 
     FileDescriptor.prototype.composeTitle = function() {

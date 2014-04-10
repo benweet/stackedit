@@ -110,33 +110,14 @@ define([
         utils.removeIndexFromArray("file.list", fileDesc.fileIndex);
         delete fileSystem[fileDesc.fileIndex];
 
+        // Don't bother with fields in localStorage, they will be removed on next page load
+
         if(fileMgr.currentFile === fileDesc) {
             // Unset the current fileDesc
             fileMgr.currentFile = undefined;
             // Refresh the editor with another file
             fileMgr.selectFile();
         }
-
-        // Remove synchronized locations from storage
-        _.each(fileDesc.syncLocations, function(syncAttributes) {
-            storage.removeItem(syncAttributes.syncIndex);
-        });
-
-        // Remove publish locations from storage
-        _.each(fileDesc.publishLocations, function(publishAttributes) {
-            storage.removeItem(publishAttributes.publishIndex);
-        });
-
-        storage.removeItem(fileDesc.fileIndex + ".title");
-        storage.removeItem(fileDesc.fileIndex + ".content");
-        storage.removeItem(fileDesc.fileIndex + ".sync");
-        storage.removeItem(fileDesc.fileIndex + ".publish");
-        storage.removeItem(fileDesc.fileIndex + ".selectTime");
-        storage.removeItem(fileDesc.fileIndex + ".editorStart");
-        storage.removeItem(fileDesc.fileIndex + ".editorEnd");
-        storage.removeItem(fileDesc.fileIndex + ".editorScrollTop");
-        storage.removeItem(fileDesc.fileIndex + ".previewScrollTop");
-        storage.removeItem(fileDesc.fileIndex + ".discussionList");
 
         eventMgr.onFileDeleted(fileDesc);
     };
@@ -146,12 +127,6 @@ define([
         return _.find(fileSystem, function(fileDesc) {
             return _.has(fileDesc.syncLocations, syncIndex);
         });
-    };
-
-    // Get syncAttributes from syncIndex
-    fileMgr.getSyncAttributes = function(syncIndex) {
-        var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
-        return fileDesc && fileDesc.syncLocations[syncIndex];
     };
 
     // Get the file descriptor associated to a publishIndex

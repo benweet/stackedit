@@ -542,13 +542,11 @@ define([
                     task.chain(recursiveDownloadContent);
                     return;
                 }
+                var url = file.downloadUrl;
                 // if file is a real time document
                 if(file.mimeType.indexOf("application/vnd.google-apps.drive-sdk") === 0) {
-                    file.content = "";
                     file.isRealtime = true;
-                    objects.shift();
-                    task.chain(recursiveDownloadContent);
-                    return;
+                    url = 'https://www.googleapis.com/drive/v2/files/' + file.id + '/realtime';
                 }
                 var headers = {};
                 var authorizationMgr = authorizationMgrMap[accountId];
@@ -556,12 +554,12 @@ define([
                     headers.Authorization = "Bearer " + authorizationMgr.token.access_token;
                 }
                 $.ajax({
-                    url: file.downloadUrl,
+                    url: url,
                     headers: headers,
                     data: {
                         key: constants.GOOGLE_API_KEY
                     },
-                    dataType: "text",
+                    dataType: file.isRealtime ? 'json' : 'text',
                     timeout: constants.AJAX_TIMEOUT
                 }).done(function(data) {
                     file.content = data;

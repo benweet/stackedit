@@ -43,7 +43,7 @@ requirejs.config({
         'bootstrap-tour': 'bower-libs/bootstrap-tour/build/js/bootstrap-tour',
         css_browser_selector: 'bower-libs/css_browser_selector/css_browser_selector',
         'pagedown-extra': 'bower-libs/pagedown-extra/Markdown.Extra',
-        pagedown: 'bower-libs/stackedit-pagedown/Markdown.Editor',
+        pagedown: 'libs/Markdown.Editor',
         'require-css': 'bower-libs/require-css/css',
         xregexp: 'bower-libs/xregexp/xregexp-all',
         yaml: 'bower-libs/yaml.js',
@@ -161,10 +161,10 @@ requirejs.config({
             'jquery'
         ],
         pagedown: [
-            'bower-libs/stackedit-pagedown/Markdown.Converter'
+            'libs/Markdown.Converter'
         ],
         'pagedown-extra': [
-            'bower-libs/stackedit-pagedown/Markdown.Converter'
+            'libs/Markdown.Converter'
         ]
     }
 });

@@ -35,29 +35,40 @@ define([
     }).compact().object().value();
 
     // Retrieve publish locations from storage
-    _.each(fileSystem, function(fileDesc) {
-        _.each(utils.retrieveIndexArray(fileDesc.fileIndex + ".publish"), function(publishIndex) {
-            try {
-                var publishAttributes = JSON.parse(storage[publishIndex]);
-                // Store publishIndex
-                publishAttributes.publishIndex = publishIndex;
-                // Replace provider ID by provider module in attributes
-                var provider = providerMap[publishAttributes.provider];
-                if(!provider) {
-                    throw new Error("Invalid provider ID: " + publishAttributes.provider);
+    (function() {
+        var publishIndexMap = {};
+        _.each(fileSystem, function(fileDesc) {
+            utils.retrieveIndexArray(fileDesc.fileIndex + ".publish").forEach(function(publishIndex) {
+                try {
+                    var publishAttributes = JSON.parse(storage[publishIndex]);
+                    // Store publishIndex
+                    publishAttributes.publishIndex = publishIndex;
+                    // Replace provider ID by provider module in attributes
+                    var provider = providerMap[publishAttributes.provider];
+                    if(!provider) {
+                        throw new Error("Invalid provider ID: " + publishAttributes.provider);
+                    }
+                    publishAttributes.provider = provider;
+                    fileDesc.publishLocations[publishIndex] = publishAttributes;
+                    publishIndexMap[publishIndex] = publishAttributes;
                 }
-                publishAttributes.provider = provider;
-                fileDesc.publishLocations[publishIndex] = publishAttributes;
-            }
-            catch(e) {
-                // storage can be corrupted
-                eventMgr.onError(e);
-                // Remove publish location
-                utils.removeIndexFromArray(fileDesc.fileIndex + ".publish", publishIndex);
-                storage.removeItem(publishIndex);
+                catch(e) {
+                    // storage can be corrupted
+                    eventMgr.onError(e);
+                    // Remove publish location
+                    utils.removeIndexFromArray(fileDesc.fileIndex + ".publish", publishIndex);
+                }
+            });
+        });
+
+        // Clean fields from deleted files in local storage
+        Object.keys(storage).forEach(function(key) {
+            var match = key.match(/(publish\.\S+?)\.\S+/);
+            if(match && !publishIndexMap.hasOwnProperty(match[1])) {
+                storage.removeItem(key);
             }
         });
-    });
+    })();
 
     // Apply template to the current document
     publisher.applyTemplate = function(fileDesc, publishAttributes, html) {
@@ -286,7 +297,7 @@ define([
             });
         }
 
-        // 
+        //
         $(".action-process-publish").click(performNewLocation);
         $(".action-update-publication").click(publisher.publish);
 

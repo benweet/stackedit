@@ -62,7 +62,7 @@ define([
                     var fileDescList = [];
                     var fileDesc;
                     _.each(result, function(file) {
-                        var parsedContent = gdriveProvider.parseSerializedContent(file.content);
+                        var parsedContent = gdriveProvider.parseContent(file.content);
                         var syncAttributes = createSyncAttributes(file.id, file.etag, parsedContent.content, file.title, parsedContent.discussionListJSON);
                         syncAttributes.isRealtime = file.isRealtime;
                         var syncLocations = {};
@@ -188,11 +188,13 @@ define([
                 var interestingChanges = [];
                 _.each(changes, function(change) {
                     var syncIndex = createSyncIndex(change.fileId);
-                    var syncAttributes = fileMgr.getSyncAttributes(syncIndex);
-                    if(syncAttributes === undefined) {
+                    var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
+                    var syncAttributes = fileDesc && fileDesc.syncLocations[syncIndex];
+                    if(!syncAttributes) {
                         return;
                     }
-                    // Store syncAttributes to avoid 2 times searching
+                    // Store fileDesc and syncAttributes references to avoid 2 times search
+                    change.fileDesc = fileDesc;
                     change.syncAttributes = syncAttributes;
                     // Delete
                     if(change.deleted === true) {
@@ -215,13 +217,8 @@ define([
                             return callback();
                         }
                         var change = changes.pop();
+                        var fileDesc = change.fileDesc;
                         var syncAttributes = change.syncAttributes;
-                        var syncIndex = syncAttributes.syncIndex;
-                        var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
-                        // No file corresponding (file may have been deleted locally)
-                        if(fileDesc === undefined) {
-                            return;
-                        }
                         // File deleted
                         if(change.deleted === true) {
                             eventMgr.onError('"' + fileDesc.title + '" has been removed from ' + providerName + '.');
@@ -233,11 +230,11 @@ define([
                             return;
                         }
                         var file = change.file;
-                        var parsedContent = gdriveProvider.parseSerializedContent(file.content);
+                        var parsedContent = gdriveProvider.parseContent(file.content);
                         var remoteContent = parsedContent.content;
                         var remoteTitle = file.title;
                         var remoteDiscussionListJSON = parsedContent.discussionListJSON;
-                        var remoteDiscussionList = JSON.parse(remoteDiscussionListJSON);
+                        var remoteDiscussionList = parsedContent.discussionList;
                         var remoteCRC = gdriveProvider.syncMerge(fileDesc, syncAttributes, remoteContent, remoteTitle, remoteDiscussionList, remoteDiscussionListJSON);
 
                         // Update syncAttributes
@@ -291,8 +288,8 @@ define([
         });
 
         // Realtime closure
+        var realtimeContext;
         (function() {
-            var realtimeContext;
 
             function toRealtimeDiscussion(context, discussion) {
                 var realtimeCommentList = context.model.createList();
@@ -430,7 +427,7 @@ define([
                 }
             }
 
-            function updateCRCs() {
+            function updateStatus() {
                 var context = realtimeContext;
                 if(!context) {
                     return;
@@ -487,7 +484,7 @@ define([
 
                     // For local changes, CRCs are updated on "save success" event
                     if(context.isServerChange) {
-                        updateCRCs();
+                        updateStatus();
                     }
                     else {
                         context.model.endCompoundOperation();
@@ -570,7 +567,7 @@ define([
                     // Also listen to "save success" event
                     doc.addEventListener(gapi.drive.realtime.EventType.DOCUMENT_SAVE_STATE_CHANGED, function(evt) {
                         if(evt.isPending === false && evt.isSaving === false) {
-                            updateCRCs();
+                            updateStatus();
                         }
                     });
 

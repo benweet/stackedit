@@ -374,7 +374,7 @@ define([
                 if(conflictList.length) {
                     eventMgr.onMessage('"' + remoteTitle + '" has conflicts that you have to review.');
                 }
-            }), this);
+            }, this));
         }
 
         // Return remote CRCs

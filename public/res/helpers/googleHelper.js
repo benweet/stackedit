@@ -562,6 +562,30 @@ define([
                     dataType: file.isRealtime ? 'json' : 'text',
                     timeout: constants.AJAX_TIMEOUT
                 }).done(function(data) {
+                    if(file.isRealtime) {
+                        data = data.data.value;
+                        data = {
+                            content: data.content.value,
+                            discussionList: (function() {
+                                var discussionList = {};
+                                data.discussionList && _.each(data.discussionList.value, function(discussionObject) {
+                                    var discussion = {
+                                        discussionIndex: discussionObject.value.discussionIndex.json,
+                                        selectionStart: discussionObject.value.selectionStart.json,
+                                        selectionEnd: discussionObject.value.selectionEnd.json,
+                                    };
+                                    var type = (discussionObject.value.type || {}).json;
+                                    type && (discussion.type = type);
+                                    var commentList = (discussionObject.value.commentList || {}).value || [];
+                                    commentList.length && (discussion.commentList = commentList.map(function(commentObject) {
+                                        return commentObject.json;
+                                    }));
+                                    discussionList[discussion.discussionIndex] = discussion;
+                                });
+                                return discussionList;
+                            })()
+                        };
+                    }
                     file.content = data;
                     objects.shift();
                     task.chain(recursiveDownloadContent);

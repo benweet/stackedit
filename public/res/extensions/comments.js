@@ -198,7 +198,7 @@ define([
             // Refresh conversation if popover is open
             var context = currentContext;
             if(context.discussionIndex) {
-                context.popoverElt.querySelector('.discussion-comment-list').innerHTML = getDiscussionComments();
+                context.getPopoverElt().querySelector('.discussion-comment-list').innerHTML = getDiscussionComments();
             }
             try {
                 cssApplier.undoToRange(context.rangyRange);

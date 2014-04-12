@@ -63,8 +63,8 @@ define([
 
         // Clean fields from deleted files in local storage
         Object.keys(storage).forEach(function(key) {
-            var match = key.match(/(publish\.\S+?)\.\S+/);
-            if(match && !publishIndexMap.hasOwnProperty(match[1])) {
+            var match = key.match(/publish\.\S+/);
+            if(match && !publishIndexMap.hasOwnProperty(match[0])) {
                 storage.removeItem(key);
             }
         });

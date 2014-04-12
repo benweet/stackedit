@@ -11,7 +11,7 @@ define([
     dialogManageSynchronization.onEventMgrCreated = function(eventMgrParameter) {
         eventMgr = eventMgrParameter;
     };
-    
+
     var synchronizer;
     dialogManageSynchronization.onSynchronizerCreated = function(synchronizerParameter) {
         synchronizer = synchronizerParameter;
@@ -34,7 +34,7 @@ define([
             $msgSyncListElt.addClass("hide");
             $msgNoSyncElt.removeClass("hide");
         }
-        
+
         var syncListHtml = _.reduce(fileDesc.syncLocations, function(result, syncAttributes) {
             return result + _.template(dialogManageSynchronizationLocationHTML, {
                 syncAttributes: syncAttributes,
@@ -42,12 +42,11 @@ define([
             });
         }, '');
         syncListElt.innerHTML = syncListHtml;
-        
+
         _.each(syncListElt.querySelectorAll('.remove-button'), function(removeButtonElt) {
             var $removeButtonElt = $(removeButtonElt);
             var syncAttributes = fileDesc.syncLocations[$removeButtonElt.data('syncIndex')];
             $removeButtonElt.click(function() {
-                synchronizer.tryStopRealtimeSync();
                 fileDesc.removeSyncLocation(syncAttributes);
                 eventMgr.onSyncRemoved(fileDesc, syncAttributes);
             });

@@ -13,7 +13,7 @@ define([
     // Faster than setTimeout (see http://dbaron.org/log/20100309-faster-timeouts)
     utils.defer = (function() {
         var timeouts = [];
-        var messageName = "delay";
+        var messageName = "deferMsg";
         window.addEventListener("message", function(evt) {
             if(evt.source == window && evt.data == messageName) {
                 evt.stopPropagation();

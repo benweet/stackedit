@@ -52,8 +52,8 @@ define([
 
         // Clean fields from deleted files in local storage
         Object.keys(storage).forEach(function(key) {
-            var match = key.match(/(sync\.\S+?)\.\S+/);
-            if(match && !syncIndexMap.hasOwnProperty(match[1])) {
+            var match = key.match(/sync\.\S+/);
+            if(match && !syncIndexMap.hasOwnProperty(match[0])) {
                 storage.removeItem(key);
             }
         });
@@ -241,28 +241,16 @@ define([
      * Realtime synchronization
      **************************************************************************/
 
-    var realtimeFileDesc;
-    var realtimeSyncAttributes;
     var isOnline = true;
-
-    // Determines if open file has real time sync location and tries to start
-    // real time sync
-    function onFileOpen(fileDesc) {
-        realtimeFileDesc = _.some(fileDesc.syncLocations, function(syncAttributes) {
-            realtimeSyncAttributes = syncAttributes;
-            return syncAttributes.isRealtime;
-        }) ? fileDesc : undefined;
-        tryStartRealtimeSync();
-    }
 
     // Tries to start/stop real time sync on online/offline event
     function onOfflineChanged(isOfflineParam) {
         if(isOfflineParam === false) {
             isOnline = true;
-            tryStartRealtimeSync();
+            startRealtimeSync();
         }
         else {
-            synchronizer.tryStopRealtimeSync();
+            stopRealtimeSync();
             isOnline = false;
         }
     }
@@ -270,24 +258,36 @@ define([
     // Starts real time synchronization if:
     // 1. current file has real time sync location
     // 2. we are online
-    function tryStartRealtimeSync() {
-        if(realtimeFileDesc !== undefined && isOnline === true) {
-            realtimeSyncAttributes.provider.startRealtimeSync(realtimeFileDesc, realtimeSyncAttributes);
-        }
+    function startRealtimeSync() {
+        var fileDesc = fileMgr.currentFile;
+        _.each(fileDesc.syncLocations, function(syncAttributes) {
+            syncAttributes.isRealtime && syncAttributes.provider.startRealtimeSync(fileDesc, syncAttributes);
+        });
     }
 
     // Stops previously started synchronization if any
-    synchronizer.tryStopRealtimeSync = function() {
-        if(realtimeFileDesc !== undefined && isOnline === true) {
-            realtimeSyncAttributes.provider.stopRealtimeSync();
-        }
-    };
+    function stopRealtimeSync() {
+        _.each(providerMap, function(provider) {
+            provider.stopRealtimeSync && provider.stopRealtimeSync();
+        });
+    }
 
     // Triggers realtime synchronization from eventMgr events
     if(window.viewerMode === false) {
-        eventMgr.addListener("onFileOpen", onFileOpen);
-        eventMgr.addListener("onFileClosed", synchronizer.tryStopRealtimeSync);
+        // On file open, try to start realtime sync
+        eventMgr.addListener("onFileOpen", startRealtimeSync);
+        // On new sync location, try to start realtime sync
+        eventMgr.addListener("onSyncExportSuccess", startRealtimeSync);
+        // On file close, stop any active realtime synchronization
+        eventMgr.addListener("onFileClosed", stopRealtimeSync);
+        // Start/stop realtime sync depending on network status
         eventMgr.addListener("onOfflineChanged", onOfflineChanged);
+        // Try to start realtime sync every 15 sec in case of error
+        eventMgr.addListener("onPeriodicRun", _.throttle(startRealtimeSync, 15000));
+        // Stop realtime sync if synchronized location is removed
+        eventMgr.addListener("onSyncRemoved", function(fileDesc, syncAttributes) {
+            fileDesc === fileMgr.currentFile && syncAttributes.isRealtime && syncAttributes.provider.stopRealtimeSync();
+        });
     }
 
     /***************************************************************************
@@ -368,11 +368,6 @@ define([
                         syncAttributes.isRealtime = true;
                         fileDesc.addSyncLocation(syncAttributes);
                         eventMgr.onSyncExportSuccess(fileDesc, syncAttributes);
-
-                        // Start the real time sync
-                        realtimeFileDesc = fileDesc;
-                        realtimeSyncAttributes = syncAttributes;
-                        tryStartRealtimeSync();
                     });
                 }
                 else {

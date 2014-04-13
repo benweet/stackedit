@@ -95,14 +95,7 @@ define([
         // Dequeue a synchronized location
         var syncAttributes = uploadSyncAttributesList.pop();
 
-        var providerSyncUpFunction = syncAttributes.provider.syncUp;
-        // Call a special function in case of a real time synchronized location
-        if(syncAttributes.isRealtime === true) {
-            providerSyncUpFunction = syncAttributes.provider.syncUpRealtime;
-        }
-
-        // Use the specified provider to perform the upload
-        providerSyncUpFunction(
+        syncAttributes.provider.syncUp(
             uploadContent,
             uploadContentCRC,
             uploadTitle,
@@ -238,59 +231,6 @@ define([
     };
 
     /***************************************************************************
-     * Realtime synchronization
-     **************************************************************************/
-
-    var isOnline = true;
-
-    // Tries to start/stop real time sync on online/offline event
-    function onOfflineChanged(isOfflineParam) {
-        if(isOfflineParam === false) {
-            isOnline = true;
-            startRealtimeSync();
-        }
-        else {
-            stopRealtimeSync();
-            isOnline = false;
-        }
-    }
-
-    // Starts real time synchronization if:
-    // 1. current file has real time sync location
-    // 2. we are online
-    function startRealtimeSync() {
-        var fileDesc = fileMgr.currentFile;
-        _.each(fileDesc.syncLocations, function(syncAttributes) {
-            syncAttributes.isRealtime && syncAttributes.provider.startRealtimeSync(fileDesc, syncAttributes);
-        });
-    }
-
-    // Stops previously started synchronization if any
-    function stopRealtimeSync() {
-        _.each(providerMap, function(provider) {
-            provider.stopRealtimeSync && provider.stopRealtimeSync();
-        });
-    }
-
-    // Triggers realtime synchronization from eventMgr events
-    if(window.viewerMode === false) {
-        // On file open, try to start realtime sync
-        eventMgr.addListener("onFileOpen", startRealtimeSync);
-        // On new sync location, try to start realtime sync
-        eventMgr.addListener("onSyncExportSuccess", startRealtimeSync);
-        // On file close, stop any active realtime synchronization
-        eventMgr.addListener("onFileClosed", stopRealtimeSync);
-        // Start/stop realtime sync depending on network status
-        eventMgr.addListener("onOfflineChanged", onOfflineChanged);
-        // Try to start realtime sync every 15 sec in case of error
-        eventMgr.addListener("onPeriodicRun", _.throttle(startRealtimeSync, 15000));
-        // Stop realtime sync if synchronized location is removed
-        eventMgr.addListener("onSyncRemoved", function(fileDesc, syncAttributes) {
-            fileDesc === fileMgr.currentFile && syncAttributes.isRealtime && syncAttributes.provider.stopRealtimeSync();
-        });
-    }
-
-    /***************************************************************************
      * Initialize module
      **************************************************************************/
 
@@ -353,37 +293,15 @@ define([
                 $(".modal-autosync-" + provider.providerId).modal();
             });
             $(".action-sync-export-" + provider.providerId).click(function(event) {
-                var isRealtime = utils.getInputChecked("#input-sync-export-" + provider.providerId + "-realtime");
                 var fileDesc = fileMgr.currentFile;
 
-                if(isRealtime) {
-                    if(_.size(fileDesc.syncLocations) > 0) {
-                        return eventMgr.onError("Real time collaborative document can't be synchronized with multiple locations");
-                    }
-                    // Perform the provider's real time export
-                    provider.exportRealtimeFile(event, fileDesc.title, fileDesc.content, fileDesc.discussionListJSON, function(error, syncAttributes) {
-                        if(error) {
-                            return;
-                        }
-                        syncAttributes.isRealtime = true;
-                        fileDesc.addSyncLocation(syncAttributes);
-                        eventMgr.onSyncExportSuccess(fileDesc, syncAttributes);
-                    });
-                }
-                else {
-                    if(_.size(fileDesc.syncLocations) > 0 && _.first(_.values(fileDesc.syncLocations)).isRealtime) {
-                        eventMgr.onError("Real time collaborative document can't be synchronized with multiple locations");
+                provider.exportFile(event, fileDesc.title, fileDesc.content, fileDesc.discussionListJSON, function(error, syncAttributes) {
+                    if(error) {
                         return;
                     }
-                    // Perform the provider's standard export
-                    provider.exportFile(event, fileDesc.title, fileDesc.content, fileDesc.discussionListJSON, function(error, syncAttributes) {
-                        if(error) {
-                            return;
-                        }
-                        fileDesc.addSyncLocation(syncAttributes);
-                        eventMgr.onSyncExportSuccess(fileDesc, syncAttributes);
-                    });
-                }
+                    fileDesc.addSyncLocation(syncAttributes);
+                    eventMgr.onSyncExportSuccess(fileDesc, syncAttributes);
+                });
 
                 // Store input values as preferences for next time we open the
                 // export dialog

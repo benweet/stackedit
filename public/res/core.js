@@ -634,6 +634,7 @@ define([
         }, 1000);
 
         eventMgr.onReady();
+
         // Adjust the layout after the dom has changed
         adjustWindow();
     };

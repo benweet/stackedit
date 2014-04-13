@@ -124,9 +124,7 @@ define([
         _.chain(this.syncLocations).sortBy(function(attributes) {
             return attributes.provider.providerId;
         }).each(function(attributes) {
-            var classes = 'icon-provider-' + attributes.provider.providerId;
-            attributes.isRealtime === true && (classes += ' realtime');
-            result.push('<i class="' + classes + '"></i>');
+            result.push('<i class="icon-provider-' + attributes.provider.providerId + '"></i>');
         });
         if(_.size(this.syncLocations) !== 0) {
             result.push('<i class="icon-refresh title-icon-category"></i>');
@@ -134,9 +132,7 @@ define([
         _.chain(this.publishLocations).sortBy(function(attributes) {
             return attributes.provider.providerId;
         }).each(function(attributes) {
-            var classes = 'icon-provider-' + attributes.provider.providerId;
-            attributes.isRealtime === true && (classes += ' realtime');
-            result.push('<i class="' + classes + '"></i>');
+            result.push('<i class="icon-provider-' + attributes.provider.providerId + '"></i>');
         });
         if(_.size(this.publishLocations) !== 0) {
             result.push('<i class="icon-upload title-icon-category"></i>');

@@ -312,21 +312,22 @@ define([
         var previewButtonsElt = document.querySelector('.extension-preview-buttons');
         previewButtonsElt.appendChild(extensionPreviewButtonsFragment);
 
-        // A bit of jQuery...
-        var $previewButtonsElt = $(previewButtonsElt);
-        var previewButtonsWidth = $previewButtonsElt.width();
-        $previewButtonsElt.find('.btn-group').each(function() {
-            var $btnGroupElt = $(this);
-            $btnGroupElt.click(function() {
-                // Align dropdown to the left of the screen
-                $btnGroupElt.find('.dropdown-menu').css({
-                    right: -previewButtonsWidth + $btnGroupElt.width() + $btnGroupElt.position().left
-                });
-                $btnGroupElt.find('.markdown-syntax, .table-of-contents').css({
-                    'max-height': $(document).height() - $btnGroupElt.offset().top - 190
+        setTimeout(function() {
+            var previewButtonsWidth = previewButtonsElt.offsetWidth;
+            _.each(previewButtonsElt.querySelectorAll('.btn-group'), function(btnGroupElt) {
+                // A bit of jQuery...
+                var $btnGroupElt = $(btnGroupElt);
+                $btnGroupElt.click(function() {
+                    // Align dropdown to the left of the screen
+                    $btnGroupElt.find('.dropdown-menu').css({
+                        right: -previewButtonsWidth + $btnGroupElt.width() + $btnGroupElt.position().left
+                    });
+                    $btnGroupElt.find('.markdown-syntax, .table-of-contents').css({
+                        'max-height': $(document).height() - $btnGroupElt.offset().top - 190
+                    });
                 });
             });
-        });
+        }, 0);
 
         // Call onReady listeners
         onReady();

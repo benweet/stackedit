@@ -71,7 +71,7 @@ define([
                 return;
             }
             window.delayedFunction = function() {
-                gapi.load("client,drive-realtime", function() {
+                gapi.load("client", function() {
                     gapi.client.load('drive', 'v2', function() {
                         connected = true;
                         task.chain();
@@ -257,11 +257,6 @@ define([
             var headers = {
                 'Content-Type': 'multipart/mixed; boundary="' + boundary + '"',
             };
-            // Sometimes we have error 412 from Google even with the correct
-            // etag
-            // if(etag !== undefined) {
-            // headers["If-Match"] = etag;
-            // }
 
             var base64Data = utils.encodeBase64(content);
             var multipartRequestBody = [
@@ -348,49 +343,6 @@ define([
                         }
                     }
                     handleError(error, task);
-                });
-            });
-        });
-        task.onSuccess(function() {
-            callback(undefined, result);
-        });
-        task.onError(function(error) {
-            callback(error);
-        });
-        task.enqueue();
-    };
-
-    googleHelper.createRealtimeFile = function(parentId, title, accountId, callback) {
-        var result;
-        var task = new AsyncTask();
-        connect(task);
-        authenticate(task, 'gdrive', accountId);
-        task.onRun(function() {
-            var metadata = {
-                title: title,
-                mimeType: 'application/vnd.google-apps.drive-sdk',
-            };
-            if(parentId !== undefined) {
-                // Specify the directory
-                metadata.parents = [
-                    {
-                        kind: 'drive#fileLink',
-                        id: parentId
-                    }
-                ];
-            }
-            runWithToken(accountId, function() {
-                var request = gapi.client.drive.files.insert({
-                    'resource': metadata
-                });
-                request.execute(function(response) {
-                    if(response && response.id) {
-                        // Upload success
-                        result = response;
-                        task.chain();
-                        return;
-                    }
-                    handleError(response.error, task);
                 });
             });
         });
@@ -562,31 +514,7 @@ define([
                     dataType: file.isRealtime ? 'json' : 'text',
                     timeout: constants.AJAX_TIMEOUT
                 }).done(function(data) {
-                    if(file.isRealtime) {
-                        data = data.data.value;
-                        data = {
-                            content: data.content.value,
-                            discussionList: (function() {
-                                var discussionList = {};
-                                data.discussionList && _.each(data.discussionList.value, function(discussionObject) {
-                                    var discussion = {
-                                        discussionIndex: discussionObject.value.discussionIndex.json,
-                                        selectionStart: discussionObject.value.selectionStart.json,
-                                        selectionEnd: discussionObject.value.selectionEnd.json,
-                                    };
-                                    var type = (discussionObject.value.type || {}).json;
-                                    type && (discussion.type = type);
-                                    var commentList = (discussionObject.value.commentList || {}).value || [];
-                                    commentList.length && (discussion.commentList = commentList.map(function(commentObject) {
-                                        return commentObject.json;
-                                    }));
-                                    discussionList[discussion.discussionIndex] = discussion;
-                                });
-                                return discussionList;
-                            })()
-                        };
-                    }
-                    file.content = data;
+                    file.content = file.isRealtime ? data.data.value.content.value : data;
                     objects.shift();
                     task.chain(recursiveDownloadContent);
                 }).fail(function(jqXHR) {
@@ -602,32 +530,6 @@ define([
         });
         task.onSuccess(function() {
             callback(undefined, result);
-        });
-        task.onError(function(error) {
-            callback(error);
-        });
-        task.enqueue();
-    };
-
-    googleHelper.loadRealtime = function(fileId, accountId, callback, errorCallback) {
-        var doc;
-        var task = new AsyncTask();
-        connect(task);
-        authenticate(task, 'gdrive', accountId);
-        task.onRun(function() {
-            var authorizationMgr = authorizationMgrMap[accountId];
-            gapi.auth.setToken(authorizationMgr.token);
-            gapi.drive.realtime.load(fileId, function(result) {
-                // onFileLoaded
-                doc = result;
-                task.chain();
-            }, undefined, function(err) {
-                errorCallback(err);
-                task.error(new Error(err.message));
-            });
-        });
-        task.onSuccess(function() {
-            callback(undefined, doc);
         });
         task.onError(function(error) {
             callback(error);

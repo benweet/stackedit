@@ -50,14 +50,6 @@ define([
     };
 
     Provider.prototype.parseContent = function(content) {
-        if(!_.isString(content)) {
-            // Real time content is already an object
-            return {
-                content: content.content,
-                discussionList: content.discussionList,
-                discussionListJSON: JSON.stringify(content.discussionList)
-            };
-        }
         var discussionList;
         var discussionListJSON = '{}';
         var discussionExtractor = /<!--se_discussion_list:([\s\S]+)-->$/.exec(content);

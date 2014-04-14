@@ -71,7 +71,7 @@
 @code-color: @secondary-color-darkest;
 @code-bg: fade(@secondary-desaturated, 7.5%);
 @hr-border: fade(@secondary-desaturated, 10%);
-@navbar-height: 49px;
+@navbar-height: 50px;
 @navbar-default-bg: @primary-bg;
 @nav-link-hover-bg: @btn-default-hover-bg;
 @nav-disabled-link-color: @disabled-color;
@@ -139,16 +139,11 @@
 
 body {
 	tab-size: 4;
+	overflow: hidden;
 }
 
 * {
     outline: none !important;
-}
-
-#preview-contents {
-	padding: 35px;
-	margin: 0 auto 200px;
-    text-align: justify;
 }
 
 .working {
@@ -255,7 +250,13 @@ a {
     }
 }
 
-.move-to-front {
+.layout-panel() {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.bring-to-front {
 	z-index: 1050 !important;
 }
 
@@ -408,11 +409,14 @@ a {
  *******************/
 
 .navbar {
-	position: static;
+	.layout-panel();
+	width: 100%;
 	padding: 0;
 	border: 0;
 	border-top: 1px solid @primary-border-color;
+	border-bottom: 1px solid @primary-border-color;
 	border-radius: 0;
+	z-index: 20;
 	.left-space, .right-space {
 		width: 25px;
 		height: @input-height-slim;
@@ -538,14 +542,11 @@ a {
 
 // Common style
 .menu-panel, .document-panel {
-	display: block;
-	position: absolute;
-	top: 0;
 	height: 100%;
-	z-index: 10;
+	z-index: 30;
 	overflow: initial;
-    .collapse-button {
-       	background-color: @panel-button-bg-color;
+    .toggle-button {
+    	background-color: @panel-button-bg-color;
         height: @input-height-slim;
         border-radius: 8px;
 		position: absolute;
@@ -560,7 +561,7 @@ a {
         	font-size: 14px;
         }
 	}
-    .collapse-button:hover, &.in .collapse-button, &.collapsing .collapse-button {
+    & .toggle-button:hover, &.panel-open > .toggle-button {
         border-width: 1px;
 	}
 	.panel-content {
@@ -574,13 +575,8 @@ a {
 }
 
 .menu-panel {
-	width: @menu-panel-width !important;
-	margin-left: (-@menu-panel-width - 15);
-    .transition(~"margin-left ease-in-out 0.35s");
-	.sub-menu {
-        background-color: @secondary-bg-lighter;
-        .box-shadow(~"inset 1px 0 1px rgba(0,0,0,.1), inset 1px 1px 4px rgba(0,0,0,.025)");
-	}
+	.layout-panel();
+	width: @menu-panel-width;
     .alert {
         padding: 15px 0;
     }
@@ -596,19 +592,16 @@ a {
             }
         }
     }
-	&.in {
-        margin-left: 0;
-    }
-    .collapse-button {
+    .toggle-button {
         border-top: 4px solid fade(@logo-yellow, @panel-button-border-fade);
         border-right: 5px solid fade(@logo-blue, @panel-button-border-fade);
         border-bottom: 4px solid fade(@logo-orange, @panel-button-border-fade);
-	    right: -50px;
+	    right: -37px;
 		z-index: -1;
 		padding: 0 10px 0 50px;
 	}
-    .collapse-button:hover, &.in .collapse-button, &.collapsing .collapse-button {
-        right: -55px;
+    & .toggle-button:hover, &.panel-open > .toggle-button {
+        right: -45px;
 	}
 	.panel-content {
 		background-color: @secondary-bg-light;
@@ -618,18 +611,15 @@ a {
 }
 
 .document-panel {
+	position: absolute;
+	top: 0;
 	right: 0;
-	width: @document-panel-width !important;
-	margin-right: (-@document-panel-width - 15);
-    .transition(~"margin-right ease-in-out 0.35s");
-	&.in {
-        margin-right: 0;
-    }
-    .collapse-button {
+	width: @document-panel-width;
+	.toggle-button {
         border-top: 4px solid fade(@logo-yellow, @panel-button-border-fade);
         border-left: 5px solid fade(@logo-green, @panel-button-border-fade);
         border-bottom: 4px solid fade(@logo-orange, @panel-button-border-fade);
-	    left: -50px;
+	    left: -37px;
 		padding: 0 50px 0 3px;
 		z-index: -1;
 		i.icon-folder-open {
@@ -637,8 +627,8 @@ a {
        		padding-bottom: 1px;
        	}
 	}
-    .collapse-button:hover, &.in .collapse-button, &.collapsing .collapse-button {
-        left: -55px;
+    & .toggle-button:hover, &.panel-open > .toggle-button {
+        left: -45px;
 	}
 	.panel-content {
 		background-color: @list-group-bg;
@@ -965,8 +955,62 @@ a {
 
 
 /*********************************
- * UI Layout
+ * Layout
  *********************************/
+
+.layout-outer-wrapper {
+	.layout-panel();
+	overflow: hidden;
+	&.layout-animate {
+		.transition(350ms ease-in-out all);
+	}
+}
+
+.layout-inner-wrapper {
+	.layout-panel();
+	overflow: hidden;
+}
+
+.layout-resizer {
+	.layout-panel();
+	width: @resizer-size;
+	height: @resizer-size;
+	&.open {
+		cursor: e-resize;
+	}
+}
+
+.layout-toggler {
+	.layout-panel();
+	padding: 0;
+	margin: 0;
+	width: @resizer-size;
+	height: 60px;
+	i {
+		font-size: 22px;
+	}
+	&.layout-toggler-preview {
+		line-height: 55px;
+		.layout-animate & {
+			.transition(350ms ease-in-out all);
+		}
+		i:before {
+			content: '\e87d';
+		}
+		&.open > i:before {
+			content: '\e87e';
+		}
+	}
+	&.layout-toggler-navbar {
+		line-height: 0;
+		i {
+			font-size: 16px;
+			height: 10.5px;
+			overflow: hidden;
+		}
+	}
+}
+
 
 .ui-layout-resizer {
 	overflow: visible !important;
@@ -1019,21 +1063,6 @@ a {
     border-bottom: 1px solid @primary-border-color;
 }
 
-.resizer-decorator {
-	position: absolute;
-	display: block !important;
-	.ui-layout-resizer-east & {
-    	width: @resizer-size;
-	    height: 100%;
-        border-left: 1px solid fade(@secondary, 6%);
-	}
-	.ui-layout-resizer-south & {
-    	height: @resizer-size;
-	    width: 100%;
-        border-top: 1px solid fade(@secondary, 6%);
-	}
-}
-
 
 /*****************************
  * Editor
@@ -1065,6 +1094,7 @@ a {
 }
 
 #wmd-input {
+	.layout-panel();
 	font-family: "PT Sans", sans-serif;
 	line-height: @editor-line-weight;
     letter-spacing: normal;
@@ -1300,23 +1330,31 @@ a {
     }
 }
 
-.textarea-helper {
-    font-family: @font-family-monospace;
-    font-size: @font-size-base;
-    position: absolute;
-    top: -100px;
-    height: 1px;
-    padding: 0;
-    line-height: @editor-line-weight;
-    position: absolute;
-    overflow: auto;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+
+/*****************************
+* Preview
+*****************************/
+
+.preview-panel {
+	.layout-panel();
+	overflow: hidden;
+	border-left: 1px solid fade(@secondary, 6%);
+	background-color: @secondary-bg-light;
+	z-index: 10;
+	.layout-animate & {
+		.transition(350ms ease-in-out all);
+	}
+}
+
+#preview-contents {
+	padding: 35px;
+	margin: 0 auto 200px;
+	text-align: justify;
 }
 
 .preview-container {
+	position: absolute;
 	overflow: auto;
-	background-color: @secondary-bg-light;
 }
 
 .wmd-prompt-background {

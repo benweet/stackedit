@@ -8,6 +8,10 @@ define([
     var scrollLink = new Extension("scrollLink", "Scroll Link", true, true);
     scrollLink.settingsBlock = scrollLinkSettingsBlockHTML;
 
+    $.easing.easeOutSine = function( p ) {
+        return Math.cos((1 - p) * Math.PI / 2 );
+    };
+
     var sectionList;
     scrollLink.onSectionsCreated = function(sectionListParam) {
         sectionList = sectionListParam;

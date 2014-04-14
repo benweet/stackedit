@@ -106,7 +106,7 @@ define([
         dropdownElt = crel('ul', {
             class: 'dropdown-menu dropdown-file-selector'
         });
-        document.querySelector('.ui-layout-resizer-north').appendChild(crel('div', crel('div', {
+        document.querySelector('.navbar').appendChild(crel('div', crel('div', {
             'data-toggle': 'dropdown'
         }), dropdownElt));
         var $dropdownElt = $(dropdownElt).dropdown();

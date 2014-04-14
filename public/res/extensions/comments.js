@@ -100,7 +100,7 @@ define([
         }
         popoverElt.style.left = left + 'px';
         popoverElt.querySelector('.arrow').style.left = (marginElt.offsetWidth - parseInt(commentElt.style.right) - commentElt.offsetWidth / 2 - left) + 'px';
-        var popoverTopOffset = document.body.offsetHeight - currentContext.hr.getBoundingClientRect().top;
+        var popoverTopOffset = window.innerHeight - currentContext.hr.getBoundingClientRect().top;
         if(popoverTopOffset < 0) {
             popoverElt.style.top = (parseInt(popoverElt.style.top) + popoverTopOffset) + 'px';
         }

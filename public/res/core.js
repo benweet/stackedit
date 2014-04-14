@@ -4,6 +4,7 @@ define([
     "underscore",
     "crel",
     "editor",
+    "layout",
     "constants",
     "utils",
     "storage",
@@ -16,9 +17,8 @@ define([
     "text!html/settingsTemplateTooltip.html",
     "text!html/settingsUserCustomExtensionTooltip.html",
     "storage",
-    "uilayout",
     'pagedown',
-], function($, _, crel, editor, constants, utils, storage, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
+], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
 
@@ -204,47 +204,7 @@ define([
         }
     }
 
-    // Set the panels visibility
-    var layout;
-    var $menuPanelElt;
-    var $documentPanelElt;
-    function setPanelVisibility(forceHide) {
-        if(forceHide === true || layout.state.north.isClosed) {
-            $menuPanelElt.hide();
-            $documentPanelElt.hide();
-        }
-        else {
-            $menuPanelElt.show();
-            $documentPanelElt.show();
-        }
-    }
-
-    // Set the preview button visibility
-    var $previewButtonsElt;
-    function setPreviewButtonsVisibility(forceHide) {
-        if(forceHide === true || layout.state.east.isClosed) {
-            $previewButtonsElt.hide();
-        }
-        else {
-            $previewButtonsElt.show();
-        }
-    }
-
     // Create the layout
-    var $editorButtonsElt;
-    var maxWidthMap = [
-        { screenWidth: 0, maxWidth: 600 },
-        { screenWidth: 1000, maxWidth: 700 },
-        { screenWidth: 1200, maxWidth: 800 },
-        { screenWidth: 1400, maxWidth: 900 },
-    ];
-    var maxWidthMapReversed = maxWidthMap.slice(0).reverse();
-    function getMaxWidth() {
-        var actualWidth = $(window).width();
-        return _.find(maxWidthMapReversed, function(value) {
-            return actualWidth > value.screenWidth;
-        }).maxWidth;
-    }
     function createLayout() {
         var layoutGlobalConfig = {
             closable: true,
@@ -274,81 +234,19 @@ define([
                 easing: "easeInOutQuad",
                 duration: 350
             },
-            onopen: function() {
-                setPanelVisibility();
-                setPreviewButtonsVisibility();
-            },
-            onclose_start: function(paneName) {
-                if(paneName == 'north') {
-                    setPanelVisibility(true);
-                }
-                else if(paneName == 'east') {
-                    setPreviewButtonsVisibility(true);
-                }
-            },
             onresize_end: function(paneName) {
-                if(editor.$contentElt !== undefined && paneName == 'center') {
-                    var padding = ($editorElt.width() - getMaxWidth()) / 2;
-                    if(padding < constants.EDITOR_DEFAULT_PADDING) {
-                        padding = constants.EDITOR_DEFAULT_PADDING;
-                    }
-                    editor.$contentElt.css({
-                        'padding-left': padding + 'px',
-                        'padding-right': padding + 'px'
-                    });
-                    editor.$marginElt.css({
-                        'width': padding + 'px',
-                    });
-                }
                 eventMgr.onLayoutResize(paneName);
             },
         };
         eventMgr.onLayoutConfigure(layoutGlobalConfig);
         if(settings.layoutOrientation == "horizontal") {
-            $(".ui-layout-south").remove();
-            $(".preview-container").html('<div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>');
-            layout = $('body').layout($.extend(layoutGlobalConfig, {
-                east__resizable: true,
-                east__size: 0.5,
-                east__minSize: 300
-            }));
         }
         else if(settings.layoutOrientation == "vertical") {
-            $(".ui-layout-east").remove();
-            $(".preview-container").html('<div id="preview-contents"><div id="wmd-preview" class="preview-content"></div></div>');
-            layout = $('body').layout($.extend(layoutGlobalConfig, {
-                south__resizable: true,
-                south__size: 0.5,
-                south__minSize: 200
-            }));
-        }
-        $(".navbar").click(function() {
-            layout.allowOverflow('north');
-        });
-        $(".ui-layout-toggler-south").addClass("btn btn-info").html('<i class="icon-none"></i>');
-        $(".ui-layout-toggler-east").addClass("btn btn-info").html('<i class="icon-none"></i>');
-        var $northTogglerElt = $(".ui-layout-toggler-north").addClass("btn btn-info").html('<i class="icon-th"></i>');
-
-        // We attach the preview buttons to the UI layout resizer in order to
-        // have fixed position
-        // We also move the north toggler to the east or south resizer as the
-        // north resizer is very small
-        // var $previewButtonsContainerElt = $('<div
-        // class="preview-button-container">');
-        var $resizerDecorator = $('<div class="resizer-decorator">');
-        $previewButtonsElt = $('<div class="extension-preview-buttons">');
-        $editorButtonsElt = $('<div class="extension-editor-buttons">');
-        if(window.viewerMode || settings.layoutOrientation == "horizontal") {
-            $('.ui-layout-resizer-north').append($previewButtonsElt);
-            $('.ui-layout-resizer-east').append($resizerDecorator).append($northTogglerElt).append($editorButtonsElt);
-        }
-        else {
-            $('.ui-layout-resizer-south').append($resizerDecorator).append($previewButtonsElt).append($editorButtonsElt).append($northTogglerElt);
         }
 
-        setPanelVisibility();
-        setPreviewButtonsVisibility();
-
+        //setPanelVisibility();
+        //setPreviewButtonsVisibility();
+        layout.init();
         eventMgr.onLayoutCreated(layout);
     }
 
@@ -379,7 +277,6 @@ define([
                 $titleContainer.before($rightBtnElts);
             }
         }
-        layout.resizeAll();
     }
 
     // Create the PageDown editor
@@ -474,50 +371,6 @@ define([
             document.body.innerHTML = bodyIndexHTML;
         }
 
-        var styleContent = '';
-
-        // Apply font
-        function applyFont(size, screenWidth) {
-            screenWidth = screenWidth || 0;
-            //var codeFontSize = settings.editorFontSize;
-            //var codeLineHeight = Math.round(codeFontSize * 20 / 12);
-            var previewFontSize = size; // * 13 / 12;
-            styleContent += [
-                '@media (min-width: ' + screenWidth + 'px) {',
-                '#wmd-input, .textarea-helper {',
-                '   font-size: ' + size + 'px;',
-                //'   font-family: ' + settings.editorFontFamily + ';',
-                '}',
-                '#preview-contents {',
-                '   font-size: ' + previewFontSize + 'px;',
-                '}',
-                '}',
-            ].join('\n');
-        }
-        applyFont(16);
-        applyFont(17, 600);
-        applyFont(18, 1200);
-
-        function applyMaxWidth(maxWidth, screenWidth) {
-            styleContent += [
-                '@media (min-width: ' + screenWidth + 'px) {',
-                '#preview-contents {',
-                '   max-width: ' + (maxWidth + 30) + 'px;',
-                '}',
-                '}',
-            ].join('\n');
-        }
-        _.each(maxWidthMap, function(entry) {
-            applyMaxWidth(entry.maxWidth, entry.screenWidth);
-        });
-
-        // Apply dynamic stylesheet
-        var style = crel('style', {
-            type : 'text/css'
-        });
-        style.innerHTML = styleContent;
-        document.head.appendChild(style);
-
         $navbarElt = $('.navbar');
         $leftBtnElts = $navbarElt.find('.left-buttons');
         $rightBtnElts = $navbarElt.find('.right-buttons');
@@ -546,75 +399,6 @@ define([
         // Detect user activity
         $(document).mousemove(setUserActive).keypress(setUserActive);
 
-        // Avoid dropdown to close when clicking on submenu
-        $(".dropdown-submenu > a").click(function(e) {
-            e.stopPropagation();
-        });
-
-        $menuPanelElt = $('.menu-panel').collapse({
-            toggle: false
-        });
-        var menuPanelBackdropElt;
-        $menuPanelElt.on('show.bs.collapse', function(e) {
-            if(e.target === $menuPanelElt[0]) {
-                isMenuPanelShown = true;
-                menuPanelBackdropElt = utils.createBackdrop('collapse', '.menu-panel');
-                $menuPanelElt.addClass('move-to-front');
-                // To avoid opening delay
-                $.support.transition && setTimeout(function() {
-                    $menuPanelElt.trigger($.support.transition.end);
-                }, 50);
-            }
-            else {
-                // Close all open sub-menus when one submenu opens
-                $menuPanelElt.find('.in').collapse('hide');
-            }
-        }).on('hide.bs.collapse', function(e) {
-            if(e.target === $menuPanelElt[0]) {
-                isMenuPanelShown = false;
-                menuPanelBackdropElt.removeBackdrop();
-                $menuPanelElt.removeClass('move-to-front');
-                editor.focus();
-            }
-        }).on('hidden.bs.collapse', function(e) {
-            if(e.target === $menuPanelElt[0]) {
-                // Close all open sub-menus when menu panel is closed
-                $menuPanelElt.find('.in').collapse('hide');
-            }
-        });
-
-        $documentPanelElt = $('.document-panel').collapse({
-            toggle: false
-        });
-        var documentPanelBackdropElt;
-        $documentPanelElt.on('show.bs.collapse', function(e) {
-            if(e.target === $documentPanelElt[0]) {
-                isDocumentPanelShown = true;
-                documentPanelBackdropElt = utils.createBackdrop('collapse', '.document-panel');
-                $documentPanelElt.addClass('move-to-front');
-                // To avoid opening delay
-                $.support.transition && setTimeout(function() {
-                    $documentPanelElt.trigger($.support.transition.end);
-                }, 50);
-            }
-            else {
-                // Close all open sub-menus when one submenu opens
-                $documentPanelElt.find('.in').collapse('hide');
-            }
-        }).on('hide.bs.collapse', function(e) {
-            if(e.target === $documentPanelElt[0]) {
-                isDocumentPanelShown = false;
-                documentPanelBackdropElt.removeBackdrop();
-                $documentPanelElt.removeClass('move-to-front');
-                editor.focus();
-            }
-        }).on('hidden.bs.collapse', function(e) {
-            if(e.target === $documentPanelElt[0]) {
-                // Close all open sub-menus when menu panel is closed
-                $documentPanelElt.find('.in').collapse('hide');
-            }
-        });
-
         // Create UI layout
         createLayout();
 
@@ -642,18 +426,7 @@ define([
     // Other initialization that are not prioritary
     eventMgr.addListener("onReady", function() {
 
-        // In vertical mode, we have to offset the editor buttons otherwise they hide the editor buttons
-        if(!window.viewerMode && settings.layoutOrientation == "vertical") {
-            $previewButtonsElt.css('right', parseInt($previewButtonsElt.css('right')) + $editorButtonsElt.width());
-        }
-
-        var isModalShown = false;
-        $('.modal').on('show.bs.modal', function() {
-            // Close panel if open
-            $menuPanelElt.collapse('hide');
-            $documentPanelElt.collapse('hide');
-            isModalShown = true;
-        }).on('shown.bs.modal', function() {
+        $('.modal').on('shown.bs.modal', function() {
             var $elt = $(this);
             setTimeout(function() {
                 // When modal opens focus on the first button
@@ -665,7 +438,6 @@ define([
             }, 50);
         }).on('hidden.bs.modal', function() {
             // Focus on the editor when modal is gone
-            isModalShown = false;
             editor.focus();
             // Revert to current theme when settings modal is closed
             applyTheme(window.theme);
@@ -675,16 +447,6 @@ define([
                 $(this).find(".modal-footer a:last").click();
             }
         });
-
-        // Hide menu panel when clicking 'Save as' button
-        $('.collapse-save-as a').click(function() {
-            $menuPanelElt.collapse('hide');
-        });
-
-        // Configure Mousetrap
-        mousetrap.stopCallback = function(e, element) {
-            return isMenuPanelShown || isDocumentPanelShown || isModalShown || $(element).is("input, select, textarea:not(.ace_text-input)");
-        };
 
         // Click events on "insert link" and "insert image" dialog buttons
         $(".action-insert-link").click(function(e) {

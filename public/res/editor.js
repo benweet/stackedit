@@ -578,17 +578,10 @@ define([
         $inputElt = $(inputElt);
         previewElt = previewEltParam;
 
-        contentElt = crel('div', {
-            class: 'editor-content',
-            contenteditable: true
-        });
-        inputElt.appendChild(contentElt);
+        contentElt = inputElt.querySelector('.editor-content');
         $contentElt = $(contentElt);
         editor.$contentElt = $contentElt;
-        marginElt = crel('div', {
-            class: 'editor-margin'
-        });
-        inputElt.appendChild(marginElt);
+        marginElt = inputElt.querySelector('.editor-margin');
         $marginElt = $(marginElt);
         editor.$marginElt = $marginElt;
 

@@ -231,13 +231,12 @@ define([
     };
 
     // Create a backdrop and add to the body
-    utils.createBackdrop = function(toggle, target) {
+    utils.createBackdrop = function(parent) {
         var result = crel('div', {
             'class': 'modal-backdrop fade',
-            'data-toggle': toggle,
-            'data-target': target,
         });
-        document.body.appendChild(result);
+        parent = parent || document.body;
+        parent.appendChild(result);
         result.offsetWidth; // force reflow
         result.className = result.className + ' in';
         result.removeBackdrop = function() {

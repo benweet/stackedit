@@ -137,9 +137,15 @@
 @state-danger-border: fade(spin(@logo-orange, -4), 20%);
 
 
-body {
-	tab-size: 4;
+html, body {
 	overflow: hidden;
+}
+
+body {
+	.layout-panel();
+	bottom: 0;
+	right: 0;
+	tab-size: 4;
 }
 
 * {
@@ -789,8 +795,8 @@ a {
 .extension-preview-buttons {
     position: absolute;
 	z-index: 1;
+	right: 35px;
     margin-top: 6px;
-    right: 35px;
     .ui-layout-resizer-south-closed & {
     	display: none !important;
     }
@@ -1357,8 +1363,7 @@ a {
 }
 
 #preview-contents {
-	padding: 35px;
-	margin: 0 auto 200px;
+	margin: 0 0 200px;
 	text-align: justify;
 }
 

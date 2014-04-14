@@ -25,6 +25,10 @@ define([
     var documentPanelWidth = 320;
     var windowSize;
 
+    var wrapperL1, wrapperL2, wrapperL3;
+    var navbar, menuPanel, documentPanel, editor, previewPanel, previewContainer, navbarToggler, previewToggler, previewResizer;
+    var animate = false;
+
     function DomObject(selector) {
         this.selector = selector;
         this.elt = document.querySelector(selector);
@@ -33,12 +37,6 @@ define([
 
     var laterCssTimeoutId;
     var laterCssQueue = [];
-
-    var wrapperL1, wrapperL2, wrapperL3;
-    var navbar, menuPanel, documentPanel, editor, previewPanel, previewContainer, navbarToggler, previewToggler, previewResizer;
-
-    var animate = false;
-
     function applyCssLater() {
         if(laterCssQueue.length === 0) {
             wrapperL1.$elt.removeClass('layout-animate');
@@ -90,7 +88,7 @@ define([
         laterCssTimeoutId = setTimeout(applyCssLater, 350);
     };
 
-    DomObject.prototype.createToggler = function(backdrop) {
+    DomObject.prototype.createToggler = function(backdrop, onToggle) {
         var backdropElt;
         this.toggle = function(show) {
             if(show === this.isOpen) {
@@ -105,6 +103,7 @@ define([
                     }, this));
                     this.$elt.addClass('bring-to-front');
                 }
+                onToggle && onToggle(this.isOpen);
             }
             else {
                 backdropElt && backdropElt.removeBackdrop();
@@ -112,6 +111,7 @@ define([
                 laterCssQueue.push(_.bind(function() {
                     !this.isOpen && this.$elt.find('.in').collapse('hide');
                     this.$elt.toggleClass('panel-open', this.isOpen).toggleClass('bring-to-front', (!!backdrop && this.isOpen));
+                    onToggle && onToggle(this.isOpen);
                 }, this));
             }
             animate = true;
@@ -134,15 +134,25 @@ define([
     }
 
     var editorContentElt;
+    var previewContentElt;
     var editorMarginElt;
     function onResize() {
-        var padding = (editor.elt.offsetWidth - getMaxWidth()) / 2;
-        if(padding < constants.EDITOR_DEFAULT_PADDING) {
-            padding = constants.EDITOR_DEFAULT_PADDING;
+
+        var editorPadding = (editor.elt.offsetWidth - getMaxWidth()) / 2;
+        if(editorPadding < constants.EDITOR_DEFAULT_PADDING) {
+            editorPadding = constants.EDITOR_DEFAULT_PADDING;
         }
-        editorContentElt.style.paddingLeft = padding + 'px';
-        editorContentElt.style.paddingRight = padding + 'px';
-        editorMarginElt.style.width = padding + 'px',
+        editorContentElt.style.paddingLeft = editorPadding + 'px';
+        editorContentElt.style.paddingRight = editorPadding + 'px';
+        editorMarginElt.style.width = editorPadding + 'px';
+
+        var previewPadding = (previewContainer.elt.offsetWidth - getMaxWidth()) / 2;
+        if(previewPadding < constants.EDITOR_DEFAULT_PADDING) {
+            previewPadding = constants.EDITOR_DEFAULT_PADDING;
+        }
+        previewContentElt.style.paddingLeft = previewPadding + 'px';
+        previewContentElt.style.paddingRight = previewPadding + 'px';
+
 
         eventMgr.onLayoutResize();
     }
@@ -171,7 +181,7 @@ define([
         wrapperL3.height = wrapperL1.height - navbarHeight;
 
         if(isVertical) {
-            if(navbar.isOpen && wrapperL3.height < editorMinSize.height + (previewPanel.isOpen ? previewMinSize.height : 0)) {
+            if(navbar.isOpen && wrapperL3.height < editorMinSize.height + resizerSize) {
                 navbar.isOpen = false;
                 return resizeAll();
             }
@@ -183,7 +193,6 @@ define([
                     previewPanel.height = (wrapperL3.height + resizerSize) / 2;
                 }
                 if(previewPanel.height < previewMinSize.height) {
-                    previewPanel.halfSize = false;
                     previewPanel.height = previewMinSize.height;
                 }
                 previewPanel.y = wrapperL3.height - previewPanel.height;
@@ -191,12 +200,10 @@ define([
                     var previewPanelHeight = wrapperL3.height - editorMinSize.height;
                     if(previewPanelHeight < previewMinSize.height) {
                         previewPanel.isOpen = false;
+                        return resizeAll();
                     }
-                    else {
-                        previewPanel.halfSize = false;
-                        previewPanel.height = previewPanelHeight;
-                    }
-                    return resizeAll();
+                    previewPanel.height = previewPanelHeight;
+                    previewPanel.y = wrapperL3.height - previewPanel.height;
                 }
             }
             previewPanel.width = wrapperL3.width;
@@ -211,7 +218,7 @@ define([
             previewResizer.width = previewContainer.width;
         }
         else {
-            if(navbar.isOpen && wrapperL3.height < editorMinSize.height) {
+            if(navbar.isOpen && wrapperL3.height < editorMinSize.height + resizerSize) {
                 navbar.isOpen = false;
                 return resizeAll();
             }
@@ -223,7 +230,6 @@ define([
                     previewPanel.width = (wrapperL3.width + resizerSize) / 2;
                 }
                 if(previewPanel.width < previewMinSize.width) {
-                    previewPanel.halfSize = false;
                     previewPanel.width = previewMinSize.width;
                 }
                 previewPanel.x = wrapperL3.width - previewPanel.width;
@@ -231,12 +237,10 @@ define([
                     var previewPanelWidth = wrapperL3.width - editorMinSize.width;
                     if(previewPanelWidth < previewMinSize.width) {
                         previewPanel.isOpen = false;
+                        return resizeAll();
                     }
-                    else {
-                        previewPanel.halfSize = false;
-                        previewPanel.width = previewPanelWidth;
-                    }
-                    return resizeAll();
+                    previewPanel.width = previewPanelWidth;
+                    previewPanel.x = wrapperL3.width - previewPanel.width;
                 }
             }
             previewPanel.height = wrapperL3.height;
@@ -265,9 +269,6 @@ define([
         previewResizer.applyCss();
         navbarToggler.applyCss();
 
-
-
-
         onResize();
     }
     layout.resizeAll = resizeAll;
@@ -287,7 +288,9 @@ define([
         previewResizer = new DomObject('.layout-resizer-preview');
 
         editorContentElt = editor.elt.querySelector('.editor-content');
+        previewContentElt = document.getElementById('preview-contents');
         editorMarginElt = editor.elt.querySelector('.editor-margin');
+        var $previewButtonsElt = $('.extension-preview-buttons');
 
         wrapperL1.$elt.toggleClass('layout-vertical', isVertical);
 
@@ -296,7 +299,9 @@ define([
         navbarToggler.$elt.click(_.bind(navbar.toggle, navbar));
 
         previewPanel.isOpen = true;
-        previewPanel.createToggler();
+        previewPanel.createToggler(false, function(isOpen) {
+            $previewButtonsElt.toggleClass('hide', !isOpen);
+        });
         previewPanel.halfSize = true;
         previewToggler.$elt.click(_.bind(previewPanel.toggle, previewPanel));
 
@@ -379,11 +384,7 @@ define([
             return menuPanel.isOpen || documentPanel.isOpen || isModalShown || $(element).is("input, select, textarea:not(.ace_text-input)");
         };
 
-
         $(window).resize(resizeAll);
-        $(document.body).on('touchmove', function(evt) {
-            evt.preventDefault();
-        });
 
         var styleContent = '';
 
@@ -408,19 +409,6 @@ define([
         applyFont(16);
         applyFont(17, 600);
         applyFont(18, 1200);
-
-        function applyMaxWidth(maxWidth, screenWidth) {
-            styleContent += [
-                '@media (min-width: ' + screenWidth + 'px) {',
-                '#preview-contents {',
-                '   max-width: ' + (maxWidth + 30) + 'px;',
-                '}',
-                '}',
-            ].join('\n');
-        }
-        _.each(maxWidthMap, function(entry) {
-            applyMaxWidth(entry.maxWidth, entry.screenWidth);
-        });
 
         // Apply dynamic stylesheet
         var style = crel('style', {

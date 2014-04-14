@@ -11,14 +11,13 @@ define([
     "settings",
     "eventMgr",
     "shortcutMgr",
-    "mousetrap",
     "text!html/bodyIndex.html",
     "text!html/bodyViewer.html",
     "text!html/settingsTemplateTooltip.html",
     "text!html/settingsUserCustomExtensionTooltip.html",
     "storage",
     'pagedown',
-], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
+], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, shortcutMgr, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
 

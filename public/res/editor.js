@@ -258,7 +258,7 @@ define([
                 }
                 var selectionRange = this.createRange(startOffset, endOffset);
                 var selectionRect = selectionRange.getBoundingClientRect();
-                y = selectionRect.top + selectionRect.height / 2 - inputElt.offsetTop + inputElt.scrollTop;
+                y = selectionRect.top + selectionRect.height / 2 - inputElt.getBoundingClientRect().top + inputElt.scrollTop;
                 selectionRange.detach();
             }
             return {

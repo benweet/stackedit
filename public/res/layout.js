@@ -3,17 +3,24 @@ define([
     'underscore',
     'utils',
     'constants',
+    'settings',
     'eventMgr',
     'crel',
     'mousetrap',
-], function($, _, utils, constants, eventMgr, crel, mousetrap) {
+], function($, _, utils, constants, settings, eventMgr, crel, mousetrap) {
     var layout = {};
 
     var resizerSize = 32;
     var togglerSize = 60;
     var navbarHeight = 50;
-    var editorMaxWidth = 250;
-    var previewMaxWidth = 330;
+    var editorMinSize = {
+        width: 250,
+        height: 180
+    };
+    var previewMinSize = {
+        width: 330,
+        height: 200
+    };
     var menuPanelWidth = 280;
     var documentPanelWidth = 320;
     var windowSize;
@@ -27,13 +34,14 @@ define([
     var laterCssTimeoutId;
     var laterCssQueue = [];
 
-    var outerWrapper, innerWrapper, navbar, menuPanel, documentPanel, editor, previewPanel, previewContainer, navbarToggler, previewToggler, previewResizer;
+    var wrapperL1, wrapperL2, wrapperL3;
+    var navbar, menuPanel, documentPanel, editor, previewPanel, previewContainer, navbarToggler, previewToggler, previewResizer;
 
     var animate = false;
 
     function applyCssLater() {
         if(laterCssQueue.length === 0) {
-            outerWrapper.$elt.removeClass('layout-animate');
+            wrapperL1.$elt.removeClass('layout-animate');
             animate = false;
             return onResize();
         }
@@ -92,7 +100,7 @@ define([
             if(this.isOpen) {
                 this.$elt.addClass('panel-open');
                 if(backdrop) {
-                    $(backdropElt = utils.createBackdrop(outerWrapper.elt)).click(_.bind(function() {
+                    $(backdropElt = utils.createBackdrop(wrapperL1.elt)).click(_.bind(function() {
                         this.toggle(false);
                     }, this));
                     this.$elt.addClass('bring-to-front');
@@ -107,7 +115,7 @@ define([
                 }, this));
             }
             animate = true;
-            outerWrapper.$elt.addClass('layout-animate');
+            wrapperL1.$elt.addClass('layout-animate');
             resizeAll();
         };
     };
@@ -125,6 +133,8 @@ define([
         }).maxWidth;
     }
 
+    var editorContentElt;
+    var editorMarginElt;
     function onResize() {
         var padding = (editor.elt.offsetWidth - getMaxWidth()) / 2;
         if(padding < constants.EDITOR_DEFAULT_PADDING) {
@@ -137,89 +147,135 @@ define([
         eventMgr.onLayoutResize();
     }
 
-    var editorContentElt;
-    var editorMarginElt;
+    var isVertical = settings.layoutOrientation == "vertical";
     function resizeAll() {
         windowSize = {
             width: window.innerWidth,
             height: window.innerHeight
         };
 
-        // Layout outer wrapper
-        outerWrapper.y = navbar.isOpen ? 0 : -navbarHeight;
-        outerWrapper.x = menuPanel.isOpen ? 0 : documentPanel.isOpen ? -(menuPanelWidth + documentPanelWidth) : -menuPanelWidth;
-        outerWrapper.width = windowSize.width + menuPanelWidth + documentPanelWidth;
-        outerWrapper.height = windowSize.height - outerWrapper.y;
-        outerWrapper.applyCss();
+        // Layout wrapper level 1
+        wrapperL1.y = navbar.isOpen ? 0 : -navbarHeight;
+        wrapperL1.x = menuPanel.isOpen ? 0 : documentPanel.isOpen ? -(menuPanelWidth + documentPanelWidth) : -menuPanelWidth;
+        wrapperL1.width = windowSize.width + menuPanelWidth + documentPanelWidth;
+        wrapperL1.height = windowSize.height - wrapperL1.y;
 
-        // Layout inner wrapper
-        innerWrapper.left = menuPanelWidth;
-        innerWrapper.width = windowSize.width;
-        innerWrapper.height = outerWrapper.height;
-        innerWrapper.applyCss();
+        // Layout wrapper level 2
+        wrapperL2.left = menuPanelWidth;
+        wrapperL2.width = windowSize.width;
+        wrapperL2.height = wrapperL1.height;
 
-        // Preview panel
-        if(!previewPanel.isOpen) {
-            previewPanel.x = innerWrapper.width - resizerSize;
-        }
-        else {
-            if(previewPanel.halfSize) {
-                previewPanel.width = (windowSize.width + resizerSize) / 2;
+        // Layout wrapper level 3
+        wrapperL3.top = navbarHeight;
+        wrapperL3.width = windowSize.width;
+        wrapperL3.height = wrapperL1.height - navbarHeight;
+
+        if(isVertical) {
+            if(navbar.isOpen && wrapperL3.height < editorMinSize.height + (previewPanel.isOpen ? previewMinSize.height : 0)) {
+                navbar.isOpen = false;
+                return resizeAll();
             }
-            if(previewPanel.width < previewMaxWidth) {
-                previewPanel.halfSize = false;
-                previewPanel.width = previewMaxWidth;
+            if(!previewPanel.isOpen) {
+                previewPanel.y = wrapperL3.height - resizerSize;
             }
-            previewPanel.x = innerWrapper.width - previewPanel.width;
-            if(previewPanel.x < editorMaxWidth) {
-                previewPanel.halfSize = false;
-                previewPanel.x = editorMaxWidth;
-                previewPanel.width = innerWrapper.width - previewPanel.x;
-                if(previewPanel.width < previewMaxWidth) {
-                    previewPanel.isOpen = false;
-                    previewPanel.width = previewMaxWidth;
-                    previewPanel.x = innerWrapper.width - resizerSize;
+            else {
+                if(previewPanel.halfSize) {
+                    previewPanel.height = (wrapperL3.height + resizerSize) / 2;
+                }
+                if(previewPanel.height < previewMinSize.height) {
+                    previewPanel.halfSize = false;
+                    previewPanel.height = previewMinSize.height;
+                }
+                previewPanel.y = wrapperL3.height - previewPanel.height;
+                if(previewPanel.y < editorMinSize.height) {
+                    var previewPanelHeight = wrapperL3.height - editorMinSize.height;
+                    if(previewPanelHeight < previewMinSize.height) {
+                        previewPanel.isOpen = false;
+                    }
+                    else {
+                        previewPanel.halfSize = false;
+                        previewPanel.height = previewPanelHeight;
+                    }
+                    return resizeAll();
                 }
             }
+            previewPanel.width = wrapperL3.width;
+            editor.height = previewPanel.y;
+            editor.width = wrapperL3.width;
+            previewContainer.top = resizerSize;
+            previewContainer.height = previewPanel.height - resizerSize;
+            previewContainer.width = previewPanel.width;
+            navbarToggler.width = togglerSize;
+            previewToggler.width = togglerSize;
+            previewToggler.x = (previewPanel.width - togglerSize) / 2;
+            previewResizer.width = previewContainer.width;
+        }
+        else {
+            if(navbar.isOpen && wrapperL3.height < editorMinSize.height) {
+                navbar.isOpen = false;
+                return resizeAll();
+            }
+            if(!previewPanel.isOpen) {
+                previewPanel.x = wrapperL3.width - resizerSize;
+            }
+            else {
+                if(previewPanel.halfSize) {
+                    previewPanel.width = (wrapperL3.width + resizerSize) / 2;
+                }
+                if(previewPanel.width < previewMinSize.width) {
+                    previewPanel.halfSize = false;
+                    previewPanel.width = previewMinSize.width;
+                }
+                previewPanel.x = wrapperL3.width - previewPanel.width;
+                if(previewPanel.x < editorMinSize.width) {
+                    var previewPanelWidth = wrapperL3.width - editorMinSize.width;
+                    if(previewPanelWidth < previewMinSize.width) {
+                        previewPanel.isOpen = false;
+                    }
+                    else {
+                        previewPanel.halfSize = false;
+                        previewPanel.width = previewPanelWidth;
+                    }
+                    return resizeAll();
+                }
+            }
+            previewPanel.height = wrapperL3.height;
+            editor.width = previewPanel.x;
+            editor.height = wrapperL3.height;
+            previewContainer.left = resizerSize;
+            previewContainer.width = previewPanel.width - resizerSize;
+            previewContainer.height = previewPanel.height;
+            navbarToggler.height = togglerSize;
+            previewToggler.height = togglerSize;
+            previewToggler.y = (previewPanel.height - togglerSize) / 2;
+            previewResizer.height = previewContainer.height;
         }
 
-        previewPanel.top = navbarHeight;
-        previewPanel.height = innerWrapper.height - previewPanel.top;
-        previewPanel.applyCss();
-
-        // Editor
-        editor.top = navbarHeight;
-        editor.width = previewPanel.x;
-        editor.height = innerWrapper.height - editor.top;
-        editor.applyCss();
-
-        // Preview container
-        previewContainer.left = resizerSize;
-        previewContainer.width = previewPanel.width - resizerSize;
-        previewContainer.height = previewPanel.height;
-        previewContainer.applyCss();
-
-        // Navbar toggler
-        navbarToggler.applyCss();
         navbarToggler.$elt.toggleClass('open', navbar.isOpen);
-
-        // Preview toggler
-        previewToggler.y = (previewPanel.height - togglerSize) / 2;
-        previewToggler.applyCss();
         previewToggler.$elt.toggleClass('open', previewPanel.isOpen);
-
-        // Preview resizer
-        previewResizer.height = previewContainer.height;
-        previewResizer.applyCss();
         previewResizer.$elt.toggleClass('open', previewPanel.isOpen);
+
+        wrapperL1.applyCss();
+        wrapperL2.applyCss();
+        wrapperL3.applyCss();
+        editor.applyCss();
+        previewPanel.applyCss();
+        previewContainer.applyCss();
+        previewToggler.applyCss();
+        previewResizer.applyCss();
+        navbarToggler.applyCss();
+
+
+
 
         onResize();
     }
     layout.resizeAll = resizeAll;
 
     layout.init = function() {
-        outerWrapper = new DomObject('.layout-outer-wrapper');
-        innerWrapper = new DomObject('.layout-inner-wrapper');
+        wrapperL1 = new DomObject('.layout-wrapper-l1');
+        wrapperL2 = new DomObject('.layout-wrapper-l2');
+        wrapperL3 = new DomObject('.layout-wrapper-l3');
         navbar = new DomObject('.navbar');
         menuPanel = new DomObject('.menu-panel');
         documentPanel = new DomObject('.document-panel');
@@ -232,6 +288,8 @@ define([
 
         editorContentElt = editor.elt.querySelector('.editor-content');
         editorMarginElt = editor.elt.querySelector('.editor-margin');
+
+        wrapperL1.$elt.toggleClass('layout-vertical', isVertical);
 
         navbar.isOpen = true;
         navbar.createToggler();
@@ -263,9 +321,9 @@ define([
         });
 
         var isDragging = false;
-        var desiredWidth;
+        var desiredWidth, desiredHeight;
         var lastCoord;
-        outerWrapper.$elt.on('mousemove', function(evt) {
+        wrapperL1.$elt.on('mousemove', function(evt) {
             if(!isDragging) {
                 return;
             }
@@ -277,7 +335,13 @@ define([
                     x: evt.pageX,
                     y: evt.pageY,
                 };
-                if(lastCoord.x !== newCoord.x) {
+                if(isVertical && lastCoord.y !== newCoord.y) {
+                    desiredHeight += lastCoord.y - newCoord.y;
+                    previewPanel.height = desiredHeight;
+                    previewPanel.halfSize = false;
+                    resizeAll();
+                }
+                if(!isVertical && lastCoord.x !== newCoord.x) {
                     desiredWidth += lastCoord.x - newCoord.x;
                     previewPanel.width = desiredWidth;
                     previewPanel.halfSize = false;
@@ -292,6 +356,7 @@ define([
             if(evt.which === 1) {
                 isDragging = true;
                 desiredWidth = previewPanel.width;
+                desiredHeight = previewPanel.height;
                 lastCoord = {
                     x: evt.pageX,
                     y: evt.pageY,

@@ -958,17 +958,15 @@ a {
  * Layout
  *********************************/
 
-.layout-outer-wrapper {
+.layout-wrapper-l1,
+.layout-wrapper-l2,
+.layout-wrapper-l3 {
 	.layout-panel();
 	overflow: hidden;
-	&.layout-animate {
-		.transition(350ms ease-in-out all);
-	}
 }
 
-.layout-inner-wrapper {
-	.layout-panel();
-	overflow: hidden;
+.layout-animate {
+	.transition(350ms ease-in-out all);
 }
 
 .layout-resizer {
@@ -977,6 +975,9 @@ a {
 	height: @resizer-size;
 	&.open {
 		cursor: e-resize;
+		.layout-vertical & {
+			cursor: s-resize;
+		}
 	}
 }
 
@@ -985,20 +986,29 @@ a {
 	padding: 0;
 	margin: 0;
 	width: @resizer-size;
-	height: 60px;
+	height: @resizer-size;
 	i {
 		font-size: 22px;
 	}
 	&.layout-toggler-preview {
-		line-height: 55px;
 		.layout-animate & {
 			.transition(350ms ease-in-out all);
 		}
+		line-height: 55px;
 		i:before {
 			content: '\e87d';
 		}
 		&.open > i:before {
 			content: '\e87e';
+		}
+		.layout-vertical & {
+			line-height: 1.45;
+			i:before {
+				content: '\e87f';
+			}
+			&.open > i:before {
+				content: '\e880';
+			}
 		}
 	}
 	&.layout-toggler-navbar {
@@ -1338,7 +1348,7 @@ a {
 .preview-panel {
 	.layout-panel();
 	overflow: hidden;
-	border-left: 1px solid fade(@secondary, 6%);
+	.box-shadow(inset 1px 0 fade(@secondary, 6%));
 	background-color: @secondary-bg-light;
 	z-index: 10;
 	.layout-animate & {

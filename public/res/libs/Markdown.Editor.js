@@ -1252,6 +1252,7 @@
             keyEvent = "keypress";
         }
 
+        /*
         util.addEvent(inputBox, keyEvent, function (key) {
 
             // Check to see if we have a button key and, if so execute the callback.
@@ -1322,6 +1323,7 @@
                 }
             }
         });
+        */
 
         // Auto-indent on shift-enter
         util.addEvent(inputBox, "keyup", function (key) {
@@ -1559,7 +1561,7 @@
 
         this.setUndoRedoButtonStates = setUndoRedoButtonStates;
         this.buttons = buttons;
-        this.setButtonState = setupButton;
+        this.doClick = doClick;
 
     }
 

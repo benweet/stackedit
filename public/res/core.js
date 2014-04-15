@@ -111,6 +111,8 @@ define([
         $themeInputElt.change();
         // Lazy rendering
         utils.setInputChecked("#input-settings-lazy-rendering", settings.lazyRendering);
+        // Editor font class
+        utils.setInputRadio("radio-settings-editor-font-class", settings.editorFontClass);
         // Editor font family
         utils.setInputValue("#input-settings-editor-font-family", settings.editorFontFamily);
         // Editor font size
@@ -157,6 +159,8 @@ define([
         var theme = utils.getInputValue($themeInputElt);
         // Lazy Rendering
         newSettings.lazyRendering = utils.getInputChecked("#input-settings-lazy-rendering");
+        // Editor font class
+        newSettings.editorFontClass = utils.getInputRadio("radio-settings-editor-font-class");
         // Editor font family
         newSettings.editorFontFamily = utils.getInputTextValue("#input-settings-editor-font-family", event);
         // Editor font size
@@ -280,7 +284,6 @@ define([
 
     // Create the PageDown editor
     var pagedownEditor;
-    var $editorElt;
     var fileDesc;
     core.initEditor = function(fileDescParam) {
         if(fileDesc !== undefined) {
@@ -401,10 +404,7 @@ define([
         // Create UI layout
         createLayout();
 
-        // Editor
-        $editorElt = $('#wmd-input');
-
-        editor.init(document.querySelector('#wmd-input'), document.querySelector('.preview-container'));
+        editor.init();
 
         // Do periodic tasks
         intervalId = window.setInterval(function() {

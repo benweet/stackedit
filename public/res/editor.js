@@ -39,8 +39,8 @@ define([
             setTimeout(refreshPreview, elapsedTime < 2000 ? elapsedTime : 2000);
         };
     })();
-    eventMgr.addListener('onPagedownConfigure', function(editor) {
-        pagedownEditor = editor;
+    eventMgr.addListener('onPagedownConfigure', function(pagedownEditorParam) {
+        pagedownEditor = pagedownEditorParam;
     });
 
     eventMgr.addListener('onSectionsCreated', function(newSectionList) {
@@ -573,17 +573,16 @@ define([
     }
     editor.adjustCommentOffsets = adjustCommentOffsets;
 
-    editor.init = function(inputEltParam, previewEltParam) {
-        inputElt = inputEltParam;
+    editor.init = function() {
+        inputElt = document.getElementById('wmd-input');
         $inputElt = $(inputElt);
-        previewElt = previewEltParam;
-
         contentElt = inputElt.querySelector('.editor-content');
         $contentElt = $(contentElt);
-        editor.$contentElt = $contentElt;
         marginElt = inputElt.querySelector('.editor-margin');
         $marginElt = $(marginElt);
-        editor.$marginElt = $marginElt;
+        previewElt = document.querySelector('.preview-container');
+
+        $inputElt.addClass(settings.editorFontClass);
 
         watcher.startWatching();
 

@@ -36,7 +36,6 @@ requirejs.config({
         'jquery-ui-draggable': 'bower-libs/jquery-ui/ui/jquery.ui.draggable',
         'jquery-ui-effect': 'bower-libs/jquery-ui/ui/jquery.ui.effect',
         'jquery-ui-effect-slide': 'bower-libs/jquery-ui/ui/jquery.ui.effect-slide',
-        uilayout: 'libs/layout',
         FileSaver: 'bower-libs/FileSaver/FileSaver',
         stacktrace: 'bower-libs/stacktrace/stacktrace',
         'requirejs-text': 'bower-libs/requirejs-text/text',

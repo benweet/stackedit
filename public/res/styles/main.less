@@ -1165,6 +1165,12 @@ a {
 		}
     }
 
+	&.font-monospaced * {
+		font-family: @font-family-monospace !important;
+		line-height: @editor-line-weight !important;
+		font-size: 1em !important;
+	}
+
 	.comment-highlight {
 		background-color: fade(@label-warning-bg, 30%);
 	}
@@ -1283,10 +1289,6 @@ a {
         .li {
             padding-left: 0;
         }
-    }
-
-    .md-li, .md-li2, .md-li3, .md-li4, .md-li5, .md-li6, .md-li7, .md-li8, .md-li9, .md-li10, .md-li11 {
-        //white-space: pre-line;
     }
 
     .md-li {

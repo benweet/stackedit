@@ -8,6 +8,7 @@ define([
         layoutOrientation: "horizontal",
         mode: 'ltr',
         lazyRendering: true,
+        editorFontClass: 'font-rich',
         editorFontFamily: 'Menlo, Consolas, "Courier New", Courier, monospace',
         editorFontSize: 13,
         maxWidth: 960,

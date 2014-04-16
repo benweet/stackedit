@@ -27,7 +27,16 @@ define([
 
     var wrapperL1, wrapperL2, wrapperL3;
     var navbar, menuPanel, documentPanel, editor, previewPanel, previewContainer, navbarToggler, previewToggler, previewResizer;
+
     var animate = false;
+    function startAnimation() {
+        animate = true;
+        wrapperL1.$elt.addClass('layout-animate');
+    }
+    function endAnimation() {
+        animate = false;
+        wrapperL1.$elt.removeClass('layout-animate');
+    }
 
     function DomObject(selector) {
         this.selector = selector;
@@ -37,16 +46,6 @@ define([
 
     var laterCssTimeoutId;
     var laterCssQueue = [];
-    function applyCssLater() {
-        if(laterCssQueue.length === 0) {
-            wrapperL1.$elt.removeClass('layout-animate');
-            animate = false;
-            return onResize();
-        }
-        laterCssQueue.shift()();
-        applyCssLater();
-    }
-
     DomObject.prototype.applyCss = function() {
 
         // Top/left
@@ -62,7 +61,7 @@ define([
             this.elt.style.transform = 'translate(' + this.x + 'px, ' + this.y + 'px)';
         }
 
-        // Width (defer if new width is smaller)
+        // Width (deferred when animate if new width is smaller)
         if(animate && this.width < this.oldWidth) {
             laterCssQueue.push(_.bind(function() {
                 this.elt.style.width = this.width + 'px';
@@ -73,7 +72,7 @@ define([
         }
         this.oldWidth = this.width;
 
-        // Height (defer if new height is smaller)
+        // Height (deferred when animate if new height is smaller)
         if(animate && this.height < this.oldHeight) {
             laterCssQueue.push(_.bind(function() {
                 this.elt.style.height = this.height + 'px';
@@ -85,7 +84,14 @@ define([
         this.oldHeight = this.height;
 
         clearTimeout(laterCssTimeoutId);
-        laterCssTimeoutId = setTimeout(applyCssLater, 350);
+        laterCssTimeoutId = setTimeout(function() {
+            laterCssQueue.forEach(function(callback) {
+                callback();
+            });
+            endAnimation();
+            laterCssQueue.length !== 0 && onResize();
+            laterCssQueue = [];
+        }, 350);
     };
 
     DomObject.prototype.createToggler = function(backdrop, onToggle) {
@@ -114,8 +120,7 @@ define([
                     onToggle && onToggle(this.isOpen);
                 }, this));
             }
-            animate = true;
-            wrapperL1.$elt.addClass('layout-animate');
+            startAnimation();
             resizeAll();
         };
     };

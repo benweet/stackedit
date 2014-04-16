@@ -203,9 +203,9 @@ define([
     addEventHook("onPublishRemoved");
 
     // Operations on Layout
-    addEventHook("onLayoutConfigure");
     addEventHook("onLayoutCreated");
     addEventHook("onLayoutResize");
+    addEventHook("onPreviewToggle");
 
     // Operations on editor
     addEventHook("onPagedownConfigure");

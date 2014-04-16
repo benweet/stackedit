@@ -458,7 +458,14 @@ define([
                     $commentElt = $(sortedCommentEltList[(curentIndex + 1) % sortedCommentEltList.length]);
                 }
             }
-            $commentElt.click();
+            if(currentContext && currentContext.commentElt === $commentElt[0]) {
+                // Close the popover properly
+                closeCurrentPopover();
+                inputElt.focus();
+            }
+            else {
+                $commentElt.click();
+            }
             evt.stopPropagation();
         });
         $openDiscussionIconElt = $openDiscussionElt.find('i');

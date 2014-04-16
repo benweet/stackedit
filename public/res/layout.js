@@ -109,15 +109,17 @@ define([
                     }, this));
                     this.$elt.addClass('bring-to-front');
                 }
-                onToggle && onToggle(this.isOpen);
+                laterCssQueue.push(_.bind(function() {
+                    onToggle && onToggle(this.isOpen);
+                }, this));
             }
             else {
+                onToggle && onToggle(false);
                 backdropElt && backdropElt.removeBackdrop();
                 backdropElt = undefined;
                 laterCssQueue.push(_.bind(function() {
                     !this.isOpen && this.$elt.find('.in').collapse('hide');
                     this.$elt.toggleClass('panel-open', this.isOpen).toggleClass('bring-to-front', (!!backdrop && this.isOpen));
-                    onToggle && onToggle(this.isOpen);
                 }, this));
             }
             startAnimation();
@@ -185,11 +187,12 @@ define([
         wrapperL3.width = windowSize.width;
         wrapperL3.height = wrapperL1.height - navbarHeight;
 
+        if(navbar.isOpen && wrapperL3.height < editorMinSize.height + resizerSize) {
+            navbar.isOpen = false;
+            return resizeAll();
+        }
+
         if(isVertical) {
-            if(navbar.isOpen && wrapperL3.height < editorMinSize.height + resizerSize) {
-                navbar.isOpen = false;
-                return resizeAll();
-            }
             if(!previewPanel.isOpen) {
                 previewPanel.y = wrapperL3.height - resizerSize;
             }
@@ -223,10 +226,6 @@ define([
             previewResizer.width = previewContainer.width;
         }
         else {
-            if(navbar.isOpen && wrapperL3.height < editorMinSize.height + resizerSize) {
-                navbar.isOpen = false;
-                return resizeAll();
-            }
             if(!previewPanel.isOpen) {
                 previewPanel.x = wrapperL3.width - resizerSize;
             }
@@ -306,6 +305,7 @@ define([
         previewPanel.isOpen = true;
         previewPanel.createToggler(false, function(isOpen) {
             $previewButtonsElt.toggleClass('hide', !isOpen);
+            eventMgr.onPreviewToggle(isOpen);
         });
         previewPanel.halfSize = true;
         previewToggler.$elt.click(_.bind(previewPanel.toggle, previewPanel));
@@ -317,8 +317,6 @@ define([
         documentPanel.isOpen = false;
         documentPanel.createToggler(true);
         documentPanel.$elt.find('.toggle-button').click(_.bind(documentPanel.toggle, documentPanel));
-
-
 
         // Hide menu panel when clicking 'Save as' button
         $('.collapse-save-as a').click(function() {
@@ -385,8 +383,8 @@ define([
         });
 
         // Configure Mousetrap
-        mousetrap.stopCallback = function(e, element) {
-            return menuPanel.isOpen || documentPanel.isOpen || isModalShown || $(element).is("input, select, textarea:not(.ace_text-input)");
+        mousetrap.stopCallback = function() {
+            return menuPanel.isOpen || documentPanel.isOpen || isModalShown;
         };
 
         $(window).resize(resizeAll);
@@ -427,5 +425,6 @@ define([
         resizeAll();
     };
 
+    eventMgr.onLayoutCreated(layout);
     return layout;
 });

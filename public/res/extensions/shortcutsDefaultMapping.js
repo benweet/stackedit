@@ -1,17 +1,32 @@
 {
-    'mod+r': function() {
-        clickPagedownButton('hr');
+    'mod+b': bindPagedownButton('bold'),
+    'mod+i': bindPagedownButton('italic'),
+    'mod+l': bindPagedownButton('link'),
+    'mod+q': bindPagedownButton('quote'),
+    'mod+k': bindPagedownButton('code'),
+    'mod+g': bindPagedownButton('image'),
+    'mod+o': bindPagedownButton('olist'),
+    'mod+u': bindPagedownButton('ulist'),
+    'mod+h': bindPagedownButton('heading'),
+    'mod+r': bindPagedownButton('hr'),
+    'mod+z': bindPagedownButton('undo'),
+    'mod+y': bindPagedownButton('redo'),
+    'mod+shift+z': bindPagedownButton('redo'),
+    'mod+d': function(evt) {
+        $('.button-open-discussion').click();
+        evt.preventDefault();
     },
-    'mod+z': function() {
-        require('editor').undoMgr.undo();
+    '= = > space': function() {
+        setTimeout(function() {
+            require('editor').replacePreviousText('==> ', '⇒ ');
+        }, 0);
     },
-    'mod+y': function() {
-        require('editor').undoMgr.redo();
-    },
-    'mod+shift+z': function() {
-        require('editor').undoMgr.redo();
+    '< = = space': function() {
+        setTimeout(function() {
+            require('editor').replacePreviousText('<== ', '⇐ ');
+        }, 0);
     },
     'S t a c k E d i t': function() {
-        eventMgr.onMessage('StackEdit is so good!!!');
+        eventMgr.onMessage("You are stunned!!! Aren't you?");
     }
 }

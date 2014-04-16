@@ -17,6 +17,11 @@ define([
         sectionList = sectionListParam;
     };
 
+    var isPreviewVisible = true;
+    scrollLink.onPreviewToggle = function(isOpen) {
+        isPreviewVisible = isOpen;
+    };
+
     var $editorElt;
     var $previewElt;
     var mdSectionList = [];
@@ -196,21 +201,6 @@ define([
         buildSections();
     };
 
-    var isPreviewVisible = true;
-    function setPreviewHidden() {
-        isPreviewVisible = false;
-    }
-    function setPreviewVisible() {
-        isPreviewVisible = true;
-    }
-
-    scrollLink.onLayoutConfigure = function(layoutGlobalConfig) {
-        layoutGlobalConfig.east__onclose = setPreviewHidden;
-        layoutGlobalConfig.south__onclose = setPreviewHidden;
-        layoutGlobalConfig.east__onopen_start = setPreviewVisible;
-        layoutGlobalConfig.south__onclose_start = setPreviewVisible;
-    };
-
     scrollLink.onFileClosed = function() {
         mdSectionList = [];
     };
@@ -228,22 +218,20 @@ define([
             }
             scrollAdjust = false;
         });
-        var handleEditorScroll = function() {
+        $editorElt.scroll(function() {
             if(isEditorMoving === false) {
                 isScrollEditor = true;
                 isScrollPreview = false;
                 doScrollLink();
             }
-        };
-        $editorElt.scroll(handleEditorScroll);
+        });
     };
 
     var $previewContentsElt;
     scrollLink.onPagedownConfigure = function(editor) {
         $previewContentsElt = $("#preview-contents");
         editor.getConverter().hooks.chain("postConversion", function(text) {
-            // To avoid losing scrolling position before elements are fully
-            // loaded
+            // To avoid losing scrolling position before elements are fully loaded
             $previewContentsElt.height($previewContentsElt.height());
             return text;
         });

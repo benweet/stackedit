@@ -113,8 +113,9 @@ define([
         this.cursorY = 0;
         this.findOffset = function(offset) {
             var walker = document.createTreeWalker(contentElt, 4);
+            var text = '';
             while(walker.nextNode()) {
-                var text = walker.currentNode.nodeValue || '';
+                text = walker.currentNode.nodeValue || '';
                 if (text.length > offset) {
                     return {
                         container: walker.currentNode,
@@ -124,11 +125,13 @@ define([
                 offset -= text.length;
             }
             return {
-                container: contentElt,
-                offset: 0
+                container: walker.currentNode,
+                offset: text.length
             };
         };
         this.createRange = function(start, end) {
+            start = start < 0 ? 0 : start;
+            end = end < 0 ? 0 : end;
             var range = document.createRange();
             var offset = _.isObject(start) ? start : this.findOffset(start);
             range.setStart(offset.container, offset.offset);
@@ -185,10 +188,10 @@ define([
                     var range;
                     var selection = rangy.getSelection();
                     if(selection.rangeCount > 0) {
-                        range = selection.getRangeAt(0);
-                        var element = range.startContainer;
-
+                        var selectionRange = selection.getRangeAt(0);
+                        var element = selectionRange.startContainer;
                         if ((contentElt.compareDocumentPosition(element) & 0x10)) {
+                            range = selectionRange;
                             var container = element;
                             var offset = range.startOffset;
                             do {
@@ -288,7 +291,7 @@ define([
     }
     var selectionMgr = new SelectionMgr();
     editor.selectionMgr = selectionMgr;
-    $(document).on('selectionchange', _.bind(selectionMgr.saveSelectionState, selectionMgr, true));
+    $(document).on('selectionchange', '.editor-content', _.bind(selectionMgr.saveSelectionState, selectionMgr, true));
 
     var adjustCursorPosition = (function() {
         var adjust = utils.debounce(function() {
@@ -332,6 +335,23 @@ define([
         range.insertNode(document.createTextNode(replacement));
     }
     editor.setValue = setValue;
+
+    function replacePreviousText(text, replacement) {
+        var offset = selectionMgr.selectionStart;
+        if(offset !== selectionMgr.selectionEnd) {
+            return false;
+        }
+        var range = selectionMgr.createRange(offset - text.length, offset);
+        if('' + range != text) {
+            return false;
+        }
+        range.deleteContents();
+        range.insertNode(document.createTextNode(replacement));
+        offset = offset - text.length + replacement.length;
+        selectionMgr.setSelectionStartEnd(offset, offset);
+        return true;
+    }
+    editor.replacePreviousText = replacePreviousText;
 
     function setValueNoWatch(value) {
         setValue(value);

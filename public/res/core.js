@@ -207,52 +207,6 @@ define([
         }
     }
 
-    // Create the layout
-    function createLayout() {
-        var layoutGlobalConfig = {
-            closable: true,
-            resizable: false,
-            slidable: false,
-            livePaneResizing: true,
-            enableCursorHotkey: false,
-            resizerDblClickToggle: false,
-            resizeWithWindow: false,
-            north__spacing_open: 1,
-            north__spacing_closed: 1,
-            spacing_open: 32,
-            spacing_closed: 32,
-            togglerLength_open: 60,
-            togglerLength_closed: 60,
-            stateManagement__enabled: false,
-            north__minSize: 49,
-            center__minWidth: 250,
-            center__minHeight: 180,
-            east__onalert: function() {
-                window.location.href = 'viewer';
-            },
-            south__onalert: function() {
-                window.location.href = 'viewer';
-            },
-            fxSettings: {
-                easing: "easeInOutQuad",
-                duration: 350
-            },
-            onresize_end: function(paneName) {
-                eventMgr.onLayoutResize(paneName);
-            },
-        };
-        eventMgr.onLayoutConfigure(layoutGlobalConfig);
-        if(settings.layoutOrientation == "horizontal") {
-        }
-        else if(settings.layoutOrientation == "vertical") {
-        }
-
-        //setPanelVisibility();
-        //setPreviewButtonsVisibility();
-        layout.init();
-        eventMgr.onLayoutCreated(layout);
-    }
-
     var $navbarElt;
     var $leftBtnElts;
     var $rightBtnElts;
@@ -360,8 +314,6 @@ define([
     };
 
     // Initialize multiple things and then fire eventMgr.onReady
-    var isDocumentPanelShown = false;
-    var isMenuPanelShown = false;
     core.onReady = function() {
         // Add RTL class
         settings.editMode == 'rtl' && $(document.body).addClass('rtl');
@@ -386,11 +338,6 @@ define([
         // Populate shortcuts in settings
         shortcutMgr.addSettingEntries();
 
-        // Hide shortcuts settings if light mode
-        if(window.lightMode) {
-            $('.tab-settings-shortcuts').hide();
-        }
-
         // listen to online/offline events
         $(window).on('offline', core.setOffline);
         $(window).on('online', setOnline);
@@ -401,9 +348,7 @@ define([
         // Detect user activity
         $(document).mousemove(setUserActive).keypress(setUserActive);
 
-        // Create UI layout
-        createLayout();
-
+        layout.init();
         editor.init();
 
         // Do periodic tasks

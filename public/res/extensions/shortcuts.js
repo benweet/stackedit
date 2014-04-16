@@ -15,13 +15,11 @@ define([
     };
 
     var eventMgr;
-    var clickPagedownButton;
+    var pagedownEditor;
     shortcuts.onEventMgrCreated = function(eventMgrParameter) {
         eventMgr = eventMgrParameter;
-        eventMgr.addListener('onPagedownConfigure', function(pagedownEditor) {
-            clickPagedownButton = function(buttonName) {
-                pagedownEditor.uiManager.doClick(pagedownEditor.uiManager.buttons[buttonName]);
-            };
+        eventMgr.addListener('onPagedownConfigure', function(pagedownEditorParam) {
+            pagedownEditor = pagedownEditorParam;
         });
     };
 
@@ -41,6 +39,14 @@ define([
             utils.getInputTextValue("#textarea-shortcuts-mapping", event, /^$/);
         }
     };
+
+    /*jshint unused:false */
+    function bindPagedownButton(buttonName) {
+        return function(evt) {
+            pagedownEditor.uiManager.doClick(pagedownEditor.uiManager.buttons[buttonName]);
+            evt.preventDefault();
+        };
+    }
 
     shortcuts.onInit = function() {
         try {

@@ -317,6 +317,7 @@ define([
         };
     })();
     eventMgr.addListener('onLayoutResize', adjustCursorPosition);
+    editor.adjustCursorPosition = adjustCursorPosition;
 
     var textContent;
     function setValue(value) {

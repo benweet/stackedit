@@ -2,23 +2,23 @@ define([
     "jquery",
     "underscore",
     "classes/Extension",
-    "text!html/scrollLinkSettingsBlock.html"
-], function($, _, Extension, scrollLinkSettingsBlockHTML) {
+    "text!html/scrollSyncSettingsBlock.html"
+], function($, _, Extension, scrollSyncSettingsBlockHTML) {
 
-    var scrollLink = new Extension("scrollLink", "Scroll Link", true, true);
-    scrollLink.settingsBlock = scrollLinkSettingsBlockHTML;
+    var scrollSync = new Extension("scrollSync", "Scroll Link", true, true);
+    scrollSync.settingsBlock = scrollSyncSettingsBlockHTML;
 
     $.easing.easeOutSine = function( p ) {
         return Math.cos((1 - p) * Math.PI / 2 );
     };
 
     var sectionList;
-    scrollLink.onSectionsCreated = function(sectionListParam) {
+    scrollSync.onSectionsCreated = function(sectionListParam) {
         sectionList = sectionListParam;
     };
 
     var isPreviewVisible = true;
-    scrollLink.onPreviewToggle = function(isOpen) {
+    scrollSync.onPreviewToggle = function(isOpen) {
         isPreviewVisible = isOpen;
     };
 
@@ -91,7 +91,7 @@ define([
         // apply Scroll Link (-10 to have a gap > 9px)
         lastEditorScrollTop = -10;
         lastPreviewScrollTop = -10;
-        doScrollLink();
+        doScrollSync();
     }, 500);
 
     var isScrollEditor = false;
@@ -99,7 +99,7 @@ define([
     var isEditorMoving = false;
     var isPreviewMoving = false;
     var scrollingHelper = $('<div>');
-    var doScrollLink = _.throttle(function() {
+    var doScrollSync = _.throttle(function() {
         if(!isPreviewVisible || mdSectionList.length === 0 || mdSectionList.length !== htmlSectionList.length) {
             return;
         }
@@ -140,12 +140,12 @@ define([
                 lastPreviewScrollTop = previewScrollTop;
                 return;
             }
-            scrollingHelper.stop('scrollLinkFx', true).css('value', 0).animate({
+            scrollingHelper.stop('scrollSyncFx', true).css('value', 0).animate({
                 value: destScrollTop - previewScrollTop
             }, {
                 easing: 'easeOutSine',
                 duration: 200,
-                queue: 'scrollLinkFx',
+                queue: 'scrollSyncFx',
                 step: function(now) {
                     isPreviewMoving = true;
                     lastPreviewScrollTop = previewScrollTop + now;
@@ -156,7 +156,7 @@ define([
                         isPreviewMoving = false;
                     }, 10);
                 },
-            }).dequeue('scrollLinkFx');
+            }).dequeue('scrollSyncFx');
 
         }
         else if(isScrollPreview === true) {
@@ -176,12 +176,12 @@ define([
                 lastEditorScrollTop = editorScrollTop;
                 return;
             }
-            scrollingHelper.stop('scrollLinkFx', true).css('value', 0).animate({
+            scrollingHelper.stop('scrollSyncFx', true).css('value', 0).animate({
                 value: destScrollTop - editorScrollTop
             }, {
                 easing: 'easeOutSine',
                 duration: 200,
-                queue: 'scrollLinkFx',
+                queue: 'scrollSyncFx',
                 step: function(now) {
                     isEditorMoving = true;
                     lastEditorScrollTop = editorScrollTop + now;
@@ -192,21 +192,21 @@ define([
                         isEditorMoving = false;
                     }, 10);
                 },
-            }).dequeue('scrollLinkFx');
+            }).dequeue('scrollSyncFx');
         }
     }, 100);
 
-    scrollLink.onLayoutResize = function() {
+    scrollSync.onLayoutResize = function() {
         isScrollEditor = true;
         buildSections();
     };
 
-    scrollLink.onFileClosed = function() {
+    scrollSync.onFileClosed = function() {
         mdSectionList = [];
     };
 
     var scrollAdjust = false;
-    scrollLink.onReady = function() {
+    scrollSync.onReady = function() {
         $previewElt = $(".preview-container");
         $editorElt = $("#wmd-input");
 
@@ -214,7 +214,7 @@ define([
             if(isPreviewMoving === false && scrollAdjust === false) {
                 isScrollPreview = true;
                 isScrollEditor = false;
-                doScrollLink();
+                doScrollSync();
             }
             scrollAdjust = false;
         });
@@ -222,13 +222,13 @@ define([
             if(isEditorMoving === false) {
                 isScrollEditor = true;
                 isScrollPreview = false;
-                doScrollLink();
+                doScrollSync();
             }
         });
     };
 
     var $previewContentsElt;
-    scrollLink.onPagedownConfigure = function(editor) {
+    scrollSync.onPagedownConfigure = function(editor) {
         $previewContentsElt = $("#preview-contents");
         editor.getConverter().hooks.chain("postConversion", function(text) {
             // To avoid losing scrolling position before elements are fully loaded
@@ -237,7 +237,7 @@ define([
         });
     };
 
-    scrollLink.onPreviewFinished = function() {
+    scrollSync.onPreviewFinished = function() {
         // Now set the correct height
         var previousHeight = $previewContentsElt.height();
         $previewContentsElt.height("auto");
@@ -250,5 +250,5 @@ define([
         buildSections();
     };
 
-    return scrollLink;
+    return scrollSync;
 });

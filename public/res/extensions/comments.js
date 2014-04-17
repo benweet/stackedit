@@ -69,11 +69,6 @@ define([
     var newCommentElt = crel('a', {
         class: 'discussion icon-comment new'
     });
-    var cursorY;
-    comments.onCursorCoordinates = function(x, y) {
-        cursorY = y;
-        setCommentEltCoordinates(newCommentElt, cursorY);
-    };
 
     function Context(commentElt, fileDesc) {
         this.commentElt = commentElt;
@@ -124,6 +119,7 @@ define([
         offsetMap = {};
         var discussionList = _.values(currentFileDesc.discussionList);
         function refreshOne() {
+            var coordinates;
             if(discussionList.length === 0) {
                 // Remove outdated commentElt
                 _.filter(commentEltMap, function(commentElt, discussionIndex) {
@@ -133,8 +129,9 @@ define([
                     delete commentEltMap[commentElt.discussionIndex];
                 });
                 // Move newCommentElt
-                setCommentEltCoordinates(newCommentElt, cursorY);
                 if(currentContext && !currentContext.discussionIndex) {
+                    coordinates = selectionMgr.getCoordinates(currentContext.getDiscussion().selectionEnd);
+                    setCommentEltCoordinates(newCommentElt, coordinates.y);
                     inputElt.scrollTop += parseInt(newCommentElt.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
                     movePopover(newCommentElt);
                 }
@@ -163,7 +160,7 @@ define([
             className += isReplied ? ' replied' : ' added';
             commentElt.className = className;
             commentElt.discussionIndex = discussion.discussionIndex;
-            var coordinates = selectionMgr.getCoordinates(discussion.selectionEnd);
+            coordinates = selectionMgr.getCoordinates(discussion.selectionEnd);
             var lineIndex = setCommentEltCoordinates(commentElt, coordinates.y);
             offsetMap[lineIndex] = (offsetMap[lineIndex] || 0) + 1;
 
@@ -325,8 +322,10 @@ define([
                     commentList: []
                 };
                 currentFileDesc.newDiscussion = discussion;
+                var coordinates = selectionMgr.getCoordinates(selectionStart);
+                setCommentEltCoordinates(newCommentElt, coordinates.y);
             }
-            context.selectionRange = selectionMgr.setSelectionStartEnd(discussion.selectionStart, discussion.selectionEnd, undefined, true);
+            context.selectionRange = selectionMgr.createRange(discussion.selectionStart, discussion.selectionEnd);
             inputElt.scrollTop += parseInt(evt.target.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
 
         }).on('shown.bs.popover', '#wmd-input > .editor-margin', function(evt) {
@@ -351,7 +350,8 @@ define([
                 case 27:
                     evt.preventDefault();
                     closeCurrentPopover();
-                    inputElt.focus();
+                    editor.focus();
+                    editor.adjustCursorPosition();
                     return;
                 }
             });
@@ -445,7 +445,7 @@ define([
             var $commentElt = $newCommentElt;
             if(currentContext) {
                 if(!currentContext.discussionIndex) {
-                    $commentElt = $(_.first(sortedCommentEltList) || newCommentElt);
+                    $commentElt = $(_.first(sortedCommentEltList));
                 }
                 else {
                     var curentIndex = -1;
@@ -455,13 +455,14 @@ define([
                             return true;
                         }
                     });
-                    $commentElt = $(sortedCommentEltList[(curentIndex + 1) % sortedCommentEltList.length]);
+                    $commentElt = $(sortedCommentEltList[(curentIndex + 1)]);
                 }
             }
-            if(currentContext && currentContext.commentElt === $commentElt[0]) {
+            if($commentElt.length === 0) {
                 // Close the popover properly
                 closeCurrentPopover();
-                inputElt.focus();
+                editor.focus();
+                editor.adjustCursorPosition();
             }
             else {
                 $commentElt.click();

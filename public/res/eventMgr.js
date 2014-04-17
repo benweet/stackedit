@@ -28,7 +28,7 @@ define([
     "extensions/toc",
     "extensions/mathJax",
     "extensions/emailConverter",
-    "extensions/scrollLink",
+    "extensions/scrollSync",
     "extensions/buttonSync",
     "extensions/buttonPublish",
     "extensions/buttonStat",

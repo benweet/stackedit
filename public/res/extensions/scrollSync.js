@@ -5,7 +5,7 @@ define([
     "text!html/scrollSyncSettingsBlock.html"
 ], function($, _, Extension, scrollSyncSettingsBlockHTML) {
 
-    var scrollSync = new Extension("scrollSync", "Scroll Link", true, true);
+    var scrollSync = new Extension("scrollSync", "Scroll Sync", true, true);
     scrollSync.settingsBlock = scrollSyncSettingsBlockHTML;
 
     $.easing.easeOutSine = function( p ) {

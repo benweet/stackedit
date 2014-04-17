@@ -6,7 +6,7 @@ define([
 
     var settings = {
         layoutOrientation: "horizontal",
-        mode: 'ltr',
+        editMode: 'ltr',
         lazyRendering: true,
         editorFontClass: 'font-rich',
         editorFontFamily: 'Menlo, Consolas, "Courier New", Courier, monospace',
@@ -56,7 +56,6 @@ define([
         ].join(""),
         pdfPageSize: 'A4',
         sshProxy: constants.SSH_PROXY_URL,
-        shortcuts: {},
         extensionSettings: {}
     };
 

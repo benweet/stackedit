@@ -143,6 +143,17 @@ define([
     var editorContentElt;
     var previewContentElt;
     var editorMarginElt;
+    var navbarInnerElt;
+    var navbarDropdownElt;
+    var $navbarDropdownBtnElt;
+    var navbarTitleElt;
+    var navbarBtnGroups = [];
+    var navbarBtnGroupsWidth = [80, 80, 160, 160, 80, 40].map(function(width) {
+        return width + 18; // Add margin
+    });
+    var navbarMarginWidth = 18 * 2 + 25 + 25;
+    var buttonsDropdownWidth = 40;
+    var titleWidth = 18 + 350;
     function onResize() {
 
         var editorPadding = (editor.elt.offsetWidth - getMaxWidth()) / 2;
@@ -160,6 +171,20 @@ define([
         previewContentElt.style.paddingLeft = previewPadding + 'px';
         previewContentElt.style.paddingRight = previewPadding + 'px';
 
+        if(!window.viewerMode) {
+            var maxWidth = navbarMarginWidth + titleWidth + buttonsDropdownWidth;
+            navbarBtnGroups.forEach(function(group, index) {
+                maxWidth += group.width;
+                index === navbarBtnGroups.length - 1 && (maxWidth -= buttonsDropdownWidth);
+                if(windowSize.width < maxWidth) {
+                    navbarDropdownElt.appendChild(group.elt);
+                }
+                else {
+                    navbarInnerElt.insertBefore(group.elt, navbarTitleElt);
+                }
+            });
+            $navbarDropdownBtnElt.toggleClass('hide', navbarDropdownElt.children.length === 0);
+        }
 
         eventMgr.onLayoutResize();
     }
@@ -295,6 +320,23 @@ define([
         previewContentElt = document.getElementById('preview-contents');
         editorMarginElt = editor.elt.querySelector('.editor-margin');
         var $previewButtonsElt = $('.extension-preview-buttons');
+        navbarInnerElt = navbar.elt.querySelector('.navbar-inner');
+        navbarDropdownElt = navbar.elt.querySelector('.buttons-dropdown .dropdown-menu');
+        $navbarDropdownBtnElt = navbar.$elt.find('.buttons-dropdown');
+        navbarTitleElt = navbar.elt.querySelector('.title-container');
+
+        _.each(navbar.elt.querySelectorAll('.right-buttons'), function(btnGroupElt) {
+            navbarBtnGroups.push({
+                elt: btnGroupElt,
+                width: navbarBtnGroupsWidth.shift()
+            });
+        });
+        _.each(navbar.elt.querySelectorAll('.left-buttons'), function(btnGroupElt) {
+            navbarBtnGroups.push({
+                elt: btnGroupElt,
+                width: navbarBtnGroupsWidth.shift()
+            });
+        });
 
         wrapperL1.$elt.toggleClass('layout-vertical', isVertical);
 
@@ -319,9 +361,8 @@ define([
         documentPanel.$elt.find('.toggle-button').click(_.bind(documentPanel.toggle, documentPanel));
 
         // Hide menu panel when clicking 'Save as' button
-        $('.collapse-save-as a').click(function() {
-            menuPanel.toggle(false);
-        });
+        menuPanel.$elt.on('click', 'a[data-toggle!=collapse]', _.bind(menuPanel.toggle, menuPanel, false));
+        documentPanel.$elt.on('click', 'a[data-toggle!=collapse]', _.bind(documentPanel.toggle, documentPanel, false));
 
         menuPanel.$elt.on('show.bs.collapse', function() {
             // Close all open sub-menus when one submenu opens

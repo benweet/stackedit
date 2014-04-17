@@ -48,6 +48,13 @@ define([
         };
     }
 
+    function expand(text, replacement) {
+        utils.defer(function() {
+            require('editor').replacePreviousText(text, replacement);
+        });
+    }
+
+    /*jshint unused:true */
     shortcuts.onInit = function() {
         try {
             /*jshint evil: true */

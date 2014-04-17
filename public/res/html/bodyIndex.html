@@ -907,8 +907,6 @@
 						href="#tabpane-settings-basic" data-toggle="tab">Basic</a></li>
 					<li><a class="action-load-settings"
 						href="#tabpane-settings-advanced" data-toggle="tab">Advanced</a></li>
-					<li><a class="action-load-settings tab-settings-shortcuts"
-						href="#tabpane-settings-shortcuts" data-toggle="tab">Shortcuts</a></li>
 					<li><a class="action-load-settings"
 						href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>
 					<li><a class="action-load-settings"
@@ -984,24 +982,18 @@
 					<div class="tab-pane" id="tabpane-settings-advanced">
 						<div class="form-horizontal">
 							<div class="form-group">
-								<label class="col-sm-4 control-label">Mode</label>
+								<label class="col-sm-4 control-label">Edit mode</label>
 								<div class="col-sm-7">
 									<div class="radio">
 										<label> <input type="radio"
-											name="radio-settings-mode" value="_ace_">
-											Normal (ACE)
+											name="radio-settings-edit-mode" value="ltr">
+											Left-To-Right
 										</label>
 									</div>
 									<div class="radio">
 										<label> <input type="radio"
-											name="radio-settings-mode" value="_light_">
-											Light (textarea)
-										</label>
-									</div>
-									<div class="radio">
-										<label> <input type="radio"
-											name="radio-settings-mode" value="_light_rtl_">
-											Light + Right-to-left
+											name="radio-settings-edit-mode" value="rtl">
+											Right-To-Left
 										</label>
 									</div>
 								</div>
@@ -1149,10 +1141,6 @@
 										class="form-control">
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="tab-pane" id="tabpane-settings-shortcuts">
-						<div class="form-horizontal">
 						</div>
 					</div>
 					<div class="tab-pane" id="tabpane-settings-extensions">

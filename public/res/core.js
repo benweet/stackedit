@@ -10,14 +10,14 @@ define([
     "storage",
     "settings",
     "eventMgr",
-    "shortcutMgr",
     "text!html/bodyIndex.html",
     "text!html/bodyViewer.html",
     "text!html/settingsTemplateTooltip.html",
+    "text!html/settingsShortcutsExtensionTooltip.html",
     "text!html/settingsUserCustomExtensionTooltip.html",
     "storage",
     'pagedown',
-], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, shortcutMgr, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
+], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsShortcutsExtensionTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
 
@@ -122,7 +122,7 @@ define([
         // Default content
         utils.setInputValue("#textarea-settings-default-content", settings.defaultContent);
         // Edit mode
-        utils.setInputRadio("radio-settings-mode", settings.editMode);
+        utils.setInputRadio("radio-settings-edit-mode", settings.editMode);
         // Commit message
         utils.setInputValue("#input-settings-publish-commit-msg", settings.commitMsg);
         // Gdrive multi-accounts
@@ -141,9 +141,6 @@ define([
         utils.setInputValue("#input-settings-pdf-page-size", settings.pdfPageSize);
         // SSH proxy
         utils.setInputValue("#input-settings-ssh-proxy", settings.sshProxy);
-
-        // Load shortcuts settings
-        shortcutMgr.loadSettings();
 
         // Load extension settings
         eventMgr.onLoadSettings();
@@ -170,7 +167,7 @@ define([
         // Default content
         newSettings.defaultContent = utils.getInputValue("#textarea-settings-default-content");
         // Edit mode
-        newSettings.editMode = utils.getInputRadio("radio-settings-mode");
+        newSettings.editMode = utils.getInputRadio("radio-settings-edit-mode");
         // Commit message
         newSettings.commitMsg = utils.getInputTextValue("#input-settings-publish-commit-msg", event);
         // Gdrive multi-accounts
@@ -190,9 +187,6 @@ define([
         // SSH proxy
         newSettings.sshProxy = utils.checkUrl(utils.getInputTextValue("#input-settings-ssh-proxy", event), true);
 
-        // Save shortcuts settings
-        shortcutMgr.saveSettings(newSettings);
-
         // Save extension settings
         newSettings.extensionSettings = {};
         eventMgr.onSaveSettings(newSettings.extensionSettings, event);
@@ -206,7 +200,7 @@ define([
             storage.themeV3 = theme;
         }
     }
-
+/*
     var $navbarElt;
     var $leftBtnElts;
     var $rightBtnElts;
@@ -235,7 +229,7 @@ define([
             }
         }
     }
-
+*/
     // Create the PageDown editor
     var pagedownEditor;
     var fileDesc;
@@ -316,7 +310,7 @@ define([
     // Initialize multiple things and then fire eventMgr.onReady
     core.onReady = function() {
         // Add RTL class
-        settings.editMode == 'rtl' && $(document.body).addClass('rtl');
+        document.body.className += ' ' + settings.editMode;
 
         if(window.viewerMode === true) {
             document.body.innerHTML = bodyViewerHTML;
@@ -325,18 +319,8 @@ define([
             document.body.innerHTML = bodyIndexHTML;
         }
 
-        $navbarElt = $('.navbar');
-        $leftBtnElts = $navbarElt.find('.left-buttons');
-        $rightBtnElts = $navbarElt.find('.right-buttons');
-        $btnDropdown = $navbarElt.find('.buttons-dropdown');
-        $titleContainer = $navbarElt.find('.title-container');
-        $(window).bind("resize", adjustWindow);
-
         // Initialize utils library
         utils.init();
-
-        // Populate shortcuts in settings
-        shortcutMgr.addSettingEntries();
 
         // listen to online/offline events
         $(window).on('offline', core.setOffline);
@@ -362,9 +346,6 @@ define([
         }, 1000);
 
         eventMgr.onReady();
-
-        // Adjust the layout after the dom has changed
-        adjustWindow();
     };
 
     // Other initialization that are not prioritary
@@ -550,6 +531,7 @@ define([
             'Thanks for supporting StackEdit by adding a backlink in your documents!<br/><br/>',
             '<b class="text-danger">NOTE: Backlinks in Stack Exchange Q/A are not welcome.</b>'
         ].join(''));
+        createTooltip(".tooltip-shortcuts-extension", settingsShortcutsExtensionTooltipHTML);
         createTooltip(".tooltip-usercustom-extension", settingsUserCustomExtensionTooltipHTML);
         createTooltip(".tooltip-template", settingsTemplateTooltipHTML);
 

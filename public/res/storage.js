@@ -216,6 +216,11 @@ define([
     if(version == "v16" || version == "v17") {
         localStorage.removeItem('focusMode');
         localStorage.removeItem('mode');
+        if(_.has(localStorage, 'settings')) {
+            settings = JSON.parse(localStorage.settings);
+            delete settings.shortcuts;
+            localStorage.settings = JSON.stringify(settings);
+        }
         version = "v18";
     }
 

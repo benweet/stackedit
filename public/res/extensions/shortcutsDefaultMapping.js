@@ -12,19 +12,15 @@
     'mod+z': bindPagedownButton('undo'),
     'mod+y': bindPagedownButton('redo'),
     'mod+shift+z': bindPagedownButton('redo'),
-    'mod+d': function(evt) {
+    'mod+p': function(evt) {
         $('.button-open-discussion').click();
         evt.preventDefault();
     },
     '= = > space': function() {
-        setTimeout(function() {
-            require('editor').replacePreviousText('==> ', '⇒ ');
-        }, 0);
+        expand('==> ', '⇒ ');
     },
     '< = = space': function() {
-        setTimeout(function() {
-            require('editor').replacePreviousText('<== ', '⇐ ');
-        }, 0);
+        expand('<== ', '⇐ ');
     },
     'S t a c k E d i t': function() {
         eventMgr.onMessage("You are stunned!!! Aren't you?");

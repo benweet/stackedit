@@ -1375,3 +1375,29 @@ div.jGrowl {
 	    .box-shadow(none);
 	}
 }
+
+
+/**************************************
+ * Only show preview pane to printer
+ **************************************/
+
+@media print {
+	html, body, .preview-container {
+		overflow: visible !important;
+	}
+
+	body > :not(.preview-container) {
+		display: none !important;
+	}
+
+	.preview-container {
+		width: auto !important;
+		height: auto !important;
+		position: static !important;
+	}
+
+	#preview-contents {
+		max-width: none !important;
+		margin-bottom: 0 !important;
+	}
+}

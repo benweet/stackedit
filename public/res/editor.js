@@ -148,17 +148,6 @@ define([
             if(end === undefined) {
                 end = this.selectionEnd;
             }
-            var textContent = inputElt.textContent;
-            if(start === textContent.length && textContent[textContent.length -1 ] == '\n') {
-                start--;
-                range = undefined;
-                skipSelectionUpdate = false;
-            }
-            if(end === textContent.length && textContent[textContent.length - 1] == '\n') {
-                end--;
-                range = undefined;
-                skipSelectionUpdate = false;
-            }
             this.selectionStart = start;
             this.selectionEnd = end;
             var min = Math.min(start, end);
@@ -223,6 +212,9 @@ define([
             };
         })();
         this.getCoordinates = function(inputOffset, container, offset) {
+            if(inputOffset === textContent.length) {
+                return this.getCoordinates(inputOffset - 1);
+            }
             if(!container) {
                 offset = this.findOffset(inputOffset);
                 container = offset.container;
@@ -508,14 +500,16 @@ define([
     eventMgr.addListener('onDiscussionRemoved', onComment);
     eventMgr.addListener('onCommentsChanged', onComment);
 
+    var trailingLfNode;
     function checkContentChange() {
         var newTextContent = inputElt.textContent;
+        if(contentElt.lastChild === trailingLfNode && trailingLfNode.textContent.slice(-1) === '\n') {
+            newTextContent = newTextContent.slice(0, -1);
+        }
+
         if(fileChanged === false) {
-            if(newTextContent == textContent) {
+            if(contentElt.children.length && newTextContent == textContent) {
                 return;
-            }
-            if(!/\n$/.test(newTextContent)) {
-                newTextContent += '\n';
             }
             undoMgr.currentMode = undoMgr.currentMode || 'typing';
             var discussionList = _.values(fileDesc.discussionList);
@@ -533,11 +527,8 @@ define([
         }
         else {
             textContent = newTextContent;
-            if(!/\n$/.test(textContent)) {
-                textContent += '\n';
-                fileDesc.content = textContent;
-            }
             selectionMgr.setSelectionStartEnd(fileDesc.editorStart, fileDesc.editorEnd);
+            selectionMgr.saveSelectionState();
             eventMgr.onFileOpen(fileDesc, textContent);
             previewElt.scrollTop = fileDesc.previewScrollTop;
             scrollTop = fileDesc.editorScrollTop;
@@ -713,8 +704,10 @@ define([
 
             actions[action](state, options);
             setValue(state.before + state.selection + state.after);
-            selectionMgr.setSelectionStartEnd(state.selectionStart, state.selectionEnd);
-            $inputElt.trigger('input');
+            _.defer(function() {
+                selectionMgr.setSelectionStartEnd(state.selectionStart, state.selectionEnd);
+                //$inputElt.trigger('input');
+            });
         };
 
         var actions = {
@@ -855,7 +848,6 @@ define([
             if(fileChanged === true) {
                 contentElt.innerHTML = '';
                 contentElt.appendChild(newSectionEltList);
-                selectionMgr.setSelectionStartEnd();
             }
             else {
                 // Remove outdated sections
@@ -880,8 +872,10 @@ define([
                     }
                     childNode = nextNode;
                 }
-                selectionMgr.setSelectionStartEnd();
             }
+            trailingLfNode = document.createTextNode('\n');
+            contentElt.appendChild(trailingLfNode);
+            selectionMgr.setSelectionStartEnd();
         });
     }
 

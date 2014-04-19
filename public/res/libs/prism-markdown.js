@@ -255,7 +255,7 @@ Prism.languages.md = (function() {
         strong: md.strong,
         em: md.em,
         strike: md.strike,
-        conflict: /\/\//g,
+        conflict: /⧸⧸/g,
         comment: Prism.languages.markup.comment,
         tag: Prism.languages.markup.tag,
         entity: Prism.languages.markup.entity
@@ -275,7 +275,7 @@ Prism.languages.md = (function() {
         fn: md.fn,
         link: md.link,
         linkref: md.linkref,
-        conflict: /\/\//g,
+        conflict: /⧸⧸/g,
     };
     md.strong.inside.rest = rest;
     md.em.inside.rest = rest;
@@ -286,7 +286,7 @@ Prism.languages.md = (function() {
         strong: md.strong,
         em: md.em,
         strike: md.strike,
-        conflict: /\/\//g,
+        conflict: /⧸⧸/g,
         comment: Prism.languages.markup.comment,
         tag: Prism.languages.markup.tag,
         entity: Prism.languages.markup.entity

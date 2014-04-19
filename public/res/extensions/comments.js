@@ -39,29 +39,25 @@ define([
         selectionMgr = editor.selectionMgr;
     };
 
-    var offsetMap = {};
-    function setCommentEltCoordinates(commentElt, y) {
-        var lineIndex = Math.round(y / 5);
-        // Try to find the nearest existing lineIndex
-        if(offsetMap.hasOwnProperty(lineIndex)) {
-            // Keep current lineIndex
+    var yList = [];
+    function setCommentEltCoordinates(commentElt, y, isNew) {
+        y = Math.round(y);
+        var yListIndex = y - 21;
+        // Avoid overlap of comment icons
+        while(yListIndex < y + 22) {
+            if(yList[yListIndex]) {
+                y = yListIndex + 22;
+            }
+            yListIndex++;
         }
-        else if(offsetMap.hasOwnProperty(lineIndex - 1)) {
-            lineIndex--;
-        }
-        else if(offsetMap.hasOwnProperty(lineIndex + 1)) {
-            lineIndex++;
-        }
+        !isNew && (yList[y] = 1);
         var yOffset = -8;
         if(commentElt.className.indexOf(' icon-split') !== -1) {
             yOffset = -12;
         }
         var top = y + yOffset;
-        var right = (offsetMap[lineIndex] || 0) * 25 + 10;
-        commentElt.orderedIndex = lineIndex * 10000 + right;
         commentElt.style.top = top + 'px';
-        commentElt.style.right = right + 'px';
-        return lineIndex;
+        commentElt.style.right = '12px';
     }
 
     var inputElt;
@@ -116,8 +112,10 @@ define([
         someReplies = false;
         sortedCommentEltList = [];
         var author = storage['author.name'];
-        offsetMap = {};
-        var discussionList = _.values(currentFileDesc.discussionList);
+        yList = [];
+        var discussionList = _.sortBy(currentFileDesc.discussionList, function(discussion) {
+            return discussion.selectionEnd;
+        });
         function refreshOne() {
             var coordinates;
             if(discussionList.length === 0) {
@@ -131,19 +129,19 @@ define([
                 // Move newCommentElt
                 if(currentContext && !currentContext.discussionIndex) {
                     coordinates = selectionMgr.getCoordinates(currentContext.getDiscussion().selectionEnd);
-                    setCommentEltCoordinates(newCommentElt, coordinates.y);
+                    setCommentEltCoordinates(newCommentElt, coordinates.y, true);
                     inputElt.scrollTop += parseInt(newCommentElt.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
                     movePopover(newCommentElt);
                 }
                 sortedCommentEltList = _.sortBy(commentEltMap, function(commentElt) {
-                    return commentElt.orderedIndex;
+                    return commentElt.selectionEnd;
                 });
                 $openDiscussionElt.toggleClass('some', sortedCommentEltList.length !== 0);
                 $openDiscussionElt.toggleClass('replied', someReplies);
                 $openDiscussionIconElt.toggleClass('icon-chat', sortedCommentEltList.length !== 0);
                 return;
             }
-            var discussion = discussionList.pop();
+            var discussion = discussionList.shift();
             var commentElt = commentEltMap[discussion.discussionIndex];
             if(!commentElt) {
                 commentElt = crel('a');
@@ -160,9 +158,9 @@ define([
             className += isReplied ? ' replied' : ' added';
             commentElt.className = className;
             commentElt.discussionIndex = discussion.discussionIndex;
+            commentElt.selectionEnd = discussion.selectionEnd;
             coordinates = selectionMgr.getCoordinates(discussion.selectionEnd);
-            var lineIndex = setCommentEltCoordinates(commentElt, coordinates.y);
-            offsetMap[lineIndex] = (offsetMap[lineIndex] || 0) + 1;
+            setCommentEltCoordinates(commentElt, coordinates.y);
 
             marginElt.appendChild(commentElt);
             commentEltMap[discussion.discussionIndex] = commentElt;
@@ -268,9 +266,10 @@ define([
         inputElt = document.getElementById('wmd-input');
         marginElt = document.querySelector('#wmd-input > .editor-margin');
         marginElt.appendChild(newCommentElt);
-        $(document.body).append(crel('div', {
+        var $popoverContainer = $(crel('div', {
             class: 'comments-popover'
-        })).on('click', function(evt) {
+        }));
+        $(document.body).append($popoverContainer).on('click', function(evt) {
             // Close on click outside the popover
             if(currentContext && currentContext.$commentElt[0] !== evt.target) {
                 closeCurrentPopover();
@@ -300,7 +299,8 @@ define([
                 return content;
             },
             selector: '#wmd-input > .editor-margin > .discussion'
-        }).on('show.bs.popover', '#wmd-input > .editor-margin', function(evt) {
+        });
+        $(marginElt).on('show.bs.popover', function(evt) {
             closeCurrentPopover();
             var context = new Context(evt.target, currentFileDesc);
             currentContext = context;
@@ -323,12 +323,12 @@ define([
                 };
                 currentFileDesc.newDiscussion = discussion;
                 var coordinates = selectionMgr.getCoordinates(selectionStart);
-                setCommentEltCoordinates(newCommentElt, coordinates.y);
+                setCommentEltCoordinates(newCommentElt, coordinates.y, true);
             }
             context.selectionRange = selectionMgr.createRange(discussion.selectionStart, discussion.selectionEnd);
             inputElt.scrollTop += parseInt(evt.target.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
 
-        }).on('shown.bs.popover', '#wmd-input > .editor-margin', function(evt) {
+        }).on('shown.bs.popover', function(evt) {
             var context = currentContext;
             var popoverElt = context.getPopoverElt();
             context.$authorInputElt = $(popoverElt.querySelector('.input-comment-author')).val(storage['author.name']);
@@ -407,11 +407,6 @@ define([
                 $removeButton.hide();
             }
 
-            // Prevent from closing on click inside the popover
-            $(popoverElt).on('click', function(evt) {
-                evt.stopPropagation();
-            });
-
             // Highlight selected text
             context.rangyRange = rangy.createRange();
             context.rangyRange.setStart(context.selectionRange.startContainer, context.selectionRange.startOffset);
@@ -424,7 +419,7 @@ define([
 
             // Focus on textarea
             context.$contentInputElt.focus().val(previousContent);
-        }).on('hide.bs.popover', '#wmd-input > .editor-margin', function() {
+        }).on('hide.bs.popover', function() {
             if(!currentContext) {
                 return;
             }
@@ -439,6 +434,12 @@ define([
             currentContext = undefined;
             delete currentFileDesc.newDiscussion;
         });
+
+        // Prevent from closing on click inside the popover
+        $popoverContainer.on('click', '.popover', function(evt) {
+            evt.stopPropagation();
+        });
+
 
         var $newCommentElt = $(newCommentElt);
         $openDiscussionElt = $('.button-open-discussion').click(function(evt) {

@@ -92,8 +92,8 @@ define([
                     result.push([0, removeDiff[1] + addDiff[1]]);
                 }
                 else {
-                    removeDiff[1] = '//' + removeDiff[1] + '//';
-                    addDiff[1] += '//';
+                    removeDiff[1] = '∕∕' + removeDiff[1] + '∕∕';
+                    addDiff[1] += '∕∕';
                     result.push(removeDiff);
                     result.push(addDiff);
                 }
@@ -330,9 +330,6 @@ define([
         if(contentChanged || discussionListChanged) {
             editor.watcher.noWatch(_.bind(function() {
                 if(contentChanged) {
-                    if(!/\n$/.test(newContent)) {
-                        newContent += '\n';
-                    }
                     if(fileMgr.currentFile === fileDesc) {
                         editor.setValueNoWatch(newContent);
                         editorSelection && editor.selectionMgr.setSelectionStartEnd(

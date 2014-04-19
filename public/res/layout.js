@@ -146,14 +146,16 @@ define([
     var navbarInnerElt;
     var navbarDropdownElt;
     var $navbarDropdownBtnElt;
-    var navbarTitleElt;
+    var navbarTitleContainerElt;
+    var $navbarTitleElt;
     var navbarBtnGroups = [];
     var navbarBtnGroupsWidth = [80, 80, 160, 160, 80, 40].map(function(width) {
         return width + 18; // Add margin
     });
     var navbarMarginWidth = 18 * 2 + 25 + 25;
     var buttonsDropdownWidth = 40;
-    var titleWidth = 18 + 350;
+    var titleMinWidth = 200;
+    var workingIndicatorWidth = 18 + 70;
     function onResize() {
 
         var editorPadding = (editor.elt.offsetWidth - getMaxWidth()) / 2;
@@ -172,7 +174,8 @@ define([
         previewContentElt.style.paddingRight = previewPadding + 'px';
 
         if(!window.viewerMode) {
-            var maxWidth = navbarMarginWidth + titleWidth + buttonsDropdownWidth;
+            var maxWidth = navbarMarginWidth + workingIndicatorWidth + titleMinWidth + buttonsDropdownWidth;
+            var titleWidth = windowSize.width - maxWidth + titleMinWidth;
             navbarBtnGroups.forEach(function(group, index) {
                 maxWidth += group.width;
                 index === navbarBtnGroups.length - 1 && (maxWidth -= buttonsDropdownWidth);
@@ -180,8 +183,12 @@ define([
                     navbarDropdownElt.appendChild(group.elt);
                 }
                 else {
-                    navbarInnerElt.insertBefore(group.elt, navbarTitleElt);
+                    navbarInnerElt.insertBefore(group.elt, navbarTitleContainerElt);
+                    titleWidth = windowSize.width - maxWidth + titleMinWidth;
                 }
+            });
+            $navbarTitleElt.css({
+                maxWidth: titleWidth
             });
             $navbarDropdownBtnElt.toggleClass('hide', navbarDropdownElt.children.length === 0);
         }
@@ -323,7 +330,8 @@ define([
         navbarInnerElt = navbar.elt.querySelector('.navbar-inner');
         navbarDropdownElt = navbar.elt.querySelector('.buttons-dropdown .dropdown-menu');
         $navbarDropdownBtnElt = navbar.$elt.find('.buttons-dropdown');
-        navbarTitleElt = navbar.elt.querySelector('.title-container');
+        navbarTitleContainerElt = navbar.elt.querySelector('.title-container');
+        $navbarTitleElt = navbar.$elt.find('.file-title-navbar, .input-file-title');
 
         _.each(navbar.elt.querySelectorAll('.right-buttons'), function(btnGroupElt) {
             navbarBtnGroups.push({

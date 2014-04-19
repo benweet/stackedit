@@ -50,7 +50,7 @@
 @jgrowl-bg-color: fade(@modal-backdrop-bg, 90%);
 
 /* Sizes */
-@file-title-width: 280px;
+@title-max-width: 400px;
 @menu-panel-width: 280px;
 @document-panel-width: 320px;
 @jgrowl-width: 260px;
@@ -487,7 +487,6 @@ a {
 		font-size: 1.5em;
         line-height: 1.4em;
 		font-weight: 200;
-		max-width: @file-title-width;
 		overflow: hidden;
 		white-space: nowrap;
 	}
@@ -496,7 +495,7 @@ a {
 		display: inline-block;
         vertical-align: middle;
         .input-file-title {
-    		width: @file-title-width;
+    		width: @title-max-width;
             font-size: 16px;
             height: @input-height-slim;
         }

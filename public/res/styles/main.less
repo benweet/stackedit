@@ -111,6 +111,7 @@
 @btn-info-color: fade(@secondary-desaturated, 35%);
 @btn-info-bg: @transparent;
 @btn-info-border: @transparent;
+@btn-info-hover-border: fade(@secondary, 8%);
 @btn-info-hover-bg: lighten(@secondary-desaturated, 45%);
 @gray-lighter: @body-bg;
 @modal-header-border-color: @secondary-border-color-light;
@@ -318,7 +319,7 @@ a {
     .info-tooltip &,
     .open &.dropdown-toggle {
     	color: darken(@secondary, 30%);
-    	border-color: fade(@secondary, 8%);
+    	border-color: @btn-info-hover-border;
     	background-color: @btn-info-hover-bg !important; // important to override .nav > li > a:hover
     }
 }
@@ -583,10 +584,17 @@ a {
 	.layout-panel();
 	width: @menu-panel-width;
     .alert {
-        padding: 15px 0;
+        padding: 10px 0;
     }
+	i {
+		margin-right: 8px;
+	}
+	small {
+		color: @dropdown-header-color;
+		padding-left: 30px;
+	}
     .nav {
-        margin: 20px 0;
+        margin: 10px 0 20px;
         > li > * {
             padding: 8px 30px;
         }
@@ -794,18 +802,20 @@ a {
 .extension-preview-buttons {
     position: absolute;
 	z-index: 1;
-	right: 35px;
+	right: 50px;
     margin-top: 6px;
-    .ui-layout-resizer-south-closed & {
-    	display: none !important;
-    }
+	background-color: @btn-info-hover-bg;
+	border: 1px solid @btn-info-hover-border;
+	border-radius: @border-radius-base;
+	.transition-transform(350ms ease-in-out);
 	.btn-group {
 		.btn {
 			position: initial;
+			border: 0;
 		}
 	}
 	.dropdown-menu {
-        margin-top: 4px;
+        margin-top: 6px;
     	padding-bottom: 20px;
 	}
 
@@ -1435,10 +1445,6 @@ div.dropdown-menu,  {
 	z-index: 1040 !important;
 }
 
-.action-import-image-gplus {
-	float: left;
-}
-
 .tooltip-inner {
 	text-align: left;
 }
@@ -1612,10 +1618,6 @@ div.jGrowl {
 		.input-group-btn {
 			display: none;
 		}
-	}
-
-	.ui-layout-toggler {
-		display: none !important;
 	}
 
 	.navbar .file-title-navbar {

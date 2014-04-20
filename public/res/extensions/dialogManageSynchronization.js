@@ -21,6 +21,7 @@ define([
     var syncListElt;
     var $msgSyncListElt;
     var $msgNoSyncElt;
+    var $showAlreadySynchronizedElt;
     var refreshDialog = function(fileDescParameter) {
         if(fileDescParameter !== undefined && fileDescParameter !== fileDesc) {
             return;
@@ -34,6 +35,8 @@ define([
             $msgSyncListElt.addClass("hide");
             $msgNoSyncElt.removeClass("hide");
         }
+
+        $showAlreadySynchronizedElt.toggleClass("hide", _.size(fileDesc.syncLocations) === 0);
 
         var syncListHtml = _.reduce(fileDesc.syncLocations, function(result, syncAttributes) {
             return result + _.template(dialogManageSynchronizationLocationHTML, {
@@ -66,6 +69,8 @@ define([
         syncListElt = modalElt.querySelector(".sync-list");
         $msgSyncListElt = $(modalElt.querySelectorAll(".msg-sync-list"));
         $msgNoSyncElt = $(modalElt.querySelectorAll(".msg-no-sync"));
+
+        $showAlreadySynchronizedElt = $(document.querySelectorAll(".show-already-synchronized"));
     };
 
     return dialogManageSynchronization;

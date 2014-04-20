@@ -59,7 +59,8 @@ requirejs.config({
         'rangy-cssclassapplier': 'bower-libs/rangy/rangy-cssclassapplier',
         diff_match_patch: 'bower-libs/google-diff-match-patch-js/diff_match_patch',
         diff_match_patch_uncompressed: 'bower-libs/google-diff-match-patch-js/diff_match_patch_uncompressed',
-        jsondiffpatch: 'bower-libs/jsondiffpatch/build/bundle'
+        jsondiffpatch: 'bower-libs/jsondiffpatch/build/bundle',
+        hammerjs: 'bower-libs/hammerjs/hammer'
     },
     shim: {
         underscore: {

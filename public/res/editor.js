@@ -62,7 +62,7 @@ define([
         fileDesc = selectedFileDesc;
     });
 
-    // Watcher used to detect editor changes
+    // Used to detect editor changes
     function Watcher() {
         this.isWatching = false;
         var contentObserver;
@@ -212,9 +212,6 @@ define([
             };
         })();
         this.getCoordinates = function(inputOffset, container, offset) {
-            if(inputOffset === textContent.length) {
-                return this.getCoordinates(inputOffset - 1);
-            }
             if(!container) {
                 offset = this.findOffset(inputOffset);
                 container = offset.container;
@@ -485,6 +482,8 @@ define([
             this.currentMode = undefined;
             lastMode = undefined;
             contentElt.textContent = content;
+            // Force this since the content could be the same
+            checkContentChange();
         };
     }
     var undoMgr = new UndoMgr();
@@ -503,12 +502,20 @@ define([
     var trailingLfNode;
     function checkContentChange() {
         var newTextContent = inputElt.textContent;
-        if(contentElt.lastChild === trailingLfNode && trailingLfNode.textContent.slice(-1) === '\n') {
+        if(contentElt.lastChild === trailingLfNode && trailingLfNode.textContent.slice(-1) == '\n') {
             newTextContent = newTextContent.slice(0, -1);
         }
 
         if(fileChanged === false) {
-            if(contentElt.children.length && newTextContent == textContent) {
+            if(newTextContent == textContent) {
+                // User has removed the empty section
+                if(contentElt.children.length === 0) {
+                    contentElt.innerHTML = '';
+                    sectionList.forEach(function(section) {
+                        contentElt.appendChild(section.elt);
+                    });
+                    addTrailingLfNode();
+                }
                 return;
             }
             undoMgr.currentMode = undoMgr.currentMode || 'typing';
@@ -609,6 +616,15 @@ define([
                 fileDesc.previewScrollTop = previewElt.scrollTop;
             }
         });
+        
+        // See https://gist.github.com/shimondoodkin/1081133
+        if(/AppleWebKit\/([\d.]+)/.exec(navigator.userAgent)) {
+            var $editableFix = $('<input style="width:1px;height:1px;border:none;margin:0;padding:0;" tabIndex="-1">').appendTo('html');
+            $contentElt.blur(function () {
+                $editableFix[0].setSelectionRange(0, 0);
+                $editableFix.blur();
+            });
+        }
 
         inputElt.focus = focus;
 
@@ -704,10 +720,8 @@ define([
 
             actions[action](state, options);
             setValue(state.before + state.selection + state.after);
-            _.defer(function() {
-                selectionMgr.setSelectionStartEnd(state.selectionStart, state.selectionEnd);
-                //$inputElt.trigger('input');
-            });
+            selectionMgr.setSelectionStartEnd(state.selectionStart, state.selectionEnd);
+
         };
 
         var actions = {
@@ -873,10 +887,17 @@ define([
                     childNode = nextNode;
                 }
             }
-            trailingLfNode = document.createTextNode('\n');
-            contentElt.appendChild(trailingLfNode);
+            addTrailingLfNode();
             selectionMgr.setSelectionStartEnd();
         });
+    }
+
+    function addTrailingLfNode() {
+        trailingLfNode = crel('span', {
+            class: 'token lf',
+        });
+        trailingLfNode.textContent = '\n';
+        contentElt.appendChild(trailingLfNode);
     }
 
     var escape = (function() {

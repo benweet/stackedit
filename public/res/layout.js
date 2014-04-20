@@ -7,7 +7,8 @@ define([
     'eventMgr',
     'crel',
     'mousetrap',
-], function($, _, utils, constants, settings, eventMgr, crel, mousetrap) {
+    'hammerjs',
+], function($, _, utils, constants, settings, eventMgr, crel, mousetrap, hammer) {
     var layout = {};
 
     var resizerSize = 32;
@@ -23,10 +24,11 @@ define([
     };
     var menuPanelWidth = 280;
     var documentPanelWidth = 320;
+    var titleMinWidth = 200;
     var windowSize;
 
     var wrapperL1, wrapperL2, wrapperL3;
-    var navbar, menuPanel, documentPanel, editor, previewPanel, previewContainer, navbarToggler, previewToggler, previewResizer;
+    var navbar, menuPanel, documentPanel, editor, previewPanel, previewContainer, navbarToggler, previewToggler, previewResizer, previewButtons;
 
     var animate = false;
     function startAnimation() {
@@ -126,6 +128,19 @@ define([
             resizeAll();
         };
     };
+    DomObject.prototype.initHammer = function(drag) {
+        this.hammer = hammer(this.elt, {
+            drag: drag ? true : false,
+            drag_max_touches: 0,
+            gesture: false,
+            hold: false,
+            release: false,
+            swipe: drag ? false : true,
+            tap: false,
+            touch: false,
+            transform: false
+        });
+    };
 
     var maxWidthMap = [
         { screenWidth: 0, maxWidth: 600 },
@@ -154,9 +169,9 @@ define([
     });
     var navbarMarginWidth = 18 * 2 + 25 + 25;
     var buttonsDropdownWidth = 40;
-    var titleMinWidth = 200;
     var workingIndicatorWidth = 18 + 70;
     function onResize() {
+        var paddingBottom = wrapperL3.height - 60;
 
         var editorPadding = (editor.elt.offsetWidth - getMaxWidth()) / 2;
         if(editorPadding < constants.EDITOR_DEFAULT_PADDING) {
@@ -164,6 +179,7 @@ define([
         }
         editorContentElt.style.paddingLeft = editorPadding + 'px';
         editorContentElt.style.paddingRight = editorPadding + 'px';
+        editorContentElt.style.paddingBottom = paddingBottom + 'px';
         editorMarginElt.style.width = editorPadding + 'px';
 
         var previewPadding = (previewContainer.elt.offsetWidth - getMaxWidth()) / 2;
@@ -172,6 +188,7 @@ define([
         }
         previewContentElt.style.paddingLeft = previewPadding + 'px';
         previewContentElt.style.paddingRight = previewPadding + 'px';
+        previewContentElt.style.paddingBottom = paddingBottom + 'px';
 
         if(!window.viewerMode) {
             var maxWidth = navbarMarginWidth + workingIndicatorWidth + titleMinWidth + buttonsDropdownWidth;
@@ -322,11 +339,11 @@ define([
         navbarToggler = new DomObject('.layout-toggler-navbar');
         previewToggler = new DomObject('.layout-toggler-preview');
         previewResizer = new DomObject('.layout-resizer-preview');
+        previewButtons = new DomObject('.extension-preview-buttons');
 
         editorContentElt = editor.elt.querySelector('.editor-content');
         previewContentElt = document.getElementById('preview-contents');
         editorMarginElt = editor.elt.querySelector('.editor-margin');
-        var $previewButtonsElt = $('.extension-preview-buttons');
         navbarInnerElt = navbar.elt.querySelector('.navbar-inner');
         navbarDropdownElt = navbar.elt.querySelector('.buttons-dropdown .dropdown-menu');
         $navbarDropdownBtnElt = navbar.$elt.find('.buttons-dropdown');
@@ -354,7 +371,7 @@ define([
 
         previewPanel.isOpen = true;
         previewPanel.createToggler(false, function(isOpen) {
-            $previewButtonsElt.toggleClass('hide', !isOpen);
+            previewButtons.$elt.toggleClass('hide', !isOpen);
             eventMgr.onPreviewToggle(isOpen);
         });
         previewPanel.halfSize = true;
@@ -368,57 +385,39 @@ define([
         documentPanel.createToggler(true);
         documentPanel.$elt.find('.toggle-button').click(_.bind(documentPanel.toggle, documentPanel));
 
-        // Hide menu panel when clicking 'Save as' button
-        menuPanel.$elt.on('click', 'a[data-toggle!=collapse]', _.bind(menuPanel.toggle, menuPanel, false));
-        documentPanel.$elt.on('click', 'a[data-toggle!=collapse]', _.bind(documentPanel.toggle, documentPanel, false));
+        // Gesture events
+        previewResizer.initHammer(true);
+        /*
+        navbar.initHammer();
+        menuPanel.initHammer();
+        documentPanel.initHammer();
+        previewButtons.initHammer();
 
-        menuPanel.$elt.on('show.bs.collapse', function() {
-            // Close all open sub-menus when one submenu opens
-            menuPanel.$elt.find('.in').collapse('hide');
-        });
+        navbar.hammer.on('swiperight', _.bind(menuPanel.toggle, menuPanel, true));
+        navbar.hammer.on('swipeleft', _.bind(documentPanel.toggle, documentPanel, true));
+        navbar.hammer.on('swipeup', _.bind(navbar.toggle, navbar, false));
 
-        var isDragging = false;
-        var desiredWidth, desiredHeight;
-        var lastCoord;
-        wrapperL1.$elt.on('mousemove', function(evt) {
-            if(!isDragging) {
-                return;
-            }
-            if(evt.which !== 1) {
-                isDragging = false;
+        menuPanel.hammer.on('swiperight', _.bind(menuPanel.toggle, menuPanel, true));
+        menuPanel.hammer.on('swipeleft', _.bind(menuPanel.toggle, menuPanel, false));
+
+        documentPanel.hammer.on('swipeleft', _.bind(documentPanel.toggle, documentPanel, true));
+        documentPanel.hammer.on('swiperight', _.bind(documentPanel.toggle, documentPanel, false));
+        */
+
+        var initialWidth, initialHeight;
+        previewResizer.hammer.on('dragstart', function() {
+            initialWidth = previewPanel.width;
+            initialHeight = previewPanel.height;
+        }).on('drag', function(evt) {
+            if(isVertical) {
+                previewPanel.height = initialHeight - evt.gesture.deltaY;
             }
             else {
-                var newCoord = {
-                    x: evt.pageX,
-                    y: evt.pageY,
-                };
-                if(isVertical && lastCoord.y !== newCoord.y) {
-                    desiredHeight += lastCoord.y - newCoord.y;
-                    previewPanel.height = desiredHeight;
-                    previewPanel.halfSize = false;
-                    resizeAll();
-                }
-                if(!isVertical && lastCoord.x !== newCoord.x) {
-                    desiredWidth += lastCoord.x - newCoord.x;
-                    previewPanel.width = desiredWidth;
-                    previewPanel.halfSize = false;
-                    resizeAll();
-                }
-                lastCoord = newCoord;
-                evt.preventDefault();
+                previewPanel.width = initialWidth - evt.gesture.deltaX;
             }
-        });
-
-        previewResizer.$elt.on('mousedown', function(evt) {
-            if(evt.which === 1) {
-                isDragging = true;
-                desiredWidth = previewPanel.width;
-                desiredHeight = previewPanel.height;
-                lastCoord = {
-                    x: evt.pageX,
-                    y: evt.pageY,
-                };
-            }
+            evt.gesture.preventDefault();
+            previewPanel.halfSize = false;
+            resizeAll();
         });
 
         var isModalShown = false;
@@ -429,6 +428,15 @@ define([
             isModalShown = true;
         }).on('hidden.bs.modal', function() {
             isModalShown = false;
+        });
+
+        // Hide panels when clicking on a non collapse element
+        menuPanel.$elt.on('click', 'a[data-toggle!=collapse]', _.bind(menuPanel.toggle, menuPanel, false));
+        documentPanel.$elt.on('click', 'a[data-toggle!=collapse]', _.bind(documentPanel.toggle, documentPanel, false));
+
+        // In menu panel, close all open sub-menus when one submenu opens
+        menuPanel.$elt.on('show.bs.collapse', function() {
+            menuPanel.$elt.find('.in').collapse('hide');
         });
 
         // Configure Mousetrap
@@ -469,10 +477,35 @@ define([
         style.innerHTML = styleContent;
         document.head.appendChild(style);
 
-
-
         resizeAll();
     };
+
+    eventMgr.addListener('onReady', function() {
+        var previewButtonsOffset = previewButtons.elt.offsetWidth + 5;
+        function openPreviewButtons() {
+            clearTimeout(closeTimeoutId);
+            previewButtons.x = 0;
+            previewButtons.applyCss();
+        }
+        var closeTimeoutId;
+        var dropdownOpen = false;
+        function closePreviewButtons() {
+            clearTimeout(closeTimeoutId);
+            closeTimeoutId = setTimeout(function() {
+                if(!dropdownOpen) {
+                    previewButtons.x = previewButtonsOffset;
+                    previewButtons.applyCss();
+                }
+            }, 3000);
+        }
+        closePreviewButtons();
+        previewButtons.$elt.hover(openPreviewButtons, closePreviewButtons).on('show.bs.dropdown', function() {
+            dropdownOpen = true;
+        }).on('hidden.bs.dropdown', function() {
+            dropdownOpen = false;
+            closePreviewButtons();
+        });
+    });
 
     eventMgr.onLayoutCreated(layout);
     return layout;

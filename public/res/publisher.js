@@ -297,9 +297,7 @@ define([
             });
         }
 
-        //
         $(".action-process-publish").click(performNewLocation);
-        $(".action-update-publication").click(publisher.publish);
 
         var $customTmplCollapseElt = $('.publish-custom-template-collapse').collapse({
             toggle: false

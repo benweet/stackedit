@@ -28,6 +28,7 @@
     "MutationObservers": "https://github.com/Polymer/MutationObservers.git#~0.2.1",
     "rangy": "~1.2.3",
     "google-diff-match-patch-js": "~1.0.0",
-    "jsondiffpatch": "~0.1.5"
+    "jsondiffpatch": "~0.1.5",
+    "hammerjs": "~1.0.10"
   }
 }

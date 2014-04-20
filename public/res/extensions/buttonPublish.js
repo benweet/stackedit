@@ -73,6 +73,10 @@ define([
         checkPublication();
     };
 
+    buttonPublish.onReady = function() {
+        $(".action-update-publication").click(publisher.publish);
+    };
+
     buttonPublish.onPublishRemoved = checkPublication;
     buttonPublish.onNewPublishSuccess = checkPublication;
 

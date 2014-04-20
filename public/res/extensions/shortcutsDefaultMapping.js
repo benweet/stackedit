@@ -12,7 +12,7 @@
     'mod+z': bindPagedownButton('undo'),
     'mod+y': bindPagedownButton('redo'),
     'mod+shift+z': bindPagedownButton('redo'),
-    'mod+p': function(evt) {
+    'mod+d': function(evt) {
         $('.button-open-discussion').click();
         evt.preventDefault();
     },

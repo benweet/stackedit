@@ -74,118 +74,149 @@ define([
     };
 
     /***************************************************************************
-     * Standard synchronization
+     * Synchronization
      **************************************************************************/
-
-    // Recursive function to upload a single file on multiple locations
-    var uploadSyncAttributesList = [];
-    var uploadContent;
-    var uploadContentCRC;
-    var uploadTitle;
-    var uploadTitleCRC;
-    var uploadDiscussionList;
-    var uploadDiscussionListCRC;
-    function locationUp(callback) {
-
-        // No more synchronized location for this document
-        if(uploadSyncAttributesList.length === 0) {
-            return fileUp(callback);
-        }
-
-        // Dequeue a synchronized location
-        var syncAttributes = uploadSyncAttributesList.pop();
-
-        syncAttributes.provider.syncUp(
-            uploadContent,
-            uploadContentCRC,
-            uploadTitle,
-            uploadTitleCRC,
-            uploadDiscussionList,
-            uploadDiscussionListCRC,
-            syncAttributes,
-            function(error, uploadFlag) {
-                if(uploadFlag === true) {
-                    // If uploadFlag is true, request another upload cycle
-                    uploadCycle = true;
-                }
-                if(error) {
-                    return callback(error);
-                }
-                if(uploadFlag) {
-                    // Update syncAttributes in storage
-                    utils.storeAttributes(syncAttributes);
-                }
-                locationUp(callback);
-            }
-        );
-    }
-
-    // Recursive function to upload multiple files
-    var uploadFileList = [];
-    function fileUp(callback) {
-
-        // No more fileDesc to synchronize
-        if(uploadFileList.length === 0) {
-            return syncUp(callback);
-        }
-
-        // Dequeue a fileDesc to synchronize
-        var fileDesc = uploadFileList.pop();
-        uploadSyncAttributesList = _.values(fileDesc.syncLocations);
-        if(uploadSyncAttributesList.length === 0) {
-            return fileUp(callback);
-        }
-
-        // Get document title/content
-        uploadContent = fileDesc.content;
-        uploadContentCRC = utils.crc32(uploadContent);
-        uploadTitle = fileDesc.title;
-        uploadTitleCRC = utils.crc32(uploadTitle);
-        uploadDiscussionList = fileDesc.discussionListJSON;
-        uploadDiscussionListCRC = utils.crc32(uploadDiscussionList);
-        locationUp(callback);
-    }
 
     // Entry point for up synchronization (upload changes)
     var uploadCycle = false;
     function syncUp(callback) {
+        var uploadFileList = [];
+
+        // Recursive function to upload multiple files
+        function fileUp() {
+            // No more fileDesc to synchronize
+            if(uploadFileList.length === 0) {
+                return syncUp(callback);
+            }
+
+            // Dequeue a fileDesc to synchronize
+            var fileDesc = uploadFileList.pop();
+            var uploadSyncAttributesList = _.values(fileDesc.syncLocations);
+            if(uploadSyncAttributesList.length === 0) {
+                return fileUp();
+            }
+
+            var uploadContent = fileDesc.content;
+            var uploadContentCRC = utils.crc32(uploadContent);
+            var uploadTitle = fileDesc.title;
+            var uploadTitleCRC = utils.crc32(uploadTitle);
+            var uploadDiscussionList = fileDesc.discussionListJSON;
+            var uploadDiscussionListCRC = utils.crc32(uploadDiscussionList);
+
+            // Recursive function to upload a single file on multiple locations
+            function locationUp() {
+
+                // No more synchronized location for this document
+                if(uploadSyncAttributesList.length === 0) {
+                    return fileUp();
+                }
+
+                // Dequeue a synchronized location
+                var syncAttributes = uploadSyncAttributesList.pop();
+
+                syncAttributes.provider.syncUp(
+                    uploadContent,
+                    uploadContentCRC,
+                    uploadTitle,
+                    uploadTitleCRC,
+                    uploadDiscussionList,
+                    uploadDiscussionListCRC,
+                    syncAttributes,
+                    function(error, uploadFlag) {
+                        if(uploadFlag === true) {
+                            // If uploadFlag is true, request another upload cycle
+                            uploadCycle = true;
+                        }
+                        if(error) {
+                            return callback(error);
+                        }
+                        if(uploadFlag) {
+                            // Update syncAttributes in storage
+                            utils.storeAttributes(syncAttributes);
+                        }
+                        locationUp();
+                    }
+                );
+            }
+            locationUp();
+        }
+
         if(uploadCycle === true) {
             // New upload cycle
             uploadCycle = false;
             uploadFileList = _.values(fileSystem);
-            fileUp(callback);
+            fileUp();
         }
         else {
             callback();
         }
     }
 
-    // Recursive function to download changes from multiple providers
-    var providerList = [];
-    function providerDown(callback) {
-        if(providerList.length === 0) {
-            return callback();
-        }
-        var provider = providerList.pop();
-
-        // Check that provider has files to sync
-        if(!synchronizer.hasSync(provider)) {
-            return providerDown(callback);
-        }
-
-        // Perform provider's syncDown
-        provider.syncDown(function(error) {
-            if(error) {
-                return callback(error);
-            }
-            providerDown(callback);
-        });
-    }
-
     // Entry point for down synchronization (download changes)
     function syncDown(callback) {
-        providerList = _.values(providerMap);
-        providerDown(callback);
+        var providerList = _.values(providerMap);
+
+        // Recursive function to download changes from multiple providers
+        function providerDown() {
+            if(providerList.length === 0) {
+                return callback();
+            }
+            var provider = providerList.pop();
+
+            // Check that provider has files to sync
+            if(!synchronizer.hasSync(provider)) {
+                return providerDown();
+            }
+
+            // Perform provider's syncDown
+            provider.syncDown(function(error) {
+                if(error) {
+                    return callback(error);
+                }
+                providerDown();
+            });
+        }
+        providerDown();
+    }
+
+    // Entry point for the autosync feature
+    function autosyncAll(callback) {
+        var autosyncFileList = _.filter(fileSystem, function(fileDesc) {
+            return _.size(fileDesc.syncLocations) === 0;
+        });
+
+        // Recursive function to autosync multiple files
+        function fileAutosync() {
+            // No more fileDesc to synchronize
+            if(autosyncFileList.length === 0) {
+                return callback();
+            }
+            var fileDesc = autosyncFileList.pop();
+
+            var providerList = _.filter(providerMap, function(provider) {
+                return provider.autosyncConfig.mode == 'all';
+            });
+            function providerAutosync() {
+                // No more provider
+                if(providerList.length === 0) {
+                    return fileAutosync();
+                }
+                var provider = providerList.pop();
+
+                provider.autosyncFile(fileDesc.title, fileDesc.content, fileDesc.discussionListJSON, provider.autosyncConfig, function(error, syncAttributes) {
+                    if(error) {
+                        return callback(error);
+                    }
+                    fileDesc.addSyncLocation(syncAttributes);
+                    eventMgr.onSyncExportSuccess(fileDesc, syncAttributes);
+                    providerAutosync();
+                });
+            }
+
+            providerAutosync();
+        }
+
+        fileAutosync();
     }
 
     // Listen to offline status changes
@@ -214,17 +245,22 @@ define([
             return false;
         }
 
-        syncDown(function(error) {
+        autosyncAll(function(error) {
             if(isError(error)) {
                 return;
             }
-            syncUp(function(error) {
+            syncDown(function(error) {
                 if(isError(error)) {
                     return;
                 }
-                syncRunning = false;
-                eventMgr.onSyncRunning(false);
-                eventMgr.onSyncSuccess();
+                syncUp(function(error) {
+                    if(isError(error)) {
+                        return;
+                    }
+                    syncRunning = false;
+                    eventMgr.onSyncRunning(false);
+                    eventMgr.onSyncSuccess();
+                });
             });
         });
         return true;
@@ -261,7 +297,10 @@ define([
     eventMgr.addListener("onFileCreated", function(fileDesc) {
         if(_.size(fileDesc.syncLocations) === 0) {
             _.each(providerMap, function(provider) {
-                provider.autosyncConfig.enabled && provider.autosyncFile(fileDesc.title, fileDesc.content, fileDesc.discussionListJSON, provider.autosyncConfig, function(error, syncAttributes) {
+                if(provider.autosyncConfig.mode != 'new') {
+                    return;
+                }
+                provider.autosyncFile(fileDesc.title, fileDesc.content, fileDesc.discussionListJSON, provider.autosyncConfig, function(error, syncAttributes) {
                     if(error) {
                         return;
                     }

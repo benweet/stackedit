@@ -262,14 +262,14 @@ define([
         // Initialize the AutoSync dialog fields
         gdriveProvider.setAutosyncDialogConfig = function() {
             var config = gdriveProvider.autosyncConfig;
-            utils.setInputChecked('#input-autosync-' + providerId + '-enabled', config.enabled);
+            utils.setInputRadio('radio-autosync-' + providerId + '-mode', config.mode || 'off');
             utils.setInputValue('#input-autosync-' + providerId + '-parentid', config.parentId);
         };
 
         // Retrieve the AutoSync dialog fields
         gdriveProvider.getAutosyncDialogConfig = function() {
             var config = {};
-            config.enabled = utils.getInputChecked('#input-autosync-' + providerId + '-enabled');
+            config.mode = utils.getInputRadio('radio-autosync-' + providerId + '-mode');
             config.parentId = utils.getInputTextValue('#input-autosync-' + providerId + '-parentid');
             return config;
         };

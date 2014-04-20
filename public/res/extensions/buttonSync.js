@@ -87,11 +87,14 @@ define([
         isOffline = isOfflineParameter;
         updateButtonState();
     };
-    
+
     buttonSync.onReady = function() {
         mousetrap.bind(buttonSync.config.syncShortcut, function(e) {
             synchronizer.sync() && (lastSync = utils.currentTime);
             e.preventDefault();
+        });
+        $(".action-force-synchronization").click(function() {
+            synchronizer.sync() && (lastSync = utils.currentTime);
         });
     };
 

@@ -28,7 +28,7 @@
 				</ul>
 				<ul class="nav left-buttons">
 					<li class="wmd-button-group4 btn-group">
-						<a class="btn btn-success button-open-discussion"><i class="icon-comment-alt"></i></a>
+						<a class="btn btn-success button-open-discussion" title="Comments Ctrl/Cmd+M"><i class="icon-comment-alt"></i></a>
 					</li>
 				</ul>
 				<ul class="nav pull-right right-buttons">
@@ -52,11 +52,9 @@
 		<div class="layout-wrapper-l3">
 			<pre id="wmd-input" class="ui-layout-center form-control"><div class="editor-content" contenteditable=true></div><div class="editor-margin"></div></pre>
 			<div class="preview-panel">
-				<div class="extension-preview-buttons"></div>
 				<div class="layout-resizer layout-resizer-preview"></div>
 				<div class="layout-toggler layout-toggler-navbar btn btn-info"><i class="icon-th"></i></div>
 				<div class="layout-toggler layout-toggler-preview btn btn-info"><i class="icon-none"></i></div>
-				<div class="extension-editor-buttons"></div>
 				<div class="preview-container">
 					<div id="preview-contents">
 						<div id="wmd-preview" class="preview-content"></div>
@@ -64,6 +62,7 @@
 				</div>
 			</div>
 		</div>
+		<div class="extension-preview-buttons"></div>
 	</div>
 	<div id="wmd-button-bar" class="hide"></div>
 
@@ -98,28 +97,28 @@
 	                        class="icon-refresh"></i> Manage synchronization</a></li>
 	                </ul>
 					<ul class="nav">
-						<li><a href="#" class="action-sync-export-dialog-dropbox"><i
-					        class="icon-provider-dropbox"></i> Save on Dropbox</a></li>
 						<li><a href="#" class="action-sync-import-dropbox"><i
 							class="icon-provider-dropbox"></i> Open from Dropbox</a></li>
-						<li><a href="#" class="submenu-sync-gdrive action-sync-export-dialog-gdrive"><i
-					        class="icon-provider-gdrive"></i> Save on Google Drive</a></li>
+						<li><a href="#" class="action-sync-export-dialog-dropbox"><i
+					        class="icon-provider-dropbox"></i> Save on Dropbox</a></li>
 						<li><a href="#" class="submenu-sync-gdrive action-sync-import-gdrive"><i
 							class="icon-provider-gdrive"></i> Open from Google Drive</a></li>
-						<li><a href="#" class="submenu-sync-gdrivesec action-sync-export-dialog-gdrivesec"><i
-					        class="icon-provider-gdrive"></i> Save on Google Drive <small>(2nd account)</small></a></li>
+						<li><a href="#" class="submenu-sync-gdrive action-sync-export-dialog-gdrive"><i
+							class="icon-provider-gdrive"></i> Save on Google Drive</a></li>
 						<li><a href="#" class="submenu-sync-gdrivesec action-sync-import-gdrivesec"><i
 							class="icon-provider-gdrive"></i> Open from Google Drive <small>(2nd account)</small></a></li>
-						<li><a href="#" class="submenu-sync-gdriveter action-sync-export-dialog-gdriveter"><i
-					        class="icon-provider-gdrive"></i> Save on Google Drive <small>(3rd account)</small></a></li>
+						<li><a href="#" class="submenu-sync-gdrivesec action-sync-export-dialog-gdrivesec"><i
+							class="icon-provider-gdrive"></i> Save on Google Drive <small>(2nd account)</small></a></li>
 						<li><a href="#" class="submenu-sync-gdriveter action-sync-import-gdriveter"><i
 							class="icon-provider-gdrive"></i> Open from Google Drive <small>(3rd account)</small></a></li>
+						<li><a href="#" class="submenu-sync-gdriveter action-sync-export-dialog-gdriveter"><i
+							class="icon-provider-gdrive"></i> Save on Google Drive <small>(3rd account)</small></a></li>
 					</ul>
 				</div>
 				<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"
 					class="list-group-item">
 					<div><i class="icon-upload"></i>Publish</div>
-					<small>Export on the web</small>
+					<small>Export to the web</small>
 				</a>
 				<div class="sub-menu collapse collapse-publish-on clearfix">
 					<ul class="nav alert alert-danger show-already-published">
@@ -181,7 +180,7 @@
 
 
 	<div class="document-panel">
-		<button class="btn toggle-button" title="Select document">
+		<button class="btn toggle-button" title="Select document Ctrl+[ Ctrl+]">
 			<i class="icon-folder-open"></i>
 		</button>
 		<div class="search-bar clearfix">
@@ -1002,17 +1001,6 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label"
-									for="input-settings-lazy-rendering">Lazy rendering <a
-									href="#" class="tooltip-lazy-rendering">(?)</a>
-								</label>
-								<div class="col-sm-7">
-									<div class="checkbox">
-										<input type="checkbox" id="input-settings-lazy-rendering" />
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
 								<label class="col-sm-4 control-label">Editor's font style</label>
 								<div class="col-sm-7">
 									<div class="radio">
@@ -1031,22 +1019,29 @@
 							</div>
 							<div class="form-group">
 								<label class="col-sm-4 control-label"
-									for="input-settings-editor-font-family">Editor font</label>
+									for="input-settings-font-size">Font size ratio</label>
 								<div class="col-sm-8 form-inline">
-									<input type="text" id="input-settings-editor-font-family"
-										class="form-control col-sm-7"> <input type="text"
-										id="input-settings-editor-font-size"
-										class="form-control col-sm-2"> px <span
-										class="help-block"> Only monospaced fonts are
-										supported.</span>
+									<input type="text" id="input-settings-font-size"
+										class="form-control col-sm-2">
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-4 control-label"
-									for="input-settings-max-width">Max width</label>
+									for="input-settings-max-width">Max width ratio</label>
 								<div class="col-sm-8 form-inline">
 									<input type="text" id="input-settings-max-width"
-										class="form-control col-sm-3"> px
+										class="form-control col-sm-2">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label"
+									for="input-settings-lazy-rendering">Lazy rendering <a
+									href="#" class="tooltip-lazy-rendering">(?)</a>
+								</label>
+								<div class="col-sm-7">
+									<div class="checkbox">
+										<input type="checkbox" id="input-settings-lazy-rendering" />
+									</div>
 								</div>
 							</div>
 							<div class="form-group">
@@ -1272,6 +1267,28 @@
 				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
 				<a href="#" class="btn btn-primary action-import-docs-settings-confirm"
 					data-dismiss="modal">OK</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade modal-add-google-drive-account">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h2 class="modal-title">Add Google Drive account</h2>
+			</div>
+			<div class="modal-body">
+				<p>To perform this request, you need to configure another Google Drive account in StackEdit.</p>
+				<blockquote>Do you want to proceed?</blockquote>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default action-remove-google-drive-state"
+					data-dismiss="modal">No</a>
+				<a href="#" class="btn btn-primary action-add-google-drive-account"
+					data-dismiss="modal">Yes</a>
 			</div>
 		</div>
 	</div>

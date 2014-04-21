@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#Date Sun Feb 16 2014 16:48:09
+#Date Sun Apr 20 2014 18:20:19
 
 CACHE:
 res/worker.js
@@ -11,18 +11,22 @@ libs/MathJax/images/MenuArrow-15.png
 libs/MathJax/jax/output/HTML-CSS/jax.js
 
 #DynamicResourcesBegin
-res-min/font/OpenSans-Bold-webfont.svg
-res-min/font/OpenSans-Bold-webfont.woff
-res-min/font/OpenSans-BoldItalic-webfont.svg
-res-min/font/OpenSans-BoldItalic-webfont.woff
-res-min/font/OpenSans-Italic-webfont.svg
-res-min/font/OpenSans-Italic-webfont.woff
-res-min/font/OpenSans-Light-webfont.svg
-res-min/font/OpenSans-Light-webfont.woff
-res-min/font/OpenSans-LightItalic-webfont.svg
-res-min/font/OpenSans-LightItalic-webfont.woff
-res-min/font/OpenSans-Regular-webfont.svg
-res-min/font/OpenSans-Regular-webfont.woff
+res-min/font/AnonymousPro-Bold-webfont.woff
+res-min/font/AnonymousPro-BoldItalic-webfont.woff
+res-min/font/AnonymousPro-Italic-webfont.woff
+res-min/font/AnonymousPro-Regular-webfont.woff
+res-min/font/PTSans-Bold-webfont.woff
+res-min/font/PTSans-BoldItalic-webfont.woff
+res-min/font/PTSans-Italic-webfont.woff
+res-min/font/PTSans-Regular-webfont.woff
+res-min/font/SourceCodePro-Bold-webfont.woff
+res-min/font/SourceCodePro-Regular-webfont.woff
+res-min/font/SourceSansPro-Bold-webfont.woff
+res-min/font/SourceSansPro-BoldItalic-webfont.woff
+res-min/font/SourceSansPro-Italic-webfont.woff
+res-min/font/SourceSansPro-Light-webfont.woff
+res-min/font/SourceSansPro-LightItalic-webfont.woff
+res-min/font/SourceSansPro-Regular-webfont.woff
 res-min/font/cursive_standard-webfont.eot
 res-min/font/cursive_standard-webfont.svg
 res-min/font/cursive_standard-webfont.ttf
@@ -45,15 +49,8 @@ res-min/themes/base.css
 res-min/themes/default.css
 res-min/themes/gray.css
 res-min/themes/night.css
+res-min/themes/original.css
 res-min/themes/school.css
-libs/dictionaries/de_DE.aff.lz
-libs/dictionaries/de_DE.dic.lz
-libs/dictionaries/en_US.aff.lz
-libs/dictionaries/en_US.dic.lz
-libs/dictionaries/es_ES.aff.lz
-libs/dictionaries/es_ES.dic.lz
-libs/dictionaries/fr_FR.aff.lz
-libs/dictionaries/fr_FR.dic.lz
 libs/MathJax/extensions/FontWarnings.js
 libs/MathJax/extensions/HTML-CSS/handle-floats.js
 libs/MathJax/extensions/HelpDialog.js

@@ -108,7 +108,8 @@ define([
             eventMgr.onError('File path is already synchronized with "' + existingTitle + '".');
             return callback(true);
         }
-        dropboxHelper.upload(path, content, function(error, result) {
+        var data = dropboxProvider.serializeContent(content, discussionListJSON);
+        dropboxHelper.upload(path, data, function(error, result) {
             if(error) {
                 return callback(error);
             }

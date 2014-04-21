@@ -60,10 +60,6 @@ define([
             // doesn't support it
             extension.enabled = false;
         }
-        else if(window.lightMode === true && extension.disableInLight === true) {
-            // Same for light mode
-            extension.enabled = false;
-        }
         else {
             // Enable the extension if it's not optional or it has not been
             // disabled by the user
@@ -137,10 +133,6 @@ define([
     eventMgr.onSaveSettings = function(newExtensionSettings, event) {
         logger.log("onSaveSettings");
         _.each(extensionList, function(extension) {
-            if(window.lightMode === true && extension.disableInLight === true) {
-                newExtensionSettings[extension.extensionId] = extension.config;
-                return;
-            }
             var newExtensionConfig = _.extend({}, extension.defaultConfig);
             newExtensionConfig.enabled = utils.getInputChecked("#input-enable-extension-" + extension.extensionId);
             var isChecked;
@@ -205,7 +197,6 @@ define([
     // Operations on Layout
     addEventHook("onLayoutCreated");
     addEventHook("onLayoutResize");
-    addEventHook("onPreviewToggle");
 
     // Operations on editor
     addEventHook("onPagedownConfigure");
@@ -274,7 +265,7 @@ define([
             var accordionHtml = _.chain(extensionList).sortBy(function(extension) {
                 return extension.extensionName.toLowerCase();
             }).reduce(function(html, extension) {
-                return html + (extension.settingsBlock && !(window.lightMode === true && extension.disableInLight === true) ? _.template(settingsExtensionsAccordionHTML, {
+                return html + (extension.settingsBlock ? _.template(settingsExtensionsAccordionHTML, {
                     extensionId: extension.extensionId,
                     extensionName: extension.extensionName,
                     isOptional: extension.isOptional,
@@ -291,16 +282,6 @@ define([
                 extensionButtonsFragment.appendChild(createBtn(listener));
             });
             document.querySelector('.extension-buttons').appendChild(extensionButtonsFragment);
-
-            // Create extension editor buttons
-            logger.log("onCreateEditorButton");
-            var onCreateEditorButtonListenerList = getExtensionListenerList("onCreateEditorButton");
-            var extensionEditorButtonsFragment = document.createDocumentFragment();
-            _.each(onCreateEditorButtonListenerList, function(listener) {
-                extensionEditorButtonsFragment.appendChild(createBtn(listener));
-            });
-            var editorButtonsElt = document.querySelector('.extension-editor-buttons');
-            editorButtonsElt.appendChild(extensionEditorButtonsFragment);
         }
 
         // Create extension preview buttons
@@ -312,23 +293,6 @@ define([
         });
         var previewButtonsElt = document.querySelector('.extension-preview-buttons');
         previewButtonsElt.appendChild(extensionPreviewButtonsFragment);
-
-        setTimeout(function() {
-            var previewButtonsWidth = previewButtonsElt.offsetWidth;
-            _.each(previewButtonsElt.querySelectorAll('.btn-group'), function(btnGroupElt) {
-                // A bit of jQuery...
-                var $btnGroupElt = $(btnGroupElt);
-                $btnGroupElt.click(function() {
-                    // Align dropdown to the left of the screen
-                    $btnGroupElt.find('.dropdown-menu').css({
-                        right: -previewButtonsWidth + $btnGroupElt.width() + $btnGroupElt.position().left
-                    });
-                    $btnGroupElt.find('.markdown-syntax, .table-of-contents').css({
-                        'max-height': $(document).height() - $btnGroupElt.offset().top - 190
-                    });
-                });
-            });
-        }, 0);
 
         // Call onReady listeners
         onReady();

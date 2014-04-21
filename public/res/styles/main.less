@@ -19,10 +19,11 @@
 @primary-border-color: fade(@primary, 10%);
 
 // Preview and menus
+@secondary-bg-dark: lighten(@secondary-desaturated, 45%);
 @secondary-bg: lighten(@secondary-desaturated, 48%);
 @secondary-bg-light: lighten(@secondary-desaturated, 47%);
 @secondary-bg-lighter: #fff;
-@secondary-color: lighten(@primary-desaturated, 10%);
+@secondary-color: lighten(@primary-desaturated, 12%);
 @secondary-color-dark: darken(@secondary-color, 12.5%);
 @secondary-color-darker: darken(@secondary-color, 25%);
 @secondary-color-darkest: darken(@secondary-color, 37.5%);
@@ -34,7 +35,7 @@
 @tertiary-bg: #fff;
 @tertiary-color-lighter: fade(@tertiary-color, 40%);
 @tertiary-color-light: fade(@tertiary-color, 60%);
-@tertiary-color: darken(@secondary-desaturated, 5%);
+@tertiary-color: @secondary-desaturated;
 @tertiary-color-dark: darken(@tertiary-color, 15%);
 @tertiary-color-darker: darken(@tertiary-color, 30%);
 
@@ -112,7 +113,7 @@
 @btn-info-bg: @transparent;
 @btn-info-border: @transparent;
 @btn-info-hover-border: fade(@secondary, 8%);
-@btn-info-hover-bg: lighten(@secondary-desaturated, 45%);
+@btn-info-hover-bg: @secondary-bg-dark;
 @gray-lighter: @body-bg;
 @modal-header-border-color: @secondary-border-color-light;
 @modal-content-bg: @secondary-bg-lighter;
@@ -316,7 +317,8 @@ a {
     &:hover,
     &:focus,
     &:active,
-    .info-tooltip &,
+    &.info-tooltip,
+	.info-tooltip &,
     .open &.dropdown-toggle {
     	color: darken(@secondary, 30%);
     	border-color: @btn-info-hover-border;
@@ -781,8 +783,7 @@ a {
 
 // Hack to align multiple btn-group
 .extension-buttons > .btn-group,
-.extension-preview-buttons > .btn-group,
-.extension-editor-buttons > .btn-group {
+.extension-preview-buttons > .btn-group {
     & > .btn,
     & > .btn {
     	border-radius: 0;
@@ -801,9 +802,9 @@ a {
 
 .extension-preview-buttons {
     position: absolute;
-	z-index: 1;
-	right: 50px;
-    margin-top: 6px;
+	z-index: 10;
+	right: 45px;
+    bottom: 6px;
 	background-color: @btn-info-hover-bg;
 	border: 1px solid @btn-info-hover-border;
 	border-radius: @border-radius-base;
@@ -815,7 +816,7 @@ a {
 		}
 	}
 	.dropdown-menu {
-        margin-top: 6px;
+        margin-bottom: 6px;
     	padding-bottom: 20px;
 	}
 
@@ -842,24 +843,6 @@ a {
 		    margin-left: 10px;
 		    padding-left: 10px;
 		}
-	}
-}
-
-.extension-editor-buttons {
-	position: absolute;
-	display: inline-block;
-	vertical-align: top;
-	.btn {
-		text-align: center;
-		height: @resizer-size;
-		width: @resizer-size;
-		padding: 0;
-	}
-	.ui-layout-resizer-east & {
-		bottom: 0;
-	}
-	.ui-layout-resizer-south & {
-		right: 0;
 	}
 }
 
@@ -1373,7 +1356,6 @@ a {
 }
 
 #preview-contents {
-	margin: 0 0 200px;
 	text-align: justify;
 }
 
@@ -1487,16 +1469,30 @@ input[type="file"] {
 
 
 /*********************
- * Bootstrap tour
+ * Popovers
  *********************/
 
 .popover {
-	max-width: 230px;
-	padding: 10px 20px 0;
-	//.box-shadow(0 5px 30px rgba(0,0,0,.175));
+	max-width: 350px;
+	padding: 15px;
 	.popover-title {
 		font-weight: @headings-font-weight;
 		font-size: 24px;
+		padding: 10px 15px;
+	}
+	.disabled {
+		display: none;
+	}
+	.popover-navigation {
+		margin-top: -40px;
+	}
+}
+
+// comments popover
+.comments-popover .popover {
+	max-width: 230px;
+	padding: 10px 20px 0;
+	.popover-title {
 		padding: 5px 0 15px;
 		border-bottom: 1px solid @hr-border;
 		line-height: @headings-line-height;
@@ -1505,13 +1501,6 @@ input[type="file"] {
 			font-size: 16px;
 			line-height: 22px;
 		}
-	}
-	.icon-lock {
-        font-size: 38px;
-        margin: 5px;
-    }
-	.disabled {
-		display: none;
 	}
 	.popover-content {
 		margin: 0;
@@ -1560,24 +1549,22 @@ input[type="file"] {
 		}
 	}
 
-	.comments-popover & {
-		&.top,
-		&.bottom {
-			.arrow {
-				margin-right: 1px;
+	&.top,
+	&.bottom {
+		.arrow {
+			margin-right: 1px;
+			border-right-width: 0;
+			&:after {
+				margin-left: -11px;
 				border-right-width: 0;
-				&:after {
-					margin-left: -11px;
-					border-right-width: 0;
-				}
 			}
 		}
-		&.top .arrow:after {
-			bottom: 2px;
-		}
-		&.bottom .arrow:after {
-			top: 2px;
-		}
+	}
+	&.top .arrow:after {
+		bottom: 2px;
+	}
+	&.bottom .arrow:after {
+		top: 2px;
 	}
 }
 

@@ -161,23 +161,19 @@ define([
         $documentListFilteredElt = $(documentListFilteredElt);
 
         // Open current folder before opening
-        $(panelElt).on('show.bs.collapse', function(e) {
-            if(e.target === panelElt) {
-                var folderDesc = selectedFileDesc.folder;
-                if(folderDesc !== undefined) {
-                    $(panelElt.querySelector('.file-list.' + folderDesc.folderIndex.replace('.', ''))).collapse('show');
-                }
+        $(panelElt).on('show.layout.toggle', function() {
+            var folderDesc = selectedFileDesc.folder;
+            if(folderDesc !== undefined) {
+                $(panelElt.querySelector('.file-list.' + folderDesc.folderIndex.replace('.', ''))).collapse('show');
             }
-        }).on('shown.bs.collapse', function(e) {
-            if(e.target === panelElt) {
-                // Unset the filter
-                $filterInputElt.val('');
-                filterFiles('');
-
-                // Scroll to the active file
-                var activeElt = documentListElt.querySelector('.file.active');
-                activeElt && (panelContentElt.scrollTop += activeElt.getBoundingClientRect().top - 240);
-            }
+        }).on('shown.layout.toggle', function() {
+            // Scroll to the active file
+            var activeElt = documentListElt.querySelector('.file.active');
+            activeElt && (panelContentElt.scrollTop += activeElt.getBoundingClientRect().top - 240);
+        }).on('hidden.layout.toggle', function() {
+            // Unset the filter
+            $filterInputElt.val('');
+            filterFiles('');
         });
 
         // Search bar input change

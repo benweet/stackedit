@@ -58,7 +58,7 @@ define([
     buttonSync.onCreateButton = function() {
         var button = crel('a', {
             class: 'btn btn-success button-synchronize',
-            title: 'Synchronize all'
+            title: 'Force synchronization Ctrl/Cmd+S'
         }, crel('i', {
             class: 'icon-refresh'
         }));

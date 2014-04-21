@@ -16,6 +16,13 @@ module.exports = function(grunt) {
         jshint: {
             options: {
                 jshintrc: true,
+                ignores: [
+                    'node_modules/**/*.js',
+                    'public/libs/**/*.js',
+                    'public/res/libs/**/*.js',
+                    'public/res/bower-libs/**/*.js',
+                    'public/res-min/**/*.js'
+                ]
             },
             client: ['public/**/*.js'],
         },
@@ -28,12 +35,14 @@ module.exports = function(grunt) {
                     mainConfigFile: 'public/res/main.js',
                     optimize: "uglify2",
                     inlineText: true,
+                    /*
                     uglify2: {
                         output: {
                             beautify: true,
                             indent_level: 1,
                         },
                     },
+                    */
                     excludeShallow: [
                         'css/css-builder',
                         'less/lessc-server',
@@ -211,7 +220,6 @@ module.exports = function(grunt) {
         // List resources and inject them in cache.manifest
         var resFolderList = [
             'public/res-min',
-            'public/libs/dictionaries',
             'public/libs/MathJax/extensions',
             'public/libs/MathJax/fonts/HTML-CSS/TeX/woff',
             'public/libs/MathJax/jax/element',

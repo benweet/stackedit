@@ -1,4 +1,3 @@
-/*global gapi */
 define([
     "jquery",
     "underscore",
@@ -115,7 +114,8 @@ define([
                 }
             }
             var parentId = utils.getInputTextValue('#input-sync-export-' + providerId + '-parentid');
-            googleHelper.upload(fileId, parentId, title, content, undefined, undefined, accountId, function(error, result) {
+            var data = gdriveProvider.serializeContent(content, discussionListJSON);
+            googleHelper.upload(fileId, parentId, title, data, undefined, undefined, accountId, function(error, result) {
                 if(error) {
                     callback(error);
                     return;
@@ -334,16 +334,33 @@ define([
                 }, 'folder', accountId);
             });
 
+            $('.action-remove-google-drive-state').click(function() {
+                storage.removeItem('gdrive.state');
+            });
+
             // Skip gdrive action if provider is not enabled in the settings
             if(accountIndex >= settings.gdriveMultiAccount) {
                 return;
             }
-            var state = utils.retrieveIgnoreError(providerId + ".state");
+            var state = utils.retrieveIgnoreError('gdrive.state');
             var userId = storage[accountId + '.userId'];
-            if(state === undefined || (userId && state.userId != userId)) {
+            if(state === undefined) {
                 return;
             }
-            storage.removeItem(providerId + ".state");
+            if(userId && state.userId != userId) {
+                if(accountIndex === settings.gdriveMultiAccount - 1) {
+                    if(settings.gdriveMultiAccount === 3) {
+                        eventMgr.onError('None of your 3 Google Drive accounts is able to perform this request.');
+                        storage.removeItem('gdrive.state');
+                    }
+                    else {
+                        $(".modal-add-google-drive-account").modal();
+                    }
+                }
+                return;
+            }
+
+            storage.removeItem('gdrive.state');
             if(state.action == "create") {
                 googleHelper.upload(undefined, state.folderId, constants.GDRIVE_DEFAULT_FILE_TITLE, settings.defaultContent, undefined, undefined, accountId, function(error, file) {
                     if(error) {

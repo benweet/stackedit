@@ -18,9 +18,6 @@ define([
     };
 
     var isPreviewVisible = true;
-    scrollSync.onPreviewToggle = function(isOpen) {
-        isPreviewVisible = isOpen;
-    };
 
     var $editorElt;
     var $previewElt;
@@ -224,6 +221,13 @@ define([
                 isScrollPreview = false;
                 doScrollSync();
             }
+        });
+
+        $previewElt.on('hide.layout.toggle', function() {
+            isPreviewVisible = false;
+        });
+        $previewElt.on('shown.layout.toggle', function() {
+            isPreviewVisible = true;
         });
     };
 

@@ -79,7 +79,10 @@ define([
     // For input control
     function inputError(element, event) {
         if(event !== undefined) {
-            element.stop(true, true).addClass("error").delay(1000).switchClass("error");
+            element.stop(true, true).addClass("error").delay(1000).queue(function() {
+                $(this).removeClass("error");
+                $(this).dequeue();
+            });
             event.stopPropagation();
         }
     }
@@ -113,20 +116,26 @@ define([
         return value;
     };
 
-    // Return input integer value
-    utils.getInputIntValue = function(element, event, min, max) {
+    // Return input number value
+    function getInputNumValue(isFloat, element, event, min, max) {
         element = jqElt(element);
         var value = utils.getInputTextValue(element, event);
         if(value === undefined) {
             return undefined;
         }
-        value = parseInt(value, 10);
+        value = isFloat ? parseFloat(value) : parseInt(value, 10);
         if(isNaN(value) || (min !== undefined && value < min) || (max !== undefined && value > max)) {
             inputError(element, event);
             return undefined;
         }
         return value;
-    };
+    }
+
+    // Return input integer value
+    utils.getInputIntValue = _.partial(getInputNumValue, false);
+
+    // Return input float value
+    utils.getInputFloatValue = _.partial(getInputNumValue, true);
 
     // Return input value and check that it's a valid RegExp
     utils.getInputRegExpValue = function(element, event) {

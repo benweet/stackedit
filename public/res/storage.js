@@ -216,9 +216,13 @@ define([
     if(version == "v16" || version == "v17") {
         localStorage.removeItem('focusMode');
         localStorage.removeItem('mode');
+        localStorage.removeItem('gdrive.state');
         if(_.has(localStorage, 'settings')) {
             settings = JSON.parse(localStorage.settings);
             delete settings.shortcuts;
+            delete settings.editorFontFamily;
+            delete settings.editorFontSize;
+            delete settings.maxWidth;
             localStorage.settings = JSON.stringify(settings);
         }
         version = "v18";

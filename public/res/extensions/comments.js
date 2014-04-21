@@ -147,7 +147,7 @@ define([
                 commentElt = crel('a');
             }
             var className = 'discussion';
-            var isReplied = !discussion.commentList || _.last(discussion.commentList).author != author;
+            var isReplied = !discussion.commentList || !author || _.last(discussion.commentList).author != author;
             isReplied && (someReplies = true);
             if(discussion.type == 'conflict') {
                 className += ' icon-split';

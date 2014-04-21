@@ -7,13 +7,28 @@ define([
 ], function(_, $, storage, Extension, Tour) {
 
     var welcomeTour = new Extension('welcomeTour', 'Welcome tour', false, true);
-    
+
     var eventMgr;
     welcomeTour.onEventMgrCreated = function(eventMgrParam) {
         eventMgr = eventMgrParam;
     };
 
     welcomeTour.onReady = function() {
+        function infoTooltip(btnSelector, title, placement) {
+            var tooltip = $(btnSelector).tooltip({
+                html: true,
+                //container: $('.extension-preview-buttons'),
+                placement: placement,
+                trigger: 'manual',
+                title: title
+            }).tooltip('show').addClass('info-tooltip');
+            tooltip.one('click', function() {
+                tooltip.tooltip('hide').removeClass('info-tooltip');
+            });
+            setTimeout(function() {
+                tooltip.tooltip('hide').removeClass('info-tooltip');
+            }, 20000);
+        }
         var tour = new Tour({
             keyboard: false,
             storage: {
@@ -26,19 +41,10 @@ define([
             },
             onEnd: function() {
                 storage.welcomeTour = 'done';
-                var tooltip = $('.button-markdown-syntax').parent().tooltip({
-                    html: true,
-                    container: $('.extension-preview-buttons'),
-                    placement: 'bottom',
-                    trigger: 'manual',
-                    title: 'Need help with Markdown syntax?'
-                }).tooltip('show').addClass('info-tooltip');
-                tooltip.one('click', function() {
-                    tooltip.tooltip('hide').removeClass('info-tooltip');
-                });
-                setTimeout(function() {
-                    tooltip.tooltip('hide').removeClass('info-tooltip');
-                }, 15000);
+                infoTooltip('.menu-panel .toggle-button *', 'Synchronize, publish and more...', 'right');
+                infoTooltip('.document-panel .toggle-button *', 'Create and manage documents', 'left');
+                infoTooltip('.extension-preview-buttons .btn-group:first', 'Need help with Markdown syntax?', 'left');
+                infoTooltip('.layout-toggler-preview', 'Toggle preview', 'right');
             },
             template: [
                 '<div class="popover tour">',
@@ -55,60 +61,17 @@ define([
         tour.addSteps([
             {
                 element: '.navbar-inner',
-                title: 'Welcome to StackEdit!',
+                title: 'StackEdit 4 beta preview!',
                 content: [
-                    '<i class="icon-lock pull-left"></i>',
-                    '<p><strong>You are using the new secured platform.</strong> If you want to recover your documents from the old platform <a target="_blank" href="http://benweet.github.io/stackedit/recovery.html">click here</a>.</p>',
-                    'Please click <code>Next</code> to take a quick tour.'
-                ].join(""),
-                placement: 'bottom',
-            },
-            {
-                element: '.navbar-inner > .nav .action-create-file, .navbar .right-buttons-dropdown > .nav > .btn:not(:hidden)',
-                title: 'New document',
-                content: 'Click the <i class="icon-file"></i> <code>New document</code> button to create a new document.',
-                placement: 'left',
-                reflex: true,
-            },
-            {
-                element: '.document-panel .collapse-button',
-                title: 'Toggle document',
-                content: [
-                    '<p>Click the <i class="icon-folder-open"></i> <code>Select document</code> button to switch to another document.</p>',
-                    'Use <code>Ctrl+[</code> and <code>Ctrl+]</code> shortcuts to toggle quickly.'
-                ].join(""),
-                placement: 'left',
-                reflex: true,
-            },
-            {
-                element: '.menu-panel .collapse-button',
-                title: 'Menu',
-                content: [
-                    '<p>Use the <i class="icon-provider-stackedit"></i> menu to synchronize your document on <i class="icon-provider-gdrive"></i> <code>Google Drive</code> or <i class="icon-provider-dropbox"></i> <code>Dropbox</code>.</p>',
-                    'Use also this menu to publish your document on <i class="icon-provider-github"></i> <code>GitHub</code>, <i class="icon-provider-blogger"></i> <code>Blogger</code>...'
-                ].join(""),
-                placement: 'right',
-                reflex: true,
-            },
-            {
-                element: '.navbar-inner > .nav .button-synchronize, .navbar .right-buttons-dropdown > .nav > .btn:not(:hidden)',
-                title: 'Synchronize',
-                content: '<p>Once imported or exported, use the <i class="icon-refresh"></i> <code>Synchronize</code> button to force the synchronization</p>This is done automatically every 3 minutes.',
-                placement: 'left',
-                reflex: true,
-            },
-            {
-                element: '.navbar-inner > .nav .button-publish, .navbar .right-buttons-dropdown > .nav > .btn:not(:hidden)',
-                title: 'Update publication',
-                content: 'Once published, use the <i class="icon-upload"></i> <code>Publish</code> button to update the publication.',
-                placement: 'left',
-                reflex: true,
-            },
-            {
-                element: '.navbar-inner',
-                title: 'Happy StackWriting!',
-                content: [
-                    '<p>Enjoy, and don\'t forget to rate <b>StackEdit</b> on <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg/reviews">Chrome Web Store</a>...</p>',
+                    '<p><strong>What\'s new?</strong></p>',
+                    '<ul>',
+                    '    <li>New contenteditable based editor (credit to Dabblet, Editorially...)</li>',
+                    '    <li>New layout with CSS3 transitions (lighter supposedly)</li>',
+                    '    <li>Comments/discussions support (see the new icon in the navigation bar)</li>',
+                    '    <li>Auto-merge and conflict detection using standard synchronization</li>',
+                    '    <li>Dropped real time sync support :( since you can collaborate simultaneously using standard synchronization</li>',
+                    '</ul>',
+                    '<p>Please provide your feedback <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg/reviews">here</a> and declare issues on GitHub... Thanks!</p>',
                     '<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://stackedit.io" data-text="Great #markdown editor!" data-via="stackedit" data-size="large"></a>',
                 ].join(""),
                 placement: 'bottom',

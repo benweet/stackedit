@@ -305,7 +305,6 @@ define([
             adjust();
         };
     })();
-    eventMgr.addListener('onLayoutResize', adjustCursorPosition);
     editor.adjustCursorPosition = adjustCursorPosition;
 
     var textContent;
@@ -616,7 +615,7 @@ define([
                 fileDesc.previewScrollTop = previewElt.scrollTop;
             }
         });
-        
+
         // See https://gist.github.com/shimondoodkin/1081133
         if(/AppleWebKit\/([\d.]+)/.exec(navigator.userAgent)) {
             var $editableFix = $('<input style="width:1px;height:1px;border:none;margin:0;padding:0;" tabIndex="-1">').appendTo('html');
@@ -915,7 +914,9 @@ define([
 
     function highlight(section) {
         var text = escape(section.text);
-        text = Prism.highlight(text, Prism.languages.md);
+        if(!window.viewerMode) {
+            text = Prism.highlight(text, Prism.languages.md);
+        }
         var frontMatter = section.textWithFrontMatter.substring(0, section.textWithFrontMatter.length - section.text.length);
         if(frontMatter.length) {
             // Front matter highlighting

@@ -18,38 +18,37 @@
         };
 
     var defaultsStrings = {
-        bold: "Strong <strong> Ctrl+B",
+        bold: "Strong <strong> Ctrl/Cmd+B",
         boldexample: "strong text",
 
-        italic: "Emphasis <em> Ctrl+I",
+        italic: "Emphasis <em> Ctrl/Cmd+I",
         italicexample: "emphasized text",
 
-        link: "Hyperlink <a> Ctrl+L",
+        link: "Hyperlink <a> Ctrl/Cmd+L",
         linkdescription: "enter link description here",
         linkdialog: "<p><b>Insert Hyperlink</b></p><p>http://example.com/ \"optional title\"</p>",
 
-        quote: "Blockquote <blockquote> Ctrl+Q",
+        quote: "Blockquote <blockquote> Ctrl/Cmd+Q",
         quoteexample: "Blockquote",
 
-        code: "Code Sample <pre><code> Ctrl+K",
+        code: "Code Sample <pre><code> Ctrl/Cmd+K",
         codeexample: "enter code here",
 
-        image: "Image <img> Ctrl+G",
+        image: "Image <img> Ctrl/Cmd+G",
         imagedescription: "enter image description here",
         imagedialog: "<p><b>Insert Image</b></p><p>http://example.com/images/diagram.jpg \"optional title\"<br><br>Need <a href='http://www.google.com/search?q=free+image+hosting' target='_blank'>free image hosting?</a></p>",
 
-        olist: "Numbered List <ol> Ctrl+O",
-        ulist: "Bulleted List <ul> Ctrl+U",
+        olist: "Numbered List <ol> Ctrl/Cmd+O",
+        ulist: "Bulleted List <ul> Ctrl/Cmd+U",
         litem: "List item",
 
-        heading: "Heading <h1>/<h2> Ctrl+H",
+        heading: "Heading <h1>/<h2> Ctrl/Cmd+H",
         headingexample: "Heading",
 
-        hr: "Horizontal Rule <hr> Ctrl+R",
+        hr: "Horizontal Rule <hr> Ctrl/Cmd+R",
 
-        undo: "Undo - Ctrl+Z",
-        redo: "Redo - Ctrl+Y",
-        redomac: "Redo - Ctrl+Shift+Z",
+        undo: "Undo - Ctrl/Cmd+Z",
+        redo: "Redo - Ctrl/Cmd+Y",
 
         help: "Markdown Editing Help"
     };
@@ -1323,7 +1322,6 @@
                 }
             }
         });
-        */
 
         // Auto-indent on shift-enter
         util.addEvent(inputBox, "keyup", function (key) {
@@ -1347,6 +1345,7 @@
                 }
             });
         }
+        */
 
 
         // Perform the button's action.
@@ -1525,11 +1524,7 @@
             buttons.undo = makeButton("wmd-undo-button", getString("undo"), "-200px", null);
             buttons.undo.execute = function (manager) { if (manager) manager.undo(); };
 
-            var redoTitle = /win/.test(nav.platform.toLowerCase()) ?
-                getString("redo") :
-                getString("redomac"); // mac and other non-Windows platforms
-
-            buttons.redo = makeButton("wmd-redo-button", redoTitle, "-220px", null);
+            buttons.redo = makeButton("wmd-redo-button", getString("redo"), "-220px", null);
             buttons.redo.execute = function (manager) { if (manager) manager.redo(); };
 
             if (helpOptions) {
@@ -1746,7 +1741,9 @@
     commandProto.doLinkOrImage = function (chunk, postProcessing, isImage) {
 
         chunk.trimWhitespace();
-        chunk.findTags(/\s*!?\[/, /\][ ]?(?:\n[ ]*)?(\[.*?\])?/);
+        //chunk.findTags(/\s*!?\[/, /\][ ]?(?:\n[ ]*)?(\[.*?\])?/);
+        chunk.findTags(/\s*!?\[/, /\][ ]?(?:\n[ ]*)?(\(.*?\))?/);
+
         var background;
 
         if (chunk.endTag.length > 1 && chunk.startTag.length > 0) {
@@ -1796,11 +1793,14 @@
                     // the first bracket could then not act as the "not a backslash" for the second.
                     chunk.selection = (" " + chunk.selection).replace(/([^\\](?:\\\\)*)(?=[[\]])/g, "$1\\").substr(1);
 
+                    /*
                     var linkDef = " [999]: " + properlyEncoded(link);
 
                     var num = that.addLinkDef(chunk, linkDef);
+                    */
                     chunk.startTag = isImage ? "![" : "[";
-                    chunk.endTag = "][" + num + "]";
+                    //chunk.endTag = "][" + num + "]";
+                    chunk.endTag = "](" + properlyEncoded(link) + ")";
 
                     if (!chunk.selection) {
                         if (isImage) {

@@ -113,12 +113,10 @@ define([
         utils.setInputChecked("#input-settings-lazy-rendering", settings.lazyRendering);
         // Editor font class
         utils.setInputRadio("radio-settings-editor-font-class", settings.editorFontClass);
-        // Editor font family
-        utils.setInputValue("#input-settings-editor-font-family", settings.editorFontFamily);
-        // Editor font size
-        utils.setInputValue("#input-settings-editor-font-size", settings.editorFontSize);
-        // Max width
-        utils.setInputValue("#input-settings-max-width", settings.maxWidth);
+        // Font size ratio
+        utils.setInputValue("#input-settings-font-size", settings.fontSizeRatio);
+        // Max width ratio
+        utils.setInputValue("#input-settings-max-width", settings.maxWidthRatio);
         // Default content
         utils.setInputValue("#textarea-settings-default-content", settings.defaultContent);
         // Edit mode
@@ -158,12 +156,10 @@ define([
         newSettings.lazyRendering = utils.getInputChecked("#input-settings-lazy-rendering");
         // Editor font class
         newSettings.editorFontClass = utils.getInputRadio("radio-settings-editor-font-class");
-        // Editor font family
-        newSettings.editorFontFamily = utils.getInputTextValue("#input-settings-editor-font-family", event);
-        // Editor font size
-        newSettings.editorFontSize = utils.getInputIntValue("#input-settings-editor-font-size", event, 1, 99);
-        // Max width
-        newSettings.maxWidth = utils.getInputIntValue("#input-settings-max-width", event, 1);
+        // Font size ratio
+        newSettings.fontSizeRatio = utils.getInputFloatValue("#input-settings-font-size", event, 0.1, 10);
+        // Max width ratio
+        newSettings.maxWidthRatio = utils.getInputFloatValue("#input-settings-max-width", event, 0.1, 10);
         // Default content
         newSettings.defaultContent = utils.getInputValue("#textarea-settings-default-content");
         // Edit mode
@@ -406,6 +402,14 @@ define([
             if(!e.isPropagationStopped()) {
                 window.location.reload();
             }
+        });
+        $('.action-add-google-drive-account').click(function() {
+            if(settings.gdriveMultiAccount === 3) {
+                return;
+            }
+            settings.gdriveMultiAccount++;
+            storage.settings = JSON.stringify(settings);
+            window.location.reload();
         });
 
         // Hot theme switcher in the settings

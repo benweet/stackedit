@@ -12,7 +12,7 @@
     "ejs": "~0.8.4"
   },
   "devDependencies": {
-    "grunt-contrib-requirejs": "~0.4.1",
+    "grunt-contrib-requirejs": "~0.4.3",
     "grunt-contrib-less": "~0.7.0",
     "grunt-string-replace": "~0.2.4",
     "grunt-contrib-copy": "~0.4.1",

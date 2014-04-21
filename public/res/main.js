@@ -139,27 +139,6 @@ requirejs.config({
         'jquery-waitforimages': [
             'jquery'
         ],
-        uilayout: [
-            'jquery-ui-effect-slide'
-        ],
-        'jquery-ui-effect-slide': [
-            'jquery-ui-effect'
-        ],
-        'jquery-ui-effect': [
-            'jquery-ui-draggable'
-        ],
-        'jquery-ui-draggable': [
-            'jquery-ui-mouse'
-        ],
-        'jquery-ui-mouse': [
-            'jquery-ui-widget'
-        ],
-        'jquery-ui-widget': [
-            'jquery-ui-core'
-        ],
-        'jquery-ui-core': [
-            'jquery'
-        ],
         pagedown: [
             'libs/Markdown.Converter'
         ],

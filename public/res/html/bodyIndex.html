@@ -140,6 +140,10 @@
 			</div>
 			<div class="list-group">
 
+				<a data-toggle="modal"
+					data-target=".modal-import-harddrive-markdown"
+					class="list-group-item action-reset-input" href="#"><i
+					class="icon-hdd"></i> Import from disk</a>
 				<a href="#" data-toggle="collapse" data-target=".collapse-save-as"
 					class="list-group-item"><i class="icon-hdd"></i> Export to disk</a>
 				<div class="sub-menu collapse collapse-save-as clearfix">
@@ -155,10 +159,6 @@
 					</ul>
 				</div>
 
-	            <a data-toggle="modal"
-	                data-target=".modal-import-harddrive-markdown"
-	                class="list-group-item action-reset-input" href="#"><i
-					class="icon-hdd"></i> Import from disk</a>
 	            <a data-toggle="modal" data-target=".modal-import-url"
 	                class="list-group-item action-reset-input" href="#"><i
 					class="icon-globe"></i> Import from URL</a>
@@ -551,23 +551,14 @@
 				<h2 class="modal-title">Synchronization</h2>
 			</div>
 			<div class="modal-body">
-				<p class="msg-sync-list hide">
+				<p>
 					"<span class="file-title"></span>" is synchronized with the
 					following location(s):
 				</p>
-				<div class="msg-sync-list sync-list hide"></div>
-				<blockquote class="msg-sync-list hide">
+				<div class="sync-list"></div>
+				<blockquote>
 					<b>Note:</b> Removing a synchronized location will not delete any
 					file.
-				</blockquote>
-				<p class="msg-no-sync hide">"<span class="file-title"></span>" is not synchronized yet.</p>
-				<blockquote class="msg-no-sync hide">
-					<b>Tip:</b> You can add synchronized locations by
-					exporting your document using <i class="icon-provider-gdrive"></i>
-					<code>Google Drive</code>
-					or <i class="icon-provider-dropbox"></i>
-					<code>Dropbox</code>
-					sub-menu.
 				</blockquote>
 			</div>
 			<div class="modal-footer">
@@ -875,8 +866,8 @@
 					"<span class="file-title"></span>" can be shared using the following link(s):
 				</p>
             	<div class="msg-share-list share-list hide"></div>
-            	<p class="msg-no-share hide">To collaborate on this document, use <i class="icon-provider-gdrive"></i> <code>Google Drive</code>
-            	or <i class="icon-provider-dropbox"></i> <code>Dropbox</code> synchronization from the <i class="icon-provider-stackedit"></i> menu.
+            	<p class="msg-no-share hide">To collaborate on this document, use <i class="icon-provider-gdrive"></i> <b>Google Drive</b>
+            	or <i class="icon-provider-dropbox"></i> <b>Dropbox</b> synchronization from the <i class="icon-provider-stackedit"></i> menu.
             	</p>
             	<p class="msg-no-share hide">To share a frozen version of this document within StackEdit, just <a
             		href="#" class="action-publish-gist" data-dismiss="modal">publish it as a Gist</a> in

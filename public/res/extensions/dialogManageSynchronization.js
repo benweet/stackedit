@@ -19,21 +19,10 @@ define([
 
     var fileDesc;
     var syncListElt;
-    var $msgSyncListElt;
-    var $msgNoSyncElt;
     var $showAlreadySynchronizedElt;
     var refreshDialog = function(fileDescParameter) {
         if(fileDescParameter !== undefined && fileDescParameter !== fileDesc) {
             return;
-        }
-
-        if(_.size(fileDesc.syncLocations) > 0) {
-            $msgSyncListElt.removeClass("hide");
-            $msgNoSyncElt.addClass("hide");
-        }
-        else {
-            $msgSyncListElt.addClass("hide");
-            $msgNoSyncElt.removeClass("hide");
         }
 
         $showAlreadySynchronizedElt.toggleClass("hide", _.size(fileDesc.syncLocations) === 0);
@@ -67,8 +56,6 @@ define([
     dialogManageSynchronization.onReady = function() {
         var modalElt = document.querySelector(".modal-manage-sync");
         syncListElt = modalElt.querySelector(".sync-list");
-        $msgSyncListElt = $(modalElt.querySelectorAll(".msg-sync-list"));
-        $msgNoSyncElt = $(modalElt.querySelectorAll(".msg-no-sync"));
 
         $showAlreadySynchronizedElt = $(document.querySelectorAll(".show-already-synchronized"));
     };

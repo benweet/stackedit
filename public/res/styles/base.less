@@ -69,47 +69,8 @@
     src: local('Source Code Pro Bold'), local('SourceCodePro-Bold'), url("../font/SourceCodePro-Bold-webfont.woff") format('woff');
 }
 
-@font-face {
-    font-family: 'Inconsolata';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Inconsolata'), url("../font/Inconsolata-Regular-webfont.woff") format('woff');
-}
-@font-face {
-    font-family: 'Inconsolata';
-    font-style: normal;
-    font-weight: 700;
-    src: local('Inconsolata Bold'), local('Inconsolata-Bold'), url("../font/Inconsolata-Bold-webfont.woff") format('woff');
-}
-
-@font-face {
-    font-family: 'Anonymous Pro';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Anonymous Pro'), local('AnonymousPro'), url("../font/AnonymousPro-Regular-webfont.woff") format('woff');
-}
-@font-face {
-    font-family: 'Anonymous Pro';
-    font-style: normal;
-    font-weight: 700;
-    src: local('Anonymous Pro Bold'), local('AnonymousPro-Bold'), url("../font/AnonymousPro-Bold-webfont.woff") format('woff');
-}
-@font-face {
-    font-family: 'Anonymous Pro';
-    font-style: italic;
-    font-weight: 400;
-    src: local('Anonymous Pro Italic'), local('AnonymousPro-Italic'), url("../font/AnonymousPro-Italic-webfont.woff") format('woff');
-}
-@font-face {
-    font-family: 'Anonymous Pro';
-    font-style: italic;
-    font-weight: 700;
-    src: local('Anonymous Pro Bold Italic'), local('AnonymousPro-BoldItalic'), url("../font/AnonymousPro-BoldItalic-webfont.woff") format('woff');
-}
-
 @font-family-sans-serif: "Source Sans Pro", sans-serif;
 @font-family-monospace: "Source Code Pro", monospace;
-@font-family-monospace-letter-spacing: -0.02em;
 
 // Copied from Bootstrap in order to have correct urls
 .img-retina(@file-1x; @file-2x; @width-1x; @height-1x) {
@@ -163,8 +124,7 @@ hr {
 
 code, pre {
 	font-family: @font-family-monospace;
-    letter-spacing: @font-family-monospace-letter-spacing;
-	font-size: 0.9em;
+    font-size: 0.9em;
 }
 
 pre, pre.prettyprint {
@@ -248,7 +208,7 @@ kbd {
     padding: 0.1em 0.6em;
     border: 1px solid @kbd-border-color;
     .box-shadow(0 1px 0px @kbd-border-color);
-    font-size: 11px;
+    font-size: 0.7em;
     font-family: Arial, Helvetica, sans-serif;
     background-color: @kbd-bg-color;
     color: @kbd-color;

@@ -46,8 +46,22 @@ define([
         this.$elt = $(this.elt);
     }
 
-    var laterCssTimeoutId;
-    var laterCssQueue = [];
+    var transitionEndTimeoutId;
+    var transitionEndCallbacks = [];
+    function onTransitionEnd(evt) {
+        if(!evt ||
+            evt.target === wrapperL1.elt ||
+            evt.target === wrapperL2.elt ||
+            evt.target === previewPanel.elt
+        ) {
+            transitionEndCallbacks.forEach(function(callback) {
+                callback();
+            });
+            endAnimation();
+            transitionEndCallbacks.length !== 0 && onResize();
+            transitionEndCallbacks = [];
+        }
+    }
     DomObject.prototype.applyCss = function() {
 
         // Top/left/Bottom/Right
@@ -67,7 +81,7 @@ define([
 
         // Width (deferred when animate if new width is smaller)
         if(animate && this.width < this.oldWidth) {
-            laterCssQueue.push(_.bind(function() {
+            transitionEndCallbacks.push(_.bind(function() {
                 this.elt.style.width = this.width + 'px';
             }, this));
         }
@@ -78,7 +92,7 @@ define([
 
         // Height (deferred when animate if new height is smaller)
         if(animate && this.height < this.oldHeight) {
-            laterCssQueue.push(_.bind(function() {
+            transitionEndCallbacks.push(_.bind(function() {
                 this.elt.style.height = this.height + 'px';
             }, this));
         }
@@ -87,15 +101,9 @@ define([
         }
         this.oldHeight = this.height;
 
-        clearTimeout(laterCssTimeoutId);
-        laterCssTimeoutId = setTimeout(function() {
-            laterCssQueue.forEach(function(callback) {
-                callback();
-            });
-            endAnimation();
-            laterCssQueue.length !== 0 && onResize();
-            laterCssQueue = [];
-        }, 350);
+        // Just in case transitionEnd event doesn't happen
+        clearTimeout(transitionEndTimeoutId);
+        animate && (transitionEndTimeoutId = setTimeout(onTransitionEnd, 800));
     };
 
     DomObject.prototype.createToggler = function(backdrop) {
@@ -114,7 +122,7 @@ define([
                     }, this));
                     this.$elt.addClass('bring-to-front');
                 }
-                laterCssQueue.push(_.bind(function() {
+                transitionEndCallbacks.push(_.bind(function() {
                     if(--pushedEvents === 0) {
                         this.isOpen && this.$elt.trigger('shown.layout.toggle');
                     }
@@ -124,7 +132,7 @@ define([
                 this.$elt.trigger('hide.layout.toggle');
                 backdropElt && backdropElt.removeBackdrop();
                 backdropElt = undefined;
-                laterCssQueue.push(_.bind(function() {
+                transitionEndCallbacks.push(_.bind(function() {
                     if(--pushedEvents === 0) {
                         !this.isOpen && this.$elt.removeClass('panel-open bring-to-front').trigger('hidden.layout.toggle');
                     }
@@ -387,6 +395,7 @@ define([
         });
 
         wrapperL1.$elt.toggleClass('layout-vertical', isVertical);
+        wrapperL1.$elt.on("webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend", onTransitionEnd);
 
         navbar.isOpen = true;
         navbar.createToggler();
@@ -412,6 +421,11 @@ define([
         // Hide panels when clicking on a non collapse element
         documentPanel.$elt.on('click', 'a[data-toggle!=collapse]', _.bind(documentPanel.toggle, documentPanel, false));
 
+        // Focus on editor when document panel is closed
+        documentPanel.$elt.on('hidden.layout.toggle', function() {
+            editor.elt.focus();
+        });
+
         menuPanel.isOpen = false;
         if(!window.viewerMode) {
             menuPanel.createToggler(true);
@@ -423,6 +437,11 @@ define([
             // Close all open sub-menus when one submenu opens and when panel is closed
             menuPanel.$elt.on('show.bs.collapse hidden.layout.toggle', function() {
                 menuPanel.$elt.find('.in').collapse('hide');
+            });
+
+            // Focus on editor when menu panel is closed
+            menuPanel.$elt.on('hidden.layout.toggle', function() {
+                editor.elt.focus();
             });
 
             // Gesture
@@ -509,7 +528,7 @@ define([
     };
 
     eventMgr.addListener('onReady', function() {
-        previewButtons.width = previewButtons.elt.offsetWidth;
+        var previewButtonsWidth = previewButtons.elt.offsetWidth;
         function openPreviewButtons() {
             clearTimeout(closeTimeoutId);
             previewButtons.x = 0;
@@ -521,7 +540,7 @@ define([
             clearTimeout(closeTimeoutId);
             closeTimeoutId = setTimeout(function() {
                 if(!dropdownOpen) {
-                    previewButtons.x = previewButtons.width;
+                    previewButtons.x = previewButtonsWidth;
                     previewButtons.applyCss();
                 }
             }, 3000);
@@ -542,7 +561,7 @@ define([
             $btnGroupElt.click(function() {
                 // Align dropdown to the left of the screen
                 $btnGroupElt.find('.dropdown-menu').css({
-                    right: -previewButtons.width + $btnGroupElt.width() + $btnGroupElt.position().left
+                    right: -previewButtonsWidth + $btnGroupElt.width() + $btnGroupElt.position().left
                 });
                 $btnGroupElt.find('.markdown-syntax, .table-of-contents').css({
                     'maxHeight': wrapperL3.height - 180

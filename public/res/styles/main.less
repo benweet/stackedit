@@ -1020,58 +1020,6 @@ a {
 }
 
 
-.ui-layout-resizer {
-	overflow: visible !important;
-    font-size: 14px !important;
-	.btn {
-		float: none;
-	}
-	.ui-layout-toggler {
-	    i {
-    		font-size: 22px;
-	    }
-		&.ui-layout-toggler-east {
-			line-height: 55px;
-			&.ui-layout-toggler-east-open i:before {
-				content: '\e87e';
-			}
-			&.ui-layout-toggler-east-closed i:before {
-				content: '\e87d';
-			}
-		}
-		&.ui-layout-toggler-south {
-			&.ui-layout-toggler-south-open i:before {
-				content: '\e880';
-			}
-			&.ui-layout-toggler-south-closed i:before {
-				content: '\e87f';
-			}
-		}
-		&.ui-layout-toggler-north {
-			left: 0 !important;
-			line-height: 0;
-			i {
-    			font-size: 16px;
-                height: 10.5px;
-                overflow: hidden;
-			}
-		}
-	}
-	&.ui-layout-resizer-east .ui-layout-toggler-north {
-		width: @resizer-size !important;
-		height: 60px !important;
-	}
-	&.ui-layout-resizer-south .ui-layout-toggler-north {
-		height: @resizer-size !important;
-	}
-}
-
-.ui-layout-resizer-north {
-	background-color: @navbar-default-bg;
-    border-bottom: 1px solid @primary-border-color;
-}
-
-
 /*****************************
  * Editor
  *****************************/
@@ -1610,5 +1558,40 @@ div.jGrowl {
 	.navbar .file-title-navbar {
 	    cursor: initial;
 	    .box-shadow(none);
+	}
+}
+
+
+/**************************************
+ * Only show preview pane to printer
+ **************************************/
+
+@media print {
+	html, body {
+		overflow: visible !important;
+	}
+
+	.layout-wrapper-l1 > *,
+	.layout-wrapper-l2 > *,
+	.layout-wrapper-l3 > *,
+	.preview-panel > * {
+		display: none !important;
+	}
+
+	.layout-wrapper-l1,
+	.layout-wrapper-l2,
+	.layout-wrapper-l3,
+	.preview-panel,
+	.preview-container {
+		display: block !important;
+		position: static !important;
+		overflow: visible !important;
+		width: auto !important;
+		height: auto !important;
+		.translate(0, 0) !important;
+	}
+
+	#preview-contents {
+		padding: 0 50px !important;
 	}
 }

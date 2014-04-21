@@ -217,6 +217,8 @@ define([
         localStorage.removeItem('focusMode');
         localStorage.removeItem('mode');
         localStorage.removeItem('gdrive.state');
+        localStorage.removeItem('google.picasa0.permissions');
+        localStorage.removeItem('google.picasa0.userId');
         if(_.has(localStorage, 'settings')) {
             settings = JSON.parse(localStorage.settings);
             delete settings.shortcuts;

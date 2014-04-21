@@ -148,7 +148,7 @@ define([
                     return;
                 }
                 syncAttributes.etag = result.etag;
-                // Remove this deprecated flag if exist
+                // Remove this deprecated flag if any
                 delete syncAttributes.isRealtime;
                 if(merge === true) {
                     // Need to store the whole content for merge
@@ -196,7 +196,7 @@ define([
                         callback(error);
                         return;
                     }
-                    function merge() {
+                    function mergeChange() {
                         if(changes.length === 0) {
                             storage[accountId + ".gdrive.lastChangeId"] = newChangeId;
                             return callback();
@@ -230,9 +230,9 @@ define([
                         syncAttributes.titleCRC = remoteCRC.titleCRC;
                         syncAttributes.discussionListCRC = remoteCRC.discussionListCRC;
                         utils.storeAttributes(syncAttributes);
-                        setTimeout(merge, 5);
+                        setTimeout(mergeChange, 5);
                     }
-                    setTimeout(merge, 5);
+                    setTimeout(mergeChange, 5);
                 });
             });
         };

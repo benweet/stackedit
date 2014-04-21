@@ -176,7 +176,7 @@ define([
                     callback(error);
                     return;
                 }
-                function merge() {
+                function mergeChange() {
                     if(changes.length === 0) {
                         storage[PROVIDER_DROPBOX + ".lastChangeId"] = newChangeId;
                         return callback();
@@ -206,9 +206,9 @@ define([
                     syncAttributes.contentCRC = remoteCRC.contentCRC;
                     syncAttributes.discussionListCRC = remoteCRC.discussionListCRC;
                     utils.storeAttributes(syncAttributes);
-                    setTimeout(merge, 5);
+                    setTimeout(mergeChange, 5);
                 }
-                setTimeout(merge, 5);
+                setTimeout(mergeChange, 5);
             });
         });
     };

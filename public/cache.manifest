@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#Date Sun Apr 20 2014 18:20:19
+#Date Mon Apr 21 2014 17:25:10
 
 CACHE:
 res/worker.js
@@ -11,10 +11,6 @@ libs/MathJax/images/MenuArrow-15.png
 libs/MathJax/jax/output/HTML-CSS/jax.js
 
 #DynamicResourcesBegin
-res-min/font/AnonymousPro-Bold-webfont.woff
-res-min/font/AnonymousPro-BoldItalic-webfont.woff
-res-min/font/AnonymousPro-Italic-webfont.woff
-res-min/font/AnonymousPro-Regular-webfont.woff
 res-min/font/PTSans-Bold-webfont.woff
 res-min/font/PTSans-BoldItalic-webfont.woff
 res-min/font/PTSans-Italic-webfont.woff

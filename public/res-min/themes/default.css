@@ -1228,7 +1228,7 @@ li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}
 .icon-chat:before{content:'\e83e'}
 .icon-folder-open:before{content:'\e81e'}
 .icon-up-circled:before{content:'\e893'}
-@font-face{font-family:'Source Sans Pro';font-style:normal;font-weight:300;src:local('Source Sans Pro Light'),local('SourceSansPro-Light'),url("../font/SourceSansPro-Light-webfont.woff") format('woff')}@font-face{font-family:'Source Sans Pro';font-style:normal;font-weight:400;src:local('Source Sans Pro'),local('SourceSansPro'),url("../font/SourceSansPro-Regular-webfont.woff") format('woff')}@font-face{font-family:'Source Sans Pro';font-style:normal;font-weight:700;src:local('Source Sans Pro Bold'),local('SourceSansPro-Bold'),url("../font/SourceSansPro-Bold-webfont.woff") format('woff')}@font-face{font-family:'Source Sans Pro';font-style:italic;font-weight:300;src:local('Source Sans Pro Light Italic'),local('SourceSansProLight-Italic'),url("../font/SourceSansPro-LightItalic-webfont.woff") format('woff')}@font-face{font-family:'Source Sans Pro';font-style:italic;font-weight:400;src:local('Source Sans Pro Italic'),local('SourceSansPro-Italic'),url("../font/SourceSansPro-Italic-webfont.woff") format('woff')}@font-face{font-family:'Source Sans Pro';font-style:italic;font-weight:700;src:local('Source Sans Pro Bold Italic'),local('SourceSansPro-BoldItalic'),url("../font/SourceSansPro-BoldItalic-webfont.woff") format('woff')}@font-face{font-family:'Source Code Pro';font-style:normal;font-weight:400;src:local('Source Code Pro'),local('SourceCodePro-Regular'),url("../font/SourceCodePro-Regular-webfont.woff") format('woff')}@font-face{font-family:'Source Code Pro';font-style:normal;font-weight:700;src:local('Source Code Pro Bold'),local('SourceCodePro-Bold'),url("../font/SourceCodePro-Bold-webfont.woff") format('woff')}@font-face{font-family:'Inconsolata';font-style:normal;font-weight:400;src:local('Inconsolata'),url("../font/Inconsolata-Regular-webfont.woff") format('woff')}@font-face{font-family:'Inconsolata';font-style:normal;font-weight:700;src:local('Inconsolata Bold'),local('Inconsolata-Bold'),url("../font/Inconsolata-Bold-webfont.woff") format('woff')}@font-face{font-family:'Anonymous Pro';font-style:normal;font-weight:400;src:local('Anonymous Pro'),local('AnonymousPro'),url("../font/AnonymousPro-Regular-webfont.woff") format('woff')}@font-face{font-family:'Anonymous Pro';font-style:normal;font-weight:700;src:local('Anonymous Pro Bold'),local('AnonymousPro-Bold'),url("../font/AnonymousPro-Bold-webfont.woff") format('woff')}@font-face{font-family:'Anonymous Pro';font-style:italic;font-weight:400;src:local('Anonymous Pro Italic'),local('AnonymousPro-Italic'),url("../font/AnonymousPro-Italic-webfont.woff") format('woff')}@font-face{font-family:'Anonymous Pro';font-style:italic;font-weight:700;src:local('Anonymous Pro Bold Italic'),local('AnonymousPro-BoldItalic'),url("../font/AnonymousPro-BoldItalic-webfont.woff") format('woff')}.container{margin-bottom:180px}
+@font-face{font-family:'Source Sans Pro';font-style:normal;font-weight:300;src:local('Source Sans Pro Light'),local('SourceSansPro-Light'),url("../font/SourceSansPro-Light-webfont.woff") format('woff')}@font-face{font-family:'Source Sans Pro';font-style:normal;font-weight:400;src:local('Source Sans Pro'),local('SourceSansPro'),url("../font/SourceSansPro-Regular-webfont.woff") format('woff')}@font-face{font-family:'Source Sans Pro';font-style:normal;font-weight:700;src:local('Source Sans Pro Bold'),local('SourceSansPro-Bold'),url("../font/SourceSansPro-Bold-webfont.woff") format('woff')}@font-face{font-family:'Source Sans Pro';font-style:italic;font-weight:300;src:local('Source Sans Pro Light Italic'),local('SourceSansProLight-Italic'),url("../font/SourceSansPro-LightItalic-webfont.woff") format('woff')}@font-face{font-family:'Source Sans Pro';font-style:italic;font-weight:400;src:local('Source Sans Pro Italic'),local('SourceSansPro-Italic'),url("../font/SourceSansPro-Italic-webfont.woff") format('woff')}@font-face{font-family:'Source Sans Pro';font-style:italic;font-weight:700;src:local('Source Sans Pro Bold Italic'),local('SourceSansPro-BoldItalic'),url("../font/SourceSansPro-BoldItalic-webfont.woff") format('woff')}@font-face{font-family:'Source Code Pro';font-style:normal;font-weight:400;src:local('Source Code Pro'),local('SourceCodePro-Regular'),url("../font/SourceCodePro-Regular-webfont.woff") format('woff')}@font-face{font-family:'Source Code Pro';font-style:normal;font-weight:700;src:local('Source Code Pro Bold'),local('SourceCodePro-Bold'),url("../font/SourceCodePro-Bold-webfont.woff") format('woff')}.container{margin-bottom:180px}
 a code{color:inherit}
 h1{font-size:2.6em}
 h2{font-size:2.15em}
@@ -1240,7 +1240,7 @@ h1,h2,h3,h4,h5,h6{margin:1.3em 0}
 pre{word-break:break-word}
 p,pre,pre.prettyprint,blockquote{margin:0 0 1.1em}
 hr{margin:2em 0}
-code,pre{font-family:"Source Code Pro",monospace;letter-spacing:-0.02em;font-size:0.9em}
+code,pre{font-family:"Source Code Pro",monospace;font-size:0.9em}
 pre,pre.prettyprint{border:0 solid rgba(102,128,153,0.075);border-left:10px solid rgba(102,128,153,0.075);border-radius:0;border-top-right-radius:5px;border-bottom-right-radius:5px;padding:10px 15px}pre code,pre.prettyprint code{background-color:transparent !important}
 dt,dd{margin-top:5px;margin-bottom:5px}
 dd{margin-left:40px}
@@ -1253,7 +1253,7 @@ table tbody+tbody{border-top:2px solid #dddddd}
 blockquote{border-left-width:10px;background-color:rgba(102,128,153,0.05);border-top-right-radius:5px;border-bottom-right-radius:5px;padding:15px 20px}blockquote p{margin-bottom:1.1em;font-size:1em;line-height:1.45}
 blockquote ul:last-child,blockquote ol:last-child{margin-bottom:0}
 ul,ol{margin-bottom:1.1em}ul ul,ol ul,ul ol,ol ol{margin-bottom:1.1em}
-kbd{padding:0.1em 0.6em;border:1px solid rgba(44,63,81,0.25);-webkit-box-shadow:0 1px 0 rgba(44,63,81,0.25);box-shadow:0 1px 0 rgba(44,63,81,0.25);font-size:11px;font-family:Arial,Helvetica,sans-serif;background-color:#fff;color:#333;border-radius:3px;display:inline-block;margin:0 0.1em;white-space:nowrap}
+kbd{padding:0.1em 0.6em;border:1px solid rgba(44,63,81,0.25);-webkit-box-shadow:0 1px 0 rgba(44,63,81,0.25);box-shadow:0 1px 0 rgba(44,63,81,0.25);font-size:0.7em;font-family:Arial,Helvetica,sans-serif;background-color:#fff;color:#333;border-radius:3px;display:inline-block;margin:0 0.1em;white-space:nowrap}
 .toc ul{list-style-type:none;margin-bottom:15px}
 .footnote{vertical-align:top;position:relative;top:-0.5em;font-size:0.8em}
 [class^="icon-"],[class*=" icon-"]{display:inline-block;line-height:1.35em;vertical-align:middle;background-repeat:no-repeat}
@@ -1419,16 +1419,6 @@ a.list-group-item:hover,a.list-group-item:focus{color:#036;border-top-color:rgba
 .layout-vertical .layout-toggler.layout-toggler-preview{line-height:1.45}.layout-vertical .layout-toggler.layout-toggler-preview i:before{content:'\e87f'}
 .layout-vertical .layout-toggler.layout-toggler-preview.open>i:before{content:'\e880'}
 .layout-toggler.layout-toggler-navbar{line-height:0}.layout-toggler.layout-toggler-navbar i{font-size:16px;height:12px;overflow:hidden}
-.ui-layout-resizer{overflow:visible !important;font-size:14px !important}.ui-layout-resizer .btn{float:none}
-.ui-layout-resizer .ui-layout-toggler i{font-size:22px}
-.ui-layout-resizer .ui-layout-toggler.ui-layout-toggler-east{line-height:55px}.ui-layout-resizer .ui-layout-toggler.ui-layout-toggler-east.ui-layout-toggler-east-open i:before{content:'\e87e'}
-.ui-layout-resizer .ui-layout-toggler.ui-layout-toggler-east.ui-layout-toggler-east-closed i:before{content:'\e87d'}
-.ui-layout-resizer .ui-layout-toggler.ui-layout-toggler-south.ui-layout-toggler-south-open i:before{content:'\e880'}
-.ui-layout-resizer .ui-layout-toggler.ui-layout-toggler-south.ui-layout-toggler-south-closed i:before{content:'\e87f'}
-.ui-layout-resizer .ui-layout-toggler.ui-layout-toggler-north{left:0 !important;line-height:0}.ui-layout-resizer .ui-layout-toggler.ui-layout-toggler-north i{font-size:16px;height:10.5px;overflow:hidden}
-.ui-layout-resizer.ui-layout-resizer-east .ui-layout-toggler-north{width:32px !important;height:60px !important}
-.ui-layout-resizer.ui-layout-resizer-south .ui-layout-toggler-north{height:32px !important}
-.ui-layout-resizer-north{background-color:#e4ebf1;border-bottom:1px solid rgba(0,128,255,0.1)}
 @font-face{font-family:'PT Sans';font-style:normal;font-weight:400;src:local('PT Sans'),local('PTSans'),url("../font/PTSans-Regular-webfont.woff") format('woff')}@font-face{font-family:'PT Sans';font-style:normal;font-weight:700;src:local('PT Sans Bold'),local('PTSans-Bold'),url("../font/PTSans-Bold-webfont.woff") format('woff')}@font-face{font-family:'PT Sans';font-style:italic;font-weight:400;src:local('PT Sans Italic'),local('PTSans-Italic'),url("../font/PTSans-Italic-webfont.woff") format('woff')}@font-face{font-family:'PT Sans';font-style:italic;font-weight:700;src:local('PT Sans Bold Italic'),local('PTSans-BoldItalic'),url("../font/PTSans-BoldItalic-webfont.woff") format('woff')}#wmd-input{position:absolute;top:0;left:0;font-family:"PT Sans",sans-serif;line-height:1.65;letter-spacing:normal;border-radius:0;color:#47596b;-webkit-box-shadow:none;box-shadow:none;resize:none;border:none;padding:0;background-color:#fff;overflow:auto;white-space:pre-wrap;word-wrap:break-word}#wmd-input>.editor-content{padding-bottom:230px}
 #wmd-input>.editor-margin{position:absolute;top:0;left:0}#wmd-input>.editor-margin .discussion{font-size:17px;position:absolute;cursor:pointer}#wmd-input>.editor-margin .discussion.new{display:none}#wmd-input>.editor-margin .discussion.new:hover,#wmd-input>.editor-margin .discussion.new.active,#wmd-input>.editor-margin .discussion.new.active:hover{display:inline-block;color:rgba(102,128,153,0.35) !important}
 #wmd-input>.editor-margin .discussion.added{color:rgba(235,176,0,0.5)}#wmd-input>.editor-margin .discussion.added:hover,#wmd-input>.editor-margin .discussion.added.active,#wmd-input>.editor-margin .discussion.added.active:hover{color:rgba(235,176,0,0.8) !important}
@@ -1498,6 +1488,7 @@ input[type="file"]{line-height:inherit;height:inherit;border:none !important}
 .sharing-tweet{float:left;margin:5px 10px 0 0}
 .popover{max-width:350px;padding:15px}.popover .popover-title{font-weight:500;font-size:24px;padding:10px 15px}
 .popover .disabled{display:none}
+.popover .popover-navigation{margin-top:-40px}
 .comments-popover .popover{max-width:230px;padding:10px 20px 0}.comments-popover .popover .popover-title{padding:5px 0 15px;border-bottom:1px solid rgba(102,128,153,0.1);line-height:1.1;overflow:hidden}.comments-popover .popover .popover-title .action-remove-discussion{font-size:16px;line-height:22px}
 .comments-popover .popover .popover-content{margin:0;padding:0}.comments-popover .popover .popover-content .scrollport{overflow:auto;max-height:230px;padding:10px 20px 0;margin:0 -20px}
 .comments-popover .popover .popover-content .btn{padding:6px 11px}
@@ -1509,11 +1500,12 @@ input[type="file"]{line-height:inherit;height:inherit;border:none !important}
 .comments-popover .popover .popover-content .new-comment-block .icon-comment{color:rgba(102,128,153,0.35)}
 .comments-popover .popover .popover-content .input-comment-author{border:none;background:none;-webkit-box-shadow:none;box-shadow:none;font-weight:bold;height:28px;padding:0 0 5px;width:140px;display:inline-block}
 .comments-popover .popover .popover-content hr{margin:0 0 10px}
-.comments-popover .comments-popover .popover.top .arrow,.comments-popover .comments-popover .popover.bottom .arrow{margin-right:1px;border-right-width:0}.comments-popover .comments-popover .popover.top .arrow:after,.comments-popover .comments-popover .popover.bottom .arrow:after{margin-left:-11px;border-right-width:0}
-.comments-popover .comments-popover .popover.top .arrow:after{bottom:2px}
-.comments-popover .comments-popover .popover.bottom .arrow:after{top:2px}
+.comments-popover .popover.top .arrow,.comments-popover .popover.bottom .arrow{margin-right:1px;border-right-width:0}.comments-popover .popover.top .arrow:after,.comments-popover .popover.bottom .arrow:after{margin-left:-11px;border-right-width:0}
+.comments-popover .popover.top .arrow:after{bottom:2px}
+.comments-popover .popover.bottom .arrow:after{top:2px}
 div.jGrowl{z-index:1040;font-size:inherit}div.jGrowl.bottom-right{right:30px}
 div.jGrowl div.jGrowl-notification,div.jGrowl div.jGrowl-closer{background-color:rgba(115,128,140,0.9);width:260px;margin:20px 0;padding:15px 20px;-ms-filter:none;filter:none;border-radius:5px}
 div.jGrowl div.jGrowl-notification{min-height:80px}
 .viewer .document-panel .search-bar{padding:20px 20px 10px}.viewer .document-panel .search-bar .input-group-btn{display:none}
 .viewer .navbar .file-title-navbar{cursor:initial;-webkit-box-shadow:none;box-shadow:none}
+@media print{html,body{overflow:visible !important} .layout-wrapper-l1>*,.layout-wrapper-l2>*,.layout-wrapper-l3>*,.preview-panel>*{display:none !important} .layout-wrapper-l1,.layout-wrapper-l2,.layout-wrapper-l3,.preview-panel,.preview-container{display:block !important;position:static !important;overflow:visible !important;width:auto !important;height:auto !important;-webkit-transform:translate(0, 0) !important;-ms-transform:translate(0, 0) !important;transform:translate(0, 0) !important} #preview-contents{padding:0 50px !important}}

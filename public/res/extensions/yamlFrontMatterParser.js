@@ -23,12 +23,13 @@ define([
             return;
         }
         var results = regex.exec(content);
+        var frontMatter = results[1];
         var yaml = results[2];
 
         if(!yaml) {
             fileDesc.frontMatter = undefined;
         }
-        else if(!fileDesc.frontMatter || fileDesc.frontMatter._yaml != yaml) {
+        else if(!fileDesc.frontMatter || fileDesc.frontMatter._frontMatter != frontMatter) {
             fileDesc.frontMatter = undefined;
             try {
                 fileDesc.frontMatter = YAML.parse(yaml);
@@ -36,7 +37,7 @@ define([
                     fileDesc.frontMatter = undefined;
                 }
                 fileDesc.frontMatter._yaml = yaml;
-                fileDesc.frontMatter._frontMatter = results[1];
+                fileDesc.frontMatter._frontMatter = frontMatter;
             }
             catch (e) {
             }

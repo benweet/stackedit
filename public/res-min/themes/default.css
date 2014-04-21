@@ -1392,6 +1392,7 @@ a{-webkit-transition:background-color ease-in-out .15s, color ease-in-out .15s, 
 .list-group-item{padding:10px 15px;margin-bottom:0}.list-group .list-group-item{border-radius:0}
 a.list-group-item:hover,a.list-group-item:focus{color:#036;border-top-color:rgba(0,128,255,0.1);border-bottom-color:rgba(0,128,255,0.1)}
 .move-to-front{z-index:1050 !important}
+.dialog-header-message{position:absolute;top:12px;right:55px;font-weight:bold}
 .btn{padding:8px 11px;-webkit-transition:background-color ease-in-out .15s, color ease-in-out .15s, border-color ease-in-out .15s;transition:background-color ease-in-out .15s, color ease-in-out .15s, border-color ease-in-out .15s}
 .btn-default:hover,.btn-default:focus,.btn-default:active,.open .btn-default.dropdown-toggle{color:#036;border-color:rgba(0,128,255,0.1);background-color:rgba(102,128,153,0.04) !important}
 .btn-primary:hover,.btn-primary:focus,.btn-primary:active,.open .btn-primary.dropdown-toggle{color:#036;border-color:rgba(0,128,255,0.1);background-color:#dae3eb !important}
@@ -1558,3 +1559,4 @@ div.jGrowl div.jGrowl-notification{min-height:80px}
 .viewer .document-panel .search-bar{padding:20px 20px 10px}.viewer .document-panel .search-bar .input-group-btn{display:none}
 .viewer .ui-layout-toggler{display:none !important}
 .viewer .navbar .file-title-navbar{cursor:initial;-webkit-box-shadow:none;box-shadow:none}
+@media print{html,body,.preview-container{overflow:visible !important} body>:not(.preview-container){display:none !important} .preview-container{width:auto !important;height:auto !important;position:static !important} #preview-contents{max-width:none !important;margin-bottom:0 !important}}

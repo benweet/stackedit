@@ -1392,6 +1392,7 @@ a{-webkit-transition:background-color ease-in-out .15s, color ease-in-out .15s, 
 .list-group-item{padding:10px 15px;margin-bottom:0}.list-group .list-group-item{border-radius:0}
 a.list-group-item:hover,a.list-group-item:focus{color:#b3b3b3;border-top-color:rgba(255,255,255,0.1);border-bottom-color:rgba(255,255,255,0.1)}
 .move-to-front{z-index:1050 !important}
+.dialog-header-message{position:absolute;top:12px;right:55px;font-weight:bold}
 .btn{padding:8px 11px;-webkit-transition:background-color ease-in-out .15s, color ease-in-out .15s, border-color ease-in-out .15s;transition:background-color ease-in-out .15s, color ease-in-out .15s, border-color ease-in-out .15s}
 .btn-default:hover,.btn-default:focus,.btn-default:active,.open .btn-default.dropdown-toggle{color:#b3b3b3;border-color:rgba(255,255,255,0.1);background-color:rgba(255,255,255,0.04) !important}
 .btn-primary:hover,.btn-primary:focus,.btn-primary:active,.open .btn-primary.dropdown-toggle{color:#b3b3b3;border-color:rgba(255,255,255,0.1);background-color:#525252 !important}
@@ -1558,5 +1559,5 @@ div.jGrowl div.jGrowl-notification{min-height:80px}
 .viewer .document-panel .search-bar{padding:20px 20px 10px}.viewer .document-panel .search-bar .input-group-btn{display:none}
 .viewer .ui-layout-toggler{display:none !important}
 .viewer .navbar .file-title-navbar{cursor:initial;-webkit-box-shadow:none;box-shadow:none}
-.form-control:focus{-webkit-box-shadow:inset 0 1px 1px rgba(255, 255, 255, 0), 0 0 12px rgba(255, 255, 255, 1);box-shadow:inset 0 1px 1px rgba(255, 255, 255, 0), 0 0 12px rgba(255, 255, 255, 1)}
+@media print{html,body,.preview-container{overflow:visible !important} body>:not(.preview-container){display:none !important} .preview-container{width:auto !important;height:auto !important;position:static !important} #preview-contents{max-width:none !important;margin-bottom:0 !important}}.form-control:focus{-webkit-box-shadow:inset 0 1px 1px rgba(255, 255, 255, 0), 0 0 12px rgba(255, 255, 255, 1);box-shadow:inset 0 1px 1px rgba(255, 255, 255, 0), 0 0 12px rgba(255, 255, 255, 1)}
 .ace-tm .ace_cursor{border-left-color:#fff}

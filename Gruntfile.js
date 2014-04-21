@@ -46,12 +46,14 @@ module.exports = function(grunt) {
                     mainConfigFile: 'public/res/main.js',
                     optimize: "uglify2",
                     inlineText: true,
+                    /*
                     uglify2: {
                         output: {
                             beautify: true,
                             indent_level: 1,
                         },
                     },
+                    */
                     excludeShallow: [
                         'css/css-builder',
                         'less/lessc-server',

@@ -1392,6 +1392,7 @@ a{-webkit-transition:background-color ease-in-out .15s, color ease-in-out .15s, 
 .list-group-item{padding:10px 15px;margin-bottom:0}.list-group .list-group-item{border-radius:0}
 a.list-group-item:hover,a.list-group-item:focus{color:#2d2d2d;border-top-color:rgba(121,121,121,0.1);border-bottom-color:rgba(121,121,121,0.1)}
 .move-to-front{z-index:1050 !important}
+.dialog-header-message{position:absolute;top:12px;right:55px;font-weight:bold}
 .btn{padding:8px 11px;-webkit-transition:background-color ease-in-out .15s, color ease-in-out .15s, border-color ease-in-out .15s;transition:background-color ease-in-out .15s, color ease-in-out .15s, border-color ease-in-out .15s}
 .btn-default:hover,.btn-default:focus,.btn-default:active,.open .btn-default.dropdown-toggle{color:#2d2d2d;border-color:rgba(121,121,121,0.1);background-color:rgba(143,134,104,0.04) !important}
 .btn-primary:hover,.btn-primary:focus,.btn-primary:active,.open .btn-primary.dropdown-toggle{color:#2d2d2d;border-color:rgba(121,121,121,0.1);background-color:#dcdcdc !important}
@@ -1558,7 +1559,7 @@ div.jGrowl div.jGrowl-notification{min-height:80px}
 .viewer .document-panel .search-bar{padding:20px 20px 10px}.viewer .document-panel .search-bar .input-group-btn{display:none}
 .viewer .ui-layout-toggler{display:none !important}
 .viewer .navbar .file-title-navbar{cursor:initial;-webkit-box-shadow:none;box-shadow:none}
-.btn-success:hover,.btn-success:focus,.btn-success:active,.open .btn-success.dropdown-toggle{color:#eee;border-color:#437160}
+@media print{html,body,.preview-container{overflow:visible !important} body>:not(.preview-container){display:none !important} .preview-container{width:auto !important;height:auto !important;position:static !important} #preview-contents{max-width:none !important;margin-bottom:0 !important}}.btn-success:hover,.btn-success:focus,.btn-success:active,.open .btn-success.dropdown-toggle{color:#eee;border-color:#437160}
 .navbar .dropdown-menu{background-color:#3a6153;border-color:#305145}
 @font-face{font-family:'cursive_standardregular';src:url('../font/cursive_standard-webfont.eot');src:url('../font/cursive_standard-webfont.eot?#iefix') format('embedded-opentype'),url('../font/cursive_standard-webfont.woff') format('woff'),url('../font/cursive_standard-webfont.ttf') format('truetype'),url('../font/cursive_standard-webfont.svg#cursive_standardregular') format('svg');font-weight:normal;font-style:normal}.ace-tm .ace_content{background-image:url("../img/school-line.png");background-repeat:repeat}
 .ace-tm .ace_marker-layer .ace_active-line{background-color:rgba(40,79,114,0.05)}

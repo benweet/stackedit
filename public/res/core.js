@@ -196,36 +196,7 @@ define([
             storage.themeV3 = theme;
         }
     }
-/*
-    var $navbarElt;
-    var $leftBtnElts;
-    var $rightBtnElts;
-    var $btnDropdown;
-    var $titleContainer;
-    var marginWidth = 18 * 2 + 25 + 25;
-    var titleWidth = 18 + 348;
-    var leftButtonsWidth = 18 * 5 + 80 + 160 + 160 + 40 + 80;
-    var rightButtonsWidth = 18 + 80;
-    var buttonsDropdownWidth = 40;
-    function adjustWindow() {
-        if(!window.viewerMode) {
-            var maxWidth = $navbarElt.width();
-            if(marginWidth + titleWidth + leftButtonsWidth + rightButtonsWidth > maxWidth) {
-                $btnDropdown.show().find('.dropdown-menu').append($leftBtnElts);
-                if(marginWidth + titleWidth + rightButtonsWidth + buttonsDropdownWidth > maxWidth) {
-                    $btnDropdown.find('.dropdown-menu').append($rightBtnElts);
-                }
-                else {
-                    $titleContainer.before($rightBtnElts);
-                }
-            }
-            else {
-                $btnDropdown.hide().after($leftBtnElts);
-                $titleContainer.before($rightBtnElts);
-            }
-        }
-    }
-*/
+
     // Create the PageDown editor
     var pagedownEditor;
     var fileDesc;
@@ -567,6 +538,8 @@ define([
             }, '');
             document.getElementById('input-settings-theme').innerHTML = themeOptions;
         }
+
+        $('.modal-header').append('<a class="dialog-header-message" href="https://github.com/benweet/stackedit/issues/385" target="_blank">Give your feedback <i class="icon-megaphone"></i></a>');
     });
 
     return core;

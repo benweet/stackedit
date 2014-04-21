@@ -1317,6 +1317,7 @@ a{-webkit-transition:background-color ease-in-out .15s, color ease-in-out .15s, 
 .list-group-item{padding:10px 15px;margin-bottom:0}.list-group .list-group-item{border-radius:0}
 a.list-group-item:hover,a.list-group-item:focus{color:#343434;border-top-color:rgba(128,128,128,0.1);border-bottom-color:rgba(128,128,128,0.1)}
 .bring-to-front{z-index:1050 !important}
+.dialog-header-message{position:absolute;top:12px;right:55px;font-weight:bold}
 .btn{padding:8px 11px;-webkit-transition:background-color ease-in-out .15s, color ease-in-out .15s, border-color ease-in-out .15s;transition:background-color ease-in-out .15s, color ease-in-out .15s, border-color ease-in-out .15s}
 .btn-default:hover,.btn-default:focus,.btn-default:active,.open .btn-default.dropdown-toggle{color:#343434;border-color:rgba(128,128,128,0.1);background-color:rgba(128,128,128,0.04) !important}
 .btn-primary:hover,.btn-primary:focus,.btn-primary:active,.open .btn-primary.dropdown-toggle{color:#343434;border-color:rgba(128,128,128,0.1);background-color:#e3e3e3 !important}

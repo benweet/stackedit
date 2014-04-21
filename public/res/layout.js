@@ -403,16 +403,29 @@ define([
 
         previewPanel.isOpen = true;
         previewPanel.createToggler();
+        previewPanel.halfSize = true;
+        previewToggler.$elt.click(_.bind(previewPanel.toggle, previewPanel));
+
+        // Hide extension buttons when preview is closed
         previewPanel.$elt.on('hide.layout.toggle', function() {
             previewButtons.bottom = 99999;
             previewButtons.applyCss();
         });
+
+        // Show extension buttons when preview is open
         previewPanel.$elt.on('shown.layout.toggle', function() {
             previewButtons.bottom = 6;
             previewButtons.applyCss();
         });
-        previewPanel.halfSize = true;
-        previewToggler.$elt.click(_.bind(previewPanel.toggle, previewPanel));
+
+        // Open StackEdit Viewer if failing to open the preview
+        previewPanel.$elt.on('show.layout.toggle', function() {
+            _.defer(function() {
+                if(!previewPanel.isOpen) {
+                    window.location.href = 'viewer';
+                }
+            });
+        });
 
         documentPanel.isOpen = false;
         documentPanel.createToggler(true);

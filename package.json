@@ -1,9 +1,12 @@
 {
   "name": "stackedit",
-  "version": "3.99.0",
+  "version": "3.99.1",
   "private": true,
   "description": "StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.",
   "main": "res/main.js",
+  "engines": {
+    "node": "0.10.x"
+  },
   "directories": {
     "doc": "doc"
   },

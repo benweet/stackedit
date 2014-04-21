@@ -848,6 +848,9 @@ define([
                     title: title,
                     content: content
                 };
+                if (publishDate) {
+                  data.published = publishDate.toISOString();
+                }
                 var type = "POST";
                 // If it's an update
                 if(postId !== undefined) {

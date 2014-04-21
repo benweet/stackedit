@@ -71,7 +71,7 @@ define([
                     '    <li>Auto-merge and conflict detection using standard synchronization</li>',
                     '    <li>Dropped real time sync support :( since you can collaborate simultaneously using standard synchronization</li>',
                     '</ul>',
-                    '<p>Please <a target="_blank" href="https://github.com/benweet/stackedit/issues/385">provide your feedback here</a> and declare issues on GitHub... Thanks!</p>',
+                    '<p>Please <a target="_blank" href="https://github.com/benweet/stackedit/issues/385">provide your feedback here</a>... Thanks!</p>',
                     '<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://stackedit.io" data-text="Great #markdown editor!" data-via="stackedit" data-size="large"></a>',
                 ].join(""),
                 placement: 'bottom',

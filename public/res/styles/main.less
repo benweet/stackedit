@@ -75,7 +75,7 @@
 @nav-disabled-link-color: @disabled-color;
 @nav-disabled-link-hover-color: @disabled-color;
 @nav-tabs-border-color: @transparent;
-@nav-tabs-link-hover-border-color: @transparent; 
+@nav-tabs-link-hover-border-color: @transparent;
 @dropdown-bg: @secondary-bg-lighter;
 @dropdown-border: @secondary-border-color;
 @dropdown-link-color: @secondary-color-darkest;
@@ -247,15 +247,22 @@ a {
 	z-index: 1050 !important;
 }
 
+.dialog-header-message {
+	position: absolute;
+	top: 12px;
+	right: 55px;
+	font-weight: bold;
+}
+
 
 /*******************
  * Buttons
  *******************/
- 
+
 .btn {
 	padding: 8px 11px;
 	.transition(~"background-color ease-in-out .15s, color ease-in-out .15s, border-color ease-in-out .15s");
-} 
+}
 
 .btn-default {
     &:hover,
@@ -323,7 +330,7 @@ a {
 /********************
  * Input
  ********************/
- 
+
 // Fix form-inline broken since Bootstrap v3
 .form-inline {
     .form-control {
@@ -347,7 +354,7 @@ a {
 .form-control-focus(@color: @secondary-desaturated) {
     @color-rgba: rgba(red(@color), green(@color), blue(@color), .6);
     &:focus {
-        border-color: @input-border;  
+        border-color: @input-border;
         outline: 0;
         .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 12px @{color-rgba}");
     }
@@ -379,7 +386,7 @@ a {
 	&:first-child .btn {
 		margin-right: 6px;
 	}
-	
+
 	&:last-child .btn {
 		margin-left: 6px;
 	}
@@ -389,7 +396,7 @@ a {
 /*******************
  * Navbar
  *******************/
- 
+
 .navbar {
 	position: static;
 	padding: 0;
@@ -435,7 +442,7 @@ a {
 			}
 		}
 	}
-	
+
 	.file-title-navbar {
 		display: inline-block;
 		vertical-align: middle;
@@ -446,7 +453,7 @@ a {
 		overflow: hidden;
 		white-space: nowrap;
 	}
-	
+
 	.input-file-title-container {
 		display: inline-block;
         vertical-align: middle;
@@ -474,21 +481,21 @@ a {
             -webkit-animation: indicator 0.6s ease-out infinite; /* Safari and Chrome */
 		}
 	}
-	
+
 	.offline-status > div {
 		display: inline-block;
 		vertical-align: middle;
 		height: @input-height-base;
 		padding: 9px 10px;
 	}
-	
+
 	.left-buttons-dropdown, .right-buttons-dropdown {
 	    > .nav {
     	    margin-left: 0;
     	    margin-right: 0;
 	    }
 	}
-	
+
 	div.dropdown-menu {
 	    top: initial;
 	    padding: 5px;
@@ -509,7 +516,7 @@ a {
  * Menu/Document panels
  *********************/
 
-// Common style 
+// Common style
 .menu-panel, .document-panel {
 	display: block;
 	position: absolute;
@@ -609,7 +616,7 @@ a {
 		border-left: 1px solid @secondary-border-color-light;
 		.icon-layers {
 			font-size: 135%;
-		}	
+		}
 	}
 	.search-bar {
 		position: absolute;
@@ -638,8 +645,8 @@ a {
 			    padding-left: 30px;
 			    padding-right: 30px;
 			}
-		}		
-	} 
+		}
+	}
 }
 
 // Dropdown document selector
@@ -659,7 +666,7 @@ a {
 /**************************
  * Document manager
  **************************/
- 
+
 .modal-document-manager {
 	.nav-pills {
 		margin-bottom: 15px;
@@ -716,8 +723,8 @@ a {
 		width: 220px;
 	}
 	.name, .file-count {
-		padding: 9px 20px 9px 15px;		
-	}	
+		padding: 9px 20px 9px 15px;
+	}
 }
 
 
@@ -761,7 +768,7 @@ a {
 	.dropdown-menu {
     	padding-bottom: 20px;
 	}
-	
+
 	.markdown-syntax, .table-of-contents {
 	    overflow-y: auto;
 	    overflow-x: hidden;
@@ -769,12 +776,12 @@ a {
 	    margin-right: -20px;
 	    width: 330px;
 	}
-	
+
 	.markdown-syntax {
 	    white-space: normal;
 	    max-height: 350px;
 	}
-	
+
 	.table-of-contents {
 		margin-left: -10px;
 	    max-height: 400px;
@@ -803,7 +810,7 @@ a {
 	}
 }
 
- 
+
 /**************************
  * Settings dialog
  **************************/
@@ -812,12 +819,12 @@ a {
 	.modal-header {
 		padding-bottom: 0;
 	}
-	
+
 	textarea {
 		max-width: 100%;
 		min-height: 100px;
 	}
-	
+
 	.panel {
 		border: 0;
 		border-radius: inherit;
@@ -825,7 +832,7 @@ a {
 		border-bottom: 1px solid @modal-content-separator-color;
 		.box-shadow(none);
 	}
-	
+
 	.accordion-heading {
 		padding: 12px 15px;
 		.checkbox {
@@ -833,7 +840,7 @@ a {
 			margin-bottom: 0;
 		}
 	}
-	
+
 	.accordion-inner {
 		border: 0;
 		padding: 10px 40px 20px;
@@ -843,10 +850,10 @@ a {
 			}
 			.form-inline .label-text {
 				margin-left: 15px
-			}			
+			}
 		}
 	}
-	
+
 	.tab-pane-button-container {
 		width: 220px;
 		margin: 10px auto 20px;
@@ -855,10 +862,10 @@ a {
     		padding-left: 15px;
     	}
 	}
-	
+
 	.nav-tabs {
 		margin: 15px 0 0;
-		
+
 		& > li > a {
 			&:hover, &:focus {
 				color: darken(@secondary, 30%);
@@ -867,7 +874,7 @@ a {
 				border-bottom-color: @transparent;
 			}
 		}
-		
+
 		& > li.active > a {
 			&, &:hover, &:focus {
 				color: @btn-primary-color;
@@ -883,7 +890,7 @@ a {
 /********************************
  * Publish/Sync/Share dialogs
  ********************************/
- 
+
 .modal-manage-sync .sync-list,
 .modal-manage-publish .publish-list,
 .modal-manage-sharing .share-list {
@@ -910,7 +917,7 @@ a {
 /*********************************
  * UI Layout
  *********************************/
- 
+
 .ui-layout-resizer {
 	overflow: visible !important;
     font-size: 14px !important;
@@ -981,14 +988,14 @@ a {
 /*****************************
  * Editor
  *****************************/
- 
+
 .ace_editor {
 	color: @tertiary-color-dark;
 }
 
 .ace-tm {
 	background-color: @tertiary-bg;
-	
+
 	.ace_text-input {
 		box-sizing: initial;
 	}
@@ -996,104 +1003,104 @@ a {
 	.ace_marker-layer .ace_active-line {
 	    background-color: fade(@primary-desaturated, 5%);
 	}
-	
+
 	.ace_cursor {
 	    color: darken(@primary-desaturated, 30%);
 	}
-	
+
 	.ace_print-margin {
 		background-color: fade(@primary-desaturated, 5%);
 	}
-	
+
 	.ace_markup.ace_heading {
 		color: @tertiary-color-darker;
 		font-weight: bold;
 	}
-	
+
 	.ace_markup.ace_list {
 		color: @tertiary-color;
 	}
-	
+
 	.ace_constant.ace_language {
 	    color: @tertiary-color-light;
 		font-weight: normal;
 	}
-	
+
 	.ace_meta.ace_tag {
 		color: @tertiary-color-dark;
 		font-style: italic;
 		font-weight: bold;
 		background-color: @code-bg;
 	}
-	
+
 	.ace_keyword.ace_operator {
 	    color: @tertiary-color-dark;
 		background-color: transparent;
 	}
-	
+
 	.ace_storage, .ace_keyword {
 		color: @tertiary-color-dark;
 		background-color: @code-bg;
 		font-weight: bold;
 	}
-	
+
 	.ace_entity.ace_name.ace_function {
 		color: @tertiary-color-darker;
 		font-weight: bold;
 	}
-	
+
 	.ace_string {
 		color: @tertiary-color-dark;
 		font-style: italic;
 		background-color: @code-bg;
 	}
-	
+
 	.ace_invalid {
 	    color: inherit;
         background: inherit;
 	}
-	
+
 	.ace_strong {
 		color: @tertiary-color-dark;
 		font-weight: bold;
 	}
-	
+
 	.ace_emphasis {
 		color: @tertiary-color-darker;
 		font-style: italic;
 	}
-	
+
 	.ace_blockquote {
 		color: @tertiary-color;
 	}
-	
+
 	.ace_code {
 		color: @tertiary-color-darker;
 		background-color: @code-bg;
 	}
-	
+
 	.ace_code_block {
 		color: @tertiary-color-darker;
 	}
-	
+
 	.ace_link {
 	    color: @tertiary-color;
 		background-color: @code-bg;
 	}
-	
+
 	.ace_description {
 		color: @tertiary-color;
 	}
-	
+
 	.ace_constant {
 	    color: @tertiary-color-dark;
 	}
-	
+
 	.ace_comment {
 	    color: @tertiary-color-light;
 		font-style: italic;
 	}
-	
+
 	.ace_marker-layer .misspelled {
 	    position: absolute;
 	    z-index: -2;
@@ -1231,7 +1238,7 @@ div.dropdown-menu,  {
     	margin: 15px 0;
     }
 }
-    
+
 .btn-gittip {
     width: 52px;
     height: 25px;
@@ -1357,7 +1364,7 @@ div.jGrowl {
 /*******************
  * Viewer
  *******************/
- 
+
 .viewer {
 	.document-panel .search-bar {
 		padding: 20px 20px 10px;
@@ -1365,11 +1372,11 @@ div.jGrowl {
 			display: none;
 		}
 	}
-	
+
 	.ui-layout-toggler {
 		display: none !important;
 	}
-	
+
 	.navbar .file-title-navbar {
 	    cursor: initial;
 	    .box-shadow(none);

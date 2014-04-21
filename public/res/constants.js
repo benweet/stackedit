@@ -1,6 +1,6 @@
 define([], function() {
     var constants = {};
-    constants.VERSION = "3.1.9";
+    constants.VERSION = "3.99.0";
 
     constants.MAIN_URL = "https://stackedit.io/";
     constants.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1";
@@ -53,6 +53,15 @@ define([], function() {
         constants.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy.herokuapp.com/";
         constants.WORDPRESS_CLIENT_ID = '3185';
         constants.WORDPRESS_PROXY_URL = "https://stackedit-wordpress-proxy.herokuapp.com/";
+    }
+    else if(location.hostname.indexOf("stackedit-beta.herokuapp.com") === 0) {
+        constants.BASE_URL = 'https://stackedit-beta.herokuapp.com/';
+        constants.GOOGLE_CLIENT_ID = '241271498917-9bbplknkt0ljv5gaudhoiogp13hd18be.apps.googleusercontent.com';
+        constants.GITHUB_CLIENT_ID = 'e9034ae191c3a8a1c5ed';
+        constants.GATEKEEPER_URL = "https://stackedit-beta-gatekeeper.herokuapp.com/";
+        constants.TUMBLR_PROXY_URL = "https://stackedit-beta-tumblr-proxy.herokuapp.com/";
+        constants.WORDPRESS_CLIENT_ID = '34786';
+        constants.WORDPRESS_PROXY_URL = "https://stackedit-beta-wordpress-proxy.herokuapp.com/";
     }
     else if(location.hostname.indexOf("benweet.insomnia247.nl") === 0) {
         constants.BASE_URL = "http://benweet.insomnia247.nl/stackedit/";

@@ -123,6 +123,8 @@ define([
         utils.setInputRadio("radio-settings-edit-mode", settings.editMode);
         // Commit message
         utils.setInputValue("#input-settings-publish-commit-msg", settings.commitMsg);
+        // Markdown MIME type
+        utils.setInputValue("#input-settings-markdown-mime-type", settings.markdownMimeType);
         // Gdrive multi-accounts
         utils.setInputValue("#input-settings-gdrive-multiaccount", settings.gdriveMultiAccount);
         // Gdrive full access
@@ -168,6 +170,8 @@ define([
         newSettings.commitMsg = utils.getInputTextValue("#input-settings-publish-commit-msg", event);
         // Gdrive multi-accounts
         newSettings.gdriveMultiAccount = utils.getInputIntValue("#input-settings-gdrive-multiaccount");
+        // Markdown MIME type
+        newSettings.markdownMimeType = utils.getInputValue("#input-settings-markdown-mime-type");
         // Gdrive full access
         newSettings.gdriveFullAccess = utils.getInputChecked("#input-settings-gdrive-full-access");
         // Drobox full access

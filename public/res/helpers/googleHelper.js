@@ -233,7 +233,7 @@ define([
             var boundary = '-------314159265358979323846';
             var delimiter = "\r\n--" + boundary + "\r\n";
             var close_delim = "\r\n--" + boundary + "--";
-            contentType = contentType || 'text/x-markdown';
+            contentType = contentType || settings.markdownMimeType;
             var metadata = {
                 title: title,
                 mimeType: contentType
@@ -768,6 +768,9 @@ define([
                     title: title,
                     content: content
                 };
+                if(publishDate) {
+                    data.published = publishDate.toISOString();
+                }
                 var type = "POST";
                 // If it's an update
                 if(postId !== undefined) {

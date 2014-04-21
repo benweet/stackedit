@@ -14,6 +14,7 @@ define([
         defaultContent: "\n\n\n> Written with [StackEdit](" + constants.MAIN_URL + ").",
         commitMsg: "Published with " + constants.MAIN_URL,
         conflictMode: 'merge',
+        markdownMimeType: 'text/x-markdown',
         gdriveMultiAccount: 1,
         gdriveFullAccess: true,
         dropboxFullAccess: true,

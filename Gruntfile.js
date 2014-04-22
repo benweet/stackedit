@@ -74,19 +74,6 @@ module.exports = function(grunt) {
             },
         },
         'string-replace': {
-            'font-parameters': {
-                files: {
-                    './': 'public/res-min/themes/*.css',
-                },
-                options: {
-                    replacements: [
-                        {
-                            pattern: /(font\/fontello\.\w+)\?\w+/g,
-                            replacement: '$1'
-                        }
-                    ]
-                }
-            },
             'constants': {
                 files: {
                     'public/res/constants.js': 'public/res/constants.js'
@@ -202,10 +189,8 @@ module.exports = function(grunt) {
      */
     grunt.registerTask('build-css', function() {
 
-        // First compile less files
+        // Compile less files
         grunt.task.run('less:compile');
-        // Remove fontello checksum arguments
-        grunt.task.run('string-replace:font-parameters');
 
     });
 

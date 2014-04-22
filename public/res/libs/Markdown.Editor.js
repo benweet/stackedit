@@ -737,12 +737,13 @@
                 return;
             }
 
-            if (inputArea.selectionStart !== undefined && !uaSniffed.isOpera) {
+            //if (inputArea.selectionStart !== undefined && !uaSniffed.isOpera) {
 
                 inputArea.focus();
                 inputArea.selectionStart = stateObj.start;
                 inputArea.selectionEnd = stateObj.end;
                 inputArea.scrollTop = stateObj.scrollTop;
+                /*
             }
             else if (doc.selection) {
 
@@ -754,14 +755,16 @@
                 range.moveStart("character", stateObj.start);
                 range.select();
             }
+            */
         };
 
         this.setInputAreaSelectionStartEnd = function () {
 
-            if (!panels.ieCachedRange && (inputArea.selectionStart || inputArea.selectionStart === 0)) {
+            //if (!panels.ieCachedRange && (inputArea.selectionStart || inputArea.selectionStart === 0)) {
 
                 stateObj.start = inputArea.selectionStart;
                 stateObj.end = inputArea.selectionEnd;
+                /*
             }
             else if (doc.selection) {
 
@@ -802,6 +805,7 @@
 
                 this.setInputAreaSelection();
             }
+            */
         };
 
         // Restore this state into the input area.
@@ -1401,9 +1405,11 @@
 
                 if (!noCleanup) {
                     fixupInputArea();
+                    /*
                     if(!linkOrImage) {
                         inputBox.dispatchEvent(new Event('keydown'));
                     }
+                    */
                 }
 
             }

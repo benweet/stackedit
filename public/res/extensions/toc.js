@@ -132,10 +132,22 @@ define([
                     elt.innerHTML = htmlToc;
                 }
             });
-            // Add toc in the TOC button 
+            // Add toc in the TOC button
             _.each(tocEltList, function(elt) {
                 elt.innerHTML = htmlToc;
             });
+        });
+    };
+
+    toc.onReady = function() {
+        var isPreviewVisible = true;
+        $(".preview-panel").on('hide.layout.toggle', function() {
+            isPreviewVisible = false;
+        }).on('shown.layout.toggle', function() {
+            isPreviewVisible = true;
+        });
+        $('.extension-preview-buttons .table-of-contents').on('click', 'a', function(evt) {
+            !isPreviewVisible && evt.preventDefault();
         });
     };
 

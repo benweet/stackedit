@@ -17,8 +17,6 @@ define([
         sectionList = sectionListParam;
     };
 
-    var isPreviewVisible = true;
-
     var $editorElt;
     var $previewElt;
     var mdSectionList = [];
@@ -26,9 +24,6 @@ define([
     var lastEditorScrollTop;
     var lastPreviewScrollTop;
     var buildSections = _.debounce(function() {
-        if(!isPreviewVisible) {
-            return;
-        }
         mdSectionList = [];
         var mdSectionOffset;
         var scrollHeight;
@@ -91,11 +86,28 @@ define([
         doScrollSync();
     }, 500);
 
+    var isPreviewVisible = true;
     var isScrollEditor = false;
     var isScrollPreview = false;
     var isEditorMoving = false;
     var isPreviewMoving = false;
     var scrollingHelper = $('<div>');
+    function getDestScrollTop(srcScrollTop, srcSectionList, destSectionList) {
+        // Find the section corresponding to the offset
+        var sectionIndex;
+        var srcSection = _.find(srcSectionList, function(section, index) {
+            sectionIndex = index;
+            return srcScrollTop < section.endOffset;
+        });
+        if(srcSection === undefined) {
+            // Something very bad happened
+            return;
+        }
+        var posInSection = (srcScrollTop - srcSection.startOffset) / (srcSection.height || 1);
+        var destSection = destSectionList[sectionIndex];
+        return destSection.startOffset + destSection.height * posInSection;
+    }
+
     var doScrollSync = _.throttle(function() {
         if(!isPreviewVisible || mdSectionList.length === 0 || mdSectionList.length !== htmlSectionList.length) {
             return;
@@ -103,21 +115,6 @@ define([
         var editorScrollTop = $editorElt.scrollTop();
         editorScrollTop < 0 && (editorScrollTop = 0);
         var previewScrollTop = $previewElt.scrollTop();
-        function getDestScrollTop(srcScrollTop, srcSectionList, destSectionList) {
-            // Find the section corresponding to the offset
-            var sectionIndex;
-            var srcSection = _.find(srcSectionList, function(section, index) {
-                sectionIndex = index;
-                return srcScrollTop < section.endOffset;
-            });
-            if(srcSection === undefined) {
-                // Something very bad happened
-                return;
-            }
-            var posInSection = (srcScrollTop - srcSection.startOffset) / (srcSection.height || 1);
-            var destSection = destSectionList[sectionIndex];
-            return destSection.startOffset + destSection.height * posInSection;
-        }
         var destScrollTop;
         // Perform the animation if diff > 9px
         if(isScrollEditor === true) {
@@ -223,11 +220,24 @@ define([
             }
         });
 
-        $previewElt.on('hide.layout.toggle', function() {
+        $(".preview-panel").on('hide.layout.toggle', function() {
             isPreviewVisible = false;
-        });
-        $previewElt.on('shown.layout.toggle', function() {
+        }).on('shown.layout.toggle', function() {
             isPreviewVisible = true;
+        });
+
+        // Reimplement anchor scrolling to work without preview
+        $('.extension-preview-buttons .table-of-contents').on('click', 'a', function(evt) {
+            evt.preventDefault();
+            var id = this.hash;
+            var $anchorElt = $previewElt.find(id);
+            if(!$anchorElt.length) {
+                return;
+            }
+            var previewScrollTop = $anchorElt.offset().top - $previewElt.offset().top + $previewElt.scrollTop();
+            $previewElt.scrollTop(previewScrollTop);
+            var editorScrollTop = getDestScrollTop(previewScrollTop, htmlSectionList, mdSectionList);
+            $editorElt.scrollTop(editorScrollTop);
         });
     };
 

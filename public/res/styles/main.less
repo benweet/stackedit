@@ -112,6 +112,7 @@
 @btn-info-color: fade(@secondary-desaturated, 35%);
 @btn-info-bg: @transparent;
 @btn-info-border: @transparent;
+@btn-info-hover-color: darken(@secondary, 30%);
 @btn-info-hover-border: fade(@secondary, 8%);
 @btn-info-hover-bg: @secondary-bg-dark;
 @gray-lighter: @body-bg;
@@ -156,6 +157,10 @@ body {
 
 .working {
 	cursor: progress;
+}
+
+.dragging {
+	cursor: move !important;
 }
 
 .btn,
@@ -327,7 +332,7 @@ a {
     &.info-tooltip,
 	.info-tooltip &,
     .open &.dropdown-toggle {
-    	color: darken(@secondary, 30%);
+    	color: @btn-info-hover-color;
     	border-color: @btn-info-hover-border;
     	background-color: @btn-info-hover-bg !important; // important to override .nav > li > a:hover
     }
@@ -808,14 +813,16 @@ a {
 }
 
 .extension-preview-buttons {
-    position: absolute;
-	z-index: 10;
-	right: 45px;
-    bottom: 6px;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	z-index: 30;
 	background-color: @btn-info-hover-bg;
 	border: 1px solid @btn-info-hover-border;
 	border-radius: @border-radius-base;
-	.transition-transform(350ms ease-in-out);
+	&.animate {
+		.transition-transform(350ms ease-in-out);
+	}
 	.btn-group {
 		.btn {
 			position: initial;
@@ -823,6 +830,7 @@ a {
 		}
 	}
 	.dropdown-menu {
+        margin-top: 6px;
         margin-bottom: 6px;
     	padding-bottom: 20px;
 	}
@@ -849,6 +857,24 @@ a {
 	    ul {
 		    margin-left: 10px;
 		    padding-left: 10px;
+		}
+	}
+
+	.stat-button .value {
+		vertical-align: text-top;
+	}
+
+	.drag-me {
+		color: @btn-info-color;
+		cursor: move;
+		&.info-tooltip {
+			color: @btn-info-hover-color;
+		}
+		i {
+			overflow: hidden;
+			&:before {
+				width: 5px;
+			}
 		}
 	}
 }

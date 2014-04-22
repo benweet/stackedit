@@ -25,6 +25,11 @@ define([
     var menuPanelWidth = 280;
     var documentPanelWidth = 320;
     var titleMinWidth = 200;
+    var previewButtonsDropdownMargin = 130;
+    var previewButtonsOffset = {
+        x: -45,
+        y: -6
+    };
     var windowSize;
 
     var wrapperL1, wrapperL2, wrapperL3;
@@ -353,6 +358,8 @@ define([
         previewResizer.applyCss();
         navbarToggler.applyCss();
 
+        previewButtons.adjustPosition();
+
         onResize();
     }
     layout.resizeAll = resizeAll;
@@ -406,6 +413,7 @@ define([
         previewPanel.halfSize = true;
         previewToggler.$elt.click(_.bind(previewPanel.toggle, previewPanel));
 
+/*
         // Hide extension buttons when preview is closed
         previewPanel.$elt.on('hide.layout.toggle', function() {
             previewButtons.bottom = 99999;
@@ -417,7 +425,7 @@ define([
             previewButtons.bottom = 6;
             previewButtons.applyCss();
         });
-
+*/
         // Open StackEdit Viewer if failing to open the preview
         previewPanel.$elt.on('show.layout.toggle', function() {
             _.defer(function() {
@@ -458,7 +466,7 @@ define([
             });
 
             // Gesture
-            previewResizer.initHammer(true);
+
             /*
             navbar.initHammer();
             menuPanel.initHammer();
@@ -476,20 +484,57 @@ define([
             documentPanel.hammer.on('swiperight', _.bind(documentPanel.toggle, documentPanel, false));
             */
 
-            var initialWidth, initialHeight;
+            previewResizer.initHammer(true);
+            var resizerInitialSize;
             previewResizer.hammer.on('dragstart', function() {
-                initialWidth = previewPanel.width;
-                initialHeight = previewPanel.height;
+                resizerInitialSize = {
+                    width: previewPanel.width,
+                    height: previewPanel.height
+                };
             }).on('drag', function(evt) {
                 if(isVertical) {
-                    previewPanel.height = initialHeight - evt.gesture.deltaY;
+                    previewPanel.height = resizerInitialSize.height - evt.gesture.deltaY;
                 }
                 else {
-                    previewPanel.width = initialWidth - evt.gesture.deltaX;
+                    previewPanel.width = resizerInitialSize.width - evt.gesture.deltaX;
                 }
                 evt.gesture.preventDefault();
                 previewPanel.halfSize = false;
                 resizeAll();
+            });
+
+            previewButtons.initHammer(true);
+            previewButtons.adjustPosition = function() {
+                if(!previewButtons.isDragged) {
+                    return;
+                }
+                var minX = -windowSize.width + previewButtons.elt.offsetWidth;
+                var minY = -windowSize.height + previewButtons.elt.offsetHeight;
+                this.x < minX && (this.x = minX);
+                this.y < minY && (this.y = minY);
+                this.x > 0 && (this.x = 0);
+                this.y > 0 && (this.y = 0);
+                this.applyCss();
+            };
+
+
+            var buttonsInitialCoord;
+            previewButtons.hammer.on('dragstart', function() {
+                previewButtons.isDragged = true;
+                previewButtons.$elt.removeClass('animate');
+                wrapperL2.$elt.addClass('dragging');
+                buttonsInitialCoord = {
+                    x: previewButtons.x,
+                    y: previewButtons.y
+                };
+            }).on('drag', function(evt) {
+                previewButtons.x = buttonsInitialCoord.x + evt.gesture.deltaX;
+                previewButtons.y = buttonsInitialCoord.y + evt.gesture.deltaY;
+                previewButtons.adjustPosition();
+                evt.gesture.preventDefault();
+            }).on('dragend', function() {
+                wrapperL2.$elt.removeClass('dragging');
+                previewButtons.$elt.find('.btn-group').toggleClass('dropup', windowSize.height/2 > -previewButtons.y);
             });
         }
 
@@ -541,19 +586,25 @@ define([
     };
 
     eventMgr.addListener('onReady', function() {
-        var previewButtonsWidth = previewButtons.elt.offsetWidth;
+        previewButtons.x = previewButtonsOffset.x;
+        previewButtons.y = previewButtonsOffset.y;
+        previewButtons.applyCss();
+
         function openPreviewButtons() {
             clearTimeout(closeTimeoutId);
-            previewButtons.x = 0;
-            previewButtons.applyCss();
+            if(!previewButtons.isDragged) {
+                previewButtons.x = previewButtonsOffset.x;
+                previewButtons.applyCss();
+            }
         }
         var closeTimeoutId;
         var dropdownOpen = false;
         function closePreviewButtons() {
             clearTimeout(closeTimeoutId);
             closeTimeoutId = setTimeout(function() {
-                if(!dropdownOpen) {
-                    previewButtons.x = previewButtonsWidth;
+                if(!previewButtons.isDragged && !dropdownOpen) {
+                    previewButtons.$elt.addClass('animate');
+                    previewButtons.x = previewButtonsOffset.x + previewButtons.elt.offsetWidth;
                     previewButtons.applyCss();
                 }
             }, 3000);
@@ -571,13 +622,18 @@ define([
 
         _.each(previewButtons.elt.querySelectorAll('.btn-group'), function(btnGroupElt) {
             var $btnGroupElt = $(btnGroupElt);
-            $btnGroupElt.click(function() {
+            $btnGroupElt.on('shown.bs.dropdown', function() {
                 // Align dropdown to the left of the screen
                 $btnGroupElt.find('.dropdown-menu').css({
-                    right: -previewButtonsWidth + $btnGroupElt.width() + $btnGroupElt.position().left
+                    right: -previewButtons.elt.offsetWidth + $btnGroupElt.width() + $btnGroupElt.position().left
                 });
+                var maxHeight = -previewButtons.y - previewButtonsDropdownMargin;
+                // If it's a dropup
+                if(windowSize.height/2 > -previewButtons.y) {
+                    maxHeight = windowSize.height + previewButtons.y - previewButtons.elt.offsetHeight - previewButtonsDropdownMargin;
+                }
                 $btnGroupElt.find('.markdown-syntax, .table-of-contents').css({
-                    'maxHeight': wrapperL3.height - 180
+                    'maxHeight': maxHeight
                 });
             }).addClass('dropup');
         });

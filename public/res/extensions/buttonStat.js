@@ -43,16 +43,22 @@ define([
     buttonStat.onCreatePreviewButton = function() {
         return _.template(buttonStatHTML, buttonStat.config);
     };
-    
+
     var previewContentsElt;
-    var value1Elt;
-    var value2Elt;
-    var value3Elt;
+    var valueElt, value1Elt, value2Elt, value3Elt;
     buttonStat.onReady = function() {
         previewContentsElt = document.getElementById('preview-contents');
-        value1Elt = document.getElementById('span-stat-value1');
-        value2Elt = document.getElementById('span-stat-value2');
-        value3Elt = document.getElementById('span-stat-value3');
+        valueElt = document.querySelector('.stat-button .value');
+        value1Elt = document.querySelector('.stat-button-dropdown .value1');
+        value2Elt = document.querySelector('.stat-button-dropdown .value2');
+        value3Elt = document.querySelector('.stat-button-dropdown .value3');
+    };
+
+    var regex1, regex2, regex3;
+    buttonStat.onInit = function() {
+        regex1 = new RegExp(buttonStat.config.value1, "g");
+        regex2 = new RegExp(buttonStat.config.value2, "g");
+        regex3 = new RegExp(buttonStat.config.value3, "g");
     };
 
     buttonStat.onPreviewFinished = function() {
@@ -63,9 +69,9 @@ define([
             scriptElt.parentNode.removeChild(scriptElt);
         }
         var text = previewContentsEltClone.textContent;
-        value1Elt.textContent = (text.match(new RegExp(buttonStat.config.value1, "g")) || []).length;
-        value2Elt.textContent = (text.match(new RegExp(buttonStat.config.value2, "g")) || []).length;
-        value3Elt.textContent = (text.match(new RegExp(buttonStat.config.value3, "g")) || []).length;
+        valueElt.textContent = value1Elt.textContent = (text.match(regex1) || []).length;
+        value2Elt.textContent = (text.match(regex2) || []).length;
+        value3Elt.textContent = (text.match(regex3) || []).length;
     };
 
     return buttonStat;

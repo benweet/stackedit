@@ -41,9 +41,9 @@ define([
             },
             onEnd: function() {
                 storage.welcomeTour = 'done';
-                infoTooltip('.menu-panel .toggle-button *', 'Synchronize, publish and more...', 'right');
-                infoTooltip('.document-panel .toggle-button *', 'Create and manage documents', 'left');
-                infoTooltip('.extension-preview-buttons .btn-group:first', 'Need help with Markdown syntax?', 'left');
+                infoTooltip('.menu-panel .toggle-button *', 'Synchronize, publish...', 'right');
+                infoTooltip('.document-panel .toggle-button *', 'Create, manage documents', 'left');
+                infoTooltip('.drag-me', 'Drag me!', 'left');
                 infoTooltip('.layout-toggler-preview', 'Toggle preview', 'right');
             },
             template: [

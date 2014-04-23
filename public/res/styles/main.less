@@ -140,14 +140,7 @@
 @state-danger-border: fade(spin(@logo-orange, -4), 20%);
 
 
-html, body {
-	overflow: hidden;
-}
-
 body {
-	.layout-panel();
-	bottom: 0;
-	right: 0;
 	tab-size: 4;
 }
 
@@ -816,10 +809,12 @@ a {
 	position: absolute;
 	right: 0;
 	bottom: 0;
-	z-index: 30;
+	z-index: 40;
 	background-color: @btn-info-hover-bg;
 	border: 1px solid @btn-info-hover-border;
 	border-radius: @border-radius-base;
+	cursor: move;
+
 	&.animate {
 		.transition-transform(350ms ease-in-out);
 	}
@@ -866,15 +861,11 @@ a {
 
 	.drag-me {
 		color: @btn-info-color;
-		cursor: move;
 		&.info-tooltip {
 			color: @btn-info-hover-color;
 		}
-		i {
-			overflow: hidden;
-			&:before {
-				width: 5px;
-			}
+		i:before {
+			width: 5px;
 		}
 	}
 }

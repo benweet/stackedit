@@ -362,9 +362,20 @@ define([
 
         onResize();
     }
-    layout.resizeAll = resizeAll;
 
     layout.init = function() {
+
+        // Tweak the body element
+        (function(bodyStyle) {
+            bodyStyle.position = 'absolute';
+            bodyStyle.top = 0;
+            bodyStyle.left = 0;
+            bodyStyle.bottom = 0;
+            bodyStyle.right = 0;
+            bodyStyle.overflow = 'hidden';
+        })(document.body.style);
+        document.documentElement.style.overflow = 'hidden';
+
         wrapperL1 = new DomObject('.layout-wrapper-l1');
         wrapperL2 = new DomObject('.layout-wrapper-l2');
         wrapperL3 = new DomObject('.layout-wrapper-l3');
@@ -413,19 +424,6 @@ define([
         previewPanel.halfSize = true;
         previewToggler.$elt.click(_.bind(previewPanel.toggle, previewPanel));
 
-/*
-        // Hide extension buttons when preview is closed
-        previewPanel.$elt.on('hide.layout.toggle', function() {
-            previewButtons.bottom = 99999;
-            previewButtons.applyCss();
-        });
-
-        // Show extension buttons when preview is open
-        previewPanel.$elt.on('shown.layout.toggle', function() {
-            previewButtons.bottom = 6;
-            previewButtons.applyCss();
-        });
-*/
         // Open StackEdit Viewer if failing to open the preview
         previewPanel.$elt.on('show.layout.toggle', function() {
             _.defer(function() {
@@ -502,41 +500,41 @@ define([
                 previewPanel.halfSize = false;
                 resizeAll();
             });
-
-            previewButtons.initHammer(true);
-            previewButtons.adjustPosition = function() {
-                if(!previewButtons.isDragged) {
-                    return;
-                }
-                var minX = -windowSize.width + previewButtons.elt.offsetWidth;
-                var minY = -windowSize.height + previewButtons.elt.offsetHeight;
-                this.x < minX && (this.x = minX);
-                this.y < minY && (this.y = minY);
-                this.x > 0 && (this.x = 0);
-                this.y > 0 && (this.y = 0);
-                this.applyCss();
-            };
-
-
-            var buttonsInitialCoord;
-            previewButtons.hammer.on('dragstart', function() {
-                previewButtons.isDragged = true;
-                previewButtons.$elt.removeClass('animate');
-                wrapperL2.$elt.addClass('dragging');
-                buttonsInitialCoord = {
-                    x: previewButtons.x,
-                    y: previewButtons.y
-                };
-            }).on('drag', function(evt) {
-                previewButtons.x = buttonsInitialCoord.x + evt.gesture.deltaX;
-                previewButtons.y = buttonsInitialCoord.y + evt.gesture.deltaY;
-                previewButtons.adjustPosition();
-                evt.gesture.preventDefault();
-            }).on('dragend', function() {
-                wrapperL2.$elt.removeClass('dragging');
-                previewButtons.$elt.find('.btn-group').toggleClass('dropup', windowSize.height/2 > -previewButtons.y);
-            });
         }
+
+        previewButtons.initHammer(true);
+        previewButtons.adjustPosition = function() {
+            if(!previewButtons.isDragged) {
+                return;
+            }
+            var minX = -windowSize.width + previewButtons.elt.offsetWidth;
+            var minY = -windowSize.height + previewButtons.elt.offsetHeight;
+            this.x < minX && (this.x = minX);
+            this.y < minY && (this.y = minY);
+            this.x > 0 && (this.x = 0);
+            this.y > 0 && (this.y = 0);
+            this.applyCss();
+        };
+
+
+        var buttonsInitialCoord;
+        previewButtons.hammer.on('dragstart', function() {
+            previewButtons.isDragged = true;
+            previewButtons.$elt.removeClass('animate');
+            wrapperL2.$elt.addClass('dragging');
+            buttonsInitialCoord = {
+                x: previewButtons.x,
+                y: previewButtons.y
+            };
+        }).on('drag', function(evt) {
+            previewButtons.x = buttonsInitialCoord.x + evt.gesture.deltaX;
+            previewButtons.y = buttonsInitialCoord.y + evt.gesture.deltaY;
+            previewButtons.adjustPosition();
+            evt.gesture.preventDefault();
+        }).on('dragend', function() {
+            wrapperL2.$elt.removeClass('dragging');
+            previewButtons.$elt.find('.btn-group').toggleClass('dropup', windowSize.height/2 > -previewButtons.y);
+        });
 
         var isModalShown = false;
         $('.modal').on('show.bs.modal', function() {
@@ -610,15 +608,13 @@ define([
             }, 3000);
         }
 
-        if(!window.viewerMode) {
+        closePreviewButtons();
+        previewButtons.$elt.hover(openPreviewButtons, closePreviewButtons).on('show.bs.dropdown', function() {
+            dropdownOpen = true;
+        }).on('hidden.bs.dropdown', function() {
+            dropdownOpen = false;
             closePreviewButtons();
-            previewButtons.$elt.hover(openPreviewButtons, closePreviewButtons).on('show.bs.dropdown', function() {
-                dropdownOpen = true;
-            }).on('hidden.bs.dropdown', function() {
-                dropdownOpen = false;
-                closePreviewButtons();
-            });
-        }
+        });
 
         _.each(previewButtons.elt.querySelectorAll('.btn-group'), function(btnGroupElt) {
             var $btnGroupElt = $(btnGroupElt);

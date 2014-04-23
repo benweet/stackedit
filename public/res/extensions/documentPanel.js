@@ -96,17 +96,6 @@ define([
 
         documentListFilteredElt.innerHTML = documentListFilteredHtml;
 
-        // Add click listeners
-        _.each(panelElt.querySelectorAll('.file'), function(fileElt) {
-            var $fileElt = $(fileElt);
-            $fileElt.click(function() {
-                var fileDesc = fileSystem[$fileElt.data('fileIndex')];
-                if(fileDesc && fileDesc !== selectedFileDesc) {
-                    fileMgr.selectFile(fileDesc);
-                }
-            });
-        });
-
     }, 50);
 
     documentPanel.onFileSelected = function(fileDesc) {
@@ -174,6 +163,12 @@ define([
             // Unset the filter
             $filterInputElt.val('');
             filterFiles('');
+        }).on('click', '.file', function() {
+            var $fileElt = $(this);
+            var fileDesc = fileSystem[$fileElt.data('fileIndex')];
+            if(fileDesc && fileDesc !== selectedFileDesc) {
+                fileMgr.selectFile(fileDesc);
+            }
         });
 
         // Search bar input change
@@ -181,6 +176,7 @@ define([
         $filterInputElt.bind("propertychange keyup input paste", function() {
             filterFiles($filterInputElt.val());
         });
+
     };
 
     return documentPanel;

@@ -113,12 +113,12 @@ define([
 
     var $liMoveElt;
     var $liDeleteElt;
-    function doActiveButtons() {
+    var doActiveButtons = _.debounce(function() {
         doSelect();
 
         $liMoveElt.toggleClass('disabled', _.size(folderList) === 0 || _.size(selectedDocumentList) === 0);
         $liDeleteElt.toggleClass('disabled', _.size(selectedFolderList) === 0 && _.size(selectedDocumentList) === 0);
-    }
+    }, 50);
 
     var orphanDocumentList;
     var $documentCountElt;
@@ -181,105 +181,6 @@ define([
         });
 
         documentListElt.innerHTML = documentListHtml;
-
-        // Set delete event listeners
-        _.each(documentListElt.querySelectorAll('.button-delete'), function(buttonElt) {
-            var $buttonElt = $(buttonElt);
-            $buttonElt.click(function(e) {
-                e.stopPropagation();
-                var $parentElt = $buttonElt.parent();
-                var folderDesc = folderList[$parentElt.data('folderIndex')];
-                var fileDesc = fileSystem[$parentElt.data('fileIndex')];
-                selectedDocumentList = [];
-                selectedFolderList = [];
-                if(folderDesc) {
-                    selectedFolderList.push(folderDesc);
-                    selectedDocumentList = folderDesc.fileList;
-                }
-                else if(fileDesc) {
-                    selectedDocumentList.push(fileDesc);
-                }
-                doDeleteConfirmation();
-            });
-        });
-
-        // Set rename event listeners
-        _.each(documentListElt.querySelectorAll('.button-rename'), function(buttonElt) {
-            var $buttonElt = $(buttonElt);
-            $buttonElt.click(function(e) {
-                e.stopPropagation();
-                var $parentElt = $buttonElt.parent();
-                var name;
-                var folderDesc = folderList[$parentElt.data('folderIndex')];
-                var fileDesc = fileSystem[$parentElt.data('fileIndex')];
-                if(folderDesc) {
-                    name = folderDesc.name;
-                }
-                else if(fileDesc) {
-                    name = fileDesc.title;
-                }
-                $parentElt.find('.name').addClass('hide');
-                $parentElt.find('.input-rename').removeClass('hide').val(name)[0].select();
-            });
-        });
-        _.each(documentListElt.querySelectorAll('.input-rename'), function(inputElt) {
-            var $inputElt = $(inputElt);
-            function rename() {
-                var parentElt = $inputElt.parent();
-                var name = $.trim($inputElt.val());
-                var folderDesc = folderList[parentElt.data('folderIndex')];
-                var fileDesc = fileSystem[parentElt.data('fileIndex')];
-                if(name && folderDesc && name != folderDesc.name) {
-                    folderDesc.name = name;
-                    eventMgr.onFoldersChanged();
-                }
-                else if(name && fileDesc && name != fileDesc.title) {
-                    fileDesc.title = name;
-                    eventMgr.onTitleChanged(fileDesc);
-                }
-                else {
-                    $inputElt.addClass('hide');
-                    parentElt.find('.name').removeClass('hide');
-                }
-            }
-            $inputElt.blur(function() {
-                rename();
-            }).keyup(function(e) {
-                if(e.keyCode == 13) {
-                    rename();
-                    e.stopPropagation();
-                }
-                if(e.keyCode == 27) {
-                    $inputElt.val('');
-                    rename();
-                    e.stopPropagation();
-                }
-            });
-        });
-
-        // Set file checkbox behavior
-        _.each(documentListElt.querySelectorAll('.file .checkbox'), function(checkboxElt) {
-            var $checkboxElt = $(checkboxElt);
-            $checkboxElt.click(function(e) {
-                e.stopPropagation();
-            }).find('[type=checkbox]').change(function() {
-                $checkboxElt.parents('.list-group').find('.folder [type=checkbox]').prop('checked', false);
-            });
-        });
-
-        // Set folder checkbox behavior
-        _.each(documentListElt.querySelectorAll('.folder .checkbox'), function(checkboxElt) {
-            var $checkboxElt = $(checkboxElt);
-            $checkboxElt.click(function(e) {
-                e.stopPropagation();
-            }).find('[type=checkbox]').change(function() {
-                $checkboxElt.parent().next().find('[type=checkbox]').prop('checked', this.checked);
-            });
-        });
-
-        // Set checkbox event listeners
-        $(documentListElt.querySelectorAll('[type=checkbox]')).change(doActiveButtons);
-
     }, 50);
 
     documentManager.onFileCreated = refreshManager;
@@ -422,6 +323,85 @@ define([
         $(modalElt.querySelectorAll('.action-cancel')).click(function() {
             $(modalElt.querySelectorAll('.document-list')).removeClass('hide');
             $(modalElt.querySelectorAll('.confirm-delete, .choose-folder, .selected-document-list, .select-folder-list')).addClass('hide');
+        });
+
+        $(documentListElt).on('click', '.button-delete', function(evt) {
+            evt.stopPropagation();
+            var $buttonElt = $(this);
+            var $parentElt = $buttonElt.parent();
+            var folderDesc = folderList[$parentElt.data('folderIndex')];
+            var fileDesc = fileSystem[$parentElt.data('fileIndex')];
+            selectedDocumentList = [];
+            selectedFolderList = [];
+            if(folderDesc) {
+                selectedFolderList.push(folderDesc);
+                selectedDocumentList = folderDesc.fileList;
+            }
+            else if(fileDesc) {
+                selectedDocumentList.push(fileDesc);
+            }
+            doDeleteConfirmation();
+
+        }).on('click', '.button-rename', function(evt) {
+            evt.stopPropagation();
+            var $parentElt = $(this.parentNode);
+            var name;
+            var folderDesc = folderList[$parentElt.data('folderIndex')];
+            var fileDesc = fileSystem[$parentElt.data('fileIndex')];
+            if(folderDesc) {
+                name = folderDesc.name;
+            }
+            else if(fileDesc) {
+                name = fileDesc.title;
+            }
+            $parentElt.find('.name').addClass('hide');
+            $parentElt.find('.input-rename').removeClass('hide').val(name)[0].select();
+
+        }).on('blur keyup', '.input-rename', function(evt) {
+            var $inputElt = $(this);
+            function rename() {
+                var parentElt = $inputElt.parent();
+                var name = $.trim($inputElt.val());
+                var folderDesc = folderList[parentElt.data('folderIndex')];
+                var fileDesc = fileSystem[parentElt.data('fileIndex')];
+                if(name && folderDesc && name != folderDesc.name) {
+                    folderDesc.name = name;
+                    eventMgr.onFoldersChanged();
+                }
+                else if(name && fileDesc && name != fileDesc.title) {
+                    fileDesc.title = name;
+                    eventMgr.onTitleChanged(fileDesc);
+                }
+                else {
+                    $inputElt.addClass('hide');
+                    parentElt.find('.name').removeClass('hide');
+                }
+            }
+            // Blur event
+            if(evt.keyCode === undefined) {
+                rename();
+            }
+            // Enter key event
+            else if(evt.keyCode == 13) {
+                rename();
+                evt.stopPropagation();
+            }
+            // Escape key event
+            else if(evt.keyCode == 27) {
+                $inputElt.val('');
+                rename();
+                evt.stopPropagation();
+            }
+        }).on('click', '.file .checkbox', function(evt) {
+            evt.stopPropagation();
+        }).on('change', '.file .checkbox input', function() {
+            $(this).parents('.file-list').prev().find('.checkbox input').prop('checked', false);
+            doActiveButtons();
+        }).on('click', '.folder .checkbox', function(evt) {
+            evt.stopPropagation();
+        }).on('change', '.folder .checkbox input', function() {
+            $(this).parents('.folder').next().find('.checkbox input').prop('checked', this.checked);
+            doActiveButtons();
         });
     };
 

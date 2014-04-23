@@ -64,15 +64,6 @@ define([
             liEltList.push($liElt);
             var fileDesc = fileSystem[$liElt.data('fileIndex')];
             liEltMap[fileDesc.fileIndex] = $liElt;
-            $liElt.find("a").click(function() {
-                selectedLi = undefined;
-                if(!$liElt.hasClass("disabled")) {
-                    fileMgr.selectFile(fileDesc);
-                }
-                else {
-                    $editorElt.focus();
-                }
-            });
         });
     }, 50);
 
@@ -160,6 +151,18 @@ define([
                 selectedLi.find("a").click();
             }
         }, "keyup");
+
+        $dropdownElt.on('click', 'a', function() {
+            selectedLi = undefined;
+            var $liElt = $(this.parentNode);
+            var fileDesc = fileSystem[$liElt.data('fileIndex')];
+            if(!$liElt.hasClass("disabled")) {
+                fileMgr.selectFile(fileDesc);
+            }
+            else {
+                $editorElt.focus();
+            }
+        });
     };
 
     return documentSelector;

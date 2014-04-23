@@ -33,16 +33,8 @@ define([
                 syncDesc: syncAttributes.id || syncAttributes.path
             });
         }, '');
+        
         syncListElt.innerHTML = syncListHtml;
-
-        _.each(syncListElt.querySelectorAll('.remove-button'), function(removeButtonElt) {
-            var $removeButtonElt = $(removeButtonElt);
-            var syncAttributes = fileDesc.syncLocations[$removeButtonElt.data('syncIndex')];
-            $removeButtonElt.click(function() {
-                fileDesc.removeSyncLocation(syncAttributes);
-                eventMgr.onSyncRemoved(fileDesc, syncAttributes);
-            });
-        });
     };
 
     dialogManageSynchronization.onFileSelected = function(fileDescParameter) {
@@ -58,6 +50,13 @@ define([
         syncListElt = modalElt.querySelector(".sync-list");
 
         $showAlreadySynchronizedElt = $(document.querySelectorAll(".show-already-synchronized"));
+
+        $(syncListElt).on('click', '.remove-button', function() {
+            var $removeButtonElt = $(this);
+            var syncAttributes = fileDesc.syncLocations[$removeButtonElt.data('syncIndex')];
+            fileDesc.removeSyncLocation(syncAttributes);
+            eventMgr.onSyncRemoved(fileDesc, syncAttributes);
+        });
     };
 
     return dialogManageSynchronization;

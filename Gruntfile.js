@@ -3,6 +3,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-jsbeautifier');
     grunt.loadNpmTasks('grunt-string-replace');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-bower-requirejs');
@@ -35,19 +36,21 @@ module.exports = function(grunt) {
                     mainConfigFile: 'public/res/main.js',
                     optimize: "uglify2",
                     inlineText: true,
-                    /*
-                    uglify2: {
-                        output: {
-                            beautify: true,
-                            indent_level: 1,
-                        },
-                    },
-                    */
                     excludeShallow: [
                         'css/css-builder',
                         'less/lessc-server',
                         'less/lessc'
                     ],
+                }
+            }
+        },
+        jsbeautifier: {
+            files: ['public/res-min/main.js'],
+            options: {
+                js: {
+                    space_before_conditional: false,
+                    keep_array_indentation: true,
+                    indentWithTabs: true,
                 }
             }
         },
@@ -181,6 +184,9 @@ module.exports = function(grunt) {
 
         // Run r.js optimization
         grunt.task.run('requirejs');
+
+        // Beautify uglified JS for site error analysis
+        grunt.task.run('jsbeautifier');
 
     });
 

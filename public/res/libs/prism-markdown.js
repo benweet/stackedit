@@ -16,7 +16,8 @@ Prism.languages.md = (function() {
     md['pre gfm'] = {
         pattern: /^ {0,3}`{3}.*?\n(.*?\n)*? {0,3}`{3} *$/gm,
         inside: {
-            "md md-pre": /`{3}/
+            "md md-pre": /`{3}/,
+            lf: /\n/gm,
         }
     };
     md['h1 alt'] = {

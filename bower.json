@@ -27,6 +27,12 @@
     "rangy": "~1.2.3",
     "google-diff-match-patch-js": "~1.0.0",
     "jsondiffpatch": "https://github.com/benweet/jsondiffpatch.git#fb9dddf7cd076d8ec89d376c0e9de9223e9888f9",
-    "hammerjs": "~1.0.10"
+    "hammerjs": "~1.0.10",
+    "raphael": "~2.1.2",
+    "js-sequence-diagrams": "https://github.com/bramp/js-sequence-diagrams.git#1.0.4",
+    "flowchart": "https://github.com/adrai/flowchart.js.git#~1.2.10"
+  },
+  "resolutions": {
+    "js-sequence-diagrams": "1.0.3"
   }
 }

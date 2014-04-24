@@ -3,12 +3,16 @@ define([
     "jquery",
     "underscore",
     "utils",
+    "logger",
     "classes/Extension",
     "text!html/markdownExtraSettingsBlock.html",
     'google-code-prettify',
     'highlightjs',
+    'crel',
+    'sequence-diagram',
+    'flow-chart',
     'pagedown-extra',
-], function($, _, utils, Extension, markdownExtraSettingsBlockHTML, prettify, hljs) {
+], function($, _, utils, logger, Extension, markdownExtraSettingsBlockHTML, prettify, hljs, crel, sequenceDiagram, flowChart) {
 
     var markdownExtra = new Extension("markdownExtra", "Markdown Extra", true);
     markdownExtra.settingsBlock = markdownExtraSettingsBlockHTML;
@@ -67,6 +71,11 @@ define([
         eventMgr = eventMgrParameter;
     };
 
+    var previewContentsElt;
+    markdownExtra.onReady = function() {
+        previewContentsElt = document.getElementById('preview-contents');
+    };
+
     markdownExtra.onPagedownConfigure = function(editor) {
         var converter = editor.getConverter();
         if(markdownExtra.config.intraword === true) {
@@ -86,14 +95,49 @@ define([
                 });
             });
         }
-        
+
         var extraOptions = {
             extensions: markdownExtra.config.extensions
         };
+
+        function doSequenceDiagrams() {
+            _.each(previewContentsElt.querySelectorAll('.prettyprint > .language-sequence'), function(elt) {
+                try {
+                    var diagram = sequenceDiagram.parse(elt.textContent);
+                    var preElt = elt.parentNode;
+                    var containerElt = crel('div', {
+                        class: 'sequence-diagram'
+                    });
+                    preElt.parentNode.replaceChild(containerElt, preElt);
+                    diagram.drawSVG(containerElt, {
+                        theme: 'simple'
+                    });
+                }
+                catch(e) {
+                    console.error(e);
+                }
+            });
+            _.each(previewContentsElt.querySelectorAll('.prettyprint > .language-flow'), function(elt) {
+                try {
+                    var chart = flowChart.parse(elt.textContent);
+                    var preElt = elt.parentNode;
+                    var containerElt = crel('div', {
+                        class: 'flow-chart'
+                    });
+                    preElt.parentNode.replaceChild(containerElt, preElt);
+                    chart.drawSVG(containerElt, {
+                        'line-width': 2
+                    });
+                }
+                catch(e) {
+                    console.error(e);
+                }
+            });
+        }
         if(markdownExtra.config.highlighter == "highlight") {
             extraOptions.highlighter = "prettify";
-            var previewContentsElt = document.getElementById('preview-contents');
             editor.hooks.chain("onPreviewRefresh", function() {
+                doSequenceDiagrams();
                 _.each(previewContentsElt.querySelectorAll('.prettyprint > code'), function(elt) {
                     !elt.highlighted && hljs.highlightBlock(elt);
                     elt.highlighted = true;
@@ -102,7 +146,10 @@ define([
         }
         else if(markdownExtra.config.highlighter == "prettify") {
             extraOptions.highlighter = "prettify";
-            editor.hooks.chain("onPreviewRefresh", prettify.prettyPrint);
+            editor.hooks.chain("onPreviewRefresh", function() {
+                doSequenceDiagrams();
+                prettify.prettyPrint();
+            });
         }
         Markdown.Extra.init(converter, extraOptions);
     };

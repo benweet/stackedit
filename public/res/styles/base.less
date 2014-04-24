@@ -130,6 +130,23 @@ hr {
 	margin: 2em 0;
 }
 
+.sequence-diagram, .flow-chart {
+    text-align: center;
+    text {
+        font-size: 1em !important;
+        font-family: @font-family-sans-serif !important;
+    }
+    [fill="#ffffff"] {
+        fill: none;
+    }
+    [stroke="#000000"] {
+        stroke: @text-color;
+    }
+    [fill="#000"], [fill="#000000"], [fill="black"] {
+        fill: @text-color;
+    }
+}
+
 code, pre {
 	font-family: @font-family-monospace;
     font-size: 0.9em;

@@ -230,6 +230,15 @@ define([
         version = "v18";
     }
 
+	if(version == 'v18') {
+		if(_.has(localStorage, 'settings')) {
+			settings = JSON.parse(localStorage.settings);
+			((settings.extensionSettings || {}).markdownExtra || {}).diagrams = true;
+			localStorage.settings = JSON.stringify(settings);
+		}
+		version = "v19";
+	}
+
     localStorage.version = version;
     return localStorage;
 });

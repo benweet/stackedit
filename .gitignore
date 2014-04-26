@@ -1,4 +1,5 @@
 .project
+.idea
 .settings
 node_modules
 Thumbs.db

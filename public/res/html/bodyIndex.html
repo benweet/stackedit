@@ -110,13 +110,13 @@
 						<li><a href="#" class="submenu-sync-gdrive action-sync-export-dialog-gdrive"><i
 							class="icon-provider-gdrive"></i> Save on Google Drive</a></li>
 						<li><a href="#" class="submenu-sync-gdrivesec action-sync-import-gdrivesec"><i
-							class="icon-provider-gdrive"></i> Open from Google Drive <small>(2nd account)</small></a></li>
+							class="icon-provider-gdrive"></i> Open from Google Drive<br><small>(2nd account)</small></a></li>
 						<li><a href="#" class="submenu-sync-gdrivesec action-sync-export-dialog-gdrivesec"><i
-							class="icon-provider-gdrive"></i> Save on Google Drive <small>(2nd account)</small></a></li>
+							class="icon-provider-gdrive"></i> Save on Google Drive<br><small>(2nd account)</small></a></li>
 						<li><a href="#" class="submenu-sync-gdriveter action-sync-import-gdriveter"><i
-							class="icon-provider-gdrive"></i> Open from Google Drive <small>(3rd account)</small></a></li>
+							class="icon-provider-gdrive"></i> Open from Google Drive<br><small>(3rd account)</small></a></li>
 						<li><a href="#" class="submenu-sync-gdriveter action-sync-export-dialog-gdriveter"><i
-							class="icon-provider-gdrive"></i> Save on Google Drive <small>(3rd account)</small></a></li>
+							class="icon-provider-gdrive"></i> Save on Google Drive<br><small>(3rd account)</small></a></li>
 					</ul>
 				</div>
 				<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"
@@ -870,6 +870,8 @@
 					"<span class="file-title"></span>" can be shared using the following link(s):
 				</p>
             	<div class="msg-share-list share-list hide"></div>
+            	<p class="msg-no-share hide"><b>No sharing link yet!</b>
+            	</p>
             	<p class="msg-no-share hide">To collaborate on this document, use <i class="icon-provider-gdrive"></i> <b>Google Drive</b>
             	or <i class="icon-provider-dropbox"></i> <b>Dropbox</b> synchronization from the <i class="icon-provider-stackedit"></i> menu.
             	</p>
@@ -1025,6 +1027,14 @@
 									for="input-settings-max-width">Max width ratio</label>
 								<div class="col-sm-8 form-inline">
 									<input type="text" id="input-settings-max-width"
+										class="form-control col-sm-2">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label"
+									for="input-settings-cursor-focus">Cursor focus ratio</label>
+								<div class="col-sm-8 form-inline">
+									<input type="text" id="input-settings-cursor-focus"
 										class="form-control col-sm-2">
 								</div>
 							</div>

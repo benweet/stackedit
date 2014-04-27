@@ -3,6 +3,7 @@
 @import (less) "../libs/highlight/styles/default.css";
 @import (less) "../libs/fontello/css/fontello.css";
 
+@body-bg: #fff;
 @text-color: #000;
 @kbd-color: #333;
 @kbd-bg-color: #FFF;
@@ -138,7 +139,7 @@ hr {
         font-family: @font-family-sans-serif !important;
     }
     [fill="#ffffff"] {
-        fill: none;
+        fill: @body-bg;
     }
     [stroke="#000000"] {
         stroke: @text-color;
@@ -239,7 +240,7 @@ kbd {
     border: 1px solid @kbd-border-color;
     .box-shadow(0 1px 0px @kbd-border-color);
     font-size: 0.7em;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: sans-serif;
     background-color: @kbd-bg-color;
     color: @kbd-color;
     border-radius: 3px;

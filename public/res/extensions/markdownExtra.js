@@ -137,53 +137,6 @@ define([
 			_.delay(doFlowChart, 0, cb);
 		}
 
-		function doHighlight(cb) {
-			if(highlightEltList.length === 0) {
-				return cb();
-			}
-			var highlightElt = highlightEltList.pop();
-			hljs.highlightBlock(highlightElt);
-			highlightElt.highlighted = true;
-			_.delay(doHighlight, 0, cb);
-		}
-
-		function doPrettify(cb) {
-			if(prettifyEltList.length === 0) {
-				return cb();
-			}
-			var prettifyElt = prettifyEltList.pop();
-			var html = prettify.prettyPrintOne(prettifyElt.innerHTML);
-			prettifyElt.innerHTML = html;
-			prettifyElt.highlighted = true;
-			_.delay(doPrettify, 0, cb);
-		}
-
-		if(markdownExtra.config.highlighter == "highlight") {
-			extraOptions.highlighter = "prettify";
-			var afterHighlight = onAsyncPreview;
-			onAsyncPreview = function(cb) {
-				highlightEltList = _.filter(previewContentsElt.querySelectorAll('.prettyprint > code'), function(elt) {
-					return !elt.highlighted;
-				});
-				_.delay(doHighlight, 0, function() {
-					afterHighlight(cb);
-				});
-			};
-		}
-
-		if(markdownExtra.config.highlighter == "prettify") {
-			extraOptions.highlighter = "prettify";
-			var afterPrettify = onAsyncPreview;
-			onAsyncPreview = function(cb) {
-				prettifyEltList = _.filter(previewContentsElt.querySelectorAll('.prettyprint > code'), function(elt) {
-					return !elt.highlighted;
-				});
-				_.delay(doPrettify, 0, function() {
-					afterPrettify(cb);
-				});
-			};
-		}
-
 		if(markdownExtra.config.diagrams) {
 			extraOptions.highlighter = "prettify";
 			var afterDiagrams = onAsyncPreview;
@@ -218,6 +171,20 @@ define([
 					return wholeMatch.replace(/^<!---(.+?)-?-->$/, ' <span class="comment label label-danger">$1</span> ');
 				});
 			});
+		}
+		if(markdownExtra.config.highlighter == "highlight") {
+			extraOptions.highlighter = "prettify";
+			var previewContentsElt = document.getElementById('preview-contents');
+			editor.hooks.chain("onPreviewRefresh", function() {
+				_.each(previewContentsElt.querySelectorAll('.prettyprint > code'), function(elt) {
+					!elt.highlighted && hljs.highlightBlock(elt);
+					elt.highlighted = true;
+				});
+			});
+		}
+		else if(markdownExtra.config.highlighter == "prettify") {
+			extraOptions.highlighter = "prettify";
+			editor.hooks.chain("onPreviewRefresh", prettify.prettyPrint);
 		}
 		Markdown.Extra.init(converter, extraOptions);
 	};

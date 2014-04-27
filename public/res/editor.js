@@ -149,11 +149,8 @@ define([
 				this.cursorY = coordinates.y;
 				eventMgr.onCursorCoordinates(coordinates.x, coordinates.y);
 			}
-			if(this.adjustScroll) {
-				var adjust = inputElt.offsetHeight / 2;
-				if(adjust > 130) {
-					adjust = 130;
-				}
+			if(this.adjustScroll && settings.cursorFocusRatio) {
+				var adjust = inputElt.offsetHeight / 2 * settings.cursorFocusRatio;
 				var cursorMinY = inputElt.scrollTop + adjust;
 				var cursorMaxY = inputElt.scrollTop + inputElt.offsetHeight - adjust;
 				if(selectionMgr.cursorY < cursorMinY) {

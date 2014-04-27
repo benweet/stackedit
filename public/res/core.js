@@ -119,6 +119,8 @@ define([
 		utils.setInputValue("#input-settings-font-size", settings.fontSizeRatio);
 		// Max width ratio
 		utils.setInputValue("#input-settings-max-width", settings.maxWidthRatio);
+		// Cursor locking ratio
+		utils.setInputValue("#input-settings-cursor-focus", settings.cursorFocusRatio);
 		// Default content
 		utils.setInputValue("#textarea-settings-default-content", settings.defaultContent);
 		// Edit mode
@@ -164,6 +166,8 @@ define([
 		newSettings.fontSizeRatio = utils.getInputFloatValue("#input-settings-font-size", event, 0.1, 10);
 		// Max width ratio
 		newSettings.maxWidthRatio = utils.getInputFloatValue("#input-settings-max-width", event, 0.1, 10);
+		// Cursor locking ratio
+		newSettings.cursorFocusRatio = utils.getInputFloatValue("#input-settings-cursor-focus", event, 0, 1);
 		// Default content
 		newSettings.defaultContent = utils.getInputValue("#textarea-settings-default-content");
 		// Edit mode

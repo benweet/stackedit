@@ -117,6 +117,8 @@ Markdown Extra
 
 > **Tip:** You can disable any **Markdown Extra** feature in the `Extensions` tab of the <i class="icon-cog"></i> `Settings` dialog.
 
+> **Note:** You can find more information about **Markdown** syntax [here][2] and **Markdown Extra** extension [here][3].
+
 
 ### Tables
 
@@ -166,6 +168,11 @@ var bar = 0;
 
 > **Tip:** To use **Highlight.js** instead of **Prettify**, just configure the `Markdown Extra` extension in the <i class="icon-cog"></i> `Settings` dialog.
 
+> **Note:** You can find more information:
+
+> - about **Prettify** syntax highlighting [here][5],
+> - about **Highlight.js** syntax highlighting [here][6].
+
 
 ### Footnotes
 
@@ -202,19 +209,42 @@ $$
 \Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
 $$
 
-> **Tip:** Make sure you include **MathJax** into your publications to render mathematical expression correctly. Your page/template should include something like:
+> **Tip:** Make sure you include **MathJax** into your publications to render mathematical expression properly. Your page/template should include something like this:
 
 ```
 <script type="text/javascript" src="https://stackedit.io/libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
 ```
 
-> **NOTE:** You can find more information:
+> **Note:** You can find more information about **LaTeX** mathematical expressions [here][4].
 
-> - about **Markdown** syntax [here][2],
-> - about **Markdown Extra** extension [here][3],
-> - about **LaTeX** mathematical expressions [here][4],
-> - about **Prettify** syntax highlighting [here][5],
-> - about **Highlight.js** syntax highlighting [here][6].
+
+### UML diagrams
+
+You can also render sequence diagrams like this:
+
+```sequence
+Alice->Bob: Hello Bob, how are you?
+Note right of Bob: Bob thinks
+Bob-->Alice: I am good thanks!
+```
+
+And flow charts like this:
+
+```flow
+st=>start: Start
+e=>end
+op=>operation: My Operation
+cond=>condition: Yes or No?
+
+st->op->cond
+cond(yes)->e
+cond(no)->op
+```
+
+> **Note:** You can find more information:
+
+> - about **Sequence diagrams** syntax [here][7],
+> - about **Flow charts** syntax [here][8].
 
   [^stackedit]: [StackEdit](https://stackedit.io/) is a full-featured, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.
 
@@ -227,3 +257,5 @@ $$
   [4]: http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference
   [5]: https://code.google.com/p/google-code-prettify/
   [6]: http://highlightjs.org/
+  [7]: http://bramp.github.io/js-sequence-diagrams/
+  [8]: http://adrai.github.io/flowchart.js/

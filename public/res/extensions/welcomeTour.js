@@ -68,6 +68,7 @@ define([
                     '    <li>New contenteditable based editor (credit to Dabblet, Editorially...)</li>',
                     '    <li>New layout with CSS3 transitions (lighter supposedly)</li>',
                     '    <li>Comments/discussions support (see the new icon in the navigation bar)</li>',
+                    '    <li>UML diagrams support</li>',
                     '    <li>Auto-merge and conflict detection using standard synchronization</li>',
                     '    <li>Dropped real time sync support :( since you can collaborate simultaneously using standard synchronization</li>',
                     '</ul>',

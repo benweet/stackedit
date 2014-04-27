@@ -1,4 +1,5 @@
 MathJax.Hub.Config({
+	skipStartupTypeset: true,
     "HTML-CSS": {
         preferredFont: "TeX",
         availableFonts: [

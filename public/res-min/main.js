@@ -162,72 +162,6 @@ THE SOFTWARE.
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ┌────────────────────────────────────────────────────────────────────┐ \\
-// │ Raphaël 2.1.1 - JavaScript Vector Library                          │ \\
-// ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2008-2012 Dmitry Baranovskiy (http://raphaeljs.com)    │ \\
-// │ Copyright © 2008-2012 Sencha Labs (http://sencha.com)              │ \\
-// ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Licensed under the MIT (http://raphaeljs.com/license.html) license.│ \\
-// └────────────────────────────────────────────────────────────────────┘ \\
-// Copyright (c) 2013 Adobe Systems Incorporated. All rights reserved.
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-// http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-// ┌────────────────────────────────────────────────────────────┐ \\
-// │ Eve 0.4.2 - JavaScript Events Library                      │ \\
-// ├────────────────────────────────────────────────────────────┤ \\
-// │ Author Dmitry Baranovskiy (http://dmitry.baranovskiy.com/) │ \\
-// └────────────────────────────────────────────────────────────┘ \\
-
-// ┌─────────────────────────────────────────────────────────────────────┐ \\
-// │ "Raphaël 2.1.0" - JavaScript Vector Library                         │ \\
-// ├─────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright (c) 2008-2011 Dmitry Baranovskiy (http://raphaeljs.com)   │ \\
-// │ Copyright (c) 2008-2011 Sencha Labs (http://sencha.com)             │ \\
-// │ Licensed under the MIT (http://raphaeljs.com/license.html) license. │ \\
-// └─────────────────────────────────────────────────────────────────────┘ \\
-
-// ┌─────────────────────────────────────────────────────────────────────┐ \\
-// │ Raphaël - JavaScript Vector Library                                 │ \\
-// ├─────────────────────────────────────────────────────────────────────┤ \\
-// │ SVG Module                                                          │ \\
-// ├─────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright (c) 2008-2011 Dmitry Baranovskiy (http://raphaeljs.com)   │ \\
-// │ Copyright (c) 2008-2011 Sencha Labs (http://sencha.com)             │ \\
-// │ Licensed under the MIT (http://raphaeljs.com/license.html) license. │ \\
-// └─────────────────────────────────────────────────────────────────────┘ \\
-
-// ┌─────────────────────────────────────────────────────────────────────┐ \\
-// │ Raphaël - JavaScript Vector Library                                 │ \\
-// ├─────────────────────────────────────────────────────────────────────┤ \\
-// │ VML Module                                                          │ \\
-// ├─────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright (c) 2008-2011 Dmitry Baranovskiy (http://raphaeljs.com)   │ \\
-// │ Copyright (c) 2008-2011 Sencha Labs (http://sencha.com)             │ \\
-// │ Licensed under the MIT (http://raphaeljs.com/license.html) license. │ \\
-// └─────────────────────────────────────────────────────────────────────┘ \\
-
-/** js sequence diagrams 1.0.4
- *  http://bramp.github.io/js-sequence-diagrams/
- *  (c) 2012-2013 Andrew Brampton (bramp.net)
- *  @license Simplified BSD license.
- */
-
-// flowchart, v1.2.10
-// Copyright (c)2014 Adriano Raiano (adrai).
-// Distributed under MIT license
-// http://adrai.github.io/flowchart.js
-
 /*
  * to-markdown - an HTML to Markdown converter
  *
@@ -375,6 +309,66 @@ THE SOFTWARE.
  * - Removed dependency on metadata plugin in favor of .data()
  * - Namespaced all events
  */
+
+// ┌────────────────────────────────────────────────────────────────────┐ \\
+// │ Raphaël 2.1.1 - JavaScript Vector Library                          │ \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// │ Copyright © 2008-2012 Dmitry Baranovskiy (http://raphaeljs.com)    │ \\
+// │ Copyright © 2008-2012 Sencha Labs (http://sencha.com)              │ \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// │ Licensed under the MIT (http://raphaeljs.com/license.html) license.│ \\
+// └────────────────────────────────────────────────────────────────────┘ \\
+// Copyright (c) 2013 Adobe Systems Incorporated. All rights reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// ┌────────────────────────────────────────────────────────────┐ \\
+// │ Eve 0.4.2 - JavaScript Events Library                      │ \\
+// ├────────────────────────────────────────────────────────────┤ \\
+// │ Author Dmitry Baranovskiy (http://dmitry.baranovskiy.com/) │ \\
+// └────────────────────────────────────────────────────────────┘ \\
+
+// ┌─────────────────────────────────────────────────────────────────────┐ \\
+// │ "Raphaël 2.1.0" - JavaScript Vector Library                         │ \\
+// ├─────────────────────────────────────────────────────────────────────┤ \\
+// │ Copyright (c) 2008-2011 Dmitry Baranovskiy (http://raphaeljs.com)   │ \\
+// │ Copyright (c) 2008-2011 Sencha Labs (http://sencha.com)             │ \\
+// │ Licensed under the MIT (http://raphaeljs.com/license.html) license. │ \\
+// └─────────────────────────────────────────────────────────────────────┘ \\
+
+// ┌─────────────────────────────────────────────────────────────────────┐ \\
+// │ Raphaël - JavaScript Vector Library                                 │ \\
+// ├─────────────────────────────────────────────────────────────────────┤ \\
+// │ SVG Module                                                          │ \\
+// ├─────────────────────────────────────────────────────────────────────┤ \\
+// │ Copyright (c) 2008-2011 Dmitry Baranovskiy (http://raphaeljs.com)   │ \\
+// │ Copyright (c) 2008-2011 Sencha Labs (http://sencha.com)             │ \\
+// │ Licensed under the MIT (http://raphaeljs.com/license.html) license. │ \\
+// └─────────────────────────────────────────────────────────────────────┘ \\
+
+// ┌─────────────────────────────────────────────────────────────────────┐ \\
+// │ Raphaël - JavaScript Vector Library                                 │ \\
+// ├─────────────────────────────────────────────────────────────────────┤ \\
+// │ VML Module                                                          │ \\
+// ├─────────────────────────────────────────────────────────────────────┤ \\
+// │ Copyright (c) 2008-2011 Dmitry Baranovskiy (http://raphaeljs.com)   │ \\
+// │ Copyright (c) 2008-2011 Sencha Labs (http://sencha.com)             │ \\
+// │ Licensed under the MIT (http://raphaeljs.com/license.html) license. │ \\
+// └─────────────────────────────────────────────────────────────────────┘ \\
+
+// flowchart, v1.2.10
+// Copyright (c)2014 Adriano Raiano (adrai).
+// Distributed under MIT license
+// http://adrai.github.io/flowchart.js
 
 /*!
  * Bootstrap v3.0.3 (http://getbootstrap.com)
@@ -936,7 +930,7 @@ function diff_match_patch() {
 		return a ? (a !== c[0] && c.unshift(a), i[a]) : void 0
 	}
 
-	function M(e, t, n, i) {
+	function A(e, t, n, i) {
 		var r, o, a, s, l, c = {}, u = e.dataTypes.slice();
 		if(u[1])
 			for(a in e.converters) c[a.toLowerCase()] = e.converters[a];
@@ -967,7 +961,7 @@ function diff_match_patch() {
 		}
 	}
 
-	function A() {
+	function M() {
 		return setTimeout(function() {
 			In = t
 		}), In = ot.now()
@@ -980,13 +974,13 @@ function diff_match_patch() {
 
 	function P(e, t, n) {
 		var i, r, o = 0,
-			a = An.length,
+			a = Mn.length,
 			s = ot.Deferred().always(function() {
 				delete l.elem
 			}),
 			l = function() {
 				if(r) return !1;
-				for(var t = In || A(), n = Math.max(0, c.startTime + c.duration - t), i = n / c.duration || 0, o = 1 - i, a = 0, l = c.tweens.length; l > a; a++) c.tweens[a].run(o);
+				for(var t = In || M(), n = Math.max(0, c.startTime + c.duration - t), i = n / c.duration || 0, o = 1 - i, a = 0, l = c.tweens.length; l > a; a++) c.tweens[a].run(o);
 				return s.notifyWith(e, [c, o, n]), 1 > o && l ? n : (s.resolveWith(e, [c]), !1)
 			}, c = s.promise({
 				elem: e,
@@ -996,7 +990,7 @@ function diff_match_patch() {
 				}, n),
 				originalProperties: t,
 				originalOptions: n,
-				startTime: In || A(),
+				startTime: In || M(),
 				duration: n.duration,
 				tweens: [],
 				createTween: function(t, n) {
@@ -1013,7 +1007,7 @@ function diff_match_patch() {
 			}),
 			u = c.props;
 		for(F(u, c.opts.specialEasing); a > o; o++)
-			if(i = An[o].call(c, e, u, c.opts)) return i;
+			if(i = Mn[o].call(c, e, u, c.opts)) return i;
 		return ot.map(u, R, c), ot.isFunction(c.opts.start) && c.opts.start.call(e, c), ot.fx.timer(ot.extend(l, {
 			elem: e,
 			anim: c,
@@ -1337,7 +1331,7 @@ function diff_match_patch() {
 	function(e, t) {
 		function n(e, t, n, i) {
 			var r, o, a, s, l, c, u, d, f, m;
-			if((t ? t.ownerDocument || t : $) !== M && L(t), t = t || M, n = n || [], !e || "string" != typeof e) return n;
+			if((t ? t.ownerDocument || t : $) !== A && L(t), t = t || A, n = n || [], !e || "string" != typeof e) return n;
 			if(1 !== (s = t.nodeType) && 9 !== s) return [];
 			if(R && !i) {
 				if(r = yt.exec(e))
@@ -1378,7 +1372,7 @@ function diff_match_patch() {
 		}
 
 		function o(e) {
-			var t = M.createElement("div");
+			var t = A.createElement("div");
 			try {
 				return !!e(t)
 			} catch(n) {
@@ -1540,7 +1534,7 @@ function diff_match_patch() {
 						x = N,
 						w = r || a && k.find.TAG("*", u && s.parentNode || s),
 						S = G += null == x ? 1 : Math.random() || .1;
-					for(y && (N = s !== M && s, _ = i); null != (d = w[v]); v++) {
+					for(y && (N = s !== A && s, _ = i); null != (d = w[v]); v++) {
 						if(a && d) {
 							for(p = 0; h = e[p++];)
 								if(h(d, s, l)) {
@@ -1585,7 +1579,7 @@ function diff_match_patch() {
 			}
 			return I(e, c)(i, t, !R, n, ht.test(e)), n
 		}
-		var S, C, _, k, T, E, I, N, D, L, M, A, R, P, F, O, B, j = "sizzle" + -new Date,
+		var S, C, _, k, T, E, I, N, D, L, A, M, R, P, F, O, B, j = "sizzle" + -new Date,
 			$ = e.document,
 			G = 0,
 			q = 0,
@@ -1657,7 +1651,7 @@ function diff_match_patch() {
 		}, C = n.support = {}, L = n.setDocument = function(e) {
 			var t = e ? e.ownerDocument || e : $,
 				n = t.defaultView;
-			return t !== M && 9 === t.nodeType && t.documentElement ? (M = t, A = t.documentElement, R = !E(t), n && n.attachEvent && n !== n.top && n.attachEvent("onbeforeunload", function() {
+			return t !== A && 9 === t.nodeType && t.documentElement ? (A = t, M = t.documentElement, R = !E(t), n && n.attachEvent && n !== n.top && n.attachEvent("onbeforeunload", function() {
 				L()
 			}), C.attributes = o(function(e) {
 				return e.className = "i", !e.getAttribute("className")
@@ -1666,7 +1660,7 @@ function diff_match_patch() {
 			}), C.getElementsByClassName = o(function(e) {
 				return e.innerHTML = "<div class='a'></div><div class='a i'></div>", e.firstChild.className = "i", 2 === e.getElementsByClassName("i").length
 			}), C.getById = o(function(e) {
-				return A.appendChild(e).id = j, !t.getElementsByName || !t.getElementsByName(j).length
+				return M.appendChild(e).id = j, !t.getElementsByName || !t.getElementsByName(j).length
 			}), C.getById ? (k.find.ID = function(e, t) {
 				if(typeof t.getElementById !== X && R) {
 					var n = t.getElementById(e);
@@ -1701,9 +1695,9 @@ function diff_match_patch() {
 			}), o(function(e) {
 				var n = t.createElement("input");
 				n.setAttribute("type", "hidden"), e.appendChild(n).setAttribute("t", ""), e.querySelectorAll("[t^='']").length && P.push("[*^$]=" + rt + "*(?:''|\"\")"), e.querySelectorAll(":enabled").length || P.push(":enabled", ":disabled"), e.querySelectorAll("*,:x"), P.push(",.*:")
-			})), (C.matchesSelector = bt.test(O = A.webkitMatchesSelector || A.mozMatchesSelector || A.oMatchesSelector || A.msMatchesSelector)) && o(function(e) {
+			})), (C.matchesSelector = bt.test(O = M.webkitMatchesSelector || M.mozMatchesSelector || M.oMatchesSelector || M.msMatchesSelector)) && o(function(e) {
 				C.disconnectedMatch = O.call(e, "div"), O.call(e, "[s!='']:x"), F.push("!=", ct)
-			}), P = P.length && new RegExp(P.join("|")), F = F.length && new RegExp(F.join("|")), B = bt.test(A.contains) || A.compareDocumentPosition ? function(e, t) {
+			}), P = P.length && new RegExp(P.join("|")), F = F.length && new RegExp(F.join("|")), B = bt.test(M.contains) || M.compareDocumentPosition ? function(e, t) {
 				var n = 9 === e.nodeType ? e.documentElement : e,
 					i = t && t.parentNode;
 				return e === i || !(!i || 1 !== i.nodeType || !(n.contains ? n.contains(i) : e.compareDocumentPosition && 16 & e.compareDocumentPosition(i)))
@@ -1712,7 +1706,7 @@ function diff_match_patch() {
 					for(; t = t.parentNode;)
 						if(t === e) return !0;
 				return !1
-			}, W = A.compareDocumentPosition ? function(e, n) {
+			}, W = M.compareDocumentPosition ? function(e, n) {
 				if(e === n) return V = !0, 0;
 				var i = n.compareDocumentPosition && e.compareDocumentPosition && e.compareDocumentPosition(n);
 				return i ? 1 & i || !C.sortDetached && n.compareDocumentPosition(e) === i ? e === t || B($, e) ? -1 : n === t || B($, n) ? 1 : D ? nt.call(D, e) - nt.call(D, n) : 0 : 4 & i ? -1 : 1 : e.compareDocumentPosition ? -1 : 1
@@ -1729,19 +1723,19 @@ function diff_match_patch() {
 				for(i = n; i = i.parentNode;) c.unshift(i);
 				for(; l[r] === c[r];) r++;
 				return r ? s(l[r], c[r]) : l[r] === $ ? -1 : c[r] === $ ? 1 : 0
-			}, t) : M
+			}, t) : A
 		}, n.matches = function(e, t) {
 			return n(e, null, null, t)
 		}, n.matchesSelector = function(e, t) {
-			if((e.ownerDocument || e) !== M && L(e), t = t.replace(ft, "='$1']"), !(!C.matchesSelector || !R || F && F.test(t) || P && P.test(t))) try {
+			if((e.ownerDocument || e) !== A && L(e), t = t.replace(ft, "='$1']"), !(!C.matchesSelector || !R || F && F.test(t) || P && P.test(t))) try {
 				var i = O.call(e, t);
 				if(i || C.disconnectedMatch || e.document && 11 !== e.document.nodeType) return i
 			} catch(r) {}
-			return n(t, M, null, [e]).length > 0
+			return n(t, A, null, [e]).length > 0
 		}, n.contains = function(e, t) {
-			return(e.ownerDocument || e) !== M && L(e), B(e, t)
+			return(e.ownerDocument || e) !== A && L(e), B(e, t)
 		}, n.attr = function(e, n) {
-			(e.ownerDocument || e) !== M && L(e);
+			(e.ownerDocument || e) !== A && L(e);
 			var i = k.attrHandle[n.toLowerCase()],
 				r = i && Y.call(k.attrHandle, n.toLowerCase()) ? i(e, n, !R) : t;
 			return r === t ? C.attributes || !R ? e.getAttribute(n) : (r = e.getAttributeNode(n)) && r.specified ? r.value : null : r
@@ -1901,10 +1895,10 @@ function diff_match_patch() {
 					return n && n.slice(1) === t.id
 				},
 				root: function(e) {
-					return e === A
+					return e === M
 				},
 				focus: function(e) {
-					return e === M.activeElement && (!M.hasFocus || M.hasFocus()) && !! (e.type || e.href || ~e.tabIndex)
+					return e === A.activeElement && (!A.hasFocus || A.hasFocus()) && !! (e.type || e.href || ~e.tabIndex)
 				},
 				enabled: function(e) {
 					return e.disabled === !1
@@ -1989,7 +1983,7 @@ function diff_match_patch() {
 			}
 			return o
 		}, C.sortStable = j.split("").sort(W).join("") === j, C.detectDuplicates = V, L(), C.sortDetached = o(function(e) {
-			return 1 & e.compareDocumentPosition(M.createElement("div"))
+			return 1 & e.compareDocumentPosition(A.createElement("div"))
 		}), o(function(e) {
 			return e.innerHTML = "<a href='#'></a>", "#" === e.firstChild.getAttribute("href")
 		}) || a("type|href|height|width", function(e, t, n) {
@@ -2812,8 +2806,8 @@ function diff_match_patch() {
 			return n
 		}
 	});
-	var Mt = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi,
-		At = /<([\w:]+)/,
+	var At = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi,
+		Mt = /<([\w:]+)/,
 		Rt = /<|&#?\w+;/,
 		Pt = /<(?:script|style|link)/i,
 		Ft = /^(?:checkbox|radio)$/i,
@@ -2879,8 +2873,8 @@ function diff_match_patch() {
 				var n = this[0] || {}, i = 0,
 					r = this.length;
 				if(e === t && 1 === n.nodeType) return n.innerHTML;
-				if("string" == typeof e && !Pt.test(e) && !Gt[(At.exec(e) || ["", ""])[1].toLowerCase()]) {
-					e = e.replace(Mt, "<$1></$2>");
+				if("string" == typeof e && !Pt.test(e) && !Gt[(Mt.exec(e) || ["", ""])[1].toLowerCase()]) {
+					e = e.replace(At, "<$1></$2>");
 					try {
 						for(; r > i; i++) n = this[i] || {}, 1 === n.nodeType && (ot.cleanData(g(n, !1)), n.innerHTML = e);
 						n = 0
@@ -2950,7 +2944,7 @@ function diff_match_patch() {
 				if(r = e[u], r || 0 === r)
 					if("object" === ot.type(r)) ot.merge(h, r.nodeType ? [r] : r);
 					else if(Rt.test(r)) {
-				for(o = o || p.appendChild(t.createElement("div")), a = (At.exec(r) || ["", ""])[1].toLowerCase(), s = Gt[a] || Gt._default, o.innerHTML = s[1] + r.replace(Mt, "<$1></$2>") + s[2], c = s[0]; c--;) o = o.lastChild;
+				for(o = o || p.appendChild(t.createElement("div")), a = (Mt.exec(r) || ["", ""])[1].toLowerCase(), s = Gt[a] || Gt._default, o.innerHTML = s[1] + r.replace(At, "<$1></$2>") + s[2], c = s[0]; c--;) o = o.lastChild;
 				ot.merge(h, o.childNodes), o = p.firstChild, o.textContent = ""
 			} else h.push(t.createTextNode(r));
 			for(p.textContent = "", u = 0; r = h[u++];)
@@ -3276,7 +3270,7 @@ function diff_match_patch() {
 		ajax: function(e, n) {
 			function i(e, n, i, s) {
 				var c, d, b, y, w, C = n;
-				2 !== x && (x = 2, l && clearTimeout(l), r = t, a = s || "", S.readyState = e > 0 ? 4 : 0, c = e >= 200 && 300 > e || 304 === e, i && (y = L(p, S, i)), y = M(p, y, S, c), c ? (p.ifModified && (w = S.getResponseHeader("Last-Modified"), w && (ot.lastModified[o] = w), w = S.getResponseHeader("etag"), w && (ot.etag[o] = w)), 204 === e || "HEAD" === p.type ? C = "nocontent" : 304 === e ? C = "notmodified" : (C = y.state, d = y.data, b = y.error, c = !b)) : (b = C, (e || !C) && (C = "error", 0 > e && (e = 0))), S.status = e, S.statusText = (n || C) + "", c ? m.resolveWith(h, [d, C, S]) : m.rejectWith(h, [S, C, b]), S.statusCode(v), v = t, u && f.trigger(c ? "ajaxSuccess" : "ajaxError", [S, p, c ? d : b]), g.fireWith(h, [S, C]), u && (f.trigger("ajaxComplete", [S, p]), --ot.active || ot.event.trigger("ajaxStop")))
+				2 !== x && (x = 2, l && clearTimeout(l), r = t, a = s || "", S.readyState = e > 0 ? 4 : 0, c = e >= 200 && 300 > e || 304 === e, i && (y = L(p, S, i)), y = A(p, y, S, c), c ? (p.ifModified && (w = S.getResponseHeader("Last-Modified"), w && (ot.lastModified[o] = w), w = S.getResponseHeader("etag"), w && (ot.etag[o] = w)), 204 === e || "HEAD" === p.type ? C = "nocontent" : 304 === e ? C = "notmodified" : (C = y.state, d = y.data, b = y.error, c = !b)) : (b = C, (e || !C) && (C = "error", 0 > e && (e = 0))), S.status = e, S.statusText = (n || C) + "", c ? m.resolveWith(h, [d, C, S]) : m.rejectWith(h, [S, C, b]), S.statusCode(v), v = t, u && f.trigger(c ? "ajaxSuccess" : "ajaxError", [S, p, c ? d : b]), g.fireWith(h, [S, C]), u && (f.trigger("ajaxComplete", [S, p]), --ot.active || ot.event.trigger("ajaxStop")))
 			}
 			"object" == typeof e && (n = e, e = t), n = n || {};
 			var r, o, a, s, l, c, u, d, p = ot.ajaxSetup({}, n),
@@ -3447,8 +3441,8 @@ function diff_match_patch() {
 	});
 	var In, Nn, Dn = /^(?:toggle|show|hide)$/,
 		Ln = new RegExp("^(?:([+-])=|)(" + at + ")([a-z%]*)$", "i"),
-		Mn = /queueHooks$/,
-		An = [O],
+		An = /queueHooks$/,
+		Mn = [O],
 		Rn = {
 			"*": [
 				function(e, t) {
@@ -3472,7 +3466,7 @@ function diff_match_patch() {
 			for(var n, i = 0, r = e.length; r > i; i++) n = e[i], Rn[n] = Rn[n] || [], Rn[n].unshift(t)
 		},
 		prefilter: function(e, t) {
-			t ? An.unshift(e) : An.push(e)
+			t ? Mn.unshift(e) : Mn.push(e)
 		}
 	}), ot.Tween = B, B.prototype = {
 		constructor: B,
@@ -3533,7 +3527,7 @@ function diff_match_patch() {
 					a = gt.get(this);
 				if(n) a[n] && a[n].stop && r(a[n]);
 				else
-					for(n in a) a[n] && a[n].stop && Mn.test(n) && r(a[n]);
+					for(n in a) a[n] && a[n].stop && An.test(n) && r(a[n]);
 				for(n = o.length; n--;) o[n].elem !== this || null != e && o[n].queue !== e || (o[n].anim.stop(i), t = !1, o.splice(n, 1));
 				(t || !i) && ot.dequeue(this, e)
 			})
@@ -4185,7 +4179,7 @@ function diff_match_patch() {
 		}
 	}
 
-	function M(n, i, a) {
+	function A(n, i, a) {
 		function s(e, t) {
 			return function(n) {
 				b(this), y(n, $), y(z(n), G);
@@ -4295,14 +4289,14 @@ function diff_match_patch() {
 		}), D(n)
 	}
 
-	function A(e) {
+	function M(e) {
 		e.collapsed = e.startContainer === e.endContainer && e.startOffset === e.endOffset, e.commonAncestorContainer = e.collapsed ? e.startContainer : O.getCommonAncestor(e.startContainer, e.endContainer)
 	}
 
 	function R(e, t, n, r, o) {
 		var a = e.startContainer !== t || e.startOffset !== n,
 			s = e.endContainer !== r || e.endOffset !== o;
-		e.startContainer = t, e.startOffset = n, e.endContainer = r, e.endOffset = o, A(e), i(e, "boundarychange", {
+		e.startContainer = t, e.startOffset = n, e.endContainer = r, e.endOffset = o, M(e), i(e, "boundarychange", {
 			startMoved: a,
 			endMoved: s
 		})
@@ -4316,7 +4310,7 @@ function diff_match_patch() {
 		this.startContainer = e, this.startOffset = 0, this.endContainer = e, this.endOffset = 0, this._listeners = {
 			boundarychange: [],
 			detach: []
-		}, A(this)
+		}, M(this)
 	}
 	e.requireModules(["DomUtil"]);
 	var O = e.dom,
@@ -4567,7 +4561,7 @@ function diff_match_patch() {
 		inspect: function() {
 			return p(this)
 		}
-	}, M(F, R, P), e.rangePrototype = I.prototype, F.rangeProperties = Z, F.RangeIterator = h, F.copyComparisonConstants = D, F.createPrototypeRange = M, F.inspect = p, F.getRangeDocument = n, F.rangesEqual = function(e, t) {
+	}, A(F, R, P), e.rangePrototype = I.prototype, F.rangeProperties = Z, F.RangeIterator = h, F.copyComparisonConstants = D, F.createPrototypeRange = A, F.inspect = p, F.getRangeDocument = n, F.rangesEqual = function(e, t) {
 		return e.startContainer === t.startContainer && e.startOffset === t.startOffset && e.endContainer === t.endContainer && e.endOffset === t.endOffset
 	}, e.DomRange = F, e.RangeException = f
 }), rangy.createModule("WrappedRange", function(e) {
@@ -4878,18 +4872,18 @@ function diff_match_patch() {
 	}) : N ? (b = n, e.isSelectionValid = function() {
 		return !0
 	}) : t.fail("Neither document.selection or window.getSelection() detected."), e.getNativeSelection = b;
-	var M = b(),
-		A = e.createNativeRange(document),
+	var A = b(),
+		M = e.createNativeRange(document),
 		R = S.getBody(document),
-		P = C.areHostObjects(M, ["anchorNode", "focusNode"] && C.areHostProperties(M, ["anchorOffset", "focusOffset"]));
+		P = C.areHostObjects(A, ["anchorNode", "focusNode"] && C.areHostProperties(A, ["anchorOffset", "focusOffset"]));
 	e.features.selectionHasAnchorAndFocus = P;
-	var F = C.isHostMethod(M, "extend");
+	var F = C.isHostMethod(A, "extend");
 	e.features.selectionHasExtend = F;
-	var O = "number" == typeof M.rangeCount;
+	var O = "number" == typeof A.rangeCount;
 	e.features.selectionHasRangeCount = O;
 	var B = !1,
 		j = !0;
-	C.areHostMethods(M, ["addRange", "getRangeAt", "removeAllRanges"]) && "number" == typeof M.rangeCount && e.features.implementsDomRange && ! function() {
+	C.areHostMethods(A, ["addRange", "getRangeAt", "removeAllRanges"]) && "number" == typeof A.rangeCount && e.features.implementsDomRange && ! function() {
 		var e = document.createElement("iframe");
 		e.frameBorder = 0, e.style.position = "absolute", e.style.left = "-10000px", R.appendChild(e);
 		var t = S.getIframeDocument(e);
@@ -4910,7 +4904,7 @@ function diff_match_patch() {
 		return e.rangeCount ? e.getRangeAt(e.rangeCount - 1).collapsed : !1
 	};
 	var q;
-	C.isHostMethod(M, "getRangeAt") ? q = function(e, t) {
+	C.isHostMethod(A, "getRangeAt") ? q = function(e, t) {
 		try {
 			return e.getRangeAt(t)
 		} catch(n) {
@@ -4930,7 +4924,7 @@ function diff_match_patch() {
 		return e.getSelection(S.getIframeWindow(t))
 	};
 	var H = f.prototype;
-	if(!L && P && C.areHostMethods(M, ["removeAllRanges", "addRange"])) {
+	if(!L && P && C.areHostMethods(A, ["removeAllRanges", "addRange"])) {
 		H.removeAllRanges = function() {
 			this.nativeSelection.removeAllRanges(), a(this)
 		};
@@ -4962,7 +4956,7 @@ function diff_match_patch() {
 			}
 		}
 	} else {
-		if(!(C.isHostMethod(M, "empty") && C.isHostMethod(A, "select") && G && L)) return t.fail("No means of selecting a Range or TextRange was found"), !1;
+		if(!(C.isHostMethod(A, "empty") && C.isHostMethod(M, "select") && G && L)) return t.fail("No means of selecting a Range or TextRange was found"), !1;
 		H.removeAllRanges = function() {
 			try {
 				if(this.docSelection.empty(), "None" != this.docSelection.type) {
@@ -4996,7 +4990,7 @@ function diff_match_patch() {
 		var n;
 		e.isSelectionValid(t.win) ? n = t.docSelection.createRange() : (n = S.getBody(t.win.document).createTextRange(), n.collapse(!0)), t.docSelection.type == I ? p(t) : u(n) ? d(t, n) : a(t)
 	};
-	else if(C.isHostMethod(M, "getRangeAt") && "number" == typeof M.rangeCount) z = function(t) {
+	else if(C.isHostMethod(A, "getRangeAt") && "number" == typeof A.rangeCount) z = function(t) {
 		if(G && D && t.docSelection.type == I) p(t);
 		else if(t._ranges.length = t.rangeCount = t.nativeSelection.rangeCount, t.rangeCount) {
 			for(var n = 0, i = t.rangeCount; i > n; ++n) t._ranges[n] = new e.WrappedRange(t.nativeSelection.getRangeAt(n));
@@ -5004,7 +4998,7 @@ function diff_match_patch() {
 		} else a(t)
 	};
 	else {
-		if(!P || typeof M.isCollapsed != x || typeof A.collapsed != x || !e.features.implementsDomRange) return t.fail("No means of obtaining a Range or TextRange from the user's selection was found"), !1;
+		if(!P || typeof A.isCollapsed != x || typeof M.collapsed != x || !e.features.implementsDomRange) return t.fail("No means of obtaining a Range or TextRange from the user's selection was found"), !1;
 		z = function(e) {
 			var t, n = e.nativeSelection;
 			n.anchorNode ? (t = q(n, 0), e._ranges = [t], e.rangeCount = 1, o(e), e.isCollapsed = y(e)) : a(e)
@@ -5584,7 +5578,7 @@ function() {
 	}, C.random = function(e, t) {
 		return null == t && (t = e, e = 0), e + Math.floor(Math.random() * (t - e + 1))
 	};
-	var M = {
+	var A = {
 		escape: {
 			"&": "&amp;",
 			"<": "&lt;",
@@ -5594,15 +5588,15 @@ function() {
 			"/": "&#x2F;"
 		}
 	};
-	M.unescape = C.invert(M.escape);
-	var A = {
-		escape: new RegExp("[" + C.keys(M.escape).join("") + "]", "g"),
-		unescape: new RegExp("(" + C.keys(M.unescape).join("|") + ")", "g")
+	A.unescape = C.invert(A.escape);
+	var M = {
+		escape: new RegExp("[" + C.keys(A.escape).join("") + "]", "g"),
+		unescape: new RegExp("(" + C.keys(A.unescape).join("|") + ")", "g")
 	};
 	C.each(["escape", "unescape"], function(e) {
 		C[e] = function(t) {
-			return null == t ? "" : ("" + t).replace(A[e], function(t) {
-				return M[e][t]
+			return null == t ? "" : ("" + t).replace(M[e], function(t) {
+				return A[e][t]
 			})
 		}
 	}), C.result = function(e, t) {
@@ -5805,7 +5799,7 @@ function(e) {
 		}
 
 		function s(e, t) {
-			return M.call(e) === "[object " + t + "]"
+			return A.call(e) === "[object " + t + "]"
 		}
 
 		function l(e, t, n) {
@@ -5886,7 +5880,7 @@ function(e) {
 				i: !0,
 				m: !0,
 				y: D
-			}, M = {}.toString;
+			}, A = {}.toString;
 		return g = function(n, r) {
 			var o, a, s, l = {
 					hasNamedCapture: !1,
@@ -5952,7 +5946,7 @@ function(e) {
 		}, g.isInstalled = function(e) {
 			return !!y[e]
 		}, g.isRegExp = function(e) {
-			return "[object RegExp]" === M.call(e)
+			return "[object RegExp]" === A.call(e)
 		}, g.match = function(e, t, n) {
 			var o, a, s = t.global && "one" !== n || "all" === n,
 				l = (s ? "g" : "") + (t.sticky ? "y" : "");
@@ -9165,7 +9159,7 @@ var prettyPrintOne, prettyPrint;
 		var s = ("" + e.keywords).replace(/^ | $/g, "");
 		s.length && n.push([N, new RegExp("^(?:" + s.replace(/[\s,]+/g, "|") + ")\\b"), null]), t.push([R, /^\s+/, null, " \r\n	 "]);
 		var l = /^.[^\s\w\.$@\'\"\`\/\\]*/;
-		return n.push([M, /^@[a-z_$][a-z_$@0-9]*/i, null], [L, /^(?:[@_]?[A-Z]+[a-z][A-Za-z_$@0-9]*|\w+_t\b)/, null], [R, /^[a-z_$][a-z_$@0-9]*/i, null], [M, new RegExp("^(?:0x[a-f0-9]+|(?:\\d(?:_\\d+)*\\d*(?:\\.\\d*)?|\\.\\d\\+)(?:e[+\\-]?\\d+)?)[a-z]*", "i"), null, "0123456789"], [R, /^\\[\s\S]?/, null], [A, l, null]), r(t, n)
+		return n.push([A, /^@[a-z_$][a-z_$@0-9]*/i, null], [L, /^(?:[@_]?[A-Z]+[a-z][A-Za-z_$@0-9]*|\w+_t\b)/, null], [R, /^[a-z_$][a-z_$@0-9]*/i, null], [A, new RegExp("^(?:0x[a-f0-9]+|(?:\\d(?:_\\d+)*\\d*(?:\\.\\d*)?|\\.\\d\\+)(?:e[+\\-]?\\d+)?)[a-z]*", "i"), null, "0123456789"], [R, /^\\[\s\S]?/, null], [M, l, null]), r(t, n)
 	}
 
 	function a(e, t, n) {
@@ -9378,8 +9372,8 @@ var prettyPrintOne, prettyPrint;
 		N = "kwd",
 		D = "com",
 		L = "typ",
-		M = "lit",
-		A = "pun",
+		A = "lit",
+		M = "pun",
 		R = "pln",
 		P = "tag",
 		F = "dec",
@@ -9397,7 +9391,7 @@ var prettyPrintOne, prettyPrint;
 			regexLiterals: !0
 		}),
 		U = {};
-	l(H, ["default-code"]), l(r([], [[R, /^[^<?]+/], [F, /^<!\w[^>]*(?:>|$)/], [D, /^<\!--[\s\S]*?(?:-\->|$)/], ["lang-", /^<\?([\s\S]+?)(?:\?>|$)/], ["lang-", /^<%([\s\S]+?)(?:%>|$)/], [A, /^(?:<[%?]|[%?]>)/], ["lang-", /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i], ["lang-js", /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i], ["lang-css", /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i], ["lang-in.tag", /^(<\/?[a-z][^<>]*>)/i]]), ["default-markup", "htm", "html", "mxml", "xhtml", "xml", "xsl"]), l(r([[R, /^[\s]+/, null, " 	\r\n"], [j, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, "\"'"]], [[P, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i], [B, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i], ["lang-uq.val", /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/], [A, /^[=<>\/]+/], ["lang-js", /^on\w+\s*=\s*\"([^\"]+)\"/i], ["lang-js", /^on\w+\s*=\s*\'([^\']+)\'/i], ["lang-js", /^on\w+\s*=\s*([^\"\'>\s]+)/i], ["lang-css", /^style\s*=\s*\"([^\"]+)\"/i], ["lang-css", /^style\s*=\s*\'([^\']+)\'/i], ["lang-css", /^style\s*=\s*([^\"\'>\s]+)/i]]), ["in.tag"]), l(r([], [[j, /^[\s\S]+/]]), ["uq.val"]), l(o({
+	l(H, ["default-code"]), l(r([], [[R, /^[^<?]+/], [F, /^<!\w[^>]*(?:>|$)/], [D, /^<\!--[\s\S]*?(?:-\->|$)/], ["lang-", /^<\?([\s\S]+?)(?:\?>|$)/], ["lang-", /^<%([\s\S]+?)(?:%>|$)/], [M, /^(?:<[%?]|[%?]>)/], ["lang-", /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i], ["lang-js", /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i], ["lang-css", /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i], ["lang-in.tag", /^(<\/?[a-z][^<>]*>)/i]]), ["default-markup", "htm", "html", "mxml", "xhtml", "xml", "xsl"]), l(r([[R, /^[\s]+/, null, " 	\r\n"], [j, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, "\"'"]], [[P, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i], [B, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i], ["lang-uq.val", /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/], [M, /^[=<>\/]+/], ["lang-js", /^on\w+\s*=\s*\"([^\"]+)\"/i], ["lang-js", /^on\w+\s*=\s*\'([^\']+)\'/i], ["lang-js", /^on\w+\s*=\s*([^\"\'>\s]+)/i], ["lang-css", /^style\s*=\s*\"([^\"]+)\"/i], ["lang-css", /^style\s*=\s*\'([^\']+)\'/i], ["lang-css", /^style\s*=\s*([^\"\'>\s]+)/i]]), ["in.tag"]), l(r([], [[j, /^[\s\S]+/]]), ["uq.val"]), l(o({
 		keywords: v,
 		hashComments: !0,
 		cStyleComments: !0,
@@ -9453,10 +9447,10 @@ var prettyPrintOne, prettyPrint;
 		PR_COMMENT: D,
 		PR_DECLARATION: F,
 		PR_KEYWORD: N,
-		PR_LITERAL: M,
+		PR_LITERAL: A,
 		PR_NOCODE: $,
 		PR_PLAIN: R,
-		PR_PUNCTUATION: A,
+		PR_PUNCTUATION: M,
 		PR_SOURCE: O,
 		PR_STRING: I,
 		PR_TAG: P,
@@ -13435,5720 +13429,7 @@ hljs.registerLanguage("bash", function(e) {
 		var t;
 		return t || e.hljs
 	}
-}(this)),
-function(e) {
-	var t, n, i = "0.4.2",
-		r = "hasOwnProperty",
-		o = /[\.\/]/,
-		a = "*",
-		s = function() {}, l = function(e, t) {
-			return e - t
-		}, c = {
-			n: {}
-		}, u = function(e, i) {
-			e = String(e);
-			var r, o = n,
-				a = Array.prototype.slice.call(arguments, 2),
-				s = u.listeners(e),
-				c = 0,
-				d = [],
-				p = {}, h = [],
-				f = t;
-			t = e, n = 0;
-			for(var m = 0, g = s.length; g > m; m++) "zIndex" in s[m] && (d.push(s[m].zIndex), s[m].zIndex < 0 && (p[s[m].zIndex] = s[m]));
-			for(d.sort(l); d[c] < 0;)
-				if(r = p[d[c++]], h.push(r.apply(i, a)), n) return n = o, h;
-			for(m = 0; g > m; m++)
-				if(r = s[m], "zIndex" in r)
-					if(r.zIndex == d[c]) {
-						if(h.push(r.apply(i, a)), n) break;
-						do
-							if(c++, r = p[d[c]], r && h.push(r.apply(i, a)), n) break; while(r)
-					} else p[r.zIndex] = r;
-					else if(h.push(r.apply(i, a)), n) break;
-			return n = o, t = f, h.length ? h : null
-		};
-	u._events = c, u.listeners = function(e) {
-		var t, n, i, r, s, l, u, d, p = e.split(o),
-			h = c,
-			f = [h],
-			m = [];
-		for(r = 0, s = p.length; s > r; r++) {
-			for(d = [], l = 0, u = f.length; u > l; l++)
-				for(h = f[l].n, n = [h[p[r]], h[a]], i = 2; i--;) t = n[i], t && (d.push(t), m = m.concat(t.f || []));
-			f = d
-		}
-		return m
-	}, u.on = function(e, t) {
-		if(e = String(e), "function" != typeof t) return function() {};
-		for(var n = e.split(o), i = c, r = 0, a = n.length; a > r; r++) i = i.n, i = i.hasOwnProperty(n[r]) && i[n[r]] || (i[n[r]] = {
-			n: {}
-		});
-		for(i.f = i.f || [], r = 0, a = i.f.length; a > r; r++)
-			if(i.f[r] == t) return s;
-		return i.f.push(t),
-		function(e) {
-			+e == +e && (t.zIndex = +e)
-		}
-	}, u.f = function(e) {
-		var t = [].slice.call(arguments, 1);
-		return function() {
-			u.apply(null, [e, null].concat(t).concat([].slice.call(arguments, 0)))
-		}
-	}, u.stop = function() {
-		n = 1
-	}, u.nt = function(e) {
-		return e ? new RegExp("(?:\\.|\\/|^)" + e + "(?:\\.|\\/|$)").test(t) : t
-	}, u.nts = function() {
-		return t.split(o)
-	}, u.off = u.unbind = function(e, t) {
-		if(!e) return void(u._events = c = {
-			n: {}
-		});
-		var n, i, s, l, d, p, h, f = e.split(o),
-			m = [c];
-		for(l = 0, d = f.length; d > l; l++)
-			for(p = 0; p < m.length; p += s.length - 2) {
-				if(s = [p, 1], n = m[p].n, f[l] != a) n[f[l]] && s.push(n[f[l]]);
-				else
-					for(i in n) n[r](i) && s.push(n[i]);
-				m.splice.apply(m, s)
-			}
-		for(l = 0, d = m.length; d > l; l++)
-			for(n = m[l]; n.n;) {
-				if(t) {
-					if(n.f) {
-						for(p = 0, h = n.f.length; h > p; p++)
-							if(n.f[p] == t) {
-								n.f.splice(p, 1);
-								break
-							}!n.f.length && delete n.f
-					}
-					for(i in n.n)
-						if(n.n[r](i) && n.n[i].f) {
-							var g = n.n[i].f;
-							for(p = 0, h = g.length; h > p; p++)
-								if(g[p] == t) {
-									g.splice(p, 1);
-									break
-								}!g.length && delete n.n[i].f
-						}
-				} else {
-					delete n.f;
-					for(i in n.n) n.n[r](i) && n.n[i].f && delete n.n[i].f
-				}
-				n = n.n
-			}
-	}, u.once = function(e, t) {
-		var n = function() {
-			return u.unbind(e, n), t.apply(this, arguments)
-		};
-		return u.on(e, n)
-	}, u.version = i, u.toString = function() {
-		return "You are running Eve " + i
-	}, "undefined" != typeof module && module.exports ? module.exports = u : "undefined" != typeof define ? define("eve", [], function() {
-		return u
-	}) : e.eve = u
-}(this),
-function(e, t) {
-	"function" == typeof define && define.amd ? define("raphael", ["eve"], function(n) {
-		return t(e, n)
-	}) : t(e, e.eve)
-}(this, function(e, t) {
-	function n(e) {
-		if(n.is(e, "function")) return x ? e() : t.on("raphael.DOMload", e);
-		if(n.is(e, W)) return n._engine.create[N](n, e.splice(0, 3 + n.is(e[0], z))).add(e);
-		var i = Array.prototype.slice.call(arguments, 0);
-		if(n.is(i[i.length - 1], "function")) {
-			var r = i.pop();
-			return x ? r.call(n._engine.create[N](n, i)) : t.on("raphael.DOMload", function() {
-				r.call(n._engine.create[N](n, i))
-			})
-		}
-		return n._engine.create[N](n, arguments)
-	}
-
-	function i(e) {
-		if("function" == typeof e || Object(e) !== e) return e;
-		var t = new e.constructor;
-		for(var n in e) e[k](n) && (t[n] = i(e[n]));
-		return t
-	}
-
-	function r(e, t) {
-		for(var n = 0, i = e.length; i > n; n++)
-			if(e[n] === t) return e.push(e.splice(n, 1)[0])
-	}
-
-	function o(e, t, n) {
-		function i() {
-			var o = Array.prototype.slice.call(arguments, 0),
-				a = o.join("␀"),
-				s = i.cache = i.cache || {}, l = i.count = i.count || [];
-			return s[k](a) ? (r(l, a), n ? n(s[a]) : s[a]) : (l.length >= 1e3 && delete s[l.shift()], l.push(a), s[a] = e[N](t, o), n ? n(s[a]) : s[a])
-		}
-		return i
-	}
-
-	function a() {
-		return this.hex
-	}
-
-	function s(e, t) {
-		for(var n = [], i = 0, r = e.length; r - 2 * !t > i; i += 2) {
-			var o = [{
-				x: +e[i - 2],
-				y: +e[i - 1]
-			}, {
-				x: +e[i],
-				y: +e[i + 1]
-			}, {
-				x: +e[i + 2],
-				y: +e[i + 3]
-			}, {
-				x: +e[i + 4],
-				y: +e[i + 5]
-			}];
-			t ? i ? r - 4 == i ? o[3] = {
-				x: +e[0],
-				y: +e[1]
-			} : r - 2 == i && (o[2] = {
-				x: +e[0],
-				y: +e[1]
-			}, o[3] = {
-				x: +e[2],
-				y: +e[3]
-			}) : o[0] = {
-				x: +e[r - 2],
-				y: +e[r - 1]
-			} : r - 4 == i ? o[3] = o[2] : i || (o[0] = {
-				x: +e[i],
-				y: +e[i + 1]
-			}), n.push(["C", (-o[0].x + 6 * o[1].x + o[2].x) / 6, (-o[0].y + 6 * o[1].y + o[2].y) / 6, (o[1].x + 6 * o[2].x - o[3].x) / 6, (o[1].y + 6 * o[2].y - o[3].y) / 6, o[2].x, o[2].y])
-		}
-		return n
-	}
-
-	function l(e, t, n, i, r) {
-		var o = -3 * t + 9 * n - 9 * i + 3 * r,
-			a = e * o + 6 * t - 12 * n + 6 * i;
-		return e * a - 3 * t + 3 * n
-	}
-
-	function c(e, t, n, i, r, o, a, s, c) {
-		null == c && (c = 1), c = c > 1 ? 1 : 0 > c ? 0 : c;
-		for(var u = c / 2, d = 12, p = [-.1252, .1252, -.3678, .3678, -.5873, .5873, -.7699, .7699, -.9041, .9041, -.9816, .9816], h = [.2491, .2491, .2335, .2335, .2032, .2032, .1601, .1601, .1069, .1069, .0472, .0472], f = 0, m = 0; d > m; m++) {
-			var g = u * p[m] + u,
-				v = l(g, e, n, r, a),
-				b = l(g, t, i, o, s),
-				y = v * v + b * b;
-			f += h[m] * j.sqrt(y)
-		}
-		return u * f
-	}
-
-	function u(e, t, n, i, r, o, a, s, l) {
-		if(!(0 > l || c(e, t, n, i, r, o, a, s) < l)) {
-			var u, d = 1,
-				p = d / 2,
-				h = d - p,
-				f = .01;
-			for(u = c(e, t, n, i, r, o, a, s, h); q(u - l) > f;) p /= 2, h += (l > u ? 1 : -1) * p, u = c(e, t, n, i, r, o, a, s, h);
-			return h
-		}
-	}
-
-	function d(e, t, n, i, r, o, a, s) {
-		if(!($(e, n) < G(r, a) || G(e, n) > $(r, a) || $(t, i) < G(o, s) || G(t, i) > $(o, s))) {
-			var l = (e * i - t * n) * (r - a) - (e - n) * (r * s - o * a),
-				c = (e * i - t * n) * (o - s) - (t - i) * (r * s - o * a),
-				u = (e - n) * (o - s) - (t - i) * (r - a);
-			if(u) {
-				var d = l / u,
-					p = c / u,
-					h = +d.toFixed(2),
-					f = +p.toFixed(2);
-				if(!(h < +G(e, n).toFixed(2) || h > +$(e, n).toFixed(2) || h < +G(r, a).toFixed(2) || h > +$(r, a).toFixed(2) || f < +G(t, i).toFixed(2) || f > +$(t, i).toFixed(2) || f < +G(o, s).toFixed(2) || f > +$(o, s).toFixed(2))) return {
-					x: d,
-					y: p
-				}
-			}
-		}
-	}
-
-	function p(e, t, i) {
-		var r = n.bezierBBox(e),
-			o = n.bezierBBox(t);
-		if(!n.isBBoxIntersect(r, o)) return i ? 0 : [];
-		for(var a = c.apply(0, e), s = c.apply(0, t), l = $(~~(a / 5), 1), u = $(~~(s / 5), 1), p = [], h = [], f = {}, m = i ? 0 : [], g = 0; l + 1 > g; g++) {
-			var v = n.findDotsAtSegment.apply(n, e.concat(g / l));
-			p.push({
-				x: v.x,
-				y: v.y,
-				t: g / l
-			})
-		}
-		for(g = 0; u + 1 > g; g++) v = n.findDotsAtSegment.apply(n, t.concat(g / u)), h.push({
-			x: v.x,
-			y: v.y,
-			t: g / u
-		});
-		for(g = 0; l > g; g++)
-			for(var b = 0; u > b; b++) {
-				var y = p[g],
-					x = p[g + 1],
-					w = h[b],
-					S = h[b + 1],
-					C = q(x.x - y.x) < .001 ? "y" : "x",
-					_ = q(S.x - w.x) < .001 ? "y" : "x",
-					k = d(y.x, y.y, x.x, x.y, w.x, w.y, S.x, S.y);
-				if(k) {
-					if(f[k.x.toFixed(4)] == k.y.toFixed(4)) continue;
-					f[k.x.toFixed(4)] = k.y.toFixed(4);
-					var T = y.t + q((k[C] - y[C]) / (x[C] - y[C])) * (x.t - y.t),
-						E = w.t + q((k[_] - w[_]) / (S[_] - w[_])) * (S.t - w.t);
-					T >= 0 && 1.001 >= T && E >= 0 && 1.001 >= E && (i ? m++ : m.push({
-						x: k.x,
-						y: k.y,
-						t1: G(T, 1),
-						t2: G(E, 1)
-					}))
-				}
-			}
-		return m
-	}
-
-	function h(e, t, i) {
-		e = n._path2curve(e), t = n._path2curve(t);
-		for(var r, o, a, s, l, c, u, d, h, f, m = i ? 0 : [], g = 0, v = e.length; v > g; g++) {
-			var b = e[g];
-			if("M" == b[0]) r = l = b[1], o = c = b[2];
-			else {
-				"C" == b[0] ? (h = [r, o].concat(b.slice(1)), r = h[6], o = h[7]) : (h = [r, o, r, o, l, c, l, c], r = l, o = c);
-				for(var y = 0, x = t.length; x > y; y++) {
-					var w = t[y];
-					if("M" == w[0]) a = u = w[1], s = d = w[2];
-					else {
-						"C" == w[0] ? (f = [a, s].concat(w.slice(1)), a = f[6], s = f[7]) : (f = [a, s, a, s, u, d, u, d], a = u, s = d);
-						var S = p(h, f, i);
-						if(i) m += S;
-						else {
-							for(var C = 0, _ = S.length; _ > C; C++) S[C].segment1 = g, S[C].segment2 = y, S[C].bez1 = h, S[C].bez2 = f;
-							m = m.concat(S)
-						}
-					}
-				}
-			}
-		}
-		return m
-	}
-
-	function f(e, t, n, i, r, o) {
-		null != e ? (this.a = +e, this.b = +t, this.c = +n, this.d = +i, this.e = +r, this.f = +o) : (this.a = 1, this.b = 0, this.c = 0, this.d = 1, this.e = 0, this.f = 0)
-	}
-
-	function m() {
-		return this.x + A + this.y + A + this.width + " × " + this.height
-	}
-
-	function g(e, t, n, i, r, o) {
-		function a(e) {
-			return((d * e + u) * e + c) * e
-		}
-
-		function s(e, t) {
-			var n = l(e, t);
-			return((f * n + h) * n + p) * n
-		}
-
-		function l(e, t) {
-			var n, i, r, o, s, l;
-			for(r = e, l = 0; 8 > l; l++) {
-				if(o = a(r) - e, q(o) < t) return r;
-				if(s = (3 * d * r + 2 * u) * r + c, q(s) < 1e-6) break;
-				r -= o / s
-			}
-			if(n = 0, i = 1, r = e, n > r) return n;
-			if(r > i) return i;
-			for(; i > n;) {
-				if(o = a(r), q(o - e) < t) return r;
-				e > o ? n = r : i = r, r = (i - n) / 2 + n
-			}
-			return r
-		}
-		var c = 3 * t,
-			u = 3 * (i - t) - c,
-			d = 1 - c - u,
-			p = 3 * n,
-			h = 3 * (r - n) - p,
-			f = 1 - p - h;
-		return s(e, 1 / (200 * o))
-	}
-
-	function v(e, t) {
-		var n = [],
-			i = {};
-		if(this.ms = t, this.times = 1, e) {
-			for(var r in e) e[k](r) && (i[Z(r)] = e[r], n.push(Z(r)));
-			n.sort(dt)
-		}
-		this.anim = i, this.top = n[n.length - 1], this.percents = n
-	}
-
-	function b(e, i, r, o, a, s) {
-		r = Z(r);
-		var l, c, u, d, p, h, m = e.ms,
-			v = {}, b = {}, y = {};
-		if(o)
-			for(w = 0, C = cn.length; C > w; w++) {
-				var x = cn[w];
-				if(x.el.id == i.id && x.anim == e) {
-					x.percent != r ? (cn.splice(w, 1), u = 1) : c = x, i.attr(x.totalOrigin);
-					break
-				}
-			} else o = +b;
-		for(var w = 0, C = e.percents.length; C > w; w++) {
-			if(e.percents[w] == r || e.percents[w] > o * e.top) {
-				r = e.percents[w], p = e.percents[w - 1] || 0, m = m / e.top * (r - p), d = e.percents[w + 1], l = e.anim[r];
-				break
-			}
-			o && i.attr(e.anim[e.percents[w]])
-		}
-		if(l) {
-			if(c) c.initstatus = o, c.start = new Date - c.ms * o;
-			else {
-				for(var _ in l)
-					if(l[k](_) && (it[k](_) || i.paper.customAttributes[k](_))) switch(v[_] = i.attr(_), null == v[_] && (v[_] = nt[_]), b[_] = l[_], it[_]) {
-						case z:
-							y[_] = (b[_] - v[_]) / m;
-							break;
-						case "colour":
-							v[_] = n.getRGB(v[_]);
-							var T = n.getRGB(b[_]);
-							y[_] = {
-								r: (T.r - v[_].r) / m,
-								g: (T.g - v[_].g) / m,
-								b: (T.b - v[_].b) / m
-							};
-							break;
-						case "path":
-							var E = Ft(v[_], b[_]),
-								I = E[1];
-							for(v[_] = E[0], y[_] = [], w = 0, C = v[_].length; C > w; w++) {
-								y[_][w] = [0];
-								for(var N = 1, L = v[_][w].length; L > N; N++) y[_][w][N] = (I[w][N] - v[_][w][N]) / m
-							}
-							break;
-						case "transform":
-							var M = i._,
-								A = Gt(M[_], b[_]);
-							if(A)
-								for(v[_] = A.from, b[_] = A.to, y[_] = [], y[_].real = !0, w = 0, C = v[_].length; C > w; w++)
-									for(y[_][w] = [v[_][w][0]], N = 1, L = v[_][w].length; L > N; N++) y[_][w][N] = (b[_][w][N] - v[_][w][N]) / m;
-							else {
-								var F = i.matrix || new f,
-									O = {
-										_: {
-											transform: M.transform
-										},
-										getBBox: function() {
-											return i.getBBox(1)
-										}
-									};
-								v[_] = [F.a, F.b, F.c, F.d, F.e, F.f], jt(O, b[_]), b[_] = O._.transform, y[_] = [(O.matrix.a - F.a) / m, (O.matrix.b - F.b) / m, (O.matrix.c - F.c) / m, (O.matrix.d - F.d) / m, (O.matrix.e - F.e) / m, (O.matrix.f - F.f) / m]
-							}
-							break;
-						case "csv":
-							var B = R(l[_])[P](S),
-								j = R(v[_])[P](S);
-							if("clip-rect" == _)
-								for(v[_] = j, y[_] = [], w = j.length; w--;) y[_][w] = (B[w] - v[_][w]) / m;
-							b[_] = B;
-							break;
-						default:
-							for(B = [][D](l[_]), j = [][D](v[_]), y[_] = [], w = i.paper.customAttributes[_].length; w--;) y[_][w] = ((B[w] || 0) - (j[w] || 0)) / m
-					}
-					var $ = l.easing, G = n.easing_formulas[$];
-				if(!G)
-					if(G = R($).match(K), G && 5 == G.length) {
-						var q = G;
-						G = function(e) {
-							return g(e, +q[1], +q[2], +q[3], +q[4], m)
-						}
-					} else G = ht;
-				if(h = l.start || e.start || +new Date, x = {
-					anim: e,
-					percent: r,
-					timestamp: h,
-					start: h + (e.del || 0),
-					status: 0,
-					initstatus: o || 0,
-					stop: !1,
-					ms: m,
-					easing: G,
-					from: v,
-					diff: y,
-					to: b,
-					el: i,
-					callback: l.callback,
-					prev: p,
-					next: d,
-					repeat: s || e.times,
-					origin: i.attr(),
-					totalOrigin: a
-				}, cn.push(x), o && !c && !u && (x.stop = !0, x.start = new Date - m * o, 1 == cn.length)) return dn();
-				u && (x.start = new Date - x.ms * o), 1 == cn.length && un(dn)
-			}
-			t("raphael.anim.start." + i.id, i, e)
-		}
-	}
-
-	function y(e) {
-		for(var t = 0; t < cn.length; t++) cn[t].el.paper == e && cn.splice(t--, 1)
-	}
-	n.version = "2.1.0", n.eve = t;
-	var x, w, S = /[, ]+/,
-		C = {
-			circle: 1,
-			rect: 1,
-			path: 1,
-			ellipse: 1,
-			text: 1,
-			image: 1
-		}, _ = /\{(\d+)\}/g,
-		k = "hasOwnProperty",
-		T = {
-			doc: document,
-			win: e
-		}, E = {
-			was: Object.prototype[k].call(T.win, "Raphael"),
-			is: T.win.Raphael
-		}, I = function() {
-			this.ca = this.customAttributes = {}
-		}, N = "apply",
-		D = "concat",
-		L = "ontouchstart" in T.win || T.win.DocumentTouch && T.doc instanceof DocumentTouch,
-		M = "",
-		A = " ",
-		R = String,
-		P = "split",
-		F = "click dblclick mousedown mousemove mouseout mouseover mouseup touchstart touchmove touchend touchcancel" [P](A),
-		O = {
-			mousedown: "touchstart",
-			mousemove: "touchmove",
-			mouseup: "touchend"
-		}, B = R.prototype.toLowerCase,
-		j = Math,
-		$ = j.max,
-		G = j.min,
-		q = j.abs,
-		H = j.pow,
-		U = j.PI,
-		z = "number",
-		V = "string",
-		W = "array",
-		X = Object.prototype.toString,
-		Q = (n._ISURL = /^url\(['"]?([^\)]+?)['"]?\)$/i, /^\s*((#[a-f\d]{6})|(#[a-f\d]{3})|rgba?\(\s*([\d\.]+%?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+%?(?:\s*,\s*[\d\.]+%?)?)\s*\)|hsba?\(\s*([\d\.]+(?:deg|\xb0|%)?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+(?:%?\s*,\s*[\d\.]+)?)%?\s*\)|hsla?\(\s*([\d\.]+(?:deg|\xb0|%)?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+(?:%?\s*,\s*[\d\.]+)?)%?\s*\))\s*$/i),
-		Y = {
-			NaN: 1,
-			Infinity: 1,
-			"-Infinity": 1
-		}, K = /^(?:cubic-)?bezier\(([^,]+),([^,]+),([^,]+),([^\)]+)\)/,
-		J = j.round,
-		Z = parseFloat,
-		et = parseInt,
-		tt = R.prototype.toUpperCase,
-		nt = n._availableAttrs = {
-			"arrow-end": "none",
-			"arrow-start": "none",
-			blur: 0,
-			"clip-rect": "0 0 1e9 1e9",
-			cursor: "default",
-			cx: 0,
-			cy: 0,
-			fill: "#fff",
-			"fill-opacity": 1,
-			font: '10px "Arial"',
-			"font-family": '"Arial"',
-			"font-size": "10",
-			"font-style": "normal",
-			"font-weight": 400,
-			gradient: 0,
-			height: 0,
-			href: "http://raphaeljs.com/",
-			"letter-spacing": 0,
-			opacity: 1,
-			path: "M0,0",
-			r: 0,
-			rx: 0,
-			ry: 0,
-			src: "",
-			stroke: "#000",
-			"stroke-dasharray": "",
-			"stroke-linecap": "butt",
-			"stroke-linejoin": "butt",
-			"stroke-miterlimit": 0,
-			"stroke-opacity": 1,
-			"stroke-width": 1,
-			target: "_blank",
-			"text-anchor": "middle",
-			title: "Raphael",
-			transform: "",
-			width: 0,
-			x: 0,
-			y: 0
-		}, it = n._availableAnimAttrs = {
-			blur: z,
-			"clip-rect": "csv",
-			cx: z,
-			cy: z,
-			fill: "colour",
-			"fill-opacity": z,
-			"font-size": z,
-			height: z,
-			opacity: z,
-			path: "path",
-			r: z,
-			rx: z,
-			ry: z,
-			stroke: "colour",
-			"stroke-opacity": z,
-			"stroke-width": z,
-			transform: "transform",
-			width: z,
-			x: z,
-			y: z
-		}, rt = /[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*/,
-		ot = {
-			hs: 1,
-			rg: 1
-		}, at = /,?([achlmqrstvxz]),?/gi,
-		st = /([achlmrqstvz])[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029,]*((-?\d*\.?\d*(?:e[\-+]?\d+)?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*)+)/gi,
-		lt = /([rstm])[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029,]*((-?\d*\.?\d*(?:e[\-+]?\d+)?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*)+)/gi,
-		ct = /(-?\d*\.?\d*(?:e[\-+]?\d+)?)[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*/gi,
-		ut = (n._radial_gradient = /^r(?:\(([^,]+?)[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*([^\)]+?)\))?/, {}),
-		dt = function(e, t) {
-			return Z(e) - Z(t)
-		}, pt = function() {}, ht = function(e) {
-			return e
-		}, ft = n._rectPath = function(e, t, n, i, r) {
-			return r ? [["M", e + r, t], ["l", n - 2 * r, 0], ["a", r, r, 0, 0, 1, r, r], ["l", 0, i - 2 * r], ["a", r, r, 0, 0, 1, -r, r], ["l", 2 * r - n, 0], ["a", r, r, 0, 0, 1, -r, -r], ["l", 0, 2 * r - i], ["a", r, r, 0, 0, 1, r, -r], ["z"]] : [["M", e, t], ["l", n, 0], ["l", 0, i], ["l", -n, 0], ["z"]]
-		}, mt = function(e, t, n, i) {
-			return null == i && (i = n), [["M", e, t], ["m", 0, -i], ["a", n, i, 0, 1, 1, 0, 2 * i], ["a", n, i, 0, 1, 1, 0, -2 * i], ["z"]]
-		}, gt = n._getPath = {
-			path: function(e) {
-				return e.attr("path")
-			},
-			circle: function(e) {
-				var t = e.attrs;
-				return mt(t.cx, t.cy, t.r)
-			},
-			ellipse: function(e) {
-				var t = e.attrs;
-				return mt(t.cx, t.cy, t.rx, t.ry)
-			},
-			rect: function(e) {
-				var t = e.attrs;
-				return ft(t.x, t.y, t.width, t.height, t.r)
-			},
-			image: function(e) {
-				var t = e.attrs;
-				return ft(t.x, t.y, t.width, t.height)
-			},
-			text: function(e) {
-				var t = e._getBBox();
-				return ft(t.x, t.y, t.width, t.height)
-			},
-			set: function(e) {
-				var t = e._getBBox();
-				return ft(t.x, t.y, t.width, t.height)
-			}
-		}, vt = n.mapPath = function(e, t) {
-			if(!t) return e;
-			var n, i, r, o, a, s, l;
-			for(e = Ft(e), r = 0, a = e.length; a > r; r++)
-				for(l = e[r], o = 1, s = l.length; s > o; o += 2) n = t.x(l[o], l[o + 1]), i = t.y(l[o], l[o + 1]), l[o] = n, l[o + 1] = i;
-			return e
-		};
-	if(n._g = T, n.type = T.win.SVGAngle || T.doc.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") ? "SVG" : "VML", "VML" == n.type) {
-		var bt, yt = T.doc.createElement("div");
-		if(yt.innerHTML = '<v:shape adj="1"/>', bt = yt.firstChild, bt.style.behavior = "url(#default#VML)", !bt || "object" != typeof bt.adj) return n.type = M;
-		yt = null
-	}
-	n.svg = !(n.vml = "VML" == n.type), n._Paper = I, n.fn = w = I.prototype = n.prototype, n._id = 0, n._oid = 0, n.is = function(e, t) {
-		return t = B.call(t), "finite" == t ? !Y[k](+e) : "array" == t ? e instanceof Array : "null" == t && null === e || t == typeof e && null !== e || "object" == t && e === Object(e) || "array" == t && Array.isArray && Array.isArray(e) || X.call(e).slice(8, -1).toLowerCase() == t
-	}, n.angle = function(e, t, i, r, o, a) {
-		if(null == o) {
-			var s = e - i,
-				l = t - r;
-			return s || l ? (180 + 180 * j.atan2(-l, -s) / U + 360) % 360 : 0
-		}
-		return n.angle(e, t, o, a) - n.angle(i, r, o, a)
-	}, n.rad = function(e) {
-		return e % 360 * U / 180
-	}, n.deg = function(e) {
-		return 180 * e / U % 360
-	}, n.snapTo = function(e, t, i) {
-		if(i = n.is(i, "finite") ? i : 10, n.is(e, W)) {
-			for(var r = e.length; r--;)
-				if(q(e[r] - t) <= i) return e[r]
-		} else {
-			e = +e;
-			var o = t % e;
-			if(i > o) return t - o;
-			if(o > e - i) return t - o + e
-		}
-		return t
-	};
-	n.createUUID = function(e, t) {
-		return function() {
-			return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(e, t).toUpperCase()
-		}
-	}(/[xy]/g, function(e) {
-		var t = 16 * j.random() | 0,
-			n = "x" == e ? t : 3 & t | 8;
-		return n.toString(16)
-	});
-	n.setWindow = function(e) {
-		t("raphael.setWindow", n, T.win, e), T.win = e, T.doc = T.win.document, n._engine.initWin && n._engine.initWin(T.win)
-	};
-	var xt = function(e) {
-		if(n.vml) {
-			var t, i = /^\s+|\s+$/g;
-			try {
-				var r = new ActiveXObject("htmlfile");
-				r.write("<body>"), r.close(), t = r.body
-			} catch(a) {
-				t = createPopup().document.body
-			}
-			var s = t.createTextRange();
-			xt = o(function(e) {
-				try {
-					t.style.color = R(e).replace(i, M);
-					var n = s.queryCommandValue("ForeColor");
-					return n = (255 & n) << 16 | 65280 & n | (16711680 & n) >>> 16, "#" + ("000000" + n.toString(16)).slice(-6)
-				} catch(r) {
-					return "none"
-				}
-			})
-		} else {
-			var l = T.doc.createElement("i");
-			l.title = "Raphaël Colour Picker", l.style.display = "none", T.doc.body.appendChild(l), xt = o(function(e) {
-				return l.style.color = e, T.doc.defaultView.getComputedStyle(l, M).getPropertyValue("color")
-			})
-		}
-		return xt(e)
-	}, wt = function() {
-			return "hsb(" + [this.h, this.s, this.b] + ")"
-		}, St = function() {
-			return "hsl(" + [this.h, this.s, this.l] + ")"
-		}, Ct = function() {
-			return this.hex
-		}, _t = function(e, t, i) {
-			if(null == t && n.is(e, "object") && "r" in e && "g" in e && "b" in e && (i = e.b, t = e.g, e = e.r), null == t && n.is(e, V)) {
-				var r = n.getRGB(e);
-				e = r.r, t = r.g, i = r.b
-			}
-			return(e > 1 || t > 1 || i > 1) && (e /= 255, t /= 255, i /= 255), [e, t, i]
-		}, kt = function(e, t, i, r) {
-			e *= 255, t *= 255, i *= 255;
-			var o = {
-				r: e,
-				g: t,
-				b: i,
-				hex: n.rgb(e, t, i),
-				toString: Ct
-			};
-			return n.is(r, "finite") && (o.opacity = r), o
-		};
-	n.color = function(e) {
-		var t;
-		return n.is(e, "object") && "h" in e && "s" in e && "b" in e ? (t = n.hsb2rgb(e), e.r = t.r, e.g = t.g, e.b = t.b, e.hex = t.hex) : n.is(e, "object") && "h" in e && "s" in e && "l" in e ? (t = n.hsl2rgb(e), e.r = t.r, e.g = t.g, e.b = t.b, e.hex = t.hex) : (n.is(e, "string") && (e = n.getRGB(e)), n.is(e, "object") && "r" in e && "g" in e && "b" in e ? (t = n.rgb2hsl(e), e.h = t.h, e.s = t.s, e.l = t.l, t = n.rgb2hsb(e), e.v = t.b) : (e = {
-			hex: "none"
-		}, e.r = e.g = e.b = e.h = e.s = e.v = e.l = -1)), e.toString = Ct, e
-	}, n.hsb2rgb = function(e, t, n, i) {
-		this.is(e, "object") && "h" in e && "s" in e && "b" in e && (n = e.b, t = e.s, e = e.h, i = e.o), e *= 360;
-		var r, o, a, s, l;
-		return e = e % 360 / 60, l = n * t, s = l * (1 - q(e % 2 - 1)), r = o = a = n - l, e = ~~e, r += [l, s, 0, 0, s, l][e], o += [s, l, l, s, 0, 0][e], a += [0, 0, s, l, l, s][e], kt(r, o, a, i)
-	}, n.hsl2rgb = function(e, t, n, i) {
-		this.is(e, "object") && "h" in e && "s" in e && "l" in e && (n = e.l, t = e.s, e = e.h), (e > 1 || t > 1 || n > 1) && (e /= 360, t /= 100, n /= 100), e *= 360;
-		var r, o, a, s, l;
-		return e = e % 360 / 60, l = 2 * t * (.5 > n ? n : 1 - n), s = l * (1 - q(e % 2 - 1)), r = o = a = n - l / 2, e = ~~e, r += [l, s, 0, 0, s, l][e], o += [s, l, l, s, 0, 0][e], a += [0, 0, s, l, l, s][e], kt(r, o, a, i)
-	}, n.rgb2hsb = function(e, t, n) {
-		n = _t(e, t, n), e = n[0], t = n[1], n = n[2];
-		var i, r, o, a;
-		return o = $(e, t, n), a = o - G(e, t, n), i = 0 == a ? null : o == e ? (t - n) / a : o == t ? (n - e) / a + 2 : (e - t) / a + 4, i = (i + 360) % 6 * 60 / 360, r = 0 == a ? 0 : a / o, {
-			h: i,
-			s: r,
-			b: o,
-			toString: wt
-		}
-	}, n.rgb2hsl = function(e, t, n) {
-		n = _t(e, t, n), e = n[0], t = n[1], n = n[2];
-		var i, r, o, a, s, l;
-		return a = $(e, t, n), s = G(e, t, n), l = a - s, i = 0 == l ? null : a == e ? (t - n) / l : a == t ? (n - e) / l + 2 : (e - t) / l + 4, i = (i + 360) % 6 * 60 / 360, o = (a + s) / 2, r = 0 == l ? 0 : .5 > o ? l / (2 * o) : l / (2 - 2 * o), {
-			h: i,
-			s: r,
-			l: o,
-			toString: St
-		}
-	}, n._path2string = function() {
-		return this.join(",").replace(at, "$1")
-	};
-	n._preload = function(e, t) {
-		var n = T.doc.createElement("img");
-		n.style.cssText = "position:absolute;left:-9999em;top:-9999em", n.onload = function() {
-			t.call(this), this.onload = null, T.doc.body.removeChild(this)
-		}, n.onerror = function() {
-			T.doc.body.removeChild(this)
-		}, T.doc.body.appendChild(n), n.src = e
-	};
-	n.getRGB = o(function(e) {
-		if(!e || (e = R(e)).indexOf("-") + 1) return {
-			r: -1,
-			g: -1,
-			b: -1,
-			hex: "none",
-			error: 1,
-			toString: a
-		};
-		if("none" == e) return {
-			r: -1,
-			g: -1,
-			b: -1,
-			hex: "none",
-			toString: a
-		};
-		!(ot[k](e.toLowerCase().substring(0, 2)) || "#" == e.charAt()) && (e = xt(e));
-		var t, i, r, o, s, l, c = e.match(Q);
-		return c ? (c[2] && (r = et(c[2].substring(5), 16), i = et(c[2].substring(3, 5), 16), t = et(c[2].substring(1, 3), 16)), c[3] && (r = et((s = c[3].charAt(3)) + s, 16), i = et((s = c[3].charAt(2)) + s, 16), t = et((s = c[3].charAt(1)) + s, 16)), c[4] && (l = c[4][P](rt), t = Z(l[0]), "%" == l[0].slice(-1) && (t *= 2.55), i = Z(l[1]), "%" == l[1].slice(-1) && (i *= 2.55), r = Z(l[2]), "%" == l[2].slice(-1) && (r *= 2.55), "rgba" == c[1].toLowerCase().slice(0, 4) && (o = Z(l[3])), l[3] && "%" == l[3].slice(-1) && (o /= 100)), c[5] ? (l = c[5][P](rt), t = Z(l[0]), "%" == l[0].slice(-1) && (t *= 2.55), i = Z(l[1]), "%" == l[1].slice(-1) && (i *= 2.55), r = Z(l[2]), "%" == l[2].slice(-1) && (r *= 2.55), ("deg" == l[0].slice(-3) || "°" == l[0].slice(-1)) && (t /= 360), "hsba" == c[1].toLowerCase().slice(0, 4) && (o = Z(l[3])), l[3] && "%" == l[3].slice(-1) && (o /= 100), n.hsb2rgb(t, i, r, o)) : c[6] ? (l = c[6][P](rt), t = Z(l[0]), "%" == l[0].slice(-1) && (t *= 2.55), i = Z(l[1]), "%" == l[1].slice(-1) && (i *= 2.55), r = Z(l[2]), "%" == l[2].slice(-1) && (r *= 2.55), ("deg" == l[0].slice(-3) || "°" == l[0].slice(-1)) && (t /= 360), "hsla" == c[1].toLowerCase().slice(0, 4) && (o = Z(l[3])), l[3] && "%" == l[3].slice(-1) && (o /= 100), n.hsl2rgb(t, i, r, o)) : (c = {
-			r: t,
-			g: i,
-			b: r,
-			toString: a
-		}, c.hex = "#" + (16777216 | r | i << 8 | t << 16).toString(16).slice(1), n.is(o, "finite") && (c.opacity = o), c)) : {
-			r: -1,
-			g: -1,
-			b: -1,
-			hex: "none",
-			error: 1,
-			toString: a
-		}
-	}, n), n.hsb = o(function(e, t, i) {
-		return n.hsb2rgb(e, t, i).hex
-	}), n.hsl = o(function(e, t, i) {
-		return n.hsl2rgb(e, t, i).hex
-	}), n.rgb = o(function(e, t, n) {
-		return "#" + (16777216 | n | t << 8 | e << 16).toString(16).slice(1)
-	}), n.getColor = function(e) {
-		var t = this.getColor.start = this.getColor.start || {
-			h: 0,
-			s: 1,
-			b: e || .75
-		}, n = this.hsb2rgb(t.h, t.s, t.b);
-		return t.h += .075, t.h > 1 && (t.h = 0, t.s -= .2, t.s <= 0 && (this.getColor.start = {
-			h: 0,
-			s: 1,
-			b: t.b
-		})), n.hex
-	}, n.getColor.reset = function() {
-		delete this.start
-	}, n.parsePathString = function(e) {
-		if(!e) return null;
-		var t = Tt(e);
-		if(t.arr) return It(t.arr);
-		var i = {
-			a: 7,
-			c: 6,
-			h: 1,
-			l: 2,
-			m: 2,
-			r: 4,
-			q: 4,
-			s: 4,
-			t: 2,
-			v: 1,
-			z: 0
-		}, r = [];
-		return n.is(e, W) && n.is(e[0], W) && (r = It(e)), r.length || R(e).replace(st, function(e, t, n) {
-			var o = [],
-				a = t.toLowerCase();
-			if(n.replace(ct, function(e, t) {
-				t && o.push(+t)
-			}), "m" == a && o.length > 2 && (r.push([t][D](o.splice(0, 2))), a = "l", t = "m" == t ? "l" : "L"), "r" == a) r.push([t][D](o));
-			else
-				for(; o.length >= i[a] && (r.push([t][D](o.splice(0, i[a]))), i[a]););
-		}), r.toString = n._path2string, t.arr = It(r), r
-	}, n.parseTransformString = o(function(e) {
-		if(!e) return null;
-		var t = [];
-		return n.is(e, W) && n.is(e[0], W) && (t = It(e)), t.length || R(e).replace(lt, function(e, n, i) {
-			{
-				var r = [];
-				B.call(n)
-			}
-			i.replace(ct, function(e, t) {
-				t && r.push(+t)
-			}), t.push([n][D](r))
-		}), t.toString = n._path2string, t
-	});
-	var Tt = function(e) {
-		var t = Tt.ps = Tt.ps || {};
-		return t[e] ? t[e].sleep = 100 : t[e] = {
-			sleep: 100
-		}, setTimeout(function() {
-			for(var n in t) t[k](n) && n != e && (t[n].sleep--, !t[n].sleep && delete t[n])
-		}), t[e]
-	};
-	n.findDotsAtSegment = function(e, t, n, i, r, o, a, s, l) {
-		var c = 1 - l,
-			u = H(c, 3),
-			d = H(c, 2),
-			p = l * l,
-			h = p * l,
-			f = u * e + 3 * d * l * n + 3 * c * l * l * r + h * a,
-			m = u * t + 3 * d * l * i + 3 * c * l * l * o + h * s,
-			g = e + 2 * l * (n - e) + p * (r - 2 * n + e),
-			v = t + 2 * l * (i - t) + p * (o - 2 * i + t),
-			b = n + 2 * l * (r - n) + p * (a - 2 * r + n),
-			y = i + 2 * l * (o - i) + p * (s - 2 * o + i),
-			x = c * e + l * n,
-			w = c * t + l * i,
-			S = c * r + l * a,
-			C = c * o + l * s,
-			_ = 90 - 180 * j.atan2(g - b, v - y) / U;
-		return(g > b || y > v) && (_ += 180), {
-			x: f,
-			y: m,
-			m: {
-				x: g,
-				y: v
-			},
-			n: {
-				x: b,
-				y: y
-			},
-			start: {
-				x: x,
-				y: w
-			},
-			end: {
-				x: S,
-				y: C
-			},
-			alpha: _
-		}
-	}, n.bezierBBox = function(e, t, i, r, o, a, s, l) {
-		n.is(e, "array") || (e = [e, t, i, r, o, a, s, l]);
-		var c = Pt.apply(null, e);
-		return {
-			x: c.min.x,
-			y: c.min.y,
-			x2: c.max.x,
-			y2: c.max.y,
-			width: c.max.x - c.min.x,
-			height: c.max.y - c.min.y
-		}
-	}, n.isPointInsideBBox = function(e, t, n) {
-		return t >= e.x && t <= e.x2 && n >= e.y && n <= e.y2
-	}, n.isBBoxIntersect = function(e, t) {
-		var i = n.isPointInsideBBox;
-		return i(t, e.x, e.y) || i(t, e.x2, e.y) || i(t, e.x, e.y2) || i(t, e.x2, e.y2) || i(e, t.x, t.y) || i(e, t.x2, t.y) || i(e, t.x, t.y2) || i(e, t.x2, t.y2) || (e.x < t.x2 && e.x > t.x || t.x < e.x2 && t.x > e.x) && (e.y < t.y2 && e.y > t.y || t.y < e.y2 && t.y > e.y)
-	}, n.pathIntersection = function(e, t) {
-		return h(e, t)
-	}, n.pathIntersectionNumber = function(e, t) {
-		return h(e, t, 1)
-	}, n.isPointInsidePath = function(e, t, i) {
-		var r = n.pathBBox(e);
-		return n.isPointInsideBBox(r, t, i) && h(e, [["M", t, i], ["H", r.x2 + 10]], 1) % 2 == 1
-	}, n._removedFactory = function(e) {
-		return function() {
-			t("raphael.log", null, "Raphaël: you are calling to method “" + e + "” of removed object", e)
-		}
-	};
-	var Et = n.pathBBox = function(e) {
-		var t = Tt(e);
-		if(t.bbox) return i(t.bbox);
-		if(!e) return {
-			x: 0,
-			y: 0,
-			width: 0,
-			height: 0,
-			x2: 0,
-			y2: 0
-		};
-		e = Ft(e);
-		for(var n, r = 0, o = 0, a = [], s = [], l = 0, c = e.length; c > l; l++)
-			if(n = e[l], "M" == n[0]) r = n[1], o = n[2], a.push(r), s.push(o);
-			else {
-				var u = Pt(r, o, n[1], n[2], n[3], n[4], n[5], n[6]);
-				a = a[D](u.min.x, u.max.x), s = s[D](u.min.y, u.max.y), r = n[5], o = n[6]
-			}
-		var d = G[N](0, a),
-			p = G[N](0, s),
-			h = $[N](0, a),
-			f = $[N](0, s),
-			m = h - d,
-			g = f - p,
-			v = {
-				x: d,
-				y: p,
-				x2: h,
-				y2: f,
-				width: m,
-				height: g,
-				cx: d + m / 2,
-				cy: p + g / 2
-			};
-		return t.bbox = i(v), v
-	}, It = function(e) {
-			var t = i(e);
-			return t.toString = n._path2string, t
-		}, Nt = n._pathToRelative = function(e) {
-			var t = Tt(e);
-			if(t.rel) return It(t.rel);
-			n.is(e, W) && n.is(e && e[0], W) || (e = n.parsePathString(e));
-			var i = [],
-				r = 0,
-				o = 0,
-				a = 0,
-				s = 0,
-				l = 0;
-			"M" == e[0][0] && (r = e[0][1], o = e[0][2], a = r, s = o, l++, i.push(["M", r, o]));
-			for(var c = l, u = e.length; u > c; c++) {
-				var d = i[c] = [],
-					p = e[c];
-				if(p[0] != B.call(p[0])) switch(d[0] = B.call(p[0]), d[0]) {
-					case "a":
-						d[1] = p[1], d[2] = p[2], d[3] = p[3], d[4] = p[4], d[5] = p[5], d[6] = +(p[6] - r).toFixed(3), d[7] = +(p[7] - o).toFixed(3);
-						break;
-					case "v":
-						d[1] = +(p[1] - o).toFixed(3);
-						break;
-					case "m":
-						a = p[1], s = p[2];
-					default:
-						for(var h = 1, f = p.length; f > h; h++) d[h] = +(p[h] - (h % 2 ? r : o)).toFixed(3)
-				} else {
-					d = i[c] = [], "m" == p[0] && (a = p[1] + r, s = p[2] + o);
-					for(var m = 0, g = p.length; g > m; m++) i[c][m] = p[m]
-				}
-				var v = i[c].length;
-				switch(i[c][0]) {
-					case "z":
-						r = a, o = s;
-						break;
-					case "h":
-						r += +i[c][v - 1];
-						break;
-					case "v":
-						o += +i[c][v - 1];
-						break;
-					default:
-						r += +i[c][v - 2], o += +i[c][v - 1]
-				}
-			}
-			return i.toString = n._path2string, t.rel = It(i), i
-		}, Dt = n._pathToAbsolute = function(e) {
-			var t = Tt(e);
-			if(t.abs) return It(t.abs);
-			if(n.is(e, W) && n.is(e && e[0], W) || (e = n.parsePathString(e)), !e || !e.length) return [["M", 0, 0]];
-			var i = [],
-				r = 0,
-				o = 0,
-				a = 0,
-				l = 0,
-				c = 0;
-			"M" == e[0][0] && (r = +e[0][1], o = +e[0][2], a = r, l = o, c++, i[0] = ["M", r, o]);
-			for(var u, d, p = 3 == e.length && "M" == e[0][0] && "R" == e[1][0].toUpperCase() && "Z" == e[2][0].toUpperCase(), h = c, f = e.length; f > h; h++) {
-				if(i.push(u = []), d = e[h], d[0] != tt.call(d[0])) switch(u[0] = tt.call(d[0]), u[0]) {
-					case "A":
-						u[1] = d[1], u[2] = d[2], u[3] = d[3], u[4] = d[4], u[5] = d[5], u[6] = +(d[6] + r), u[7] = +(d[7] + o);
-						break;
-					case "V":
-						u[1] = +d[1] + o;
-						break;
-					case "H":
-						u[1] = +d[1] + r;
-						break;
-					case "R":
-						for(var m = [r, o][D](d.slice(1)), g = 2, v = m.length; v > g; g++) m[g] = +m[g] + r, m[++g] = +m[g] + o;
-						i.pop(), i = i[D](s(m, p));
-						break;
-					case "M":
-						a = +d[1] + r, l = +d[2] + o;
-					default:
-						for(g = 1, v = d.length; v > g; g++) u[g] = +d[g] + (g % 2 ? r : o)
-				} else if("R" == d[0]) m = [r, o][D](d.slice(1)), i.pop(), i = i[D](s(m, p)), u = ["R"][D](d.slice(-2));
-				else
-					for(var b = 0, y = d.length; y > b; b++) u[b] = d[b];
-				switch(u[0]) {
-					case "Z":
-						r = a, o = l;
-						break;
-					case "H":
-						r = u[1];
-						break;
-					case "V":
-						o = u[1];
-						break;
-					case "M":
-						a = u[u.length - 2], l = u[u.length - 1];
-					default:
-						r = u[u.length - 2], o = u[u.length - 1]
-				}
-			}
-			return i.toString = n._path2string, t.abs = It(i), i
-		}, Lt = function(e, t, n, i) {
-			return [e, t, n, i, n, i]
-		}, Mt = function(e, t, n, i, r, o) {
-			var a = 1 / 3,
-				s = 2 / 3;
-			return [a * e + s * n, a * t + s * i, a * r + s * n, a * o + s * i, r, o]
-		}, At = function(e, t, n, i, r, a, s, l, c, u) {
-			var d, p = 120 * U / 180,
-				h = U / 180 * (+r || 0),
-				f = [],
-				m = o(function(e, t, n) {
-					var i = e * j.cos(n) - t * j.sin(n),
-						r = e * j.sin(n) + t * j.cos(n);
-					return {
-						x: i,
-						y: r
-					}
-				});
-			if(u) _ = u[0], k = u[1], S = u[2], C = u[3];
-			else {
-				d = m(e, t, -h), e = d.x, t = d.y, d = m(l, c, -h), l = d.x, c = d.y;
-				var g = (j.cos(U / 180 * r), j.sin(U / 180 * r), (e - l) / 2),
-					v = (t - c) / 2,
-					b = g * g / (n * n) + v * v / (i * i);
-				b > 1 && (b = j.sqrt(b), n = b * n, i = b * i);
-				var y = n * n,
-					x = i * i,
-					w = (a == s ? -1 : 1) * j.sqrt(q((y * x - y * v * v - x * g * g) / (y * v * v + x * g * g))),
-					S = w * n * v / i + (e + l) / 2,
-					C = w * -i * g / n + (t + c) / 2,
-					_ = j.asin(((t - C) / i).toFixed(9)),
-					k = j.asin(((c - C) / i).toFixed(9));
-				_ = S > e ? U - _ : _, k = S > l ? U - k : k, 0 > _ && (_ = 2 * U + _), 0 > k && (k = 2 * U + k), s && _ > k && (_ -= 2 * U), !s && k > _ && (k -= 2 * U)
-			}
-			var T = k - _;
-			if(q(T) > p) {
-				var E = k,
-					I = l,
-					N = c;
-				k = _ + p * (s && k > _ ? 1 : -1), l = S + n * j.cos(k), c = C + i * j.sin(k), f = At(l, c, n, i, r, 0, s, I, N, [k, E, S, C])
-			}
-			T = k - _;
-			var L = j.cos(_),
-				M = j.sin(_),
-				A = j.cos(k),
-				R = j.sin(k),
-				F = j.tan(T / 4),
-				O = 4 / 3 * n * F,
-				B = 4 / 3 * i * F,
-				$ = [e, t],
-				G = [e + O * M, t - B * L],
-				H = [l + O * R, c - B * A],
-				z = [l, c];
-			if(G[0] = 2 * $[0] - G[0], G[1] = 2 * $[1] - G[1], u) return [G, H, z][D](f);
-			f = [G, H, z][D](f).join()[P](",");
-			for(var V = [], W = 0, X = f.length; X > W; W++) V[W] = W % 2 ? m(f[W - 1], f[W], h).y : m(f[W], f[W + 1], h).x;
-			return V
-		}, Rt = function(e, t, n, i, r, o, a, s, l) {
-			var c = 1 - l;
-			return {
-				x: H(c, 3) * e + 3 * H(c, 2) * l * n + 3 * c * l * l * r + H(l, 3) * a,
-				y: H(c, 3) * t + 3 * H(c, 2) * l * i + 3 * c * l * l * o + H(l, 3) * s
-			}
-		}, Pt = o(function(e, t, n, i, r, o, a, s) {
-			var l, c = r - 2 * n + e - (a - 2 * r + n),
-				u = 2 * (n - e) - 2 * (r - n),
-				d = e - n,
-				p = (-u + j.sqrt(u * u - 4 * c * d)) / 2 / c,
-				h = (-u - j.sqrt(u * u - 4 * c * d)) / 2 / c,
-				f = [t, s],
-				m = [e, a];
-			return q(p) > "1e12" && (p = .5), q(h) > "1e12" && (h = .5), p > 0 && 1 > p && (l = Rt(e, t, n, i, r, o, a, s, p), m.push(l.x), f.push(l.y)), h > 0 && 1 > h && (l = Rt(e, t, n, i, r, o, a, s, h), m.push(l.x), f.push(l.y)), c = o - 2 * i + t - (s - 2 * o + i), u = 2 * (i - t) - 2 * (o - i), d = t - i, p = (-u + j.sqrt(u * u - 4 * c * d)) / 2 / c, h = (-u - j.sqrt(u * u - 4 * c * d)) / 2 / c, q(p) > "1e12" && (p = .5), q(h) > "1e12" && (h = .5), p > 0 && 1 > p && (l = Rt(e, t, n, i, r, o, a, s, p), m.push(l.x), f.push(l.y)), h > 0 && 1 > h && (l = Rt(e, t, n, i, r, o, a, s, h), m.push(l.x), f.push(l.y)), {
-				min: {
-					x: G[N](0, m),
-					y: G[N](0, f)
-				},
-				max: {
-					x: $[N](0, m),
-					y: $[N](0, f)
-				}
-			}
-		}),
-		Ft = n._path2curve = o(function(e, t) {
-			var n = !t && Tt(e);
-			if(!t && n.curve) return It(n.curve);
-			for(var i = Dt(e), r = t && Dt(t), o = {
-					x: 0,
-					y: 0,
-					bx: 0,
-					by: 0,
-					X: 0,
-					Y: 0,
-					qx: null,
-					qy: null
-				}, a = {
-					x: 0,
-					y: 0,
-					bx: 0,
-					by: 0,
-					X: 0,
-					Y: 0,
-					qx: null,
-					qy: null
-				}, s = (function(e, t, n) {
-					var i, r;
-					if(!e) return ["C", t.x, t.y, t.x, t.y, t.x, t.y];
-					switch(!(e[0] in {
-						T: 1,
-						Q: 1
-					}) && (t.qx = t.qy = null), e[0]) {
-						case "M":
-							t.X = e[1], t.Y = e[2];
-							break;
-						case "A":
-							e = ["C"][D](At[N](0, [t.x, t.y][D](e.slice(1))));
-							break;
-						case "S":
-							"C" == n || "S" == n ? (i = 2 * t.x - t.bx, r = 2 * t.y - t.by) : (i = t.x, r = t.y), e = ["C", i, r][D](e.slice(1));
-							break;
-						case "T":
-							"Q" == n || "T" == n ? (t.qx = 2 * t.x - t.qx, t.qy = 2 * t.y - t.qy) : (t.qx = t.x, t.qy = t.y), e = ["C"][D](Mt(t.x, t.y, t.qx, t.qy, e[1], e[2]));
-							break;
-						case "Q":
-							t.qx = e[1], t.qy = e[2], e = ["C"][D](Mt(t.x, t.y, e[1], e[2], e[3], e[4]));
-							break;
-						case "L":
-							e = ["C"][D](Lt(t.x, t.y, e[1], e[2]));
-							break;
-						case "H":
-							e = ["C"][D](Lt(t.x, t.y, e[1], t.y));
-							break;
-						case "V":
-							e = ["C"][D](Lt(t.x, t.y, t.x, e[1]));
-							break;
-						case "Z":
-							e = ["C"][D](Lt(t.x, t.y, t.X, t.Y))
-					}
-					return e
-				}), l = function(e, t) {
-					if(e[t].length > 7) {
-						e[t].shift();
-						for(var n = e[t]; n.length;) e.splice(t++, 0, ["C"][D](n.splice(0, 6)));
-						e.splice(t, 1), d = $(i.length, r && r.length || 0)
-					}
-				}, c = function(e, t, n, o, a) {
-					e && t && "M" == e[a][0] && "M" != t[a][0] && (t.splice(a, 0, ["M", o.x, o.y]), n.bx = 0, n.by = 0, n.x = e[a][1], n.y = e[a][2], d = $(i.length, r && r.length || 0))
-				}, u = 0, d = $(i.length, r && r.length || 0); d > u; u++) {
-				i[u] = s(i[u], o), l(i, u), r && (r[u] = s(r[u], a)), r && l(r, u), c(i, r, o, a, u), c(r, i, a, o, u);
-				var p = i[u],
-					h = r && r[u],
-					f = p.length,
-					m = r && h.length;
-				o.x = p[f - 2], o.y = p[f - 1], o.bx = Z(p[f - 4]) || o.x, o.by = Z(p[f - 3]) || o.y, a.bx = r && (Z(h[m - 4]) || a.x), a.by = r && (Z(h[m - 3]) || a.y), a.x = r && h[m - 2], a.y = r && h[m - 1]
-			}
-			return r || (n.curve = It(i)), r ? [i, r] : i
-		}, null, It),
-		Ot = (n._parseDots = o(function(e) {
-			for(var t = [], i = 0, r = e.length; r > i; i++) {
-				var o = {}, a = e[i].match(/^([^:]*):?([\d\.]*)/);
-				if(o.color = n.getRGB(a[1]), o.color.error) return null;
-				o.color = o.color.hex, a[2] && (o.offset = a[2] + "%"), t.push(o)
-			}
-			for(i = 1, r = t.length - 1; r > i; i++)
-				if(!t[i].offset) {
-					for(var s = Z(t[i - 1].offset || 0), l = 0, c = i + 1; r > c; c++)
-						if(t[c].offset) {
-							l = t[c].offset;
-							break
-						}
-					l || (l = 100, c = r), l = Z(l);
-					for(var u = (l - s) / (c - i + 1); c > i; i++) s += u, t[i].offset = s + "%"
-				}
-			return t
-		}), n._tear = function(e, t) {
-			e == t.top && (t.top = e.prev), e == t.bottom && (t.bottom = e.next), e.next && (e.next.prev = e.prev), e.prev && (e.prev.next = e.next)
-		}),
-		Bt = (n._tofront = function(e, t) {
-			t.top !== e && (Ot(e, t), e.next = null, e.prev = t.top, t.top.next = e, t.top = e)
-		}, n._toback = function(e, t) {
-			t.bottom !== e && (Ot(e, t), e.next = t.bottom, e.prev = null, t.bottom.prev = e, t.bottom = e)
-		}, n._insertafter = function(e, t, n) {
-			Ot(e, n), t == n.top && (n.top = e), t.next && (t.next.prev = e), e.next = t.next, e.prev = t, t.next = e
-		}, n._insertbefore = function(e, t, n) {
-			Ot(e, n), t == n.bottom && (n.bottom = e), t.prev && (t.prev.next = e), e.prev = t.prev, t.prev = e, e.next = t
-		}, n.toMatrix = function(e, t) {
-			var n = Et(e),
-				i = {
-					_: {
-						transform: M
-					},
-					getBBox: function() {
-						return n
-					}
-				};
-			return jt(i, t), i.matrix
-		}),
-		jt = (n.transformPath = function(e, t) {
-			return vt(e, Bt(e, t))
-		}, n._extractTransform = function(e, t) {
-			if(null == t) return e._.transform;
-			t = R(t).replace(/\.{3}|\u2026/g, e._.transform || M);
-			var i = n.parseTransformString(t),
-				r = 0,
-				o = 0,
-				a = 0,
-				s = 1,
-				l = 1,
-				c = e._,
-				u = new f;
-			if(c.transform = i || [], i)
-				for(var d = 0, p = i.length; p > d; d++) {
-					var h, m, g, v, b, y = i[d],
-						x = y.length,
-						w = R(y[0]).toLowerCase(),
-						S = y[0] != w,
-						C = S ? u.invert() : 0;
-					"t" == w && 3 == x ? S ? (h = C.x(0, 0), m = C.y(0, 0), g = C.x(y[1], y[2]), v = C.y(y[1], y[2]), u.translate(g - h, v - m)) : u.translate(y[1], y[2]) : "r" == w ? 2 == x ? (b = b || e.getBBox(1), u.rotate(y[1], b.x + b.width / 2, b.y + b.height / 2), r += y[1]) : 4 == x && (S ? (g = C.x(y[2], y[3]), v = C.y(y[2], y[3]), u.rotate(y[1], g, v)) : u.rotate(y[1], y[2], y[3]), r += y[1]) : "s" == w ? 2 == x || 3 == x ? (b = b || e.getBBox(1), u.scale(y[1], y[x - 1], b.x + b.width / 2, b.y + b.height / 2), s *= y[1], l *= y[x - 1]) : 5 == x && (S ? (g = C.x(y[3], y[4]), v = C.y(y[3], y[4]), u.scale(y[1], y[2], g, v)) : u.scale(y[1], y[2], y[3], y[4]), s *= y[1], l *= y[2]) : "m" == w && 7 == x && u.add(y[1], y[2], y[3], y[4], y[5], y[6]), c.dirtyT = 1, e.matrix = u
-				}
-			e.matrix = u, c.sx = s, c.sy = l, c.deg = r, c.dx = o = u.e, c.dy = a = u.f, 1 == s && 1 == l && !r && c.bbox ? (c.bbox.x += +o, c.bbox.y += +a) : c.dirtyT = 1
-		}),
-		$t = function(e) {
-			var t = e[0];
-			switch(t.toLowerCase()) {
-				case "t":
-					return [t, 0, 0];
-				case "m":
-					return [t, 1, 0, 0, 1, 0, 0];
-				case "r":
-					return 4 == e.length ? [t, 0, e[2], e[3]] : [t, 0];
-				case "s":
-					return 5 == e.length ? [t, 1, 1, e[3], e[4]] : 3 == e.length ? [t, 1, 1] : [t, 1]
-			}
-		}, Gt = n._equaliseTransform = function(e, t) {
-			t = R(t).replace(/\.{3}|\u2026/g, e), e = n.parseTransformString(e) || [], t = n.parseTransformString(t) || [];
-			for(var i, r, o, a, s = $(e.length, t.length), l = [], c = [], u = 0; s > u; u++) {
-				if(o = e[u] || $t(t[u]), a = t[u] || $t(o), o[0] != a[0] || "r" == o[0].toLowerCase() && (o[2] != a[2] || o[3] != a[3]) || "s" == o[0].toLowerCase() && (o[3] != a[3] || o[4] != a[4])) return;
-				for(l[u] = [], c[u] = [], i = 0, r = $(o.length, a.length); r > i; i++) i in o && (l[u][i] = o[i]), i in a && (c[u][i] = a[i])
-			}
-			return {
-				from: l,
-				to: c
-			}
-		};
-	n._getContainer = function(e, t, i, r) {
-		var o;
-		return o = null != r || n.is(e, "object") ? e : T.doc.getElementById(e), null != o ? o.tagName ? null == t ? {
-			container: o,
-			width: o.style.pixelWidth || o.offsetWidth,
-			height: o.style.pixelHeight || o.offsetHeight
-		} : {
-			container: o,
-			width: t,
-			height: i
-		} : {
-			container: 1,
-			x: e,
-			y: t,
-			width: i,
-			height: r
-		} : void 0
-	}, n.pathToRelative = Nt, n._engine = {}, n.path2curve = Ft, n.matrix = function(e, t, n, i, r, o) {
-		return new f(e, t, n, i, r, o)
-	},
-	function(e) {
-		function t(e) {
-			return e[0] * e[0] + e[1] * e[1]
-		}
-
-		function i(e) {
-			var n = j.sqrt(t(e));
-			e[0] && (e[0] /= n), e[1] && (e[1] /= n)
-		}
-		e.add = function(e, t, n, i, r, o) {
-			var a, s, l, c, u = [[], [], []],
-				d = [[this.a, this.c, this.e], [this.b, this.d, this.f], [0, 0, 1]],
-				p = [[e, n, r], [t, i, o], [0, 0, 1]];
-			for(e && e instanceof f && (p = [[e.a, e.c, e.e], [e.b, e.d, e.f], [0, 0, 1]]), a = 0; 3 > a; a++)
-				for(s = 0; 3 > s; s++) {
-					for(c = 0, l = 0; 3 > l; l++) c += d[a][l] * p[l][s];
-					u[a][s] = c
-				}
-			this.a = u[0][0], this.b = u[1][0], this.c = u[0][1], this.d = u[1][1], this.e = u[0][2], this.f = u[1][2]
-		}, e.invert = function() {
-			var e = this,
-				t = e.a * e.d - e.b * e.c;
-			return new f(e.d / t, -e.b / t, -e.c / t, e.a / t, (e.c * e.f - e.d * e.e) / t, (e.b * e.e - e.a * e.f) / t)
-		}, e.clone = function() {
-			return new f(this.a, this.b, this.c, this.d, this.e, this.f)
-		}, e.translate = function(e, t) {
-			this.add(1, 0, 0, 1, e, t)
-		}, e.scale = function(e, t, n, i) {
-			null == t && (t = e), (n || i) && this.add(1, 0, 0, 1, n, i), this.add(e, 0, 0, t, 0, 0), (n || i) && this.add(1, 0, 0, 1, -n, -i)
-		}, e.rotate = function(e, t, i) {
-			e = n.rad(e), t = t || 0, i = i || 0;
-			var r = +j.cos(e).toFixed(9),
-				o = +j.sin(e).toFixed(9);
-			this.add(r, o, -o, r, t, i), this.add(1, 0, 0, 1, -t, -i)
-		}, e.x = function(e, t) {
-			return e * this.a + t * this.c + this.e
-		}, e.y = function(e, t) {
-			return e * this.b + t * this.d + this.f
-		}, e.get = function(e) {
-			return +this[R.fromCharCode(97 + e)].toFixed(4)
-		}, e.toString = function() {
-			return n.svg ? "matrix(" + [this.get(0), this.get(1), this.get(2), this.get(3), this.get(4), this.get(5)].join() + ")" : [this.get(0), this.get(2), this.get(1), this.get(3), 0, 0].join()
-		}, e.toFilter = function() {
-			return "progid:DXImageTransform.Microsoft.Matrix(M11=" + this.get(0) + ", M12=" + this.get(2) + ", M21=" + this.get(1) + ", M22=" + this.get(3) + ", Dx=" + this.get(4) + ", Dy=" + this.get(5) + ", sizingmethod='auto expand')"
-		}, e.offset = function() {
-			return [this.e.toFixed(4), this.f.toFixed(4)]
-		}, e.split = function() {
-			var e = {};
-			e.dx = this.e, e.dy = this.f;
-			var r = [[this.a, this.c], [this.b, this.d]];
-			e.scalex = j.sqrt(t(r[0])), i(r[0]), e.shear = r[0][0] * r[1][0] + r[0][1] * r[1][1], r[1] = [r[1][0] - r[0][0] * e.shear, r[1][1] - r[0][1] * e.shear], e.scaley = j.sqrt(t(r[1])), i(r[1]), e.shear /= e.scaley;
-			var o = -r[0][1],
-				a = r[1][1];
-			return 0 > a ? (e.rotate = n.deg(j.acos(a)), 0 > o && (e.rotate = 360 - e.rotate)) : e.rotate = n.deg(j.asin(o)), e.isSimple = !(+e.shear.toFixed(9) || e.scalex.toFixed(9) != e.scaley.toFixed(9) && e.rotate), e.isSuperSimple = !+e.shear.toFixed(9) && e.scalex.toFixed(9) == e.scaley.toFixed(9) && !e.rotate, e.noRotation = !+e.shear.toFixed(9) && !e.rotate, e
-		}, e.toTransformString = function(e) {
-			var t = e || this[P]();
-			return t.isSimple ? (t.scalex = +t.scalex.toFixed(4), t.scaley = +t.scaley.toFixed(4), t.rotate = +t.rotate.toFixed(4), (t.dx || t.dy ? "t" + [t.dx, t.dy] : M) + (1 != t.scalex || 1 != t.scaley ? "s" + [t.scalex, t.scaley, 0, 0] : M) + (t.rotate ? "r" + [t.rotate, 0, 0] : M)) : "m" + [this.get(0), this.get(1), this.get(2), this.get(3), this.get(4), this.get(5)]
-		}
-	}(f.prototype);
-	var qt = navigator.userAgent.match(/Version\/(.*?)\s/) || navigator.userAgent.match(/Chrome\/(\d+)/);
-	w.safari = "Apple Computer, Inc." == navigator.vendor && (qt && qt[1] < 4 || "iP" == navigator.platform.slice(0, 2)) || "Google Inc." == navigator.vendor && qt && qt[1] < 8 ? function() {
-		var e = this.rect(-99, -99, this.width + 99, this.height + 99).attr({
-			stroke: "none"
-		});
-		setTimeout(function() {
-			e.remove()
-		})
-	} : pt;
-	for(var Ht = function() {
-		this.returnValue = !1
-	}, Ut = function() {
-			return this.originalEvent.preventDefault()
-		}, zt = function() {
-			this.cancelBubble = !0
-		}, Vt = function() {
-			return this.originalEvent.stopPropagation()
-		}, Wt = function(e) {
-			var t = T.doc.documentElement.scrollTop || T.doc.body.scrollTop,
-				n = T.doc.documentElement.scrollLeft || T.doc.body.scrollLeft;
-			return {
-				x: e.clientX + n,
-				y: e.clientY + t
-			}
-		}, Xt = function() {
-			return T.doc.addEventListener ? function(e, t, n, i) {
-				var r = function(e) {
-					var t = Wt(e);
-					return n.call(i, e, t.x, t.y)
-				};
-				if(e.addEventListener(t, r, !1), L && O[t]) {
-					var o = function(t) {
-						for(var r = Wt(t), o = t, a = 0, s = t.targetTouches && t.targetTouches.length; s > a; a++)
-							if(t.targetTouches[a].target == e) {
-								t = t.targetTouches[a], t.originalEvent = o, t.preventDefault = Ut, t.stopPropagation = Vt;
-								break
-							}
-						return n.call(i, t, r.x, r.y)
-					};
-					e.addEventListener(O[t], o, !1)
-				}
-				return function() {
-					return e.removeEventListener(t, r, !1), L && O[t] && e.removeEventListener(O[t], r, !1), !0
-				}
-			} : T.doc.attachEvent ? function(e, t, n, i) {
-				var r = function(e) {
-					e = e || T.win.event;
-					var t = T.doc.documentElement.scrollTop || T.doc.body.scrollTop,
-						r = T.doc.documentElement.scrollLeft || T.doc.body.scrollLeft,
-						o = e.clientX + r,
-						a = e.clientY + t;
-					return e.preventDefault = e.preventDefault || Ht, e.stopPropagation = e.stopPropagation || zt, n.call(i, e, o, a)
-				};
-				e.attachEvent("on" + t, r);
-				var o = function() {
-					return e.detachEvent("on" + t, r), !0
-				};
-				return o
-			} : void 0
-		}(), Qt = [], Yt = function(e) {
-			for(var n, i = e.clientX, r = e.clientY, o = T.doc.documentElement.scrollTop || T.doc.body.scrollTop, a = T.doc.documentElement.scrollLeft || T.doc.body.scrollLeft, s = Qt.length; s--;) {
-				if(n = Qt[s], L && e.touches) {
-					for(var l, c = e.touches.length; c--;)
-						if(l = e.touches[c], l.identifier == n.el._drag.id) {
-							i = l.clientX, r = l.clientY, (e.originalEvent ? e.originalEvent : e).preventDefault();
-							break
-						}
-				} else e.preventDefault();
-				var u, d = n.el.node,
-					p = d.nextSibling,
-					h = d.parentNode,
-					f = d.style.display;
-				T.win.opera && h.removeChild(d), d.style.display = "none", u = n.el.paper.getElementByPoint(i, r), d.style.display = f, T.win.opera && (p ? h.insertBefore(d, p) : h.appendChild(d)), u && t("raphael.drag.over." + n.el.id, n.el, u), i += a, r += o, t("raphael.drag.move." + n.el.id, n.move_scope || n.el, i - n.el._drag.x, r - n.el._drag.y, i, r, e)
-			}
-		}, Kt = function(e) {
-			n.unmousemove(Yt).unmouseup(Kt);
-			for(var i, r = Qt.length; r--;) i = Qt[r], i.el._drag = {}, t("raphael.drag.end." + i.el.id, i.end_scope || i.start_scope || i.move_scope || i.el, e);
-			Qt = []
-		}, Jt = n.el = {}, Zt = F.length; Zt--;)! function(e) {
-		n[e] = Jt[e] = function(t, i) {
-			return n.is(t, "function") && (this.events = this.events || [], this.events.push({
-				name: e,
-				f: t,
-				unbind: Xt(this.shape || this.node || T.doc, e, t, i || this)
-			})), this
-		}, n["un" + e] = Jt["un" + e] = function(t) {
-			for(var i = this.events || [], r = i.length; r--;) i[r].name != e || !n.is(t, "undefined") && i[r].f != t || (i[r].unbind(), i.splice(r, 1), !i.length && delete this.events);
-			return this
-		}
-	}(F[Zt]);
-	Jt.data = function(e, i) {
-		var r = ut[this.id] = ut[this.id] || {};
-		if(0 == arguments.length) return r;
-		if(1 == arguments.length) {
-			if(n.is(e, "object")) {
-				for(var o in e) e[k](o) && this.data(o, e[o]);
-				return this
-			}
-			return t("raphael.data.get." + this.id, this, r[e], e), r[e]
-		}
-		return r[e] = i, t("raphael.data.set." + this.id, this, i, e), this
-	}, Jt.removeData = function(e) {
-		return null == e ? ut[this.id] = {} : ut[this.id] && delete ut[this.id][e], this
-	}, Jt.getData = function() {
-		return i(ut[this.id] || {})
-	}, Jt.hover = function(e, t, n, i) {
-		return this.mouseover(e, n).mouseout(t, i || n)
-	}, Jt.unhover = function(e, t) {
-		return this.unmouseover(e).unmouseout(t)
-	};
-	var en = [];
-	Jt.drag = function(e, i, r, o, a, s) {
-		function l(l) {
-			(l.originalEvent || l).preventDefault();
-			var c = l.clientX,
-				u = l.clientY,
-				d = T.doc.documentElement.scrollTop || T.doc.body.scrollTop,
-				p = T.doc.documentElement.scrollLeft || T.doc.body.scrollLeft;
-			if(this._drag.id = l.identifier, L && l.touches)
-				for(var h, f = l.touches.length; f--;)
-					if(h = l.touches[f], this._drag.id = h.identifier, h.identifier == this._drag.id) {
-						c = h.clientX, u = h.clientY;
-						break
-					}
-			this._drag.x = c + p, this._drag.y = u + d, !Qt.length && n.mousemove(Yt).mouseup(Kt), Qt.push({
-				el: this,
-				move_scope: o,
-				start_scope: a,
-				end_scope: s
-			}), i && t.on("raphael.drag.start." + this.id, i), e && t.on("raphael.drag.move." + this.id, e), r && t.on("raphael.drag.end." + this.id, r), t("raphael.drag.start." + this.id, a || o || this, l.clientX + p, l.clientY + d, l)
-		}
-		return this._drag = {}, en.push({
-			el: this,
-			start: l
-		}), this.mousedown(l), this
-	}, Jt.onDragOver = function(e) {
-		e ? t.on("raphael.drag.over." + this.id, e) : t.unbind("raphael.drag.over." + this.id)
-	}, Jt.undrag = function() {
-		for(var e = en.length; e--;) en[e].el == this && (this.unmousedown(en[e].start), en.splice(e, 1), t.unbind("raphael.drag.*." + this.id));
-		!en.length && n.unmousemove(Yt).unmouseup(Kt), Qt = []
-	}, w.circle = function(e, t, i) {
-		var r = n._engine.circle(this, e || 0, t || 0, i || 0);
-		return this.__set__ && this.__set__.push(r), r
-	}, w.rect = function(e, t, i, r, o) {
-		var a = n._engine.rect(this, e || 0, t || 0, i || 0, r || 0, o || 0);
-		return this.__set__ && this.__set__.push(a), a
-	}, w.ellipse = function(e, t, i, r) {
-		var o = n._engine.ellipse(this, e || 0, t || 0, i || 0, r || 0);
-		return this.__set__ && this.__set__.push(o), o
-	}, w.path = function(e) {
-		e && !n.is(e, V) && !n.is(e[0], W) && (e += M);
-		var t = n._engine.path(n.format[N](n, arguments), this);
-		return this.__set__ && this.__set__.push(t), t
-	}, w.image = function(e, t, i, r, o) {
-		var a = n._engine.image(this, e || "about:blank", t || 0, i || 0, r || 0, o || 0);
-		return this.__set__ && this.__set__.push(a), a
-	}, w.text = function(e, t, i) {
-		var r = n._engine.text(this, e || 0, t || 0, R(i));
-		return this.__set__ && this.__set__.push(r), r
-	}, w.set = function(e) {
-		!n.is(e, "array") && (e = Array.prototype.splice.call(arguments, 0, arguments.length));
-		var t = new hn(e);
-		return this.__set__ && this.__set__.push(t), t.paper = this, t.type = "set", t
-	}, w.setStart = function(e) {
-		this.__set__ = e || this.set()
-	}, w.setFinish = function() {
-		var e = this.__set__;
-		return delete this.__set__, e
-	}, w.setSize = function(e, t) {
-		return n._engine.setSize.call(this, e, t)
-	}, w.setViewBox = function(e, t, i, r, o) {
-		return n._engine.setViewBox.call(this, e, t, i, r, o)
-	}, w.top = w.bottom = null, w.raphael = n;
-	var tn = function(e) {
-		var t = e.getBoundingClientRect(),
-			n = e.ownerDocument,
-			i = n.body,
-			r = n.documentElement,
-			o = r.clientTop || i.clientTop || 0,
-			a = r.clientLeft || i.clientLeft || 0,
-			s = t.top + (T.win.pageYOffset || r.scrollTop || i.scrollTop) - o,
-			l = t.left + (T.win.pageXOffset || r.scrollLeft || i.scrollLeft) - a;
-		return {
-			y: s,
-			x: l
-		}
-	};
-	w.getElementByPoint = function(e, t) {
-		var n = this,
-			i = n.canvas,
-			r = T.doc.elementFromPoint(e, t);
-		if(T.win.opera && "svg" == r.tagName) {
-			var o = tn(i),
-				a = i.createSVGRect();
-			a.x = e - o.x, a.y = t - o.y, a.width = a.height = 1;
-			var s = i.getIntersectionList(a, null);
-			s.length && (r = s[s.length - 1])
-		}
-		if(!r) return null;
-		for(; r.parentNode && r != i.parentNode && !r.raphael;) r = r.parentNode;
-		return r == n.canvas.parentNode && (r = i), r = r && r.raphael ? n.getById(r.raphaelid) : null
-	}, w.getElementsByBBox = function(e) {
-		var t = this.set();
-		return this.forEach(function(i) {
-			n.isBBoxIntersect(i.getBBox(), e) && t.push(i)
-		}), t
-	}, w.getById = function(e) {
-		for(var t = this.bottom; t;) {
-			if(t.id == e) return t;
-			t = t.next
-		}
-		return null
-	}, w.forEach = function(e, t) {
-		for(var n = this.bottom; n;) {
-			if(e.call(t, n) === !1) return this;
-			n = n.next
-		}
-		return this
-	}, w.getElementsByPoint = function(e, t) {
-		var n = this.set();
-		return this.forEach(function(i) {
-			i.isPointInside(e, t) && n.push(i)
-		}), n
-	}, Jt.isPointInside = function(e, t) {
-		var i = this.realPath = gt[this.type](this);
-		return this.attr("transform") && this.attr("transform").length && (i = n.transformPath(i, this.attr("transform"))), n.isPointInsidePath(i, e, t)
-	}, Jt.getBBox = function(e) {
-		if(this.removed) return {};
-		var t = this._;
-		return e ? ((t.dirty || !t.bboxwt) && (this.realPath = gt[this.type](this), t.bboxwt = Et(this.realPath), t.bboxwt.toString = m, t.dirty = 0), t.bboxwt) : ((t.dirty || t.dirtyT || !t.bbox) && ((t.dirty || !this.realPath) && (t.bboxwt = 0, this.realPath = gt[this.type](this)), t.bbox = Et(vt(this.realPath, this.matrix)), t.bbox.toString = m, t.dirty = t.dirtyT = 0), t.bbox)
-	}, Jt.clone = function() {
-		if(this.removed) return null;
-		var e = this.paper[this.type]().attr(this.attr());
-		return this.__set__ && this.__set__.push(e), e
-	}, Jt.glow = function(e) {
-		if("text" == this.type) return null;
-		e = e || {};
-		var t = {
-			width: (e.width || 10) + (+this.attr("stroke-width") || 1),
-			fill: e.fill || !1,
-			opacity: e.opacity || .5,
-			offsetx: e.offsetx || 0,
-			offsety: e.offsety || 0,
-			color: e.color || "#000"
-		}, n = t.width / 2,
-			i = this.paper,
-			r = i.set(),
-			o = this.realPath || gt[this.type](this);
-		o = this.matrix ? vt(o, this.matrix) : o;
-		for(var a = 1; n + 1 > a; a++) r.push(i.path(o).attr({
-			stroke: t.color,
-			fill: t.fill ? t.color : "none",
-			"stroke-linejoin": "round",
-			"stroke-linecap": "round",
-			"stroke-width": +(t.width / n * a).toFixed(3),
-			opacity: +(t.opacity / n).toFixed(3)
-		}));
-		return r.insertBefore(this).translate(t.offsetx, t.offsety)
-	};
-	var nn = function(e, t, i, r, o, a, s, l, d) {
-		return null == d ? c(e, t, i, r, o, a, s, l) : n.findDotsAtSegment(e, t, i, r, o, a, s, l, u(e, t, i, r, o, a, s, l, d))
-	}, rn = function(e, t) {
-			return function(i, r, o) {
-				i = Ft(i);
-				for(var a, s, l, c, u, d = "", p = {}, h = 0, f = 0, m = i.length; m > f; f++) {
-					if(l = i[f], "M" == l[0]) a = +l[1], s = +l[2];
-					else {
-						if(c = nn(a, s, l[1], l[2], l[3], l[4], l[5], l[6]), h + c > r) {
-							if(t && !p.start) {
-								if(u = nn(a, s, l[1], l[2], l[3], l[4], l[5], l[6], r - h), d += ["C" + u.start.x, u.start.y, u.m.x, u.m.y, u.x, u.y], o) return d;
-								p.start = d, d = ["M" + u.x, u.y + "C" + u.n.x, u.n.y, u.end.x, u.end.y, l[5], l[6]].join(), h += c, a = +l[5], s = +l[6];
-								continue
-							}
-							if(!e && !t) return u = nn(a, s, l[1], l[2], l[3], l[4], l[5], l[6], r - h), {
-								x: u.x,
-								y: u.y,
-								alpha: u.alpha
-							}
-						}
-						h += c, a = +l[5], s = +l[6]
-					}
-					d += l.shift() + l
-				}
-				return p.end = d, u = e ? h : t ? p : n.findDotsAtSegment(a, s, l[0], l[1], l[2], l[3], l[4], l[5], 1), u.alpha && (u = {
-					x: u.x,
-					y: u.y,
-					alpha: u.alpha
-				}), u
-			}
-		}, on = rn(1),
-		an = rn(),
-		sn = rn(0, 1);
-	n.getTotalLength = on, n.getPointAtLength = an, n.getSubpath = function(e, t, n) {
-		if(this.getTotalLength(e) - n < 1e-6) return sn(e, t).end;
-		var i = sn(e, n, 1);
-		return t ? sn(i, t).end : i
-	}, Jt.getTotalLength = function() {
-		var e = this.getPath();
-		if(e) return this.node.getTotalLength ? this.node.getTotalLength() : on(e)
-	}, Jt.getPointAtLength = function(e) {
-		var t = this.getPath();
-		if(t) return an(t, e)
-	}, Jt.getPath = function() {
-		var e, t = n._getPath[this.type];
-		if("text" != this.type && "set" != this.type) return t && (e = t(this)), e
-	}, Jt.getSubpath = function(e, t) {
-		var i = this.getPath();
-		if(i) return n.getSubpath(i, e, t)
-	};
-	var ln = n.easing_formulas = {
-		linear: function(e) {
-			return e
-		},
-		"<": function(e) {
-			return H(e, 1.7)
-		},
-		">": function(e) {
-			return H(e, .48)
-		},
-		"<>": function(e) {
-			var t = .48 - e / 1.04,
-				n = j.sqrt(.1734 + t * t),
-				i = n - t,
-				r = H(q(i), 1 / 3) * (0 > i ? -1 : 1),
-				o = -n - t,
-				a = H(q(o), 1 / 3) * (0 > o ? -1 : 1),
-				s = r + a + .5;
-			return 3 * (1 - s) * s * s + s * s * s
-		},
-		backIn: function(e) {
-			var t = 1.70158;
-			return e * e * ((t + 1) * e - t)
-		},
-		backOut: function(e) {
-			e -= 1;
-			var t = 1.70158;
-			return e * e * ((t + 1) * e + t) + 1
-		},
-		elastic: function(e) {
-			return e == !! e ? e : H(2, -10 * e) * j.sin(2 * (e - .075) * U / .3) + 1
-		},
-		bounce: function(e) {
-			var t, n = 7.5625,
-				i = 2.75;
-			return 1 / i > e ? t = n * e * e : 2 / i > e ? (e -= 1.5 / i, t = n * e * e + .75) : 2.5 / i > e ? (e -= 2.25 / i, t = n * e * e + .9375) : (e -= 2.625 / i, t = n * e * e + .984375), t
-		}
-	};
-	ln.easeIn = ln["ease-in"] = ln["<"], ln.easeOut = ln["ease-out"] = ln[">"], ln.easeInOut = ln["ease-in-out"] = ln["<>"], ln["back-in"] = ln.backIn, ln["back-out"] = ln.backOut;
-	var cn = [],
-		un = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function(e) {
-			setTimeout(e, 16)
-		}, dn = function() {
-			for(var e = +new Date, i = 0; i < cn.length; i++) {
-				var r = cn[i];
-				if(!r.el.removed && !r.paused) {
-					var o, a, s = e - r.start,
-						l = r.ms,
-						c = r.easing,
-						u = r.from,
-						d = r.diff,
-						p = r.to,
-						h = (r.t, r.el),
-						f = {}, m = {};
-					if(r.initstatus ? (s = (r.initstatus * r.anim.top - r.prev) / (r.percent - r.prev) * l, r.status = r.initstatus, delete r.initstatus, r.stop && cn.splice(i--, 1)) : r.status = (r.prev + (r.percent - r.prev) * (s / l)) / r.anim.top, !(0 > s))
-						if(l > s) {
-							var g = c(s / l);
-							for(var v in u)
-								if(u[k](v)) {
-									switch(it[v]) {
-										case z:
-											o = +u[v] + g * l * d[v];
-											break;
-										case "colour":
-											o = "rgb(" + [pn(J(u[v].r + g * l * d[v].r)), pn(J(u[v].g + g * l * d[v].g)), pn(J(u[v].b + g * l * d[v].b))].join(",") + ")";
-											break;
-										case "path":
-											o = [];
-											for(var y = 0, x = u[v].length; x > y; y++) {
-												o[y] = [u[v][y][0]];
-												for(var w = 1, S = u[v][y].length; S > w; w++) o[y][w] = +u[v][y][w] + g * l * d[v][y][w];
-												o[y] = o[y].join(A)
-											}
-											o = o.join(A);
-											break;
-										case "transform":
-											if(d[v].real)
-												for(o = [], y = 0, x = u[v].length; x > y; y++)
-													for(o[y] = [u[v][y][0]], w = 1, S = u[v][y].length; S > w; w++) o[y][w] = u[v][y][w] + g * l * d[v][y][w];
-											else {
-												var C = function(e) {
-													return +u[v][e] + g * l * d[v][e]
-												};
-												o = [["m", C(0), C(1), C(2), C(3), C(4), C(5)]]
-											}
-											break;
-										case "csv":
-											if("clip-rect" == v)
-												for(o = [], y = 4; y--;) o[y] = +u[v][y] + g * l * d[v][y];
-											break;
-										default:
-											var _ = [][D](u[v]);
-											for(o = [], y = h.paper.customAttributes[v].length; y--;) o[y] = +_[y] + g * l * d[v][y]
-									}
-									f[v] = o
-								}
-							h.attr(f),
-							function(e, n, i) {
-								setTimeout(function() {
-									t("raphael.anim.frame." + e, n, i)
-								})
-							}(h.id, h, r.anim)
-						} else {
-							if(function(e, i, r) {
-								setTimeout(function() {
-									t("raphael.anim.frame." + i.id, i, r), t("raphael.anim.finish." + i.id, i, r), n.is(e, "function") && e.call(i)
-								})
-							}(r.callback, h, r.anim), h.attr(p), cn.splice(i--, 1), r.repeat > 1 && !r.next) {
-								for(a in p) p[k](a) && (m[a] = r.totalOrigin[a]);
-								r.el.attr(m), b(r.anim, r.el, r.anim.percents[0], null, r.totalOrigin, r.repeat - 1)
-							}
-							r.next && !r.stop && b(r.anim, r.el, r.next, null, r.totalOrigin, r.repeat)
-						}
-				}
-			}
-			n.svg && h && h.paper && h.paper.safari(), cn.length && un(dn)
-		}, pn = function(e) {
-			return e > 255 ? 255 : 0 > e ? 0 : e
-		};
-	Jt.animateWith = function(e, t, i, r, o, a) {
-		var s = this;
-		if(s.removed) return a && a.call(s), s;
-		var l = i instanceof v ? i : n.animation(i, r, o, a);
-		b(l, s, l.percents[0], null, s.attr());
-		for(var c = 0, u = cn.length; u > c; c++)
-			if(cn[c].anim == t && cn[c].el == e) {
-				cn[u - 1].start = cn[c].start;
-				break
-			}
-		return s
-	}, Jt.onAnimation = function(e) {
-		return e ? t.on("raphael.anim.frame." + this.id, e) : t.unbind("raphael.anim.frame." + this.id), this
-	}, v.prototype.delay = function(e) {
-		var t = new v(this.anim, this.ms);
-		return t.times = this.times, t.del = +e || 0, t
-	}, v.prototype.repeat = function(e) {
-		var t = new v(this.anim, this.ms);
-		return t.del = this.del, t.times = j.floor($(e, 0)) || 1, t
-	}, n.animation = function(e, t, i, r) {
-		if(e instanceof v) return e;
-		(n.is(i, "function") || !i) && (r = r || i || null, i = null), e = Object(e), t = +t || 0;
-		var o, a, s = {};
-		for(a in e) e[k](a) && Z(a) != a && Z(a) + "%" != a && (o = !0, s[a] = e[a]);
-		return o ? (i && (s.easing = i), r && (s.callback = r), new v({
-			100: s
-		}, t)) : new v(e, t)
-	}, Jt.animate = function(e, t, i, r) {
-		var o = this;
-		if(o.removed) return r && r.call(o), o;
-		var a = e instanceof v ? e : n.animation(e, t, i, r);
-		return b(a, o, a.percents[0], null, o.attr()), o
-	}, Jt.setTime = function(e, t) {
-		return e && null != t && this.status(e, G(t, e.ms) / e.ms), this
-	}, Jt.status = function(e, t) {
-		var n, i, r = [],
-			o = 0;
-		if(null != t) return b(e, this, -1, G(t, 1)), this;
-		for(n = cn.length; n > o; o++)
-			if(i = cn[o], i.el.id == this.id && (!e || i.anim == e)) {
-				if(e) return i.status;
-				r.push({
-					anim: i.anim,
-					status: i.status
-				})
-			}
-		return e ? 0 : r
-	}, Jt.pause = function(e) {
-		for(var n = 0; n < cn.length; n++) cn[n].el.id != this.id || e && cn[n].anim != e || t("raphael.anim.pause." + this.id, this, cn[n].anim) !== !1 && (cn[n].paused = !0);
-		return this
-	}, Jt.resume = function(e) {
-		for(var n = 0; n < cn.length; n++)
-			if(cn[n].el.id == this.id && (!e || cn[n].anim == e)) {
-				var i = cn[n];
-				t("raphael.anim.resume." + this.id, this, i.anim) !== !1 && (delete i.paused, this.status(i.anim, i.status))
-			}
-		return this
-	}, Jt.stop = function(e) {
-		for(var n = 0; n < cn.length; n++) cn[n].el.id != this.id || e && cn[n].anim != e || t("raphael.anim.stop." + this.id, this, cn[n].anim) !== !1 && cn.splice(n--, 1);
-		return this
-	}, t.on("raphael.remove", y), t.on("raphael.clear", y), Jt.toString = function() {
-		return "Raphaël’s object"
-	};
-	var hn = function(e) {
-		if(this.items = [], this.length = 0, this.type = "set", e)
-			for(var t = 0, n = e.length; n > t; t++)!e[t] || e[t].constructor != Jt.constructor && e[t].constructor != hn || (this[this.items.length] = this.items[this.items.length] = e[t], this.length++)
-	}, fn = hn.prototype;
-	fn.push = function() {
-		for(var e, t, n = 0, i = arguments.length; i > n; n++) e = arguments[n], !e || e.constructor != Jt.constructor && e.constructor != hn || (t = this.items.length, this[t] = this.items[t] = e, this.length++);
-		return this
-	}, fn.pop = function() {
-		return this.length && delete this[this.length--], this.items.pop()
-	}, fn.forEach = function(e, t) {
-		for(var n = 0, i = this.items.length; i > n; n++)
-			if(e.call(t, this.items[n], n) === !1) return this;
-		return this
-	};
-	for(var mn in Jt) Jt[k](mn) && (fn[mn] = function(e) {
-		return function() {
-			var t = arguments;
-			return this.forEach(function(n) {
-				n[e][N](n, t)
-			})
-		}
-	}(mn));
-	return fn.attr = function(e, t) {
-		if(e && n.is(e, W) && n.is(e[0], "object"))
-			for(var i = 0, r = e.length; r > i; i++) this.items[i].attr(e[i]);
-		else
-			for(var o = 0, a = this.items.length; a > o; o++) this.items[o].attr(e, t);
-		return this
-	}, fn.clear = function() {
-		for(; this.length;) this.pop()
-	}, fn.splice = function(e, t) {
-		e = 0 > e ? $(this.length + e, 0) : e, t = $(0, G(this.length - e, t));
-		var n, i = [],
-			r = [],
-			o = [];
-		for(n = 2; n < arguments.length; n++) o.push(arguments[n]);
-		for(n = 0; t > n; n++) r.push(this[e + n]);
-		for(; n < this.length - e; n++) i.push(this[e + n]);
-		var a = o.length;
-		for(n = 0; n < a + i.length; n++) this.items[e + n] = this[e + n] = a > n ? o[n] : i[n - a];
-		for(n = this.items.length = this.length -= t - a; this[n];) delete this[n++];
-		return new hn(r)
-	}, fn.exclude = function(e) {
-		for(var t = 0, n = this.length; n > t; t++)
-			if(this[t] == e) return this.splice(t, 1), !0
-	}, fn.animate = function(e, t, i, r) {
-		(n.is(i, "function") || !i) && (r = i || null);
-		var o, a, s = this.items.length,
-			l = s,
-			c = this;
-		if(!s) return this;
-		r && (a = function() {
-			!--s && r.call(c)
-		}), i = n.is(i, V) ? i : a;
-		var u = n.animation(e, t, i, a);
-		for(o = this.items[--l].animate(u); l--;) this.items[l] && !this.items[l].removed && this.items[l].animateWith(o, u, u), this.items[l] && !this.items[l].removed || s--;
-		return this
-	}, fn.insertAfter = function(e) {
-		for(var t = this.items.length; t--;) this.items[t].insertAfter(e);
-		return this
-	}, fn.getBBox = function() {
-		for(var e = [], t = [], n = [], i = [], r = this.items.length; r--;)
-			if(!this.items[r].removed) {
-				var o = this.items[r].getBBox();
-				e.push(o.x), t.push(o.y), n.push(o.x + o.width), i.push(o.y + o.height)
-			}
-		return e = G[N](0, e), t = G[N](0, t), n = $[N](0, n), i = $[N](0, i), {
-			x: e,
-			y: t,
-			x2: n,
-			y2: i,
-			width: n - e,
-			height: i - t
-		}
-	}, fn.clone = function(e) {
-		e = this.paper.set();
-		for(var t = 0, n = this.items.length; n > t; t++) e.push(this.items[t].clone());
-		return e
-	}, fn.toString = function() {
-		return "Raphaël‘s set"
-	}, fn.glow = function(e) {
-		var t = this.paper.set();
-		return this.forEach(function(n) {
-			var i = n.glow(e);
-			null != i && i.forEach(function(e) {
-				t.push(e)
-			})
-		}), t
-	}, fn.isPointInside = function(e, t) {
-		var n = !1;
-		return this.forEach(function(i) {
-			return i.isPointInside(e, t) ? (console.log("runned"), n = !0, !1) : void 0
-		}), n
-	}, n.registerFont = function(e) {
-		if(!e.face) return e;
-		this.fonts = this.fonts || {};
-		var t = {
-			w: e.w,
-			face: {},
-			glyphs: {}
-		}, n = e.face["font-family"];
-		for(var i in e.face) e.face[k](i) && (t.face[i] = e.face[i]);
-		if(this.fonts[n] ? this.fonts[n].push(t) : this.fonts[n] = [t], !e.svg) {
-			t.face["units-per-em"] = et(e.face["units-per-em"], 10);
-			for(var r in e.glyphs)
-				if(e.glyphs[k](r)) {
-					var o = e.glyphs[r];
-					if(t.glyphs[r] = {
-						w: o.w,
-						k: {},
-						d: o.d && "M" + o.d.replace(/[mlcxtrv]/g, function(e) {
-							return {
-								l: "L",
-								c: "C",
-								x: "z",
-								t: "m",
-								r: "l",
-								v: "c"
-							}[e] || "M"
-						}) + "z"
-					}, o.k)
-						for(var a in o.k) o[k](a) && (t.glyphs[r].k[a] = o.k[a])
-				}
-		}
-		return e
-	}, w.getFont = function(e, t, i, r) {
-		if(r = r || "normal", i = i || "normal", t = +t || {
-			normal: 400,
-			bold: 700,
-			lighter: 300,
-			bolder: 800
-		}[t] || 400, n.fonts) {
-			var o = n.fonts[e];
-			if(!o) {
-				var a = new RegExp("(^|\\s)" + e.replace(/[^\w\d\s+!~.:_-]/g, M) + "(\\s|$)", "i");
-				for(var s in n.fonts)
-					if(n.fonts[k](s) && a.test(s)) {
-						o = n.fonts[s];
-						break
-					}
-			}
-			var l;
-			if(o)
-				for(var c = 0, u = o.length; u > c && (l = o[c], l.face["font-weight"] != t || l.face["font-style"] != i && l.face["font-style"] || l.face["font-stretch"] != r); c++);
-			return l
-		}
-	}, w.print = function(e, t, i, r, o, a, s, l) {
-		a = a || "middle", s = $(G(s || 0, 1), -1), l = $(G(l || 1, 3), 1);
-		var c, u = R(i)[P](M),
-			d = 0,
-			p = 0,
-			h = M;
-		if(n.is(r, "string") && (r = this.getFont(r)), r) {
-			c = (o || 16) / r.face["units-per-em"];
-			for(var f = r.face.bbox[P](S), m = +f[0], g = f[3] - f[1], v = 0, b = +f[1] + ("baseline" == a ? g + +r.face.descent : g / 2), y = 0, x = u.length; x > y; y++) {
-				if("\n" == u[y]) d = 0, C = 0, p = 0, v += g * l;
-				else {
-					var w = p && r.glyphs[u[y - 1]] || {}, C = r.glyphs[u[y]];
-					d += p ? (w.w || r.w) + (w.k && w.k[u[y]] || 0) + r.w * s : 0, p = 1
-				}
-				C && C.d && (h += n.transformPath(C.d, ["t", d * c, v * c, "s", c, c, m, b, "t", (e - m) / c, (t - b) / c]))
-			}
-		}
-		return this.path(h).attr({
-			fill: "#000",
-			stroke: "none"
-		})
-	}, w.add = function(e) {
-		if(n.is(e, "array"))
-			for(var t, i = this.set(), r = 0, o = e.length; o > r; r++) t = e[r] || {}, C[k](t.type) && i.push(this[t.type]().attr(t));
-		return i
-	}, n.format = function(e, t) {
-		var i = n.is(t, W) ? [0][D](t) : arguments;
-		return e && n.is(e, V) && i.length - 1 && (e = e.replace(_, function(e, t) {
-			return null == i[++t] ? M : i[t]
-		})), e || M
-	}, n.fullfill = function() {
-		var e = /\{([^\}]+)\}/g,
-			t = /(?:(?:^|\.)(.+?)(?=\[|\.|$|\()|\[('|")(.+?)\2\])(\(\))?/g,
-			n = function(e, n, i) {
-				var r = i;
-				return n.replace(t, function(e, t, n, i, o) {
-					t = t || i, r && (t in r && (r = r[t]), "function" == typeof r && o && (r = r()))
-				}), r = (null == r || r == i ? e : r) + ""
-			};
-		return function(t, i) {
-			return String(t).replace(e, function(e, t) {
-				return n(e, t, i)
-			})
-		}
-	}(), n.ninja = function() {
-		return E.was ? T.win.Raphael = E.is : delete Raphael, n
-	}, n.st = fn,
-	function(e, t, i) {
-		function r() {
-			/in/.test(e.readyState) ? setTimeout(r, 9) : n.eve("raphael.DOMload")
-		}
-		null == e.readyState && e.addEventListener && (e.addEventListener(t, i = function() {
-			e.removeEventListener(t, i, !1), e.readyState = "complete"
-		}, !1), e.readyState = "loading"), r()
-	}(document, "DOMContentLoaded"), t.on("raphael.DOMload", function() {
-		x = !0
-	}),
-	function() {
-		if(n.svg) {
-			var e = "hasOwnProperty",
-				t = String,
-				i = parseFloat,
-				r = parseInt,
-				o = Math,
-				a = o.max,
-				s = o.abs,
-				l = o.pow,
-				c = /[, ]+/,
-				u = n.eve,
-				d = "",
-				p = " ",
-				h = "http://www.w3.org/1999/xlink",
-				f = {
-					block: "M5,0 0,2.5 5,5z",
-					classic: "M5,0 0,2.5 5,5 3.5,3 3.5,2z",
-					diamond: "M2.5,0 5,2.5 2.5,5 0,2.5z",
-					open: "M6,1 1,3.5 6,6",
-					oval: "M2.5,0A2.5,2.5,0,0,1,2.5,5 2.5,2.5,0,0,1,2.5,0z"
-				}, m = {};
-			n.toString = function() {
-				return "Your browser supports SVG.\nYou are running Raphaël " + this.version
-			};
-			var g = function(i, r) {
-				if(r) {
-					"string" == typeof i && (i = g(i));
-					for(var o in r) r[e](o) && ("xlink:" == o.substring(0, 6) ? i.setAttributeNS(h, o.substring(6), t(r[o])) : i.setAttribute(o, t(r[o])))
-				} else i = n._g.doc.createElementNS("http://www.w3.org/2000/svg", i), i.style && (i.style.webkitTapHighlightColor = "rgba(0,0,0,0)");
-				return i
-			}, v = function(e, r) {
-					var c = "linear",
-						u = e.id + r,
-						p = .5,
-						h = .5,
-						f = e.node,
-						m = e.paper,
-						v = f.style,
-						b = n._g.doc.getElementById(u);
-					if(!b) {
-						if(r = t(r).replace(n._radial_gradient, function(e, t, n) {
-							if(c = "radial", t && n) {
-								p = i(t), h = i(n);
-								var r = 2 * (h > .5) - 1;
-								l(p - .5, 2) + l(h - .5, 2) > .25 && (h = o.sqrt(.25 - l(p - .5, 2)) * r + .5) && .5 != h && (h = h.toFixed(5) - 1e-5 * r)
-							}
-							return d
-						}), r = r.split(/\s*\-\s*/), "linear" == c) {
-							var y = r.shift();
-							if(y = -i(y), isNaN(y)) return null;
-							var x = [0, 0, o.cos(n.rad(y)), o.sin(n.rad(y))],
-								w = 1 / (a(s(x[2]), s(x[3])) || 1);
-							x[2] *= w, x[3] *= w, x[2] < 0 && (x[0] = -x[2], x[2] = 0), x[3] < 0 && (x[1] = -x[3], x[3] = 0)
-						}
-						var S = n._parseDots(r);
-						if(!S) return null;
-						if(u = u.replace(/[\(\)\s,\xb0#]/g, "_"), e.gradient && u != e.gradient.id && (m.defs.removeChild(e.gradient), delete e.gradient), !e.gradient) {
-							b = g(c + "Gradient", {
-								id: u
-							}), e.gradient = b, g(b, "radial" == c ? {
-								fx: p,
-								fy: h
-							} : {
-								x1: x[0],
-								y1: x[1],
-								x2: x[2],
-								y2: x[3],
-								gradientTransform: e.matrix.invert()
-							}), m.defs.appendChild(b);
-							for(var C = 0, _ = S.length; _ > C; C++) b.appendChild(g("stop", {
-								offset: S[C].offset ? S[C].offset : C ? "100%" : "0%",
-								"stop-color": S[C].color || "#fff"
-							}))
-						}
-					}
-					return g(f, {
-						fill: "url(#" + u + ")",
-						opacity: 1,
-						"fill-opacity": 1
-					}), v.fill = d, v.opacity = 1, v.fillOpacity = 1, 1
-				}, b = function(e) {
-					var t = e.getBBox(1);
-					g(e.pattern, {
-						patternTransform: e.matrix.invert() + " translate(" + t.x + "," + t.y + ")"
-					})
-				}, y = function(i, r, o) {
-					if("path" == i.type) {
-						for(var a, s, l, c, u, p = t(r).toLowerCase().split("-"), h = i.paper, v = o ? "end" : "start", b = i.node, y = i.attrs, x = y["stroke-width"], w = p.length, S = "classic", C = 3, _ = 3, k = 5; w--;) switch(p[w]) {
-							case "block":
-							case "classic":
-							case "oval":
-							case "diamond":
-							case "open":
-							case "none":
-								S = p[w];
-								break;
-							case "wide":
-								_ = 5;
-								break;
-							case "narrow":
-								_ = 2;
-								break;
-							case "long":
-								C = 5;
-								break;
-							case "short":
-								C = 2
-						}
-						if("open" == S ? (C += 2, _ += 2, k += 2, l = 1, c = o ? 4 : 1, u = {
-							fill: "none",
-							stroke: y.stroke
-						}) : (c = l = C / 2, u = {
-							fill: y.stroke,
-							stroke: "none"
-						}), i._.arrows ? o ? (i._.arrows.endPath && m[i._.arrows.endPath]--, i._.arrows.endMarker && m[i._.arrows.endMarker]--) : (i._.arrows.startPath && m[i._.arrows.startPath]--, i._.arrows.startMarker && m[i._.arrows.startMarker]--) : i._.arrows = {}, "none" != S) {
-							var T = "raphael-marker-" + S,
-								E = "raphael-marker-" + v + S + C + _;
-							n._g.doc.getElementById(T) ? m[T]++ : (h.defs.appendChild(g(g("path"), {
-								"stroke-linecap": "round",
-								d: f[S],
-								id: T
-							})), m[T] = 1);
-							var I, N = n._g.doc.getElementById(E);
-							N ? (m[E]++, I = N.getElementsByTagName("use")[0]) : (N = g(g("marker"), {
-								id: E,
-								markerHeight: _,
-								markerWidth: C,
-								orient: "auto",
-								refX: c,
-								refY: _ / 2
-							}), I = g(g("use"), {
-								"xlink:href": "#" + T,
-								transform: (o ? "rotate(180 " + C / 2 + " " + _ / 2 + ") " : d) + "scale(" + C / k + "," + _ / k + ")",
-								"stroke-width": (1 / ((C / k + _ / k) / 2)).toFixed(4)
-							}), N.appendChild(I), h.defs.appendChild(N), m[E] = 1), g(I, u);
-							var D = l * ("diamond" != S && "oval" != S);
-							o ? (a = i._.arrows.startdx * x || 0, s = n.getTotalLength(y.path) - D * x) : (a = D * x, s = n.getTotalLength(y.path) - (i._.arrows.enddx * x || 0)), u = {}, u["marker-" + v] = "url(#" + E + ")", (s || a) && (u.d = n.getSubpath(y.path, a, s)), g(b, u), i._.arrows[v + "Path"] = T, i._.arrows[v + "Marker"] = E, i._.arrows[v + "dx"] = D, i._.arrows[v + "Type"] = S, i._.arrows[v + "String"] = r
-						} else o ? (a = i._.arrows.startdx * x || 0, s = n.getTotalLength(y.path) - a) : (a = 0, s = n.getTotalLength(y.path) - (i._.arrows.enddx * x || 0)), i._.arrows[v + "Path"] && g(b, {
-							d: n.getSubpath(y.path, a, s)
-						}), delete i._.arrows[v + "Path"], delete i._.arrows[v + "Marker"], delete i._.arrows[v + "dx"], delete i._.arrows[v + "Type"], delete i._.arrows[v + "String"];
-						for(u in m)
-							if(m[e](u) && !m[u]) {
-								var L = n._g.doc.getElementById(u);
-								L && L.parentNode.removeChild(L)
-							}
-					}
-				}, x = {
-					"": [0],
-					none: [0],
-					"-": [3, 1],
-					".": [1, 1],
-					"-.": [3, 1, 1, 1],
-					"-..": [3, 1, 1, 1, 1, 1],
-					". ": [1, 3],
-					"- ": [4, 3],
-					"--": [8, 3],
-					"- .": [4, 3, 1, 3],
-					"--.": [8, 3, 1, 3],
-					"--..": [8, 3, 1, 3, 1, 3]
-				}, w = function(e, n, i) {
-					if(n = x[t(n).toLowerCase()]) {
-						for(var r = e.attrs["stroke-width"] || "1", o = {
-								round: r,
-								square: r,
-								butt: 0
-							}[e.attrs["stroke-linecap"] || i["stroke-linecap"]] || 0, a = [], s = n.length; s--;) a[s] = n[s] * r + (s % 2 ? 1 : -1) * o;
-						g(e.node, {
-							"stroke-dasharray": a.join(",")
-						})
-					}
-				}, S = function(i, o) {
-					var l = i.node,
-						u = i.attrs,
-						p = l.style.visibility;
-					l.style.visibility = "hidden";
-					for(var f in o)
-						if(o[e](f)) {
-							if(!n._availableAttrs[e](f)) continue;
-							var m = o[f];
-							switch(u[f] = m, f) {
-								case "blur":
-									i.blur(m);
-									break;
-								case "href":
-								case "title":
-									var x = g("title"),
-										S = n._g.doc.createTextNode(m);
-									x.appendChild(S), l.appendChild(x);
-									break;
-								case "target":
-									var C = l.parentNode;
-									if("a" != C.tagName.toLowerCase()) {
-										var x = g("a");
-										C.insertBefore(x, l), x.appendChild(l), C = x
-									}
-									"target" == f ? C.setAttributeNS(h, "show", "blank" == m ? "new" : m) : C.setAttributeNS(h, f, m);
-									break;
-								case "cursor":
-									l.style.cursor = m;
-									break;
-								case "transform":
-									i.transform(m);
-									break;
-								case "arrow-start":
-									y(i, m);
-									break;
-								case "arrow-end":
-									y(i, m, 1);
-									break;
-								case "clip-rect":
-									var k = t(m).split(c);
-									if(4 == k.length) {
-										i.clip && i.clip.parentNode.parentNode.removeChild(i.clip.parentNode);
-										var T = g("clipPath"),
-											E = g("rect");
-										T.id = n.createUUID(), g(E, {
-											x: k[0],
-											y: k[1],
-											width: k[2],
-											height: k[3]
-										}), T.appendChild(E), i.paper.defs.appendChild(T), g(l, {
-											"clip-path": "url(#" + T.id + ")"
-										}), i.clip = E
-									}
-									if(!m) {
-										var I = l.getAttribute("clip-path");
-										if(I) {
-											var N = n._g.doc.getElementById(I.replace(/(^url\(#|\)$)/g, d));
-											N && N.parentNode.removeChild(N), g(l, {
-												"clip-path": d
-											}), delete i.clip
-										}
-									}
-									break;
-								case "path":
-									"path" == i.type && (g(l, {
-										d: m ? u.path = n._pathToAbsolute(m) : "M0,0"
-									}), i._.dirty = 1, i._.arrows && ("startString" in i._.arrows && y(i, i._.arrows.startString), "endString" in i._.arrows && y(i, i._.arrows.endString, 1)));
-									break;
-								case "width":
-									if(l.setAttribute(f, m), i._.dirty = 1, !u.fx) break;
-									f = "x", m = u.x;
-								case "x":
-									u.fx && (m = -u.x - (u.width || 0));
-								case "rx":
-									if("rx" == f && "rect" == i.type) break;
-								case "cx":
-									l.setAttribute(f, m), i.pattern && b(i), i._.dirty = 1;
-									break;
-								case "height":
-									if(l.setAttribute(f, m), i._.dirty = 1, !u.fy) break;
-									f = "y", m = u.y;
-								case "y":
-									u.fy && (m = -u.y - (u.height || 0));
-								case "ry":
-									if("ry" == f && "rect" == i.type) break;
-								case "cy":
-									l.setAttribute(f, m), i.pattern && b(i), i._.dirty = 1;
-									break;
-								case "r":
-									"rect" == i.type ? g(l, {
-										rx: m,
-										ry: m
-									}) : l.setAttribute(f, m), i._.dirty = 1;
-									break;
-								case "src":
-									"image" == i.type && l.setAttributeNS(h, "href", m);
-									break;
-								case "stroke-width":
-									(1 != i._.sx || 1 != i._.sy) && (m /= a(s(i._.sx), s(i._.sy)) || 1), i.paper._vbSize && (m *= i.paper._vbSize), l.setAttribute(f, m), u["stroke-dasharray"] && w(i, u["stroke-dasharray"], o), i._.arrows && ("startString" in i._.arrows && y(i, i._.arrows.startString), "endString" in i._.arrows && y(i, i._.arrows.endString, 1));
-									break;
-								case "stroke-dasharray":
-									w(i, m, o);
-									break;
-								case "fill":
-									var D = t(m).match(n._ISURL);
-									if(D) {
-										T = g("pattern");
-										var L = g("image");
-										T.id = n.createUUID(), g(T, {
-											x: 0,
-											y: 0,
-											patternUnits: "userSpaceOnUse",
-											height: 1,
-											width: 1
-										}), g(L, {
-											x: 0,
-											y: 0,
-											"xlink:href": D[1]
-										}), T.appendChild(L),
-										function(e) {
-											n._preload(D[1], function() {
-												var t = this.offsetWidth,
-													n = this.offsetHeight;
-												g(e, {
-													width: t,
-													height: n
-												}), g(L, {
-													width: t,
-													height: n
-												}), i.paper.safari()
-											})
-										}(T), i.paper.defs.appendChild(T), g(l, {
-											fill: "url(#" + T.id + ")"
-										}), i.pattern = T, i.pattern && b(i);
-										break
-									}
-									var M = n.getRGB(m);
-									if(M.error) {
-										if(("circle" == i.type || "ellipse" == i.type || "r" != t(m).charAt()) && v(i, m)) {
-											if("opacity" in u || "fill-opacity" in u) {
-												var A = n._g.doc.getElementById(l.getAttribute("fill").replace(/^url\(#|\)$/g, d));
-												if(A) {
-													var R = A.getElementsByTagName("stop");
-													g(R[R.length - 1], {
-														"stop-opacity": ("opacity" in u ? u.opacity : 1) * ("fill-opacity" in u ? u["fill-opacity"] : 1)
-													})
-												}
-											}
-											u.gradient = m, u.fill = "none";
-											break
-										}
-									} else delete o.gradient, delete u.gradient, !n.is(u.opacity, "undefined") && n.is(o.opacity, "undefined") && g(l, {
-										opacity: u.opacity
-									}), !n.is(u["fill-opacity"], "undefined") && n.is(o["fill-opacity"], "undefined") && g(l, {
-										"fill-opacity": u["fill-opacity"]
-									});
-									M[e]("opacity") && g(l, {
-										"fill-opacity": M.opacity > 1 ? M.opacity / 100 : M.opacity
-									});
-								case "stroke":
-									M = n.getRGB(m), l.setAttribute(f, M.hex), "stroke" == f && M[e]("opacity") && g(l, {
-										"stroke-opacity": M.opacity > 1 ? M.opacity / 100 : M.opacity
-									}), "stroke" == f && i._.arrows && ("startString" in i._.arrows && y(i, i._.arrows.startString), "endString" in i._.arrows && y(i, i._.arrows.endString, 1));
-									break;
-								case "gradient":
-									("circle" == i.type || "ellipse" == i.type || "r" != t(m).charAt()) && v(i, m);
-									break;
-								case "opacity":
-									u.gradient && !u[e]("stroke-opacity") && g(l, {
-										"stroke-opacity": m > 1 ? m / 100 : m
-									});
-								case "fill-opacity":
-									if(u.gradient) {
-										A = n._g.doc.getElementById(l.getAttribute("fill").replace(/^url\(#|\)$/g, d)), A && (R = A.getElementsByTagName("stop"), g(R[R.length - 1], {
-											"stop-opacity": m
-										}));
-										break
-									}
-								default:
-									"font-size" == f && (m = r(m, 10) + "px");
-									var P = f.replace(/(\-.)/g, function(e) {
-										return e.substring(1).toUpperCase()
-									});
-									l.style[P] = m, i._.dirty = 1, l.setAttribute(f, m)
-							}
-						}
-					_(i, o), l.style.visibility = p
-				}, C = 1.2,
-				_ = function(i, o) {
-					if("text" == i.type && (o[e]("text") || o[e]("font") || o[e]("font-size") || o[e]("x") || o[e]("y"))) {
-						var a = i.attrs,
-							s = i.node,
-							l = s.firstChild ? r(n._g.doc.defaultView.getComputedStyle(s.firstChild, d).getPropertyValue("font-size"), 10) : 10;
-						if(o[e]("text")) {
-							for(a.text = o.text; s.firstChild;) s.removeChild(s.firstChild);
-							for(var c, u = t(o.text).split("\n"), p = [], h = 0, f = u.length; f > h; h++) c = g("tspan"), h && g(c, {
-								dy: l * C,
-								x: a.x
-							}), c.appendChild(n._g.doc.createTextNode(u[h])), s.appendChild(c), p[h] = c
-						} else
-							for(p = s.getElementsByTagName("tspan"), h = 0, f = p.length; f > h; h++) h ? g(p[h], {
-								dy: l * C,
-								x: a.x
-							}) : g(p[0], {
-								dy: 0
-							});
-						g(s, {
-							x: a.x,
-							y: a.y
-						}), i._.dirty = 1;
-						var m = i._getBBox(),
-							v = a.y - (m.y + m.height / 2);
-						v && n.is(v, "finite") && g(p[0], {
-							dy: v
-						})
-					}
-				}, k = function(e, t) {
-					this[0] = this.node = e, e.raphael = !0, this.id = n._oid++, e.raphaelid = this.id, this.matrix = n.matrix(), this.realPath = null, this.paper = t, this.attrs = this.attrs || {}, this._ = {
-						transform: [],
-						sx: 1,
-						sy: 1,
-						deg: 0,
-						dx: 0,
-						dy: 0,
-						dirty: 1
-					}, !t.bottom && (t.bottom = this), this.prev = t.top, t.top && (t.top.next = this), t.top = this, this.next = null
-				}, T = n.el;
-			k.prototype = T, T.constructor = k, n._engine.path = function(e, t) {
-				var n = g("path");
-				t.canvas && t.canvas.appendChild(n);
-				var i = new k(n, t);
-				return i.type = "path", S(i, {
-					fill: "none",
-					stroke: "#000",
-					path: e
-				}), i
-			}, T.rotate = function(e, n, r) {
-				if(this.removed) return this;
-				if(e = t(e).split(c), e.length - 1 && (n = i(e[1]), r = i(e[2])), e = i(e[0]), null == r && (n = r), null == n || null == r) {
-					var o = this.getBBox(1);
-					n = o.x + o.width / 2, r = o.y + o.height / 2
-				}
-				return this.transform(this._.transform.concat([["r", e, n, r]])), this
-			}, T.scale = function(e, n, r, o) {
-				if(this.removed) return this;
-				if(e = t(e).split(c), e.length - 1 && (n = i(e[1]), r = i(e[2]), o = i(e[3])), e = i(e[0]), null == n && (n = e), null == o && (r = o), null == r || null == o) var a = this.getBBox(1);
-				return r = null == r ? a.x + a.width / 2 : r, o = null == o ? a.y + a.height / 2 : o, this.transform(this._.transform.concat([["s", e, n, r, o]])), this
-			}, T.translate = function(e, n) {
-				return this.removed ? this : (e = t(e).split(c), e.length - 1 && (n = i(e[1])), e = i(e[0]) || 0, n = +n || 0, this.transform(this._.transform.concat([["t", e, n]])), this)
-			}, T.transform = function(t) {
-				var i = this._;
-				if(null == t) return i.transform;
-				if(n._extractTransform(this, t), this.clip && g(this.clip, {
-					transform: this.matrix.invert()
-				}), this.pattern && b(this), this.node && g(this.node, {
-					transform: this.matrix
-				}), 1 != i.sx || 1 != i.sy) {
-					var r = this.attrs[e]("stroke-width") ? this.attrs["stroke-width"] : 1;
-					this.attr({
-						"stroke-width": r
-					})
-				}
-				return this
-			}, T.hide = function() {
-				return !this.removed && this.paper.safari(this.node.style.display = "none"), this
-			}, T.show = function() {
-				return !this.removed && this.paper.safari(this.node.style.display = ""), this
-			}, T.remove = function() {
-				if(!this.removed && this.node.parentNode) {
-					var e = this.paper;
-					e.__set__ && e.__set__.exclude(this), u.unbind("raphael.*.*." + this.id), this.gradient && e.defs.removeChild(this.gradient), n._tear(this, e), "a" == this.node.parentNode.tagName.toLowerCase() ? this.node.parentNode.parentNode.removeChild(this.node.parentNode) : this.node.parentNode.removeChild(this.node);
-					for(var t in this) this[t] = "function" == typeof this[t] ? n._removedFactory(t) : null;
-					this.removed = !0
-				}
-			}, T._getBBox = function() {
-				if("none" == this.node.style.display) {
-					this.show();
-					var e = !0
-				}
-				var t = {};
-				try {
-					t = this.node.getBBox()
-				} catch(n) {} finally {
-					t = t || {}
-				}
-				return e && this.hide(), t
-			}, T.attr = function(t, i) {
-				if(this.removed) return this;
-				if(null == t) {
-					var r = {};
-					for(var o in this.attrs) this.attrs[e](o) && (r[o] = this.attrs[o]);
-					return r.gradient && "none" == r.fill && (r.fill = r.gradient) && delete r.gradient, r.transform = this._.transform, r
-				}
-				if(null == i && n.is(t, "string")) {
-					if("fill" == t && "none" == this.attrs.fill && this.attrs.gradient) return this.attrs.gradient;
-					if("transform" == t) return this._.transform;
-					for(var a = t.split(c), s = {}, l = 0, d = a.length; d > l; l++) t = a[l], s[t] = t in this.attrs ? this.attrs[t] : n.is(this.paper.customAttributes[t], "function") ? this.paper.customAttributes[t].def : n._availableAttrs[t];
-					return d - 1 ? s : s[a[0]]
-				}
-				if(null == i && n.is(t, "array")) {
-					for(s = {}, l = 0, d = t.length; d > l; l++) s[t[l]] = this.attr(t[l]);
-					return s
-				}
-				if(null != i) {
-					var p = {};
-					p[t] = i
-				} else null != t && n.is(t, "object") && (p = t);
-				for(var h in p) u("raphael.attr." + h + "." + this.id, this, p[h]);
-				for(h in this.paper.customAttributes)
-					if(this.paper.customAttributes[e](h) && p[e](h) && n.is(this.paper.customAttributes[h], "function")) {
-						var f = this.paper.customAttributes[h].apply(this, [].concat(p[h]));
-						this.attrs[h] = p[h];
-						for(var m in f) f[e](m) && (p[m] = f[m])
-					}
-				return S(this, p), this
-			}, T.toFront = function() {
-				if(this.removed) return this;
-				"a" == this.node.parentNode.tagName.toLowerCase() ? this.node.parentNode.parentNode.appendChild(this.node.parentNode) : this.node.parentNode.appendChild(this.node);
-				var e = this.paper;
-				return e.top != this && n._tofront(this, e), this
-			}, T.toBack = function() {
-				if(this.removed) return this;
-				var e = this.node.parentNode;
-				"a" == e.tagName.toLowerCase() ? e.parentNode.insertBefore(this.node.parentNode, this.node.parentNode.parentNode.firstChild) : e.firstChild != this.node && e.insertBefore(this.node, this.node.parentNode.firstChild), n._toback(this, this.paper);
-				this.paper;
-				return this
-			}, T.insertAfter = function(e) {
-				if(this.removed) return this;
-				var t = e.node || e[e.length - 1].node;
-				return t.nextSibling ? t.parentNode.insertBefore(this.node, t.nextSibling) : t.parentNode.appendChild(this.node), n._insertafter(this, e, this.paper), this
-			}, T.insertBefore = function(e) {
-				if(this.removed) return this;
-				var t = e.node || e[0].node;
-				return t.parentNode.insertBefore(this.node, t), n._insertbefore(this, e, this.paper), this
-			}, T.blur = function(e) {
-				var t = this;
-				if(0 !== +e) {
-					var i = g("filter"),
-						r = g("feGaussianBlur");
-					t.attrs.blur = e, i.id = n.createUUID(), g(r, {
-						stdDeviation: +e || 1.5
-					}), i.appendChild(r), t.paper.defs.appendChild(i), t._blur = i, g(t.node, {
-						filter: "url(#" + i.id + ")"
-					})
-				} else t._blur && (t._blur.parentNode.removeChild(t._blur), delete t._blur, delete t.attrs.blur), t.node.removeAttribute("filter");
-				return t
-			}, n._engine.circle = function(e, t, n, i) {
-				var r = g("circle");
-				e.canvas && e.canvas.appendChild(r);
-				var o = new k(r, e);
-				return o.attrs = {
-					cx: t,
-					cy: n,
-					r: i,
-					fill: "none",
-					stroke: "#000"
-				}, o.type = "circle", g(r, o.attrs), o
-			}, n._engine.rect = function(e, t, n, i, r, o) {
-				var a = g("rect");
-				e.canvas && e.canvas.appendChild(a);
-				var s = new k(a, e);
-				return s.attrs = {
-					x: t,
-					y: n,
-					width: i,
-					height: r,
-					r: o || 0,
-					rx: o || 0,
-					ry: o || 0,
-					fill: "none",
-					stroke: "#000"
-				}, s.type = "rect", g(a, s.attrs), s
-			}, n._engine.ellipse = function(e, t, n, i, r) {
-				var o = g("ellipse");
-				e.canvas && e.canvas.appendChild(o);
-				var a = new k(o, e);
-				return a.attrs = {
-					cx: t,
-					cy: n,
-					rx: i,
-					ry: r,
-					fill: "none",
-					stroke: "#000"
-				}, a.type = "ellipse", g(o, a.attrs), a
-			}, n._engine.image = function(e, t, n, i, r, o) {
-				var a = g("image");
-				g(a, {
-					x: n,
-					y: i,
-					width: r,
-					height: o,
-					preserveAspectRatio: "none"
-				}), a.setAttributeNS(h, "href", t), e.canvas && e.canvas.appendChild(a);
-				var s = new k(a, e);
-				return s.attrs = {
-					x: n,
-					y: i,
-					width: r,
-					height: o,
-					src: t
-				}, s.type = "image", s
-			}, n._engine.text = function(e, t, i, r) {
-				var o = g("text");
-				e.canvas && e.canvas.appendChild(o);
-				var a = new k(o, e);
-				return a.attrs = {
-					x: t,
-					y: i,
-					"text-anchor": "middle",
-					text: r,
-					font: n._availableAttrs.font,
-					stroke: "none",
-					fill: "#000"
-				}, a.type = "text", S(a, a.attrs), a
-			}, n._engine.setSize = function(e, t) {
-				return this.width = e || this.width, this.height = t || this.height, this.canvas.setAttribute("width", this.width), this.canvas.setAttribute("height", this.height), this._viewBox && this.setViewBox.apply(this, this._viewBox), this
-			}, n._engine.create = function() {
-				var e = n._getContainer.apply(0, arguments),
-					t = e && e.container,
-					i = e.x,
-					r = e.y,
-					o = e.width,
-					a = e.height;
-				if(!t) throw new Error("SVG container not found.");
-				var s, l = g("svg"),
-					c = "overflow:hidden;";
-				return i = i || 0, r = r || 0, o = o || 512, a = a || 342, g(l, {
-					height: a,
-					version: 1.1,
-					width: o,
-					xmlns: "http://www.w3.org/2000/svg"
-				}), 1 == t ? (l.style.cssText = c + "position:absolute;left:" + i + "px;top:" + r + "px", n._g.doc.body.appendChild(l), s = 1) : (l.style.cssText = c + "position:relative", t.firstChild ? t.insertBefore(l, t.firstChild) : t.appendChild(l)), t = new n._Paper, t.width = o, t.height = a, t.canvas = l, t.clear(), t._left = t._top = 0, s && (t.renderfix = function() {}), t.renderfix(), t
-			}, n._engine.setViewBox = function(e, t, n, i, r) {
-				u("raphael.setViewBox", this, this._viewBox, [e, t, n, i, r]);
-				var o, s, l = a(n / this.width, i / this.height),
-					c = this.top,
-					d = r ? "meet" : "xMinYMin";
-				for(null == e ? (this._vbSize && (l = 1), delete this._vbSize, o = "0 0 " + this.width + p + this.height) : (this._vbSize = l, o = e + p + t + p + n + p + i), g(this.canvas, {
-					viewBox: o,
-					preserveAspectRatio: d
-				}); l && c;) s = "stroke-width" in c.attrs ? c.attrs["stroke-width"] : 1, c.attr({
-					"stroke-width": s
-				}), c._.dirty = 1, c._.dirtyT = 1, c = c.prev;
-				return this._viewBox = [e, t, n, i, !! r], this
-			}, n.prototype.renderfix = function() {
-				var e, t = this.canvas,
-					n = t.style;
-				try {
-					e = t.getScreenCTM() || t.createSVGMatrix()
-				} catch(i) {
-					e = t.createSVGMatrix()
-				}
-				var r = -e.e % 1,
-					o = -e.f % 1;
-				(r || o) && (r && (this._left = (this._left + r) % 1, n.left = this._left + "px"), o && (this._top = (this._top + o) % 1, n.top = this._top + "px"))
-			}, n.prototype.clear = function() {
-				n.eve("raphael.clear", this);
-				for(var e = this.canvas; e.firstChild;) e.removeChild(e.firstChild);
-				this.bottom = this.top = null, (this.desc = g("desc")).appendChild(n._g.doc.createTextNode("Created with Raphaël " + n.version)), e.appendChild(this.desc), e.appendChild(this.defs = g("defs"))
-			}, n.prototype.remove = function() {
-				u("raphael.remove", this), this.canvas.parentNode && this.canvas.parentNode.removeChild(this.canvas);
-				for(var e in this) this[e] = "function" == typeof this[e] ? n._removedFactory(e) : null
-			};
-			var E = n.st;
-			for(var I in T) T[e](I) && !E[e](I) && (E[I] = function(e) {
-				return function() {
-					var t = arguments;
-					return this.forEach(function(n) {
-						n[e].apply(n, t)
-					})
-				}
-			}(I))
-		}
-	}(),
-	function() {
-		if(n.vml) {
-			var e = "hasOwnProperty",
-				t = String,
-				i = parseFloat,
-				r = Math,
-				o = r.round,
-				a = r.max,
-				s = r.min,
-				l = r.abs,
-				c = "fill",
-				u = /[, ]+/,
-				d = n.eve,
-				p = " progid:DXImageTransform.Microsoft",
-				h = " ",
-				f = "",
-				m = {
-					M: "m",
-					L: "l",
-					C: "c",
-					Z: "x",
-					m: "t",
-					l: "r",
-					c: "v",
-					z: "x"
-				}, g = /([clmz]),?([^clmz]*)/gi,
-				v = / progid:\S+Blur\([^\)]+\)/g,
-				b = /-?[^,\s-]+/g,
-				y = "position:absolute;left:0;top:0;width:1px;height:1px",
-				x = 21600,
-				w = {
-					path: 1,
-					rect: 1,
-					image: 1
-				}, S = {
-					circle: 1,
-					ellipse: 1
-				}, C = function(e) {
-					var i = /[ahqstv]/gi,
-						r = n._pathToAbsolute;
-					if(t(e).match(i) && (r = n._path2curve), i = /[clmz]/g, r == n._pathToAbsolute && !t(e).match(i)) {
-						var a = t(e).replace(g, function(e, t, n) {
-							var i = [],
-								r = "m" == t.toLowerCase(),
-								a = m[t];
-							return n.replace(b, function(e) {
-								r && 2 == i.length && (a += i + m["m" == t ? "l" : "L"], i = []), i.push(o(e * x))
-							}), a + i
-						});
-						return a
-					}
-					var s, l, c = r(e);
-					a = [];
-					for(var u = 0, d = c.length; d > u; u++) {
-						s = c[u], l = c[u][0].toLowerCase(), "z" == l && (l = "x");
-						for(var p = 1, v = s.length; v > p; p++) l += o(s[p] * x) + (p != v - 1 ? "," : f);
-						a.push(l)
-					}
-					return a.join(h)
-				}, _ = function(e, t, i) {
-					var r = n.matrix();
-					return r.rotate(-e, .5, .5), {
-						dx: r.x(t, i),
-						dy: r.y(t, i)
-					}
-				}, k = function(e, t, n, i, r, o) {
-					var a = e._,
-						s = e.matrix,
-						u = a.fillpos,
-						d = e.node,
-						p = d.style,
-						f = 1,
-						m = "",
-						g = x / t,
-						v = x / n;
-					if(p.visibility = "hidden", t && n) {
-						if(d.coordsize = l(g) + h + l(v), p.rotation = o * (0 > t * n ? -1 : 1), o) {
-							var b = _(o, i, r);
-							i = b.dx, r = b.dy
-						}
-						if(0 > t && (m += "x"), 0 > n && (m += " y") && (f = -1), p.flip = m, d.coordorigin = i * -g + h + r * -v, u || a.fillsize) {
-							var y = d.getElementsByTagName(c);
-							y = y && y[0], d.removeChild(y), u && (b = _(o, s.x(u[0], u[1]), s.y(u[0], u[1])), y.position = b.dx * f + h + b.dy * f), a.fillsize && (y.size = a.fillsize[0] * l(t) + h + a.fillsize[1] * l(n)), d.appendChild(y)
-						}
-						p.visibility = "visible"
-					}
-				};
-			n.toString = function() {
-				return "Your browser doesn’t support SVG. Falling down to VML.\nYou are running Raphaël " + this.version
-			};
-			var T = function(e, n, i) {
-				for(var r = t(n).toLowerCase().split("-"), o = i ? "end" : "start", a = r.length, s = "classic", l = "medium", c = "medium"; a--;) switch(r[a]) {
-					case "block":
-					case "classic":
-					case "oval":
-					case "diamond":
-					case "open":
-					case "none":
-						s = r[a];
-						break;
-					case "wide":
-					case "narrow":
-						c = r[a];
-						break;
-					case "long":
-					case "short":
-						l = r[a]
-				}
-				var u = e.node.getElementsByTagName("stroke")[0];
-				u[o + "arrow"] = s, u[o + "arrowlength"] = l, u[o + "arrowwidth"] = c
-			}, E = function(r, l) {
-					r.attrs = r.attrs || {};
-					var d = r.node,
-						p = r.attrs,
-						m = d.style,
-						g = w[r.type] && (l.x != p.x || l.y != p.y || l.width != p.width || l.height != p.height || l.cx != p.cx || l.cy != p.cy || l.rx != p.rx || l.ry != p.ry || l.r != p.r),
-						v = S[r.type] && (p.cx != l.cx || p.cy != l.cy || p.r != l.r || p.rx != l.rx || p.ry != l.ry),
-						b = r;
-					for(var y in l) l[e](y) && (p[y] = l[y]);
-					if(g && (p.path = n._getPath[r.type](r), r._.dirty = 1), l.href && (d.href = l.href), l.title && (d.title = l.title), l.target && (d.target = l.target), l.cursor && (m.cursor = l.cursor), "blur" in l && r.blur(l.blur), (l.path && "path" == r.type || g) && (d.path = C(~t(p.path).toLowerCase().indexOf("r") ? n._pathToAbsolute(p.path) : p.path), "image" == r.type && (r._.fillpos = [p.x, p.y], r._.fillsize = [p.width, p.height], k(r, 1, 1, 0, 0, 0))), "transform" in l && r.transform(l.transform), v) {
-						var _ = +p.cx,
-							E = +p.cy,
-							N = +p.rx || +p.r || 0,
-							D = +p.ry || +p.r || 0;
-						d.path = n.format("ar{0},{1},{2},{3},{4},{1},{4},{1}x", o((_ - N) * x), o((E - D) * x), o((_ + N) * x), o((E + D) * x), o(_ * x)), r._.dirty = 1
-					}
-					if("clip-rect" in l) {
-						var M = t(l["clip-rect"]).split(u);
-						if(4 == M.length) {
-							M[2] = +M[2] + +M[0], M[3] = +M[3] + +M[1];
-							var A = d.clipRect || n._g.doc.createElement("div"),
-								R = A.style;
-							R.clip = n.format("rect({1}px {2}px {3}px {0}px)", M), d.clipRect || (R.position = "absolute", R.top = 0, R.left = 0, R.width = r.paper.width + "px", R.height = r.paper.height + "px", d.parentNode.insertBefore(A, d), A.appendChild(d), d.clipRect = A)
-						}
-						l["clip-rect"] || d.clipRect && (d.clipRect.style.clip = "auto")
-					}
-					if(r.textpath) {
-						var P = r.textpath.style;
-						l.font && (P.font = l.font), l["font-family"] && (P.fontFamily = '"' + l["font-family"].split(",")[0].replace(/^['"]+|['"]+$/g, f) + '"'), l["font-size"] && (P.fontSize = l["font-size"]), l["font-weight"] && (P.fontWeight = l["font-weight"]), l["font-style"] && (P.fontStyle = l["font-style"])
-					}
-					if("arrow-start" in l && T(b, l["arrow-start"]), "arrow-end" in l && T(b, l["arrow-end"], 1), null != l.opacity || null != l["stroke-width"] || null != l.fill || null != l.src || null != l.stroke || null != l["stroke-width"] || null != l["stroke-opacity"] || null != l["fill-opacity"] || null != l["stroke-dasharray"] || null != l["stroke-miterlimit"] || null != l["stroke-linejoin"] || null != l["stroke-linecap"]) {
-						var F = d.getElementsByTagName(c),
-							O = !1;
-						if(F = F && F[0], !F && (O = F = L(c)), "image" == r.type && l.src && (F.src = l.src), l.fill && (F.on = !0), (null == F.on || "none" == l.fill || null === l.fill) && (F.on = !1), F.on && l.fill) {
-							var B = t(l.fill).match(n._ISURL);
-							if(B) {
-								F.parentNode == d && d.removeChild(F), F.rotate = !0, F.src = B[1], F.type = "tile";
-								var j = r.getBBox(1);
-								F.position = j.x + h + j.y, r._.fillpos = [j.x, j.y], n._preload(B[1], function() {
-									r._.fillsize = [this.offsetWidth, this.offsetHeight]
-								})
-							} else F.color = n.getRGB(l.fill).hex, F.src = f, F.type = "solid", n.getRGB(l.fill).error && (b.type in {
-								circle: 1,
-								ellipse: 1
-							} || "r" != t(l.fill).charAt()) && I(b, l.fill, F) && (p.fill = "none", p.gradient = l.fill, F.rotate = !1)
-						}
-						if("fill-opacity" in l || "opacity" in l) {
-							var $ = ((+p["fill-opacity"] + 1 || 2) - 1) * ((+p.opacity + 1 || 2) - 1) * ((+n.getRGB(l.fill).o + 1 || 2) - 1);
-							$ = s(a($, 0), 1), F.opacity = $, F.src && (F.color = "none")
-						}
-						d.appendChild(F);
-						var G = d.getElementsByTagName("stroke") && d.getElementsByTagName("stroke")[0],
-							q = !1;
-						!G && (q = G = L("stroke")), (l.stroke && "none" != l.stroke || l["stroke-width"] || null != l["stroke-opacity"] || l["stroke-dasharray"] || l["stroke-miterlimit"] || l["stroke-linejoin"] || l["stroke-linecap"]) && (G.on = !0), ("none" == l.stroke || null === l.stroke || null == G.on || 0 == l.stroke || 0 == l["stroke-width"]) && (G.on = !1);
-						var H = n.getRGB(l.stroke);
-						G.on && l.stroke && (G.color = H.hex), $ = ((+p["stroke-opacity"] + 1 || 2) - 1) * ((+p.opacity + 1 || 2) - 1) * ((+H.o + 1 || 2) - 1);
-						var U = .75 * (i(l["stroke-width"]) || 1);
-						if($ = s(a($, 0), 1), null == l["stroke-width"] && (U = p["stroke-width"]), l["stroke-width"] && (G.weight = U), U && 1 > U && ($ *= U) && (G.weight = 1), G.opacity = $, l["stroke-linejoin"] && (G.joinstyle = l["stroke-linejoin"] || "miter"), G.miterlimit = l["stroke-miterlimit"] || 8, l["stroke-linecap"] && (G.endcap = "butt" == l["stroke-linecap"] ? "flat" : "square" == l["stroke-linecap"] ? "square" : "round"), l["stroke-dasharray"]) {
-							var z = {
-								"-": "shortdash",
-								".": "shortdot",
-								"-.": "shortdashdot",
-								"-..": "shortdashdotdot",
-								". ": "dot",
-								"- ": "dash",
-								"--": "longdash",
-								"- .": "dashdot",
-								"--.": "longdashdot",
-								"--..": "longdashdotdot"
-							};
-							G.dashstyle = z[e](l["stroke-dasharray"]) ? z[l["stroke-dasharray"]] : f
-						}
-						q && d.appendChild(G)
-					}
-					if("text" == b.type) {
-						b.paper.canvas.style.display = f;
-						var V = b.paper.span,
-							W = 100,
-							X = p.font && p.font.match(/\d+(?:\.\d*)?(?=px)/);
-						m = V.style, p.font && (m.font = p.font), p["font-family"] && (m.fontFamily = p["font-family"]), p["font-weight"] && (m.fontWeight = p["font-weight"]), p["font-style"] && (m.fontStyle = p["font-style"]), X = i(p["font-size"] || X && X[0]) || 10, m.fontSize = X * W + "px", b.textpath.string && (V.innerHTML = t(b.textpath.string).replace(/</g, "&#60;").replace(/&/g, "&#38;").replace(/\n/g, "<br>"));
-						var Q = V.getBoundingClientRect();
-						b.W = p.w = (Q.right - Q.left) / W, b.H = p.h = (Q.bottom - Q.top) / W, b.X = p.x, b.Y = p.y + b.H / 2, ("x" in l || "y" in l) && (b.path.v = n.format("m{0},{1}l{2},{1}", o(p.x * x), o(p.y * x), o(p.x * x) + 1));
-						for(var Y = ["x", "y", "text", "font", "font-family", "font-weight", "font-style", "font-size"], K = 0, J = Y.length; J > K; K++)
-							if(Y[K] in l) {
-								b._.dirty = 1;
-								break
-							}
-						switch(p["text-anchor"]) {
-							case "start":
-								b.textpath.style["v-text-align"] = "left", b.bbx = b.W / 2;
-								break;
-							case "end":
-								b.textpath.style["v-text-align"] = "right", b.bbx = -b.W / 2;
-								break;
-							default:
-								b.textpath.style["v-text-align"] = "center", b.bbx = 0
-						}
-						b.textpath.style["v-text-kern"] = !0
-					}
-				}, I = function(e, o, a) {
-					e.attrs = e.attrs || {};
-					var s = (e.attrs, Math.pow),
-						l = "linear",
-						c = ".5 .5";
-					if(e.attrs.gradient = o, o = t(o).replace(n._radial_gradient, function(e, t, n) {
-						return l = "radial", t && n && (t = i(t), n = i(n), s(t - .5, 2) + s(n - .5, 2) > .25 && (n = r.sqrt(.25 - s(t - .5, 2)) * (2 * (n > .5) - 1) + .5), c = t + h + n), f
-					}), o = o.split(/\s*\-\s*/), "linear" == l) {
-						var u = o.shift();
-						if(u = -i(u), isNaN(u)) return null
-					}
-					var d = n._parseDots(o);
-					if(!d) return null;
-					if(e = e.shape || e.node, d.length) {
-						e.removeChild(a), a.on = !0, a.method = "none", a.color = d[0].color, a.color2 = d[d.length - 1].color;
-						for(var p = [], m = 0, g = d.length; g > m; m++) d[m].offset && p.push(d[m].offset + h + d[m].color);
-						a.colors = p.length ? p.join() : "0% " + a.color, "radial" == l ? (a.type = "gradientTitle", a.focus = "100%", a.focussize = "0 0", a.focusposition = c, a.angle = 0) : (a.type = "gradient", a.angle = (270 - u) % 360), e.appendChild(a)
-					}
-					return 1
-				}, N = function(e, t) {
-					this[0] = this.node = e, e.raphael = !0, this.id = n._oid++, e.raphaelid = this.id, this.X = 0, this.Y = 0, this.attrs = {}, this.paper = t, this.matrix = n.matrix(), this._ = {
-						transform: [],
-						sx: 1,
-						sy: 1,
-						dx: 0,
-						dy: 0,
-						deg: 0,
-						dirty: 1,
-						dirtyT: 1
-					}, !t.bottom && (t.bottom = this), this.prev = t.top, t.top && (t.top.next = this), t.top = this, this.next = null
-				}, D = n.el;
-			N.prototype = D, D.constructor = N, D.transform = function(e) {
-				if(null == e) return this._.transform;
-				var i, r = this.paper._viewBoxShift,
-					o = r ? "s" + [r.scale, r.scale] + "-1-1t" + [r.dx, r.dy] : f;
-				r && (i = e = t(e).replace(/\.{3}|\u2026/g, this._.transform || f)), n._extractTransform(this, o + e);
-				var a, s = this.matrix.clone(),
-					l = this.skew,
-					c = this.node,
-					u = ~t(this.attrs.fill).indexOf("-"),
-					d = !t(this.attrs.fill).indexOf("url(");
-				if(s.translate(1, 1), d || u || "image" == this.type)
-					if(l.matrix = "1 0 0 1", l.offset = "0 0", a = s.split(), u && a.noRotation || !a.isSimple) {
-						c.style.filter = s.toFilter();
-						var p = this.getBBox(),
-							m = this.getBBox(1),
-							g = p.x - m.x,
-							v = p.y - m.y;
-						c.coordorigin = g * -x + h + v * -x, k(this, 1, 1, g, v, 0)
-					} else c.style.filter = f, k(this, a.scalex, a.scaley, a.dx, a.dy, a.rotate);
-					else c.style.filter = f, l.matrix = t(s), l.offset = s.offset();
-				return i && (this._.transform = i), this
-			}, D.rotate = function(e, n, r) {
-				if(this.removed) return this;
-				if(null != e) {
-					if(e = t(e).split(u), e.length - 1 && (n = i(e[1]), r = i(e[2])), e = i(e[0]), null == r && (n = r), null == n || null == r) {
-						var o = this.getBBox(1);
-						n = o.x + o.width / 2, r = o.y + o.height / 2
-					}
-					return this._.dirtyT = 1, this.transform(this._.transform.concat([["r", e, n, r]])), this
-				}
-			}, D.translate = function(e, n) {
-				return this.removed ? this : (e = t(e).split(u), e.length - 1 && (n = i(e[1])), e = i(e[0]) || 0, n = +n || 0, this._.bbox && (this._.bbox.x += e, this._.bbox.y += n), this.transform(this._.transform.concat([["t", e, n]])), this)
-			}, D.scale = function(e, n, r, o) {
-				if(this.removed) return this;
-				if(e = t(e).split(u), e.length - 1 && (n = i(e[1]), r = i(e[2]), o = i(e[3]), isNaN(r) && (r = null), isNaN(o) && (o = null)), e = i(e[0]), null == n && (n = e), null == o && (r = o), null == r || null == o) var a = this.getBBox(1);
-				return r = null == r ? a.x + a.width / 2 : r, o = null == o ? a.y + a.height / 2 : o, this.transform(this._.transform.concat([["s", e, n, r, o]])), this._.dirtyT = 1, this
-			}, D.hide = function() {
-				return !this.removed && (this.node.style.display = "none"), this
-			}, D.show = function() {
-				return !this.removed && (this.node.style.display = f), this
-			}, D._getBBox = function() {
-				return this.removed ? {} : {
-					x: this.X + (this.bbx || 0) - this.W / 2,
-					y: this.Y - this.H,
-					width: this.W,
-					height: this.H
-				}
-			}, D.remove = function() {
-				if(!this.removed && this.node.parentNode) {
-					this.paper.__set__ && this.paper.__set__.exclude(this), n.eve.unbind("raphael.*.*." + this.id), n._tear(this, this.paper), this.node.parentNode.removeChild(this.node), this.shape && this.shape.parentNode.removeChild(this.shape);
-					for(var e in this) this[e] = "function" == typeof this[e] ? n._removedFactory(e) : null;
-					this.removed = !0
-				}
-			}, D.attr = function(t, i) {
-				if(this.removed) return this;
-				if(null == t) {
-					var r = {};
-					for(var o in this.attrs) this.attrs[e](o) && (r[o] = this.attrs[o]);
-					return r.gradient && "none" == r.fill && (r.fill = r.gradient) && delete r.gradient, r.transform = this._.transform, r
-				}
-				if(null == i && n.is(t, "string")) {
-					if(t == c && "none" == this.attrs.fill && this.attrs.gradient) return this.attrs.gradient;
-					for(var a = t.split(u), s = {}, l = 0, p = a.length; p > l; l++) t = a[l], s[t] = t in this.attrs ? this.attrs[t] : n.is(this.paper.customAttributes[t], "function") ? this.paper.customAttributes[t].def : n._availableAttrs[t];
-					return p - 1 ? s : s[a[0]]
-				}
-				if(this.attrs && null == i && n.is(t, "array")) {
-					for(s = {}, l = 0, p = t.length; p > l; l++) s[t[l]] = this.attr(t[l]);
-					return s
-				}
-				var h;
-				null != i && (h = {}, h[t] = i), null == i && n.is(t, "object") && (h = t);
-				for(var f in h) d("raphael.attr." + f + "." + this.id, this, h[f]);
-				if(h) {
-					for(f in this.paper.customAttributes)
-						if(this.paper.customAttributes[e](f) && h[e](f) && n.is(this.paper.customAttributes[f], "function")) {
-							var m = this.paper.customAttributes[f].apply(this, [].concat(h[f]));
-							this.attrs[f] = h[f];
-							for(var g in m) m[e](g) && (h[g] = m[g])
-						}
-					h.text && "text" == this.type && (this.textpath.string = h.text), E(this, h)
-				}
-				return this
-			}, D.toFront = function() {
-				return !this.removed && this.node.parentNode.appendChild(this.node), this.paper && this.paper.top != this && n._tofront(this, this.paper), this
-			}, D.toBack = function() {
-				return this.removed ? this : (this.node.parentNode.firstChild != this.node && (this.node.parentNode.insertBefore(this.node, this.node.parentNode.firstChild), n._toback(this, this.paper)), this)
-			}, D.insertAfter = function(e) {
-				return this.removed ? this : (e.constructor == n.st.constructor && (e = e[e.length - 1]), e.node.nextSibling ? e.node.parentNode.insertBefore(this.node, e.node.nextSibling) : e.node.parentNode.appendChild(this.node), n._insertafter(this, e, this.paper), this)
-			}, D.insertBefore = function(e) {
-				return this.removed ? this : (e.constructor == n.st.constructor && (e = e[0]), e.node.parentNode.insertBefore(this.node, e.node), n._insertbefore(this, e, this.paper), this)
-			}, D.blur = function(e) {
-				var t = this.node.runtimeStyle,
-					i = t.filter;
-				return i = i.replace(v, f), 0 !== +e ? (this.attrs.blur = e, t.filter = i + h + p + ".Blur(pixelradius=" + (+e || 1.5) + ")", t.margin = n.format("-{0}px 0 0 -{0}px", o(+e || 1.5))) : (t.filter = i, t.margin = 0, delete this.attrs.blur), this
-			}, n._engine.path = function(e, t) {
-				var n = L("shape");
-				n.style.cssText = y, n.coordsize = x + h + x, n.coordorigin = t.coordorigin;
-				var i = new N(n, t),
-					r = {
-						fill: "none",
-						stroke: "#000"
-					};
-				e && (r.path = e), i.type = "path", i.path = [], i.Path = f, E(i, r), t.canvas.appendChild(n);
-				var o = L("skew");
-				return o.on = !0, n.appendChild(o), i.skew = o, i.transform(f), i
-			}, n._engine.rect = function(e, t, i, r, o, a) {
-				var s = n._rectPath(t, i, r, o, a),
-					l = e.path(s),
-					c = l.attrs;
-				return l.X = c.x = t, l.Y = c.y = i, l.W = c.width = r, l.H = c.height = o, c.r = a, c.path = s, l.type = "rect", l
-			}, n._engine.ellipse = function(e, t, n, i, r) {
-				{
-					var o = e.path();
-					o.attrs
-				}
-				return o.X = t - i, o.Y = n - r, o.W = 2 * i, o.H = 2 * r, o.type = "ellipse", E(o, {
-					cx: t,
-					cy: n,
-					rx: i,
-					ry: r
-				}), o
-			}, n._engine.circle = function(e, t, n, i) {
-				{
-					var r = e.path();
-					r.attrs
-				}
-				return r.X = t - i, r.Y = n - i, r.W = r.H = 2 * i, r.type = "circle", E(r, {
-					cx: t,
-					cy: n,
-					r: i
-				}), r
-			}, n._engine.image = function(e, t, i, r, o, a) {
-				var s = n._rectPath(i, r, o, a),
-					l = e.path(s).attr({
-						stroke: "none"
-					}),
-					u = l.attrs,
-					d = l.node,
-					p = d.getElementsByTagName(c)[0];
-				return u.src = t, l.X = u.x = i, l.Y = u.y = r, l.W = u.width = o, l.H = u.height = a, u.path = s, l.type = "image", p.parentNode == d && d.removeChild(p), p.rotate = !0, p.src = t, p.type = "tile", l._.fillpos = [i, r], l._.fillsize = [o, a], d.appendChild(p), k(l, 1, 1, 0, 0, 0), l
-			}, n._engine.text = function(e, i, r, a) {
-				var s = L("shape"),
-					l = L("path"),
-					c = L("textpath");
-				i = i || 0, r = r || 0, a = a || "", l.v = n.format("m{0},{1}l{2},{1}", o(i * x), o(r * x), o(i * x) + 1), l.textpathok = !0, c.string = t(a), c.on = !0, s.style.cssText = y, s.coordsize = x + h + x, s.coordorigin = "0 0";
-				var u = new N(s, e),
-					d = {
-						fill: "#000",
-						stroke: "none",
-						font: n._availableAttrs.font,
-						text: a
-					};
-				u.shape = s, u.path = l, u.textpath = c, u.type = "text", u.attrs.text = t(a), u.attrs.x = i, u.attrs.y = r, u.attrs.w = 1, u.attrs.h = 1, E(u, d), s.appendChild(c), s.appendChild(l), e.canvas.appendChild(s);
-				var p = L("skew");
-				return p.on = !0, s.appendChild(p), u.skew = p, u.transform(f), u
-			}, n._engine.setSize = function(e, t) {
-				var i = this.canvas.style;
-				return this.width = e, this.height = t, e == +e && (e += "px"), t == +t && (t += "px"), i.width = e, i.height = t, i.clip = "rect(0 " + e + " " + t + " 0)", this._viewBox && n._engine.setViewBox.apply(this, this._viewBox), this
-			}, n._engine.setViewBox = function(e, t, i, r, o) {
-				n.eve("raphael.setViewBox", this, this._viewBox, [e, t, i, r, o]);
-				var s, l, c = this.width,
-					u = this.height,
-					d = 1 / a(i / c, r / u);
-				return o && (s = u / r, l = c / i, c > i * s && (e -= (c - i * s) / 2 / s), u > r * l && (t -= (u - r * l) / 2 / l)), this._viewBox = [e, t, i, r, !! o], this._viewBoxShift = {
-					dx: -e,
-					dy: -t,
-					scale: d
-				}, this.forEach(function(e) {
-					e.transform("...")
-				}), this
-			};
-			var L;
-			n._engine.initWin = function(e) {
-				var t = e.document;
-				t.createStyleSheet().addRule(".rvml", "behavior:url(#default#VML)");
-				try {
-					!t.namespaces.rvml && t.namespaces.add("rvml", "urn:schemas-microsoft-com:vml"), L = function(e) {
-						return t.createElement("<rvml:" + e + ' class="rvml">')
-					}
-				} catch(n) {
-					L = function(e) {
-						return t.createElement("<" + e + ' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')
-					}
-				}
-			}, n._engine.initWin(n._g.win), n._engine.create = function() {
-				var e = n._getContainer.apply(0, arguments),
-					t = e.container,
-					i = e.height,
-					r = e.width,
-					o = e.x,
-					a = e.y;
-				if(!t) throw new Error("VML container not found.");
-				var s = new n._Paper,
-					l = s.canvas = n._g.doc.createElement("div"),
-					c = l.style;
-				return o = o || 0, a = a || 0, r = r || 512, i = i || 342, s.width = r, s.height = i, r == +r && (r += "px"), i == +i && (i += "px"), s.coordsize = 1e3 * x + h + 1e3 * x, s.coordorigin = "0 0", s.span = n._g.doc.createElement("span"), s.span.style.cssText = "position:absolute;left:-9999em;top:-9999em;padding:0;margin:0;line-height:1;", l.appendChild(s.span), c.cssText = n.format("top:0;left:0;width:{0};height:{1};display:inline-block;position:relative;clip:rect(0 {0} {1} 0);overflow:hidden", r, i), 1 == t ? (n._g.doc.body.appendChild(l), c.left = o + "px", c.top = a + "px", c.position = "absolute") : t.firstChild ? t.insertBefore(l, t.firstChild) : t.appendChild(l), s.renderfix = function() {}, s
-			}, n.prototype.clear = function() {
-				n.eve("raphael.clear", this), this.canvas.innerHTML = f, this.span = n._g.doc.createElement("span"), this.span.style.cssText = "position:absolute;left:-9999em;top:-9999em;padding:0;margin:0;line-height:1;display:inline;", this.canvas.appendChild(this.span), this.bottom = this.top = null
-			}, n.prototype.remove = function() {
-				n.eve("raphael.remove", this), this.canvas.parentNode.removeChild(this.canvas);
-				for(var e in this) this[e] = "function" == typeof this[e] ? n._removedFactory(e) : null;
-				return !0
-			};
-			var M = n.st;
-			for(var A in D) D[e](A) && !M[e](A) && (M[A] = function(e) {
-				return function() {
-					var t = arguments;
-					return this.forEach(function(n) {
-						n[e].apply(n, t)
-					})
-				}
-			}(A))
-		}
-	}(), E.was ? T.win.Raphael = n : Raphael = n, n
-}), ! function() {
-	function e() {
-		this.title = void 0, this.actors = [], this.signals = []
-	}
-
-	function t(e, t) {
-		_.extend(this, t), this.name = "ParseError", this.message = e || ""
-	}
-	e.prototype.getActor = function(t) {
-		var n = /^(.+) as (\S+)$/i.exec(t.trim());
-		n ? (name = n[1].trim(), t = n[2].trim()) : name = t.trim(), name = name.replace(/\\n/gm, "\n");
-		var i, r = this.actors;
-		for(i in r)
-			if(r[i].alias == t) return r[i];
-		return i = r.push(new e.Actor(t, name, r.length)), r[i - 1]
-	}, e.prototype.setTitle = function(e) {
-		this.title = e
-	}, e.prototype.addSignal = function(e) {
-		this.signals.push(e)
-	}, e.Actor = function(e, t, n) {
-		this.alias = e, this.name = t, this.index = n
-	}, e.Signal = function(e, t, n, i) {
-		this.type = "Signal", this.actorA = e, this.actorB = n, this.linetype = 3 & t, this.arrowtype = 3 & t >> 2, this.message = i
-	}, e.Signal.prototype.isSelf = function() {
-		return this.actorA.index == this.actorB.index
-	}, e.Note = function(e, t, n) {
-		if(this.type = "Note", this.actor = e, this.placement = t, this.message = n, this.hasManyActors() && e[0] == e[1]) throw new Error("Note should be over two different actors")
-	}, e.Note.prototype.hasManyActors = function() {
-		return _.isArray(this.actor)
-	}, e.LINETYPE = {
-		SOLID: 0,
-		DOTTED: 1
-	}, e.ARROWTYPE = {
-		FILLED: 0,
-		OPEN: 1
-	}, e.PLACEMENT = {
-		LEFTOF: 0,
-		RIGHTOF: 1,
-		OVER: 2
-	};
-	var n = function() {
-		function t() {
-			this.yy = {}
-		}
-		var n = {
-			trace: function() {},
-			yy: {},
-			symbols_: {
-				error: 2,
-				start: 3,
-				document: 4,
-				EOF: 5,
-				line: 6,
-				statement: 7,
-				NL: 8,
-				participant: 9,
-				actor: 10,
-				signal: 11,
-				note_statement: 12,
-				title: 13,
-				message: 14,
-				note: 15,
-				placement: 16,
-				over: 17,
-				actor_pair: 18,
-				",": 19,
-				left_of: 20,
-				right_of: 21,
-				signaltype: 22,
-				ACTOR: 23,
-				linetype: 24,
-				arrowtype: 25,
-				LINE: 26,
-				DOTLINE: 27,
-				ARROW: 28,
-				OPENARROW: 29,
-				MESSAGE: 30,
-				$accept: 0,
-				$end: 1
-			},
-			terminals_: {
-				2: "error",
-				5: "EOF",
-				8: "NL",
-				9: "participant",
-				13: "title",
-				15: "note",
-				17: "over",
-				19: ",",
-				20: "left_of",
-				21: "right_of",
-				23: "ACTOR",
-				26: "LINE",
-				27: "DOTLINE",
-				28: "ARROW",
-				29: "OPENARROW",
-				30: "MESSAGE"
-			},
-			productions_: [0, [3, 2], [4, 0], [4, 2], [6, 1], [6, 1], [7, 2], [7, 1], [7, 1], [7, 2], [12, 4], [12, 4], [18, 1], [18, 3], [16, 1], [16, 1], [11, 4], [10, 1], [22, 2], [22, 1], [24, 1], [24, 1], [25, 1], [25, 1], [14, 1]],
-			performAction: function(t, n, i, r, o, a) {
-				var s = a.length - 1;
-				switch(o) {
-					case 1:
-						return r;
-					case 4:
-						break;
-					case 6:
-						a[s];
-						break;
-					case 7:
-						r.addSignal(a[s]);
-						break;
-					case 8:
-						r.addSignal(a[s]);
-						break;
-					case 9:
-						r.setTitle(a[s]);
-						break;
-					case 10:
-						this.$ = new e.Note(a[s - 1], a[s - 2], a[s]);
-						break;
-					case 11:
-						this.$ = new e.Note(a[s - 1], e.PLACEMENT.OVER, a[s]);
-						break;
-					case 12:
-						this.$ = a[s];
-						break;
-					case 13:
-						this.$ = [a[s - 2], a[s]];
-						break;
-					case 14:
-						this.$ = e.PLACEMENT.LEFTOF;
-						break;
-					case 15:
-						this.$ = e.PLACEMENT.RIGHTOF;
-						break;
-					case 16:
-						this.$ = new e.Signal(a[s - 3], a[s - 2], a[s - 1], a[s]);
-						break;
-					case 17:
-						this.$ = r.getActor(a[s]);
-						break;
-					case 18:
-						this.$ = a[s - 1] | a[s] << 2;
-						break;
-					case 19:
-						this.$ = a[s];
-						break;
-					case 20:
-						this.$ = e.LINETYPE.SOLID;
-						break;
-					case 21:
-						this.$ = e.LINETYPE.DOTTED;
-						break;
-					case 22:
-						this.$ = e.ARROWTYPE.FILLED;
-						break;
-					case 23:
-						this.$ = e.ARROWTYPE.OPEN;
-						break;
-					case 24:
-						this.$ = a[s].substring(1).trim().replace(/\\n/gm, "\n")
-				}
-			},
-			table: [{
-				3: 1,
-				4: 2,
-				5: [2, 2],
-				8: [2, 2],
-				9: [2, 2],
-				13: [2, 2],
-				15: [2, 2],
-				23: [2, 2]
-			}, {
-				1: [3]
-			}, {
-				5: [1, 3],
-				6: 4,
-				7: 5,
-				8: [1, 6],
-				9: [1, 7],
-				10: 11,
-				11: 8,
-				12: 9,
-				13: [1, 10],
-				15: [1, 12],
-				23: [1, 13]
-			}, {
-				1: [2, 1]
-			}, {
-				5: [2, 3],
-				8: [2, 3],
-				9: [2, 3],
-				13: [2, 3],
-				15: [2, 3],
-				23: [2, 3]
-			}, {
-				5: [2, 4],
-				8: [2, 4],
-				9: [2, 4],
-				13: [2, 4],
-				15: [2, 4],
-				23: [2, 4]
-			}, {
-				5: [2, 5],
-				8: [2, 5],
-				9: [2, 5],
-				13: [2, 5],
-				15: [2, 5],
-				23: [2, 5]
-			}, {
-				10: 14,
-				23: [1, 13]
-			}, {
-				5: [2, 7],
-				8: [2, 7],
-				9: [2, 7],
-				13: [2, 7],
-				15: [2, 7],
-				23: [2, 7]
-			}, {
-				5: [2, 8],
-				8: [2, 8],
-				9: [2, 8],
-				13: [2, 8],
-				15: [2, 8],
-				23: [2, 8]
-			}, {
-				14: 15,
-				30: [1, 16]
-			}, {
-				22: 17,
-				24: 18,
-				26: [1, 19],
-				27: [1, 20]
-			}, {
-				16: 21,
-				17: [1, 22],
-				20: [1, 23],
-				21: [1, 24]
-			}, {
-				5: [2, 17],
-				8: [2, 17],
-				9: [2, 17],
-				13: [2, 17],
-				15: [2, 17],
-				19: [2, 17],
-				23: [2, 17],
-				26: [2, 17],
-				27: [2, 17],
-				30: [2, 17]
-			}, {
-				5: [2, 6],
-				8: [2, 6],
-				9: [2, 6],
-				13: [2, 6],
-				15: [2, 6],
-				23: [2, 6]
-			}, {
-				5: [2, 9],
-				8: [2, 9],
-				9: [2, 9],
-				13: [2, 9],
-				15: [2, 9],
-				23: [2, 9]
-			}, {
-				5: [2, 24],
-				8: [2, 24],
-				9: [2, 24],
-				13: [2, 24],
-				15: [2, 24],
-				23: [2, 24]
-			}, {
-				10: 25,
-				23: [1, 13]
-			}, {
-				23: [2, 19],
-				25: 26,
-				28: [1, 27],
-				29: [1, 28]
-			}, {
-				23: [2, 20],
-				28: [2, 20],
-				29: [2, 20]
-			}, {
-				23: [2, 21],
-				28: [2, 21],
-				29: [2, 21]
-			}, {
-				10: 29,
-				23: [1, 13]
-			}, {
-				10: 31,
-				18: 30,
-				23: [1, 13]
-			}, {
-				23: [2, 14]
-			}, {
-				23: [2, 15]
-			}, {
-				14: 32,
-				30: [1, 16]
-			}, {
-				23: [2, 18]
-			}, {
-				23: [2, 22]
-			}, {
-				23: [2, 23]
-			}, {
-				14: 33,
-				30: [1, 16]
-			}, {
-				14: 34,
-				30: [1, 16]
-			}, {
-				19: [1, 35],
-				30: [2, 12]
-			}, {
-				5: [2, 16],
-				8: [2, 16],
-				9: [2, 16],
-				13: [2, 16],
-				15: [2, 16],
-				23: [2, 16]
-			}, {
-				5: [2, 10],
-				8: [2, 10],
-				9: [2, 10],
-				13: [2, 10],
-				15: [2, 10],
-				23: [2, 10]
-			}, {
-				5: [2, 11],
-				8: [2, 11],
-				9: [2, 11],
-				13: [2, 11],
-				15: [2, 11],
-				23: [2, 11]
-			}, {
-				10: 36,
-				23: [1, 13]
-			}, {
-				30: [2, 13]
-			}],
-			defaultActions: {
-				3: [2, 1],
-				23: [2, 14],
-				24: [2, 15],
-				26: [2, 18],
-				27: [2, 22],
-				28: [2, 23],
-				36: [2, 13]
-			},
-			parseError: function(e, t) {
-				if(!t.recoverable) throw new Error(e);
-				this.trace(e)
-			},
-			parse: function(e) {
-				function t() {
-					var e;
-					return e = n.lexer.lex() || p, "number" != typeof e && (e = n.symbols_[e] || e), e
-				}
-				var n = this,
-					i = [0],
-					r = [null],
-					o = [],
-					a = this.table,
-					s = "",
-					l = 0,
-					c = 0,
-					u = 0,
-					d = 2,
-					p = 1;
-				this.lexer.setInput(e), this.lexer.yy = this.yy, this.yy.lexer = this.lexer, this.yy.parser = this, "undefined" == typeof this.lexer.yylloc && (this.lexer.yylloc = {});
-				var h = this.lexer.yylloc;
-				o.push(h);
-				var f = this.lexer.options && this.lexer.options.ranges;
-				this.parseError = "function" == typeof this.yy.parseError ? this.yy.parseError : Object.getPrototypeOf(this).parseError;
-				for(var m, g, v, b, y, x, w, S, C, _ = {};;) {
-					if(v = i[i.length - 1], this.defaultActions[v] ? b = this.defaultActions[v] : ((null === m || "undefined" == typeof m) && (m = t()), b = a[v] && a[v][m]), "undefined" == typeof b || !b.length || !b[0]) {
-						var k = "";
-						C = [];
-						for(x in a[v]) this.terminals_[x] && x > d && C.push("'" + this.terminals_[x] + "'");
-						k = this.lexer.showPosition ? "Parse error on line " + (l + 1) + ":\n" + this.lexer.showPosition() + "\nExpecting " + C.join(", ") + ", got '" + (this.terminals_[m] || m) + "'" : "Parse error on line " + (l + 1) + ": Unexpected " + (m == p ? "end of input" : "'" + (this.terminals_[m] || m) + "'"), this.parseError(k, {
-							text: this.lexer.match,
-							token: this.terminals_[m] || m,
-							line: this.lexer.yylineno,
-							loc: h,
-							expected: C
-						})
-					}
-					if(b[0] instanceof Array && b.length > 1) throw new Error("Parse Error: multiple actions possible at state: " + v + ", token: " + m);
-					switch(b[0]) {
-						case 1:
-							i.push(m), r.push(this.lexer.yytext), o.push(this.lexer.yylloc), i.push(b[1]), m = null, g ? (m = g, g = null) : (c = this.lexer.yyleng, s = this.lexer.yytext, l = this.lexer.yylineno, h = this.lexer.yylloc, u > 0 && u--);
-							break;
-						case 2:
-							if(w = this.productions_[b[1]][1], _.$ = r[r.length - w], _._$ = {
-								first_line: o[o.length - (w || 1)].first_line,
-								last_line: o[o.length - 1].last_line,
-								first_column: o[o.length - (w || 1)].first_column,
-								last_column: o[o.length - 1].last_column
-							}, f && (_._$.range = [o[o.length - (w || 1)].range[0], o[o.length - 1].range[1]]), y = this.performAction.call(_, s, c, l, this.yy, b[1], r, o), "undefined" != typeof y) return y;
-							w && (i = i.slice(0, -2 * w), r = r.slice(0, -1 * w), o = o.slice(0, -1 * w)), i.push(this.productions_[b[1]][0]), r.push(_.$), o.push(_._$), S = a[i[i.length - 2]][i[i.length - 1]], i.push(S);
-							break;
-						case 3:
-							return !0
-					}
-				}
-				return !0
-			}
-		}, i = function() {
-				var e = {
-					EOF: 1,
-					parseError: function(e, t) {
-						if(!this.yy.parser) throw new Error(e);
-						this.yy.parser.parseError(e, t)
-					},
-					setInput: function(e) {
-						return this._input = e, this._more = this._backtrack = this.done = !1, this.yylineno = this.yyleng = 0, this.yytext = this.matched = this.match = "", this.conditionStack = ["INITIAL"], this.yylloc = {
-							first_line: 1,
-							first_column: 0,
-							last_line: 1,
-							last_column: 0
-						}, this.options.ranges && (this.yylloc.range = [0, 0]), this.offset = 0, this
-					},
-					input: function() {
-						var e = this._input[0];
-						this.yytext += e, this.yyleng++, this.offset++, this.match += e, this.matched += e;
-						var t = e.match(/(?:\r\n?|\n).*/g);
-						return t ? (this.yylineno++, this.yylloc.last_line++) : this.yylloc.last_column++, this.options.ranges && this.yylloc.range[1]++, this._input = this._input.slice(1), e
-					},
-					unput: function(e) {
-						var t = e.length,
-							n = e.split(/(?:\r\n?|\n)/g);
-						this._input = e + this._input, this.yytext = this.yytext.substr(0, this.yytext.length - t - 1), this.offset -= t;
-						var i = this.match.split(/(?:\r\n?|\n)/g);
-						this.match = this.match.substr(0, this.match.length - 1), this.matched = this.matched.substr(0, this.matched.length - 1), n.length - 1 && (this.yylineno -= n.length - 1);
-						var r = this.yylloc.range;
-						return this.yylloc = {
-							first_line: this.yylloc.first_line,
-							last_line: this.yylineno + 1,
-							first_column: this.yylloc.first_column,
-							last_column: n ? (n.length === i.length ? this.yylloc.first_column : 0) + i[i.length - n.length].length - n[0].length : this.yylloc.first_column - t
-						}, this.options.ranges && (this.yylloc.range = [r[0], r[0] + this.yyleng - t]), this.yyleng = this.yytext.length, this
-					},
-					more: function() {
-						return this._more = !0, this
-					},
-					reject: function() {
-						return this.options.backtrack_lexer ? (this._backtrack = !0, this) : this.parseError("Lexical error on line " + (this.yylineno + 1) + ". You can only invoke reject() in the lexer when the lexer is of the backtracking persuasion (options.backtrack_lexer = true).\n" + this.showPosition(), {
-							text: "",
-							token: null,
-							line: this.yylineno
-						})
-					},
-					less: function(e) {
-						this.unput(this.match.slice(e))
-					},
-					pastInput: function() {
-						var e = this.matched.substr(0, this.matched.length - this.match.length);
-						return(e.length > 20 ? "..." : "") + e.substr(-20).replace(/\n/g, "")
-					},
-					upcomingInput: function() {
-						var e = this.match;
-						return e.length < 20 && (e += this._input.substr(0, 20 - e.length)), (e.substr(0, 20) + (e.length > 20 ? "..." : "")).replace(/\n/g, "")
-					},
-					showPosition: function() {
-						var e = this.pastInput(),
-							t = new Array(e.length + 1).join("-");
-						return e + this.upcomingInput() + "\n" + t + "^"
-					},
-					test_match: function(e, t) {
-						var n, i, r;
-						if(this.options.backtrack_lexer && (r = {
-							yylineno: this.yylineno,
-							yylloc: {
-								first_line: this.yylloc.first_line,
-								last_line: this.last_line,
-								first_column: this.yylloc.first_column,
-								last_column: this.yylloc.last_column
-							},
-							yytext: this.yytext,
-							match: this.match,
-							matches: this.matches,
-							matched: this.matched,
-							yyleng: this.yyleng,
-							offset: this.offset,
-							_more: this._more,
-							_input: this._input,
-							yy: this.yy,
-							conditionStack: this.conditionStack.slice(0),
-							done: this.done
-						}, this.options.ranges && (r.yylloc.range = this.yylloc.range.slice(0))), i = e[0].match(/(?:\r\n?|\n).*/g), i && (this.yylineno += i.length), this.yylloc = {
-							first_line: this.yylloc.last_line,
-							last_line: this.yylineno + 1,
-							first_column: this.yylloc.last_column,
-							last_column: i ? i[i.length - 1].length - i[i.length - 1].match(/\r?\n?/)[0].length : this.yylloc.last_column + e[0].length
-						}, this.yytext += e[0], this.match += e[0], this.matches = e, this.yyleng = this.yytext.length, this.options.ranges && (this.yylloc.range = [this.offset, this.offset += this.yyleng]), this._more = !1, this._backtrack = !1, this._input = this._input.slice(e[0].length), this.matched += e[0], n = this.performAction.call(this, this.yy, this, t, this.conditionStack[this.conditionStack.length - 1]), this.done && this._input && (this.done = !1), n) return n;
-						if(this._backtrack) {
-							for(var o in r) this[o] = r[o];
-							return !1
-						}
-						return !1
-					},
-					next: function() {
-						if(this.done) return this.EOF;
-						this._input || (this.done = !0);
-						var e, t, n, i;
-						this._more || (this.yytext = "", this.match = "");
-						for(var r = this._currentRules(), o = 0; o < r.length; o++)
-							if(n = this._input.match(this.rules[r[o]]), n && (!t || n[0].length > t[0].length)) {
-								if(t = n, i = o, this.options.backtrack_lexer) {
-									if(e = this.test_match(n, r[o]), e !== !1) return e;
-									if(this._backtrack) {
-										t = !1;
-										continue
-									}
-									return !1
-								}
-								if(!this.options.flex) break
-							}
-						return t ? (e = this.test_match(t, r[i]), e !== !1 ? e : !1) : "" === this._input ? this.EOF : this.parseError("Lexical error on line " + (this.yylineno + 1) + ". Unrecognized text.\n" + this.showPosition(), {
-							text: "",
-							token: null,
-							line: this.yylineno
-						})
-					},
-					lex: function() {
-						var e = this.next();
-						return e ? e : this.lex()
-					},
-					begin: function(e) {
-						this.conditionStack.push(e)
-					},
-					popState: function() {
-						var e = this.conditionStack.length - 1;
-						return e > 0 ? this.conditionStack.pop() : this.conditionStack[0]
-					},
-					_currentRules: function() {
-						return this.conditionStack.length && this.conditionStack[this.conditionStack.length - 1] ? this.conditions[this.conditionStack[this.conditionStack.length - 1]].rules : this.conditions.INITIAL.rules
-					},
-					topState: function(e) {
-						return e = this.conditionStack.length - 1 - Math.abs(e || 0), e >= 0 ? this.conditionStack[e] : "INITIAL"
-					},
-					pushState: function(e) {
-						this.begin(e)
-					},
-					stateStackSize: function() {
-						return this.conditionStack.length
-					},
-					options: {
-						"case-insensitive": !0
-					},
-					performAction: function(e, t, n) {
-						switch(n) {
-							case 0:
-								return 8;
-							case 1:
-								break;
-							case 2:
-								break;
-							case 3:
-								return 9;
-							case 4:
-								return 20;
-							case 5:
-								return 21;
-							case 6:
-								return 17;
-							case 7:
-								return 15;
-							case 8:
-								return 13;
-							case 9:
-								return 19;
-							case 10:
-								return 23;
-							case 11:
-								return 27;
-							case 12:
-								return 26;
-							case 13:
-								return 29;
-							case 14:
-								return 28;
-							case 15:
-								return 30;
-							case 16:
-								return 5;
-							case 17:
-								return "INVALID"
-						}
-					},
-					rules: [/^(?:[\n]+)/i, /^(?:\s+)/i, /^(?:#[^\n]*)/i, /^(?:participant\b)/i, /^(?:left of\b)/i, /^(?:right of\b)/i, /^(?:over\b)/i, /^(?:note\b)/i, /^(?:title\b)/i, /^(?:,)/i, /^(?:[^\->:\n,]+)/i, /^(?:--)/i, /^(?:-)/i, /^(?:>>)/i, /^(?:>)/i, /^(?:[^#\n]+)/i, /^(?:$)/i, /^(?:.)/i],
-					conditions: {
-						INITIAL: {
-							rules: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
-							inclusive: !0
-						}
-					}
-				};
-				return e
-			}();
-		return n.lexer = i, t.prototype = n, n.Parser = t, new t
-	}();
-	"undefined" != typeof require && "undefined" != typeof exports && (exports.parser = n, exports.Parser = n.Parser, exports.parse = function() {
-		return n.parse.apply(n, arguments)
-	}, exports.main = function(e) {
-		e[1] || (console.log("Usage: " + e[0] + " FILE"), process.exit(1));
-		var t = require("fs").readFileSync(require("path").normalize(e[1]), "utf8");
-		return exports.parser.parse(t)
-	}, "undefined" != typeof module && require.main === module && exports.main(process.argv.slice(1))), t.prototype = new Error, e.ParseError = t, n.parseError = function(e, n) {
-		throw new t(e, n)
-	}, e.parse = function(t) {
-		return n.yy = new e, n.parse(t)
-	}, this.Diagram = e
-}.call(this), "undefined" != typeof jQuery && function(e) {
-	e.fn.sequenceDiagram = function(t) {
-		return this.each(function() {
-			var n = e(this),
-				i = Diagram.parse(n.text());
-			n.html(""), i.drawSVG(this, t)
-		})
-	}
-}(jQuery), Raphael.registerFont({
-	w: 209,
-	face: {
-		"font-family": "daniel",
-		"font-weight": 700,
-		"font-stretch": "normal",
-		"units-per-em": "360",
-		"panose-1": "2 11 8 0 0 0 0 0 0 0",
-		ascent: "288",
-		descent: "-72",
-		"x-height": "7",
-		bbox: "-92.0373 -310.134 632 184.967",
-		"underline-thickness": "3.51562",
-		"underline-position": "-21.6211",
-		"unicode-range": "U+0009-U+F002"
-	},
-	glyphs: {
-		" ": {
-			w: 179
-		},
-		"	": {
-			w: 179
-		},
-		"!": {
-			d: "66,-306v9,3,18,11,19,24v-18,73,-20,111,-37,194v0,10,2,34,-12,34v-12,0,-18,-9,-18,-28v0,-85,23,-136,38,-214v1,-7,4,-10,10,-10xm25,-30v15,-1,28,34,5,35v-11,-1,-38,-36,-5,-35",
-			w: 115
-		},
-		'"': {
-			d: "91,-214v-32,3,-25,-40,-20,-68v3,-16,7,-25,12,-27v35,13,14,56,8,95xm8,-231v4,-31,1,-40,18,-75v37,7,11,51,11,79v-3,3,-4,8,-5,13v-17,4,-16,-10,-24,-17",
-			w: 117
-		},
-		"#": {
-			d: "271,-64v-30,26,-96,-7,-102,51v-6,2,-13,2,-24,-2v-2,-11,10,-21,2,-28v-14,5,-48,0,-48,22v0,23,-11,14,-29,10v-7,-6,6,-19,-1,-24r-32,4v-19,-8,-15,-24,5,-28r33,-6v4,0,24,-23,11,-27v-26,0,-63,14,-74,-10v3,-1,9,-17,16,-10v15,-8,81,4,89,-30v8,-14,16,-34,24,-38v23,9,24,38,5,49v37,24,55,-38,72,-43v19,10,20,23,-1,45v2,8,23,1,29,4v3,3,6,6,10,11v-14,13,-20,12,-45,12v-17,0,-16,17,-19,29v18,-7,49,3,67,-2v4,0,8,4,12,11xm161,-104v-30,-1,-44,10,-44,37v14,1,24,0,40,-5v0,-1,3,-10,8,-26v0,-4,-1,-6,-4,-6",
-			w: 285
-		},
-		$: {
-			d: "164,-257v29,4,1,42,-3,50v5,5,38,13,41,24v8,4,6,15,-2,21v-18,3,-36,-17,-49,-17v-17,1,-31,40,-28,48v5,4,8,8,9,10v13,1,35,37,28,44v-10,21,-36,20,-65,28v-10,10,-12,40,-17,51v-9,-3,-28,1,-18,-17v0,-13,5,-24,-1,-35v-18,1,-59,-10,-42,-29v21,0,56,16,55,-16v5,-4,9,-18,9,-26v-14,-15,-55,-41,-53,-65v2,-33,56,-19,98,-26v10,-14,31,-43,38,-45xm93,-152v11,-10,15,-15,14,-29v-17,-3,-37,1,-43,6v10,12,20,19,29,23xm111,-103v-8,1,-11,12,-10,22v10,0,28,2,27,-8v0,-4,-13,-15,-17,-14",
-			w: 225
-		},
-		"%": {
-			d: "181,-96v24,-7,67,-13,104,1v14,18,21,19,22,44v-13,43,-99,61,-146,36v-9,-9,-22,-11,-32,-29v0,-27,24,-53,52,-52xm139,-185v-9,68,-138,73,-131,-5v0,-3,3,-9,9,-17v13,1,27,1,17,-16v5,-39,63,0,93,-6v36,1,80,-9,102,11v15,32,12,32,-8,56v-16,21,-103,78,-152,125r-14,28v-23,11,-25,-7,-29,-20v34,-71,133,-98,171,-162v-13,-12,-52,-5,-61,1v0,1,1,3,3,5xm38,-190v0,34,55,29,70,8v0,-14,-20,-11,-32,-14v-14,-3,-24,-9,-40,-10v1,0,5,11,2,16xm172,-53v12,27,90,18,102,-5v-18,-7,-32,-10,-40,-10v-29,3,-57,-4,-62,15",
-			w: 308
-		},
-		"&": {
-			d: "145,-82v17,-8,47,-15,71,-26v13,2,25,12,9,23v-23,7,-40,16,-53,27r0,6v13,8,30,21,36,38v0,8,-4,12,-11,12v-19,0,-43,-39,-59,-44v-30,12,-65,29,-97,32v-32,3,-45,-41,-23,-63v21,-20,52,-26,70,-48v-4,-31,-12,-47,9,-73v13,-16,20,-29,23,-39v15,-15,32,-22,51,-22v30,9,62,64,32,96v-2,3,-47,42,-69,48v-15,8,-11,9,0,22v6,7,10,11,11,11xm114,-138v25,-13,62,-38,74,-62v0,-9,-10,-31,-20,-29v-28,7,-60,42,-60,75v0,10,2,15,6,16xm99,-91v-18,10,-54,18,-59,45v26,5,61,-12,77,-22v-1,-5,-13,-23,-18,-23",
-			w: 253
-		},
-		"'": {
-			d: "36,-182v-36,7,-34,-61,-17,-80v15,1,21,19,21,20r-1,-1v0,0,-1,12,-5,35v1,5,3,17,2,26",
-			w: 63
-		},
-		"(": {
-			d: "130,-306v13,2,23,43,-1,43v-49,43,-77,77,-90,148v5,49,27,67,64,101v4,14,5,6,2,19r-15,0v-35,-17,-79,-58,-79,-120v0,-58,66,-176,119,-191",
-			w: 120
-		},
-		")": {
-			d: "108,-138v-2,73,-48,120,-98,153v-17,-5,-16,-20,-6,-31v52,-64,73,-62,74,-135v1,-42,-40,-98,-58,-128v0,-5,-1,-12,-2,-22v18,-18,25,0,42,27v25,39,50,66,48,136",
-			w: 120
-		},
-		"*": {
-			d: "121,-271v15,-5,36,-8,40,9v-5,10,-31,19,-47,31v0,11,34,43,14,53v-18,8,-24,-24,-34,-20v-4,10,-4,19,-12,41v-25,7,-15,-30,-17,-47v-13,-1,-17,9,-46,30r-10,0v-20,-32,37,-43,54,-64v-10,-11,-36,-33,-16,-51v3,0,14,8,33,24v8,-10,26,-39,32,-42v14,7,15,23,9,36",
-			w: 177
-		},
-		"+": {
-			d: "163,-64v-7,22,-65,2,-77,21v-2,10,-6,21,-11,35v-20,4,-21,-12,-19,-29v3,-23,-44,6,-39,-27v-8,-22,36,-8,49,-18v8,-13,6,-36,24,-40v19,-4,14,32,11,39v18,3,19,2,54,8v2,1,5,5,8,11",
-			w: 170
-		},
-		",": {
-			d: "25,63v-26,21,-48,-2,-22,-24v14,-12,35,-40,35,-69v3,-2,3,-11,12,-9v35,17,5,88,-25,102",
-			w: 97
-		},
-		"-": {
-			d: "57,-94v19,4,55,-5,54,17v-15,23,-54,20,-91,15v-4,2,-13,-10,-11,-16v-1,-22,28,-15,48,-16",
-			w: 124
-		},
-		".": {
-			d: "40,-48v21,20,21,44,-4,44v-33,0,-26,-24,-10,-44r14,0",
-			w: 67
-		},
-		"/": {
-			d: "21,20v-22,-45,21,-95,41,-126v38,-57,115,-158,193,-201v2,0,4,3,7,11v11,29,-15,34,-25,55v-81,56,-189,208,-197,261r-19,0",
-			w: 275
-		},
-		0: {
-			d: "78,-237v70,-47,269,-41,270,59v0,34,-11,53,-29,76v-13,35,-30,32,-85,64v-6,2,-10,6,-7,8v-73,14,-98,38,-173,1v-7,-13,-52,-48,-46,-88v9,-57,27,-75,70,-120xm123,-38v100,0,202,-46,195,-153v-32,-55,-144,-73,-211,-35v-16,34,-68,54,-53,108v6,25,1,22,-3,39v6,24,41,41,72,41",
-			w: 353
-		},
-		1: {
-			d: "39,-208v0,-14,6,-59,29,-39v3,4,6,13,10,24r-22,128r8,87v-4,6,-9,3,-16,2v-44,-38,-9,-137,-9,-202",
-			w: 93
-		},
-		2: {
-			d: "88,-35v47,-10,119,-24,168,-9v0,12,-23,13,-35,16v1,1,3,1,5,1v-74,8,-118,23,-194,23v-14,0,-20,-13,-21,-28v55,-40,83,-61,123,-104v26,-13,65,-67,71,-102v-1,-9,-11,-16,-22,-16v-20,-1,-120,29,-156,49v-10,-2,-30,-20,-10,-28v50,-21,111,-51,178,-48v25,10,44,22,36,39v12,30,-19,64,-34,83v-39,48,-37,39,-115,109v0,5,-3,8,-8,11v4,3,8,4,14,4",
-			w: 265
-		},
-		3: {
-			d: "188,-282v34,-10,74,25,47,51v-19,32,-55,50,-92,70v28,14,116,25,108,70v8,14,-49,40,-63,48v-29,9,-130,22,-168,42v-6,-5,-19,-7,-12,-22v56,-36,175,-21,210,-76v-9,-20,-88,-42,-97,-33v-20,-1,-41,2,-56,-7r5,-21v56,-25,103,-36,137,-78v1,-1,2,-5,4,-11v-15,-14,-56,7,-79,0v-10,9,-73,22,-92,31v-11,-4,-28,-23,-13,-30v50,-22,96,-26,154,-37v0,-1,8,3,7,3",
-			w: 260
-		},
-		4: {
-			d: "79,-249v-7,17,-29,75,-33,96v0,6,3,8,8,8v43,-2,111,6,141,-6v17,-47,20,-100,63,-148v9,4,16,7,21,10v-17,31,-44,95,-51,141v7,4,24,-4,23,10v-1,16,-29,12,-31,23v-10,22,-9,69,-7,103v-3,2,-7,5,-10,9v-47,-11,-23,-74,-16,-114v0,-4,-2,-6,-7,-6v-65,2,-89,13,-162,4v-22,-22,-2,-53,5,-76v16,-15,17,-57,35,-70v6,-1,21,11,21,16",
-			w: 267
-		},
-		5: {
-			d: "185,-272v30,7,45,-8,53,18v1,16,-17,18,-34,14v0,0,-95,-11,-129,1v-6,9,-24,33,-29,54v76,10,171,5,214,47v11,11,22,30,5,52v-14,12,-30,14,-34,27v-26,11,-141,63,-157,60v-16,-2,-25,-19,-4,-27v48,-18,128,-39,170,-86v4,-14,-65,-41,-85,-41r-92,0v-10,-4,-66,-1,-57,-23v0,-23,23,-51,35,-83v11,-28,133,-10,144,-13",
-			w: 284
-		},
-		6: {
-			d: "70,-64v9,-51,63,-74,123,-71v43,2,109,3,111,41r-25,47v0,1,1,2,2,3v-5,0,-39,10,-41,20v-15,3,-22,4,-22,11v-39,1,-77,20,-119,13v-42,-7,-35,-9,-77,-46v-56,-118,94,-201,176,-229v7,0,21,8,20,15v-2,17,-23,15,-43,24v-69,31,-119,72,-134,145v-5,25,36,68,78,64v59,-6,128,-18,153,-61v-7,-14,-13,-9,-32,-21v-67,-15,-118,-5,-150,43r0,12v-13,4,-17,-3,-20,-10",
-			w: 310
-		},
-		7: {
-			d: "37,-228v33,-14,173,-17,181,-19v28,-1,24,31,9,45v-17,15,-45,49,-59,69v-17,26,-55,67,-61,113v-10,13,-9,14,-14,20v-33,-13,-20,-25,-11,-53v16,-48,73,-115,109,-156v2,-7,5,-14,-10,-12v-26,4,-54,6,-76,13v-23,-5,-83,31,-94,-9v2,-8,18,-19,26,-11",
-			w: 245
-		},
-		8: {
-			d: "57,-236v40,-50,166,-51,213,-10v22,28,10,63,-22,78r-35,17v8,5,54,24,53,44v-5,14,-4,33,-18,42v-13,13,-35,18,-44,34v-60,27,-190,49,-194,-42v7,-41,17,-54,59,-70r0,-4v-32,-9,-73,-62,-26,-85v4,0,8,-2,14,-4xm142,-160v24,-2,160,-31,99,-72v-28,-18,-108,-33,-146,-5v-16,12,-28,30,-33,59v24,12,37,20,80,18xm41,-62v30,65,189,6,199,-37v3,-14,-60,-30,-74,-30v-70,0,-118,10,-125,67",
-			w: 290
-		},
-		9: {
-			d: "11,-192v15,-49,119,-61,161,-23v16,15,27,55,11,79v-20,62,-51,79,-96,118v-10,4,-45,27,-50,6v9,-15,66,-52,98,-99v-7,-7,-8,-3,-25,0v-49,-11,-96,-25,-99,-81xm145,-131v7,-5,13,-34,13,-41v-2,-51,-104,-38,-114,-6v-2,10,37,35,46,35v23,1,43,-1,55,12",
-			w: 198
-		},
-		":": {
-			d: "39,-125v15,-8,40,-1,40,15v0,15,-6,22,-19,22v-13,0,-29,-21,-21,-37xm66,-17v-8,27,-51,19,-46,-8v-1,-6,8,-22,14,-20v29,0,30,6,32,28",
-			w: 95
-		},
-		";": {
-			d: "56,-93v2,-30,37,-22,40,2v0,2,-1,7,-3,15v-13,8,-15,6,-27,4xm64,-44v11,-11,30,-4,32,14v-21,39,-63,71,-92,85v-5,0,-11,-2,-18,-8v11,-23,36,-36,50,-61v11,-7,19,-20,28,-30",
-			w: 107
-		},
-		"<": {
-			d: "166,-202v12,0,29,15,24,29v0,4,-119,64,-120,73v15,21,89,64,91,86v2,29,-18,12,-30,15v-27,-29,-59,-54,-95,-75v-18,-10,-25,-13,-24,-41",
-			w: 176
-		},
-		"=": {
-			d: "125,-121v18,7,55,-9,69,14v0,17,-45,26,-135,26v-18,0,-27,-7,-27,-21v-1,-37,60,-5,93,-19xm138,-71v20,0,48,-1,50,16v-13,24,-86,32,-131,29v-29,-2,-43,-10,-43,-24v-7,-23,36,-14,39,-17v27,6,57,-4,85,-4",
-			w: 196
-		},
-		">": {
-			d: "4,-14v20,-48,77,-59,118,-94v-16,-19,-58,-52,-81,-75v-11,-7,-15,-38,-1,-40v33,16,83,71,121,105v26,23,-6,35,-41,53v-29,16,-56,28,-73,54v-21,15,-16,20,-34,15v-3,0,-9,-16,-9,-18",
-			w: 174
-		},
-		"?": {
-			d: "105,-291v57,-13,107,-4,107,39v0,67,-136,85,-155,137v-1,6,10,23,-4,23v-23,1,-33,-35,-23,-57v31,-41,124,-60,149,-103v-8,-21,-72,-5,-88,-1v-23,6,-59,39,-71,8v0,0,-1,0,1,-17v10,-4,45,-20,84,-29xm80,-25v-6,4,-8,39,-24,22v-24,3,-22,-21,-13,-35v17,-7,29,5,37,13",
-			w: 216
-		},
-		"@": {
-			d: "218,-207v23,8,42,14,47,37v44,68,-27,137,-87,85r1,0v0,2,-59,19,-61,17v-35,0,-42,-47,-17,-68r0,-4v-19,-1,-45,37,-49,40v-37,76,58,72,121,62v11,-2,34,-13,36,3v-14,31,-69,31,-114,33v-51,2,-99,-41,-80,-92v2,-30,22,-40,42,-63v35,-20,91,-53,161,-50xm217,-101v23,0,35,-19,35,-41v0,-43,-75,-41,-102,-19v36,3,55,16,62,41v-6,5,-6,19,5,19xm127,-110v8,5,51,-15,28,-16v-4,0,-25,4,-28,16",
-			w: 291
-		},
-		A: {
-			d: "97,-81v-23,-10,-39,38,-52,60v-8,6,-8,6,-22,18v-22,-7,-23,-37,-4,-49v7,-8,11,-15,15,-23r-1,1v-14,-26,23,-29,31,-40v1,-1,15,-29,26,-36v17,-31,39,-58,54,-92v16,-20,20,-51,41,-66v29,5,34,62,45,92v9,64,21,103,49,155v-3,25,-44,11,-54,0v-34,-12,-97,-29,-128,-20xm107,-118v20,6,80,10,111,17v6,-7,-4,-15,-7,-24v-11,-28,-9,-92,-30,-117v-9,9,-19,44,-34,55v-9,23,-27,40,-40,69",
-			w: 294
-		},
-		B: {
-			d: "256,-179v41,10,115,34,91,91v-6,3,-14,12,-19,20v-37,19,-50,34,-63,25v-9,10,-12,11,-34,13r3,-3v-4,-4,-12,-4,-18,0v0,0,2,2,5,4v-21,14,-26,6,-44,15v-4,0,-7,-2,-8,-5v-6,11,-20,-5,-18,11v-36,4,-91,35,-114,4v-7,-62,-10,-138,4,-199v-1,-19,-37,2,-37,-27v0,-8,2,-13,6,-15v68,-31,231,-92,311,-39v8,12,12,20,12,25v-8,42,-32,49,-77,80xm79,-160v72,-17,135,-39,184,-70v20,-13,31,-23,31,-27v1,-6,-30,-13,-38,-12v-54,0,-116,13,-186,41v11,21,1,48,9,68xm262,-43v0,-4,3,-6,-4,-5v0,1,1,2,4,5xm211,-140v-34,7,-94,24,-139,15v-6,20,-4,56,-4,82v0,29,43,1,56,2v48,-11,108,-25,154,-48v20,-10,32,-17,32,-25v0,-18,-33,-26,-99,-26xm195,-20v6,1,6,-2,5,-7v-3,2,-7,2,-5,7",
-			w: 364
-		},
-		C: {
-			d: "51,-114v-12,75,96,76,166,71r145,-10v9,2,9,5,9,18v-37,18,-85,28,-109,22v-18,10,-47,10,-71,10v-29,0,-68,1,-105,-11v-6,-1,-10,-3,-10,-8v-33,-13,-48,-33,-66,-59v-19,-114,146,-150,224,-177v35,0,88,-31,99,7v-1,29,-49,14,-76,28v-55,8,-115,35,-175,71v-13,8,-23,21,-31,38",
-			w: 376
-		},
-		D: {
-			d: "312,-78v-2,1,-3,7,-10,5v6,-3,10,-4,10,-5xm4,-252v2,-27,83,-38,106,-39v130,-7,267,1,291,109v0,0,-2,8,-3,25v-5,9,-4,28,-23,34v-4,4,-2,5,-7,0v-3,3,-15,7,-5,10v0,0,-10,14,-13,2v-11,1,-8,5,-20,14v1,2,7,3,9,1v-4,13,-22,13,-11,4v0,-3,1,-6,-3,-5v-40,29,-103,38,-141,65v10,6,22,-7,34,-3v-41,20,-127,44,-171,46v-21,1,-47,-33,-11,-39v15,-2,43,-6,56,-11v-16,-101,-5,-130,9,-207v2,0,4,-1,6,-3v-16,-17,-91,38,-103,-3xm297,-69v-7,3,-17,8,-25,7v1,1,3,2,5,2v-4,2,-11,5,-23,9v4,-11,30,-21,43,-18xm240,-51v10,0,12,2,0,6r0,-6xm220,-36v-1,-3,4,-6,6,-3v0,1,-2,1,-6,3xm125,-48v16,6,137,-46,155,-53v29,-18,101,-44,82,-93v-21,-53,-84,-61,-168,-67v-20,7,-50,3,-77,8v33,54,-12,132,8,205xm159,-22v-4,-1,-15,-5,-15,2v7,-1,12,-2,15,-2",
-			w: 381
-		},
-		E: {
-			d: "45,-219v-19,-36,34,-41,63,-36v44,-10,133,-8,194,-15v3,2,38,11,52,15v-73,19,-171,21,-246,38v-9,11,-16,32,-20,61v35,11,133,-6,183,3v1,6,2,7,3,14v-46,24,-118,16,-193,27v-15,13,-22,52,-22,66v60,1,121,-20,188,-20v22,10,53,-7,74,5v16,29,-23,26,-43,32v-73,4,-139,13,-216,27r-52,-10v-4,-22,23,-69,26,-98v-3,0,-10,-15,-12,-24v20,-12,34,-23,35,-67v2,-1,5,-5,5,-7v0,-4,-14,-11,-19,-11",
-			w: 353
-		},
-		F: {
-			d: "270,-258v13,2,59,6,48,34v-78,-3,-143,1,-212,22v-10,16,-21,43,-24,69r145,-9v8,3,29,-3,16,21v-14,-1,-59,13,-60,7v-12,13,-67,18,-108,21v-2,1,-4,3,-7,6v-2,23,-8,43,-7,69v1,28,-30,11,-40,5r10,-80r-26,-14v5,-10,10,-33,28,-25v21,-3,15,-46,26,-59v-1,-3,-32,-13,-28,-24v2,-22,45,-16,59,-30v47,4,99,-14,151,-9v5,-3,25,-3,29,-4",
-			w: 236
-		},
-		G: {
-			d: "311,-168v53,0,94,57,74,110v-31,37,-71,34,-136,52v-13,-7,-41,10,-57,7v-73,-1,-122,-17,-162,-59v-49,-51,-24,-80,5,-130v35,-61,138,-93,214,-106v16,4,42,-1,40,21v-5,40,-39,2,-73,21v-76,19,-162,65,-177,142v28,103,237,76,312,29v2,-3,3,-7,3,-13v-10,-35,-37,-43,-87,-45v-16,-13,-53,-9,-78,1v-4,-3,-5,-7,-5,-11v17,-29,73,-17,108,-24v12,4,18,5,19,5",
-			w: 391
-		},
-		H: {
-			d: "300,-268v18,12,19,32,4,51v-35,44,-34,140,-46,217v-1,5,-5,13,-11,12v-6,1,-19,-14,-18,-27r7,-106v-28,7,-76,22,-116,14v-18,2,-36,6,-55,3v-43,-8,-14,53,-33,75v-29,1,-26,-67,-21,-97v5,-31,28,-73,43,-98v2,2,7,3,14,3v13,33,-11,48,-13,78v61,4,118,2,176,2v8,0,13,-6,15,-20v4,-47,21,-87,54,-107",
-			w: 288
-		},
-		I: {
-			d: "63,-266v34,10,-4,105,-8,128r-24,126v-2,2,-3,1,-9,6v-12,-10,-12,-15,-12,-47v0,-93,9,-156,28,-188v10,-17,19,-25,25,-25",
-			w: 79
-		},
-		J: {
-			d: "235,-291v26,11,31,104,31,142v0,37,-2,95,-32,126v-33,34,-121,26,-167,1v-18,-11,-54,-29,-59,-59v0,-3,5,-15,16,-14v31,36,90,57,162,51v63,-30,56,-148,32,-226v-1,-16,11,-13,17,-21",
-			w: 282
-		},
-		K: {
-			d: "212,-219v17,-5,80,-60,80,-19v0,9,-2,14,-5,16r-132,78v-34,23,-54,32,-21,50v39,21,74,23,124,41v5,2,7,5,7,9v-4,24,-55,15,-79,8v-67,-19,-98,-36,-116,-83v9,-24,38,-35,66,-61v7,-4,49,-30,76,-39xm47,-194v11,-20,11,-45,31,-55v2,2,4,3,6,0v29,39,-21,96,-18,128v-17,24,-15,62,-29,113v-4,3,-10,7,-19,11v-12,-13,-10,-28,-8,-53v3,-31,17,-79,37,-144",
-			w: 270
-		},
-		L: {
-			d: "84,-43v58,0,179,-27,242,-4v3,17,-29,24,-40,26v-85,-4,-202,46,-268,3v-24,-16,-2,-33,-4,-57v26,-76,38,-108,86,-191v14,-7,26,-50,45,-32v6,22,5,31,-12,46v-20,39,-50,82,-67,142v-7,6,-19,46,-19,54v0,9,12,13,37,13",
-			w: 331
-		},
-		M: {
-			d: "174,-236v-1,52,-11,92,-7,143v10,5,15,-12,22,-18v42,-55,90,-130,136,-174r15,-18v42,2,32,53,11,80v-12,58,-54,143,-34,210v0,3,-3,12,-9,10v-31,-5,-32,-57,-27,-92v4,-27,12,-58,25,-93v-5,-10,5,-19,6,-30v-46,44,-66,110,-129,172v-11,10,-18,15,-22,15v-34,6,-28,-103,-28,-152v-28,22,-65,119,-96,170v-9,15,-34,3,-31,-19v30,-64,91,-177,139,-229v12,-1,29,13,29,25",
-			w: 343
-		},
-		N: {
-			d: "248,-20v-3,17,-37,18,-43,3v-24,-35,-53,-145,-80,-203v-32,40,-55,120,-92,174v-13,3,-26,-13,-27,-22r87,-171v4,-13,20,-57,42,-32v42,48,46,139,82,198v29,-45,46,-88,65,-153v12,-19,23,-42,38,-60v27,-1,14,18,4,44v-6,46,-32,68,-37,121v-15,29,-33,69,-39,101",
-			w: 307
-		},
-		O: {
-			d: "240,-268v85,1,163,29,150,125v13,7,-12,18,-5,26v-23,63,-133,112,-228,124v-80,-16,-171,-56,-148,-153v11,-47,20,-43,53,-83v17,-9,39,-22,73,-29v45,-10,81,-10,105,-10xm363,-156v16,-51,-62,-85,-111,-79v-25,-11,-50,8,-81,0v-15,10,-70,16,-85,31v6,20,-27,24,-39,45v-42,75,40,128,115,128v56,0,209,-71,201,-125",
-			w: 383
-		},
-		P: {
-			d: "70,-225v-7,-12,-36,16,-49,19v-4,0,-9,-5,-14,-17v21,-47,114,-55,172,-59v41,-3,132,33,99,87v-21,34,-72,59,-144,80v-2,16,-79,3,-74,46v3,25,-5,47,-10,68v-22,-1,-23,-29,-22,-56v2,-25,-20,-32,-8,-50v21,-5,10,-35,25,-57v6,-28,14,-48,25,-61xm71,-229v47,14,-2,50,-1,99v41,-3,113,-37,173,-76v5,-9,8,-14,8,-15v-28,-47,-125,-29,-180,-8",
-			w: 252
-		},
-		Q: {
-			d: "374,-217v20,59,-11,127,-48,156r30,38v-1,6,-8,16,-14,9v-3,0,-19,-9,-47,-26v-72,35,-173,75,-236,12v-70,-40,-67,-213,26,-217r8,5v24,-20,72,-48,112,-38v21,-4,22,-1,50,-2v66,-2,94,20,119,63xm296,-88v13,5,61,-49,63,-84v4,-62,-54,-78,-119,-76v-14,-6,-49,5,-71,3v-42,16,-89,41,-93,94v-9,11,1,25,-7,38v-12,-19,-7,-67,-1,-88v-56,30,-37,137,19,155v27,17,92,19,119,0v12,-2,29,-9,52,-20v2,-2,3,-3,3,-6v-11,-12,-46,-27,-54,-56v0,-13,3,-19,9,-19v18,1,60,52,80,59",
-			w: 379
-		},
-		R: {
-			d: "100,-275v96,-23,196,-10,208,78v-3,18,-17,52,-49,62v-14,20,-54,23,-79,40v-2,0,-14,2,-36,6v-40,8,-30,14,-3,33v37,27,52,30,118,55v16,6,31,23,12,27v-58,-2,-104,-29,-143,-61v-14,-3,-16,-15,-39,-27v-23,-19,-28,-12,-15,-38v63,-19,111,-15,163,-53v27,-20,43,-36,43,-49v0,-64,-120,-62,-173,-38v-9,4,-38,9,-40,18v-10,32,-16,70,-13,116v-10,21,-8,47,-6,75v2,31,-9,29,-27,22v-9,-55,5,-140,15,-190v-8,-6,-24,10,-24,-11v0,-34,16,-34,42,-55v2,-1,17,-4,46,-10",
-			w: 297
-		},
-		S: {
-			d: "13,-3v-7,-3,-22,-18,-5,-22v68,-15,119,-32,154,-45v51,-19,39,-34,3,-53v-46,-25,-82,-30,-121,-64v-33,-29,-50,-35,-25,-58v37,-20,119,-29,181,-29v29,0,44,6,44,18v-9,26,-62,6,-104,14v-17,2,-72,6,-92,16v37,53,132,58,180,111v8,9,11,20,11,30v-4,17,-23,35,-42,34v-21,16,-17,1,-49,17v-14,7,-41,9,-56,20v-25,-3,-49,10,-79,11",
-			w: 234
-		},
-		T: {
-			d: "141,-3v-36,-6,1,-49,-3,-79v10,-19,6,-35,15,-64r26,-85v-51,-9,-100,10,-141,14v-16,2,-30,-26,-11,-32v26,-8,143,-8,179,-19r12,6v67,-2,142,-1,200,-1v8,0,14,3,19,10v-18,16,-74,3,-103,14v-48,-4,-60,4,-113,7v-42,22,-36,130,-58,187v1,12,-9,44,-22,42",
-			w: 277
-		},
-		U: {
-			d: "365,-262v13,56,-22,104,-36,141v-19,22,-30,38,-57,56v-4,18,-60,35,-78,50v-53,28,-142,0,-161,-34v-31,-56,-37,-108,-11,-164v17,-33,29,-50,48,-29v-2,2,-3,7,-4,13v-44,36,-38,149,7,174v30,26,55,19,102,4v56,-17,66,-34,120,-76v12,-24,56,-68,46,-122r0,-16v0,1,-1,3,-1,6v4,-13,11,-10,25,-3",
-			w: 368
-		},
-		V: {
-			d: "246,-258v21,-22,31,-26,44,-8v1,1,-12,22,-28,35v-15,25,-41,38,-56,69v-13,15,-20,31,-28,57v-15,13,-11,29,-27,72v3,21,-5,24,-27,27v-33,-45,-54,-118,-84,-167v-5,-26,-18,-50,-25,-76v-3,-12,24,-8,29,-5v8,13,18,52,26,70r52,115v9,-2,4,-9,10,-21r25,-47v25,-44,46,-76,89,-121",
-			w: 234
-		},
-		W: {
-			d: "31,-213v16,46,17,106,41,151v31,-35,49,-89,76,-127v30,-15,39,27,52,56v10,22,21,48,35,67v2,0,4,-1,5,-3v16,-28,50,-76,79,-121v14,-21,40,-63,64,-83r5,8v-30,58,-76,110,-97,173v-18,28,-25,37,-33,63v-11,1,-16,25,-30,15v-21,-31,-44,-89,-62,-131v0,-2,-1,-3,-5,-5v-17,11,-16,36,-31,50v-20,33,-20,84,-68,94v-24,-19,-23,-81,-39,-111v-1,-15,-29,-94,-10,-108v9,2,12,5,18,12",
-			w: 331
-		},
-		X: {
-			d: "143,-183v43,-25,69,-36,126,-62v22,-10,86,-10,56,21v-51,3,-158,61,-154,64v10,15,41,30,50,52v27,17,46,60,70,82v9,14,-6,30,-24,20v-35,-43,-75,-100,-116,-132v-48,13,-100,47,-118,94v-1,49,-26,34,-27,4v-1,-26,13,-27,17,-48v22,-27,68,-55,90,-77v-9,-12,-60,-39,-79,-57v-6,-10,-6,-25,12,-25",
-			w: 312
-		},
-		Y: {
-			d: "216,-240v19,-14,42,10,22,26v-54,66,-121,109,-156,197v-8,21,-11,15,-30,4v3,-37,27,-61,33,-76v12,-12,15,-19,32,-42v-8,-6,-40,5,-45,5v-48,-6,-69,-65,-56,-113v14,0,13,-1,24,7v2,33,12,75,42,73v36,-2,102,-57,134,-81",
-			w: 189
-		},
-		Z: {
-			d: "60,-255v66,12,200,-34,240,21v-13,42,-63,62,-98,89v-19,15,-47,33,-82,55v-25,16,-47,32,-66,47v58,24,129,-6,208,-6v23,0,36,12,13,19v-33,2,-53,5,-86,10v-32,18,-88,15,-135,15v-9,-1,-55,-1,-48,-29v1,-24,30,-24,40,-41v64,-50,151,-86,208,-147v-38,-17,-155,12,-198,-4v0,0,-11,-33,4,-29",
-			w: 310
-		},
-		"[": {
-			d: "72,-258r-15,250v30,4,55,-3,80,-6v7,-1,8,17,9,23v-28,15,-73,23,-121,21v-7,0,-10,-6,-10,-17v0,-60,25,-193,22,-288v0,-16,13,-20,33,-19v9,-3,34,-12,51,-12v16,0,15,16,19,29v-16,7,-48,10,-68,19",
-			w: 151
-		},
-		"\\": {
-			d: "21,38v-20,-21,9,-72,13,-90v44,-78,113,-189,200,-253v2,0,5,4,7,12v11,31,-13,36,-24,58v-74,61,-174,219,-180,273r-16,0",
-			w: 257
-		},
-		"]": {
-			d: "133,-258v-23,-13,-84,6,-85,-32v0,-10,5,-15,14,-15v0,0,30,2,90,7v10,1,15,13,15,36v2,7,-8,59,-13,112r-11,125v-9,48,9,90,-59,71v-20,-4,-39,-1,-59,-4v-5,-10,-25,-12,-14,-30v8,-3,61,-13,78,-8v14,1,8,-7,10,-17v15,-69,21,-166,34,-245",
-			w: 171
-		},
-		"^": {
-			d: "68,-306v20,15,47,36,58,60v-1,4,0,7,-9,7v-26,0,-47,-38,-49,-32v-15,9,-41,50,-54,30v-2,-31,17,-23,33,-51v8,-9,15,-14,21,-14",
-			w: 135
-		},
-		_: {
-			d: "11,15v-8,33,18,45,50,34r205,2r197,-5v11,-5,14,-9,7,-28v-95,-21,-258,-10,-376,-10v-25,0,-72,-3,-83,7",
-			w: 485
-		},
-		"`": {
-			d: "75,-264v16,8,56,14,39,43v-30,-8,-65,-23,-105,-44v-1,-3,-3,-28,5,-25v16,5,44,17,61,26",
-			w: 129
-		},
-		a: {
-			d: "124,-56v10,4,59,41,65,50v1,7,-6,17,-12,17r-60,-30v-22,2,-42,21,-65,19v-33,4,-68,-67,-15,-81v41,-27,96,-39,110,9v0,6,-4,12,-11,16v-33,-25,-67,-5,-88,12v10,16,61,-18,76,-12",
-			w: 196
-		},
-		b: {
-			d: "80,-140v69,1,123,0,134,52v5,26,-71,71,-97,70v-11,11,-88,22,-94,22v-11,-3,-26,-18,-6,-24v19,-5,-2,-19,-1,-35v1,-18,11,-36,-5,-47v-6,-17,-6,-21,14,-32v6,-45,18,-89,28,-124v2,-7,8,-12,17,-15v5,3,10,11,16,28v-12,27,-13,63,-23,96v0,6,6,9,17,9xm87,-107v-40,-9,-31,31,-39,54v8,15,0,25,12,22v30,-8,60,-18,88,-32v39,-18,49,-33,-1,-42v-20,-4,-45,-7,-60,-2",
-			w: 217
-		},
-		c: {
-			d: "128,-123v29,-7,37,29,12,33v-27,-4,-40,6,-79,25v-8,4,-13,11,-16,22v30,32,91,3,134,11v5,13,-8,26,-22,19v-51,25,-139,28,-150,-30v6,-50,69,-82,121,-80",
-			w: 194
-		},
-		d: {
-			d: "224,-201v0,-35,-17,-111,24,-94v7,86,-2,119,0,197v-4,2,-8,21,-18,16v-62,-7,-154,-8,-185,29v6,17,28,26,51,26v16,0,100,-15,132,-18v7,5,-6,20,-10,22v-24,8,-122,42,-163,25v-32,-5,-62,-53,-36,-80v35,-37,118,-46,198,-43v1,-22,7,-49,7,-80",
-			w: 265
-		},
-		e: {
-			d: "4,-57v0,-58,51,-71,110,-74v33,-1,45,16,59,35v1,14,2,39,-7,42v-24,-2,-73,13,-99,11v-2,2,-2,3,-2,3v0,3,12,8,37,15v21,0,69,9,31,22v-9,14,-34,6,-56,6v-27,-5,-73,-28,-73,-60xm123,-102v-22,2,-68,5,-65,26v24,-2,66,5,79,-6v-5,-13,-1,-13,-14,-20",
-			w: 182
-		},
-		f: {
-			d: "6,-59v6,-29,53,-4,53,-43v0,-64,29,-118,84,-150v45,-25,167,-24,155,51v-1,2,-7,6,0,6r-10,2v-45,-58,-165,-39,-186,39v-7,26,-11,42,-9,62v44,8,95,-21,135,-7v-12,25,-39,21,-76,30v-19,5,-18,7,-54,19v-2,8,15,32,17,35v-6,25,-26,26,-40,-5r-15,-24v-41,10,-44,12,-54,-15",
-			w: 234
-		},
-		g: {
-			d: "132,-97v30,27,21,75,30,117v-12,31,-11,66,-36,103v-32,46,-105,83,-167,39v-31,-21,-49,-29,-51,-75v-2,-37,77,-50,121,-57v37,-6,68,-10,95,-11v7,-6,3,-32,4,-46v0,0,-1,1,-1,2v0,-18,-5,-31,-14,-45v-44,5,-79,20,-94,-18v3,-54,73,-54,125,-50v12,7,12,13,4,25v-30,-11,-76,8,-90,20v23,3,50,-16,74,-4xm-34,121v60,53,168,1,159,-86v-47,-7,-93,24,-142,30v-12,7,-45,19,-42,29v0,10,8,19,25,27",
-			w: 188
-		},
-		h: {
-			d: "100,-310v11,-2,10,19,11,20v-11,52,-40,133,-53,189v-6,30,-9,37,-9,47v27,0,113,-34,143,-34v42,0,31,47,39,79v0,4,-5,17,-16,16v4,2,11,3,4,6v-24,-1,-28,-34,-25,-64v-1,-1,-2,-3,-5,-5v-51,0,-110,38,-162,51v-9,1,-15,-15,-16,-23v17,-89,39,-141,71,-264v0,-9,6,-19,18,-18",
-			w: 251
-		},
-		i: {
-			d: "62,-209v7,18,9,23,-5,38v-23,-6,-21,-18,-11,-36v2,0,8,-1,16,-2xm34,-7v-18,-21,-8,-73,-1,-106v7,-10,20,-8,23,6v-1,36,7,72,-2,104v-8,2,-8,0,-20,-4",
-			w: 80
-		},
-		j: {
-			d: "88,-191v5,28,-18,40,-28,21v0,-20,12,-29,28,-21xm82,-99v28,-1,16,35,16,61v0,60,-19,150,-35,202v-12,8,-19,31,-35,16v-32,-7,-43,-19,-56,-44r2,-17v11,4,49,45,61,18v10,-55,27,-107,30,-171v0,-16,0,-59,17,-65",
-			w: 120
-		},
-		k: {
-			d: "59,-66v33,26,114,37,155,62v8,-4,22,-2,19,-17v0,-4,-12,-11,-30,-24v-36,-25,-54,-22,-99,-33v14,-21,119,-13,103,-63r-16,-7r-123,47r25,-93v-3,-15,16,-49,18,-81v1,-15,-21,-14,-25,-3v-31,82,-49,168,-75,257v2,2,22,30,27,10v2,-5,4,-9,9,-11v4,-16,4,-15,12,-44",
-			w: 236
-		},
-		l: {
-			d: "66,-300v21,-6,37,23,30,55v-10,51,-28,135,-28,208v0,11,6,36,-13,37v-29,-5,-30,-48,-25,-83r28,-177v-6,-17,1,-29,8,-40",
-			w: 102
-		},
-		m: {
-			d: "348,-59v-2,21,0,57,3,73v-17,3,-30,-1,-32,-16v-8,-7,-5,-44,-13,-70v-35,3,-82,49,-111,70v-12,8,-40,4,-39,-15r2,-56v-1,-13,4,-28,-8,-29v-35,8,-79,72,-115,87v-6,2,-20,-18,-21,-22v1,-20,14,-105,39,-64r8,15v17,-14,72,-56,93,-54v27,3,49,40,43,80v24,-2,66,-55,124,-53v11,14,28,23,27,54",
-			w: 368
-		},
-		n: {
-			d: "121,-136v37,6,62,54,62,111v0,32,-16,25,-31,17v-18,-30,-5,-45,-22,-85v-37,-13,-71,55,-92,65v-20,-3,-39,-39,-21,-62v2,-12,3,-15,11,-30v12,-8,20,11,29,12",
-			w: 194
-		},
-		o: {
-			d: "108,-139v52,-24,104,18,104,63v0,59,-66,67,-114,83v-52,-2,-115,-50,-80,-105v23,-18,52,-35,90,-41xm45,-60v16,54,125,16,131,-23v-12,-59,-129,-8,-131,23",
-			w: 217
-		},
-		p: {
-			d: "82,14v-10,12,-8,117,-24,142v-15,2,-19,0,-29,-13v0,-76,9,-113,22,-192v14,-27,35,-6,37,13v0,8,-3,21,-7,38v2,2,3,2,4,2v26,-9,116,-33,126,-72v-7,-17,-24,-33,-49,-31v-40,3,-116,13,-116,47v-5,7,-2,17,-16,20v-17,-12,-18,-20,-12,-38v8,-25,74,-61,110,-59v55,-15,113,15,118,70v-15,52,-84,79,-146,83v-5,0,-11,-4,-18,-10",
-			w: 251
-		},
-		q: {
-			d: "144,-147v27,-8,89,-3,97,31v-9,29,-42,-4,-73,1v-32,6,-118,20,-111,49v0,7,13,13,21,13v21,0,78,-24,104,-34v2,0,9,8,22,21v1,1,1,2,1,5v-27,90,-22,70,-43,203v11,15,-15,54,-33,33v-6,-8,-10,-20,-3,-28v1,-72,5,-114,15,-172v-35,3,-35,10,-59,8v-41,-4,-98,-41,-56,-85v33,-34,59,-27,118,-45",
-			w: 248
-		},
-		r: {
-			d: "242,-117v2,22,5,10,-14,23v-73,-7,-166,-23,-174,56v-8,6,-3,20,-8,36v-29,10,-40,-9,-33,-46v6,-31,7,-69,32,-55v58,-37,66,-42,175,-19v3,5,15,4,22,5",
-			w: 229
-		},
-		s: {
-			d: "154,-151v19,1,27,24,13,32v-4,1,-22,4,-53,7v-16,8,-22,-2,-39,9v23,21,89,16,96,62v-13,24,-85,35,-124,42v-9,-3,-18,-3,-27,0v-6,-4,-21,-16,-8,-25v30,-6,83,-13,102,-24v-17,-16,-80,-33,-97,-48v-3,-2,-4,-7,-4,-15v-6,-6,3,-13,15,-18v22,-9,94,-23,126,-22",
-			w: 188
-		},
-		t: {
-			d: "85,-150v10,-41,35,-126,65,-134v4,1,24,19,11,36v-17,22,-29,57,-36,104v26,8,50,-7,73,5v14,0,22,3,22,9v-1,19,-44,18,-57,23v-10,1,-46,0,-54,10v-10,24,-4,67,-20,98v-21,-3,-26,1,-26,-20v0,-9,2,-36,8,-81v-15,-13,-81,9,-77,-27v4,-38,71,6,91,-23",
-			w: 194
-		},
-		u: {
-			d: "207,-136v-1,-2,11,-14,14,-13v6,0,10,7,10,22v-3,40,-23,56,-40,82v-13,19,-62,43,-93,43v-67,-2,-111,-75,-71,-133v26,-3,21,29,19,49v-1,27,26,44,57,42v41,-2,93,-55,104,-92",
-			w: 242
-		},
-		v: {
-			d: "24,-127r52,71v42,-16,70,-54,124,-65v5,4,8,7,8,11v-8,19,-4,8,-33,32v0,1,-1,3,-1,5v-61,45,-93,68,-97,68v-40,-15,-50,-72,-68,-100v6,-14,10,-22,15,-22",
-			w: 214
-		},
-		w: {
-			d: "15,-139v38,-2,27,57,45,86v30,2,67,-66,101,-78v26,6,36,69,60,78v47,-35,51,-54,119,-104v3,0,7,-2,15,-4v19,23,-9,28,-21,49v-33,28,-68,90,-107,109v-10,6,-52,-47,-72,-71v-20,17,-85,74,-97,73v-38,7,-41,-98,-52,-122v0,-1,3,-7,9,-16",
-			w: 325
-		},
-		x: {
-			d: "95,-124v22,-13,78,-32,99,-31v16,0,23,6,23,18v0,22,-17,11,-49,21v-3,0,-45,20,-42,24v0,1,2,4,8,10v20,24,49,41,44,80v-35,3,-27,-9,-60,-44v-40,-43,-37,-26,-79,9v-1,1,-2,3,-3,8v-12,8,-28,10,-27,-11v-6,-8,45,-65,48,-65v-17,-21,-61,-52,-24,-68v9,0,48,37,62,49",
-			w: 223
-		},
-		y: {
-			d: "44,-65v22,33,70,4,99,-8v5,-4,28,-15,41,-31r17,0v25,47,-26,70,-40,114v-5,4,-9,8,-10,21v-16,12,-11,33,-27,51v-5,18,-12,43,-23,71v-1,-1,-2,34,-18,29v-12,1,-22,-12,-22,-23v20,-70,24,-65,68,-177v-47,16,-111,8,-116,-39v-11,-13,-7,-62,8,-62v18,0,22,26,23,54",
-			w: 216
-		},
-		z: {
-			d: "189,-43v9,-1,46,-6,41,12v0,7,-5,13,-15,14v-45,6,-148,24,-181,13v0,-3,-5,-8,-14,-15v5,-44,66,-46,90,-85v-15,-18,-84,21,-84,-14v0,-10,5,-17,14,-18v33,-3,79,-13,109,-3v4,-2,14,11,12,15v0,23,-26,51,-78,84v28,10,73,-3,106,-3",
-			w: 244
-		},
-		"{": {
-			d: "94,-303v27,-9,90,-14,79,26v-20,17,-55,-5,-87,13v-4,1,-6,4,-6,8v33,42,31,44,7,85v-6,10,-13,16,-13,13v5,6,17,17,15,31r-33,78v7,35,28,49,57,63r49,0v7,42,-51,41,-86,20v-43,-13,-51,-51,-56,-89v-2,-25,25,-54,27,-71v-3,-4,-46,-5,-41,-21v2,-10,-3,-29,11,-25v2,0,51,-17,52,-38v4,-3,-25,-23,-25,-49v0,-41,8,-30,50,-44",
-			w: 179
-		},
-		"|": {
-			d: "30,-308v26,5,14,50,15,80v5,78,-8,153,-3,225v-2,15,-1,31,-11,36v-8,-3,-25,-22,-25,-32r9,-183v0,-40,0,-78,1,-112v0,-4,9,-15,14,-14",
-			w: 63
-		},
-		"}": {
-			d: "47,-298v34,-17,118,-18,112,36v6,25,-76,98,-69,103v4,16,39,7,44,28v7,34,-34,17,-37,39v8,29,49,83,23,123v-15,23,-43,26,-73,46v-34,8,-43,11,-49,-17v1,-15,30,-15,33,-20v24,-12,70,-27,55,-61v-14,-33,-37,-68,-19,-103v-46,-50,46,-100,60,-141v-10,-16,-68,6,-77,-12",
-			w: 143
-		},
-		"~": {
-			d: "7,-254v2,-6,59,-50,67,-46v11,-1,35,19,46,26v5,0,27,-10,66,-31v21,8,-1,25,-7,38v-27,21,-48,31,-65,31v-24,-11,-37,-39,-65,-9v-7,7,-26,36,-42,11v3,-5,-3,-17,0,-20",
-			w: 199
-		},
-		Ä: {
-			d: "161,-217v20,53,23,124,54,170v-2,20,-34,9,-42,0v-27,-12,-78,-18,-101,-18v-26,6,-29,51,-54,63v-18,-4,-19,-30,-3,-38v5,-9,15,-16,8,-29v1,-12,23,-9,26,-19v6,-10,11,-20,20,-27r70,-121v12,-4,16,4,22,19xm82,-91v17,3,62,7,86,13v-13,-33,-13,-80,-29,-109v-15,30,-38,63,-57,96xm187,-259v0,8,-4,13,-12,13v-18,0,-21,-20,-16,-34v18,-1,28,2,28,21xm90,-284v7,3,28,11,28,18v0,9,-9,18,-18,17v-17,0,-25,-24,-10,-35"
-		},
-		Å: {
-			d: "161,-217v20,53,23,124,54,170v-2,20,-34,9,-42,0v-27,-12,-78,-18,-101,-18v-26,6,-29,51,-54,63v-18,-4,-19,-30,-3,-38v5,-9,15,-16,8,-29v1,-12,23,-9,26,-19v6,-10,11,-20,20,-27r70,-121v12,-4,16,4,22,19xm82,-91v17,3,62,7,86,13v-13,-33,-13,-80,-29,-109v-15,30,-38,63,-57,96xm112,-239v-31,-17,-9,-61,29,-56v12,2,22,3,33,12v24,39,-30,62,-62,44xm119,-262v2,14,41,8,41,-4v0,-4,-8,-6,-24,-9v-10,-2,-17,10,-17,13"
-		},
-		Ç: {
-			d: "48,-108v-12,70,90,71,159,67r138,-9v9,-1,7,9,7,17v-37,16,-80,27,-103,21v-14,9,-40,3,-67,9v-30,0,-64,1,-100,-10v-6,-1,-10,-4,-10,-8v-32,-12,-46,-31,-63,-56v-16,-61,47,-103,83,-121v82,-42,118,-45,200,-60v21,-4,36,34,11,37v-90,11,-148,31,-225,77v-12,8,-23,20,-30,36xm172,18v29,4,47,14,53,35v-2,7,-14,31,-27,31v-28,7,-55,9,-84,14v-18,-5,-13,-32,7,-32v21,0,55,-5,69,-13v-16,-14,-63,10,-50,-35v9,-10,1,-27,23,-29v7,8,11,16,9,29",
-			w: 331
-		},
-		É: {
-			d: "49,-160v1,-4,-10,-9,-15,-8v-15,-35,32,-30,57,-31r142,-8v2,1,30,7,40,10v-52,16,-133,17,-190,30v-7,9,-12,24,-15,47v26,10,102,-6,141,3v1,3,1,6,2,10v-36,18,-92,12,-149,21v-11,9,-16,41,-16,51v55,-1,111,-21,168,-13v15,-8,48,1,31,18v-53,16,-130,13,-198,29r-39,-8v-4,-19,17,-53,20,-76v-1,0,-7,-11,-9,-18v18,-7,22,-28,30,-57xm133,-248v27,-11,48,-32,59,-14v3,11,-79,52,-88,53v-14,1,-16,-11,-12,-21v10,-4,23,-11,41,-18",
-			w: 252
-		},
-		Ñ: {
-			d: "224,-182v1,-17,15,-24,22,-38v20,0,13,10,3,33v-3,36,-25,52,-28,94v-10,24,-30,55,-29,82r-19,7v-32,-8,-36,-70,-58,-111v-2,-23,-7,-27,-19,-54v-28,36,-41,93,-71,133v-9,5,-20,-9,-20,-17r73,-149v9,-24,31,-5,36,7v19,41,31,98,53,139v22,-35,34,-69,50,-118v2,-3,3,-3,7,-8xm203,-257v22,-8,41,-24,65,-26v3,11,-8,9,-7,21v-26,20,-46,31,-59,31v-2,3,-49,-27,-49,-29v-11,0,-32,31,-46,32v-11,-2,-12,-21,-4,-23v4,-6,28,-30,48,-34v17,-4,43,28,52,28",
-			w: 219
-		},
-		Ö: {
-			d: "62,-184v78,-31,249,-50,238,74v-6,65,-102,105,-179,115v-77,-7,-152,-71,-101,-149v2,-5,24,-33,42,-40xm279,-120v14,-38,-47,-64,-85,-61v-20,-9,-41,7,-62,0v-11,7,-54,12,-66,24v0,20,-51,35,-38,66v-1,43,50,67,96,67v44,0,162,-55,155,-96xm197,-229v0,8,-4,13,-12,13v-17,0,-19,-19,-16,-34v18,-1,29,1,28,21xm101,-254v7,3,28,9,27,18v1,8,-8,17,-17,17v-18,0,-26,-24,-10,-35",
-			w: 273
-		},
-		Ü: {
-			d: "281,-202v6,67,-30,121,-71,152v-3,14,-47,26,-60,39v-41,20,-110,1,-125,-26v-24,-44,-28,-84,-8,-127v12,-26,23,-38,37,-22v-2,2,-3,5,-3,10v-34,26,-29,116,5,134v22,32,86,-1,109,-8v38,-28,104,-64,97,-149v2,-10,7,-8,19,-3xm197,-227v0,8,-4,13,-12,13v-18,0,-21,-20,-16,-34v18,-1,28,2,28,21xm101,-252v7,3,27,10,27,18v0,8,-9,18,-18,17v-18,-1,-24,-25,-9,-35",
-			w: 262
-		},
-		á: {
-			d: "118,-53v10,4,55,41,62,47v0,7,-5,16,-12,16r-57,-28v-20,3,-40,19,-61,18v-10,2,-43,-17,-42,-36v0,-14,7,-40,27,-41v39,-26,92,-36,104,9v0,6,-2,11,-9,15v-32,-24,-64,-6,-84,11v8,15,58,-17,72,-11xm32,-117v24,-3,85,-55,101,-32v3,11,-80,53,-89,53v-13,2,-14,-10,-12,-21",
-			w: 173
-		},
-		à: {
-			d: "118,-53v10,4,55,41,62,47v0,7,-5,16,-12,16r-57,-28v-20,3,-40,19,-61,18v-10,2,-43,-17,-42,-36v0,-14,7,-40,27,-41v39,-26,92,-36,104,9v0,6,-2,11,-9,15v-32,-24,-64,-6,-84,11v8,15,58,-17,72,-11xm99,-137v7,6,56,14,37,40v-28,-7,-62,-21,-100,-41v-2,-3,-2,-26,5,-23v16,4,42,17,58,24",
-			w: 173
-		},
-		â: {
-			d: "118,-53v10,4,55,41,62,47v0,7,-5,16,-12,16r-57,-28v-20,3,-40,19,-61,18v-10,2,-43,-17,-42,-36v0,-14,7,-40,27,-41v39,-26,92,-36,104,9v0,6,-2,11,-9,15v-32,-24,-64,-6,-84,11v8,15,58,-17,72,-11xm147,-97v-27,-6,-39,-26,-60,-37v-21,7,-38,46,-65,23v-2,-5,-3,-10,-4,-14v18,-4,43,-31,61,-42v28,5,40,21,62,36v12,8,18,17,18,25v0,6,-4,9,-12,9",
-			w: 173
-		},
-		ä: {
-			d: "118,-53v10,4,55,41,62,47v0,7,-5,16,-12,16r-57,-28v-20,3,-40,19,-61,18v-32,5,-66,-64,-15,-77v39,-26,92,-36,104,9v0,6,-3,11,-9,15v-32,-24,-64,-6,-84,11v8,15,58,-17,72,-11xm142,-119v0,8,-4,13,-12,13v-18,0,-21,-20,-16,-34v18,-1,28,2,28,21xm46,-144v7,3,28,9,27,18v1,8,-9,18,-18,17v-18,-1,-25,-25,-9,-35",
-			w: 173
-		},
-		ã: {
-			d: "118,-53v10,4,55,41,62,47v0,7,-5,16,-12,16r-57,-28v-20,3,-40,19,-61,18v-10,2,-43,-17,-42,-36v0,-14,7,-40,27,-41v39,-26,92,-36,104,9v0,6,-2,11,-9,15v-32,-24,-64,-6,-84,11v8,15,58,-17,72,-11xm114,-136v22,-8,41,-24,64,-26v3,11,-7,10,-7,21v-26,20,-45,30,-58,30v-3,3,-49,-26,-49,-28v-10,-1,-32,35,-51,31v-12,-32,8,-29,32,-51v24,-21,54,20,69,23",
-			w: 173
-		},
-		å: {
-			d: "118,-53v10,4,55,41,62,47v0,7,-5,16,-12,16r-57,-28v-20,3,-40,19,-61,18v-10,2,-43,-17,-42,-36v0,-14,7,-40,27,-41v39,-26,92,-36,104,9v0,6,-2,11,-9,15v-32,-24,-64,-6,-84,11v8,15,58,-17,72,-11xm54,-101v-37,-20,-9,-71,34,-65v13,1,25,3,38,13v27,45,-34,73,-72,52xm61,-128v4,20,48,7,49,-5v0,-5,-9,-7,-28,-10v-12,-2,-21,11,-21,15",
-			w: 173
-		},
-		ç: {
-			d: "108,-118v30,-6,56,21,25,33v-24,-6,-39,5,-75,23v-7,4,-12,12,-15,22v31,28,86,3,128,9v3,28,-29,16,-44,28v-53,15,-106,10,-120,-37v0,-48,62,-70,101,-78xm92,18v23,4,45,12,48,32v-2,6,-12,28,-25,28v-24,6,-50,10,-77,13v-16,-4,-11,-28,7,-29v17,-1,51,-4,63,-12v-14,-15,-57,10,-46,-32v9,-8,0,-25,21,-26v6,6,12,14,9,26",
-			w: 171
-		},
-		é: {
-			d: "108,-124v42,-3,70,39,50,73v-22,-1,-70,12,-94,10v-1,1,-2,3,-2,3v0,3,12,7,35,14v18,0,64,7,30,21v-10,14,-31,6,-53,6v-26,-7,-70,-26,-70,-58v0,-54,48,-65,104,-69xm130,-78v-2,-35,-66,-13,-77,3v16,6,62,6,77,-3xm76,-169v26,-11,48,-32,59,-14v3,10,-80,53,-89,53v-14,1,-14,-10,-12,-21v15,-7,16,-7,42,-18",
-			w: 161
-		},
-		è: {
-			d: "108,-124v42,-3,70,39,50,73v-22,-1,-70,12,-94,10v-1,1,-2,3,-2,3v0,3,12,7,35,14v18,0,64,7,30,21v-10,14,-31,6,-53,6v-26,-7,-70,-26,-70,-58v0,-54,48,-65,104,-69xm130,-78v-2,-35,-66,-13,-77,3v16,6,62,6,77,-3xm95,-166v7,6,54,14,37,40v-28,-7,-62,-21,-100,-41v-3,-3,-3,-26,5,-24v16,5,42,18,58,25",
-			w: 161
-		},
-		ê: {
-			d: "108,-124v42,-3,70,39,50,73v-22,-1,-70,12,-94,10v-1,1,-2,3,-2,3v0,3,12,7,35,14v18,0,64,7,30,21v-10,14,-31,6,-53,6v-26,-7,-70,-26,-70,-58v0,-54,48,-65,104,-69xm130,-78v-2,-35,-66,-13,-77,3v16,6,62,6,77,-3xm145,-129v-27,-6,-39,-26,-60,-37v-8,0,-10,4,-14,10v-11,15,-51,34,-56,0v17,-4,44,-32,61,-43v28,5,41,21,63,36v12,8,17,17,17,25v0,6,-3,9,-11,9",
-			w: 161
-		},
-		ë: {
-			d: "108,-124v42,-3,70,39,50,73v-22,-1,-70,12,-94,10r-3,3v0,3,12,7,36,14v18,0,64,7,30,21v-10,14,-31,6,-53,6v-26,-7,-67,-27,-71,-58v7,-52,48,-65,105,-69xm130,-78v-2,-35,-66,-13,-77,3v16,6,62,6,77,-3xm140,-144v0,8,-4,12,-12,12v-18,0,-19,-19,-16,-33v18,-1,29,1,28,21xm44,-169v7,3,28,9,28,17v0,9,-9,18,-18,18v-18,0,-25,-24,-10,-35",
-			w: 161
-		},
-		í: {
-			d: "59,-98v20,4,15,53,10,95v-6,1,-11,2,-19,-4v1,-7,-12,-18,-10,-24v4,-22,-4,-65,19,-67xm50,-139v27,-11,49,-32,59,-14v3,11,-80,53,-89,53v-14,1,-14,-12,-11,-22v15,-7,14,-6,41,-17",
-			w: 105
-		},
-		ì: {
-			d: "57,-98v22,5,13,50,11,95v-7,1,-11,2,-20,-4v1,-7,-12,-18,-10,-24v4,-22,-2,-64,19,-67xm70,-139v14,10,54,14,37,41v-28,-7,-61,-22,-99,-42v-3,-2,-3,-25,5,-23v15,5,41,17,57,24",
-			w: 109
-		},
-		î: {
-			d: "72,-98v20,5,12,51,10,95v-6,2,-13,1,-20,-4v1,-8,-12,-18,-10,-24v4,-22,-3,-65,20,-67xm134,-94v-26,-7,-39,-25,-60,-37v-7,0,-9,4,-13,10v-14,15,-51,34,-56,-1v18,-4,45,-33,61,-43v27,6,40,22,62,37v12,8,18,17,18,25v0,6,-4,9,-12,9",
-			w: 143
-		},
-		ï: {
-			d: "55,-97v19,5,15,53,10,95v-17,5,-26,-14,-30,-28v6,-20,-3,-65,20,-67xm110,-118v0,8,-4,13,-12,13v-17,0,-19,-19,-16,-34v18,-1,29,1,28,21xm14,-143v6,3,28,8,28,17v0,9,-9,18,-18,18v-18,0,-25,-24,-10,-35",
-			w: 107
-		},
-		ñ: {
-			d: "115,-129v34,6,59,50,59,105v0,31,-15,24,-30,17v-15,-29,-5,-42,-20,-81v-35,-13,-68,52,-88,61v-20,-4,-38,-36,-19,-59v0,-12,3,-14,10,-28v11,-8,18,11,27,12xm117,-166v22,-7,41,-23,64,-26v3,11,-7,10,-7,21v-26,20,-45,30,-58,30v-3,3,-49,-26,-49,-28v-10,-1,-32,35,-51,31v-5,-12,-8,-16,0,-23v4,-6,28,-29,48,-33v17,-3,43,28,53,28",
-			w: 171
-		},
-		ó: {
-			d: "102,-132v50,-20,99,16,99,60v0,54,-60,64,-108,79v-50,-2,-110,-48,-76,-100v22,-17,49,-33,85,-39xm136,-104v-34,0,-91,27,-94,47v16,51,125,16,125,-22v0,-17,-10,-25,-31,-25xm49,-154v24,-3,85,-55,101,-32v3,11,-80,53,-89,53v-14,0,-13,-8,-12,-21",
-			w: 191
-		},
-		ò: {
-			d: "102,-132v50,-20,99,16,99,60v0,54,-60,64,-108,79v-50,-2,-110,-48,-76,-100v22,-17,49,-33,85,-39xm136,-104v-34,0,-91,27,-94,47v16,51,125,16,125,-22v0,-17,-10,-25,-31,-25xm115,-181v14,10,51,13,37,40v-28,-7,-62,-21,-100,-41v-3,-2,-3,-26,5,-23v16,5,42,17,58,24",
-			w: 191
-		},
-		ô: {
-			d: "102,-132v50,-20,99,16,99,60v0,54,-60,64,-108,79v-50,-2,-110,-48,-76,-100v22,-17,49,-33,85,-39xm136,-104v-34,0,-91,27,-94,47v16,51,125,16,125,-22v0,-17,-10,-25,-31,-25xm110,-177v-22,6,-38,45,-65,22v-2,-4,-3,-9,-4,-13v18,-4,43,-32,61,-43v27,6,40,21,62,36v12,9,18,17,18,25v1,11,-15,10,-23,7",
-			w: 191
-		},
-		ö: {
-			d: "102,-132v50,-20,99,16,99,60v0,54,-60,64,-108,79v-50,-2,-110,-48,-76,-100v22,-17,49,-33,85,-39xm136,-104v-34,0,-91,27,-94,47v16,51,125,16,125,-22v0,-17,-10,-25,-31,-25xm161,-160v0,8,-4,13,-12,13v-17,0,-19,-19,-16,-34v18,-1,29,1,28,21xm65,-185v7,3,28,9,28,18v0,7,-9,18,-18,17v-18,1,-25,-24,-10,-35",
-			w: 191
-		},
-		õ: {
-			d: "102,-132v50,-20,99,16,99,60v0,54,-60,64,-108,79v-50,-2,-110,-48,-76,-100v22,-17,49,-33,85,-39xm136,-104v-34,0,-91,27,-94,47v16,51,125,16,125,-22v0,-17,-10,-25,-31,-25xm58,-199v26,-21,54,18,69,22v4,0,15,-5,34,-13v22,-9,21,-16,31,-13v3,11,-9,9,-7,22v-26,20,-46,30,-59,30v-2,4,-49,-28,-49,-29v-11,0,-32,31,-46,32v-12,-3,-13,-21,-4,-23v4,-6,14,-15,31,-28",
-			w: 191
-		},
-		ú: {
-			d: "196,-129v-1,-4,12,-13,15,-13v6,0,8,7,8,21v0,24,-7,25,-13,45v-7,7,-14,21,-24,29v-9,24,-61,45,-89,45v-63,0,-105,-72,-67,-126v24,-3,19,27,18,46v-1,26,23,42,54,40v38,-3,88,-51,98,-87xm106,-174v26,-11,48,-32,59,-14v3,11,-81,53,-89,54v-13,1,-15,-12,-11,-22v15,-7,14,-7,41,-18",
-			w: 213
-		},
-		ù: {
-			d: "196,-129v-1,-4,12,-13,15,-13v6,0,8,7,8,21v0,24,-7,25,-13,45v-7,7,-14,21,-24,29v-9,24,-61,45,-89,45v-63,0,-105,-72,-67,-126v24,-3,19,27,18,46v-1,26,23,42,54,40v38,-3,88,-51,98,-87xm126,-166v7,6,56,14,37,40v-28,-7,-62,-22,-100,-42v-2,-3,-2,-26,5,-23v16,4,42,18,58,25",
-			w: 213
-		},
-		û: {
-			d: "196,-129v-1,-4,12,-13,15,-13v6,0,8,7,8,21v0,24,-7,25,-13,45v-7,7,-14,21,-24,29v-9,24,-61,45,-89,45v-63,0,-105,-72,-67,-126v24,-3,19,27,18,46v-1,26,23,42,54,40v38,-3,88,-51,98,-87xm172,-143v-27,-6,-39,-26,-60,-37v-8,0,-10,4,-14,10v-11,15,-49,35,-56,0v17,-4,44,-32,61,-43v27,6,41,21,63,36v12,9,17,17,17,25v0,6,-3,9,-11,9",
-			w: 213
-		},
-		ü: {
-			d: "196,-129v-1,-4,12,-13,15,-13v6,0,8,7,8,21v0,24,-7,25,-13,45v-7,7,-14,21,-24,29v-9,24,-61,45,-89,45v-63,0,-105,-72,-67,-126v24,-3,19,27,18,46v-1,26,23,42,54,40v38,-3,88,-51,98,-87xm168,-161v0,8,-3,13,-11,13v-17,0,-20,-19,-17,-34v18,-1,29,1,28,21xm72,-186v7,3,29,9,28,18v0,7,-9,18,-18,17v-18,1,-25,-24,-10,-35",
-			w: 213
-		},
-		"†": {
-			d: "22,-286v15,6,5,-20,19,-19v9,-3,15,21,17,22v6,1,12,3,20,6v3,10,5,16,-9,16v-34,-10,-6,51,-34,52v-20,-7,11,-47,-15,-49v-14,3,-25,-5,-17,-24v7,-2,14,-4,19,-4",
-			w: 77
-		},
-		"°": {
-			d: "106,-268v0,36,-35,38,-51,46v-48,5,-60,-58,-25,-78v33,-11,76,-9,76,32xm38,-257v16,7,39,2,38,-17v-13,-9,-28,-1,-32,11v-5,3,-7,0,-6,6",
-			w: 114
-		},
-		"¢": {
-			d: "105,-188v13,-12,14,-18,26,-15v7,23,7,15,-3,49v6,0,18,14,17,20v-3,5,-12,19,-26,13v-14,1,-14,5,-16,21v10,10,46,-13,38,18v-9,17,-23,16,-54,20v-17,16,-4,55,-29,60v-37,-10,19,-64,-24,-71v-20,-10,-37,-47,-6,-62v23,-20,73,-4,77,-53xm65,-101v4,-9,7,-8,3,-13v-14,4,-22,10,-3,13",
-			w: 154
-		},
-		"£": {
-			d: "153,-170v3,22,62,0,49,39v-18,6,-31,12,-58,9v-12,-1,-17,30,-23,39v19,26,50,56,91,35v9,-2,27,-13,27,4v0,27,-27,39,-58,42v-32,-5,-59,-19,-78,-39v-6,1,-35,44,-57,39v-25,0,-37,-15,-37,-46v0,-41,43,-53,73,-50v4,1,12,-18,12,-21v-7,-15,-49,0,-44,-30v-2,-31,31,-16,60,-19v16,-30,25,-119,93,-113v16,2,75,16,50,44v-4,5,-7,7,-12,8v-18,-12,-32,-18,-41,-18v-35,-1,-38,52,-47,77xm43,-45v4,5,12,-2,11,-9v-1,2,-12,1,-11,9",
-			w: 242
-		},
-		"§": {
-			d: "141,-115v12,10,29,36,28,56v-4,68,-129,69,-152,16v-1,-12,-10,-22,8,-23v17,3,47,21,67,23v16,1,40,-8,38,-21v-8,-49,-119,-30,-117,-85v1,-28,15,-45,-3,-64v-1,-53,55,-61,103,-62v15,-5,6,-5,20,-2v16,17,23,27,23,30v-1,26,-29,7,-45,7v-21,0,-51,2,-62,17v19,14,87,8,97,43v18,14,16,57,-5,65xm64,-147r57,17v10,-28,-22,-43,-47,-44v-25,-1,-35,19,-10,27",
-			w: 174
-		},
-		"•": {
-			d: "130,-114v0,47,-124,54,-120,-8r6,-31v44,-28,64,-34,104,0v8,6,10,20,10,39",
-			w: 139
-		},
-		"¶": {
-			d: "121,-237v21,-9,44,-13,63,-1v-1,7,5,6,7,11r-4,190v-2,33,4,39,-15,40v-16,1,-10,-20,-10,-33r4,-161v0,-17,-1,-34,-16,-25v2,10,1,23,1,35v-9,46,-6,75,-15,156v-3,4,-7,5,-12,5v-17,-10,-3,-89,-10,-115v-43,14,-98,10,-101,-29v-4,-53,59,-63,104,-75v3,1,4,2,4,2xm95,-204v2,9,-30,50,1,50v35,0,23,-13,29,-43v0,-1,-2,-7,-4,-15v-12,-1,-14,2,-26,8",
-			w: 206
-		},
-		ß: {
-			d: "33,10v-29,4,-28,-32,-16,-70v18,-58,17,-137,56,-176v12,-24,46,-58,82,-43v20,8,47,24,47,54v0,30,-62,59,-67,90v33,23,56,33,63,63v-18,21,-22,36,-48,54v-24,17,-27,41,-53,16v-2,-19,7,-35,24,-42v15,-13,26,-22,34,-40v-13,-17,-78,-29,-56,-70v-3,-27,64,-54,66,-86v-8,-25,-41,-4,-52,8v-29,30,-47,83,-51,141v-17,25,-8,71,-29,101"
-		},
-		"®": {
-			d: "75,-194v78,-29,116,9,130,84v-2,42,-22,47,-57,67v-74,20,-161,-19,-129,-110v6,-18,29,-34,57,-40xm46,-86v51,36,84,21,129,-15v7,-15,0,-39,-10,-49v-13,-37,-49,-26,-86,-18v-28,7,-49,46,-33,82xm72,-123v-5,-43,68,-57,75,-14v-17,26,-18,17,3,32v2,25,-25,18,-45,7r-4,-4v-1,8,-3,20,-12,24v-10,-3,-21,-34,-17,-45xm112,-135v-10,-1,-20,13,-9,14v6,-6,9,-11,9,-14",
-			w: 217
-		},
-		"©": {
-			d: "102,-29v-74,5,-124,-84,-70,-140v22,-22,53,-35,97,-38v46,-4,88,49,74,100v0,44,-51,75,-101,78xm96,-66v42,-3,75,-23,75,-69v0,-23,-4,-38,-44,-38v-16,0,-33,6,-49,20v36,-4,55,-12,62,20v-5,16,-49,1,-50,21v10,15,53,-14,54,11v0,18,-14,27,-42,27v-22,1,-46,-11,-46,-31v0,-25,7,-39,20,-44v-1,-1,-2,-2,-3,-2v-51,22,-32,89,23,85",
-			w: 217
-		},
-		"™": {
-			d: "213,-307v28,9,11,49,7,75v-1,4,-4,6,-11,6v-7,1,-11,-14,-11,-34v-14,-6,-34,34,-46,28v-2,0,-10,-9,-24,-27v-10,7,-3,36,-27,31v-15,-24,-3,-27,1,-48v-6,-7,-27,-1,-31,3v-3,14,-7,30,-11,51v-5,10,-29,9,-24,-12v-5,-8,1,-18,3,-35v-13,6,-33,2,-29,-18v20,-17,64,-17,100,-19v28,-1,29,30,45,39v11,-6,35,-32,58,-40",
-			w: 239
-		},
-		"´": {
-			d: "52,-284v29,-11,50,-34,62,-14v3,12,-86,54,-94,56v-14,0,-16,-12,-12,-23v11,-5,25,-11,44,-19",
-			w: 120
-		},
-		"¨": {
-			d: "124,-259v0,9,-4,13,-12,13v-18,0,-22,-21,-17,-35v19,-1,30,1,29,22xm23,-285v7,2,30,9,29,18v1,10,-9,19,-18,19v-19,0,-28,-26,-11,-37",
-			w: 136
-		},
-		"≠": {
-			d: "48,-130v29,11,49,-57,60,-50v25,6,7,27,-1,46v22,5,29,7,21,22v-18,2,-48,-1,-50,15v9,8,53,-7,54,10v-4,22,-46,20,-72,24v-7,13,-18,32,-34,57v-8,6,-15,-3,-13,-14v-1,-9,15,-39,14,-45v-30,5,-24,-17,-13,-25v12,-1,36,4,29,-13v-14,0,-47,6,-36,-12v0,-18,27,-13,41,-15",
-			w: 140
-		},
-		Æ: {
-			d: "335,-259v0,30,-102,12,-122,34v10,21,2,79,16,100v24,-6,59,-13,86,-16v23,-2,32,21,13,26r-103,29v-3,22,-4,38,8,43v28,-5,60,-6,86,-14v5,-1,14,7,14,11v6,16,-90,40,-107,40v-29,0,-39,-19,-32,-46v-2,-4,0,-26,-9,-28v-29,2,-58,6,-88,6v-31,0,-40,74,-82,73v-18,-23,4,-37,12,-50v40,-65,112,-126,165,-207v20,-17,69,-11,112,-13v21,0,31,4,31,12xm123,-111v28,1,44,-2,67,-10v-4,-22,5,-49,-7,-65v-3,6,-65,61,-60,75",
-			w: 348
-		},
-		Ø: {
-			d: "76,-211v41,-13,100,-22,140,-3v26,-19,40,-29,44,-29v10,0,15,7,15,20v0,15,-23,23,-30,35v23,39,29,114,-21,139v-36,19,-102,35,-147,18v-14,-5,-29,29,-46,35v-25,-13,-19,-24,3,-56v-9,-17,-28,-27,-28,-60v0,-38,23,-72,70,-99xm107,-66v55,15,125,-12,123,-70v0,-16,-5,-25,-13,-29r-110,95r0,4xm39,-108v-1,3,17,31,22,27v8,-6,109,-90,123,-106v-15,-11,-43,1,-63,2v-33,10,-80,35,-82,77",
-			w: 270
-		},
-		"∞": {
-			d: "322,-72v-4,22,-54,41,-76,41v-43,0,-83,-17,-114,-35v-46,19,-125,53,-128,-18v-1,-14,10,-22,13,-35v29,-10,62,-31,97,-4v37,28,47,5,75,-8v40,-19,73,-10,114,1v13,1,18,55,19,58xm228,-69v15,0,62,-12,61,-25v-19,-23,-89,-10,-105,11v0,2,1,4,2,4v28,6,42,10,42,10xm75,-102v-13,2,-41,4,-44,19v0,4,3,7,10,7v21,0,40,-6,54,-17v-9,-6,-16,-9,-20,-9",
-			w: 330
-		},
-		"±": {
-			d: "93,-163v-7,46,76,-4,46,47v-14,6,-27,13,-38,8v-24,2,-14,28,-28,44r-14,0v-7,-12,-5,-15,-7,-33v-12,-7,-41,-1,-37,-24v2,-11,23,-17,36,-14r28,-38v4,0,9,4,14,10xm113,-27v-12,18,-58,27,-85,24v-16,2,-22,-23,-13,-36v28,-7,85,-11,98,12",
-			w: 151
-		},
-		"≤": {
-			d: "73,-109v10,15,87,16,87,42v0,11,-5,16,-13,16v-36,-11,-69,-24,-109,-31v-18,-8,-18,-13,-9,-36v59,-56,93,-83,101,-83v16,0,18,17,14,28v-27,24,-42,35,-71,64xm10,-29v35,-12,117,-26,148,-3v1,2,-5,19,-8,18r-124,15v-16,2,-26,-18,-16,-30",
-			w: 168
-		},
-		"≥": {
-			d: "115,-174v20,7,53,36,20,57v-19,11,-91,68,-82,59v-18,3,-25,-22,-13,-31v15,-10,14,-10,70,-51r-50,-37v-5,-4,-5,-27,4,-28v16,7,40,17,51,31xm14,-32v33,-10,86,-14,127,-10v12,12,5,23,-11,27v-49,9,-82,13,-99,13v-22,0,-24,-16,-17,-30",
-			w: 163
-		},
-		"¥": {
-			d: "31,-248v30,-3,64,64,74,59v37,-22,77,-65,107,-82v20,-11,34,18,21,32v-28,19,-52,38,-70,57v-18,8,-40,21,-35,60v2,19,39,7,64,7v25,0,16,21,2,27v-36,16,-46,8,-68,18v6,11,101,-20,66,24v-21,11,-42,12,-75,20v-2,1,-5,6,-10,18v-8,3,-11,10,-24,8v-7,-17,-2,-18,-9,-26v-13,5,-39,3,-53,-2v-10,-17,-7,-27,0,-34v23,-1,45,1,64,-5v-11,-7,-28,-4,-64,-6v-13,-8,-15,-24,-6,-35v33,-2,102,9,76,-37v-14,-14,-33,-38,-60,-66v-10,-10,-8,-28,0,-37",
-			w: 219
-		},
-		µ: {
-			d: "123,-114v41,0,54,-9,127,-17v12,-2,20,-6,25,-12v5,-78,43,-127,119,-138v38,-5,46,23,55,48v-5,5,2,4,2,12v-2,47,-72,81,-129,95v-17,4,-12,32,-2,39v30,-5,24,0,99,4v14,9,14,20,-1,23v-17,3,-71,-1,-85,13v1,19,18,35,-3,47v-1,-6,-10,-7,-16,-5v-3,-3,-20,-37,-29,-41v-15,8,-50,22,-49,-9v1,-19,2,-27,28,-26v24,1,13,-12,8,-30v-22,1,-64,16,-111,23v-50,7,-17,47,-17,57v0,10,-5,15,-13,15v-20,-9,-27,-30,-33,-55v-20,-17,-52,8,-85,-6v-2,-10,-13,-26,4,-29v32,-6,41,-1,65,-7v-17,-74,-4,-173,69,-180v55,-20,130,8,131,65v-11,9,-10,2,-29,-11v-33,-23,-37,-26,-76,-25v-41,13,-69,38,-67,100v0,34,4,50,13,50xm317,-152v29,-6,106,-43,106,-71v0,-23,-24,-25,-42,-17v-31,1,-74,48,-64,88",
-			w: 462
-		},
-		"∂": {
-			d: "456,-113v55,-37,119,-8,176,5v-19,37,-104,-5,-144,18v-5,64,-45,87,-130,87v-43,0,-70,-8,-96,-21v-54,15,-146,29,-209,10v-18,-11,-43,-26,-46,-53v-1,-9,28,-48,51,-46v55,-10,55,-8,101,-8v29,0,17,-26,23,-56v4,-19,4,-74,34,-49v4,42,-7,83,-10,124v0,4,-11,10,-34,17v-29,-1,-45,-4,-74,1v-10,2,-57,3,-52,18v30,43,132,30,190,18v2,-10,-7,-19,-5,-28v5,-36,31,-59,74,-56v27,2,71,4,70,35v-1,30,-37,41,-58,57v35,13,131,15,135,-23v2,-19,-5,-36,4,-50xm262,-85v0,3,13,28,19,25v7,0,48,-13,61,-29v-10,-17,-71,-17,-80,4",
-			w: 640
-		},
-		"∑": {
-			d: "235,-95v-3,-59,120,-41,160,-28v3,-2,15,-3,14,4v1,3,-16,19,-21,18r-97,4v-25,5,-18,18,-23,56v-16,14,-25,24,-36,18v-83,32,-154,29,-212,-17v-45,-68,41,-114,107,-119v50,-4,59,66,22,85v-16,8,-61,10,-79,15v36,27,185,24,165,-36xm128,-119v-23,-3,-43,4,-53,15v13,5,46,-4,53,-15",
-			w: 414
-		},
-		"∏": {
-			d: "243,-190v7,-18,27,-19,38,6v0,2,-5,8,-14,16v-8,-9,-27,-4,-24,-22xm221,-111v55,-7,60,22,45,64v5,23,17,47,-22,47v-35,0,-18,-40,-15,-70v-2,-19,-35,-13,-52,-18v-2,0,-13,1,-34,3v-4,0,-10,11,-13,31v-3,20,1,43,-11,54v-12,-4,-13,-5,-21,-3v-13,-13,-3,-25,-12,-41v7,-6,12,-22,10,-39v-23,-8,-79,15,-87,-21v12,-28,78,-4,101,-20r36,-96v8,-19,17,-28,27,-28v10,0,15,6,15,18v-6,32,-31,62,-38,109v25,10,47,-1,71,10",
-			w: 282
-		},
-		π: {
-			d: "247,-240v-3,5,-14,12,-21,6v-41,5,-71,-4,-85,37v-6,7,-21,42,-25,61v28,12,104,-16,129,24v8,11,12,24,12,38v-7,17,-2,99,-40,68v-9,-23,-5,-47,-1,-73v3,-24,-40,-24,-50,-19v-4,0,-18,2,-44,6v-30,-6,-16,49,-33,58v-19,-11,-14,2,-29,-10v8,-71,20,-114,43,-170v-24,-2,-49,4,-73,7v-30,3,-32,-33,-7,-36r184,-22v17,-1,40,13,40,25",
-			w: 265
-		},
-		"∫": {
-			d: "62,-151v-7,-70,20,-130,63,-150v28,1,39,10,70,23v20,8,6,33,-6,35v-29,-13,-45,-20,-49,-20v-20,-4,-45,51,-43,70v8,60,5,129,5,189v0,62,-27,93,-79,93v-37,-1,-71,-14,-63,-57v21,0,79,34,91,-2v16,-3,14,-64,21,-85v-2,-31,-1,-74,-10,-96",
-			w: 156
-		},
-		ª: {
-			d: "6,-265v1,-31,58,-53,80,-22v-11,14,25,28,25,36v-2,8,-15,12,-27,10v-22,-29,-68,19,-78,-24xm52,-281v-8,1,-24,10,-9,13v11,1,24,-10,9,-13",
-			w: 117
-		},
-		º: {
-			d: "13,-273v1,-31,56,-41,83,-18v36,8,14,48,-9,52v-35,6,-64,-5,-74,-34xm81,-269v-7,-7,-20,-11,-29,-6v5,13,13,11,29,6",
-			w: 128
-		},
-		Ω: {
-			d: "121,-111v9,16,43,-5,54,5v28,-4,62,8,81,-5v48,-33,166,-28,160,44v15,34,-51,53,-88,53v-34,0,-53,-21,-71,-37v-15,7,-32,-4,-28,-22v-26,-4,-93,-6,-108,8v8,17,5,37,12,54v-1,15,-18,15,-31,10v-9,-15,-20,-39,-19,-63v-20,-9,-73,15,-79,-18v4,-28,50,-11,77,-24v12,-99,36,-168,137,-178v35,5,64,20,67,57v0,13,-14,18,-20,5v-15,-35,-83,-31,-104,4v-26,20,-39,82,-40,107xm334,-45v15,2,51,-14,53,-22v-7,-20,-36,-31,-69,-29v-8,-1,-39,6,-37,14v-3,10,44,38,53,37",
-			w: 424
-		},
-		æ: {
-			d: "145,-44r33,7v2,42,-59,29,-85,16v-6,7,-35,24,-48,15v-19,2,-35,-21,-33,-37v2,-24,5,-19,28,-36v-6,-8,-45,3,-33,-21v21,-22,58,-12,85,-1v6,-5,35,-28,45,-15v20,-4,36,17,36,35v0,23,-4,21,-28,37xm111,-72v12,3,49,-16,19,-17v-5,0,-20,12,-19,17xm74,-50v-14,-4,-48,16,-19,17v4,1,19,-14,19,-17",
-			w: 184
-		},
-		ø: {
-			d: "76,-136v17,7,33,-8,51,0v9,-6,21,-13,36,-21v23,22,-13,31,3,50v11,13,4,21,14,35v-4,5,-1,14,-4,23v-14,23,-45,41,-84,39v-12,2,-29,28,-41,38v-2,-11,-34,-10,-15,-30v3,-7,5,-11,5,-11v-15,-24,-60,-54,-22,-89v23,-21,25,-32,57,-34xm102,-54v18,1,50,-19,30,-32v-12,7,-22,18,-30,32xm85,-92v-14,3,-26,8,-38,17v2,20,17,13,26,0v6,-8,12,-13,12,-17",
-			w: 188
-		},
-		"¿": {
-			d: "181,-247v3,1,31,2,29,15v-4,22,-37,27,-41,4v1,-5,7,-20,12,-19xm161,-34v-45,-1,-105,19,-124,51v0,11,18,17,54,17v39,0,82,-13,112,4v-10,35,-58,31,-100,31v-47,0,-80,-10,-99,-31v-10,-56,22,-73,64,-90v8,-3,32,-9,74,-18v21,-15,7,-62,22,-92v-1,-5,-1,-11,4,-12v16,0,24,7,24,22v-8,30,-8,73,-17,111v-3,5,-7,7,-14,7",
-			w: 213
-		},
-		"¡": {
-			d: "86,-197v8,16,-7,41,-24,25v-11,-11,-4,-16,-3,-29v13,0,15,-2,27,4xm46,-107v4,-8,11,-16,23,-7v19,26,-5,57,-6,87v-7,0,-5,18,-9,28v0,14,-17,52,-11,70v-2,7,-15,28,-25,12v-4,-6,-15,-7,-6,-16v2,-39,14,-96,34,-174",
-			w: 95
-		},
-		"¬": {
-			d: "141,-99v47,7,103,-3,149,6v14,24,18,15,10,39v-10,34,-7,31,-26,76v-4,6,-15,8,-16,21v-4,2,-4,1,-13,5v-22,-33,-4,-33,16,-104v-5,-9,-28,-4,-38,-6r-183,4v-14,0,-41,-29,-17,-36v31,-9,82,5,118,-5",
-			w: 315
-		},
-		"√": {
-			d: "364,-218v43,-21,80,-51,104,-32v-3,19,-24,21,-44,40v-41,15,-78,53,-136,78r-137,98v-20,16,-79,66,-91,68v-3,1,-25,-11,-24,-13v-4,-28,-43,-61,-30,-85v26,-15,42,19,58,32r295,-188v0,1,2,2,5,2",
-			w: 474
-		},
-		ƒ: {
-			d: "115,-262v-23,6,-39,63,-38,96v1,3,57,2,54,16v1,22,-45,15,-51,30v3,34,12,68,10,103v14,17,-18,53,-28,63v-48,8,-89,5,-95,-37v20,-5,77,21,83,-18v17,-29,-4,-61,0,-98v0,-5,-3,-10,-7,-17v-33,4,-43,-17,-25,-37v10,-4,27,5,27,-10v0,-43,15,-77,32,-109v12,-7,16,-22,38,-20v11,1,51,35,25,55v-9,1,-16,-17,-25,-17",
-			w: 145
-		},
-		"≈": {
-			d: "133,-112v21,15,48,-30,78,-17v3,3,5,7,5,9v-8,30,-47,45,-76,45v-19,0,-64,-48,-90,-21r-29,20v-6,-1,-17,-16,-15,-32v24,-17,70,-42,107,-21v4,4,10,9,20,17xm138,-57v28,2,48,-25,76,-26v13,30,-21,42,-40,53v-41,24,-77,-15,-114,-23v-15,14,-46,32,-49,-1v-3,-9,27,-28,54,-30",
-			w: 223
-		},
-		"∆": {
-			d: "18,-1v-24,-30,8,-48,25,-71v14,-19,34,-28,40,-56v20,-35,29,-14,57,4v9,39,43,62,57,102v0,16,-34,17,-50,14v-28,2,-72,4,-129,7xm139,-47r-22,-52v-12,-5,-12,15,-24,27v-7,6,-14,16,-23,28v23,1,36,-1,69,-3",
-			w: 199
-		},
-		"«": {
-			d: "191,-64v16,6,87,37,53,63v-39,-9,-71,-28,-107,-40v-14,-13,-13,-34,10,-47v27,-15,48,-55,84,-62v9,-2,21,10,21,18r-13,21v-16,5,-44,22,-51,41v0,4,1,6,3,6xm71,-65v17,6,87,35,55,62v-39,-8,-66,-27,-108,-40v-14,-13,-13,-36,10,-46v23,-18,50,-56,84,-63v9,-2,21,10,21,18r-13,22v-20,6,-32,17,-51,37v0,3,-1,11,2,10",
-			w: 265
-		},
-		"»": {
-			d: "120,-129v9,-33,48,-10,64,5v9,20,86,52,50,86v-36,11,-66,31,-107,40v-6,-7,-9,-13,-9,-17v-2,-13,50,-46,63,-46v11,-18,-33,-42,-48,-47xm1,-128v10,-33,46,-8,64,6v8,19,86,50,51,85v-40,13,-69,30,-108,40v-6,-7,-8,-12,-8,-16v-2,-14,50,-46,63,-47v7,-13,-9,-20,-19,-30v-10,-9,-20,-15,-30,-17",
-			w: 252
-		},
-		"…": {
-			d: "244,-24v-1,21,-38,32,-41,3v-2,-19,23,-22,34,-17v0,7,0,15,7,14xm113,-24v0,-22,28,-21,38,-8v5,34,-39,40,-38,8xm35,-2v-10,-2,-36,-17,-18,-29v-1,-15,17,-17,31,-6v7,17,6,33,-13,35",
-			w: 258
-		},
-		" ": {
-			w: 179
-		},
-		À: {
-			d: "161,-217v20,53,23,124,54,170v-2,20,-34,9,-42,0v-27,-12,-78,-18,-101,-18v-26,6,-29,51,-54,63v-18,-4,-19,-30,-3,-38v5,-9,15,-16,8,-29v1,-12,23,-9,26,-19v6,-10,11,-20,20,-27r70,-121v12,-4,16,4,22,19xm82,-91v17,3,62,7,86,13v-13,-33,-13,-80,-29,-109v-15,30,-38,63,-57,96xm150,-268v14,10,54,14,37,41v-28,-7,-62,-22,-100,-42v-2,-3,-2,-26,5,-23v16,4,42,17,58,24"
-		},
-		Ã: {
-			d: "161,-217v20,53,23,124,54,170v-2,20,-34,9,-42,0v-27,-12,-78,-18,-101,-18v-26,6,-29,51,-54,63v-18,-4,-19,-30,-3,-38v5,-9,15,-16,8,-29v1,-12,23,-9,26,-19v6,-10,11,-20,20,-27r70,-121v12,-4,16,4,22,19xm82,-91v17,3,62,7,86,13v-13,-33,-13,-80,-29,-109v-15,30,-38,63,-57,96xm100,-285v26,-19,54,19,69,22v4,0,15,-5,34,-13v23,-9,22,-17,31,-12v3,11,-9,9,-7,21v-26,20,-46,30,-59,30v-3,3,-50,-26,-49,-29v-12,1,-31,35,-51,32v-3,-8,-5,-14,-5,-18v10,-9,16,-17,37,-33"
-		},
-		Õ: {
-			d: "62,-184v78,-31,249,-50,238,74v-6,65,-102,105,-179,115v-77,-7,-152,-71,-101,-149v2,-5,24,-33,42,-40xm279,-120v14,-38,-47,-64,-85,-61v-20,-9,-41,7,-62,0v-11,7,-54,12,-66,24v0,20,-51,35,-38,66v-1,43,50,67,96,67v44,0,162,-55,155,-96xm116,-270v26,-19,54,19,69,22v4,0,15,-5,34,-13v23,-10,22,-16,31,-12v3,11,-8,9,-7,21v-45,28,-47,42,-88,16v-29,-19,-12,-20,-43,2v-8,5,-12,18,-23,15v-13,-3,-12,-20,-4,-23v4,-6,14,-15,31,-28",
-			w: 273
-		},
-		Œ: {
-			d: "247,-243v71,4,161,-7,245,-8v17,0,27,6,27,17v-8,27,-70,14,-104,23v-3,1,-52,0,-65,7r0,4v16,16,17,29,17,65v32,10,74,-14,99,16v-14,25,-76,17,-127,24v-17,18,-55,32,-75,51v85,0,128,-3,204,-11v15,-2,21,11,20,29v-78,24,-177,12,-270,24v-24,3,-24,-29,-48,-15v-46,7,-70,4,-105,-4v-19,-18,-42,-22,-52,-55v-10,-34,0,-47,12,-78v-18,-59,48,-78,105,-84v17,-18,103,-13,117,-5xm125,-45v76,-9,186,-43,209,-105v-26,-67,-137,-83,-217,-54v3,34,-45,25,-60,58v-41,48,5,108,68,101",
-			w: 492
-		},
-		œ: {
-			d: "185,-54v25,28,107,-17,104,33v-12,12,-60,14,-87,14v0,0,1,1,2,1v-11,1,-39,-9,-50,-17v-28,17,-75,32,-114,7v-22,-14,-34,-11,-34,-41v0,-36,33,-49,48,-75v29,-16,72,-3,95,11v12,-9,48,-27,59,-26v30,0,64,15,65,40v0,7,-6,20,-20,37v-29,1,-44,11,-68,16xm226,-106v-21,-7,-41,-2,-48,13v14,1,42,-7,48,-13xm132,-87v-21,-35,-94,11,-92,24v-2,14,43,21,61,21v25,0,36,-20,31,-45",
-			w: 295
-		},
-		"–": {
-			d: "6,-66v-8,-72,79,-21,146,-39v37,-10,79,7,111,0v9,8,14,13,14,17v2,26,-72,13,-99,21v-83,4,-124,21,-172,1",
-			w: 282
-		},
-		"—": {
-			d: "175,-106v86,-9,201,1,286,-1v11,6,13,11,6,30v-118,15,-246,10,-377,10v-25,0,-73,3,-82,-8r-2,-26v11,-13,32,-9,52,-7v38,3,84,-5,117,2",
-			w: 485
-		},
-		"“": {
-			d: "66,-261v-21,5,-37,51,-22,77v0,4,-2,6,-7,6v-31,-9,-38,-62,-12,-94v12,-15,21,-28,31,-34v16,-1,19,24,22,34v10,-11,22,-32,43,-23v-2,8,4,16,5,19v-6,11,-51,53,-29,74v-12,21,-30,5,-33,-17v-6,-13,9,-28,2,-42",
-			w: 118
-		},
-		"”": {
-			d: "120,-294v12,3,30,26,19,34v2,15,-40,70,-55,66v-40,-10,10,-51,14,-64v3,-3,8,-31,22,-36xm70,-306v14,3,26,34,16,49v-19,30,-31,45,-58,59v-12,-11,-33,-17,-7,-36v13,-19,36,-27,36,-59v0,-5,9,-13,13,-13",
-			w: 148
-		},
-		"‘": {
-			d: "73,-262v-10,7,-41,39,-38,69v-15,13,-27,-16,-28,-28v-2,-20,51,-83,66,-83v20,0,25,41,0,42",
-			w: 95
-		},
-		"’": {
-			d: "74,-300v13,31,-1,99,-44,101v-13,0,-19,-5,-19,-15v6,-10,31,-34,35,-59v2,-11,1,-32,11,-32v6,0,11,2,17,5",
-			w: 90
-		},
-		"÷": {
-			d: "167,-158v-4,3,-7,9,-10,20v-23,4,-34,-8,-29,-31v14,-6,18,1,39,11xm78,-72v-53,11,-53,12,-69,-15v-1,-12,11,-17,22,-14v71,-13,151,-18,230,-24v11,1,21,16,23,28v-28,20,-90,11,-126,16v-36,5,-62,5,-80,9xm123,-40v19,-17,41,-1,41,17v0,13,-6,19,-17,19v-15,0,-29,-14,-24,-36",
-			w: 293
-		},
-		"◊": {
-			d: "76,-158v48,-8,64,11,100,36v28,19,-5,39,-22,54v-15,13,-40,32,-48,49v-17,5,-12,0,-27,-16v-6,-6,-86,-31,-68,-53r2,-9v27,-23,48,-44,63,-61xm93,-65v12,-2,35,-31,41,-38v-5,-10,-16,-14,-34,-24v-12,12,-36,29,-40,44v19,11,30,18,33,18",
-			w: 199
-		},
-		ÿ: {
-			d: "118,85v-11,11,-11,38,-22,61v-2,-1,-2,31,-17,27v-11,0,-21,-10,-21,-22v20,-66,23,-61,64,-168v-22,1,-38,16,-58,4v-22,4,-51,-16,-51,-42v-11,-13,-7,-59,7,-58v16,1,21,24,22,51v21,33,66,5,94,-7v4,-3,26,-14,38,-29r17,0v23,44,-23,59,-34,102v-6,9,-13,9,-13,26v-15,6,-12,33,-27,48v0,2,1,4,1,7xm158,-136v0,8,-4,13,-12,13v-18,0,-21,-20,-16,-34v18,-1,29,1,28,21xm62,-161v7,3,28,9,27,18v1,8,-8,17,-17,17v-18,0,-26,-24,-10,-35",
-			w: 190
-		},
-		Ÿ: {
-			d: "176,-189v35,20,-25,54,-39,72v-26,34,-57,57,-74,104v-10,15,-4,14,-23,3r0,-10v19,-44,27,-46,50,-81v-9,-5,-24,4,-34,4v-38,0,-54,-50,-44,-87v21,-5,18,19,22,35v4,18,15,27,29,27v41,0,60,-39,113,-67xm153,-222v0,8,-3,12,-11,12v-18,0,-21,-19,-16,-33v18,-1,28,2,27,21xm57,-247v8,2,29,9,28,17v0,21,-37,24,-36,1v0,-7,2,-13,8,-18",
-			w: 135
-		},
-		"⁄": {
-			d: "193,-305v7,6,17,31,3,41v-10,7,-12,13,-21,25v-79,56,-190,209,-197,260r-18,0v-23,-19,9,-70,15,-85v52,-83,121,-179,218,-241",
-			w: 120
-		},
-		"¤": {
-			d: "308,-133r-200,16v-2,1,-6,4,-10,10v70,-2,144,-14,211,-8v3,0,8,4,13,8v-1,4,-3,9,-9,17v-57,11,-164,6,-219,25v26,32,112,25,173,25v9,0,35,2,35,19v0,9,-4,13,-12,14v-115,12,-146,23,-211,-19v-12,-4,-22,-9,-25,-27v-6,-29,-61,3,-43,-49v17,-1,36,7,42,-12v-32,7,-36,-39,-11,-40v29,14,63,-25,73,-30v52,-25,72,-44,142,-44v23,0,21,41,-1,39v-35,-3,-61,9,-102,31v2,2,5,4,8,4v18,-6,101,-9,115,-9v7,0,55,13,31,30",
-			w: 312
-		},
-		"€": {
-			d: "308,-133r-200,16v-2,1,-6,4,-10,10v70,-2,144,-14,211,-8v3,0,8,4,13,8v-1,4,-3,9,-9,17v-57,11,-164,6,-219,25v26,32,112,25,173,25v9,0,35,2,35,19v0,9,-4,13,-12,14v-115,12,-146,23,-211,-19v-12,-4,-22,-9,-25,-27v-6,-29,-61,3,-43,-49v17,-1,36,7,42,-12v-32,7,-36,-39,-11,-40v29,14,63,-25,73,-30v52,-25,72,-44,142,-44v23,0,21,41,-1,39v-35,-3,-61,9,-102,31v2,2,5,4,8,4v18,-6,101,-9,115,-9v7,0,55,13,31,30",
-			w: 312
-		},
-		"‹": {
-			d: "64,-107v9,17,86,17,87,43v0,11,-4,16,-13,16v-36,-11,-70,-22,-109,-31v-19,-4,-18,-14,-9,-36v59,-56,93,-84,101,-84v17,0,19,20,13,29",
-			w: 159
-		},
-		"›": {
-			d: "41,-181v26,27,112,44,70,91r-82,60v-20,3,-25,-23,-13,-32r70,-51r-66,-46v-5,-6,-4,-28,5,-29v4,2,9,4,16,7",
-			w: 137
-		},
-		"": {
-			d: "74,-74v-6,-24,-70,8,-68,-27v0,-6,6,-20,20,-18v44,6,45,-9,42,-49v7,-40,26,-114,90,-104v48,-2,63,-1,90,30v11,25,4,14,2,44v-7,17,-54,9,-49,-7r8,-21v-5,-13,-22,-9,-43,-11v-56,-6,-63,45,-67,92v-2,21,5,23,22,22v37,-1,80,-9,113,-1v13,31,-9,82,-22,106v-13,10,-26,-6,-22,-25r11,-46v0,-3,-2,-6,-6,-6v-19,0,-47,3,-83,9v-6,1,-9,4,-8,11r12,59v-1,9,-11,30,-23,18v-18,-18,-15,-59,-19,-76",
-			w: 272
-		},
-		"": {
-			d: "43,-61v-21,4,-36,2,-39,-15v-4,-35,41,-8,34,-47v4,-59,12,-99,46,-124v11,-42,157,-47,149,13v1,7,-7,15,-13,15v-18,-7,-19,-26,-47,-23v-34,3,-65,6,-79,37v-12,27,-22,52,-21,91v13,9,31,-11,45,-4v32,-15,50,-6,94,-13v12,-30,19,-79,36,-133v1,-5,5,-8,12,-8v44,18,-18,106,-12,144v-9,22,-1,73,-16,104v2,28,-23,28,-37,16v1,-26,9,-48,11,-75v0,-6,-3,-9,-9,-9v-43,0,-83,8,-119,24v8,40,17,33,-7,56v-20,-9,-21,-19,-28,-49",
-			w: 283
-		},
-		"‡": {
-			d: "102,-284v16,2,42,-2,33,18v-7,15,-42,1,-38,30v3,3,31,1,30,11v4,15,-29,19,-36,24v-2,18,-4,24,-16,29r-25,-26v-25,7,-53,3,-42,-25v4,-10,70,0,51,-22v-17,4,-41,12,-39,-15v-5,-16,39,-18,44,-20v4,-2,7,-10,10,-24v19,-3,23,6,28,20",
-			w: 145
-		},
-		"∙": {
-			d: "57,-77v6,18,-7,21,-19,23v-34,6,-25,-40,-9,-43v18,-3,29,8,28,20",
-			w: 67
-		},
-		"‚": {
-			d: "25,63v-26,21,-48,-2,-22,-24v14,-12,35,-40,35,-69v3,-2,3,-11,12,-9v35,17,5,88,-25,102",
-			w: 97
-		},
-		"„": {
-			d: "25,63v-26,21,-48,-2,-22,-24v11,-9,36,-41,35,-69v3,-2,4,-12,12,-9v36,14,5,89,-25,102xm84,64v-24,20,-45,-1,-21,-24v21,-20,32,-35,35,-69v3,-2,3,-11,12,-9v36,17,9,86,-26,102",
-			w: 135
-		},
-		"‰": {
-			d: "398,-131v58,-1,87,13,72,65v-1,30,-66,63,-99,65v-56,3,-99,-58,-62,-102v2,2,5,2,8,2v20,-16,51,-17,81,-30xm202,-279v33,0,94,-24,95,18v-7,31,-33,27,-54,55v-36,32,-71,74,-112,99v-18,18,-40,34,-51,58v-19,14,-25,37,-56,40v-17,2,-25,-29,-10,-40v15,-11,40,-37,52,-52r87,-72v-51,13,-100,6,-116,-27v1,-5,-6,-30,-9,-36v-3,-5,22,-41,27,-39v29,2,16,34,5,49v0,15,14,23,42,23v42,0,59,-31,28,-38v-17,-4,-53,3,-50,-23v0,-7,1,-12,4,-16v16,-9,36,4,49,5v0,0,23,-4,69,-4xm222,-118v33,-2,55,18,50,57v-29,36,-48,45,-96,50v-27,-5,-56,-17,-58,-51v13,-37,64,-43,104,-56xm335,-61v13,44,101,7,108,-31v-11,-3,-20,-4,-30,-4v-18,-1,-82,18,-78,35xm225,-244v-18,0,-29,-1,-46,3v7,15,6,28,0,43v15,-14,34,-30,46,-46xm164,-53v26,5,59,-10,76,-26v-17,-16,-49,2,-67,14v1,8,-8,6,-9,12",
-			w: 485
-		},
-		Â: {
-			d: "161,-217v20,53,23,124,54,170v-2,20,-34,9,-42,0v-27,-12,-78,-18,-101,-18v-26,6,-29,51,-54,63v-18,-4,-19,-30,-3,-38v5,-9,15,-16,8,-29v1,-12,23,-9,26,-19v6,-10,11,-20,20,-27r70,-121v12,-4,16,4,22,19xm82,-91v17,3,62,7,86,13v-13,-33,-13,-80,-29,-109v-15,30,-38,63,-57,96xm202,-219v-27,-6,-40,-26,-61,-37v-21,7,-39,46,-65,23v-2,-4,-3,-10,-4,-14v19,-4,43,-32,61,-43v27,6,40,22,62,37v12,8,18,17,18,25v0,6,-3,9,-11,9"
-		},
-		Ê: {
-			d: "49,-160v1,-4,-10,-9,-15,-8v-15,-35,32,-30,57,-31r142,-8v2,1,30,7,40,10v-52,16,-133,17,-190,30v-7,9,-12,24,-15,47v26,10,102,-6,141,3v1,3,1,6,2,10v-36,18,-92,12,-149,21v-11,9,-16,41,-16,51v55,-1,111,-21,168,-13v15,-8,48,1,31,18v-53,16,-130,13,-198,29r-39,-8v-4,-19,17,-53,20,-76v-1,0,-7,-11,-9,-18v18,-7,22,-28,30,-57xm199,-211v-27,-6,-39,-26,-60,-37v-21,7,-40,47,-65,22v-2,-7,-2,-7,-4,-13v18,-5,44,-31,61,-43v27,6,41,22,62,37v12,9,18,17,18,25v0,6,-4,9,-12,9",
-			w: 252
-		},
-		Á: {
-			d: "161,-217v20,53,23,124,54,170v-2,20,-34,9,-42,0v-27,-12,-78,-18,-101,-18v-26,6,-29,51,-54,63v-18,-4,-19,-30,-3,-38v5,-9,15,-16,8,-29v1,-12,23,-9,26,-19v6,-10,11,-20,20,-27r70,-121v12,-4,16,4,22,19xm82,-91v17,3,62,7,86,13v-13,-33,-13,-80,-29,-109v-15,30,-38,63,-57,96xm84,-250v31,-5,83,-53,100,-31v0,5,-11,15,-35,28v-16,5,-51,28,-53,25v-14,1,-16,-11,-12,-22"
-		},
-		Ë: {
-			d: "49,-160v1,-4,-10,-9,-15,-8v-15,-35,32,-30,57,-31r142,-8v2,1,30,7,40,10v-52,16,-133,17,-190,30v-7,9,-12,24,-15,47v26,10,102,-6,141,3v1,3,1,6,2,10v-36,18,-92,12,-149,21v-11,9,-17,41,-17,51v55,0,112,-21,169,-13v15,-8,48,1,31,18v-53,16,-130,13,-198,29r-39,-8v-3,-21,17,-53,20,-76v-1,0,-7,-11,-9,-18v18,-7,22,-28,30,-57xm191,-236v0,8,-4,13,-12,13v-17,0,-19,-19,-16,-34v18,-1,29,1,28,21xm95,-261v7,3,29,9,28,18v0,7,-9,17,-18,17v-18,0,-26,-25,-10,-35",
-			w: 252
-		},
-		È: {
-			d: "49,-160v1,-4,-10,-9,-15,-8v-15,-35,32,-30,57,-31r142,-8v2,1,30,7,40,10v-52,16,-133,17,-190,30v-7,9,-12,24,-15,47v26,10,102,-6,141,3v1,3,1,6,2,10v-36,18,-92,12,-149,21v-11,9,-16,41,-16,51v55,-1,111,-21,168,-13v15,-8,48,1,31,18v-53,16,-130,13,-198,29r-39,-8v-4,-19,17,-53,20,-76v-1,0,-7,-11,-9,-18v18,-7,22,-28,30,-57xm184,-236v6,9,5,13,0,23v-28,-7,-62,-21,-100,-41v-3,-2,-3,-27,5,-23v34,11,60,25,95,41",
-			w: 252
-		},
-		Í: {
-			d: "26,-5v-9,-6,-9,-12,-9,-36v0,-71,7,-119,21,-144v8,-13,14,-20,19,-20v28,19,-7,89,-10,120v-2,21,-8,47,-14,76v-2,1,-2,0,-7,4xm6,-233v31,-6,83,-53,101,-31v2,11,-80,53,-89,53v-14,1,-14,-11,-12,-22",
-			w: 104
-		},
-		Î: {
-			d: "53,-9v-15,7,-16,-3,-16,-32v0,-71,7,-119,21,-144v8,-13,14,-20,19,-20v28,19,-7,89,-10,120v-2,21,-8,47,-14,76xm137,-209v-27,-6,-40,-26,-61,-37v-8,0,-9,4,-13,10v-11,13,-50,37,-56,0v18,-5,43,-32,61,-43v28,5,40,21,62,36v12,9,18,17,18,25v0,6,-4,9,-11,9",
-			w: 144
-		},
-		Ï: {
-			d: "33,-5v-9,-6,-9,-12,-9,-36v0,-71,8,-119,22,-144v8,-13,14,-20,19,-20v27,20,-11,87,-10,120r-15,76v-1,1,-4,2,-7,4xm111,-222v0,8,-4,12,-12,12v-18,0,-19,-19,-16,-33v18,-1,29,1,28,21xm15,-247v8,2,29,9,28,17v0,21,-37,24,-36,1v0,-7,2,-13,8,-18",
-			w: 110
-		},
-		Ì: {
-			d: "33,-5v-9,-6,-9,-12,-9,-36v0,-71,8,-119,22,-144v8,-13,14,-20,19,-20v27,20,-11,87,-10,120r-15,76v-1,1,-4,2,-7,4xm72,-247v7,6,55,15,36,40v-28,-7,-61,-21,-99,-41v-3,-2,-3,-27,5,-23v18,3,41,17,58,24",
-			w: 111
-		},
-		Ó: {
-			d: "62,-184v78,-31,249,-50,238,74v-6,65,-102,105,-179,115v-77,-7,-152,-71,-101,-149v2,-5,24,-33,42,-40xm279,-120v14,-38,-47,-64,-85,-61v-20,-9,-41,7,-62,0v-11,7,-54,12,-66,24v0,20,-51,35,-38,66v-1,43,50,67,96,67v44,0,162,-55,155,-96xm142,-250v27,-11,47,-32,59,-14v2,11,-80,53,-89,53v-13,1,-15,-11,-12,-21v10,-5,24,-11,42,-18",
-			w: 273
-		},
-		Ô: {
-			d: "62,-184v78,-31,249,-50,238,74v-6,65,-102,105,-179,115v-77,-7,-152,-71,-101,-149v2,-5,24,-33,42,-40xm279,-120v14,-38,-47,-64,-85,-61v-20,-9,-41,7,-62,0v-11,7,-54,12,-66,24v0,20,-51,35,-38,66v-1,43,50,67,96,67v44,0,162,-55,155,-96xm157,-282v17,18,52,34,54,63v-24,12,-52,-36,-53,-29r-42,34v-23,-4,-6,-31,5,-34v1,1,27,-37,36,-34",
-			w: 273
-		},
-		"": {
-			d: "231,-188v31,-74,91,-99,188,-116v28,1,6,39,1,51v-20,52,-100,91,-148,126v2,4,6,7,12,10v42,-42,181,-41,166,46v-1,8,-19,8,-28,5v-43,1,-168,42,-106,86v15,16,33,28,61,39v0,10,0,17,-6,22v-8,8,-35,26,-78,51v-52,7,-128,22,-154,-17v-23,-35,-99,-35,-117,-77v-29,-68,25,-149,75,-175v44,-23,89,5,135,13v14,-26,2,-39,-1,-64",
-			w: 461
-		},
-		Ò: {
-			d: "62,-184v78,-31,249,-50,238,74v-6,65,-102,105,-179,115v-77,-7,-152,-71,-101,-149v2,-5,24,-33,42,-40xm279,-120v14,-38,-47,-64,-85,-61v-20,-9,-41,7,-62,0v-11,7,-54,12,-66,24v0,20,-51,35,-38,66v-1,43,50,67,96,67v44,0,162,-55,155,-96xm161,-262v14,10,52,13,37,41v-28,-7,-62,-21,-100,-41v-3,-3,-3,-26,5,-24v16,5,42,17,58,24",
-			w: 273
-		},
-		Ú: {
-			d: "281,-202v6,67,-30,121,-71,152v-3,14,-47,26,-60,39v-41,20,-110,1,-125,-26v-24,-44,-28,-84,-8,-127v12,-26,23,-38,37,-22v-2,2,-3,5,-3,10v-34,26,-30,116,5,134v22,32,86,-1,109,-8v38,-28,104,-64,97,-149v2,-10,7,-8,19,-3xm194,-265v3,-1,11,4,11,6v3,12,-81,52,-89,54v-14,0,-13,-9,-12,-22",
-			w: 262
-		},
-		Û: {
-			d: "281,-202v6,67,-30,121,-71,152v-3,14,-47,26,-60,39v-41,20,-110,1,-125,-26v-24,-44,-28,-84,-8,-127v12,-26,23,-38,37,-22v-2,2,-3,5,-3,10v-34,26,-30,116,5,134v22,32,86,-1,109,-8v38,-28,104,-64,97,-149v2,-10,7,-8,19,-3xm150,-266v24,11,58,27,73,46v0,5,-3,6,-10,6v-28,2,-61,-30,-63,-25v-10,0,-57,40,-69,23v3,-10,-8,-15,8,-19v17,-1,34,-29,61,-31",
-			w: 262
-		},
-		Ù: {
-			d: "281,-202v6,67,-30,121,-71,152v-3,14,-47,26,-60,39v-41,20,-110,1,-125,-26v-24,-44,-28,-84,-8,-127v12,-26,23,-38,37,-22v-2,2,-3,5,-3,10v-34,26,-30,116,5,134v22,32,86,-1,109,-8v38,-28,104,-64,97,-149v2,-10,7,-8,19,-3xm151,-243v14,10,54,14,37,41v-28,-7,-61,-22,-99,-42v-3,-2,-4,-25,4,-23v16,5,42,17,58,24",
-			w: 262
-		},
-		ı: {
-			d: "43,-103v21,4,16,56,11,100v-7,2,-11,1,-20,-5v0,-7,-13,-18,-11,-25v4,-23,-3,-68,20,-70",
-			w: 80
-		},
-		ˆ: {
-			d: "144,-220v-29,0,-41,-27,-63,-39v-8,0,-11,5,-15,11v-17,12,-32,31,-54,13v-2,-5,-3,-9,-4,-14v20,-5,45,-33,64,-45v28,6,43,23,65,38v12,9,19,19,19,27v0,6,-4,9,-12,9",
-			w: 165
-		},
-		"˜": {
-			d: "47,-300v26,-21,57,19,72,23v4,0,16,-5,36,-14v24,-10,22,-16,32,-13v3,12,-7,11,-7,23v-27,21,-48,32,-62,32v-3,2,-52,-27,-51,-31v-12,-2,-34,40,-54,33v-4,-13,-8,-18,1,-24v5,-7,16,-15,33,-29",
-			w: 186
-		},
-		"¯": {
-			d: "63,-295v28,-7,73,10,105,7v11,1,6,8,5,19v-37,21,-72,11,-136,11v-23,0,-31,-14,-27,-36v12,-15,40,0,53,-1",
-			w: 183
-		},
-		"˘": {
-			d: "65,-269v20,-11,45,-31,74,-36v20,30,-42,40,-59,66v-5,6,-11,8,-18,8v-8,-3,-45,-32,-51,-54v5,-24,14,-13,34,1",
-			w: 158
-		},
-		"˙": {
-			d: "23,-302v15,-13,32,1,32,18v1,22,-36,29,-39,4v0,0,3,-7,7,-22",
-			w: 70
-		},
-		"˚": {
-			d: "23,-225v-43,-24,-11,-85,41,-78v16,2,31,4,46,17v32,54,-41,86,-87,61xm33,-257v2,20,57,11,57,-6v0,-6,-11,-9,-33,-12v-14,-2,-24,13,-24,18",
-			w: 123
-		},
-		"¸": {
-			d: "74,16v32,2,49,14,55,36v-3,7,-14,31,-29,33v-28,4,-57,11,-88,14v-19,-6,-13,-31,8,-33v20,-1,59,-5,73,-14v-17,-14,-68,8,-53,-37v9,-10,2,-28,24,-30v8,8,13,17,10,31",
-			w: 129
-		},
-		"˝": {
-			d: "91,-249v15,-11,38,-53,57,-29v0,9,0,14,-3,23v-2,3,-20,22,-54,55v-5,5,-10,8,-16,8v-17,2,-6,-22,-7,-31v-1,0,-2,0,-4,1v-17,21,-29,31,-50,27v-5,-18,-3,-15,3,-27v23,-27,40,-46,48,-59v7,-12,31,3,29,9v-1,14,-3,24,-13,31v4,4,9,-1,10,-8",
-			w: 151
-		},
-		"˛": {
-			d: "82,-5v-8,12,-16,55,-21,75v0,4,2,7,7,7v6,0,22,-7,50,-20v8,0,12,7,12,20v-2,22,-6,14,-27,30v-15,12,-26,16,-30,16v-47,-8,-59,-14,-56,-75v8,-27,12,-54,25,-77v19,-21,35,15,40,24",
-			w: 138
-		},
-		ˇ: {
-			d: "39,-286v33,46,63,-4,96,-16v6,0,9,6,9,19v0,24,-49,46,-77,46v-32,0,-52,-28,-59,-48v0,-25,23,-17,31,-1",
-			w: 153
-		},
-		"\r": {
-			w: 179
-		}
-	}
-}),
-function() {
-	function e(e) {
-		this.message = e
-	}
-
-	function t(t, n) {
-		if(!t) throw new e(n)
-	}
-
-	function n(e) {
-		return e.x + e.width / 2
-	}
-
-	function i(e) {
-		return e.y + e.height / 2
-	}
-	var r = 10,
-		o = 10,
-		a = 10,
-		s = 5,
-		l = 5,
-		c = 10,
-		u = 5,
-		d = 15,
-		p = 0,
-		h = 5,
-		f = 20,
-		m = Diagram.PLACEMENT,
-		g = Diagram.LINETYPE,
-		v = Diagram.ARROWTYPE,
-		b = {
-			stroke: "#000",
-			"stroke-width": 2
-		}, y = {
-			fill: "#fff"
-		};
-	e.prototype.toString = function() {
-		return "AssertException: " + this.message
-	}, String.prototype.trim || (String.prototype.trim = function() {
-		return this.replace(/^\s+|\s+$/g, "")
-	}), Raphael.fn.line = function(e, n, i, r) {
-		return t(_.all([e, i, n, r], _.isFinite), "x1,x2,y1,y2 must be numeric"), this.path("M{0},{1} L{2},{3}", e, n, i, r)
-	}, Raphael.fn.wobble = function(e, n, i, r) {
-		t(_.all([e, i, n, r], _.isFinite), "x1,x2,y1,y2 must be numeric");
-		var o = Math.sqrt((i - e) * (i - e) + (r - n) * (r - n)) / 25,
-			a = Math.random(),
-			s = Math.random(),
-			l = Math.random() > .5 ? o : -o,
-			c = Math.random() > .5 ? o : -o,
-			u = {
-				x: (i - e) * a + e + l,
-				y: (r - n) * a + n + c
-			}, d = {
-				x: (i - e) * s + e - l,
-				y: (r - n) * s + n - c
-			};
-		return "C" + u.x + "," + u.y + " " + d.x + "," + d.y + " " + i + "," + r
-	}, Raphael.fn.text_bbox = function(e, t) {
-		var n;
-		t._obj ? n = this.print_center(0, 0, e, t._obj, t["font-size"]) : (n = this.text(0, 0, e), n.attr(t));
-		var i = n.getBBox();
-		return n.remove(), i
-	}, Raphael.fn.handRect = function(e, n, i, r) {
-		return t(_.all([e, n, i, r], _.isFinite), "x, y, w, h must be numeric"), this.path("M" + e + "," + n + this.wobble(e, n, e + i, n) + this.wobble(e + i, n, e + i, n + r) + this.wobble(e + i, n + r, e, n + r) + this.wobble(e, n + r, e, n)).attr(y)
-	}, Raphael.fn.handLine = function(e, n, i, r) {
-		return t(_.all([e, i, n, r], _.isFinite), "x1,x2,y1,y2 must be numeric"), this.path("M" + e + "," + n + this.wobble(e, n, i, r))
-	}, Raphael.fn.print_center = function(e, t, n, i, r, o) {
-		var a = this.print(e, t, n, i, r, "baseline", o),
-			s = a.getBBox(),
-			l = e - s.x - s.width / 2,
-			c = t - s.y - s.height / 2,
-			u = new Raphael.matrix;
-		return u.translate(l, c), a.attr("path", Raphael.mapPath(a.attr("path"), u))
-	};
-	var x = function(e) {
-		this.init(e)
-	};
-	_.extend(x.prototype, {
-		init: function(e) {
-			this.diagram = e, this._paper = void 0, this._font = void 0, this._title = void 0, this._actors_height = 0, this._signals_height = 0;
-			var t = this.arrow_types = {};
-			t[v.FILLED] = "block", t[v.OPEN] = "open";
-			var n = this.line_types = {};
-			n[g.SOLID] = "", n[g.DOTTED] = "-"
-		},
-		init_paper: function(e) {
-			this._paper = new Raphael(e, 320, 200)
-		},
-		init_font: function() {},
-		draw_line: function(e, t, n, i) {
-			return this._paper.line(e, t, n, i)
-		},
-		draw_rect: function(e, t, n, i) {
-			return this._paper.rect(e, t, n, i)
-		},
-		draw: function(e) {
-			var t = this.diagram;
-			this.init_paper(e), this.init_font(), this.layout();
-			var n = this._title ? this._title.height : 0;
-			this._paper.setStart(), this._paper.setSize(t.width, t.height);
-			var i = r + n;
-			this.draw_title(), this.draw_actors(i), this.draw_signals(i + this._actors_height), this._paper.setFinish()
-		},
-		layout: function() {
-			function e(e, n, i) {
-				t(n > e, "a must be less than or equal to b"), 0 > e ? (n = v[n], n.x = Math.max(i - n.width / 2, n.x)) : n >= v.length ? (e = v[e], e.padding_right = Math.max(i, e.padding_right)) : (e = v[e], e.distances[n] = Math.max(i, e.distances[n] ? e.distances[n] : 0))
-			}
-			var n = this.diagram,
-				i = this._paper,
-				g = this._font,
-				v = n.actors,
-				b = n.signals;
-			if(n.width = 0, n.height = 0, n.title) {
-				var y = this._title = {}, x = i.text_bbox(n.title, g);
-				y.text_bb = x, y.message = n.title, y.width = x.width + 2 * (h + p), y.height = x.height + 2 * (h + p), y.x = r, y.y = r, n.width += y.width, n.height += y.height
-			}
-			_.each(v, function(e) {
-				var t = i.text_bbox(e.name, g);
-				e.text_bb = t, e.x = 0, e.y = 0, e.width = t.width + 2 * (a + o), e.height = t.height + 2 * (a + o), e.distances = [], e.padding_right = 0, this._actors_height = Math.max(e.height, this._actors_height)
-			}, this), _.each(b, function(t) {
-				var n, r, a = i.text_bbox(t.message, g);
-				t.text_bb = a, t.width = a.width, t.height = a.height;
-				var p = 0;
-				if("Signal" == t.type) t.width += 2 * (s + l), t.height += 2 * (s + l), t.isSelf() ? (n = t.actorA.index, r = n + 1, t.width += f) : (n = Math.min(t.actorA.index, t.actorB.index), r = Math.max(t.actorA.index, t.actorB.index));
-				else {
-					if("Note" != t.type) throw new Error("Unhandled signal type:" + t.type);
-					if(t.width += 2 * (c + u), t.height += 2 * (c + u), p = 2 * o, t.placement == m.LEFTOF) r = t.actor.index, n = r - 1;
-					else if(t.placement == m.RIGHTOF) n = t.actor.index, r = n + 1;
-					else if(t.placement == m.OVER && t.hasManyActors()) n = Math.min(t.actor[0].index, t.actor[1].index), r = Math.max(t.actor[0].index, t.actor[1].index), p = -(2 * u + 2 * d);
-					else if(t.placement == m.OVER) return n = t.actor.index, e(n - 1, n, t.width / 2), e(n, n + 1, t.width / 2), void(this._signals_height += t.height)
-				}
-				e(n, r, t.width + p), this._signals_height += t.height
-			}, this);
-			var w = 0;
-			return _.each(v, function(e) {
-				e.x = Math.max(w, e.x), _.each(e.distances, function(t, n) {
-					"undefined" != typeof t && (n = v[n], t = Math.max(t, e.width / 2, n.width / 2), n.x = Math.max(n.x, e.x + e.width / 2 + t - n.width / 2))
-				}), w = e.x + e.width + e.padding_right
-			}, this), n.width = Math.max(w, n.width), n.width += 2 * r, n.height += 2 * r + 2 * this._actors_height + this._signals_height, this
-		},
-		draw_title: function() {
-			var e = this._title;
-			e && this.draw_text_box(e, e.message, p, h, this._font)
-		},
-		draw_actors: function(e) {
-			var t = e;
-			_.each(this.diagram.actors, function(e) {
-				this.draw_actor(e, t, this._actors_height), this.draw_actor(e, t + this._actors_height + this._signals_height, this._actors_height);
-				var i = n(e),
-					r = this.draw_line(i, t + this._actors_height - o, i, t + this._actors_height + o + this._signals_height);
-				r.attr(b)
-			}, this)
-		},
-		draw_actor: function(e, t, n) {
-			e.y = t, e.height = n, this.draw_text_box(e, e.name, o, a, this._font)
-		},
-		draw_signals: function(e) {
-			var t = e;
-			_.each(this.diagram.signals, function(e) {
-				"Signal" == e.type ? e.isSelf() ? this.draw_self_signal(e, t) : this.draw_signal(e, t) : "Note" == e.type && this.draw_note(e, t), t += e.height
-			}, this)
-		},
-		draw_self_signal: function(e, i) {
-			t(e.isSelf(), "signal must be a self signal");
-			var r = e.text_bb,
-				o = n(e.actorA),
-				a = o + f + l - r.x,
-				c = i + e.height / 2;
-			this.draw_text(a, c, e.message, this._font);
-			var u, d = _.extend({}, b, {
-					"stroke-dasharray": this.line_types[e.linetype]
-				}),
-				p = i + s,
-				h = p + e.height - s;
-			u = this.draw_line(o, p, o + f, p), u.attr(d), u = this.draw_line(o + f, p, o + f, h), u.attr(d), u = this.draw_line(o + f, h, o, h), d["arrow-end"] = this.arrow_types[e.arrowtype] + "-wide-long", u.attr(d)
-		},
-		draw_signal: function(e, t) {
-			var i = n(e.actorA),
-				r = n(e.actorB),
-				o = (r - i) / 2 + i,
-				a = t + s + 2 * l;
-			this.draw_text(o, a, e.message, this._font), a = t + e.height - s - l;
-			var c = this.draw_line(i, a, r, a);
-			c.attr(b), c.attr({
-				"arrow-end": this.arrow_types[e.arrowtype] + "-wide-long",
-				"stroke-dasharray": this.line_types[e.linetype]
-			})
-		},
-		draw_note: function(e, t) {
-			e.y = t;
-			var i = e.hasManyActors() ? e.actor[0] : e.actor,
-				r = n(i);
-			switch(e.placement) {
-				case m.RIGHTOF:
-					e.x = r + o;
-					break;
-				case m.LEFTOF:
-					e.x = r - o - e.width;
-					break;
-				case m.OVER:
-					if(e.hasManyActors()) {
-						var a = n(e.actor[1]),
-							s = d + u;
-						e.x = r - s, e.width = a + s - e.x
-					} else e.x = r - e.width / 2;
-					break;
-				default:
-					throw new Error("Unhandled note placement:" + e.placement)
-			}
-			this.draw_text_box(e, e.message, c, u, this._font)
-		},
-		draw_text: function(e, t, n, i) {
-			var r, o = this._paper,
-				a = i || {};
-			a._obj ? r = o.print_center(e, t, n, a._obj, a["font-size"]) : (r = o.text(e, t, n), r.attr(a));
-			var s = r.getBBox(),
-				l = o.rect(s.x, s.y, s.width, s.height);
-			l.attr({
-				fill: "#fff",
-				stroke: "none"
-			}), r.toFront()
-		},
-		draw_text_box: function(e, t, r, o, a) {
-			var s = e.x + r,
-				l = e.y + r,
-				c = e.width - 2 * r,
-				u = e.height - 2 * r,
-				d = this.draw_rect(s, l, c, u);
-			d.attr(b), s = n(e), l = i(e), this.draw_text(s, l, t, a)
-		}
-	});
-	var w = function(e) {
-		this.init(e)
-	};
-	_.extend(w.prototype, x.prototype, {
-		init_font: function() {
-			this._font = {
-				"font-size": 16,
-				"font-family": "Andale Mono, monospace"
-			}
-		}
-	});
-	var S = function(e) {
-		this.init(e)
-	};
-	_.extend(S.prototype, x.prototype, {
-		init_font: function() {
-			this._font = {
-				"font-size": 16,
-				"font-family": "daniel"
-			}, this._font._obj = this._paper.getFont("daniel")
-		},
-		draw_line: function(e, t, n, i) {
-			return this._paper.handLine(e, t, n, i)
-		},
-		draw_rect: function(e, t, n, i) {
-			return this._paper.handRect(e, t, n, i)
-		}
-	});
-	var C = {
-		simple: w,
-		hand: S
-	};
-	Diagram.prototype.drawSVG = function(e, t) {
-		var n = {
-			theme: "hand"
-		};
-		if(t = _.defaults(t || {}, n), !(t.theme in C)) throw new Error("Unsupported theme: " + t.theme);
-		var i = new C[t.theme](this);
-		i.draw(e)
-	}
-}(), define("sequence-diagram", ["underscore", "raphael"], function(e) {
-	return function() {
-		var t;
-		return t || e.Diagram
-	}
-}(this)), ! function(e, t) {
-	"object" == typeof exports ? module.exports = t() : "function" == typeof define && define.amd && define("flow-chart", [], t)
-}(this, function() {
-	function e(t, n) {
-		if(!t || "function" == typeof t) return n;
-		var i = {};
-		for(var r in n) i[r] = n[r];
-		for(r in t) t[r] && (i[r] = "object" == typeof i[r] ? e(i[r], t[r]) : t[r]);
-		return i
-	}
-
-	function t(e, t) {
-		if("function" == typeof Object.create) e.super_ = t, e.prototype = Object.create(t.prototype, {
-			constructor: {
-				value: e,
-				enumerable: !1,
-				writable: !0,
-				configurable: !0
-			}
-		});
-		else {
-			e.super_ = t;
-			var n = function() {};
-			n.prototype = t.prototype, e.prototype = new n, e.prototype.constructor = e
-		}
-	}
-
-	function n(e, t, n) {
-		var i, r, o = "M{0},{1}";
-		for(i = 2, r = 2 * n.length + 2; r > i; i += 2) o += " L{" + i + "},{" + (i + 1) + "}";
-		var a = [t.x, t.y];
-		for(i = 0, r = n.length; r > i; i++) a.push(n[i].x), a.push(n[i].y);
-		var s = e.paper.path(o, a);
-		s.attr("stroke", e.options["element-color"]), s.attr("stroke-width", e.options["line-width"]);
-		var l = e.options.font,
-			c = e.options["font-family"],
-			u = e.options["font-weight"];
-		return l && s.attr({
-			font: l
-		}), c && s.attr({
-			"font-family": c
-		}), u && s.attr({
-			"font-weight": u
-		}), s
-	}
-
-	function i(e, t, n, i) {
-		var r, o;
-		"[object Array]" !== Object.prototype.toString.call(n) && (n = [n]);
-		var a = "M{0},{1}";
-		for(r = 2, o = 2 * n.length + 2; o > r; r += 2) a += " L{" + r + "},{" + (r + 1) + "}";
-		var s = [t.x, t.y];
-		for(r = 0, o = n.length; o > r; r++) s.push(n[r].x), s.push(n[r].y);
-		var l = e.paper.path(a, s);
-		l.attr({
-			stroke: e.options["line-color"],
-			"stroke-width": e.options["line-width"],
-			"arrow-end": e.options["arrow-end"]
-		});
-		var c = e.options.font,
-			u = e.options["font-family"],
-			d = e.options["font-weight"];
-		if(c && l.attr({
-			font: c
-		}), u && l.attr({
-			"font-family": u
-		}), d && l.attr({
-			"font-weight": d
-		}), i) {
-			var p = !1,
-				h = e.paper.text(0, 0, i),
-				f = !1,
-				m = n[0];
-			t.y === m.y && (f = !0);
-			var g = 0,
-				v = 0;
-			p ? (g = t.x > m.x ? t.x - (t.x - m.x) / 2 : m.x - (m.x - t.x) / 2, v = t.y > m.y ? t.y - (t.y - m.y) / 2 : m.y - (m.y - t.y) / 2, f ? (g -= h.getBBox().width / 2, v -= e.options["text-margin"]) : (g += e.options["text-margin"], v -= h.getBBox().height / 2)) : (g = t.x, v = t.y, f ? (g += e.options["text-margin"] / 2, v -= e.options["text-margin"]) : (g += e.options["text-margin"] / 2, v += e.options["text-margin"])), h.attr({
-				"text-anchor": "start",
-				"font-size": e.options["font-size"],
-				stroke: e.options["font-color"],
-				x: g,
-				y: v
-			}), c && h.attr({
-				font: c
-			}), u && h.attr({
-				"font-family": u
-			}), d && h.attr({
-				"font-weight": d
-			})
-		}
-		return l
-	}
-
-	function r(e, t, n, i, r, o, a, s) {
-		var l, c, u, d, p, h = {
-				x: null,
-				y: null,
-				onLine1: !1,
-				onLine2: !1
-			};
-		return l = (s - o) * (n - e) - (a - r) * (i - t), 0 === l ? h : (c = t - o, u = e - r, d = (a - r) * c - (s - o) * u, p = (n - e) * c - (i - t) * u, c = d / l, u = p / l, h.x = e + c * (n - e), h.y = t + c * (i - t), c > 0 && 1 > c && (h.onLine1 = !0), u > 0 && 1 > u && (h.onLine2 = !0), h)
-	}
-
-	function o(e, t) {
-		t = t || {}, this.paper = new Raphael(e), this.options = g.defaults(t, m), this.symbols = [], this.lines = [], this.start = null
-	}
-
-	function a(e, t, n) {
-		this.chart = e, this.group = this.chart.paper.set(), this.connectedTo = [], this.symbolType = t.symbolType, this.next_direction = t.next && t.direction_next ? t.direction_next : void 0, this.text = this.chart.paper.text(0, 0, t.text), this.text.attr({
-			"text-anchor": "start",
-			"font-size": this.chart.options.symbols[this.symbolType]["font-size"] || this.chart.options["font-size"],
-			x: this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"],
-			stroke: this.chart.options.symbols[this.symbolType]["font-color"] || this.chart.options["font-color"]
-		});
-		var i = this.chart.options.symbols[this.symbolType].font || this.chart.options.font,
-			r = this.chart.options.symbols[this.symbolType]["font-family"] || this.chart.options["font-family"],
-			o = this.chart.options.symbols[this.symbolType]["font-weight"] || this.chart.options["font-weight"];
-		if(i && this.text.attr({
-			font: i
-		}), r && this.text.attr({
-			"font-family": r
-		}), o && this.text.attr({
-			"font-weight": o
-		}), t.link && this.text.attr("href", t.link), t.target && this.text.attr("target", t.target), this.chart.options.symbols[this.symbolType].maxWidth || this.chart.options.maxWidth) {
-			for(var a = this.chart.options.symbols[this.symbolType].maxWidth || this.chart.options.maxWidth, s = t.text.split(" "), l = "", c = 0, u = s.length; u > c; c++) {
-				var d = s[c];
-				this.text.attr("text", l + " " + d), l += this.text.getBBox().width > a ? "\n" + d : " " + d
-			}
-			this.text.attr("text", l.substring(1))
-		}
-		this.group.push(this.text), n && (n.attr({
-			stroke: this.chart.options.symbols[this.symbolType]["element-color"] || this.chart.options["element-color"],
-			"stroke-width": this.chart.options.symbols[this.symbolType]["line-width"] || this.chart.options["line-width"],
-			width: this.text.getBBox().width + 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
-			height: this.text.getBBox().height + 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
-			fill: this.chart.options.symbols[this.symbolType].fill || this.chart.options.fill
-		}), t.link && n.attr("href", t.link), t.target && n.attr("target", t.target), this.group.push(n), n.insertBefore(this.text), this.text.attr({
-			y: n.getBBox().height / 2
-		}), this.initialize())
-	}
-
-	function s(e, t) {
-		var n = e.paper.rect(0, 0, 0, 0, 20);
-		t = t || {}, t.text = t.text || "Start", a.call(this, e, t, n)
-	}
-
-	function l(e, t) {
-		var n = e.paper.rect(0, 0, 0, 0, 20);
-		t = t || {}, t.text = t.text || "End", a.call(this, e, t, n)
-	}
-
-	function c(e, t) {
-		var n = e.paper.rect(0, 0, 0, 0);
-		t = t || {}, a.call(this, e, t, n)
-	}
-
-	function u(e, t) {
-		var n = e.paper.rect(0, 0, 0, 0);
-		t = t || {}, a.call(this, e, t, n), n.attr({
-			width: this.text.getBBox().width + 4 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"])
-		}), this.text.attr({
-			x: 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"])
-		});
-		var i = e.paper.rect(0, 0, 0, 0);
-		i.attr({
-			x: this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"],
-			stroke: this.chart.options.symbols[this.symbolType]["element-color"] || this.chart.options["element-color"],
-			"stroke-width": this.chart.options.symbols[this.symbolType]["line-width"] || this.chart.options["line-width"],
-			width: this.text.getBBox().width + 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
-			height: this.text.getBBox().height + 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
-			fill: this.chart.options.symbols[this.symbolType].fill || this.chart.options.fill
-		});
-		var r = this.chart.options.symbols[this.symbolType].font || this.chart.options.font,
-			o = this.chart.options.symbols[this.symbolType]["font-family"] || this.chart.options["font-family"],
-			s = this.chart.options.symbols[this.symbolType]["font-weight"] || this.chart.options["font-weight"];
-		r && i.attr({
-			font: r
-		}), o && i.attr({
-			"font-family": o
-		}), s && i.attr({
-			"font-weight": s
-		}), t.link && i.attr("href", t.link), t.target && i.attr("target", t.target), this.group.push(i), i.insertBefore(this.text), this.initialize()
-	}
-
-	function d(e, t) {
-		t = t || {}, a.call(this, e, t), this.text.attr({
-			x: 3 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"])
-		});
-		var i = this.text.getBBox().width + 4 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
-			r = this.text.getBBox().height + 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
-			o = this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"],
-			s = r / 2,
-			l = {
-				x: o,
-				y: s
-			}, c = [{
-				x: o - (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
-				y: r
-			}, {
-				x: o - (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]) + i,
-				y: r
-			}, {
-				x: o - (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]) + i + 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
-				y: 0
-			}, {
-				x: o - (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]) + 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
-				y: 0
-			}, {
-				x: o,
-				y: s
-			}],
-			u = n(e, l, c);
-		u.attr({
-			stroke: this.chart.options.symbols[this.symbolType]["element-color"] || this.chart.options["element-color"],
-			"stroke-width": this.chart.options.symbols[this.symbolType]["line-width"] || this.chart.options["line-width"],
-			fill: this.chart.options.symbols[this.symbolType].fill || this.chart.options.fill
-		}), t.link && u.attr("href", t.link), t.target && u.attr("target", t.target), this.text.attr({
-			y: u.getBBox().height / 2
-		}), this.group.push(u), u.insertBefore(this.text), this.initialize()
-	}
-
-	function p(e, t) {
-		t = t || {}, a.call(this, e, t), this.yes_direction = "bottom", this.no_direction = "right", t.yes && t.direction_yes && t.no && !t.direction_no ? "right" === t.direction_yes ? (this.no_direction = "bottom", this.yes_direction = "right") : (this.no_direction = "right", this.yes_direction = "bottom") : t.yes && !t.direction_yes && t.no && t.direction_no ? "right" === t.direction_no ? (this.yes_direction = "bottom", this.no_direction = "right") : (this.yes_direction = "right", this.no_direction = "bottom") : (this.yes_direction = "bottom", this.no_direction = "right"), this.yes_direction = this.yes_direction || "bottom", this.no_direction = this.no_direction || "right", this.text.attr({
-			x: 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"])
-		});
-		var i = this.text.getBBox().width + 3 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]);
-		i += i / 2;
-		var r = this.text.getBBox().height + 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]);
-		r += r / 2, r = Math.max(.5 * i, r);
-		var o = i / 4,
-			s = r / 4;
-		this.text.attr({
-			x: o + (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]) / 2
-		});
-		var l = {
-			x: o,
-			y: s
-		}, c = [{
-				x: o - i / 4,
-				y: s + r / 4
-			}, {
-				x: o - i / 4 + i / 2,
-				y: s + r / 4 + r / 2
-			}, {
-				x: o - i / 4 + i,
-				y: s + r / 4
-			}, {
-				x: o - i / 4 + i / 2,
-				y: s + r / 4 - r / 2
-			}, {
-				x: o - i / 4,
-				y: s + r / 4
-			}],
-			u = n(e, l, c);
-		u.attr({
-			stroke: this.chart.options.symbols[this.symbolType]["element-color"] || this.chart.options["element-color"],
-			"stroke-width": this.chart.options.symbols[this.symbolType]["line-width"] || this.chart.options["line-width"],
-			fill: this.chart.options.symbols[this.symbolType].fill || this.chart.options.fill
-		}), t.link && u.attr("href", t.link), t.target && u.attr("target", t.target), this.text.attr({
-			y: u.getBBox().height / 2
-		}), this.group.push(u), u.insertBefore(this.text), this.initialize()
-	}
-
-	function h(e) {
-		function t(e) {
-			var t = e.indexOf("(") + 1,
-				n = e.indexOf(")");
-			return t >= 0 && n >= 0 ? i.symbols[e.substring(0, t - 1)] : i.symbols[e]
-		}
-
-		function n(e) {
-			var t = "next",
-				n = e.indexOf("(") + 1,
-				i = e.indexOf(")");
-			return n >= 0 && i >= 0 && (t = I.substring(n, i), t.indexOf(",") < 0 && "yes" !== t && "no" !== t && (t = "next, " + t)), t
-		}
-		e = e || "", e = e.trim();
-		for(var i = {
-			symbols: {},
-			start: null,
-			drawSVG: function(e, t) {
-				function n(e) {
-					if(r[e.key]) return r[e.key];
-					switch(e.symbolType) {
-						case "start":
-							r[e.key] = new s(i, e);
-							break;
-						case "end":
-							r[e.key] = new l(i, e);
-							break;
-						case "operation":
-							r[e.key] = new c(i, e);
-							break;
-						case "inputoutput":
-							r[e.key] = new d(i, e);
-							break;
-						case "subroutine":
-							r[e.key] = new u(i, e);
-							break;
-						case "condition":
-							r[e.key] = new p(i, e);
-							break;
-						default:
-							return new Error("Wrong symbol type!")
-					}
-					return r[e.key]
-				}
-				this.diagram && this.diagram.clean();
-				var i = new o(e, t);
-				this.diagram = i;
-				var r = {}, a = this;
-				! function h(e, t, r) {
-					var o = n(e);
-					return a.start === e ? i.startWith(o) : t && r && !t.pathOk && (t instanceof p ? (r.yes === e && t.yes(o), r.no === e && t.no(o)) : t.then(o)), o.pathOk ? o : (o instanceof p ? (e.yes && h(e.yes, o, e), e.no && h(e.no, o, e)) : e.next && h(e.next, o, e), o)
-				}(this.start), i.render()
-			},
-			clean: function() {
-				this.diagram.clean()
-			}
-		}, r = [], a = 0, h = 1, f = e.length; f > h; h++)
-			if("\n" === e[h] && "\\" !== e[h - 1]) {
-				var m = e.substring(a, h);
-				a = h + 1, r.push(m.replace(/\\\n/g, "\n"))
-			}
-		a < e.length && r.push(e.substr(a));
-		for(var g = 1, v = r.length; v > g;) {
-			var b = r[g];
-			b.indexOf(": ") < 0 && b.indexOf("(") < 0 && b.indexOf(")") < 0 && b.indexOf("->") < 0 && b.indexOf("=>") < 0 ? (r[g - 1] += "\n" + b, r.splice(g, 1), v--) : g++
-		}
-		for(; r.length > 0;) {
-			var y = r.splice(0, 1)[0];
-			if(y.indexOf("=>") >= 0) {
-				var x, w = y.split("=>"),
-					S = {
-						key: w[0],
-						symbolType: w[1],
-						text: null,
-						link: null,
-						target: null
-					};
-				if(S.symbolType.indexOf(": ") >= 0 && (x = S.symbolType.split(": "), S.symbolType = x[0], S.text = x[1]), S.text && S.text.indexOf(":>") >= 0 ? (x = S.text.split(":>"), S.text = x[0], S.link = x[1]) : S.symbolType.indexOf(":>") >= 0 && (x = S.symbolType.split(":>"), S.symbolType = x[0], S.link = x[1]), S.symbolType.indexOf("\n") >= 0 && (S.symbolType = S.symbolType.split("\n")[0]), S.link) {
-					var C = S.link.indexOf("[") + 1,
-						_ = S.link.indexOf("]");
-					C >= 0 && _ >= 0 && (S.target = S.link.substring(C, _), S.link = S.link.substring(0, C - 1))
-				}
-				i.symbols[S.key] = S
-			} else if(y.indexOf("->") >= 0)
-				for(var k = y.split("->"), T = 0, E = k.length; E > T; T++) {
-					var I = k[T],
-						N = t(I),
-						D = n(I),
-						L = null;
-					if(D.indexOf(",") >= 0) {
-						var M = D.split(",");
-						D = M[0], L = M[1].trim()
-					}
-					if(i.start || (i.start = N), E > T + 1) {
-						var A = k[T + 1];
-						N[D] = t(A), N["direction_" + D] = L, L = null
-					}
-				}
-		}
-		return i
-	}
-	Array.prototype.indexOf || (Array.prototype.indexOf = function(e) {
-		if(null === this) throw new TypeError;
-		var t = Object(this),
-			n = t.length >>> 0;
-		if(0 === n) return -1;
-		var i = 0;
-		if(arguments.length > 0 && (i = Number(arguments[1]), i != i ? i = 0 : 0 !== i && 1 / 0 != i && i != -1 / 0 && (i = (i > 0 || -1) * Math.floor(Math.abs(i)))), i >= n) return -1;
-		for(var r = i >= 0 ? i : Math.max(n - Math.abs(i), 0); n > r; r++)
-			if(r in t && t[r] === e) return r;
-		return -1
-	}), Array.prototype.lastIndexOf || (Array.prototype.lastIndexOf = function(e) {
-		if(null === this) throw new TypeError;
-		var t = Object(this),
-			n = t.length >>> 0;
-		if(0 === n) return -1;
-		var i = n;
-		arguments.length > 1 && (i = Number(arguments[1]), i != i ? i = 0 : 0 !== i && i != 1 / 0 && i != -(1 / 0) && (i = (i > 0 || -1) * Math.floor(Math.abs(i))));
-		for(var r = i >= 0 ? Math.min(i, n - 1) : n - Math.abs(i); r >= 0; r--)
-			if(r in t && t[r] === e) return r;
-		return -1
-	}), String.prototype.trim || (String.prototype.trim = function() {
-		return this.replace(/^\s+|\s+$/g, "")
-	});
-	var f = {}, m = {
-			"line-width": 3,
-			"line-length": 50,
-			"text-margin": 10,
-			"font-size": 14,
-			"font-color": "black",
-			"line-color": "black",
-			"element-color": "black",
-			fill: "white",
-			"yes-text": "yes",
-			"no-text": "no",
-			"arrow-end": "block",
-			symbols: {
-				start: {},
-				end: {},
-				condition: {},
-				inputoutput: {},
-				operation: {},
-				subroutine: {}
-			}
-		}, g = {
-			defaults: e,
-			inherits: t
-		};
-	return o.prototype.handle = function(e) {
-		this.symbols.indexOf(e) <= -1 && this.symbols.push(e);
-		var t = this;
-		return e instanceof p ? (e.yes = function(n) {
-			return e.yes_symbol = n, e.no_symbol && (e.pathOk = !0), t.handle(n)
-		}, e.no = function(n) {
-			return e.no_symbol = n, e.yes_symbol && (e.pathOk = !0), t.handle(n)
-		}) : e.then = function(n) {
-			return e.next = n, e.pathOk = !0, t.handle(n)
-		}, e
-	}, o.prototype.startWith = function(e) {
-		return this.start = e, this.handle(e)
-	}, o.prototype.render = function() {
-		var e, t = 0,
-			n = 0,
-			i = 0,
-			r = 0,
-			o = 0;
-		for(n = 0, i = this.symbols.length; i > n; n++) e = this.symbols[n], e.width > t && (t = e.width);
-		for(n = 0, i = this.symbols.length; i > n; n++) e = this.symbols[n], e.shiftX((t - e.width) / 2);
-		for(this.start.render(), n = 0, i = this.symbols.length; i > n; n++) e = this.symbols[n], e.renderLines();
-		for(r = this.maxXFromLine, n = 0, i = this.symbols.length; i > n; n++) {
-			e = this.symbols[n];
-			var a = e.getX() + e.width,
-				s = e.getY() + e.height;
-			a > r && (r = a), s > o && (o = s)
-		}
-		this.paper.setSize(r + this.options["line-width"], o + this.options["line-width"])
-	}, o.prototype.clean = function() {
-		if(this.paper) {
-			var e = this.paper.canvas;
-			e.parentNode.removeChild(e)
-		}
-	}, a.prototype.initialize = function() {
-		this.group.transform("t" + (this.chart.options.symbols[this.symbolType]["line-width"] || this.chart.options["line-width"]) + "," + (this.chart.options.symbols[this.symbolType]["line-width"] || this.chart.options["line-width"])), this.width = this.group.getBBox().width, this.height = this.group.getBBox().height
-	}, a.prototype.getCenter = function() {
-		return {
-			x: this.getX() + this.width / 2,
-			y: this.getY() + this.height / 2
-		}
-	}, a.prototype.getX = function() {
-		return this.group.getBBox().x
-	}, a.prototype.getY = function() {
-		return this.group.getBBox().y
-	}, a.prototype.shiftX = function(e) {
-		this.group.transform("t" + (this.getX() + e) + "," + this.getY())
-	}, a.prototype.setX = function(e) {
-		this.group.transform("t" + e + "," + this.getY())
-	}, a.prototype.shiftY = function(e) {
-		this.group.transform("t" + this.getX() + "," + (this.getY() + e))
-	}, a.prototype.setY = function(e) {
-		this.group.transform("t" + this.getX() + "," + e)
-	}, a.prototype.getTop = function() {
-		var e = this.getY(),
-			t = this.getX() + this.width / 2;
-		return {
-			x: t,
-			y: e
-		}
-	}, a.prototype.getBottom = function() {
-		var e = this.getY() + this.height,
-			t = this.getX() + this.width / 2;
-		return {
-			x: t,
-			y: e
-		}
-	}, a.prototype.getLeft = function() {
-		var e = this.getY() + this.group.getBBox().height / 2,
-			t = this.getX();
-		return {
-			x: t,
-			y: e
-		}
-	}, a.prototype.getRight = function() {
-		var e = this.getY() + this.group.getBBox().height / 2,
-			t = this.getX() + this.group.getBBox().width;
-		return {
-			x: t,
-			y: e
-		}
-	}, a.prototype.render = function() {
-		if(this.next) {
-			var e = this.chart.options.symbols[this.symbolType]["line-length"] || this.chart.options["line-length"];
-			if("right" === this.next_direction) {
-				var t = this.getRight();
-				if(this.next.getLeft(), !this.next.isPositioned) {
-					this.next.setY(t.y - this.next.height / 2), this.next.shiftX(this.group.getBBox().x + this.width + e);
-					var n = this;
-					! function r() {
-						for(var t, i = !1, o = 0, a = n.chart.symbols.length; a > o; o++) {
-							t = n.chart.symbols[o];
-							var s = Math.abs(t.getCenter().x - n.next.getCenter().x);
-							if(t.getCenter().y > n.next.getCenter().y && s <= n.next.width / 2) {
-								i = !0;
-								break
-							}
-						}
-						i && (n.next.setX(t.getX() + t.width + e), r())
-					}(), this.next.isPositioned = !0, this.next.render()
-				}
-			} else {
-				var i = this.getBottom();
-				this.next.getTop(), this.next.isPositioned || (this.next.shiftY(this.getY() + this.height + e), this.next.setX(i.x - this.next.width / 2), this.next.isPositioned = !0, this.next.render())
-			}
-		}
-	}, a.prototype.renderLines = function() {
-		this.next && (this.next_direction ? this.drawLineTo(this.next, "", this.next_direction) : this.drawLineTo(this.next))
-	}, a.prototype.drawLineTo = function(e, t, n) {
-		this.connectedTo.indexOf(e) < 0 && this.connectedTo.push(e);
-		var o, a = this.getCenter().x,
-			s = this.getCenter().y,
-			l = (this.getTop(), this.getRight()),
-			c = this.getBottom(),
-			u = this.getLeft(),
-			d = e.getCenter().x,
-			p = e.getCenter().y,
-			h = e.getTop(),
-			f = e.getRight(),
-			m = (e.getBottom(), e.getLeft()),
-			g = a === d,
-			v = s === p,
-			b = p > s,
-			y = s > p,
-			x = a > d,
-			w = d > a,
-			S = 0,
-			C = this.chart.options.symbols[this.symbolType]["line-length"] || this.chart.options["line-length"],
-			_ = this.chart.options.symbols[this.symbolType]["line-width"] || this.chart.options["line-width"];
-		if(n && "bottom" !== n || !g || !b ? n && "right" !== n || !v || !w ? n && "left" !== n || !v || !x ? n && "right" !== n || !g || !y ? n && "right" !== n || !g || !b ? n && "bottom" !== n || !x ? n && "bottom" !== n || !w ? n && "right" === n && x ? (o = i(this.chart, l, [{
-			x: l.x + C / 2,
-			y: l.y
-		}, {
-			x: l.x + C / 2,
-			y: h.y - C / 2
-		}, {
-			x: h.x,
-			y: h.y - C / 2
-		}, {
-			x: h.x,
-			y: h.y
-		}], t), this.rightStart = !0, e.topEnd = !0, S = l.x + C / 2) : n && "right" === n && w ? (o = i(this.chart, l, [{
-			x: h.x,
-			y: l.y
-		}, {
-			x: h.x,
-			y: h.y
-		}], t), this.rightStart = !0, e.topEnd = !0, S = l.x + C / 2) : n && "bottom" === n && g && y ? (o = i(this.chart, c, [{
-			x: c.x,
-			y: c.y + C / 2
-		}, {
-			x: l.x + C / 2,
-			y: c.y + C / 2
-		}, {
-			x: l.x + C / 2,
-			y: h.y - C / 2
-		}, {
-			x: h.x,
-			y: h.y - C / 2
-		}, {
-			x: h.x,
-			y: h.y
-		}], t), this.bottomStart = !0, e.topEnd = !0, S = c.x + C / 2) : "left" === n && (o = i(this.chart, u, [{
-			x: h.x + (u.x - h.x) / 2,
-			y: u.y
-		}, {
-			x: h.x + (u.x - h.x) / 2,
-			y: h.y - C / 2
-		}, {
-			x: h.x,
-			y: h.y - C / 2
-		}, {
-			x: h.x,
-			y: h.y
-		}], t), this.leftStart = !0, e.topEnd = !0, S = u.x) : (o = i(this.chart, c, [{
-			x: c.x,
-			y: c.y + C / 2
-		}, {
-			x: c.x + (c.x - h.x) / 2,
-			y: c.y + C / 2
-		}, {
-			x: c.x + (c.x - h.x) / 2,
-			y: h.y - C / 2
-		}, {
-			x: h.x,
-			y: h.y - C / 2
-		}, {
-			x: h.x,
-			y: h.y
-		}], t), this.bottomStart = !0, e.topEnd = !0, S = c.x + (c.x - h.x) / 2) : (o = this.leftEnd && y ? i(this.chart, c, [{
-			x: c.x,
-			y: c.y + C / 2
-		}, {
-			x: c.x + (c.x - h.x) / 2,
-			y: c.y + C / 2
-		}, {
-			x: c.x + (c.x - h.x) / 2,
-			y: h.y - C / 2
-		}, {
-			x: h.x,
-			y: h.y - C / 2
-		}, {
-			x: h.x,
-			y: h.y
-		}], t) : i(this.chart, c, [{
-			x: c.x,
-			y: h.y - C / 2
-		}, {
-			x: h.x,
-			y: h.y - C / 2
-		}, {
-			x: h.x,
-			y: h.y
-		}], t), this.bottomStart = !0, e.topEnd = !0, S = c.x + (c.x - h.x) / 2) : (o = i(this.chart, l, [{
-			x: l.x + C / 2,
-			y: l.y
-		}, {
-			x: l.x + C / 2,
-			y: h.y - C / 2
-		}, {
-			x: h.x,
-			y: h.y - C / 2
-		}, {
-			x: h.x,
-			y: h.y
-		}], t), this.rightStart = !0, e.topEnd = !0, S = l.x + C / 2) : (o = i(this.chart, l, [{
-			x: l.x + C / 2,
-			y: l.y
-		}, {
-			x: l.x + C / 2,
-			y: h.y - C / 2
-		}, {
-			x: h.x,
-			y: h.y - C / 2
-		}, {
-			x: h.x,
-			y: h.y
-		}], t), this.rightStart = !0, e.topEnd = !0, S = l.x + C / 2) : (o = i(this.chart, u, f, t), this.leftStart = !0, e.rightEnd = !0, S = f.x) : (o = i(this.chart, l, m, t), this.rightStart = !0, e.leftEnd = !0, S = m.x) : (o = i(this.chart, c, h, t), this.bottomStart = !0, e.topEnd = !0, S = c.x), o) {
-			for(var k = 0, T = this.chart.lines.length; T > k; k++)
-				for(var E, I = this.chart.lines[k], N = I.attr("path"), D = o.attr("path"), L = 0, M = N.length - 1; M > L; L++) {
-					var A = [];
-					A.push(["M", N[L][1], N[L][2]]), A.push(["L", N[L + 1][1], N[L + 1][2]]);
-					for(var R = A[0][1], P = A[0][2], F = A[1][1], O = A[1][2], B = 0, j = D.length - 1; j > B; B++) {
-						var $ = [];
-						$.push(["M", D[B][1], D[B][2]]), $.push(["L", D[B + 1][1], D[B + 1][2]]);
-						var G = $[0][1],
-							q = $[0][2],
-							H = $[1][1],
-							U = $[1][2],
-							z = r(R, P, F, O, G, q, H, U);
-						if(z.onLine1 && z.onLine2) {
-							var V;
-							q === U ? G > H ? (V = ["L", z.x + 2 * _, q], D.splice(B + 1, 0, V), V = ["C", z.x + 2 * _, q, z.x, q - 4 * _, z.x - 2 * _, q], D.splice(B + 2, 0, V), o.attr("path", D)) : (V = ["L", z.x - 2 * _, q], D.splice(B + 1, 0, V), V = ["C", z.x - 2 * _, q, z.x, q - 4 * _, z.x + 2 * _, q], D.splice(B + 2, 0, V), o.attr("path", D)) : q > U ? (V = ["L", G, z.y + 2 * _], D.splice(B + 1, 0, V), V = ["C", G, z.y + 2 * _, G + 4 * _, z.y, G, z.y - 2 * _], D.splice(B + 2, 0, V), o.attr("path", D)) : (V = ["L", G, z.y - 2 * _], D.splice(B + 1, 0, V), V = ["C", G, z.y - 2 * _, G + 4 * _, z.y, G, z.y + 2 * _], D.splice(B + 2, 0, V), o.attr("path", D)), B += 2, E += 2
-						}
-					}
-				}
-			this.chart.lines.push(o)
-		}(!this.chart.maxXFromLine || this.chart.maxXFromLine && S > this.chart.maxXFromLine) && (this.chart.maxXFromLine = S)
-	}, g.inherits(s, a), s.prototype.render = function() {
-		if(this.next) {
-			var e = this.chart.options.symbols[this.symbolType]["line-length"] || this.chart.options["line-length"],
-				t = this.getBottom();
-			this.next.getTop(), this.next.isPositioned || (this.next.shiftY(this.getY() + this.height + e), this.next.setX(t.x - this.next.width / 2), this.next.isPositioned = !0, this.next.render())
-		}
-	}, s.prototype.renderLines = function() {
-		this.next && this.drawLineTo(this.next)
-	}, g.inherits(l, a), g.inherits(c, a), g.inherits(u, a), g.inherits(d, a), d.prototype.getLeft = function() {
-		var e = this.getY() + this.group.getBBox().height / 2,
-			t = this.getX() + (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]);
-		return {
-			x: t,
-			y: e
-		}
-	}, d.prototype.getRight = function() {
-		var e = this.getY() + this.group.getBBox().height / 2,
-			t = this.getX() + this.group.getBBox().width - (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]);
-		return {
-			x: t,
-			y: e
-		}
-	}, g.inherits(p, a), p.prototype.render = function() {
-		this.yes_direction && (this[this.yes_direction + "_symbol"] = this.yes_symbol), this.no_direction && (this[this.no_direction + "_symbol"] = this.no_symbol);
-		var e = this.chart.options.symbols[this.symbolType]["line-length"] || this.chart.options["line-length"];
-		if(this.bottom_symbol) {
-			var t = this.getBottom();
-			this.bottom_symbol.getTop(), this.bottom_symbol.isPositioned || (this.bottom_symbol.shiftY(this.getY() + this.height + e), this.bottom_symbol.setX(t.x - this.bottom_symbol.width / 2), this.bottom_symbol.isPositioned = !0, this.bottom_symbol.render())
-		}
-		if(this.right_symbol) {
-			var n = this.getRight();
-			if(this.right_symbol.getLeft(), !this.right_symbol.isPositioned) {
-				this.right_symbol.setY(n.y - this.right_symbol.height / 2), this.right_symbol.shiftX(this.group.getBBox().x + this.width + e);
-				var i = this;
-				! function r() {
-					for(var t, n = !1, o = 0, a = i.chart.symbols.length; a > o; o++) {
-						t = i.chart.symbols[o];
-						var s = Math.abs(t.getCenter().x - i.right_symbol.getCenter().x);
-						if(t.getCenter().y > i.right_symbol.getCenter().y && s <= i.right_symbol.width / 2) {
-							n = !0;
-							break
-						}
-					}
-					n && (i.right_symbol.setX(t.getX() + t.width + e), r())
-				}(), this.right_symbol.isPositioned = !0, this.right_symbol.render()
-			}
-		}
-	}, p.prototype.renderLines = function() {
-		this.yes_symbol && this.drawLineTo(this.yes_symbol, this.chart.options["yes-text"], this.yes_direction), this.no_symbol && this.drawLineTo(this.no_symbol, this.chart.options["no-text"], this.no_direction)
-	}, f.parse = h, f
-}), define("text!html/tooltipMarkdownExtraDiagrams.html", [], function() {
-	return 'You can create sequence diagrams like this:\n<br />\n<br />\n```sequence<br />\nAlice-&gt;Bob: Hello Bob, how are you?\nBob--&gt;Alice: I am good thanks!\n```<br />\n<a target="_blank" href="http://bramp.github.io/js-sequence-diagrams/">More info</a>\n<br />\n<br />\nOr flow charts like this:\n<br />\n<br />\n```flow<br />\nst=&gt;start: Start<br />\ne=&gt;end<br />\nop=&gt;operation: My Operation<br />\ncond=&gt;condition: Yes or No?<br />\nst-&gt;op-&gt;cond<br />\ncond(yes)-&gt;e<br />\ncond(no)-&gt;op<br />\n```<br />\n<a target="_blank" href="http://adrai.github.io/flowchart.js/">More info</a>\n'
-});
+}(this));
 var Markdown;
 if(Markdown = "object" == typeof exports && "function" == typeof require ? exports : {}, function() {
 	function e(e) {
@@ -19211,7 +13492,7 @@ if(Markdown = "object" == typeof exports && "function" == typeof require ? expor
 		}
 
 		function a(e) {
-			return e = R.preSpanGamut(e), e = b(e), e = s(e), e = _(e), e = u(e), e = l(e), e = T(e), e = e.replace(/~P/g, "://"), e = C(e), e = A._DoItalicsAndBold ? A._DoItalicsAndBold(e) : x(e), e = e.replace(/  +\n/g, " <br>\n"), e = R.postSpanGamut(e)
+			return e = R.preSpanGamut(e), e = b(e), e = s(e), e = _(e), e = u(e), e = l(e), e = T(e), e = e.replace(/~P/g, "://"), e = C(e), e = M._DoItalicsAndBold ? M._DoItalicsAndBold(e) : x(e), e = e.replace(/  +\n/g, " <br>\n"), e = R.postSpanGamut(e)
 		}
 
 		function s(e) {
@@ -19366,7 +13647,7 @@ if(Markdown = "object" == typeof exports && "function" == typeof require ? expor
 		}
 
 		function _(e) {
-			return e = e.replace(/\\(\\)/g, M), e = e.replace(/\\([`*_{}\[\]()>#+-.!])/g, M)
+			return e = e.replace(/\\(\\)/g, A), e = e.replace(/\\([`*_{}\[\]()>#+-.!])/g, A)
 		}
 
 		function k(e, t, n, i) {
@@ -19427,16 +13708,16 @@ if(Markdown = "object" == typeof exports && "function" == typeof require ? expor
 			var i = "([" + t.replace(/([\[\]\\])/g, "\\$1") + "])";
 			n && (i = "\\\\" + i);
 			var r = new RegExp(i, "g");
-			return e = e.replace(r, M)
+			return e = e.replace(r, A)
 		}
 
-		function M(e, t) {
+		function A(e, t) {
 			var n = t.charCodeAt(0);
 			return "~E" + n + "E"
 		}
-		var A = {};
+		var M = {};
 		this.setOptions = function(e) {
-			A = e
+			M = e
 		};
 		var R = this.hooks = new n;
 		R.addNoop("plainLinkText"), R.addNoop("preConversion"), R.addNoop("postNormalization"), R.addNoop("preBlockGamut"), R.addNoop("postBlockGamut"), R.addNoop("preSpanGamut"), R.addNoop("postSpanGamut"), R.addNoop("postConversion");
@@ -19714,113 +13995,62 @@ if(Markdown = "object" == typeof exports && "function" == typeof require ? expor
 			return t ? e : " <br>\n"
 		})
 	}
-}(), define("pagedown-extra", function() {}), define("extensions/markdownExtra", ["jquery", "underscore", "utils", "logger", "classes/Extension", "text!html/markdownExtraSettingsBlock.html", "google-code-prettify", "highlightjs", "crel", "sequence-diagram", "flow-chart", "text!html/tooltipMarkdownExtraDiagrams.html", "pagedown-extra"], function(e, t, n, i, r, o, a, s, l, c, u, d) {
-	var p = new r("markdownExtra", "Markdown Extra", !0);
-	p.settingsBlock = o, p.defaultConfig = {
+}(), define("pagedown-extra", function() {}), define("extensions/markdownExtra", ["jquery", "underscore", "utils", "logger", "classes/Extension", "text!html/markdownExtraSettingsBlock.html", "google-code-prettify", "highlightjs", "crel", "pagedown-extra"], function(e, t, n, i, r, o, a, s) {
+	var l = new r("markdownExtra", "Markdown Extra", !0);
+	l.settingsBlock = o, l.defaultConfig = {
 		extensions: ["fenced_code_gfm", "tables", "def_list", "attr_list", "footnotes", "smartypants", "strikethrough", "newlines"],
 		intraword: !0,
 		comments: !0,
 		highlighter: "prettify"
-	}, p.onLoadSettings = function() {
+	}, l.onLoadSettings = function() {
 		function e(e) {
-			return t.some(p.config.extensions, function(t) {
+			return t.some(l.config.extensions, function(t) {
 				return t == e
 			})
 		}
-		n.setInputChecked("#input-markdownextra-fencedcodegfm", e("fenced_code_gfm")), n.setInputChecked("#input-markdownextra-tables", e("tables")), n.setInputChecked("#input-markdownextra-deflist", e("def_list")), n.setInputChecked("#input-markdownextra-attrlist", e("attr_list")), n.setInputChecked("#input-markdownextra-footnotes", e("footnotes")), n.setInputChecked("#input-markdownextra-smartypants", e("smartypants")), n.setInputChecked("#input-markdownextra-strikethrough", e("strikethrough")), n.setInputChecked("#input-markdownextra-newlines", e("newlines")), n.setInputChecked("#input-markdownextra-intraword", p.config.intraword), n.setInputChecked("#input-markdownextra-comments", p.config.comments), n.setInputValue("#input-markdownextra-highlighter", p.config.highlighter), n.setInputChecked("#input-markdownextra-diagrams", p.config.diagrams)
-	}, p.onSaveSettings = function(e) {
+		n.setInputChecked("#input-markdownextra-fencedcodegfm", e("fenced_code_gfm")), n.setInputChecked("#input-markdownextra-tables", e("tables")), n.setInputChecked("#input-markdownextra-deflist", e("def_list")), n.setInputChecked("#input-markdownextra-attrlist", e("attr_list")), n.setInputChecked("#input-markdownextra-footnotes", e("footnotes")), n.setInputChecked("#input-markdownextra-smartypants", e("smartypants")), n.setInputChecked("#input-markdownextra-strikethrough", e("strikethrough")), n.setInputChecked("#input-markdownextra-newlines", e("newlines")), n.setInputChecked("#input-markdownextra-intraword", l.config.intraword), n.setInputChecked("#input-markdownextra-comments", l.config.comments), n.setInputValue("#input-markdownextra-highlighter", l.config.highlighter), n.setInputChecked("#input-markdownextra-diagrams", l.config.diagrams)
+	}, l.onSaveSettings = function(e) {
 		e.extensions = [], n.getInputChecked("#input-markdownextra-fencedcodegfm") && e.extensions.push("fenced_code_gfm"), n.getInputChecked("#input-markdownextra-tables") && e.extensions.push("tables"), n.getInputChecked("#input-markdownextra-deflist") && e.extensions.push("def_list"), n.getInputChecked("#input-markdownextra-attrlist") && e.extensions.push("attr_list"), n.getInputChecked("#input-markdownextra-footnotes") && e.extensions.push("footnotes"), n.getInputChecked("#input-markdownextra-smartypants") && e.extensions.push("smartypants"), n.getInputChecked("#input-markdownextra-strikethrough") && e.extensions.push("strikethrough"), n.getInputChecked("#input-markdownextra-newlines") && e.extensions.push("newlines"), e.intraword = n.getInputChecked("#input-markdownextra-intraword"), e.comments = n.getInputChecked("#input-markdownextra-comments"), e.highlighter = n.getInputValue("#input-markdownextra-highlighter"), e.diagrams = n.getInputChecked("#input-markdownextra-diagrams")
 	};
-	var h;
-	p.onEventMgrCreated = function(e) {
-		h = e
+	var c;
+	l.onEventMgrCreated = function(e) {
+		c = e
 	};
-	var f;
-	p.onReady = function() {
-		f = document.getElementById("preview-contents"), n.createTooltip(".tooltip-markdown-extra-diagrams", d)
-	};
-	var m = function(e) {
-		e()
-	};
-	p.onAsyncPreview = function(e) {
-		m(e)
-	};
-	var g;
-	return p.onInit = function() {
-		function e(n) {
-			if(0 === i.length) return n();
-			var r = i.pop();
-			try {
-				var o = c.parse(r.textContent),
-					a = r.parentNode,
-					s = l("div", {
-						"class": "sequence-diagram"
-					});
-				a.parentNode.replaceChild(s, a), o.drawSVG(s, {
-					theme: "simple"
-				})
-			} catch(u) {}
-			t.delay(e, 0, n)
-		}
-
-		function n(e) {
-			if(0 === r.length) return e();
-			var i = r.pop();
-			try {
-				var o = u.parse(i.textContent),
-					a = i.parentNode,
-					s = l("div", {
-						"class": "flow-chart"
-					});
-				a.parentNode.replaceChild(s, a), o.drawSVG(s, {
-					"line-width": 2
-				})
-			} catch(c) {}
-			t.delay(n, 0, e)
-		}
-		var i, r;
-		if(g = {
-			extensions: p.config.extensions
-		}, p.config.diagrams) {
-			g.highlighter = "prettify";
-			var o = m;
-			m = function(a) {
-				i = Array.prototype.slice.call(f.querySelectorAll(".prettyprint > .language-sequence")), r = Array.prototype.slice.call(f.querySelectorAll(".prettyprint > .language-flow")), t.delay(e, 0, function() {
-					t.delay(n, 0, function() {
-						o(a)
-					})
-				})
-			}
-		}
-	}, p.onPagedownConfigure = function(e) {
-		var n = e.getConverter();
-		if(p.config.intraword === !0) {
-			var i = {
+	var u;
+	return l.onReady = function() {
+		u = document.getElementById("preview-contents")
+	}, l.onPagedownConfigure = function(e) {
+		var n = e.getConverter(),
+			i = {
+				extensions: l.config.extensions,
+				highlighter: "prettify"
+			};
+		if(l.config.intraword === !0) {
+			var r = {
 				_DoItalicsAndBold: function(e) {
 					return e = e.replace(/([^\w*]|^)(\*\*|__)(?=\S)(.+?[*_]*)(?=\S)\2(?=[^\w*]|$)/g, "$1<strong>$3</strong>"), e = e.replace(/([^\w*]|^)(\*|_)(?=\S)(.+?)(?=\S)\2(?=[^\w*]|$)/g, "$1<em>$3</em>")
 				}
 			};
-			n.setOptions(i)
+			n.setOptions(r)
 		}
-		if(p.config.comments === !0 && n.hooks.chain("postConversion", function(e) {
+		if(l.config.comments === !0 && n.hooks.chain("postConversion", function(e) {
 			return e.replace(/<!--.*?-->/g, function(e) {
 				return e.replace(/^<!---(.+?)-?-->$/, ' <span class="comment label label-danger">$1</span> ')
 			})
-		}), "highlight" == p.config.highlighter) {
-			g.highlighter = "prettify";
-			var r = document.getElementById("preview-contents");
+		}), "highlight" == l.config.highlighter) {
+			var o = document.getElementById("preview-contents");
 			e.hooks.chain("onPreviewRefresh", function() {
-				t.each(r.querySelectorAll(".prettyprint > code"), function(e) {
+				t.each(o.querySelectorAll(".prettyprint > code"), function(e) {
 					!e.highlighted && s.highlightBlock(e), e.highlighted = !0
 				})
 			})
-		} else "prettify" == p.config.highlighter && (g.highlighter = "prettify", e.hooks.chain("onPreviewRefresh", a.prettyPrint));
-		Markdown.Extra.init(n, g)
-	}, p
+		} else "prettify" == l.config.highlighter && e.hooks.chain("onPreviewRefresh", a.prettyPrint);
+		Markdown.Extra.init(n, i)
+	}, l
 }), define("text!html/mathJaxSettingsBlock.html", [], function() {
 	return '<p>Allows StackEdit to interpret LaTeX mathematical expressions.</p>\n<div class="form-horizontal">\n    <div class="form-group">\n        <label class="col-sm-4 control-label"\n            for="input-mathjax-config-tex">TeX configuration</label>\n        <div class="col-sm-7">\n            <input type="text" id="input-mathjax-config-tex" class="form-control">\n        </div>\n    </div>\n    <div class="form-group">\n        <label class="col-sm-4 control-label"\n            for="input-mathjax-config-tex2jax">tex2jax configuration</label>\n        <div class="col-sm-7">\n            <input type="text" id="input-mathjax-config-tex2jax" class="form-control">\n        </div>\n    </div>\n</div>\n<span class="help-block pull-right"><a target="_blank" href="http://docs.mathjax.org/en/latest/options/index.html">More info</a></span>'
 }), define("text!libs/mathjax_config.js", [], function() {
-	return 'MathJax.Hub.Config({\n    "HTML-CSS": {\n        preferredFont: "TeX",\n        availableFonts: [\n            "STIX",\n            "TeX"\n        ],\n        linebreaks: {\n            automatic: true\n        },\n        EqnChunk: 10,\n        imageFont: null\n    },\n    tex2jax: <%= tex2jax || \'{ inlineMath: [["$","$"],["\\\\\\\\\\\\\\\\(","\\\\\\\\\\\\\\\\)"]], displayMath: [["$$","$$"],["\\\\\\\\[","\\\\\\\\]"]], processEscapes: true }\' %>,\n    TeX: $.extend({\n        noUndefined: {\n            attributes: {\n                mathcolor: "red",\n                mathbackground: "#FFEEEE",\n                mathsize: "90%"\n            }\n        },\n        Safe: {\n            allow: {\n                URLs: "safe",\n                classes: "safe",\n                cssIDs: "safe",\n                styles: "safe",\n                fontsize: "all"\n            }\n        }\n    }, <%= tex %>),\n    messageStyle: "none"\n});\n'
+	return 'MathJax.Hub.Config({\n	skipStartupTypeset: true,\n    "HTML-CSS": {\n        preferredFont: "TeX",\n        availableFonts: [\n            "STIX",\n            "TeX"\n        ],\n        linebreaks: {\n            automatic: true\n        },\n        EqnChunk: 10,\n        imageFont: null\n    },\n    tex2jax: <%= tex2jax || \'{ inlineMath: [["$","$"],["\\\\\\\\\\\\\\\\(","\\\\\\\\\\\\\\\\)"]], displayMath: [["$$","$$"],["\\\\\\\\[","\\\\\\\\]"]], processEscapes: true }\' %>,\n    TeX: $.extend({\n        noUndefined: {\n            attributes: {\n                mathcolor: "red",\n                mathbackground: "#FFEEEE",\n                mathsize: "90%"\n            }\n        },\n        Safe: {\n            allow: {\n                URLs: "safe",\n                classes: "safe",\n                cssIDs: "safe",\n                styles: "safe",\n                fontsize: "all"\n            }\n        }\n    }, <%= tex %>),\n    messageStyle: "none"\n});\n'
 }), define("libs/mathjax_init", ["settings", "text!libs/mathjax_config.js"], function(e, t) {
 	var n = document.createElement("script");
 	n.type = "text/x-mathjax-config", n.innerHTML = _.template(t, {
@@ -20578,7 +14808,7 @@ if(Markdown = "object" == typeof exports && "function" == typeof require ? expor
 		e = e || {};
 		var t, n = !1;
 		for(t in D) e[t] ? n = !0 : D[t] = 0;
-		n || (A = !1)
+		n || (M = !1)
 	}
 
 	function a(e, t, n, i, o, a) {
@@ -20621,8 +14851,8 @@ if(Markdown = "object" == typeof exports && "function" == typeof require ? expor
 				if(r[i].level != l) continue;
 				c = !0, s[r[i].seq] = 1, u(r[i].callback, n, r[i].combo, r[i].seq)
 			} else c || u(r[i].callback, n, r[i].combo);
-		var d = "keypress" == n.type && M;
-		n.type != A || h(e) || d || o(s), M = c && "keydown" == n.type
+		var d = "keypress" == n.type && A;
+		n.type != M || h(e) || d || o(s), A = c && "keydown" == n.type
 	}
 
 	function p(e) {
@@ -20654,7 +14884,7 @@ if(Markdown = "object" == typeof exports && "function" == typeof require ? expor
 	function v(e, t, n, r) {
 		function a(t) {
 			return function() {
-				A = t, ++D[e], f()
+				M = t, ++D[e], f()
 			}
 		}
 
@@ -20767,7 +14997,7 @@ if(Markdown = "object" == typeof exports && "function" == typeof require ? expor
 			"return": "enter",
 			escape: "esc",
 			mod: /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "meta" : "ctrl"
-		}, I = {}, N = {}, D = {}, L = !1, M = !1, A = !1, R = 1; 20 > R; ++R) _[111 + R] = "f" + R;
+		}, I = {}, N = {}, D = {}, L = !1, A = !1, M = !1, R = 1; 20 > R; ++R) _[111 + R] = "f" + R;
 	for(R = 0; 9 >= R; ++R) _[R + 96] = R;
 	n(t, "keypress", p), n(t, "keydown", p), n(t, "keyup", p);
 	var P = {
@@ -21442,6 +15672,3965 @@ if(Markdown = "object" == typeof exports && "function" == typeof require ? expor
 	}, u.onPublishRemoved = function(e, t) {
 		l(t.provider.providerName + " publish location has been removed.")
 	}, u
+}), define("text!html/umlDiagramsSettingsBlock.html", [], function() {
+	return '<p>Creates UML diagrams from plain text description.</p>\n\n<p>Sequence diagrams:</p>\n<pre><div class="help-block pull-right"><a target="_blank" href="http://bramp.github.io/js-sequence-diagrams/">More info</a></div><code>```sequence\nAlice->Bob: Hello Bob, how are you?\nBob-->Alice: I am good thanks!\n```</code>\n</pre>\n\n<p>Flow charts:</p>\n<pre><div class="help-block pull-right"><a target="_blank" href="http://adrai.github.io/flowchart.js/">More info</a></div><code>```flow\nst=>start: Start\ne=>end\nop=>operation: My Operation\ncond=>condition: Yes or No?\nst->op->cond\ncond(yes)->e\ncond(no)->op\n```</code>\n</pre>\n<blockquote>\n    <b>Note:</b> Markdown Extra extension has to be enabled with GFM fenced code blocks option.\n</blockquote>\n\n'
+}), define("text!bower-libs/js-sequence-diagrams/build/sequence-diagram-min.js", [], function() {
+	return '/** js sequence diagrams 1.0.4\n *  http://bramp.github.io/js-sequence-diagrams/\n *  (c) 2012-2013 Andrew Brampton (bramp.net)\n *  @license Simplified BSD license.\n */\n!function(){function Diagram(){this.title=void 0,this.actors=[],this.signals=[]}function ParseError(message,hash){_.extend(this,hash),this.name="ParseError",this.message=message||""}Diagram.prototype.getActor=function(alias){var s=/^(.+) as (\\S+)$/i.exec(alias.trim());s?(name=s[1].trim(),alias=s[2].trim()):name=alias.trim(),name=name.replace(/\\\\n/gm,"\\n");var i,actors=this.actors;for(i in actors)if(actors[i].alias==alias)return actors[i];return i=actors.push(new Diagram.Actor(alias,name,actors.length)),actors[i-1]},Diagram.prototype.setTitle=function(title){this.title=title},Diagram.prototype.addSignal=function(signal){this.signals.push(signal)},Diagram.Actor=function(alias,name,index){this.alias=alias,this.name=name,this.index=index},Diagram.Signal=function(actorA,signaltype,actorB,message){this.type="Signal",this.actorA=actorA,this.actorB=actorB,this.linetype=3&signaltype,this.arrowtype=3&signaltype>>2,this.message=message},Diagram.Signal.prototype.isSelf=function(){return this.actorA.index==this.actorB.index},Diagram.Note=function(actor,placement,message){if(this.type="Note",this.actor=actor,this.placement=placement,this.message=message,this.hasManyActors()&&actor[0]==actor[1])throw new Error("Note should be over two different actors")},Diagram.Note.prototype.hasManyActors=function(){return _.isArray(this.actor)},Diagram.LINETYPE={SOLID:0,DOTTED:1},Diagram.ARROWTYPE={FILLED:0,OPEN:1},Diagram.PLACEMENT={LEFTOF:0,RIGHTOF:1,OVER:2};var grammar=function(){function Parser(){this.yy={}}var parser={trace:function(){},yy:{},symbols_:{error:2,start:3,document:4,EOF:5,line:6,statement:7,NL:8,participant:9,actor:10,signal:11,note_statement:12,title:13,message:14,note:15,placement:16,over:17,actor_pair:18,",":19,left_of:20,right_of:21,signaltype:22,ACTOR:23,linetype:24,arrowtype:25,LINE:26,DOTLINE:27,ARROW:28,OPENARROW:29,MESSAGE:30,$accept:0,$end:1},terminals_:{2:"error",5:"EOF",8:"NL",9:"participant",13:"title",15:"note",17:"over",19:",",20:"left_of",21:"right_of",23:"ACTOR",26:"LINE",27:"DOTLINE",28:"ARROW",29:"OPENARROW",30:"MESSAGE"},productions_:[0,[3,2],[4,0],[4,2],[6,1],[6,1],[7,2],[7,1],[7,1],[7,2],[12,4],[12,4],[18,1],[18,3],[16,1],[16,1],[11,4],[10,1],[22,2],[22,1],[24,1],[24,1],[25,1],[25,1],[14,1]],performAction:function(yytext,yyleng,yylineno,yy,yystate,$$){var $0=$$.length-1;switch(yystate){case 1:return yy;case 4:break;case 6:$$[$0];break;case 7:yy.addSignal($$[$0]);break;case 8:yy.addSignal($$[$0]);break;case 9:yy.setTitle($$[$0]);break;case 10:this.$=new Diagram.Note($$[$0-1],$$[$0-2],$$[$0]);break;case 11:this.$=new Diagram.Note($$[$0-1],Diagram.PLACEMENT.OVER,$$[$0]);break;case 12:this.$=$$[$0];break;case 13:this.$=[$$[$0-2],$$[$0]];break;case 14:this.$=Diagram.PLACEMENT.LEFTOF;break;case 15:this.$=Diagram.PLACEMENT.RIGHTOF;break;case 16:this.$=new Diagram.Signal($$[$0-3],$$[$0-2],$$[$0-1],$$[$0]);break;case 17:this.$=yy.getActor($$[$0]);break;case 18:this.$=$$[$0-1]|$$[$0]<<2;break;case 19:this.$=$$[$0];break;case 20:this.$=Diagram.LINETYPE.SOLID;break;case 21:this.$=Diagram.LINETYPE.DOTTED;break;case 22:this.$=Diagram.ARROWTYPE.FILLED;break;case 23:this.$=Diagram.ARROWTYPE.OPEN;break;case 24:this.$=$$[$0].substring(1).trim().replace(/\\\\n/gm,"\\n")}},table:[{3:1,4:2,5:[2,2],8:[2,2],9:[2,2],13:[2,2],15:[2,2],23:[2,2]},{1:[3]},{5:[1,3],6:4,7:5,8:[1,6],9:[1,7],10:11,11:8,12:9,13:[1,10],15:[1,12],23:[1,13]},{1:[2,1]},{5:[2,3],8:[2,3],9:[2,3],13:[2,3],15:[2,3],23:[2,3]},{5:[2,4],8:[2,4],9:[2,4],13:[2,4],15:[2,4],23:[2,4]},{5:[2,5],8:[2,5],9:[2,5],13:[2,5],15:[2,5],23:[2,5]},{10:14,23:[1,13]},{5:[2,7],8:[2,7],9:[2,7],13:[2,7],15:[2,7],23:[2,7]},{5:[2,8],8:[2,8],9:[2,8],13:[2,8],15:[2,8],23:[2,8]},{14:15,30:[1,16]},{22:17,24:18,26:[1,19],27:[1,20]},{16:21,17:[1,22],20:[1,23],21:[1,24]},{5:[2,17],8:[2,17],9:[2,17],13:[2,17],15:[2,17],19:[2,17],23:[2,17],26:[2,17],27:[2,17],30:[2,17]},{5:[2,6],8:[2,6],9:[2,6],13:[2,6],15:[2,6],23:[2,6]},{5:[2,9],8:[2,9],9:[2,9],13:[2,9],15:[2,9],23:[2,9]},{5:[2,24],8:[2,24],9:[2,24],13:[2,24],15:[2,24],23:[2,24]},{10:25,23:[1,13]},{23:[2,19],25:26,28:[1,27],29:[1,28]},{23:[2,20],28:[2,20],29:[2,20]},{23:[2,21],28:[2,21],29:[2,21]},{10:29,23:[1,13]},{10:31,18:30,23:[1,13]},{23:[2,14]},{23:[2,15]},{14:32,30:[1,16]},{23:[2,18]},{23:[2,22]},{23:[2,23]},{14:33,30:[1,16]},{14:34,30:[1,16]},{19:[1,35],30:[2,12]},{5:[2,16],8:[2,16],9:[2,16],13:[2,16],15:[2,16],23:[2,16]},{5:[2,10],8:[2,10],9:[2,10],13:[2,10],15:[2,10],23:[2,10]},{5:[2,11],8:[2,11],9:[2,11],13:[2,11],15:[2,11],23:[2,11]},{10:36,23:[1,13]},{30:[2,13]}],defaultActions:{3:[2,1],23:[2,14],24:[2,15],26:[2,18],27:[2,22],28:[2,23],36:[2,13]},parseError:function(str,hash){if(!hash.recoverable)throw new Error(str);this.trace(str)},parse:function(input){function lex(){var token;return token=self.lexer.lex()||EOF,"number"!=typeof token&&(token=self.symbols_[token]||token),token}var self=this,stack=[0],vstack=[null],lstack=[],table=this.table,yytext="",yylineno=0,yyleng=0,recovering=0,TERROR=2,EOF=1;this.lexer.setInput(input),this.lexer.yy=this.yy,this.yy.lexer=this.lexer,this.yy.parser=this,"undefined"==typeof this.lexer.yylloc&&(this.lexer.yylloc={});var yyloc=this.lexer.yylloc;lstack.push(yyloc);var ranges=this.lexer.options&&this.lexer.options.ranges;this.parseError="function"==typeof this.yy.parseError?this.yy.parseError:Object.getPrototypeOf(this).parseError;for(var symbol,preErrorSymbol,state,action,r,p,len,newState,expected,yyval={};;){if(state=stack[stack.length-1],this.defaultActions[state]?action=this.defaultActions[state]:((null===symbol||"undefined"==typeof symbol)&&(symbol=lex()),action=table[state]&&table[state][symbol]),"undefined"==typeof action||!action.length||!action[0]){var errStr="";expected=[];for(p in table[state])this.terminals_[p]&&p>TERROR&&expected.push("\'"+this.terminals_[p]+"\'");errStr=this.lexer.showPosition?"Parse error on line "+(yylineno+1)+":\\n"+this.lexer.showPosition()+"\\nExpecting "+expected.join(", ")+", got \'"+(this.terminals_[symbol]||symbol)+"\'":"Parse error on line "+(yylineno+1)+": Unexpected "+(symbol==EOF?"end of input":"\'"+(this.terminals_[symbol]||symbol)+"\'"),this.parseError(errStr,{text:this.lexer.match,token:this.terminals_[symbol]||symbol,line:this.lexer.yylineno,loc:yyloc,expected:expected})}if(action[0]instanceof Array&&action.length>1)throw new Error("Parse Error: multiple actions possible at state: "+state+", token: "+symbol);switch(action[0]){case 1:stack.push(symbol),vstack.push(this.lexer.yytext),lstack.push(this.lexer.yylloc),stack.push(action[1]),symbol=null,preErrorSymbol?(symbol=preErrorSymbol,preErrorSymbol=null):(yyleng=this.lexer.yyleng,yytext=this.lexer.yytext,yylineno=this.lexer.yylineno,yyloc=this.lexer.yylloc,recovering>0&&recovering--);break;case 2:if(len=this.productions_[action[1]][1],yyval.$=vstack[vstack.length-len],yyval._$={first_line:lstack[lstack.length-(len||1)].first_line,last_line:lstack[lstack.length-1].last_line,first_column:lstack[lstack.length-(len||1)].first_column,last_column:lstack[lstack.length-1].last_column},ranges&&(yyval._$.range=[lstack[lstack.length-(len||1)].range[0],lstack[lstack.length-1].range[1]]),r=this.performAction.call(yyval,yytext,yyleng,yylineno,this.yy,action[1],vstack,lstack),"undefined"!=typeof r)return r;len&&(stack=stack.slice(0,2*-1*len),vstack=vstack.slice(0,-1*len),lstack=lstack.slice(0,-1*len)),stack.push(this.productions_[action[1]][0]),vstack.push(yyval.$),lstack.push(yyval._$),newState=table[stack[stack.length-2]][stack[stack.length-1]],stack.push(newState);break;case 3:return!0}}return!0}},lexer=function(){var lexer={EOF:1,parseError:function(str,hash){if(!this.yy.parser)throw new Error(str);this.yy.parser.parseError(str,hash)},setInput:function(input){return this._input=input,this._more=this._backtrack=this.done=!1,this.yylineno=this.yyleng=0,this.yytext=this.matched=this.match="",this.conditionStack=["INITIAL"],this.yylloc={first_line:1,first_column:0,last_line:1,last_column:0},this.options.ranges&&(this.yylloc.range=[0,0]),this.offset=0,this},input:function(){var ch=this._input[0];this.yytext+=ch,this.yyleng++,this.offset++,this.match+=ch,this.matched+=ch;var lines=ch.match(/(?:\\r\\n?|\\n).*/g);return lines?(this.yylineno++,this.yylloc.last_line++):this.yylloc.last_column++,this.options.ranges&&this.yylloc.range[1]++,this._input=this._input.slice(1),ch},unput:function(ch){var len=ch.length,lines=ch.split(/(?:\\r\\n?|\\n)/g);this._input=ch+this._input,this.yytext=this.yytext.substr(0,this.yytext.length-len-1),this.offset-=len;var oldLines=this.match.split(/(?:\\r\\n?|\\n)/g);this.match=this.match.substr(0,this.match.length-1),this.matched=this.matched.substr(0,this.matched.length-1),lines.length-1&&(this.yylineno-=lines.length-1);var r=this.yylloc.range;return this.yylloc={first_line:this.yylloc.first_line,last_line:this.yylineno+1,first_column:this.yylloc.first_column,last_column:lines?(lines.length===oldLines.length?this.yylloc.first_column:0)+oldLines[oldLines.length-lines.length].length-lines[0].length:this.yylloc.first_column-len},this.options.ranges&&(this.yylloc.range=[r[0],r[0]+this.yyleng-len]),this.yyleng=this.yytext.length,this},more:function(){return this._more=!0,this},reject:function(){return this.options.backtrack_lexer?(this._backtrack=!0,this):this.parseError("Lexical error on line "+(this.yylineno+1)+". You can only invoke reject() in the lexer when the lexer is of the backtracking persuasion (options.backtrack_lexer = true).\\n"+this.showPosition(),{text:"",token:null,line:this.yylineno})},less:function(n){this.unput(this.match.slice(n))},pastInput:function(){var past=this.matched.substr(0,this.matched.length-this.match.length);return(past.length>20?"...":"")+past.substr(-20).replace(/\\n/g,"")},upcomingInput:function(){var next=this.match;return next.length<20&&(next+=this._input.substr(0,20-next.length)),(next.substr(0,20)+(next.length>20?"...":"")).replace(/\\n/g,"")},showPosition:function(){var pre=this.pastInput(),c=new Array(pre.length+1).join("-");return pre+this.upcomingInput()+"\\n"+c+"^"},test_match:function(match,indexed_rule){var token,lines,backup;if(this.options.backtrack_lexer&&(backup={yylineno:this.yylineno,yylloc:{first_line:this.yylloc.first_line,last_line:this.last_line,first_column:this.yylloc.first_column,last_column:this.yylloc.last_column},yytext:this.yytext,match:this.match,matches:this.matches,matched:this.matched,yyleng:this.yyleng,offset:this.offset,_more:this._more,_input:this._input,yy:this.yy,conditionStack:this.conditionStack.slice(0),done:this.done},this.options.ranges&&(backup.yylloc.range=this.yylloc.range.slice(0))),lines=match[0].match(/(?:\\r\\n?|\\n).*/g),lines&&(this.yylineno+=lines.length),this.yylloc={first_line:this.yylloc.last_line,last_line:this.yylineno+1,first_column:this.yylloc.last_column,last_column:lines?lines[lines.length-1].length-lines[lines.length-1].match(/\\r?\\n?/)[0].length:this.yylloc.last_column+match[0].length},this.yytext+=match[0],this.match+=match[0],this.matches=match,this.yyleng=this.yytext.length,this.options.ranges&&(this.yylloc.range=[this.offset,this.offset+=this.yyleng]),this._more=!1,this._backtrack=!1,this._input=this._input.slice(match[0].length),this.matched+=match[0],token=this.performAction.call(this,this.yy,this,indexed_rule,this.conditionStack[this.conditionStack.length-1]),this.done&&this._input&&(this.done=!1),token)return token;if(this._backtrack){for(var k in backup)this[k]=backup[k];return!1}return!1},next:function(){if(this.done)return this.EOF;this._input||(this.done=!0);var token,match,tempMatch,index;this._more||(this.yytext="",this.match="");for(var rules=this._currentRules(),i=0;i<rules.length;i++)if(tempMatch=this._input.match(this.rules[rules[i]]),tempMatch&&(!match||tempMatch[0].length>match[0].length)){if(match=tempMatch,index=i,this.options.backtrack_lexer){if(token=this.test_match(tempMatch,rules[i]),token!==!1)return token;if(this._backtrack){match=!1;continue}return!1}if(!this.options.flex)break}return match?(token=this.test_match(match,rules[index]),token!==!1?token:!1):""===this._input?this.EOF:this.parseError("Lexical error on line "+(this.yylineno+1)+". Unrecognized text.\\n"+this.showPosition(),{text:"",token:null,line:this.yylineno})},lex:function(){var r=this.next();return r?r:this.lex()},begin:function(condition){this.conditionStack.push(condition)},popState:function(){var n=this.conditionStack.length-1;return n>0?this.conditionStack.pop():this.conditionStack[0]},_currentRules:function(){return this.conditionStack.length&&this.conditionStack[this.conditionStack.length-1]?this.conditions[this.conditionStack[this.conditionStack.length-1]].rules:this.conditions.INITIAL.rules},topState:function(n){return n=this.conditionStack.length-1-Math.abs(n||0),n>=0?this.conditionStack[n]:"INITIAL"},pushState:function(condition){this.begin(condition)},stateStackSize:function(){return this.conditionStack.length},options:{"case-insensitive":!0},performAction:function(yy,yy_,$avoiding_name_collisions,YY_START){switch($avoiding_name_collisions){case 0:return 8;case 1:break;case 2:break;case 3:return 9;case 4:return 20;case 5:return 21;case 6:return 17;case 7:return 15;case 8:return 13;case 9:return 19;case 10:return 23;case 11:return 27;case 12:return 26;case 13:return 29;case 14:return 28;case 15:return 30;case 16:return 5;case 17:return"INVALID"}},rules:[/^(?:[\\n]+)/i,/^(?:\\s+)/i,/^(?:#[^\\n]*)/i,/^(?:participant\\b)/i,/^(?:left of\\b)/i,/^(?:right of\\b)/i,/^(?:over\\b)/i,/^(?:note\\b)/i,/^(?:title\\b)/i,/^(?:,)/i,/^(?:[^\\->:\\n,]+)/i,/^(?:--)/i,/^(?:-)/i,/^(?:>>)/i,/^(?:>)/i,/^(?:[^#\\n]+)/i,/^(?:$)/i,/^(?:.)/i],conditions:{INITIAL:{rules:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],inclusive:!0}}};return lexer}();return parser.lexer=lexer,Parser.prototype=parser,parser.Parser=Parser,new Parser}();"undefined"!=typeof require&&"undefined"!=typeof exports&&(exports.parser=grammar,exports.Parser=grammar.Parser,exports.parse=function(){return grammar.parse.apply(grammar,arguments)},exports.main=function(args){args[1]||(console.log("Usage: "+args[0]+" FILE"),process.exit(1));var source=require("fs").readFileSync(require("path").normalize(args[1]),"utf8");return exports.parser.parse(source)},"undefined"!=typeof module&&require.main===module&&exports.main(process.argv.slice(1))),ParseError.prototype=new Error,Diagram.ParseError=ParseError,grammar.parseError=function(message,hash){throw new ParseError(message,hash)},Diagram.parse=function(input){return grammar.yy=new Diagram,grammar.parse(input)},this.Diagram=Diagram}.call(this),"undefined"!=typeof jQuery&&function($){$.fn.sequenceDiagram=function(options){return this.each(function(){var $this=$(this),diagram=Diagram.parse($this.text());$this.html(""),diagram.drawSVG(this,options)})}}(jQuery),Raphael.registerFont({w:209,face:{"font-family":"daniel","font-weight":700,"font-stretch":"normal","units-per-em":"360","panose-1":"2 11 8 0 0 0 0 0 0 0",ascent:"288",descent:"-72","x-height":"7",bbox:"-92.0373 -310.134 632 184.967","underline-thickness":"3.51562","underline-position":"-21.6211","unicode-range":"U+0009-U+F002"},glyphs:{" ":{w:179},"	":{w:179},"!":{d:"66,-306v9,3,18,11,19,24v-18,73,-20,111,-37,194v0,10,2,34,-12,34v-12,0,-18,-9,-18,-28v0,-85,23,-136,38,-214v1,-7,4,-10,10,-10xm25,-30v15,-1,28,34,5,35v-11,-1,-38,-36,-5,-35",w:115},\'"\':{d:"91,-214v-32,3,-25,-40,-20,-68v3,-16,7,-25,12,-27v35,13,14,56,8,95xm8,-231v4,-31,1,-40,18,-75v37,7,11,51,11,79v-3,3,-4,8,-5,13v-17,4,-16,-10,-24,-17",w:117},"#":{d:"271,-64v-30,26,-96,-7,-102,51v-6,2,-13,2,-24,-2v-2,-11,10,-21,2,-28v-14,5,-48,0,-48,22v0,23,-11,14,-29,10v-7,-6,6,-19,-1,-24r-32,4v-19,-8,-15,-24,5,-28r33,-6v4,0,24,-23,11,-27v-26,0,-63,14,-74,-10v3,-1,9,-17,16,-10v15,-8,81,4,89,-30v8,-14,16,-34,24,-38v23,9,24,38,5,49v37,24,55,-38,72,-43v19,10,20,23,-1,45v2,8,23,1,29,4v3,3,6,6,10,11v-14,13,-20,12,-45,12v-17,0,-16,17,-19,29v18,-7,49,3,67,-2v4,0,8,4,12,11xm161,-104v-30,-1,-44,10,-44,37v14,1,24,0,40,-5v0,-1,3,-10,8,-26v0,-4,-1,-6,-4,-6",w:285},$:{d:"164,-257v29,4,1,42,-3,50v5,5,38,13,41,24v8,4,6,15,-2,21v-18,3,-36,-17,-49,-17v-17,1,-31,40,-28,48v5,4,8,8,9,10v13,1,35,37,28,44v-10,21,-36,20,-65,28v-10,10,-12,40,-17,51v-9,-3,-28,1,-18,-17v0,-13,5,-24,-1,-35v-18,1,-59,-10,-42,-29v21,0,56,16,55,-16v5,-4,9,-18,9,-26v-14,-15,-55,-41,-53,-65v2,-33,56,-19,98,-26v10,-14,31,-43,38,-45xm93,-152v11,-10,15,-15,14,-29v-17,-3,-37,1,-43,6v10,12,20,19,29,23xm111,-103v-8,1,-11,12,-10,22v10,0,28,2,27,-8v0,-4,-13,-15,-17,-14",w:225},"%":{d:"181,-96v24,-7,67,-13,104,1v14,18,21,19,22,44v-13,43,-99,61,-146,36v-9,-9,-22,-11,-32,-29v0,-27,24,-53,52,-52xm139,-185v-9,68,-138,73,-131,-5v0,-3,3,-9,9,-17v13,1,27,1,17,-16v5,-39,63,0,93,-6v36,1,80,-9,102,11v15,32,12,32,-8,56v-16,21,-103,78,-152,125r-14,28v-23,11,-25,-7,-29,-20v34,-71,133,-98,171,-162v-13,-12,-52,-5,-61,1v0,1,1,3,3,5xm38,-190v0,34,55,29,70,8v0,-14,-20,-11,-32,-14v-14,-3,-24,-9,-40,-10v1,0,5,11,2,16xm172,-53v12,27,90,18,102,-5v-18,-7,-32,-10,-40,-10v-29,3,-57,-4,-62,15",w:308},"&":{d:"145,-82v17,-8,47,-15,71,-26v13,2,25,12,9,23v-23,7,-40,16,-53,27r0,6v13,8,30,21,36,38v0,8,-4,12,-11,12v-19,0,-43,-39,-59,-44v-30,12,-65,29,-97,32v-32,3,-45,-41,-23,-63v21,-20,52,-26,70,-48v-4,-31,-12,-47,9,-73v13,-16,20,-29,23,-39v15,-15,32,-22,51,-22v30,9,62,64,32,96v-2,3,-47,42,-69,48v-15,8,-11,9,0,22v6,7,10,11,11,11xm114,-138v25,-13,62,-38,74,-62v0,-9,-10,-31,-20,-29v-28,7,-60,42,-60,75v0,10,2,15,6,16xm99,-91v-18,10,-54,18,-59,45v26,5,61,-12,77,-22v-1,-5,-13,-23,-18,-23",w:253},"\'":{d:"36,-182v-36,7,-34,-61,-17,-80v15,1,21,19,21,20r-1,-1v0,0,-1,12,-5,35v1,5,3,17,2,26",w:63},"(":{d:"130,-306v13,2,23,43,-1,43v-49,43,-77,77,-90,148v5,49,27,67,64,101v4,14,5,6,2,19r-15,0v-35,-17,-79,-58,-79,-120v0,-58,66,-176,119,-191",w:120},")":{d:"108,-138v-2,73,-48,120,-98,153v-17,-5,-16,-20,-6,-31v52,-64,73,-62,74,-135v1,-42,-40,-98,-58,-128v0,-5,-1,-12,-2,-22v18,-18,25,0,42,27v25,39,50,66,48,136",w:120},"*":{d:"121,-271v15,-5,36,-8,40,9v-5,10,-31,19,-47,31v0,11,34,43,14,53v-18,8,-24,-24,-34,-20v-4,10,-4,19,-12,41v-25,7,-15,-30,-17,-47v-13,-1,-17,9,-46,30r-10,0v-20,-32,37,-43,54,-64v-10,-11,-36,-33,-16,-51v3,0,14,8,33,24v8,-10,26,-39,32,-42v14,7,15,23,9,36",w:177},"+":{d:"163,-64v-7,22,-65,2,-77,21v-2,10,-6,21,-11,35v-20,4,-21,-12,-19,-29v3,-23,-44,6,-39,-27v-8,-22,36,-8,49,-18v8,-13,6,-36,24,-40v19,-4,14,32,11,39v18,3,19,2,54,8v2,1,5,5,8,11",w:170},",":{d:"25,63v-26,21,-48,-2,-22,-24v14,-12,35,-40,35,-69v3,-2,3,-11,12,-9v35,17,5,88,-25,102",w:97},"-":{d:"57,-94v19,4,55,-5,54,17v-15,23,-54,20,-91,15v-4,2,-13,-10,-11,-16v-1,-22,28,-15,48,-16",w:124},".":{d:"40,-48v21,20,21,44,-4,44v-33,0,-26,-24,-10,-44r14,0",w:67},"/":{d:"21,20v-22,-45,21,-95,41,-126v38,-57,115,-158,193,-201v2,0,4,3,7,11v11,29,-15,34,-25,55v-81,56,-189,208,-197,261r-19,0",w:275},0:{d:"78,-237v70,-47,269,-41,270,59v0,34,-11,53,-29,76v-13,35,-30,32,-85,64v-6,2,-10,6,-7,8v-73,14,-98,38,-173,1v-7,-13,-52,-48,-46,-88v9,-57,27,-75,70,-120xm123,-38v100,0,202,-46,195,-153v-32,-55,-144,-73,-211,-35v-16,34,-68,54,-53,108v6,25,1,22,-3,39v6,24,41,41,72,41",w:353},1:{d:"39,-208v0,-14,6,-59,29,-39v3,4,6,13,10,24r-22,128r8,87v-4,6,-9,3,-16,2v-44,-38,-9,-137,-9,-202",w:93},2:{d:"88,-35v47,-10,119,-24,168,-9v0,12,-23,13,-35,16v1,1,3,1,5,1v-74,8,-118,23,-194,23v-14,0,-20,-13,-21,-28v55,-40,83,-61,123,-104v26,-13,65,-67,71,-102v-1,-9,-11,-16,-22,-16v-20,-1,-120,29,-156,49v-10,-2,-30,-20,-10,-28v50,-21,111,-51,178,-48v25,10,44,22,36,39v12,30,-19,64,-34,83v-39,48,-37,39,-115,109v0,5,-3,8,-8,11v4,3,8,4,14,4",w:265},3:{d:"188,-282v34,-10,74,25,47,51v-19,32,-55,50,-92,70v28,14,116,25,108,70v8,14,-49,40,-63,48v-29,9,-130,22,-168,42v-6,-5,-19,-7,-12,-22v56,-36,175,-21,210,-76v-9,-20,-88,-42,-97,-33v-20,-1,-41,2,-56,-7r5,-21v56,-25,103,-36,137,-78v1,-1,2,-5,4,-11v-15,-14,-56,7,-79,0v-10,9,-73,22,-92,31v-11,-4,-28,-23,-13,-30v50,-22,96,-26,154,-37v0,-1,8,3,7,3",w:260},4:{d:"79,-249v-7,17,-29,75,-33,96v0,6,3,8,8,8v43,-2,111,6,141,-6v17,-47,20,-100,63,-148v9,4,16,7,21,10v-17,31,-44,95,-51,141v7,4,24,-4,23,10v-1,16,-29,12,-31,23v-10,22,-9,69,-7,103v-3,2,-7,5,-10,9v-47,-11,-23,-74,-16,-114v0,-4,-2,-6,-7,-6v-65,2,-89,13,-162,4v-22,-22,-2,-53,5,-76v16,-15,17,-57,35,-70v6,-1,21,11,21,16",w:267},5:{d:"185,-272v30,7,45,-8,53,18v1,16,-17,18,-34,14v0,0,-95,-11,-129,1v-6,9,-24,33,-29,54v76,10,171,5,214,47v11,11,22,30,5,52v-14,12,-30,14,-34,27v-26,11,-141,63,-157,60v-16,-2,-25,-19,-4,-27v48,-18,128,-39,170,-86v4,-14,-65,-41,-85,-41r-92,0v-10,-4,-66,-1,-57,-23v0,-23,23,-51,35,-83v11,-28,133,-10,144,-13",w:284},6:{d:"70,-64v9,-51,63,-74,123,-71v43,2,109,3,111,41r-25,47v0,1,1,2,2,3v-5,0,-39,10,-41,20v-15,3,-22,4,-22,11v-39,1,-77,20,-119,13v-42,-7,-35,-9,-77,-46v-56,-118,94,-201,176,-229v7,0,21,8,20,15v-2,17,-23,15,-43,24v-69,31,-119,72,-134,145v-5,25,36,68,78,64v59,-6,128,-18,153,-61v-7,-14,-13,-9,-32,-21v-67,-15,-118,-5,-150,43r0,12v-13,4,-17,-3,-20,-10",w:310},7:{d:"37,-228v33,-14,173,-17,181,-19v28,-1,24,31,9,45v-17,15,-45,49,-59,69v-17,26,-55,67,-61,113v-10,13,-9,14,-14,20v-33,-13,-20,-25,-11,-53v16,-48,73,-115,109,-156v2,-7,5,-14,-10,-12v-26,4,-54,6,-76,13v-23,-5,-83,31,-94,-9v2,-8,18,-19,26,-11",w:245},8:{d:"57,-236v40,-50,166,-51,213,-10v22,28,10,63,-22,78r-35,17v8,5,54,24,53,44v-5,14,-4,33,-18,42v-13,13,-35,18,-44,34v-60,27,-190,49,-194,-42v7,-41,17,-54,59,-70r0,-4v-32,-9,-73,-62,-26,-85v4,0,8,-2,14,-4xm142,-160v24,-2,160,-31,99,-72v-28,-18,-108,-33,-146,-5v-16,12,-28,30,-33,59v24,12,37,20,80,18xm41,-62v30,65,189,6,199,-37v3,-14,-60,-30,-74,-30v-70,0,-118,10,-125,67",w:290},9:{d:"11,-192v15,-49,119,-61,161,-23v16,15,27,55,11,79v-20,62,-51,79,-96,118v-10,4,-45,27,-50,6v9,-15,66,-52,98,-99v-7,-7,-8,-3,-25,0v-49,-11,-96,-25,-99,-81xm145,-131v7,-5,13,-34,13,-41v-2,-51,-104,-38,-114,-6v-2,10,37,35,46,35v23,1,43,-1,55,12",w:198},":":{d:"39,-125v15,-8,40,-1,40,15v0,15,-6,22,-19,22v-13,0,-29,-21,-21,-37xm66,-17v-8,27,-51,19,-46,-8v-1,-6,8,-22,14,-20v29,0,30,6,32,28",w:95},";":{d:"56,-93v2,-30,37,-22,40,2v0,2,-1,7,-3,15v-13,8,-15,6,-27,4xm64,-44v11,-11,30,-4,32,14v-21,39,-63,71,-92,85v-5,0,-11,-2,-18,-8v11,-23,36,-36,50,-61v11,-7,19,-20,28,-30",w:107},"<":{d:"166,-202v12,0,29,15,24,29v0,4,-119,64,-120,73v15,21,89,64,91,86v2,29,-18,12,-30,15v-27,-29,-59,-54,-95,-75v-18,-10,-25,-13,-24,-41",w:176},"=":{d:"125,-121v18,7,55,-9,69,14v0,17,-45,26,-135,26v-18,0,-27,-7,-27,-21v-1,-37,60,-5,93,-19xm138,-71v20,0,48,-1,50,16v-13,24,-86,32,-131,29v-29,-2,-43,-10,-43,-24v-7,-23,36,-14,39,-17v27,6,57,-4,85,-4",w:196},">":{d:"4,-14v20,-48,77,-59,118,-94v-16,-19,-58,-52,-81,-75v-11,-7,-15,-38,-1,-40v33,16,83,71,121,105v26,23,-6,35,-41,53v-29,16,-56,28,-73,54v-21,15,-16,20,-34,15v-3,0,-9,-16,-9,-18",w:174},"?":{d:"105,-291v57,-13,107,-4,107,39v0,67,-136,85,-155,137v-1,6,10,23,-4,23v-23,1,-33,-35,-23,-57v31,-41,124,-60,149,-103v-8,-21,-72,-5,-88,-1v-23,6,-59,39,-71,8v0,0,-1,0,1,-17v10,-4,45,-20,84,-29xm80,-25v-6,4,-8,39,-24,22v-24,3,-22,-21,-13,-35v17,-7,29,5,37,13",w:216},"@":{d:"218,-207v23,8,42,14,47,37v44,68,-27,137,-87,85r1,0v0,2,-59,19,-61,17v-35,0,-42,-47,-17,-68r0,-4v-19,-1,-45,37,-49,40v-37,76,58,72,121,62v11,-2,34,-13,36,3v-14,31,-69,31,-114,33v-51,2,-99,-41,-80,-92v2,-30,22,-40,42,-63v35,-20,91,-53,161,-50xm217,-101v23,0,35,-19,35,-41v0,-43,-75,-41,-102,-19v36,3,55,16,62,41v-6,5,-6,19,5,19xm127,-110v8,5,51,-15,28,-16v-4,0,-25,4,-28,16",w:291},A:{d:"97,-81v-23,-10,-39,38,-52,60v-8,6,-8,6,-22,18v-22,-7,-23,-37,-4,-49v7,-8,11,-15,15,-23r-1,1v-14,-26,23,-29,31,-40v1,-1,15,-29,26,-36v17,-31,39,-58,54,-92v16,-20,20,-51,41,-66v29,5,34,62,45,92v9,64,21,103,49,155v-3,25,-44,11,-54,0v-34,-12,-97,-29,-128,-20xm107,-118v20,6,80,10,111,17v6,-7,-4,-15,-7,-24v-11,-28,-9,-92,-30,-117v-9,9,-19,44,-34,55v-9,23,-27,40,-40,69",w:294},B:{d:"256,-179v41,10,115,34,91,91v-6,3,-14,12,-19,20v-37,19,-50,34,-63,25v-9,10,-12,11,-34,13r3,-3v-4,-4,-12,-4,-18,0v0,0,2,2,5,4v-21,14,-26,6,-44,15v-4,0,-7,-2,-8,-5v-6,11,-20,-5,-18,11v-36,4,-91,35,-114,4v-7,-62,-10,-138,4,-199v-1,-19,-37,2,-37,-27v0,-8,2,-13,6,-15v68,-31,231,-92,311,-39v8,12,12,20,12,25v-8,42,-32,49,-77,80xm79,-160v72,-17,135,-39,184,-70v20,-13,31,-23,31,-27v1,-6,-30,-13,-38,-12v-54,0,-116,13,-186,41v11,21,1,48,9,68xm262,-43v0,-4,3,-6,-4,-5v0,1,1,2,4,5xm211,-140v-34,7,-94,24,-139,15v-6,20,-4,56,-4,82v0,29,43,1,56,2v48,-11,108,-25,154,-48v20,-10,32,-17,32,-25v0,-18,-33,-26,-99,-26xm195,-20v6,1,6,-2,5,-7v-3,2,-7,2,-5,7",w:364},C:{d:"51,-114v-12,75,96,76,166,71r145,-10v9,2,9,5,9,18v-37,18,-85,28,-109,22v-18,10,-47,10,-71,10v-29,0,-68,1,-105,-11v-6,-1,-10,-3,-10,-8v-33,-13,-48,-33,-66,-59v-19,-114,146,-150,224,-177v35,0,88,-31,99,7v-1,29,-49,14,-76,28v-55,8,-115,35,-175,71v-13,8,-23,21,-31,38",w:376},D:{d:"312,-78v-2,1,-3,7,-10,5v6,-3,10,-4,10,-5xm4,-252v2,-27,83,-38,106,-39v130,-7,267,1,291,109v0,0,-2,8,-3,25v-5,9,-4,28,-23,34v-4,4,-2,5,-7,0v-3,3,-15,7,-5,10v0,0,-10,14,-13,2v-11,1,-8,5,-20,14v1,2,7,3,9,1v-4,13,-22,13,-11,4v0,-3,1,-6,-3,-5v-40,29,-103,38,-141,65v10,6,22,-7,34,-3v-41,20,-127,44,-171,46v-21,1,-47,-33,-11,-39v15,-2,43,-6,56,-11v-16,-101,-5,-130,9,-207v2,0,4,-1,6,-3v-16,-17,-91,38,-103,-3xm297,-69v-7,3,-17,8,-25,7v1,1,3,2,5,2v-4,2,-11,5,-23,9v4,-11,30,-21,43,-18xm240,-51v10,0,12,2,0,6r0,-6xm220,-36v-1,-3,4,-6,6,-3v0,1,-2,1,-6,3xm125,-48v16,6,137,-46,155,-53v29,-18,101,-44,82,-93v-21,-53,-84,-61,-168,-67v-20,7,-50,3,-77,8v33,54,-12,132,8,205xm159,-22v-4,-1,-15,-5,-15,2v7,-1,12,-2,15,-2",w:381},E:{d:"45,-219v-19,-36,34,-41,63,-36v44,-10,133,-8,194,-15v3,2,38,11,52,15v-73,19,-171,21,-246,38v-9,11,-16,32,-20,61v35,11,133,-6,183,3v1,6,2,7,3,14v-46,24,-118,16,-193,27v-15,13,-22,52,-22,66v60,1,121,-20,188,-20v22,10,53,-7,74,5v16,29,-23,26,-43,32v-73,4,-139,13,-216,27r-52,-10v-4,-22,23,-69,26,-98v-3,0,-10,-15,-12,-24v20,-12,34,-23,35,-67v2,-1,5,-5,5,-7v0,-4,-14,-11,-19,-11",w:353},F:{d:"270,-258v13,2,59,6,48,34v-78,-3,-143,1,-212,22v-10,16,-21,43,-24,69r145,-9v8,3,29,-3,16,21v-14,-1,-59,13,-60,7v-12,13,-67,18,-108,21v-2,1,-4,3,-7,6v-2,23,-8,43,-7,69v1,28,-30,11,-40,5r10,-80r-26,-14v5,-10,10,-33,28,-25v21,-3,15,-46,26,-59v-1,-3,-32,-13,-28,-24v2,-22,45,-16,59,-30v47,4,99,-14,151,-9v5,-3,25,-3,29,-4",w:236},G:{d:"311,-168v53,0,94,57,74,110v-31,37,-71,34,-136,52v-13,-7,-41,10,-57,7v-73,-1,-122,-17,-162,-59v-49,-51,-24,-80,5,-130v35,-61,138,-93,214,-106v16,4,42,-1,40,21v-5,40,-39,2,-73,21v-76,19,-162,65,-177,142v28,103,237,76,312,29v2,-3,3,-7,3,-13v-10,-35,-37,-43,-87,-45v-16,-13,-53,-9,-78,1v-4,-3,-5,-7,-5,-11v17,-29,73,-17,108,-24v12,4,18,5,19,5",w:391},H:{d:"300,-268v18,12,19,32,4,51v-35,44,-34,140,-46,217v-1,5,-5,13,-11,12v-6,1,-19,-14,-18,-27r7,-106v-28,7,-76,22,-116,14v-18,2,-36,6,-55,3v-43,-8,-14,53,-33,75v-29,1,-26,-67,-21,-97v5,-31,28,-73,43,-98v2,2,7,3,14,3v13,33,-11,48,-13,78v61,4,118,2,176,2v8,0,13,-6,15,-20v4,-47,21,-87,54,-107",w:288},I:{d:"63,-266v34,10,-4,105,-8,128r-24,126v-2,2,-3,1,-9,6v-12,-10,-12,-15,-12,-47v0,-93,9,-156,28,-188v10,-17,19,-25,25,-25",w:79},J:{d:"235,-291v26,11,31,104,31,142v0,37,-2,95,-32,126v-33,34,-121,26,-167,1v-18,-11,-54,-29,-59,-59v0,-3,5,-15,16,-14v31,36,90,57,162,51v63,-30,56,-148,32,-226v-1,-16,11,-13,17,-21",w:282},K:{d:"212,-219v17,-5,80,-60,80,-19v0,9,-2,14,-5,16r-132,78v-34,23,-54,32,-21,50v39,21,74,23,124,41v5,2,7,5,7,9v-4,24,-55,15,-79,8v-67,-19,-98,-36,-116,-83v9,-24,38,-35,66,-61v7,-4,49,-30,76,-39xm47,-194v11,-20,11,-45,31,-55v2,2,4,3,6,0v29,39,-21,96,-18,128v-17,24,-15,62,-29,113v-4,3,-10,7,-19,11v-12,-13,-10,-28,-8,-53v3,-31,17,-79,37,-144",w:270},L:{d:"84,-43v58,0,179,-27,242,-4v3,17,-29,24,-40,26v-85,-4,-202,46,-268,3v-24,-16,-2,-33,-4,-57v26,-76,38,-108,86,-191v14,-7,26,-50,45,-32v6,22,5,31,-12,46v-20,39,-50,82,-67,142v-7,6,-19,46,-19,54v0,9,12,13,37,13",w:331},M:{d:"174,-236v-1,52,-11,92,-7,143v10,5,15,-12,22,-18v42,-55,90,-130,136,-174r15,-18v42,2,32,53,11,80v-12,58,-54,143,-34,210v0,3,-3,12,-9,10v-31,-5,-32,-57,-27,-92v4,-27,12,-58,25,-93v-5,-10,5,-19,6,-30v-46,44,-66,110,-129,172v-11,10,-18,15,-22,15v-34,6,-28,-103,-28,-152v-28,22,-65,119,-96,170v-9,15,-34,3,-31,-19v30,-64,91,-177,139,-229v12,-1,29,13,29,25",w:343},N:{d:"248,-20v-3,17,-37,18,-43,3v-24,-35,-53,-145,-80,-203v-32,40,-55,120,-92,174v-13,3,-26,-13,-27,-22r87,-171v4,-13,20,-57,42,-32v42,48,46,139,82,198v29,-45,46,-88,65,-153v12,-19,23,-42,38,-60v27,-1,14,18,4,44v-6,46,-32,68,-37,121v-15,29,-33,69,-39,101",w:307},O:{d:"240,-268v85,1,163,29,150,125v13,7,-12,18,-5,26v-23,63,-133,112,-228,124v-80,-16,-171,-56,-148,-153v11,-47,20,-43,53,-83v17,-9,39,-22,73,-29v45,-10,81,-10,105,-10xm363,-156v16,-51,-62,-85,-111,-79v-25,-11,-50,8,-81,0v-15,10,-70,16,-85,31v6,20,-27,24,-39,45v-42,75,40,128,115,128v56,0,209,-71,201,-125",w:383},P:{d:"70,-225v-7,-12,-36,16,-49,19v-4,0,-9,-5,-14,-17v21,-47,114,-55,172,-59v41,-3,132,33,99,87v-21,34,-72,59,-144,80v-2,16,-79,3,-74,46v3,25,-5,47,-10,68v-22,-1,-23,-29,-22,-56v2,-25,-20,-32,-8,-50v21,-5,10,-35,25,-57v6,-28,14,-48,25,-61xm71,-229v47,14,-2,50,-1,99v41,-3,113,-37,173,-76v5,-9,8,-14,8,-15v-28,-47,-125,-29,-180,-8",w:252},Q:{d:"374,-217v20,59,-11,127,-48,156r30,38v-1,6,-8,16,-14,9v-3,0,-19,-9,-47,-26v-72,35,-173,75,-236,12v-70,-40,-67,-213,26,-217r8,5v24,-20,72,-48,112,-38v21,-4,22,-1,50,-2v66,-2,94,20,119,63xm296,-88v13,5,61,-49,63,-84v4,-62,-54,-78,-119,-76v-14,-6,-49,5,-71,3v-42,16,-89,41,-93,94v-9,11,1,25,-7,38v-12,-19,-7,-67,-1,-88v-56,30,-37,137,19,155v27,17,92,19,119,0v12,-2,29,-9,52,-20v2,-2,3,-3,3,-6v-11,-12,-46,-27,-54,-56v0,-13,3,-19,9,-19v18,1,60,52,80,59",w:379},R:{d:"100,-275v96,-23,196,-10,208,78v-3,18,-17,52,-49,62v-14,20,-54,23,-79,40v-2,0,-14,2,-36,6v-40,8,-30,14,-3,33v37,27,52,30,118,55v16,6,31,23,12,27v-58,-2,-104,-29,-143,-61v-14,-3,-16,-15,-39,-27v-23,-19,-28,-12,-15,-38v63,-19,111,-15,163,-53v27,-20,43,-36,43,-49v0,-64,-120,-62,-173,-38v-9,4,-38,9,-40,18v-10,32,-16,70,-13,116v-10,21,-8,47,-6,75v2,31,-9,29,-27,22v-9,-55,5,-140,15,-190v-8,-6,-24,10,-24,-11v0,-34,16,-34,42,-55v2,-1,17,-4,46,-10",w:297},S:{d:"13,-3v-7,-3,-22,-18,-5,-22v68,-15,119,-32,154,-45v51,-19,39,-34,3,-53v-46,-25,-82,-30,-121,-64v-33,-29,-50,-35,-25,-58v37,-20,119,-29,181,-29v29,0,44,6,44,18v-9,26,-62,6,-104,14v-17,2,-72,6,-92,16v37,53,132,58,180,111v8,9,11,20,11,30v-4,17,-23,35,-42,34v-21,16,-17,1,-49,17v-14,7,-41,9,-56,20v-25,-3,-49,10,-79,11",w:234},T:{d:"141,-3v-36,-6,1,-49,-3,-79v10,-19,6,-35,15,-64r26,-85v-51,-9,-100,10,-141,14v-16,2,-30,-26,-11,-32v26,-8,143,-8,179,-19r12,6v67,-2,142,-1,200,-1v8,0,14,3,19,10v-18,16,-74,3,-103,14v-48,-4,-60,4,-113,7v-42,22,-36,130,-58,187v1,12,-9,44,-22,42",w:277},U:{d:"365,-262v13,56,-22,104,-36,141v-19,22,-30,38,-57,56v-4,18,-60,35,-78,50v-53,28,-142,0,-161,-34v-31,-56,-37,-108,-11,-164v17,-33,29,-50,48,-29v-2,2,-3,7,-4,13v-44,36,-38,149,7,174v30,26,55,19,102,4v56,-17,66,-34,120,-76v12,-24,56,-68,46,-122r0,-16v0,1,-1,3,-1,6v4,-13,11,-10,25,-3",w:368},V:{d:"246,-258v21,-22,31,-26,44,-8v1,1,-12,22,-28,35v-15,25,-41,38,-56,69v-13,15,-20,31,-28,57v-15,13,-11,29,-27,72v3,21,-5,24,-27,27v-33,-45,-54,-118,-84,-167v-5,-26,-18,-50,-25,-76v-3,-12,24,-8,29,-5v8,13,18,52,26,70r52,115v9,-2,4,-9,10,-21r25,-47v25,-44,46,-76,89,-121",w:234},W:{d:"31,-213v16,46,17,106,41,151v31,-35,49,-89,76,-127v30,-15,39,27,52,56v10,22,21,48,35,67v2,0,4,-1,5,-3v16,-28,50,-76,79,-121v14,-21,40,-63,64,-83r5,8v-30,58,-76,110,-97,173v-18,28,-25,37,-33,63v-11,1,-16,25,-30,15v-21,-31,-44,-89,-62,-131v0,-2,-1,-3,-5,-5v-17,11,-16,36,-31,50v-20,33,-20,84,-68,94v-24,-19,-23,-81,-39,-111v-1,-15,-29,-94,-10,-108v9,2,12,5,18,12",w:331},X:{d:"143,-183v43,-25,69,-36,126,-62v22,-10,86,-10,56,21v-51,3,-158,61,-154,64v10,15,41,30,50,52v27,17,46,60,70,82v9,14,-6,30,-24,20v-35,-43,-75,-100,-116,-132v-48,13,-100,47,-118,94v-1,49,-26,34,-27,4v-1,-26,13,-27,17,-48v22,-27,68,-55,90,-77v-9,-12,-60,-39,-79,-57v-6,-10,-6,-25,12,-25",w:312},Y:{d:"216,-240v19,-14,42,10,22,26v-54,66,-121,109,-156,197v-8,21,-11,15,-30,4v3,-37,27,-61,33,-76v12,-12,15,-19,32,-42v-8,-6,-40,5,-45,5v-48,-6,-69,-65,-56,-113v14,0,13,-1,24,7v2,33,12,75,42,73v36,-2,102,-57,134,-81",w:189},Z:{d:"60,-255v66,12,200,-34,240,21v-13,42,-63,62,-98,89v-19,15,-47,33,-82,55v-25,16,-47,32,-66,47v58,24,129,-6,208,-6v23,0,36,12,13,19v-33,2,-53,5,-86,10v-32,18,-88,15,-135,15v-9,-1,-55,-1,-48,-29v1,-24,30,-24,40,-41v64,-50,151,-86,208,-147v-38,-17,-155,12,-198,-4v0,0,-11,-33,4,-29",w:310},"[":{d:"72,-258r-15,250v30,4,55,-3,80,-6v7,-1,8,17,9,23v-28,15,-73,23,-121,21v-7,0,-10,-6,-10,-17v0,-60,25,-193,22,-288v0,-16,13,-20,33,-19v9,-3,34,-12,51,-12v16,0,15,16,19,29v-16,7,-48,10,-68,19",w:151},"\\\\":{d:"21,38v-20,-21,9,-72,13,-90v44,-78,113,-189,200,-253v2,0,5,4,7,12v11,31,-13,36,-24,58v-74,61,-174,219,-180,273r-16,0",w:257},"]":{d:"133,-258v-23,-13,-84,6,-85,-32v0,-10,5,-15,14,-15v0,0,30,2,90,7v10,1,15,13,15,36v2,7,-8,59,-13,112r-11,125v-9,48,9,90,-59,71v-20,-4,-39,-1,-59,-4v-5,-10,-25,-12,-14,-30v8,-3,61,-13,78,-8v14,1,8,-7,10,-17v15,-69,21,-166,34,-245",w:171},"^":{d:"68,-306v20,15,47,36,58,60v-1,4,0,7,-9,7v-26,0,-47,-38,-49,-32v-15,9,-41,50,-54,30v-2,-31,17,-23,33,-51v8,-9,15,-14,21,-14",w:135},_:{d:"11,15v-8,33,18,45,50,34r205,2r197,-5v11,-5,14,-9,7,-28v-95,-21,-258,-10,-376,-10v-25,0,-72,-3,-83,7",w:485},"`":{d:"75,-264v16,8,56,14,39,43v-30,-8,-65,-23,-105,-44v-1,-3,-3,-28,5,-25v16,5,44,17,61,26",w:129},a:{d:"124,-56v10,4,59,41,65,50v1,7,-6,17,-12,17r-60,-30v-22,2,-42,21,-65,19v-33,4,-68,-67,-15,-81v41,-27,96,-39,110,9v0,6,-4,12,-11,16v-33,-25,-67,-5,-88,12v10,16,61,-18,76,-12",w:196},b:{d:"80,-140v69,1,123,0,134,52v5,26,-71,71,-97,70v-11,11,-88,22,-94,22v-11,-3,-26,-18,-6,-24v19,-5,-2,-19,-1,-35v1,-18,11,-36,-5,-47v-6,-17,-6,-21,14,-32v6,-45,18,-89,28,-124v2,-7,8,-12,17,-15v5,3,10,11,16,28v-12,27,-13,63,-23,96v0,6,6,9,17,9xm87,-107v-40,-9,-31,31,-39,54v8,15,0,25,12,22v30,-8,60,-18,88,-32v39,-18,49,-33,-1,-42v-20,-4,-45,-7,-60,-2",w:217},c:{d:"128,-123v29,-7,37,29,12,33v-27,-4,-40,6,-79,25v-8,4,-13,11,-16,22v30,32,91,3,134,11v5,13,-8,26,-22,19v-51,25,-139,28,-150,-30v6,-50,69,-82,121,-80",w:194},d:{d:"224,-201v0,-35,-17,-111,24,-94v7,86,-2,119,0,197v-4,2,-8,21,-18,16v-62,-7,-154,-8,-185,29v6,17,28,26,51,26v16,0,100,-15,132,-18v7,5,-6,20,-10,22v-24,8,-122,42,-163,25v-32,-5,-62,-53,-36,-80v35,-37,118,-46,198,-43v1,-22,7,-49,7,-80",w:265},e:{d:"4,-57v0,-58,51,-71,110,-74v33,-1,45,16,59,35v1,14,2,39,-7,42v-24,-2,-73,13,-99,11v-2,2,-2,3,-2,3v0,3,12,8,37,15v21,0,69,9,31,22v-9,14,-34,6,-56,6v-27,-5,-73,-28,-73,-60xm123,-102v-22,2,-68,5,-65,26v24,-2,66,5,79,-6v-5,-13,-1,-13,-14,-20",w:182},f:{d:"6,-59v6,-29,53,-4,53,-43v0,-64,29,-118,84,-150v45,-25,167,-24,155,51v-1,2,-7,6,0,6r-10,2v-45,-58,-165,-39,-186,39v-7,26,-11,42,-9,62v44,8,95,-21,135,-7v-12,25,-39,21,-76,30v-19,5,-18,7,-54,19v-2,8,15,32,17,35v-6,25,-26,26,-40,-5r-15,-24v-41,10,-44,12,-54,-15",w:234},g:{d:"132,-97v30,27,21,75,30,117v-12,31,-11,66,-36,103v-32,46,-105,83,-167,39v-31,-21,-49,-29,-51,-75v-2,-37,77,-50,121,-57v37,-6,68,-10,95,-11v7,-6,3,-32,4,-46v0,0,-1,1,-1,2v0,-18,-5,-31,-14,-45v-44,5,-79,20,-94,-18v3,-54,73,-54,125,-50v12,7,12,13,4,25v-30,-11,-76,8,-90,20v23,3,50,-16,74,-4xm-34,121v60,53,168,1,159,-86v-47,-7,-93,24,-142,30v-12,7,-45,19,-42,29v0,10,8,19,25,27",w:188},h:{d:"100,-310v11,-2,10,19,11,20v-11,52,-40,133,-53,189v-6,30,-9,37,-9,47v27,0,113,-34,143,-34v42,0,31,47,39,79v0,4,-5,17,-16,16v4,2,11,3,4,6v-24,-1,-28,-34,-25,-64v-1,-1,-2,-3,-5,-5v-51,0,-110,38,-162,51v-9,1,-15,-15,-16,-23v17,-89,39,-141,71,-264v0,-9,6,-19,18,-18",w:251},i:{d:"62,-209v7,18,9,23,-5,38v-23,-6,-21,-18,-11,-36v2,0,8,-1,16,-2xm34,-7v-18,-21,-8,-73,-1,-106v7,-10,20,-8,23,6v-1,36,7,72,-2,104v-8,2,-8,0,-20,-4",w:80},j:{d:"88,-191v5,28,-18,40,-28,21v0,-20,12,-29,28,-21xm82,-99v28,-1,16,35,16,61v0,60,-19,150,-35,202v-12,8,-19,31,-35,16v-32,-7,-43,-19,-56,-44r2,-17v11,4,49,45,61,18v10,-55,27,-107,30,-171v0,-16,0,-59,17,-65",w:120},k:{d:"59,-66v33,26,114,37,155,62v8,-4,22,-2,19,-17v0,-4,-12,-11,-30,-24v-36,-25,-54,-22,-99,-33v14,-21,119,-13,103,-63r-16,-7r-123,47r25,-93v-3,-15,16,-49,18,-81v1,-15,-21,-14,-25,-3v-31,82,-49,168,-75,257v2,2,22,30,27,10v2,-5,4,-9,9,-11v4,-16,4,-15,12,-44",w:236},l:{d:"66,-300v21,-6,37,23,30,55v-10,51,-28,135,-28,208v0,11,6,36,-13,37v-29,-5,-30,-48,-25,-83r28,-177v-6,-17,1,-29,8,-40",w:102},m:{d:"348,-59v-2,21,0,57,3,73v-17,3,-30,-1,-32,-16v-8,-7,-5,-44,-13,-70v-35,3,-82,49,-111,70v-12,8,-40,4,-39,-15r2,-56v-1,-13,4,-28,-8,-29v-35,8,-79,72,-115,87v-6,2,-20,-18,-21,-22v1,-20,14,-105,39,-64r8,15v17,-14,72,-56,93,-54v27,3,49,40,43,80v24,-2,66,-55,124,-53v11,14,28,23,27,54",w:368},n:{d:"121,-136v37,6,62,54,62,111v0,32,-16,25,-31,17v-18,-30,-5,-45,-22,-85v-37,-13,-71,55,-92,65v-20,-3,-39,-39,-21,-62v2,-12,3,-15,11,-30v12,-8,20,11,29,12",w:194},o:{d:"108,-139v52,-24,104,18,104,63v0,59,-66,67,-114,83v-52,-2,-115,-50,-80,-105v23,-18,52,-35,90,-41xm45,-60v16,54,125,16,131,-23v-12,-59,-129,-8,-131,23",w:217},p:{d:"82,14v-10,12,-8,117,-24,142v-15,2,-19,0,-29,-13v0,-76,9,-113,22,-192v14,-27,35,-6,37,13v0,8,-3,21,-7,38v2,2,3,2,4,2v26,-9,116,-33,126,-72v-7,-17,-24,-33,-49,-31v-40,3,-116,13,-116,47v-5,7,-2,17,-16,20v-17,-12,-18,-20,-12,-38v8,-25,74,-61,110,-59v55,-15,113,15,118,70v-15,52,-84,79,-146,83v-5,0,-11,-4,-18,-10",w:251},q:{d:"144,-147v27,-8,89,-3,97,31v-9,29,-42,-4,-73,1v-32,6,-118,20,-111,49v0,7,13,13,21,13v21,0,78,-24,104,-34v2,0,9,8,22,21v1,1,1,2,1,5v-27,90,-22,70,-43,203v11,15,-15,54,-33,33v-6,-8,-10,-20,-3,-28v1,-72,5,-114,15,-172v-35,3,-35,10,-59,8v-41,-4,-98,-41,-56,-85v33,-34,59,-27,118,-45",w:248},r:{d:"242,-117v2,22,5,10,-14,23v-73,-7,-166,-23,-174,56v-8,6,-3,20,-8,36v-29,10,-40,-9,-33,-46v6,-31,7,-69,32,-55v58,-37,66,-42,175,-19v3,5,15,4,22,5",w:229},s:{d:"154,-151v19,1,27,24,13,32v-4,1,-22,4,-53,7v-16,8,-22,-2,-39,9v23,21,89,16,96,62v-13,24,-85,35,-124,42v-9,-3,-18,-3,-27,0v-6,-4,-21,-16,-8,-25v30,-6,83,-13,102,-24v-17,-16,-80,-33,-97,-48v-3,-2,-4,-7,-4,-15v-6,-6,3,-13,15,-18v22,-9,94,-23,126,-22",w:188},t:{d:"85,-150v10,-41,35,-126,65,-134v4,1,24,19,11,36v-17,22,-29,57,-36,104v26,8,50,-7,73,5v14,0,22,3,22,9v-1,19,-44,18,-57,23v-10,1,-46,0,-54,10v-10,24,-4,67,-20,98v-21,-3,-26,1,-26,-20v0,-9,2,-36,8,-81v-15,-13,-81,9,-77,-27v4,-38,71,6,91,-23",w:194},u:{d:"207,-136v-1,-2,11,-14,14,-13v6,0,10,7,10,22v-3,40,-23,56,-40,82v-13,19,-62,43,-93,43v-67,-2,-111,-75,-71,-133v26,-3,21,29,19,49v-1,27,26,44,57,42v41,-2,93,-55,104,-92",w:242},v:{d:"24,-127r52,71v42,-16,70,-54,124,-65v5,4,8,7,8,11v-8,19,-4,8,-33,32v0,1,-1,3,-1,5v-61,45,-93,68,-97,68v-40,-15,-50,-72,-68,-100v6,-14,10,-22,15,-22",w:214},w:{d:"15,-139v38,-2,27,57,45,86v30,2,67,-66,101,-78v26,6,36,69,60,78v47,-35,51,-54,119,-104v3,0,7,-2,15,-4v19,23,-9,28,-21,49v-33,28,-68,90,-107,109v-10,6,-52,-47,-72,-71v-20,17,-85,74,-97,73v-38,7,-41,-98,-52,-122v0,-1,3,-7,9,-16",w:325},x:{d:"95,-124v22,-13,78,-32,99,-31v16,0,23,6,23,18v0,22,-17,11,-49,21v-3,0,-45,20,-42,24v0,1,2,4,8,10v20,24,49,41,44,80v-35,3,-27,-9,-60,-44v-40,-43,-37,-26,-79,9v-1,1,-2,3,-3,8v-12,8,-28,10,-27,-11v-6,-8,45,-65,48,-65v-17,-21,-61,-52,-24,-68v9,0,48,37,62,49",w:223},y:{d:"44,-65v22,33,70,4,99,-8v5,-4,28,-15,41,-31r17,0v25,47,-26,70,-40,114v-5,4,-9,8,-10,21v-16,12,-11,33,-27,51v-5,18,-12,43,-23,71v-1,-1,-2,34,-18,29v-12,1,-22,-12,-22,-23v20,-70,24,-65,68,-177v-47,16,-111,8,-116,-39v-11,-13,-7,-62,8,-62v18,0,22,26,23,54",w:216},z:{d:"189,-43v9,-1,46,-6,41,12v0,7,-5,13,-15,14v-45,6,-148,24,-181,13v0,-3,-5,-8,-14,-15v5,-44,66,-46,90,-85v-15,-18,-84,21,-84,-14v0,-10,5,-17,14,-18v33,-3,79,-13,109,-3v4,-2,14,11,12,15v0,23,-26,51,-78,84v28,10,73,-3,106,-3",w:244},"{":{d:"94,-303v27,-9,90,-14,79,26v-20,17,-55,-5,-87,13v-4,1,-6,4,-6,8v33,42,31,44,7,85v-6,10,-13,16,-13,13v5,6,17,17,15,31r-33,78v7,35,28,49,57,63r49,0v7,42,-51,41,-86,20v-43,-13,-51,-51,-56,-89v-2,-25,25,-54,27,-71v-3,-4,-46,-5,-41,-21v2,-10,-3,-29,11,-25v2,0,51,-17,52,-38v4,-3,-25,-23,-25,-49v0,-41,8,-30,50,-44",w:179},"|":{d:"30,-308v26,5,14,50,15,80v5,78,-8,153,-3,225v-2,15,-1,31,-11,36v-8,-3,-25,-22,-25,-32r9,-183v0,-40,0,-78,1,-112v0,-4,9,-15,14,-14",w:63},"}":{d:"47,-298v34,-17,118,-18,112,36v6,25,-76,98,-69,103v4,16,39,7,44,28v7,34,-34,17,-37,39v8,29,49,83,23,123v-15,23,-43,26,-73,46v-34,8,-43,11,-49,-17v1,-15,30,-15,33,-20v24,-12,70,-27,55,-61v-14,-33,-37,-68,-19,-103v-46,-50,46,-100,60,-141v-10,-16,-68,6,-77,-12",w:143},"~":{d:"7,-254v2,-6,59,-50,67,-46v11,-1,35,19,46,26v5,0,27,-10,66,-31v21,8,-1,25,-7,38v-27,21,-48,31,-65,31v-24,-11,-37,-39,-65,-9v-7,7,-26,36,-42,11v3,-5,-3,-17,0,-20",w:199},"Ä":{d:"161,-217v20,53,23,124,54,170v-2,20,-34,9,-42,0v-27,-12,-78,-18,-101,-18v-26,6,-29,51,-54,63v-18,-4,-19,-30,-3,-38v5,-9,15,-16,8,-29v1,-12,23,-9,26,-19v6,-10,11,-20,20,-27r70,-121v12,-4,16,4,22,19xm82,-91v17,3,62,7,86,13v-13,-33,-13,-80,-29,-109v-15,30,-38,63,-57,96xm187,-259v0,8,-4,13,-12,13v-18,0,-21,-20,-16,-34v18,-1,28,2,28,21xm90,-284v7,3,28,11,28,18v0,9,-9,18,-18,17v-17,0,-25,-24,-10,-35"},"Å":{d:"161,-217v20,53,23,124,54,170v-2,20,-34,9,-42,0v-27,-12,-78,-18,-101,-18v-26,6,-29,51,-54,63v-18,-4,-19,-30,-3,-38v5,-9,15,-16,8,-29v1,-12,23,-9,26,-19v6,-10,11,-20,20,-27r70,-121v12,-4,16,4,22,19xm82,-91v17,3,62,7,86,13v-13,-33,-13,-80,-29,-109v-15,30,-38,63,-57,96xm112,-239v-31,-17,-9,-61,29,-56v12,2,22,3,33,12v24,39,-30,62,-62,44xm119,-262v2,14,41,8,41,-4v0,-4,-8,-6,-24,-9v-10,-2,-17,10,-17,13"},"Ç":{d:"48,-108v-12,70,90,71,159,67r138,-9v9,-1,7,9,7,17v-37,16,-80,27,-103,21v-14,9,-40,3,-67,9v-30,0,-64,1,-100,-10v-6,-1,-10,-4,-10,-8v-32,-12,-46,-31,-63,-56v-16,-61,47,-103,83,-121v82,-42,118,-45,200,-60v21,-4,36,34,11,37v-90,11,-148,31,-225,77v-12,8,-23,20,-30,36xm172,18v29,4,47,14,53,35v-2,7,-14,31,-27,31v-28,7,-55,9,-84,14v-18,-5,-13,-32,7,-32v21,0,55,-5,69,-13v-16,-14,-63,10,-50,-35v9,-10,1,-27,23,-29v7,8,11,16,9,29",w:331},"É":{d:"49,-160v1,-4,-10,-9,-15,-8v-15,-35,32,-30,57,-31r142,-8v2,1,30,7,40,10v-52,16,-133,17,-190,30v-7,9,-12,24,-15,47v26,10,102,-6,141,3v1,3,1,6,2,10v-36,18,-92,12,-149,21v-11,9,-16,41,-16,51v55,-1,111,-21,168,-13v15,-8,48,1,31,18v-53,16,-130,13,-198,29r-39,-8v-4,-19,17,-53,20,-76v-1,0,-7,-11,-9,-18v18,-7,22,-28,30,-57xm133,-248v27,-11,48,-32,59,-14v3,11,-79,52,-88,53v-14,1,-16,-11,-12,-21v10,-4,23,-11,41,-18",w:252},"Ñ":{d:"224,-182v1,-17,15,-24,22,-38v20,0,13,10,3,33v-3,36,-25,52,-28,94v-10,24,-30,55,-29,82r-19,7v-32,-8,-36,-70,-58,-111v-2,-23,-7,-27,-19,-54v-28,36,-41,93,-71,133v-9,5,-20,-9,-20,-17r73,-149v9,-24,31,-5,36,7v19,41,31,98,53,139v22,-35,34,-69,50,-118v2,-3,3,-3,7,-8xm203,-257v22,-8,41,-24,65,-26v3,11,-8,9,-7,21v-26,20,-46,31,-59,31v-2,3,-49,-27,-49,-29v-11,0,-32,31,-46,32v-11,-2,-12,-21,-4,-23v4,-6,28,-30,48,-34v17,-4,43,28,52,28",w:219},"Ö":{d:"62,-184v78,-31,249,-50,238,74v-6,65,-102,105,-179,115v-77,-7,-152,-71,-101,-149v2,-5,24,-33,42,-40xm279,-120v14,-38,-47,-64,-85,-61v-20,-9,-41,7,-62,0v-11,7,-54,12,-66,24v0,20,-51,35,-38,66v-1,43,50,67,96,67v44,0,162,-55,155,-96xm197,-229v0,8,-4,13,-12,13v-17,0,-19,-19,-16,-34v18,-1,29,1,28,21xm101,-254v7,3,28,9,27,18v1,8,-8,17,-17,17v-18,0,-26,-24,-10,-35",w:273},"Ü":{d:"281,-202v6,67,-30,121,-71,152v-3,14,-47,26,-60,39v-41,20,-110,1,-125,-26v-24,-44,-28,-84,-8,-127v12,-26,23,-38,37,-22v-2,2,-3,5,-3,10v-34,26,-29,116,5,134v22,32,86,-1,109,-8v38,-28,104,-64,97,-149v2,-10,7,-8,19,-3xm197,-227v0,8,-4,13,-12,13v-18,0,-21,-20,-16,-34v18,-1,28,2,28,21xm101,-252v7,3,27,10,27,18v0,8,-9,18,-18,17v-18,-1,-24,-25,-9,-35",w:262},"á":{d:"118,-53v10,4,55,41,62,47v0,7,-5,16,-12,16r-57,-28v-20,3,-40,19,-61,18v-10,2,-43,-17,-42,-36v0,-14,7,-40,27,-41v39,-26,92,-36,104,9v0,6,-2,11,-9,15v-32,-24,-64,-6,-84,11v8,15,58,-17,72,-11xm32,-117v24,-3,85,-55,101,-32v3,11,-80,53,-89,53v-13,2,-14,-10,-12,-21",w:173},"à":{d:"118,-53v10,4,55,41,62,47v0,7,-5,16,-12,16r-57,-28v-20,3,-40,19,-61,18v-10,2,-43,-17,-42,-36v0,-14,7,-40,27,-41v39,-26,92,-36,104,9v0,6,-2,11,-9,15v-32,-24,-64,-6,-84,11v8,15,58,-17,72,-11xm99,-137v7,6,56,14,37,40v-28,-7,-62,-21,-100,-41v-2,-3,-2,-26,5,-23v16,4,42,17,58,24",w:173},"â":{d:"118,-53v10,4,55,41,62,47v0,7,-5,16,-12,16r-57,-28v-20,3,-40,19,-61,18v-10,2,-43,-17,-42,-36v0,-14,7,-40,27,-41v39,-26,92,-36,104,9v0,6,-2,11,-9,15v-32,-24,-64,-6,-84,11v8,15,58,-17,72,-11xm147,-97v-27,-6,-39,-26,-60,-37v-21,7,-38,46,-65,23v-2,-5,-3,-10,-4,-14v18,-4,43,-31,61,-42v28,5,40,21,62,36v12,8,18,17,18,25v0,6,-4,9,-12,9",w:173},"ä":{d:"118,-53v10,4,55,41,62,47v0,7,-5,16,-12,16r-57,-28v-20,3,-40,19,-61,18v-32,5,-66,-64,-15,-77v39,-26,92,-36,104,9v0,6,-3,11,-9,15v-32,-24,-64,-6,-84,11v8,15,58,-17,72,-11xm142,-119v0,8,-4,13,-12,13v-18,0,-21,-20,-16,-34v18,-1,28,2,28,21xm46,-144v7,3,28,9,27,18v1,8,-9,18,-18,17v-18,-1,-25,-25,-9,-35",w:173},"ã":{d:"118,-53v10,4,55,41,62,47v0,7,-5,16,-12,16r-57,-28v-20,3,-40,19,-61,18v-10,2,-43,-17,-42,-36v0,-14,7,-40,27,-41v39,-26,92,-36,104,9v0,6,-2,11,-9,15v-32,-24,-64,-6,-84,11v8,15,58,-17,72,-11xm114,-136v22,-8,41,-24,64,-26v3,11,-7,10,-7,21v-26,20,-45,30,-58,30v-3,3,-49,-26,-49,-28v-10,-1,-32,35,-51,31v-12,-32,8,-29,32,-51v24,-21,54,20,69,23",w:173},"å":{d:"118,-53v10,4,55,41,62,47v0,7,-5,16,-12,16r-57,-28v-20,3,-40,19,-61,18v-10,2,-43,-17,-42,-36v0,-14,7,-40,27,-41v39,-26,92,-36,104,9v0,6,-2,11,-9,15v-32,-24,-64,-6,-84,11v8,15,58,-17,72,-11xm54,-101v-37,-20,-9,-71,34,-65v13,1,25,3,38,13v27,45,-34,73,-72,52xm61,-128v4,20,48,7,49,-5v0,-5,-9,-7,-28,-10v-12,-2,-21,11,-21,15",w:173},"ç":{d:"108,-118v30,-6,56,21,25,33v-24,-6,-39,5,-75,23v-7,4,-12,12,-15,22v31,28,86,3,128,9v3,28,-29,16,-44,28v-53,15,-106,10,-120,-37v0,-48,62,-70,101,-78xm92,18v23,4,45,12,48,32v-2,6,-12,28,-25,28v-24,6,-50,10,-77,13v-16,-4,-11,-28,7,-29v17,-1,51,-4,63,-12v-14,-15,-57,10,-46,-32v9,-8,0,-25,21,-26v6,6,12,14,9,26",w:171},"é":{d:"108,-124v42,-3,70,39,50,73v-22,-1,-70,12,-94,10v-1,1,-2,3,-2,3v0,3,12,7,35,14v18,0,64,7,30,21v-10,14,-31,6,-53,6v-26,-7,-70,-26,-70,-58v0,-54,48,-65,104,-69xm130,-78v-2,-35,-66,-13,-77,3v16,6,62,6,77,-3xm76,-169v26,-11,48,-32,59,-14v3,10,-80,53,-89,53v-14,1,-14,-10,-12,-21v15,-7,16,-7,42,-18",w:161},"è":{d:"108,-124v42,-3,70,39,50,73v-22,-1,-70,12,-94,10v-1,1,-2,3,-2,3v0,3,12,7,35,14v18,0,64,7,30,21v-10,14,-31,6,-53,6v-26,-7,-70,-26,-70,-58v0,-54,48,-65,104,-69xm130,-78v-2,-35,-66,-13,-77,3v16,6,62,6,77,-3xm95,-166v7,6,54,14,37,40v-28,-7,-62,-21,-100,-41v-3,-3,-3,-26,5,-24v16,5,42,18,58,25",w:161},"ê":{d:"108,-124v42,-3,70,39,50,73v-22,-1,-70,12,-94,10v-1,1,-2,3,-2,3v0,3,12,7,35,14v18,0,64,7,30,21v-10,14,-31,6,-53,6v-26,-7,-70,-26,-70,-58v0,-54,48,-65,104,-69xm130,-78v-2,-35,-66,-13,-77,3v16,6,62,6,77,-3xm145,-129v-27,-6,-39,-26,-60,-37v-8,0,-10,4,-14,10v-11,15,-51,34,-56,0v17,-4,44,-32,61,-43v28,5,41,21,63,36v12,8,17,17,17,25v0,6,-3,9,-11,9",w:161},"ë":{d:"108,-124v42,-3,70,39,50,73v-22,-1,-70,12,-94,10r-3,3v0,3,12,7,36,14v18,0,64,7,30,21v-10,14,-31,6,-53,6v-26,-7,-67,-27,-71,-58v7,-52,48,-65,105,-69xm130,-78v-2,-35,-66,-13,-77,3v16,6,62,6,77,-3xm140,-144v0,8,-4,12,-12,12v-18,0,-19,-19,-16,-33v18,-1,29,1,28,21xm44,-169v7,3,28,9,28,17v0,9,-9,18,-18,18v-18,0,-25,-24,-10,-35",w:161},"í":{d:"59,-98v20,4,15,53,10,95v-6,1,-11,2,-19,-4v1,-7,-12,-18,-10,-24v4,-22,-4,-65,19,-67xm50,-139v27,-11,49,-32,59,-14v3,11,-80,53,-89,53v-14,1,-14,-12,-11,-22v15,-7,14,-6,41,-17",w:105},"ì":{d:"57,-98v22,5,13,50,11,95v-7,1,-11,2,-20,-4v1,-7,-12,-18,-10,-24v4,-22,-2,-64,19,-67xm70,-139v14,10,54,14,37,41v-28,-7,-61,-22,-99,-42v-3,-2,-3,-25,5,-23v15,5,41,17,57,24",w:109},"î":{d:"72,-98v20,5,12,51,10,95v-6,2,-13,1,-20,-4v1,-8,-12,-18,-10,-24v4,-22,-3,-65,20,-67xm134,-94v-26,-7,-39,-25,-60,-37v-7,0,-9,4,-13,10v-14,15,-51,34,-56,-1v18,-4,45,-33,61,-43v27,6,40,22,62,37v12,8,18,17,18,25v0,6,-4,9,-12,9",w:143},"ï":{d:"55,-97v19,5,15,53,10,95v-17,5,-26,-14,-30,-28v6,-20,-3,-65,20,-67xm110,-118v0,8,-4,13,-12,13v-17,0,-19,-19,-16,-34v18,-1,29,1,28,21xm14,-143v6,3,28,8,28,17v0,9,-9,18,-18,18v-18,0,-25,-24,-10,-35",w:107},"ñ":{d:"115,-129v34,6,59,50,59,105v0,31,-15,24,-30,17v-15,-29,-5,-42,-20,-81v-35,-13,-68,52,-88,61v-20,-4,-38,-36,-19,-59v0,-12,3,-14,10,-28v11,-8,18,11,27,12xm117,-166v22,-7,41,-23,64,-26v3,11,-7,10,-7,21v-26,20,-45,30,-58,30v-3,3,-49,-26,-49,-28v-10,-1,-32,35,-51,31v-5,-12,-8,-16,0,-23v4,-6,28,-29,48,-33v17,-3,43,28,53,28",w:171},"ó":{d:"102,-132v50,-20,99,16,99,60v0,54,-60,64,-108,79v-50,-2,-110,-48,-76,-100v22,-17,49,-33,85,-39xm136,-104v-34,0,-91,27,-94,47v16,51,125,16,125,-22v0,-17,-10,-25,-31,-25xm49,-154v24,-3,85,-55,101,-32v3,11,-80,53,-89,53v-14,0,-13,-8,-12,-21",w:191},"ò":{d:"102,-132v50,-20,99,16,99,60v0,54,-60,64,-108,79v-50,-2,-110,-48,-76,-100v22,-17,49,-33,85,-39xm136,-104v-34,0,-91,27,-94,47v16,51,125,16,125,-22v0,-17,-10,-25,-31,-25xm115,-181v14,10,51,13,37,40v-28,-7,-62,-21,-100,-41v-3,-2,-3,-26,5,-23v16,5,42,17,58,24",w:191},"ô":{d:"102,-132v50,-20,99,16,99,60v0,54,-60,64,-108,79v-50,-2,-110,-48,-76,-100v22,-17,49,-33,85,-39xm136,-104v-34,0,-91,27,-94,47v16,51,125,16,125,-22v0,-17,-10,-25,-31,-25xm110,-177v-22,6,-38,45,-65,22v-2,-4,-3,-9,-4,-13v18,-4,43,-32,61,-43v27,6,40,21,62,36v12,9,18,17,18,25v1,11,-15,10,-23,7",w:191},"ö":{d:"102,-132v50,-20,99,16,99,60v0,54,-60,64,-108,79v-50,-2,-110,-48,-76,-100v22,-17,49,-33,85,-39xm136,-104v-34,0,-91,27,-94,47v16,51,125,16,125,-22v0,-17,-10,-25,-31,-25xm161,-160v0,8,-4,13,-12,13v-17,0,-19,-19,-16,-34v18,-1,29,1,28,21xm65,-185v7,3,28,9,28,18v0,7,-9,18,-18,17v-18,1,-25,-24,-10,-35",w:191},"õ":{d:"102,-132v50,-20,99,16,99,60v0,54,-60,64,-108,79v-50,-2,-110,-48,-76,-100v22,-17,49,-33,85,-39xm136,-104v-34,0,-91,27,-94,47v16,51,125,16,125,-22v0,-17,-10,-25,-31,-25xm58,-199v26,-21,54,18,69,22v4,0,15,-5,34,-13v22,-9,21,-16,31,-13v3,11,-9,9,-7,22v-26,20,-46,30,-59,30v-2,4,-49,-28,-49,-29v-11,0,-32,31,-46,32v-12,-3,-13,-21,-4,-23v4,-6,14,-15,31,-28",w:191},"ú":{d:"196,-129v-1,-4,12,-13,15,-13v6,0,8,7,8,21v0,24,-7,25,-13,45v-7,7,-14,21,-24,29v-9,24,-61,45,-89,45v-63,0,-105,-72,-67,-126v24,-3,19,27,18,46v-1,26,23,42,54,40v38,-3,88,-51,98,-87xm106,-174v26,-11,48,-32,59,-14v3,11,-81,53,-89,54v-13,1,-15,-12,-11,-22v15,-7,14,-7,41,-18",w:213},"ù":{d:"196,-129v-1,-4,12,-13,15,-13v6,0,8,7,8,21v0,24,-7,25,-13,45v-7,7,-14,21,-24,29v-9,24,-61,45,-89,45v-63,0,-105,-72,-67,-126v24,-3,19,27,18,46v-1,26,23,42,54,40v38,-3,88,-51,98,-87xm126,-166v7,6,56,14,37,40v-28,-7,-62,-22,-100,-42v-2,-3,-2,-26,5,-23v16,4,42,18,58,25",w:213},"û":{d:"196,-129v-1,-4,12,-13,15,-13v6,0,8,7,8,21v0,24,-7,25,-13,45v-7,7,-14,21,-24,29v-9,24,-61,45,-89,45v-63,0,-105,-72,-67,-126v24,-3,19,27,18,46v-1,26,23,42,54,40v38,-3,88,-51,98,-87xm172,-143v-27,-6,-39,-26,-60,-37v-8,0,-10,4,-14,10v-11,15,-49,35,-56,0v17,-4,44,-32,61,-43v27,6,41,21,63,36v12,9,17,17,17,25v0,6,-3,9,-11,9",w:213},"ü":{d:"196,-129v-1,-4,12,-13,15,-13v6,0,8,7,8,21v0,24,-7,25,-13,45v-7,7,-14,21,-24,29v-9,24,-61,45,-89,45v-63,0,-105,-72,-67,-126v24,-3,19,27,18,46v-1,26,23,42,54,40v38,-3,88,-51,98,-87xm168,-161v0,8,-3,13,-11,13v-17,0,-20,-19,-17,-34v18,-1,29,1,28,21xm72,-186v7,3,29,9,28,18v0,7,-9,18,-18,17v-18,1,-25,-24,-10,-35",w:213},"†":{d:"22,-286v15,6,5,-20,19,-19v9,-3,15,21,17,22v6,1,12,3,20,6v3,10,5,16,-9,16v-34,-10,-6,51,-34,52v-20,-7,11,-47,-15,-49v-14,3,-25,-5,-17,-24v7,-2,14,-4,19,-4",w:77},"°":{d:"106,-268v0,36,-35,38,-51,46v-48,5,-60,-58,-25,-78v33,-11,76,-9,76,32xm38,-257v16,7,39,2,38,-17v-13,-9,-28,-1,-32,11v-5,3,-7,0,-6,6",w:114},"¢":{d:"105,-188v13,-12,14,-18,26,-15v7,23,7,15,-3,49v6,0,18,14,17,20v-3,5,-12,19,-26,13v-14,1,-14,5,-16,21v10,10,46,-13,38,18v-9,17,-23,16,-54,20v-17,16,-4,55,-29,60v-37,-10,19,-64,-24,-71v-20,-10,-37,-47,-6,-62v23,-20,73,-4,77,-53xm65,-101v4,-9,7,-8,3,-13v-14,4,-22,10,-3,13",w:154},"£":{d:"153,-170v3,22,62,0,49,39v-18,6,-31,12,-58,9v-12,-1,-17,30,-23,39v19,26,50,56,91,35v9,-2,27,-13,27,4v0,27,-27,39,-58,42v-32,-5,-59,-19,-78,-39v-6,1,-35,44,-57,39v-25,0,-37,-15,-37,-46v0,-41,43,-53,73,-50v4,1,12,-18,12,-21v-7,-15,-49,0,-44,-30v-2,-31,31,-16,60,-19v16,-30,25,-119,93,-113v16,2,75,16,50,44v-4,5,-7,7,-12,8v-18,-12,-32,-18,-41,-18v-35,-1,-38,52,-47,77xm43,-45v4,5,12,-2,11,-9v-1,2,-12,1,-11,9",w:242},"§":{d:"141,-115v12,10,29,36,28,56v-4,68,-129,69,-152,16v-1,-12,-10,-22,8,-23v17,3,47,21,67,23v16,1,40,-8,38,-21v-8,-49,-119,-30,-117,-85v1,-28,15,-45,-3,-64v-1,-53,55,-61,103,-62v15,-5,6,-5,20,-2v16,17,23,27,23,30v-1,26,-29,7,-45,7v-21,0,-51,2,-62,17v19,14,87,8,97,43v18,14,16,57,-5,65xm64,-147r57,17v10,-28,-22,-43,-47,-44v-25,-1,-35,19,-10,27",w:174},"•":{d:"130,-114v0,47,-124,54,-120,-8r6,-31v44,-28,64,-34,104,0v8,6,10,20,10,39",w:139},"¶":{d:"121,-237v21,-9,44,-13,63,-1v-1,7,5,6,7,11r-4,190v-2,33,4,39,-15,40v-16,1,-10,-20,-10,-33r4,-161v0,-17,-1,-34,-16,-25v2,10,1,23,1,35v-9,46,-6,75,-15,156v-3,4,-7,5,-12,5v-17,-10,-3,-89,-10,-115v-43,14,-98,10,-101,-29v-4,-53,59,-63,104,-75v3,1,4,2,4,2xm95,-204v2,9,-30,50,1,50v35,0,23,-13,29,-43v0,-1,-2,-7,-4,-15v-12,-1,-14,2,-26,8",w:206},"ß":{d:"33,10v-29,4,-28,-32,-16,-70v18,-58,17,-137,56,-176v12,-24,46,-58,82,-43v20,8,47,24,47,54v0,30,-62,59,-67,90v33,23,56,33,63,63v-18,21,-22,36,-48,54v-24,17,-27,41,-53,16v-2,-19,7,-35,24,-42v15,-13,26,-22,34,-40v-13,-17,-78,-29,-56,-70v-3,-27,64,-54,66,-86v-8,-25,-41,-4,-52,8v-29,30,-47,83,-51,141v-17,25,-8,71,-29,101"},"®":{d:"75,-194v78,-29,116,9,130,84v-2,42,-22,47,-57,67v-74,20,-161,-19,-129,-110v6,-18,29,-34,57,-40xm46,-86v51,36,84,21,129,-15v7,-15,0,-39,-10,-49v-13,-37,-49,-26,-86,-18v-28,7,-49,46,-33,82xm72,-123v-5,-43,68,-57,75,-14v-17,26,-18,17,3,32v2,25,-25,18,-45,7r-4,-4v-1,8,-3,20,-12,24v-10,-3,-21,-34,-17,-45xm112,-135v-10,-1,-20,13,-9,14v6,-6,9,-11,9,-14",w:217},"©":{d:"102,-29v-74,5,-124,-84,-70,-140v22,-22,53,-35,97,-38v46,-4,88,49,74,100v0,44,-51,75,-101,78xm96,-66v42,-3,75,-23,75,-69v0,-23,-4,-38,-44,-38v-16,0,-33,6,-49,20v36,-4,55,-12,62,20v-5,16,-49,1,-50,21v10,15,53,-14,54,11v0,18,-14,27,-42,27v-22,1,-46,-11,-46,-31v0,-25,7,-39,20,-44v-1,-1,-2,-2,-3,-2v-51,22,-32,89,23,85",w:217},"™":{d:"213,-307v28,9,11,49,7,75v-1,4,-4,6,-11,6v-7,1,-11,-14,-11,-34v-14,-6,-34,34,-46,28v-2,0,-10,-9,-24,-27v-10,7,-3,36,-27,31v-15,-24,-3,-27,1,-48v-6,-7,-27,-1,-31,3v-3,14,-7,30,-11,51v-5,10,-29,9,-24,-12v-5,-8,1,-18,3,-35v-13,6,-33,2,-29,-18v20,-17,64,-17,100,-19v28,-1,29,30,45,39v11,-6,35,-32,58,-40",w:239},"´":{d:"52,-284v29,-11,50,-34,62,-14v3,12,-86,54,-94,56v-14,0,-16,-12,-12,-23v11,-5,25,-11,44,-19",w:120},"¨":{d:"124,-259v0,9,-4,13,-12,13v-18,0,-22,-21,-17,-35v19,-1,30,1,29,22xm23,-285v7,2,30,9,29,18v1,10,-9,19,-18,19v-19,0,-28,-26,-11,-37",w:136},"≠":{d:"48,-130v29,11,49,-57,60,-50v25,6,7,27,-1,46v22,5,29,7,21,22v-18,2,-48,-1,-50,15v9,8,53,-7,54,10v-4,22,-46,20,-72,24v-7,13,-18,32,-34,57v-8,6,-15,-3,-13,-14v-1,-9,15,-39,14,-45v-30,5,-24,-17,-13,-25v12,-1,36,4,29,-13v-14,0,-47,6,-36,-12v0,-18,27,-13,41,-15",w:140},"Æ":{d:"335,-259v0,30,-102,12,-122,34v10,21,2,79,16,100v24,-6,59,-13,86,-16v23,-2,32,21,13,26r-103,29v-3,22,-4,38,8,43v28,-5,60,-6,86,-14v5,-1,14,7,14,11v6,16,-90,40,-107,40v-29,0,-39,-19,-32,-46v-2,-4,0,-26,-9,-28v-29,2,-58,6,-88,6v-31,0,-40,74,-82,73v-18,-23,4,-37,12,-50v40,-65,112,-126,165,-207v20,-17,69,-11,112,-13v21,0,31,4,31,12xm123,-111v28,1,44,-2,67,-10v-4,-22,5,-49,-7,-65v-3,6,-65,61,-60,75",w:348},"Ø":{d:"76,-211v41,-13,100,-22,140,-3v26,-19,40,-29,44,-29v10,0,15,7,15,20v0,15,-23,23,-30,35v23,39,29,114,-21,139v-36,19,-102,35,-147,18v-14,-5,-29,29,-46,35v-25,-13,-19,-24,3,-56v-9,-17,-28,-27,-28,-60v0,-38,23,-72,70,-99xm107,-66v55,15,125,-12,123,-70v0,-16,-5,-25,-13,-29r-110,95r0,4xm39,-108v-1,3,17,31,22,27v8,-6,109,-90,123,-106v-15,-11,-43,1,-63,2v-33,10,-80,35,-82,77",w:270},"∞":{d:"322,-72v-4,22,-54,41,-76,41v-43,0,-83,-17,-114,-35v-46,19,-125,53,-128,-18v-1,-14,10,-22,13,-35v29,-10,62,-31,97,-4v37,28,47,5,75,-8v40,-19,73,-10,114,1v13,1,18,55,19,58xm228,-69v15,0,62,-12,61,-25v-19,-23,-89,-10,-105,11v0,2,1,4,2,4v28,6,42,10,42,10xm75,-102v-13,2,-41,4,-44,19v0,4,3,7,10,7v21,0,40,-6,54,-17v-9,-6,-16,-9,-20,-9",w:330},"±":{d:"93,-163v-7,46,76,-4,46,47v-14,6,-27,13,-38,8v-24,2,-14,28,-28,44r-14,0v-7,-12,-5,-15,-7,-33v-12,-7,-41,-1,-37,-24v2,-11,23,-17,36,-14r28,-38v4,0,9,4,14,10xm113,-27v-12,18,-58,27,-85,24v-16,2,-22,-23,-13,-36v28,-7,85,-11,98,12",w:151},"≤":{d:"73,-109v10,15,87,16,87,42v0,11,-5,16,-13,16v-36,-11,-69,-24,-109,-31v-18,-8,-18,-13,-9,-36v59,-56,93,-83,101,-83v16,0,18,17,14,28v-27,24,-42,35,-71,64xm10,-29v35,-12,117,-26,148,-3v1,2,-5,19,-8,18r-124,15v-16,2,-26,-18,-16,-30",w:168},"≥":{d:"115,-174v20,7,53,36,20,57v-19,11,-91,68,-82,59v-18,3,-25,-22,-13,-31v15,-10,14,-10,70,-51r-50,-37v-5,-4,-5,-27,4,-28v16,7,40,17,51,31xm14,-32v33,-10,86,-14,127,-10v12,12,5,23,-11,27v-49,9,-82,13,-99,13v-22,0,-24,-16,-17,-30",w:163},"¥":{d:"31,-248v30,-3,64,64,74,59v37,-22,77,-65,107,-82v20,-11,34,18,21,32v-28,19,-52,38,-70,57v-18,8,-40,21,-35,60v2,19,39,7,64,7v25,0,16,21,2,27v-36,16,-46,8,-68,18v6,11,101,-20,66,24v-21,11,-42,12,-75,20v-2,1,-5,6,-10,18v-8,3,-11,10,-24,8v-7,-17,-2,-18,-9,-26v-13,5,-39,3,-53,-2v-10,-17,-7,-27,0,-34v23,-1,45,1,64,-5v-11,-7,-28,-4,-64,-6v-13,-8,-15,-24,-6,-35v33,-2,102,9,76,-37v-14,-14,-33,-38,-60,-66v-10,-10,-8,-28,0,-37",w:219},"µ":{d:"123,-114v41,0,54,-9,127,-17v12,-2,20,-6,25,-12v5,-78,43,-127,119,-138v38,-5,46,23,55,48v-5,5,2,4,2,12v-2,47,-72,81,-129,95v-17,4,-12,32,-2,39v30,-5,24,0,99,4v14,9,14,20,-1,23v-17,3,-71,-1,-85,13v1,19,18,35,-3,47v-1,-6,-10,-7,-16,-5v-3,-3,-20,-37,-29,-41v-15,8,-50,22,-49,-9v1,-19,2,-27,28,-26v24,1,13,-12,8,-30v-22,1,-64,16,-111,23v-50,7,-17,47,-17,57v0,10,-5,15,-13,15v-20,-9,-27,-30,-33,-55v-20,-17,-52,8,-85,-6v-2,-10,-13,-26,4,-29v32,-6,41,-1,65,-7v-17,-74,-4,-173,69,-180v55,-20,130,8,131,65v-11,9,-10,2,-29,-11v-33,-23,-37,-26,-76,-25v-41,13,-69,38,-67,100v0,34,4,50,13,50xm317,-152v29,-6,106,-43,106,-71v0,-23,-24,-25,-42,-17v-31,1,-74,48,-64,88",w:462},"∂":{d:"456,-113v55,-37,119,-8,176,5v-19,37,-104,-5,-144,18v-5,64,-45,87,-130,87v-43,0,-70,-8,-96,-21v-54,15,-146,29,-209,10v-18,-11,-43,-26,-46,-53v-1,-9,28,-48,51,-46v55,-10,55,-8,101,-8v29,0,17,-26,23,-56v4,-19,4,-74,34,-49v4,42,-7,83,-10,124v0,4,-11,10,-34,17v-29,-1,-45,-4,-74,1v-10,2,-57,3,-52,18v30,43,132,30,190,18v2,-10,-7,-19,-5,-28v5,-36,31,-59,74,-56v27,2,71,4,70,35v-1,30,-37,41,-58,57v35,13,131,15,135,-23v2,-19,-5,-36,4,-50xm262,-85v0,3,13,28,19,25v7,0,48,-13,61,-29v-10,-17,-71,-17,-80,4",w:640},"∑":{d:"235,-95v-3,-59,120,-41,160,-28v3,-2,15,-3,14,4v1,3,-16,19,-21,18r-97,4v-25,5,-18,18,-23,56v-16,14,-25,24,-36,18v-83,32,-154,29,-212,-17v-45,-68,41,-114,107,-119v50,-4,59,66,22,85v-16,8,-61,10,-79,15v36,27,185,24,165,-36xm128,-119v-23,-3,-43,4,-53,15v13,5,46,-4,53,-15",w:414},"∏":{d:"243,-190v7,-18,27,-19,38,6v0,2,-5,8,-14,16v-8,-9,-27,-4,-24,-22xm221,-111v55,-7,60,22,45,64v5,23,17,47,-22,47v-35,0,-18,-40,-15,-70v-2,-19,-35,-13,-52,-18v-2,0,-13,1,-34,3v-4,0,-10,11,-13,31v-3,20,1,43,-11,54v-12,-4,-13,-5,-21,-3v-13,-13,-3,-25,-12,-41v7,-6,12,-22,10,-39v-23,-8,-79,15,-87,-21v12,-28,78,-4,101,-20r36,-96v8,-19,17,-28,27,-28v10,0,15,6,15,18v-6,32,-31,62,-38,109v25,10,47,-1,71,10",w:282},"π":{d:"247,-240v-3,5,-14,12,-21,6v-41,5,-71,-4,-85,37v-6,7,-21,42,-25,61v28,12,104,-16,129,24v8,11,12,24,12,38v-7,17,-2,99,-40,68v-9,-23,-5,-47,-1,-73v3,-24,-40,-24,-50,-19v-4,0,-18,2,-44,6v-30,-6,-16,49,-33,58v-19,-11,-14,2,-29,-10v8,-71,20,-114,43,-170v-24,-2,-49,4,-73,7v-30,3,-32,-33,-7,-36r184,-22v17,-1,40,13,40,25",w:265},"∫":{d:"62,-151v-7,-70,20,-130,63,-150v28,1,39,10,70,23v20,8,6,33,-6,35v-29,-13,-45,-20,-49,-20v-20,-4,-45,51,-43,70v8,60,5,129,5,189v0,62,-27,93,-79,93v-37,-1,-71,-14,-63,-57v21,0,79,34,91,-2v16,-3,14,-64,21,-85v-2,-31,-1,-74,-10,-96",w:156},"ª":{d:"6,-265v1,-31,58,-53,80,-22v-11,14,25,28,25,36v-2,8,-15,12,-27,10v-22,-29,-68,19,-78,-24xm52,-281v-8,1,-24,10,-9,13v11,1,24,-10,9,-13",w:117},"º":{d:"13,-273v1,-31,56,-41,83,-18v36,8,14,48,-9,52v-35,6,-64,-5,-74,-34xm81,-269v-7,-7,-20,-11,-29,-6v5,13,13,11,29,6",w:128},"Ω":{d:"121,-111v9,16,43,-5,54,5v28,-4,62,8,81,-5v48,-33,166,-28,160,44v15,34,-51,53,-88,53v-34,0,-53,-21,-71,-37v-15,7,-32,-4,-28,-22v-26,-4,-93,-6,-108,8v8,17,5,37,12,54v-1,15,-18,15,-31,10v-9,-15,-20,-39,-19,-63v-20,-9,-73,15,-79,-18v4,-28,50,-11,77,-24v12,-99,36,-168,137,-178v35,5,64,20,67,57v0,13,-14,18,-20,5v-15,-35,-83,-31,-104,4v-26,20,-39,82,-40,107xm334,-45v15,2,51,-14,53,-22v-7,-20,-36,-31,-69,-29v-8,-1,-39,6,-37,14v-3,10,44,38,53,37",w:424},"æ":{d:"145,-44r33,7v2,42,-59,29,-85,16v-6,7,-35,24,-48,15v-19,2,-35,-21,-33,-37v2,-24,5,-19,28,-36v-6,-8,-45,3,-33,-21v21,-22,58,-12,85,-1v6,-5,35,-28,45,-15v20,-4,36,17,36,35v0,23,-4,21,-28,37xm111,-72v12,3,49,-16,19,-17v-5,0,-20,12,-19,17xm74,-50v-14,-4,-48,16,-19,17v4,1,19,-14,19,-17",w:184},"ø":{d:"76,-136v17,7,33,-8,51,0v9,-6,21,-13,36,-21v23,22,-13,31,3,50v11,13,4,21,14,35v-4,5,-1,14,-4,23v-14,23,-45,41,-84,39v-12,2,-29,28,-41,38v-2,-11,-34,-10,-15,-30v3,-7,5,-11,5,-11v-15,-24,-60,-54,-22,-89v23,-21,25,-32,57,-34xm102,-54v18,1,50,-19,30,-32v-12,7,-22,18,-30,32xm85,-92v-14,3,-26,8,-38,17v2,20,17,13,26,0v6,-8,12,-13,12,-17",w:188},"¿":{d:"181,-247v3,1,31,2,29,15v-4,22,-37,27,-41,4v1,-5,7,-20,12,-19xm161,-34v-45,-1,-105,19,-124,51v0,11,18,17,54,17v39,0,82,-13,112,4v-10,35,-58,31,-100,31v-47,0,-80,-10,-99,-31v-10,-56,22,-73,64,-90v8,-3,32,-9,74,-18v21,-15,7,-62,22,-92v-1,-5,-1,-11,4,-12v16,0,24,7,24,22v-8,30,-8,73,-17,111v-3,5,-7,7,-14,7",w:213},"¡":{d:"86,-197v8,16,-7,41,-24,25v-11,-11,-4,-16,-3,-29v13,0,15,-2,27,4xm46,-107v4,-8,11,-16,23,-7v19,26,-5,57,-6,87v-7,0,-5,18,-9,28v0,14,-17,52,-11,70v-2,7,-15,28,-25,12v-4,-6,-15,-7,-6,-16v2,-39,14,-96,34,-174",w:95},"¬":{d:"141,-99v47,7,103,-3,149,6v14,24,18,15,10,39v-10,34,-7,31,-26,76v-4,6,-15,8,-16,21v-4,2,-4,1,-13,5v-22,-33,-4,-33,16,-104v-5,-9,-28,-4,-38,-6r-183,4v-14,0,-41,-29,-17,-36v31,-9,82,5,118,-5",w:315},"√":{d:"364,-218v43,-21,80,-51,104,-32v-3,19,-24,21,-44,40v-41,15,-78,53,-136,78r-137,98v-20,16,-79,66,-91,68v-3,1,-25,-11,-24,-13v-4,-28,-43,-61,-30,-85v26,-15,42,19,58,32r295,-188v0,1,2,2,5,2",w:474},"ƒ":{d:"115,-262v-23,6,-39,63,-38,96v1,3,57,2,54,16v1,22,-45,15,-51,30v3,34,12,68,10,103v14,17,-18,53,-28,63v-48,8,-89,5,-95,-37v20,-5,77,21,83,-18v17,-29,-4,-61,0,-98v0,-5,-3,-10,-7,-17v-33,4,-43,-17,-25,-37v10,-4,27,5,27,-10v0,-43,15,-77,32,-109v12,-7,16,-22,38,-20v11,1,51,35,25,55v-9,1,-16,-17,-25,-17",w:145},"≈":{d:"133,-112v21,15,48,-30,78,-17v3,3,5,7,5,9v-8,30,-47,45,-76,45v-19,0,-64,-48,-90,-21r-29,20v-6,-1,-17,-16,-15,-32v24,-17,70,-42,107,-21v4,4,10,9,20,17xm138,-57v28,2,48,-25,76,-26v13,30,-21,42,-40,53v-41,24,-77,-15,-114,-23v-15,14,-46,32,-49,-1v-3,-9,27,-28,54,-30",w:223},"∆":{d:"18,-1v-24,-30,8,-48,25,-71v14,-19,34,-28,40,-56v20,-35,29,-14,57,4v9,39,43,62,57,102v0,16,-34,17,-50,14v-28,2,-72,4,-129,7xm139,-47r-22,-52v-12,-5,-12,15,-24,27v-7,6,-14,16,-23,28v23,1,36,-1,69,-3",w:199},"«":{d:"191,-64v16,6,87,37,53,63v-39,-9,-71,-28,-107,-40v-14,-13,-13,-34,10,-47v27,-15,48,-55,84,-62v9,-2,21,10,21,18r-13,21v-16,5,-44,22,-51,41v0,4,1,6,3,6xm71,-65v17,6,87,35,55,62v-39,-8,-66,-27,-108,-40v-14,-13,-13,-36,10,-46v23,-18,50,-56,84,-63v9,-2,21,10,21,18r-13,22v-20,6,-32,17,-51,37v0,3,-1,11,2,10",w:265},"»":{d:"120,-129v9,-33,48,-10,64,5v9,20,86,52,50,86v-36,11,-66,31,-107,40v-6,-7,-9,-13,-9,-17v-2,-13,50,-46,63,-46v11,-18,-33,-42,-48,-47xm1,-128v10,-33,46,-8,64,6v8,19,86,50,51,85v-40,13,-69,30,-108,40v-6,-7,-8,-12,-8,-16v-2,-14,50,-46,63,-47v7,-13,-9,-20,-19,-30v-10,-9,-20,-15,-30,-17",w:252},"…":{d:"244,-24v-1,21,-38,32,-41,3v-2,-19,23,-22,34,-17v0,7,0,15,7,14xm113,-24v0,-22,28,-21,38,-8v5,34,-39,40,-38,8xm35,-2v-10,-2,-36,-17,-18,-29v-1,-15,17,-17,31,-6v7,17,6,33,-13,35",w:258}," ":{w:179},"À":{d:"161,-217v20,53,23,124,54,170v-2,20,-34,9,-42,0v-27,-12,-78,-18,-101,-18v-26,6,-29,51,-54,63v-18,-4,-19,-30,-3,-38v5,-9,15,-16,8,-29v1,-12,23,-9,26,-19v6,-10,11,-20,20,-27r70,-121v12,-4,16,4,22,19xm82,-91v17,3,62,7,86,13v-13,-33,-13,-80,-29,-109v-15,30,-38,63,-57,96xm150,-268v14,10,54,14,37,41v-28,-7,-62,-22,-100,-42v-2,-3,-2,-26,5,-23v16,4,42,17,58,24"},"Ã":{d:"161,-217v20,53,23,124,54,170v-2,20,-34,9,-42,0v-27,-12,-78,-18,-101,-18v-26,6,-29,51,-54,63v-18,-4,-19,-30,-3,-38v5,-9,15,-16,8,-29v1,-12,23,-9,26,-19v6,-10,11,-20,20,-27r70,-121v12,-4,16,4,22,19xm82,-91v17,3,62,7,86,13v-13,-33,-13,-80,-29,-109v-15,30,-38,63,-57,96xm100,-285v26,-19,54,19,69,22v4,0,15,-5,34,-13v23,-9,22,-17,31,-12v3,11,-9,9,-7,21v-26,20,-46,30,-59,30v-3,3,-50,-26,-49,-29v-12,1,-31,35,-51,32v-3,-8,-5,-14,-5,-18v10,-9,16,-17,37,-33"},"Õ":{d:"62,-184v78,-31,249,-50,238,74v-6,65,-102,105,-179,115v-77,-7,-152,-71,-101,-149v2,-5,24,-33,42,-40xm279,-120v14,-38,-47,-64,-85,-61v-20,-9,-41,7,-62,0v-11,7,-54,12,-66,24v0,20,-51,35,-38,66v-1,43,50,67,96,67v44,0,162,-55,155,-96xm116,-270v26,-19,54,19,69,22v4,0,15,-5,34,-13v23,-10,22,-16,31,-12v3,11,-8,9,-7,21v-45,28,-47,42,-88,16v-29,-19,-12,-20,-43,2v-8,5,-12,18,-23,15v-13,-3,-12,-20,-4,-23v4,-6,14,-15,31,-28",w:273},"Œ":{d:"247,-243v71,4,161,-7,245,-8v17,0,27,6,27,17v-8,27,-70,14,-104,23v-3,1,-52,0,-65,7r0,4v16,16,17,29,17,65v32,10,74,-14,99,16v-14,25,-76,17,-127,24v-17,18,-55,32,-75,51v85,0,128,-3,204,-11v15,-2,21,11,20,29v-78,24,-177,12,-270,24v-24,3,-24,-29,-48,-15v-46,7,-70,4,-105,-4v-19,-18,-42,-22,-52,-55v-10,-34,0,-47,12,-78v-18,-59,48,-78,105,-84v17,-18,103,-13,117,-5xm125,-45v76,-9,186,-43,209,-105v-26,-67,-137,-83,-217,-54v3,34,-45,25,-60,58v-41,48,5,108,68,101",w:492},"œ":{d:"185,-54v25,28,107,-17,104,33v-12,12,-60,14,-87,14v0,0,1,1,2,1v-11,1,-39,-9,-50,-17v-28,17,-75,32,-114,7v-22,-14,-34,-11,-34,-41v0,-36,33,-49,48,-75v29,-16,72,-3,95,11v12,-9,48,-27,59,-26v30,0,64,15,65,40v0,7,-6,20,-20,37v-29,1,-44,11,-68,16xm226,-106v-21,-7,-41,-2,-48,13v14,1,42,-7,48,-13xm132,-87v-21,-35,-94,11,-92,24v-2,14,43,21,61,21v25,0,36,-20,31,-45",w:295},"–":{d:"6,-66v-8,-72,79,-21,146,-39v37,-10,79,7,111,0v9,8,14,13,14,17v2,26,-72,13,-99,21v-83,4,-124,21,-172,1",w:282},"—":{d:"175,-106v86,-9,201,1,286,-1v11,6,13,11,6,30v-118,15,-246,10,-377,10v-25,0,-73,3,-82,-8r-2,-26v11,-13,32,-9,52,-7v38,3,84,-5,117,2",w:485},"“":{d:"66,-261v-21,5,-37,51,-22,77v0,4,-2,6,-7,6v-31,-9,-38,-62,-12,-94v12,-15,21,-28,31,-34v16,-1,19,24,22,34v10,-11,22,-32,43,-23v-2,8,4,16,5,19v-6,11,-51,53,-29,74v-12,21,-30,5,-33,-17v-6,-13,9,-28,2,-42",w:118},"”":{d:"120,-294v12,3,30,26,19,34v2,15,-40,70,-55,66v-40,-10,10,-51,14,-64v3,-3,8,-31,22,-36xm70,-306v14,3,26,34,16,49v-19,30,-31,45,-58,59v-12,-11,-33,-17,-7,-36v13,-19,36,-27,36,-59v0,-5,9,-13,13,-13",w:148},"‘":{d:"73,-262v-10,7,-41,39,-38,69v-15,13,-27,-16,-28,-28v-2,-20,51,-83,66,-83v20,0,25,41,0,42",w:95},"’":{d:"74,-300v13,31,-1,99,-44,101v-13,0,-19,-5,-19,-15v6,-10,31,-34,35,-59v2,-11,1,-32,11,-32v6,0,11,2,17,5",w:90},"÷":{d:"167,-158v-4,3,-7,9,-10,20v-23,4,-34,-8,-29,-31v14,-6,18,1,39,11xm78,-72v-53,11,-53,12,-69,-15v-1,-12,11,-17,22,-14v71,-13,151,-18,230,-24v11,1,21,16,23,28v-28,20,-90,11,-126,16v-36,5,-62,5,-80,9xm123,-40v19,-17,41,-1,41,17v0,13,-6,19,-17,19v-15,0,-29,-14,-24,-36",w:293},"◊":{d:"76,-158v48,-8,64,11,100,36v28,19,-5,39,-22,54v-15,13,-40,32,-48,49v-17,5,-12,0,-27,-16v-6,-6,-86,-31,-68,-53r2,-9v27,-23,48,-44,63,-61xm93,-65v12,-2,35,-31,41,-38v-5,-10,-16,-14,-34,-24v-12,12,-36,29,-40,44v19,11,30,18,33,18",w:199},"ÿ":{d:"118,85v-11,11,-11,38,-22,61v-2,-1,-2,31,-17,27v-11,0,-21,-10,-21,-22v20,-66,23,-61,64,-168v-22,1,-38,16,-58,4v-22,4,-51,-16,-51,-42v-11,-13,-7,-59,7,-58v16,1,21,24,22,51v21,33,66,5,94,-7v4,-3,26,-14,38,-29r17,0v23,44,-23,59,-34,102v-6,9,-13,9,-13,26v-15,6,-12,33,-27,48v0,2,1,4,1,7xm158,-136v0,8,-4,13,-12,13v-18,0,-21,-20,-16,-34v18,-1,29,1,28,21xm62,-161v7,3,28,9,27,18v1,8,-8,17,-17,17v-18,0,-26,-24,-10,-35",w:190},"Ÿ":{d:"176,-189v35,20,-25,54,-39,72v-26,34,-57,57,-74,104v-10,15,-4,14,-23,3r0,-10v19,-44,27,-46,50,-81v-9,-5,-24,4,-34,4v-38,0,-54,-50,-44,-87v21,-5,18,19,22,35v4,18,15,27,29,27v41,0,60,-39,113,-67xm153,-222v0,8,-3,12,-11,12v-18,0,-21,-19,-16,-33v18,-1,28,2,27,21xm57,-247v8,2,29,9,28,17v0,21,-37,24,-36,1v0,-7,2,-13,8,-18",w:135},"⁄":{d:"193,-305v7,6,17,31,3,41v-10,7,-12,13,-21,25v-79,56,-190,209,-197,260r-18,0v-23,-19,9,-70,15,-85v52,-83,121,-179,218,-241",w:120},"¤":{d:"308,-133r-200,16v-2,1,-6,4,-10,10v70,-2,144,-14,211,-8v3,0,8,4,13,8v-1,4,-3,9,-9,17v-57,11,-164,6,-219,25v26,32,112,25,173,25v9,0,35,2,35,19v0,9,-4,13,-12,14v-115,12,-146,23,-211,-19v-12,-4,-22,-9,-25,-27v-6,-29,-61,3,-43,-49v17,-1,36,7,42,-12v-32,7,-36,-39,-11,-40v29,14,63,-25,73,-30v52,-25,72,-44,142,-44v23,0,21,41,-1,39v-35,-3,-61,9,-102,31v2,2,5,4,8,4v18,-6,101,-9,115,-9v7,0,55,13,31,30",w:312},"€":{d:"308,-133r-200,16v-2,1,-6,4,-10,10v70,-2,144,-14,211,-8v3,0,8,4,13,8v-1,4,-3,9,-9,17v-57,11,-164,6,-219,25v26,32,112,25,173,25v9,0,35,2,35,19v0,9,-4,13,-12,14v-115,12,-146,23,-211,-19v-12,-4,-22,-9,-25,-27v-6,-29,-61,3,-43,-49v17,-1,36,7,42,-12v-32,7,-36,-39,-11,-40v29,14,63,-25,73,-30v52,-25,72,-44,142,-44v23,0,21,41,-1,39v-35,-3,-61,9,-102,31v2,2,5,4,8,4v18,-6,101,-9,115,-9v7,0,55,13,31,30",w:312},"‹":{d:"64,-107v9,17,86,17,87,43v0,11,-4,16,-13,16v-36,-11,-70,-22,-109,-31v-19,-4,-18,-14,-9,-36v59,-56,93,-84,101,-84v17,0,19,20,13,29",w:159},"›":{d:"41,-181v26,27,112,44,70,91r-82,60v-20,3,-25,-23,-13,-32r70,-51r-66,-46v-5,-6,-4,-28,5,-29v4,2,9,4,16,7",w:137},"":{d:"74,-74v-6,-24,-70,8,-68,-27v0,-6,6,-20,20,-18v44,6,45,-9,42,-49v7,-40,26,-114,90,-104v48,-2,63,-1,90,30v11,25,4,14,2,44v-7,17,-54,9,-49,-7r8,-21v-5,-13,-22,-9,-43,-11v-56,-6,-63,45,-67,92v-2,21,5,23,22,22v37,-1,80,-9,113,-1v13,31,-9,82,-22,106v-13,10,-26,-6,-22,-25r11,-46v0,-3,-2,-6,-6,-6v-19,0,-47,3,-83,9v-6,1,-9,4,-8,11r12,59v-1,9,-11,30,-23,18v-18,-18,-15,-59,-19,-76",w:272},"":{d:"43,-61v-21,4,-36,2,-39,-15v-4,-35,41,-8,34,-47v4,-59,12,-99,46,-124v11,-42,157,-47,149,13v1,7,-7,15,-13,15v-18,-7,-19,-26,-47,-23v-34,3,-65,6,-79,37v-12,27,-22,52,-21,91v13,9,31,-11,45,-4v32,-15,50,-6,94,-13v12,-30,19,-79,36,-133v1,-5,5,-8,12,-8v44,18,-18,106,-12,144v-9,22,-1,73,-16,104v2,28,-23,28,-37,16v1,-26,9,-48,11,-75v0,-6,-3,-9,-9,-9v-43,0,-83,8,-119,24v8,40,17,33,-7,56v-20,-9,-21,-19,-28,-49",w:283},"‡":{d:"102,-284v16,2,42,-2,33,18v-7,15,-42,1,-38,30v3,3,31,1,30,11v4,15,-29,19,-36,24v-2,18,-4,24,-16,29r-25,-26v-25,7,-53,3,-42,-25v4,-10,70,0,51,-22v-17,4,-41,12,-39,-15v-5,-16,39,-18,44,-20v4,-2,7,-10,10,-24v19,-3,23,6,28,20",w:145},"∙":{d:"57,-77v6,18,-7,21,-19,23v-34,6,-25,-40,-9,-43v18,-3,29,8,28,20",w:67},"‚":{d:"25,63v-26,21,-48,-2,-22,-24v14,-12,35,-40,35,-69v3,-2,3,-11,12,-9v35,17,5,88,-25,102",w:97},"„":{d:"25,63v-26,21,-48,-2,-22,-24v11,-9,36,-41,35,-69v3,-2,4,-12,12,-9v36,14,5,89,-25,102xm84,64v-24,20,-45,-1,-21,-24v21,-20,32,-35,35,-69v3,-2,3,-11,12,-9v36,17,9,86,-26,102",w:135},"‰":{d:"398,-131v58,-1,87,13,72,65v-1,30,-66,63,-99,65v-56,3,-99,-58,-62,-102v2,2,5,2,8,2v20,-16,51,-17,81,-30xm202,-279v33,0,94,-24,95,18v-7,31,-33,27,-54,55v-36,32,-71,74,-112,99v-18,18,-40,34,-51,58v-19,14,-25,37,-56,40v-17,2,-25,-29,-10,-40v15,-11,40,-37,52,-52r87,-72v-51,13,-100,6,-116,-27v1,-5,-6,-30,-9,-36v-3,-5,22,-41,27,-39v29,2,16,34,5,49v0,15,14,23,42,23v42,0,59,-31,28,-38v-17,-4,-53,3,-50,-23v0,-7,1,-12,4,-16v16,-9,36,4,49,5v0,0,23,-4,69,-4xm222,-118v33,-2,55,18,50,57v-29,36,-48,45,-96,50v-27,-5,-56,-17,-58,-51v13,-37,64,-43,104,-56xm335,-61v13,44,101,7,108,-31v-11,-3,-20,-4,-30,-4v-18,-1,-82,18,-78,35xm225,-244v-18,0,-29,-1,-46,3v7,15,6,28,0,43v15,-14,34,-30,46,-46xm164,-53v26,5,59,-10,76,-26v-17,-16,-49,2,-67,14v1,8,-8,6,-9,12",w:485},"Â":{d:"161,-217v20,53,23,124,54,170v-2,20,-34,9,-42,0v-27,-12,-78,-18,-101,-18v-26,6,-29,51,-54,63v-18,-4,-19,-30,-3,-38v5,-9,15,-16,8,-29v1,-12,23,-9,26,-19v6,-10,11,-20,20,-27r70,-121v12,-4,16,4,22,19xm82,-91v17,3,62,7,86,13v-13,-33,-13,-80,-29,-109v-15,30,-38,63,-57,96xm202,-219v-27,-6,-40,-26,-61,-37v-21,7,-39,46,-65,23v-2,-4,-3,-10,-4,-14v19,-4,43,-32,61,-43v27,6,40,22,62,37v12,8,18,17,18,25v0,6,-3,9,-11,9"},"Ê":{d:"49,-160v1,-4,-10,-9,-15,-8v-15,-35,32,-30,57,-31r142,-8v2,1,30,7,40,10v-52,16,-133,17,-190,30v-7,9,-12,24,-15,47v26,10,102,-6,141,3v1,3,1,6,2,10v-36,18,-92,12,-149,21v-11,9,-16,41,-16,51v55,-1,111,-21,168,-13v15,-8,48,1,31,18v-53,16,-130,13,-198,29r-39,-8v-4,-19,17,-53,20,-76v-1,0,-7,-11,-9,-18v18,-7,22,-28,30,-57xm199,-211v-27,-6,-39,-26,-60,-37v-21,7,-40,47,-65,22v-2,-7,-2,-7,-4,-13v18,-5,44,-31,61,-43v27,6,41,22,62,37v12,9,18,17,18,25v0,6,-4,9,-12,9",w:252},"Á":{d:"161,-217v20,53,23,124,54,170v-2,20,-34,9,-42,0v-27,-12,-78,-18,-101,-18v-26,6,-29,51,-54,63v-18,-4,-19,-30,-3,-38v5,-9,15,-16,8,-29v1,-12,23,-9,26,-19v6,-10,11,-20,20,-27r70,-121v12,-4,16,4,22,19xm82,-91v17,3,62,7,86,13v-13,-33,-13,-80,-29,-109v-15,30,-38,63,-57,96xm84,-250v31,-5,83,-53,100,-31v0,5,-11,15,-35,28v-16,5,-51,28,-53,25v-14,1,-16,-11,-12,-22"},"Ë":{d:"49,-160v1,-4,-10,-9,-15,-8v-15,-35,32,-30,57,-31r142,-8v2,1,30,7,40,10v-52,16,-133,17,-190,30v-7,9,-12,24,-15,47v26,10,102,-6,141,3v1,3,1,6,2,10v-36,18,-92,12,-149,21v-11,9,-17,41,-17,51v55,0,112,-21,169,-13v15,-8,48,1,31,18v-53,16,-130,13,-198,29r-39,-8v-3,-21,17,-53,20,-76v-1,0,-7,-11,-9,-18v18,-7,22,-28,30,-57xm191,-236v0,8,-4,13,-12,13v-17,0,-19,-19,-16,-34v18,-1,29,1,28,21xm95,-261v7,3,29,9,28,18v0,7,-9,17,-18,17v-18,0,-26,-25,-10,-35",w:252},"È":{d:"49,-160v1,-4,-10,-9,-15,-8v-15,-35,32,-30,57,-31r142,-8v2,1,30,7,40,10v-52,16,-133,17,-190,30v-7,9,-12,24,-15,47v26,10,102,-6,141,3v1,3,1,6,2,10v-36,18,-92,12,-149,21v-11,9,-16,41,-16,51v55,-1,111,-21,168,-13v15,-8,48,1,31,18v-53,16,-130,13,-198,29r-39,-8v-4,-19,17,-53,20,-76v-1,0,-7,-11,-9,-18v18,-7,22,-28,30,-57xm184,-236v6,9,5,13,0,23v-28,-7,-62,-21,-100,-41v-3,-2,-3,-27,5,-23v34,11,60,25,95,41",w:252},"Í":{d:"26,-5v-9,-6,-9,-12,-9,-36v0,-71,7,-119,21,-144v8,-13,14,-20,19,-20v28,19,-7,89,-10,120v-2,21,-8,47,-14,76v-2,1,-2,0,-7,4xm6,-233v31,-6,83,-53,101,-31v2,11,-80,53,-89,53v-14,1,-14,-11,-12,-22",w:104},"Î":{d:"53,-9v-15,7,-16,-3,-16,-32v0,-71,7,-119,21,-144v8,-13,14,-20,19,-20v28,19,-7,89,-10,120v-2,21,-8,47,-14,76xm137,-209v-27,-6,-40,-26,-61,-37v-8,0,-9,4,-13,10v-11,13,-50,37,-56,0v18,-5,43,-32,61,-43v28,5,40,21,62,36v12,9,18,17,18,25v0,6,-4,9,-11,9",w:144},"Ï":{d:"33,-5v-9,-6,-9,-12,-9,-36v0,-71,8,-119,22,-144v8,-13,14,-20,19,-20v27,20,-11,87,-10,120r-15,76v-1,1,-4,2,-7,4xm111,-222v0,8,-4,12,-12,12v-18,0,-19,-19,-16,-33v18,-1,29,1,28,21xm15,-247v8,2,29,9,28,17v0,21,-37,24,-36,1v0,-7,2,-13,8,-18",w:110},"Ì":{d:"33,-5v-9,-6,-9,-12,-9,-36v0,-71,8,-119,22,-144v8,-13,14,-20,19,-20v27,20,-11,87,-10,120r-15,76v-1,1,-4,2,-7,4xm72,-247v7,6,55,15,36,40v-28,-7,-61,-21,-99,-41v-3,-2,-3,-27,5,-23v18,3,41,17,58,24",w:111},"Ó":{d:"62,-184v78,-31,249,-50,238,74v-6,65,-102,105,-179,115v-77,-7,-152,-71,-101,-149v2,-5,24,-33,42,-40xm279,-120v14,-38,-47,-64,-85,-61v-20,-9,-41,7,-62,0v-11,7,-54,12,-66,24v0,20,-51,35,-38,66v-1,43,50,67,96,67v44,0,162,-55,155,-96xm142,-250v27,-11,47,-32,59,-14v2,11,-80,53,-89,53v-13,1,-15,-11,-12,-21v10,-5,24,-11,42,-18",w:273},"Ô":{d:"62,-184v78,-31,249,-50,238,74v-6,65,-102,105,-179,115v-77,-7,-152,-71,-101,-149v2,-5,24,-33,42,-40xm279,-120v14,-38,-47,-64,-85,-61v-20,-9,-41,7,-62,0v-11,7,-54,12,-66,24v0,20,-51,35,-38,66v-1,43,50,67,96,67v44,0,162,-55,155,-96xm157,-282v17,18,52,34,54,63v-24,12,-52,-36,-53,-29r-42,34v-23,-4,-6,-31,5,-34v1,1,27,-37,36,-34",w:273},"":{d:"231,-188v31,-74,91,-99,188,-116v28,1,6,39,1,51v-20,52,-100,91,-148,126v2,4,6,7,12,10v42,-42,181,-41,166,46v-1,8,-19,8,-28,5v-43,1,-168,42,-106,86v15,16,33,28,61,39v0,10,0,17,-6,22v-8,8,-35,26,-78,51v-52,7,-128,22,-154,-17v-23,-35,-99,-35,-117,-77v-29,-68,25,-149,75,-175v44,-23,89,5,135,13v14,-26,2,-39,-1,-64",w:461},"Ò":{d:"62,-184v78,-31,249,-50,238,74v-6,65,-102,105,-179,115v-77,-7,-152,-71,-101,-149v2,-5,24,-33,42,-40xm279,-120v14,-38,-47,-64,-85,-61v-20,-9,-41,7,-62,0v-11,7,-54,12,-66,24v0,20,-51,35,-38,66v-1,43,50,67,96,67v44,0,162,-55,155,-96xm161,-262v14,10,52,13,37,41v-28,-7,-62,-21,-100,-41v-3,-3,-3,-26,5,-24v16,5,42,17,58,24",w:273},"Ú":{d:"281,-202v6,67,-30,121,-71,152v-3,14,-47,26,-60,39v-41,20,-110,1,-125,-26v-24,-44,-28,-84,-8,-127v12,-26,23,-38,37,-22v-2,2,-3,5,-3,10v-34,26,-30,116,5,134v22,32,86,-1,109,-8v38,-28,104,-64,97,-149v2,-10,7,-8,19,-3xm194,-265v3,-1,11,4,11,6v3,12,-81,52,-89,54v-14,0,-13,-9,-12,-22",w:262},"Û":{d:"281,-202v6,67,-30,121,-71,152v-3,14,-47,26,-60,39v-41,20,-110,1,-125,-26v-24,-44,-28,-84,-8,-127v12,-26,23,-38,37,-22v-2,2,-3,5,-3,10v-34,26,-30,116,5,134v22,32,86,-1,109,-8v38,-28,104,-64,97,-149v2,-10,7,-8,19,-3xm150,-266v24,11,58,27,73,46v0,5,-3,6,-10,6v-28,2,-61,-30,-63,-25v-10,0,-57,40,-69,23v3,-10,-8,-15,8,-19v17,-1,34,-29,61,-31",w:262},"Ù":{d:"281,-202v6,67,-30,121,-71,152v-3,14,-47,26,-60,39v-41,20,-110,1,-125,-26v-24,-44,-28,-84,-8,-127v12,-26,23,-38,37,-22v-2,2,-3,5,-3,10v-34,26,-30,116,5,134v22,32,86,-1,109,-8v38,-28,104,-64,97,-149v2,-10,7,-8,19,-3xm151,-243v14,10,54,14,37,41v-28,-7,-61,-22,-99,-42v-3,-2,-4,-25,4,-23v16,5,42,17,58,24",w:262},"ı":{d:"43,-103v21,4,16,56,11,100v-7,2,-11,1,-20,-5v0,-7,-13,-18,-11,-25v4,-23,-3,-68,20,-70",w:80},"ˆ":{d:"144,-220v-29,0,-41,-27,-63,-39v-8,0,-11,5,-15,11v-17,12,-32,31,-54,13v-2,-5,-3,-9,-4,-14v20,-5,45,-33,64,-45v28,6,43,23,65,38v12,9,19,19,19,27v0,6,-4,9,-12,9",w:165},"˜":{d:"47,-300v26,-21,57,19,72,23v4,0,16,-5,36,-14v24,-10,22,-16,32,-13v3,12,-7,11,-7,23v-27,21,-48,32,-62,32v-3,2,-52,-27,-51,-31v-12,-2,-34,40,-54,33v-4,-13,-8,-18,1,-24v5,-7,16,-15,33,-29",w:186},"¯":{d:"63,-295v28,-7,73,10,105,7v11,1,6,8,5,19v-37,21,-72,11,-136,11v-23,0,-31,-14,-27,-36v12,-15,40,0,53,-1",w:183},"˘":{d:"65,-269v20,-11,45,-31,74,-36v20,30,-42,40,-59,66v-5,6,-11,8,-18,8v-8,-3,-45,-32,-51,-54v5,-24,14,-13,34,1",w:158},"˙":{d:"23,-302v15,-13,32,1,32,18v1,22,-36,29,-39,4v0,0,3,-7,7,-22",w:70},"˚":{d:"23,-225v-43,-24,-11,-85,41,-78v16,2,31,4,46,17v32,54,-41,86,-87,61xm33,-257v2,20,57,11,57,-6v0,-6,-11,-9,-33,-12v-14,-2,-24,13,-24,18",w:123},"¸":{d:"74,16v32,2,49,14,55,36v-3,7,-14,31,-29,33v-28,4,-57,11,-88,14v-19,-6,-13,-31,8,-33v20,-1,59,-5,73,-14v-17,-14,-68,8,-53,-37v9,-10,2,-28,24,-30v8,8,13,17,10,31",w:129},"˝":{d:"91,-249v15,-11,38,-53,57,-29v0,9,0,14,-3,23v-2,3,-20,22,-54,55v-5,5,-10,8,-16,8v-17,2,-6,-22,-7,-31v-1,0,-2,0,-4,1v-17,21,-29,31,-50,27v-5,-18,-3,-15,3,-27v23,-27,40,-46,48,-59v7,-12,31,3,29,9v-1,14,-3,24,-13,31v4,4,9,-1,10,-8",w:151},"˛":{d:"82,-5v-8,12,-16,55,-21,75v0,4,2,7,7,7v6,0,22,-7,50,-20v8,0,12,7,12,20v-2,22,-6,14,-27,30v-15,12,-26,16,-30,16v-47,-8,-59,-14,-56,-75v8,-27,12,-54,25,-77v19,-21,35,15,40,24",w:138},"ˇ":{d:"39,-286v33,46,63,-4,96,-16v6,0,9,6,9,19v0,24,-49,46,-77,46v-32,0,-52,-28,-59,-48v0,-25,23,-17,31,-1",w:153},"\\r":{w:179}}}),function(){\nfunction AssertException(message){this.message=message}function assert(exp,message){if(!exp)throw new AssertException(message)}function getCenterX(box){return box.x+box.width/2}function getCenterY(box){return box.y+box.height/2}var DIAGRAM_MARGIN=10,ACTOR_MARGIN=10,ACTOR_PADDING=10,SIGNAL_MARGIN=5,SIGNAL_PADDING=5,NOTE_MARGIN=10,NOTE_PADDING=5,NOTE_OVERLAP=15,TITLE_MARGIN=0,TITLE_PADDING=5,SELF_SIGNAL_WIDTH=20,PLACEMENT=Diagram.PLACEMENT,LINETYPE=Diagram.LINETYPE,ARROWTYPE=Diagram.ARROWTYPE,LINE={stroke:"#000","stroke-width":2},RECT={fill:"#fff"};AssertException.prototype.toString=function(){return"AssertException: "+this.message},String.prototype.trim||(String.prototype.trim=function(){return this.replace(/^\\s+|\\s+$/g,"")}),Raphael.fn.line=function(x1,y1,x2,y2){return assert(_.all([x1,x2,y1,y2],_.isFinite),"x1,x2,y1,y2 must be numeric"),this.path("M{0},{1} L{2},{3}",x1,y1,x2,y2)},Raphael.fn.wobble=function(x1,y1,x2,y2){assert(_.all([x1,x2,y1,y2],_.isFinite),"x1,x2,y1,y2 must be numeric");var wobble=Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))/25,r1=Math.random(),r2=Math.random(),xfactor=Math.random()>.5?wobble:-wobble,yfactor=Math.random()>.5?wobble:-wobble,p1={x:(x2-x1)*r1+x1+xfactor,y:(y2-y1)*r1+y1+yfactor},p2={x:(x2-x1)*r2+x1-xfactor,y:(y2-y1)*r2+y1-yfactor};return"C"+p1.x+","+p1.y+" "+p2.x+","+p2.y+" "+x2+","+y2},Raphael.fn.text_bbox=function(text,font){var p;font._obj?p=this.print_center(0,0,text,font._obj,font["font-size"]):(p=this.text(0,0,text),p.attr(font));var bb=p.getBBox();return p.remove(),bb},Raphael.fn.handRect=function(x,y,w,h){return assert(_.all([x,y,w,h],_.isFinite),"x, y, w, h must be numeric"),this.path("M"+x+","+y+this.wobble(x,y,x+w,y)+this.wobble(x+w,y,x+w,y+h)+this.wobble(x+w,y+h,x,y+h)+this.wobble(x,y+h,x,y)).attr(RECT)},Raphael.fn.handLine=function(x1,y1,x2,y2){return assert(_.all([x1,x2,y1,y2],_.isFinite),"x1,x2,y1,y2 must be numeric"),this.path("M"+x1+","+y1+this.wobble(x1,y1,x2,y2))},Raphael.fn.print_center=function(x,y,string,font,size,letter_spacing){var path=this.print(x,y,string,font,size,"baseline",letter_spacing),bb=path.getBBox(),dx=x-bb.x-bb.width/2,dy=y-bb.y-bb.height/2,m=new Raphael.matrix;return m.translate(dx,dy),path.attr("path",Raphael.mapPath(path.attr("path"),m))};var BaseTheme=function(diagram){this.init(diagram)};_.extend(BaseTheme.prototype,{init:function(diagram){this.diagram=diagram,this._paper=void 0,this._font=void 0,this._title=void 0,this._actors_height=0,this._signals_height=0;var a=this.arrow_types={};a[ARROWTYPE.FILLED]="block",a[ARROWTYPE.OPEN]="open";var l=this.line_types={};l[LINETYPE.SOLID]="",l[LINETYPE.DOTTED]="-"},init_paper:function(container){this._paper=new Raphael(container,320,200)},init_font:function(){},draw_line:function(x1,y1,x2,y2){return this._paper.line(x1,y1,x2,y2)},draw_rect:function(x,y,w,h){return this._paper.rect(x,y,w,h)},draw:function(container){var diagram=this.diagram;this.init_paper(container),this.init_font(),this.layout();var title_height=this._title?this._title.height:0;this._paper.setStart(),this._paper.setSize(diagram.width,diagram.height);var y=DIAGRAM_MARGIN+title_height;this.draw_title(),this.draw_actors(y),this.draw_signals(y+this._actors_height),this._paper.setFinish()},layout:function(){function actor_ensure_distance(a,b,d){assert(b>a,"a must be less than or equal to b"),0>a?(b=actors[b],b.x=Math.max(d-b.width/2,b.x)):b>=actors.length?(a=actors[a],a.padding_right=Math.max(d,a.padding_right)):(a=actors[a],a.distances[b]=Math.max(d,a.distances[b]?a.distances[b]:0))}var diagram=this.diagram,paper=this._paper,font=this._font,actors=diagram.actors,signals=diagram.signals;if(diagram.width=0,diagram.height=0,diagram.title){var title=this._title={},bb=paper.text_bbox(diagram.title,font);title.text_bb=bb,title.message=diagram.title,title.width=bb.width+2*(TITLE_PADDING+TITLE_MARGIN),title.height=bb.height+2*(TITLE_PADDING+TITLE_MARGIN),title.x=DIAGRAM_MARGIN,title.y=DIAGRAM_MARGIN,diagram.width+=title.width,diagram.height+=title.height}_.each(actors,function(a){var bb=paper.text_bbox(a.name,font);a.text_bb=bb,a.x=0,a.y=0,a.width=bb.width+2*(ACTOR_PADDING+ACTOR_MARGIN),a.height=bb.height+2*(ACTOR_PADDING+ACTOR_MARGIN),a.distances=[],a.padding_right=0,this._actors_height=Math.max(a.height,this._actors_height)},this),_.each(signals,function(s){var a,b,bb=paper.text_bbox(s.message,font);s.text_bb=bb,s.width=bb.width,s.height=bb.height;var extra_width=0;if("Signal"==s.type)s.width+=2*(SIGNAL_MARGIN+SIGNAL_PADDING),s.height+=2*(SIGNAL_MARGIN+SIGNAL_PADDING),s.isSelf()?(a=s.actorA.index,b=a+1,s.width+=SELF_SIGNAL_WIDTH):(a=Math.min(s.actorA.index,s.actorB.index),b=Math.max(s.actorA.index,s.actorB.index));else{if("Note"!=s.type)throw new Error("Unhandled signal type:"+s.type);if(s.width+=2*(NOTE_MARGIN+NOTE_PADDING),s.height+=2*(NOTE_MARGIN+NOTE_PADDING),extra_width=2*ACTOR_MARGIN,s.placement==PLACEMENT.LEFTOF)b=s.actor.index,a=b-1;else if(s.placement==PLACEMENT.RIGHTOF)a=s.actor.index,b=a+1;else if(s.placement==PLACEMENT.OVER&&s.hasManyActors())a=Math.min(s.actor[0].index,s.actor[1].index),b=Math.max(s.actor[0].index,s.actor[1].index),extra_width=-(2*NOTE_PADDING+2*NOTE_OVERLAP);else if(s.placement==PLACEMENT.OVER)return a=s.actor.index,actor_ensure_distance(a-1,a,s.width/2),actor_ensure_distance(a,a+1,s.width/2),this._signals_height+=s.height,void 0}actor_ensure_distance(a,b,s.width+extra_width),this._signals_height+=s.height},this);var actors_x=0;return _.each(actors,function(a){a.x=Math.max(actors_x,a.x),_.each(a.distances,function(distance,b){"undefined"!=typeof distance&&(b=actors[b],distance=Math.max(distance,a.width/2,b.width/2),b.x=Math.max(b.x,a.x+a.width/2+distance-b.width/2))}),actors_x=a.x+a.width+a.padding_right},this),diagram.width=Math.max(actors_x,diagram.width),diagram.width+=2*DIAGRAM_MARGIN,diagram.height+=2*DIAGRAM_MARGIN+2*this._actors_height+this._signals_height,this},draw_title:function(){var title=this._title;title&&this.draw_text_box(title,title.message,TITLE_MARGIN,TITLE_PADDING,this._font)},draw_actors:function(offsetY){var y=offsetY;_.each(this.diagram.actors,function(a){this.draw_actor(a,y,this._actors_height),this.draw_actor(a,y+this._actors_height+this._signals_height,this._actors_height);var aX=getCenterX(a),line=this.draw_line(aX,y+this._actors_height-ACTOR_MARGIN,aX,y+this._actors_height+ACTOR_MARGIN+this._signals_height);line.attr(LINE)},this)},draw_actor:function(actor,offsetY,height){actor.y=offsetY,actor.height=height,this.draw_text_box(actor,actor.name,ACTOR_MARGIN,ACTOR_PADDING,this._font)},draw_signals:function(offsetY){var y=offsetY;_.each(this.diagram.signals,function(s){"Signal"==s.type?s.isSelf()?this.draw_self_signal(s,y):this.draw_signal(s,y):"Note"==s.type&&this.draw_note(s,y),y+=s.height},this)},draw_self_signal:function(signal,offsetY){assert(signal.isSelf(),"signal must be a self signal");var text_bb=signal.text_bb,aX=getCenterX(signal.actorA),x=aX+SELF_SIGNAL_WIDTH+SIGNAL_PADDING-text_bb.x,y=offsetY+signal.height/2;this.draw_text(x,y,signal.message,this._font);var line,attr=_.extend({},LINE,{"stroke-dasharray":this.line_types[signal.linetype]}),y1=offsetY+SIGNAL_MARGIN,y2=y1+signal.height-SIGNAL_MARGIN;line=this.draw_line(aX,y1,aX+SELF_SIGNAL_WIDTH,y1),line.attr(attr),line=this.draw_line(aX+SELF_SIGNAL_WIDTH,y1,aX+SELF_SIGNAL_WIDTH,y2),line.attr(attr),line=this.draw_line(aX+SELF_SIGNAL_WIDTH,y2,aX,y2),attr["arrow-end"]=this.arrow_types[signal.arrowtype]+"-wide-long",line.attr(attr)},draw_signal:function(signal,offsetY){var aX=getCenterX(signal.actorA),bX=getCenterX(signal.actorB),x=(bX-aX)/2+aX,y=offsetY+SIGNAL_MARGIN+2*SIGNAL_PADDING;this.draw_text(x,y,signal.message,this._font),y=offsetY+signal.height-SIGNAL_MARGIN-SIGNAL_PADDING;var line=this.draw_line(aX,y,bX,y);line.attr(LINE),line.attr({"arrow-end":this.arrow_types[signal.arrowtype]+"-wide-long","stroke-dasharray":this.line_types[signal.linetype]})},draw_note:function(note,offsetY){note.y=offsetY;var actorA=note.hasManyActors()?note.actor[0]:note.actor,aX=getCenterX(actorA);switch(note.placement){case PLACEMENT.RIGHTOF:note.x=aX+ACTOR_MARGIN;break;case PLACEMENT.LEFTOF:note.x=aX-ACTOR_MARGIN-note.width;break;case PLACEMENT.OVER:if(note.hasManyActors()){var bX=getCenterX(note.actor[1]),overlap=NOTE_OVERLAP+NOTE_PADDING;note.x=aX-overlap,note.width=bX+overlap-note.x}else note.x=aX-note.width/2;break;default:throw new Error("Unhandled note placement:"+note.placement)}this.draw_text_box(note,note.message,NOTE_MARGIN,NOTE_PADDING,this._font)},draw_text:function(x,y,text,font){var t,paper=this._paper,f=font||{};f._obj?t=paper.print_center(x,y,text,f._obj,f["font-size"]):(t=paper.text(x,y,text),t.attr(f));var bb=t.getBBox(),r=paper.rect(bb.x,bb.y,bb.width,bb.height);r.attr({fill:"#fff",stroke:"none"}),t.toFront()},draw_text_box:function(box,text,margin,padding,font){var x=box.x+margin,y=box.y+margin,w=box.width-2*margin,h=box.height-2*margin,rect=this.draw_rect(x,y,w,h);rect.attr(LINE),x=getCenterX(box),y=getCenterY(box),this.draw_text(x,y,text,font)}});var RaphaëlTheme=function(diagram){this.init(diagram)};_.extend(RaphaëlTheme.prototype,BaseTheme.prototype,{init_font:function(){this._font={"font-size":16,"font-family":"Andale Mono, monospace"}}});var HandRaphaëlTheme=function(diagram){this.init(diagram)};_.extend(HandRaphaëlTheme.prototype,BaseTheme.prototype,{init_font:function(){this._font={"font-size":16,"font-family":"daniel"},this._font._obj=this._paper.getFont("daniel")},draw_line:function(x1,y1,x2,y2){return this._paper.handLine(x1,y1,x2,y2)},draw_rect:function(x,y,w,h){return this._paper.handRect(x,y,w,h)}});var themes={simple:RaphaëlTheme,hand:HandRaphaëlTheme};Diagram.prototype.drawSVG=function(container,options){var default_options={theme:"hand"};if(options=_.defaults(options||{},default_options),!(options.theme in themes))throw new Error("Unsupported theme: "+options.theme);var drawing=new themes[options.theme](this);drawing.draw(container)}}();\n//# sourceMappingURL=build/sequence-diagram-min.js.map'
+}), function(e) {
+	var t, n, i = "0.4.2",
+		r = "hasOwnProperty",
+		o = /[\.\/]/,
+		a = "*",
+		s = function() {}, l = function(e, t) {
+			return e - t
+		}, c = {
+			n: {}
+		}, u = function(e, i) {
+			e = String(e);
+			var r, o = n,
+				a = Array.prototype.slice.call(arguments, 2),
+				s = u.listeners(e),
+				c = 0,
+				d = [],
+				p = {}, h = [],
+				f = t;
+			t = e, n = 0;
+			for(var m = 0, g = s.length; g > m; m++) "zIndex" in s[m] && (d.push(s[m].zIndex), s[m].zIndex < 0 && (p[s[m].zIndex] = s[m]));
+			for(d.sort(l); d[c] < 0;)
+				if(r = p[d[c++]], h.push(r.apply(i, a)), n) return n = o, h;
+			for(m = 0; g > m; m++)
+				if(r = s[m], "zIndex" in r)
+					if(r.zIndex == d[c]) {
+						if(h.push(r.apply(i, a)), n) break;
+						do
+							if(c++, r = p[d[c]], r && h.push(r.apply(i, a)), n) break; while(r)
+					} else p[r.zIndex] = r;
+					else if(h.push(r.apply(i, a)), n) break;
+			return n = o, t = f, h.length ? h : null
+		};
+	u._events = c, u.listeners = function(e) {
+		var t, n, i, r, s, l, u, d, p = e.split(o),
+			h = c,
+			f = [h],
+			m = [];
+		for(r = 0, s = p.length; s > r; r++) {
+			for(d = [], l = 0, u = f.length; u > l; l++)
+				for(h = f[l].n, n = [h[p[r]], h[a]], i = 2; i--;) t = n[i], t && (d.push(t), m = m.concat(t.f || []));
+			f = d
+		}
+		return m
+	}, u.on = function(e, t) {
+		if(e = String(e), "function" != typeof t) return function() {};
+		for(var n = e.split(o), i = c, r = 0, a = n.length; a > r; r++) i = i.n, i = i.hasOwnProperty(n[r]) && i[n[r]] || (i[n[r]] = {
+			n: {}
+		});
+		for(i.f = i.f || [], r = 0, a = i.f.length; a > r; r++)
+			if(i.f[r] == t) return s;
+		return i.f.push(t),
+		function(e) {
+			+e == +e && (t.zIndex = +e)
+		}
+	}, u.f = function(e) {
+		var t = [].slice.call(arguments, 1);
+		return function() {
+			u.apply(null, [e, null].concat(t).concat([].slice.call(arguments, 0)))
+		}
+	}, u.stop = function() {
+		n = 1
+	}, u.nt = function(e) {
+		return e ? new RegExp("(?:\\.|\\/|^)" + e + "(?:\\.|\\/|$)").test(t) : t
+	}, u.nts = function() {
+		return t.split(o)
+	}, u.off = u.unbind = function(e, t) {
+		if(!e) return void(u._events = c = {
+			n: {}
+		});
+		var n, i, s, l, d, p, h, f = e.split(o),
+			m = [c];
+		for(l = 0, d = f.length; d > l; l++)
+			for(p = 0; p < m.length; p += s.length - 2) {
+				if(s = [p, 1], n = m[p].n, f[l] != a) n[f[l]] && s.push(n[f[l]]);
+				else
+					for(i in n) n[r](i) && s.push(n[i]);
+				m.splice.apply(m, s)
+			}
+		for(l = 0, d = m.length; d > l; l++)
+			for(n = m[l]; n.n;) {
+				if(t) {
+					if(n.f) {
+						for(p = 0, h = n.f.length; h > p; p++)
+							if(n.f[p] == t) {
+								n.f.splice(p, 1);
+								break
+							}!n.f.length && delete n.f
+					}
+					for(i in n.n)
+						if(n.n[r](i) && n.n[i].f) {
+							var g = n.n[i].f;
+							for(p = 0, h = g.length; h > p; p++)
+								if(g[p] == t) {
+									g.splice(p, 1);
+									break
+								}!g.length && delete n.n[i].f
+						}
+				} else {
+					delete n.f;
+					for(i in n.n) n.n[r](i) && n.n[i].f && delete n.n[i].f
+				}
+				n = n.n
+			}
+	}, u.once = function(e, t) {
+		var n = function() {
+			return u.unbind(e, n), t.apply(this, arguments)
+		};
+		return u.on(e, n)
+	}, u.version = i, u.toString = function() {
+		return "You are running Eve " + i
+	}, "undefined" != typeof module && module.exports ? module.exports = u : "undefined" != typeof define ? define("eve", [], function() {
+		return u
+	}) : e.eve = u
+}(this), function(e, t) {
+	"function" == typeof define && define.amd ? define("raphael", ["eve"], function(n) {
+		return t(e, n)
+	}) : t(e, e.eve)
+}(this, function(e, t) {
+	function n(e) {
+		if(n.is(e, "function")) return x ? e() : t.on("raphael.DOMload", e);
+		if(n.is(e, W)) return n._engine.create[N](n, e.splice(0, 3 + n.is(e[0], z))).add(e);
+		var i = Array.prototype.slice.call(arguments, 0);
+		if(n.is(i[i.length - 1], "function")) {
+			var r = i.pop();
+			return x ? r.call(n._engine.create[N](n, i)) : t.on("raphael.DOMload", function() {
+				r.call(n._engine.create[N](n, i))
+			})
+		}
+		return n._engine.create[N](n, arguments)
+	}
+
+	function i(e) {
+		if("function" == typeof e || Object(e) !== e) return e;
+		var t = new e.constructor;
+		for(var n in e) e[k](n) && (t[n] = i(e[n]));
+		return t
+	}
+
+	function r(e, t) {
+		for(var n = 0, i = e.length; i > n; n++)
+			if(e[n] === t) return e.push(e.splice(n, 1)[0])
+	}
+
+	function o(e, t, n) {
+		function i() {
+			var o = Array.prototype.slice.call(arguments, 0),
+				a = o.join("␀"),
+				s = i.cache = i.cache || {}, l = i.count = i.count || [];
+			return s[k](a) ? (r(l, a), n ? n(s[a]) : s[a]) : (l.length >= 1e3 && delete s[l.shift()], l.push(a), s[a] = e[N](t, o), n ? n(s[a]) : s[a])
+		}
+		return i
+	}
+
+	function a() {
+		return this.hex
+	}
+
+	function s(e, t) {
+		for(var n = [], i = 0, r = e.length; r - 2 * !t > i; i += 2) {
+			var o = [{
+				x: +e[i - 2],
+				y: +e[i - 1]
+			}, {
+				x: +e[i],
+				y: +e[i + 1]
+			}, {
+				x: +e[i + 2],
+				y: +e[i + 3]
+			}, {
+				x: +e[i + 4],
+				y: +e[i + 5]
+			}];
+			t ? i ? r - 4 == i ? o[3] = {
+				x: +e[0],
+				y: +e[1]
+			} : r - 2 == i && (o[2] = {
+				x: +e[0],
+				y: +e[1]
+			}, o[3] = {
+				x: +e[2],
+				y: +e[3]
+			}) : o[0] = {
+				x: +e[r - 2],
+				y: +e[r - 1]
+			} : r - 4 == i ? o[3] = o[2] : i || (o[0] = {
+				x: +e[i],
+				y: +e[i + 1]
+			}), n.push(["C", (-o[0].x + 6 * o[1].x + o[2].x) / 6, (-o[0].y + 6 * o[1].y + o[2].y) / 6, (o[1].x + 6 * o[2].x - o[3].x) / 6, (o[1].y + 6 * o[2].y - o[3].y) / 6, o[2].x, o[2].y])
+		}
+		return n
+	}
+
+	function l(e, t, n, i, r) {
+		var o = -3 * t + 9 * n - 9 * i + 3 * r,
+			a = e * o + 6 * t - 12 * n + 6 * i;
+		return e * a - 3 * t + 3 * n
+	}
+
+	function c(e, t, n, i, r, o, a, s, c) {
+		null == c && (c = 1), c = c > 1 ? 1 : 0 > c ? 0 : c;
+		for(var u = c / 2, d = 12, p = [-.1252, .1252, -.3678, .3678, -.5873, .5873, -.7699, .7699, -.9041, .9041, -.9816, .9816], h = [.2491, .2491, .2335, .2335, .2032, .2032, .1601, .1601, .1069, .1069, .0472, .0472], f = 0, m = 0; d > m; m++) {
+			var g = u * p[m] + u,
+				v = l(g, e, n, r, a),
+				b = l(g, t, i, o, s),
+				y = v * v + b * b;
+			f += h[m] * j.sqrt(y)
+		}
+		return u * f
+	}
+
+	function u(e, t, n, i, r, o, a, s, l) {
+		if(!(0 > l || c(e, t, n, i, r, o, a, s) < l)) {
+			var u, d = 1,
+				p = d / 2,
+				h = d - p,
+				f = .01;
+			for(u = c(e, t, n, i, r, o, a, s, h); q(u - l) > f;) p /= 2, h += (l > u ? 1 : -1) * p, u = c(e, t, n, i, r, o, a, s, h);
+			return h
+		}
+	}
+
+	function d(e, t, n, i, r, o, a, s) {
+		if(!($(e, n) < G(r, a) || G(e, n) > $(r, a) || $(t, i) < G(o, s) || G(t, i) > $(o, s))) {
+			var l = (e * i - t * n) * (r - a) - (e - n) * (r * s - o * a),
+				c = (e * i - t * n) * (o - s) - (t - i) * (r * s - o * a),
+				u = (e - n) * (o - s) - (t - i) * (r - a);
+			if(u) {
+				var d = l / u,
+					p = c / u,
+					h = +d.toFixed(2),
+					f = +p.toFixed(2);
+				if(!(h < +G(e, n).toFixed(2) || h > +$(e, n).toFixed(2) || h < +G(r, a).toFixed(2) || h > +$(r, a).toFixed(2) || f < +G(t, i).toFixed(2) || f > +$(t, i).toFixed(2) || f < +G(o, s).toFixed(2) || f > +$(o, s).toFixed(2))) return {
+					x: d,
+					y: p
+				}
+			}
+		}
+	}
+
+	function p(e, t, i) {
+		var r = n.bezierBBox(e),
+			o = n.bezierBBox(t);
+		if(!n.isBBoxIntersect(r, o)) return i ? 0 : [];
+		for(var a = c.apply(0, e), s = c.apply(0, t), l = $(~~(a / 5), 1), u = $(~~(s / 5), 1), p = [], h = [], f = {}, m = i ? 0 : [], g = 0; l + 1 > g; g++) {
+			var v = n.findDotsAtSegment.apply(n, e.concat(g / l));
+			p.push({
+				x: v.x,
+				y: v.y,
+				t: g / l
+			})
+		}
+		for(g = 0; u + 1 > g; g++) v = n.findDotsAtSegment.apply(n, t.concat(g / u)), h.push({
+			x: v.x,
+			y: v.y,
+			t: g / u
+		});
+		for(g = 0; l > g; g++)
+			for(var b = 0; u > b; b++) {
+				var y = p[g],
+					x = p[g + 1],
+					w = h[b],
+					S = h[b + 1],
+					C = q(x.x - y.x) < .001 ? "y" : "x",
+					_ = q(S.x - w.x) < .001 ? "y" : "x",
+					k = d(y.x, y.y, x.x, x.y, w.x, w.y, S.x, S.y);
+				if(k) {
+					if(f[k.x.toFixed(4)] == k.y.toFixed(4)) continue;
+					f[k.x.toFixed(4)] = k.y.toFixed(4);
+					var T = y.t + q((k[C] - y[C]) / (x[C] - y[C])) * (x.t - y.t),
+						E = w.t + q((k[_] - w[_]) / (S[_] - w[_])) * (S.t - w.t);
+					T >= 0 && 1.001 >= T && E >= 0 && 1.001 >= E && (i ? m++ : m.push({
+						x: k.x,
+						y: k.y,
+						t1: G(T, 1),
+						t2: G(E, 1)
+					}))
+				}
+			}
+		return m
+	}
+
+	function h(e, t, i) {
+		e = n._path2curve(e), t = n._path2curve(t);
+		for(var r, o, a, s, l, c, u, d, h, f, m = i ? 0 : [], g = 0, v = e.length; v > g; g++) {
+			var b = e[g];
+			if("M" == b[0]) r = l = b[1], o = c = b[2];
+			else {
+				"C" == b[0] ? (h = [r, o].concat(b.slice(1)), r = h[6], o = h[7]) : (h = [r, o, r, o, l, c, l, c], r = l, o = c);
+				for(var y = 0, x = t.length; x > y; y++) {
+					var w = t[y];
+					if("M" == w[0]) a = u = w[1], s = d = w[2];
+					else {
+						"C" == w[0] ? (f = [a, s].concat(w.slice(1)), a = f[6], s = f[7]) : (f = [a, s, a, s, u, d, u, d], a = u, s = d);
+						var S = p(h, f, i);
+						if(i) m += S;
+						else {
+							for(var C = 0, _ = S.length; _ > C; C++) S[C].segment1 = g, S[C].segment2 = y, S[C].bez1 = h, S[C].bez2 = f;
+							m = m.concat(S)
+						}
+					}
+				}
+			}
+		}
+		return m
+	}
+
+	function f(e, t, n, i, r, o) {
+		null != e ? (this.a = +e, this.b = +t, this.c = +n, this.d = +i, this.e = +r, this.f = +o) : (this.a = 1, this.b = 0, this.c = 0, this.d = 1, this.e = 0, this.f = 0)
+	}
+
+	function m() {
+		return this.x + M + this.y + M + this.width + " × " + this.height
+	}
+
+	function g(e, t, n, i, r, o) {
+		function a(e) {
+			return((d * e + u) * e + c) * e
+		}
+
+		function s(e, t) {
+			var n = l(e, t);
+			return((f * n + h) * n + p) * n
+		}
+
+		function l(e, t) {
+			var n, i, r, o, s, l;
+			for(r = e, l = 0; 8 > l; l++) {
+				if(o = a(r) - e, q(o) < t) return r;
+				if(s = (3 * d * r + 2 * u) * r + c, q(s) < 1e-6) break;
+				r -= o / s
+			}
+			if(n = 0, i = 1, r = e, n > r) return n;
+			if(r > i) return i;
+			for(; i > n;) {
+				if(o = a(r), q(o - e) < t) return r;
+				e > o ? n = r : i = r, r = (i - n) / 2 + n
+			}
+			return r
+		}
+		var c = 3 * t,
+			u = 3 * (i - t) - c,
+			d = 1 - c - u,
+			p = 3 * n,
+			h = 3 * (r - n) - p,
+			f = 1 - p - h;
+		return s(e, 1 / (200 * o))
+	}
+
+	function v(e, t) {
+		var n = [],
+			i = {};
+		if(this.ms = t, this.times = 1, e) {
+			for(var r in e) e[k](r) && (i[Z(r)] = e[r], n.push(Z(r)));
+			n.sort(dt)
+		}
+		this.anim = i, this.top = n[n.length - 1], this.percents = n
+	}
+
+	function b(e, i, r, o, a, s) {
+		r = Z(r);
+		var l, c, u, d, p, h, m = e.ms,
+			v = {}, b = {}, y = {};
+		if(o)
+			for(w = 0, C = cn.length; C > w; w++) {
+				var x = cn[w];
+				if(x.el.id == i.id && x.anim == e) {
+					x.percent != r ? (cn.splice(w, 1), u = 1) : c = x, i.attr(x.totalOrigin);
+					break
+				}
+			} else o = +b;
+		for(var w = 0, C = e.percents.length; C > w; w++) {
+			if(e.percents[w] == r || e.percents[w] > o * e.top) {
+				r = e.percents[w], p = e.percents[w - 1] || 0, m = m / e.top * (r - p), d = e.percents[w + 1], l = e.anim[r];
+				break
+			}
+			o && i.attr(e.anim[e.percents[w]])
+		}
+		if(l) {
+			if(c) c.initstatus = o, c.start = new Date - c.ms * o;
+			else {
+				for(var _ in l)
+					if(l[k](_) && (it[k](_) || i.paper.customAttributes[k](_))) switch(v[_] = i.attr(_), null == v[_] && (v[_] = nt[_]), b[_] = l[_], it[_]) {
+						case z:
+							y[_] = (b[_] - v[_]) / m;
+							break;
+						case "colour":
+							v[_] = n.getRGB(v[_]);
+							var T = n.getRGB(b[_]);
+							y[_] = {
+								r: (T.r - v[_].r) / m,
+								g: (T.g - v[_].g) / m,
+								b: (T.b - v[_].b) / m
+							};
+							break;
+						case "path":
+							var E = Ft(v[_], b[_]),
+								I = E[1];
+							for(v[_] = E[0], y[_] = [], w = 0, C = v[_].length; C > w; w++) {
+								y[_][w] = [0];
+								for(var N = 1, L = v[_][w].length; L > N; N++) y[_][w][N] = (I[w][N] - v[_][w][N]) / m
+							}
+							break;
+						case "transform":
+							var A = i._,
+								M = Gt(A[_], b[_]);
+							if(M)
+								for(v[_] = M.from, b[_] = M.to, y[_] = [], y[_].real = !0, w = 0, C = v[_].length; C > w; w++)
+									for(y[_][w] = [v[_][w][0]], N = 1, L = v[_][w].length; L > N; N++) y[_][w][N] = (b[_][w][N] - v[_][w][N]) / m;
+							else {
+								var F = i.matrix || new f,
+									O = {
+										_: {
+											transform: A.transform
+										},
+										getBBox: function() {
+											return i.getBBox(1)
+										}
+									};
+								v[_] = [F.a, F.b, F.c, F.d, F.e, F.f], jt(O, b[_]), b[_] = O._.transform, y[_] = [(O.matrix.a - F.a) / m, (O.matrix.b - F.b) / m, (O.matrix.c - F.c) / m, (O.matrix.d - F.d) / m, (O.matrix.e - F.e) / m, (O.matrix.f - F.f) / m]
+							}
+							break;
+						case "csv":
+							var B = R(l[_])[P](S),
+								j = R(v[_])[P](S);
+							if("clip-rect" == _)
+								for(v[_] = j, y[_] = [], w = j.length; w--;) y[_][w] = (B[w] - v[_][w]) / m;
+							b[_] = B;
+							break;
+						default:
+							for(B = [][D](l[_]), j = [][D](v[_]), y[_] = [], w = i.paper.customAttributes[_].length; w--;) y[_][w] = ((B[w] || 0) - (j[w] || 0)) / m
+					}
+					var $ = l.easing, G = n.easing_formulas[$];
+				if(!G)
+					if(G = R($).match(K), G && 5 == G.length) {
+						var q = G;
+						G = function(e) {
+							return g(e, +q[1], +q[2], +q[3], +q[4], m)
+						}
+					} else G = ht;
+				if(h = l.start || e.start || +new Date, x = {
+					anim: e,
+					percent: r,
+					timestamp: h,
+					start: h + (e.del || 0),
+					status: 0,
+					initstatus: o || 0,
+					stop: !1,
+					ms: m,
+					easing: G,
+					from: v,
+					diff: y,
+					to: b,
+					el: i,
+					callback: l.callback,
+					prev: p,
+					next: d,
+					repeat: s || e.times,
+					origin: i.attr(),
+					totalOrigin: a
+				}, cn.push(x), o && !c && !u && (x.stop = !0, x.start = new Date - m * o, 1 == cn.length)) return dn();
+				u && (x.start = new Date - x.ms * o), 1 == cn.length && un(dn)
+			}
+			t("raphael.anim.start." + i.id, i, e)
+		}
+	}
+
+	function y(e) {
+		for(var t = 0; t < cn.length; t++) cn[t].el.paper == e && cn.splice(t--, 1)
+	}
+	n.version = "2.1.0", n.eve = t;
+	var x, w, S = /[, ]+/,
+		C = {
+			circle: 1,
+			rect: 1,
+			path: 1,
+			ellipse: 1,
+			text: 1,
+			image: 1
+		}, _ = /\{(\d+)\}/g,
+		k = "hasOwnProperty",
+		T = {
+			doc: document,
+			win: e
+		}, E = {
+			was: Object.prototype[k].call(T.win, "Raphael"),
+			is: T.win.Raphael
+		}, I = function() {
+			this.ca = this.customAttributes = {}
+		}, N = "apply",
+		D = "concat",
+		L = "ontouchstart" in T.win || T.win.DocumentTouch && T.doc instanceof DocumentTouch,
+		A = "",
+		M = " ",
+		R = String,
+		P = "split",
+		F = "click dblclick mousedown mousemove mouseout mouseover mouseup touchstart touchmove touchend touchcancel" [P](M),
+		O = {
+			mousedown: "touchstart",
+			mousemove: "touchmove",
+			mouseup: "touchend"
+		}, B = R.prototype.toLowerCase,
+		j = Math,
+		$ = j.max,
+		G = j.min,
+		q = j.abs,
+		H = j.pow,
+		U = j.PI,
+		z = "number",
+		V = "string",
+		W = "array",
+		X = Object.prototype.toString,
+		Q = (n._ISURL = /^url\(['"]?([^\)]+?)['"]?\)$/i, /^\s*((#[a-f\d]{6})|(#[a-f\d]{3})|rgba?\(\s*([\d\.]+%?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+%?(?:\s*,\s*[\d\.]+%?)?)\s*\)|hsba?\(\s*([\d\.]+(?:deg|\xb0|%)?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+(?:%?\s*,\s*[\d\.]+)?)%?\s*\)|hsla?\(\s*([\d\.]+(?:deg|\xb0|%)?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+(?:%?\s*,\s*[\d\.]+)?)%?\s*\))\s*$/i),
+		Y = {
+			NaN: 1,
+			Infinity: 1,
+			"-Infinity": 1
+		}, K = /^(?:cubic-)?bezier\(([^,]+),([^,]+),([^,]+),([^\)]+)\)/,
+		J = j.round,
+		Z = parseFloat,
+		et = parseInt,
+		tt = R.prototype.toUpperCase,
+		nt = n._availableAttrs = {
+			"arrow-end": "none",
+			"arrow-start": "none",
+			blur: 0,
+			"clip-rect": "0 0 1e9 1e9",
+			cursor: "default",
+			cx: 0,
+			cy: 0,
+			fill: "#fff",
+			"fill-opacity": 1,
+			font: '10px "Arial"',
+			"font-family": '"Arial"',
+			"font-size": "10",
+			"font-style": "normal",
+			"font-weight": 400,
+			gradient: 0,
+			height: 0,
+			href: "http://raphaeljs.com/",
+			"letter-spacing": 0,
+			opacity: 1,
+			path: "M0,0",
+			r: 0,
+			rx: 0,
+			ry: 0,
+			src: "",
+			stroke: "#000",
+			"stroke-dasharray": "",
+			"stroke-linecap": "butt",
+			"stroke-linejoin": "butt",
+			"stroke-miterlimit": 0,
+			"stroke-opacity": 1,
+			"stroke-width": 1,
+			target: "_blank",
+			"text-anchor": "middle",
+			title: "Raphael",
+			transform: "",
+			width: 0,
+			x: 0,
+			y: 0
+		}, it = n._availableAnimAttrs = {
+			blur: z,
+			"clip-rect": "csv",
+			cx: z,
+			cy: z,
+			fill: "colour",
+			"fill-opacity": z,
+			"font-size": z,
+			height: z,
+			opacity: z,
+			path: "path",
+			r: z,
+			rx: z,
+			ry: z,
+			stroke: "colour",
+			"stroke-opacity": z,
+			"stroke-width": z,
+			transform: "transform",
+			width: z,
+			x: z,
+			y: z
+		}, rt = /[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*/,
+		ot = {
+			hs: 1,
+			rg: 1
+		}, at = /,?([achlmqrstvxz]),?/gi,
+		st = /([achlmrqstvz])[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029,]*((-?\d*\.?\d*(?:e[\-+]?\d+)?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*)+)/gi,
+		lt = /([rstm])[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029,]*((-?\d*\.?\d*(?:e[\-+]?\d+)?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*)+)/gi,
+		ct = /(-?\d*\.?\d*(?:e[\-+]?\d+)?)[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,?[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*/gi,
+		ut = (n._radial_gradient = /^r(?:\(([^,]+?)[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*,[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029]*([^\)]+?)\))?/, {}),
+		dt = function(e, t) {
+			return Z(e) - Z(t)
+		}, pt = function() {}, ht = function(e) {
+			return e
+		}, ft = n._rectPath = function(e, t, n, i, r) {
+			return r ? [["M", e + r, t], ["l", n - 2 * r, 0], ["a", r, r, 0, 0, 1, r, r], ["l", 0, i - 2 * r], ["a", r, r, 0, 0, 1, -r, r], ["l", 2 * r - n, 0], ["a", r, r, 0, 0, 1, -r, -r], ["l", 0, 2 * r - i], ["a", r, r, 0, 0, 1, r, -r], ["z"]] : [["M", e, t], ["l", n, 0], ["l", 0, i], ["l", -n, 0], ["z"]]
+		}, mt = function(e, t, n, i) {
+			return null == i && (i = n), [["M", e, t], ["m", 0, -i], ["a", n, i, 0, 1, 1, 0, 2 * i], ["a", n, i, 0, 1, 1, 0, -2 * i], ["z"]]
+		}, gt = n._getPath = {
+			path: function(e) {
+				return e.attr("path")
+			},
+			circle: function(e) {
+				var t = e.attrs;
+				return mt(t.cx, t.cy, t.r)
+			},
+			ellipse: function(e) {
+				var t = e.attrs;
+				return mt(t.cx, t.cy, t.rx, t.ry)
+			},
+			rect: function(e) {
+				var t = e.attrs;
+				return ft(t.x, t.y, t.width, t.height, t.r)
+			},
+			image: function(e) {
+				var t = e.attrs;
+				return ft(t.x, t.y, t.width, t.height)
+			},
+			text: function(e) {
+				var t = e._getBBox();
+				return ft(t.x, t.y, t.width, t.height)
+			},
+			set: function(e) {
+				var t = e._getBBox();
+				return ft(t.x, t.y, t.width, t.height)
+			}
+		}, vt = n.mapPath = function(e, t) {
+			if(!t) return e;
+			var n, i, r, o, a, s, l;
+			for(e = Ft(e), r = 0, a = e.length; a > r; r++)
+				for(l = e[r], o = 1, s = l.length; s > o; o += 2) n = t.x(l[o], l[o + 1]), i = t.y(l[o], l[o + 1]), l[o] = n, l[o + 1] = i;
+			return e
+		};
+	if(n._g = T, n.type = T.win.SVGAngle || T.doc.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") ? "SVG" : "VML", "VML" == n.type) {
+		var bt, yt = T.doc.createElement("div");
+		if(yt.innerHTML = '<v:shape adj="1"/>', bt = yt.firstChild, bt.style.behavior = "url(#default#VML)", !bt || "object" != typeof bt.adj) return n.type = A;
+		yt = null
+	}
+	n.svg = !(n.vml = "VML" == n.type), n._Paper = I, n.fn = w = I.prototype = n.prototype, n._id = 0, n._oid = 0, n.is = function(e, t) {
+		return t = B.call(t), "finite" == t ? !Y[k](+e) : "array" == t ? e instanceof Array : "null" == t && null === e || t == typeof e && null !== e || "object" == t && e === Object(e) || "array" == t && Array.isArray && Array.isArray(e) || X.call(e).slice(8, -1).toLowerCase() == t
+	}, n.angle = function(e, t, i, r, o, a) {
+		if(null == o) {
+			var s = e - i,
+				l = t - r;
+			return s || l ? (180 + 180 * j.atan2(-l, -s) / U + 360) % 360 : 0
+		}
+		return n.angle(e, t, o, a) - n.angle(i, r, o, a)
+	}, n.rad = function(e) {
+		return e % 360 * U / 180
+	}, n.deg = function(e) {
+		return 180 * e / U % 360
+	}, n.snapTo = function(e, t, i) {
+		if(i = n.is(i, "finite") ? i : 10, n.is(e, W)) {
+			for(var r = e.length; r--;)
+				if(q(e[r] - t) <= i) return e[r]
+		} else {
+			e = +e;
+			var o = t % e;
+			if(i > o) return t - o;
+			if(o > e - i) return t - o + e
+		}
+		return t
+	};
+	n.createUUID = function(e, t) {
+		return function() {
+			return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(e, t).toUpperCase()
+		}
+	}(/[xy]/g, function(e) {
+		var t = 16 * j.random() | 0,
+			n = "x" == e ? t : 3 & t | 8;
+		return n.toString(16)
+	});
+	n.setWindow = function(e) {
+		t("raphael.setWindow", n, T.win, e), T.win = e, T.doc = T.win.document, n._engine.initWin && n._engine.initWin(T.win)
+	};
+	var xt = function(e) {
+		if(n.vml) {
+			var t, i = /^\s+|\s+$/g;
+			try {
+				var r = new ActiveXObject("htmlfile");
+				r.write("<body>"), r.close(), t = r.body
+			} catch(a) {
+				t = createPopup().document.body
+			}
+			var s = t.createTextRange();
+			xt = o(function(e) {
+				try {
+					t.style.color = R(e).replace(i, A);
+					var n = s.queryCommandValue("ForeColor");
+					return n = (255 & n) << 16 | 65280 & n | (16711680 & n) >>> 16, "#" + ("000000" + n.toString(16)).slice(-6)
+				} catch(r) {
+					return "none"
+				}
+			})
+		} else {
+			var l = T.doc.createElement("i");
+			l.title = "Raphaël Colour Picker", l.style.display = "none", T.doc.body.appendChild(l), xt = o(function(e) {
+				return l.style.color = e, T.doc.defaultView.getComputedStyle(l, A).getPropertyValue("color")
+			})
+		}
+		return xt(e)
+	}, wt = function() {
+			return "hsb(" + [this.h, this.s, this.b] + ")"
+		}, St = function() {
+			return "hsl(" + [this.h, this.s, this.l] + ")"
+		}, Ct = function() {
+			return this.hex
+		}, _t = function(e, t, i) {
+			if(null == t && n.is(e, "object") && "r" in e && "g" in e && "b" in e && (i = e.b, t = e.g, e = e.r), null == t && n.is(e, V)) {
+				var r = n.getRGB(e);
+				e = r.r, t = r.g, i = r.b
+			}
+			return(e > 1 || t > 1 || i > 1) && (e /= 255, t /= 255, i /= 255), [e, t, i]
+		}, kt = function(e, t, i, r) {
+			e *= 255, t *= 255, i *= 255;
+			var o = {
+				r: e,
+				g: t,
+				b: i,
+				hex: n.rgb(e, t, i),
+				toString: Ct
+			};
+			return n.is(r, "finite") && (o.opacity = r), o
+		};
+	n.color = function(e) {
+		var t;
+		return n.is(e, "object") && "h" in e && "s" in e && "b" in e ? (t = n.hsb2rgb(e), e.r = t.r, e.g = t.g, e.b = t.b, e.hex = t.hex) : n.is(e, "object") && "h" in e && "s" in e && "l" in e ? (t = n.hsl2rgb(e), e.r = t.r, e.g = t.g, e.b = t.b, e.hex = t.hex) : (n.is(e, "string") && (e = n.getRGB(e)), n.is(e, "object") && "r" in e && "g" in e && "b" in e ? (t = n.rgb2hsl(e), e.h = t.h, e.s = t.s, e.l = t.l, t = n.rgb2hsb(e), e.v = t.b) : (e = {
+			hex: "none"
+		}, e.r = e.g = e.b = e.h = e.s = e.v = e.l = -1)), e.toString = Ct, e
+	}, n.hsb2rgb = function(e, t, n, i) {
+		this.is(e, "object") && "h" in e && "s" in e && "b" in e && (n = e.b, t = e.s, e = e.h, i = e.o), e *= 360;
+		var r, o, a, s, l;
+		return e = e % 360 / 60, l = n * t, s = l * (1 - q(e % 2 - 1)), r = o = a = n - l, e = ~~e, r += [l, s, 0, 0, s, l][e], o += [s, l, l, s, 0, 0][e], a += [0, 0, s, l, l, s][e], kt(r, o, a, i)
+	}, n.hsl2rgb = function(e, t, n, i) {
+		this.is(e, "object") && "h" in e && "s" in e && "l" in e && (n = e.l, t = e.s, e = e.h), (e > 1 || t > 1 || n > 1) && (e /= 360, t /= 100, n /= 100), e *= 360;
+		var r, o, a, s, l;
+		return e = e % 360 / 60, l = 2 * t * (.5 > n ? n : 1 - n), s = l * (1 - q(e % 2 - 1)), r = o = a = n - l / 2, e = ~~e, r += [l, s, 0, 0, s, l][e], o += [s, l, l, s, 0, 0][e], a += [0, 0, s, l, l, s][e], kt(r, o, a, i)
+	}, n.rgb2hsb = function(e, t, n) {
+		n = _t(e, t, n), e = n[0], t = n[1], n = n[2];
+		var i, r, o, a;
+		return o = $(e, t, n), a = o - G(e, t, n), i = 0 == a ? null : o == e ? (t - n) / a : o == t ? (n - e) / a + 2 : (e - t) / a + 4, i = (i + 360) % 6 * 60 / 360, r = 0 == a ? 0 : a / o, {
+			h: i,
+			s: r,
+			b: o,
+			toString: wt
+		}
+	}, n.rgb2hsl = function(e, t, n) {
+		n = _t(e, t, n), e = n[0], t = n[1], n = n[2];
+		var i, r, o, a, s, l;
+		return a = $(e, t, n), s = G(e, t, n), l = a - s, i = 0 == l ? null : a == e ? (t - n) / l : a == t ? (n - e) / l + 2 : (e - t) / l + 4, i = (i + 360) % 6 * 60 / 360, o = (a + s) / 2, r = 0 == l ? 0 : .5 > o ? l / (2 * o) : l / (2 - 2 * o), {
+			h: i,
+			s: r,
+			l: o,
+			toString: St
+		}
+	}, n._path2string = function() {
+		return this.join(",").replace(at, "$1")
+	};
+	n._preload = function(e, t) {
+		var n = T.doc.createElement("img");
+		n.style.cssText = "position:absolute;left:-9999em;top:-9999em", n.onload = function() {
+			t.call(this), this.onload = null, T.doc.body.removeChild(this)
+		}, n.onerror = function() {
+			T.doc.body.removeChild(this)
+		}, T.doc.body.appendChild(n), n.src = e
+	};
+	n.getRGB = o(function(e) {
+		if(!e || (e = R(e)).indexOf("-") + 1) return {
+			r: -1,
+			g: -1,
+			b: -1,
+			hex: "none",
+			error: 1,
+			toString: a
+		};
+		if("none" == e) return {
+			r: -1,
+			g: -1,
+			b: -1,
+			hex: "none",
+			toString: a
+		};
+		!(ot[k](e.toLowerCase().substring(0, 2)) || "#" == e.charAt()) && (e = xt(e));
+		var t, i, r, o, s, l, c = e.match(Q);
+		return c ? (c[2] && (r = et(c[2].substring(5), 16), i = et(c[2].substring(3, 5), 16), t = et(c[2].substring(1, 3), 16)), c[3] && (r = et((s = c[3].charAt(3)) + s, 16), i = et((s = c[3].charAt(2)) + s, 16), t = et((s = c[3].charAt(1)) + s, 16)), c[4] && (l = c[4][P](rt), t = Z(l[0]), "%" == l[0].slice(-1) && (t *= 2.55), i = Z(l[1]), "%" == l[1].slice(-1) && (i *= 2.55), r = Z(l[2]), "%" == l[2].slice(-1) && (r *= 2.55), "rgba" == c[1].toLowerCase().slice(0, 4) && (o = Z(l[3])), l[3] && "%" == l[3].slice(-1) && (o /= 100)), c[5] ? (l = c[5][P](rt), t = Z(l[0]), "%" == l[0].slice(-1) && (t *= 2.55), i = Z(l[1]), "%" == l[1].slice(-1) && (i *= 2.55), r = Z(l[2]), "%" == l[2].slice(-1) && (r *= 2.55), ("deg" == l[0].slice(-3) || "°" == l[0].slice(-1)) && (t /= 360), "hsba" == c[1].toLowerCase().slice(0, 4) && (o = Z(l[3])), l[3] && "%" == l[3].slice(-1) && (o /= 100), n.hsb2rgb(t, i, r, o)) : c[6] ? (l = c[6][P](rt), t = Z(l[0]), "%" == l[0].slice(-1) && (t *= 2.55), i = Z(l[1]), "%" == l[1].slice(-1) && (i *= 2.55), r = Z(l[2]), "%" == l[2].slice(-1) && (r *= 2.55), ("deg" == l[0].slice(-3) || "°" == l[0].slice(-1)) && (t /= 360), "hsla" == c[1].toLowerCase().slice(0, 4) && (o = Z(l[3])), l[3] && "%" == l[3].slice(-1) && (o /= 100), n.hsl2rgb(t, i, r, o)) : (c = {
+			r: t,
+			g: i,
+			b: r,
+			toString: a
+		}, c.hex = "#" + (16777216 | r | i << 8 | t << 16).toString(16).slice(1), n.is(o, "finite") && (c.opacity = o), c)) : {
+			r: -1,
+			g: -1,
+			b: -1,
+			hex: "none",
+			error: 1,
+			toString: a
+		}
+	}, n), n.hsb = o(function(e, t, i) {
+		return n.hsb2rgb(e, t, i).hex
+	}), n.hsl = o(function(e, t, i) {
+		return n.hsl2rgb(e, t, i).hex
+	}), n.rgb = o(function(e, t, n) {
+		return "#" + (16777216 | n | t << 8 | e << 16).toString(16).slice(1)
+	}), n.getColor = function(e) {
+		var t = this.getColor.start = this.getColor.start || {
+			h: 0,
+			s: 1,
+			b: e || .75
+		}, n = this.hsb2rgb(t.h, t.s, t.b);
+		return t.h += .075, t.h > 1 && (t.h = 0, t.s -= .2, t.s <= 0 && (this.getColor.start = {
+			h: 0,
+			s: 1,
+			b: t.b
+		})), n.hex
+	}, n.getColor.reset = function() {
+		delete this.start
+	}, n.parsePathString = function(e) {
+		if(!e) return null;
+		var t = Tt(e);
+		if(t.arr) return It(t.arr);
+		var i = {
+			a: 7,
+			c: 6,
+			h: 1,
+			l: 2,
+			m: 2,
+			r: 4,
+			q: 4,
+			s: 4,
+			t: 2,
+			v: 1,
+			z: 0
+		}, r = [];
+		return n.is(e, W) && n.is(e[0], W) && (r = It(e)), r.length || R(e).replace(st, function(e, t, n) {
+			var o = [],
+				a = t.toLowerCase();
+			if(n.replace(ct, function(e, t) {
+				t && o.push(+t)
+			}), "m" == a && o.length > 2 && (r.push([t][D](o.splice(0, 2))), a = "l", t = "m" == t ? "l" : "L"), "r" == a) r.push([t][D](o));
+			else
+				for(; o.length >= i[a] && (r.push([t][D](o.splice(0, i[a]))), i[a]););
+		}), r.toString = n._path2string, t.arr = It(r), r
+	}, n.parseTransformString = o(function(e) {
+		if(!e) return null;
+		var t = [];
+		return n.is(e, W) && n.is(e[0], W) && (t = It(e)), t.length || R(e).replace(lt, function(e, n, i) {
+			{
+				var r = [];
+				B.call(n)
+			}
+			i.replace(ct, function(e, t) {
+				t && r.push(+t)
+			}), t.push([n][D](r))
+		}), t.toString = n._path2string, t
+	});
+	var Tt = function(e) {
+		var t = Tt.ps = Tt.ps || {};
+		return t[e] ? t[e].sleep = 100 : t[e] = {
+			sleep: 100
+		}, setTimeout(function() {
+			for(var n in t) t[k](n) && n != e && (t[n].sleep--, !t[n].sleep && delete t[n])
+		}), t[e]
+	};
+	n.findDotsAtSegment = function(e, t, n, i, r, o, a, s, l) {
+		var c = 1 - l,
+			u = H(c, 3),
+			d = H(c, 2),
+			p = l * l,
+			h = p * l,
+			f = u * e + 3 * d * l * n + 3 * c * l * l * r + h * a,
+			m = u * t + 3 * d * l * i + 3 * c * l * l * o + h * s,
+			g = e + 2 * l * (n - e) + p * (r - 2 * n + e),
+			v = t + 2 * l * (i - t) + p * (o - 2 * i + t),
+			b = n + 2 * l * (r - n) + p * (a - 2 * r + n),
+			y = i + 2 * l * (o - i) + p * (s - 2 * o + i),
+			x = c * e + l * n,
+			w = c * t + l * i,
+			S = c * r + l * a,
+			C = c * o + l * s,
+			_ = 90 - 180 * j.atan2(g - b, v - y) / U;
+		return(g > b || y > v) && (_ += 180), {
+			x: f,
+			y: m,
+			m: {
+				x: g,
+				y: v
+			},
+			n: {
+				x: b,
+				y: y
+			},
+			start: {
+				x: x,
+				y: w
+			},
+			end: {
+				x: S,
+				y: C
+			},
+			alpha: _
+		}
+	}, n.bezierBBox = function(e, t, i, r, o, a, s, l) {
+		n.is(e, "array") || (e = [e, t, i, r, o, a, s, l]);
+		var c = Pt.apply(null, e);
+		return {
+			x: c.min.x,
+			y: c.min.y,
+			x2: c.max.x,
+			y2: c.max.y,
+			width: c.max.x - c.min.x,
+			height: c.max.y - c.min.y
+		}
+	}, n.isPointInsideBBox = function(e, t, n) {
+		return t >= e.x && t <= e.x2 && n >= e.y && n <= e.y2
+	}, n.isBBoxIntersect = function(e, t) {
+		var i = n.isPointInsideBBox;
+		return i(t, e.x, e.y) || i(t, e.x2, e.y) || i(t, e.x, e.y2) || i(t, e.x2, e.y2) || i(e, t.x, t.y) || i(e, t.x2, t.y) || i(e, t.x, t.y2) || i(e, t.x2, t.y2) || (e.x < t.x2 && e.x > t.x || t.x < e.x2 && t.x > e.x) && (e.y < t.y2 && e.y > t.y || t.y < e.y2 && t.y > e.y)
+	}, n.pathIntersection = function(e, t) {
+		return h(e, t)
+	}, n.pathIntersectionNumber = function(e, t) {
+		return h(e, t, 1)
+	}, n.isPointInsidePath = function(e, t, i) {
+		var r = n.pathBBox(e);
+		return n.isPointInsideBBox(r, t, i) && h(e, [["M", t, i], ["H", r.x2 + 10]], 1) % 2 == 1
+	}, n._removedFactory = function(e) {
+		return function() {
+			t("raphael.log", null, "Raphaël: you are calling to method “" + e + "” of removed object", e)
+		}
+	};
+	var Et = n.pathBBox = function(e) {
+		var t = Tt(e);
+		if(t.bbox) return i(t.bbox);
+		if(!e) return {
+			x: 0,
+			y: 0,
+			width: 0,
+			height: 0,
+			x2: 0,
+			y2: 0
+		};
+		e = Ft(e);
+		for(var n, r = 0, o = 0, a = [], s = [], l = 0, c = e.length; c > l; l++)
+			if(n = e[l], "M" == n[0]) r = n[1], o = n[2], a.push(r), s.push(o);
+			else {
+				var u = Pt(r, o, n[1], n[2], n[3], n[4], n[5], n[6]);
+				a = a[D](u.min.x, u.max.x), s = s[D](u.min.y, u.max.y), r = n[5], o = n[6]
+			}
+		var d = G[N](0, a),
+			p = G[N](0, s),
+			h = $[N](0, a),
+			f = $[N](0, s),
+			m = h - d,
+			g = f - p,
+			v = {
+				x: d,
+				y: p,
+				x2: h,
+				y2: f,
+				width: m,
+				height: g,
+				cx: d + m / 2,
+				cy: p + g / 2
+			};
+		return t.bbox = i(v), v
+	}, It = function(e) {
+			var t = i(e);
+			return t.toString = n._path2string, t
+		}, Nt = n._pathToRelative = function(e) {
+			var t = Tt(e);
+			if(t.rel) return It(t.rel);
+			n.is(e, W) && n.is(e && e[0], W) || (e = n.parsePathString(e));
+			var i = [],
+				r = 0,
+				o = 0,
+				a = 0,
+				s = 0,
+				l = 0;
+			"M" == e[0][0] && (r = e[0][1], o = e[0][2], a = r, s = o, l++, i.push(["M", r, o]));
+			for(var c = l, u = e.length; u > c; c++) {
+				var d = i[c] = [],
+					p = e[c];
+				if(p[0] != B.call(p[0])) switch(d[0] = B.call(p[0]), d[0]) {
+					case "a":
+						d[1] = p[1], d[2] = p[2], d[3] = p[3], d[4] = p[4], d[5] = p[5], d[6] = +(p[6] - r).toFixed(3), d[7] = +(p[7] - o).toFixed(3);
+						break;
+					case "v":
+						d[1] = +(p[1] - o).toFixed(3);
+						break;
+					case "m":
+						a = p[1], s = p[2];
+					default:
+						for(var h = 1, f = p.length; f > h; h++) d[h] = +(p[h] - (h % 2 ? r : o)).toFixed(3)
+				} else {
+					d = i[c] = [], "m" == p[0] && (a = p[1] + r, s = p[2] + o);
+					for(var m = 0, g = p.length; g > m; m++) i[c][m] = p[m]
+				}
+				var v = i[c].length;
+				switch(i[c][0]) {
+					case "z":
+						r = a, o = s;
+						break;
+					case "h":
+						r += +i[c][v - 1];
+						break;
+					case "v":
+						o += +i[c][v - 1];
+						break;
+					default:
+						r += +i[c][v - 2], o += +i[c][v - 1]
+				}
+			}
+			return i.toString = n._path2string, t.rel = It(i), i
+		}, Dt = n._pathToAbsolute = function(e) {
+			var t = Tt(e);
+			if(t.abs) return It(t.abs);
+			if(n.is(e, W) && n.is(e && e[0], W) || (e = n.parsePathString(e)), !e || !e.length) return [["M", 0, 0]];
+			var i = [],
+				r = 0,
+				o = 0,
+				a = 0,
+				l = 0,
+				c = 0;
+			"M" == e[0][0] && (r = +e[0][1], o = +e[0][2], a = r, l = o, c++, i[0] = ["M", r, o]);
+			for(var u, d, p = 3 == e.length && "M" == e[0][0] && "R" == e[1][0].toUpperCase() && "Z" == e[2][0].toUpperCase(), h = c, f = e.length; f > h; h++) {
+				if(i.push(u = []), d = e[h], d[0] != tt.call(d[0])) switch(u[0] = tt.call(d[0]), u[0]) {
+					case "A":
+						u[1] = d[1], u[2] = d[2], u[3] = d[3], u[4] = d[4], u[5] = d[5], u[6] = +(d[6] + r), u[7] = +(d[7] + o);
+						break;
+					case "V":
+						u[1] = +d[1] + o;
+						break;
+					case "H":
+						u[1] = +d[1] + r;
+						break;
+					case "R":
+						for(var m = [r, o][D](d.slice(1)), g = 2, v = m.length; v > g; g++) m[g] = +m[g] + r, m[++g] = +m[g] + o;
+						i.pop(), i = i[D](s(m, p));
+						break;
+					case "M":
+						a = +d[1] + r, l = +d[2] + o;
+					default:
+						for(g = 1, v = d.length; v > g; g++) u[g] = +d[g] + (g % 2 ? r : o)
+				} else if("R" == d[0]) m = [r, o][D](d.slice(1)), i.pop(), i = i[D](s(m, p)), u = ["R"][D](d.slice(-2));
+				else
+					for(var b = 0, y = d.length; y > b; b++) u[b] = d[b];
+				switch(u[0]) {
+					case "Z":
+						r = a, o = l;
+						break;
+					case "H":
+						r = u[1];
+						break;
+					case "V":
+						o = u[1];
+						break;
+					case "M":
+						a = u[u.length - 2], l = u[u.length - 1];
+					default:
+						r = u[u.length - 2], o = u[u.length - 1]
+				}
+			}
+			return i.toString = n._path2string, t.abs = It(i), i
+		}, Lt = function(e, t, n, i) {
+			return [e, t, n, i, n, i]
+		}, At = function(e, t, n, i, r, o) {
+			var a = 1 / 3,
+				s = 2 / 3;
+			return [a * e + s * n, a * t + s * i, a * r + s * n, a * o + s * i, r, o]
+		}, Mt = function(e, t, n, i, r, a, s, l, c, u) {
+			var d, p = 120 * U / 180,
+				h = U / 180 * (+r || 0),
+				f = [],
+				m = o(function(e, t, n) {
+					var i = e * j.cos(n) - t * j.sin(n),
+						r = e * j.sin(n) + t * j.cos(n);
+					return {
+						x: i,
+						y: r
+					}
+				});
+			if(u) _ = u[0], k = u[1], S = u[2], C = u[3];
+			else {
+				d = m(e, t, -h), e = d.x, t = d.y, d = m(l, c, -h), l = d.x, c = d.y;
+				var g = (j.cos(U / 180 * r), j.sin(U / 180 * r), (e - l) / 2),
+					v = (t - c) / 2,
+					b = g * g / (n * n) + v * v / (i * i);
+				b > 1 && (b = j.sqrt(b), n = b * n, i = b * i);
+				var y = n * n,
+					x = i * i,
+					w = (a == s ? -1 : 1) * j.sqrt(q((y * x - y * v * v - x * g * g) / (y * v * v + x * g * g))),
+					S = w * n * v / i + (e + l) / 2,
+					C = w * -i * g / n + (t + c) / 2,
+					_ = j.asin(((t - C) / i).toFixed(9)),
+					k = j.asin(((c - C) / i).toFixed(9));
+				_ = S > e ? U - _ : _, k = S > l ? U - k : k, 0 > _ && (_ = 2 * U + _), 0 > k && (k = 2 * U + k), s && _ > k && (_ -= 2 * U), !s && k > _ && (k -= 2 * U)
+			}
+			var T = k - _;
+			if(q(T) > p) {
+				var E = k,
+					I = l,
+					N = c;
+				k = _ + p * (s && k > _ ? 1 : -1), l = S + n * j.cos(k), c = C + i * j.sin(k), f = Mt(l, c, n, i, r, 0, s, I, N, [k, E, S, C])
+			}
+			T = k - _;
+			var L = j.cos(_),
+				A = j.sin(_),
+				M = j.cos(k),
+				R = j.sin(k),
+				F = j.tan(T / 4),
+				O = 4 / 3 * n * F,
+				B = 4 / 3 * i * F,
+				$ = [e, t],
+				G = [e + O * A, t - B * L],
+				H = [l + O * R, c - B * M],
+				z = [l, c];
+			if(G[0] = 2 * $[0] - G[0], G[1] = 2 * $[1] - G[1], u) return [G, H, z][D](f);
+			f = [G, H, z][D](f).join()[P](",");
+			for(var V = [], W = 0, X = f.length; X > W; W++) V[W] = W % 2 ? m(f[W - 1], f[W], h).y : m(f[W], f[W + 1], h).x;
+			return V
+		}, Rt = function(e, t, n, i, r, o, a, s, l) {
+			var c = 1 - l;
+			return {
+				x: H(c, 3) * e + 3 * H(c, 2) * l * n + 3 * c * l * l * r + H(l, 3) * a,
+				y: H(c, 3) * t + 3 * H(c, 2) * l * i + 3 * c * l * l * o + H(l, 3) * s
+			}
+		}, Pt = o(function(e, t, n, i, r, o, a, s) {
+			var l, c = r - 2 * n + e - (a - 2 * r + n),
+				u = 2 * (n - e) - 2 * (r - n),
+				d = e - n,
+				p = (-u + j.sqrt(u * u - 4 * c * d)) / 2 / c,
+				h = (-u - j.sqrt(u * u - 4 * c * d)) / 2 / c,
+				f = [t, s],
+				m = [e, a];
+			return q(p) > "1e12" && (p = .5), q(h) > "1e12" && (h = .5), p > 0 && 1 > p && (l = Rt(e, t, n, i, r, o, a, s, p), m.push(l.x), f.push(l.y)), h > 0 && 1 > h && (l = Rt(e, t, n, i, r, o, a, s, h), m.push(l.x), f.push(l.y)), c = o - 2 * i + t - (s - 2 * o + i), u = 2 * (i - t) - 2 * (o - i), d = t - i, p = (-u + j.sqrt(u * u - 4 * c * d)) / 2 / c, h = (-u - j.sqrt(u * u - 4 * c * d)) / 2 / c, q(p) > "1e12" && (p = .5), q(h) > "1e12" && (h = .5), p > 0 && 1 > p && (l = Rt(e, t, n, i, r, o, a, s, p), m.push(l.x), f.push(l.y)), h > 0 && 1 > h && (l = Rt(e, t, n, i, r, o, a, s, h), m.push(l.x), f.push(l.y)), {
+				min: {
+					x: G[N](0, m),
+					y: G[N](0, f)
+				},
+				max: {
+					x: $[N](0, m),
+					y: $[N](0, f)
+				}
+			}
+		}),
+		Ft = n._path2curve = o(function(e, t) {
+			var n = !t && Tt(e);
+			if(!t && n.curve) return It(n.curve);
+			for(var i = Dt(e), r = t && Dt(t), o = {
+					x: 0,
+					y: 0,
+					bx: 0,
+					by: 0,
+					X: 0,
+					Y: 0,
+					qx: null,
+					qy: null
+				}, a = {
+					x: 0,
+					y: 0,
+					bx: 0,
+					by: 0,
+					X: 0,
+					Y: 0,
+					qx: null,
+					qy: null
+				}, s = (function(e, t, n) {
+					var i, r;
+					if(!e) return ["C", t.x, t.y, t.x, t.y, t.x, t.y];
+					switch(!(e[0] in {
+						T: 1,
+						Q: 1
+					}) && (t.qx = t.qy = null), e[0]) {
+						case "M":
+							t.X = e[1], t.Y = e[2];
+							break;
+						case "A":
+							e = ["C"][D](Mt[N](0, [t.x, t.y][D](e.slice(1))));
+							break;
+						case "S":
+							"C" == n || "S" == n ? (i = 2 * t.x - t.bx, r = 2 * t.y - t.by) : (i = t.x, r = t.y), e = ["C", i, r][D](e.slice(1));
+							break;
+						case "T":
+							"Q" == n || "T" == n ? (t.qx = 2 * t.x - t.qx, t.qy = 2 * t.y - t.qy) : (t.qx = t.x, t.qy = t.y), e = ["C"][D](At(t.x, t.y, t.qx, t.qy, e[1], e[2]));
+							break;
+						case "Q":
+							t.qx = e[1], t.qy = e[2], e = ["C"][D](At(t.x, t.y, e[1], e[2], e[3], e[4]));
+							break;
+						case "L":
+							e = ["C"][D](Lt(t.x, t.y, e[1], e[2]));
+							break;
+						case "H":
+							e = ["C"][D](Lt(t.x, t.y, e[1], t.y));
+							break;
+						case "V":
+							e = ["C"][D](Lt(t.x, t.y, t.x, e[1]));
+							break;
+						case "Z":
+							e = ["C"][D](Lt(t.x, t.y, t.X, t.Y))
+					}
+					return e
+				}), l = function(e, t) {
+					if(e[t].length > 7) {
+						e[t].shift();
+						for(var n = e[t]; n.length;) e.splice(t++, 0, ["C"][D](n.splice(0, 6)));
+						e.splice(t, 1), d = $(i.length, r && r.length || 0)
+					}
+				}, c = function(e, t, n, o, a) {
+					e && t && "M" == e[a][0] && "M" != t[a][0] && (t.splice(a, 0, ["M", o.x, o.y]), n.bx = 0, n.by = 0, n.x = e[a][1], n.y = e[a][2], d = $(i.length, r && r.length || 0))
+				}, u = 0, d = $(i.length, r && r.length || 0); d > u; u++) {
+				i[u] = s(i[u], o), l(i, u), r && (r[u] = s(r[u], a)), r && l(r, u), c(i, r, o, a, u), c(r, i, a, o, u);
+				var p = i[u],
+					h = r && r[u],
+					f = p.length,
+					m = r && h.length;
+				o.x = p[f - 2], o.y = p[f - 1], o.bx = Z(p[f - 4]) || o.x, o.by = Z(p[f - 3]) || o.y, a.bx = r && (Z(h[m - 4]) || a.x), a.by = r && (Z(h[m - 3]) || a.y), a.x = r && h[m - 2], a.y = r && h[m - 1]
+			}
+			return r || (n.curve = It(i)), r ? [i, r] : i
+		}, null, It),
+		Ot = (n._parseDots = o(function(e) {
+			for(var t = [], i = 0, r = e.length; r > i; i++) {
+				var o = {}, a = e[i].match(/^([^:]*):?([\d\.]*)/);
+				if(o.color = n.getRGB(a[1]), o.color.error) return null;
+				o.color = o.color.hex, a[2] && (o.offset = a[2] + "%"), t.push(o)
+			}
+			for(i = 1, r = t.length - 1; r > i; i++)
+				if(!t[i].offset) {
+					for(var s = Z(t[i - 1].offset || 0), l = 0, c = i + 1; r > c; c++)
+						if(t[c].offset) {
+							l = t[c].offset;
+							break
+						}
+					l || (l = 100, c = r), l = Z(l);
+					for(var u = (l - s) / (c - i + 1); c > i; i++) s += u, t[i].offset = s + "%"
+				}
+			return t
+		}), n._tear = function(e, t) {
+			e == t.top && (t.top = e.prev), e == t.bottom && (t.bottom = e.next), e.next && (e.next.prev = e.prev), e.prev && (e.prev.next = e.next)
+		}),
+		Bt = (n._tofront = function(e, t) {
+			t.top !== e && (Ot(e, t), e.next = null, e.prev = t.top, t.top.next = e, t.top = e)
+		}, n._toback = function(e, t) {
+			t.bottom !== e && (Ot(e, t), e.next = t.bottom, e.prev = null, t.bottom.prev = e, t.bottom = e)
+		}, n._insertafter = function(e, t, n) {
+			Ot(e, n), t == n.top && (n.top = e), t.next && (t.next.prev = e), e.next = t.next, e.prev = t, t.next = e
+		}, n._insertbefore = function(e, t, n) {
+			Ot(e, n), t == n.bottom && (n.bottom = e), t.prev && (t.prev.next = e), e.prev = t.prev, t.prev = e, e.next = t
+		}, n.toMatrix = function(e, t) {
+			var n = Et(e),
+				i = {
+					_: {
+						transform: A
+					},
+					getBBox: function() {
+						return n
+					}
+				};
+			return jt(i, t), i.matrix
+		}),
+		jt = (n.transformPath = function(e, t) {
+			return vt(e, Bt(e, t))
+		}, n._extractTransform = function(e, t) {
+			if(null == t) return e._.transform;
+			t = R(t).replace(/\.{3}|\u2026/g, e._.transform || A);
+			var i = n.parseTransformString(t),
+				r = 0,
+				o = 0,
+				a = 0,
+				s = 1,
+				l = 1,
+				c = e._,
+				u = new f;
+			if(c.transform = i || [], i)
+				for(var d = 0, p = i.length; p > d; d++) {
+					var h, m, g, v, b, y = i[d],
+						x = y.length,
+						w = R(y[0]).toLowerCase(),
+						S = y[0] != w,
+						C = S ? u.invert() : 0;
+					"t" == w && 3 == x ? S ? (h = C.x(0, 0), m = C.y(0, 0), g = C.x(y[1], y[2]), v = C.y(y[1], y[2]), u.translate(g - h, v - m)) : u.translate(y[1], y[2]) : "r" == w ? 2 == x ? (b = b || e.getBBox(1), u.rotate(y[1], b.x + b.width / 2, b.y + b.height / 2), r += y[1]) : 4 == x && (S ? (g = C.x(y[2], y[3]), v = C.y(y[2], y[3]), u.rotate(y[1], g, v)) : u.rotate(y[1], y[2], y[3]), r += y[1]) : "s" == w ? 2 == x || 3 == x ? (b = b || e.getBBox(1), u.scale(y[1], y[x - 1], b.x + b.width / 2, b.y + b.height / 2), s *= y[1], l *= y[x - 1]) : 5 == x && (S ? (g = C.x(y[3], y[4]), v = C.y(y[3], y[4]), u.scale(y[1], y[2], g, v)) : u.scale(y[1], y[2], y[3], y[4]), s *= y[1], l *= y[2]) : "m" == w && 7 == x && u.add(y[1], y[2], y[3], y[4], y[5], y[6]), c.dirtyT = 1, e.matrix = u
+				}
+			e.matrix = u, c.sx = s, c.sy = l, c.deg = r, c.dx = o = u.e, c.dy = a = u.f, 1 == s && 1 == l && !r && c.bbox ? (c.bbox.x += +o, c.bbox.y += +a) : c.dirtyT = 1
+		}),
+		$t = function(e) {
+			var t = e[0];
+			switch(t.toLowerCase()) {
+				case "t":
+					return [t, 0, 0];
+				case "m":
+					return [t, 1, 0, 0, 1, 0, 0];
+				case "r":
+					return 4 == e.length ? [t, 0, e[2], e[3]] : [t, 0];
+				case "s":
+					return 5 == e.length ? [t, 1, 1, e[3], e[4]] : 3 == e.length ? [t, 1, 1] : [t, 1]
+			}
+		}, Gt = n._equaliseTransform = function(e, t) {
+			t = R(t).replace(/\.{3}|\u2026/g, e), e = n.parseTransformString(e) || [], t = n.parseTransformString(t) || [];
+			for(var i, r, o, a, s = $(e.length, t.length), l = [], c = [], u = 0; s > u; u++) {
+				if(o = e[u] || $t(t[u]), a = t[u] || $t(o), o[0] != a[0] || "r" == o[0].toLowerCase() && (o[2] != a[2] || o[3] != a[3]) || "s" == o[0].toLowerCase() && (o[3] != a[3] || o[4] != a[4])) return;
+				for(l[u] = [], c[u] = [], i = 0, r = $(o.length, a.length); r > i; i++) i in o && (l[u][i] = o[i]), i in a && (c[u][i] = a[i])
+			}
+			return {
+				from: l,
+				to: c
+			}
+		};
+	n._getContainer = function(e, t, i, r) {
+		var o;
+		return o = null != r || n.is(e, "object") ? e : T.doc.getElementById(e), null != o ? o.tagName ? null == t ? {
+			container: o,
+			width: o.style.pixelWidth || o.offsetWidth,
+			height: o.style.pixelHeight || o.offsetHeight
+		} : {
+			container: o,
+			width: t,
+			height: i
+		} : {
+			container: 1,
+			x: e,
+			y: t,
+			width: i,
+			height: r
+		} : void 0
+	}, n.pathToRelative = Nt, n._engine = {}, n.path2curve = Ft, n.matrix = function(e, t, n, i, r, o) {
+		return new f(e, t, n, i, r, o)
+	},
+	function(e) {
+		function t(e) {
+			return e[0] * e[0] + e[1] * e[1]
+		}
+
+		function i(e) {
+			var n = j.sqrt(t(e));
+			e[0] && (e[0] /= n), e[1] && (e[1] /= n)
+		}
+		e.add = function(e, t, n, i, r, o) {
+			var a, s, l, c, u = [[], [], []],
+				d = [[this.a, this.c, this.e], [this.b, this.d, this.f], [0, 0, 1]],
+				p = [[e, n, r], [t, i, o], [0, 0, 1]];
+			for(e && e instanceof f && (p = [[e.a, e.c, e.e], [e.b, e.d, e.f], [0, 0, 1]]), a = 0; 3 > a; a++)
+				for(s = 0; 3 > s; s++) {
+					for(c = 0, l = 0; 3 > l; l++) c += d[a][l] * p[l][s];
+					u[a][s] = c
+				}
+			this.a = u[0][0], this.b = u[1][0], this.c = u[0][1], this.d = u[1][1], this.e = u[0][2], this.f = u[1][2]
+		}, e.invert = function() {
+			var e = this,
+				t = e.a * e.d - e.b * e.c;
+			return new f(e.d / t, -e.b / t, -e.c / t, e.a / t, (e.c * e.f - e.d * e.e) / t, (e.b * e.e - e.a * e.f) / t)
+		}, e.clone = function() {
+			return new f(this.a, this.b, this.c, this.d, this.e, this.f)
+		}, e.translate = function(e, t) {
+			this.add(1, 0, 0, 1, e, t)
+		}, e.scale = function(e, t, n, i) {
+			null == t && (t = e), (n || i) && this.add(1, 0, 0, 1, n, i), this.add(e, 0, 0, t, 0, 0), (n || i) && this.add(1, 0, 0, 1, -n, -i)
+		}, e.rotate = function(e, t, i) {
+			e = n.rad(e), t = t || 0, i = i || 0;
+			var r = +j.cos(e).toFixed(9),
+				o = +j.sin(e).toFixed(9);
+			this.add(r, o, -o, r, t, i), this.add(1, 0, 0, 1, -t, -i)
+		}, e.x = function(e, t) {
+			return e * this.a + t * this.c + this.e
+		}, e.y = function(e, t) {
+			return e * this.b + t * this.d + this.f
+		}, e.get = function(e) {
+			return +this[R.fromCharCode(97 + e)].toFixed(4)
+		}, e.toString = function() {
+			return n.svg ? "matrix(" + [this.get(0), this.get(1), this.get(2), this.get(3), this.get(4), this.get(5)].join() + ")" : [this.get(0), this.get(2), this.get(1), this.get(3), 0, 0].join()
+		}, e.toFilter = function() {
+			return "progid:DXImageTransform.Microsoft.Matrix(M11=" + this.get(0) + ", M12=" + this.get(2) + ", M21=" + this.get(1) + ", M22=" + this.get(3) + ", Dx=" + this.get(4) + ", Dy=" + this.get(5) + ", sizingmethod='auto expand')"
+		}, e.offset = function() {
+			return [this.e.toFixed(4), this.f.toFixed(4)]
+		}, e.split = function() {
+			var e = {};
+			e.dx = this.e, e.dy = this.f;
+			var r = [[this.a, this.c], [this.b, this.d]];
+			e.scalex = j.sqrt(t(r[0])), i(r[0]), e.shear = r[0][0] * r[1][0] + r[0][1] * r[1][1], r[1] = [r[1][0] - r[0][0] * e.shear, r[1][1] - r[0][1] * e.shear], e.scaley = j.sqrt(t(r[1])), i(r[1]), e.shear /= e.scaley;
+			var o = -r[0][1],
+				a = r[1][1];
+			return 0 > a ? (e.rotate = n.deg(j.acos(a)), 0 > o && (e.rotate = 360 - e.rotate)) : e.rotate = n.deg(j.asin(o)), e.isSimple = !(+e.shear.toFixed(9) || e.scalex.toFixed(9) != e.scaley.toFixed(9) && e.rotate), e.isSuperSimple = !+e.shear.toFixed(9) && e.scalex.toFixed(9) == e.scaley.toFixed(9) && !e.rotate, e.noRotation = !+e.shear.toFixed(9) && !e.rotate, e
+		}, e.toTransformString = function(e) {
+			var t = e || this[P]();
+			return t.isSimple ? (t.scalex = +t.scalex.toFixed(4), t.scaley = +t.scaley.toFixed(4), t.rotate = +t.rotate.toFixed(4), (t.dx || t.dy ? "t" + [t.dx, t.dy] : A) + (1 != t.scalex || 1 != t.scaley ? "s" + [t.scalex, t.scaley, 0, 0] : A) + (t.rotate ? "r" + [t.rotate, 0, 0] : A)) : "m" + [this.get(0), this.get(1), this.get(2), this.get(3), this.get(4), this.get(5)]
+		}
+	}(f.prototype);
+	var qt = navigator.userAgent.match(/Version\/(.*?)\s/) || navigator.userAgent.match(/Chrome\/(\d+)/);
+	w.safari = "Apple Computer, Inc." == navigator.vendor && (qt && qt[1] < 4 || "iP" == navigator.platform.slice(0, 2)) || "Google Inc." == navigator.vendor && qt && qt[1] < 8 ? function() {
+		var e = this.rect(-99, -99, this.width + 99, this.height + 99).attr({
+			stroke: "none"
+		});
+		setTimeout(function() {
+			e.remove()
+		})
+	} : pt;
+	for(var Ht = function() {
+		this.returnValue = !1
+	}, Ut = function() {
+			return this.originalEvent.preventDefault()
+		}, zt = function() {
+			this.cancelBubble = !0
+		}, Vt = function() {
+			return this.originalEvent.stopPropagation()
+		}, Wt = function(e) {
+			var t = T.doc.documentElement.scrollTop || T.doc.body.scrollTop,
+				n = T.doc.documentElement.scrollLeft || T.doc.body.scrollLeft;
+			return {
+				x: e.clientX + n,
+				y: e.clientY + t
+			}
+		}, Xt = function() {
+			return T.doc.addEventListener ? function(e, t, n, i) {
+				var r = function(e) {
+					var t = Wt(e);
+					return n.call(i, e, t.x, t.y)
+				};
+				if(e.addEventListener(t, r, !1), L && O[t]) {
+					var o = function(t) {
+						for(var r = Wt(t), o = t, a = 0, s = t.targetTouches && t.targetTouches.length; s > a; a++)
+							if(t.targetTouches[a].target == e) {
+								t = t.targetTouches[a], t.originalEvent = o, t.preventDefault = Ut, t.stopPropagation = Vt;
+								break
+							}
+						return n.call(i, t, r.x, r.y)
+					};
+					e.addEventListener(O[t], o, !1)
+				}
+				return function() {
+					return e.removeEventListener(t, r, !1), L && O[t] && e.removeEventListener(O[t], r, !1), !0
+				}
+			} : T.doc.attachEvent ? function(e, t, n, i) {
+				var r = function(e) {
+					e = e || T.win.event;
+					var t = T.doc.documentElement.scrollTop || T.doc.body.scrollTop,
+						r = T.doc.documentElement.scrollLeft || T.doc.body.scrollLeft,
+						o = e.clientX + r,
+						a = e.clientY + t;
+					return e.preventDefault = e.preventDefault || Ht, e.stopPropagation = e.stopPropagation || zt, n.call(i, e, o, a)
+				};
+				e.attachEvent("on" + t, r);
+				var o = function() {
+					return e.detachEvent("on" + t, r), !0
+				};
+				return o
+			} : void 0
+		}(), Qt = [], Yt = function(e) {
+			for(var n, i = e.clientX, r = e.clientY, o = T.doc.documentElement.scrollTop || T.doc.body.scrollTop, a = T.doc.documentElement.scrollLeft || T.doc.body.scrollLeft, s = Qt.length; s--;) {
+				if(n = Qt[s], L && e.touches) {
+					for(var l, c = e.touches.length; c--;)
+						if(l = e.touches[c], l.identifier == n.el._drag.id) {
+							i = l.clientX, r = l.clientY, (e.originalEvent ? e.originalEvent : e).preventDefault();
+							break
+						}
+				} else e.preventDefault();
+				var u, d = n.el.node,
+					p = d.nextSibling,
+					h = d.parentNode,
+					f = d.style.display;
+				T.win.opera && h.removeChild(d), d.style.display = "none", u = n.el.paper.getElementByPoint(i, r), d.style.display = f, T.win.opera && (p ? h.insertBefore(d, p) : h.appendChild(d)), u && t("raphael.drag.over." + n.el.id, n.el, u), i += a, r += o, t("raphael.drag.move." + n.el.id, n.move_scope || n.el, i - n.el._drag.x, r - n.el._drag.y, i, r, e)
+			}
+		}, Kt = function(e) {
+			n.unmousemove(Yt).unmouseup(Kt);
+			for(var i, r = Qt.length; r--;) i = Qt[r], i.el._drag = {}, t("raphael.drag.end." + i.el.id, i.end_scope || i.start_scope || i.move_scope || i.el, e);
+			Qt = []
+		}, Jt = n.el = {}, Zt = F.length; Zt--;)! function(e) {
+		n[e] = Jt[e] = function(t, i) {
+			return n.is(t, "function") && (this.events = this.events || [], this.events.push({
+				name: e,
+				f: t,
+				unbind: Xt(this.shape || this.node || T.doc, e, t, i || this)
+			})), this
+		}, n["un" + e] = Jt["un" + e] = function(t) {
+			for(var i = this.events || [], r = i.length; r--;) i[r].name != e || !n.is(t, "undefined") && i[r].f != t || (i[r].unbind(), i.splice(r, 1), !i.length && delete this.events);
+			return this
+		}
+	}(F[Zt]);
+	Jt.data = function(e, i) {
+		var r = ut[this.id] = ut[this.id] || {};
+		if(0 == arguments.length) return r;
+		if(1 == arguments.length) {
+			if(n.is(e, "object")) {
+				for(var o in e) e[k](o) && this.data(o, e[o]);
+				return this
+			}
+			return t("raphael.data.get." + this.id, this, r[e], e), r[e]
+		}
+		return r[e] = i, t("raphael.data.set." + this.id, this, i, e), this
+	}, Jt.removeData = function(e) {
+		return null == e ? ut[this.id] = {} : ut[this.id] && delete ut[this.id][e], this
+	}, Jt.getData = function() {
+		return i(ut[this.id] || {})
+	}, Jt.hover = function(e, t, n, i) {
+		return this.mouseover(e, n).mouseout(t, i || n)
+	}, Jt.unhover = function(e, t) {
+		return this.unmouseover(e).unmouseout(t)
+	};
+	var en = [];
+	Jt.drag = function(e, i, r, o, a, s) {
+		function l(l) {
+			(l.originalEvent || l).preventDefault();
+			var c = l.clientX,
+				u = l.clientY,
+				d = T.doc.documentElement.scrollTop || T.doc.body.scrollTop,
+				p = T.doc.documentElement.scrollLeft || T.doc.body.scrollLeft;
+			if(this._drag.id = l.identifier, L && l.touches)
+				for(var h, f = l.touches.length; f--;)
+					if(h = l.touches[f], this._drag.id = h.identifier, h.identifier == this._drag.id) {
+						c = h.clientX, u = h.clientY;
+						break
+					}
+			this._drag.x = c + p, this._drag.y = u + d, !Qt.length && n.mousemove(Yt).mouseup(Kt), Qt.push({
+				el: this,
+				move_scope: o,
+				start_scope: a,
+				end_scope: s
+			}), i && t.on("raphael.drag.start." + this.id, i), e && t.on("raphael.drag.move." + this.id, e), r && t.on("raphael.drag.end." + this.id, r), t("raphael.drag.start." + this.id, a || o || this, l.clientX + p, l.clientY + d, l)
+		}
+		return this._drag = {}, en.push({
+			el: this,
+			start: l
+		}), this.mousedown(l), this
+	}, Jt.onDragOver = function(e) {
+		e ? t.on("raphael.drag.over." + this.id, e) : t.unbind("raphael.drag.over." + this.id)
+	}, Jt.undrag = function() {
+		for(var e = en.length; e--;) en[e].el == this && (this.unmousedown(en[e].start), en.splice(e, 1), t.unbind("raphael.drag.*." + this.id));
+		!en.length && n.unmousemove(Yt).unmouseup(Kt), Qt = []
+	}, w.circle = function(e, t, i) {
+		var r = n._engine.circle(this, e || 0, t || 0, i || 0);
+		return this.__set__ && this.__set__.push(r), r
+	}, w.rect = function(e, t, i, r, o) {
+		var a = n._engine.rect(this, e || 0, t || 0, i || 0, r || 0, o || 0);
+		return this.__set__ && this.__set__.push(a), a
+	}, w.ellipse = function(e, t, i, r) {
+		var o = n._engine.ellipse(this, e || 0, t || 0, i || 0, r || 0);
+		return this.__set__ && this.__set__.push(o), o
+	}, w.path = function(e) {
+		e && !n.is(e, V) && !n.is(e[0], W) && (e += A);
+		var t = n._engine.path(n.format[N](n, arguments), this);
+		return this.__set__ && this.__set__.push(t), t
+	}, w.image = function(e, t, i, r, o) {
+		var a = n._engine.image(this, e || "about:blank", t || 0, i || 0, r || 0, o || 0);
+		return this.__set__ && this.__set__.push(a), a
+	}, w.text = function(e, t, i) {
+		var r = n._engine.text(this, e || 0, t || 0, R(i));
+		return this.__set__ && this.__set__.push(r), r
+	}, w.set = function(e) {
+		!n.is(e, "array") && (e = Array.prototype.splice.call(arguments, 0, arguments.length));
+		var t = new hn(e);
+		return this.__set__ && this.__set__.push(t), t.paper = this, t.type = "set", t
+	}, w.setStart = function(e) {
+		this.__set__ = e || this.set()
+	}, w.setFinish = function() {
+		var e = this.__set__;
+		return delete this.__set__, e
+	}, w.setSize = function(e, t) {
+		return n._engine.setSize.call(this, e, t)
+	}, w.setViewBox = function(e, t, i, r, o) {
+		return n._engine.setViewBox.call(this, e, t, i, r, o)
+	}, w.top = w.bottom = null, w.raphael = n;
+	var tn = function(e) {
+		var t = e.getBoundingClientRect(),
+			n = e.ownerDocument,
+			i = n.body,
+			r = n.documentElement,
+			o = r.clientTop || i.clientTop || 0,
+			a = r.clientLeft || i.clientLeft || 0,
+			s = t.top + (T.win.pageYOffset || r.scrollTop || i.scrollTop) - o,
+			l = t.left + (T.win.pageXOffset || r.scrollLeft || i.scrollLeft) - a;
+		return {
+			y: s,
+			x: l
+		}
+	};
+	w.getElementByPoint = function(e, t) {
+		var n = this,
+			i = n.canvas,
+			r = T.doc.elementFromPoint(e, t);
+		if(T.win.opera && "svg" == r.tagName) {
+			var o = tn(i),
+				a = i.createSVGRect();
+			a.x = e - o.x, a.y = t - o.y, a.width = a.height = 1;
+			var s = i.getIntersectionList(a, null);
+			s.length && (r = s[s.length - 1])
+		}
+		if(!r) return null;
+		for(; r.parentNode && r != i.parentNode && !r.raphael;) r = r.parentNode;
+		return r == n.canvas.parentNode && (r = i), r = r && r.raphael ? n.getById(r.raphaelid) : null
+	}, w.getElementsByBBox = function(e) {
+		var t = this.set();
+		return this.forEach(function(i) {
+			n.isBBoxIntersect(i.getBBox(), e) && t.push(i)
+		}), t
+	}, w.getById = function(e) {
+		for(var t = this.bottom; t;) {
+			if(t.id == e) return t;
+			t = t.next
+		}
+		return null
+	}, w.forEach = function(e, t) {
+		for(var n = this.bottom; n;) {
+			if(e.call(t, n) === !1) return this;
+			n = n.next
+		}
+		return this
+	}, w.getElementsByPoint = function(e, t) {
+		var n = this.set();
+		return this.forEach(function(i) {
+			i.isPointInside(e, t) && n.push(i)
+		}), n
+	}, Jt.isPointInside = function(e, t) {
+		var i = this.realPath = gt[this.type](this);
+		return this.attr("transform") && this.attr("transform").length && (i = n.transformPath(i, this.attr("transform"))), n.isPointInsidePath(i, e, t)
+	}, Jt.getBBox = function(e) {
+		if(this.removed) return {};
+		var t = this._;
+		return e ? ((t.dirty || !t.bboxwt) && (this.realPath = gt[this.type](this), t.bboxwt = Et(this.realPath), t.bboxwt.toString = m, t.dirty = 0), t.bboxwt) : ((t.dirty || t.dirtyT || !t.bbox) && ((t.dirty || !this.realPath) && (t.bboxwt = 0, this.realPath = gt[this.type](this)), t.bbox = Et(vt(this.realPath, this.matrix)), t.bbox.toString = m, t.dirty = t.dirtyT = 0), t.bbox)
+	}, Jt.clone = function() {
+		if(this.removed) return null;
+		var e = this.paper[this.type]().attr(this.attr());
+		return this.__set__ && this.__set__.push(e), e
+	}, Jt.glow = function(e) {
+		if("text" == this.type) return null;
+		e = e || {};
+		var t = {
+			width: (e.width || 10) + (+this.attr("stroke-width") || 1),
+			fill: e.fill || !1,
+			opacity: e.opacity || .5,
+			offsetx: e.offsetx || 0,
+			offsety: e.offsety || 0,
+			color: e.color || "#000"
+		}, n = t.width / 2,
+			i = this.paper,
+			r = i.set(),
+			o = this.realPath || gt[this.type](this);
+		o = this.matrix ? vt(o, this.matrix) : o;
+		for(var a = 1; n + 1 > a; a++) r.push(i.path(o).attr({
+			stroke: t.color,
+			fill: t.fill ? t.color : "none",
+			"stroke-linejoin": "round",
+			"stroke-linecap": "round",
+			"stroke-width": +(t.width / n * a).toFixed(3),
+			opacity: +(t.opacity / n).toFixed(3)
+		}));
+		return r.insertBefore(this).translate(t.offsetx, t.offsety)
+	};
+	var nn = function(e, t, i, r, o, a, s, l, d) {
+		return null == d ? c(e, t, i, r, o, a, s, l) : n.findDotsAtSegment(e, t, i, r, o, a, s, l, u(e, t, i, r, o, a, s, l, d))
+	}, rn = function(e, t) {
+			return function(i, r, o) {
+				i = Ft(i);
+				for(var a, s, l, c, u, d = "", p = {}, h = 0, f = 0, m = i.length; m > f; f++) {
+					if(l = i[f], "M" == l[0]) a = +l[1], s = +l[2];
+					else {
+						if(c = nn(a, s, l[1], l[2], l[3], l[4], l[5], l[6]), h + c > r) {
+							if(t && !p.start) {
+								if(u = nn(a, s, l[1], l[2], l[3], l[4], l[5], l[6], r - h), d += ["C" + u.start.x, u.start.y, u.m.x, u.m.y, u.x, u.y], o) return d;
+								p.start = d, d = ["M" + u.x, u.y + "C" + u.n.x, u.n.y, u.end.x, u.end.y, l[5], l[6]].join(), h += c, a = +l[5], s = +l[6];
+								continue
+							}
+							if(!e && !t) return u = nn(a, s, l[1], l[2], l[3], l[4], l[5], l[6], r - h), {
+								x: u.x,
+								y: u.y,
+								alpha: u.alpha
+							}
+						}
+						h += c, a = +l[5], s = +l[6]
+					}
+					d += l.shift() + l
+				}
+				return p.end = d, u = e ? h : t ? p : n.findDotsAtSegment(a, s, l[0], l[1], l[2], l[3], l[4], l[5], 1), u.alpha && (u = {
+					x: u.x,
+					y: u.y,
+					alpha: u.alpha
+				}), u
+			}
+		}, on = rn(1),
+		an = rn(),
+		sn = rn(0, 1);
+	n.getTotalLength = on, n.getPointAtLength = an, n.getSubpath = function(e, t, n) {
+		if(this.getTotalLength(e) - n < 1e-6) return sn(e, t).end;
+		var i = sn(e, n, 1);
+		return t ? sn(i, t).end : i
+	}, Jt.getTotalLength = function() {
+		var e = this.getPath();
+		if(e) return this.node.getTotalLength ? this.node.getTotalLength() : on(e)
+	}, Jt.getPointAtLength = function(e) {
+		var t = this.getPath();
+		if(t) return an(t, e)
+	}, Jt.getPath = function() {
+		var e, t = n._getPath[this.type];
+		if("text" != this.type && "set" != this.type) return t && (e = t(this)), e
+	}, Jt.getSubpath = function(e, t) {
+		var i = this.getPath();
+		if(i) return n.getSubpath(i, e, t)
+	};
+	var ln = n.easing_formulas = {
+		linear: function(e) {
+			return e
+		},
+		"<": function(e) {
+			return H(e, 1.7)
+		},
+		">": function(e) {
+			return H(e, .48)
+		},
+		"<>": function(e) {
+			var t = .48 - e / 1.04,
+				n = j.sqrt(.1734 + t * t),
+				i = n - t,
+				r = H(q(i), 1 / 3) * (0 > i ? -1 : 1),
+				o = -n - t,
+				a = H(q(o), 1 / 3) * (0 > o ? -1 : 1),
+				s = r + a + .5;
+			return 3 * (1 - s) * s * s + s * s * s
+		},
+		backIn: function(e) {
+			var t = 1.70158;
+			return e * e * ((t + 1) * e - t)
+		},
+		backOut: function(e) {
+			e -= 1;
+			var t = 1.70158;
+			return e * e * ((t + 1) * e + t) + 1
+		},
+		elastic: function(e) {
+			return e == !! e ? e : H(2, -10 * e) * j.sin(2 * (e - .075) * U / .3) + 1
+		},
+		bounce: function(e) {
+			var t, n = 7.5625,
+				i = 2.75;
+			return 1 / i > e ? t = n * e * e : 2 / i > e ? (e -= 1.5 / i, t = n * e * e + .75) : 2.5 / i > e ? (e -= 2.25 / i, t = n * e * e + .9375) : (e -= 2.625 / i, t = n * e * e + .984375), t
+		}
+	};
+	ln.easeIn = ln["ease-in"] = ln["<"], ln.easeOut = ln["ease-out"] = ln[">"], ln.easeInOut = ln["ease-in-out"] = ln["<>"], ln["back-in"] = ln.backIn, ln["back-out"] = ln.backOut;
+	var cn = [],
+		un = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function(e) {
+			setTimeout(e, 16)
+		}, dn = function() {
+			for(var e = +new Date, i = 0; i < cn.length; i++) {
+				var r = cn[i];
+				if(!r.el.removed && !r.paused) {
+					var o, a, s = e - r.start,
+						l = r.ms,
+						c = r.easing,
+						u = r.from,
+						d = r.diff,
+						p = r.to,
+						h = (r.t, r.el),
+						f = {}, m = {};
+					if(r.initstatus ? (s = (r.initstatus * r.anim.top - r.prev) / (r.percent - r.prev) * l, r.status = r.initstatus, delete r.initstatus, r.stop && cn.splice(i--, 1)) : r.status = (r.prev + (r.percent - r.prev) * (s / l)) / r.anim.top, !(0 > s))
+						if(l > s) {
+							var g = c(s / l);
+							for(var v in u)
+								if(u[k](v)) {
+									switch(it[v]) {
+										case z:
+											o = +u[v] + g * l * d[v];
+											break;
+										case "colour":
+											o = "rgb(" + [pn(J(u[v].r + g * l * d[v].r)), pn(J(u[v].g + g * l * d[v].g)), pn(J(u[v].b + g * l * d[v].b))].join(",") + ")";
+											break;
+										case "path":
+											o = [];
+											for(var y = 0, x = u[v].length; x > y; y++) {
+												o[y] = [u[v][y][0]];
+												for(var w = 1, S = u[v][y].length; S > w; w++) o[y][w] = +u[v][y][w] + g * l * d[v][y][w];
+												o[y] = o[y].join(M)
+											}
+											o = o.join(M);
+											break;
+										case "transform":
+											if(d[v].real)
+												for(o = [], y = 0, x = u[v].length; x > y; y++)
+													for(o[y] = [u[v][y][0]], w = 1, S = u[v][y].length; S > w; w++) o[y][w] = u[v][y][w] + g * l * d[v][y][w];
+											else {
+												var C = function(e) {
+													return +u[v][e] + g * l * d[v][e]
+												};
+												o = [["m", C(0), C(1), C(2), C(3), C(4), C(5)]]
+											}
+											break;
+										case "csv":
+											if("clip-rect" == v)
+												for(o = [], y = 4; y--;) o[y] = +u[v][y] + g * l * d[v][y];
+											break;
+										default:
+											var _ = [][D](u[v]);
+											for(o = [], y = h.paper.customAttributes[v].length; y--;) o[y] = +_[y] + g * l * d[v][y]
+									}
+									f[v] = o
+								}
+							h.attr(f),
+							function(e, n, i) {
+								setTimeout(function() {
+									t("raphael.anim.frame." + e, n, i)
+								})
+							}(h.id, h, r.anim)
+						} else {
+							if(function(e, i, r) {
+								setTimeout(function() {
+									t("raphael.anim.frame." + i.id, i, r), t("raphael.anim.finish." + i.id, i, r), n.is(e, "function") && e.call(i)
+								})
+							}(r.callback, h, r.anim), h.attr(p), cn.splice(i--, 1), r.repeat > 1 && !r.next) {
+								for(a in p) p[k](a) && (m[a] = r.totalOrigin[a]);
+								r.el.attr(m), b(r.anim, r.el, r.anim.percents[0], null, r.totalOrigin, r.repeat - 1)
+							}
+							r.next && !r.stop && b(r.anim, r.el, r.next, null, r.totalOrigin, r.repeat)
+						}
+				}
+			}
+			n.svg && h && h.paper && h.paper.safari(), cn.length && un(dn)
+		}, pn = function(e) {
+			return e > 255 ? 255 : 0 > e ? 0 : e
+		};
+	Jt.animateWith = function(e, t, i, r, o, a) {
+		var s = this;
+		if(s.removed) return a && a.call(s), s;
+		var l = i instanceof v ? i : n.animation(i, r, o, a);
+		b(l, s, l.percents[0], null, s.attr());
+		for(var c = 0, u = cn.length; u > c; c++)
+			if(cn[c].anim == t && cn[c].el == e) {
+				cn[u - 1].start = cn[c].start;
+				break
+			}
+		return s
+	}, Jt.onAnimation = function(e) {
+		return e ? t.on("raphael.anim.frame." + this.id, e) : t.unbind("raphael.anim.frame." + this.id), this
+	}, v.prototype.delay = function(e) {
+		var t = new v(this.anim, this.ms);
+		return t.times = this.times, t.del = +e || 0, t
+	}, v.prototype.repeat = function(e) {
+		var t = new v(this.anim, this.ms);
+		return t.del = this.del, t.times = j.floor($(e, 0)) || 1, t
+	}, n.animation = function(e, t, i, r) {
+		if(e instanceof v) return e;
+		(n.is(i, "function") || !i) && (r = r || i || null, i = null), e = Object(e), t = +t || 0;
+		var o, a, s = {};
+		for(a in e) e[k](a) && Z(a) != a && Z(a) + "%" != a && (o = !0, s[a] = e[a]);
+		return o ? (i && (s.easing = i), r && (s.callback = r), new v({
+			100: s
+		}, t)) : new v(e, t)
+	}, Jt.animate = function(e, t, i, r) {
+		var o = this;
+		if(o.removed) return r && r.call(o), o;
+		var a = e instanceof v ? e : n.animation(e, t, i, r);
+		return b(a, o, a.percents[0], null, o.attr()), o
+	}, Jt.setTime = function(e, t) {
+		return e && null != t && this.status(e, G(t, e.ms) / e.ms), this
+	}, Jt.status = function(e, t) {
+		var n, i, r = [],
+			o = 0;
+		if(null != t) return b(e, this, -1, G(t, 1)), this;
+		for(n = cn.length; n > o; o++)
+			if(i = cn[o], i.el.id == this.id && (!e || i.anim == e)) {
+				if(e) return i.status;
+				r.push({
+					anim: i.anim,
+					status: i.status
+				})
+			}
+		return e ? 0 : r
+	}, Jt.pause = function(e) {
+		for(var n = 0; n < cn.length; n++) cn[n].el.id != this.id || e && cn[n].anim != e || t("raphael.anim.pause." + this.id, this, cn[n].anim) !== !1 && (cn[n].paused = !0);
+		return this
+	}, Jt.resume = function(e) {
+		for(var n = 0; n < cn.length; n++)
+			if(cn[n].el.id == this.id && (!e || cn[n].anim == e)) {
+				var i = cn[n];
+				t("raphael.anim.resume." + this.id, this, i.anim) !== !1 && (delete i.paused, this.status(i.anim, i.status))
+			}
+		return this
+	}, Jt.stop = function(e) {
+		for(var n = 0; n < cn.length; n++) cn[n].el.id != this.id || e && cn[n].anim != e || t("raphael.anim.stop." + this.id, this, cn[n].anim) !== !1 && cn.splice(n--, 1);
+		return this
+	}, t.on("raphael.remove", y), t.on("raphael.clear", y), Jt.toString = function() {
+		return "Raphaël’s object"
+	};
+	var hn = function(e) {
+		if(this.items = [], this.length = 0, this.type = "set", e)
+			for(var t = 0, n = e.length; n > t; t++)!e[t] || e[t].constructor != Jt.constructor && e[t].constructor != hn || (this[this.items.length] = this.items[this.items.length] = e[t], this.length++)
+	}, fn = hn.prototype;
+	fn.push = function() {
+		for(var e, t, n = 0, i = arguments.length; i > n; n++) e = arguments[n], !e || e.constructor != Jt.constructor && e.constructor != hn || (t = this.items.length, this[t] = this.items[t] = e, this.length++);
+		return this
+	}, fn.pop = function() {
+		return this.length && delete this[this.length--], this.items.pop()
+	}, fn.forEach = function(e, t) {
+		for(var n = 0, i = this.items.length; i > n; n++)
+			if(e.call(t, this.items[n], n) === !1) return this;
+		return this
+	};
+	for(var mn in Jt) Jt[k](mn) && (fn[mn] = function(e) {
+		return function() {
+			var t = arguments;
+			return this.forEach(function(n) {
+				n[e][N](n, t)
+			})
+		}
+	}(mn));
+	return fn.attr = function(e, t) {
+		if(e && n.is(e, W) && n.is(e[0], "object"))
+			for(var i = 0, r = e.length; r > i; i++) this.items[i].attr(e[i]);
+		else
+			for(var o = 0, a = this.items.length; a > o; o++) this.items[o].attr(e, t);
+		return this
+	}, fn.clear = function() {
+		for(; this.length;) this.pop()
+	}, fn.splice = function(e, t) {
+		e = 0 > e ? $(this.length + e, 0) : e, t = $(0, G(this.length - e, t));
+		var n, i = [],
+			r = [],
+			o = [];
+		for(n = 2; n < arguments.length; n++) o.push(arguments[n]);
+		for(n = 0; t > n; n++) r.push(this[e + n]);
+		for(; n < this.length - e; n++) i.push(this[e + n]);
+		var a = o.length;
+		for(n = 0; n < a + i.length; n++) this.items[e + n] = this[e + n] = a > n ? o[n] : i[n - a];
+		for(n = this.items.length = this.length -= t - a; this[n];) delete this[n++];
+		return new hn(r)
+	}, fn.exclude = function(e) {
+		for(var t = 0, n = this.length; n > t; t++)
+			if(this[t] == e) return this.splice(t, 1), !0
+	}, fn.animate = function(e, t, i, r) {
+		(n.is(i, "function") || !i) && (r = i || null);
+		var o, a, s = this.items.length,
+			l = s,
+			c = this;
+		if(!s) return this;
+		r && (a = function() {
+			!--s && r.call(c)
+		}), i = n.is(i, V) ? i : a;
+		var u = n.animation(e, t, i, a);
+		for(o = this.items[--l].animate(u); l--;) this.items[l] && !this.items[l].removed && this.items[l].animateWith(o, u, u), this.items[l] && !this.items[l].removed || s--;
+		return this
+	}, fn.insertAfter = function(e) {
+		for(var t = this.items.length; t--;) this.items[t].insertAfter(e);
+		return this
+	}, fn.getBBox = function() {
+		for(var e = [], t = [], n = [], i = [], r = this.items.length; r--;)
+			if(!this.items[r].removed) {
+				var o = this.items[r].getBBox();
+				e.push(o.x), t.push(o.y), n.push(o.x + o.width), i.push(o.y + o.height)
+			}
+		return e = G[N](0, e), t = G[N](0, t), n = $[N](0, n), i = $[N](0, i), {
+			x: e,
+			y: t,
+			x2: n,
+			y2: i,
+			width: n - e,
+			height: i - t
+		}
+	}, fn.clone = function(e) {
+		e = this.paper.set();
+		for(var t = 0, n = this.items.length; n > t; t++) e.push(this.items[t].clone());
+		return e
+	}, fn.toString = function() {
+		return "Raphaël‘s set"
+	}, fn.glow = function(e) {
+		var t = this.paper.set();
+		return this.forEach(function(n) {
+			var i = n.glow(e);
+			null != i && i.forEach(function(e) {
+				t.push(e)
+			})
+		}), t
+	}, fn.isPointInside = function(e, t) {
+		var n = !1;
+		return this.forEach(function(i) {
+			return i.isPointInside(e, t) ? (console.log("runned"), n = !0, !1) : void 0
+		}), n
+	}, n.registerFont = function(e) {
+		if(!e.face) return e;
+		this.fonts = this.fonts || {};
+		var t = {
+			w: e.w,
+			face: {},
+			glyphs: {}
+		}, n = e.face["font-family"];
+		for(var i in e.face) e.face[k](i) && (t.face[i] = e.face[i]);
+		if(this.fonts[n] ? this.fonts[n].push(t) : this.fonts[n] = [t], !e.svg) {
+			t.face["units-per-em"] = et(e.face["units-per-em"], 10);
+			for(var r in e.glyphs)
+				if(e.glyphs[k](r)) {
+					var o = e.glyphs[r];
+					if(t.glyphs[r] = {
+						w: o.w,
+						k: {},
+						d: o.d && "M" + o.d.replace(/[mlcxtrv]/g, function(e) {
+							return {
+								l: "L",
+								c: "C",
+								x: "z",
+								t: "m",
+								r: "l",
+								v: "c"
+							}[e] || "M"
+						}) + "z"
+					}, o.k)
+						for(var a in o.k) o[k](a) && (t.glyphs[r].k[a] = o.k[a])
+				}
+		}
+		return e
+	}, w.getFont = function(e, t, i, r) {
+		if(r = r || "normal", i = i || "normal", t = +t || {
+			normal: 400,
+			bold: 700,
+			lighter: 300,
+			bolder: 800
+		}[t] || 400, n.fonts) {
+			var o = n.fonts[e];
+			if(!o) {
+				var a = new RegExp("(^|\\s)" + e.replace(/[^\w\d\s+!~.:_-]/g, A) + "(\\s|$)", "i");
+				for(var s in n.fonts)
+					if(n.fonts[k](s) && a.test(s)) {
+						o = n.fonts[s];
+						break
+					}
+			}
+			var l;
+			if(o)
+				for(var c = 0, u = o.length; u > c && (l = o[c], l.face["font-weight"] != t || l.face["font-style"] != i && l.face["font-style"] || l.face["font-stretch"] != r); c++);
+			return l
+		}
+	}, w.print = function(e, t, i, r, o, a, s, l) {
+		a = a || "middle", s = $(G(s || 0, 1), -1), l = $(G(l || 1, 3), 1);
+		var c, u = R(i)[P](A),
+			d = 0,
+			p = 0,
+			h = A;
+		if(n.is(r, "string") && (r = this.getFont(r)), r) {
+			c = (o || 16) / r.face["units-per-em"];
+			for(var f = r.face.bbox[P](S), m = +f[0], g = f[3] - f[1], v = 0, b = +f[1] + ("baseline" == a ? g + +r.face.descent : g / 2), y = 0, x = u.length; x > y; y++) {
+				if("\n" == u[y]) d = 0, C = 0, p = 0, v += g * l;
+				else {
+					var w = p && r.glyphs[u[y - 1]] || {}, C = r.glyphs[u[y]];
+					d += p ? (w.w || r.w) + (w.k && w.k[u[y]] || 0) + r.w * s : 0, p = 1
+				}
+				C && C.d && (h += n.transformPath(C.d, ["t", d * c, v * c, "s", c, c, m, b, "t", (e - m) / c, (t - b) / c]))
+			}
+		}
+		return this.path(h).attr({
+			fill: "#000",
+			stroke: "none"
+		})
+	}, w.add = function(e) {
+		if(n.is(e, "array"))
+			for(var t, i = this.set(), r = 0, o = e.length; o > r; r++) t = e[r] || {}, C[k](t.type) && i.push(this[t.type]().attr(t));
+		return i
+	}, n.format = function(e, t) {
+		var i = n.is(t, W) ? [0][D](t) : arguments;
+		return e && n.is(e, V) && i.length - 1 && (e = e.replace(_, function(e, t) {
+			return null == i[++t] ? A : i[t]
+		})), e || A
+	}, n.fullfill = function() {
+		var e = /\{([^\}]+)\}/g,
+			t = /(?:(?:^|\.)(.+?)(?=\[|\.|$|\()|\[('|")(.+?)\2\])(\(\))?/g,
+			n = function(e, n, i) {
+				var r = i;
+				return n.replace(t, function(e, t, n, i, o) {
+					t = t || i, r && (t in r && (r = r[t]), "function" == typeof r && o && (r = r()))
+				}), r = (null == r || r == i ? e : r) + ""
+			};
+		return function(t, i) {
+			return String(t).replace(e, function(e, t) {
+				return n(e, t, i)
+			})
+		}
+	}(), n.ninja = function() {
+		return E.was ? T.win.Raphael = E.is : delete Raphael, n
+	}, n.st = fn,
+	function(e, t, i) {
+		function r() {
+			/in/.test(e.readyState) ? setTimeout(r, 9) : n.eve("raphael.DOMload")
+		}
+		null == e.readyState && e.addEventListener && (e.addEventListener(t, i = function() {
+			e.removeEventListener(t, i, !1), e.readyState = "complete"
+		}, !1), e.readyState = "loading"), r()
+	}(document, "DOMContentLoaded"), t.on("raphael.DOMload", function() {
+		x = !0
+	}),
+	function() {
+		if(n.svg) {
+			var e = "hasOwnProperty",
+				t = String,
+				i = parseFloat,
+				r = parseInt,
+				o = Math,
+				a = o.max,
+				s = o.abs,
+				l = o.pow,
+				c = /[, ]+/,
+				u = n.eve,
+				d = "",
+				p = " ",
+				h = "http://www.w3.org/1999/xlink",
+				f = {
+					block: "M5,0 0,2.5 5,5z",
+					classic: "M5,0 0,2.5 5,5 3.5,3 3.5,2z",
+					diamond: "M2.5,0 5,2.5 2.5,5 0,2.5z",
+					open: "M6,1 1,3.5 6,6",
+					oval: "M2.5,0A2.5,2.5,0,0,1,2.5,5 2.5,2.5,0,0,1,2.5,0z"
+				}, m = {};
+			n.toString = function() {
+				return "Your browser supports SVG.\nYou are running Raphaël " + this.version
+			};
+			var g = function(i, r) {
+				if(r) {
+					"string" == typeof i && (i = g(i));
+					for(var o in r) r[e](o) && ("xlink:" == o.substring(0, 6) ? i.setAttributeNS(h, o.substring(6), t(r[o])) : i.setAttribute(o, t(r[o])))
+				} else i = n._g.doc.createElementNS("http://www.w3.org/2000/svg", i), i.style && (i.style.webkitTapHighlightColor = "rgba(0,0,0,0)");
+				return i
+			}, v = function(e, r) {
+					var c = "linear",
+						u = e.id + r,
+						p = .5,
+						h = .5,
+						f = e.node,
+						m = e.paper,
+						v = f.style,
+						b = n._g.doc.getElementById(u);
+					if(!b) {
+						if(r = t(r).replace(n._radial_gradient, function(e, t, n) {
+							if(c = "radial", t && n) {
+								p = i(t), h = i(n);
+								var r = 2 * (h > .5) - 1;
+								l(p - .5, 2) + l(h - .5, 2) > .25 && (h = o.sqrt(.25 - l(p - .5, 2)) * r + .5) && .5 != h && (h = h.toFixed(5) - 1e-5 * r)
+							}
+							return d
+						}), r = r.split(/\s*\-\s*/), "linear" == c) {
+							var y = r.shift();
+							if(y = -i(y), isNaN(y)) return null;
+							var x = [0, 0, o.cos(n.rad(y)), o.sin(n.rad(y))],
+								w = 1 / (a(s(x[2]), s(x[3])) || 1);
+							x[2] *= w, x[3] *= w, x[2] < 0 && (x[0] = -x[2], x[2] = 0), x[3] < 0 && (x[1] = -x[3], x[3] = 0)
+						}
+						var S = n._parseDots(r);
+						if(!S) return null;
+						if(u = u.replace(/[\(\)\s,\xb0#]/g, "_"), e.gradient && u != e.gradient.id && (m.defs.removeChild(e.gradient), delete e.gradient), !e.gradient) {
+							b = g(c + "Gradient", {
+								id: u
+							}), e.gradient = b, g(b, "radial" == c ? {
+								fx: p,
+								fy: h
+							} : {
+								x1: x[0],
+								y1: x[1],
+								x2: x[2],
+								y2: x[3],
+								gradientTransform: e.matrix.invert()
+							}), m.defs.appendChild(b);
+							for(var C = 0, _ = S.length; _ > C; C++) b.appendChild(g("stop", {
+								offset: S[C].offset ? S[C].offset : C ? "100%" : "0%",
+								"stop-color": S[C].color || "#fff"
+							}))
+						}
+					}
+					return g(f, {
+						fill: "url(#" + u + ")",
+						opacity: 1,
+						"fill-opacity": 1
+					}), v.fill = d, v.opacity = 1, v.fillOpacity = 1, 1
+				}, b = function(e) {
+					var t = e.getBBox(1);
+					g(e.pattern, {
+						patternTransform: e.matrix.invert() + " translate(" + t.x + "," + t.y + ")"
+					})
+				}, y = function(i, r, o) {
+					if("path" == i.type) {
+						for(var a, s, l, c, u, p = t(r).toLowerCase().split("-"), h = i.paper, v = o ? "end" : "start", b = i.node, y = i.attrs, x = y["stroke-width"], w = p.length, S = "classic", C = 3, _ = 3, k = 5; w--;) switch(p[w]) {
+							case "block":
+							case "classic":
+							case "oval":
+							case "diamond":
+							case "open":
+							case "none":
+								S = p[w];
+								break;
+							case "wide":
+								_ = 5;
+								break;
+							case "narrow":
+								_ = 2;
+								break;
+							case "long":
+								C = 5;
+								break;
+							case "short":
+								C = 2
+						}
+						if("open" == S ? (C += 2, _ += 2, k += 2, l = 1, c = o ? 4 : 1, u = {
+							fill: "none",
+							stroke: y.stroke
+						}) : (c = l = C / 2, u = {
+							fill: y.stroke,
+							stroke: "none"
+						}), i._.arrows ? o ? (i._.arrows.endPath && m[i._.arrows.endPath]--, i._.arrows.endMarker && m[i._.arrows.endMarker]--) : (i._.arrows.startPath && m[i._.arrows.startPath]--, i._.arrows.startMarker && m[i._.arrows.startMarker]--) : i._.arrows = {}, "none" != S) {
+							var T = "raphael-marker-" + S,
+								E = "raphael-marker-" + v + S + C + _;
+							n._g.doc.getElementById(T) ? m[T]++ : (h.defs.appendChild(g(g("path"), {
+								"stroke-linecap": "round",
+								d: f[S],
+								id: T
+							})), m[T] = 1);
+							var I, N = n._g.doc.getElementById(E);
+							N ? (m[E]++, I = N.getElementsByTagName("use")[0]) : (N = g(g("marker"), {
+								id: E,
+								markerHeight: _,
+								markerWidth: C,
+								orient: "auto",
+								refX: c,
+								refY: _ / 2
+							}), I = g(g("use"), {
+								"xlink:href": "#" + T,
+								transform: (o ? "rotate(180 " + C / 2 + " " + _ / 2 + ") " : d) + "scale(" + C / k + "," + _ / k + ")",
+								"stroke-width": (1 / ((C / k + _ / k) / 2)).toFixed(4)
+							}), N.appendChild(I), h.defs.appendChild(N), m[E] = 1), g(I, u);
+							var D = l * ("diamond" != S && "oval" != S);
+							o ? (a = i._.arrows.startdx * x || 0, s = n.getTotalLength(y.path) - D * x) : (a = D * x, s = n.getTotalLength(y.path) - (i._.arrows.enddx * x || 0)), u = {}, u["marker-" + v] = "url(#" + E + ")", (s || a) && (u.d = n.getSubpath(y.path, a, s)), g(b, u), i._.arrows[v + "Path"] = T, i._.arrows[v + "Marker"] = E, i._.arrows[v + "dx"] = D, i._.arrows[v + "Type"] = S, i._.arrows[v + "String"] = r
+						} else o ? (a = i._.arrows.startdx * x || 0, s = n.getTotalLength(y.path) - a) : (a = 0, s = n.getTotalLength(y.path) - (i._.arrows.enddx * x || 0)), i._.arrows[v + "Path"] && g(b, {
+							d: n.getSubpath(y.path, a, s)
+						}), delete i._.arrows[v + "Path"], delete i._.arrows[v + "Marker"], delete i._.arrows[v + "dx"], delete i._.arrows[v + "Type"], delete i._.arrows[v + "String"];
+						for(u in m)
+							if(m[e](u) && !m[u]) {
+								var L = n._g.doc.getElementById(u);
+								L && L.parentNode.removeChild(L)
+							}
+					}
+				}, x = {
+					"": [0],
+					none: [0],
+					"-": [3, 1],
+					".": [1, 1],
+					"-.": [3, 1, 1, 1],
+					"-..": [3, 1, 1, 1, 1, 1],
+					". ": [1, 3],
+					"- ": [4, 3],
+					"--": [8, 3],
+					"- .": [4, 3, 1, 3],
+					"--.": [8, 3, 1, 3],
+					"--..": [8, 3, 1, 3, 1, 3]
+				}, w = function(e, n, i) {
+					if(n = x[t(n).toLowerCase()]) {
+						for(var r = e.attrs["stroke-width"] || "1", o = {
+								round: r,
+								square: r,
+								butt: 0
+							}[e.attrs["stroke-linecap"] || i["stroke-linecap"]] || 0, a = [], s = n.length; s--;) a[s] = n[s] * r + (s % 2 ? 1 : -1) * o;
+						g(e.node, {
+							"stroke-dasharray": a.join(",")
+						})
+					}
+				}, S = function(i, o) {
+					var l = i.node,
+						u = i.attrs,
+						p = l.style.visibility;
+					l.style.visibility = "hidden";
+					for(var f in o)
+						if(o[e](f)) {
+							if(!n._availableAttrs[e](f)) continue;
+							var m = o[f];
+							switch(u[f] = m, f) {
+								case "blur":
+									i.blur(m);
+									break;
+								case "href":
+								case "title":
+									var x = g("title"),
+										S = n._g.doc.createTextNode(m);
+									x.appendChild(S), l.appendChild(x);
+									break;
+								case "target":
+									var C = l.parentNode;
+									if("a" != C.tagName.toLowerCase()) {
+										var x = g("a");
+										C.insertBefore(x, l), x.appendChild(l), C = x
+									}
+									"target" == f ? C.setAttributeNS(h, "show", "blank" == m ? "new" : m) : C.setAttributeNS(h, f, m);
+									break;
+								case "cursor":
+									l.style.cursor = m;
+									break;
+								case "transform":
+									i.transform(m);
+									break;
+								case "arrow-start":
+									y(i, m);
+									break;
+								case "arrow-end":
+									y(i, m, 1);
+									break;
+								case "clip-rect":
+									var k = t(m).split(c);
+									if(4 == k.length) {
+										i.clip && i.clip.parentNode.parentNode.removeChild(i.clip.parentNode);
+										var T = g("clipPath"),
+											E = g("rect");
+										T.id = n.createUUID(), g(E, {
+											x: k[0],
+											y: k[1],
+											width: k[2],
+											height: k[3]
+										}), T.appendChild(E), i.paper.defs.appendChild(T), g(l, {
+											"clip-path": "url(#" + T.id + ")"
+										}), i.clip = E
+									}
+									if(!m) {
+										var I = l.getAttribute("clip-path");
+										if(I) {
+											var N = n._g.doc.getElementById(I.replace(/(^url\(#|\)$)/g, d));
+											N && N.parentNode.removeChild(N), g(l, {
+												"clip-path": d
+											}), delete i.clip
+										}
+									}
+									break;
+								case "path":
+									"path" == i.type && (g(l, {
+										d: m ? u.path = n._pathToAbsolute(m) : "M0,0"
+									}), i._.dirty = 1, i._.arrows && ("startString" in i._.arrows && y(i, i._.arrows.startString), "endString" in i._.arrows && y(i, i._.arrows.endString, 1)));
+									break;
+								case "width":
+									if(l.setAttribute(f, m), i._.dirty = 1, !u.fx) break;
+									f = "x", m = u.x;
+								case "x":
+									u.fx && (m = -u.x - (u.width || 0));
+								case "rx":
+									if("rx" == f && "rect" == i.type) break;
+								case "cx":
+									l.setAttribute(f, m), i.pattern && b(i), i._.dirty = 1;
+									break;
+								case "height":
+									if(l.setAttribute(f, m), i._.dirty = 1, !u.fy) break;
+									f = "y", m = u.y;
+								case "y":
+									u.fy && (m = -u.y - (u.height || 0));
+								case "ry":
+									if("ry" == f && "rect" == i.type) break;
+								case "cy":
+									l.setAttribute(f, m), i.pattern && b(i), i._.dirty = 1;
+									break;
+								case "r":
+									"rect" == i.type ? g(l, {
+										rx: m,
+										ry: m
+									}) : l.setAttribute(f, m), i._.dirty = 1;
+									break;
+								case "src":
+									"image" == i.type && l.setAttributeNS(h, "href", m);
+									break;
+								case "stroke-width":
+									(1 != i._.sx || 1 != i._.sy) && (m /= a(s(i._.sx), s(i._.sy)) || 1), i.paper._vbSize && (m *= i.paper._vbSize), l.setAttribute(f, m), u["stroke-dasharray"] && w(i, u["stroke-dasharray"], o), i._.arrows && ("startString" in i._.arrows && y(i, i._.arrows.startString), "endString" in i._.arrows && y(i, i._.arrows.endString, 1));
+									break;
+								case "stroke-dasharray":
+									w(i, m, o);
+									break;
+								case "fill":
+									var D = t(m).match(n._ISURL);
+									if(D) {
+										T = g("pattern");
+										var L = g("image");
+										T.id = n.createUUID(), g(T, {
+											x: 0,
+											y: 0,
+											patternUnits: "userSpaceOnUse",
+											height: 1,
+											width: 1
+										}), g(L, {
+											x: 0,
+											y: 0,
+											"xlink:href": D[1]
+										}), T.appendChild(L),
+										function(e) {
+											n._preload(D[1], function() {
+												var t = this.offsetWidth,
+													n = this.offsetHeight;
+												g(e, {
+													width: t,
+													height: n
+												}), g(L, {
+													width: t,
+													height: n
+												}), i.paper.safari()
+											})
+										}(T), i.paper.defs.appendChild(T), g(l, {
+											fill: "url(#" + T.id + ")"
+										}), i.pattern = T, i.pattern && b(i);
+										break
+									}
+									var A = n.getRGB(m);
+									if(A.error) {
+										if(("circle" == i.type || "ellipse" == i.type || "r" != t(m).charAt()) && v(i, m)) {
+											if("opacity" in u || "fill-opacity" in u) {
+												var M = n._g.doc.getElementById(l.getAttribute("fill").replace(/^url\(#|\)$/g, d));
+												if(M) {
+													var R = M.getElementsByTagName("stop");
+													g(R[R.length - 1], {
+														"stop-opacity": ("opacity" in u ? u.opacity : 1) * ("fill-opacity" in u ? u["fill-opacity"] : 1)
+													})
+												}
+											}
+											u.gradient = m, u.fill = "none";
+											break
+										}
+									} else delete o.gradient, delete u.gradient, !n.is(u.opacity, "undefined") && n.is(o.opacity, "undefined") && g(l, {
+										opacity: u.opacity
+									}), !n.is(u["fill-opacity"], "undefined") && n.is(o["fill-opacity"], "undefined") && g(l, {
+										"fill-opacity": u["fill-opacity"]
+									});
+									A[e]("opacity") && g(l, {
+										"fill-opacity": A.opacity > 1 ? A.opacity / 100 : A.opacity
+									});
+								case "stroke":
+									A = n.getRGB(m), l.setAttribute(f, A.hex), "stroke" == f && A[e]("opacity") && g(l, {
+										"stroke-opacity": A.opacity > 1 ? A.opacity / 100 : A.opacity
+									}), "stroke" == f && i._.arrows && ("startString" in i._.arrows && y(i, i._.arrows.startString), "endString" in i._.arrows && y(i, i._.arrows.endString, 1));
+									break;
+								case "gradient":
+									("circle" == i.type || "ellipse" == i.type || "r" != t(m).charAt()) && v(i, m);
+									break;
+								case "opacity":
+									u.gradient && !u[e]("stroke-opacity") && g(l, {
+										"stroke-opacity": m > 1 ? m / 100 : m
+									});
+								case "fill-opacity":
+									if(u.gradient) {
+										M = n._g.doc.getElementById(l.getAttribute("fill").replace(/^url\(#|\)$/g, d)), M && (R = M.getElementsByTagName("stop"), g(R[R.length - 1], {
+											"stop-opacity": m
+										}));
+										break
+									}
+								default:
+									"font-size" == f && (m = r(m, 10) + "px");
+									var P = f.replace(/(\-.)/g, function(e) {
+										return e.substring(1).toUpperCase()
+									});
+									l.style[P] = m, i._.dirty = 1, l.setAttribute(f, m)
+							}
+						}
+					_(i, o), l.style.visibility = p
+				}, C = 1.2,
+				_ = function(i, o) {
+					if("text" == i.type && (o[e]("text") || o[e]("font") || o[e]("font-size") || o[e]("x") || o[e]("y"))) {
+						var a = i.attrs,
+							s = i.node,
+							l = s.firstChild ? r(n._g.doc.defaultView.getComputedStyle(s.firstChild, d).getPropertyValue("font-size"), 10) : 10;
+						if(o[e]("text")) {
+							for(a.text = o.text; s.firstChild;) s.removeChild(s.firstChild);
+							for(var c, u = t(o.text).split("\n"), p = [], h = 0, f = u.length; f > h; h++) c = g("tspan"), h && g(c, {
+								dy: l * C,
+								x: a.x
+							}), c.appendChild(n._g.doc.createTextNode(u[h])), s.appendChild(c), p[h] = c
+						} else
+							for(p = s.getElementsByTagName("tspan"), h = 0, f = p.length; f > h; h++) h ? g(p[h], {
+								dy: l * C,
+								x: a.x
+							}) : g(p[0], {
+								dy: 0
+							});
+						g(s, {
+							x: a.x,
+							y: a.y
+						}), i._.dirty = 1;
+						var m = i._getBBox(),
+							v = a.y - (m.y + m.height / 2);
+						v && n.is(v, "finite") && g(p[0], {
+							dy: v
+						})
+					}
+				}, k = function(e, t) {
+					this[0] = this.node = e, e.raphael = !0, this.id = n._oid++, e.raphaelid = this.id, this.matrix = n.matrix(), this.realPath = null, this.paper = t, this.attrs = this.attrs || {}, this._ = {
+						transform: [],
+						sx: 1,
+						sy: 1,
+						deg: 0,
+						dx: 0,
+						dy: 0,
+						dirty: 1
+					}, !t.bottom && (t.bottom = this), this.prev = t.top, t.top && (t.top.next = this), t.top = this, this.next = null
+				}, T = n.el;
+			k.prototype = T, T.constructor = k, n._engine.path = function(e, t) {
+				var n = g("path");
+				t.canvas && t.canvas.appendChild(n);
+				var i = new k(n, t);
+				return i.type = "path", S(i, {
+					fill: "none",
+					stroke: "#000",
+					path: e
+				}), i
+			}, T.rotate = function(e, n, r) {
+				if(this.removed) return this;
+				if(e = t(e).split(c), e.length - 1 && (n = i(e[1]), r = i(e[2])), e = i(e[0]), null == r && (n = r), null == n || null == r) {
+					var o = this.getBBox(1);
+					n = o.x + o.width / 2, r = o.y + o.height / 2
+				}
+				return this.transform(this._.transform.concat([["r", e, n, r]])), this
+			}, T.scale = function(e, n, r, o) {
+				if(this.removed) return this;
+				if(e = t(e).split(c), e.length - 1 && (n = i(e[1]), r = i(e[2]), o = i(e[3])), e = i(e[0]), null == n && (n = e), null == o && (r = o), null == r || null == o) var a = this.getBBox(1);
+				return r = null == r ? a.x + a.width / 2 : r, o = null == o ? a.y + a.height / 2 : o, this.transform(this._.transform.concat([["s", e, n, r, o]])), this
+			}, T.translate = function(e, n) {
+				return this.removed ? this : (e = t(e).split(c), e.length - 1 && (n = i(e[1])), e = i(e[0]) || 0, n = +n || 0, this.transform(this._.transform.concat([["t", e, n]])), this)
+			}, T.transform = function(t) {
+				var i = this._;
+				if(null == t) return i.transform;
+				if(n._extractTransform(this, t), this.clip && g(this.clip, {
+					transform: this.matrix.invert()
+				}), this.pattern && b(this), this.node && g(this.node, {
+					transform: this.matrix
+				}), 1 != i.sx || 1 != i.sy) {
+					var r = this.attrs[e]("stroke-width") ? this.attrs["stroke-width"] : 1;
+					this.attr({
+						"stroke-width": r
+					})
+				}
+				return this
+			}, T.hide = function() {
+				return !this.removed && this.paper.safari(this.node.style.display = "none"), this
+			}, T.show = function() {
+				return !this.removed && this.paper.safari(this.node.style.display = ""), this
+			}, T.remove = function() {
+				if(!this.removed && this.node.parentNode) {
+					var e = this.paper;
+					e.__set__ && e.__set__.exclude(this), u.unbind("raphael.*.*." + this.id), this.gradient && e.defs.removeChild(this.gradient), n._tear(this, e), "a" == this.node.parentNode.tagName.toLowerCase() ? this.node.parentNode.parentNode.removeChild(this.node.parentNode) : this.node.parentNode.removeChild(this.node);
+					for(var t in this) this[t] = "function" == typeof this[t] ? n._removedFactory(t) : null;
+					this.removed = !0
+				}
+			}, T._getBBox = function() {
+				if("none" == this.node.style.display) {
+					this.show();
+					var e = !0
+				}
+				var t = {};
+				try {
+					t = this.node.getBBox()
+				} catch(n) {} finally {
+					t = t || {}
+				}
+				return e && this.hide(), t
+			}, T.attr = function(t, i) {
+				if(this.removed) return this;
+				if(null == t) {
+					var r = {};
+					for(var o in this.attrs) this.attrs[e](o) && (r[o] = this.attrs[o]);
+					return r.gradient && "none" == r.fill && (r.fill = r.gradient) && delete r.gradient, r.transform = this._.transform, r
+				}
+				if(null == i && n.is(t, "string")) {
+					if("fill" == t && "none" == this.attrs.fill && this.attrs.gradient) return this.attrs.gradient;
+					if("transform" == t) return this._.transform;
+					for(var a = t.split(c), s = {}, l = 0, d = a.length; d > l; l++) t = a[l], s[t] = t in this.attrs ? this.attrs[t] : n.is(this.paper.customAttributes[t], "function") ? this.paper.customAttributes[t].def : n._availableAttrs[t];
+					return d - 1 ? s : s[a[0]]
+				}
+				if(null == i && n.is(t, "array")) {
+					for(s = {}, l = 0, d = t.length; d > l; l++) s[t[l]] = this.attr(t[l]);
+					return s
+				}
+				if(null != i) {
+					var p = {};
+					p[t] = i
+				} else null != t && n.is(t, "object") && (p = t);
+				for(var h in p) u("raphael.attr." + h + "." + this.id, this, p[h]);
+				for(h in this.paper.customAttributes)
+					if(this.paper.customAttributes[e](h) && p[e](h) && n.is(this.paper.customAttributes[h], "function")) {
+						var f = this.paper.customAttributes[h].apply(this, [].concat(p[h]));
+						this.attrs[h] = p[h];
+						for(var m in f) f[e](m) && (p[m] = f[m])
+					}
+				return S(this, p), this
+			}, T.toFront = function() {
+				if(this.removed) return this;
+				"a" == this.node.parentNode.tagName.toLowerCase() ? this.node.parentNode.parentNode.appendChild(this.node.parentNode) : this.node.parentNode.appendChild(this.node);
+				var e = this.paper;
+				return e.top != this && n._tofront(this, e), this
+			}, T.toBack = function() {
+				if(this.removed) return this;
+				var e = this.node.parentNode;
+				"a" == e.tagName.toLowerCase() ? e.parentNode.insertBefore(this.node.parentNode, this.node.parentNode.parentNode.firstChild) : e.firstChild != this.node && e.insertBefore(this.node, this.node.parentNode.firstChild), n._toback(this, this.paper);
+				this.paper;
+				return this
+			}, T.insertAfter = function(e) {
+				if(this.removed) return this;
+				var t = e.node || e[e.length - 1].node;
+				return t.nextSibling ? t.parentNode.insertBefore(this.node, t.nextSibling) : t.parentNode.appendChild(this.node), n._insertafter(this, e, this.paper), this
+			}, T.insertBefore = function(e) {
+				if(this.removed) return this;
+				var t = e.node || e[0].node;
+				return t.parentNode.insertBefore(this.node, t), n._insertbefore(this, e, this.paper), this
+			}, T.blur = function(e) {
+				var t = this;
+				if(0 !== +e) {
+					var i = g("filter"),
+						r = g("feGaussianBlur");
+					t.attrs.blur = e, i.id = n.createUUID(), g(r, {
+						stdDeviation: +e || 1.5
+					}), i.appendChild(r), t.paper.defs.appendChild(i), t._blur = i, g(t.node, {
+						filter: "url(#" + i.id + ")"
+					})
+				} else t._blur && (t._blur.parentNode.removeChild(t._blur), delete t._blur, delete t.attrs.blur), t.node.removeAttribute("filter");
+				return t
+			}, n._engine.circle = function(e, t, n, i) {
+				var r = g("circle");
+				e.canvas && e.canvas.appendChild(r);
+				var o = new k(r, e);
+				return o.attrs = {
+					cx: t,
+					cy: n,
+					r: i,
+					fill: "none",
+					stroke: "#000"
+				}, o.type = "circle", g(r, o.attrs), o
+			}, n._engine.rect = function(e, t, n, i, r, o) {
+				var a = g("rect");
+				e.canvas && e.canvas.appendChild(a);
+				var s = new k(a, e);
+				return s.attrs = {
+					x: t,
+					y: n,
+					width: i,
+					height: r,
+					r: o || 0,
+					rx: o || 0,
+					ry: o || 0,
+					fill: "none",
+					stroke: "#000"
+				}, s.type = "rect", g(a, s.attrs), s
+			}, n._engine.ellipse = function(e, t, n, i, r) {
+				var o = g("ellipse");
+				e.canvas && e.canvas.appendChild(o);
+				var a = new k(o, e);
+				return a.attrs = {
+					cx: t,
+					cy: n,
+					rx: i,
+					ry: r,
+					fill: "none",
+					stroke: "#000"
+				}, a.type = "ellipse", g(o, a.attrs), a
+			}, n._engine.image = function(e, t, n, i, r, o) {
+				var a = g("image");
+				g(a, {
+					x: n,
+					y: i,
+					width: r,
+					height: o,
+					preserveAspectRatio: "none"
+				}), a.setAttributeNS(h, "href", t), e.canvas && e.canvas.appendChild(a);
+				var s = new k(a, e);
+				return s.attrs = {
+					x: n,
+					y: i,
+					width: r,
+					height: o,
+					src: t
+				}, s.type = "image", s
+			}, n._engine.text = function(e, t, i, r) {
+				var o = g("text");
+				e.canvas && e.canvas.appendChild(o);
+				var a = new k(o, e);
+				return a.attrs = {
+					x: t,
+					y: i,
+					"text-anchor": "middle",
+					text: r,
+					font: n._availableAttrs.font,
+					stroke: "none",
+					fill: "#000"
+				}, a.type = "text", S(a, a.attrs), a
+			}, n._engine.setSize = function(e, t) {
+				return this.width = e || this.width, this.height = t || this.height, this.canvas.setAttribute("width", this.width), this.canvas.setAttribute("height", this.height), this._viewBox && this.setViewBox.apply(this, this._viewBox), this
+			}, n._engine.create = function() {
+				var e = n._getContainer.apply(0, arguments),
+					t = e && e.container,
+					i = e.x,
+					r = e.y,
+					o = e.width,
+					a = e.height;
+				if(!t) throw new Error("SVG container not found.");
+				var s, l = g("svg"),
+					c = "overflow:hidden;";
+				return i = i || 0, r = r || 0, o = o || 512, a = a || 342, g(l, {
+					height: a,
+					version: 1.1,
+					width: o,
+					xmlns: "http://www.w3.org/2000/svg"
+				}), 1 == t ? (l.style.cssText = c + "position:absolute;left:" + i + "px;top:" + r + "px", n._g.doc.body.appendChild(l), s = 1) : (l.style.cssText = c + "position:relative", t.firstChild ? t.insertBefore(l, t.firstChild) : t.appendChild(l)), t = new n._Paper, t.width = o, t.height = a, t.canvas = l, t.clear(), t._left = t._top = 0, s && (t.renderfix = function() {}), t.renderfix(), t
+			}, n._engine.setViewBox = function(e, t, n, i, r) {
+				u("raphael.setViewBox", this, this._viewBox, [e, t, n, i, r]);
+				var o, s, l = a(n / this.width, i / this.height),
+					c = this.top,
+					d = r ? "meet" : "xMinYMin";
+				for(null == e ? (this._vbSize && (l = 1), delete this._vbSize, o = "0 0 " + this.width + p + this.height) : (this._vbSize = l, o = e + p + t + p + n + p + i), g(this.canvas, {
+					viewBox: o,
+					preserveAspectRatio: d
+				}); l && c;) s = "stroke-width" in c.attrs ? c.attrs["stroke-width"] : 1, c.attr({
+					"stroke-width": s
+				}), c._.dirty = 1, c._.dirtyT = 1, c = c.prev;
+				return this._viewBox = [e, t, n, i, !! r], this
+			}, n.prototype.renderfix = function() {
+				var e, t = this.canvas,
+					n = t.style;
+				try {
+					e = t.getScreenCTM() || t.createSVGMatrix()
+				} catch(i) {
+					e = t.createSVGMatrix()
+				}
+				var r = -e.e % 1,
+					o = -e.f % 1;
+				(r || o) && (r && (this._left = (this._left + r) % 1, n.left = this._left + "px"), o && (this._top = (this._top + o) % 1, n.top = this._top + "px"))
+			}, n.prototype.clear = function() {
+				n.eve("raphael.clear", this);
+				for(var e = this.canvas; e.firstChild;) e.removeChild(e.firstChild);
+				this.bottom = this.top = null, (this.desc = g("desc")).appendChild(n._g.doc.createTextNode("Created with Raphaël " + n.version)), e.appendChild(this.desc), e.appendChild(this.defs = g("defs"))
+			}, n.prototype.remove = function() {
+				u("raphael.remove", this), this.canvas.parentNode && this.canvas.parentNode.removeChild(this.canvas);
+				for(var e in this) this[e] = "function" == typeof this[e] ? n._removedFactory(e) : null
+			};
+			var E = n.st;
+			for(var I in T) T[e](I) && !E[e](I) && (E[I] = function(e) {
+				return function() {
+					var t = arguments;
+					return this.forEach(function(n) {
+						n[e].apply(n, t)
+					})
+				}
+			}(I))
+		}
+	}(),
+	function() {
+		if(n.vml) {
+			var e = "hasOwnProperty",
+				t = String,
+				i = parseFloat,
+				r = Math,
+				o = r.round,
+				a = r.max,
+				s = r.min,
+				l = r.abs,
+				c = "fill",
+				u = /[, ]+/,
+				d = n.eve,
+				p = " progid:DXImageTransform.Microsoft",
+				h = " ",
+				f = "",
+				m = {
+					M: "m",
+					L: "l",
+					C: "c",
+					Z: "x",
+					m: "t",
+					l: "r",
+					c: "v",
+					z: "x"
+				}, g = /([clmz]),?([^clmz]*)/gi,
+				v = / progid:\S+Blur\([^\)]+\)/g,
+				b = /-?[^,\s-]+/g,
+				y = "position:absolute;left:0;top:0;width:1px;height:1px",
+				x = 21600,
+				w = {
+					path: 1,
+					rect: 1,
+					image: 1
+				}, S = {
+					circle: 1,
+					ellipse: 1
+				}, C = function(e) {
+					var i = /[ahqstv]/gi,
+						r = n._pathToAbsolute;
+					if(t(e).match(i) && (r = n._path2curve), i = /[clmz]/g, r == n._pathToAbsolute && !t(e).match(i)) {
+						var a = t(e).replace(g, function(e, t, n) {
+							var i = [],
+								r = "m" == t.toLowerCase(),
+								a = m[t];
+							return n.replace(b, function(e) {
+								r && 2 == i.length && (a += i + m["m" == t ? "l" : "L"], i = []), i.push(o(e * x))
+							}), a + i
+						});
+						return a
+					}
+					var s, l, c = r(e);
+					a = [];
+					for(var u = 0, d = c.length; d > u; u++) {
+						s = c[u], l = c[u][0].toLowerCase(), "z" == l && (l = "x");
+						for(var p = 1, v = s.length; v > p; p++) l += o(s[p] * x) + (p != v - 1 ? "," : f);
+						a.push(l)
+					}
+					return a.join(h)
+				}, _ = function(e, t, i) {
+					var r = n.matrix();
+					return r.rotate(-e, .5, .5), {
+						dx: r.x(t, i),
+						dy: r.y(t, i)
+					}
+				}, k = function(e, t, n, i, r, o) {
+					var a = e._,
+						s = e.matrix,
+						u = a.fillpos,
+						d = e.node,
+						p = d.style,
+						f = 1,
+						m = "",
+						g = x / t,
+						v = x / n;
+					if(p.visibility = "hidden", t && n) {
+						if(d.coordsize = l(g) + h + l(v), p.rotation = o * (0 > t * n ? -1 : 1), o) {
+							var b = _(o, i, r);
+							i = b.dx, r = b.dy
+						}
+						if(0 > t && (m += "x"), 0 > n && (m += " y") && (f = -1), p.flip = m, d.coordorigin = i * -g + h + r * -v, u || a.fillsize) {
+							var y = d.getElementsByTagName(c);
+							y = y && y[0], d.removeChild(y), u && (b = _(o, s.x(u[0], u[1]), s.y(u[0], u[1])), y.position = b.dx * f + h + b.dy * f), a.fillsize && (y.size = a.fillsize[0] * l(t) + h + a.fillsize[1] * l(n)), d.appendChild(y)
+						}
+						p.visibility = "visible"
+					}
+				};
+			n.toString = function() {
+				return "Your browser doesn’t support SVG. Falling down to VML.\nYou are running Raphaël " + this.version
+			};
+			var T = function(e, n, i) {
+				for(var r = t(n).toLowerCase().split("-"), o = i ? "end" : "start", a = r.length, s = "classic", l = "medium", c = "medium"; a--;) switch(r[a]) {
+					case "block":
+					case "classic":
+					case "oval":
+					case "diamond":
+					case "open":
+					case "none":
+						s = r[a];
+						break;
+					case "wide":
+					case "narrow":
+						c = r[a];
+						break;
+					case "long":
+					case "short":
+						l = r[a]
+				}
+				var u = e.node.getElementsByTagName("stroke")[0];
+				u[o + "arrow"] = s, u[o + "arrowlength"] = l, u[o + "arrowwidth"] = c
+			}, E = function(r, l) {
+					r.attrs = r.attrs || {};
+					var d = r.node,
+						p = r.attrs,
+						m = d.style,
+						g = w[r.type] && (l.x != p.x || l.y != p.y || l.width != p.width || l.height != p.height || l.cx != p.cx || l.cy != p.cy || l.rx != p.rx || l.ry != p.ry || l.r != p.r),
+						v = S[r.type] && (p.cx != l.cx || p.cy != l.cy || p.r != l.r || p.rx != l.rx || p.ry != l.ry),
+						b = r;
+					for(var y in l) l[e](y) && (p[y] = l[y]);
+					if(g && (p.path = n._getPath[r.type](r), r._.dirty = 1), l.href && (d.href = l.href), l.title && (d.title = l.title), l.target && (d.target = l.target), l.cursor && (m.cursor = l.cursor), "blur" in l && r.blur(l.blur), (l.path && "path" == r.type || g) && (d.path = C(~t(p.path).toLowerCase().indexOf("r") ? n._pathToAbsolute(p.path) : p.path), "image" == r.type && (r._.fillpos = [p.x, p.y], r._.fillsize = [p.width, p.height], k(r, 1, 1, 0, 0, 0))), "transform" in l && r.transform(l.transform), v) {
+						var _ = +p.cx,
+							E = +p.cy,
+							N = +p.rx || +p.r || 0,
+							D = +p.ry || +p.r || 0;
+						d.path = n.format("ar{0},{1},{2},{3},{4},{1},{4},{1}x", o((_ - N) * x), o((E - D) * x), o((_ + N) * x), o((E + D) * x), o(_ * x)), r._.dirty = 1
+					}
+					if("clip-rect" in l) {
+						var A = t(l["clip-rect"]).split(u);
+						if(4 == A.length) {
+							A[2] = +A[2] + +A[0], A[3] = +A[3] + +A[1];
+							var M = d.clipRect || n._g.doc.createElement("div"),
+								R = M.style;
+							R.clip = n.format("rect({1}px {2}px {3}px {0}px)", A), d.clipRect || (R.position = "absolute", R.top = 0, R.left = 0, R.width = r.paper.width + "px", R.height = r.paper.height + "px", d.parentNode.insertBefore(M, d), M.appendChild(d), d.clipRect = M)
+						}
+						l["clip-rect"] || d.clipRect && (d.clipRect.style.clip = "auto")
+					}
+					if(r.textpath) {
+						var P = r.textpath.style;
+						l.font && (P.font = l.font), l["font-family"] && (P.fontFamily = '"' + l["font-family"].split(",")[0].replace(/^['"]+|['"]+$/g, f) + '"'), l["font-size"] && (P.fontSize = l["font-size"]), l["font-weight"] && (P.fontWeight = l["font-weight"]), l["font-style"] && (P.fontStyle = l["font-style"])
+					}
+					if("arrow-start" in l && T(b, l["arrow-start"]), "arrow-end" in l && T(b, l["arrow-end"], 1), null != l.opacity || null != l["stroke-width"] || null != l.fill || null != l.src || null != l.stroke || null != l["stroke-width"] || null != l["stroke-opacity"] || null != l["fill-opacity"] || null != l["stroke-dasharray"] || null != l["stroke-miterlimit"] || null != l["stroke-linejoin"] || null != l["stroke-linecap"]) {
+						var F = d.getElementsByTagName(c),
+							O = !1;
+						if(F = F && F[0], !F && (O = F = L(c)), "image" == r.type && l.src && (F.src = l.src), l.fill && (F.on = !0), (null == F.on || "none" == l.fill || null === l.fill) && (F.on = !1), F.on && l.fill) {
+							var B = t(l.fill).match(n._ISURL);
+							if(B) {
+								F.parentNode == d && d.removeChild(F), F.rotate = !0, F.src = B[1], F.type = "tile";
+								var j = r.getBBox(1);
+								F.position = j.x + h + j.y, r._.fillpos = [j.x, j.y], n._preload(B[1], function() {
+									r._.fillsize = [this.offsetWidth, this.offsetHeight]
+								})
+							} else F.color = n.getRGB(l.fill).hex, F.src = f, F.type = "solid", n.getRGB(l.fill).error && (b.type in {
+								circle: 1,
+								ellipse: 1
+							} || "r" != t(l.fill).charAt()) && I(b, l.fill, F) && (p.fill = "none", p.gradient = l.fill, F.rotate = !1)
+						}
+						if("fill-opacity" in l || "opacity" in l) {
+							var $ = ((+p["fill-opacity"] + 1 || 2) - 1) * ((+p.opacity + 1 || 2) - 1) * ((+n.getRGB(l.fill).o + 1 || 2) - 1);
+							$ = s(a($, 0), 1), F.opacity = $, F.src && (F.color = "none")
+						}
+						d.appendChild(F);
+						var G = d.getElementsByTagName("stroke") && d.getElementsByTagName("stroke")[0],
+							q = !1;
+						!G && (q = G = L("stroke")), (l.stroke && "none" != l.stroke || l["stroke-width"] || null != l["stroke-opacity"] || l["stroke-dasharray"] || l["stroke-miterlimit"] || l["stroke-linejoin"] || l["stroke-linecap"]) && (G.on = !0), ("none" == l.stroke || null === l.stroke || null == G.on || 0 == l.stroke || 0 == l["stroke-width"]) && (G.on = !1);
+						var H = n.getRGB(l.stroke);
+						G.on && l.stroke && (G.color = H.hex), $ = ((+p["stroke-opacity"] + 1 || 2) - 1) * ((+p.opacity + 1 || 2) - 1) * ((+H.o + 1 || 2) - 1);
+						var U = .75 * (i(l["stroke-width"]) || 1);
+						if($ = s(a($, 0), 1), null == l["stroke-width"] && (U = p["stroke-width"]), l["stroke-width"] && (G.weight = U), U && 1 > U && ($ *= U) && (G.weight = 1), G.opacity = $, l["stroke-linejoin"] && (G.joinstyle = l["stroke-linejoin"] || "miter"), G.miterlimit = l["stroke-miterlimit"] || 8, l["stroke-linecap"] && (G.endcap = "butt" == l["stroke-linecap"] ? "flat" : "square" == l["stroke-linecap"] ? "square" : "round"), l["stroke-dasharray"]) {
+							var z = {
+								"-": "shortdash",
+								".": "shortdot",
+								"-.": "shortdashdot",
+								"-..": "shortdashdotdot",
+								". ": "dot",
+								"- ": "dash",
+								"--": "longdash",
+								"- .": "dashdot",
+								"--.": "longdashdot",
+								"--..": "longdashdotdot"
+							};
+							G.dashstyle = z[e](l["stroke-dasharray"]) ? z[l["stroke-dasharray"]] : f
+						}
+						q && d.appendChild(G)
+					}
+					if("text" == b.type) {
+						b.paper.canvas.style.display = f;
+						var V = b.paper.span,
+							W = 100,
+							X = p.font && p.font.match(/\d+(?:\.\d*)?(?=px)/);
+						m = V.style, p.font && (m.font = p.font), p["font-family"] && (m.fontFamily = p["font-family"]), p["font-weight"] && (m.fontWeight = p["font-weight"]), p["font-style"] && (m.fontStyle = p["font-style"]), X = i(p["font-size"] || X && X[0]) || 10, m.fontSize = X * W + "px", b.textpath.string && (V.innerHTML = t(b.textpath.string).replace(/</g, "&#60;").replace(/&/g, "&#38;").replace(/\n/g, "<br>"));
+						var Q = V.getBoundingClientRect();
+						b.W = p.w = (Q.right - Q.left) / W, b.H = p.h = (Q.bottom - Q.top) / W, b.X = p.x, b.Y = p.y + b.H / 2, ("x" in l || "y" in l) && (b.path.v = n.format("m{0},{1}l{2},{1}", o(p.x * x), o(p.y * x), o(p.x * x) + 1));
+						for(var Y = ["x", "y", "text", "font", "font-family", "font-weight", "font-style", "font-size"], K = 0, J = Y.length; J > K; K++)
+							if(Y[K] in l) {
+								b._.dirty = 1;
+								break
+							}
+						switch(p["text-anchor"]) {
+							case "start":
+								b.textpath.style["v-text-align"] = "left", b.bbx = b.W / 2;
+								break;
+							case "end":
+								b.textpath.style["v-text-align"] = "right", b.bbx = -b.W / 2;
+								break;
+							default:
+								b.textpath.style["v-text-align"] = "center", b.bbx = 0
+						}
+						b.textpath.style["v-text-kern"] = !0
+					}
+				}, I = function(e, o, a) {
+					e.attrs = e.attrs || {};
+					var s = (e.attrs, Math.pow),
+						l = "linear",
+						c = ".5 .5";
+					if(e.attrs.gradient = o, o = t(o).replace(n._radial_gradient, function(e, t, n) {
+						return l = "radial", t && n && (t = i(t), n = i(n), s(t - .5, 2) + s(n - .5, 2) > .25 && (n = r.sqrt(.25 - s(t - .5, 2)) * (2 * (n > .5) - 1) + .5), c = t + h + n), f
+					}), o = o.split(/\s*\-\s*/), "linear" == l) {
+						var u = o.shift();
+						if(u = -i(u), isNaN(u)) return null
+					}
+					var d = n._parseDots(o);
+					if(!d) return null;
+					if(e = e.shape || e.node, d.length) {
+						e.removeChild(a), a.on = !0, a.method = "none", a.color = d[0].color, a.color2 = d[d.length - 1].color;
+						for(var p = [], m = 0, g = d.length; g > m; m++) d[m].offset && p.push(d[m].offset + h + d[m].color);
+						a.colors = p.length ? p.join() : "0% " + a.color, "radial" == l ? (a.type = "gradientTitle", a.focus = "100%", a.focussize = "0 0", a.focusposition = c, a.angle = 0) : (a.type = "gradient", a.angle = (270 - u) % 360), e.appendChild(a)
+					}
+					return 1
+				}, N = function(e, t) {
+					this[0] = this.node = e, e.raphael = !0, this.id = n._oid++, e.raphaelid = this.id, this.X = 0, this.Y = 0, this.attrs = {}, this.paper = t, this.matrix = n.matrix(), this._ = {
+						transform: [],
+						sx: 1,
+						sy: 1,
+						dx: 0,
+						dy: 0,
+						deg: 0,
+						dirty: 1,
+						dirtyT: 1
+					}, !t.bottom && (t.bottom = this), this.prev = t.top, t.top && (t.top.next = this), t.top = this, this.next = null
+				}, D = n.el;
+			N.prototype = D, D.constructor = N, D.transform = function(e) {
+				if(null == e) return this._.transform;
+				var i, r = this.paper._viewBoxShift,
+					o = r ? "s" + [r.scale, r.scale] + "-1-1t" + [r.dx, r.dy] : f;
+				r && (i = e = t(e).replace(/\.{3}|\u2026/g, this._.transform || f)), n._extractTransform(this, o + e);
+				var a, s = this.matrix.clone(),
+					l = this.skew,
+					c = this.node,
+					u = ~t(this.attrs.fill).indexOf("-"),
+					d = !t(this.attrs.fill).indexOf("url(");
+				if(s.translate(1, 1), d || u || "image" == this.type)
+					if(l.matrix = "1 0 0 1", l.offset = "0 0", a = s.split(), u && a.noRotation || !a.isSimple) {
+						c.style.filter = s.toFilter();
+						var p = this.getBBox(),
+							m = this.getBBox(1),
+							g = p.x - m.x,
+							v = p.y - m.y;
+						c.coordorigin = g * -x + h + v * -x, k(this, 1, 1, g, v, 0)
+					} else c.style.filter = f, k(this, a.scalex, a.scaley, a.dx, a.dy, a.rotate);
+					else c.style.filter = f, l.matrix = t(s), l.offset = s.offset();
+				return i && (this._.transform = i), this
+			}, D.rotate = function(e, n, r) {
+				if(this.removed) return this;
+				if(null != e) {
+					if(e = t(e).split(u), e.length - 1 && (n = i(e[1]), r = i(e[2])), e = i(e[0]), null == r && (n = r), null == n || null == r) {
+						var o = this.getBBox(1);
+						n = o.x + o.width / 2, r = o.y + o.height / 2
+					}
+					return this._.dirtyT = 1, this.transform(this._.transform.concat([["r", e, n, r]])), this
+				}
+			}, D.translate = function(e, n) {
+				return this.removed ? this : (e = t(e).split(u), e.length - 1 && (n = i(e[1])), e = i(e[0]) || 0, n = +n || 0, this._.bbox && (this._.bbox.x += e, this._.bbox.y += n), this.transform(this._.transform.concat([["t", e, n]])), this)
+			}, D.scale = function(e, n, r, o) {
+				if(this.removed) return this;
+				if(e = t(e).split(u), e.length - 1 && (n = i(e[1]), r = i(e[2]), o = i(e[3]), isNaN(r) && (r = null), isNaN(o) && (o = null)), e = i(e[0]), null == n && (n = e), null == o && (r = o), null == r || null == o) var a = this.getBBox(1);
+				return r = null == r ? a.x + a.width / 2 : r, o = null == o ? a.y + a.height / 2 : o, this.transform(this._.transform.concat([["s", e, n, r, o]])), this._.dirtyT = 1, this
+			}, D.hide = function() {
+				return !this.removed && (this.node.style.display = "none"), this
+			}, D.show = function() {
+				return !this.removed && (this.node.style.display = f), this
+			}, D._getBBox = function() {
+				return this.removed ? {} : {
+					x: this.X + (this.bbx || 0) - this.W / 2,
+					y: this.Y - this.H,
+					width: this.W,
+					height: this.H
+				}
+			}, D.remove = function() {
+				if(!this.removed && this.node.parentNode) {
+					this.paper.__set__ && this.paper.__set__.exclude(this), n.eve.unbind("raphael.*.*." + this.id), n._tear(this, this.paper), this.node.parentNode.removeChild(this.node), this.shape && this.shape.parentNode.removeChild(this.shape);
+					for(var e in this) this[e] = "function" == typeof this[e] ? n._removedFactory(e) : null;
+					this.removed = !0
+				}
+			}, D.attr = function(t, i) {
+				if(this.removed) return this;
+				if(null == t) {
+					var r = {};
+					for(var o in this.attrs) this.attrs[e](o) && (r[o] = this.attrs[o]);
+					return r.gradient && "none" == r.fill && (r.fill = r.gradient) && delete r.gradient, r.transform = this._.transform, r
+				}
+				if(null == i && n.is(t, "string")) {
+					if(t == c && "none" == this.attrs.fill && this.attrs.gradient) return this.attrs.gradient;
+					for(var a = t.split(u), s = {}, l = 0, p = a.length; p > l; l++) t = a[l], s[t] = t in this.attrs ? this.attrs[t] : n.is(this.paper.customAttributes[t], "function") ? this.paper.customAttributes[t].def : n._availableAttrs[t];
+					return p - 1 ? s : s[a[0]]
+				}
+				if(this.attrs && null == i && n.is(t, "array")) {
+					for(s = {}, l = 0, p = t.length; p > l; l++) s[t[l]] = this.attr(t[l]);
+					return s
+				}
+				var h;
+				null != i && (h = {}, h[t] = i), null == i && n.is(t, "object") && (h = t);
+				for(var f in h) d("raphael.attr." + f + "." + this.id, this, h[f]);
+				if(h) {
+					for(f in this.paper.customAttributes)
+						if(this.paper.customAttributes[e](f) && h[e](f) && n.is(this.paper.customAttributes[f], "function")) {
+							var m = this.paper.customAttributes[f].apply(this, [].concat(h[f]));
+							this.attrs[f] = h[f];
+							for(var g in m) m[e](g) && (h[g] = m[g])
+						}
+					h.text && "text" == this.type && (this.textpath.string = h.text), E(this, h)
+				}
+				return this
+			}, D.toFront = function() {
+				return !this.removed && this.node.parentNode.appendChild(this.node), this.paper && this.paper.top != this && n._tofront(this, this.paper), this
+			}, D.toBack = function() {
+				return this.removed ? this : (this.node.parentNode.firstChild != this.node && (this.node.parentNode.insertBefore(this.node, this.node.parentNode.firstChild), n._toback(this, this.paper)), this)
+			}, D.insertAfter = function(e) {
+				return this.removed ? this : (e.constructor == n.st.constructor && (e = e[e.length - 1]), e.node.nextSibling ? e.node.parentNode.insertBefore(this.node, e.node.nextSibling) : e.node.parentNode.appendChild(this.node), n._insertafter(this, e, this.paper), this)
+			}, D.insertBefore = function(e) {
+				return this.removed ? this : (e.constructor == n.st.constructor && (e = e[0]), e.node.parentNode.insertBefore(this.node, e.node), n._insertbefore(this, e, this.paper), this)
+			}, D.blur = function(e) {
+				var t = this.node.runtimeStyle,
+					i = t.filter;
+				return i = i.replace(v, f), 0 !== +e ? (this.attrs.blur = e, t.filter = i + h + p + ".Blur(pixelradius=" + (+e || 1.5) + ")", t.margin = n.format("-{0}px 0 0 -{0}px", o(+e || 1.5))) : (t.filter = i, t.margin = 0, delete this.attrs.blur), this
+			}, n._engine.path = function(e, t) {
+				var n = L("shape");
+				n.style.cssText = y, n.coordsize = x + h + x, n.coordorigin = t.coordorigin;
+				var i = new N(n, t),
+					r = {
+						fill: "none",
+						stroke: "#000"
+					};
+				e && (r.path = e), i.type = "path", i.path = [], i.Path = f, E(i, r), t.canvas.appendChild(n);
+				var o = L("skew");
+				return o.on = !0, n.appendChild(o), i.skew = o, i.transform(f), i
+			}, n._engine.rect = function(e, t, i, r, o, a) {
+				var s = n._rectPath(t, i, r, o, a),
+					l = e.path(s),
+					c = l.attrs;
+				return l.X = c.x = t, l.Y = c.y = i, l.W = c.width = r, l.H = c.height = o, c.r = a, c.path = s, l.type = "rect", l
+			}, n._engine.ellipse = function(e, t, n, i, r) {
+				{
+					var o = e.path();
+					o.attrs
+				}
+				return o.X = t - i, o.Y = n - r, o.W = 2 * i, o.H = 2 * r, o.type = "ellipse", E(o, {
+					cx: t,
+					cy: n,
+					rx: i,
+					ry: r
+				}), o
+			}, n._engine.circle = function(e, t, n, i) {
+				{
+					var r = e.path();
+					r.attrs
+				}
+				return r.X = t - i, r.Y = n - i, r.W = r.H = 2 * i, r.type = "circle", E(r, {
+					cx: t,
+					cy: n,
+					r: i
+				}), r
+			}, n._engine.image = function(e, t, i, r, o, a) {
+				var s = n._rectPath(i, r, o, a),
+					l = e.path(s).attr({
+						stroke: "none"
+					}),
+					u = l.attrs,
+					d = l.node,
+					p = d.getElementsByTagName(c)[0];
+				return u.src = t, l.X = u.x = i, l.Y = u.y = r, l.W = u.width = o, l.H = u.height = a, u.path = s, l.type = "image", p.parentNode == d && d.removeChild(p), p.rotate = !0, p.src = t, p.type = "tile", l._.fillpos = [i, r], l._.fillsize = [o, a], d.appendChild(p), k(l, 1, 1, 0, 0, 0), l
+			}, n._engine.text = function(e, i, r, a) {
+				var s = L("shape"),
+					l = L("path"),
+					c = L("textpath");
+				i = i || 0, r = r || 0, a = a || "", l.v = n.format("m{0},{1}l{2},{1}", o(i * x), o(r * x), o(i * x) + 1), l.textpathok = !0, c.string = t(a), c.on = !0, s.style.cssText = y, s.coordsize = x + h + x, s.coordorigin = "0 0";
+				var u = new N(s, e),
+					d = {
+						fill: "#000",
+						stroke: "none",
+						font: n._availableAttrs.font,
+						text: a
+					};
+				u.shape = s, u.path = l, u.textpath = c, u.type = "text", u.attrs.text = t(a), u.attrs.x = i, u.attrs.y = r, u.attrs.w = 1, u.attrs.h = 1, E(u, d), s.appendChild(c), s.appendChild(l), e.canvas.appendChild(s);
+				var p = L("skew");
+				return p.on = !0, s.appendChild(p), u.skew = p, u.transform(f), u
+			}, n._engine.setSize = function(e, t) {
+				var i = this.canvas.style;
+				return this.width = e, this.height = t, e == +e && (e += "px"), t == +t && (t += "px"), i.width = e, i.height = t, i.clip = "rect(0 " + e + " " + t + " 0)", this._viewBox && n._engine.setViewBox.apply(this, this._viewBox), this
+			}, n._engine.setViewBox = function(e, t, i, r, o) {
+				n.eve("raphael.setViewBox", this, this._viewBox, [e, t, i, r, o]);
+				var s, l, c = this.width,
+					u = this.height,
+					d = 1 / a(i / c, r / u);
+				return o && (s = u / r, l = c / i, c > i * s && (e -= (c - i * s) / 2 / s), u > r * l && (t -= (u - r * l) / 2 / l)), this._viewBox = [e, t, i, r, !! o], this._viewBoxShift = {
+					dx: -e,
+					dy: -t,
+					scale: d
+				}, this.forEach(function(e) {
+					e.transform("...")
+				}), this
+			};
+			var L;
+			n._engine.initWin = function(e) {
+				var t = e.document;
+				t.createStyleSheet().addRule(".rvml", "behavior:url(#default#VML)");
+				try {
+					!t.namespaces.rvml && t.namespaces.add("rvml", "urn:schemas-microsoft-com:vml"), L = function(e) {
+						return t.createElement("<rvml:" + e + ' class="rvml">')
+					}
+				} catch(n) {
+					L = function(e) {
+						return t.createElement("<" + e + ' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')
+					}
+				}
+			}, n._engine.initWin(n._g.win), n._engine.create = function() {
+				var e = n._getContainer.apply(0, arguments),
+					t = e.container,
+					i = e.height,
+					r = e.width,
+					o = e.x,
+					a = e.y;
+				if(!t) throw new Error("VML container not found.");
+				var s = new n._Paper,
+					l = s.canvas = n._g.doc.createElement("div"),
+					c = l.style;
+				return o = o || 0, a = a || 0, r = r || 512, i = i || 342, s.width = r, s.height = i, r == +r && (r += "px"), i == +i && (i += "px"), s.coordsize = 1e3 * x + h + 1e3 * x, s.coordorigin = "0 0", s.span = n._g.doc.createElement("span"), s.span.style.cssText = "position:absolute;left:-9999em;top:-9999em;padding:0;margin:0;line-height:1;", l.appendChild(s.span), c.cssText = n.format("top:0;left:0;width:{0};height:{1};display:inline-block;position:relative;clip:rect(0 {0} {1} 0);overflow:hidden", r, i), 1 == t ? (n._g.doc.body.appendChild(l), c.left = o + "px", c.top = a + "px", c.position = "absolute") : t.firstChild ? t.insertBefore(l, t.firstChild) : t.appendChild(l), s.renderfix = function() {}, s
+			}, n.prototype.clear = function() {
+				n.eve("raphael.clear", this), this.canvas.innerHTML = f, this.span = n._g.doc.createElement("span"), this.span.style.cssText = "position:absolute;left:-9999em;top:-9999em;padding:0;margin:0;line-height:1;display:inline;", this.canvas.appendChild(this.span), this.bottom = this.top = null
+			}, n.prototype.remove = function() {
+				n.eve("raphael.remove", this), this.canvas.parentNode.removeChild(this.canvas);
+				for(var e in this) this[e] = "function" == typeof this[e] ? n._removedFactory(e) : null;
+				return !0
+			};
+			var A = n.st;
+			for(var M in D) D[e](M) && !A[e](M) && (A[M] = function(e) {
+				return function() {
+					var t = arguments;
+					return this.forEach(function(n) {
+						n[e].apply(n, t)
+					})
+				}
+			}(M))
+		}
+	}(), E.was ? T.win.Raphael = n : Raphael = n, n
+}), define("sequence-diagram", ["text!bower-libs/js-sequence-diagrams/build/sequence-diagram-min.js", "raphael", "underscore"], function(sequenceDiagramMinJS) {
+	return eval(sequenceDiagramMinJS), window.Diagram
+}), ! function(e, t) {
+	"object" == typeof exports ? module.exports = t() : "function" == typeof define && define.amd && define("flow-chart", [], t)
+}(this, function() {
+	function e(t, n) {
+		if(!t || "function" == typeof t) return n;
+		var i = {};
+		for(var r in n) i[r] = n[r];
+		for(r in t) t[r] && (i[r] = "object" == typeof i[r] ? e(i[r], t[r]) : t[r]);
+		return i
+	}
+
+	function t(e, t) {
+		if("function" == typeof Object.create) e.super_ = t, e.prototype = Object.create(t.prototype, {
+			constructor: {
+				value: e,
+				enumerable: !1,
+				writable: !0,
+				configurable: !0
+			}
+		});
+		else {
+			e.super_ = t;
+			var n = function() {};
+			n.prototype = t.prototype, e.prototype = new n, e.prototype.constructor = e
+		}
+	}
+
+	function n(e, t, n) {
+		var i, r, o = "M{0},{1}";
+		for(i = 2, r = 2 * n.length + 2; r > i; i += 2) o += " L{" + i + "},{" + (i + 1) + "}";
+		var a = [t.x, t.y];
+		for(i = 0, r = n.length; r > i; i++) a.push(n[i].x), a.push(n[i].y);
+		var s = e.paper.path(o, a);
+		s.attr("stroke", e.options["element-color"]), s.attr("stroke-width", e.options["line-width"]);
+		var l = e.options.font,
+			c = e.options["font-family"],
+			u = e.options["font-weight"];
+		return l && s.attr({
+			font: l
+		}), c && s.attr({
+			"font-family": c
+		}), u && s.attr({
+			"font-weight": u
+		}), s
+	}
+
+	function i(e, t, n, i) {
+		var r, o;
+		"[object Array]" !== Object.prototype.toString.call(n) && (n = [n]);
+		var a = "M{0},{1}";
+		for(r = 2, o = 2 * n.length + 2; o > r; r += 2) a += " L{" + r + "},{" + (r + 1) + "}";
+		var s = [t.x, t.y];
+		for(r = 0, o = n.length; o > r; r++) s.push(n[r].x), s.push(n[r].y);
+		var l = e.paper.path(a, s);
+		l.attr({
+			stroke: e.options["line-color"],
+			"stroke-width": e.options["line-width"],
+			"arrow-end": e.options["arrow-end"]
+		});
+		var c = e.options.font,
+			u = e.options["font-family"],
+			d = e.options["font-weight"];
+		if(c && l.attr({
+			font: c
+		}), u && l.attr({
+			"font-family": u
+		}), d && l.attr({
+			"font-weight": d
+		}), i) {
+			var p = !1,
+				h = e.paper.text(0, 0, i),
+				f = !1,
+				m = n[0];
+			t.y === m.y && (f = !0);
+			var g = 0,
+				v = 0;
+			p ? (g = t.x > m.x ? t.x - (t.x - m.x) / 2 : m.x - (m.x - t.x) / 2, v = t.y > m.y ? t.y - (t.y - m.y) / 2 : m.y - (m.y - t.y) / 2, f ? (g -= h.getBBox().width / 2, v -= e.options["text-margin"]) : (g += e.options["text-margin"], v -= h.getBBox().height / 2)) : (g = t.x, v = t.y, f ? (g += e.options["text-margin"] / 2, v -= e.options["text-margin"]) : (g += e.options["text-margin"] / 2, v += e.options["text-margin"])), h.attr({
+				"text-anchor": "start",
+				"font-size": e.options["font-size"],
+				stroke: e.options["font-color"],
+				x: g,
+				y: v
+			}), c && h.attr({
+				font: c
+			}), u && h.attr({
+				"font-family": u
+			}), d && h.attr({
+				"font-weight": d
+			})
+		}
+		return l
+	}
+
+	function r(e, t, n, i, r, o, a, s) {
+		var l, c, u, d, p, h = {
+				x: null,
+				y: null,
+				onLine1: !1,
+				onLine2: !1
+			};
+		return l = (s - o) * (n - e) - (a - r) * (i - t), 0 === l ? h : (c = t - o, u = e - r, d = (a - r) * c - (s - o) * u, p = (n - e) * c - (i - t) * u, c = d / l, u = p / l, h.x = e + c * (n - e), h.y = t + c * (i - t), c > 0 && 1 > c && (h.onLine1 = !0), u > 0 && 1 > u && (h.onLine2 = !0), h)
+	}
+
+	function o(e, t) {
+		t = t || {}, this.paper = new Raphael(e), this.options = g.defaults(t, m), this.symbols = [], this.lines = [], this.start = null
+	}
+
+	function a(e, t, n) {
+		this.chart = e, this.group = this.chart.paper.set(), this.connectedTo = [], this.symbolType = t.symbolType, this.next_direction = t.next && t.direction_next ? t.direction_next : void 0, this.text = this.chart.paper.text(0, 0, t.text), this.text.attr({
+			"text-anchor": "start",
+			"font-size": this.chart.options.symbols[this.symbolType]["font-size"] || this.chart.options["font-size"],
+			x: this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"],
+			stroke: this.chart.options.symbols[this.symbolType]["font-color"] || this.chart.options["font-color"]
+		});
+		var i = this.chart.options.symbols[this.symbolType].font || this.chart.options.font,
+			r = this.chart.options.symbols[this.symbolType]["font-family"] || this.chart.options["font-family"],
+			o = this.chart.options.symbols[this.symbolType]["font-weight"] || this.chart.options["font-weight"];
+		if(i && this.text.attr({
+			font: i
+		}), r && this.text.attr({
+			"font-family": r
+		}), o && this.text.attr({
+			"font-weight": o
+		}), t.link && this.text.attr("href", t.link), t.target && this.text.attr("target", t.target), this.chart.options.symbols[this.symbolType].maxWidth || this.chart.options.maxWidth) {
+			for(var a = this.chart.options.symbols[this.symbolType].maxWidth || this.chart.options.maxWidth, s = t.text.split(" "), l = "", c = 0, u = s.length; u > c; c++) {
+				var d = s[c];
+				this.text.attr("text", l + " " + d), l += this.text.getBBox().width > a ? "\n" + d : " " + d
+			}
+			this.text.attr("text", l.substring(1))
+		}
+		this.group.push(this.text), n && (n.attr({
+			stroke: this.chart.options.symbols[this.symbolType]["element-color"] || this.chart.options["element-color"],
+			"stroke-width": this.chart.options.symbols[this.symbolType]["line-width"] || this.chart.options["line-width"],
+			width: this.text.getBBox().width + 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
+			height: this.text.getBBox().height + 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
+			fill: this.chart.options.symbols[this.symbolType].fill || this.chart.options.fill
+		}), t.link && n.attr("href", t.link), t.target && n.attr("target", t.target), this.group.push(n), n.insertBefore(this.text), this.text.attr({
+			y: n.getBBox().height / 2
+		}), this.initialize())
+	}
+
+	function s(e, t) {
+		var n = e.paper.rect(0, 0, 0, 0, 20);
+		t = t || {}, t.text = t.text || "Start", a.call(this, e, t, n)
+	}
+
+	function l(e, t) {
+		var n = e.paper.rect(0, 0, 0, 0, 20);
+		t = t || {}, t.text = t.text || "End", a.call(this, e, t, n)
+	}
+
+	function c(e, t) {
+		var n = e.paper.rect(0, 0, 0, 0);
+		t = t || {}, a.call(this, e, t, n)
+	}
+
+	function u(e, t) {
+		var n = e.paper.rect(0, 0, 0, 0);
+		t = t || {}, a.call(this, e, t, n), n.attr({
+			width: this.text.getBBox().width + 4 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"])
+		}), this.text.attr({
+			x: 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"])
+		});
+		var i = e.paper.rect(0, 0, 0, 0);
+		i.attr({
+			x: this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"],
+			stroke: this.chart.options.symbols[this.symbolType]["element-color"] || this.chart.options["element-color"],
+			"stroke-width": this.chart.options.symbols[this.symbolType]["line-width"] || this.chart.options["line-width"],
+			width: this.text.getBBox().width + 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
+			height: this.text.getBBox().height + 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
+			fill: this.chart.options.symbols[this.symbolType].fill || this.chart.options.fill
+		});
+		var r = this.chart.options.symbols[this.symbolType].font || this.chart.options.font,
+			o = this.chart.options.symbols[this.symbolType]["font-family"] || this.chart.options["font-family"],
+			s = this.chart.options.symbols[this.symbolType]["font-weight"] || this.chart.options["font-weight"];
+		r && i.attr({
+			font: r
+		}), o && i.attr({
+			"font-family": o
+		}), s && i.attr({
+			"font-weight": s
+		}), t.link && i.attr("href", t.link), t.target && i.attr("target", t.target), this.group.push(i), i.insertBefore(this.text), this.initialize()
+	}
+
+	function d(e, t) {
+		t = t || {}, a.call(this, e, t), this.text.attr({
+			x: 3 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"])
+		});
+		var i = this.text.getBBox().width + 4 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
+			r = this.text.getBBox().height + 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
+			o = this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"],
+			s = r / 2,
+			l = {
+				x: o,
+				y: s
+			}, c = [{
+				x: o - (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
+				y: r
+			}, {
+				x: o - (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]) + i,
+				y: r
+			}, {
+				x: o - (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]) + i + 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
+				y: 0
+			}, {
+				x: o - (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]) + 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]),
+				y: 0
+			}, {
+				x: o,
+				y: s
+			}],
+			u = n(e, l, c);
+		u.attr({
+			stroke: this.chart.options.symbols[this.symbolType]["element-color"] || this.chart.options["element-color"],
+			"stroke-width": this.chart.options.symbols[this.symbolType]["line-width"] || this.chart.options["line-width"],
+			fill: this.chart.options.symbols[this.symbolType].fill || this.chart.options.fill
+		}), t.link && u.attr("href", t.link), t.target && u.attr("target", t.target), this.text.attr({
+			y: u.getBBox().height / 2
+		}), this.group.push(u), u.insertBefore(this.text), this.initialize()
+	}
+
+	function p(e, t) {
+		t = t || {}, a.call(this, e, t), this.yes_direction = "bottom", this.no_direction = "right", t.yes && t.direction_yes && t.no && !t.direction_no ? "right" === t.direction_yes ? (this.no_direction = "bottom", this.yes_direction = "right") : (this.no_direction = "right", this.yes_direction = "bottom") : t.yes && !t.direction_yes && t.no && t.direction_no ? "right" === t.direction_no ? (this.yes_direction = "bottom", this.no_direction = "right") : (this.yes_direction = "right", this.no_direction = "bottom") : (this.yes_direction = "bottom", this.no_direction = "right"), this.yes_direction = this.yes_direction || "bottom", this.no_direction = this.no_direction || "right", this.text.attr({
+			x: 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"])
+		});
+		var i = this.text.getBBox().width + 3 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]);
+		i += i / 2;
+		var r = this.text.getBBox().height + 2 * (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]);
+		r += r / 2, r = Math.max(.5 * i, r);
+		var o = i / 4,
+			s = r / 4;
+		this.text.attr({
+			x: o + (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]) / 2
+		});
+		var l = {
+			x: o,
+			y: s
+		}, c = [{
+				x: o - i / 4,
+				y: s + r / 4
+			}, {
+				x: o - i / 4 + i / 2,
+				y: s + r / 4 + r / 2
+			}, {
+				x: o - i / 4 + i,
+				y: s + r / 4
+			}, {
+				x: o - i / 4 + i / 2,
+				y: s + r / 4 - r / 2
+			}, {
+				x: o - i / 4,
+				y: s + r / 4
+			}],
+			u = n(e, l, c);
+		u.attr({
+			stroke: this.chart.options.symbols[this.symbolType]["element-color"] || this.chart.options["element-color"],
+			"stroke-width": this.chart.options.symbols[this.symbolType]["line-width"] || this.chart.options["line-width"],
+			fill: this.chart.options.symbols[this.symbolType].fill || this.chart.options.fill
+		}), t.link && u.attr("href", t.link), t.target && u.attr("target", t.target), this.text.attr({
+			y: u.getBBox().height / 2
+		}), this.group.push(u), u.insertBefore(this.text), this.initialize()
+	}
+
+	function h(e) {
+		function t(e) {
+			var t = e.indexOf("(") + 1,
+				n = e.indexOf(")");
+			return t >= 0 && n >= 0 ? i.symbols[e.substring(0, t - 1)] : i.symbols[e]
+		}
+
+		function n(e) {
+			var t = "next",
+				n = e.indexOf("(") + 1,
+				i = e.indexOf(")");
+			return n >= 0 && i >= 0 && (t = I.substring(n, i), t.indexOf(",") < 0 && "yes" !== t && "no" !== t && (t = "next, " + t)), t
+		}
+		e = e || "", e = e.trim();
+		for(var i = {
+			symbols: {},
+			start: null,
+			drawSVG: function(e, t) {
+				function n(e) {
+					if(r[e.key]) return r[e.key];
+					switch(e.symbolType) {
+						case "start":
+							r[e.key] = new s(i, e);
+							break;
+						case "end":
+							r[e.key] = new l(i, e);
+							break;
+						case "operation":
+							r[e.key] = new c(i, e);
+							break;
+						case "inputoutput":
+							r[e.key] = new d(i, e);
+							break;
+						case "subroutine":
+							r[e.key] = new u(i, e);
+							break;
+						case "condition":
+							r[e.key] = new p(i, e);
+							break;
+						default:
+							return new Error("Wrong symbol type!")
+					}
+					return r[e.key]
+				}
+				this.diagram && this.diagram.clean();
+				var i = new o(e, t);
+				this.diagram = i;
+				var r = {}, a = this;
+				! function h(e, t, r) {
+					var o = n(e);
+					return a.start === e ? i.startWith(o) : t && r && !t.pathOk && (t instanceof p ? (r.yes === e && t.yes(o), r.no === e && t.no(o)) : t.then(o)), o.pathOk ? o : (o instanceof p ? (e.yes && h(e.yes, o, e), e.no && h(e.no, o, e)) : e.next && h(e.next, o, e), o)
+				}(this.start), i.render()
+			},
+			clean: function() {
+				this.diagram.clean()
+			}
+		}, r = [], a = 0, h = 1, f = e.length; f > h; h++)
+			if("\n" === e[h] && "\\" !== e[h - 1]) {
+				var m = e.substring(a, h);
+				a = h + 1, r.push(m.replace(/\\\n/g, "\n"))
+			}
+		a < e.length && r.push(e.substr(a));
+		for(var g = 1, v = r.length; v > g;) {
+			var b = r[g];
+			b.indexOf(": ") < 0 && b.indexOf("(") < 0 && b.indexOf(")") < 0 && b.indexOf("->") < 0 && b.indexOf("=>") < 0 ? (r[g - 1] += "\n" + b, r.splice(g, 1), v--) : g++
+		}
+		for(; r.length > 0;) {
+			var y = r.splice(0, 1)[0];
+			if(y.indexOf("=>") >= 0) {
+				var x, w = y.split("=>"),
+					S = {
+						key: w[0],
+						symbolType: w[1],
+						text: null,
+						link: null,
+						target: null
+					};
+				if(S.symbolType.indexOf(": ") >= 0 && (x = S.symbolType.split(": "), S.symbolType = x[0], S.text = x[1]), S.text && S.text.indexOf(":>") >= 0 ? (x = S.text.split(":>"), S.text = x[0], S.link = x[1]) : S.symbolType.indexOf(":>") >= 0 && (x = S.symbolType.split(":>"), S.symbolType = x[0], S.link = x[1]), S.symbolType.indexOf("\n") >= 0 && (S.symbolType = S.symbolType.split("\n")[0]), S.link) {
+					var C = S.link.indexOf("[") + 1,
+						_ = S.link.indexOf("]");
+					C >= 0 && _ >= 0 && (S.target = S.link.substring(C, _), S.link = S.link.substring(0, C - 1))
+				}
+				i.symbols[S.key] = S
+			} else if(y.indexOf("->") >= 0)
+				for(var k = y.split("->"), T = 0, E = k.length; E > T; T++) {
+					var I = k[T],
+						N = t(I),
+						D = n(I),
+						L = null;
+					if(D.indexOf(",") >= 0) {
+						var A = D.split(",");
+						D = A[0], L = A[1].trim()
+					}
+					if(i.start || (i.start = N), E > T + 1) {
+						var M = k[T + 1];
+						N[D] = t(M), N["direction_" + D] = L, L = null
+					}
+				}
+		}
+		return i
+	}
+	Array.prototype.indexOf || (Array.prototype.indexOf = function(e) {
+		if(null === this) throw new TypeError;
+		var t = Object(this),
+			n = t.length >>> 0;
+		if(0 === n) return -1;
+		var i = 0;
+		if(arguments.length > 0 && (i = Number(arguments[1]), i != i ? i = 0 : 0 !== i && 1 / 0 != i && i != -1 / 0 && (i = (i > 0 || -1) * Math.floor(Math.abs(i)))), i >= n) return -1;
+		for(var r = i >= 0 ? i : Math.max(n - Math.abs(i), 0); n > r; r++)
+			if(r in t && t[r] === e) return r;
+		return -1
+	}), Array.prototype.lastIndexOf || (Array.prototype.lastIndexOf = function(e) {
+		if(null === this) throw new TypeError;
+		var t = Object(this),
+			n = t.length >>> 0;
+		if(0 === n) return -1;
+		var i = n;
+		arguments.length > 1 && (i = Number(arguments[1]), i != i ? i = 0 : 0 !== i && i != 1 / 0 && i != -(1 / 0) && (i = (i > 0 || -1) * Math.floor(Math.abs(i))));
+		for(var r = i >= 0 ? Math.min(i, n - 1) : n - Math.abs(i); r >= 0; r--)
+			if(r in t && t[r] === e) return r;
+		return -1
+	}), String.prototype.trim || (String.prototype.trim = function() {
+		return this.replace(/^\s+|\s+$/g, "")
+	});
+	var f = {}, m = {
+			"line-width": 3,
+			"line-length": 50,
+			"text-margin": 10,
+			"font-size": 14,
+			"font-color": "black",
+			"line-color": "black",
+			"element-color": "black",
+			fill: "white",
+			"yes-text": "yes",
+			"no-text": "no",
+			"arrow-end": "block",
+			symbols: {
+				start: {},
+				end: {},
+				condition: {},
+				inputoutput: {},
+				operation: {},
+				subroutine: {}
+			}
+		}, g = {
+			defaults: e,
+			inherits: t
+		};
+	return o.prototype.handle = function(e) {
+		this.symbols.indexOf(e) <= -1 && this.symbols.push(e);
+		var t = this;
+		return e instanceof p ? (e.yes = function(n) {
+			return e.yes_symbol = n, e.no_symbol && (e.pathOk = !0), t.handle(n)
+		}, e.no = function(n) {
+			return e.no_symbol = n, e.yes_symbol && (e.pathOk = !0), t.handle(n)
+		}) : e.then = function(n) {
+			return e.next = n, e.pathOk = !0, t.handle(n)
+		}, e
+	}, o.prototype.startWith = function(e) {
+		return this.start = e, this.handle(e)
+	}, o.prototype.render = function() {
+		var e, t = 0,
+			n = 0,
+			i = 0,
+			r = 0,
+			o = 0;
+		for(n = 0, i = this.symbols.length; i > n; n++) e = this.symbols[n], e.width > t && (t = e.width);
+		for(n = 0, i = this.symbols.length; i > n; n++) e = this.symbols[n], e.shiftX((t - e.width) / 2);
+		for(this.start.render(), n = 0, i = this.symbols.length; i > n; n++) e = this.symbols[n], e.renderLines();
+		for(r = this.maxXFromLine, n = 0, i = this.symbols.length; i > n; n++) {
+			e = this.symbols[n];
+			var a = e.getX() + e.width,
+				s = e.getY() + e.height;
+			a > r && (r = a), s > o && (o = s)
+		}
+		this.paper.setSize(r + this.options["line-width"], o + this.options["line-width"])
+	}, o.prototype.clean = function() {
+		if(this.paper) {
+			var e = this.paper.canvas;
+			e.parentNode.removeChild(e)
+		}
+	}, a.prototype.initialize = function() {
+		this.group.transform("t" + (this.chart.options.symbols[this.symbolType]["line-width"] || this.chart.options["line-width"]) + "," + (this.chart.options.symbols[this.symbolType]["line-width"] || this.chart.options["line-width"])), this.width = this.group.getBBox().width, this.height = this.group.getBBox().height
+	}, a.prototype.getCenter = function() {
+		return {
+			x: this.getX() + this.width / 2,
+			y: this.getY() + this.height / 2
+		}
+	}, a.prototype.getX = function() {
+		return this.group.getBBox().x
+	}, a.prototype.getY = function() {
+		return this.group.getBBox().y
+	}, a.prototype.shiftX = function(e) {
+		this.group.transform("t" + (this.getX() + e) + "," + this.getY())
+	}, a.prototype.setX = function(e) {
+		this.group.transform("t" + e + "," + this.getY())
+	}, a.prototype.shiftY = function(e) {
+		this.group.transform("t" + this.getX() + "," + (this.getY() + e))
+	}, a.prototype.setY = function(e) {
+		this.group.transform("t" + this.getX() + "," + e)
+	}, a.prototype.getTop = function() {
+		var e = this.getY(),
+			t = this.getX() + this.width / 2;
+		return {
+			x: t,
+			y: e
+		}
+	}, a.prototype.getBottom = function() {
+		var e = this.getY() + this.height,
+			t = this.getX() + this.width / 2;
+		return {
+			x: t,
+			y: e
+		}
+	}, a.prototype.getLeft = function() {
+		var e = this.getY() + this.group.getBBox().height / 2,
+			t = this.getX();
+		return {
+			x: t,
+			y: e
+		}
+	}, a.prototype.getRight = function() {
+		var e = this.getY() + this.group.getBBox().height / 2,
+			t = this.getX() + this.group.getBBox().width;
+		return {
+			x: t,
+			y: e
+		}
+	}, a.prototype.render = function() {
+		if(this.next) {
+			var e = this.chart.options.symbols[this.symbolType]["line-length"] || this.chart.options["line-length"];
+			if("right" === this.next_direction) {
+				var t = this.getRight();
+				if(this.next.getLeft(), !this.next.isPositioned) {
+					this.next.setY(t.y - this.next.height / 2), this.next.shiftX(this.group.getBBox().x + this.width + e);
+					var n = this;
+					! function r() {
+						for(var t, i = !1, o = 0, a = n.chart.symbols.length; a > o; o++) {
+							t = n.chart.symbols[o];
+							var s = Math.abs(t.getCenter().x - n.next.getCenter().x);
+							if(t.getCenter().y > n.next.getCenter().y && s <= n.next.width / 2) {
+								i = !0;
+								break
+							}
+						}
+						i && (n.next.setX(t.getX() + t.width + e), r())
+					}(), this.next.isPositioned = !0, this.next.render()
+				}
+			} else {
+				var i = this.getBottom();
+				this.next.getTop(), this.next.isPositioned || (this.next.shiftY(this.getY() + this.height + e), this.next.setX(i.x - this.next.width / 2), this.next.isPositioned = !0, this.next.render())
+			}
+		}
+	}, a.prototype.renderLines = function() {
+		this.next && (this.next_direction ? this.drawLineTo(this.next, "", this.next_direction) : this.drawLineTo(this.next))
+	}, a.prototype.drawLineTo = function(e, t, n) {
+		this.connectedTo.indexOf(e) < 0 && this.connectedTo.push(e);
+		var o, a = this.getCenter().x,
+			s = this.getCenter().y,
+			l = (this.getTop(), this.getRight()),
+			c = this.getBottom(),
+			u = this.getLeft(),
+			d = e.getCenter().x,
+			p = e.getCenter().y,
+			h = e.getTop(),
+			f = e.getRight(),
+			m = (e.getBottom(), e.getLeft()),
+			g = a === d,
+			v = s === p,
+			b = p > s,
+			y = s > p,
+			x = a > d,
+			w = d > a,
+			S = 0,
+			C = this.chart.options.symbols[this.symbolType]["line-length"] || this.chart.options["line-length"],
+			_ = this.chart.options.symbols[this.symbolType]["line-width"] || this.chart.options["line-width"];
+		if(n && "bottom" !== n || !g || !b ? n && "right" !== n || !v || !w ? n && "left" !== n || !v || !x ? n && "right" !== n || !g || !y ? n && "right" !== n || !g || !b ? n && "bottom" !== n || !x ? n && "bottom" !== n || !w ? n && "right" === n && x ? (o = i(this.chart, l, [{
+			x: l.x + C / 2,
+			y: l.y
+		}, {
+			x: l.x + C / 2,
+			y: h.y - C / 2
+		}, {
+			x: h.x,
+			y: h.y - C / 2
+		}, {
+			x: h.x,
+			y: h.y
+		}], t), this.rightStart = !0, e.topEnd = !0, S = l.x + C / 2) : n && "right" === n && w ? (o = i(this.chart, l, [{
+			x: h.x,
+			y: l.y
+		}, {
+			x: h.x,
+			y: h.y
+		}], t), this.rightStart = !0, e.topEnd = !0, S = l.x + C / 2) : n && "bottom" === n && g && y ? (o = i(this.chart, c, [{
+			x: c.x,
+			y: c.y + C / 2
+		}, {
+			x: l.x + C / 2,
+			y: c.y + C / 2
+		}, {
+			x: l.x + C / 2,
+			y: h.y - C / 2
+		}, {
+			x: h.x,
+			y: h.y - C / 2
+		}, {
+			x: h.x,
+			y: h.y
+		}], t), this.bottomStart = !0, e.topEnd = !0, S = c.x + C / 2) : "left" === n && (o = i(this.chart, u, [{
+			x: h.x + (u.x - h.x) / 2,
+			y: u.y
+		}, {
+			x: h.x + (u.x - h.x) / 2,
+			y: h.y - C / 2
+		}, {
+			x: h.x,
+			y: h.y - C / 2
+		}, {
+			x: h.x,
+			y: h.y
+		}], t), this.leftStart = !0, e.topEnd = !0, S = u.x) : (o = i(this.chart, c, [{
+			x: c.x,
+			y: c.y + C / 2
+		}, {
+			x: c.x + (c.x - h.x) / 2,
+			y: c.y + C / 2
+		}, {
+			x: c.x + (c.x - h.x) / 2,
+			y: h.y - C / 2
+		}, {
+			x: h.x,
+			y: h.y - C / 2
+		}, {
+			x: h.x,
+			y: h.y
+		}], t), this.bottomStart = !0, e.topEnd = !0, S = c.x + (c.x - h.x) / 2) : (o = this.leftEnd && y ? i(this.chart, c, [{
+			x: c.x,
+			y: c.y + C / 2
+		}, {
+			x: c.x + (c.x - h.x) / 2,
+			y: c.y + C / 2
+		}, {
+			x: c.x + (c.x - h.x) / 2,
+			y: h.y - C / 2
+		}, {
+			x: h.x,
+			y: h.y - C / 2
+		}, {
+			x: h.x,
+			y: h.y
+		}], t) : i(this.chart, c, [{
+			x: c.x,
+			y: h.y - C / 2
+		}, {
+			x: h.x,
+			y: h.y - C / 2
+		}, {
+			x: h.x,
+			y: h.y
+		}], t), this.bottomStart = !0, e.topEnd = !0, S = c.x + (c.x - h.x) / 2) : (o = i(this.chart, l, [{
+			x: l.x + C / 2,
+			y: l.y
+		}, {
+			x: l.x + C / 2,
+			y: h.y - C / 2
+		}, {
+			x: h.x,
+			y: h.y - C / 2
+		}, {
+			x: h.x,
+			y: h.y
+		}], t), this.rightStart = !0, e.topEnd = !0, S = l.x + C / 2) : (o = i(this.chart, l, [{
+			x: l.x + C / 2,
+			y: l.y
+		}, {
+			x: l.x + C / 2,
+			y: h.y - C / 2
+		}, {
+			x: h.x,
+			y: h.y - C / 2
+		}, {
+			x: h.x,
+			y: h.y
+		}], t), this.rightStart = !0, e.topEnd = !0, S = l.x + C / 2) : (o = i(this.chart, u, f, t), this.leftStart = !0, e.rightEnd = !0, S = f.x) : (o = i(this.chart, l, m, t), this.rightStart = !0, e.leftEnd = !0, S = m.x) : (o = i(this.chart, c, h, t), this.bottomStart = !0, e.topEnd = !0, S = c.x), o) {
+			for(var k = 0, T = this.chart.lines.length; T > k; k++)
+				for(var E, I = this.chart.lines[k], N = I.attr("path"), D = o.attr("path"), L = 0, A = N.length - 1; A > L; L++) {
+					var M = [];
+					M.push(["M", N[L][1], N[L][2]]), M.push(["L", N[L + 1][1], N[L + 1][2]]);
+					for(var R = M[0][1], P = M[0][2], F = M[1][1], O = M[1][2], B = 0, j = D.length - 1; j > B; B++) {
+						var $ = [];
+						$.push(["M", D[B][1], D[B][2]]), $.push(["L", D[B + 1][1], D[B + 1][2]]);
+						var G = $[0][1],
+							q = $[0][2],
+							H = $[1][1],
+							U = $[1][2],
+							z = r(R, P, F, O, G, q, H, U);
+						if(z.onLine1 && z.onLine2) {
+							var V;
+							q === U ? G > H ? (V = ["L", z.x + 2 * _, q], D.splice(B + 1, 0, V), V = ["C", z.x + 2 * _, q, z.x, q - 4 * _, z.x - 2 * _, q], D.splice(B + 2, 0, V), o.attr("path", D)) : (V = ["L", z.x - 2 * _, q], D.splice(B + 1, 0, V), V = ["C", z.x - 2 * _, q, z.x, q - 4 * _, z.x + 2 * _, q], D.splice(B + 2, 0, V), o.attr("path", D)) : q > U ? (V = ["L", G, z.y + 2 * _], D.splice(B + 1, 0, V), V = ["C", G, z.y + 2 * _, G + 4 * _, z.y, G, z.y - 2 * _], D.splice(B + 2, 0, V), o.attr("path", D)) : (V = ["L", G, z.y - 2 * _], D.splice(B + 1, 0, V), V = ["C", G, z.y - 2 * _, G + 4 * _, z.y, G, z.y + 2 * _], D.splice(B + 2, 0, V), o.attr("path", D)), B += 2, E += 2
+						}
+					}
+				}
+			this.chart.lines.push(o)
+		}(!this.chart.maxXFromLine || this.chart.maxXFromLine && S > this.chart.maxXFromLine) && (this.chart.maxXFromLine = S)
+	}, g.inherits(s, a), s.prototype.render = function() {
+		if(this.next) {
+			var e = this.chart.options.symbols[this.symbolType]["line-length"] || this.chart.options["line-length"],
+				t = this.getBottom();
+			this.next.getTop(), this.next.isPositioned || (this.next.shiftY(this.getY() + this.height + e), this.next.setX(t.x - this.next.width / 2), this.next.isPositioned = !0, this.next.render())
+		}
+	}, s.prototype.renderLines = function() {
+		this.next && this.drawLineTo(this.next)
+	}, g.inherits(l, a), g.inherits(c, a), g.inherits(u, a), g.inherits(d, a), d.prototype.getLeft = function() {
+		var e = this.getY() + this.group.getBBox().height / 2,
+			t = this.getX() + (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]);
+		return {
+			x: t,
+			y: e
+		}
+	}, d.prototype.getRight = function() {
+		var e = this.getY() + this.group.getBBox().height / 2,
+			t = this.getX() + this.group.getBBox().width - (this.chart.options.symbols[this.symbolType]["text-margin"] || this.chart.options["text-margin"]);
+		return {
+			x: t,
+			y: e
+		}
+	}, g.inherits(p, a), p.prototype.render = function() {
+		this.yes_direction && (this[this.yes_direction + "_symbol"] = this.yes_symbol), this.no_direction && (this[this.no_direction + "_symbol"] = this.no_symbol);
+		var e = this.chart.options.symbols[this.symbolType]["line-length"] || this.chart.options["line-length"];
+		if(this.bottom_symbol) {
+			var t = this.getBottom();
+			this.bottom_symbol.getTop(), this.bottom_symbol.isPositioned || (this.bottom_symbol.shiftY(this.getY() + this.height + e), this.bottom_symbol.setX(t.x - this.bottom_symbol.width / 2), this.bottom_symbol.isPositioned = !0, this.bottom_symbol.render())
+		}
+		if(this.right_symbol) {
+			var n = this.getRight();
+			if(this.right_symbol.getLeft(), !this.right_symbol.isPositioned) {
+				this.right_symbol.setY(n.y - this.right_symbol.height / 2), this.right_symbol.shiftX(this.group.getBBox().x + this.width + e);
+				var i = this;
+				! function r() {
+					for(var t, n = !1, o = 0, a = i.chart.symbols.length; a > o; o++) {
+						t = i.chart.symbols[o];
+						var s = Math.abs(t.getCenter().x - i.right_symbol.getCenter().x);
+						if(t.getCenter().y > i.right_symbol.getCenter().y && s <= i.right_symbol.width / 2) {
+							n = !0;
+							break
+						}
+					}
+					n && (i.right_symbol.setX(t.getX() + t.width + e), r())
+				}(), this.right_symbol.isPositioned = !0, this.right_symbol.render()
+			}
+		}
+	}, p.prototype.renderLines = function() {
+		this.yes_symbol && this.drawLineTo(this.yes_symbol, this.chart.options["yes-text"], this.yes_direction), this.no_symbol && this.drawLineTo(this.no_symbol, this.chart.options["no-text"], this.no_direction)
+	}, f.parse = h, f
+}), define("extensions/umlDiagrams", ["jquery", "underscore", "utils", "logger", "classes/Extension", "text!html/umlDiagramsSettingsBlock.html", "crel", "sequence-diagram", "flow-chart"], function(e, t, n, i, r, o, a, s, l) {
+	var c = new r("umlDiagrams", "UML Diagrams", !0);
+	c.settingsBlock = o;
+	var u;
+	c.onEventMgrCreated = function(e) {
+		u = e
+	};
+	var d;
+	c.onReady = function() {
+		d = document.getElementById("preview-contents")
+	};
+	var p = function(e) {
+		e()
+	};
+	return c.onAsyncPreview = function(e) {
+		p(e)
+	}, c.onInit = function() {
+		function e(n) {
+			if(0 === i.length) return n();
+			var r = i.pop();
+			try {
+				var o = s.parse(r.textContent),
+					l = r.parentNode,
+					c = a("div", {
+						"class": "sequence-diagram"
+					});
+				l.parentNode.replaceChild(c, l), o.drawSVG(c, {
+					theme: "simple"
+				})
+			} catch(u) {}
+			t.delay(e, 0, n)
+		}
+
+		function n(e) {
+			if(0 === r.length) return e();
+			var i = r.pop();
+			try {
+				var o = l.parse(i.textContent),
+					s = i.parentNode,
+					c = a("div", {
+						"class": "flow-chart"
+					});
+				s.parentNode.replaceChild(c, s), o.drawSVG(c, {
+					"line-width": 2
+				})
+			} catch(u) {}
+			t.delay(n, 0, e)
+		}
+		var i, r, o = p;
+		p = function(a) {
+			i = Array.prototype.slice.call(d.querySelectorAll(".prettyprint > .language-sequence")), r = Array.prototype.slice.call(d.querySelectorAll(".prettyprint > .language-flow")), t.delay(e, 0, function() {
+				t.delay(n, 0, function() {
+					o(a)
+				})
+			})
+		}
+	}, c
 }), define("text!html/buttonToc.html", [], function() {
 	return '<button class="btn btn-info dropdown-toggle" title="Table of contents" data-toggle="dropdown">\n    <i class="icon-list"></i>\n</button>\n<div class="dropdown-menu pull-right">\n    <h3>Table of contents</h3>\n    <hr>\n    <div class="table-of-contents">\n    </div>\n    <hr>\n</div>\n'
 }), define("text!html/tocSettingsBlock.html", [], function() {
@@ -23002,7 +21191,7 @@ function(e, t) {
 	};
 	var C, _, k, T, E, I, N = {}, D = [],
 		L = !1,
-		M = t.debounce(function() {
+		A = t.debounce(function() {
 			function e() {
 				var i;
 				if(0 === o.length) return t.filter(N, function(e, n) {
@@ -23029,10 +21218,10 @@ function(e, t) {
 				clearTimeout(T), T = setTimeout(e, 5)
 			}
 		}, 50);
-	return f.onLayoutResize = M, f.onFileOpen = function(e) {
-		k = e, M()
+	return f.onLayoutResize = A, f.onFileOpen = function(e) {
+		k = e, A()
 	}, f.onContentChanged = function(e) {
-		k === e && M()
+		k === e && A()
 	}, f.onCommentsChanged = function(e) {
 		if(k === e) {
 			if(void 0 !== C) {
@@ -23046,12 +21235,12 @@ function(e, t) {
 					C === t && _.applyToRange(t.rangyRange)
 				}, 50)
 			}
-			M()
+			A()
 		}
 	}, f.onDiscussionCreated = function(e) {
-		k === e && M()
+		k === e && A()
 	}, f.onDiscussionRemoved = function(e, t) {
-		k === e && (void 0 !== C && C.discussionIndex == t.discussionIndex && d(), M())
+		k === e && (void 0 !== C && C.discussionIndex == t.discussionIndex && d(), A())
 	}, f.onReady = function() {
 		_ = o.createCssClassApplier("comment-highlight", {
 			normalize: !1
@@ -23205,7 +21394,7 @@ function(e) {
 			})
 		})
 	}
-}(jQuery), define("jquery-waitforimages", function() {}), define("eventMgr", ["jquery", "underscore", "crel", "utils", "logger", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/yamlFrontMatterParser", "extensions/markdownSectionParser", "extensions/partialRendering", "extensions/buttonMarkdownSyntax", "extensions/googleAnalytics", "extensions/twitter", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogManageSharing", "extensions/dialogOpenHarddrive", "extensions/documentTitle", "extensions/documentSelector", "extensions/documentPanel", "extensions/documentManager", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollSync", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonViewer", "extensions/welcomeTour", "extensions/shortcuts", "extensions/userCustom", "extensions/comments", "bootstrap", "jquery-waitforimages"], function(e, t, n, i, r, o, a, s) {
+}(jQuery), define("jquery-waitforimages", function() {}), define("eventMgr", ["jquery", "underscore", "crel", "utils", "logger", "classes/Extension", "settings", "text!html/settingsExtensionsAccordion.html", "extensions/yamlFrontMatterParser", "extensions/markdownSectionParser", "extensions/partialRendering", "extensions/buttonMarkdownSyntax", "extensions/googleAnalytics", "extensions/twitter", "extensions/dialogAbout", "extensions/dialogManagePublication", "extensions/dialogManageSynchronization", "extensions/dialogManageSharing", "extensions/dialogOpenHarddrive", "extensions/documentTitle", "extensions/documentSelector", "extensions/documentPanel", "extensions/documentManager", "extensions/workingIndicator", "extensions/notifications", "extensions/markdownExtra", "extensions/umlDiagrams", "extensions/toc", "extensions/mathJax", "extensions/emailConverter", "extensions/scrollSync", "extensions/buttonSync", "extensions/buttonPublish", "extensions/buttonStat", "extensions/buttonHtmlCode", "extensions/buttonViewer", "extensions/welcomeTour", "extensions/shortcuts", "extensions/userCustom", "extensions/comments", "bootstrap", "jquery-waitforimages"], function(e, t, n, i, r, o, a, s) {
 	function l(e) {
 		return t.chain(p).map(function(t) {
 			return t.enabled && t[e]
@@ -25362,7 +23551,7 @@ function(e) {
 			O.newDiscussion && n.push(O.newDiscussion);
 			var i = w(H, e, n);
 			H = e, i === !0 && (O.discussionList = O.discussionList), O.content = H, q.saveSelectionState(), r.onContentChanged(O, H), i && r.onCommentsChanged(O), U.saveState()
-		} else H = e, O.content = H, q.setSelectionStartEnd(O.editorStart, O.editorEnd), q.saveSelectionState(), r.onFileOpen(O, H), M.scrollTop = O.previewScrollTop, P = O.editorScrollTop, T.scrollTop = P, B = !1
+		} else H = e, O.content = H, q.setSelectionStartEnd(O.editorStart, O.editorEnd), q.saveSelectionState(), r.onFileOpen(O, H), A.scrollTop = O.previewScrollTop, P = O.editorScrollTop, T.scrollTop = P, B = !1
 	}
 
 	function w(e, t, n) {
@@ -25436,21 +23625,21 @@ function(e) {
 		});
 		i.generated = !0, i.innerHTML = t, e.elt = i
 	}
-	var T, E, I, N, D, L, M, A, R = {}, P = 0,
+	var T, E, I, N, D, L, A, M, R = {}, P = 0,
 		F = function() {
 			var e = 0,
 				n = function() {
 					var t = Date.now();
-					A.refreshPreview(), e = Date.now() - t
+					M.refreshPreview(), e = Date.now() - t
 				};
 			return i.lazyRendering === !0 ? t.debounce(n, 500) : function() {
 				setTimeout(n, 2e3 > e ? e : 2e3)
 			}
 		}();
 	r.addListener("onPagedownConfigure", function(e) {
-		A = e
+		M = e
 	}), r.addListener("onSectionsCreated", function(e) {
-		S(e), C(), B === !0 ? A.refreshPreview() : F()
+		S(e), C(), B === !0 ? M.refreshPreview() : F()
 	});
 	var O, B = !0;
 	r.addListener("onFileSelected", function(e) {
@@ -25478,10 +23667,10 @@ function(e) {
 	R.undoMgr = U, r.addListener("onDiscussionCreated", y), r.addListener("onDiscussionRemoved", y), r.addListener("onCommentsChanged", y);
 	var z;
 	R.adjustCommentOffsets = w, R.init = function() {
-		if(T = document.getElementById("wmd-input"), E = e(T), I = T.querySelector(".editor-content"), N = e(I), D = T.querySelector(".editor-margin"), L = e(D), M = document.querySelector(".preview-container"), E.addClass(i.editorFontClass), j.startWatching(), e(T).scroll(function() {
+		if(T = document.getElementById("wmd-input"), E = e(T), I = T.querySelector(".editor-content"), N = e(I), D = T.querySelector(".editor-margin"), L = e(D), A = document.querySelector(".preview-container"), E.addClass(i.editorFontClass), j.startWatching(), e(T).scroll(function() {
 			P = T.scrollTop, B === !1 && (O.editorScrollTop = P)
-		}), e(M).scroll(function() {
-			B === !1 && (O.previewScrollTop = M.scrollTop)
+		}), e(A).scroll(function() {
+			B === !1 && (O.previewScrollTop = A.scrollTop)
 		}), /AppleWebKit\/([\d.]+)/.exec(navigator.userAgent)) {
 			var n = e('<input style="width:1px;height:1px;border:none;margin:0;padding:0;" tabIndex="-1">').appendTo("html");
 			N.blur(function() {
@@ -26077,10 +24266,10 @@ function(e, t) {
 			height: window.innerHeight
 		}, v.y = x.isOpen ? 0 : -R, v.x = w.isOpen ? 0 : S.isOpen ? -(O + B) : -O, v.width = g.width + O + B, v.height = g.height - v.y, b.left = O, b.width = g.width, b.height = v.height, y.top = R, y.width = g.width, y.height = v.height - R, v.applyCss(), b.applyCss(), y.applyCss(), window.viewerMode) return _.width = y.width, _.height = y.height, k.width = y.width, k.height = y.height, _.applyCss(), k.applyCss(), f();
 		for(;;) {
-			if(!(x.isOpen && y.height < P.height + M)) {
+			if(!(x.isOpen && y.height < P.height + A)) {
 				if(ot) {
 					if(_.isOpen) {
-						if(_.halfSize && (_.height = (y.height + M) / 2), _.height < F.height && (_.height = F.height), _.y = y.height - _.height, _.y < P.height) {
+						if(_.halfSize && (_.height = (y.height + A) / 2), _.height < F.height && (_.height = F.height), _.y = y.height - _.height, _.y < P.height) {
 							var e = y.height - P.height;
 							if(e < F.height) {
 								_.isOpen = !1, _.$elt.trigger("hide.layout.toggle").trigger("hidden.layout.toggle");
@@ -26088,11 +24277,11 @@ function(e, t) {
 							}
 							_.height = e, _.y = y.height - _.height
 						}
-					} else _.y = y.height - M;
-					_.width = y.width, C.height = _.y, C.width = y.width, k.top = M, k.height = _.height - M, k.width = _.width, T.width = A, E.width = A, E.x = (_.width - A) / 2, I.width = k.width
+					} else _.y = y.height - A;
+					_.width = y.width, C.height = _.y, C.width = y.width, k.top = A, k.height = _.height - A, k.width = _.width, T.width = M, E.width = M, E.x = (_.width - M) / 2, I.width = k.width
 				} else {
 					if(_.isOpen) {
-						if(_.halfSize && (_.width = (y.width + M) / 2), _.width < F.width && (_.width = F.width), _.x = y.width - _.width, _.x < P.width) {
+						if(_.halfSize && (_.width = (y.width + A) / 2), _.width < F.width && (_.width = F.width), _.x = y.width - _.width, _.x < P.width) {
 							var t = y.width - P.width;
 							if(t < F.width) {
 								_.isOpen = !1, _.$elt.trigger("hide.layout.toggle").trigger("hidden.layout.toggle");
@@ -26100,8 +24289,8 @@ function(e, t) {
 							}
 							_.width = t, _.x = y.width - _.width
 						}
-					} else _.x = y.width - M;
-					_.height = y.height, C.width = _.x, C.height = y.height, k.left = M, k.width = _.width - M, k.height = _.height, T.height = A, E.height = A, E.y = (_.height - A) / 2, I.height = k.height
+					} else _.x = y.width - A;
+					_.height = y.height, C.width = _.x, C.height = y.height, k.left = A, k.width = _.width - A, k.height = _.height, T.height = M, E.height = M, E.y = (_.height - M) / 2, I.height = k.height
 				}
 				break
 			}
@@ -26109,8 +24298,8 @@ function(e, t) {
 		}
 		T.$elt.toggleClass("open", x.isOpen), E.$elt.toggleClass("open", _.isOpen), I.$elt.toggleClass("open", _.isOpen), C.applyCss(), _.applyCss(), k.applyCss(), E.applyCss(), I.applyCss(), T.applyCss(), N.adjustPosition(), f()
 	}
-	var g, v, b, y, x, w, S, C, _, k, T, E, I, N, D, L = {}, M = 32,
-		A = 60,
+	var g, v, b, y, x, w, S, C, _, k, T, E, I, N, D, L = {}, A = 32,
+		M = 60,
 		R = 50,
 		P = {
 			width: 250,
@@ -27157,9 +25346,9 @@ function() {
 			I = E && k;
 		a.titleCRC = a.titleCRC || x;
 		var N, D, L = a.titleCRC != x,
-			M = a.titleCRC != C,
-			A = g != l && M,
-			R = A && L,
+			A = a.titleCRC != C,
+			M = g != l && A,
+			R = M && L,
 			P = a.discussionListCRC != w,
 			F = a.discussionListCRC != _,
 			O = v != h && F,
@@ -27214,7 +25403,7 @@ function() {
 			var i;
 			do i = t.randomString() + t.randomString(); while (e.has(q, i));
 			n.discussionIndex = i, q[i] = n
-		})), A && (n.title = G, i.onTitleChanged(n), i.onMessage('"' + g + '" has been renamed to "' + G + '" on ' + this.providerName + ".")), (E || O) && o.watcher.noWatch(e.bind(function() {
+		})), M && (n.title = G, i.onTitleChanged(n), i.onMessage('"' + g + '" has been renamed to "' + G + '" on ' + this.providerName + ".")), (E || O) && o.watcher.noWatch(e.bind(function() {
 			if(E && (r.currentFile === n && (o.setValueNoWatch($), Q && o.selectionMgr.setSelectionStartEnd(Q.selectionStart, Q.selectionEnd)), n.content = $, i.onContentChanged(n, $)), O) {
 				n.discussionList = q;
 				var t = u.diff(b, q),
@@ -29435,8 +27624,8 @@ function() {
 	}();
 	var D = /^inline(-block|-table)?$/i,
 		L = /[^\r\n\t\f \u200B]/,
-		M = w(!1),
-		A = w(!0);
+		A = w(!1),
+		M = w(!0);
 	S.prototype = {
 		doMerge: function() {
 			for(var e, t, n, i = [], r = 0, o = this.textNodes.length; o > r; ++r) e = this.textNodes[r], t = e.parentNode, i[r] = e.data, r && (t.removeChild(e), t.hasChildNodes() || t.parentNode.removeChild(t));
@@ -29477,8 +27666,8 @@ function() {
 			return this.ignoreWhiteSpace && e && 3 == e.nodeType && v(e)
 		},
 		postApply: function(e, t, n) {
-			for(var i, r, o, a = e[0], s = e[e.length - 1], l = [], c = a, u = s, d = 0, p = s.length, h = 0, f = e.length; f > h; ++h) r = e[h], o = M(r, !n), o ? (i || (i = new S(o), l.push(i)), i.textNodes.push(r), r === a && (c = i.firstTextNode, d = c.length), r === s && (u = i.firstTextNode, p = i.getLength())) : i = null;
-			var m = A(s, !n);
+			for(var i, r, o, a = e[0], s = e[e.length - 1], l = [], c = a, u = s, d = 0, p = s.length, h = 0, f = e.length; f > h; ++h) r = e[h], o = A(r, !n), o ? (i || (i = new S(o), l.push(i)), i.textNodes.push(r), r === a && (c = i.firstTextNode, d = c.length), r === s && (u = i.firstTextNode, p = i.getLength())) : i = null;
+			var m = M(s, !n);
 			if(m && (i || (i = new S(s), l.push(i)), i.textNodes.push(m)), l.length) {
 				for(h = 0, f = l.length; f > h; ++h) l[h].doMerge();
 				t.setStart(c, d), t.setEnd(u, p)
@@ -29634,7 +27823,7 @@ function() {
 		diff_match_patch_uncompressed: "bower-libs/google-diff-match-patch-js/diff_match_patch_uncompressed",
 		jsondiffpatch: "bower-libs/jsondiffpatch/build/bundle",
 		hammerjs: "bower-libs/hammerjs/hammer",
-		"sequence-diagram": "bower-libs/js-sequence-diagrams/build/sequence-diagram-min",
+		"sequence-diagram": "libs/sequence-diagram",
 		raphael: "bower-libs/raphael/raphael",
 		"flow-chart": "bower-libs/flowchart/release/flowchart.amd-1.2.10.min",
 		flowchart: "bower-libs/flowchart/release/flowchart-1.2.10.min"
@@ -29691,10 +27880,6 @@ function() {
 		"jquery-waitforimages": ["jquery"],
 		pagedown: ["libs/Markdown.Converter"],
 		"pagedown-extra": ["libs/Markdown.Converter"],
-		"sequence-diagram": {
-			deps: ["underscore", "raphael"],
-			exports: "Diagram"
-		},
 		"flow-chart": ["raphael"]
 	}
 });

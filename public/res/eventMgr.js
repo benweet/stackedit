@@ -25,6 +25,7 @@ define([
     "extensions/workingIndicator",
     "extensions/notifications",
     "extensions/markdownExtra",
+    "extensions/umlDiagrams",
     "extensions/toc",
     "extensions/mathJax",
     "extensions/emailConverter",

@@ -25,7 +25,7 @@ module.exports = function(grunt) {
                     'public/res-min/**/*.js'
                 ]
             },
-            client: ['public/**/*.js'],
+            client: ['public/**/*.js']
         },
         requirejs: {
             compile: {
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
                         'css/css-builder',
                         'less/lessc-server',
                         'less/lessc'
-                    ],
+                    ]
                 }
             }
         },
@@ -50,14 +50,14 @@ module.exports = function(grunt) {
                 js: {
                     space_before_conditional: false,
                     keep_array_indentation: true,
-                    indentWithTabs: true,
+                    indentWithTabs: true
                 }
             }
         },
         less: {
             compile: {
                 options: {
-                    compress: true,
+                    compress: true
                 },
                 files: [
                     {
@@ -67,14 +67,14 @@ module.exports = function(grunt) {
                             '*.less'
                         ],
                         dest: 'public/res-min/themes',
-                        ext: '.css',
+                        ext: '.css'
                     },
                     {
                         src: 'public/res/styles/base.less',
-                        dest: 'public/res-min/themes/base.css',
+                        dest: 'public/res-min/themes/base.css'
                     }
-                ],
-            },
+                ]
+            }
         },
         'string-replace': {
             'constants': {
@@ -86,7 +86,7 @@ module.exports = function(grunt) {
                         {
                             pattern: /constants\.VERSION = .*/,
                             replacement: 'constants.VERSION = "<%= pkg.version %>";'
-                        },
+                        }
                     ]
                 }
             },
@@ -103,10 +103,10 @@ module.exports = function(grunt) {
                         {
                             pattern: /(#DynamicResourcesBegin\n)[\s\S]*(\n#DynamicResourcesEnd)/,
                             replacement: '$1<%= resources %>$2'
-                        },
+                        }
                     ]
                 }
-            },
+            }
         },
         copy: {
             resources: {
@@ -137,7 +137,7 @@ module.exports = function(grunt) {
                             'require.js'
                         ],
                         dest: 'public/res-min/'
-                    },
+                    }
                 ]
             }
         },
@@ -161,7 +161,7 @@ module.exports = function(grunt) {
                 ],
                 pushTo: 'origin'
             }
-        },
+        }
     });
 
     /***************************************************************************

@@ -1225,6 +1225,10 @@ h1,h2,h3,h4,h5,h6{margin:1.3em 0}
 pre{word-break:break-word}
 p,pre,pre.prettyprint,blockquote{margin:0 0 1.1em}
 hr{margin:2em 0}
+.sequence-diagram,.flow-chart{text-align:center;margin-bottom:1.1em}.sequence-diagram text,.flow-chart text{font-size:1em !important;font-family:"Source Sans Pro",sans-serif !important}
+.sequence-diagram [fill="#ffffff"],.flow-chart [fill="#ffffff"]{fill:#fff}
+.sequence-diagram [stroke="#000000"],.flow-chart [stroke="#000000"]{stroke:#000}
+.sequence-diagram [fill="#000"],.flow-chart [fill="#000"],.sequence-diagram [fill="#000000"],.flow-chart [fill="#000000"],.sequence-diagram [fill="black"],.flow-chart [fill="black"]{fill:#000}
 code,pre{font-family:"Source Code Pro",monospace;font-size:0.9em}
 code{white-space:normal}
 pre,pre.prettyprint{border:0 solid #eee;border-left:10px solid #eee;border-radius:0;border-top-right-radius:5px;border-bottom-right-radius:5px;padding:10px 15px}pre code,pre.prettyprint code{background-color:transparent !important}
@@ -1239,7 +1243,7 @@ table tbody+tbody{border-top:2px solid #dddddd}
 blockquote{border-left-width:10px;background-color:#f8f8f8;border-top-right-radius:5px;border-bottom-right-radius:5px;padding:15px 20px}blockquote p{margin-bottom:1.1em;font-size:1em;line-height:1.45}
 blockquote ul:last-child,blockquote ol:last-child{margin-bottom:0}
 ul,ol{margin-bottom:1.1em}ul ul,ol ul,ul ol,ol ol{margin-bottom:1.1em}
-kbd{padding:0.1em 0.6em;border:1px solid rgba(0,0,0,0.25);-webkit-box-shadow:0 1px 0 rgba(0,0,0,0.25);box-shadow:0 1px 0 rgba(0,0,0,0.25);font-size:0.7em;font-family:Arial,Helvetica,sans-serif;background-color:#fff;color:#333;border-radius:3px;display:inline-block;margin:0 0.1em;white-space:nowrap}
+kbd{padding:0.1em 0.6em;border:1px solid rgba(0,0,0,0.25);-webkit-box-shadow:0 1px 0 rgba(0,0,0,0.25);box-shadow:0 1px 0 rgba(0,0,0,0.25);font-size:0.7em;font-family:sans-serif;background-color:#fff;color:#333;border-radius:3px;display:inline-block;margin:0 0.1em;white-space:nowrap}
 .toc ul{list-style-type:none;margin-bottom:15px}
 .footnote{vertical-align:top;position:relative;top:-0.5em;font-size:0.8em}
 [class^="icon-"],[class*=" icon-"]{display:inline-block;line-height:1.35em;vertical-align:middle;background-repeat:no-repeat}

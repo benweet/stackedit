@@ -90,7 +90,7 @@ define([
 
 	var extraOptions;
 	markdownExtra.onInit = function() {
-		var sequenceDiagramEltList, flowChartEltList, highlightEltList, prettifyEltList;
+		var sequenceDiagramEltList, flowChartEltList;
 		extraOptions = {
 			extensions: markdownExtra.config.extensions
 		};

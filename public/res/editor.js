@@ -534,8 +534,7 @@ define([
 		if(contentElt.lastChild === trailingLfNode && trailingLfNode.textContent.slice(-1) == '\n') {
 			newTextContent = newTextContent.slice(0, -1);
 		}
-		newTextContent = newTextContent.replace(/\r\n/g, '\n'); // DOS to Unix
-		newTextContent = newTextContent.replace(/\r/g, '\n'); // Mac to Unix
+		newTextContent = newTextContent.replace(/\r\n?/g, '\n'); // Mac/DOS to Unix
 
 		if(fileChanged === false) {
 			if(newTextContent == textContent) {

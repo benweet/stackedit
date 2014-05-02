@@ -91,15 +91,21 @@ define([
 				blocks[i] = "@@" + math.length + "@@";
 				math.push(block)
 			} else if(start) {
+				// Ignore inline maths that are actually multiline (fixes #136)
+				if(end == inline && block.charAt(0) == '\n') {
+					if(last) {
+						i = last;
+						processMath(start, i, unescape);
+					}
+					start = end = last = null;
+					braces = 0;
+				}
 				//
 				//  If we are in math, look for the end delimiter,
 				//    but don't go past double line breaks, and
 				//    and balance braces within the math.
 				//
-				if(end == inline && block.charAt(0) == '\n') {
-					// This should fix #136 by ignoring inline maths that are actually multiline
-					start = end = last = null;
-				} else if(block === end) {
+				else if(block === end) {
 					if(braces) {
 						last = i
 					} else {
@@ -107,7 +113,12 @@ define([
 					}
 				} else {
 					if(block.match(/\n.*\n/)) {
-						last && (i = last, processMath(start, i, unescape)), start = end = last = null, braces = 0
+						if(last) {
+							i = last;
+							processMath(start, i, unescape);
+						}
+						start = end = last = null;
+						braces = 0;
 					} else {
 						if("{" === block) {
 							braces++

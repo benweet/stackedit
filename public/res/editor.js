@@ -43,9 +43,12 @@ define([
 		pagedownEditor = pagedownEditorParam;
 	});
 
+	var isComposing;
 	eventMgr.addListener('onSectionsCreated', function(newSectionList) {
-		updateSectionList(newSectionList);
-		highlightSections();
+		if(!isComposing) {
+			updateSectionList(newSectionList);
+			highlightSections();
+		}
 		if(fileChanged === true) {
 			// Refresh preview synchronously
 			pagedownEditor.refreshPreview();
@@ -726,6 +729,14 @@ define([
 				if(evt.which !== 13) {
 					clearNewline = false;
 				}
+			})
+			.on('compositionstart', function() {
+				isComposing = true;
+				console.log('compositionstart');
+			})
+			.on('compositionend', function() {
+				isComposing = false;
+				console.log('compositionend');
 			})
 			.on('mouseup', _.bind(selectionMgr.saveSelectionState, selectionMgr, true))
 			.on('paste', function() {

@@ -43,7 +43,7 @@ define([
 		pagedownEditor = pagedownEditorParam;
 	});
 
-	var isComposing;
+	var isComposing = 0;
 	eventMgr.addListener('onSectionsCreated', function(newSectionList) {
 		if(!isComposing) {
 			updateSectionList(newSectionList);
@@ -731,12 +731,12 @@ define([
 				}
 			})
 			.on('compositionstart', function() {
-				isComposing = true;
-				console.log('compositionstart');
+				isComposing++;
 			})
 			.on('compositionend', function() {
-				isComposing = false;
-				console.log('compositionend');
+				setTimeout(function() {
+					isComposing--;
+				}, 0);
 			})
 			.on('mouseup', _.bind(selectionMgr.saveSelectionState, selectionMgr, true))
 			.on('paste', function() {

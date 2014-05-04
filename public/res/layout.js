@@ -252,38 +252,38 @@ define([
 			height: window.innerHeight
 		};
 
-		// Layout wrapper level 1
-		wrapperL1.y = navbar.isOpen ? 0 : -navbarHeight;
-		wrapperL1.x = menuPanel.isOpen ? 0 : documentPanel.isOpen ? -(menuPanelWidth + documentPanelWidth) : -menuPanelWidth;
-		wrapperL1.width = windowSize.width + menuPanelWidth + documentPanelWidth;
-		wrapperL1.height = windowSize.height - wrapperL1.y;
-
-		// Layout wrapper level 2
-		wrapperL2.left = menuPanelWidth;
-		wrapperL2.width = windowSize.width;
-		wrapperL2.height = wrapperL1.height;
-
-		// Layout wrapper level 3
-		wrapperL3.top = navbarHeight;
-		wrapperL3.width = windowSize.width;
-		wrapperL3.height = wrapperL1.height - navbarHeight;
-
-		wrapperL1.applyCss();
-		wrapperL2.applyCss();
-		wrapperL3.applyCss();
-
-		if(window.viewerMode) {
-			previewPanel.width = wrapperL3.width;
-			previewPanel.height = wrapperL3.height;
-			previewContainer.width = wrapperL3.width;
-			previewContainer.height = wrapperL3.height;
-
-			previewPanel.applyCss();
-			previewContainer.applyCss();
-			return onResize();
-		}
-
 		while(true) {
+			// Layout wrapper level 1
+			wrapperL1.y = navbar.isOpen ? 0 : -navbarHeight;
+			wrapperL1.x = menuPanel.isOpen ? 0 : documentPanel.isOpen ? -(menuPanelWidth + documentPanelWidth) : -menuPanelWidth;
+			wrapperL1.width = windowSize.width + menuPanelWidth + documentPanelWidth;
+			wrapperL1.height = windowSize.height - wrapperL1.y;
+
+			// Layout wrapper level 2
+			wrapperL2.left = menuPanelWidth;
+			wrapperL2.width = windowSize.width;
+			wrapperL2.height = wrapperL1.height;
+
+			// Layout wrapper level 3
+			wrapperL3.top = navbarHeight;
+			wrapperL3.width = windowSize.width;
+			wrapperL3.height = wrapperL1.height - navbarHeight;
+
+			wrapperL1.applyCss();
+			wrapperL2.applyCss();
+			wrapperL3.applyCss();
+
+			if(window.viewerMode) {
+				previewPanel.width = wrapperL3.width;
+				previewPanel.height = wrapperL3.height;
+				previewContainer.width = wrapperL3.width;
+				previewContainer.height = wrapperL3.height;
+
+				previewPanel.applyCss();
+				previewContainer.applyCss();
+				return onResize();
+			}
+
 			if(navbar.isOpen && wrapperL3.height < editorMinSize.height + resizerSize) {
 				navbar.isOpen = false;
 				navbar.$elt.trigger('hide.layout.toggle').trigger('hidden.layout.toggle');

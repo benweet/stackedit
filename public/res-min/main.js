@@ -7958,7 +7958,7 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
 	}, utils
 }), define("constants", [], function() {
 	var e = {};
-	return e.VERSION = "3.99.3", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", e.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", e.GOOGLE_DRIVE_APP_ID = "241271498917", e.DROPBOX_APP_KEY = "lq6mwopab8wskas", e.DROPBOX_APP_SECRET = "851fgnucpezy84t", e.DROPBOX_RESTRICTED_APP_KEY = "sw0hlixhr8q1xk0", e.DROPBOX_RESTRICTED_APP_SECRET = "1r808p2xygs6lbg", e.BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c", e.DEFAULT_FILE_TITLE = "Title", e.DEFAULT_FOLDER_NAME = "New folder", e.GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document", e.EDITOR_DEFAULT_PADDING = 35, e.CHECK_ONLINE_PERIOD = 12e4, e.AJAX_TIMEOUT = 3e4, e.ASYNC_TASK_DEFAULT_TIMEOUT = 6e4, e.ASYNC_TASK_LONG_TIMEOUT = 18e4, e.USER_IDLE_THRESHOLD = 3e5, e.IMPORT_FILE_MAX_CONTENT_SIZE = 1e5, e.IMPORT_IMG_MAX_CONTENT_SIZE = 1e7, e.TEMPORARY_FILE_INDEX = "file.tempIndex", e.WELCOME_DOCUMENT_TITLE = "Welcome document", e.DOWNLOAD_PROXY_URL = "https://stackedit-download-proxy.herokuapp.com/", e.PICASA_PROXY_URL = "https://stackedit-picasa-proxy.herokuapp.com/", e.SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/", e.HTMLTOPDF_URL = "https://stackedit-htmltopdf.herokuapp.com/", e.BASE_URL = "http://localhost/", e.GOOGLE_CLIENT_ID = "241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "e47fef6055344579799d", e.GATEKEEPER_URL = "https://stackedit-gatekeeper-localhost.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-local.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "23361", e.WORDPRESS_PROXY_URL = "https://stackedit-io-wordpress-proxy.herokuapp.com/", 0 === location.hostname.indexOf("stackedit.io") ? (e.BASE_URL = e.MAIN_URL, e.GOOGLE_CLIENT_ID = "241271498917-t4t7d07qis7oc0ahaskbif3ft6tk63cd.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "710fc67886ab1ae8fee6", e.GATEKEEPER_URL = "https://stackedit-io-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-io-tumblr-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("benweet.github.io") ? (e.BASE_URL = "http://benweet.github.io/stackedit/", e.GOOGLE_CLIENT_ID = "241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "fa0d09514da8377ee32e", e.GATEKEEPER_URL = "https://stackedit-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "3185", e.WORDPRESS_PROXY_URL = "https://stackedit-wordpress-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("stackedit-beta.herokuapp.com") ? (e.BASE_URL = "https://stackedit-beta.herokuapp.com/", e.GOOGLE_CLIENT_ID = "241271498917-9bbplknkt0ljv5gaudhoiogp13hd18be.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "e9034ae191c3a8a1c5ed", e.GATEKEEPER_URL = "https://stackedit-beta-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-beta-tumblr-proxy.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "34786", e.WORDPRESS_PROXY_URL = "https://stackedit-beta-wordpress-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("benweet.insomnia247.nl") && (e.BASE_URL = "http://benweet.insomnia247.nl/stackedit/", e.GOOGLE_CLIENT_ID = "241271498917-52hae7a08hv7ltenv7km8h7lghno9sk3.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "d2943d6074b2d9c4a830", e.GATEKEEPER_URL = "https://stackedit-gatekeeper-insomnia.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-beta.herokuapp.com/"), e.THEME_LIST = {
+	return e.VERSION = "3.99.4", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", e.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", e.GOOGLE_DRIVE_APP_ID = "241271498917", e.DROPBOX_APP_KEY = "lq6mwopab8wskas", e.DROPBOX_APP_SECRET = "851fgnucpezy84t", e.DROPBOX_RESTRICTED_APP_KEY = "sw0hlixhr8q1xk0", e.DROPBOX_RESTRICTED_APP_SECRET = "1r808p2xygs6lbg", e.BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c", e.DEFAULT_FILE_TITLE = "Title", e.DEFAULT_FOLDER_NAME = "New folder", e.GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document", e.EDITOR_DEFAULT_PADDING = 35, e.CHECK_ONLINE_PERIOD = 12e4, e.AJAX_TIMEOUT = 3e4, e.ASYNC_TASK_DEFAULT_TIMEOUT = 6e4, e.ASYNC_TASK_LONG_TIMEOUT = 18e4, e.USER_IDLE_THRESHOLD = 3e5, e.IMPORT_FILE_MAX_CONTENT_SIZE = 1e5, e.IMPORT_IMG_MAX_CONTENT_SIZE = 1e7, e.TEMPORARY_FILE_INDEX = "file.tempIndex", e.WELCOME_DOCUMENT_TITLE = "Welcome document", e.DOWNLOAD_PROXY_URL = "https://stackedit-download-proxy.herokuapp.com/", e.PICASA_PROXY_URL = "https://stackedit-picasa-proxy.herokuapp.com/", e.SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/", e.HTMLTOPDF_URL = "https://stackedit-htmltopdf.herokuapp.com/", e.BASE_URL = "http://localhost/", e.GOOGLE_CLIENT_ID = "241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "e47fef6055344579799d", e.GATEKEEPER_URL = "https://stackedit-gatekeeper-localhost.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-local.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "23361", e.WORDPRESS_PROXY_URL = "https://stackedit-io-wordpress-proxy.herokuapp.com/", 0 === location.hostname.indexOf("stackedit.io") ? (e.BASE_URL = e.MAIN_URL, e.GOOGLE_CLIENT_ID = "241271498917-t4t7d07qis7oc0ahaskbif3ft6tk63cd.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "710fc67886ab1ae8fee6", e.GATEKEEPER_URL = "https://stackedit-io-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-io-tumblr-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("benweet.github.io") ? (e.BASE_URL = "http://benweet.github.io/stackedit/", e.GOOGLE_CLIENT_ID = "241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "fa0d09514da8377ee32e", e.GATEKEEPER_URL = "https://stackedit-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "3185", e.WORDPRESS_PROXY_URL = "https://stackedit-wordpress-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("stackedit-beta.herokuapp.com") ? (e.BASE_URL = "https://stackedit-beta.herokuapp.com/", e.GOOGLE_CLIENT_ID = "241271498917-9bbplknkt0ljv5gaudhoiogp13hd18be.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "e9034ae191c3a8a1c5ed", e.GATEKEEPER_URL = "https://stackedit-beta-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-beta-tumblr-proxy.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "34786", e.WORDPRESS_PROXY_URL = "https://stackedit-beta-wordpress-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("benweet.insomnia247.nl") && (e.BASE_URL = "http://benweet.insomnia247.nl/stackedit/", e.GOOGLE_CLIENT_ID = "241271498917-52hae7a08hv7ltenv7km8h7lghno9sk3.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "d2943d6074b2d9c4a830", e.GATEKEEPER_URL = "https://stackedit-gatekeeper-insomnia.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-beta.herokuapp.com/"), e.THEME_LIST = {
 		"default": "Default",
 		gray: "Gray",
 		night: "Night",
@@ -14081,7 +14081,7 @@ if(Markdown = "object" == typeof exports && "function" == typeof require ? expor
 		}, u = w(e.replace(/\r\n?/g, "\n"), S);
 		for(var n = 1, r = u.length; r > n; n += 2) {
 			var o = u[n];
-			"@" === o.charAt(0) ? (u[n] = "@@" + m.length + "@@", m.push(o)) : d ? p == y && "\n" == o.charAt(0) ? d = p = h = null : o === p ? f ? h = n : i(d, n, t) : o.match(/\n.*\n/) ? (h && (n = h, i(d, n, t)), d = p = h = null, f = 0) : "{" === o ? f++ : "}" === o && f && f-- : o === y || "$$" === o ? (d = n, p = o, f = 0) : "begin" === o.substr(1, 5) && (d = n, p = "\\end" + o.substr(6), f = 0)
+			"@" === o.charAt(0) ? (u[n] = "@@" + m.length + "@@", m.push(o)) : d ? p == y && "\n" == o.charAt(0) ? (h && (n = h, i(d, n, t)), d = p = h = null, f = 0) : o === p ? f ? h = n : i(d, n, t) : o.match(/\n.*\n/) ? (h && (n = h, i(d, n, t)), d = p = h = null, f = 0) : "{" === o ? f++ : "}" === o && f && f-- : o === y || "$$" === o ? (d = n, p = o, f = 0) : "begin" === o.substr(1, 5) && (d = n, p = "\\end" + o.substr(6), f = 0)
 		}
 		return h && i(d, h, t), t(u.join(""))
 	}
@@ -23373,7 +23373,7 @@ function(e) {
 				var t = T.offsetHeight / 2 * i.cursorFocusRatio,
 					n = T.scrollTop + t,
 					o = T.scrollTop + T.offsetHeight - t;
-				q.cursorY < n ? T.scrollTop += q.cursorY - n : q.cursorY > o && (T.scrollTop += q.cursorY - o), this.adjustScroll = !1
+				H.cursorY < n ? T.scrollTop += H.cursorY - n : H.cursorY > o && (T.scrollTop += H.cursorY - o), this.adjustScroll = !1
 			}
 		}, this));
 		this.setSelectionStartEnd = function(e, t, n, i) {
@@ -23384,10 +23384,10 @@ function(e) {
 				var s = c.getSelection();
 				s.removeAllRanges(), s.addRange(n, e > t)
 			}
-			return O.editorStart = this.selectionStart, O.editorEnd = this.selectionEnd, o(), n
+			return B.editorStart = this.selectionStart, B.editorEnd = this.selectionEnd, o(), n
 		}, this.saveSelectionState = function() {
 			function n(t) {
-				if(clearTimeout(i), i = void 0, e.adjustScroll = t, B === !1) {
+				if(clearTimeout(i), i = void 0, e.adjustScroll = t, j === !1) {
 					var n, r = e.selectionStart,
 						o = e.selectionEnd,
 						a = c.getSelection();
@@ -23407,7 +23407,7 @@ function(e) {
 					}
 					e.setSelectionStartEnd(r, o, n, !0)
 				}
-				U.saveSelectionState()
+				z.saveSelectionState()
 			}
 			var i;
 			return function(e, r) {
@@ -23419,7 +23419,7 @@ function(e) {
 				r = 0;
 			if("\n" == t.textContent) r = t.parentNode.offsetTop + t.parentNode.offsetHeight / 2;
 			else {
-				var o = H[e],
+				var o = U[e],
 					a = {
 						container: t,
 						offset: n
@@ -23440,7 +23440,7 @@ function(e) {
 			var t = 0,
 				n = 0,
 				i = 0;
-			return H.split(/\s/).some(function(r) {
+			return U.split(/\s/).some(function(r) {
 				return r && (t = i, n = i + r.length, n > e) ? !0 : void(i += r.length + 1)
 			}), {
 				start: t,
@@ -23450,51 +23450,51 @@ function(e) {
 	}
 
 	function p() {
-		void 0 !== T && q.saveSelectionState(!0, !0)
+		void 0 !== T && H.saveSelectionState(!0, !0)
 	}
 
 	function h(e) {
-		var t = $.diff_commonPrefix(H, e);
-		t === H.length && t--;
-		var n = Math.min($.diff_commonSuffix(H, e), H.length - t, e.length - t),
+		var t = G.diff_commonPrefix(U, e);
+		t === U.length && t--;
+		var n = Math.min(G.diff_commonSuffix(U, e), U.length - t, e.length - t),
 			i = e.substring(t, e.length - n),
-			r = q.createRange(t, H.length - n);
+			r = H.createRange(t, U.length - n);
 		r.deleteContents(), r.insertNode(document.createTextNode(i))
 	}
 
 	function f(e, t) {
-		var n = q.selectionStart;
-		if(n !== q.selectionEnd) return !1;
-		var i = q.createRange(n - e.length, n);
-		return "" + i != e ? !1 : (i.deleteContents(), i.insertNode(document.createTextNode(t)), n = n - e.length + t.length, q.setSelectionStartEnd(n, n), !0)
+		var n = H.selectionStart;
+		if(n !== H.selectionEnd) return !1;
+		var i = H.createRange(n - e.length, n);
+		return "" + i != e ? !1 : (i.deleteContents(), i.insertNode(document.createTextNode(t)), n = n - e.length + t.length, H.setSelectionStartEnd(n, n), !0)
 	}
 
 	function m(e) {
-		h(e), H = e
+		h(e), U = e
 	}
 
 	function g() {
-		return H
+		return U
 	}
 
 	function v() {
-		N.focus(), q.setSelectionStartEnd(), T.scrollTop = P
+		N.focus(), H.setSelectionStartEnd(), T.scrollTop = P
 	}
 
 	function b() {
 		function e(e, n, i) {
-			j.noWatch(function() {
-				H != e.content && (m(e.content), O.content = e.content, r.onContentChanged(O, e.content)), q.setSelectionStartEnd(n, i);
-				var o = O.discussionListJSON;
+			$.noWatch(function() {
+				U != e.content && (m(e.content), B.content = e.content, r.onContentChanged(B, e.content)), H.setSelectionStartEnd(n, i);
+				var o = B.discussionListJSON;
 				if(o != e.discussionListJSON) {
-					var a = O.discussionList;
-					O.discussionListJSON = e.discussionListJSON;
-					var s = O.discussionList,
-						l = G.diff(a, s),
+					var a = B.discussionList;
+					B.discussionListJSON = e.discussionListJSON;
+					var s = B.discussionList,
+						l = q.diff(a, s),
 						c = !1;
 					t.each(l, function(e, n) {
-						t.isArray(e) ? 1 === e.length ? r.onDiscussionCreated(O, s[n]) : r.onDiscussionRemoved(O, a[n]) : c = !0
-					}), c && r.onCommentsChanged(O)
+						t.isArray(e) ? 1 === e.length ? r.onDiscussionCreated(B, s[n]) : r.onDiscussionRemoved(B, a[n]) : c = !0
+					}), c && r.onCommentsChanged(B)
 				}
 			}), s = n, l = i, a = e, this.currentMode = void 0, o = void 0, this.onButtonStateChange(), p()
 		}
@@ -23508,13 +23508,13 @@ function(e) {
 			"comment" == this.currentMode || this.currentMode != o && "newlines" != o || e - i > 1e3 ? (c.push(a), 100 === c.length && c.shift()) : (s = a.selectionStartBefore, l = a.selectionEndBefore), a = {
 				selectionStartBefore: s,
 				selectionEndBefore: l,
-				selectionStartAfter: q.selectionStart,
-				selectionEndAfter: q.selectionEnd,
-				content: H,
-				discussionListJSON: O.discussionListJSON
+				selectionStartAfter: H.selectionStart,
+				selectionEndAfter: H.selectionEnd,
+				content: U,
+				discussionListJSON: B.discussionListJSON
 			}, i = e, o = this.currentMode, this.currentMode = void 0, this.onButtonStateChange()
 		}, this), this.saveSelectionState = t.debounce(function() {
-			void 0 === this.currentMode && (s = q.selectionStart, l = q.selectionEnd)
+			void 0 === this.currentMode && (s = H.selectionStart, l = H.selectionEnd)
 		}, 10), this.canUndo = function() {
 			return c.length
 		}, this.canRedo = function() {
@@ -23526,37 +23526,37 @@ function(e) {
 			var t = u.pop();
 			t && (c.push(a), e.call(this, t, t.selectionStartAfter, t.selectionEndAfter))
 		}, this.init = function() {
-			var e = O.content;
+			var e = B.content;
 			c = [], u = [], i = 0, a = {
-				selectionStartAfter: O.selectionStart,
-				selectionEndAfter: O.selectionEnd,
+				selectionStartAfter: B.selectionStart,
+				selectionEndAfter: B.selectionEnd,
 				content: e,
-				discussionListJSON: O.discussionListJSON
+				discussionListJSON: B.discussionListJSON
 			}, this.currentMode = void 0, o = void 0, I.textContent = e, x()
 		}
 	}
 
 	function y() {
-		j.isWatching === !0 && (U.currentMode = U.currentMode || "comment", U.saveState())
+		$.isWatching === !0 && (z.currentMode = z.currentMode || "comment", z.saveState())
 	}
 
 	function x() {
 		var e = T.textContent;
-		if(I.lastChild === z && "\n" == z.textContent.slice(-1) && (e = e.slice(0, -1)), e = e.replace(/\r\n?/g, "\n"), B === !1) {
-			if(e == H) return void(0 === I.children.length && (I.innerHTML = "", W.forEach(function(e) {
+		if(I.lastChild === V && "\n" == V.textContent.slice(-1) && (e = e.slice(0, -1)), e = e.replace(/\r\n?/g, "\n"), j === !1) {
+			if(e == U) return void(0 === I.children.length && (I.innerHTML = "", X.forEach(function(e) {
 				I.appendChild(e.elt)
 			}), _()));
-			U.currentMode = U.currentMode || "typing";
-			var n = t.values(O.discussionList);
-			O.newDiscussion && n.push(O.newDiscussion);
-			var i = w(H, e, n);
-			H = e, i === !0 && (O.discussionList = O.discussionList), O.content = H, q.saveSelectionState(), r.onContentChanged(O, H), i && r.onCommentsChanged(O), U.saveState()
-		} else H = e, O.content = H, q.setSelectionStartEnd(O.editorStart, O.editorEnd), q.saveSelectionState(), r.onFileOpen(O, H), A.scrollTop = O.previewScrollTop, P = O.editorScrollTop, T.scrollTop = P, B = !1
+			z.currentMode = z.currentMode || "typing";
+			var n = t.values(B.discussionList);
+			B.newDiscussion && n.push(B.newDiscussion);
+			var i = w(U, e, n);
+			U = e, i === !0 && (B.discussionList = B.discussionList), B.content = U, H.saveSelectionState(), r.onContentChanged(B, U), i && r.onCommentsChanged(B), z.saveState()
+		} else U = e, B.content = U, H.setSelectionStartEnd(B.editorStart, B.editorEnd), H.saveSelectionState(), r.onFileOpen(B, U), A.scrollTop = B.previewScrollTop, P = B.editorScrollTop, T.scrollTop = P, j = !1
 	}
 
 	function w(e, t, n) {
 		if(n.length) {
-			var i = $.diff_main(e, t),
+			var i = G.diff_main(e, t),
 				r = !1,
 				o = 0;
 			return i.forEach(function(e) {
@@ -23572,53 +23572,53 @@ function(e) {
 	}
 
 	function S(e) {
-		if(Q = [], X = [], V = void 0, B === !0) return X = W, W = e, void(Q = e);
-		var n = W.length;
-		t.some(W, function(t, i) {
+		if(Y = [], Q = [], W = void 0, j === !0) return Q = X, X = e, void(Y = e);
+		var n = X.length;
+		t.some(X, function(t, i) {
 			var r = e[i];
 			return i >= e.length || t.textWithFrontMatter != r.textWithFrontMatter || t.elt.parentNode !== I || t.elt.textContent != r.textWithFrontMatter ? (n = i, !0) : void 0
 		});
-		var i = -W.length;
-		t.some(W.slice().reverse(), function(t, n) {
+		var i = -X.length;
+		t.some(X.slice().reverse(), function(t, n) {
 			var r = e[e.length - n - 1];
 			return n >= e.length || t.textWithFrontMatter != r.textWithFrontMatter || t.elt.parentNode !== I || t.elt.textContent != r.textWithFrontMatter ? (i = -n, !0) : void 0
-		}), n - i > W.length && (i = n - W.length);
-		var r = W.slice(0, n);
-		Q = e.slice(n, e.length + i);
-		var o = W.slice(W.length + i, W.length);
-		V = t.first(o), X = W.slice(n, W.length + i), W = r.concat(Q).concat(o)
+		}), n - i > X.length && (i = n - X.length);
+		var r = X.slice(0, n);
+		Y = e.slice(n, e.length + i);
+		var o = X.slice(X.length + i, X.length);
+		W = t.first(o), Q = X.slice(n, X.length + i), X = r.concat(Y).concat(o)
 	}
 
 	function C() {
 		var e = document.createDocumentFragment();
-		Q.forEach(function(t) {
+		Y.forEach(function(t) {
 			k(t), e.appendChild(t.elt)
-		}), j.noWatch(function() {
-			if(B === !0) I.innerHTML = "", I.appendChild(e);
+		}), $.noWatch(function() {
+			if(j === !0) I.innerHTML = "", I.appendChild(e);
 			else {
-				X.forEach(function(e) {
+				Q.forEach(function(e) {
 					e.elt.parentNode === I && I.removeChild(e.elt)
-				}), void 0 !== V ? I.insertBefore(e, V.elt) : I.appendChild(e);
+				}), void 0 !== W ? I.insertBefore(e, W.elt) : I.appendChild(e);
 				for(var t = I.firstChild; t;) {
 					var n = t.nextSibling;
 					t.generated || I.removeChild(t), t = n
 				}
 			}
-			_(), q.setSelectionStartEnd()
+			_(), H.setSelectionStartEnd()
 		})
 	}
 
 	function _() {
-		z = l("span", {
+		V = l("span", {
 			"class": "token lf"
-		}), z.textContent = "\n", I.appendChild(z)
+		}), V.textContent = "\n", I.appendChild(V)
 	}
 
 	function k(e) {
-		var t = Y(e.text);
+		var t = K(e.text);
 		window.viewerMode || (t = o.highlight(t, o.languages.md));
 		var n = e.textWithFrontMatter.substring(0, e.textWithFrontMatter.length - e.text.length);
-		n.length && (n = Y(n), n = n.replace(/\n/g, '<span class="token lf">\n</span>'), t = '<span class="token md">' + n + "</span>" + t);
+		n.length && (n = K(n), n = n.replace(/\n/g, '<span class="token lf">\n</span>'), t = '<span class="token md">' + n + "</span>" + t);
 		var i = l("span", {
 			id: "wmd-input-section-" + e.id,
 			"class": "wmd-input-section"
@@ -23638,17 +23638,19 @@ function(e) {
 		}();
 	r.addListener("onPagedownConfigure", function(e) {
 		M = e
-	}), r.addListener("onSectionsCreated", function(e) {
-		S(e), C(), B === !0 ? M.refreshPreview() : F()
 	});
-	var O, B = !0;
+	var O;
+	r.addListener("onSectionsCreated", function(e) {
+		O || (S(e), C()), j === !0 ? M.refreshPreview() : F()
+	});
+	var B, j = !0;
 	r.addListener("onFileSelected", function(e) {
-		B = !0, O = e
+		j = !0, B = e
 	});
-	var j = new u;
-	R.watcher = j;
-	var $ = new a,
-		G = s.create({
+	var $ = new u;
+	R.watcher = $;
+	var G = new a,
+		q = s.create({
 			objectHash: function(e) {
 				return JSON.stringify(e)
 			},
@@ -23659,18 +23661,18 @@ function(e) {
 				minLength: 9999999
 			}
 		}),
-		q = new d;
-	R.selectionMgr = q, e(document).on("selectionchange", ".editor-content", t.bind(q.saveSelectionState, q, !0)), R.adjustCursorPosition = p;
-	var H;
+		H = new d;
+	R.selectionMgr = H, e(document).on("selectionchange", ".editor-content", t.bind(H.saveSelectionState, H, !0)), R.adjustCursorPosition = p;
+	var U;
 	R.setValue = h, R.replacePreviousText = f, R.setValueNoWatch = m, R.getValue = g, R.focus = v;
-	var U = new b;
-	R.undoMgr = U, r.addListener("onDiscussionCreated", y), r.addListener("onDiscussionRemoved", y), r.addListener("onCommentsChanged", y);
-	var z;
+	var z = new b;
+	R.undoMgr = z, r.addListener("onDiscussionCreated", y), r.addListener("onDiscussionRemoved", y), r.addListener("onCommentsChanged", y);
+	var V;
 	R.adjustCommentOffsets = w, R.init = function() {
-		if(T = document.getElementById("wmd-input"), E = e(T), I = T.querySelector(".editor-content"), N = e(I), D = T.querySelector(".editor-margin"), L = e(D), A = document.querySelector(".preview-container"), E.addClass(i.editorFontClass), j.startWatching(), e(T).scroll(function() {
-			P = T.scrollTop, B === !1 && (O.editorScrollTop = P)
+		if(T = document.getElementById("wmd-input"), E = e(T), I = T.querySelector(".editor-content"), N = e(I), D = T.querySelector(".editor-margin"), L = e(D), A = document.querySelector(".preview-container"), E.addClass(i.editorFontClass), $.startWatching(), e(T).scroll(function() {
+			P = T.scrollTop, j === !1 && (B.editorScrollTop = P)
 		}), e(A).scroll(function() {
-			B === !1 && (O.previewScrollTop = A.scrollTop)
+			j === !1 && (B.previewScrollTop = A.scrollTop)
 		}), /AppleWebKit\/([\d.]+)/.exec(navigator.userAgent)) {
 			var n = e('<input style="width:1px;height:1px;border:none;margin:0;padding:0;" tabIndex="-1">').appendTo("html");
 			N.blur(function() {
@@ -23679,24 +23681,24 @@ function(e) {
 		}
 		T.focus = v, Object.defineProperty(T, "value", {
 			get: function() {
-				return H
+				return U
 			},
 			set: h
 		}), Object.defineProperty(T, "selectionStart", {
 			get: function() {
-				return Math.min(q.selectionStart, q.selectionEnd)
+				return Math.min(H.selectionStart, H.selectionEnd)
 			},
 			set: function(e) {
-				q.setSelectionStartEnd(e)
+				H.setSelectionStartEnd(e)
 			},
 			enumerable: !0,
 			configurable: !0
 		}), Object.defineProperty(T, "selectionEnd", {
 			get: function() {
-				return Math.max(q.selectionStart, q.selectionEnd)
+				return Math.max(H.selectionStart, H.selectionEnd)
 			},
 			set: function(e) {
-				q.setSelectionStartEnd(void 0, e)
+				H.setSelectionStartEnd(void 0, e)
 			},
 			enumerable: !0,
 			configurable: !0
@@ -23704,7 +23706,7 @@ function(e) {
 		var r = !1;
 		N.on("keydown", function(e) {
 			if(17 !== e.which && 91 !== e.which && 18 !== e.which && 16 !== e.which) {
-				q.saveSelectionState();
+				H.saveSelectionState();
 				var t = e.metaKey || e.ctrlKey;
 				switch(t || p(), e.which) {
 					case 9:
@@ -23717,16 +23719,20 @@ function(e) {
 				}
 				13 !== e.which && (r = !1)
 			}
-		}).on("mouseup", t.bind(q.saveSelectionState, q, !0)).on("paste", function() {
-			U.currentMode = "paste", p()
+		}).on("compositionstart", function() {
+			O = !0, console.log("compositionstart")
+		}).on("compositionend", function() {
+			O = !1, console.log("compositionend")
+		}).on("mouseup", t.bind(H.saveSelectionState, H, !0)).on("paste", function() {
+			z.currentMode = "paste", p()
 		}).on("cut", function() {
-			U.currentMode = "cut", p()
+			z.currentMode = "cut", p()
 		});
 		var o = function(e, t) {
 			t = t || {};
 			var n = g(),
-				i = t.start || q.selectionStart,
-				r = t.end || q.selectionEnd,
+				i = t.start || H.selectionStart,
+				r = t.end || H.selectionEnd,
 				o = {
 					selectionStart: i,
 					selectionEnd: r,
@@ -23734,7 +23740,7 @@ function(e) {
 					after: n.slice(r),
 					selection: n.slice(i, r)
 				};
-			a[e](o, t), h(o.before + o.selection + o.after), q.setSelectionStartEnd(o.selectionStart, o.selectionEnd)
+			a[e](o, t), h(o.before + o.selection + o.after), H.setSelectionStartEnd(o.selectionStart, o.selectionEnd)
 		}, a = {
 				indent: function(e, t) {
 					function n(e, t, n, i) {
@@ -23759,14 +23765,14 @@ function(e) {
 						var a = parseInt(i[1], 10);
 						o = o.replace(/\d+/, a + 1)
 					}
-					o.length && (r = !0), U.currentMode = "newlines", e.before += "\n" + o, e.selection = "", e.selectionStart += o.length + 1, e.selectionEnd = e.selectionStart
+					o.length && (r = !0), z.currentMode = "newlines", e.before += "\n" + o, e.selection = "", e.selectionStart += o.length + 1, e.selectionEnd = e.selectionStart
 				}
 			}
 	};
-	var V, W = [],
-		X = [],
+	var W, X = [],
 		Q = [],
-		Y = function() {
+		Y = [],
+		K = function() {
 			var e = {
 				"&": "&amp;",
 				"<": "&lt;",

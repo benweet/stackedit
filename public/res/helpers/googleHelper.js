@@ -63,12 +63,10 @@ define([
         task.onRun(function() {
             if(isOffline === true) {
                 connected = false;
-                task.error(new Error("Operation not available in offline mode.|stopPublish"));
-                return;
+                return task.error(new Error("Operation not available in offline mode.|stopPublish"));
             }
             if(connected === true) {
-                task.chain();
-                return;
+                return task.chain();
             }
             window.delayedFunction = function() {
                 gapi.load("client", function() {
@@ -148,8 +146,7 @@ define([
             var immediate;
             function localAuthenticate() {
                 if(authuser > 5) {
-                    task.error(new Error('Unable to authenticate user ' + authorizationMgr.getUserId() + ', please sign in with Google.'));
-                    return;
+                    return task.error(new Error('Unable to authenticate user ' + authorizationMgr.getUserId() + ', please sign in with Google.'));
                 }
                 if(immediate === false) {
                     task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
@@ -184,8 +181,7 @@ define([
             }
             function oauthRedirect() {
                 if(immediate === true) {
-                    task.chain(localAuthenticate);
-                    return;
+                    return task.chain(localAuthenticate);
                 }
                 utils.redirectConfirm('You are being redirected to <strong>Google</strong> authorization page.', function() {
                     task.chain(localAuthenticate);
@@ -288,8 +284,7 @@ define([
                         // Upload success
                         result = response;
                         result.content = content;
-                        task.chain();
-                        return;
+                        return task.chain();
                     }
                     var error = response.error;
                     // Handle error
@@ -332,8 +327,7 @@ define([
                     if(response && response.id) {
                         // Rename success
                         result = response;
-                        task.chain();
-                        return;
+                        return task.chain();
                     }
                     var error = response.error;
                     // Handle error
@@ -380,8 +374,7 @@ define([
                     request.execute(function(response) {
                         if(!response || !response.largestChangeId) {
                             // Handle error
-                            handleError(response.error, task);
-                            return;
+                            return handleError(response.error, task);
                         }
                         // Retrieve success
                         newChangeId = response.largestChangeId;
@@ -419,8 +412,7 @@ define([
         task.onRun(function() {
             function recursiveDownloadMetadata() {
                 if(ids.length === 0) {
-                    task.chain();
-                    return;
+                    return task.chain();
                 }
                 var id = ids[0];
                 var headers = {};
@@ -475,8 +467,7 @@ define([
         task.onRun(function() {
             function recursiveDownloadContent() {
                 if(objects.length === 0) {
-                    task.chain();
-                    return;
+                    return task.chain();
                 }
                 var object = objects[0];
                 result.push(object);
@@ -491,8 +482,7 @@ define([
                 }
                 if(!file) {
                     objects.shift();
-                    task.chain(recursiveDownloadContent);
-                    return;
+                    return task.chain(recursiveDownloadContent);
                 }
                 var url = file.downloadUrl;
                 // if file is a real time document
@@ -604,16 +594,14 @@ define([
                 errorMsg = "Google error (" + error.code + ": " + error.message + ").";
                 if(error.code >= 500 && error.code < 600) {
                     // Retry as described in Google's best practices
-                    task.retry(new Error(errorMsg));
-                    return;
+                    return task.retry(new Error(errorMsg));
                 }
                 else if(error.code === 401 || error.code === 403 || error.code == "token_refresh_required") {
                     _.each(authorizationMgrMap, function(authorizationMgr) {
                         authorizationMgr.setRefreshFlag();
                     });
                     errorMsg = "Access to Google account is not authorized.";
-                    task.retry(new Error(errorMsg), 1);
-                    return;
+                    return task.retry(new Error(errorMsg), 1);
                 }
                 else if(error.code === 0 || error.code === -1) {
                     connected = false;
@@ -632,8 +620,7 @@ define([
     function loadPicker(task) {
         task.onRun(function() {
             if(pickerLoaded === true) {
-                task.chain();
-                return;
+                return task.chain();
             }
             $.ajax({
                 url: "//www.google.com/jsapi",

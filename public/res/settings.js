@@ -56,6 +56,7 @@ define([
 			'</html>'
 		].join(""),
 		pdfPageSize: 'A4',
+		teamserverURL: constants.TEAM_SERVER_URL,
 		sshProxy: constants.SSH_PROXY_URL,
 		extensionSettings: {}
 	};

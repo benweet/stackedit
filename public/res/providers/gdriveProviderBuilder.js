@@ -91,8 +91,7 @@ define([
                     var syncIndex = createSyncIndex(doc.id);
                     var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
                     if(fileDesc !== undefined) {
-                        eventMgr.onError('"' + fileDesc.title + '" was already imported.');
-                        return;
+                        return eventMgr.onError('"' + fileDesc.title + '" was already imported.');
                     }
                     importIds.push(doc.id);
                 });
@@ -109,16 +108,14 @@ define([
                 var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
                 if(fileDesc !== undefined) {
                     eventMgr.onError('File ID is already synchronized with "' + fileDesc.title + '".');
-                    callback(true);
-                    return;
+                    return callback(true);
                 }
             }
             var parentId = utils.getInputTextValue('#input-sync-export-' + providerId + '-parentid');
             var data = gdriveProvider.serializeContent(content, discussionListJSON);
             googleHelper.upload(fileId, parentId, title, data, undefined, undefined, accountId, function(error, result) {
                 if(error) {
-                    callback(error);
-                    return;
+                    return callback(error);
                 }
                 var syncAttributes = createSyncAttributes(result.id, result.etag, content, title, discussionListJSON);
                 callback(undefined, syncAttributes);
@@ -128,7 +125,7 @@ define([
         gdriveProvider.syncUp = function(content, contentCRC, title, titleCRC, discussionList, discussionListCRC, syncAttributes, callback) {
             if(
                 (syncAttributes.contentCRC == contentCRC) && // Content CRC hasn't changed
-                (syncAttributes.titleCRC == titleCRC) && // Content CRC hasn't changed
+                (syncAttributes.titleCRC == titleCRC) && // Title CRC hasn't changed
                 (syncAttributes.discussionListCRC == discussionListCRC) // Discussion list CRC hasn't changed
             ) {
                 return callback(undefined, false);
@@ -144,8 +141,7 @@ define([
             var data = gdriveProvider.serializeContent(content, discussionList);
             googleHelper.upload(syncAttributes.id, undefined, title, data, undefined, syncAttributes.etag, accountId, function(error, result) {
                 if(error) {
-                    callback(error, true);
-                    return;
+                    return callback(error, true);
                 }
                 syncAttributes.etag = result.etag;
                 // Remove this deprecated flag if any
@@ -167,8 +163,7 @@ define([
             var lastChangeId = parseInt(storage[accountId + ".gdrive.lastChangeId"], 10);
             googleHelper.checkChanges(lastChangeId, accountId, function(error, changes, newChangeId) {
                 if(error) {
-                    callback(error);
-                    return;
+                    return callback(error);
                 }
                 var interestingChanges = [];
                 _.each(changes, function(change) {

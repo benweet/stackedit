@@ -104,7 +104,7 @@ define([
 		connect(task);
 		authenticate(task);
 		task.onRun(function() {
-			var url = settings.teamserverURL + '/repo/' + repo + '/changes';
+			var url = settings.teamserverURL + '/repo/' + repo + '/changes/';
 			var type = 'GET';
 			if(lastChangeId) {
 				url += lastChangeId;

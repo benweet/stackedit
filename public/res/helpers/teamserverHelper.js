@@ -1,4 +1,3 @@
-/*global gapi, google */
 define([
 	"underscore",
 	"jquery",
@@ -33,7 +32,7 @@ define([
 				return task.chain();
 			}
 			$.ajax({
-				url: settings.teamserverURL + '/ping',
+				url: constants.TEAM_SERVER_URL + 'ping',
 				timeout: constants.AJAX_TIMEOUT
 			}).fail(function(jqXHR) {
 				var error = {

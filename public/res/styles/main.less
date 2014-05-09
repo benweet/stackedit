@@ -244,6 +244,8 @@ a {
 
 .list-group-item {
 	padding: 10px 15px;
+	border-left-width: 0;
+	border-right-width: 0;
 	margin-bottom: 0;
 	.list-group & {
 		border-radius: 0;
@@ -251,9 +253,24 @@ a {
 	a&:hover,
 	a&:focus {
     	color: darken(@secondary, 30%);
-	    border-top-color: @list-group-hover-border-color;
-	    border-bottom-color: @list-group-hover-border-color;
+	    border-color: @list-group-hover-border-color;
     }
+	.checkbox {
+		float: right;
+		margin: 0;
+		padding: 0;
+		cursor: pointer;
+		input {
+			cursor: pointer;
+			margin: 0 16px;
+			height: @input-height-slim;
+		}
+	}
+}
+
+.form-group {
+	margin-bottom: 1px;
+	padding: 5px;
 }
 
 .text-danger:hover {
@@ -764,17 +781,6 @@ a {
 		color: @folder-color;
 		font-size: 15px;
 		border-top-color: @modal-content-separator-color;
-	}
-	.checkbox {
-		float: right;
-		margin: 0;
-		padding: 0;
-		cursor: pointer;
-		input {
-			cursor: pointer;
-			margin: 0 16px;
-			height: @input-height-slim;
-		}
 	}
 	.input-rename {
 		width: 220px;

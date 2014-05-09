@@ -518,6 +518,9 @@ define([
 
 		previewButtons.initHammer(true);
 		previewButtons.adjustPosition = function() {
+			if(!previewButtons.isDragged) {
+				return;
+			}
 			var minX = -windowSize.width + previewButtons.elt.offsetWidth;
 			var minY = -windowSize.height + previewButtons.elt.offsetHeight;
 			this.x < minX && (this.x = minX);
@@ -530,6 +533,8 @@ define([
 
 		var buttonsInitialCoord;
 		previewButtons.hammer.on('dragstart', function() {
+			previewButtons.isDragged = true;
+			previewButtons.$elt.removeClass('animate');
 			wrapperL2.$elt.addClass('dragging');
 			buttonsInitialCoord = {
 				x: previewButtons.x,
@@ -601,6 +606,36 @@ define([
 		previewButtons.x = previewButtonsOffset.x;
 		previewButtons.y = previewButtonsOffset.y;
 		previewButtons.applyCss();
+
+		function openPreviewButtons() {
+			clearTimeout(closeTimeoutId);
+			if(!previewButtons.isDragged) {
+				previewButtons.x = previewButtonsOffset.x;
+				previewButtons.applyCss();
+			}
+		}
+
+		var closeTimeoutId;
+		var dropdownOpen = false;
+
+		function closePreviewButtons() {
+			clearTimeout(closeTimeoutId);
+			closeTimeoutId = setTimeout(function() {
+				if(!previewButtons.isDragged && !dropdownOpen) {
+					previewButtons.$elt.addClass('animate');
+					previewButtons.x = previewButtonsOffset.x + previewButtons.elt.offsetWidth;
+					previewButtons.applyCss();
+				}
+			}, 3000);
+		}
+
+		closePreviewButtons();
+		previewButtons.$elt.hover(openPreviewButtons, closePreviewButtons).on('show.bs.dropdown', function() {
+			dropdownOpen = true;
+		}).on('hidden.bs.dropdown', function() {
+			dropdownOpen = false;
+			closePreviewButtons();
+		});
 
 		_.each(previewButtons.elt.querySelectorAll('.btn-group'), function(btnGroupElt) {
 			var $btnGroupElt = $(btnGroupElt);

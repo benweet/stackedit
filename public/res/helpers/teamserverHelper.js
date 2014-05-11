@@ -6,10 +6,9 @@ define([
 	"utils",
 	"storage",
 	"logger",
-	"settings",
 	"eventMgr",
 	"classes/AsyncTask"
-], function(_, $, constants, core, utils, storage, logger, settings, eventMgr, AsyncTask) {
+], function(_, $, constants, core, utils, storage, logger, eventMgr, AsyncTask) {
 
 	var connected = false;
 	var authenticated = true;
@@ -35,8 +34,8 @@ define([
 				url: constants.TEAM_SERVER_URL + 'ping',
 				timeout: constants.AJAX_TIMEOUT
 			}).done(function() {
-                task.chain();
-            }).fail(function(jqXHR) {
+				task.chain();
+			}).fail(function(jqXHR) {
 				var error = {
 					code: jqXHR.status,
 					message: jqXHR.statusText
@@ -60,7 +59,7 @@ define([
 		connect(task);
 		authenticate(task);
 		task.onRun(function() {
-			var url = settings.teamserverURL + '/repo/' + repo + '/document';
+			var url = constants.TEAM_SERVER_URL + 'repo/' + repo + '/document';
 			var type = 'POST';
 			if(id) {
 				url += '/' + id;
@@ -77,7 +76,7 @@ define([
 				timeout: constants.AJAX_TIMEOUT
 			}).done(function(data) {
 				result = data;
-                task.chain();
+				task.chain();
 			}).fail(function(jqXHR) {
 				var error = {
 					code: jqXHR.status,
@@ -99,14 +98,14 @@ define([
 		task.enqueue();
 	};
 
-	teamserverHelper.checkChanges = function(repo, lastChangeId, accountId, callback) {
+	teamserverHelper.checkChanges = function(repo, lastChangeId, callback) {
 		var changes;
 		var newChangeId = lastChangeId;
 		var task = new AsyncTask();
 		connect(task);
 		authenticate(task);
 		task.onRun(function() {
-			var url = settings.teamserverURL + '/repo/' + repo + '/changes/';
+			var url = constants.TEAM_SERVER_URL + 'repo/' + repo + '/changes/';
 			var type = 'GET';
 			if(lastChangeId) {
 				url += lastChangeId;
@@ -119,7 +118,7 @@ define([
 			}).done(function(data) {
 				newChangeId = data.newChangeId;
 				changes = data.changes;
-                task.chain();
+				task.chain();
 			}).fail(function(jqXHR) {
 				var error = {
 					code: jqXHR.status,
@@ -148,7 +147,7 @@ define([
 					return task.chain();
 				}
 				var id = ids[0];
-				var url = settings.teamserverURL + '/repo/' + repo + '/document/' + id;
+				var url = constants.TEAM_SERVER_URL + 'repo/' + repo + '/document/' + id;
 				$.ajax({
 					url: url,
 					dataType: "json",
@@ -168,6 +167,7 @@ define([
 					handleError(error, task);
 				});
 			}
+
 			task.chain(recursiveDownloadMetadata);
 		});
 		task.onSuccess(function() {
@@ -206,14 +206,16 @@ define([
 		task.error(new Error(errorMsg));
 	}
 
+	var $windowElt = $(window);
+	var origin = window.location.protocol + '//' + window.location.host;
 	teamserverHelper.picker = function(repo, callback) {
 		var docs = [];
-		var picker;
+		var iframe;
 
 		function hidePicker() {
-			if(picker !== undefined) {
-				picker.setVisible(false);
-				$(".modal-backdrop, .picker").remove();
+			if(iframe !== undefined) {
+				iframe.removeIframe();
+				$windowElt.off('message.teamserver');
 			}
 		}
 
@@ -221,10 +223,17 @@ define([
 		// Add some time for user to choose his files
 		task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
 		connect(task);
-        task.onRun(function() {
-            utils.iframe(constants.TEAM_SERVER_URL + 'index.html#/documentPicker', 800, 600);
-            task.chain();
-        });
+		task.onRun(function() {
+			iframe = utils.iframe(constants.TEAM_SERVER_URL + 'teamserver.html#/documentPicker', 550, 500);
+			$windowElt.on('message.teamserver', function(evt) {
+				evt = evt.originalEvent;
+				if(evt.origin == origin && evt.data.status == 'DocumentPickerFinished') {
+					docs = evt.data.documents;
+					hidePicker();
+					task.chain();
+				}
+			});
+		});
 		task.onSuccess(function() {
 			callback(undefined, docs);
 		});

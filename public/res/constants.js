@@ -27,7 +27,7 @@ define([], function() {
     constants.PICASA_PROXY_URL = "https://stackedit-picasa-proxy.herokuapp.com/";
     constants.SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/";
     constants.HTMLTOPDF_URL = "https://stackedit-htmltopdf.herokuapp.com/";
-	constants.TEAM_SERVER_URL = "http://localhost:11583/";
+	constants.TEAM_SERVER_URL = "/";
 
 	// Site dependent
     constants.BASE_URL = "http://localhost/";

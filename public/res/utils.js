@@ -308,21 +308,35 @@ define([
 		].join(""));
 	};
 
-    utils.iframe = function(url, width, height, css) {
-        $("<iframe src=\"" + url + "\">")
-            .attr("id", "remidDialogIframe")
-            .attr("width", width)
-            .attr("height", height)
-            //.attr("scrolling", options.iframeScrolling)
-            .attr("frameborder", "0")
-            .css("position", "fixed")
-            .css(css || {})
-            //.css("border", options.iframeBorder)
-            //.css("border-radius", options.iframeBorderRadius)
-            //.css("background", options.iframeBackground)
-            //.css("z-index", options.iframeZindex)
-            .appendTo(document.body);
-    };
+	var $windowElt = $(window);
+	utils.iframe = function(url, width, height) {
+		var $backdropElt = $(utils.createBackdrop());
+		var result = crel('iframe', {
+			src: url,
+			frameborder: 0,
+			class: 'modal-content modal-iframe'
+		});
+		document.body.appendChild(result);
+		function placeIframe() {
+			var actualWidth = window.innerWidth - 20;
+			actualWidth > width && (actualWidth = width);
+			var actualHeight = window.innerHeight - 50;
+			actualHeight > height && (actualHeight = height);
+			result.setAttribute('width', actualWidth);
+			result.setAttribute('height', actualHeight);
+		}
+		placeIframe();
+		$windowElt.on('resize.iframe', placeIframe);
+		function removeIframe() {
+			$backdropElt.off('click.backdrop');
+			$backdropElt[0].removeBackdrop();
+			$windowElt.off('resize.iframe');
+			result.parentNode.removeChild(result);
+		}
+		result.removeIframe = removeIframe;
+		$backdropElt.on('click.backdrop', removeIframe);
+		return result;
+	};
 
 	// Shows a dialog to force the user to click a button before opening oauth popup
 	var redirectCallbackConfirm;

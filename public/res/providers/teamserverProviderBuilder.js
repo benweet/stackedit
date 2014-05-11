@@ -14,7 +14,7 @@ define([
 ], function($, _, constants, utils, storage, logger, Provider, settings, eventMgr, fileMgr, editor, teamserverHelper) {
 
     return function(providerId, providerName) {
-        var repo = 'teamserver';
+        var repo = 'test';
 
         var teamserverProvider = new Provider(providerId, providerName);
 
@@ -131,8 +131,8 @@ define([
                     return callback(error);
                 }
                 var interestingChanges = [];
-                _.each(changes, function(change) {
-                    var syncIndex = createSyncIndex(change.id);
+                _.each(changes, function(change, id) {
+                    var syncIndex = createSyncIndex(id);
                     var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
                     var syncAttributes = fileDesc && fileDesc.syncLocations[syncIndex];
                     if(!syncAttributes) {
@@ -151,7 +151,7 @@ define([
                         interestingChanges.push(change);
                     }
                 });
-                teamserverHelper.downloadContent(repo, interestingChanges, function(error, changes) {
+                teamserverHelper.download(repo, interestingChanges, function(error, changes) {
                     if(error) {
                         return callback(error);
                     }

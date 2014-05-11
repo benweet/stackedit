@@ -34,7 +34,9 @@ define([
 			$.ajax({
 				url: constants.TEAM_SERVER_URL + 'ping',
 				timeout: constants.AJAX_TIMEOUT
-			}).fail(function(jqXHR) {
+			}).done(function() {
+                task.chain();
+            }).fail(function(jqXHR) {
 				var error = {
 					code: jqXHR.status,
 					message: jqXHR.statusText
@@ -75,6 +77,7 @@ define([
 				timeout: constants.AJAX_TIMEOUT
 			}).done(function(data) {
 				result = data;
+                task.chain();
 			}).fail(function(jqXHR) {
 				var error = {
 					code: jqXHR.status,
@@ -116,6 +119,7 @@ define([
 			}).done(function(data) {
 				newChangeId = data.newChangeId;
 				changes = data.changes;
+                task.chain();
 			}).fail(function(jqXHR) {
 				var error = {
 					code: jqXHR.status,
@@ -217,6 +221,10 @@ define([
 		// Add some time for user to choose his files
 		task.timeout = constants.ASYNC_TASK_LONG_TIMEOUT;
 		connect(task);
+        task.onRun(function() {
+            utils.iframe(constants.TEAM_SERVER_URL + 'index.html#/documentPicker', 800, 600);
+            task.chain();
+        });
 		task.onSuccess(function() {
 			callback(undefined, docs);
 		});

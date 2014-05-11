@@ -308,6 +308,22 @@ define([
 		].join(""));
 	};
 
+    utils.iframe = function(url, width, height, css) {
+        $("<iframe src=\"" + url + "\">")
+            .attr("id", "remidDialogIframe")
+            .attr("width", width)
+            .attr("height", height)
+            //.attr("scrolling", options.iframeScrolling)
+            .attr("frameborder", "0")
+            .css("position", "fixed")
+            .css(css || {})
+            //.css("border", options.iframeBorder)
+            //.css("border-radius", options.iframeBorderRadius)
+            //.css("background", options.iframeBackground)
+            //.css("z-index", options.iframeZindex)
+            .appendTo(document.body);
+    };
+
 	// Shows a dialog to force the user to click a button before opening oauth popup
 	var redirectCallbackConfirm;
 	var redirectCallbackCancel;

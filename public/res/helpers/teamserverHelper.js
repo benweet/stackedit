@@ -228,7 +228,7 @@ define([
 			$windowElt.on('message.teamserver', function(evt) {
 				evt = evt.originalEvent;
 				if(evt.origin == origin && evt.data.status == 'DocumentPickerFinished') {
-					docs = evt.data.documents;
+					docs = evt.data.documents || [];
 					hidePicker();
 					task.chain();
 				}

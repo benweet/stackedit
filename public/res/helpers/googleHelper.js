@@ -9,7 +9,7 @@ define([
 	"logger",
 	"settings",
 	"eventMgr",
-	"classes/AsyncTask",
+	"classes/AsyncTask"
 ], function(_, $, constants, core, utils, storage, logger, settings, eventMgr, AsyncTask) {
 
 	var connected = false;
@@ -98,7 +98,7 @@ define([
 		],
 		gdrive: [
 			'https://www.googleapis.com/auth/drive.install',
-				settings.gdriveFullAccess === true ? 'https://www.googleapis.com/auth/drive' : 'https://www.googleapis.com/auth/drive.file'
+			settings.gdriveFullAccess === true ? 'https://www.googleapis.com/auth/drive' : 'https://www.googleapis.com/auth/drive.file'
 		],
 		blogger: [
 			'https://www.googleapis.com/auth/blogger'
@@ -260,7 +260,7 @@ define([
 				method = 'PUT';
 			}
 			var headers = {
-				'Content-Type': 'multipart/mixed; boundary="' + boundary + '"',
+				'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
 			};
 
 			var base64Data = utils.encodeBase64(content);
@@ -283,10 +283,10 @@ define([
 					'path': path,
 					'method': method,
 					'params': {
-						'uploadType': 'multipart',
+						'uploadType': 'multipart'
 					},
 					'headers': headers,
-					'body': multipartRequestBody,
+					'body': multipartRequestBody
 				});
 				request.execute(function(response) {
 					if(response && response.id) {
@@ -696,7 +696,7 @@ define([
 					"text/x-markdown",
 					"text/plain",
 					"application/octet-stream",
-						"application/vnd.google-apps.drive-sdk." + constants.GOOGLE_DRIVE_APP_ID
+					"application/vnd.google-apps.drive-sdk." + constants.GOOGLE_DRIVE_APP_ID
 				].join(","));
 				pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
 				pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);
@@ -733,7 +733,7 @@ define([
 				}
 			});
 			picker = pickerBuilder.build();
-			var $backdrop = $(utils.createBackdrop()).on('click.backdrop', function() {
+			$(utils.createBackdrop()).on('click.backdrop', function() {
 				hidePicker();
 				task.chain();
 			});

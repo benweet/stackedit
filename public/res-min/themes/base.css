@@ -1221,7 +1221,7 @@ h3{font-size:1.7em}
 h4{font-size:1.25em}
 h5{font-size:1em}
 h6{font-size:.85em}
-h1,h2,h3,h4,h5,h6{margin:1.3em 0}
+h1,h2,h3,h4,h5,h6{margin:1.3em 0;font-weight:300}
 pre{word-break:break-word}
 p,pre,pre.prettyprint,blockquote{margin:0 0 1.1em}
 hr{margin:2em 0}

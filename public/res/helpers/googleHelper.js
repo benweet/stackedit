@@ -108,6 +108,7 @@ define([
             'https://www.googleapis.com/auth/photos'
         ]
     };
+    var oauthIframes = [];
     function authenticate(task, permission, accountId) {
         var authorizationMgr = authorizationMgrMap[accountId];
         if(!authorizationMgr) {
@@ -161,6 +162,16 @@ define([
                     immediate: immediate,
                     authuser: immediate === false ? '' : authuser
                 }, function(authResult) {
+
+                    // Hack to clean window from old oauth iframes
+                    authorizationMgr.$oauthIframe && authorizationMgr.$oauthIframe.remove();
+                    var currentOauthIframes = _.filter(document.querySelectorAll('iframe'), function(iframe) {
+                        var src = iframe.getAttribute('src');
+                        return src && src.indexOf('https://accounts.google.com/o/oauth2/auth') === 0;
+                    });
+                    authorizationMgr.$oauthIframe = $(_.difference(currentOauthIframes, oauthIframes));
+                    oauthIframes = currentOauthIframes;
+
                     newToken = gapi.auth.getToken();
                     gapi.auth.setToken(currentToken);
                     if(!authResult || authResult.error) {

@@ -91,7 +91,6 @@ define([
     var isScrollPreview = false;
     var isEditorMoving = false;
     var isPreviewMoving = false;
-    var scrollingHelper = $('<div>');
     function getDestScrollTop(srcScrollTop, srcSectionList, destSectionList) {
         // Find the section corresponding to the offset
         var sectionIndex;
@@ -106,6 +105,34 @@ define([
         var posInSection = (srcScrollTop - srcSection.startOffset) / (srcSection.height || 1);
         var destSection = destSectionList[sectionIndex];
         return destSection.startOffset + destSection.height * posInSection;
+    }
+
+    var timeoutId;
+    var currentEndCb;
+    function animate(elt, startValue, endValue, stepCb, endCb) {
+        if(currentEndCb) {
+            clearTimeout(timeoutId);
+            currentEndCb();
+        }
+        currentEndCb = endCb;
+        var diff = endValue - startValue;
+        var startTime = Date.now();
+        function tick() {
+            var currentTime = Date.now();
+            var progress = (currentTime - startTime) / 200;
+            if(progress < 1) {
+                var scrollTop = startValue + diff * Math.cos((1 - progress) * Math.PI / 2 );
+                elt.scrollTop = scrollTop;
+                stepCb(scrollTop);
+                timeoutId = setTimeout(tick, 1);
+            }
+            else {
+                currentEndCb = undefined;
+                elt.scrollTop = endValue;
+                endCb();
+            }
+        }
+        tick();
     }
 
     var doScrollSync = _.throttle(function() {
@@ -134,24 +161,12 @@ define([
                 lastPreviewScrollTop = previewScrollTop;
                 return;
             }
-            scrollingHelper.stop('scrollSyncFx', true).css('value', 0).animate({
-                value: destScrollTop - previewScrollTop
-            }, {
-                easing: 'easeOutSine',
-                duration: 200,
-                queue: 'scrollSyncFx',
-                step: function(now) {
-                    isPreviewMoving = true;
-                    lastPreviewScrollTop = previewScrollTop + now;
-                    $previewElt.scrollTop(lastPreviewScrollTop);
-                },
-                done: function() {
-                    setTimeout(function() {
-                        isPreviewMoving = false;
-                    }, 10);
-                },
-            }).dequeue('scrollSyncFx');
-
+            animate($previewElt[0], previewScrollTop, destScrollTop, function(currentScrollTop) {
+                isPreviewMoving = true;
+                lastPreviewScrollTop = currentScrollTop;
+            }, function() {
+                isPreviewMoving = false;
+            });
         }
         else if(isScrollPreview === true) {
             if(Math.abs(previewScrollTop - lastPreviewScrollTop) <= 9) {
@@ -170,23 +185,12 @@ define([
                 lastEditorScrollTop = editorScrollTop;
                 return;
             }
-            scrollingHelper.stop('scrollSyncFx', true).css('value', 0).animate({
-                value: destScrollTop - editorScrollTop
-            }, {
-                easing: 'easeOutSine',
-                duration: 200,
-                queue: 'scrollSyncFx',
-                step: function(now) {
-                    isEditorMoving = true;
-                    lastEditorScrollTop = editorScrollTop + now;
-                    $editorElt.scrollTop(lastEditorScrollTop);
-                },
-                done: function() {
-                    setTimeout(function() {
-                        isEditorMoving = false;
-                    }, 10);
-                },
-            }).dequeue('scrollSyncFx');
+            animate($editorElt[0], editorScrollTop, destScrollTop, function(currentScrollTop) {
+                isEditorMoving = true;
+                lastEditorScrollTop = currentScrollTop;
+            }, function() {
+                isEditorMoving = false;
+            });
         }
     }, 100);
 

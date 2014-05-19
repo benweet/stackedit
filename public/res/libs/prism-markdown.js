@@ -30,7 +30,49 @@ Prism.languages.md = (function() {
         inside: {
         }
     };
-    md.hr = {
+	md.table = {
+		pattern: new RegExp(
+			['^'                         ,
+				'[ ]{0,3}'                  , // Allowed whitespace
+				'[|]'                       , // Initial pipe
+				'(.+)\\n'                   , // $1: Header Row
+
+				'[ ]{0,3}'                  , // Allowed whitespace
+				'[|]([ ]*[-:]+[-| :]*)\\n'  , // $2: Separator
+
+				'('                         , // $3: Table Body
+				'(?:[ ]*[|].*\\n?)*'      , // Table rows
+				')',
+				'(?:\\n|$)'                   // Stop at final newline
+			].join(''),
+			'gm'
+		),
+		inside: {
+			lf: /\n/gm
+		}
+	};
+	md['table alt'] = {
+		pattern: new RegExp(
+			['^'                         ,
+				'[ ]{0,3}'                  , // Allowed whitespace
+				'(\\S.*[|].*)\\n'           , // $1: Header Row
+
+				'[ ]{0,3}'                  , // Allowed whitespace
+				'([-:]+[ ]*[|][-| :]*)\\n'  , // $2: Separator
+
+				'('                         , // $3: Table Body
+				'(?:.*[|].*\\n?)*'        , // Table rows
+				')'                         ,
+				'(?:\\n|$)'                   // Stop at final newline
+			].join(''),
+			'gm'
+		),
+		inside: {
+			lf: /\n/gm
+		}
+	};
+
+	md.hr = {
         pattern: /^([*\-_] *){3,}$/gm,
     };
     md.li = {
@@ -266,6 +308,8 @@ Prism.languages.md = (function() {
     }
     md["h1 alt"].inside.rest = rest;
     md["h2 alt"].inside.rest = rest;
+    md.table.inside.rest = rest;
+    md["table alt"].inside.rest = rest;
     md.p.inside.rest = rest;
     md.blockquote.inside.rest = rest;
     md.li.inside.rest = rest;

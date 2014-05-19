@@ -124,19 +124,19 @@ Markdown Extra
 
 **Markdown Extra** has a special syntax for tables:
 
-Item | Value
---- | ---
+Item     | Value
+-------- | ---
 Computer | $1600
-Phone | $12
-Pipe | $1
+Phone    | $12
+Pipe     | $1
 
 You can specify column alignment with one or two colons:
 
-| Item | Value | Qty |
-| :--- | ---: | :---: |
-| Computer | $1600 | 5 |
-| Phone | $12 | 12 |
-| Pipe | $1 | 234 |
+| Item     | Value | Qty   |
+| :------- | ----: | :---: |
+| Computer | $1600 |  5    |
+| Phone    | $12   |  12   |
+| Pipe     | $1    |  234  |
 
 
 ### Definition Lists
@@ -185,11 +185,11 @@ You can create footnotes like this[^footnote].
 
 SmartyPants converts ASCII punctuation characters into "smart" typographic punctuation HTML entities. For example:
 
-| | ASCII | HTML |
----|---|---
-| Single backticks | `'Isn't this fun?'` | 'Isn't this fun?' |
-| Quotes | `"Isn't this fun?"` | "Isn't this fun?" |
-| Dashes | `-- is en-dash, --- is em-dash` | -- is en-dash, --- is em-dash |
+|                  | ASCII                        | HTML              |
+ ----------------- | ---------------------------- | ------------------
+| Single backticks | `'Isn't this fun?'`            | 'Isn't this fun?' |
+| Quotes           | `"Isn't this fun?"`            | "Isn't this fun?" |
+| Dashes           | `-- is en-dash, --- is em-dash` | -- is en-dash, --- is em-dash |
 
 
 ### Table of contents

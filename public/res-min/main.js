@@ -7958,7 +7958,7 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
 	}, utils
 }), define("constants", [], function() {
 	var e = {};
-	return e.VERSION = "3.99.5", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", e.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", e.GOOGLE_DRIVE_APP_ID = "241271498917", e.DROPBOX_APP_KEY = "lq6mwopab8wskas", e.DROPBOX_APP_SECRET = "851fgnucpezy84t", e.DROPBOX_RESTRICTED_APP_KEY = "sw0hlixhr8q1xk0", e.DROPBOX_RESTRICTED_APP_SECRET = "1r808p2xygs6lbg", e.BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c", e.DEFAULT_FILE_TITLE = "Title", e.DEFAULT_FOLDER_NAME = "New folder", e.GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document", e.EDITOR_DEFAULT_PADDING = 35, e.CHECK_ONLINE_PERIOD = 12e4, e.AJAX_TIMEOUT = 3e4, e.ASYNC_TASK_DEFAULT_TIMEOUT = 6e4, e.ASYNC_TASK_LONG_TIMEOUT = 18e4, e.USER_IDLE_THRESHOLD = 3e5, e.IMPORT_FILE_MAX_CONTENT_SIZE = 1e5, e.IMPORT_IMG_MAX_CONTENT_SIZE = 1e7, e.TEMPORARY_FILE_INDEX = "file.tempIndex", e.WELCOME_DOCUMENT_TITLE = "Welcome document", e.DOWNLOAD_PROXY_URL = "https://stackedit-download-proxy.herokuapp.com/", e.PICASA_PROXY_URL = "https://stackedit-picasa-proxy.herokuapp.com/", e.SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/", e.HTMLTOPDF_URL = "https://stackedit-htmltopdf.herokuapp.com/", e.BASE_URL = "http://localhost/", e.GOOGLE_CLIENT_ID = "241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "e47fef6055344579799d", e.GATEKEEPER_URL = "https://stackedit-gatekeeper-localhost.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-local.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "23361", e.WORDPRESS_PROXY_URL = "https://stackedit-io-wordpress-proxy.herokuapp.com/", 0 === location.hostname.indexOf("stackedit.io") ? (e.BASE_URL = e.MAIN_URL, e.GOOGLE_CLIENT_ID = "241271498917-t4t7d07qis7oc0ahaskbif3ft6tk63cd.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "710fc67886ab1ae8fee6", e.GATEKEEPER_URL = "https://stackedit-io-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-io-tumblr-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("benweet.github.io") ? (e.BASE_URL = "http://benweet.github.io/stackedit/", e.GOOGLE_CLIENT_ID = "241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "fa0d09514da8377ee32e", e.GATEKEEPER_URL = "https://stackedit-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "3185", e.WORDPRESS_PROXY_URL = "https://stackedit-wordpress-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("stackedit-beta.herokuapp.com") ? (e.BASE_URL = "https://stackedit-beta.herokuapp.com/", e.GOOGLE_CLIENT_ID = "241271498917-9bbplknkt0ljv5gaudhoiogp13hd18be.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "e9034ae191c3a8a1c5ed", e.GATEKEEPER_URL = "https://stackedit-beta-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-beta-tumblr-proxy.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "34786", e.WORDPRESS_PROXY_URL = "https://stackedit-beta-wordpress-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("benweet.insomnia247.nl") && (e.BASE_URL = "http://benweet.insomnia247.nl/stackedit/", e.GOOGLE_CLIENT_ID = "241271498917-52hae7a08hv7ltenv7km8h7lghno9sk3.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "d2943d6074b2d9c4a830", e.GATEKEEPER_URL = "https://stackedit-gatekeeper-insomnia.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-beta.herokuapp.com/"), e.THEME_LIST = {
+	return e.VERSION = "3.99.6", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", e.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", e.GOOGLE_DRIVE_APP_ID = "241271498917", e.DROPBOX_APP_KEY = "lq6mwopab8wskas", e.DROPBOX_APP_SECRET = "851fgnucpezy84t", e.DROPBOX_RESTRICTED_APP_KEY = "sw0hlixhr8q1xk0", e.DROPBOX_RESTRICTED_APP_SECRET = "1r808p2xygs6lbg", e.BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c", e.DEFAULT_FILE_TITLE = "Title", e.DEFAULT_FOLDER_NAME = "New folder", e.GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document", e.EDITOR_DEFAULT_PADDING = 35, e.CHECK_ONLINE_PERIOD = 12e4, e.AJAX_TIMEOUT = 3e4, e.ASYNC_TASK_DEFAULT_TIMEOUT = 6e4, e.ASYNC_TASK_LONG_TIMEOUT = 18e4, e.USER_IDLE_THRESHOLD = 3e5, e.IMPORT_FILE_MAX_CONTENT_SIZE = 1e5, e.IMPORT_IMG_MAX_CONTENT_SIZE = 1e7, e.TEMPORARY_FILE_INDEX = "file.tempIndex", e.WELCOME_DOCUMENT_TITLE = "Welcome document", e.DOWNLOAD_PROXY_URL = "https://stackedit-download-proxy.herokuapp.com/", e.PICASA_PROXY_URL = "https://stackedit-picasa-proxy.herokuapp.com/", e.SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/", e.HTMLTOPDF_URL = "https://stackedit-htmltopdf.herokuapp.com/", e.BASE_URL = "http://localhost/", e.GOOGLE_CLIENT_ID = "241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "e47fef6055344579799d", e.GATEKEEPER_URL = "https://stackedit-gatekeeper-localhost.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-local.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "23361", e.WORDPRESS_PROXY_URL = "https://stackedit-io-wordpress-proxy.herokuapp.com/", 0 === location.hostname.indexOf("stackedit.io") ? (e.BASE_URL = e.MAIN_URL, e.GOOGLE_CLIENT_ID = "241271498917-t4t7d07qis7oc0ahaskbif3ft6tk63cd.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "710fc67886ab1ae8fee6", e.GATEKEEPER_URL = "https://stackedit-io-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-io-tumblr-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("benweet.github.io") ? (e.BASE_URL = "http://benweet.github.io/stackedit/", e.GOOGLE_CLIENT_ID = "241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "fa0d09514da8377ee32e", e.GATEKEEPER_URL = "https://stackedit-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "3185", e.WORDPRESS_PROXY_URL = "https://stackedit-wordpress-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("stackedit-beta.herokuapp.com") ? (e.BASE_URL = "https://stackedit-beta.herokuapp.com/", e.GOOGLE_CLIENT_ID = "241271498917-9bbplknkt0ljv5gaudhoiogp13hd18be.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "e9034ae191c3a8a1c5ed", e.GATEKEEPER_URL = "https://stackedit-beta-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-beta-tumblr-proxy.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "34786", e.WORDPRESS_PROXY_URL = "https://stackedit-beta-wordpress-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("benweet.insomnia247.nl") && (e.BASE_URL = "http://benweet.insomnia247.nl/stackedit/", e.GOOGLE_CLIENT_ID = "241271498917-52hae7a08hv7ltenv7km8h7lghno9sk3.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "d2943d6074b2d9c4a830", e.GATEKEEPER_URL = "https://stackedit-gatekeeper-insomnia.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-beta.herokuapp.com/"), e.THEME_LIST = {
 		"default": "Default",
 		gray: "Gray",
 		night: "Night",
@@ -19728,137 +19728,131 @@ if(Markdown = "object" == typeof exports && "function" == typeof require ? expor
 			return s.startOffset + s.height * a
 		}
 	}
-	var o = new n("scrollSync", "Scroll Sync", !0, !0);
-	o.settingsBlock = i, e.easing.easeOutSine = function(e) {
+
+	function o(e, t, n, i, r) {
+		function o() {
+			var l = Date.now(),
+				c = (l - s) / 200;
+			if(1 > c) {
+				var u = t + a * Math.cos((1 - c) * Math.PI / 2);
+				e.scrollTop = u, i(u), p = setTimeout(o, 1)
+			} else h = void 0, e.scrollTop = n, r()
+		}
+		h && (clearTimeout(p), h()), h = r;
+		var a = n - t,
+			s = Date.now();
+		o()
+	}
+	var a = new n("scrollSync", "Scroll Sync", !0, !0);
+	a.settingsBlock = i, e.easing.easeOutSine = function(e) {
 		return Math.cos((1 - e) * Math.PI / 2)
 	};
-	var a;
-	o.onSectionsCreated = function(e) {
-		a = e
+	var s;
+	a.onSectionsCreated = function(e) {
+		s = e
 	};
-	var s, l, c, u, d = [],
-		p = [],
-		h = t.debounce(function() {
-			d = [];
-			var t, n, i = s.scrollTop();
-			s.find(".wmd-input-section").each(function() {
+	var l, c, u, d, p, h, f = [],
+		m = [],
+		g = t.debounce(function() {
+			f = [];
+			var t, n, i = l.scrollTop();
+			l.find(".wmd-input-section").each(function() {
 				if(void 0 === t) return void(t = 0);
 				var n = e(this.firstChild),
 					r = n.position().top + i;
-				d.push({
+				f.push({
 					startOffset: t,
 					endOffset: r,
 					height: r - t
 				}), t = r
-			}), n = s.prop("scrollHeight"), d.push({
+			}), n = l.prop("scrollHeight"), f.push({
 				startOffset: t,
 				endOffset: n,
 				height: n - t
-			}), p = [];
-			var r, o = l.scrollTop();
-			l.find(".wmd-preview-section").each(function() {
+			}), m = [];
+			var r, o = c.scrollTop();
+			c.find(".wmd-preview-section").each(function() {
 				if(void 0 === r) return void(r = 0);
 				var t = e(this),
 					n = t.position().top + o;
-				p.push({
+				m.push({
 					startOffset: r,
 					endOffset: n,
 					height: n - r
 				}), r = n
-			}), n = l.prop("scrollHeight"), p.push({
+			}), n = c.prop("scrollHeight"), m.push({
 				startOffset: r,
 				endOffset: n,
 				height: n - r
-			}), c = -10, u = -10, x()
+			}), u = -10, d = -10, S()
 		}, 500),
-		f = !0,
-		m = !1,
-		g = !1,
-		v = !1,
+		v = !0,
 		b = !1,
-		y = e("<div>"),
-		x = t.throttle(function() {
-			if(f && 0 !== d.length && d.length === p.length) {
-				var e = s.scrollTop();
+		y = !1,
+		x = !1,
+		w = !1,
+		S = t.throttle(function() {
+			if(v && 0 !== f.length && f.length === m.length) {
+				var e = l.scrollTop();
 				0 > e && (e = 0);
-				var n, i = l.scrollTop();
-				if(m === !0) {
-					if(Math.abs(e - c) <= 9) return;
-					if(m = !1, c = e, n = r(e, d, p), n = t.min([n, l.prop("scrollHeight") - l.outerHeight()]), Math.abs(n - i) <= 9) return void(u = i);
-					y.stop("scrollSyncFx", !0).css("value", 0).animate({
-						value: n - i
-					}, {
-						easing: "easeOutSine",
-						duration: 200,
-						queue: "scrollSyncFx",
-						step: function(e) {
-							b = !0, u = i + e, l.scrollTop(u)
-						},
-						done: function() {
-							setTimeout(function() {
-								b = !1
-							}, 10)
-						}
-					}).dequeue("scrollSyncFx")
-				} else if(g === !0) {
-					if(Math.abs(i - u) <= 9) return;
-					if(g = !1, u = i, n = r(i, p, d), n = t.min([n, s.prop("scrollHeight") - s.outerHeight()]), Math.abs(n - e) <= 9) return void(c = e);
-					y.stop("scrollSyncFx", !0).css("value", 0).animate({
-						value: n - e
-					}, {
-						easing: "easeOutSine",
-						duration: 200,
-						queue: "scrollSyncFx",
-						step: function(t) {
-							v = !0, c = e + t, s.scrollTop(c)
-						},
-						done: function() {
-							setTimeout(function() {
-								v = !1
-							}, 10)
-						}
-					}).dequeue("scrollSyncFx")
+				var n, i = c.scrollTop();
+				if(b === !0) {
+					if(Math.abs(e - u) <= 9) return;
+					if(b = !1, u = e, n = r(e, f, m), n = t.min([n, c.prop("scrollHeight") - c.outerHeight()]), Math.abs(n - i) <= 9) return void(d = i);
+					o(c[0], i, n, function(e) {
+						w = !0, d = e
+					}, function() {
+						w = !1
+					})
+				} else if(y === !0) {
+					if(Math.abs(i - d) <= 9) return;
+					if(y = !1, d = i, n = r(i, m, f), n = t.min([n, l.prop("scrollHeight") - l.outerHeight()]), Math.abs(n - e) <= 9) return void(u = e);
+					o(l[0], e, n, function(e) {
+						x = !0, u = e
+					}, function() {
+						x = !1
+					})
 				}
 			}
 		}, 100);
-	o.onLayoutResize = function() {
-		m = !0, h()
-	}, o.onFileClosed = function() {
-		d = []
+	a.onLayoutResize = function() {
+		b = !0, g()
+	}, a.onFileClosed = function() {
+		f = []
 	};
-	var w = !1;
-	o.onReady = function() {
-		l = e(".preview-container"), s = e("#wmd-input"), l.scroll(function() {
-			b === !1 && w === !1 && (g = !0, m = !1, x()), w = !1
-		}), s.scroll(function() {
-			v === !1 && (m = !0, g = !1, x())
+	var C = !1;
+	a.onReady = function() {
+		c = e(".preview-container"), l = e("#wmd-input"), c.scroll(function() {
+			w === !1 && C === !1 && (y = !0, b = !1, S()), C = !1
+		}), l.scroll(function() {
+			x === !1 && (b = !0, y = !1, S())
 		}), e(".preview-panel").on("hide.layout.toggle", function() {
-			f = !1
+			v = !1
 		}).on("shown.layout.toggle", function() {
-			f = !0
+			v = !0
 		}), e(".extension-preview-buttons .table-of-contents").on("click", "a", function(e) {
 			e.preventDefault();
 			var t = this.hash,
-				n = l.find(t);
+				n = c.find(t);
 			if(n.length) {
-				var i = n.offset().top - l.offset().top + l.scrollTop();
-				l.scrollTop(i);
-				var o = r(i, p, d);
-				s.scrollTop(o)
+				var i = n.offset().top - c.offset().top + c.scrollTop();
+				c.scrollTop(i);
+				var o = r(i, m, f);
+				l.scrollTop(o)
 			}
 		})
 	};
-	var S;
-	return o.onPagedownConfigure = function(t) {
-		S = e("#preview-contents"), t.getConverter().hooks.chain("postConversion", function(e) {
-			return S.height(S.height()), e
+	var _;
+	return a.onPagedownConfigure = function(t) {
+		_ = e("#preview-contents"), t.getConverter().hooks.chain("postConversion", function(e) {
+			return _.height(_.height()), e
 		})
-	}, o.onPreviewFinished = function() {
-		var e = S.height();
-		S.height("auto");
-		var t = S.height();
-		m = !0, e > t && (w = !0), h()
-	}, o
+	}, a.onPreviewFinished = function() {
+		var e = _.height();
+		_.height("auto");
+		var t = _.height();
+		b = !0, e > t && (C = !0), g()
+	}, a
 }), define("text!html/buttonSyncSettingsBlock.html", [], function() {
 	return '<p>Adds a "Synchronize documents" button in the navigation bar.</p>\n<div class="form-horizontal">\n	<div class="form-group">\n		<label class="col-sm-5 control-label" for="input-sync-period">Sync\n			period (0: manual)</label>\n		<div class="col-sm-6 form-inline">\n			<input type="text" id="input-sync-period"\n				class="col-sm-5 form-control" placeholder="180000"> ms\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-sm-5 control-label"\n			for="input-sync-shortcut">Sync\n			shortcut <a href="http://craig.is/killing/mice#keys" target="_blank">(?)</a></label>\n		<div class="col-sm-6">\n			<input type="text" id="input-sync-shortcut"\n				class="form-control">\n		</div>\n	</div>\n</div>'
 }), define("extensions/buttonSync", ["jquery", "underscore", "crel", "utils", "classes/Extension", "mousetrap", "text!html/buttonSyncSettingsBlock.html"], function(e, t, n, i, r, o, a) {
@@ -23084,22 +23078,32 @@ function(e) {
 		t = /[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)\b/gi,
 		n = Prism.languages.latex,
 		i = {};
-	i.pre = {
-		pattern: /(^|(?:^|(?:^|\n)(?![ \t]*([*+\-]|\d+\.)[ \t]).*\n)\s*?\n)(\s*(?: {4}|\t).*(?:\n|$))+/g,
-		lookbehind: !0,
-		inside: {}
-	}, i["pre gfm"] = {
-		pattern: /^ {0,3}`{3}.*?\n(.*?\n)*? {0,3}`{3} *$/gm,
+	i["pre gfm"] = {
+		pattern: /^`{3}.*\n(?:[\s\S]*?)\n`{3} *$/gm,
 		inside: {
 			"md md-pre": /`{3}/,
 			lf: /\n/gm
 		}
+	}, i.pre = {
+		pattern: /(^|(?:^|(?:^|\n)(?![ \t]*([*+\-]|\d+\.)[ \t]).*\n)\s*?\n)(\s*(?: {4}|\t).*(?:\n|$))+/g,
+		lookbehind: !0,
+		inside: {}
 	}, i["h1 alt"] = {
 		pattern: /^(.+)[ \t]*\n=+[ \t]*$/gm,
 		inside: {}
 	}, i["h2 alt"] = {
 		pattern: /^(.+)[ \t]*\n-+[ \t]*$/gm,
 		inside: {}
+	}, i.table = {
+		pattern: new RegExp(["^", "[ ]{0,3}", "[|]", "(.+)\\n", "[ ]{0,3}", "[|]([ ]*[-:]+[-| :]*)\\n", "(", "(?:[ ]*[|].*\\n?)*", ")", "(?:\\n|$)"].join(""), "gm"),
+		inside: {
+			lf: /\n/gm
+		}
+	}, i["table alt"] = {
+		pattern: new RegExp(["^", "[ ]{0,3}", "(\\S.*[|].*)\\n", "[ ]{0,3}", "([-:]+[ ]*[|][-| :]*)\\n", "(", "(?:.*[|].*\\n?)*", ")", "(?:\\n|$)"].join(""), "gm"),
+		inside: {
+			lf: /\n/gm
+		}
 	}, i.hr = {
 		pattern: /^([*\-_] *){3,}$/gm
 	}, i.li = {
@@ -23311,7 +23315,7 @@ function(e) {
 		tag: Prism.languages.markup.tag,
 		entity: Prism.languages.markup.entity
 	}, a = 6; a >= 1; a--) i["h" + a].inside.rest = o;
-	i["h1 alt"].inside.rest = o, i["h2 alt"].inside.rest = o, i.p.inside.rest = o, i.blockquote.inside.rest = o, i.li.inside.rest = o, i.fndef.inside.rest = o, o = {
+	i["h1 alt"].inside.rest = o, i["h2 alt"].inside.rest = o, i.table.inside.rest = o, i["table alt"].inside.rest = o, i.p.inside.rest = o, i.blockquote.inside.rest = o, i.li.inside.rest = o, i.fndef.inside.rest = o, o = {
 		code: i.code,
 		fn: i.fn,
 		link: i.link,
@@ -23366,52 +23370,57 @@ function(e) {
 				r = t.isObject(e) ? e : this.findOffset(e);
 			return i.setStart(r.container, r.offset), n && n != e && (r = t.isObject(n) ? n : this.findOffset(n)), i.setEnd(r.container, r.offset), i
 		};
-		var o = n.debounce(t.bind(function() {
-			E.toggleClass("has-selection", this.selectionStart !== this.selectionEnd);
-			var e = this.getCoordinates(this.selectionEnd, this.selectionEndContainer, this.selectionEndOffset);
-			if(this.cursorY !== e.y && (this.cursorY = e.y, r.onCursorCoordinates(e.x, e.y)), this.adjustScroll && i.cursorFocusRatio) {
-				var t = T.offsetHeight / 2 * i.cursorFocusRatio,
-					n = T.scrollTop + t,
-					o = T.scrollTop + T.offsetHeight - t;
-				H.cursorY < n ? T.scrollTop += H.cursorY - n : H.cursorY > o && (T.scrollTop += H.cursorY - o), this.adjustScroll = !1
-			}
-		}, this));
-		this.setSelectionStartEnd = function(e, t, n, i) {
-			void 0 === e && (e = this.selectionStart), 0 > e && (e = 0), void 0 === t && (t = this.selectionEnd), 0 > t && (t = 0), this.selectionStart = e, this.selectionEnd = t;
-			var r = Math.min(e, t),
-				a = Math.max(e, t);
-			if(n = n || this.createRange(r, a), !i) {
-				var s = c.getSelection();
-				s.removeAllRanges(), s.addRange(n, e > t)
-			}
-			return B.editorStart = this.selectionStart, B.editorEnd = this.selectionEnd, o(), n
+		var o, a = n.debounce(function() {
+				E.toggleClass("has-selection", this.selectionStart !== this.selectionEnd);
+				var e = this.getCoordinates(this.selectionEnd, this.selectionEndContainer, this.selectionEndOffset);
+				if(this.cursorY !== e.y && (this.cursorY = e.y, r.onCursorCoordinates(e.x, e.y), o && i.cursorFocusRatio)) {
+					var t = T.offsetHeight / 2 * i.cursorFocusRatio,
+						n = T.scrollTop + t,
+						a = T.scrollTop + T.offsetHeight - t;
+					H.cursorY < n ? T.scrollTop += H.cursorY - n : H.cursorY > a && (T.scrollTop += H.cursorY - a)
+				}
+				o = !1
+			}, this);
+		this.updateCursorCoordinates = function(e) {
+			o = o || e, a()
+		}, this.updateSelectionRange = function(e) {
+			var t = Math.min(this.selectionStart, this.selectionEnd),
+				n = Math.max(this.selectionStart, this.selectionEnd);
+			e || (e = this.createRange(t, n));
+			var i = c.getSelection();
+			i.removeAllRanges(), i.addRange(e, this.selectionStart > this.selectionEnd)
+		}, this.setSelectionStartEnd = function(e, t) {
+			void 0 === e && (e = this.selectionStart), 0 > e && (e = 0), void 0 === t && (t = this.selectionEnd), 0 > t && (t = 0), this.selectionStart = e, this.selectionEnd = t, B.editorStart = e, B.editorEnd = t
 		}, this.saveSelectionState = function() {
-			function n(t) {
-				if(clearTimeout(i), i = void 0, e.adjustScroll = t, j === !1) {
-					var n, r = e.selectionStart,
-						o = e.selectionEnd,
-						a = c.getSelection();
-					if(a.rangeCount > 0) {
-						var s = a.getRangeAt(0),
-							l = s.startContainer;
-						if(16 & I.compareDocumentPosition(l)) {
-							n = s;
-							var u = l,
-								d = n.startOffset;
+			function t() {
+				if(j === !1) {
+					var t, n = e.selectionStart,
+						i = e.selectionEnd,
+						r = c.getSelection();
+					if(r.rangeCount > 0) {
+						var o = r.getRangeAt(0),
+							a = o.startContainer;
+						if(16 & I.compareDocumentPosition(a)) {
+							t = o;
+							var s = a,
+								l = t.startOffset;
 							do {
-								for(; l = l.previousSibling;) l.textContent && (d += l.textContent.length);
-								l = u = u.parentNode
-							} while (l && l != T);
-							a.isBackwards() ? (r = d + (n + "").length, o = d) : (r = d, o = d + (n + "").length)
+								for(; a = a.previousSibling;) a.textContent && (l += a.textContent.length);
+								a = s = s.parentNode
+							} while (a && a != T);
+							r.isBackwards() ? (n = l + (t + "").length, i = l) : (n = l, i = l + (t + "").length)
 						}
 					}
-					e.setSelectionStartEnd(r, o, n, !0)
+					e.setSelectionStartEnd(n, i)
 				}
 				z.saveSelectionState()
 			}
-			var i;
-			return function(e, r) {
-				r = t.isBoolean(r) ? r : !1, e ? (clearTimeout(i), i = t.delay(n, 5, r)) : n(r)
+			var i = !1,
+				r = n.debounce(function() {
+					t(), e.updateCursorCoordinates(i), i = !1
+				});
+			return function(e, n) {
+				return e ? (i = i || n, r()) : void t()
 			}
 		}(), this.getCoordinates = function(e, t, n) {
 			t || (n = this.findOffset(e), t = n.container, n = n.offset);
@@ -23466,7 +23475,7 @@ function(e) {
 		var n = H.selectionStart;
 		if(n !== H.selectionEnd) return !1;
 		var i = H.createRange(n - e.length, n);
-		return "" + i != e ? !1 : (i.deleteContents(), i.insertNode(document.createTextNode(t)), n = n - e.length + t.length, H.setSelectionStartEnd(n, n), !0)
+		return "" + i != e ? !1 : (i.deleteContents(), i.insertNode(document.createTextNode(t)), n = n - e.length + t.length, H.setSelectionStartEnd(n, n), H.updateSelectionRange(), H.updateCursorCoordinates(), !0)
 	}
 
 	function m(e) {
@@ -23478,13 +23487,13 @@ function(e) {
 	}
 
 	function v() {
-		N.focus(), H.setSelectionStartEnd(), T.scrollTop = P
+		N.focus(), H.updateSelectionRange(), T.scrollTop = P
 	}
 
 	function b() {
 		function e(e, n, i) {
 			$.noWatch(function() {
-				U != e.content && (m(e.content), B.content = e.content, r.onContentChanged(B, e.content)), H.setSelectionStartEnd(n, i);
+				U != e.content && (m(e.content), B.content = e.content, r.onContentChanged(B, e.content)), H.setSelectionStartEnd(n, i), H.updateSelectionRange(), H.updateCursorCoordinates();
 				var o = B.discussionListJSON;
 				if(o != e.discussionListJSON) {
 					var a = B.discussionList;
@@ -23505,7 +23514,10 @@ function(e) {
 		}, this.setMode = function() {}, this.onButtonStateChange = function() {}, this.saveState = n.debounce(function() {
 			u = [];
 			var e = Date.now();
-			"comment" == this.currentMode || this.currentMode != o && "newlines" != o || e - i > 1e3 ? (c.push(a), 100 === c.length && c.shift()) : (s = a.selectionStartBefore, l = a.selectionEndBefore), a = {
+			if("comment" == this.currentMode || "newlines" == o || this.currentMode != o || e - i > 1e3)
+				for(c.push(a); c.length > 100;) c.shift();
+			else s = a.selectionStartBefore, l = a.selectionEndBefore;
+			a = {
 				selectionStartBefore: s,
 				selectionEndBefore: l,
 				selectionStartAfter: H.selectionStart,
@@ -23551,7 +23563,7 @@ function(e) {
 			B.newDiscussion && n.push(B.newDiscussion);
 			var i = w(U, e, n);
 			U = e, i === !0 && (B.discussionList = B.discussionList), B.content = U, H.saveSelectionState(), r.onContentChanged(B, U), i && r.onCommentsChanged(B), z.saveState()
-		} else U = e, B.content = U, H.setSelectionStartEnd(B.editorStart, B.editorEnd), H.saveSelectionState(), r.onFileOpen(B, U), A.scrollTop = B.previewScrollTop, P = B.editorScrollTop, T.scrollTop = P, j = !1
+		} else U = e, B.content = U, H.setSelectionStartEnd(B.editorStart, B.editorEnd), H.updateSelectionRange(), H.updateCursorCoordinates(), z.saveSelectionState(), r.onFileOpen(B, U), A.scrollTop = B.previewScrollTop, P = B.editorScrollTop, T.scrollTop = P, j = !1
 	}
 
 	function w(e, t, n) {
@@ -23604,7 +23616,7 @@ function(e) {
 					t.generated || I.removeChild(t), t = n
 				}
 			}
-			_(), H.setSelectionStartEnd()
+			_(), H.updateSelectionRange(), H.updateCursorCoordinates()
 		})
 	}
 
@@ -23662,7 +23674,7 @@ function(e) {
 			}
 		}),
 		H = new d;
-	R.selectionMgr = H, e(document).on("selectionchange", ".editor-content", t.bind(H.saveSelectionState, H, !0)), R.adjustCursorPosition = p;
+	R.selectionMgr = H, e(document).on("selectionchange", ".editor-content", t.bind(H.saveSelectionState, H, !0, !1)), R.adjustCursorPosition = p;
 	var U;
 	R.setValue = h, R.replacePreviousText = f, R.setValueNoWatch = m, R.getValue = g, R.focus = v;
 	var z = new b;
@@ -23689,7 +23701,7 @@ function(e) {
 				return Math.min(H.selectionStart, H.selectionEnd)
 			},
 			set: function(e) {
-				H.setSelectionStartEnd(e)
+				H.setSelectionStartEnd(e), H.updateSelectionRange(), H.updateCursorCoordinates()
 			},
 			enumerable: !0,
 			configurable: !0
@@ -23698,7 +23710,7 @@ function(e) {
 				return Math.max(H.selectionStart, H.selectionEnd)
 			},
 			set: function(e) {
-				H.setSelectionStartEnd(void 0, e)
+				H.setSelectionStartEnd(void 0, e), H.updateSelectionRange(), H.updateCursorCoordinates()
 			},
 			enumerable: !0,
 			configurable: !0
@@ -23706,9 +23718,9 @@ function(e) {
 		var r = !1;
 		N.on("keydown", function(e) {
 			if(17 !== e.which && 91 !== e.which && 18 !== e.which && 16 !== e.which) {
-				H.saveSelectionState();
+				H.saveSelectionState(), p();
 				var t = e.metaKey || e.ctrlKey;
-				switch(t || p(), e.which) {
+				switch(e.which) {
 					case 9:
 						t || (o("indent", {
 							inverse: e.shiftKey
@@ -23725,7 +23737,7 @@ function(e) {
 			setTimeout(function() {
 				O--
 			}, 0)
-		}).on("mouseup", t.bind(H.saveSelectionState, H, !0)).on("paste", function() {
+		}).on("mouseup", t.bind(H.saveSelectionState, H, !0, !1)).on("paste", function() {
 			z.currentMode = "paste", p()
 		}).on("cut", function() {
 			z.currentMode = "cut", p()
@@ -23742,7 +23754,7 @@ function(e) {
 					after: n.slice(r),
 					selection: n.slice(i, r)
 				};
-			a[e](o, t), h(o.before + o.selection + o.after), H.setSelectionStartEnd(o.selectionStart, o.selectionEnd)
+			a[e](o, t), h(o.before + o.selection + o.after), H.setSelectionStartEnd(o.selectionStart, o.selectionEnd), H.updateSelectionRange()
 		}, a = {
 				indent: function(e, t) {
 					function n(e, t, n, i) {
@@ -25186,7 +25198,7 @@ function() {
 		e(".modal-header").append('<a class="dialog-header-message" href="https://github.com/benweet/stackedit/issues/385" target="_blank">Give your feedback <i class="icon-megaphone"></i></a>')
 	}), S
 }), define("text!WELCOME.md", [], function() {
-	return 'Welcome to StackEdit!		{#welcome}\n====================\n\n\nHello, I am your first Markdown document within **StackEdit**[^stackedit]. Don\'t delete me, I can be helpful. I can be recovered anyway in the `Utils` tab of the <i class="icon-cog"></i> `Settings` dialog.\n\n----------\n\n\nDocuments\n--------------\n\n**StackEdit** stores your documents in your browser, which means all your documents are automatically saved locally and are accessible **offline!**\n\n> **Note:**\n\n> - StackEdit is accessible offline after the application has been loaded for the first time.\n> - Your local documents are not shared between different browsers or computers.\n> - Clearing your browser\'s data may **delete all your local documents!** Make sure your documents are backed up using **Google Drive** or **Dropbox** synchronization (see [<i class="icon-refresh"></i> Synchronization](#synchronization) section).\n\n#### <i class="icon-file"></i> Create a document\n\nThe document panel is accessible using  <i class="icon-folder-open"></i> button in the navigation bar. You can create a new document by clicking the <i class="icon-file"></i> `New document` sub-menu in the document panel.\n\n#### <i class="icon-folder-open"></i> Switch to another document\n\nAll your local documents are listed in the document panel. You can switch from one to another by clicking a document in the document panel or you can also use <kbd>Ctrl+[</kbd> and <kbd>Ctrl+]</kbd> to toggle documents by most recently used.\n\n#### <i class="icon-pencil"></i> Rename a document\n\nYou can rename the current document by clicking the document title in the navigation bar.\n\n#### <i class="icon-trash"></i> Delete a document\n\nYou can delete the current document by clicking the <i class="icon-trash"></i> `Delete document` sub-menu in the document panel.\n\n#### <i class="icon-hdd"></i> Export a document\n\nYou can save the current document to a file using the <i class="icon-hdd"></i> `Export to disk` sub-menu from the <i class="icon-provider-stackedit"></i> menu panel.\n\n> **Tip:** See [<i class="icon-upload"></i> Publish a document](#publish-a-document) section for a description of the different output formats.\n\n\n----------\n\n\nSynchronization\n--------------------\n\n**StackEdit** can be combined with <i class="icon-provider-gdrive"></i> **Google Drive** and <i class="icon-provider-dropbox"></i> **Dropbox** to have your documents centralized in the *Cloud*. The synchronization mechanism will take care of uploading your modifications or downloading the latest version of your documents.\n\n> **Note:**\n\n> - Full access to **Google Drive** or **Dropbox** is required to be able to import any document in StackEdit. Permission restrictions can be configured in the settings.\n> - Imported documents are downloaded in your browser and are not transmitted to a server.\n> - If you experience problems saving your documents on Google Drive, check and optionally disable browser extensions, such as Disconnect.\n\n#### <i class="icon-refresh"></i> Open a document\n\nYou can open a document from <i class="icon-provider-gdrive"></i> **Google Drive** or the <i class="icon-provider-dropbox"></i> **Dropbox** by opening the <i class="icon-refresh"></i> `Synchronize` sub-menu and by clicking `Open from...`. Once opened, any modification in your document will be automatically synchronized with the **Google Drive** / **Dropbox** file.\n\n#### <i class="icon-refresh"></i> Save a document\n\nYou can save any document by opening the <i class="icon-refresh"></i> `Synchronize` sub-menu and by clicking `Save on...`. Even if your document is already synchronized with **Google Drive** or **Dropbox**, you can export it to a another location. **StackEdit** can synchronize one document with multiple locations.\n\n#### <i class="icon-refresh"></i> Synchronize a document\n\nOnce your document is linked to a <i class="icon-provider-gdrive"></i> **Google Drive** or a <i class="icon-provider-dropbox"></i> **Dropbox** file, **StackEdit** will periodically (every 3 minutes) synchronize it by downloading/uploading any modification. Any conflict will be detected, and a local copy of your document will be created as a backup if necessary.\n\nIf you just have modified your document and you want to force the synchronization, click the <i class="icon-refresh"></i> button in the navigation bar.\n\n> **Note:** The <i class="icon-refresh"></i> button is disabled when you have no document to synchronize.\n\n#### <i class="icon-refresh"></i> Manage document synchronization\n\nSince one document can be synchronized with multiple locations, you can list and manage synchronized locations by clicking <i class="icon-refresh"></i> `Manage synchronization` in the <i class="icon-refresh"></i> `Synchronize` sub-menu. This will let you remove synchronization locations that are associated to your document.\n\n> **Note:** If you delete the file from **Google Drive** or from **Dropbox**, the document will no longer be synchronized with that location.\n\n----------\n\n\nPublication\n--------------\n\nOnce you are happy with your document, you can publish it on different websites directly from **StackEdit**. As for now, **StackEdit** can publish on **Blogger**, **Dropbox**, **Gist**, **GitHub**, **Google Drive**, **Tumblr**, **WordPress** and on any SSH server.\n\n#### <i class="icon-upload"></i> Publish a document\n\nYou can publish your document by opening the <i class="icon-upload"></i> `Publish` sub-menu and by choosing a website. In the dialog box, you can choose the publication format:\n\n- Markdown, to publish the Markdown text on a website that can interpret it (**GitHub** for example),\n- HTML, to publish the document converted into HTML (on a blog for example),\n- Template, to have a full control of the output.\n\n> **Note:** The default template is a simple webpage wrapping your document in HTML format. You can customize it in the `Advanced` tab of the <i class="icon-cog"></i> `Settings` dialog.\n\n#### <i class="icon-upload"></i> Update a publication\n\nAfter publishing, **StackEdit** will keep your document linked to that publication which makes it easy for you to update it. Once you have modified your document and you want to update your publication, click on the <i class="icon-upload"></i> button in the navigation bar.\n\n> **Note:** The <i class="icon-upload"></i> button is disabled when your document has not been published yet.\n\n#### <i class="icon-upload"></i> Manage document publication\n\nSince one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-upload"></i> `Manage publication` in the <i class="icon-provider-stackedit"></i> menu. This will let you remove publication locations that are associated to your document.\n\n> **Note:** In some cases, if the file has been removed from the website or the blog, the document will no longer be published on that location.\n\n----------\n\n\nMarkdown Extra\n--------------------\n\n**StackEdit** supports **Markdown Extra**, which extends **Markdown** syntax with some nice features.\n\n> **Tip:** You can disable any **Markdown Extra** feature in the `Extensions` tab of the <i class="icon-cog"></i> `Settings` dialog.\n\n> **Note:** You can find more information about **Markdown** syntax [here][2] and **Markdown Extra** extension [here][3].\n\n\n### Tables\n\n**Markdown Extra** has a special syntax for tables:\n\nItem | Value\n--- | ---\nComputer | $1600\nPhone | $12\nPipe | $1\n\nYou can specify column alignment with one or two colons:\n\n| Item | Value | Qty |\n| :--- | ---: | :---: |\n| Computer | $1600 | 5 |\n| Phone | $12 | 12 |\n| Pipe | $1 | 234 |\n\n\n### Definition Lists\n\n**Markdown Extra** has a special syntax for definition lists too:\n\nTerm 1\nTerm 2\n:   Definition A\n:   Definition B\n\nTerm 3\n\n:   Definition C\n\n:   Definition D\n\n	> part of definition D\n\n\n### Fenced code blocks\n\nGitHub\'s fenced code blocks[^gfm] are also supported with **Prettify** syntax highlighting:\n\n```\n// Foo\nvar bar = 0;\n```\n\n> **Tip:** To use **Highlight.js** instead of **Prettify**, just configure the `Markdown Extra` extension in the <i class="icon-cog"></i> `Settings` dialog.\n\n> **Note:** You can find more information:\n\n> - about **Prettify** syntax highlighting [here][5],\n> - about **Highlight.js** syntax highlighting [here][6].\n\n\n### Footnotes\n\nYou can create footnotes like this[^footnote].\n\n  [^footnote]: Here is the *text* of the **footnote**.\n\n\n### SmartyPants\n\nSmartyPants converts ASCII punctuation characters into "smart" typographic punctuation HTML entities. For example:\n\n| | ASCII | HTML |\n---|---|---\n| Single backticks | `\'Isn\'t this fun?\'` | \'Isn\'t this fun?\' |\n| Quotes | `"Isn\'t this fun?"` | "Isn\'t this fun?" |\n| Dashes | `-- is en-dash, --- is em-dash` | -- is en-dash, --- is em-dash |\n\n\n### Table of contents\n\nYou can insert a table of contents using the marker `[TOC]`:\n\n[TOC]\n\n\n### MathJax\n\nYou can render *LaTeX* mathematical expressions using **MathJax**, as on [math.stackexchange.com][1]:\n\nThe *Gamma function* satisfying $\\Gamma(n) = (n-1)!\\quad\\forall n\\in\\mathbb N$ is via the Euler integral\n\n$$\n\\Gamma(z) = \\int_0^\\infty t^{z-1}e^{-t}dt\\,.\n$$\n\n> **Tip:** Make sure you include **MathJax** into your publications to render mathematical expression properly. Your page/template should include something like this:\n\n```\n<script type="text/javascript" src="https://stackedit.io/libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n```\n\n> **Note:** You can find more information about **LaTeX** mathematical expressions [here][4].\n\n\n### UML diagrams\n\nYou can also render sequence diagrams like this:\n\n```sequence\nAlice->Bob: Hello Bob, how are you?\nNote right of Bob: Bob thinks\nBob-->Alice: I am good thanks!\n```\n\nAnd flow charts like this:\n\n```flow\nst=>start: Start\ne=>end\nop=>operation: My Operation\ncond=>condition: Yes or No?\n\nst->op->cond\ncond(yes)->e\ncond(no)->op\n```\n\n> **Note:** You can find more information:\n\n> - about **Sequence diagrams** syntax [here][7],\n> - about **Flow charts** syntax [here][8].\n\n  [^stackedit]: [StackEdit](https://stackedit.io/) is a full-featured, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.\n\n  [^gfm]: **GitHub Flavored Markdown** (GFM) is supported by StackEdit.\n\n\n  [1]: http://math.stackexchange.com/\n  [2]: http://daringfireball.net/projects/markdown/syntax "Markdown"\n  [3]: https://github.com/jmcmanus/pagedown-extra "Pagedown Extra"\n  [4]: http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference\n  [5]: https://code.google.com/p/google-code-prettify/\n  [6]: http://highlightjs.org/\n  [7]: http://bramp.github.io/js-sequence-diagrams/\n  [8]: http://adrai.github.io/flowchart.js/\n'
+	return 'Welcome to StackEdit!		{#welcome}\n====================\n\n\nHello, I am your first Markdown document within **StackEdit**[^stackedit]. Don\'t delete me, I can be helpful. I can be recovered anyway in the `Utils` tab of the <i class="icon-cog"></i> `Settings` dialog.\n\n----------\n\n\nDocuments\n--------------\n\n**StackEdit** stores your documents in your browser, which means all your documents are automatically saved locally and are accessible **offline!**\n\n> **Note:**\n\n> - StackEdit is accessible offline after the application has been loaded for the first time.\n> - Your local documents are not shared between different browsers or computers.\n> - Clearing your browser\'s data may **delete all your local documents!** Make sure your documents are backed up using **Google Drive** or **Dropbox** synchronization (see [<i class="icon-refresh"></i> Synchronization](#synchronization) section).\n\n#### <i class="icon-file"></i> Create a document\n\nThe document panel is accessible using  <i class="icon-folder-open"></i> button in the navigation bar. You can create a new document by clicking the <i class="icon-file"></i> `New document` sub-menu in the document panel.\n\n#### <i class="icon-folder-open"></i> Switch to another document\n\nAll your local documents are listed in the document panel. You can switch from one to another by clicking a document in the document panel or you can also use <kbd>Ctrl+[</kbd> and <kbd>Ctrl+]</kbd> to toggle documents by most recently used.\n\n#### <i class="icon-pencil"></i> Rename a document\n\nYou can rename the current document by clicking the document title in the navigation bar.\n\n#### <i class="icon-trash"></i> Delete a document\n\nYou can delete the current document by clicking the <i class="icon-trash"></i> `Delete document` sub-menu in the document panel.\n\n#### <i class="icon-hdd"></i> Export a document\n\nYou can save the current document to a file using the <i class="icon-hdd"></i> `Export to disk` sub-menu from the <i class="icon-provider-stackedit"></i> menu panel.\n\n> **Tip:** See [<i class="icon-upload"></i> Publish a document](#publish-a-document) section for a description of the different output formats.\n\n\n----------\n\n\nSynchronization\n--------------------\n\n**StackEdit** can be combined with <i class="icon-provider-gdrive"></i> **Google Drive** and <i class="icon-provider-dropbox"></i> **Dropbox** to have your documents centralized in the *Cloud*. The synchronization mechanism will take care of uploading your modifications or downloading the latest version of your documents.\n\n> **Note:**\n\n> - Full access to **Google Drive** or **Dropbox** is required to be able to import any document in StackEdit. Permission restrictions can be configured in the settings.\n> - Imported documents are downloaded in your browser and are not transmitted to a server.\n> - If you experience problems saving your documents on Google Drive, check and optionally disable browser extensions, such as Disconnect.\n\n#### <i class="icon-refresh"></i> Open a document\n\nYou can open a document from <i class="icon-provider-gdrive"></i> **Google Drive** or the <i class="icon-provider-dropbox"></i> **Dropbox** by opening the <i class="icon-refresh"></i> `Synchronize` sub-menu and by clicking `Open from...`. Once opened, any modification in your document will be automatically synchronized with the **Google Drive** / **Dropbox** file.\n\n#### <i class="icon-refresh"></i> Save a document\n\nYou can save any document by opening the <i class="icon-refresh"></i> `Synchronize` sub-menu and by clicking `Save on...`. Even if your document is already synchronized with **Google Drive** or **Dropbox**, you can export it to a another location. **StackEdit** can synchronize one document with multiple locations.\n\n#### <i class="icon-refresh"></i> Synchronize a document\n\nOnce your document is linked to a <i class="icon-provider-gdrive"></i> **Google Drive** or a <i class="icon-provider-dropbox"></i> **Dropbox** file, **StackEdit** will periodically (every 3 minutes) synchronize it by downloading/uploading any modification. Any conflict will be detected, and a local copy of your document will be created as a backup if necessary.\n\nIf you just have modified your document and you want to force the synchronization, click the <i class="icon-refresh"></i> button in the navigation bar.\n\n> **Note:** The <i class="icon-refresh"></i> button is disabled when you have no document to synchronize.\n\n#### <i class="icon-refresh"></i> Manage document synchronization\n\nSince one document can be synchronized with multiple locations, you can list and manage synchronized locations by clicking <i class="icon-refresh"></i> `Manage synchronization` in the <i class="icon-refresh"></i> `Synchronize` sub-menu. This will let you remove synchronization locations that are associated to your document.\n\n> **Note:** If you delete the file from **Google Drive** or from **Dropbox**, the document will no longer be synchronized with that location.\n\n----------\n\n\nPublication\n--------------\n\nOnce you are happy with your document, you can publish it on different websites directly from **StackEdit**. As for now, **StackEdit** can publish on **Blogger**, **Dropbox**, **Gist**, **GitHub**, **Google Drive**, **Tumblr**, **WordPress** and on any SSH server.\n\n#### <i class="icon-upload"></i> Publish a document\n\nYou can publish your document by opening the <i class="icon-upload"></i> `Publish` sub-menu and by choosing a website. In the dialog box, you can choose the publication format:\n\n- Markdown, to publish the Markdown text on a website that can interpret it (**GitHub** for example),\n- HTML, to publish the document converted into HTML (on a blog for example),\n- Template, to have a full control of the output.\n\n> **Note:** The default template is a simple webpage wrapping your document in HTML format. You can customize it in the `Advanced` tab of the <i class="icon-cog"></i> `Settings` dialog.\n\n#### <i class="icon-upload"></i> Update a publication\n\nAfter publishing, **StackEdit** will keep your document linked to that publication which makes it easy for you to update it. Once you have modified your document and you want to update your publication, click on the <i class="icon-upload"></i> button in the navigation bar.\n\n> **Note:** The <i class="icon-upload"></i> button is disabled when your document has not been published yet.\n\n#### <i class="icon-upload"></i> Manage document publication\n\nSince one document can be published on multiple locations, you can list and manage publish locations by clicking <i class="icon-upload"></i> `Manage publication` in the <i class="icon-provider-stackedit"></i> menu. This will let you remove publication locations that are associated to your document.\n\n> **Note:** In some cases, if the file has been removed from the website or the blog, the document will no longer be published on that location.\n\n----------\n\n\nMarkdown Extra\n--------------------\n\n**StackEdit** supports **Markdown Extra**, which extends **Markdown** syntax with some nice features.\n\n> **Tip:** You can disable any **Markdown Extra** feature in the `Extensions` tab of the <i class="icon-cog"></i> `Settings` dialog.\n\n> **Note:** You can find more information about **Markdown** syntax [here][2] and **Markdown Extra** extension [here][3].\n\n\n### Tables\n\n**Markdown Extra** has a special syntax for tables:\n\nItem     | Value\n-------- | ---\nComputer | $1600\nPhone    | $12\nPipe     | $1\n\nYou can specify column alignment with one or two colons:\n\n| Item     | Value | Qty   |\n| :------- | ----: | :---: |\n| Computer | $1600 |  5    |\n| Phone    | $12   |  12   |\n| Pipe     | $1    |  234  |\n\n\n### Definition Lists\n\n**Markdown Extra** has a special syntax for definition lists too:\n\nTerm 1\nTerm 2\n:   Definition A\n:   Definition B\n\nTerm 3\n\n:   Definition C\n\n:   Definition D\n\n	> part of definition D\n\n\n### Fenced code blocks\n\nGitHub\'s fenced code blocks[^gfm] are also supported with **Prettify** syntax highlighting:\n\n```\n// Foo\nvar bar = 0;\n```\n\n> **Tip:** To use **Highlight.js** instead of **Prettify**, just configure the `Markdown Extra` extension in the <i class="icon-cog"></i> `Settings` dialog.\n\n> **Note:** You can find more information:\n\n> - about **Prettify** syntax highlighting [here][5],\n> - about **Highlight.js** syntax highlighting [here][6].\n\n\n### Footnotes\n\nYou can create footnotes like this[^footnote].\n\n  [^footnote]: Here is the *text* of the **footnote**.\n\n\n### SmartyPants\n\nSmartyPants converts ASCII punctuation characters into "smart" typographic punctuation HTML entities. For example:\n\n|                  | ASCII                        | HTML              |\n ----------------- | ---------------------------- | ------------------\n| Single backticks | `\'Isn\'t this fun?\'`            | \'Isn\'t this fun?\' |\n| Quotes           | `"Isn\'t this fun?"`            | "Isn\'t this fun?" |\n| Dashes           | `-- is en-dash, --- is em-dash` | -- is en-dash, --- is em-dash |\n\n\n### Table of contents\n\nYou can insert a table of contents using the marker `[TOC]`:\n\n[TOC]\n\n\n### MathJax\n\nYou can render *LaTeX* mathematical expressions using **MathJax**, as on [math.stackexchange.com][1]:\n\nThe *Gamma function* satisfying $\\Gamma(n) = (n-1)!\\quad\\forall n\\in\\mathbb N$ is via the Euler integral\n\n$$\n\\Gamma(z) = \\int_0^\\infty t^{z-1}e^{-t}dt\\,.\n$$\n\n> **Tip:** Make sure you include **MathJax** into your publications to render mathematical expression properly. Your page/template should include something like this:\n\n```\n<script type="text/javascript" src="https://stackedit.io/libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n```\n\n> **Note:** You can find more information about **LaTeX** mathematical expressions [here][4].\n\n\n### UML diagrams\n\nYou can also render sequence diagrams like this:\n\n```sequence\nAlice->Bob: Hello Bob, how are you?\nNote right of Bob: Bob thinks\nBob-->Alice: I am good thanks!\n```\n\nAnd flow charts like this:\n\n```flow\nst=>start: Start\ne=>end\nop=>operation: My Operation\ncond=>condition: Yes or No?\n\nst->op->cond\ncond(yes)->e\ncond(no)->op\n```\n\n> **Note:** You can find more information:\n\n> - about **Sequence diagrams** syntax [here][7],\n> - about **Flow charts** syntax [here][8].\n\n  [^stackedit]: [StackEdit](https://stackedit.io/) is a full-featured, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.\n\n  [^gfm]: **GitHub Flavored Markdown** (GFM) is supported by StackEdit.\n\n\n  [1]: http://math.stackexchange.com/\n  [2]: http://daringfireball.net/projects/markdown/syntax "Markdown"\n  [3]: https://github.com/jmcmanus/pagedown-extra "Pagedown Extra"\n  [4]: http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference\n  [5]: https://code.google.com/p/google-code-prettify/\n  [6]: http://highlightjs.org/\n  [7]: http://bramp.github.io/js-sequence-diagrams/\n  [8]: http://adrai.github.io/flowchart.js/\n'
 }), define("fileMgr", ["jquery", "underscore", "constants", "core", "utils", "storage", "settings", "eventMgr", "fileSystem", "classes/FileDescriptor", "text!WELCOME.md"], function(e, t, n, i, r, o, a, s, l, c, u) {
 	var d = {};
 	return d.currentFile = void 0, d.selectFile = function(r) {
@@ -25834,14 +25846,19 @@ function() {
 			function l() {
 				if(m > 5) return void i.error(new Error("Unable to authenticate user " + s.getUserId() + ", please sign in with Google."));
 				p === !1 && (i.timeout = n.ASYNC_TASK_LONG_TIMEOUT);
-				var t = e.chain(x).pick(s.getListWithNew(o)).flatten().value();
+				var r = e.chain(x).pick(s.getListWithNew(o)).flatten().value();
 				gapi.auth.authorize({
 					client_id: n.GOOGLE_CLIENT_ID,
-					scope: t,
+					scope: r,
 					immediate: p,
 					authuser: p === !1 ? "" : m
-				}, function(e) {
-					d = gapi.auth.getToken(), gapi.auth.setToken(h), !e || e.error ? g === !0 && p === !0 ? (p = !1, i.chain(c)) : i.error(new Error("Access to Google account is not authorized.")) : (p === !0 && m++, i.chain(a))
+				}, function(n) {
+					s.$oauthIframe && s.$oauthIframe.remove();
+					var r = e.filter(document.querySelectorAll("iframe"), function(e) {
+						var t = e.getAttribute("src");
+						return t && 0 === t.indexOf("https://accounts.google.com/o/oauth2/auth")
+					});
+					s.$oauthIframe = t(e.difference(r, w)), w = r, d = gapi.auth.getToken(), gapi.auth.setToken(h), !n || n.error ? g === !0 && p === !0 ? (p = !1, i.chain(c)) : i.error(new Error("Access to Google account is not authorized.")) : (p === !0 && m++, i.chain(a))
 				})
 			}
 
@@ -25886,7 +25903,7 @@ function() {
 
 	function m(e) {
 		e.onRun(function() {
-			return w === !0 ? void e.chain() : void t.ajax({
+			return S === !0 ? void e.chain() : void t.ajax({
 				url: "//www.google.com/jsapi",
 				data: {
 					key: n.GOOGLE_API_KEY
@@ -25898,7 +25915,7 @@ function() {
 					callback: function() {
 						e.chain()
 					}
-				}), w = !0
+				}), S = !0
 			}).fail(function(t) {
 				var n = {
 					code: t.status,
@@ -25918,7 +25935,7 @@ function() {
 		gdrive: ["https://www.googleapis.com/auth/drive.install", s.gdriveFullAccess === !0 ? "https://www.googleapis.com/auth/drive" : "https://www.googleapis.com/auth/drive.file"],
 		blogger: ["https://www.googleapis.com/auth/blogger"],
 		picasa: ["https://www.googleapis.com/auth/photos"]
-	};
+	}, w = [];
 	b.refreshGdriveToken = function(e) {
 		var t = new c;
 		d(t);
@@ -26114,7 +26131,7 @@ function() {
 			o(e)
 		}), l.enqueue()
 	};
-	var w = !1;
+	var S = !1;
 	return b.picker = function(e, i, o) {
 		function a() {
 			void 0 !== s && (s.setVisible(!1), t(".modal-backdrop, .picker").remove())

@@ -1443,6 +1443,7 @@ a.list-group-item:hover,a.list-group-item:focus{color:#b3b3b3;border-top-color:r
 #wmd-input .tag{color:#fff;font:bold .9em "Source Code Pro",monospace}#wmd-input .tag .punctuation,#wmd-input .tag .attr-value,#wmd-input .tag .attr-name{font-weight:normal}
 #wmd-input .latex,#wmd-input .math{color:#9f9f9f}
 #wmd-input .entity{font:italic .9em "Source Code Pro",monospace;color:#9f9f9f}
+#wmd-input .table{font:normal .9em "Source Code Pro",monospace}
 #wmd-input .comment{font-size:0.9em;color:rgba(159,159,159,0.6)}
 #wmd-input .keyword{color:#dfdfdf;font-weight:bold}
 #wmd-input .code,#wmd-input .img,#wmd-input .imgref,#wmd-input .md-toc{background-color:rgba(255,255,255,0.1);border-radius:4px;padding:0.15em 0}

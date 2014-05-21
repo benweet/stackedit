@@ -7,17 +7,17 @@ Prism.languages.md = (function() {
     var latex = Prism.languages.latex;
 
     var md = {};
+	md['pre gfm'] = {
+		pattern: /^`{3}.*\n(?:[\s\S]*?)\n`{3} *$/gm,
+		inside: {
+			"md md-pre": /`{3}/,
+			lf: /\n/gm
+		}
+	};
     md.pre = {
         pattern: /(^|(?:^|(?:^|\n)(?![ \t]*([*+\-]|\d+\.)[ \t]).*\n)\s*?\n)(\s*(?: {4}|\t).*(?:\n|$))+/g,
         lookbehind: true,
         inside: {
-        }
-    };
-    md['pre gfm'] = {
-        pattern: /^ {0,3}`{3}.*?\n(.*?\n)*? {0,3}`{3} *$/gm,
-        inside: {
-            "md md-pre": /`{3}/,
-            lf: /\n/gm,
         }
     };
     md['h1 alt'] = {

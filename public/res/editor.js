@@ -145,27 +145,42 @@ define([
 			range.setEnd(offset.container, offset.offset);
 			return range;
 		};
-		var updateCursorCoordinates = utils.debounce(_.bind(function() {
+		var adjustScroll;
+		var debouncedUpdateCursorCoordinates = utils.debounce(function() {
 			$inputElt.toggleClass('has-selection', this.selectionStart !== this.selectionEnd);
 			var coordinates = this.getCoordinates(this.selectionEnd, this.selectionEndContainer, this.selectionEndOffset);
 			if(this.cursorY !== coordinates.y) {
 				this.cursorY = coordinates.y;
 				eventMgr.onCursorCoordinates(coordinates.x, coordinates.y);
-			}
-			if(this.adjustScroll && settings.cursorFocusRatio) {
-				var adjust = inputElt.offsetHeight / 2 * settings.cursorFocusRatio;
-				var cursorMinY = inputElt.scrollTop + adjust;
-				var cursorMaxY = inputElt.scrollTop + inputElt.offsetHeight - adjust;
-				if(selectionMgr.cursorY < cursorMinY) {
-					inputElt.scrollTop += selectionMgr.cursorY - cursorMinY;
+				if(adjustScroll && settings.cursorFocusRatio) {
+					var adjust = inputElt.offsetHeight / 2 * settings.cursorFocusRatio;
+					var cursorMinY = inputElt.scrollTop + adjust;
+					var cursorMaxY = inputElt.scrollTop + inputElt.offsetHeight - adjust;
+					if(selectionMgr.cursorY < cursorMinY) {
+						inputElt.scrollTop += selectionMgr.cursorY - cursorMinY;
+					}
+					else if(selectionMgr.cursorY > cursorMaxY) {
+						inputElt.scrollTop += selectionMgr.cursorY - cursorMaxY;
+					}
 				}
-				else if(selectionMgr.cursorY > cursorMaxY) {
-					inputElt.scrollTop += selectionMgr.cursorY - cursorMaxY;
-				}
-				this.adjustScroll = false;
 			}
-		}, this));
-		this.setSelectionStartEnd = function(start, end, range, skipSelectionUpdate) {
+			adjustScroll = false;
+		}, this);
+		this.updateCursorCoordinates = function(adjustScrollParam) {
+			adjustScroll = adjustScroll || adjustScrollParam;
+			debouncedUpdateCursorCoordinates();
+		};
+		this.updateSelectionRange = function(range) {
+			var min = Math.min(this.selectionStart, this.selectionEnd);
+			var max = Math.max(this.selectionStart, this.selectionEnd);
+			if(!range) {
+				range = this.createRange(min, max);
+			}
+			var selection = rangy.getSelection();
+			selection.removeAllRanges();
+			selection.addRange(range, this.selectionStart > this.selectionEnd);
+		};
+		this.setSelectionStartEnd = function(start, end) {
 			if(start === undefined) {
 				start = this.selectionStart;
 			}
@@ -180,26 +195,11 @@ define([
 			}
 			this.selectionStart = start;
 			this.selectionEnd = end;
-			var min = Math.min(start, end);
-			var max = Math.max(start, end);
-			range = range || this.createRange(min, max);
-			if(!skipSelectionUpdate) {
-				var selection = rangy.getSelection();
-				selection.removeAllRanges();
-				selection.addRange(range, start > end);
-			}
-			fileDesc.editorStart = this.selectionStart;
-			fileDesc.editorEnd = this.selectionEnd;
-			updateCursorCoordinates();
-			return range;
+			fileDesc.editorStart = start;
+			fileDesc.editorEnd = end;
 		};
 		this.saveSelectionState = (function() {
-			var timeoutId;
-
-			function save(adjustScroll) {
-				clearTimeout(timeoutId);
-				timeoutId = undefined;
-				self.adjustScroll = adjustScroll;
+			function save() {
 				if(fileChanged === false) {
 					var selectionStart = self.selectionStart;
 					var selectionEnd = self.selectionEnd;
@@ -231,19 +231,24 @@ define([
 							}
 						}
 					}
-					self.setSelectionStartEnd(selectionStart, selectionEnd, range, true);
+					self.setSelectionStartEnd(selectionStart, selectionEnd);
 				}
 				undoMgr.saveSelectionState();
 			}
+			var nextTickAdjustScroll = false;
+			var debouncedSave = utils.debounce(function() {
+				save();
+				self.updateCursorCoordinates(nextTickAdjustScroll);
+				nextTickAdjustScroll = false;
+			});
 
 			return function(debounced, adjustScroll) {
-				adjustScroll = _.isBoolean(adjustScroll) ? adjustScroll : false;
 				if(debounced) {
-					clearTimeout(timeoutId);
-					timeoutId = _.delay(save, 5, adjustScroll);
+					nextTickAdjustScroll = nextTickAdjustScroll || adjustScroll;
+					return debouncedSave();
 				}
 				else {
-					save(adjustScroll);
+					save();
 				}
 			};
 		})();
@@ -317,7 +322,7 @@ define([
 
 	var selectionMgr = new SelectionMgr();
 	editor.selectionMgr = selectionMgr;
-	$(document).on('selectionchange', '.editor-content', _.bind(selectionMgr.saveSelectionState, selectionMgr, true));
+	$(document).on('selectionchange', '.editor-content', _.bind(selectionMgr.saveSelectionState, selectionMgr, true, false));
 
 	function adjustCursorPosition() {
 		if(inputElt === undefined) {
@@ -361,6 +366,8 @@ define([
 		range.insertNode(document.createTextNode(replacement));
 		offset = offset - text.length + replacement.length;
 		selectionMgr.setSelectionStartEnd(offset, offset);
+		selectionMgr.updateSelectionRange();
+		selectionMgr.updateCursorCoordinates();
 		return true;
 	}
 
@@ -381,7 +388,7 @@ define([
 
 	function focus() {
 		$contentElt.focus();
-		selectionMgr.setSelectionStartEnd();
+		selectionMgr.updateSelectionRange();
 		inputElt.scrollTop = scrollTop;
 	}
 
@@ -405,14 +412,15 @@ define([
 		this.saveState = utils.debounce(function() {
 			redoStack = [];
 			var currentTime = Date.now();
-			if(this.currentMode == 'comment' || (this.currentMode != lastMode && lastMode != 'newlines') || currentTime - lastTime > 1000) {
+			if(this.currentMode == 'comment' || lastMode == 'newlines' || this.currentMode != lastMode || currentTime - lastTime > 1000) {
 				undoStack.push(currentState);
 				// Limit the size of the stack
-				if(undoStack.length === 100) {
+				while(undoStack.length > 100) {
 					undoStack.shift();
 				}
 			}
 			else {
+				// Restore selectionBefore that has potentially been modified by saveSelectionState
 				selectionStartBefore = currentState.selectionStartBefore;
 				selectionEndBefore = currentState.selectionEndBefore;
 			}
@@ -450,6 +458,8 @@ define([
 					eventMgr.onContentChanged(fileDesc, state.content);
 				}
 				selectionMgr.setSelectionStartEnd(selectionStart, selectionEnd);
+				selectionMgr.updateSelectionRange();
+				selectionMgr.updateCursorCoordinates();
 				var discussionListJSON = fileDesc.discussionListJSON;
 				if(discussionListJSON != state.discussionListJSON) {
 					var oldDiscussionList = fileDesc.discussionList;
@@ -569,7 +579,9 @@ define([
 			textContent = newTextContent;
 			fileDesc.content = textContent;
 			selectionMgr.setSelectionStartEnd(fileDesc.editorStart, fileDesc.editorEnd);
-			selectionMgr.saveSelectionState();
+			selectionMgr.updateSelectionRange();
+			selectionMgr.updateCursorCoordinates();
+			undoMgr.saveSelectionState();
 			eventMgr.onFileOpen(fileDesc, textContent);
 			previewElt.scrollTop = fileDesc.previewScrollTop;
 			scrollTop = fileDesc.editorScrollTop;
@@ -676,6 +688,8 @@ define([
 			},
 			set: function(value) {
 				selectionMgr.setSelectionStartEnd(value);
+				selectionMgr.updateSelectionRange();
+				selectionMgr.updateCursorCoordinates();
 			},
 
 			enumerable: true,
@@ -688,6 +702,8 @@ define([
 			},
 			set: function(value) {
 				selectionMgr.setSelectionStartEnd(undefined, value);
+				selectionMgr.updateSelectionRange();
+				selectionMgr.updateCursorCoordinates();
 			},
 
 			enumerable: true,
@@ -706,11 +722,9 @@ define([
 					return;
 				}
 				selectionMgr.saveSelectionState();
+				adjustCursorPosition();
 
 				var cmdOrCtrl = evt.metaKey || evt.ctrlKey;
-				if(!cmdOrCtrl) {
-					adjustCursorPosition();
-				}
 
 				switch(evt.which) {
 					case 9: // Tab
@@ -738,7 +752,7 @@ define([
 					isComposing--;
 				}, 0);
 			})
-			.on('mouseup', _.bind(selectionMgr.saveSelectionState, selectionMgr, true))
+			.on('mouseup', _.bind(selectionMgr.saveSelectionState, selectionMgr, true, false))
 			.on('paste', function() {
 				undoMgr.currentMode = 'paste';
 				adjustCursorPosition();
@@ -765,7 +779,7 @@ define([
 			actions[action](state, options);
 			setValue(state.before + state.selection + state.after);
 			selectionMgr.setSelectionStartEnd(state.selectionStart, state.selectionEnd);
-
+			selectionMgr.updateSelectionRange();
 		};
 
 		var actions = {
@@ -934,7 +948,8 @@ define([
 				}
 			}
 			addTrailingLfNode();
-			selectionMgr.setSelectionStartEnd();
+			selectionMgr.updateSelectionRange();
+			selectionMgr.updateCursorCoordinates();
 		});
 	}
 

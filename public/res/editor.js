@@ -27,6 +27,7 @@ define([
 	var pagedownEditor;
 	var refreshPreviewLater = (function() {
 		var elapsedTime = 0;
+		var timeoutId;
 		var refreshPreview = function() {
 			var startTime = Date.now();
 			pagedownEditor.refreshPreview();
@@ -36,7 +37,8 @@ define([
 			return _.debounce(refreshPreview, 500);
 		}
 		return function() {
-			setTimeout(refreshPreview, elapsedTime < 2000 ? elapsedTime : 2000);
+			clearTimeout(timeoutId);
+			timeoutId = setTimeout(refreshPreview, elapsedTime < 2000 ? elapsedTime : 2000);
 		};
 	})();
 	eventMgr.addListener('onPagedownConfigure', function(pagedownEditorParam) {
@@ -174,9 +176,10 @@ define([
 			var min = Math.min(this.selectionStart, this.selectionEnd);
 			var max = Math.max(this.selectionStart, this.selectionEnd);
 		    var range = this.createRange(min, max);
-			var selection = document.getSelection();
+			var selection = rangy.getSelection();
 			selection.removeAllRanges();
-			selection.addRange(range);
+			selection.addRange(range, this.selectionStart > this.selectionEnd);
+			selection.detach();
             range.detach();
 		};
 		this.setSelectionStartEnd = function(start, end) {
@@ -203,7 +206,7 @@ define([
 					var selectionStart = self.selectionStart;
 					var selectionEnd = self.selectionEnd;
 					var range;
-					var selection = document.getSelection();
+					var selection = rangy.getSelection();
 					if(selection.rangeCount > 0) {
 						var selectionRange = selection.getRangeAt(0);
 						var element = selectionRange.startContainer;
@@ -220,7 +223,7 @@ define([
 								element = container = container.parentNode;
 							} while(element && element != inputElt);
 
-							if(false) {
+							if(selection.isBackwards()) {
 								selectionStart = offset + (range + '').length;
 								selectionEnd = offset;
 							}
@@ -231,6 +234,7 @@ define([
 						}
                         selectionRange.detach();
 					}
+					selection.detach();
 					self.setSelectionStartEnd(selectionStart, selectionEnd);
 				}
 				undoMgr.saveSelectionState();

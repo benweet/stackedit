@@ -1425,6 +1425,7 @@
             var disabledYShift = "-20px";
             var highlightYShift = "-40px";
             var image = button.getElementsByTagName("span")[0];
+            button.className = button.className.replace(/ disabled/g, "");
             if (isEnabled) {
                 image.style.backgroundPosition = button.XShift + " " + normalYShift;
                 button.onmouseover = function () {
@@ -1454,7 +1455,6 @@
                         return false;
                     }
                 }
-                button.className = button.className.replace(/ disabled/g, "");
             }
             else {
                 image.style.backgroundPosition = button.XShift + " " + disabledYShift;

@@ -16,7 +16,7 @@ define([
         '<div class="comment-block<%= reply ? \' reply\' : \'\' %>">',
         '    <div class="comment-author"><i class="icon-comment"></i> <%= author %></div>',
         '    <div class="comment-content"><%= content %></div>',
-        '</div>',
+        '</div>'
     ].join('');
     var popoverTitleTmpl = [
         '<span class="clearfix">',
@@ -24,7 +24,7 @@ define([
         '        <i class="icon-trash"></i>',
         '    </a>',
         '    “<%- title %>”',
-        '</span>',
+        '</span>'
     ].join('');
 
     var eventMgr;
@@ -197,6 +197,7 @@ define([
             }
             try {
                 cssApplier.undoToRange(context.rangyRange);
+                context.rangyRange.detach();
             }
             catch(e) {}
             var discussion = context.getDiscussion();
@@ -289,12 +290,12 @@ define([
                     title += '...';
                 }
                 return _.template(popoverTitleTmpl, {
-                    title: title,
+                    title: title
                 });
             },
             content: function() {
                 var content = _.template(commentsPopoverContentHTML, {
-                    commentList: getDiscussionComments(),
+                    commentList: getDiscussionComments()
                 });
                 return content;
             },
@@ -431,6 +432,7 @@ define([
 
             // Remove highlight
             cssApplier.undoToRange(currentContext.rangyRange);
+            currentContext.rangyRange.detach();
             currentContext = undefined;
             delete currentFileDesc.newDiscussion;
         });

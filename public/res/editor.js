@@ -170,15 +170,14 @@ define([
 			adjustScroll = adjustScroll || adjustScrollParam;
 			debouncedUpdateCursorCoordinates();
 		};
-		this.updateSelectionRange = function(range) {
+		this.updateSelectionRange = function() {
 			var min = Math.min(this.selectionStart, this.selectionEnd);
 			var max = Math.max(this.selectionStart, this.selectionEnd);
-			if(!range) {
-				range = this.createRange(min, max);
-			}
-			var selection = rangy.getSelection();
+		    var range = this.createRange(min, max);
+			var selection = document.getSelection();
 			selection.removeAllRanges();
-			selection.addRange(range, this.selectionStart > this.selectionEnd);
+			selection.addRange(range);
+            range.detach();
 		};
 		this.setSelectionStartEnd = function(start, end) {
 			if(start === undefined) {
@@ -204,7 +203,7 @@ define([
 					var selectionStart = self.selectionStart;
 					var selectionEnd = self.selectionEnd;
 					var range;
-					var selection = rangy.getSelection();
+					var selection = document.getSelection();
 					if(selection.rangeCount > 0) {
 						var selectionRange = selection.getRangeAt(0);
 						var element = selectionRange.startContainer;
@@ -221,7 +220,7 @@ define([
 								element = container = container.parentNode;
 							} while(element && element != inputElt);
 
-							if(selection.isBackwards()) {
+							if(false) {
 								selectionStart = offset + (range + '').length;
 								selectionEnd = offset;
 							}
@@ -230,6 +229,7 @@ define([
 								selectionEnd = offset + (range + '').length;
 							}
 						}
+                        selectionRange.detach();
 					}
 					self.setSelectionStartEnd(selectionStart, selectionEnd);
 				}
@@ -349,6 +349,7 @@ define([
 		var range = selectionMgr.createRange(startOffset, textContent.length - endOffset);
 		range.deleteContents();
 		range.insertNode(document.createTextNode(replacement));
+        range.detach();
 	}
 
 	editor.setValue = setValue;
@@ -364,6 +365,7 @@ define([
 		}
 		range.deleteContents();
 		range.insertNode(document.createTextNode(replacement));
+        range.detach();
 		offset = offset - text.length + replacement.length;
 		selectionMgr.setSelectionStartEnd(offset, offset);
 		selectionMgr.updateSelectionRange();

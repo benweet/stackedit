@@ -1236,7 +1236,7 @@ h3{font-size:1.7em}
 h4{font-size:1.25em}
 h5{font-size:1em}
 h6{font-size:.85em}
-h1,h2,h3,h4,h5,h6{margin:1.3em 0}
+h1,h2,h3,h4,h5,h6{margin:1.3em 0;text-align:start}
 pre{word-break:break-word}
 p,pre,pre.prettyprint,blockquote{margin:0 0 1.1em}
 hr{margin:2em 0}
@@ -1449,7 +1449,7 @@ a.list-group-item:hover,a.list-group-item:focus{color:#036;border-top-color:rgba
 #wmd-input .code,#wmd-input .img,#wmd-input .imgref,#wmd-input .md-toc{background-color:rgba(102,128,153,0.075);border-radius:4px;padding:0.15em 0}
 #wmd-input .md-toc{font-size:2.5em;padding:0.2em}
 #wmd-input .link .md-underlined-text,#wmd-input .linkref .md-underlined-text{color:inherit}
-#wmd-input .blockquote{color:#668099;padding-left:2em}#wmd-input .blockquote .li{padding-left:0}
+#wmd-input .blockquote{color:#668099}
 #wmd-input .h1,#wmd-input .h2,#wmd-input .h3,#wmd-input .h4,#wmd-input .h5,#wmd-input .h6{font-weight:600}#wmd-input .h1 .md-hash,#wmd-input .h2 .md-hash,#wmd-input .h3 .md-hash,#wmd-input .h4 .md-hash,#wmd-input .h5 .md-hash,#wmd-input .h6 .md-hash{color:rgba(102,128,153,0.4)}
 #wmd-input .h1,#wmd-input .h11{font-size:1.4em}
 #wmd-input .h2,#wmd-input .h22{font-size:1.3em}
@@ -1463,18 +1463,6 @@ a.list-group-item:hover,a.list-group-item:focus{color:#036;border-top-color:rgba
 #wmd-input .strong,#wmd-input .strong .md{font-weight:bold}
 #wmd-input .md-strike-text{text-decoration:line-through}
 #wmd-input .md-underlined-text{text-decoration:underline}
-#wmd-input .li{padding-left:0.8em}#wmd-input .li .li{padding-left:0}
-#wmd-input .md-li{padding-left:1.2em}
-#wmd-input .md-li2{padding-left:2.4em}
-#wmd-input .md-li3{padding-left:3.6em}
-#wmd-input .md-li4{padding-left:4.8em}
-#wmd-input .md-li5{padding-left:6em}
-#wmd-input .md-li6{padding-left:7.2em}
-#wmd-input .md-li7{padding-left:8.4em}
-#wmd-input .md-li8{padding-left:9.6em}
-#wmd-input .md-li9{padding-left:10.8em}
-#wmd-input .md-li10{padding-left:12em}
-#wmd-input .md-li11{padding-left:13.2em}
 #wmd-input .img,#wmd-input .imgref{padding:0.2em 0.4em;padding-right:0}
 #wmd-input .md-bang,#wmd-input .md-alt,#wmd-input .md-title{color:#587ea4}
 .preview-panel{position:absolute;top:0;left:0;overflow:hidden;-webkit-box-shadow:inset 1px 0 rgba(0,128,255,0.06);box-shadow:inset 1px 0 rgba(0,128,255,0.06);background-color:#f6f7f9;z-index:10}.layout-animate .preview-panel{-webkit-transition:350ms ease-in-out all;transition:350ms ease-in-out all}

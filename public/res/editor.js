@@ -788,6 +788,7 @@ define([
 			selectionMgr.updateSelectionRange();
 		};
 
+		var indentRegex = /^ {0,3}>[ ]*|^[ \t]*(?:[*+\-]|(\d+)\.)[ \t]|^\s+/;
 		var actions = {
 			indent: function(state, options) {
 				function strSplice(str, i, remove, add) {
@@ -805,16 +806,19 @@ define([
 						state.selectionEnd--;
 					}
 					state.selection = state.selection.replace(/^[ \t]/gm, '');
-				} else if(state.selection) {
-					state.before = strSplice(state.before, lf, 0, '\t');
-					state.selection = state.selection.replace(/\r?\n(?=[\s\S])/g, '\n\t');
-					state.selectionStart++;
-					state.selectionEnd++;
 				} else {
-					state.before += '\t';
-					state.selectionStart++;
-					state.selectionEnd++;
-					return;
+					var previousLine = state.before.slice(lf);
+					if(state.selection || previousLine.match(indentRegex)) {
+						state.before = strSplice(state.before, lf, 0, '\t');
+						state.selection = state.selection.replace(/\r?\n(?=[\s\S])/g, '\n\t');
+						state.selectionStart++;
+						state.selectionEnd++;
+					} else {
+						state.before += '\t';
+						state.selectionStart++;
+						state.selectionEnd++;
+						return;
+					}
 				}
 
 				state.selectionEnd = state.selectionStart + state.selection.length;
@@ -832,7 +836,7 @@ define([
 				}
 				clearNewline = false;
 				var previousLine = state.before.slice(lf);
-				var indentMatch = previousLine.match(/^ {0,3}>[ ]*|^[ \t]*(?:[*+\-]|(\d+)\.)[ \t]|^\s+/);
+				var indentMatch = previousLine.match(indentRegex);
 				var indent = (indentMatch || [''])[0];
 				if(indentMatch && indentMatch[1]) {
 					var number = parseInt(indentMatch[1], 10);

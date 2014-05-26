@@ -105,7 +105,7 @@ define([
             'https://www.googleapis.com/auth/blogger'
         ],
         picasa: [
-            'https://picasaweb.google.com/data/'
+            'https://www.googleapis.com/auth/photos'
         ]
     };
     function authenticate(task, permission, accountId) {

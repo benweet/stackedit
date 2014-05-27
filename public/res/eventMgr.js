@@ -198,6 +198,7 @@ define([
     // Operations on Layout
     addEventHook("onLayoutCreated");
     addEventHook("onLayoutResize");
+    addEventHook("onExtensionButtonResize");
 
     // Operations on editor
     addEventHook("onPagedownConfigure");

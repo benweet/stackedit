@@ -4,7 +4,7 @@ define([
     "utils",
     "classes/Extension",
     "text!html/buttonStat.html",
-    "text!html/buttonStatSettingsBlock.html",
+    "text!html/buttonStatSettingsBlock.html"
 ], function($, _, utils, Extension, buttonStatHTML, buttonStatSettingsBlockHTML) {
 
     var buttonStat = new Extension("buttonStat", 'Button "Statistics"', true, true);
@@ -15,7 +15,12 @@ define([
         name2: "Words",
         value2: "\\S+",
         name3: "Paragraphs",
-        value3: "\\S.*",
+        value3: "\\S.*"
+    };
+
+    var eventMgr;
+    buttonStat.onEventMgrCreated = function(eventMgrParam) {
+        eventMgr = eventMgrParam;
     };
 
     buttonStat.onLoadSettings = function() {
@@ -72,6 +77,7 @@ define([
         valueElt.textContent = value1Elt.textContent = (text.match(regex1) || []).length;
         value2Elt.textContent = (text.match(regex2) || []).length;
         value3Elt.textContent = (text.match(regex3) || []).length;
+        eventMgr.onExtensionButtonResize();
     };
 
     return buttonStat;

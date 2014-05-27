@@ -25,6 +25,7 @@ define([
 	var menuPanelWidth = 280;
 	var documentPanelWidth = 320;
 	var titleMinWidth = 200;
+	var previewButtonsClosedOffset = 18;
 	var previewButtonsDropdownMargin = 130;
 	var previewButtonsOffset = {
 		x: -45,
@@ -606,10 +607,14 @@ define([
 		previewButtons.x = previewButtonsOffset.x;
 		previewButtons.y = previewButtonsOffset.y;
 		previewButtons.applyCss();
+        setTimeout(function() {
+            previewButtons.$elt.addClass('animate');
+        }, 0);
 
 		function openPreviewButtons() {
 			clearTimeout(closeTimeoutId);
 			if(!previewButtons.isDragged) {
+                previewButtons.isOpen = true;
 				previewButtons.x = previewButtonsOffset.x;
 				previewButtons.applyCss();
 			}
@@ -622,13 +627,14 @@ define([
 			clearTimeout(closeTimeoutId);
 			closeTimeoutId = setTimeout(function() {
 				if(!previewButtons.isDragged && !dropdownOpen) {
-					previewButtons.$elt.addClass('animate');
-					previewButtons.x = previewButtonsOffset.x + previewButtons.elt.offsetWidth;
+                    previewButtons.isOpen = false;
+					previewButtons.x = previewButtonsOffset.x + previewButtons.elt.offsetWidth + previewButtonsClosedOffset;
 					previewButtons.applyCss();
 				}
 			}, 3000);
 		}
 
+        openPreviewButtons();
 		closePreviewButtons();
 		previewButtons.$elt.hover(openPreviewButtons, closePreviewButtons).on('show.bs.dropdown', function() {
 			dropdownOpen = true;
@@ -655,6 +661,22 @@ define([
 			}).addClass('dropup');
 		});
 	});
+
+    eventMgr.addListener('onExtensionButtonResize', function() {
+        if(!previewButtons.isDragged) {
+            if(!previewButtons.isOpen) {
+                previewButtons.$elt.removeClass('animate');
+                previewButtons.x = previewButtonsOffset.x + previewButtons.elt.offsetWidth + previewButtonsClosedOffset;
+                previewButtons.applyCss();
+                setTimeout(function() {
+                    previewButtons.$elt.addClass('animate');
+                }, 0);
+            }
+        }
+        else {
+            previewButtons.adjustPosition();
+        }
+    });
 
 	eventMgr.onLayoutCreated(layout);
 	return layout;

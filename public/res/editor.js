@@ -769,20 +769,18 @@ define([
 			});
 
 		var action = function(action, options) {
-			options = options || {};
-
 			var textContent = getValue();
-			var selectionStart = options.start || selectionMgr.selectionStart;
-			var selectionEnd = options.end || selectionMgr.selectionEnd;
+			var min = Math.min(selectionMgr.selectionStart, selectionMgr.selectionEnd);
+			var max = Math.max(selectionMgr.selectionStart, selectionMgr.selectionEnd);
 			var state = {
-				selectionStart: selectionStart,
-				selectionEnd: selectionEnd,
-				before: textContent.slice(0, selectionStart),
-				after: textContent.slice(selectionEnd),
-				selection: textContent.slice(selectionStart, selectionEnd)
+				selectionStart: min,
+				selectionEnd: max,
+				before: textContent.slice(0, min),
+				after: textContent.slice(max),
+				selection: textContent.slice(min, max)
 			};
 
-			actions[action](state, options);
+			actions[action](state, options || {});
 			setValue(state.before + state.selection + state.after);
 			selectionMgr.setSelectionStartEnd(state.selectionStart, state.selectionEnd);
 			selectionMgr.updateSelectionRange();

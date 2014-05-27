@@ -24,8 +24,8 @@ define([
     "extensions/documentManager",
     "extensions/workingIndicator",
     "extensions/notifications",
+	"extensions/umlDiagrams",
     "extensions/markdownExtra",
-    "extensions/umlDiagrams",
     "extensions/toc",
     "extensions/mathJax",
     "extensions/emailConverter",
@@ -39,8 +39,9 @@ define([
     "extensions/shortcuts",
     "extensions/userCustom",
     "extensions/comments",
+    "extensions/htmlSanitizer",
     "bootstrap",
-    "jquery-waitforimages",
+    "jquery-waitforimages"
 ], function($, _, crel, utils, logger, Extension, settings, settingsExtensionsAccordionHTML) {
 
     var eventMgr = {};

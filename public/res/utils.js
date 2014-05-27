@@ -10,6 +10,47 @@ define([
 
 	var utils = {};
 
+	utils.msie = (function() {
+		/**
+		 * IE 11 changed the format of the UserAgent string.
+		 * See http://msdn.microsoft.com/en-us/library/ms537503.aspx
+		 */
+		var msie = parseInt((/msie (\d+)/.exec(navigator.userAgent.toLowerCase()) || [])[1], 10);
+		if (isNaN(msie)) {
+			msie = parseInt((/trident\/.*; rv:(\d+)/.exec(navigator.userAgent.toLowerCase()) || [])[1], 10);
+		}
+		return msie;
+	})();
+
+	utils.urlResolve = (function() {
+		var urlParsingNode = document.createElement("a");
+		return function urlResolve(url) {
+			var href = url;
+
+			if (utils.msie) {
+				// Normalize before parse.  Refer Implementation Notes on why this is
+				// done in two steps on IE.
+				urlParsingNode.setAttribute("href", href);
+				href = urlParsingNode.href;
+			}
+
+			urlParsingNode.setAttribute('href', href);
+
+			// urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
+			return {
+				href: urlParsingNode.href,
+				protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
+				host: urlParsingNode.host,
+				search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
+				hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
+				hostname: urlParsingNode.hostname,
+				port: urlParsingNode.port,
+				pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
+					urlParsingNode.pathname : '/' + urlParsingNode.pathname
+			};
+		};
+	})();
+
 	// Faster than setTimeout (see http://dbaron.org/log/20100309-faster-timeouts)
 	utils.defer = (function() {
 		var timeouts = [];

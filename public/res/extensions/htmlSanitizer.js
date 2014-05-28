@@ -16,13 +16,9 @@ define([
 		converter.hooks.chain("postConversion", function(html) {
 			buf = [];
 			html.split('<div class="se-preview-section-delimiter"></div>').forEach(function(sectionHtml) {
-				try {
-					htmlParser(sectionHtml, htmlSanitizeWriter(buf, function(uri, isImage) {
-						return !/^unsafe/.test(sanitizeUri(uri, isImage));
-					}));
-				}
-				catch(e) {
-				}
+				htmlParser(sectionHtml, htmlSanitizeWriter(buf, function(uri, isImage) {
+					return !/^unsafe/.test(sanitizeUri(uri, isImage));
+				}));
 				buf.push('<div class="se-preview-section-delimiter"></div>');
 			});
 			return buf.slice(0, -1).join('');
@@ -98,6 +94,9 @@ define([
 	// Special Elements (can contain anything)
 	var specialElements = makeMap("script,style");
 
+	// benweet: Add iframe
+	blockElements.iframe = true;
+
 	var validElements = _.extend({},
 		voidElements,
 		blockElements,
@@ -113,8 +112,9 @@ define([
 			'scope,scrolling,shape,size,span,start,summary,target,title,type,' +
 			'valign,value,vspace,width'));
 
-	// benweet: Add id
+	// benweet: Add id and allowfullscreen (YouTube iframe)
 	validAttrs.id = true;
+	validAttrs.allowfullscreen = true;
 
 	/*
 	 * HTML Parser By Misko Hevery (misko@hevery.com)

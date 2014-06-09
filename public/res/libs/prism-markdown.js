@@ -1,8 +1,10 @@
 // Credit to https://editorially.com/
 Prism.languages.md = (function () {
 
-    var urlPattern = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>\[\]'"]+|\([^\s()<>\[\]'"]*\))+(?:\([^\s()<>\[\]'"]*\)|[^\s`!()\[\]{}:'".,<>?«»“”‘’]))/gi;
-    var emailPattern = /[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)\b/gi;
+    var charInsideUrl = "[-A-Z0-9+&@#/%?=~_|[\\]()!:,.;]",
+        charEndingUrl = "[-A-Z0-9+&@#/%=~_|[\\])]";
+    var urlPattern = new RegExp("(=\"|<)?\\b(https?|ftp)(://" + charInsideUrl + "*" + charEndingUrl + ")(?=$|\\W)", "gi");
+    var emailPattern = /(?:mailto:)?([-.\w]+\@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]+)/gi;
 
     var latex = Prism.languages.latex;
 
@@ -241,9 +243,6 @@ Prism.languages.md = (function () {
             }
         }
     };
-    md.email = {
-        pattern: emailPattern
-    };
     md.code = {
         pattern: /(^|[^\\])(`+)([^\r]*?[^`])\2(?!`)/g,
         lookbehind: true,
@@ -297,8 +296,11 @@ Prism.languages.md = (function () {
         conflict: /⧸⧸/g,
         comment: Prism.languages.markup.comment,
         tag: Prism.languages.markup.tag,
-        entity: Prism.languages.markup.entity
+        entity: Prism.languages.markup.entity,
+        url: urlPattern,
+        email: emailPattern
     };
+
     for (var c = 6; c >= 1; c--) {
         md["h" + c].inside.rest = rest;
     }

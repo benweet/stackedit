@@ -117,7 +117,7 @@ define([
 	};
 
 	DomObject.prototype.createToggler = function(backdrop) {
-		var backdropElt;
+		var $backdropElt;
 		var pushedEvents = 0;
 		this.toggle = function(show) {
 			if(show === this.isOpen) {
@@ -127,7 +127,7 @@ define([
 			if(this.isOpen) {
 				this.$elt.addClass('panel-open').trigger('show.layout.toggle');
 				if(backdrop) {
-					$(backdropElt = utils.createBackdrop(wrapperL1.elt)).click(_.bind(function() {
+					$backdropElt = $(utils.createBackdrop(wrapperL1.elt)).on('click.backdrop', _.bind(function() {
 						this.toggle(false);
 					}, this));
 					this.$elt.addClass('bring-to-front');
@@ -140,8 +140,11 @@ define([
 			}
 			else {
 				this.$elt.trigger('hide.layout.toggle');
-				backdropElt && backdropElt.removeBackdrop();
-				backdropElt = undefined;
+				if($backdropElt) {
+					$backdropElt.off('click.backdrop');
+					$backdropElt[0].removeBackdrop();
+					$backdropElt = undefined;
+				}
 				transitionEndCallbacks.push(_.bind(function() {
 					if(--pushedEvents === 0) {
 						!this.isOpen && this.$elt.removeClass('panel-open bring-to-front').trigger('hidden.layout.toggle');

@@ -103,6 +103,7 @@ li.L9 { background: #eee }
 @line-height-base: 1.45;
 @p-margin: 1.1em;
 @headings-font-family: inherit;
+@headings-font-weight: 300;
 
 @font-face {
   font-family: 'fontello';
@@ -183,6 +184,7 @@ li.L9 { background: #eee }
 
 .container {
     margin-bottom: 180px;
+	text-align: justify;
 }
 
 a code {
@@ -228,6 +230,9 @@ hr {
     }
     [stroke="#000000"] {
         stroke: @text-color;
+    }
+    text[stroke="#000000"] {
+        stroke: none;
     }
     [fill="#000"], [fill="#000000"], [fill="black"] {
         fill: @text-color;

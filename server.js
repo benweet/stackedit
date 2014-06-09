@@ -11,6 +11,7 @@ app.all('*', function(req, res, next) {
         res.redirect('https://stackedit.io' + req.url);
     }
     else {
+		/\.(eot|ttf|woff)$/.test(req.url) && res.header('Access-Control-Allow-Origin', '*');
         next();
     }
 });

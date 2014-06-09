@@ -40,7 +40,9 @@ define([
 					});
 					preElt.parentNode.replaceChild(containerElt, preElt);
 					chart.drawSVG(containerElt, {
-						'line-width': 2
+						'line-width': 2,
+						'font-family': 'sans-serif',
+						'font-weight': 'normal'
 					});
 				}
 				catch(e) {

@@ -175,12 +175,12 @@ define([
 		this.updateSelectionRange = function() {
 			var min = Math.min(this.selectionStart, this.selectionEnd);
 			var max = Math.max(this.selectionStart, this.selectionEnd);
-		    var range = this.createRange(min, max);
+			var range = this.createRange(min, max);
 			var selection = rangy.getSelection();
 			selection.removeAllRanges();
 			selection.addRange(range, this.selectionStart > this.selectionEnd);
 			selection.detach();
-            range.detach();
+			range.detach();
 		};
 		this.setSelectionStartEnd = function(start, end) {
 			if(start === undefined) {
@@ -232,13 +232,14 @@ define([
 								selectionEnd = offset + (range + '').length;
 							}
 						}
-                        selectionRange.detach();
+						selectionRange.detach();
 					}
 					selection.detach();
 					self.setSelectionStartEnd(selectionStart, selectionEnd);
 				}
 				undoMgr.saveSelectionState();
 			}
+
 			var nextTickAdjustScroll = false;
 			var debouncedSave = utils.debounce(function() {
 				save();
@@ -353,7 +354,7 @@ define([
 		var range = selectionMgr.createRange(startOffset, textContent.length - endOffset);
 		range.deleteContents();
 		range.insertNode(document.createTextNode(replacement));
-        range.detach();
+		range.detach();
 	}
 
 	editor.setValue = setValue;
@@ -369,7 +370,7 @@ define([
 		}
 		range.deleteContents();
 		range.insertNode(document.createTextNode(replacement));
-        range.detach();
+		range.detach();
 		offset = offset - text.length + replacement.length;
 		selectionMgr.setSelectionStartEnd(offset, offset);
 		selectionMgr.updateSelectionRange();
@@ -759,9 +760,18 @@ define([
 				}, 0);
 			})
 			.on('mouseup', _.bind(selectionMgr.saveSelectionState, selectionMgr, true, false))
-			.on('paste', function() {
+			.on('paste', function(evt) {
 				undoMgr.currentMode = 'paste';
 				adjustCursorPosition();
+				try {
+					var data = evt.originalEvent.clipboardData.getData("text/plain");
+					if(data) {
+						evt.preventDefault();
+						document.execCommand("insertHTML", false, data);
+					}
+				}
+				catch(e) {
+				}
 			})
 			.on('cut', function() {
 				undoMgr.currentMode = 'cut';

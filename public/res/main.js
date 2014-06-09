@@ -61,7 +61,7 @@ requirejs.config({
 		diff_match_patch_uncompressed: 'bower-libs/google-diff-match-patch-js/diff_match_patch_uncompressed',
 		jsondiffpatch: 'bower-libs/jsondiffpatch/build/bundle',
 		hammerjs: 'bower-libs/hammerjs/hammer',
-		'sequence-diagram': 'libs/sequence-diagram',
+		'sequence-diagram': 'bower-libs/js-sequence-diagrams/build/sequence-diagram-min',
 		raphael: 'bower-libs/raphael/raphael',
 		'flow-chart': 'bower-libs/flowchart/release/flowchart.amd-1.2.10.min',
 		flowchart: 'bower-libs/flowchart/release/flowchart-1.2.10.min'

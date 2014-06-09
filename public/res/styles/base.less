@@ -103,6 +103,7 @@ li.L9 { background: #eee }
 @line-height-base: 1.45;
 @p-margin: 1.1em;
 @headings-font-family: inherit;
+@headings-font-weight: 300;
 
 @font-face {
   font-family: 'fontello';
@@ -183,6 +184,7 @@ li.L9 { background: #eee }
 
 .container {
     margin-bottom: 180px;
+	text-align: justify;
 }
 
 a code {
@@ -199,7 +201,6 @@ h6 { font-size: @title-base-size * 0.85; }
 h1, h2, h3, h4, h5, h6 {
 	margin: 1.3em 0;
 	text-align: start;
-	font-weight: 300;
 }
 
 pre {
@@ -229,6 +230,9 @@ hr {
     }
     [stroke="#000000"] {
         stroke: @text-color;
+    }
+    text[stroke="#000000"] {
+        stroke: none;
     }
     [fill="#000"], [fill="#000000"], [fill="black"] {
         fill: @text-color;

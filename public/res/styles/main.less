@@ -1223,11 +1223,6 @@ a {
     .h6 { font-size: 0.9em; }
 
 
-    .url,
-	.email {
-        color: @tertiary-color-light;
-    }
-
     .md, .hr {
         color: @tertiary-color-light;
         font-style: normal;
@@ -1248,11 +1243,17 @@ a {
         text-decoration: line-through
     }
 
+	.url,
+	.email,
     .md-underlined-text {
         text-decoration: underline;
     }
 
-    .img,
+	.linkdef .url {
+		color: @tertiary-color-light;
+	}
+
+	.img,
     .imgref {
         padding: 0.2em 0.4em;
         padding-right: 0;

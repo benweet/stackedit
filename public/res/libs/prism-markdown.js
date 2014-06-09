@@ -30,7 +30,7 @@ Prism.languages.md = (function () {
         md["h" + i] = {
             pattern: new RegExp("^#{" + i + "}.+$", "gm"),
             inside: {
-                "md md-hash": new RegExp("^#{" + i + "} ")
+                "md md-hash": new RegExp("^#{" + i + "}")
             }
         };
     }

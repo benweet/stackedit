@@ -28,7 +28,7 @@ define([], function() {
     constants.SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/";
     constants.HTMLTOPDF_URL = "https://stackedit-htmltopdf.herokuapp.com/";
 
-    // Site dependent
+	// Site dependent
     constants.BASE_URL = "http://localhost/";
     constants.GOOGLE_CLIENT_ID = '241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com';
     constants.GITHUB_CLIENT_ID = 'e47fef6055344579799d';

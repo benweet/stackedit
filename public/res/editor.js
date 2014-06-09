@@ -179,8 +179,6 @@ define([
 			var selection = rangy.getSelection();
 			selection.removeAllRanges();
 			selection.addRange(range, this.selectionStart > this.selectionEnd);
-			selection.detach();
-			range.detach();
 		};
 		this.setSelectionStartEnd = function(start, end) {
 			if(start === undefined) {
@@ -232,9 +230,7 @@ define([
 								selectionEnd = offset + (range + '').length;
 							}
 						}
-						selectionRange.detach();
 					}
-					selection.detach();
 					self.setSelectionStartEnd(selectionStart, selectionEnd);
 				}
 				undoMgr.saveSelectionState();

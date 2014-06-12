@@ -125,7 +125,7 @@ define([
 			else {
 				currentEndCb = undefined;
 				elt.scrollTop = endValue;
-				endCb();
+				setTimeout(endCb, 100);
 			}
 		}
 

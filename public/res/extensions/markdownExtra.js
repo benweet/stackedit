@@ -27,7 +27,7 @@ define([
 		],
 		intraword: true,
 		comments: true,
-		highlighter: "prettify"
+		highlighter: "highlight"
 	};
 
 	markdownExtra.onLoadSettings = function() {

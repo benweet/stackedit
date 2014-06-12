@@ -758,16 +758,11 @@ define([
 			.on('mouseup', _.bind(selectionMgr.saveSelectionState, selectionMgr, true, false))
 			.on('paste', function(evt) {
 				undoMgr.currentMode = 'paste';
+				evt.preventDefault();
+				var data = (evt.originalEvent || evt).clipboardData.getData('text/plain') || prompt('Paste something...');
+				data = escape(data);
 				adjustCursorPosition();
-				try {
-					var data = evt.originalEvent.clipboardData.getData("text/plain");
-					if(data) {
-						evt.preventDefault();
-						document.execCommand("insertHTML", false, data);
-					}
-				}
-				catch(e) {
-				}
+				document.execCommand('insertHtml', false, data);
 			})
 			.on('cut', function() {
 				undoMgr.currentMode = 'cut';

@@ -226,6 +226,12 @@ define([
 		currentContext && currentContext.$commentElt.popover('toggle').popover('destroy');
 	}
 
+	comments.onEditorPopover = function() {
+		closeCurrentPopover();
+		editor.focus();
+		editor.adjustCursorPosition();
+	};
+
 	comments.onDiscussionCreated = function(fileDesc) {
 		currentFileDesc === fileDesc && refreshDiscussions();
 	};
@@ -265,7 +271,7 @@ define([
 	}
 
 	comments.onReady = function() {
-		cssApplier = rangy.createCssClassApplier("comment-highlight", {
+		cssApplier = rangy.createCssClassApplier('comment-highlight', {
 			normalize: false
 		});
 		var previousContent = '';
@@ -308,7 +314,7 @@ define([
 			selector: '#wmd-input > .editor-margin > .discussion'
 		});
 		$(marginElt).on('show.bs.popover', function(evt) {
-			closeCurrentPopover();
+			eventMgr.onEditorPopover();
 			var context = new Context(evt.target, currentFileDesc);
 			currentContext = context;
 
@@ -348,18 +354,10 @@ define([
 
 			var $addButton = $(popoverElt.querySelector('.action-add-comment'));
 			$().add(context.$contentInputElt).add(context.$authorInputElt).keydown(function(evt) {
-				// Enter key
-				switch(evt.which) {
-					case 13:
-						evt.preventDefault();
-						$addButton.click();
-						return;
-					case 27:
-						evt.preventDefault();
-						closeCurrentPopover();
-						editor.focus();
-						editor.adjustCursorPosition();
-						return;
+				if(evt.which === 13) {
+					// Enter key
+					evt.preventDefault();
+					$addButton.click();
 				}
 			});
 			$addButton.click(function(evt) {
@@ -418,7 +416,7 @@ define([
 			context.rangyRange = rangy.createRange();
 			context.rangyRange.setStart(context.selectionRange.startContainer, context.selectionRange.startOffset);
 			context.rangyRange.setEnd(context.selectionRange.endContainer, context.selectionRange.endOffset);
-			setTimeout(function() { // Need to delay this because it's not refreshed properly
+			setTimeout(function() { // Delay this because not refreshed properly
 				if(currentContext === context) {
 					cssApplier.applyToRange(context.rangyRange);
 				}
@@ -451,7 +449,6 @@ define([
 		$popoverContainer.on('click', '.popover', function(evt) {
 			evt.stopPropagation();
 		});
-
 
 		var $newCommentElt = $(newCommentElt);
 		$openDiscussionElt = $('.button-open-discussion').click(function(evt) {

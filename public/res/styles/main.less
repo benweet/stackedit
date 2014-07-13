@@ -105,10 +105,10 @@
 @btn-primary-bg: @primary-bg;
 @btn-primary-border: fade(@secondary, 5%);
 @btn-primary-hover-bg: mix(@primary-desaturated, @btn-primary-bg, 7.5%);
-@btn-success-color: darken(@primary-desaturated, 25%);
+@btn-success-color: darken(@primary-desaturated, 20%);
 @btn-success-bg: @transparent;
 @btn-success-border: @transparent;
-@btn-success-hover-bg: fade(@primary-desaturated, 7.5%);
+@btn-success-hover-bg: fade(@primary-desaturated, 5%);
 @btn-info-color: fade(@secondary-desaturated, 35%);
 @btn-info-bg: @transparent;
 @btn-info-border: @transparent;
@@ -130,10 +130,10 @@
 @popover-arrow-outer-color: @secondary-border-color;
 @popover-title-bg: @transparent;
 @alert-border-radius: 0;
-@label-warning-bg: spin(darken(@logo-yellow, 4%), -10);
-@state-warning-text: spin(darken(@logo-yellow, 14%), -10);
-@state-warning-bg: fade(spin(@logo-yellow, -10), 12%);
-@state-warning-border: fade(spin(@logo-yellow, -10), 24%);
+@label-warning-bg: spin(darken(@logo-yellow, 4%), -5);
+@state-warning-text: spin(darken(@logo-yellow, 14%), -5);
+@state-warning-bg: fade(spin(@logo-yellow, -5), 12%);
+@state-warning-border: fade(spin(@logo-yellow, -5), 24%);
 @label-danger-bg: spin(darken(@logo-orange, 4%), -8);
 @state-danger-text: spin(darken(@logo-orange, 18%), -8);
 @state-danger-bg: fade(spin(@logo-orange, -8), 10%);
@@ -162,7 +162,7 @@ body {
 	.user-select(none);
 }
 
-.dropdown-menu, .modal-content, .panel-content, .search-bar, .popover {
+.dropdown-menu, .modal-content, .panel-content, .search-bar, .popover, .find-replace {
 	.box-shadow(0 4px 16px rgba(0,0,0,.225));
 }
 
@@ -699,7 +699,6 @@ a {
 		padding: 15px 20px;
 		z-index: 3;
 		border: 1px solid @secondary-border-color;
-		border-top: 0;
 		border-radius: 6px;
         .nav {
             margin-bottom: 10px;
@@ -736,7 +735,7 @@ a {
 // Dropdown document selector
 .dropdown-file-selector {
 	top: 6px;
-	right: 30px;
+	right: 55px;
 	left: auto;
 	margin: 0;
 	min-width: 280px;
@@ -830,8 +829,8 @@ a {
 	right: 0;
 	bottom: 0;
 	z-index: 40;
-	background-color: @btn-info-hover-bg;
-	border: 1px solid @btn-info-hover-border;
+	background-color: @navbar-default-bg;
+	border: 1px solid @navbar-default-border;
 	border-radius: @border-radius-base;
 	cursor: move;
 
@@ -880,10 +879,7 @@ a {
 	}
 
 	.drag-me {
-		color: @btn-info-color;
-		&.info-tooltip {
-			color: @btn-info-hover-color;
-		}
+		color: @btn-success-color;
 		i:before {
 			width: 5px;
 		}
@@ -1124,9 +1120,9 @@ a {
 				}
 			}
 			&.added {
-				color: fade(@label-warning-bg, 50%);
+				color: fade(@label-warning-bg, 70%);
 				&:hover, &.active, &.active:hover {
-					color: fade(@label-warning-bg, 80%) !important;
+					color: fade(@label-warning-bg, 100%) !important;
 				}
 			}
 			&.replied {
@@ -1157,6 +1153,14 @@ a {
 
 	.comment-highlight {
 		background-color: fade(@label-warning-bg, 30%);
+	}
+
+	.find-replace-highlight {
+		background-color: fade(@logo-yellow, 60%);
+	}
+
+	.find-replace-select {
+		background-color: rgb(181, 213, 255);
 	}
 
 	.conflict {
@@ -1280,6 +1284,26 @@ a {
     .md-title {
         color: @secondary-color-dark;
     }
+}
+
+.find-replace {
+	position: absolute;
+	bottom: 0;
+	width: 410px;
+	background-color: @secondary-bg;
+	padding: 15px 20px;
+	border-top: 1px solid @secondary-border-color;
+	border-right: 1px solid @secondary-border-color;
+	border-top-right-radius: 6px;
+	.form-group {
+		width: 180px;
+		padding: 0 5px;
+	}
+	.close {
+		position: absolute;
+		right: 20px;
+		top: 10px;
+	}
 }
 
 

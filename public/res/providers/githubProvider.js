@@ -7,8 +7,7 @@ define([
 
     var githubProvider = new Provider("github", "GitHub");
     githubProvider.publishPreferencesInputIds = [
-        "github-reponame",
-        "github-username",
+        "github-repo",
         "github-branch"
     ];
 

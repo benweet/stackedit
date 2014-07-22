@@ -59,6 +59,7 @@ define([
                     documentMarkdown: selectedFileDesc.content,
                     strippedDocumentMarkdown: selectedFileDesc.content.substring(selectedFileDesc.frontMatter ? selectedFileDesc.frontMatter._frontMatter.length : 0),
                     documentHTML: htmlWithoutComments,
+					documentHTMLWithFrontMatter: (selectedFileDesc.frontMatter ? selectedFileDesc.frontMatter._frontMatter : '') + htmlWithoutComments,
                     documentHTMLWithComments: htmlWithComments,
                     frontMatter: selectedFileDesc.frontMatter,
                     publishAttributes: undefined,

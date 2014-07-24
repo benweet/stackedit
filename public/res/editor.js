@@ -159,21 +159,21 @@ define([
 			start = start < 0 ? 0 : start;
 			end = end < 0 ? 0 : end;
 			var range = document.createRange();
-			var offsetList = [];
+			var offsetList = [], startIndex, endIndex;
 			if(_.isNumber(start)) {
 				offsetList.push(start);
-				start = offsetList.length - 1;
+				startIndex = offsetList.length - 1;
 			}
 			if(_.isNumber(end)) {
 				offsetList.push(end);
-				end = offsetList.length - 1;
+				endIndex = offsetList.length - 1;
 			}
 			offsetList = this.findOffsets(offsetList);
-			var startOffset = _.isObject(start) ? start : offsetList[start];
+			var startOffset = _.isObject(start) ? start : offsetList[startIndex];
 			range.setStart(startOffset.container, startOffset.offsetInContainer);
 			var endOffset = startOffset;
 			if(end && end != start) {
-				endOffset = _.isObject(end) ? end : offsetList[end];
+				endOffset = _.isObject(end) ? end : offsetList[endIndex];
 			}
 			range.setEnd(endOffset.container, endOffset.offsetInContainer);
 			return range;
@@ -627,6 +627,22 @@ define([
 	eventMgr.addListener('onDiscussionRemoved', onComment);
 	eventMgr.addListener('onCommentsChanged', onComment);
 
+	var triggerSpellCheck = _.debounce(function() {
+		if(!selectionMgr.hasFocus || selectionMgr.selectionStart !== selectionMgr.selectionEnd) {
+			return;
+		}
+		var selection = window.getSelection();
+		// Hack for Chrome to trigger the spell checker
+		if(selectionMgr.selectionStart) {
+			selection.modify("move", "backward", "character");
+			selection.modify("move", "forward", "character");
+		}
+		else {
+			selection.modify("move", "forward", "character");
+			selection.modify("move", "backward", "character");
+		}
+	}, 10);
+
 	var trailingLfNode;
 
 	function checkContentChange() {
@@ -661,6 +677,7 @@ define([
 			eventMgr.onContentChanged(fileDesc, textContent);
 			updateDiscussionList && eventMgr.onCommentsChanged(fileDesc);
 			undoMgr.saveState();
+			triggerSpellCheck();
 		}
 		else {
 			textContent = newTextContent;

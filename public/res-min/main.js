@@ -8008,7 +8008,7 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
 	}, utils
 }), define("constants", [], function() {
 	var e = {};
-	return e.VERSION = "3.99.14", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", e.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", e.GOOGLE_DRIVE_APP_ID = "241271498917", e.DROPBOX_APP_KEY = "lq6mwopab8wskas", e.DROPBOX_APP_SECRET = "851fgnucpezy84t", e.DROPBOX_RESTRICTED_APP_KEY = "sw0hlixhr8q1xk0", e.DROPBOX_RESTRICTED_APP_SECRET = "1r808p2xygs6lbg", e.BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c", e.DEFAULT_FILE_TITLE = "Title", e.DEFAULT_FOLDER_NAME = "New folder", e.GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document", e.EDITOR_DEFAULT_PADDING = 35, e.CHECK_ONLINE_PERIOD = 12e4, e.AJAX_TIMEOUT = 3e4, e.ASYNC_TASK_DEFAULT_TIMEOUT = 6e4, e.ASYNC_TASK_LONG_TIMEOUT = 18e4, e.USER_IDLE_THRESHOLD = 3e5, e.IMPORT_FILE_MAX_CONTENT_SIZE = 1e5, e.IMPORT_IMG_MAX_CONTENT_SIZE = 1e7, e.TEMPORARY_FILE_INDEX = "file.tempIndex", e.WELCOME_DOCUMENT_TITLE = "Welcome document", e.DOWNLOAD_PROXY_URL = "https://stackedit-download-proxy.herokuapp.com/", e.PICASA_PROXY_URL = "https://stackedit-picasa-proxy.herokuapp.com/", e.SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/", e.HTMLTOPDF_URL = "https://stackedit-htmltopdf.herokuapp.com/", e.BASE_URL = "http://localhost/", e.GOOGLE_CLIENT_ID = "241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "e47fef6055344579799d", e.GATEKEEPER_URL = "https://stackedit-gatekeeper-localhost.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-local.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "23361", e.WORDPRESS_PROXY_URL = "https://stackedit-io-wordpress-proxy.herokuapp.com/", 0 === location.hostname.indexOf("stackedit.io") ? (e.BASE_URL = e.MAIN_URL, e.GOOGLE_CLIENT_ID = "241271498917-t4t7d07qis7oc0ahaskbif3ft6tk63cd.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "710fc67886ab1ae8fee6", e.GATEKEEPER_URL = "https://stackedit-io-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-io-tumblr-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("benweet.github.io") ? (e.BASE_URL = "http://benweet.github.io/stackedit/", e.GOOGLE_CLIENT_ID = "241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "fa0d09514da8377ee32e", e.GATEKEEPER_URL = "https://stackedit-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "3185", e.WORDPRESS_PROXY_URL = "https://stackedit-wordpress-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("stackedit-beta.herokuapp.com") ? (e.BASE_URL = "https://stackedit-beta.herokuapp.com/", e.GOOGLE_CLIENT_ID = "241271498917-9bbplknkt0ljv5gaudhoiogp13hd18be.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "e9034ae191c3a8a1c5ed", e.GATEKEEPER_URL = "https://stackedit-beta-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-beta-tumblr-proxy.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "34786", e.WORDPRESS_PROXY_URL = "https://stackedit-beta-wordpress-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("benweet.insomnia247.nl") && (e.BASE_URL = "http://benweet.insomnia247.nl/stackedit/", e.GOOGLE_CLIENT_ID = "241271498917-52hae7a08hv7ltenv7km8h7lghno9sk3.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "d2943d6074b2d9c4a830", e.GATEKEEPER_URL = "https://stackedit-gatekeeper-insomnia.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-beta.herokuapp.com/"), e.THEME_LIST = {
+	return e.VERSION = "3.99.15", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", e.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", e.GOOGLE_DRIVE_APP_ID = "241271498917", e.DROPBOX_APP_KEY = "lq6mwopab8wskas", e.DROPBOX_APP_SECRET = "851fgnucpezy84t", e.DROPBOX_RESTRICTED_APP_KEY = "sw0hlixhr8q1xk0", e.DROPBOX_RESTRICTED_APP_SECRET = "1r808p2xygs6lbg", e.BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c", e.DEFAULT_FILE_TITLE = "Title", e.DEFAULT_FOLDER_NAME = "New folder", e.GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document", e.EDITOR_DEFAULT_PADDING = 35, e.CHECK_ONLINE_PERIOD = 12e4, e.AJAX_TIMEOUT = 3e4, e.ASYNC_TASK_DEFAULT_TIMEOUT = 6e4, e.ASYNC_TASK_LONG_TIMEOUT = 18e4, e.USER_IDLE_THRESHOLD = 3e5, e.IMPORT_FILE_MAX_CONTENT_SIZE = 1e5, e.IMPORT_IMG_MAX_CONTENT_SIZE = 1e7, e.TEMPORARY_FILE_INDEX = "file.tempIndex", e.WELCOME_DOCUMENT_TITLE = "Welcome document", e.DOWNLOAD_PROXY_URL = "https://stackedit-download-proxy.herokuapp.com/", e.PICASA_PROXY_URL = "https://stackedit-picasa-proxy.herokuapp.com/", e.SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/", e.HTMLTOPDF_URL = "https://stackedit-htmltopdf.herokuapp.com/", e.BASE_URL = "http://localhost/", e.GOOGLE_CLIENT_ID = "241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "e47fef6055344579799d", e.GATEKEEPER_URL = "https://stackedit-gatekeeper-localhost.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-local.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "23361", e.WORDPRESS_PROXY_URL = "https://stackedit-io-wordpress-proxy.herokuapp.com/", 0 === location.hostname.indexOf("stackedit.io") ? (e.BASE_URL = e.MAIN_URL, e.GOOGLE_CLIENT_ID = "241271498917-t4t7d07qis7oc0ahaskbif3ft6tk63cd.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "710fc67886ab1ae8fee6", e.GATEKEEPER_URL = "https://stackedit-io-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-io-tumblr-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("benweet.github.io") ? (e.BASE_URL = "http://benweet.github.io/stackedit/", e.GOOGLE_CLIENT_ID = "241271498917-jpto9lls9fqnem1e4h6ppds9uob8rpvu.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "fa0d09514da8377ee32e", e.GATEKEEPER_URL = "https://stackedit-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "3185", e.WORDPRESS_PROXY_URL = "https://stackedit-wordpress-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("stackedit-beta.herokuapp.com") ? (e.BASE_URL = "https://stackedit-beta.herokuapp.com/", e.GOOGLE_CLIENT_ID = "241271498917-9bbplknkt0ljv5gaudhoiogp13hd18be.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "e9034ae191c3a8a1c5ed", e.GATEKEEPER_URL = "https://stackedit-beta-gatekeeper.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-beta-tumblr-proxy.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "34786", e.WORDPRESS_PROXY_URL = "https://stackedit-beta-wordpress-proxy.herokuapp.com/") : 0 === location.hostname.indexOf("benweet.insomnia247.nl") && (e.BASE_URL = "http://benweet.insomnia247.nl/stackedit/", e.GOOGLE_CLIENT_ID = "241271498917-52hae7a08hv7ltenv7km8h7lghno9sk3.apps.googleusercontent.com", e.GITHUB_CLIENT_ID = "d2943d6074b2d9c4a830", e.GATEKEEPER_URL = "https://stackedit-gatekeeper-insomnia.herokuapp.com/", e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-beta.herokuapp.com/"), e.THEME_LIST = {
 		"default": "Default",
 		gray: "Gray",
 		night: "Night",
@@ -25489,13 +25489,13 @@ function(e) {
 			return t
 		}, this.createRange = function(e, n) {
 			e = 0 > e ? 0 : e, n = 0 > n ? 0 : n;
-			var i = document.createRange(),
-				r = [];
-			t.isNumber(e) && (r.push(e), e = r.length - 1), t.isNumber(n) && (r.push(n), n = r.length - 1), r = this.findOffsets(r);
-			var o = t.isObject(e) ? e : r[e];
-			i.setStart(o.container, o.offsetInContainer);
-			var a = o;
-			return n && n != e && (a = t.isObject(n) ? n : r[n]), i.setEnd(a.container, a.offsetInContainer), i
+			var i, r, o = document.createRange(),
+				a = [];
+			t.isNumber(e) && (a.push(e), i = a.length - 1), t.isNumber(n) && (a.push(n), r = a.length - 1), a = this.findOffsets(a);
+			var s = t.isObject(e) ? e : a[i];
+			o.setStart(s.container, s.offsetInContainer);
+			var l = s;
+			return n && n != e && (l = t.isObject(n) ? n : a[r]), o.setEnd(l.container, l.offsetInContainer), o
 		};
 		var o, a = n.debounce(function() {
 				N.toggleClass("has-selection", this.selectionStart !== this.selectionEnd);
@@ -25715,14 +25715,14 @@ function(e) {
 	function S() {
 		var e = I.textContent;
 		if(D.lastChild === X && "\n" == X.textContent.slice(-1) && (e = e.slice(0, -1)), e = e.replace(/\r\n?/g, "\n"), q === !1) {
-			if(e == V) return void(0 === D.children.length && (D.innerHTML = "", Y.forEach(function(e) {
+			if(e == V) return void(0 === D.children.length && (D.innerHTML = "", K.forEach(function(e) {
 				D.appendChild(e.elt)
 			}), T()));
 			W.currentMode = W.currentMode || "typing";
 			var n = t.values($.discussionList);
 			$.newDiscussion && n.push($.newDiscussion);
 			var i = C(V, e, n);
-			V = e, i === !0 && ($.discussionList = $.discussionList), $.content = V, z.saveSelectionState(), r.onContentChanged($, V), i && r.onCommentsChanged($), W.saveState()
+			V = e, i === !0 && ($.discussionList = $.discussionList), $.content = V, z.saveSelectionState(), r.onContentChanged($, V), i && r.onCommentsChanged($), W.saveState(), Q()
 		} else V = e, $.content = V, z.setSelectionStartEnd($.editorStart, $.editorEnd), z.updateSelectionRange(), z.updateCursorCoordinates(), W.saveSelectionState(), r.onFileOpen($, V), R.scrollTop = $.previewScrollTop, O = $.editorScrollTop, I.scrollTop = O, q = !1
 	}
 
@@ -25744,33 +25744,33 @@ function(e) {
 	}
 
 	function _(e) {
-		if(J = [], K = [], Q = void 0, q === !0) return K = Y, Y = e, void(J = e);
-		var n = Y.length;
-		t.some(Y, function(t, i) {
+		if(Z = [], J = [], Y = void 0, q === !0) return J = K, K = e, void(Z = e);
+		var n = K.length;
+		t.some(K, function(t, i) {
 			var r = e[i];
 			return i >= e.length || t.textWithFrontMatter != r.textWithFrontMatter || t.elt.parentNode !== D || t.elt.textContent != r.textWithFrontMatter ? (n = i, !0) : void 0
 		});
-		var i = -Y.length;
-		t.some(Y.slice().reverse(), function(t, n) {
+		var i = -K.length;
+		t.some(K.slice().reverse(), function(t, n) {
 			var r = e[e.length - n - 1];
 			return n >= e.length || t.textWithFrontMatter != r.textWithFrontMatter || t.elt.parentNode !== D || t.elt.textContent != r.textWithFrontMatter ? (i = -n, !0) : void 0
-		}), n - i > Y.length && (i = n - Y.length);
-		var r = Y.slice(0, n);
-		J = e.slice(n, e.length + i);
-		var o = Y.slice(Y.length + i, Y.length);
-		Q = t.first(o), K = Y.slice(n, Y.length + i), Y = r.concat(J).concat(o)
+		}), n - i > K.length && (i = n - K.length);
+		var r = K.slice(0, n);
+		Z = e.slice(n, e.length + i);
+		var o = K.slice(K.length + i, K.length);
+		Y = t.first(o), J = K.slice(n, K.length + i), K = r.concat(Z).concat(o)
 	}
 
 	function k() {
 		var e = document.createDocumentFragment();
-		J.forEach(function(t) {
+		Z.forEach(function(t) {
 			E(t), e.appendChild(t.elt)
 		}), G.noWatch(function() {
 			if(q === !0) D.innerHTML = "", D.appendChild(e);
 			else {
-				K.forEach(function(e) {
+				J.forEach(function(e) {
 					e.elt.parentNode === D && D.removeChild(e.elt)
-				}), void 0 !== Q ? D.insertBefore(e, Q.elt) : D.appendChild(e);
+				}), void 0 !== Y ? D.insertBefore(e, Y.elt) : D.appendChild(e);
 				for(var t = D.firstChild; t;) {
 					var n = t.nextSibling;
 					t.generated || D.removeChild(t), t = n
@@ -25787,10 +25787,10 @@ function(e) {
 	}
 
 	function E(e) {
-		var t = Z(e.text);
+		var t = et(e.text);
 		window.viewerMode || (t = o.highlight(t, o.languages.md));
 		var n = e.textWithFrontMatter.substring(0, e.textWithFrontMatter.length - e.text.length);
-		n.length && (n = Z(n), n = n.replace(/\n/g, '<span class="token lf">\n</span>'), t = '<span class="token md">' + n + "</span>" + t);
+		n.length && (n = et(n), n = n.replace(/\n/g, '<span class="token lf">\n</span>'), t = '<span class="token md">' + n + "</span>" + t);
 		var i = l("span", {
 			id: "wmd-input-section-" + e.id,
 			"class": "wmd-input-section"
@@ -25839,7 +25839,12 @@ function(e) {
 	F.setValue = h, F.replace = f, F.replaceAll = m, F.replacePreviousText = g, F.setValueNoWatch = v, F.getValue = b, F.focus = y;
 	var W = new x;
 	F.undoMgr = W, r.addListener("onDiscussionCreated", w), r.addListener("onDiscussionRemoved", w), r.addListener("onCommentsChanged", w);
-	var X;
+	var X, Q = t.debounce(function() {
+			if(z.hasFocus && z.selectionStart === z.selectionEnd) {
+				var e = window.getSelection();
+				z.selectionStart ? (e.modify("move", "backward", "character"), e.modify("move", "forward", "character")) : (e.modify("move", "forward", "character"), e.modify("move", "backward", "character"))
+			}
+		}, 10);
 	F.adjustCommentOffsets = C, F.init = function() {
 		if(I = document.getElementById("wmd-input"), N = e(I), D = I.querySelector(".editor-content"), L = e(D), M = I.querySelector(".editor-margin"), A = e(M), R = document.querySelector(".preview-container"), N.addClass(i.editorFontClass), G.startWatching(), e(I).scroll(function() {
 			O = I.scrollTop, q === !1 && ($.editorScrollTop = O)
@@ -25900,7 +25905,7 @@ function(e) {
 		}).on("mouseup", t.bind(z.saveSelectionState, z, !0, !1)).on("paste", function(e) {
 			W.currentMode = "paste", e.preventDefault();
 			var t = (e.originalEvent || e).clipboardData.getData("text/plain") || prompt("Paste something...");
-			t = Z(t), p(), document.execCommand("insertHtml", !1, t)
+			t = et(t), p(), document.execCommand("insertHtml", !1, t)
 		}).on("cut", function() {
 			W.currentMode = "cut", p()
 		}).on("focus", function() {
@@ -25950,10 +25955,10 @@ function(e) {
 				}
 			}
 	};
-	var Q, Y = [],
-		K = [],
+	var Y, K = [],
 		J = [],
-		Z = function() {
+		Z = [],
+		et = function() {
 			var e = {
 				"&": "&amp;",
 				"<": "&lt;",

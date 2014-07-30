@@ -185,20 +185,20 @@ define([
 			if(this.cursorY !== coordinates.y) {
 				this.cursorY = coordinates.y;
 				eventMgr.onCursorCoordinates(coordinates.x, coordinates.y);
-				if(adjustScroll) {
-					var adjustTop, adjustBottom;
-					adjustTop = adjustBottom = inputElt.offsetHeight / 2 * settings.cursorFocusRatio;
-					adjustTop = this.adjustTop || adjustTop;
-					adjustBottom = this.adjustBottom || adjustTop;
-					if(adjustTop && adjustBottom) {
-						var cursorMinY = inputElt.scrollTop + adjustTop;
-						var cursorMaxY = inputElt.scrollTop + inputElt.offsetHeight - adjustBottom;
-						if(selectionMgr.cursorY < cursorMinY) {
-							inputElt.scrollTop += selectionMgr.cursorY - cursorMinY;
-						}
-						else if(selectionMgr.cursorY > cursorMaxY) {
-							inputElt.scrollTop += selectionMgr.cursorY - cursorMaxY;
-						}
+			}
+			if(adjustScroll) {
+				var adjustTop, adjustBottom;
+				adjustTop = adjustBottom = inputElt.offsetHeight / 2 * settings.cursorFocusRatio;
+				adjustTop = this.adjustTop || adjustTop;
+				adjustBottom = this.adjustBottom || adjustTop;
+				if(adjustTop && adjustBottom) {
+					var cursorMinY = inputElt.scrollTop + adjustTop;
+					var cursorMaxY = inputElt.scrollTop + inputElt.offsetHeight - adjustBottom;
+					if(selectionMgr.cursorY < cursorMinY) {
+						inputElt.scrollTop += selectionMgr.cursorY - cursorMinY;
+					}
+					else if(selectionMgr.cursorY > cursorMaxY) {
+						inputElt.scrollTop += selectionMgr.cursorY - cursorMaxY;
 					}
 				}
 			}

@@ -273,8 +273,16 @@ define([
 			}
 
 			var nextTickAdjustScroll = false;
+			var lastSelectionStart, lastSelectionEnd;
+			var saveLastSelection = _.debounce(function() {
+				lastSelectionStart = self.selectionStart;
+				lastSelectionEnd = self.selectionEnd;
+			}, 50);
 			var debouncedSave = utils.debounce(function() {
 				save();
+				if(lastSelectionStart == self.selectionStart && lastSelectionEnd == self.selectionEnd) {
+					nextTickAdjustScroll = false;
+				}
 				self.updateCursorCoordinates(nextTickAdjustScroll);
 				nextTickAdjustScroll = false;
 			});
@@ -287,6 +295,7 @@ define([
 				else {
 					save();
 				}
+				saveLastSelection();
 			};
 		})();
 		this.getSelectedText = function() {

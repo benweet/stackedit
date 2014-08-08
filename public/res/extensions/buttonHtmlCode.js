@@ -4,13 +4,13 @@ define([
     "utils",
     "classes/Extension",
     "text!html/buttonHtmlCode.html",
-    "text!html/buttonHtmlCodeSettingsBlock.html",
+    "text!html/buttonHtmlCodeSettingsBlock.html"
 ], function($, _, utils, Extension, buttonHtmlCodeHTML, buttonHtmlCodeSettingsBlockHTML) {
 
     var buttonHtmlCode = new Extension("buttonHtmlCode", 'Button "HTML code"', true, true);
     buttonHtmlCode.settingsBlock = buttonHtmlCodeSettingsBlockHTML;
     buttonHtmlCode.defaultConfig = {
-        template: "<%= documentHTML %>",
+        template: "<%= documentHTML %>"
     };
 
     buttonHtmlCode.onLoadSettings = function() {
@@ -62,7 +62,7 @@ define([
 					documentHTMLWithFrontMatter: (selectedFileDesc.frontMatter ? selectedFileDesc.frontMatter._frontMatter : '') + htmlWithoutComments,
                     documentHTMLWithComments: htmlWithComments,
                     frontMatter: selectedFileDesc.frontMatter,
-                    publishAttributes: undefined,
+                    publishAttributes: undefined
                 });
                 textareaElt.value = htmlCode;
             }

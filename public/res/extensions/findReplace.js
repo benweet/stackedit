@@ -151,7 +151,7 @@ define([
 		eventMgr.onEditorPopover();
 		shown = true;
 		$findReplaceElt.show();
-		$searchForInputElt.focus();
+		$searchForInputElt.focus()[0].setSelectionRange(0, $searchForInputElt.val().length);
 		editor.selectionMgr.adjustTop = 50;
 		editor.selectionMgr.adjustBottom = 220;
 		highlight(true);

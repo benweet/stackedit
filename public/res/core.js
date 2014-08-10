@@ -10,12 +10,13 @@ define([
 	"storage",
 	"settings",
 	"eventMgr",
+	"monetizejs",
 	"text!html/bodyIndex.html",
 	"text!html/bodyViewer.html",
 	"text!html/tooltipSettingsTemplate.html",
 	"storage",
 	'pagedown'
-], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML) {
+], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, MonetizeJS, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML) {
 
 	var core = {};
 
@@ -325,6 +326,59 @@ define([
 		eventMgr.onReady();
 	};
 
+	var monetize = new MonetizeJS({
+		applicationID: 'iklMbzDI7dvMEScb'
+	});
+	var $alerts = $();
+
+	function hasPaid(payments) {
+		return payments && (
+			(payments.chargeOption && payments.chargeOption.alias == 'once') ||
+			(payments.subscriptionOption && payments.subscriptionOption.alias == 'monthly') ||
+			(payments.subscriptionOption && payments.subscriptionOption.alias == 'yearly'));
+	}
+
+	function removeAlerts() {
+		$alerts.remove();
+		$alerts = $();
+	}
+
+	function performPayment() {
+		monetize.getPayments({
+			pricingOptions: [
+				'once',
+				'monthly',
+				'yearly'
+			]
+		}, function(err, payments) {
+			if(hasPaid(payments)) {
+				eventMgr.onMessage('Thank you for sponsoring StackEdit!');
+				removeAlerts();
+			}
+		});
+	}
+
+	var checkPayment = _.debounce(function() {
+		if(isOffline) {
+			return;
+		}
+		monetize.getPaymentsImmediate(function(err, payments) {
+			if(!hasPaid(payments)) {
+				_.each(document.querySelectorAll('.modal-body'), function(modalBodyElt) {
+					var $elt = $('<div class="alert alert-danger">Please consider <a href="#">sponsoring StackEdit</a> for $1/month (or <a href="#">sign in</a> if you\'re already a sponsor).</div>');
+					$elt.find('a').click(performPayment);
+					modalBodyElt.insertBefore($elt[0], modalBodyElt.firstChild);
+					$alerts = $alerts.add($elt);
+				});
+			}
+			else {
+				removeAlerts();
+			}
+		});
+	}, 1000);
+
+	eventMgr.addListener('onOfflineChanged', checkPayment);
+
 	// Other initialization that are not prioritary
 	eventMgr.addListener("onReady", function() {
 
@@ -521,7 +575,8 @@ define([
 			document.getElementById('input-settings-theme').innerHTML = themeOptions;
 		}
 
-		$('.modal-header').append('<a class="dialog-header-message" href="https://github.com/benweet/stackedit/issues/385" target="_blank">Give your feedback <i class="icon-megaphone"></i></a>');
+		//$('.modal-header').append('<a class="dialog-header-message" href="https://github.com/benweet/stackedit/issues/385" target="_blank">Give your feedback <i class="icon-megaphone"></i></a>');
+		checkPayment();
 	});
 
 	return core;

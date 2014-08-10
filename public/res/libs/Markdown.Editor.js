@@ -742,8 +742,9 @@
                 inputArea.focus();
                 inputArea.selectionStart = stateObj.start;
                 inputArea.selectionEnd = stateObj.end;
+	        /*
                 inputArea.scrollTop = stateObj.scrollTop;
-                /*
+
             }
             else if (doc.selection) {
 
@@ -815,9 +816,11 @@
                 inputArea.value = stateObj.text;
             }
             this.setInputAreaSelection();
+	        /*
             setTimeout(function() {
                 inputArea.scrollTop = stateObj.scrollTop;
             }, 0);
+            */
         };
 
         // Gets a collection of HTML chunks from the inptut textarea.
@@ -1405,11 +1408,10 @@
 
                 if (!noCleanup) {
                     fixupInputArea();
-                    /*
                     if(!linkOrImage) {
-                        inputBox.dispatchEvent(new Event('keydown'));
+	                    inputBox.adjustCursorPosition();
+	                    //inputBox.dispatchEvent(new Event('keydown'));
                     }
-                    */
                 }
 
             }

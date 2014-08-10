@@ -620,6 +620,7 @@ define([
                 previewButtons.isOpen = true;
 				previewButtons.x = previewButtonsOffset.x;
 				previewButtons.applyCss();
+				previewButtons.$elt.removeClass('closed');
 			}
 		}
 
@@ -633,6 +634,7 @@ define([
                     previewButtons.isOpen = false;
 					previewButtons.x = previewButtonsOffset.x + previewButtons.elt.offsetWidth + previewButtonsClosedOffset;
 					previewButtons.applyCss();
+					previewButtons.$elt.addClass('closed');
 				}
 			}, 3000);
 		}

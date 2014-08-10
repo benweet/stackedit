@@ -246,10 +246,10 @@ define([
 
         // Selection dropdown menu actions
         $(modalElt.querySelectorAll('.action-select-all')).click(function() {
-            $(documentListElt.querySelectorAll('input[type="checkbox"]')).prop('checked', true).change();
+            $(documentListElt.querySelectorAll('.folder input[type="checkbox"]')).prop('checked', true).change();
         });
         $(modalElt.querySelectorAll('.action-unselect-all')).click(function() {
-            $(documentListElt.querySelectorAll('input[type="checkbox"]')).prop('checked', false).change();
+            $(documentListElt.querySelectorAll('.folder input[type="checkbox"]')).prop('checked', false).change();
         });
 
         // Delete selection actions

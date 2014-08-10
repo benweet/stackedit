@@ -294,15 +294,15 @@ Prism.languages.md = (function() {
 		link: md.link,
 		imgref: md.imgref,
 		linkref: md.linkref,
+		url: urlPattern,
+		email: emailPattern,
 		strong: md.strong,
 		em: md.em,
 		strike: md.strike,
 		conflict: /⧸⧸/g,
 		comment: Prism.languages.markup.comment,
 		tag: Prism.languages.markup.tag,
-		entity: Prism.languages.markup.entity,
-		url: urlPattern,
-		email: emailPattern
+		entity: Prism.languages.markup.entity
 	};
 
 	for(var c = 6; c >= 1; c--) {

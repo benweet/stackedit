@@ -231,11 +231,11 @@ define([
 		$('.extension-preview-buttons .table-of-contents').on('click', 'a', function(evt) {
 			evt.preventDefault();
 			var id = this.hash;
-			var anchorElt = previewElt.querySelector(id);
-			if(!anchorElt) {
+			var anchorElt = $(id);
+			if(!anchorElt.length) {
 				return;
 			}
-			var previewScrollTop = anchorElt.getBoundingClientRect().top - previewElt.getBoundingClientRect().top + previewElt.scrollTop;
+			var previewScrollTop = anchorElt[0].getBoundingClientRect().top - previewElt.getBoundingClientRect().top + previewElt.scrollTop;
 			previewElt.scrollTop = previewScrollTop;
 			var editorScrollTop = getDestScrollTop(previewScrollTop, htmlSectionList, mdSectionList);
 			editorElt.scrollTop = editorScrollTop;

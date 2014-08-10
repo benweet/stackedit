@@ -1195,6 +1195,7 @@ kbd{padding:0.1em 0.6em;border:1px solid rgba(0,0,0,0.25);-webkit-box-shadow:0 1
 .footnote{vertical-align:top;position:relative;top:-0.5em;font-size:0.8em}
 [class^="icon-"],[class*=" icon-"]{display:inline-block;line-height:1.35em;vertical-align:middle;background-repeat:no-repeat}
 .icon-code{font-size:83%;line-height:1.65em}.icon-code:before{margin-left:0.1em;margin-right:0.6em}
+.icon-trash{line-height:1.50em}
 .icon-folder-open{font-size:80%}.icon-folder-open:before{margin-right:0.6em}
 .icon-chart-bar{font-size:95%}.icon-chart-bar:before{margin-left:0.3em;margin-right:0.3em}
 .icon-comment-alt,.icon-chat{font-size:92%}.icon-comment-alt:before,.icon-chat:before{margin-left:0.1em;margin-right:0.4em}

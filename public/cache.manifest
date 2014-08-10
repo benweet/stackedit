@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#Date Thu Jul 24 2014 18:17:02
+#Date Mon Aug 11 2014 00:47:28
 
 CACHE:
 libs/MathJax/MathJax.js?config=TeX-AMS_HTML
@@ -30,21 +30,20 @@ res-min/font/fontello.eot
 res-min/font/fontello.svg
 res-min/font/fontello.ttf
 res-min/font/fontello.woff
+res-min/img/button.svg
 res-min/img/gittip.png
 res-min/img/icons.png
 res-min/img/icons2x.png
-res-min/img/logo-192.png
-res-min/img/logo-promo-128.png
+res-min/img/logo.svg
 res-min/img/menu-icon.png
-res-min/img/school-line.png
 res-min/img/stackedit-32.ico
 res-min/main.js
 res-min/require.js
 res-min/themes/base.css
+res-min/themes/blue.css
 res-min/themes/default.css
 res-min/themes/gray.css
 res-min/themes/night.css
-res-min/themes/original.css
 res-min/themes/school.css
 libs/MathJax/extensions/FontWarnings.js
 libs/MathJax/extensions/HTML-CSS/handle-floats.js

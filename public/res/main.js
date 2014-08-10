@@ -64,7 +64,8 @@ requirejs.config({
 		'sequence-diagram': 'bower-libs/js-sequence-diagrams/build/sequence-diagram-min',
 		raphael: 'bower-libs/raphael/raphael',
 		'flow-chart': 'bower-libs/flowchart/release/flowchart.amd-1.2.10.min',
-		flowchart: 'bower-libs/flowchart/release/flowchart-1.2.10.min'
+		flowchart: 'bower-libs/flowchart/release/flowchart-1.2.10.min',
+		monetizejs: 'bower-libs/monetizejs/src/monetize'
 	},
 	shim: {
 		underscore: {

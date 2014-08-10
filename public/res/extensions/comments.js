@@ -228,8 +228,6 @@ define([
 
 	comments.onEditorPopover = function() {
 		closeCurrentPopover();
-		editor.focus();
-		editor.adjustCursorPosition();
 	};
 
 	comments.onDiscussionCreated = function(fileDesc) {

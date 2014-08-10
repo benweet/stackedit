@@ -114,6 +114,7 @@ define([
 
 	function SelectionMgr() {
 		var self = this;
+		var lastSelectionStart = 0, lastSelectionEnd = 0;
 		this.selectionStart = 0;
 		this.selectionEnd = 0;
 		this.cursorY = 0;
@@ -216,6 +217,10 @@ define([
 			selection.removeAllRanges();
 			selection.addRange(range, this.selectionStart > this.selectionEnd);
 		};
+		var saveLastSelection = _.debounce(function() {
+			lastSelectionStart = self.selectionStart;
+			lastSelectionEnd = self.selectionEnd;
+		}, 50);
 		this.setSelectionStartEnd = function(start, end) {
 			if(start === undefined) {
 				start = this.selectionStart;
@@ -233,6 +238,7 @@ define([
 			this.selectionEnd = end;
 			fileDesc.editorStart = start;
 			fileDesc.editorEnd = end;
+			saveLastSelection();
 		};
 		this.saveSelectionState = (function() {
 			function save() {
@@ -273,11 +279,6 @@ define([
 			}
 
 			var nextTickAdjustScroll = false;
-			var lastSelectionStart, lastSelectionEnd;
-			var saveLastSelection = _.debounce(function() {
-				lastSelectionStart = self.selectionStart;
-				lastSelectionEnd = self.selectionEnd;
-			}, 50);
 			var debouncedSave = utils.debounce(function() {
 				save();
 				if(lastSelectionStart == self.selectionStart && lastSelectionEnd == self.selectionEnd) {
@@ -295,7 +296,6 @@ define([
 				else {
 					save();
 				}
-				saveLastSelection();
 			};
 		})();
 		this.getSelectedText = function() {
@@ -787,6 +787,7 @@ define([
 		}
 
 		inputElt.focus = focus;
+		inputElt.adjustCursorPosition = adjustCursorPosition;
 
 		Object.defineProperty(inputElt, 'value', {
 			get: function() {

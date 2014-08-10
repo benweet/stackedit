@@ -1,1 +1,100 @@
 @import "../styles/main.less";
+
+@primary: #808080;
+@navbar-default-bg: #4a4a4a;
+@link-color: #4FA1DB;
+
+@input-bg: #fff;
+@input-border: @secondary-border-color-light;
+@panel-button-box-shadow: ~"0 0 1px rgba(255,255,255,0.75)";
+@modal-backdrop-bg: #606060;
+@input-color: @secondary-color-darkest;
+@disabled-color: mix(@secondary-color, @input-bg, 50%);
+
+
+
+
+// Navbar buttons
+@btn-success-color: #ddd;
+@btn-success-hover-bg: darken(@navbar-default-bg, 10%);
+.btn-success {
+	&:hover,
+	&:focus,
+	&:active,
+	.open &.dropdown-toggle {
+		color: #fff !important;
+	}
+	.buttons-dropdown .dropdown-menu & {
+		color: darken(@primary-desaturated, 20%) !important;
+		&:hover,
+		&:focus,
+		&:active {
+			border-color: @primary-border-color;
+			background-color: fade(@primary-desaturated, 5%) !important; // important to override .nav > li > a:hover
+		}
+	}
+}
+
+// Buttons over preview
+@btn-info-hover-bg: @secondary-bg-dark;
+
+
+@btn-primary-color: #fff;
+@btn-primary-bg: @link-color;
+@btn-primary-hover-bg: darken(@btn-primary-bg, 8%);
+.btn-primary {
+	&:hover,
+	&:focus,
+	&:active,
+	.open &.dropdown-toggle {
+		color: @btn-primary-color;
+	}
+}
+
+@btn-default-color: @text-color;
+@btn-default-bg: #fff;
+@btn-default-border: @input-border;
+@btn-default-hover-bg: fade(#000, 2%);
+
+@secondary-bg: #fcfcfc;
+@secondary-bg-light: #f6f6f6;
+@secondary-bg-lighter: @secondary-bg;
+@secondary-bg-dark: #f0f0f0;
+@secondary-border-color: #e2e2e2;
+@secondary-border-color-light: #eee;
+@secondary-border-color-lighter: #eee;
+@tertiary-bg: @secondary-bg;
+
+
+.sub-menu, .file-list .list-group-item {
+	background-color: @secondary-bg;
+}
+
+.extension-preview-buttons.closed {
+	.opacity(0.25);
+	&.info-tooltip-container {
+		.opacity(1);
+	}
+}
+
+.modal-document-manager {
+	.btn-default {
+		background-color: transparent;
+		border-color: transparent;
+		&:hover,
+		&:focus,
+		&:active,
+		.open &.dropdown-toggle {
+			border-color: fade(@secondary, 10%);
+		}
+	}
+}
+
+.form-control-focus(@color: @link-color) {
+	@color-rgba: rgba(red(@color), green(@color), blue(@color), .6);
+	&:focus {
+		border-color: fade(@color, 50%);
+		outline: 0;
+		.box-shadow(~"@{form-control-inset-shadow}, 0 0 12px -1px @{color}");
+	}
+}

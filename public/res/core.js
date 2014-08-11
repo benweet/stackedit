@@ -334,7 +334,6 @@ define([
 	function hasPaid(payments) {
 		return payments && (
 			(payments.chargeOption && payments.chargeOption.alias == 'once') ||
-			(payments.subscriptionOption && payments.subscriptionOption.alias == 'monthly') ||
 			(payments.subscriptionOption && payments.subscriptionOption.alias == 'yearly'));
 	}
 
@@ -363,16 +362,14 @@ define([
 			return;
 		}
 		monetize.getPaymentsImmediate(function(err, payments) {
+			removeAlerts();
 			if(!hasPaid(payments)) {
 				_.each(document.querySelectorAll('.modal-body'), function(modalBodyElt) {
-					var $elt = $('<div class="alert alert-danger">Please consider <a href="#">sponsoring StackEdit</a> for $1/month (or <a href="#">sign in</a> if you\'re already a sponsor).</div>');
+					var $elt = $('<div class="alert alert-danger">Please consider <a href="#">sponsoring StackEdit</a> for $5/year (or <a href="#">sign in</a> if you\'re already a sponsor).</div>');
 					$elt.find('a').click(performPayment);
 					modalBodyElt.insertBefore($elt[0], modalBodyElt.firstChild);
 					$alerts = $alerts.add($elt);
 				});
-			}
-			else {
-				removeAlerts();
 			}
 		});
 	}, 1000);

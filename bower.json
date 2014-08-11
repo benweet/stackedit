@@ -31,6 +31,6 @@
     "raphael": "~2.1.2",
     "js-sequence-diagrams": "https://github.com/benweet/js-sequence-diagrams.git#7b157daa2deaf5b46b320673cc2ddabe6f013725",
     "flowchart": "https://github.com/adrai/flowchart.js.git#~1.2.10",
-    "monetizejs": "~0.1.2"
+    "monetizejs": "~0.2.0"
   }
 }

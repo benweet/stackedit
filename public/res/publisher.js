@@ -348,7 +348,6 @@ define([
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', constants.HTMLTOPDF_URL, true);
                 xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhr.setRequestHeader('page-size', settings.pdfPageSize);
                 xhr.responseType = 'blob';
                 xhr.onreadystatechange = function() {
                     if(this.readyState == 4) {

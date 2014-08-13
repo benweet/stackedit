@@ -91,7 +91,7 @@ define([
                     var syncIndex = createSyncIndex(doc.id);
                     var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
                     if(fileDesc !== undefined) {
-                        return eventMgr.onError('"' + fileDesc.title + '" was already imported.');
+                        return eventMgr.onError('"' + fileDesc.title + '" is already in your local documents.');
                     }
                     importIds.push(doc.id);
                 });

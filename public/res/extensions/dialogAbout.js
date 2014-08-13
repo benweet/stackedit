@@ -10,6 +10,11 @@ define([
 
 	var dialogAbout = new Extension("dialogAbout", 'Dialog "About"');
 
+	var eventMgr;
+	dialogAbout.onEventMgrCreated = function(eventMgrParameter) {
+		eventMgr = eventMgrParameter;
+	};
+
 	var monetize = new MonetizeJS({
 		applicationID: 'iklMbzDI7dvMEScb'
 	});
@@ -22,6 +27,7 @@ define([
 			monetize.getPayments({
 				summary: true
 			}, function() {
+				eventMgr.onMessage('Please refresh the page for your sponsorship to take effect.');
 			});
 		});
 	};

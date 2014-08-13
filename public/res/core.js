@@ -14,9 +14,10 @@ define([
 	"text!html/bodyIndex.html",
 	"text!html/bodyViewer.html",
 	"text!html/tooltipSettingsTemplate.html",
+	"text!html/tooltipSettingsPdfOptions.html",
 	"storage",
 	'pagedown'
-], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, MonetizeJS, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML) {
+], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, MonetizeJS, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsPdfOptionsTooltipHTML) {
 
 	var core = {};
 
@@ -142,8 +143,8 @@ define([
 		utils.setInputValue("#textarea-settings-publish-template", settings.template);
 		// PDF template
 		utils.setInputValue("#textarea-settings-pdf-template", settings.pdfTemplate);
-		// PDF page size
-		utils.setInputValue("#input-settings-pdf-page-size", settings.pdfPageSize);
+		// PDF options
+		utils.setInputValue("#textarea-settings-pdf-options", settings.pdfOptions);
 		// SSH proxy
 		utils.setInputValue("#input-settings-ssh-proxy", settings.sshProxy);
 
@@ -189,8 +190,8 @@ define([
 		newSettings.template = utils.getInputTextValue("#textarea-settings-publish-template", event);
 		// PDF template
 		newSettings.pdfTemplate = utils.getInputTextValue("#textarea-settings-pdf-template", event);
-		// PDF page size
-		newSettings.pdfPageSize = utils.getInputValue("#input-settings-pdf-page-size");
+		// PDF options
+		newSettings.pdfOptions = utils.getInputJSONValue("#textarea-settings-pdf-options", event);
 		// SSH proxy
 		newSettings.sshProxy = utils.checkUrl(utils.getInputTextValue("#input-settings-ssh-proxy", event), true);
 
@@ -331,10 +332,12 @@ define([
 	});
 	var $alerts = $();
 
-	function hasPaid(payments) {
-		return payments && (
+	function isSponsor(payments) {
+		var result = payments && (
 			(payments.chargeOption && payments.chargeOption.alias == 'once') ||
 			(payments.subscriptionOption && payments.subscriptionOption.alias == 'yearly'));
+		eventMgr.isSponsor = result;
+		return result;
 	}
 
 	function removeAlerts() {
@@ -346,11 +349,10 @@ define([
 		monetize.getPayments({
 			pricingOptions: [
 				'once',
-				'monthly',
 				'yearly'
 			]
 		}, function(err, payments) {
-			if(hasPaid(payments)) {
+			if(isSponsor(payments)) {
 				eventMgr.onMessage('Thank you for sponsoring StackEdit!');
 				removeAlerts();
 			}
@@ -363,7 +365,7 @@ define([
 		}
 		monetize.getPaymentsImmediate(function(err, payments) {
 			removeAlerts();
-			if(!hasPaid(payments)) {
+			if(!isSponsor(payments)) {
 				_.each(document.querySelectorAll('.modal-body'), function(modalBodyElt) {
 					var $elt = $('<div class="alert alert-danger">Please consider <a href="#">sponsoring StackEdit</a> for $5/year (or <a href="#">sign in</a> if you\'re already a sponsor).</div>');
 					$elt.find('a').click(performPayment);
@@ -542,6 +544,7 @@ define([
 			'<b class="text-danger">NOTE: Backlinks in Stack Exchange Q/A are not welcome.</b>'
 		].join(''));
 		utils.createTooltip(".tooltip-template", settingsTemplateTooltipHTML);
+		utils.createTooltip(".tooltip-pdf-options", settingsPdfOptionsTooltipHTML);
 
 		// Avoid dropdown panels to close on click
 		$("div.dropdown-menu").click(function(e) {

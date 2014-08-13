@@ -89,7 +89,7 @@
 				<a href="#" data-toggle="collapse" data-target=".collapse-synchronize"
 					class="list-group-item">
 					<div><i class="icon-refresh"></i> Synchronize</div>
-					<small>Backup, collaborate in the cloud</small>
+					<small>Backup, collaborate...</small>
 				</a>
 				<div class="sub-menu collapse collapse-synchronize clearfix">
 					<ul class="nav alert alert-danger show-already-synchronized">
@@ -159,7 +159,7 @@
 						<li><a class="action-download-template" href="#"><i
 					        class="icon-download"></i> Using template</a></li>
 						<li><a class="action-download-pdf" href="#"><i
-					        class="icon-download"></i> As PDF</a></li>
+					        class="icon-download"></i> As PDF <sup class="text-danger">sponsor</sup></a></li>
 					</ul>
 				</div>
 
@@ -1072,14 +1072,12 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="input-settings-pdf-page-size">PDF page size</label>
+								<label class="col-sm-4 control-label" for="textarea-settings-pdf-options">PDF options
+                                    <a href="#" class="tooltip-pdf-options">(?)</a>
+                                </label>
 								<div class="col-sm-7">
-									<select id="input-settings-pdf-page-size" class="form-control">
-									    <option value="A3">A3</option>
-									    <option value="A4">A4</option>
-									    <option value="Legal">Legal</option>
-									    <option value="Letter">Letter</option>
-									</select>
+                                    <textarea id="textarea-settings-pdf-options"
+                                              class="form-control"></textarea>
 								</div>
 							</div>
 							<div class="form-group">
@@ -1297,6 +1295,26 @@
 					data-dismiss="modal">No</a>
 				<a href="#" class="btn btn-primary action-add-google-drive-account"
 					data-dismiss="modal">Yes</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade modal-sponsorship-required">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h2 class="modal-title">Sponsorship required</h2>
+			</div>
+			<div class="modal-body">
+				<p>This feature is restricted to sponsors only as it's a web service hosted on Amazon EC2.
+                    Note that sponsoring StackEdit would cost you only <b>$5/year</b>...</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-primary"
+					data-dismiss="modal">Close</a>
 			</div>
 		</div>
 	</div>

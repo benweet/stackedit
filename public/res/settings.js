@@ -52,10 +52,10 @@ define([
 			constants.MAIN_URL,
 			'libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>\n',
 			'</head>\n',
-			'<body class="pdf"><%= documentHTML %></body>\n',
+			'<body><%= documentHTML %></body>\n',
 			'</html>'
 		].join(""),
-		pdfPageSize: 'A4',
+		pdfOptions: '{}',
 		sshProxy: constants.SSH_PROXY_URL,
 		extensionSettings: {}
 	};

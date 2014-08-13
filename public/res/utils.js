@@ -129,7 +129,7 @@ define([
 	// For input control
 	function inputError(element, event) {
 		if(event !== undefined) {
-			element.stop(true, true).addClass("error").delay(1000).queue(function() {
+			element.stop(true, true).addClass("error").delay(3000).queue(function() {
 				$(this).removeClass("error");
 				$(this).dequeue();
 			});
@@ -215,6 +215,23 @@ define([
 			/*jshint evil:true */
 			eval("var test=" + value);
 			/*jshint evil:false */
+		}
+		catch(e) {
+			inputError(element, event);
+			return undefined;
+		}
+		return value;
+	};
+
+	// Return input value and check that it's a valid JSON
+	utils.getInputJSONValue = function(element, event) {
+		element = jqElt(element);
+		var value = utils.getInputTextValue(element, event);
+		if(value === undefined) {
+			return undefined;
+		}
+		try {
+			JSON.parse(value);
 		}
 		catch(e) {
 			inputError(element, event);

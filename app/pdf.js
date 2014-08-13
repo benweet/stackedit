@@ -18,10 +18,10 @@ module.exports = function(req, res, next) {
 	}
 
 	// Margins
-	var marginRight = parseInt(options.marginRight);
-	params.push('-R', isNaN(marginRight) ? 25 : marginRight);
 	var marginTop = parseInt(options.marginTop);
 	params.push('-T', isNaN(marginTop) ? 25 : marginTop);
+	var marginRight = parseInt(options.marginRight);
+	params.push('-R', isNaN(marginRight) ? 25 : marginRight);
 	var marginBottom = parseInt(options.marginBottom);
 	params.push('-B', isNaN(marginBottom) ? 25 : marginBottom);
 	var marginLeft = parseInt(options.marginLeft);
@@ -42,8 +42,7 @@ module.exports = function(req, res, next) {
 	options.footerFontSize && params.push('--footer-font-size ', options.footerFontSize);
 
 	// Page size
-	var pageSize = options.pageSize;
-	params.push('--page-size', authorizedPageSizes.indexOf(pageSize) === -1 ? 'A4' : pageSize);
+	params.push('--page-size', authorizedPageSizes.indexOf(options.pageSize) === -1 ? 'A4' : options.pageSize);
 
 	// wkhtmltopdf can't access /dev/stdout on Amazon EC2 for some reason
 	var filePath = '/tmp/' + Date.now() + '.pdf';

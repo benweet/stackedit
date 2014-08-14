@@ -46,7 +46,7 @@ module.exports = function(req, res, next) {
 
 	// wkhtmltopdf can't access /dev/stdout on Amazon EC2 for some reason
 	var filePath = '/tmp/' + Date.now() + '.pdf';
-	var wkhtmltopdf = spawn('wkhtmltopdf', params.concat('--javascript-delay', '6000', '-', filePath), {
+	var wkhtmltopdf = spawn('wkhtmltopdf', params.concat('--window-status', 'done', '-', filePath), {
 		stdio: [
 			'pipe',
 			'ignore',

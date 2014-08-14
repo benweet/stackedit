@@ -355,11 +355,14 @@ define([
 					return task.chain();
 				}
 				monetize.getTokenImmediate(function(err, result) {
-					token = result || '';
+					token = result;
 					task.chain();
 				});
 			});
 			task.onRun(function() {
+				if(!token) {
+					return task.chain();
+				}
 				var xhr = new XMLHttpRequest();
 				xhr.open('POST', constants.HTMLTOPDF_URL + '?token=' + encodeURIComponent(token) + '&options=' + encodeURIComponent(settings.pdfOptions), true);
 				xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -378,9 +381,7 @@ define([
 				xhr.send(content);
 			});
 			task.onSuccess(function() {
-				if(pdf !== undefined) {
-					utils.saveAs(pdf, fileMgr.currentFile.title + ".pdf");
-				}
+				pdf && utils.saveAs(pdf, fileMgr.currentFile.title + ".pdf");
 			});
 			task.enqueue();
 		});

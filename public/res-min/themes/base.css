@@ -1171,6 +1171,7 @@ h1,h2,h3,h4,h5,h6{margin:1.3em 0;text-align:start}
 pre{word-break:break-word}
 p,pre,pre.prettyprint,blockquote{margin:0 0 1.1em}
 hr{margin:2em 0}
+img{max-width:100%}
 .sequence-diagram,.flow-chart{text-align:center;margin-bottom:1.1em}.sequence-diagram text,.flow-chart text{font-size:15px !important;font-family:"Source Sans Pro",sans-serif !important}
 .sequence-diagram [fill="#ffffff"],.flow-chart [fill="#ffffff"]{fill:#fff}
 .sequence-diagram [stroke="#000000"],.flow-chart [stroke="#000000"]{stroke:#000}
@@ -1212,4 +1213,3 @@ kbd{padding:0.1em 0.6em;border:1px solid rgba(0,0,0,0.25);-webkit-box-shadow:0 1
 .icon-provider-ssh{background-position:-126px 0}
 .icon-provider-gplus{background-position:-144px 0}
 body.rtl #wmd-input,body.rtl #preview-contents,body.rtl .input-file-title,body.rtl .search-bar input,body.rtl .modal-document-manager input,body.rtl .comments-popover,body.rtl .container{direction:rtl}
-body.pdf{font-family:"DejaVu Sans"}body.pdf code,body.pdf pre{font-family:"DejaVu Sans Mono"}

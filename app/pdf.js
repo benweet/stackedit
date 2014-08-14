@@ -1,6 +1,34 @@
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 
+function waitForJavaScript() {
+	if(window.MathJax) {
+		// Amazon EC2: fix TeX font detection
+		MathJax.Hub.Register.StartupHook("HTML-CSS Jax Startup",function () {
+			var HTMLCSS = MathJax.OutputJax["HTML-CSS"];
+			HTMLCSS.Font.checkWebFont = function (check,font,callback) {
+				if (check.time(callback)) {
+					return;
+				}
+				if (check.total === 0) {
+					HTMLCSS.Font.testFont(font);
+					setTimeout(check,200);
+				} else {
+					callback(check.STATUS.OK);
+				}
+			};
+		});
+		MathJax.Hub.Queue(function () {
+			window.status = 'done';
+		});
+	}
+	else {
+		setTimeout(function() {
+			window.status = 'done';
+		}, 2000);
+	}
+}
+
 var authorizedPageSizes = [
 	'A3',
 	'A4',
@@ -46,7 +74,10 @@ module.exports = function(req, res, next) {
 
 	// wkhtmltopdf can't access /dev/stdout on Amazon EC2 for some reason
 	var filePath = '/tmp/' + Date.now() + '.pdf';
-	var wkhtmltopdf = spawn('wkhtmltopdf', params.concat('--window-status', 'done', '-', filePath), {
+	var binPath = process.env.WKHTMLTOPDF_PATH || 'wkhtmltopdf';
+	params.push('--run-script', waitForJavaScript.toString() + 'waitForJavaScript()');
+	params.push('--window-status', 'done');
+	var wkhtmltopdf = spawn(binPath, params.concat('-', filePath), {
 		stdio: [
 			'pipe',
 			'ignore',
@@ -56,19 +87,37 @@ module.exports = function(req, res, next) {
 	function onError(err) {
 		next(err);
 	}
+	function onUnknownError() {
+		res.statusCode = 400;
+		res.end('Unknown error');
+	}
+	function onTimeout() {
+		res.statusCode = 408;
+		res.end('Request timeout');
+	}
+	var timeoutId = setTimeout(function() {
+		timeoutId = undefined;
+		wkhtmltopdf.kill();
+	}, 30000);
 	wkhtmltopdf.on('error', onError);
 	wkhtmltopdf.stdin.on('error', onError);
 	wkhtmltopdf.on('close', function(code) {
+		if(!timeoutId) {
+			return onTimeout();
+		}
+		clearTimeout(timeoutId);
 		if(code) {
-			res.statusCode = 400;
-			return res.end('Unknown error');
+			return onUnknownError();
 		}
 		var readStream = fs.createReadStream(filePath);
+		readStream.on('open', function() {
+			readStream.pipe(res);
+		});
 		readStream.on('close', function() {
 			fs.unlink(filePath, function() {
 			});
 		});
-		readStream.pipe(res);
+		readStream.on('error', onUnknownError);
 	});
 	req.pipe(wkhtmltopdf.stdin);
 };

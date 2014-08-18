@@ -8,12 +8,10 @@ app.engine('html', require('ejs').renderFile);
 // Force HTTPS on stackedit.io
 app.all('*', function(req, res, next) {
 	if (req.headers.host == 'stackedit.io' && req.headers['x-forwarded-proto'] != 'https') {
-		res.redirect('https://stackedit.io' + req.url);
+		return res.redirect('https://stackedit.io' + req.url);
 	}
-	else {
-		/\.(eot|ttf|woff)$/.test(req.url) && res.header('Access-Control-Allow-Origin', '*');
-		next();
-	}
+	/\.(eot|ttf|woff)$/.test(req.url) && res.header('Access-Control-Allow-Origin', '*');
+	next();
 });
 
 // Use gzip compression

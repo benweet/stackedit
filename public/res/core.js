@@ -145,8 +145,6 @@ define([
 		utils.setInputValue("#textarea-settings-pdf-template", settings.pdfTemplate);
 		// PDF options
 		utils.setInputValue("#textarea-settings-pdf-options", settings.pdfOptions);
-		// SSH proxy
-		utils.setInputValue("#input-settings-ssh-proxy", settings.sshProxy);
 
 		// Load extension settings
 		eventMgr.onLoadSettings();
@@ -192,8 +190,6 @@ define([
 		newSettings.pdfTemplate = utils.getInputTextValue("#textarea-settings-pdf-template", event);
 		// PDF options
 		newSettings.pdfOptions = utils.getInputJSONValue("#textarea-settings-pdf-options", event);
-		// SSH proxy
-		newSettings.sshProxy = utils.checkUrl(utils.getInputTextValue("#input-settings-ssh-proxy", event), true);
 
 		// Save extension settings
 		newSettings.extensionSettings = {};
@@ -509,9 +505,9 @@ define([
 			storage.clear();
 			var allowedKeys = /^file\.|^folder\.|^publish\.|^settings$|^sync\.|^google\.|^author\.|^themeV4$|^version$/;
 			_.each(newstorage, function(value, key) {
-				//if(allowedKeys.test(key)) {
+				if(allowedKeys.test(key)) {
 					storage[key] = value;
-				//}
+				}
 			});
 			window.location.reload();
 		});

@@ -13,7 +13,8 @@
   "dependencies": {
     "express": "~3.16.6",
     "ejs": "~0.8.4",
-    "request": "~2.40.0"
+    "request": "~2.40.0",
+    "ssh2": "^0.3.5"
   },
   "devDependencies": {
     "grunt-contrib-requirejs": "~0.4.3",

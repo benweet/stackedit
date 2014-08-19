@@ -6,7 +6,7 @@ define([
     'fileMgr',
     'editor',
     'diff_match_patch_uncompressed',
-    'jsondiffpatch',
+    'jsondiffpatch'
 ], function(_, utils, settings, eventMgr, fileMgr, editor, diff_match_patch, jsondiffpatch) {
 
     function Provider(providerId, providerName) {

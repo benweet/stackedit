@@ -23,10 +23,10 @@ define([], function() {
 	constants.IMPORT_IMG_MAX_CONTENT_SIZE = 10000000;
 	constants.TEMPORARY_FILE_INDEX = "file.tempIndex";
 	constants.WELCOME_DOCUMENT_TITLE = "Welcome document";
-	constants.DOWNLOAD_PROXY_URL = "https://stackedit-download-proxy.herokuapp.com/";
-	constants.PICASA_PROXY_URL = "https://stackedit-picasa-proxy.herokuapp.com/";
-	constants.SSH_PROXY_URL = "https://stackedit-ssh-proxy.herokuapp.com/";
-	constants.HTMLTOPDF_URL = "/pdf";
+	constants.DOWNLOAD_IMPORT_URL = "/downloadImport";
+	constants.PICASA_IMPORT_IMG_URL = "/picasaImportImg";
+	constants.SSH_PUBLISH_URL = '/sshPublish';
+	constants.PDF_EXPORT_URL = "/pdfExport";
 
 	// Site dependent
 	constants.BASE_URL = "http://localhost/";

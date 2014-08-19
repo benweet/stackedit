@@ -39,7 +39,7 @@ var authorizedPageSizes = [
 	'Letter'
 ];
 
-module.exports = function(req, res, next) {
+exports.export = function(req, res, next) {
 	function onError(err) {
 		next(err);
 	}

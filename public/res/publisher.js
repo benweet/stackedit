@@ -364,7 +364,10 @@ define([
 					return task.chain();
 				}
 				var xhr = new XMLHttpRequest();
-				xhr.open('POST', constants.HTMLTOPDF_URL + '?token=' + encodeURIComponent(token) + '&options=' + encodeURIComponent(settings.pdfOptions), true);
+				xhr.open('POST', constants.PDF_EXPORT_URL + '?' + $.param({
+					token: token,
+					options: settings.pdfOptions
+				}), true);
 				xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 				xhr.responseType = 'blob';
 				xhr.onreadystatechange = function() {
@@ -373,7 +376,7 @@ define([
 							pdf = this.response;
 						}
 						else {
-							eventMgr.onError("Error when trying to generate PDF: " + this.status);
+							eventMgr.onError("Error when trying to generate PDF: " + this.statusText);
 						}
 						task.chain();
 					}

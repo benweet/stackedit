@@ -246,9 +246,10 @@ define([
 		localStorage.removeItem("welcomeTour");
 		if(_.has(localStorage, 'settings')) {
 			settings = JSON.parse(localStorage.settings);
-			// Remove PDF settings as it's a new web service
+			// New web services
 			delete settings.pdfTemplate;
 			delete settings.pdfPageSize;
+			delete settings.sshProxy;
 			localStorage.settings = JSON.stringify(settings);
 		}
 		version = "v20";

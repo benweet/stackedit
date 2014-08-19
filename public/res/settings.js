@@ -56,7 +56,6 @@ define([
 			'    "pageSize": "A4"',
 			'}'
 		].join('\n'),
-		sshProxy: constants.SSH_PROXY_URL,
 		extensionSettings: {}
 	};
 

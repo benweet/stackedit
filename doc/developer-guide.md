@@ -25,8 +25,6 @@ Getting started
 
 		(export PORT=80 && node server.js)
 		
-	> **NOTE:** StackEdit project itself has no back end. It can run on any apache server.
-
 - Run Chrome without application cache:
 
 		chrome --disable-application-cache

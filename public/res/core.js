@@ -205,7 +205,7 @@ define([
 			}
 			$.extend(settings, newSettings);
 			storage.settings = JSON.stringify(settings);
-			storage.themeV3 = theme;
+			storage.themeV4 = theme;
 		}
 	}
 
@@ -327,13 +327,14 @@ define([
 		eventMgr.onReady();
 	};
 
+	var appId = 'ESTHdCYOi18iLhhO';
 	var monetize = new MonetizeJS({
-		applicationID: 'iklMbzDI7dvMEScb'
+		applicationID: appId
 	});
 	var $alerts = $();
 
 	function isSponsor(payments) {
-		var result = payments && (
+		var result = payments && payments.app == appId && (
 			(payments.chargeOption && payments.chargeOption.alias == 'once') ||
 			(payments.subscriptionOption && payments.subscriptionOption.alias == 'yearly'));
 		eventMgr.isSponsor = result;
@@ -506,11 +507,11 @@ define([
 		});
 		$(".action-import-docs-settings-confirm").click(function() {
 			storage.clear();
-			var allowedKeys = /^file\.|^folder\.|^publish\.|^settings$|^sync\.|^google\.|^author\.|^themeV3$|^version$/;
+			var allowedKeys = /^file\.|^folder\.|^publish\.|^settings$|^sync\.|^google\.|^author\.|^themeV4$|^version$/;
 			_.each(newstorage, function(value, key) {
-				if(allowedKeys.test(key)) {
+				//if(allowedKeys.test(key)) {
 					storage[key] = value;
-				}
+				//}
 			});
 			window.location.reload();
 		});

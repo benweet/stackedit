@@ -239,6 +239,21 @@ define([
 		version = "v19";
 	}
 
+	if(version == 'v19') {
+		// Force new theme by using themeV4 variable
+		localStorage.removeItem("themeV3");
+		// Force welcome tour
+		localStorage.removeItem("welcomeTour");
+		if(_.has(localStorage, 'settings')) {
+			settings = JSON.parse(localStorage.settings);
+			// Remove PDF settings as it's a new web service
+			delete settings.pdfTemplate;
+			delete settings.pdfPageSize;
+			localStorage.settings = JSON.stringify(settings);
+		}
+		version = "v20";
+	}
+
     localStorage.version = version;
     return localStorage;
 });

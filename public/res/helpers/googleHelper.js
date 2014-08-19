@@ -565,7 +565,9 @@ define([
 			}
 
 			$.ajax({
-				url: constants.PICASA_PROXY_URL + "upload/" + albumId,
+				url: constants.PICASA_IMPORT_IMG_URL + '?' + $.param({
+					albumId: albumId
+				}),
 				headers: headers,
 				data: content,
 				processData: false,

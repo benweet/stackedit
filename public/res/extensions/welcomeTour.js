@@ -63,8 +63,7 @@ define([
 				element: '.navbar-inner',
 				title: 'StackEdit 4 is out!',
 				content: [
-					'<p>I\'m very pleased to welcome you here!</p>',
-					'<p>StackEdit keeps getting better and I hope you appreciate it.</p>',
+					'<p>I\'m very pleased to welcome you here! StackEdit keeps getting better and I hope you appreciate it.</p>',
 					'Please click <b>Next</b> to take a quick tour.'
 				].join(""),
 				placement: 'bottom'
@@ -97,20 +96,20 @@ define([
 					'<b>Tip:</b> Reopen the Welcome Document from Settings>Utils to discover other new features.'
 				].join(""),
 				placement: 'right',
-				reflex: true,
+				reflex: true
 			},
 			{
 				element: '.navbar-inner',
 				title: 'Happy StackWriting!',
 				content: [
 					'<p>Enjoy, and don\'t forget to rate 5 stars on the <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg/reviews">Chrome Web Store</a>...</p>',
-					'<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://stackedit.io" data-text="Great #markdown editor!" data-via="stackedit" data-size="large"></a>',
+					'<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://stackedit.io" data-text="Great #markdown editor!" data-via="stackedit" data-size="large"></a>'
 				].join(""),
 				placement: 'bottom',
 				onShown: function() {
 					eventMgr.onTweet();
 				}
-			},
+			}
 		]);
 		if(!_.has(storage, 'welcomeTour')) {
 			tour.start();

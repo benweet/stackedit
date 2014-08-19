@@ -48,7 +48,6 @@ define([
 		utils.setInputChecked("#input-markdownextra-intraword", markdownExtra.config.intraword);
 		utils.setInputChecked("#input-markdownextra-comments", markdownExtra.config.comments);
 		utils.setInputValue("#input-markdownextra-highlighter", markdownExtra.config.highlighter);
-		utils.setInputChecked("#input-markdownextra-diagrams", markdownExtra.config.diagrams);
 	};
 
 	markdownExtra.onSaveSettings = function(newConfig) {
@@ -64,7 +63,6 @@ define([
 		newConfig.intraword = utils.getInputChecked("#input-markdownextra-intraword");
 		newConfig.comments = utils.getInputChecked("#input-markdownextra-comments");
 		newConfig.highlighter = utils.getInputValue("#input-markdownextra-highlighter");
-		newConfig.diagrams = utils.getInputChecked("#input-markdownextra-diagrams");
 	};
 
 	var eventMgr;

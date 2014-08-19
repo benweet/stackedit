@@ -25,7 +25,10 @@ app.get('/viewer', function (req, res) {
 	res.render('viewer.html');
 });
 
-app.post('/pdf', require('./pdf'));
+app.post('/pdfExport', require('./pdf').export);
+app.post('/sshPublish', require('./ssh').publish);
+app.post('/picasaImportImg', require('./picasa').importImg);
+app.get('/downloadImport', require('./download').importPublic);
 
 // Error 404
 app.use(function(req, res, next) {

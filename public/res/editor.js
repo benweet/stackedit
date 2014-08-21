@@ -25,6 +25,8 @@ define([
 	var $marginElt;
 	var previewElt;
 	var pagedownEditor;
+	var trailingLfNode;
+
 	var refreshPreviewLater = (function() {
 		var elapsedTime = 0;
 		var timeoutId;
@@ -148,7 +150,7 @@ define([
 			do {
 				result.push({
 					container: walker.currentNode,
-					offsetInContainer: walkerOffset,
+					offsetInContainer: text.length,
 					offset: offset
 				});
 				offset = offsetList.shift();
@@ -270,6 +272,11 @@ define([
 							else {
 								selectionStart = offset;
 								selectionEnd = offset + (range + '').length;
+							}
+							if(selectionStart === selectionEnd && selectionStart > textContent.length) {
+								// In Firefox cursor can be after the trailingLfNode
+								selection.nativeSelection.modify("move", "backward", "character");
+								selectionStart = --selectionEnd;
 							}
 						}
 					}
@@ -651,8 +658,6 @@ define([
 			selection.modify("move", "backward", "character");
 		}
 	}, 10);
-
-	var trailingLfNode;
 
 	function checkContentChange() {
 		var newTextContent = inputElt.textContent;

@@ -1,27 +1,31 @@
 {
   "name": "stackedit",
-  "version": "3.1.12",
+  "version": "4.0.0",
   "private": true,
   "description": "StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.",
   "main": "res/main.js",
+  "engines": {
+    "node": "0.10.x"
+  },
   "directories": {
     "doc": "doc"
   },
   "dependencies": {
-    "express": "3.x",
-    "ejs": "~0.8.4"
+    "express": "~3.16.6",
+    "ejs": "~0.8.4",
+    "request": "~2.40.0",
+    "ssh2": "^0.3.5"
   },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-requirejs": "~0.4.1",
+    "grunt-contrib-requirejs": "~0.4.3",
     "grunt-contrib-less": "~0.7.0",
     "grunt-string-replace": "~0.2.4",
     "grunt-contrib-copy": "~0.4.1",
-    "bower": "~1.2.5",
     "grunt-bower-requirejs": "~0.7.1",
     "grunt-bower-task": "~0.3.1",
     "grunt-bump": "0.0.11",
-    "grunt-contrib-jshint": "~0.7.1"
+    "grunt-contrib-jshint": "~0.7.1",
+    "grunt-jsbeautifier": "^0.2.7"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

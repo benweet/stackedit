@@ -1,0 +1,35 @@
+Available variables:
+<br>
+<ul>
+    <li>
+        <b>documentTitle</b>: document title</li>
+    <li>
+        <b>documentMarkdown</b>: document in Markdown format</li>
+    <li>
+        <b>strippedDocumentMarkdown</b>: document without front matter</li>
+    <li>
+        <b>documentHTML</b>: document in HTML format</li>
+    <li>
+        <b>documentHTMLWithFrontMatter</b></li>
+    <li>
+        <b>frontMatter</b>: undefined if no front matter</li>
+    <li>
+        <b>publishAttributes</b>: undefined if
+        not publishing</li>
+</ul>
+<b>Examples:</b>
+<br />&lt;title&gt;&lt;%= documentTitle %&gt;&lt;&#x2F;title&gt;
+<br />&lt;div&gt;&lt;%- documentHTML %&gt;&lt;&#x2F;div&gt;
+<br />&lt;%
+<br />if(publishAttributes.provider.providerId == &quot;github&quot;) print(documentMarkdown);
+<br
+/>%&gt;
+<br />
+<br />
+<a target="_blank" href="http://underscorejs.org/#template">More
+	info</a>
+<br />
+<br />
+<b class="text-danger">
+    <i class="icon-attention"></i>Careful! Template is subject to malicious code. Don't copy/paste untrusted
+    content.</b>

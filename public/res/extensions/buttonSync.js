@@ -58,7 +58,7 @@ define([
     buttonSync.onCreateButton = function() {
         var button = crel('a', {
             class: 'btn btn-success button-synchronize',
-            title: 'Synchronize all'
+            title: 'Force synchronization Ctrl/Cmd+S'
         }, crel('i', {
             class: 'icon-refresh'
         }));
@@ -87,11 +87,14 @@ define([
         isOffline = isOfflineParameter;
         updateButtonState();
     };
-    
+
     buttonSync.onReady = function() {
         mousetrap.bind(buttonSync.config.syncShortcut, function(e) {
             synchronizer.sync() && (lastSync = utils.currentTime);
             e.preventDefault();
+        });
+        $(".action-force-synchronization").click(function() {
+            synchronizer.sync() && (lastSync = utils.currentTime);
         });
     };
 

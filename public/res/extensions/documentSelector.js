@@ -9,7 +9,7 @@ define([
     "text!html/documentSelectorSettingsBlock.html",
 ], function($, _, crel, utils, Extension, mousetrap, fileSystem, documentSelectorSettingsBlockHTML) {
 
-    var documentSelector = new Extension("documentSelector", 'Document Selector', true, true);
+    var documentSelector = new Extension("documentSelector", 'Document Selector', true);
     documentSelector.settingsBlock = documentSelectorSettingsBlockHTML;
     documentSelector.defaultConfig = {
         orderBy: "mru",
@@ -27,11 +27,6 @@ define([
         newConfig.orderBy = utils.getInputValue("#select-document-selector-orderby");
         newConfig.shortcutPrevious = utils.getInputTextValue("#input-document-selector-shortcut-previous", event);
         newConfig.shortcutNext = utils.getInputTextValue("#input-document-selector-shortcut-next", event);
-    };
-
-    var aceEditor;
-    documentSelector.onAceCreated = function(aceEditorParam) {
-        aceEditor = aceEditorParam;
     };
 
     var fileMgr;
@@ -69,18 +64,6 @@ define([
             liEltList.push($liElt);
             var fileDesc = fileSystem[$liElt.data('fileIndex')];
             liEltMap[fileDesc.fileIndex] = $liElt;
-            $liElt.find("a").click(function() {
-                selectedLi = undefined;
-                if(!$liElt.hasClass("disabled")) {
-                    fileMgr.selectFile(fileDesc);
-                }
-                else if(aceEditor !== undefined) {
-                    aceEditor.focus();
-                }
-                else {
-                    $editorElt.focus();
-                }
-            });
         });
     }, 50);
 
@@ -99,7 +82,7 @@ define([
 
     documentSelector.onReady = function() {
         $editorElt = $('#wmd-input');
-        
+
         if(documentSelector.config.orderBy == "title") {
             sortFunction = function(fileDesc) {
                 return fileDesc.title.toLowerCase();
@@ -114,7 +97,7 @@ define([
         dropdownElt = crel('ul', {
             class: 'dropdown-menu dropdown-file-selector'
         });
-        document.querySelector('.ui-layout-resizer-north').appendChild(crel('div', crel('div', {
+        document.querySelector('.navbar').appendChild(crel('div', crel('div', {
             'data-toggle': 'dropdown'
         }), dropdownElt));
         var $dropdownElt = $(dropdownElt).dropdown();
@@ -138,9 +121,9 @@ define([
                 liIndex = -1;
             }
             selectedLi = liEltList[(liIndex + liEltList.length) % liEltList.length];
-            _.defer(function() {
+            setTimeout(function() {
                 selectedLi.find("a").focus();
-            });
+            }, 10);
             return false;
         });
         var shortcutNext = documentSelector.config.shortcutNext.toLowerCase();
@@ -151,9 +134,9 @@ define([
             }
             var liIndex = _.indexOf(liEltList, selectedLi) + 1;
             selectedLi = liEltList[liIndex % liEltList.length];
-            _.defer(function() {
+            setTimeout(function() {
                 selectedLi.find("a").focus();
-            });
+            }, 10);
             return false;
         });
         var delimiter1 = shortcutPrevious.indexOf("+");
@@ -168,6 +151,18 @@ define([
                 selectedLi.find("a").click();
             }
         }, "keyup");
+
+        $dropdownElt.on('click', 'a', function() {
+            selectedLi = undefined;
+            var $liElt = $(this.parentNode);
+            var fileDesc = fileSystem[$liElt.data('fileIndex')];
+            if(!$liElt.hasClass("disabled")) {
+                fileMgr.selectFile(fileDesc);
+            }
+            else {
+                $editorElt.focus();
+            }
+        });
     };
 
     return documentSelector;

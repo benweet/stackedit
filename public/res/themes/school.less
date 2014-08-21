@@ -1,6 +1,6 @@
 @import "../styles/main.less";
 
-@board-color: #385E50;
+@board-color: #3F584F;
 @board-border-color: #B9B39F;
 @blue-ink: #284F72;
 @black-ink: #444;
@@ -17,11 +17,11 @@
 @secondary-desaturated: darken(@board-border-color, 19%);
 @primary-border-color: @navbar-default-bg;
 @modal-backdrop-bg: @primary;
-@btn-success-color: #eee;
+@btn-success-color: #ddd;
 @btn-success-bg: @transparent;
 @btn-success-border: @transparent;
 @btn-success-hover-bg: lighten(@navbar-default-bg, 10%);
-@panel-button-bg-color: #ddd;
+@panel-button-bg-color: #eee;
 
 
 // Navbar buttons
@@ -30,7 +30,7 @@
     &:focus,
     &:active,
     .open &.dropdown-toggle {
-    	color: @btn-success-color;
+    	color: #fff;
     	border-color: lighten(@navbar-default-bg, 10%);
     }
 }
@@ -51,37 +51,25 @@
     font-style: normal;
 }
 
-.ace-tm {
-	.ace_content {
-	    background-image: url("../img/school-line.png");
-		background-repeat: repeat;
-        background-size: 64px 1.65em;
-	}
-
-    .ace_print-margin-layer {
+#wmd-input {
+	.ace_print-margin-layer {
 		display: block;
         .ace_print-margin {
             background-color: fade(@red-ink, 50%);
         }
     }
-        	
-	.ace_markup.ace_heading {
+
+	.h1, .h2, .h3, .h4, .h5, .h6 {
 		color: @black-ink;
 	}
-	
-	.ace_blockquote {
+
+	.blockquote {
 		color: @red-ink;
 	}
-	
-	.ace_code {
-		color: @green-ink;
-	}
-	
-	.ace_code_block {
-		color: @green-ink;
-	}
-	
-	.ace_comment {
+
+	.code,
+    .pre,
+    .comment {
 		color: @green-ink;
 	}
 }

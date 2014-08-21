@@ -37,7 +37,7 @@ define([
             class: 'btn btn-success button-publish',
             title: 'Update document publication'
         }, crel('i', {
-            class: 'icon-share'
+            class: 'icon-upload'
         }));
         $button = $(button).click(function() {
             if(!$button.hasClass("disabled")) {
@@ -71,6 +71,10 @@ define([
     buttonPublish.onFileSelected = function(fileDesc) {
         currentFileDesc = fileDesc;
         checkPublication();
+    };
+
+    buttonPublish.onReady = function() {
+        $(".action-update-publication").click(publisher.publish);
     };
 
     buttonPublish.onPublishRemoved = checkPublication;

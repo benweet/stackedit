@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    
+
     <head>
         <title>StackEdit - Recovery</title>
         <link rel="canonical" href="https://stackedit.io/">
@@ -16,7 +16,15 @@
                 baseUrl: window.baseDir,
                 deps: ['main']
             };
-            setTimeout(function() {
+            var timer = 5;
+            function waitTimer() {
+                try {
+                    document.getElementById('timer').textContent = --timer;
+                }
+                catch(e) {}
+                if(timer) {
+                    return setTimeout(waitTimer, 1000);
+                }
                 var failure = false;
                 try {
                     // Try to use StackEdit dependencies to save a file
@@ -29,14 +37,15 @@
                     failure = true;
                 }
                 listFiles();
-                
+
                 // Show finish messages
                 var eltList = document.querySelectorAll(failure ? '.download-failure' : '.download-success');
                 for (var i = 0; i < eltList.length; ++i) {
                     var elt = eltList[i];
                     show(elt);
                 }
-            }, 5000);
+            }
+            setTimeout(waitTimer, 1000);
 
             function show(elt) {
                 elt.className = elt.className.replace(/ hide/, '');
@@ -50,14 +59,14 @@
                 "'": '&#39;',
                 "/": '&#x2F;'
             };
-            
+
             function escapeHtml(string) {
                 return String(string).replace(/[&<>"'\/]/g, function(s) {
                     return entityMap[s];
                 });
             }
-            
-            function listFiles() {      
+
+            function listFiles() {
                 // List files
                 var fileListElt = document.querySelector('.file-list');
                 fileListElt.innerHTML = '';
@@ -76,7 +85,7 @@
                     fileListElt.appendChild(divElt);
                 }
             }
-                
+
             function removeFile(fileIndex) {
                 var ok = confirm('Are you sure you want to remove "' + localStorage[fileIndex + '.title'] + '"?');
                 if(ok) {
@@ -89,7 +98,7 @@
                     listFiles();
                 }
             }
-            
+
             function clearLocalStorage() {
                 var ok = confirm('This will remove all your documents and settings. Are you sure?');
                 if(ok) {
@@ -100,7 +109,7 @@
         </script>
         <script src="res-min/require.js"></script>
     </head>
-    
+
     <body>
         <div class="container">
             <br/>
@@ -109,7 +118,7 @@
             </a>
             <h3>StackEdit recovery</h3>
             <p>
-                <strong>The download of your documents and settings will start in 5 seconds...</strong>
+                <strong>The download of your documents and settings will start in <span id="timer">5</span> seconds...</strong>
             </p>
             <p>To import your documents and settings back in StackEdit:</p>
             <blockquote>

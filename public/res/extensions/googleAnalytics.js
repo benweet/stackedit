@@ -70,8 +70,14 @@ define([
         _gaq.push([
             '_trackEvent',
             "Settings",
+            'editMode',
+            "" + settings.editMode
+        ]);
+        _gaq.push([
+            '_trackEvent',
+            "Settings",
             'theme',
-            "" + window.theme
+            "" + window.themeV4
         ]);
         _gaq.push([
             '_trackEvent',
@@ -82,14 +88,26 @@ define([
         _gaq.push([
             '_trackEvent',
             "Settings",
-            'editorFontFamily',
-            "" + settings.editorFontFamily
+            'editorFontClass',
+            "" + settings.editorFontClass
         ]);
         _gaq.push([
             '_trackEvent',
             "Settings",
-            'editorFontSize',
-            "" + settings.editorFontSize
+            'fontSizeRatio',
+            "" + settings.fontSizeRatio
+        ]);
+        _gaq.push([
+            '_trackEvent',
+            "Settings",
+            'maxWidthRatio',
+            "" + settings.maxWidthRatio
+        ]);
+        _gaq.push([
+            '_trackEvent',
+            "Settings",
+            'cursorFocusRatio',
+            "" + settings.cursorFocusRatio
         ]);
         // Check if user has removed back links
         _gaq.push([
@@ -103,13 +121,6 @@ define([
             "Settings",
             'commitMsg backlink',
             "" + (settings.commitMsg.indexOf(constants.MAIN_URL) !== -1)
-        ]);
-        // Check if user has changed sshProxy
-        _gaq.push([
-            '_trackEvent',
-            "Settings",
-            'sshProxy unchanged',
-            "" + (settings.sshProxy == constants.SSH_PROXY_URL)
         ]);
         // Check if extensions have been disabled
         _.each(settings.extensionSettings, function(config, extensionId) {
@@ -165,7 +176,7 @@ define([
         _gaq.push([
             '_trackEvent',
             'Sync',
-            'SyncImport',
+            'SyncImport'
         ]);
         _gaq.push([
             '_trackEvent',
@@ -179,7 +190,7 @@ define([
         _gaq.push([
             '_trackEvent',
             'Sync',
-            'SyncExport',
+            'SyncExport'
         ]);
         _gaq.push([
             '_trackEvent',

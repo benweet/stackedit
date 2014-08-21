@@ -50,7 +50,7 @@ define([
         core.initEditor(fileDesc);
     };
 
-    fileMgr.createFile = function(title, content, syncLocations, isTemporary) {
+    fileMgr.createFile = function(title, content, discussionListJSON, syncLocations, isTemporary) {
         content = content !== undefined ? content : settings.defaultContent;
         if(!title) {
             // Create a file title
@@ -86,6 +86,7 @@ define([
 
         // Create the file descriptor
         var fileDesc = new FileDescriptor(fileIndex, title, syncLocations);
+        discussionListJSON && (fileDesc.discussionListJSON = discussionListJSON);
 
         // Add the index to the file list
         if(!isTemporary) {
@@ -98,7 +99,7 @@ define([
 
     fileMgr.deleteFile = function(fileDesc) {
         fileDesc = fileDesc || fileMgr.currentFile;
-        
+
         // Unassociate file from folder
         if(fileDesc.folder) {
             fileDesc.folder.removeFile(fileDesc);
@@ -109,33 +110,14 @@ define([
         utils.removeIndexFromArray("file.list", fileDesc.fileIndex);
         delete fileSystem[fileDesc.fileIndex];
 
+        // Don't bother with fields in localStorage, they will be removed on next page load
+
         if(fileMgr.currentFile === fileDesc) {
             // Unset the current fileDesc
             fileMgr.currentFile = undefined;
             // Refresh the editor with another file
             fileMgr.selectFile();
         }
-
-        // Remove synchronized locations from storage
-        _.each(fileDesc.syncLocations, function(syncAttributes) {
-            storage.removeItem(syncAttributes.syncIndex);
-        });
-
-        // Remove publish locations from storage
-        _.each(fileDesc.publishLocations, function(publishAttributes) {
-            storage.removeItem(publishAttributes.publishIndex);
-        });
-
-        storage.removeItem(fileDesc.fileIndex + ".title");
-        storage.removeItem(fileDesc.fileIndex + ".content");
-        storage.removeItem(fileDesc.fileIndex + ".sync");
-        storage.removeItem(fileDesc.fileIndex + ".publish");
-        storage.removeItem(fileDesc.fileIndex + ".selectTime");
-        storage.removeItem(fileDesc.fileIndex + ".editorStart");
-        storage.removeItem(fileDesc.fileIndex + ".editorEnd");
-        storage.removeItem(fileDesc.fileIndex + ".editorScrollTop");
-        storage.removeItem(fileDesc.fileIndex + ".previewScrollTop");
-        storage.removeItem(fileDesc.fileIndex + ".editorSelectRange");
 
         eventMgr.onFileDeleted(fileDesc);
     };
@@ -147,23 +129,12 @@ define([
         });
     };
 
-    // Get syncAttributes from syncIndex
-    fileMgr.getSyncAttributes = function(syncIndex) {
-        var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
-        return fileDesc && fileDesc.syncLocations[syncIndex];
-    };
-
     // Get the file descriptor associated to a publishIndex
     fileMgr.getFileFromPublishIndex = function(publishIndex) {
         return _.find(fileSystem, function(fileDesc) {
             return _.has(fileDesc.publishLocations, publishIndex);
         });
     };
-
-    var aceEditor;
-    eventMgr.addListener('onAceCreated', function(aceEditorParam) {
-        aceEditor = aceEditorParam;
-    });
 
     eventMgr.addListener("onReady", function() {
         var $editorElt = $("#wmd-input");
@@ -190,9 +161,9 @@ define([
             }
             $fileTitleElt.addClass('hide');
             var fileTitleInput = $fileTitleInputElt.removeClass('hide');
-            _.defer(function() {
+            setTimeout(function() {
                 fileTitleInput.focus().get(0).select();
-            });
+            }, 10);
         });
         function applyTitle() {
             $fileTitleInputElt.addClass('hide');
@@ -204,7 +175,7 @@ define([
                 eventMgr.onTitleChanged(fileDesc);
             }
             $fileTitleInputElt.val(fileDesc.title);
-            aceEditor ? aceEditor.focus() : $editorElt.focus();
+            $editorElt.focus();
         }
         $fileTitleInputElt.blur(function() {
             applyTitle();
@@ -222,9 +193,6 @@ define([
         });
         $(".action-edit-document").click(function() {
             var content = $editorElt.val();
-            if(aceEditor !== undefined) {
-                content = aceEditor.getValue();
-            }
             var title = fileMgr.currentFile.title;
             var fileDesc = fileMgr.createFile(title, content);
             fileMgr.selectFile(fileDesc);

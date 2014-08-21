@@ -21,7 +21,7 @@ define([
         }
 
         $showAlreadyPublishedElt.toggleClass("hide", _.size(fileDesc.publishLocations) === 0);
-        
+
         var publishListHtml = _.reduce(fileDesc.publishLocations, function(result, publishAttributes) {
             var formattedAttributes = _.omit(publishAttributes, "provider", "publishIndex", "sharingLink");
             formattedAttributes.password && (formattedAttributes.password = "********");
@@ -31,16 +31,8 @@ define([
                 publishDesc: formattedAttributes
             });
         }, '');
-        publishListElt.innerHTML = publishListHtml;
         
-        _.each(publishListElt.querySelectorAll('.remove-button'), function(removeButtonElt) {
-            var $removeButtonElt = $(removeButtonElt);
-            var publishAttributes = fileDesc.publishLocations[$removeButtonElt.data('publishIndex')];
-            $removeButtonElt.click(function() {
-                fileDesc.removePublishLocation(publishAttributes);
-                eventMgr.onPublishRemoved(fileDesc, publishAttributes);
-            });
-        });
+        publishListElt.innerHTML = publishListHtml;
     };
 
     dialogManagePublication.onFileSelected = function(fileDescParameter) {
@@ -56,6 +48,13 @@ define([
         publishListElt = modalElt.querySelector(".publish-list");
 
         $showAlreadyPublishedElt = $(document.querySelectorAll(".show-already-published"));
+
+        $(publishListElt).on('click', '.remove-button', function() {
+            var $removeButtonElt = $(this);
+            var publishAttributes = fileDesc.publishLocations[$removeButtonElt.data('publishIndex')];
+            fileDesc.removePublishLocation(publishAttributes);
+            eventMgr.onPublishRemoved(fileDesc, publishAttributes);
+        });
     };
 
     return dialogManagePublication;

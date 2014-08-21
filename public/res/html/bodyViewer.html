@@ -1,69 +1,93 @@
-
-<div class="navbar navbar-default ui-layout-north">
-	<div class="navbar-inner">
-		<div class="nav right-space pull-right"></div>
-
-		<ul class="nav pull-right">
-			<li class="btn-group">
-				<button class="btn btn-success action-edit-document hide"
-					title="Edit this document">
-					<i class="icon-pencil"></i>
-				</button>
-			</li>
-			<li class="btn-group">
-				<button class="btn btn-success dropdown-toggle"
-					data-toggle="dropdown" title="Save this document">
-					<i class="icon-download"></i>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a class="action-download-md" href="#">Save as
-							Markdown</a></li>
-					<li><a class="action-download-html" href="#">Save as HTML</a></li>
-					<li><a class="action-download-template" href="#">Save
-							using template</a></li>
-					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>
+<div class="layout-wrapper-l1">
+	<div class="layout-wrapper-l2">
+		<div class="navbar navbar-default ui-layout-north">
+			<div class="navbar-inner">
+				<div class="nav left-space"></div>
+				<div class="nav right-space pull-right"></div>
+				<div class="buttons-dropdown dropdown">
+					<div class="nav">
+						<button class="btn btn-success" data-toggle="dropdown"
+							title="Show buttons">
+							<i class="icon-th-large"></i>
+						</button>
+						<div class="dropdown-menu">
+						</div>
+					</div>
+				</div>
+				<ul class="nav pull-right right-buttons">
+					<li class="btn-group">
+						<button class="btn btn-success action-edit-document hide"
+							title="Edit this document">
+							<i class="icon-pencil"></i>
+						</button>
+					</li>
+					<li class="btn-group">
+						<button class="btn btn-success dropdown-toggle"
+							data-toggle="dropdown" title="Save this document">
+							<i class="icon-download"></i>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a class="action-download-md" href="#"><i
+								class="icon-download"></i> Export as Markdown</a></li>
+							<li><a class="action-download-html" href="#"><i
+								class="icon-download"></i> Export as HTML</a></li>
+							<li><a class="action-download-template" href="#"><i
+								class="icon-download"></i> Export using template</a></li>
+							<li><a class="action-download-pdf" href="#"><i
+								class="icon-download"></i> Export as PDF</a></li>
+						</ul>
+					</li>
 				</ul>
-			</li>
-		</ul>
-		<ul class="nav pull-right">
-			<li><div class="working-indicator"></div></li>
-			<li><span class="btn btn-success file-title-navbar"></span></li>
-		</ul>
-	</div>
-</div>
-<div id="wmd-button-bar" class="hide"></div>
-<div id="wmd-input" class="hide"></div>
-<div class="ui-layout-center preview-container"></div>
-
-<div class="menu-panel collapse width">
-	<button class="btn collapse-button action-open-stackedit"
-		title="Open StackEdit">
-		<img
-			data-stackedit-src="menu-icon.png" width="24" height="24" />
-	</button>
-</div>
-
-<div class="document-panel collapse width">
-	<button class="btn collapse-button" data-toggle="collapse"
-		data-target=".document-panel" title="Select document">
-		<i class="icon-folder-open"></i>
-	</button>
-	<div class="search-bar clearfix">
-		<div class="input-group">
-			<span class="input-group-addon"><i class="icon-search"></i></span><input
-				type="text" class="form-control"></input>
-			<div class="input-group-btn">
-				<a data-toggle="modal" data-target=".modal-document-manager"
-					class="btn btn-link" title="Manage documents"><i
-					class="icon-layers"></i></a>
+				<ul class="nav pull-right title-container">
+					<li><div class="working-indicator"></div></li>
+					<li><span class="btn btn-success file-title-navbar"></span></li>
+				</ul>
+			</div>
+		</div>
+		<div class="layout-wrapper-l3">
+			<pre id="wmd-input" class="ui-layout-center form-control"><div class="editor-content"></div><div class="editor-margin"></div></pre>
+			<div class="preview-panel">
+				<div class="preview-container">
+					<div id="preview-contents">
+						<div id="wmd-preview" class="preview-content"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="extension-preview-buttons">
+			<div class="btn-group drag-me" title="Drag me!">
+				<i class="icon-ellipsis-vert"></i>
 			</div>
 		</div>
 	</div>
-	<div class="panel-content">
-		<div class="list-group document-list"></div>
-		<div class="list-group document-list-filtered hide"></div>
+	<div id="wmd-button-bar" class="hide"></div>
+
+	<div class="menu-panel">
+		<button class="btn toggle-button action-open-stackedit"
+			title="Open StackEdit">
+			<img
+				data-stackedit-src="menu-icon.png" width="24" height="24" />
+		</button>
+	</div>
+
+
+	<div class="document-panel">
+		<button class="btn toggle-button" title="Select document Ctrl+[ Ctrl+]">
+			<i class="icon-folder-open"></i>
+		</button>
+		<div class="search-bar clearfix">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="icon-search"></i></span><input
+					type="text" class="form-control" placeholder="Find document"></input>
+			</div>
+		</div>
+		<div class="panel-content">
+			<div class="list-group document-list"></div>
+			<div class="list-group document-list-filtered hide"></div>
+		</div>
 	</div>
 </div>
+<div id="wmd-button-bar" class="hide"></div>
 
 <div class="modal modal-non-unique">
 	<div class="modal-dialog">

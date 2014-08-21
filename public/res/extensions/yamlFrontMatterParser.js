@@ -16,32 +16,36 @@ define([
         fileDesc = fileDescParam;
     };
 
-    var regex = /^(\s*-{3}\s*\n([\w\W]+?)\n\s*-{3}\s*\n)?([\w\W]*)$/;
-    yamlFrontMatterParser.onPagedownConfigure = function(editor) {
-        var converter = editor.getConverter();
-        converter.hooks.chain("preConversion", function(text) {
-            var results = regex.exec(text);
-            var yaml = results[2];
+    var regex = /^(\s*-{3}\s*\n([\w\W]+?)\n\s*-{3}\s*?\n)?([\w\W]*)$/;
 
-            if (yaml && (!fileDesc.frontMatter || fileDesc.frontMatter._yaml != yaml)) {
-                fileDesc.frontMatter = undefined;
-                try {
-                    fileDesc.frontMatter = YAML.parse(yaml);
-                    if(!_.isObject(fileDesc.frontMatter)) {
-                        fileDesc.frontMatter = undefined;
-                    }
-                    fileDesc.frontMatter._yaml = yaml;
-                    fileDesc.frontMatter._frontMatter = results[1];
+    function parseFrontMatter(fileDescParam, content) {
+        if(fileDescParam !== fileDesc) {
+            return;
+        }
+        var results = regex.exec(content);
+        var frontMatter = results[1];
+        var yaml = results[2];
+
+        if(!yaml) {
+            fileDesc.frontMatter = undefined;
+        }
+        else if(!fileDesc.frontMatter || fileDesc.frontMatter._frontMatter != frontMatter) {
+            fileDesc.frontMatter = undefined;
+            try {
+                fileDesc.frontMatter = YAML.parse(yaml);
+                if(!_.isObject(fileDesc.frontMatter)) {
+                    fileDesc.frontMatter = undefined;
                 }
-                catch (e) {
-                    eventMgr.onMarkdownTrim(0);
-                    return text;
-                }
+                fileDesc.frontMatter._yaml = yaml;
+                fileDesc.frontMatter._frontMatter = frontMatter;
             }
-            eventMgr.onMarkdownTrim((results[1] || '').length);
-            return results[3];
-        });
-    };
+            catch (e) {
+            }
+        }
+    }
+
+    yamlFrontMatterParser.onFileOpen = parseFrontMatter;
+    yamlFrontMatterParser.onContentChanged = parseFrontMatter;
 
     return yamlFrontMatterParser;
 });

@@ -1,8 +1,7 @@
 CACHE MANIFEST
-#Date Sat Mar 22 2014 02:00:56
+#Date Wed Aug 20 2014 23:51:57
 
 CACHE:
-res/worker.js
 libs/MathJax/MathJax.js?config=TeX-AMS_HTML
 libs/MathJax/config/Safe.js
 libs/MathJax/config/TeX-AMS_HTML.js
@@ -11,18 +10,18 @@ libs/MathJax/images/MenuArrow-15.png
 libs/MathJax/jax/output/HTML-CSS/jax.js
 
 #DynamicResourcesBegin
-res-min/font/OpenSans-Bold-webfont.svg
-res-min/font/OpenSans-Bold-webfont.woff
-res-min/font/OpenSans-BoldItalic-webfont.svg
-res-min/font/OpenSans-BoldItalic-webfont.woff
-res-min/font/OpenSans-Italic-webfont.svg
-res-min/font/OpenSans-Italic-webfont.woff
-res-min/font/OpenSans-Light-webfont.svg
-res-min/font/OpenSans-Light-webfont.woff
-res-min/font/OpenSans-LightItalic-webfont.svg
-res-min/font/OpenSans-LightItalic-webfont.woff
-res-min/font/OpenSans-Regular-webfont.svg
-res-min/font/OpenSans-Regular-webfont.woff
+res-min/font/PTSans-Bold-webfont.woff
+res-min/font/PTSans-BoldItalic-webfont.woff
+res-min/font/PTSans-Italic-webfont.woff
+res-min/font/PTSans-Regular-webfont.woff
+res-min/font/SourceCodePro-Bold-webfont.woff
+res-min/font/SourceCodePro-Regular-webfont.woff
+res-min/font/SourceSansPro-Bold-webfont.woff
+res-min/font/SourceSansPro-BoldItalic-webfont.woff
+res-min/font/SourceSansPro-Italic-webfont.woff
+res-min/font/SourceSansPro-Light-webfont.woff
+res-min/font/SourceSansPro-LightItalic-webfont.woff
+res-min/font/SourceSansPro-Regular-webfont.woff
 res-min/font/cursive_standard-webfont.eot
 res-min/font/cursive_standard-webfont.svg
 res-min/font/cursive_standard-webfont.ttf
@@ -31,29 +30,21 @@ res-min/font/fontello.eot
 res-min/font/fontello.svg
 res-min/font/fontello.ttf
 res-min/font/fontello.woff
+res-min/img/button.svg
 res-min/img/gittip.png
 res-min/img/icons.png
 res-min/img/icons2x.png
-res-min/img/logo-192.png
-res-min/img/logo-promo-128.png
+res-min/img/logo.svg
 res-min/img/menu-icon.png
-res-min/img/school-line.png
 res-min/img/stackedit-32.ico
 res-min/main.js
 res-min/require.js
 res-min/themes/base.css
+res-min/themes/blue.css
 res-min/themes/default.css
 res-min/themes/gray.css
 res-min/themes/night.css
 res-min/themes/school.css
-libs/dictionaries/de_DE.aff.lz
-libs/dictionaries/de_DE.dic.lz
-libs/dictionaries/en_US.aff.lz
-libs/dictionaries/en_US.dic.lz
-libs/dictionaries/es_ES.aff.lz
-libs/dictionaries/es_ES.dic.lz
-libs/dictionaries/fr_FR.aff.lz
-libs/dictionaries/fr_FR.dic.lz
 libs/MathJax/extensions/FontWarnings.js
 libs/MathJax/extensions/HTML-CSS/handle-floats.js
 libs/MathJax/extensions/HelpDialog.js

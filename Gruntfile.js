@@ -3,6 +3,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-jsbeautifier');
     grunt.loadNpmTasks('grunt-string-replace');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-bower-requirejs');
@@ -24,7 +25,7 @@ module.exports = function(grunt) {
                     'public/res-min/**/*.js'
                 ]
             },
-            client: ['public/**/*.js'],
+            client: ['public/**/*.js']
         },
         requirejs: {
             compile: {
@@ -35,24 +36,28 @@ module.exports = function(grunt) {
                     mainConfigFile: 'public/res/main.js',
                     optimize: "uglify2",
                     inlineText: true,
-                    uglify2: {
-                        output: {
-                            beautify: true,
-                            indent_level: 1,
-                        },
-                    },
                     excludeShallow: [
                         'css/css-builder',
                         'less/lessc-server',
                         'less/lessc'
-                    ],
+                    ]
+                }
+            }
+        },
+        jsbeautifier: {
+            files: ['public/res-min/main.js'],
+            options: {
+                js: {
+                    space_before_conditional: false,
+                    keep_array_indentation: true,
+                    indentWithTabs: true
                 }
             }
         },
         less: {
             compile: {
                 options: {
-                    compress: true,
+                    compress: true
                 },
                 files: [
                     {
@@ -62,29 +67,16 @@ module.exports = function(grunt) {
                             '*.less'
                         ],
                         dest: 'public/res-min/themes',
-                        ext: '.css',
+                        ext: '.css'
                     },
                     {
                         src: 'public/res/styles/base.less',
-                        dest: 'public/res-min/themes/base.css',
+                        dest: 'public/res-min/themes/base.css'
                     }
-                ],
-            },
+                ]
+            }
         },
         'string-replace': {
-            'font-parameters': {
-                files: {
-                    './': 'public/res-min/themes/*.css',
-                },
-                options: {
-                    replacements: [
-                        {
-                            pattern: /(font\/fontello\.\w+)\?\w+/g,
-                            replacement: '$1'
-                        }
-                    ]
-                }
-            },
             'constants': {
                 files: {
                     'public/res/constants.js': 'public/res/constants.js'
@@ -94,7 +86,7 @@ module.exports = function(grunt) {
                         {
                             pattern: /constants\.VERSION = .*/,
                             replacement: 'constants.VERSION = "<%= pkg.version %>";'
-                        },
+                        }
                     ]
                 }
             },
@@ -111,10 +103,10 @@ module.exports = function(grunt) {
                         {
                             pattern: /(#DynamicResourcesBegin\n)[\s\S]*(\n#DynamicResourcesEnd)/,
                             replacement: '$1<%= resources %>$2'
-                        },
+                        }
                     ]
                 }
-            },
+            }
         },
         copy: {
             resources: {
@@ -145,7 +137,7 @@ module.exports = function(grunt) {
                             'require.js'
                         ],
                         dest: 'public/res-min/'
-                    },
+                    }
                 ]
             }
         },
@@ -169,7 +161,7 @@ module.exports = function(grunt) {
                 ],
                 pushTo: 'origin'
             }
-        },
+        }
     });
 
     /***************************************************************************
@@ -193,6 +185,9 @@ module.exports = function(grunt) {
         // Run r.js optimization
         grunt.task.run('requirejs');
 
+        // Beautify uglified JS for site error analysis
+        grunt.task.run('jsbeautifier');
+
     });
 
     /***************************************************************************
@@ -200,10 +195,8 @@ module.exports = function(grunt) {
      */
     grunt.registerTask('build-css', function() {
 
-        // First compile less files
+        // Compile less files
         grunt.task.run('less:compile');
-        // Remove fontello checksum arguments
-        grunt.task.run('string-replace:font-parameters');
 
     });
 
@@ -218,7 +211,6 @@ module.exports = function(grunt) {
         // List resources and inject them in cache.manifest
         var resFolderList = [
             'public/res-min',
-            'public/libs/dictionaries',
             'public/libs/MathJax/extensions',
             'public/libs/MathJax/fonts/HTML-CSS/TeX/woff',
             'public/libs/MathJax/jax/element',

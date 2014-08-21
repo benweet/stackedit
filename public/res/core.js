@@ -28,7 +28,7 @@ define([
 ], function($, _, crel, ace, constants, utils, storage, settings, eventMgr, shortcutMgr, mousetrap, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsUserCustomExtensionTooltipHTML) {
 
     var core = {};
-    
+
     // Used for periodic tasks
     var intervalId;
 
@@ -53,7 +53,7 @@ define([
         }
         return userActive && windowUnique;
     }
-    
+
     // Used to only have 1 window of the application in the same browser
     var windowId;
     function checkWindowUnique() {
@@ -147,7 +147,7 @@ define([
         utils.setInputValue("#input-settings-pdf-page-size", settings.pdfPageSize);
         // SSH proxy
         utils.setInputValue("#input-settings-ssh-proxy", settings.sshProxy);
-        
+
         // Load shortcuts settings
         shortcutMgr.loadSettings();
 
@@ -250,8 +250,17 @@ define([
         aceEditor.session.setNewLineMode("unix");
         aceEditor.session.setMode("libs/ace_mode");
         aceEditor.session.$selectLongWords = true;
+        aceEditor.setShowPrintMargin(true);
+        aceEditor.setHighlightActiveLine(false);
+        aceEditor.setHighlightGutterLine(false);
+        aceEditor.setHighlightSelectedWord(false);
+        aceEditor.setDisplayIndentGuides(false);
+        aceEditor.setShowFoldWidgets(false);
+        aceEditor.setWrapBehavioursEnabled(false);
+        // Hack to disable bracket highlighting
+        aceEditor.$highlightBrackets = function() {};
 
-        // Make bold titles...
+        // Hack to make bold titles
         (function(self) {
             function checkLine(currentLine) {
                 var line = self.lines[currentLine];
@@ -320,6 +329,19 @@ define([
 
     // Create the layout
     var $editorButtonsElt;
+    var maxWidthMap = [
+        { screenWidth: 0, maxWidth: 600 },
+        { screenWidth: 1000, maxWidth: 700 },
+        { screenWidth: 1200, maxWidth: 800 },
+        { screenWidth: 1400, maxWidth: 900 },
+    ];
+    var maxWidthMapReversed = maxWidthMap.slice(0).reverse();
+    function getMaxWidth() {
+        var actualWidth = $(window).width();
+        return _.find(maxWidthMapReversed, function(value) {
+            return actualWidth > value.screenWidth;
+        }).maxWidth;
+    }
     function createLayout() {
         var layoutGlobalConfig = {
             closable: true,
@@ -331,14 +353,20 @@ define([
             resizeWithWindow: false,
             north__spacing_open: 1,
             north__spacing_closed: 1,
-            spacing_open: 35,
-            spacing_closed: 35,
+            spacing_open: 32,
+            spacing_closed: 32,
             togglerLength_open: 60,
             togglerLength_closed: 60,
             stateManagement__enabled: false,
             north__minSize: 49,
             center__minWidth: 250,
             center__minHeight: 180,
+            east__onAlert: function() {
+                window.location.href = 'viewer';
+            },
+            south__onAlert: function() {
+                window.location.href = 'viewer';
+            },
             fxSettings: {
                 easing: "easeInOutQuad",
                 duration: 350
@@ -362,7 +390,7 @@ define([
                     bottomMargin < 0 && (bottomMargin = 0);
                     aceEditor.renderer.setScrollMargin(0, bottomMargin, 0, 0);
                     setTimeout(function() {
-                        var padding = (aceEditor.renderer.$size.scrollerWidth - settings.maxWidth) / 2;
+                        var padding = (aceEditor.renderer.$size.scrollerWidth - getMaxWidth()) / 2;
                         if(padding < constants.EDITOR_DEFAULT_PADDING) {
                             padding = constants.EDITOR_DEFAULT_PADDING;
                         }
@@ -394,7 +422,6 @@ define([
                 south__minSize: 200
             }));
         }
-        settings.maxWidth && $('#preview-contents').css('max-width', (settings.maxWidth + 30) + 'px');
         $(".navbar").click(function() {
             layout.allowOverflow('north');
         });
@@ -428,33 +455,33 @@ define([
     var $navbarElt;
     var $leftBtnElts;
     var $rightBtnElts;
-    var $leftBtnDropdown;
-    var $rightBtnDropdown;
-    var marginWidth = 36 + 25 + 25;
+    var $btnDropdown;
+    var $titleContainer;
+    var marginWidth = 18 * 2 + 25 + 25;
     var titleWidth = 18 + 348;
-    var leftButtonsWidth = 72 + 83 + 166 + 167 + 83;
-    var rightButtonsWidth = 36 + 84 + 83;
-    var rightButtonsDropdown = 42;
+    var leftButtonsWidth = 18 * 4 + 80 + 160 + 160 + 80;
+    var rightButtonsWidth = 18 + 80;
+    var buttonsDropdownWidth = 40;
     function adjustWindow() {
         if(!window.viewerMode) {
-            var maxWidth = $navbarElt.width() - 5;
+            var maxWidth = $navbarElt.width();
             if(marginWidth + titleWidth + leftButtonsWidth + rightButtonsWidth > maxWidth) {
-                $rightBtnDropdown.show().find('.dropdown-menu').append($rightBtnElts);
-                if(marginWidth + titleWidth + leftButtonsWidth + rightButtonsDropdown > maxWidth) {
-                    $leftBtnDropdown.show().find('.dropdown-menu').append($leftBtnElts);
+                $btnDropdown.show().find('.dropdown-menu').append($leftBtnElts);
+                if(marginWidth + titleWidth + rightButtonsWidth + buttonsDropdownWidth > maxWidth) {
+                    $btnDropdown.find('.dropdown-menu').append($rightBtnElts);
                 }
                 else {
-                    $leftBtnDropdown.hide().after($leftBtnElts);
+                    $titleContainer.before($rightBtnElts);
                 }
             }
             else {
-                $leftBtnDropdown.hide().after($leftBtnElts);
-                $rightBtnDropdown.hide().after($rightBtnElts);
+                $btnDropdown.hide().after($leftBtnElts);
+                $titleContainer.before($rightBtnElts);
             }
         }
         layout.resizeAll();
     }
-    
+
     // Create the PageDown editor
     var editor;
     var $editorElt;
@@ -551,7 +578,7 @@ define([
             }
             documentContent = newDocumentContent;
         }
-        
+
         var previewWrapper;
         if(window.lightMode) {
             editor = new Markdown.EditorLight(converter);
@@ -578,7 +605,7 @@ define([
             $(".modal-insert-image").modal();
             return true;
         });
-            
+
         if(settings.lazyRendering === true) {
             previewWrapper = function(makePreview) {
                 var debouncedMakePreview = _.debounce(makePreview, 500);
@@ -658,7 +685,7 @@ define([
         $("#wmd-undo-button").append($('<i class="icon-reply">')).appendTo($btnGroupElt);
         $("#wmd-redo-button").append($('<i class="icon-forward">')).appendTo($btnGroupElt);
     };
-    
+
     // Initialize multiple things and then fire eventMgr.onReady
     var isDocumentPanelShown = false;
     var isMenuPanelShown = false;
@@ -669,19 +696,62 @@ define([
         else {
             document.body.innerHTML = bodyIndexHTML;
         }
+        
+        var styleContent = '';
+
+        // Apply font
+        function applyFont(size, screenWidth) {
+            screenWidth = screenWidth || 0;
+            //var codeFontSize = settings.editorFontSize;
+            //var codeLineHeight = Math.round(codeFontSize * 20 / 12);
+            var previewFontSize = size * 13 / 12;
+            styleContent += [
+                '@media (min-width: ' + screenWidth + 'px) {',
+                '#wmd-input, .textarea-helper {',
+                '   font-size: ' + size + 'px;',
+                //'   font-family: ' + settings.editorFontFamily + ';',
+                '}',
+                '#preview-contents {',
+                '   font-size: ' + previewFontSize + 'px;',
+                '}',
+                '}',
+            ].join('\n');
+        }
+        applyFont(15);
+        applyFont(16, 600);
+        applyFont(17, 1200);
+                
+        function applyMaxWidth(maxWidth, screenWidth) {
+            styleContent += [
+                '@media (min-width: ' + screenWidth + 'px) {',
+                '#preview-contents {',
+                '   max-width: ' + (maxWidth + 30) + 'px;',
+                '}',
+                '}',
+            ].join('\n');
+        }
+        _.each(maxWidthMap, function(entry) {
+            applyMaxWidth(entry.maxWidth, entry.screenWidth);
+        });
+        
+        // Apply dynamic stylesheet
+        var style = document.createElement("style");
+        style.innerHTML = styleContent;
+        document.head.appendChild(style);
+
         $navbarElt = $('.navbar');
         $leftBtnElts = $navbarElt.find('.left-buttons');
         $rightBtnElts = $navbarElt.find('.right-buttons');
-        $leftBtnDropdown = $navbarElt.find('.left-buttons-dropdown');
-        $rightBtnDropdown = $navbarElt.find('.right-buttons-dropdown');
+        $btnDropdown = $navbarElt.find('.buttons-dropdown');
+        $titleContainer = $navbarElt.find('.title-container');
         $(window).bind("resize", adjustWindow);
-        
+
         // Initialize utils library
         utils.init();
-        
+
         // Populate shortcuts in settings
         shortcutMgr.addSettingEntries();
-        
+
         // Hide shortcuts settings if light mode
         if(window.lightMode) {
             $('.tab-settings-shortcuts').hide();
@@ -767,32 +837,30 @@ define([
         });
 
         // Editor
-        if(window.lightMode) {
+        if(window.preMode) {
+            // In light mode, we replace ACE with a textarea
+            $('#wmd-input').addClass('form-control').attr('contenteditable', true);
+            
+            // Create UI layout after textarea
+            createLayout();
+        }
+        else if(window.lightMode) {
             // In light mode, we replace ACE with a textarea
             $('#wmd-input').replaceWith(function() {
                 return $('<textarea id="wmd-input">').addClass(this.className).addClass('form-control');
             });
+            
+            // Create UI layout after textarea
+            createLayout();
         }
-        
-        $editorElt = $("#wmd-input, .textarea-helper").css({
-            // Apply editor font
-            "font-family": settings.editorFontFamily,
-            "font-size": settings.editorFontSize + "px",
-            "line-height": Math.round(settings.editorFontSize * (20 / 12)) + "px"
-        });
-        
-        if(!window.lightMode) {
+        else {
+            // Create UI layout before ACE editor
+            createLayout();
+
             // ACE editor
             createAceEditor();
-
-            // Editor's element
-            $editorElt.find('.ace_content').css({
-                "background-size": "64px " + Math.round(settings.editorFontSize * (20 / 12)) + "px",
-            });
         }
-
-        // UI layout
-        createLayout();
+        $editorElt = $('#wmd-input');
 
         // Do periodic tasks
         intervalId = window.setInterval(function() {
@@ -811,7 +879,7 @@ define([
 
     // Other initialization that are not prioritary
     eventMgr.addListener("onReady", function() {
-        
+
         // In vertical mode, we have to offset the editor buttons otherwise they hide the editor buttons
         if(!window.viewerMode && settings.layoutOrientation == "vertical") {
             $previewButtonsElt.css('right', parseInt($previewButtonsElt.css('right')) + $editorButtonsElt.width());
@@ -845,7 +913,7 @@ define([
                 $(this).find(".modal-footer a:last").click();
             }
         });
-        
+
         // Hide menu panel when clicking 'Save as' button
         $('.collapse-save-as a').click(function() {
             $menuPanelElt.collapse('hide');
@@ -1008,7 +1076,7 @@ define([
                 });
             });
         }
-        
+
         createTooltip(".tooltip-lazy-rendering", 'Disable preview rendering while typing in order to offload CPU. Refresh preview after 500 ms of inactivity.');
         createTooltip(".tooltip-default-content", [
             'Thanks for supporting StackEdit by adding a backlink in your documents!<br/><br/>',
@@ -1028,7 +1096,7 @@ define([
             keyboard: false,
             show: false
         });
-        
+
         // Load images
         _.each(document.querySelectorAll('img'), function(imgElt) {
             var $imgElt = $(imgElt);

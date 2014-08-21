@@ -9,99 +9,93 @@
 @kbd-border-color: fade(@text-color, 25%);
 @blockquote-border-color: #eee;
 @blockquote-bg: #f8f8f8;
-@title-base-size: 14px;
+@title-base-size: 1em;
 @code-color: @text-color;
 @code-bg: fade(@text-color, 4%);
 @pre-bg: @blockquote-bg;
 @pre-border-color: @blockquote-border-color;
-
+@font-size-base: 15px;
+@line-height-base: 1.45;
+@p-margin: 1.1em;
 
 @font-face {
-    font-family: 'Open Sans';
+    font-family: 'Source Sans Pro';
     font-style: normal;
     font-weight: 300;
-    src: local('Open Sans Light'), local('OpenSans-Light'), url("../font/OpenSans-Light-webfont.woff") format('woff');
+    src: local('Source Sans Pro Light'), local('SourceSansPro-Light'), url("../font/SourceSansPro-Light-webfont.woff") format('woff');
 }
 @font-face {
-    font-family: 'Open Sans';
+    font-family: 'Source Sans Pro';
     font-style: normal;
     font-weight: 400;
-    src: local('Open Sans'), local('OpenSans'), url("../font/OpenSans-Regular-webfont.woff") format('woff');
+    src: local('Source Sans Pro'), local('SourceSansPro'), url("../font/SourceSansPro-Regular-webfont.woff") format('woff');
 }
 @font-face {
-    font-family: 'Open Sans';
+    font-family: 'Source Sans Pro';
     font-style: normal;
     font-weight: 700;
-    src: local('Open Sans Bold'), local('OpenSans-Bold'), url("../font/OpenSans-Bold-webfont.woff") format('woff');
+    src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url("../font/SourceSansPro-Bold-webfont.woff") format('woff');
 }
 @font-face {
-    font-family: 'Open Sans';
+    font-family: 'Source Sans Pro';
     font-style: italic;
     font-weight: 300;
-    src: local('Open Sans Light Italic'), local('OpenSansLight-Italic'), url("../font/OpenSans-LightItalic-webfont.woff") format('woff');
+    src: local('Source Sans Pro Light Italic'), local('SourceSansProLight-Italic'), url("../font/SourceSansPro-LightItalic-webfont.woff") format('woff');
 }
 @font-face {
-    font-family: 'Open Sans';
+    font-family: 'Source Sans Pro';
     font-style: italic;
     font-weight: 400;
-    src: local('Open Sans Italic'), local('OpenSans-Italic'), url("../font/OpenSans-Italic-webfont.woff") format('woff');
+    src: local('Source Sans Pro Italic'), local('SourceSansPro-Italic'), url("../font/SourceSansPro-Italic-webfont.woff") format('woff');
 }
 @font-face {
-    font-family: 'Open Sans';
+    font-family: 'Source Sans Pro';
     font-style: italic;
     font-weight: 700;
-    src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url("../font/OpenSans-BoldItalic-webfont.woff") format('woff');
-}
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    @font-face {
-        font-family: 'Open Sans';
-        font-style: normal;
-        font-weight: 300;
-        src: local('Open Sans Light'), local('OpenSans-Light'), url('../font/OpenSans-Light-webfont.svg') format('svg');
-    }
-}
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    @font-face {
-        font-family: 'Open Sans';
-        font-style: normal;
-        font-weight: 400;
-        src: local('Open Sans'), local('OpenSans'), url('../font/OpenSans-Regular-webfont.svg') format('svg');
-    }
-}
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    @font-face {
-        font-family: 'Open Sans';
-        font-style: normal;
-        font-weight: 700;
-        src: local('Open Sans Bold'), local('OpenSans-Bold'), url('../font/OpenSans-Bold-webfont.svg') format('svg');
-    }
-}
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    @font-face {
-        font-family: 'Open Sans';
-        font-style: italic;
-        font-weight: 300;
-        src: local('Open Sans Light Italic'), local('OpenSansLight-Italic'), url('../font/OpenSans-LightItalic-webfont.svg') format('svg');
-    }
-}
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    @font-face {
-        font-family: 'Open Sans';
-        font-style: italic;
-        font-weight: 400;
-        src: local('Open Sans Italic'), local('OpenSans-Italic'), url('../font/OpenSans-Italic-webfont.svg') format('svg');
-    }
-}
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    @font-face {
-        font-family: 'Open Sans';
-        font-style: italic;
-        font-weight: 700;
-        src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url('../font/OpenSans-BoldItalic-webfont.svg') format('svg');
-    }
+    src: local('Source Sans Pro Bold Italic'), local('SourceSansPro-BoldItalic'), url("../font/SourceSansPro-BoldItalic-webfont.woff") format('woff');
 }
 
-@font-family-sans-serif: 'Open Sans', "Trebuchet MS", Helvetica, sans-serif;
+@font-face {
+    font-family: 'Source Code Pro';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Source Code Pro'), local('SourceCodePro-Regular'), url("../font/SourceCodePro-Regular-webfont.woff") format('woff');
+}
+@font-face {
+    font-family: 'Source Code Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Source Code Pro Bold'), local('SourceCodePro-Bold'), url("../font/SourceCodePro-Bold-webfont.woff") format('woff');
+}
+
+@font-face {
+    font-family: 'Anonymous Pro';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Anonymous Pro'), local('AnonymousPro'), url("../font/AnonymousPro-Regular-webfont.woff") format('woff');
+}
+@font-face {
+    font-family: 'Anonymous Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Anonymous Pro Bold'), local('AnonymousPro-Bold'), url("../font/AnonymousPro-Bold-webfont.woff") format('woff');
+}
+@font-face {
+    font-family: 'Anonymous Pro';
+    font-style: italic;
+    font-weight: 400;
+    src: local('Anonymous Pro Italic'), local('AnonymousPro-Italic'), url("../font/AnonymousPro-Italic-webfont.woff") format('woff');
+}
+@font-face {
+    font-family: 'Anonymous Pro';
+    font-style: italic;
+    font-weight: 700;
+    src: local('Anonymous Pro Bold Italic'), local('AnonymousPro-BoldItalic'), url("../font/AnonymousPro-BoldItalic-webfont.woff") format('woff');
+}
+
+@font-family-sans-serif: "Source Sans Pro", sans-serif;
+@font-family-monospace: "Source Code Pro", monospace;
+@font-family-monospace-letter-spacing: -0.02em;
 
 body {
     -webkit-font-smoothing: antialiased;
@@ -131,43 +125,32 @@ a code {
 	color: inherit;
 }
 
-h1 { font-size: floor(@title-base-size * 2.60); }
-h2 { font-size: floor(@title-base-size * 2.15); }
-h3 { font-size: ceil(@title-base-size * 1.70); }
-h4 { font-size: ceil(@title-base-size * 1.25); }
-h5 { font-size:  @title-base-size; }
-h6 { font-size: ceil(@title-base-size * 0.85); }
+h1 { font-size: @title-base-size * 2.60; }
+h2 { font-size: @title-base-size * 2.15; }
+h3 { font-size: @title-base-size * 1.70; }
+h4 { font-size: @title-base-size * 1.25; }
+h5 { font-size: @title-base-size; }
+h6 { font-size: @title-base-size * 0.85; }
 
-h1 {
-	margin: 60px 0 40px;
-}
-
-h2 {
-	margin: 50px 0 30px;
-}
-
-h3 {
-	margin: 35px 0 20px;
-}
-
-h4, h5, h6 {
-	margin: 25px 0 15px;
+h1, h2, h3, h4, h5, h6 {
+	margin: 1.3em 0;
 }
 
 p,
 pre,
 pre.prettyprint,
 blockquote {
-	margin: 0 0 15px;
+	margin: 0 0 @p-margin;
 }
 
 hr {
-	margin: 30px 0;
+	margin: 2em 0;
 }
 
 code, pre {
-	font-family: Menlo, Consolas, "Courier New", monospace;
-	font-size: 12px !important;
+	font-family: @font-family-monospace;
+    letter-spacing: @font-family-monospace-letter-spacing;
+	font-size: 0.95em !important;
 }
 
 pre, pre.prettyprint {
@@ -229,8 +212,8 @@ blockquote {
 	border-bottom-right-radius: 5px;
 	padding: 15px 20px;
 	p {
-	    margin-bottom: 15px;
-	    font-size: @font-size-base;
+	    margin-bottom: @p-margin;
+	    font-size: 1em;
 	    line-height: @line-height-base;
 	}
 	
@@ -241,9 +224,9 @@ blockquote {
 }
 
 ul,ol {
-	margin-bottom: 15px;
+	margin-bottom: @p-margin;
 	ul,ol {
-		margin-bottom: 15px;
+		margin-bottom: @p-margin;
 	}
 }
 
@@ -279,14 +262,14 @@ kbd {
 
 [class^="icon-"], [class*=" icon-"] {
 	display: inline-block;
-	line-height: 14px;
+	line-height: 1.2em;
 	vertical-align: middle;
 	background-repeat: no-repeat;
 }
 
 // Custom icons (not from Font Awesome)
 .icon-code {
-	font-size: 80%;
+	font-size: 83%;
 	&:before {
     	margin-left: 0.1em;
     	margin-right: 0.6em;

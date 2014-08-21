@@ -33,7 +33,7 @@ define([
     };
 
     buttonPublish.onCreateButton = function() {
-        var button = crel('button', {
+        var button = crel('a', {
             class: 'btn btn-success button-publish',
             title: 'Update document publication'
         }, crel('i', {

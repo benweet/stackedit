@@ -2,7 +2,7 @@
 	<div class="navbar-inner">
 		<div class="nav left-space"></div>
 		<div class="nav right-space pull-right"></div>
-		<div class="left-buttons-dropdown dropdown">
+		<div class="buttons-dropdown dropdown">
     		<div class="nav">
         		<button class="btn btn-success" data-toggle="dropdown"
             		title="Show buttons">
@@ -24,25 +24,6 @@
 		<ul class="nav left-buttons">
 			<li class="wmd-button-group4 btn-group"></li>
 		</ul>
-		<div class="right-buttons-dropdown dropdown">
-    		<div class="nav pull-right">
-        		<button class="btn btn-success" data-toggle="dropdown"
-            		title="Show buttons">
-            		<i class="icon-th-large"></i>
-            	</button>
-    		    <div class="dropdown-menu">
-        		</div>
-        	</div>
-		</div>
-		<ul class="nav pull-right right-buttons">
-			<li class="btn-group"><button
-					class="btn btn-success action-create-file" title="New document">
-					<i class="icon-file"></i>
-				</button>
-				<button class="btn btn-success action-remove-file-confirm" title="Delete document">
-					<i class="icon-trash"></i>
-				</button></li>
-		</ul>
 		<ul class="nav pull-right right-buttons">
 			<li class="offline-status hide">
 			    <div class="text-danger">
@@ -51,12 +32,12 @@
 			</li>
 			<li class="extension-buttons"></li>
 		</ul>
-		<ul class="nav pull-right">
+		<ul class="nav pull-right title-container">
 			<li><div class="working-indicator"></div></li>
 			<li><a class="btn btn-success file-title-navbar" href="#"
 				title="Rename document"> </a></li>
 			<li><div class="input-file-title-container"><input type="text"
-				class="col-lg-4 form-control hide input-file-title"
+				class="col-sm-4 form-control hide input-file-title"
 				placeholder="Document title" /></div></li>
 		</ul>
 	</div>
@@ -76,106 +57,99 @@
 		<div class="list-group">
 			<a href="viewer" title="StackEdit Viewer"
 				class="list-group-item"><i class="icon-resize-full"></i>
-				StackEdit Viewer</a> <a href="#" data-toggle="collapse"
-				data-target=".collapse-open-from" class="list-group-item"><i
-				class="icon-hdd"></i> Open from...</a>
-			<div class="sub-menu collapse collapse-open-from clearfix">
-				<ul class="nav">
-					<li><a data-toggle="modal" data-target=".modal-import-url"
-						class="action-reset-input" href="#">Open from URL</a></li>
-					<li><a data-toggle="modal"
-						data-target=".modal-import-harddrive-markdown"
-						class="action-reset-input" href="#">Import from hard drive</a></li>
-					<li><a data-toggle="modal"
-						data-target=".modal-import-harddrive-html"
-						class="action-reset-input" href="#">Convert HTML to Markdown</a></li>
-				</ul>
-			</div>
-
+				StackEdit Viewer</a>
+            
+		</div>
+        <div class=dropdown-header>EXPORT</div>
+		<div class="list-group">
 			<a href="#" data-toggle="collapse" data-target=".collapse-save-as"
-				class="list-group-item"><i class="icon-hdd"></i> Save as...</a>
+				class="list-group-item"><i class="icon-hdd"></i> Save...</a>
 			<div class="sub-menu collapse collapse-save-as clearfix">
 				<ul class="nav">
-					<li><a class="action-download-md" href="#">Save as
-							Markdown</a></li>
-					<li><a class="action-download-html" href="#">Save as HTML</a></li>
-					<li><a class="action-download-template" href="#">Save
-							using template</a></li>
-					<li><a class="action-download-pdf" href="#">Save as PDF</a></li>
+					<li><a class="action-download-md" href="#"><i
+				        class="icon-download"></i> Save as Markdown</a></li>
+					<li><a class="action-download-html" href="#"><i
+				        class="icon-download"></i> Save as HTML</a></li>
+					<li><a class="action-download-template" href="#"><i
+				        class="icon-download"></i> Save using template</a></li>
+					<li><a class="action-download-pdf" href="#"><i
+				        class="icon-download"></i> Save as PDF</a></li>
 				</ul>
 			</div>
-		</div>
-		<div class=dropdown-header>SYNCHRONIZE</div>
-		<div class="list-group">
-			<a href="#" data-toggle="collapse"
-				data-target=".collapse-sync-gdrive" class="list-group-item submenu-sync-gdrive"><i
-				class="icon-provider-gdrive"></i> Google Drive</a>
-			<div class="sub-menu collapse collapse-sync-gdrive clearfix">
+			<a href="#" data-toggle="collapse" data-target=".collapse-synchronize"
+				class="list-group-item"><i
+				class="icon-refresh"></i> Synchronize...</a>
+			<div class="sub-menu collapse collapse-synchronize clearfix">
 				<ul class="nav">
-					<li><a href="#" class="action-sync-import-gdrive"
-						data-toggle="collapse" data-target=".menu-panel">Import from
-							Google Drive</a></li>
-					<li><a href="#" class="action-sync-export-dialog-gdrive">Export
-							to Google Drive</a></li>
-					<li><a href="#" class="action-autosync-dialog-gdrive">AutoSync...</a></li>
-				</ul>
-			</div>
-			<a href="#" data-toggle="collapse"
-				data-target=".collapse-sync-gdrivesec" class="list-group-item submenu-sync-gdrivesec"><i
-				class="icon-provider-gdrive"></i> Google Drive (2nd account)</a>
-			<div class="sub-menu collapse collapse-sync-gdrivesec clearfix">
+                    <li><a href="#" data-toggle="modal" data-target=".modal-manage-sync"
+                        class="action-reset-input"><i
+                        class="icon-refresh"></i> Manage synchronization</a></li>
+                </ul>
 				<ul class="nav">
-					<li><a href="#" class="action-sync-import-gdrivesec"
-						data-toggle="collapse" data-target=".menu-panel">Import from
-							Google Drive</a></li>
-					<li><a href="#" class="action-sync-export-dialog-gdrivesec">Export
-							to Google Drive</a></li>
-					<li><a href="#" class="action-autosync-dialog-gdrivesec">AutoSync...</a></li>
+					<li><a href="#" class="action-sync-export-dialog-dropbox"><i
+				        class="icon-provider-dropbox"></i> Export to Dropbox</a></li>
+					<li><a href="#" class="submenu-sync-gdrive action-sync-export-dialog-gdrive"><i
+				        class="icon-provider-gdrive"></i> Export to Google Drive</a></li>
+					<li><a href="#" class="submenu-sync-gdrivesec action-sync-export-dialog-gdrivesec"><i
+				        class="icon-provider-gdrive"></i> Export to Google Drive <small>(2nd account)</small></a></li>
+					<li><a href="#" class="submenu-sync-gdriveter action-sync-export-dialog-gdriveter"><i
+				        class="icon-provider-gdrive"></i> Export to Google Drive <small>(3rd account)</small></a></li>
+					<li><a href="#" class="submenu-sync-gdrive action-autosync-dialog-gdrive"><i
+				        class="icon-provider-gdrive"></i> Google Drive AutoSync</a></li>
+					<li><a href="#" class="submenu-sync-gdrivesec action-autosync-dialog-gdrivesec"><i
+				        class="icon-provider-gdrive"></i> Google Drive AutoSync <small>(2nd account)</small></a></li>
+					<li><a href="#" class="submenu-sync-gdriveter action-autosync-dialog-gdriveter"><i
+				        class="icon-provider-gdrive"></i> Google Drive AutoSync <small>(3rd account)</small></a></li>
 				</ul>
 			</div>
-			<a href="#" data-toggle="collapse"
-				data-target=".collapse-sync-gdriveter" class="list-group-item submenu-sync-gdriveter"><i
-				class="icon-provider-gdrive"></i> Google Drive (3rd account)</a>
-			<div class="sub-menu collapse collapse-sync-gdriveter clearfix">
-				<ul class="nav">
-					<li><a href="#" class="action-sync-import-gdriveter"
-						data-toggle="collapse" data-target=".menu-panel">Import from
-							Google Drive</a></li>
-					<li><a href="#" class="action-sync-export-dialog-gdriveter">Export
-							to Google Drive</li>
-					<li><a href="#" class="action-autosync-dialog-gdriveter">AutoSync...</a></li>
-				</ul>
-			</div>
-			<a href="#" data-toggle="collapse"
-				data-target=".collapse-sync-dropbox" class="list-group-item"><i
-				class="icon-provider-dropbox"></i> Dropbox</a>
-			<div class="sub-menu collapse collapse-sync-dropbox clearfix">
-				<ul class="nav">
-					<li><a class="action-sync-import-dropbox" href="#"
-						data-toggle="collapse" data-target=".menu-panel">Import from
-							Dropbox</a></li>
-					<li><a href="#" class="action-sync-export-dialog-dropbox">Export
-							to Dropbox</a></li>
-				</ul>
-			</div>
-			<a href="#" data-toggle="modal" data-target=".modal-manage-sync"
-				class="action-reset-input list-group-item"><i
-				class="icon-refresh"></i> Manage synchronization</a>
-		</div>
-		<div class=dropdown-header>PUBLISH</div>
-		<div class="list-group">
 			<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"
-				class="list-group-item"><i class="icon-share"></i> Publish on...</a>
+				class="list-group-item"><i class="icon-share"></i> Publish...</a>
 			<div class="sub-menu collapse collapse-publish-on clearfix">
-				<ul class="nav">
+				<ul class="nav alert alert-danger show-already-published">
+                    <li><div>"<span class="file-title"></span>" is already published.</div></li>
+                    <li><a href="#" class="action-update-publication"
+                        data-toggle="collapse" data-target=".menu-panel"><i class="icon-share"></i>
+                        Update publication</a></li>
+                    <li><a href="#" data-toggle="modal" data-target=".modal-manage-publish"
+                        class="action-reset-input"><i class="icon-share"></i>
+                        Manage publishing</a></li>
+				</ul>
+				<ul class="nav publish-on-provider-list">
 				</ul>
 			</div>
-			<a href="#" data-toggle="modal" data-target=".modal-manage-publish"
-				class="action-reset-input list-group-item"><i class="icon-share"></i>
-				Manage publication</a>
 			<a href="#" data-toggle="modal" data-target=".modal-manage-sharing"
 				class="action-reset-input list-group-item"><i class="icon-provider-stackedit"></i>
 				Sharing...</a>
+		</div>
+        <div class=dropdown-header>IMPORT</div>
+		<div class="list-group">
+            <a data-toggle="modal"
+                data-target=".modal-import-harddrive-markdown"
+                class="list-group-item action-reset-input" href="#"><i
+				class="icon-hdd"></i> Open from disk</a>
+            <a data-toggle="modal" data-target=".modal-import-url"
+                class="list-group-item action-reset-input" href="#"><i
+				class="icon-globe"></i> Open from URL</a>
+            <a data-toggle="modal"
+				data-target=".modal-import-harddrive-html"
+				class="list-group-item action-reset-input" href="#"><i
+				class="icon-code"></i> Convert HTML to Markdown</a>
+            <a class="list-group-item action-sync-import-dropbox" href="#"
+                data-toggle="collapse" data-target=".menu-panel"><i
+				class="icon-provider-dropbox"></i> Import from
+                    Dropbox</a>
+            <a href="#" class="list-group-item submenu-sync-gdrive action-sync-import-gdrive"
+                data-toggle="collapse" data-target=".menu-panel"><i
+				class="icon-provider-gdrive"></i> Import from
+                    Google Drive</a>
+            <a href="#" class="list-group-item submenu-sync-gdrivesec action-sync-import-gdrivesec"
+                data-toggle="collapse" data-target=".menu-panel"><i
+				class="icon-provider-gdrive"></i> Import from
+                    Google Drive <small>(2nd account)</small></a>
+            <a href="#" class="list-group-item submenu-sync-gdriveter action-sync-import-gdriveter"
+                data-toggle="collapse" data-target=".menu-panel"><i
+				class="icon-provider-gdrive"></i> Import from
+                    Google Drive <small>(3rd account)</small></a>
 		</div>
 		<ul class="nav">
 			<li><a href="#" data-toggle="modal"
@@ -195,14 +169,17 @@
 		<i class="icon-folder-open"></i>
 	</button>
 	<div class="search-bar clearfix">
+		<ul class="nav">
+			<li><a href="#" class="action-create-file" data-toggle="collapse" data-target=".document-panel"><i
+					class="icon-file"></i> New document</a></li>
+			<li><a href="#" class="action-remove-file-confirm"><i
+					class="icon-trash"></i> Delete document</a></li>
+			<li><a href="#" data-toggle="modal" data-target=".modal-document-manager"><i
+					class="icon-layers"></i> Manage documents</a></li>
+        </ul>
 		<div class="input-group">
 			<span class="input-group-addon"><i class="icon-search"></i></span><input
-				type="text" class="form-control"></input>
-			<div class="input-group-btn">
-				<a data-toggle="modal" data-target=".modal-document-manager"
-					class="btn btn-link" title="Manage documents"><i
-					class="icon-layers"></i></a>
-			</div>
+				type="text" class="form-control" placeholder="Find document"></input>
 		</div>
 	</div>
 	<div class="panel-content">
@@ -219,7 +196,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h3 class="modal-title">Manage documents</h3>
+				<h2 class="modal-title">Manage documents</h2>
 			</div>
 			<div class="modal-body">
 				<div></div>
@@ -275,13 +252,13 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h3 class="modal-title">Hyperlink</h3>
+				<h2 class="modal-title">Hyperlink</h2>
 			</div>
 			<div class="modal-body">
 				<p>Please provide the link URL and an optional title:</p>
 				<div class="input-group">
 					<span class="input-group-addon"><i class="icon-globe"></i></span><input
-						id="input-insert-link" type="text" class="col-lg-5 form-control"
+						id="input-insert-link" type="text" class="col-sm-5 form-control"
 						placeholder='http://example.com/ "optional title"'></input>
 				</div>
 			</div>
@@ -302,13 +279,13 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h3 class="modal-title">Image</h3>
+				<h2 class="modal-title">Image</h2>
 			</div>
 			<div class="modal-body">
 				<p>Please provide the image URL and an optional title:</p>
 				<div class="input-group">
 					<span class="input-group-addon"><i class="icon-picture"></i></span><input
-						id="input-insert-image" type="text" class="col-lg-5 form-control"
+						id="input-insert-image" type="text" class="col-sm-5 form-control"
 						placeholder='http://example.com/image.jpg "optional title"'></input>
 				</div>
 			</div>
@@ -331,29 +308,29 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h3 class="modal-title">Google+ image import</h3>
+				<h2 class="modal-title">Google+ image import</h2>
 			</div>
 			<div class="modal-body">
 				<div class="form-horizontal">
 					<div class="form-group">
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<img>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-4 control-label"
+						<label class="col-sm-4 control-label"
 							for="input-import-image-title">Title (optional)</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<input type="text" id="input-import-image-title"
 								placeholder="Image title" class="form-control">
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-4 control-label"
+						<label class="col-sm-4 control-label"
 							for="input-import-image-size">Size limit (optional)</label>
-						<div class="col-lg-7 form-inline">
+						<div class="col-sm-7 form-inline">
 							<input type="text" id="input-import-image-size" placeholder="0"
-								class="col-lg-3 form-control"> px
+								class="col-sm-3 form-control"> px
 						</div>
 					</div>
 				</div>
@@ -375,14 +352,14 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h3 class="modal-title">Delete</h3>
+				<h2 class="modal-title">Delete</h2>
 			</div>
 			<div class="modal-body">
 				<p>
 					Are you sure you want to delete "<span class="file-title"></span>"?
 				</p>
 				<blockquote>
-					<b>NOTE:</b> This will not delete the file on synchronized
+					<b>Note:</b> This will not delete the file on synchronized
 					locations.
 				</blockquote>
 			</div>
@@ -403,14 +380,14 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h3 class="modal-title">Open from URL</h3>
+				<h2 class="modal-title">Open from URL</h2>
 			</div>
 			<div class="modal-body">
 				<p>Please provide a link to a Markdown document.</p>
 				<div class="form-horizontal">
 					<div class="form-group">
-						<label class="col-lg-3 control-label" for="input-import-url">URL</label>
-						<div class="col-lg-8">
+						<label class="col-sm-3 control-label" for="input-import-url">URL</label>
+						<div class="col-sm-8">
 							<input type="text" id="input-import-url"
 								placeholder="http://www.abc.com/xyz.md" class="form-control">
 						</div>
@@ -434,7 +411,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h3 class="modal-title">Import from hard drive</h3>
+				<h2 class="modal-title">Import from disk</h2>
 			</div>
 			<div class="modal-body">
 				<p>Please select your Markdown files here:</p>
@@ -461,7 +438,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h3 class="modal-title">Convert HTML to Markdown</h3>
+				<h2 class="modal-title">Convert HTML to Markdown</h2>
 			</div>
 			<div class="modal-body">
 				<p>Please select your HTML files here:</p>
@@ -508,7 +485,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h3 class="modal-title">Export to Dropbox</h3>
+				<h2 class="modal-title">Export to Dropbox</h2>
 			</div>
 			<div class="modal-body">
 				<p>
@@ -519,9 +496,9 @@
 				</p>
 				<div class="form-horizontal">
 					<div class="form-group">
-						<label class="col-lg-3 control-label"
+						<label class="col-sm-3 control-label"
 							for="input-sync-export-dropbox-path">File path</label>
-						<div class="col-lg-8">
+						<div class="col-sm-8">
 							<input type="text" id="input-sync-export-dropbox-path"
 								placeholder="/path/to/My Document.md" class="form-control">
 							<span class="help-block"> File path is composed of both
@@ -530,7 +507,7 @@
 					</div>
 				</div>
 				<blockquote>
-					<b>NOTE:</b>
+					<b>Note:</b>
 					<ul>
 						<li>Dropbox file path does not depend on document title.</li>
 						<li>The title of your document will not be synchronized.</li>
@@ -556,7 +533,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h3 class="modal-title">Synchronization</h3>
+				<h2 class="modal-title">Synchronization</h2>
 			</div>
 			<div class="modal-body">
 				<p class="msg-sync-list hide">
@@ -565,7 +542,7 @@
 				</p>
 				<div class="msg-sync-list sync-list hide"></div>
 				<blockquote class="msg-sync-list hide">
-					<b>NOTE:</b> Removing a synchronized location will not delete any
+					<b>Note:</b> Removing a synchronized location will not delete any
 					file.
 				</blockquote>
 				<p class="msg-no-sync hide">"<span class="file-title"></span>" is not synchronized yet.</p>
@@ -593,15 +570,15 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h3 class="modal-title">
+				<h2 class="modal-title">
 					Publish on <span class="publish-provider-name"></span>
-				</h3>
+				</h2>
 			</div>
 			<div class="modal-body">
 				<div class="form-horizontal">
 					<div class="form-group modal-publish-ssh">
-						<label class="col-lg-4 control-label" for="input-publish-ssh-host">Host</label>
-						<div class="col-lg-7">
+						<label class="col-sm-4 control-label" for="input-publish-ssh-host">Host</label>
+						<div class="col-sm-7">
 							<input type="text" id="input-publish-ssh-host"
 								placeholder="host.name.or.ip" class="form-control"> <span
 								class="help-block"> Host must be accessible publicly,
@@ -612,57 +589,57 @@
 						</div>
 					</div>
 					<div class="form-group modal-publish-ssh">
-						<label class="col-lg-4 control-label" for="input-publish-ssh-port">Port
+						<label class="col-sm-4 control-label" for="input-publish-ssh-port">Port
 							(optional)</label>
-						<div class="col-lg-2">
+						<div class="col-sm-2">
 							<input type="text" id="input-publish-ssh-port" placeholder="22"
 								class="form-control">
 						</div>
 					</div>
 					<div class="form-group modal-publish-ssh">
-						<label class="col-lg-4 control-label"
+						<label class="col-sm-4 control-label"
 							for="input-publish-ssh-username">Username</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<input type="text" id="input-publish-ssh-username"
 								placeholder="username" class="form-control">
 						</div>
 					</div>
 					<div class="form-group modal-publish-ssh">
-						<label class="col-lg-4 control-label"
+						<label class="col-sm-4 control-label"
 							for="input-publish-ssh-password">Password</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<input type="password" id="input-publish-ssh-password"
 								placeholder="password" class="form-control">
 						</div>
 					</div>
 					<div class="form-group modal-publish-github">
-						<label class="col-lg-4 control-label"
+						<label class="col-sm-4 control-label"
 							for="input-publish-github-reponame">Repository</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<input type="text" id="input-publish-github-reponame"
 								placeholder="repository-name" class="form-control">
 						</div>
 					</div>
 					<div class="form-group modal-publish-github">
-						<label class="col-lg-4 control-label"
+						<label class="col-sm-4 control-label"
 							for="input-publish-github-username">Username (optional)</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<input type="text" id="input-publish-github-username"
 								placeholder="username" class="form-control">
 						</div>
 					</div>
 					<div class="form-group modal-publish-github">
-						<label class="col-lg-4 control-label"
+						<label class="col-sm-4 control-label"
 							for="input-publish-github-branch">Branch</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<input type="text" id="input-publish-github-branch"
 								placeholder="branch-name" class="form-control">
 						</div>
 					</div>
 					<div class="form-group modal-publish-ssh modal-publish-github">
-						<label class="col-lg-4 control-label"
+						<label class="col-sm-4 control-label"
 							for="input-publish-file-path">File path</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<input type="text" id="input-publish-file-path"
 								placeholder="path/to/file.md" class="form-control">
 							<span class="help-block"> File path is composed of both
@@ -670,24 +647,24 @@
 						</div>
 					</div>
 					<div class="form-group modal-publish-gist">
-						<label class="col-lg-4 control-label" for="input-publish-filename">Filename</label>
-						<div class="col-lg-7">
+						<label class="col-sm-4 control-label" for="input-publish-filename">Filename</label>
+						<div class="col-sm-7">
 							<input type="text" id="input-publish-filename"
 								placeholder="filename" class="form-control">
 						</div>
 					</div>
 					<div class="form-group modal-publish-gist">
-						<label class="col-lg-4 control-label" for="input-publish-gist-id">Existing
+						<label class="col-sm-4 control-label" for="input-publish-gist-id">Existing
 							ID (optional)</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<input type="text" id="input-publish-gist-id"
 								placeholder="GistID" class="form-control">
 						</div>
 					</div>
 					<div class="form-group modal-publish-gist">
-						<label class="col-lg-4 control-label"
+						<label class="col-sm-4 control-label"
 							for="input-publish-gist-public">Public</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<div class="checkbox">
 								<input type="checkbox" id="input-publish-gist-public"
 									checked="checked" />
@@ -695,25 +672,25 @@
 						</div>
 					</div>
 					<div class="form-group modal-publish-blogger modal-publish-bloggerpage">
-						<label class="col-lg-4 control-label"
+						<label class="col-sm-4 control-label"
 							for="input-publish-blogger-url">Blog URL</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<input type="text" id="input-publish-blogger-url"
 								placeholder="http://exemple.blogger.com/" class="form-control">
 						</div>
 					</div>
 					<div class="form-group modal-publish-tumblr">
-						<label class="col-lg-4 control-label"
+						<label class="col-sm-4 control-label"
 							for="input-publish-tumblr-hostname">Blog hostname</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<input type="text" id="input-publish-tumblr-hostname"
 								placeholder="exemple.tumblr.com" class="form-control">
 						</div>
 					</div>
 					<div class="form-group modal-publish-wordpress">
-						<label class="col-lg-4 control-label"
+						<label class="col-sm-4 control-label"
 							for="input-publish-tumblr-hostname">WordPress site</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<input type="text" id="input-publish-wordpress-site"
 								placeholder="exemple.wordpress.com" class="form-control">
 							<span class="help-block"> <a target="_blank"
@@ -724,26 +701,26 @@
 					</div>
 					<div
 						class="form-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">
-						<label class="col-lg-4 control-label" for="input-publish-postid">Update
+						<label class="col-sm-4 control-label" for="input-publish-postid">Update
 							existing post ID (optional)</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<input type="text" id="input-publish-postid" placeholder="PostID"
 								class="form-control">
 						</div>
 					</div>
 					<div
 						class="form-group modal-publish-bloggerpage">
-						<label class="col-lg-4 control-label" for="input-publish-pageid">Update
+						<label class="col-sm-4 control-label" for="input-publish-pageid">Update
 							existing page ID (optional)</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<input type="text" id="input-publish-pageid" placeholder="PageID"
 								class="form-control">
 						</div>
 					</div>
 					<div class="form-group modal-publish-dropbox">
-						<label class="col-lg-4 control-label"
+						<label class="col-sm-4 control-label"
 							for="input-publish-dropbox-path">File path</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<input type="text" id="input-publish-dropbox-path"
 								placeholder="/path/to/My Document.html" class="form-control">
 							<span class="help-block"> File path is composed of both
@@ -751,9 +728,9 @@
 						</div>
 					</div>
 					<div class="form-group modal-publish-gdrive">
-						<label class="col-lg-4 control-label"
+						<label class="col-sm-4 control-label"
 							for="input-publish-gdrive-fileid">File ID (optional)</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<input type="text" id="input-publish-gdrive-fileid"
 								placeholder="FileID" class="form-control"> <span
 								class="help-block">If no file ID is supplied, a new file
@@ -762,10 +739,10 @@
 						</div>
 					</div>
 					<div class="form-group modal-publish-gdrive">
-						<label class="col-lg-4 control-label"
+						<label class="col-sm-4 control-label"
 							for="input-publish-gdrive-filename">Force filename
 							(optional)</label>
-						<div class="col-lg-7">
+						<div class="col-sm-7">
 							<input type="text" id="input-publish-gdrive-filename"
 								placeholder="Filename" class="form-control"> <span
 								class="help-block">If no file name is supplied, the
@@ -774,8 +751,8 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-lg-4 control-label">Format</label>
-						<div class="col-lg-7">
+						<label class="col-sm-4 control-label">Format</label>
+						<div class="col-sm-7">
 							<div class="radio">
 								<label> <input type="radio" name="radio-publish-format"
 									value="markdown"> Markdown
@@ -795,8 +772,8 @@
 					</div>
 					<div class="collapse publish-custom-template-collapse">
 						<div class="form-group">
-							<div class="col-lg-4"></div>
-							<div class="col-lg-7">
+							<div class="col-sm-4"></div>
+							<div class="col-sm-7">
 								<div class="checkbox">
 									<label> <input type="checkbox"
 										id="checkbox-publish-custom-template"> Custom template
@@ -805,8 +782,8 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<div class="col-lg-4"></div>
-							<div class="col-lg-7">
+							<div class="col-sm-4"></div>
+							<div class="col-sm-7">
 								<textarea class="form-control"
 									id="textarea-publish-custom-template"></textarea>
 							</div>
@@ -849,22 +826,16 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h3 class="modal-title">Publication</h3>
+				<h2 class="modal-title">Publication</h2>
 			</div>
 			<div class="modal-body">
-				<p class="msg-publish-list hide">
+				<p>
 					"<span class="file-title"></span>" is published on the following
 					location(s):
 				</p>
-				<div class="msg-publish-list publish-list hide"></div>
-				<blockquote class="msg-publish-list hide">
-					<b>NOTE:</b> Removing a publish location will not delete the actual publication.
-				</blockquote>
-				<p class="msg-no-publish hide">
-					"<span class="file-title"></span>" is not published yet.
-				</p>
-				<blockquote class="msg-no-publish hide">
-					<b>Tip:</b> You can add publications using the <i class="icon-share"></i> <code>Publish on</code> sub-menu.
+				<div class="publish-list"></div>
+				<blockquote>
+					<b>Note:</b> Removing a publish location will not delete the actual publication.
 				</blockquote>
 			</div>
 			<div class="modal-footer">
@@ -882,7 +853,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h3 class="modal-title">Sharing</h3>
+				<h2 class="modal-title">Sharing</h2>
 			</div>
 			<div class="modal-body">
 				<p class="msg-share-list hide">
@@ -917,7 +888,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h3 class="modal-title">Settings</h3>
+				<h2 class="modal-title">Settings</h2>
 				<ul class="nav nav-tabs">
 					<li class="active"><a class="action-load-settings"
 						href="#tabpane-settings-basic" data-toggle="tab">Basic</a></li>
@@ -937,8 +908,8 @@
 					<div class="tab-pane active" id="tabpane-settings-basic">
 						<div class="form-horizontal">
 							<div class="form-group">
-								<label class="col-lg-4 control-label">Layout orientation</label>
-								<div class="col-lg-7">
+								<label class="col-sm-4 control-label">Layout orientation</label>
+								<div class="col-sm-7">
 									<div class="radio">
 										<label> <input type="radio"
 											name="radio-layout-orientation" value="horizontal">
@@ -954,15 +925,15 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-lg-4 control-label" for="input-settings-theme">Theme</label>
-								<div class="col-lg-7">
+								<label class="col-sm-4 control-label" for="input-settings-theme">Theme</label>
+								<div class="col-sm-7">
 									<select id="input-settings-theme" class="form-control">
 									</select>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="col-lg-4"></div>
-								<div class="col-lg-7">
+								<div class="col-sm-4"></div>
+								<div class="col-sm-7">
 									<div class="checkbox">
 									    <label>
 										    <input type="checkbox" id="input-settings-markdown-extra" />
@@ -972,8 +943,8 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="col-lg-4"></div>
-								<div class="col-lg-7">
+								<div class="col-sm-4"></div>
+								<div class="col-sm-7">
 									<div class="checkbox">
 									    <label>
 										    <input type="checkbox" id="input-settings-mathjax" />
@@ -983,10 +954,10 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-lg-4 control-label"
+								<label class="col-sm-4 control-label"
 									for="input-settings-gdrive-multiaccount">Google Drive multi-accounts</a>
 								</label>
-								<div class="col-lg-7">
+								<div class="col-sm-7">
 									<select id="input-settings-gdrive-multiaccount" class="form-control">
     									<option value="1">1 account</option>
     									<option value="2">2 accounts</option>
@@ -1000,8 +971,8 @@
 					<div class="tab-pane" id="tabpane-settings-advanced">
 						<div class="form-horizontal">
 							<div class="form-group">
-								<label class="col-lg-4 control-label">Mode</label>
-								<div class="col-lg-7">
+								<label class="col-sm-4 control-label">Mode</label>
+								<div class="col-sm-7">
 									<div class="radio">
 										<label> <input type="radio"
 											name="radio-settings-mode" value="_ace_">
@@ -1023,69 +994,69 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-lg-4 control-label"
+								<label class="col-sm-4 control-label"
 									for="input-settings-lazy-rendering">Lazy rendering <a
 									href="#" class="tooltip-lazy-rendering">(?)</a>
 								</label>
-								<div class="col-lg-7">
+								<div class="col-sm-7">
 									<div class="checkbox">
 										<input type="checkbox" id="input-settings-lazy-rendering" />
 									</div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-lg-4 control-label"
+								<label class="col-sm-4 control-label"
 									for="input-settings-editor-font-family">Editor font</label>
-								<div class="col-lg-8 form-inline">
+								<div class="col-sm-8 form-inline">
 									<input type="text" id="input-settings-editor-font-family"
-										class="form-control col-lg-7"> <input type="text"
+										class="form-control col-sm-7"> <input type="text"
 										id="input-settings-editor-font-size"
-										class="form-control col-lg-2"> px <span
+										class="form-control col-sm-2"> px <span
 										class="help-block"> Only monospaced fonts are
 										supported.</span>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-lg-4 control-label"
+								<label class="col-sm-4 control-label"
 									for="input-settings-max-width">Max width</label>
-								<div class="col-lg-8 form-inline">
+								<div class="col-sm-8 form-inline">
 									<input type="text" id="input-settings-max-width"
-										class="form-control col-lg-3"> px
+										class="form-control col-sm-3"> px
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-lg-4 control-label"
+								<label class="col-sm-4 control-label"
 									for="textarea-settings-default-content">Default content
 									<a href="#" class="tooltip-default-content">(?)</a>
 								</label>
-								<div class="col-lg-7">
+								<div class="col-sm-7">
 									<textarea id="textarea-settings-default-content"
 										class="form-control"></textarea>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-lg-4 control-label"
+								<label class="col-sm-4 control-label"
 									for="textarea-settings-publish-template">Default
 									template <a href="#" class="tooltip-template">(?)</a>
 								</label>
-								<div class="col-lg-7">
+								<div class="col-sm-7">
 									<textarea id="textarea-settings-publish-template"
 										class="form-control"></textarea>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-lg-4 control-label"
+								<label class="col-sm-4 control-label"
 									for="textarea-settings-pdf-template">PDF
 									template <a href="#" class="tooltip-template">(?)</a>
 								</label>
-								<div class="col-lg-7">
+								<div class="col-sm-7">
 									<textarea id="textarea-settings-pdf-template"
 										class="form-control"></textarea>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-lg-4 control-label" for="input-settings-pdf-page-size">PDF page size</label>
-								<div class="col-lg-7">
+								<label class="col-sm-4 control-label" for="input-settings-pdf-page-size">PDF page size</label>
+								<div class="col-sm-7">
 									<select id="input-settings-pdf-page-size" class="form-control">
 									    <option value="A3">A3</option>
 									    <option value="A4">A4</option>
@@ -1095,8 +1066,8 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-lg-4 control-label">Permissions</label>
-								<div class="col-lg-7">
+								<label class="col-sm-4 control-label">Permissions</label>
+								<div class="col-sm-7">
 									<div class="checkbox">
 									    <label>
 										    <input type="checkbox" id="input-settings-gdrive-full-access" />
@@ -1108,8 +1079,8 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="col-lg-4"></div>
-								<div class="col-lg-7">
+								<div class="col-sm-4"></div>
+								<div class="col-sm-7">
 									<div class="checkbox">
 									    <label>
 										    <input type="checkbox" id="input-settings-dropbox-full-access" />
@@ -1120,8 +1091,8 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="col-lg-4"></div>
-								<div class="col-lg-7">
+								<div class="col-sm-4"></div>
+								<div class="col-sm-7">
 									<div class="checkbox">
 									    <label>
 										    <input type="checkbox" id="input-settings-github-full-access" />
@@ -1133,17 +1104,17 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-lg-4 control-label"
+								<label class="col-sm-4 control-label"
 									for="input-settings-publish-commit-msg">GitHub commit message</label>
-								<div class="col-lg-7">
+								<div class="col-sm-7">
 									<input type="text" id="input-settings-publish-commit-msg"
 										class="form-control">
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-lg-4 control-label"
+								<label class="col-sm-4 control-label"
 									for="input-settings-ssh-proxy">SSH proxy</label>
-								<div class="col-lg-7">
+								<div class="col-sm-7">
 									<input type="text" id="input-settings-ssh-proxy"
 										class="form-control">
 								</div>
@@ -1207,7 +1178,7 @@
 		<div class="modal-content">
 
 			<div class="modal-header">
-				<h3 class="modal-title">Ooops...</h3>
+				<h2 class="modal-title">Ooops...</h2>
 			</div>
 			<div class="modal-body">
 				<p>StackEdit has stopped because another instance was running in
@@ -1229,7 +1200,7 @@
 		<div class="modal-content">
 
 			<div class="modal-header">
-				<h3 class="modal-title">Redirection</h3>
+				<h2 class="modal-title">Redirection</h2>
 			</div>
 			<div class="modal-body">
 			    <p class="redirect-msg"></p>
@@ -1249,7 +1220,7 @@
 		<div class="modal-content">
 
 			<div class="modal-header">
-				<h3 class="modal-title">Reset application</h3>
+				<h2 class="modal-title">Reset application</h2>
 			</div>
 			<div class="modal-body">
 				<p>This will delete all your local documents.</p>
@@ -1270,7 +1241,7 @@
 		<div class="modal-content">
 
 			<div class="modal-header">
-				<h3 class="modal-title">Import documents and settings</h3>
+				<h2 class="modal-title">Import documents and settings</h2>
 			</div>
 			<div class="modal-body">
 				<p>This will delete all existing local documents.</p>

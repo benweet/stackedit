@@ -14,21 +14,13 @@ define([
 
     var fileDesc;
     var publishListElt;
-    var $msgPublishListElt;
-    var $msgNoPublishElt;
+    var $showAlreadyPublishedElt;
     var refreshDialog = function(fileDescParameter) {
         if(fileDescParameter !== undefined && fileDescParameter !== fileDesc) {
             return;
         }
 
-        if(_.size(fileDesc.publishLocations) > 0) {
-            $msgPublishListElt.removeClass("hide");
-            $msgNoPublishElt.addClass("hide");
-        }
-        else {
-            $msgPublishListElt.addClass("hide");
-            $msgNoPublishElt.removeClass("hide");
-        }
+        $showAlreadyPublishedElt.toggleClass("hide", _.size(fileDesc.publishLocations) === 0);
         
         var publishListHtml = _.reduce(fileDesc.publishLocations, function(result, publishAttributes) {
             var formattedAttributes = _.omit(publishAttributes, "provider", "publishIndex", "sharingLink");
@@ -62,10 +54,9 @@ define([
     dialogManagePublication.onReady = function() {
         var modalElt = document.querySelector(".modal-manage-publish");
         publishListElt = modalElt.querySelector(".publish-list");
-        $msgPublishListElt = $(modalElt.querySelectorAll(".msg-publish-list"));
-        $msgNoPublishElt = $(modalElt.querySelectorAll(".msg-no-publish"));
+
+        $showAlreadyPublishedElt = $(document.querySelectorAll(".show-already-published"));
     };
 
     return dialogManagePublication;
-
 });

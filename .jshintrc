@@ -1,0 +1,14 @@
+{
+    "curly": true,
+    "browser": true,
+    "devel": true,
+    "indent": 4,
+    "latedef": true,
+    "undef": true,
+    "unused": true,
+    "expr": true,
+    "globals": {
+        "define": false,
+        "require": false
+    }
+}

@@ -55,14 +55,16 @@
 	.ace_content {
 	    background-image: url("../img/school-line.png");
 		background-repeat: repeat;
+        background-size: 64px 1.65em;
 	}
-	.ace_marker-layer .ace_active-line {
-		background-color: fade(@blue-ink, 5%);
-	}
-	.ace_print-margin {
-		background-color: fade(@red-ink, 50%);
-	}
-	
+
+    .ace_print-margin-layer {
+		display: block;
+        .ace_print-margin {
+            background-color: fade(@red-ink, 50%);
+        }
+    }
+        	
 	.ace_markup.ace_heading {
 		color: @black-ink;
 	}

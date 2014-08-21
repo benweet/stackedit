@@ -172,9 +172,11 @@ define([
         var $fileTitleElt = $('.file-title-navbar');
         var $fileTitleInputElt = $(".input-file-title");
         $(".action-create-file").click(function() {
-            var fileDesc = fileMgr.createFile();
-            fileMgr.selectFile(fileDesc);
-            $fileTitleElt.click();
+            setTimeout(function() {
+                var fileDesc = fileMgr.createFile();
+                fileMgr.selectFile(fileDesc);
+                $fileTitleElt.click();
+            }, 400);
         });
         $('.action-remove-file-confirm').click(function() {
             $('.modal-remove-file-confirm').modal('show');

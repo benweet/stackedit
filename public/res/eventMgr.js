@@ -318,9 +318,14 @@ define([
         var previewButtonsWidth = $previewButtonsElt.width();
         $previewButtonsElt.find('.btn-group').each(function() {
             var $btnGroupElt = $(this);
-            // Align dropdown to the left of the screen
-            $btnGroupElt.find('.dropdown-menu').css({
-                right: -previewButtonsWidth + $btnGroupElt.width() + $btnGroupElt.position().left
+            $btnGroupElt.click(function() {
+                // Align dropdown to the left of the screen
+                $btnGroupElt.find('.dropdown-menu').css({
+                    right: -previewButtonsWidth + $btnGroupElt.width() + $btnGroupElt.position().left
+                });
+                $btnGroupElt.find('.markdown-syntax, .table-of-contents').css({
+                    'max-height': $(document).height() - $btnGroupElt.offset().top - 190
+                });
             });
         });
         

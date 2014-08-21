@@ -267,7 +267,7 @@ define([
     eventMgr.addListener("onReady", function() {
         if(window.viewerMode === false) {
             // Add every provider in the panel menu
-            var publishMenuElt = document.querySelector('.menu-panel .collapse-publish-on .nav');
+            var publishMenuElt = document.querySelector('.menu-panel .publish-on-provider-list');
             var publishMenuHtml = _.reduce(providerMap, function(result, provider) {
                 return result + _.template(initPublishButtonTmpl, {
                     provider: provider
@@ -288,6 +288,7 @@ define([
 
         // 
         $(".action-process-publish").click(performNewLocation);
+        $(".action-update-publication").click(publisher.publish);
 
         var $customTmplCollapseElt = $('.publish-custom-template-collapse').collapse({
             toggle: false

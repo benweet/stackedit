@@ -29,7 +29,7 @@
     "jsondiffpatch": "https://github.com/benweet/jsondiffpatch.git#fb9dddf7cd076d8ec89d376c0e9de9223e9888f9",
     "hammerjs": "~1.0.10",
     "raphael": "~2.1.2",
-    "js-sequence-diagrams": "https://github.com/benweet/js-sequence-diagrams.git#7b157daa2deaf5b46b320673cc2ddabe6f013725",
+    "js-sequence-diagrams": "https://github.com/benweet/js-sequence-diagrams.git#d60c973aa0ff148dc588c7ceee0b41e59dff3f9f",
     "flowchart": "https://github.com/adrai/flowchart.js.git#~1.2.10",
     "monetizejs": "~0.2.0"
   }

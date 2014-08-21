@@ -6,9 +6,9 @@ define([
 	"classes/Extension",
 	"text!html/umlDiagramsSettingsBlock.html",
 	'crel',
-	'sequence-diagram',
+	'Diagram',
 	'flow-chart'
-], function($, _, utils, logger, Extension, umlDiagramsSettingsBlockHTML, crel, sequenceDiagram, flowChart) {
+], function($, _, utils, logger, Extension, umlDiagramsSettingsBlockHTML, crel, Diagram, flowChart) {
 
 	var umlDiagrams = new Extension("umlDiagrams", "UML Diagrams", true);
 	umlDiagrams.settingsBlock = umlDiagramsSettingsBlockHTML;
@@ -18,7 +18,7 @@ define([
 		editor.hooks.chain("onPreviewRefresh", function() {
 			_.each(previewContentsElt.querySelectorAll('.prettyprint > .language-sequence'), function(elt) {
 				try {
-					var diagram = sequenceDiagram.parse(elt.textContent);
+					var diagram = Diagram.parse(elt.textContent);
 					var preElt = elt.parentNode;
 					var containerElt = crel('div', {
 						class: 'sequence-diagram'

@@ -275,7 +275,7 @@ define([
 							}
 							if(selectionStart === selectionEnd && selectionStart > textContent.length) {
 								// In Firefox cursor can be after the trailingLfNode
-								selection.nativeSelection.modify("move", "backward", "character");
+								selection.nativeSelection.modify && selection.nativeSelection.modify("move", "backward", "character");
 								selectionStart = --selectionEnd;
 							}
 						}
@@ -644,10 +644,10 @@ define([
 	eventMgr.addListener('onCommentsChanged', onComment);
 
 	var triggerSpellCheck = _.debounce(function() {
-		if(!selectionMgr.hasFocus || selectionMgr.selectionStart !== selectionMgr.selectionEnd) {
+		var selection = window.getSelection();
+		if(!selectionMgr.hasFocus || selectionMgr.selectionStart !== selectionMgr.selectionEnd || !selection.modify) {
 			return;
 		}
-		var selection = window.getSelection();
 		// Hack for Chrome to trigger the spell checker
 		if(selectionMgr.selectionStart) {
 			selection.modify("move", "backward", "character");

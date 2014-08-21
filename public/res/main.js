@@ -61,7 +61,8 @@ requirejs.config({
 		diff_match_patch_uncompressed: 'bower-libs/google-diff-match-patch-js/diff_match_patch_uncompressed',
 		jsondiffpatch: 'bower-libs/jsondiffpatch/build/bundle',
 		hammerjs: 'bower-libs/hammerjs/hammer',
-		'sequence-diagram': 'bower-libs/js-sequence-diagrams/build/sequence-diagram-min',
+		'Diagram': 'bower-libs/js-sequence-diagrams/src/sequence-diagram',
+		'diagram-grammar': 'bower-libs/js-sequence-diagrams/build/diagram-grammar',
 		raphael: 'bower-libs/raphael/raphael',
 		'flow-chart': 'bower-libs/flowchart/release/flowchart.amd-1.2.10.min',
 		flowchart: 'bower-libs/flowchart/release/flowchart-1.2.10.min',
@@ -152,6 +153,13 @@ requirejs.config({
 		],
 		'flow-chart': [
 			'raphael'
+		],
+		'diagram-grammar': [
+			'underscore'
+		],
+		'Diagram': [
+			'raphael',
+			'diagram-grammar'
 		]
 	}
 });

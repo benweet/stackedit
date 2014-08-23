@@ -645,7 +645,7 @@ define([
 
 	var triggerSpellCheck = _.debounce(function() {
 		var selection = window.getSelection();
-		if(!selectionMgr.hasFocus || selectionMgr.selectionStart !== selectionMgr.selectionEnd || !selection.modify) {
+		if(!selectionMgr.hasFocus || isComposing || selectionMgr.selectionStart !== selectionMgr.selectionEnd || !selection.modify) {
 			return;
 		}
 		// Hack for Chrome to trigger the spell checker

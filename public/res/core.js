@@ -371,7 +371,7 @@ define([
 				});
 			}
 		});
-	}, 1000);
+	}, 3000);
 
 	eventMgr.addListener('onOfflineChanged', checkPayment);
 

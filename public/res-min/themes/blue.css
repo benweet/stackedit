@@ -1261,7 +1261,7 @@ div.jGrowl div.jGrowl-closer{padding-top:4px;padding-bottom:4px;cursor:pointer;f
 .modal.fade .modal-dialog{-webkit-transform:translate(0, 0);-ms-transform:translate(0, 0);transform:translate(0, 0)}
 .modal-content{background-color:#f6f7f9}
 .modal-body{background-color:#fff;padding-bottom:30px}
-.modal-footer{background-color:#f6f7f9;margin-top:0}
+.modal-footer{margin-top:0}
 .modal-iframe{display:block;margin:30px auto 0;z-index:1040;border-radius:0}
 a{-webkit-transition:background-color ease-in-out .15s, color ease-in-out .15s, border-color ease-in-out .15s;transition:background-color ease-in-out .15s, color ease-in-out .15s, border-color ease-in-out .15s}
 .nav-pills>li>a{border:1px solid rgba(0,0,0,0)}.nav-pills>li>a:hover,.nav-pills>li>a:focus{color:#036;border-color:rgba(0,128,255,0.1)}

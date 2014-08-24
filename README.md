@@ -5,7 +5,11 @@ StackEdit is a full-featured, open-source Markdown editor based on PageDown, the
 
 Main showcase: https://stackedit.io/.
 
-> **NOTE:**
+Support StackEdit:
+
+[![](https://cdn.monetizejs.com/resources/button-32.png)](https://monetizejs.com/authorize?client_id=ESTHdCYOi18iLhhO&summary=true)
+
+> **Note:**
 >
 > - Documents are stored in the [browser's local storage][1], which means they are not shared between different browsers/computers. Clearing your browser's data may delete all your local documents.
 > - Full access to Dropbox or Google Drive is required to be able to import any document in StackEdit. Imported documents are downloaded in your browser and are not transmitted to a server.
@@ -40,10 +44,6 @@ Main showcase: https://stackedit.io/.
  - [Welcome document][2]
  - [Developer guide][3]
  - [Theming guide][4]
-
-### Support StackEdit:
-
-[![Fund me on Gittip](https://raw.github.com/gittip/www.gittip.com/master/www/assets/gittip.png)](https://www.gittip.com/stackedit/ "Fund me on Gittip")
 
 > **NOTE:** This page has been written and published with [StackEdit][5].
 

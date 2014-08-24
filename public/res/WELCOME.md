@@ -2,7 +2,7 @@ Welcome to StackEdit!
 ===================
 
 
-Hello, I'm your first Markdown document in **StackEdit**[^stackedit]. Don't delete me, I can be helpful. I can be recovered anyway in the **Utils** tab of the <i class="icon-cog"></i> **Settings** dialog.
+Hello, I'm your first Markdown document in **StackEdit**[^stackedit]. Don't delete me, I'm very helpful! I can be recovered anyway in the **Utils** tab of the <i class="icon-cog"></i> **Settings** dialog.
 
 ----------
 
@@ -16,11 +16,11 @@ Documents
 
 > - StackEdit is accessible offline after the application has been loaded for the first time.
 > - Your local documents are not shared between different browsers or computers.
-> - Clearing your browser's data may **delete all your local documents!** Make sure your documents are synchronized with your **Google Drive** or your **Dropbox** account (check out the [<i class="icon-refresh"></i> Synchronization](#synchronization) section).
+> - Clearing your browser's data may **delete all your local documents!** Make sure your documents are synchronized with **Google Drive** or **Dropbox** (check out the [<i class="icon-refresh"></i> Synchronization](#synchronization) section).
 
 #### <i class="icon-file"></i> Create a document
 
-The document panel is accessible using  <i class="icon-folder-open"></i> button in the navigation bar. You can create a new document by clicking <i class="icon-file"></i> **New document** in the document panel.
+The document panel is accessible using the <i class="icon-folder-open"></i> button in the navigation bar. You can create a new document by clicking <i class="icon-file"></i> **New document** in the document panel.
 
 #### <i class="icon-folder-open"></i> Switch to another document
 
@@ -245,6 +245,10 @@ cond(no)->op
 
 > - about **Sequence diagrams** syntax [here][7],
 > - about **Flow charts** syntax [here][8].
+
+### Support StackEdit
+
+[![](https://cdn.monetizejs.com/resources/button-38.png)](https://monetizejs.com/authorize?client_id=ESTHdCYOi18iLhhO&summary=true)
 
   [^stackedit]: [StackEdit](https://stackedit.io/) is a full-featured, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.
 

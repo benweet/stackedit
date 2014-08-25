@@ -10,7 +10,7 @@ Hello, I'm your first Markdown document in **StackEdit**[^stackedit]. Don't dele
 Documents
 -------------
 
-**StackEdit** stores your documents in your browser, which means all your documents are automatically saved locally and are accessible **offline!**
+StackEdit stores your documents in your browser, which means all your documents are automatically saved locally and are accessible **offline!**
 
 > **Note:**
 
@@ -47,7 +47,7 @@ You can save the current document to a file by clicking <i class="icon-hdd"></i>
 Synchronization
 -------------------
 
-**StackEdit** can be combined with <i class="icon-provider-gdrive"></i> **Google Drive** and <i class="icon-provider-dropbox"></i> **Dropbox** to have your documents centralized in the *Cloud*. The synchronization mechanism will take care of uploading your modifications or downloading the latest version of your documents.
+StackEdit can be combined with <i class="icon-provider-gdrive"></i> **Google Drive** and <i class="icon-provider-dropbox"></i> **Dropbox** to have your documents saved in the *Cloud*. The synchronization mechanism takes care of uploading your modifications or downloading the latest version of your documents.
 
 > **Note:**
 
@@ -61,11 +61,11 @@ You can open a document from <i class="icon-provider-gdrive"></i> **Google Drive
 
 #### <i class="icon-refresh"></i> Save a document
 
-You can save any document by opening the <i class="icon-refresh"></i> **Synchronize** sub-menu and by clicking **Save on...**. Even if your document is already synchronized with **Google Drive** or **Dropbox**, you can export it to a another location. **StackEdit** can synchronize one document with multiple locations and accounts.
+You can save any document by opening the <i class="icon-refresh"></i> **Synchronize** sub-menu and by clicking **Save on...**. Even if your document is already synchronized with **Google Drive** or **Dropbox**, you can export it to a another location. StackEdit can synchronize one document with multiple locations and accounts.
 
 #### <i class="icon-refresh"></i> Synchronize a document
 
-Once your document is linked to a <i class="icon-provider-gdrive"></i> **Google Drive** or a <i class="icon-provider-dropbox"></i> **Dropbox** file, **StackEdit** will periodically (every 3 minutes) synchronize it by downloading/uploading any modification. A merge will be performed if necessary and conflicts will be detected.
+Once your document is linked to a <i class="icon-provider-gdrive"></i> **Google Drive** or a <i class="icon-provider-dropbox"></i> **Dropbox** file, StackEdit will periodically (every 3 minutes) synchronize it by downloading/uploading any modification. A merge will be performed if necessary and conflicts will be detected.
 
 If you just have modified your document and you want to force the synchronization, click the <i class="icon-refresh"></i> button in the navigation bar.
 
@@ -83,7 +83,7 @@ Since one document can be synchronized with multiple locations, you can list and
 Publication
 -------------
 
-Once you are happy with your document, you can publish it on different websites directly from **StackEdit**. As for now, **StackEdit** can publish on **Blogger**, **Dropbox**, **Gist**, **GitHub**, **Google Drive**, **Tumblr**, **WordPress** and on any SSH server.
+Once you are happy with your document, you can publish it on different websites directly from StackEdit. As for now, StackEdit can publish on **Blogger**, **Dropbox**, **Gist**, **GitHub**, **Google Drive**, **Tumblr**, **WordPress** and on any SSH server.
 
 #### <i class="icon-upload"></i> Publish a document
 
@@ -97,7 +97,7 @@ You can publish your document by opening the <i class="icon-upload"></i> **Publi
 
 #### <i class="icon-upload"></i> Update a publication
 
-After publishing, **StackEdit** will keep your document linked to that publication which makes it easy for you to update it. Once you have modified your document and you want to update your publication, click on the <i class="icon-upload"></i> button in the navigation bar.
+After publishing, StackEdit will keep your document linked to that publication which makes it easy for you to update it. Once you have modified your document and you want to update your publication, click on the <i class="icon-upload"></i> button in the navigation bar.
 
 > **Note:** The <i class="icon-upload"></i> button is disabled when your document has not been published yet.
 
@@ -113,7 +113,7 @@ Since one document can be published on multiple locations, you can list and mana
 Markdown Extra
 --------------------
 
-**StackEdit** supports **Markdown Extra**, which extends **Markdown** syntax with some nice features.
+StackEdit supports **Markdown Extra**, which extends **Markdown** syntax with some nice features.
 
 > **Tip:** You can disable any **Markdown Extra** feature in the **Extensions** tab of the <i class="icon-cog"></i> **Settings** dialog.
 

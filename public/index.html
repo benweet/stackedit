@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>StackEdit – In-browser markdown editor</title>
+    <link rel="canonical" href="https://stackedit.io/">
+    <link rel="icon" href="res-min/img/stackedit-32.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="res-min/img/stackedit-32.ico" type="image/x-icon">
+    <meta name="description" content="Full-featured, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.">
+    <meta name="author" content="Benoit Schweblin">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="msvalidate.01" content="5E47EE6F67B069C17E3CDD418351A612">
+    <link rel="stylesheet" href="res-min/themes/default.css">
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <style>
+        body {
+            font-size: 18px;
+            font-weight: 300;
+        }
+        .navbar {
+            position: fixed;
+        }
+        .content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        .slide {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .footer {
+            position: absolute;
+            top: inherit;
+            bottom: 0;
+            height: 50px;
+            width: 100%;
+            padding: 5px
+        }
+        .slide, .footer, h1 {
+            text-align: center;
+        }
+        .footer .btn {
+            font-size: 28px;
+            padding: 0 11px;
+            line-height: 1;
+        }
+        .btn-info {
+            color: #777;
+        }
+        .centered {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+        .logo {
+            height: 150px;
+            width: 600px;
+        }
+        .logo .subtitle {
+            position: absolute;
+            text-align: right;
+            color: #888;
+            top: 110px;
+            right: 10px;
+            font-size: 22px;
+        }
+        .logo a {
+            color: #555;
+        }
+        .logo i::before {
+            margin-right: 0;
+        }
+        .transition {
+            -webkit-transition: all ease-in-out 1.5s;
+            transition: all ease-out 1.5s;
+        }
+        .transparent {
+            opacity: 0;
+        }
+        .scale {
+            -webkit-transform: scale(1.03);
+            -ms-transform: scale(1.03);
+            transform: scale(1.03);
+        }
+        .navbar .nav {
+            float: none;
+        }
+        .navbar .btn {
+            font-size: 18px;
+            line-height: 1.25;
+        }
+        img.modal-content {
+            margin: 50px auto;
+            display: block;
+        }
+        .social {
+            font-size: 26px;
+        }
+
+    </style>
+    <script>
+        $(function() {
+            function scrollTo(elt){
+                return function() {
+                    $('html,body').animate({scrollTop: elt.offset().top}, 500);
+                };
+            }
+            $('#scrollToSlide2').click(scrollTo($('#slide2')));
+
+            setTimeout(function() {
+                $('.logo').removeClass('transparent scale');
+            }, 500);
+            setTimeout(function() {
+                $('.logo .transparent, .navbar-inner .transparent, .footer .transparent').removeClass('transparent scale');
+            }, 1500);
+        })
+    </script>
+</head>
+
+<body>
+<div class="content">
+<div class="slide modal-body" id="slide1">
+    <nav class="navbar navbar-default">
+        <div class="navbar-inner">
+            <div class="nav transition transparent">
+                <a class="btn btn-success" href="editor" title="Editor"><i class="icon-pencil"></i> Start writing now!</a>
+            </div>
+        </div>
+    </nav>
+    <div class="centered logo transition transparent scale">
+        <img src="res/img/logo.svg" />
+        <div class="subtitle transition transparent scale">
+            In-browser markdown editor<br>
+            <div class="social">
+                <a href=""><img height="24" src="https://cdn.monetizejs.com/resources/button.svg"></a>
+                <a href=""><i class="icon-github-circled"></i></a>
+                <a href=""><i class="icon-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer preview-panel modal-footer">
+        <div class="transition transparent">
+            <a class="btn btn-info" id="scrollToSlide2"><i class="icon-angle-down"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="slide" id="slide2">
+<div class="container">
+
+    <h1 id="unrivalled-writing-experience">Unrivalled writing experience.</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <img class="modal-content" width="600" src="res/img/syntax-highlighting.gif">
+        </div>
+        <div class="col-md-4">
+            <h2 id="rich-markdown-editor">Rich markdown editor</h2>
+
+            <p>StackEdit’s syntax highlighting is unique. The refined text formatting of the editor helps you visualize the final rendering of your documents.</p>
+
+            <h2 id="wysiwyg-control-buttons">WYSIWYG controls</h2>
+
+            <p>StackEdit provides very handy formatting buttons and shortcuts, thanks to PageDown, the WYSIWYG-style markdown editor used by Stack Overflow.</p>
+
+            <h2 id="live-preview-with-scrollsync">Live preview with ScrollSync</h2>
+
+            <p>StackEdit’s ScrollSync extension binds together the scrollbars of the preview panel and the editor panel to ensure that you can always keep an eye on the output while writing.</p>
+
+            <h2 id="built-in-spell-checker">Built-in spell-checker</h2>
+
+            <p>StackEdit uses browser’s built-in spell-checker to perform efficient, multi-language spell-checking and correction suggestions.</p>
+
+            <h2 id="fully-customizable">Fully customizable</h2>
+
+            <p>StackEdit has an infinite combinations of settings. Themes, layout, shortcuts, extensions… almost everything can be personalized. For the rest, StackEdit lets you create your own extension…</p>
+        </div>
+    </div>
+
+
+    <h1 id="designed-for-web-writing">Designed for web writing</h1>
+
+    <h2 id="simultaneous-collaboration">Simultaneous collaboration</h2>
+
+    <p>Documents in StackEdit can be synchronized and shared through Google Drive and Dropbox. When two collaborators are working on the same document at the same time, StackEdit takes care of merging the modifications.</p>
+
+    <h2 id="review-comments">Review comments</h2>
+
+    <p>StackEdit allows you to insert inline comments and embed collaborator discussions in your documents, much like Microsoft Word or Google Docs.</p>
+
+    <h2 id="publish-straight-to-your-blog">Publish straight to your blog</h2>
+
+    <p>StackEdit can upload your documents directly to Blogger, GitHub, Tumblr, WordPress… You can choose whether to upload in markdown format, HTML, or to format the output using Underscore template engine.</p>
+
+    <h2 id="write-offline">Write offline</h2>
+
+    <p>Even when you travel, StackEdit is still accessible and lets you write in documents offline just like any desktop application. Now, you have no excuse!</p>
+
+    <h1 id="extended-markdown-support">Extended markdown support</h1>
+
+    <h2 id="github-flavored-markdown">GitHub Flavored Markdown</h2>
+
+    <p>StackEdit supports different markdown flavors such as Markdown Extra and GitHub flavored Markdown. Each markdown feature can be enabled or disabled at your convenience.</p>
+
+    <h2 id="latex-mathematical-expressions">LaTeX mathematical expressions</h2>
+
+    <p>StackEdit integrates MathJax to render mathematics from LaTeX expressions inside your markdown document, as you would do on Stack Exchange.</p>
+
+    <h2 id="uml-diagrams">UML diagrams</h2>
+
+    <p>StackEdit enables you to write sequence diagrams and flow charts using a simple text syntax.</p>
+
+</div>
+    </div>
+</div>
+</body>
+
+</html>

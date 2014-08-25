@@ -189,7 +189,7 @@ define([
             }
         });
         $(".action-open-stackedit").click(function() {
-            window.location.href = ".";
+            window.location.href = "editor";
         });
         $(".action-edit-document").click(function() {
             var content = $editorElt.val();

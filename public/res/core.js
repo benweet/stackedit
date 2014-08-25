@@ -11,13 +11,13 @@ define([
 	"settings",
 	"eventMgr",
 	"monetizejs",
-	"text!html/bodyIndex.html",
+	"text!html/bodyEditor.html",
 	"text!html/bodyViewer.html",
 	"text!html/tooltipSettingsTemplate.html",
 	"text!html/tooltipSettingsPdfOptions.html",
 	"storage",
 	'pagedown'
-], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, MonetizeJS, bodyIndexHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsPdfOptionsTooltipHTML) {
+], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, MonetizeJS, bodyEditorHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsPdfOptionsTooltipHTML) {
 
 	var core = {};
 
@@ -291,7 +291,7 @@ define([
 			document.body.innerHTML = bodyViewerHTML;
 		}
 		else {
-			document.body.innerHTML = bodyIndexHTML;
+			document.body.innerHTML = bodyEditorHTML;
 		}
 
 		// Initialize utils library

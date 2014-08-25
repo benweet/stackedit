@@ -20,6 +20,11 @@ app.use(express.compress());
 // Serve static resources
 app.use(express.static(__dirname + '/../public'));
 
+// Serve editor.html in /viewer
+app.get('/editor', function (req, res) {
+	res.render('editor.html');
+});
+
 // Serve viewer.html in /viewer
 app.get('/viewer', function (req, res) {
 	res.render('viewer.html');

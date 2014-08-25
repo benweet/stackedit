@@ -54,6 +54,7 @@ Prism.languages.md = (function() {
 		pattern: /(^|(?:^|(?:^|\n)(?![ \t]*([*+\-]|\d+\.)[ \t]).*\n)\s*?\n)(\s*(?: {4}|\t).*(?:\n|$))+/g,
 		lookbehind: true,
 		inside: {
+			lf: lf
 		}
 	};
 	md.table = {

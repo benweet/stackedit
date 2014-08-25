@@ -1795,6 +1795,18 @@
       "src": "fontawesome"
     },
     {
+      "uid": "0f6a2573a7b6df911ed199bb63717e27",
+      "css": "github-circled",
+      "code": 59455,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "627abcdb627cb1789e009c08e2678ef9",
+      "css": "twitter",
+      "code": 59466,
+      "src": "fontawesome"
+    },
+    {
       "uid": "4815ddddea76d90e367a9694a93b7e24",
       "css": "resize-full",
       "code": 59661,

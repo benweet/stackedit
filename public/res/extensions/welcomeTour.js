@@ -28,7 +28,7 @@ define([
 			});
 			setTimeout(function() {
 				tooltip.tooltip('hide').removeClass('info-tooltip').parent().removeClass('info-tooltip-container');
-			}, 20000);
+			}, 30000);
 		}
 
 		var tour = new Tour({

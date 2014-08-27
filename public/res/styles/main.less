@@ -503,18 +503,10 @@ a {
 
 	.button-open-discussion {
 		&.some {
-			color: lighten(@alert-warning-text, 8%);
-			&:hover,
-			&:focus {
-				//color: @alert-warning-text;
-			}
+			color: lighten(@alert-warning-text, 8%) !important;
 		}
 		&.replied {
-			color: lighten(@alert-danger-text, 8%);
-			&:hover,
-			&:focus {
-				//color: @alert-danger-text;
-			}
+			color: lighten(@alert-danger-text, 8%) !important;
 		}
 	}
 
@@ -1154,6 +1146,11 @@ a {
 			}
 		}
     }
+
+	&.has-selection > .editor-margin .discussion.new {
+		display: inline-block;
+		color: fade(@tertiary-color, 25%);
+	}
 
 	&.font-monospaced * {
 		font-family: @font-family-monospace !important;

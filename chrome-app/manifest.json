@@ -1,7 +1,7 @@
 {
   "name": "StackEdit",
   "description": "The Markdown editor powered by PageDown",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "manifest_version": 2,
   "container" : "GOOGLE_DRIVE",
   "api_console_project_id" : "241271498917",
@@ -13,7 +13,7 @@
       "https://stackedit.io/"
     ],
     "launch": {
-      "web_url": "https://stackedit.io/"
+      "web_url": "https://stackedit.io/editor"
     }
   },
   "offline_enabled": true,

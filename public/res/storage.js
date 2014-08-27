@@ -255,6 +255,16 @@ define([
 		version = "v20";
 	}
 
+	if(version == 'v20') {
+		if(_.has(localStorage, 'settings')) {
+			settings = JSON.parse(localStorage.settings);
+			// Force use of text/plain
+			delete settings.markdownMimeType;
+			localStorage.settings = JSON.stringify(settings);
+		}
+		version = "v21";
+	}
+
     localStorage.version = version;
     return localStorage;
 });

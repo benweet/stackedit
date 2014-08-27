@@ -66,6 +66,7 @@ define([
 	var newCommentElt = crel('a', {
 		class: 'discussion icon-comment new'
 	});
+	var newCommentEltY;
 
 	function Context(commentElt, fileDesc) {
 		this.commentElt = commentElt;
@@ -131,9 +132,8 @@ define([
 					delete commentEltMap[commentElt.discussionIndex];
 				});
 				// Move newCommentElt
+				setCommentEltCoordinates(newCommentElt, newCommentEltY, true);
 				if(currentContext && !currentContext.discussionIndex) {
-					coordinates = selectionMgr.getCoordinates(currentContext.getDiscussion().selectionEnd);
-					setCommentEltCoordinates(newCommentElt, coordinates.y, true);
 					inputElt.scrollTop += parseInt(newCommentElt.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
 					movePopover(newCommentElt);
 				}
@@ -188,6 +188,11 @@ define([
 
 	comments.onContentChanged = function(fileDesc) {
 		currentFileDesc === fileDesc && refreshDiscussions();
+	};
+
+	comments.onCursorCoordinates = function(x, y) {
+		newCommentEltY = y;
+		setCommentEltCoordinates(newCommentElt, y, true);
 	};
 
 	comments.onCommentsChanged = function(fileDesc) {
@@ -333,8 +338,6 @@ define([
 					commentList: []
 				};
 				currentFileDesc.newDiscussion = discussion;
-				var coordinates = selectionMgr.getCoordinates(selectionStart);
-				setCommentEltCoordinates(newCommentElt, coordinates.y, true);
 			}
 			context.selectionRange = selectionMgr.createRange(discussion.selectionStart, discussion.selectionEnd);
 			inputElt.scrollTop += parseInt(evt.target.style.top) - inputElt.scrollTop - inputElt.offsetHeight * 3 / 4;
@@ -466,11 +469,14 @@ define([
 					$commentElt = $(sortedCommentEltList[(curentIndex + 1)]);
 				}
 			}
+			else if(selectionMgr.selectionStart === selectionMgr.selectionEnd && sortedCommentEltList.length) {
+				$commentElt = $(_.first(sortedCommentEltList));
+			}
 			if($commentElt.length === 0) {
 				// Close the popover properly
 				closeCurrentPopover();
 				editor.focus();
-				editor.adjustCursorPosition();
+				editor.adjustCursorPosition(true);
 			}
 			else {
 				$commentElt.click();

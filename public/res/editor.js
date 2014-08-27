@@ -288,14 +288,18 @@ define([
 			var nextTickAdjustScroll = false;
 			var debouncedSave = utils.debounce(function() {
 				save();
-				if(lastSelectionStart == self.selectionStart && lastSelectionEnd == self.selectionEnd) {
+				if(lastSelectionStart === self.selectionStart && lastSelectionEnd === self.selectionEnd) {
 					nextTickAdjustScroll = false;
 				}
 				self.updateCursorCoordinates(nextTickAdjustScroll);
 				nextTickAdjustScroll = false;
 			});
 
-			return function(debounced, adjustScroll) {
+			return function(debounced, adjustScroll, forceAdjustScroll) {
+				if(forceAdjustScroll) {
+					lastSelectionStart = undefined;
+					lastSelectionEnd = undefined;
+				}
 				if(debounced) {
 					nextTickAdjustScroll = nextTickAdjustScroll || adjustScroll;
 					return debouncedSave();
@@ -386,11 +390,11 @@ define([
 	editor.selectionMgr = selectionMgr;
 	$(document).on('selectionchange', '.editor-content', _.bind(selectionMgr.saveSelectionState, selectionMgr, true, false));
 
-	function adjustCursorPosition() {
+	function adjustCursorPosition(force) {
 		if(inputElt === undefined) {
 			return;
 		}
-		selectionMgr.saveSelectionState(true, true);
+		selectionMgr.saveSelectionState(true, true, force);
 	}
 
 	editor.adjustCursorPosition = adjustCursorPosition;

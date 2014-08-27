@@ -1,4 +1,3 @@
-// Credit to https://editorially.com/
 Prism.languages.md = (function() {
 
 	var charInsideUrl = "[-A-Z0-9+&@#/%?=~_|[\\]()!:,.;]",

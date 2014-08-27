@@ -839,9 +839,10 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .asciidoc .hljs-emphasis,.markdown .hljs-emphasis{font-style:italic}
 .nginx .hljs-built_in{font-weight:normal}
 .coffeescript .javascript,.javascript .xml,.lasso .markup,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:0.5}
-@font-face{font-family:'fontello';src:url('../font/fontello.eot?24620533');src:url('../font/fontello.eot?24620533#iefix') format('embedded-opentype'),url('../font/fontello.woff?24620533') format('woff'),url('../font/fontello.ttf?24620533') format('truetype'),url('../font/fontello.svg?24620533#fontello') format('svg');font-weight:normal;font-style:normal}[class^="icon-"]:before,[class*=" icon-"]:before{font-family:"fontello";font-style:normal;font-weight:normal;speak:none;display:inline-block;text-decoration:inherit;width:1em;margin-right:.2em;text-align:center;font-variant:normal;text-transform:none;line-height:1em;margin-left:.2em;}
+@font-face{font-family:'fontello';src:url('../font/fontello.eot');src:url('../font/fontello.eot#iefix') format('embedded-opentype'),url('../font/fontello.woff') format('woff'),url('../font/fontello.ttf') format('truetype'),url('../font/fontello.svg#fontello') format('svg');font-weight:normal;font-style:normal}[class^="icon-"]:before,[class*=" icon-"]:before{font-family:"fontello";font-style:normal;font-weight:normal;speak:none;display:inline-block;text-decoration:inherit;width:1em;margin-right:.2em;text-align:center;font-variant:normal;text-transform:none;line-height:1em;margin-left:.2em;}
+.icon-pause:before{content:'\e800'}
 .icon-glass:before{content:'\e801'}
-.icon-archive:before{content:'\e859'}
+.icon-music:before{content:'\e802'}
 .icon-search:before{content:'\e803'}
 .icon-mail:before{content:'\e804'}
 .icon-mail-alt:before{content:'\e805'}
@@ -869,19 +870,18 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .icon-ok-squared:before{content:'\e81b'}
 .icon-cancel:before{content:'\e81c'}
 .icon-cancel-circled:before{content:'\e81d'}
-.icon-cancel-circled2:before{content:'\e86f'}
+.icon-folder-open:before{content:'\e81e'}
 .icon-plus:before{content:'\e81f'}
 .icon-plus-circled:before{content:'\e820'}
 .icon-plus-squared:before{content:'\e821'}
+.icon-download:before{content:'\e822'}
 .icon-minus:before{content:'\e823'}
 .icon-minus-circled:before{content:'\e824'}
 .icon-minus-squared:before{content:'\e825'}
 .icon-minus-squared-alt:before{content:'\e826'}
+.icon-upload:before{content:'\e827'}
 .icon-help:before{content:'\e828'}
-.icon-help-circled:before{content:'\e939'}
-.icon-info-circled:before{content:'\e93a'}
-.icon-info:before{content:'\e93b'}
-.icon-home:before{content:'\e93c'}
+.icon-layers:before{content:'\e829'}
 .icon-unlink:before{content:'\e82a'}
 .icon-link-ext:before{content:'\e82b'}
 .icon-link-ext-alt:before{content:'\e82c'}
@@ -897,25 +897,24 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .icon-bookmark:before{content:'\e836'}
 .icon-bookmark-empty:before{content:'\e837'}
 .icon-flag:before{content:'\e838'}
-.icon-flag-empty:before{content:'\e93d'}
-.icon-flag-checkered:before{content:'\e93e'}
-.icon-thumbs-up:before{content:'\e93f'}
-.icon-thumbs-down:before{content:'\e940'}
 .icon-thumbs-up-alt:before{content:'\e839'}
 .icon-thumbs-down-alt:before{content:'\e83a'}
-.icon-reply:before{content:'\e845'}
+.icon-comment:before{content:'\e83b'}
+.icon-comment-alt:before{content:'\e83c'}
+.icon-split:before{content:'\e83d'}
+.icon-chat:before{content:'\e83e'}
+.icon-github-circled:before{content:'\e83f'}
 .icon-reply-all:before{content:'\e840'}
-.icon-forward:before{content:'\e856'}
+.icon-hdd:before{content:'\e841'}
 .icon-quote-left:before{content:'\e842'}
 .icon-quote-right:before{content:'\e843'}
+.icon-code:before{content:'\e844'}
+.icon-reply:before{content:'\e845'}
 .icon-export-alt:before{content:'\e846'}
 .icon-pencil:before{content:'\e847'}
 .icon-pencil-squared:before{content:'\e848'}
-.icon-edit:before{content:'\e941'}
-.icon-print:before{content:'\e942'}
-.icon-retweet:before{content:'\e943'}
-.icon-keyboard:before{content:'\e944'}
 .icon-gamepad:before{content:'\e849'}
+.icon-twitter:before{content:'\e84a'}
 .icon-comment-empty:before{content:'\e84c'}
 .icon-chat-empty:before{content:'\e84d'}
 .icon-bell:before{content:'\e84e'}
@@ -926,11 +925,10 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .icon-location:before{content:'\e853'}
 .icon-direction:before{content:'\e854'}
 .icon-compass:before{content:'\e855'}
+.icon-forward:before{content:'\e856'}
 .icon-doc:before{content:'\e857'}
 .icon-docs:before{content:'\e858'}
-.icon-doc-text:before{content:'\e945'}
-.icon-file:before{content:'\e946'}
-.icon-doc-text-inv:before{content:'\e947'}
+.icon-archive:before{content:'\e859'}
 .icon-folder-empty:before{content:'\e85a'}
 .icon-folder-open-empty:before{content:'\e85b'}
 .icon-box:before{content:'\e85c'}
@@ -946,16 +944,13 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .icon-calendar:before{content:'\e866'}
 .icon-calendar-empty:before{content:'\e867'}
 .icon-login:before{content:'\e868'}
-.icon-logout:before{content:'\e949'}
-.icon-mic:before{content:'\e94a'}
-.icon-mute:before{content:'\e94b'}
-.icon-volume-off:before{content:'\e94c'}
 .icon-volume-down:before{content:'\e869'}
 .icon-volume-up:before{content:'\e86a'}
 .icon-headphones:before{content:'\e86b'}
 .icon-clock:before{content:'\e86c'}
 .icon-lightbulb:before{content:'\e86d'}
 .icon-block:before{content:'\e86e'}
+.icon-cancel-circled2:before{content:'\e86f'}
 .icon-resize-full-alt:before{content:'\e870'}
 .icon-resize-small:before{content:'\e871'}
 .icon-resize-vertical:before{content:'\e872'}
@@ -965,10 +960,6 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .icon-zoom-out:before{content:'\e876'}
 .icon-down-circled2:before{content:'\e877'}
 .icon-up-circled2:before{content:'\e878'}
-.icon-down-dir:before{content:'\e94d'}
-.icon-up-dir:before{content:'\e94e'}
-.icon-left-dir:before{content:'\e94f'}
-.icon-right-dir:before{content:'\e950'}
 .icon-down-open:before{content:'\e879'}
 .icon-left-open:before{content:'\e87a'}
 .icon-right-open:before{content:'\e87b'}
@@ -985,10 +976,6 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .icon-angle-double-right:before{content:'\e886'}
 .icon-angle-double-up:before{content:'\e887'}
 .icon-angle-double-down:before{content:'\e888'}
-.icon-down:before{content:'\e951'}
-.icon-right:before{content:'\e953'}
-.icon-left:before{content:'\e952'}
-.icon-up:before{content:'\e954'}
 .icon-down-big:before{content:'\e889'}
 .icon-left-big:before{content:'\e88a'}
 .icon-right-big:before{content:'\e88b'}
@@ -999,23 +986,19 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .icon-down-hand:before{content:'\e890'}
 .icon-left-circled:before{content:'\e891'}
 .icon-right-circled:before{content:'\e892'}
-.icon-music:before{content:'\e802'}
+.icon-up-circled:before{content:'\e893'}
 .icon-down-circled:before{content:'\e894'}
 .icon-cw:before{content:'\e895'}
 .icon-ccw:before{content:'\e896'}
 .icon-refresh:before{content:'\e897'}
 .icon-level-up:before{content:'\e898'}
-.icon-level-down:before{content:'\e955'}
-.icon-shuffle:before{content:'\e956'}
-.icon-exchange:before{content:'\e957'}
-.icon-collapse:before{content:'\e958'}
 .icon-collapse-top:before{content:'\e899'}
 .icon-expand:before{content:'\e89a'}
 .icon-play:before{content:'\e89b'}
 .icon-play-circled:before{content:'\e89c'}
 .icon-play-circled2:before{content:'\e89d'}
 .icon-stop:before{content:'\e89e'}
-.icon-pause:before{content:'\e800'}
+.icon-trash:before{content:'\e89f'}
 .icon-to-end:before{content:'\e8a0'}
 .icon-to-end-alt:before{content:'\e8a1'}
 .icon-to-start:before{content:'\e8a2'}
@@ -1023,11 +1006,8 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .icon-fast-fw:before{content:'\e8a4'}
 .icon-fast-bw:before{content:'\e8a5'}
 .icon-eject:before{content:'\e8a6'}
+.icon-target:before{content:'\e8a7'}
 .icon-signal:before{content:'\e8a8'}
-.icon-award:before{content:'\e959'}
-.icon-desktop:before{content:'\e95a'}
-.icon-laptop:before{content:'\e90e'}
-.icon-tablet:before{content:'\e95c'}
 .icon-mobile:before{content:'\e8a9'}
 .icon-inbox:before{content:'\e8aa'}
 .icon-globe:before{content:'\e8ab'}
@@ -1039,15 +1019,11 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .icon-flight:before{content:'\e8b1'}
 .icon-fighter-jet:before{content:'\e8b2'}
 .icon-leaf:before{content:'\e8b3'}
-.icon-font:before{content:'\e8b6'}
-.icon-bold:before{content:'\e8b5'}
 .icon-italic:before{content:'\e8b4'}
+.icon-bold:before{content:'\e8b5'}
+.icon-font:before{content:'\e8b6'}
 .icon-text-height:before{content:'\e8b7'}
 .icon-text-width:before{content:'\e8b8'}
-.icon-align-left:before{content:'\e95d'}
-.icon-align-center:before{content:'\e95e'}
-.icon-align-right:before{content:'\e95f'}
-.icon-align-justify:before{content:'\e960'}
 .icon-list:before{content:'\e8b9'}
 .icon-indent-left:before{content:'\e8ba'}
 .icon-indent-right:before{content:'\e8bb'}
@@ -1064,10 +1040,6 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .icon-paste:before{content:'\e8c6'}
 .icon-briefcase:before{content:'\e8c7'}
 .icon-suitcase:before{content:'\e8c8'}
-.icon-ellipsis:before{content:'\e961'}
-.icon-ellipsis-vert:before{content:'\e962'}
-.icon-off:before{content:'\e963'}
-.icon-road:before{content:'\e964'}
 .icon-list-alt:before{content:'\e8c9'}
 .icon-qrcode:before{content:'\e8ca'}
 .icon-barcode:before{content:'\e8cb'}
@@ -1082,10 +1054,8 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .icon-gift:before{content:'\e8d4'}
 .icon-fire:before{content:'\e8d5'}
 .icon-magnet:before{content:'\e8d6'}
+.icon-folder:before{content:'\e8d7'}
 .icon-ticket:before{content:'\e8d8'}
-.icon-credit-card:before{content:'\e965'}
-.icon-floppy:before{content:'\e966'}
-.icon-megaphone:before{content:'\e967'}
 .icon-key:before{content:'\e8d9'}
 .icon-fork:before{content:'\e8da'}
 .icon-rocket:before{content:'\e8db'}
@@ -1139,25 +1109,57 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
 .icon-extinguisher:before{content:'\e90b'}
 .icon-bullseye:before{content:'\e90c'}
 .icon-resize-full:before{content:'\e90d'}
-.icon-split:before{content:'\e83d'}
-.icon-target:before{content:'\e8a7'}
-.icon-layers:before{content:'\e829'}
+.icon-laptop:before{content:'\e90e'}
 .icon-chart-bar:before{content:'\e90f'}
-.icon-link:before{content:'\e913'}
-.icon-download:before{content:'\e822'}
-.icon-upload:before{content:'\e827'}
 .icon-download-cloud:before{content:'\e910'}
 .icon-upload-cloud:before{content:'\e911'}
 .icon-share:before{content:'\e912'}
-.icon-hdd:before{content:'\e841'}
-.icon-trash:before{content:'\e89f'}
-.icon-folder:before{content:'\e8d7'}
-.icon-code:before{content:'\e844'}
-.icon-comment:before{content:'\e83b'}
-.icon-comment-alt:before{content:'\e83c'}
-.icon-chat:before{content:'\e83e'}
-.icon-folder-open:before{content:'\e81e'}
-.icon-up-circled:before{content:'\e893'}
+.icon-link:before{content:'\e913'}
+.icon-help-circled:before{content:'\e939'}
+.icon-info-circled:before{content:'\e93a'}
+.icon-info:before{content:'\e93b'}
+.icon-home:before{content:'\e93c'}
+.icon-flag-empty:before{content:'\e93d'}
+.icon-flag-checkered:before{content:'\e93e'}
+.icon-thumbs-up:before{content:'\e93f'}
+.icon-thumbs-down:before{content:'\e940'}
+.icon-edit:before{content:'\e941'}
+.icon-print:before{content:'\e942'}
+.icon-retweet:before{content:'\e943'}
+.icon-keyboard:before{content:'\e944'}
+.icon-doc-text:before{content:'\e945'}
+.icon-file:before{content:'\e946'}
+.icon-doc-text-inv:before{content:'\e947'}
+.icon-logout:before{content:'\e949'}
+.icon-mic:before{content:'\e94a'}
+.icon-mute:before{content:'\e94b'}
+.icon-volume-off:before{content:'\e94c'}
+.icon-down-dir:before{content:'\e94d'}
+.icon-up-dir:before{content:'\e94e'}
+.icon-left-dir:before{content:'\e94f'}
+.icon-right-dir:before{content:'\e950'}
+.icon-down:before{content:'\e951'}
+.icon-left:before{content:'\e952'}
+.icon-right:before{content:'\e953'}
+.icon-up:before{content:'\e954'}
+.icon-level-down:before{content:'\e955'}
+.icon-shuffle:before{content:'\e956'}
+.icon-exchange:before{content:'\e957'}
+.icon-collapse:before{content:'\e958'}
+.icon-award:before{content:'\e959'}
+.icon-desktop:before{content:'\e95a'}
+.icon-tablet:before{content:'\e95c'}
+.icon-align-left:before{content:'\e95d'}
+.icon-align-center:before{content:'\e95e'}
+.icon-align-right:before{content:'\e95f'}
+.icon-align-justify:before{content:'\e960'}
+.icon-ellipsis:before{content:'\e961'}
+.icon-ellipsis-vert:before{content:'\e962'}
+.icon-off:before{content:'\e963'}
+.icon-road:before{content:'\e964'}
+.icon-credit-card:before{content:'\e965'}
+.icon-floppy:before{content:'\e966'}
+.icon-megaphone:before{content:'\e967'}
 .pln{color:#000}
 .str{color:#080}
 .kwd{color:#008}
@@ -1194,11 +1196,11 @@ img{max-width:100%}
 .sequence-diagram [fill="#000"],.flow-chart [fill="#000"],.sequence-diagram [fill="#000000"],.flow-chart [fill="#000000"],.sequence-diagram [fill="black"],.flow-chart [fill="black"]{fill:#3f3f3f}
 code,pre{font-family:"Source Code Pro",monospace;font-size:0.9em}
 code{white-space:normal}
-pre,pre.prettyprint{border:0 solid rgba(128,128,128,0.075);border-left:10px solid rgba(128,128,128,0.075);border-radius:0;border-top-right-radius:5px;border-bottom-right-radius:5px;padding:10px 15px}pre code,pre.prettyprint code{background-color:transparent !important}
+pre,pre.prettyprint{border:0;padding:10px 20px;border-radius:5px}pre code,pre.prettyprint code{background-color:transparent !important}
 dt,dd{margin-top:5px;margin-bottom:5px}
 dd{margin-left:40px}
 table{margin-bottom:20px}
-table th,table td{padding:8px;line-height:20px;text-align:left;vertical-align:top;border-top:1px solid #dddddd}
+table th,table td{padding:8px;line-height:20px;vertical-align:top;border-top:1px solid #dddddd}
 table th{font-weight:bold}
 table thead th{vertical-align:bottom}
 table caption+thead tr:first-child th,table caption+thead tr:first-child td,table colgroup+thead tr:first-child th,table colgroup+thead tr:first-child td,table thead:first-child tr:first-child th,table thead:first-child tr:first-child td{border-top:0}
@@ -1308,8 +1310,8 @@ a.list-group-item:hover,a.list-group-item:focus{color:#343434;border-color:rgba(
 .navbar .nav.pull-right{float:right}.navbar .nav.pull-right>li>.dropdown-menu{right:0;left:auto}.navbar .nav.pull-right>li>.dropdown-menu .dropdown-menu{right:100%;left:auto;margin-right:-1px;margin-left:0}
 .navbar .btn{height:38px;padding:6px 8px}
 .navbar .btn-group>.btn.disabled *,.navbar .btn-group>.btn.blocked *,.navbar .btn-group>.btn[disabled] *{color:rgba(77,77,77,0.3)}
-.navbar .button-open-discussion.some{color:#e0b800}
-.navbar .button-open-discussion.replied{color:#e74434}
+.navbar .button-open-discussion.some{color:#e0b800 !important}
+.navbar .button-open-discussion.replied{color:#e74434 !important}
 .navbar .file-title-navbar{display:inline-block;vertical-align:middle;padding:1px 15px;font-size:1.5em;line-height:1.4em;font-weight:200;overflow:hidden;white-space:nowrap}
 .navbar .input-file-title-container{display:inline-block;vertical-align:middle}.navbar .input-file-title-container .input-file-title{width:400px;font-size:16px;height:38px}
 .navbar .working-indicator{display:inline-block;vertical-align:middle;overflow:hidden;height:38px;width:60px;padding-top:8px}.navbar .working-indicator .bar{display:inline-block;width:14px;height:6px;border-radius:1px;margin:0 2px;opacity:0.25;background-color:rgba(77,77,77,0.75)}
@@ -1383,11 +1385,12 @@ a.list-group-item:hover,a.list-group-item:focus{color:#343434;border-color:rgba(
 @font-face{font-family:'PT Sans';font-style:normal;font-weight:400;src:local('PT Sans'),local('PTSans'),url("../font/PTSans-Regular-webfont.woff") format('woff')}@font-face{font-family:'PT Sans';font-style:normal;font-weight:700;src:local('PT Sans Bold'),local('PTSans-Bold'),url("../font/PTSans-Bold-webfont.woff") format('woff')}@font-face{font-family:'PT Sans';font-style:italic;font-weight:400;src:local('PT Sans Italic'),local('PTSans-Italic'),url("../font/PTSans-Italic-webfont.woff") format('woff')}@font-face{font-family:'PT Sans';font-style:italic;font-weight:700;src:local('PT Sans Bold Italic'),local('PTSans-BoldItalic'),url("../font/PTSans-BoldItalic-webfont.woff") format('woff')}#wmd-input{position:absolute;top:0;left:0;font-family:"PT Sans",sans-serif;line-height:1.65;letter-spacing:normal;border-radius:0;color:#5a5a5a;-webkit-box-shadow:none;box-shadow:none;resize:none;border:none;padding:0;background-color:#fff;overflow:auto;white-space:pre-wrap;word-wrap:break-word;word-break:normal}#wmd-input>.editor-content{padding-bottom:230px}
 #wmd-input>.editor-margin{position:absolute;top:0;left:0}#wmd-input>.editor-margin .discussion{font-size:17px;position:absolute;cursor:pointer}#wmd-input>.editor-margin .discussion.new{display:none}#wmd-input>.editor-margin .discussion.new:hover,#wmd-input>.editor-margin .discussion.new.active,#wmd-input>.editor-margin .discussion.new.active:hover{display:inline-block;color:rgba(128,128,128,0.35) !important}
 #wmd-input>.editor-margin .discussion.added{color:rgba(235,192,0,0.7)}#wmd-input>.editor-margin .discussion.added:hover,#wmd-input>.editor-margin .discussion.added.active,#wmd-input>.editor-margin .discussion.added.active:hover{color:#ebc000 !important}
-#wmd-input>.editor-margin .discussion.replied{color:rgba(230,59,43,0.7)}#wmd-input>.editor-margin .discussion.replied:hover,#wmd-input>.editor-margin .discussion.replied.active,#wmd-input>.editor-margin .discussion.replied.active:hover{color:#e63b2b !important}
+#wmd-input>.editor-margin .discussion.replied{color:rgba(230,59,43,0.7)}#wmd-input>.editor-margin .discussion.replied:hover,#wmd-input>.editor-margin .discussion.replied.active,#wmd-input>.editor-margin .discussion.replied.active:hover{color:rgba(230,59,43,0.8) !important}
 #wmd-input>.editor-margin .discussion.icon-split{font-size:22px}#wmd-input>.editor-margin .discussion.icon-split:before{margin-right:0}
 #wmd-input>.editor-margin .discussion:hover,#wmd-input>.editor-margin .discussion.active{text-decoration:none}
+#wmd-input.has-selection>.editor-margin .discussion.new{display:inline-block;color:rgba(128,128,128,0.25)}
 #wmd-input.font-monospaced *{font-family:"Source Code Pro",monospace !important;line-height:1.65 !important;font-size:1em !important}
-#wmd-input .comment-highlight,#wmd-input .find-replace-highlight{background-color:rgba(255,230,0,0.6)}
+#wmd-input .comment-highlight,#wmd-input .find-replace-highlight{background-color:rgba(255,230,0,0.5)}
 #wmd-input .find-replace-select{background-color:#b5d5ff}
 #wmd-input .conflict{font-weight:bold;color:#e63b2b}
 #wmd-input .code,#wmd-input .pre{color:#343434;font:normal .9em "Source Code Pro",monospace}

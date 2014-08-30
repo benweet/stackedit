@@ -205,6 +205,7 @@ define([
 		});
 	var navbarMarginWidth = 18 * 2 + 25 + 25;
 	var buttonsDropdownWidth = 40;
+	var viewerButtonGroupWidth = 100;
 	var workingIndicatorWidth = 18 + 70;
 
 	function onResize() {
@@ -228,6 +229,9 @@ define([
 		previewContentElt.style.paddingBottom = paddingBottom + 'px';
 
 		var maxWidth = navbarMarginWidth + workingIndicatorWidth + titleMinWidth + buttonsDropdownWidth;
+		if(window.viewerMode) {
+			maxWidth = navbarMarginWidth + workingIndicatorWidth + titleMinWidth + viewerButtonGroupWidth;
+		}
 		var titleWidth = windowSize.width - maxWidth + titleMinWidth;
 		navbarBtnGroups.forEach(function(group, index) {
 			maxWidth += group.width;

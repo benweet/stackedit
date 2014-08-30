@@ -196,7 +196,7 @@ define([
             var title = fileMgr.currentFile.title;
             var fileDesc = fileMgr.createFile(title, content);
             fileMgr.selectFile(fileDesc);
-            window.location.href = ".";
+            window.location.href = "editor";
         });
         $(".action-welcome-file").click(function() {
             var fileDesc = fileMgr.createFile(constants.WELCOME_DOCUMENT_TITLE, welcomeContent);

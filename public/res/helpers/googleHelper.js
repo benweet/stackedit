@@ -167,9 +167,15 @@ define([
 					gapi.auth.setToken(currentToken);
 					if(!authResult || authResult.error) {
 						if(connected === true && immediate === true) {
-							// If immediate did not work retry without immediate
-							// flag
-							immediate = false;
+							// If immediate did not work
+							if(authuser < 5 && authorizationMgr.getUserId()) {
+								// Try immediate with next authuser
+								authuser++;
+							}
+							else {
+								// retry without immediate flag
+								immediate = false;
+							}
 							task.chain(oauthRedirect);
 						}
 						else {
@@ -199,8 +205,7 @@ define([
 			function startAuthenticate() {
 				immediate = true;
 				if(authorizationMgr.token && authorizationMgr.isAuthorized(permission)) {
-					task.chain();
-					return;
+					return task.chain();
 				}
 				if(!authorizationMgr.getUserId()) {
 					immediate = false;

@@ -25,11 +25,7 @@ Getting started
 
 		(export PORT=80 && node server.js)
 		
-- Run Chrome without application cache:
-
-		chrome --disable-application-cache
-
-- Run **StackEdit** in debug mode (serve original files instead of minified):
+- Run **StackEdit** in debug mode (no application cache, serve original files instead of minified):
 
 		http://localhost/?debug
 
@@ -43,11 +39,11 @@ Getting started
 
 - Add the new dependency to [RequireJS][8] configuration file (`main.js`):
 
-		grunt bower
+		gulp bower-requirejs
 
 ### Build/minify
 
-	grunt
+	gulp
 	
 ### Deploy
 

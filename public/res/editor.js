@@ -358,7 +358,6 @@ define([
 				var selectionRange = this.createRange(startOffset, endOffset);
 				var selectionRect = selectionRange.getBoundingClientRect();
 				y = selectionRect.top + selectionRect.height / 2 - inputElt.getBoundingClientRect().top + inputElt.scrollTop;
-				selectionRange.detach();
 			}
 			return {
 				x: x,
@@ -415,7 +414,6 @@ define([
 		var range = selectionMgr.createRange(startOffset, textContent.length - endOffset);
 		range.deleteContents();
 		range.insertNode(document.createTextNode(replacement));
-		range.detach();
 		return {
 			start: startOffset,
 			end: value.length - endOffset
@@ -432,7 +430,6 @@ define([
 		}
 		range.deleteContents();
 		range.insertNode(document.createTextNode(replacement));
-		range.detach();
 		var endOffset = selectionStart + replacement.length;
 		selectionMgr.setSelectionStartEnd(endOffset, endOffset);
 		selectionMgr.updateSelectionRange();
@@ -465,7 +462,6 @@ define([
 		}
 		range.deleteContents();
 		range.insertNode(document.createTextNode(replacement));
-		range.detach();
 		offset = offset - text.length + replacement.length;
 		selectionMgr.setSelectionStartEnd(offset, offset);
 		selectionMgr.updateSelectionRange();

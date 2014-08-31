@@ -7,7 +7,7 @@ if(!process.env.NO_CLUSTER && cluster.isMaster) {
 	for(var i = 0; i < count; i++) {
 		cluster.fork();
 	}
-	cluster.on('exit', function(worker) {
+	cluster.on('exit', function() {
 		console.log('Worker died. Spawning a new process...');
 		cluster.fork();
 	});

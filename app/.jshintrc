@@ -1,9 +1,0 @@
-{
-    "curly": true,
-    "node": true,
-    "indent": 4,
-    "latedef": true,
-    "undef": true,
-    "unused": true,
-    "expr": true
-}

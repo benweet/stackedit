@@ -207,7 +207,6 @@ define([
 			}
 			try {
 				cssApplier.undoToRange(context.rangyRange);
-				context.rangyRange.detach();
 			}
 			catch(e) {
 			}
@@ -438,7 +437,6 @@ define([
 			// Remove highlight
 			try {
 				cssApplier.undoToRange(currentContext.rangyRange);
-				currentContext.rangyRange.detach();
 			}
 			catch(e) {
 			}

@@ -1,7 +1,7 @@
 define([
     "jquery",
     "underscore",
-    "classes/Extension",
+    "classes/Extension"
 ], function($, _, Extension) {
 
     var documentTitle = new Extension("documentTitle", "Document Title");
@@ -14,7 +14,6 @@ define([
         }
 
         var title = fileDesc.title;
-        document.title = "StackEdit – " + title;
         $fileTitleNavbar.html(fileDesc.composeTitle());
         $(".file-title").text(title);
         $(".input-file-title").val(title);

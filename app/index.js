@@ -12,7 +12,7 @@ app.all('*', function(req, res, next) {
 	if (req.headers.host == 'stackedit.io' && req.headers['x-forwarded-proto'] != 'https') {
 		return res.redirect('https://stackedit.io' + req.url);
 	}
-	/\.(eot|ttf|woff)$/.test(req.url) && res.header('Access-Control-Allow-Origin', '*');
+	/\.(eot|ttf|woff|svg)$/.test(req.url) && res.header('Access-Control-Allow-Origin', '*');
 	next();
 });
 
@@ -20,6 +20,8 @@ app.all('*', function(req, res, next) {
 app.use(compression());
 
 // Serve static resources
+var staticOverride = process.env.STATIC_OVERRIDE;
+staticOverride && app.use(serveStatic(__dirname + '/../' + staticOverride));
 app.use(serveStatic(__dirname + '/../public'));
 
 app.post('/pdfExport', require('./pdf').export);
@@ -27,10 +29,12 @@ app.post('/sshPublish', require('./ssh').publish);
 app.post('/picasaImportImg', require('./picasa').importImg);
 app.get('/downloadImport', require('./download').importPublic);
 
+var cdnLocation = process.env.CDN_LOCATION || '';
 app.use(function(req, res, next) {
 	res.renderDebug = function(page) {
 		return res.render(page, {
-			cache: !req.query.hasOwnProperty('debug')
+			cache: !req.query.hasOwnProperty('debug'),
+			cdn: cdnLocation
 		});
 	};
 	next();

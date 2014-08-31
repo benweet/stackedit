@@ -68,22 +68,39 @@
         }
 
         .logo {
-            width: 600px;
-            height: 160px;
+            width: 300px;
+            height: 150px;
         }
 
         .logo img {
-            width: 600px;
-            height: 135px;
+            width: 300px;
+            height: 67px;
         }
 
         .logo .subtitle {
             position: absolute;
-            text-align: right;
+            text-align: center;
             color: #888;
-            top: 105px;
+            top: 80px;
             right: 10px;
             font-size: 22px;
+        }
+
+        @media (min-width: 600px) {
+            .logo {
+                width: 600px;
+                height: 160px;
+            }
+
+            .logo img {
+                width: 600px;
+                height: 135px;
+            }
+
+            .logo .subtitle {
+                text-align: right;
+                top: 105px;
+            }
         }
 
         .transition {
@@ -105,9 +122,13 @@
             float: none;
         }
 
-        .navbar .btn {
-            font-size: 18px;
-            line-height: 1.25;
+        .navbar .file-title-navbar {
+            font-size: 20px;
+            line-height: 1.6;
+        }
+
+        .file-title-navbar i {
+            line-height: 1;
         }
 
         .img {
@@ -167,7 +188,7 @@
     <script>
         function animate(elts) {
             Array.prototype.slice.call(elts).forEach(function(elt) {
-                elt.className = elt.className.replace(/(?:^|\s)(transparent|scale)(?!\S)/g , '');
+                elt.className = elt.className.replace(/(?:^|\s)(transparent|scale)(?!\S)/g, '');
             });
         }
         setTimeout(function() {
@@ -184,6 +205,7 @@
                     $('html,body').animate({scrollTop: elt.offset().top}, 500);
                 };
             }
+
             $('#scrollToSlide2').click(scrollTo($('#slide2')));
         })
     </script>
@@ -195,7 +217,7 @@
         <div class="navbar navbar-default navbar-fixed">
             <div class="navbar-inner">
                 <div class="nav">
-                    <a class="btn btn-success" href="editor" title="Editor"><i class="icon-pencil"></i> Start writing
+                    <a class="btn btn-success file-title-navbar" href="editor" title="Editor"><i class="icon-pencil"></i> Start writing
                         now!</a>
                 </div>
             </div>
@@ -319,7 +341,7 @@
                 <div class="col-md-4 col-md-offset-1">
                     <br>
 
-                    <h2 id="publish-straight-to-your-blog">Straight to your blog</h2>
+                    <h2 id="straight-to-your-blog">Straight to your blog</h2>
 
                     <p>StackEdit can upload your documents directly to Blogger, GitHub, Tumblr, WordPress… You can
                         choose
@@ -347,8 +369,7 @@
 
                     <p>Documents in StackEdit can be synchronized and shared through Google Drive and Dropbox. When two
                         collaborators are working on the same document at the same time, StackEdit takes care of merging
-                        the
-                        modifications.</p>
+                        the modifications.</p>
                 </div>
                 <div class="col-md-7 col-md-offset-1">
                     <img class="img" width="600" src="res-min/img/comments.png">
@@ -365,8 +386,7 @@
                     <h2 id="review-comments">Review comments</h2>
 
                     <p>StackEdit allows you to insert inline comments and embed collaborator discussions in your
-                        documents, much
-                        like Microsoft Word or Google Docs.</p>
+                        documents, much like Microsoft Word or Google Docs.</p>
                 </div>
             </div>
             <br>
@@ -396,54 +416,66 @@
     <div class="dark inset-shadow markdown-img">
     </div>
     <div class="modal-body">
-         <img class="background-img img" width="500" src="res-min/img/toc.gif">
+        <img class="background-img img" width="500" src="res-min/img/toc.gif">
     </div>
     <div class="modal-footer modal-header">
         <div class="container">
             <h1 id="extended-markdown-support">Extended markdown support.</h1>
+
             <div class="row">
                 <div class="col-md-4 col-md-offset-4">
                     <hr>
                 </div>
             </div>
             <br>
+
             <div class="row">
                 <div class="col-md-5">
                     <h2 id="github-flavored-markdown">GitHub Flavored Markdown</h2>
+                </div>
+            </div>
 
+            <div class="row">
+                <div class="col-md-5">
                     <p>StackEdit supports different markdown flavors such as Markdown Extra and GFM. Each
                         markdown feature can be enabled or disabled at your convenience.</p>
                     <br>
+                </div>
+                <div class="col-md-6 col-md-offset-1">
+                    <img class="img" width="410" src="res-min/img/code-block.png">
+                </div>
+            </div>
 
+            <div class="row">
+                <div class="col-md-5">
                     <h2 id="latex-mathematical-expressions">LaTeX mathematical expressions</h2>
+                </div>
+            </div>
 
+            <div class="row">
+                <div class="col-md-5">
                     <p>StackEdit integrates MathJax to render mathematics from LaTeX expressions inside your markdown
                         document,
                         as you would do on Stack Exchange.</p>
                     <br>
-
-                    <h2 id="uml-diagrams">UML diagrams</h2>
-
-                    <p>StackEdit enables you to write sequence diagrams and flow charts using a simple syntax.</p>
                 </div>
                 <div class="col-md-6 col-md-offset-1">
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <img class="img" width="410" src="res-min/img/code-block.png">
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
                     <img class="img" width="330" src="res-min/img/math.png">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-5">
+                    <h2 id="uml-diagrams">UML diagrams</h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-5">
+                    <p>StackEdit enables you to write sequence diagrams and flow charts using a simple syntax.</p>
                     <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
+                </div>
+                <div class="col-md-6 col-md-offset-1">
                     <img class="img" width="220" src="res-min/img/diagram.png">
                 </div>
             </div>

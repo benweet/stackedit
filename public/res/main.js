@@ -41,11 +41,12 @@ requirejs.config({
 		'requirejs-text': 'bower-libs/requirejs-text/text',
 		'bootstrap-tour': 'bower-libs/bootstrap-tour/build/js/bootstrap-tour',
 		css_browser_selector: 'bower-libs/css_browser_selector/css_browser_selector',
-		'pagedown-extra': 'bower-libs/pagedown-extra/Markdown.Extra',
+		'pagedown-extra': 'bower-libs/pagedown-extra/node-pagedown-extra',
+		pagedownExtra: 'bower-libs/pagedown-extra/Markdown.Extra',
 		pagedown: 'libs/Markdown.Editor',
 		'require-css': 'bower-libs/require-css/css',
 		xregexp: 'bower-libs/xregexp/xregexp-all',
-		yaml: 'bower-libs/yaml.js',
+		yaml: 'bower-libs/yaml.js/bin/yaml',
 		'yaml.js': 'bower-libs/yaml.js',
 		'yaml-js': 'bower-libs/yaml.js/bin/yaml',
 		css: 'bower-libs/require-css/css',
@@ -61,12 +62,14 @@ requirejs.config({
 		diff_match_patch_uncompressed: 'bower-libs/google-diff-match-patch-js/diff_match_patch_uncompressed',
 		jsondiffpatch: 'bower-libs/jsondiffpatch/build/bundle',
 		hammerjs: 'bower-libs/hammerjs/hammer',
-		'Diagram': 'bower-libs/js-sequence-diagrams/src/sequence-diagram',
+		Diagram: 'bower-libs/js-sequence-diagrams/src/sequence-diagram',
 		'diagram-grammar': 'bower-libs/js-sequence-diagrams/build/diagram-grammar',
 		raphael: 'bower-libs/raphael/raphael',
 		'flow-chart': 'bower-libs/flowchart/release/flowchart.amd-1.2.10.min',
 		flowchart: 'bower-libs/flowchart/release/flowchart-1.2.10.min',
-		monetizejs: 'bower-libs/monetizejs/src/monetize'
+		monetizejs: 'bower-libs/monetizejs/src/monetize',
+		'to-markdown': 'bower-libs/to-markdown/src/to-markdown',
+		waitForImages: 'bower-libs/waitForImages/dist/jquery.waitforimages'
 	},
 	shim: {
 		underscore: {
@@ -148,7 +151,7 @@ requirejs.config({
 		pagedown: [
 			'libs/Markdown.Converter'
 		],
-		'pagedown-extra': [
+		pagedownExtra: [
 			'libs/Markdown.Converter'
 		],
 		'flow-chart': [
@@ -157,7 +160,7 @@ requirejs.config({
 		'diagram-grammar': [
 			'underscore'
 		],
-		'Diagram': [
+		Diagram: [
 			'raphael',
 			'diagram-grammar'
 		]
@@ -204,7 +207,7 @@ require([
 	"mediaImporter",
 	"css",
 	"rangy-cssclassapplier",
-	themeModule,
+	themeModule
 ], function($, rangy, core, eventMgr) {
 
 	if(window.noStart) {

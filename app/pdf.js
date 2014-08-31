@@ -1,3 +1,4 @@
+/* global window,MathJax */
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 var path = require('path');

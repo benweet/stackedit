@@ -1,7 +1,7 @@
 {
   "name": "StackEdit",
-  "description": "The Markdown editor powered by PageDown",
-  "version": "1.0.9",
+  "description": "In-browser markdown editor",
+  "version": "1.0.10",
   "manifest_version": 2,
   "container" : "GOOGLE_DRIVE",
   "api_console_project_id" : "241271498917",

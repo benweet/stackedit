@@ -46,7 +46,6 @@ define([
 			}
 			catch(e) {
 			}
-			rangyRange.detach();
 		});
 		rangeList = [];
 	}
@@ -57,7 +56,6 @@ define([
 				selectRange && selectCssApplier.undoToRange(selectRange);
 			}
 			catch(e) {}
-			selectRange.toBeDetached && selectRange.detach();
 			selectRange = undefined;
 		}
 	}
@@ -188,7 +186,6 @@ define([
 			selectRange = rangy.createRange();
 			selectRange.setStart(range.startContainer, range.startOffset);
 			selectRange.setEnd(range.endContainer, range.endOffset);
-			selectRange.toBeDetached = true;
 		}
 		selectCssApplier.applyToRange(selectRange);
 		selectRange.start = offset.start;

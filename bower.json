@@ -32,5 +32,9 @@
     "js-sequence-diagrams": "https://github.com/benweet/js-sequence-diagrams.git#d60c973aa0ff148dc588c7ceee0b41e59dff3f9f",
     "flowchart": "https://github.com/adrai/flowchart.js.git#~1.2.10",
     "monetizejs": "~0.2.0"
-  }
+  },
+  "main": [
+    "/public/res/main.js",
+    "/public/res/styles/jquery.jgrowl.css"
+  ]
 }

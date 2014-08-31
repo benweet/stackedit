@@ -9,7 +9,7 @@ define([
 	'google-code-prettify',
 	'highlightjs',
 	'crel',
-	'pagedown-extra'
+	'pagedownExtra'
 ], function($, _, utils, logger, Extension, markdownExtraSettingsBlockHTML, prettify, hljs) {
 
 	var markdownExtra = new Extension("markdownExtra", "Markdown Extra", true);

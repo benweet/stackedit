@@ -230,19 +230,22 @@ gulp.task('bump-patch', bumpTask('patch'));
 gulp.task('bump-minor', bumpTask('minor'));
 gulp.task('bump-major', bumpTask('major'));
 
-gulp.task('commit', function() {
+gulp.task('git-add', function() {
 	return gulp.src('./public/res-min/**/*')
-		.pipe(git.add())
-		.pipe(git.commit('Prepare release', {args: '-A'}));
+		.pipe(git.add());
 });
 
-gulp.task('tag', function() {
+gulp.task('git-commit', function() {
+	git.commit('Prepare release', { args: '-a' }).end();
+});
+
+gulp.task('git-tag', function() {
 	var tag = 'v' + getVersion();
 	util.log('Tagging as: ' + util.colors.cyan(tag));
 	git.tag(tag, 'Version ' + getVersion());
 });
 
-gulp.task('push', function() {
+gulp.task('git-push', function() {
 	git.push('origin', 'master', { args: ' --tags' }).end();
 });
 
@@ -251,9 +254,10 @@ function releaseTask(importance) {
 		return runSequence(
 				'bump-' + importance,
 			'default',
-			'commit',
-			'tag',
-			'push');
+			'git-add',
+			'git-commit',
+			'git-tag',
+			'git-push');
 	};
 }
 

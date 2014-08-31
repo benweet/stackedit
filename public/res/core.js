@@ -378,7 +378,7 @@ define([
 	// Other initialization that are not prioritary
 	eventMgr.addListener("onReady", function() {
 
-		$('.modal').on('shown.bs.modal', function() {
+		$(document.body).on('shown.bs.modal', '.modal', function() {
 			var $elt = $(this);
 			setTimeout(function() {
 				// When modal opens focus on the first button
@@ -388,12 +388,12 @@ define([
 				// Or on the first input if any
 				$elt.find("input:enabled:visible:first").focus();
 			}, 50);
-		}).on('hidden.bs.modal', function() {
+		}).on('hidden.bs.modal', '.modal', function() {
 			// Focus on the editor when modal is gone
 			editor.focus();
 			// Revert to current theme when settings modal is closed
 			applyTheme(window.theme);
-		}).keyup(function(e) {
+		}).on('keyup', '.modal', function(e) {
 			// Handle enter key in modals
 			if(e.which == 13 && !$(e.target).is("textarea")) {
 				$(this).find(".modal-footer a:last").click();

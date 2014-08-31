@@ -387,6 +387,16 @@ define([
 
 	layout.init = function() {
 
+		var isModalShown = false;
+		$(document.body).on('show.bs.modal', '.modal', function() {
+			// Close panel if open
+			menuPanel.toggle(false);
+			documentPanel.toggle(false);
+			isModalShown = true;
+		}).on('hidden.bs.modal', '.modal', function() {
+			isModalShown = false;
+		});
+
 		// Tweak the body element
 		(function(bodyStyle) {
 			bodyStyle.position = 'absolute';
@@ -464,7 +474,7 @@ define([
 
 		// Focus on editor when document panel is closed
 		documentPanel.$elt.on('hidden.layout.toggle', function() {
-			editor.elt.focus();
+			isModalShown || editor.elt.focus();
 		});
 
 		menuPanel.isOpen = false;
@@ -482,7 +492,7 @@ define([
 
 			// Focus on editor when menu panel is closed
 			menuPanel.$elt.on('hidden.layout.toggle', function() {
-				editor.elt.focus();
+				isModalShown || editor.elt.focus();
 			});
 
 			// Gesture
@@ -556,16 +566,6 @@ define([
 		}).on('dragend', function() {
 			wrapperL2.$elt.removeClass('dragging');
 			previewButtons.$elt.find('.btn-group').toggleClass('dropup', windowSize.height / 2 > -previewButtons.y);
-		});
-
-		var isModalShown = false;
-		$('.modal').on('show.bs.modal', function() {
-			// Close panel if open
-			menuPanel.toggle(false);
-			documentPanel.toggle(false);
-			isModalShown = true;
-		}).on('hidden.bs.modal', function() {
-			isModalShown = false;
 		});
 
 		// Configure Mousetrap

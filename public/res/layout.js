@@ -551,8 +551,9 @@ define([
 
 		var buttonsInitialCoord;
 		previewButtons.hammer.on('dragstart', function() {
+			previewButtons.isOpen = true;
 			previewButtons.isDragged = true;
-			previewButtons.$elt.removeClass('animate');
+			previewButtons.$elt.removeClass('closed animate');
 			wrapperL2.$elt.addClass('dragging');
 			buttonsInitialCoord = {
 				x: previewButtons.x,

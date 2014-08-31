@@ -4637,7 +4637,10 @@ function diff_match_patch() {
  delete i.pdfPageSize, delete i.sshProxy, localStorage.settings = JSON.stringify(i)), 
  o = "v20"), "v20" == o && (e.has(localStorage, "settings") && (i = JSON.parse(localStorage.settings), 
  delete i.markdownMimeType, localStorage.settings = JSON.stringify(i)), o = "v21"), 
- localStorage.version = o, localStorage;
+ "v21" == o && (e.has(localStorage, "settings") && (i = JSON.parse(localStorage.settings), 
+ i.template && (i.template = i.template.replace("https://stackedit.io/", "https://cdn.stackedit.io/latest/")), 
+ localStorage.settings = JSON.stringify(i)), o = "v22"), localStorage.version = o, 
+ localStorage;
 }), function(e) {
  var t;
  "function" == typeof define ? define("xregexp", e) : "object" == typeof exports ? (t = e(), 
@@ -6812,9 +6815,9 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
  }, utils;
 }), define("constants", [], function() {
  var e = {};
- return e.VERSION = "4.1.1", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", 
- e.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", e.GOOGLE_DRIVE_APP_ID = "241271498917", 
- e.DROPBOX_APP_KEY = "lq6mwopab8wskas", e.DROPBOX_APP_SECRET = "851fgnucpezy84t", 
+ return e.VERSION = "4.1.2", e.MAIN_URL = "https://stackedit.io/", e.CDN_URL = "https://cdn.stackedit.io/latest/", 
+ e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", e.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", 
+ e.GOOGLE_DRIVE_APP_ID = "241271498917", e.DROPBOX_APP_KEY = "lq6mwopab8wskas", e.DROPBOX_APP_SECRET = "851fgnucpezy84t", 
  e.DROPBOX_RESTRICTED_APP_KEY = "sw0hlixhr8q1xk0", e.DROPBOX_RESTRICTED_APP_SECRET = "1r808p2xygs6lbg", 
  e.BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c", e.DEFAULT_FILE_TITLE = "Title", 
  e.DEFAULT_FOLDER_NAME = "New folder", e.GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document", 
@@ -6864,7 +6867,7 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
   gdriveFullAccess: !0,
   dropboxFullAccess: !0,
   githubFullAccess: !0,
-  template: [ "<!DOCTYPE html>", "<html>", "<head>", '<meta charset="utf-8">', "<title><%= documentTitle %></title>", '<link rel="stylesheet" href="' + t.MAIN_URL + 'res-min/themes/base.css" />', '<script type="text/javascript" src="' + t.MAIN_URL + 'libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>', "</head>", '<body><div class="container"><%= documentHTML %></div></body>', "</html>" ].join("\n"),
+  template: [ "<!DOCTYPE html>", "<html>", "<head>", '<meta charset="utf-8">', "<title><%= documentTitle %></title>", '<link rel="stylesheet" href="' + t.CDN_URL + 'res-min/themes/base.css" />', '<script type="text/javascript" src="' + t.CDN_URL + 'libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>', "</head>", '<body><div class="container"><%= documentHTML %></div></body>', "</html>" ].join("\n"),
   pdfTemplate: [ "<!DOCTYPE html>", "<html>", "<head>", '<meta charset="utf-8">', "<title><%= documentTitle %></title>", '<link rel="stylesheet" href="http://localhost/res-min/themes/base.css" />', '<script type="text/x-mathjax-config">', 'MathJax.Hub.Config({ messageStyle: "none" });', "</script>", '<script type="text/javascript" src="http://localhost/libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>', "</head>", "<body><%= documentHTML %></body>", "</html>" ].join("\n"),
   pdfOptions: [ "{", '    "marginTop": 25,', '    "marginRight": 25,', '    "marginBottom": 25,', '    "marginLeft": 25,', '    "pageSize": "A4"', "}" ].join("\n"),
   extensionSettings: {}

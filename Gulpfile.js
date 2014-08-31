@@ -186,7 +186,7 @@ gulp.task('cache-manifest', function() {
 });
 
 gulp.task('cache-manifest-stackedit-io', function() {
-	return makeCacheManifest('./public-stackedit.io/', 'https://cdn.stackedit.io/v' + getVersion() + '/');
+	return makeCacheManifest('./public-stackedit.io/', 'https://cdn.stackedit.io/' + getVersion() + '/');
 });
 
 gulp.task('bower-requirejs', function(cb) {
@@ -203,15 +203,16 @@ gulp.task('clean', [
 	'clean-font',
 	'clean-img'
 ]);
-gulp.task('default', function() {
-	return runSequence([
+gulp.task('default', function(cb) {
+	runSequence([
 			'jshint',
 			'requirejs',
 			'less',
 			'copy-font',
 			'copy-img'
 		],
-		'cache-manifest');
+		'cache-manifest',
+		cb);
 });
 
 function bumpTask(importance) {
@@ -225,7 +226,6 @@ function bumpTask(importance) {
 	};
 }
 
-gulp.task('bump', bumpTask('patch'));
 gulp.task('bump-patch', bumpTask('patch'));
 gulp.task('bump-minor', bumpTask('minor'));
 gulp.task('bump-major', bumpTask('major'));
@@ -242,7 +242,7 @@ gulp.task('git-commit', function() {
 gulp.task('git-tag', function() {
 	var tag = 'v' + getVersion();
 	util.log('Tagging as: ' + util.colors.cyan(tag));
-	git.tag(tag, 'Version ' + getVersion());
+	git.tag(tag, 'Version ' + getVersion()).end();
 });
 
 gulp.task('git-push', function() {
@@ -250,18 +250,18 @@ gulp.task('git-push', function() {
 });
 
 function releaseTask(importance) {
-	return function() {
-		return runSequence(
+	return function(cb) {
+		runSequence(
 				'bump-' + importance,
 			'default',
 			'git-add',
 			'git-commit',
 			'git-tag',
-			'git-push');
+			'git-push',
+			cb);
 	};
 }
 
-gulp.task('release', releaseTask('patch'));
-gulp.task('release-patch', releaseTask('patch'));
-gulp.task('release-minor', releaseTask('minor'));
-gulp.task('release-major', releaseTask('major'));
+gulp.task('patch', releaseTask('patch'));
+gulp.task('minor', releaseTask('minor'));
+gulp.task('major', releaseTask('major'));

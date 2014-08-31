@@ -26,8 +26,8 @@ define([
 			'<head>',
 			'<meta charset="utf-8">',
 			'<title><%= documentTitle %></title>',
-			'<link rel="stylesheet" href="' + constants.MAIN_URL + 'res-min/themes/base.css" />',
-			'<script type="text/javascript" src="' + constants.MAIN_URL + 'libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>',
+			'<link rel="stylesheet" href="' + constants.CDN_URL + 'res-min/themes/base.css" />',
+			'<script type="text/javascript" src="' + constants.CDN_URL + 'libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>',
 			'</head>',
 			'<body><div class="container"><%= documentHTML %></div></body>',
 			'</html>'

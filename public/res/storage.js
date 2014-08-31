@@ -265,6 +265,15 @@ define([
 		version = "v21";
 	}
 
-    localStorage.version = version;
+	if(version == "v21") {
+		if(_.has(localStorage, 'settings')) {
+			settings = JSON.parse(localStorage.settings);
+			settings.template && (settings.template = settings.template.replace('https://stackedit.io/', 'https://cdn.stackedit.io/latest/'));
+			localStorage.settings = JSON.stringify(settings);
+		}
+		version = "v22";
+	}
+
+	localStorage.version = version;
     return localStorage;
 });

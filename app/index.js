@@ -29,7 +29,7 @@ app.post('/sshPublish', require('./ssh').publish);
 app.post('/picasaImportImg', require('./picasa').importImg);
 app.get('/downloadImport', require('./download').importPublic);
 
-var cdnLocation = process.env.CDN_LOCATION || '';
+var cdnLocation = staticOverride == 'public-stackedit.io' ? '//cdn.stackedit.io/' : '';
 app.use(function(req, res, next) {
 	res.renderDebug = function(page) {
 		return res.render(page, {

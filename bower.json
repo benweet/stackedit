@@ -1,6 +1,6 @@
 {
   "name": "stackedit",
-  "version": "4.1.2",
+  "version": "4.1.3",
   "description": "StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.",
   "dependencies": {
     "bootstrap": "3.0.3",
@@ -32,7 +32,7 @@
     "js-sequence-diagrams": "https://github.com/benweet/js-sequence-diagrams.git#d60c973aa0ff148dc588c7ceee0b41e59dff3f9f",
     "flowchart": "https://github.com/adrai/flowchart.js.git#~1.2.10",
     "monetizejs": "~0.2.0",
-	"MathJax": "~2.4.0"
+    "MathJax": "~2.4.0"
   },
   "main": [
     "/public/res/main.js",

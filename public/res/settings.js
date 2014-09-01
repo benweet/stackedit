@@ -26,8 +26,8 @@ define([
 			'<head>',
 			'<meta charset="utf-8">',
 			'<title><%= documentTitle %></title>',
-			'<link rel="stylesheet" href="' + constants.CDN_URL + 'res-min/themes/base.css" />',
-			'<script type="text/javascript" src="' + constants.CDN_URL + 'libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>',
+			'<link rel="stylesheet" href="https://cdn.stackedit.io/latest/res-min/themes/base.css" />',
+			'<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>',
 			'</head>',
 			'<body><div class="container"><%= documentHTML %></div></body>',
 			'</html>'
@@ -42,7 +42,7 @@ define([
 			'<script type="text/x-mathjax-config">',
 			'MathJax.Hub.Config({ messageStyle: "none" });',
 			'</script>',
-			'<script type="text/javascript" src="http://localhost/libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>',
+			'<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>',
 			'</head>',
 			'<body><%= documentHTML %></body>',
 			'</html>'

@@ -209,10 +209,10 @@ $$
 \Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
 $$
 
-> **Tip:** Make sure you include **MathJax** into your publications to render mathematical expression properly. Your page/template should include something like this:
+> **Tip:** To make sure mathematical expressions are rendered properly on your website, include **MathJax** into your template:
 
 ```
-<script type="text/javascript" src="https://stackedit.io/libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 ```
 
 > **Note:** You can find more information about **LaTeX** mathematical expressions [here][4].

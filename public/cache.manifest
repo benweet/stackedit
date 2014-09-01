@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#Date Mon Sep 01 2014 20:19:11 GMT+0100 (IST)
+#Date Mon Sep 01 2014 23:37:45 GMT+0100 (IST)
 
 CACHE:
 .
@@ -210,14 +210,14 @@ res-min/themes/school.css
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/Main/Regular/SpacingModLetters.js?rev=2.4-beta-2
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/Math/BoldItalic/Main.js?rev=2.4-beta-2
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/Math/Italic/Main.js?rev=2.4-beta-2
-//cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/SansSerif/Italic/BasicLatin.js?rev=2.4-beta-2
-//cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/SansSerif/Italic/CombDiacritMarks.js?rev=2.4-beta-2
-//cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/SansSerif/Italic/Main.js?rev=2.4-beta-2
-//cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/SansSerif/Italic/Other.js?rev=2.4-beta-2
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/SansSerif/Bold/BasicLatin.js?rev=2.4-beta-2
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/SansSerif/Bold/CombDiacritMarks.js?rev=2.4-beta-2
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/SansSerif/Bold/Main.js?rev=2.4-beta-2
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/SansSerif/Bold/Other.js?rev=2.4-beta-2
+//cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/SansSerif/Italic/BasicLatin.js?rev=2.4-beta-2
+//cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/SansSerif/Italic/CombDiacritMarks.js?rev=2.4-beta-2
+//cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/SansSerif/Italic/Main.js?rev=2.4-beta-2
+//cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/SansSerif/Italic/Other.js?rev=2.4-beta-2
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/SansSerif/Regular/BasicLatin.js?rev=2.4-beta-2
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/SansSerif/Regular/CombDiacritMarks.js?rev=2.4-beta-2
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/TeX/SansSerif/Regular/Main.js?rev=2.4-beta-2
@@ -381,9 +381,9 @@ res-min/themes/school.css
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/STIX/General/Regular/SupplementalArrowsA.js?rev=2.4-beta-2
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/STIX/General/Regular/SupplementalArrowsB.js?rev=2.4-beta-2
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/STIX/General/Regular/ij.js?rev=2.4-beta-2
-//cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/STIX/IntegralsD/Bold/All.js?rev=2.4-beta-2
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/STIX/IntegralsD/Regular/All.js?rev=2.4-beta-2
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/STIX/IntegralsD/Regular/Main.js?rev=2.4-beta-2
+//cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/STIX/IntegralsD/Bold/All.js?rev=2.4-beta-2
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/STIX/IntegralsSm/Bold/All.js?rev=2.4-beta-2
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/STIX/IntegralsSm/Regular/All.js?rev=2.4-beta-2
 //cdn.mathjax.org/mathjax/2.4-latest/jax/output/HTML-CSS/fonts/STIX/IntegralsSm/Regular/Main.js?rev=2.4-beta-2

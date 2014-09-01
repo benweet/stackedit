@@ -1,8 +1,7 @@
 define([], function() {
 	var constants = {};
-	constants.VERSION = "4.1.2";
+	constants.VERSION = "4.1.3";
 	constants.MAIN_URL = "https://stackedit.io/";
-	constants.CDN_URL = "https://cdn.stackedit.io/latest/";
 	constants.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1";
 	constants.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw";
 	constants.GOOGLE_DRIVE_APP_ID = "241271498917";
@@ -23,7 +22,7 @@ define([], function() {
 	constants.IMPORT_FILE_MAX_CONTENT_SIZE = 100000;
 	constants.IMPORT_IMG_MAX_CONTENT_SIZE = 10000000;
 	constants.TEMPORARY_FILE_INDEX = "file.tempIndex";
-	constants.WELCOME_DOCUMENT_TITLE = "Hello";
+	constants.WELCOME_DOCUMENT_TITLE = "Hello!";
 	constants.DOWNLOAD_IMPORT_URL = "/downloadImport";
 	constants.PICASA_IMPORT_IMG_URL = "/picasaImportImg";
 	constants.SSH_PUBLISH_URL = '/sshPublish';

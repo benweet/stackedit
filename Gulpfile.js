@@ -233,6 +233,7 @@ gulp.task('default', function(cb) {
 			'copy-img'
 		],
 		'cache-manifest',
+		'cache-manifest-stackedit-io',
 		cb);
 });
 

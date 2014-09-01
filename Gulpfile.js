@@ -257,18 +257,14 @@ gulp.task('git-add', function() {
 		.pipe(git.add());
 });
 
-gulp.task('git-commit', function() {
-	git.commit('Prepare release', { args: '-a' }).end();
-});
-
 gulp.task('git-tag', function() {
-	var tag = 'v' + getVersion();
+	var version = getVersion();
+	var message = 'Version ' + version;
+	var tag = 'v' + version;
+	git.commit(message, { args: '-a' }).end();
 	util.log('Tagging as: ' + util.colors.cyan(tag));
-	git.tag(tag, 'Version ' + getVersion());
-});
-
-gulp.task('git-push', function() {
-	git.push('origin', 'master', { args: ' --tags' }).end();
+	git.tag(tag, message);
+	git.push('origin', 'master', { args: ' --tags' });
 });
 
 function releaseTask(importance) {
@@ -277,9 +273,7 @@ function releaseTask(importance) {
 				'bump-' + importance,
 			'default',
 			'git-add',
-			'git-commit',
 			'git-tag',
-			'git-push',
 			cb);
 	};
 }

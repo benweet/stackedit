@@ -1,6 +1,6 @@
 {
   "name": "stackedit",
-  "version": "4.1.4",
+  "version": "4.1.5",
   "private": true,
   "description": "StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.",
   "main": "res/main.js",
@@ -29,7 +29,6 @@
     "run-sequence": "^0.3.6",
     "gulp-clean": "^0.3.1",
     "gulp-replace": "^0.4.0",
-    "gulp-git": "^0.5.0",
     "gulp-bump": "^0.1.11",
     "gulp-util": "^3.0.1",
     "knox": "^0.9.1",

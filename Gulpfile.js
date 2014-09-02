@@ -10,7 +10,7 @@ var less = require('gulp-less');
 var inject = require('gulp-inject');
 var replace = require('gulp-replace');
 var bump = require('gulp-bump');
-var git = require('gulp-git');
+var childProcess = require('child_process');
 var runSequence = require('run-sequence');
 var es = require('event-stream');
 var fs = require('fs');
@@ -215,7 +215,7 @@ gulp.task('cache-manifest', function() {
 });
 
 gulp.task('cache-manifest-stackedit-io', function() {
-	return makeCacheManifest('./public-stackedit.io/', '//cdn.stackedit.io/' + getVersion() + '/');
+	return makeCacheManifest('./public-stackedit.io/', '//stackedit.s3.amazonaws.com/' + getVersion() + '/');
 });
 
 gulp.task('clean', [
@@ -252,19 +252,34 @@ gulp.task('bump-patch', bumpTask('patch'));
 gulp.task('bump-minor', bumpTask('minor'));
 gulp.task('bump-major', bumpTask('major'));
 
-gulp.task('git-add', function() {
-	return gulp.src('./public/res-min/**/*')
-		.pipe(git.add());
-});
+function exec(cmd, cb) {
+	childProcess.exec(cmd, {cwd: process.cwd()}, function(err, stdout, stderr) {
+		if(!err) {
+			util.log(stdout, stderr);
+		}
+		cb(err);
+	});
+}
 
-gulp.task('git-tag', function() {
-	var version = getVersion();
-	var message = 'Version ' + version;
-	var tag = 'v' + version;
-	git.commit(message, { args: '-a' }).end();
+gulp.task('git-tag', function(cb) {
+	var tag = 'v' + getVersion();
 	util.log('Tagging as: ' + util.colors.cyan(tag));
-	git.tag(tag, message);
-	git.push('origin', 'master', { args: ' --tags' });
+	exec('git add ./public/res-min', function(err) {
+		if(err) {
+			return cb(err);
+		}
+		exec('git commit -a -m "Prepare release"', function(err) {
+			if(err) {
+				return cb(err);
+			}
+			exec('git tag -a ' + tag + ' -m "Version ' + getVersion() + '"', function(err) {
+				if(err) {
+					return cb(err);
+				}
+				exec('git push origin master --tags', cb);
+			});
+		});
+	});
 });
 
 function releaseTask(importance) {
@@ -272,7 +287,6 @@ function releaseTask(importance) {
 		runSequence(
 				'bump-' + importance,
 			'default',
-			'git-add',
 			'git-tag',
 			cb);
 	};
@@ -286,7 +300,7 @@ gulp.task('deploy-cdn', function() {
 	var s3Client = knox.createClient({
 		key: process.env.STACKEDIT_AWS_ACCESS_KEY_ID,
 		secret: process.env.STACKEDIT_AWS_SECRET_KEY,
-		bucket: 'cdn.stackedit.io'
+		bucket: 'stackedit'
 	});
 	var zippedFormat = {
 		'text/plain': true,
@@ -296,6 +310,7 @@ gulp.task('deploy-cdn', function() {
 		'application/javascript': true,
 		'image/svg+xml': true
 	};
+
 	function upload(file, cb) {
 		var headers = {
 			'x-amz-acl': 'public-read',
@@ -306,11 +321,12 @@ gulp.task('deploy-cdn', function() {
 		file.contentEncoding && (headers['Content-Encoding'] = file.contentEncoding);
 		s3Client.putBuffer(file.contents, file.dest + file.relative, headers, cb);
 	}
+
 	var queue = async.queue(upload, 16).push;
 	var version = getVersion();
 	return gulp.src([
 		'./**/*',
-		'!./res/bower-libs/**/*'
+		'!./res/**/*'
 	], {
 		cwd: './public',
 		buffer: false

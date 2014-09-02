@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var compression = require('compression');
 var serveStatic = require('serve-static');
+var fs = require('fs');
 
 // Configure ejs engine
 app.set('views', __dirname + '/../views');
@@ -29,7 +30,10 @@ app.post('/sshPublish', require('./ssh').publish);
 app.post('/picasaImportImg', require('./picasa').importImg);
 app.get('/downloadImport', require('./download').importPublic);
 
-var cdnLocation = staticOverride == 'public-stackedit.io' ? '//cdn.stackedit.io/' : '';
+var packageJson = JSON.parse(fs.readFileSync(__dirname + '/../package.json', {
+	encoding: 'utf8'
+}));
+var cdnLocation = staticOverride == 'public-stackedit.io' ? '//stackedit.s3.amazonaws.com/' + packageJson.version + '/' : '';
 app.use(function(req, res, next) {
 	res.renderDebug = function(page) {
 		return res.render(page, {

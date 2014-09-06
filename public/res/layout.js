@@ -125,6 +125,7 @@ define([
 			}
 			this.isOpen = _.isBoolean(show) ? show : !this.isOpen;
 			if(this.isOpen) {
+				this.isShown = true;
 				this.$elt.addClass('panel-open').trigger('show.layout.toggle');
 				if(backdrop) {
 					$backdropElt = $(utils.createBackdrop(wrapperL1.elt)).on('click.backdrop', _.bind(function() {
@@ -134,7 +135,9 @@ define([
 				}
 				transitionEndCallbacks.push(_.bind(function() {
 					if(--pushedEvents === 0) {
-						this.isOpen && this.$elt.trigger('shown.layout.toggle');
+						if(this.isOpen) {
+							this.$elt.trigger('shown.layout.toggle');
+						}
 					}
 				}, this));
 			}
@@ -147,7 +150,10 @@ define([
 				}
 				transitionEndCallbacks.push(_.bind(function() {
 					if(--pushedEvents === 0) {
-						!this.isOpen && this.$elt.removeClass('panel-open bring-to-front').trigger('hidden.layout.toggle');
+						if(!this.isOpen) {
+							this.isShown = false;
+							this.$elt.removeClass('panel-open bring-to-front').trigger('hidden.layout.toggle');
+						}
 					}
 				}, this));
 			}
@@ -253,6 +259,14 @@ define([
 	}
 
 	var isVertical = settings.layoutOrientation == "vertical";
+
+	function fixViewportScrolling() {
+		// Fix a weird viewport behavior using pageup/pagedown in Webkit
+		wrapperL1.width = windowSize.width + menuPanelWidth + (documentPanel.isShown ? documentPanelWidth : 0);
+		wrapperL1.elt.style.width = wrapperL1.width + 'px';
+		documentPanel.right = documentPanel.isShown ? 0 : -documentPanelWidth;
+		documentPanel.elt.style.right = documentPanel.right + 'px';
+	}
 
 	function resizeAll() {
 		windowSize = {
@@ -380,6 +394,7 @@ define([
 		previewResizer.applyCss();
 		navbarToggler.applyCss();
 
+		fixViewportScrolling();
 		previewButtons.adjustPosition();
 
 		onResize();
@@ -431,6 +446,15 @@ define([
 		navbarTitleContainerElt = navbar.elt.querySelector('.title-container');
 		$navbarTitleElt = navbar.$elt.find('.file-title-navbar, .input-file-title');
 
+		// Fix a weird viewport behavior using pageup/pagedown in Webkit
+		$([
+			wrapperL1.elt,
+			wrapperL2.elt,
+			wrapperL3.elt
+		]).on('scroll', function() {
+			this.scrollLeft = 0;
+		});
+
 		_.each(navbar.elt.querySelectorAll('.right-buttons'), function(btnGroupElt) {
 			navbarBtnGroups.push({
 				elt: btnGroupElt,
@@ -474,6 +498,7 @@ define([
 
 		// Focus on editor when document panel is closed
 		documentPanel.$elt.on('hidden.layout.toggle', function() {
+			fixViewportScrolling();
 			isModalShown || editor.elt.focus();
 		});
 

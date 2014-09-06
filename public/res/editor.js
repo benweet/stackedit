@@ -247,15 +247,13 @@ define([
 				if(fileChanged === false) {
 					var selectionStart = self.selectionStart;
 					var selectionEnd = self.selectionEnd;
-					var range;
 					var selection = rangy.getSelection();
 					if(selection.rangeCount > 0) {
 						var selectionRange = selection.getRangeAt(0);
 						var element = selectionRange.startContainer;
 						if((contentElt.compareDocumentPosition(element) & 0x10)) {
-							range = selectionRange;
 							var container = element;
-							var offset = range.startOffset;
+							var offset = selectionRange.startOffset;
 							do {
 								while(element = element.previousSibling) {
 									if(element.textContent) {
@@ -266,17 +264,20 @@ define([
 							} while(element && element != inputElt);
 
 							if(selection.isBackwards()) {
-								selectionStart = offset + (range + '').length;
+								selectionStart = offset + (selectionRange + '').length;
 								selectionEnd = offset;
 							}
 							else {
 								selectionStart = offset;
-								selectionEnd = offset + (range + '').length;
+								selectionEnd = offset + (selectionRange + '').length;
 							}
-							if(selectionStart === selectionEnd && selectionStart > textContent.length) {
-								// In Firefox cursor can be after the trailingLfNode
-								selection.nativeSelection.modify && selection.nativeSelection.modify("move", "backward", "character");
+
+							if(selectionStart === selectionEnd && selectionRange.startContainer.textContent == '\n' && selectionRange.startOffset == 1) {
+								// In IE if end of line is selected, offset is wrong
+								// Also, in Firefox cursor can be after the trailingLfNode
 								selectionStart = --selectionEnd;
+								self.setSelectionStartEnd(selectionStart, selectionEnd);
+								self.updateSelectionRange();
 							}
 						}
 					}

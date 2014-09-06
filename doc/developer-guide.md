@@ -8,7 +8,7 @@ Getting started
 
 - [Git][1]
 - [node.js/npm][2]
-- [Grunt][3]
+- [Gulp][3]
 - [Bower][4]
 
 ### Before debugging
@@ -596,7 +596,7 @@ myExtension.onMessage = function(message) {
 
   [1]: http://git-scm.com/
   [2]: http://nodejs.org/
-  [3]: http://gruntjs.com/
+  [3]: http://gulpjs.com/
   [4]: http://bower.io/
   [5]: http://requirejs.org/ "RequireJS"
   [6]: http://en.wikipedia.org/wiki/Asynchronous_module_definition "Asynchronous module definition"

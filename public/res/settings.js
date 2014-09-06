@@ -26,7 +26,7 @@ define([
 			'<head>',
 			'<meta charset="utf-8">',
 			'<title><%= documentTitle %></title>',
-			'<link rel="stylesheet" href="https://stackedit.s3.amazonaws.com/latest/res-min/themes/base.css" />',
+			'<link rel="stylesheet" href="' + constants.MAIN_URL + 'res-min/themes/base.css" />',
 			'<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>',
 			'</head>',
 			'<body><div class="container"><%= documentHTML %></div></body>',
@@ -42,7 +42,7 @@ define([
 			'<script type="text/x-mathjax-config">',
 			'MathJax.Hub.Config({ messageStyle: "none" });',
 			'</script>',
-			'<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>',
+			'<script type="text/javascript" src="http://localhost/res/bower-libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>',
 			'</head>',
 			'<body><%= documentHTML %></body>',
 			'</html>'

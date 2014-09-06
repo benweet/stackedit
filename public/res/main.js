@@ -23,7 +23,7 @@ requirejs.config({
 		'mousetrap-record': 'bower-libs/mousetrap/plugins/record/mousetrap-record',
 		toMarkdown: 'bower-libs/to-markdown/src/to-markdown',
 		text: 'bower-libs/requirejs-text/text',
-		mathjax: 'bower-libs/MathJax/MathJax.js?config=TeX-AMS_HTML',
+		mathjax: '../res/bower-libs/MathJax/MathJax.js?config=TeX-AMS_HTML',
 		bootstrap: 'bower-libs/bootstrap/dist/js/bootstrap',
 		requirejs: 'bower-libs/requirejs/require',
 		'google-code-prettify': 'bower-libs/google-code-prettify/src/prettify',
@@ -167,14 +167,6 @@ requirejs.config({
 		]
 	}
 });
-
-if(window.baseDir.slice(-7) == 'res-min') {
-	requirejs.config({
-		paths: {
-			mathjax: '//cdn.mathjax.org/mathjax/2.4-latest/MathJax.js?config=TeX-AMS_HTML'
-		}
-	});
-}
 
 // Check browser compatibility
 try {

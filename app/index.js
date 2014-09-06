@@ -2,7 +2,6 @@ var express = require('express');
 var app = express();
 var compression = require('compression');
 var serveStatic = require('serve-static');
-var fs = require('fs');
 
 // Configure ejs engine
 app.set('views', __dirname + '/../views');
@@ -20,25 +19,18 @@ app.all('*', function(req, res, next) {
 // Use gzip compression
 app.use(compression());
 
-// Serve static resources
-var staticOverride = process.env.STATIC_OVERRIDE;
-staticOverride && app.use(serveStatic(__dirname + '/../' + staticOverride));
-app.use(serveStatic(__dirname + '/../public'));
-
 app.post('/pdfExport', require('./pdf').export);
 app.post('/sshPublish', require('./ssh').publish);
 app.post('/picasaImportImg', require('./picasa').importImg);
 app.get('/downloadImport', require('./download').importPublic);
 
-var packageJson = JSON.parse(fs.readFileSync(__dirname + '/../package.json', {
-	encoding: 'utf8'
-}));
-var cdnLocation = staticOverride == 'public-stackedit.io' ? '//stackedit.s3.amazonaws.com/' + packageJson.version + '/' : '';
+// Serve static resources
+app.use(serveStatic(__dirname + '/../public'));
+
 app.use(function(req, res, next) {
 	res.renderDebug = function(page) {
 		return res.render(page, {
-			cache: !req.query.hasOwnProperty('debug'),
-			cdn: cdnLocation
+			cache: !req.query.hasOwnProperty('debug')
 		});
 	};
 	next();

@@ -268,11 +268,8 @@ define([
 	if(version == "v21") {
 		if(_.has(localStorage, 'settings')) {
 			settings = JSON.parse(localStorage.settings);
-			if(settings.template) {
-				settings.template = settings.template.replace('https://stackedit.io/libs/MathJax/', 'https://cdn.mathjax.org/mathjax/latest/');
-				settings.template = settings.template.replace('https://stackedit.io/', 'https://stackedit.s3.amazonaws.com/latest/');
-			}
-			settings.pdfTemplate && (settings.pdfTemplate = settings.pdfTemplate.replace('http://localhost/libs/MathJax/', 'https://cdn.mathjax.org/mathjax/latest/'));
+			settings.template && (settings.template = settings.template.replace('https://stackedit.io/libs/MathJax/', 'https://cdn.mathjax.org/mathjax/latest/'));
+			settings.pdfTemplate && (settings.pdfTemplate = settings.pdfTemplate.replace('/libs/MathJax/', '/res/bower-libs/MathJax/'));
 			localStorage.settings = JSON.stringify(settings);
 		}
 		version = "v22";

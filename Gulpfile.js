@@ -12,12 +12,7 @@ var replace = require('gulp-replace');
 var bump = require('gulp-bump');
 var childProcess = require('child_process');
 var runSequence = require('run-sequence');
-var es = require('event-stream');
 var fs = require('fs');
-var knox = require('knox');
-var zlib = require('zlib');
-var mime = require('mime');
-var async = require("async");
 
 
 /** __________________________________________
@@ -160,11 +155,12 @@ gulp.task('copy-img', ['clean-img'], function() {
  * cache.manifest
  */
 
-function makeCacheManifest(dest, cdn) {
-	cdn = cdn || '';
+gulp.task('cache-manifest', function() {
 	return gulp.src('./public/cache.manifest')
 		.pipe(replace(/(#Date ).*/, '$1' + Date()))
-		.pipe(inject(gulp.src('./res-min/**/*.*', {
+		.pipe(inject(gulp.src([
+				'./res-min/**/*.*'
+			], {
 				read: false,
 				cwd: './public'
 			}),
@@ -173,49 +169,41 @@ function makeCacheManifest(dest, cdn) {
 				endtag: '# end_inject_resources',
 				ignoreExtensions: true,
 				transform: function(filepath) {
-					return cdn + filepath.substring(1);
+					return filepath.substring(1);
 				}
 			}))
 		.pipe(inject(gulp.src([
-				'./MathJax.js',
-				'./config/Safe.js',
-				'./config/TeX-AMS_HTML.js',
-				'./images/CloseX-31.png',
-				'./images/MenuArrow-15.png',
-				'./jax/output/HTML-CSS/jax.js',
-				'./extensions/**/*.*',
-				'./fonts/HTML-CSS/TeX/woff/**/*.*',
-				'./jax/element/**/*.*',
-				'./jax/output/HTML-CSS/autoload/**/*.*',
-				'./jax/output/HTML-CSS/fonts/TeX/**/*.*',
-				'./jax/output/HTML-CSS/fonts/STIX/**/*.*'
+				'./res/bower-libs/MathJax/MathJax.js',
+				'./res/bower-libs/MathJax/config/Safe.js',
+				'./res/bower-libs/MathJax/config/TeX-AMS_HTML.js',
+				'./res/bower-libs/MathJax/images/CloseX-31.png',
+				'./res/bower-libs/MathJax/images/MenuArrow-15.png',
+				'./res/bower-libs/MathJax/jax/output/HTML-CSS/jax.js',
+				'./res/bower-libs/MathJax/extensions/**/*.*',
+				'./res/bower-libs/MathJax/fonts/HTML-CSS/TeX/woff/**/*.*',
+				'./res/bower-libs/MathJax/jax/element/**/*.*',
+				'./res/bower-libs/MathJax/jax/output/HTML-CSS/autoload/**/*.*',
+				'./res/bower-libs/MathJax/jax/output/HTML-CSS/fonts/TeX/**/*.*',
+				'./res/bower-libs/MathJax/jax/output/HTML-CSS/fonts/STIX/**/*.*'
 			], {
 				read: false,
-				cwd: './public/res/bower-libs/MathJax'
+				cwd: './public'
 			}),
 			{
 				starttag: '# start_inject_mathjax',
 				endtag: '# end_inject_mathjax',
 				ignoreExtensions: true,
 				transform: function(filepath) {
-					if(filepath == '/MathJax.js') {
+					if(filepath == '/res/bower-libs/MathJax/MathJax.js') {
 						filepath += '?config=TeX-AMS_HTML';
 					}
 					else {
 						filepath += '?rev=2.4-beta-2';
 					}
-					return '//cdn.mathjax.org/mathjax/2.4-latest' + filepath;
+					return filepath.substring(1);
 				}
 			}))
-		.pipe(gulp.dest(dest));
-}
-
-gulp.task('cache-manifest', function() {
-	return makeCacheManifest('./public/');
-});
-
-gulp.task('cache-manifest-stackedit-io', function() {
-	return makeCacheManifest('./public-stackedit.io/', '//stackedit.s3.amazonaws.com/' + getVersion() + '/');
+		.pipe(gulp.dest('./public/'));
 });
 
 gulp.task('clean', [
@@ -233,7 +221,6 @@ gulp.task('default', function(cb) {
 			'copy-img'
 		],
 		'cache-manifest',
-		'cache-manifest-stackedit-io',
 		cb);
 });
 
@@ -295,69 +282,3 @@ function releaseTask(importance) {
 gulp.task('patch', releaseTask('patch'));
 gulp.task('minor', releaseTask('minor'));
 gulp.task('major', releaseTask('major'));
-
-gulp.task('deploy-cdn', function() {
-	var s3Client = knox.createClient({
-		key: process.env.STACKEDIT_AWS_ACCESS_KEY_ID,
-		secret: process.env.STACKEDIT_AWS_SECRET_KEY,
-		bucket: 'stackedit'
-	});
-	var zippedFormat = {
-		'text/plain': true,
-		'text/html': true,
-		'text/css': true,
-		'text/cache-manifest': true,
-		'application/javascript': true,
-		'image/svg+xml': true
-	};
-
-	function upload(file, cb) {
-		var headers = {
-			'x-amz-acl': 'public-read',
-			'Content-Length': file.contents.length,
-			'Content-Type': file.contentType,
-			'Cache-Control': 'max-age=' + file.maxAge
-		};
-		file.contentEncoding && (headers['Content-Encoding'] = file.contentEncoding);
-		s3Client.putBuffer(file.contents, file.dest + file.relative, headers, cb);
-	}
-
-	var queue = async.queue(upload, 16).push;
-	var version = getVersion();
-	return gulp.src([
-		'./**/*',
-		'!./res/**/*'
-	], {
-		cwd: './public',
-		buffer: false
-	})
-		.pipe(es.map(function(file, cb) {
-			if(!file.contents) {
-				return cb(null, file);
-			}
-			file.contentType = mime.lookup(file.path);
-			var stream = file.contents;
-			if(zippedFormat.hasOwnProperty(file.contentType)) {
-				var gzip = zlib.createGzip();
-				stream = stream.pipe(gzip);
-				file.contentEncoding = 'gzip';
-			}
-			var bufs = [];
-			stream.on('data', function(d) {
-				bufs.push(d);
-			});
-			stream.on('error', function(err) {
-				cb(err);
-			});
-			stream.on('end', function() {
-				file.contents = Buffer.concat(bufs);
-				file.dest = 'latest/';
-				file.maxAge = 86400;
-				queue(file, function(err) {
-					file.dest = version + '/';
-					file.maxAge = 31536000;
-					err ? cb(err) : queue(file, cb);
-				});
-			});
-		}));
-});

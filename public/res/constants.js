@@ -75,7 +75,9 @@ define([], function() {
 		"default": "Default",
 		"gray": "Gray",
 		"night": "Night",
-		"school": "School"
+		"school": "School",
+		"solarized-light": "Solarized Light",
+		"solarized-dark": "Solarized Dark"
 	};
 
 	return constants;

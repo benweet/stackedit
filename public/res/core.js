@@ -55,7 +55,7 @@ define([
 			return;
 		}
 		if(windowId === undefined) {
-			windowId = utils.randomString();
+			windowId = utils.id();
 			storage.frontWindowId = windowId;
 		}
 		var frontWindowId = storage.frontWindowId;

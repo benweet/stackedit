@@ -1,6 +1,6 @@
 <div class="layout-wrapper-l1">
 	<div class="layout-wrapper-l2">
-		<div class="navbar navbar-default ui-layout-north">
+		<div class="navbar navbar-default">
 			<div class="navbar-inner">
 				<div class="nav left-space"></div>
 				<div class="nav right-space pull-right"></div>
@@ -50,7 +50,7 @@
 			</div>
 		</div>
 		<div class="layout-wrapper-l3">
-			<pre id="wmd-input" class="ui-layout-center form-control"><div class="editor-content" contenteditable=true></div><div class="editor-margin"></div></pre>
+			<pre id="wmd-input" class="form-control"><div class="editor-content" contenteditable=true></div><div class="editor-margin"></div></pre>
 			<div class="preview-panel">
 				<div class="layout-resizer layout-resizer-preview"></div>
 				<div class="layout-toggler layout-toggler-navbar btn btn-info" title="Toggle navigation bar"><i class="icon-th"></i></div>
@@ -89,7 +89,7 @@
 				<a href="#" data-toggle="collapse" data-target=".collapse-synchronize"
 					class="list-group-item">
 					<div><i class="icon-refresh"></i> Synchronize</div>
-					<small>Backup, collaborate...</small>
+					<small>Open/save in the Cloud</small>
 				</a>
 				<div class="sub-menu collapse collapse-synchronize clearfix">
 					<ul class="nav alert alert-danger show-already-synchronized">
@@ -101,6 +101,10 @@
 	                        class="icon-refresh"></i> Manage synchronization</a></li>
 	                </ul>
 					<ul class="nav">
+						<li><a href="#" class="action-sync-import-dialog-couchdb"><i
+							class="icon-provider-couchdb"></i> Open from CouchDB <sup class="text-danger">beta</sup></a></li>
+						<li><a href="#" class="action-sync-export-dialog-couchdb"><i
+					        class="icon-provider-couchdb"></i> Save on CouchDB <sup class="text-danger">beta</sup></a></li>
 						<li><a href="#" class="action-sync-import-dropbox"><i
 							class="icon-provider-dropbox"></i> Open from Dropbox</a></li>
 						<li><a href="#" class="action-sync-export-dialog-dropbox"><i
@@ -541,6 +545,110 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+
+<div class="modal fade modal-download-couchdb">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h2 class="modal-title">Open from CouchDB</h2>
+                <br>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="select-sync-import-couchdb-tag" class="col-sm-3 control-label">Filter by tag</label>
+                        <div class="col-sm-5">
+                            <select id="select-sync-import-couchdb-tag" class="form-control">
+                                <option value="">None</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <button class="btn btn-link"><i class="icon-tags"></i> Manage tags</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal hide">
+                    <div class="form-group">
+                        <label for="input-sync-import-couchdb-documentid" class="col-sm-3 control-label">Document
+                            ID</label>
+
+                        <div class="col-sm-9">
+                            <input id="input-sync-import-couchdb-documentid" class="form-control"
+                                   placeholder="DocumentID">
+                            <span class="help-block">Multiple IDs can be provided (space separated)</span>
+                        </div>
+                    </div>
+                </div>
+                    <ul class="document-list nav nav-pills">
+                        <li class="pull-right dropdown"><a href="#"
+                                                           data-toggle="dropdown"><i class="icon-check"></i> Selection
+                            <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" class="action-unselect-all"><i
+                                        class="icon-check-empty"></i> Unselect all</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#" class="action-delete-items"><i
+                                        class="icon-trash"></i> Delete</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p class="document-list">
+                    </p>
+                    <div class="list-group document-list"></div>
+                <div class="document-list">
+                    <div class="please-wait">Please wait...</div>
+                    <button class="more-documents btn btn-link">More documents!</button>
+                </div>
+                <p class="confirm-delete hide">The following documents will be
+                    removed from the database:</p>
+
+                <div class="confirm-delete list-group selected-document-list hide"></div>
+            </div>
+            <div class="modal-footer">
+                <a href="#"
+                   class="btn btn-default confirm-delete action-cancel hide">Cancel</a>
+                <a href="#"
+                   class="btn btn-primary confirm-delete action-delete-items-confirm hide">Delete</a>
+                <a href="#" class="btn btn-default document-list" data-dismiss="modal">Cancel</a>
+                <a href="#" data-dismiss="modal"
+                   class="btn btn-primary action-sync-import-couchdb document-list">Open</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade modal-upload-couchdb">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h2 class="modal-title">Save on CouchDB</h2>
+            </div>
+            <div class="modal-body">
+                <p>
+                    This will save "<span class="file-title"></span>" to CouchDB and keep it synchronized.
+                </p>
+                <blockquote>
+                    <b>Tip:</b> You can use a
+                    <a href="http://jekyllrb.com/docs/frontmatter/"
+                       target="_blank">YAML front matter</a> to specify tags for your document.
+                </blockquote>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                <a href="#" data-dismiss="modal"
+                   class="btn btn-primary action-sync-export-couchdb">OK</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 

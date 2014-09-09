@@ -87,24 +87,15 @@ define([
 		};
 	};
 
-	// Generates a 24 chars length random string (should be enough to prevent collisions)
-	utils.randomString = (function() {
-		var max = Math.pow(36, 6);
-
-		function s6() {
-			// Linear [0-9a-z]{6} random string
-			return ('000000' + (Math.random() * max | 0).toString(36)).slice(-6);
+	// Generates a 24 char length random id
+	var idAlphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	utils.id = function() {
+		var result = [];
+		for(var i = 0; i < 24; i++) {
+			result.push(idAlphabet[Math.random() * idAlphabet.length | 0]);
 		}
-
-		return function() {
-			return [
-				s6(),
-				s6(),
-				s6(),
-				s6()
-			].join('');
-		};
-	})();
+		return result.join('');
+	};
 
 	// Return a parameter from the URL
 	utils.getURLParameter = function(name) {
@@ -549,6 +540,122 @@ define([
 		return result.join("");
 	};
 
+	function padNumber(num, digits, trim) {
+		var neg = '';
+		if (num < 0) {
+			neg =  '-';
+			num = -num;
+		}
+		num = '' + num;
+		while(num.length < digits) {
+			num = '0' + num;
+		}
+		if (trim) {
+			num = num.substr(num.length - digits);
+		}
+		return neg + num;
+	}
+
+	function dateGetter(name, size, offset, trim) {
+		offset = offset || 0;
+		return function(date) {
+			var value = date['get' + name]();
+			if (offset > 0 || value > -offset) {
+				value += offset;
+			}
+			if (value === 0 && offset == -12 ) {
+				value = 12;
+			}
+			return padNumber(value, size, trim);
+		};
+	}
+
+	function dateStrGetter(name, shortForm) {
+		return function(date, formats) {
+			var value = date['get' + name]();
+			var get = (shortForm ? ('SHORT' + name) : name).toUpperCase();
+
+			return formats[get][value];
+		};
+	}
+
+	var DATE_FORMATS_SPLIT = /((?:[^yMdHhmsaZE']+)|(?:'(?:[^']|'')*')|(?:E+|y+|M+|d+|H+|h+|m+|s+|a|Z))(.*)/;
+	var DATE_FORMATS = {
+		yyyy: dateGetter('FullYear', 4),
+		yy: dateGetter('FullYear', 2, 0, true),
+		y: dateGetter('FullYear', 1),
+		MMMM: dateStrGetter('Month'),
+		MMM: dateStrGetter('Month', true),
+		MM: dateGetter('Month', 2, 1),
+		M: dateGetter('Month', 1, 1),
+		dd: dateGetter('Date', 2),
+		d: dateGetter('Date', 1),
+		HH: dateGetter('Hours', 2),
+		H: dateGetter('Hours', 1),
+		hh: dateGetter('Hours', 2, -12),
+		h: dateGetter('Hours', 1, -12),
+		mm: dateGetter('Minutes', 2),
+		m: dateGetter('Minutes', 1),
+		ss: dateGetter('Seconds', 2),
+		s: dateGetter('Seconds', 1),
+		// while ISO 8601 requires fractions to be prefixed with `.` or `,`
+		// we can be just safely rely on using `sss` since we currently don't support single or two digit fractions
+		sss: dateGetter('Milliseconds', 3),
+		EEEE: dateStrGetter('Day'),
+		EEE: dateStrGetter('Day', true)
+	};
+
+	var DATETIME_FORMATS = {
+		MONTH: 'January,February,March,April,May,June,July,August,September,October,November,December'.split(','),
+		SHORTMONTH: 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'.split(','),
+		DAY: 'Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday'.split(','),
+		SHORTDAY: 'Sun,Mon,Tue,Wed,Thu,Fri,Sat'.split(','),
+		AMPMS: ['AM','PM'],
+		medium: 'MMM d, y h:mm:ss a',
+		short: 'M/d/yy h:mm a',
+		fullDate: 'EEEE, MMMM d, y',
+		longDate: 'MMMM d, y',
+		mediumDate: 'MMM d, y',
+		shortDate: 'M/d/yy',
+		mediumTime: 'h:mm:ss a',
+		shortTime: 'h:mm a'
+	};
+
+	utils.formatDate = function(date) {
+		var text = '',
+			parts = [],
+			fn, match;
+
+		var interval = Date.now() - date;
+		var format = 'HH:mm';
+		if(interval > 31556940000) {
+			format = 'y';
+		}
+		else if(interval > 86400000) {
+			format = 'MMM d';
+		}
+		date = new Date(date);
+
+		while(format) {
+			match = DATE_FORMATS_SPLIT.exec(format);
+			if (match) {
+				parts = parts.concat(match.slice(1));
+				format = parts.pop();
+			} else {
+				parts.push(format);
+				format = null;
+			}
+		}
+
+		parts.forEach(function(value){
+			fn = DATE_FORMATS[value];
+			text += fn ? fn(date, DATETIME_FORMATS)
+				: value.replace(/(^'|'$)/g, '').replace(/''/g, "'");
+		});
+
+		return text;
+	};
+
 	// Base64 conversion
 	utils.encodeBase64 = function(str) {
 		if(str.length === 0) {
@@ -602,6 +709,10 @@ define([
 				break;
 		}
 		return x.join('');
+	};
+
+	utils.decodeBase64 = function(str) {
+		return window.unescape(decodeURIComponent(window.atob(str)));
 	};
 
 	// CRC32 algorithm

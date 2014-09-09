@@ -314,7 +314,7 @@ define([
                 // Create discussion index
                 var discussionIndex;
                 do {
-                    discussionIndex = utils.randomString() + utils.randomString(); // Increased size to prevent collision
+                    discussionIndex = utils.id();
                 } while(_.has(newDiscussionList, discussionIndex));
                 conflict.discussionIndex = discussionIndex;
                 newDiscussionList[discussionIndex] = conflict;

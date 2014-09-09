@@ -68,7 +68,7 @@ define([
 		var fileIndex = constants.TEMPORARY_FILE_INDEX;
 		if(!isTemporary) {
 			do {
-				fileIndex = "file." + utils.randomString();
+				fileIndex = "file." + utils.id();
 			} while(_.has(fileSystem, fileIndex));
 		}
 

@@ -188,7 +188,7 @@ define([
 	function createPublishIndex(fileDesc, publishAttributes) {
 		var publishIndex;
 		do {
-			publishIndex = "publish." + utils.randomString();
+			publishIndex = "publish." + utils.id();
 		} while(_.has(storage, publishIndex));
 		publishAttributes.publishIndex = publishIndex;
 		fileDesc.addPublishLocation(publishAttributes);

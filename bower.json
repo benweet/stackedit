@@ -7,7 +7,7 @@
     "jquery": "2.0.3",
     "underscore": "1.5.1",
     "requirejs": "~2.1.11",
-    "require-css": "0.1.2",
+    "require-css": "0.1.5",
     "require-less": "0.1.2",
     "mousetrap": "~1.4.4",
     "jgrowl": "~1.2.10",

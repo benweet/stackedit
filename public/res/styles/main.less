@@ -1,4 +1,5 @@
 @import "base.less";
+@import "alertify.less";
 @import "../bower-libs/bootstrap-tour/src/less/bootstrap-tour.less";
 @import (less) "jquery.jgrowl.css";
 
@@ -144,7 +145,7 @@ body {
 	.user-select(none);
 }
 
-.dropdown-menu, .modal-content, .panel-content, .search-bar, .popover, .find-replace {
+.dropdown-menu, .modal-content, .panel-content, .search-bar, .popover, .find-replace, .alertify {
 	.box-shadow(0 4px 16px rgba(0,0,0,.225));
 }
 
@@ -299,7 +300,7 @@ a {
 @btn-default-bg: @transparent;
 @btn-default-border: @transparent;
 @btn-default-hover-bg: fade(@secondary-desaturated, 4%);
-.btn-default {
+.btn-default, .alertify-button-cancel {
     &:hover,
     &:focus,
     &:active,
@@ -314,7 +315,7 @@ a {
 @btn-primary-bg: @primary-bg;
 @btn-primary-border: fade(@secondary, 5%);
 @btn-primary-hover-bg: mix(@primary-desaturated, @btn-primary-bg, 7.5%);
-.btn-primary {
+.btn-primary, .alertify-button-ok {
     &:hover,
     &:focus,
     &:active,
@@ -386,23 +387,21 @@ a {
     .box-shadow(~"@{form-control-inset-shadow}");
 }
 
-// Fix form-inline broken since Bootstrap v3
 .form-inline {
-    .form-control {
-        display: inline-block;
-    }
-    .col-sm-1  { width: percentage((1 / @grid-columns)); }
-    .col-sm-2  { width: percentage((2 / @grid-columns)); }
-    .col-sm-3  { width: percentage((3 / @grid-columns)); }
-    .col-sm-4  { width: percentage((4 / @grid-columns)); }
-    .col-sm-5  { width: percentage((5 / @grid-columns)); }
-    .col-sm-6  { width: percentage((6 / @grid-columns)); }
-    .col-sm-7  { width: percentage((7 / @grid-columns)); }
-    .col-sm-8  { width: percentage((8 / @grid-columns)); }
-    .col-sm-9  { width: percentage((9 / @grid-columns)); }
-    .col-sm-10 { width: percentage((10/ @grid-columns)); }
-    .col-sm-11 { width: percentage((11/ @grid-columns)); }
-    .col-sm-12 { width: 100%; }
+	@media (min-width: @screen-sm) {
+	    .col-sm-1  { width: percentage((1 / @grid-columns)) !important; }
+	    .col-sm-2  { width: percentage((2 / @grid-columns)) !important; }
+	    .col-sm-3  { width: percentage((3 / @grid-columns)) !important; }
+	    .col-sm-4  { width: percentage((4 / @grid-columns)) !important; }
+	    .col-sm-5  { width: percentage((5 / @grid-columns)) !important; }
+	    .col-sm-6  { width: percentage((6 / @grid-columns)) !important; }
+	    .col-sm-7  { width: percentage((7 / @grid-columns)) !important; }
+	    .col-sm-8  { width: percentage((8 / @grid-columns)) !important; }
+	    .col-sm-9  { width: percentage((9 / @grid-columns)) !important; }
+	    .col-sm-10 { width: percentage((10/ @grid-columns)) !important; }
+	    .col-sm-11 { width: percentage((11/ @grid-columns)) !important; }
+	    .col-sm-12 { width: 100% !important; }
+	}
     * {float:none;}
 }
 
@@ -802,6 +801,9 @@ a {
 	}
 	.name, .date, .file-count {
 		padding: 9px 20px 9px 15px;
+	}
+	.name i {
+		margin-right: 8px;
 	}
 	.date {
 		font-weight: normal;

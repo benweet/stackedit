@@ -89,7 +89,7 @@
 				<a href="#" data-toggle="collapse" data-target=".collapse-synchronize"
 					class="list-group-item">
 					<div><i class="icon-refresh"></i> Synchronize</div>
-					<small>Open/save in the Cloud</small>
+					<small>Open/Save in the Cloud</small>
 				</a>
 				<div class="sub-menu collapse collapse-synchronize clearfix">
 					<ul class="nav alert alert-danger show-already-synchronized">
@@ -102,9 +102,9 @@
 	                </ul>
 					<ul class="nav">
 						<li><a href="#" class="action-sync-import-dialog-couchdb"><i
-							class="icon-provider-couchdb"></i> Open from CouchDB <sup class="text-danger">beta</sup></a></li>
+							class="icon-provider-couchdb"></i> Open from CouchDB <sup class="text-danger">new</sup></a></li>
 						<li><a href="#" class="action-sync-export-dialog-couchdb"><i
-					        class="icon-provider-couchdb"></i> Save on CouchDB <sup class="text-danger">beta</sup></a></li>
+					        class="icon-provider-couchdb"></i> Save on CouchDB <sup class="text-danger">new</sup></a></li>
 						<li><a href="#" class="action-sync-import-dropbox"><i
 							class="icon-provider-dropbox"></i> Open from Dropbox</a></li>
 						<li><a href="#" class="action-sync-export-dialog-dropbox"><i
@@ -556,23 +556,23 @@
                 <button type="button" class="close" data-dismiss="modal"
                         aria-hidden="true">&times;</button>
                 <h2 class="modal-title">Open from CouchDB</h2>
-                <br>
-                <div class="form-horizontal">
-                    <div class="form-group">
+                <div class="form-horizontal list-mode">
+                    <br>
+                    <div class="form-group form-inline">
                         <label for="select-sync-import-couchdb-tag" class="col-sm-3 control-label">Filter by tag</label>
-                        <div class="col-sm-5">
-                            <select id="select-sync-import-couchdb-tag" class="form-control">
-                                <option value="">None</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-4">
-                            <button class="btn btn-link"><i class="icon-tags"></i> Manage tags</button>
-                        </div>
+                        <select id="select-sync-import-couchdb-tag" class="col-sm-4 form-control">
+                        </select>
+                        <span class="col-sm-5">
+                            <button class="btn btn-link action-add-tag"><i class="icon-tag"></i> Add
+                            </button>
+                            <button class="btn btn-link action-remove-tag"><i class="icon-tag"></i> Remove
+                            </button>
+                        </span>
                     </div>
                 </div>
             </div>
             <div class="modal-body">
-                <div class="form-horizontal hide">
+                <div class="form-horizontal byid-mode">
                     <div class="form-group">
                         <label for="input-sync-import-couchdb-documentid" class="col-sm-3 control-label">Document
                             ID</label>
@@ -584,7 +584,7 @@
                         </div>
                     </div>
                 </div>
-                    <ul class="document-list nav nav-pills">
+                    <ul class="list-mode nav nav-pills">
                         <li class="pull-right dropdown"><a href="#"
                                                            data-toggle="dropdown"><i class="icon-check"></i> Selection
                             <b class="caret"></b></a>
@@ -597,26 +597,31 @@
                             </ul>
                         </li>
                     </ul>
-                    <p class="document-list">
+                    <p class="list-mode">
                     </p>
-                    <div class="list-group document-list"></div>
-                <div class="document-list">
-                    <div class="please-wait">Please wait...</div>
+                    <div class="list-group document-list list-mode"></div>
+                <div class="list-mode">
+                    <div class="please-wait"><b>Please wait...</b></div>
+                    <div class="no-document"><b>No document.</b></div>
                     <button class="more-documents btn btn-link">More documents!</button>
                 </div>
-                <p class="confirm-delete hide">The following documents will be
-                    removed from the database:</p>
+                <p class="delete-mode hide">The following documents will be
+                    removed from CouchDB:</p>
 
-                <div class="confirm-delete list-group selected-document-list hide"></div>
+                <div class="delete-mode list-group selected-document-list hide"></div>
             </div>
             <div class="modal-footer">
+                <a href="#" class="btn btn-default pull-left list-mode action-byid-mode">Open by ID...</a>
                 <a href="#"
-                   class="btn btn-default confirm-delete action-cancel hide">Cancel</a>
+                   class="btn btn-default delete-mode action-cancel hide">Cancel</a>
                 <a href="#"
-                   class="btn btn-primary confirm-delete action-delete-items-confirm hide">Delete</a>
-                <a href="#" class="btn btn-default document-list" data-dismiss="modal">Cancel</a>
+                   class="btn btn-primary delete-mode action-delete-items-confirm hide">Delete</a>
+                <a href="#" class="btn btn-default byid-mode action-cancel">Cancel</a>
                 <a href="#" data-dismiss="modal"
-                   class="btn btn-primary action-sync-import-couchdb document-list">Open</a>
+                   class="btn btn-primary action-sync-import-couchdb byid-mode">Open</a>
+                <a href="#" class="btn btn-default list-mode" data-dismiss="modal">Cancel</a>
+                <a href="#" data-dismiss="modal"
+                   class="btn btn-primary action-sync-import-couchdb list-mode">Open</a>
             </div>
         </div>
     </div>

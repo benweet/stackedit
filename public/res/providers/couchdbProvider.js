@@ -1,6 +1,8 @@
 define([
 	"jquery",
 	"underscore",
+	"crel",
+	"alertify",
 	"constants",
 	"utils",
 	"storage",
@@ -12,7 +14,7 @@ define([
 	"fileSystem",
 	"editor",
 	"helpers/couchdbHelper"
-], function($, _, constants, utils, storage, logger, Provider, settings, eventMgr, fileMgr, fileSystem, editor, couchdbHelper) {
+], function($, _, crel, alertify, constants, utils, storage, logger, Provider, settings, eventMgr, fileMgr, fileSystem, editor, couchdbHelper) {
 
 	var PROVIDER_COUCHDB = "couchdb";
 
@@ -71,10 +73,11 @@ define([
 		});
 	}
 
+	var $documentIdsElt;
 	couchdbProvider.importFiles = function() {
 		var tag = $('#select-sync-import-couchdb-tag').val();
 		if(!tag) {
-			var ids = _.chain(($('#input-sync-import-couchdb-documentid').val() || '').split(/\s+/))
+			var ids = _.chain(($documentIdsElt.val() || '').split(/\s+/))
 				.compact()
 				.unique()
 				.value();
@@ -204,29 +207,34 @@ define([
 		});
 	};
 
-	var documentEltTmpl = [
-		'<a href="#" class="list-group-item document clearfix" data-document-id="<%= document._id %>">',
-		'<div class="date pull-right"><%= date %></div></div>',
-		'<div class="name"><i class="icon-provider-couchdb"></i> ',
-		'<%= document.title %></div>',
-		'</a>'
-	].join('');
-
-
 	eventMgr.addListener("onReady", function() {
+		var documentEltTmpl = [
+			'<a href="#" class="list-group-item document clearfix" data-document-id="<%= document._id %>">',
+			'<div class="date pull-right"><%= date %></div></div>',
+			'<div class="name"><i class="icon-provider-couchdb"></i> ',
+			'<%= document.title %></div>',
+			'</a>'
+		].join('');
+
+		$documentIdsElt = $('#input-sync-import-couchdb-documentid');
 		var modalElt = document.querySelector('.modal-download-couchdb');
-		var $documentListElt = $(modalElt.querySelector('.list-group.document-list'));
+		var $documentListElt = $(modalElt.querySelector('.document-list'));
 		var $selectedDocumentListElt = $(modalElt.querySelector('.selected-document-list'));
 		var $pleaseWaitElt = $(modalElt.querySelector('.please-wait'));
+		var $noDocumentElt = $(modalElt.querySelector('.no-document'));
 		var $moreDocumentsElt = $(modalElt.querySelector('.more-documents'));
 		var documentMap, lastDocument;
 		var selectedDocuments, $selectedElts;
 		function doSelect() {
 			$selectedElts = $documentListElt.children('.active').clone();
 			selectedDocuments = [];
+			var selectedDocumentIds = [];
 			$selectedElts.each(function() {
-				selectedDocuments.push(documentMap[$(this).data('documentId')]);
+				var documentId = $(this).data('documentId');
+				selectedDocumentIds.push(documentId);
+				selectedDocuments.push(documentMap[documentId]);
 			});
+			$documentIdsElt.val(selectedDocumentIds.join(' '));
 			$selectedDocumentListElt.empty().append($selectedElts);
 			$(modalElt.querySelectorAll('.action-delete-items')).parent().toggleClass('disabled', selectedDocuments.length === 0);
 		}
@@ -237,12 +245,14 @@ define([
 			doSelect();
 		}
 		clear();
-		function deleteMode(enabled) {
-			$(modalElt.querySelectorAll('.confirm-delete')).toggleClass('hide', !enabled);
-			$(modalElt.querySelectorAll('.document-list')).toggleClass('hide', enabled);
+		function setMode(mode) {
+			$(modalElt.querySelectorAll('.list-mode')).toggleClass('hide', mode != 'list');
+			$(modalElt.querySelectorAll('.delete-mode')).toggleClass('hide', mode != 'delete');
+			$(modalElt.querySelectorAll('.byid-mode')).toggleClass('hide', mode != 'byid');
 		}
 		function updateDocumentList() {
 			$pleaseWaitElt.removeClass('hide');
+			$noDocumentElt.addClass('hide');
 			$moreDocumentsElt.addClass('hide');
 			couchdbHelper.listDocuments(undefined, lastDocument && lastDocument.updated, function(err, result) {
 				if(err) {
@@ -262,11 +272,32 @@ define([
 				}, '');
 
 				$documentListElt.append(documentListHtml);
+				if($documentListElt.children().length === 0) {
+					$noDocumentElt.removeClass('hide');
+				}
 			});
-			deleteMode(false);
+			setMode('list');
+		}
+
+		var tagList = utils.retrieveIgnoreError(PROVIDER_COUCHDB + '.tagList') || [];
+		var $selectTagElt = $('#select-sync-import-couchdb-tag');
+		function updateTagList() {
+			$selectTagElt.empty().append(crel('option', {
+				value: ''
+			}, 'none'));
+			_.sortBy(tagList, function(tag) {
+				return tag.toLowerCase();
+			}).forEach(function(tag) {
+				$selectTagElt.append(crel('option', {
+					value: tag
+				}, tag));
+			});
 		}
 		$(modalElt)
-			.on('show.bs.modal', updateDocumentList)
+			.on('show.bs.modal', function() {
+				updateDocumentList();
+				updateTagList();
+			})
 			.on('hidden.bs.modal', clear)
 			.on('click', '.document-list .document', function() {
 				$(this).toggleClass('active');
@@ -277,10 +308,40 @@ define([
 				$documentListElt.children().removeClass('active');
 				doSelect();
 			})
+			.on('click', '.action-byid-mode', function() {
+				setMode('byid');
+			})
+			.on('click', '.action-add-tag', function() {
+				alertify.prompt("Enter a tag:", function (e, tag) {
+					if(!e || !tag) {
+						return;
+					}
+					tagList.push(tag);
+					tagList = _.chain(tagList)
+						.sortBy(function(tag) {
+							return tag.toLowerCase();
+						})
+						.unique(true)
+						.value();
+					storage[PROVIDER_COUCHDB + '.tagList'] = JSON.stringify(tagList);
+					updateTagList();
+					$selectTagElt.val(tag);
+				}, "Tag");
+			})
+			.on('click', '.action-remove-tag', function() {
+				var tag = $selectTagElt.val();
+				tag && alertify.confirm('You are removing <b>' + $selectTagElt.val() + '</b> from your list of filters.', function (e) {
+					if(e) {
+						tagList = _.without(tagList, tag);
+						storage[PROVIDER_COUCHDB + '.tagList'] = JSON.stringify(tagList);
+						updateTagList();
+						$selectTagElt.val('');
+					}
+				}, "Tag");
+			})
 			.on('click', '.action-delete-items', function() {
-				doSelect();
 				if($selectedElts.length) {
-					deleteMode(true);
+					setMode('delete');
 				}
 			})
 			.on('click', '.action-delete-items-confirm', function() {
@@ -289,7 +350,7 @@ define([
 				updateDocumentList();
 			})
 			.on('click', '.action-cancel', function() {
-				deleteMode(false);
+				setMode('list');
 			});
 	});
 

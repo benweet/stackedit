@@ -402,14 +402,14 @@ define([
 
 	layout.init = function() {
 
-		var isModalShown = false;
+		var isModalShown = 0;
 		$(document.body).on('show.bs.modal', '.modal', function() {
 			// Close panel if open
 			menuPanel.toggle(false);
 			documentPanel.toggle(false);
-			isModalShown = true;
+			isModalShown++;
 		}).on('hidden.bs.modal', '.modal', function() {
-			isModalShown = false;
+			isModalShown--;
 		});
 
 		// Tweak the body element

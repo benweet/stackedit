@@ -70,7 +70,8 @@ requirejs.config({
 		monetizejs: 'bower-libs/monetizejs/src/monetize',
 		'to-markdown': 'bower-libs/to-markdown/src/to-markdown',
 		waitForImages: 'bower-libs/waitForImages/dist/jquery.waitforimages',
-		MathJax: 'bower-libs/MathJax/MathJax'
+		MathJax: 'bower-libs/MathJax/MathJax',
+		alertify: 'bower-libs/alertify.js/lib/alertify'
 	},
 	shim: {
 		underscore: {

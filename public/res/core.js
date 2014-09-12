@@ -393,7 +393,7 @@ define([
 			editor.focus();
 			// Revert to current theme when settings modal is closed
 			applyTheme(window.theme);
-		}).on('keyup', '.modal', function(e) {
+		}).on('keypress', '.modal', function(e) {
 			// Handle enter key in modals
 			if(e.which == 13 && !$(e.target).is("textarea")) {
 				$(this).find(".modal-footer a:last").click();

@@ -18,6 +18,15 @@ var validate = function(newDoc) {
 	if(!newDoc._id.match(/[a-zA-Z0-9]{24}/)) {
 		throw({forbidden: 'Invalid ID format.'});
 	}
+	if(newDoc._deleted) {
+		if(newDoc.updated !== undefined ||
+			newDoc.tags !== undefined ||
+			newDoc.title !== undefined ||
+			newDoc._attachments !== undefined) {
+			throw({forbidden: 'Deleted document must be empty.'});
+		}
+		return;
+	}
 	if(toString.call(newDoc.updated) !== '[object Number]') {
 		throw({forbidden: 'Update time must be an integer.'});
 	}
@@ -65,7 +74,9 @@ var validate = function(newDoc) {
 };
 
 var byUpdate = function(doc) {
-	emit(doc.updated, null);
+	if(!doc.tags || !doc.tags.length) {
+		emit(doc.updated, null);
+	}
 };
 
 var byTagAndUpdate = function(doc) {

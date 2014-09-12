@@ -164,6 +164,7 @@
 	border: 1px solid @input-border;
 	border-radius: @input-border-radius;
 	.box-shadow(~"@{form-control-inset-shadow}");
+	.transition(~"border-color ease-in-out .15s, box-shadow ease-in-out .15s");
 }
 .alertify-text:focus {
 	.form-control-focus();
@@ -174,6 +175,7 @@
 	background:@secondary-bg-light;
 	border-top: 1px solid @secondary-border-color-light;
 	text-align: right;
+	border-radius: 0 0 6px 6px;
 }
 .alertify-button {
 	margin-left: 10px;

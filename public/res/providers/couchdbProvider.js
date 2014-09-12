@@ -312,7 +312,7 @@ define([
 				setMode('byid');
 			})
 			.on('click', '.action-add-tag', function() {
-				alertify.prompt("Enter a tag:", function (e, tag) {
+				alertify.prompt("Enter a tag (case sensitive):", function (e, tag) {
 					if(!e || !tag) {
 						return;
 					}

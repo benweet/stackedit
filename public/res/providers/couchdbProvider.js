@@ -19,6 +19,9 @@ define([
 	var PROVIDER_COUCHDB = "couchdb";
 
 	var couchdbProvider = new Provider(PROVIDER_COUCHDB, "CouchDB");
+	couchdbProvider.importPreferencesInputIds = [
+		PROVIDER_COUCHDB + "-tag"
+	];
 
 	function createSyncIndex(id) {
 		return "sync." + PROVIDER_COUCHDB + "." + id;
@@ -250,15 +253,17 @@ define([
 			$(modalElt.querySelectorAll('.delete-mode')).toggleClass('hide', mode != 'delete');
 			$(modalElt.querySelectorAll('.byid-mode')).toggleClass('hide', mode != 'byid');
 		}
-		function updateDocumentList() {
+
+		var updateDocumentList = _.debounce(function() {
 			$pleaseWaitElt.removeClass('hide');
 			$noDocumentElt.addClass('hide');
 			$moreDocumentsElt.addClass('hide');
-			couchdbHelper.listDocuments(undefined, lastDocument && lastDocument.updated, function(err, result) {
+			couchdbHelper.listDocuments($selectTagElt.val(), lastDocument && lastDocument.updated, function(err, result) {
+				$pleaseWaitElt.addClass('hide');
 				if(err) {
+					$moreDocumentsElt.removeClass('hide');
 					return;
 				}
-				$pleaseWaitElt.addClass('hide');
 				if(result.length === 3) {
 					$moreDocumentsElt.removeClass('hide');
 					lastDocument = result.pop();
@@ -277,10 +282,14 @@ define([
 				}
 			});
 			setMode('list');
-		}
+		}, 10, true);
 
 		var tagList = utils.retrieveIgnoreError(PROVIDER_COUCHDB + '.tagList') || [];
-		var $selectTagElt = $('#select-sync-import-couchdb-tag');
+		var $selectTagElt = $('#input-sync-import-couchdb-tag')
+			.on('change', function() {
+				clear();
+				updateDocumentList();
+			});
 		function updateTagList() {
 			$selectTagElt.empty().append(crel('option', {
 				value: ''
@@ -293,12 +302,12 @@ define([
 				}, tag));
 			});
 		}
+		updateTagList();
 		$(modalElt)
 			.on('show.bs.modal', function() {
+				clear();
 				updateDocumentList();
-				updateTagList();
 			})
-			.on('hidden.bs.modal', clear)
 			.on('click', '.document-list .document', function() {
 				$(this).toggleClass('active');
 				doSelect();

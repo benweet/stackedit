@@ -30,7 +30,7 @@ var validate = function(newDoc) {
 	if(toString.call(newDoc.updated) !== '[object Number]') {
 		throw({forbidden: 'Update time must be an integer.'});
 	}
-	if(newDoc.updated > Date.now() + 60000) {
+	if(newDoc.updated > Date.now() + 300000) {
 		throw({forbidden: 'Update time is in the future, please check your clock!'});
 	}
 	if(toString.call(newDoc.title) !== '[object String]') {

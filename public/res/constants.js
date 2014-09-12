@@ -27,7 +27,7 @@ define([], function() {
 	constants.PICASA_IMPORT_IMG_URL = "/picasaImportImg";
 	constants.SSH_PUBLISH_URL = '/sshPublish';
 	constants.PDF_EXPORT_URL = "/pdfExport";
-	constants.COUCHDB_URL = 'http://localhost:5984/documents';
+	constants.COUCHDB_URL = 'https://stackedit.couchappy.com/documents';
 
 	// Site dependent
 	constants.BASE_URL = "http://localhost/";

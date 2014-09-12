@@ -168,9 +168,9 @@ define([
 				tag,
 				updated || []
 			]) : updated;
-			var endKey = tag && JSON.stringify([
+			var endKey = tag ? JSON.stringify([
 				tag
-			]);
+			]) : undefined;
 			$.ajax({
 				url: constants.COUCHDB_URL + ddoc,
 				data: {

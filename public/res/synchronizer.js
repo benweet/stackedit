@@ -282,7 +282,7 @@ define([
 		utils.resetModalInputs();
 		var preferences = utils.retrieveIgnoreError(provider.providerId + '.' + action + 'Preferences');
 		if(preferences) {
-			_.each(provider.exportPreferencesInputIds, function(inputId) {
+			_.each(provider[action + 'PreferencesInputIds'], function(inputId) {
 				var exportPreferenceValue = preferences[inputId];
 				var setValue = utils.setInputValue;
 				if(_.isBoolean(exportPreferenceValue)) {
@@ -328,6 +328,20 @@ define([
 			// Provider's import button
 			$(".action-sync-import-" + provider.providerId).click(function(event) {
 				provider.importFiles(event);
+
+				// Store input values as preferences for next time we open the
+				// import dialog
+				var importPreferences = {};
+				_.each(provider.importPreferencesInputIds, function(inputId) {
+					var inputElt = document.getElementById("input-sync-import-" + inputId);
+					if(inputElt.type == 'checkbox') {
+						importPreferences[inputId] = inputElt.checked;
+					}
+					else {
+						importPreferences[inputId] = inputElt.value;
+					}
+				});
+				storage[provider.providerId + ".importPreferences"] = JSON.stringify(importPreferences);
 			});
 			// Provider's import dialog action
 			$(".action-sync-import-dialog-" + provider.providerId).click(function() {

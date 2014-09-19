@@ -3,7 +3,7 @@ define([
 ], function(Extension) {
 
     var emailConverter = new Extension("emailConverter", "Markdown Email", true);
-    emailConverter.settingsBlock = '<p>Converts email adresses in the form &lt;email@example.com&gt; into clickable links.</p>';
+    emailConverter.settingsBlock = '<p>Converts email addresses in the form &lt;email@example.com&gt; into clickable links.</p>';
 
     emailConverter.onPagedownConfigure = function(editor) {
         editor.getConverter().hooks.chain("postConversion", function(text) {

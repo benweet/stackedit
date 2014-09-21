@@ -1,15 +1,13 @@
-# Dockerfile for StackEdit
-
-FROM shykes/nodejs
+FROM debian:jessie
 
 RUN apt-get update
-RUN apt-get upgrade
-
-RUN apt-get install -y git-core
-
+RUN apt-get upgrade -yq
+RUN apt-get install -yq git nodejs-legacy npm
 RUN git clone https://github.com/benweet/stackedit.git
 
-RUN (cd /stackedit/ && npm install)
-EXPOSE 3000
+WORKDIR stackedit
+RUN npm install
+RUN node_modules/bower/bin/bower install --allow-root --production --config.interactive=false
+CMD nodejs server.js
 
-CMD (cd /stackedit/ && node server.js)
+EXPOSE 3000

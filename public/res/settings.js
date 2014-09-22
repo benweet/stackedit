@@ -32,31 +32,6 @@ define([
 			'<body><div class="container"><%= documentHTML %></div></body>',
 			'</html>'
 		].join('\n'),
-		pdfTemplate: [
-			'<!DOCTYPE html>',
-			'<html>',
-			'<head>',
-			'<meta charset="utf-8">',
-			'<title><%= documentTitle %></title>',
-			'<link rel="stylesheet" href="http://localhost/res-min/themes/base.css" />',
-			'<script type="text/x-mathjax-config">',
-			'MathJax.Hub.Config({ messageStyle: "none" });',
-			'</script>',
-			'<script type="text/javascript" src="http://localhost/res/bower-libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>',
-			'</head>',
-			'<body><%= documentHTML %></body>',
-			'</html>'
-		].join('\n'),
-		pdfOptions: [
-			'{',
-			'    "marginTop": 25,',
-			'    "marginRight": 25,',
-			'    "marginBottom": 25,',
-			'    "marginLeft": 25,',
-			'    "pageSize": "A4"',
-			'}'
-		].join('\n'),
-		couchdbUrl: constants.COUCHDB_URL,
 		extensionSettings: {}
 	};
 

@@ -10,14 +10,12 @@ define([
 	"storage",
 	"settings",
 	"eventMgr",
-	"monetizejs",
 	"text!html/bodyEditor.html",
 	"text!html/bodyViewer.html",
 	"text!html/tooltipSettingsTemplate.html",
-	"text!html/tooltipSettingsPdfOptions.html",
 	"storage",
 	'pagedown'
-], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, MonetizeJS, bodyEditorHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsPdfOptionsTooltipHTML) {
+], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, bodyEditorHTML, bodyViewerHTML, settingsTemplateTooltipHTML) {
 
 	var core = {};
 
@@ -141,10 +139,6 @@ define([
 		utils.setInputChecked("#input-settings-github-full-access", settings.githubFullAccess);
 		// Template
 		utils.setInputValue("#textarea-settings-publish-template", settings.template);
-		// PDF template
-		utils.setInputValue("#textarea-settings-pdf-template", settings.pdfTemplate);
-		// PDF options
-		utils.setInputValue("#textarea-settings-pdf-options", settings.pdfOptions);
 		// CouchDB URL
 		utils.setInputValue("#input-settings-couchdb-url", settings.couchdbUrl);
 
@@ -188,10 +182,6 @@ define([
 		newSettings.githubFullAccess = utils.getInputChecked("#input-settings-github-full-access");
 		// Template
 		newSettings.template = utils.getInputTextValue("#textarea-settings-publish-template", event);
-		// PDF template
-		newSettings.pdfTemplate = utils.getInputTextValue("#textarea-settings-pdf-template", event);
-		// PDF options
-		newSettings.pdfOptions = utils.getInputJSONValue("#textarea-settings-pdf-options", event);
 		// CouchDB URL
 		newSettings.couchdbUrl = utils.getInputValue("#input-settings-couchdb-url", event);
 
@@ -326,58 +316,6 @@ define([
 
 		eventMgr.onReady();
 	};
-
-	var appId = 'ESTHdCYOi18iLhhO';
-	var monetize = new MonetizeJS({
-		applicationID: appId
-	});
-	var $alerts = $();
-
-	function isSponsor(payments) {
-		var result = payments && payments.app == appId && (
-			(payments.chargeOption && payments.chargeOption.alias == 'once') ||
-			(payments.subscriptionOption && payments.subscriptionOption.alias == 'yearly'));
-		eventMgr.isSponsor = result;
-		return result;
-	}
-
-	function removeAlerts() {
-		$alerts.remove();
-		$alerts = $();
-	}
-
-	function performPayment() {
-		monetize.getPayments({
-			pricingOptions: [
-				'once',
-				'yearly'
-			]
-		}, function(err, payments) {
-			if(isSponsor(payments)) {
-				eventMgr.onMessage('Thank you for sponsoring StackEdit!');
-				removeAlerts();
-			}
-		});
-	}
-
-	var checkPayment = _.debounce(function() {
-		if(isOffline) {
-			return;
-		}
-		monetize.getPaymentsImmediate(function(err, payments) {
-			removeAlerts();
-			if(!isSponsor(payments)) {
-				_.each(document.querySelectorAll('.modal-body'), function(modalBodyElt) {
-					var $elt = $('<div class="alert alert-danger">Please consider <a href="#">sponsoring StackEdit</a> for $5/year (or <a href="#">sign in</a> if you\'re already a sponsor).</div>');
-					$elt.find('a').click(performPayment);
-					modalBodyElt.insertBefore($elt[0], modalBodyElt.firstChild);
-					$alerts = $alerts.add($elt);
-				});
-			}
-		});
-	}, 3000);
-
-	eventMgr.addListener('onOfflineChanged', checkPayment);
 
 	// Other initialization that are not prioritary
 	eventMgr.addListener("onReady", function() {
@@ -545,7 +483,6 @@ define([
 			'<b class="text-danger">NOTE: Backlinks in Stack Exchange Q/A are not welcome.</b>'
 		].join(''));
 		utils.createTooltip(".tooltip-template", settingsTemplateTooltipHTML);
-		utils.createTooltip(".tooltip-pdf-options", settingsPdfOptionsTooltipHTML);
 
 		// Avoid dropdown panels to close on click
 		$("div.dropdown-menu").click(function(e) {
@@ -577,7 +514,6 @@ define([
 		}
 
 		//$('.modal-header').append('<a class="dialog-header-message" href="https://github.com/benweet/stackedit/issues/385" target="_blank">Give your feedback <i class="icon-megaphone"></i></a>');
-		checkPayment();
 	});
 
 	return core;

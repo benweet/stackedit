@@ -36,7 +36,7 @@
   },
   "scripts": {
     "setup": "bower install && bower prune && gulp",
-    "server": "PORT=80 node server.js",
+    "server": "PORT=3000 node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -27,7 +27,6 @@ define([], function() {
 	constants.DOWNLOAD_IMPORT_URL = "/downloadImport";
 	constants.PICASA_IMPORT_IMG_URL = "/picasaImportImg";
 	constants.SSH_PUBLISH_URL = '/sshPublish';
-	constants.PDF_EXPORT_URL = "/pdfExport";
 	constants.COUCHDB_URL = 'https://stackedit.couchappy.com/documents';
 
 	// Site dependent

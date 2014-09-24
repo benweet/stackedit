@@ -28,7 +28,6 @@ define([
 	"extensions/umlDiagrams",
 	"extensions/markdownExtra",
 	"extensions/toc",
-	"extensions/mathJax",
 	"extensions/emailConverter",
 	"extensions/scrollSync",
 	"extensions/buttonSync",
@@ -124,12 +123,9 @@ define([
 		_.each(extensionList, function(extension) {
 			var isChecked = !extension.isOptional || extension.config.enabled === undefined || extension.config.enabled === true;
 			utils.setInputChecked("#input-enable-extension-" + extension.extensionId, isChecked);
-			// Special case for Markdown Extra and MathJax
+			// Special case for Markdown Extra
 			if(extension.extensionId == 'markdownExtra') {
 				utils.setInputChecked("#input-settings-markdown-extra", isChecked);
-			}
-			else if(extension.extensionId == 'mathJax') {
-				utils.setInputChecked("#input-settings-mathjax", isChecked);
 			}
 			var onLoadSettingsListener = extension.onLoadSettings;
 			onLoadSettingsListener && onLoadSettingsListener();
@@ -141,15 +137,9 @@ define([
 			var newExtensionConfig = _.extend({}, extension.defaultConfig);
 			newExtensionConfig.enabled = utils.getInputChecked("#input-enable-extension-" + extension.extensionId);
 			var isChecked;
-			// Special case for Markdown Extra and MathJax
+			// Special case for Markdown Extra
 			if(extension.extensionId == 'markdownExtra') {
 				isChecked = utils.getInputChecked("#input-settings-markdown-extra");
-				if(isChecked != extension.enabled) {
-					newExtensionConfig.enabled = isChecked;
-				}
-			}
-			else if(extension.extensionId == 'mathJax') {
-				isChecked = utils.getInputChecked("#input-settings-mathjax");
 				if(isChecked != extension.enabled) {
 					newExtensionConfig.enabled = isChecked;
 				}

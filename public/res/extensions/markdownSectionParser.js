@@ -1,11 +1,10 @@
 define([
     "underscore",
     "extensions/markdownExtra",
-    "extensions/mathJax",
     "extensions/partialRendering",
     "classes/Extension",
     "crel",
-], function(_, markdownExtra, mathJax, partialRendering, Extension, crel) {
+], function(_, markdownExtra, partialRendering, Extension, crel) {
 
     var markdownSectionParser = new Extension("markdownSectionParser", "Markdown section parser");
 
@@ -26,12 +25,6 @@ define([
             })) {
                 regexp = '^```.*\\n[\\s\\S]*?\\n```|' + regexp; // Fenced block delimiters
             }
-        }
-        if(mathJax.enabled) {
-            // Math delimiter has to follow 1 empty line to be considered as a section delimiter
-            regexp = '^[ \\t]*\\n\\$\\$[\\s\\S]*?\\$\\$|' + regexp; // $$ math block delimiters
-            regexp = '^[ \\t]*\\n\\\\\\\\[[\\s\\S]*?\\\\\\\\]|' + regexp; // \\[ \\] math block delimiters
-            regexp = '^[ \\t]*\\n\\\\?\\\\begin\\{[a-z]*\\*?\\}[\\s\\S]*?\\\\end\\{[a-z]*\\*?\\}|' + regexp; // \\begin{...} \\end{...} math block delimiters
         }
         regexp = new RegExp(regexp, 'gm');
 

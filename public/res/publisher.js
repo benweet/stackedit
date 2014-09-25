@@ -8,7 +8,6 @@ define([
 	"eventMgr",
 	"fileSystem",
 	"fileMgr",
-	"sharing",
 	"monetizejs",
 	"classes/Provider",
 	"classes/AsyncTask",
@@ -23,7 +22,7 @@ define([
 	"providers/sshProvider",
 	"providers/tumblrProvider",
 	"providers/wordpressProvider"
-], function($, _, constants, utils, storage, settings, eventMgr, fileSystem, fileMgr, sharing, MonetizeJS, Provider, AsyncTask) {
+], function($, _, constants, utils, storage, settings, eventMgr, fileSystem, fileMgr, MonetizeJS, Provider, AsyncTask) {
 
 	var publisher = {};
 
@@ -248,9 +247,7 @@ define([
 		provider.publish(publishAttributes, fileDesc.frontMatter, title, content, function(error) {
 			if(error === undefined) {
 				publishAttributes.provider = provider;
-				sharing.createLink(publishAttributes, function() {
-					createPublishIndex(fileDesc, publishAttributes);
-				});
+				createPublishIndex(fileDesc, publishAttributes);
 			}
 		});
 

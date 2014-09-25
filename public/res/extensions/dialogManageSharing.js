@@ -2,7 +2,7 @@ define([
     "jquery",
     "underscore",
     "classes/Extension",
-    "text!html/dialogManageSharingLocation.html",
+    "text!html/dialogManageSharingLocation.html"
 ], function($, _, Extension, dialogManageSharingLocationHTML) {
 
     var dialogManageSharing = new Extension("dialogManageSharing", 'Button "Share"', false, true);
@@ -31,8 +31,6 @@ define([
             return result;
         }, '');
         shareListElt.innerHTML = linkListHtml;
-        
-        eventMgr.onTweet();
         
         $msgShareListElt.toggleClass('hide', linkListHtml.length === 0);
         $msgNoShareElt.toggleClass('hide', linkListHtml.length !== 0);

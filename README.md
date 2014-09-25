@@ -41,7 +41,7 @@ Support StackEdit:
 
 ### Documentation:
 
- - [Welcome document][2]
+ - [Hello! document][2]
  - [Developer guide][3]
  - [Theming guide][4]
 

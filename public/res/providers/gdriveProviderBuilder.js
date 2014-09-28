@@ -21,7 +21,7 @@ define([
 		var gdriveProvider = new Provider(providerId, providerName);
 		gdriveProvider.defaultPublishFormat = "template";
 		gdriveProvider.exportPreferencesInputIds = [
-				providerId + "-parentid",
+			providerId + "-parentid"
 		];
 
 		function createSyncIndex(id) {

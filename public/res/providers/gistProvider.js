@@ -8,7 +8,7 @@ define([
     gistProvider.publishPreferencesInputIds = [
         "gist-public"
     ];
-    gistProvider.sharingAttributes = [
+    gistProvider.viewerSharingAttributes = [
         "gistId",
         "filename"
     ];

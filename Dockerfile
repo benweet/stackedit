@@ -1,15 +1,15 @@
-# Dockerfile for StackEdit
+FROM dockerfile/nodejs
 
-FROM shykes/nodejs
+WORKDIR /tmp
 
-RUN apt-get update
-RUN apt-get upgrade
+RUN wget -qO- https://github.com/benweet/stackedit/archive/v4.1.1.tar.gz | tar xz
 
-RUN apt-get install -y git-core
+WORKDIR stackedit-4.1.1
 
-RUN git clone https://github.com/benweet/stackedit.git
+RUN \
+  npm install && \
+  node_modules/bower/bin/bower install --allow-root --production --config.interactive=false
 
-RUN (cd /stackedit/ && npm install)
+CMD node server.js
+
 EXPOSE 3000
-
-CMD (cd /stackedit/ && node server.js)

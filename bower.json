@@ -13,7 +13,7 @@
     "jgrowl": "~1.2.10",
     "google-code-prettify": "~1.0.0",
     "FileSaver": "*",
-    "stacktrace": "~0.5.3",
+    "stacktrace": "~0.6.2",
     "requirejs-text": "~2.0.10",
     "bootstrap-tour": "~0.7.1",
     "pagedown-extra": "https://github.com/jmcmanus/pagedown-extra.git#4484dd6696c82f1880b264bd610947f6f1cbdfb6",

@@ -19,15 +19,13 @@
 						for="input-sync-export-<%= providerId %>-parentid">Folder ID
 						(optional)</label>
 					<div class="col-lg-8">
-						<div class="input-group">
-							<input type="text" id="input-sync-export-<%= providerId %>-parentid"
-								placeholder="FolderID" class="form-control">
-							<div class="input-group-btn">
-								<a class="btn btn-link action-export-<%= providerId %>-choose-folder"
-									title="Choose folder" data-dismiss="modal"><i
-									class="icon-folder-open"></i></a>
-							</div>
-						</div>
+                        <input type="text" id="input-sync-export-<%= providerId %>-parentid"
+                            placeholder="FolderID" class="form-control">
+                        <div class="text-right">
+                            <a class="btn btn-link btn-sm action-export-<%= providerId %>-choose-folder"
+                               title="Choose folder" data-dismiss="modal"><i
+                                    class="icon-folder-open"></i> Open folder</a>
+                        </div>
 						<span class="help-block"> If no folder ID is supplied, the
 							file will be created in your root folder. </span>
 					</div>

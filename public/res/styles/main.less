@@ -93,10 +93,10 @@
 @list-group-bg: @secondary-bg-light;
 @list-group-border: @transparent;
 @list-group-active-color: darken(@primary-desaturated, 25%);
-@list-group-active-bg: @primary-bg;
+@list-group-active-bg: @secondary-bg-dark;
 @list-group-active-border: fade(@secondary, 5%);
 @list-group-hover-bg: @btn-default-hover-bg;
-@list-group-hover-border-color: fade(@secondary, 10%);
+@list-group-hover-border-color: @btn-default-hover-border;
 @input-color: @secondary-color-darkest;
 @input-color-placeholder: @disabled-color;
 @gray-lighter: @body-bg;
@@ -300,13 +300,14 @@ a {
 @btn-default-bg: @transparent;
 @btn-default-border: @transparent;
 @btn-default-hover-bg: fade(@secondary-desaturated, 4%);
+@btn-default-hover-border: fade(@secondary, 10%);
 .btn-default, .alertify-button-cancel {
     &:hover,
     &:focus,
     &:active,
     .open &.dropdown-toggle {
     	color: darken(@secondary, 30%);
-    	border-color: fade(@secondary, 10%);
+    	border-color: @btn-default-hover-border;
     	background-color: @btn-default-hover-bg !important; // important to override .nav > li > a:hover
     }
 }
@@ -315,13 +316,14 @@ a {
 @btn-primary-bg: @primary-bg;
 @btn-primary-border: fade(@secondary, 5%);
 @btn-primary-hover-bg: mix(@primary-desaturated, @btn-primary-bg, 7.5%);
+@btn-primary-hover-border: fade(@secondary, 10%);
 .btn-primary, .alertify-button-ok {
     &:hover,
     &:focus,
     &:active,
     .open &.dropdown-toggle {
     	color: darken(@secondary, 30%);
-    	border-color: fade(@secondary, 10%);
+    	border-color: @btn-primary-hover-border;
     	background-color: @btn-primary-hover-bg !important; // important to override .nav > li > a:hover
     }
 }
@@ -330,13 +332,14 @@ a {
 @btn-success-color: darken(@primary-desaturated, 20%);
 @btn-success-bg: @transparent;
 @btn-success-border: @transparent;
+@btn-success-hover-color: darken(@primary, 30%);
 @btn-success-hover-bg: fade(@primary-desaturated, 5%);
 .btn-success {
     &:hover,
     &:focus,
     &:active,
     .open &.dropdown-toggle {
-    	color: darken(@primary, 30%) !important;
+    	color: @btn-success-hover-color !important;
     	border-color: @primary-border-color;
     	background-color: @btn-success-hover-bg !important; // important to override .nav > li > a:hover
     }
@@ -522,6 +525,27 @@ a {
 		font-weight: 200;
 		overflow: hidden;
 		white-space: nowrap;
+		a {
+			i {
+				.transition(~"all ease-in-out .15s");
+			}
+			.icon-link-ext-alt {
+				color: transparent;
+				position: relative;
+				font-size: 12px;
+				top: -12px;
+				right: 6px;
+				width: 0;
+			}
+			&:hover {
+				[class^="icon-provider-"], [class*=" icon-provider-"] {
+					.opacity(0.5);
+				}
+				.icon-link-ext-alt {
+					color: @btn-success-hover-color;
+				}
+			}
+		}
 	}
 
 	.input-file-title-container {
@@ -547,7 +571,7 @@ a {
             height: 6px;
             border-radius: 1px;
             margin: 0 2px;
-            opacity: 0.25;
+            .opacity(0.25);
             background-color: fade(@btn-success-color, 75%);
 		}
 	}
@@ -807,7 +831,12 @@ a {
 		padding: 9px 20px 9px 15px;
 	}
 	.name i {
-		margin-right: 8px;
+		&.icon-file, &.icon-folder {
+			margin-right: 8px;
+			font-size: 20px;
+			line-height: 15px;
+			margin-top: -2px;
+		}
 	}
 	.date {
 		font-weight: normal;
@@ -959,7 +988,7 @@ a {
 		& > li > a {
 			&:hover, &:focus {
 				color: darken(@secondary, 30%);
-            	border-color: fade(@secondary, 10%);
+            	border-color: @btn-default-hover-border;
             	background-color: @btn-default-hover-bg;
 				border-bottom-color: @transparent;
 			}
@@ -987,7 +1016,7 @@ a {
 .modal-manage-publish .publish-list,
 .modal-manage-sharing .share-list {
 	margin-bottom: 20px;
-	.input-group {
+	.entry {
 		margin-bottom: 10px;
 	}
 }
@@ -1381,7 +1410,7 @@ div.dropdown-menu,  {
     a:focus {
         color: @link-hover-color;
     }
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2, h3 {
     	margin: 1em 0;
     }
 }
@@ -1567,7 +1596,7 @@ div.jGrowl {
 	div.jGrowl-notification, div.jGrowl-closer {
 		background-color: @jgrowl-bg-color;
 		width: @jgrowl-width;
-		margin: 10px 0;
+		margin: 6px 0;
 		padding: 10px 12px;
 		-ms-filter: none;
 		filter: none;

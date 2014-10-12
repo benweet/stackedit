@@ -33,8 +33,7 @@
     "gulp-util": "^3.0.1",
     "knox": "^0.9.1",
     "mime": "^1.2.11",
-    "event-stream": "^3.1.7",
-    "async": "^0.9.0"
+    "event-stream": "^3.1.7"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

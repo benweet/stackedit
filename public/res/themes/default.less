@@ -16,14 +16,9 @@
 
 // Navbar buttons
 @btn-success-color: #ddd;
+@btn-success-hover-color: #fff;
 @btn-success-hover-bg: darken(@navbar-default-bg, 10%);
 .btn-success {
-	&:hover,
-	&:focus,
-	&:active,
-	.open &.dropdown-toggle {
-		color: #fff !important;
-	}
 	.buttons-dropdown .dropdown-menu & {
 		color: darken(@primary-desaturated, 20%) !important;
 		&:hover,
@@ -53,8 +48,9 @@
 
 @btn-default-color: @text-color;
 @btn-default-bg: #fff;
-@btn-default-border: @input-border;
+@btn-default-border: fade(@input-border, 75%);
 @btn-default-hover-bg: fade(#000, 2%);
+@btn-default-hover-border: fade(@secondary, 5%);
 
 @secondary-bg: #fcfcfc;
 @secondary-bg-light: #f6f6f6;

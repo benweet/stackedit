@@ -89,7 +89,7 @@
 				<a href="#" data-toggle="collapse" data-target=".collapse-synchronize"
 					class="list-group-item">
 					<div><i class="icon-refresh"></i> Synchronize</div>
-					<small>Open/Save in the Cloud</small>
+					<small>Open, save, collaborate in the Cloud</small>
 				</a>
 				<div class="sub-menu collapse collapse-synchronize clearfix">
 					<ul class="nav alert alert-danger show-already-synchronized">
@@ -135,7 +135,7 @@
 	                        Update publication</a></li>
 	                    <li><a href="#" data-toggle="modal" data-target=".modal-manage-publish"
 	                        class="action-reset-input"><i class="icon-upload"></i>
-	                        Manage publishing</a></li>
+	                        Manage publication</a></li>
 					</ul>
 					<ul class="nav publish-on-provider-list">
 					</ul>
@@ -572,6 +572,13 @@
                 </div>
             </div>
             <div class="modal-body">
+                <p class="msg-default-couchdb hide alert alert-danger"><i class="icon-attention"></i> <b>Careful:</b>
+                    You're using the public CouchDB instance.
+                    <b>Anybody can open, edit and delete your files there!</b> To setup your own CouchDB instance <a
+                            target="blank" href="https://github.com/benweet/stackedit/blob/master/doc/couchdb-setup.md">click
+                        here</a>.
+                </p>
+
                 <div class="form-horizontal byid-mode">
                     <div class="form-group">
                         <label for="input-sync-import-couchdb-documentid" class="col-sm-3 control-label">Document
@@ -638,6 +645,13 @@
                 <h2 class="modal-title">Save on CouchDB</h2>
             </div>
             <div class="modal-body">
+                <p class="msg-default-couchdb hide alert alert-danger"><i class="icon-attention"></i> <b>Careful:</b>
+                    You're using the public CouchDB instance.
+                    <b>Anybody can open, edit and delete your files there!</b> To setup your own CouchDB instance <a
+                            target="blank" href="https://github.com/benweet/stackedit/blob/master/doc/couchdb-setup.md">click
+                        here</a>.
+                </p>
+
                 <p>
                     This will save "<span class="file-title"></span>" to CouchDB and keep it synchronized.
                 </p>
@@ -645,6 +659,7 @@
                     <b>Tip:</b> You can use a
                     <a href="http://jekyllrb.com/docs/frontmatter/"
                        target="_blank">YAML front matter</a> to specify tags for your document.
+                    Alternatively, you can place comma separated tags in squared brackets at the beginning of the document title.
                 </blockquote>
             </div>
             <div class="modal-footer">
@@ -1247,10 +1262,25 @@
 										class="form-control">
 								</div>
 							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label"
+									for="input-settings-couchdb-url">CouchDB URL</label>
+								<div class="col-sm-7">
+									<input type="text" id="input-settings-couchdb-url"
+										class="form-control">
+                                    <span class="help-block pull-right"><a
+                                            target="blank"
+                                            href="https://github.com/benweet/stackedit/blob/master/doc/couchdb-setup.md">Setup
+                                        your own CouchDB...</a></span>
+                                </div>
+							</div>
 						</div>
 					</div>
 					<div class="tab-pane" id="tabpane-settings-extensions">
 						<div class="panel-group accordion-extensions"></div>
+						<span class="help-block pull-right"><a target="_blank"
+							href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#developer-guide">Create
+								your own extension...</a></span>
 					</div>
 					<div class="tab-pane" id="tabpane-settings-utils">
 						<div class="tab-pane-button-container">

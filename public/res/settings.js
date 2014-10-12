@@ -56,6 +56,7 @@ define([
 			'    "pageSize": "A4"',
 			'}'
 		].join('\n'),
+		couchdbUrl: constants.COUCHDB_URL,
 		extensionSettings: {}
 	};
 

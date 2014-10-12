@@ -24,6 +24,16 @@ define([
 			providerId + "-parentid"
 		];
 
+		gdriveProvider.getSyncLocationLink = gdriveProvider.getPublishLocationLink = function(attributes) {
+			var authuser = googleHelper.getAuthorizationMgr(accountId).authuser;
+			return [
+				'https://docs.google.com/file/d/',
+				attributes.id,
+				'/edit',
+				authuser ? '?authuser=' + authuser : ''
+			].join('');
+		};
+
 		function createSyncIndex(id) {
 			return "sync." + providerId + "." + id;
 		}

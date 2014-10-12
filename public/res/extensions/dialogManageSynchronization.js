@@ -1,64 +1,65 @@
 define([
-    "jquery",
-    "underscore",
-    "classes/Extension",
-    "text!html/dialogManageSynchronizationLocation.html",
+	"jquery",
+	"underscore",
+	"classes/Extension",
+	"text!html/dialogManageSynchronizationLocation.html",
 ], function($, _, Extension, dialogManageSynchronizationLocationHTML) {
 
-    var dialogManageSynchronization = new Extension("dialogManageSynchronization", 'Dialog "Manage synchronization"', false, true);
+	var dialogManageSynchronization = new Extension("dialogManageSynchronization", 'Dialog "Manage synchronization"', false, true);
 
-    var eventMgr;
-    dialogManageSynchronization.onEventMgrCreated = function(eventMgrParameter) {
-        eventMgr = eventMgrParameter;
-    };
+	var eventMgr;
+	dialogManageSynchronization.onEventMgrCreated = function(eventMgrParameter) {
+		eventMgr = eventMgrParameter;
+	};
 
-    var synchronizer;
-    dialogManageSynchronization.onSynchronizerCreated = function(synchronizerParameter) {
-        synchronizer = synchronizerParameter;
-    };
+	var synchronizer;
+	dialogManageSynchronization.onSynchronizerCreated = function(synchronizerParameter) {
+		synchronizer = synchronizerParameter;
+	};
 
-    var fileDesc;
-    var syncListElt;
-    var $showAlreadySynchronizedElt;
-    var refreshDialog = function(fileDescParameter) {
-        if(fileDescParameter !== undefined && fileDescParameter !== fileDesc) {
-            return;
-        }
+	var fileDesc;
+	var syncListElt;
+	var $showAlreadySynchronizedElt;
+	var refreshDialog = function(fileDescParameter) {
+		if(fileDescParameter !== undefined && fileDescParameter !== fileDesc) {
+			return;
+		}
 
-        $showAlreadySynchronizedElt.toggleClass("hide", _.size(fileDesc.syncLocations) === 0);
+		$showAlreadySynchronizedElt.toggleClass("hide", _.size(fileDesc.syncLocations) === 0);
 
-        var syncListHtml = _.reduce(fileDesc.syncLocations, function(result, syncAttributes) {
-            return result + _.template(dialogManageSynchronizationLocationHTML, {
-                syncAttributes: syncAttributes,
-                syncDesc: syncAttributes.id || syncAttributes.path
-            });
-        }, '');
-        
-        syncListElt.innerHTML = syncListHtml;
-    };
+		var syncListHtml = _.reduce(fileDesc.syncLocations, function(result, syncAttributes) {
+			return result + _.template(dialogManageSynchronizationLocationHTML, {
+				syncAttributes: syncAttributes,
+				syncDesc: syncAttributes.id || syncAttributes.path,
+				syncLocationLink: syncAttributes.provider.getSyncLocationLink && syncAttributes.provider.getSyncLocationLink(syncAttributes)
+			});
+		}, '');
 
-    dialogManageSynchronization.onFileSelected = function(fileDescParameter) {
-        fileDesc = fileDescParameter;
-        refreshDialog(fileDescParameter);
-    };
+		syncListElt.innerHTML = syncListHtml;
+	};
 
-    dialogManageSynchronization.onSyncExportSuccess = refreshDialog;
-    dialogManageSynchronization.onSyncRemoved = refreshDialog;
+	dialogManageSynchronization.onFileSelected = function(fileDescParameter) {
+		fileDesc = fileDescParameter;
+		refreshDialog(fileDescParameter);
+	};
 
-    dialogManageSynchronization.onReady = function() {
-        var modalElt = document.querySelector(".modal-manage-sync");
-        syncListElt = modalElt.querySelector(".sync-list");
+	dialogManageSynchronization.onSyncExportSuccess = refreshDialog;
+	dialogManageSynchronization.onSyncRemoved = refreshDialog;
 
-        $showAlreadySynchronizedElt = $(document.querySelectorAll(".show-already-synchronized"));
+	dialogManageSynchronization.onReady = function() {
+		var modalElt = document.querySelector(".modal-manage-sync");
+		syncListElt = modalElt.querySelector(".sync-list");
 
-        $(syncListElt).on('click', '.remove-button', function() {
-            var $removeButtonElt = $(this);
-            var syncAttributes = fileDesc.syncLocations[$removeButtonElt.data('syncIndex')];
-            fileDesc.removeSyncLocation(syncAttributes);
-            eventMgr.onSyncRemoved(fileDesc, syncAttributes);
-        });
-    };
+		$showAlreadySynchronizedElt = $(document.querySelectorAll(".show-already-synchronized"));
 
-    return dialogManageSynchronization;
+		$(syncListElt).on('click', '.remove-button', function() {
+			var $removeButtonElt = $(this);
+			var syncAttributes = fileDesc.syncLocations[$removeButtonElt.data('syncIndex')];
+			fileDesc.removeSyncLocation(syncAttributes);
+			eventMgr.onSyncRemoved(fileDesc, syncAttributes);
+		});
+	};
+
+	return dialogManageSynchronization;
 
 });

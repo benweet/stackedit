@@ -11,7 +11,16 @@ define([
         "tumblr-hostname"
     ];
 
-    tumblrProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
+	tumblrProvider.getPublishLocationLink = function(attributes) {
+		return [
+			'http://',
+			attributes.blogHostname,
+			'/post/',
+			attributes.postId
+		].join('');
+	};
+
+	tumblrProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
         var labelList = publishAttributes.tags || [];
         if(frontMatter) {
             frontMatter.tags !== undefined && (labelList = frontMatter.tags);

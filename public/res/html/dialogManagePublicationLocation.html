@@ -1,11 +1,16 @@
-<div class="input-group">
+<div class="entry">
+    <div class="input-group">
 	<span class="input-group-addon" title="<%= publishAttributes.provider.providerName %>">
 		<i class="icon-provider-<%= publishAttributes.provider.providerId %>"></i>
 	</span> <input class="form-control" type="text"
-		value="<%= publishDesc %>" disabled />
-	<div class="input-group-btn">
-		<a class="btn btn-link remove-button" title="Remove this location"
-			data-publish-index="<%= publishAttributes.publishIndex %>"><i
-			class="icon-trash"></i></a>
-	</div>
+                   value="<%= publishDesc %>" disabled/>
+    </div>
+    <div class="text-right">
+        <a class="btn btn-link btn-sm open-location<%- publishLocationLink ? '' : ' hide' %>"
+           target="_blank" href="<%- publishLocationLink %>">
+            <i class="icon-link-ext-alt"></i> Open in <%= publishAttributes.provider.providerName %>
+        </a>
+        <a class="btn btn-link btn-sm remove-button"
+           data-publish-index="<%= publishAttributes.publishIndex %>"><i class="icon-trash"></i> Remove location</a>
+    </div>
 </div>

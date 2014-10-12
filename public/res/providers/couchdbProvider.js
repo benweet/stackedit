@@ -23,6 +23,15 @@ define([
 		PROVIDER_COUCHDB + "-tag"
 	];
 
+	couchdbProvider.getSyncLocationLink = function(attributes) {
+		return [
+			settings.couchdbUrl,
+			'/',
+			attributes.id,
+			'/content'
+		].join('');
+	};
+
 	function createSyncIndex(id) {
 		return "sync." + PROVIDER_COUCHDB + "." + id;
 	}
@@ -97,9 +106,18 @@ define([
 		}
 	};
 
+	function getTags(frontMatter, title) {
+		var tags = frontMatter && frontMatter.tags;
+		var match = title.match(/^\s*\[(.*?)\]/);
+		if(match) {
+			tags = match[1];
+		}
+		return tags;
+	}
+
 	couchdbProvider.exportFile = function(event, title, content, discussionListJSON, frontMatter, callback) {
 		var data = couchdbProvider.serializeContent(content, discussionListJSON);
-		var tags = frontMatter && frontMatter.tags;
+		var tags = getTags(frontMatter, title);
 		couchdbHelper.uploadDocument(undefined, title, data, tags, undefined, function(error, result) {
 			if(error) {
 				return callback(error);
@@ -119,7 +137,7 @@ define([
 		}
 
 		var data = couchdbProvider.serializeContent(content, discussionList);
-		var tags = frontMatter && frontMatter.tags;
+		var tags = getTags(frontMatter, title);
 		couchdbHelper.uploadDocument(syncAttributes.id, title, data, tags, syncAttributes.rev, function(error, result) {
 			if(error) {
 				return callback(error, true);
@@ -211,10 +229,13 @@ define([
 	};
 
 	eventMgr.addListener("onReady", function() {
+		if(constants.COUCHDB_URL == settings.couchdbUrl) {
+			$('.msg-default-couchdb').removeClass('hide');
+		}
 		var documentEltTmpl = [
 			'<a href="#" class="list-group-item document clearfix" data-document-id="<%= document._id %>">',
 			'<div class="date pull-right"><%= date %></div></div>',
-			'<div class="name"><i class="icon-provider-couchdb"></i> ',
+			'<div class="name"><i class="icon-file"></i> ',
 			'<%= document.title %></div>',
 			'</a>'
 		].join('');
@@ -334,7 +355,7 @@ define([
 						.value();
 					storage[PROVIDER_COUCHDB + '.tagList'] = JSON.stringify(tagList);
 					updateTagList();
-					$selectTagElt.val(tag);
+					$selectTagElt.val(tag).change();
 				}, "Tag");
 			})
 			.on('click', '.action-remove-tag', function() {
@@ -344,9 +365,9 @@ define([
 						tagList = _.without(tagList, tag);
 						storage[PROVIDER_COUCHDB + '.tagList'] = JSON.stringify(tagList);
 						updateTagList();
-						$selectTagElt.val('');
+						$selectTagElt.val('').change();
 					}
-				}, "Tag");
+				});
 			})
 			.on('click', '.action-delete-items', function() {
 				if($selectedElts.length) {

@@ -145,6 +145,8 @@ define([
 		utils.setInputValue("#textarea-settings-pdf-template", settings.pdfTemplate);
 		// PDF options
 		utils.setInputValue("#textarea-settings-pdf-options", settings.pdfOptions);
+		// CouchDB URL
+		utils.setInputValue("#input-settings-couchdb-url", settings.couchdbUrl);
 
 		// Load extension settings
 		eventMgr.onLoadSettings();
@@ -190,6 +192,8 @@ define([
 		newSettings.pdfTemplate = utils.getInputTextValue("#textarea-settings-pdf-template", event);
 		// PDF options
 		newSettings.pdfOptions = utils.getInputJSONValue("#textarea-settings-pdf-options", event);
+		// CouchDB URL
+		newSettings.couchdbUrl = utils.getInputValue("#input-settings-couchdb-url", event);
 
 		// Save extension settings
 		newSettings.extensionSettings = {};

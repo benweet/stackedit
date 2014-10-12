@@ -1,6 +1,3 @@
-var request = require('request');
-var async = require('async');
-
 var validate = function(newDoc) {
 	Object.keys(newDoc).forEach(function(key) {
 		if(key[0] !== '_' && [
@@ -88,14 +85,6 @@ var byTagAndUpdate = function(doc) {
 	});
 };
 
-
-if(process.argv.length < 3) {
-	console.error('Missing URL parameter');
-	process.exit(-1);
-}
-
-var url = process.argv[2];
-
 var ddocs = [
 	{
 		path: '/_design/validate',
@@ -125,31 +114,66 @@ var ddocs = [
 	}
 ];
 
-async.each(ddocs, function(ddoc, cb) {
+if(process.argv.length < 3) {
+	console.error('Missing URL parameter');
+	process.exit(-1);
+}
 
-	request.get(url + ddoc.path, function(err, res) {
-		if(res && res.body) {
-			ddoc.body._rev = JSON.parse(res.body)._rev;
-		}
-		request.put({
-			url: url + ddoc.path,
-			json: true,
-			body: ddoc.body
-		}, function(err, res) {
-			if(err) {
-				return cb(res);
-			}
-			if(res.statusCode >= 300) {
-				return cb(res.body);
-			}
-			cb();
-		});
-	});
+var url = require('url').parse(process.argv[2]);
+var request = require(url.protocol === 'https:' ? 'https' : 'http').request;
 
-}, function(err) {
-	if(err) {
-		console.error(err);
-	} else {
-		console.log('All design documents updated successfully');
+function onError(err, body) {
+	console.error(err);
+	body && console.error(body);
+	process.exit(1);
+}
+function uploadDdoc() {
+	if(ddocs.length === 0) {
+		return console.log('All design documents updated successfully.');
 	}
-});
+	var ddoc = ddocs.shift();
+	var options = {
+		hostname: url.hostname,
+		port: url.port,
+		path: url.path + ddoc.path,
+		auth: url.auth,
+		method: 'GET'
+	};
+	request(options, function(res) {
+		var body = '';
+		res
+			.on('data', function(chunk) {
+				body += chunk;
+			})
+			.on('end', function() {
+				res.statusCode >= 300 && onError('Status code: ' + res.statusCode, body);
+				ddoc.body._rev = JSON.parse(body)._rev;
+				var options = {
+					hostname: url.hostname,
+					port: url.port,
+					path: url.path + ddoc.path,
+					auth: url.auth,
+					method: 'PUT',
+					headers: {
+						'Content-type': 'application/json'
+					}
+				};
+				request(options, function(res) {
+					var body = '';
+					res
+						.on('data', function(chunk) {
+							body += chunk;
+						})
+						.on('end', function() {
+							res.statusCode >= 300 && onError('Status code: ' + res.statusCode, body);
+							uploadDdoc();
+						});
+				})
+					.on('error', onError)
+					.end(JSON.stringify(ddoc.body));
+			});
+	})
+		.on('error', onError)
+		.end();
+}
+uploadDdoc();

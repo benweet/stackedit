@@ -13,6 +13,13 @@ define([
         "filename"
     ];
 
+	gistProvider.getPublishLocationLink = function(attributes) {
+		return [
+			'https://gist.github.com/',
+			attributes.gistId
+		].join('');
+	};
+
     gistProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
         githubHelper.uploadGist(publishAttributes.gistId, publishAttributes.filename, publishAttributes.isPublic, title, content, function(error, gistId) {
             if(error) {

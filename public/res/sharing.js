@@ -28,10 +28,7 @@ define([
 	});
 
 	sharing.getEditorParams = function(attributes) {
-		var provider = providerMap[attributes.provider.providerId];
-		if(provider === undefined) {
-			return;
-		}
+		var provider = attributes.provider;
 		var params = {
 			provider: provider.providerId
 		};
@@ -45,10 +42,9 @@ define([
 	};
 
 	sharing.getViewerParams = function(attributes) {
-		var provider = providerMap[attributes.provider.providerId];
-		if(provider === undefined ||
-			// Or document is not published in markdown format
-			attributes.format != "markdown") {
+		var provider = attributes.provider;
+		// If document is not published in markdown format
+		if(attributes.format != "markdown") {
 			return;
 		}
 		var params = {
@@ -98,5 +94,6 @@ define([
 		}
 	});
 
+	eventMgr.onSharingCreated(sharing);
 	return sharing;
 });

@@ -1,7 +1,6 @@
 define([
 	"jquery",
 	"underscore",
-	"constants",
 	"core",
 	"utils",
 	"storage",
@@ -9,7 +8,7 @@ define([
 	"settings",
 	"eventMgr",
 	"classes/AsyncTask"
-], function($, _, constants, core, utils, storage, logger, settings, eventMgr, AsyncTask) {
+], function($, _, core, utils, storage, logger, settings, eventMgr, AsyncTask) {
 
 	var couchdbHelper = {};
 
@@ -26,7 +25,7 @@ define([
 			if(tags) {
 				// Has to be an array
 				if(!_.isArray(tags)) {
-					tags = _.chain(('' + tags).split(/\s+/))
+					tags = _.chain(('' + tags).split(/,/))
 						.compact()
 						.unique()
 						.value();
@@ -43,7 +42,7 @@ define([
 			}
 			$.ajax({
 				type: 'POST',
-				url: constants.COUCHDB_URL,
+				url: settings.couchdbUrl,
 				contentType: 'application/json',
 				dataType: 'json',
 				data: JSON.stringify({
@@ -82,7 +81,7 @@ define([
 		task.onRun(function() {
 			$.ajax({
 				type: 'POST',
-				url: constants.COUCHDB_URL + '/_changes?' + $.param({
+				url: settings.couchdbUrl + '/_changes?' + $.param({
 					filter: '_doc_ids',
 					since: newChangeId,
 					include_docs: true,
@@ -130,7 +129,7 @@ define([
 					return task.chain(recursiveDownloadContent);
 				}
 				$.ajax({
-					url: constants.COUCHDB_URL + '/' + encodeURIComponent(document._id),
+					url: settings.couchdbUrl + '/' + encodeURIComponent(document._id),
 					headers: {
 						Accept: 'application/json'
 					},
@@ -172,7 +171,7 @@ define([
 				tag
 			]) : undefined;
 			$.ajax({
-				url: constants.COUCHDB_URL + ddoc,
+				url: settings.couchdbUrl + ddoc,
 				data: {
 					start_key: startKey,
 					end_key: endKey,
@@ -203,7 +202,7 @@ define([
 		task.onRun(function() {
 			$.ajax({
 				type: 'POST',
-				url: constants.COUCHDB_URL + '/_bulk_docs',
+				url: settings.couchdbUrl + '/_bulk_docs',
 				data: JSON.stringify({
 					docs: docs.map(function(doc) {
 						return {

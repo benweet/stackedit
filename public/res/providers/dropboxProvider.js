@@ -14,7 +14,18 @@ define([
     var dropboxProvider = new Provider(PROVIDER_DROPBOX, "Dropbox");
     dropboxProvider.defaultPublishFormat = "template";
 
-    function checkPath(path) {
+	dropboxProvider.getSyncLocationLink = dropboxProvider.getPublishLocationLink = function(attributes) {
+		var pathComponents = attributes.path.split('/').map(encodeURIComponent);
+		var filename = pathComponents.pop();
+		return [
+			'https://www.dropbox.com/home',
+			pathComponents.join('/'),
+			'?select=',
+			filename
+		].join('');
+	};
+
+	function checkPath(path) {
         if(path === undefined) {
             return undefined;
         }

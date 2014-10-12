@@ -296,7 +296,7 @@ define([
 					$moreDocumentsElt.removeClass('hide');
 					return;
 				}
-				if(result.length === 3) {
+				if(result.length === constants.COUCHDB_PAGE_SIZE) {
 					$moreDocumentsElt.removeClass('hide');
 					lastDocument = result.pop();
 				}

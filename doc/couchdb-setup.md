@@ -1,7 +1,7 @@
 ### Pre-requisites
 
-- CouchDB 1.5 or later, because of the use of `POST /{db}/_changes`,
-- Node.js, to load the design documents in the database.
+- **CouchDB 1.5 or later**, because of the use of `POST /{db}/_changes`,
+- **Node.js**, to load the design documents in the database.
 
 > **Note:**
 > 
@@ -34,9 +34,19 @@ curl -X PUT https://instance.couchappy.com/documents
 ### Insert the design documents
 
 ```bash
+curl -O https://raw.githubusercontent.com/benweet/stackedit/master/couchdb/setup.js
+node setup.js https://instance.couchappy.com/documents
+```
+
+Or directly:
+
+```bash
 curl https://raw.githubusercontent.com/benweet/stackedit/master/couchdb/setup.js | node /dev/stdin https://instance.couchappy.com/documents
 ```
 
 ### Update StackEdit settings
 
 To configure StackEdit to use your CouchDB instance, change the in URL in `Menu` > `Settings` > `Advanced` > `CouchDB URL` to `https://instance.couchappy.com/documents`.
+
+
+> Written with [StackEdit](https://stackedit.io/).

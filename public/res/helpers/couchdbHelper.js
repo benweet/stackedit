@@ -5,10 +5,11 @@ define([
 	"utils",
 	"storage",
 	"logger",
+	"constants",
 	"settings",
 	"eventMgr",
 	"classes/AsyncTask"
-], function($, _, core, utils, storage, logger, settings, eventMgr, AsyncTask) {
+], function($, _, core, utils, storage, logger, constants, settings, eventMgr, AsyncTask) {
 
 	var couchdbHelper = {};
 
@@ -177,7 +178,7 @@ define([
 					end_key: endKey,
 					descending: true,
 					include_docs: true,
-					limit: 3,
+					limit: constants.COUCHDB_PAGE_SIZE,
 					reduce: false
 				},
 				dataType: 'json'

@@ -21,6 +21,7 @@ define([], function() {
 	constants.USER_IDLE_THRESHOLD = 300000;
 	constants.IMPORT_FILE_MAX_CONTENT_SIZE = 100000;
 	constants.IMPORT_IMG_MAX_CONTENT_SIZE = 10000000;
+	constants.COUCHDB_PAGE_SIZE = 25;
 	constants.TEMPORARY_FILE_INDEX = "file.tempIndex";
 	constants.WELCOME_DOCUMENT_TITLE = "Hello!";
 	constants.DOWNLOAD_IMPORT_URL = "/downloadImport";

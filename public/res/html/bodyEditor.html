@@ -382,7 +382,7 @@
 					Are you sure you want to delete "<span class="file-title"></span>"?
 				</p>
 				<blockquote>
-					<b>Note:</b> It won't delete the file on synchronized locations.
+					<p><b>Note:</b> It won't delete the file on synchronized locations.</p>
 				</blockquote>
 			</div>
 			<div class="modal-footer">
@@ -656,10 +656,10 @@
                     This will save "<span class="file-title"></span>" to CouchDB and keep it synchronized.
                 </p>
                 <blockquote>
-                    <b>Tip:</b> You can use a
+                    <p><b>Tip:</b> You can use a
                     <a href="http://jekyllrb.com/docs/frontmatter/"
-                       target="_blank">YAML front matter</a> to specify tags for your document.
-                    Alternatively, you can place comma separated tags in squared brackets at the beginning of the document title.
+                       target="_blank">YAML front matter</a> to specify tags for your document.</p>
+                    <p>Alternatively, you can place comma separated tags in squared brackets at the beginning of the document title.</p>
                 </blockquote>
             </div>
             <div class="modal-footer">
@@ -688,8 +688,8 @@
 				</p>
 				<div class="sync-list"></div>
 				<blockquote>
-					<b>Note:</b> Removing a synchronized location will not delete any
-					file.
+					<p><b>Note:</b> Removing a synchronized location will not delete any
+					file.</p>
 				</blockquote>
 			</div>
 			<div class="modal-footer">
@@ -962,7 +962,7 @@
 				</p>
 				<div class="publish-list"></div>
 				<blockquote>
-					<b>Note:</b> Removing a publish location will not delete the actual publication.
+					<p><b>Note:</b> Removing a publish location will not delete the actual publication.</p>
 				</blockquote>
 			</div>
 			<div class="modal-footer">
@@ -983,23 +983,28 @@
 				<h2 class="modal-title">Sharing</h2>
 			</div>
 			<div class="modal-body">
-				<p class="msg-share-list hide">
-					"<span class="file-title"></span>" can be shared using the following link(s):
-				</p>
-            	<div class="msg-share-list share-list hide"></div>
-            	<p class="msg-no-share hide alert alert-danger"><b>No sharing link yet!</b>
+                <p>Collaborate on "<span class="file-title"></span>" using the following link(s):</p>
+            	<p class="msg-no-share-editor"><b>No sharing link yet!</b>
             	</p>
-            	<p class="msg-no-share hide">To collaborate on this document, use <i class="icon-provider-gdrive"></i> <b>Google Drive</b>
-            	or <i class="icon-provider-dropbox"></i> <b>Dropbox</b> synchronization from the <i class="icon-provider-stackedit"></i> menu.
-            	</p>
-            	<p class="msg-no-share hide">To share a frozen version of this document within StackEdit, just <a
-            		href="#" class="action-publish-gist" data-dismiss="modal">publish it as a Gist</a> in
-            		Markdown format from the <i class="icon-provider-stackedit"></i> menu.
-            	</p>
+                <div class="share-editor-list"></div>
             	<blockquote>
-            		<b>Tip:</b> You can open any URL within StackEdit using <a
+                    <p><b>Note:</b> To collaborate on this document, just <a
+                        href="#" class="action-sync-export-dialog-couchdb" data-dismiss="modal">save it on CouchDB</a>.
+                    To collaborate via Google Drive or Dropbox, you have to share the file manually from Google Drive/Dropbox websites.</p>
+            	</blockquote>
+                <p>Share a read-only version of "<span class="file-title"></span>" using the following link(s):</p>
+            	<p class="msg-no-share-viewer"><b>No sharing link yet!</b>
+            	</p>
+                <div class="share-viewer-list"></div>
+            	<blockquote>
+                    <p><b>Note:</b> To share a read-only version of this document, just <a
+                        href="#" class="action-publish-gist" data-dismiss="modal">publish it as a Gist</a> in
+                    Markdown format.</p>
+            	</blockquote>
+            	<blockquote>
+            		<p><b>Tip:</b> You can open any markdown URL within StackEdit Viewer using <a
             			href="viewer#!url=https://raw.github.com/benweet/stackedit/master/README.md"
-            			title="Sharing example"><code>viewer#!url=</code></a>.
+            			title="Sharing example"><code>viewer#!url=</code></a>.</p>
             	</blockquote>
 			</div>
 			<div class="modal-footer">
@@ -1334,8 +1339,10 @@
 			<div class="modal-body">
 				<p>StackEdit has stopped because another instance was running in
 					the same browser.</p>
-				<blockquote>If you want to reopen StackEdit, click on
-					"Reload".</blockquote>
+				<blockquote>
+                    <p>If you want to reopen StackEdit, click on
+					"Reload".</p>
+                </blockquote>
 			</div>
 			<div class="modal-footer">
 				<a href="javascript:window.location.reload();"
@@ -1355,7 +1362,9 @@
 			</div>
 			<div class="modal-body">
 			    <p class="redirect-msg"></p>
-				<blockquote>Please click <b>OK</b> to proceed.</blockquote>
+				<blockquote>
+                    <p>Please click <b>OK</b> to proceed.</p>
+                </blockquote>
 			</div>
 			<div class="modal-footer">
 				<a class="btn btn-default" data-dismiss="modal">Cancel</a>
@@ -1417,7 +1426,7 @@
 			</div>
 			<div class="modal-body">
 				<p>To perform this request, you need to configure another Google Drive account in StackEdit.</p>
-				<blockquote>Do you want to proceed?</blockquote>
+				<blockquote><b>Do you want to proceed?</b></blockquote>
 			</div>
 			<div class="modal-footer">
 				<a href="#" class="btn btn-default action-remove-google-drive-state"
@@ -1441,7 +1450,9 @@
 				<p>This feature is restricted to sponsor users as it's a web service hosted on Amazon EC2.
                     Note that sponsoring StackEdit would cost you only $5/year.</p>
 				<p>To see how a PDF looks <a target="_blank" href="/Welcome%20document.pdf">click here</a>.</p>
-				<blockquote><b>Tip:</b> PDFs are fully customizable via Settings>Advanced>PDF template/options.</blockquote>
+				<blockquote>
+                    <p><b>Tip:</b> PDFs are fully customizable via Settings>Advanced>PDF template/options.</p>
+                </blockquote>
 			</div>
 			<div class="modal-footer">
 				<a href="#" class="btn btn-primary"

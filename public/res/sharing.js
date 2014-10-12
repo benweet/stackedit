@@ -7,6 +7,7 @@ define([
 	"fileMgr",
 	"classes/AsyncTask",
 	"classes/Provider",
+	"providers/couchdbProvider",
 	"providers/downloadProvider",
 	"providers/gistProvider"
 ], function($, _, constants, utils, eventMgr, fileMgr, AsyncTask, Provider) {
@@ -61,36 +62,49 @@ define([
 
 	eventMgr.addListener("onReady", function() {
 		// Check parameters to see if we have to download a shared document
-		var providerId = utils.getURLParameter("provider");
+		var importParameters, provider, providerId = utils.getURLParameter("provider");
 		if(window.viewerMode) {
 			if(providerId === undefined) {
 				providerId = "download";
 			}
-			var provider = providerMap[providerId];
+			provider = providerMap[providerId];
 			if(provider === undefined) {
 				return;
 			}
-			var importParameters = {};
-			_.each(provider.viewerSharingAttributes, function(attributeName) {
+			importParameters = {};
+			if(_.some(provider.viewerSharingAttributes, function(attributeName) {
 				var parameter = utils.getURLParameter(attributeName);
 				if(!parameter) {
-					importParameters = undefined;
-					return;
+					return 1;
 				}
 				importParameters[attributeName] = parameter;
-			});
-			if(importParameters === undefined) {
+			})) {
 				return;
 			}
-			$("#preview-contents, .navbar .file-title-navbar").hide();
-			provider.importPublic(importParameters, function(error, title, content) {
-				$("#preview-contents, .navbar .file-title-navbar").show();
+			provider.importPublic(importParameters, utils.lockUI(function(error, title, content) {
 				if(error) {
 					return;
 				}
 				var fileDesc = fileMgr.createFile(title, content, undefined, undefined, true);
 				fileMgr.selectFile(fileDesc);
-			});
+			}));
+		}
+		else if(providerId) {
+			provider = providerMap[providerId];
+			if(provider === undefined) {
+				return;
+			}
+			importParameters = {};
+			if(_.some(provider.editorSharingAttributes, function(attributeName) {
+				var parameter = utils.getURLParameter(attributeName);
+				if(!parameter) {
+					return 1;
+				}
+				importParameters[attributeName] = parameter;
+			})) {
+				return;
+			}
+			provider.importPrivate(importParameters, utils.lockUI());
 		}
 	});
 

@@ -18,29 +18,40 @@ define([
 	};
 
 	var fileDesc;
-	var shareListElt;
-	var $msgShareListElt;
-	var $msgNoShareElt;
+	var shareEditorListElt;
+	var shareViewerListElt;
+	var $msgNoShareEditorElt;
+	var $msgNoShareViewerElt;
 	var refreshDocumentSharing = function(fileDescParameter) {
 		if(fileDescParameter !== undefined && fileDescParameter !== fileDesc) {
 			return;
 		}
 
-		var linkListHtml = _.reduce(fileDesc.publishLocations, function(result, attributes) {
-			var params = sharing.getViewerParams(attributes);
+		var editorLinkListHtml = _.reduce(fileDesc.syncLocations, function(result, attributes) {
+			var params = sharing.getEditorParams(attributes);
 			if(params) {
-				var link = constants.MAIN_URL + 'viewer?' + $.param(params);
+				var link = constants.MAIN_URL + 'editor#!' + $.param(params);
 				result += _.template(dialogManageSharingLocationHTML, {
-					link: link,
-					title: fileDesc.title
+					link: link
 				});
 			}
 			return result;
 		}, '');
-		shareListElt.innerHTML = linkListHtml;
+		shareEditorListElt.innerHTML = editorLinkListHtml;
+		$msgNoShareEditorElt.toggleClass('hide', editorLinkListHtml.length !== 0);
 
-		$msgShareListElt.toggleClass('hide', linkListHtml.length === 0);
-		$msgNoShareElt.toggleClass('hide', linkListHtml.length !== 0);
+		var viewerLinkListHtml = _.reduce(fileDesc.publishLocations, function(result, attributes) {
+			var params = sharing.getViewerParams(attributes);
+			if(params) {
+				var link = constants.MAIN_URL + 'viewer#!' + $.param(params);
+				result += _.template(dialogManageSharingLocationHTML, {
+					link: link
+				});
+			}
+			return result;
+		}, '');
+		shareViewerListElt.innerHTML = viewerLinkListHtml;
+		$msgNoShareViewerElt.toggleClass('hide', viewerLinkListHtml.length !== 0);
 	};
 
 	dialogManageSharing.onFileSelected = function(fileDescParameter) {
@@ -48,21 +59,22 @@ define([
 		refreshDocumentSharing(fileDescParameter);
 	};
 
-	dialogManageSharing.onNewPublishSuccess = function(fileDescParameter, publishAttributes) {
-		refreshDocumentSharing(fileDescParameter);
-		if(sharing.getViewerParams(publishAttributes)) {
-			$('.modal').modal('hide');
-			$('.modal-manage-sharing').modal('show');
-		}
-	};
-
+	dialogManageSharing.onSyncExportSuccess = refreshDocumentSharing;
+	dialogManageSharing.onSyncRemoved = refreshDocumentSharing;
+	dialogManageSharing.onNewPublishSuccess = refreshDocumentSharing;
 	dialogManageSharing.onPublishRemoved = refreshDocumentSharing;
 
 	dialogManageSharing.onReady = function() {
 		var modalElt = document.querySelector('.modal-manage-sharing');
-		shareListElt = modalElt.querySelector('.share-list');
-		$msgShareListElt = $(modalElt.querySelectorAll('.msg-share-list'));
-		$msgNoShareElt = $(modalElt.querySelectorAll('.msg-no-share'));
+		shareEditorListElt = modalElt.querySelector('.share-editor-list');
+		shareViewerListElt = modalElt.querySelector('.share-viewer-list');
+		$msgNoShareEditorElt = $(modalElt.querySelectorAll('.msg-no-share-editor'));
+		$msgNoShareViewerElt = $(modalElt.querySelectorAll('.msg-no-share-viewer'));
+		$(modalElt).on('show.bs.modal', function() {
+			$(modalElt.querySelector('input')).each(function() {
+				this.value = $(this).data('value');
+			});
+		});
 	};
 
 	return dialogManageSharing;

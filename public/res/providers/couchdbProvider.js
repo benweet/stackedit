@@ -22,6 +22,9 @@ define([
 	couchdbProvider.importPreferencesInputIds = [
 		PROVIDER_COUCHDB + "-tag"
 	];
+	couchdbProvider.editorSharingAttributes = [
+		"id"
+	];
 
 	couchdbProvider.getSyncLocationLink = function(attributes) {
 		return [
@@ -57,14 +60,26 @@ define([
 		return syncAttributes;
 	}
 
-	function importFilesFromIds(ids) {
-		couchdbHelper.downloadContent(ids.map(function(id) {
+	function importFilesFromIds(ids, cb) {
+		var importIds = [];
+		_.each(ids, function(id) {
+			var syncIndex = createSyncIndex(id);
+			var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
+			if(fileDesc !== undefined) {
+				return eventMgr.onError('"' + fileDesc.title + '" is already in your local documents.');
+			}
+			importIds.push(id);
+		});
+		if(ids.length === 0) {
+			return cb && cb();
+		}
+		couchdbHelper.downloadContent(importIds.map(function(id) {
 			return {
 				_id: id
 			};
 		}), function(error, result) {
 			if(error) {
-				return;
+				return cb && cb(error);
 			}
 			var fileDescList = [];
 			var fileDesc;
@@ -82,6 +97,7 @@ define([
 				eventMgr.onSyncImportSuccess(fileDescList, couchdbProvider);
 				fileMgr.selectFile(fileDesc);
 			}
+			cb && cb();
 		});
 	}
 
@@ -93,16 +109,7 @@ define([
 				.compact()
 				.unique()
 				.value();
-			var importIds = [];
-			_.each(ids, function(id) {
-				var syncIndex = createSyncIndex(id);
-				var fileDesc = fileMgr.getFileFromSyncIndex(syncIndex);
-				if(fileDesc !== undefined) {
-					return eventMgr.onError('"' + fileDesc.title + '" is already in your local documents.');
-				}
-				importIds.push(id);
-			});
-			importFilesFromIds(importIds);
+			importFilesFromIds(ids);
 		}
 	};
 
@@ -226,6 +233,10 @@ define([
 				setTimeout(mergeChange, 5);
 			});
 		});
+	};
+
+	couchdbProvider.importPrivate = function(importParameters, callback) {
+		importFilesFromIds([importParameters.id], callback);
 	};
 
 	eventMgr.addListener("onReady", function() {

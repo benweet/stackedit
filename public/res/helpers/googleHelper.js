@@ -49,6 +49,14 @@ define([
 		this.getUserId = function() {
 			return userId;
 		};
+		var authUser = parseInt(storage[accountId + '.authUser'] || 0);
+		this.setAuthUser = function(value) {
+			authUser = value;
+			storage[accountId + '.authUser'] = authUser;
+		};
+		this.getAuthUser = function() {
+			return authUser;
+		};
 	}
 
 	var googleHelper = {};
@@ -190,7 +198,7 @@ define([
 					}
 					else {
 						// Success but we need to check the user id
-						authorizationMgr.authuser = authuser;
+						authorizationMgr.setAuthUser(authuser);
 						immediate === true && authuser++;
 						task.chain(getTokenInfo);
 					}

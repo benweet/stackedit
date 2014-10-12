@@ -7,7 +7,7 @@ define([
     "text!html/buttonStatSettingsBlock.html"
 ], function($, _, utils, Extension, buttonStatHTML, buttonStatSettingsBlockHTML) {
 
-    var buttonStat = new Extension("buttonStat", 'Button "Statistics"', true, true);
+    var buttonStat = new Extension("buttonStat", 'Button "Statistics"', true);
     buttonStat.settingsBlock = buttonStatSettingsBlockHTML;
     buttonStat.defaultConfig = {
         name1: "Characters",

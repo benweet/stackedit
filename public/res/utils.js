@@ -418,6 +418,21 @@ define([
 		});
 	};
 
+	utils.lockUI = function(cb) {
+		var eltsToHide = $([
+			'#wmd-input',
+			'#preview-contents',
+			'.navbar .file-title-navbar',
+			'.navbar .left-buttons',
+			'.navbar .right-buttons',
+			'.navbar .buttons-dropdown'
+		].join(',')).hide();
+		return function() {
+			eltsToHide.show();
+			cb && cb.apply(null, arguments);
+		};
+	};
+
 	var entityMap = {
 		"&": "&amp;",
 		"<": "&lt;",

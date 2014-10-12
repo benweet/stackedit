@@ -25,7 +25,7 @@ define([
 		];
 
 		gdriveProvider.getSyncLocationLink = gdriveProvider.getPublishLocationLink = function(attributes) {
-			var authuser = googleHelper.getAuthorizationMgr(accountId).authuser;
+			var authuser = googleHelper.getAuthorizationMgr(accountId).getAuthUser();
 			return [
 				'https://docs.google.com/file/d/',
 				attributes.id,
@@ -59,14 +59,14 @@ define([
 			return syncAttributes;
 		}
 
-		function importFilesFromIds(ids) {
+		function importFilesFromIds(ids, cb) {
 			googleHelper.downloadMetadata(ids, accountId, function(error, result) {
 				if(error) {
-					return;
+					return cb && cb(error);
 				}
 				googleHelper.downloadContent(result, accountId, function(error, result) {
 					if(error) {
-						return;
+						return cb && cb(error);
 					}
 					var fileDescList = [];
 					var fileDesc;
@@ -88,6 +88,7 @@ define([
 						eventMgr.onSyncImportSuccess(fileDescList, gdriveProvider);
 						fileMgr.selectFile(fileDesc);
 					}
+					cb && cb();
 				});
 			});
 		}
@@ -369,8 +370,7 @@ define([
 
 			storage.removeItem('gdrive.state');
 			if(state.action == "create") {
-				eventMgr.onMessage('Please wait while creating your document on ' + providerName);
-				googleHelper.upload(undefined, state.folderId, constants.GDRIVE_DEFAULT_FILE_TITLE, settings.defaultContent, undefined, undefined, accountId, function(error, file) {
+				googleHelper.upload(undefined, state.folderId, constants.GDRIVE_DEFAULT_FILE_TITLE, settings.defaultContent, undefined, undefined, accountId, utils.lockUI(function(error, file) {
 					if(error) {
 						return;
 					}
@@ -380,7 +380,7 @@ define([
 					var fileDesc = fileMgr.createFile(file.title, file.content, undefined, syncLocations);
 					fileMgr.selectFile(fileDesc);
 					eventMgr.onMessage('"' + file.title + '" created successfully on ' + providerName + '.');
-				});
+				}));
 			}
 			else if(state.action == "open") {
 				var importIds = [];
@@ -394,8 +394,7 @@ define([
 						importIds.push(id);
 					}
 				});
-				eventMgr.onMessage('Please wait while loading your document from ' + providerName);
-				importFilesFromIds(importIds);
+				importFilesFromIds(importIds, utils.lockUI());
 			}
 		});
 

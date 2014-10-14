@@ -146,8 +146,9 @@ function uploadDdoc() {
 				body += chunk;
 			})
 			.on('end', function() {
-				res.statusCode >= 300 && onError('Status code: ' + res.statusCode, body);
-				ddoc.body._rev = JSON.parse(body)._rev;
+				if(res.statusCode == 200) {
+					ddoc.body._rev = JSON.parse(body)._rev;
+				}
 				var options = {
 					hostname: url.hostname,
 					port: url.port,

@@ -7,3 +7,4 @@ Thumbs.db
 stackedit.iml
 public/res/bower-libs
 public/res-min/
+public/cache.manifest

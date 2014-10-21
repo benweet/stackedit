@@ -1,7 +1,7 @@
 /* jshint -W015 */
 var gulp = require('gulp');
 var util = require('gulp-util');
-var clean = require('gulp-clean');
+var del = require('del');
 var jshint = require('gulp-jshint');
 var requirejs = require('gulp-requirejs');
 var bowerRequirejs = require('bower-requirejs');
@@ -55,11 +55,10 @@ gulp.task('jshint', function() {
  */
 
 gulp.task('clean-requirejs', function() {
-	return gulp.src([
+	return del([
 		'./public/res-min/main.js',
 		'./public/res-min/require.js'
-	])
-		.pipe(clean());
+	]);
 });
 
 gulp.task('copy-requirejs', ['clean-requirejs'], function() {
@@ -109,8 +108,7 @@ gulp.task('bower-requirejs', function(cb) {
  */
 
 gulp.task('clean-less', function() {
-	return gulp.src('./public/res-min/themes')
-		.pipe(clean());
+	return del('./public/res-min/themes');
 });
 
 gulp.task('less', ['clean-less'], function() {
@@ -129,8 +127,7 @@ gulp.task('less', ['clean-less'], function() {
  */
 
 gulp.task('clean-font', function() {
-	return gulp.src('./public/res-min/font')
-		.pipe(clean());
+	return del('./public/res-min/font');
 });
 
 gulp.task('copy-font', ['clean-font'], function() {
@@ -143,8 +140,7 @@ gulp.task('copy-font', ['clean-font'], function() {
  */
 
 gulp.task('clean-img', function() {
-	return gulp.src('./public/res-min/img')
-		.pipe(clean());
+	return del('./public/res-min/img');
 });
 
 gulp.task('copy-img', ['clean-img'], function() {

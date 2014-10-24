@@ -20,7 +20,7 @@
         <script>
             // Use ?debug to serve original JavaScript files instead of minified
             window.baseDir = 'res';
-            if (!/(\?|&)debug($|&)/.test(location.search)) {
+            if (!/(\?|&)debug(=|$|&)/.test(location.search)) {
                 window.baseDir += '-min';
             }
             window.require = {

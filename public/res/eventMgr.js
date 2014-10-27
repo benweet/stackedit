@@ -219,6 +219,9 @@ define([
 	// Refresh twitter buttons
 	addEventHook("onTweet");
 
+	// Plugins
+	addEventHook("onProviderLoaded");
+	addEventHook("onPluginsLoaded");
 
 	var onPreviewFinished = createEventHook("onPreviewFinished");
 	var onAsyncPreviewListenerList = getExtensionListenerList("onAsyncPreview");

@@ -9,33 +9,22 @@ define([
 	"fileSystem",
 	"fileMgr",
 	"monetizejs",
-	"classes/Provider",
-	"classes/AsyncTask",
-	"providers/bloggerProvider",
-	"providers/bloggerPageProvider",
-	"providers/dropboxProvider",
-	"providers/gistProvider",
-	"providers/githubProvider",
-	"providers/gdriveProvider",
-	"providers/gdrivesecProvider",
-	"providers/gdriveterProvider",
-	"providers/sshProvider",
-	"providers/tumblrProvider",
-	"providers/wordpressProvider"
-], function($, _, constants, utils, storage, settings, eventMgr, fileSystem, fileMgr, MonetizeJS, Provider, AsyncTask) {
+	"classes/AsyncTask"
+], function($, _, constants, utils, storage, settings, eventMgr, fileSystem, fileMgr, MonetizeJS, AsyncTask) {
 
 	var publisher = {};
 
 	// Create a map with providerId: providerModule
-	var providerMap = _.chain(arguments).map(function(argument) {
-		return argument instanceof Provider && argument.isPublishEnabled === true && [
-			argument.providerId,
-			argument
-		];
-	}).compact().object().value();
+	var providerMap = {};
+
+	eventMgr.addListener("onProviderLoaded", function(provider) {
+		if (provider.isPublishEnabled === true) {
+			providerMap[provider.providerId] = provider;
+		}
+	});
 
 	// Retrieve publish locations from storage
-	(function() {
+	eventMgr.addListener("onPluginsLoaded", function() {
 		var publishIndexMap = {};
 		_.each(fileSystem, function(fileDesc) {
 			utils.retrieveIndexArray(fileDesc.fileIndex + ".publish").forEach(function(publishIndex) {
@@ -68,7 +57,7 @@ define([
 				storage.removeItem(key);
 			}
 		});
-	})();
+	});
 
 	// Apply template to the current document
 	publisher.applyTemplate = function(fileDesc, publishAttributes, html) {

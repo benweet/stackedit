@@ -4,8 +4,7 @@ define([
 	"constants",
 	"classes/Provider",
 	"core",
-	"eventMgr",
-	"providers/gplusProvider"
+	"eventMgr"
 ], function($, _, constants, Provider, core, eventMgr) {
 
 	var mediaImporter = {};

@@ -208,6 +208,7 @@ require([
 	"publisher",
 	"sharing",
 	"mediaImporter",
+	"plugins",
 	"css",
 	"rangy-cssclassapplier",
 	themeModule

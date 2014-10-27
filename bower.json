@@ -18,7 +18,7 @@
     "bootstrap-tour": "~0.10.1",
     "pagedown-extra": "https://github.com/jmcmanus/pagedown-extra.git#4484dd6696c82f1880b264bd610947f6f1cbdfb6",
     "crel": "https://github.com/KoryNunn/crel.git#f5ca3cd7ae",
-    "waitForImages": "~1.4.2",
+    "waitForImages": "~1.6.4",
     "to-markdown": "https://github.com/benweet/to-markdown.git#jquery",
     "xregexp": "d06eff50f87d81d2dd3afc1e854784c38b17bcc4",
     "yaml.js": "~0.2.0",

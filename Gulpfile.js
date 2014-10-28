@@ -61,7 +61,7 @@ gulp.task('clean-requirejs', function() {
 	]);
 });
 
-gulp.task('copy-requirejs', ['clean-requirejs'], function() {
+gulp.task('copy-requirejs', function() {
 	return gulp.src('./public/res/bower-libs/requirejs/require.js')
 		.pipe(gulp.dest('./public/res-min/'));
 });
@@ -111,7 +111,7 @@ gulp.task('clean-less', function() {
 	return del('./public/res-min/themes');
 });
 
-gulp.task('less', ['clean-less'], function() {
+gulp.task('less', function() {
 	return gulp.src([
 		'./public/res/styles/base.less',
 		'./public/res/themes/*.less'
@@ -130,7 +130,7 @@ gulp.task('clean-font', function() {
 	return del('./public/res-min/font');
 });
 
-gulp.task('copy-font', ['clean-font'], function() {
+gulp.task('copy-font', function() {
 	return gulp.src('./public/res/font/*')
 		.pipe(gulp.dest('./public/res-min/font/'));
 });
@@ -143,7 +143,7 @@ gulp.task('clean-img', function() {
 	return del('./public/res-min/img');
 });
 
-gulp.task('copy-img', ['clean-img'], function() {
+gulp.task('copy-img', function() {
 	return gulp.src('./public/res/img/*')
 		.pipe(gulp.dest('./public/res-min/img/'));
 });

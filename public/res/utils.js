@@ -727,7 +727,7 @@ define([
 	};
 
 	utils.decodeBase64 = function(str) {
-		return window.unescape(decodeURIComponent(window.atob(str)));
+		return decodeURIComponent(window.escape(window.atob(str)));
 	};
 
 	// CRC32 algorithm

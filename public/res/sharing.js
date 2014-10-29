@@ -4,14 +4,8 @@ define([
 	"constants",
 	"utils",
 	"eventMgr",
-	"fileMgr",
-	"classes/AsyncTask",
-	"classes/Provider",
-	"providers/karnovProvider",
-	"providers/couchdbProvider",
-	"providers/downloadProvider",
-	"providers/gistProvider"
-], function($, _, constants, utils, eventMgr, fileMgr, AsyncTask, Provider) {
+	"fileMgr"
+], function($, _, constants, utils, eventMgr, fileMgr) {
 
 	var sharing = {};
 

@@ -4,5 +4,5 @@ define([
 ], function(Plugin, downloadProvider) {
 	return new Plugin({
 		providers: [downloadProvider]
-	};
+	});
 });

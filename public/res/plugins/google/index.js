@@ -6,5 +6,5 @@ define([
 ], function(Plugin, gdriveProvider, gdrivesecProvider, gdriveterProvider) {
 	return new Plugin({
 		providers: [gdriveProvider, gdrivesecProvider, gdriveterProvider]
-	};
+	});
 });

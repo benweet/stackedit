@@ -20,7 +20,7 @@ define([
 	});
 
 	// Retrieve sync locations from storage
-	eventMgr.addListener("onPluginsLoaded", (function() {
+	eventMgr.addListener("onPluginsLoaded", function() {
 		var syncIndexMap = {};
 		_.each(fileSystem, function(fileDesc) {
 			utils.retrieveIndexArray(fileDesc.fileIndex + ".sync").forEach(function(syncIndex) {

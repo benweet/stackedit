@@ -4,5 +4,5 @@ define([
 ], function(Plugin, couchdbProvider) {
 	return new Plugin({
 		providers: [couchdbProvider]
-	};
+	});
 });

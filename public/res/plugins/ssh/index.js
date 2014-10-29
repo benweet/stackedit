@@ -4,5 +4,5 @@ define([
 ], function(Plugin, sshProvider) {
 	return new Plugin({
 		providers: [sshProvider]
-	};
+	});
 });

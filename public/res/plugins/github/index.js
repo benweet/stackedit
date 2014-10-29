@@ -5,5 +5,5 @@ define([
 ], function(Plugin, gistProvider, githubProvider) {
 	return new Plugin({
 		providers: [gistProvider, githubProvider]
-	};
+	});
 });

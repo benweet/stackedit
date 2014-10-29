@@ -4,5 +4,5 @@ define([
 ], function(Plugin, dropboxProvider) {
 	return new Plugin({
 		providers: [dropboxProvider]
-	};
+	});
 });

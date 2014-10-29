@@ -7,7 +7,7 @@ define([
     "text!html/buttonHtmlCodeSettingsBlock.html"
 ], function($, _, utils, Extension, buttonHtmlCodeHTML, buttonHtmlCodeSettingsBlockHTML) {
 
-    var buttonHtmlCode = new Extension("buttonHtmlCode", 'Button "HTML code"', true, true);
+    var buttonHtmlCode = new Extension("buttonHtmlCode", 'Button "HTML code"', true);
     buttonHtmlCode.settingsBlock = buttonHtmlCodeSettingsBlockHTML;
     buttonHtmlCode.defaultConfig = {
         template: "<%= documentHTML %>"

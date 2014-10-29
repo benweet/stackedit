@@ -33,6 +33,9 @@ define([
 	var eventMgr;
 	userCustom.onEventMgrCreated = function(eventMgrParameter) {
 		eventMgr = eventMgrParameter;
+		eventMgr.addListener('onReady', function() {
+			utils.createTooltip(".tooltip-usercustom-extension", tooltipUserCustomExtensionHTML);
+		});
 	};
 
 	userCustom.onLoadSettings = function() {
@@ -60,10 +63,6 @@ define([
 		catch(e) {
 			console.error(e);
 		}
-	};
-
-	userCustom.onReady = function() {
-		utils.createTooltip(".tooltip-usercustom-extension", tooltipUserCustomExtensionHTML);
 	};
 
 	return userCustom;

@@ -1,12 +1,16 @@
-<div class="input-group">
+<div class="entry">
+    <div class="input-group">
 	<span class="input-group-addon"
-		title="<%= syncAttributes.provider.providerName %>">
-		<i
-		class="icon-provider-<%= syncAttributes.provider.providerId %>"></i>
-	</span> <input class="form-control" type="text"
-		value="<%= syncDesc %>" disabled />
-	<div class="input-group-btn">
-		<a class="btn btn-link remove-button" title="Remove this location"
-			data-sync-index="<%= syncAttributes.syncIndex %>"><i class="icon-trash"></i></a>
-	</div>
+          title="<%= syncAttributes.provider.providerName %>">
+		<i class="icon-provider-<%= syncAttributes.provider.providerId %>"></i>
+	</span> <input class="form-control" type="text" value="<%= syncDesc %>" disabled/>
+    </div>
+    <div class="text-right">
+        <a class="btn btn-link btn-sm open-location<%- syncLocationLink ? '' : ' hide' %>"
+           target="_blank" href="<%- syncLocationLink %>">
+            <i class="icon-link-ext-alt"></i> Open in <%= syncAttributes.provider.providerName %>
+        </a>
+        <a class="btn btn-link btn-sm remove-button"
+           data-sync-index="<%= syncAttributes.syncIndex %>"><i class="icon-trash"></i> Remove location</a>
+    </div>
 </div>

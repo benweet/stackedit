@@ -1,4 +1,5 @@
 @import "base.less";
+@import "alertify.less";
 @import "../bower-libs/bootstrap-tour/src/less/bootstrap-tour.less";
 @import (less) "jquery.jgrowl.css";
 
@@ -92,10 +93,10 @@
 @list-group-bg: @secondary-bg-light;
 @list-group-border: @transparent;
 @list-group-active-color: darken(@primary-desaturated, 25%);
-@list-group-active-bg: @primary-bg;
+@list-group-active-bg: @secondary-bg-dark;
 @list-group-active-border: fade(@secondary, 5%);
 @list-group-hover-bg: @btn-default-hover-bg;
-@list-group-hover-border-color: fade(@secondary, 10%);
+@list-group-hover-border-color: @btn-default-hover-border;
 @input-color: @secondary-color-darkest;
 @input-color-placeholder: @disabled-color;
 @gray-lighter: @body-bg;
@@ -144,7 +145,7 @@ body {
 	.user-select(none);
 }
 
-.dropdown-menu, .modal-content, .panel-content, .search-bar, .popover, .find-replace {
+.dropdown-menu, .modal-content, .panel-content, .search-bar, .popover, .find-replace, .alertify {
 	.box-shadow(0 4px 16px rgba(0,0,0,.225));
 }
 
@@ -299,13 +300,14 @@ a {
 @btn-default-bg: @transparent;
 @btn-default-border: @transparent;
 @btn-default-hover-bg: fade(@secondary-desaturated, 4%);
-.btn-default {
+@btn-default-hover-border: fade(@secondary, 10%);
+.btn-default, .alertify-button-cancel {
     &:hover,
     &:focus,
     &:active,
     .open &.dropdown-toggle {
     	color: darken(@secondary, 30%);
-    	border-color: fade(@secondary, 10%);
+    	border-color: @btn-default-hover-border;
     	background-color: @btn-default-hover-bg !important; // important to override .nav > li > a:hover
     }
 }
@@ -314,13 +316,14 @@ a {
 @btn-primary-bg: @primary-bg;
 @btn-primary-border: fade(@secondary, 5%);
 @btn-primary-hover-bg: mix(@primary-desaturated, @btn-primary-bg, 7.5%);
-.btn-primary {
+@btn-primary-hover-border: fade(@secondary, 10%);
+.btn-primary, .alertify-button-ok {
     &:hover,
     &:focus,
     &:active,
     .open &.dropdown-toggle {
     	color: darken(@secondary, 30%);
-    	border-color: fade(@secondary, 10%);
+    	border-color: @btn-primary-hover-border;
     	background-color: @btn-primary-hover-bg !important; // important to override .nav > li > a:hover
     }
 }
@@ -329,13 +332,14 @@ a {
 @btn-success-color: darken(@primary-desaturated, 20%);
 @btn-success-bg: @transparent;
 @btn-success-border: @transparent;
+@btn-success-hover-color: darken(@primary, 30%);
 @btn-success-hover-bg: fade(@primary-desaturated, 5%);
 .btn-success {
     &:hover,
     &:focus,
     &:active,
     .open &.dropdown-toggle {
-    	color: darken(@primary, 30%) !important;
+    	color: @btn-success-hover-color !important;
     	border-color: @primary-border-color;
     	background-color: @btn-success-hover-bg !important; // important to override .nav > li > a:hover
     }
@@ -359,6 +363,10 @@ a {
     	border-color: @btn-info-hover-border;
     	background-color: @btn-info-hover-bg !important; // important to override .nav > li > a:hover
     }
+}
+
+.btn-link:hover {
+	text-decoration: none;
 }
 
 .btn-group {
@@ -386,23 +394,21 @@ a {
     .box-shadow(~"@{form-control-inset-shadow}");
 }
 
-// Fix form-inline broken since Bootstrap v3
 .form-inline {
-    .form-control {
-        display: inline-block;
-    }
-    .col-sm-1  { width: percentage((1 / @grid-columns)); }
-    .col-sm-2  { width: percentage((2 / @grid-columns)); }
-    .col-sm-3  { width: percentage((3 / @grid-columns)); }
-    .col-sm-4  { width: percentage((4 / @grid-columns)); }
-    .col-sm-5  { width: percentage((5 / @grid-columns)); }
-    .col-sm-6  { width: percentage((6 / @grid-columns)); }
-    .col-sm-7  { width: percentage((7 / @grid-columns)); }
-    .col-sm-8  { width: percentage((8 / @grid-columns)); }
-    .col-sm-9  { width: percentage((9 / @grid-columns)); }
-    .col-sm-10 { width: percentage((10/ @grid-columns)); }
-    .col-sm-11 { width: percentage((11/ @grid-columns)); }
-    .col-sm-12 { width: 100%; }
+	@media (min-width: @screen-sm) {
+	    .col-sm-1  { width: percentage((1 / @grid-columns)) !important; }
+	    .col-sm-2  { width: percentage((2 / @grid-columns)) !important; }
+	    .col-sm-3  { width: percentage((3 / @grid-columns)) !important; }
+	    .col-sm-4  { width: percentage((4 / @grid-columns)) !important; }
+	    .col-sm-5  { width: percentage((5 / @grid-columns)) !important; }
+	    .col-sm-6  { width: percentage((6 / @grid-columns)) !important; }
+	    .col-sm-7  { width: percentage((7 / @grid-columns)) !important; }
+	    .col-sm-8  { width: percentage((8 / @grid-columns)) !important; }
+	    .col-sm-9  { width: percentage((9 / @grid-columns)) !important; }
+	    .col-sm-10 { width: percentage((10/ @grid-columns)) !important; }
+	    .col-sm-11 { width: percentage((11/ @grid-columns)) !important; }
+	    .col-sm-12 { width: 100% !important; }
+	}
     * {float:none;}
 }
 
@@ -519,6 +525,27 @@ a {
 		font-weight: 200;
 		overflow: hidden;
 		white-space: nowrap;
+		a {
+			i {
+				.transition(~"all ease-in-out .15s");
+			}
+			.icon-link-ext-alt {
+				color: transparent;
+				position: relative;
+				font-size: 12px;
+				top: -12px;
+				right: 6px;
+				width: 0;
+			}
+			&:hover {
+				[class^="icon-provider-"], [class*=" icon-provider-"] {
+					.opacity(0.5);
+				}
+				.icon-link-ext-alt {
+					color: @btn-success-hover-color;
+				}
+			}
+		}
 	}
 
 	.input-file-title-container {
@@ -544,7 +571,7 @@ a {
             height: 6px;
             border-radius: 1px;
             margin: 0 2px;
-            opacity: 0.25;
+            .opacity(0.25);
             background-color: fade(@btn-success-color, 75%);
 		}
 	}
@@ -758,6 +785,22 @@ a {
     		}
     	}
 	}
+	.file-list .list-group-item {
+		background-color: @transparent;
+		padding: 0 3px;
+	}
+	margin-bottom: 0;
+
+	.input-rename {
+		width: 220px;
+		height: @input-height-slim;
+	}
+}
+
+.modal {
+	.list-group .list-group-item {
+		border-radius: @border-radius-base;
+	}
 	.list-group-item {
 		padding: 3px;
 		margin: 0;
@@ -778,27 +821,25 @@ a {
 			}
 		}
 	}
-	.file-list .list-group-item {
-		background-color: @transparent;
-		padding: 0 3px;
-	}
-	margin-bottom: 0;
-	.list-group .list-group-item {
-		border-radius: @border-radius-base;
-	}
-
-	.folder {
+	.folder, .document {
 		font-weight: bold;
 		color: @folder-color;
 		font-size: 15px;
 		background-color: @transparent;
 	}
-	.input-rename {
-		width: 220px;
-		height: @input-height-slim;
-	}
-	.name, .file-count {
+	.name, .date, .file-count {
 		padding: 9px 20px 9px 15px;
+	}
+	.name i {
+		&.icon-file, &.icon-folder {
+			margin-right: 8px;
+			font-size: 20px;
+			line-height: 15px;
+			margin-top: -2px;
+		}
+	}
+	.date {
+		font-weight: normal;
 	}
 }
 
@@ -947,7 +988,7 @@ a {
 		& > li > a {
 			&:hover, &:focus {
 				color: darken(@secondary, 30%);
-            	border-color: fade(@secondary, 10%);
+            	border-color: @btn-default-hover-border;
             	background-color: @btn-default-hover-bg;
 				border-bottom-color: @transparent;
 			}
@@ -973,15 +1014,12 @@ a {
 
 .modal-manage-sync .sync-list,
 .modal-manage-publish .publish-list,
-.modal-manage-sharing .share-list {
+.modal-manage-sharing .share-editor-list,
+.modal-manage-sharing .share-viewer-list {
 	margin-bottom: 20px;
-	.input-group {
+	.entry {
 		margin-bottom: 10px;
 	}
-}
-
-.share-list .form-control {
-    width: 280px
 }
 
 .publish-custom-template-collapse {
@@ -1174,7 +1212,7 @@ a {
     .code,
     .pre {
 		color: @tertiary-color-darker;
-        font: normal 0.9em @font-family-monospace
+        font: normal 0.9em @font-family-monospace;
     }
 
     .tag {
@@ -1198,6 +1236,9 @@ a {
 
 	.table {
 		font: normal 0.9em @font-family-monospace;
+		* {
+			font-size: 1em;
+		}
 	}
 
     .comment {
@@ -1323,6 +1364,9 @@ a {
 	.layout-animate & {
 		.transition(350ms ease-in-out all);
 	}
+	.layout-vertical & {
+		.box-shadow(inset 0 1px fade(@secondary, 6%));
+	}
 }
 
 #preview-contents {
@@ -1363,7 +1407,7 @@ div.dropdown-menu,  {
     a:focus {
         color: @link-hover-color;
     }
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2, h3 {
     	margin: 1em 0;
     }
 }
@@ -1549,7 +1593,7 @@ div.jGrowl {
 	div.jGrowl-notification, div.jGrowl-closer {
 		background-color: @jgrowl-bg-color;
 		width: @jgrowl-width;
-		margin: 10px 0;
+		margin: 6px 0;
 		padding: 10px 12px;
 		-ms-filter: none;
 		filter: none;

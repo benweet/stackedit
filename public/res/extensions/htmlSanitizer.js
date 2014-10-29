@@ -387,6 +387,13 @@ define([
 				if(!ignore) {
 					out(encodeEntities(chars));
 				}
+			},
+			comment: function(comment) {
+				if(!ignore) {
+					out('<!--');
+					out(encodeEntities(comment));
+					out('-->');
+				}
 			}
 		};
 	}

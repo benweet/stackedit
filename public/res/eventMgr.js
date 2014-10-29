@@ -162,6 +162,7 @@ define([
 	addEventHook("onFileMgrCreated");
 	addEventHook("onSynchronizerCreated");
 	addEventHook("onPublisherCreated");
+	addEventHook("onSharingCreated");
 	addEventHook("onEventMgrCreated");
 
 	// Operations on files

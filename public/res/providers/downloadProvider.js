@@ -9,7 +9,7 @@ define([
 ], function($, constants, eventMgr, utils, fileMgr, Provider, AsyncTask) {
 
 	var downloadProvider = new Provider("download");
-	downloadProvider.sharingAttributes = [
+	downloadProvider.viewerSharingAttributes = [
 		"url"
 	];
 

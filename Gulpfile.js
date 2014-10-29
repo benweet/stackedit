@@ -37,12 +37,13 @@ gulp.task('constants', function() {
 
 gulp.task('jshint', function() {
 	return gulp.src([
-		'./**/*.js',
-		'!./node_modules/**/*.js',
-		'!./public/libs/**/*.js',
-		'!./public/res/libs/**/*.js',
-		'!./public/res/bower-libs/**/*.js',
-		'!./public/res-min/**/*.js'
+		'./*.js',
+		'./app/**/*.js',
+		'./public/res/classes/**/*.js',
+		'./public/res/extensions/**/*.js',
+		'./public/res/helpers/**/*.js',
+		'./public/res/providers/**/*.js',
+		'./public/res/*.js'
 	])
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'))

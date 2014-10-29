@@ -68,7 +68,8 @@ requirejs.config({
 		flowchart: 'bower-libs/flowchart/release/flowchart-1.2.10.min',
 		monetizejs: 'bower-libs/monetizejs/src/monetize',
 		'to-markdown': 'bower-libs/to-markdown/src/to-markdown',
-		waitForImages: 'bower-libs/waitForImages/dist/jquery.waitforimages'
+		waitForImages: 'bower-libs/waitForImages/dist/jquery.waitforimages',
+		alertify: 'bower-libs/alertify.js/lib/alertify'
 	},
 	shim: {
 		underscore: {
@@ -191,7 +192,7 @@ if(window.baseDir.indexOf('-min') !== -1) {
 	themeModule = "css!themes/" + window.theme;
 }
 
-// RequireJS entry point. By requiring synchronizer, publisher and
+// RequireJS entry point. By requiring synchronizer, publisher, sharing and
 // media-importer, we are actually loading all the modules
 require([
 	"jquery",
@@ -200,6 +201,7 @@ require([
 	"eventMgr",
 	"synchronizer",
 	"publisher",
+	"sharing",
 	"mediaImporter",
 	"css",
 	"rangy-cssclassapplier",

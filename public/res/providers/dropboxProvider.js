@@ -14,7 +14,18 @@ define([
     var dropboxProvider = new Provider(PROVIDER_DROPBOX, "Dropbox");
     dropboxProvider.defaultPublishFormat = "template";
 
-    function checkPath(path) {
+	dropboxProvider.getSyncLocationLink = dropboxProvider.getPublishLocationLink = function(attributes) {
+		var pathComponents = attributes.path.split('/').map(encodeURIComponent);
+		var filename = pathComponents.pop();
+		return [
+			'https://www.dropbox.com/home',
+			pathComponents.join('/'),
+			'?select=',
+			filename
+		].join('');
+	};
+
+	function checkPath(path) {
         if(path === undefined) {
             return undefined;
         }
@@ -94,7 +105,7 @@ define([
         });
     };
 
-    dropboxProvider.exportFile = function(event, title, content, discussionListJSON, callback) {
+    dropboxProvider.exportFile = function(event, title, content, discussionListJSON, frontMatter, callback) {
         var path = utils.getInputTextValue("#input-sync-export-dropbox-path", event);
         path = checkPath(path);
         if(path === undefined) {
@@ -118,7 +129,7 @@ define([
         });
     };
 
-    dropboxProvider.syncUp = function(content, contentCRC, title, titleCRC, discussionList, discussionListCRC, syncAttributes, callback) {
+    dropboxProvider.syncUp = function(content, contentCRC, title, titleCRC, discussionList, discussionListCRC, frontMatter, syncAttributes, callback) {
         if(
             (syncAttributes.contentCRC == contentCRC) && // Content CRC hasn't changed
             (syncAttributes.discussionListCRC == discussionListCRC) // Discussion list CRC hasn't changed

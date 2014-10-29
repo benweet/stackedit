@@ -11,7 +11,16 @@ define([
         "blogger-url"
     ];
 
-    bloggerPageProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
+	bloggerPageProvider.getPublishLocationLink = function(attributes) {
+		return [
+			'https://www.blogger.com/blogger.g?blogID=',
+			attributes.blogId,
+			'#editor/target=page;pageID=',
+			attributes.pageId
+		].join('');
+	};
+
+	bloggerPageProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
         var isDraft = frontMatter && frontMatter.published === false;
         var publishDate = frontMatter && frontMatter.date;
         googleHelper.uploadBloggerPage(publishAttributes.blogUrl, publishAttributes.blogId, publishAttributes.pageId, isDraft, publishDate, title, content, function(error, blogId, pageId) {

@@ -11,7 +11,16 @@ define([
         "blogger-url"
     ];
 
-    bloggerProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
+	bloggerProvider.getPublishLocationLink = function(attributes) {
+		return [
+			'https://www.blogger.com/blogger.g?blogID=',
+			attributes.blogId,
+			'#editor/target=post;postID=',
+			attributes.postId
+		].join('');
+	};
+
+	bloggerProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
         var labelList = publishAttributes.labelList || [];
         if(frontMatter) {
             frontMatter.tags !== undefined && (labelList = frontMatter.tags);

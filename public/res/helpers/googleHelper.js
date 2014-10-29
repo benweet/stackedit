@@ -49,6 +49,14 @@ define([
 		this.getUserId = function() {
 			return userId;
 		};
+		var authUser = parseInt(storage[accountId + '.authUser'] || 0);
+		this.setAuthUser = function(value) {
+			authUser = value;
+			storage[accountId + '.authUser'] = authUser;
+		};
+		this.getAuthUser = function() {
+			return authUser;
+		};
 	}
 
 	var googleHelper = {};
@@ -108,12 +116,17 @@ define([
 		]
 	};
 
-	function authenticate(task, permission, accountId) {
+	googleHelper.getAuthorizationMgr = function(accountId) {
 		var authorizationMgr = authorizationMgrMap[accountId];
 		if(!authorizationMgr) {
 			authorizationMgr = new AuthorizationMgr(accountId);
 			authorizationMgrMap[accountId] = authorizationMgr;
 		}
+		return authorizationMgr;
+	};
+
+	function authenticate(task, permission, accountId) {
+		var authorizationMgr = googleHelper.getAuthorizationMgr(accountId);
 		task.onRun(function() {
 			var currentToken = gapi.auth.getToken();
 			var newToken;
@@ -185,6 +198,7 @@ define([
 					}
 					else {
 						// Success but we need to check the user id
+						authorizationMgr.setAuthUser(authuser);
 						immediate === true && authuser++;
 						task.chain(getTokenInfo);
 					}

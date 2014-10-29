@@ -25,6 +25,7 @@ define([
 			'<html>',
 			'<head>',
 			'<meta charset="utf-8">',
+			'<meta name="viewport" content="width=device-width, initial-scale=1.0">',
 			'<title><%= documentTitle %></title>',
 			'<link rel="stylesheet" href="' + constants.MAIN_URL + 'res-min/themes/base.css" />',
 			'</head>',
@@ -55,6 +56,7 @@ define([
 			'    "pageSize": "A4"',
 			'}'
 		].join('\n'),
+		couchdbUrl: constants.COUCHDB_URL,
 		extensionSettings: {}
 	};
 

@@ -8,7 +8,7 @@ define([
     "logger",
     "settings",
     "eventMgr",
-    "classes/AsyncTask",
+    "classes/AsyncTask"
 ], function($, constants, core, utils, storage, logger, settings, eventMgr, AsyncTask) {
 
     var connected;
@@ -162,7 +162,7 @@ define([
             }
         });
         task.onSuccess(function() {
-            callback();
+            callback(undefined, username);
         });
         task.onError(function(error) {
             callback(error);

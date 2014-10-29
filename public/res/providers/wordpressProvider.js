@@ -11,7 +11,15 @@ define([
         "wordpress-site"
     ];
 
-    wordpressProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
+	wordpressProvider.getPublishLocationLink = function(attributes) {
+		return attributes.siteId && [
+			'https://wordpress.com/post',
+			attributes.siteId,
+			attributes.postId
+		].join('/');
+	};
+
+	wordpressProvider.publish = function(publishAttributes, frontMatter, title, content, callback) {
         var labelList = publishAttributes.tags || [];
         if(frontMatter) {
             frontMatter.tags !== undefined && (labelList = frontMatter.tags);
@@ -19,11 +27,11 @@ define([
         var status = (frontMatter && frontMatter.published === false) ? 'draft' : 'publish';
         var date = frontMatter && frontMatter.date;
         _.isString(labelList) && (labelList = _.compact(labelList.split(/[\s,]/)));
-        wordpressHelper.upload(publishAttributes.site, publishAttributes.postId, labelList.join(','), status, date, title, content, function(error, postId) {
+        wordpressHelper.upload(publishAttributes.site, publishAttributes.postId, labelList.join(','), status, date, title, content, function(error, siteId, postId) {
             if(error) {
-                callback(error);
-                return;
+                return callback(error);
             }
+            publishAttributes.siteId = siteId;
             publishAttributes.postId = postId;
             callback();
         });

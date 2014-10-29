@@ -120,7 +120,7 @@ Prism.languages.md = (function() {
 		}
 	};
 	md['latex block'] = {
-		pattern: /\\?\\begin\{[a-z]*\*?\}[\s\S]*?\\?\\end\{[a-z]*\*?\}/g,
+		pattern: /\\?\\begin\{([a-z]*\*?)\}[\s\S]*?\\?\\end\{\1\}/g,
 		inside: {
 			"keyword": /\\?\\(begin|end)/,
 			lf: lf,

@@ -14,7 +14,7 @@ define([
         }
 
         var title = fileDesc.title;
-        $fileTitleNavbar.html(fileDesc.composeTitle());
+        $fileTitleNavbar.html(fileDesc.composeTitle(true));
         $(".file-title").text(title);
         $(".input-file-title").val(title);
     }, 50);

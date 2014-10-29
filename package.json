@@ -1,6 +1,6 @@
 {
   "name": "stackedit",
-  "version": "4.2.0",
+  "version": "4.3.1",
   "private": true,
   "description": "StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.",
   "main": "res/main.js",
@@ -33,8 +33,7 @@
     "gulp-util": "^3.0.1",
     "knox": "^0.9.1",
     "mime": "^1.2.11",
-    "event-stream": "^3.1.7",
-    "async": "^0.9.0"
+    "event-stream": "^3.1.7"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

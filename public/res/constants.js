@@ -1,6 +1,6 @@
 define([], function() {
 	var constants = {};
-	constants.VERSION = "4.2.0";
+	constants.VERSION = "4.3.1";
 	constants.MAIN_URL = "https://stackedit.io/";
 	constants.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1";
 	constants.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw";
@@ -21,12 +21,14 @@ define([], function() {
 	constants.USER_IDLE_THRESHOLD = 300000;
 	constants.IMPORT_FILE_MAX_CONTENT_SIZE = 100000;
 	constants.IMPORT_IMG_MAX_CONTENT_SIZE = 10000000;
+	constants.COUCHDB_PAGE_SIZE = 25;
 	constants.TEMPORARY_FILE_INDEX = "file.tempIndex";
 	constants.WELCOME_DOCUMENT_TITLE = "Hello!";
 	constants.DOWNLOAD_IMPORT_URL = "/downloadImport";
 	constants.PICASA_IMPORT_IMG_URL = "/picasaImportImg";
 	constants.SSH_PUBLISH_URL = '/sshPublish';
 	constants.PDF_EXPORT_URL = "/pdfExport";
+	constants.COUCHDB_URL = 'https://stackedit.couchappy.com/documents';
 
 	// Site dependent
 	constants.BASE_URL = "http://localhost/";
@@ -75,7 +77,9 @@ define([], function() {
 		"default": "Default",
 		"gray": "Gray",
 		"night": "Night",
-		"school": "School"
+		"school": "School",
+		"solarized-light": "Solarized Light",
+		"solarized-dark": "Solarized Dark"
 	};
 
 	return constants;

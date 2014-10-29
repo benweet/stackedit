@@ -7,7 +7,7 @@ define([
     "classes/Extension",
     "classes/FolderDescriptor",
     "folderList",
-    "fileSystem",
+    "fileSystem"
 ], function($, _, constants, utils, storage, Extension, FolderDescriptor, folderList, fileSystem) {
 
     var documentManager = new Extension("documentManager", 'Document Manager', false, true);
@@ -39,17 +39,17 @@ define([
         '<button class="btn btn-default button-delete" title="Delete"><i class="icon-trash"></i></button>',
         '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>',
         '<div class="name"><%= fileDesc.composeTitle() %></div>',
-        '<input type="text" class="input-rename form-control hide"></li>',
+        '<input type="text" class="input-rename form-control hide"></li>'
     ].join('');
     var selectFolderEltTmpl = [
         '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>">',
         '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>',
         '<div class="name"><i class="icon-forward"></i> ',
-        '<%= folderDesc.name %></div></a>',
+        '<%= folderDesc.name %></div></a>'
     ].join('');
     var selectedDocumentEltTmpl = [
         '<li class="list-group-item file clearfix">',
-        '<div class="name"><%= fileDesc.composeTitle() %></div></li>',
+        '<div class="name"><%= fileDesc.composeTitle() %></div></li>'
     ].join('');
 
     var isVisible;
@@ -86,7 +86,7 @@ define([
             return fileDesc.title.toLowerCase();
         }).reduce(function(result, fileDesc) {
             return result + _.template(selectedDocumentEltTmpl, {
-                fileDesc: fileDesc,
+                fileDesc: fileDesc
             });
         }, '').value();
         selectedDocumentListElt.innerHTML = '<ul class="file-list nav">' + selectedDocumentListHtml + '</ul>';
@@ -147,7 +147,7 @@ define([
             _.size(orphanDocumentList),
             '</div>',
             '<div class="name"><i class="icon-folder"></i> ',
-            'ROOT folder</div></a>',
+            'ROOT folder</div></a>'
         ].join('');
 
         // Add orphan documents
@@ -155,7 +155,7 @@ define([
             return fileDesc.title.toLowerCase();
         }).reduce(function(result, fileDesc) {
             return result + _.template(documentEltTmpl, {
-                fileDesc: fileDesc,
+                fileDesc: fileDesc
             });
         }, '').value();
         orphanListHtml = orphanListHtml && '<ul class="nav">' + orphanListHtml + '</ul>';
@@ -169,7 +169,7 @@ define([
                 return fileDesc.title.toLowerCase();
             }).reduce(function(result, fileDesc) {
                 return result + _.template(documentEltTmpl, {
-                    fileDesc: fileDesc,
+                    fileDesc: fileDesc
                 });
             }, '').value();
             fileListHtml = fileListHtml && '<ul class="nav">' + fileListHtml + '</ul>';
@@ -224,7 +224,7 @@ define([
         $(modalElt.querySelectorAll('.action-create-folder')).click(function() {
             var folderIndex;
             do {
-                folderIndex = "folder." + utils.randomString();
+                folderIndex = "folder." + utils.id();
             } while (_.has(folderList, folderIndex));
 
             storage[folderIndex + ".name"] = constants.DEFAULT_FOLDER_NAME;
@@ -286,13 +286,13 @@ define([
                 _.size(orphanDocumentList),
                 '</div>',
                 '<div class="name"><i class="icon-forward"></i> ',
-                'ROOT folder</div></a>',
+                'ROOT folder</div></a>'
             ].join('');
             selectFolderListHtml += _.chain(folderList).sortBy(function(folderDesc) {
                 return folderDesc.name.toLowerCase();
             }).reduce(function(result, folderDesc) {
                 return result + _.template(selectFolderEltTmpl, {
-                    folderDesc: folderDesc,
+                    folderDesc: folderDesc
                 });
             }, '').value();
             selectFolderListElt.innerHTML = selectFolderListHtml;

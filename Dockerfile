@@ -1,13 +1,7 @@
-FROM debian:jessie
+# Pull base image.
+FROM node:0.10-onbuild
 
-RUN apt-get update
-RUN apt-get upgrade -yq
-RUN apt-get install -yq git nodejs-legacy npm
-RUN git clone https://github.com/benweet/stackedit.git
+# Node base will default the command to `node server.js`.
 
-WORKDIR stackedit
-RUN npm install
-RUN node_modules/bower/bin/bower install --allow-root --production --config.interactive=false
-CMD nodejs server.js
-
+# Expose port.
 EXPOSE 3000

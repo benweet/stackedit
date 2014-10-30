@@ -17,14 +17,14 @@ Getting started
 
 		npm install
 
-- Download dependencies:
+- Download dependencies and build:
 
-		bower install
+                npm run setup
 
-- Serve **StackEdit** at `http://localhost/`:
+- Serve **StackEdit** at `http://localhost:80/`:
 
-		(export PORT=80 && node server.js)
-		
+                npm run server
+
 - Run **StackEdit** in debug mode (no application cache, serve original files instead of minified):
 
 		http://localhost/?debug

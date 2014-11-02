@@ -16,7 +16,7 @@
     "stacktrace": "~0.6.2",
     "requirejs-text": "~2.0.10",
     "bootstrap-tour": "~0.7.1",
-    "pagedown-extra": "https://github.com/jmcmanus/pagedown-extra.git#4484dd6696c82f1880b264bd610947f6f1cbdfb6",
+    "pagedown-extra": "https://github.com/jmcmanus/pagedown-extra.git#ea782c3d11eb78f57d00aa819527338996a70721",
     "crel": "https://github.com/KoryNunn/crel.git#8dbda04b129fc0aec01a2a080d1cab26816e11c1",
     "waitForImages": "https://github.com/alexanderdickson/waitForImages.git#~1.4.2",
     "to-markdown": "https://github.com/benweet/to-markdown.git#jquery",

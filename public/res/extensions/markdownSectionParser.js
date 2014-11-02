@@ -24,7 +24,7 @@ define([
             if(_.some(markdownExtra.config.extensions, function(extension) {
                 return extension == "fenced_code_gfm";
             })) {
-                regexp = '^```.*\\n[\\s\\S]*?\\n```|' + regexp; // Fenced block delimiters
+                regexp = '^```[^`\\n]*\\n[\\s\\S]*?\\n```|' + regexp; // Fenced block delimiters
             }
         }
         if(mathJax.enabled) {

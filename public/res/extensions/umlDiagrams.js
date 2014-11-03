@@ -12,6 +12,23 @@ define([
 
 	var umlDiagrams = new Extension("umlDiagrams", "UML Diagrams", true);
 	umlDiagrams.settingsBlock = umlDiagramsSettingsBlockHTML;
+	umlDiagrams.defaultConfig = {
+		flowchartOptions: [
+			'{',
+			'   "line-width": 2,',
+			'   "font-family": "sans-serif",',
+			'   "font-weight": "normal"',
+			'}'
+		].join('\n')
+	};
+
+	umlDiagrams.onLoadSettings = function() {
+		utils.setInputValue("#textarea-umldiagram-flowchart-options", umlDiagrams.config.flowchartOptions);
+	};
+
+	umlDiagrams.onSaveSettings = function(newConfig, event) {
+		newConfig.flowchartOptions = utils.getInputJSONValue("#textarea-umldiagram-flowchart-options", event);
+	};
 
 	umlDiagrams.onPagedownConfigure = function(editor) {
 		var previewContentsElt = document.getElementById('preview-contents');
@@ -39,11 +56,7 @@ define([
 						class: 'flow-chart'
 					});
 					preElt.parentNode.replaceChild(containerElt, preElt);
-					chart.drawSVG(containerElt, {
-						'line-width': 2,
-						'font-family': 'sans-serif',
-						'font-weight': 'normal'
-					});
+					chart.drawSVG(containerElt, JSON.parse(umlDiagrams.config.flowchartOptions));
 				}
 				catch(e) {
 				}

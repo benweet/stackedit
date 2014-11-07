@@ -7,13 +7,12 @@ var requirejs = require('gulp-requirejs');
 var bowerRequirejs = require('bower-requirejs');
 var uglify = require('gulp-uglify');
 var less = require('gulp-less');
-var inject = require('gulp-inject');
+var manifest = require('gulp-manifest');
 var replace = require('gulp-replace');
 var bump = require('gulp-bump');
 var childProcess = require('child_process');
 var runSequence = require('run-sequence');
 var fs = require('fs');
-
 
 /** __________________________________________
  * constants.js
@@ -157,53 +156,17 @@ gulp.task('copy-img', ['clean-img'], function() {
  */
 
 gulp.task('cache-manifest', function() {
-	return gulp.src('./public/cache.manifest')
-		.pipe(replace(/(#Date ).*/, '$1' + Date()))
-		.pipe(inject(gulp.src([
-				'./res-min/**/*.*'
+	return gulp.src([
+				'./public/res-min/**/*.*'
 			], {
-				read: false,
-				cwd: './public'
-			}),
-			{
-				starttag: '# start_inject_resources',
-				endtag: '# end_inject_resources',
-				ignoreExtensions: true,
-				transform: function(filepath) {
-					return filepath.substring(1);
-				}
-			}))
-		.pipe(inject(gulp.src([
-				'./res/bower-libs/MathJax/MathJax.js',
-				'./res/bower-libs/MathJax/config/Safe.js',
-				'./res/bower-libs/MathJax/config/TeX-AMS_HTML.js',
-				'./res/bower-libs/MathJax/images/CloseX-31.png',
-				'./res/bower-libs/MathJax/images/MenuArrow-15.png',
-				'./res/bower-libs/MathJax/jax/output/HTML-CSS/jax.js',
-				'./res/bower-libs/MathJax/extensions/**/*.*',
-				'./res/bower-libs/MathJax/fonts/HTML-CSS/TeX/woff/**/*.*',
-				'./res/bower-libs/MathJax/jax/element/**/*.*',
-				'./res/bower-libs/MathJax/jax/output/HTML-CSS/autoload/**/*.*',
-				'./res/bower-libs/MathJax/jax/output/HTML-CSS/fonts/TeX/**/*.*',
-				'./res/bower-libs/MathJax/jax/output/HTML-CSS/fonts/STIX/**/*.*'
-			], {
-				read: false,
-				cwd: './public'
-			}),
-			{
-				starttag: '# start_inject_mathjax',
-				endtag: '# end_inject_mathjax',
-				ignoreExtensions: true,
-				transform: function(filepath) {
-					if(filepath == '/res/bower-libs/MathJax/MathJax.js') {
-						filepath += '?config=TeX-AMS_HTML';
-					}
-					else {
-						filepath += '?rev=2.4-beta-2';
-					}
-					return filepath.substring(1);
-				}
-			}))
+				base: './public'
+			})
+		.pipe(manifest({
+			hash: true,
+			cache: [ '.', 'editor', 'viewer' ],
+			filename: 'cache.manifest',
+			exclude: 'cache.manifest'
+		}))
 		.pipe(gulp.dest('./public/'));
 });
 

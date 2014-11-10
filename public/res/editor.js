@@ -27,6 +27,13 @@ define([
 	var pagedownEditor;
 	var trailingLfNode;
 
+//<<<<<<<
+    var publisher;
+    eventMgr.addListener('onPublisherCreated', function(publisherParameter) {
+        publisher = publisherParameter;
+    });
+//=======
+
 	var refreshPreviewLater = (function() {
 		var elapsedTime = 0;
 		var timeoutId;
@@ -874,12 +881,23 @@ define([
 			})
 			.on('mouseup', _.bind(selectionMgr.saveSelectionState, selectionMgr, true, false))
 			.on('paste', function(evt) {
-				undoMgr.currentMode = 'paste';
-				evt.preventDefault();
-				var data = (evt.originalEvent || evt).clipboardData.getData('text/plain') || prompt('Paste something...');
-				data = escape(data);
-				adjustCursorPosition();
-				document.execCommand('insertHtml', false, data);
+				var items = (evt.clipboardData  || evt.originalEvent.clipboardData).items;
+				console.log(JSON.stringify(items));
+				// find pasted image
+				var blob = null;
+				for (var i = 0; i < items.length; i++) {
+					if (items[i].type.indexOf("image") !== -1) {
+						blob = items[i].getAsFile();
+					}
+				}
+				if (blob !== null) {
+					console.log("Its a Image!");
+					undoMgr.currentMode = "paste", evt.preventDefault();
+					var data = "![](".concat(publisher.imgPublish(blob), ")");
+					data = escape(data);
+					adjustCursorPosition();
+					document.execCommand('insertHtml', false, data);
+				}
 			})
 			.on('cut', function() {
 				undoMgr.currentMode = 'cut';

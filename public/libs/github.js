@@ -352,22 +352,50 @@
       // -------
 
       this.postBlob = function(content, cb) {
-        if (typeof(content) === "string") {
-          content = {
-            "content": content,
-            "encoding": "utf-8"
-          };
+        if (typeof(content) == "object") {
+          if (content.type == "image/png") {
+            var tmp = content;
+            content = {
+              "encoding": "base64",
+              "content": null
+            };
+            var reader = new FileReader();
+            reader.onloadend = function(event) {
+                content.content = btoa(event.target.result);
+                _request("POST", repoPath + "/git/blobs", content, function(err, res) {
+                    if (err) return cb(err);
+                    cb(null, res.sha);
+                });
+                return;
+            }
+            reader.readAsBinaryString(tmp);
+          } else {
+            content = {
+              "content": btoa(String.fromCharCode.apply(null, new Uint8Array(content))),
+              "encoding": "base64"
+            };
+            _request("POST", repoPath + "/git/blobs", content, function(err, res) {
+              if (err) return cb(err);
+              cb(null, res.sha);
+            });
+          }
         } else {
-          	content = {
+          if (typeof(content) === "string") {
+            content = {
+              "content": content,
+              "encoding": "utf-8"
+            };
+          } else {
+            content = {
               "content": btoa(String.fromCharCode.apply(null, new Uint8Array(content))),
               "encoding": "base64"
             };
           }
-
-        _request("POST", repoPath + "/git/blobs", content, function(err, res) {
-          if (err) return cb(err);
-          cb(null, res.sha);
-        });
+          _request("POST", repoPath + "/git/blobs", content, function(err, res) {
+            if (err) return cb(err);
+            cb(null, res.sha);
+          });
+        }
       };
 
       // Update an existing tree adding a new blob object getting a tree SHA back

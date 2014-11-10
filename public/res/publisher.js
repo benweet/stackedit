@@ -146,6 +146,40 @@ define([
 			publishLocation(callback, errorFlag || error);
 		});
 	}
+		
+	function publishImgLocation(image, callback, errorFlag) {
+		// No more publish location for this document
+		if(publishAttributesList.length === 0) {
+			callback(errorFlag);
+			return;
+		}
+
+		// Dequeue a synchronized location
+		var publishAttributes = publishAttributesList.pop();
+		// Format the content
+		var content = image;
+		var title = (publishFileDesc.frontMatter || {}).title || publishFileDesc.title;
+
+		publishAttributes.path = prompt('publish image on github, image path/name?') || null;
+		publishAttributes.format = "image";
+
+		// Call the provider
+		publishAttributes.provider.publish(publishAttributes, publishFileDesc.frontMatter, title, content, function(error) {
+			if(error !== undefined) {
+				var errorMsg = error.toString();
+				if(errorMsg.indexOf("|removePublish") !== -1) {
+					publishFileDesc.removePublishLocation(publishAttributes);
+					eventMgr.onPublishRemoved(publishFileDesc, publishAttributes);
+				}
+				if(errorMsg.indexOf("|stopPublish") !== -1) {
+					callback(error);
+					return;
+				}
+			}
+			publishLocation(callback, errorFlag || error);
+		});
+		return "https://raw.githubusercontent.com/".concat(publishAttributes.username, "/", publishAttributes.repository, "/", publishAttributes.branch, "/", publishAttributes.path);
+	}
 
 	// Get the html from the onPreviewFinished callback
 	var currentHTML;
@@ -175,6 +209,25 @@ define([
 		publishHTML = currentHTML;
 		publishAttributesList = _.values(publishFileDesc.publishLocations);
 		publishLocation(function(errorFlag) {
+			publishRunning = false;
+			eventMgr.onPublishRunning(false);
+			if(errorFlag === undefined) {
+				eventMgr.onPublishSuccess(publishFileDesc);
+			}
+		});
+	};
+	
+	publisher.imgPublish = function(image) {
+		// If publish is running or offline
+		if(publishRunning === true || isOffline === true) {
+			return;
+		}
+		publishRunning = true;
+		eventMgr.onPublishRunning(true);
+		publishFileDesc = fileMgr.currentFile;
+		publishHTML = currentHTML;
+		publishAttributesList = _.values(publishFileDesc.publishLocations);
+		return publishImgLocation(image, function(errorFlag) {
 			publishRunning = false;
 			eventMgr.onPublishRunning(false);
 			if(errorFlag === undefined) {

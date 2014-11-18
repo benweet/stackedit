@@ -27,12 +27,10 @@ define([
 	var pagedownEditor;
 	var trailingLfNode;
 
-//<<<<<<<
     var publisher;
     eventMgr.addListener('onPublisherCreated', function(publisherParameter) {
         publisher = publisherParameter;
     });
-//=======
 
 	var refreshPreviewLater = (function() {
 		var elapsedTime = 0;

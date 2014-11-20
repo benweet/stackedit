@@ -183,6 +183,48 @@ define([
 		});
 	};
 
+	publisher.imgPublish = function(img, imgName, cb) {
+		if(publishRunning === true || isOffline === true) {
+			return;
+		}
+
+		if (img !== null && imgName !== null && imgName !== "") {
+
+			publishRunning = true;
+			eventMgr.onPublishRunning(true);
+
+			publishFileDesc = fileMgr.currentFile;
+			var list = _.values(publishFileDesc.publishLocations);
+			var attributes;
+			var i;
+			// get github attributes
+			for (i = 0; i < list.length; i++) {
+				if (list[i].provider.providerId === "github") {
+					attributes = list[i];
+				}
+			}
+			// add a / to image folder if missing
+			if (attributes.imgFolder.indexOf("/", attributes.imgFolder.length - 1) === -1) {
+				attributes.imgFolder = attributes.imgFolder.concat("/");
+			}
+			attributes.imgPath = attributes.imgFolder.concat(imgName);
+			attributes.format = "image";
+			attributes.provider.imgPublish(attributes, publishFileDesc.frontMatter, "image", img, function() {
+				publishRunning = false;
+				eventMgr.onPublishRunning(false);
+				if (attributes.branch === "gh-pages") {
+					cb("http://".concat(attributes.username, ".github.io/",
+						attributes.repository, "/", attributes.imgPath));
+				} else {
+					cb("https://raw.githubusercontent.com/".concat(attributes.username, "/",
+						attributes.repository, "/", attributes.branch, "/", attributes.imgPath));
+				}
+			});
+		} else {
+			console.log("no image or name given.\n");
+		}
+	};
+
 	// Generate a publishIndex associated to a file and store publishAttributes
 	function createPublishIndex(fileDesc, publishAttributes) {
 		var publishIndex;

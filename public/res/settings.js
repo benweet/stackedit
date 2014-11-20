@@ -14,6 +14,7 @@ define([
 		cursorFocusRatio: 0.5,
 		defaultContent: "\n\n\n> Written with [StackEdit](" + constants.MAIN_URL + ").",
 		commitMsg: "Published with " + constants.MAIN_URL,
+		imgCommitMsg: "Image upload.",
 		conflictMode: 'merge',
 		markdownMimeType: 'text/plain',
 		gdriveMultiAccount: 1,

@@ -27,6 +27,11 @@ define([
 	var pagedownEditor;
 	var trailingLfNode;
 
+	var publisher;
+	eventMgr.addListener('onPublisherCreated', function(publisherParameter) {
+		publisher = publisherParameter;
+	});
+
 	var refreshPreviewLater = (function() {
 		var elapsedTime = 0;
 		var timeoutId;
@@ -876,10 +881,30 @@ define([
 			.on('paste', function(evt) {
 				undoMgr.currentMode = 'paste';
 				evt.preventDefault();
-				var data = (evt.originalEvent || evt).clipboardData.getData('text/plain') || prompt('Paste something...');
-				data = escape(data);
-				adjustCursorPosition();
-				document.execCommand('insertHtml', false, data);
+				var items = (evt.clipboardData  || evt.originalEvent.clipboardData).items;
+				var blob = null;
+				for (var i = 0; i < items.length; i++) {
+					if (items[i].type.indexOf("image") !== -1) {
+						blob = items[i].getAsFile();
+					}
+				}
+				if (blob !== null) {
+					var currentUnixTime = new Date().getTime();
+					var imageName = prompt("image name?", "img_".concat(currentUnixTime, ".png"));
+					if (imageName !== null) {
+						publisher.imgPublish(blob, imageName, function(link) {
+							if (link !== "" && link !== null) {
+								adjustCursorPosition();
+								document.execCommand('insertHtml', false, escape("![](".concat(link , ")")));
+							}
+						});
+					}
+				} else {
+					var data = (evt.originalEvent || evt).clipboardData.getData('text/plain') || prompt('Paste something...');
+					data = escape(data);
+					adjustCursorPosition();
+					document.execCommand('insertHtml', false, data);
+				}
 			})
 			.on('cut', function() {
 				undoMgr.currentMode = 'cut';

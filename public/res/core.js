@@ -129,6 +129,8 @@ define([
 		utils.setInputRadio("radio-settings-edit-mode", settings.editMode);
 		// Commit message
 		utils.setInputValue("#input-settings-publish-commit-msg", settings.commitMsg);
+		// Image Commit message
+		utils.setInputValue("#input-settings-publish-img-commit-msg", settings.imgCommitMsg);
 		// Markdown MIME type
 		utils.setInputValue("#input-settings-markdown-mime-type", settings.markdownMimeType);
 		// Gdrive multi-accounts
@@ -176,6 +178,8 @@ define([
 		newSettings.editMode = utils.getInputRadio("radio-settings-edit-mode");
 		// Commit message
 		newSettings.commitMsg = utils.getInputTextValue("#input-settings-publish-commit-msg", event);
+		// Image Commit message
+		newSettings.imgCommitMsg = utils.getInputTextValue("#input-settings-publish-img-commit-msg", event);
 		// Gdrive multi-accounts
 		newSettings.gdriveMultiAccount = utils.getInputIntValue("#input-settings-gdrive-multiaccount");
 		// Markdown MIME type

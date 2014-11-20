@@ -30,11 +30,21 @@ define([
 		});
 	};
 
+	githubProvider.imgPublish = function(publishAttributes, frontMatter, title, content, callback) {
+		var commitMsg = settings.imgCommitMsg;
+		githubHelper.upload(publishAttributes.repository, publishAttributes.username, publishAttributes.imgBranch, publishAttributes.imgPath, content, commitMsg, function(err, username) {
+			publishAttributes.username = username;
+			callback(err);
+		});
+	};
+
 	githubProvider.newPublishAttributes = function(event) {
 		var publishAttributes = {};
 		publishAttributes.repository = utils.getInputTextValue("#input-publish-github-repo", event);
 		publishAttributes.branch = utils.getInputTextValue("#input-publish-github-branch", event);
 		publishAttributes.path = utils.getInputTextValue("#input-publish-file-path", event);
+		publishAttributes.imgFolder = utils.getInputTextValue("#input-publish-img-folder", event);
+		publishAttributes.imgBranch = utils.getInputTextValue("#input-publish-github-img-branch", event);
 		if(event.isPropagationStopped()) {
 			return undefined;
 		}

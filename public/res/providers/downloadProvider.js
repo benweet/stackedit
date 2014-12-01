@@ -3,10 +3,11 @@ define([
 	"constants",
 	"eventMgr",
 	"utils",
+	"fileSystem",
 	"fileMgr",
 	"classes/Provider",
 	"classes/AsyncTask"
-], function($, constants, eventMgr, utils, fileMgr, Provider, AsyncTask) {
+], function($, constants, eventMgr, utils, fileSystem, fileMgr, Provider, AsyncTask) {
 
 	var downloadProvider = new Provider("download");
 	downloadProvider.viewerSharingAttributes = [
@@ -62,6 +63,27 @@ define([
 				});
 			}
 		});
+		if (location.hash) {
+			var hash = JSON.parse(location.hash.replace("#", ""));
+			if (hash.type === "download") {
+				var fileDesc = null;
+				utils.retrieveIndexArray("file.list").forEach(function(fileIndex) {
+					if (fileSystem[fileIndex].title === hash.importParameters.title) {
+						fileDesc = fileSystem[fileIndex];
+						return;
+					}
+				});
+
+				downloadProvider.importPublic(hash.importParameters, function(undefined, title, content) {
+					if (fileDesc === null) {
+						fileDesc = fileMgr.createFile(hash.importParameters.title, content);
+					}
+					eventMgr.onContentChanged(fileDesc, content);
+
+					fileMgr.selectFile(fileDesc);
+				});
+			}
+		}
 	});
 
 	return downloadProvider;

@@ -30,6 +30,16 @@ define([
 		});
 	};
 
+	githubProvider.read = function(publishAttributes, callback) {
+		githubHelper.read(publishAttributes.repository, publishAttributes.username, publishAttributes.branch, publishAttributes.path, function(err, username, content) {
+			if (err === undefined) {
+				callback(content);
+			} else {
+				callback("");
+			}
+		});
+	};
+
 	githubProvider.newPublishAttributes = function(event) {
 		var publishAttributes = {};
 		publishAttributes.repository = utils.getInputTextValue("#input-publish-github-repo", event);

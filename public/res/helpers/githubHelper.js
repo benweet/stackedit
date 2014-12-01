@@ -128,6 +128,50 @@ define([
         });
     }
 
+    githubHelper.read = function(reponame, username, branch, path, callback) {
+        var task = new AsyncTask();
+        connect(task);
+        authenticate(task);
+        var content;
+        task.onRun(function() {
+            function getUsername() {
+                var user = github.getUser();
+                user.show(undefined, function(err, result) {
+                    if(err) {
+                        handleError(err, task);
+                        return;
+                    }
+                    username = result.login;
+                    task.chain(read);
+                });
+            }
+            function read() {
+                var repo = github.getRepo(username, reponame);
+                repo.read(branch, path, function(err, data) {
+                    if(err) {
+                        handleError(err, task);
+                        return;
+                    }
+                    content = data;
+                    task.chain();
+                });
+            }
+            if(username) {
+                task.chain(read);
+            }
+            else {
+                task.chain(getUsername);
+            }
+        });
+        task.onSuccess(function() {
+            callback(undefined, username, content);
+        });
+        task.onError(function(error) {
+            callback(error);
+        });
+        task.enqueue();
+    };
+
     githubHelper.upload = function(reponame, username, branch, path, content, commitMsg, callback) {
         var task = new AsyncTask();
         connect(task);

@@ -212,7 +212,7 @@ define([
 			attributes.provider.imgPublish(attributes, publishFileDesc.frontMatter, "image", img, function() {
 				publishRunning = false;
 				eventMgr.onPublishRunning(false);
-				if (attributes.branch === "gh-pages") {
+				if (attributes.imgBranch === "gh-pages") {
 					cb("http://".concat(attributes.username, ".github.io/",
 						attributes.repository, "/", attributes.imgPath));
 				} else {

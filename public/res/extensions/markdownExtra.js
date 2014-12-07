@@ -20,8 +20,7 @@ define([
 			"attr_list",
 			"footnotes",
 			"smartypants",
-			"strikethrough",
-			"newlines"
+			"strikethrough"
 		],
 		intraword: true,
 		comments: true

@@ -1,7 +1,6 @@
 define([
 	"eventMgr",
 	"classes/Plugin",
-	"plugins/blogger/index",
 	"plugins/dropbox/index",
 	"plugins/github/index",
 	"plugins/google/index",

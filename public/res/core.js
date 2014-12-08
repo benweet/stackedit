@@ -129,8 +129,6 @@ define([
 		utils.setInputValue("#input-settings-publish-commit-msg", settings.commitMsg);
 		// Markdown MIME type
 		utils.setInputValue("#input-settings-markdown-mime-type", settings.markdownMimeType);
-		// GitHub full access
-		utils.setInputChecked("#input-settings-github-full-access", settings.githubFullAccess);
 		// Template
 		utils.setInputValue("#textarea-settings-publish-template", settings.template);
 
@@ -164,8 +162,6 @@ define([
 		newSettings.commitMsg = utils.getInputTextValue("#input-settings-publish-commit-msg", event);
 		// Markdown MIME type
 		newSettings.markdownMimeType = utils.getInputValue("#input-settings-markdown-mime-type");
-		// GitHub full access
-		newSettings.githubFullAccess = utils.getInputChecked("#input-settings-github-full-access");
 		// Template
 		newSettings.template = utils.getInputTextValue("#textarea-settings-publish-template", event);
 

@@ -462,23 +462,7 @@
 								placeholder="password" class="form-control">
 						</div>
 					</div>
-					<div class="form-group modal-publish-github">
-						<label class="col-sm-4 control-label"
-							for="input-publish-github-repo">Repository</label>
-						<div class="col-sm-7">
-							<input type="text" id="input-publish-github-repo"
-								placeholder="Repository name or URL" class="form-control">
-						</div>
-					</div>
-					<div class="form-group modal-publish-github">
-						<label class="col-sm-4 control-label"
-							for="input-publish-github-branch">Branch</label>
-						<div class="col-sm-7">
-							<input type="text" id="input-publish-github-branch"
-								placeholder="branch-name" class="form-control">
-						</div>
-					</div>
-					<div class="form-group modal-publish-ssh modal-publish-github">
+					<div class="form-group modal-publish-ssh ">
 						<label class="col-sm-4 control-label"
 							for="input-publish-file-path">File path</label>
 						<div class="col-sm-7">
@@ -488,32 +472,6 @@
 								folder and filename. </span>
 						</div>
 					</div>
-					<div class="form-group modal-publish-gist">
-						<label class="col-sm-4 control-label" for="input-publish-filename">Filename</label>
-						<div class="col-sm-7">
-							<input type="text" id="input-publish-filename"
-								placeholder="filename" class="form-control">
-						</div>
-					</div>
-					<div class="form-group modal-publish-gist">
-						<label class="col-sm-4 control-label" for="input-publish-gist-id">Existing
-							ID (optional)</label>
-						<div class="col-sm-7">
-							<input type="text" id="input-publish-gist-id"
-								placeholder="GistID" class="form-control">
-						</div>
-					</div>
-					<div class="form-group modal-publish-gist">
-						<label class="col-sm-4 control-label"
-							for="input-publish-gist-public">Public</label>
-						<div class="col-sm-7">
-							<div class="checkbox">
-								<input type="checkbox" id="input-publish-gist-public"
-									checked="checked" />
-							</div>
-						</div>
-					</div>
-
 					<div class="form-group">
 						<label class="col-sm-4 control-label">Format</label>
 						<div class="col-sm-7">
@@ -617,16 +575,6 @@
             	<p class="msg-no-share-viewer"><b>No sharing link yet!</b>
             	</p>
                 <div class="share-viewer-list"></div>
-            	<blockquote>
-                    <p><b>Note:</b> To share a read-only version of this document, just <a
-                        href="#" class="action-publish-gist" data-dismiss="modal">publish it as a Gist</a> in
-                    Markdown format.</p>
-            	</blockquote>
-            	<blockquote>
-            		<p><b>Tip:</b> You can open any markdown URL within StackEdit Viewer using <a
-            			href="viewer#!url=https://raw.github.com/benweet/stackedit/master/README.md"
-            			title="Sharing example"><code>viewer#!url=</code></a>.</p>
-            	</blockquote>
 			</div>
 			<div class="modal-footer">
 				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
@@ -801,19 +749,6 @@
 							</div>
 
 							<h4>Permissions</h4>
-							<div class="form-group">
-								<div class="col-sm-4"></div>
-								<div class="col-sm-7">
-									<div class="checkbox">
-									    <label>
-										    <input type="checkbox" id="input-settings-github-full-access" />
-										    Allow StackEdit to access private repositories in GitHub
-										</label> <span class="help-block">Existing authorization has to be revoked in
-										<a href="https://github.com/settings/applications" target="_blank">GitHub settings</a>
-										for this change to take effect.</span>
-									</div>
-								</div>
-							</div>
 							<div class="form-group">
 								<label class="col-sm-4 control-label"
 									for="input-settings-publish-commit-msg">GitHub commit message</label>

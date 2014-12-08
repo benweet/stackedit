@@ -20,18 +20,19 @@ The goal is that this should provide a clean split-panel editor without extra be
 * [ ] remove special edge-case syntax handling of markdown
   - [x] remove mathjax
   - [ ] remove flowchart/uml
-* [ ] Remove extra css stylesheets, there is only need for one stylesheet here
+* [x] Remove extra css stylesheets, there is only need for one stylesheet here
 * [ ] Remove all settings and provide some decent defaults.
 * [x] Remove monetizeJs
 * [ ] Remove all third-party integration points:
   - [x] twitter
   - [x] google drive
   - [x] picasa
-  - [ ] github
+  - [x] github
   - [x] couchdb
   - [x] dropbox
   - [x] blogger
   - [x] google+
+  - [ ] ssh
   - [x] tumblr
   - [x] wordpress
 

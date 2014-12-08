@@ -23,7 +23,6 @@ define([
 	"extensions/documentManager",
 	"extensions/workingIndicator",
 	"extensions/notifications",
-	"extensions/umlDiagrams",
 	"extensions/markdownExtra",
 	"extensions/toc",
 	"extensions/emailConverter",

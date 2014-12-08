@@ -34,7 +34,7 @@ The goal is that this should provide a clean split-panel editor without extra be
   - [x] dropbox
   - [x] blogger
   - [x] google+
-  - [ ] ssh
+  - [x] ssh
   - [x] tumblr
   - [x] wordpress
 

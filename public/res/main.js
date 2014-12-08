@@ -15,7 +15,7 @@ requirejs.config({
 		}
 	],
 	paths: {
-		jquery: 'bower-libs/jquery/jquery',
+		jquery: 'bower-libs/jquery/dist/jquery',
 		underscore: 'bower-libs/underscore/underscore',
 		crel: 'bower-libs/crel/crel',
 		jgrowl: 'bower-libs/jgrowl/jquery.jgrowl',
@@ -45,9 +45,9 @@ requirejs.config({
 		pagedown: 'libs/Markdown.Editor',
 		'require-css': 'bower-libs/require-css/css',
 		xregexp: 'bower-libs/xregexp/xregexp-all',
-		yaml: 'bower-libs/yaml.js/bin/yaml',
+		yaml: 'bower-libs/yaml.js/dist/yaml',
 		'yaml.js': 'bower-libs/yaml.js',
-		'yaml-js': 'bower-libs/yaml.js/bin/yaml',
+		'yaml-js': 'bower-libs/yaml.js/dist/yaml',
 		css: 'bower-libs/require-css/css',
 		'css-builder': 'bower-libs/require-css/css-builder',
 		normalize: 'bower-libs/require-css/normalize',

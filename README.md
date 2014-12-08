@@ -16,6 +16,7 @@ The goal is that this should provide a clean split-panel editor without extra be
 
 * [ ] Remove server-side part
 * [x] Remove chrome extension/app
+* [x] Remove firefox extension/app
 * [x] Remove google analytics
 * [ ] remove special edge-case syntax handling of markdown
   - [x] remove mathjax

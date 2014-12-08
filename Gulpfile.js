@@ -4,7 +4,6 @@ var util = require('gulp-util');
 var clean = require('gulp-clean');
 var jshint = require('gulp-jshint');
 var requirejs = require('gulp-requirejs');
-var bowerRequirejs = require('bower-requirejs');
 var uglify = require('gulp-uglify');
 var less = require('gulp-less');
 var inject = require('gulp-inject');
@@ -94,14 +93,6 @@ gulp.task('requirejs', [
 			}
 		}))
 		.pipe(gulp.dest('./public/res-min/'));
-});
-
-gulp.task('bower-requirejs', function(cb) {
-	bowerRequirejs({
-		config: './public/res/main.js'
-	}, function() {
-		cb();
-	});
 });
 
 /** __________________________________________

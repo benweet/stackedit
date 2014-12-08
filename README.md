@@ -32,8 +32,8 @@ The goal is that this should provide a clean split-panel editor without extra be
   - [ ] dropbox
   - [x] blogger
   - [x] google+
-  - [ ] tumblr
-  - [ ] wordpress
+  - [x] tumblr
+  - [x] wordpress
 
 
 All of this functionality is provided in the full version of Stackedit. This branch can easily be extended to provide just the features you need for a specific project.
@@ -57,8 +57,6 @@ Support StackEdit:
  - Export your documents in Markdown, HTML or PDF and format it using a template
  - Synchronize your Markdown documents in the Cloud
  - Edit existing Markdown documents from Google Drive, Dropbox and your local hard drive
- - Post your Markdown document on Blogger/Blogspot, WordPress, Tumblr
- - Publish your Markdown document on GitHub, Gist, Google Drive, Dropbox or any SSH server
  - Share a link to a Markdown document that renders it in a nice viewer
  - Show statistics about your document
  - Convert HTML to Markdown
@@ -73,8 +71,6 @@ Support StackEdit:
  - Theming support with different themes available
  - A la carte extensions
  - Offline editing
- - Online synchronization using Google Drive (multi-accounts) and Dropbox
- - One click publish on Blogger, Dropbox, Gist, GitHub, Google Drive, SSH server, Tumblr, WordPress
 
 ### Documentation:
 

@@ -3,8 +3,7 @@ define([
 	"classes/Plugin",
 	"plugins/dropbox/index",
 	"plugins/github/index",
-	"plugins/ssh/index",
-	"plugins/tumblr/index"
+	"plugins/ssh/index"
 ], function(eventMgr, Plugin) {
 	Array.prototype.slice.call(arguments).forEach(function(argument) {
 		if (argument && argument instanceof Plugin) {

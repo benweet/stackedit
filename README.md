@@ -32,6 +32,7 @@ The goal is that this should provide a clean split-panel editor without extra be
   - [ ] remove flowchart/uml
 * [ ] Remove extra css stylesheets, there is only need for one stylesheet here
 * [ ] Remove all settings and provide some decent defaults.
+* [ ] Remove monetizejs
 
 All of this functionality is provided in the full version of Stackedit. This branch can easily be extended to provide just the features you need for a specific project.
 

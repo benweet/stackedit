@@ -24,7 +24,7 @@ The goal is that this should provide a clean split-panel editor without extra be
 * [ ] Remove all settings and provide some decent defaults.
 * [x] Remove monetizeJs
 * [ ] Remove all third-party integration points:
-  - [ ] twitter
+  - [x] twitter
   - [x] google drive
   - [x] picasa
   - [ ] github

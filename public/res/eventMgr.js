@@ -12,7 +12,6 @@ define([
 	"extensions/markdownSectionParser",
 	"extensions/partialRendering",
 	"extensions/buttonMarkdownSyntax",
-	"extensions/twitter",
 	"extensions/dialogAbout",
 	"extensions/dialogManagePublication",
 	"extensions/dialogManageSynchronization",
@@ -204,9 +203,6 @@ define([
 	addEventHook("onDiscussionCreated");
 	addEventHook("onDiscussionRemoved");
 	addEventHook("onCommentsChanged");
-
-	// Refresh twitter buttons
-	addEventHook("onTweet");
 
 	// Plugins
 	addEventHook("onProviderLoaded");

@@ -107,7 +107,7 @@ define([
 				].join(""),
 				placement: 'bottom',
 				onShown: function() {
-					eventMgr.onTweet();
+					//eventMgr.onTweet();
 				}
 			}
 		]);

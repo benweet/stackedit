@@ -7,13 +7,12 @@ var requirejs = require('gulp-requirejs');
 var bowerRequirejs = require('bower-requirejs');
 var uglify = require('gulp-uglify');
 var less = require('gulp-less');
-var inject = require('gulp-inject');
+var manifest = require('gulp-manifest');
 var replace = require('gulp-replace');
 var bump = require('gulp-bump');
 var childProcess = require('child_process');
 var runSequence = require('run-sequence');
 var fs = require('fs');
-
 
 /** __________________________________________
  * constants.js
@@ -152,23 +151,22 @@ gulp.task('copy-img', function() {
  * cache.manifest
  */
 
+/** __________________________________________
+ * cache.manifest
+ */
+
 gulp.task('cache-manifest', function() {
-	return gulp.src('./public/cache.manifest')
-		.pipe(replace(/(#Date ).*/, '$1' + Date()))
-		.pipe(inject(gulp.src([
-				'./res-min/**/*.*'
+	return gulp.src([
+				'./public/res-min/**/*.*'
 			], {
-				read: false,
-				cwd: './public'
-			}),
-			{
-				starttag: '# start_inject_resources',
-				endtag: '# end_inject_resources',
-				ignoreExtensions: true,
-				transform: function(filepath) {
-					return filepath.substring(1);
-				}
-			}))
+				base: './public'
+			})
+		.pipe(manifest({
+			hash: true,
+			cache: [ '.', 'editor', 'viewer' ],
+			filename: 'cache.manifest',
+			exclude: 'cache.manifest'
+		}))
 		.pipe(gulp.dest('./public/'));
 });
 

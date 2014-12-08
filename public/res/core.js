@@ -129,10 +129,6 @@ define([
 		utils.setInputValue("#input-settings-publish-commit-msg", settings.commitMsg);
 		// Markdown MIME type
 		utils.setInputValue("#input-settings-markdown-mime-type", settings.markdownMimeType);
-		// Gdrive multi-accounts
-		utils.setInputValue("#input-settings-gdrive-multiaccount", settings.gdriveMultiAccount);
-		// Gdrive full access
-		utils.setInputChecked("#input-settings-gdrive-full-access", settings.gdriveFullAccess);
 		// Dropbox full access
 		utils.setInputChecked("#input-settings-dropbox-full-access", settings.dropboxFullAccess);
 		// GitHub full access
@@ -170,12 +166,8 @@ define([
 		newSettings.editMode = utils.getInputRadio("radio-settings-edit-mode");
 		// Commit message
 		newSettings.commitMsg = utils.getInputTextValue("#input-settings-publish-commit-msg", event);
-		// Gdrive multi-accounts
-		newSettings.gdriveMultiAccount = utils.getInputIntValue("#input-settings-gdrive-multiaccount");
 		// Markdown MIME type
 		newSettings.markdownMimeType = utils.getInputValue("#input-settings-markdown-mime-type");
-		// Gdrive full access
-		newSettings.gdriveFullAccess = utils.getInputChecked("#input-settings-gdrive-full-access");
 		// Drobox full access
 		newSettings.dropboxFullAccess = utils.getInputChecked("#input-settings-dropbox-full-access");
 		// GitHub full access
@@ -375,14 +367,6 @@ define([
 			if(!e.isPropagationStopped()) {
 				window.location.reload();
 			}
-		});
-		$('.action-add-google-drive-account').click(function() {
-			if(settings.gdriveMultiAccount === 3) {
-				return;
-			}
-			settings.gdriveMultiAccount++;
-			storage.settings = JSON.stringify(settings);
-			window.location.reload();
 		});
 
 		// Hot theme switcher in the settings

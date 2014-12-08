@@ -12,7 +12,6 @@ define([], function() {
 	constants.BITLY_ACCESS_TOKEN = "317e033bfd48cf31155a68a536b1860013b09c4c";
 	constants.DEFAULT_FILE_TITLE = "Title";
 	constants.DEFAULT_FOLDER_NAME = "New folder";
-	constants.GDRIVE_DEFAULT_FILE_TITLE = "New Markdown document";
 	constants.EDITOR_DEFAULT_PADDING = 35;
 	constants.CHECK_ONLINE_PERIOD = 120000;
 	constants.AJAX_TIMEOUT = 30000;

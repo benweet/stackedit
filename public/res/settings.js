@@ -16,8 +16,6 @@ define([
 		commitMsg: "Published with " + constants.MAIN_URL,
 		conflictMode: 'merge',
 		markdownMimeType: 'text/plain',
-		gdriveMultiAccount: 1,
-		gdriveFullAccess: true,
 		dropboxFullAccess: true,
 		githubFullAccess: true,
 		template: [

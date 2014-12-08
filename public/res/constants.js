@@ -33,8 +33,6 @@ define([], function() {
 	constants.GITHUB_CLIENT_ID = 'e47fef6055344579799d';
 	constants.GATEKEEPER_URL = "https://stackedit-gatekeeper-localhost.herokuapp.com/";
 	constants.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-local.herokuapp.com/";
-	constants.WORDPRESS_CLIENT_ID = '23361';
-	constants.WORDPRESS_PROXY_URL = "https://stackedit-io-wordpress-proxy.herokuapp.com/";
 
 
 	constants.THEME_LIST = {

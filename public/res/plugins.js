@@ -4,8 +4,7 @@ define([
 	"plugins/dropbox/index",
 	"plugins/github/index",
 	"plugins/ssh/index",
-	"plugins/tumblr/index",
-	"plugins/wordpress/index"
+	"plugins/tumblr/index"
 ], function(eventMgr, Plugin) {
 	Array.prototype.slice.call(arguments).forEach(function(argument) {
 		if (argument && argument instanceof Plugin) {

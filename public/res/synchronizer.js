@@ -5,27 +5,22 @@ define([
 	"storage",
 	"eventMgr",
 	"fileSystem",
-	"fileMgr",
-	"classes/Provider",
-	"providers/dropboxProvider",
-	"providers/couchdbProvider",
-	"providers/gdriveProvider",
-	"providers/gdrivesecProvider",
-	"providers/gdriveterProvider"
-], function($, _, utils, storage, eventMgr, fileSystem, fileMgr, Provider) {
+	"fileMgr"
+], function($, _, utils, storage, eventMgr, fileSystem, fileMgr) {
 
 	var synchronizer = {};
 
 	// Create a map with providerId: providerModule
-	var providerMap = _.chain(arguments).map(function(argument) {
-		return argument instanceof Provider && [
-			argument.providerId,
-			argument
-		];
-	}).compact().object().value();
+	var providerMap = {};
+
+	eventMgr.addListener("onProviderLoaded", function(provider) {
+		providerMap[provider.providerId] = provider;
+		// AutoSync configuration
+		provider.autosyncConfig = utils.retrieveIgnoreError(provider.providerId + ".autosyncConfig") || {};
+	});
 
 	// Retrieve sync locations from storage
-	(function() {
+	eventMgr.addListener("onPluginsLoaded", function() {
 		var syncIndexMap = {};
 		_.each(fileSystem, function(fileDesc) {
 			utils.retrieveIndexArray(fileDesc.fileIndex + ".sync").forEach(function(syncIndex) {
@@ -58,11 +53,6 @@ define([
 				storage.removeItem(key);
 			}
 		});
-	})();
-
-	// AutoSync configuration
-	_.each(providerMap, function(provider) {
-		provider.autosyncConfig = utils.retrieveIgnoreError(provider.providerId + ".autosyncConfig") || {};
 	});
 
 	// Returns true if at least one file has synchronized location

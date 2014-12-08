@@ -4,23 +4,17 @@ define([
 	"constants",
 	"utils",
 	"eventMgr",
-	"fileMgr",
-	"classes/AsyncTask",
-	"classes/Provider",
-	"providers/couchdbProvider",
-	"providers/downloadProvider",
-	"providers/gistProvider"
-], function($, _, constants, utils, eventMgr, fileMgr, AsyncTask, Provider) {
+	"fileMgr"
+], function($, _, constants, utils, eventMgr, fileMgr) {
 
 	var sharing = {};
 
 	// Create a map with providerId: providerModule
-	var providerMap = _.chain(arguments).map(function(argument) {
-		return argument instanceof Provider && [
-			argument.providerId,
-			argument
-		];
-	}).compact().object().value();
+	var providerMap = {};
+
+	eventMgr.addListener("onProviderLoaded", function(provider) {
+		providerMap[provider.providerId] = provider;
+	});
 
 	// Listen to offline status changes
 	var isOffline = false;

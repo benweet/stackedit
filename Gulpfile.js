@@ -41,6 +41,7 @@ gulp.task('jshint', function() {
 		'./public/res/classes/**/*.js',
 		'./public/res/extensions/**/*.js',
 		'./public/res/helpers/**/*.js',
+		'./public/res/plugins/**/*.js',
 		'./public/res/providers/**/*.js',
 		'./public/res/*.js'
 	])

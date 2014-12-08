@@ -16,7 +16,6 @@ define([
 		commitMsg: "Published with " + constants.MAIN_URL,
 		conflictMode: 'merge',
 		markdownMimeType: 'text/plain',
-		dropboxFullAccess: true,
 		githubFullAccess: true,
 		template: [
 			'<!DOCTYPE html>',

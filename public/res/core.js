@@ -129,8 +129,6 @@ define([
 		utils.setInputValue("#input-settings-publish-commit-msg", settings.commitMsg);
 		// Markdown MIME type
 		utils.setInputValue("#input-settings-markdown-mime-type", settings.markdownMimeType);
-		// Dropbox full access
-		utils.setInputChecked("#input-settings-dropbox-full-access", settings.dropboxFullAccess);
 		// GitHub full access
 		utils.setInputChecked("#input-settings-github-full-access", settings.githubFullAccess);
 		// Template
@@ -168,8 +166,6 @@ define([
 		newSettings.commitMsg = utils.getInputTextValue("#input-settings-publish-commit-msg", event);
 		// Markdown MIME type
 		newSettings.markdownMimeType = utils.getInputValue("#input-settings-markdown-mime-type");
-		// Drobox full access
-		newSettings.dropboxFullAccess = utils.getInputChecked("#input-settings-dropbox-full-access");
 		// GitHub full access
 		newSettings.githubFullAccess = utils.getInputChecked("#input-settings-github-full-access");
 		// Template
@@ -182,9 +178,6 @@ define([
 		eventMgr.onSaveSettings(newSettings.extensionSettings, event);
 
 		if(!event.isPropagationStopped()) {
-			if(settings.dropboxFullAccess !== newSettings.dropboxFullAccess) {
-				storage.removeItem('dropbox.lastChangeId');
-			}
 			$.extend(settings, newSettings);
 			storage.settings = JSON.stringify(settings);
 			storage.themeV4 = theme;
@@ -428,9 +421,6 @@ define([
 		$(".action-default-settings").click(function() {
 			storage.removeItem("settings");
 			storage.removeItem("theme");
-			if(!settings.dropboxFullAccess) {
-				storage.removeItem('dropbox.lastChangeId');
-			}
 			window.location.reload();
 		});
 

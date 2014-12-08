@@ -29,7 +29,7 @@ The goal is that this should provide a clean split-panel editor without extra be
   - [x] picasa
   - [ ] github
   - [ ] couchdb
-  - [ ] dropbox
+  - [x] dropbox
   - [x] blogger
   - [x] google+
   - [x] tumblr

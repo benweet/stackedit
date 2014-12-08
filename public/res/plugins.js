@@ -1,7 +1,6 @@
 define([
 	"eventMgr",
 	"classes/Plugin",
-	"plugins/dropbox/index",
 	"plugins/github/index",
 	"plugins/ssh/index"
 ], function(eventMgr, Plugin) {

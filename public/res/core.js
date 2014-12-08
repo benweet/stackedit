@@ -129,10 +129,6 @@ define([
 		utils.setInputValue("#input-settings-publish-commit-msg", settings.commitMsg);
 		// Markdown MIME type
 		utils.setInputValue("#input-settings-markdown-mime-type", settings.markdownMimeType);
-		// Gdrive multi-accounts
-		utils.setInputValue("#input-settings-gdrive-multiaccount", settings.gdriveMultiAccount);
-		// Gdrive full access
-		utils.setInputChecked("#input-settings-gdrive-full-access", settings.gdriveFullAccess);
 		// Dropbox full access
 		utils.setInputChecked("#input-settings-dropbox-full-access", settings.dropboxFullAccess);
 		// GitHub full access
@@ -170,12 +166,8 @@ define([
 		newSettings.editMode = utils.getInputRadio("radio-settings-edit-mode");
 		// Commit message
 		newSettings.commitMsg = utils.getInputTextValue("#input-settings-publish-commit-msg", event);
-		// Gdrive multi-accounts
-		newSettings.gdriveMultiAccount = utils.getInputIntValue("#input-settings-gdrive-multiaccount");
 		// Markdown MIME type
 		newSettings.markdownMimeType = utils.getInputValue("#input-settings-markdown-mime-type");
-		// Gdrive full access
-		newSettings.gdriveFullAccess = utils.getInputChecked("#input-settings-gdrive-full-access");
 		// Drobox full access
 		newSettings.dropboxFullAccess = utils.getInputChecked("#input-settings-dropbox-full-access");
 		// GitHub full access
@@ -236,16 +228,6 @@ define([
 			core.insertLinkCallback = callback;
 			utils.resetModalInputs();
 			$(".modal-insert-link").modal();
-			return true;
-		});
-		// Custom insert image dialog
-		pagedownEditor.hooks.set("insertImageDialog", function(callback) {
-			core.insertLinkCallback = callback;
-			if(core.catchModal) {
-				return true;
-			}
-			utils.resetModalInputs();
-			$(".modal-insert-image").modal();
 			return true;
 		});
 
@@ -350,16 +332,9 @@ define([
 				core.insertLinkCallback = undefined;
 			}
 		});
-		$(".action-insert-image").click(function(e) {
-			var value = utils.getInputTextValue($("#input-insert-image"), e);
-			if(value !== undefined) {
-				core.insertLinkCallback(value);
-				core.insertLinkCallback = undefined;
-			}
-		});
 
-		// Hide events on "insert link" and "insert image" dialogs
-		$(".modal-insert-link, .modal-insert-image").on('hidden.bs.modal', function() {
+		// Hide events on "insert link" dialog
+		$(".modal-insert-link").on('hidden.bs.modal', function() {
 			if(core.insertLinkCallback !== undefined) {
 				core.insertLinkCallback(null);
 				core.insertLinkCallback = undefined;
@@ -375,14 +350,6 @@ define([
 			if(!e.isPropagationStopped()) {
 				window.location.reload();
 			}
-		});
-		$('.action-add-google-drive-account').click(function() {
-			if(settings.gdriveMultiAccount === 3) {
-				return;
-			}
-			settings.gdriveMultiAccount++;
-			storage.settings = JSON.stringify(settings);
-			window.location.reload();
 		});
 
 		// Hot theme switcher in the settings

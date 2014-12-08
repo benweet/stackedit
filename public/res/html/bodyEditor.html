@@ -109,18 +109,6 @@
 							class="icon-provider-dropbox"></i> Open from Dropbox</a></li>
 						<li><a href="#" class="action-sync-export-dialog-dropbox"><i
 					        class="icon-provider-dropbox"></i> Save on Dropbox</a></li>
-						<li><a href="#" class="submenu-sync-gdrive action-sync-import-gdrive"><i
-							class="icon-provider-gdrive"></i> Open from Google Drive</a></li>
-						<li><a href="#" class="submenu-sync-gdrive action-sync-export-dialog-gdrive"><i
-							class="icon-provider-gdrive"></i> Save on Google Drive</a></li>
-						<li><a href="#" class="submenu-sync-gdrivesec action-sync-import-gdrivesec"><i
-							class="icon-provider-gdrive"></i> Open from Google Drive<br><small>(2nd account)</small></a></li>
-						<li><a href="#" class="submenu-sync-gdrivesec action-sync-export-dialog-gdrivesec"><i
-							class="icon-provider-gdrive"></i> Save on Google Drive<br><small>(2nd account)</small></a></li>
-						<li><a href="#" class="submenu-sync-gdriveter action-sync-import-gdriveter"><i
-							class="icon-provider-gdrive"></i> Open from Google Drive<br><small>(3rd account)</small></a></li>
-						<li><a href="#" class="submenu-sync-gdriveter action-sync-export-dialog-gdriveter"><i
-							class="icon-provider-gdrive"></i> Save on Google Drive<br><small>(3rd account)</small></a></li>
 					</ul>
 				</div>
 				<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"
@@ -293,79 +281,6 @@
 </div>
 
 
-<div class="modal fade modal-insert-image">
-	<div class="modal-dialog">
-		<div class="modal-content">
-
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true">&times;</button>
-				<h2 class="modal-title">Image</h2>
-			</div>
-			<div class="modal-body">
-				<p>Please provide the image URL and an optional title:</p>
-				<div class="input-group">
-					<span class="input-group-addon"><i class="icon-picture"></i></span><input
-						id="input-insert-image" type="text" class="col-sm-5 form-control"
-						placeholder='http://example.com/image.jpg "optional title"' />
-				</div>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="btn btn-default pull-left action-import-image-gplus"
-					data-dismiss="modal"><i class="icon-provider-gplus"></i> Import
-					from Google+</a> <a href="#" class="btn btn-default"
-					data-dismiss="modal">Cancel</a> <a href="#"
-					class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<div class="modal fade modal-import-image">
-	<div class="modal-dialog">
-		<div class="modal-content">
-
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true">&times;</button>
-				<h2 class="modal-title">Google+ image import</h2>
-			</div>
-			<div class="modal-body">
-				<div class="form-horizontal">
-					<div class="form-group">
-						<div class="col-sm-7">
-							<img>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-4 control-label"
-							for="input-import-image-title">Title (optional)</label>
-						<div class="col-sm-7">
-							<input type="text" id="input-import-image-title"
-								placeholder="Image title" class="form-control">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-4 control-label"
-							for="input-import-image-size">Size limit (optional)</label>
-						<div class="col-sm-7 form-inline">
-							<input type="text" id="input-import-image-size" placeholder="0"
-								class="col-sm-3 form-control"> px
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
-				<a href="#" class="btn btn-primary action-import-image"
-					data-dismiss="modal">OK</a>
-			</div>
-		</div>
-	</div>
-</div>
-
-
 <div class="modal fade modal-remove-file-confirm">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -481,21 +396,6 @@
 	</div>
 </div>
 
-
-<div class="modal fade modal-upload-gdrive">
-</div>
-<div class="modal fade modal-upload-gdrivesec">
-</div>
-<div class="modal fade modal-upload-gdriveter">
-</div>
-
-
-<div class="modal fade modal-autosync-gdrive">
-</div>
-<div class="modal fade modal-autosync-gdrivesec">
-</div>
-<div class="modal fade modal-autosync-gdriveter">
-</div>
 
 
 <div class="modal fade modal-upload-dropbox">
@@ -796,14 +696,6 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group modal-publish-blogger modal-publish-bloggerpage">
-						<label class="col-sm-4 control-label"
-							for="input-publish-blogger-url">Blog URL</label>
-						<div class="col-sm-7">
-							<input type="text" id="input-publish-blogger-url"
-								placeholder="http://exemple.blogger.com/" class="form-control">
-						</div>
-					</div>
 					<div class="form-group modal-publish-tumblr">
 						<label class="col-sm-4 control-label"
 							for="input-publish-tumblr-hostname">Blog hostname</label>
@@ -825,20 +717,11 @@
 						</div>
 					</div>
 					<div
-						class="form-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">
+						class="form-group modal-publish-tumblr modal-publish-wordpress">
 						<label class="col-sm-4 control-label" for="input-publish-postid">Update
 							existing post ID (optional)</label>
 						<div class="col-sm-7">
 							<input type="text" id="input-publish-postid" placeholder="PostID"
-								class="form-control">
-						</div>
-					</div>
-					<div
-						class="form-group modal-publish-bloggerpage">
-						<label class="col-sm-4 control-label" for="input-publish-pageid">Update
-							existing page ID (optional)</label>
-						<div class="col-sm-7">
-							<input type="text" id="input-publish-pageid" placeholder="PageID"
 								class="form-control">
 						</div>
 					</div>
@@ -850,28 +733,6 @@
 								placeholder="/path/to/My Document.html" class="form-control">
 							<span class="help-block"> File path is composed of both
 								folder and filename. </span>
-						</div>
-					</div>
-					<div class="form-group modal-publish-gdrive">
-						<label class="col-sm-4 control-label"
-							for="input-publish-gdrive-fileid">File ID (optional)</label>
-						<div class="col-sm-7">
-							<input type="text" id="input-publish-gdrive-fileid"
-								placeholder="FileID" class="form-control"> <span
-								class="help-block">If no file ID is supplied, a new file
-								will be created in your Google Drive root folder. You can move
-								the file afterwards within Google Drive.</span>
-						</div>
-					</div>
-					<div class="form-group modal-publish-gdrive">
-						<label class="col-sm-4 control-label"
-							for="input-publish-gdrive-filename">Force filename
-							(optional)</label>
-						<div class="col-sm-7">
-							<input type="text" id="input-publish-gdrive-filename"
-								placeholder="Filename" class="form-control"> <span
-								class="help-block">If no file name is supplied, the
-								document title will be used.</span>
 						</div>
 					</div>
 
@@ -915,23 +776,11 @@
 						</div>
 					</div>
 				</div>
-				<blockquote class="front-matter-info modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">
+				<blockquote class="front-matter-info modal-publish-tumblr modal-publish-wordpress">
                     <p><b>Tip:</b> You can use a
                     <a href="http://jekyllrb.com/docs/frontmatter/"
                     target="_blank">YAML front matter</a> to specify the title and the tags/labels of your publication.</p>
                     <p><b>Interpreted variables:</b> <code>title</code>, <code>tags</code>, <code>published</code>, <code>date</code>.</p>
-				</blockquote>
-				<blockquote class="front-matter-info modal-publish-bloggerpage">
-                    <p><b>Tip:</b> You can use a
-                    <a href="http://jekyllrb.com/docs/frontmatter/"
-                    target="_blank">YAML front matter</a> to specify the title of your page.</p>
-                    <p><b>Interpreted variables:</b> <code>title</code>.</p>
-				</blockquote>
-				<blockquote class="url-info modal-publish-bloggerpage">
-                    <p><b>About URL:</b> For newly created page , Blogger API will append a generated number to the url like <code>about-me-1234.html</code>, if you deeply care about your URL naming, you should first create the page on Blogger and then update them with StackEdit specifying the pageId when publishing.
-                    </p>
-                    <p><b>About page visibility:</b> Blogger API does not respect published status for pages.When publishing the page to Blogger, the page will be <strong>live</strong> but not added to the page listing. You should arrange the page listing from Blogger dashboard.
-                    </p>
 				</blockquote>
 			</div>
 			<div class="modal-footer">
@@ -988,7 +837,7 @@
             	<blockquote>
                     <p><b>Note:</b> To collaborate on this document, just <a
                         href="#" class="action-sync-export-dialog-couchdb" data-dismiss="modal">save it on CouchDB</a>.
-                    To collaborate via Google Drive or Dropbox, you have to share the file manually from Google Drive/Dropbox websites.</p>
+                    To collaborate via Dropbox or similar, you have to share the file manually from Dropbox website.</p>
             	</blockquote>
                 <hr>
                 <p>Share a read-only version of "<span class="file-title"></span>" using the following link(s):</p>
@@ -1071,19 +920,6 @@
 										    <b>Markdown Extra/GitHub Flavored Markdown</b> syntax
 										</label>
 									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-4 control-label"
-									for="input-settings-gdrive-multiaccount">Google Drive multi-accounts
-								</label>
-								<div class="col-sm-7">
-									<select id="input-settings-gdrive-multiaccount" class="form-control">
-    									<option value="1">1 account</option>
-    									<option value="2">2 accounts</option>
-    									<option value="3">3 accounts</option>
-									</select>
-									<span class="help-block"><b>Please sign in first with Google.</b> Once linked with your Google accounts, changing account is not possible unless you reset the application.</span>
 								</div>
 							</div>
 						</div>
@@ -1190,19 +1026,8 @@
 									</select>
 								</div>
 							</div>
-							<div class="form-group">
-								<label class="col-sm-4 control-label">Permissions</label>
-								<div class="col-sm-7">
-									<div class="checkbox">
-									    <label>
-										    <input type="checkbox" id="input-settings-gdrive-full-access" />
-										    Allow StackEdit to open any document in Google Drive
-										</label> <span class="help-block">Existing authorization has to be revoked in
-										<a href="https://www.google.com/settings/dashboard" target="_blank">Google Dashboard</a>
-										for this change to take effect.</span>
-									</div>
-								</div>
-							</div>
+
+							<h4>Permissions</h4>
 							<div class="form-group">
 								<div class="col-sm-4"></div>
 								<div class="col-sm-7">
@@ -1380,28 +1205,6 @@
 				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
 				<a href="#" class="btn btn-primary action-import-docs-settings-confirm"
 					data-dismiss="modal">OK</a>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<div class="modal fade modal-add-google-drive-account">
-	<div class="modal-dialog">
-		<div class="modal-content">
-
-			<div class="modal-header">
-				<h2 class="modal-title">Add Google Drive account</h2>
-			</div>
-			<div class="modal-body">
-				<p>To perform this request, you need to configure another Google Drive account in StackEdit.</p>
-				<blockquote><b>Do you want to proceed?</b></blockquote>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="btn btn-default action-remove-google-drive-state"
-					data-dismiss="modal">No</a>
-				<a href="#" class="btn btn-primary action-add-google-drive-account"
-					data-dismiss="modal">Yes</a>
 			</div>
 		</div>
 	</div>

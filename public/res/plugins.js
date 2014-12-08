@@ -7,8 +7,8 @@
  */
 define([
 	"eventMgr",
-	"classes/Plugin",
-	"plugins/ssh/index"
+	"classes/Plugin"
+	//, "plugins/ssh/index"
 ], function(eventMgr, Plugin) {
 	Array.prototype.slice.call(arguments).forEach(function(argument) {
 		if (argument && argument instanceof Plugin) {

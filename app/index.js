@@ -19,7 +19,6 @@ app.all('*', function(req, res, next) {
 // Use gzip compression
 app.use(compression());
 
-app.post('/sshPublish', require('./ssh').publish);
 app.get('/downloadImport', require('./download').importPublic);
 
 // Serve static resources

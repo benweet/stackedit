@@ -19,7 +19,6 @@ define([], function() {
 	constants.TEMPORARY_FILE_INDEX = "file.tempIndex";
 	constants.WELCOME_DOCUMENT_TITLE = "Hello!";
 	constants.DOWNLOAD_IMPORT_URL = "/downloadImport";
-	constants.SSH_PUBLISH_URL = '/sshPublish';
 
 	// Site dependent
 	constants.BASE_URL = "http://localhost/";

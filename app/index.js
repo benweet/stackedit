@@ -20,7 +20,6 @@ app.all('*', function(req, res, next) {
 app.use(compression());
 
 app.post('/sshPublish', require('./ssh').publish);
-app.post('/picasaImportImg', require('./picasa').importImg);
 app.get('/downloadImport', require('./download').importPublic);
 
 // Serve static resources

@@ -38,13 +38,7 @@ define([], function() {
 
 
 	constants.THEME_LIST = {
-		"blue": "Blue",
-		"default": "Default",
-		"gray": "Gray",
-		"night": "Night",
-		"school": "School",
-		"solarized-light": "Solarized Light",
-		"solarized-dark": "Solarized Dark"
+		"default": "Default"
 	};
 
 	return constants;

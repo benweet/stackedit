@@ -133,8 +133,6 @@ define([
 		utils.setInputChecked("#input-settings-github-full-access", settings.githubFullAccess);
 		// Template
 		utils.setInputValue("#textarea-settings-publish-template", settings.template);
-		// CouchDB URL
-		utils.setInputValue("#input-settings-couchdb-url", settings.couchdbUrl);
 
 		// Load extension settings
 		eventMgr.onLoadSettings();
@@ -170,8 +168,6 @@ define([
 		newSettings.githubFullAccess = utils.getInputChecked("#input-settings-github-full-access");
 		// Template
 		newSettings.template = utils.getInputTextValue("#textarea-settings-publish-template", event);
-		// CouchDB URL
-		newSettings.couchdbUrl = utils.getInputValue("#input-settings-couchdb-url", event);
 
 		// Save extension settings
 		newSettings.extensionSettings = {};

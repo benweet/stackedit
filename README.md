@@ -28,7 +28,7 @@ The goal is that this should provide a clean split-panel editor without extra be
   - [x] google drive
   - [x] picasa
   - [ ] github
-  - [ ] couchdb
+  - [x] couchdb
   - [x] dropbox
   - [x] blogger
   - [x] google+

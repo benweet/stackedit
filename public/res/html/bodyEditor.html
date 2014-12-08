@@ -100,12 +100,6 @@
 	                        class="action-reset-input"><i
 	                        class="icon-refresh"></i> Manage synchronization</a></li>
 	                </ul>
-					<ul class="nav">
-						<li><a href="#" class="action-sync-import-dialog-couchdb"><i
-							class="icon-provider-couchdb"></i> Open from CouchDB <sup class="text-danger">new</sup></a></li>
-						<li><a href="#" class="action-sync-export-dialog-couchdb"><i
-					        class="icon-provider-couchdb"></i> Save on CouchDB <sup class="text-danger">new</sup></a></li>
-					</ul>
 				</div>
 				<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"
 					class="list-group-item">
@@ -393,130 +387,6 @@
 </div>
 
 
-<div class="modal fade modal-download-couchdb">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-hidden="true">&times;</button>
-                <h2 class="modal-title">Open from CouchDB</h2>
-                <div class="form-horizontal list-mode">
-                    <br>
-                    <div class="form-group form-inline">
-                        <label for="input-sync-import-couchdb-tag" class="col-sm-3 control-label">Filter by tag</label>
-                        <select id="input-sync-import-couchdb-tag" class="col-sm-4 form-control">
-                        </select>
-                        <span class="col-sm-5">
-                            <a class="btn btn-link action-add-tag"><i class="icon-tag"></i> Add
-                            </a>
-                            <a class="btn btn-link action-remove-tag"><i class="icon-tag"></i> Remove
-                            </a>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-body">
-                <p class="msg-default-couchdb hide alert alert-danger"><i class="icon-attention"></i> <b>Careful:</b>
-                    You're using the public CouchDB instance.
-                    <b>Anybody can open, edit and delete your files there!</b> To setup your own CouchDB instance <a
-                            target="blank" href="https://github.com/benweet/stackedit/blob/master/doc/couchdb-setup.md">click
-                        here</a>.
-                </p>
-
-                <div class="form-horizontal byid-mode">
-                    <div class="form-group">
-                        <label for="input-sync-import-couchdb-documentid" class="col-sm-3 control-label">Document
-                            ID</label>
-
-                        <div class="col-sm-9">
-                            <input id="input-sync-import-couchdb-documentid" class="form-control"
-                                   placeholder="DocumentID">
-                            <span class="help-block">Multiple IDs can be provided (space separated)</span>
-                        </div>
-                    </div>
-                </div>
-                    <ul class="list-mode nav nav-pills">
-                        <li class="pull-right dropdown"><a href="#"
-                                                           data-toggle="dropdown"><i class="icon-check"></i> Selection
-                            <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#" class="action-unselect-all"><i
-                                        class="icon-check-empty"></i> Unselect all</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#" class="action-delete-items"><i
-                                        class="icon-trash"></i> Delete</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <p class="list-mode">
-                    </p>
-                    <div class="list-group document-list list-mode"></div>
-                <div class="list-mode text-center">
-                    <div class="please-wait"><b>Please wait...</b></div>
-                    <div class="no-document"><b>No document.</b></div>
-                    <button class="more-documents btn btn-link"><i class="icon-angle-double-down"></i> More documents!</button>
-                </div>
-                <p class="delete-mode hide">The following documents will be
-                    removed from CouchDB:</p>
-
-                <div class="delete-mode list-group selected-document-list hide"></div>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-default pull-left list-mode action-byid-mode">Open by ID...</a>
-                <a href="#"
-                   class="btn btn-default delete-mode action-cancel hide">Cancel</a>
-                <a href="#"
-                   class="btn btn-primary delete-mode action-delete-items-confirm hide">Delete</a>
-                <a href="#" class="btn btn-default byid-mode action-cancel">Cancel</a>
-                <a href="#" data-dismiss="modal"
-                   class="btn btn-primary action-sync-import-couchdb byid-mode">Open</a>
-                <a href="#" class="btn btn-default list-mode" data-dismiss="modal">Cancel</a>
-                <a href="#" data-dismiss="modal"
-                   class="btn btn-primary action-sync-import-couchdb list-mode">Open</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade modal-upload-couchdb">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-hidden="true">&times;</button>
-                <h2 class="modal-title">Save on CouchDB</h2>
-            </div>
-            <div class="modal-body">
-                <p class="msg-default-couchdb hide alert alert-danger"><i class="icon-attention"></i> <b>Careful:</b>
-                    You're using the public CouchDB instance.
-                    <b>Anybody can open, edit and delete your files there!</b> To setup your own CouchDB instance <a
-                            target="blank" href="https://github.com/benweet/stackedit/blob/master/doc/couchdb-setup.md">click
-                        here</a>.
-                </p>
-
-                <p>
-                    This will save "<span class="file-title"></span>" to CouchDB and keep it synchronized.
-                </p>
-                <blockquote>
-                    <p><b>Tip:</b> You can use a
-                    <a href="http://jekyllrb.com/docs/frontmatter/"
-                       target="_blank">YAML front matter</a> to specify tags for your document.</p>
-                    <p>Alternatively, you can place comma separated tags in square brackets at the beginning of the document title.</p>
-                </blockquote>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
-                <a href="#" data-dismiss="modal"
-                   class="btn btn-primary action-sync-export-couchdb">OK</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <div class="modal fade modal-manage-sync">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -742,11 +612,6 @@
             	<p class="msg-no-share-editor"><b>No sharing link yet!</b>
             	</p>
                 <div class="share-editor-list"></div>
-            	<blockquote>
-                    <p><b>Note:</b> To collaborate on this document, just <a
-                        href="#" class="action-sync-export-dialog-couchdb" data-dismiss="modal">save it on CouchDB</a>.
-                    </p>
-            	</blockquote>
                 <hr>
                 <p>Share a read-only version of "<span class="file-title"></span>" using the following link(s):</p>
             	<p class="msg-no-share-viewer"><b>No sharing link yet!</b>
@@ -956,18 +821,6 @@
 									<input type="text" id="input-settings-publish-commit-msg"
 										class="form-control">
 								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-4 control-label"
-									for="input-settings-couchdb-url">CouchDB URL</label>
-								<div class="col-sm-7">
-									<input type="text" id="input-settings-couchdb-url"
-										class="form-control">
-                                    <span class="help-block pull-right"><a
-                                            target="blank"
-                                            href="https://github.com/benweet/stackedit/blob/master/doc/couchdb-setup.md">Setup
-                                        your own CouchDB...</a></span>
-                                </div>
 							</div>
 						</div>
 					</div>

@@ -230,16 +230,6 @@ define([
 			$(".modal-insert-link").modal();
 			return true;
 		});
-		// Custom insert image dialog
-		pagedownEditor.hooks.set("insertImageDialog", function(callback) {
-			core.insertLinkCallback = callback;
-			if(core.catchModal) {
-				return true;
-			}
-			utils.resetModalInputs();
-			$(".modal-insert-image").modal();
-			return true;
-		});
 
 		eventMgr.onPagedownConfigure(pagedownEditor);
 		pagedownEditor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
@@ -342,16 +332,9 @@ define([
 				core.insertLinkCallback = undefined;
 			}
 		});
-		$(".action-insert-image").click(function(e) {
-			var value = utils.getInputTextValue($("#input-insert-image"), e);
-			if(value !== undefined) {
-				core.insertLinkCallback(value);
-				core.insertLinkCallback = undefined;
-			}
-		});
 
-		// Hide events on "insert link" and "insert image" dialogs
-		$(".modal-insert-link, .modal-insert-image").on('hidden.bs.modal', function() {
+		// Hide events on "insert link" dialog
+		$(".modal-insert-link").on('hidden.bs.modal', function() {
 			if(core.insertLinkCallback !== undefined) {
 				core.insertLinkCallback(null);
 				core.insertLinkCallback = undefined;

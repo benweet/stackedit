@@ -3,7 +3,6 @@ define([
 	"classes/Plugin",
 	"plugins/dropbox/index",
 	"plugins/github/index",
-	"plugins/google/index",
 	"plugins/ssh/index",
 	"plugins/tumblr/index",
 	"plugins/wordpress/index"

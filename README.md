@@ -15,7 +15,15 @@ This branch removes all server-side parts, and special code for handling www.sta
 The goal is that this should provide a clean split-panel editor without extra bells and whistles.
 
 * [ ] Remove server-side part
+* [ ] Remove chrome extension/app
+* [ ] Remove firefox extension/app
 * [ ] Remove google analytics
+* [ ] remove special edge-case syntax handling of markdown
+  - [x] remove mathjax
+  - [ ] remove flowchart/uml
+* [ ] Remove extra css stylesheets, there is only need for one stylesheet here
+* [ ] Remove all settings and provide some decent defaults.
+* [x] Remove monetizeJs
 * [ ] Remove all third-party integration points:
   - [ ] twitter
   - [ ] google drive
@@ -27,12 +35,7 @@ The goal is that this should provide a clean split-panel editor without extra be
   - [ ] google+
   - [ ] tumblr
   - [ ] wordpress
-* [ ] remove special edge-case syntax handling of markdown
-  - [ ] remove mathjax
-  - [ ] remove flowchart/uml
-* [ ] Remove extra css stylesheets, there is only need for one stylesheet here
-* [ ] Remove all settings and provide some decent defaults.
-* [ ] Remove monetizejs
+
 
 All of this functionality is provided in the full version of Stackedit. This branch can easily be extended to provide just the features you need for a specific project.
 

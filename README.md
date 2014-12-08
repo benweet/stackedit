@@ -15,9 +15,8 @@ This branch removes all server-side parts, and special code for handling www.sta
 The goal is that this should provide a clean split-panel editor without extra bells and whistles.
 
 * [ ] Remove server-side part
-* [ ] Remove chrome extension/app
-* [ ] Remove firefox extension/app
-* [ ] Remove google analytics
+* [x] Remove chrome extension/app
+* [x] Remove google analytics
 * [ ] remove special edge-case syntax handling of markdown
   - [x] remove mathjax
   - [ ] remove flowchart/uml
@@ -26,13 +25,13 @@ The goal is that this should provide a clean split-panel editor without extra be
 * [x] Remove monetizeJs
 * [ ] Remove all third-party integration points:
   - [ ] twitter
-  - [ ] google drive
-  - [ ] picasa
+  - [x] google drive
+  - [x] picasa
   - [ ] github
   - [ ] couchdb
   - [ ] dropbox
-  - [ ] blogger
-  - [ ] google+
+  - [x] blogger
+  - [x] google+
   - [ ] tumblr
   - [ ] wordpress
 

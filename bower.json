@@ -28,8 +28,6 @@
     "google-diff-match-patch-js": "~1.0.0",
     "jsondiffpatch": "benweet/jsondiffpatch#fb9dddf7cd076d8ec89d376c0e9de9223e9888f9",
     "hammerjs": "~2.0",
-    "raphael": "~2.1.2",
-    "flowchart": "adrai/flowchart.js#751717d3db6437def9a5f8b1cb73e8bb81b5833a",
     "alertify.js": "fabien-d/alertify.js#0.3.11"
   },
   "main": [

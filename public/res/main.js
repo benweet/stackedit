@@ -61,9 +61,6 @@ requirejs.config({
 		diff_match_patch_uncompressed: 'bower-libs/google-diff-match-patch-js/diff_match_patch_uncompressed',
 		jsondiffpatch: 'bower-libs/jsondiffpatch/build/bundle',
 		hammerjs: 'bower-libs/hammerjs/hammer',
-		raphael: 'bower-libs/raphael/raphael',
-		'flow-chart': 'bower-libs/flowchart/release/flowchart.amd-1.2.10.min',
-		flowchart: 'bower-libs/flowchart/release/flowchart-1.2.10.min',
 		'to-markdown': 'bower-libs/to-markdown/src/to-markdown',
 		waitForImages: 'bower-libs/waitForImages/dist/jquery.waitforimages',
 		alertify: 'bower-libs/alertify.js/lib/alertify'
@@ -147,10 +144,7 @@ requirejs.config({
 		],
 		pagedownExtra: [
 			'libs/Markdown.Converter'
-		],
-		'flow-chart': [
-			'raphael'
-		],
+		]
 	}
 });
 

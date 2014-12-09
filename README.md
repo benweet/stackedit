@@ -20,7 +20,7 @@ The goal is that this should provide a clean split-panel editor without extra be
 * [x] Remove google analytics
 * [ ] remove special edge-case syntax handling of markdown
   - [x] remove mathjax
-  - [ ] remove flowchart/uml
+  - [x] remove flowchart/uml
   - [ ] remove syntax highlighting
 * [x] Remove extra css stylesheets, there is only need for one stylesheet here
 * [ ] Remove all settings and provide some decent defaults.

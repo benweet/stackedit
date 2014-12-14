@@ -293,12 +293,18 @@ define([
 			var nextTickAdjustScroll = false;
 			var debouncedSave = utils.debounce(function() {
 				save();
+				self.updateCursorCoordinates(nextTickAdjustScroll);
+				// In some cases we have to wait a little bit more to see the selection change (Cmd+A on Chrome/OSX)
+				longerDebouncedSave();
+			});
+			var longerDebouncedSave = utils.debounce(function() {
+				save();
 				if(lastSelectionStart === self.selectionStart && lastSelectionEnd === self.selectionEnd) {
 					nextTickAdjustScroll = false;
 				}
 				self.updateCursorCoordinates(nextTickAdjustScroll);
 				nextTickAdjustScroll = false;
-			});
+			}, 10);
 
 			return function(debounced, adjustScroll, forceAdjustScroll) {
 				if(forceAdjustScroll) {
@@ -880,10 +886,19 @@ define([
 			.on('paste', function(evt) {
 				undoMgr.currentMode = 'paste';
 				evt.preventDefault();
-				var data = (evt.originalEvent || evt).clipboardData.getData('text/plain') || prompt('Paste something...');
-				data = escape(data);
+				var data, clipboardData = (evt.originalEvent || evt).clipboardData;
+				if(clipboardData) {
+					data = clipboardData.getData('text/plain');
+				}
+				else {
+					clipboardData = window.clipboardData;
+					data = clipboardData && clipboardData.getData('Text');
+				}
+				if(!data) {
+					return;
+				}
+				replace(selectionMgr.selectionStart, selectionMgr.selectionEnd, data);
 				adjustCursorPosition();
-				document.execCommand('insertHtml', false, data);
 			})
 			.on('cut', function() {
 				undoMgr.currentMode = 'cut';

@@ -250,18 +250,22 @@ define([
 					var selection = rangy.getSelection();
 					if(selection.rangeCount > 0) {
 						var selectionRange = selection.getRangeAt(0);
-						var element = selectionRange.startContainer;
-						if((contentElt.compareDocumentPosition(element) & 0x10)) {
-							var container = element;
+						var node = selectionRange.startContainer;
+						if((contentElt.compareDocumentPosition(node) & 0x10)) {
 							var offset = selectionRange.startOffset;
+							if(node.hasChildNodes() && offset > 0) {
+								node = node.childNodes[offset - 1];
+								offset = node.textContent.length;
+							}
+							var container = node;
 							do {
-								while(element = element.previousSibling) {
-									if(element.textContent) {
-										offset += element.textContent.length;
+								while(node = node.previousSibling) {
+									if(node.textContent) {
+										offset += node.textContent.length;
 									}
 								}
-								element = container = container.parentNode;
-							} while(element && element != inputElt);
+								node = container = container.parentNode;
+							} while(node && node != inputElt);
 
 							if(selection.isBackwards()) {
 								selectionStart = offset + (selectionRange + '').length;

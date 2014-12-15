@@ -252,28 +252,22 @@ define([
 						var selectionRange = selection.getRangeAt(0);
 						var node = selectionRange.startContainer;
 						if((contentElt.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY) || contentElt === node) {
-							var offset = selectionRange.startOffset;
-							if(node.hasChildNodes() && offset > 0) {
-								node = node.childNodes[offset - 1];
-								offset = node.textContent.length;
-							}
-							var container = node;
-							while(node != contentElt) {
-								while(node = node.previousSibling) {
-									if(node.textContent) {
-										offset += node.textContent.length;
-									}
-								}
-								node = container = container.parentNode;
-							}
+							var range = self.createRange({
+								container: contentElt,
+								offsetInContainer: 0
+							}, {
+								container: node,
+								offsetInContainer: selectionRange.startOffset
+							});
+							var offset = range.toString().length;
 
 							if(selection.isBackwards()) {
-								selectionStart = offset + (selectionRange + '').length;
+								selectionStart = offset + selectionRange.toString().length;
 								selectionEnd = offset;
 							}
 							else {
 								selectionStart = offset;
-								selectionEnd = offset + (selectionRange + '').length;
+								selectionEnd = offset + selectionRange.toString().length;
 							}
 
 							if(selectionStart === selectionEnd && selectionRange.startContainer.textContent == '\n' && selectionRange.startOffset == 1) {

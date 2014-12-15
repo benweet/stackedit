@@ -251,21 +251,21 @@ define([
 					if(selection.rangeCount > 0) {
 						var selectionRange = selection.getRangeAt(0);
 						var node = selectionRange.startContainer;
-						if((contentElt.compareDocumentPosition(node) & 0x10)) {
+						if((contentElt.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY) || contentElt === node) {
 							var offset = selectionRange.startOffset;
 							if(node.hasChildNodes() && offset > 0) {
 								node = node.childNodes[offset - 1];
 								offset = node.textContent.length;
 							}
 							var container = node;
-							do {
+							while(node != contentElt) {
 								while(node = node.previousSibling) {
 									if(node.textContent) {
 										offset += node.textContent.length;
 									}
 								}
 								node = container = container.parentNode;
-							} while(node && node != inputElt);
+							}
 
 							if(selection.isBackwards()) {
 								selectionStart = offset + (selectionRange + '').length;
@@ -435,12 +435,14 @@ define([
 
 	function replace(selectionStart, selectionEnd, replacement) {
 		undoMgr.currentMode = undoMgr.currentMode || 'replace';
-		var range = selectionMgr.createRange(selectionStart, selectionEnd);
-		if('' + range == replacement) {
-			return;
+		var range = selectionMgr.createRange(
+			Math.min(selectionStart, selectionEnd),
+			Math.max(selectionStart, selectionEnd)
+		);
+		if('' + range != replacement) {
+			range.deleteContents();
+			range.insertNode(document.createTextNode(replacement));
 		}
-		range.deleteContents();
-		range.insertNode(document.createTextNode(replacement));
 		var endOffset = selectionStart + replacement.length;
 		selectionMgr.setSelectionStartEnd(endOffset, endOffset);
 		selectionMgr.updateSelectionRange();

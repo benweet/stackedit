@@ -21,9 +21,9 @@ else {
 		// Configure HTTPS on OpsWorks
 		var fs = require('fs');
 		var credentials = {
-			key: fs.readFileSync(__dirname + '/../shared/config/ssl.key', 'utf8'),
-			cert: fs.readFileSync(__dirname + '/../shared/config/ssl.crt', 'utf8'),
-			ca: fs.readFileSync(__dirname + '/../shared/config/ssl.ca', 'utf8').split('\n\n')
+			key: fs.readFileSync(__dirname + '/../../shared/config/ssl.key', 'utf8'),
+			cert: fs.readFileSync(__dirname + '/../../shared/config/ssl.crt', 'utf8'),
+			ca: fs.readFileSync(__dirname + '/../../shared/config/ssl.ca', 'utf8').split('\n\n')
 		};
 		server = https.createServer(credentials, app);
 	}

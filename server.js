@@ -25,7 +25,6 @@ else {
 			cert: fs.readFileSync(__dirname + '/../shared/config/ssl.crt', 'utf8'),
 			ca: fs.readFileSync(__dirname + '/../shared/config/ssl.ca', 'utf8').split('\n\n')
 		};
-		console.log(credentials.ca)
 		server = https.createServer(credentials, app);
 	}
 	else {

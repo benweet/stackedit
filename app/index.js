@@ -9,7 +9,7 @@ app.engine('html', require('ejs').renderFile);
 
 // Force HTTPS on stackedit.io
 app.all('*', function(req, res, next) {
-	if (req.headers.host == 'stackedit.io' && req.headers['x-forwarded-proto'] != 'https') {
+	if (req.headers.host == 'stackedit.io' && (!req.secure || req.headers['x-forwarded-proto'] != 'https')) {
 		return res.redirect('https://stackedit.io' + req.url);
 	}
 	/\.(eot|ttf|woff|svg)$/.test(req.url) && res.header('Access-Control-Allow-Origin', '*');

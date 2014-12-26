@@ -32,7 +32,6 @@ define([
 	"extensions/buttonStat",
 	"extensions/buttonHtmlCode",
 	"extensions/buttonViewer",
-	"extensions/welcomeTour",
 	"extensions/shortcuts",
 	"extensions/userCustom",
 	"extensions/comments",

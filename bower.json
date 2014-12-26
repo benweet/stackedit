@@ -15,7 +15,6 @@
     "FileSaver": "*",
     "stacktrace": "~0.6.2",
     "requirejs-text": "~2.0.10",
-    "bootstrap-tour": "~0.10.1",
     "pagedown-extra": "jmcmanus/pagedown-extra#ea782c3d11eb78f57d00aa819527338996a70721",
     "crel": "KoryNunn/crel#8dbda04b129fc0aec01a2a080d1cab26816e11c1",
     "waitForImages": "~1.6.4",

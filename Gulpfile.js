@@ -163,17 +163,18 @@ gulp.task('clean', [
 	'clean-font',
 	'clean-img'
 ]);
-gulp.task('default', function(cb) {
-	runSequence([
+gulp.task('build', [
 			'jshint',
 			'requirejs',
 			'less',
 			'copy-font',
 			'copy-img'
-		],
-		'cache-manifest',
-		cb);
-});
+		]);
+
+gulp.task('default', [
+			'build',
+			'cache-manifest'
+		]);
 
 function bumpTask(importance) {
 	return function() {
@@ -223,7 +224,7 @@ gulp.task('git-tag', function(cb) {
 function releaseTask(importance) {
 	return function(cb) {
 		runSequence(
-				'bump-' + importance,
+			'bump-' + importance,
 			'default',
 			'git-tag',
 			cb);

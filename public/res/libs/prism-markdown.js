@@ -1,7 +1,7 @@
 Prism.languages.md = (function() {
 
-	var charInsideUrl = "[-A-Z0-9+&@#/%?=~_|[\\]()!:,.;]",
-		charEndingUrl = "[-A-Z0-9+&@#/%=~_|[\\])]";
+	var charInsideUrl = "(&amp;|[-A-Z0-9+@#/%?=~_|[\\]()!:,.;])",
+		charEndingUrl = "(&amp;|[-A-Z0-9+@#/%=~_|[\\])])";
 	var urlPattern = new RegExp("(https?|ftp)(://" + charInsideUrl + "*" + charEndingUrl + ")(?=$|\\W)", "gi");
 	var emailPattern = /(?:mailto:)?([-.\w]+\@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]+)/gi;
 

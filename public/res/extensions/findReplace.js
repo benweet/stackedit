@@ -105,7 +105,7 @@ define([
 		var textLength = text.length;
 		if(textLength) {
 			try {
-				var flags = caseSensitive ? 'g' : 'gi';
+				var flags = caseSensitive ? 'gm' : 'gmi';
 				text = useRegexp ? text : text.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 				regex = new RegExp(text, flags);
 				editor.getValue().replace(regex, function(match, offset) {

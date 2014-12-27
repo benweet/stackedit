@@ -6,11 +6,9 @@ define([
 	"logger",
 	"classes/Extension",
 	"text!html/markdownExtraSettingsBlock.html",
-	'google-code-prettify',
-	'highlightjs',
 	'crel',
 	'pagedownExtra'
-], function($, _, utils, logger, Extension, markdownExtraSettingsBlockHTML, prettify, hljs) {
+], function($, _, utils, logger, Extension, markdownExtraSettingsBlockHTML) {
 
 	var markdownExtra = new Extension("markdownExtra", "Markdown Extra", true);
 	markdownExtra.settingsBlock = markdownExtraSettingsBlockHTML;
@@ -26,8 +24,7 @@ define([
 			"newlines"
 		],
 		intraword: true,
-		comments: true,
-		highlighter: "highlight"
+		comments: true
 	};
 
 	markdownExtra.onLoadSettings = function() {
@@ -47,7 +44,6 @@ define([
 		utils.setInputChecked("#input-markdownextra-newlines", hasExtension("newlines"));
 		utils.setInputChecked("#input-markdownextra-intraword", markdownExtra.config.intraword);
 		utils.setInputChecked("#input-markdownextra-comments", markdownExtra.config.comments);
-		utils.setInputValue("#input-markdownextra-highlighter", markdownExtra.config.highlighter);
 	};
 
 	markdownExtra.onSaveSettings = function(newConfig) {
@@ -62,7 +58,6 @@ define([
 		utils.getInputChecked("#input-markdownextra-newlines") && newConfig.extensions.push("newlines");
 		newConfig.intraword = utils.getInputChecked("#input-markdownextra-intraword");
 		newConfig.comments = utils.getInputChecked("#input-markdownextra-comments");
-		newConfig.highlighter = utils.getInputValue("#input-markdownextra-highlighter");
 	};
 
 	var eventMgr;
@@ -78,8 +73,7 @@ define([
 	markdownExtra.onPagedownConfigure = function(editor) {
 		var converter = editor.getConverter();
 		var extraOptions = {
-			extensions: markdownExtra.config.extensions,
-			highlighter: "prettify"
+			extensions: markdownExtra.config.extensions
 		};
 
 		if(markdownExtra.config.intraword === true) {
@@ -100,18 +94,6 @@ define([
 					return wholeMatch.replace(/^<!---(.+?)-?-->$/, ' <span class="comment label label-danger">$1</span> ');
 				});
 			});
-		}
-		if(markdownExtra.config.highlighter == "highlight") {
-			var previewContentsElt = document.getElementById('preview-contents');
-			editor.hooks.chain("onPreviewRefresh", function() {
-				_.each(previewContentsElt.querySelectorAll('.prettyprint > code'), function(elt) {
-					!elt.highlighted && hljs.highlightBlock(elt);
-					elt.highlighted = true;
-				});
-			});
-		}
-		else if(markdownExtra.config.highlighter == "prettify") {
-			editor.hooks.chain("onPreviewRefresh", prettify.prettyPrint);
 		}
 		Markdown.Extra.init(converter, extraOptions);
 	};

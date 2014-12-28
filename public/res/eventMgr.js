@@ -7,7 +7,6 @@ define([
 	"logger",
 	"classes/Extension",
 	"settings",
-	"text!html/settingsExtensionsAccordion.html",
 	"extensions/yamlFrontMatterParser",
 	"extensions/markdownSectionParser",
 	"extensions/partialRendering",
@@ -39,7 +38,7 @@ define([
 	"extensions/htmlSanitizer",
 	"bootstrap",
 	"jquery-waitforimages"
-], function($, _, crel, mousetrap, utils, logger, Extension, settings, settingsExtensionsAccordionHTML) {
+], function($, _, crel, mousetrap, utils, logger, Extension, settings) {
 
 	var eventMgr = {};
 
@@ -117,12 +116,7 @@ define([
 	eventMgr.onLoadSettings = function() {
 		logger.log("onLoadSettings");
 		_.each(extensionList, function(extension) {
-			var isChecked = !extension.isOptional || extension.config.enabled === undefined || extension.config.enabled === true;
-			utils.setInputChecked("#input-enable-extension-" + extension.extensionId, isChecked);
-			// Special case for Markdown Extra
-			if(extension.extensionId == 'markdownExtra') {
-				utils.setInputChecked("#input-settings-markdown-extra", isChecked);
-			}
+
 			var onLoadSettingsListener = extension.onLoadSettings;
 			onLoadSettingsListener && onLoadSettingsListener();
 		});
@@ -132,14 +126,7 @@ define([
 		_.each(extensionList, function(extension) {
 			var newExtensionConfig = _.extend({}, extension.defaultConfig);
 			newExtensionConfig.enabled = utils.getInputChecked("#input-enable-extension-" + extension.extensionId);
-			var isChecked;
-			// Special case for Markdown Extra
-			if(extension.extensionId == 'markdownExtra') {
-				isChecked = utils.getInputChecked("#input-settings-markdown-extra");
-				if(isChecked != extension.enabled) {
-					newExtensionConfig.enabled = isChecked;
-				}
-			}
+
 			var onSaveSettingsListener = extension.onSaveSettings;
 			onSaveSettingsListener && onSaveSettingsListener(newExtensionConfig, event);
 			newExtensionSettings[extension.extensionId] = newExtensionConfig;
@@ -258,19 +245,6 @@ define([
 		};
 
 		if(window.viewerMode === false) {
-			// Create accordion in settings dialog
-			var accordionHtml = _.chain(extensionList).sortBy(function(extension) {
-				return extension.extensionName.toLowerCase();
-			}).reduce(function(html, extension) {
-				return html + (extension.settingsBlock ? _.template(settingsExtensionsAccordionHTML, {
-					extensionId: extension.extensionId,
-					extensionName: extension.extensionName,
-					isOptional: extension.isOptional,
-					settingsBlock: extension.settingsBlock
-				}) : "");
-			}, "").value();
-			document.querySelector('.accordion-extensions').innerHTML = accordionHtml;
-
 			// Create extension buttons
 			logger.log("onCreateButton");
 			var onCreateButtonListenerList = getExtensionListenerList("onCreateButton");

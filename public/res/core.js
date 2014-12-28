@@ -1,4 +1,4 @@
-/*globals Markdown, requirejs */
+/*globals Markdown */
 define([
 	"jquery",
 	"underscore",
@@ -12,10 +12,9 @@ define([
 	"eventMgr",
 	"text!html/bodyEditor.html",
 	"text!html/bodyViewer.html",
-	"text!html/tooltipSettingsTemplate.html",
 	"storage",
 	'pagedown'
-], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, bodyEditorHTML, bodyViewerHTML, settingsTemplateTooltipHTML) {
+], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, bodyEditorHTML, bodyViewerHTML) {
 
 	var core = {};
 
@@ -101,37 +100,7 @@ define([
 		}
 	}
 
-	// Load settings in settings dialog
-	var $themeInputElt;
-
 	function loadSettings() {
-
-		// Layout orientation
-		utils.setInputRadio("radio-layout-orientation", settings.layoutOrientation);
-		// Theme
-		utils.setInputValue($themeInputElt, window.theme);
-		$themeInputElt.change();
-		// Lazy rendering
-		utils.setInputChecked("#input-settings-lazy-rendering", settings.lazyRendering);
-		// Editor font class
-		utils.setInputRadio("radio-settings-editor-font-class", settings.editorFontClass);
-		// Font size ratio
-		utils.setInputValue("#input-settings-font-size", settings.fontSizeRatio);
-		// Max width ratio
-		utils.setInputValue("#input-settings-max-width", settings.maxWidthRatio);
-		// Cursor locking ratio
-		utils.setInputValue("#input-settings-cursor-focus", settings.cursorFocusRatio);
-		// Default content
-		utils.setInputValue("#textarea-settings-default-content", settings.defaultContent);
-		// Edit mode
-		utils.setInputRadio("radio-settings-edit-mode", settings.editMode);
-		// Commit message
-		utils.setInputValue("#input-settings-publish-commit-msg", settings.commitMsg);
-		// Markdown MIME type
-		utils.setInputValue("#input-settings-markdown-mime-type", settings.markdownMimeType);
-		// Template
-		utils.setInputValue("#textarea-settings-publish-template", settings.template);
-
 		// Load extension settings
 		eventMgr.onLoadSettings();
 	}
@@ -140,31 +109,6 @@ define([
 	function saveSettings(event) {
 		var newSettings = {};
 
-		// Layout orientation
-		newSettings.layoutOrientation = utils.getInputRadio("radio-layout-orientation");
-		// Theme
-		var theme = utils.getInputValue($themeInputElt);
-		// Lazy Rendering
-		newSettings.lazyRendering = utils.getInputChecked("#input-settings-lazy-rendering");
-		// Editor font class
-		newSettings.editorFontClass = utils.getInputRadio("radio-settings-editor-font-class");
-		// Font size ratio
-		newSettings.fontSizeRatio = utils.getInputFloatValue("#input-settings-font-size", event, 0.1, 10);
-		// Max width ratio
-		newSettings.maxWidthRatio = utils.getInputFloatValue("#input-settings-max-width", event, 0.1, 10);
-		// Cursor locking ratio
-		newSettings.cursorFocusRatio = utils.getInputFloatValue("#input-settings-cursor-focus", event, 0, 1);
-		// Default content
-		newSettings.defaultContent = utils.getInputValue("#textarea-settings-default-content");
-		// Edit mode
-		newSettings.editMode = utils.getInputRadio("radio-settings-edit-mode");
-		// Commit message
-		newSettings.commitMsg = utils.getInputTextValue("#input-settings-publish-commit-msg", event);
-		// Markdown MIME type
-		newSettings.markdownMimeType = utils.getInputValue("#input-settings-markdown-mime-type");
-		// Template
-		newSettings.template = utils.getInputTextValue("#textarea-settings-publish-template", event);
-
 		// Save extension settings
 		newSettings.extensionSettings = {};
 		eventMgr.onSaveSettings(newSettings.extensionSettings, event);
@@ -172,7 +116,6 @@ define([
 		if(!event.isPropagationStopped()) {
 			$.extend(settings, newSettings);
 			storage.settings = JSON.stringify(settings);
-			storage.themeV4 = theme;
 		}
 	}
 
@@ -300,8 +243,6 @@ define([
 		}).on('hidden.bs.modal', '.modal', function() {
 			// Focus on the editor when modal is gone
 			editor.focus();
-			// Revert to current theme when settings modal is closed
-			applyTheme(window.theme);
 		}).on('keypress', '.modal', function(e) {
 			// Handle enter key in modals
 			if(e.which == 13 && !$(e.target).is("textarea")) {
@@ -337,74 +278,6 @@ define([
 			}
 		});
 
-		// Hot theme switcher in the settings
-		var currentTheme = window.theme;
-
-		function applyTheme(theme) {
-			theme = theme || 'default';
-			if(currentTheme != theme) {
-				var themeModule = "less!themes/" + theme;
-				if(window.baseDir.indexOf('-min') !== -1) {
-					themeModule = "css!themes/" + theme;
-				}
-				// Undefine the module in RequireJS
-				requirejs.undef(themeModule);
-				// Then reload the style
-				require([
-					themeModule
-				]);
-				currentTheme = theme;
-			}
-		}
-
-		$themeInputElt = $("#input-settings-theme");
-		$themeInputElt.on("change", function() {
-			applyTheme(this.value);
-		});
-
-		// Import docs and settings
-		$(".action-import-docs-settings").click(function() {
-			$("#input-file-import-docs-settings").click();
-		});
-		var newstorage;
-		$("#input-file-import-docs-settings").change(function(evt) {
-			var files = (evt.dataTransfer || evt.target).files;
-			$(".modal-settings").modal("hide");
-			_.each(files, function(file) {
-				var reader = new FileReader();
-				reader.onload = (function(importedFile) {
-					return function(e) {
-						try {
-							newstorage = JSON.parse(e.target.result);
-							// Compare storage version
-							var newVersion = parseInt(newstorage.version.match(/^v(\d+)$/)[1], 10);
-							var currentVersion = parseInt(storage.version.match(/^v(\d+)$/)[1], 10);
-							if(newVersion > currentVersion) {
-								// We manage storage upgrade, not downgrade
-								eventMgr.onError("Incompatible version. Please upgrade StackEdit.");
-							} else {
-								$('.modal-import-docs-settings').modal('show');
-							}
-						}
-						catch(exc) {
-							eventMgr.onError("Wrong format: " + importedFile.name);
-						}
-						$("#input-file-import-docs-settings").val('');
-					};
-				})(file);
-				reader.readAsText(file);
-			});
-		});
-		$(".action-import-docs-settings-confirm").click(function() {
-			storage.clear();
-			var allowedKeys = /^file\.|^folder\.|^publish\.|^settings$|^sync\.|^google\.|^author\.|^themeV4$|^version$/;
-			_.each(newstorage, function(value, key) {
-				if(allowedKeys.test(key)) {
-					storage[key] = value;
-				}
-			});
-			window.location.reload();
-		});
 		// Export settings
 		$(".action-export-docs-settings").click(function() {
 			utils.saveAs(JSON.stringify(storage), "StackEdit local storage.json");
@@ -425,13 +298,6 @@ define([
 		$(".action-reset-input").click(function() {
 			utils.resetModalInputs();
 		});
-
-		utils.createTooltip(".tooltip-lazy-rendering", 'Disable preview rendering while typing in order to offload CPU. Refresh preview after 500 ms of inactivity.');
-		utils.createTooltip(".tooltip-default-content", [
-			'Thanks for supporting StackEdit by adding a backlink in your documents!<br/><br/>',
-			'<b class="text-danger">NOTE: Backlinks in Stack Exchange Q/A are not welcome.</b>'
-		].join(''));
-		utils.createTooltip(".tooltip-template", settingsTemplateTooltipHTML);
 
 		// Avoid dropdown panels to close on click
 		$("div.dropdown-menu").click(function(e) {
@@ -454,15 +320,6 @@ define([
 			}
 		});
 
-		if(window.viewerMode === false) {
-			// Load theme list
-			var themeOptions = _.reduce(constants.THEME_LIST, function(themeOptions, name, value) {
-				return themeOptions + '<option value="' + value + '">' + name + '</option>';
-			}, '');
-			document.getElementById('input-settings-theme').innerHTML = themeOptions;
-		}
-
-		//$('.modal-header').append('<a class="dialog-header-message" href="https://github.com/benweet/stackedit/issues/385" target="_blank">Give your feedback <i class="icon-megaphone"></i></a>');
 	});
 
 	return core;

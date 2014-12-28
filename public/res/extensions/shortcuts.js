@@ -5,7 +5,6 @@ define([
 	"mousetrap",
 	"classes/Extension",
 	"text!extensions/shortcutsDefaultMapping.settings",
-	"text!html/shortcutsSettingsBlock.html",
 	"text!html/tooltipSettingsShortcutsExtension.html"
 ], function($, _, utils, mousetrap, Extension, shortcutsDefaultMapping, shortcutsSettingsBlockHTML, tooltipSettingsShortcutsExtensionHTML) {
 

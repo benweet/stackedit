@@ -5,27 +5,29 @@ StackEdit is a full-featured, open-source Markdown editor based on PageDown, the
 
 Main showcase: https://stackedit.io/.
 
-This version
-============
+This branch (editor only)
+==========================
 
 Minimal client-side part of Stackedit.
 
-This branch removes all server-side parts, and special code for handling www.stackedit.io, google analytics, and more.
+This branch [jesperronn/split_panel_editor](https://github.com/jesperronn/stackedit/tree/split_panel_editor) removes all server-side parts, and special code for handling www.stackedit.io, google analytics, and more.
 
 The goal is that this should provide a clean split-panel editor without extra bells and whistles.
 
-* [ ] Remove server-side part
+It is meant to be integrated in your own page, as an editor plugin for that particular purpose only.
+
+* [x] Remove server-side parts used only be third-party integration points
 * [x] Remove chrome extension/app
 * [x] Remove firefox extension/app
 * [x] Remove google analytics
-* [ ] remove special edge-case syntax handling of markdown
+* [x] remove special edge-case syntax handling of markdown
   - [x] remove mathjax
   - [x] remove flowchart/uml
   - [x] remove syntax highlighting
 * [x] Remove extra css stylesheets, there is only need for one stylesheet here
-* [ ] Remove all settings and provide some decent defaults.
+* [x] Remove all settings and provide some decent defaults.
 * [x] Remove monetizeJs
-* [ ] Remove all third-party integration points:
+* [x] Remove all third-party integration points:
   - [x] twitter
   - [x] google drive
   - [x] picasa

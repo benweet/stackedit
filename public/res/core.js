@@ -4,6 +4,7 @@ define([
 	"underscore",
 	"crel",
 	"editor",
+	"themeLoader",
 	"layout",
 	"constants",
 	"utils",
@@ -14,7 +15,7 @@ define([
 	"text!html/bodyViewer.html",
 	"storage",
 	'pagedown'
-], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, bodyEditorHTML, bodyViewerHTML) {
+], function($, _, crel, editor, themeLoader, layout, constants, utils, storage, settings, eventMgr, bodyEditorHTML, bodyViewerHTML) {
 
 	var core = {};
 

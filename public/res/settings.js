@@ -5,6 +5,7 @@ define([
 ], function(_, constants, storage) {
 
 	var settings = {
+		defaultTheme: 'default',
 		layoutOrientation: "horizontal",
 		editMode: 'ltr',
 		lazyRendering: true,

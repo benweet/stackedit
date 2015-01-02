@@ -7,7 +7,8 @@ define([
 	'eventMgr',
 	'crel',
 	'mousetrap',
-	'hammerjs'
+	'hammerjs',
+	'themeLoader'
 ], function($, _, utils, constants, settings, eventMgr, crel, mousetrap, hammer) {
 	var layout = {};
 

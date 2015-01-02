@@ -1,9 +1,10 @@
-/*globals Markdown, requirejs */
+/*globals Markdown */
 define([
 	"jquery",
 	"underscore",
 	"crel",
 	"editor",
+	"themeLoader",
 	"layout",
 	"constants",
 	"utils",
@@ -17,7 +18,7 @@ define([
 	"text!html/tooltipSettingsPdfOptions.html",
 	"storage",
 	'pagedown'
-], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, MonetizeJS, bodyEditorHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsPdfOptionsTooltipHTML) {
+], function($, _, crel, editor, themeLoader, layout, constants, utils, storage, settings, eventMgr, MonetizeJS, bodyEditorHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsPdfOptionsTooltipHTML) {
 
 	var core = {};
 
@@ -111,7 +112,7 @@ define([
 		// Layout orientation
 		utils.setInputRadio("radio-layout-orientation", settings.layoutOrientation);
 		// Theme
-		utils.setInputValue($themeInputElt, window.theme);
+		utils.setInputValue($themeInputElt, themeLoader.theme);
 		$themeInputElt.change();
 		// Lazy rendering
 		utils.setInputChecked("#input-settings-lazy-rendering", settings.lazyRendering);
@@ -380,6 +381,8 @@ define([
 	eventMgr.addListener('onOfflineChanged', checkPayment);
 
 	// Other initialization that are not prioritary
+
+
 	eventMgr.addListener("onReady", function() {
 
 		$(document.body).on('shown.bs.modal', '.modal', function() {
@@ -396,7 +399,7 @@ define([
 			// Focus on the editor when modal is gone
 			editor.focus();
 			// Revert to current theme when settings modal is closed
-			applyTheme(window.theme);
+			themeLoader.applyTheme(themeLoader.theme);
 		}).on('keypress', '.modal', function(e) {
 			// Handle enter key in modals
 			if(e.which == 13 && !$(e.target).is("textarea")) {
@@ -447,29 +450,9 @@ define([
 			window.location.reload();
 		});
 
-		// Hot theme switcher in the settings
-		var currentTheme = window.theme;
-
-		function applyTheme(theme) {
-			theme = theme || 'default';
-			if(currentTheme != theme) {
-				var themeModule = "less!themes/" + theme;
-				if(window.baseDir.indexOf('-min') !== -1) {
-					themeModule = "css!themes/" + theme;
-				}
-				// Undefine the module in RequireJS
-				requirejs.undef(themeModule);
-				// Then reload the style
-				require([
-					themeModule
-				]);
-				currentTheme = theme;
-			}
-		}
-
 		$themeInputElt = $("#input-settings-theme");
 		$themeInputElt.on("change", function() {
-			applyTheme(this.value);
+			themeLoader.applyTheme(this.value);
 		});
 
 		// Import docs and settings

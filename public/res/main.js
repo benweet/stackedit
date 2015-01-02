@@ -190,12 +190,6 @@ catch(e) {
 // Viewer mode is deduced from the body class
 window.viewerMode = /(^| )viewer($| )/.test(document.body.className);
 
-// Keep the theme in a global variable
-window.theme = localStorage.themeV4 || 'default';
-var themeModule = "less!themes/" + window.theme;
-if(window.baseDir.indexOf('-min') !== -1) {
-	themeModule = "css!themes/" + window.theme;
-}
 
 // RequireJS entry point. By requiring synchronizer, publisher, sharing and
 // media-importer, we are actually loading all the modules
@@ -209,8 +203,7 @@ require([
 	"sharing",
 	"mediaImporter",
 	"css",
-	"rangy-cssclassapplier",
-	themeModule
+	"rangy-cssclassapplier"
 ], function($, rangy, core, eventMgr) {
 
 	if(window.noStart) {

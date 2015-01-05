@@ -17,13 +17,12 @@ Getting started
 
         npm install
 
-- Download dependencies and build:
+Download dependencies and build (done automatically after `npm install`)
 
-        npm run setup
 
 - Serve **StackEdit** at `http://localhost:80/`:
 
-        npm run server
+        npm start
 
  Run **StackEdit** in debug mode (no application cache, serve original files instead of minified):
 

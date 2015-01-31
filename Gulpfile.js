@@ -90,7 +90,8 @@ gulp.task('requirejs', [
 		.pipe(uglify({
 			output: {
 				beautify: true,
-				indent_level: 1
+				indent_level: 1,
+				ascii_only: true
 			}
 		}))
 		.pipe(gulp.dest('./public/res-min/'));

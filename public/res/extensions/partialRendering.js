@@ -166,6 +166,7 @@ define([
 
 		// Rewrite footnotes in the footer and update footnote numbers
 		footnoteContainerElt.innerHTML = '';
+		delete footnoteContainerElt.exportableHtml;
 		var usedFootnoteIds = [];
 		if(hasFootnotes === true) {
 			var footnoteElts = crel('ol');

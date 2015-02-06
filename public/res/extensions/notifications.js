@@ -52,6 +52,9 @@ define([
         jGrowl("<i class='icon-white " + iconClass + "'></i> " + _.escape(message).replace(/\n/g, '<br/>'), options);
     }
 
+    // expose for use from plugins/overrides:
+    notifications.message = showMessage;
+
     var isReady = false;
     var $offlineStatusElt;
     var $extensionButtonsElt;

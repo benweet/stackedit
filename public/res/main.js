@@ -207,6 +207,7 @@ require([
 	"synchronizer",
 	"publisher",
 	"sharing",
+	"overrides",
 	"mediaImporter",
 	"css",
 	"rangy-cssclassapplier",

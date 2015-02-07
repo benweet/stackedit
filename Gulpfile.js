@@ -142,10 +142,6 @@ gulp.task('copy-img', function() {
  * cache.manifest
  */
 
-/** __________________________________________
- * cache.manifest
- */
-
 gulp.task('cache-manifest', function() {
 	return gulp.src([
 				'./public/res-min/**/*.*'

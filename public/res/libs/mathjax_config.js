@@ -3,7 +3,6 @@ MathJax.Hub.Config({
     "HTML-CSS": {
         preferredFont: "TeX",
         availableFonts: [
-            "STIX",
             "TeX"
         ],
         linebreaks: {

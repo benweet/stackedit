@@ -265,14 +265,23 @@ define([
 		version = "v21";
 	}
 
-	if(version == "v21") {
+    if(version == "v21") {
+        if(_.has(localStorage, 'settings')) {
+            settings = JSON.parse(localStorage.settings);
+            settings.template && (settings.template = settings.template.replace('https://stackedit.io/libs/MathJax/', 'https://cdn.mathjax.org/mathjax/latest/'));
+            settings.pdfTemplate && (settings.pdfTemplate = settings.pdfTemplate.replace('/libs/MathJax/', '/res/bower-libs/MathJax/'));
+            localStorage.settings = JSON.stringify(settings);
+        }
+        version = "v22";
+    }
+
+	if(version == "v22") {
 		if(_.has(localStorage, 'settings')) {
 			settings = JSON.parse(localStorage.settings);
-			settings.template && (settings.template = settings.template.replace('https://stackedit.io/libs/MathJax/', 'https://cdn.mathjax.org/mathjax/latest/'));
-			settings.pdfTemplate && (settings.pdfTemplate = settings.pdfTemplate.replace('/libs/MathJax/', '/res/bower-libs/MathJax/'));
+			settings.couchdbUrl && (settings.couchdbUrl = settings.couchdbUrl.replace('https://stackedit.couchappy.com/documents', 'https://stackedit.smileupps.com/documents'));
 			localStorage.settings = JSON.stringify(settings);
 		}
-		version = "v22";
+		version = "v23";
 	}
 
 	localStorage.version = version;

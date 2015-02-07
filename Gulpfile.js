@@ -85,8 +85,12 @@ gulp.task('requirejs', [
 			'less/lessc'
 		]
 	})
-		.pipe(uglify())
-		.pipe(gulp.dest('./public/res-min/'));
+	.pipe(uglify({
+		output: {
+			ascii_only: true
+		}
+	}))
+	.pipe(gulp.dest('./public/res-min/'));
 });
 
 /** __________________________________________

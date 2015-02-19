@@ -193,10 +193,10 @@ define([
 		document.body.className += ' ' + settings.editMode;
 
 		if(window.viewerMode === true) {
-			document.body.innerHTML = bodyViewerHTML;
+			document.body.innerHTML += bodyViewerHTML;
 		}
 		else {
-			document.body.innerHTML = bodyEditorHTML;
+			document.body.innerHTML += bodyEditorHTML;
 		}
 
 		// Initialize utils library

@@ -1,0 +1,138 @@
+.navbar {
+	.layout-panel();
+	width: 100%;
+	padding: 0;
+	border: 0;
+	border-top: 1px solid @primary-border-color;
+	border-bottom: 1px solid @primary-border-color;
+	border-radius: 0;
+	z-index: 20;
+	.left-space, .right-space {
+		width: 25px;
+		height: @input-height-slim;
+	}
+	.nav {
+		float: left;
+		margin: 5px 9px;
+		height: @input-height-slim;
+		& > li {
+			display: inline-block;
+		}
+		// Dropdown submenu
+		&.pull-right {
+			float: right;
+			& > li > .dropdown-menu {
+				right: 0;
+				left: auto;
+				.dropdown-menu {
+					right: 100%;
+					left: auto;
+					margin-right: -1px;
+					margin-left: 0;
+				}
+			}
+		}
+	}
+	.btn {
+		height: @input-height-slim;
+		padding: 6px 8px;
+	}
+	.btn-group > .btn {
+		&.disabled,
+		&.blocked,
+		&[disabled] {
+			* {
+				color: fade(@btn-success-color, 30%);
+			}
+		}
+	}
+
+	.button-open-discussion {
+		&.some {
+			color: lighten(@alert-warning-text, 8%) !important;
+		}
+		&.replied {
+			color: lighten(@alert-danger-text, 8%) !important;
+		}
+	}
+
+	.file-title-navbar {
+		display: inline-block;
+		vertical-align: middle;
+		padding: 1px 15px;
+		font-size: 1.5em;
+        line-height: 1.45em;
+		font-weight: 200;
+		overflow: hidden;
+		white-space: nowrap;
+		a {
+			i {
+				.transition(~"all ease-in-out .15s");
+			}
+			.icon-link-ext-alt {
+				color: transparent;
+				position: relative;
+				font-size: 12px;
+				top: -12px;
+				right: 6px;
+				width: 0;
+			}
+			&:hover {
+				[class^="icon-provider-"], [class*=" icon-provider-"] {
+					.opacity(0.5);
+				}
+				.icon-link-ext-alt {
+					color: @btn-success-hover-color;
+				}
+			}
+		}
+	}
+
+	.input-file-title-container {
+		display: inline-block;
+        vertical-align: middle;
+        .input-file-title {
+    		width: @title-max-width;
+            font-size: 16px;
+            height: @input-height-slim;
+        }
+	}
+
+	.working-indicator {
+		display: inline-block;
+		vertical-align: middle;
+	    overflow: hidden;
+        height: @input-height-slim;
+        width: 60px;
+        padding-top: 8px;
+		.bar {
+		    display: inline-block;
+		    width: 14px;
+            height: 6px;
+            border-radius: 1px;
+            margin: 0 2px;
+            .opacity(0.25);
+            background-color: fade(@btn-success-color, 75%);
+		}
+	}
+
+	.offline-status > div {
+		display: inline-block;
+		vertical-align: middle;
+		height: @input-height-slim;
+		padding: 9px 10px;
+	}
+
+	.buttons-dropdown {
+	    > .nav {
+    	    margin-left: 0;
+    	    margin-right: 0;
+	    }
+	}
+
+	div.dropdown-menu {
+	    top: initial;
+	    padding: 5px;
+        margin: 10px;
+	}
+}

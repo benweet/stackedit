@@ -47,63 +47,9 @@
 
 @import (less) "../libs/fontello/css/fontello.css";
 
-
-@body-bg: #fff;
-@text-color: #000;
-@kbd-color: #333;
-@kbd-bg-color: #FFF;
-@kbd-border-color: fade(@text-color, 25%);
-@blockquote-border-color: #eee;
-@blockquote-bg: #f8f8f8;
-@title-base-size: 1em;
-@code-color: @text-color;
-@code-bg: fade(@text-color, 4%);
-@pre-bg: @blockquote-bg;
-@pre-border-color: @blockquote-border-color;
-@font-size-base: 15px;
-@line-height-base: 1.45;
-@p-margin: 1.1em;
-@headings-font-family: inherit;
-@headings-font-weight: 300;
-
-@font-face {
-  font-family: 'fontello';
-  src: url('../font/fontello.svg#fontello') format('svg'),
-       url('../font/fontello.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-    font-family: 'Source Code Pro';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Source Code Pro'), local('SourceCodePro-Regular'), url("../font/SourceCodePro-Regular-webfont.woff") format('woff');
-}
-@font-face {
-    font-family: 'Source Code Pro';
-    font-style: normal;
-    font-weight: 700;
-    src: local('Source Code Pro Bold'), local('SourceCodePro-Bold'), url("../font/SourceCodePro-Bold-webfont.woff") format('woff');
-}
-
-@font-family-monospace: "Source Code Pro", monospace;
-
-// Copied from Bootstrap in order to have correct urls
-.img-retina(@file-1x; @file-2x; @width-1x; @height-1x) {
-  background-image: url("@{file-1x}");
-
-  @media
-  only screen and (-webkit-min-device-pixel-ratio: 2),
-  only screen and (   min--moz-device-pixel-ratio: 2),
-  only screen and (     -o-min-device-pixel-ratio: 2/1),
-  only screen and (        min-device-pixel-ratio: 2),
-  only screen and (                min-resolution: 192dpi),
-  only screen and (                min-resolution: 2dppx) {
-    background-image: url("@{file-2x}");
-    background-size: @width-1x @height-1x;
-  }
-}
+@import "variables.less";
+@import "mixins.less";
+@import "fonts.less";
 
 .container {
     margin-bottom: 180px;
@@ -258,93 +204,7 @@ kbd {
  * Icons
  ***********************/
 
-[class^="icon-"], [class*=" icon-"] {
-	display: inline-block;
-	line-height: 1.35em;
-	vertical-align: middle;
-	background-repeat: no-repeat;
-}
-
-// Custom icons (not from Font Awesome)
-.icon-code {
-	font-size: 83%;
-    line-height: 1.65em;
-	&:before {
-    	margin-left: 0.1em;
-    	margin-right: 0.6em;
-	}
-}
-
-.icon-trash {
-	line-height: 1.50em;
-}
-
-.icon-folder-open {
-	font-size: 80%;
-	&:before {
-    	margin-right: 0.6em;
-	}
-}
-
-.icon-chart-bar {
-	font-size: 95%;
-	&:before {
-    	margin-left: 0.3em;
-    	margin-right: 0.3em;
-	}
-}
-
-.icon-comment-alt, .icon-chat {
-	font-size: 92%;
-    &:before {
-        margin-left: 0.1em;
-        margin-right: 0.4em;
-    }
-}
-
-.icon-file {
-    font-size: 104%;
-	margin-left: 0;
-	margin-right: 0;
-}
-
-.icon-link {
-    font-size: 104%;
-}
-
-// Provider's icons (the colored ones)
-[class^="icon-provider-"], [class*=" icon-provider-"] {
-	.img-retina('../img/icons.png', '../img/icons2x.png', 256px, 16px);
-	width: 18px;
-	height: 16px;
-	margin-top: -2px;
-	margin-left: 2px;
-}
-
-.icon-provider-stackedit {
-	background-position: 0 0;
-}
-
-.icon-provider-dropbox {
-	background-position: -37px 0;
-}
-
-.icon-provider-github,.icon-provider-gist {
-	background-position: -54px 0;
-}
-
-.icon-provider-tumblr {
-	background-position: -90px 0;
-}
-
-.icon-provider-wordpress {
-	background-position: -108px 0;
-}
-
-.icon-provider-ssh {
-	background-position: -126px 0;
-}
-
+@import "icons.less";
 
 /*******************
  * RTL

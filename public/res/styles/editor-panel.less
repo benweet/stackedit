@@ -1,0 +1,246 @@
+@font-face {
+    font-family: 'PT Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('PT Sans'), local('PTSans'), url("../font/PTSans-Regular-webfont.woff") format('woff');
+}
+@font-face {
+    font-family: 'PT Sans';
+    font-style: normal;
+    font-weight: 700;
+    src: local('PT Sans Bold'), local('PTSans-Bold'), url("../font/PTSans-Bold-webfont.woff") format('woff');
+}
+@font-face {
+    font-family: 'PT Sans';
+    font-style: italic;
+    font-weight: 400;
+    src: local('PT Sans Italic'), local('PTSans-Italic'), url("../font/PTSans-Italic-webfont.woff") format('woff');
+}
+@font-face {
+    font-family: 'PT Sans';
+    font-style: italic;
+    font-weight: 700;
+    src: local('PT Sans Bold Italic'), local('PTSans-BoldItalic'), url("../font/PTSans-BoldItalic-webfont.woff") format('woff');
+}
+
+#wmd-input {
+	.layout-panel();
+	font-family: "PT Sans", sans-serif;
+	line-height: @editor-line-weight;
+    letter-spacing: normal;
+    border-radius: 0;
+	color: @tertiary-color-dark;
+	.box-shadow(none);
+	resize: none;
+	border: none;
+    padding: 0;
+    background-color: @tertiary-bg;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+	word-break: normal;
+    > .editor-content {
+        padding-bottom: 230px;
+    }
+    > .editor-margin {
+        .layout-panel();
+		.discussion {
+			font-size: 17px;
+			&.new {
+				display: none;
+				&:hover, &.active, &.active:hover {
+					display: inline-block;
+					color: fade(@tertiary-color, 35%) !important;
+				}
+			}
+			&.added {
+				color: fade(@label-warning-bg, 70%);
+				&:hover, &.active, &.active:hover {
+					color: fade(@label-warning-bg, 100%) !important;
+				}
+			}
+			&.replied {
+				color: fade(@label-danger-bg, 70%);
+				&:hover, &.active, &.active:hover {
+					color: fade(@label-danger-bg, 80%) !important;
+				}
+			}
+			&.icon-split {
+				font-size: 22px;
+				&:before {
+					margin-right: 0;
+				}
+			}
+			position: absolute;
+			cursor: pointer;
+			&:hover, &.active {
+				text-decoration: none;
+			}
+		}
+    }
+
+	&.has-selection > .editor-margin .discussion.new {
+		display: inline-block;
+		color: fade(@tertiary-color, 25%);
+	}
+
+	&.font-monospaced * {
+		font-family: @font-family-monospace !important;
+		line-height: @editor-line-weight !important;
+		font-size: 1em !important;
+	}
+
+	.comment-highlight, .find-replace-highlight {
+		background-color: fade(@logo-yellow, 50%);
+	}
+
+	.find-replace-select {
+		background-color: rgb(181, 213, 255);
+	}
+
+	.conflict {
+		font-weight: bold;
+		color: @label-danger-bg;
+	}
+
+    .code,
+    .pre {
+		color: @tertiary-color-darker;
+        font: normal 0.9em @font-family-monospace;
+    }
+
+    .tag {
+        color: @tertiary-color-darker;
+        font: bold 0.9em @font-family-monospace;
+        .punctuation,
+        .attr-value,
+        .attr-name {
+            font-weight: normal;
+        }
+    }
+
+    .latex, .math {
+        color: @tertiary-color;
+    }
+
+    .entity {
+        font: italic 0.9em @font-family-monospace;
+        color: @tertiary-color;
+    }
+
+	.table {
+		font: normal 0.9em @font-family-monospace;
+		* {
+			font-size: 1em;
+		}
+	}
+
+    .comment {
+        font-size: 0.9em;
+        color: @tertiary-color-light;
+    }
+
+    .keyword {
+		color: @tertiary-color-dark;
+		font-weight: bold;
+	}
+
+    .code, .img, .imgref, .md-toc {
+		background-color: @code-bg;
+        border-radius: @border-radius-base;
+        padding: 0.15em 0;
+    }
+
+    .md-toc {
+        font-size: 2.5em;
+        padding: 0.2em;
+    }
+
+    .link, .linkref {
+        .md-underlined-text {
+            color: inherit;
+        }
+    }
+
+    .blockquote {
+        color: @tertiary-color;
+    }
+
+    .h1, .h2, .h3, .h4, .h5, .h6 {
+        font-weight: 600;
+        .md-hash {
+            color: @tertiary-color-lighter;
+        }
+    }
+
+    .h1, .h11 { font-size: 1.7em; }
+    .h2, .h22 { font-size: 1.4em; }
+    .h3 { font-size: 1.2em; }
+    .h4 { font-size: 1.1em; }
+    .h5 { font-size: 1em; }
+    .h6 { font-size: 0.9em; }
+
+
+    .md, .hr {
+        color: @tertiary-color-light;
+        font-style: normal;
+        font-weight: normal
+    }
+
+    .em,
+    .em .md {
+        font-style: italic;
+    }
+
+    .strong,
+    .strong .md {
+        font-weight: bold;
+    }
+
+    .md-strike-text {
+        text-decoration: line-through
+    }
+
+	.url,
+	.email,
+    .md-underlined-text {
+        text-decoration: underline;
+    }
+
+	.linkdef .url {
+		color: @tertiary-color-light;
+	}
+
+	.img,
+    .imgref {
+        padding: 0.2em 0.4em;
+        padding-right: 0;
+    }
+
+    .md-bang,
+    .md-alt,
+    .md-title {
+        color: @secondary-color-dark;
+    }
+}
+
+
+.find-replace {
+	position: absolute;
+	bottom: 0;
+	width: 410px;
+	background-color: @secondary-bg;
+	padding: 15px 20px;
+	border-top: 1px solid @secondary-border-color;
+	border-right: 1px solid @secondary-border-color;
+	border-top-right-radius: 6px;
+	.form-group {
+		width: 180px;
+		padding: 0 5px;
+	}
+	.close {
+		position: absolute;
+		right: 20px;
+		top: 10px;
+	}
+}

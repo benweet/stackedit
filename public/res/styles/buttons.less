@@ -1,0 +1,71 @@
+.btn {
+	padding: 8px 11px;
+	.transition(~"background-color ease-in-out .15s, color ease-in-out .15s, border-color ease-in-out .15s");
+}
+
+.btn-default, .alertify-button-cancel {
+    &:hover,
+    &:focus,
+    &:active,
+    .open &.dropdown-toggle {
+    	color: darken(@secondary, 30%);
+    	border-color: @btn-default-hover-border;
+    	background-color: @btn-default-hover-bg !important; // important to override .nav > li > a:hover
+    }
+}
+
+.btn-primary, .alertify-button-ok {
+    &:hover,
+    &:focus,
+    &:active,
+    .open &.dropdown-toggle {
+    	color: darken(@secondary, 30%);
+    	border-color: @btn-primary-hover-border;
+    	background-color: @btn-primary-hover-bg !important; // important to override .nav > li > a:hover
+    }
+}
+
+// Navbar buttons
+.btn-success {
+    &:hover,
+    &:focus,
+    &:active,
+    .open &.dropdown-toggle {
+    	color: @btn-success-hover-color !important;
+    	border-color: @primary-border-color;
+    	background-color: @btn-success-hover-bg !important; // important to override .nav > li > a:hover
+    }
+}
+
+// Buttons over preview
+.btn-info {
+    &:hover,
+    &:focus,
+    &:active,
+    &.info-tooltip,
+	.info-tooltip &,
+    .open &.dropdown-toggle {
+    	color: @btn-info-hover-color;
+    	border-color: @btn-info-hover-border;
+    	background-color: @btn-info-hover-bg !important; // important to override .nav > li > a:hover
+    }
+}
+
+.btn-link:hover {
+	text-decoration: none;
+}
+
+.btn-group {
+    .btn + .btn,
+    .btn + .btn-group,
+    .btn-group + .btn,
+    .btn-group + .btn-group {
+        margin-left: 0;
+    }
+}
+
+// Last dropdown-toggle in a button-group (Bootstrap override)
+.btn-group>.btn+.dropdown-toggle {
+	padding-right: 11px;
+	padding-left: 11px;
+}

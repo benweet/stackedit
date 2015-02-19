@@ -1,0 +1,22 @@
+.preview-panel {
+	.layout-panel();
+	overflow: hidden;
+	.box-shadow(inset 1px 0 fade(@secondary, 6%));
+	background-color: @secondary-bg-light;
+	z-index: 10;
+	.layout-animate & {
+		.transition(350ms ease-in-out all);
+	}
+	.layout-vertical & {
+		.box-shadow(inset 0 1px fade(@secondary, 6%));
+	}
+}
+
+#preview-contents {
+	text-align: justify;
+}
+
+.preview-container {
+	position: absolute;
+	overflow: auto;
+}

@@ -191,12 +191,15 @@ define([
 	core.onReady = function() {
 		// Add RTL class
 		document.body.className += ' ' + settings.editMode;
-
+		var tmp = document.createElement('body');
 		if(window.viewerMode === true) {
-			document.body.innerHTML += bodyViewerHTML;
+			tmp.innerHTML = bodyViewerHTML;
 		}
 		else {
-			document.body.innerHTML += bodyEditorHTML;
+			tmp.innerHTML = bodyEditorHTML;
+		}
+		while (tmp.firstChild) {
+			document.body.appendChild(tmp.firstChild);
 		}
 
 		// Initialize utils library

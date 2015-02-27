@@ -19,9 +19,8 @@ define([
 				htmlParser(sectionHtml, htmlSanitizeWriter(buf, function(uri, isImage) {
 					return !/^unsafe/.test(sanitizeUri(uri, isImage));
 				}));
-				buf.push('<div class="se-preview-section-delimiter"></div>');
 			});
-			return buf.slice(0, -1).join('');
+			return buf.join('<div class="se-preview-section-delimiter"></div>');
 		});
 	};
 

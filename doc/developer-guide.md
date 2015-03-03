@@ -580,14 +580,9 @@ myExtension.onMessage = function(message) {
 
 ----------
 
-#### ACE events
 
-- **`onAceCreated(aceEditor)`**
 
-    The ACE editor has just been created.
-    - `aceEditor`: the ACE editor object.
 
-    > Triggered by the `core` module.
 
 
 

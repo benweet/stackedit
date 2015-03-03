@@ -15,19 +15,19 @@ Getting started
 
 - Download development tools:
 
-		npm install
+        npm install
 
 - Download dependencies and build:
 
-		npm run setup
+        npm run setup
 
 - Serve **StackEdit** at `http://localhost:80/`:
 
-		npm run server
+        npm run server
 
  Run **StackEdit** in debug mode (no application cache, serve original files instead of minified):
 
-		http://localhost/?debug
+        http://localhost/?debug
 
 ### Add new dependencies
 
@@ -35,15 +35,15 @@ Getting started
 
 - Install new dependencies using [Bower][7]:
 
-		bower install <library> --save
+        bower install <library> --save
 
 - Add the new dependency to [RequireJS][8] configuration file (`main.js`):
 
-		gulp bower-requirejs
+        gulp bower-requirejs
 
 ### Build/minify
 
-	gulp
+    gulp
 
 ### Deploy
 
@@ -205,9 +205,9 @@ A `publishAttributes` object is an object that describes a publish location. Att
 - `publishIndex`: the unique string index of the publish location.
 - `provider`: the [`provider`][38] module that handles the publish location.
 - `format`: the publishing format for the publish location. It can be:
-	- `markdown` for Markdown format.
-	- `html` for HTML format.
-	- `template` for template format.
+    - `markdown` for Markdown format.
+    - `html` for HTML format.
+    - `template` for template format.
 
 
 ----------

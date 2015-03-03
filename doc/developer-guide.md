@@ -502,14 +502,13 @@ myExtension.onMessage = function(message) {
     The layout has just been created.
     - `layout`: the layout object of the UI Layout library.
 
-    > Triggered by the `core` module.
+    > Triggered by the `layout` module.
 
-- **`onLayoutResize(paneName)`**
+- **`onLayoutResize()`**
 
     One pane of the layout has been resized.
-    - `paneName`: the name of the resized layout pane.
 
-    > Triggered by the `core` module.
+    > Triggered by the `layout` module.
 
 - **`onCreateButton()`**
 

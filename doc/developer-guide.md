@@ -577,13 +577,59 @@ myExtension.onMessage = function(message) {
 
     > Triggered by the `yamlFrontMatterParser` extension.
 
-
 ----------
 
+#### Internal PageDown editor events
+`Markdown.Editor.js` exposes some hooks, which Stackedit uses internally to render
+text, calculate Scolling positions, and more.
+
+- **`onPreviewRefresh`**
+    Called with no arguments after the preview has been refreshed
+    > Triggered by the `Markdown.Editor` module.
 
 
+- **`postBlockquoteCreation(selection)`**
+    called with the user's selection *after* the blockquote was created; should
+    return the actual to-be-inserted text
+    > Triggered by the `Markdown.Editor` module.
+
+- **`insertImageDialog(callback(imageUrl){})`**
+    called with one parameter: a callback to be called with the URL of the image.
+    If the application creates its own image insertion dialog, this hook should
+    return true, and the callback should be called with the chosen image url
+    (or null if the user cancelled). If this hook returns false, the default
+    dialog will be used.
+    > Triggered by the `Markdown.Editor` module.
+
+- **`insertLinkDialog`**
+    Custom hook added by Stackedit. See `insertImageDialog` above.
+    > Triggered by the `Markdown.Editor` module.
 
 
+----------
+#### Internal PageDown converter events
+`Markdown.Converter.js` exposes some hooks, which Stackedit uses internally
+
+- **`preConversion(text)`**
+
+    called with the orignal text as given to makeHtml. The result of this
+    plugin hook is the actual markdown source that will be cooked
+
+    > Triggered by the `Markdown.Converter` module.
+
+- **`postNormalization(text)`**
+
+    called with the text once all normalizations have been completed (tabs to
+    spaces, line endings, etc.), but before any conversions have been made
+
+    > Triggered by the `Markdown.Converter` module.
+
+- **`postConversion(html)`**
+
+    called with the final cooked HTML code. The result of this plugin hook is
+    the actual output of makeHtml
+
+    > Triggered by the `Markdown.Converter` module.
 
 
 > Written with [StackEdit](https://stackedit.io/).

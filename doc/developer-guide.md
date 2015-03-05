@@ -523,12 +523,6 @@ myExtension.onMessage = function(message) {
 
     > Triggered by the `eventMgr` module. Only `Extension` modules can handle this event.
 
-- **`onCreateEditorButton()`**
-
-    Allows extensions to add their own buttons in the side bar. Implemented listeners have to return an HTML button element. See `onCreateButton` for a concrete example.
-
-    > Triggered by the `eventMgr` module. Only `Extension` modules can handle this event.
-
 - **`onCreatePreviewButton()`**
 
     Allows extensions to add their own buttons over the preview. Implemented listeners have to return an HTML button element. See `onCreateButton` for a concrete example.
@@ -546,7 +540,7 @@ myExtension.onMessage = function(message) {
     - `editor`: the Pagedown editor object before `run` has been called.
 
     > Triggered by the `core` module.
-    
+
 - **`onAsyncPreview(callback)`**
 
     Called after Pagedown's synchronous rendering to trigger extra asynchronous rendering (such as MathJax). Implemented listeners have to call the callback parameter after processing in order other `onAsyncPreview` listeners to run.

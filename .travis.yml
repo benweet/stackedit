@@ -5,7 +5,6 @@ cache:
   directories:
     - node_modules
     - public/res/bower-libs
-before_install: npm install -g gulp-cli bower
 
 # don't run tests, since Stackedit have none.
 # 'true' is a unix command which returns 0

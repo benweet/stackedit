@@ -1,9 +1,12 @@
 language: node_js
 node_js:
   - "0.10"
+cache:
+  directories:
+    - node_modules
+    - public/res/bower-libs
 before_install: npm install -g gulp-cli bower
 
-# don't run tests, since Stackedit have none. 
+# don't run tests, since Stackedit have none.
 # 'true' is a unix command which returns 0
 script: true
-

@@ -199,6 +199,26 @@ define([
         $(documentListElt.querySelectorAll('.input-rename')).addClass('hide');
     };
 
+
+    documentManager.createFolder = function(folderName) {
+            var folderIndex;
+            do {
+                folderIndex = "folder." + utils.id();
+            } while (_.has(folderList, folderIndex));
+
+            storage[folderIndex + ".name"] = folderName;
+
+            // Create the folder descriptor
+            var folderDesc = new FolderDescriptor(folderIndex, folderName);
+
+            // Add the index to the folder list
+            utils.appendIndexToArray("folder.list", folderIndex);
+            folderList[folderIndex] = folderDesc;
+            eventMgr.onFoldersChanged();
+            return folderDesc;
+    }
+
+
     documentManager.onReady = function() {
         modalElt = document.querySelector('.modal-document-manager');
         documentListElt = modalElt.querySelector('.list-group.document-list');
@@ -222,24 +242,11 @@ define([
 
         // Create folder action
         $(modalElt.querySelectorAll('.action-create-folder')).click(function() {
-            var folderIndex;
-            do {
-                folderIndex = "folder." + utils.id();
-            } while (_.has(folderList, folderIndex));
-
-            storage[folderIndex + ".name"] = constants.DEFAULT_FOLDER_NAME;
-
-            // Create the folder descriptor
-            var folderDesc = new FolderDescriptor(folderIndex, constants.DEFAULT_FOLDER_NAME);
-
-            // Add the index to the folder list
-            utils.appendIndexToArray("folder.list", folderIndex);
-            folderList[folderIndex] = folderDesc;
-            eventMgr.onFoldersChanged();
+            var newFolder = documentManager.createFolder(constants.DEFAULT_FOLDER_NAME);
 
             // Edit the name when folder has just been created
             setTimeout(function() {
-                var renameButtonElt = $(modalElt.querySelector('[data-folder-index="' + folderIndex + '"] .button-rename')).click();
+                var renameButtonElt = $(modalElt.querySelector('[data-folder-index="' + newFolder.folderIndex + '"] .button-rename')).click();
                 modalElt.scrollTop += renameButtonElt.offset().top - 50;
             }, 60);
         });

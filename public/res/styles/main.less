@@ -866,34 +866,4 @@ div.jGrowl {
  * Only show preview pane to printer
  **************************************/
 
-@media print {
-	html, body {
-		background: transparent !important;
-		overflow: visible !important;
-	}
-
-	.layout-wrapper-l1 > *,
-	.layout-wrapper-l2 > *,
-	.layout-wrapper-l3 > *,
-	.preview-panel > * {
-		display: none !important;
-	}
-
-	.layout-wrapper-l1,
-	.layout-wrapper-l2,
-	.layout-wrapper-l3,
-	.preview-panel,
-	.preview-container {
-		background: transparent !important;
-		display: block !important;
-		position: static !important;
-		overflow: visible !important;
-		width: auto !important;
-		height: auto !important;
-		.translate(0, 0) !important;
-	}
-
-	#preview-contents {
-		padding: 0 50px !important;
-	}
-}
+@import "print.less";

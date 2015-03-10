@@ -450,6 +450,7 @@ define([
 		// Hot theme switcher in the settings
 		var currentTheme = window.theme;
 
+    var loadedTheme,lastTheme,_themeStyle = window._themeStyle;
 		function applyTheme(theme) {
 			theme = theme || 'default';
 			if(currentTheme != theme) {
@@ -462,7 +463,15 @@ define([
 				// Then reload the style
 				require([
 					themeModule
-				]);
+				],function(){
+          if(!_themeStyle[theme]){
+            loadedTheme = document.styleSheets[document.styleSheets.length-1];
+            _themeStyle[theme] = loadedTheme
+          }
+          _themeStyle[theme].disabled = false;
+          if(lastTheme) lastTheme.disabled = true;
+          lastTheme = _themeStyle[theme];
+        });
 				currentTheme = theme;
 			}
 		}

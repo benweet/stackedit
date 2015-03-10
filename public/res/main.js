@@ -217,6 +217,10 @@ require([
 		return;
 	}
 
+  window._themeStyle = {};
+  window._themeStyle[window.theme]= document.styleSheets[document.styleSheets.length-1];
+
+
 	$(function() {
 		rangy.init();
 

@@ -368,11 +368,13 @@ define([
 				}
 
 				var discussion = context.getDiscussion();
+				var timestamp = Date.now();
 				context.$contentInputElt.val('');
 				closeCurrentPopover();
 
 				discussion.commentList = discussion.commentList || [];
 				discussion.commentList.push({
+					created_at: timestamp,
 					author: author,
 					content: content
 				});
@@ -384,6 +386,7 @@ define([
 						discussionIndex = utils.id();
 					} while(_.has(discussionList, discussionIndex));
 					discussion.discussionIndex = discussionIndex;
+					discussion.created_at = timestamp;
 					discussionList[discussionIndex] = discussion;
 					context.fileDesc.discussionList = discussionList; // Write discussionList in localStorage
 					eventMgr.onDiscussionCreated(context.fileDesc, discussion);

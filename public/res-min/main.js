@@ -91,7 +91,7 @@ function diff_match_patch() {
  }
  function v(e, t) {
   var n = t.nodeName.toLowerCase();
-  "input" === n && Ft.test(e.type) ? t.checked = e.checked : ("input" === n || "textarea" === n) && (t.defaultValue = e.defaultValue);
+  "input" === n && Ot.test(e.type) ? t.checked = e.checked : ("input" === n || "textarea" === n) && (t.defaultValue = e.defaultValue);
  }
  function b(e, t) {
   if (t in e) return t;
@@ -171,7 +171,7 @@ function diff_match_patch() {
   for (i in n) n[i] !== t && ((o[i] ? e : r || (r = {}))[i] = n[i]);
   return r && ot.extend(!0, e, r), e;
  }
- function L(e, n, i) {
+ function M(e, n, i) {
   for (var r, o, a, s, l = e.contents, c = e.dataTypes; "*" === c[0]; ) c.shift(), 
   r === t && (r = e.mimeType || n.getResponseHeader("Content-Type"));
   if (r) for (o in l) if (l[o] && l[o].test(r)) {
@@ -190,7 +190,7 @@ function diff_match_patch() {
   }
   return a ? (a !== c[0] && c.unshift(a), i[a]) : void 0;
  }
- function M(e, t, n, i) {
+ function L(e, t, n, i) {
   var r, o, a, s, l, c = {}, u = e.dataTypes.slice();
   if (u[1]) for (a in e.converters) c[a.toLowerCase()] = e.converters[a];
   for (o = u.shift(); o; ) if (e.responseFields[o] && (n[e.responseFields[o]] = t), 
@@ -251,7 +251,7 @@ function diff_match_patch() {
     return t ? s.resolveWith(e, [ c, t ]) : s.rejectWith(e, [ c, t ]), this;
    }
   }), u = c.props;
-  for (F(u, c.opts.specialEasing); a > o; o++) if (i = An[o].call(c, e, u, c.opts)) return i;
+  for (O(u, c.opts.specialEasing); a > o; o++) if (i = An[o].call(c, e, u, c.opts)) return i;
   return ot.map(u, R, c), ot.isFunction(c.opts.start) && c.opts.start.call(e, c), 
   ot.fx.timer(ot.extend(l, {
    elem: e,
@@ -259,7 +259,7 @@ function diff_match_patch() {
    queue: c.opts.queue
   })), c.progress(c.opts.progress).done(c.opts.done, c.opts.complete).fail(c.opts.fail).always(c.opts.always);
  }
- function F(e, t) {
+ function O(e, t) {
   var n, i, r, o, a;
   for (n in e) if (i = ot.camelCase(n), r = t[i], o = e[n], ot.isArray(o) && (r = o[1], 
   o = e[n] = o[0]), n !== i && (e[i] = o, delete e[n]), a = ot.cssHooks[i], a && "expand" in a) {
@@ -267,7 +267,7 @@ function diff_match_patch() {
    for (n in o) n in e || (e[n] = o[n], t[n] = r);
   } else t[i] = r;
  }
- function O(e, n, i) {
+ function F(e, n, i) {
   var r, o, a, s, l, c, u = this, d = {}, p = e.style, h = e.nodeType && y(e), f = gt.get(e, "fxshow");
   i.queue || (l = ot._queueHooks(e, "fx"), null == l.unqueued && (l.unqueued = 0, 
   c = l.empty.fire, l.empty.fire = function() {
@@ -537,7 +537,7 @@ function diff_match_patch() {
  }), q = ot(z), function(e, t) {
   function n(e, t, n, i) {
    var r, o, a, s, l, c, u, d, f, m;
-   if ((t ? t.ownerDocument || t : $) !== M && L(t), t = t || M, n = n || [], !e || "string" != typeof e) return n;
+   if ((t ? t.ownerDocument || t : $) !== L && M(t), t = t || L, n = n || [], !e || "string" != typeof e) return n;
    if (1 !== (s = t.nodeType) && 9 !== s) return [];
    if (R && !i) {
     if (r = yt.exec(e)) if (a = r[1]) {
@@ -577,7 +577,7 @@ function diff_match_patch() {
    return e[j] = !0, e;
   }
   function o(e) {
-   var t = M.createElement("div");
+   var t = L.createElement("div");
    try {
     return !!e(t);
    } catch (n) {
@@ -699,7 +699,7 @@ function diff_match_patch() {
   function y(e, t) {
    var i = 0, o = t.length > 0, a = e.length > 0, s = function(r, s, l, c, u) {
     var d, p, h, f = [], m = 0, v = "0", b = r && [], y = null != u, x = D, w = r || a && k.find.TAG("*", u && s.parentNode || s), S = q += null == x ? 1 : Math.random() || .1;
-    for (y && (D = s !== M && s, _ = i); null != (d = w[v]); v++) {
+    for (y && (D = s !== L && s, _ = i); null != (d = w[v]); v++) {
      if (a && d) {
       for (p = 0; h = e[p++]; ) if (h(d, s, l)) {
        c.push(d);
@@ -739,7 +739,7 @@ function diff_match_patch() {
    }
    return I(e, c)(i, t, !R, n, ht.test(e)), n;
   }
-  var S, C, _, k, E, T, I, D, N, L, M, A, R, P, F, O, B, j = "sizzle" + -new Date(), $ = e.document, q = 0, G = 0, H = i(), U = i(), z = i(), V = !1, W = function(e, t) {
+  var S, C, _, k, E, T, I, D, N, M, L, A, R, P, O, F, B, j = "sizzle" + -new Date(), $ = e.document, q = 0, G = 0, H = i(), U = i(), z = i(), V = !1, W = function(e, t) {
    return e === t ? (V = !0, 0) : 0;
   }, X = typeof t, Q = 1 << 31, Y = {}.hasOwnProperty, K = [], J = K.pop, Z = K.push, et = K.push, tt = K.slice, nt = K.indexOf || function(e) {
    for (var t = 0, n = this.length; n > t; t++) if (this[t] === e) return t;
@@ -772,11 +772,11 @@ function diff_match_patch() {
   T = n.isXML = function(e) {
    var t = e && (e.ownerDocument || e).documentElement;
    return t ? "HTML" !== t.nodeName : !1;
-  }, C = n.support = {}, L = n.setDocument = function(e) {
+  }, C = n.support = {}, M = n.setDocument = function(e) {
    var t = e ? e.ownerDocument || e : $, n = t.defaultView;
-   return t !== M && 9 === t.nodeType && t.documentElement ? (M = t, A = t.documentElement, 
+   return t !== L && 9 === t.nodeType && t.documentElement ? (L = t, A = t.documentElement, 
    R = !T(t), n && n.attachEvent && n !== n.top && n.attachEvent("onbeforeunload", function() {
-    L();
+    M();
    }), C.attributes = o(function(e) {
     return e.className = "i", !e.getAttribute("className");
    }), C.getElementsByTagName = o(function(e) {
@@ -813,7 +813,7 @@ function diff_match_patch() {
     return o;
    }, k.find.CLASS = C.getElementsByClassName && function(e, t) {
     return typeof t.getElementsByClassName !== X && R ? t.getElementsByClassName(e) : void 0;
-   }, F = [], P = [], (C.qsa = bt.test(t.querySelectorAll)) && (o(function(e) {
+   }, O = [], P = [], (C.qsa = bt.test(t.querySelectorAll)) && (o(function(e) {
     e.innerHTML = "<select><option selected=''></option></select>", e.querySelectorAll("[selected]").length || P.push("\\[" + rt + "*(?:value|" + it + ")"), 
     e.querySelectorAll(":checked").length || P.push(":checked");
    }), o(function(e) {
@@ -821,9 +821,9 @@ function diff_match_patch() {
     n.setAttribute("type", "hidden"), e.appendChild(n).setAttribute("t", ""), e.querySelectorAll("[t^='']").length && P.push("[*^$]=" + rt + "*(?:''|\"\")"), 
     e.querySelectorAll(":enabled").length || P.push(":enabled", ":disabled"), e.querySelectorAll("*,:x"), 
     P.push(",.*:");
-   })), (C.matchesSelector = bt.test(O = A.webkitMatchesSelector || A.mozMatchesSelector || A.oMatchesSelector || A.msMatchesSelector)) && o(function(e) {
-    C.disconnectedMatch = O.call(e, "div"), O.call(e, "[s!='']:x"), F.push("!=", ct);
-   }), P = P.length && new RegExp(P.join("|")), F = F.length && new RegExp(F.join("|")), 
+   })), (C.matchesSelector = bt.test(F = A.webkitMatchesSelector || A.mozMatchesSelector || A.oMatchesSelector || A.msMatchesSelector)) && o(function(e) {
+    C.disconnectedMatch = F.call(e, "div"), F.call(e, "[s!='']:x"), O.push("!=", ct);
+   }), P = P.length && new RegExp(P.join("|")), O = O.length && new RegExp(O.join("|")), 
    B = bt.test(A.contains) || A.compareDocumentPosition ? function(e, t) {
     var n = 9 === e.nodeType ? e.documentElement : e, i = t && t.parentNode;
     return e === i || !(!i || 1 !== i.nodeType || !(n.contains ? n.contains(i) : e.compareDocumentPosition && 16 & e.compareDocumentPosition(i)));
@@ -843,19 +843,19 @@ function diff_match_patch() {
     for (i = n; i = i.parentNode; ) c.unshift(i);
     for (;l[r] === c[r]; ) r++;
     return r ? s(l[r], c[r]) : l[r] === $ ? -1 : c[r] === $ ? 1 : 0;
-   }, t) : M;
+   }, t) : L;
   }, n.matches = function(e, t) {
    return n(e, null, null, t);
   }, n.matchesSelector = function(e, t) {
-   if ((e.ownerDocument || e) !== M && L(e), t = t.replace(ft, "='$1']"), !(!C.matchesSelector || !R || F && F.test(t) || P && P.test(t))) try {
-    var i = O.call(e, t);
+   if ((e.ownerDocument || e) !== L && M(e), t = t.replace(ft, "='$1']"), !(!C.matchesSelector || !R || O && O.test(t) || P && P.test(t))) try {
+    var i = F.call(e, t);
     if (i || C.disconnectedMatch || e.document && 11 !== e.document.nodeType) return i;
    } catch (r) {}
-   return n(t, M, null, [ e ]).length > 0;
+   return n(t, L, null, [ e ]).length > 0;
   }, n.contains = function(e, t) {
-   return (e.ownerDocument || e) !== M && L(e), B(e, t);
+   return (e.ownerDocument || e) !== L && M(e), B(e, t);
   }, n.attr = function(e, n) {
-   (e.ownerDocument || e) !== M && L(e);
+   (e.ownerDocument || e) !== L && M(e);
    var i = k.attrHandle[n.toLowerCase()], r = i && Y.call(k.attrHandle, n.toLowerCase()) ? i(e, n, !R) : t;
    return r === t ? C.attributes || !R ? e.getAttribute(n) : (r = e.getAttributeNode(n)) && r.specified ? r.value : null : r;
   }, n.error = function(e) {
@@ -1006,7 +1006,7 @@ function diff_match_patch() {
      return e === A;
     },
     focus: function(e) {
-     return e === M.activeElement && (!M.hasFocus || M.hasFocus()) && !!(e.type || e.href || ~e.tabIndex);
+     return e === L.activeElement && (!L.hasFocus || L.hasFocus()) && !!(e.type || e.href || ~e.tabIndex);
     },
     enabled: function(e) {
      return e.disabled === !1;
@@ -1087,9 +1087,9 @@ function diff_match_patch() {
     o = z(e, y(r, i));
    }
    return o;
-  }, C.sortStable = j.split("").sort(W).join("") === j, C.detectDuplicates = V, L(), 
+  }, C.sortStable = j.split("").sort(W).join("") === j, C.detectDuplicates = V, M(), 
   C.sortDetached = o(function(e) {
-   return 1 & e.compareDocumentPosition(M.createElement("div"));
+   return 1 & e.compareDocumentPosition(L.createElement("div"));
   }), o(function(e) {
    return e.innerHTML = "<a href='#'></a>", "#" === e.firstChild.getAttribute("href");
   }) || a("type|href|height|width", function(e, t, n) {
@@ -1779,7 +1779,7 @@ function diff_match_patch() {
    return n ? ot.event.trigger(e, t, n, !0) : void 0;
   }
  });
- var It = /^.[^:#\[\.,]*$/, Dt = /^(?:parents|prev(?:Until|All))/, Nt = ot.expr.match.needsContext, Lt = {
+ var It = /^.[^:#\[\.,]*$/, Dt = /^(?:parents|prev(?:Until|All))/, Nt = ot.expr.match.needsContext, Mt = {
   children: !0,
   contents: !0,
   next: !0,
@@ -1869,7 +1869,7 @@ function diff_match_patch() {
   ot.fn[e] = function(n, i) {
    var r = ot.map(this, t, n);
    return "Until" !== e.slice(-5) && (i = n), i && "string" == typeof i && (r = ot.filter(i, r)), 
-   this.length > 1 && (Lt[e] || ot.unique(r), Dt.test(e) && r.reverse()), this.pushStack(r);
+   this.length > 1 && (Mt[e] || ot.unique(r), Dt.test(e) && r.reverse()), this.pushStack(r);
   };
  }), ot.extend({
   filter: function(e, t, n) {
@@ -1890,7 +1890,7 @@ function diff_match_patch() {
    return n;
   }
  });
- var Mt = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi, At = /<([\w:]+)/, Rt = /<|&#?\w+;/, Pt = /<(?:script|style|link)/i, Ft = /^(?:checkbox|radio)$/i, Ot = /checked\s*(?:[^=]|=\s*.checked.)/i, Bt = /^$|\/(?:java|ecma)script/i, jt = /^true\/(.*)/, $t = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g, qt = {
+ var Lt = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi, At = /<([\w:]+)/, Rt = /<|&#?\w+;/, Pt = /<(?:script|style|link)/i, Ot = /^(?:checkbox|radio)$/i, Ft = /checked\s*(?:[^=]|=\s*.checked.)/i, Bt = /^$|\/(?:java|ecma)script/i, jt = /^true\/(.*)/, $t = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g, qt = {
   option: [ 1, "<select multiple='multiple'>", "</select>" ],
   thead: [ 1, "<table>", "</table>" ],
   col: [ 2, "<table><colgroup>", "</colgroup></table>" ],
@@ -1951,7 +1951,7 @@ function diff_match_patch() {
     var n = this[0] || {}, i = 0, r = this.length;
     if (e === t && 1 === n.nodeType) return n.innerHTML;
     if ("string" == typeof e && !Pt.test(e) && !qt[(At.exec(e) || [ "", "" ])[1].toLowerCase()]) {
-     e = e.replace(Mt, "<$1></$2>");
+     e = e.replace(Lt, "<$1></$2>");
      try {
       for (;r > i; i++) n = this[i] || {}, 1 === n.nodeType && (ot.cleanData(g(n, !1)), 
       n.innerHTML = e);
@@ -1976,7 +1976,7 @@ function diff_match_patch() {
   domManip: function(e, t, n) {
    e = J.apply([], e);
    var i, r, o, a, s, l, c = 0, u = this.length, d = this, f = u - 1, m = e[0], v = ot.isFunction(m);
-   if (v || !(1 >= u || "string" != typeof m || ot.support.checkClone) && Ot.test(m)) return this.each(function(i) {
+   if (v || !(1 >= u || "string" != typeof m || ot.support.checkClone) && Ft.test(m)) return this.each(function(i) {
     var r = d.eq(i);
     v && (e[0] = m.call(this, i, r.html())), r.domManip(e, t, n);
    });
@@ -2013,7 +2013,7 @@ function diff_match_patch() {
    for (var r, o, a, s, l, c, u = 0, d = e.length, p = t.createDocumentFragment(), h = []; d > u; u++) if (r = e[u], 
    r || 0 === r) if ("object" === ot.type(r)) ot.merge(h, r.nodeType ? [ r ] : r); else if (Rt.test(r)) {
     for (o = o || p.appendChild(t.createElement("div")), a = (At.exec(r) || [ "", "" ])[1].toLowerCase(), 
-    s = qt[a] || qt._default, o.innerHTML = s[1] + r.replace(Mt, "<$1></$2>") + s[2], 
+    s = qt[a] || qt._default, o.innerHTML = s[1] + r.replace(Lt, "<$1></$2>") + s[2], 
     c = s[0]; c--; ) o = o.lastChild;
     ot.merge(h, o.childNodes), o = p.firstChild, o.textContent = "";
    } else h.push(t.createTextNode(r));
@@ -2204,7 +2204,7 @@ function diff_match_patch() {
     return e ? ot.makeArray(e) : this;
    }).filter(function() {
     var e = this.type;
-    return this.name && !ot(this).is(":disabled") && on.test(this.nodeName) && !rn.test(e) && (this.checked || !Ft.test(e));
+    return this.name && !ot(this).is(":disabled") && on.test(this.nodeName) && !rn.test(e) && (this.checked || !Ot.test(e));
    }).map(function(e, t) {
     var n = ot(this).val();
     return null == n ? null : ot.isArray(n) ? ot.map(n, function(e) {
@@ -2320,7 +2320,7 @@ function diff_match_patch() {
    function i(e, n, i, s) {
     var c, d, b, y, w, C = n;
     2 !== x && (x = 2, l && clearTimeout(l), r = t, a = s || "", S.readyState = e > 0 ? 4 : 0, 
-    c = e >= 200 && 300 > e || 304 === e, i && (y = L(p, S, i)), y = M(p, y, S, c), 
+    c = e >= 200 && 300 > e || 304 === e, i && (y = M(p, S, i)), y = L(p, y, S, c), 
     c ? (p.ifModified && (w = S.getResponseHeader("Last-Modified"), w && (ot.lastModified[o] = w), 
     w = S.getResponseHeader("etag"), w && (ot.etag[o] = w)), 204 === e || "HEAD" === p.type ? C = "nocontent" : 304 === e ? C = "notmodified" : (C = y.state, 
     d = y.data, b = y.error, c = !b)) : (b = C, (e || !C) && (C = "error", 0 > e && (e = 0))), 
@@ -2493,9 +2493,9 @@ function diff_match_patch() {
    }
   } : void 0;
  });
- var In, Dn, Nn = /^(?:toggle|show|hide)$/, Ln = new RegExp("^(?:([+-])=|)(" + at + ")([a-z%]*)$", "i"), Mn = /queueHooks$/, An = [ O ], Rn = {
+ var In, Dn, Nn = /^(?:toggle|show|hide)$/, Mn = new RegExp("^(?:([+-])=|)(" + at + ")([a-z%]*)$", "i"), Ln = /queueHooks$/, An = [ F ], Rn = {
   "*": [ function(e, t) {
-   var n = this.createTween(e, t), i = n.cur(), r = Ln.exec(t), o = r && r[3] || (ot.cssNumber[e] ? "" : "px"), a = (ot.cssNumber[e] || "px" !== o && +i) && Ln.exec(ot.css(n.elem, e)), s = 1, l = 20;
+   var n = this.createTween(e, t), i = n.cur(), r = Mn.exec(t), o = r && r[3] || (ot.cssNumber[e] ? "" : "px"), a = (ot.cssNumber[e] || "px" !== o && +i) && Mn.exec(ot.css(n.elem, e)), s = 1, l = 20;
    if (a && a[3] !== o) {
     o = o || a[3], r = r || [], a = +i || 1;
     do s = s || ".5", a /= s, ot.style(n.elem, e, a + o); while (s !== (s = n.cur() / i) && 1 !== s && --l);
@@ -2569,7 +2569,7 @@ function diff_match_patch() {
    return "string" != typeof e && (i = n, n = e, e = t), n && e !== !1 && this.queue(e || "fx", []), 
    this.each(function() {
     var t = !0, n = null != e && e + "queueHooks", o = ot.timers, a = gt.get(this);
-    if (n) a[n] && a[n].stop && r(a[n]); else for (n in a) a[n] && a[n].stop && Mn.test(n) && r(a[n]);
+    if (n) a[n] && a[n].stop && r(a[n]); else for (n in a) a[n] && a[n].stop && Ln.test(n) && r(a[n]);
     for (n = o.length; n--; ) o[n].elem !== this || null != e && o[n].queue !== e || (o[n].anim.stop(i), 
     t = !1, o.splice(n, 1));
     (t || !i) && ot.dequeue(this, e);
@@ -3008,10 +3008,10 @@ function diff_match_patch() {
  }, e.DOMException = _;
 }), rangy.createModule("DomRange", function(e) {
  function t(e, t) {
-  return 3 != e.nodeType && (O.isAncestorOf(e, t.startContainer, !0) || O.isAncestorOf(e, t.endContainer, !0));
+  return 3 != e.nodeType && (F.isAncestorOf(e, t.startContainer, !0) || F.isAncestorOf(e, t.endContainer, !0));
  }
  function n(e) {
-  return O.getDocument(e.startContainer);
+  return F.getDocument(e.startContainer);
  }
  function i(e, t, n) {
   var i = e._listeners[t];
@@ -3021,14 +3021,14 @@ function diff_match_patch() {
   });
  }
  function r(e) {
-  return new B(e.parentNode, O.getNodeIndex(e));
+  return new B(e.parentNode, F.getNodeIndex(e));
  }
  function o(e) {
-  return new B(e.parentNode, O.getNodeIndex(e) + 1);
+  return new B(e.parentNode, F.getNodeIndex(e) + 1);
  }
  function a(e, t, n) {
   var i = 11 == e.nodeType ? e.firstChild : e;
-  return O.isCharacterDataNode(t) ? n == t.length ? O.insertAfter(e, t) : t.parentNode.insertBefore(e, 0 == n ? t : O.splitDataNode(t, n)) : n >= t.childNodes.length ? t.appendChild(e) : t.insertBefore(e, t.childNodes[n]), 
+  return F.isCharacterDataNode(t) ? n == t.length ? F.insertAfter(e, t) : t.parentNode.insertBefore(e, 0 == n ? t : F.splitDataNode(t, n)) : n >= t.childNodes.length ? t.appendChild(e) : t.insertBefore(e, t.childNodes[n]), 
   i;
  }
  function s(e) {
@@ -3047,7 +3047,7 @@ function diff_match_patch() {
   for (var o, a; o = e.next(); ) if (e.isPartiallySelectedSubtree()) {
    if (t(o) === !1) return void (n.stop = !0);
    if (a = e.getSubtreeIterator(), l(a, t, n), a.detach(!0), n.stop) return;
-  } else for (i = O.createIterator(o); r = i.next(); ) if (t(r) === !1) return void (n.stop = !0);
+  } else for (i = F.createIterator(o); r = i.next(); ) if (t(r) === !1) return void (n.stop = !0);
  }
  function c(e) {
   for (var t; e.next(); ) e.isPartiallySelectedSubtree() ? (t = e.getSubtreeIterator(), 
@@ -3071,15 +3071,15 @@ function diff_match_patch() {
  }
  function p(e) {
   var t = "undefined" == typeof e.getName ? "Range" : e.getName();
-  return "[" + t + "(" + O.inspectNode(e.startContainer) + ":" + e.startOffset + ", " + O.inspectNode(e.endContainer) + ":" + e.endOffset + ")]";
+  return "[" + t + "(" + F.inspectNode(e.startContainer) + ":" + e.startOffset + ", " + F.inspectNode(e.endContainer) + ":" + e.endOffset + ")]";
  }
  function h(e, t) {
   if (this.range = e, this.clonePartiallySelectedTextNodes = t, !e.collapsed) {
    this.sc = e.startContainer, this.so = e.startOffset, this.ec = e.endContainer, this.eo = e.endOffset;
    var n = e.commonAncestorContainer;
-   this.sc === this.ec && O.isCharacterDataNode(this.sc) ? (this.isSingleCharacterDataNode = !0, 
-   this._first = this._last = this._next = this.sc) : (this._first = this._next = this.sc !== n || O.isCharacterDataNode(this.sc) ? O.getClosestAncestorIn(this.sc, n, !0) : this.sc.childNodes[this.so], 
-   this._last = this.ec !== n || O.isCharacterDataNode(this.ec) ? O.getClosestAncestorIn(this.ec, n, !0) : this.ec.childNodes[this.eo - 1]);
+   this.sc === this.ec && F.isCharacterDataNode(this.sc) ? (this.isSingleCharacterDataNode = !0, 
+   this._first = this._last = this._next = this.sc) : (this._first = this._next = this.sc !== n || F.isCharacterDataNode(this.sc) ? F.getClosestAncestorIn(this.sc, n, !0) : this.sc.childNodes[this.so], 
+   this._last = this.ec !== n || F.isCharacterDataNode(this.ec) ? F.getClosestAncestorIn(this.ec, n, !0) : this.ec.childNodes[this.eo - 1]);
   }
  }
  function f(e) {
@@ -3091,7 +3091,7 @@ function diff_match_patch() {
  function g(e) {
   return function(t, n) {
    for (var i, r = n ? t : t.parentNode; r; ) {
-    if (i = r.nodeType, O.arrayContains(e, i)) return r;
+    if (i = r.nodeType, F.arrayContains(e, i)) return r;
     r = r.parentNode;
    }
    return null;
@@ -3104,10 +3104,10 @@ function diff_match_patch() {
   if (!e.startContainer) throw new j("INVALID_STATE_ERR");
  }
  function y(e, t) {
-  if (!O.arrayContains(t, e.nodeType)) throw new f("INVALID_NODE_TYPE_ERR");
+  if (!F.arrayContains(t, e.nodeType)) throw new f("INVALID_NODE_TYPE_ERR");
  }
  function x(e, t) {
-  if (0 > t || t > (O.isCharacterDataNode(e) ? e.length : e.childNodes.length)) throw new j("INDEX_SIZE_ERR");
+  if (0 > t || t > (F.isCharacterDataNode(e) ? e.length : e.childNodes.length)) throw new j("INDEX_SIZE_ERR");
  }
  function w(e, t) {
   if (V(e, !0) !== V(t, !0)) throw new j("WRONG_DOCUMENT_ERR");
@@ -3119,10 +3119,10 @@ function diff_match_patch() {
   if (!e) throw new j(t);
  }
  function _(e) {
-  return !O.arrayContains(q, e.nodeType) && !V(e, !0);
+  return !F.arrayContains(q, e.nodeType) && !V(e, !0);
  }
  function k(e, t) {
-  return t <= (O.isCharacterDataNode(e) ? e.length : e.childNodes.length);
+  return t <= (F.isCharacterDataNode(e) ? e.length : e.childNodes.length);
  }
  function E(e) {
   return !!e.startContainer && !!e.endContainer && !_(e.startContainer) && !_(e.endContainer) && k(e.startContainer, e.startOffset) && k(e.endContainer, e.endOffset);
@@ -3138,17 +3138,17 @@ function diff_match_patch() {
  function N(e) {
   D(e), D(e.prototype);
  }
- function L(e, t) {
+ function M(e, t) {
   return function() {
    T(this);
    var n, i, r = this.startContainer, a = this.startOffset, s = this.commonAncestorContainer, c = new h(this, !0);
-   r !== s && (n = O.getClosestAncestorIn(r, s, !0), i = o(n), r = i.node, a = i.offset), 
+   r !== s && (n = F.getClosestAncestorIn(r, s, !0), i = o(n), r = i.node, a = i.offset), 
    l(c, S), c.reset();
    var u = e(c);
    return c.detach(), t(this, r, a, r, a), u;
   };
  }
- function M(n, i, a) {
+ function L(n, i, a) {
   function s(e, t) {
    return function(n) {
     b(this), y(n, $), y(z(n), q);
@@ -3158,12 +3158,12 @@ function diff_match_patch() {
   }
   function l(e, t, n) {
    var r = e.endContainer, o = e.endOffset;
-   (t !== e.startContainer || n !== e.startOffset) && ((z(t) != z(r) || 1 == O.comparePoints(t, n, r, o)) && (r = t, 
+   (t !== e.startContainer || n !== e.startOffset) && ((z(t) != z(r) || 1 == F.comparePoints(t, n, r, o)) && (r = t, 
    o = n), i(e, t, n, r, o));
   }
   function d(e, t, n) {
    var r = e.startContainer, o = e.startOffset;
-   (t !== e.endContainer || n !== e.endOffset) && ((z(t) != z(r) || -1 == O.comparePoints(t, n, r, o)) && (r = t, 
+   (t !== e.endContainer || n !== e.endOffset) && ((z(t) != z(r) || -1 == F.comparePoints(t, n, r, o)) && (r = t, 
    o = n), i(e, r, o, t, n));
   }
   function p(e, t, n) {
@@ -3184,15 +3184,15 @@ function diff_match_patch() {
     T(this), e ? i(this, this.startContainer, this.startOffset, this.startContainer, this.startOffset) : i(this, this.endContainer, this.endOffset, this.endContainer, this.endOffset);
    },
    selectNodeContents: function(e) {
-    b(this), v(e, !0), i(this, e, 0, e, O.getNodeLength(e));
+    b(this), v(e, !0), i(this, e, 0, e, F.getNodeLength(e));
    },
    selectNode: function(e) {
     b(this), v(e, !1), y(e, $);
     var t = r(e), n = o(e);
     i(this, t.node, t.offset, n.node, n.offset);
    },
-   extractContents: L(u, i),
-   deleteContents: L(c, i),
+   extractContents: M(u, i),
+   deleteContents: M(c, i),
    canSurroundContents: function() {
     T(this), S(this.startContainer), S(this.endContainer);
     var e = new h(this, !0), n = e._first && t(e._first, this) || e._last && t(e._last, this);
@@ -3204,8 +3204,8 @@ function diff_match_patch() {
    splitBoundaries: function() {
     T(this);
     var e = this.startContainer, t = this.startOffset, n = this.endContainer, r = this.endOffset, o = e === n;
-    O.isCharacterDataNode(n) && r > 0 && r < n.length && O.splitDataNode(n, r), O.isCharacterDataNode(e) && t > 0 && t < e.length && (e = O.splitDataNode(e, t), 
-    o ? (r -= t, n = e) : n == e.parentNode && r >= O.getNodeIndex(e) && r++, t = 0), 
+    F.isCharacterDataNode(n) && r > 0 && r < n.length && F.splitDataNode(n, r), F.isCharacterDataNode(e) && t > 0 && t < e.length && (e = F.splitDataNode(e, t), 
+    o ? (r -= t, n = e) : n == e.parentNode && r >= F.getNodeIndex(e) && r++, t = 0), 
     i(this, e, t, n, r);
    },
    normalizeBoundaries: function() {
@@ -3220,22 +3220,22 @@ function diff_match_patch() {
       var a = i.length;
       if (t = o.length, i.insertData(0, o.data), o.parentNode.removeChild(o), e == n) r += t, 
       n = e; else if (n == i.parentNode) {
-       var s = O.getNodeIndex(i);
+       var s = F.getNodeIndex(i);
        r == s ? (n = i, r = a) : r > s && r--;
       }
      }
     }, s = !0;
-    if (O.isCharacterDataNode(n)) n.length == r && o(n); else {
+    if (F.isCharacterDataNode(n)) n.length == r && o(n); else {
      if (r > 0) {
       var l = n.childNodes[r - 1];
-      l && O.isCharacterDataNode(l) && o(l);
+      l && F.isCharacterDataNode(l) && o(l);
      }
      s = !this.collapsed;
     }
     if (s) {
-     if (O.isCharacterDataNode(e)) 0 == t && a(e); else if (t < e.childNodes.length) {
+     if (F.isCharacterDataNode(e)) 0 == t && a(e); else if (t < e.childNodes.length) {
       var c = e.childNodes[t];
-      c && O.isCharacterDataNode(c) && a(c);
+      c && F.isCharacterDataNode(c) && a(c);
      }
     } else e = n, t = r;
     i(this, e, t, n, r);
@@ -3247,7 +3247,7 @@ function diff_match_patch() {
  }
  function A(e) {
   e.collapsed = e.startContainer === e.endContainer && e.startOffset === e.endOffset, 
-  e.commonAncestorContainer = e.collapsed ? e.startContainer : O.getCommonAncestor(e.startContainer, e.endContainer);
+  e.commonAncestorContainer = e.collapsed ? e.startContainer : F.getCommonAncestor(e.startContainer, e.endContainer);
  }
  function R(e, t, n, r, o) {
   var a = e.startContainer !== t || e.startOffset !== n, s = e.endContainer !== r || e.endOffset !== o;
@@ -3261,7 +3261,7 @@ function diff_match_patch() {
   b(e), e.startContainer = e.startOffset = e.endContainer = e.endOffset = null, e.collapsed = e.commonAncestorContainer = null, 
   i(e, "detach", null), e._listeners = null;
  }
- function F(e) {
+ function O(e) {
   this.startContainer = e, this.startOffset = 0, this.endContainer = e, this.endOffset = 0, 
   this._listeners = {
    boundarychange: [],
@@ -3269,7 +3269,7 @@ function diff_match_patch() {
   }, A(this);
  }
  e.requireModules([ "DomUtil" ]);
- var O = e.dom, B = O.DomPosition, j = e.DOMException;
+ var F = e.dom, B = F.DomPosition, j = e.DOMException;
  h.prototype = {
   _current: null,
   _next: null,
@@ -3284,12 +3284,12 @@ function diff_match_patch() {
   },
   next: function() {
    var e = this._current = this._next;
-   return e && (this._next = e !== this._last ? e.nextSibling : null, O.isCharacterDataNode(e) && this.clonePartiallySelectedTextNodes && (e === this.ec && (e = e.cloneNode(!0)).deleteData(this.eo, e.length - this.eo), 
+   return e && (this._next = e !== this._last ? e.nextSibling : null, F.isCharacterDataNode(e) && this.clonePartiallySelectedTextNodes && (e === this.ec && (e = e.cloneNode(!0)).deleteData(this.eo, e.length - this.eo), 
    this._current === this.sc && (e = e.cloneNode(!0)).deleteData(0, this.so))), e;
   },
   remove: function() {
    var e, t, n = this._current;
-   !O.isCharacterDataNode(n) || n !== this.sc && n !== this.ec ? n.parentNode && n.parentNode.removeChild(n) : (e = n === this.sc ? this.so : 0, 
+   !F.isCharacterDataNode(n) || n !== this.sc && n !== this.ec ? n.parentNode && n.parentNode.removeChild(n) : (e = n === this.sc ? this.so : 0, 
    t = n === this.ec ? this.eo : n.length, e != t && n.deleteData(e, t - e));
   },
   isPartiallySelectedSubtree: function() {
@@ -3299,9 +3299,9 @@ function diff_match_patch() {
   getSubtreeIterator: function() {
    var e;
    if (this.isSingleCharacterDataNode) e = this.range.cloneRange(), e.collapse(); else {
-    e = new F(n(this.range));
-    var t = this._current, i = t, r = 0, o = t, a = O.getNodeLength(t);
-    O.isAncestorOf(t, this.sc, !0) && (i = this.sc, r = this.so), O.isAncestorOf(t, this.ec, !0) && (o = this.ec, 
+    e = new O(n(this.range));
+    var t = this._current, i = t, r = 0, o = t, a = F.getNodeLength(t);
+    F.isAncestorOf(t, this.sc, !0) && (i = this.sc, r = this.so), F.isAncestorOf(t, this.ec, !0) && (o = this.ec, 
     a = this.eo), R(e, i, r, o, a);
    }
    return new h(e, this.clonePartiallySelectedTextNodes);
@@ -3326,22 +3326,22 @@ function diff_match_patch() {
    this._current = this._next = this.nodes = null;
   }
  };
- var $ = [ 1, 3, 4, 5, 7, 8, 10 ], q = [ 2, 9, 11 ], G = [ 5, 6, 10, 12 ], H = [ 1, 3, 4, 5, 7, 8, 10, 11 ], U = [ 1, 3, 4, 5, 7, 8 ], z = O.getRootContainer, V = g([ 9, 11 ]), W = g(G), X = g([ 6, 10, 12 ]), Q = document.createElement("style"), Y = !1;
+ var $ = [ 1, 3, 4, 5, 7, 8, 10 ], q = [ 2, 9, 11 ], G = [ 5, 6, 10, 12 ], H = [ 1, 3, 4, 5, 7, 8, 10, 11 ], U = [ 1, 3, 4, 5, 7, 8 ], z = F.getRootContainer, V = g([ 9, 11 ]), W = g(G), X = g([ 6, 10, 12 ]), Q = document.createElement("style"), Y = !1;
  try {
   Q.innerHTML = "<b>x</b>", Y = 3 == Q.firstChild.nodeType;
  } catch (K) {}
  e.features.htmlParsingConforms = Y;
  var J = Y ? function(e) {
-  var t = this.startContainer, n = O.getDocument(t);
+  var t = this.startContainer, n = F.getDocument(t);
   if (!t) throw new j("INVALID_STATE_ERR");
   var i = null;
-  return 1 == t.nodeType ? i = t : O.isCharacterDataNode(t) && (i = O.parentElement(t)), 
-  i = null === i || "HTML" == i.nodeName && O.isHtmlNamespace(O.getDocument(i).documentElement) && O.isHtmlNamespace(i) ? n.createElement("body") : i.cloneNode(!1), 
-  i.innerHTML = e, O.fragmentFromNodeChildren(i);
+  return 1 == t.nodeType ? i = t : F.isCharacterDataNode(t) && (i = F.parentElement(t)), 
+  i = null === i || "HTML" == i.nodeName && F.isHtmlNamespace(F.getDocument(i).documentElement) && F.isHtmlNamespace(i) ? n.createElement("body") : i.cloneNode(!1), 
+  i.innerHTML = e, F.fragmentFromNodeChildren(i);
  } : function(e) {
   b(this);
   var t = n(this), i = t.createElement("body");
-  return i.innerHTML = e, O.fragmentFromNodeChildren(i);
+  return i.innerHTML = e, F.fragmentFromNodeChildren(i);
  }, Z = [ "startContainer", "startOffset", "endContainer", "endOffset", "collapsed", "commonAncestorContainer" ], et = 0, tt = 1, nt = 2, it = 3, rt = 0, ot = 1, at = 2, st = 3;
  I.prototype = {
   attachListener: function(e, t) {
@@ -3351,10 +3351,10 @@ function diff_match_patch() {
    T(this), w(this.startContainer, t.startContainer);
    var n, i, r, o, a = e == it || e == et ? "start" : "end", s = e == tt || e == et ? "start" : "end";
    return n = this[a + "Container"], i = this[a + "Offset"], r = t[s + "Container"], 
-   o = t[s + "Offset"], O.comparePoints(n, i, r, o);
+   o = t[s + "Offset"], F.comparePoints(n, i, r, o);
   },
   insertNode: function(e) {
-   if (T(this), y(e, H), S(this.startContainer), O.isAncestorOf(e, this.startContainer, !0)) throw new j("HIERARCHY_REQUEST_ERR");
+   if (T(this), y(e, H), S(this.startContainer), F.isAncestorOf(e, this.startContainer, !0)) throw new j("HIERARCHY_REQUEST_ERR");
    var t = a(e, this.startContainer, this.startOffset);
    this.setStartBefore(t);
   },
@@ -3362,7 +3362,7 @@ function diff_match_patch() {
    T(this);
    var e, t;
    if (this.collapsed) return n(this).createDocumentFragment();
-   if (this.startContainer === this.endContainer && O.isCharacterDataNode(this.startContainer)) return e = this.startContainer.cloneNode(!0), 
+   if (this.startContainer === this.endContainer && F.isCharacterDataNode(this.startContainer)) return e = this.startContainer.cloneNode(!0), 
    e.data = e.data.slice(this.startOffset, this.endOffset), t = n(this).createDocumentFragment(), 
    t.appendChild(e), t;
    var i = new h(this, !0);
@@ -3381,13 +3381,13 @@ function diff_match_patch() {
   },
   cloneRange: function() {
    T(this);
-   for (var e, t = new F(n(this)), i = Z.length; i--; ) e = Z[i], t[e] = this[e];
+   for (var e, t = new O(n(this)), i = Z.length; i--; ) e = Z[i], t[e] = this[e];
    return t;
   },
   toString: function() {
    T(this);
    var e = this.startContainer;
-   if (e === this.endContainer && O.isCharacterDataNode(e)) return 3 == e.nodeType || 4 == e.nodeType ? e.data.slice(this.startOffset, this.endOffset) : "";
+   if (e === this.endContainer && F.isCharacterDataNode(e)) return 3 == e.nodeType || 4 == e.nodeType ? e.data.slice(this.startOffset, this.endOffset) : "";
    var t = [], n = new h(this, !0);
    return l(n, function(e) {
     (3 == e.nodeType || 4 == e.nodeType) && t.push(e.data);
@@ -3395,13 +3395,13 @@ function diff_match_patch() {
   },
   compareNode: function(e) {
    T(this);
-   var t = e.parentNode, n = O.getNodeIndex(e);
+   var t = e.parentNode, n = F.getNodeIndex(e);
    if (!t) throw new j("NOT_FOUND_ERR");
    var i = this.comparePoint(t, n), r = this.comparePoint(t, n + 1);
    return 0 > i ? r > 0 ? at : rt : r > 0 ? ot : st;
   },
   comparePoint: function(e, t) {
-   return T(this), C(e, "HIERARCHY_REQUEST_ERR"), w(e, this.startContainer), O.comparePoints(e, t, this.startContainer, this.startOffset) < 0 ? -1 : O.comparePoints(e, t, this.endContainer, this.endOffset) > 0 ? 1 : 0;
+   return T(this), C(e, "HIERARCHY_REQUEST_ERR"), w(e, this.startContainer), F.comparePoints(e, t, this.startContainer, this.startOffset) < 0 ? -1 : F.comparePoints(e, t, this.endContainer, this.endOffset) > 0 ? 1 : 0;
   },
   createContextualFragment: J,
   toHtml: function() {
@@ -3410,23 +3410,23 @@ function diff_match_patch() {
    return e.appendChild(this.cloneContents()), e.innerHTML;
   },
   intersectsNode: function(e, t) {
-   if (T(this), C(e, "NOT_FOUND_ERR"), O.getDocument(e) !== n(this)) return !1;
-   var i = e.parentNode, r = O.getNodeIndex(e);
+   if (T(this), C(e, "NOT_FOUND_ERR"), F.getDocument(e) !== n(this)) return !1;
+   var i = e.parentNode, r = F.getNodeIndex(e);
    C(i, "NOT_FOUND_ERR");
-   var o = O.comparePoints(i, r, this.endContainer, this.endOffset), a = O.comparePoints(i, r + 1, this.startContainer, this.startOffset);
+   var o = F.comparePoints(i, r, this.endContainer, this.endOffset), a = F.comparePoints(i, r + 1, this.startContainer, this.startOffset);
    return t ? 0 >= o && a >= 0 : 0 > o && a > 0;
   },
   isPointInRange: function(e, t) {
-   return T(this), C(e, "HIERARCHY_REQUEST_ERR"), w(e, this.startContainer), O.comparePoints(e, t, this.startContainer, this.startOffset) >= 0 && O.comparePoints(e, t, this.endContainer, this.endOffset) <= 0;
+   return T(this), C(e, "HIERARCHY_REQUEST_ERR"), w(e, this.startContainer), F.comparePoints(e, t, this.startContainer, this.startOffset) >= 0 && F.comparePoints(e, t, this.endContainer, this.endOffset) <= 0;
   },
   intersectsRange: function(e, t) {
    if (T(this), n(e) != n(this)) throw new j("WRONG_DOCUMENT_ERR");
-   var i = O.comparePoints(this.startContainer, this.startOffset, e.endContainer, e.endOffset), r = O.comparePoints(this.endContainer, this.endOffset, e.startContainer, e.startOffset);
+   var i = F.comparePoints(this.startContainer, this.startOffset, e.endContainer, e.endOffset), r = F.comparePoints(this.endContainer, this.endOffset, e.startContainer, e.startOffset);
    return t ? 0 >= i && r >= 0 : 0 > i && r > 0;
   },
   intersection: function(e) {
    if (this.intersectsRange(e)) {
-    var t = O.comparePoints(this.startContainer, this.startOffset, e.startContainer, e.startOffset), n = O.comparePoints(this.endContainer, this.endOffset, e.endContainer, e.endOffset), i = this.cloneRange();
+    var t = F.comparePoints(this.startContainer, this.startOffset, e.startContainer, e.startOffset), n = F.comparePoints(this.endContainer, this.endOffset, e.endContainer, e.endOffset), i = this.cloneRange();
     return -1 == t && i.setStart(e.startContainer, e.startOffset), 1 == n && i.setEnd(e.endContainer, e.endOffset), 
     i;
    }
@@ -3435,8 +3435,8 @@ function diff_match_patch() {
   union: function(e) {
    if (this.intersectsRange(e, !0)) {
     var t = this.cloneRange();
-    return -1 == O.comparePoints(e.startContainer, e.startOffset, this.startContainer, this.startOffset) && t.setStart(e.startContainer, e.startOffset), 
-    1 == O.comparePoints(e.endContainer, e.endOffset, this.endContainer, this.endOffset) && t.setEnd(e.endContainer, e.endOffset), 
+    return -1 == F.comparePoints(e.startContainer, e.startOffset, this.startContainer, this.startOffset) && t.setStart(e.startContainer, e.startOffset), 
+    1 == F.comparePoints(e.endContainer, e.endOffset, this.endContainer, this.endOffset) && t.setEnd(e.endContainer, e.endOffset), 
     t;
    }
    throw new f("Ranges do not intersect");
@@ -3445,7 +3445,7 @@ function diff_match_patch() {
    return t ? this.intersectsNode(e, !1) : this.compareNode(e) == st;
   },
   containsNodeContents: function(e) {
-   return this.comparePoint(e, 0) >= 0 && this.comparePoint(e, O.getNodeLength(e)) <= 0;
+   return this.comparePoint(e, 0) >= 0 && this.comparePoint(e, F.getNodeLength(e)) <= 0;
   },
   containsRange: function(e) {
    return this.intersection(e).equals(e);
@@ -3482,7 +3482,7 @@ function diff_match_patch() {
    return "DomRange";
   },
   equals: function(e) {
-   return F.rangesEqual(this, e);
+   return O.rangesEqual(this, e);
   },
   isValid: function() {
    return E(this);
@@ -3490,11 +3490,11 @@ function diff_match_patch() {
   inspect: function() {
    return p(this);
   }
- }, M(F, R, P), e.rangePrototype = I.prototype, F.rangeProperties = Z, F.RangeIterator = h, 
- F.copyComparisonConstants = N, F.createPrototypeRange = M, F.inspect = p, F.getRangeDocument = n, 
- F.rangesEqual = function(e, t) {
+ }, L(O, R, P), e.rangePrototype = I.prototype, O.rangeProperties = Z, O.RangeIterator = h, 
+ O.copyComparisonConstants = N, O.createPrototypeRange = L, O.inspect = p, O.getRangeDocument = n, 
+ O.rangesEqual = function(e, t) {
   return e.startContainer === t.startContainer && e.startOffset === t.startOffset && e.endContainer === t.endContainer && e.endOffset === t.endOffset;
- }, e.DomRange = F, e.RangeException = f;
+ }, e.DomRange = O, e.RangeException = f;
 }), rangy.createModule("WrappedRange", function(e) {
  function t(e) {
   var t = e.parentElement(), n = e.duplicate();
@@ -3741,7 +3741,7 @@ function diff_match_patch() {
   this.refresh();
  }
  function m(e, t) {
-  for (var n, i = S.getDocument(t[0].startContainer), r = S.getBody(i).createControlRange(), o = 0; rangeCount > o; ++o) {
+  for (var n, i = S.getDocument(t[0].startContainer), r = S.getBody(i).createControlRange(), o = 0; o < rangeCount; ++o) {
    n = c(t[o]);
    try {
     r.add(n);
@@ -3760,21 +3760,21 @@ function diff_match_patch() {
   return "[" + r + "(Ranges: " + t.join(", ") + ")(anchor: " + n.inspect() + ", focus: " + i.inspect() + "]";
  }
  e.requireModules([ "DomUtil", "DomRange", "WrappedRange" ]), e.config.checkSelectionRanges = !0;
- var b, y, x = "boolean", w = "_rangySelection", S = e.dom, C = e.util, _ = e.DomRange, k = e.WrappedRange, E = e.DOMException, T = S.DomPosition, I = "Control", D = e.util.isHostMethod(window, "getSelection"), N = e.util.isHostObject(document, "selection"), L = N && (!D || e.config.preferTextRange);
- L ? (b = i, e.isSelectionValid = function(e) {
+ var b, y, x = "boolean", w = "_rangySelection", S = e.dom, C = e.util, _ = e.DomRange, k = e.WrappedRange, E = e.DOMException, T = S.DomPosition, I = "Control", D = e.util.isHostMethod(window, "getSelection"), N = e.util.isHostObject(document, "selection"), M = N && (!D || e.config.preferTextRange);
+ M ? (b = i, e.isSelectionValid = function(e) {
   var t = (e || window).document, n = t.selection;
   return "None" != n.type || S.getDocument(n.createRange().parentElement()) == t;
  }) : D ? (b = n, e.isSelectionValid = function() {
   return !0;
  }) : t.fail("Neither document.selection or window.getSelection() detected."), e.getNativeSelection = b;
- var M = b(), A = e.createNativeRange(document), R = S.getBody(document), P = C.areHostObjects(M, [ "anchorNode", "focusNode" ] && C.areHostProperties(M, [ "anchorOffset", "focusOffset" ]));
+ var L = b(), A = e.createNativeRange(document), R = S.getBody(document), P = C.areHostObjects(L, [ "anchorNode", "focusNode" ] && C.areHostProperties(L, [ "anchorOffset", "focusOffset" ]));
  e.features.selectionHasAnchorAndFocus = P;
- var F = C.isHostMethod(M, "extend");
- e.features.selectionHasExtend = F;
- var O = "number" == typeof M.rangeCount;
- e.features.selectionHasRangeCount = O;
+ var O = C.isHostMethod(L, "extend");
+ e.features.selectionHasExtend = O;
+ var F = "number" == typeof L.rangeCount;
+ e.features.selectionHasRangeCount = F;
  var B = !1, j = !0;
- C.areHostMethods(M, [ "addRange", "getRangeAt", "removeAllRanges" ]) && "number" == typeof M.rangeCount && e.features.implementsDomRange && !function() {
+ C.areHostMethods(L, [ "addRange", "getRangeAt", "removeAllRanges" ]) && "number" == typeof L.rangeCount && e.features.implementsDomRange && !function() {
   var e = document.createElement("iframe");
   e.frameBorder = 0, e.style.position = "absolute", e.style.left = "-10000px", R.appendChild(e);
   var t = S.getIframeDocument(e);
@@ -3793,7 +3793,7 @@ function diff_match_patch() {
   return e.rangeCount ? e.getRangeAt(e.rangeCount - 1).collapsed : !1;
  };
  var G;
- C.isHostMethod(M, "getRangeAt") ? G = function(e, t) {
+ C.isHostMethod(L, "getRangeAt") ? G = function(e, t) {
   try {
    return e.getRangeAt(t);
   } catch (n) {
@@ -3813,7 +3813,7 @@ function diff_match_patch() {
   return e.getSelection(S.getIframeWindow(t));
  };
  var H = f.prototype;
- if (!L && P && C.areHostMethods(M, [ "removeAllRanges", "addRange" ])) {
+ if (!M && P && C.areHostMethods(L, [ "removeAllRanges", "addRange" ])) {
   H.removeAllRanges = function() {
    this.nativeSelection.removeAllRanges(), a(this);
   };
@@ -3822,8 +3822,8 @@ function diff_match_patch() {
    r.collapseToPoint(n.endContainer, n.endOffset), t.nativeSelection.addRange(s(r)), 
    t.nativeSelection.extend(n.startContainer, n.startOffset), t.refresh();
   };
-  H.addRange = O ? function(t, n) {
-   if (q && N && this.docSelection.type == I) h(this, t); else if (n && F) U(this, t); else {
+  H.addRange = F ? function(t, n) {
+   if (q && N && this.docSelection.type == I) h(this, t); else if (n && O) U(this, t); else {
     var i;
     if (B ? i = this.rangeCount : (this.removeAllRanges(), i = 0), this.nativeSelection.addRange(s(t)), 
     this.rangeCount = this.nativeSelection.rangeCount, this.rangeCount == i + 1) {
@@ -3835,7 +3835,7 @@ function diff_match_patch() {
     } else this.refresh();
    }
   } : function(e, t) {
-   t && F ? U(this, e) : (this.nativeSelection.addRange(s(e)), this.refresh());
+   t && O ? U(this, e) : (this.nativeSelection.addRange(s(e)), this.refresh());
   }, H.setRanges = function(e) {
    if (q && e.length > 1) m(this, e); else {
     this.removeAllRanges();
@@ -3843,7 +3843,7 @@ function diff_match_patch() {
    }
   };
  } else {
-  if (!(C.isHostMethod(M, "empty") && C.isHostMethod(A, "select") && q && L)) return t.fail("No means of selecting a Range or TextRange was found"), 
+  if (!(C.isHostMethod(L, "empty") && C.isHostMethod(A, "select") && q && M)) return t.fail("No means of selecting a Range or TextRange was found"), 
   !1;
   H.removeAllRanges = function() {
    try {
@@ -3874,18 +3874,18 @@ function diff_match_patch() {
   return this._ranges[e];
  };
  var z;
- if (L) z = function(t) {
+ if (M) z = function(t) {
   var n;
   e.isSelectionValid(t.win) ? n = t.docSelection.createRange() : (n = S.getBody(t.win.document).createTextRange(), 
   n.collapse(!0)), t.docSelection.type == I ? p(t) : u(n) ? d(t, n) : a(t);
- }; else if (C.isHostMethod(M, "getRangeAt") && "number" == typeof M.rangeCount) z = function(t) {
+ }; else if (C.isHostMethod(L, "getRangeAt") && "number" == typeof L.rangeCount) z = function(t) {
   if (q && N && t.docSelection.type == I) p(t); else if (t._ranges.length = t.rangeCount = t.nativeSelection.rangeCount, 
   t.rangeCount) {
    for (var n = 0, i = t.rangeCount; i > n; ++n) t._ranges[n] = new e.WrappedRange(t.nativeSelection.getRangeAt(n));
    r(t, t._ranges[t.rangeCount - 1], W(t.nativeSelection)), t.isCollapsed = y(t);
   } else a(t);
  }; else {
-  if (!P || typeof M.isCollapsed != x || typeof A.collapsed != x || !e.features.implementsDomRange) return t.fail("No means of obtaining a Range or TextRange from the user's selection was found"), 
+  if (!P || typeof L.isCollapsed != x || typeof A.collapsed != x || !e.features.implementsDomRange) return t.fail("No means of obtaining a Range or TextRange from the user's selection was found"), 
   !1;
   z = function(e) {
    var t, n = e.nativeSelection;
@@ -3917,7 +3917,7 @@ function diff_match_patch() {
   V(this, e);
  };
  var W;
- !L && P && e.features.implementsDomRange ? (W = function(e) {
+ !M && P && e.features.implementsDomRange ? (W = function(e) {
   var t = !1;
   return e.anchorNode && (t = 1 == S.comparePoints(e.anchorNode, e.anchorOffset, e.focusNode, e.focusOffset)), 
   t;
@@ -4344,7 +4344,7 @@ function diff_match_patch() {
  }, C.tap = function(e, t) {
   return t(e), e;
  };
- var L = function(e, t, n, i) {
+ var M = function(e, t, n, i) {
   if (e === t) return 0 !== e || 1 / e == 1 / t;
   if (null == e || null == t) return e === t;
   e instanceof C && (e = e._wrapped), t instanceof C && (t = t._wrapped);
@@ -4371,9 +4371,9 @@ function diff_match_patch() {
   n.push(e), i.push(t);
   var l = 0, u = !0;
   if ("[object Array]" == r) {
-   if (l = e.length, u = l == t.length) for (;l-- && (u = L(e[l], t[l], n, i)); ) ;
+   if (l = e.length, u = l == t.length) for (;l-- && (u = M(e[l], t[l], n, i)); ) ;
   } else {
-   for (var d in e) if (C.has(e, d) && (l++, !(u = C.has(t, d) && L(e[d], t[d], n, i)))) break;
+   for (var d in e) if (C.has(e, d) && (l++, !(u = C.has(t, d) && M(e[d], t[d], n, i)))) break;
    if (u) {
     for (d in t) if (C.has(t, d) && !l--) break;
     u = !l;
@@ -4382,7 +4382,7 @@ function diff_match_patch() {
   return n.pop(), i.pop(), u;
  };
  C.isEqual = function(e, t) {
-  return L(e, t, [], []);
+  return M(e, t, [], []);
  }, C.isEmpty = function(e) {
   if (null == e) return !0;
   if (C.isArray(e) || C.isString(e)) return 0 === e.length;
@@ -4424,7 +4424,7 @@ function diff_match_patch() {
  }, C.random = function(e, t) {
   return null == t && (t = e, e = 0), e + Math.floor(Math.random() * (t - e + 1));
  };
- var M = {
+ var L = {
   escape: {
    "&": "&amp;",
    "<": "&lt;",
@@ -4434,15 +4434,15 @@ function diff_match_patch() {
    "/": "&#x2F;"
   }
  };
- M.unescape = C.invert(M.escape);
+ L.unescape = C.invert(L.escape);
  var A = {
-  escape: new RegExp("[" + C.keys(M.escape).join("") + "]", "g"),
-  unescape: new RegExp("(" + C.keys(M.unescape).join("|") + ")", "g")
+  escape: new RegExp("[" + C.keys(L.escape).join("") + "]", "g"),
+  unescape: new RegExp("(" + C.keys(L.unescape).join("|") + ")", "g")
  };
  C.each([ "escape", "unescape" ], function(e) {
   C[e] = function(t) {
    return null == t ? "" : ("" + t).replace(A[e], function(t) {
-    return M[e][t];
+    return L[e][t];
    });
   };
  }), C.result = function(e, t) {
@@ -4467,7 +4467,7 @@ function diff_match_patch() {
   interpolate: /<%=([\s\S]+?)%>/g,
   escape: /<%-([\s\S]+?)%>/g
  };
- var P = /(.)^/, F = {
+ var P = /(.)^/, O = {
   "'": "'",
   "\\": "\\",
   "\r": "r",
@@ -4475,14 +4475,14 @@ function diff_match_patch() {
   "	": "t",
   "\u2028": "u2028",
   "\u2029": "u2029"
- }, O = /\\|'|\r|\n|\t|\u2028|\u2029/g;
+ }, F = /\\|'|\r|\n|\t|\u2028|\u2029/g;
  C.template = function(e, t, n) {
   var i;
   n = C.defaults({}, n, C.templateSettings);
   var r = new RegExp([ (n.escape || P).source, (n.interpolate || P).source, (n.evaluate || P).source ].join("|") + "|$", "g"), o = 0, a = "__p+='";
   e.replace(r, function(t, n, i, r, s) {
-   return a += e.slice(o, s).replace(O, function(e) {
-    return "\\" + F[e];
+   return a += e.slice(o, s).replace(F, function(e) {
+    return "\\" + O[e];
    }), n && (a += "'+\n((__t=(" + n + "))==null?'':_.escape(__t))+\n'"), i && (a += "'+\n((__t=(" + i + "))==null?'':__t)+\n'"), 
    r && (a += "';\n" + r + "\n__p+='"), o = s + t.length, t;
   }), a += "';\n", n.variable || (a = "with(obj||{}){\n" + a + "}\n"), a = "var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};\n" + a + "return __p;\n";
@@ -4632,7 +4632,9 @@ function diff_match_patch() {
  "v21" == o && (e.has(localStorage, "settings") && (i = JSON.parse(localStorage.settings), 
  i.template && (i.template = i.template.replace("https://stackedit.io/libs/MathJax/", "https://cdn.mathjax.org/mathjax/latest/")), 
  i.pdfTemplate && (i.pdfTemplate = i.pdfTemplate.replace("/libs/MathJax/", "/res/bower-libs/MathJax/")), 
- localStorage.settings = JSON.stringify(i)), o = "v22"), localStorage.version = o, 
+ localStorage.settings = JSON.stringify(i)), o = "v22"), "v22" == o && (e.has(localStorage, "settings") && (i = JSON.parse(localStorage.settings), 
+ i.couchdbUrl && (i.couchdbUrl = i.couchdbUrl.replace("https://stackedit.couchappy.com/documents", "https://stackedit.smileupps.com/documents")), 
+ localStorage.settings = JSON.stringify(i)), o = "v23"), localStorage.version = o, 
  localStorage;
 }), function(e) {
  var t;
@@ -4671,7 +4673,7 @@ function diff_match_patch() {
    return -1;
   }
   function s(e, t) {
-   return M.call(e) === "[object " + t + "]";
+   return L.call(e) === "[object " + t + "]";
   }
   function l(e, t, n) {
    return x.test.call(n.indexOf("x") > -1 ? /^(?:\s+|#.*|\(\?#[^)]*\))*(?:[?*+]|{\d+(?:,\d*)?})/ : /^(?:\(\?#[^)]*\))*(?:[?*+]|{\d+(?:,\d*)?})/, e.slice(t));
@@ -4682,7 +4684,7 @@ function diff_match_patch() {
    for (e = x.replace.call(e, /^\(\?([\w$]+)\)/, function(e, i) {
     if (x.test.call(/[gy]/, i)) throw new SyntaxError("Cannot use flag g or y in mode modifier " + e);
     return t = n(t + i), "";
-   }), i = 0; i < t.length; ++i) if (!L[t.charAt(i)]) throw new SyntaxError("Unknown regex flag " + t.charAt(i));
+   }), i = 0; i < t.length; ++i) if (!M[t.charAt(i)]) throw new SyntaxError("Unknown regex flag " + t.charAt(i));
    return {
     pattern: e,
     flags: t
@@ -4695,7 +4697,7 @@ function diff_match_patch() {
   }
   function d(e) {
    if (!/^[\w$]$/.test(e)) throw new Error("Flag must be a single character A-Za-z0-9_$");
-   L[e] = !0;
+   M[e] = !0;
   }
   function p(e, t, n, i, r) {
    for (var o, a, s = _.length, l = null; s--; ) if (a = _[s], (a.scope === i || "all" === a.scope) && (!a.flag || t.indexOf(a.flag) > -1) && (o = g.exec(e, a.regex, n, "sticky"))) {
@@ -4732,12 +4734,12 @@ function diff_match_patch() {
   }, w = {}, S = {}, C = {}, _ = [], k = "default", E = "class", T = {
    "default": /\\(?:0(?:[0-3][0-7]{0,2}|[4-7][0-7]?)?|[1-9]\d*|x[\dA-Fa-f]{2}|u[\dA-Fa-f]{4}|c[A-Za-z]|[\s\S])|\(\?[:=!]|[?*+]\?|{\d+(?:,\d*)?}\??|[\s\S]/,
    "class": /\\(?:[0-3][0-7]{0,2}|[4-7][0-7]?|x[\dA-Fa-f]{2}|u[\dA-Fa-f]{4}|c[A-Za-z]|[\s\S])|[\s\S]/
-  }, I = /\$(?:{([\w$]+)}|(\d\d?|[\s\S]))/g, D = x.exec.call(/()??/, "")[1] === e, N = RegExp.prototype.sticky !== e, L = {
+  }, I = /\$(?:{([\w$]+)}|(\d\d?|[\s\S]))/g, D = x.exec.call(/()??/, "")[1] === e, N = RegExp.prototype.sticky !== e, M = {
    g: !0,
    i: !0,
    m: !0,
    y: N
-  }, M = {}.toString;
+  }, L = {}.toString;
   return g = function(n, r) {
    var o, a, s, l = {
     hasNamedCapture: !1,
@@ -4803,7 +4805,7 @@ function diff_match_patch() {
   }, g.isInstalled = function(e) {
    return !!y[e];
   }, g.isRegExp = function(e) {
-   return "[object RegExp]" === M.call(e);
+   return "[object RegExp]" === L.call(e);
   }, g.match = function(e, t, n) {
    var o, a, s = t.global && "one" !== n || "all" === n, l = (s ? "g" : "") + (t.sticky ? "y" : "");
    return t[b] = t[b] || r(), a = t[b][l || "noGY"] || (t[b][l || "noGY"] = i(t, {
@@ -5046,7 +5048,7 @@ function diff_match_patch() {
    var n = u[e], i = "";
    return n.bmp && !n.isBmpLast && (i = "[" + n.bmp + "]" + (n.astral ? "|" : "")), 
    n.astral && (i += n.astral), n.isBmpLast && n.bmp && (i += (n.astral ? "|" : "") + "[" + n.bmp + "]"), 
-   t ? "(?:(?!" + i + ")(?:[í €-í¯¿][í°€-í¿¿]|[\x00-ï¿¿]))" : "(?:" + i + ")";
+   t ? "(?:(?!" + i + ")(?:[\ud800-\udbff][\udc00-\udfff]|[\x00-\uffff]))" : "(?:" + i + ")";
   }
   function c(e, t) {
    var n = t ? "a!" : "a=";
@@ -5081,671 +5083,671 @@ function diff_match_patch() {
   }, e.addUnicodeData([ {
    name: "L",
    alias: "Letter",
-   bmp: "A-Za-zÂªÂµÂºÃ€-Ã–Ã˜-Ã¶Ã¸-ËË†-Ë‘Ë -Ë¤Ë¬Ë®Í°-Í´Í¶Í·Íº-Í½Î†Îˆ-ÎŠÎŒÎ-Î¡Î£-ÏµÏ·-ÒÒŠ-Ô§Ô±-Õ–Õ™Õ¡-Ö‡×-×ª×°-×²Ø -ÙŠÙ®Ù¯Ù±-Û“Û•Û¥Û¦Û®Û¯Ûº-Û¼Û¿ÜÜ’-Ü¯İ-Ş¥Ş±ßŠ-ßªß´ßµßºà €-à •à šà ¤à ¨à¡€-à¡˜à¢ à¢¢-à¢¬à¤„-à¤¹à¤½à¥à¥˜-à¥¡à¥±-à¥·à¥¹-à¥¿à¦…-à¦Œà¦à¦à¦“-à¦¨à¦ª-à¦°à¦²à¦¶-à¦¹à¦½à§à§œà§à§Ÿ-à§¡à§°à§±à¨…-à¨Šà¨à¨à¨“-à¨¨à¨ª-à¨°à¨²à¨³à¨µà¨¶à¨¸à¨¹à©™-à©œà©à©²-à©´àª…-àªàª-àª‘àª“-àª¨àªª-àª°àª²àª³àªµ-àª¹àª½à«à« à«¡à¬…-à¬Œà¬à¬à¬“-à¬¨à¬ª-à¬°à¬²à¬³à¬µ-à¬¹à¬½à­œà­à­Ÿ-à­¡à­±à®ƒà®…-à®Šà®-à®à®’-à®•à®™à®šà®œà®à®Ÿà®£à®¤à®¨-à®ªà®®-à®¹à¯à°…-à°Œà°-à°à°’-à°¨à°ª-à°³à°µ-à°¹à°½à±˜à±™à± à±¡à²…-à²Œà²-à²à²’-à²¨à²ª-à²³à²µ-à²¹à²½à³à³ à³¡à³±à³²à´…-à´Œà´-à´à´’-à´ºà´½àµàµ àµ¡àµº-àµ¿à¶…-à¶–à¶š-à¶±à¶³-à¶»à¶½à·€-à·†à¸-à¸°à¸²à¸³à¹€-à¹†àºàº‚àº„àº‡àºˆàºŠàºàº”-àº—àº™-àºŸàº¡-àº£àº¥àº§àºªàº«àº­-àº°àº²àº³àº½à»€-à»„à»†à»œ-à»Ÿà¼€à½€-à½‡à½‰-à½¬à¾ˆ-à¾Œá€€-á€ªá€¿á-á•áš-áá¡á¥á¦á®-á°áµ-á‚á‚á‚ -áƒ…áƒ‡áƒáƒ-áƒºáƒ¼-á‰ˆá‰Š-á‰á‰-á‰–á‰˜á‰š-á‰á‰ -áŠˆáŠŠ-áŠáŠ-áŠ°áŠ²-áŠµáŠ¸-áŠ¾á‹€á‹‚-á‹…á‹ˆ-á‹–á‹˜-áŒáŒ’-áŒ•áŒ˜-ášá€-áá -á´á-á™¬á™¯-á™¿áš-áššáš -á›ªáœ€-áœŒáœ-áœ‘áœ -áœ±á€-á‘á -á¬á®-á°á€-á³áŸ—áŸœá  -á¡·á¢€-á¢¨á¢ªá¢°-á£µá¤€-á¤œá¥-á¥­á¥°-á¥´á¦€-á¦«á§-á§‡á¨€-á¨–á¨ -á©”áª§á¬…-á¬³á­…-á­‹á®ƒ-á® á®®á®¯á®º-á¯¥á°€-á°£á±-á±á±š-á±½á³©-á³¬á³®-á³±á³µá³¶á´€-á¶¿á¸€-á¼•á¼˜-á¼á¼ -á½…á½ˆ-á½á½-á½—á½™á½›á½á½Ÿ-á½½á¾€-á¾´á¾¶-á¾¼á¾¾á¿‚-á¿„á¿†-á¿Œá¿-á¿“á¿–-á¿›á¿ -á¿¬á¿²-á¿´á¿¶-á¿¼â±â¿â‚-â‚œâ„‚â„‡â„Š-â„“â„•â„™-â„â„¤â„¦â„¨â„ª-â„­â„¯-â„¹â„¼-â„¿â……-â…‰â…â†ƒâ†„â°€-â°®â°°-â±â± -â³¤â³«-â³®â³²â³³â´€-â´¥â´§â´­â´°-âµ§âµ¯â¶€-â¶–â¶ -â¶¦â¶¨-â¶®â¶°-â¶¶â¶¸-â¶¾â·€-â·†â·ˆ-â·â·-â·–â·˜-â·â¸¯ã€…ã€†ã€±-ã€µã€»ã€¼ã-ã‚–ã‚-ã‚Ÿã‚¡-ãƒºãƒ¼-ãƒ¿ã„…-ã„­ã„±-ã†ã† -ã†ºã‡°-ã‡¿ã€-ä¶µä¸€-é¿Œê€€-ê’Œê“-ê“½ê”€-ê˜Œê˜-ê˜Ÿê˜ªê˜«ê™€-ê™®ê™¿-êš—êš -ê›¥êœ—-êœŸêœ¢-êˆê‹-êê-ê“ê -êªêŸ¸-ê ê ƒ-ê …ê ‡-ê Šê Œ-ê ¢ê¡€-ê¡³ê¢‚-ê¢³ê£²-ê£·ê£»ê¤Š-ê¤¥ê¤°-ê¥†ê¥ -ê¥¼ê¦„-ê¦²ê§ê¨€-ê¨¨ê©€-ê©‚ê©„-ê©‹ê© -ê©¶ê©ºêª€-êª¯êª±êªµêª¶êª¹-êª½ê«€ê«‚ê«›-ê«ê« -ê«ªê«²-ê«´ê¬-ê¬†ê¬‰-ê¬ê¬‘-ê¬–ê¬ -ê¬¦ê¬¨-ê¬®ê¯€-ê¯¢ê°€-í£í°-íŸ†íŸ‹-íŸ»ï¤€-ï©­ï©°-ï«™ï¬€-ï¬†ï¬“-ï¬—ï¬ï¬Ÿ-ï¬¨ï¬ª-ï¬¶ï¬¸-ï¬¼ï¬¾ï­€ï­ï­ƒï­„ï­†-ï®±ï¯“-ï´½ïµ-ï¶ï¶’-ï·‡ï·°-ï·»ï¹°-ï¹´ï¹¶-ï»¼ï¼¡-ï¼ºï½-ï½šï½¦-ï¾¾ï¿‚-ï¿‡ï¿Š-ï¿ï¿’-ï¿—ï¿š-ï¿œ",
-   astral: "í ‚[í°€-í°…í°ˆí°Š-í°µí°·í°¸í°¼í°¿-í±•í´€-í´•í´ -í´¹í¶€-í¶·í¶¾í¶¿í¸€í¸-í¸“í¸•-í¸—í¸™-í¸³í¹ -í¹¼í¼€-í¼µí½€-í½•í½ -í½²]|í [í°€-í²]|í €[í°€-í°‹í°-í°¦í°¨-í°ºí°¼í°½í°¿-í±í±-í±í²€-í³ºíº€-íºœíº -í»í¼€-í¼í¼°-í½€í½‚-í½‰í¾€-í¾í¾ -í¿ƒí¿ˆ-í¿]|í š[í°€-í¸¸]|í „[í°ƒ-í°·í²ƒ-í²¯í³-í³¨í´ƒ-í´¦í¶ƒ-í¶²í·-í·„]|í¡®[í°€-í°]|í¡­[í°€-í¼´í½€-í¿¿]|í ƒ[í°€-í±ˆ]|í [í°€-í°®]|í …[íº€-íºª]|í¡¾[í°€-í¸]|í ›[í¼€-í½„í½í¾“-í¾Ÿ]|í¡©[í°€-í»–í¼€-í¿¿]|í ¬[í°€í°]|[í Œí¡€-í¡¨í¡ª-í¡¬][í°€-í¿¿]|í »[í¸€-í¸ƒí¸…-í¸Ÿí¸¡í¸¢í¸¤í¸§í¸©-í¸²í¸´-í¸·í¸¹í¸»í¹‚í¹‡í¹‰í¹‹í¹-í¹í¹‘í¹’í¹”í¹—í¹™í¹›í¹í¹Ÿí¹¡í¹¢í¹¤í¹§-í¹ªí¹¬-í¹²í¹´-í¹·í¹¹-í¹¼í¹¾íº€-íº‰íº‹-íº›íº¡-íº£íº¥-íº©íº«-íº»]|í µ[í°€-í±”í±–-í²œí²í²Ÿí²¢í²¥í²¦í²©-í²¬í²®-í²¹í²»í²½-í³ƒí³…-í´…í´‡-í´Ší´-í´”í´–-í´œí´-í´¹í´»-í´¾íµ€-íµ„íµ†íµŠ-íµíµ’-íº¥íº¨-í»€í»‚-í»ší»œ-í»ºí»¼-í¼”í¼–-í¼´í¼¶-í½í½-í½®í½°-í¾ˆí¾Š-í¾¨í¾ª-í¿‚í¿„-í¿‹]|í ˆ[í°€-í½®]"
+   bmp: "A-Za-z\xaa\xb5\xba\xc0-\xd6\xd8-\xf6\xf8-\u02c1\u02c6-\u02d1\u02e0-\u02e4\u02ec\u02ee\u0370-\u0374\u0376\u0377\u037a-\u037d\u0386\u0388-\u038a\u038c\u038e-\u03a1\u03a3-\u03f5\u03f7-\u0481\u048a-\u0527\u0531-\u0556\u0559\u0561-\u0587\u05d0-\u05ea\u05f0-\u05f2\u0620-\u064a\u066e\u066f\u0671-\u06d3\u06d5\u06e5\u06e6\u06ee\u06ef\u06fa-\u06fc\u06ff\u0710\u0712-\u072f\u074d-\u07a5\u07b1\u07ca-\u07ea\u07f4\u07f5\u07fa\u0800-\u0815\u081a\u0824\u0828\u0840-\u0858\u08a0\u08a2-\u08ac\u0904-\u0939\u093d\u0950\u0958-\u0961\u0971-\u0977\u0979-\u097f\u0985-\u098c\u098f\u0990\u0993-\u09a8\u09aa-\u09b0\u09b2\u09b6-\u09b9\u09bd\u09ce\u09dc\u09dd\u09df-\u09e1\u09f0\u09f1\u0a05-\u0a0a\u0a0f\u0a10\u0a13-\u0a28\u0a2a-\u0a30\u0a32\u0a33\u0a35\u0a36\u0a38\u0a39\u0a59-\u0a5c\u0a5e\u0a72-\u0a74\u0a85-\u0a8d\u0a8f-\u0a91\u0a93-\u0aa8\u0aaa-\u0ab0\u0ab2\u0ab3\u0ab5-\u0ab9\u0abd\u0ad0\u0ae0\u0ae1\u0b05-\u0b0c\u0b0f\u0b10\u0b13-\u0b28\u0b2a-\u0b30\u0b32\u0b33\u0b35-\u0b39\u0b3d\u0b5c\u0b5d\u0b5f-\u0b61\u0b71\u0b83\u0b85-\u0b8a\u0b8e-\u0b90\u0b92-\u0b95\u0b99\u0b9a\u0b9c\u0b9e\u0b9f\u0ba3\u0ba4\u0ba8-\u0baa\u0bae-\u0bb9\u0bd0\u0c05-\u0c0c\u0c0e-\u0c10\u0c12-\u0c28\u0c2a-\u0c33\u0c35-\u0c39\u0c3d\u0c58\u0c59\u0c60\u0c61\u0c85-\u0c8c\u0c8e-\u0c90\u0c92-\u0ca8\u0caa-\u0cb3\u0cb5-\u0cb9\u0cbd\u0cde\u0ce0\u0ce1\u0cf1\u0cf2\u0d05-\u0d0c\u0d0e-\u0d10\u0d12-\u0d3a\u0d3d\u0d4e\u0d60\u0d61\u0d7a-\u0d7f\u0d85-\u0d96\u0d9a-\u0db1\u0db3-\u0dbb\u0dbd\u0dc0-\u0dc6\u0e01-\u0e30\u0e32\u0e33\u0e40-\u0e46\u0e81\u0e82\u0e84\u0e87\u0e88\u0e8a\u0e8d\u0e94-\u0e97\u0e99-\u0e9f\u0ea1-\u0ea3\u0ea5\u0ea7\u0eaa\u0eab\u0ead-\u0eb0\u0eb2\u0eb3\u0ebd\u0ec0-\u0ec4\u0ec6\u0edc-\u0edf\u0f00\u0f40-\u0f47\u0f49-\u0f6c\u0f88-\u0f8c\u1000-\u102a\u103f\u1050-\u1055\u105a-\u105d\u1061\u1065\u1066\u106e-\u1070\u1075-\u1081\u108e\u10a0-\u10c5\u10c7\u10cd\u10d0-\u10fa\u10fc-\u1248\u124a-\u124d\u1250-\u1256\u1258\u125a-\u125d\u1260-\u1288\u128a-\u128d\u1290-\u12b0\u12b2-\u12b5\u12b8-\u12be\u12c0\u12c2-\u12c5\u12c8-\u12d6\u12d8-\u1310\u1312-\u1315\u1318-\u135a\u1380-\u138f\u13a0-\u13f4\u1401-\u166c\u166f-\u167f\u1681-\u169a\u16a0-\u16ea\u1700-\u170c\u170e-\u1711\u1720-\u1731\u1740-\u1751\u1760-\u176c\u176e-\u1770\u1780-\u17b3\u17d7\u17dc\u1820-\u1877\u1880-\u18a8\u18aa\u18b0-\u18f5\u1900-\u191c\u1950-\u196d\u1970-\u1974\u1980-\u19ab\u19c1-\u19c7\u1a00-\u1a16\u1a20-\u1a54\u1aa7\u1b05-\u1b33\u1b45-\u1b4b\u1b83-\u1ba0\u1bae\u1baf\u1bba-\u1be5\u1c00-\u1c23\u1c4d-\u1c4f\u1c5a-\u1c7d\u1ce9-\u1cec\u1cee-\u1cf1\u1cf5\u1cf6\u1d00-\u1dbf\u1e00-\u1f15\u1f18-\u1f1d\u1f20-\u1f45\u1f48-\u1f4d\u1f50-\u1f57\u1f59\u1f5b\u1f5d\u1f5f-\u1f7d\u1f80-\u1fb4\u1fb6-\u1fbc\u1fbe\u1fc2-\u1fc4\u1fc6-\u1fcc\u1fd0-\u1fd3\u1fd6-\u1fdb\u1fe0-\u1fec\u1ff2-\u1ff4\u1ff6-\u1ffc\u2071\u207f\u2090-\u209c\u2102\u2107\u210a-\u2113\u2115\u2119-\u211d\u2124\u2126\u2128\u212a-\u212d\u212f-\u2139\u213c-\u213f\u2145-\u2149\u214e\u2183\u2184\u2c00-\u2c2e\u2c30-\u2c5e\u2c60-\u2ce4\u2ceb-\u2cee\u2cf2\u2cf3\u2d00-\u2d25\u2d27\u2d2d\u2d30-\u2d67\u2d6f\u2d80-\u2d96\u2da0-\u2da6\u2da8-\u2dae\u2db0-\u2db6\u2db8-\u2dbe\u2dc0-\u2dc6\u2dc8-\u2dce\u2dd0-\u2dd6\u2dd8-\u2dde\u2e2f\u3005\u3006\u3031-\u3035\u303b\u303c\u3041-\u3096\u309d-\u309f\u30a1-\u30fa\u30fc-\u30ff\u3105-\u312d\u3131-\u318e\u31a0-\u31ba\u31f0-\u31ff\u3400-\u4db5\u4e00-\u9fcc\ua000-\ua48c\ua4d0-\ua4fd\ua500-\ua60c\ua610-\ua61f\ua62a\ua62b\ua640-\ua66e\ua67f-\ua697\ua6a0-\ua6e5\ua717-\ua71f\ua722-\ua788\ua78b-\ua78e\ua790-\ua793\ua7a0-\ua7aa\ua7f8-\ua801\ua803-\ua805\ua807-\ua80a\ua80c-\ua822\ua840-\ua873\ua882-\ua8b3\ua8f2-\ua8f7\ua8fb\ua90a-\ua925\ua930-\ua946\ua960-\ua97c\ua984-\ua9b2\ua9cf\uaa00-\uaa28\uaa40-\uaa42\uaa44-\uaa4b\uaa60-\uaa76\uaa7a\uaa80-\uaaaf\uaab1\uaab5\uaab6\uaab9-\uaabd\uaac0\uaac2\uaadb-\uaadd\uaae0-\uaaea\uaaf2-\uaaf4\uab01-\uab06\uab09-\uab0e\uab11-\uab16\uab20-\uab26\uab28-\uab2e\uabc0-\uabe2\uac00-\ud7a3\ud7b0-\ud7c6\ud7cb-\ud7fb\uf900-\ufa6d\ufa70-\ufad9\ufb00-\ufb06\ufb13-\ufb17\ufb1d\ufb1f-\ufb28\ufb2a-\ufb36\ufb38-\ufb3c\ufb3e\ufb40\ufb41\ufb43\ufb44\ufb46-\ufbb1\ufbd3-\ufd3d\ufd50-\ufd8f\ufd92-\ufdc7\ufdf0-\ufdfb\ufe70-\ufe74\ufe76-\ufefc\uff21-\uff3a\uff41-\uff5a\uff66-\uffbe\uffc2-\uffc7\uffca-\uffcf\uffd2-\uffd7\uffda-\uffdc",
+   astral: "\ud802[\udc00-\udc05\udc08\udc0a-\udc35\udc37\udc38\udc3c\udc3f-\udc55\udd00-\udd15\udd20-\udd39\udd80-\uddb7\uddbe\uddbf\ude00\ude10-\ude13\ude15-\ude17\ude19-\ude33\ude60-\ude7c\udf00-\udf35\udf40-\udf55\udf60-\udf72]|\ud801[\udc00-\udc9d]|\ud800[\udc00-\udc0b\udc0d-\udc26\udc28-\udc3a\udc3c\udc3d\udc3f-\udc4d\udc50-\udc5d\udc80-\udcfa\ude80-\ude9c\udea0-\uded0\udf00-\udf1e\udf30-\udf40\udf42-\udf49\udf80-\udf9d\udfa0-\udfc3\udfc8-\udfcf]|\ud81a[\udc00-\ude38]|\ud804[\udc03-\udc37\udc83-\udcaf\udcd0-\udce8\udd03-\udd26\udd83-\uddb2\uddc1-\uddc4]|\ud86e[\udc00-\udc1d]|\ud86d[\udc00-\udf34\udf40-\udfff]|\ud803[\udc00-\udc48]|\ud80d[\udc00-\udc2e]|\ud805[\ude80-\udeaa]|\ud87e[\udc00-\ude1d]|\ud81b[\udf00-\udf44\udf50\udf93-\udf9f]|\ud869[\udc00-\uded6\udf00-\udfff]|\ud82c[\udc00\udc01]|[\ud80c\ud840-\ud868\ud86a-\ud86c][\udc00-\udfff]|\ud83b[\ude00-\ude03\ude05-\ude1f\ude21\ude22\ude24\ude27\ude29-\ude32\ude34-\ude37\ude39\ude3b\ude42\ude47\ude49\ude4b\ude4d-\ude4f\ude51\ude52\ude54\ude57\ude59\ude5b\ude5d\ude5f\ude61\ude62\ude64\ude67-\ude6a\ude6c-\ude72\ude74-\ude77\ude79-\ude7c\ude7e\ude80-\ude89\ude8b-\ude9b\udea1-\udea3\udea5-\udea9\udeab-\udebb]|\ud835[\udc00-\udc54\udc56-\udc9c\udc9e\udc9f\udca2\udca5\udca6\udca9-\udcac\udcae-\udcb9\udcbb\udcbd-\udcc3\udcc5-\udd05\udd07-\udd0a\udd0d-\udd14\udd16-\udd1c\udd1e-\udd39\udd3b-\udd3e\udd40-\udd44\udd46\udd4a-\udd50\udd52-\udea5\udea8-\udec0\udec2-\udeda\udedc-\udefa\udefc-\udf14\udf16-\udf34\udf36-\udf4e\udf50-\udf6e\udf70-\udf88\udf8a-\udfa8\udfaa-\udfc2\udfc4-\udfcb]|\ud808[\udc00-\udf6e]"
   } ]);
  }(e), function(e) {
   if (!e.addUnicodeData) throw new ReferenceError("Unicode Base must be loaded before Unicode Blocks");
   e.addUnicodeData([ {
    name: "InAegean_Numbers",
-   astral: "í €[í´€-í´¿]"
+   astral: "\ud800[\udd00-\udd3f]"
   }, {
    name: "InAlchemical_Symbols",
-   astral: "í ½[í¼€-í½¿]"
+   astral: "\ud83d[\udf00-\udf7f]"
   }, {
    name: "InAlphabetic_Presentation_Forms",
-   bmp: "ï¬€-ï­"
+   bmp: "\ufb00-\ufb4f"
   }, {
    name: "InAncient_Greek_Musical_Notation",
-   astral: "í ´[í¸€-í¹]"
+   astral: "\ud834[\ude00-\ude4f]"
   }, {
    name: "InAncient_Greek_Numbers",
-   astral: "í €[íµ€-í¶]"
+   astral: "\ud800[\udd40-\udd8f]"
   }, {
    name: "InAncient_Symbols",
-   astral: "í €[í¶-í·]"
+   astral: "\ud800[\udd90-\uddcf]"
   }, {
    name: "InArabic",
-   bmp: "Ø€-Û¿"
+   bmp: "\u0600-\u06ff"
   }, {
    name: "InArabic_Extended_A",
-   bmp: "à¢ -à£¿"
+   bmp: "\u08a0-\u08ff"
   }, {
    name: "InArabic_Mathematical_Alphabetic_Symbols",
-   astral: "í »[í¸€-í»¿]"
+   astral: "\ud83b[\ude00-\udeff]"
   }, {
    name: "InArabic_Presentation_Forms_A",
-   bmp: "ï­-ï·¿"
+   bmp: "\ufb50-\ufdff"
   }, {
    name: "InArabic_Presentation_Forms_B",
-   bmp: "ï¹°-ï»¿"
+   bmp: "\ufe70-\ufeff"
   }, {
    name: "InArabic_Supplement",
-   bmp: "İ-İ¿"
+   bmp: "\u0750-\u077f"
   }, {
    name: "InArmenian",
-   bmp: "Ô°-Ö"
+   bmp: "\u0530-\u058f"
   }, {
    name: "InArrows",
-   bmp: "â†-â‡¿"
+   bmp: "\u2190-\u21ff"
   }, {
    name: "InAvestan",
-   astral: "í ‚[í¼€-í¼¿]"
+   astral: "\ud802[\udf00-\udf3f]"
   }, {
    name: "InBalinese",
-   bmp: "á¬€-á­¿"
+   bmp: "\u1b00-\u1b7f"
   }, {
    name: "InBamum",
-   bmp: "êš -ê›¿"
+   bmp: "\ua6a0-\ua6ff"
   }, {
    name: "InBamum_Supplement",
-   astral: "í š[í°€-í¸¿]"
+   astral: "\ud81a[\udc00-\ude3f]"
   }, {
    name: "InBasic_Latin",
    bmp: "\x00-"
   }, {
    name: "InBatak",
-   bmp: "á¯€-á¯¿"
+   bmp: "\u1bc0-\u1bff"
   }, {
    name: "InBengali",
-   bmp: "à¦€-à§¿"
+   bmp: "\u0980-\u09ff"
   }, {
    name: "InBlock_Elements",
-   bmp: "â–€-â–Ÿ"
+   bmp: "\u2580-\u259f"
   }, {
    name: "InBopomofo",
-   bmp: "ã„€-ã„¯"
+   bmp: "\u3100-\u312f"
   }, {
    name: "InBopomofo_Extended",
-   bmp: "ã† -ã†¿"
+   bmp: "\u31a0-\u31bf"
   }, {
    name: "InBox_Drawing",
-   bmp: "â”€-â•¿"
+   bmp: "\u2500-\u257f"
   }, {
    name: "InBrahmi",
-   astral: "í „[í°€-í±¿]"
+   astral: "\ud804[\udc00-\udc7f]"
   }, {
    name: "InBraille_Patterns",
-   bmp: "â €-â£¿"
+   bmp: "\u2800-\u28ff"
   }, {
    name: "InBuginese",
-   bmp: "á¨€-á¨Ÿ"
+   bmp: "\u1a00-\u1a1f"
   }, {
    name: "InBuhid",
-   bmp: "á€-áŸ"
+   bmp: "\u1740-\u175f"
   }, {
    name: "InByzantine_Musical_Symbols",
-   astral: "í ´[í°€-í³¿]"
+   astral: "\ud834[\udc00-\udcff]"
   }, {
    name: "InCJK_Compatibility",
-   bmp: "ãŒ€-ã¿"
+   bmp: "\u3300-\u33ff"
   }, {
    name: "InCJK_Compatibility_Forms",
-   bmp: "ï¸°-ï¹"
+   bmp: "\ufe30-\ufe4f"
   }, {
    name: "InCJK_Compatibility_Ideographs",
-   bmp: "ï¤€-ï«¿"
+   bmp: "\uf900-\ufaff"
   }, {
    name: "InCJK_Compatibility_Ideographs_Supplement",
-   astral: "í¡¾[í°€-í¸Ÿ]"
+   astral: "\ud87e[\udc00-\ude1f]"
   }, {
    name: "InCJK_Radicals_Supplement",
-   bmp: "âº€-â»¿"
+   bmp: "\u2e80-\u2eff"
   }, {
    name: "InCJK_Strokes",
-   bmp: "ã‡€-ã‡¯"
+   bmp: "\u31c0-\u31ef"
   }, {
    name: "InCJK_Symbols_and_Punctuation",
-   bmp: "ã€€-ã€¿"
+   bmp: "\u3000-\u303f"
   }, {
    name: "InCJK_Unified_Ideographs",
-   bmp: "ä¸€-é¿¿"
+   bmp: "\u4e00-\u9fff"
   }, {
    name: "InCJK_Unified_Ideographs_Extension_A",
-   bmp: "ã€-ä¶¿"
+   bmp: "\u3400-\u4dbf"
   }, {
    name: "InCJK_Unified_Ideographs_Extension_B",
-   astral: "[í¡€-í¡¨][í°€-í¿¿]|í¡©[í°€-í»Ÿ]"
+   astral: "[\ud840-\ud868][\udc00-\udfff]|\ud869[\udc00-\udedf]"
   }, {
    name: "InCJK_Unified_Ideographs_Extension_C",
-   astral: "í¡­[í°€-í¼¿]|[í¡ª-í¡¬][í°€-í¿¿]|í¡©[í¼€-í¿¿]"
+   astral: "\ud86d[\udc00-\udf3f]|[\ud86a-\ud86c][\udc00-\udfff]|\ud869[\udf00-\udfff]"
   }, {
    name: "InCJK_Unified_Ideographs_Extension_D",
-   astral: "í¡­[í½€-í¿¿]|í¡®[í°€-í°Ÿ]"
+   astral: "\ud86d[\udf40-\udfff]|\ud86e[\udc00-\udc1f]"
   }, {
    name: "InCarian",
-   astral: "í €[íº -í»Ÿ]"
+   astral: "\ud800[\udea0-\udedf]"
   }, {
    name: "InChakma",
-   astral: "í „[í´€-íµ]"
+   astral: "\ud804[\udd00-\udd4f]"
   }, {
    name: "InCham",
-   bmp: "ê¨€-ê©Ÿ"
+   bmp: "\uaa00-\uaa5f"
   }, {
    name: "InCherokee",
-   bmp: "á -á¿"
+   bmp: "\u13a0-\u13ff"
   }, {
    name: "InCombining_Diacritical_Marks",
-   bmp: "Ì€-Í¯"
+   bmp: "\u0300-\u036f"
   }, {
    name: "InCombining_Diacritical_Marks_Supplement",
-   bmp: "á·€-á·¿"
+   bmp: "\u1dc0-\u1dff"
   }, {
    name: "InCombining_Diacritical_Marks_for_Symbols",
-   bmp: "âƒ-âƒ¿"
+   bmp: "\u20d0-\u20ff"
   }, {
    name: "InCombining_Half_Marks",
-   bmp: "ï¸ -ï¸¯"
+   bmp: "\ufe20-\ufe2f"
   }, {
    name: "InCommon_Indic_Number_Forms",
-   bmp: "ê °-ê ¿"
+   bmp: "\ua830-\ua83f"
   }, {
    name: "InControl_Pictures",
-   bmp: "â€-â¿"
+   bmp: "\u2400-\u243f"
   }, {
    name: "InCoptic",
-   bmp: "â²€-â³¿"
+   bmp: "\u2c80-\u2cff"
   }, {
    name: "InCounting_Rod_Numerals",
-   astral: "í ´[í½ -í½¿]"
+   astral: "\ud834[\udf60-\udf7f]"
   }, {
    name: "InCuneiform",
-   astral: "í ˆ[í°€-í¿¿]"
+   astral: "\ud808[\udc00-\udfff]"
   }, {
    name: "InCuneiform_Numbers_and_Punctuation",
-   astral: "í ‰[í°€-í±¿]"
+   astral: "\ud809[\udc00-\udc7f]"
   }, {
    name: "InCurrency_Symbols",
-   bmp: "â‚ -âƒ"
+   bmp: "\u20a0-\u20cf"
   }, {
    name: "InCypriot_Syllabary",
-   astral: "í ‚[í°€-í°¿]"
+   astral: "\ud802[\udc00-\udc3f]"
   }, {
    name: "InCyrillic",
-   bmp: "Ğ€-Ó¿"
+   bmp: "\u0400-\u04ff"
   }, {
    name: "InCyrillic_Extended_A",
-   bmp: "â· -â·¿"
+   bmp: "\u2de0-\u2dff"
   }, {
    name: "InCyrillic_Extended_B",
-   bmp: "ê™€-êšŸ"
+   bmp: "\ua640-\ua69f"
   }, {
    name: "InCyrillic_Supplement",
-   bmp: "Ô€-Ô¯"
+   bmp: "\u0500-\u052f"
   }, {
    name: "InDeseret",
-   astral: "í [í°€-í±]"
+   astral: "\ud801[\udc00-\udc4f]"
   }, {
    name: "InDevanagari",
-   bmp: "à¤€-à¥¿"
+   bmp: "\u0900-\u097f"
   }, {
    name: "InDevanagari_Extended",
-   bmp: "ê£ -ê£¿"
+   bmp: "\ua8e0-\ua8ff"
   }, {
    name: "InDingbats",
-   bmp: "âœ€-â¿"
+   bmp: "\u2700-\u27bf"
   }, {
    name: "InDomino_Tiles",
-   astral: "í ¼[í°°-í²Ÿ]"
+   astral: "\ud83c[\udc30-\udc9f]"
   }, {
    name: "InEgyptian_Hieroglyphs",
-   astral: "í Œ[í°€-í¿¿]|í [í°€-í°¯]"
+   astral: "\ud80c[\udc00-\udfff]|\ud80d[\udc00-\udc2f]"
   }, {
    name: "InEmoticons",
-   astral: "í ½[í¸€-í¹]"
+   astral: "\ud83d[\ude00-\ude4f]"
   }, {
    name: "InEnclosed_Alphanumeric_Supplement",
-   astral: "í ¼[í´€-í·¿]"
+   astral: "\ud83c[\udd00-\uddff]"
   }, {
    name: "InEnclosed_Alphanumerics",
-   bmp: "â‘ -â“¿"
+   bmp: "\u2460-\u24ff"
   }, {
    name: "InEnclosed_CJK_Letters_and_Months",
-   bmp: "ãˆ€-ã‹¿"
+   bmp: "\u3200-\u32ff"
   }, {
    name: "InEnclosed_Ideographic_Supplement",
-   astral: "í ¼[í¸€-í»¿]"
+   astral: "\ud83c[\ude00-\udeff]"
   }, {
    name: "InEthiopic",
-   bmp: "áˆ€-á¿"
+   bmp: "\u1200-\u137f"
   }, {
    name: "InEthiopic_Extended",
-   bmp: "â¶€-â·Ÿ"
+   bmp: "\u2d80-\u2ddf"
   }, {
    name: "InEthiopic_Extended_A",
-   bmp: "ê¬€-ê¬¯"
+   bmp: "\uab00-\uab2f"
   }, {
    name: "InEthiopic_Supplement",
-   bmp: "á€-áŸ"
+   bmp: "\u1380-\u139f"
   }, {
    name: "InGeneral_Punctuation",
-   bmp: "â€€-â¯"
+   bmp: "\u2000-\u206f"
   }, {
    name: "InGeometric_Shapes",
-   bmp: "â– -â—¿"
+   bmp: "\u25a0-\u25ff"
   }, {
    name: "InGeorgian",
-   bmp: "á‚ -áƒ¿"
+   bmp: "\u10a0-\u10ff"
   }, {
    name: "InGeorgian_Supplement",
-   bmp: "â´€-â´¯"
+   bmp: "\u2d00-\u2d2f"
   }, {
    name: "InGlagolitic",
-   bmp: "â°€-â±Ÿ"
+   bmp: "\u2c00-\u2c5f"
   }, {
    name: "InGothic",
-   astral: "í €[í¼°-í½]"
+   astral: "\ud800[\udf30-\udf4f]"
   }, {
    name: "InGreek_Extended",
-   bmp: "á¼€-á¿¿"
+   bmp: "\u1f00-\u1fff"
   }, {
    name: "InGreek_and_Coptic",
-   bmp: "Í°-Ï¿"
+   bmp: "\u0370-\u03ff"
   }, {
    name: "InGujarati",
-   bmp: "àª€-à«¿"
+   bmp: "\u0a80-\u0aff"
   }, {
    name: "InGurmukhi",
-   bmp: "à¨€-à©¿"
+   bmp: "\u0a00-\u0a7f"
   }, {
    name: "InHalfwidth_and_Fullwidth_Forms",
-   bmp: "ï¼€-ï¿¯"
+   bmp: "\uff00-\uffef"
   }, {
    name: "InHangul_Compatibility_Jamo",
-   bmp: "ã„°-ã†"
+   bmp: "\u3130-\u318f"
   }, {
    name: "InHangul_Jamo",
-   bmp: "á„€-á‡¿"
+   bmp: "\u1100-\u11ff"
   }, {
    name: "InHangul_Jamo_Extended_A",
-   bmp: "ê¥ -ê¥¿"
+   bmp: "\ua960-\ua97f"
   }, {
    name: "InHangul_Jamo_Extended_B",
-   bmp: "í°-íŸ¿"
+   bmp: "\ud7b0-\ud7ff"
   }, {
    name: "InHangul_Syllables",
-   bmp: "ê°€-í¯"
+   bmp: "\uac00-\ud7af"
   }, {
    name: "InHanunoo",
-   bmp: "áœ -áœ¿"
+   bmp: "\u1720-\u173f"
   }, {
    name: "InHebrew",
-   bmp: "Ö-×¿"
+   bmp: "\u0590-\u05ff"
   }, {
    name: "InHigh_Private_Use_Surrogates",
-   bmp: "í®€-í¯¿"
+   bmp: "\udb80-\udbff"
   }, {
    name: "InHigh_Surrogates",
-   bmp: "í €-í­¿"
+   bmp: "\ud800-\udb7f"
   }, {
    name: "InHiragana",
-   bmp: "ã€-ã‚Ÿ"
+   bmp: "\u3040-\u309f"
   }, {
    name: "InIPA_Extensions",
-   bmp: "É-Ê¯"
+   bmp: "\u0250-\u02af"
   }, {
    name: "InIdeographic_Description_Characters",
-   bmp: "â¿°-â¿¿"
+   bmp: "\u2ff0-\u2fff"
   }, {
    name: "InImperial_Aramaic",
-   astral: "í ‚[í±€-í±Ÿ]"
+   astral: "\ud802[\udc40-\udc5f]"
   }, {
    name: "InInscriptional_Pahlavi",
-   astral: "í ‚[í½ -í½¿]"
+   astral: "\ud802[\udf60-\udf7f]"
   }, {
    name: "InInscriptional_Parthian",
-   astral: "í ‚[í½€-í½Ÿ]"
+   astral: "\ud802[\udf40-\udf5f]"
   }, {
    name: "InJavanese",
-   bmp: "ê¦€-ê§Ÿ"
+   bmp: "\ua980-\ua9df"
   }, {
    name: "InKaithi",
-   astral: "í „[í²€-í³]"
+   astral: "\ud804[\udc80-\udccf]"
   }, {
    name: "InKana_Supplement",
-   astral: "í ¬[í°€-í³¿]"
+   astral: "\ud82c[\udc00-\udcff]"
   }, {
    name: "InKanbun",
-   bmp: "ã†-ã†Ÿ"
+   bmp: "\u3190-\u319f"
   }, {
    name: "InKangxi_Radicals",
-   bmp: "â¼€-â¿Ÿ"
+   bmp: "\u2f00-\u2fdf"
   }, {
    name: "InKannada",
-   bmp: "à²€-à³¿"
+   bmp: "\u0c80-\u0cff"
   }, {
    name: "InKatakana",
-   bmp: "ã‚ -ãƒ¿"
+   bmp: "\u30a0-\u30ff"
   }, {
    name: "InKatakana_Phonetic_Extensions",
-   bmp: "ã‡°-ã‡¿"
+   bmp: "\u31f0-\u31ff"
   }, {
    name: "InKayah_Li",
-   bmp: "ê¤€-ê¤¯"
+   bmp: "\ua900-\ua92f"
   }, {
    name: "InKharoshthi",
-   astral: "í ‚[í¸€-í¹Ÿ]"
+   astral: "\ud802[\ude00-\ude5f]"
   }, {
    name: "InKhmer",
-   bmp: "á€-áŸ¿"
+   bmp: "\u1780-\u17ff"
   }, {
    name: "InKhmer_Symbols",
-   bmp: "á§ -á§¿"
+   bmp: "\u19e0-\u19ff"
   }, {
    name: "InLao",
-   bmp: "àº€-à»¿"
+   bmp: "\u0e80-\u0eff"
   }, {
    name: "InLatin_Extended_Additional",
-   bmp: "á¸€-á»¿"
+   bmp: "\u1e00-\u1eff"
   }, {
    name: "InLatin_Extended_A",
-   bmp: "Ä€-Å¿"
+   bmp: "\u0100-\u017f"
   }, {
    name: "InLatin_Extended_B",
-   bmp: "Æ€-É"
+   bmp: "\u0180-\u024f"
   }, {
    name: "InLatin_Extended_C",
-   bmp: "â± -â±¿"
+   bmp: "\u2c60-\u2c7f"
   }, {
    name: "InLatin_Extended_D",
-   bmp: "êœ -êŸ¿"
+   bmp: "\ua720-\ua7ff"
   }, {
    name: "InLatin_1_Supplement",
-   bmp: "Â€-Ã¿"
+   bmp: "\x80-\xff"
   }, {
    name: "InLepcha",
-   bmp: "á°€-á±"
+   bmp: "\u1c00-\u1c4f"
   }, {
    name: "InLetterlike_Symbols",
-   bmp: "â„€-â…"
+   bmp: "\u2100-\u214f"
   }, {
    name: "InLimbu",
-   bmp: "á¤€-á¥"
+   bmp: "\u1900-\u194f"
   }, {
    name: "InLinear_B_Ideograms",
-   astral: "í €[í²€-í³¿]"
+   astral: "\ud800[\udc80-\udcff]"
   }, {
    name: "InLinear_B_Syllabary",
-   astral: "í €[í°€-í±¿]"
+   astral: "\ud800[\udc00-\udc7f]"
   }, {
    name: "InLisu",
-   bmp: "ê“-ê“¿"
+   bmp: "\ua4d0-\ua4ff"
   }, {
    name: "InLow_Surrogates",
-   bmp: "í°€-í¿¿"
+   bmp: "\udc00-\udfff"
   }, {
    name: "InLycian",
-   astral: "í €[íº€-íºŸ]"
+   astral: "\ud800[\ude80-\ude9f]"
   }, {
    name: "InLydian",
-   astral: "í ‚[í´ -í´¿]"
+   astral: "\ud802[\udd20-\udd3f]"
   }, {
    name: "InMahjong_Tiles",
-   astral: "í ¼[í°€-í°¯]"
+   astral: "\ud83c[\udc00-\udc2f]"
   }, {
    name: "InMalayalam",
-   bmp: "à´€-àµ¿"
+   bmp: "\u0d00-\u0d7f"
   }, {
    name: "InMandaic",
-   bmp: "à¡€-à¡Ÿ"
+   bmp: "\u0840-\u085f"
   }, {
    name: "InMathematical_Alphanumeric_Symbols",
-   astral: "í µ[í°€-í¿¿]"
+   astral: "\ud835[\udc00-\udfff]"
   }, {
    name: "InMathematical_Operators",
-   bmp: "âˆ€-â‹¿"
+   bmp: "\u2200-\u22ff"
   }, {
    name: "InMeetei_Mayek",
-   bmp: "ê¯€-ê¯¿"
+   bmp: "\uabc0-\uabff"
   }, {
    name: "InMeetei_Mayek_Extensions",
-   bmp: "ê« -ê«¿"
+   bmp: "\uaae0-\uaaff"
   }, {
    name: "InMeroitic_Cursive",
-   astral: "í ‚[í¶ -í·¿]"
+   astral: "\ud802[\udda0-\uddff]"
   }, {
    name: "InMeroitic_Hieroglyphs",
-   astral: "í ‚[í¶€-í¶Ÿ]"
+   astral: "\ud802[\udd80-\udd9f]"
   }, {
    name: "InMiao",
-   astral: "í ›[í¼€-í¾Ÿ]"
+   astral: "\ud81b[\udf00-\udf9f]"
   }, {
    name: "InMiscellaneous_Mathematical_Symbols_A",
-   bmp: "âŸ€-âŸ¯"
+   bmp: "\u27c0-\u27ef"
   }, {
    name: "InMiscellaneous_Mathematical_Symbols_B",
-   bmp: "â¦€-â§¿"
+   bmp: "\u2980-\u29ff"
   }, {
    name: "InMiscellaneous_Symbols",
-   bmp: "â˜€-â›¿"
+   bmp: "\u2600-\u26ff"
   }, {
    name: "InMiscellaneous_Symbols_And_Pictographs",
-   astral: "í ½[í°€-í·¿]|í ¼[í¼€-í¿¿]"
+   astral: "\ud83d[\udc00-\uddff]|\ud83c[\udf00-\udfff]"
   }, {
    name: "InMiscellaneous_Symbols_and_Arrows",
-   bmp: "â¬€-â¯¿"
+   bmp: "\u2b00-\u2bff"
   }, {
    name: "InMiscellaneous_Technical",
-   bmp: "âŒ€-â¿"
+   bmp: "\u2300-\u23ff"
   }, {
    name: "InModifier_Tone_Letters",
-   bmp: "êœ€-êœŸ"
+   bmp: "\ua700-\ua71f"
   }, {
    name: "InMongolian",
-   bmp: "á €-á¢¯"
+   bmp: "\u1800-\u18af"
   }, {
    name: "InMusical_Symbols",
-   astral: "í ´[í´€-í·¿]"
+   astral: "\ud834[\udd00-\uddff]"
   }, {
    name: "InMyanmar",
-   bmp: "á€€-á‚Ÿ"
+   bmp: "\u1000-\u109f"
   }, {
    name: "InMyanmar_Extended_A",
-   bmp: "ê© -ê©¿"
+   bmp: "\uaa60-\uaa7f"
   }, {
    name: "InNKo",
-   bmp: "ß€-ß¿"
+   bmp: "\u07c0-\u07ff"
   }, {
    name: "InNew_Tai_Lue",
-   bmp: "á¦€-á§Ÿ"
+   bmp: "\u1980-\u19df"
   }, {
    name: "InNumber_Forms",
-   bmp: "â…-â†"
+   bmp: "\u2150-\u218f"
   }, {
    name: "InOgham",
-   bmp: "áš€-ášŸ"
+   bmp: "\u1680-\u169f"
   }, {
    name: "InOl_Chiki",
-   bmp: "á±-á±¿"
+   bmp: "\u1c50-\u1c7f"
   }, {
    name: "InOld_Italic",
-   astral: "í €[í¼€-í¼¯]"
+   astral: "\ud800[\udf00-\udf2f]"
   }, {
    name: "InOld_Persian",
-   astral: "í €[í¾ -í¿Ÿ]"
+   astral: "\ud800[\udfa0-\udfdf]"
   }, {
    name: "InOld_South_Arabian",
-   astral: "í ‚[í¹ -í¹¿]"
+   astral: "\ud802[\ude60-\ude7f]"
   }, {
    name: "InOld_Turkic",
-   astral: "í ƒ[í°€-í±]"
+   astral: "\ud803[\udc00-\udc4f]"
   }, {
    name: "InOptical_Character_Recognition",
-   bmp: "â‘€-â‘Ÿ"
+   bmp: "\u2440-\u245f"
   }, {
    name: "InOriya",
-   bmp: "à¬€-à­¿"
+   bmp: "\u0b00-\u0b7f"
   }, {
    name: "InOsmanya",
-   astral: "í [í²€-í²¯]"
+   astral: "\ud801[\udc80-\udcaf]"
   }, {
    name: "InPhags_pa",
-   bmp: "ê¡€-ê¡¿"
+   bmp: "\ua840-\ua87f"
   }, {
    name: "InPhaistos_Disc",
-   astral: "í €[í·-í·¿]"
+   astral: "\ud800[\uddd0-\uddff]"
   }, {
    name: "InPhoenician",
-   astral: "í ‚[í´€-í´Ÿ]"
+   astral: "\ud802[\udd00-\udd1f]"
   }, {
    name: "InPhonetic_Extensions",
-   bmp: "á´€-áµ¿"
+   bmp: "\u1d00-\u1d7f"
   }, {
    name: "InPhonetic_Extensions_Supplement",
-   bmp: "á¶€-á¶¿"
+   bmp: "\u1d80-\u1dbf"
   }, {
    name: "InPlaying_Cards",
-   astral: "í ¼[í² -í³¿]"
+   astral: "\ud83c[\udca0-\udcff]"
   }, {
    name: "InPrivate_Use_Area",
-   bmp: "î€€-ï£¿"
+   bmp: "\ue000-\uf8ff"
   }, {
    name: "InRejang",
-   bmp: "ê¤°-ê¥Ÿ"
+   bmp: "\ua930-\ua95f"
   }, {
    name: "InRumi_Numeral_Symbols",
-   astral: "í ƒ[í¹ -í¹¿]"
+   astral: "\ud803[\ude60-\ude7f]"
   }, {
    name: "InRunic",
-   bmp: "áš -á›¿"
+   bmp: "\u16a0-\u16ff"
   }, {
    name: "InSamaritan",
-   bmp: "à €-à ¿"
+   bmp: "\u0800-\u083f"
   }, {
    name: "InSaurashtra",
-   bmp: "ê¢€-ê£Ÿ"
+   bmp: "\ua880-\ua8df"
   }, {
    name: "InSharada",
-   astral: "í „[í¶€-í·Ÿ]"
+   astral: "\ud804[\udd80-\udddf]"
   }, {
    name: "InShavian",
-   astral: "í [í±-í±¿]"
+   astral: "\ud801[\udc50-\udc7f]"
   }, {
    name: "InSinhala",
-   bmp: "à¶€-à·¿"
+   bmp: "\u0d80-\u0dff"
   }, {
    name: "InSmall_Form_Variants",
-   bmp: "ï¹-ï¹¯"
+   bmp: "\ufe50-\ufe6f"
   }, {
    name: "InSora_Sompeng",
-   astral: "í „[í³-í³¿]"
+   astral: "\ud804[\udcd0-\udcff]"
   }, {
    name: "InSpacing_Modifier_Letters",
-   bmp: "Ê°-Ë¿"
+   bmp: "\u02b0-\u02ff"
   }, {
    name: "InSpecials",
-   bmp: "ï¿°-ï¿¿"
+   bmp: "\ufff0-\uffff"
   }, {
    name: "InSundanese",
-   bmp: "á®€-á®¿"
+   bmp: "\u1b80-\u1bbf"
   }, {
    name: "InSundanese_Supplement",
-   bmp: "á³€-á³"
+   bmp: "\u1cc0-\u1ccf"
   }, {
    name: "InSuperscripts_and_Subscripts",
-   bmp: "â°-â‚Ÿ"
+   bmp: "\u2070-\u209f"
   }, {
    name: "InSupplemental_Arrows_A",
-   bmp: "âŸ°-âŸ¿"
+   bmp: "\u27f0-\u27ff"
   }, {
    name: "InSupplemental_Arrows_B",
-   bmp: "â¤€-â¥¿"
+   bmp: "\u2900-\u297f"
   }, {
    name: "InSupplemental_Mathematical_Operators",
-   bmp: "â¨€-â«¿"
+   bmp: "\u2a00-\u2aff"
   }, {
    name: "InSupplemental_Punctuation",
-   bmp: "â¸€-â¹¿"
+   bmp: "\u2e00-\u2e7f"
   }, {
    name: "InSupplementary_Private_Use_Area_A",
-   astral: "[í®€-í®¿][í°€-í¿¿]"
+   astral: "[\udb80-\udbbf][\udc00-\udfff]"
   }, {
    name: "InSupplementary_Private_Use_Area_B",
-   astral: "[í¯€-í¯¿][í°€-í¿¿]"
+   astral: "[\udbc0-\udbff][\udc00-\udfff]"
   }, {
    name: "InSyloti_Nagri",
-   bmp: "ê €-ê ¯"
+   bmp: "\ua800-\ua82f"
   }, {
    name: "InSyriac",
-   bmp: "Ü€-İ"
+   bmp: "\u0700-\u074f"
   }, {
    name: "InTagalog",
-   bmp: "áœ€-áœŸ"
+   bmp: "\u1700-\u171f"
   }, {
    name: "InTagbanwa",
-   bmp: "á -á¿"
+   bmp: "\u1760-\u177f"
   }, {
    name: "InTags",
-   astral: "í­€[í°€-í±¿]"
+   astral: "\udb40[\udc00-\udc7f]"
   }, {
    name: "InTai_Le",
-   bmp: "á¥-á¥¿"
+   bmp: "\u1950-\u197f"
   }, {
    name: "InTai_Tham",
-   bmp: "á¨ -áª¯"
+   bmp: "\u1a20-\u1aaf"
   }, {
    name: "InTai_Viet",
-   bmp: "êª€-ê«Ÿ"
+   bmp: "\uaa80-\uaadf"
   }, {
    name: "InTai_Xuan_Jing_Symbols",
-   astral: "í ´[í¼€-í½Ÿ]"
+   astral: "\ud834[\udf00-\udf5f]"
   }, {
    name: "InTakri",
-   astral: "í …[íº€-í»]"
+   astral: "\ud805[\ude80-\udecf]"
   }, {
    name: "InTamil",
-   bmp: "à®€-à¯¿"
+   bmp: "\u0b80-\u0bff"
   }, {
    name: "InTelugu",
-   bmp: "à°€-à±¿"
+   bmp: "\u0c00-\u0c7f"
   }, {
    name: "InThaana",
-   bmp: "Ş€-Ş¿"
+   bmp: "\u0780-\u07bf"
   }, {
    name: "InThai",
-   bmp: "à¸€-à¹¿"
+   bmp: "\u0e00-\u0e7f"
   }, {
    name: "InTibetan",
-   bmp: "à¼€-à¿¿"
+   bmp: "\u0f00-\u0fff"
   }, {
    name: "InTifinagh",
-   bmp: "â´°-âµ¿"
+   bmp: "\u2d30-\u2d7f"
   }, {
    name: "InTransport_And_Map_Symbols",
-   astral: "í ½[íº€-í»¿]"
+   astral: "\ud83d[\ude80-\udeff]"
   }, {
    name: "InUgaritic",
-   astral: "í €[í¾€-í¾Ÿ]"
+   astral: "\ud800[\udf80-\udf9f]"
   }, {
    name: "InUnified_Canadian_Aboriginal_Syllabics",
-   bmp: "á€-á™¿"
+   bmp: "\u1400-\u167f"
   }, {
    name: "InUnified_Canadian_Aboriginal_Syllabics_Extended",
-   bmp: "á¢°-á£¿"
+   bmp: "\u18b0-\u18ff"
   }, {
    name: "InVai",
-   bmp: "ê”€-ê˜¿"
+   bmp: "\ua500-\ua63f"
   }, {
    name: "InVariation_Selectors",
-   bmp: "ï¸€-ï¸"
+   bmp: "\ufe00-\ufe0f"
   }, {
    name: "InVariation_Selectors_Supplement",
-   astral: "í­€[í´€-í·¯]"
+   astral: "\udb40[\udd00-\uddef]"
   }, {
    name: "InVedic_Extensions",
-   bmp: "á³-á³¿"
+   bmp: "\u1cd0-\u1cff"
   }, {
    name: "InVertical_Forms",
-   bmp: "ï¸-ï¸Ÿ"
+   bmp: "\ufe10-\ufe1f"
   }, {
    name: "InYi_Radicals",
-   bmp: "ê’-ê“"
+   bmp: "\ua490-\ua4cf"
   }, {
    name: "InYi_Syllables",
-   bmp: "ê€€-ê’"
+   bmp: "\ua000-\ua48f"
   }, {
    name: "InYijing_Hexagram_Symbols",
-   bmp: "ä·€-ä·¿"
+   bmp: "\u4dc0-\u4dff"
   } ]);
  }(e), function(e) {
   if (!e.addUnicodeData) throw new ReferenceError("Unicode Base must be loaded before Unicode Categories");
@@ -5753,155 +5755,155 @@ function diff_match_patch() {
    name: "C",
    alias: "Other",
    isBmpLast: !0,
-   bmp: "\x00--ÂŸÂ­Í¸Í¹Í¿-ÎƒÎ‹ÎÎ¢Ô¨-Ô°Õ—Õ˜Õ ÖˆÖ‹-ÖÖ×ˆ-××«-×¯×µ-Ø…ØœØÛÜÜİ‹İŒŞ²-Ş¿ß»-ß¿à ®à ¯à ¿à¡œà¡à¡Ÿ-à¢Ÿà¢¡à¢­-à££à£¿à¥¸à¦€à¦„à¦à¦à¦‘à¦’à¦©à¦±à¦³-à¦µà¦ºà¦»à§…à§†à§‰à§Šà§-à§–à§˜-à§›à§à§¤à§¥à§¼-à¨€à¨„à¨‹-à¨à¨‘à¨’à¨©à¨±à¨´à¨·à¨ºà¨»à¨½à©ƒ-à©†à©‰à©Šà©-à©à©’-à©˜à©à©Ÿ-à©¥à©¶-àª€àª„àªàª’àª©àª±àª´àªºàª»à«†à«Šà«à«à«‘-à«Ÿà«¤à«¥à«²-à¬€à¬„à¬à¬à¬‘à¬’à¬©à¬±à¬´à¬ºà¬»à­…à­†à­‰à­Šà­-à­•à­˜-à­›à­à­¤à­¥à­¸-à®à®„à®‹-à®à®‘à®–-à®˜à®›à®à® -à®¢à®¥-à®§à®«-à®­à®º-à®½à¯ƒ-à¯…à¯‰à¯à¯à¯‘-à¯–à¯˜-à¯¥à¯»-à°€à°„à°à°‘à°©à°´à°º-à°¼à±…à±‰à±-à±”à±—à±š-à±Ÿà±¤à±¥à±°-à±·à²€à²à²„à²à²‘à²©à²´à²ºà²»à³…à³‰à³-à³”à³—-à³à³Ÿà³¤à³¥à³°à³³-à´à´„à´à´‘à´»à´¼àµ…àµ‰àµ-àµ–àµ˜-àµŸàµ¤àµ¥àµ¶-àµ¸à¶€à¶à¶„à¶—-à¶™à¶²à¶¼à¶¾à¶¿à·‡-à·‰à·‹-à·à·•à·—à· -à·±à·µ-à¸€à¸»-à¸¾à¹œ-àº€àºƒàº…àº†àº‰àº‹àºŒàº-àº“àº˜àº àº¤àº¦àº¨àº©àº¬àººàº¾àº¿à»…à»‡à»à»à»šà»›à» -à»¿à½ˆà½­-à½°à¾˜à¾½à¿à¿›-à¿¿áƒ†áƒˆ-áƒŒáƒáƒá‰‰á‰á‰á‰—á‰™á‰á‰ŸáŠ‰áŠáŠáŠ±áŠ¶áŠ·áŠ¿á‹á‹†á‹‡á‹—áŒ‘áŒ–áŒ—á›áœá½-á¿áš-áŸáµ-á¿áš-ášŸá›±-á›¿áœáœ•-áœŸáœ·-áœ¿á”-áŸá­á±á´-á¿áŸáŸŸáŸª-áŸ¯áŸº-áŸ¿á á š-á Ÿá¡¸-á¡¿á¢«-á¢¯á£¶-á£¿á¤-á¤Ÿá¤¬-á¤¯á¤¼-á¤¿á¥-á¥ƒá¥®á¥¯á¥µ-á¥¿á¦¬-á¦¯á§Š-á§á§›-á§á¨œá¨á©Ÿá©½á©¾áªŠ-áªáªš-áªŸáª®-á«¿á­Œ-á­á­½-á­¿á¯´-á¯»á°¸-á°ºá±Š-á±Œá²€-á²¿á³ˆ-á³á³·-á³¿á·§-á·»á¼–á¼—á¼á¼Ÿá½†á½‡á½á½á½˜á½šá½œá½á½¾á½¿á¾µá¿…á¿”á¿•á¿œá¿°á¿±á¿µá¿¿â€‹-â€â€ª-â€®â -â¯â²â³â‚â‚-â‚Ÿâ‚»-âƒâƒ±-âƒ¿â†Š-â†â´-â¿â§-â¿â‘‹-â‘Ÿâœ€â­-â­â­š-â¯¿â°¯â±Ÿâ³´-â³¸â´¦â´¨-â´¬â´®â´¯âµ¨-âµ®âµ±-âµ¾â¶—-â¶Ÿâ¶§â¶¯â¶·â¶¿â·‡â·â·—â·Ÿâ¸¼-â¹¿âºšâ»´-â»¿â¿–-â¿¯â¿¼-â¿¿ã€ã‚—ã‚˜ã„€-ã„„ã„®-ã„°ã†ã†»-ã†¿ã‡¤-ã‡¯ãˆŸã‹¿ä¶¶-ä¶¿é¿-é¿¿ê’-ê’ê“‡-ê“ê˜¬-ê˜¿êš˜-êšê›¸-ê›¿êê”-êŸê«-êŸ·ê ¬-ê ¯ê º-ê ¿ê¡¸-ê¡¿ê£…-ê£ê£š-ê£Ÿê£¼-ê£¿ê¥”-ê¥ê¥½-ê¥¿ê§ê§š-ê§ê§ -ê§¿ê¨·-ê¨¿ê©ê©ê©šê©›ê©¼-ê©¿ê«ƒ-ê«šê«·-ê¬€ê¬‡ê¬ˆê¬ê¬ê¬—-ê¬Ÿê¬§ê¬¯-ê®¿ê¯®ê¯¯ê¯º-ê¯¿í¤-í¯íŸ‡-íŸŠíŸ¼-ï£¿ï©®ï©¯ï«š-ï«¿ï¬‡-ï¬’ï¬˜-ï¬œï¬·ï¬½ï¬¿ï­‚ï­…ï¯‚-ï¯’ïµ€-ïµï¶ï¶‘ï·ˆ-ï·¯ï·¾ï·¿ï¸š-ï¸Ÿï¸§-ï¸¯ï¹“ï¹§ï¹¬-ï¹¯ï¹µï»½-ï¼€ï¾¿-ï¿ï¿ˆï¿‰ï¿ï¿‘ï¿˜ï¿™ï¿-ï¿Ÿï¿§ï¿¯-ï¿»ï¿¾ï¿¿",
-   astral: "í ˆ[í½¯-í¿¿]|í ‰[í±£-í±¯í±´-í¿¿]|í „[í±-í±‘í±°-í±¿í²½í³‚-í³í³©-í³¯í³º-í³¿í´µíµ„-íµ¿í·‰-í·í·š-í¿¿]|í ‚[í°†í°‡í°‰í°¶í°¹-í°»í°½í°¾í±–í± -í³¿í´œ-í´í´º-í´¾íµ€-íµ¿í¶¸-í¶½í·€-í·¿í¸„í¸‡-í¸‹í¸”í¸˜í¸´-í¸·í¸»-í¸¾í¹ˆ-í¹í¹™-í¹Ÿíº€-í»¿í¼¶-í¼¸í½–í½—í½³-í½·í¾€-í¿¿]|í¡­[í¼µ-í¼¿]|í ›[í°€-í»¿í½…-í½í½¿-í¾í¾ -í¿¿]|í¡®[í°-í¿¿]|í €[í°Œí°§í°»í°¾í±í±í±-í±¿í³»-í³¿í´ƒ-í´†í´´-í´¶í¶‹-í¶í¶œ-í·í·¾-í¹¿íº-íºŸí»‘-í»¿í¼Ÿí¼¤-í¼¯í½‹-í½¿í¾í¿„-í¿‡í¿–-í¿¿]|í¡©[í»—-í»¿]|í »[í°€-í·¿í¸„í¸ í¸£í¸¥í¸¦í¸¨í¸³í¸¸í¸ºí¸¼-í¹í¹ƒ-í¹†í¹ˆí¹Ší¹Œí¹í¹“í¹•í¹–í¹˜í¹ší¹œí¹í¹ í¹£í¹¥í¹¦í¹«í¹³í¹¸í¹½í¹¿íºŠíºœ-íº íº¤íºªíº¼-í»¯í»²-í¿¿]|í¡¾[í¸-í¿¿]|í­€[í°€-í³¿í·°-í¿¿]|í ƒ[í±‰-í¹Ÿí¹¿-í¿¿]|í [í°¯-í¿¿]|[í †í ‡í Ší ‹í -í ™í œ-í «í ­-í ³í ¶-í ºí ¾í ¿í¡¯-í¡½í¡¿-í¬¿í­-í¯¿][í°€-í¿¿]|í ½[í°¿í±í³¸í³½-í³¿í´¾í´¿íµ„-íµíµ¨-í·ºí¹-í¹„í¹-í¹¿í»†-í»¿í½´-í¿¿]|í ¼[í°¬-í°¯í²”-í²Ÿí²¯í²°í²¿í³€í³í³ -í³¿í´‹-í´í´¯íµ¬-íµ¯í¶›-í·¥í¸ƒ-í¸í¸»-í¸¿í¹‰-í¹í¹’-í»¿í¼¡-í¼¯í¼¶í½½-í½¿í¾”-í¾Ÿí¿…í¿‹-í¿Ÿí¿±-í¿¿]|í µ[í±•í²í² í²¡í²£í²¤í²§í²¨í²­í²ºí²¼í³„í´†í´‹í´Œí´•í´í´ºí´¿íµ…íµ‡-íµ‰íµ‘íº¦íº§í¿Œí¿]|í š[í¸¹-í¿¿]|í ´[í³¶-í³¿í´§í´¨íµ³-íµºí·-í·¿í¹†-í»¿í½—-í½Ÿí½²-í¿¿]|í [í²í²Ÿí²ª-í¿¿]|í …[í°€-í¹¿íº¸-íº¿í»Š-í¿¿]|í ¬[í°‚-í¿¿]"
+   bmp: "\x00--\x9f\xad\u0378\u0379\u037f-\u0383\u038b\u038d\u03a2\u0528-\u0530\u0557\u0558\u0560\u0588\u058b-\u058e\u0590\u05c8-\u05cf\u05eb-\u05ef\u05f5-\u0605\u061c\u061d\u06dd\u070e\u070f\u074b\u074c\u07b2-\u07bf\u07fb-\u07ff\u082e\u082f\u083f\u085c\u085d\u085f-\u089f\u08a1\u08ad-\u08e3\u08ff\u0978\u0980\u0984\u098d\u098e\u0991\u0992\u09a9\u09b1\u09b3-\u09b5\u09ba\u09bb\u09c5\u09c6\u09c9\u09ca\u09cf-\u09d6\u09d8-\u09db\u09de\u09e4\u09e5\u09fc-\u0a00\u0a04\u0a0b-\u0a0e\u0a11\u0a12\u0a29\u0a31\u0a34\u0a37\u0a3a\u0a3b\u0a3d\u0a43-\u0a46\u0a49\u0a4a\u0a4e-\u0a50\u0a52-\u0a58\u0a5d\u0a5f-\u0a65\u0a76-\u0a80\u0a84\u0a8e\u0a92\u0aa9\u0ab1\u0ab4\u0aba\u0abb\u0ac6\u0aca\u0ace\u0acf\u0ad1-\u0adf\u0ae4\u0ae5\u0af2-\u0b00\u0b04\u0b0d\u0b0e\u0b11\u0b12\u0b29\u0b31\u0b34\u0b3a\u0b3b\u0b45\u0b46\u0b49\u0b4a\u0b4e-\u0b55\u0b58-\u0b5b\u0b5e\u0b64\u0b65\u0b78-\u0b81\u0b84\u0b8b-\u0b8d\u0b91\u0b96-\u0b98\u0b9b\u0b9d\u0ba0-\u0ba2\u0ba5-\u0ba7\u0bab-\u0bad\u0bba-\u0bbd\u0bc3-\u0bc5\u0bc9\u0bce\u0bcf\u0bd1-\u0bd6\u0bd8-\u0be5\u0bfb-\u0c00\u0c04\u0c0d\u0c11\u0c29\u0c34\u0c3a-\u0c3c\u0c45\u0c49\u0c4e-\u0c54\u0c57\u0c5a-\u0c5f\u0c64\u0c65\u0c70-\u0c77\u0c80\u0c81\u0c84\u0c8d\u0c91\u0ca9\u0cb4\u0cba\u0cbb\u0cc5\u0cc9\u0cce-\u0cd4\u0cd7-\u0cdd\u0cdf\u0ce4\u0ce5\u0cf0\u0cf3-\u0d01\u0d04\u0d0d\u0d11\u0d3b\u0d3c\u0d45\u0d49\u0d4f-\u0d56\u0d58-\u0d5f\u0d64\u0d65\u0d76-\u0d78\u0d80\u0d81\u0d84\u0d97-\u0d99\u0db2\u0dbc\u0dbe\u0dbf\u0dc7-\u0dc9\u0dcb-\u0dce\u0dd5\u0dd7\u0de0-\u0df1\u0df5-\u0e00\u0e3b-\u0e3e\u0e5c-\u0e80\u0e83\u0e85\u0e86\u0e89\u0e8b\u0e8c\u0e8e-\u0e93\u0e98\u0ea0\u0ea4\u0ea6\u0ea8\u0ea9\u0eac\u0eba\u0ebe\u0ebf\u0ec5\u0ec7\u0ece\u0ecf\u0eda\u0edb\u0ee0-\u0eff\u0f48\u0f6d-\u0f70\u0f98\u0fbd\u0fcd\u0fdb-\u0fff\u10c6\u10c8-\u10cc\u10ce\u10cf\u1249\u124e\u124f\u1257\u1259\u125e\u125f\u1289\u128e\u128f\u12b1\u12b6\u12b7\u12bf\u12c1\u12c6\u12c7\u12d7\u1311\u1316\u1317\u135b\u135c\u137d-\u137f\u139a-\u139f\u13f5-\u13ff\u169d-\u169f\u16f1-\u16ff\u170d\u1715-\u171f\u1737-\u173f\u1754-\u175f\u176d\u1771\u1774-\u177f\u17de\u17df\u17ea-\u17ef\u17fa-\u17ff\u180f\u181a-\u181f\u1878-\u187f\u18ab-\u18af\u18f6-\u18ff\u191d-\u191f\u192c-\u192f\u193c-\u193f\u1941-\u1943\u196e\u196f\u1975-\u197f\u19ac-\u19af\u19ca-\u19cf\u19db-\u19dd\u1a1c\u1a1d\u1a5f\u1a7d\u1a7e\u1a8a-\u1a8f\u1a9a-\u1a9f\u1aae-\u1aff\u1b4c-\u1b4f\u1b7d-\u1b7f\u1bf4-\u1bfb\u1c38-\u1c3a\u1c4a-\u1c4c\u1c80-\u1cbf\u1cc8-\u1ccf\u1cf7-\u1cff\u1de7-\u1dfb\u1f16\u1f17\u1f1e\u1f1f\u1f46\u1f47\u1f4e\u1f4f\u1f58\u1f5a\u1f5c\u1f5e\u1f7e\u1f7f\u1fb5\u1fc5\u1fd4\u1fd5\u1fdc\u1ff0\u1ff1\u1ff5\u1fff\u200b-\u200f\u202a-\u202e\u2060-\u206f\u2072\u2073\u208f\u209d-\u209f\u20bb-\u20cf\u20f1-\u20ff\u218a-\u218f\u23f4-\u23ff\u2427-\u243f\u244b-\u245f\u2700\u2b4d-\u2b4f\u2b5a-\u2bff\u2c2f\u2c5f\u2cf4-\u2cf8\u2d26\u2d28-\u2d2c\u2d2e\u2d2f\u2d68-\u2d6e\u2d71-\u2d7e\u2d97-\u2d9f\u2da7\u2daf\u2db7\u2dbf\u2dc7\u2dcf\u2dd7\u2ddf\u2e3c-\u2e7f\u2e9a\u2ef4-\u2eff\u2fd6-\u2fef\u2ffc-\u2fff\u3040\u3097\u3098\u3100-\u3104\u312e-\u3130\u318f\u31bb-\u31bf\u31e4-\u31ef\u321f\u32ff\u4db6-\u4dbf\u9fcd-\u9fff\ua48d-\ua48f\ua4c7-\ua4cf\ua62c-\ua63f\ua698-\ua69e\ua6f8-\ua6ff\ua78f\ua794-\ua79f\ua7ab-\ua7f7\ua82c-\ua82f\ua83a-\ua83f\ua878-\ua87f\ua8c5-\ua8cd\ua8da-\ua8df\ua8fc-\ua8ff\ua954-\ua95e\ua97d-\ua97f\ua9ce\ua9da-\ua9dd\ua9e0-\ua9ff\uaa37-\uaa3f\uaa4e\uaa4f\uaa5a\uaa5b\uaa7c-\uaa7f\uaac3-\uaada\uaaf7-\uab00\uab07\uab08\uab0f\uab10\uab17-\uab1f\uab27\uab2f-\uabbf\uabee\uabef\uabfa-\uabff\ud7a4-\ud7af\ud7c7-\ud7ca\ud7fc-\uf8ff\ufa6e\ufa6f\ufada-\ufaff\ufb07-\ufb12\ufb18-\ufb1c\ufb37\ufb3d\ufb3f\ufb42\ufb45\ufbc2-\ufbd2\ufd40-\ufd4f\ufd90\ufd91\ufdc8-\ufdef\ufdfe\ufdff\ufe1a-\ufe1f\ufe27-\ufe2f\ufe53\ufe67\ufe6c-\ufe6f\ufe75\ufefd-\uff00\uffbf-\uffc1\uffc8\uffc9\uffd0\uffd1\uffd8\uffd9\uffdd-\uffdf\uffe7\uffef-\ufffb\ufffe\uffff",
+   astral: "\ud808[\udf6f-\udfff]|\ud809[\udc63-\udc6f\udc74-\udfff]|\ud804[\udc4e-\udc51\udc70-\udc7f\udcbd\udcc2-\udccf\udce9-\udcef\udcfa-\udcff\udd35\udd44-\udd7f\uddc9-\uddcf\uddda-\udfff]|\ud802[\udc06\udc07\udc09\udc36\udc39-\udc3b\udc3d\udc3e\udc56\udc60-\udcff\udd1c-\udd1e\udd3a-\udd3e\udd40-\udd7f\uddb8-\uddbd\uddc0-\uddff\ude04\ude07-\ude0b\ude14\ude18\ude34-\ude37\ude3b-\ude3e\ude48-\ude4f\ude59-\ude5f\ude80-\udeff\udf36-\udf38\udf56\udf57\udf73-\udf77\udf80-\udfff]|\ud86d[\udf35-\udf3f]|\ud81b[\udc00-\udeff\udf45-\udf4f\udf7f-\udf8e\udfa0-\udfff]|\ud86e[\udc1e-\udfff]|\ud800[\udc0c\udc27\udc3b\udc3e\udc4e\udc4f\udc5e-\udc7f\udcfb-\udcff\udd03-\udd06\udd34-\udd36\udd8b-\udd8f\udd9c-\uddcf\uddfe-\ude7f\ude9d-\ude9f\uded1-\udeff\udf1f\udf24-\udf2f\udf4b-\udf7f\udf9e\udfc4-\udfc7\udfd6-\udfff]|\ud869[\uded7-\udeff]|\ud83b[\udc00-\uddff\ude04\ude20\ude23\ude25\ude26\ude28\ude33\ude38\ude3a\ude3c-\ude41\ude43-\ude46\ude48\ude4a\ude4c\ude50\ude53\ude55\ude56\ude58\ude5a\ude5c\ude5e\ude60\ude63\ude65\ude66\ude6b\ude73\ude78\ude7d\ude7f\ude8a\ude9c-\udea0\udea4\udeaa\udebc-\udeef\udef2-\udfff]|\ud87e[\ude1e-\udfff]|\udb40[\udc00-\udcff\uddf0-\udfff]|\ud803[\udc49-\ude5f\ude7f-\udfff]|\ud80d[\udc2f-\udfff]|[\ud806\ud807\ud80a\ud80b\ud80e-\ud819\ud81c-\ud82b\ud82d-\ud833\ud836-\ud83a\ud83e\ud83f\ud86f-\ud87d\ud87f-\udb3f\udb41-\udbff][\udc00-\udfff]|\ud83d[\udc3f\udc41\udcf8\udcfd-\udcff\udd3e\udd3f\udd44-\udd4f\udd68-\uddfa\ude41-\ude44\ude50-\ude7f\udec6-\udeff\udf74-\udfff]|\ud83c[\udc2c-\udc2f\udc94-\udc9f\udcaf\udcb0\udcbf\udcc0\udcd0\udce0-\udcff\udd0b-\udd0f\udd2f\udd6c-\udd6f\udd9b-\udde5\ude03-\ude0f\ude3b-\ude3f\ude49-\ude4f\ude52-\udeff\udf21-\udf2f\udf36\udf7d-\udf7f\udf94-\udf9f\udfc5\udfcb-\udfdf\udff1-\udfff]|\ud835[\udc55\udc9d\udca0\udca1\udca3\udca4\udca7\udca8\udcad\udcba\udcbc\udcc4\udd06\udd0b\udd0c\udd15\udd1d\udd3a\udd3f\udd45\udd47-\udd49\udd51\udea6\udea7\udfcc\udfcd]|\ud81a[\ude39-\udfff]|\ud834[\udcf6-\udcff\udd27\udd28\udd73-\udd7a\uddde-\uddff\ude46-\udeff\udf57-\udf5f\udf72-\udfff]|\ud801[\udc9e\udc9f\udcaa-\udfff]|\ud805[\udc00-\ude7f\udeb8-\udebf\udeca-\udfff]|\ud82c[\udc02-\udfff]"
   }, {
    name: "Cc",
    alias: "Control",
-   bmp: "\x00--ÂŸ"
+   bmp: "\x00--\x9f"
   }, {
    name: "Cf",
    alias: "Format",
-   bmp: "Â­Ø€-Ø„ÛÜâ€‹-â€â€ª-â€®â -â¤âª-â¯ï»¿ï¿¹-ï¿»",
-   astral: "í­€[í°í° -í±¿]|í ´[íµ³-íµº]|ğ‘‚½"
+   bmp: "\xad\u0600-\u0604\u06dd\u070f\u200b-\u200f\u202a-\u202e\u2060-\u2064\u206a-\u206f\ufeff\ufff9-\ufffb",
+   astral: "\udb40[\udc01\udc20-\udc7f]|\ud834[\udd73-\udd7a]|\ud804\udcbd"
   }, {
    name: "Cn",
    alias: "Unassigned",
-   bmp: "Í¸Í¹Í¿-ÎƒÎ‹ÎÎ¢Ô¨-Ô°Õ—Õ˜Õ ÖˆÖ‹-ÖÖ×ˆ-××«-×¯×µ-×¿Ø…ØœØÜİ‹İŒŞ²-Ş¿ß»-ß¿à ®à ¯à ¿à¡œà¡à¡Ÿ-à¢Ÿà¢¡à¢­-à££à£¿à¥¸à¦€à¦„à¦à¦à¦‘à¦’à¦©à¦±à¦³-à¦µà¦ºà¦»à§…à§†à§‰à§Šà§-à§–à§˜-à§›à§à§¤à§¥à§¼-à¨€à¨„à¨‹-à¨à¨‘à¨’à¨©à¨±à¨´à¨·à¨ºà¨»à¨½à©ƒ-à©†à©‰à©Šà©-à©à©’-à©˜à©à©Ÿ-à©¥à©¶-àª€àª„àªàª’àª©àª±àª´àªºàª»à«†à«Šà«à«à«‘-à«Ÿà«¤à«¥à«²-à¬€à¬„à¬à¬à¬‘à¬’à¬©à¬±à¬´à¬ºà¬»à­…à­†à­‰à­Šà­-à­•à­˜-à­›à­à­¤à­¥à­¸-à®à®„à®‹-à®à®‘à®–-à®˜à®›à®à® -à®¢à®¥-à®§à®«-à®­à®º-à®½à¯ƒ-à¯…à¯‰à¯à¯à¯‘-à¯–à¯˜-à¯¥à¯»-à°€à°„à°à°‘à°©à°´à°º-à°¼à±…à±‰à±-à±”à±—à±š-à±Ÿà±¤à±¥à±°-à±·à²€à²à²„à²à²‘à²©à²´à²ºà²»à³…à³‰à³-à³”à³—-à³à³Ÿà³¤à³¥à³°à³³-à´à´„à´à´‘à´»à´¼àµ…àµ‰àµ-àµ–àµ˜-àµŸàµ¤àµ¥àµ¶-àµ¸à¶€à¶à¶„à¶—-à¶™à¶²à¶¼à¶¾à¶¿à·‡-à·‰à·‹-à·à·•à·—à· -à·±à·µ-à¸€à¸»-à¸¾à¹œ-àº€àºƒàº…àº†àº‰àº‹àºŒàº-àº“àº˜àº àº¤àº¦àº¨àº©àº¬àººàº¾àº¿à»…à»‡à»à»à»šà»›à» -à»¿à½ˆà½­-à½°à¾˜à¾½à¿à¿›-à¿¿áƒ†áƒˆ-áƒŒáƒáƒá‰‰á‰á‰á‰—á‰™á‰á‰ŸáŠ‰áŠáŠáŠ±áŠ¶áŠ·áŠ¿á‹á‹†á‹‡á‹—áŒ‘áŒ–áŒ—á›áœá½-á¿áš-áŸáµ-á¿áš-ášŸá›±-á›¿áœáœ•-áœŸáœ·-áœ¿á”-áŸá­á±á´-á¿áŸáŸŸáŸª-áŸ¯áŸº-áŸ¿á á š-á Ÿá¡¸-á¡¿á¢«-á¢¯á£¶-á£¿á¤-á¤Ÿá¤¬-á¤¯á¤¼-á¤¿á¥-á¥ƒá¥®á¥¯á¥µ-á¥¿á¦¬-á¦¯á§Š-á§á§›-á§á¨œá¨á©Ÿá©½á©¾áªŠ-áªáªš-áªŸáª®-á«¿á­Œ-á­á­½-á­¿á¯´-á¯»á°¸-á°ºá±Š-á±Œá²€-á²¿á³ˆ-á³á³·-á³¿á·§-á·»á¼–á¼—á¼á¼Ÿá½†á½‡á½á½á½˜á½šá½œá½á½¾á½¿á¾µá¿…á¿”á¿•á¿œá¿°á¿±á¿µá¿¿â¥-â©â²â³â‚â‚-â‚Ÿâ‚»-âƒâƒ±-âƒ¿â†Š-â†â´-â¿â§-â¿â‘‹-â‘Ÿâœ€â­-â­â­š-â¯¿â°¯â±Ÿâ³´-â³¸â´¦â´¨-â´¬â´®â´¯âµ¨-âµ®âµ±-âµ¾â¶—-â¶Ÿâ¶§â¶¯â¶·â¶¿â·‡â·â·—â·Ÿâ¸¼-â¹¿âºšâ»´-â»¿â¿–-â¿¯â¿¼-â¿¿ã€ã‚—ã‚˜ã„€-ã„„ã„®-ã„°ã†ã†»-ã†¿ã‡¤-ã‡¯ãˆŸã‹¿ä¶¶-ä¶¿é¿-é¿¿ê’-ê’ê“‡-ê“ê˜¬-ê˜¿êš˜-êšê›¸-ê›¿êê”-êŸê«-êŸ·ê ¬-ê ¯ê º-ê ¿ê¡¸-ê¡¿ê£…-ê£ê£š-ê£Ÿê£¼-ê£¿ê¥”-ê¥ê¥½-ê¥¿ê§ê§š-ê§ê§ -ê§¿ê¨·-ê¨¿ê©ê©ê©šê©›ê©¼-ê©¿ê«ƒ-ê«šê«·-ê¬€ê¬‡ê¬ˆê¬ê¬ê¬—-ê¬Ÿê¬§ê¬¯-ê®¿ê¯®ê¯¯ê¯º-ê¯¿í¤-í¯íŸ‡-íŸŠíŸ¼-íŸ¿ï©®ï©¯ï«š-ï«¿ï¬‡-ï¬’ï¬˜-ï¬œï¬·ï¬½ï¬¿ï­‚ï­…ï¯‚-ï¯’ïµ€-ïµï¶ï¶‘ï·ˆ-ï·¯ï·¾ï·¿ï¸š-ï¸Ÿï¸§-ï¸¯ï¹“ï¹§ï¹¬-ï¹¯ï¹µï»½ï»¾ï¼€ï¾¿-ï¿ï¿ˆï¿‰ï¿ï¿‘ï¿˜ï¿™ï¿-ï¿Ÿï¿§ï¿¯-ï¿¸ï¿¾ï¿¿",
-   astral: "í ˆ[í½¯-í¿¿]|í­€[í°€í°‚-í°Ÿí²€-í³¿í·°-í¿¿]|í ´[í³¶-í³¿í´§í´¨í·-í·¿í¹†-í»¿í½—-í½Ÿí½²-í¿¿]|í ‚[í°†í°‡í°‰í°¶í°¹-í°»í°½í°¾í±–í± -í³¿í´œ-í´í´º-í´¾íµ€-íµ¿í¶¸-í¶½í·€-í·¿í¸„í¸‡-í¸‹í¸”í¸˜í¸´-í¸·í¸»-í¸¾í¹ˆ-í¹í¹™-í¹Ÿíº€-í»¿í¼¶-í¼¸í½–í½—í½³-í½·í¾€-í¿¿]|í¡­[í¼µ-í¼¿]|í ›[í°€-í»¿í½…-í½í½¿-í¾í¾ -í¿¿]|í ‰[í±£-í±¯í±´-í¿¿]|í €[í°Œí°§í°»í°¾í±í±í±-í±¿í³»-í³¿í´ƒ-í´†í´´-í´¶í¶‹-í¶í¶œ-í·í·¾-í¹¿íº-íºŸí»‘-í»¿í¼Ÿí¼¤-í¼¯í½‹-í½¿í¾í¿„-í¿‡í¿–-í¿¿]|í¡©[í»—-í»¿]|í „[í±-í±‘í±°-í±¿í³‚-í³í³©-í³¯í³º-í³¿í´µíµ„-íµ¿í·‰-í·í·š-í¿¿]|í »[í°€-í·¿í¸„í¸ í¸£í¸¥í¸¦í¸¨í¸³í¸¸í¸ºí¸¼-í¹í¹ƒ-í¹†í¹ˆí¹Ší¹Œí¹í¹“í¹•í¹–í¹˜í¹ší¹œí¹í¹ í¹£í¹¥í¹¦í¹«í¹³í¹¸í¹½í¹¿íºŠíºœ-íº íº¤íºªíº¼-í»¯í»²-í¿¿]|[í®¿í¯¿][í¿¾í¿¿]|í¡¾[í¸-í¿¿]|í ƒ[í±‰-í¹Ÿí¹¿-í¿¿]|í [í°¯-í¿¿]|[í †í ‡í Ší ‹í -í ™í œ-í «í ­-í ³í ¶-í ºí ¾í ¿í¡¯-í¡½í¡¿-í¬¿í­-í­¿][í°€-í¿¿]|í ½[í°¿í±í³¸í³½-í³¿í´¾í´¿íµ„-íµíµ¨-í·ºí¹-í¹„í¹-í¹¿í»†-í»¿í½´-í¿¿]|í¡®[í°-í¿¿]|í ¼[í°¬-í°¯í²”-í²Ÿí²¯í²°í²¿í³€í³í³ -í³¿í´‹-í´í´¯íµ¬-íµ¯í¶›-í·¥í¸ƒ-í¸í¸»-í¸¿í¹‰-í¹í¹’-í»¿í¼¡-í¼¯í¼¶í½½-í½¿í¾”-í¾Ÿí¿…í¿‹-í¿Ÿí¿±-í¿¿]|í µ[í±•í²í² í²¡í²£í²¤í²§í²¨í²­í²ºí²¼í³„í´†í´‹í´Œí´•í´í´ºí´¿íµ…íµ‡-íµ‰íµ‘íº¦íº§í¿Œí¿]|í š[í¸¹-í¿¿]|í [í²í²Ÿí²ª-í¿¿]|í …[í°€-í¹¿íº¸-íº¿í»Š-í¿¿]|í ¬[í°‚-í¿¿]"
+   bmp: "\u0378\u0379\u037f-\u0383\u038b\u038d\u03a2\u0528-\u0530\u0557\u0558\u0560\u0588\u058b-\u058e\u0590\u05c8-\u05cf\u05eb-\u05ef\u05f5-\u05ff\u0605\u061c\u061d\u070e\u074b\u074c\u07b2-\u07bf\u07fb-\u07ff\u082e\u082f\u083f\u085c\u085d\u085f-\u089f\u08a1\u08ad-\u08e3\u08ff\u0978\u0980\u0984\u098d\u098e\u0991\u0992\u09a9\u09b1\u09b3-\u09b5\u09ba\u09bb\u09c5\u09c6\u09c9\u09ca\u09cf-\u09d6\u09d8-\u09db\u09de\u09e4\u09e5\u09fc-\u0a00\u0a04\u0a0b-\u0a0e\u0a11\u0a12\u0a29\u0a31\u0a34\u0a37\u0a3a\u0a3b\u0a3d\u0a43-\u0a46\u0a49\u0a4a\u0a4e-\u0a50\u0a52-\u0a58\u0a5d\u0a5f-\u0a65\u0a76-\u0a80\u0a84\u0a8e\u0a92\u0aa9\u0ab1\u0ab4\u0aba\u0abb\u0ac6\u0aca\u0ace\u0acf\u0ad1-\u0adf\u0ae4\u0ae5\u0af2-\u0b00\u0b04\u0b0d\u0b0e\u0b11\u0b12\u0b29\u0b31\u0b34\u0b3a\u0b3b\u0b45\u0b46\u0b49\u0b4a\u0b4e-\u0b55\u0b58-\u0b5b\u0b5e\u0b64\u0b65\u0b78-\u0b81\u0b84\u0b8b-\u0b8d\u0b91\u0b96-\u0b98\u0b9b\u0b9d\u0ba0-\u0ba2\u0ba5-\u0ba7\u0bab-\u0bad\u0bba-\u0bbd\u0bc3-\u0bc5\u0bc9\u0bce\u0bcf\u0bd1-\u0bd6\u0bd8-\u0be5\u0bfb-\u0c00\u0c04\u0c0d\u0c11\u0c29\u0c34\u0c3a-\u0c3c\u0c45\u0c49\u0c4e-\u0c54\u0c57\u0c5a-\u0c5f\u0c64\u0c65\u0c70-\u0c77\u0c80\u0c81\u0c84\u0c8d\u0c91\u0ca9\u0cb4\u0cba\u0cbb\u0cc5\u0cc9\u0cce-\u0cd4\u0cd7-\u0cdd\u0cdf\u0ce4\u0ce5\u0cf0\u0cf3-\u0d01\u0d04\u0d0d\u0d11\u0d3b\u0d3c\u0d45\u0d49\u0d4f-\u0d56\u0d58-\u0d5f\u0d64\u0d65\u0d76-\u0d78\u0d80\u0d81\u0d84\u0d97-\u0d99\u0db2\u0dbc\u0dbe\u0dbf\u0dc7-\u0dc9\u0dcb-\u0dce\u0dd5\u0dd7\u0de0-\u0df1\u0df5-\u0e00\u0e3b-\u0e3e\u0e5c-\u0e80\u0e83\u0e85\u0e86\u0e89\u0e8b\u0e8c\u0e8e-\u0e93\u0e98\u0ea0\u0ea4\u0ea6\u0ea8\u0ea9\u0eac\u0eba\u0ebe\u0ebf\u0ec5\u0ec7\u0ece\u0ecf\u0eda\u0edb\u0ee0-\u0eff\u0f48\u0f6d-\u0f70\u0f98\u0fbd\u0fcd\u0fdb-\u0fff\u10c6\u10c8-\u10cc\u10ce\u10cf\u1249\u124e\u124f\u1257\u1259\u125e\u125f\u1289\u128e\u128f\u12b1\u12b6\u12b7\u12bf\u12c1\u12c6\u12c7\u12d7\u1311\u1316\u1317\u135b\u135c\u137d-\u137f\u139a-\u139f\u13f5-\u13ff\u169d-\u169f\u16f1-\u16ff\u170d\u1715-\u171f\u1737-\u173f\u1754-\u175f\u176d\u1771\u1774-\u177f\u17de\u17df\u17ea-\u17ef\u17fa-\u17ff\u180f\u181a-\u181f\u1878-\u187f\u18ab-\u18af\u18f6-\u18ff\u191d-\u191f\u192c-\u192f\u193c-\u193f\u1941-\u1943\u196e\u196f\u1975-\u197f\u19ac-\u19af\u19ca-\u19cf\u19db-\u19dd\u1a1c\u1a1d\u1a5f\u1a7d\u1a7e\u1a8a-\u1a8f\u1a9a-\u1a9f\u1aae-\u1aff\u1b4c-\u1b4f\u1b7d-\u1b7f\u1bf4-\u1bfb\u1c38-\u1c3a\u1c4a-\u1c4c\u1c80-\u1cbf\u1cc8-\u1ccf\u1cf7-\u1cff\u1de7-\u1dfb\u1f16\u1f17\u1f1e\u1f1f\u1f46\u1f47\u1f4e\u1f4f\u1f58\u1f5a\u1f5c\u1f5e\u1f7e\u1f7f\u1fb5\u1fc5\u1fd4\u1fd5\u1fdc\u1ff0\u1ff1\u1ff5\u1fff\u2065-\u2069\u2072\u2073\u208f\u209d-\u209f\u20bb-\u20cf\u20f1-\u20ff\u218a-\u218f\u23f4-\u23ff\u2427-\u243f\u244b-\u245f\u2700\u2b4d-\u2b4f\u2b5a-\u2bff\u2c2f\u2c5f\u2cf4-\u2cf8\u2d26\u2d28-\u2d2c\u2d2e\u2d2f\u2d68-\u2d6e\u2d71-\u2d7e\u2d97-\u2d9f\u2da7\u2daf\u2db7\u2dbf\u2dc7\u2dcf\u2dd7\u2ddf\u2e3c-\u2e7f\u2e9a\u2ef4-\u2eff\u2fd6-\u2fef\u2ffc-\u2fff\u3040\u3097\u3098\u3100-\u3104\u312e-\u3130\u318f\u31bb-\u31bf\u31e4-\u31ef\u321f\u32ff\u4db6-\u4dbf\u9fcd-\u9fff\ua48d-\ua48f\ua4c7-\ua4cf\ua62c-\ua63f\ua698-\ua69e\ua6f8-\ua6ff\ua78f\ua794-\ua79f\ua7ab-\ua7f7\ua82c-\ua82f\ua83a-\ua83f\ua878-\ua87f\ua8c5-\ua8cd\ua8da-\ua8df\ua8fc-\ua8ff\ua954-\ua95e\ua97d-\ua97f\ua9ce\ua9da-\ua9dd\ua9e0-\ua9ff\uaa37-\uaa3f\uaa4e\uaa4f\uaa5a\uaa5b\uaa7c-\uaa7f\uaac3-\uaada\uaaf7-\uab00\uab07\uab08\uab0f\uab10\uab17-\uab1f\uab27\uab2f-\uabbf\uabee\uabef\uabfa-\uabff\ud7a4-\ud7af\ud7c7-\ud7ca\ud7fc-\ud7ff\ufa6e\ufa6f\ufada-\ufaff\ufb07-\ufb12\ufb18-\ufb1c\ufb37\ufb3d\ufb3f\ufb42\ufb45\ufbc2-\ufbd2\ufd40-\ufd4f\ufd90\ufd91\ufdc8-\ufdef\ufdfe\ufdff\ufe1a-\ufe1f\ufe27-\ufe2f\ufe53\ufe67\ufe6c-\ufe6f\ufe75\ufefd\ufefe\uff00\uffbf-\uffc1\uffc8\uffc9\uffd0\uffd1\uffd8\uffd9\uffdd-\uffdf\uffe7\uffef-\ufff8\ufffe\uffff",
+   astral: "\ud808[\udf6f-\udfff]|\udb40[\udc00\udc02-\udc1f\udc80-\udcff\uddf0-\udfff]|\ud834[\udcf6-\udcff\udd27\udd28\uddde-\uddff\ude46-\udeff\udf57-\udf5f\udf72-\udfff]|\ud802[\udc06\udc07\udc09\udc36\udc39-\udc3b\udc3d\udc3e\udc56\udc60-\udcff\udd1c-\udd1e\udd3a-\udd3e\udd40-\udd7f\uddb8-\uddbd\uddc0-\uddff\ude04\ude07-\ude0b\ude14\ude18\ude34-\ude37\ude3b-\ude3e\ude48-\ude4f\ude59-\ude5f\ude80-\udeff\udf36-\udf38\udf56\udf57\udf73-\udf77\udf80-\udfff]|\ud86d[\udf35-\udf3f]|\ud81b[\udc00-\udeff\udf45-\udf4f\udf7f-\udf8e\udfa0-\udfff]|\ud809[\udc63-\udc6f\udc74-\udfff]|\ud800[\udc0c\udc27\udc3b\udc3e\udc4e\udc4f\udc5e-\udc7f\udcfb-\udcff\udd03-\udd06\udd34-\udd36\udd8b-\udd8f\udd9c-\uddcf\uddfe-\ude7f\ude9d-\ude9f\uded1-\udeff\udf1f\udf24-\udf2f\udf4b-\udf7f\udf9e\udfc4-\udfc7\udfd6-\udfff]|\ud869[\uded7-\udeff]|\ud804[\udc4e-\udc51\udc70-\udc7f\udcc2-\udccf\udce9-\udcef\udcfa-\udcff\udd35\udd44-\udd7f\uddc9-\uddcf\uddda-\udfff]|\ud83b[\udc00-\uddff\ude04\ude20\ude23\ude25\ude26\ude28\ude33\ude38\ude3a\ude3c-\ude41\ude43-\ude46\ude48\ude4a\ude4c\ude50\ude53\ude55\ude56\ude58\ude5a\ude5c\ude5e\ude60\ude63\ude65\ude66\ude6b\ude73\ude78\ude7d\ude7f\ude8a\ude9c-\udea0\udea4\udeaa\udebc-\udeef\udef2-\udfff]|[\udbbf\udbff][\udffe\udfff]|\ud87e[\ude1e-\udfff]|\ud803[\udc49-\ude5f\ude7f-\udfff]|\ud80d[\udc2f-\udfff]|[\ud806\ud807\ud80a\ud80b\ud80e-\ud819\ud81c-\ud82b\ud82d-\ud833\ud836-\ud83a\ud83e\ud83f\ud86f-\ud87d\ud87f-\udb3f\udb41-\udb7f][\udc00-\udfff]|\ud83d[\udc3f\udc41\udcf8\udcfd-\udcff\udd3e\udd3f\udd44-\udd4f\udd68-\uddfa\ude41-\ude44\ude50-\ude7f\udec6-\udeff\udf74-\udfff]|\ud86e[\udc1e-\udfff]|\ud83c[\udc2c-\udc2f\udc94-\udc9f\udcaf\udcb0\udcbf\udcc0\udcd0\udce0-\udcff\udd0b-\udd0f\udd2f\udd6c-\udd6f\udd9b-\udde5\ude03-\ude0f\ude3b-\ude3f\ude49-\ude4f\ude52-\udeff\udf21-\udf2f\udf36\udf7d-\udf7f\udf94-\udf9f\udfc5\udfcb-\udfdf\udff1-\udfff]|\ud835[\udc55\udc9d\udca0\udca1\udca3\udca4\udca7\udca8\udcad\udcba\udcbc\udcc4\udd06\udd0b\udd0c\udd15\udd1d\udd3a\udd3f\udd45\udd47-\udd49\udd51\udea6\udea7\udfcc\udfcd]|\ud81a[\ude39-\udfff]|\ud801[\udc9e\udc9f\udcaa-\udfff]|\ud805[\udc00-\ude7f\udeb8-\udebf\udeca-\udfff]|\ud82c[\udc02-\udfff]"
   }, {
    name: "Co",
    alias: "Private_Use",
-   bmp: "î€€-ï£¿",
-   astral: "[í®€-í®¾í¯€-í¯¾][í°€-í¿¿]|[í®¿í¯¿][í°€-í¿½]"
+   bmp: "\ue000-\uf8ff",
+   astral: "[\udb80-\udbbe\udbc0-\udbfe][\udc00-\udfff]|[\udbbf\udbff][\udc00-\udffd]"
   }, {
    name: "Cs",
    alias: "Surrogate",
-   bmp: "í €-í¿¿"
+   bmp: "\ud800-\udfff"
   }, {
    name: "Ll",
    alias: "Lowercase_Letter",
-   bmp: "a-zÂµÃŸ-Ã¶Ã¸-Ã¿ÄÄƒÄ…Ä‡Ä‰Ä‹ÄÄÄ‘Ä“Ä•Ä—Ä™Ä›ÄÄŸÄ¡Ä£Ä¥Ä§Ä©Ä«Ä­Ä¯Ä±Ä³ÄµÄ·Ä¸ÄºÄ¼Ä¾Å€Å‚Å„Å†ÅˆÅ‰Å‹ÅÅÅ‘Å“Å•Å—Å™Å›ÅÅŸÅ¡Å£Å¥Å§Å©Å«Å­Å¯Å±Å³ÅµÅ·ÅºÅ¼Å¾-Æ€ÆƒÆ…ÆˆÆŒÆÆ’Æ•Æ™-Æ›ÆÆ¡Æ£Æ¥Æ¨ÆªÆ«Æ­Æ°Æ´Æ¶Æ¹ÆºÆ½-Æ¿Ç†Ç‰ÇŒÇÇÇ’Ç”Ç–Ç˜ÇšÇœÇÇŸÇ¡Ç£Ç¥Ç§Ç©Ç«Ç­Ç¯Ç°Ç³ÇµÇ¹Ç»Ç½Ç¿ÈÈƒÈ…È‡È‰È‹ÈÈÈ‘È“È•È—È™È›ÈÈŸÈ¡È£È¥È§È©È«È­È¯È±È³-È¹È¼È¿É€É‚É‡É‰É‹ÉÉ-Ê“Ê•-Ê¯Í±Í³Í·Í»-Í½ÎÎ¬-ÏÏÏ‘Ï•-Ï—Ï™Ï›ÏÏŸÏ¡Ï£Ï¥Ï§Ï©Ï«Ï­Ï¯-Ï³ÏµÏ¸Ï»Ï¼Ğ°-ÑŸÑ¡Ñ£Ñ¥Ñ§Ñ©Ñ«Ñ­Ñ¯Ñ±Ñ³ÑµÑ·Ñ¹Ñ»Ñ½Ñ¿ÒÒ‹ÒÒÒ‘Ò“Ò•Ò—Ò™Ò›ÒÒŸÒ¡Ò£Ò¥Ò§Ò©Ò«Ò­Ò¯Ò±Ò³ÒµÒ·Ò¹Ò»Ò½Ò¿Ó‚Ó„Ó†ÓˆÓŠÓŒÓÓÓ‘Ó“Ó•Ó—Ó™Ó›ÓÓŸÓ¡Ó£Ó¥Ó§Ó©Ó«Ó­Ó¯Ó±Ó³ÓµÓ·Ó¹Ó»Ó½Ó¿ÔÔƒÔ…Ô‡Ô‰Ô‹ÔÔÔ‘Ô“Ô•Ô—Ô™Ô›ÔÔŸÔ¡Ô£Ô¥Ô§Õ¡-Ö‡á´€-á´«áµ«-áµ·áµ¹-á¶šá¸á¸ƒá¸…á¸‡á¸‰á¸‹á¸á¸á¸‘á¸“á¸•á¸—á¸™á¸›á¸á¸Ÿá¸¡á¸£á¸¥á¸§á¸©á¸«á¸­á¸¯á¸±á¸³á¸µá¸·á¸¹á¸»á¸½á¸¿á¹á¹ƒá¹…á¹‡á¹‰á¹‹á¹á¹á¹‘á¹“á¹•á¹—á¹™á¹›á¹á¹Ÿá¹¡á¹£á¹¥á¹§á¹©á¹«á¹­á¹¯á¹±á¹³á¹µá¹·á¹¹á¹»á¹½á¹¿áºáºƒáº…áº‡áº‰áº‹áºáºáº‘áº“áº•-áºáºŸáº¡áº£áº¥áº§áº©áº«áº­áº¯áº±áº³áºµáº·áº¹áº»áº½áº¿á»á»ƒá»…á»‡á»‰á»‹á»á»á»‘á»“á»•á»—á»™á»›á»á»Ÿá»¡á»£á»¥á»§á»©á»«á»­á»¯á»±á»³á»µá»·á»¹á»»á»½á»¿-á¼‡á¼-á¼•á¼ -á¼§á¼°-á¼·á½€-á½…á½-á½—á½ -á½§á½°-á½½á¾€-á¾‡á¾-á¾—á¾ -á¾§á¾°-á¾´á¾¶á¾·á¾¾á¿‚-á¿„á¿†á¿‡á¿-á¿“á¿–á¿—á¿ -á¿§á¿²-á¿´á¿¶á¿·â„Šâ„â„â„“â„¯â„´â„¹â„¼â„½â…†-â…‰â…â†„â°°-â±â±¡â±¥â±¦â±¨â±ªâ±¬â±±â±³â±´â±¶-â±»â²â²ƒâ²…â²‡â²‰â²‹â²â²â²‘â²“â²•â²—â²™â²›â²â²Ÿâ²¡â²£â²¥â²§â²©â²«â²­â²¯â²±â²³â²µâ²·â²¹â²»â²½â²¿â³â³ƒâ³…â³‡â³‰â³‹â³â³â³‘â³“â³•â³—â³™â³›â³â³Ÿâ³¡â³£â³¤â³¬â³®â³³â´€-â´¥â´§â´­ê™ê™ƒê™…ê™‡ê™‰ê™‹ê™ê™ê™‘ê™“ê™•ê™—ê™™ê™›ê™ê™Ÿê™¡ê™£ê™¥ê™§ê™©ê™«ê™­êšêšƒêš…êš‡êš‰êš‹êšêšêš‘êš“êš•êš—êœ£êœ¥êœ§êœ©êœ«êœ­êœ¯-êœ±êœ³êœµêœ·êœ¹êœ»êœ½êœ¿êêƒê…ê‡ê‰ê‹êêê‘ê“ê•ê—ê™ê›êêŸê¡ê£ê¥ê§ê©ê«ê­ê¯ê±-ê¸êºê¼ê¿êêƒê…ê‡êŒêê‘ê“ê¡ê£ê¥ê§ê©êŸºï¬€-ï¬†ï¬“-ï¬—ï½-ï½š",
-   astral: "í µ[í°š-í°³í±-í±”í±–-í±§í²‚-í²›í²¶-í²¹í²»í²½-í³ƒí³…-í³í³ª-í´ƒí´-í´·íµ’-íµ«í¶†-í¶Ÿí¶º-í·“í·®-í¸‡í¸¢-í¸»í¹–-í¹¯íºŠ-íº¥í»‚-í»ší»œ-í»¡í»¼-í¼”í¼–-í¼›í¼¶-í½í½-í½•í½°-í¾ˆí¾Š-í¾í¾ª-í¿‚í¿„-í¿‰í¿‹]|í [í°¨-í±]"
+   bmp: "a-z\xb5\xdf-\xf6\xf8-\xff\u0101\u0103\u0105\u0107\u0109\u010b\u010d\u010f\u0111\u0113\u0115\u0117\u0119\u011b\u011d\u011f\u0121\u0123\u0125\u0127\u0129\u012b\u012d\u012f\u0131\u0133\u0135\u0137\u0138\u013a\u013c\u013e\u0140\u0142\u0144\u0146\u0148\u0149\u014b\u014d\u014f\u0151\u0153\u0155\u0157\u0159\u015b\u015d\u015f\u0161\u0163\u0165\u0167\u0169\u016b\u016d\u016f\u0171\u0173\u0175\u0177\u017a\u017c\u017e-\u0180\u0183\u0185\u0188\u018c\u018d\u0192\u0195\u0199-\u019b\u019e\u01a1\u01a3\u01a5\u01a8\u01aa\u01ab\u01ad\u01b0\u01b4\u01b6\u01b9\u01ba\u01bd-\u01bf\u01c6\u01c9\u01cc\u01ce\u01d0\u01d2\u01d4\u01d6\u01d8\u01da\u01dc\u01dd\u01df\u01e1\u01e3\u01e5\u01e7\u01e9\u01eb\u01ed\u01ef\u01f0\u01f3\u01f5\u01f9\u01fb\u01fd\u01ff\u0201\u0203\u0205\u0207\u0209\u020b\u020d\u020f\u0211\u0213\u0215\u0217\u0219\u021b\u021d\u021f\u0221\u0223\u0225\u0227\u0229\u022b\u022d\u022f\u0231\u0233-\u0239\u023c\u023f\u0240\u0242\u0247\u0249\u024b\u024d\u024f-\u0293\u0295-\u02af\u0371\u0373\u0377\u037b-\u037d\u0390\u03ac-\u03ce\u03d0\u03d1\u03d5-\u03d7\u03d9\u03db\u03dd\u03df\u03e1\u03e3\u03e5\u03e7\u03e9\u03eb\u03ed\u03ef-\u03f3\u03f5\u03f8\u03fb\u03fc\u0430-\u045f\u0461\u0463\u0465\u0467\u0469\u046b\u046d\u046f\u0471\u0473\u0475\u0477\u0479\u047b\u047d\u047f\u0481\u048b\u048d\u048f\u0491\u0493\u0495\u0497\u0499\u049b\u049d\u049f\u04a1\u04a3\u04a5\u04a7\u04a9\u04ab\u04ad\u04af\u04b1\u04b3\u04b5\u04b7\u04b9\u04bb\u04bd\u04bf\u04c2\u04c4\u04c6\u04c8\u04ca\u04cc\u04ce\u04cf\u04d1\u04d3\u04d5\u04d7\u04d9\u04db\u04dd\u04df\u04e1\u04e3\u04e5\u04e7\u04e9\u04eb\u04ed\u04ef\u04f1\u04f3\u04f5\u04f7\u04f9\u04fb\u04fd\u04ff\u0501\u0503\u0505\u0507\u0509\u050b\u050d\u050f\u0511\u0513\u0515\u0517\u0519\u051b\u051d\u051f\u0521\u0523\u0525\u0527\u0561-\u0587\u1d00-\u1d2b\u1d6b-\u1d77\u1d79-\u1d9a\u1e01\u1e03\u1e05\u1e07\u1e09\u1e0b\u1e0d\u1e0f\u1e11\u1e13\u1e15\u1e17\u1e19\u1e1b\u1e1d\u1e1f\u1e21\u1e23\u1e25\u1e27\u1e29\u1e2b\u1e2d\u1e2f\u1e31\u1e33\u1e35\u1e37\u1e39\u1e3b\u1e3d\u1e3f\u1e41\u1e43\u1e45\u1e47\u1e49\u1e4b\u1e4d\u1e4f\u1e51\u1e53\u1e55\u1e57\u1e59\u1e5b\u1e5d\u1e5f\u1e61\u1e63\u1e65\u1e67\u1e69\u1e6b\u1e6d\u1e6f\u1e71\u1e73\u1e75\u1e77\u1e79\u1e7b\u1e7d\u1e7f\u1e81\u1e83\u1e85\u1e87\u1e89\u1e8b\u1e8d\u1e8f\u1e91\u1e93\u1e95-\u1e9d\u1e9f\u1ea1\u1ea3\u1ea5\u1ea7\u1ea9\u1eab\u1ead\u1eaf\u1eb1\u1eb3\u1eb5\u1eb7\u1eb9\u1ebb\u1ebd\u1ebf\u1ec1\u1ec3\u1ec5\u1ec7\u1ec9\u1ecb\u1ecd\u1ecf\u1ed1\u1ed3\u1ed5\u1ed7\u1ed9\u1edb\u1edd\u1edf\u1ee1\u1ee3\u1ee5\u1ee7\u1ee9\u1eeb\u1eed\u1eef\u1ef1\u1ef3\u1ef5\u1ef7\u1ef9\u1efb\u1efd\u1eff-\u1f07\u1f10-\u1f15\u1f20-\u1f27\u1f30-\u1f37\u1f40-\u1f45\u1f50-\u1f57\u1f60-\u1f67\u1f70-\u1f7d\u1f80-\u1f87\u1f90-\u1f97\u1fa0-\u1fa7\u1fb0-\u1fb4\u1fb6\u1fb7\u1fbe\u1fc2-\u1fc4\u1fc6\u1fc7\u1fd0-\u1fd3\u1fd6\u1fd7\u1fe0-\u1fe7\u1ff2-\u1ff4\u1ff6\u1ff7\u210a\u210e\u210f\u2113\u212f\u2134\u2139\u213c\u213d\u2146-\u2149\u214e\u2184\u2c30-\u2c5e\u2c61\u2c65\u2c66\u2c68\u2c6a\u2c6c\u2c71\u2c73\u2c74\u2c76-\u2c7b\u2c81\u2c83\u2c85\u2c87\u2c89\u2c8b\u2c8d\u2c8f\u2c91\u2c93\u2c95\u2c97\u2c99\u2c9b\u2c9d\u2c9f\u2ca1\u2ca3\u2ca5\u2ca7\u2ca9\u2cab\u2cad\u2caf\u2cb1\u2cb3\u2cb5\u2cb7\u2cb9\u2cbb\u2cbd\u2cbf\u2cc1\u2cc3\u2cc5\u2cc7\u2cc9\u2ccb\u2ccd\u2ccf\u2cd1\u2cd3\u2cd5\u2cd7\u2cd9\u2cdb\u2cdd\u2cdf\u2ce1\u2ce3\u2ce4\u2cec\u2cee\u2cf3\u2d00-\u2d25\u2d27\u2d2d\ua641\ua643\ua645\ua647\ua649\ua64b\ua64d\ua64f\ua651\ua653\ua655\ua657\ua659\ua65b\ua65d\ua65f\ua661\ua663\ua665\ua667\ua669\ua66b\ua66d\ua681\ua683\ua685\ua687\ua689\ua68b\ua68d\ua68f\ua691\ua693\ua695\ua697\ua723\ua725\ua727\ua729\ua72b\ua72d\ua72f-\ua731\ua733\ua735\ua737\ua739\ua73b\ua73d\ua73f\ua741\ua743\ua745\ua747\ua749\ua74b\ua74d\ua74f\ua751\ua753\ua755\ua757\ua759\ua75b\ua75d\ua75f\ua761\ua763\ua765\ua767\ua769\ua76b\ua76d\ua76f\ua771-\ua778\ua77a\ua77c\ua77f\ua781\ua783\ua785\ua787\ua78c\ua78e\ua791\ua793\ua7a1\ua7a3\ua7a5\ua7a7\ua7a9\ua7fa\ufb00-\ufb06\ufb13-\ufb17\uff41-\uff5a",
+   astral: "\ud835[\udc1a-\udc33\udc4e-\udc54\udc56-\udc67\udc82-\udc9b\udcb6-\udcb9\udcbb\udcbd-\udcc3\udcc5-\udccf\udcea-\udd03\udd1e-\udd37\udd52-\udd6b\udd86-\udd9f\uddba-\uddd3\uddee-\ude07\ude22-\ude3b\ude56-\ude6f\ude8a-\udea5\udec2-\udeda\udedc-\udee1\udefc-\udf14\udf16-\udf1b\udf36-\udf4e\udf50-\udf55\udf70-\udf88\udf8a-\udf8f\udfaa-\udfc2\udfc4-\udfc9\udfcb]|\ud801[\udc28-\udc4f]"
   }, {
    name: "Lm",
    alias: "Modifier_Letter",
-   bmp: "Ê°-ËË†-Ë‘Ë -Ë¤Ë¬Ë®Í´ÍºÕ™Ù€Û¥Û¦ß´ßµßºà šà ¤à ¨à¥±à¹†à»†áƒ¼áŸ—á¡ƒáª§á±¸-á±½á´¬-áµªáµ¸á¶›-á¶¿â±â¿â‚-â‚œâ±¼â±½âµ¯â¸¯ã€…ã€±-ã€µã€»ã‚ã‚ãƒ¼-ãƒ¾ê€•ê“¸-ê“½ê˜Œê™¿êœ—-êœŸê°êˆêŸ¸êŸ¹ê§ê©°ê«ê«³ê«´ï½°ï¾ï¾Ÿ",
-   astral: "í ›[í¾“-í¾Ÿ]"
+   bmp: "\u02b0-\u02c1\u02c6-\u02d1\u02e0-\u02e4\u02ec\u02ee\u0374\u037a\u0559\u0640\u06e5\u06e6\u07f4\u07f5\u07fa\u081a\u0824\u0828\u0971\u0e46\u0ec6\u10fc\u17d7\u1843\u1aa7\u1c78-\u1c7d\u1d2c-\u1d6a\u1d78\u1d9b-\u1dbf\u2071\u207f\u2090-\u209c\u2c7c\u2c7d\u2d6f\u2e2f\u3005\u3031-\u3035\u303b\u309d\u309e\u30fc-\u30fe\ua015\ua4f8-\ua4fd\ua60c\ua67f\ua717-\ua71f\ua770\ua788\ua7f8\ua7f9\ua9cf\uaa70\uaadd\uaaf3\uaaf4\uff70\uff9e\uff9f",
+   astral: "\ud81b[\udf93-\udf9f]"
   }, {
    name: "Lo",
    alias: "Other_Letter",
-   bmp: "ÂªÂºÆ»Ç€-ÇƒÊ”×-×ª×°-×²Ø -Ø¿Ù-ÙŠÙ®Ù¯Ù±-Û“Û•Û®Û¯Ûº-Û¼Û¿ÜÜ’-Ü¯İ-Ş¥Ş±ßŠ-ßªà €-à •à¡€-à¡˜à¢ à¢¢-à¢¬à¤„-à¤¹à¤½à¥à¥˜-à¥¡à¥²-à¥·à¥¹-à¥¿à¦…-à¦Œà¦à¦à¦“-à¦¨à¦ª-à¦°à¦²à¦¶-à¦¹à¦½à§à§œà§à§Ÿ-à§¡à§°à§±à¨…-à¨Šà¨à¨à¨“-à¨¨à¨ª-à¨°à¨²à¨³à¨µà¨¶à¨¸à¨¹à©™-à©œà©à©²-à©´àª…-àªàª-àª‘àª“-àª¨àªª-àª°àª²àª³àªµ-àª¹àª½à«à« à«¡à¬…-à¬Œà¬à¬à¬“-à¬¨à¬ª-à¬°à¬²à¬³à¬µ-à¬¹à¬½à­œà­à­Ÿ-à­¡à­±à®ƒà®…-à®Šà®-à®à®’-à®•à®™à®šà®œà®à®Ÿà®£à®¤à®¨-à®ªà®®-à®¹à¯à°…-à°Œà°-à°à°’-à°¨à°ª-à°³à°µ-à°¹à°½à±˜à±™à± à±¡à²…-à²Œà²-à²à²’-à²¨à²ª-à²³à²µ-à²¹à²½à³à³ à³¡à³±à³²à´…-à´Œà´-à´à´’-à´ºà´½àµàµ àµ¡àµº-àµ¿à¶…-à¶–à¶š-à¶±à¶³-à¶»à¶½à·€-à·†à¸-à¸°à¸²à¸³à¹€-à¹…àºàº‚àº„àº‡àºˆàºŠàºàº”-àº—àº™-àºŸàº¡-àº£àº¥àº§àºªàº«àº­-àº°àº²àº³àº½à»€-à»„à»œ-à»Ÿà¼€à½€-à½‡à½‰-à½¬à¾ˆ-à¾Œá€€-á€ªá€¿á-á•áš-áá¡á¥á¦á®-á°áµ-á‚á‚áƒ-áƒºáƒ½-á‰ˆá‰Š-á‰á‰-á‰–á‰˜á‰š-á‰á‰ -áŠˆáŠŠ-áŠáŠ-áŠ°áŠ²-áŠµáŠ¸-áŠ¾á‹€á‹‚-á‹…á‹ˆ-á‹–á‹˜-áŒáŒ’-áŒ•áŒ˜-ášá€-áá -á´á-á™¬á™¯-á™¿áš-áššáš -á›ªáœ€-áœŒáœ-áœ‘áœ -áœ±á€-á‘á -á¬á®-á°á€-á³áŸœá  -á¡‚á¡„-á¡·á¢€-á¢¨á¢ªá¢°-á£µá¤€-á¤œá¥-á¥­á¥°-á¥´á¦€-á¦«á§-á§‡á¨€-á¨–á¨ -á©”á¬…-á¬³á­…-á­‹á®ƒ-á® á®®á®¯á®º-á¯¥á°€-á°£á±-á±á±š-á±·á³©-á³¬á³®-á³±á³µá³¶â„µ-â„¸â´°-âµ§â¶€-â¶–â¶ -â¶¦â¶¨-â¶®â¶°-â¶¶â¶¸-â¶¾â·€-â·†â·ˆ-â·â·-â·–â·˜-â·ã€†ã€¼ã-ã‚–ã‚Ÿã‚¡-ãƒºãƒ¿ã„…-ã„­ã„±-ã†ã† -ã†ºã‡°-ã‡¿ã€-ä¶µä¸€-é¿Œê€€-ê€”ê€–-ê’Œê“-ê“·ê”€-ê˜‹ê˜-ê˜Ÿê˜ªê˜«ê™®êš -ê›¥êŸ»-ê ê ƒ-ê …ê ‡-ê Šê Œ-ê ¢ê¡€-ê¡³ê¢‚-ê¢³ê£²-ê£·ê£»ê¤Š-ê¤¥ê¤°-ê¥†ê¥ -ê¥¼ê¦„-ê¦²ê¨€-ê¨¨ê©€-ê©‚ê©„-ê©‹ê© -ê©¯ê©±-ê©¶ê©ºêª€-êª¯êª±êªµêª¶êª¹-êª½ê«€ê«‚ê«›ê«œê« -ê«ªê«²ê¬-ê¬†ê¬‰-ê¬ê¬‘-ê¬–ê¬ -ê¬¦ê¬¨-ê¬®ê¯€-ê¯¢ê°€-í£í°-íŸ†íŸ‹-íŸ»ï¤€-ï©­ï©°-ï«™ï¬ï¬Ÿ-ï¬¨ï¬ª-ï¬¶ï¬¸-ï¬¼ï¬¾ï­€ï­ï­ƒï­„ï­†-ï®±ï¯“-ï´½ïµ-ï¶ï¶’-ï·‡ï·°-ï·»ï¹°-ï¹´ï¹¶-ï»¼ï½¦-ï½¯ï½±-ï¾ï¾ -ï¾¾ï¿‚-ï¿‡ï¿Š-ï¿ï¿’-ï¿—ï¿š-ï¿œ",
-   astral: "í ‚[í°€-í°…í°ˆí°Š-í°µí°·í°¸í°¼í°¿-í±•í´€-í´•í´ -í´¹í¶€-í¶·í¶¾í¶¿í¸€í¸-í¸“í¸•-í¸—í¸™-í¸³í¹ -í¹¼í¼€-í¼µí½€-í½•í½ -í½²]|í €[í°€-í°‹í°-í°¦í°¨-í°ºí°¼í°½í°¿-í±í±-í±í²€-í³ºíº€-íºœíº -í»í¼€-í¼í¼°-í½€í½‚-í½‰í¾€-í¾í¾ -í¿ƒí¿ˆ-í¿]|í š[í°€-í¸¸]|í „[í°ƒ-í°·í²ƒ-í²¯í³-í³¨í´ƒ-í´¦í¶ƒ-í¶²í·-í·„]|í¡®[í°€-í°]|í¡­[í°€-í¼´í½€-í¿¿]|í ƒ[í°€-í±ˆ]|í [í°€-í°®]|í …[íº€-íºª]|í¡¾[í°€-í¸]|í ›[í¼€-í½„í½]|í [í±-í²]|í ¬[í°€í°]|[í Œí¡€-í¡¨í¡ª-í¡¬][í°€-í¿¿]|í »[í¸€-í¸ƒí¸…-í¸Ÿí¸¡í¸¢í¸¤í¸§í¸©-í¸²í¸´-í¸·í¸¹í¸»í¹‚í¹‡í¹‰í¹‹í¹-í¹í¹‘í¹’í¹”í¹—í¹™í¹›í¹í¹Ÿí¹¡í¹¢í¹¤í¹§-í¹ªí¹¬-í¹²í¹´-í¹·í¹¹-í¹¼í¹¾íº€-íº‰íº‹-íº›íº¡-íº£íº¥-íº©íº«-íº»]|í ˆ[í°€-í½®]|í¡©[í°€-í»–í¼€-í¿¿]"
+   bmp: "\xaa\xba\u01bb\u01c0-\u01c3\u0294\u05d0-\u05ea\u05f0-\u05f2\u0620-\u063f\u0641-\u064a\u066e\u066f\u0671-\u06d3\u06d5\u06ee\u06ef\u06fa-\u06fc\u06ff\u0710\u0712-\u072f\u074d-\u07a5\u07b1\u07ca-\u07ea\u0800-\u0815\u0840-\u0858\u08a0\u08a2-\u08ac\u0904-\u0939\u093d\u0950\u0958-\u0961\u0972-\u0977\u0979-\u097f\u0985-\u098c\u098f\u0990\u0993-\u09a8\u09aa-\u09b0\u09b2\u09b6-\u09b9\u09bd\u09ce\u09dc\u09dd\u09df-\u09e1\u09f0\u09f1\u0a05-\u0a0a\u0a0f\u0a10\u0a13-\u0a28\u0a2a-\u0a30\u0a32\u0a33\u0a35\u0a36\u0a38\u0a39\u0a59-\u0a5c\u0a5e\u0a72-\u0a74\u0a85-\u0a8d\u0a8f-\u0a91\u0a93-\u0aa8\u0aaa-\u0ab0\u0ab2\u0ab3\u0ab5-\u0ab9\u0abd\u0ad0\u0ae0\u0ae1\u0b05-\u0b0c\u0b0f\u0b10\u0b13-\u0b28\u0b2a-\u0b30\u0b32\u0b33\u0b35-\u0b39\u0b3d\u0b5c\u0b5d\u0b5f-\u0b61\u0b71\u0b83\u0b85-\u0b8a\u0b8e-\u0b90\u0b92-\u0b95\u0b99\u0b9a\u0b9c\u0b9e\u0b9f\u0ba3\u0ba4\u0ba8-\u0baa\u0bae-\u0bb9\u0bd0\u0c05-\u0c0c\u0c0e-\u0c10\u0c12-\u0c28\u0c2a-\u0c33\u0c35-\u0c39\u0c3d\u0c58\u0c59\u0c60\u0c61\u0c85-\u0c8c\u0c8e-\u0c90\u0c92-\u0ca8\u0caa-\u0cb3\u0cb5-\u0cb9\u0cbd\u0cde\u0ce0\u0ce1\u0cf1\u0cf2\u0d05-\u0d0c\u0d0e-\u0d10\u0d12-\u0d3a\u0d3d\u0d4e\u0d60\u0d61\u0d7a-\u0d7f\u0d85-\u0d96\u0d9a-\u0db1\u0db3-\u0dbb\u0dbd\u0dc0-\u0dc6\u0e01-\u0e30\u0e32\u0e33\u0e40-\u0e45\u0e81\u0e82\u0e84\u0e87\u0e88\u0e8a\u0e8d\u0e94-\u0e97\u0e99-\u0e9f\u0ea1-\u0ea3\u0ea5\u0ea7\u0eaa\u0eab\u0ead-\u0eb0\u0eb2\u0eb3\u0ebd\u0ec0-\u0ec4\u0edc-\u0edf\u0f00\u0f40-\u0f47\u0f49-\u0f6c\u0f88-\u0f8c\u1000-\u102a\u103f\u1050-\u1055\u105a-\u105d\u1061\u1065\u1066\u106e-\u1070\u1075-\u1081\u108e\u10d0-\u10fa\u10fd-\u1248\u124a-\u124d\u1250-\u1256\u1258\u125a-\u125d\u1260-\u1288\u128a-\u128d\u1290-\u12b0\u12b2-\u12b5\u12b8-\u12be\u12c0\u12c2-\u12c5\u12c8-\u12d6\u12d8-\u1310\u1312-\u1315\u1318-\u135a\u1380-\u138f\u13a0-\u13f4\u1401-\u166c\u166f-\u167f\u1681-\u169a\u16a0-\u16ea\u1700-\u170c\u170e-\u1711\u1720-\u1731\u1740-\u1751\u1760-\u176c\u176e-\u1770\u1780-\u17b3\u17dc\u1820-\u1842\u1844-\u1877\u1880-\u18a8\u18aa\u18b0-\u18f5\u1900-\u191c\u1950-\u196d\u1970-\u1974\u1980-\u19ab\u19c1-\u19c7\u1a00-\u1a16\u1a20-\u1a54\u1b05-\u1b33\u1b45-\u1b4b\u1b83-\u1ba0\u1bae\u1baf\u1bba-\u1be5\u1c00-\u1c23\u1c4d-\u1c4f\u1c5a-\u1c77\u1ce9-\u1cec\u1cee-\u1cf1\u1cf5\u1cf6\u2135-\u2138\u2d30-\u2d67\u2d80-\u2d96\u2da0-\u2da6\u2da8-\u2dae\u2db0-\u2db6\u2db8-\u2dbe\u2dc0-\u2dc6\u2dc8-\u2dce\u2dd0-\u2dd6\u2dd8-\u2dde\u3006\u303c\u3041-\u3096\u309f\u30a1-\u30fa\u30ff\u3105-\u312d\u3131-\u318e\u31a0-\u31ba\u31f0-\u31ff\u3400-\u4db5\u4e00-\u9fcc\ua000-\ua014\ua016-\ua48c\ua4d0-\ua4f7\ua500-\ua60b\ua610-\ua61f\ua62a\ua62b\ua66e\ua6a0-\ua6e5\ua7fb-\ua801\ua803-\ua805\ua807-\ua80a\ua80c-\ua822\ua840-\ua873\ua882-\ua8b3\ua8f2-\ua8f7\ua8fb\ua90a-\ua925\ua930-\ua946\ua960-\ua97c\ua984-\ua9b2\uaa00-\uaa28\uaa40-\uaa42\uaa44-\uaa4b\uaa60-\uaa6f\uaa71-\uaa76\uaa7a\uaa80-\uaaaf\uaab1\uaab5\uaab6\uaab9-\uaabd\uaac0\uaac2\uaadb\uaadc\uaae0-\uaaea\uaaf2\uab01-\uab06\uab09-\uab0e\uab11-\uab16\uab20-\uab26\uab28-\uab2e\uabc0-\uabe2\uac00-\ud7a3\ud7b0-\ud7c6\ud7cb-\ud7fb\uf900-\ufa6d\ufa70-\ufad9\ufb1d\ufb1f-\ufb28\ufb2a-\ufb36\ufb38-\ufb3c\ufb3e\ufb40\ufb41\ufb43\ufb44\ufb46-\ufbb1\ufbd3-\ufd3d\ufd50-\ufd8f\ufd92-\ufdc7\ufdf0-\ufdfb\ufe70-\ufe74\ufe76-\ufefc\uff66-\uff6f\uff71-\uff9d\uffa0-\uffbe\uffc2-\uffc7\uffca-\uffcf\uffd2-\uffd7\uffda-\uffdc",
+   astral: "\ud802[\udc00-\udc05\udc08\udc0a-\udc35\udc37\udc38\udc3c\udc3f-\udc55\udd00-\udd15\udd20-\udd39\udd80-\uddb7\uddbe\uddbf\ude00\ude10-\ude13\ude15-\ude17\ude19-\ude33\ude60-\ude7c\udf00-\udf35\udf40-\udf55\udf60-\udf72]|\ud800[\udc00-\udc0b\udc0d-\udc26\udc28-\udc3a\udc3c\udc3d\udc3f-\udc4d\udc50-\udc5d\udc80-\udcfa\ude80-\ude9c\udea0-\uded0\udf00-\udf1e\udf30-\udf40\udf42-\udf49\udf80-\udf9d\udfa0-\udfc3\udfc8-\udfcf]|\ud81a[\udc00-\ude38]|\ud804[\udc03-\udc37\udc83-\udcaf\udcd0-\udce8\udd03-\udd26\udd83-\uddb2\uddc1-\uddc4]|\ud86e[\udc00-\udc1d]|\ud86d[\udc00-\udf34\udf40-\udfff]|\ud803[\udc00-\udc48]|\ud80d[\udc00-\udc2e]|\ud805[\ude80-\udeaa]|\ud87e[\udc00-\ude1d]|\ud81b[\udf00-\udf44\udf50]|\ud801[\udc50-\udc9d]|\ud82c[\udc00\udc01]|[\ud80c\ud840-\ud868\ud86a-\ud86c][\udc00-\udfff]|\ud83b[\ude00-\ude03\ude05-\ude1f\ude21\ude22\ude24\ude27\ude29-\ude32\ude34-\ude37\ude39\ude3b\ude42\ude47\ude49\ude4b\ude4d-\ude4f\ude51\ude52\ude54\ude57\ude59\ude5b\ude5d\ude5f\ude61\ude62\ude64\ude67-\ude6a\ude6c-\ude72\ude74-\ude77\ude79-\ude7c\ude7e\ude80-\ude89\ude8b-\ude9b\udea1-\udea3\udea5-\udea9\udeab-\udebb]|\ud808[\udc00-\udf6e]|\ud869[\udc00-\uded6\udf00-\udfff]"
   }, {
    name: "Lt",
    alias: "Titlecase_Letter",
-   bmp: "Ç…ÇˆÇ‹Ç²á¾ˆ-á¾á¾˜-á¾Ÿá¾¨-á¾¯á¾¼á¿Œá¿¼"
+   bmp: "\u01c5\u01c8\u01cb\u01f2\u1f88-\u1f8f\u1f98-\u1f9f\u1fa8-\u1faf\u1fbc\u1fcc\u1ffc"
   }, {
    name: "Lu",
    alias: "Uppercase_Letter",
-   bmp: "A-ZÃ€-Ã–Ã˜-ÃÄ€Ä‚Ä„Ä†ÄˆÄŠÄŒÄÄÄ’Ä”Ä–Ä˜ÄšÄœÄÄ Ä¢Ä¤Ä¦Ä¨ÄªÄ¬Ä®Ä°Ä²Ä´Ä¶Ä¹Ä»Ä½Ä¿ÅÅƒÅ…Å‡ÅŠÅŒÅÅÅ’Å”Å–Å˜ÅšÅœÅÅ Å¢Å¤Å¦Å¨ÅªÅ¬Å®Å°Å²Å´Å¶Å¸Å¹Å»Å½ÆÆ‚Æ„Æ†Æ‡Æ‰-Æ‹Æ-Æ‘Æ“Æ”Æ–-Æ˜ÆœÆÆŸÆ Æ¢Æ¤Æ¦Æ§Æ©Æ¬Æ®Æ¯Æ±-Æ³ÆµÆ·Æ¸Æ¼Ç„Ç‡ÇŠÇÇÇ‘Ç“Ç•Ç—Ç™Ç›ÇÇ Ç¢Ç¤Ç¦Ç¨ÇªÇ¬Ç®Ç±Ç´Ç¶-Ç¸ÇºÇ¼Ç¾È€È‚È„È†ÈˆÈŠÈŒÈÈÈ’È”È–È˜ÈšÈœÈÈ È¢È¤È¦È¨ÈªÈ¬È®È°È²ÈºÈ»È½È¾ÉÉƒ-É†ÉˆÉŠÉŒÉÍ°Í²Í¶Î†Îˆ-ÎŠÎŒÎÎÎ‘-Î¡Î£-Î«ÏÏ’-Ï”Ï˜ÏšÏœÏÏ Ï¢Ï¤Ï¦Ï¨ÏªÏ¬Ï®Ï´Ï·Ï¹ÏºÏ½-Ğ¯Ñ Ñ¢Ñ¤Ñ¦Ñ¨ÑªÑ¬Ñ®Ñ°Ñ²Ñ´Ñ¶Ñ¸ÑºÑ¼Ñ¾Ò€ÒŠÒŒÒÒÒ’Ò”Ò–Ò˜ÒšÒœÒÒ Ò¢Ò¤Ò¦Ò¨ÒªÒ¬Ò®Ò°Ò²Ò´Ò¶Ò¸ÒºÒ¼Ò¾Ó€ÓÓƒÓ…Ó‡Ó‰Ó‹ÓÓÓ’Ó”Ó–Ó˜ÓšÓœÓÓ Ó¢Ó¤Ó¦Ó¨ÓªÓ¬Ó®Ó°Ó²Ó´Ó¶Ó¸ÓºÓ¼Ó¾Ô€Ô‚Ô„Ô†ÔˆÔŠÔŒÔÔÔ’Ô”Ô–Ô˜ÔšÔœÔÔ Ô¢Ô¤Ô¦Ô±-Õ–á‚ -áƒ…áƒ‡áƒá¸€á¸‚á¸„á¸†á¸ˆá¸Šá¸Œá¸á¸á¸’á¸”á¸–á¸˜á¸šá¸œá¸á¸ á¸¢á¸¤á¸¦á¸¨á¸ªá¸¬á¸®á¸°á¸²á¸´á¸¶á¸¸á¸ºá¸¼á¸¾á¹€á¹‚á¹„á¹†á¹ˆá¹Šá¹Œá¹á¹á¹’á¹”á¹–á¹˜á¹šá¹œá¹á¹ á¹¢á¹¤á¹¦á¹¨á¹ªá¹¬á¹®á¹°á¹²á¹´á¹¶á¹¸á¹ºá¹¼á¹¾áº€áº‚áº„áº†áºˆáºŠáºŒáºáºáº’áº”áºáº áº¢áº¤áº¦áº¨áºªáº¬áº®áº°áº²áº´áº¶áº¸áººáº¼áº¾á»€á»‚á»„á»†á»ˆá»Šá»Œá»á»á»’á»”á»–á»˜á»šá»œá»á» á»¢á»¤á»¦á»¨á»ªá»¬á»®á»°á»²á»´á»¶á»¸á»ºá»¼á»¾á¼ˆ-á¼á¼˜-á¼á¼¨-á¼¯á¼¸-á¼¿á½ˆ-á½á½™á½›á½á½Ÿá½¨-á½¯á¾¸-á¾»á¿ˆ-á¿‹á¿˜-á¿›á¿¨-á¿¬á¿¸-á¿»â„‚â„‡â„‹-â„â„-â„’â„•â„™-â„â„¤â„¦â„¨â„ª-â„­â„°-â„³â„¾â„¿â……â†ƒâ°€-â°®â± â±¢-â±¤â±§â±©â±«â±­-â±°â±²â±µâ±¾-â²€â²‚â²„â²†â²ˆâ²Šâ²Œâ²â²â²’â²”â²–â²˜â²šâ²œâ²â² â²¢â²¤â²¦â²¨â²ªâ²¬â²®â²°â²²â²´â²¶â²¸â²ºâ²¼â²¾â³€â³‚â³„â³†â³ˆâ³Šâ³Œâ³â³â³’â³”â³–â³˜â³šâ³œâ³â³ â³¢â³«â³­â³²ê™€ê™‚ê™„ê™†ê™ˆê™Šê™Œê™ê™ê™’ê™”ê™–ê™˜ê™šê™œê™ê™ ê™¢ê™¤ê™¦ê™¨ê™ªê™¬êš€êš‚êš„êš†êšˆêšŠêšŒêšêšêš’êš”êš–êœ¢êœ¤êœ¦êœ¨êœªêœ¬êœ®êœ²êœ´êœ¶êœ¸êœºêœ¼êœ¾ê€ê‚ê„ê†êˆêŠêŒêêê’ê”ê–ê˜êšêœêê ê¢ê¤ê¦ê¨êªê¬ê®ê¹ê»ê½ê¾ê€ê‚ê„ê†ê‹êêê’ê ê¢ê¤ê¦ê¨êªï¼¡-ï¼º",
-   astral: "í µ[í°€-í°™í°´-í±í±¨-í²í²œí²í²Ÿí²¢í²¥í²¦í²©-í²¬í²®-í²µí³-í³©í´„í´…í´‡-í´Ší´-í´”í´–-í´œí´¸í´¹í´»-í´¾íµ€-íµ„íµ†íµŠ-íµíµ¬-í¶…í¶ -í¶¹í·”-í·­í¸ˆ-í¸¡í¸¼-í¹•í¹°-íº‰íº¨-í»€í»¢-í»ºí¼œ-í¼´í½–-í½®í¾-í¾¨í¿Š]|í [í°€-í°§]"
+   bmp: "A-Z\xc0-\xd6\xd8-\xde\u0100\u0102\u0104\u0106\u0108\u010a\u010c\u010e\u0110\u0112\u0114\u0116\u0118\u011a\u011c\u011e\u0120\u0122\u0124\u0126\u0128\u012a\u012c\u012e\u0130\u0132\u0134\u0136\u0139\u013b\u013d\u013f\u0141\u0143\u0145\u0147\u014a\u014c\u014e\u0150\u0152\u0154\u0156\u0158\u015a\u015c\u015e\u0160\u0162\u0164\u0166\u0168\u016a\u016c\u016e\u0170\u0172\u0174\u0176\u0178\u0179\u017b\u017d\u0181\u0182\u0184\u0186\u0187\u0189-\u018b\u018e-\u0191\u0193\u0194\u0196-\u0198\u019c\u019d\u019f\u01a0\u01a2\u01a4\u01a6\u01a7\u01a9\u01ac\u01ae\u01af\u01b1-\u01b3\u01b5\u01b7\u01b8\u01bc\u01c4\u01c7\u01ca\u01cd\u01cf\u01d1\u01d3\u01d5\u01d7\u01d9\u01db\u01de\u01e0\u01e2\u01e4\u01e6\u01e8\u01ea\u01ec\u01ee\u01f1\u01f4\u01f6-\u01f8\u01fa\u01fc\u01fe\u0200\u0202\u0204\u0206\u0208\u020a\u020c\u020e\u0210\u0212\u0214\u0216\u0218\u021a\u021c\u021e\u0220\u0222\u0224\u0226\u0228\u022a\u022c\u022e\u0230\u0232\u023a\u023b\u023d\u023e\u0241\u0243-\u0246\u0248\u024a\u024c\u024e\u0370\u0372\u0376\u0386\u0388-\u038a\u038c\u038e\u038f\u0391-\u03a1\u03a3-\u03ab\u03cf\u03d2-\u03d4\u03d8\u03da\u03dc\u03de\u03e0\u03e2\u03e4\u03e6\u03e8\u03ea\u03ec\u03ee\u03f4\u03f7\u03f9\u03fa\u03fd-\u042f\u0460\u0462\u0464\u0466\u0468\u046a\u046c\u046e\u0470\u0472\u0474\u0476\u0478\u047a\u047c\u047e\u0480\u048a\u048c\u048e\u0490\u0492\u0494\u0496\u0498\u049a\u049c\u049e\u04a0\u04a2\u04a4\u04a6\u04a8\u04aa\u04ac\u04ae\u04b0\u04b2\u04b4\u04b6\u04b8\u04ba\u04bc\u04be\u04c0\u04c1\u04c3\u04c5\u04c7\u04c9\u04cb\u04cd\u04d0\u04d2\u04d4\u04d6\u04d8\u04da\u04dc\u04de\u04e0\u04e2\u04e4\u04e6\u04e8\u04ea\u04ec\u04ee\u04f0\u04f2\u04f4\u04f6\u04f8\u04fa\u04fc\u04fe\u0500\u0502\u0504\u0506\u0508\u050a\u050c\u050e\u0510\u0512\u0514\u0516\u0518\u051a\u051c\u051e\u0520\u0522\u0524\u0526\u0531-\u0556\u10a0-\u10c5\u10c7\u10cd\u1e00\u1e02\u1e04\u1e06\u1e08\u1e0a\u1e0c\u1e0e\u1e10\u1e12\u1e14\u1e16\u1e18\u1e1a\u1e1c\u1e1e\u1e20\u1e22\u1e24\u1e26\u1e28\u1e2a\u1e2c\u1e2e\u1e30\u1e32\u1e34\u1e36\u1e38\u1e3a\u1e3c\u1e3e\u1e40\u1e42\u1e44\u1e46\u1e48\u1e4a\u1e4c\u1e4e\u1e50\u1e52\u1e54\u1e56\u1e58\u1e5a\u1e5c\u1e5e\u1e60\u1e62\u1e64\u1e66\u1e68\u1e6a\u1e6c\u1e6e\u1e70\u1e72\u1e74\u1e76\u1e78\u1e7a\u1e7c\u1e7e\u1e80\u1e82\u1e84\u1e86\u1e88\u1e8a\u1e8c\u1e8e\u1e90\u1e92\u1e94\u1e9e\u1ea0\u1ea2\u1ea4\u1ea6\u1ea8\u1eaa\u1eac\u1eae\u1eb0\u1eb2\u1eb4\u1eb6\u1eb8\u1eba\u1ebc\u1ebe\u1ec0\u1ec2\u1ec4\u1ec6\u1ec8\u1eca\u1ecc\u1ece\u1ed0\u1ed2\u1ed4\u1ed6\u1ed8\u1eda\u1edc\u1ede\u1ee0\u1ee2\u1ee4\u1ee6\u1ee8\u1eea\u1eec\u1eee\u1ef0\u1ef2\u1ef4\u1ef6\u1ef8\u1efa\u1efc\u1efe\u1f08-\u1f0f\u1f18-\u1f1d\u1f28-\u1f2f\u1f38-\u1f3f\u1f48-\u1f4d\u1f59\u1f5b\u1f5d\u1f5f\u1f68-\u1f6f\u1fb8-\u1fbb\u1fc8-\u1fcb\u1fd8-\u1fdb\u1fe8-\u1fec\u1ff8-\u1ffb\u2102\u2107\u210b-\u210d\u2110-\u2112\u2115\u2119-\u211d\u2124\u2126\u2128\u212a-\u212d\u2130-\u2133\u213e\u213f\u2145\u2183\u2c00-\u2c2e\u2c60\u2c62-\u2c64\u2c67\u2c69\u2c6b\u2c6d-\u2c70\u2c72\u2c75\u2c7e-\u2c80\u2c82\u2c84\u2c86\u2c88\u2c8a\u2c8c\u2c8e\u2c90\u2c92\u2c94\u2c96\u2c98\u2c9a\u2c9c\u2c9e\u2ca0\u2ca2\u2ca4\u2ca6\u2ca8\u2caa\u2cac\u2cae\u2cb0\u2cb2\u2cb4\u2cb6\u2cb8\u2cba\u2cbc\u2cbe\u2cc0\u2cc2\u2cc4\u2cc6\u2cc8\u2cca\u2ccc\u2cce\u2cd0\u2cd2\u2cd4\u2cd6\u2cd8\u2cda\u2cdc\u2cde\u2ce0\u2ce2\u2ceb\u2ced\u2cf2\ua640\ua642\ua644\ua646\ua648\ua64a\ua64c\ua64e\ua650\ua652\ua654\ua656\ua658\ua65a\ua65c\ua65e\ua660\ua662\ua664\ua666\ua668\ua66a\ua66c\ua680\ua682\ua684\ua686\ua688\ua68a\ua68c\ua68e\ua690\ua692\ua694\ua696\ua722\ua724\ua726\ua728\ua72a\ua72c\ua72e\ua732\ua734\ua736\ua738\ua73a\ua73c\ua73e\ua740\ua742\ua744\ua746\ua748\ua74a\ua74c\ua74e\ua750\ua752\ua754\ua756\ua758\ua75a\ua75c\ua75e\ua760\ua762\ua764\ua766\ua768\ua76a\ua76c\ua76e\ua779\ua77b\ua77d\ua77e\ua780\ua782\ua784\ua786\ua78b\ua78d\ua790\ua792\ua7a0\ua7a2\ua7a4\ua7a6\ua7a8\ua7aa\uff21-\uff3a",
+   astral: "\ud835[\udc00-\udc19\udc34-\udc4d\udc68-\udc81\udc9c\udc9e\udc9f\udca2\udca5\udca6\udca9-\udcac\udcae-\udcb5\udcd0-\udce9\udd04\udd05\udd07-\udd0a\udd0d-\udd14\udd16-\udd1c\udd38\udd39\udd3b-\udd3e\udd40-\udd44\udd46\udd4a-\udd50\udd6c-\udd85\udda0-\uddb9\uddd4-\udded\ude08-\ude21\ude3c-\ude55\ude70-\ude89\udea8-\udec0\udee2-\udefa\udf1c-\udf34\udf56-\udf6e\udf90-\udfa8\udfca]|\ud801[\udc00-\udc27]"
   }, {
    name: "M",
    alias: "Mark",
-   bmp: "Ì€-Í¯Òƒ-Ò‰Ö‘-Ö½Ö¿××‚×„×…×‡Ø-ØšÙ‹-ÙŸÙ°Û–-ÛœÛŸ-Û¤Û§Û¨Ûª-Û­Ü‘Ü°-İŠŞ¦-Ş°ß«-ß³à –-à ™à ›-à £à ¥-à §à ©-à ­à¡™-à¡›à£¤-à£¾à¤€-à¤ƒà¤º-à¤¼à¤¾-à¥à¥‘-à¥—à¥¢à¥£à¦-à¦ƒà¦¼à¦¾-à§„à§‡à§ˆà§‹-à§à§—à§¢à§£à¨-à¨ƒà¨¼à¨¾-à©‚à©‡à©ˆà©‹-à©à©‘à©°à©±à©µàª-àªƒàª¼àª¾-à«…à«‡-à«‰à«‹-à«à«¢à«£à¬-à¬ƒà¬¼à¬¾-à­„à­‡à­ˆà­‹-à­à­–à­—à­¢à­£à®‚à®¾-à¯‚à¯†-à¯ˆà¯Š-à¯à¯—à°-à°ƒà°¾-à±„à±†-à±ˆà±Š-à±à±•à±–à±¢à±£à²‚à²ƒà²¼à²¾-à³„à³†-à³ˆà³Š-à³à³•à³–à³¢à³£à´‚à´ƒà´¾-àµ„àµ†-àµˆàµŠ-àµàµ—àµ¢àµ£à¶‚à¶ƒà·Šà·-à·”à·–à·˜-à·Ÿà·²à·³à¸±à¸´-à¸ºà¹‡-à¹àº±àº´-àº¹àº»àº¼à»ˆ-à»à¼˜à¼™à¼µà¼·à¼¹à¼¾à¼¿à½±-à¾„à¾†à¾‡à¾-à¾—à¾™-à¾¼à¿†á€«-á€¾á–-á™á-á á¢-á¤á§-á­á±-á´á‚‚-á‚á‚á‚š-á‚á-áŸáœ’-áœ”áœ²-áœ´á’á“á²á³á´-áŸ“áŸá ‹-á á¢©á¤ -á¤«á¤°-á¤»á¦°-á§€á§ˆá§‰á¨—-á¨›á©•-á©á© -á©¼á©¿á¬€-á¬„á¬´-á­„á­«-á­³á®€-á®‚á®¡-á®­á¯¦-á¯³á°¤-á°·á³-á³’á³”-á³¨á³­á³²-á³´á·€-á·¦á·¼-á·¿âƒ-âƒ°â³¯-â³±âµ¿â· -â·¿ã€ª-ã€¯ã‚™ã‚šê™¯-ê™²ê™´-ê™½êšŸê›°ê›±ê ‚ê †ê ‹ê £-ê §ê¢€ê¢ê¢´-ê£„ê£ -ê£±ê¤¦-ê¤­ê¥‡-ê¥“ê¦€-ê¦ƒê¦³-ê§€ê¨©-ê¨¶ê©ƒê©Œê©ê©»êª°êª²-êª´êª·êª¸êª¾êª¿ê«ê««-ê«¯ê«µê«¶ê¯£-ê¯ªê¯¬ê¯­ï¬ï¸€-ï¸ï¸ -ï¸¦",
-   astral: "í ´[íµ¥-íµ©íµ­-íµ²íµ»-í¶‚í¶…-í¶‹í¶ª-í¶­í¹‚-í¹„]|í ‚[í¸-í¸ƒí¸…í¸†í¸Œ-í¸í¸¸-í¸ºí¸¿]|í ›[í½‘-í½¾í¾-í¾’]|í „[í°€-í°‚í°¸-í±†í²€-í²‚í²°-í²ºí´€-í´‚í´§-í´´í¶€-í¶‚í¶³-í·€]|í …[íº«-íº·]|ğ‡½|í­€[í´€-í·¯]"
+   bmp: "\u0300-\u036f\u0483-\u0489\u0591-\u05bd\u05bf\u05c1\u05c2\u05c4\u05c5\u05c7\u0610-\u061a\u064b-\u065f\u0670\u06d6-\u06dc\u06df-\u06e4\u06e7\u06e8\u06ea-\u06ed\u0711\u0730-\u074a\u07a6-\u07b0\u07eb-\u07f3\u0816-\u0819\u081b-\u0823\u0825-\u0827\u0829-\u082d\u0859-\u085b\u08e4-\u08fe\u0900-\u0903\u093a-\u093c\u093e-\u094f\u0951-\u0957\u0962\u0963\u0981-\u0983\u09bc\u09be-\u09c4\u09c7\u09c8\u09cb-\u09cd\u09d7\u09e2\u09e3\u0a01-\u0a03\u0a3c\u0a3e-\u0a42\u0a47\u0a48\u0a4b-\u0a4d\u0a51\u0a70\u0a71\u0a75\u0a81-\u0a83\u0abc\u0abe-\u0ac5\u0ac7-\u0ac9\u0acb-\u0acd\u0ae2\u0ae3\u0b01-\u0b03\u0b3c\u0b3e-\u0b44\u0b47\u0b48\u0b4b-\u0b4d\u0b56\u0b57\u0b62\u0b63\u0b82\u0bbe-\u0bc2\u0bc6-\u0bc8\u0bca-\u0bcd\u0bd7\u0c01-\u0c03\u0c3e-\u0c44\u0c46-\u0c48\u0c4a-\u0c4d\u0c55\u0c56\u0c62\u0c63\u0c82\u0c83\u0cbc\u0cbe-\u0cc4\u0cc6-\u0cc8\u0cca-\u0ccd\u0cd5\u0cd6\u0ce2\u0ce3\u0d02\u0d03\u0d3e-\u0d44\u0d46-\u0d48\u0d4a-\u0d4d\u0d57\u0d62\u0d63\u0d82\u0d83\u0dca\u0dcf-\u0dd4\u0dd6\u0dd8-\u0ddf\u0df2\u0df3\u0e31\u0e34-\u0e3a\u0e47-\u0e4e\u0eb1\u0eb4-\u0eb9\u0ebb\u0ebc\u0ec8-\u0ecd\u0f18\u0f19\u0f35\u0f37\u0f39\u0f3e\u0f3f\u0f71-\u0f84\u0f86\u0f87\u0f8d-\u0f97\u0f99-\u0fbc\u0fc6\u102b-\u103e\u1056-\u1059\u105e-\u1060\u1062-\u1064\u1067-\u106d\u1071-\u1074\u1082-\u108d\u108f\u109a-\u109d\u135d-\u135f\u1712-\u1714\u1732-\u1734\u1752\u1753\u1772\u1773\u17b4-\u17d3\u17dd\u180b-\u180d\u18a9\u1920-\u192b\u1930-\u193b\u19b0-\u19c0\u19c8\u19c9\u1a17-\u1a1b\u1a55-\u1a5e\u1a60-\u1a7c\u1a7f\u1b00-\u1b04\u1b34-\u1b44\u1b6b-\u1b73\u1b80-\u1b82\u1ba1-\u1bad\u1be6-\u1bf3\u1c24-\u1c37\u1cd0-\u1cd2\u1cd4-\u1ce8\u1ced\u1cf2-\u1cf4\u1dc0-\u1de6\u1dfc-\u1dff\u20d0-\u20f0\u2cef-\u2cf1\u2d7f\u2de0-\u2dff\u302a-\u302f\u3099\u309a\ua66f-\ua672\ua674-\ua67d\ua69f\ua6f0\ua6f1\ua802\ua806\ua80b\ua823-\ua827\ua880\ua881\ua8b4-\ua8c4\ua8e0-\ua8f1\ua926-\ua92d\ua947-\ua953\ua980-\ua983\ua9b3-\ua9c0\uaa29-\uaa36\uaa43\uaa4c\uaa4d\uaa7b\uaab0\uaab2-\uaab4\uaab7\uaab8\uaabe\uaabf\uaac1\uaaeb-\uaaef\uaaf5\uaaf6\uabe3-\uabea\uabec\uabed\ufb1e\ufe00-\ufe0f\ufe20-\ufe26",
+   astral: "\ud834[\udd65-\udd69\udd6d-\udd72\udd7b-\udd82\udd85-\udd8b\uddaa-\uddad\ude42-\ude44]|\ud802[\ude01-\ude03\ude05\ude06\ude0c-\ude0f\ude38-\ude3a\ude3f]|\ud81b[\udf51-\udf7e\udf8f-\udf92]|\ud804[\udc00-\udc02\udc38-\udc46\udc80-\udc82\udcb0-\udcba\udd00-\udd02\udd27-\udd34\udd80-\udd82\uddb3-\uddc0]|\ud805[\udeab-\udeb7]|\ud800\uddfd|\udb40[\udd00-\uddef]"
   }, {
    name: "Mc",
    alias: "Spacing_Mark",
-   bmp: "à¤ƒà¤»à¤¾-à¥€à¥‰-à¥Œà¥à¥à¦‚à¦ƒà¦¾-à§€à§‡à§ˆà§‹à§Œà§—à¨ƒà¨¾-à©€àªƒàª¾-à«€à«‰à«‹à«Œà¬‚à¬ƒà¬¾à­€à­‡à­ˆà­‹à­Œà­—à®¾à®¿à¯à¯‚à¯†-à¯ˆà¯Š-à¯Œà¯—à°-à°ƒà±-à±„à²‚à²ƒà²¾à³€-à³„à³‡à³ˆà³Šà³‹à³•à³–à´‚à´ƒà´¾-àµ€àµ†-àµˆàµŠ-àµŒàµ—à¶‚à¶ƒà·-à·‘à·˜-à·Ÿà·²à·³à¼¾à¼¿à½¿á€«á€¬á€±á€¸á€»á€¼á–á—á¢-á¤á§-á­á‚ƒá‚„á‚‡-á‚Œá‚á‚š-á‚œá¶á¾-áŸ…áŸ‡áŸˆá¤£-á¤¦á¤©-á¤«á¤°á¤±á¤³-á¤¸á¦°-á§€á§ˆá§‰á¨™-á¨›á©•á©—á©¡á©£á©¤á©­-á©²á¬„á¬µá¬»á¬½-á­á­ƒá­„á®‚á®¡á®¦á®§á®ªá®¬á®­á¯§á¯ª-á¯¬á¯®á¯²á¯³á°¤-á°«á°´á°µá³¡á³²á³³ã€®ã€¯ê £ê ¤ê §ê¢€ê¢ê¢´-ê£ƒê¥’ê¥“ê¦ƒê¦´ê¦µê¦ºê¦»ê¦½-ê§€ê¨¯ê¨°ê¨³ê¨´ê©ê©»ê««ê«®ê«¯ê«µê¯£ê¯¤ê¯¦ê¯§ê¯©ê¯ªê¯¬",
-   astral: "í ´[íµ¥íµ¦íµ­-íµ²]|í „[í°€í°‚í²‚í²°-í²²í²·í²¸í´¬í¶‚í¶³-í¶µí¶¿í·€]|í …[íº¬íº®íº¯íº¶]|í ›[í½‘-í½¾]"
+   bmp: "\u0903\u093b\u093e-\u0940\u0949-\u094c\u094e\u094f\u0982\u0983\u09be-\u09c0\u09c7\u09c8\u09cb\u09cc\u09d7\u0a03\u0a3e-\u0a40\u0a83\u0abe-\u0ac0\u0ac9\u0acb\u0acc\u0b02\u0b03\u0b3e\u0b40\u0b47\u0b48\u0b4b\u0b4c\u0b57\u0bbe\u0bbf\u0bc1\u0bc2\u0bc6-\u0bc8\u0bca-\u0bcc\u0bd7\u0c01-\u0c03\u0c41-\u0c44\u0c82\u0c83\u0cbe\u0cc0-\u0cc4\u0cc7\u0cc8\u0cca\u0ccb\u0cd5\u0cd6\u0d02\u0d03\u0d3e-\u0d40\u0d46-\u0d48\u0d4a-\u0d4c\u0d57\u0d82\u0d83\u0dcf-\u0dd1\u0dd8-\u0ddf\u0df2\u0df3\u0f3e\u0f3f\u0f7f\u102b\u102c\u1031\u1038\u103b\u103c\u1056\u1057\u1062-\u1064\u1067-\u106d\u1083\u1084\u1087-\u108c\u108f\u109a-\u109c\u17b6\u17be-\u17c5\u17c7\u17c8\u1923-\u1926\u1929-\u192b\u1930\u1931\u1933-\u1938\u19b0-\u19c0\u19c8\u19c9\u1a19-\u1a1b\u1a55\u1a57\u1a61\u1a63\u1a64\u1a6d-\u1a72\u1b04\u1b35\u1b3b\u1b3d-\u1b41\u1b43\u1b44\u1b82\u1ba1\u1ba6\u1ba7\u1baa\u1bac\u1bad\u1be7\u1bea-\u1bec\u1bee\u1bf2\u1bf3\u1c24-\u1c2b\u1c34\u1c35\u1ce1\u1cf2\u1cf3\u302e\u302f\ua823\ua824\ua827\ua880\ua881\ua8b4-\ua8c3\ua952\ua953\ua983\ua9b4\ua9b5\ua9ba\ua9bb\ua9bd-\ua9c0\uaa2f\uaa30\uaa33\uaa34\uaa4d\uaa7b\uaaeb\uaaee\uaaef\uaaf5\uabe3\uabe4\uabe6\uabe7\uabe9\uabea\uabec",
+   astral: "\ud834[\udd65\udd66\udd6d-\udd72]|\ud804[\udc00\udc02\udc82\udcb0-\udcb2\udcb7\udcb8\udd2c\udd82\uddb3-\uddb5\uddbf\uddc0]|\ud805[\udeac\udeae\udeaf\udeb6]|\ud81b[\udf51-\udf7e]"
   }, {
    name: "Me",
    alias: "Enclosing_Mark",
-   bmp: "ÒˆÒ‰âƒ-âƒ âƒ¢-âƒ¤ê™°-ê™²"
+   bmp: "\u0488\u0489\u20dd-\u20e0\u20e2-\u20e4\ua670-\ua672"
   }, {
    name: "Mn",
    alias: "Nonspacing_Mark",
-   bmp: "Ì€-Í¯Òƒ-Ò‡Ö‘-Ö½Ö¿××‚×„×…×‡Ø-ØšÙ‹-ÙŸÙ°Û–-ÛœÛŸ-Û¤Û§Û¨Ûª-Û­Ü‘Ü°-İŠŞ¦-Ş°ß«-ß³à –-à ™à ›-à £à ¥-à §à ©-à ­à¡™-à¡›à£¤-à£¾à¤€-à¤‚à¤ºà¤¼à¥-à¥ˆà¥à¥‘-à¥—à¥¢à¥£à¦à¦¼à§-à§„à§à§¢à§£à¨à¨‚à¨¼à©à©‚à©‡à©ˆà©‹-à©à©‘à©°à©±à©µàªàª‚àª¼à«-à«…à«‡à«ˆà«à«¢à«£à¬à¬¼à¬¿à­-à­„à­à­–à­¢à­£à®‚à¯€à¯à°¾-à±€à±†-à±ˆà±Š-à±à±•à±–à±¢à±£à²¼à²¿à³†à³Œà³à³¢à³£àµ-àµ„àµàµ¢àµ£à·Šà·’-à·”à·–à¸±à¸´-à¸ºà¹‡-à¹àº±àº´-àº¹àº»àº¼à»ˆ-à»à¼˜à¼™à¼µà¼·à¼¹à½±-à½¾à¾€-à¾„à¾†à¾‡à¾-à¾—à¾™-à¾¼à¿†á€­-á€°á€²-á€·á€¹á€ºá€½á€¾á˜á™á-á á±-á´á‚‚á‚…á‚†á‚á‚á-áŸáœ’-áœ”áœ²-áœ´á’á“á²á³á´áµá·-á½áŸ†áŸ‰-áŸ“áŸá ‹-á á¢©á¤ -á¤¢á¤§á¤¨á¤²á¤¹-á¤»á¨—á¨˜á©–á©˜-á©á© á©¢á©¥-á©¬á©³-á©¼á©¿á¬€-á¬ƒá¬´á¬¶-á¬ºá¬¼á­‚á­«-á­³á®€á®á®¢-á®¥á®¨á®©á®«á¯¦á¯¨á¯©á¯­á¯¯-á¯±á°¬-á°³á°¶á°·á³-á³’á³”-á³ á³¢-á³¨á³­á³´á·€-á·¦á·¼-á·¿âƒ-âƒœâƒ¡âƒ¥-âƒ°â³¯-â³±âµ¿â· -â·¿ã€ª-ã€­ã‚™ã‚šê™¯ê™´-ê™½êšŸê›°ê›±ê ‚ê †ê ‹ê ¥ê ¦ê£„ê£ -ê£±ê¤¦-ê¤­ê¥‡-ê¥‘ê¦€-ê¦‚ê¦³ê¦¶-ê¦¹ê¦¼ê¨©-ê¨®ê¨±ê¨²ê¨µê¨¶ê©ƒê©Œêª°êª²-êª´êª·êª¸êª¾êª¿ê«ê«¬ê«­ê«¶ê¯¥ê¯¨ê¯­ï¬ï¸€-ï¸ï¸ -ï¸¦",
-   astral: "í ‚[í¸-í¸ƒí¸…í¸†í¸Œ-í¸í¸¸-í¸ºí¸¿]|í ´[íµ§-íµ©íµ»-í¶‚í¶…-í¶‹í¶ª-í¶­í¹‚-í¹„]|í ›[í¾-í¾’]|í …[íº«íº­íº°-íºµíº·]|í „[í°í°¸-í±†í²€í²í²³-í²¶í²¹í²ºí´€-í´‚í´§-í´«í´­-í´´í¶€í¶í¶¶-í¶¾]|ğ‡½|í­€[í´€-í·¯]"
+   bmp: "\u0300-\u036f\u0483-\u0487\u0591-\u05bd\u05bf\u05c1\u05c2\u05c4\u05c5\u05c7\u0610-\u061a\u064b-\u065f\u0670\u06d6-\u06dc\u06df-\u06e4\u06e7\u06e8\u06ea-\u06ed\u0711\u0730-\u074a\u07a6-\u07b0\u07eb-\u07f3\u0816-\u0819\u081b-\u0823\u0825-\u0827\u0829-\u082d\u0859-\u085b\u08e4-\u08fe\u0900-\u0902\u093a\u093c\u0941-\u0948\u094d\u0951-\u0957\u0962\u0963\u0981\u09bc\u09c1-\u09c4\u09cd\u09e2\u09e3\u0a01\u0a02\u0a3c\u0a41\u0a42\u0a47\u0a48\u0a4b-\u0a4d\u0a51\u0a70\u0a71\u0a75\u0a81\u0a82\u0abc\u0ac1-\u0ac5\u0ac7\u0ac8\u0acd\u0ae2\u0ae3\u0b01\u0b3c\u0b3f\u0b41-\u0b44\u0b4d\u0b56\u0b62\u0b63\u0b82\u0bc0\u0bcd\u0c3e-\u0c40\u0c46-\u0c48\u0c4a-\u0c4d\u0c55\u0c56\u0c62\u0c63\u0cbc\u0cbf\u0cc6\u0ccc\u0ccd\u0ce2\u0ce3\u0d41-\u0d44\u0d4d\u0d62\u0d63\u0dca\u0dd2-\u0dd4\u0dd6\u0e31\u0e34-\u0e3a\u0e47-\u0e4e\u0eb1\u0eb4-\u0eb9\u0ebb\u0ebc\u0ec8-\u0ecd\u0f18\u0f19\u0f35\u0f37\u0f39\u0f71-\u0f7e\u0f80-\u0f84\u0f86\u0f87\u0f8d-\u0f97\u0f99-\u0fbc\u0fc6\u102d-\u1030\u1032-\u1037\u1039\u103a\u103d\u103e\u1058\u1059\u105e-\u1060\u1071-\u1074\u1082\u1085\u1086\u108d\u109d\u135d-\u135f\u1712-\u1714\u1732-\u1734\u1752\u1753\u1772\u1773\u17b4\u17b5\u17b7-\u17bd\u17c6\u17c9-\u17d3\u17dd\u180b-\u180d\u18a9\u1920-\u1922\u1927\u1928\u1932\u1939-\u193b\u1a17\u1a18\u1a56\u1a58-\u1a5e\u1a60\u1a62\u1a65-\u1a6c\u1a73-\u1a7c\u1a7f\u1b00-\u1b03\u1b34\u1b36-\u1b3a\u1b3c\u1b42\u1b6b-\u1b73\u1b80\u1b81\u1ba2-\u1ba5\u1ba8\u1ba9\u1bab\u1be6\u1be8\u1be9\u1bed\u1bef-\u1bf1\u1c2c-\u1c33\u1c36\u1c37\u1cd0-\u1cd2\u1cd4-\u1ce0\u1ce2-\u1ce8\u1ced\u1cf4\u1dc0-\u1de6\u1dfc-\u1dff\u20d0-\u20dc\u20e1\u20e5-\u20f0\u2cef-\u2cf1\u2d7f\u2de0-\u2dff\u302a-\u302d\u3099\u309a\ua66f\ua674-\ua67d\ua69f\ua6f0\ua6f1\ua802\ua806\ua80b\ua825\ua826\ua8c4\ua8e0-\ua8f1\ua926-\ua92d\ua947-\ua951\ua980-\ua982\ua9b3\ua9b6-\ua9b9\ua9bc\uaa29-\uaa2e\uaa31\uaa32\uaa35\uaa36\uaa43\uaa4c\uaab0\uaab2-\uaab4\uaab7\uaab8\uaabe\uaabf\uaac1\uaaec\uaaed\uaaf6\uabe5\uabe8\uabed\ufb1e\ufe00-\ufe0f\ufe20-\ufe26",
+   astral: "\ud802[\ude01-\ude03\ude05\ude06\ude0c-\ude0f\ude38-\ude3a\ude3f]|\ud834[\udd67-\udd69\udd7b-\udd82\udd85-\udd8b\uddaa-\uddad\ude42-\ude44]|\ud81b[\udf8f-\udf92]|\ud805[\udeab\udead\udeb0-\udeb5\udeb7]|\ud804[\udc01\udc38-\udc46\udc80\udc81\udcb3-\udcb6\udcb9\udcba\udd00-\udd02\udd27-\udd2b\udd2d-\udd34\udd80\udd81\uddb6-\uddbe]|\ud800\uddfd|\udb40[\udd00-\uddef]"
   }, {
    name: "N",
    alias: "Number",
-   bmp: "0-9Â²Â³Â¹Â¼-Â¾Ù -Ù©Û°-Û¹ß€-ß‰à¥¦-à¥¯à§¦-à§¯à§´-à§¹à©¦-à©¯à«¦-à«¯à­¦-à­¯à­²-à­·à¯¦-à¯²à±¦-à±¯à±¸-à±¾à³¦-à³¯àµ¦-àµµà¹-à¹™à»-à»™à¼ -à¼³á€-á‰á‚-á‚™á©-á¼á›®-á›°áŸ -áŸ©áŸ°-áŸ¹á -á ™á¥†-á¥á§-á§šáª€-áª‰áª-áª™á­-á­™á®°-á®¹á±€-á±‰á±-á±™â°â´-â¹â‚€-â‚‰â…-â†‚â†…-â†‰â‘ -â’›â“ª-â“¿â¶-â“â³½ã€‡ã€¡-ã€©ã€¸-ã€ºã†’-ã†•ãˆ -ãˆ©ã‰ˆ-ã‰ã‰‘-ã‰ŸãŠ€-ãŠ‰ãŠ±-ãŠ¿ê˜ -ê˜©ê›¦-ê›¯ê °-ê µê£-ê£™ê¤€-ê¤‰ê§-ê§™ê©-ê©™ê¯°-ê¯¹ï¼-ï¼™",
-   astral: "í ‚[í±˜-í±Ÿí´–-í´›í¹€-í¹‡í¹½í¹¾í½˜-í½Ÿí½¸-í½¿]|í [í² -í²©]|í ‰[í°€-í±¢]|í µ[í¿-í¿¿]|í €[í´‡-í´³íµ€-íµ¸í¶Ší¼ -í¼£í½í½Ší¿‘-í¿•]|í ´[í½ -í½±]|í ƒ[í¹ -í¹¾]|í ¼[í´€-í´Š]|í …[í»€-í»‰]|í „[í±’-í±¯í³°-í³¹í´¶-í´¿í·-í·™]"
+   bmp: "0-9\xb2\xb3\xb9\xbc-\xbe\u0660-\u0669\u06f0-\u06f9\u07c0-\u07c9\u0966-\u096f\u09e6-\u09ef\u09f4-\u09f9\u0a66-\u0a6f\u0ae6-\u0aef\u0b66-\u0b6f\u0b72-\u0b77\u0be6-\u0bf2\u0c66-\u0c6f\u0c78-\u0c7e\u0ce6-\u0cef\u0d66-\u0d75\u0e50-\u0e59\u0ed0-\u0ed9\u0f20-\u0f33\u1040-\u1049\u1090-\u1099\u1369-\u137c\u16ee-\u16f0\u17e0-\u17e9\u17f0-\u17f9\u1810-\u1819\u1946-\u194f\u19d0-\u19da\u1a80-\u1a89\u1a90-\u1a99\u1b50-\u1b59\u1bb0-\u1bb9\u1c40-\u1c49\u1c50-\u1c59\u2070\u2074-\u2079\u2080-\u2089\u2150-\u2182\u2185-\u2189\u2460-\u249b\u24ea-\u24ff\u2776-\u2793\u2cfd\u3007\u3021-\u3029\u3038-\u303a\u3192-\u3195\u3220-\u3229\u3248-\u324f\u3251-\u325f\u3280-\u3289\u32b1-\u32bf\ua620-\ua629\ua6e6-\ua6ef\ua830-\ua835\ua8d0-\ua8d9\ua900-\ua909\ua9d0-\ua9d9\uaa50-\uaa59\uabf0-\uabf9\uff10-\uff19",
+   astral: "\ud802[\udc58-\udc5f\udd16-\udd1b\ude40-\ude47\ude7d\ude7e\udf58-\udf5f\udf78-\udf7f]|\ud801[\udca0-\udca9]|\ud809[\udc00-\udc62]|\ud835[\udfce-\udfff]|\ud800[\udd07-\udd33\udd40-\udd78\udd8a\udf20-\udf23\udf41\udf4a\udfd1-\udfd5]|\ud834[\udf60-\udf71]|\ud803[\ude60-\ude7e]|\ud83c[\udd00-\udd0a]|\ud805[\udec0-\udec9]|\ud804[\udc52-\udc6f\udcf0-\udcf9\udd36-\udd3f\uddd0-\uddd9]"
   }, {
    name: "Nd",
    alias: "Decimal_Number",
-   bmp: "0-9Ù -Ù©Û°-Û¹ß€-ß‰à¥¦-à¥¯à§¦-à§¯à©¦-à©¯à«¦-à«¯à­¦-à­¯à¯¦-à¯¯à±¦-à±¯à³¦-à³¯àµ¦-àµ¯à¹-à¹™à»-à»™à¼ -à¼©á€-á‰á‚-á‚™áŸ -áŸ©á -á ™á¥†-á¥á§-á§™áª€-áª‰áª-áª™á­-á­™á®°-á®¹á±€-á±‰á±-á±™ê˜ -ê˜©ê£-ê£™ê¤€-ê¤‰ê§-ê§™ê©-ê©™ê¯°-ê¯¹ï¼-ï¼™",
-   astral: "í „[í±¦-í±¯í³°-í³¹í´¶-í´¿í·-í·™]|í …[í»€-í»‰]|í [í² -í²©]|í µ[í¿-í¿¿]"
+   bmp: "0-9\u0660-\u0669\u06f0-\u06f9\u07c0-\u07c9\u0966-\u096f\u09e6-\u09ef\u0a66-\u0a6f\u0ae6-\u0aef\u0b66-\u0b6f\u0be6-\u0bef\u0c66-\u0c6f\u0ce6-\u0cef\u0d66-\u0d6f\u0e50-\u0e59\u0ed0-\u0ed9\u0f20-\u0f29\u1040-\u1049\u1090-\u1099\u17e0-\u17e9\u1810-\u1819\u1946-\u194f\u19d0-\u19d9\u1a80-\u1a89\u1a90-\u1a99\u1b50-\u1b59\u1bb0-\u1bb9\u1c40-\u1c49\u1c50-\u1c59\ua620-\ua629\ua8d0-\ua8d9\ua900-\ua909\ua9d0-\ua9d9\uaa50-\uaa59\uabf0-\uabf9\uff10-\uff19",
+   astral: "\ud804[\udc66-\udc6f\udcf0-\udcf9\udd36-\udd3f\uddd0-\uddd9]|\ud805[\udec0-\udec9]|\ud801[\udca0-\udca9]|\ud835[\udfce-\udfff]"
   }, {
    name: "Nl",
    alias: "Letter_Number",
-   bmp: "á›®-á›°â… -â†‚â†…-â†ˆã€‡ã€¡-ã€©ã€¸-ã€ºê›¦-ê›¯",
-   astral: "í €[íµ€-íµ´í½í½Ší¿‘-í¿•]|í ‰[í°€-í±¢]"
+   bmp: "\u16ee-\u16f0\u2160-\u2182\u2185-\u2188\u3007\u3021-\u3029\u3038-\u303a\ua6e6-\ua6ef",
+   astral: "\ud800[\udd40-\udd74\udf41\udf4a\udfd1-\udfd5]|\ud809[\udc00-\udc62]"
   }, {
    name: "No",
    alias: "Other_Number",
-   bmp: "Â²Â³Â¹Â¼-Â¾à§´-à§¹à­²-à­·à¯°-à¯²à±¸-à±¾àµ°-àµµà¼ª-à¼³á©-á¼áŸ°-áŸ¹á§šâ°â´-â¹â‚€-â‚‰â…-â…Ÿâ†‰â‘ -â’›â“ª-â“¿â¶-â“â³½ã†’-ã†•ãˆ -ãˆ©ã‰ˆ-ã‰ã‰‘-ã‰ŸãŠ€-ãŠ‰ãŠ±-ãŠ¿ê °-ê µ",
-   astral: "í ‚[í±˜-í±Ÿí´–-í´›í¹€-í¹‡í¹½í¹¾í½˜-í½Ÿí½¸-í½¿]|í ´[í½ -í½±]|í ƒ[í¹ -í¹¾]|í €[í´‡-í´³íµµ-íµ¸í¶Ší¼ -í¼£]|í ¼[í´€-í´Š]|í „[í±’-í±¥]"
+   bmp: "\xb2\xb3\xb9\xbc-\xbe\u09f4-\u09f9\u0b72-\u0b77\u0bf0-\u0bf2\u0c78-\u0c7e\u0d70-\u0d75\u0f2a-\u0f33\u1369-\u137c\u17f0-\u17f9\u19da\u2070\u2074-\u2079\u2080-\u2089\u2150-\u215f\u2189\u2460-\u249b\u24ea-\u24ff\u2776-\u2793\u2cfd\u3192-\u3195\u3220-\u3229\u3248-\u324f\u3251-\u325f\u3280-\u3289\u32b1-\u32bf\ua830-\ua835",
+   astral: "\ud802[\udc58-\udc5f\udd16-\udd1b\ude40-\ude47\ude7d\ude7e\udf58-\udf5f\udf78-\udf7f]|\ud834[\udf60-\udf71]|\ud803[\ude60-\ude7e]|\ud800[\udd07-\udd33\udd75-\udd78\udd8a\udf20-\udf23]|\ud83c[\udd00-\udd0a]|\ud804[\udc52-\udc65]"
   }, {
    name: "P",
    alias: "Punctuation",
-   bmp: "!-#%-\\x2A,-/:;\\x3F@\\x5B-\\x5D_\\x7B}Â¡Â§Â«Â¶Â·Â»Â¿Í¾Î‡Õš-ÕŸÖ‰ÖŠÖ¾×€×ƒ×†×³×´Ø‰ØŠØŒØØ›ØØŸÙª-Ù­Û”Ü€-Üß·-ß¹à °-à ¾à¡à¥¤à¥¥à¥°à«°à·´à¹à¹šà¹›à¼„-à¼’à¼”à¼º-à¼½à¾…à¿-à¿”à¿™à¿šáŠ-ááƒ»á -á¨á€á™­á™®áš›ášœá›«-á›­áœµáœ¶áŸ”-áŸ–áŸ˜-áŸšá €-á Šá¥„á¥…á¨á¨Ÿáª -áª¦áª¨-áª­á­š-á­ á¯¼-á¯¿á°»-á°¿á±¾á±¿á³€-á³‡á³“â€-â€§â€°-âƒâ…-â‘â“-ââ½â¾â‚â‚âŒ©âŒªâ¨-âµâŸ…âŸ†âŸ¦-âŸ¯â¦ƒ-â¦˜â§˜-â§›â§¼â§½â³¹-â³¼â³¾â³¿âµ°â¸€-â¸®â¸°-â¸»ã€-ã€ƒã€ˆ-ã€‘ã€”-ã€Ÿã€°ã€½ã‚ ãƒ»ê“¾ê“¿ê˜-ê˜ê™³ê™¾ê›²-ê›·ê¡´-ê¡·ê£ê£ê£¸-ê£ºê¤®ê¤¯ê¥Ÿê§-ê§ê§ê§Ÿê©œ-ê©Ÿê«ê«Ÿê«°ê«±ê¯«ï´¾ï´¿ï¸-ï¸™ï¸°-ï¹’ï¹”-ï¹¡ï¹£ï¹¨ï¹ªï¹«ï¼-ï¼ƒï¼…-ï¼Šï¼Œ-ï¼ï¼šï¼›ï¼Ÿï¼ ï¼»-ï¼½ï¼¿ï½›ï½ï½Ÿ-ï½¥",
-   astral: "í ‰[í±°-í±³]|í ‚[í±—í´Ÿí´¿í¹-í¹˜í¹¿í¼¹-í¼¿]|í €[í´€-í´‚í¾Ÿí¿]|í „[í±‡-í±í²»í²¼í²¾-í³íµ€-íµƒí·…-í·ˆ]"
+   bmp: "!-#%-\\x2A,-/:;\\x3F@\\x5B-\\x5D_\\x7B}\xa1\xa7\xab\xb6\xb7\xbb\xbf\u037e\u0387\u055a-\u055f\u0589\u058a\u05be\u05c0\u05c3\u05c6\u05f3\u05f4\u0609\u060a\u060c\u060d\u061b\u061e\u061f\u066a-\u066d\u06d4\u0700-\u070d\u07f7-\u07f9\u0830-\u083e\u085e\u0964\u0965\u0970\u0af0\u0df4\u0e4f\u0e5a\u0e5b\u0f04-\u0f12\u0f14\u0f3a-\u0f3d\u0f85\u0fd0-\u0fd4\u0fd9\u0fda\u104a-\u104f\u10fb\u1360-\u1368\u1400\u166d\u166e\u169b\u169c\u16eb-\u16ed\u1735\u1736\u17d4-\u17d6\u17d8-\u17da\u1800-\u180a\u1944\u1945\u1a1e\u1a1f\u1aa0-\u1aa6\u1aa8-\u1aad\u1b5a-\u1b60\u1bfc-\u1bff\u1c3b-\u1c3f\u1c7e\u1c7f\u1cc0-\u1cc7\u1cd3\u2010-\u2027\u2030-\u2043\u2045-\u2051\u2053-\u205e\u207d\u207e\u208d\u208e\u2329\u232a\u2768-\u2775\u27c5\u27c6\u27e6-\u27ef\u2983-\u2998\u29d8-\u29db\u29fc\u29fd\u2cf9-\u2cfc\u2cfe\u2cff\u2d70\u2e00-\u2e2e\u2e30-\u2e3b\u3001-\u3003\u3008-\u3011\u3014-\u301f\u3030\u303d\u30a0\u30fb\ua4fe\ua4ff\ua60d-\ua60f\ua673\ua67e\ua6f2-\ua6f7\ua874-\ua877\ua8ce\ua8cf\ua8f8-\ua8fa\ua92e\ua92f\ua95f\ua9c1-\ua9cd\ua9de\ua9df\uaa5c-\uaa5f\uaade\uaadf\uaaf0\uaaf1\uabeb\ufd3e\ufd3f\ufe10-\ufe19\ufe30-\ufe52\ufe54-\ufe61\ufe63\ufe68\ufe6a\ufe6b\uff01-\uff03\uff05-\uff0a\uff0c-\uff0f\uff1a\uff1b\uff1f\uff20\uff3b-\uff3d\uff3f\uff5b\uff5d\uff5f-\uff65",
+   astral: "\ud809[\udc70-\udc73]|\ud802[\udc57\udd1f\udd3f\ude50-\ude58\ude7f\udf39-\udf3f]|\ud800[\udd00-\udd02\udf9f\udfd0]|\ud804[\udc47-\udc4d\udcbb\udcbc\udcbe-\udcc1\udd40-\udd43\uddc5-\uddc8]"
   }, {
    name: "Pc",
    alias: "Connector_Punctuation",
-   bmp: "_â€¿â€â”ï¸³ï¸´ï¹-ï¹ï¼¿"
+   bmp: "_\u203f\u2040\u2054\ufe33\ufe34\ufe4d-\ufe4f\uff3f"
   }, {
    name: "Pd",
    alias: "Dash_Punctuation",
-   bmp: "\\x2DÖŠÖ¾á€á †â€-â€•â¸—â¸šâ¸ºâ¸»ã€œã€°ã‚ ï¸±ï¸²ï¹˜ï¹£ï¼"
+   bmp: "\\x2D\u058a\u05be\u1400\u1806\u2010-\u2015\u2e17\u2e1a\u2e3a\u2e3b\u301c\u3030\u30a0\ufe31\ufe32\ufe58\ufe63\uff0d"
   }, {
    name: "Pe",
    alias: "Close_Punctuation",
-   bmp: "\\x29\\x5D}à¼»à¼½ášœâ†â¾â‚âŒªâ©â«â­â¯â±â³âµâŸ†âŸ§âŸ©âŸ«âŸ­âŸ¯â¦„â¦†â¦ˆâ¦Šâ¦Œâ¦â¦â¦’â¦”â¦–â¦˜â§™â§›â§½â¸£â¸¥â¸§â¸©ã€‰ã€‹ã€ã€ã€‘ã€•ã€—ã€™ã€›ã€ã€Ÿï´¿ï¸˜ï¸¶ï¸¸ï¸ºï¸¼ï¸¾ï¹€ï¹‚ï¹„ï¹ˆï¹šï¹œï¹ï¼‰ï¼½ï½ï½ ï½£"
+   bmp: "\\x29\\x5D}\u0f3b\u0f3d\u169c\u2046\u207e\u208e\u232a\u2769\u276b\u276d\u276f\u2771\u2773\u2775\u27c6\u27e7\u27e9\u27eb\u27ed\u27ef\u2984\u2986\u2988\u298a\u298c\u298e\u2990\u2992\u2994\u2996\u2998\u29d9\u29db\u29fd\u2e23\u2e25\u2e27\u2e29\u3009\u300b\u300d\u300f\u3011\u3015\u3017\u3019\u301b\u301e\u301f\ufd3f\ufe18\ufe36\ufe38\ufe3a\ufe3c\ufe3e\ufe40\ufe42\ufe44\ufe48\ufe5a\ufe5c\ufe5e\uff09\uff3d\uff5d\uff60\uff63"
   }, {
    name: "Pf",
    alias: "Final_Punctuation",
-   bmp: "Â»â€™â€â€ºâ¸ƒâ¸…â¸Šâ¸â¸â¸¡"
+   bmp: "\xbb\u2019\u201d\u203a\u2e03\u2e05\u2e0a\u2e0d\u2e1d\u2e21"
   }, {
    name: "Pi",
    alias: "Initial_Punctuation",
-   bmp: "Â«â€˜â€›â€œâ€Ÿâ€¹â¸‚â¸„â¸‰â¸Œâ¸œâ¸ "
+   bmp: "\xab\u2018\u201b\u201c\u201f\u2039\u2e02\u2e04\u2e09\u2e0c\u2e1c\u2e20"
   }, {
    name: "Po",
    alias: "Other_Punctuation",
-   bmp: "!-#%-'\\x2A,\\x2E/:;\\x3F@\\x5CÂ¡Â§Â¶Â·Â¿Í¾Î‡Õš-ÕŸÖ‰×€×ƒ×†×³×´Ø‰ØŠØŒØØ›ØØŸÙª-Ù­Û”Ü€-Üß·-ß¹à °-à ¾à¡à¥¤à¥¥à¥°à«°à·´à¹à¹šà¹›à¼„-à¼’à¼”à¾…à¿-à¿”à¿™à¿šáŠ-ááƒ»á -á¨á™­á™®á›«-á›­áœµáœ¶áŸ”-áŸ–áŸ˜-áŸšá €-á …á ‡-á Šá¥„á¥…á¨á¨Ÿáª -áª¦áª¨-áª­á­š-á­ á¯¼-á¯¿á°»-á°¿á±¾á±¿á³€-á³‡á³“â€–â€—â€ -â€§â€°-â€¸â€»-â€¾â-âƒâ‡-â‘â“â•-ââ³¹-â³¼â³¾â³¿âµ°â¸€â¸â¸†-â¸ˆâ¸‹â¸-â¸–â¸˜â¸™â¸›â¸â¸Ÿâ¸ª-â¸®â¸°-â¸¹ã€-ã€ƒã€½ãƒ»ê“¾ê“¿ê˜-ê˜ê™³ê™¾ê›²-ê›·ê¡´-ê¡·ê£ê£ê£¸-ê£ºê¤®ê¤¯ê¥Ÿê§-ê§ê§ê§Ÿê©œ-ê©Ÿê«ê«Ÿê«°ê«±ê¯«ï¸-ï¸–ï¸™ï¸°ï¹…ï¹†ï¹‰-ï¹Œï¹-ï¹’ï¹”-ï¹—ï¹Ÿ-ï¹¡ï¹¨ï¹ªï¹«ï¼-ï¼ƒï¼…-ï¼‡ï¼Šï¼Œï¼ï¼ï¼šï¼›ï¼Ÿï¼ ï¼¼ï½¡ï½¤ï½¥",
-   astral: "í ‰[í±°-í±³]|í ‚[í±—í´Ÿí´¿í¹-í¹˜í¹¿í¼¹-í¼¿]|í €[í´€-í´‚í¾Ÿí¿]|í „[í±‡-í±í²»í²¼í²¾-í³íµ€-íµƒí·…-í·ˆ]"
+   bmp: "!-#%-'\\x2A,\\x2E/:;\\x3F@\\x5C\xa1\xa7\xb6\xb7\xbf\u037e\u0387\u055a-\u055f\u0589\u05c0\u05c3\u05c6\u05f3\u05f4\u0609\u060a\u060c\u060d\u061b\u061e\u061f\u066a-\u066d\u06d4\u0700-\u070d\u07f7-\u07f9\u0830-\u083e\u085e\u0964\u0965\u0970\u0af0\u0df4\u0e4f\u0e5a\u0e5b\u0f04-\u0f12\u0f14\u0f85\u0fd0-\u0fd4\u0fd9\u0fda\u104a-\u104f\u10fb\u1360-\u1368\u166d\u166e\u16eb-\u16ed\u1735\u1736\u17d4-\u17d6\u17d8-\u17da\u1800-\u1805\u1807-\u180a\u1944\u1945\u1a1e\u1a1f\u1aa0-\u1aa6\u1aa8-\u1aad\u1b5a-\u1b60\u1bfc-\u1bff\u1c3b-\u1c3f\u1c7e\u1c7f\u1cc0-\u1cc7\u1cd3\u2016\u2017\u2020-\u2027\u2030-\u2038\u203b-\u203e\u2041-\u2043\u2047-\u2051\u2053\u2055-\u205e\u2cf9-\u2cfc\u2cfe\u2cff\u2d70\u2e00\u2e01\u2e06-\u2e08\u2e0b\u2e0e-\u2e16\u2e18\u2e19\u2e1b\u2e1e\u2e1f\u2e2a-\u2e2e\u2e30-\u2e39\u3001-\u3003\u303d\u30fb\ua4fe\ua4ff\ua60d-\ua60f\ua673\ua67e\ua6f2-\ua6f7\ua874-\ua877\ua8ce\ua8cf\ua8f8-\ua8fa\ua92e\ua92f\ua95f\ua9c1-\ua9cd\ua9de\ua9df\uaa5c-\uaa5f\uaade\uaadf\uaaf0\uaaf1\uabeb\ufe10-\ufe16\ufe19\ufe30\ufe45\ufe46\ufe49-\ufe4c\ufe50-\ufe52\ufe54-\ufe57\ufe5f-\ufe61\ufe68\ufe6a\ufe6b\uff01-\uff03\uff05-\uff07\uff0a\uff0c\uff0e\uff0f\uff1a\uff1b\uff1f\uff20\uff3c\uff61\uff64\uff65",
+   astral: "\ud809[\udc70-\udc73]|\ud802[\udc57\udd1f\udd3f\ude50-\ude58\ude7f\udf39-\udf3f]|\ud800[\udd00-\udd02\udf9f\udfd0]|\ud804[\udc47-\udc4d\udcbb\udcbc\udcbe-\udcc1\udd40-\udd43\uddc5-\uddc8]"
   }, {
    name: "Ps",
    alias: "Open_Punctuation",
-   bmp: "\\x28\\x5B\\x7Bà¼ºà¼¼áš›â€šâ€â…â½â‚âŒ©â¨âªâ¬â®â°â²â´âŸ…âŸ¦âŸ¨âŸªâŸ¬âŸ®â¦ƒâ¦…â¦‡â¦‰â¦‹â¦â¦â¦‘â¦“â¦•â¦—â§˜â§šâ§¼â¸¢â¸¤â¸¦â¸¨ã€ˆã€Šã€Œã€ã€ã€”ã€–ã€˜ã€šã€ï´¾ï¸—ï¸µï¸·ï¸¹ï¸»ï¸½ï¸¿ï¹ï¹ƒï¹‡ï¹™ï¹›ï¹ï¼ˆï¼»ï½›ï½Ÿï½¢"
+   bmp: "\\x28\\x5B\\x7B\u0f3a\u0f3c\u169b\u201a\u201e\u2045\u207d\u208d\u2329\u2768\u276a\u276c\u276e\u2770\u2772\u2774\u27c5\u27e6\u27e8\u27ea\u27ec\u27ee\u2983\u2985\u2987\u2989\u298b\u298d\u298f\u2991\u2993\u2995\u2997\u29d8\u29da\u29fc\u2e22\u2e24\u2e26\u2e28\u3008\u300a\u300c\u300e\u3010\u3014\u3016\u3018\u301a\u301d\ufd3e\ufe17\ufe35\ufe37\ufe39\ufe3b\ufe3d\ufe3f\ufe41\ufe43\ufe47\ufe59\ufe5b\ufe5d\uff08\uff3b\uff5b\uff5f\uff62"
   }, {
    name: "S",
    alias: "Symbol",
-   bmp: "\\x24\\x2B<->\\x5E`\\x7C~Â¢-Â¦Â¨Â©Â¬Â®-Â±Â´Â¸Ã—Ã·Ë‚-Ë…Ë’-ËŸË¥-Ë«Ë­Ë¯-Ë¿ÍµÎ„Î…Ï¶Ò‚ÖØ†-ØˆØ‹ØØÛÛ©Û½Û¾ß¶à§²à§³à§ºà§»à«±à­°à¯³-à¯ºà±¿àµ¹à¸¿à¼-à¼ƒà¼“à¼•-à¼—à¼š-à¼Ÿà¼´à¼¶à¼¸à¾¾-à¿…à¿‡-à¿Œà¿à¿à¿•-à¿˜á‚á‚Ÿá-á™áŸ›á¥€á§-á§¿á­¡-á­ªá­´-á­¼á¾½á¾¿-á¿á¿-á¿á¿-á¿Ÿá¿­-á¿¯á¿½á¿¾â„â’âº-â¼â‚Š-â‚Œâ‚ -â‚ºâ„€â„â„ƒ-â„†â„ˆâ„‰â„”â„–-â„˜â„-â„£â„¥â„§â„©â„®â„ºâ„»â…€-â…„â…Š-â…â…â†-âŒ¨âŒ«-â³â€-â¦â‘€-â‘Šâ’œ-â“©â”€-â›¿âœ-â§â”-âŸ„âŸ‡-âŸ¥âŸ°-â¦‚â¦™-â§—â§œ-â§»â§¾-â­Œâ­-â­™â³¥-â³ªâº€-âº™âº›-â»³â¼€-â¿•â¿°-â¿»ã€„ã€’ã€“ã€ ã€¶ã€·ã€¾ã€¿ã‚›ã‚œã†ã†‘ã†–-ã†Ÿã‡€-ã‡£ãˆ€-ãˆãˆª-ã‰‡ã‰ã‰ -ã‰¿ãŠŠ-ãŠ°ã‹€-ã‹¾ãŒ€-ã¿ä·€-ä·¿ê’-ê“†êœ€-êœ–êœ êœ¡ê‰êŠê ¨-ê «ê ¶-ê ¹ê©·-ê©¹ï¬©ï®²-ï¯ï·¼ï·½ï¹¢ï¹¤-ï¹¦ï¹©ï¼„ï¼‹ï¼œ-ï¼ï¼¾ï½€ï½œï½ï¿ -ï¿¦ï¿¨-ï¿®ï¿¼ï¿½",
-   astral: "í ½[í°€-í°¾í±€í±‚-í³·í³¹-í³¼í´€-í´½íµ€-íµƒíµ-íµ§í·»-í¹€í¹…-í¹íº€-í»…í¼€-í½³]|í µ[í»í»›í»»í¼•í¼µí½í½¯í¾‰í¾©í¿ƒ]|í ¼[í°€-í°«í°°-í²“í² -í²®í²±-í²¾í³-í³í³‘-í³Ÿí´-í´®í´°-íµ«íµ°-í¶ší·¦-í¸‚í¸-í¸ºí¹€-í¹ˆí¹í¹‘í¼€-í¼ í¼°-í¼µí¼·-í½¼í¾€-í¾“í¾ -í¿„í¿†-í¿Ší¿ -í¿°]|í ´[í°€-í³µí´€-í´¦í´©-íµ¤íµª-íµ¬í¶ƒí¶„í¶Œ-í¶©í¶®-í·í¸€-í¹í¹…í¼€-í½–]|í €[í´·-í´¿íµ¹-í¶‰í¶-í¶›í·-í·¼]|í »[í»°í»±]"
+   bmp: "\\x24\\x2B<->\\x5E`\\x7C~\xa2-\xa6\xa8\xa9\xac\xae-\xb1\xb4\xb8\xd7\xf7\u02c2-\u02c5\u02d2-\u02df\u02e5-\u02eb\u02ed\u02ef-\u02ff\u0375\u0384\u0385\u03f6\u0482\u058f\u0606-\u0608\u060b\u060e\u060f\u06de\u06e9\u06fd\u06fe\u07f6\u09f2\u09f3\u09fa\u09fb\u0af1\u0b70\u0bf3-\u0bfa\u0c7f\u0d79\u0e3f\u0f01-\u0f03\u0f13\u0f15-\u0f17\u0f1a-\u0f1f\u0f34\u0f36\u0f38\u0fbe-\u0fc5\u0fc7-\u0fcc\u0fce\u0fcf\u0fd5-\u0fd8\u109e\u109f\u1390-\u1399\u17db\u1940\u19de-\u19ff\u1b61-\u1b6a\u1b74-\u1b7c\u1fbd\u1fbf-\u1fc1\u1fcd-\u1fcf\u1fdd-\u1fdf\u1fed-\u1fef\u1ffd\u1ffe\u2044\u2052\u207a-\u207c\u208a-\u208c\u20a0-\u20ba\u2100\u2101\u2103-\u2106\u2108\u2109\u2114\u2116-\u2118\u211e-\u2123\u2125\u2127\u2129\u212e\u213a\u213b\u2140-\u2144\u214a-\u214d\u214f\u2190-\u2328\u232b-\u23f3\u2400-\u2426\u2440-\u244a\u249c-\u24e9\u2500-\u26ff\u2701-\u2767\u2794-\u27c4\u27c7-\u27e5\u27f0-\u2982\u2999-\u29d7\u29dc-\u29fb\u29fe-\u2b4c\u2b50-\u2b59\u2ce5-\u2cea\u2e80-\u2e99\u2e9b-\u2ef3\u2f00-\u2fd5\u2ff0-\u2ffb\u3004\u3012\u3013\u3020\u3036\u3037\u303e\u303f\u309b\u309c\u3190\u3191\u3196-\u319f\u31c0-\u31e3\u3200-\u321e\u322a-\u3247\u3250\u3260-\u327f\u328a-\u32b0\u32c0-\u32fe\u3300-\u33ff\u4dc0-\u4dff\ua490-\ua4c6\ua700-\ua716\ua720\ua721\ua789\ua78a\ua828-\ua82b\ua836-\ua839\uaa77-\uaa79\ufb29\ufbb2-\ufbc1\ufdfc\ufdfd\ufe62\ufe64-\ufe66\ufe69\uff04\uff0b\uff1c-\uff1e\uff3e\uff40\uff5c\uff5e\uffe0-\uffe6\uffe8-\uffee\ufffc\ufffd",
+   astral: "\ud83d[\udc00-\udc3e\udc40\udc42-\udcf7\udcf9-\udcfc\udd00-\udd3d\udd40-\udd43\udd50-\udd67\uddfb-\ude40\ude45-\ude4f\ude80-\udec5\udf00-\udf73]|\ud835[\udec1\udedb\udefb\udf15\udf35\udf4f\udf6f\udf89\udfa9\udfc3]|\ud83c[\udc00-\udc2b\udc30-\udc93\udca0-\udcae\udcb1-\udcbe\udcc1-\udccf\udcd1-\udcdf\udd10-\udd2e\udd30-\udd6b\udd70-\udd9a\udde6-\ude02\ude10-\ude3a\ude40-\ude48\ude50\ude51\udf00-\udf20\udf30-\udf35\udf37-\udf7c\udf80-\udf93\udfa0-\udfc4\udfc6-\udfca\udfe0-\udff0]|\ud834[\udc00-\udcf5\udd00-\udd26\udd29-\udd64\udd6a-\udd6c\udd83\udd84\udd8c-\udda9\uddae-\udddd\ude00-\ude41\ude45\udf00-\udf56]|\ud800[\udd37-\udd3f\udd79-\udd89\udd90-\udd9b\uddd0-\uddfc]|\ud83b[\udef0\udef1]"
   }, {
    name: "Sc",
    alias: "Currency_Symbol",
-   bmp: "\\x24Â¢-Â¥ÖØ‹à§²à§³à§»à«±à¯¹à¸¿áŸ›â‚ -â‚ºê ¸ï·¼ï¹©ï¼„ï¿ ï¿¡ï¿¥ï¿¦"
+   bmp: "\\x24\xa2-\xa5\u058f\u060b\u09f2\u09f3\u09fb\u0af1\u0bf9\u0e3f\u17db\u20a0-\u20ba\ua838\ufdfc\ufe69\uff04\uffe0\uffe1\uffe5\uffe6"
   }, {
    name: "Sk",
    alias: "Modifier_Symbol",
-   bmp: "\\x5E`Â¨Â¯Â´Â¸Ë‚-Ë…Ë’-ËŸË¥-Ë«Ë­Ë¯-Ë¿ÍµÎ„Î…á¾½á¾¿-á¿á¿-á¿á¿-á¿Ÿá¿­-á¿¯á¿½á¿¾ã‚›ã‚œêœ€-êœ–êœ êœ¡ê‰êŠï®²-ï¯ï¼¾ï½€ï¿£"
+   bmp: "\\x5E`\xa8\xaf\xb4\xb8\u02c2-\u02c5\u02d2-\u02df\u02e5-\u02eb\u02ed\u02ef-\u02ff\u0375\u0384\u0385\u1fbd\u1fbf-\u1fc1\u1fcd-\u1fcf\u1fdd-\u1fdf\u1fed-\u1fef\u1ffd\u1ffe\u309b\u309c\ua700-\ua716\ua720\ua721\ua789\ua78a\ufbb2-\ufbc1\uff3e\uff40\uffe3"
   }, {
    name: "Sm",
    alias: "Math_Symbol",
-   bmp: "\\x2B<->\\x7C~Â¬Â±Ã—Ã·Ï¶Ø†-Øˆâ„â’âº-â¼â‚Š-â‚Œâ„˜â…€-â…„â…‹â†-â†”â†šâ†›â† â†£â†¦â†®â‡â‡â‡’â‡”â‡´-â‹¿âŒˆ-âŒ‹âŒ âŒ¡â¼â›-â³âœ-â¡â–·â—â—¸-â—¿â™¯âŸ€-âŸ„âŸ‡-âŸ¥âŸ°-âŸ¿â¤€-â¦‚â¦™-â§—â§œ-â§»â§¾-â«¿â¬°-â­„â­‡-â­Œï¬©ï¹¢ï¹¤-ï¹¦ï¼‹ï¼œ-ï¼ï½œï½ï¿¢ï¿©-ï¿¬",
-   astral: "í »[í»°í»±]|í µ[í»í»›í»»í¼•í¼µí½í½¯í¾‰í¾©í¿ƒ]"
+   bmp: "\\x2B<->\\x7C~\xac\xb1\xd7\xf7\u03f6\u0606-\u0608\u2044\u2052\u207a-\u207c\u208a-\u208c\u2118\u2140-\u2144\u214b\u2190-\u2194\u219a\u219b\u21a0\u21a3\u21a6\u21ae\u21ce\u21cf\u21d2\u21d4\u21f4-\u22ff\u2308-\u230b\u2320\u2321\u237c\u239b-\u23b3\u23dc-\u23e1\u25b7\u25c1\u25f8-\u25ff\u266f\u27c0-\u27c4\u27c7-\u27e5\u27f0-\u27ff\u2900-\u2982\u2999-\u29d7\u29dc-\u29fb\u29fe-\u2aff\u2b30-\u2b44\u2b47-\u2b4c\ufb29\ufe62\ufe64-\ufe66\uff0b\uff1c-\uff1e\uff5c\uff5e\uffe2\uffe9-\uffec",
+   astral: "\ud83b[\udef0\udef1]|\ud835[\udec1\udedb\udefb\udf15\udf35\udf4f\udf6f\udf89\udfa9\udfc3]"
   }, {
    name: "So",
    alias: "Other_Symbol",
-   bmp: "Â¦Â©Â®Â°Ò‚ØØÛÛ©Û½Û¾ß¶à§ºà­°à¯³-à¯¸à¯ºà±¿àµ¹à¼-à¼ƒà¼“à¼•-à¼—à¼š-à¼Ÿà¼´à¼¶à¼¸à¾¾-à¿…à¿‡-à¿Œà¿à¿à¿•-à¿˜á‚á‚Ÿá-á™á¥€á§-á§¿á­¡-á­ªá­´-á­¼â„€â„â„ƒ-â„†â„ˆâ„‰â„”â„–â„—â„-â„£â„¥â„§â„©â„®â„ºâ„»â…Šâ…Œâ…â…â†•-â†™â†œ-â†Ÿâ†¡â†¢â†¤â†¥â†§-â†­â†¯-â‡â‡â‡‘â‡“â‡•-â‡³âŒ€-âŒ‡âŒŒ-âŒŸâŒ¢-âŒ¨âŒ«-â»â½-âšâ´-â›â¢-â³â€-â¦â‘€-â‘Šâ’œ-â“©â”€-â–¶â–¸-â—€â—‚-â—·â˜€-â™®â™°-â›¿âœ-â§â”-â¿â €-â£¿â¬€-â¬¯â­…â­†â­-â­™â³¥-â³ªâº€-âº™âº›-â»³â¼€-â¿•â¿°-â¿»ã€„ã€’ã€“ã€ ã€¶ã€·ã€¾ã€¿ã†ã†‘ã†–-ã†Ÿã‡€-ã‡£ãˆ€-ãˆãˆª-ã‰‡ã‰ã‰ -ã‰¿ãŠŠ-ãŠ°ã‹€-ã‹¾ãŒ€-ã¿ä·€-ä·¿ê’-ê“†ê ¨-ê «ê ¶ê ·ê ¹ê©·-ê©¹ï·½ï¿¤ï¿¨ï¿­ï¿®ï¿¼ï¿½",
-   astral: "í ½[í°€-í°¾í±€í±‚-í³·í³¹-í³¼í´€-í´½íµ€-íµƒíµ-íµ§í·»-í¹€í¹…-í¹íº€-í»…í¼€-í½³]|í ´[í°€-í³µí´€-í´¦í´©-íµ¤íµª-íµ¬í¶ƒí¶„í¶Œ-í¶©í¶®-í·í¸€-í¹í¹…í¼€-í½–]|í ¼[í°€-í°«í°°-í²“í² -í²®í²±-í²¾í³-í³í³‘-í³Ÿí´-í´®í´°-íµ«íµ°-í¶ší·¦-í¸‚í¸-í¸ºí¹€-í¹ˆí¹í¹‘í¼€-í¼ í¼°-í¼µí¼·-í½¼í¾€-í¾“í¾ -í¿„í¿†-í¿Ší¿ -í¿°]|í €[í´·-í´¿íµ¹-í¶‰í¶-í¶›í·-í·¼]"
+   bmp: "\xa6\xa9\xae\xb0\u0482\u060e\u060f\u06de\u06e9\u06fd\u06fe\u07f6\u09fa\u0b70\u0bf3-\u0bf8\u0bfa\u0c7f\u0d79\u0f01-\u0f03\u0f13\u0f15-\u0f17\u0f1a-\u0f1f\u0f34\u0f36\u0f38\u0fbe-\u0fc5\u0fc7-\u0fcc\u0fce\u0fcf\u0fd5-\u0fd8\u109e\u109f\u1390-\u1399\u1940\u19de-\u19ff\u1b61-\u1b6a\u1b74-\u1b7c\u2100\u2101\u2103-\u2106\u2108\u2109\u2114\u2116\u2117\u211e-\u2123\u2125\u2127\u2129\u212e\u213a\u213b\u214a\u214c\u214d\u214f\u2195-\u2199\u219c-\u219f\u21a1\u21a2\u21a4\u21a5\u21a7-\u21ad\u21af-\u21cd\u21d0\u21d1\u21d3\u21d5-\u21f3\u2300-\u2307\u230c-\u231f\u2322-\u2328\u232b-\u237b\u237d-\u239a\u23b4-\u23db\u23e2-\u23f3\u2400-\u2426\u2440-\u244a\u249c-\u24e9\u2500-\u25b6\u25b8-\u25c0\u25c2-\u25f7\u2600-\u266e\u2670-\u26ff\u2701-\u2767\u2794-\u27bf\u2800-\u28ff\u2b00-\u2b2f\u2b45\u2b46\u2b50-\u2b59\u2ce5-\u2cea\u2e80-\u2e99\u2e9b-\u2ef3\u2f00-\u2fd5\u2ff0-\u2ffb\u3004\u3012\u3013\u3020\u3036\u3037\u303e\u303f\u3190\u3191\u3196-\u319f\u31c0-\u31e3\u3200-\u321e\u322a-\u3247\u3250\u3260-\u327f\u328a-\u32b0\u32c0-\u32fe\u3300-\u33ff\u4dc0-\u4dff\ua490-\ua4c6\ua828-\ua82b\ua836\ua837\ua839\uaa77-\uaa79\ufdfd\uffe4\uffe8\uffed\uffee\ufffc\ufffd",
+   astral: "\ud83d[\udc00-\udc3e\udc40\udc42-\udcf7\udcf9-\udcfc\udd00-\udd3d\udd40-\udd43\udd50-\udd67\uddfb-\ude40\ude45-\ude4f\ude80-\udec5\udf00-\udf73]|\ud834[\udc00-\udcf5\udd00-\udd26\udd29-\udd64\udd6a-\udd6c\udd83\udd84\udd8c-\udda9\uddae-\udddd\ude00-\ude41\ude45\udf00-\udf56]|\ud83c[\udc00-\udc2b\udc30-\udc93\udca0-\udcae\udcb1-\udcbe\udcc1-\udccf\udcd1-\udcdf\udd10-\udd2e\udd30-\udd6b\udd70-\udd9a\udde6-\ude02\ude10-\ude3a\ude40-\ude48\ude50\ude51\udf00-\udf20\udf30-\udf35\udf37-\udf7c\udf80-\udf93\udfa0-\udfc4\udfc6-\udfca\udfe0-\udff0]|\ud800[\udd37-\udd3f\udd79-\udd89\udd90-\udd9b\uddd0-\uddfc]"
   }, {
    name: "Z",
    alias: "Separator",
-   bmp: " Â áš€á â€€-â€Š\u2028\u2029â€¯âŸã€€"
+   bmp: " \xa0\u1680\u180e\u2000-\u200a\u2028\u2029\u202f\u205f\u3000"
   }, {
    name: "Zl",
    alias: "Line_Separator",
@@ -5913,7 +5915,7 @@ function diff_match_patch() {
   }, {
    name: "Zs",
    alias: "Space_Separator",
-   bmp: " Â áš€á â€€-â€Šâ€¯âŸã€€"
+   bmp: " \xa0\u1680\u180e\u2000-\u200a\u202f\u205f\u3000"
   } ]);
  }(e), function(e) {
   if (!e.addUnicodeData) throw new ReferenceError("Unicode Base must be loaded before Unicode Properties");
@@ -5922,352 +5924,352 @@ function diff_match_patch() {
    bmp: "\x00-"
   }, {
    name: "Alphabetic",
-   bmp: "A-Za-zÂªÂµÂºÃ€-Ã–Ã˜-Ã¶Ã¸-ËË†-Ë‘Ë -Ë¤Ë¬Ë®Í…Í°-Í´Í¶Í·Íº-Í½Î†Îˆ-ÎŠÎŒÎ-Î¡Î£-ÏµÏ·-ÒÒŠ-Ô§Ô±-Õ–Õ™Õ¡-Ö‡Ö°-Ö½Ö¿××‚×„×…×‡×-×ª×°-×²Ø-ØšØ -Ù—Ù™-ÙŸÙ®-Û“Û•-ÛœÛ¡-Û¨Û­-Û¯Ûº-Û¼Û¿Ü-Ü¿İ-Ş±ßŠ-ßªß´ßµßºà €-à —à š-à ¬à¡€-à¡˜à¢ à¢¢-à¢¬à£¤-à£©à£°-à£¾à¤€-à¤»à¤½-à¥Œà¥-à¥à¥•-à¥£à¥±-à¥·à¥¹-à¥¿à¦-à¦ƒà¦…-à¦Œà¦à¦à¦“-à¦¨à¦ª-à¦°à¦²à¦¶-à¦¹à¦½-à§„à§‡à§ˆà§‹à§Œà§à§—à§œà§à§Ÿ-à§£à§°à§±à¨-à¨ƒà¨…-à¨Šà¨à¨à¨“-à¨¨à¨ª-à¨°à¨²à¨³à¨µà¨¶à¨¸à¨¹à¨¾-à©‚à©‡à©ˆà©‹à©Œà©‘à©™-à©œà©à©°-à©µàª-àªƒàª…-àªàª-àª‘àª“-àª¨àªª-àª°àª²àª³àªµ-àª¹àª½-à«…à«‡-à«‰à«‹à«Œà«à« -à«£à¬-à¬ƒà¬…-à¬Œà¬à¬à¬“-à¬¨à¬ª-à¬°à¬²à¬³à¬µ-à¬¹à¬½-à­„à­‡à­ˆà­‹à­Œà­–à­—à­œà­à­Ÿ-à­£à­±à®‚à®ƒà®…-à®Šà®-à®à®’-à®•à®™à®šà®œà®à®Ÿà®£à®¤à®¨-à®ªà®®-à®¹à®¾-à¯‚à¯†-à¯ˆà¯Š-à¯Œà¯à¯—à°-à°ƒà°…-à°Œà°-à°à°’-à°¨à°ª-à°³à°µ-à°¹à°½-à±„à±†-à±ˆà±Š-à±Œà±•à±–à±˜à±™à± -à±£à²‚à²ƒà²…-à²Œà²-à²à²’-à²¨à²ª-à²³à²µ-à²¹à²½-à³„à³†-à³ˆà³Š-à³Œà³•à³–à³à³ -à³£à³±à³²à´‚à´ƒà´…-à´Œà´-à´à´’-à´ºà´½-àµ„àµ†-àµˆàµŠ-àµŒàµàµ—àµ -àµ£àµº-àµ¿à¶‚à¶ƒà¶…-à¶–à¶š-à¶±à¶³-à¶»à¶½à·€-à·†à·-à·”à·–à·˜-à·Ÿà·²à·³à¸-à¸ºà¹€-à¹†à¹àºàº‚àº„àº‡àºˆàºŠàºàº”-àº—àº™-àºŸàº¡-àº£àº¥àº§àºªàº«àº­-àº¹àº»-àº½à»€-à»„à»†à»à»œ-à»Ÿà¼€à½€-à½‡à½‰-à½¬à½±-à¾à¾ˆ-à¾—à¾™-à¾¼á€€-á€¶á€¸á€»-á€¿á-á¢á¥-á¨á®-á‚†á‚á‚œá‚á‚ -áƒ…áƒ‡áƒáƒ-áƒºáƒ¼-á‰ˆá‰Š-á‰á‰-á‰–á‰˜á‰š-á‰á‰ -áŠˆáŠŠ-áŠáŠ-áŠ°áŠ²-áŠµáŠ¸-áŠ¾á‹€á‹‚-á‹…á‹ˆ-á‹–á‹˜-áŒáŒ’-áŒ•áŒ˜-ášáŸá€-áá -á´á-á™¬á™¯-á™¿áš-áššáš -á›ªá›®-á›°áœ€-áœŒáœ-áœ“áœ -áœ³á€-á“á -á¬á®-á°á²á³á€-á³á¶-áŸˆáŸ—áŸœá  -á¡·á¢€-á¢ªá¢°-á£µá¤€-á¤œá¤ -á¤«á¤°-á¤¸á¥-á¥­á¥°-á¥´á¦€-á¦«á¦°-á§‰á¨€-á¨›á¨ -á©á©¡-á©´áª§á¬€-á¬³á¬µ-á­ƒá­…-á­‹á®€-á®©á®¬-á®¯á®º-á¯¥á¯§-á¯±á°€-á°µá±-á±á±š-á±½á³©-á³¬á³®-á³³á³µá³¶á´€-á¶¿á¸€-á¼•á¼˜-á¼á¼ -á½…á½ˆ-á½á½-á½—á½™á½›á½á½Ÿ-á½½á¾€-á¾´á¾¶-á¾¼á¾¾á¿‚-á¿„á¿†-á¿Œá¿-á¿“á¿–-á¿›á¿ -á¿¬á¿²-á¿´á¿¶-á¿¼â±â¿â‚-â‚œâ„‚â„‡â„Š-â„“â„•â„™-â„â„¤â„¦â„¨â„ª-â„­â„¯-â„¹â„¼-â„¿â……-â…‰â…â… -â†ˆâ’¶-â“©â°€-â°®â°°-â±â± -â³¤â³«-â³®â³²â³³â´€-â´¥â´§â´­â´°-âµ§âµ¯â¶€-â¶–â¶ -â¶¦â¶¨-â¶®â¶°-â¶¶â¶¸-â¶¾â·€-â·†â·ˆ-â·â·-â·–â·˜-â·â· -â·¿â¸¯ã€…-ã€‡ã€¡-ã€©ã€±-ã€µã€¸-ã€¼ã-ã‚–ã‚-ã‚Ÿã‚¡-ãƒºãƒ¼-ãƒ¿ã„…-ã„­ã„±-ã†ã† -ã†ºã‡°-ã‡¿ã€-ä¶µä¸€-é¿Œê€€-ê’Œê“-ê“½ê”€-ê˜Œê˜-ê˜Ÿê˜ªê˜«ê™€-ê™®ê™´-ê™»ê™¿-êš—êšŸ-ê›¯êœ—-êœŸêœ¢-êˆê‹-êê-ê“ê -êªêŸ¸-ê ê ƒ-ê …ê ‡-ê Šê Œ-ê §ê¡€-ê¡³ê¢€-ê£ƒê£²-ê£·ê£»ê¤Š-ê¤ªê¤°-ê¥’ê¥ -ê¥¼ê¦€-ê¦²ê¦´-ê¦¿ê§ê¨€-ê¨¶ê©€-ê©ê© -ê©¶ê©ºêª€-êª¾ê«€ê«‚ê«›-ê«ê« -ê«¯ê«²-ê«µê¬-ê¬†ê¬‰-ê¬ê¬‘-ê¬–ê¬ -ê¬¦ê¬¨-ê¬®ê¯€-ê¯ªê°€-í£í°-íŸ†íŸ‹-íŸ»ï¤€-ï©­ï©°-ï«™ï¬€-ï¬†ï¬“-ï¬—ï¬-ï¬¨ï¬ª-ï¬¶ï¬¸-ï¬¼ï¬¾ï­€ï­ï­ƒï­„ï­†-ï®±ï¯“-ï´½ïµ-ï¶ï¶’-ï·‡ï·°-ï·»ï¹°-ï¹´ï¹¶-ï»¼ï¼¡-ï¼ºï½-ï½šï½¦-ï¾¾ï¿‚-ï¿‡ï¿Š-ï¿ï¿’-ï¿—ï¿š-ï¿œ",
-   astral: "í ƒ[í°€-í±ˆ]|í [í°€-í²]|í ‰[í°€-í±¢]|í š[í°€-í¸¸]|í „[í°€-í±…í²‚-í²¸í³-í³¨í´€-í´²í¶€-í¶¿í·-í·„]|[í Œí¡€-í¡¨í¡ª-í¡¬][í°€-í¿¿]|í¡®[í°€-í°]|í¡­[í°€-í¼´í½€-í¿¿]|í [í°€-í°®]|í¡¾[í°€-í¸]|í ‚[í°€-í°…í°ˆí°Š-í°µí°·í°¸í°¼í°¿-í±•í´€-í´•í´ -í´¹í¶€-í¶·í¶¾í¶¿í¸€-í¸ƒí¸…í¸†í¸Œ-í¸“í¸•-í¸—í¸™-í¸³í¹ -í¹¼í¼€-í¼µí½€-í½•í½ -í½²]|í €[í°€-í°‹í°-í°¦í°¨-í°ºí°¼í°½í°¿-í±í±-í±í²€-í³ºíµ€-íµ´íº€-íºœíº -í»í¼€-í¼í¼°-í½Ší¾€-í¾í¾ -í¿ƒí¿ˆ-í¿í¿‘-í¿•]|í ›[í¼€-í½„í½-í½¾í¾“-í¾Ÿ]|í µ[í°€-í±”í±–-í²œí²í²Ÿí²¢í²¥í²¦í²©-í²¬í²®-í²¹í²»í²½-í³ƒí³…-í´…í´‡-í´Ší´-í´”í´–-í´œí´-í´¹í´»-í´¾íµ€-íµ„íµ†íµŠ-íµíµ’-íº¥íº¨-í»€í»‚-í»ší»œ-í»ºí»¼-í¼”í¼–-í¼´í¼¶-í½í½-í½®í½°-í¾ˆí¾Š-í¾¨í¾ª-í¿‚í¿„-í¿‹]|í »[í¸€-í¸ƒí¸…-í¸Ÿí¸¡í¸¢í¸¤í¸§í¸©-í¸²í¸´-í¸·í¸¹í¸»í¹‚í¹‡í¹‰í¹‹í¹-í¹í¹‘í¹’í¹”í¹—í¹™í¹›í¹í¹Ÿí¹¡í¹¢í¹¤í¹§-í¹ªí¹¬-í¹²í¹´-í¹·í¹¹-í¹¼í¹¾íº€-íº‰íº‹-íº›íº¡-íº£íº¥-íº©íº«-íº»]|í¡©[í°€-í»–í¼€-í¿¿]|í ¬[í°€í°]|í ˆ[í°€-í½®]|í …[íº€-íºµ]"
+   bmp: "A-Za-z\xaa\xb5\xba\xc0-\xd6\xd8-\xf6\xf8-\u02c1\u02c6-\u02d1\u02e0-\u02e4\u02ec\u02ee\u0345\u0370-\u0374\u0376\u0377\u037a-\u037d\u0386\u0388-\u038a\u038c\u038e-\u03a1\u03a3-\u03f5\u03f7-\u0481\u048a-\u0527\u0531-\u0556\u0559\u0561-\u0587\u05b0-\u05bd\u05bf\u05c1\u05c2\u05c4\u05c5\u05c7\u05d0-\u05ea\u05f0-\u05f2\u0610-\u061a\u0620-\u0657\u0659-\u065f\u066e-\u06d3\u06d5-\u06dc\u06e1-\u06e8\u06ed-\u06ef\u06fa-\u06fc\u06ff\u0710-\u073f\u074d-\u07b1\u07ca-\u07ea\u07f4\u07f5\u07fa\u0800-\u0817\u081a-\u082c\u0840-\u0858\u08a0\u08a2-\u08ac\u08e4-\u08e9\u08f0-\u08fe\u0900-\u093b\u093d-\u094c\u094e-\u0950\u0955-\u0963\u0971-\u0977\u0979-\u097f\u0981-\u0983\u0985-\u098c\u098f\u0990\u0993-\u09a8\u09aa-\u09b0\u09b2\u09b6-\u09b9\u09bd-\u09c4\u09c7\u09c8\u09cb\u09cc\u09ce\u09d7\u09dc\u09dd\u09df-\u09e3\u09f0\u09f1\u0a01-\u0a03\u0a05-\u0a0a\u0a0f\u0a10\u0a13-\u0a28\u0a2a-\u0a30\u0a32\u0a33\u0a35\u0a36\u0a38\u0a39\u0a3e-\u0a42\u0a47\u0a48\u0a4b\u0a4c\u0a51\u0a59-\u0a5c\u0a5e\u0a70-\u0a75\u0a81-\u0a83\u0a85-\u0a8d\u0a8f-\u0a91\u0a93-\u0aa8\u0aaa-\u0ab0\u0ab2\u0ab3\u0ab5-\u0ab9\u0abd-\u0ac5\u0ac7-\u0ac9\u0acb\u0acc\u0ad0\u0ae0-\u0ae3\u0b01-\u0b03\u0b05-\u0b0c\u0b0f\u0b10\u0b13-\u0b28\u0b2a-\u0b30\u0b32\u0b33\u0b35-\u0b39\u0b3d-\u0b44\u0b47\u0b48\u0b4b\u0b4c\u0b56\u0b57\u0b5c\u0b5d\u0b5f-\u0b63\u0b71\u0b82\u0b83\u0b85-\u0b8a\u0b8e-\u0b90\u0b92-\u0b95\u0b99\u0b9a\u0b9c\u0b9e\u0b9f\u0ba3\u0ba4\u0ba8-\u0baa\u0bae-\u0bb9\u0bbe-\u0bc2\u0bc6-\u0bc8\u0bca-\u0bcc\u0bd0\u0bd7\u0c01-\u0c03\u0c05-\u0c0c\u0c0e-\u0c10\u0c12-\u0c28\u0c2a-\u0c33\u0c35-\u0c39\u0c3d-\u0c44\u0c46-\u0c48\u0c4a-\u0c4c\u0c55\u0c56\u0c58\u0c59\u0c60-\u0c63\u0c82\u0c83\u0c85-\u0c8c\u0c8e-\u0c90\u0c92-\u0ca8\u0caa-\u0cb3\u0cb5-\u0cb9\u0cbd-\u0cc4\u0cc6-\u0cc8\u0cca-\u0ccc\u0cd5\u0cd6\u0cde\u0ce0-\u0ce3\u0cf1\u0cf2\u0d02\u0d03\u0d05-\u0d0c\u0d0e-\u0d10\u0d12-\u0d3a\u0d3d-\u0d44\u0d46-\u0d48\u0d4a-\u0d4c\u0d4e\u0d57\u0d60-\u0d63\u0d7a-\u0d7f\u0d82\u0d83\u0d85-\u0d96\u0d9a-\u0db1\u0db3-\u0dbb\u0dbd\u0dc0-\u0dc6\u0dcf-\u0dd4\u0dd6\u0dd8-\u0ddf\u0df2\u0df3\u0e01-\u0e3a\u0e40-\u0e46\u0e4d\u0e81\u0e82\u0e84\u0e87\u0e88\u0e8a\u0e8d\u0e94-\u0e97\u0e99-\u0e9f\u0ea1-\u0ea3\u0ea5\u0ea7\u0eaa\u0eab\u0ead-\u0eb9\u0ebb-\u0ebd\u0ec0-\u0ec4\u0ec6\u0ecd\u0edc-\u0edf\u0f00\u0f40-\u0f47\u0f49-\u0f6c\u0f71-\u0f81\u0f88-\u0f97\u0f99-\u0fbc\u1000-\u1036\u1038\u103b-\u103f\u1050-\u1062\u1065-\u1068\u106e-\u1086\u108e\u109c\u109d\u10a0-\u10c5\u10c7\u10cd\u10d0-\u10fa\u10fc-\u1248\u124a-\u124d\u1250-\u1256\u1258\u125a-\u125d\u1260-\u1288\u128a-\u128d\u1290-\u12b0\u12b2-\u12b5\u12b8-\u12be\u12c0\u12c2-\u12c5\u12c8-\u12d6\u12d8-\u1310\u1312-\u1315\u1318-\u135a\u135f\u1380-\u138f\u13a0-\u13f4\u1401-\u166c\u166f-\u167f\u1681-\u169a\u16a0-\u16ea\u16ee-\u16f0\u1700-\u170c\u170e-\u1713\u1720-\u1733\u1740-\u1753\u1760-\u176c\u176e-\u1770\u1772\u1773\u1780-\u17b3\u17b6-\u17c8\u17d7\u17dc\u1820-\u1877\u1880-\u18aa\u18b0-\u18f5\u1900-\u191c\u1920-\u192b\u1930-\u1938\u1950-\u196d\u1970-\u1974\u1980-\u19ab\u19b0-\u19c9\u1a00-\u1a1b\u1a20-\u1a5e\u1a61-\u1a74\u1aa7\u1b00-\u1b33\u1b35-\u1b43\u1b45-\u1b4b\u1b80-\u1ba9\u1bac-\u1baf\u1bba-\u1be5\u1be7-\u1bf1\u1c00-\u1c35\u1c4d-\u1c4f\u1c5a-\u1c7d\u1ce9-\u1cec\u1cee-\u1cf3\u1cf5\u1cf6\u1d00-\u1dbf\u1e00-\u1f15\u1f18-\u1f1d\u1f20-\u1f45\u1f48-\u1f4d\u1f50-\u1f57\u1f59\u1f5b\u1f5d\u1f5f-\u1f7d\u1f80-\u1fb4\u1fb6-\u1fbc\u1fbe\u1fc2-\u1fc4\u1fc6-\u1fcc\u1fd0-\u1fd3\u1fd6-\u1fdb\u1fe0-\u1fec\u1ff2-\u1ff4\u1ff6-\u1ffc\u2071\u207f\u2090-\u209c\u2102\u2107\u210a-\u2113\u2115\u2119-\u211d\u2124\u2126\u2128\u212a-\u212d\u212f-\u2139\u213c-\u213f\u2145-\u2149\u214e\u2160-\u2188\u24b6-\u24e9\u2c00-\u2c2e\u2c30-\u2c5e\u2c60-\u2ce4\u2ceb-\u2cee\u2cf2\u2cf3\u2d00-\u2d25\u2d27\u2d2d\u2d30-\u2d67\u2d6f\u2d80-\u2d96\u2da0-\u2da6\u2da8-\u2dae\u2db0-\u2db6\u2db8-\u2dbe\u2dc0-\u2dc6\u2dc8-\u2dce\u2dd0-\u2dd6\u2dd8-\u2dde\u2de0-\u2dff\u2e2f\u3005-\u3007\u3021-\u3029\u3031-\u3035\u3038-\u303c\u3041-\u3096\u309d-\u309f\u30a1-\u30fa\u30fc-\u30ff\u3105-\u312d\u3131-\u318e\u31a0-\u31ba\u31f0-\u31ff\u3400-\u4db5\u4e00-\u9fcc\ua000-\ua48c\ua4d0-\ua4fd\ua500-\ua60c\ua610-\ua61f\ua62a\ua62b\ua640-\ua66e\ua674-\ua67b\ua67f-\ua697\ua69f-\ua6ef\ua717-\ua71f\ua722-\ua788\ua78b-\ua78e\ua790-\ua793\ua7a0-\ua7aa\ua7f8-\ua801\ua803-\ua805\ua807-\ua80a\ua80c-\ua827\ua840-\ua873\ua880-\ua8c3\ua8f2-\ua8f7\ua8fb\ua90a-\ua92a\ua930-\ua952\ua960-\ua97c\ua980-\ua9b2\ua9b4-\ua9bf\ua9cf\uaa00-\uaa36\uaa40-\uaa4d\uaa60-\uaa76\uaa7a\uaa80-\uaabe\uaac0\uaac2\uaadb-\uaadd\uaae0-\uaaef\uaaf2-\uaaf5\uab01-\uab06\uab09-\uab0e\uab11-\uab16\uab20-\uab26\uab28-\uab2e\uabc0-\uabea\uac00-\ud7a3\ud7b0-\ud7c6\ud7cb-\ud7fb\uf900-\ufa6d\ufa70-\ufad9\ufb00-\ufb06\ufb13-\ufb17\ufb1d-\ufb28\ufb2a-\ufb36\ufb38-\ufb3c\ufb3e\ufb40\ufb41\ufb43\ufb44\ufb46-\ufbb1\ufbd3-\ufd3d\ufd50-\ufd8f\ufd92-\ufdc7\ufdf0-\ufdfb\ufe70-\ufe74\ufe76-\ufefc\uff21-\uff3a\uff41-\uff5a\uff66-\uffbe\uffc2-\uffc7\uffca-\uffcf\uffd2-\uffd7\uffda-\uffdc",
+   astral: "\ud803[\udc00-\udc48]|\ud801[\udc00-\udc9d]|\ud809[\udc00-\udc62]|\ud81a[\udc00-\ude38]|\ud804[\udc00-\udc45\udc82-\udcb8\udcd0-\udce8\udd00-\udd32\udd80-\uddbf\uddc1-\uddc4]|[\ud80c\ud840-\ud868\ud86a-\ud86c][\udc00-\udfff]|\ud86e[\udc00-\udc1d]|\ud86d[\udc00-\udf34\udf40-\udfff]|\ud80d[\udc00-\udc2e]|\ud87e[\udc00-\ude1d]|\ud802[\udc00-\udc05\udc08\udc0a-\udc35\udc37\udc38\udc3c\udc3f-\udc55\udd00-\udd15\udd20-\udd39\udd80-\uddb7\uddbe\uddbf\ude00-\ude03\ude05\ude06\ude0c-\ude13\ude15-\ude17\ude19-\ude33\ude60-\ude7c\udf00-\udf35\udf40-\udf55\udf60-\udf72]|\ud800[\udc00-\udc0b\udc0d-\udc26\udc28-\udc3a\udc3c\udc3d\udc3f-\udc4d\udc50-\udc5d\udc80-\udcfa\udd40-\udd74\ude80-\ude9c\udea0-\uded0\udf00-\udf1e\udf30-\udf4a\udf80-\udf9d\udfa0-\udfc3\udfc8-\udfcf\udfd1-\udfd5]|\ud81b[\udf00-\udf44\udf50-\udf7e\udf93-\udf9f]|\ud835[\udc00-\udc54\udc56-\udc9c\udc9e\udc9f\udca2\udca5\udca6\udca9-\udcac\udcae-\udcb9\udcbb\udcbd-\udcc3\udcc5-\udd05\udd07-\udd0a\udd0d-\udd14\udd16-\udd1c\udd1e-\udd39\udd3b-\udd3e\udd40-\udd44\udd46\udd4a-\udd50\udd52-\udea5\udea8-\udec0\udec2-\udeda\udedc-\udefa\udefc-\udf14\udf16-\udf34\udf36-\udf4e\udf50-\udf6e\udf70-\udf88\udf8a-\udfa8\udfaa-\udfc2\udfc4-\udfcb]|\ud83b[\ude00-\ude03\ude05-\ude1f\ude21\ude22\ude24\ude27\ude29-\ude32\ude34-\ude37\ude39\ude3b\ude42\ude47\ude49\ude4b\ude4d-\ude4f\ude51\ude52\ude54\ude57\ude59\ude5b\ude5d\ude5f\ude61\ude62\ude64\ude67-\ude6a\ude6c-\ude72\ude74-\ude77\ude79-\ude7c\ude7e\ude80-\ude89\ude8b-\ude9b\udea1-\udea3\udea5-\udea9\udeab-\udebb]|\ud869[\udc00-\uded6\udf00-\udfff]|\ud82c[\udc00\udc01]|\ud808[\udc00-\udf6e]|\ud805[\ude80-\udeb5]"
   }, {
    name: "Any",
    isBmpLast: !0,
-   bmp: "\x00-ï¿¿",
-   astral: "[í €-í¯¿][í°€-í¿¿]"
+   bmp: "\x00-\uffff",
+   astral: "[\ud800-\udbff][\udc00-\udfff]"
   }, {
    name: "Assigned",
    inverseOf: "Cn"
   }, {
    name: "Default_Ignorable_Code_Point",
-   bmp: "Â­Íá…Ÿá… á´áµá ‹-á â€‹-â€â€ª-â€®â -â¯ã…¤ï¸€-ï¸ï»¿ï¾ ï¿°-ï¿¸",
-   astral: "[í­€-í­ƒ][í°€-í¿¿]|í ´[íµ³-íµº]"
+   bmp: "\xad\u034f\u115f\u1160\u17b4\u17b5\u180b-\u180d\u200b-\u200f\u202a-\u202e\u2060-\u206f\u3164\ufe00-\ufe0f\ufeff\uffa0\ufff0-\ufff8",
+   astral: "[\udb40-\udb43][\udc00-\udfff]|\ud834[\udd73-\udd7a]"
   }, {
    name: "Lowercase",
-   bmp: "a-zÂªÂµÂºÃŸ-Ã¶Ã¸-Ã¿ÄÄƒÄ…Ä‡Ä‰Ä‹ÄÄÄ‘Ä“Ä•Ä—Ä™Ä›ÄÄŸÄ¡Ä£Ä¥Ä§Ä©Ä«Ä­Ä¯Ä±Ä³ÄµÄ·Ä¸ÄºÄ¼Ä¾Å€Å‚Å„Å†ÅˆÅ‰Å‹ÅÅÅ‘Å“Å•Å—Å™Å›ÅÅŸÅ¡Å£Å¥Å§Å©Å«Å­Å¯Å±Å³ÅµÅ·ÅºÅ¼Å¾-Æ€ÆƒÆ…ÆˆÆŒÆÆ’Æ•Æ™-Æ›ÆÆ¡Æ£Æ¥Æ¨ÆªÆ«Æ­Æ°Æ´Æ¶Æ¹ÆºÆ½-Æ¿Ç†Ç‰ÇŒÇÇÇ’Ç”Ç–Ç˜ÇšÇœÇÇŸÇ¡Ç£Ç¥Ç§Ç©Ç«Ç­Ç¯Ç°Ç³ÇµÇ¹Ç»Ç½Ç¿ÈÈƒÈ…È‡È‰È‹ÈÈÈ‘È“È•È—È™È›ÈÈŸÈ¡È£È¥È§È©È«È­È¯È±È³-È¹È¼È¿É€É‚É‡É‰É‹ÉÉ-Ê“Ê•-Ê¸Ë€ËË -Ë¤Í…Í±Í³Í·Íº-Í½ÎÎ¬-ÏÏÏ‘Ï•-Ï—Ï™Ï›ÏÏŸÏ¡Ï£Ï¥Ï§Ï©Ï«Ï­Ï¯-Ï³ÏµÏ¸Ï»Ï¼Ğ°-ÑŸÑ¡Ñ£Ñ¥Ñ§Ñ©Ñ«Ñ­Ñ¯Ñ±Ñ³ÑµÑ·Ñ¹Ñ»Ñ½Ñ¿ÒÒ‹ÒÒÒ‘Ò“Ò•Ò—Ò™Ò›ÒÒŸÒ¡Ò£Ò¥Ò§Ò©Ò«Ò­Ò¯Ò±Ò³ÒµÒ·Ò¹Ò»Ò½Ò¿Ó‚Ó„Ó†ÓˆÓŠÓŒÓÓÓ‘Ó“Ó•Ó—Ó™Ó›ÓÓŸÓ¡Ó£Ó¥Ó§Ó©Ó«Ó­Ó¯Ó±Ó³ÓµÓ·Ó¹Ó»Ó½Ó¿ÔÔƒÔ…Ô‡Ô‰Ô‹ÔÔÔ‘Ô“Ô•Ô—Ô™Ô›ÔÔŸÔ¡Ô£Ô¥Ô§Õ¡-Ö‡á´€-á¶¿á¸á¸ƒá¸…á¸‡á¸‰á¸‹á¸á¸á¸‘á¸“á¸•á¸—á¸™á¸›á¸á¸Ÿá¸¡á¸£á¸¥á¸§á¸©á¸«á¸­á¸¯á¸±á¸³á¸µá¸·á¸¹á¸»á¸½á¸¿á¹á¹ƒá¹…á¹‡á¹‰á¹‹á¹á¹á¹‘á¹“á¹•á¹—á¹™á¹›á¹á¹Ÿá¹¡á¹£á¹¥á¹§á¹©á¹«á¹­á¹¯á¹±á¹³á¹µá¹·á¹¹á¹»á¹½á¹¿áºáºƒáº…áº‡áº‰áº‹áºáºáº‘áº“áº•-áºáºŸáº¡áº£áº¥áº§áº©áº«áº­áº¯áº±áº³áºµáº·áº¹áº»áº½áº¿á»á»ƒá»…á»‡á»‰á»‹á»á»á»‘á»“á»•á»—á»™á»›á»á»Ÿá»¡á»£á»¥á»§á»©á»«á»­á»¯á»±á»³á»µá»·á»¹á»»á»½á»¿-á¼‡á¼-á¼•á¼ -á¼§á¼°-á¼·á½€-á½…á½-á½—á½ -á½§á½°-á½½á¾€-á¾‡á¾-á¾—á¾ -á¾§á¾°-á¾´á¾¶á¾·á¾¾á¿‚-á¿„á¿†á¿‡á¿-á¿“á¿–á¿—á¿ -á¿§á¿²-á¿´á¿¶á¿·â±â¿â‚-â‚œâ„Šâ„â„â„“â„¯â„´â„¹â„¼â„½â…†-â…‰â…â…°-â…¿â†„â“-â“©â°°-â±â±¡â±¥â±¦â±¨â±ªâ±¬â±±â±³â±´â±¶-â±½â²â²ƒâ²…â²‡â²‰â²‹â²â²â²‘â²“â²•â²—â²™â²›â²â²Ÿâ²¡â²£â²¥â²§â²©â²«â²­â²¯â²±â²³â²µâ²·â²¹â²»â²½â²¿â³â³ƒâ³…â³‡â³‰â³‹â³â³â³‘â³“â³•â³—â³™â³›â³â³Ÿâ³¡â³£â³¤â³¬â³®â³³â´€-â´¥â´§â´­ê™ê™ƒê™…ê™‡ê™‰ê™‹ê™ê™ê™‘ê™“ê™•ê™—ê™™ê™›ê™ê™Ÿê™¡ê™£ê™¥ê™§ê™©ê™«ê™­êšêšƒêš…êš‡êš‰êš‹êšêšêš‘êš“êš•êš—êœ£êœ¥êœ§êœ©êœ«êœ­êœ¯-êœ±êœ³êœµêœ·êœ¹êœ»êœ½êœ¿êêƒê…ê‡ê‰ê‹êêê‘ê“ê•ê—ê™ê›êêŸê¡ê£ê¥ê§ê©ê«ê­ê¯-ê¸êºê¼ê¿êêƒê…ê‡êŒêê‘ê“ê¡ê£ê¥ê§ê©êŸ¸-êŸºï¬€-ï¬†ï¬“-ï¬—ï½-ï½š",
-   astral: "í µ[í°š-í°³í±-í±”í±–-í±§í²‚-í²›í²¶-í²¹í²»í²½-í³ƒí³…-í³í³ª-í´ƒí´-í´·íµ’-íµ«í¶†-í¶Ÿí¶º-í·“í·®-í¸‡í¸¢-í¸»í¹–-í¹¯íºŠ-íº¥í»‚-í»ší»œ-í»¡í»¼-í¼”í¼–-í¼›í¼¶-í½í½-í½•í½°-í¾ˆí¾Š-í¾í¾ª-í¿‚í¿„-í¿‰í¿‹]|í [í°¨-í±]"
+   bmp: "a-z\xaa\xb5\xba\xdf-\xf6\xf8-\xff\u0101\u0103\u0105\u0107\u0109\u010b\u010d\u010f\u0111\u0113\u0115\u0117\u0119\u011b\u011d\u011f\u0121\u0123\u0125\u0127\u0129\u012b\u012d\u012f\u0131\u0133\u0135\u0137\u0138\u013a\u013c\u013e\u0140\u0142\u0144\u0146\u0148\u0149\u014b\u014d\u014f\u0151\u0153\u0155\u0157\u0159\u015b\u015d\u015f\u0161\u0163\u0165\u0167\u0169\u016b\u016d\u016f\u0171\u0173\u0175\u0177\u017a\u017c\u017e-\u0180\u0183\u0185\u0188\u018c\u018d\u0192\u0195\u0199-\u019b\u019e\u01a1\u01a3\u01a5\u01a8\u01aa\u01ab\u01ad\u01b0\u01b4\u01b6\u01b9\u01ba\u01bd-\u01bf\u01c6\u01c9\u01cc\u01ce\u01d0\u01d2\u01d4\u01d6\u01d8\u01da\u01dc\u01dd\u01df\u01e1\u01e3\u01e5\u01e7\u01e9\u01eb\u01ed\u01ef\u01f0\u01f3\u01f5\u01f9\u01fb\u01fd\u01ff\u0201\u0203\u0205\u0207\u0209\u020b\u020d\u020f\u0211\u0213\u0215\u0217\u0219\u021b\u021d\u021f\u0221\u0223\u0225\u0227\u0229\u022b\u022d\u022f\u0231\u0233-\u0239\u023c\u023f\u0240\u0242\u0247\u0249\u024b\u024d\u024f-\u0293\u0295-\u02b8\u02c0\u02c1\u02e0-\u02e4\u0345\u0371\u0373\u0377\u037a-\u037d\u0390\u03ac-\u03ce\u03d0\u03d1\u03d5-\u03d7\u03d9\u03db\u03dd\u03df\u03e1\u03e3\u03e5\u03e7\u03e9\u03eb\u03ed\u03ef-\u03f3\u03f5\u03f8\u03fb\u03fc\u0430-\u045f\u0461\u0463\u0465\u0467\u0469\u046b\u046d\u046f\u0471\u0473\u0475\u0477\u0479\u047b\u047d\u047f\u0481\u048b\u048d\u048f\u0491\u0493\u0495\u0497\u0499\u049b\u049d\u049f\u04a1\u04a3\u04a5\u04a7\u04a9\u04ab\u04ad\u04af\u04b1\u04b3\u04b5\u04b7\u04b9\u04bb\u04bd\u04bf\u04c2\u04c4\u04c6\u04c8\u04ca\u04cc\u04ce\u04cf\u04d1\u04d3\u04d5\u04d7\u04d9\u04db\u04dd\u04df\u04e1\u04e3\u04e5\u04e7\u04e9\u04eb\u04ed\u04ef\u04f1\u04f3\u04f5\u04f7\u04f9\u04fb\u04fd\u04ff\u0501\u0503\u0505\u0507\u0509\u050b\u050d\u050f\u0511\u0513\u0515\u0517\u0519\u051b\u051d\u051f\u0521\u0523\u0525\u0527\u0561-\u0587\u1d00-\u1dbf\u1e01\u1e03\u1e05\u1e07\u1e09\u1e0b\u1e0d\u1e0f\u1e11\u1e13\u1e15\u1e17\u1e19\u1e1b\u1e1d\u1e1f\u1e21\u1e23\u1e25\u1e27\u1e29\u1e2b\u1e2d\u1e2f\u1e31\u1e33\u1e35\u1e37\u1e39\u1e3b\u1e3d\u1e3f\u1e41\u1e43\u1e45\u1e47\u1e49\u1e4b\u1e4d\u1e4f\u1e51\u1e53\u1e55\u1e57\u1e59\u1e5b\u1e5d\u1e5f\u1e61\u1e63\u1e65\u1e67\u1e69\u1e6b\u1e6d\u1e6f\u1e71\u1e73\u1e75\u1e77\u1e79\u1e7b\u1e7d\u1e7f\u1e81\u1e83\u1e85\u1e87\u1e89\u1e8b\u1e8d\u1e8f\u1e91\u1e93\u1e95-\u1e9d\u1e9f\u1ea1\u1ea3\u1ea5\u1ea7\u1ea9\u1eab\u1ead\u1eaf\u1eb1\u1eb3\u1eb5\u1eb7\u1eb9\u1ebb\u1ebd\u1ebf\u1ec1\u1ec3\u1ec5\u1ec7\u1ec9\u1ecb\u1ecd\u1ecf\u1ed1\u1ed3\u1ed5\u1ed7\u1ed9\u1edb\u1edd\u1edf\u1ee1\u1ee3\u1ee5\u1ee7\u1ee9\u1eeb\u1eed\u1eef\u1ef1\u1ef3\u1ef5\u1ef7\u1ef9\u1efb\u1efd\u1eff-\u1f07\u1f10-\u1f15\u1f20-\u1f27\u1f30-\u1f37\u1f40-\u1f45\u1f50-\u1f57\u1f60-\u1f67\u1f70-\u1f7d\u1f80-\u1f87\u1f90-\u1f97\u1fa0-\u1fa7\u1fb0-\u1fb4\u1fb6\u1fb7\u1fbe\u1fc2-\u1fc4\u1fc6\u1fc7\u1fd0-\u1fd3\u1fd6\u1fd7\u1fe0-\u1fe7\u1ff2-\u1ff4\u1ff6\u1ff7\u2071\u207f\u2090-\u209c\u210a\u210e\u210f\u2113\u212f\u2134\u2139\u213c\u213d\u2146-\u2149\u214e\u2170-\u217f\u2184\u24d0-\u24e9\u2c30-\u2c5e\u2c61\u2c65\u2c66\u2c68\u2c6a\u2c6c\u2c71\u2c73\u2c74\u2c76-\u2c7d\u2c81\u2c83\u2c85\u2c87\u2c89\u2c8b\u2c8d\u2c8f\u2c91\u2c93\u2c95\u2c97\u2c99\u2c9b\u2c9d\u2c9f\u2ca1\u2ca3\u2ca5\u2ca7\u2ca9\u2cab\u2cad\u2caf\u2cb1\u2cb3\u2cb5\u2cb7\u2cb9\u2cbb\u2cbd\u2cbf\u2cc1\u2cc3\u2cc5\u2cc7\u2cc9\u2ccb\u2ccd\u2ccf\u2cd1\u2cd3\u2cd5\u2cd7\u2cd9\u2cdb\u2cdd\u2cdf\u2ce1\u2ce3\u2ce4\u2cec\u2cee\u2cf3\u2d00-\u2d25\u2d27\u2d2d\ua641\ua643\ua645\ua647\ua649\ua64b\ua64d\ua64f\ua651\ua653\ua655\ua657\ua659\ua65b\ua65d\ua65f\ua661\ua663\ua665\ua667\ua669\ua66b\ua66d\ua681\ua683\ua685\ua687\ua689\ua68b\ua68d\ua68f\ua691\ua693\ua695\ua697\ua723\ua725\ua727\ua729\ua72b\ua72d\ua72f-\ua731\ua733\ua735\ua737\ua739\ua73b\ua73d\ua73f\ua741\ua743\ua745\ua747\ua749\ua74b\ua74d\ua74f\ua751\ua753\ua755\ua757\ua759\ua75b\ua75d\ua75f\ua761\ua763\ua765\ua767\ua769\ua76b\ua76d\ua76f-\ua778\ua77a\ua77c\ua77f\ua781\ua783\ua785\ua787\ua78c\ua78e\ua791\ua793\ua7a1\ua7a3\ua7a5\ua7a7\ua7a9\ua7f8-\ua7fa\ufb00-\ufb06\ufb13-\ufb17\uff41-\uff5a",
+   astral: "\ud835[\udc1a-\udc33\udc4e-\udc54\udc56-\udc67\udc82-\udc9b\udcb6-\udcb9\udcbb\udcbd-\udcc3\udcc5-\udccf\udcea-\udd03\udd1e-\udd37\udd52-\udd6b\udd86-\udd9f\uddba-\uddd3\uddee-\ude07\ude22-\ude3b\ude56-\ude6f\ude8a-\udea5\udec2-\udeda\udedc-\udee1\udefc-\udf14\udf16-\udf1b\udf36-\udf4e\udf50-\udf55\udf70-\udf88\udf8a-\udf8f\udfaa-\udfc2\udfc4-\udfc9\udfcb]|\ud801[\udc28-\udc4f]"
   }, {
    name: "Noncharacter_Code_Point",
-   bmp: "ï·-ï·¯ï¿¾ï¿¿",
-   astral: "[í¬¿í­¿í®¿í¯¿í ¿í¡¿í¢¿í«¿í¥¿í¦¿í§¿í¨¿í£¿íª¿í©¿í¤¿][í¿¾í¿¿]"
+   bmp: "\ufdd0-\ufdef\ufffe\uffff",
+   astral: "[\udb3f\udb7f\udbbf\udbff\ud83f\ud87f\ud8bf\udaff\ud97f\ud9bf\ud9ff\uda3f\ud8ff\udabf\uda7f\ud93f][\udffe\udfff]"
   }, {
    name: "Uppercase",
-   bmp: "A-ZÃ€-Ã–Ã˜-ÃÄ€Ä‚Ä„Ä†ÄˆÄŠÄŒÄÄÄ’Ä”Ä–Ä˜ÄšÄœÄÄ Ä¢Ä¤Ä¦Ä¨ÄªÄ¬Ä®Ä°Ä²Ä´Ä¶Ä¹Ä»Ä½Ä¿ÅÅƒÅ…Å‡ÅŠÅŒÅÅÅ’Å”Å–Å˜ÅšÅœÅÅ Å¢Å¤Å¦Å¨ÅªÅ¬Å®Å°Å²Å´Å¶Å¸Å¹Å»Å½ÆÆ‚Æ„Æ†Æ‡Æ‰-Æ‹Æ-Æ‘Æ“Æ”Æ–-Æ˜ÆœÆÆŸÆ Æ¢Æ¤Æ¦Æ§Æ©Æ¬Æ®Æ¯Æ±-Æ³ÆµÆ·Æ¸Æ¼Ç„Ç‡ÇŠÇÇÇ‘Ç“Ç•Ç—Ç™Ç›ÇÇ Ç¢Ç¤Ç¦Ç¨ÇªÇ¬Ç®Ç±Ç´Ç¶-Ç¸ÇºÇ¼Ç¾È€È‚È„È†ÈˆÈŠÈŒÈÈÈ’È”È–È˜ÈšÈœÈÈ È¢È¤È¦È¨ÈªÈ¬È®È°È²ÈºÈ»È½È¾ÉÉƒ-É†ÉˆÉŠÉŒÉÍ°Í²Í¶Î†Îˆ-ÎŠÎŒÎÎÎ‘-Î¡Î£-Î«ÏÏ’-Ï”Ï˜ÏšÏœÏÏ Ï¢Ï¤Ï¦Ï¨ÏªÏ¬Ï®Ï´Ï·Ï¹ÏºÏ½-Ğ¯Ñ Ñ¢Ñ¤Ñ¦Ñ¨ÑªÑ¬Ñ®Ñ°Ñ²Ñ´Ñ¶Ñ¸ÑºÑ¼Ñ¾Ò€ÒŠÒŒÒÒÒ’Ò”Ò–Ò˜ÒšÒœÒÒ Ò¢Ò¤Ò¦Ò¨ÒªÒ¬Ò®Ò°Ò²Ò´Ò¶Ò¸ÒºÒ¼Ò¾Ó€ÓÓƒÓ…Ó‡Ó‰Ó‹ÓÓÓ’Ó”Ó–Ó˜ÓšÓœÓÓ Ó¢Ó¤Ó¦Ó¨ÓªÓ¬Ó®Ó°Ó²Ó´Ó¶Ó¸ÓºÓ¼Ó¾Ô€Ô‚Ô„Ô†ÔˆÔŠÔŒÔÔÔ’Ô”Ô–Ô˜ÔšÔœÔÔ Ô¢Ô¤Ô¦Ô±-Õ–á‚ -áƒ…áƒ‡áƒá¸€á¸‚á¸„á¸†á¸ˆá¸Šá¸Œá¸á¸á¸’á¸”á¸–á¸˜á¸šá¸œá¸á¸ á¸¢á¸¤á¸¦á¸¨á¸ªá¸¬á¸®á¸°á¸²á¸´á¸¶á¸¸á¸ºá¸¼á¸¾á¹€á¹‚á¹„á¹†á¹ˆá¹Šá¹Œá¹á¹á¹’á¹”á¹–á¹˜á¹šá¹œá¹á¹ á¹¢á¹¤á¹¦á¹¨á¹ªá¹¬á¹®á¹°á¹²á¹´á¹¶á¹¸á¹ºá¹¼á¹¾áº€áº‚áº„áº†áºˆáºŠáºŒáºáºáº’áº”áºáº áº¢áº¤áº¦áº¨áºªáº¬áº®áº°áº²áº´áº¶áº¸áººáº¼áº¾á»€á»‚á»„á»†á»ˆá»Šá»Œá»á»á»’á»”á»–á»˜á»šá»œá»á» á»¢á»¤á»¦á»¨á»ªá»¬á»®á»°á»²á»´á»¶á»¸á»ºá»¼á»¾á¼ˆ-á¼á¼˜-á¼á¼¨-á¼¯á¼¸-á¼¿á½ˆ-á½á½™á½›á½á½Ÿá½¨-á½¯á¾¸-á¾»á¿ˆ-á¿‹á¿˜-á¿›á¿¨-á¿¬á¿¸-á¿»â„‚â„‡â„‹-â„â„-â„’â„•â„™-â„â„¤â„¦â„¨â„ª-â„­â„°-â„³â„¾â„¿â……â… -â…¯â†ƒâ’¶-â“â°€-â°®â± â±¢-â±¤â±§â±©â±«â±­-â±°â±²â±µâ±¾-â²€â²‚â²„â²†â²ˆâ²Šâ²Œâ²â²â²’â²”â²–â²˜â²šâ²œâ²â² â²¢â²¤â²¦â²¨â²ªâ²¬â²®â²°â²²â²´â²¶â²¸â²ºâ²¼â²¾â³€â³‚â³„â³†â³ˆâ³Šâ³Œâ³â³â³’â³”â³–â³˜â³šâ³œâ³â³ â³¢â³«â³­â³²ê™€ê™‚ê™„ê™†ê™ˆê™Šê™Œê™ê™ê™’ê™”ê™–ê™˜ê™šê™œê™ê™ ê™¢ê™¤ê™¦ê™¨ê™ªê™¬êš€êš‚êš„êš†êšˆêšŠêšŒêšêšêš’êš”êš–êœ¢êœ¤êœ¦êœ¨êœªêœ¬êœ®êœ²êœ´êœ¶êœ¸êœºêœ¼êœ¾ê€ê‚ê„ê†êˆêŠêŒêêê’ê”ê–ê˜êšêœêê ê¢ê¤ê¦ê¨êªê¬ê®ê¹ê»ê½ê¾ê€ê‚ê„ê†ê‹êêê’ê ê¢ê¤ê¦ê¨êªï¼¡-ï¼º",
-   astral: "í µ[í°€-í°™í°´-í±í±¨-í²í²œí²í²Ÿí²¢í²¥í²¦í²©-í²¬í²®-í²µí³-í³©í´„í´…í´‡-í´Ší´-í´”í´–-í´œí´¸í´¹í´»-í´¾íµ€-íµ„íµ†íµŠ-íµíµ¬-í¶…í¶ -í¶¹í·”-í·­í¸ˆ-í¸¡í¸¼-í¹•í¹°-íº‰íº¨-í»€í»¢-í»ºí¼œ-í¼´í½–-í½®í¾-í¾¨í¿Š]|í [í°€-í°§]"
+   bmp: "A-Z\xc0-\xd6\xd8-\xde\u0100\u0102\u0104\u0106\u0108\u010a\u010c\u010e\u0110\u0112\u0114\u0116\u0118\u011a\u011c\u011e\u0120\u0122\u0124\u0126\u0128\u012a\u012c\u012e\u0130\u0132\u0134\u0136\u0139\u013b\u013d\u013f\u0141\u0143\u0145\u0147\u014a\u014c\u014e\u0150\u0152\u0154\u0156\u0158\u015a\u015c\u015e\u0160\u0162\u0164\u0166\u0168\u016a\u016c\u016e\u0170\u0172\u0174\u0176\u0178\u0179\u017b\u017d\u0181\u0182\u0184\u0186\u0187\u0189-\u018b\u018e-\u0191\u0193\u0194\u0196-\u0198\u019c\u019d\u019f\u01a0\u01a2\u01a4\u01a6\u01a7\u01a9\u01ac\u01ae\u01af\u01b1-\u01b3\u01b5\u01b7\u01b8\u01bc\u01c4\u01c7\u01ca\u01cd\u01cf\u01d1\u01d3\u01d5\u01d7\u01d9\u01db\u01de\u01e0\u01e2\u01e4\u01e6\u01e8\u01ea\u01ec\u01ee\u01f1\u01f4\u01f6-\u01f8\u01fa\u01fc\u01fe\u0200\u0202\u0204\u0206\u0208\u020a\u020c\u020e\u0210\u0212\u0214\u0216\u0218\u021a\u021c\u021e\u0220\u0222\u0224\u0226\u0228\u022a\u022c\u022e\u0230\u0232\u023a\u023b\u023d\u023e\u0241\u0243-\u0246\u0248\u024a\u024c\u024e\u0370\u0372\u0376\u0386\u0388-\u038a\u038c\u038e\u038f\u0391-\u03a1\u03a3-\u03ab\u03cf\u03d2-\u03d4\u03d8\u03da\u03dc\u03de\u03e0\u03e2\u03e4\u03e6\u03e8\u03ea\u03ec\u03ee\u03f4\u03f7\u03f9\u03fa\u03fd-\u042f\u0460\u0462\u0464\u0466\u0468\u046a\u046c\u046e\u0470\u0472\u0474\u0476\u0478\u047a\u047c\u047e\u0480\u048a\u048c\u048e\u0490\u0492\u0494\u0496\u0498\u049a\u049c\u049e\u04a0\u04a2\u04a4\u04a6\u04a8\u04aa\u04ac\u04ae\u04b0\u04b2\u04b4\u04b6\u04b8\u04ba\u04bc\u04be\u04c0\u04c1\u04c3\u04c5\u04c7\u04c9\u04cb\u04cd\u04d0\u04d2\u04d4\u04d6\u04d8\u04da\u04dc\u04de\u04e0\u04e2\u04e4\u04e6\u04e8\u04ea\u04ec\u04ee\u04f0\u04f2\u04f4\u04f6\u04f8\u04fa\u04fc\u04fe\u0500\u0502\u0504\u0506\u0508\u050a\u050c\u050e\u0510\u0512\u0514\u0516\u0518\u051a\u051c\u051e\u0520\u0522\u0524\u0526\u0531-\u0556\u10a0-\u10c5\u10c7\u10cd\u1e00\u1e02\u1e04\u1e06\u1e08\u1e0a\u1e0c\u1e0e\u1e10\u1e12\u1e14\u1e16\u1e18\u1e1a\u1e1c\u1e1e\u1e20\u1e22\u1e24\u1e26\u1e28\u1e2a\u1e2c\u1e2e\u1e30\u1e32\u1e34\u1e36\u1e38\u1e3a\u1e3c\u1e3e\u1e40\u1e42\u1e44\u1e46\u1e48\u1e4a\u1e4c\u1e4e\u1e50\u1e52\u1e54\u1e56\u1e58\u1e5a\u1e5c\u1e5e\u1e60\u1e62\u1e64\u1e66\u1e68\u1e6a\u1e6c\u1e6e\u1e70\u1e72\u1e74\u1e76\u1e78\u1e7a\u1e7c\u1e7e\u1e80\u1e82\u1e84\u1e86\u1e88\u1e8a\u1e8c\u1e8e\u1e90\u1e92\u1e94\u1e9e\u1ea0\u1ea2\u1ea4\u1ea6\u1ea8\u1eaa\u1eac\u1eae\u1eb0\u1eb2\u1eb4\u1eb6\u1eb8\u1eba\u1ebc\u1ebe\u1ec0\u1ec2\u1ec4\u1ec6\u1ec8\u1eca\u1ecc\u1ece\u1ed0\u1ed2\u1ed4\u1ed6\u1ed8\u1eda\u1edc\u1ede\u1ee0\u1ee2\u1ee4\u1ee6\u1ee8\u1eea\u1eec\u1eee\u1ef0\u1ef2\u1ef4\u1ef6\u1ef8\u1efa\u1efc\u1efe\u1f08-\u1f0f\u1f18-\u1f1d\u1f28-\u1f2f\u1f38-\u1f3f\u1f48-\u1f4d\u1f59\u1f5b\u1f5d\u1f5f\u1f68-\u1f6f\u1fb8-\u1fbb\u1fc8-\u1fcb\u1fd8-\u1fdb\u1fe8-\u1fec\u1ff8-\u1ffb\u2102\u2107\u210b-\u210d\u2110-\u2112\u2115\u2119-\u211d\u2124\u2126\u2128\u212a-\u212d\u2130-\u2133\u213e\u213f\u2145\u2160-\u216f\u2183\u24b6-\u24cf\u2c00-\u2c2e\u2c60\u2c62-\u2c64\u2c67\u2c69\u2c6b\u2c6d-\u2c70\u2c72\u2c75\u2c7e-\u2c80\u2c82\u2c84\u2c86\u2c88\u2c8a\u2c8c\u2c8e\u2c90\u2c92\u2c94\u2c96\u2c98\u2c9a\u2c9c\u2c9e\u2ca0\u2ca2\u2ca4\u2ca6\u2ca8\u2caa\u2cac\u2cae\u2cb0\u2cb2\u2cb4\u2cb6\u2cb8\u2cba\u2cbc\u2cbe\u2cc0\u2cc2\u2cc4\u2cc6\u2cc8\u2cca\u2ccc\u2cce\u2cd0\u2cd2\u2cd4\u2cd6\u2cd8\u2cda\u2cdc\u2cde\u2ce0\u2ce2\u2ceb\u2ced\u2cf2\ua640\ua642\ua644\ua646\ua648\ua64a\ua64c\ua64e\ua650\ua652\ua654\ua656\ua658\ua65a\ua65c\ua65e\ua660\ua662\ua664\ua666\ua668\ua66a\ua66c\ua680\ua682\ua684\ua686\ua688\ua68a\ua68c\ua68e\ua690\ua692\ua694\ua696\ua722\ua724\ua726\ua728\ua72a\ua72c\ua72e\ua732\ua734\ua736\ua738\ua73a\ua73c\ua73e\ua740\ua742\ua744\ua746\ua748\ua74a\ua74c\ua74e\ua750\ua752\ua754\ua756\ua758\ua75a\ua75c\ua75e\ua760\ua762\ua764\ua766\ua768\ua76a\ua76c\ua76e\ua779\ua77b\ua77d\ua77e\ua780\ua782\ua784\ua786\ua78b\ua78d\ua790\ua792\ua7a0\ua7a2\ua7a4\ua7a6\ua7a8\ua7aa\uff21-\uff3a",
+   astral: "\ud835[\udc00-\udc19\udc34-\udc4d\udc68-\udc81\udc9c\udc9e\udc9f\udca2\udca5\udca6\udca9-\udcac\udcae-\udcb5\udcd0-\udce9\udd04\udd05\udd07-\udd0a\udd0d-\udd14\udd16-\udd1c\udd38\udd39\udd3b-\udd3e\udd40-\udd44\udd46\udd4a-\udd50\udd6c-\udd85\udda0-\uddb9\uddd4-\udded\ude08-\ude21\ude3c-\ude55\ude70-\ude89\udea8-\udec0\udee2-\udefa\udf1c-\udf34\udf56-\udf6e\udf90-\udfa8\udfca]|\ud801[\udc00-\udc27]"
   }, {
    name: "White_Space",
-   bmp: "	-\r Â…Â áš€á â€€-â€Š\u2028\u2029â€¯âŸã€€"
+   bmp: "	-\r \x85\xa0\u1680\u180e\u2000-\u200a\u2028\u2029\u202f\u205f\u3000"
   } ]);
  }(e), function(e) {
   if (!e.addUnicodeData) throw new ReferenceError("Unicode Base must be loaded before Unicode Scripts");
   e.addUnicodeData([ {
    name: "Arabic",
-   bmp: "Ø€-Ø„Ø†-Ø‹Ø-ØšØØ -Ø¿Ù-ÙŠÙ–-ÙŸÙª-Ù¯Ù±-ÛœÛ-Û¿İ-İ¿à¢ à¢¢-à¢¬à£¤-à£¾ï­-ï¯ï¯“-ï´½ïµ-ï¶ï¶’-ï·‡ï·°-ï·¼ï¹°-ï¹´ï¹¶-ï»¼",
-   astral: "í ƒ[í¹ -í¹¾]|í »[í¸€-í¸ƒí¸…-í¸Ÿí¸¡í¸¢í¸¤í¸§í¸©-í¸²í¸´-í¸·í¸¹í¸»í¹‚í¹‡í¹‰í¹‹í¹-í¹í¹‘í¹’í¹”í¹—í¹™í¹›í¹í¹Ÿí¹¡í¹¢í¹¤í¹§-í¹ªí¹¬-í¹²í¹´-í¹·í¹¹-í¹¼í¹¾íº€-íº‰íº‹-íº›íº¡-íº£íº¥-íº©íº«-íº»í»°í»±]"
+   bmp: "\u0600-\u0604\u0606-\u060b\u060d-\u061a\u061e\u0620-\u063f\u0641-\u064a\u0656-\u065f\u066a-\u066f\u0671-\u06dc\u06de-\u06ff\u0750-\u077f\u08a0\u08a2-\u08ac\u08e4-\u08fe\ufb50-\ufbc1\ufbd3-\ufd3d\ufd50-\ufd8f\ufd92-\ufdc7\ufdf0-\ufdfc\ufe70-\ufe74\ufe76-\ufefc",
+   astral: "\ud803[\ude60-\ude7e]|\ud83b[\ude00-\ude03\ude05-\ude1f\ude21\ude22\ude24\ude27\ude29-\ude32\ude34-\ude37\ude39\ude3b\ude42\ude47\ude49\ude4b\ude4d-\ude4f\ude51\ude52\ude54\ude57\ude59\ude5b\ude5d\ude5f\ude61\ude62\ude64\ude67-\ude6a\ude6c-\ude72\ude74-\ude77\ude79-\ude7c\ude7e\ude80-\ude89\ude8b-\ude9b\udea1-\udea3\udea5-\udea9\udeab-\udebb\udef0\udef1]"
   }, {
    name: "Armenian",
-   bmp: "Ô±-Õ–Õ™-ÕŸÕ¡-Ö‡ÖŠÖï¬“-ï¬—"
+   bmp: "\u0531-\u0556\u0559-\u055f\u0561-\u0587\u058a\u058f\ufb13-\ufb17"
   }, {
    name: "Avestan",
-   astral: "í ‚[í¼€-í¼µí¼¹-í¼¿]"
+   astral: "\ud802[\udf00-\udf35\udf39-\udf3f]"
   }, {
    name: "Balinese",
-   bmp: "á¬€-á­‹á­-á­¼"
+   bmp: "\u1b00-\u1b4b\u1b50-\u1b7c"
   }, {
    name: "Bamum",
-   bmp: "êš -ê›·",
-   astral: "í š[í°€-í¸¸]"
+   bmp: "\ua6a0-\ua6f7",
+   astral: "\ud81a[\udc00-\ude38]"
   }, {
    name: "Batak",
-   bmp: "á¯€-á¯³á¯¼-á¯¿"
+   bmp: "\u1bc0-\u1bf3\u1bfc-\u1bff"
   }, {
    name: "Bengali",
-   bmp: "à¦-à¦ƒà¦…-à¦Œà¦à¦à¦“-à¦¨à¦ª-à¦°à¦²à¦¶-à¦¹à¦¼-à§„à§‡à§ˆà§‹-à§à§—à§œà§à§Ÿ-à§£à§¦-à§»"
+   bmp: "\u0981-\u0983\u0985-\u098c\u098f\u0990\u0993-\u09a8\u09aa-\u09b0\u09b2\u09b6-\u09b9\u09bc-\u09c4\u09c7\u09c8\u09cb-\u09ce\u09d7\u09dc\u09dd\u09df-\u09e3\u09e6-\u09fb"
   }, {
    name: "Bopomofo",
-   bmp: "ËªË«ã„…-ã„­ã† -ã†º"
+   bmp: "\u02ea\u02eb\u3105-\u312d\u31a0-\u31ba"
   }, {
    name: "Brahmi",
-   astral: "í „[í°€-í±í±’-í±¯]"
+   astral: "\ud804[\udc00-\udc4d\udc52-\udc6f]"
   }, {
    name: "Braille",
-   bmp: "â €-â£¿"
+   bmp: "\u2800-\u28ff"
   }, {
    name: "Buginese",
-   bmp: "á¨€-á¨›á¨á¨Ÿ"
+   bmp: "\u1a00-\u1a1b\u1a1e\u1a1f"
   }, {
    name: "Buhid",
-   bmp: "á€-á“"
+   bmp: "\u1740-\u1753"
   }, {
    name: "Canadian_Aboriginal",
-   bmp: "á€-á™¿á¢°-á£µ"
+   bmp: "\u1400-\u167f\u18b0-\u18f5"
   }, {
    name: "Carian",
-   astral: "í €[íº -í»]"
+   astral: "\ud800[\udea0-\uded0]"
   }, {
    name: "Chakma",
-   astral: "í „[í´€-í´´í´¶-íµƒ]"
+   astral: "\ud804[\udd00-\udd34\udd36-\udd43]"
   }, {
    name: "Cham",
-   bmp: "ê¨€-ê¨¶ê©€-ê©ê©-ê©™ê©œ-ê©Ÿ"
+   bmp: "\uaa00-\uaa36\uaa40-\uaa4d\uaa50-\uaa59\uaa5c-\uaa5f"
   }, {
    name: "Cherokee",
-   bmp: "á -á´"
+   bmp: "\u13a0-\u13f4"
   }, {
    name: "Common",
-   bmp: "\x00-@\\x5B-`\\x7B-Â©Â«-Â¹Â»-Â¿Ã—Ã·Ê¹-ËŸË¥-Ë©Ë¬-Ë¿Í´Í¾Î…Î‡Ö‰ØŒØ›ØŸÙ€Ù -Ù©Ûà¥¤à¥¥à¸¿à¿•-à¿˜áƒ»á›«-á›­áœµáœ¶á ‚á ƒá …á³“á³¡á³©-á³¬á³®-á³³á³µá³¶â€€-â€‹â€-â¤âª-â°â´-â¾â‚€-â‚â‚ -â‚ºâ„€-â„¥â„§-â„©â„¬-â„±â„³-â…â…-â…Ÿâ†‰â†-â³â€-â¦â‘€-â‘Šâ‘ -â›¿âœ-âŸ¿â¤€-â­Œâ­-â­™â¸€-â¸»â¿°-â¿»ã€€-ã€„ã€†ã€ˆ-ã€ ã€°-ã€·ã€¼-ã€¿ã‚›ã‚œã‚ ãƒ»ãƒ¼ã†-ã†Ÿã‡€-ã‡£ãˆ -ã‰Ÿã‰¿-ã‹ã˜-ã¿ä·€-ä·¿êœ€-êœ¡êˆ-êŠê °-ê ¹ï´¾ï´¿ï·½ï¸-ï¸™ï¸°-ï¹’ï¹”-ï¹¦ï¹¨-ï¹«ï»¿ï¼-ï¼ ï¼»-ï½€ï½›-ï½¥ï½°ï¾ï¾Ÿï¿ -ï¿¦ï¿¨-ï¿®ï¿¹-ï¿½",
-   astral: "í €[í´€-í´‚í´‡-í´³í´·-í´¿í¶-í¶›í·-í·¼]|í ¼[í°€-í°«í°°-í²“í² -í²®í²±-í²¾í³-í³í³‘-í³Ÿí´€-í´Ší´-í´®í´°-íµ«íµ°-í¶ší·¦-í·¿í¸í¸‚í¸-í¸ºí¹€-í¹ˆí¹í¹‘í¼€-í¼ í¼°-í¼µí¼·-í½¼í¾€-í¾“í¾ -í¿„í¿†-í¿Ší¿ -í¿°]|í­€[í°í° -í±¿]|í µ[í°€-í±”í±–-í²œí²í²Ÿí²¢í²¥í²¦í²©-í²¬í²®-í²¹í²»í²½-í³ƒí³…-í´…í´‡-í´Ší´-í´”í´–-í´œí´-í´¹í´»-í´¾íµ€-íµ„íµ†íµŠ-íµíµ’-íº¥íº¨-í¿‹í¿-í¿¿]|í ´[í°€-í³µí´€-í´¦í´©-íµ¦íµª-íµºí¶ƒí¶„í¶Œ-í¶©í¶®-í·í¼€-í½–í½ -í½±]|í ½[í°€-í°¾í±€í±‚-í³·í³¹-í³¼í´€-í´½íµ€-íµƒíµ-íµ§í·»-í¹€í¹…-í¹íº€-í»…í¼€-í½³]"
+   bmp: "\x00-@\\x5B-`\\x7B-\xa9\xab-\xb9\xbb-\xbf\xd7\xf7\u02b9-\u02df\u02e5-\u02e9\u02ec-\u02ff\u0374\u037e\u0385\u0387\u0589\u060c\u061b\u061f\u0640\u0660-\u0669\u06dd\u0964\u0965\u0e3f\u0fd5-\u0fd8\u10fb\u16eb-\u16ed\u1735\u1736\u1802\u1803\u1805\u1cd3\u1ce1\u1ce9-\u1cec\u1cee-\u1cf3\u1cf5\u1cf6\u2000-\u200b\u200e-\u2064\u206a-\u2070\u2074-\u207e\u2080-\u208e\u20a0-\u20ba\u2100-\u2125\u2127-\u2129\u212c-\u2131\u2133-\u214d\u214f-\u215f\u2189\u2190-\u23f3\u2400-\u2426\u2440-\u244a\u2460-\u26ff\u2701-\u27ff\u2900-\u2b4c\u2b50-\u2b59\u2e00-\u2e3b\u2ff0-\u2ffb\u3000-\u3004\u3006\u3008-\u3020\u3030-\u3037\u303c-\u303f\u309b\u309c\u30a0\u30fb\u30fc\u3190-\u319f\u31c0-\u31e3\u3220-\u325f\u327f-\u32cf\u3358-\u33ff\u4dc0-\u4dff\ua700-\ua721\ua788-\ua78a\ua830-\ua839\ufd3e\ufd3f\ufdfd\ufe10-\ufe19\ufe30-\ufe52\ufe54-\ufe66\ufe68-\ufe6b\ufeff\uff01-\uff20\uff3b-\uff40\uff5b-\uff65\uff70\uff9e\uff9f\uffe0-\uffe6\uffe8-\uffee\ufff9-\ufffd",
+   astral: "\ud800[\udd00-\udd02\udd07-\udd33\udd37-\udd3f\udd90-\udd9b\uddd0-\uddfc]|\ud83c[\udc00-\udc2b\udc30-\udc93\udca0-\udcae\udcb1-\udcbe\udcc1-\udccf\udcd1-\udcdf\udd00-\udd0a\udd10-\udd2e\udd30-\udd6b\udd70-\udd9a\udde6-\uddff\ude01\ude02\ude10-\ude3a\ude40-\ude48\ude50\ude51\udf00-\udf20\udf30-\udf35\udf37-\udf7c\udf80-\udf93\udfa0-\udfc4\udfc6-\udfca\udfe0-\udff0]|\udb40[\udc01\udc20-\udc7f]|\ud835[\udc00-\udc54\udc56-\udc9c\udc9e\udc9f\udca2\udca5\udca6\udca9-\udcac\udcae-\udcb9\udcbb\udcbd-\udcc3\udcc5-\udd05\udd07-\udd0a\udd0d-\udd14\udd16-\udd1c\udd1e-\udd39\udd3b-\udd3e\udd40-\udd44\udd46\udd4a-\udd50\udd52-\udea5\udea8-\udfcb\udfce-\udfff]|\ud834[\udc00-\udcf5\udd00-\udd26\udd29-\udd66\udd6a-\udd7a\udd83\udd84\udd8c-\udda9\uddae-\udddd\udf00-\udf56\udf60-\udf71]|\ud83d[\udc00-\udc3e\udc40\udc42-\udcf7\udcf9-\udcfc\udd00-\udd3d\udd40-\udd43\udd50-\udd67\uddfb-\ude40\ude45-\ude4f\ude80-\udec5\udf00-\udf73]"
   }, {
    name: "Coptic",
-   bmp: "Ï¢-Ï¯â²€-â³³â³¹-â³¿"
+   bmp: "\u03e2-\u03ef\u2c80-\u2cf3\u2cf9-\u2cff"
   }, {
    name: "Cuneiform",
-   astral: "í ‰[í°€-í±¢í±°-í±³]|í ˆ[í°€-í½®]"
+   astral: "\ud809[\udc00-\udc62\udc70-\udc73]|\ud808[\udc00-\udf6e]"
   }, {
    name: "Cypriot",
-   astral: "í ‚[í°€-í°…í°ˆí°Š-í°µí°·í°¸í°¼í°¿]"
+   astral: "\ud802[\udc00-\udc05\udc08\udc0a-\udc35\udc37\udc38\udc3c\udc3f]"
   }, {
    name: "Cyrillic",
-   bmp: "Ğ€-Ò„Ò‡-Ô§á´«áµ¸â· -â·¿ê™€-êš—êšŸ"
+   bmp: "\u0400-\u0484\u0487-\u0527\u1d2b\u1d78\u2de0-\u2dff\ua640-\ua697\ua69f"
   }, {
    name: "Deseret",
-   astral: "í [í°€-í±]"
+   astral: "\ud801[\udc00-\udc4f]"
   }, {
    name: "Devanagari",
-   bmp: "à¤€-à¥à¥“-à¥£à¥¦-à¥·à¥¹-à¥¿ê£ -ê£»"
+   bmp: "\u0900-\u0950\u0953-\u0963\u0966-\u0977\u0979-\u097f\ua8e0-\ua8fb"
   }, {
    name: "Egyptian_Hieroglyphs",
-   astral: "í Œ[í°€-í¿¿]|í [í°€-í°®]"
+   astral: "\ud80c[\udc00-\udfff]|\ud80d[\udc00-\udc2e]"
   }, {
    name: "Ethiopic",
-   bmp: "áˆ€-á‰ˆá‰Š-á‰á‰-á‰–á‰˜á‰š-á‰á‰ -áŠˆáŠŠ-áŠáŠ-áŠ°áŠ²-áŠµáŠ¸-áŠ¾á‹€á‹‚-á‹…á‹ˆ-á‹–á‹˜-áŒáŒ’-áŒ•áŒ˜-ášá-á¼á€-á™â¶€-â¶–â¶ -â¶¦â¶¨-â¶®â¶°-â¶¶â¶¸-â¶¾â·€-â·†â·ˆ-â·â·-â·–â·˜-â·ê¬-ê¬†ê¬‰-ê¬ê¬‘-ê¬–ê¬ -ê¬¦ê¬¨-ê¬®"
+   bmp: "\u1200-\u1248\u124a-\u124d\u1250-\u1256\u1258\u125a-\u125d\u1260-\u1288\u128a-\u128d\u1290-\u12b0\u12b2-\u12b5\u12b8-\u12be\u12c0\u12c2-\u12c5\u12c8-\u12d6\u12d8-\u1310\u1312-\u1315\u1318-\u135a\u135d-\u137c\u1380-\u1399\u2d80-\u2d96\u2da0-\u2da6\u2da8-\u2dae\u2db0-\u2db6\u2db8-\u2dbe\u2dc0-\u2dc6\u2dc8-\u2dce\u2dd0-\u2dd6\u2dd8-\u2dde\uab01-\uab06\uab09-\uab0e\uab11-\uab16\uab20-\uab26\uab28-\uab2e"
   }, {
    name: "Georgian",
-   bmp: "á‚ -áƒ…áƒ‡áƒáƒ-áƒºáƒ¼-áƒ¿â´€-â´¥â´§â´­"
+   bmp: "\u10a0-\u10c5\u10c7\u10cd\u10d0-\u10fa\u10fc-\u10ff\u2d00-\u2d25\u2d27\u2d2d"
   }, {
    name: "Glagolitic",
-   bmp: "â°€-â°®â°°-â±"
+   bmp: "\u2c00-\u2c2e\u2c30-\u2c5e"
   }, {
    name: "Gothic",
-   astral: "í €[í¼°-í½Š]"
+   astral: "\ud800[\udf30-\udf4a]"
   }, {
    name: "Greek",
-   bmp: "Í°-Í³Íµ-Í·Íº-Í½Î„Î†Îˆ-ÎŠÎŒÎ-Î¡Î£-Ï¡Ï°-Ï¿á´¦-á´ªáµ-áµ¡áµ¦-áµªá¶¿á¼€-á¼•á¼˜-á¼á¼ -á½…á½ˆ-á½á½-á½—á½™á½›á½á½Ÿ-á½½á¾€-á¾´á¾¶-á¿„á¿†-á¿“á¿–-á¿›á¿-á¿¯á¿²-á¿´á¿¶-á¿¾â„¦",
-   astral: "í ´[í¸€-í¹…]|í €[íµ€-í¶Š]"
+   bmp: "\u0370-\u0373\u0375-\u0377\u037a-\u037d\u0384\u0386\u0388-\u038a\u038c\u038e-\u03a1\u03a3-\u03e1\u03f0-\u03ff\u1d26-\u1d2a\u1d5d-\u1d61\u1d66-\u1d6a\u1dbf\u1f00-\u1f15\u1f18-\u1f1d\u1f20-\u1f45\u1f48-\u1f4d\u1f50-\u1f57\u1f59\u1f5b\u1f5d\u1f5f-\u1f7d\u1f80-\u1fb4\u1fb6-\u1fc4\u1fc6-\u1fd3\u1fd6-\u1fdb\u1fdd-\u1fef\u1ff2-\u1ff4\u1ff6-\u1ffe\u2126",
+   astral: "\ud834[\ude00-\ude45]|\ud800[\udd40-\udd8a]"
   }, {
    name: "Gujarati",
-   bmp: "àª-àªƒàª…-àªàª-àª‘àª“-àª¨àªª-àª°àª²àª³àªµ-àª¹àª¼-à«…à«‡-à«‰à«‹-à«à«à« -à«£à«¦-à«±"
+   bmp: "\u0a81-\u0a83\u0a85-\u0a8d\u0a8f-\u0a91\u0a93-\u0aa8\u0aaa-\u0ab0\u0ab2\u0ab3\u0ab5-\u0ab9\u0abc-\u0ac5\u0ac7-\u0ac9\u0acb-\u0acd\u0ad0\u0ae0-\u0ae3\u0ae6-\u0af1"
   }, {
    name: "Gurmukhi",
-   bmp: "à¨-à¨ƒà¨…-à¨Šà¨à¨à¨“-à¨¨à¨ª-à¨°à¨²à¨³à¨µà¨¶à¨¸à¨¹à¨¼à¨¾-à©‚à©‡à©ˆà©‹-à©à©‘à©™-à©œà©à©¦-à©µ"
+   bmp: "\u0a01-\u0a03\u0a05-\u0a0a\u0a0f\u0a10\u0a13-\u0a28\u0a2a-\u0a30\u0a32\u0a33\u0a35\u0a36\u0a38\u0a39\u0a3c\u0a3e-\u0a42\u0a47\u0a48\u0a4b-\u0a4d\u0a51\u0a59-\u0a5c\u0a5e\u0a66-\u0a75"
   }, {
    name: "Han",
-   bmp: "âº€-âº™âº›-â»³â¼€-â¿•ã€…ã€‡ã€¡-ã€©ã€¸-ã€»ã€-ä¶µä¸€-é¿Œï¤€-ï©­ï©°-ï«™",
-   astral: "[í¡€-í¡¨í¡ª-í¡¬][í°€-í¿¿]|í¡­[í°€-í¼´í½€-í¿¿]|í¡®[í°€-í°]|í¡©[í°€-í»–í¼€-í¿¿]|í¡¾[í°€-í¸]"
+   bmp: "\u2e80-\u2e99\u2e9b-\u2ef3\u2f00-\u2fd5\u3005\u3007\u3021-\u3029\u3038-\u303b\u3400-\u4db5\u4e00-\u9fcc\uf900-\ufa6d\ufa70-\ufad9",
+   astral: "[\ud840-\ud868\ud86a-\ud86c][\udc00-\udfff]|\ud86d[\udc00-\udf34\udf40-\udfff]|\ud86e[\udc00-\udc1d]|\ud869[\udc00-\uded6\udf00-\udfff]|\ud87e[\udc00-\ude1d]"
   }, {
    name: "Hangul",
-   bmp: "á„€-á‡¿ã€®ã€¯ã„±-ã†ãˆ€-ãˆã‰ -ã‰¾ê¥ -ê¥¼ê°€-í£í°-íŸ†íŸ‹-íŸ»ï¾ -ï¾¾ï¿‚-ï¿‡ï¿Š-ï¿ï¿’-ï¿—ï¿š-ï¿œ"
+   bmp: "\u1100-\u11ff\u302e\u302f\u3131-\u318e\u3200-\u321e\u3260-\u327e\ua960-\ua97c\uac00-\ud7a3\ud7b0-\ud7c6\ud7cb-\ud7fb\uffa0-\uffbe\uffc2-\uffc7\uffca-\uffcf\uffd2-\uffd7\uffda-\uffdc"
   }, {
    name: "Hanunoo",
-   bmp: "áœ -áœ´"
+   bmp: "\u1720-\u1734"
   }, {
    name: "Hebrew",
-   bmp: "Ö‘-×‡×-×ª×°-×´ï¬-ï¬¶ï¬¸-ï¬¼ï¬¾ï­€ï­ï­ƒï­„ï­†-ï­"
+   bmp: "\u0591-\u05c7\u05d0-\u05ea\u05f0-\u05f4\ufb1d-\ufb36\ufb38-\ufb3c\ufb3e\ufb40\ufb41\ufb43\ufb44\ufb46-\ufb4f"
   }, {
    name: "Hiragana",
-   bmp: "ã-ã‚–ã‚-ã‚Ÿ",
-   astral: "ğ›€|ğŸˆ€"
+   bmp: "\u3041-\u3096\u309d-\u309f",
+   astral: "\ud82c\udc01|\ud83c\ude00"
   }, {
    name: "Imperial_Aramaic",
-   astral: "í ‚[í±€-í±•í±—-í±Ÿ]"
+   astral: "\ud802[\udc40-\udc55\udc57-\udc5f]"
   }, {
    name: "Inherited",
-   bmp: "Ì€-Í¯Ò…Ò†Ù‹-Ù•Ù°à¥‘à¥’á³-á³’á³”-á³ á³¢-á³¨á³­á³´á·€-á·¦á·¼-á·¿â€Œâ€âƒ-âƒ°ã€ª-ã€­ã‚™ã‚šï¸€-ï¸ï¸ -ï¸¦",
-   astral: "í ´[íµ§-íµ©íµ»-í¶‚í¶…-í¶‹í¶ª-í¶­]|ğ‡½|í­€[í´€-í·¯]"
+   bmp: "\u0300-\u036f\u0485\u0486\u064b-\u0655\u0670\u0951\u0952\u1cd0-\u1cd2\u1cd4-\u1ce0\u1ce2-\u1ce8\u1ced\u1cf4\u1dc0-\u1de6\u1dfc-\u1dff\u200c\u200d\u20d0-\u20f0\u302a-\u302d\u3099\u309a\ufe00-\ufe0f\ufe20-\ufe26",
+   astral: "\ud834[\udd67-\udd69\udd7b-\udd82\udd85-\udd8b\uddaa-\uddad]|\ud800\uddfd|\udb40[\udd00-\uddef]"
   }, {
    name: "Inscriptional_Pahlavi",
-   astral: "í ‚[í½ -í½²í½¸-í½¿]"
+   astral: "\ud802[\udf60-\udf72\udf78-\udf7f]"
   }, {
    name: "Inscriptional_Parthian",
-   astral: "í ‚[í½€-í½•í½˜-í½Ÿ]"
+   astral: "\ud802[\udf40-\udf55\udf58-\udf5f]"
   }, {
    name: "Javanese",
-   bmp: "ê¦€-ê§ê§-ê§™ê§ê§Ÿ"
+   bmp: "\ua980-\ua9cd\ua9cf-\ua9d9\ua9de\ua9df"
   }, {
    name: "Kaithi",
-   astral: "í „[í²€-í³]"
+   astral: "\ud804[\udc80-\udcc1]"
   }, {
    name: "Kannada",
-   bmp: "à²‚à²ƒà²…-à²Œà²-à²à²’-à²¨à²ª-à²³à²µ-à²¹à²¼-à³„à³†-à³ˆà³Š-à³à³•à³–à³à³ -à³£à³¦-à³¯à³±à³²"
+   bmp: "\u0c82\u0c83\u0c85-\u0c8c\u0c8e-\u0c90\u0c92-\u0ca8\u0caa-\u0cb3\u0cb5-\u0cb9\u0cbc-\u0cc4\u0cc6-\u0cc8\u0cca-\u0ccd\u0cd5\u0cd6\u0cde\u0ce0-\u0ce3\u0ce6-\u0cef\u0cf1\u0cf2"
   }, {
    name: "Katakana",
-   bmp: "ã‚¡-ãƒºãƒ½-ãƒ¿ã‡°-ã‡¿ã‹-ã‹¾ãŒ€-ã—ï½¦-ï½¯ï½±-ï¾",
-   astral: "ğ›€€"
+   bmp: "\u30a1-\u30fa\u30fd-\u30ff\u31f0-\u31ff\u32d0-\u32fe\u3300-\u3357\uff66-\uff6f\uff71-\uff9d",
+   astral: "\ud82c\udc00"
   }, {
    name: "Kayah_Li",
-   bmp: "ê¤€-ê¤¯"
+   bmp: "\ua900-\ua92f"
   }, {
    name: "Kharoshthi",
-   astral: "í ‚[í¸€-í¸ƒí¸…í¸†í¸Œ-í¸“í¸•-í¸—í¸™-í¸³í¸¸-í¸ºí¸¿-í¹‡í¹-í¹˜]"
+   astral: "\ud802[\ude00-\ude03\ude05\ude06\ude0c-\ude13\ude15-\ude17\ude19-\ude33\ude38-\ude3a\ude3f-\ude47\ude50-\ude58]"
   }, {
    name: "Khmer",
-   bmp: "á€-áŸáŸ -áŸ©áŸ°-áŸ¹á§ -á§¿"
+   bmp: "\u1780-\u17dd\u17e0-\u17e9\u17f0-\u17f9\u19e0-\u19ff"
   }, {
    name: "Lao",
-   bmp: "àºàº‚àº„àº‡àºˆàºŠàºàº”-àº—àº™-àºŸàº¡-àº£àº¥àº§àºªàº«àº­-àº¹àº»-àº½à»€-à»„à»†à»ˆ-à»à»-à»™à»œ-à»Ÿ"
+   bmp: "\u0e81\u0e82\u0e84\u0e87\u0e88\u0e8a\u0e8d\u0e94-\u0e97\u0e99-\u0e9f\u0ea1-\u0ea3\u0ea5\u0ea7\u0eaa\u0eab\u0ead-\u0eb9\u0ebb-\u0ebd\u0ec0-\u0ec4\u0ec6\u0ec8-\u0ecd\u0ed0-\u0ed9\u0edc-\u0edf"
   }, {
    name: "Latin",
-   bmp: "A-Za-zÂªÂºÃ€-Ã–Ã˜-Ã¶Ã¸-Ê¸Ë -Ë¤á´€-á´¥á´¬-áµœáµ¢-áµ¥áµ«-áµ·áµ¹-á¶¾á¸€-á»¿â±â¿â‚-â‚œâ„ªâ„«â„²â…â… -â†ˆâ± -â±¿êœ¢-ê‡ê‹-êê-ê“ê -êªêŸ¸-êŸ¿ï¬€-ï¬†ï¼¡-ï¼ºï½-ï½š"
+   bmp: "A-Za-z\xaa\xba\xc0-\xd6\xd8-\xf6\xf8-\u02b8\u02e0-\u02e4\u1d00-\u1d25\u1d2c-\u1d5c\u1d62-\u1d65\u1d6b-\u1d77\u1d79-\u1dbe\u1e00-\u1eff\u2071\u207f\u2090-\u209c\u212a\u212b\u2132\u214e\u2160-\u2188\u2c60-\u2c7f\ua722-\ua787\ua78b-\ua78e\ua790-\ua793\ua7a0-\ua7aa\ua7f8-\ua7ff\ufb00-\ufb06\uff21-\uff3a\uff41-\uff5a"
   }, {
    name: "Lepcha",
-   bmp: "á°€-á°·á°»-á±‰á±-á±"
+   bmp: "\u1c00-\u1c37\u1c3b-\u1c49\u1c4d-\u1c4f"
   }, {
    name: "Limbu",
-   bmp: "á¤€-á¤œá¤ -á¤«á¤°-á¤»á¥€á¥„-á¥"
+   bmp: "\u1900-\u191c\u1920-\u192b\u1930-\u193b\u1940\u1944-\u194f"
   }, {
    name: "Linear_B",
-   astral: "í €[í°€-í°‹í°-í°¦í°¨-í°ºí°¼í°½í°¿-í±í±-í±í²€-í³º]"
+   astral: "\ud800[\udc00-\udc0b\udc0d-\udc26\udc28-\udc3a\udc3c\udc3d\udc3f-\udc4d\udc50-\udc5d\udc80-\udcfa]"
   }, {
    name: "Lisu",
-   bmp: "ê“-ê“¿"
+   bmp: "\ua4d0-\ua4ff"
   }, {
    name: "Lycian",
-   astral: "í €[íº€-íºœ]"
+   astral: "\ud800[\ude80-\ude9c]"
   }, {
    name: "Lydian",
-   astral: "í ‚[í´ -í´¹í´¿]"
+   astral: "\ud802[\udd20-\udd39\udd3f]"
   }, {
    name: "Malayalam",
-   bmp: "à´‚à´ƒà´…-à´Œà´-à´à´’-à´ºà´½-àµ„àµ†-àµˆàµŠ-àµàµ—àµ -àµ£àµ¦-àµµàµ¹-àµ¿"
+   bmp: "\u0d02\u0d03\u0d05-\u0d0c\u0d0e-\u0d10\u0d12-\u0d3a\u0d3d-\u0d44\u0d46-\u0d48\u0d4a-\u0d4e\u0d57\u0d60-\u0d63\u0d66-\u0d75\u0d79-\u0d7f"
   }, {
    name: "Mandaic",
-   bmp: "à¡€-à¡›à¡"
+   bmp: "\u0840-\u085b\u085e"
   }, {
    name: "Meetei_Mayek",
-   bmp: "ê« -ê«¶ê¯€-ê¯­ê¯°-ê¯¹"
+   bmp: "\uaae0-\uaaf6\uabc0-\uabed\uabf0-\uabf9"
   }, {
    name: "Meroitic_Cursive",
-   astral: "í ‚[í¶ -í¶·í¶¾í¶¿]"
+   astral: "\ud802[\udda0-\uddb7\uddbe\uddbf]"
   }, {
    name: "Meroitic_Hieroglyphs",
-   astral: "í ‚[í¶€-í¶Ÿ]"
+   astral: "\ud802[\udd80-\udd9f]"
   }, {
    name: "Miao",
-   astral: "í ›[í¼€-í½„í½-í½¾í¾-í¾Ÿ]"
+   astral: "\ud81b[\udf00-\udf44\udf50-\udf7e\udf8f-\udf9f]"
   }, {
    name: "Mongolian",
-   bmp: "á €á á „á †-á á -á ™á  -á¡·á¢€-á¢ª"
+   bmp: "\u1800\u1801\u1804\u1806-\u180e\u1810-\u1819\u1820-\u1877\u1880-\u18aa"
   }, {
    name: "Myanmar",
-   bmp: "á€€-á‚Ÿê© -ê©»"
+   bmp: "\u1000-\u109f\uaa60-\uaa7b"
   }, {
    name: "New_Tai_Lue",
-   bmp: "á¦€-á¦«á¦°-á§‰á§-á§šá§á§Ÿ"
+   bmp: "\u1980-\u19ab\u19b0-\u19c9\u19d0-\u19da\u19de\u19df"
   }, {
    name: "Nko",
-   bmp: "ß€-ßº"
+   bmp: "\u07c0-\u07fa"
   }, {
    name: "Ogham",
-   bmp: "áš€-ášœ"
+   bmp: "\u1680-\u169c"
   }, {
    name: "Ol_Chiki",
-   bmp: "á±-á±¿"
+   bmp: "\u1c50-\u1c7f"
   }, {
    name: "Old_Italic",
-   astral: "í €[í¼€-í¼í¼ -í¼£]"
+   astral: "\ud800[\udf00-\udf1e\udf20-\udf23]"
   }, {
    name: "Old_Persian",
-   astral: "í €[í¾ -í¿ƒí¿ˆ-í¿•]"
+   astral: "\ud800[\udfa0-\udfc3\udfc8-\udfd5]"
   }, {
    name: "Old_South_Arabian",
-   astral: "í ‚[í¹ -í¹¿]"
+   astral: "\ud802[\ude60-\ude7f]"
   }, {
    name: "Old_Turkic",
-   astral: "í ƒ[í°€-í±ˆ]"
+   astral: "\ud803[\udc00-\udc48]"
   }, {
    name: "Oriya",
-   bmp: "à¬-à¬ƒà¬…-à¬Œà¬à¬à¬“-à¬¨à¬ª-à¬°à¬²à¬³à¬µ-à¬¹à¬¼-à­„à­‡à­ˆà­‹-à­à­–à­—à­œà­à­Ÿ-à­£à­¦-à­·"
+   bmp: "\u0b01-\u0b03\u0b05-\u0b0c\u0b0f\u0b10\u0b13-\u0b28\u0b2a-\u0b30\u0b32\u0b33\u0b35-\u0b39\u0b3c-\u0b44\u0b47\u0b48\u0b4b-\u0b4d\u0b56\u0b57\u0b5c\u0b5d\u0b5f-\u0b63\u0b66-\u0b77"
   }, {
    name: "Osmanya",
-   astral: "í [í²€-í²í² -í²©]"
+   astral: "\ud801[\udc80-\udc9d\udca0-\udca9]"
   }, {
    name: "Phags_Pa",
-   bmp: "ê¡€-ê¡·"
+   bmp: "\ua840-\ua877"
   }, {
    name: "Phoenician",
-   astral: "í ‚[í´€-í´›í´Ÿ]"
+   astral: "\ud802[\udd00-\udd1b\udd1f]"
   }, {
    name: "Rejang",
-   bmp: "ê¤°-ê¥“ê¥Ÿ"
+   bmp: "\ua930-\ua953\ua95f"
   }, {
    name: "Runic",
-   bmp: "áš -á›ªá›®-á›°"
+   bmp: "\u16a0-\u16ea\u16ee-\u16f0"
   }, {
    name: "Samaritan",
-   bmp: "à €-à ­à °-à ¾"
+   bmp: "\u0800-\u082d\u0830-\u083e"
   }, {
    name: "Saurashtra",
-   bmp: "ê¢€-ê£„ê£-ê£™"
+   bmp: "\ua880-\ua8c4\ua8ce-\ua8d9"
   }, {
    name: "Sharada",
-   astral: "í „[í¶€-í·ˆí·-í·™]"
+   astral: "\ud804[\udd80-\uddc8\uddd0-\uddd9]"
   }, {
    name: "Shavian",
-   astral: "í [í±-í±¿]"
+   astral: "\ud801[\udc50-\udc7f]"
   }, {
    name: "Sinhala",
-   bmp: "à¶‚à¶ƒà¶…-à¶–à¶š-à¶±à¶³-à¶»à¶½à·€-à·†à·Šà·-à·”à·–à·˜-à·Ÿà·²-à·´"
+   bmp: "\u0d82\u0d83\u0d85-\u0d96\u0d9a-\u0db1\u0db3-\u0dbb\u0dbd\u0dc0-\u0dc6\u0dca\u0dcf-\u0dd4\u0dd6\u0dd8-\u0ddf\u0df2-\u0df4"
   }, {
    name: "Sora_Sompeng",
-   astral: "í „[í³-í³¨í³°-í³¹]"
+   astral: "\ud804[\udcd0-\udce8\udcf0-\udcf9]"
   }, {
    name: "Sundanese",
-   bmp: "á®€-á®¿á³€-á³‡"
+   bmp: "\u1b80-\u1bbf\u1cc0-\u1cc7"
   }, {
    name: "Syloti_Nagri",
-   bmp: "ê €-ê «"
+   bmp: "\ua800-\ua82b"
   }, {
    name: "Syriac",
-   bmp: "Ü€-ÜÜ-İŠİ-İ"
+   bmp: "\u0700-\u070d\u070f-\u074a\u074d-\u074f"
   }, {
    name: "Tagalog",
-   bmp: "áœ€-áœŒáœ-áœ”"
+   bmp: "\u1700-\u170c\u170e-\u1714"
   }, {
    name: "Tagbanwa",
-   bmp: "á -á¬á®-á°á²á³"
+   bmp: "\u1760-\u176c\u176e-\u1770\u1772\u1773"
   }, {
    name: "Tai_Le",
-   bmp: "á¥-á¥­á¥°-á¥´"
+   bmp: "\u1950-\u196d\u1970-\u1974"
   }, {
    name: "Tai_Tham",
-   bmp: "á¨ -á©á© -á©¼á©¿-áª‰áª-áª™áª -áª­"
+   bmp: "\u1a20-\u1a5e\u1a60-\u1a7c\u1a7f-\u1a89\u1a90-\u1a99\u1aa0-\u1aad"
   }, {
    name: "Tai_Viet",
-   bmp: "êª€-ê«‚ê«›-ê«Ÿ"
+   bmp: "\uaa80-\uaac2\uaadb-\uaadf"
   }, {
    name: "Takri",
-   astral: "í …[íº€-íº·í»€-í»‰]"
+   astral: "\ud805[\ude80-\udeb7\udec0-\udec9]"
   }, {
    name: "Tamil",
-   bmp: "à®‚à®ƒà®…-à®Šà®-à®à®’-à®•à®™à®šà®œà®à®Ÿà®£à®¤à®¨-à®ªà®®-à®¹à®¾-à¯‚à¯†-à¯ˆà¯Š-à¯à¯à¯—à¯¦-à¯º"
+   bmp: "\u0b82\u0b83\u0b85-\u0b8a\u0b8e-\u0b90\u0b92-\u0b95\u0b99\u0b9a\u0b9c\u0b9e\u0b9f\u0ba3\u0ba4\u0ba8-\u0baa\u0bae-\u0bb9\u0bbe-\u0bc2\u0bc6-\u0bc8\u0bca-\u0bcd\u0bd0\u0bd7\u0be6-\u0bfa"
   }, {
    name: "Telugu",
-   bmp: "à°-à°ƒà°…-à°Œà°-à°à°’-à°¨à°ª-à°³à°µ-à°¹à°½-à±„à±†-à±ˆà±Š-à±à±•à±–à±˜à±™à± -à±£à±¦-à±¯à±¸-à±¿"
+   bmp: "\u0c01-\u0c03\u0c05-\u0c0c\u0c0e-\u0c10\u0c12-\u0c28\u0c2a-\u0c33\u0c35-\u0c39\u0c3d-\u0c44\u0c46-\u0c48\u0c4a-\u0c4d\u0c55\u0c56\u0c58\u0c59\u0c60-\u0c63\u0c66-\u0c6f\u0c78-\u0c7f"
   }, {
    name: "Thaana",
-   bmp: "Ş€-Ş±"
+   bmp: "\u0780-\u07b1"
   }, {
    name: "Thai",
-   bmp: "à¸-à¸ºà¹€-à¹›"
+   bmp: "\u0e01-\u0e3a\u0e40-\u0e5b"
   }, {
    name: "Tibetan",
-   bmp: "à¼€-à½‡à½‰-à½¬à½±-à¾—à¾™-à¾¼à¾¾-à¿Œà¿-à¿”à¿™à¿š"
+   bmp: "\u0f00-\u0f47\u0f49-\u0f6c\u0f71-\u0f97\u0f99-\u0fbc\u0fbe-\u0fcc\u0fce-\u0fd4\u0fd9\u0fda"
   }, {
    name: "Tifinagh",
-   bmp: "â´°-âµ§âµ¯âµ°âµ¿"
+   bmp: "\u2d30-\u2d67\u2d6f\u2d70\u2d7f"
   }, {
    name: "Ugaritic",
-   astral: "í €[í¾€-í¾í¾Ÿ]"
+   astral: "\ud800[\udf80-\udf9d\udf9f]"
   }, {
    name: "Vai",
-   bmp: "ê”€-ê˜«"
+   bmp: "\ua500-\ua62b"
   }, {
    name: "Yi",
-   bmp: "ê€€-ê’Œê’-ê“†"
+   bmp: "\ua000-\ua48c\ua490-\ua4c6"
   } ]);
  }(e), e;
 }), function(e, t) {
@@ -6277,8 +6279,8 @@ function diff_match_patch() {
   t = t || {
    guess: !0
   };
-  var n = t.e || null, i = !!t.guess, r = new e.implementation(), o = r.run(n);
-  return i ? r.guessAnonymousFunctions(o) : o;
+  var n = t.e || null, i = !!t.guess, r = t.mode || null, o = new e.implementation(), a = o.run(n, r);
+  return i ? o.guessAnonymousFunctions(a) : a;
  }
  return e.implementation = function() {}, e.implementation.prototype = {
   run: function(e, t) {
@@ -6292,7 +6294,7 @@ function diff_match_patch() {
    }
   },
   mode: function(e) {
-   return e.arguments && e.stack ? "chrome" : e.stack && e.sourceURL ? "safari" : e.stack && e.number ? "ie" : e.stack && e.fileName ? "firefox" : e.message && e["opera#sourceloc"] ? e.stacktrace ? e.message.indexOf("\n") > -1 && e.message.split("\n").length > e.stacktrace.split("\n").length ? "opera9" : "opera10a" : "opera9" : e.message && e.stack && e.stacktrace ? e.stacktrace.indexOf("called from line") < 0 ? "opera10b" : "opera11" : e.stack && !e.fileName ? "chrome" : "other";
+   return "undefined" != typeof window && window.navigator.userAgent.indexOf("PhantomJS") > -1 ? "phantomjs" : e.arguments && e.stack ? "chrome" : e.stack && e.sourceURL ? "safari" : e.stack && e.number ? "ie" : e.stack && e.fileName ? "firefox" : e.message && e["opera#sourceloc"] ? e.stacktrace ? e.message.indexOf("\n") > -1 && e.message.split("\n").length > e.stacktrace.split("\n").length ? "opera9" : "opera10a" : "opera9" : e.message && e.stack && e.stacktrace ? e.stacktrace.indexOf("called from line") < 0 ? "opera10b" : "opera11" : e.stack && !e.fileName ? "chrome" : "other";
   },
   instrumentFunction: function(t, n, i) {
    t = t || window;
@@ -6351,6 +6353,14 @@ function diff_match_patch() {
    for (var t = "{anonymous}", n = /Line (\d+).*script (?:in )?(\S+)/i, i = e.message.split("\n"), r = [], o = 2, a = i.length; a > o; o += 2) {
     var s = n.exec(i[o]);
     s && r.push(t + "()@" + s[2] + ":" + s[1] + " -- " + i[o + 1].replace(/^\s+/, ""));
+   }
+   return r;
+  },
+  phantomjs: function(e) {
+   for (var t = "{anonymous}", n = /(\S+) \((\S+)\)/i, i = e.stack.split("\n"), r = [], o = 1, a = i.length; a > o; o++) {
+    i[o] = i[o].replace(/^\s+at\s+/gm, "");
+    var s = n.exec(i[o]);
+    r.push(s ? s[1] + "()@" + s[2] : t + "()@" + i[o]);
    }
    return r;
   },
@@ -6448,16 +6458,18 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
  if ("undefined" == typeof navigator || !/MSIE [1-9]\./.test(navigator.userAgent)) {
   var t = e.document, n = function() {
    return e.URL || e.webkitURL || e;
-  }, i = e.URL || e.webkitURL || e, r = t.createElementNS("http://www.w3.org/1999/xhtml", "a"), o = !e.externalHost && "download" in r, a = e.webkitRequestFileSystem, s = e.requestFileSystem || a || e.mozRequestFileSystem, l = function(t) {
+  }, i = t.createElementNS("http://www.w3.org/1999/xhtml", "a"), r = "download" in i, o = function(n) {
+   var i = t.createEvent("MouseEvents");
+   i.initMouseEvent("click", !0, !1, e, 0, 0, 0, 0, 0, !1, !1, !1, !1, 0, null), n.dispatchEvent(i);
+  }, a = e.webkitRequestFileSystem, s = e.requestFileSystem || a || e.mozRequestFileSystem, l = function(t) {
    (e.setImmediate || e.setTimeout)(function() {
     throw t;
    }, 0);
-  }, c = "application/octet-stream", u = 0, d = [], p = function() {
-   for (var e = d.length; e--; ) {
-    var t = d[e];
-    "string" == typeof t ? i.revokeObjectURL(t) : t.remove();
-   }
-   d.length = 0;
+  }, c = "application/octet-stream", u = 0, d = 500, p = function(t) {
+   var i = function() {
+    "string" == typeof t ? n().revokeObjectURL(t) : t.remove();
+   };
+   e.chrome ? i() : setTimeout(i, d);
   }, h = function(e, t, n) {
    t = [].concat(t);
    for (var i = t.length; i--; ) {
@@ -6468,59 +6480,53 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
      l(o);
     }
    }
-  }, f = function(i, l) {
-   var p, f, m, g = this, v = i.type, b = !1, y = function() {
-    var e = n().createObjectURL(i);
-    return d.push(e), e;
-   }, x = function() {
+  }, f = function(t, l) {
+   var d, f, m, g = this, v = t.type, b = !1, y = function() {
     h(g, "writestart progress write writeend".split(" "));
-   }, w = function() {
-    (b || !p) && (p = y(i)), f ? f.location.href = p : window.open(p, "_blank"), g.readyState = g.DONE, 
-    x();
-   }, S = function(e) {
+   }, x = function() {
+    if ((b || !d) && (d = n().createObjectURL(t)), f) f.location.href = d; else {
+     var i = e.open(d, "_blank");
+     void 0 == i && "undefined" != typeof safari && (e.location.href = d);
+    }
+    g.readyState = g.DONE, y(), p(d);
+   }, w = function(e) {
     return function() {
      return g.readyState !== g.DONE ? e.apply(this, arguments) : void 0;
     };
-   }, C = {
+   }, S = {
     create: !0,
     exclusive: !1
    };
-   if (g.readyState = g.INIT, l || (l = "download"), o) {
-    p = y(i), t = e.document, r = t.createElementNS("http://www.w3.org/1999/xhtml", "a"), 
-    r.href = p, r.download = l;
-    var _ = t.createEvent("MouseEvents");
-    return _.initMouseEvent("click", !0, !1, e, 0, 0, 0, 0, 0, !1, !1, !1, !1, 0, null), 
-    r.dispatchEvent(_), g.readyState = g.DONE, void x();
-   }
-   return e.chrome && v && v !== c && (m = i.slice || i.webkitSlice, i = m.call(i, 0, i.size, c), 
-   b = !0), a && "download" !== l && (l += ".download"), (v === c || a) && (f = e), 
-   s ? (u += i.size, void s(e.TEMPORARY, u, S(function(e) {
-    e.root.getDirectory("saved", C, S(function(e) {
-     var t = function() {
-      e.getFile(l, C, S(function(e) {
-       e.createWriter(S(function(t) {
-        t.onwriteend = function(t) {
-         f.location.href = e.toURL(), d.push(e), g.readyState = g.DONE, h(g, "writeend", t);
-        }, t.onerror = function() {
-         var e = t.error;
-         e.code !== e.ABORT_ERR && w();
+   return g.readyState = g.INIT, l || (l = "download"), r ? (d = n().createObjectURL(t), 
+   i.href = d, i.download = l, o(i), g.readyState = g.DONE, y(), void p(d)) : (e.chrome && v && v !== c && (m = t.slice || t.webkitSlice, 
+   t = m.call(t, 0, t.size, c), b = !0), a && "download" !== l && (l += ".download"), 
+   (v === c || a) && (f = e), s ? (u += t.size, void s(e.TEMPORARY, u, w(function(e) {
+    e.root.getDirectory("saved", S, w(function(e) {
+     var n = function() {
+      e.getFile(l, S, w(function(e) {
+       e.createWriter(w(function(n) {
+        n.onwriteend = function(t) {
+         f.location.href = e.toURL(), g.readyState = g.DONE, h(g, "writeend", t), p(e);
+        }, n.onerror = function() {
+         var e = n.error;
+         e.code !== e.ABORT_ERR && x();
         }, "writestart progress write abort".split(" ").forEach(function(e) {
-         t["on" + e] = g["on" + e];
-        }), t.write(i), g.abort = function() {
-         t.abort(), g.readyState = g.DONE;
+         n["on" + e] = g["on" + e];
+        }), n.write(t), g.abort = function() {
+         n.abort(), g.readyState = g.DONE;
         }, g.readyState = g.WRITING;
-       }), w);
-      }), w);
+       }), x);
+      }), x);
      };
      e.getFile(l, {
       create: !1
-     }, S(function(e) {
-      e.remove(), t();
-     }), S(function(e) {
-      e.code === e.NOT_FOUND_ERR ? t() : w();
+     }, w(function(e) {
+      e.remove(), n();
+     }), w(function(e) {
+      e.code === e.NOT_FOUND_ERR ? n() : x();
      }));
-    }), w);
-   }), w)) : void w();
+    }), x);
+   }), x)) : void x());
   }, m = f.prototype, g = function(e, t) {
    return new f(e, t);
   };
@@ -6528,13 +6534,11 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
    var e = this;
    e.readyState = e.DONE, h(e, "abort");
   }, m.readyState = m.INIT = 0, m.WRITING = 1, m.DONE = 2, m.error = m.onwritestart = m.onprogress = m.onwrite = m.onabort = m.onerror = m.onwriteend = null, 
-  e.addEventListener("unload", p, !1), g.unload = function() {
-   p(), e.removeEventListener("unload", p, !1);
-  }, g;
+  g;
  }
 }("undefined" != typeof self && self || "undefined" != typeof window && window || this.content);
 
-"undefined" != typeof module && null !== module ? module.exports = saveAs : "undefined" != typeof define && null !== define && null != define.amd && define("FileSaver", [], function() {
+"undefined" != typeof module && module.exports ? module.exports.saveAs = saveAs : "undefined" != typeof define && null !== define && null != define.amd && define("FileSaver", [], function() {
  return saveAs;
 }), define("utils", [ "jquery", "underscore", "storage", "crel", "xregexp", "stacktrace", "FileSaver" ], function($, _, storage, crel, XRegExp, printStackTrace, saveAs) {
  function jqElt(e) {
@@ -6759,7 +6763,7 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
   '"': "&quot;",
   "'": "&#39;",
   "/": "&#x2F;",
-  "Â ": " "
+  "\xa0": " "
  };
  utils.escape = function(e) {
   return String(e).replace(/[&<"'\/\u00a0]/g, function(e) {
@@ -6888,7 +6892,7 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
  }, utils;
 }), define("constants", [], function() {
  var e = {};
- return e.VERSION = "4.3.2", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", 
+ return e.VERSION = "4.3.11", e.MAIN_URL = "https://stackedit.io/", e.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", 
  e.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", e.GOOGLE_DRIVE_APP_ID = "241271498917", 
  e.DROPBOX_APP_KEY = "lq6mwopab8wskas", e.DROPBOX_APP_SECRET = "851fgnucpezy84t", 
  e.DROPBOX_RESTRICTED_APP_KEY = "sw0hlixhr8q1xk0", e.DROPBOX_RESTRICTED_APP_SECRET = "1r808p2xygs6lbg", 
@@ -6899,7 +6903,7 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
  e.IMPORT_FILE_MAX_CONTENT_SIZE = 1e5, e.IMPORT_IMG_MAX_CONTENT_SIZE = 1e7, e.COUCHDB_PAGE_SIZE = 25, 
  e.TEMPORARY_FILE_INDEX = "file.tempIndex", e.WELCOME_DOCUMENT_TITLE = "Hello!", 
  e.DOWNLOAD_IMPORT_URL = "/downloadImport", e.PICASA_IMPORT_IMG_URL = "/picasaImportImg", 
- e.SSH_PUBLISH_URL = "/sshPublish", e.PDF_EXPORT_URL = "/pdfExport", e.COUCHDB_URL = "https://stackedit.couchappy.com/documents", 
+ e.SSH_PUBLISH_URL = "/sshPublish", e.PDF_EXPORT_URL = "/pdfExport", e.COUCHDB_URL = "https://stackedit.smileupps.com/documents", 
  e.BASE_URL = "http://localhost/", e.GOOGLE_CLIENT_ID = "241271498917-lev37kef013q85avc91am1gccg5g8lrb.apps.googleusercontent.com", 
  e.GITHUB_CLIENT_ID = "e47fef6055344579799d", e.GATEKEEPER_URL = "https://stackedit-gatekeeper-localhost.herokuapp.com/", 
  e.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-local.herokuapp.com/", e.WORDPRESS_CLIENT_ID = "23361", 
@@ -7004,13 +7008,13 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
    if (r[i].level != l) continue;
    c = !0, s[r[i].seq] = 1, u(r[i].callback, n, r[i].combo, r[i].seq);
   } else c || u(r[i].callback, n, r[i].combo);
-  var d = "keypress" == n.type && M;
-  n.type != A || h(e) || d || o(s), M = c && "keydown" == n.type;
+  var d = "keypress" == n.type && L;
+  n.type != A || h(e) || d || o(s), L = c && "keydown" == n.type;
  }
  function p(e) {
   "number" != typeof e.which && (e.which = e.keyCode);
   var t = i(e);
-  if (t) return "keyup" == e.type && L === t ? void (L = !1) : void P.handleKey(t, s(e), e);
+  if (t) return "keyup" == e.type && M === t ? void (M = !1) : void P.handleKey(t, s(e), e);
  }
  function h(e) {
   return "shift" == e || "ctrl" == e || "alt" == e || "meta" == e;
@@ -7036,7 +7040,7 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
    };
   }
   function s(t) {
-   u(n, t, e), "keyup" !== r && (L = i(t)), setTimeout(o, 10);
+   u(n, t, e), "keyup" !== r && (M = i(t)), setTimeout(o, 10);
   }
   N[e] = 0;
   for (var l = 0; l < t.length; ++l) {
@@ -7141,7 +7145,7 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
   "return": "enter",
   escape: "esc",
   mod: /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "meta" : "ctrl"
- }, I = {}, D = {}, N = {}, L = !1, M = !1, A = !1, R = 1; 20 > R; ++R) _[111 + R] = "f" + R;
+ }, I = {}, D = {}, N = {}, M = !1, L = !1, A = !1, R = 1; 20 > R; ++R) _[111 + R] = "f" + R;
  for (R = 0; 9 >= R; ++R) _[R + 96] = R;
  n(t, "keypress", p), n(t, "keydown", p), n(t, "keyup", p);
  var P = {
@@ -7179,7 +7183,7 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
 }), define("text", [ "module" ], function(e) {
  var t, n, i, r, o, a = [ "Msxml2.XMLHTTP", "Microsoft.XMLHTTP", "Msxml2.XMLHTTP.4.0" ], s = /^\s*<\?xml(\s)+version=[\'\"](\d)*.(\d)*[\'\"](\s)*\?>/im, l = /<body[^>]*>\s*([\s\S]+)\s*<\/body>/im, c = "undefined" != typeof location && location.href, u = c && location.protocol && location.protocol.replace(/\:/, ""), d = c && location.hostname, p = c && (location.port || void 0), h = {}, f = e.config && e.config() || {};
  return t = {
-  version: "2.0.12",
+  version: "2.0.13",
   strip: function(e) {
    if (e) {
     e = e.replace(s, "");
@@ -7207,8 +7211,8 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
    return e;
   },
   parseName: function(e) {
-   var t, n, i, r = !1, o = e.indexOf("."), a = 0 === e.indexOf("./") || 0 === e.indexOf("../");
-   return -1 !== o && (!a || o > 1) ? (t = e.substring(0, o), n = e.substring(o + 1, e.length)) : t = e, 
+   var t, n, i, r = !1, o = e.lastIndexOf("."), a = 0 === e.indexOf("./") || 0 === e.indexOf("../");
+   return -1 !== o && (!a || o > 1) ? (t = e.substring(0, o), n = e.substring(o + 1)) : t = e, 
    i = n || t, o = i.indexOf("!"), -1 !== o && (r = "strip" === i.substring(o + 1), 
    i = i.substring(0, o), n ? n = i : t = i), {
     moduleName: t,
@@ -7257,7 +7261,7 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
  t.get = function(e, t, i) {
   try {
    var r = n.readFileSync(e, "utf8");
-   0 === r.indexOf("ï»¿") && (r = r.substring(1)), t(r);
+   "\ufeff" === r[0] && (r = r.substring(1)), t(r);
   } catch (o) {
    i && i(o);
   }
@@ -7437,7 +7441,7 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
    if (this.isNumeric(e)) return "string" == typeof e ? "'" + e + "'" : parseFloat(e);
    if ("number" == typeof e) return 1/0 == e ? ".Inf" : e == -1/0 ? "-.Inf" : isNaN(e) ? ".NAN" : e;
    var t = new YamlEscaper();
-   return t.requiresDoubleQuoting(e) ? t.escapeWithDoubleQuotes(e) : t.requiresSingleQuoting(e) ? t.escapeWithSingleQuotes(e) : "" == e ? "" : this.getTimestampRegex().test(e) ? "'" + e + "'" : this.inArray(e.toLowerCase(), [ "null", "~", "true", "false" ]) ? "'" + e + "'" : e;
+   return t.requiresDoubleQuoting(e) ? t.escapeWithDoubleQuotes(e) : t.requiresSingleQuoting(e) ? t.escapeWithSingleQuotes(e) : "" == e ? '""' : this.getTimestampRegex().test(e) ? "'" + e + "'" : this.inArray(e.toLowerCase(), [ "null", "~", "true", "false" ]) ? "'" + e + "'" : e;
   },
   dumpObject: function(e) {
    var t, n = this.getKeys(e), i = null, r = n.length;
@@ -7975,7 +7979,8 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
   escapeWithSingleQuotes: function(e) {
    return "'" + e.replace(/'/g, "''") + "'";
   }
- }, YamlEscaper.REGEX_CHARACTER_TO_ESCAPE = "[\\x00-\\x1f]|Ã‚Â…|Ã‚Â |Ã¢Â€Â¨|Ã¢Â€Â©", YamlEscaper.escapees = [ "\\\\", '\\"', '"', "\x00", "", "", "", "", "", "", "", "\b", "	", "\n", "", "\f", "\r", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "Ã‚Â…", "Ã‚Â ", "Ã¢Â€Â¨", "Ã¢Â€Â©" ], 
+ }, YamlEscaper.REGEX_CHARACTER_TO_ESCAPE = "[\\x00-\\x1f]|\xc2\x85|\xc2\xa0|\xe2\x80\xa8|\xe2\x80\xa9", 
+ YamlEscaper.escapees = [ "\\\\", '\\"', '"', "\x00", "", "", "", "", "", "", "", "\b", "	", "\n", "", "\f", "\r", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "\xc2\x85", "\xc2\xa0", "\xe2\x80\xa8", "\xe2\x80\xa9" ], 
  YamlEscaper.escaped = [ '\\"', "\\\\", '\\"', "\\0", "\\x01", "\\x02", "\\x03", "\\x04", "\\x05", "\\x06", "\\a", "\\b", "\\t", "\\n", "\\v", "\\f", "\\r", "\\x0e", "\\x0f", "\\x10", "\\x11", "\\x12", "\\x13", "\\x14", "\\x15", "\\x16", "\\x17", "\\x18", "\\x19", "\\x1a", "\\e", "\\x1c", "\\x1d", "\\x1e", "\\x1f", "\\N", "\\_", "\\L", "\\P" ];
  var a = function() {};
  a.prototype = {
@@ -8033,10 +8038,10 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
     return "\\";
 
    case "N":
-    return "\x00Â…";
+    return "\x00\x85";
 
    case "_":
-    return "\x00Â ";
+    return "\x00\xa0";
 
    case "L":
     return " (";
@@ -8161,7 +8166,11 @@ var saveAs = saveAs || "undefined" != typeof navigator && navigator.msSaveOrOpen
  return o.onFileOpen = i, o.onContentChanged = i, o;
 }), define("text!html/markdownExtraSettingsBlock.html", [], function() {
  return '<p>Adds extra features to the original Markdown syntax.</p>\n<div class="form-horizontal">\n	<div class="form-group">\n		<label class="col-sm-4 control-label" for="input-markdownextra-tables">Tables</label>\n		<div class="col-sm-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-tables">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-sm-4 control-label"\n			for="input-markdownextra-deflist">Definition lists</label>\n		<div class="col-sm-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-deflist">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-sm-4 control-label"\n			for="input-markdownextra-attrlist">Special attributes</label>\n		<div class="col-sm-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-attrlist">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-sm-4 control-label"\n			for="input-markdownextra-footnotes">Footnotes</label>\n		<div class="col-sm-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-footnotes">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-sm-4 control-label"\n			for="input-markdownextra-comments">Comments</label>\n		<div class="col-sm-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-comments">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-sm-4 control-label"\n			for="input-markdownextra-smartypants">SmartyPants</label>\n		<div class="col-sm-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-smartypants">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-sm-4 control-label"\n			for="input-markdownextra-newlines">GFM newlines</label>\n		<div class="col-sm-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-newlines">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-sm-4 control-label"\n			for="input-markdownextra-intraword">GFM intra-word stars/underscores</label>\n		<div class="col-sm-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-intraword">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-sm-4 control-label"\n			for="input-markdownextra-strikethrough">GFM strikethrough</label>\n		<div class="col-sm-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-strikethrough">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-sm-4 control-label"\n			for="input-markdownextra-fencedcodegfm">GFM fenced code\n			blocks</label>\n		<div class="col-sm-7">\n			<div class="checkbox">\n				<input type="checkbox" id="input-markdownextra-fencedcodegfm">\n			</div>\n		</div>\n	</div>\n	<div class="form-group">\n		<label class="col-sm-4 control-label"\n			for="input-markdownextra-highlighter">Syntax highlighter</label>\n		<div class="col-sm-7">\n			<select id="input-markdownextra-highlighter" class="form-control"><option>None</option>\n				<option value="prettify">Prettify</option>\n				<option value="highlight">Highlight.js</option>\n			</select>\n		</div>\n	</div>\n</div>\n<span class="help-block pull-right"><a target="_blank"\n	href="https://github.com/jmcmanus/pagedown-extra">More info</a></span>';
-}), window.PR_SHOULD_USE_CONTINUATION = !0;
+});
+
+var IN_GLOBAL_SCOPE = !0;
+
+window.PR_SHOULD_USE_CONTINUATION = !0;
 
 var prettyPrintOne, prettyPrint;
 
@@ -8252,19 +8261,16 @@ var prettyPrintOne, prettyPrint;
  }
  function t(e, t) {
   function n(e) {
-   switch (e.nodeType) {
-   case 1:
+   var l = e.nodeType;
+   if (1 == l) {
     if (i.test(e.className)) return;
-    for (var l = e.firstChild; l; l = l.nextSibling) n(l);
-    var c = e.nodeName.toLowerCase();
-    ("br" === c || "li" === c) && (r[s] = "\n", a[s << 1] = o++, a[s++ << 1 | 1] = e);
-    break;
-
-   case 3:
-   case 4:
-    var u = e.nodeValue;
-    u.length && (u = t ? u.replace(/\r\n?/g, "\n") : u.replace(/[ \t\r\n]+/g, " "), 
-    r[s] = u, a[s << 1] = o, o += u.length, a[s++ << 1 | 1] = e);
+    for (var c = e.firstChild; c; c = c.nextSibling) n(c);
+    var u = e.nodeName.toLowerCase();
+    ("br" === u || "li" === u) && (r[s] = "\n", a[s << 1] = o++, a[s++ << 1 | 1] = e);
+   } else if (3 == l || 4 == l) {
+    var d = e.nodeValue;
+    d.length && (d = t ? d.replace(/\r\n?/g, "\n") : d.replace(/[ \t\r\n]+/g, " "), 
+    r[s] = d, a[s << 1] = o, o += d.length, a[s++ << 1 | 1] = e);
    }
   }
   var i = /(?:^|\s)nocode(?:\s|$)/, r = [], o = 0, a = [], s = 0;
@@ -8285,7 +8291,7 @@ var prettyPrintOne, prettyPrint;
  function i(e) {
   for (var t = void 0, n = e.firstChild; n; n = n.nextSibling) {
    var i = n.nodeType;
-   t = 1 === i ? t ? e : n : 3 === i && G.test(n.nodeValue) ? e : t;
+   t = 1 === i ? t ? e : n : 3 === i && H.test(n.nodeValue) ? e : t;
   }
   return t === e ? void 0 : t;
  }
@@ -8301,7 +8307,7 @@ var prettyPrintOne, prettyPrint;
    a.push(/[\0-\uffff]/), r = e(a);
   }();
   var a = i.length, s = function(e) {
-   for (var t = e.sourceCode, l = e.basePos, u = [ l, R ], d = 0, p = t.match(r) || [], h = {}, f = 0, m = p.length; m > f; ++f) {
+   for (var t = e.sourceCode, l = e.basePos, u = [ l, P ], d = 0, p = t.match(r) || [], h = {}, f = 0, m = p.length; m > f; ++f) {
     var g, v = p[f], b = h[v], y = void 0;
     if ("string" == typeof b) g = !1; else {
      var x = o[v.charAt(0)];
@@ -8310,10 +8316,10 @@ var prettyPrintOne, prettyPrint;
        b = x[0];
        break;
       }
-      y || (b = R);
+      y || (b = P);
      }
      g = b.length >= 5 && "lang-" === b.substring(0, 5), !g || y && "string" == typeof y[1] || (g = !1, 
-     b = O), g || (h[v] = b);
+     b = B), g || (h[v] = b);
     }
     var S = d;
     if (d += v.length, g) {
@@ -8329,36 +8335,31 @@ var prettyPrintOne, prettyPrint;
  }
  function o(e) {
   var t = [], n = [];
-  t.push(e.tripleQuotedStrings ? [ I, /^(?:\'\'\'(?:[^\'\\]|\\[\s\S]|\'{1,2}(?=[^\']))*(?:\'\'\'|$)|\"\"\"(?:[^\"\\]|\\[\s\S]|\"{1,2}(?=[^\"]))*(?:\"\"\"|$)|\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$))/, null, "'\"" ] : e.multiLineStrings ? [ I, /^(?:\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$)|\`(?:[^\\\`]|\\[\s\S])*(?:\`|$))/, null, "'\"`" ] : [ I, /^(?:\'(?:[^\\\'\r\n]|\\.)*(?:\'|$)|\"(?:[^\\\"\r\n]|\\.)*(?:\"|$))/, null, "\"'" ]), 
-  e.verbatimStrings && n.push([ I, /^@\"(?:[^\"]|\"\")*(?:\"|$)/, null ]);
+  t.push(e.tripleQuotedStrings ? [ D, /^(?:\'\'\'(?:[^\'\\]|\\[\s\S]|\'{1,2}(?=[^\']))*(?:\'\'\'|$)|\"\"\"(?:[^\"\\]|\\[\s\S]|\"{1,2}(?=[^\"]))*(?:\"\"\"|$)|\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$))/, null, "'\"" ] : e.multiLineStrings ? [ D, /^(?:\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$)|\`(?:[^\\\`]|\\[\s\S])*(?:\`|$))/, null, "'\"`" ] : [ D, /^(?:\'(?:[^\\\'\r\n]|\\.)*(?:\'|$)|\"(?:[^\\\"\r\n]|\\.)*(?:\"|$))/, null, "\"'" ]), 
+  e.verbatimStrings && n.push([ D, /^@\"(?:[^\"]|\"\")*(?:\"|$)/, null ]);
   var i = e.hashComments;
-  if (i && (e.cStyleComments ? (t.push(i > 1 ? [ N, /^#(?:##(?:[^#]|#(?!##))*(?:###|$)|.*)/, null, "#" ] : [ N, /^#(?:(?:define|e(?:l|nd)if|else|error|ifn?def|include|line|pragma|undef|warning)\b|[^\r\n]*)/, null, "#" ]), 
-  n.push([ I, /^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h(?:h|pp|\+\+)?|[a-z]\w*)>/, null ])) : t.push([ N, /^#[^\r\n]*/, null, "#" ])), 
-  e.cStyleComments && (n.push([ N, /^\/\/[^\r\n]*/, null ]), n.push([ N, /^\/\*[\s\S]*?(?:\*\/|$)/, null ])), 
-  e.regexLiterals) {
-   var o = "/(?=[^/*])(?:[^/\\x5B\\x5C]|\\x5C[\\s\\S]|\\x5B(?:[^\\x5C\\x5D]|\\x5C[\\s\\S])*(?:\\x5D|$))+/";
-   n.push([ "lang-regex", new RegExp("^" + q + "(" + o + ")") ]);
+  i && (e.cStyleComments ? (t.push(i > 1 ? [ M, /^#(?:##(?:[^#]|#(?!##))*(?:###|$)|.*)/, null, "#" ] : [ M, /^#(?:(?:define|e(?:l|nd)if|else|error|ifn?def|include|line|pragma|undef|warning)\b|[^\r\n]*)/, null, "#" ]), 
+  n.push([ D, /^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h(?:h|pp|\+\+)?|[a-z]\w*)>/, null ])) : t.push([ M, /^#[^\r\n]*/, null, "#" ])), 
+  e.cStyleComments && (n.push([ M, /^\/\/[^\r\n]*/, null ]), n.push([ M, /^\/\*[\s\S]*?(?:\*\/|$)/, null ]));
+  var o = e.regexLiterals;
+  if (o) {
+   var a = o > 1 ? "" : "\n\r", s = a ? "." : "[\\S\\s]", l = "/(?=[^/*" + a + "])(?:[^/\\x5B\\x5C" + a + "]|\\x5C" + s + "|\\x5B(?:[^\\x5C\\x5D" + a + "]|\\x5C" + s + ")*(?:\\x5D|$))+/";
+   n.push([ "lang-regex", RegExp("^" + G + "(" + l + ")") ]);
   }
-  var a = e.types;
-  a && n.push([ L, a ]);
-  var s = ("" + e.keywords).replace(/^ | $/g, "");
-  s.length && n.push([ D, new RegExp("^(?:" + s.replace(/[\s,]+/g, "|") + ")\\b"), null ]), 
-  t.push([ R, /^\s+/, null, " \r\n	Â " ]);
-  var l = /^.[^\s\w\.$@\'\"\`\/\\]*/;
-  return n.push([ M, /^@[a-z_$][a-z_$@0-9]*/i, null ], [ L, /^(?:[@_]?[A-Z]+[a-z][A-Za-z_$@0-9]*|\w+_t\b)/, null ], [ R, /^[a-z_$][a-z_$@0-9]*/i, null ], [ M, new RegExp("^(?:0x[a-f0-9]+|(?:\\d(?:_\\d+)*\\d*(?:\\.\\d*)?|\\.\\d\\+)(?:e[+\\-]?\\d+)?)[a-z]*", "i"), null, "0123456789" ], [ R, /^\\[\s\S]?/, null ], [ A, l, null ]), 
+  var c = e.types;
+  c && n.push([ L, c ]);
+  var u = ("" + e.keywords).replace(/^ | $/g, "");
+  u.length && n.push([ N, new RegExp("^(?:" + u.replace(/[\s,]+/g, "|") + ")\\b"), null ]), 
+  t.push([ P, /^\s+/, null, " \r\n	\xa0" ]);
+  var d = "^.[^\\s\\w.$@'\"`/\\\\]*";
+  return e.regexLiterals && (d += "(?!s*/)"), n.push([ A, /^@[a-z_$][a-z_$@0-9]*/i, null ], [ L, /^(?:[@_]?[A-Z]+[a-z][A-Za-z_$@0-9]*|\w+_t\b)/, null ], [ P, /^[a-z_$][a-z_$@0-9]*/i, null ], [ A, new RegExp("^(?:0x[a-f0-9]+|(?:\\d(?:_\\d+)*\\d*(?:\\.\\d*)?|\\.\\d\\+)(?:e[+\\-]?\\d+)?)[a-z]*", "i"), null, "0123456789" ], [ P, /^\\[\s\S]?/, null ], [ R, new RegExp(d), null ]), 
   r(t, n);
  }
  function a(e, t, n) {
   function i(e) {
-   switch (e.nodeType) {
-   case 1:
-    if (o.test(e.className)) break;
-    if ("br" === e.nodeName) r(e), e.parentNode && e.parentNode.removeChild(e); else for (var t = e.firstChild; t; t = t.nextSibling) i(t);
-    break;
-
-   case 3:
-   case 4:
-    if (n) {
+   var t = e.nodeType;
+   if (1 != t || o.test(e.className)) {
+    if ((3 == t || 4 == t) && n) {
      var l = e.nodeValue, c = l.match(a);
      if (c) {
       var u = l.substring(0, c.index);
@@ -8371,7 +8372,7 @@ var prettyPrintOne, prettyPrint;
       r(e), u || e.parentNode.removeChild(e);
      }
     }
-   }
+   } else if ("br" === e.nodeName) r(e), e.parentNode && e.parentNode.removeChild(e); else for (var h = e.firstChild; h; h = h.nextSibling) i(h);
   }
   function r(e) {
    function t(e, n) {
@@ -8393,7 +8394,7 @@ var prettyPrintOne, prettyPrint;
   var d = s.createElement("ol");
   d.className = "linenums";
   for (var p = Math.max(0, t - 1 | 0) || 0, u = 0, h = c.length; h > u; ++u) l = c[u], 
-  l.className = "L" + (u + p) % 10, l.firstChild || l.appendChild(s.createTextNode("Â ")), 
+  l.className = "L" + (u + p) % 10, l.firstChild || l.appendChild(s.createTextNode("\xa0")), 
   d.appendChild(l);
   e.appendChild(d);
  }
@@ -8431,12 +8432,12 @@ var prettyPrintOne, prettyPrint;
  function l(e, t) {
   for (var n = t.length; --n >= 0; ) {
    var i = t[n];
-   U.hasOwnProperty(i) ? h.console && console.warn("cannot override language handler %s", i) : U[i] = e;
+   z.hasOwnProperty(i) ? h.console && console.warn("cannot override language handler %s", i) : z[i] = e;
   }
  }
  function c(e, t) {
-  return e && U.hasOwnProperty(e) || (e = /^\s*</.test(t) ? "default-markup" : "default-code"), 
-  U[e];
+  return e && z.hasOwnProperty(e) || (e = /^\s*</.test(t) ? "default-markup" : "default-code"), 
+  z[e];
  }
  function u(e) {
   var n = e.langExtension;
@@ -8444,12 +8445,12 @@ var prettyPrintOne, prettyPrint;
    var i = t(e.sourceNode, e.pre), r = i.sourceCode;
    e.sourceCode = r, e.spans = i.spans, e.basePos = 0, c(n, r)(e), s(e);
   } catch (o) {
-   h.console && console.log(o && o.stack ? o.stack : o);
+   h.console && console.log(o && o.stack || o);
   }
  }
  function d(e, t, n) {
-  var i = document.createElement("pre");
-  i.innerHTML = e, n && a(i, n, !0);
+  var i = document.createElement("div");
+  i.innerHTML = "<pre>" + e + "</pre>", i = i.firstChild, n && a(i, n, !0);
   var r = {
    langExtension: t,
    numberLines: n,
@@ -8458,67 +8459,82 @@ var prettyPrintOne, prettyPrint;
   };
   return u(r), i.innerHTML;
  }
- function p(e) {
-  function t(e) {
-   return document.getElementsByTagName(e);
+ function p(e, t) {
+  function n(e) {
+   return o.getElementsByTagName(e);
   }
-  function n() {
-   for (var t = h.PR_SHOULD_USE_CONTINUATION ? d.now() + 250 : 1/0; f < o.length && d.now() < t; f++) {
-    var r = o[f], s = r.className;
-    if (g.test(s) && !v.test(s)) {
-     for (var l = !1, c = r.parentNode; c; c = c.parentNode) {
-      var w = c.tagName;
-      if (x.test(w) && c.className && g.test(c.className)) {
-       l = !0;
+  function r() {
+   for (var t = h.PR_SHOULD_USE_CONTINUATION ? m.now() + 250 : 1/0; v < c.length && m.now() < t; v++) {
+    for (var n = c[v], o = _, l = n; l = l.previousSibling; ) {
+     var d = l.nodeType, p = (7 === d || 8 === d) && l.nodeValue;
+     if (p ? !/^\??prettify\b/.test(p) : 3 !== d || /\S/.test(l.nodeValue)) break;
+     if (p) {
+      o = {}, p.replace(/\b(\w+)=([\w:.%+-]+)/g, function(e, t, n) {
+       o[t] = n;
+      });
+      break;
+     }
+    }
+    var f = n.className;
+    if ((o !== _ || y.test(f)) && !x.test(f)) {
+     for (var k = !1, E = n.parentNode; E; E = E.parentNode) {
+      var T = E.tagName;
+      if (C.test(T) && E.className && y.test(E.className)) {
+       k = !0;
        break;
       }
      }
-     if (!l) {
-      r.className += " prettyprinted";
-      var S, C = s.match(m);
-      !C && (S = i(r)) && y.test(S.tagName) && (C = S.className.match(m)), C && (C = C[1]);
-      var _;
-      if (b.test(r.tagName)) _ = 1; else {
-       var k = r.currentStyle, E = k ? k.whiteSpace : document.defaultView && document.defaultView.getComputedStyle ? document.defaultView.getComputedStyle(r, null).getPropertyValue("white-space") : 0;
-       _ = E && "pre" === E.substring(0, 3);
+     if (!k) {
+      n.className += " prettyprinted";
+      var I = o.lang;
+      if (!I) {
+       I = f.match(b);
+       var D;
+       !I && (D = i(n)) && S.test(D.tagName) && (I = D.className.match(b)), I && (I = I[1]);
       }
-      var T = r.className.match(/\blinenums\b(?::(\d+))?/);
-      T = T ? T[1] && T[1].length ? +T[1] : !0 : !1, T && a(r, T, _), p = {
-       langExtension: C,
-       sourceNode: r,
-       numberLines: T,
-       pre: _
-      }, u(p);
+      var N;
+      if (w.test(n.tagName)) N = 1; else {
+       var M = n.currentStyle, L = s.defaultView, A = M ? M.whiteSpace : L && L.getComputedStyle ? L.getComputedStyle(n, null).getPropertyValue("white-space") : 0;
+       N = A && "pre" === A.substring(0, 3);
+      }
+      var R = o.linenums;
+      (R = "true" === R || +R) || (R = f.match(/\blinenums\b(?::(\d+))?/), R = R ? R[1] && R[1].length ? +R[1] : !0 : !1), 
+      R && a(n, R, N), g = {
+       langExtension: I,
+       sourceNode: n,
+       numberLines: R,
+       pre: N
+      }, u(g);
      }
     }
    }
-   f < o.length ? setTimeout(n, 250) : e && e();
+   v < c.length ? setTimeout(r, 250) : "function" == typeof e && e();
   }
-  for (var r = [ t("pre"), t("code"), t("xmp") ], o = [], s = 0; s < r.length; ++s) for (var l = 0, c = r[s].length; c > l; ++l) o.push(r[s][l]);
-  r = null;
-  var d = Date;
-  d.now || (d = {
+  for (var o = t || document.body, s = o.ownerDocument || document, l = [ n("pre"), n("code"), n("xmp") ], c = [], d = 0; d < l.length; ++d) for (var p = 0, f = l[d].length; f > p; ++p) c.push(l[d][p]);
+  l = null;
+  var m = Date;
+  m.now || (m = {
    now: function() {
     return +new Date();
    }
   });
-  var p, f = 0, m = /\blang(?:uage)?-([\w.]+)(?!\S)/, g = /\bprettyprint\b/, v = /\bprettyprinted\b/, b = /pre|xmp/i, y = /^code$/i, x = /^(?:pre|code|xmp)$/i;
-  n();
+  var g, v = 0, b = /\blang(?:uage)?-([\w.]+)(?!\S)/, y = /\bprettyprint\b/, x = /\bprettyprinted\b/, w = /pre|xmp/i, S = /^code$/i, C = /^(?:pre|code|xmp)$/i, _ = {};
+  r();
  }
- var h = window, f = [ "break,continue,do,else,for,if,return,while" ], m = [ f, "auto,case,char,const,default,double,enum,extern,float,goto,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile" ], g = [ m, "catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof" ], v = [ g, "alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,dynamic_cast,explicit,export,friend,inline,late_check,mutable,namespace,nullptr,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where" ], b = [ g, "abstract,boolean,byte,extends,final,finally,implements,import,instanceof,null,native,package,strictfp,super,synchronized,throws,transient" ], y = [ b, "as,base,by,checked,decimal,delegate,descending,dynamic,event,fixed,foreach,from,group,implicit,in,interface,internal,into,is,let,lock,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where" ], x = "all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes", w = [ g, "debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN" ], S = "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END", C = [ f, "and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None" ], _ = [ f, "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END" ], k = [ f, "case,done,elif,esac,eval,fi,function,in,local,set,then,until" ], E = [ v, y, w, S + C, _, k ], T = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/, I = "str", D = "kwd", N = "com", L = "typ", M = "lit", A = "pun", R = "pln", P = "tag", F = "dec", O = "src", B = "atn", j = "atv", $ = "nocode", q = "(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*", G = /\S/, H = o({
-  keywords: E,
+ var h = window, f = [ "break,continue,do,else,for,if,return,while" ], m = [ f, "auto,case,char,const,default,double,enum,extern,float,goto,inline,int,long,register,short,signed,sizeof,static,struct,switch,typedef,union,unsigned,void,volatile" ], g = [ m, "catch,class,delete,false,import,new,operator,private,protected,public,this,throw,true,try,typeof" ], v = [ g, "alignof,align_union,asm,axiom,bool,concept,concept_map,const_cast,constexpr,decltype,delegate,dynamic_cast,explicit,export,friend,generic,late_check,mutable,namespace,nullptr,property,reinterpret_cast,static_assert,static_cast,template,typeid,typename,using,virtual,where" ], b = [ g, "abstract,assert,boolean,byte,extends,final,finally,implements,import,instanceof,interface,null,native,package,strictfp,super,synchronized,throws,transient" ], y = [ b, "as,base,by,checked,decimal,delegate,descending,dynamic,event,fixed,foreach,from,group,implicit,in,internal,into,is,let,lock,object,out,override,orderby,params,partial,readonly,ref,sbyte,sealed,stackalloc,string,select,uint,ulong,unchecked,unsafe,ushort,var,virtual,where" ], x = "all,and,by,catch,class,else,extends,false,finally,for,if,in,is,isnt,loop,new,no,not,null,of,off,on,or,return,super,then,throw,true,try,unless,until,when,while,yes", w = [ g, "debugger,eval,export,function,get,null,set,undefined,var,with,Infinity,NaN" ], S = "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END", C = [ f, "and,as,assert,class,def,del,elif,except,exec,finally,from,global,import,in,is,lambda,nonlocal,not,or,pass,print,raise,try,with,yield,False,True,None" ], _ = [ f, "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END" ], k = [ f, "as,assert,const,copy,drop,enum,extern,fail,false,fn,impl,let,log,loop,match,mod,move,mut,priv,pub,pure,ref,self,static,struct,true,trait,type,unsafe,use" ], E = [ f, "case,done,elif,esac,eval,fi,function,in,local,set,then,until" ], T = [ v, y, w, S, C, _, E ], I = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)\b/, D = "str", N = "kwd", M = "com", L = "typ", A = "lit", R = "pun", P = "pln", O = "tag", F = "dec", B = "src", j = "atn", $ = "atv", q = "nocode", G = "(?:^^\\.?|[+-]|[!=]=?=?|\\#|%=?|&&?=?|\\(|\\*=?|[+\\-]=|->|\\/=?|::?|<<?=?|>>?>?=?|,|;|\\?|@|\\[|~|{|\\^\\^?=?|\\|\\|?=?|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*", H = /\S/, U = o({
+  keywords: T,
   hashComments: !0,
   cStyleComments: !0,
   multiLineStrings: !0,
   regexLiterals: !0
- }), U = {};
- l(H, [ "default-code" ]), l(r([], [ [ R, /^[^<?]+/ ], [ F, /^<!\w[^>]*(?:>|$)/ ], [ N, /^<\!--[\s\S]*?(?:-\->|$)/ ], [ "lang-", /^<\?([\s\S]+?)(?:\?>|$)/ ], [ "lang-", /^<%([\s\S]+?)(?:%>|$)/ ], [ A, /^(?:<[%?]|[%?]>)/ ], [ "lang-", /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i ], [ "lang-js", /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i ], [ "lang-css", /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i ], [ "lang-in.tag", /^(<\/?[a-z][^<>]*>)/i ] ]), [ "default-markup", "htm", "html", "mxml", "xhtml", "xml", "xsl" ]), 
- l(r([ [ R, /^[\s]+/, null, " 	\r\n" ], [ j, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, "\"'" ] ], [ [ P, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i ], [ B, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i ], [ "lang-uq.val", /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/ ], [ A, /^[=<>\/]+/ ], [ "lang-js", /^on\w+\s*=\s*\"([^\"]+)\"/i ], [ "lang-js", /^on\w+\s*=\s*\'([^\']+)\'/i ], [ "lang-js", /^on\w+\s*=\s*([^\"\'>\s]+)/i ], [ "lang-css", /^style\s*=\s*\"([^\"]+)\"/i ], [ "lang-css", /^style\s*=\s*\'([^\']+)\'/i ], [ "lang-css", /^style\s*=\s*([^\"\'>\s]+)/i ] ]), [ "in.tag" ]), 
- l(r([], [ [ j, /^[\s\S]+/ ] ]), [ "uq.val" ]), l(o({
+ }), z = {};
+ l(U, [ "default-code" ]), l(r([], [ [ P, /^[^<?]+/ ], [ F, /^<!\w[^>]*(?:>|$)/ ], [ M, /^<\!--[\s\S]*?(?:-\->|$)/ ], [ "lang-", /^<\?([\s\S]+?)(?:\?>|$)/ ], [ "lang-", /^<%([\s\S]+?)(?:%>|$)/ ], [ R, /^(?:<[%?]|[%?]>)/ ], [ "lang-", /^<xmp\b[^>]*>([\s\S]+?)<\/xmp\b[^>]*>/i ], [ "lang-js", /^<script\b[^>]*>([\s\S]*?)(<\/script\b[^>]*>)/i ], [ "lang-css", /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i ], [ "lang-in.tag", /^(<\/?[a-z][^<>]*>)/i ] ]), [ "default-markup", "htm", "html", "mxml", "xhtml", "xml", "xsl" ]), 
+ l(r([ [ P, /^[\s]+/, null, " 	\r\n" ], [ $, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, "\"'" ] ], [ [ O, /^^<\/?[a-z](?:[\w.:-]*\w)?|\/?>$/i ], [ j, /^(?!style[\s=]|on)[a-z](?:[\w:-]*\w)?/i ], [ "lang-uq.val", /^=\s*([^>\'\"\s]*(?:[^>\'\"\s\/]|\/(?=\s)))/ ], [ R, /^[=<>\/]+/ ], [ "lang-js", /^on\w+\s*=\s*\"([^\"]+)\"/i ], [ "lang-js", /^on\w+\s*=\s*\'([^\']+)\'/i ], [ "lang-js", /^on\w+\s*=\s*([^\"\'>\s]+)/i ], [ "lang-css", /^style\s*=\s*\"([^\"]+)\"/i ], [ "lang-css", /^style\s*=\s*\'([^\']+)\'/i ], [ "lang-css", /^style\s*=\s*([^\"\'>\s]+)/i ] ]), [ "in.tag" ]), 
+ l(r([], [ [ $, /^[\s\S]+/ ] ]), [ "uq.val" ]), l(o({
   keywords: v,
   hashComments: !0,
   cStyleComments: !0,
-  types: T
+  types: I
  }), [ "c", "cc", "cpp", "cxx", "cyc", "m" ]), l(o({
   keywords: "null,true,false"
  }), [ "json" ]), l(o({
@@ -8526,63 +8542,67 @@ var prettyPrintOne, prettyPrint;
   hashComments: !0,
   cStyleComments: !0,
   verbatimStrings: !0,
-  types: T
+  types: I
  }), [ "cs" ]), l(o({
   keywords: b,
   cStyleComments: !0
  }), [ "java" ]), l(o({
-  keywords: k,
+  keywords: E,
   hashComments: !0,
   multiLineStrings: !0
- }), [ "bsh", "csh", "sh" ]), l(o({
+ }), [ "bash", "bsh", "csh", "sh" ]), l(o({
   keywords: C,
   hashComments: !0,
   multiLineStrings: !0,
   tripleQuotedStrings: !0
- }), [ "cv", "py" ]), l(o({
+ }), [ "cv", "py", "python" ]), l(o({
   keywords: S,
   hashComments: !0,
   multiLineStrings: !0,
-  regexLiterals: !0
+  regexLiterals: 2
  }), [ "perl", "pl", "pm" ]), l(o({
   keywords: _,
   hashComments: !0,
   multiLineStrings: !0,
   regexLiterals: !0
- }), [ "rb" ]), l(o({
+ }), [ "rb", "ruby" ]), l(o({
   keywords: w,
   cStyleComments: !0,
   regexLiterals: !0
- }), [ "js" ]), l(o({
+ }), [ "javascript", "js" ]), l(o({
   keywords: x,
   hashComments: 3,
   cStyleComments: !0,
   multilineStrings: !0,
   tripleQuotedStrings: !0,
   regexLiterals: !0
- }), [ "coffee" ]), l(r([], [ [ I, /^[\s\S]+/ ] ]), [ "regex" ]);
- var z = h.PR = {
+ }), [ "coffee" ]), l(o({
+  keywords: k,
+  cStyleComments: !0,
+  multilineStrings: !0
+ }), [ "rc", "rs", "rust" ]), l(r([], [ [ D, /^[\s\S]+/ ] ]), [ "regex" ]);
+ var V = h.PR = {
   createSimpleLexer: r,
   registerLangHandler: l,
   sourceDecorator: o,
-  PR_ATTRIB_NAME: B,
-  PR_ATTRIB_VALUE: j,
-  PR_COMMENT: N,
+  PR_ATTRIB_NAME: j,
+  PR_ATTRIB_VALUE: $,
+  PR_COMMENT: M,
   PR_DECLARATION: F,
-  PR_KEYWORD: D,
-  PR_LITERAL: M,
-  PR_NOCODE: $,
-  PR_PLAIN: R,
-  PR_PUNCTUATION: A,
-  PR_SOURCE: O,
-  PR_STRING: I,
-  PR_TAG: P,
+  PR_KEYWORD: N,
+  PR_LITERAL: A,
+  PR_NOCODE: q,
+  PR_PLAIN: P,
+  PR_PUNCTUATION: R,
+  PR_SOURCE: B,
+  PR_STRING: D,
+  PR_TAG: O,
   PR_TYPE: L,
-  prettyPrintOne: h.prettyPrintOne = d,
-  prettyPrint: h.prettyPrint = p
+  prettyPrintOne: IN_GLOBAL_SCOPE ? h.prettyPrintOne = d : prettyPrintOne = d,
+  prettyPrint: prettyPrint = IN_GLOBAL_SCOPE ? h.prettyPrint = p : prettyPrint = p
  };
  "function" == typeof define && define.amd && define("google-code-prettify", [], function() {
-  return z;
+  return V;
  });
 }();
 
@@ -8781,12 +8801,12 @@ var hljs = new function() {
     language: t,
     top: C
    };
-  } catch (L) {
-   if (-1 != L.message.indexOf("Illegal")) return {
+  } catch (M) {
+   if (-1 != M.message.indexOf("Illegal")) return {
     r: 0,
     value: e(i)
    };
-   throw L;
+   throw M;
   }
  }
  function u(t, n) {
@@ -10115,7 +10135,7 @@ hljs.registerLanguage("bash", function(e) {
 }), hljs.registerLanguage("php", function(e) {
  var t = {
   cN: "variable",
-  b: "\\$+[a-zA-Z_-Ã¿][a-zA-Z0-9_-Ã¿]*"
+  b: "\\$+[a-zA-Z_-\xff][a-zA-Z0-9_-\xff]*"
  }, n = {
   cN: "preprocessor",
   b: /<\?(php)?|\?>/
@@ -10286,7 +10306,7 @@ hljs.registerLanguage("bash", function(e) {
   } ]
  };
 }), hljs.registerLanguage("1c", function(e) {
- var t = "[a-zA-ZĞ°-ÑĞ-Ğ¯][a-zA-Z0-9_Ğ°-ÑĞ-Ğ¯]*", n = "Ğ²Ğ¾Ğ·Ğ²Ñ€Ğ°Ñ‚ Ğ´Ğ°Ñ‚Ğ° Ğ´Ğ»Ñ ĞµÑĞ»Ğ¸ Ğ¸ Ğ¸Ğ»Ğ¸ Ğ¸Ğ½Ğ°Ñ‡Ğµ Ğ¸Ğ½Ğ°Ñ‡ĞµĞµÑĞ»Ğ¸ Ğ¸ÑĞºĞ»ÑÑ‡ĞµĞ½Ğ¸Ğµ ĞºĞ¾Ğ½ĞµÑ†ĞµÑĞ»Ğ¸ ĞºĞ¾Ğ½ĞµÑ†Ğ¿Ğ¾Ğ¿Ñ‹Ñ‚ĞºĞ¸ ĞºĞ¾Ğ½ĞµÑ†Ğ¿Ñ€Ğ¾Ñ†ĞµĞ´ÑƒÑ€Ñ‹ ĞºĞ¾Ğ½ĞµÑ†Ñ„ÑƒĞ½ĞºÑ†Ğ¸Ğ¸ ĞºĞ¾Ğ½ĞµÑ†Ñ†Ğ¸ĞºĞ»Ğ° ĞºĞ¾Ğ½ÑÑ‚Ğ°Ğ½Ñ‚Ğ° Ğ½Ğµ Ğ¿ĞµÑ€ĞµĞ¹Ñ‚Ğ¸ Ğ¿ĞµÑ€ĞµĞ¼ Ğ¿ĞµÑ€ĞµÑ‡Ğ¸ÑĞ»ĞµĞ½Ğ¸Ğµ Ğ¿Ğ¾ Ğ¿Ğ¾ĞºĞ° Ğ¿Ğ¾Ğ¿Ñ‹Ñ‚ĞºĞ° Ğ¿Ñ€ĞµÑ€Ğ²Ğ°Ñ‚ÑŒ Ğ¿Ñ€Ğ¾Ğ´Ğ¾Ğ»Ğ¶Ğ¸Ñ‚ÑŒ Ğ¿Ñ€Ğ¾Ñ†ĞµĞ´ÑƒÑ€Ğ° ÑÑ‚Ñ€Ğ¾ĞºĞ° Ñ‚Ğ¾Ğ³Ğ´Ğ° Ñ„Ñ Ñ„ÑƒĞ½ĞºÑ†Ğ¸Ñ Ñ†Ğ¸ĞºĞ» Ñ‡Ğ¸ÑĞ»Ğ¾ ÑĞºÑĞ¿Ğ¾Ñ€Ñ‚", i = "ansitooem oemtoansi Ğ²Ğ²ĞµÑÑ‚Ğ¸Ğ²Ğ¸Ğ´ÑÑƒĞ±ĞºĞ¾Ğ½Ñ‚Ğ¾ Ğ²Ğ²ĞµÑÑ‚Ğ¸Ğ´Ğ°Ñ‚Ñƒ Ğ²Ğ²ĞµÑÑ‚Ğ¸Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğµ Ğ²Ğ²ĞµÑÑ‚Ğ¸Ğ¿ĞµÑ€ĞµÑ‡Ğ¸ÑĞ»ĞµĞ½Ğ¸Ğµ Ğ²Ğ²ĞµÑÑ‚Ğ¸Ğ¿ĞµÑ€Ğ¸Ğ¾Ğ´ Ğ²Ğ²ĞµÑÑ‚Ğ¸Ğ¿Ğ»Ğ°Ğ½ÑÑ‡ĞµÑ‚Ğ¾Ğ² Ğ²Ğ²ĞµÑÑ‚Ğ¸ÑÑ‚Ñ€Ğ¾ĞºÑƒ Ğ²Ğ²ĞµÑÑ‚Ğ¸Ñ‡Ğ¸ÑĞ»Ğ¾ Ğ²Ğ¾Ğ¿Ñ€Ğ¾Ñ Ğ²Ğ¾ÑÑÑ‚Ğ°Ğ½Ğ¾Ğ²Ğ¸Ñ‚ÑŒĞ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğµ Ğ²Ñ€ĞµĞ³ Ğ²Ñ‹Ğ±Ñ€Ğ°Ğ½Ğ½Ñ‹Ğ¹Ğ¿Ğ»Ğ°Ğ½ÑÑ‡ĞµÑ‚Ğ¾Ğ² Ğ²Ñ‹Ğ·Ğ²Ğ°Ñ‚ÑŒĞ¸ÑĞºĞ»ÑÑ‡ĞµĞ½Ğ¸Ğµ Ğ´Ğ°Ñ‚Ğ°Ğ³Ğ¾Ğ´ Ğ´Ğ°Ñ‚Ğ°Ğ¼ĞµÑÑÑ† Ğ´Ğ°Ñ‚Ğ°Ñ‡Ğ¸ÑĞ»Ğ¾ Ğ´Ğ¾Ğ±Ğ°Ğ²Ğ¸Ñ‚ÑŒĞ¼ĞµÑÑÑ† Ğ·Ğ°Ğ²ĞµÑ€ÑˆĞ¸Ñ‚ÑŒÑ€Ğ°Ğ±Ğ¾Ñ‚ÑƒÑĞ¸ÑÑ‚ĞµĞ¼Ñ‹ Ğ·Ğ°Ğ³Ğ¾Ğ»Ğ¾Ğ²Ğ¾ĞºÑĞ¸ÑÑ‚ĞµĞ¼Ñ‹ Ğ·Ğ°Ğ¿Ğ¸ÑÑŒĞ¶ÑƒÑ€Ğ½Ğ°Ğ»Ğ°Ñ€ĞµĞ³Ğ¸ÑÑ‚Ñ€Ğ°Ñ†Ğ¸Ğ¸ Ğ·Ğ°Ğ¿ÑƒÑÑ‚Ğ¸Ñ‚ÑŒĞ¿Ñ€Ğ¸Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ğµ Ğ·Ğ°Ñ„Ğ¸ĞºÑĞ¸Ñ€Ğ¾Ğ²Ğ°Ñ‚ÑŒÑ‚Ñ€Ğ°Ğ½Ğ·Ğ°ĞºÑ†Ğ¸Ñ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸ĞµĞ²ÑÑ‚Ñ€Ğ¾ĞºÑƒ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸ĞµĞ²ÑÑ‚Ñ€Ğ¾ĞºÑƒĞ²Ğ½ÑƒÑ‚Ñ€ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸ĞµĞ²Ñ„Ğ°Ğ¹Ğ» Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸ĞµĞ¸Ğ·ÑÑ‚Ñ€Ğ¾ĞºĞ¸ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸ĞµĞ¸Ğ·ÑÑ‚Ñ€Ğ¾ĞºĞ¸Ğ²Ğ½ÑƒÑ‚Ñ€ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸ĞµĞ¸Ğ·Ñ„Ğ°Ğ¹Ğ»Ğ° Ğ¸Ğ¼ÑĞºĞ¾Ğ¼Ğ¿ÑŒÑÑ‚ĞµÑ€Ğ° Ğ¸Ğ¼ÑĞ¿Ğ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»Ñ ĞºĞ°Ñ‚Ğ°Ğ»Ğ¾Ğ³Ğ²Ñ€ĞµĞ¼ĞµĞ½Ğ½Ñ‹Ñ…Ñ„Ğ°Ğ¹Ğ»Ğ¾Ğ² ĞºĞ°Ñ‚Ğ°Ğ»Ğ¾Ğ³Ğ¸Ğ± ĞºĞ°Ñ‚Ğ°Ğ»Ğ¾Ğ³Ğ¿Ğ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»Ñ ĞºĞ°Ñ‚Ğ°Ğ»Ğ¾Ğ³Ğ¿Ñ€Ğ¾Ğ³Ñ€Ğ°Ğ¼Ğ¼Ñ‹ ĞºĞ¾Ğ´ÑĞ¸Ğ¼Ğ² ĞºĞ¾Ğ¼Ğ°Ğ½Ğ´Ğ°ÑĞ¸ÑÑ‚ĞµĞ¼Ñ‹ ĞºĞ¾Ğ½Ğ³Ğ¾Ğ´Ğ° ĞºĞ¾Ğ½ĞµÑ†Ğ¿ĞµÑ€Ğ¸Ğ¾Ğ´Ğ°Ğ±Ğ¸ ĞºĞ¾Ğ½ĞµÑ†Ñ€Ğ°ÑÑÑ‡Ğ¸Ñ‚Ğ°Ğ½Ğ½Ğ¾Ğ³Ğ¾Ğ¿ĞµÑ€Ğ¸Ğ¾Ğ´Ğ°Ğ±Ğ¸ ĞºĞ¾Ğ½ĞµÑ†ÑÑ‚Ğ°Ğ½Ğ´Ğ°Ñ€Ñ‚Ğ½Ğ¾Ğ³Ğ¾Ğ¸Ğ½Ñ‚ĞµÑ€Ğ²Ğ°Ğ»Ğ° ĞºĞ¾Ğ½ĞºĞ²Ğ°Ñ€Ñ‚Ğ°Ğ»Ğ° ĞºĞ¾Ğ½Ğ¼ĞµÑÑÑ†Ğ° ĞºĞ¾Ğ½Ğ½ĞµĞ´ĞµĞ»Ğ¸ Ğ»ĞµĞ² Ğ»Ğ¾Ğ³ Ğ»Ğ¾Ğ³10 Ğ¼Ğ°ĞºÑ Ğ¼Ğ°ĞºÑĞ¸Ğ¼Ğ°Ğ»ÑŒĞ½Ğ¾ĞµĞºĞ¾Ğ»Ğ¸Ñ‡ĞµÑÑ‚Ğ²Ğ¾ÑÑƒĞ±ĞºĞ¾Ğ½Ñ‚Ğ¾ Ğ¼Ğ¸Ğ½ Ğ¼Ğ¾Ğ½Ğ¾Ğ¿Ğ¾Ğ»ÑŒĞ½Ñ‹Ğ¹Ñ€ĞµĞ¶Ğ¸Ğ¼ Ğ½Ğ°Ğ·Ğ²Ğ°Ğ½Ğ¸ĞµĞ¸Ğ½Ñ‚ĞµÑ€Ñ„ĞµĞ¹ÑĞ° Ğ½Ğ°Ğ·Ğ²Ğ°Ğ½Ğ¸ĞµĞ½Ğ°Ğ±Ğ¾Ñ€Ğ°Ğ¿Ñ€Ğ°Ğ² Ğ½Ğ°Ğ·Ğ½Ğ°Ñ‡Ğ¸Ñ‚ÑŒĞ²Ğ¸Ğ´ Ğ½Ğ°Ğ·Ğ½Ğ°Ñ‡Ğ¸Ñ‚ÑŒÑÑ‡ĞµÑ‚ Ğ½Ğ°Ğ¹Ñ‚Ğ¸ Ğ½Ğ°Ğ¹Ñ‚Ğ¸Ğ¿Ğ¾Ğ¼ĞµÑ‡ĞµĞ½Ğ½Ñ‹ĞµĞ½Ğ°ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ğµ Ğ½Ğ°Ğ¹Ñ‚Ğ¸ÑÑÑ‹Ğ»ĞºĞ¸ Ğ½Ğ°Ñ‡Ğ°Ğ»Ğ¾Ğ¿ĞµÑ€Ğ¸Ğ¾Ğ´Ğ°Ğ±Ğ¸ Ğ½Ğ°Ñ‡Ğ°Ğ»Ğ¾ÑÑ‚Ğ°Ğ½Ğ´Ğ°Ñ€Ñ‚Ğ½Ğ¾Ğ³Ğ¾Ğ¸Ğ½Ñ‚ĞµÑ€Ğ²Ğ°Ğ»Ğ° Ğ½Ğ°Ñ‡Ğ°Ñ‚ÑŒÑ‚Ñ€Ğ°Ğ½Ğ·Ğ°ĞºÑ†Ğ¸Ñ Ğ½Ğ°Ñ‡Ğ³Ğ¾Ğ´Ğ° Ğ½Ğ°Ñ‡ĞºĞ²Ğ°Ñ€Ñ‚Ğ°Ğ»Ğ° Ğ½Ğ°Ñ‡Ğ¼ĞµÑÑÑ†Ğ° Ğ½Ğ°Ñ‡Ğ½ĞµĞ´ĞµĞ»Ğ¸ Ğ½Ğ¾Ğ¼ĞµÑ€Ğ´Ğ½ÑĞ³Ğ¾Ğ´Ğ° Ğ½Ğ¾Ğ¼ĞµÑ€Ğ´Ğ½ÑĞ½ĞµĞ´ĞµĞ»Ğ¸ Ğ½Ğ¾Ğ¼ĞµÑ€Ğ½ĞµĞ´ĞµĞ»Ğ¸Ğ³Ğ¾Ğ´Ğ° Ğ½Ñ€ĞµĞ³ Ğ¾Ğ±Ñ€Ğ°Ğ±Ğ¾Ñ‚ĞºĞ°Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ½Ğ¸Ñ Ğ¾ĞºÑ€ Ğ¾Ğ¿Ğ¸ÑĞ°Ğ½Ğ¸ĞµĞ¾ÑˆĞ¸Ğ±ĞºĞ¸ Ğ¾ÑĞ½Ğ¾Ğ²Ğ½Ğ¾Ğ¹Ğ¶ÑƒÑ€Ğ½Ğ°Ğ»Ñ€Ğ°ÑÑ‡ĞµÑ‚Ğ¾Ğ² Ğ¾ÑĞ½Ğ¾Ğ²Ğ½Ğ¾Ğ¹Ğ¿Ğ»Ğ°Ğ½ÑÑ‡ĞµÑ‚Ğ¾Ğ² Ğ¾ÑĞ½Ğ¾Ğ²Ğ½Ğ¾Ğ¹ÑĞ·Ñ‹Ğº Ğ¾Ñ‚ĞºÑ€Ñ‹Ñ‚ÑŒÑ„Ğ¾Ñ€Ğ¼Ñƒ Ğ¾Ñ‚ĞºÑ€Ñ‹Ñ‚ÑŒÑ„Ğ¾Ñ€Ğ¼ÑƒĞ¼Ğ¾Ğ´Ğ°Ğ»ÑŒĞ½Ğ¾ Ğ¾Ñ‚Ğ¼ĞµĞ½Ğ¸Ñ‚ÑŒÑ‚Ñ€Ğ°Ğ½Ğ·Ğ°ĞºÑ†Ğ¸Ñ Ğ¾Ñ‡Ğ¸ÑÑ‚Ğ¸Ñ‚ÑŒĞ¾ĞºĞ½Ğ¾ÑĞ¾Ğ¾Ğ±Ñ‰ĞµĞ½Ğ¸Ğ¹ Ğ¿ĞµÑ€Ğ¸Ğ¾Ğ´ÑÑ‚Ñ€ Ğ¿Ğ¾Ğ»Ğ½Ğ¾ĞµĞ¸Ğ¼ÑĞ¿Ğ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»Ñ Ğ¿Ğ¾Ğ»ÑƒÑ‡Ğ¸Ñ‚ÑŒĞ²Ñ€ĞµĞ¼ÑÑ‚Ğ° Ğ¿Ğ¾Ğ»ÑƒÑ‡Ğ¸Ñ‚ÑŒĞ´Ğ°Ñ‚ÑƒÑ‚Ğ° Ğ¿Ğ¾Ğ»ÑƒÑ‡Ğ¸Ñ‚ÑŒĞ´Ğ¾ĞºÑƒĞ¼ĞµĞ½Ñ‚Ñ‚Ğ° Ğ¿Ğ¾Ğ»ÑƒÑ‡Ğ¸Ñ‚ÑŒĞ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸ÑĞ¾Ñ‚Ğ±Ğ¾Ñ€Ğ° Ğ¿Ğ¾Ğ»ÑƒÑ‡Ğ¸Ñ‚ÑŒĞ¿Ğ¾Ğ·Ğ¸Ñ†Ğ¸ÑÑ‚Ğ° Ğ¿Ğ¾Ğ»ÑƒÑ‡Ğ¸Ñ‚ÑŒĞ¿ÑƒÑÑ‚Ğ¾ĞµĞ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğµ Ğ¿Ğ¾Ğ»ÑƒÑ‡Ğ¸Ñ‚ÑŒÑ‚Ğ° Ğ¿Ñ€Ğ°Ğ² Ğ¿Ñ€Ğ°Ğ²Ğ¾Ğ´Ğ¾ÑÑ‚ÑƒĞ¿Ğ° Ğ¿Ñ€ĞµĞ´ÑƒĞ¿Ñ€ĞµĞ¶Ğ´ĞµĞ½Ğ¸Ğµ Ğ¿Ñ€ĞµÑ„Ğ¸ĞºÑĞ°Ğ²Ñ‚Ğ¾Ğ½ÑƒĞ¼ĞµÑ€Ğ°Ñ†Ğ¸Ğ¸ Ğ¿ÑƒÑÑ‚Ğ°ÑÑÑ‚Ñ€Ğ¾ĞºĞ° Ğ¿ÑƒÑÑ‚Ğ¾ĞµĞ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğµ Ñ€Ğ°Ğ±Ğ¾Ñ‡Ğ°ÑĞ´Ğ°Ñ‚Ñ‚ÑŒĞ¿ÑƒÑÑ‚Ğ¾ĞµĞ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğµ Ñ€Ğ°Ğ±Ğ¾Ñ‡Ğ°ÑĞ´Ğ°Ñ‚Ğ° Ñ€Ğ°Ğ·Ğ´ĞµĞ»Ğ¸Ñ‚ĞµĞ»ÑŒÑÑ‚Ñ€Ğ°Ğ½Ğ¸Ñ† Ñ€Ğ°Ğ·Ğ´ĞµĞ»Ğ¸Ñ‚ĞµĞ»ÑŒÑÑ‚Ñ€Ğ¾Ğº Ñ€Ğ°Ğ·Ğ¼ Ñ€Ğ°Ğ·Ğ¾Ğ±Ñ€Ğ°Ñ‚ÑŒĞ¿Ğ¾Ğ·Ğ¸Ñ†Ğ¸ÑĞ´Ğ¾ĞºÑƒĞ¼ĞµĞ½Ñ‚Ğ° Ñ€Ğ°ÑÑÑ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒÑ€ĞµĞ³Ğ¸ÑÑ‚Ñ€Ñ‹Ğ½Ğ° Ñ€Ğ°ÑÑÑ‡Ğ¸Ñ‚Ğ°Ñ‚ÑŒÑ€ĞµĞ³Ğ¸ÑÑ‚Ñ€Ñ‹Ğ¿Ğ¾ ÑĞ¸Ğ³Ğ½Ğ°Ğ» ÑĞ¸Ğ¼Ğ² ÑĞ¸Ğ¼Ğ²Ğ¾Ğ»Ñ‚Ğ°Ğ±ÑƒĞ»ÑÑ†Ğ¸Ğ¸ ÑĞ¾Ğ·Ğ´Ğ°Ñ‚ÑŒĞ¾Ğ±ÑŠĞµĞºÑ‚ ÑĞ¾ĞºÑ€Ğ» ÑĞ¾ĞºÑ€Ğ»Ğ¿ ÑĞ¾ĞºÑ€Ğ¿ ÑĞ¾Ğ¾Ğ±Ñ‰Ğ¸Ñ‚ÑŒ ÑĞ¾ÑÑ‚Ğ¾ÑĞ½Ğ¸Ğµ ÑĞ¾Ñ…Ñ€Ğ°Ğ½Ğ¸Ñ‚ÑŒĞ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğµ ÑÑ€ĞµĞ´ ÑÑ‚Ğ°Ñ‚ÑƒÑĞ²Ğ¾Ğ·Ğ²Ñ€Ğ°Ñ‚Ğ° ÑÑ‚Ñ€Ğ´Ğ»Ğ¸Ğ½Ğ° ÑÑ‚Ñ€Ğ·Ğ°Ğ¼ĞµĞ½Ğ¸Ñ‚ÑŒ ÑÑ‚Ñ€ĞºĞ¾Ğ»Ğ¸Ñ‡ĞµÑÑ‚Ğ²Ğ¾ÑÑ‚Ñ€Ğ¾Ğº ÑÑ‚Ñ€Ğ¿Ğ¾Ğ»ÑƒÑ‡Ğ¸Ñ‚ÑŒÑÑ‚Ñ€Ğ¾ĞºÑƒ  ÑÑ‚Ñ€Ñ‡Ğ¸ÑĞ»Ğ¾Ğ²Ñ…Ğ¾Ğ¶Ğ´ĞµĞ½Ğ¸Ğ¹ ÑÑ„Ğ¾Ñ€Ğ¼Ğ¸Ñ€Ğ¾Ğ²Ğ°Ñ‚ÑŒĞ¿Ğ¾Ğ·Ğ¸Ñ†Ğ¸ÑĞ´Ğ¾ĞºÑƒĞ¼ĞµĞ½Ñ‚Ğ° ÑÑ‡ĞµÑ‚Ğ¿Ğ¾ĞºĞ¾Ğ´Ñƒ Ñ‚ĞµĞºÑƒÑ‰Ğ°ÑĞ´Ğ°Ñ‚Ğ° Ñ‚ĞµĞºÑƒÑ‰ĞµĞµĞ²Ñ€ĞµĞ¼Ñ Ñ‚Ğ¸Ğ¿Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ñ Ñ‚Ğ¸Ğ¿Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸ÑÑÑ‚Ñ€ ÑƒĞ´Ğ°Ğ»Ğ¸Ñ‚ÑŒĞ¾Ğ±ÑŠĞµĞºÑ‚Ñ‹ ÑƒÑÑ‚Ğ°Ğ½Ğ¾Ğ²Ğ¸Ñ‚ÑŒÑ‚Ğ°Ğ½Ğ° ÑƒÑÑ‚Ğ°Ğ½Ğ¾Ğ²Ğ¸Ñ‚ÑŒÑ‚Ğ°Ğ¿Ğ¾ Ñ„Ğ¸ĞºÑÑˆĞ°Ğ±Ğ»Ğ¾Ğ½ Ñ„Ğ¾Ñ€Ğ¼Ğ°Ñ‚ Ñ†ĞµĞ» ÑˆĞ°Ğ±Ğ»Ğ¾Ğ½", r = {
+ var t = "[a-zA-Z\u0430-\u044f\u0410-\u042f][a-zA-Z0-9_\u0430-\u044f\u0410-\u042f]*", n = "\u0432\u043e\u0437\u0432\u0440\u0430\u0442 \u0434\u0430\u0442\u0430 \u0434\u043b\u044f \u0435\u0441\u043b\u0438 \u0438 \u0438\u043b\u0438 \u0438\u043d\u0430\u0447\u0435 \u0438\u043d\u0430\u0447\u0435\u0435\u0441\u043b\u0438 \u0438\u0441\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u0435 \u043a\u043e\u043d\u0435\u0446\u0435\u0441\u043b\u0438 \u043a\u043e\u043d\u0435\u0446\u043f\u043e\u043f\u044b\u0442\u043a\u0438 \u043a\u043e\u043d\u0435\u0446\u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440\u044b \u043a\u043e\u043d\u0435\u0446\u0444\u0443\u043d\u043a\u0446\u0438\u0438 \u043a\u043e\u043d\u0435\u0446\u0446\u0438\u043a\u043b\u0430 \u043a\u043e\u043d\u0441\u0442\u0430\u043d\u0442\u0430 \u043d\u0435 \u043f\u0435\u0440\u0435\u0439\u0442\u0438 \u043f\u0435\u0440\u0435\u043c \u043f\u0435\u0440\u0435\u0447\u0438\u0441\u043b\u0435\u043d\u0438\u0435 \u043f\u043e \u043f\u043e\u043a\u0430 \u043f\u043e\u043f\u044b\u0442\u043a\u0430 \u043f\u0440\u0435\u0440\u0432\u0430\u0442\u044c \u043f\u0440\u043e\u0434\u043e\u043b\u0436\u0438\u0442\u044c \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440\u0430 \u0441\u0442\u0440\u043e\u043a\u0430 \u0442\u043e\u0433\u0434\u0430 \u0444\u0441 \u0444\u0443\u043d\u043a\u0446\u0438\u044f \u0446\u0438\u043a\u043b \u0447\u0438\u0441\u043b\u043e \u044d\u043a\u0441\u043f\u043e\u0440\u0442", i = "ansitooem oemtoansi \u0432\u0432\u0435\u0441\u0442\u0438\u0432\u0438\u0434\u0441\u0443\u0431\u043a\u043e\u043d\u0442\u043e \u0432\u0432\u0435\u0441\u0442\u0438\u0434\u0430\u0442\u0443 \u0432\u0432\u0435\u0441\u0442\u0438\u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0432\u0432\u0435\u0441\u0442\u0438\u043f\u0435\u0440\u0435\u0447\u0438\u0441\u043b\u0435\u043d\u0438\u0435 \u0432\u0432\u0435\u0441\u0442\u0438\u043f\u0435\u0440\u0438\u043e\u0434 \u0432\u0432\u0435\u0441\u0442\u0438\u043f\u043b\u0430\u043d\u0441\u0447\u0435\u0442\u043e\u0432 \u0432\u0432\u0435\u0441\u0442\u0438\u0441\u0442\u0440\u043e\u043a\u0443 \u0432\u0432\u0435\u0441\u0442\u0438\u0447\u0438\u0441\u043b\u043e \u0432\u043e\u043f\u0440\u043e\u0441 \u0432\u043e\u0441\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c\u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0432\u0440\u0435\u0433 \u0432\u044b\u0431\u0440\u0430\u043d\u043d\u044b\u0439\u043f\u043b\u0430\u043d\u0441\u0447\u0435\u0442\u043e\u0432 \u0432\u044b\u0437\u0432\u0430\u0442\u044c\u0438\u0441\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u0435 \u0434\u0430\u0442\u0430\u0433\u043e\u0434 \u0434\u0430\u0442\u0430\u043c\u0435\u0441\u044f\u0446 \u0434\u0430\u0442\u0430\u0447\u0438\u0441\u043b\u043e \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c\u043c\u0435\u0441\u044f\u0446 \u0437\u0430\u0432\u0435\u0440\u0448\u0438\u0442\u044c\u0440\u0430\u0431\u043e\u0442\u0443\u0441\u0438\u0441\u0442\u0435\u043c\u044b \u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a\u0441\u0438\u0441\u0442\u0435\u043c\u044b \u0437\u0430\u043f\u0438\u0441\u044c\u0436\u0443\u0440\u043d\u0430\u043b\u0430\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u0438 \u0437\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c\u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0437\u0430\u0444\u0438\u043a\u0441\u0438\u0440\u043e\u0432\u0430\u0442\u044c\u0442\u0440\u0430\u043d\u0437\u0430\u043a\u0446\u0438\u044e \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435\u0432\u0441\u0442\u0440\u043e\u043a\u0443 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435\u0432\u0441\u0442\u0440\u043e\u043a\u0443\u0432\u043d\u0443\u0442\u0440 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435\u0432\u0444\u0430\u0439\u043b \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435\u0438\u0437\u0441\u0442\u0440\u043e\u043a\u0438 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435\u0438\u0437\u0441\u0442\u0440\u043e\u043a\u0438\u0432\u043d\u0443\u0442\u0440 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435\u0438\u0437\u0444\u0430\u0439\u043b\u0430 \u0438\u043c\u044f\u043a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\u0430 \u0438\u043c\u044f\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0432\u0440\u0435\u043c\u0435\u043d\u043d\u044b\u0445\u0444\u0430\u0439\u043b\u043e\u0432 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0438\u0431 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u043a\u043e\u0434\u0441\u0438\u043c\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u0430\u0441\u0438\u0441\u0442\u0435\u043c\u044b \u043a\u043e\u043d\u0433\u043e\u0434\u0430 \u043a\u043e\u043d\u0435\u0446\u043f\u0435\u0440\u0438\u043e\u0434\u0430\u0431\u0438 \u043a\u043e\u043d\u0435\u0446\u0440\u0430\u0441\u0441\u0447\u0438\u0442\u0430\u043d\u043d\u043e\u0433\u043e\u043f\u0435\u0440\u0438\u043e\u0434\u0430\u0431\u0438 \u043a\u043e\u043d\u0435\u0446\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u043e\u0433\u043e\u0438\u043d\u0442\u0435\u0440\u0432\u0430\u043b\u0430 \u043a\u043e\u043d\u043a\u0432\u0430\u0440\u0442\u0430\u043b\u0430 \u043a\u043e\u043d\u043c\u0435\u0441\u044f\u0446\u0430 \u043a\u043e\u043d\u043d\u0435\u0434\u0435\u043b\u0438 \u043b\u0435\u0432 \u043b\u043e\u0433 \u043b\u043e\u043310 \u043c\u0430\u043a\u0441 \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u043e\u0435\u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e\u0441\u0443\u0431\u043a\u043e\u043d\u0442\u043e \u043c\u0438\u043d \u043c\u043e\u043d\u043e\u043f\u043e\u043b\u044c\u043d\u044b\u0439\u0440\u0435\u0436\u0438\u043c \u043d\u0430\u0437\u0432\u0430\u043d\u0438\u0435\u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441\u0430 \u043d\u0430\u0437\u0432\u0430\u043d\u0438\u0435\u043d\u0430\u0431\u043e\u0440\u0430\u043f\u0440\u0430\u0432 \u043d\u0430\u0437\u043d\u0430\u0447\u0438\u0442\u044c\u0432\u0438\u0434 \u043d\u0430\u0437\u043d\u0430\u0447\u0438\u0442\u044c\u0441\u0447\u0435\u0442 \u043d\u0430\u0439\u0442\u0438 \u043d\u0430\u0439\u0442\u0438\u043f\u043e\u043c\u0435\u0447\u0435\u043d\u043d\u044b\u0435\u043d\u0430\u0443\u0434\u0430\u043b\u0435\u043d\u0438\u0435 \u043d\u0430\u0439\u0442\u0438\u0441\u0441\u044b\u043b\u043a\u0438 \u043d\u0430\u0447\u0430\u043b\u043e\u043f\u0435\u0440\u0438\u043e\u0434\u0430\u0431\u0438 \u043d\u0430\u0447\u0430\u043b\u043e\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u043e\u0433\u043e\u0438\u043d\u0442\u0435\u0440\u0432\u0430\u043b\u0430 \u043d\u0430\u0447\u0430\u0442\u044c\u0442\u0440\u0430\u043d\u0437\u0430\u043a\u0446\u0438\u044e \u043d\u0430\u0447\u0433\u043e\u0434\u0430 \u043d\u0430\u0447\u043a\u0432\u0430\u0440\u0442\u0430\u043b\u0430 \u043d\u0430\u0447\u043c\u0435\u0441\u044f\u0446\u0430 \u043d\u0430\u0447\u043d\u0435\u0434\u0435\u043b\u0438 \u043d\u043e\u043c\u0435\u0440\u0434\u043d\u044f\u0433\u043e\u0434\u0430 \u043d\u043e\u043c\u0435\u0440\u0434\u043d\u044f\u043d\u0435\u0434\u0435\u043b\u0438 \u043d\u043e\u043c\u0435\u0440\u043d\u0435\u0434\u0435\u043b\u0438\u0433\u043e\u0434\u0430 \u043d\u0440\u0435\u0433 \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430\u043e\u0436\u0438\u0434\u0430\u043d\u0438\u044f \u043e\u043a\u0440 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435\u043e\u0448\u0438\u0431\u043a\u0438 \u043e\u0441\u043d\u043e\u0432\u043d\u043e\u0439\u0436\u0443\u0440\u043d\u0430\u043b\u0440\u0430\u0441\u0447\u0435\u0442\u043e\u0432 \u043e\u0441\u043d\u043e\u0432\u043d\u043e\u0439\u043f\u043b\u0430\u043d\u0441\u0447\u0435\u0442\u043e\u0432 \u043e\u0441\u043d\u043e\u0432\u043d\u043e\u0439\u044f\u0437\u044b\u043a \u043e\u0442\u043a\u0440\u044b\u0442\u044c\u0444\u043e\u0440\u043c\u0443 \u043e\u0442\u043a\u0440\u044b\u0442\u044c\u0444\u043e\u0440\u043c\u0443\u043c\u043e\u0434\u0430\u043b\u044c\u043d\u043e \u043e\u0442\u043c\u0435\u043d\u0438\u0442\u044c\u0442\u0440\u0430\u043d\u0437\u0430\u043a\u0446\u0438\u044e \u043e\u0447\u0438\u0441\u0442\u0438\u0442\u044c\u043e\u043a\u043d\u043e\u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0439 \u043f\u0435\u0440\u0438\u043e\u0434\u0441\u0442\u0440 \u043f\u043e\u043b\u043d\u043e\u0435\u0438\u043c\u044f\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f \u043f\u043e\u043b\u0443\u0447\u0438\u0442\u044c\u0432\u0440\u0435\u043c\u044f\u0442\u0430 \u043f\u043e\u043b\u0443\u0447\u0438\u0442\u044c\u0434\u0430\u0442\u0443\u0442\u0430 \u043f\u043e\u043b\u0443\u0447\u0438\u0442\u044c\u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0442\u0430 \u043f\u043e\u043b\u0443\u0447\u0438\u0442\u044c\u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044f\u043e\u0442\u0431\u043e\u0440\u0430 \u043f\u043e\u043b\u0443\u0447\u0438\u0442\u044c\u043f\u043e\u0437\u0438\u0446\u0438\u044e\u0442\u0430 \u043f\u043e\u043b\u0443\u0447\u0438\u0442\u044c\u043f\u0443\u0441\u0442\u043e\u0435\u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u043f\u043e\u043b\u0443\u0447\u0438\u0442\u044c\u0442\u0430 \u043f\u0440\u0430\u0432 \u043f\u0440\u0430\u0432\u043e\u0434\u043e\u0441\u0442\u0443\u043f\u0430 \u043f\u0440\u0435\u0434\u0443\u043f\u0440\u0435\u0436\u0434\u0435\u043d\u0438\u0435 \u043f\u0440\u0435\u0444\u0438\u043a\u0441\u0430\u0432\u0442\u043e\u043d\u0443\u043c\u0435\u0440\u0430\u0446\u0438\u0438 \u043f\u0443\u0441\u0442\u0430\u044f\u0441\u0442\u0440\u043e\u043a\u0430 \u043f\u0443\u0441\u0442\u043e\u0435\u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0440\u0430\u0431\u043e\u0447\u0430\u044f\u0434\u0430\u0442\u0442\u044c\u043f\u0443\u0441\u0442\u043e\u0435\u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0440\u0430\u0431\u043e\u0447\u0430\u044f\u0434\u0430\u0442\u0430 \u0440\u0430\u0437\u0434\u0435\u043b\u0438\u0442\u0435\u043b\u044c\u0441\u0442\u0440\u0430\u043d\u0438\u0446 \u0440\u0430\u0437\u0434\u0435\u043b\u0438\u0442\u0435\u043b\u044c\u0441\u0442\u0440\u043e\u043a \u0440\u0430\u0437\u043c \u0440\u0430\u0437\u043e\u0431\u0440\u0430\u0442\u044c\u043f\u043e\u0437\u0438\u0446\u0438\u044e\u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430 \u0440\u0430\u0441\u0441\u0447\u0438\u0442\u0430\u0442\u044c\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u044b\u043d\u0430 \u0440\u0430\u0441\u0441\u0447\u0438\u0442\u0430\u0442\u044c\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u044b\u043f\u043e \u0441\u0438\u0433\u043d\u0430\u043b \u0441\u0438\u043c\u0432 \u0441\u0438\u043c\u0432\u043e\u043b\u0442\u0430\u0431\u0443\u043b\u044f\u0446\u0438\u0438 \u0441\u043e\u0437\u0434\u0430\u0442\u044c\u043e\u0431\u044a\u0435\u043a\u0442 \u0441\u043e\u043a\u0440\u043b \u0441\u043e\u043a\u0440\u043b\u043f \u0441\u043e\u043a\u0440\u043f \u0441\u043e\u043e\u0431\u0449\u0438\u0442\u044c \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c\u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0441\u0440\u0435\u0434 \u0441\u0442\u0430\u0442\u0443\u0441\u0432\u043e\u0437\u0432\u0440\u0430\u0442\u0430 \u0441\u0442\u0440\u0434\u043b\u0438\u043d\u0430 \u0441\u0442\u0440\u0437\u0430\u043c\u0435\u043d\u0438\u0442\u044c \u0441\u0442\u0440\u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e\u0441\u0442\u0440\u043e\u043a \u0441\u0442\u0440\u043f\u043e\u043b\u0443\u0447\u0438\u0442\u044c\u0441\u0442\u0440\u043e\u043a\u0443  \u0441\u0442\u0440\u0447\u0438\u0441\u043b\u043e\u0432\u0445\u043e\u0436\u0434\u0435\u043d\u0438\u0439 \u0441\u0444\u043e\u0440\u043c\u0438\u0440\u043e\u0432\u0430\u0442\u044c\u043f\u043e\u0437\u0438\u0446\u0438\u044e\u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430 \u0441\u0447\u0435\u0442\u043f\u043e\u043a\u043e\u0434\u0443 \u0442\u0435\u043a\u0443\u0449\u0430\u044f\u0434\u0430\u0442\u0430 \u0442\u0435\u043a\u0443\u0449\u0435\u0435\u0432\u0440\u0435\u043c\u044f \u0442\u0438\u043f\u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044f \u0442\u0438\u043f\u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044f\u0441\u0442\u0440 \u0443\u0434\u0430\u043b\u0438\u0442\u044c\u043e\u0431\u044a\u0435\u043a\u0442\u044b \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c\u0442\u0430\u043d\u0430 \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c\u0442\u0430\u043f\u043e \u0444\u0438\u043a\u0441\u0448\u0430\u0431\u043b\u043e\u043d \u0444\u043e\u0440\u043c\u0430\u0442 \u0446\u0435\u043b \u0448\u0430\u0431\u043b\u043e\u043d", r = {
   cN: "dquote",
   b: '""'
  }, o = {
@@ -10309,10 +10329,10 @@ hljs.registerLanguage("bash", function(e) {
   },
   c: [ e.CLCM, e.NM, o, a, {
    cN: "function",
-   b: "(Ğ¿Ñ€Ğ¾Ñ†ĞµĞ´ÑƒÑ€Ğ°|Ñ„ÑƒĞ½ĞºÑ†Ğ¸Ñ)",
+   b: "(\u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440\u0430|\u0444\u0443\u043d\u043a\u0446\u0438\u044f)",
    e: "$",
    l: t,
-   k: "Ğ¿Ñ€Ğ¾Ñ†ĞµĞ´ÑƒÑ€Ğ° Ñ„ÑƒĞ½ĞºÑ†Ğ¸Ñ",
+   k: "\u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440\u0430 \u0444\u0443\u043d\u043a\u0446\u0438\u044f",
    c: [ e.inherit(e.TM, {
     b: t
    }), {
@@ -10323,14 +10343,14 @@ hljs.registerLanguage("bash", function(e) {
      b: "\\(",
      e: "\\)",
      l: t,
-     k: "Ğ·Ğ½Ğ°Ñ‡",
+     k: "\u0437\u043d\u0430\u0447",
      c: [ o, a ]
     }, {
      cN: "export",
-     b: "ÑĞºÑĞ¿Ğ¾Ñ€Ñ‚",
+     b: "\u044d\u043a\u0441\u043f\u043e\u0440\u0442",
      eW: !0,
      l: t,
-     k: "ÑĞºÑĞ¿Ğ¾Ñ€Ñ‚",
+     k: "\u044d\u043a\u0441\u043f\u043e\u0440\u0442",
      c: [ e.CLCM ]
     } ]
    }, e.CLCM ]
@@ -10457,10 +10477,10 @@ hljs.registerLanguage("bash", function(e) {
 }), hljs.registerLanguage("tex", function() {
  var e = {
   cN: "command",
-  b: "\\\\[a-zA-ZĞ°-ÑĞ-Ñ]+[\\*]?"
+  b: "\\\\[a-zA-Z\u0430-\u044f\u0410-\u044f]+[\\*]?"
  }, t = {
   cN: "command",
-  b: "\\\\[^a-zA-ZĞ°-ÑĞ-Ñ0-9]"
+  b: "\\\\[^a-zA-Z\u0430-\u044f\u0410-\u044f0-9]"
  }, n = {
   cN: "special",
   b: "[{}\\[\\]\\&#~]",
@@ -10468,7 +10488,7 @@ hljs.registerLanguage("bash", function(e) {
  };
  return {
   c: [ {
-   b: "\\\\[a-zA-ZĞ°-ÑĞ-Ñ]+[\\*]? *= *-?\\d*\\.?\\d+(pt|pc|mm|cm|in|dd|cc|ex|em)?",
+   b: "\\\\[a-zA-Z\u0430-\u044f\u0410-\u044f]+[\\*]? *= *-?\\d*\\.?\\d+(pt|pc|mm|cm|in|dd|cc|ex|em)?",
    rB: !0,
    c: [ e, t, {
     cN: "number",
@@ -12458,7 +12478,7 @@ function() {
  }, Markdown.Converter = function() {
   function e(e) {
    return e = e.replace(/^[ ]{0,3}\[(.+)\]:[ \t]*\n?[ \t]*<?(\S+?)>?(?=\s|$)[ \t]*\n?[ \t]*((\n*)["(](.+?)[")][ \t]*)?(?:\n+)/gm, function(e, t, n, i, r, o) {
-    return t = t.toLowerCase(), P.set(t, C(n)), r ? i : (o && F.set(t, o.replace(/"/g, "&quot;")), 
+    return t = t.toLowerCase(), P.set(t, C(n)), r ? i : (o && O.set(t, o.replace(/"/g, "&quot;")), 
     "");
    });
   }
@@ -12470,7 +12490,7 @@ function() {
   }
   function r(e, t) {
    var n = t;
-   return n = n.replace(/^\n+/, ""), n = n.replace(/\n+$/g, ""), n = "\n\n~K" + (O.push(n) - 1) + "K\n\n";
+   return n = n.replace(/^\n+/, ""), n = n.replace(/\n+$/g, ""), n = "\n\n~K" + (F.push(n) - 1) + "K\n\n";
   }
   function o(e, n) {
    e = R.preBlockGamut(e, j), e = h(e);
@@ -12488,7 +12508,7 @@ function() {
    var t = /(<[a-z\/!$]("[^"]*"|'[^']*'|[^'">])*>|<!(--(?:|(?:[^>-]|-[^>])(?:[^-]|-[^-])*)--)>)/gi;
    return e = e.replace(t, function(e) {
     var t = e.replace(/(.)<\/?code>(?=.)/g, "$1`");
-    return t = L(t, "!" == e.charAt(1) ? "\\`*_/" : "\\`*_");
+    return t = M(t, "!" == e.charAt(1) ? "\\`*_/" : "\\`*_");
    });
   }
   function l(e) {
@@ -12500,13 +12520,13 @@ function() {
    void 0 == s && (s = "");
    var l = t, c = n.replace(/:\/\//g, "~P"), u = i.toLowerCase(), p = r, h = s;
    if ("" == p) if ("" == u && (u = c.toLowerCase().replace(/ ?\n/g, " ")), p = "#" + u, 
-   void 0 != P.get(u)) p = P.get(u), void 0 != F.get(u) && (h = F.get(u)); else {
+   void 0 != P.get(u)) p = P.get(u), void 0 != O.get(u) && (h = O.get(u)); else {
     if (!(l.search(/\(\s*\)$/m) > -1)) return l;
     p = "";
    }
-   p = N(p), p = L(p, "*_");
+   p = N(p), p = M(p, "*_");
    var f = '<a href="' + p + '"';
-   return "" != h && (h = d(h), h = L(h, "*_"), f += ' title="' + h + '"'), f += ">" + c + "</a>";
+   return "" != h && (h = d(h), h = M(h, "*_"), f += ' title="' + h + '"'), f += ">" + c + "</a>";
   }
   function u(e) {
    return e = e.replace(/(!\[(.*?)\][ ]?(?:\n[ ]*)?\[(.*?)\])()()()()/g, p), e = e.replace(/(!\[(.*?)\]\s?\([ \t]*()<?(\S+?)>?[ \t]*((['"])(.*?)\6[ \t]*)?\))/g, p);
@@ -12518,11 +12538,11 @@ function() {
    var l = t, c = n, u = i.toLowerCase(), p = r, h = s;
    if (h || (h = ""), "" == p) {
     if ("" == u && (u = c.toLowerCase().replace(/ ?\n/g, " ")), p = "#" + u, void 0 == P.get(u)) return l;
-    p = P.get(u), void 0 != F.get(u) && (h = F.get(u));
+    p = P.get(u), void 0 != O.get(u) && (h = O.get(u));
    }
-   c = L(d(c), "*_[]()"), p = L(p, "*_");
+   c = M(d(c), "*_[]()"), p = M(p, "*_");
    var f = '<img src="' + p + '" alt="' + c + '"';
-   return h = d(h), h = L(h, "*_"), f += ' title="' + h + '"', f += " />";
+   return h = d(h), h = M(h, "*_"), f += ' title="' + h + '"', f += " />";
   }
   function h(e) {
    return e = e.replace(/^(.+)[ \t]*\n=+[ \t]*\n+/gm, function(e, t) {
@@ -12563,7 +12583,7 @@ function() {
    }), e = e.replace(/~0/, "");
   }
   function v(e) {
-   return e = e.replace(/(^\n+|\n+$)/g, ""), "\n\n~K" + (O.push(e) - 1) + "K\n\n";
+   return e = e.replace(/(^\n+|\n+$)/g, ""), "\n\n~K" + (F.push(e) - 1) + "K\n\n";
   }
   function b(e) {
    return e = e.replace(/(^|[^\\])(`+)([^\r]*?[^`])\2(?!`)/gm, function(e, t, n, i) {
@@ -12574,7 +12594,7 @@ function() {
   }
   function y(e) {
    return e = e.replace(/&/g, "&amp;"), e = e.replace(/</g, "&lt;"), e = e.replace(/>/g, "&gt;"), 
-   e = L(e, "*_{}[]\\", !1);
+   e = M(e, "*_{}[]\\", !1);
   }
   function x(e) {
    return e = e.replace(/([\W_]|^)(\*\*|__)(?=\S)([^\r]*?\S[\*_]*)\2([\W_]|$)/g, "$1<strong>$3</strong>$4"), 
@@ -12600,7 +12620,7 @@ function() {
    if (!t) {
     o = i.length;
     for (var s = 0; o > s; s++) for (var c = !0; c; ) c = !1, i[s] = i[s].replace(/~K(\d+)K/g, function(e, t) {
-     return c = !0, O[t];
+     return c = !0, F[t];
     });
    }
    return i.join("\n\n");
@@ -12609,7 +12629,7 @@ function() {
    return e = e.replace(/&(?!#?[xX]?(?:[0-9a-fA-F]+|\w+);)/g, "&amp;"), e = e.replace(/<(?![a-z\/?!]|~D)/gi, "&lt;");
   }
   function _(e) {
-   return e = e.replace(/\\(\\)/g, M), e = e.replace(/\\([`*_{}\[\]()>#+-.!])/g, M);
+   return e = e.replace(/\\(\\)/g, L), e = e.replace(/\\([`*_{}\[\]()>#+-.!])/g, L);
   }
   function k(e, t, n, i) {
    if (t) return e;
@@ -12658,13 +12678,13 @@ function() {
     return "~D" == e ? "%24" : ":" == e ? ":" : "%" + e.charCodeAt(0).toString(16);
    });
   }
-  function L(e, t, n) {
+  function M(e, t, n) {
    var i = "([" + t.replace(/([\[\]\\])/g, "\\$1") + "])";
    n && (i = "\\\\" + i);
    var r = new RegExp(i, "g");
-   return e = e.replace(r, M);
+   return e = e.replace(r, L);
   }
-  function M(e, t) {
+  function L(e, t) {
    var n = t.charCodeAt(0);
    return "~E" + n + "E";
   }
@@ -12676,14 +12696,14 @@ function() {
   R.addNoop("plainLinkText"), R.addNoop("preConversion"), R.addNoop("postNormalization"), 
   R.addNoop("preBlockGamut"), R.addNoop("postBlockGamut"), R.addNoop("preSpanGamut"), 
   R.addNoop("postSpanGamut"), R.addNoop("postConversion");
-  var P, F, O, B;
+  var P, O, F, B;
   this.makeHtml = function(n) {
    if (P) throw new Error("Recursive call to converter.makeHtml");
-   return P = new i(), F = new i(), O = [], B = 0, n = R.preConversion(n), n = n.replace(/~/g, "~T"), 
+   return P = new i(), O = new i(), F = [], B = 0, n = R.preConversion(n), n = n.replace(/~/g, "~T"), 
    n = n.replace(/\$/g, "~D"), n = n.replace(/\r\n/g, "\n"), n = n.replace(/\r/g, "\n"), 
    n = "\n\n" + n + "\n\n", n = D(n), n = n.replace(/^[ \t]+$/gm, ""), n = R.postNormalization(n), 
    n = t(n), n = e(n), n = o(n), n = T(n), n = n.replace(/~D/g, "$$"), n = n.replace(/~T/g, "~"), 
-   n = R.postConversion(n), O = F = P = null, n;
+   n = R.postConversion(n), F = O = P = null, n;
   };
   var j = function(e) {
    return o(e);
@@ -13016,7 +13036,7 @@ function() {
 }), define("text!html/mathJaxSettingsBlock.html", [], function() {
  return '<p>Allows StackEdit to interpret LaTeX mathematical expressions.</p>\n<div class="form-horizontal">\n    <div class="form-group">\n        <label class="col-sm-4 control-label"\n            for="input-mathjax-config-tex">TeX configuration</label>\n        <div class="col-sm-7">\n            <input type="text" id="input-mathjax-config-tex" class="form-control">\n        </div>\n    </div>\n    <div class="form-group">\n        <label class="col-sm-4 control-label"\n            for="input-mathjax-config-tex2jax">tex2jax configuration</label>\n        <div class="col-sm-7">\n            <input type="text" id="input-mathjax-config-tex2jax" class="form-control">\n        </div>\n    </div>\n</div>\n<span class="help-block pull-right"><a target="_blank" href="http://docs.mathjax.org/en/latest/options/index.html">More info</a></span>';
 }), define("text!libs/mathjax_config.js", [], function() {
- return 'MathJax.Hub.Config({\n	skipStartupTypeset: true,\n    "HTML-CSS": {\n        preferredFont: "TeX",\n        availableFonts: [\n            "STIX",\n            "TeX"\n        ],\n        linebreaks: {\n            automatic: true\n        },\n        EqnChunk: 10,\n        imageFont: null\n    },\n    tex2jax: <%= tex2jax || \'{ inlineMath: [["$","$"],["\\\\\\\\\\\\\\\\(","\\\\\\\\\\\\\\\\)"]], displayMath: [["$$","$$"],["\\\\\\\\[","\\\\\\\\]"]], processEscapes: true }\' %>,\n    TeX: $.extend({\n        noUndefined: {\n            attributes: {\n                mathcolor: "red",\n                mathbackground: "#FFEEEE",\n                mathsize: "90%"\n            }\n        },\n        Safe: {\n            allow: {\n                URLs: "safe",\n                classes: "safe",\n                cssIDs: "safe",\n                styles: "safe",\n                fontsize: "all"\n            }\n        }\n    }, <%= tex %>),\n    messageStyle: "none"\n});\n';
+ return 'MathJax.Hub.Config({\n	skipStartupTypeset: true,\n    "HTML-CSS": {\n        preferredFont: "TeX",\n        availableFonts: [\n            "TeX"\n        ],\n        linebreaks: {\n            automatic: true\n        },\n        EqnChunk: 10,\n        imageFont: null\n    },\n    tex2jax: <%= tex2jax || \'{ inlineMath: [["$","$"],["\\\\\\\\\\\\\\\\(","\\\\\\\\\\\\\\\\)"]], displayMath: [["$$","$$"],["\\\\\\\\[","\\\\\\\\]"]], processEscapes: true }\' %>,\n    TeX: $.extend({\n        noUndefined: {\n            attributes: {\n                mathcolor: "red",\n                mathbackground: "#FFEEEE",\n                mathsize: "90%"\n            }\n        },\n        Safe: {\n            allow: {\n                URLs: "safe",\n                classes: "safe",\n                cssIDs: "safe",\n                styles: "safe",\n                fontsize: "all"\n            }\n        }\n    }, <%= tex %>),\n    messageStyle: "none"\n});\n';
 }), define("libs/mathjax_init", [ "settings", "text!libs/mathjax_config.js" ], function(e, t) {
  var n = document.createElement("script");
  n.type = "text/x-mathjax-config", n.innerHTML = _.template(t, {
@@ -13179,8 +13199,8 @@ function() {
   d = e.first(a), b = v.slice(i, v.length + r), v = o.concat(y).concat(a);
  }
  function a(e) {
-  var t = e.id.substring(3);
-  w[t] = e;
+  var t = e.id.substring(3), n = w[t];
+  n && S.removeChild(n), w[t] = e, S.appendChild(e);
  }
  function s() {
   function n(n) {
@@ -13205,7 +13225,7 @@ function() {
   }), i.innerHTML = "";
   var s = p;
   void 0 !== d && (s = document.getElementById("wmd-preview-section-" + d.id)), h.insertBefore(o, s), 
-  p.innerHTML = "";
+  p.innerHTML = "", delete p.exportableHtml;
   var l = [];
   if (m === !0) {
    var c = t("ol");
@@ -13217,12 +13237,14 @@ function() {
     i && c.appendChild(i.cloneNode(!0));
    }), l.length > 0 && p.appendChild(t("div", {
     "class": "footnotes"
-   }, t("hr"), c)), w = e.pick(w, l);
+   }, t("hr"), c)), Object.keys(w).forEach(function(e) {
+    -1 === l.indexOf(e) && (S.removeChild(w[e]), delete w[e]);
+   });
   }
  }
  var l = new i("partialRendering", "Partial Rendering", !0);
  l.settingsBlock = r;
- var c, u, d, p, h, f = !1, m = !1, g = [], v = [], b = [], y = [], x = !1, w = {};
+ var c, u, d, p, h, f = !1, m = !1, g = [], v = [], b = [], y = [], x = !1, w = {}, S = document.createDocumentFragment();
  return l.onSectionsCreated = function(e) {
   g = e;
  }, l.onPagedownConfigure = function(t) {
@@ -13565,7 +13587,7 @@ function() {
   return c;
  });
 }(), define("text!html/dialogAbout.html", [], function() {
- return '<div class="modal-dialog">\n    <div class="modal-content">\n        <div class="modal-header">\n            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>\n            <img height="64" data-stackedit-src="logo.svg" />\n        </div>\n        <div class="modal-body">\n            <div class="pull-right">\n                <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://stackedit.io" data-text="Great #markdown editor!" data-via="stackedit" data-size="large"></a>\n            </div>\n            <dl>\n                <dt>About:</dt>\n                <dd>\n                    <a target="_blank" href="https://github.com/benweet/stackedit/">GitHub\n						project</a> /\n                    <a target="_blank" href="https://github.com/benweet/stackedit/issues">issue\n						tracker</a>\n                    <br />\n                    <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome\n						app</a> (thanks for your review!)\n                    <br />\n                    <a target="_blank" href="https://twitter.com/stackedit/">Follow on Twitter</a>\n                    <br />\n                    <a target="_blank" href="https://www.facebook.com/stackedit/">Follow\n						on Facebook</a>\n                    <br />\n                    <a target="_blank" href="https://plus.google.com/110816046787593496375"\n                    rel="publisher">Follow on Google+</a>\n                    <br />\n				</dd>\n			</dl>\n			<dl>\n				<dt>Developers:</dt>\n				<dd>\n					<a target="_blank" href="https://twitter.com/benweet">Benoit Schweblin</a><br />\n					Pete Eigel (contributor)<br />\n					wiibaa (contributor)<br />\n                    <a target="_blank" href="http://www.hugwebdesign.com/">Daniel Hug</a> (contributor)<br />\n                    <a target="_blank" href="https://github.com/kmb32123">Kevin Brey</a> (themer)<br />\n                </dd>\n			</dl>\n            <p>\n                With special thanks to <a target="blank" href="http://www.couchappy.com/">Couchappy</a> for CouchDB hosting.\n            </p>\n			<dl>\n				<dt>Sponsorship:</dt>\n				<dd>\n                    <a href="#" class="sponsorship-button"><img height="30" data-stackedit-src="button.svg" /></a>\n				</dd>\n			</dl>\n			<p>\n				StackEdit <%= version %> &ndash; <a target="_blank" href="privacy_policy.html">Privacy Policy</a><br /> Copyright 2013-2014 <a\n					target="_blank" href="https://twitter.com/benweet">Benoit\n					Schweblin</a><br /> Licensed under an <a target="_blank"\n					href="http://www.apache.org/licenses/LICENSE-2.0">Apache\n					License</a>\n			</p>\n		</div>\n		<div class="modal-footer">\n			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n		</div>\n	</div>\n</div>\n';
+ return '<div class="modal-dialog">\n    <div class="modal-content">\n        <div class="modal-header">\n            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>\n            <img height="64" data-stackedit-src="logo.svg" />\n        </div>\n        <div class="modal-body">\n            <div class="pull-right">\n                <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://stackedit.io" data-text="Great #markdown editor!" data-via="stackedit" data-size="large"></a>\n            </div>\n            <dl>\n                <dt>About:</dt>\n                <dd>\n                    <a target="_blank" href="https://github.com/benweet/stackedit/">GitHub\n						project</a> /\n                    <a target="_blank" href="https://github.com/benweet/stackedit/issues">issue\n						tracker</a>\n                    <br />\n                    <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome\n						app</a> (thanks for your review!)\n                    <br />\n                    <a target="_blank" href="https://twitter.com/stackedit/">Follow on Twitter</a>\n                    <br />\n                    <a target="_blank" href="https://www.facebook.com/stackedit/">Follow\n						on Facebook</a>\n                    <br />\n                    <a target="_blank" href="https://plus.google.com/110816046787593496375"\n                    rel="publisher">Follow on Google+</a>\n                    <br />\n				</dd>\n			</dl>\n			<dl>\n				<dt>Developers:</dt>\n				<dd>\n					<a target="_blank" href="https://twitter.com/benweet">Benoit Schweblin</a><br />\n					Pete Eigel (contributor)<br />\n					wiibaa (contributor)<br />\n                    <a target="_blank" href="http://www.hugwebdesign.com/">Daniel Hug</a> (contributor)<br />\n                    <a target="_blank" href="https://github.com/kmb32123">Kevin Brey</a> (themer)<br />\n                </dd>\n			</dl>\n            <p>\n                With special thanks to <a target="blank" href="http://www.smileupps.com/">Smileupps</a> for CouchDB hosting.\n            </p>\n			<dl>\n				<dt>Sponsorship:</dt>\n				<dd>\n                    <a href="#" class="sponsorship-button"><img height="30" data-stackedit-src="button.svg" /></a>\n				</dd>\n			</dl>\n			<p>\n				StackEdit <%= version %> &ndash; <a target="_blank" href="privacy_policy.html">Privacy Policy</a><br /> Copyright 2013-2014 <a\n					target="_blank" href="https://twitter.com/benweet">Benoit\n					Schweblin</a><br /> Licensed under an <a target="_blank"\n					href="http://www.apache.org/licenses/LICENSE-2.0">Apache\n					License</a>\n			</p>\n		</div>\n		<div class="modal-footer">\n			<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n		</div>\n	</div>\n</div>\n';
 }), define("extensions/dialogAbout", [ "jquery", "underscore", "constants", "utils", "classes/Extension", "monetizejs", "text!html/dialogAbout.html" ], function(e, t, n, i, r, o, a) {
  var s, l = new r("dialogAbout", 'Dialog "About"');
  l.onEventMgrCreated = function(e) {
@@ -14250,7 +14272,7 @@ function() {
  };
  var m, g, v, b, y, x, w, S, C, _ = [ '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>" data-toggle="collapse" data-target=".modal-document-manager .file-list.<%= id %>">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<button class="btn btn-default button-delete" title="Delete"><i class="icon-trash"></i></button>', '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>', '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>', '<div class="name"><i class="icon-folder"></i> ', "<%= folderDesc.name %></div>", '<input type="text" class="input-rename form-control hide"></a>', '<div class="file-list collapse <%= id %> clearfix"><%= fileListHtml %></div>' ].join(""), k = [ '<li class="list-group-item file clearfix" data-file-index="<%= fileDesc.fileIndex %>">', '<label class="checkbox" title="Select"><input type="checkbox"></label>', '<button class="btn btn-default button-delete" title="Delete"><i class="icon-trash"></i></button>', '<button class="btn btn-default button-rename" title="Rename"><i class="icon-pencil"></i></button>', '<div class="name"><%= fileDesc.composeTitle() %></div>', '<input type="text" class="input-rename form-control hide"></li>' ].join(""), E = [ '<a href="#" class="list-group-item folder clearfix" data-folder-index="<%= folderDesc.folderIndex %>">', '<div class="pull-right file-count"><%= _.size(folderDesc.fileList) %></div>', '<div class="name"><i class="icon-forward"></i> ', "<%= folderDesc.name %></div></a>" ].join(""), T = [ '<li class="list-group-item file clearfix">', '<div class="name"><%= fileDesc.composeTitle() %></div></li>' ].join(""), I = [], D = [], N = t.debounce(function() {
   c(), y.toggleClass("disabled", 0 === t.size(s) || 0 === t.size(I)), x.toggleClass("disabled", 0 === t.size(D) && 0 === t.size(I));
- }, 50), L = t.debounce(function() {
+ }, 50), M = t.debounce(function() {
   if (m !== !1) {
    N(), S.text(t.size(l)), C.text(t.size(s) + 1), w = t.filter(l, function(e) {
     return void 0 === e.folder;
@@ -14281,8 +14303,8 @@ function() {
    }), v.innerHTML = e;
   }
  }, 50);
- return h.onFileCreated = L, h.onFileDeleted = L, h.onSyncExportSuccess = L, h.onSyncRemoved = L, 
- h.onNewPublishSuccess = L, h.onPublishRemoved = L, h.onFoldersChanged = L, h.onTitleChanged = function(t) {
+ return h.onFileCreated = M, h.onFileDeleted = M, h.onSyncExportSuccess = M, h.onSyncRemoved = M, 
+ h.onNewPublishSuccess = M, h.onPublishRemoved = M, h.onFoldersChanged = M, h.onTitleChanged = function(t) {
   m !== !1 && (e(v).find('[data-file-index="' + t.fileIndex + '"] .name').html(t.composeTitle()).removeClass("hide"), 
   e(v.querySelectorAll(".input-rename")).addClass("hide"));
  }, h.onReady = function() {
@@ -14291,7 +14313,7 @@ function() {
   b = g.querySelector(".list-group.selected-document-list");
   var o = g.querySelector(".list-group.select-folder-list");
   e(g).on("show.bs.modal", function() {
-   m = !0, L(), setTimeout(function() {
+   m = !0, M(), setTimeout(function() {
     e(v.querySelectorAll(".root-folder")).click();
    }, 250);
   }).on("hide.bs.modal", function() {
@@ -14403,7 +14425,7 @@ function() {
  }, a;
 }), function(e) {
  var t = function() {
-  return !1 === e.support.boxModel && e.support.objectAll && $support.leadingWhitespace;
+  return !1 === e.support.boxModel && e.support.objectAll && e.support.leadingWhitespace;
  }();
  e.jGrowl = function(t, n) {
   0 == e("#jGrowl").size() && e('<div id="jGrowl"></div>').addClass(n && n.position ? n.position : e.jGrowl.defaults.position).appendTo("body"), 
@@ -14465,7 +14487,7 @@ function() {
   render: function(t) {
    var n = this, i = t.message, r = t.options;
    r.themeState = "" == r.themeState ? "" : "ui-state-" + r.themeState;
-   var t = e('<div class="jGrowl-notification ' + r.themeState + " ui-corner-all" + (void 0 != r.group && "" != r.group ? " " + r.group : "") + '"><div class="jGrowl-close">' + r.closeTemplate + '</div><div class="jGrowl-header">' + r.header + '</div><div class="jGrowl-message">' + i + "</div></div>").data("jGrowl", r).addClass(r.theme).children("div.jGrowl-close").bind("click.jGrowl", function() {
+   var t = e("<div/>").addClass("jGrowl-notification " + r.themeState + " ui-corner-all" + (void 0 != r.group && "" != r.group ? " " + r.group : "")).append(e("<div/>").addClass("jGrowl-close").html(r.closeTemplate)).append(e("<div/>").addClass("jGrowl-header").html(r.header)).append(e("<div/>").addClass("jGrowl-message").html(i)).data("jGrowl", r).addClass(r.theme).children("div.jGrowl-close").bind("click.jGrowl", function() {
     e(this).parent().trigger("jGrowl.beforeClose");
    }).parent();
    e(t).bind("mouseover.jGrowl", function() {
@@ -14473,29 +14495,29 @@ function() {
    }).bind("mouseout.jGrowl", function() {
     e("div.jGrowl-notification", n.element).data("jGrowl.pause", !1);
    }).bind("jGrowl.beforeOpen", function() {
-    0 != r.beforeOpen.apply(t, [ t, i, r, n.element ]) && e(this).trigger("jGrowl.open");
+    r.beforeOpen.apply(t, [ t, i, r, n.element ]) !== !1 && e(this).trigger("jGrowl.open");
    }).bind("jGrowl.open", function() {
-    0 != r.open.apply(t, [ t, i, r, n.element ]) && ("after" == r.glue ? e("div.jGrowl-notification:last", n.element).after(t) : e("div.jGrowl-notification:first", n.element).before(t), 
+    r.open.apply(t, [ t, i, r, n.element ]) !== !1 && ("after" == r.glue ? e("div.jGrowl-notification:last", n.element).after(t) : e("div.jGrowl-notification:first", n.element).before(t), 
     e(this).animate(r.animateOpen, r.openDuration, r.easing, function() {
-     e.support.opacity === !1 && this.style.removeAttribute("filter"), null != e(this).data("jGrowl") && (e(this).data("jGrowl").created = new Date()), 
+     e.support.opacity === !1 && this.style.removeAttribute("filter"), null !== e(this).data("jGrowl") && (e(this).data("jGrowl").created = new Date()), 
      e(this).trigger("jGrowl.afterOpen");
     }));
    }).bind("jGrowl.afterOpen", function() {
     r.afterOpen.apply(t, [ t, i, r, n.element ]);
    }).bind("jGrowl.beforeClose", function() {
-    0 != r.beforeClose.apply(t, [ t, i, r, n.element ]) && e(this).trigger("jGrowl.close");
+    r.beforeClose.apply(t, [ t, i, r, n.element ]) !== !1 && e(this).trigger("jGrowl.close");
    }).bind("jGrowl.close", function() {
     e(this).data("jGrowl.pause", !0), e(this).animate(r.animateClose, r.closeDuration, r.easing, function() {
      e.isFunction(r.close) ? r.close.apply(t, [ t, i, r, n.element ]) !== !1 && e(this).remove() : e(this).remove();
     });
    }).trigger("jGrowl.beforeOpen"), "" != r.corners && void 0 != e.fn.corner && e(t).corner(r.corners), 
-   e("div.jGrowl-notification:parent", n.element).size() > 1 && 0 == e("div.jGrowl-closer", n.element).size() && 0 != this.defaults.closer && e(this.defaults.closerTemplate).addClass("jGrowl-closer " + this.defaults.themeState + " ui-corner-all").addClass(this.defaults.theme).appendTo(n.element).animate(this.defaults.animateOpen, this.defaults.speed, this.defaults.easing).bind("click.jGrowl", function() {
+   e("div.jGrowl-notification:parent", n.element).size() > 1 && 0 == e("div.jGrowl-closer", n.element).size() && this.defaults.closer !== !1 && e(this.defaults.closerTemplate).addClass("jGrowl-closer " + this.defaults.themeState + " ui-corner-all").addClass(this.defaults.theme).appendTo(n.element).animate(this.defaults.animateOpen, this.defaults.speed, this.defaults.easing).bind("click.jGrowl", function() {
     e(this).siblings().trigger("jGrowl.beforeClose"), e.isFunction(n.defaults.closer) && n.defaults.closer.apply(e(this).parent()[0], [ e(this).parent()[0] ]);
    });
   },
   update: function() {
    e(this.element).find("div.jGrowl-notification:parent").each(function() {
-    void 0 != e(this).data("jGrowl") && void 0 != e(this).data("jGrowl").created && e(this).data("jGrowl").created.getTime() + parseInt(e(this).data("jGrowl").life) < new Date().getTime() && 1 != e(this).data("jGrowl").sticky && (void 0 == e(this).data("jGrowl.pause") || 1 != e(this).data("jGrowl.pause")) && e(this).trigger("jGrowl.beforeClose");
+    void 0 != e(this).data("jGrowl") && void 0 !== e(this).data("jGrowl").created && e(this).data("jGrowl").created.getTime() + parseInt(e(this).data("jGrowl").life) < new Date().getTime() && e(this).data("jGrowl").sticky !== !0 && (void 0 == e(this).data("jGrowl.pause") || e(this).data("jGrowl.pause") !== !0) && e(this).trigger("jGrowl.beforeClose");
    }), this.notifications.length > 0 && (0 == this.defaults.pool || e(this.element).find("div.jGrowl-notification:parent").size() < this.defaults.pool) && this.render(this.notifications.shift()), 
    e(this.element).find("div.jGrowl-notification:parent").size() < 2 && e(this.element).find("div.jGrowl-closer").animate(this.defaults.animateClose, this.defaults.speed, this.defaults.easing, function() {
     e(this).remove();
@@ -14508,7 +14530,7 @@ function() {
    }, parseInt(this.defaults.check)), t && e(this.element).addClass("ie6");
   },
   shutdown: function() {
-   e(this.element).removeClass("jGrowl").find("div.jGrowl-notification").remove(), 
+   e(this.element).removeClass("jGrowl").find("div.jGrowl-notification").trigger("jGrowl.close").parent().empty(), 
    clearInterval(this.interval);
   },
   close: function() {
@@ -14665,10 +14687,10 @@ function() {
  }, "undefined" != typeof module && module.exports ? module.exports = u : "undefined" != typeof define ? define("eve", [], function() {
   return u;
  }) : e.eve = u;
-}(this), function(e, t) {
+}(window || this), function(e, t) {
  "function" == typeof define && define.amd ? define("raphael", [ "eve" ], function(n) {
   return t(e, n);
- }) : t(e, e.eve);
+ }) : t(e, e.eve || "function" == typeof require && require("eve"));
 }(this, function(e, t) {
  function n(e) {
   if (n.is(e, "function")) return x ? e() : t.on("raphael.DOMload", e);
@@ -14693,7 +14715,7 @@ function() {
  }
  function o(e, t, n) {
   function i() {
-   var o = Array.prototype.slice.call(arguments, 0), a = o.join("â€"), s = i.cache = i.cache || {}, l = i.count = i.count || [];
+   var o = Array.prototype.slice.call(arguments, 0), a = o.join("\u2400"), s = i.cache = i.cache || {}, l = i.count = i.count || [];
    return s[k](a) ? (r(l, a), n ? n(s[a]) : s[a]) : (l.length >= 1e3 && delete s[l.shift()], 
    l.push(a), s[a] = e[D](t, o), n ? n(s[a]) : s[a]);
   }
@@ -14829,7 +14851,7 @@ function() {
   this.b = 0, this.c = 0, this.d = 1, this.e = 0, this.f = 0);
  }
  function m() {
-  return this.x + A + this.y + A + this.width + " Ã— " + this.height;
+  return this.x + A + this.y + A + this.width + " \xd7 " + this.height;
  }
  function g(e, t, n, i, r, o) {
   function a(e) {
@@ -14902,26 +14924,26 @@ function() {
      break;
 
     case "path":
-     var T = Ft(v[_], b[_]), I = T[1];
+     var T = Ot(v[_], b[_]), I = T[1];
      for (v[_] = T[0], y[_] = [], w = 0, C = v[_].length; C > w; w++) {
       y[_][w] = [ 0 ];
-      for (var D = 1, L = v[_][w].length; L > D; D++) y[_][w][D] = (I[w][D] - v[_][w][D]) / m;
+      for (var D = 1, M = v[_][w].length; M > D; D++) y[_][w][D] = (I[w][D] - v[_][w][D]) / m;
      }
      break;
 
     case "transform":
-     var M = i._, A = qt(M[_], b[_]);
+     var L = i._, A = qt(L[_], b[_]);
      if (A) for (v[_] = A.from, b[_] = A.to, y[_] = [], y[_].real = !0, w = 0, C = v[_].length; C > w; w++) for (y[_][w] = [ v[_][w][0] ], 
-     D = 1, L = v[_][w].length; L > D; D++) y[_][w][D] = (b[_][w][D] - v[_][w][D]) / m; else {
-      var F = i.matrix || new f(), O = {
+     D = 1, M = v[_][w].length; M > D; D++) y[_][w][D] = (b[_][w][D] - v[_][w][D]) / m; else {
+      var O = i.matrix || new f(), F = {
        _: {
-        transform: M.transform
+        transform: L.transform
        },
        getBBox: function() {
         return i.getBBox(1);
        }
       };
-      v[_] = [ F.a, F.b, F.c, F.d, F.e, F.f ], jt(O, b[_]), b[_] = O._.transform, y[_] = [ (O.matrix.a - F.a) / m, (O.matrix.b - F.b) / m, (O.matrix.c - F.c) / m, (O.matrix.d - F.d) / m, (O.matrix.e - F.e) / m, (O.matrix.f - F.f) / m ];
+      v[_] = [ O.a, O.b, O.c, O.d, O.e, O.f ], jt(F, b[_]), b[_] = F._.transform, y[_] = [ (F.matrix.a - O.a) / m, (F.matrix.b - O.b) / m, (F.matrix.c - O.c) / m, (F.matrix.d - O.d) / m, (F.matrix.e - O.e) / m, (F.matrix.f - O.f) / m ];
      }
      break;
 
@@ -14970,7 +14992,7 @@ function() {
  function y(e) {
   for (var t = 0; t < cn.length; t++) cn[t].el.paper == e && cn.splice(t--, 1);
  }
- n.version = "2.1.0", n.eve = t;
+ n.version = "2.1.2", n.eve = t;
  var x, w, S = /[, ]+/, C = {
   circle: 1,
   rect: 1,
@@ -14986,11 +15008,11 @@ function() {
   is: E.win.Raphael
  }, I = function() {
   this.ca = this.customAttributes = {};
- }, D = "apply", N = "concat", L = "ontouchstart" in E.win || E.win.DocumentTouch && E.doc instanceof DocumentTouch, M = "", A = " ", R = String, P = "split", F = "click dblclick mousedown mousemove mouseout mouseover mouseup touchstart touchmove touchend touchcancel"[P](A), O = {
+ }, D = "apply", N = "concat", M = "ontouchstart" in E.win || E.win.DocumentTouch && E.doc instanceof DocumentTouch, L = "", A = " ", R = String, P = "split", O = "click dblclick mousedown mousemove mouseout mouseover mouseup touchstart touchmove touchend touchcancel"[P](A), F = {
   mousedown: "touchstart",
   mousemove: "touchmove",
   mouseup: "touchend"
- }, B = R.prototype.toLowerCase, j = Math, $ = j.max, q = j.min, G = j.abs, H = j.pow, U = j.PI, z = "number", V = "string", W = "array", X = Object.prototype.toString, Q = (n._ISURL = /^url\(['"]?([^\)]+?)['"]?\)$/i, 
+ }, B = R.prototype.toLowerCase, j = Math, $ = j.max, q = j.min, G = j.abs, H = j.pow, U = j.PI, z = "number", V = "string", W = "array", X = Object.prototype.toString, Q = (n._ISURL = /^url\(['"]?(.+?)['"]?\)$/i, 
  /^\s*((#[a-f\d]{6})|(#[a-f\d]{3})|rgba?\(\s*([\d\.]+%?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+%?(?:\s*,\s*[\d\.]+%?)?)\s*\)|hsba?\(\s*([\d\.]+(?:deg|\xb0|%)?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+(?:%?\s*,\s*[\d\.]+)?)%?\s*\)|hsla?\(\s*([\d\.]+(?:deg|\xb0|%)?\s*,\s*[\d\.]+%?\s*,\s*[\d\.]+(?:%?\s*,\s*[\d\.]+)?)%?\s*\))\s*$/i), Y = {
   NaN: 1,
   Infinity: 1,
@@ -15098,7 +15120,7 @@ function() {
  }, vt = n.mapPath = function(e, t) {
   if (!t) return e;
   var n, i, r, o, a, s, l;
-  for (e = Ft(e), r = 0, a = e.length; a > r; r++) for (l = e[r], o = 1, s = l.length; s > o; o += 2) n = t.x(l[o], l[o + 1]), 
+  for (e = Ot(e), r = 0, a = e.length; a > r; r++) for (l = e[r], o = 1, s = l.length; s > o; o += 2) n = t.x(l[o], l[o + 1]), 
   i = t.y(l[o], l[o + 1]), l[o] = n, l[o + 1] = i;
   return e;
  };
@@ -15106,7 +15128,7 @@ function() {
  "VML" == n.type) {
   var bt, yt = E.doc.createElement("div");
   if (yt.innerHTML = '<v:shape adj="1"/>', bt = yt.firstChild, bt.style.behavior = "url(#default#VML)", 
-  !bt || "object" != typeof bt.adj) return n.type = M;
+  !bt || "object" != typeof bt.adj) return n.type = L;
   yt = null;
  }
  n.svg = !(n.vml = "VML" == n.type), n._Paper = I, n.fn = w = I.prototype = n.prototype, 
@@ -15156,7 +15178,7 @@ function() {
    var s = t.createTextRange();
    xt = o(function(e) {
     try {
-     t.style.color = R(e).replace(i, M);
+     t.style.color = R(e).replace(i, L);
      var n = s.queryCommandValue("ForeColor");
      return n = (255 & n) << 16 | 65280 & n | (16711680 & n) >>> 16, "#" + ("000000" + n.toString(16)).slice(-6);
     } catch (r) {
@@ -15165,9 +15187,9 @@ function() {
    });
   } else {
    var l = E.doc.createElement("i");
-   l.title = "RaphaÃ«l Colour Picker", l.style.display = "none", E.doc.body.appendChild(l), 
+   l.title = "Rapha\xebl Colour Picker", l.style.display = "none", E.doc.body.appendChild(l), 
    xt = o(function(e) {
-    return l.style.color = e, E.doc.defaultView.getComputedStyle(l, M).getPropertyValue("color");
+    return l.style.color = e, E.doc.defaultView.getComputedStyle(l, L).getPropertyValue("color");
    });
   }
   return xt(e);
@@ -15205,8 +15227,8 @@ function() {
    hex: "none"
   }, e.r = e.g = e.b = e.h = e.s = e.v = e.l = -1)), e.toString = Ct, e;
  }, n.hsb2rgb = function(e, t, n, i) {
-  this.is(e, "object") && "h" in e && "s" in e && "b" in e && (n = e.b, t = e.s, e = e.h, 
-  i = e.o), e *= 360;
+  this.is(e, "object") && "h" in e && "s" in e && "b" in e && (n = e.b, t = e.s, i = e.o, 
+  e = e.h), e *= 360;
   var r, o, a, s, l;
   return e = e % 360 / 60, l = n * t, s = l * (1 - G(e % 2 - 1)), r = o = a = n - l, 
   e = ~~e, r += [ l, s, 0, 0, s, l ][e], o += [ s, l, l, s, 0, 0 ][e], a += [ 0, 0, s, l, l, s ][e], 
@@ -15275,11 +15297,11 @@ function() {
   r = Z(l[2]), "%" == l[2].slice(-1) && (r *= 2.55), "rgba" == c[1].toLowerCase().slice(0, 4) && (o = Z(l[3])), 
   l[3] && "%" == l[3].slice(-1) && (o /= 100)), c[5] ? (l = c[5][P](rt), t = Z(l[0]), 
   "%" == l[0].slice(-1) && (t *= 2.55), i = Z(l[1]), "%" == l[1].slice(-1) && (i *= 2.55), 
-  r = Z(l[2]), "%" == l[2].slice(-1) && (r *= 2.55), ("deg" == l[0].slice(-3) || "Â°" == l[0].slice(-1)) && (t /= 360), 
+  r = Z(l[2]), "%" == l[2].slice(-1) && (r *= 2.55), ("deg" == l[0].slice(-3) || "\xb0" == l[0].slice(-1)) && (t /= 360), 
   "hsba" == c[1].toLowerCase().slice(0, 4) && (o = Z(l[3])), l[3] && "%" == l[3].slice(-1) && (o /= 100), 
   n.hsb2rgb(t, i, r, o)) : c[6] ? (l = c[6][P](rt), t = Z(l[0]), "%" == l[0].slice(-1) && (t *= 2.55), 
   i = Z(l[1]), "%" == l[1].slice(-1) && (i *= 2.55), r = Z(l[2]), "%" == l[2].slice(-1) && (r *= 2.55), 
-  ("deg" == l[0].slice(-3) || "Â°" == l[0].slice(-1)) && (t /= 360), "hsla" == c[1].toLowerCase().slice(0, 4) && (o = Z(l[3])), 
+  ("deg" == l[0].slice(-3) || "\xb0" == l[0].slice(-1)) && (t /= 360), "hsla" == c[1].toLowerCase().slice(0, 4) && (o = Z(l[3])), 
   l[3] && "%" == l[3].slice(-1) && (o /= 100), n.hsl2rgb(t, i, r, o)) : (c = {
    r: t,
    g: i,
@@ -15407,7 +15429,7 @@ function() {
   return n.isPointInsideBBox(r, t, i) && h(e, [ [ "M", t, i ], [ "H", r.x2 + 10 ] ], 1) % 2 == 1;
  }, n._removedFactory = function(e) {
   return function() {
-   t("raphael.log", null, "RaphaÃ«l: you are calling to method â€œ" + e + "â€ of removed object", e);
+   t("raphael.log", null, "Rapha\xebl: you are calling to method \u201c" + e + "\u201d of removed object", e);
   };
  };
  var Tt = n.pathBBox = function(e) {
@@ -15421,7 +15443,7 @@ function() {
    x2: 0,
    y2: 0
   };
-  e = Ft(e);
+  e = Ot(e);
   for (var n, r = 0, o = 0, a = [], s = [], l = 0, c = e.length; c > l; l++) if (n = e[l], 
   "M" == n[0]) r = n[1], o = n[2], a.push(r), s.push(o); else {
    var u = Pt(r, o, n[1], n[2], n[3], n[4], n[5], n[6]);
@@ -15543,9 +15565,9 @@ function() {
    }
   }
   return i.toString = n._path2string, t.abs = It(i), i;
- }, Lt = function(e, t, n, i) {
+ }, Mt = function(e, t, n, i) {
   return [ e, t, n, i, n, i ];
- }, Mt = function(e, t, n, i, r, o) {
+ }, Lt = function(e, t, n, i, r, o) {
   var a = 1 / 3, s = 2 / 3;
   return [ a * e + s * n, a * t + s * i, a * r + s * n, a * o + s * i, r, o ];
  }, At = function(e, t, n, i, r, a, s, l, c, u) {
@@ -15570,7 +15592,7 @@ function() {
    k = _ + p * (s && k > _ ? 1 : -1), l = S + n * j.cos(k), c = C + i * j.sin(k), f = At(l, c, n, i, r, 0, s, I, D, [ k, T, S, C ]);
   }
   E = k - _;
-  var L = j.cos(_), M = j.sin(_), A = j.cos(k), R = j.sin(k), F = j.tan(E / 4), O = 4 / 3 * n * F, B = 4 / 3 * i * F, $ = [ e, t ], q = [ e + O * M, t - B * L ], H = [ l + O * R, c - B * A ], z = [ l, c ];
+  var M = j.cos(_), L = j.sin(_), A = j.cos(k), R = j.sin(k), O = j.tan(E / 4), F = 4 / 3 * n * O, B = 4 / 3 * i * O, $ = [ e, t ], q = [ e + F * L, t - B * M ], H = [ l + F * R, c - B * A ], z = [ l, c ];
   if (q[0] = 2 * $[0] - q[0], q[1] = 2 * $[1] - q[1], u) return [ q, H, z ][N](f);
   f = [ q, H, z ][N](f).join()[P](",");
   for (var V = [], W = 0, X = f.length; X > W; W++) V[W] = W % 2 ? m(f[W - 1], f[W], h).y : m(f[W], f[W + 1], h).x;
@@ -15599,7 +15621,7 @@ function() {
     y: $[D](0, f)
    }
   };
- }), Ft = n._path2curve = o(function(e, t) {
+ }), Ot = n._path2curve = o(function(e, t) {
   var n = !t && Et(e);
   if (!t && n.curve) return It(n.curve);
   for (var i = Nt(e), r = t && Nt(t), o = {
@@ -15621,12 +15643,12 @@ function() {
    qx: null,
    qy: null
   }, s = (function(e, t, n) {
-   var i, r;
-   if (!e) return [ "C", t.x, t.y, t.x, t.y, t.x, t.y ];
-   switch (!(e[0] in {
+   var i, r, o = {
     T: 1,
     Q: 1
-   }) && (t.qx = t.qy = null), e[0]) {
+   };
+   if (!e) return [ "C", t.x, t.y, t.x, t.y, t.x, t.y ];
+   switch (!(e[0] in o) && (t.qx = t.qy = null), e[0]) {
    case "M":
     t.X = e[1], t.Y = e[2];
     break;
@@ -15642,48 +15664,50 @@ function() {
 
    case "T":
     "Q" == n || "T" == n ? (t.qx = 2 * t.x - t.qx, t.qy = 2 * t.y - t.qy) : (t.qx = t.x, 
-    t.qy = t.y), e = [ "C" ][N](Mt(t.x, t.y, t.qx, t.qy, e[1], e[2]));
+    t.qy = t.y), e = [ "C" ][N](Lt(t.x, t.y, t.qx, t.qy, e[1], e[2]));
     break;
 
    case "Q":
-    t.qx = e[1], t.qy = e[2], e = [ "C" ][N](Mt(t.x, t.y, e[1], e[2], e[3], e[4]));
+    t.qx = e[1], t.qy = e[2], e = [ "C" ][N](Lt(t.x, t.y, e[1], e[2], e[3], e[4]));
     break;
 
    case "L":
-    e = [ "C" ][N](Lt(t.x, t.y, e[1], e[2]));
+    e = [ "C" ][N](Mt(t.x, t.y, e[1], e[2]));
     break;
 
    case "H":
-    e = [ "C" ][N](Lt(t.x, t.y, e[1], t.y));
+    e = [ "C" ][N](Mt(t.x, t.y, e[1], t.y));
     break;
 
    case "V":
-    e = [ "C" ][N](Lt(t.x, t.y, t.x, e[1]));
+    e = [ "C" ][N](Mt(t.x, t.y, t.x, e[1]));
     break;
 
    case "Z":
-    e = [ "C" ][N](Lt(t.x, t.y, t.X, t.Y));
+    e = [ "C" ][N](Mt(t.x, t.y, t.X, t.Y));
    }
    return e;
   }), l = function(e, t) {
    if (e[t].length > 7) {
     e[t].shift();
-    for (var n = e[t]; n.length; ) e.splice(t++, 0, [ "C" ][N](n.splice(0, 6)));
-    e.splice(t, 1), d = $(i.length, r && r.length || 0);
+    for (var n = e[t]; n.length; ) u[t] = "A", r && (d[t] = "A"), e.splice(t++, 0, [ "C" ][N](n.splice(0, 6)));
+    e.splice(t, 1), m = $(i.length, r && r.length || 0);
    }
   }, c = function(e, t, n, o, a) {
    e && t && "M" == e[a][0] && "M" != t[a][0] && (t.splice(a, 0, [ "M", o.x, o.y ]), 
-   n.bx = 0, n.by = 0, n.x = e[a][1], n.y = e[a][2], d = $(i.length, r && r.length || 0));
-  }, u = 0, d = $(i.length, r && r.length || 0); d > u; u++) {
-   i[u] = s(i[u], o), l(i, u), r && (r[u] = s(r[u], a)), r && l(r, u), c(i, r, o, a, u), 
-   c(r, i, a, o, u);
-   var p = i[u], h = r && r[u], f = p.length, m = r && h.length;
-   o.x = p[f - 2], o.y = p[f - 1], o.bx = Z(p[f - 4]) || o.x, o.by = Z(p[f - 3]) || o.y, 
-   a.bx = r && (Z(h[m - 4]) || a.x), a.by = r && (Z(h[m - 3]) || a.y), a.x = r && h[m - 2], 
-   a.y = r && h[m - 1];
+   n.bx = 0, n.by = 0, n.x = e[a][1], n.y = e[a][2], m = $(i.length, r && r.length || 0));
+  }, u = [], d = [], p = "", h = "", f = 0, m = $(i.length, r && r.length || 0); m > f; f++) {
+   i[f] && (p = i[f][0]), "C" != p && (u[f] = p, f && (h = u[f - 1])), i[f] = s(i[f], o, h), 
+   "A" != u[f] && "C" == p && (u[f] = "C"), l(i, f), r && (r[f] && (p = r[f][0]), "C" != p && (d[f] = p, 
+   f && (h = d[f - 1])), r[f] = s(r[f], a, h), "A" != d[f] && "C" == p && (d[f] = "C"), 
+   l(r, f)), c(i, r, o, a, f), c(r, i, a, o, f);
+   var g = i[f], v = r && r[f], b = g.length, y = r && v.length;
+   o.x = g[b - 2], o.y = g[b - 1], o.bx = Z(g[b - 4]) || o.x, o.by = Z(g[b - 3]) || o.y, 
+   a.bx = r && (Z(v[y - 4]) || a.x), a.by = r && (Z(v[y - 3]) || a.y), a.x = r && v[y - 2], 
+   a.y = r && v[y - 1];
   }
   return r || (n.curve = It(i)), r ? [ i, r ] : i;
- }, null, It), Ot = (n._parseDots = o(function(e) {
+ }, null, It), Ft = (n._parseDots = o(function(e) {
   for (var t = [], i = 0, r = e.length; r > i; i++) {
    var o = {}, a = e[i].match(/^([^:]*):?([\d\.]*)/);
    if (o.color = n.getRGB(a[1]), o.color.error) return null;
@@ -15702,20 +15726,20 @@ function() {
   e == t.top && (t.top = e.prev), e == t.bottom && (t.bottom = e.next), e.next && (e.next.prev = e.prev), 
   e.prev && (e.prev.next = e.next);
  }), Bt = (n._tofront = function(e, t) {
-  t.top !== e && (Ot(e, t), e.next = null, e.prev = t.top, t.top.next = e, t.top = e);
+  t.top !== e && (Ft(e, t), e.next = null, e.prev = t.top, t.top.next = e, t.top = e);
  }, n._toback = function(e, t) {
-  t.bottom !== e && (Ot(e, t), e.next = t.bottom, e.prev = null, t.bottom.prev = e, 
+  t.bottom !== e && (Ft(e, t), e.next = t.bottom, e.prev = null, t.bottom.prev = e, 
   t.bottom = e);
  }, n._insertafter = function(e, t, n) {
-  Ot(e, n), t == n.top && (n.top = e), t.next && (t.next.prev = e), e.next = t.next, 
+  Ft(e, n), t == n.top && (n.top = e), t.next && (t.next.prev = e), e.next = t.next, 
   e.prev = t, t.next = e;
  }, n._insertbefore = function(e, t, n) {
-  Ot(e, n), t == n.bottom && (n.bottom = e), t.prev && (t.prev.next = e), e.prev = t.prev, 
+  Ft(e, n), t == n.bottom && (n.bottom = e), t.prev && (t.prev.next = e), e.prev = t.prev, 
   t.prev = e, e.next = t;
  }, n.toMatrix = function(e, t) {
   var n = Tt(e), i = {
    _: {
-    transform: M
+    transform: L
    },
    getBBox: function() {
     return n;
@@ -15726,7 +15750,7 @@ function() {
   return vt(e, Bt(e, t));
  }, n._extractTransform = function(e, t) {
   if (null == t) return e._.transform;
-  t = R(t).replace(/\.{3}|\u2026/g, e._.transform || M);
+  t = R(t).replace(/\.{3}|\u2026/g, e._.transform || L);
   var i = n.parseTransformString(t), r = 0, o = 0, a = 0, s = 1, l = 1, c = e._, u = new f();
   if (c.transform = i || [], i) for (var d = 0, p = i.length; p > d; d++) {
    var h, m, g, v, b, y = i[d], x = y.length, w = R(y[0]).toLowerCase(), S = y[0] != w, C = S ? u.invert() : 0;
@@ -15785,7 +15809,7 @@ function() {
    width: i,
    height: r
   } : void 0;
- }, n.pathToRelative = Dt, n._engine = {}, n.path2curve = Ft, n.matrix = function(e, t, n, i, r, o) {
+ }, n.pathToRelative = Dt, n._engine = {}, n.path2curve = Ot, n.matrix = function(e, t, n, i, r, o) {
   return new f(e, t, n, i, r, o);
  }, function(e) {
   function t(e) {
@@ -15845,7 +15869,7 @@ function() {
   }, e.toTransformString = function(e) {
    var t = e || this[P]();
    return t.isSimple ? (t.scalex = +t.scalex.toFixed(4), t.scaley = +t.scaley.toFixed(4), 
-   t.rotate = +t.rotate.toFixed(4), (t.dx || t.dy ? "t" + [ t.dx, t.dy ] : M) + (1 != t.scalex || 1 != t.scaley ? "s" + [ t.scalex, t.scaley, 0, 0 ] : M) + (t.rotate ? "r" + [ t.rotate, 0, 0 ] : M)) : "m" + [ this.get(0), this.get(1), this.get(2), this.get(3), this.get(4), this.get(5) ];
+   t.rotate = +t.rotate.toFixed(4), (t.dx || t.dy ? "t" + [ t.dx, t.dy ] : L) + (1 != t.scalex || 1 != t.scaley ? "s" + [ t.scalex, t.scaley, 0, 0 ] : L) + (t.rotate ? "r" + [ t.rotate, 0, 0 ] : L)) : "m" + [ this.get(0), this.get(1), this.get(2), this.get(3), this.get(4), this.get(5) ];
   };
  }(f.prototype);
  var Gt = navigator.userAgent.match(/Version\/(.*?)\s/) || navigator.userAgent.match(/Chrome\/(\d+)/);
@@ -15877,7 +15901,7 @@ function() {
     var t = Wt(e);
     return n.call(i, e, t.x, t.y);
    };
-   if (e.addEventListener(t, r, !1), L && O[t]) {
+   if (e.addEventListener(t, r, !1), M && F[t]) {
     var o = function(t) {
      for (var r = Wt(t), o = t, a = 0, s = t.targetTouches && t.targetTouches.length; s > a; a++) if (t.targetTouches[a].target == e) {
       t = t.targetTouches[a], t.originalEvent = o, t.preventDefault = Ut, t.stopPropagation = Vt;
@@ -15885,10 +15909,10 @@ function() {
      }
      return n.call(i, t, r.x, r.y);
     };
-    e.addEventListener(O[t], o, !1);
+    e.addEventListener(F[t], o, !1);
    }
    return function() {
-    return e.removeEventListener(t, r, !1), L && O[t] && e.removeEventListener(O[t], r, !1), 
+    return e.removeEventListener(t, r, !1), M && F[t] && e.removeEventListener(F[t], o, !1), 
     !0;
    };
   } : E.doc.attachEvent ? function(e, t, n, i) {
@@ -15906,7 +15930,7 @@ function() {
   } : void 0;
  }(), Qt = [], Yt = function(e) {
   for (var n, i = e.clientX, r = e.clientY, o = E.doc.documentElement.scrollTop || E.doc.body.scrollTop, a = E.doc.documentElement.scrollLeft || E.doc.body.scrollLeft, s = Qt.length; s--; ) {
-   if (n = Qt[s], L && e.touches) {
+   if (n = Qt[s], M && e.touches) {
     for (var l, c = e.touches.length; c--; ) if (l = e.touches[c], l.identifier == n.el._drag.id) {
      i = l.clientX, r = l.clientY, (e.originalEvent ? e.originalEvent : e).preventDefault();
      break;
@@ -15921,7 +15945,7 @@ function() {
   n.unmousemove(Yt).unmouseup(Kt);
   for (var i, r = Qt.length; r--; ) i = Qt[r], i.el._drag = {}, t("raphael.drag.end." + i.el.id, i.end_scope || i.start_scope || i.move_scope || i.el, e);
   Qt = [];
- }, Jt = n.el = {}, Zt = F.length; Zt--; ) !function(e) {
+ }, Jt = n.el = {}, Zt = O.length; Zt--; ) !function(e) {
   n[e] = Jt[e] = function(t, i) {
    return n.is(t, "function") && (this.events = this.events || [], this.events.push({
     name: e,
@@ -15933,7 +15957,7 @@ function() {
    i.splice(r, 1), !i.length && delete this.events);
    return this;
   };
- }(F[Zt]);
+ }(O[Zt]);
  Jt.data = function(e, i) {
   var r = ut[this.id] = ut[this.id] || {};
   if (0 == arguments.length) return r;
@@ -15959,7 +15983,7 @@ function() {
   function l(l) {
    (l.originalEvent || l).preventDefault();
    var c = l.clientX, u = l.clientY, d = E.doc.documentElement.scrollTop || E.doc.body.scrollTop, p = E.doc.documentElement.scrollLeft || E.doc.body.scrollLeft;
-   if (this._drag.id = l.identifier, L && l.touches) for (var h, f = l.touches.length; f--; ) if (h = l.touches[f], 
+   if (this._drag.id = l.identifier, M && l.touches) for (var h, f = l.touches.length; f--; ) if (h = l.touches[f], 
    this._drag.id = h.identifier, h.identifier == this._drag.id) {
     c = h.clientX, u = h.clientY;
     break;
@@ -15993,7 +16017,7 @@ function() {
   var o = n._engine.ellipse(this, e || 0, t || 0, i || 0, r || 0);
   return this.__set__ && this.__set__.push(o), o;
  }, w.path = function(e) {
-  e && !n.is(e, V) && !n.is(e[0], W) && (e += M);
+  e && !n.is(e, V) && !n.is(e[0], W) && (e += L);
   var t = n._engine.path(n.format[D](n, arguments), this);
   return this.__set__ && this.__set__.push(t), t;
  }, w.image = function(e, t, i, r, o) {
@@ -16011,6 +16035,12 @@ function() {
  }, w.setFinish = function() {
   var e = this.__set__;
   return delete this.__set__, e;
+ }, w.getSize = function() {
+  var e = this.canvas.parentNode;
+  return {
+   width: e.offsetWidth,
+   height: e.offsetHeight
+  };
  }, w.setSize = function(e, t) {
   return n._engine.setSize.call(this, e, t);
  }, w.setViewBox = function(e, t, i, r, o) {
@@ -16097,7 +16127,7 @@ function() {
   return null == d ? c(e, t, i, r, o, a, s, l) : n.findDotsAtSegment(e, t, i, r, o, a, s, l, u(e, t, i, r, o, a, s, l, d));
  }, rn = function(e, t) {
   return function(i, r, o) {
-   i = Ft(i);
+   i = Ot(i);
    for (var a, s, l, c, u, d = "", p = {}, h = 0, f = 0, m = i.length; m > f; f++) {
     if (l = i[f], "M" == l[0]) a = +l[1], s = +l[2]; else {
      if (c = nn(a, s, l[1], l[2], l[3], l[4], l[5], l[6]), h + c > r) {
@@ -16275,9 +16305,18 @@ function() {
   (n.is(i, "function") || !i) && (r = r || i || null, i = null), e = Object(e), t = +t || 0;
   var o, a, s = {};
   for (a in e) e[k](a) && Z(a) != a && Z(a) + "%" != a && (o = !0, s[a] = e[a]);
-  return o ? (i && (s.easing = i), r && (s.callback = r), new v({
+  if (o) return i && (s.easing = i), r && (s.callback = r), new v({
    100: s
-  }, t)) : new v(e, t);
+  }, t);
+  if (r) {
+   var l = 0;
+   for (var c in e) {
+    var u = et(c);
+    e[k](c) && u > l && (l = u);
+   }
+   l += "%", !e[l].callback && (e[l].callback = r);
+  }
+  return new v(e, t);
  }, Jt.animate = function(e, t, i, r) {
   var o = this;
   if (o.removed) return r && r.call(o), o;
@@ -16309,7 +16348,7 @@ function() {
   for (var n = 0; n < cn.length; n++) cn[n].el.id != this.id || e && cn[n].anim != e || t("raphael.anim.stop." + this.id, this, cn[n].anim) !== !1 && cn.splice(n--, 1);
   return this;
  }, t.on("raphael.remove", y), t.on("raphael.clear", y), Jt.toString = function() {
-  return "RaphaÃ«lâ€™s object";
+  return "Rapha\xebl\u2019s object";
  };
  var hn = function(e) {
   if (this.items = [], this.length = 0, this.type = "set", e) for (var t = 0, n = e.length; n > t; t++) !e[t] || e[t].constructor != Jt.constructor && e[t].constructor != hn || (this[this.items.length] = this.items[this.items.length] = e[t], 
@@ -16383,7 +16422,7 @@ function() {
   for (var t = 0, n = this.items.length; n > t; t++) e.push(this.items[t].clone());
   return e;
  }, fn.toString = function() {
-  return "RaphaÃ«lâ€˜s set";
+  return "Rapha\xebl\u2018s set";
  }, fn.glow = function(e) {
   var t = this.paper.set();
   return this.forEach(function(n) {
@@ -16395,7 +16434,7 @@ function() {
  }, fn.isPointInside = function(e, t) {
   var n = !1;
   return this.forEach(function(i) {
-   return i.isPointInside(e, t) ? (console.log("runned"), n = !0, !1) : void 0;
+   return i.isPointInside(e, t) ? (n = !0, !1) : void 0;
   }), n;
  }, n.registerFont = function(e) {
   if (!e.face) return e;
@@ -16436,7 +16475,7 @@ function() {
   }[t] || 400, n.fonts) {
    var o = n.fonts[e];
    if (!o) {
-    var a = new RegExp("(^|\\s)" + e.replace(/[^\w\d\s+!~.:_-]/g, M) + "(\\s|$)", "i");
+    var a = new RegExp("(^|\\s)" + e.replace(/[^\w\d\s+!~.:_-]/g, L) + "(\\s|$)", "i");
     for (var s in n.fonts) if (n.fonts[k](s) && a.test(s)) {
      o = n.fonts[s];
      break;
@@ -16448,7 +16487,7 @@ function() {
   }
  }, w.print = function(e, t, i, r, o, a, s, l) {
   a = a || "middle", s = $(q(s || 0, 1), -1), l = $(q(l || 1, 3), 1);
-  var c, u = R(i)[P](M), d = 0, p = 0, h = M;
+  var c, u = R(i)[P](L), d = 0, p = 0, h = L;
   if (n.is(r, "string") && (r = this.getFont(r)), r) {
    c = (o || 16) / r.face["units-per-em"];
    for (var f = r.face.bbox[P](S), m = +f[0], g = f[3] - f[1], v = 0, b = +f[1] + ("baseline" == a ? g + +r.face.descent : g / 2), y = 0, x = u.length; x > y; y++) {
@@ -16470,8 +16509,8 @@ function() {
  }, n.format = function(e, t) {
   var i = n.is(t, W) ? [ 0 ][N](t) : arguments;
   return e && n.is(e, V) && i.length - 1 && (e = e.replace(_, function(e, t) {
-   return null == i[++t] ? M : i[t];
-  })), e || M;
+   return null == i[++t] ? L : i[t];
+  })), e || L;
  }, n.fullfill = function() {
   var e = /\{([^\}]+)\}/g, t = /(?:(?:^|\.)(.+?)(?=\[|\.|$|\()|\[('|")(.+?)\2\])(\(\))?/g, n = function(e, n, i) {
    var r = i;
@@ -16486,16 +16525,16 @@ function() {
   };
  }(), n.ninja = function() {
   return T.was ? E.win.Raphael = T.is : delete Raphael, n;
- }, n.st = fn, function(e, t, i) {
+ }, n.st = fn, t.on("raphael.DOMload", function() {
+  x = !0;
+ }), function(e, t, i) {
   function r() {
    /in/.test(e.readyState) ? setTimeout(r, 9) : n.eve("raphael.DOMload");
   }
   null == e.readyState && e.addEventListener && (e.addEventListener(t, i = function() {
    e.removeEventListener(t, i, !1), e.readyState = "complete";
   }, !1), e.readyState = "loading"), r();
- }(document, "DOMContentLoaded"), t.on("raphael.DOMload", function() {
-  x = !0;
- }), function() {
+ }(document, "DOMContentLoaded"), function() {
   if (n.svg) {
    var e = "hasOwnProperty", t = String, i = parseFloat, r = parseInt, o = Math, a = o.max, s = o.abs, l = o.pow, c = /[, ]+/, u = n.eve, d = "", p = " ", h = "http://www.w3.org/1999/xlink", f = {
     block: "M5,0 0,2.5 5,5z",
@@ -16505,7 +16544,7 @@ function() {
     oval: "M2.5,0A2.5,2.5,0,0,1,2.5,5 2.5,2.5,0,0,1,2.5,0z"
    }, m = {};
    n.toString = function() {
-    return "Your browser supports SVG.\nYou are running RaphaÃ«l " + this.version;
+    return "Your browser supports SVG.\nYou are running Rapha\xebl " + this.version;
    };
    var g = function(i, r) {
     if (r) {
@@ -16553,7 +16592,7 @@ function() {
      }
     }
     return g(f, {
-     fill: "url(#" + u + ")",
+     fill: "url(" + document.location + "#" + u + ")",
      opacity: 1,
      "fill-opacity": 1
     }), v.fill = d, v.opacity = 1, v.fillOpacity = 1, 1;
@@ -16597,7 +16636,7 @@ function() {
       stroke: "none"
      }), i._.arrows ? o ? (i._.arrows.endPath && m[i._.arrows.endPath]--, i._.arrows.endMarker && m[i._.arrows.endMarker]--) : (i._.arrows.startPath && m[i._.arrows.startPath]--, 
      i._.arrows.startMarker && m[i._.arrows.startMarker]--) : i._.arrows = {}, "none" != S) {
-      var E = "raphael-marker-" + S, T = "raphael-marker-" + v + S + C + _;
+      var E = "raphael-marker-" + S, T = "raphael-marker-" + v + S + C + _ + "-obj" + i.id;
       n._g.doc.getElementById(E) ? m[E]++ : (h.defs.appendChild(g(g("path"), {
        "stroke-linecap": "round",
        d: f[S],
@@ -16628,8 +16667,8 @@ function() {
      }), delete i._.arrows[v + "Path"], delete i._.arrows[v + "Marker"], delete i._.arrows[v + "dx"], 
      delete i._.arrows[v + "Type"], delete i._.arrows[v + "String"];
      for (u in m) if (m[e](u) && !m[u]) {
-      var L = n._g.doc.getElementById(u);
-      L && L.parentNode.removeChild(L);
+      var M = n._g.doc.getElementById(u);
+      M && M.parentNode.removeChild(M);
      }
     }
    }, x = {
@@ -16667,17 +16706,21 @@ function() {
       i.blur(m);
       break;
 
-     case "href":
      case "title":
-      var x = g("title"), S = n._g.doc.createTextNode(m);
-      x.appendChild(S), l.appendChild(x);
+      var x = l.getElementsByTagName("title");
+      if (x.length && (x = x[0])) x.firstChild.nodeValue = m; else {
+       x = g("title");
+       var S = n._g.doc.createTextNode(m);
+       x.appendChild(S), l.appendChild(x);
+      }
       break;
 
+     case "href":
      case "target":
       var C = l.parentNode;
       if ("a" != C.tagName.toLowerCase()) {
-       var x = g("a");
-       C.insertBefore(x, l), x.appendChild(l), C = x;
+       var k = g("a");
+       C.insertBefore(k, l), k.appendChild(l), C = k;
       }
       "target" == f ? C.setAttributeNS(h, "show", "blank" == m ? "new" : m) : C.setAttributeNS(h, f, m);
       break;
@@ -16699,24 +16742,24 @@ function() {
       break;
 
      case "clip-rect":
-      var k = t(m).split(c);
-      if (4 == k.length) {
+      var E = t(m).split(c);
+      if (4 == E.length) {
        i.clip && i.clip.parentNode.parentNode.removeChild(i.clip.parentNode);
-       var E = g("clipPath"), T = g("rect");
-       E.id = n.createUUID(), g(T, {
-        x: k[0],
-        y: k[1],
-        width: k[2],
-        height: k[3]
-       }), E.appendChild(T), i.paper.defs.appendChild(E), g(l, {
-        "clip-path": "url(#" + E.id + ")"
-       }), i.clip = T;
+       var T = g("clipPath"), I = g("rect");
+       T.id = n.createUUID(), g(I, {
+        x: E[0],
+        y: E[1],
+        width: E[2],
+        height: E[3]
+       }), T.appendChild(I), i.paper.defs.appendChild(T), g(l, {
+        "clip-path": "url(#" + T.id + ")"
+       }), i.clip = I;
       }
       if (!m) {
-       var I = l.getAttribute("clip-path");
-       if (I) {
-        var D = n._g.doc.getElementById(I.replace(/(^url\(#|\)$)/g, d));
-        D && D.parentNode.removeChild(D), g(l, {
+       var D = l.getAttribute("clip-path");
+       if (D) {
+        var N = n._g.doc.getElementById(D.replace(/(^url\(#|\)$)/g, d));
+        N && N.parentNode.removeChild(N), g(l, {
          "clip-path": d
         }), delete i.clip;
        }
@@ -16770,8 +16813,8 @@ function() {
       break;
 
      case "stroke-width":
-      (1 != i._.sx || 1 != i._.sy) && (m /= a(s(i._.sx), s(i._.sy)) || 1), i.paper._vbSize && (m *= i.paper._vbSize), 
-      l.setAttribute(f, m), u["stroke-dasharray"] && w(i, u["stroke-dasharray"], o), i._.arrows && ("startString" in i._.arrows && y(i, i._.arrows.startString), 
+      (1 != i._.sx || 1 != i._.sy) && (m /= a(s(i._.sx), s(i._.sy)) || 1), l.setAttribute(f, m), 
+      u["stroke-dasharray"] && w(i, u["stroke-dasharray"], o), i._.arrows && ("startString" in i._.arrows && y(i, i._.arrows.startString), 
       "endString" in i._.arrows && y(i, i._.arrows.endString, 1));
       break;
 
@@ -16780,11 +16823,11 @@ function() {
       break;
 
      case "fill":
-      var N = t(m).match(n._ISURL);
-      if (N) {
-       E = g("pattern");
+      var M = t(m).match(n._ISURL);
+      if (M) {
+       T = g("pattern");
        var L = g("image");
-       E.id = n.createUUID(), g(E, {
+       T.id = n.createUUID(), g(T, {
         x: 0,
         y: 0,
         patternUnits: "userSpaceOnUse",
@@ -16793,9 +16836,9 @@ function() {
        }), g(L, {
         x: 0,
         y: 0,
-        "xlink:href": N[1]
-       }), E.appendChild(L), function(e) {
-        n._preload(N[1], function() {
+        "xlink:href": M[1]
+       }), T.appendChild(L), function(e) {
+        n._preload(M[1], function() {
          var t = this.offsetWidth, n = this.offsetHeight;
          g(e, {
           width: t,
@@ -16805,19 +16848,19 @@ function() {
           height: n
          }), i.paper.safari();
         });
-       }(E), i.paper.defs.appendChild(E), g(l, {
-        fill: "url(#" + E.id + ")"
-       }), i.pattern = E, i.pattern && b(i);
+       }(T), i.paper.defs.appendChild(T), g(l, {
+        fill: "url(#" + T.id + ")"
+       }), i.pattern = T, i.pattern && b(i);
        break;
       }
-      var M = n.getRGB(m);
-      if (M.error) {
+      var A = n.getRGB(m);
+      if (A.error) {
        if (("circle" == i.type || "ellipse" == i.type || "r" != t(m).charAt()) && v(i, m)) {
         if ("opacity" in u || "fill-opacity" in u) {
-         var A = n._g.doc.getElementById(l.getAttribute("fill").replace(/^url\(#|\)$/g, d));
-         if (A) {
-          var R = A.getElementsByTagName("stop");
-          g(R[R.length - 1], {
+         var R = n._g.doc.getElementById(l.getAttribute("fill").replace(/^url\(#|\)$/g, d));
+         if (R) {
+          var P = R.getElementsByTagName("stop");
+          g(P[P.length - 1], {
            "stop-opacity": ("opacity" in u ? u.opacity : 1) * ("fill-opacity" in u ? u["fill-opacity"] : 1)
           });
          }
@@ -16830,13 +16873,13 @@ function() {
       }), !n.is(u["fill-opacity"], "undefined") && n.is(o["fill-opacity"], "undefined") && g(l, {
        "fill-opacity": u["fill-opacity"]
       });
-      M[e]("opacity") && g(l, {
-       "fill-opacity": M.opacity > 1 ? M.opacity / 100 : M.opacity
+      A[e]("opacity") && g(l, {
+       "fill-opacity": A.opacity > 1 ? A.opacity / 100 : A.opacity
       });
 
      case "stroke":
-      M = n.getRGB(m), l.setAttribute(f, M.hex), "stroke" == f && M[e]("opacity") && g(l, {
-       "stroke-opacity": M.opacity > 1 ? M.opacity / 100 : M.opacity
+      A = n.getRGB(m), l.setAttribute(f, A.hex), "stroke" == f && A[e]("opacity") && g(l, {
+       "stroke-opacity": A.opacity > 1 ? A.opacity / 100 : A.opacity
       }), "stroke" == f && i._.arrows && ("startString" in i._.arrows && y(i, i._.arrows.startString), 
       "endString" in i._.arrows && y(i, i._.arrows.endString, 1));
       break;
@@ -16852,8 +16895,8 @@ function() {
 
      case "fill-opacity":
       if (u.gradient) {
-       A = n._g.doc.getElementById(l.getAttribute("fill").replace(/^url\(#|\)$/g, d)), 
-       A && (R = A.getElementsByTagName("stop"), g(R[R.length - 1], {
+       R = n._g.doc.getElementById(l.getAttribute("fill").replace(/^url\(#|\)$/g, d)), 
+       R && (P = R.getElementsByTagName("stop"), g(P[P.length - 1], {
         "stop-opacity": m
        }));
        break;
@@ -16861,10 +16904,10 @@ function() {
 
      default:
       "font-size" == f && (m = r(m, 10) + "px");
-      var P = f.replace(/(\-.)/g, function(e) {
+      var O = f.replace(/(\-.)/g, function(e) {
        return e.substring(1).toUpperCase();
       });
-      l.style[P] = m, i._.dirty = 1, l.setAttribute(f, m);
+      l.style[O] = m, i._.dirty = 1, l.setAttribute(f, m);
      }
     }
     _(i, o), l.style.visibility = p;
@@ -16893,7 +16936,10 @@ function() {
       dy: v
      });
     }
-   }, k = function(e, t) {
+   }, k = function(e) {
+    return e.parentNode && "a" === e.parentNode.tagName.toLowerCase() ? e.parentNode : e;
+   };
+   Element = function(e, t) {
     this[0] = this.node = e, e.raphael = !0, this.id = n._oid++, e.raphaelid = this.id, 
     this.matrix = n.matrix(), this.realPath = null, this.paper = t, this.attrs = this.attrs || {}, 
     this._ = {
@@ -16906,17 +16952,16 @@ function() {
      dirty: 1
     }, !t.bottom && (t.bottom = this), this.prev = t.top, t.top && (t.top.next = this), 
     t.top = this, this.next = null;
-   }, E = n.el;
-   k.prototype = E, E.constructor = k, n._engine.path = function(e, t) {
+   }, Jt = n.el, Element.prototype = Jt, Jt.constructor = Element, n._engine.path = function(e, t) {
     var n = g("path");
     t.canvas && t.canvas.appendChild(n);
-    var i = new k(n, t);
+    var i = new Element(n, t);
     return i.type = "path", S(i, {
      fill: "none",
      stroke: "#000",
      path: e
     }), i;
-   }, E.rotate = function(e, n, r) {
+   }, Jt.rotate = function(e, n, r) {
     if (this.removed) return this;
     if (e = t(e).split(c), e.length - 1 && (n = i(e[1]), r = i(e[2])), e = i(e[0]), 
     null == r && (n = r), null == n || null == r) {
@@ -16924,17 +16969,17 @@ function() {
      n = o.x + o.width / 2, r = o.y + o.height / 2;
     }
     return this.transform(this._.transform.concat([ [ "r", e, n, r ] ])), this;
-   }, E.scale = function(e, n, r, o) {
+   }, Jt.scale = function(e, n, r, o) {
     if (this.removed) return this;
     if (e = t(e).split(c), e.length - 1 && (n = i(e[1]), r = i(e[2]), o = i(e[3])), 
     e = i(e[0]), null == n && (n = e), null == o && (r = o), null == r || null == o) var a = this.getBBox(1);
     return r = null == r ? a.x + a.width / 2 : r, o = null == o ? a.y + a.height / 2 : o, 
     this.transform(this._.transform.concat([ [ "s", e, n, r, o ] ])), this;
-   }, E.translate = function(e, n) {
+   }, Jt.translate = function(e, n) {
     return this.removed ? this : (e = t(e).split(c), e.length - 1 && (n = i(e[1])), 
     e = i(e[0]) || 0, n = +n || 0, this.transform(this._.transform.concat([ [ "t", e, n ] ])), 
     this);
-   }, E.transform = function(t) {
+   }, Jt.transform = function(t) {
     var i = this._;
     if (null == t) return i.transform;
     if (n._extractTransform(this, t), this.clip && g(this.clip, {
@@ -16948,31 +16993,42 @@ function() {
      });
     }
     return this;
-   }, E.hide = function() {
+   }, Jt.hide = function() {
     return !this.removed && this.paper.safari(this.node.style.display = "none"), this;
-   }, E.show = function() {
+   }, Jt.show = function() {
     return !this.removed && this.paper.safari(this.node.style.display = ""), this;
-   }, E.remove = function() {
-    if (!this.removed && this.node.parentNode) {
-     var e = this.paper;
-     e.__set__ && e.__set__.exclude(this), u.unbind("raphael.*.*." + this.id), this.gradient && e.defs.removeChild(this.gradient), 
-     n._tear(this, e), "a" == this.node.parentNode.tagName.toLowerCase() ? this.node.parentNode.parentNode.removeChild(this.node.parentNode) : this.node.parentNode.removeChild(this.node);
-     for (var t in this) this[t] = "function" == typeof this[t] ? n._removedFactory(t) : null;
+   }, Jt.remove = function() {
+    var e = k(this.node);
+    if (!this.removed && e.parentNode) {
+     var t = this.paper;
+     t.__set__ && t.__set__.exclude(this), u.unbind("raphael.*.*." + this.id), this.gradient && t.defs.removeChild(this.gradient), 
+     n._tear(this, t), e.parentNode.removeChild(e), this.removeData();
+     for (var i in this) this[i] = "function" == typeof this[i] ? n._removedFactory(i) : null;
      this.removed = !0;
     }
-   }, E._getBBox = function() {
+   }, Jt._getBBox = function() {
     if ("none" == this.node.style.display) {
      this.show();
      var e = !0;
     }
-    var t = {};
+    var t, n = !1;
+    this.paper.canvas.parentElement ? t = this.paper.canvas.parentElement.style : this.paper.canvas.parentNode && (t = this.paper.canvas.parentNode.style), 
+    t && "none" == t.display && (n = !0, t.display = "");
+    var i = {};
     try {
-     t = this.node.getBBox();
-    } catch (n) {} finally {
-     t = t || {};
+     i = this.node.getBBox();
+    } catch (r) {
+     i = {
+      x: this.node.clientLeft,
+      y: this.node.clientTop,
+      width: this.node.clientWidth,
+      height: this.node.clientHeight
+     };
+    } finally {
+     i = i || {}, n && (t.display = "none");
     }
-    return e && this.hide(), t;
-   }, E.attr = function(t, i) {
+    return e && this.hide(), i;
+   }, Jt.attr = function(t, i) {
     if (this.removed) return this;
     if (null == t) {
      var r = {};
@@ -17001,29 +17057,28 @@ function() {
      for (var m in f) f[e](m) && (p[m] = f[m]);
     }
     return S(this, p), this;
-   }, E.toFront = function() {
+   }, Jt.toFront = function() {
     if (this.removed) return this;
-    "a" == this.node.parentNode.tagName.toLowerCase() ? this.node.parentNode.parentNode.appendChild(this.node.parentNode) : this.node.parentNode.appendChild(this.node);
-    var e = this.paper;
-    return e.top != this && n._tofront(this, e), this;
-   }, E.toBack = function() {
+    var e = k(this.node);
+    e.parentNode.appendChild(e);
+    var t = this.paper;
+    return t.top != this && n._tofront(this, t), this;
+   }, Jt.toBack = function() {
     if (this.removed) return this;
-    var e = this.node.parentNode;
-    "a" == e.tagName.toLowerCase() ? e.parentNode.insertBefore(this.node.parentNode, this.node.parentNode.parentNode.firstChild) : e.firstChild != this.node && e.insertBefore(this.node, this.node.parentNode.firstChild), 
-    n._toback(this, this.paper);
+    var e = k(this.node), t = e.parentNode;
+    t.insertBefore(e, t.firstChild), n._toback(this, this.paper);
     this.paper;
     return this;
-   }, E.insertAfter = function(e) {
-    if (this.removed) return this;
-    var t = e.node || e[e.length - 1].node;
-    return t.nextSibling ? t.parentNode.insertBefore(this.node, t.nextSibling) : t.parentNode.appendChild(this.node), 
+   }, Jt.insertAfter = function(e) {
+    if (this.removed || !e) return this;
+    var t = k(this.node), i = k(e.node || e[e.length - 1].node);
+    return i.nextSibling ? i.parentNode.insertBefore(t, i.nextSibling) : i.parentNode.appendChild(t), 
     n._insertafter(this, e, this.paper), this;
-   }, E.insertBefore = function(e) {
-    if (this.removed) return this;
-    var t = e.node || e[0].node;
-    return t.parentNode.insertBefore(this.node, t), n._insertbefore(this, e, this.paper), 
-    this;
-   }, E.blur = function(e) {
+   }, Jt.insertBefore = function(e) {
+    if (this.removed || !e) return this;
+    var t = k(this.node), i = k(e.node || e[0].node);
+    return i.parentNode.insertBefore(t, i), n._insertbefore(this, e, this.paper), this;
+   }, Jt.blur = function(e) {
     var t = this;
     if (0 !== +e) {
      var i = g("filter"), r = g("feGaussianBlur");
@@ -17038,7 +17093,7 @@ function() {
    }, n._engine.circle = function(e, t, n, i) {
     var r = g("circle");
     e.canvas && e.canvas.appendChild(r);
-    var o = new k(r, e);
+    var o = new Element(r, e);
     return o.attrs = {
      cx: t,
      cy: n,
@@ -17049,13 +17104,12 @@ function() {
    }, n._engine.rect = function(e, t, n, i, r, o) {
     var a = g("rect");
     e.canvas && e.canvas.appendChild(a);
-    var s = new k(a, e);
+    var s = new Element(a, e);
     return s.attrs = {
      x: t,
      y: n,
      width: i,
      height: r,
-     r: o || 0,
      rx: o || 0,
      ry: o || 0,
      fill: "none",
@@ -17064,7 +17118,7 @@ function() {
    }, n._engine.ellipse = function(e, t, n, i, r) {
     var o = g("ellipse");
     e.canvas && e.canvas.appendChild(o);
-    var a = new k(o, e);
+    var a = new Element(o, e);
     return a.attrs = {
      cx: t,
      cy: n,
@@ -17082,7 +17136,7 @@ function() {
      height: o,
      preserveAspectRatio: "none"
     }), a.setAttributeNS(h, "href", t), e.canvas && e.canvas.appendChild(a);
-    var s = new k(a, e);
+    var s = new Element(a, e);
     return s.attrs = {
      x: n,
      y: i,
@@ -17093,13 +17147,14 @@ function() {
    }, n._engine.text = function(e, t, i, r) {
     var o = g("text");
     e.canvas && e.canvas.appendChild(o);
-    var a = new k(o, e);
+    var a = new Element(o, e);
     return a.attrs = {
      x: t,
      y: i,
      "text-anchor": "middle",
      text: r,
-     font: n._availableAttrs.font,
+     "font-family": n._availableAttrs["font-family"],
+     "font-size": n._availableAttrs["font-size"],
      stroke: "none",
      fill: "#000"
     }, a.type = "text", S(a, a.attrs), a;
@@ -17115,7 +17170,8 @@ function() {
      height: a,
      version: 1.1,
      width: o,
-     xmlns: "http://www.w3.org/2000/svg"
+     xmlns: "http://www.w3.org/2000/svg",
+     "xmlns:xlink": "http://www.w3.org/1999/xlink"
     }), 1 == t ? (l.style.cssText = c + "position:absolute;left:" + i + "px;top:" + r + "px", 
     n._g.doc.body.appendChild(l), s = 1) : (l.style.cssText = c + "position:relative", 
     t.firstChild ? t.insertBefore(l, t.firstChild) : t.appendChild(l)), t = new n._Paper(), 
@@ -17123,14 +17179,14 @@ function() {
     t.renderfix(), t;
    }, n._engine.setViewBox = function(e, t, n, i, r) {
     u("raphael.setViewBox", this, this._viewBox, [ e, t, n, i, r ]);
-    var o, s, l = a(n / this.width, i / this.height), c = this.top, d = r ? "meet" : "xMinYMin";
-    for (null == e ? (this._vbSize && (l = 1), delete this._vbSize, o = "0 0 " + this.width + p + this.height) : (this._vbSize = l, 
+    var o, s, l = this.getSize(), c = a(n / l.width, i / l.height), d = this.top, h = r ? "xMidYMid meet" : "xMinYMin";
+    for (null == e ? (this._vbSize && (c = 1), delete this._vbSize, o = "0 0 " + this.width + p + this.height) : (this._vbSize = c, 
     o = e + p + t + p + n + p + i), g(this.canvas, {
      viewBox: o,
-     preserveAspectRatio: d
-    }); l && c; ) s = "stroke-width" in c.attrs ? c.attrs["stroke-width"] : 1, c.attr({
+     preserveAspectRatio: h
+    }); c && d; ) s = "stroke-width" in d.attrs ? d.attrs["stroke-width"] : 1, d.attr({
      "stroke-width": s
-    }), c._.dirty = 1, c._.dirtyT = 1, c = c.prev;
+    }), d._.dirty = 1, d._.dirtyT = 1, d = d.prev;
     return this._viewBox = [ e, t, n, i, !!r ], this;
    }, n.prototype.renderfix = function() {
     var e, t = this.canvas, n = t.style;
@@ -17145,21 +17201,21 @@ function() {
    }, n.prototype.clear = function() {
     n.eve("raphael.clear", this);
     for (var e = this.canvas; e.firstChild; ) e.removeChild(e.firstChild);
-    this.bottom = this.top = null, (this.desc = g("desc")).appendChild(n._g.doc.createTextNode("Created with RaphaÃ«l " + n.version)), 
+    this.bottom = this.top = null, (this.desc = g("desc")).appendChild(n._g.doc.createTextNode("Created with Rapha\xebl " + n.version)), 
     e.appendChild(this.desc), e.appendChild(this.defs = g("defs"));
    }, n.prototype.remove = function() {
     u("raphael.remove", this), this.canvas.parentNode && this.canvas.parentNode.removeChild(this.canvas);
     for (var e in this) this[e] = "function" == typeof this[e] ? n._removedFactory(e) : null;
    };
-   var T = n.st;
-   for (var I in E) E[e](I) && !T[e](I) && (T[I] = function(e) {
+   var E = n.st;
+   for (var T in Jt) Jt[e](T) && !E[e](T) && (E[T] = function(e) {
     return function() {
      var t = arguments;
      return this.forEach(function(n) {
       n[e].apply(n, t);
      });
     };
-   }(I));
+   }(T));
   }
  }(), function() {
   if (n.vml) {
@@ -17172,7 +17228,7 @@ function() {
     l: "r",
     c: "v",
     z: "x"
-   }, g = /([clmz]),?([^clmz]*)/gi, v = / progid:\S+Blur\([^\)]+\)/g, b = /-?[^,\s-]+/g, y = "position:absolute;left:0;top:0;width:1px;height:1px", x = 21600, w = {
+   }, g = /([clmz]),?([^clmz]*)/gi, v = / progid:\S+Blur\([^\)]+\)/g, b = /-?[^,\s-]+/g, y = "position:absolute;left:0;top:0;width:1px;height:1px;behavior:url(#default#VML)", x = 21600, w = {
     path: 1,
     rect: 1,
     image: 1
@@ -17222,7 +17278,7 @@ function() {
     }
    };
    n.toString = function() {
-    return "Your browser doesnâ€™t support SVG. Falling down to VML.\nYou are running RaphaÃ«l " + this.version;
+    return "Your browser doesn\u2019t support SVG. Falling down to VML.\nYou are running Rapha\xebl " + this.version;
    };
    var E = function(e, n, i) {
     for (var r = t(n).toLowerCase().split("-"), o = i ? "end" : "start", a = r.length, s = "classic", l = "medium", c = "medium"; a--; ) switch (r[a]) {
@@ -17253,18 +17309,18 @@ function() {
     if (g && (p.path = n._getPath[r.type](r), r._.dirty = 1), l.href && (d.href = l.href), 
     l.title && (d.title = l.title), l.target && (d.target = l.target), l.cursor && (m.cursor = l.cursor), 
     "blur" in l && r.blur(l.blur), (l.path && "path" == r.type || g) && (d.path = C(~t(p.path).toLowerCase().indexOf("r") ? n._pathToAbsolute(p.path) : p.path), 
-    "image" == r.type && (r._.fillpos = [ p.x, p.y ], r._.fillsize = [ p.width, p.height ], 
+    r._.dirty = 1, "image" == r.type && (r._.fillpos = [ p.x, p.y ], r._.fillsize = [ p.width, p.height ], 
     k(r, 1, 1, 0, 0, 0))), "transform" in l && r.transform(l.transform), v) {
      var _ = +p.cx, T = +p.cy, D = +p.rx || +p.r || 0, N = +p.ry || +p.r || 0;
      d.path = n.format("ar{0},{1},{2},{3},{4},{1},{4},{1}x", o((_ - D) * x), o((T - N) * x), o((_ + D) * x), o((T + N) * x), o(_ * x)), 
      r._.dirty = 1;
     }
     if ("clip-rect" in l) {
-     var M = t(l["clip-rect"]).split(u);
-     if (4 == M.length) {
-      M[2] = +M[2] + +M[0], M[3] = +M[3] + +M[1];
+     var L = t(l["clip-rect"]).split(u);
+     if (4 == L.length) {
+      L[2] = +L[2] + +L[0], L[3] = +L[3] + +L[1];
       var A = d.clipRect || n._g.doc.createElement("div"), R = A.style;
-      R.clip = n.format("rect({1}px {2}px {3}px {0}px)", M), d.clipRect || (R.position = "absolute", 
+      R.clip = n.format("rect({1}px {2}px {3}px {0}px)", L), d.clipRect || (R.position = "absolute", 
       R.top = 0, R.left = 0, R.width = r.paper.width + "px", R.height = r.paper.height + "px", 
       d.parentNode.insertBefore(A, d), A.appendChild(d), d.clipRect = A);
      }
@@ -17278,30 +17334,30 @@ function() {
     }
     if ("arrow-start" in l && E(b, l["arrow-start"]), "arrow-end" in l && E(b, l["arrow-end"], 1), 
     null != l.opacity || null != l["stroke-width"] || null != l.fill || null != l.src || null != l.stroke || null != l["stroke-width"] || null != l["stroke-opacity"] || null != l["fill-opacity"] || null != l["stroke-dasharray"] || null != l["stroke-miterlimit"] || null != l["stroke-linejoin"] || null != l["stroke-linecap"]) {
-     var F = d.getElementsByTagName(c), O = !1;
-     if (F = F && F[0], !F && (O = F = L(c)), "image" == r.type && l.src && (F.src = l.src), 
-     l.fill && (F.on = !0), (null == F.on || "none" == l.fill || null === l.fill) && (F.on = !1), 
-     F.on && l.fill) {
+     var O = d.getElementsByTagName(c), F = !1;
+     if (O = O && O[0], !O && (F = O = M(c)), "image" == r.type && l.src && (O.src = l.src), 
+     l.fill && (O.on = !0), (null == O.on || "none" == l.fill || null === l.fill) && (O.on = !1), 
+     O.on && l.fill) {
       var B = t(l.fill).match(n._ISURL);
       if (B) {
-       F.parentNode == d && d.removeChild(F), F.rotate = !0, F.src = B[1], F.type = "tile";
+       O.parentNode == d && d.removeChild(O), O.rotate = !0, O.src = B[1], O.type = "tile";
        var j = r.getBBox(1);
-       F.position = j.x + h + j.y, r._.fillpos = [ j.x, j.y ], n._preload(B[1], function() {
+       O.position = j.x + h + j.y, r._.fillpos = [ j.x, j.y ], n._preload(B[1], function() {
         r._.fillsize = [ this.offsetWidth, this.offsetHeight ];
        });
-      } else F.color = n.getRGB(l.fill).hex, F.src = f, F.type = "solid", n.getRGB(l.fill).error && (b.type in {
+      } else O.color = n.getRGB(l.fill).hex, O.src = f, O.type = "solid", n.getRGB(l.fill).error && (b.type in {
        circle: 1,
        ellipse: 1
-      } || "r" != t(l.fill).charAt()) && I(b, l.fill, F) && (p.fill = "none", p.gradient = l.fill, 
-      F.rotate = !1);
+      } || "r" != t(l.fill).charAt()) && I(b, l.fill, O) && (p.fill = "none", p.gradient = l.fill, 
+      O.rotate = !1);
      }
      if ("fill-opacity" in l || "opacity" in l) {
       var $ = ((+p["fill-opacity"] + 1 || 2) - 1) * ((+p.opacity + 1 || 2) - 1) * ((+n.getRGB(l.fill).o + 1 || 2) - 1);
-      $ = s(a($, 0), 1), F.opacity = $, F.src && (F.color = "none");
+      $ = s(a($, 0), 1), O.opacity = $, O.src && (O.color = "none");
      }
-     d.appendChild(F);
+     d.appendChild(O);
      var q = d.getElementsByTagName("stroke") && d.getElementsByTagName("stroke")[0], G = !1;
-     !q && (G = q = L("stroke")), (l.stroke && "none" != l.stroke || l["stroke-width"] || null != l["stroke-opacity"] || l["stroke-dasharray"] || l["stroke-miterlimit"] || l["stroke-linejoin"] || l["stroke-linecap"]) && (q.on = !0), 
+     !q && (G = q = M("stroke")), (l.stroke && "none" != l.stroke || l["stroke-width"] || null != l["stroke-opacity"] || l["stroke-dasharray"] || l["stroke-miterlimit"] || l["stroke-linejoin"] || l["stroke-linecap"]) && (q.on = !0), 
      ("none" == l.stroke || null === l.stroke || null == q.on || 0 == l.stroke || 0 == l["stroke-width"]) && (q.on = !1);
      var H = n.getRGB(l.stroke);
      q.on && l.stroke && (q.color = H.hex), $ = ((+p["stroke-opacity"] + 1 || 2) - 1) * ((+p.opacity + 1 || 2) - 1) * ((+H.o + 1 || 2) - 1);
@@ -17309,7 +17365,7 @@ function() {
      if ($ = s(a($, 0), 1), null == l["stroke-width"] && (U = p["stroke-width"]), l["stroke-width"] && (q.weight = U), 
      U && 1 > U && ($ *= U) && (q.weight = 1), q.opacity = $, l["stroke-linejoin"] && (q.joinstyle = l["stroke-linejoin"] || "miter"), 
      q.miterlimit = l["stroke-miterlimit"] || 8, l["stroke-linecap"] && (q.endcap = "butt" == l["stroke-linecap"] ? "flat" : "square" == l["stroke-linecap"] ? "square" : "round"), 
-     l["stroke-dasharray"]) {
+     "stroke-dasharray" in l) {
       var z = {
        "-": "shortdash",
        ".": "shortdot",
@@ -17400,7 +17456,7 @@ function() {
      c.coordorigin = g * -x + h + v * -x, k(this, 1, 1, g, v, 0);
     } else c.style.filter = f, k(this, a.scalex, a.scaley, a.dx, a.dy, a.rotate); else c.style.filter = f, 
     l.matrix = t(s), l.offset = s.offset();
-    return i && (this._.transform = i), this;
+    return null !== i && (this._.transform = i, n._extractTransform(this, i)), this;
    }, N.rotate = function(e, n, r) {
     if (this.removed) return this;
     if (null != e) {
@@ -17428,6 +17484,15 @@ function() {
     return !this.removed && (this.node.style.display = "none"), this;
    }, N.show = function() {
     return !this.removed && (this.node.style.display = f), this;
+   }, N.auxGetBBox = n.el.getBBox, N.getBBox = function() {
+    var e = this.auxGetBBox();
+    if (this.paper && this.paper._viewBoxShift) {
+     var t = {}, n = 1 / this.paper._viewBoxShift.scale;
+     return t.x = e.x - this.paper._viewBoxShift.dx, t.x *= n, t.y = e.y - this.paper._viewBoxShift.dy, 
+     t.y *= n, t.width = e.width * n, t.height = e.height * n, t.x2 = t.x + t.width, 
+     t.y2 = t.y + t.height, t;
+    }
+    return e;
    }, N._getBBox = function() {
     return this.removed ? {} : {
      x: this.X + (this.bbx || 0) - this.W / 2,
@@ -17490,14 +17555,14 @@ function() {
     t.margin = n.format("-{0}px 0 0 -{0}px", o(+e || 1.5))) : (t.filter = i, t.margin = 0, 
     delete this.attrs.blur), this;
    }, n._engine.path = function(e, t) {
-    var n = L("shape");
+    var n = M("shape");
     n.style.cssText = y, n.coordsize = x + h + x, n.coordorigin = t.coordorigin;
     var i = new D(n, t), r = {
      fill: "none",
      stroke: "#000"
     };
     e && (r.path = e), i.type = "path", i.path = [], i.Path = f, T(i, r), t.canvas.appendChild(n);
-    var o = L("skew");
+    var o = M("skew");
     return o.on = !0, n.appendChild(o), i.skew = o, i.transform(f), i;
    }, n._engine.rect = function(e, t, i, r, o, a) {
     var s = n._rectPath(t, i, r, o, a), l = e.path(s), c = l.attrs;
@@ -17533,7 +17598,7 @@ function() {
     p.src = t, p.type = "tile", l._.fillpos = [ i, r ], l._.fillsize = [ o, a ], d.appendChild(p), 
     k(l, 1, 1, 0, 0, 0), l;
    }, n._engine.text = function(e, i, r, a) {
-    var s = L("shape"), l = L("path"), c = L("textpath");
+    var s = M("shape"), l = M("path"), c = M("textpath");
     i = i || 0, r = r || 0, a = a || "", l.v = n.format("m{0},{1}l{2},{1}", o(i * x), o(r * x), o(i * x) + 1), 
     l.textpathok = !0, c.string = t(a), c.on = !0, s.style.cssText = y, s.coordsize = x + h + x, 
     s.coordorigin = "0 0";
@@ -17546,7 +17611,7 @@ function() {
     u.shape = s, u.path = l, u.textpath = c, u.type = "text", u.attrs.text = t(a), u.attrs.x = i, 
     u.attrs.y = r, u.attrs.w = 1, u.attrs.h = 1, T(u, d), s.appendChild(c), s.appendChild(l), 
     e.canvas.appendChild(s);
-    var p = L("skew");
+    var p = M("skew");
     return p.on = !0, s.appendChild(p), u.skew = p, u.transform(f), u;
    }, n._engine.setSize = function(e, t) {
     var i = this.canvas.style;
@@ -17555,27 +17620,27 @@ function() {
     this;
    }, n._engine.setViewBox = function(e, t, i, r, o) {
     n.eve("raphael.setViewBox", this, this._viewBox, [ e, t, i, r, o ]);
-    var s, l, c = this.width, u = this.height, d = 1 / a(i / c, r / u);
-    return o && (s = u / r, l = c / i, c > i * s && (e -= (c - i * s) / 2 / s), u > r * l && (t -= (u - r * l) / 2 / l)), 
+    var a, s, l = this.getSize(), c = l.width, u = l.height;
+    return o && (a = u / r, s = c / i, c > i * a && (e -= (c - i * a) / 2 / a), u > r * s && (t -= (u - r * s) / 2 / s)), 
     this._viewBox = [ e, t, i, r, !!o ], this._viewBoxShift = {
      dx: -e,
      dy: -t,
-     scale: d
+     scale: size
     }, this.forEach(function(e) {
      e.transform("...");
     }), this;
    };
-   var L;
+   var M;
    n._engine.initWin = function(e) {
     var t = e.document;
-    t.createStyleSheet().addRule(".rvml", "behavior:url(#default#VML)");
+    t.styleSheets.length < 31 ? t.createStyleSheet().addRule(".rvml", "behavior:url(#default#VML)") : t.styleSheets[0].addRule(".rvml", "behavior:url(#default#VML)");
     try {
      !t.namespaces.rvml && t.namespaces.add("rvml", "urn:schemas-microsoft-com:vml"), 
-     L = function(e) {
+     M = function(e) {
       return t.createElement("<rvml:" + e + ' class="rvml">');
      };
     } catch (n) {
-     L = function(e) {
+     M = function(e) {
       return t.createElement("<" + e + ' xmlns="urn:schemas-microsoft.com:vml" class="rvml">');
      };
     }
@@ -17598,8 +17663,8 @@ function() {
     for (var e in this) this[e] = "function" == typeof this[e] ? n._removedFactory(e) : null;
     return !0;
    };
-   var M = n.st;
-   for (var A in N) N[e](A) && !M[e](A) && (M[A] = function(e) {
+   var L = n.st;
+   for (var A in N) N[e](A) && !L[e](A) && (L[A] = function(e) {
     return function() {
      var t = arguments;
      return this.forEach(function(n) {
@@ -17608,7 +17673,8 @@ function() {
     };
    }(A));
   }
- }(), T.was ? E.win.Raphael = n : Raphael = n, n;
+ }(), T.was ? E.win.Raphael = n : Raphael = n, "object" == typeof exports && (module.exports = n), 
+ n;
 }), function() {
  function e() {
   this.title = void 0, this.actors = [], this.signals = [];
@@ -18872,14 +18938,14 @@ function() {
     }
     i.symbols[S.key] = S;
    } else if (y.indexOf("->") >= 0) for (var E = y.split("->"), T = 0, I = E.length; I > T; T++) {
-    var D = E[T], N = t(D), L = n(D), M = null;
-    if (L.indexOf(",") >= 0) {
-     var A = L.split(",");
-     L = A[0], M = A[1].trim();
+    var D = E[T], N = t(D), M = n(D), L = null;
+    if (M.indexOf(",") >= 0) {
+     var A = M.split(",");
+     M = A[0], L = A[1].trim();
     }
     if (i.start || (i.start = N), I > T + 1) {
      var R = E[T + 1];
-     N[L] = t(R), N["direction_" + L] = M, M = null;
+     N[M] = t(R), N["direction_" + M] = L, L = null;
     }
    }
   }
@@ -19172,22 +19238,22 @@ function() {
   this.rightStart = !0, e.leftEnd = !0, S = m.x; else o = i(this.chart, c, h, t), 
   this.bottomStart = !0, e.topEnd = !0, S = c.x;
   if (o) {
-   for (var E = 0, T = this.chart.lines.length; T > E; E++) for (var I, D = this.chart.lines[E], N = D.attr("path"), L = o.attr("path"), M = 0, A = N.length - 1; A > M; M++) {
+   for (var E = 0, T = this.chart.lines.length; T > E; E++) for (var I, D = this.chart.lines[E], N = D.attr("path"), M = o.attr("path"), L = 0, A = N.length - 1; A > L; L++) {
     var R = [];
-    R.push([ "M", N[M][1], N[M][2] ]), R.push([ "L", N[M + 1][1], N[M + 1][2] ]);
-    for (var P = R[0][1], F = R[0][2], O = R[1][1], B = R[1][2], j = 0, $ = L.length - 1; $ > j; j++) {
+    R.push([ "M", N[L][1], N[L][2] ]), R.push([ "L", N[L + 1][1], N[L + 1][2] ]);
+    for (var P = R[0][1], O = R[0][2], F = R[1][1], B = R[1][2], j = 0, $ = M.length - 1; $ > j; j++) {
      var q = [];
-     q.push([ "M", L[j][1], L[j][2] ]), q.push([ "L", L[j + 1][1], L[j + 1][2] ]);
-     var G = q[0][1], H = q[0][2], U = q[1][1], z = q[1][2], V = r(P, F, O, B, G, H, U, z);
+     q.push([ "M", M[j][1], M[j][2] ]), q.push([ "L", M[j + 1][1], M[j + 1][2] ]);
+     var G = q[0][1], H = q[0][2], U = q[1][1], z = q[1][2], V = r(P, O, F, B, G, H, U, z);
      if (V.onLine1 && V.onLine2) {
       var W;
-      H === z ? G > U ? (W = [ "L", V.x + 2 * _, H ], L.splice(j + 1, 0, W), W = [ "C", V.x + 2 * _, H, V.x, H - 4 * _, V.x - 2 * _, H ], 
-      L.splice(j + 2, 0, W), o.attr("path", L)) : (W = [ "L", V.x - 2 * _, H ], L.splice(j + 1, 0, W), 
-      W = [ "C", V.x - 2 * _, H, V.x, H - 4 * _, V.x + 2 * _, H ], L.splice(j + 2, 0, W), 
-      o.attr("path", L)) : H > z ? (W = [ "L", G, V.y + 2 * _ ], L.splice(j + 1, 0, W), 
-      W = [ "C", G, V.y + 2 * _, G + 4 * _, V.y, G, V.y - 2 * _ ], L.splice(j + 2, 0, W), 
-      o.attr("path", L)) : (W = [ "L", G, V.y - 2 * _ ], L.splice(j + 1, 0, W), W = [ "C", G, V.y - 2 * _, G + 4 * _, V.y, G, V.y + 2 * _ ], 
-      L.splice(j + 2, 0, W), o.attr("path", L)), j += 2, I += 2;
+      H === z ? G > U ? (W = [ "L", V.x + 2 * _, H ], M.splice(j + 1, 0, W), W = [ "C", V.x + 2 * _, H, V.x, H - 4 * _, V.x - 2 * _, H ], 
+      M.splice(j + 2, 0, W), o.attr("path", M)) : (W = [ "L", V.x - 2 * _, H ], M.splice(j + 1, 0, W), 
+      W = [ "C", V.x - 2 * _, H, V.x, H - 4 * _, V.x + 2 * _, H ], M.splice(j + 2, 0, W), 
+      o.attr("path", M)) : H > z ? (W = [ "L", G, V.y + 2 * _ ], M.splice(j + 1, 0, W), 
+      W = [ "C", G, V.y + 2 * _, G + 4 * _, V.y, G, V.y - 2 * _ ], M.splice(j + 2, 0, W), 
+      o.attr("path", M)) : (W = [ "L", G, V.y - 2 * _ ], M.splice(j + 1, 0, W), W = [ "C", G, V.y - 2 * _, G + 4 * _, V.y, G, V.y + 2 * _ ], 
+      M.splice(j + 2, 0, W), o.attr("path", M)), j += 2, I += 2;
      }
     }
    }
@@ -20678,11 +20744,11 @@ function() {
   });
  }, a;
 }), define("text!extensions/shortcutsDefaultMapping.settings", [], function() {
- return "{\n    'mod+b': bindPagedownButton('bold'),\n    'mod+i': bindPagedownButton('italic'),\n    'mod+l': bindPagedownButton('link'),\n    'mod+q': bindPagedownButton('quote'),\n    'mod+k': bindPagedownButton('code'),\n    'mod+g': bindPagedownButton('image'),\n    'mod+o': bindPagedownButton('olist'),\n    'mod+u': bindPagedownButton('ulist'),\n    'mod+h': bindPagedownButton('heading'),\n    'mod+r': bindPagedownButton('hr'),\n    'mod+z': bindPagedownButton('undo'),\n    'mod+y': bindPagedownButton('redo'),\n    'mod+shift+z': bindPagedownButton('redo'),\n    'mod+m': function(evt) {\n        $('.button-open-discussion').click();\n        evt.preventDefault();\n    },\n    '= = > space': function() {\n        expand('==> ', 'â‡’ ');\n    },\n    '< = = space': function() {\n        expand('<== ', 'â‡ ');\n    },\n    'S t a c k E d i t': function() {\n        eventMgr.onMessage(\"You are stunned!!! Aren't you?\");\n    }\n}\n";
+ return "{\n    'mod+b': bindPagedownButton('bold'),\n    'mod+i': bindPagedownButton('italic'),\n    'mod+l': bindPagedownButton('link'),\n    'mod+q': bindPagedownButton('quote'),\n    'mod+k': bindPagedownButton('code'),\n    'mod+g': bindPagedownButton('image'),\n    'mod+o': bindPagedownButton('olist'),\n    'mod+u': bindPagedownButton('ulist'),\n    'mod+h': bindPagedownButton('heading'),\n    'mod+r': bindPagedownButton('hr'),\n    'mod+z': bindPagedownButton('undo'),\n    'mod+y': bindPagedownButton('redo'),\n    'mod+shift+z': bindPagedownButton('redo'),\n    'mod+m': function(evt) {\n        $('.button-open-discussion').click();\n        evt.preventDefault();\n    },\n    '= = > space': function() {\n        expand('==> ', '\u21d2 ');\n    },\n    '< = = space': function() {\n        expand('<== ', '\u21d0 ');\n    },\n    'S t a c k E d i t': function() {\n        eventMgr.onMessage(\"You are stunned!!! Aren't you?\");\n    }\n}\n";
 }), define("text!html/shortcutsSettingsBlock.html", [], function() {
  return '<p>Maps keyboard shortcuts to JavaScript functions.</p>\n<div class="form-horizontal">\n	<div class="form-group">\n		<label class="col-sm-3 control-label" for="textarea-shortcuts-mapping">Mapping\n			<a href="#" class="tooltip-shortcuts-extension">(?)</a>\n		</label>\n		<div class="col-sm-8">\n			<textarea id="textarea-shortcuts-mapping" class="form-control"></textarea>\n		</div>\n	</div>\n</div>\n';
 }), define("text!html/tooltipSettingsShortcutsExtension.html", [], function() {
- return 'You can create expanding macros like this:\n<br />\n<br />\n\'- - > space\': function() {\n<br />\n	expand(\'--> \', \'â†’ \');\n<br />\n}\n<br />\n<br />\n<a target="_blank"\n	href="http://craig.is/killing/mice">More\n	info</a>\n<br />\n<br />\n<b class="text-danger"><i class="icon-attention"></i> Careful! This is subject to malicious code. Don\'t copy/paste untrusted content.</b>\n';
+ return 'You can create expanding macros like this:\n<br />\n<br />\n\'- - > space\': function() {\n<br />\n	expand(\'--> \', \'\u2192 \');\n<br />\n}\n<br />\n<br />\n<a target="_blank"\n	href="http://craig.is/killing/mice">More\n	info</a>\n<br />\n<br />\n<b class="text-danger"><i class="icon-attention"></i> Careful! This is subject to malicious code. Don\'t copy/paste untrusted content.</b>\n';
 }), define("extensions/shortcuts", [ "jquery", "underscore", "utils", "mousetrap", "classes/Extension", "text!extensions/shortcutsDefaultMapping.settings", "text!html/shortcutsSettingsBlock.html", "text!html/tooltipSettingsShortcutsExtension.html" ], function($, _, utils, mousetrap, Extension, shortcutsDefaultMapping, shortcutsSettingsBlockHTML, tooltipSettingsShortcutsExtensionHTML) {
  function bindPagedownButton(e) {
   return function(t) {
@@ -20807,7 +20873,7 @@ function() {
    reply: !0
   })), r.join("");
  }
- var h, f = new a("comments", "Comments", !1, !0), m = [ "<div class=\"comment-block<%= reply ? ' reply' : '' %>\">", '    <div class="comment-author"><i class="icon-comment"></i> <%= author %></div>', '    <div class="comment-content"><%= content %></div>', "</div>" ].join(""), g = [ '<span class="clearfix">', '    <a href="#" class="action-remove-discussion pull-right">', '        <i class="icon-trash"></i>', "    </a>", "    â€œ<%- title %>â€", "</span>" ].join("");
+ var h, f = new a("comments", "Comments", !1, !0), m = [ "<div class=\"comment-block<%= reply ? ' reply' : '' %>\">", '    <div class="comment-author"><i class="icon-comment"></i> <%= author %></div>', '    <div class="comment-content"><%= content %></div>', "</div>" ].join(""), g = [ '<span class="clearfix">', '    <a href="#" class="action-remove-discussion pull-right">', '        <i class="icon-trash"></i>', "    </a>", "    \u201c<%- title %>\u201d", "</span>" ].join("");
  f.onEventMgrCreated = function(e) {
   h = e;
  };
@@ -20823,7 +20889,7 @@ function() {
  }, c.prototype.getPopoverElt = function() {
   return document.querySelector(".comments-popover .popover:last-child");
  };
- var _, k, E, T, I, D, N = {}, L = [], M = !1, A = t.debounce(function() {
+ var _, k, E, T, I, D, N = {}, M = [], L = !1, A = t.debounce(function() {
   function e() {
    var i;
    if (0 === o.length) return t.filter(N, function(e, n) {
@@ -20831,20 +20897,20 @@ function() {
    }).forEach(function(e) {
     x.removeChild(e), delete N[e.discussionIndex];
    }), l(C, w, !0), _ && !_.discussionIndex && (y.scrollTop += parseInt(C.style.top) - y.scrollTop - 3 * y.offsetHeight / 4, 
-   u(C)), L = t.sortBy(N, function(e) {
+   u(C)), M = t.sortBy(N, function(e) {
     return e.selectionEnd;
-   }), I.toggleClass("some", 0 !== L.length), I.toggleClass("replied", M), void D.toggleClass("icon-chat", 0 !== L.length);
+   }), I.toggleClass("some", 0 !== M.length), I.toggleClass("replied", L), void D.toggleClass("icon-chat", 0 !== M.length);
    var a = o.shift(), s = N[a.discussionIndex];
    s || (s = r("a"));
    var c = "discussion", d = !a.commentList || !n || t.last(a.commentList).author != n;
-   d && (M = !0), c += "conflict" == a.type ? " icon-split" : " icon-comment", c += d ? " replied" : " added", 
+   d && (L = !0), c += "conflict" == a.type ? " icon-split" : " icon-comment", c += d ? " replied" : " added", 
    s.className = c, s.discussionIndex = a.discussionIndex, s.selectionEnd = a.selectionEnd, 
    i = b.getCoordinates(a.selectionEnd), l(s, i.y), x.appendChild(s), N[a.discussionIndex] = s, 
    _ && _.getDiscussion() === a && (y.scrollTop += parseInt(s.style.top) - y.scrollTop - 3 * y.offsetHeight / 4, 
    u(s)), T = setTimeout(e, 5);
   }
   if (void 0 !== E) {
-   M = !1, L = [];
+   L = !1, M = [];
    var n = i["author.name"];
    S = [];
    var o = t.sortBy(E.discussionList, function(e) {
@@ -20983,24 +21049,24 @@ function() {
    var i = f;
    if (_) if (_.discussionIndex) {
     var r = -1;
-    L.some(function(e, t) {
+    M.some(function(e, t) {
      return e === _.commentElt ? (r = t, !0) : void 0;
-    }), i = e(L[r + 1]);
-   } else i = e(t.first(L)); else b.selectionStart === b.selectionEnd && L.length && (i = e(t.first(L)));
+    }), i = e(M[r + 1]);
+   } else i = e(t.first(M)); else b.selectionStart === b.selectionEnd && M.length && (i = e(t.first(M)));
    0 === i.length ? (d(), v.focus(), v.adjustCursorPosition(!0)) : i.click(), n.stopPropagation();
   }), D = I.find("i");
  }, f;
 }), define("text!html/findReplace.html", [], function() {
- return '<button type="button" class="close button-find-replace-dismiss">Ã—</button>\n<div class="form-inline">\n    <div class="form-group">\n        <label for="input-find-replace-search-for">Search for</label>\n        <input class="form-control" id="input-find-replace-search-for" placeholder="Search for">\n    </div>\n    <div class="form-group">\n        <label for="input-find-replace-replace-with">Replace with</label>\n        <input class="form-control" id="input-find-replace-replace-with" placeholder="Replace with">\n    </div>\n</div>\n<div class="pull-right">\n    <div class="help-block text-right">\n        <span class="found-counter">0</span> found\n    </div>\n    <div>\n        <button type="button" class="btn btn-primary search-button">Search</button>\n        <button type="button" class="btn btn-default replace-button">Replace</button>\n        <button type="button" class="btn btn-default replace-all-button">All</button>\n    </div>\n</div>\n<div class="pull-left">\n    <div class="checkbox">\n        <label>\n            <input type="checkbox" class="checkbox-case-sensitive"> Case sensitive\n        </label>\n    </div>\n    <div class="checkbox">\n        <label>\n            <input type="checkbox" class="checkbox-regexp"> Regular expression\n        </label>\n    </div>\n</div>\n';
+ return '<button type="button" class="close button-find-replace-dismiss">\xd7</button>\n<div class="form-inline">\n    <div class="form-group">\n        <label for="input-find-replace-search-for">Search for</label>\n        <input class="form-control" id="input-find-replace-search-for" placeholder="Search for">\n    </div>\n    <div class="form-group">\n        <label for="input-find-replace-replace-with">Replace with</label>\n        <input class="form-control" id="input-find-replace-replace-with" placeholder="Replace with">\n    </div>\n</div>\n<div class="pull-right">\n    <div class="help-block text-right">\n        <span class="found-counter">0</span> found\n    </div>\n    <div>\n        <button type="button" class="btn btn-primary search-button">Search</button>\n        <button type="button" class="btn btn-default replace-button">Replace</button>\n        <button type="button" class="btn btn-default replace-all-button">All</button>\n    </div>\n</div>\n<div class="pull-left">\n    <div class="checkbox">\n        <label>\n            <input type="checkbox" class="checkbox-case-sensitive"> Case sensitive\n        </label>\n    </div>\n    <div class="checkbox">\n        <label>\n            <input type="checkbox" class="checkbox-regexp"> Regular expression\n        </label>\n    </div>\n</div>\n';
 }), define("text!html/findReplaceSettingsBlock.html", [], function() {
  return '<p>Helps find and replace text in the current document.</p>\n<div class="form-horizontal">\n	<div class="form-group">\n		<label class="col-sm-5 control-label"\n			for="input-find-replace-shortcut">Shortcut <a href="http://craig.is/killing/mice#keys" target="_blank">(?)</a></label>\n		<div class="col-sm-6">\n			<input type="text" id="input-find-replace-shortcut"\n				class="form-control">\n		</div>\n	</div>\n</div>';
 }), define("extensions/findReplace", [ "jquery", "underscore", "crel", "utils", "classes/Extension", "mousetrap", "rangy", "text!html/findReplace.html", "text!html/findReplaceSettingsBlock.html" ], function(e, t, n, i, r, o, a, s, l) {
  function c() {
-  u(), L.forEach(function(e) {
+  u(), M.forEach(function(e) {
    try {
     x.undoToRange(e);
    } catch (t) {}
-  }), L = [];
+  }), M = [];
  }
  function u() {
   if (S) {
@@ -21018,30 +21084,30 @@ function() {
     offset: e.offset
    } : e;
   }
-  if (F) {
+  if (O) {
    var n = k.val(), i = I.prop("checked"), r = D.prop("checked");
    if (e || n != A || i != R || r != P) {
     A = n, R = i, P = r, c();
     var o, s = {};
-    M = [];
+    L = [];
     var l = 0, u = n.length;
     if (u) try {
-     var d = i ? "g" : "gi";
+     var d = i ? "gm" : "gmi";
      if (n = r ? n : n.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"), N = new RegExp(n, d), 
      b.getValue().replace(N, function(e, t) {
-      M.push({
+      L.push({
        start: t,
        end: t + e.length
       });
-     }), l = M.length, M.length < 200) {
+     }), l = L.length, L.length < 200) {
       var p = [];
-      M.forEach(function(e) {
+      L.forEach(function(e) {
        p.push(e.start), p.push(e.end);
       }), p = b.selectionMgr.findOffsets(p);
       for (var h = 0; h < p.length; h += 2) {
        var f = p[h], m = p[h + 1], g = t(f), v = t(m), y = a.createRange();
        y.setStart(g.container, g.offsetInContainer), y.setEnd(v.container, v.offsetInContainer), 
-       s = m, o = y, x.applyToRange(y), L[f.offset] = y;
+       s = m, o = y, x.applyToRange(y), M[f.offset] = y;
       }
       b.selectionMgr.hasFocus && b.selectionMgr.updateSelectionRange();
      }
@@ -21051,20 +21117,20 @@ function() {
   }
  }
  function p() {
-  y.onEditorPopover(), F = !0, _.show(), k.focus()[0].setSelectionRange(0, k.val().length), 
+  y.onEditorPopover(), O = !0, _.show(), k.focus()[0].setSelectionRange(0, k.val().length), 
   b.selectionMgr.adjustTop = 50, b.selectionMgr.adjustBottom = 220, d(!0);
  }
  function h() {
-  F = !1, _.hide(), c(), b.selectionMgr.adjustTop = 0, b.selectionMgr.adjustBottom = 0, 
+  O = !1, _.hide(), c(), b.selectionMgr.adjustTop = 0, b.selectionMgr.adjustBottom = 0, 
   b.focus();
  }
  function f() {
   u();
-  var e = Math.min(b.selectionMgr.selectionStart, b.selectionMgr.selectionEnd), n = t.find(M, function(t) {
+  var e = Math.min(b.selectionMgr.selectionStart, b.selectionMgr.selectionEnd), n = t.find(L, function(t) {
    return t.start > e;
   });
-  if (n || (n = t.first(M)), n) {
-   if (S = L[n.start], !S) {
+  if (n || (n = t.first(L)), n) {
+   if (S = M[n.start], !S) {
     var i = b.selectionMgr.createRange(n.start, n.end);
     S = a.createRange(), S.setStart(i.startContainer, i.startOffset), S.setEnd(i.endContainer, i.endOffset);
    }
@@ -21099,7 +21165,7 @@ function() {
  v.onEventMgrCreated = function(e) {
   y = e;
  };
- var x, w, S, C, _, k, E, T, I, D, N, L = [], M = [], A = "", R = !1, P = !1, F = !1;
+ var x, w, S, C, _, k, E, T, I, D, N, M = [], L = [], A = "", R = !1, P = !1, O = !1;
  return v.onEditorPopover = function() {
   h();
  }, v.onContentChanged = t.bind(d, null, !0), v.onFileOpen = t.bind(d, null, !0), 
@@ -21160,7 +21226,7 @@ function() {
   for (s.last = function() {
    return s[s.length - 1];
   }; e; ) {
-   if (o = !0, s.last() && L[s.last()]) e = e.replace(new RegExp("(.*)<\\s*\\/\\s*" + s.last() + "[^>]*>", "i"), function(e, n) {
+   if (o = !0, s.last() && M[s.last()]) e = e.replace(new RegExp("(.*)<\\s*\\/\\s*" + s.last() + "[^>]*>", "i"), function(e, n) {
     return n = n.replace(w, "$1").replace(C, "$1"), t.chars && t.chars(c(n)), "";
    }), i("", s.last()); else if (0 === e.indexOf("<!--") ? (r = e.indexOf("--", 4), 
    r >= 0 && e.lastIndexOf("-->", r) === r && (t.comment && t.comment(e.substring(4, r)), 
@@ -21181,7 +21247,7 @@ function() {
  }
  function c(e) {
   if (!e) return "";
-  var t = F.exec(e), n = t[1], i = t[3], r = t[2];
+  var t = O.exec(e), n = t[1], i = t[3], r = t[2];
   return r && (P.innerHTML = r.replace(/</g, "&lt;"), r = "textContent" in P ? P.textContent : P.innerText), 
   n + r + i;
  }
@@ -21194,14 +21260,14 @@ function() {
   var i = !1, r = t.bind(e.push, e);
   return {
    start: function(e, o, a) {
-    e = e && e.toLowerCase(), !i && L[e] && (i = e), i || M[e] !== !0 || (r("<"), r(e), 
+    e = e && e.toLowerCase(), !i && M[e] && (i = e), i || L[e] !== !0 || (r("<"), r(e), 
     t.forEach(o, function(t, i) {
      var o = i && i.toLowerCase(), a = "img" === e && "src" === o || "background" === o;
      R[o] !== !0 || A[o] === !0 && !n(t, a) || (r(" "), r(i), r('="'), r(u(t)), r('"'));
     }), r(a ? "/>" : ">"));
    },
    end: function(e) {
-    e = e && e.toLowerCase(), i || M[e] !== !0 || (r("</"), r(e), r(">")), e == i && (i = !1);
+    e = e && e.toLowerCase(), i || L[e] !== !0 || (r("</"), r(e), r(">")), e == i && (i = !1);
    },
    chars: function(e) {
     i || r(u(e));
@@ -21224,11 +21290,11 @@ function() {
    }), h.slice(0, -1).join("");
   });
  };
- var f = /^\s*(https?|ftp|mailto|tel|file):/, m = /^\s*(https?|ftp|file):|data:image\//, g = /^<\s*([\w:-]+)((?:\s+[\w:-]+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)\s*>/, v = /^<\s*\/\s*([\w:-]+)[^>]*>/, b = /([\w:-]+)(?:\s*=\s*(?:(?:"((?:[^"])*)")|(?:'((?:[^'])*)')|([^>\s]+)))?/g, y = /^</, x = /^<\s*\//, w = /<!--(.*?)-->/g, S = /<!DOCTYPE([^>]*?)>/i, C = /<!\[CDATA\[(.*?)]]>/g, _ = /([^\#-~| |!])/g, k = s("area,br,col,hr,img,wbr"), E = s("colgroup,dd,dt,li,p,tbody,td,tfoot,th,thead,tr"), T = s("rp,rt"), I = t.extend({}, T, E), D = t.extend({}, E, s("address,article,aside,blockquote,caption,center,del,dir,div,dl,figure,figcaption,footer,h1,h2,h3,h4,h5,h6,header,hgroup,hr,ins,map,menu,nav,ol,pre,script,section,table,ul")), N = t.extend({}, T, s("a,abbr,acronym,b,bdi,bdo,big,br,cite,code,del,dfn,em,font,i,img,ins,kbd,label,map,mark,q,ruby,rp,rt,s,samp,small,span,strike,strong,sub,sup,time,tt,u,var")), L = s("script,style");
+ var f = /^\s*(https?|ftp|mailto|tel|file):/, m = /^\s*(https?|ftp|file):|data:image\//, g = /^<\s*([\w:-]+)((?:\s+[\w:-]+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)\s*>/, v = /^<\s*\/\s*([\w:-]+)[^>]*>/, b = /([\w:-]+)(?:\s*=\s*(?:(?:"((?:[^"])*)")|(?:'((?:[^'])*)')|([^>\s]+)))?/g, y = /^</, x = /^<\s*\//, w = /<!--(.*?)-->/g, S = /<!DOCTYPE([^>]*?)>/i, C = /<!\[CDATA\[(.*?)]]>/g, _ = /([^\#-~| |!])/g, k = s("area,br,col,hr,img,wbr"), E = s("colgroup,dd,dt,li,p,tbody,td,tfoot,th,thead,tr"), T = s("rp,rt"), I = t.extend({}, T, E), D = t.extend({}, E, s("address,article,aside,blockquote,caption,center,del,dir,div,dl,figure,figcaption,footer,h1,h2,h3,h4,h5,h6,header,hgroup,hr,ins,map,menu,nav,ol,pre,script,section,table,ul")), N = t.extend({}, T, s("a,abbr,acronym,b,bdi,bdo,big,br,cite,code,del,dfn,em,font,i,img,ins,kbd,label,map,mark,q,ruby,rp,rt,s,samp,small,span,strike,strong,sub,sup,time,tt,u,var")), M = s("script,style");
  D.iframe = !0;
- var M = t.extend({}, k, D, N, I), A = s("background,cite,href,longdesc,src,usemap"), R = t.extend({}, A, s("abbr,align,alt,axis,bgcolor,border,cellpadding,cellspacing,class,clear,color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace,ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules,scope,scrolling,shape,size,span,start,summary,target,title,type,valign,value,vspace,width"));
+ var L = t.extend({}, k, D, N, I), A = s("background,cite,href,longdesc,src,usemap"), R = t.extend({}, A, s("abbr,align,alt,axis,bgcolor,border,cellpadding,cellspacing,class,clear,color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace,ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules,scope,scrolling,shape,size,span,start,summary,target,title,type,valign,value,vspace,width"));
  R.id = !0, R.allowfullscreen = !0;
- var P = document.createElement("pre"), F = /^(\s*)([\s\S]*?)(\s*)$/;
+ var P = document.createElement("pre"), O = /^(\s*)([\s\S]*?)(\s*)$/;
  return p;
 }), function(e) {
  var t = "waitForImages";
@@ -21339,8 +21405,14 @@ function() {
    var i = n.length ? n.shift() : function() {
     setTimeout(function() {
      var e = "";
-     t.each(g.children, function(t) {
-      e += t.innerHTML;
+     t.each(g.children, function(n) {
+      if (!n.exportableHtml) {
+       var i = n.cloneNode(!0);
+       t.each(i.querySelectorAll(".MathJax, .MathJax_Display, .MathJax_Preview"), function(e) {
+        e.parentNode.removeChild(e);
+       }), n.exportableHtml = i.innerHTML;
+      }
+      e += n.exportableHtml;
      });
      var n = r.trim(e), i = n.replace(/ <span class="comment label label-danger">.*?<\/span> /g, "");
      b(n, i);
@@ -22882,7 +22954,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
  rparen: /[\])}]/g,
  comment: /%.*/g
 }, define("libs/prism-latex", function() {}), Prism.languages.md = function() {
- var e = "[-A-Z0-9+&@#/%?=~_|[\\]()!:,.;]", t = "[-A-Z0-9+&@#/%=~_|[\\])]", n = new RegExp("(https?|ftp)(://" + e + "*" + t + ")(?=$|\\W)", "gi"), i = /(?:mailto:)?([-.\w]+\@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]+)/gi, r = Prism.languages.latex, o = /\n/gm, a = {};
+ var e = "(&amp;|[-A-Z0-9+@#/%?=~_|[\\]()!:,.;])", t = "(&amp;|[-A-Z0-9+@#/%=~_|[\\])])", n = new RegExp("(https?|ftp)(://" + e + "*" + t + ")(?=$|\\W)", "gi"), i = /(?:mailto:)?([-.\w]+\@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]+)/gi, r = Prism.languages.latex, o = /\n/gm, a = {};
  a["pre gfm"] = {
   pattern: /^`{3}.*\n(?:[\s\S]*?)\n`{3} *$/gm,
   inside: {
@@ -22994,14 +23066,14 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
     pattern: /\([^\)]+\)/,
     inside: {
      "md md-paren-start": /^\(/,
-     "md md-title": /(['â€˜][^'â€™]*['â€™]|["â€œ][^"â€]*["â€])(?=\)$)/,
+     "md md-title": /(['\u2018][^'\u2019]*['\u2019]|["\u201c][^"\u201d]*["\u201d])(?=\)$)/,
      "md md-src": /[^\('" \t]+(?=[\)'" \t])/,
      "md md-paren-end": /\)$/
     }
    }
   }
  }, a.link = {
-  pattern: /\[(?:(\\.)|[^\[\]])*\]\([^\(\)\s]+(\(\S*?\))??[^\(\)\s]*?(\s(['â€˜][^'â€™]*['â€™]|["â€œ][^"â€]*["â€]))?\)/gm,
+  pattern: /\[(?:(\\.)|[^\[\]])*\]\([^\(\)\s]+(\(\S*?\))??[^\(\)\s]*?(\s(['\u2018][^'\u2019]*['\u2019]|["\u201c][^"\u201d]*["\u201d]))?\)/gm,
   inside: {
    "md md-bracket-start": {
     pattern: /(^|[^\\])\[/,
@@ -23113,7 +23185,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
   strong: a.strong,
   em: a.em,
   strike: a.strike,
-  conflict: /â§¸â§¸/g,
+  conflict: /\u29f8\u29f8/g,
   comment: Prism.languages.markup.comment,
   tag: Prism.languages.markup.tag,
   entity: Prism.languages.markup.entity
@@ -23125,14 +23197,14 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
   fn: a.fn,
   link: a.link,
   linkref: a.linkref,
-  conflict: /â§¸â§¸/g
+  conflict: /\u29f8\u29f8/g
  }, a.strong.inside.rest = l, a.em.inside.rest = l, a.strike.inside.rest = l;
  var u = {
   code: a.code,
   strong: a.strong,
   em: a.em,
   strike: a.strike,
-  conflict: /â§¸â§¸/g,
+  conflict: /\u29f8\u29f8/g,
   comment: Prism.languages.markup.comment,
   tag: Prism.languages.markup.tag,
   entity: Prism.languages.markup.entity
@@ -23223,13 +23295,14 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
      var t = e.selectionStart, n = e.selectionEnd, i = c.getSelection();
      if (i.rangeCount > 0) {
       var r = i.getRangeAt(0), o = r.startContainer;
-      if (16 & N.compareDocumentPosition(o)) {
-       var a = o, s = r.startOffset;
-       do {
-        for (;o = o.previousSibling; ) o.textContent && (s += o.textContent.length);
-        o = a = a.parentNode;
-       } while (o && o != I);
-       i.isBackwards() ? (t = s + (r + "").length, n = s) : (t = s, n = s + (r + "").length), 
+      if (N.compareDocumentPosition(o) & Node.DOCUMENT_POSITION_CONTAINED_BY || N === o) {
+       var a = r.startOffset;
+       o.hasChildNodes() && a > 0 && (o = o.childNodes[a - 1], a = o.textContent.length);
+       for (var s = o; o != N; ) {
+        for (;o = o.previousSibling; ) o.textContent && (a += o.textContent.length);
+        o = s = s.parentNode;
+       }
+       i.isBackwards() ? (t = a + r.toString().length, n = a) : (t = a, n = a + r.toString().length), 
        t === n && "\n" == r.startContainer.textContent && 1 == r.startOffset && (t = --n, 
        e.setSelectionStartEnd(t, n), e.updateSelectionRange());
       }
@@ -23239,9 +23312,11 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
     X.saveSelectionState();
    }
    var i = !1, r = n.debounce(function() {
+    t(), e.updateCursorCoordinates(i), s();
+   }), s = n.debounce(function() {
     t(), o === e.selectionStart && a === e.selectionEnd && (i = !1), e.updateCursorCoordinates(i), 
     i = !1;
-   });
+   }, 10);
    return function(e, n, s) {
     return s && (o = void 0, a = void 0), e ? (i = i || n, r()) : void t();
    };
@@ -23296,18 +23371,16 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
  }
  function f(e, t, n) {
   X.currentMode = X.currentMode || "replace";
-  var i = V.createRange(e, t);
-  if ("" + i != n) {
-   i.deleteContents(), i.insertNode(document.createTextNode(n));
-   var r = e + n.length;
-   V.setSelectionStartEnd(r, r), V.updateSelectionRange(), V.updateCursorCoordinates(!0);
-  }
+  var i = V.createRange(Math.min(e, t), Math.max(e, t));
+  "" + i != n && (i.deleteContents(), i.insertNode(document.createTextNode(n)));
+  var r = e + n.length;
+  V.setSelectionStartEnd(r, r), V.updateSelectionRange(), V.updateCursorCoordinates(!0);
  }
  function m(e, t) {
   X.currentMode = X.currentMode || "replace";
   var n = W.replace(e, t);
   if (n != W) {
-   var i = O.setValue(n);
+   var i = F.setValue(n);
    V.setSelectionStartEnd(i.end, i.end), V.updateSelectionRange(), V.updateCursorCoordinates(!0);
   }
  }
@@ -23326,7 +23399,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
   return W;
  }
  function y() {
-  L.focus(), V.updateSelectionRange(), I.scrollTop = B;
+  M.focus(), V.updateSelectionRange(), I.scrollTop = B;
  }
  function x() {
   function e(e, n, i) {
@@ -23388,7 +23461,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
  }
  function S() {
   var e = I.textContent;
-  if (N.lastChild === F && "\n" == F.textContent.slice(-1) && (e = e.slice(0, -1)), 
+  if (N.lastChild === O && "\n" == O.textContent.slice(-1) && (e = e.slice(0, -1)), 
   e = e.replace(/\r\n?/g, "\n"), G === !1) {
    if (e == W) return void (0 === N.children.length && (N.innerHTML = "", K.forEach(function(e) {
     N.appendChild(e.elt);
@@ -23445,7 +23518,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
   }), H.noWatch(function() {
    if (G === !0) N.innerHTML = "", N.appendChild(e); else {
     J.forEach(function(e) {
-     e.elt.parentNode === N && N.removeChild(e.elt);
+     e.elt.parentNode === N && N.removeChild(e.elt), e.elt.generated = !1;
     }), void 0 !== Y ? N.insertBefore(e, Y.elt) : N.appendChild(e);
     for (var t = N.firstChild; t; ) {
      var n = t.nextSibling;
@@ -23456,9 +23529,9 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
   });
  }
  function E() {
-  F = l("span", {
+  O = l("span", {
    "class": "token lf"
-  }), F.textContent = "\n", N.appendChild(F);
+  }), O.textContent = "\n", N.appendChild(O);
  }
  function T(e) {
   var t = et(e.text);
@@ -23472,7 +23545,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
   });
   i.generated = !0, i.innerHTML = t, e.elt = i;
  }
- var I, D, N, L, M, A, R, P, F, O = {}, B = 0, j = function() {
+ var I, D, N, M, L, A, R, P, O, F = {}, B = 0, j = function() {
   var e, n = 0, r = function() {
    var e = Date.now();
    P.refreshPreview(), n = Date.now() - e;
@@ -23493,7 +23566,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
   G = !0, q = e;
  });
  var H = new u();
- O.watcher = H;
+ F.watcher = H;
  var U = new a(), z = s.create({
   objectHash: function(e) {
    return JSON.stringify(e);
@@ -23505,13 +23578,13 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
    minLength: 9999999
   }
  }), V = new d();
- O.selectionMgr = V, e(document).on("selectionchange", ".editor-content", t.bind(V.saveSelectionState, V, !0, !1)), 
- O.adjustCursorPosition = p;
+ F.selectionMgr = V, e(document).on("selectionchange", ".editor-content", t.bind(V.saveSelectionState, V, !0, !1)), 
+ F.adjustCursorPosition = p;
  var W;
- O.setValue = h, O.replace = f, O.replaceAll = m, O.replacePreviousText = g, O.setValueNoWatch = v, 
- O.getValue = b, O.focus = y;
+ F.setValue = h, F.replace = f, F.replaceAll = m, F.replacePreviousText = g, F.setValueNoWatch = v, 
+ F.getValue = b, F.focus = y;
  var X = new x();
- O.undoMgr = X, r.addListener("onDiscussionCreated", w), r.addListener("onDiscussionRemoved", w), 
+ F.undoMgr = X, r.addListener("onDiscussionCreated", w), r.addListener("onDiscussionRemoved", w), 
  r.addListener("onCommentsChanged", w);
  var Q = t.debounce(function() {
   var e = window.getSelection();
@@ -23519,16 +23592,16 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
   e.modify("move", "forward", "character")) : (e.modify("move", "forward", "character"), 
   e.modify("move", "backward", "character")));
  }, 10);
- O.adjustCommentOffsets = C, O.init = function() {
+ F.adjustCommentOffsets = C, F.init = function() {
   if (I = document.getElementById("wmd-input"), D = e(I), N = I.querySelector(".editor-content"), 
-  L = e(N), M = I.querySelector(".editor-margin"), A = e(M), R = document.querySelector(".preview-container"), 
+  M = e(N), L = I.querySelector(".editor-margin"), A = e(L), R = document.querySelector(".preview-container"), 
   D.addClass(i.editorFontClass), H.startWatching(), e(I).scroll(function() {
    B = I.scrollTop, G === !1 && (q.editorScrollTop = B);
   }), e(R).scroll(function() {
    G === !1 && (q.previewScrollTop = R.scrollTop);
   }), /AppleWebKit\/([\d.]+)/.exec(navigator.userAgent)) {
    var n = e('<input style="width:1px;height:1px;border:none;margin:0;padding:0;" tabIndex="-1">').appendTo("html");
-   L.blur(function() {
+   M.blur(function() {
     n[0].setSelectionRange(0, 0), n.blur();
    });
   }
@@ -23557,7 +23630,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
    configurable: !0
   });
   var r = !1;
-  L.on("keydown", function(e) {
+  M.on("keydown", function(e) {
    if (17 !== e.which && 91 !== e.which && 18 !== e.which && 16 !== e.which) {
     V.saveSelectionState(), p();
     var t = e.metaKey || e.ctrlKey;
@@ -23581,8 +23654,9 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
    }, 0);
   }).on("mouseup", t.bind(V.saveSelectionState, V, !0, !1)).on("paste", function(e) {
    X.currentMode = "paste", e.preventDefault();
-   var t = (e.originalEvent || e).clipboardData.getData("text/plain") || prompt("Paste something...");
-   t = et(t), p(), document.execCommand("insertHtml", !1, t);
+   var t, n = (e.originalEvent || e).clipboardData;
+   n ? t = n.getData("text/plain") : (n = window.clipboardData, t = n && n.getData("Text")), 
+   t && (f(V.selectionStart, V.selectionEnd, t), p());
   }).on("cut", function() {
    X.currentMode = "cut", p();
   }).on("focus", function() {
@@ -23634,7 +23708,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
   var e = {
    "&": "&amp;",
    "<": "&lt;",
-   "Â ": " "
+   "\xa0": " "
   };
   return function(t) {
    return t.replace(/[&<\u00a0]/g, function(t) {
@@ -23642,7 +23716,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
    });
   };
  }();
- return r.onEditorCreated(O), O;
+ return r.onEditorCreated(F), F;
 }), function(e, t) {
  function n() {
   i.READY || (b.determineEventTypes(), f.each(i.gestures, function(e) {
@@ -23652,10 +23726,10 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
  var i = function(e, t) {
   return new i.Instance(e, t || {});
  };
- i.VERSION = "1.0.10", i.defaults = {
+ i.VERSION = "1.0.11", i.defaults = {
   stop_browser_behavior: {
    userSelect: "none",
-   touchAction: "none",
+   touchAction: "pan-y",
    touchCallout: "none",
    contentZooming: "none",
    userDrag: "none",
@@ -24138,13 +24212,13 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
    x.width = v.width, x.height = b.height - P, b.applyCss(), y.applyCss(), x.applyCss(), 
    window.viewerMode) return k.width = x.width, k.height = x.height, E.width = x.width, 
    E.height = x.height, k.applyCss(), E.applyCss(), f();
-   if (!(w.isOpen && x.height < F.height + A)) {
+   if (!(w.isOpen && x.height < O.height + A)) {
     if (lt) {
      if (k.isOpen) {
-      if (k.halfSize && (k.height = (x.height + A) / 2), k.height < O.height && (k.height = O.height), 
-      k.y = x.height - k.height, k.y < F.height) {
-       var e = x.height - F.height;
-       if (e < O.height) {
+      if (k.halfSize && (k.height = (x.height + A) / 2), k.height < F.height && (k.height = F.height), 
+      k.y = x.height - k.height, k.y < O.height) {
+       var e = x.height - O.height;
+       if (e < F.height) {
         k.isOpen = !1, k.$elt.trigger("hide.layout.toggle").trigger("hidden.layout.toggle");
         continue;
        }
@@ -24155,10 +24229,10 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
      E.width = k.width, T.width = R, I.width = R, I.x = (k.width - R) / 2, D.width = E.width;
     } else {
      if (k.isOpen) {
-      if (k.halfSize && (k.width = (x.width + A) / 2), k.width < O.width && (k.width = O.width), 
-      k.x = x.width - k.width, k.x < F.width) {
-       var t = x.width - F.width;
-       if (t < O.width) {
+      if (k.halfSize && (k.width = (x.width + A) / 2), k.width < F.width && (k.width = F.width), 
+      k.x = x.width - k.width, k.x < O.width) {
+       var t = x.width - O.width;
+       if (t < F.width) {
         k.isOpen = !1, k.$elt.trigger("hide.layout.toggle").trigger("hidden.layout.toggle");
         continue;
        }
@@ -24176,10 +24250,10 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
   _.applyCss(), k.applyCss(), E.applyCss(), I.applyCss(), D.applyCss(), T.applyCss(), 
   m(), N.adjustPosition(), f();
  }
- var v, b, y, x, w, S, C, _, k, E, T, I, D, N, L, M = {}, A = 32, R = 60, P = 50, F = {
+ var v, b, y, x, w, S, C, _, k, E, T, I, D, N, M, L = {}, A = 32, R = 60, P = 50, O = {
   width: 250,
   height: 140
- }, O = {
+ }, F = {
   width: 330,
   height: 160
  }, B = 280, j = 320, $ = 200, q = 18, G = 130, H = {
@@ -24198,7 +24272,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
   this.oldWidth = this.width, U && this.height < this.oldHeight ? z.push(t.bind(function() {
    this.elt.style.height = this.height + "px";
   }, this)) : void 0 !== this.height && (this.elt.style.height = this.height + "px"), 
-  this.oldHeight = this.height, clearTimeout(L), U && (L = setTimeout(p, 800));
+  this.oldHeight = this.height, clearTimeout(M), U && (M = setTimeout(p, 800));
  }, d.prototype.createToggler = function(i) {
   var r, o = 0;
   this.toggle = function(a) {
@@ -24240,7 +24314,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
  } ], tt = et.slice(0).reverse(), nt = [], it = [ 80, 80, 160, 160, 80, 40 ].map(function(e) {
   return e + 18;
  }), rt = 86, ot = 40, at = 100, st = 88, lt = "vertical" == r.layoutOrientation;
- return M.init = function() {
+ return L.init = function() {
   function n(e, t) {
    t = t || 0, c += [ "@media (min-width: " + t + "px) {", "#wmd-input {", "   font-size: " + e + "px;", "}", "#preview-contents {", "   font-size: " + e + "px;", "}", "}" ].join("\n");
   }
@@ -24364,7 +24438,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
   N.applyCss(), setTimeout(function() {
    N.$elt.addClass("animate");
   }, 0));
- }), o.onLayoutCreated(M), M;
+ }), o.onLayoutCreated(L), L;
 }), define("text!html/bodyEditor.html", [], function() {
  return '<div class="layout-wrapper-l1">\n	<div class="layout-wrapper-l2">\n		<div class="navbar navbar-default">\n			<div class="navbar-inner">\n				<div class="nav left-space"></div>\n				<div class="nav right-space pull-right"></div>\n				<div class="buttons-dropdown dropdown">\n		    		<div class="nav">\n		        		<button class="btn btn-success" data-toggle="dropdown"\n		            		title="Show buttons">\n		            		<i class="icon-th-large"></i>\n		            	</button>\n		    		    <div class="dropdown-menu">\n		        		</div>\n		        	</div>\n				</div>\n				<ul class="nav left-buttons">\n					<li class="wmd-button-group1 btn-group"></li>\n				</ul>\n				<ul class="nav left-buttons">\n					<li class="wmd-button-group2 btn-group"></li>\n				</ul>\n				<ul class="nav left-buttons">\n					<li class="wmd-button-group3 btn-group"></li>\n				</ul>\n				<ul class="nav left-buttons">\n					<li class="wmd-button-group5 btn-group"></li>\n				</ul>\n				<ul class="nav left-buttons">\n					<li class="wmd-button-group4 btn-group">\n						<a class="btn btn-success button-open-discussion" title="Comments Ctrl/Cmd+M"><i class="icon-comment-alt"></i></a>\n					</li>\n				</ul>\n				<ul class="nav pull-right right-buttons">\n					<li class="offline-status hide">\n					    <div class="text-danger">\n					        <i class="icon-attention-circled"></i>offline\n					    </div>\n					</li>\n					<li class="extension-buttons"></li>\n				</ul>\n				<ul class="nav pull-right title-container">\n					<li><div class="working-indicator"></div></li>\n					<li><a class="btn btn-success file-title-navbar" href="#"\n						title="Rename document"> </a></li>\n					<li><div class="input-file-title-container"><input type="text"\n						class="col-sm-4 form-control hide input-file-title"\n						placeholder="Document title" /></div></li>\n				</ul>\n			</div>\n		</div>\n		<div class="layout-wrapper-l3">\n			<pre id="wmd-input" class="form-control"><div class="editor-content" contenteditable=true></div><div class="editor-margin"></div></pre>\n			<div class="preview-panel">\n				<div class="layout-resizer layout-resizer-preview"></div>\n				<div class="layout-toggler layout-toggler-navbar btn btn-info" title="Toggle navigation bar"><i class="icon-th"></i></div>\n				<div class="layout-toggler layout-toggler-preview btn btn-info" title="Toggle preview"><i class="icon-none"></i></div>\n				<div class="preview-container">\n					<div id="preview-contents">\n						<div id="wmd-preview" class="preview-content"></div>\n					</div>\n				</div>\n			</div>\n		</div>\n		<div class="extension-preview-buttons">\n			<div class="btn-group drag-me" title="Drag me!">\n				<i class="icon-ellipsis-vert"></i>\n			</div>\n		</div>\n	</div>\n	<div id="wmd-button-bar" class="hide"></div>\n\n	<div class="menu-panel">\n		<button class="btn toggle-button" title="Menu">\n			<img\n				data-stackedit-src="menu-icon.png" width="24" height="24" />\n		</button>\n		<div class="panel-content">\n			<div class="list-group">\n\n				<a href="viewer" title="StackEdit Viewer"\n					class="list-group-item">\n					<i class="icon-resize-full"></i> StackEdit Viewer\n				</a>\n\n			</div>\n			<div class="list-group">\n\n				<a href="#" data-toggle="collapse" data-target=".collapse-synchronize"\n					class="list-group-item">\n					<div><i class="icon-refresh"></i> Synchronize</div>\n					<small>Open, save, collaborate in the Cloud</small>\n				</a>\n				<div class="sub-menu collapse collapse-synchronize clearfix">\n					<ul class="nav alert alert-danger show-already-synchronized">\n						<li><div>"<span class="file-title"></span>" is already synchronized.</div></li>\n						<li><a href="#" class="action-force-synchronization"><i class="icon-refresh"></i>\n							Force synchronization</a></li>\n	                    <li><a href="#" data-toggle="modal" data-target=".modal-manage-sync"\n	                        class="action-reset-input"><i\n	                        class="icon-refresh"></i> Manage synchronization</a></li>\n	                </ul>\n					<ul class="nav">\n						<li><a href="#" class="action-sync-import-dialog-couchdb"><i\n							class="icon-provider-couchdb"></i> Open from CouchDB <sup class="text-danger">new</sup></a></li>\n						<li><a href="#" class="action-sync-export-dialog-couchdb"><i\n					        class="icon-provider-couchdb"></i> Save on CouchDB <sup class="text-danger">new</sup></a></li>\n						<li><a href="#" class="action-sync-import-dropbox"><i\n							class="icon-provider-dropbox"></i> Open from Dropbox</a></li>\n						<li><a href="#" class="action-sync-export-dialog-dropbox"><i\n					        class="icon-provider-dropbox"></i> Save on Dropbox</a></li>\n						<li><a href="#" class="submenu-sync-gdrive action-sync-import-gdrive"><i\n							class="icon-provider-gdrive"></i> Open from Google Drive</a></li>\n						<li><a href="#" class="submenu-sync-gdrive action-sync-export-dialog-gdrive"><i\n							class="icon-provider-gdrive"></i> Save on Google Drive</a></li>\n						<li><a href="#" class="submenu-sync-gdrivesec action-sync-import-gdrivesec"><i\n							class="icon-provider-gdrive"></i> Open from Google Drive<br><small>(2nd account)</small></a></li>\n						<li><a href="#" class="submenu-sync-gdrivesec action-sync-export-dialog-gdrivesec"><i\n							class="icon-provider-gdrive"></i> Save on Google Drive<br><small>(2nd account)</small></a></li>\n						<li><a href="#" class="submenu-sync-gdriveter action-sync-import-gdriveter"><i\n							class="icon-provider-gdrive"></i> Open from Google Drive<br><small>(3rd account)</small></a></li>\n						<li><a href="#" class="submenu-sync-gdriveter action-sync-export-dialog-gdriveter"><i\n							class="icon-provider-gdrive"></i> Save on Google Drive<br><small>(3rd account)</small></a></li>\n					</ul>\n				</div>\n				<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"\n					class="list-group-item">\n					<div><i class="icon-upload"></i>Publish</div>\n					<small>Export to the web</small>\n				</a>\n				<div class="sub-menu collapse collapse-publish-on clearfix">\n					<ul class="nav alert alert-danger show-already-published">\n	                    <li><div>"<span class="file-title"></span>" is already published.</div></li>\n	                    <li><a href="#" class="action-update-publication"><i class="icon-upload"></i>\n	                        Update publication</a></li>\n	                    <li><a href="#" data-toggle="modal" data-target=".modal-manage-publish"\n	                        class="action-reset-input"><i class="icon-upload"></i>\n	                        Manage publication</a></li>\n					</ul>\n					<ul class="nav publish-on-provider-list">\n					</ul>\n				</div>\n				<a href="#" data-toggle="modal" data-target=".modal-manage-sharing"\n					class="action-reset-input list-group-item">\n					<div><i class="icon-link"></i>Sharing</div>\n					<small>Share document links</small>\n				</a>\n			</div>\n			<div class="list-group">\n\n				<a data-toggle="modal"\n					data-target=".modal-import-harddrive-markdown"\n					class="list-group-item action-reset-input" href="#"><i\n					class="icon-hdd"></i> Import from disk</a>\n				<a href="#" data-toggle="collapse" data-target=".collapse-save-as"\n					class="list-group-item"><i class="icon-hdd"></i> Export to disk</a>\n				<div class="sub-menu collapse collapse-save-as clearfix">\n					<ul class="nav">\n						<li><a class="action-download-md" href="#"><i\n					        class="icon-download"></i> As Markdown</a></li>\n						<li><a class="action-download-html" href="#"><i\n					        class="icon-download"></i> As HTML</a></li>\n						<li><a class="action-download-template" href="#"><i\n					        class="icon-download"></i> Using template</a></li>\n						<li><a class="action-download-pdf" href="#"><i\n					        class="icon-download"></i> As PDF <sup class="text-danger">sponsor</sup></a></li>\n					</ul>\n				</div>\n\n	            <a data-toggle="modal" data-target=".modal-import-url"\n	                class="list-group-item action-reset-input" href="#"><i\n					class="icon-globe"></i> Import from URL</a>\n	            <a data-toggle="modal"\n					data-target=".modal-import-harddrive-html"\n					class="list-group-item action-reset-input" href="#"><i\n					class="icon-code"></i> Convert HTML to Markdown</a>\n			</div>\n			<ul class="nav">\n				<li><a href="#" data-toggle="modal"\n					data-target=".modal-settings" class="action-load-settings"><i\n						class="icon-cog"></i> Settings</a></li>\n				<li><a href="#" data-toggle="modal" data-target=".modal-about"><i\n						class="icon-help-circled"></i> About</a></li>\n			</ul>\n\n		</div>\n	</div>\n\n\n	<div class="document-panel">\n		<button class="btn toggle-button" title="Select document Ctrl+[ Ctrl+]">\n			<i class="icon-folder-open"></i>\n		</button>\n		<div class="search-bar clearfix">\n			<ul class="nav">\n				<li><a href="#" class="action-create-file"><i\n						class="icon-file"></i> New document</a></li>\n				<li><a href="#" class="action-remove-file-confirm"><i\n						class="icon-trash"></i> Delete document</a></li>\n				<li><a href="#" data-toggle="modal" data-target=".modal-document-manager"><i\n						class="icon-layers"></i> Manage documents</a></li>\n	        </ul>\n			<div class="input-group">\n				<span class="input-group-addon"><i class="icon-search"></i></span><input\n					type="text" class="form-control" placeholder="Find document" />\n			</div>\n		</div>\n		<div class="panel-content">\n			<div class="list-group document-list"></div>\n			<div class="list-group document-list-filtered hide"></div>\n		</div>\n	</div>\n</div>\n\n<div class="modal fade modal-document-manager">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h2 class="modal-title">Manage documents</h2>\n			</div>\n			<div class="modal-body">\n				<div></div>\n				<ul class="nav nav-pills document-list">\n					<li class="pull-right dropdown"><a href="#"\n						data-toggle="dropdown"><i class="icon-check"></i> Selection <b\n							class="caret"></b></a>\n						<ul class="dropdown-menu">\n							<li><a href="#" class="action-select-all"><i\n									class="icon-check"></i> Select all</a></li>\n							<li><a href="#" class="action-unselect-all"><i\n									class="icon-check-empty"></i> Unselect all</a></li>\n							<li class="divider"></li>\n							<li><a href="#" class="action-move-items"><i\n									class="icon-forward"></i> Move to folder</a></li>\n							<li><a href="#" class="action-delete-items"><i\n									class="icon-trash"></i> Delete</a></li>\n						</ul></li>\n					<li class="pull-right"><a href="#"\n						class="action-create-folder"> <i class="icon-folder"></i>\n							Create folder\n					</a></li>\n					<li class="disabled"><a><i class="icon-file"></i> <span\n							class="document-count"></span></a></li>\n					<li class="disabled"><a><i class="icon-folder"></i> <span\n							class="folder-count"></span></a></li>\n				</ul>\n				<div class="list-group document-list"></div>\n				<p class="confirm-delete hide">The following documents will be\n					deleted locally:</p>\n				<p class="choose-folder hide">Please choose a destination\n					folder:</p>\n				<div class="list-group selected-document-list hide"></div>\n				<div class="list-group select-folder-list hide"></div>\n			</div>\n			<div class="modal-footer">\n				<a href="#"\n					class="btn btn-default confirm-delete choose-folder action-cancel hide">Cancel</a>\n				<a href="#"\n					class="btn btn-primary confirm-delete action-delete-items-confirm hide">OK</a>\n				<a href="#" class="btn btn-primary document-list"\n					data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-insert-link">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h2 class="modal-title">Hyperlink</h2>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the link URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-globe"></i></span><input\n						id="input-insert-link" type="text" class="col-sm-5 form-control"\n						placeholder=\'http://example.com/ "optional title"\' />\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-insert-link"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-insert-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h2 class="modal-title">Image</h2>\n			</div>\n			<div class="modal-body">\n				<p>Please provide the image URL and an optional title:</p>\n				<div class="input-group">\n					<span class="input-group-addon"><i class="icon-picture"></i></span><input\n						id="input-insert-image" type="text" class="col-sm-5 form-control"\n						placeholder=\'http://example.com/image.jpg "optional title"\' />\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default pull-left action-import-image-gplus"\n					data-dismiss="modal"><i class="icon-provider-gplus"></i> Import\n					from Google+</a> <a href="#" class="btn btn-default"\n					data-dismiss="modal">Cancel</a> <a href="#"\n					class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-import-image">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h2 class="modal-title">Google+ image import</h2>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group">\n						<div class="col-sm-7">\n							<img>\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-sm-4 control-label"\n							for="input-import-image-title">Title (optional)</label>\n						<div class="col-sm-7">\n							<input type="text" id="input-import-image-title"\n								placeholder="Image title" class="form-control">\n						</div>\n					</div>\n					<div class="form-group">\n						<label class="col-sm-4 control-label"\n							for="input-import-image-size">Size limit (optional)</label>\n						<div class="col-sm-7 form-inline">\n							<input type="text" id="input-import-image-size" placeholder="0"\n								class="col-sm-3 form-control"> px\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-image"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-remove-file-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h2 class="modal-title">Delete</h2>\n			</div>\n			<div class="modal-body">\n				<p>\n					Are you sure you want to delete "<span class="file-title"></span>"?\n				</p>\n				<blockquote>\n					<p><b>Note:</b> It won\'t delete the file on synchronized locations.</p>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-remove-file"\n					data-dismiss="modal">Delete</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-import-url">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h2 class="modal-title">Import from URL</h2>\n			</div>\n			<div class="modal-body">\n				<p>Please provide a link to a Markdown document.</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-sm-3 control-label" for="input-import-url">URL</label>\n						<div class="col-sm-8">\n							<input type="text" id="input-import-url"\n								placeholder="http://www.abc.com/xyz.md" class="form-control">\n						</div>\n					</div>\n				</div>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-import-url">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-import-harddrive-markdown">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h2 class="modal-title">Import from disk</h2>\n			</div>\n			<div class="modal-body">\n				<p>Please select your Markdown files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-markdown"\n						multiple class="form-control" />\n				</p>\n				<p>Or drag and drop your Markdown files here:</p>\n				<p id="dropzone-import-harddrive-markdown" class="drop-zone">Drop\n					files here</p>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-import-harddrive-html">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h2 class="modal-title">Convert HTML to Markdown</h2>\n			</div>\n			<div class="modal-body">\n				<p>Please select your HTML files here:</p>\n				<p>\n					<input type="file" id="input-file-import-harddrive-html" multiple\n						class="form-control" />\n				</p>\n				<p>Or drag and drop your HTML files here:</p>\n				<p id="dropzone-import-harddrive-html" class="drop-zone">Drop\n					files here</p>\n				<p>Or insert your HTML code here:</p>\n				<textarea id="input-convert-html" class="form-control"></textarea>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Close</a> <a\n					href="#" class="btn btn-primary action-convert-html"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-upload-gdrive">\n</div>\n<div class="modal fade modal-upload-gdrivesec">\n</div>\n<div class="modal fade modal-upload-gdriveter">\n</div>\n\n\n<div class="modal fade modal-autosync-gdrive">\n</div>\n<div class="modal fade modal-autosync-gdrivesec">\n</div>\n<div class="modal fade modal-autosync-gdriveter">\n</div>\n\n\n<div class="modal fade modal-upload-dropbox">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h2 class="modal-title">Save on Dropbox</h2>\n			</div>\n			<div class="modal-body">\n				<p>\n					This will save "<span class="file-title"></span>" to your <i\n						class="icon-provider-dropbox"></i>\n					<code>Dropbox</code>\n					account and keep it synchronized.\n				</p>\n				<div class="form-horizontal">\n					<div class="form-group">\n						<label class="col-sm-3 control-label"\n							for="input-sync-export-dropbox-path">File path</label>\n						<div class="col-sm-8">\n							<input type="text" id="input-sync-export-dropbox-path"\n								placeholder="/path/to/My Document.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n				</div>\n				<blockquote>\n					<b>Note:</b>\n					<ul>\n						<li>Dropbox file path does not depend on document title.</li>\n						<li>The title of your document will not be synchronized.</li>\n						<li>Destination folder must exist.</li>\n						<li>Any existing file at this location will be overwritten.</li>\n					</ul>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-sync-export-dropbox">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-download-couchdb">\n    <div class="modal-dialog">\n        <div class="modal-content">\n\n            <div class="modal-header">\n                <button type="button" class="close" data-dismiss="modal"\n                        aria-hidden="true">&times;</button>\n                <h2 class="modal-title">Open from CouchDB</h2>\n                <div class="form-horizontal list-mode">\n                    <br>\n                    <div class="form-group form-inline">\n                        <label for="input-sync-import-couchdb-tag" class="col-sm-3 control-label">Filter by tag</label>\n                        <select id="input-sync-import-couchdb-tag" class="col-sm-4 form-control">\n                        </select>\n                        <span class="col-sm-5">\n                            <a class="btn btn-link action-add-tag"><i class="icon-tag"></i> Add\n                            </a>\n                            <a class="btn btn-link action-remove-tag"><i class="icon-tag"></i> Remove\n                            </a>\n                        </span>\n                    </div>\n                </div>\n            </div>\n            <div class="modal-body">\n                <p class="msg-default-couchdb hide alert alert-danger"><i class="icon-attention"></i> <b>Careful:</b>\n                    You\'re using the public CouchDB instance.\n                    <b>Anybody can open, edit and delete your files there!</b> To setup your own CouchDB instance <a\n                            target="blank" href="https://github.com/benweet/stackedit/blob/master/doc/couchdb-setup.md">click\n                        here</a>.\n                </p>\n\n                <div class="form-horizontal byid-mode">\n                    <div class="form-group">\n                        <label for="input-sync-import-couchdb-documentid" class="col-sm-3 control-label">Document\n                            ID</label>\n\n                        <div class="col-sm-9">\n                            <input id="input-sync-import-couchdb-documentid" class="form-control"\n                                   placeholder="DocumentID">\n                            <span class="help-block">Multiple IDs can be provided (space separated)</span>\n                        </div>\n                    </div>\n                </div>\n                    <ul class="list-mode nav nav-pills">\n                        <li class="pull-right dropdown"><a href="#"\n                                                           data-toggle="dropdown"><i class="icon-check"></i> Selection\n                            <b class="caret"></b></a>\n                            <ul class="dropdown-menu">\n                                <li><a href="#" class="action-unselect-all"><i\n                                        class="icon-check-empty"></i> Unselect all</a></li>\n                                <li class="divider"></li>\n                                <li><a href="#" class="action-delete-items"><i\n                                        class="icon-trash"></i> Delete</a></li>\n                            </ul>\n                        </li>\n                    </ul>\n                    <p class="list-mode">\n                    </p>\n                    <div class="list-group document-list list-mode"></div>\n                <div class="list-mode text-center">\n                    <div class="please-wait"><b>Please wait...</b></div>\n                    <div class="no-document"><b>No document.</b></div>\n                    <button class="more-documents btn btn-link"><i class="icon-angle-double-down"></i> More documents!</button>\n                </div>\n                <p class="delete-mode hide">The following documents will be\n                    removed from CouchDB:</p>\n\n                <div class="delete-mode list-group selected-document-list hide"></div>\n            </div>\n            <div class="modal-footer">\n                <a href="#" class="btn btn-default pull-left list-mode action-byid-mode">Open by ID...</a>\n                <a href="#"\n                   class="btn btn-default delete-mode action-cancel hide">Cancel</a>\n                <a href="#"\n                   class="btn btn-primary delete-mode action-delete-items-confirm hide">Delete</a>\n                <a href="#" class="btn btn-default byid-mode action-cancel">Cancel</a>\n                <a href="#" data-dismiss="modal"\n                   class="btn btn-primary action-sync-import-couchdb byid-mode">Open</a>\n                <a href="#" class="btn btn-default list-mode" data-dismiss="modal">Cancel</a>\n                <a href="#" data-dismiss="modal"\n                   class="btn btn-primary action-sync-import-couchdb list-mode">Open</a>\n            </div>\n        </div>\n    </div>\n</div>\n\n\n<div class="modal fade modal-upload-couchdb">\n    <div class="modal-dialog">\n        <div class="modal-content">\n\n            <div class="modal-header">\n                <button type="button" class="close" data-dismiss="modal"\n                        aria-hidden="true">&times;</button>\n                <h2 class="modal-title">Save on CouchDB</h2>\n            </div>\n            <div class="modal-body">\n                <p class="msg-default-couchdb hide alert alert-danger"><i class="icon-attention"></i> <b>Careful:</b>\n                    You\'re using the public CouchDB instance.\n                    <b>Anybody can open, edit and delete your files there!</b> To setup your own CouchDB instance <a\n                            target="blank" href="https://github.com/benweet/stackedit/blob/master/doc/couchdb-setup.md">click\n                        here</a>.\n                </p>\n\n                <p>\n                    This will save "<span class="file-title"></span>" to CouchDB and keep it synchronized.\n                </p>\n                <blockquote>\n                    <p><b>Tip:</b> You can use a\n                    <a href="http://jekyllrb.com/docs/frontmatter/"\n                       target="_blank">YAML front matter</a> to specify tags for your document.</p>\n                    <p>Alternatively, you can place comma separated tags in square brackets at the beginning of the document title.</p>\n                </blockquote>\n            </div>\n            <div class="modal-footer">\n                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n                <a href="#" data-dismiss="modal"\n                   class="btn btn-primary action-sync-export-couchdb">OK</a>\n            </div>\n        </div>\n    </div>\n</div>\n\n\n<div class="modal fade modal-manage-sync">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h2 class="modal-title">Synchronization</h2>\n			</div>\n			<div class="modal-body">\n				<p>\n					"<span class="file-title"></span>" is synchronized with the\n					following location(s):\n				</p>\n				<div class="sync-list"></div>\n				<blockquote>\n					<p><b>Note:</b> Removing a synchronized location will not delete any\n					file.</p>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h2 class="modal-title">\n					Publish on <span class="publish-provider-name"></span>\n				</h2>\n			</div>\n			<div class="modal-body">\n				<div class="form-horizontal">\n					<div class="form-group modal-publish-ssh">\n						<label class="col-sm-4 control-label" for="input-publish-ssh-host">Host</label>\n						<div class="col-sm-7">\n							<input type="text" id="input-publish-ssh-host"\n								placeholder="hostname.or.ip" class="form-control"> <span\n								class="help-block"> Host must be accessible publicly,\n								unless you\'re hosting your own StackEdit instance.\n							</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-sm-4 control-label" for="input-publish-ssh-port">Port\n							(optional)</label>\n						<div class="col-sm-2">\n							<input type="text" id="input-publish-ssh-port" placeholder="22"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-sm-4 control-label"\n							for="input-publish-ssh-username">Username</label>\n						<div class="col-sm-7">\n							<input type="text" id="input-publish-ssh-username"\n								placeholder="username" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh">\n						<label class="col-sm-4 control-label"\n							for="input-publish-ssh-password">Password</label>\n						<div class="col-sm-7">\n							<input type="password" id="input-publish-ssh-password"\n								placeholder="password" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-sm-4 control-label"\n							for="input-publish-github-repo">Repository</label>\n						<div class="col-sm-7">\n							<input type="text" id="input-publish-github-repo"\n								placeholder="Repository name or URL" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-github">\n						<label class="col-sm-4 control-label"\n							for="input-publish-github-branch">Branch</label>\n						<div class="col-sm-7">\n							<input type="text" id="input-publish-github-branch"\n								placeholder="branch-name" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-ssh modal-publish-github">\n						<label class="col-sm-4 control-label"\n							for="input-publish-file-path">File path</label>\n						<div class="col-sm-7">\n							<input type="text" id="input-publish-file-path"\n								placeholder="path/to/file.md" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-sm-4 control-label" for="input-publish-filename">Filename</label>\n						<div class="col-sm-7">\n							<input type="text" id="input-publish-filename"\n								placeholder="filename" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-sm-4 control-label" for="input-publish-gist-id">Existing\n							ID (optional)</label>\n						<div class="col-sm-7">\n							<input type="text" id="input-publish-gist-id"\n								placeholder="GistID" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-gist">\n						<label class="col-sm-4 control-label"\n							for="input-publish-gist-public">Public</label>\n						<div class="col-sm-7">\n							<div class="checkbox">\n								<input type="checkbox" id="input-publish-gist-public"\n									checked="checked" />\n							</div>\n						</div>\n					</div>\n					<div class="form-group modal-publish-blogger modal-publish-bloggerpage">\n						<label class="col-sm-4 control-label"\n							for="input-publish-blogger-url">Blog URL</label>\n						<div class="col-sm-7">\n							<input type="text" id="input-publish-blogger-url"\n								placeholder="http://exemple.blogger.com/" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-tumblr">\n						<label class="col-sm-4 control-label"\n							for="input-publish-tumblr-hostname">Blog hostname</label>\n						<div class="col-sm-7">\n							<input type="text" id="input-publish-tumblr-hostname"\n								placeholder="exemple.tumblr.com" class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-wordpress">\n						<label class="col-sm-4 control-label"\n							for="input-publish-tumblr-hostname">WordPress site</label>\n						<div class="col-sm-7">\n							<input type="text" id="input-publish-wordpress-site"\n								placeholder="exemple.wordpress.com" class="form-control">\n							<span class="help-block"> <a target="_blank"\n								href="http://jetpack.me/">Jetpack plugin</a> is required for\n								self-hosted sites.\n							</span>\n						</div>\n					</div>\n					<div\n						class="form-group modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n						<label class="col-sm-4 control-label" for="input-publish-postid">Update\n							existing post ID (optional)</label>\n						<div class="col-sm-7">\n							<input type="text" id="input-publish-postid" placeholder="PostID"\n								class="form-control">\n						</div>\n					</div>\n					<div\n						class="form-group modal-publish-bloggerpage">\n						<label class="col-sm-4 control-label" for="input-publish-pageid">Update\n							existing page ID (optional)</label>\n						<div class="col-sm-7">\n							<input type="text" id="input-publish-pageid" placeholder="PageID"\n								class="form-control">\n						</div>\n					</div>\n					<div class="form-group modal-publish-dropbox">\n						<label class="col-sm-4 control-label"\n							for="input-publish-dropbox-path">File path</label>\n						<div class="col-sm-7">\n							<input type="text" id="input-publish-dropbox-path"\n								placeholder="/path/to/My Document.html" class="form-control">\n							<span class="help-block"> File path is composed of both\n								folder and filename. </span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-sm-4 control-label"\n							for="input-publish-gdrive-fileid">File ID (optional)</label>\n						<div class="col-sm-7">\n							<input type="text" id="input-publish-gdrive-fileid"\n								placeholder="FileID" class="form-control"> <span\n								class="help-block">If no file ID is supplied, a new file\n								will be created in your Google Drive root folder. You can move\n								the file afterwards within Google Drive.</span>\n						</div>\n					</div>\n					<div class="form-group modal-publish-gdrive">\n						<label class="col-sm-4 control-label"\n							for="input-publish-gdrive-filename">Force filename\n							(optional)</label>\n						<div class="col-sm-7">\n							<input type="text" id="input-publish-gdrive-filename"\n								placeholder="Filename" class="form-control"> <span\n								class="help-block">If no file name is supplied, the\n								document title will be used.</span>\n						</div>\n					</div>\n\n					<div class="form-group">\n						<label class="col-sm-4 control-label">Format</label>\n						<div class="col-sm-7">\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="markdown"> Markdown\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="html"> HTML\n								</label>\n							</div>\n							<div class="radio">\n								<label> <input type="radio" name="radio-publish-format"\n									value="template"> Template\n								</label>\n							</div>\n						</div>\n					</div>\n					<div class="collapse publish-custom-template-collapse">\n						<div class="form-group">\n							<div class="col-sm-4"></div>\n							<div class="col-sm-7">\n								<div class="checkbox">\n									<label> <input type="checkbox"\n										id="checkbox-publish-custom-template"> Custom template\n									</label> <a href="#" class="tooltip-template">(?)</a>\n								</div>\n							</div>\n						</div>\n						<div class="form-group">\n							<div class="col-sm-4"></div>\n							<div class="col-sm-7">\n								<textarea class="form-control"\n									id="textarea-publish-custom-template"></textarea>\n							</div>\n						</div>\n					</div>\n				</div>\n				<blockquote class="front-matter-info modal-publish-blogger modal-publish-tumblr modal-publish-wordpress">\n                    <p><b>Tip:</b> You can use a\n                    <a href="http://jekyllrb.com/docs/frontmatter/"\n                    target="_blank">YAML front matter</a> to specify the title and the tags/labels of your publication.</p>\n                    <p><b>Interpreted variables:</b> <code>title</code>, <code>tags</code>, <code>published</code>, <code>date</code>.</p>\n				</blockquote>\n				<blockquote class="front-matter-info modal-publish-bloggerpage">\n                    <p><b>Tip:</b> You can use a\n                    <a href="http://jekyllrb.com/docs/frontmatter/"\n                    target="_blank">YAML front matter</a> to specify the title of your page.</p>\n                    <p><b>Interpreted variables:</b> <code>title</code>.</p>\n				</blockquote>\n				<blockquote class="url-info modal-publish-bloggerpage">\n                    <p><b>About URL:</b> For newly created page , Blogger API will append a generated number to the url like <code>about-me-1234.html</code>, if you deeply care about your URL naming, you should first create the page on Blogger and then update them with StackEdit specifying the pageId when publishing.\n                    </p>\n                    <p><b>About page visibility:</b> Blogger API does not respect published status for pages.When publishing the page to Blogger, the page will be <strong>live</strong> but not added to the page listing. You should arrange the page listing from Blogger dashboard.\n                    </p>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" data-dismiss="modal"\n					class="btn btn-primary action-process-publish">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-manage-publish">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h2 class="modal-title">Publication</h2>\n			</div>\n			<div class="modal-body">\n				<p>\n					"<span class="file-title"></span>" is published on the following\n					location(s):\n				</p>\n				<div class="publish-list"></div>\n				<blockquote>\n					<p><b>Note:</b> Removing a publish location will not delete the actual publication.</p>\n				</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-manage-sharing">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h2 class="modal-title">Sharing</h2>\n			</div>\n			<div class="modal-body">\n                <p>Collaborate on "<span class="file-title"></span>" using the following link(s):</p>\n            	<p class="msg-no-share-editor"><b>No sharing link yet!</b>\n            	</p>\n                <div class="share-editor-list"></div>\n            	<blockquote>\n                    <p><b>Note:</b> To collaborate on this document, just <a\n                        href="#" class="action-sync-export-dialog-couchdb" data-dismiss="modal">save it on CouchDB</a>.\n                    To collaborate via Google Drive or Dropbox, you have to share the file manually from Google Drive/Dropbox websites.</p>\n            	</blockquote>\n                <hr>\n                <p>Share a read-only version of "<span class="file-title"></span>" using the following link(s):</p>\n            	<p class="msg-no-share-viewer"><b>No sharing link yet!</b>\n            	</p>\n                <div class="share-viewer-list"></div>\n            	<blockquote>\n                    <p><b>Note:</b> To share a read-only version of this document, just <a\n                        href="#" class="action-publish-gist" data-dismiss="modal">publish it as a Gist</a> in\n                    Markdown format.</p>\n            	</blockquote>\n            	<blockquote>\n            		<p><b>Tip:</b> You can open any markdown URL within StackEdit Viewer using <a\n            			href="viewer#!url=https://raw.github.com/benweet/stackedit/master/README.md"\n            			title="Sharing example"><code>viewer#!url=</code></a>.</p>\n            	</blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<button type="button" class="close" data-dismiss="modal"\n					aria-hidden="true">&times;</button>\n				<h2 class="modal-title">Settings</h2>\n				<ul class="nav nav-tabs">\n					<li class="active"><a class="action-load-settings"\n						href="#tabpane-settings-basic" data-toggle="tab">Basic</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-advanced" data-toggle="tab">Advanced</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-extensions" data-toggle="tab">Extensions</a></li>\n					<li><a class="action-load-settings"\n						href="#tabpane-settings-utils" data-toggle="tab">Utils</a></li>\n				</ul>\n			</div>\n			<div class="modal-body">\n\n				<div class="tab-content clearfix">\n					<div class="tab-pane active" id="tabpane-settings-basic">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-sm-4 control-label">Layout orientation</label>\n								<div class="col-sm-7">\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="horizontal">\n											Horizontal\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-layout-orientation" value="vertical">\n											Vertical\n										</label>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-sm-4 control-label" for="input-settings-theme">Theme</label>\n								<div class="col-sm-7">\n									<select id="input-settings-theme" class="form-control">\n									</select>\n								</div>\n							</div>\n							<div class="form-group">\n								<div class="col-sm-4"></div>\n								<div class="col-sm-7">\n									<div class="checkbox">\n									    <label>\n										    <input type="checkbox" id="input-settings-markdown-extra" />\n										    <b>Markdown Extra/GitHub Flavored Markdown</b> syntax\n										</label>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<div class="col-sm-4"></div>\n								<div class="col-sm-7">\n									<div class="checkbox">\n									    <label>\n										    <input type="checkbox" id="input-settings-mathjax" />\n										    <b>LaTeX mathematical expressions</b> using <code>$</code> and <code>$$</code> delimiters\n										</label>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-sm-4 control-label"\n									for="input-settings-gdrive-multiaccount">Google Drive multi-accounts\n								</label>\n								<div class="col-sm-7">\n									<select id="input-settings-gdrive-multiaccount" class="form-control">\n    									<option value="1">1 account</option>\n    									<option value="2">2 accounts</option>\n    									<option value="3">3 accounts</option>\n									</select>\n									<span class="help-block"><b>Please sign in first with Google.</b> Once linked with your Google accounts, changing account is not possible unless you reset the application.</span>\n								</div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-advanced">\n						<div class="form-horizontal">\n							<div class="form-group">\n								<label class="col-sm-4 control-label">Edit mode</label>\n								<div class="col-sm-7">\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-settings-edit-mode" value="ltr">\n											Left-To-Right\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-settings-edit-mode" value="rtl">\n											Right-To-Left\n										</label>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-sm-4 control-label">Editor\'s font style</label>\n								<div class="col-sm-7">\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-settings-editor-font-class" value="font-rich">\n											Rich\n										</label>\n									</div>\n									<div class="radio">\n										<label> <input type="radio"\n											name="radio-settings-editor-font-class" value="font-monospaced">\n											Monospaced\n										</label>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-sm-4 control-label"\n									for="input-settings-font-size">Font size ratio</label>\n								<div class="col-sm-8 form-inline">\n									<input type="text" id="input-settings-font-size"\n										class="form-control col-sm-2">\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-sm-4 control-label"\n									for="input-settings-max-width">Max width ratio</label>\n								<div class="col-sm-8 form-inline">\n									<input type="text" id="input-settings-max-width"\n										class="form-control col-sm-2">\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-sm-4 control-label"\n									for="input-settings-cursor-focus">Cursor focus ratio</label>\n								<div class="col-sm-8 form-inline">\n									<input type="text" id="input-settings-cursor-focus"\n										class="form-control col-sm-2">\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-sm-4 control-label"\n									for="input-settings-lazy-rendering">Lazy rendering <a\n									href="#" class="tooltip-lazy-rendering">(?)</a>\n								</label>\n								<div class="col-sm-7">\n									<div class="checkbox">\n										<input type="checkbox" id="input-settings-lazy-rendering" />\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-sm-4 control-label"\n									for="textarea-settings-default-content">Default content\n									<a href="#" class="tooltip-default-content">(?)</a>\n								</label>\n								<div class="col-sm-7">\n									<textarea id="textarea-settings-default-content"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-sm-4 control-label"\n									for="textarea-settings-publish-template">Default\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-sm-7">\n									<textarea id="textarea-settings-publish-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-sm-4 control-label"\n									for="textarea-settings-pdf-template">PDF\n									template <a href="#" class="tooltip-template">(?)</a>\n								</label>\n								<div class="col-sm-7">\n									<textarea id="textarea-settings-pdf-template"\n										class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-sm-4 control-label" for="textarea-settings-pdf-options">PDF options\n                                    <a href="#" class="tooltip-pdf-options">(?)</a>\n                                </label>\n								<div class="col-sm-7">\n                                    <textarea id="textarea-settings-pdf-options"\n                                              class="form-control"></textarea>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-sm-4 control-label"\n									for="input-settings-markdown-mime-type">Markdown MIME type\n								</label>\n								<div class="col-sm-7">\n									<select id="input-settings-markdown-mime-type" class="form-control">\n										<option value="text/plain">text/plain</option>\n										<option value="text/x-markdown">text/x-markdown</option>\n									</select>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-sm-4 control-label">Permissions</label>\n								<div class="col-sm-7">\n									<div class="checkbox">\n									    <label>\n										    <input type="checkbox" id="input-settings-gdrive-full-access" />\n										    Allow StackEdit to open any document in Google Drive\n										</label> <span class="help-block">Existing authorization has to be revoked in\n										<a href="https://www.google.com/settings/dashboard" target="_blank">Google Dashboard</a>\n										for this change to take effect.</span>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<div class="col-sm-4"></div>\n								<div class="col-sm-7">\n									<div class="checkbox">\n									    <label>\n										    <input type="checkbox" id="input-settings-dropbox-full-access" />\n										    Allow StackEdit to open any document in Dropbox\n										</label> <span class="help-block">If unchecked, access will be restricted to folder\n										<b>/Applications/StackEdit</b> for existing files.</span>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<div class="col-sm-4"></div>\n								<div class="col-sm-7">\n									<div class="checkbox">\n									    <label>\n										    <input type="checkbox" id="input-settings-github-full-access" />\n										    Allow StackEdit to access private repositories in GitHub\n										</label> <span class="help-block">Existing authorization has to be revoked in\n										<a href="https://github.com/settings/applications" target="_blank">GitHub settings</a>\n										for this change to take effect.</span>\n									</div>\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-sm-4 control-label"\n									for="input-settings-publish-commit-msg">GitHub commit message</label>\n								<div class="col-sm-7">\n									<input type="text" id="input-settings-publish-commit-msg"\n										class="form-control">\n								</div>\n							</div>\n							<div class="form-group">\n								<label class="col-sm-4 control-label"\n									for="input-settings-couchdb-url">CouchDB URL</label>\n								<div class="col-sm-7">\n									<input type="text" id="input-settings-couchdb-url"\n										class="form-control">\n                                    <span class="help-block pull-right"><a\n                                            target="blank"\n                                            href="https://github.com/benweet/stackedit/blob/master/doc/couchdb-setup.md">Setup\n                                        your own CouchDB...</a></span>\n                                </div>\n							</div>\n						</div>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-extensions">\n						<div class="panel-group accordion-extensions"></div>\n						<span class="help-block pull-right"><a target="_blank"\n							href="https://github.com/benweet/stackedit/blob/master/doc/developer-guide.md#developer-guide">Create\n								your own extension...</a></span>\n					</div>\n					<div class="tab-pane" id="tabpane-settings-utils">\n						<div class="tab-pane-button-container">\n							<a href="#" class="btn btn-block btn-default action-welcome-file"\n								data-dismiss="modal"><i class="icon-help-circled"></i>\n								Hello! document</a> <a href="#"\n								class="btn btn-block btn-default action-welcome-tour"\n								data-dismiss="modal"><i\n								class="icon-help-circled"></i> Welcome tour</a>\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-default action-import-docs-settings"><i\n								class="icon-cog-alt"></i> Import docs & settings</a> <a href="#"\n								class="btn btn-block btn-default action-export-docs-settings"\n								data-dismiss="modal"><i class="icon-cog-alt"></i>\n								Export docs & settings</a> <input type="file"\n								id="input-file-import-docs-settings" class="hide">\n						</div>\n						<div class="tab-pane-button-container">\n							<a href="#"\n								class="btn btn-block btn-default action-default-settings"\n								data-dismiss="modal"><i class="icon-wrench"></i>\n								Load default settings</a> <a href="#" class="btn btn-block btn-default"\n								data-dismiss="modal" data-toggle="modal"\n								data-target=".modal-app-reset"><i\n								class="icon-fire"></i> Reset application</a> <a target="_blank" href="recovery.html" class="btn btn-block btn-default"><i\n								class="icon-medkit"></i> StackEdit recovery</a>\n						</div>\n					</div>\n				</div>\n\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-apply-settings"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-non-unique">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h2 class="modal-title">Ooops...</h2>\n			</div>\n			<div class="modal-body">\n				<p>StackEdit has stopped because another instance was running in\n					the same browser.</p>\n				<blockquote>\n                    <p>If you want to reopen StackEdit, click on\n					"Reload".</p>\n                </blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="javascript:window.location.reload();"\n					class="btn btn-primary">Reload</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-redirect-confirm">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h2 class="modal-title">Redirection</h2>\n			</div>\n			<div class="modal-body">\n			    <p class="redirect-msg"></p>\n				<blockquote>\n                    <p>Please click <b>OK</b> to proceed.</p>\n                </blockquote>\n			</div>\n			<div class="modal-footer">\n				<a class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a class="btn btn-primary action-redirect-confirm" data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-app-reset">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h2 class="modal-title">Reset application</h2>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all your local documents.</p>\n				<blockquote><b>Are you sure?</b></blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-app-reset"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-import-docs-settings">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h2 class="modal-title">Import documents and settings</h2>\n			</div>\n			<div class="modal-body">\n				<p>This will delete all existing local documents.</p>\n				<blockquote><b>Are you sure?</b></blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>\n				<a href="#" class="btn btn-primary action-import-docs-settings-confirm"\n					data-dismiss="modal">OK</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-add-google-drive-account">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h2 class="modal-title">Add Google Drive account</h2>\n			</div>\n			<div class="modal-body">\n				<p>To perform this request, you need to configure another Google Drive account in StackEdit.</p>\n				<blockquote><b>Do you want to proceed?</b></blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-default action-remove-google-drive-state"\n					data-dismiss="modal">No</a>\n				<a href="#" class="btn btn-primary action-add-google-drive-account"\n					data-dismiss="modal">Yes</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div class="modal fade modal-sponsor-only">\n	<div class="modal-dialog">\n		<div class="modal-content">\n\n			<div class="modal-header">\n				<h2 class="modal-title">Sponsor only!</h2>\n			</div>\n			<div class="modal-body">\n				<p>This feature is restricted to sponsor users as it\'s a web service hosted on Amazon EC2.\n                    Note that sponsoring StackEdit would cost you only $5/year.</p>\n				<p>To see how a PDF looks <a target="_blank" href="/Welcome%20document.pdf">click here</a>.</p>\n				<blockquote>\n                    <p><b>Tip:</b> PDFs are fully customizable via Settings>Advanced>PDF template/options.</p>\n                </blockquote>\n			</div>\n			<div class="modal-footer">\n				<a href="#" class="btn btn-primary"\n					data-dismiss="modal">Close</a>\n			</div>\n		</div>\n	</div>\n</div>\n\n\n<div id="dropboxjs" data-app-key="x0k2l8puemfvg0o"></div>\n';
 }), define("text!html/bodyViewer.html", [], function() {
@@ -24932,10 +25006,10 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
  function m() {
   I = !0, D = !0;
   var e = a.currentTime;
-  e > L + 1e3 && (L = e, c.onUserActive());
+  e > M + 1e3 && (M = e, c.onUserActive());
  }
  function g() {
-  return a.currentTime - L > o.USER_IDLE_THRESHOLD && (D = !1), D && N;
+  return a.currentTime - M > o.USER_IDLE_THRESHOLD && (D = !1), D && N;
  }
  function v() {
   if (I !== !1 && N !== !1) {
@@ -24946,10 +25020,10 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
   }
  }
  function b() {
-  M === !0 && (M = !1, c.onOfflineChanged(!1));
+  L === !0 && (L = !1, c.onOfflineChanged(!1));
  }
  function y() {
-  M === !0 && navigator.onLine === !0 && A + o.CHECK_ONLINE_PERIOD < a.currentTime && (A = a.currentTime, 
+  L === !0 && navigator.onLine === !0 && A + o.CHECK_ONLINE_PERIOD < a.currentTime && (A = a.currentTime, 
   e.ajax({
    url: "//www.google.com/jsapi",
    timeout: o.AJAX_TIMEOUT,
@@ -24990,7 +25064,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
   e.extend(l, n), s.settings = JSON.stringify(l), s.themeV4 = i);
  }
  function S(e) {
-  var t = e && e.app == O && (e.chargeOption && "once" == e.chargeOption.alias || e.subscriptionOption && "yearly" == e.subscriptionOption.alias);
+  var t = e && e.app == F && (e.chargeOption && "once" == e.chargeOption.alias || e.subscriptionOption && "yearly" == e.subscriptionOption.alias);
   return c.isSponsor = t, t;
  }
  function C() {
@@ -25003,13 +25077,13 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
    S(t) && (c.onMessage("Thank you for sponsoring StackEdit!"), C());
   });
  }
- var k, E, T = {}, I = !1, D = !1, N = !0, L = 0, M = !1, A = a.currentTime;
+ var k, E, T = {}, I = !1, D = !1, N = !0, M = 0, L = !1, A = a.currentTime;
  T.setOffline = function() {
-  A = a.currentTime, M === !1 && (M = !0, c.onOfflineChanged(!0));
+  A = a.currentTime, L === !1 && (L = !0, c.onOfflineChanged(!0));
  };
- var R, P, F;
+ var R, P, O;
  T.initEditor = function(t) {
-  if (void 0 !== F && c.onFileClosed(F), F = t, void 0 !== P) return i.undoMgr.init(), 
+  if (void 0 !== O && c.onFileClosed(O), O = t, void 0 !== P) return i.undoMgr.init(), 
   P.uiManager.setUndoRedoButtonStates();
   var n = new Markdown.Converter(), r = {
    _DoItalicsAndBold: function(e) {
@@ -25044,10 +25118,10 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
    y());
   }, 1e3), c.onReady();
  };
- var O = "ESTHdCYOi18iLhhO", B = new u({
-  applicationID: O
+ var F = "ESTHdCYOi18iLhhO", B = new u({
+  applicationID: F
  }), j = e(), $ = t.debounce(function() {
-  M || B.getPaymentsImmediate(function(n, i) {
+  L || B.getPaymentsImmediate(function(n, i) {
    C(), S(i) || t.each(document.querySelectorAll(".modal-body"), function(t) {
     var n = e('<div class="alert alert-danger">Please consider <a href="#">sponsoring StackEdit</a> for $5/year (or <a href="#">sign in</a> if you\'re already a sponsor).</div>');
     n.find("a").click(_), t.insertBefore(n[0], t.firstChild), j = j.add(n);
@@ -25274,8 +25348,9 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
  return l.prototype.syncMerge = function(n, a, s, l, p, h) {
   function f(e) {
    function t() {
-    (i[1] || r[1]) && (i[1] && r[1] ? (i[1] = "â§¸â§¸" + i[1] + "â§¸â§¸", r[1] += "â§¸â§¸", n.push(i), 
-    n.push(r)) : n.push([ 0, i[1] + r[1] ]), i = [ -1, "" ], r = [ 1, "" ]);
+    (i[1] || r[1]) && (i[1] && r[1] ? (i[1] = "\u29f8\u29f8" + i[1] + "\u29f8\u29f8", 
+    r[1] += "\u29f8\u29f8", n.push(i), n.push(r)) : n.push([ 0, i[1] + r[1] ]), i = [ -1, "" ], 
+    r = [ 1, "" ]);
    }
    var n = [], i = [ -1, "" ], r = [ 1, "" ], o = 20;
    return e.forEach(function(a, s) {
@@ -25302,7 +25377,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
   }
   var m = n.content, g = n.title, v = n.discussionListJSON, b = n.discussionList, y = t.crc32(m), x = t.crc32(g), w = t.crc32(v), S = t.crc32(s), C = t.crc32(l), _ = t.crc32(h), k = a.contentCRC != y, E = a.contentCRC != S, T = m != s && E, I = T && k;
   a.titleCRC = a.titleCRC || x;
-  var D, N, L = a.titleCRC != x, M = a.titleCRC != C, A = g != l && M, R = A && L, P = a.discussionListCRC != w, F = a.discussionListCRC != _, O = v != h && F, B = O && P, j = [], $ = s, q = l, G = p, H = !1, U = !1, z = !1;
+  var D, N, M = a.titleCRC != x, L = a.titleCRC != C, A = g != l && L, R = A && M, P = a.discussionListCRC != w, O = a.discussionListCRC != _, F = v != h && O, B = F && P, j = [], $ = s, q = l, G = p, H = !1, U = !1, z = !1;
   if (!d && (I || R || B) || I && void 0 === a.content || R && void 0 === a.title || B && void 0 === a.discussionList) r.createFile(g + " (backup)", m, v), 
   i.onMessage('Conflict detected on "' + g + '". A backup has been created locally.'); else {
    if (I) {
@@ -25321,7 +25396,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
      }), X && (X.selectionEnd = $.length, j.push(X));
     }
    }
-   T && (P && (H = !0), F ? U = !0 : (H = !0, G = b)), B && (z = !0), R && (N = c.patch_make(a.title, g), 
+   T && (P && (H = !0), O ? U = !0 : (H = !0, G = b)), B && (z = !0), R && (N = c.patch_make(a.title, g), 
    q = c.patch_apply(N, l)[0]);
   }
   var Q;
@@ -25331,7 +25406,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
     selectionStart: o.selectionMgr.selectionStart,
     selectionEnd: o.selectionMgr.selectionEnd
    }, Y.push(Q), n.newDiscussion && Y.push(n.newDiscussion)), H && (Y = Y.concat(e.values(b))), 
-   O |= o.adjustCommentOffsets(m, $, Y);
+   F |= o.adjustCommentOffsets(m, $, Y);
   }
   if (U) {
    var K = e.values(p);
@@ -25343,14 +25418,14 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
     e || delete p[t];
    });
   }
-  return j.length && (O = !0, j.forEach(function(n) {
+  return j.length && (F = !0, j.forEach(function(n) {
    var i;
    do i = t.id(); while (e.has(G, i));
    n.discussionIndex = i, G[i] = n;
   })), A && (n.title = q, i.onTitleChanged(n), i.onMessage('"' + g + '" has been renamed to "' + q + '" on ' + this.providerName + ".")), 
-  (T || O) && o.watcher.noWatch(e.bind(function() {
+  (T || F) && o.watcher.noWatch(e.bind(function() {
    if (T && (r.currentFile === n && (o.setValueNoWatch($), Q && o.selectionMgr.setSelectionStartEnd(Q.selectionStart, Q.selectionEnd)), 
-   n.content = $, i.onContentChanged(n, $)), O) {
+   n.content = $, i.onContentChanged(n, $)), F) {
     n.discussionList = G;
     var t = u.diff(b, G), a = !1;
     e.each(t, function(t, r) {
@@ -27981,7 +28056,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
  }
  function v(e) {
   if (0 == e.data.length) return !0;
-  if (L.test(e.data)) return !1;
+  if (M.test(e.data)) return !1;
   var t = k(e.parentNode, "whiteSpace");
   switch (t) {
   case "pre":
@@ -28080,7 +28155,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
    return e && 1 == e.nodeType && "false" != e.contentEditable ? "true" == e.contentEditable || D(e.parentNode) : !1;
   };
  }();
- var N = /^inline(-block|-table)?$/i, L = /[^\r\n\t\f \u200B]/, M = w(!1), A = w(!0);
+ var N = /^inline(-block|-table)?$/i, M = /[^\r\n\t\f \u200B]/, L = w(!1), A = w(!0);
  S.prototype = {
   doMerge: function() {
    for (var e, t, n, i = [], r = 0, o = this.textNodes.length; o > r; ++r) e = this.textNodes[r], 
@@ -28122,7 +28197,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(e
   },
   postApply: function(e, t, n) {
    for (var i, r, o, a = e[0], s = e[e.length - 1], l = [], c = a, u = s, d = 0, p = s.length, h = 0, f = e.length; f > h; ++h) r = e[h], 
-   o = M(r, !n), o ? (i || (i = new S(o), l.push(i)), i.textNodes.push(r), r === a && (c = i.firstTextNode, 
+   o = L(r, !n), o ? (i || (i = new S(o), l.push(i)), i.textNodes.push(r), r === a && (c = i.firstTextNode, 
    d = c.length), r === s && (u = i.firstTextNode, p = i.getLength())) : i = null;
    var m = A(s, !n);
    if (m && (i || (i = new S(s), l.push(i)), i.textNodes.push(m)), l.length) {

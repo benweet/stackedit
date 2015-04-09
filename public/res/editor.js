@@ -250,26 +250,30 @@ define([
 					var selection = rangy.getSelection();
 					if(selection.rangeCount > 0) {
 						var selectionRange = selection.getRangeAt(0);
-						var element = selectionRange.startContainer;
-						if((contentElt.compareDocumentPosition(element) & 0x10)) {
-							var container = element;
+						var node = selectionRange.startContainer;
+						if((contentElt.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY) || contentElt === node) {
 							var offset = selectionRange.startOffset;
-							do {
-								while(element = element.previousSibling) {
-									if(element.textContent) {
-										offset += element.textContent.length;
+							if(node.hasChildNodes() && offset > 0) {
+								node = node.childNodes[offset - 1];
+								offset = node.textContent.length;
+							}
+							var container = node;
+							while(node != contentElt) {
+								while(node = node.previousSibling) {
+									if(node.textContent) {
+										offset += node.textContent.length;
 									}
 								}
-								element = container = container.parentNode;
-							} while(element && element != inputElt);
+								node = container = container.parentNode;
+							}
 
 							if(selection.isBackwards()) {
-								selectionStart = offset + (selectionRange + '').length;
+								selectionStart = offset + selectionRange.toString().length;
 								selectionEnd = offset;
 							}
 							else {
 								selectionStart = offset;
-								selectionEnd = offset + (selectionRange + '').length;
+								selectionEnd = offset + selectionRange.toString().length;
 							}
 
 							if(selectionStart === selectionEnd && selectionRange.startContainer.textContent == '\n' && selectionRange.startOffset == 1) {
@@ -289,12 +293,18 @@ define([
 			var nextTickAdjustScroll = false;
 			var debouncedSave = utils.debounce(function() {
 				save();
+				self.updateCursorCoordinates(nextTickAdjustScroll);
+				// In some cases we have to wait a little bit more to see the selection change (Cmd+A on Chrome/OSX)
+				longerDebouncedSave();
+			});
+			var longerDebouncedSave = utils.debounce(function() {
+				save();
 				if(lastSelectionStart === self.selectionStart && lastSelectionEnd === self.selectionEnd) {
 					nextTickAdjustScroll = false;
 				}
 				self.updateCursorCoordinates(nextTickAdjustScroll);
 				nextTickAdjustScroll = false;
-			});
+			}, 10);
 
 			return function(debounced, adjustScroll, forceAdjustScroll) {
 				if(forceAdjustScroll) {
@@ -425,12 +435,14 @@ define([
 
 	function replace(selectionStart, selectionEnd, replacement) {
 		undoMgr.currentMode = undoMgr.currentMode || 'replace';
-		var range = selectionMgr.createRange(selectionStart, selectionEnd);
-		if('' + range == replacement) {
-			return;
+		var range = selectionMgr.createRange(
+			Math.min(selectionStart, selectionEnd),
+			Math.max(selectionStart, selectionEnd)
+		);
+		if('' + range != replacement) {
+			range.deleteContents();
+			range.insertNode(document.createTextNode(replacement));
 		}
-		range.deleteContents();
-		range.insertNode(document.createTextNode(replacement));
 		var endOffset = selectionStart + replacement.length;
 		selectionMgr.setSelectionStartEnd(endOffset, endOffset);
 		selectionMgr.updateSelectionRange();
@@ -876,10 +888,19 @@ define([
 			.on('paste', function(evt) {
 				undoMgr.currentMode = 'paste';
 				evt.preventDefault();
-				var data = (evt.originalEvent || evt).clipboardData.getData('text/plain') || prompt('Paste something...');
-				data = escape(data);
+				var data, clipboardData = (evt.originalEvent || evt).clipboardData;
+				if(clipboardData) {
+					data = clipboardData.getData('text/plain');
+				}
+				else {
+					clipboardData = window.clipboardData;
+					data = clipboardData && clipboardData.getData('Text');
+				}
+				if(!data) {
+					return;
+				}
+				replace(selectionMgr.selectionStart, selectionMgr.selectionEnd, data);
 				adjustCursorPosition();
-				document.execCommand('insertHtml', false, data);
 			})
 			.on('cut', function() {
 				undoMgr.currentMode = 'cut';
@@ -1058,8 +1079,10 @@ define([
 			else {
 				// Remove outdated sections
 				sectionsToRemove.forEach(function(section) {
-					// section can be already removed
+					// section may be already removed
 					section.elt.parentNode === contentElt && contentElt.removeChild(section.elt);
+					// To detect sections that come back with built-in undo
+					section.elt.generated = false;
 				});
 
 				if(insertBeforeSection !== undefined) {

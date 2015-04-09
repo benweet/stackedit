@@ -1,6 +1,6 @@
 {
   "name": "stackedit",
-  "version": "4.3.2",
+  "version": "4.3.11",
   "description": "StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.",
   "dependencies": {
     "bootstrap": "~3.3.0",
@@ -29,11 +29,11 @@
     "jsondiffpatch": "benweet/jsondiffpatch#fb9dddf7cd076d8ec89d376c0e9de9223e9888f9",
     "hammerjs": "~2.0",
     "raphael": "~2.1.2",
-    "js-sequence-diagrams": "benweet/js-sequence-diagrams#d60c973aa0ff148dc588c7ceee0b41e59dff3f9f",
-    "flowchart": "adrai/flowchart.js#751717d3db6437def9a5f8b1cb73e8bb81b5833a",
+    "js-sequence-diagrams": "https://github.com/benweet/js-sequence-diagrams.git#d60c973aa0ff148dc588c7ceee0b41e59dff3f9f",
+    "flowchart": "https://github.com/adrai/flowchart.js.git#751717d3db6437def9a5f8b1cb73e8bb81b5833a",
     "monetizejs": "~0.2.0",
-    "MathJax": "~2.4.0",
-    "alertify.js": "fabien-d/alertify.js#0.3.11"
+    "MathJax": "~2.5.0",
+    "alertify.js": "https://github.com/fabien-d/alertify.js.git#fc2e06fa39873363dda199204b8544119ab060bf"
   },
   "main": [
     "/public/res/main.js",

@@ -1,6 +1,6 @@
 define([], function() {
 	var constants = {};
-	constants.VERSION = "4.3.2";
+	constants.VERSION = "4.3.11";
 	constants.MAIN_URL = "https://stackedit.io/";
 	constants.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1";
 	constants.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw";
@@ -28,7 +28,7 @@ define([], function() {
 	constants.PICASA_IMPORT_IMG_URL = "/picasaImportImg";
 	constants.SSH_PUBLISH_URL = '/sshPublish';
 	constants.PDF_EXPORT_URL = "/pdfExport";
-	constants.COUCHDB_URL = 'https://stackedit.couchappy.com/documents';
+	constants.COUCHDB_URL = 'https://stackedit.smileupps.com/documents';
 
 	// Site dependent
 	constants.BASE_URL = "http://localhost/";

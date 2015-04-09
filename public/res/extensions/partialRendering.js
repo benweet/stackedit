@@ -104,10 +104,14 @@ define([
 	}
 
 	var footnoteMap = {};
+	var footnoteFragment = document.createDocumentFragment();
 	// Store one footnote elt in the footnote map
 	function storeFootnote(footnoteElt) {
 		var id = footnoteElt.id.substring(3);
+		var oldFootnote = footnoteMap[id];
+		oldFootnote && footnoteFragment.removeChild(oldFootnote);
 		footnoteMap[id] = footnoteElt;
+		footnoteFragment.appendChild(footnoteElt);
 	}
 
 	var footnoteContainerElt;
@@ -162,6 +166,7 @@ define([
 
 		// Rewrite footnotes in the footer and update footnote numbers
 		footnoteContainerElt.innerHTML = '';
+		delete footnoteContainerElt.exportableHtml;
 		var usedFootnoteIds = [];
 		if(hasFootnotes === true) {
 			var footnoteElts = crel('ol');
@@ -179,7 +184,12 @@ define([
 				}, crel('hr'), footnoteElts));
 			}
 			// Keep used footnotes only in our map
-			footnoteMap = _.pick(footnoteMap, usedFootnoteIds);
+			Object.keys(footnoteMap).forEach(function(key) {
+				if(usedFootnoteIds.indexOf(key) === -1) {
+					footnoteFragment.removeChild(footnoteMap[key]);
+					delete footnoteMap[key];
+				}
+			});
 		}
 	}
 

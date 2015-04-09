@@ -231,7 +231,14 @@ define([
 				setTimeout(function() {
 					var html = "";
 					_.each(previewContentsElt.children, function(elt) {
-						html += elt.innerHTML;
+						if(!elt.exportableHtml) {
+							var clonedElt = elt.cloneNode(true);
+							_.each(clonedElt.querySelectorAll('.MathJax, .MathJax_Display, .MathJax_Preview'), function(elt) {
+								elt.parentNode.removeChild(elt);
+							});
+							elt.exportableHtml = clonedElt.innerHTML;
+						}
+						html += elt.exportableHtml;
 					});
 					var htmlWithComments = utils.trim(html);
 					var htmlWithoutComments = htmlWithComments.replace(/ <span class="comment label label-danger">.*?<\/span> /g, '');

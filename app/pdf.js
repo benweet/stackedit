@@ -90,14 +90,14 @@ exports.export = function(req, res, next) {
 		// Header
 		options.headerCenter && params.push('--header-center', options.headerCenter);
 		options.headerLeft && params.push('--header-left', options.headerLeft);
-		options.headerRight && params.push('--header-left', options.headerRight);
+		options.headerRight && params.push('--header-right', options.headerRight);
 		options.headerFontName && params.push('--header-font-name', options.headerFontName);
 		options.headerFontSize && params.push('--header-font-size', options.headerFontSize);
 
 		// Footer
 		options.footerCenter && params.push('--footer-center', options.footerCenter);
 		options.footerLeft && params.push('--footer-left', options.footerLeft);
-		options.footerRight && params.push('--footer-left', options.footerRight);
+		options.footerRight && params.push('--footer-right', options.footerRight);
 		options.footerFontName && params.push('--footer-font-name', options.footerFontName);
 		options.footerFontSize && params.push('--footer-font-size', options.footerFontSize);
 

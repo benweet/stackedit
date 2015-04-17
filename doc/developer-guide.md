@@ -21,10 +21,13 @@ Getting started
 
 		bower install
 
-- Serve **StackEdit** at `http://localhost/`:
+- Serve **StackEdit** at `http://localhost/`: 
 
 		(export PORT=80 && node server.js)
-		
+  If on Windows, use
+  
+  		(set PORT=80 && node server.js)
+
 - Run **StackEdit** in debug mode (no application cache, serve original files instead of minified):
 
 		http://localhost/?debug

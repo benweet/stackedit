@@ -33,7 +33,8 @@
     "flowchart": "https://github.com/adrai/flowchart.js.git#751717d3db6437def9a5f8b1cb73e8bb81b5833a",
     "monetizejs": "~0.2.0",
     "MathJax": "~2.5.0",
-    "alertify.js": "https://github.com/fabien-d/alertify.js.git#fc2e06fa39873363dda199204b8544119ab060bf"
+    "alertify.js": "https://github.com/fabien-d/alertify.js.git#fc2e06fa39873363dda199204b8544119ab060bf",
+    "nomnoml": "skanaar/nomnoml#d62ec1ddcb8fa3226c9147c4132fd42f9ef8de5b"
   },
   "main": [
     "/public/res/main.js",

@@ -7,8 +7,9 @@ define([
 	"text!html/umlDiagramsSettingsBlock.html",
 	'crel',
 	'Diagram',
-	'flow-chart'
-], function($, _, utils, logger, Extension, umlDiagramsSettingsBlockHTML, crel, Diagram, flowChart) {
+	'flow-chart',
+	'nomnoml'
+], function($, _, utils, logger, Extension, umlDiagramsSettingsBlockHTML, crel, Diagram, flowChart, nomnoml) {
 
 	var umlDiagrams = new Extension("umlDiagrams", "UML Diagrams", true);
 	umlDiagrams.settingsBlock = umlDiagramsSettingsBlockHTML;
@@ -57,6 +58,24 @@ define([
 					});
 					preElt.parentNode.replaceChild(containerElt, preElt);
 					chart.drawSVG(containerElt, JSON.parse(umlDiagrams.config.flowchartOptions));
+				}
+				catch(e) {
+				}
+			});
+			_.each(previewContentsElt.querySelectorAll('.prettyprint > .language-nomnoml'), function(elt) {
+				try {
+					var themeFills = '#fill: #eee; #f8f8f8\n';	// TODO: Create this from theme palette instead.
+					var preElt = elt.parentNode;
+					var canvasElt = crel('canvas');
+					nomnoml.draw(canvasElt, themeFills + elt.textContent);
+					var pElt = crel('p',	// Wrap <img> in a <p> to mimic markdown image rendering.
+						crel('img', {
+							src: canvasElt.toDataURL('image/png'),
+							alt: 'nomnoml diagram',
+							title: 'nomnoml diagram'	// TODO: Use value from #title directive instead.
+						})
+					);
+					preElt.parentNode.replaceChild(pElt, preElt);
 				}
 				catch(e) {
 				}

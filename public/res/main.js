@@ -17,6 +17,7 @@ requirejs.config({
 	paths: {
 		jquery: 'bower-libs/jquery/jquery',
 		underscore: 'bower-libs/underscore/underscore',
+		lodash: 'bower-libs/lodash/lodash',
 		crel: 'bower-libs/crel/crel',
 		jgrowl: 'bower-libs/jgrowl/jquery.jgrowl',
 		mousetrap: 'bower-libs/mousetrap/mousetrap',
@@ -71,7 +72,8 @@ requirejs.config({
 		'to-markdown': 'bower-libs/to-markdown/src/to-markdown',
 		waitForImages: 'bower-libs/waitForImages/dist/jquery.waitforimages',
 		MathJax: 'bower-libs/MathJax/MathJax',
-		alertify: 'bower-libs/alertify.js/lib/alertify'
+		alertify: 'bower-libs/alertify.js/lib/alertify',
+		nomnoml: 'bower-libs/nomnoml/dist/nomnoml'
 	},
 	shim: {
 		underscore: {

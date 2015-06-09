@@ -28,6 +28,17 @@ cond(yes)->e
 cond(no)->op
 ```</code>
 </pre>
+
+<p>nomnoml diagrams:</p>
+<pre><div class="help-block pull-right"><a target="_blank" href="http://www.nomnoml.com/">More info</a></div><code>```nomnoml
+[&lt;abstract&gt;Component||  operation()]
+[Client] depends --&gt; [Component]
+[Decorator|- next: Component]
+[Decorator] decorates -- [ConcreteComponent]
+[Component] &lt;:- [Decorator]
+[Component] &lt;:- [ConcreteComponent]
+```</code></pre>
+
 <blockquote>
     <p><b>Note:</b> Markdown Extra extension has to be enabled with GFM fenced code blocks option.</p>
 </blockquote>

@@ -43,7 +43,7 @@ Download dependencies and build (done automatically after `npm install`)
 ### Build/minify
 
 	gulp
-	
+
 ### Deploy
 
 - on Heroku:
@@ -246,9 +246,9 @@ myExtension.onMessage = function(message) {
 - **`onReady()`**
 
     All the modules are loaded and the DOM is ready.
-    
+
     > Triggered by the `core` module.
-    
+
     > This is preferred over [jQuery's `.ready()`][39] because it ensures that all modules have been loaded by RequireJS.
 
 - **`onMessage(message)`**
@@ -265,32 +265,32 @@ myExtension.onMessage = function(message) {
 
     The off-line status has changed.
     - `isOffline`: the off-line status.
-    
+
     >  Triggered by the `core` module.
 
 - **`onUserActive()`**
 
     The user has just moved the mouse or pressed the keyboard.
-    
+
     > Triggered by the `core` module.
 
 - **`onAsyncRunning(isRunning)`**
 
     Some asynchronous tasks have just started or stopped.
     - `isRunning`: true if started, false if stopped.
-    
+
     > Triggered by the `AsyncTask` module.
 
 - **`onPeriodicRun()`**
 
     A hook that is called periodically (every 1 second if user is active).
-    
+
     > Triggered by the `core` module.
 
 - **`onLoadSettings()`**
 
     A hook that is called when the settings dialog has to be refreshed. Every `Extension` module that has configuration inputs in the settings dialog has to implement a listener for this event.
-    
+
     > Triggered by the `core` module. Only `Extension` modules can handle this event.
 
 - **`onSaveSettings(newConfig, event)`**
@@ -298,15 +298,15 @@ myExtension.onMessage = function(message) {
     A hook that is called when the settings dialog has to be validated. Every `Extension` module that has configuration inputs in the settings dialog has to implement a listener for this event.
     - `newConfig`: the new configuration object, deduced from the settings dialog inputs.
     - `event`: the submit event object. `stopPropagation` has to be called in case of an error when parsing settings dialog inputs.
-    
+
     > Triggered by the `core` module. Only `Extension` modules can handle this event.
 
 - **`onInit()`**
 
     A hook allowing enabled extensions to initialize.
-    
+
     > Triggered by the `eventMgr` module. Only `Extension` modules can handle this event.
-    
+
     > This event is triggered before `onReady` event and just after the `config` and `enabled` extensions properties have been set by the `eventMgr`.
 
 
@@ -318,7 +318,7 @@ myExtension.onMessage = function(message) {
 
     The `fileMgr` module has been created.
     - `fileMgr`: the `fileMgr` module.
-    
+
     > Triggered by the `fileMgr` module.
 
 
@@ -326,21 +326,21 @@ myExtension.onMessage = function(message) {
 
     The `synchronizer` module has been created.
     - `synchronizer`: the `synchronizer` module.
-    
+
     > Triggered by the `synchronizer` module.
 
 - **`onPublisherCreated(publisher)`**
 
     The `publisher` module has been created.
     - `publisher`: the `publisher` module.
-    
+
     > Triggered by the `publisher` module.
 
 - **`onEventMgrCreated()`**
 
     The `eventMgr` module has been created.
     - `eventMgr`: the `eventMgr` module.
-    
+
     > Triggered by the `eventMgr` module.
 
 
@@ -352,42 +352,42 @@ myExtension.onMessage = function(message) {
 
     A [`FileDescriptor`][41] object has been created.
     - `fileDesc`: the [`FileDescriptor`][42] object.
-    
+
     > Triggered by the `fileMgr` module.
 
 - **`onFileDeleted(fileDesc)`**
 
     A [`FileDescriptor`][43] object has been removed from the `fileSystem` module.
     - `fileDesc`: the [`FileDescriptor`][44] object.
-    
+
     > Triggered by the `fileMgr` module.
 
 - **`onFileSelected(fileDesc)`**
 
     A [`FileDescriptor`][45] object has been selected.
     - `fileDesc`: the [`FileDescriptor`][46] object.
-    
+
     > Triggered by the `fileMgr` module. This event is triggered before `onFileClosed` (if another document is open) and `onFileOpen` events.
 
 - **`onFileClosed(fileDesc)`**
 
     The current [`FileDescriptor`][47] object is about to be detached from the editor.
     - `fileDesc`: the [`FileDescriptor`][48] object.
-    
+
     > Triggered by the `fileMgr` module. This event is triggered after `onFileSelected` event and before `onFileClosed` event.
 
 - **`onFileOpen(fileDesc)`**
 
     The selected [`FileDescriptor`][49] object has been attached to the editor.
     - `fileDesc`: the [`FileDescriptor`][50] object.
-    
+
     > Triggered by the `fileMgr` module. This event is triggered after `onFileSelected` and `onFileClosed` (if another document is open) events.
 
 - **`onContentChanged(fileDesc)`**
 
     The content of a [`FileDescriptor`][51] object has been modified.
     - `fileDesc`: the [`FileDescriptor`][52] object.
-    
+
 - **`onTitleChanged(fileDesc)`**
 
     The content of a [`FileDescriptor`][53] object has been modified.
@@ -406,27 +406,27 @@ myExtension.onMessage = function(message) {
 
     A synchronization job has just started or stopped.
     - `isRunning`: true if started, false if stopped.
-    
+
     > Triggered by the `synchronizer` module.
-    
+
     > A synchronization job is the action to download and upload all detected changes for all sync locations of all documents.
 
 - **`onSyncSuccess()`**
 
     A synchronization job has successfully finished.
-    
+
     > Triggered by the `synchronizer` module.
-    
+
     > A synchronization job is the action to download and upload all detected changes for all sync locations of all documents.
-    
+
 - **`onSyncImportSuccess(fileDescList, provider)`**
 
     The import of documents has successfully finished.
     - `fileDescList`: the list of [`FileDescriptor`][55] objects that have been created.
     - `provider`: the [`provider`][56] module that handled the import.
-    
+
     > Triggered by the [`provider`][57] module that handled the import.
-    
+
     > An import is the action to download multiple files and to create, for each, one [`FileDescriptor`][55] objects with one sync location.
 
 - **`onSyncExportSuccess(fileDesc, syncAttributes)`**
@@ -434,9 +434,9 @@ myExtension.onMessage = function(message) {
     The export of one document has successfully finished.
     - `fileDesc`: the [`FileDescriptor`][58] object that has been exported.
     - `syncAttributes`: the descriptor object of the new sync location.
-    
+
     > Triggered by the `synchronizer` module.
-    
+
     > An export is the action to upload one file and to create one new sync location associated with one existing `FileDescriptor`][55] object.
 
 - **`onSyncRemoved(fileDesc, syncAttributes)`**
@@ -444,7 +444,7 @@ myExtension.onMessage = function(message) {
     A sync location has been removed from a [`FileDescriptor`][59] object.
     - `fileDesc`: the [`FileDescriptor`][60] object.
     - `syncAttributes`: the descriptor object of the removed sync location.
-    
+
 
 ----------
 
@@ -454,26 +454,26 @@ myExtension.onMessage = function(message) {
 
     A document publication job has just started or stopped.
     - `isRunning`: true if started, false if stopped.
-    
+
     > Triggered by the `publisher` module.
-    
+
     > A publication job is the action to upload changes on multiple publish locations associated with one `FileDescriptor`][55] object.
 
 - **`onPublishSuccess(fileDesc)`**
 
     A document publication job has successfully finished.
     - `fileDesc`: the [`FileDescriptor`][60] object that has been published.
-    
+
     > Triggered by the `publisher` module.
-    
+
     > A publication job is the action to upload changes on multiple publish locations associated with one `FileDescriptor`][55] object.
-    
+
 - **`onNewPublishSuccess(fileDesc, publishAttributes)`**
 
     A new publish location has been successfully created.
     - `fileDesc`: the [`FileDescriptor`][60] object that has been published.
     - `publishAttributes`: the descriptor object of the new publish location.
-    
+
     > Triggered by the `publisher` module.
 
 - **`onPublishRemoved(fileDesc, publishAttributes)`**
@@ -481,7 +481,7 @@ myExtension.onMessage = function(message) {
     A publish location has been removed from a [`FileDescriptor`][59] object.
     - `fileDesc`: the [`FileDescriptor`][60] object.
     - `publishAttributes`: the descriptor object of the removed publish location.
-    
+
     > Triggered by the `publisher` module.
 
 
@@ -493,23 +493,23 @@ myExtension.onMessage = function(message) {
 
     The layout is about to be configured.
     - `layoutConfig`: the configuration object of the UI Layout library.
-    
+
     > Triggered by the `core` module.
 
 - **`onLayoutCreated(layout)`**
 
     The layout has just been created.
     - `layout`: the layout object of the UI Layout library.
-    
+
     > Triggered by the `core` module.
 
 - **`onLayoutResize(paneName)`**
 
     One pane of the layout has been resized.
     - `paneName`: the name of the resized layout pane.
-    
+
     > Triggered by the `core` module.
-    
+
 - **`onCreateButton()`**
 
     Allows extensions to add their own buttons in the navigation bar. Implemented listeners have to return an HTML button element. For example:
@@ -521,19 +521,19 @@ myExtension.onMessage = function(message) {
             });
             return button[0];
         };
-    
+
     > Triggered by the `eventMgr` module. Only `Extension` modules can handle this event.
 
 - **`onCreateEditorButton()`**
 
     Allows extensions to add their own buttons in the side bar. Implemented listeners have to return an HTML button element. See `onCreateButton` for a concrete example.
-    
+
     > Triggered by the `eventMgr` module. Only `Extension` modules can handle this event.
 
 - **`onCreatePreviewButton()`**
 
     Allows extensions to add their own buttons over the preview. Implemented listeners have to return an HTML button element. See `onCreateButton` for a concrete example.
-    
+
     > Triggered by the `eventMgr` module. Only `Extension` modules can handle this event.
 
 
@@ -545,16 +545,16 @@ myExtension.onMessage = function(message) {
 
     The Pagedown editor is about to be created.
     - `editor`: the Pagedown editor object before `run` has been called.
-    
+
     > Triggered by the `core` module.
-    
+
 - **`onAsyncPreview(callback)`**
 
     Called after Pagedown's synchronous rendering to trigger extra asynchronous rendering (such as MathJax). Implemented listeners have to call the callback parameter after processing in order other `onAsyncPreview` listeners to run.
     - `callback`: the callback to call at the end of the asynchronous processing.
-    
+
     > Triggered by the `eventMgr` module. Only `Extension` modules can handle this event.
-    
+
 - **`onPreviewFinished(html)`**
 
     Called after every `onAsyncPreview` listeners have been called.
@@ -566,14 +566,14 @@ myExtension.onMessage = function(message) {
     - `sectionList`: the list of section objects. Each section object contains:
         - `text`: the markdown substring contained in the section.
         - `textWithDelimiter`: the text with an added delimiter.
-    
+
     > Triggered by the `markdownSectionParser` extension.
 
 - **`onMarkdownTrim(offset)`**
 
     The Markdown has been left trimmed by a certain number of character.
     - `offset`: the number of characters that have been removed.
-    
+
     > Triggered by the `yamlFrontMatterParser` extension.
 
 
@@ -585,7 +585,7 @@ myExtension.onMessage = function(message) {
 
     The ACE editor has just been created.
     - `aceEditor`: the ACE editor object.
-    
+
     > Triggered by the `core` module.
 
 

@@ -5,7 +5,8 @@ cache:
   directories:
     - node_modules
     - public/res/bower-libs
-
+# new Travis infrastructure:
+sudo: false
 # don't run tests, since Stackedit have none.
 # 'true' is a unix command which returns 0
 script: true

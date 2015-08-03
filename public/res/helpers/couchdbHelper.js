@@ -19,9 +19,43 @@ define([
 		isOffline = isOfflineParam;
 	});
 
+	couchdbHelper.startSession = function() {
+		var task = new AsyncTask();
+		var anchor = document.createElement('a');
+		anchor.href = settings.couchdbUrl;
+		if (anchor.username === '') {
+			return task; // No credentials provided; no session to start
+		}
+
+		task.onRun(function() {
+			$.ajax({
+				type: 'POST',
+				url: settings.couchdbUrl + '/../_session',
+				contentType: 'application/json',
+				xhrFields: {
+					withCredentials: true
+				},
+				dataType: 'json',
+				data: JSON.stringify({
+					name: anchor.username,
+					password: anchor.password
+				})
+			}).done(function(data, status, jqXHR) {
+				if (data.ok !== true) {
+					handleError(jqXHR, task);
+					return;
+				}
+				task.chain();
+			}).fail(function(jqXHR) {
+				handleError(jqXHR, task);
+			});
+		});
+		return task;
+	};
+
 	couchdbHelper.uploadDocument = function(documentId, title, content, tags, rev, callback) {
 		var result;
-		var task = new AsyncTask();
+		var task = this.startSession();
 		task.onRun(function() {
 			if(tags) {
 				// Has to be an array
@@ -45,6 +79,9 @@ define([
 				type: 'POST',
 				url: settings.couchdbUrl,
 				contentType: 'application/json',
+				xhrFields: {
+					withCredentials: true
+				},
 				dataType: 'json',
 				data: JSON.stringify({
 					_id: documentId || utils.id(),
@@ -78,7 +115,7 @@ define([
 	couchdbHelper.checkChanges = function(lastChangeId, syncLocations, callback) {
 		var changes;
 		var newChangeId = lastChangeId || 0;
-		var task = new AsyncTask();
+		var task = this.startSession();
 		task.onRun(function() {
 			$.ajax({
 				type: 'POST',
@@ -89,6 +126,9 @@ define([
 					attachments: true
 				}),
 				contentType: 'application/json',
+				xhrFields: {
+					withCredentials: true
+				},
 				dataType: 'json',
 				data: JSON.stringify({
 					doc_ids: Object.keys(syncLocations)
@@ -117,7 +157,7 @@ define([
 
 	couchdbHelper.downloadContent = function(documents, callback) {
 		var result = [];
-		var task = new AsyncTask();
+		var task = this.startSession();
 		task.onRun(function() {
 			function recursiveDownloadContent() {
 				if(documents.length === 0) {
@@ -135,6 +175,9 @@ define([
 						Accept: 'application/json'
 					},
 					contentType: 'application/json',
+					xhrFields: {
+						withCredentials: true
+					},
 					dataType: 'json',
 					data: {
 						attachments: true
@@ -161,7 +204,7 @@ define([
 
 	couchdbHelper.listDocuments = function(tag, updated, callback) {
 		var result;
-		var task = new AsyncTask();
+		var task = this.startSession();
 		task.onRun(function() {
 			var ddoc = '/_design/by_' + (tag ? 'tag_and_' : '') + 'update/_view/default';
 			var startKey = tag ? JSON.stringify([
@@ -172,7 +215,14 @@ define([
 				tag
 			]) : undefined;
 			$.ajax({
+				type: 'GET',
 				url: settings.couchdbUrl + ddoc,
+				contentType: 'application/json',
+				xhrFields: {
+					withCredentials: true
+				},
+				crossDomain: true,
+				dataType: 'json',
 				data: {
 					start_key: startKey,
 					end_key: endKey,
@@ -180,8 +230,7 @@ define([
 					include_docs: true,
 					limit: constants.COUCHDB_PAGE_SIZE,
 					reduce: false
-				},
-				dataType: 'json'
+				}
 			}).done(function(data) {
 				result = _.pluck(data.rows, 'doc');
 				task.chain();
@@ -199,11 +248,16 @@ define([
 	};
 
 	couchdbHelper.deleteDocuments = function(docs) {
-		var task = new AsyncTask();
+		var task = this.startSession();
 		task.onRun(function() {
 			$.ajax({
 				type: 'POST',
 				url: settings.couchdbUrl + '/_bulk_docs',
+				contentType: 'application/json',
+				xhrFields: {
+					withCredentials: true
+				},
+				dataType: 'json',
 				data: JSON.stringify({
 					docs: docs.map(function(doc) {
 						return {
@@ -213,8 +267,6 @@ define([
 						};
 					})
 				}),
-				contentType: 'application/json',
-				dataType: 'json'
 			}).done(function() {
 				task.chain();
 			}).fail(function(jqXHR) {

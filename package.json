@@ -16,7 +16,7 @@
     "request": "~2.40.0",
     "ssh2": "^0.3.5",
     "compression": "^1.0.11",
-    "serve-static": "^1.5.3"
+    "serve-static": "^1.6.5"
   },
   "devDependencies": {
     "gulp": "^3.8.7",

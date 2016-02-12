@@ -20,7 +20,7 @@
     "crel": "https://github.com/KoryNunn/crel.git#8dbda04b129fc0aec01a2a080d1cab26816e11c1",
     "waitForImages": "https://github.com/alexanderdickson/waitForImages.git#~1.4.2",
     "to-markdown": "https://github.com/benweet/to-markdown.git#jquery",
-    "xregexp": "d06eff50f87d81d2dd3afc1e854784c38b17bcc4",
+    "xregexp": "300157f34b39b15b7b0dba7608955945d53e61b9",
     "yaml.js": "https://github.com/jeremyfa/yaml.js.git#~0.1.4",
     "prism": "a12e8692b5f660a0123a06f74935f75386a93042",
     "MutationObservers": "https://github.com/Polymer/MutationObservers.git#~0.2.1",

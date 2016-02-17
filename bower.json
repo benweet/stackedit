@@ -32,7 +32,7 @@
     "js-sequence-diagrams": "https://github.com/benweet/js-sequence-diagrams.git#c59e2e39d9185e9291f37b73fc596eba5ed33650",
     "flowchart": "https://github.com/adrai/flowchart.js.git#751717d3db6437def9a5f8b1cb73e8bb81b5833a",
     "monetizejs": "~0.2.0",
-    "MathJax": "~2.5.0",
+    "MathJax": "2.6.1",
     "alertify.js": "https://github.com/fabien-d/alertify.js.git#fc2e06fa39873363dda199204b8544119ab060bf"
   },
   "main": [

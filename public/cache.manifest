@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#Date Wed Feb 17 2016 21:57:12 GMT+0000 (GMT)
+#Date Tue Mar 01 2016 00:39:36 GMT+0000 (GMT)
 
 CACHE:
 .
@@ -99,6 +99,7 @@ res/bower-libs/MathJax/extensions/TeX/noErrors.js?rev=2.6.1
 res/bower-libs/MathJax/extensions/TeX/noUndefined.js?rev=2.6.1
 res/bower-libs/MathJax/extensions/TeX/unicode.js?rev=2.6.1
 res/bower-libs/MathJax/extensions/TeX/verb.js?rev=2.6.1
+res/bower-libs/MathJax/jax/element/mml/jax.js?rev=2.6.1
 res/bower-libs/MathJax/jax/element/mml/optable/Arrows.js?rev=2.6.1
 res/bower-libs/MathJax/jax/element/mml/optable/BasicLatin.js?rev=2.6.1
 res/bower-libs/MathJax/jax/element/mml/optable/CombDiacritMarks.js?rev=2.6.1
@@ -118,7 +119,6 @@ res/bower-libs/MathJax/jax/element/mml/optable/SpacingModLetters.js?rev=2.6.1
 res/bower-libs/MathJax/jax/element/mml/optable/SupplementalArrowsA.js?rev=2.6.1
 res/bower-libs/MathJax/jax/element/mml/optable/SupplementalArrowsB.js?rev=2.6.1
 res/bower-libs/MathJax/jax/element/mml/optable/SuppMathOperators.js?rev=2.6.1
-res/bower-libs/MathJax/jax/element/mml/jax.js?rev=2.6.1
 res/bower-libs/MathJax/jax/output/SVG/autoload/annotation-xml.js?rev=2.6.1
 res/bower-libs/MathJax/jax/output/SVG/autoload/maction.js?rev=2.6.1
 res/bower-libs/MathJax/jax/output/SVG/autoload/menclose.js?rev=2.6.1
@@ -127,8 +127,16 @@ res/bower-libs/MathJax/jax/output/SVG/autoload/mmultiscripts.js?rev=2.6.1
 res/bower-libs/MathJax/jax/output/SVG/autoload/ms.js?rev=2.6.1
 res/bower-libs/MathJax/jax/output/SVG/autoload/mtable.js?rev=2.6.1
 res/bower-libs/MathJax/jax/output/SVG/autoload/multiline.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/fontdata-extra.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/fontdata.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Fraktur/Bold/BasicLatin.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Fraktur/Bold/Main.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Fraktur/Bold/Other.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Fraktur/Bold/PUA.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Fraktur/Regular/BasicLatin.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Fraktur/Regular/Main.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Fraktur/Regular/Other.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Fraktur/Regular/PUA.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Caligraphic/Bold/Main.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Caligraphic/Regular/Main.js?rev=2.6.1
 res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/AMS/Regular/Arrows.js?rev=2.6.1
 res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/AMS/Regular/BoxDrawing.js?rev=2.6.1
 res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/AMS/Regular/CombDiacritMarks.js?rev=2.6.1
@@ -148,16 +156,30 @@ res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/AMS/Regular/MiscTechnical.js?rev
 res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/AMS/Regular/PUA.js?rev=2.6.1
 res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/AMS/Regular/SpacingModLetters.js?rev=2.6.1
 res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/AMS/Regular/SuppMathOperators.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Caligraphic/Bold/Main.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Caligraphic/Regular/Main.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Fraktur/Bold/BasicLatin.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Fraktur/Bold/Main.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Fraktur/Bold/Other.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Fraktur/Bold/PUA.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Fraktur/Regular/BasicLatin.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Fraktur/Regular/Main.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Fraktur/Regular/Other.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Fraktur/Regular/PUA.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Math/BoldItalic/Main.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Math/Italic/Main.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Size1/Regular/Main.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Size2/Regular/Main.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Script/Regular/BasicLatin.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Script/Regular/Main.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Bold/BasicLatin.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Bold/CombDiacritMarks.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Bold/Main.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Bold/Other.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Italic/BasicLatin.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Italic/CombDiacritMarks.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Italic/Main.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Italic/Other.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Regular/BasicLatin.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Regular/CombDiacritMarks.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Regular/Main.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Regular/Other.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Typewriter/Regular/BasicLatin.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Typewriter/Regular/CombDiacritMarks.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Typewriter/Regular/Main.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Typewriter/Regular/Other.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Size3/Regular/Main.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Size4/Regular/Main.js?rev=2.6.1
 res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Main/Bold/Arrows.js?rev=2.6.1
 res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Main/Bold/BasicLatin.js?rev=2.6.1
 res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Main/Bold/CombDiacritMarks.js?rev=2.6.1
@@ -198,30 +220,8 @@ res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Main/Regular/MathOperators.js?re
 res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Main/Regular/MiscSymbols.js?rev=2.6.1
 res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Main/Regular/SpacingModLetters.js?rev=2.6.1
 res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Main/Regular/SuppMathOperators.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Math/BoldItalic/Main.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Math/Italic/Main.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Bold/BasicLatin.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Bold/CombDiacritMarks.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Bold/Main.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Bold/Other.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Italic/BasicLatin.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Italic/CombDiacritMarks.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Italic/Main.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Italic/Other.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Regular/BasicLatin.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Regular/CombDiacritMarks.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Regular/Main.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/SansSerif/Regular/Other.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Script/Regular/BasicLatin.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Script/Regular/Main.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Size1/Regular/Main.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Size2/Regular/Main.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Size3/Regular/Main.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Size4/Regular/Main.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Typewriter/Regular/BasicLatin.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Typewriter/Regular/CombDiacritMarks.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Typewriter/Regular/Main.js?rev=2.6.1
-res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/Typewriter/Regular/Other.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/fontdata-extra.js?rev=2.6.1
+res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/fontdata.js?rev=2.6.1
 # end_inject_mathjax
 
 

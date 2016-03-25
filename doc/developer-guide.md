@@ -57,6 +57,7 @@ Getting started
 
 - in a Docker container:
 
+		eval "$(docker-machine env default)"
         docker build -t my-stackedit-image .
         docker run -p 3000 my-stackedit-image
 

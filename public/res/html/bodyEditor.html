@@ -121,6 +121,10 @@
 							class="icon-provider-gdrive"></i> Open from Google Drive<br><small>(3rd account)</small></a></li>
 						<li><a href="#" class="submenu-sync-gdriveter action-sync-export-dialog-gdriveter"><i
 							class="icon-provider-gdrive"></i> Save on Google Drive<br><small>(3rd account)</small></a></li>
+						<li><a href="#" class="action-sync-import-evernote"><i
+							class="icon-provider-evernote"></i> Open from Evernote</a></li>
+						<li><a href="#" class="action-sync-export-dialog-evernote"><i
+							class="icon-provider-evernote"></i> Save on Evernote</a></li>
 					</ul>
 				</div>
 				<a href="#" data-toggle="collapse" data-target=".collapse-publish-on"
@@ -547,6 +551,61 @@
 	</div>
 </div>
 
+<div class="modal fade modal-upload-evernote">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h2 class="modal-title">Save on Evernote</h2>
+			</div>
+			<div class="modal-body">
+				<p>
+					This will save "<span class="file-title"></span>" to your <i
+						class="icon-provider-evernote"></i>
+					<code>Evernote</code>
+					account and keep it synchronized.
+				</p>
+				<blockquote>
+					<b>Note:</b>
+					<ul>
+						<li>The title of your document will not be synchronized.</li>
+					</ul>
+				</blockquote>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<a href="#" data-dismiss="modal"
+					class="btn btn-primary action-sync-export-evernote">OK</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade modal-picker-evernote">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h2 class="modal-title">Select documents from Evernote</h2>
+			</div>
+			<div class="modal-body">
+				<form>
+					<table class="picker-table-evernote" border="0">
+					</table>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<a href="#" data-dismiss="modal"
+					class="btn btn-primary action-pick-files-evernote">OK</a>
+			</div>
+		</div>
+	</div>
+</div>
 
 <div class="modal fade modal-download-couchdb">
     <div class="modal-dialog">

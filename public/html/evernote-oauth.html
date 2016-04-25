@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script type="text/javascript">
+	function getParameter(name) {
+		var regex = new RegExp(name + "=(.+?)(&|$)");
+		try {
+			return decodeURIComponent(regex.exec(location.search)[1]);
+		} catch (e) {
+			return undefined;
+		}
+	}
+	// It's better to use constants.EVERNOTE_PROXY_URL
+	// TODO Resarch
+	var proxyServerAddr = "https://serene-forest-38715.herokuapp.com";
+
+	var oauthAccessToken = getParameter("oauthAccessToken");
+	if (!oauthAccessToken) {
+		var selfAddr = window.location.href.replace(/window.location.search/, "");
+		window.location.href = proxyServerAddr + "/oauth?callbackurl=" + selfAddr;
+	} else {
+		localStorage["evernoteAccessToken"] = oauthAccessToken;
+		window.close();
+	}
+</script>
+</head>
+</html>

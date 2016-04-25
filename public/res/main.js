@@ -71,7 +71,8 @@ requirejs.config({
 		'to-markdown': 'bower-libs/to-markdown/src/to-markdown',
 		waitForImages: 'bower-libs/waitForImages/dist/jquery.waitforimages',
 		MathJax: 'bower-libs/MathJax/MathJax',
-		alertify: 'bower-libs/alertify.js/lib/alertify'
+		alertify: 'bower-libs/alertify.js/lib/alertify',
+		md5: 'bower-libs/js-md5/build/md5.min'
 	},
 	shim: {
 		underscore: {

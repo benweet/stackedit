@@ -38,6 +38,8 @@ define([], function() {
 	constants.TUMBLR_PROXY_URL = "https://stackedit-tumblr-proxy-local.herokuapp.com/";
 	constants.WORDPRESS_CLIENT_ID = '23361';
 	constants.WORDPRESS_PROXY_URL = "https://stackedit-io-wordpress-proxy.herokuapp.com/";
+	// TODO Change this and the url in "public/html/evernote-oauth.html"
+	constants.EVERNOTE_PROXY_URL = "https://serene-forest-38715.herokuapp.com";
 
 	if(location.hostname.indexOf("stackedit.io") === 0) {
 		constants.BASE_URL = constants.MAIN_URL;

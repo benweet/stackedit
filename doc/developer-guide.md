@@ -23,7 +23,8 @@ Getting started
 
 - Serve **StackEdit** at `http://localhost/`: 
 
-		(export PORT=80 && node server.js)
+		PORT=80 node server.js
+
   If on Windows, use
   
   		(set PORT=80 && node server.js)

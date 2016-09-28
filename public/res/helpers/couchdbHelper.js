@@ -19,6 +19,12 @@ define([
 		isOffline = isOfflineParam;
 	});
 
+	couchdbHelper.parseUrl = function(url) {
+		var anchor = document.createElement('a');
+		anchor.href = url;
+		return anchor.protocol + '//' + anchor.host + anchor.pathname + anchor.search;
+	};
+
 	couchdbHelper.startSession = function() {
 		var task = new AsyncTask();
 		var anchor = document.createElement('a');
@@ -30,7 +36,7 @@ define([
 		task.onRun(function() {
 			$.ajax({
 				type: 'POST',
-				url: settings.couchdbUrl + '/../_session',
+				url: couchdbHelper.parseUrl(settings.couchdbUrl) + '/../_session',
 				contentType: 'application/json',
 				xhrFields: {
 					withCredentials: true
@@ -77,7 +83,7 @@ define([
 			}
 			$.ajax({
 				type: 'POST',
-				url: settings.couchdbUrl,
+				url: couchdbHelper.parseUrl(settings.couchdbUrl),
 				contentType: 'application/json',
 				xhrFields: {
 					withCredentials: true
@@ -119,7 +125,7 @@ define([
 		task.onRun(function() {
 			$.ajax({
 				type: 'POST',
-				url: settings.couchdbUrl + '/_changes?' + $.param({
+				url: couchdbHelper.parseUrl(settings.couchdbUrl) + '/_changes?' + $.param({
 					filter: '_doc_ids',
 					since: newChangeId,
 					include_docs: true,
@@ -170,7 +176,7 @@ define([
 					return task.chain(recursiveDownloadContent);
 				}
 				$.ajax({
-					url: settings.couchdbUrl + '/' + encodeURIComponent(document._id),
+					url: couchdbHelper.parseUrl(settings.couchdbUrl) + '/' + encodeURIComponent(document._id),
 					headers: {
 						Accept: 'application/json'
 					},
@@ -216,7 +222,7 @@ define([
 			]) : undefined;
 			$.ajax({
 				type: 'GET',
-				url: settings.couchdbUrl + ddoc,
+				url: couchdbHelper.parseUrl(settings.couchdbUrl) + ddoc,
 				contentType: 'application/json',
 				xhrFields: {
 					withCredentials: true
@@ -252,7 +258,7 @@ define([
 		task.onRun(function() {
 			$.ajax({
 				type: 'POST',
-				url: settings.couchdbUrl + '/_bulk_docs',
+				url: couchdbHelper.parseUrl(settings.couchdbUrl) + '/_bulk_docs',
 				contentType: 'application/json',
 				xhrFields: {
 					withCredentials: true

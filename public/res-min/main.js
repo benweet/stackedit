@@ -26302,12 +26302,15 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(t
  var d = {}, p = !1;
  return l.addListener("onOfflineChanged", function(t) {
   p = t;
- }), d.startSession = function() {
+ }), d.parseUrl = function(t) {
+  var e = document.createElement("a");
+  return e.href = t, e.protocol + "//" + e.host + e.pathname + e.search;
+ }, d.startSession = function() {
   var e = new c(), n = document.createElement("a");
   return n.href = s.couchdbUrl, "" === n.username ? e : (e.onRun(function() {
    t.ajax({
     type: "POST",
-    url: s.couchdbUrl + "/../_session",
+    url: d.parseUrl(s.couchdbUrl) + "/../_session",
     contentType: "application/json",
     xhrFields: {
      withCredentials: !0
@@ -26324,14 +26327,14 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(t
    });
   }), e);
  }, d.uploadDocument = function(n, r, o, a, l, c) {
-  var d, p = this.startSession();
-  p.onRun(function() {
+  var p, h = this.startSession();
+  h.onRun(function() {
    a ? (e.isArray(a) || (a = e.chain(("" + a).split(/,/)).compact().unique().value()), 
    a = a.filter(function(t) {
     return e.isString(t) && t.length < 32;
    }), a = a.slice(0, 16)) : a = void 0, t.ajax({
     type: "POST",
-    url: s.couchdbUrl,
+    url: d.parseUrl(s.couchdbUrl),
     contentType: "application/json",
     xhrFields: {
      withCredentials: !0
@@ -26351,21 +26354,21 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(t
      }
     })
    }).done(function(t) {
-    d = t, p.chain();
+    p = t, h.chain();
    }).fail(function(t) {
-    u(t, p);
+    u(t, h);
    });
-  }), p.onSuccess(function() {
-   c(void 0, d);
-  }), p.onError(function(t) {
+  }), h.onSuccess(function() {
+   c(void 0, p);
+  }), h.onError(function(t) {
    c(t);
-  }), p.enqueue();
+  }), h.enqueue();
  }, d.checkChanges = function(n, i, r) {
   var o, a = n || 0, l = this.startSession();
   l.onRun(function() {
    t.ajax({
     type: "POST",
-    url: s.couchdbUrl + "/_changes?" + t.param({
+    url: d.parseUrl(s.couchdbUrl) + "/_changes?" + t.param({
      filter: "_doc_ids",
      since: a,
      include_docs: !0,
@@ -26402,7 +26405,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(t
     var a = n[0];
     return r.push(a), a.deleted || void 0 !== ((a._attachments || {}).content || {}).data ? (n.shift(), 
     o.chain(i)) : void t.ajax({
-     url: s.couchdbUrl + "/" + encodeURIComponent(a._id),
+     url: d.parseUrl(s.couchdbUrl) + "/" + encodeURIComponent(a._id),
      headers: {
       Accept: "application/json"
      },
@@ -26429,10 +26432,10 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(t
  }, d.listDocuments = function(n, i, r) {
   var o, l = this.startSession();
   l.onRun(function() {
-   var r = "/_design/by_" + (n ? "tag_and_" : "") + "update/_view/default", c = n ? JSON.stringify([ n, i || [] ]) : i, d = n ? JSON.stringify([ n ]) : void 0;
+   var r = "/_design/by_" + (n ? "tag_and_" : "") + "update/_view/default", c = n ? JSON.stringify([ n, i || [] ]) : i, p = n ? JSON.stringify([ n ]) : void 0;
    t.ajax({
     type: "GET",
-    url: s.couchdbUrl + r,
+    url: d.parseUrl(s.couchdbUrl) + r,
     contentType: "application/json",
     xhrFields: {
      withCredentials: !0
@@ -26441,7 +26444,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(t
     dataType: "json",
     data: {
      start_key: c,
-     end_key: d,
+     end_key: p,
      descending: !0,
      include_docs: !0,
      limit: a.COUCHDB_PAGE_SIZE,
@@ -26462,7 +26465,7 @@ this.DIFF_EQUAL = DIFF_EQUAL, define("diff_match_patch_uncompressed", function(t
   n.onRun(function() {
    t.ajax({
     type: "POST",
-    url: s.couchdbUrl + "/_bulk_docs",
+    url: d.parseUrl(s.couchdbUrl) + "/_bulk_docs",
     contentType: "application/json",
     xhrFields: {
      withCredentials: !0

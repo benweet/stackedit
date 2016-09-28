@@ -233,7 +233,7 @@ define([
 					_.each(previewContentsElt.children, function(elt) {
 						if(!elt.exportableHtml) {
 							var clonedElt = elt.cloneNode(true);
-							_.each(clonedElt.querySelectorAll('.MathJax, .MathJax_Display, .MathJax_Preview'), function(elt) {
+							_.each(clonedElt.querySelectorAll('.MathJax_SVG, .MathJax_SVG_Display, .MathJax_Preview'), function(elt) {
 								elt.parentNode.removeChild(elt);
 							});
 							elt.exportableHtml = clonedElt.innerHTML;

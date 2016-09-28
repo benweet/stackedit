@@ -177,15 +177,14 @@ gulp.task('cache-manifest', function() {
 		.pipe(inject(gulp.src([
 				'./res/bower-libs/MathJax/MathJax.js',
 				'./res/bower-libs/MathJax/config/Safe.js',
-				'./res/bower-libs/MathJax/config/TeX-AMS_HTML.js',
+				'./res/bower-libs/MathJax/config/TeX-AMS_SVG.js',
 				'./res/bower-libs/MathJax/images/CloseX-31.png',
 				'./res/bower-libs/MathJax/images/MenuArrow-15.png',
-				'./res/bower-libs/MathJax/jax/output/HTML-CSS/jax.js',
+				'./res/bower-libs/MathJax/jax/output/SVG/jax.js',
 				'./res/bower-libs/MathJax/extensions/**/*.*',
-				'./res/bower-libs/MathJax/fonts/HTML-CSS/TeX/woff/**/*.*',
 				'./res/bower-libs/MathJax/jax/element/**/*.*',
-				'./res/bower-libs/MathJax/jax/output/HTML-CSS/autoload/**/*.*',
-				'./res/bower-libs/MathJax/jax/output/HTML-CSS/fonts/TeX/**/*.*'
+				'./res/bower-libs/MathJax/jax/output/SVG/autoload/**/*.*',
+				'./res/bower-libs/MathJax/jax/output/SVG/fonts/TeX/**/*.*'
 			], {
 				read: false,
 				cwd: './public'
@@ -196,10 +195,10 @@ gulp.task('cache-manifest', function() {
 				ignoreExtensions: true,
 				transform: function(filepath) {
 					if(filepath == '/res/bower-libs/MathJax/MathJax.js') {
-						filepath += '?config=TeX-AMS_HTML';
+						filepath += '?config=TeX-AMS_SVG';
 					}
 					else {
-						filepath += '?rev=2.5.0';
+						filepath += '?rev=2.6.1';
 					}
 					return filepath.substring(1);
 				}

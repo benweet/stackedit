@@ -165,7 +165,7 @@ define([
 			titleEditing = true;
 			setTimeout(function() {
 				fileTitleInput.focus().get(0).select();
-			}, 10);
+			}, 50);
 		});
 		function applyTitle() {
 			if(!titleEditing) {

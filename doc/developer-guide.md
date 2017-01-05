@@ -63,6 +63,15 @@ Getting started
 > **NOTE:** OAuth authorizations work out of the box for address `http://localhost/` except for WordPress. To allow another address, you have to add specific keys at the end of `constants.js` and eventually to set up specific proxies with the corresponding key/secret pairs ([WordPress Proxy][9], [Tumblr Proxy][10] and [Gatekeeper][11]).
 
 
+### OSX Issues
+ 
+For developing on OSX, you might need to install bower globally  
+
+    sudo npm install -g bower
+    
+Also, see this link to address bower permission issues you may encounter:
+https://github.com/bower/bower/issues/2262
+
 Architecture
 ------------
 

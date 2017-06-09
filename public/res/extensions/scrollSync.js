@@ -1,13 +1,23 @@
 define([
 	"jquery",
 	"underscore",
+	"utils",
 	"classes/Extension",
 	"text!html/scrollSyncSettingsBlock.html"
-], function($, _, Extension, scrollSyncSettingsBlockHTML) {
+], function($, _, utils, Extension, scrollSyncSettingsBlockHTML) {
 
 	var scrollSync = new Extension("scrollSync", "Scroll Sync", true, true);
 	scrollSync.settingsBlock = scrollSyncSettingsBlockHTML;
+	scrollSync.defaultConfig = {
+        noSmooth: false
+    };
+	scrollSync.onLoadSettings = function() {
+		utils.setInputChecked("#input-scrollsync-smooth", scrollSync.config.noSmooth);
+	};
 
+	scrollSync.onSaveSettings = function(newConfig) {
+		newConfig.noSmooth = utils.getInputChecked("#input-scrollsync-smooth");
+    };
 	var sectionList;
 	scrollSync.onSectionsCreated = function(sectionListParam) {
 		sectionList = sectionListParam;
@@ -105,6 +115,10 @@ define([
 	var currentEndCb;
 
 	function animate(elt, startValue, endValue, stepCb, endCb) {
+		if(scrollSync.config.noSmooth) {
+			elt.scrollTop = endValue;
+			return;
+		}
 		if(currentEndCb) {
 			clearTimeout(timeoutId);
 			currentEndCb();

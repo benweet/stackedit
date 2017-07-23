@@ -1,0 +1,232 @@
+@import './variables';
+
+.markdown-highlighting {
+  color: $editor-color;
+  font-family: inherit;
+  font-size: inherit;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+  font-weight: $editor-font-weight-base;
+
+  .code {
+    font-family: $font-family-monospace;
+    font-size: $font-size-monospace;
+
+    * {
+      font-size: inherit !important;
+    }
+  }
+
+  .pre {
+    color: $editor-color;
+    font-family: $font-family-monospace;
+    font-size: $font-size-monospace;
+    word-break: break-all;
+
+    [class*='language-'] {
+      color: $editor-color-dark;
+    }
+
+    * {
+      font-size: inherit !important;
+    }
+  }
+
+  .tag {
+    color: $editor-color;
+    font-family: $font-family-monospace;
+    font-size: $font-size-monospace;
+    font-weight: $editor-font-weight-bold;
+
+    .punctuation,
+    .attr-value,
+    .attr-name {
+      font-weight: $editor-font-weight-base;
+    }
+
+    * {
+      font-size: inherit !important;
+    }
+  }
+
+  .latex,
+  .math {
+    color: $editor-color;
+  }
+
+  .entity {
+    color: $editor-color;
+    font-family: $font-family-monospace;
+    font-size: $font-size-monospace;
+    font-style: italic;
+
+    * {
+      font-size: inherit !important;
+    }
+  }
+
+  .table {
+    font-family: $font-family-monospace;
+    font-size: $font-size-monospace;
+
+    * {
+      font-size: inherit !important;
+    }
+  }
+
+  .comment {
+    color: $editor-color-light;
+  }
+
+  .keyword {
+    color: $editor-color-dark;
+    font-weight: $editor-font-weight-bold;
+  }
+
+  .code,
+  .img,
+  .img-wrapper,
+  .imgref,
+  .cl-toc {
+    background-color: $code-bg;
+    border-radius: $code-border-radius;
+    padding: 0.15em 0;
+  }
+
+  .img-wrapper {
+    display: inline-block;
+
+    .img {
+      display: inline-block;
+      padding: 0;
+    }
+
+    img {
+      max-width: 100%;
+      padding: 0 0.15em;
+    }
+  }
+
+  .cl-toc {
+    font-size: 2.8em;
+    padding: 0.15em;
+  }
+
+  .blockquote {
+    color: rgba(0, 0, 0, 0.48);
+  }
+
+  .h1,
+  .h2,
+  .h3,
+  .h4,
+  .h5,
+  .h6 {
+    font-weight: $editor-font-weight-bold;
+  }
+
+  .h1,
+  .h11 {
+    font-size: 2em;
+  }
+
+  .h2,
+  .h22 {
+    font-size: 1.5em;
+  }
+
+  .h3 {
+    font-size: 1.17em;
+  }
+
+  .h4 {
+    font-size: 1em;
+  }
+
+  .h5 {
+    font-size: 0.83em;
+  }
+
+  .h6 {
+    font-size: 0.75em;
+  }
+
+  .cl-hash {
+    color: $editor-color-light;
+  }
+
+  .cl,
+  .hr {
+    color: $editor-color-light;
+    font-style: normal;
+    font-weight: $editor-font-weight-base;
+  }
+
+  .em,
+  .em .cl {
+    font-style: italic;
+  }
+
+  .strong,
+  .strong .cl,
+  .term {
+    font-weight: $editor-font-weight-bold;
+  }
+
+  .cl-del-text {
+    text-decoration: line-through;
+  }
+
+  .url,
+  .email,
+  .cl-underlined-text {
+    text-decoration: underline;
+  }
+
+  .linkdef .url {
+    color: $editor-color-light;
+  }
+
+  .fn,
+  .inlinefn,
+  .sup {
+    font-size: smaller;
+    position: relative;
+    top: -0.5em;
+  }
+
+  .sub {
+    bottom: -0.25em;
+    font-size: smaller;
+    position: relative;
+  }
+
+  .img,
+  .imgref,
+  .link,
+  .linkref {
+    color: $editor-color-light;
+
+    .cl-underlined-text {
+      color: $editor-color-dark;
+    }
+  }
+
+  .cl-title {
+    color: $editor-color;
+  }
+}
+
+.markdown-highlighting--inline {
+  .h1,
+  .h11,
+  .h2,
+  .h22,
+  .h3,
+  .h4,
+  .h5,
+  .h6,
+  .cl-toc {
+    font-size: inherit;
+  }
+}

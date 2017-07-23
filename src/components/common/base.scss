@@ -1,0 +1,145 @@
+@import '../../node_modules/normalize-scss/sass/normalize';
+
+@include normalize();
+
+html,
+body {
+  color: rgba(0, 0, 0, 0.75);
+  font-family: $font-family-editor;
+  font-variant-ligatures: common-ligatures;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+ul,
+ol,
+dl {
+  margin: 1.2em 0;
+}
+
+ol ul,
+ul ol,
+ul ul,
+ol ol {
+  margin: 0;
+}
+
+a {
+  color: $link-color;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: $font-family-monospace;
+  font-size: $font-size-monospace;
+
+  * {
+    font-size: inherit;
+  }
+}
+
+blockquote {
+  color: rgba(0, 0, 0, 0.4);
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+code {
+  background-color: $code-bg;
+  border-radius: $border-radius-base;
+  padding: 2px 4px;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid rgba(128, 128, 128, 0.15);
+  margin: 2em 0;
+}
+
+pre > code {
+  background-color: $code-bg;
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  -webkit-text-size-adjust: none;
+}
+
+.toc ul {
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+table {
+  background-color: transparent;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  border-right: 1px solid #e0e0e0;
+  padding: 8px 12px;
+
+  &:last-child {
+    border-right: 0;
+  }
+}
+
+td {
+  border-top: 1px solid #e0e0e0;
+}
+
+kbd {
+  background-color: #fff;
+  border: 1px solid rgba(63, 63, 63, 0.25);
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(63, 63, 63, 0.25);
+  color: #333;
+  display: inline-block;
+  font-size: 0.7em;
+  margin: 0 0.1em;
+  padding: 0.1em 0.6em;
+  white-space: nowrap;
+}
+
+abbr {
+  &[title] {
+    border-bottom: 1px dotted #777;
+    cursor: help;
+  }
+}
+
+.footnote {
+  font-size: 0.8em;
+  position: relative;
+  top: -0.25em;
+  vertical-align: top;
+}
+
+.export-container {
+  margin-bottom: 180px;
+  margin-left: auto;
+  margin-right: auto;
+
+  > :not(h1):not(h2):not(h3):not(h4):not(h5):not(h6):not([align]) {
+    text-align: justify;
+  }
+}
+
+@media (min-width: 768px) {
+  .export-container {
+    width: 750px;
+  }
+}

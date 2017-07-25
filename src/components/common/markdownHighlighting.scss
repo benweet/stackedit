@@ -118,12 +118,18 @@
   }
 
   .h1,
+  .h11,
   .h2,
+  .h22,
   .h3,
   .h4,
   .h5,
   .h6 {
     font-weight: $editor-font-weight-bold;
+
+    * {
+      line-height: $line-height-title;
+    }
   }
 
   .h1,

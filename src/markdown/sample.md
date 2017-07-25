@@ -151,6 +151,10 @@ GitHub's fenced code blocks are also supported with **Highlight.js** syntax high
 var bar = 0;
 ```
 
+```js
+var foo = 'bar'; // baz
+```
+
 > **Tip:** To use **Prettify** instead of **Highlight.js**, just configure the **Markdown Extra** extension in the <i class="icon-cog"></i> **Settings** dialog.
 
 > **Note:** You can find more information:

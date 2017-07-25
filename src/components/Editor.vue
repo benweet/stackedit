@@ -36,7 +36,7 @@ export default {
   word-wrap: break-word;
 
   * {
-    line-height: 1.65;
+    line-height: $line-height-base;
   }
 
   .cledit-section {

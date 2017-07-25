@@ -1,4 +1,7 @@
 @import '../../node_modules/normalize-scss/sass/normalize';
+@import '../../node_modules/katex/dist/katex.css';
+@import './variables.scss';
+@import './fonts.scss';
 
 @include normalize();
 
@@ -7,7 +10,7 @@ body {
   color: rgba(0, 0, 0, 0.75);
   font-family: $font-family-main;
   font-variant-ligatures: common-ligatures;
-  line-height: 1.65;
+  line-height: $line-height-base;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -34,11 +37,25 @@ h4,
 h5,
 h6 {
   margin: 1.8em 0 1.2em;
+  line-height: $line-height-title;
+  padding: 0.33em 0;
 }
 
 h1,
 h2 {
   border-bottom: 1px solid $hr-color;
+}
+
+h1 {
+  font-size: 2.2em;
+}
+
+h2 {
+  font-size: 1.6em;
+}
+
+h3 {
+  font-size: 1.22em;
 }
 
 ol ul,

@@ -1,1 +1,2 @@
+import './katexExt';
 import './markdownExt';

@@ -1,45 +1,44 @@
 <template>
-  <div class="navigation-bar">
-    <div class="navigation-bar__title-mirror button" v-bind:style="{ maxWidth: titleMaxWidth + 'px' }"></div>
+  <div class="navigation-bar" v-bind:class="{'navigation-bar--editor': showEditor}">
     <div class="navigation-bar__inner navigation-bar__inner--right">
-      <button v-if="!editingTitle" v-on:click="editingTitle = true" v-bind:style="{ width: titleWidth + 'px' }" class="navigation-bar__title button">{{title}}</button>
-      <input v-if="editingTitle" v-on:blur="editingTitle = false" v-model.lazy.trim="title" v-focus v-autosize @keyup.enter="editingTitle = false" @keyup.esc="resetTitle" type="text" class="navigation-bar__title navigation-bar__title--input text-input">
+      <div class="navigation-bar__title navigation-bar__title--text text-input" v-bind:style="{maxWidth: titleMaxWidth + 'px'}"></div>
+      <input class="navigation-bar__title navigation-bar__title--input text-input" v-bind:class="{'navigation-bar__title--focused': titleFocused, 'navigation-bar__title--scrolling': titleScrolling}" v-bind:style="{maxWidth: titleMaxWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keyup.enter="submitTitle()" @keyup.esc="submitTitle(true)" v-model.lazy.trim="title">
     </div>
-    <div class="navigation-bar__inner navigation-bar__inner--left" v-if="showEditor">
-      <button class="navigation-bar__button button" v-on:click="pagedownClick('bold')">
+    <div class="navigation-bar__inner navigation-bar__inner--left">
+      <button class="navigation-bar__button button" @click="pagedownClick('bold')">
         <icon-format-bold></icon-format-bold>
       </button>
-      <button class="navigation-bar__button button" v-on:click="pagedownClick('italic')">
+      <button class="navigation-bar__button button" @click="pagedownClick('italic')">
         <icon-format-italic></icon-format-italic>
       </button>
-      <button class="navigation-bar__button button" v-on:click="pagedownClick('strikethrough')">
+      <button class="navigation-bar__button button" @click="pagedownClick('strikethrough')">
         <icon-format-strikethrough></icon-format-strikethrough>
       </button>
-      <button class="navigation-bar__button button" v-on:click="pagedownClick('heading')">
+      <button class="navigation-bar__button button" @click="pagedownClick('heading')">
         <icon-format-size></icon-format-size>
       </button>
-      <button class="navigation-bar__button button" v-on:click="pagedownClick('ulist')">
+      <button class="navigation-bar__button button" @click="pagedownClick('ulist')">
         <icon-format-list-bulleted></icon-format-list-bulleted>
       </button>
-      <button class="navigation-bar__button button" v-on:click="pagedownClick('olist')">
+      <button class="navigation-bar__button button" @click="pagedownClick('olist')">
         <icon-format-list-numbers></icon-format-list-numbers>
       </button>
-      <button class="navigation-bar__button button" v-on:click="pagedownClick('table')">
+      <button class="navigation-bar__button button" @click="pagedownClick('table')">
         <icon-table></icon-table>
       </button>
-      <button class="navigation-bar__button button" v-on:click="pagedownClick('quote')">
+      <button class="navigation-bar__button button" @click="pagedownClick('quote')">
         <icon-format-quote-close></icon-format-quote-close>
       </button>
-      <button class="navigation-bar__button button" v-on:click="pagedownClick('code')">
+      <button class="navigation-bar__button button" @click="pagedownClick('code')">
         <icon-code-braces></icon-code-braces>
       </button>
-      <button class="navigation-bar__button button" v-on:click="pagedownClick('link')">
+      <button class="navigation-bar__button button" @click="pagedownClick('link')">
         <icon-link-variant></icon-link-variant>
       </button>
-      <button class="navigation-bar__button button" v-on:click="pagedownClick('image')">
+      <button class="navigation-bar__button button" @click="pagedownClick('image')">
         <icon-file-image></icon-file-image>
       </button>
-      <button class="navigation-bar__button button" v-on:click="pagedownClick('hr')">
+      <button class="navigation-bar__button button" @click="pagedownClick('hr')">
         <icon-format-horizontal-rule></icon-format-horizontal-rule>
       </button>
     </div>
@@ -49,34 +48,12 @@
 <script>
 import { mapState } from 'vuex';
 import editorSvc from '../services/editorSvc';
-
-let titleMirrorElt;
+import animationSvc from '../services/animationSvc';
 
 export default {
-  directives: {
-    focus: {
-      inserted(elt) {
-        elt.focus();
-        elt.select();
-      },
-    },
-    autosize: {
-      inserted(elt) {
-        function adjustWidth() {
-          titleMirrorElt.textContent = elt.value;
-          const width = titleMirrorElt.getBoundingClientRect().width + 1; // 1px for the caret
-          elt.style.width = `${width}px`;
-        }
-
-        adjustWidth();
-        elt.addEventListener('keyup', adjustWidth);
-        elt.addEventListener('input', adjustWidth);
-      },
-    },
-  },
   data: () => ({
-    editingTitle: null,
-    isMounted: false,
+    titleFocused: false,
+    titleHover: false,
   }),
   computed: {
     ...mapState('layout', {
@@ -91,26 +68,61 @@ export default {
         this.$store.commit('files/setCurrentFileName', value);
       },
     },
-    titleWidth() {
-      if (!this.isMounted) {
-        return 0;
+    titleScrolling() {
+      const result = this.titleHover && !this.titleFocused;
+      if (this.titleInputElt) {
+        if (result) {
+          const scrollLeft = this.titleInputElt.scrollWidth - this.titleInputElt.offsetWidth;
+          animationSvc.animate(this.titleInputElt)
+            .scrollLeft(scrollLeft)
+            .duration(scrollLeft * 10)
+            .easing('inOut')
+            .start();
+        } else {
+          animationSvc.animate(this.titleInputElt)
+            .scrollLeft(0)
+            .start();
+        }
       }
-      titleMirrorElt.textContent = this.$store.state.files.currentFile.name;
-      return titleMirrorElt.getBoundingClientRect().width + 1; // 1px for the caret
+      return result;
     },
   },
   methods: {
     pagedownClick(name) {
       editorSvc.pagedownEditor.uiManager.doClick(name);
     },
-    resetTitle(event) {
-      event.target.value = '';
-      this.editingTitle = false;
+    editTitle(toggle) {
+      this.titleFocused = toggle;
+      if (toggle) {
+        this.titleInputElt.setSelectionRange(0, this.titleInputElt.value.length);
+      }
+    },
+    submitTitle(reset) {
+      if (reset) {
+        this.titleInputElt.value = '';
+      }
+      this.titleInputElt.blur();
     },
   },
   mounted() {
-    titleMirrorElt = this.$el.querySelector('.navigation-bar__title-mirror');
-    this.isMounted = true;
+    this.titleInputElt = this.$el.querySelector('.navigation-bar__title--input');
+    const titleTextElt = this.$el.querySelector('.navigation-bar__title--text');
+
+    const adjustWidth = () => {
+      titleTextElt.textContent = this.titleInputElt.value;
+      const width = titleTextElt.getBoundingClientRect().width + 1; // 1px for the caret
+      this.titleInputElt.style.width = `${width}px`;
+    };
+
+    adjustWidth();
+    this.titleInputElt.addEventListener('keyup', adjustWidth);
+    this.titleInputElt.addEventListener('input', adjustWidth);
+    this.titleInputElt.addEventListener('mouseenter', () => {
+      this.titleHover = true;
+    });
+    this.titleInputElt.addEventListener('mouseleave', () => {
+      this.titleHover = false;
+    });
   },
 };
 </script>
@@ -123,10 +135,6 @@ export default {
   background-color: #2c2c2c;
   padding: 4px 15px 0;
   overflow: hidden;
-}
-
-.navigation-bar__inner--left {
-  float: left;
 }
 
 .navigation-bar__inner--right {
@@ -143,13 +151,15 @@ $navbar-button-hover-background: #484848;
 }
 
 .navigation-bar__title,
-.navigation-bar__title-mirror,
 .navigation-bar__button {
   display: inline-block;
   color: $navbar-button-color;
   background-color: transparent;
   font-weight: 400;
+}
 
+.navigation-bar__title--input,
+.navigation-bar__button {
   &:active,
   &:focus,
   &:hover {
@@ -158,9 +168,35 @@ $navbar-button-hover-background: #484848;
   }
 }
 
-.navigation-bar__title-mirror {
-  position: absolute;
-  left: -9999px;
-  width: auto;
+.navigation-bar__title--text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.navigation-bar__title--input,
+.navigation-bar__inner--left {
+  display: none;
+}
+
+.navigation-bar--editor {
+  .navigation-bar__title--text {
+    position: absolute;
+    left: -9999px;
+    width: auto;
+  }
+
+  .navigation-bar__title--input,
+  .navigation-bar__inner--left {
+    display: block;
+  }
+}
+
+.navigation-bar__title--input {
+  cursor: pointer;
+
+  &.navigation-bar__title--focused {
+    cursor: text;
+  }
 }
 </style>

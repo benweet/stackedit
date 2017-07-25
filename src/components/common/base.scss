@@ -5,7 +5,7 @@
 html,
 body {
   color: rgba(0, 0, 0, 0.75);
-  font-family: $font-family-editor;
+  font-family: $font-family-main;
   font-variant-ligatures: common-ligatures;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
@@ -27,6 +27,20 @@ dl {
   margin: 1.2em 0;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 1.8em 0 1.2em;
+}
+
+h1,
+h2 {
+  border-bottom: 1px solid $hr-color;
+}
+
 ol ul,
 ul ol,
 ul ul,
@@ -36,6 +50,12 @@ ol ol {
 
 a {
   color: $link-color;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
 }
 
 code,
@@ -64,7 +84,7 @@ code {
 
 hr {
   border: 0;
-  border-top: 1px solid rgba(128, 128, 128, 0.15);
+  border-top: 1px solid $hr-color;
   margin: 2em 0;
 }
 

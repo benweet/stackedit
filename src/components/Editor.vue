@@ -27,7 +27,7 @@ export default {
 }
 
 .editor__inner {
-  font-family: $font-family-editor;
+  font-family: $font-family-main;
   font-variant-ligatures: no-common-ligatures;
   margin: 0;
   padding: 10px 20px 360px 110px;

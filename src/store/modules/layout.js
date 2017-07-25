@@ -5,9 +5,10 @@ const buttonBarWidth = 30;
 const statusBarHeight = 20;
 const outOfScreenMargin = 50;
 const minPadding = 20;
+const navigationBarSpaceWidth = 30;
 const navigationBarLeftWidth = 500;
-const titleMaxMaxWidth = 500;
-const titleMinMaxWidth = 200;
+const maxTitleMaxWidth = 800;
+const minTitleMaxWidth = 200;
 
 const setter = propertyName => (state, value) => {
   state[propertyName] = value;
@@ -154,12 +155,12 @@ export default {
         editorPadding = minPadding;
       }
 
-      let titleMaxWidth = bodyWidth;
+      let titleMaxWidth = bodyWidth - navigationBarSpaceWidth;
       if (state.showEditor) {
         titleMaxWidth -= navigationBarLeftWidth;
       }
-      titleMaxWidth = Math.min(titleMaxWidth, titleMaxMaxWidth);
-      titleMaxWidth = Math.max(titleMaxWidth, titleMinMaxWidth);
+      titleMaxWidth = Math.min(titleMaxWidth, maxTitleMaxWidth);
+      titleMaxWidth = Math.max(titleMaxWidth, minTitleMaxWidth);
 
       commit('setFontSize', fontSize);
       commit('setInner1Y', inner1Y);

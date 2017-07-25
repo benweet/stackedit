@@ -5,7 +5,7 @@ export default {
   state: {
     files: [],
     currentFile: {
-      name: 'Test',
+      name: 'Test 123456 abcdefghijkl 123456 abcdefghijkl 123456 abcdefghijkl 123456 abcdefghijkl',
       folderId: null,
       isLoaded: true,
       content: {

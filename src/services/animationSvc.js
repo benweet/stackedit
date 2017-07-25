@@ -2,7 +2,8 @@ import bezierEasing from 'bezier-easing';
 
 const easings = {
   materialIn: bezierEasing(0.75, 0, 0.8, 0.25),
-  materialOut: bezierEasing(0.25, 0.8, 0.25, 1.0),
+  materialOut: bezierEasing(0.25, 0.8, 0.25, 1),
+  inOut: bezierEasing(0.25, 0.1, 0.67, 1),
 };
 
 const vendors = ['moz', 'webkit'];
@@ -225,4 +226,6 @@ function animate(elt) {
   return elt.$animation;
 }
 
-export default { animate };
+export default {
+  animate,
+};

@@ -78,7 +78,7 @@ const doScrollSync = () => {
         }, () => {
           isPreviewMoving = true;
         });
-    }, localSkipAnimation ? 500 : 10);
+    }, localSkipAnimation ? 500 : 50);
   } else if (!store.state.layout.showEditor || isScrollPreview) {
     // Scroll the editor
     isScrollPreview = false;
@@ -110,7 +110,7 @@ const doScrollSync = () => {
         }, () => {
           isEditorMoving = true;
         });
-    }, localSkipAnimation ? 500 : 10);
+    }, localSkipAnimation ? 500 : 50);
   }
 };
 

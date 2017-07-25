@@ -1,16 +1,14 @@
 <template>
   <div class="button-bar">
-    <div class="button-bar__inner button-bar__inner--left" @click="toggleEditor(false)">
-      <div class="button-bar__button">
-        <icon-eye></icon-eye>
-      </div>
-    </div>
     <div class="button-bar__inner button-bar__inner--top">
       <div class="button-bar__button" :class="{ 'button-bar__button--on': showNavigationBar }" @click="toggleNavigationBar()">
         <icon-navigation-bar></icon-navigation-bar>
       </div>
       <div class="button-bar__button" :class="{ 'button-bar__button--on': showSidePreview }" @click="toggleSidePreview()">
         <icon-side-preview></icon-side-preview>
+      </div>
+      <div class="button-bar__button" @click="toggleEditor(false)">
+        <icon-eye></icon-eye>
       </div>
     </div>
     <div class="button-bar__inner button-bar__inner--bottom">
@@ -74,15 +72,5 @@ export default {
 
 .button-bar__button--on {
   color: rgba(0, 0, 0, 0.4);
-}
-
-.button-bar__inner--left {
-  left: -52px;
-  z-index: 1;
-
-  .button-bar__button {
-    width: 30px;
-    height: 30px;
-  }
 }
 </style>

@@ -45,4 +45,63 @@ body {
     fill: currentColor;
   }
 }
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.text-input {
+  display: block;
+  width: 100%;
+  height: 36px;
+  padding: 3px 12px;
+  font-size: 22px;
+  line-height: 1.5;
+  color: inherit;
+  background-color: #fff;
+  background-image: none;
+  border: 0;
+  border-radius: $border-radius-base;
+}
+
+.button {
+  color: #333;
+  background-color: transparent;
+  display: inline-block;
+  height: 36px;
+  padding: 3px 12px;
+  margin-bottom: 0;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.4;
+  overflow: hidden;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 0;
+  border-radius: $border-radius-base;
+
+  &:focus {
+    color: #333;
+    background-color: transparent;
+
+    &:active,
+    & {
+      outline: 0;
+    }
+  }
+}
 </style>

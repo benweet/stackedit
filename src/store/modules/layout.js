@@ -5,6 +5,9 @@ const buttonBarWidth = 30;
 const statusBarHeight = 20;
 const outOfScreenMargin = 50;
 const minPadding = 20;
+const navigationBarLeftWidth = 500;
+const titleMaxMaxWidth = 500;
+const titleMinMaxWidth = 200;
 
 const setter = propertyName => (state, value) => {
   state[propertyName] = value;
@@ -23,7 +26,7 @@ export default {
     showEditor: true,
     showSidePreview: true,
     showSideBar: false,
-    showStatusBar: false,
+    showStatusBar: true,
     editorWidthFactor: 1,
     fontSizeFactor: 1,
     // Style
@@ -40,6 +43,7 @@ export default {
     editorPadding: 0,
     previewWidth: 0,
     previewPadding: 0,
+    titleMaxWidth: 0,
   },
   mutations: {
     setShowNavigationBar: setter('showNavigationBar'),
@@ -62,6 +66,7 @@ export default {
     setEditorPadding: setter('editorPadding'),
     setPreviewWidth: setter('previewWidth'),
     setPreviewPadding: setter('previewPadding'),
+    setTitleMaxWidth: setter('titleMaxWidth'),
   },
   actions: {
     toggleNavigationBar: toggler('showNavigationBar', 'setShowNavigationBar'),
@@ -73,7 +78,7 @@ export default {
       const bodyWidth = document.body.clientWidth;
       const bodyHeight = document.body.clientHeight;
 
-      const showNavigationBar = state.showEditor && state.showNavigationBar;
+      const showNavigationBar = !state.showEditor || state.showNavigationBar;
       const inner1Y = showNavigationBar
         ? navigationBarHeight
         : 0;
@@ -149,6 +154,13 @@ export default {
         editorPadding = minPadding;
       }
 
+      let titleMaxWidth = bodyWidth;
+      if (state.showEditor) {
+        titleMaxWidth -= navigationBarLeftWidth;
+      }
+      titleMaxWidth = Math.min(titleMaxWidth, titleMaxMaxWidth);
+      titleMaxWidth = Math.max(titleMaxWidth, titleMinMaxWidth);
+
       commit('setFontSize', fontSize);
       commit('setInner1Y', inner1Y);
       commit('setInner1Height', inner1Height);
@@ -162,6 +174,7 @@ export default {
       commit('setPreviewPadding', previewPadding);
       commit('setEditorWidth', editorWidth);
       commit('setEditorPadding', editorPadding);
+      commit('setTitleMaxWidth', titleMaxWidth);
     },
   },
 };

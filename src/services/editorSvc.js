@@ -414,6 +414,7 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
         }
       }
       editorSvc.previewSelectionRange = range;
+      editorSvc.$emit('previewSelectionRange', editorSvc.previewSelectionRange);
     }
   }, 50),
 

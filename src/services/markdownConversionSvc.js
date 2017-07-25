@@ -16,6 +16,7 @@ const languageAliases = ({
   xml: 'markup',
   py: 'python',
   rb: 'ruby',
+  yml: 'yaml',
   ps1: 'powershell',
   psm1: 'powershell',
 });
@@ -24,7 +25,7 @@ Object.keys(languageAliases).forEach((alias) => {
   Prism.languages[alias] = Prism.languages[language];
 });
 
-// Add language parsing capability to markdown fences
+// Add programming language parsing capability to markdown fences
 const insideFences = {};
 Object.keys(Prism.languages).forEach((name) => {
   const language = Prism.languages[name];
@@ -136,13 +137,13 @@ const markdownConversionSvc = {
     converter.inline.ruler.enable([], true);
     extensionSvc.initConverter(converter, options, isCurrentFile);
     Object.keys(startSectionBlockTypeMap).forEach((type) => {
-      const rule = converter.renderer.rules[type] === true || converter.renderer.renderToken;
-      converter.renderer.rules[type] = (tokens, idx, opts) => {
+      const rule = converter.renderer.rules[type] || converter.renderer.renderToken;
+      converter.renderer.rules[type] = (tokens, idx, opts, env, self) => {
         if (tokens[idx].sectionDelimiter) {
           // Add section delimiter
-          return htmlSectionMarker + rule.call(converter.renderer, tokens, idx, opts);
+          return htmlSectionMarker + rule.call(converter.renderer, tokens, idx, opts, env, self);
         }
-        return rule.call(converter.renderer, tokens, idx, opts);
+        return rule.call(converter.renderer, tokens, idx, opts, env, self);
       };
     });
     return converter;

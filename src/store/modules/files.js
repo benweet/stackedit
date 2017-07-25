@@ -5,7 +5,7 @@ export default {
   state: {
     files: [],
     currentFile: {
-      name: null,
+      name: 'Test',
       folderId: null,
       isLoaded: true,
       content: {
@@ -20,6 +20,11 @@ export default {
   mutations: {
     setCurrentFile: (state, value) => {
       state.currentFile = value;
+    },
+    setCurrentFileName: (state, value) => {
+      if (value) {
+        state.currentFile.name = value;
+      }
     },
     setCurrentFileContentText: (state, value) => {
       state.currentFile.content.text = value;

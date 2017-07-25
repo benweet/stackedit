@@ -132,7 +132,7 @@ extensionSvc.onInitConverter(0, (markdown, options) => {
           }
         }
 
-        // If nothing is left after this, use the identifier `section`
+        // If nothing left after this, use `section`
         slug = slug.slice(i) || 'section';
 
         let anchor = slug;

@@ -1,6 +1,9 @@
 <template>
   <div class="navigation-bar" v-bind:class="{'navigation-bar--editor': showEditor}">
-    <div class="navigation-bar__inner navigation-bar__inner--right">
+    <div class="navigation-bar__inner navigation-bar__inner--right flex flex--row">
+      <div class="navigation-bar__spinner">
+        <div class="spinner"></div>
+      </div>
       <div class="navigation-bar__title navigation-bar__title--text text-input" v-bind:style="{maxWidth: titleMaxWidth + 'px'}"></div>
       <input class="navigation-bar__title navigation-bar__title--input text-input" v-bind:class="{'navigation-bar__title--focused': titleFocused, 'navigation-bar__title--scrolling': titleScrolling}" v-bind:style="{maxWidth: titleMaxWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keyup.enter="submitTitle()" @keyup.esc="submitTitle(true)" v-model.lazy.trim="title">
     </div>
@@ -128,6 +131,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import 'common/variables.scss';
+
 .navigation-bar {
   position: absolute;
   width: 100%;
@@ -141,19 +146,16 @@ export default {
   float: right;
 }
 
-$navbar-button-color: rgba(255, 255, 255, 0.67);
-$navbar-button-hover-background: #484848;
-
 .navigation-bar__button {
   display: inline-block;
   width: 34px;
-  padding: 6px 5px;
+  padding: 6px;
 }
 
 .navigation-bar__title,
 .navigation-bar__button {
   display: inline-block;
-  color: $navbar-button-color;
+  color: $navbar-color;
   background-color: transparent;
   font-weight: 400;
 }
@@ -163,8 +165,8 @@ $navbar-button-hover-background: #484848;
   &:active,
   &:focus,
   &:hover {
-    color: #fff;
-    background-color: $navbar-button-hover-background;
+    color: $navbar-hover-color;
+    background-color: $navbar-hover-background;
   }
 }
 
@@ -198,5 +200,10 @@ $navbar-button-hover-background: #484848;
   &.navigation-bar__title--focused {
     cursor: text;
   }
+}
+
+.navigation-bar__spinner {
+  margin: 10px 5px 0;
+  color: rgba(255, 255, 255, 0.33);
 }
 </style>

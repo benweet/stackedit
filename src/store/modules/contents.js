@@ -1,16 +1,12 @@
 import moduleTemplate from './moduleTemplate';
-import defaultFile from '../../data/emptyFile';
+import emptyContent from '../../data/emptyContent';
 
 const module = moduleTemplate();
 
-module.state = {
-  ...module.state,
-  currentId: null,
-};
-
 module.getters = {
   ...module.getters,
-  current: state => state.itemMap[state.currentId] || defaultFile(),
+  current: (state, getters, rootState, rootGetters) =>
+    state.itemMap[rootGetters['files/current'].contentId] || emptyContent(),
 };
 
 module.actions = {

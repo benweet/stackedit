@@ -1,286 +1,34 @@
 import 'babel-polyfill';
 import 'indexeddbshim';
-import utils from './utils';
+import debug from 'debug';
+import store from '../store';
+
+const dbg = debug('stackedit:localDbSvc');
 
 let indexedDB = window.indexedDB;
 const localStorage = window.localStorage;
 const dbVersion = 1;
+const dbStoreName = 'objects';
 
-// Use the shim on Safari or if indexedDB is not available
+// Use the shim on Safari or when indexedDB is not available
 if (window.shimIndexedDB && (!indexedDB || (navigator.userAgent.indexOf('Chrome') === -1 && navigator.userAgent.indexOf('Safari') !== -1))) {
   indexedDB = window.shimIndexedDB;
 }
 
+function getStorePrefixFromType(type) {
+  // Return `files` for type `file`, `folders` for type `folder`, etc...
+  const prefix = `${type}s`;
+  return store.state[prefix] && prefix;
+}
+
 const deletedMarkerMaxAge = 1000;
-
-function identity(value) {
-  return value;
-}
-
-function makeStore(storeName, schemaParameter) {
-  const schema = {
-    ...schemaParameter,
-    updated: 'int',
-  };
-
-  const schemaKeys = Object.keys(schema);
-  const schemaKeysLen = schemaKeys.length;
-  const complexKeys = [];
-  let complexKeysLen = 0;
-  const attributeCheckers = {};
-  const attributeReaders = {};
-  const attributeWriters = {};
-
-  class Dao {
-    constructor(id, skipInit) {
-      this.id = id || utils.uid();
-      if (!skipInit) {
-        const fakeItem = {};
-        for (let i = 0; i < schemaKeysLen; i += 1) {
-          attributeReaders[schemaKeys[i]](fakeItem, this);
-        }
-        this.$dirty = true;
-      }
-    }
-  }
-
-  function createDao(id) {
-    return new Dao(id);
-  }
-
-  Object.keys(schema).forEach((key) => {
-    const value = schema[key];
-    const storedValueKey = `_${key}`;
-    let defaultValue = value.default === undefined ? '' : value.default;
-    let serializer = value.serializer || identity;
-    let parser = value.parser || identity;
-    if (value === 'int') {
-      defaultValue = 0;
-    } else if (value === 'object') {
-      defaultValue = 'null';
-      parser = JSON.parse;
-      serializer = JSON.stringify;
-    }
-
-    attributeReaders[key] = (dbItem, dao) => {
-      dao[storedValueKey] = dbItem[key] || defaultValue;
-    };
-    attributeWriters[key] = (dbItem, dao) => {
-      const storedValue = dao[storedValueKey];
-      if (storedValue && storedValue !== defaultValue) {
-        dbItem[key] = storedValue;
-      }
-    };
-
-    function getter() {
-      return this[storedValueKey];
-    }
-
-    function setter(param) {
-      const val = param || defaultValue;
-      if (this[storedValueKey] === val) {
-        return false;
-      }
-      this[storedValueKey] = val;
-      this.$dirty = true;
-      return true;
-    }
-
-    if (key === 'updated') {
-      Object.defineProperty(Dao.prototype, key, {
-        get: getter,
-        set: (value) => {
-          if (setter.call(this, value)) {
-            this.$dirtyUpdated = true;
-          }
-        }
-      })
-    } else if (value === 'string' || value === 'int') {
-      Object.defineProperty(Dao.prototype, key, {
-        get: getter,
-        set: setter
-      })
-    } else if (![64, 128] // Handle string64 and string128
-      .cl_some(function (length) {
-        if (value === 'string' + length) {
-          Object.defineProperty(Dao.prototype, key, {
-            get: getter,
-            set: function (value) {
-              if (value && value.length > length) {
-                value = value.slice(0, length)
-              }
-              setter.call(this, value)
-            }
-          })
-          return true
-        }
-      })
-    ) {
-      // Other types go to complexKeys list
-      complexKeys.push(key)
-      complexKeysLen++
-
-      // And have complex readers/writers
-      attributeReaders[key] = function (dbItem, dao) {
-        const storedValue = dbItem[key]
-        if (!storedValue) {
-          storedValue = defaultValue
-        }
-        dao[storedValueKey] = storedValue
-        dao[key] = parser(storedValue)
-      }
-      attributeWriters[key] = function (dbItem, dao) {
-        const storedValue = serializer(dao[key])
-        dao[storedValueKey] = storedValue
-        if (storedValue && storedValue !== defaultValue) {
-          dbItem[key] = storedValue
-        }
-      }
-
-      // Checkers are only for complex types
-      attributeCheckers[key] = function (dao) {
-        return serializer(dao[key]) !== dao[storedValueKey]
-      }
-    }
-  })
-
-  const lastTx = 0
-  const storedSeqs = Object.create(null)
-
-  function readDbItem(item, daoMap) {
-    const dao = daoMap[item.id] || new Dao(item.id, true)
-    if (!item.updated) {
-      delete storedSeqs[item.id]
-      if (dao.updated) {
-        delete daoMap[item.id]
-        return true
-      }
-      return
-    }
-    if (storedSeqs[item.id] === item.seq) {
-      return
-    }
-    storedSeqs[item.id] = item.seq
-    for (const i = 0; i < schemaKeysLen; i++) {
-      attributeReaders[schemaKeys[i]](item, dao)
-    }
-    dao.$dirty = false
-    dao.$dirtyUpdated = false
-    daoMap[item.id] = dao
-    return true
-  }
-
-  function getPatch(tx, cb) {
-    let resetMap;
-
-    // We may have missed some deleted markers
-    if (lastTx && tx.txCounter - lastTx > deletedMarkerMaxAge) {
-      // Delete all dirty daos, user was asleep anyway...
-      resetMap = true
-      // And retrieve everything from DB
-      lastTx = 0
-    }
-
-    const hasChanged = !lastTx
-    const store = tx.objectStore(storeName)
-    const index = store.index('seq')
-    const range = $window.IDBKeyRange.lowerBound(lastTx, true)
-    const items = []
-    const itemsToDelete = []
-    index.openCursor(range).onsuccess = function (event) {
-      const cursor = event.target.result
-      if (!cursor) {
-        itemsToDelete.cl_each(function (item) {
-          store.delete(item.id)
-        })
-        items.length && debug('Got ' + items.length + ' ' + storeName + ' items')
-        // Return a patch, to apply changes later
-        return cb(function (daoMap) {
-          if (resetMap) {
-            Object.keys(daoMap).cl_each(function (key) {
-              delete daoMap[key]
-            })
-            storedSeqs = Object.create(null)
-          }
-          items.cl_each(function (item) {
-            hasChanged |= readDbItem(item, daoMap)
-          })
-          return hasChanged
-        })
-      }
-      const item = cursor.value
-      items.push(item)
-      // Remove old deleted markers
-      if (!item.updated && tx.txCounter - item.seq > deletedMarkerMaxAge) {
-        itemsToDelete.push(item)
-      }
-      cursor.continue()
-    }
-  }
-
-  function writeAll(daoMap, tx) {
-    lastTx = tx.txCounter
-    const store = tx.objectStore(storeName)
-
-    // Remove deleted daos
-    const storedIds = Object.keys(storedSeqs)
-    const storedIdsLen = storedIds.length
-    for (const i = 0; i < storedIdsLen; i++) {
-      const id = storedIds[i]
-      if (!daoMap[id]) {
-        // Put a deleted marker to notify other tabs
-        store.put({
-          id: id,
-          seq: lastTx
-        })
-        delete storedSeqs[id]
-      }
-    }
-
-    // Put changes
-    const daoIds = Object.keys(daoMap)
-    const daoIdsLen = daoIds.length
-    for (i = 0; i < daoIdsLen; i++) {
-      const dao = daoMap[daoIds[i]]
-      const dirty = dao.$dirty
-      for (const j = 0; !dirty && j < complexKeysLen; j++) {
-        dirty |= attributeCheckers[complexKeys[j]](dao)
-      }
-      if (dirty) {
-        if (!dao.$dirtyUpdated) {
-          // Force update the `updated` attribute
-          dao.updated = Date.now()
-        }
-        const item = {
-          id: daoIds[i],
-          seq: lastTx
-        }
-        for (j = 0; j < schemaKeysLen; j++) {
-          attributeWriters[schemaKeys[j]](item, dao)
-        }
-        debug('Put ' + storeName + ' item')
-        store.put(item)
-        storedSeqs[item.id] = item.seq
-        dao.$dirty = false
-        dao.$dirtyUpdated = false
-      }
-    }
-  }
-
-  return {
-    getPatch,
-    writeAll,
-    createDao,
-    Dao,
-  };
-}
 
 class Connection {
   constructor() {
     this.getTxCbs = [];
 
     // Init connexion
-    const request = indexedDB.open('classeur-db', dbVersion);
+    const request = indexedDB.open('stackedit-db', dbVersion);
 
     request.onerror = () => {
       throw new Error("Can't connect to IndexedDB.");
@@ -298,23 +46,21 @@ class Connection {
     request.onupgradeneeded = (event) => {
       const eventDb = event.target.result;
       const oldVersion = event.oldVersion || 0;
-      function createStore(name) {
-        const store = eventDb.createObjectStore(name, { keyPath: 'id' });
-        store.createIndex('seq', 'seq', { unique: false });
-      }
 
       // We don't use 'break' in this switch statement,
       // the fall-through behaviour is what we want.
       /* eslint-disable no-fallthrough */
       switch (oldVersion) {
         case 0:
-          [
-            'contents',
-            'files',
-            'folders',
-            'objects',
-            'app',
-          ].forEach(createStore);
+          {
+            // Create store
+            const dbStore = eventDb.createObjectStore(dbStoreName, {
+              keyPath: 'id',
+            });
+            dbStore.createIndex('tx', 'tx', {
+              unique: false,
+            });
+          }
         default:
       }
       /* eslint-enable no-fallthrough */
@@ -333,31 +79,144 @@ class Connection {
       return;
     }
     const tx = this.db.transaction(this.db.objectStoreNames, 'readwrite');
-    // tx.onerror = (evt) => {
-    //   dbg('Rollback transaction', evt);
-    // };
-    const store = tx.objectStore('app');
-    const request = store.get('txCounter');
+    tx.onerror = (evt) => {
+      dbg('Rollback transaction', evt);
+    };
+    const dbStore = tx.objectStore(dbStoreName);
+    const request = dbStore.get('txCounter');
     request.onsuccess = () => {
-      tx.txCounter = request.result ? request.result.value : 0;
+      tx.txCounter = request.result ? request.result.tx : 0;
       tx.txCounter += 1;
-      store.put({
+      dbStore.put({
         id: 'txCounter',
-        value: tx.txCounter,
+        tx: tx.txCounter,
       });
       cb(tx);
     };
   }
 }
 
-class LocalDbStorage {
-  init(store) {
-    this.store = store;
-    store.subscribe((mutation, state) => {
-      console.log(mutation, state);
-    });
+class Storage {
+  constructor() {
+    this.lastTx = 0;
+    this.updatedMap = Object.create(null);
     this.connection = new Connection();
+  }
+
+  sync() {
+    const storeItemMap = {};
+    [
+      store.state.files,
+    ].forEach(moduleState => Object.assign(storeItemMap, moduleState.itemMap));
+    const tx = this.connection.createTx();
+    this.readAll(storeItemMap, tx, () => this.writeAll(storeItemMap, tx));
+  }
+
+  readAll(storeItemMap, tx, cb) {
+    let resetMap;
+
+    // We may have missed some deleted markers
+    if (this.lastTx && tx.txCounter - this.lastTx > deletedMarkerMaxAge) {
+      // Delete all dirty store items (user was asleep anyway...)
+      resetMap = true;
+      // And retrieve everything from DB
+      this.lastTx = 0;
+    }
+
+    const dbStore = tx.objectStore(dbStoreName);
+    const index = dbStore.index('tx');
+    const range = window.IDBKeyRange.lowerBound(this.lastTx, true);
+    const items = [];
+    const itemsToDelete = [];
+    index.openCursor(range).onsuccess = (event) => {
+      const cursor = event.target.result;
+      if (!cursor) {
+        itemsToDelete.forEach((item) => {
+          dbStore.delete(item.id);
+        });
+        if (items.length) {
+          dbg(`Got ${items.length} items`);
+        }
+        if (resetMap) {
+          Object.keys(storeItemMap).forEach((id) => {
+            delete storeItemMap[id];
+          });
+          this.updatedMap = Object.create(null);
+        }
+        items.forEach(item => this.readDbItem(item, storeItemMap));
+        cb();
+      }
+      const item = cursor.value;
+      items.push(item);
+      // Remove old deleted markers
+      if (!item.updated && tx.txCounter - item.tx > deletedMarkerMaxAge) {
+        itemsToDelete.push(item);
+      }
+      cursor.continue();
+    };
+  }
+
+  writeAll(storeItemMap, tx) {
+    this.lastTx = tx.txCounter;
+    const dbStore = tx.objectStore(dbStoreName);
+
+    // Remove deleted store items
+    const storedIds = Object.keys(this.updatedMap);
+    const storedIdsLen = storedIds.length;
+    for (let i = 0; i < storedIdsLen; i += 1) {
+      const id = storedIds[i];
+      if (!storeItemMap[id]) {
+        // Put a deleted marker to notify other tabs
+        dbStore.put({
+          id,
+          tx: this.lastTx,
+        });
+        delete this.updatedMap[id];
+      }
+    }
+
+    // Put changes
+    const storeItemIds = Object.keys(storeItemMap);
+    const storeItemIdsLen = storeItemIds.length;
+    for (let i = 0; i < storeItemIdsLen; i += 1) {
+      const storeItem = storeItemMap[storeItemIds[i]];
+      // Store object has changed
+      if (this.updatedMap[storeItem.id] !== storeItem.updated) {
+        const item = {
+          ...storeItem,
+          tx: this.lastTx,
+        };
+        dbg('Putting 1 item');
+        dbStore.put(item);
+        this.updatedMap[item.id] = item.updated;
+      }
+    }
+  }
+
+  readDbItem(dbItem, storeItemMap) {
+    const existingStoreItem = storeItemMap[dbItem.id];
+    if (!dbItem.updated) {
+      delete this.updatedMap[dbItem.id];
+      if (existingStoreItem) {
+        const prefix = getStorePrefixFromType(existingStoreItem.type);
+        if (prefix) {
+          delete storeItemMap[existingStoreItem.id];
+          // Remove object from the store
+          store.commit(`${prefix}/deleteItem`, existingStoreItem.id);
+        }
+      }
+    } else if (this.updatedMap[dbItem.id] !== dbItem.updated) {
+      const storeItem = {
+        ...dbItem,
+        tx: undefined,
+      };
+      this.updatedMap[storeItem.id] = storeItem.updated;
+      storeItemMap[storeItem.id] = storeItem;
+      // Put object in the store
+      const prefix = getStorePrefixFromType(storeItem.type);
+      store.commit(`${prefix}/setItem`, storeItem);
+    }
   }
 }
 
-export default LocalDbStorage;
+export default Storage;

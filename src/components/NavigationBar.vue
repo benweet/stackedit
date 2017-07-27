@@ -5,7 +5,7 @@
         <div class="spinner"></div>
       </div>
       <div class="navigation-bar__title navigation-bar__title--text text-input" v-bind:style="{maxWidth: titleMaxWidth + 'px'}"></div>
-      <input class="navigation-bar__title navigation-bar__title--input text-input" v-bind:class="{'navigation-bar__title--focused': titleFocused, 'navigation-bar__title--scrolling': titleScrolling}" v-bind:style="{maxWidth: titleMaxWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keyup.enter="submitTitle()" @keyup.esc="submitTitle(true)" v-model.lazy.trim="title">
+      <input class="navigation-bar__title navigation-bar__title--input text-input" v-bind:class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" v-bind:style="{maxWidth: titleMaxWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keyup.enter="submitTitle()" @keyup.esc="submitTitle(true)" v-model.lazy.trim="title">
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--left">
       <button class="navigation-bar__button button" @click="pagedownClick('bold')">
@@ -55,7 +55,7 @@ import animationSvc from '../services/animationSvc';
 
 export default {
   data: () => ({
-    titleFocused: false,
+    titleFocus: false,
     titleHover: false,
   }),
   computed: {
@@ -65,14 +65,14 @@ export default {
     }),
     title: {
       get() {
-        return this.$store.state.files.currentFile.name;
+        return this.$store.getters['files/current'].name;
       },
-      set(value) {
-        this.$store.commit('files/setCurrentFileName', value);
+      set(name) {
+        this.$store.dispatch('files/patchCurrent', { name });
       },
     },
     titleScrolling() {
-      const result = this.titleHover && !this.titleFocused;
+      const result = this.titleHover && !this.titleFocus;
       if (this.titleInputElt) {
         if (result) {
           const scrollLeft = this.titleInputElt.scrollWidth - this.titleInputElt.offsetWidth;
@@ -95,7 +95,7 @@ export default {
       editorSvc.pagedownEditor.uiManager.doClick(name);
     },
     editTitle(toggle) {
-      this.titleFocused = toggle;
+      this.titleFocus = toggle;
       if (toggle) {
         this.titleInputElt.setSelectionRange(0, this.titleInputElt.value.length);
       }
@@ -197,7 +197,7 @@ export default {
 .navigation-bar__title--input {
   cursor: pointer;
 
-  &.navigation-bar__title--focused {
+  &.navigation-bar__title--focus {
     cursor: text;
   }
 }

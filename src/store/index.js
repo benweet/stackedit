@@ -4,13 +4,10 @@ import Vuex from 'vuex';
 import files from './modules/files';
 import layout from './modules/layout';
 import editor from './modules/editor';
-import LocalDbStorage from '../services/localDbSvc';
 
 Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== 'production';
-
-const localDbStorage = new LocalDbStorage();
 
 const store = new Vuex.Store({
   modules: {
@@ -19,7 +16,7 @@ const store = new Vuex.Store({
     editor,
   },
   strict: debug,
-  plugins: [_store => localDbStorage.init(_store)].concat(debug ? [createLogger()] : []),
+  plugins: debug ? [createLogger()] : [],
 });
 
 export default store;

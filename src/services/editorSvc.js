@@ -29,8 +29,9 @@ const allowDebounce = (action, wait) => {
 };
 
 const diffMatchPatch = new DiffMatchPatch();
+let lastContentId = null;
 let reinitClEditor = true;
-let isPreviewRefreshed = false;
+let instantPreview = true;
 let tokens;
 const anchorHash = {};
 
@@ -171,9 +172,14 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
    * Initialize the cledit editor with markdown-it section parser and Prism highlighter
    */
   initClEditor() {
-    if (!store.state.files.currentFile.isLoaded) {
+    const contentId = store.getters['contents/current'].id;
+    if (contentId !== lastContentId) {
       reinitClEditor = true;
-      isPreviewRefreshed = false;
+      instantPreview = true;
+      lastContentId = contentId;
+    }
+    if (!contentId) {
+      // This means the content is not loaded yet
       editorEngineSvc.clEditor.toggleEditable(false);
       return;
     }
@@ -336,8 +342,8 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
    * Make the diff between editor's markdown and preview's html.
    */
   makeTextToPreviewDiffs: allowDebounce(() => {
-    if (editorSvc.sectionDescList
-      && editorSvc.sectionDescList !== editorSvc.sectionDescMeasuredList) {
+    if (editorSvc.sectionDescList &&
+      editorSvc.sectionDescList !== editorSvc.sectionDescMeasuredList) {
       editorSvc.sectionDescList
         .forEach((sectionDesc) => {
           if (!sectionDesc.textToPreviewDiffs) {
@@ -355,19 +361,21 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
    */
   saveContentState: allowDebounce(() => {
     const scrollPosition = editorSvc.getScrollPosition() ||
-      store.state.files.currentFile.content.state.scrollPosition;
-    store.commit('files/setCurrentFileContentState', {
-      selectionStart: editorEngineSvc.clEditor.selectionMgr.selectionStart,
-      selectionEnd: editorEngineSvc.clEditor.selectionMgr.selectionEnd,
-      scrollPosition,
-    }, { root: true });
+      store.getters['contents/current'].state.scrollPosition;
+    store.dispatch('contents/patchCurrent', {
+      state: {
+        selectionStart: editorEngineSvc.clEditor.selectionMgr.selectionStart,
+        selectionEnd: editorEngineSvc.clEditor.selectionMgr.selectionEnd,
+        scrollPosition,
+      },
+    });
   }, 100),
 
   /**
    * Restore the scroll position from the current file content state.
    */
   restoreScrollPosition() {
-    const scrollPosition = store.state.files.currentFile.content.state.scrollPosition;
+    const scrollPosition = store.getters['contents/current'].state.scrollPosition;
     if (scrollPosition && this.sectionDescMeasuredList) {
       const objectToScroll = this.getObjectToScroll();
       const sectionDesc = this.sectionDescMeasuredList[scrollPosition.sectionIdx];
@@ -388,10 +396,10 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
     if (range) {
       if (
         /* eslint-disable no-bitwise */
-        !(editorSvc.previewElt.compareDocumentPosition(range.startContainer)
-          & window.Node.DOCUMENT_POSITION_CONTAINED_BY) ||
-        !(editorSvc.previewElt.compareDocumentPosition(range.endContainer)
-          & window.Node.DOCUMENT_POSITION_CONTAINED_BY)
+        !(editorSvc.previewElt.compareDocumentPosition(range.startContainer) &
+          window.Node.DOCUMENT_POSITION_CONTAINED_BY) ||
+        !(editorSvc.previewElt.compareDocumentPosition(range.endContainer) &
+          window.Node.DOCUMENT_POSITION_CONTAINED_BY)
         /* eslint-enable no-bitwise */
       ) {
         range = null;
@@ -561,14 +569,14 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
 
     const refreshPreview = () => {
       this.convert();
-      if (!isPreviewRefreshed) {
+      if (instantPreview) {
         this.refreshPreview();
         this.measureSectionDimensions();
         this.restoreScrollPosition();
       } else {
         setTimeout(() => this.refreshPreview(), 10);
       }
-      isPreviewRefreshed = true;
+      instantPreview = false;
     };
 
     const debouncedRefreshPreview = debounce(refreshPreview, 20);
@@ -579,10 +587,10 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
       if (this.sectionList !== newSectionList) {
         this.sectionList = newSectionList;
         this.$emit('sectionList', this.sectionList);
-        if (isPreviewRefreshed) {
-          debouncedRefreshPreview();
-        } else {
+        if (instantPreview) {
           refreshPreview();
+        } else {
+          debouncedRefreshPreview();
         }
       }
       if (this.selectionRange !== newSelectionRange) {
@@ -710,7 +718,7 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
     // })
 
     store.watch(
-      state => state.files.currentFile.content.properties,
+      () => store.getters['contents/current'].properties,
       (properties) => {
         const options = properties && extensionSvc.getOptions(properties, true);
         if (JSON.stringify(options) !== JSON.stringify(editorSvc.options)) {

@@ -11,8 +11,8 @@ let markerIdxMap;
 let previousPatchableText;
 let currentPatchableText;
 let discussionMarkers;
-let content;
 let isChangePatch;
+let contentId;
 
 function getDiscussionMarkers(discussion, discussionId, onMarker) {
   function getMarker(offsetName) {
@@ -35,6 +35,7 @@ function getDiscussionMarkers(discussion, discussionId, onMarker) {
 }
 
 function syncDiscussionMarkers() {
+  const content = store.getters['contents/current'];
   Object.keys(discussionMarkers)
     .forEach((markerKey) => {
       const marker = discussionMarkers[markerKey];
@@ -99,8 +100,9 @@ export default {
     markerIdxMap = Object.create(null);
     discussionMarkers = {};
     clEditor.on('contentChanged', (text) => {
-      store.commit('files/setCurrentFileContentText', text);
+      store.dispatch('contents/patchCurrent', { text });
       syncDiscussionMarkers();
+      const content = store.getters('contents/current');
       if (!isChangePatch) {
         previousPatchableText = currentPatchableText;
         currentPatchableText = clDiffUtils.makePatchableText(content, markerKeys, markerIdxMap);
@@ -121,11 +123,12 @@ export default {
     clEditor.addMarker(newDiscussionMarker1);
   },
   initClEditor(opts, reinit) {
-    if (store.state.files.currentFile.content) {
+    const content = store.getters('contents/current');
+    if (content) {
       const options = Object.assign({}, opts);
 
-      if (content !== store.state.files.currentFile.content) {
-        content = store.state.files.currentFile.content;
+      if (contentId !== content.id) {
+        contentId = content.id;
         currentPatchableText = clDiffUtils.makePatchableText(content, markerKeys, markerIdxMap);
         previousPatchableText = currentPatchableText;
         syncDiscussionMarkers();
@@ -153,6 +156,7 @@ export default {
       this.lastExternalChange = Date.now();
     }
     syncDiscussionMarkers();
+    const content = store.getters('contents/current');
     return clEditor.setContent(content.text, isExternal);
   },
 };

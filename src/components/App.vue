@@ -104,41 +104,4 @@ textarea {
     }
   }
 }
-
-$r: 9px;
-$d: $r * 2;
-$t: 1500ms;
-
-.spinner {
-  width: $d;
-  height: $d;
-  display: block;
-  position: relative;
-  border: $d/10 solid currentColor;
-  border-radius: 50%;
-
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    display: block;
-    width: $d/10;
-    background-color: currentColor;
-    border-radius: ($d/10)/2;
-    transform-origin: 50% 0;
-  }
-
-  &::before {
-    height: $r - $d/5;
-    left: $r - $d/10 - $d/20;
-    top: 50%;
-    animation: spin $t linear infinite;
-  }
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
 </style>

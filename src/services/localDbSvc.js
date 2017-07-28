@@ -21,7 +21,7 @@ function getStorePrefixFromType(type) {
   return store.state[prefix] && prefix;
 }
 
-const deletedMarkerMaxAge = 1000;
+const deleteMarkerMaxAge = 1000;
 
 class Connection {
   constructor() {
@@ -67,6 +67,9 @@ class Connection {
     };
   }
 
+  /**
+   * Create a connection asynchronously.
+   */
   createTx(cb) {
     if (!this.db) {
       this.getTxCbs.push(cb);
@@ -78,10 +81,13 @@ class Connection {
       window.location.reload();
       return;
     }
+
+    // Open transaction in read/write will prevent conflict with other tabs
     const tx = this.db.transaction(this.db.objectStoreNames, 'readwrite');
     tx.onerror = (evt) => {
       dbg('Rollback transaction', evt);
     };
+    // Read the current txCounter
     const dbStore = tx.objectStore(dbStoreName);
     const request = dbStore.get('txCounter');
     request.onsuccess = () => {
@@ -101,6 +107,11 @@ export default {
   updatedMap: Object.create(null),
   connection: new Connection(),
 
+  /**
+   * Return a promise that is resolved once the synchronization between the store and the localDb
+   * is finished. Effectively, open a transaction, then read and apply all changes from the DB
+   * since previous transaction, then write all changes from the store.
+   */
   sync() {
     return new Promise((resolve) => {
       const storeItemMap = {};
@@ -117,11 +128,14 @@ export default {
     });
   },
 
+  /**
+   * Read and apply all changes from the DB since previous transaction.
+   */
   readAll(storeItemMap, tx, cb) {
     let resetMap;
 
-    // We may have missed some deleted markers
-    if (this.lastTx && tx.txCounter - this.lastTx > deletedMarkerMaxAge) {
+    // We may have missed some delete markers
+    if (this.lastTx && tx.txCounter - this.lastTx > deleteMarkerMaxAge) {
       // Delete all dirty store items (user was asleep anyway...)
       resetMap = true;
       // And retrieve everything from DB
@@ -138,8 +152,8 @@ export default {
       if (cursor) {
         const item = cursor.value;
         items.push(item);
-        // Remove old deleted markers
-        if (!item.updated && tx.txCounter - item.tx > deletedMarkerMaxAge) {
+        // Remove old delete markers
+        if (!item.updated && tx.txCounter - item.tx > deleteMarkerMaxAge) {
           itemsToDelete.push(item);
         }
         cursor.continue();
@@ -162,30 +176,28 @@ export default {
     };
   },
 
+  /**
+   * Write all changes from the store since previous transaction.
+   */
   writeAll(storeItemMap, tx) {
     this.lastTx = tx.txCounter;
     const dbStore = tx.objectStore(dbStoreName);
 
     // Remove deleted store items
-    const storedIds = Object.keys(this.updatedMap);
-    const storedIdsLen = storedIds.length;
-    for (let i = 0; i < storedIdsLen; i += 1) {
-      const id = storedIds[i];
+    Object.keys(this.updatedMap).forEach((id) => {
       if (!storeItemMap[id]) {
-        // Put a deleted marker to notify other tabs
+        // Put a delete marker to notify other tabs
         dbStore.put({
           id,
           tx: this.lastTx,
         });
         delete this.updatedMap[id];
       }
-    }
+    });
 
     // Put changes
-    const storeItemIds = Object.keys(storeItemMap);
-    const storeItemIdsLen = storeItemIds.length;
-    for (let i = 0; i < storeItemIdsLen; i += 1) {
-      const storeItem = storeItemMap[storeItemIds[i]];
+    Object.keys(storeItemMap).forEach((id) => {
+      const storeItem = storeItemMap[id];
       // Store object has changed
       if (this.updatedMap[storeItem.id] !== storeItem.updated) {
         const item = {
@@ -196,9 +208,12 @@ export default {
         dbStore.put(item);
         this.updatedMap[item.id] = item.updated;
       }
-    }
+    });
   },
 
+  /**
+   * Read and apply one DB change.
+   */
   readDbItem(dbItem, storeItemMap) {
     const existingStoreItem = storeItemMap[dbItem.id];
     if (!dbItem.updated) {

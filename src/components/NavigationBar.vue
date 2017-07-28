@@ -1,13 +1,24 @@
 <template>
   <div class="navigation-bar" v-bind:class="{'navigation-bar--editor': showEditor}">
+    <div class="navigation-bar__inner navigation-bar__inner--left navigation-bar__inner--button">
+      <button class="navigation-bar__button button" @click="toggleExplorer()">
+        <icon-menu></icon-menu>
+      </button>
+    </div>
+    <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--button">
+      <button class="navigation-bar__button button" @click="toggleExplorer()">
+        <icon-settings></icon-settings>
+      </button>
+    </div>
     <div class="navigation-bar__inner navigation-bar__inner--right flex flex--row">
       <div class="navigation-bar__spinner">
         <div class="spinner"></div>
       </div>
-      <div class="navigation-bar__title navigation-bar__title--text text-input" v-bind:style="{maxWidth: titleMaxWidth + 'px'}"></div>
-      <input class="navigation-bar__title navigation-bar__title--input text-input" v-bind:class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" v-bind:style="{maxWidth: titleMaxWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keyup.enter="submitTitle()" @keyup.esc="submitTitle(true)" v-model.lazy.trim="title">
+      <div class="navigation-bar__title navigation-bar__title--fake text-input"></div>
+      <div class="navigation-bar__title navigation-bar__title--text text-input" v-bind:style="{maxWidth: titleMaxWidth + 'px'}">{{title}}</div>
+      <input class="navigation-bar__title navigation-bar__title--input text-input" v-bind:class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" v-bind:style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keyup.enter="submitTitle()" @keyup.esc="submitTitle(true)" v-on:mouseenter="titleHover = true" v-on:mouseleave="titleHover = false" v-model="title">
     </div>
-    <div class="navigation-bar__inner navigation-bar__inner--left">
+    <div class="navigation-bar__inner navigation-bar__inner--edit-buttons">
       <button class="navigation-bar__button button" @click="pagedownClick('bold')">
         <icon-format-bold></icon-format-bold>
       </button>
@@ -49,12 +60,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import editorSvc from '../services/editorSvc';
 import animationSvc from '../services/animationSvc';
 
 export default {
   data: () => ({
+    mounted: false,
+    title: '',
     titleFocus: false,
     titleHover: false,
   }),
@@ -63,13 +76,15 @@ export default {
       showEditor: 'showEditor',
       titleMaxWidth: 'titleMaxWidth',
     }),
-    title: {
-      get() {
-        return this.$store.getters['files/current'].name;
-      },
-      set(name) {
-        this.$store.dispatch('files/patchCurrent', { name });
-      },
+    titleWidth() {
+      if (!this.mounted) {
+        return 0;
+      }
+      this.titleFakeElt.textContent = this.title;
+      const width = this.titleFakeElt.getBoundingClientRect().width + 1; // 1px for the caret
+      return width < this.titleMaxWidth
+        ? width
+        : this.titleMaxWidth;
     },
     titleScrolling() {
       const result = this.titleHover && !this.titleFocus;
@@ -91,6 +106,10 @@ export default {
     },
   },
   methods: {
+    ...mapActions('layout', [
+      'toggleExplorer',
+      'toggleSideBar',
+    ]),
     pagedownClick(name) {
       editorSvc.pagedownEditor.uiManager.doClick(name);
     },
@@ -98,39 +117,33 @@ export default {
       this.titleFocus = toggle;
       if (toggle) {
         this.titleInputElt.setSelectionRange(0, this.titleInputElt.value.length);
+      } else {
+        const title = this.title.trim();
+        if (title) {
+          this.$store.dispatch('files/patchCurrent', { name: title });
+        } else {
+          this.title = this.$store.getters['files/current'].name;
+        }
       }
     },
     submitTitle(reset) {
       if (reset) {
-        this.titleInputElt.value = '';
+        this.title = '';
       }
       this.titleInputElt.blur();
     },
   },
-  mounted() {
-    this.titleInputElt = this.$el.querySelector('.navigation-bar__title--input');
-    const titleTextElt = this.$el.querySelector('.navigation-bar__title--text');
-
-    const adjustWidth = () => {
-      titleTextElt.textContent = this.titleInputElt.value;
-      const width = titleTextElt.getBoundingClientRect().width + 1; // 1px for the caret
-      this.titleInputElt.style.width = `${width}px`;
-    };
-
-    this.titleInputElt.addEventListener('keyup', adjustWidth);
-    this.titleInputElt.addEventListener('input', adjustWidth);
+  created() {
     this.$store.watch(
       () => this.$store.getters['files/current'].name,
-      adjustWidth, {
-        immediate: true,
-      });
-
-    this.titleInputElt.addEventListener('mouseenter', () => {
-      this.titleHover = true;
-    });
-    this.titleInputElt.addEventListener('mouseleave', () => {
-      this.titleHover = false;
-    });
+      (name) => {
+        this.title = name;
+      }, { immediate: true });
+  },
+  mounted() {
+    this.titleFakeElt = this.$el.querySelector('.navigation-bar__title--fake');
+    this.titleInputElt = this.$el.querySelector('.navigation-bar__title--input');
+    this.mounted = true;
   },
 };
 </script>
@@ -142,12 +155,24 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  padding: 4px 15px 0;
+  padding-top: 4px;
   overflow: hidden;
+}
+
+.navigation-bar__inner--left {
+  float: left;
 }
 
 .navigation-bar__inner--right {
   float: right;
+}
+
+.navigation-bar__inner--button {
+  margin: 0 4px;
+}
+
+.navigation-bar__inner--edit-buttons {
+  margin-left: 15px;
 }
 
 .navigation-bar__button {
@@ -174,26 +199,29 @@ export default {
   }
 }
 
+.navigation-bar__title--fake {
+  position: absolute;
+  left: -9999px;
+  width: auto;
+  white-space: pre-wrap;
+}
+
 .navigation-bar__title--text {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+
+  .navigation-bar--editor & {
+    display: none;
+  }
 }
 
 .navigation-bar__title--input,
-.navigation-bar__inner--left {
+.navigation-bar__inner--edit-buttons,
+.navigation-bar__inner--button {
   display: none;
-}
 
-.navigation-bar--editor {
-  .navigation-bar__title--text {
-    position: absolute;
-    left: -9999px;
-    width: auto;
-  }
-
-  .navigation-bar__title--input,
-  .navigation-bar__inner--left {
+  .navigation-bar--editor & {
     display: block;
   }
 }

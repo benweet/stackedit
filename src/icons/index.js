@@ -15,6 +15,8 @@ import StatusBar from './StatusBar';
 import NavigationBar from './NavigationBar';
 import SidePreview from './SidePreview';
 import Eye from './Eye';
+import Menu from './Menu';
+import Settings from './Settings';
 
 Vue.component('iconFormatBold', FormatBold);
 Vue.component('iconFormatItalic', FormatItalic);
@@ -32,3 +34,5 @@ Vue.component('iconStatusBar', StatusBar);
 Vue.component('iconNavigationBar', NavigationBar);
 Vue.component('iconSidePreview', SidePreview);
 Vue.component('iconEye', Eye);
+Vue.component('iconMenu', Menu);
+Vue.component('iconSettings', Settings);

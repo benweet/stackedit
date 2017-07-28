@@ -1,28 +1,31 @@
 <template>
   <div class="layout">
-    <div class="layout__panel layout__panel--inner-1" :style="{ top: inner1Y + 'px', height: inner1Height + 'px' }">
-      <div class="layout__panel layout__panel--inner-2" :style="{ height: inner2Height + 'px' }">
-        <div class="layout__panel layout__panel--inner-3" :style="{ left: inner3X + 'px', width: inner3Width + 'px' }">
-          <div class="layout__panel layout__panel--button-bar">
+    <div class="layout__panel flex flex--row">
+      <div class="layout__panel layout__panel--explorer" v-show="showExplorer" :style="{ width: explorerWidth + 'px' }">
+        <explorer></explorer>
+      </div>
+      <div class="layout__panel flex flex--column" :style="{ width: innerWidth + 'px' }">
+        <div class="layout__panel layout__panel--navigation-bar" v-show="showNavigationBar || !showEditor" :style="{ height: navigationBarHeight + 'px' }">
+          <navigation-bar></navigation-bar>
+        </div>
+        <div class="layout__panel flex flex--row" :style="{ height: innerHeight + 'px' }">
+          <div class="layout__panel layout__panel--editor" v-show="showEditor" :style="{ width: editorWidth + 'px', 'font-size': fontSize + 'px' }">
+            <editor></editor>
+          </div>
+          <div class="layout__panel layout__panel--button-bar" v-show="showEditor" :style="{ width: buttonBarWidth + 'px' }">
             <button-bar></button-bar>
           </div>
           <div class="layout__panel layout__panel--preview" v-show="showSidePreview || !showEditor" :style="{ width: previewWidth + 'px', 'font-size': fontSize + 'px' }">
             <preview></preview>
           </div>
         </div>
-        <div class="layout__panel layout__panel--editor" v-show="showEditor" :style="{ width: editorWidth + 'px', 'font-size': fontSize + 'px' }">
-          <editor></editor>
+        <div class="layout__panel layout__panel--status-bar" v-show="showStatusBar" :style="{ height: statusBarHeight + 'px' }">
+          <status-bar></status-bar>
         </div>
       </div>
-      <div class="layout__panel layout__panel--status-bar" :style="{ top: statusBarY + 'px' }">
-        <status-bar></status-bar>
+      <div class="layout__panel layout__panel--side-bar" v-show="showSideBar" :style="{ width: sideBarWidth + 'px' }">
+        <side-bar></side-bar>
       </div>
-    </div>
-    <div class="layout__panel layout__panel--navigation-bar" :style="{ top: navigationBarY + 'px' }">
-      <navigation-bar></navigation-bar>
-    </div>
-    <div class="layout__panel layout__panel--side-bar" :style="{ left: sideBarX + 'px' }">
-      <side-bar></side-bar>
     </div>
   </div>
 </template>
@@ -30,9 +33,10 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import NavigationBar from './NavigationBar';
-import SideBar from './SideBar';
 import ButtonBar from './ButtonBar';
 import StatusBar from './StatusBar';
+import Explorer from './Explorer';
+import SideBar from './SideBar';
 import Editor from './Editor';
 import Preview from './Preview';
 import editorSvc from '../services/editorSvc';
@@ -41,24 +45,28 @@ import constants from '../services/constants';
 export default {
   components: {
     NavigationBar,
-    SideBar,
     ButtonBar,
     StatusBar,
+    Explorer,
+    SideBar,
     Editor,
     Preview,
   },
   computed: mapState('layout', {
+    explorerWidth: 'explorerWidth',
+    sideBarWidth: 'sideBarWidth',
+    navigationBarHeight: 'navigationBarHeight',
+    buttonBarWidth: 'buttonBarWidth',
+    statusBarHeight: 'statusBarHeight',
     showEditor: 'showEditor',
     showSidePreview: 'showSidePreview',
+    showNavigationBar: 'showNavigationBar',
+    showStatusBar: 'showStatusBar',
+    showSideBar: 'showSideBar',
+    showExplorer: 'showExplorer',
     fontSize: 'fontSize',
-    inner1Y: 'inner1Y',
-    inner1Height: 'inner1Height',
-    inner2Height: 'inner2Height',
-    inner3X: 'inner3X',
-    inner3Width: 'inner3Width',
-    navigationBarY: 'navigationBarY',
-    sideBarX: 'sideBarX',
-    statusBarY: 'statusBarY',
+    innerWidth: 'innerWidth',
+    innerHeight: 'innerHeight',
     previewWidth: 'previewWidth',
     editorWidth: 'editorWidth',
   }),
@@ -127,41 +135,34 @@ export default {
 </script>
 
 <style lang="scss">
-.layout__panel {
+.layout {
   position: absolute;
   width: 100%;
   height: 100%;
 }
 
-.layout__panel--inner-1 {
-  right: 0;
-}
-
-.layout__panel--button-bar {
-  /* buttonBarWidth */
-  width: 30px;
-}
-
-.layout__panel--preview {
-  /* buttonBarWidth */
-  left: 30px;
-}
-
-.layout__panel--status-bar {
-  /* statusBarHeight */
-  height: 20px;
-  background-color: #007acc;
-}
-
-.layout__panel--side-bar {
-  /* sideBarWidth */
-  width: 280px;
+.layout__panel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  -webkit-flex: none;
+  flex: none;
 }
 
 .layout__panel--navigation-bar {
-  /* navigationBarHeight */
-  height: 44px;
   background-color: #2c2c2c;
+}
+
+.layout__panel--status-bar {
+  background-color: #007acc;
+}
+
+.layout__panel--editor {
+  background-color: #fff;
+}
+
+.layout__panel--explorer {
+  background-color: #ddd;
 }
 
 .layout__panel--button-bar,
@@ -169,7 +170,10 @@ export default {
 .layout__panel--side-bar,
 .layout__panel--navigation-bar {
   .app--loading & > * {
-    display: none !important;
+    opacity: 0.5;
+
+    /* Hack to disable mouse focus */
+    pointer-events: none;
   }
 }
 </style>

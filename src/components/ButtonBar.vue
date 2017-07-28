@@ -34,7 +34,6 @@ export default {
     'toggleNavigationBar',
     'toggleEditor',
     'toggleSidePreview',
-    'toggleSideBar',
     'toggleStatusBar',
   ]),
 };

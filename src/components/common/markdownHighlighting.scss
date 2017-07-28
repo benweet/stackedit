@@ -127,6 +127,7 @@
   .h6 {
     font-weight: $editor-font-weight-bold;
 
+    &,
     * {
       line-height: $line-height-title;
     }

@@ -38,8 +38,8 @@ store.watch(
       return store.state.files.itemMap[fileId];
     }))
     .then((currentFile) => {
-      store.commit('files/patchItem', { id: currentFile.id });
       store.commit('files/setCurrentId', currentFile.id);
+      store.dispatch('files/patchCurrent', {}); // Update `updated` field to make it the mostRecent
     }),
   {
     immediate: true,

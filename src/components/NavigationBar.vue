@@ -117,9 +117,14 @@ export default {
       this.titleInputElt.style.width = `${width}px`;
     };
 
-    adjustWidth();
     this.titleInputElt.addEventListener('keyup', adjustWidth);
     this.titleInputElt.addEventListener('input', adjustWidth);
+    this.$store.watch(
+      () => this.$store.getters['files/current'].name,
+      adjustWidth, {
+        immediate: true,
+      });
+
     this.titleInputElt.addEventListener('mouseenter', () => {
       this.titleHover = true;
     });
@@ -137,7 +142,6 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: #2c2c2c;
   padding: 4px 15px 0;
   overflow: hidden;
 }

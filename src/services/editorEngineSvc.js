@@ -102,7 +102,7 @@ export default {
     clEditor.on('contentChanged', (text) => {
       store.dispatch('contents/patchCurrent', { text });
       syncDiscussionMarkers();
-      const content = store.getters('contents/current');
+      const content = store.getters['contents/current'];
       if (!isChangePatch) {
         previousPatchableText = currentPatchableText;
         currentPatchableText = clDiffUtils.makePatchableText(content, markerKeys, markerIdxMap);
@@ -123,7 +123,7 @@ export default {
     clEditor.addMarker(newDiscussionMarker1);
   },
   initClEditor(opts, reinit) {
-    const content = store.getters('contents/current');
+    const content = store.getters['contents/current'];
     if (content) {
       const options = Object.assign({}, opts);
 
@@ -156,7 +156,7 @@ export default {
       this.lastExternalChange = Date.now();
     }
     syncDiscussionMarkers();
-    const content = store.getters('contents/current');
+    const content = store.getters['contents/current'];
     return clEditor.setContent(content.text, isExternal);
   },
 };

@@ -96,21 +96,26 @@ class Connection {
   }
 }
 
-class Storage {
-  constructor() {
-    this.lastTx = 0;
-    this.updatedMap = Object.create(null);
-    this.connection = new Connection();
-  }
+export default {
+  lastTx: 0,
+  updatedMap: Object.create(null),
+  connection: new Connection(),
 
   sync() {
-    const storeItemMap = {};
-    [
-      store.state.files,
-    ].forEach(moduleState => Object.assign(storeItemMap, moduleState.itemMap));
-    const tx = this.connection.createTx();
-    this.readAll(storeItemMap, tx, () => this.writeAll(storeItemMap, tx));
-  }
+    return new Promise((resolve) => {
+      const storeItemMap = {};
+      [
+        store.state.contents,
+        store.state.files,
+      ].forEach(moduleState => Object.assign(storeItemMap, moduleState.itemMap));
+      this.connection.createTx((tx) => {
+        this.readAll(storeItemMap, tx, () => {
+          this.writeAll(storeItemMap, tx);
+          resolve();
+        });
+      });
+    });
+  },
 
   readAll(storeItemMap, tx, cb) {
     let resetMap;
@@ -130,7 +135,15 @@ class Storage {
     const itemsToDelete = [];
     index.openCursor(range).onsuccess = (event) => {
       const cursor = event.target.result;
-      if (!cursor) {
+      if (cursor) {
+        const item = cursor.value;
+        items.push(item);
+        // Remove old deleted markers
+        if (!item.updated && tx.txCounter - item.tx > deletedMarkerMaxAge) {
+          itemsToDelete.push(item);
+        }
+        cursor.continue();
+      } else {
         itemsToDelete.forEach((item) => {
           dbStore.delete(item.id);
         });
@@ -146,15 +159,8 @@ class Storage {
         items.forEach(item => this.readDbItem(item, storeItemMap));
         cb();
       }
-      const item = cursor.value;
-      items.push(item);
-      // Remove old deleted markers
-      if (!item.updated && tx.txCounter - item.tx > deletedMarkerMaxAge) {
-        itemsToDelete.push(item);
-      }
-      cursor.continue();
     };
-  }
+  },
 
   writeAll(storeItemMap, tx) {
     this.lastTx = tx.txCounter;
@@ -191,7 +197,7 @@ class Storage {
         this.updatedMap[item.id] = item.updated;
       }
     }
-  }
+  },
 
   readDbItem(dbItem, storeItemMap) {
     const existingStoreItem = storeItemMap[dbItem.id];
@@ -206,17 +212,11 @@ class Storage {
         }
       }
     } else if (this.updatedMap[dbItem.id] !== dbItem.updated) {
-      const storeItem = {
-        ...dbItem,
-        tx: undefined,
-      };
-      this.updatedMap[storeItem.id] = storeItem.updated;
-      storeItemMap[storeItem.id] = storeItem;
+      this.updatedMap[dbItem.id] = dbItem.updated;
+      storeItemMap[dbItem.id] = dbItem;
       // Put object in the store
-      const prefix = getStorePrefixFromType(storeItem.type);
-      store.commit(`${prefix}/setItem`, storeItem);
+      const prefix = getStorePrefixFromType(dbItem.type);
+      store.commit(`${prefix}/setItem`, dbItem);
     }
-  }
-}
-
-export default Storage;
+  },
+};

@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="app" v-bind:class="{'app--loading': loading}">
     <layout></layout>
   </div>
 </template>
@@ -10,6 +10,11 @@ import Layout from './Layout';
 export default {
   components: {
     Layout,
+  },
+  computed: {
+    loading() {
+      return !this.$store.getters['contents/current'].id;
+    },
   },
 };
 </script>

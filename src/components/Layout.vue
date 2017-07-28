@@ -161,5 +161,15 @@ export default {
 .layout__panel--navigation-bar {
   /* navigationBarHeight */
   height: 44px;
+  background-color: #2c2c2c;
+}
+
+.layout__panel--button-bar,
+.layout__panel--status-bar,
+.layout__panel--side-bar,
+.layout__panel--navigation-bar {
+  .app--loading & > * {
+    display: none !important;
+  }
 }
 </style>

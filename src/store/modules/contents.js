@@ -1,12 +1,12 @@
 import moduleTemplate from './moduleTemplate';
-import emptyContent from '../../data/emptyContent';
+import empty from '../../data/emptyContent';
 
-const module = moduleTemplate();
+const module = moduleTemplate(empty);
 
 module.getters = {
   ...module.getters,
   current: (state, getters, rootState, rootGetters) =>
-    state.itemMap[rootGetters['files/current'].contentId] || emptyContent(),
+    state.itemMap[rootGetters['files/current'].contentId] || empty(),
 };
 
 module.actions = {

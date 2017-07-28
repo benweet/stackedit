@@ -42,8 +42,8 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
   tocElt: null,
   // Other objects
   pagedownEditor: null,
-  options: {},
-  prismGrammars: {},
+  options: null,
+  prismGrammars: null,
   converter: null,
   parsingCtx: null,
   conversionCtx: null,
@@ -172,17 +172,6 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
    * Initialize the cledit editor with markdown-it section parser and Prism highlighter
    */
   initClEditor() {
-    const contentId = store.getters['contents/current'].id;
-    if (contentId !== lastContentId) {
-      reinitClEditor = true;
-      instantPreview = true;
-      lastContentId = contentId;
-    }
-    if (!contentId) {
-      // This means the content is not loaded yet
-      editorEngineSvc.clEditor.toggleEditable(false);
-      return;
-    }
     const options = {
       sectionHighlighter: section => Prism.highlight(
         section.text, this.prismGrammars[section.data]),
@@ -193,6 +182,9 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
     };
     editorEngineSvc.initClEditor(options, reinitClEditor);
     editorEngineSvc.clEditor.toggleEditable(true);
+    const contentId = store.getters['contents/current'].id;
+    // Switch off the editor when no content is loaded
+    editorEngineSvc.clEditor.toggleEditable(!!contentId);
     reinitClEditor = false;
     this.restoreScrollPosition();
   },
@@ -717,14 +709,27 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
     //   }
     // })
 
+    // Watch file content properties changes
     store.watch(
       () => store.getters['contents/current'].properties,
       (properties) => {
-        const options = properties && extensionSvc.getOptions(properties, true);
+        // Track ID changes at the same time
+        const contentId = store.getters['contents/current'].id;
+        let initClEditor = false;
+        if (contentId !== lastContentId) {
+          reinitClEditor = true;
+          instantPreview = true;
+          lastContentId = contentId;
+          initClEditor = true;
+        }
+        const options = extensionSvc.getOptions(properties, true);
         if (JSON.stringify(options) !== JSON.stringify(editorSvc.options)) {
           editorSvc.options = options;
           editorSvc.initPrism();
           editorSvc.initConverter();
+          initClEditor = true;
+        }
+        if (initClEditor) {
           editorSvc.initClEditor();
         }
       }, {

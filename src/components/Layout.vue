@@ -1,29 +1,29 @@
 <template>
   <div class="layout">
     <div class="layout__panel flex flex--row">
-      <div class="layout__panel layout__panel--explorer" v-show="showExplorer" :style="{ width: explorerWidth + 'px' }">
+      <div class="layout__panel layout__panel--explorer" v-show="styles.showExplorer" :style="{ width: constants.explorerWidth + 'px' }">
         <explorer></explorer>
       </div>
-      <div class="layout__panel flex flex--column" :style="{ width: innerWidth + 'px' }">
-        <div class="layout__panel layout__panel--navigation-bar" v-show="showNavigationBar || !showEditor" :style="{ height: navigationBarHeight + 'px' }">
+      <div class="layout__panel flex flex--column" :style="{ width: styles.innerWidth + 'px' }">
+        <div class="layout__panel layout__panel--navigation-bar" v-show="styles.showNavigationBar" :style="{ height: constants.navigationBarHeight + 'px' }">
           <navigation-bar></navigation-bar>
         </div>
-        <div class="layout__panel flex flex--row" :style="{ height: innerHeight + 'px' }">
-          <div class="layout__panel layout__panel--editor" v-show="showEditor" :style="{ width: editorWidth + 'px', 'font-size': fontSize + 'px' }">
+        <div class="layout__panel flex flex--row" :style="{ height: styles.innerHeight + 'px' }">
+          <div class="layout__panel layout__panel--editor" v-show="styles.showEditor" :style="{ width: styles.editorWidth + 'px', 'font-size': styles.fontSize + 'px' }">
             <editor></editor>
           </div>
-          <div class="layout__panel layout__panel--button-bar" v-show="showEditor" :style="{ width: buttonBarWidth + 'px' }">
+          <div class="layout__panel layout__panel--button-bar" v-show="styles.showEditor" :style="{ width: constants.buttonBarWidth + 'px' }">
             <button-bar></button-bar>
           </div>
-          <div class="layout__panel layout__panel--preview" v-show="showSidePreview || !showEditor" :style="{ width: previewWidth + 'px', 'font-size': fontSize + 'px' }">
+          <div class="layout__panel layout__panel--preview" v-show="styles.showPreview" :style="{ width: styles.previewWidth + 'px', 'font-size': styles.fontSize + 'px' }">
             <preview></preview>
           </div>
         </div>
-        <div class="layout__panel layout__panel--status-bar" v-show="showStatusBar" :style="{ height: statusBarHeight + 'px' }">
+        <div class="layout__panel layout__panel--status-bar" v-show="styles.showStatusBar" :style="{ height: constants.statusBarHeight + 'px' }">
           <status-bar></status-bar>
         </div>
       </div>
-      <div class="layout__panel layout__panel--side-bar" v-show="showSideBar" :style="{ width: sideBarWidth + 'px' }">
+      <div class="layout__panel layout__panel--side-bar" v-show="styles.showSideBar" :style="{ width: constants.sideBarWidth + 'px' }">
         <side-bar></side-bar>
       </div>
     </div>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapGetters, mapMutations } from 'vuex';
 import NavigationBar from './NavigationBar';
 import ButtonBar from './ButtonBar';
 import StatusBar from './StatusBar';
@@ -40,7 +40,6 @@ import SideBar from './SideBar';
 import Editor from './Editor';
 import Preview from './Preview';
 import editorSvc from '../services/editorSvc';
-import constants from '../services/constants';
 
 export default {
   components: {
@@ -52,33 +51,23 @@ export default {
     Editor,
     Preview,
   },
-  computed: mapState('layout', {
-    explorerWidth: 'explorerWidth',
-    sideBarWidth: 'sideBarWidth',
-    navigationBarHeight: 'navigationBarHeight',
-    buttonBarWidth: 'buttonBarWidth',
-    statusBarHeight: 'statusBarHeight',
-    showEditor: 'showEditor',
-    showSidePreview: 'showSidePreview',
-    showNavigationBar: 'showNavigationBar',
-    showStatusBar: 'showStatusBar',
-    showSideBar: 'showSideBar',
-    showExplorer: 'showExplorer',
-    fontSize: 'fontSize',
-    innerWidth: 'innerWidth',
-    innerHeight: 'innerHeight',
-    previewWidth: 'previewWidth',
-    editorWidth: 'editorWidth',
-  }),
+  computed: {
+    ...mapState('layout', [
+      'constants',
+    ]),
+    ...mapGetters('layout', [
+      'styles',
+    ]),
+  },
   methods: {
-    ...mapActions('layout', [
-      'updateStyle',
+    ...mapMutations('layout', [
+      'updateBodySize',
     ]),
     saveSelection: () => editorSvc.saveSelection(true),
   },
   created() {
-    this.updateStyle();
-    window.addEventListener('resize', this.updateStyle);
+    this.updateBodySize();
+    window.addEventListener('resize', this.updateBodySize);
     window.addEventListener('keyup', this.saveSelection);
     window.addEventListener('mouseup', this.saveSelection);
     window.addEventListener('contextmenu', this.saveSelection);
@@ -106,10 +95,10 @@ export default {
           / (sectionDesc.tocDimension.height || 1);
         const editorScrollTop = sectionDesc.editorDimension.startOffset
           + (sectionDesc.editorDimension.height * posInSection);
-        editorElt.parentNode.scrollTop = editorScrollTop - constants.scrollOffset;
+        editorElt.parentNode.scrollTop = editorScrollTop;
         const previewScrollTop = sectionDesc.previewDimension.startOffset
           + (sectionDesc.previewDimension.height * posInSection);
-        previewElt.parentNode.scrollTop = previewScrollTop - constants.scrollOffset;
+        previewElt.parentNode.scrollTop = previewScrollTop;
         return true;
       });
     }
@@ -162,7 +151,7 @@ export default {
 }
 
 .layout__panel--explorer {
-  background-color: #ddd;
+  background-color: #dadada;
 }
 
 .layout__panel--button-bar,

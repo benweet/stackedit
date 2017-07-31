@@ -9,7 +9,6 @@ import markdownConversionSvc from './markdownConversionSvc';
 import markdownGrammarSvc from './markdownGrammarSvc';
 import sectionUtils from './sectionUtils';
 import extensionSvc from './extensionSvc';
-import constants from './constants';
 import animationSvc from './animationSvc';
 import editorEngineSvc from './editorEngineSvc';
 import store from '../store';
@@ -63,7 +62,7 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
   getObjectToScroll() {
     let elt = this.editorElt.parentNode;
     let dimensionKey = 'editorDimension';
-    if (!store.state.layout.showEditor) {
+    if (!store.getters['layout/styles'].showEditor) {
       elt = this.previewElt.parentNode;
       dimensionKey = 'previewDimension';
     }
@@ -426,10 +425,10 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
     let scrollerElt = this.previewElt.parentNode;
     const sectionDesc = anchorHash[anchor];
     if (sectionDesc) {
-      if (store.state.layout.showSidePreview || !store.state.layout.showEditor) {
+      if (store.getters['layout/styles'].showPreview) {
         scrollTop = sectionDesc.previewDimension.startOffset;
       } else {
-        scrollTop = sectionDesc.editorDimension.startOffset - constants.scrollOffset;
+        scrollTop = sectionDesc.editorDimension.startOffset;
         scrollerElt = this.editorElt.parentNode;
       }
     } else {
@@ -575,7 +574,7 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
 
     let newSectionList;
     let newSelectionRange;
-    const debouncedEditorChanged = debounce(() => {
+    const onEditorChanged = () => {
       if (this.sectionList !== newSectionList) {
         this.sectionList = newSectionList;
         this.$emit('sectionList', this.sectionList);
@@ -590,7 +589,8 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
         this.$emit('selectionRange', this.selectionRange);
       }
       this.saveContentState();
-    }, 10);
+    };
+    const debouncedEditorChanged = debounce(onEditorChanged, 10);
 
     editorEngineSvc.clEditor.selectionMgr.on('selectionChanged', (start, end, selectionRange) => {
       newSelectionRange = selectionRange;
@@ -685,8 +685,14 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
 
     editorEngineSvc.clEditor.on('contentChanged', (content, diffs, sectionList) => {
       newSectionList = sectionList;
-      debouncedEditorChanged();
+      if (instantPreview) {
+        onEditorChanged();
+      } else {
+        debouncedEditorChanged();
+      }
     });
+
+    this.$emit('inited');
 
     // scope.$watch('editorLayoutSvc.isEditorOpen', function (isOpen) {
     //   clEditorSvc.cledit.toggleEditable(isOpen)
@@ -736,12 +742,10 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
         immediate: true,
       });
 
-    store.watch(state => `${state.layout.editorWidth},${state.layout.previewWidth}`,
+    store.watch(() => `${store.getters['layout/styles'].editorWidth},${store.getters['layout/styles'].previewWidth}`,
       () => editorSvc.measureSectionDimensions(true));
-    store.watch(state => state.layout.showSidePreview,
+    store.watch(() => store.getters['layout/styles'].showSidePreview,
       showSidePreview => showSidePreview && editorSvc.measureSectionDimensions());
-
-    this.$emit('inited');
   },
 });
 

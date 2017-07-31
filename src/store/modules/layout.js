@@ -9,148 +9,135 @@ const setter = propertyName => (state, value) => {
   state[propertyName] = value;
 };
 
-const toggler = (propertyName, setterName) => ({ state, commit, dispatch }, show) => {
-  commit(setterName, show === undefined ? !state[propertyName] : show);
-  dispatch('updateStyle');
+const toggler = propertyName => (state, value) => {
+  state[propertyName] = value === undefined ? !state[propertyName] : value;
 };
 
 export default {
   namespaced: true,
   state: {
-    // Constants
-    explorerWidth: 280,
-    sideBarWidth: 280,
-    navigationBarHeight: 44,
-    buttonBarWidth: 30,
-    statusBarHeight: 20,
+    constants: {
+      explorerWidth: 250,
+      sideBarWidth: 280,
+      navigationBarHeight: 44,
+      buttonBarWidth: 30,
+      statusBarHeight: 20,
+    },
     // Configuration
     showNavigationBar: true,
     showEditor: true,
     showSidePreview: true,
     showStatusBar: true,
     showSideBar: false,
-    showExplorer: false,
+    showExplorer: true,
     editorWidthFactor: 1,
     fontSizeFactor: 1,
-    // Style
-    fontSize: 0,
-    innerWidth: 0,
-    innerHeight: 0,
-    editorWidth: 0,
-    editorPadding: 0,
-    previewWidth: 0,
-    previewPadding: 0,
-    titleMaxWidth: 0,
+    // Styles
+    bodyWidth: 0,
+    bodyHeight: 0,
   },
   mutations: {
-    setShowNavigationBar: setter('showNavigationBar'),
-    setShowEditor: setter('showEditor'),
-    setShowSidePreview: setter('showSidePreview'),
-    setShowStatusBar: setter('showStatusBar'),
-    setShowSideBar: setter('showSideBar'),
-    setShowExplorer: setter('showExplorer'),
+    toggleNavigationBar: toggler('showNavigationBar'),
+    toggleEditor: toggler('showEditor'),
+    toggleSidePreview: toggler('showSidePreview'),
+    toggleStatusBar: toggler('showStatusBar'),
+    toggleSideBar: toggler('showSideBar'),
+    toggleExplorer: toggler('showExplorer'),
     setEditorWidthFactor: setter('editorWidthFactor'),
     setFontSizeFactor: setter('fontSizeFactor'),
-    setFontSize: setter('fontSize'),
-    setInnerWidth: setter('innerWidth'),
-    setInnerHeight: setter('innerHeight'),
-    setEditorWidth: setter('editorWidth'),
-    setEditorPadding: setter('editorPadding'),
-    setPreviewWidth: setter('previewWidth'),
-    setPreviewPadding: setter('previewPadding'),
-    setTitleMaxWidth: setter('titleMaxWidth'),
+    updateBodySize: (state) => {
+      state.bodyWidth = document.body.clientWidth;
+      state.bodyHeight = document.body.clientHeight;
+    },
   },
-  actions: {
-    toggleNavigationBar: toggler('showNavigationBar', 'setShowNavigationBar'),
-    toggleEditor: toggler('showEditor', 'setShowEditor'),
-    toggleSidePreview: toggler('showSidePreview', 'setShowSidePreview'),
-    toggleStatusBar: toggler('showStatusBar', 'setShowStatusBar'),
-    toggleSideBar: toggler('showSideBar', 'setShowSideBar'),
-    toggleExplorer: toggler('showExplorer', 'setShowExplorer'),
-    updateStyle({ state, commit, dispatch }) {
-      const bodyWidth = document.body.clientWidth;
-      const bodyHeight = document.body.clientHeight;
+  getters: {
+    styles: (state) => {
+      const styles = {
+        showNavigationBar: !state.showEditor || state.showNavigationBar,
+        showStatusBar: state.showStatusBar,
+        showEditor: state.showEditor,
+        showSidePreview: state.showSidePreview && state.showEditor,
+        showPreview: state.showSidePreview || !state.showEditor,
+        showSideBar: state.showSideBar,
+        showExplorer: state.showExplorer,
+      };
 
-      const showNavigationBar = !state.showEditor || state.showNavigationBar;
-      let innerHeight = bodyHeight;
-      if (showNavigationBar) {
-        innerHeight -= state.navigationBarHeight;
-      }
-      if (state.showStatusBar) {
-        innerHeight -= state.statusBarHeight;
-      }
+      function computeStyles() {
+        styles.innerHeight = state.bodyHeight;
+        if (styles.showNavigationBar) {
+          styles.innerHeight -= state.constants.navigationBarHeight;
+        }
+        if (styles.showStatusBar) {
+          styles.innerHeight -= state.constants.statusBarHeight;
+        }
 
-      let innerWidth = bodyWidth;
-      if (state.showSideBar) {
-        innerWidth -= state.sideBarWidth;
-      }
-      if (state.showExplorer) {
-        innerWidth -= state.explorerWidth;
-      }
-      let doublePanelWidth = innerWidth - state.buttonBarWidth;
-      if (doublePanelWidth < editorMinWidth) {
-        if (state.showSideBar) {
-          dispatch('toggleSideBar', false);
+        styles.innerWidth = state.bodyWidth;
+        if (styles.showSideBar) {
+          styles.innerWidth -= state.constants.sideBarWidth;
+        }
+        if (styles.showExplorer) {
+          styles.innerWidth -= state.constants.explorerWidth;
+        }
+
+        let doublePanelWidth = styles.innerWidth - state.constants.buttonBarWidth;
+        if (doublePanelWidth < editorMinWidth) {
+          if (styles.showSideBar) {
+            styles.showSideBar = false;
+            computeStyles();
+            return;
+          }
+          if (styles.showExplorer) {
+            styles.showExplorer = false;
+            computeStyles();
+            return;
+          }
+          doublePanelWidth = editorMinWidth;
+        }
+
+        if (styles.showSidePreview && doublePanelWidth / 2 < editorMinWidth) {
+          styles.showSidePreview = false;
+          computeStyles();
           return;
         }
-        if (state.showExplorer) {
-          dispatch('toggleExplorer', false);
-          return;
+
+        styles.fontSize = 18;
+        styles.textWidth = 990;
+        if (doublePanelWidth < 1120) {
+          styles.fontSize -= 1;
+          styles.textWidth = 910;
         }
-        doublePanelWidth = editorMinWidth;
-      }
-      const splitPanel = state.showEditor && state.showSidePreview;
-      if (splitPanel && doublePanelWidth / 2 < editorMinWidth) {
-        dispatch('toggleSidePreview', false);
-        return;
+        if (doublePanelWidth < 1040) {
+          styles.textWidth = 830;
+        }
+        styles.textWidth *= state.editorWidthFactor;
+        if (doublePanelWidth < styles.textWidth) {
+          styles.textWidth = doublePanelWidth;
+        }
+        if (styles.textWidth < 640) {
+          styles.fontSize -= 1;
+        }
+        styles.fontSize *= state.fontSizeFactor;
+
+        const panelWidth = doublePanelWidth / 2;
+        styles.previewWidth = styles.showSidePreview ?
+          panelWidth :
+          styles.innerWidth;
+        styles.previewPadding = Math.max((styles.previewWidth - styles.textWidth) / 2, minPadding);
+        styles.editorWidth = styles.showSidePreview ?
+          panelWidth :
+          doublePanelWidth;
+        styles.editorPadding = Math.max((styles.editorWidth - styles.textWidth) / 2, minPadding);
+
+        styles.titleMaxWidth = styles.innerWidth - navigationBarSpaceWidth;
+        if (styles.showEditor) {
+          styles.titleMaxWidth -= navigationBarLeftWidth;
+        }
+        styles.titleMaxWidth = Math.min(styles.titleMaxWidth, maxTitleMaxWidth);
+        styles.titleMaxWidth = Math.max(styles.titleMaxWidth, minTitleMaxWidth);
       }
 
-      let fontSize = 18;
-      let textWidth = 990;
-      if (doublePanelWidth < 1120) {
-        fontSize -= 1;
-        textWidth = 910;
-      }
-      if (doublePanelWidth < 1040) {
-        textWidth = 830;
-      }
-      if (textWidth < 640) {
-        fontSize -= 1;
-      }
-      textWidth *= state.editorWidthFactor;
-      fontSize *= state.fontSizeFactor;
-
-      const panelWidth = doublePanelWidth / 2;
-      const previewWidth = splitPanel ?
-        panelWidth :
-        innerWidth;
-      let previewPadding = (previewWidth - textWidth) / 2;
-      if (previewPadding < minPadding) {
-        previewPadding = minPadding;
-      }
-      const editorWidth = splitPanel ?
-        panelWidth :
-        doublePanelWidth;
-      let editorPadding = (editorWidth - textWidth) / 2;
-      if (editorPadding < minPadding) {
-        editorPadding = minPadding;
-      }
-
-      let titleMaxWidth = innerWidth - navigationBarSpaceWidth;
-      if (state.showEditor) {
-        titleMaxWidth -= navigationBarLeftWidth;
-      }
-      titleMaxWidth = Math.min(titleMaxWidth, maxTitleMaxWidth);
-      titleMaxWidth = Math.max(titleMaxWidth, minTitleMaxWidth);
-
-      commit('setFontSize', fontSize);
-      commit('setInnerWidth', innerWidth);
-      commit('setInnerHeight', innerHeight);
-      commit('setPreviewWidth', previewWidth);
-      commit('setPreviewPadding', previewPadding);
-      commit('setEditorWidth', editorWidth);
-      commit('setEditorPadding', editorPadding);
-      commit('setTitleMaxWidth', titleMaxWidth);
+      computeStyles();
+      return styles;
     },
   },
 };

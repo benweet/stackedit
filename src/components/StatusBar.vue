@@ -1,8 +1,8 @@
 <template>
   <div class="stat-panel panel no-overflow">
-    <div class="stat-panel__block stat-panel__block--left" v-if="showEditor">
+    <div class="stat-panel__block stat-panel__block--left" v-if="styles.showEditor">
       <span class="stat-panel__block-name">
-        Text
+        Markdown
         <small v-show="textSelection">(selection)</small>
       </span>
       <span v-for="stat in textStats" :key="stat.id">
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 import editorSvc from '../services/editorSvc';
 import editorEngineSvc from '../services/editorEngineSvc';
 import utils from '../services/utils';
@@ -54,9 +54,9 @@ export default {
       new Stat('paragraphs', '\\S.*'),
     ],
   }),
-  computed: mapState('layout', {
-    showEditor: 'showEditor',
-  }),
+  computed: mapGetters('layout', [
+    'styles',
+  ]),
   created() {
     editorSvc.$on('sectionList', () => this.computeText());
     editorSvc.$on('selectionRange', () => this.computeText());

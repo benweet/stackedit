@@ -20,17 +20,15 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   computed: mapState('layout', [
     'showNavigationBar',
-    'showEditor',
     'showSidePreview',
-    'showSideBar',
     'showStatusBar',
   ]),
-  methods: mapActions('layout', [
+  methods: mapMutations('layout', [
     'toggleNavigationBar',
     'toggleEditor',
     'toggleSidePreview',
@@ -61,7 +59,6 @@ export default {
   width: 26px;
   height: 26px;
   padding: 2px;
-  border-radius: 3px;
   margin: 3px 0;
 
   &:hover {

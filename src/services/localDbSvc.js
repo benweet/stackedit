@@ -118,6 +118,7 @@ export default {
       [
         store.state.contents,
         store.state.files,
+        store.state.folders,
       ].forEach(moduleState => Object.assign(storeItemMap, moduleState.itemMap));
       this.connection.createTx((tx) => {
         this.readAll(storeItemMap, tx, () => {

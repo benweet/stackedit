@@ -1,13 +1,13 @@
 <template>
-  <div class="navigation-bar" v-bind:class="{'navigation-bar--editor': showEditor}">
+  <div class="navigation-bar" v-bind:class="{'navigation-bar--editor': styles.showEditor}">
     <div class="navigation-bar__inner navigation-bar__inner--left navigation-bar__inner--button">
       <button class="navigation-bar__button button" @click="toggleExplorer()">
-        <icon-menu></icon-menu>
+        <icon-folder-multiple></icon-folder-multiple>
       </button>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--button">
       <button class="navigation-bar__button button" @click="toggleExplorer()">
-        <icon-settings></icon-settings>
+        <icon-menu></icon-menu>
       </button>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--right flex flex--row">
@@ -15,7 +15,7 @@
         <div class="spinner"></div>
       </div>
       <div class="navigation-bar__title navigation-bar__title--fake text-input"></div>
-      <div class="navigation-bar__title navigation-bar__title--text text-input" v-bind:style="{maxWidth: titleMaxWidth + 'px'}">{{title}}</div>
+      <div class="navigation-bar__title navigation-bar__title--text text-input" v-bind:style="{maxWidth: styles.titleMaxWidth + 'px'}">{{title}}</div>
       <input class="navigation-bar__title navigation-bar__title--input text-input" v-bind:class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" v-bind:style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keyup.enter="submitTitle()" @keyup.esc="submitTitle(true)" v-on:mouseenter="titleHover = true" v-on:mouseleave="titleHover = false" v-model="title">
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--edit-buttons">
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import editorSvc from '../services/editorSvc';
 import animationSvc from '../services/animationSvc';
 
@@ -72,19 +72,18 @@ export default {
     titleHover: false,
   }),
   computed: {
-    ...mapState('layout', {
-      showEditor: 'showEditor',
-      titleMaxWidth: 'titleMaxWidth',
-    }),
+    ...mapGetters('layout', [
+      'styles',
+    ]),
     titleWidth() {
       if (!this.mounted) {
         return 0;
       }
       this.titleFakeElt.textContent = this.title;
-      const width = this.titleFakeElt.getBoundingClientRect().width + 1; // 1px for the caret
-      return width < this.titleMaxWidth
+      const width = this.titleFakeElt.getBoundingClientRect().width + 2; // 2px for the caret
+      return width < this.styles.titleMaxWidth
         ? width
-        : this.titleMaxWidth;
+        : this.styles.titleMaxWidth;
     },
     titleScrolling() {
       const result = this.titleHover && !this.titleFocus;
@@ -106,7 +105,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('layout', [
+    ...mapMutations('layout', [
       'toggleExplorer',
       'toggleSideBar',
     ]),
@@ -120,7 +119,7 @@ export default {
       } else {
         const title = this.title.trim();
         if (title) {
-          this.$store.dispatch('files/patchCurrent', { name: title });
+          this.$store.dispatch('files/patchCurrent', { name: title.slice(0, 250) });
         } else {
           this.title = this.$store.getters['files/current'].name;
         }
@@ -161,6 +160,10 @@ export default {
 
 .navigation-bar__inner--left {
   float: left;
+
+  &.navigation-bar__inner--button {
+    margin-right: 15px;
+  }
 }
 
 .navigation-bar__inner--right {
@@ -176,9 +179,16 @@ export default {
 }
 
 .navigation-bar__button {
-  display: inline-block;
   width: 34px;
   padding: 6px;
+
+  /* prevent from seeing wrapped buttons */
+  margin-bottom: 20px;
+
+  .navigation-bar__inner--button & {
+    padding: 7px;
+    width: 38px;
+  }
 }
 
 .navigation-bar__title,
@@ -186,7 +196,7 @@ export default {
   display: inline-block;
   color: $navbar-color;
   background-color: transparent;
-  font-weight: 400;
+  font-size: 22px;
 }
 
 .navigation-bar__title--input,
@@ -235,7 +245,7 @@ export default {
 }
 
 .navigation-bar__spinner {
-  margin: 10px 5px 0;
+  margin: 10px 5px 0 15px;
   color: rgba(255, 255, 255, 0.33);
 }
 

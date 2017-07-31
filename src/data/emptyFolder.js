@@ -1,7 +1,6 @@
 export default () => ({
   id: null,
-  type: 'file',
+  type: 'folder',
   name: '',
   parentId: null,
-  contentId: null,
 });

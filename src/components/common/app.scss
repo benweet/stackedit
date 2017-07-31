@@ -38,10 +38,11 @@ textarea {
 
 .text-input {
   display: block;
+  font-variant-ligatures: no-common-ligatures;
   width: 100%;
   height: 36px;
   padding: 3px 12px;
-  font-size: 22px;
+  font-size: inherit;
   line-height: 1.5;
   color: inherit;
   background-color: #fff;
@@ -57,7 +58,7 @@ textarea {
   height: 36px;
   padding: 3px 12px;
   margin-bottom: 0;
-  font-size: 22px;
+  font-size: inherit;
   font-weight: 400;
   line-height: 1.4;
   overflow: hidden;
@@ -106,13 +107,3 @@ textarea {
   flex-direction: column;
 }
 
-.side-title {
-  height: 44px;
-  line-height: 44px;
-  padding: 0 10px;
-  background-color: #ccc;
-}
-
-.side-title__text {
-  text-transform: uppercase;
-}

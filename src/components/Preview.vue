@@ -1,19 +1,19 @@
 <template>
   <div class="preview">
-    <div class="preview__inner" :style="{ 'padding-left': previewPadding + 'px', 'padding-right': previewPadding + 'px' }">
+    <div class="preview__inner" :style="{ 'padding-left': styles.previewPadding + 'px', 'padding-right': styles.previewPadding + 'px' }">
     </div>
   </div>
 </template>
 
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 const appUri = `${window.location.protocol}//${window.location.host}`;
 
 export default {
-  computed: mapState('layout', [
-    'previewPadding',
+  computed: mapGetters('layout', [
+    'styles',
   ]),
   mounted() {
     this.$el.addEventListener('click', (evt) => {
@@ -44,5 +44,18 @@ export default {
 .preview__inner {
   margin: 0;
   padding: 0 1035px 360px;
+}
+
+.preview__inner > :first-child {
+  & > h1,
+  & > h2,
+  & > h3,
+  & > h4,
+  & > h5,
+  & > h6 {
+    &:first-child {
+      margin-top: 0;
+    }
+  }
 }
 </style>

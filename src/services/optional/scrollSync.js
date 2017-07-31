@@ -1,5 +1,4 @@
 import store from '../../store';
-import constants from '../constants';
 import animationSvc from '../animationSvc';
 import editorSvc from '../editorSvc';
 
@@ -34,9 +33,7 @@ function throttle(func, wait) {
 }
 
 const doScrollSync = () => {
-  const localSkipAnimation = skipAnimation
-    || !store.state.layout.showSidePreview
-    || !store.state.layout.showEditor;
+  const localSkipAnimation = skipAnimation || !store.getters['layout/styles'].showSidePreview;
   skipAnimation = false;
   if (!store.state.editor.scrollSync || !sectionDescList || sectionDescList.length === 0) {
     return;
@@ -45,12 +42,11 @@ const doScrollSync = () => {
   if (editorScrollTop < 0) {
     editorScrollTop = 0;
   }
-  let previewScrollTop = previewScrollerElt.scrollTop;
+  const previewScrollTop = previewScrollerElt.scrollTop;
   let scrollTo;
   if (isScrollEditor) {
     // Scroll the preview
     isScrollEditor = false;
-    editorScrollTop += constants.scrollOffset;
     sectionDescList.some((sectionDesc) => {
       if (editorScrollTop > sectionDesc.editorDimension.endOffset) {
         return false;
@@ -58,7 +54,7 @@ const doScrollSync = () => {
       const posInSection = (editorScrollTop - sectionDesc.editorDimension.startOffset)
         / (sectionDesc.editorDimension.height || 1);
       scrollTo = (sectionDesc.previewDimension.startOffset
-        + (sectionDesc.previewDimension.height * posInSection)) - constants.scrollOffset;
+        + (sectionDesc.previewDimension.height * posInSection));
       return true;
     });
     scrollTo = Math.min(
@@ -79,10 +75,9 @@ const doScrollSync = () => {
           isPreviewMoving = true;
         });
     }, localSkipAnimation ? 500 : 50);
-  } else if (!store.state.layout.showEditor || isScrollPreview) {
+  } else if (!store.getters['layout/styles'].showEditor || isScrollPreview) {
     // Scroll the editor
     isScrollPreview = false;
-    previewScrollTop += constants.scrollOffset;
     sectionDescList.some((sectionDesc) => {
       if (previewScrollTop > sectionDesc.previewDimension.endOffset) {
         return false;
@@ -90,7 +85,7 @@ const doScrollSync = () => {
       const posInSection = (previewScrollTop - sectionDesc.previewDimension.startOffset)
         / (sectionDesc.previewDimension.height || 1);
       scrollTo = (sectionDesc.editorDimension.startOffset
-        + (sectionDesc.editorDimension.height * posInSection)) - constants.scrollOffset;
+        + (sectionDesc.editorDimension.height * posInSection));
       return true;
     });
     scrollTo = Math.min(
@@ -119,7 +114,7 @@ let timeoutId;
 
 const forceScrollSync = () => {
   if (!isPreviewRefreshing) {
-    doScrollSync(!store.state.layout.showSidePreview);
+    doScrollSync();
   }
 };
 store.watch(state => state.editor.scrollSync, forceScrollSync);
@@ -135,7 +130,7 @@ editorSvc.$on('inited', () => {
     }
     isScrollEditor = true;
     isScrollPreview = false;
-    doScrollSync(!store.state.layout.showSidePreview);
+    doScrollSync();
   });
 
   previewScrollerElt.addEventListener('scroll', () => {
@@ -144,7 +139,7 @@ editorSvc.$on('inited', () => {
     }
     isScrollPreview = true;
     isScrollEditor = false;
-    doScrollSync(!store.state.layout.showSidePreview);
+    doScrollSync();
   });
 });
 
@@ -163,20 +158,27 @@ editorSvc.$on('previewText', () => {
   // Remove height property once the preview as been refreshed
   previewElt.style.removeProperty('height');
   // Assume the user is writing in the editor
-  isScrollEditor = store.state.layout.showEditor;
+  isScrollEditor = store.getters['layout/styles'].showEditor;
   // A preview scrolling event can occur if height is smaller
   timeoutId = setTimeout(() => {
     isPreviewRefreshing = false;
   }, 100);
 });
 
-store.watch(state => state.layout.showSidePreview,
+store.watch(
+  () => store.getters['layout/styles'].showSidePreview,
   (showSidePreview) => {
     if (showSidePreview) {
       isScrollEditor = true;
       isScrollPreview = false;
       skipAnimation = true;
     }
+  });
+
+store.watch(
+  () => store.getters['files/current'].id,
+  () => {
+    skipAnimation = true;
   });
 
 editorSvc.$on('sectionDescMeasuredList', (sectionDescMeasuredList) => {

@@ -1,4 +1,5 @@
 export default () => ({
+  id: null,
   type: 'content',
   state: {},
   text: '\n',

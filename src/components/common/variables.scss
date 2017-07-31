@@ -1,8 +1,8 @@
 $font-family-main: Lato, 'Helvetica Neue', Helvetica, sans-serif;
-$font-family-monospace: Inconsolata, 'Lucida Sans Typewriter', 'Lucida Console', monaco, Courrier, monospace;
+$font-family-monospace: 'Roboto Mono', 'Lucida Sans Typewriter', 'Lucida Console', monaco, Courrier, monospace;
 $line-height-base: 1.67;
 $line-height-title: 1.33;
-$font-size-monospace: 0.95em;
+$font-size-monospace: 0.85em;
 $code-bg: rgba(0, 0, 0, 0.05);
 $code-border-radius: 2px;
 $link-color: #4a80cf;
@@ -10,7 +10,7 @@ $border-radius-base: 2px;
 $hr-color: rgba(128, 128, 128, 0.2);
 $navbar-color: rgba(255, 255, 255, 0.67);
 $navbar-hover-color: #fff;
-$navbar-hover-background: #484848;
+$navbar-hover-background: rgba(255, 255, 255, 0.1);
 
 $editor-color: rgba(0, 0, 0, 0.8);
 $editor-color-light: rgba(0, 0, 0, 0.28);

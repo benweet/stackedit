@@ -1,16 +1,16 @@
 <template>
   <div class="editor">
-    <pre class="editor__inner markdown-highlighting" :style="{ 'padding-left': editorPadding + 'px', 'padding-right': editorPadding + 'px' }"></pre>
+    <pre class="editor__inner markdown-highlighting" :style="{'padding-left': styles.editorPadding + 'px', 'padding-right': styles.editorPadding + 'px'}"></pre>
   </div>
 </template>
 
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
-  computed: mapState('layout', [
-    'editorPadding',
+  computed: mapGetters('layout', [
+    'styles',
   ]),
 };
 </script>

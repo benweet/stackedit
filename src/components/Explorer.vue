@@ -1,20 +1,22 @@
 <template>
   <div class="explorer flex flex--column">
-    <div class="side-title">
-      <button class="side-title__button side-title__button--right button" @click="toggleExplorer(false)">
+    <div class="side-title flex flex--row flex--space-between">
+      <div class="flex flex--row">
+        <button class="side-title__button button" @click="newItem()">
+          <icon-file-plus></icon-file-plus>
+        </button>
+        <button class="side-title__button button" @click="newItem(true)">
+          <icon-folder-plus></icon-folder-plus>
+        </button>
+        <button class="side-title__button button" @click="editItem()">
+          <icon-pen></icon-pen>
+        </button>
+        <button class="side-title__button button" @click="deleteItem()">
+          <icon-delete></icon-delete>
+        </button>
+      </div>
+      <button class="side-title__button button" @click="toggleExplorer(false)">
         <icon-close></icon-close>
-      </button>
-      <button class="side-title__button button" @click="newItem()">
-        <icon-file-plus></icon-file-plus>
-      </button>
-      <button class="side-title__button button" @click="newItem(true)">
-        <icon-folder-plus></icon-folder-plus>
-      </button>
-      <button class="side-title__button button" @click="editItem()">
-        <icon-pen></icon-pen>
-      </button>
-      <button class="side-title__button button" @click="deleteItem()">
-        <icon-delete></icon-delete>
       </button>
     </div>
     <div class="explorer__tree" :class="{'explorer__tree--new-item': !newChildNode.isNil}" tabindex="0">
@@ -24,10 +26,8 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 import ExplorerNode from './ExplorerNode';
-import emptyFile from '../data/emptyFile';
-import emptyFolder from '../data/emptyFolder';
 
 export default {
   components: {
@@ -42,42 +42,53 @@ export default {
     ]),
   },
   methods: {
-    ...mapMutations('explorer', [
-      'setSelectedId',
-    ]),
-    ...mapMutations('layout', [
+    ...mapActions('data', [
       'toggleExplorer',
     ]),
     newItem(isFolder) {
       const parentId = this.$store.getters['explorer/selectedNodeFolder'].item.id;
       this.$store.dispatch('explorer/openNode', parentId);
       this.$store.commit('explorer/setNewItem', {
-        ...isFolder ? emptyFolder() : emptyFile(),
+        type: isFolder ? 'folder' : 'file',
         parentId,
       });
     },
     editItem() {
-      const selectNode = this.$store.getters['explorer/selectedNode'];
-      this.$store.commit('explorer/setEditingId', selectNode.item.id);
+      const selectedNode = this.$store.getters['explorer/selectedNode'];
+      this.$store.commit('explorer/setEditingId', selectedNode.item.id);
     },
     deleteItem() {
-      // const selectNode = this.$store.getters['explorer/selectedNode'];
-      // switch (this.node.item.type) {
-      //   case 'file':
-      //   default:
-      //     this.$store.commit('files/setCurrentId', id);
-      //     break;
-      //   case 'folder':
-      //     this.$store.commit('explorer/toggleOpenNode', id);
-      //     break;
-      // }
+      const selectedNode = this.$store.getters['explorer/selectedNode'];
+      if (selectedNode.item.id) {
+        this.$store.dispatch(selectedNode.isFolder
+          ? 'modal/folderDeletion'
+          : 'modal/fileDeletion',
+          selectedNode.item)
+          .then(() => {
+            if (selectedNode === this.$store.getters['explorer/selectedNode']) {
+              if (selectedNode.isFolder) {
+                const recursiveDelete = (folderNode) => {
+                  folderNode.folders.forEach(recursiveDelete);
+                  folderNode.files.forEach((fileNode) => {
+                    this.$store.commit('files/deleteItem', fileNode.item.id);
+                  });
+                  this.$store.commit('folders/deleteItem', folderNode.item.id);
+                };
+                recursiveDelete(selectedNode);
+              } else {
+                this.$store.commit('files/deleteItem', selectedNode.item.id);
+              }
+            }
+          });
+      }
     },
   },
   created() {
     this.$store.watch(
       () => this.$store.getters['files/current'].id,
       (currentFileId) => {
-        this.setSelectedId(currentFileId);
+        this.$store.commit('explorer/setSelectedId', currentFileId);
+        this.$store.dispatch('explorer/openNode', currentFileId);
       }, {
         immediate: true,
       });
@@ -91,15 +102,27 @@ export default {
   height: 100%;
 }
 
+.explorer__tree {
+  overflow: auto;
+
+  /* fake element */
+  & > .explorer-node > .explorer-node__children > .explorer-node:last-child > .explorer-node__item {
+    height: 20px;
+    cursor: auto;
+  }
+}
+
 .side-title {
   height: 44px;
   line-height: 44px;
-  padding: 4px 8px 0;
+  padding: 4px 5px 0;
   background-color: rgba(0, 0, 0, 0.1);
+  -webkit-flex: none;
+  flex: none;
 }
 
 .side-title__button {
-  width: 36px;
+  width: 38px;
   padding: 6px;
   display: inline-block;
   background-color: transparent;
@@ -112,11 +135,6 @@ export default {
   &:focus,
   &:hover {
     opacity: 1;
-    background-color: rgba(0, 0, 0, 0.1);
   }
-}
-
-.side-title__button--right {
-  float: right;
 }
 </style>

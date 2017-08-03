@@ -12,8 +12,6 @@ function SelectionMgr(editor) {
   this.selectionStart = 0
   this.selectionEnd = 0
   this.cursorCoordinates = {}
-  this.adjustTop = 0
-  this.adjustBottom = 0
 
   this.findContainer = function (offset) {
     var result = cledit.Utils.findContainer(contentElt, offset)
@@ -51,18 +49,14 @@ function SelectionMgr(editor) {
       this.$trigger('cursorCoordinatesChanged', coordinates)
     }
     if (adjustScroll) {
-      var adjustTop, adjustBottom
-      adjustTop = adjustBottom = scrollElt.clientHeight / 2 * editor.options.cursorFocusRatio
-      adjustTop = this.adjustTop || adjustTop
-      adjustBottom = this.adjustBottom || adjustTop
-      if (adjustTop && adjustBottom) {
-        var cursorMinY = scrollElt.scrollTop + adjustTop
-        var cursorMaxY = scrollElt.scrollTop + scrollElt.clientHeight - adjustBottom
-        if (this.cursorCoordinates.top < cursorMinY) {
-          scrollElt.scrollTop += this.cursorCoordinates.top - cursorMinY
-        } else if (this.cursorCoordinates.top + this.cursorCoordinates.height > cursorMaxY) {
-          scrollElt.scrollTop += this.cursorCoordinates.top + this.cursorCoordinates.height - cursorMaxY
-        }
+      var adjustment = scrollElt.clientHeight / 2 * editor.options.getCursorFocusRatio()
+      var cursorTop = this.cursorCoordinates.top + this.cursorCoordinates.height / 2
+      var minScrollTop = cursorTop - adjustment
+      var maxScrollTop = cursorTop + adjustment - scrollElt.clientHeight
+      if (scrollElt.scrollTop > minScrollTop) {
+        scrollElt.scrollTop = minScrollTop
+      } else if (scrollElt.scrollTop < maxScrollTop) {
+        scrollElt.scrollTop = maxScrollTop
       }
     }
     adjustScroll = false

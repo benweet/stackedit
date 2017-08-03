@@ -166,13 +166,11 @@ editorSvc.$on('previewText', () => {
 });
 
 store.watch(
-  () => store.getters['layout/styles'].showSidePreview,
-  (showSidePreview) => {
-    if (showSidePreview) {
-      isScrollEditor = true;
-      isScrollPreview = false;
-      skipAnimation = true;
-    }
+  () => store.getters['layout/styles'],
+  () => {
+    isScrollEditor = true;
+    isScrollPreview = false;
+    skipAnimation = true;
   });
 
 store.watch(

@@ -333,7 +333,9 @@ function cledit(contentElt, scrollElt, windowParam) {
 
   editor.init = function (options) {
     options = ({
-      cursorFocusRatio: 0.2,
+      getCursorFocusRatio: function () {
+        return 0.1
+      },
       sectionHighlighter: function (section) {
         return section.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ')
       },

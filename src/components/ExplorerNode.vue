@@ -1,12 +1,12 @@
 <template>
-  <div class="explorer-node" :class="{'explorer-node--selected': selected, 'explorer-node--open': open}">
-    <div v-if="editing" class="explorer-node__item-editor" :class="['explorer-node__item-editor--' + node.item.type]" :style="{'padding-left': leftPadding}">
+  <div class="explorer-node" :class="{'explorer-node--selected': isSelected, 'explorer-node--open': isOpen, 'explorer-node--drag-target': isDragTargetFolder}" @dragover.prevent @dragenter.stop="setDragTarget(node.item.id)" @dragleave.stop="isDragTarget && setDragTargetId()" @drop.stop="onDrop">
+    <div v-if="isEditing" class="explorer-node__item-editor" :class="['explorer-node__item-editor--' + node.item.type]" :style="{'padding-left': leftPadding}">
       <input type="text" class="text-input" v-focus @blur="submitEdit()" @keyup.enter="submitEdit()" @keyup.esc="submitEdit(true)" v-model="editingNodeName">
     </div>
-    <div v-else-if="!node.isRoot" class="explorer-node__item" :class="['explorer-node__item--' + node.item.type]" :style="{'padding-left': leftPadding}" @click="select(node.item.id)">
+    <div v-else class="explorer-node__item" :class="['explorer-node__item--' + node.item.type]" :style="{'padding-left': leftPadding}" @click="select(node.item.id)" draggable="true" @dragstart.stop="setDragSourceId" @dragend.stop="setDragTargetId()">
       {{node.item.name}}
     </div>
-    <div v-if="node.isFolder && open">
+    <div class="explorer-node__children" v-if="node.isFolder && isOpen">
       <explorer-node v-for="node in node.folders" :key="node.item.id" :node="node" :depth="depth + 1"></explorer-node>
       <div v-if="newChild" class="explorer-node__new-child" :class="['explorer-node__new-child--' + newChild.item.type]" :style="{'padding-left': childLeftPadding}">
         <input type="text" class="text-input" v-focus @blur="submitNewChild()" @keyup.enter="submitNewChild()" @keyup.esc="submitNewChild(true)" v-model.trim="newChildName">
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { mapMutations, mapActions } from 'vuex';
 import utils from '../services/utils';
 import defaultContent from '../data/defaultContent.md';
 
@@ -40,13 +41,19 @@ export default {
     childLeftPadding() {
       return `${(this.depth + 1) * 15}px`;
     },
-    selected() {
+    isSelected() {
       return this.$store.getters['explorer/selectedNode'] === this.node;
     },
-    editing() {
+    isEditing() {
       return this.$store.getters['explorer/editingNode'] === this.node;
     },
-    open() {
+    isDragTarget() {
+      return this.$store.getters['explorer/dragTargetNode'] === this.node;
+    },
+    isDragTargetFolder() {
+      return this.$store.getters['explorer/dragTargetNodeFolder'] === this.node;
+    },
+    isOpen() {
       return this.$store.state.explorer.openNodes[this.node.item.id] || this.node.isRoot;
     },
     newChild() {
@@ -71,17 +78,26 @@ export default {
     },
   },
   methods: {
+    ...mapMutations('explorer', [
+      'setDragTargetId',
+    ]),
+    ...mapActions('explorer', [
+      'setDragTarget',
+    ]),
     select(id) {
-      this.$store.commit('explorer/setSelectedId', id);
-      if (this.node.isFolder) {
-        this.$store.commit('explorer/toggleOpenNode', id);
-      } else {
-        this.$store.commit('files/setCurrentId', id);
+      const node = this.$store.getters['explorer/nodeMap'][id];
+      if (node) {
+        this.$store.commit('explorer/setSelectedId', id);
+        if (node.isFolder) {
+          this.$store.commit('explorer/toggleOpenNode', id);
+        } else {
+          this.$store.commit('files/setCurrentId', id);
+        }
       }
     },
     submitNewChild(cancel) {
       const newChildNode = this.$store.state.explorer.newChildNode;
-      if (!cancel && newChildNode.item.name) {
+      if (!cancel && !newChildNode.isNil && newChildNode.item.name) {
         const id = utils.uid();
         if (newChildNode.isFolder) {
           this.$store.commit('folders/setItem', {
@@ -115,12 +131,43 @@ export default {
       }
       this.$store.commit('explorer/setEditingId', null);
     },
+    setDragSourceId(evt) {
+      const id = this.node.item.id;
+      if (id === 'fake') {
+        evt.preventDefault();
+        return;
+      }
+      this.$store.commit('explorer/setDragSourceId', id);
+    },
+    onDrop() {
+      const sourceNode = this.$store.getters['explorer/dragSourceNode'];
+      const targetNode = this.$store.getters['explorer/dragTargetNodeFolder'];
+      this.setDragTargetId();
+      if (!sourceNode.isNil
+        && !targetNode.isNil
+        && sourceNode.item.id !== targetNode.item.id
+      ) {
+        const patch = {
+          id: sourceNode.item.id,
+          parentId: targetNode.item.id,
+        };
+        if (sourceNode.isFolder) {
+          this.$store.commit('folders/patchItem', patch);
+        } else {
+          this.$store.commit('files/patchItem', patch);
+        }
+      }
+    },
   },
 };
 </script>
 
 <style lang="scss">
 $item-font-size: 14px;
+
+.explorer-node--drag-target {
+  background-color: rgba(0, 128, 255, 0.2);
+}
 
 .explorer-node__item {
   cursor: pointer;

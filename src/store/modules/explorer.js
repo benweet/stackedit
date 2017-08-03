@@ -6,6 +6,14 @@ const setter = propertyName => (state, value) => {
   state[propertyName] = value;
 };
 
+function debounceAction(action, wait) {
+  let timeoutId;
+  return (context) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => action(context), wait);
+  };
+}
+
 const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
 const compare = (node1, node2) => collator.compare(node1.item.name, node2.item.name);
 
@@ -31,12 +39,20 @@ class Node {
 
 const nilFileNode = new Node(emptyFile());
 nilFileNode.isNil = true;
+const fakeFileNode = new Node(emptyFile());
+fakeFileNode.item.id = 'fake';
 
 function getParent(node, getters) {
-  if (node === nilFileNode) {
+  if (node.isNil) {
     return nilFileNode;
   }
   return getters.nodeMap[node.item.parentId] || getters.rootNode;
+}
+
+function getFolder(node, getters) {
+  return node.item.type === 'folder' ?
+    node :
+    getParent(node, getters);
 }
 
 export default {
@@ -44,6 +60,8 @@ export default {
   state: {
     selectedId: null,
     editingId: null,
+    dragSourceId: null,
+    dragTargetId: null,
     newChildNode: nilFileNode,
     openNodes: {},
   },
@@ -70,6 +88,8 @@ export default {
         }
       });
       rootNode.sortChildren();
+      // Add a fake file at the end of the root folder to always allow drag and drop into it.
+      rootNode.files.push(fakeFileNode);
       return {
         nodeMap,
         rootNode,
@@ -79,19 +99,29 @@ export default {
     rootNode: (state, getters) => getters.nodeStructure.rootNode,
     newChildNodeParent: (state, getters) => getParent(state.newChildNode, getters),
     selectedNode: (state, getters) => getters.nodeMap[state.selectedId] || nilFileNode,
-    selectedNodeFolder: (state, getters) => {
-      const selectedNode = getters.selectedNode;
-      return selectedNode.item.type === 'folder'
-        ? selectedNode
-        : getParent(selectedNode, getters);
-    },
+    selectedNodeFolder: (state, getters) => getFolder(getters.selectedNode, getters),
     editingNode: (state, getters) => getters.nodeMap[state.editingId] || nilFileNode,
+    dragSourceNode: (state, getters) => getters.nodeMap[state.dragSourceId] || nilFileNode,
+    dragTargetNode: (state, getters) => {
+      if (state.dragTargetId === 'fake') {
+        return fakeFileNode;
+      }
+      return getters.nodeMap[state.dragTargetId] || nilFileNode;
+    },
+    dragTargetNodeFolder: (state, getters) => {
+      if (state.dragTargetId === 'fake') {
+        return getters.rootNode;
+      }
+      return getFolder(getters.dragTargetNode, getters);
+    },
   },
   mutations: {
     setSelectedId: setter('selectedId'),
     setEditingId: setter('editingId'),
+    setDragSourceId: setter('dragSourceId'),
+    setDragTargetId: setter('dragTargetId'),
     setNewItem(state, item) {
-      state.newChildNode = item ? new Node(item) : nilFileNode;
+      state.newChildNode = item ? new Node(item, item.type === 'folder') : nilFileNode;
     },
     setNewItemName(state, name) {
       state.newChildNode.item.name = name;
@@ -109,6 +139,13 @@ export default {
         }
         dispatch('openNode', node.item.parentId);
       }
+    },
+    openDragTarget: debounceAction(({ state, dispatch }) => {
+      dispatch('openNode', state.dragTargetId);
+    }, 1000),
+    setDragTarget({ state, getters, commit, dispatch }, id) {
+      commit('setDragTargetId', id);
+      dispatch('openDragTarget');
     },
   },
 };

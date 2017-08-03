@@ -74,7 +74,7 @@ export default {
   },
   mounted() {
     const editorElt = this.$el.querySelector('.editor__inner');
-    const previewElt = this.$el.querySelector('.preview__inner');
+    const previewElt = this.$el.querySelector('.preview__inner-2');
     const tocElt = this.$el.querySelector('.toc__inner');
     editorSvc.init(editorElt, previewElt, tocElt);
 
@@ -87,7 +87,7 @@ export default {
       e.preventDefault();
       const y = e.clientY - tocElt.getBoundingClientRect().top;
 
-      this.$store.state.sectionDescList.some((sectionDesc) => {
+      editorSvc.sectionDescList.some((sectionDesc) => {
         if (y >= sectionDesc.tocDimension.endOffset) {
           return false;
         }
@@ -124,6 +124,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import 'common/variables.scss';
+
 .layout {
   position: absolute;
   width: 100%;

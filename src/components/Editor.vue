@@ -1,6 +1,6 @@
 <template>
   <div class="editor">
-    <pre class="editor__inner markdown-highlighting" :style="{'padding-left': styles.editorPadding + 'px', 'padding-right': styles.editorPadding + 'px'}"></pre>
+    <pre class="editor__inner markdown-highlighting" :style="{padding: styles.editorPadding}"></pre>
   </div>
 </template>
 
@@ -26,13 +26,13 @@ export default {
 }
 
 .editor__inner {
+  margin: 0;
   font-family: $font-family-main;
   font-variant-ligatures: no-common-ligatures;
-  margin: 0;
-  padding: 10px 20px 360px 110px;
   white-space: pre-wrap;
   word-break: break-word;
   word-wrap: break-word;
+  caret-color: #000;
 
   * {
     line-height: $line-height-base;

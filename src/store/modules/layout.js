@@ -1,5 +1,7 @@
 const editorMinWidth = 280;
 const minPadding = 20;
+const previewButtonWidth = 55;
+const editorTopPadding = 10;
 const navigationBarSpaceWidth = 30;
 const navigationBarLeftWidth = 570;
 const maxTitleMaxWidth = 800;
@@ -7,10 +9,6 @@ const minTitleMaxWidth = 200;
 
 const setter = propertyName => (state, value) => {
   state[propertyName] = value;
-};
-
-const toggler = propertyName => (state, value) => {
-  state[propertyName] = value === undefined ? !state[propertyName] : value;
 };
 
 export default {
@@ -23,26 +21,12 @@ export default {
       buttonBarWidth: 30,
       statusBarHeight: 20,
     },
-    // Configuration
-    showNavigationBar: true,
-    showEditor: true,
-    showSidePreview: true,
-    showStatusBar: true,
-    showSideBar: false,
-    showExplorer: true,
     editorWidthFactor: 1,
     fontSizeFactor: 1,
-    // Styles
     bodyWidth: 0,
     bodyHeight: 0,
   },
   mutations: {
-    toggleNavigationBar: toggler('showNavigationBar'),
-    toggleEditor: toggler('showEditor'),
-    toggleSidePreview: toggler('showSidePreview'),
-    toggleStatusBar: toggler('showStatusBar'),
-    toggleSideBar: toggler('showSideBar'),
-    toggleExplorer: toggler('showExplorer'),
     setEditorWidthFactor: setter('editorWidthFactor'),
     setFontSizeFactor: setter('fontSizeFactor'),
     updateBodySize: (state) => {
@@ -51,15 +35,16 @@ export default {
     },
   },
   getters: {
-    styles: (state) => {
+    styles: (state, getters, rootState, rootGetters) => {
+      const localSettings = rootGetters['data/localSettings'];
       const styles = {
-        showNavigationBar: !state.showEditor || state.showNavigationBar,
-        showStatusBar: state.showStatusBar,
-        showEditor: state.showEditor,
-        showSidePreview: state.showSidePreview && state.showEditor,
-        showPreview: state.showSidePreview || !state.showEditor,
-        showSideBar: state.showSideBar,
-        showExplorer: state.showExplorer,
+        showNavigationBar: !localSettings.showEditor || localSettings.showNavigationBar,
+        showStatusBar: localSettings.showStatusBar,
+        showEditor: localSettings.showEditor,
+        showSidePreview: localSettings.showSidePreview && localSettings.showEditor,
+        showPreview: localSettings.showSidePreview || !localSettings.showEditor,
+        showSideBar: localSettings.showSideBar,
+        showExplorer: localSettings.showExplorer,
       };
 
       function computeStyles() {
@@ -96,6 +81,7 @@ export default {
 
         if (styles.showSidePreview && doublePanelWidth / 2 < editorMinWidth) {
           styles.showSidePreview = false;
+          styles.showPreview = false;
           computeStyles();
           return;
         }
@@ -118,15 +104,24 @@ export default {
         }
         styles.fontSize *= state.fontSizeFactor;
 
-        const panelWidth = doublePanelWidth / 2;
+        const bottomPadding = Math.floor(styles.innerHeight / 2);
+        const panelWidth = Math.floor(doublePanelWidth / 2);
         styles.previewWidth = styles.showSidePreview ?
           panelWidth :
           styles.innerWidth;
-        styles.previewPadding = Math.max((styles.previewWidth - styles.textWidth) / 2, minPadding);
+        const previewLeftPadding = Math.max(
+          Math.floor((styles.previewWidth - styles.textWidth) / 2), minPadding);
+        let previewRightPadding = previewLeftPadding;
+        if (!styles.showEditor && previewRightPadding < previewButtonWidth) {
+          previewRightPadding = previewButtonWidth;
+        }
+        styles.previewPadding = `${editorTopPadding}px ${previewRightPadding}px ${bottomPadding}px ${previewLeftPadding}px`;
         styles.editorWidth = styles.showSidePreview ?
           panelWidth :
           doublePanelWidth;
-        styles.editorPadding = Math.max((styles.editorWidth - styles.textWidth) / 2, minPadding);
+        const editorSidePadding = Math.max(
+          Math.floor((styles.editorWidth - styles.textWidth) / 2), minPadding);
+        styles.editorPadding = `${editorTopPadding}px ${editorSidePadding}px ${bottomPadding}px`;
 
         styles.titleMaxWidth = styles.innerWidth - navigationBarSpaceWidth;
         if (styles.showEditor) {

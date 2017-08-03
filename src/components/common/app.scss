@@ -58,7 +58,7 @@ textarea {
   height: 36px;
   padding: 3px 12px;
   margin-bottom: 0;
-  font-size: inherit;
+  font-size: 18px;
   font-weight: 400;
   line-height: 1.4;
   overflow: hidden;
@@ -76,14 +76,12 @@ textarea {
   border: 0;
   border-radius: $border-radius-base;
 
-  &:focus {
+  &:active,
+  &:focus,
+  &:hover {
     color: #333;
-    background-color: transparent;
-
-    &:active,
-    & {
-      outline: 0;
-    }
+    background-color: rgba(0, 0, 0, 0.1);
+    outline: 0;
   }
 }
 
@@ -105,5 +103,10 @@ textarea {
   -webkit-box-orient: vertical;
   -webkit-flex-direction: column;
   flex-direction: column;
+}
+
+.flex--space-between {
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
 }
 

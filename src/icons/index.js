@@ -23,6 +23,7 @@ import Delete from './Delete';
 import Close from './Close';
 import FolderMultiple from './FolderMultiple';
 import Pen from './Pen';
+import Target from './Target';
 
 Vue.component('iconFormatBold', FormatBold);
 Vue.component('iconFormatItalic', FormatItalic);
@@ -48,3 +49,4 @@ Vue.component('iconDelete', Delete);
 Vue.component('iconClose', Close);
 Vue.component('iconFolderMultiple', FolderMultiple);
 Vue.component('iconPen', Pen);
+Vue.component('iconTarget', Target);

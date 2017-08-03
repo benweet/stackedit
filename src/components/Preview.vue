@@ -1,22 +1,35 @@
 <template>
   <div class="preview">
-    <div class="preview__inner" :style="{ 'padding-left': styles.previewPadding + 'px', 'padding-right': styles.previewPadding + 'px' }">
+    <div class="preview__inner-1" @click="onClick" @scroll="onScroll">
+      <div class="preview__inner-2" :style="{padding: styles.previewPadding}">
+      </div>
+    </div>
+    <div v-if="!styles.showEditor" class="preview__button-bar">
+      <div class="preview__button" @click="toggleEditor(true)">
+        <icon-pen></icon-pen>
+      </div>
     </div>
   </div>
 </template>
 
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 const appUri = `${window.location.protocol}//${window.location.host}`;
 
 export default {
+  data: () => ({
+    previewTop: true,
+  }),
   computed: mapGetters('layout', [
     'styles',
   ]),
-  mounted() {
-    this.$el.addEventListener('click', (evt) => {
+  methods: {
+    ...mapActions('data', [
+      'toggleEditor',
+    ]),
+    onClick(evt) {
       let elt = evt.target;
       while (elt !== this.$el) {
         if (elt.href && elt.href.match(/^https?:\/\//)
@@ -28,34 +41,53 @@ export default {
         }
         elt = elt.parentNode;
       }
-    });
+    },
+    onScroll(evt) {
+      this.previewTop = evt.target.scrollTop < 10;
+    },
   },
 };
 </script>
 
 <style lang="scss">
-.preview {
+@import 'common/variables.scss';
+
+.preview,
+.preview__inner-1 {
   position: absolute;
   width: 100%;
   height: 100%;
+}
+
+.preview__inner-1 {
   overflow: auto;
 }
 
-.preview__inner {
+.preview__inner-2 {
   margin: 0;
-  padding: 0 1035px 360px;
 }
 
-.preview__inner > :first-child {
-  & > h1,
-  & > h2,
-  & > h3,
-  & > h4,
-  & > h5,
-  & > h6 {
-    &:first-child {
-      margin-top: 0;
-    }
+.preview__inner-2 > :first-child > :first-child {
+  margin-top: 0;
+}
+
+.preview__button-bar {
+  position: absolute;
+  top: 10px;
+  right: 26px;
+}
+
+.preview__button {
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.25);
+  width: 40px;
+  height: 40px;
+  padding: 5px;
+  border-radius: $border-radius-base;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.75);
   }
 }
 </style>

@@ -1,12 +1,12 @@
 <template>
-  <div class="navigation-bar" v-bind:class="{'navigation-bar--editor': styles.showEditor}">
+  <div class="navigation-bar" :class="{'navigation-bar--editor': styles.showEditor}">
     <div class="navigation-bar__inner navigation-bar__inner--left navigation-bar__inner--button">
       <button class="navigation-bar__button button" @click="toggleExplorer()">
         <icon-folder-multiple></icon-folder-multiple>
       </button>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--button">
-      <button class="navigation-bar__button button" @click="toggleExplorer()">
+      <button class="navigation-bar__button button" @click="toggleSideBar()">
         <icon-menu></icon-menu>
       </button>
     </div>
@@ -16,7 +16,7 @@
       </div>
       <div class="navigation-bar__title navigation-bar__title--fake text-input"></div>
       <div class="navigation-bar__title navigation-bar__title--text text-input" v-bind:style="{maxWidth: styles.titleMaxWidth + 'px'}">{{title}}</div>
-      <input class="navigation-bar__title navigation-bar__title--input text-input" v-bind:class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" v-bind:style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keyup.enter="submitTitle()" @keyup.esc="submitTitle(true)" v-on:mouseenter="titleHover = true" v-on:mouseleave="titleHover = false" v-model="title">
+      <input class="navigation-bar__title navigation-bar__title--input text-input" :class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" v-bind:style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keyup.enter="submitTitle()" @keyup.esc="submitTitle(true)" v-on:mouseenter="titleHover = true" v-on:mouseleave="titleHover = false" v-model="title">
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--edit-buttons">
       <button class="navigation-bar__button button" @click="pagedownClick('bold')">
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import editorSvc from '../services/editorSvc';
 import animationSvc from '../services/animationSvc';
 
@@ -105,7 +105,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('layout', [
+    ...mapActions('data', [
       'toggleExplorer',
       'toggleSideBar',
     ]),

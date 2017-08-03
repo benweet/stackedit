@@ -17,12 +17,12 @@ const debounce = cledit.Utils.debounce;
 
 const allowDebounce = (action, wait) => {
   let timeoutId;
-  return (doDebounce = false) => {
+  return (doDebounce = false, ...params) => {
     clearTimeout(timeoutId);
     if (doDebounce) {
-      timeoutId = setTimeout(() => action(), wait);
+      timeoutId = setTimeout(() => action(...params), wait);
     } else {
-      action();
+      action(...params);
     }
   };
 };
@@ -178,6 +178,12 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
         this.parsingCtx = markdownConversionSvc.parseSections(this.converter, text);
         return this.parsingCtx.sections;
       },
+      getCursorFocusRatio: () => {
+        if (store.getters['data/localSettings'].focusMode) {
+          return 1;
+        }
+        return 0.15;
+      },
     };
     editorEngineSvc.initClEditor(options, reinitClEditor);
     editorEngineSvc.clEditor.toggleEditable(true);
@@ -321,10 +327,13 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
   /**
    * Measure the height of each section in editor, preview and toc.
    */
-  measureSectionDimensions: allowDebounce(() => {
+  measureSectionDimensions: allowDebounce((restoreScrollPosition) => {
     if (editorSvc.sectionDescList && this.sectionDescList !== editorSvc.sectionDescMeasuredList) {
       sectionUtils.measureSectionDimensions(editorSvc);
       editorSvc.sectionDescMeasuredList = editorSvc.sectionDescList;
+      if (restoreScrollPosition) {
+        editorSvc.restoreScrollPosition();
+      }
       editorSvc.$emit('sectionDescMeasuredList', editorSvc.sectionDescMeasuredList);
     }
   }, 500),
@@ -538,11 +547,6 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
       input: Object.create(editorEngineSvc.clEditor),
     });
     this.pagedownEditor.run();
-    this.editorElt.addEventListener('focus', () => {
-      // if (clEditorLayoutSvc.currentControl === 'menu') {
-      //   clEditorLayoutSvc.currentControl = undefined
-      // }
-    });
     // state.pagedownEditor.hooks.set('insertLinkDialog', (callback) => {
     //   clEditorSvc.linkDialogCallback = callback
     //   clEditorLayoutSvc.currentControl = 'linkDialog'
@@ -556,14 +560,13 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
     //   return true
     // })
 
-    this.editorElt.addEventListener('scroll', () => this.saveContentState(true));
+    this.editorElt.parentNode.addEventListener('scroll', () => this.saveContentState(true));
 
     const refreshPreview = () => {
       this.convert();
       if (instantPreview) {
         this.refreshPreview();
-        this.measureSectionDimensions();
-        this.restoreScrollPosition();
+        this.measureSectionDimensions(false, true);
       } else {
         setTimeout(() => this.refreshPreview(), 10);
       }
@@ -704,7 +707,7 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
     //   }, 1)
     // })
 
-    // clEditorSvc.setPreviewElt(element[0].querySelector('.preview__inner'))
+    // clEditorSvc.setPreviewElt(element[0].querySelector('.preview__inner-2'))
     // var previewElt = element[0].querySelector('.preview')
     // clEditorSvc.isPreviewTop = previewElt.scrollTop < 10
     // previewElt.addEventListener('scroll', function () {
@@ -742,10 +745,8 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
         immediate: true,
       });
 
-    store.watch(() => `${store.getters['layout/styles'].editorWidth},${store.getters['layout/styles'].previewWidth}`,
-      () => editorSvc.measureSectionDimensions(true));
-    store.watch(() => store.getters['layout/styles'].showSidePreview,
-      showSidePreview => showSidePreview && editorSvc.measureSectionDimensions());
+    store.watch(() => store.getters['layout/styles'],
+      () => editorSvc.measureSectionDimensions(false, true));
   },
 });
 

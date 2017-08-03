@@ -18,7 +18,7 @@ if (window.shimIndexedDB && (!indexedDB || (navigator.userAgent.indexOf('Chrome'
 function getStorePrefixFromType(type) {
   // Return `files` for type `file`, `folders` for type `folder`, etc...
   const prefix = `${type}s`;
-  return store.state[prefix] && prefix;
+  return store.state[prefix] ? prefix : 'data';
 }
 
 const deleteMarkerMaxAge = 1000;
@@ -110,7 +110,7 @@ export default {
   /**
    * Return a promise that is resolved once the synchronization between the store and the localDb
    * is finished. Effectively, open a transaction, then read and apply all changes from the DB
-   * since previous transaction, then write all changes from the store.
+   * since the previous transaction, then write all the changes from the store.
    */
   sync() {
     return new Promise((resolve) => {
@@ -119,10 +119,14 @@ export default {
         store.state.contents,
         store.state.files,
         store.state.folders,
+        store.state.data,
       ].forEach(moduleState => Object.assign(storeItemMap, moduleState.itemMap));
       this.connection.createTx((tx) => {
         this.readAll(storeItemMap, tx, () => {
           this.writeAll(storeItemMap, tx);
+          if (!store.state.ready) {
+            store.commit('setReady');
+          }
           resolve();
         });
       });

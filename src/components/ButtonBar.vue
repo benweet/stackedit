@@ -1,10 +1,10 @@
 <template>
   <div class="button-bar">
     <div class="button-bar__inner button-bar__inner--top">
-      <div class="button-bar__button" :class="{ 'button-bar__button--on': showNavigationBar }" @click="toggleNavigationBar()">
+      <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.showNavigationBar }" @click="toggleNavigationBar()">
         <icon-navigation-bar></icon-navigation-bar>
       </div>
-      <div class="button-bar__button" :class="{ 'button-bar__button--on': showSidePreview }" @click="toggleSidePreview()">
+      <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.showSidePreview }" @click="toggleSidePreview()">
         <icon-side-preview></icon-side-preview>
       </div>
       <div class="button-bar__button" @click="toggleEditor(false)">
@@ -12,7 +12,10 @@
       </div>
     </div>
     <div class="button-bar__inner button-bar__inner--bottom">
-      <div class="button-bar__button" :class="{ 'button-bar__button--on': showStatusBar }" @click="toggleStatusBar()">
+      <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.focusMode }" @click="toggleFocusMode()">
+        <icon-target></icon-target>
+      </div>
+      <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.showStatusBar }" @click="toggleStatusBar()">
         <icon-status-bar></icon-status-bar>
       </div>
     </div>
@@ -20,19 +23,18 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  computed: mapState('layout', [
-    'showNavigationBar',
-    'showSidePreview',
-    'showStatusBar',
+  computed: mapGetters('data', [
+    'localSettings',
   ]),
-  methods: mapMutations('layout', [
+  methods: mapActions('data', [
     'toggleNavigationBar',
     'toggleEditor',
     'toggleSidePreview',
     'toggleStatusBar',
+    'toggleFocusMode',
   ]),
 };
 </script>

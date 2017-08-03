@@ -1,19 +1,30 @@
 <template>
-  <div id="app" class="app" v-bind:class="{'app--loading': loading}">
+  <div v-if="ready" class="app" :class="{'app--loading': loading}">
     <layout></layout>
+    <modal v-if="showModal"></modal>
   </div>
+  <div v-else class="app__spash-screen"></div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Layout from './Layout';
+import Modal from './Modal';
 
 export default {
   components: {
     Layout,
+    Modal,
   },
   computed: {
+    ...mapState([
+      'ready',
+    ]),
     loading() {
       return !this.$store.getters['contents/current'].id;
+    },
+    showModal() {
+      return !!this.$store.state.modal.content;
     },
   },
 };
@@ -21,4 +32,12 @@ export default {
 
 <style lang="scss">
 @import 'common/app';
+
+.app__spash-screen {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: no-repeat center url('../assets/logo.svg');
+  background-color: #fff;
+}
 </style>

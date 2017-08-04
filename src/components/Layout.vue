@@ -152,7 +152,8 @@ export default {
   background-color: #fff;
 }
 
-.layout__panel--explorer {
+.layout__panel--explorer,
+.layout__panel--side-bar {
   background-color: #dadada;
 }
 

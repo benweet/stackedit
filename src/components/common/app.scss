@@ -110,3 +110,33 @@ textarea {
   justify-content: space-between;
 }
 
+.side-title {
+  height: 44px;
+  line-height: 36px;
+  padding: 4px 6px 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  -webkit-flex: none;
+  flex: none;
+}
+
+.side-title__button {
+  width: 38px;
+  padding: 6px;
+  display: inline-block;
+  background-color: transparent;
+  opacity: 0.75;
+
+  /* prevent from seeing wrapped buttons */
+  margin-bottom: 20px;
+
+  &:active,
+  &:focus,
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.side-title__title {
+  text-transform: uppercase;
+  padding: 0 5px;
+}

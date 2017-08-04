@@ -59,7 +59,7 @@ export default {
     },
     deleteItem() {
       const selectedNode = this.$store.getters['explorer/selectedNode'];
-      if (selectedNode.item.id) {
+      if (!selectedNode.isNil) {
         this.$store.dispatch(selectedNode.isFolder
           ? 'modal/folderDeletion'
           : 'modal/fileDeletion',
@@ -109,32 +109,6 @@ export default {
   & > .explorer-node > .explorer-node__children > .explorer-node:last-child > .explorer-node__item {
     height: 20px;
     cursor: auto;
-  }
-}
-
-.side-title {
-  height: 44px;
-  line-height: 44px;
-  padding: 4px 5px 0;
-  background-color: rgba(0, 0, 0, 0.1);
-  -webkit-flex: none;
-  flex: none;
-}
-
-.side-title__button {
-  width: 38px;
-  padding: 6px;
-  display: inline-block;
-  background-color: transparent;
-  opacity: 0.75;
-
-  /* prevent from seeing wrapped buttons */
-  margin-bottom: 20px;
-
-  &:active,
-  &:focus,
-  &:hover {
-    opacity: 1;
   }
 }
 </style>

@@ -55,8 +55,8 @@ textarea {
   color: #333;
   background-color: transparent;
   display: inline-block;
-  height: 36px;
-  padding: 3px 12px;
+  height: auto;
+  padding: 6px 12px;
   margin-bottom: 0;
   font-size: 18px;
   font-weight: 400;
@@ -105,9 +105,19 @@ textarea {
   flex-direction: column;
 }
 
+.flex--center {
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
 .flex--space-between {
   -webkit-justify-content: space-between;
   justify-content: space-between;
+}
+
+.flex--align-center {
+  -webkit-align-items: center;
+  align-items: center;
 }
 
 .side-title {
@@ -121,6 +131,7 @@ textarea {
 
 .side-title__button {
   width: 38px;
+  height: 36px;
   padding: 6px;
   display: inline-block;
   background-color: transparent;

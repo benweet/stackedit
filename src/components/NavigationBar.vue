@@ -180,6 +180,7 @@ export default {
 
 .navigation-bar__button {
   width: 34px;
+  height: 36px;
   padding: 7px;
 
   /* prevent from seeing wrapped buttons */

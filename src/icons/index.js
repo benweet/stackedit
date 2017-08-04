@@ -24,6 +24,10 @@ import Close from './Close';
 import FolderMultiple from './FolderMultiple';
 import Pen from './Pen';
 import Target from './Target';
+import ArrowLeft from './ArrowLeft';
+import HelpCircle from './HelpCircle';
+import Toc from './Toc';
+import Login from './Login';
 
 Vue.component('iconFormatBold', FormatBold);
 Vue.component('iconFormatItalic', FormatItalic);
@@ -50,3 +54,7 @@ Vue.component('iconClose', Close);
 Vue.component('iconFolderMultiple', FolderMultiple);
 Vue.component('iconPen', Pen);
 Vue.component('iconTarget', Target);
+Vue.component('iconArrowLeft', ArrowLeft);
+Vue.component('iconHelpCircle', HelpCircle);
+Vue.component('iconToc', Toc);
+Vue.component('iconLogin', Login);

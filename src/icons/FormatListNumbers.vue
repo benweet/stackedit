@@ -1,5 +1,5 @@
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" class="icon" width="100%" height="100%" viewBox="0 0 24.00 24.00" enable-background="new 0 0 24.00 24.00" xml:space="preserve">
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="100%" height="100%" viewBox="0 0 24.00 24.00">
     <path d="M7.235,13.059l14.825,0l0,-2.118l-14.825,0m0,8.471l14.825,0l0,-2.117l-14.825,0m0,-10.59l14.825,0l0,-2.117l-14.825,0m-5.295,6.353l1.906,0l-1.906,2.224l0,0.953l3.177,0l0,-1.059l-1.906,0l1.906,-2.224l0,-0.953l-3.177,0m1.059,-2.118l1.059,0l0,-4.235l-2.118,0l0,1.059l1.059,0m-1.059,12.707l2.118,0l0,0.529l-1.059,0l0,1.059l1.059,0l0,0.529l-2.118,0l0,1.059l3.177,0l0,-4.235l-3.177,0l0,1.059Z" style="fill-rule:nonzero;"/>
   </svg>
 </template>

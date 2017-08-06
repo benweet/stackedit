@@ -255,6 +255,20 @@ const markdownConversionSvc = {
       htmlSectionDiff,
     };
   },
+
+  /**
+   * Helper to highlight arbitrary markdown
+   * @param {Object} markdown The markdown content to highlight.
+   * @param {Object} converter An optional converter.
+   * @param {Object} grammars Optional grammars.
+   * @returns {Object} The highlighted markdown in HTML format.
+   */
+  highlight(markdown, converter = this.defaultConverter, grammars = this.defaultPrismGrammars) {
+    const parsingCtx = this.parseSections(converter, markdown);
+    return parsingCtx.sections.map(
+      section => Prism.highlight(section.text, grammars[section.data]),
+    ).join('');
+  },
 };
 
 markdownConversionSvc.defaultConverter = markdownConversionSvc.createConverter(defaultOptions);

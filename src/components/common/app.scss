@@ -3,7 +3,7 @@
 @import './markdownHighlighting';
 
 body {
-  background-color: #f3f3f3;
+  background-color: #fff;
   top: 0;
   right: 0;
   bottom: 0;
@@ -110,6 +110,11 @@ textarea {
   justify-content: center;
 }
 
+.flex--end {
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+}
+
 .flex--space-between {
   -webkit-justify-content: space-between;
   justify-content: space-between;
@@ -123,7 +128,7 @@ textarea {
 .side-title {
   height: 44px;
   line-height: 36px;
-  padding: 4px 6px 0;
+  padding: 4px 4px 0;
   background-color: rgba(0, 0, 0, 0.1);
   -webkit-flex: none;
   flex: none;
@@ -136,6 +141,8 @@ textarea {
   display: inline-block;
   background-color: transparent;
   opacity: 0.75;
+  -webkit-flex: none;
+  flex: none;
 
   /* prevent from seeing wrapped buttons */
   margin-bottom: 20px;
@@ -150,4 +157,8 @@ textarea {
 .side-title__title {
   text-transform: uppercase;
   padding: 0 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
 }

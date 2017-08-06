@@ -1,5 +1,5 @@
 Headers
-----------------------------
+---------------------------
 
 # Header 1
 
@@ -9,7 +9,7 @@ Headers
 
 
 Styling
-----------------------------
+---------------------------
 
 *Emphasize* _emphasize_
 
@@ -25,7 +25,7 @@ H~2~O is a liquid.
 
 
 Lists
-----------------------------
+---------------------------
 
 - Item
 * Item
@@ -37,7 +37,7 @@ Lists
 
 
 Links
-----------------------------
+---------------------------
 
 A [link](http://example.com).
 
@@ -45,7 +45,7 @@ An image: ![Alt](img.jpg)
 
 
 Code
-----------------------------
+---------------------------
 
 Some `inline code`.
 
@@ -61,7 +61,7 @@ var foo = 'bar';
 
 
 Tables
-----------------------------
+---------------------------
 
 Item     | Value
 -------- | -----
@@ -76,7 +76,7 @@ Pipe     | $1
 
 
 Definition lists
-----------------------------
+---------------------------
 
 Markdown
 :  Text-to-HTML conversion tool
@@ -86,7 +86,7 @@ Classeur
 :  A Markdown editing app
 
 Footnotes
-----------------------------
+---------------------------
 
 Some text with a footnote.[^1]
 
@@ -94,7 +94,7 @@ Some text with a footnote.[^1]
 
 
 Abbreviations
-----------------------------
+---------------------------
 
 Markdown converts text to HTML.
 
@@ -102,7 +102,7 @@ Markdown converts text to HTML.
 
 
 LaTeX math
-----------------------------
+---------------------------
 
 The Gamma function satisfying $\Gamma(n) = (n-1)!\quad\forall
 n\in\mathbb N$ is via the Euler integral

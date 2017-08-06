@@ -34,10 +34,10 @@ export default {
 @import 'common/app';
 
 .app__spash-screen {
-  position: absolute;
-  width: 100%;
+  margin: 0 auto;
+  max-width: 600px;
   height: 100%;
   background: no-repeat center url('../assets/logo.svg');
-  background-color: #fff;
+  background-size: contain;
 }
 </style>

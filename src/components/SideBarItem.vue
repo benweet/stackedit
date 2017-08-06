@@ -1,6 +1,6 @@
 <template>
-  <div class="menu-item button flex flex--row flex--align-center">
-    <div class="menu-item__icon flex flex--column flex--center">
+  <div class="side-bar-item button flex flex--row flex--align-center">
+    <div class="side-bar-item__icon flex flex--column flex--center">
       <slot name="icon"></slot>
     </div>
     <div class="flex flex--column">
@@ -10,7 +10,7 @@
 </template>
 
 <style lang="scss">
-.menu-item {
+.side-bar-item {
   text-align: left;
   padding: 10px 12px;
   height: auto;
@@ -25,7 +25,7 @@
   }
 }
 
-.menu-item__icon {
+.side-bar-item__icon {
   height: 20px;
   width: 20px;
   margin-right: 12px;

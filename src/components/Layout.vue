@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <div class="layout__panel flex flex--row">
+    <div class="layout__panel flex flex--row" :class="{'flex--end': styles.showSideBar && !styles.showExplorer}">
       <div class="layout__panel layout__panel--explorer" v-show="styles.showExplorer" :style="{ width: constants.explorerWidth + 'px' }">
         <explorer></explorer>
       </div>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import NavigationBar from './NavigationBar';
 import ButtonBar from './ButtonBar';
 import StatusBar from './StatusBar';
@@ -52,10 +52,8 @@ export default {
     Preview,
   },
   computed: {
-    ...mapState('layout', [
-      'constants',
-    ]),
     ...mapGetters('layout', [
+      'constants',
       'styles',
     ]),
   },
@@ -77,48 +75,12 @@ export default {
     const previewElt = this.$el.querySelector('.preview__inner-2');
     const tocElt = this.$el.querySelector('.toc__inner');
     editorSvc.init(editorElt, previewElt, tocElt);
-
-    // TOC click behaviour
-    let isMousedown;
-    function onClick(e) {
-      if (!isMousedown) {
-        return;
-      }
-      e.preventDefault();
-      const y = e.clientY - tocElt.getBoundingClientRect().top;
-
-      editorSvc.sectionDescList.some((sectionDesc) => {
-        if (y >= sectionDesc.tocDimension.endOffset) {
-          return false;
-        }
-        const posInSection = (y - sectionDesc.tocDimension.startOffset)
-          / (sectionDesc.tocDimension.height || 1);
-        const editorScrollTop = sectionDesc.editorDimension.startOffset
-          + (sectionDesc.editorDimension.height * posInSection);
-        editorElt.parentNode.scrollTop = editorScrollTop;
-        const previewScrollTop = sectionDesc.previewDimension.startOffset
-          + (sectionDesc.previewDimension.height * posInSection);
-        previewElt.parentNode.scrollTop = previewScrollTop;
-        return true;
-      });
-    }
-
-    tocElt.addEventListener('mouseup', () => {
-      isMousedown = false;
-    });
-    tocElt.addEventListener('mouseleave', () => {
-      isMousedown = false;
-    });
-    tocElt.addEventListener('mousedown', (e) => {
-      isMousedown = e.which === 1;
-      onClick(e);
-    });
-    tocElt.addEventListener('mousemove', (e) => {
-      onClick(e);
-    });
   },
   destroyed() {
     window.removeEventListener('resize', this.updateStyle);
+    window.removeEventListener('keyup', this.saveSelection);
+    window.removeEventListener('mouseup', this.saveSelection);
+    window.removeEventListener('contextmenu', this.saveSelection);
   },
 };
 </script>
@@ -150,6 +112,11 @@ export default {
 
 .layout__panel--editor {
   background-color: #fff;
+}
+
+.layout__panel--button-bar,
+.layout__panel--preview {
+  background-color: #f3f3f3;
 }
 
 .layout__panel--explorer,

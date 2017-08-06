@@ -93,10 +93,6 @@ class Connection {
     request.onsuccess = () => {
       tx.txCounter = request.result ? request.result.tx : 0;
       tx.txCounter += 1;
-      dbStore.put({
-        id: 'txCounter',
-        tx: tx.txCounter,
-      });
       cb(tx);
     };
   }
@@ -137,45 +133,38 @@ export default {
    * Read and apply all changes from the DB since previous transaction.
    */
   readAll(storeItemMap, tx, cb) {
-    let resetMap;
-
-    // We may have missed some delete markers
-    if (this.lastTx && tx.txCounter - this.lastTx > deleteMarkerMaxAge) {
-      // Delete all dirty store items (user was asleep anyway...)
-      resetMap = true;
-      // And retrieve everything from DB
-      this.lastTx = 0;
-    }
-
+    let lastTx = this.lastTx;
     const dbStore = tx.objectStore(dbStoreName);
     const index = dbStore.index('tx');
     const range = window.IDBKeyRange.lowerBound(this.lastTx, true);
-    const items = [];
-    const itemsToDelete = [];
+    const changes = [];
     index.openCursor(range).onsuccess = (event) => {
       const cursor = event.target.result;
       if (cursor) {
         const item = cursor.value;
-        items.push(item);
-        // Remove old delete markers
-        if (!item.updated && tx.txCounter - item.tx > deleteMarkerMaxAge) {
-          itemsToDelete.push(item);
+        if (item.tx > lastTx) {
+          lastTx = item.tx;
+          if (this.lastTx && item.tx - this.lastTx > deleteMarkerMaxAge) {
+            // We may have missed some delete markers
+            window.location.reload();
+            return;
+          }
         }
+        // Collect change
+        changes.push(item);
         cursor.continue();
       } else {
-        itemsToDelete.forEach((item) => {
-          dbStore.delete(item.id);
+        if (changes.length) {
+          dbg(`Got ${changes.length} changes`);
+        }
+        changes.forEach((item) => {
+          this.readDbItem(item, storeItemMap);
+          // If item is an old delete marker, remove it from the DB
+          if (!item.updated && lastTx - item.tx > deleteMarkerMaxAge) {
+            dbStore.delete(item.id);
+          }
         });
-        if (items.length) {
-          dbg(`Got ${items.length} items`);
-        }
-        if (resetMap) {
-          Object.keys(storeItemMap).forEach((id) => {
-            delete storeItemMap[id];
-          });
-          this.updatedMap = Object.create(null);
-        }
-        items.forEach(item => this.readDbItem(item, storeItemMap));
+        this.lastTx = lastTx;
         cb();
       }
     };
@@ -185,8 +174,8 @@ export default {
    * Write all changes from the store since previous transaction.
    */
   writeAll(storeItemMap, tx) {
-    this.lastTx = tx.txCounter;
     const dbStore = tx.objectStore(dbStoreName);
+    const incrementedTx = this.lastTx + 1;
 
     // Remove deleted store items
     Object.keys(this.updatedMap).forEach((id) => {
@@ -194,9 +183,10 @@ export default {
         // Put a delete marker to notify other tabs
         dbStore.put({
           id,
-          tx: this.lastTx,
+          tx: incrementedTx,
         });
         delete this.updatedMap[id];
+        this.lastTx = incrementedTx; // No need to read what we just wrote
       }
     });
 
@@ -207,11 +197,12 @@ export default {
       if (this.updatedMap[storeItem.id] !== storeItem.updated) {
         const item = {
           ...storeItem,
-          tx: this.lastTx,
+          tx: incrementedTx,
         };
         dbg('Putting 1 item');
         dbStore.put(item);
         this.updatedMap[item.id] = item.updated;
+        this.lastTx = incrementedTx; // No need to read what we just wrote
       }
     });
   },
@@ -220,18 +211,18 @@ export default {
    * Read and apply one DB change.
    */
   readDbItem(dbItem, storeItemMap) {
-    const existingStoreItem = storeItemMap[dbItem.id];
     if (!dbItem.updated) {
+      // DB item is a delete marker
       delete this.updatedMap[dbItem.id];
+      const existingStoreItem = storeItemMap[dbItem.id];
       if (existingStoreItem) {
+        delete storeItemMap[existingStoreItem.id];
+        // Remove object from the store
         const prefix = getStorePrefixFromType(existingStoreItem.type);
-        if (prefix) {
-          delete storeItemMap[existingStoreItem.id];
-          // Remove object from the store
-          store.commit(`${prefix}/deleteItem`, existingStoreItem.id);
-        }
+        store.commit(`${prefix}/deleteItem`, existingStoreItem.id);
       }
     } else if (this.updatedMap[dbItem.id] !== dbItem.updated) {
+      // DB item is different from the corresponding store item
       this.updatedMap[dbItem.id] = dbItem.updated;
       storeItemMap[dbItem.id] = dbItem;
       // Put object in the store

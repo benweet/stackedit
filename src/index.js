@@ -1,10 +1,10 @@
 import Vue from 'vue';
-import App from './components/App';
-import store from './store';
-import './services/syncSvc';
 import './extensions/';
+import './services/syncSvc';
 import './services/optional';
 import './icons/';
+import App from './components/App';
+import store from './store';
 
 Vue.config.productionTip = false;
 

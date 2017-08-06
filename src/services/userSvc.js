@@ -1,4 +1,5 @@
 import utils from './utils';
+import store from '../store';
 
 const googleClientId = '241271498917-t4t7d07qis7oc0ahaskbif3ft6tk63cd.apps.googleusercontent.com';
 const appUri = 'http://localhost:8080/';
@@ -12,8 +13,8 @@ export default {
     const state = utils.uid();
     let authorizeUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
     authorizeUrl = utils.addQueryParam(authorizeUrl, 'client_id', googleClientId);
-    authorizeUrl = utils.addQueryParam(authorizeUrl, 'response_type', 'code');
-    authorizeUrl = utils.addQueryParam(authorizeUrl, 'redirect_uri', `${appUri}oauth2/google/callback`);
+    authorizeUrl = utils.addQueryParam(authorizeUrl, 'response_type', 'token');
+    authorizeUrl = utils.addQueryParam(authorizeUrl, 'redirect_uri', `${appUri}oauth2/callback.html`);
     authorizeUrl = utils.addQueryParam(authorizeUrl, 'state', state);
     if (googleAppsDomain) {
       authorizeUrl = utils.addQueryParam(authorizeUrl, 'scope', 'openid email');
@@ -33,8 +34,14 @@ export default {
           && event.data.state === state
         ) {
           this.cleanOauth2Context();
-          console.log(event.data);
-          resolve();
+          if (event.data.accessToken) {
+            store.dispatch('data/patchTokens', {
+              googleToken: {
+                accessToken: event.data.accessToken,
+              },
+            });
+            resolve();
+          }
         }
       };
       window.addEventListener('message', msgHandler);

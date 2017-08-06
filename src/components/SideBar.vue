@@ -18,6 +18,11 @@
           <div>Sign in with Google</div>
           <span>Have all your files and settings backed up and synced.</span>
         </side-bar-item>
+        <side-bar-item @click.native="signin">
+          <icon-login slot="icon"></icon-login>
+          <div>Sign in on CouchDB</div>
+          <span>Save and collaborate on a CouchDB hosted by you.</span>
+        </side-bar-item>
         <side-bar-item @click.native="panel = 'toc'">
           <icon-toc slot="icon"></icon-toc>
           Table of contents

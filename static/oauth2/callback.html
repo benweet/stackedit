@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script>
+      var state;
+      var accessToken;
+      function parse(search) {
+        (search || '').slice(1).split('&').forEach(function (param) {
+          var split = param.split('=');
+          var key = decodeURIComponent(split.shift());
+          var value = decodeURIComponent(split.join('='));
+          if (key === 'state') {
+            state = value;
+          } else if (key === 'access_token') {
+            accessToken = value;
+          }
+        });
+      }
+      parse(location.search);
+      parse(location.hash);
+      var origin = location.protocol + '//' + location.host;
+      opener.postMessage({
+        state: state,
+        accessToken: accessToken
+      }, origin);
+    </script>
+  </body>
+</html>

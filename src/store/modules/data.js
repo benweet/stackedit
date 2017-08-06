@@ -1,24 +1,28 @@
 import moduleTemplate from './moduleTemplate';
 import defaultLocalSettings from '../../data/defaultLocalSettings';
 
+const empty = (id) => {
+  switch (id) {
+    case 'localSettings':
+      return defaultLocalSettings();
+    default:
+      return { id, updated: 0 };
+  }
+};
+const module = moduleTemplate(empty);
+
+const getter = id => state => state.itemMap[id] || empty(id);
+
 const localSettingsToggler = propertyName => ({ getters, dispatch }, value) => {
   dispatch('patchLocalSettings', {
     [propertyName]: value === undefined ? !getters.localSettings[propertyName] : value,
   });
 };
 
-const module = moduleTemplate((id) => {
-  switch (id) {
-    case 'localSettings':
-      return defaultLocalSettings();
-    default:
-      throw new Error(`Unknown data id ${id}`);
-  }
-});
-
 module.getters = {
   ...module.getters,
-  localSettings: state => state.itemMap.localSettings || defaultLocalSettings(),
+  localSettings: getter('localSettings'),
+  tokens: getter('tokens'),
 };
 
 module.actions = {
@@ -27,6 +31,12 @@ module.actions = {
     commit('patchOrSetItem', {
       ...value,
       id: 'localSettings',
+    });
+  },
+  patchTokens({ getters, commit }, value) {
+    commit('patchOrSetItem', {
+      ...value,
+      id: 'tokens',
     });
   },
   toggleNavigationBar: localSettingsToggler('showNavigationBar'),

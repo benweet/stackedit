@@ -13,16 +13,16 @@
     </div>
     <div class="side-bar__inner">
       <div v-if="panel === 'menu'" class="side-bar__panel side-bar__panel--menu">
-        <side-bar-item @click.native="signin">
+        <side-bar-item v-if="!loginToken" @click.native="signin">
           <icon-login slot="icon"></icon-login>
           <div>Sign in with Google</div>
           <span>Have all your files and settings backed up and synced.</span>
         </side-bar-item>
-        <side-bar-item @click.native="signin">
-          <icon-login slot="icon"></icon-login>
-          <div>Sign in on CouchDB</div>
-          <span>Save and collaborate on a CouchDB hosted by you.</span>
-        </side-bar-item>
+        <!-- <side-bar-item @click.native="signin">
+                <icon-login slot="icon"></icon-login>
+                <div>Sign in on CouchDB</div>
+                <span>Save and collaborate on a CouchDB hosted by you.</span>
+              </side-bar-item> -->
         <side-bar-item @click.native="panel = 'toc'">
           <icon-toc slot="icon"></icon-toc>
           Table of contents
@@ -44,12 +44,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import Toc from './Toc';
 import SideBarItem from './SideBarItem';
 import markdownSample from '../data/markdownSample.md';
 import markdownConversionSvc from '../services/markdownConversionSvc';
-import userSvc from '../services/userSvc';
+import googleHelper from '../services/helpers/googleHelper';
+import syncSvc from '../services/syncSvc';
 
 const panelNames = {
   menu: 'Menu',
@@ -72,6 +73,9 @@ export default {
     markdownSample: markdownConversionSvc.highlight(markdownSample),
   }),
   computed: {
+    ...mapGetters('data', [
+      'loginToken',
+    ]),
     panelName() {
       return panelNames[this.panel];
     },
@@ -81,7 +85,10 @@ export default {
       'toggleSideBar',
     ]),
     signin() {
-      userSvc.signinWithGoogle();
+      googleHelper.startOauth2([
+        'openid',
+        'https://www.googleapis.com/auth/drive.appdata',
+      ]).then(() => syncSvc.requestSync());
     },
   },
 };
@@ -109,6 +116,10 @@ export default {
 
 .side-bar__panel--hidden {
   left: 1000px;
+}
+
+.side-bar__panel--menu {
+  padding: 5px;
 }
 
 .side-bar__panel--help {

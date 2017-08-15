@@ -9,6 +9,7 @@ import layout from './modules/layout';
 import editor from './modules/editor';
 import explorer from './modules/explorer';
 import modal from './modules/modal';
+import queue from './modules/queue';
 
 Vue.use(Vuex);
 
@@ -32,6 +33,7 @@ const store = new Vuex.Store({
     editor,
     explorer,
     modal,
+    queue,
   },
   strict: debug,
   plugins: debug ? [createLogger()] : [],

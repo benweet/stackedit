@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import './extensions/';
-import './services/syncSvc';
 import './services/optional';
 import './icons/';
 import App from './components/App';

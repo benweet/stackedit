@@ -11,7 +11,7 @@
       </button>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--right flex flex--row">
-      <div class="navigation-bar__spinner">
+      <div class="navigation-bar__spinner" v-show="showSpinner">
         <div class="spinner"></div>
       </div>
       <div class="navigation-bar__title navigation-bar__title--fake text-input"></div>
@@ -75,6 +75,9 @@ export default {
     ...mapGetters('layout', [
       'styles',
     ]),
+    showSpinner() {
+      return !this.$store.state.queue.isEmpty;
+    },
     titleWidth() {
       if (!this.mounted) {
         return 0;

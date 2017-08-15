@@ -14,7 +14,6 @@
   text-align: left;
   padding: 10px 12px;
   height: auto;
-  margin: 5px;
 
   span {
     display: inline-block;

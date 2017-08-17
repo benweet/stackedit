@@ -3,5 +3,4 @@ export default () => ({
   type: 'file',
   name: '',
   parentId: null,
-  contentId: null,
 });

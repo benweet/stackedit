@@ -1,9 +1,12 @@
 import createLogger from 'vuex/dist/logger';
 import Vue from 'vue';
 import Vuex from 'vuex';
-import contents from './modules/contents';
-import files from './modules/files';
-import folders from './modules/folders';
+import utils from '../services/utils';
+import contentState from './modules/contentState';
+import syncContent from './modules/syncContent';
+import content from './modules/content';
+import file from './modules/file';
+import folder from './modules/folder';
 import data from './modules/data';
 import layout from './modules/layout';
 import editor from './modules/editor';
@@ -15,9 +18,21 @@ Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== 'production';
 
-const store = new Vuex.Store({
+export default new Vuex.Store({
   state: {
     ready: false,
+  },
+  getters: {
+    allItemMap: (state) => {
+      const result = {};
+      utils.types.forEach(type => Object.assign(result, state[type].itemMap));
+      return result;
+    },
+    syncedItemMap: (state) => {
+      const result = {};
+      ['file', 'folder'].forEach(type => Object.assign(result, state[type].itemMap));
+      return result;
+    },
   },
   mutations: {
     setReady: (state) => {
@@ -25,9 +40,11 @@ const store = new Vuex.Store({
     },
   },
   modules: {
-    contents,
-    files,
-    folders,
+    contentState,
+    syncContent,
+    content,
+    file,
+    folder,
     data,
     layout,
     editor,
@@ -38,5 +55,3 @@ const store = new Vuex.Store({
   strict: debug,
   plugins: debug ? [createLogger()] : [],
 });
-
-export default store;

@@ -68,10 +68,10 @@ export default {
   getters: {
     nodeStructure: (state, getters, rootState, rootGetters) => {
       const nodeMap = {};
-      rootGetters['folders/items'].forEach((item) => {
+      rootGetters['folder/items'].forEach((item) => {
         nodeMap[item.id] = new Node(item, true);
       });
-      rootGetters['files/items'].forEach((item) => {
+      rootGetters['file/items'].forEach((item) => {
         nodeMap[item.id] = new Node(item);
       });
       const rootNode = new Node(emptyFolder(), true, true);

@@ -1,5 +1,4 @@
 export default () => ({
-  id: 'localSettings',
   showNavigationBar: true,
   showEditor: true,
   showSidePreview: true,
@@ -7,5 +6,4 @@ export default () => ({
   showSideBar: false,
   showExplorer: false,
   focusMode: false,
-  updated: 0,
 });

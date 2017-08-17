@@ -108,7 +108,7 @@ export default {
   width: 100%;
   height: 100%;
   color: #fff;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .stat-panel__block {

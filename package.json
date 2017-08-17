@@ -13,7 +13,6 @@
   "dependencies": {
     "bezier-easing": "^1.1.0",
     "clunderscore": "^1.0.3",
-    "debug": "^2.6.8",
     "diff-match-patch": "^1.0.0",
     "indexeddbshim": "^3.0.4",
     "katex": "^0.7.1",

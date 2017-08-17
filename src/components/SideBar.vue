@@ -15,7 +15,7 @@
       <div v-if="panel === 'menu'" class="side-bar__panel side-bar__panel--menu">
         <side-bar-item v-if="!loginToken" @click.native="signin">
           <icon-login slot="icon"></icon-login>
-          <div>Sign in with Google</div>
+          <div>Sign in</div>
           <span>Have all your files and settings backed up and synced.</span>
         </side-bar-item>
         <!-- <side-bar-item @click.native="signin">

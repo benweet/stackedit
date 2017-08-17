@@ -70,13 +70,13 @@ export default {
                 const recursiveDelete = (folderNode) => {
                   folderNode.folders.forEach(recursiveDelete);
                   folderNode.files.forEach((fileNode) => {
-                    this.$store.commit('files/deleteItem', fileNode.item.id);
+                    this.$store.commit('file/deleteItem', fileNode.item.id);
                   });
-                  this.$store.commit('folders/deleteItem', folderNode.item.id);
+                  this.$store.commit('folder/deleteItem', folderNode.item.id);
                 };
                 recursiveDelete(selectedNode);
               } else {
-                this.$store.commit('files/deleteItem', selectedNode.item.id);
+                this.$store.commit('file/deleteItem', selectedNode.item.id);
               }
             }
           });
@@ -85,7 +85,7 @@ export default {
   },
   created() {
     this.$store.watch(
-      () => this.$store.getters['files/current'].id,
+      () => this.$store.getters['file/current'].id,
       (currentFileId) => {
         this.$store.commit('explorer/setSelectedId', currentFileId);
         this.$store.dispatch('explorer/openNode', currentFileId);

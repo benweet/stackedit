@@ -35,7 +35,10 @@ export default {
       if (!state.isSyncRequested) {
         commit('setIsSyncRequested', true);
         const unset = () => commit('setIsSyncRequested', false);
-        dispatch('enqueue', () => cb().then(unset, unset));
+        dispatch('enqueue', () => cb().then(unset, (err) => {
+          unset();
+          throw err;
+        }));
       }
     },
   },

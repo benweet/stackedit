@@ -1,6 +1,6 @@
 import DiffMatchPatch from 'diff-match-patch';
-import cledit from '../cledit/cledit';
-import clDiffUtils from '../cledit/cldiffutils';
+import cledit from '../libs/cledit';
+import clDiffUtils from '../libs/cldiffutils';
 import store from '../store';
 
 let clEditor;
@@ -35,7 +35,7 @@ function getDiscussionMarkers(discussion, discussionId, onMarker) {
 }
 
 function syncDiscussionMarkers() {
-  const content = store.getters['contents/current'];
+  const content = store.getters['content/current'];
   Object.keys(discussionMarkers)
     .forEach((markerKey) => {
       const marker = discussionMarkers[markerKey];
@@ -100,9 +100,9 @@ export default {
     markerIdxMap = Object.create(null);
     discussionMarkers = {};
     clEditor.on('contentChanged', (text) => {
-      store.dispatch('contents/patchCurrent', { text });
+      store.dispatch('content/patchCurrent', { text });
       syncDiscussionMarkers();
-      const content = store.getters['contents/current'];
+      const content = store.getters['content/current'];
       if (!isChangePatch) {
         previousPatchableText = currentPatchableText;
         currentPatchableText = clDiffUtils.makePatchableText(content, markerKeys, markerIdxMap);
@@ -123,7 +123,8 @@ export default {
     clEditor.addMarker(newDiscussionMarker1);
   },
   initClEditor(opts, reinit) {
-    const content = store.getters['contents/current'];
+    const content = store.getters['content/current'];
+    const contentState = store.getters['contentState/current'];
     if (content) {
       const options = Object.assign({}, opts);
 
@@ -136,8 +137,8 @@ export default {
 
       if (reinit) {
         options.content = content.text;
-        options.selectionStart = content.state.selectionStart;
-        options.selectionEnd = content.state.selectionEnd;
+        options.selectionStart = contentState.selectionStart;
+        options.selectionEnd = contentState.selectionEnd;
       }
 
       options.patchHandler = {
@@ -156,7 +157,7 @@ export default {
       this.lastExternalChange = Date.now();
     }
     syncDiscussionMarkers();
-    const content = store.getters['contents/current'];
+    const content = store.getters['content/current'];
     return clEditor.setContent(content.text, isExternal);
   },
 };

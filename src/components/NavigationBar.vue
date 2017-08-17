@@ -122,9 +122,9 @@ export default {
       } else {
         const title = this.title.trim();
         if (title) {
-          this.$store.dispatch('files/patchCurrent', { name: title.slice(0, 250) });
+          this.$store.dispatch('file/patchCurrent', { name: title.slice(0, 250) });
         } else {
-          this.title = this.$store.getters['files/current'].name;
+          this.title = this.$store.getters['file/current'].name;
         }
       }
     },
@@ -137,7 +137,7 @@ export default {
   },
   created() {
     this.$store.watch(
-      () => this.$store.getters['files/current'].name,
+      () => this.$store.getters['file/current'].name,
       (name) => {
         this.title = name;
       }, { immediate: true });

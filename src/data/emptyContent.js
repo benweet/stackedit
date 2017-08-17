@@ -1,10 +1,10 @@
 export default () => ({
   id: null,
   type: 'content',
-  state: {},
   text: '\n',
-  properties: {},
+  properties: '\n',
   discussions: {},
   comments: {},
+  syncLocations: [],
   updated: 0,
 });

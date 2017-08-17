@@ -1,9 +1,7 @@
 import 'babel-polyfill';
 import 'indexeddbshim';
-import debug from 'debug';
+import utils from './utils';
 import store from '../store';
-
-const dbg = debug('stackedit:localDbSvc');
 
 let indexedDB = window.indexedDB;
 const localStorage = window.localStorage;
@@ -13,12 +11,6 @@ const dbStoreName = 'objects';
 // Use the shim on Safari or when indexedDB is not available
 if (window.shimIndexedDB && (!indexedDB || (navigator.userAgent.indexOf('Chrome') === -1 && navigator.userAgent.indexOf('Safari') !== -1))) {
   indexedDB = window.shimIndexedDB;
-}
-
-function getStorePrefixFromType(type) {
-  // Return `files` for type `file`, `folders` for type `folder`, etc...
-  const prefix = `${type}s`;
-  return store.state[prefix] ? prefix : 'data';
 }
 
 const deleteMarkerMaxAge = 1000;
@@ -39,7 +31,7 @@ class Connection {
       localStorage.localDbVersion = this.db.version; // Safari does not support onversionchange
       this.db.onversionchange = () => window.location.reload();
 
-      this.getTxCbs.forEach(cb => this.createTx(cb));
+      this.getTxCbs.forEach(({ onTx, onError }) => this.createTx(onTx, onError));
       this.getTxCbs = null;
     };
 
@@ -68,39 +60,46 @@ class Connection {
   }
 
   /**
-   * Create a connection asynchronously.
+   * Create a transaction asynchronously.
    */
-  createTx(cb) {
+  createTx(onTx, onError) {
+    // If DB is not ready, keep callbacks for later
     if (!this.db) {
-      this.getTxCbs.push(cb);
-      return;
+      return this.getTxCbs.push({ onTx, onError });
     }
 
     // If DB version has changed (Safari support)
     if (parseInt(localStorage.localDbVersion, 10) !== this.db.version) {
-      window.location.reload();
-      return;
+      return window.location.reload();
     }
 
     // Open transaction in read/write will prevent conflict with other tabs
     const tx = this.db.transaction(this.db.objectStoreNames, 'readwrite');
-    tx.onerror = (evt) => {
-      dbg('Rollback transaction', evt);
-    };
-    // Read the current txCounter
-    const dbStore = tx.objectStore(dbStoreName);
-    const request = dbStore.get('txCounter');
-    request.onsuccess = () => {
-      tx.txCounter = request.result ? request.result.tx : 0;
-      tx.txCounter += 1;
-      cb(tx);
-    };
+    tx.onerror = onError;
+
+    return onTx(tx);
+  }
+}
+
+const updatedMap = {};
+utils.types.forEach((type) => {
+  updatedMap[type] = Object.create(null);
+});
+
+function isContentType(type) {
+  switch (type) {
+    case 'content':
+    case 'contentState':
+    case 'syncContent':
+      return true;
+    default:
+      return false;
   }
 }
 
 export default {
   lastTx: 0,
-  updatedMap: Object.create(null),
+  updatedMap,
   connection: new Connection(),
 
   /**
@@ -109,14 +108,8 @@ export default {
    * since the previous transaction, then write all the changes from the store.
    */
   sync() {
-    return new Promise((resolve) => {
-      const storeItemMap = {};
-      [
-        store.state.contents,
-        store.state.files,
-        store.state.folders,
-        store.state.data,
-      ].forEach(moduleState => Object.assign(storeItemMap, moduleState.itemMap));
+    return new Promise((resolve, reject) => {
+      const storeItemMap = { ...store.getters.allItemMap };
       this.connection.createTx((tx) => {
         this.readAll(storeItemMap, tx, () => {
           this.writeAll(storeItemMap, tx);
@@ -125,7 +118,7 @@ export default {
           }
           resolve();
         });
-      });
+      }, () => reject(new Error('Local DB access error.')));
     });
   },
 
@@ -154,9 +147,6 @@ export default {
         changes.push(item);
         cursor.continue();
       } else {
-        if (changes.length) {
-          dbg(`Got ${changes.length} changes`);
-        }
         changes.forEach((item) => {
           this.readDbItem(item, storeItemMap);
           // If item is an old delete marker, remove it from the DB
@@ -178,30 +168,43 @@ export default {
     const incrementedTx = this.lastTx + 1;
 
     // Remove deleted store items
-    Object.keys(this.updatedMap).forEach((id) => {
-      if (!storeItemMap[id]) {
+    Object.keys(this.updatedMap).forEach((type) => {
+      // Remove this type only if file is deleted
+      let checker = cb => id => !storeItemMap[id] && cb(id);
+      if (isContentType(type)) {
+        // For content types, remove only if file is deleted
+        checker = cb => (id) => {
+          if (!storeItemMap[id]) {
+            const [fileId] = id.split('/');
+            if (!store.state.file.itemMap[fileId]) {
+              cb(id);
+            }
+          }
+        };
+      }
+      Object.keys(this.updatedMap[type]).forEach(checker((id) => {
         // Put a delete marker to notify other tabs
         dbStore.put({
           id,
+          type,
           tx: incrementedTx,
         });
-        delete this.updatedMap[id];
+        delete this.updatedMap[type][id];
         this.lastTx = incrementedTx; // No need to read what we just wrote
-      }
+      }));
     });
 
     // Put changes
     Object.keys(storeItemMap).forEach((id) => {
       const storeItem = storeItemMap[id];
       // Store object has changed
-      if (this.updatedMap[storeItem.id] !== storeItem.updated) {
+      if (this.updatedMap[storeItem.type][storeItem.id] !== storeItem.updated) {
         const item = {
           ...storeItem,
           tx: incrementedTx,
         };
-        dbg('Putting 1 item');
         dbStore.put(item);
-        this.updatedMap[item.id] = item.updated;
+        this.updatedMap[item.type][item.id] = item.updated;
         this.lastTx = incrementedTx; // No need to read what we just wrote
       }
     });
@@ -211,23 +214,56 @@ export default {
    * Read and apply one DB change.
    */
   readDbItem(dbItem, storeItemMap) {
+    const existingStoreItem = storeItemMap[dbItem.id];
     if (!dbItem.updated) {
       // DB item is a delete marker
-      delete this.updatedMap[dbItem.id];
-      const existingStoreItem = storeItemMap[dbItem.id];
+      delete this.updatedMap[dbItem.type][dbItem.id];
       if (existingStoreItem) {
+        // Remove item from the store
+        store.commit(`${existingStoreItem.type}/deleteItem`, existingStoreItem.id);
         delete storeItemMap[existingStoreItem.id];
-        // Remove object from the store
-        const prefix = getStorePrefixFromType(existingStoreItem.type);
-        store.commit(`${prefix}/deleteItem`, existingStoreItem.id);
       }
-    } else if (this.updatedMap[dbItem.id] !== dbItem.updated) {
+    } else if (this.updatedMap[dbItem.type][dbItem.id] !== dbItem.updated) {
       // DB item is different from the corresponding store item
-      this.updatedMap[dbItem.id] = dbItem.updated;
-      storeItemMap[dbItem.id] = dbItem;
-      // Put object in the store
-      const prefix = getStorePrefixFromType(dbItem.type);
-      store.commit(`${prefix}/setItem`, dbItem);
+      this.updatedMap[dbItem.type][dbItem.id] = dbItem.updated;
+      // Update content only if it exists in the store
+      if (existingStoreItem || !isContentType(dbItem.type)) {
+        // Put item in the store
+        store.commit(`${dbItem.type}/setItem`, dbItem);
+        storeItemMap[dbItem.id] = dbItem;
+      }
     }
+  },
+
+  /**
+   * Retrieve an item from the DB.
+   */
+  retrieveItem(id) {
+    // Check if item is in the store
+    const itemInStore = store.getters.allItemMap[id];
+    if (itemInStore) {
+      // Use deepCopy to freeze item
+      return Promise.resolve(itemInStore);
+    }
+    return new Promise((resolve, reject) => {
+      // Get the item from DB
+      const onError = () => reject(new Error('Data not available.'));
+      this.connection.createTx((tx) => {
+        const dbStore = tx.objectStore(dbStoreName);
+        const request = dbStore.get(id);
+        request.onsuccess = () => {
+          const dbItem = request.result;
+          if (!dbItem || !dbItem.updated) {
+            onError();
+          } else {
+            this.updatedMap[dbItem.type][dbItem.id] = dbItem.updated;
+            // Put item in the store
+            store.commit(`${dbItem.type}/setItem`, dbItem);
+            // Use deepCopy to freeze item
+            resolve(dbItem);
+          }
+        };
+      }, () => onError());
+    });
   },
 };

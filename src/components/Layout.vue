@@ -127,6 +127,7 @@ export default {
 .layout__panel--button-bar,
 .layout__panel--status-bar,
 .layout__panel--side-bar,
+.layout__panel--explorer,
 .layout__panel--navigation-bar {
   .app--loading & > * {
     opacity: 0.5;

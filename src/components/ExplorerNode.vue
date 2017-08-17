@@ -91,7 +91,7 @@ export default {
         if (node.isFolder) {
           this.$store.commit('explorer/toggleOpenNode', id);
         } else {
-          this.$store.commit('files/setCurrentId', id);
+          this.$store.commit('file/setCurrentId', id);
         }
       }
     },
@@ -100,20 +100,18 @@ export default {
       if (!cancel && !newChildNode.isNil && newChildNode.item.name) {
         const id = utils.uid();
         if (newChildNode.isFolder) {
-          this.$store.commit('folders/setItem', {
+          this.$store.commit('folder/setItem', {
             ...newChildNode.item,
             id,
           });
         } else {
-          const contentId = utils.uid();
-          this.$store.commit('contents/setItem', {
-            id: contentId,
+          this.$store.commit('content/setItem', {
+            id: `${id}/content`,
             text: defaultContent,
           });
-          this.$store.commit('files/setItem', {
+          this.$store.commit('file/setItem', {
             ...newChildNode.item,
             id,
-            contentId,
           });
         }
         this.select(id);
@@ -124,7 +122,7 @@ export default {
       const id = this.$store.getters['explorer/editingNode'].item.id;
       const value = this.editingValue;
       if (!cancel && id && value) {
-        this.$store.commit('files/patchItem', {
+        this.$store.commit('file/patchItem', {
           id,
           name: value.slice(0, 250),
         });
@@ -152,9 +150,9 @@ export default {
           parentId: targetNode.item.id,
         };
         if (sourceNode.isFolder) {
-          this.$store.commit('folders/patchItem', patch);
+          this.$store.commit('folder/patchItem', patch);
         } else {
-          this.$store.commit('files/patchItem', patch);
+          this.$store.commit('file/patchItem', patch);
         }
       }
     },

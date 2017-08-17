@@ -21,7 +21,7 @@ export default {
       'ready',
     ]),
     loading() {
-      return !this.$store.getters['contents/current'].id;
+      return !this.$store.getters['content/current'].id;
     },
     showModal() {
       return !!this.$store.state.modal.content;

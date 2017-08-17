@@ -11,9 +11,8 @@ module.state = {
 module.getters = {
   ...module.getters,
   current: state => state.itemMap[state.currentId] || empty(),
-  itemsByUpdated: (state, getters) =>
-    getters.items.slice().sort((file1, file2) => file2.updated - file1.updated),
-  mostRecent: (state, getters) => getters.itemsByUpdated[0] || empty(),
+  lastOpened: (state, getters, rootState, rootGetters) =>
+    state.itemMap[rootGetters['data/lastOpenedIds'][0]] || getters.items[0] || empty(),
 };
 
 module.mutations = {

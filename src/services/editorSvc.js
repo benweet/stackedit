@@ -2,9 +2,9 @@ import Vue from 'vue';
 import DiffMatchPatch from 'diff-match-patch';
 import Prism from 'prismjs';
 import markdownItPandocRenderer from 'markdown-it-pandoc-renderer';
-import cledit from '../cledit/cledit';
-import pagedown from '../cledit/pagedown';
-import htmlSanitizer from '../cledit/htmlSanitizer';
+import cledit from '../libs/cledit';
+import pagedown from '../libs/pagedown';
+import htmlSanitizer from '../libs/htmlSanitizer';
 import markdownConversionSvc from './markdownConversionSvc';
 import markdownGrammarSvc from './markdownGrammarSvc';
 import sectionUtils from './sectionUtils';
@@ -187,7 +187,7 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
     };
     editorEngineSvc.initClEditor(options, reinitClEditor);
     editorEngineSvc.clEditor.toggleEditable(true);
-    const contentId = store.getters['contents/current'].id;
+    const contentId = store.getters['content/current'].id;
     // Switch off the editor when no content is loaded
     editorEngineSvc.clEditor.toggleEditable(!!contentId);
     reinitClEditor = false;
@@ -361,13 +361,11 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
    */
   saveContentState: allowDebounce(() => {
     const scrollPosition = editorSvc.getScrollPosition() ||
-      store.getters['contents/current'].state.scrollPosition;
-    store.dispatch('contents/patchCurrent', {
-      state: {
-        selectionStart: editorEngineSvc.clEditor.selectionMgr.selectionStart,
-        selectionEnd: editorEngineSvc.clEditor.selectionMgr.selectionEnd,
-        scrollPosition,
-      },
+      store.getters['contentState/current'].scrollPosition;
+    store.dispatch('contentState/patchCurrent', {
+      selectionStart: editorEngineSvc.clEditor.selectionMgr.selectionStart,
+      selectionEnd: editorEngineSvc.clEditor.selectionMgr.selectionEnd,
+      scrollPosition,
     });
   }, 100),
 
@@ -375,7 +373,7 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
    * Restore the scroll position from the current file content state.
    */
   restoreScrollPosition() {
-    const scrollPosition = store.getters['contents/current'].state.scrollPosition;
+    const scrollPosition = store.getters['contentState/current'].scrollPosition;
     if (scrollPosition && this.sectionDescMeasuredList) {
       const objectToScroll = this.getObjectToScroll();
       const sectionDesc = this.sectionDescMeasuredList[scrollPosition.sectionIdx];
@@ -504,10 +502,10 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
 
   // const view = {
   //   file: {
-  //     name: rootState.files.currentFile.name,
+  //     name: rootState.file.currentFile.name,
   //     content: {
-  //       properties: rootState.files.currentFile.content.properties,
-  //       text: rootState.files.currentFile.content.text,
+  //       properties: rootState.file.currentFile.content.properties,
+  //       text: rootState.file.currentFile.content.text,
   //       html: state.previewHtml,
   //       toc,
   //     },
@@ -720,10 +718,10 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
 
     // Watch file content properties changes
     store.watch(
-      () => store.getters['contents/current'].properties,
+      () => store.getters['content/current'].properties,
       (properties) => {
         // Track ID changes at the same time
-        const contentId = store.getters['contents/current'].id;
+        const contentId = store.getters['content/current'].id;
         let initClEditor = false;
         if (contentId !== lastContentId) {
           reinitClEditor = true;

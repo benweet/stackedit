@@ -174,7 +174,7 @@ store.watch(
   });
 
 store.watch(
-  () => store.getters['files/current'].id,
+  () => store.getters['file/current'].id,
   () => {
     skipAnimation = true;
   });

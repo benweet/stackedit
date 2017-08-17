@@ -31,75 +31,17 @@ const request = (googleToken, options) => utils.request({
   },
 });
 
-const saveFile = (googleToken, data, appData) => {
-  const options = {
-    method: 'POST',
-    url: 'https://www.googleapis.com/upload/drive/v2/files',
-    headers: {},
-  };
-  if (appData) {
-    options.method = 'PUT';
-    options.url = `https://www.googleapis.com/drive/v2/files/${appData.id}`;
-    options.headers['if-match'] = appData.etag;
-  }
-  const metadata = {
-    title: data.name,
-    parents: [{
-      id: 'appDataFolder',
-    }],
-    properties: Object.keys(data)
-      .filter(key => key !== 'name' && key !== 'tx')
-      .map(key => ({
-        key,
-        value: JSON.stringify(data[key]),
-        visibility: 'PUBLIC',
-      })),
-  };
-  const media = null;
-  const boundary = `-------${utils.uid()}`;
-  const delimiter = `\r\n--${boundary}\r\n`;
-  const closeDelimiter = `\r\n--${boundary}--`;
-  if (media) {
-    let multipartRequestBody = '';
-    multipartRequestBody += delimiter;
-    multipartRequestBody += 'Content-Type: application/json\r\n\r\n';
-    multipartRequestBody += JSON.stringify(metadata);
-    multipartRequestBody += delimiter;
-    multipartRequestBody += 'Content-Type: application/json\r\n\r\n';
-    multipartRequestBody += JSON.stringify(media);
-    multipartRequestBody += closeDelimiter;
-    return request(googleToken, {
-      ...options,
-      params: {
-        uploadType: 'multipart',
-      },
-      headers: {
-        ...options.headers,
-        'Content-Type': `multipart/mixed; boundary="${boundary}"`,
-      },
-      body: multipartRequestBody,
-    });
-  }
-  return request(googleToken, {
-    ...options,
-    body: metadata,
-  }).then(res => ({
-    id: res.body.id,
-    etag: res.body.etag,
-  }));
-};
-
 export default {
   startOauth2(scopes, sub = null, silent = false) {
     return utils.startOauth2(
-        'https://accounts.google.com/o/oauth2/v2/auth', {
-          client_id: clientId,
-          response_type: 'token',
-          scope: scopes.join(' '),
-          hd: appsDomain,
-          login_hint: sub,
-          prompt: silent ? 'none' : null,
-        }, silent)
+      'https://accounts.google.com/o/oauth2/v2/auth', {
+        client_id: clientId,
+        response_type: 'token',
+        scope: scopes.join(' '),
+        hd: appsDomain,
+        login_hint: sub,
+        prompt: silent ? 'none' : null,
+      }, silent)
       // Call the tokeninfo endpoint
       .then(data => utils.request({
         method: 'POST',
@@ -137,9 +79,9 @@ export default {
           if (!sub) {
             throw new Error('Google account already linked.');
           }
-          // Add isLogin and lastChangeId to googleToken
+          // Add isLogin and nextPageToken to googleToken
           googleToken.isLogin = existingToken.isLogin;
-          googleToken.lastChangeId = existingToken.lastChangeId;
+          googleToken.nextPageToken = existingToken.nextPageToken;
         }
         // Add googleToken to googleTokens
         store.dispatch('data/setGoogleToken', googleToken);
@@ -177,48 +119,122 @@ export default {
     let changes = [];
     return this.refreshToken(['https://www.googleapis.com/auth/drive.appdata'], googleToken)
       .then((refreshedToken) => {
-        const lastChangeId = refreshedToken.lastChangeId || 0;
-        const getPage = pageToken => request(refreshedToken, {
+        const getPage = (pageToken = '1') => request(refreshedToken, {
           method: 'GET',
-          url: 'https://www.googleapis.com/drive/v2/changes',
+          url: 'https://www.googleapis.com/drive/v3/changes',
           params: {
             pageToken,
-            startChangeId: pageToken || !lastChangeId ? null : lastChangeId + 1,
             spaces: 'appDataFolder',
-            fields: 'nextPageToken,items(deleted,file/id,file/etag,file/title,file/properties(key,value))',
+            pageSize: 1000,
+            fields: 'nextPageToken,newStartPageToken,changes(fileId,removed,file/name,file/properties)',
           },
         }).then((res) => {
-          changes = changes.concat(res.body.items);
+          changes = changes.concat(res.body.changes.filter(item => item.fileId));
           if (res.body.nextPageToken) {
             return getPage(res.body.nextPageToken);
           }
+          changes.forEach((change) => {
+            if (change.file) {
+              change.item = {
+                name: change.file.name,
+              };
+              if (change.file.properties) {
+                Object.keys(change.file.properties).forEach((key) => {
+                  change.item[key] = JSON.parse(change.file.properties[key]);
+                });
+              }
+              change.syncData = {
+                id: change.fileId,
+                itemId: change.item.id,
+                updated: change.item.updated,
+              };
+              change.file = undefined;
+            }
+          });
+          changes.nextPageToken = res.body.newStartPageToken;
           return changes;
         });
 
-        return getPage();
+        return getPage(refreshedToken.nextPageToken);
       });
   },
-  updateLastChangeId(googleToken, changes) {
-    const refreshedToken = store.getters['data/googleTokens'][googleToken.sub];
-    let lastChangeId = refreshedToken.lastChangeId || 0;
-    changes.forEach((change) => {
-      if (change.id > lastChangeId) {
-        lastChangeId = change.id;
-      }
-    });
-    if (lastChangeId !== refreshedToken.lastChangeId) {
+  updateNextPageToken(googleToken, changes) {
+    const lastToken = store.getters['data/googleTokens'][googleToken.sub];
+    if (changes.nextPageToken !== lastToken.nextPageToken) {
       store.dispatch('data/setGoogleToken', {
-        ...refreshedToken,
-        lastChangeId,
+        ...lastToken,
+        nextPageToken: changes.nextPageToken,
       });
     }
   },
-  insertData(googleToken, data) {
+  saveItem(googleToken, item, syncData, ifNotTooLate = cb => res => cb(res)) {
     return this.refreshToken(['https://www.googleapis.com/auth/drive.appdata'], googleToken)
-      .then(refreshedToken => saveFile(refreshedToken, data));
+      // Refreshing a token can take a while if an oauth window pops up, so check if it's too late
+      .then(ifNotTooLate((refreshedToken) => {
+        const options = {
+          method: 'POST',
+          url: 'https://www.googleapis.com/drive/v3/files',
+        };
+        const metadata = {
+          name: item.name,
+          properties: {},
+        };
+        if (syncData) {
+          options.method = 'PATCH';
+          options.url = `https://www.googleapis.com/drive/v3/files/${syncData.id}`;
+        } else {
+          // Parents field is not patchable
+          metadata.parents = ['appDataFolder'];
+        }
+        Object.keys(item).forEach((key) => {
+          if (key !== 'name' && key !== 'tx') {
+            metadata.properties[key] = JSON.stringify(item[key]);
+          }
+        });
+        const media = null;
+        const boundary = `-------${utils.uid()}`;
+        const delimiter = `\r\n--${boundary}\r\n`;
+        const closeDelimiter = `\r\n--${boundary}--`;
+        if (media) {
+          let multipartRequestBody = '';
+          multipartRequestBody += delimiter;
+          multipartRequestBody += 'Content-Type: application/json\r\n\r\n';
+          multipartRequestBody += JSON.stringify(metadata);
+          multipartRequestBody += delimiter;
+          multipartRequestBody += 'Content-Type: application/json\r\n\r\n';
+          multipartRequestBody += JSON.stringify(media);
+          multipartRequestBody += closeDelimiter;
+          options.url = options.url.replace(
+            'https://www.googleapis.com/',
+            'https://www.googleapis.com/upload/');
+          return request(refreshedToken, {
+            ...options,
+            params: {
+              uploadType: 'multipart',
+            },
+            headers: {
+              'Content-Type': `multipart/mixed; boundary="${boundary}"`,
+            },
+            body: multipartRequestBody,
+          });
+        }
+        return request(refreshedToken, {
+          ...options,
+          body: metadata,
+        }).then(res => ({
+          // Build sync data
+          id: res.body.id,
+          itemId: item.id,
+          updated: item.updated,
+        }));
+      }));
   },
-  updateData(googleToken, data, appData) {
+  removeItem(googleToken, syncData, ifNotTooLate = cb => res => cb(res)) {
     return this.refreshToken(['https://www.googleapis.com/auth/drive.appdata'], googleToken)
-      .then(refreshedToken => saveFile(refreshedToken, data, appData));
+      // Refreshing a token can take a while if an oauth window pops up, so check if it's too late
+      .then(ifNotTooLate(refreshedToken => request(refreshedToken, {
+        method: 'DELETE',
+        url: `https://www.googleapis.com/drive/v3/files/${syncData.id}`,
+      })).then(() => syncData));
   },
 };

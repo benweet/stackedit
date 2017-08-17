@@ -4,7 +4,7 @@ const alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
 const radix = alphabet.length;
 const array = new Uint32Array(20);
 
-// For addQueryParam()
+// For addQueryParams()
 const urlParser = window.document.createElement('a');
 
 // For loadScript()
@@ -14,16 +14,23 @@ const scriptLoadingPromises = Object.create(null);
 const origin = `${location.protocol}//${location.host}`;
 
 export default {
+  types: ['contentState', 'syncContent', 'content', 'file', 'folder', 'data'],
+  deepCopy(obj) {
+    return obj === undefined ? obj : JSON.parse(JSON.stringify(obj));
+  },
   uid() {
     crypto.getRandomValues(array);
     return array.cl_map(value => alphabet[value % radix]).join('');
   },
-  setInterval(func, interval) {
-    const randomizedInterval = Math.floor((1 + (Math.random() * 0.1)) * interval);
-    return setInterval(() => func(), randomizedInterval);
+  randomize(value) {
+    return Math.floor((1 + (Math.random() * 0.2)) * value);
   },
-  addQueryParam(url, key, value) {
-    if (!url || !key || value == null) {
+  setInterval(func, interval) {
+    return setInterval(() => func(), this.randomize(interval));
+  },
+  addQueryParams(url = '', params = {}) {
+    const keys = Object.keys(params).filter(key => params[key] != null);
+    if (!keys.length) {
       return url;
     }
     urlParser.href = url;
@@ -32,7 +39,7 @@ export default {
     } else {
       urlParser.search = '?';
     }
-    urlParser.search += `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+    urlParser.search += keys.map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
     return urlParser.href;
   },
   loadScript(url) {
@@ -57,10 +64,7 @@ export default {
     const state = this.uid();
     params.state = state;
     params.redirect_uri = `${origin}/oauth2/callback.html`;
-    let authorizeUrl = url;
-    Object.keys(params).forEach((key) => {
-      authorizeUrl = this.addQueryParam(authorizeUrl, key, params[key]);
-    });
+    const authorizeUrl = this.addQueryParams(url, params);
     if (silent) {
       // Use an iframe as wnd for silent mode
       oauth2Context.iframeElt = document.createElement('iframe');
@@ -92,7 +96,7 @@ export default {
         }
         clearTimeout(oauth2Context.closeTimeout);
         window.removeEventListener('message', oauth2Context.msgHandler);
-        oauth2Context.clean = () => {}; // Prevent from cleaning several times
+        oauth2Context.clean = () => { }; // Prevent from cleaning several times
         if (errorMsg) {
           reject(new Error(errorMsg));
         }
@@ -193,32 +197,26 @@ export default {
         }, timeout);
 
         // Add query params to URL
-        let url = config.url || '';
-        if (config.params) {
-          Object.keys(config.params).forEach((key) => {
-            url = this.addQueryParam(url, key, config.params[key]);
-          });
-        }
-
+        const url = this.addQueryParams(config.url, config.params);
         xhr.open(config.method, url);
         Object.keys(config.headers).forEach((key) => {
           xhr.setRequestHeader(key, config.headers[key]);
         });
         xhr.send(config.body ? JSON.stringify(config.body) : null);
       })
-      .catch((err) => {
-        // Try again later in case of retriable error
-        if (isRetriable(err) && retryAfter < maxRetryAfter) {
-          return new Promise(
+        .catch((err) => {
+          // Try again later in case of retriable error
+          if (isRetriable(err) && retryAfter < maxRetryAfter) {
+            return new Promise(
               (resolve) => {
                 setTimeout(resolve, retryAfter);
                 // Exponential backoff
                 retryAfter *= 2;
               })
-            .then(attempt);
-        }
-        throw err;
-      });
+              .then(attempt);
+          }
+          throw err;
+        });
 
     return attempt();
   },

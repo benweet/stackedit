@@ -5,8 +5,6 @@ import utils from './utils';
 import userActivitySvc from './userActivitySvc';
 import gdriveAppDataProvider from './providers/gdriveAppDataProvider';
 import googleHelper from './helpers/googleHelper';
-import emptyContent from '../data/emptyContent';
-import emptySyncContent from '../data/emptySyncContent';
 
 const lastSyncActivityKey = 'lastSyncActivity';
 let lastSyncActivity;
@@ -36,6 +34,7 @@ function setLastSyncActivity() {
 
 function getSyncProvider(syncLocation) {
   switch (syncLocation.provider) {
+    case 'gdriveAppData':
     default:
       return gdriveAppDataProvider;
   }
@@ -43,10 +42,20 @@ function getSyncProvider(syncLocation) {
 
 function getSyncToken(syncLocation) {
   switch (syncLocation.provider) {
+    case 'gdriveAppData':
     default:
       return store.getters['data/loginToken'];
   }
 }
+
+const loader = type => fileId => localDbSvc.loadItem(`${fileId}/${type}`)
+  // Item does not exist, create it
+  .catch(() => store.commit(`${type}/setItem`, {
+    id: `${fileId}/${type}`,
+  }));
+const loadContent = loader('content');
+const loadSyncContent = loader('syncContent');
+const loadContentState = loader('contentState');
 
 function applyChanges(changes) {
   const storeItemMap = { ...store.getters.allItemMap };
@@ -164,23 +173,51 @@ function sync() {
         const existingSyncData = store.getters['data/syncDataByItemId'][contentId];
       });
 
-      const syncOneContent = fileId => localDbSvc.retrieveItem(`${fileId}/syncContent`)
-        .catch(() => ({ ...emptySyncContent(), id: `${fileId}/syncContent` }))
-        .then(syncContent => localDbSvc.retrieveItem(`${fileId}/content`)
-          .catch(() => ({ ...emptyContent(), id: `${fileId}/content` }))
-          .then((content) => {
-            const syncOneContentLocation = (syncLocation) => {
-              return Promise.resolve()
-                .then(() => {
-                  const provider = getSyncProvider(syncLocation);
-                  const token = getSyncToken(syncLocation);
-                  return provider && token && provider.downloadContent()
-                });
-            };
+      const syncOneContent = fileId => loadSyncContent(fileId)
+        .then(() => loadContent(fileId))
+        .then(() => {
+          const getContent = () => store.state.content.itemMap[`${fileId}/content`];
+          const getSyncContent = () => store.state.content.itemMap[`${fileId}/syncContent`];
 
-            const syncLocations = [{ provider: null }, ...content.syncLocations];
-            return syncOneContentLocation(syncLocations[0]);
-          }));
+          const syncLocations = [
+            { id: 'main', provider: 'gdriveAppData' },
+            ...getContent().syncLocations.filter(syncLocation => getSyncToken(syncLocation),
+          )];
+          const downloadedLocations = {};
+
+          const syncOneContentLocation = () => {
+            let result;
+            syncLocations.some((syncLocation) => {
+              if (!downloadedLocations[syncLocation.id]) {
+                const provider = getSyncProvider(syncLocation);
+                const token = getSyncToken(syncLocation);
+                result = provider && token && provider.downloadContent(fileId, syncLocation)
+                  .then((content) => {
+                    const syncContent = getSyncContent();
+                    const syncLocationData = syncContent.syncLocationData[syncLocation.id] || {
+                      history: [],
+                    };
+                    let lastMergedContent;
+                    syncLocationData.history.some((updated) => {
+                      if (content.history.indexOf(updated) !== -1) {
+
+                      }
+                      return lastMergedContent;
+                    });
+                  })
+                  .then(() => syncOneContentLocation());
+              }
+              return result;
+            });
+            return result;
+          };
+
+          return syncOneContentLocation();
+        })
+        .then(() => localDbSvc.unloadContents(), (err) => {
+          localDbSvc.unloadContents();
+          throw err;
+        });
 
       // Called until no content to save
       const saveNextContent = ifNotTooLate(() => {
@@ -189,7 +226,7 @@ function sync() {
           const updated = getContentUpdated(contentId);
           const existingSyncData = store.getters['data/syncDataByItemId'][contentId];
           if (!existingSyncData || existingSyncData.updated !== updated) {
-            saveContentPromise = localDbSvc.retrieveItem(contentId)
+            saveContentPromise = localDbSvc.loadItem(contentId)
               .then(content => googleHelper.saveItem(
                 googleToken,
                 // Use deepCopy to freeze objects
@@ -299,19 +336,11 @@ localDbSvc.sync()
         store.dispatch('data/setLastOpenedId', currentFile.id);
         return Promise.resolve()
           // Load contentState from DB
-          .then(() => localDbSvc.retrieveItem(`${currentFile.id}/contentState`)
-            // contentState does not exist, create it
-            .catch(() => store.commit('contentState/setItem', {
-              id: `${currentFile.id}/contentState`,
-            })))
+          .then(() => loadContentState(currentFile.id))
           // Load syncContent from DB
-          .then(() => localDbSvc.retrieveItem(`${currentFile.id}/syncContent`)
-            // syncContent does not exist, create it
-            .catch(() => store.commit('syncContent/setItem', {
-              id: `${currentFile.id}/syncContent`,
-            })))
+          .then(() => loadSyncContent(currentFile.id))
           // Load content from DB
-          .then(() => localDbSvc.retrieveItem(`${currentFile.id}/content`));
+          .then(() => localDbSvc.loadItem(`${currentFile.id}/content`));
       }),
     {
       immediate: true,
@@ -319,6 +348,14 @@ localDbSvc.sync()
 
 // Sync local DB periodically
 utils.setInterval(() => localDbSvc.sync(), 1000);
+
+// Unload contents from memory periodically
+utils.setInterval(() => {
+  // Wait for sync and publish to finish
+  if (store.state.queue.isEmpty) {
+    localDbSvc.unloadContents();
+  }
+}, 5000);
 
 export default {
   isSyncAvailable,

@@ -86,16 +86,11 @@ utils.types.forEach((type) => {
   updatedMap[type] = Object.create(null);
 });
 
-function isContentType(type) {
-  switch (type) {
-    case 'content':
-    case 'contentState':
-    case 'syncContent':
-      return true;
-    default:
-      return false;
-  }
-}
+const contentTypes = {
+  content: true,
+  contentState: true,
+  syncContent: true,
+};
 
 export default {
   lastTx: 0,
@@ -171,8 +166,8 @@ export default {
     Object.keys(this.updatedMap).forEach((type) => {
       // Remove this type only if file is deleted
       let checker = cb => id => !storeItemMap[id] && cb(id);
-      if (isContentType(type)) {
-        // For content types, remove only if file is deleted
+      if (contentTypes[type]) {
+        // For content types, remove item only if file is deleted
         checker = cb => (id) => {
           if (!storeItemMap[id]) {
             const [fileId] = id.split('/');
@@ -227,7 +222,7 @@ export default {
       // DB item is different from the corresponding store item
       this.updatedMap[dbItem.type][dbItem.id] = dbItem.updated;
       // Update content only if it exists in the store
-      if (existingStoreItem || !isContentType(dbItem.type)) {
+      if (existingStoreItem || !contentTypes[dbItem.type]) {
         // Put item in the store
         store.commit(`${dbItem.type}/setItem`, dbItem);
         storeItemMap[dbItem.id] = dbItem;
@@ -236,9 +231,9 @@ export default {
   },
 
   /**
-   * Retrieve an item from the DB.
+   * Retrieve an item from the DB and put it in the store.
    */
-  retrieveItem(id) {
+  loadItem(id) {
     // Check if item is in the store
     const itemInStore = store.getters.allItemMap[id];
     if (itemInStore) {
@@ -259,11 +254,30 @@ export default {
             this.updatedMap[dbItem.type][dbItem.id] = dbItem.updated;
             // Put item in the store
             store.commit(`${dbItem.type}/setItem`, dbItem);
-            // Use deepCopy to freeze item
             resolve(dbItem);
           }
         };
       }, () => onError());
+    });
+  },
+
+  /**
+   * Unload from the store contents that haven't been opened recently
+   */
+  unloadContents() {
+    const lastOpenedFileIds = store.getters['data/lastOpenedIds']
+      .slice(0, 10).reduce((result, id) => {
+        result[id] = true;
+        return result;
+      }, {});
+    Object.keys(contentTypes).forEach((type) => {
+      store.getters(`${type}/items`).forEach((item) => {
+        const [fileId] = item.id.split('/');
+        if (!lastOpenedFileIds[fileId]) {
+          // Remove item from the store
+          store.commit(`${type}/deleteItem`, item.id);
+        }
+      });
     });
   },
 };

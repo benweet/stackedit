@@ -25,13 +25,13 @@ const patcher = id => ({ state, commit }, data) => {
     },
   });
 };
-const localSettingsToggler = propertyName => ({ getters, dispatch }, value) => dispatch('patchLocalSettings', {
-  [propertyName]: value === undefined ? !getters.localSettings[propertyName] : value,
-});
 
 // Local settings
 module.getters.localSettings = getter('localSettings');
 module.actions.patchLocalSettings = patcher('localSettings');
+const localSettingsToggler = propertyName => ({ getters, dispatch }, value) => dispatch('patchLocalSettings', {
+  [propertyName]: value === undefined ? !getters.localSettings[propertyName] : value,
+});
 module.actions.toggleNavigationBar = localSettingsToggler('showNavigationBar');
 module.actions.toggleEditor = localSettingsToggler('showEditor');
 module.actions.toggleSidePreview = localSettingsToggler('showSidePreview');
@@ -48,7 +48,7 @@ module.getters.lastOpened = getter('lastOpened');
 const getLastOpenedIds = (lastOpened, rootState) => Object.keys(lastOpened)
   .filter(id => rootState.file.itemMap[id])
   .sort((id1, id2) => lastOpened[id2] - lastOpened[id1])
-  .slice(0, 10);
+  .slice(0, 20);
 module.getters.lastOpenedIds = (state, getters, rootState) =>
   getLastOpenedIds(getters.lastOpened, rootState);
 module.actions.setLastOpenedId = ({ getters, commit, rootState }, fileId) => {
@@ -80,18 +80,18 @@ module.actions.setSyncData = setter('syncData');
 module.getters.tokens = getter('tokens');
 module.getters.googleTokens = (state, getters) => getters.tokens.google || {};
 module.getters.loginToken = (state, getters) => {
-  // Return the first googleToken that has the isLogin flag
+  // Return the first google token that has the isLogin flag
   const googleTokens = getters.googleTokens;
   const loginSubs = Object.keys(googleTokens)
     .filter(sub => googleTokens[sub].isLogin);
   return googleTokens[loginSubs[0]];
 };
 module.actions.patchTokens = patcher('tokens');
-module.actions.setGoogleToken = ({ getters, dispatch }, googleToken) => {
+module.actions.setGoogleToken = ({ getters, dispatch }, token) => {
   dispatch('patchTokens', {
     google: {
       ...getters.googleTokens,
-      [googleToken.sub]: googleToken,
+      [token.sub]: token,
     },
   });
 };

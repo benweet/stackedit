@@ -1,7 +1,7 @@
 export default () => ({
   id: null,
   type: 'syncContent',
-  contentRevisions: {},
+  historyData: {},
   syncLocationData: {},
   updated: 0,
 });

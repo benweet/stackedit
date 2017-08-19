@@ -23,25 +23,25 @@ const tokenExpirationMargin = 10 * 60 * 1000; // 10 min
 //   ],
 // };
 
-const request = (googleToken, options) => utils.request({
+const request = (token, options) => utils.request({
   ...options,
   headers: {
     ...options.headers,
-    Authorization: `Bearer ${googleToken.accessToken}`,
+    Authorization: `Bearer ${token.accessToken}`,
   },
 });
 
 export default {
   startOauth2(scopes, sub = null, silent = false) {
     return utils.startOauth2(
-      'https://accounts.google.com/o/oauth2/v2/auth', {
-        client_id: clientId,
-        response_type: 'token',
-        scope: scopes.join(' '),
-        hd: appsDomain,
-        login_hint: sub,
-        prompt: silent ? 'none' : null,
-      }, silent)
+        'https://accounts.google.com/o/oauth2/v2/auth', {
+          client_id: clientId,
+          response_type: 'token',
+          scope: scopes.join(' '),
+          hd: appsDomain,
+          login_hint: sub,
+          prompt: silent ? 'none' : null,
+        }, silent)
       // Call the tokeninfo endpoint
       .then(data => utils.request({
         method: 'POST',
@@ -68,28 +68,28 @@ export default {
         };
       }))
       // Call the tokeninfo endpoint
-      .then(googleToken => request(googleToken, {
+      .then(token => request(token, {
         method: 'GET',
         url: 'https://www.googleapis.com/plus/v1/people/me',
       }).then((res) => {
-        // Add name to googleToken
-        googleToken.name = res.body.displayName;
-        const existingToken = store.getters['data/googleTokens'][googleToken.sub];
+        // Add name to token
+        token.name = res.body.displayName;
+        const existingToken = store.getters['data/googleTokens'][token.sub];
         if (existingToken) {
           if (!sub) {
             throw new Error('Google account already linked.');
           }
-          // Add isLogin and nextPageToken to googleToken
-          googleToken.isLogin = existingToken.isLogin;
-          googleToken.nextPageToken = existingToken.nextPageToken;
+          // Add isLogin and nextPageToken to token
+          token.isLogin = existingToken.isLogin;
+          token.nextPageToken = existingToken.nextPageToken;
         }
-        // Add googleToken to googleTokens
-        store.dispatch('data/setGoogleToken', googleToken);
-        return googleToken;
+        // Add token to googleTokens
+        store.dispatch('data/setGoogleToken', token);
+        return token;
       }));
   },
-  refreshToken(scopes, googleToken) {
-    const sub = googleToken.sub;
+  refreshToken(scopes, token) {
+    const sub = token.sub;
     const lastToken = store.getters['data/googleTokens'][sub];
     const mergedScopes = [...new Set([
       ...scopes,
@@ -115,9 +115,9 @@ export default {
           .catch(() => this.startOauth2(mergedScopes, sub));
       });
   },
-  getChanges(googleToken) {
+  getChanges(token) {
     let changes = [];
-    return this.refreshToken(['https://www.googleapis.com/auth/drive.appdata'], googleToken)
+    return this.refreshToken(['https://www.googleapis.com/auth/drive.appdata'], token)
       .then((refreshedToken) => {
         const getPage = (pageToken = '1') => request(refreshedToken, {
           method: 'GET',
@@ -158,8 +158,8 @@ export default {
         return getPage(refreshedToken.nextPageToken);
       });
   },
-  updateNextPageToken(googleToken, changes) {
-    const lastToken = store.getters['data/googleTokens'][googleToken.sub];
+  updateNextPageToken(token, changes) {
+    const lastToken = store.getters['data/googleTokens'][token.sub];
     if (changes.nextPageToken !== lastToken.nextPageToken) {
       store.dispatch('data/setGoogleToken', {
         ...lastToken,
@@ -167,8 +167,8 @@ export default {
       });
     }
   },
-  saveItem(googleToken, item, syncData, ifNotTooLate = cb => res => cb(res)) {
-    return this.refreshToken(['https://www.googleapis.com/auth/drive.appdata'], googleToken)
+  saveItem(token, item, syncData, ifNotTooLate = cb => res => cb(res)) {
+    return this.refreshToken(['https://www.googleapis.com/auth/drive.appdata'], token)
       // Refreshing a token can take a while if an oauth window pops up, so check if it's too late
       .then(ifNotTooLate((refreshedToken) => {
         const options = {
@@ -229,12 +229,22 @@ export default {
         }));
       }));
   },
-  removeItem(googleToken, syncData, ifNotTooLate = cb => res => cb(res)) {
-    return this.refreshToken(['https://www.googleapis.com/auth/drive.appdata'], googleToken)
+  removeItem(token, syncData, ifNotTooLate = cb => res => cb(res)) {
+    return this.refreshToken(['https://www.googleapis.com/auth/drive.appdata'], token)
       // Refreshing a token can take a while if an oauth window pops up, so check if it's too late
       .then(ifNotTooLate(refreshedToken => request(refreshedToken, {
         method: 'DELETE',
         url: `https://www.googleapis.com/drive/v3/files/${syncData.id}`,
       })).then(() => syncData));
+  },
+  downloadFile(refreshedToken, id) {
+    return request(refreshedToken, {
+      method: 'GET',
+      url: `https://www.googleapis.com/drive/v3/files/${id}?alt=media`,
+    }).then(res => res.body);
+  },
+  downloadAppDataFile(token, id) {
+    return this.refreshToken(['https://www.googleapis.com/auth/drive.appdata'], token)
+      .then(refreshedToken => this.downloadFile(refreshedToken, id));
   },
 };

@@ -3,10 +3,11 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import utils from '../services/utils';
 import contentState from './modules/contentState';
-import syncContent from './modules/syncContent';
+import syncedContent from './modules/syncedContent';
 import content from './modules/content';
 import file from './modules/file';
 import folder from './modules/folder';
+import syncLocation from './modules/syncLocation';
 import data from './modules/data';
 import layout from './modules/layout';
 import editor from './modules/editor';
@@ -18,9 +19,10 @@ Vue.use(Vuex);
 
 const debug = process.env.NODE_ENV !== 'production';
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
     ready: false,
+    offline: false,
   },
   getters: {
     allItemMap: (state) => {
@@ -28,23 +30,22 @@ export default new Vuex.Store({
       utils.types.forEach(type => Object.assign(result, state[type].itemMap));
       return result;
     },
-    syncedItemMap: (state) => {
-      const result = {};
-      ['file', 'folder'].forEach(type => Object.assign(result, state[type].itemMap));
-      return result;
-    },
   },
   mutations: {
     setReady: (state) => {
       state.ready = true;
     },
+    setOffline: (state, value) => {
+      state.offline = value;
+    },
   },
   modules: {
     contentState,
-    syncContent,
+    syncedContent,
     content,
     file,
     folder,
+    syncLocation,
     data,
     layout,
     editor,
@@ -55,3 +56,15 @@ export default new Vuex.Store({
   strict: debug,
   plugins: debug ? [createLogger()] : [],
 });
+
+function checkOffline() {
+  const isOffline = window.navigator.onLine === false;
+  if (isOffline !== store.state.offline) {
+    store.commit('setOffline', isOffline);
+  }
+}
+utils.setInterval(checkOffline, 1000);
+window.addEventListener('online', checkOffline);
+window.addEventListener('offline', checkOffline);
+
+export default store;

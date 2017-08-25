@@ -5,6 +5,5 @@ export default () => ({
   properties: '\n',
   discussions: {},
   comments: {},
-  syncLocations: [],
-  updated: 0,
+  hash: 0,
 });

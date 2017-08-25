@@ -4,5 +4,5 @@ export default () => ({
   selectionStart: 0,
   selectionEnd: 0,
   scrollPosition: null,
-  updated: 0,
+  hash: 0,
 });

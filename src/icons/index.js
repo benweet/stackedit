@@ -28,6 +28,8 @@ import ArrowLeft from './ArrowLeft';
 import HelpCircle from './HelpCircle';
 import Toc from './Toc';
 import Login from './Login';
+import Sync from './Sync';
+import SyncOff from './SyncOff';
 
 Vue.component('iconFormatBold', FormatBold);
 Vue.component('iconFormatItalic', FormatItalic);
@@ -58,3 +60,5 @@ Vue.component('iconArrowLeft', ArrowLeft);
 Vue.component('iconHelpCircle', HelpCircle);
 Vue.component('iconToc', Toc);
 Vue.component('iconLogin', Login);
+Vue.component('iconSync', Sync);
+Vue.component('iconSyncOff', SyncOff);

@@ -93,7 +93,7 @@ const deflistBlockTypeMap = createFlagMap([
 
 function hashArray(arr, valueHash, valueArray) {
   const hash = [];
-  arr.cl_each((str) => {
+  arr.forEach((str) => {
     let strHash = valueHash[str];
     if (strHash === undefined) {
       strHash = valueArray.length;

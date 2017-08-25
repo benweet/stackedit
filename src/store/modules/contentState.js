@@ -1,7 +1,7 @@
 import moduleTemplate from './moduleTemplate';
 import empty from '../../data/emptyContentState';
 
-const module = moduleTemplate(empty);
+const module = moduleTemplate(empty, true);
 
 module.getters = {
   ...module.getters,

@@ -3,4 +3,5 @@ export default () => ({
   type: 'file',
   name: '',
   parentId: null,
+  hash: 0,
 });

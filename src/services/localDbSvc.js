@@ -1,16 +1,15 @@
 import 'babel-polyfill';
-import 'indexeddbshim';
+import 'indexeddbshim/dist/indexeddbshim';
 import utils from './utils';
 import store from '../store';
 
-let indexedDB = window.indexedDB;
+const indexedDB = window.indexedDB;
 const localStorage = window.localStorage;
 const dbVersion = 1;
 const dbStoreName = 'objects';
 
-// Use the shim on Safari or when indexedDB is not available
-if (window.shimIndexedDB && (!indexedDB || (navigator.userAgent.indexOf('Chrome') === -1 && navigator.userAgent.indexOf('Safari') !== -1))) {
-  indexedDB = window.shimIndexedDB;
+if (!indexedDB) {
+  throw new Error('Your browser is not supported. Please upgrade to the latest version.');
 }
 
 const deleteMarkerMaxAge = 1000;
@@ -81,20 +80,20 @@ class Connection {
   }
 }
 
-const updatedMap = {};
+const hashMap = {};
 utils.types.forEach((type) => {
-  updatedMap[type] = Object.create(null);
+  hashMap[type] = Object.create(null);
 });
 
 const contentTypes = {
   content: true,
   contentState: true,
-  syncContent: true,
+  syncedContent: true,
 };
 
 export default {
   lastTx: 0,
-  updatedMap,
+  hashMap,
   connection: new Connection(),
 
   /**
@@ -145,7 +144,7 @@ export default {
         changes.forEach((item) => {
           this.readDbItem(item, storeItemMap);
           // If item is an old delete marker, remove it from the DB
-          if (!item.updated && lastTx - item.tx > deleteMarkerMaxAge) {
+          if (!item.hash && lastTx - item.tx > deleteMarkerMaxAge) {
             dbStore.delete(item.id);
           }
         });
@@ -163,7 +162,7 @@ export default {
     const incrementedTx = this.lastTx + 1;
 
     // Remove deleted store items
-    Object.keys(this.updatedMap).forEach((type) => {
+    Object.keys(this.hashMap).forEach((type) => {
       // Remove this type only if file is deleted
       let checker = cb => id => !storeItemMap[id] && cb(id);
       if (contentTypes[type]) {
@@ -177,14 +176,14 @@ export default {
           }
         };
       }
-      Object.keys(this.updatedMap[type]).forEach(checker((id) => {
+      Object.keys(this.hashMap[type]).forEach(checker((id) => {
         // Put a delete marker to notify other tabs
         dbStore.put({
           id,
           type,
           tx: incrementedTx,
         });
-        delete this.updatedMap[type][id];
+        delete this.hashMap[type][id];
         this.lastTx = incrementedTx; // No need to read what we just wrote
       }));
     });
@@ -193,13 +192,13 @@ export default {
     Object.keys(storeItemMap).forEach((id) => {
       const storeItem = storeItemMap[id];
       // Store object has changed
-      if (this.updatedMap[storeItem.type][storeItem.id] !== storeItem.updated) {
+      if (this.hashMap[storeItem.type][storeItem.id] !== storeItem.hash) {
         const item = {
           ...storeItem,
           tx: incrementedTx,
         };
         dbStore.put(item);
-        this.updatedMap[item.type][item.id] = item.updated;
+        this.hashMap[item.type][item.id] = item.hash;
         this.lastTx = incrementedTx; // No need to read what we just wrote
       }
     });
@@ -210,20 +209,21 @@ export default {
    */
   readDbItem(dbItem, storeItemMap) {
     const existingStoreItem = storeItemMap[dbItem.id];
-    if (!dbItem.updated) {
+    if (!dbItem.hash) {
       // DB item is a delete marker
-      delete this.updatedMap[dbItem.type][dbItem.id];
+      delete this.hashMap[dbItem.type][dbItem.id];
       if (existingStoreItem) {
         // Remove item from the store
         store.commit(`${existingStoreItem.type}/deleteItem`, existingStoreItem.id);
         delete storeItemMap[existingStoreItem.id];
       }
-    } else if (this.updatedMap[dbItem.type][dbItem.id] !== dbItem.updated) {
+    } else if (this.hashMap[dbItem.type][dbItem.id] !== dbItem.hash) {
       // DB item is different from the corresponding store item
-      this.updatedMap[dbItem.type][dbItem.id] = dbItem.updated;
+      this.hashMap[dbItem.type][dbItem.id] = dbItem.hash;
       // Update content only if it exists in the store
       if (existingStoreItem || !contentTypes[dbItem.type]) {
         // Put item in the store
+        dbItem.tx = undefined;
         store.commit(`${dbItem.type}/setItem`, dbItem);
         storeItemMap[dbItem.id] = dbItem;
       }
@@ -248,13 +248,14 @@ export default {
         const request = dbStore.get(id);
         request.onsuccess = () => {
           const dbItem = request.result;
-          if (!dbItem || !dbItem.updated) {
+          if (!dbItem || !dbItem.hash) {
             onError();
           } else {
-            this.updatedMap[dbItem.type][dbItem.id] = dbItem.updated;
+            this.hashMap[dbItem.type][dbItem.id] = dbItem.hash;
             // Put item in the store
+            dbItem.tx = undefined;
             store.commit(`${dbItem.type}/setItem`, dbItem);
-            resolve(dbItem);
+            resolve();
           }
         };
       }, () => onError());
@@ -265,15 +266,12 @@ export default {
    * Unload from the store contents that haven't been opened recently
    */
   unloadContents() {
-    const lastOpenedFileIds = store.getters['data/lastOpenedIds']
-      .slice(0, 10).reduce((result, id) => {
-        result[id] = true;
-        return result;
-      }, {});
+    // Keep only last opened files in memory
+    const lastOpenedFileIds = new Set(store.getters['data/lastOpenedIds']);
     Object.keys(contentTypes).forEach((type) => {
-      store.getters(`${type}/items`).forEach((item) => {
+      store.getters[`${type}/items`].forEach((item) => {
         const [fileId] = item.id.split('/');
-        if (!lastOpenedFileIds[fileId]) {
+        if (!lastOpenedFileIds.has(fileId)) {
           // Remove item from the store
           store.commit(`${type}/deleteItem`, item.id);
         }

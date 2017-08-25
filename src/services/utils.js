@@ -14,13 +14,35 @@ const scriptLoadingPromises = Object.create(null);
 const origin = `${location.protocol}//${location.host}`;
 
 export default {
-  types: ['contentState', 'syncContent', 'content', 'file', 'folder', 'data'],
+  types: ['contentState', 'syncedContent', 'content', 'file', 'folder', 'syncLocation', 'data'],
   deepCopy(obj) {
-    return obj === undefined ? obj : JSON.parse(JSON.stringify(obj));
+    return obj == null ? obj : JSON.parse(JSON.stringify(obj));
+  },
+  serializeObject(obj) {
+    return obj === undefined ? obj : JSON.stringify(obj, (key, value) => {
+      if (Object.prototype.toString.call(value) !== '[object Object]') {
+        return value;
+      }
+      // Sort keys to have a predictable result
+      return Object.keys(value).sort().reduce((sorted, valueKey) => {
+        sorted[valueKey] = value[valueKey];
+        return sorted;
+      }, {});
+    });
   },
   uid() {
     crypto.getRandomValues(array);
     return array.cl_map(value => alphabet[value % radix]).join('');
+  },
+  hash(str) {
+    let hash = 0;
+    if (!str) return hash;
+    for (let i = 0; i < str.length; i += 1) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char; // eslint-disable-line no-bitwise
+      hash |= 0; // eslint-disable-line no-bitwise
+    }
+    return hash;
   },
   randomize(value) {
     return Math.floor((1 + (Math.random() * 0.2)) * value);
@@ -73,6 +95,7 @@ export default {
       oauth2Context.iframeElt.onload = () => {
         oauth2Context.closeTimeout = setTimeout(() => oauth2Context.clean(), 5 * 1000);
       };
+      oauth2Context.iframeElt.onerror = () => oauth2Context.clean();
       oauth2Context.iframeElt.src = authorizeUrl;
       document.body.appendChild(oauth2Context.iframeElt);
       oauth2Context.wnd = oauth2Context.iframeElt.contentWindow;
@@ -96,7 +119,9 @@ export default {
         }
         clearTimeout(oauth2Context.closeTimeout);
         window.removeEventListener('message', oauth2Context.msgHandler);
-        oauth2Context.clean = () => { }; // Prevent from cleaning several times
+        oauth2Context.clean = () => {
+          // Prevent from cleaning several times
+        };
         if (errorMsg) {
           reject(new Error(errorMsg));
         }
@@ -130,9 +155,11 @@ export default {
     let retryAfter = 500; // 500 ms
     const maxRetryAfter = 30 * 1000; // 30 sec
     const config = Object.assign({}, configParam);
-    config.headers = Object.assign({
-      'Content-Type': 'application/json',
-    }, config.headers);
+    config.headers = Object.assign({}, config.headers);
+    if (config.body && typeof config.body === 'object') {
+      config.body = JSON.stringify(config.body);
+      config.headers['Content-Type'] = 'application/json';
+    }
 
     function parseHeaders(xhr) {
       const pairs = xhr.getAllResponseHeaders().trim().split('\n');
@@ -174,10 +201,12 @@ export default {
             headers: parseHeaders(xhr),
             body: xhr.responseText,
           };
-          try {
-            result.body = JSON.parse(result.body);
-          } catch (e) {
-            // ignore
+          if (!config.raw) {
+            try {
+              result.body = JSON.parse(result.body);
+            } catch (e) {
+              // ignore
+            }
           }
           if (result.status >= 200 && result.status < 300) {
             resolve(result);
@@ -202,7 +231,7 @@ export default {
         Object.keys(config.headers).forEach((key) => {
           xhr.setRequestHeader(key, config.headers[key]);
         });
-        xhr.send(config.body ? JSON.stringify(config.body) : null);
+        xhr.send(config.body || null);
       })
         .catch((err) => {
           // Try again later in case of retriable error

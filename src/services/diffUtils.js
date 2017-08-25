@@ -2,13 +2,12 @@ import DiffMatchPatch from 'diff-match-patch';
 import utils from './utils';
 
 const diffMatchPatch = new DiffMatchPatch();
-const diffMatchPatchStrict = new DiffMatchPatch();
-diffMatchPatchStrict.Match_Threshold = 0;
-diffMatchPatchStrict.Patch_DeleteThreshold = 0;
-const diffMatchPatchPermissive = new DiffMatchPatch();
-diffMatchPatchPermissive.Match_Distance = 999999999;
+diffMatchPatch.Match_Distance = 10000;
 
 function makePatchableText(content, markerKeys, markerIdxMap) {
+  if (!content || !content.discussions) {
+    return null;
+  }
   const markers = [];
   // Sort keys to have predictable marker positions in case of same offset
   const discussionKeys = Object.keys(content.discussions).sort();
@@ -58,6 +57,9 @@ function makePatchableText(content, markerKeys, markerIdxMap) {
 }
 
 function stripDiscussionOffsets(objectMap) {
+  if (objectMap == null) {
+    return objectMap;
+  }
   const result = {};
   Object.keys(objectMap).forEach((id) => {
     result[id] = {
@@ -85,72 +87,58 @@ function restoreDiscussionOffsets(content, markerKeys) {
   }
 }
 
-function serializeObject(obj) {
-  if (!obj) {
-    return obj;
+function mergeText(serverText, clientText, lastMergedText) {
+  const serverClientDiffs = diffMatchPatch.diff_main(serverText, clientText);
+  diffMatchPatch.diff_cleanupSemantic(serverClientDiffs);
+  // Fusion text is a mix of both server and client contents
+  const fusionText = serverClientDiffs.map(diff => diff[1]).join('');
+  if (!lastMergedText) {
+    return fusionText;
   }
-  return JSON.stringify(obj, (key, value) => {
-    if (Object.prototype.toString.call(value) !== '[object Object]') {
-      return value;
-    }
-    return Object.keys(value).sort().reduce((sorted, valueKey) => {
-      sorted[valueKey] = value[valueKey];
-      return sorted;
-    }, {});
-  });
+  // Let's try to find out what text has to be removed from fusion
+  const intersectionText = serverClientDiffs
+    // Keep only equalities
+    .filter(diff => diff[0] === DiffMatchPatch.DIFF_EQUAL)
+    .map(diff => diff[1]).join('');
+  const lastMergedTextDiffs = diffMatchPatch.diff_main(lastMergedText, intersectionText)
+    // Keep only equalities and deletions
+    .filter(diff => diff[0] !== DiffMatchPatch.DIFF_INSERT);
+  diffMatchPatch.diff_cleanupSemantic(serverClientDiffs);
+  // Make a patch with deletions only
+  const patches = diffMatchPatch.patch_make(lastMergedText, lastMergedTextDiffs);
+  // Apply patch to fusion text
+  return diffMatchPatch.patch_apply(patches, fusionText)[0];
 }
 
-function mergeText(oldText, newText, serverText) {
-  let diffs = diffMatchPatch.diff_main(oldText, newText);
-  diffMatchPatch.diff_cleanupSemantic(diffs);
-  const patches = diffMatchPatch.patch_make(oldText, diffs);
-  const patchResult = diffMatchPatch.patch_apply(patches, serverText);
-  if (!patchResult[1].some(changeApplied => !changeApplied)) {
-    return patchResult[0];
+function mergeValues(serverValue, clientValue, lastMergedValue) {
+  if (!lastMergedValue) {
+    return serverValue || clientValue; // Take the server value in priority
   }
-
-  diffs = diffMatchPatchStrict.diff_main(patchResult[0], newText);
-  diffMatchPatch.diff_cleanupSemantic(diffs);
-  return diffs.map(diff => diff[1]).join('');
-}
-
-function quickPatch(oldStr, newStr, destStr, strict) {
-  const dmp = strict ? diffMatchPatchStrict : diffMatchPatch;
-  const diffs = dmp.diff_main(oldStr, newStr);
-  const patches = dmp.patch_make(oldStr, diffs);
-  const patchResult = dmp.patch_apply(patches, destStr);
-  return patchResult[0];
-}
-
-function mergeValue(oldValue, newValue, serverValue) {
-  if (!oldValue) {
-    return serverValue; // There might be conflict, keep the server value
-  }
-  const newSerializedValue = serializeObject(newValue);
-  const serverSerializedValue = serializeObject(serverValue);
+  const newSerializedValue = utils.serializeObject(clientValue);
+  const serverSerializedValue = utils.serializeObject(serverValue);
   if (newSerializedValue === serverSerializedValue) {
     return serverValue; // no conflict
   }
-  const oldSerializedValue = serializeObject(oldValue);
+  const oldSerializedValue = utils.serializeObject(lastMergedValue);
   if (oldSerializedValue !== newSerializedValue && !serverValue) {
-    return newValue; // Removed on server but changed on client
+    return clientValue; // Removed on server but changed on client
   }
-  if (oldSerializedValue !== serverSerializedValue && !newValue) {
+  if (oldSerializedValue !== serverSerializedValue && !clientValue) {
     return serverValue; // Removed on client but changed on server
   }
   if (oldSerializedValue !== newSerializedValue && oldSerializedValue === serverSerializedValue) {
-    return newValue; // Take the client value
+    return clientValue; // Take the client value
   }
-  return serverValue; // Take the server value otherwise
+  return serverValue; // Take the server value
 }
 
-function mergeObjects(oldObject, newObject, serverObject) {
+function mergeObjects(serverObject, clientObject, lastMergedObject = {}) {
   const mergedObject = {};
   Object.keys({
-    ...newObject,
+    ...clientObject,
     ...serverObject,
   }).forEach((key) => {
-    const mergedValue = mergeValue(oldObject[key], newObject[key], serverObject[key]);
+    const mergedValue = mergeValues(serverObject[key], clientObject[key], lastMergedObject[key]);
     if (mergedValue != null) {
       mergedObject[key] = mergedValue;
     }
@@ -158,47 +146,41 @@ function mergeObjects(oldObject, newObject, serverObject) {
   return utils.deepCopy(mergedObject);
 }
 
-function mergeContent(oldContent, newContent, serverContent) {
+function mergeContent(serverContent, clientContent, lastMergedContent = {}) {
   const markerKeys = [];
   const markerIdxMap = Object.create(null);
-  const oldText = makePatchableText(oldContent, markerKeys, markerIdxMap);
+  const lastMergedText = makePatchableText(lastMergedContent, markerKeys, markerIdxMap);
   const serverText = makePatchableText(serverContent, markerKeys, markerIdxMap);
-  const localText = makePatchableText(newContent, markerKeys, markerIdxMap);
-  const isServerTextChanges = oldText !== serverText;
-  const isTextSynchronized = serverText === localText;
+  const clientText = makePatchableText(clientContent, markerKeys, markerIdxMap);
+  const isServerTextChanges = lastMergedText !== serverText;
+  const isTextSynchronized = serverText === clientText;
 
   const result = {
     text: isTextSynchronized || !isServerTextChanges
-      ? localText
-      : mergeText(oldText, serverText, localText),
-    properties: mergeValue(
-      oldContent.properties,
-      newContent.properties,
+      ? clientText
+      : mergeText(serverText, clientText, lastMergedText),
+    properties: mergeValues(
       serverContent.properties,
+      clientContent.properties,
+      lastMergedContent.properties,
     ),
     discussions: mergeObjects(
-      stripDiscussionOffsets(oldContent.discussions),
-      stripDiscussionOffsets(newContent.discussions),
       stripDiscussionOffsets(serverContent.discussions),
+      stripDiscussionOffsets(clientContent.discussions),
+      stripDiscussionOffsets(lastMergedContent.discussions),
     ),
     comments: mergeObjects(
-      oldContent.comments,
-      newContent.comments,
       serverContent.comments,
+      clientContent.comments,
+      lastMergedContent.comments,
     ),
   };
   restoreDiscussionOffsets(result, markerKeys);
-  return result
+  return result;
 }
 
 export default {
-  serializeObject,
   makePatchableText,
   restoreDiscussionOffsets,
-  applyContentChanges,
-  getTextPatches,
-  getObjectPatches,
-  quickPatch,
-  mergeObjects,
   mergeContent,
 };

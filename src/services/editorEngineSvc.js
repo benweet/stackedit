@@ -1,6 +1,7 @@
 import DiffMatchPatch from 'diff-match-patch';
 import cledit from '../libs/cledit';
-import clDiffUtils from '../libs/cldiffutils';
+import utils from './utils';
+import diffUtils from './diffUtils';
 import store from '../store';
 
 let clEditor;
@@ -34,26 +35,35 @@ function getDiscussionMarkers(discussion, discussionId, onMarker) {
   getMarker('offset1');
 }
 
-function syncDiscussionMarkers() {
-  const content = store.getters['content/current'];
-  Object.keys(discussionMarkers)
-    .forEach((markerKey) => {
-      const marker = discussionMarkers[markerKey];
-      // Remove marker if discussion was removed
-      const discussion = content.discussions[marker.discussionId];
-      if (!discussion || discussion[marker.offsetName] === undefined) {
-        clEditor.removeMarker(marker);
-        delete discussionMarkers[markerKey];
-      }
-    });
+function syncDiscussionMarkers(content, writeOffsets) {
+  Object.keys(discussionMarkers).forEach((markerKey) => {
+    const marker = discussionMarkers[markerKey];
+    // Remove marker if discussion was removed
+    const discussion = content.discussions[marker.discussionId];
+    if (!discussion || discussion[marker.offsetName] === undefined) {
+      clEditor.removeMarker(marker);
+      delete discussionMarkers[markerKey];
+    }
+  });
 
-  Object.keys(content.discussions)
-    .forEach((discussionId) => {
-      const discussion = content.discussions[discussionId];
-      getDiscussionMarkers(discussion, discussionId, (marker) => {
+  Object.keys(content.discussions).forEach((discussionId) => {
+    const discussion = content.discussions[discussionId];
+    getDiscussionMarkers(discussion, discussionId, writeOffsets
+      ? (marker) => {
         discussion[marker.offsetName] = marker.offset;
+      }
+      : (marker) => {
+        marker.offset = discussion[marker.offsetName];
       });
-    });
+  });
+}
+
+function removeDiscussionMarkers() {
+  Object.keys(discussionMarkers).forEach((markerKey) => {
+    const marker = discussionMarkers[markerKey];
+    clEditor.removeMarker(marker);
+    delete discussionMarkers[markerKey];
+  });
 }
 
 const diffMatchPatch = new DiffMatchPatch();
@@ -91,8 +101,6 @@ function reversePatches(patches) {
 
 export default {
   clEditor: null,
-  lastChange: 0,
-  lastExternalChange: 0,
   createClEditor(editorElt) {
     this.clEditor = cledit(editorElt, editorElt.parentNode);
     clEditor = this.clEditor;
@@ -100,42 +108,38 @@ export default {
     markerIdxMap = Object.create(null);
     discussionMarkers = {};
     clEditor.on('contentChanged', (text) => {
-      store.dispatch('content/patchCurrent', { text });
-      syncDiscussionMarkers();
-      const content = store.getters['content/current'];
+      const oldContent = store.getters['content/current'];
+      const newContent = {
+        ...oldContent,
+        discussions: utils.deepCopy(oldContent.discussions),
+        text,
+      };
+      syncDiscussionMarkers(newContent, true);
       if (!isChangePatch) {
         previousPatchableText = currentPatchableText;
-        currentPatchableText = clDiffUtils.makePatchableText(content, markerKeys, markerIdxMap);
+        currentPatchableText = diffUtils.makePatchableText(newContent, markerKeys, markerIdxMap);
       } else {
         // Take a chance to restore discussion offsets on undo/redo
-        content.text = currentPatchableText;
-        clDiffUtils.restoreDiscussionOffsets(content, markerKeys);
-        content.discussions.cl_each((discussion, discussionId) => {
-          getDiscussionMarkers(discussion, discussionId, (marker) => {
-            marker.offset = discussion[marker.offsetName];
-          });
-        });
+        diffUtils.restoreDiscussionOffsets(newContent, markerKeys);
+        syncDiscussionMarkers(newContent, false);
       }
+      store.dispatch('content/patchCurrent', newContent);
       isChangePatch = false;
-      this.lastChange = Date.now();
     });
     clEditor.addMarker(newDiscussionMarker0);
     clEditor.addMarker(newDiscussionMarker1);
   },
-  initClEditor(opts, reinit) {
+  initClEditor(opts) {
     const content = store.getters['content/current'];
-    const contentState = store.getters['contentState/current'];
     if (content) {
       const options = Object.assign({}, opts);
 
       if (contentId !== content.id) {
         contentId = content.id;
-        currentPatchableText = clDiffUtils.makePatchableText(content, markerKeys, markerIdxMap);
+        currentPatchableText = diffUtils.makePatchableText(content, markerKeys, markerIdxMap);
         previousPatchableText = currentPatchableText;
-        syncDiscussionMarkers();
-      }
-
-      if (reinit) {
+        syncDiscussionMarkers(content, false);
+        const contentState = store.getters['contentState/current'];
         options.content = content.text;
         options.selectionStart = contentState.selectionStart;
         options.selectionEnd = contentState.selectionEnd;
@@ -143,21 +147,21 @@ export default {
 
       options.patchHandler = {
         makePatches,
-        applyPatches: patches => applyPatches(patches),
+        applyPatches,
         reversePatches,
       };
       clEditor.init(options);
     }
   },
-  applyContent(isExternal) {
-    if (!clEditor) {
-      return null;
+  applyContent() {
+    if (clEditor) {
+      const content = store.getters['content/current'];
+      if (clEditor.setContent(content.text, true).range) {
+        // Marker will be recreated on contentChange
+        removeDiscussionMarkers();
+      } else {
+        syncDiscussionMarkers(content, false);
+      }
     }
-    if (isExternal) {
-      this.lastExternalChange = Date.now();
-    }
-    syncDiscussionMarkers();
-    const content = store.getters['content/current'];
-    return clEditor.setContent(content.text, isExternal);
   },
 };

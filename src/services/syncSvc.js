@@ -2,18 +2,22 @@ import localDbSvc from './localDbSvc';
 import store from '../store';
 import welcomeFile from '../data/welcomeFile.md';
 import utils from './utils';
+import diffUtils from './diffUtils';
 import userActivitySvc from './userActivitySvc';
 import gdriveAppDataProvider from './providers/gdriveAppDataProvider';
-import googleHelper from './helpers/googleHelper';
 
 const lastSyncActivityKey = 'lastSyncActivity';
 let lastSyncActivity;
 const getStoredLastSyncActivity = () => parseInt(localStorage[lastSyncActivityKey], 10) || 0;
 const inactivityThreshold = 3 * 1000; // 3 sec
 const restartSyncAfter = 30 * 1000; // 30 sec
-const autoSyncAfter = utils.randomize(restartSyncAfter);
-const isSyncAvailable = () => window.navigator.onLine !== false &&
-  !!store.getters['data/loginToken'];
+const autoSyncAfter = utils.randomize(60 * 1000); // 60 sec
+
+const isDataSyncPossible = () => !!store.getters['data/loginToken'];
+const hasCurrentFileSyncLocations = () => !!store.getters['syncLocation/current'].length;
+
+const isSyncPossible = () => !store.state.offline &&
+  (isDataSyncPossible() || hasCurrentFileSyncLocations());
 
 function isSyncWindow() {
   const storedLastSyncActivity = getStoredLastSyncActivity();
@@ -48,13 +52,31 @@ function getSyncToken(syncLocation) {
   }
 }
 
+function cleanSyncedContent(syncedContent) {
+  // Clean syncHistory from removed syncLocations
+  Object.keys(syncedContent.syncHistory).forEach((syncLocationId) => {
+    if (syncLocationId !== 'main' && !store.state.syncLocation.itemMap[syncLocationId]) {
+      delete syncedContent.syncHistory[syncLocationId];
+    }
+  });
+  const allSyncLocationHashes = new Set([].concat(
+    ...Object.keys(syncedContent.syncHistory).map(
+      id => syncedContent.syncHistory[id])));
+  // Clean historyData from unused contents
+  Object.keys(syncedContent.historyData).map(hash => parseInt(hash, 10)).forEach((hash) => {
+    if (!allSyncLocationHashes.has(hash)) {
+      delete syncedContent.historyData[hash];
+    }
+  });
+}
+
 const loader = type => fileId => localDbSvc.loadItem(`${fileId}/${type}`)
   // Item does not exist, create it
   .catch(() => store.commit(`${type}/setItem`, {
     id: `${fileId}/${type}`,
   }));
 const loadContent = loader('content');
-const loadSyncContent = loader('syncContent');
+const loadSyncedContent = loader('syncedContent');
 const loadContentState = loader('contentState');
 
 function applyChanges(changes) {
@@ -73,9 +95,9 @@ function applyChanges(changes) {
       }
       delete syncData[change.fileId];
       syncDataChanged = true;
-    } else if (!change.removed && change.item && change.item.updated) {
-      if (!existingSyncData || (existingSyncData.updated !== change.item.updated && (
-        !existingItem || existingItem.updated !== change.item.updated
+    } else if (!change.removed && change.item && change.item.hash) {
+      if (!existingSyncData || (existingSyncData.hash !== change.item.hash && (
+        !existingItem || existingItem.hash !== change.item.hash
       ))) {
         // Put object in the store
         if (change.item.type !== 'content') { // Merge contents later
@@ -93,33 +115,184 @@ function applyChanges(changes) {
   }
 }
 
+const LAST_SENT = 0;
+const LAST_MERGED = 1;
+
+function syncFile(fileId) {
+  return loadSyncedContent(fileId)
+    .then(() => loadContent(fileId))
+    .then(() => {
+      const getContent = () => store.state.content.itemMap[`${fileId}/content`];
+      const getSyncedContent = () => store.state.syncedContent.itemMap[`${fileId}/syncedContent`];
+      const getSyncHistoryItem = syncLocationId => getSyncedContent().syncHistory[syncLocationId];
+      const downloadedLocations = {};
+
+      const isLocationSynced = syncLocation =>
+        getSyncHistoryItem(syncLocation.id)[LAST_SENT] === getContent().hash;
+
+      const syncOneContentLocation = () => {
+        const syncLocations = [
+          ...store.getters['syncLocation/groupedByFileId'][fileId] || [],
+        ];
+        if (isDataSyncPossible()) {
+          syncLocations.push({ id: 'main', provider: 'gdriveAppData', fileId });
+        }
+        let result;
+        syncLocations.some((syncLocation) => {
+          if (!downloadedLocations[syncLocation.id] || !isLocationSynced(syncLocation)) {
+            const provider = getSyncProvider(syncLocation);
+            const token = getSyncToken(syncLocation);
+            result = provider && token && provider.downloadContent(token, syncLocation)
+              .then((serverContent = null) => {
+                downloadedLocations[syncLocation.id] = true;
+
+                const syncedContent = getSyncedContent();
+                const syncHistoryItem = getSyncHistoryItem(syncLocation.id);
+                let mergedContent = (() => {
+                  const clientContent = utils.deepCopy(getContent());
+                  if (!serverContent) {
+                    // Sync location has not been created yet
+                    return clientContent;
+                  }
+                  if (serverContent.hash === clientContent.hash) {
+                    // Server and client contents are synced
+                    return clientContent;
+                  }
+                  if (syncedContent.historyData[serverContent.hash]) {
+                    // Server content has not changed or has already been merged
+                    return clientContent;
+                  }
+                  // Perform a merge with last merged content if any, or a simple fusion otherwise
+                  let lastMergedContent;
+                  serverContent.history.some((hash) => {
+                    lastMergedContent = syncedContent.historyData[hash];
+                    return lastMergedContent;
+                  });
+                  if (!lastMergedContent && syncHistoryItem) {
+                    lastMergedContent = syncedContent.historyData[syncHistoryItem[LAST_MERGED]];
+                  }
+                  return diffUtils.mergeContent(serverContent, clientContent, lastMergedContent);
+                })();
+
+                // Update content in store
+                store.commit('content/patchItem', {
+                  id: `${fileId}/content`,
+                  ...mergedContent,
+                });
+
+                // Retrieve content with new `hash` value and freeze it
+                mergedContent = utils.deepCopy(getContent());
+
+                // Make merged content history
+                const mergedContentHistory = serverContent ? serverContent.history.slice() : [];
+                let skipUpload = true;
+                if (mergedContentHistory[0] !== mergedContent.hash) {
+                  // Put merged content hash at the beginning of history
+                  mergedContentHistory.unshift(mergedContent.hash);
+                  // Server content is either out of sync or its history is incomplete, do upload
+                  skipUpload = false;
+                }
+                if (syncHistoryItem && syncHistoryItem[0] !== mergedContent.hash) {
+                  // Clean up by removing the hash we've previously added
+                  const idx = mergedContentHistory.indexOf(syncHistoryItem[LAST_SENT]);
+                  if (idx !== -1) {
+                    mergedContentHistory.splice(idx, 1);
+                  }
+                }
+
+                // Store server content if any, and merged content which will be sent if different
+                const newSyncedContent = utils.deepCopy(syncedContent);
+                const newSyncHistoryItem = newSyncedContent.syncHistory[syncLocation.id] || [];
+                newSyncedContent.syncHistory[syncLocation.id] = newSyncHistoryItem;
+                if (serverContent && (serverContent.hash === newSyncHistoryItem[LAST_SENT] ||
+                  serverContent.history.indexOf(newSyncHistoryItem[LAST_SENT]) !== -1)
+                ) {
+                  // The server has accepted the content we previously sent
+                  newSyncHistoryItem[LAST_MERGED] = newSyncHistoryItem[LAST_SENT];
+                }
+                newSyncHistoryItem[LAST_SENT] = mergedContent.hash;
+                newSyncedContent.historyData[mergedContent.hash] = mergedContent;
+
+                // Clean synced content from unused revisions
+                cleanSyncedContent(newSyncedContent);
+                // Store synced content
+                store.commit('syncedContent/patchItem', newSyncedContent);
+
+                if (skipUpload) {
+                  // Server content and merged content are equal, skip content upload
+                  return null;
+                }
+
+                // Prevent from sending new content too long after old content has been fetched
+                const syncStartTime = Date.now();
+                const ifNotTooLate = cb => (res) => {
+                  // No time to refresh a token...
+                  if (syncStartTime + 500 < Date.now()) {
+                    throw new Error('TOO_LATE');
+                  }
+                  return cb(res);
+                };
+
+                // Upload merged content
+                return provider.uploadContent(token, {
+                  ...mergedContent,
+                  history: mergedContentHistory,
+                }, syncLocation, ifNotTooLate);
+              })
+              .then(() => syncOneContentLocation());
+          }
+          return result;
+        });
+        return result;
+      };
+
+      return syncOneContentLocation();
+    })
+    .then(() => localDbSvc.unloadContents(), (err) => {
+      localDbSvc.unloadContents();
+      throw err;
+    })
+    .catch((err) => {
+      if (err && err.message === 'TOO_LATE') {
+        // Restart sync
+        return syncFile(fileId);
+      }
+      throw err;
+    });
+}
+
 function sync() {
   const googleToken = store.getters['data/loginToken'];
-  return googleHelper.getChanges(googleToken)
+  return gdriveAppDataProvider.getChanges(googleToken)
     .then((changes) => {
       // Apply changes
       applyChanges(changes);
-      googleHelper.updateNextPageToken(googleToken, changes);
+      gdriveAppDataProvider.setAppliedChanges(googleToken, changes);
 
       // Prevent from sending items too long after changes have been retrieved
       const syncStartTime = Date.now();
       const ifNotTooLate = cb => (res) => {
         if (syncStartTime + restartSyncAfter < Date.now()) {
-          throw new Error('too_late');
+          throw new Error('TOO_LATE');
         }
         return cb(res);
       };
 
       // Called until no item to save
       const saveNextItem = ifNotTooLate(() => {
-        const storeItemMap = store.getters.syncedItemMap;
+        const storeItemMap = {
+          ...store.state.file.itemMap,
+          ...store.state.folder.itemMap,
+          ...store.state.syncLocation.itemMap,
+          // Deal with contents later
+        };
         const syncDataByItemId = store.getters['data/syncDataByItemId'];
         let result;
         Object.keys(storeItemMap).some((id) => {
           const item = storeItemMap[id];
           const existingSyncData = syncDataByItemId[id];
-          if (!existingSyncData || existingSyncData.updated !== item.updated) {
-            result = googleHelper.saveItem(
+          if (!existingSyncData || existingSyncData.hash !== item.hash) {
+            result = gdriveAppDataProvider.saveItem(
               googleToken,
               // Use deepCopy to freeze objects
               utils.deepCopy(item),
@@ -138,15 +311,23 @@ function sync() {
 
       // Called until no item to remove
       const removeNextItem = ifNotTooLate(() => {
-        const storeItemMap = store.getters.syncedItemMap;
+        const storeItemMap = {
+          ...store.state.file.itemMap,
+          ...store.state.folder.itemMap,
+          ...store.state.syncLocation.itemMap,
+          ...store.state.content.itemMap, // Deal with contents now
+        };
         const syncData = store.getters['data/syncData'];
         let result;
         Object.keys(syncData).some((id) => {
           const existingSyncData = syncData[id];
-          if (!storeItemMap[existingSyncData.itemId]) {
+          if (!storeItemMap[existingSyncData.itemId] &&
+            // Remove content only if file has been removed
+            (existingSyncData.type !== 'content' || !storeItemMap[existingSyncData.itemId.split('/')[0]])
+          ) {
             // Use deepCopy to freeze objects
             const syncDataToRemove = utils.deepCopy(existingSyncData);
-            result = googleHelper.removeItem(googleToken, syncDataToRemove, ifNotTooLate)
+            result = gdriveAppDataProvider.removeItem(googleToken, syncDataToRemove, ifNotTooLate)
               .then(() => {
                 const syncDataCopy = { ...store.getters['data/syncData'] };
                 delete syncDataCopy[syncDataToRemove.id];
@@ -159,98 +340,45 @@ function sync() {
         return result;
       });
 
-      // Get content `updated` field from itemMap or from localDbSvc if not loaded
-      const getContentUpdated = (contentId) => {
-        const loadedContent = store.state.content.itemMap[contentId];
-        return loadedContent ? loadedContent.updated : localDbSvc.updatedMap.content[contentId];
+      const getOneFileIdToSync = () => {
+        const allContentIds = Object.keys({
+          ...store.state.content.itemMap,
+          ...store.getters['data/syncDataByType'].content,
+        });
+        let fileId;
+        allContentIds.some((contentId) => {
+          // Get content hash from itemMap or from localDbSvc if not loaded
+          const loadedContent = store.state.content.itemMap[contentId];
+          const hash = loadedContent ? loadedContent.hash : localDbSvc.hashMap.content[contentId];
+          const syncData = store.getters['data/syncDataByItemId'][contentId];
+          // Sync if item hash and syncData hash are different
+          if (!hash || !syncData || hash !== syncData.hash) {
+            [fileId] = contentId.split('/');
+          }
+          return fileId;
+        });
+        return fileId;
       };
 
-      // Download current file content and contents that have changed
-      const forceContentIds = { [`${store.getters['file/current'].id}/content`]: true };
-      store.getters['file/items'].forEach((file) => {
-        const contentId = `${file.id}/content`;
-        const updated = getContentUpdated(contentId);
-        const existingSyncData = store.getters['data/syncDataByItemId'][contentId];
-      });
-
-      const syncOneContent = fileId => loadSyncContent(fileId)
-        .then(() => loadContent(fileId))
-        .then(() => {
-          const getContent = () => store.state.content.itemMap[`${fileId}/content`];
-          const getSyncContent = () => store.state.content.itemMap[`${fileId}/syncContent`];
-
-          const syncLocations = [
-            { id: 'main', provider: 'gdriveAppData' },
-            ...getContent().syncLocations.filter(syncLocation => getSyncToken(syncLocation),
-          )];
-          const downloadedLocations = {};
-
-          const syncOneContentLocation = () => {
-            let result;
-            syncLocations.some((syncLocation) => {
-              if (!downloadedLocations[syncLocation.id]) {
-                const provider = getSyncProvider(syncLocation);
-                const token = getSyncToken(syncLocation);
-                result = provider && token && provider.downloadContent(fileId, syncLocation)
-                  .then((content) => {
-                    const syncContent = getSyncContent();
-                    const syncLocationData = syncContent.syncLocationData[syncLocation.id] || {
-                      history: [],
-                    };
-                    let lastMergedContent;
-                    syncLocationData.history.some((updated) => {
-                      if (content.history.indexOf(updated) !== -1) {
-
-                      }
-                      return lastMergedContent;
-                    });
-                  })
-                  .then(() => syncOneContentLocation());
-              }
-              return result;
-            });
-            return result;
-          };
-
-          return syncOneContentLocation();
-        })
-        .then(() => localDbSvc.unloadContents(), (err) => {
-          localDbSvc.unloadContents();
-          throw err;
-        });
-
-      // Called until no content to save
-      const saveNextContent = ifNotTooLate(() => {
-        let saveContentPromise;
-        const getSaveContentPromise = (contentId) => {
-          const updated = getContentUpdated(contentId);
-          const existingSyncData = store.getters['data/syncDataByItemId'][contentId];
-          if (!existingSyncData || existingSyncData.updated !== updated) {
-            saveContentPromise = localDbSvc.loadItem(contentId)
-              .then(content => googleHelper.saveItem(
-                googleToken,
-                // Use deepCopy to freeze objects
-                utils.deepCopy(content),
-                utils.deepCopy(existingSyncData),
-                ifNotTooLate,
-              ))
-              .then(resultSyncData => store.dispatch('data/patchSyncData', {
-                [resultSyncData.id]: resultSyncData,
-              }))
-              .then(() => saveNextContent());
-          }
-          return saveContentPromise;
-        };
-        Object.keys(localDbSvc.updatedMap.content)
-          .some(id => getSaveContentPromise(id, syncDataByItemId));
-        return saveContentPromise;
-      });
+      const syncNextFile = () => {
+        const fileId = getOneFileIdToSync();
+        return fileId && syncFile(fileId)
+          .then(() => syncNextFile());
+      };
 
       return Promise.resolve()
         .then(() => saveNextItem())
         .then(() => removeNextItem())
+        .then(() => {
+          if (store.getters['content/current'].id) {
+            // Sync current file first
+            return syncFile(store.getters['file/current'].id)
+              .then(() => syncNextFile());
+          }
+          return syncNextFile();
+        })
         .catch((err) => {
-          if (err && err.message === 'too_late') {
+          if (err && err.message === 'TOO_LATE') {
             // Restart sync
             return sync();
           }
@@ -266,19 +394,30 @@ function requestSync() {
       // Only start syncing when these conditions are met
       if (userActivitySvc.isActive() && isSyncWindow()) {
         clearInterval(intervalId);
-        if (!isSyncAvailable()) {
+        if (!isSyncPossible()) {
           // Cancel sync
           reject();
-        } else {
-          // Call setLastSyncActivity periodically
-          intervalId = utils.setInterval(() => setLastSyncActivity(), 1000);
-          setLastSyncActivity();
-          const cleaner = cb => (res) => {
-            clearInterval(intervalId);
-            cb(res);
-          };
-          sync().then(cleaner(resolve), cleaner(reject));
+          return;
         }
+
+        // Call setLastSyncActivity periodically
+        intervalId = utils.setInterval(() => setLastSyncActivity(), 1000);
+        setLastSyncActivity();
+        const cleaner = cb => (res) => {
+          clearInterval(intervalId);
+          cb(res);
+        };
+        Promise.resolve()
+          .then(() => {
+            if (isDataSyncPossible()) {
+              return sync();
+            }
+            if (hasCurrentFileSyncLocations()) {
+              return syncFile(store.getters['file/current'].id);
+            }
+            return null;
+          })
+          .then(cleaner(resolve), cleaner(reject));
       }
     };
     intervalId = utils.setInterval(() => attempt(), 1000);
@@ -288,7 +427,7 @@ function requestSync() {
 
 // Sync periodically
 utils.setInterval(() => {
-  if (isSyncAvailable() &&
+  if (isSyncPossible() &&
     userActivitySvc.isActive() &&
     isSyncWindow() &&
     isAutoSyncReady()
@@ -337,8 +476,8 @@ localDbSvc.sync()
         return Promise.resolve()
           // Load contentState from DB
           .then(() => loadContentState(currentFile.id))
-          // Load syncContent from DB
-          .then(() => loadSyncContent(currentFile.id))
+          // Load syncedContent from DB
+          .then(() => loadSyncedContent(currentFile.id))
           // Load content from DB
           .then(() => localDbSvc.loadItem(`${currentFile.id}/content`));
       }),
@@ -358,6 +497,6 @@ utils.setInterval(() => {
 }, 5000);
 
 export default {
-  isSyncAvailable,
+  isSyncPossible,
   requestSync,
 };

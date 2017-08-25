@@ -29,7 +29,6 @@ const allowDebounce = (action, wait) => {
 
 const diffMatchPatch = new DiffMatchPatch();
 let lastContentId = null;
-let reinitClEditor = true;
 let instantPreview = true;
 let tokens;
 const anchorHash = {};
@@ -185,12 +184,11 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
         return 0.15;
       },
     };
-    editorEngineSvc.initClEditor(options, reinitClEditor);
+    editorEngineSvc.initClEditor(options);
     editorEngineSvc.clEditor.toggleEditable(true);
     const contentId = store.getters['content/current'].id;
     // Switch off the editor when no content is loaded
     editorEngineSvc.clEditor.toggleEditable(!!contentId);
-    reinitClEditor = false;
     this.restoreScrollPosition();
   },
 
@@ -573,30 +571,26 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
 
     const debouncedRefreshPreview = debounce(refreshPreview, 20);
 
-    let newSectionList;
-    let newSelectionRange;
-    const onEditorChanged = () => {
-      if (this.sectionList !== newSectionList) {
-        this.sectionList = newSectionList;
-        this.$emit('sectionList', this.sectionList);
-        if (instantPreview) {
-          refreshPreview();
-        } else {
-          debouncedRefreshPreview();
+    const onEditorChanged =
+      (sectionList = this.sectionList, selectionRange = this.selectionRange) => {
+        if (this.sectionList !== sectionList) {
+          this.sectionList = sectionList;
+          this.$emit('sectionList', this.sectionList);
+          if (instantPreview) {
+            refreshPreview();
+          } else {
+            debouncedRefreshPreview();
+          }
         }
-      }
-      if (this.selectionRange !== newSelectionRange) {
-        this.selectionRange = newSelectionRange;
-        this.$emit('selectionRange', this.selectionRange);
-      }
-      this.saveContentState();
-    };
-    const debouncedEditorChanged = debounce(onEditorChanged, 10);
+        if (this.selectionRange !== selectionRange) {
+          this.selectionRange = selectionRange;
+          this.$emit('selectionRange', this.selectionRange);
+        }
+        this.saveContentState();
+      };
 
-    editorEngineSvc.clEditor.selectionMgr.on('selectionChanged', (start, end, selectionRange) => {
-      newSelectionRange = selectionRange;
-      debouncedEditorChanged();
-    });
+    editorEngineSvc.clEditor.selectionMgr.on('selectionChanged',
+      (start, end, selectionRange) => onEditorChanged(undefined, selectionRange));
 
     /* -----------------------------
      * Inline images
@@ -684,14 +678,8 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
       triggerImgCacheGc();
     });
 
-    editorEngineSvc.clEditor.on('contentChanged', (content, diffs, sectionList) => {
-      newSectionList = sectionList;
-      if (instantPreview) {
-        onEditorChanged();
-      } else {
-        debouncedEditorChanged();
-      }
-    });
+    editorEngineSvc.clEditor.on('contentChanged',
+      (content, diffs, sectionList) => onEditorChanged(sectionList));
 
     this.$emit('inited');
 
@@ -716,20 +704,20 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
     //   }
     // })
 
-    // Watch file content properties changes
+    // Watch file content changes
     store.watch(
-      () => store.getters['content/current'].properties,
-      (properties) => {
-        // Track ID changes at the same time
-        const contentId = store.getters['content/current'].id;
+      () => store.getters['content/current'].hash,
+      () => {
+        const content = store.getters['content/current'];
+        // Track ID changes
         let initClEditor = false;
-        if (contentId !== lastContentId) {
-          reinitClEditor = true;
+        if (content.id !== lastContentId) {
           instantPreview = true;
-          lastContentId = contentId;
+          lastContentId = content.id;
           initClEditor = true;
         }
-        const options = extensionSvc.getOptions(properties, true);
+        // Track properties changes
+        const options = extensionSvc.getOptions(content.properties, true);
         if (JSON.stringify(options) !== JSON.stringify(editorSvc.options)) {
           editorSvc.options = options;
           editorSvc.initPrism();
@@ -739,6 +727,8 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
         if (initClEditor) {
           editorSvc.initClEditor();
         }
+        // Apply possible text and discussion changes
+        editorEngineSvc.applyContent();
       }, {
         immediate: true,
       });

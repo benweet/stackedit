@@ -1,7 +1,8 @@
 import moduleTemplate from './moduleTemplate';
+import utils from '../../services/utils';
 import defaultLocalSettings from '../../data/defaultLocalSettings';
 
-const itemTemplate = (id, data = {}) => ({ id, type: 'data', data, updated: 0 });
+const itemTemplate = (id, data = {}) => ({ id, type: 'data', data, hash: 0 });
 
 const empty = (id) => {
   switch (id) {
@@ -11,7 +12,7 @@ const empty = (id) => {
       return itemTemplate(id);
   }
 };
-const module = moduleTemplate(empty);
+const module = moduleTemplate(empty, true);
 
 const getter = id => state => (state.itemMap[id] || empty(id)).data;
 const setter = id => ({ commit }, data) => commit('setItem', itemTemplate(id, data));
@@ -70,6 +71,20 @@ module.getters.syncDataByItemId = (state, getters) => {
   Object.keys(syncData).forEach((id) => {
     const value = syncData[id];
     result[value.itemId] = value;
+  });
+  return result;
+};
+module.getters.syncDataByType = (state, getters) => {
+  const result = {};
+  utils.types.forEach((type) => {
+    result[type] = {};
+  });
+  const syncData = getters.syncData;
+  Object.keys(syncData).forEach((id) => {
+    const item = syncData[id];
+    if (result[item.type]) {
+      result[item.type][item.itemId] = item;
+    }
   });
   return result;
 };

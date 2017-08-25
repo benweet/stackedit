@@ -110,7 +110,7 @@ extensionSvc.onInitConverter(0, (markdown, options) => {
     const anchorHash = {};
     let headingOpenToken;
     let headingContent;
-    state.tokens.cl_each((token) => {
+    state.tokens.forEach((token) => {
       if (token.type === 'heading_open') {
         headingContent = '';
         headingOpenToken = token;
@@ -148,7 +148,7 @@ extensionSvc.onInitConverter(0, (markdown, options) => {
         ];
         headingOpenToken = undefined;
       } else if (headingOpenToken) {
-        headingContent += token.children.cl_reduce((result, child) => {
+        headingContent += token.children.reduce((result, child) => {
           if (child.type !== 'footnote_ref') {
             return result + child.content;
           }

@@ -1,10 +1,17 @@
 import Vue from 'vue';
+import utils from '../../services/utils';
 
-export default (empty) => {
+export default (empty, simpleHash = false) => {
+  // Use Date.now as a simple hash function, which is ok for not-synced types
+  const hashFunc = simpleHash ? Date.now : item => utils.hash(utils.serializeObject({
+    ...item,
+    hash: undefined,
+  }));
+
   function setItem(state, value) {
     const item = Object.assign(empty(value.id), value);
-    if (!item.updated) {
-      item.updated = Date.now();
+    if (!item.hash) {
+      item.hash = hashFunc(item);
     }
     Vue.set(state.itemMap, item.id, item);
   }
@@ -13,7 +20,7 @@ export default (empty) => {
     const item = state.itemMap[patch.id];
     if (item) {
       Object.assign(item, patch);
-      item.updated = Date.now(); // Trigger sync
+      item.hash = hashFunc(item);
       Vue.set(state.itemMap, item.id, item);
       return true;
     }

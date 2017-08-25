@@ -59,7 +59,7 @@ export default {
   color: rgba(0, 0, 0, 0.75);
   cursor: pointer;
   font-size: 10px;
-  padding: 10px 20px;
+  padding: 5px 20px 40px;
   white-space: nowrap;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -73,8 +73,8 @@ export default {
 
   .cl-toc-section {
     * {
-      margin: 0.25em 0;
-      padding: 0.25em 0;
+      margin: 0.2em 0;
+      padding: 0.2em 0;
     }
 
     h2 {

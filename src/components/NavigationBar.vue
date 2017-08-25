@@ -17,6 +17,12 @@
       <div class="navigation-bar__title navigation-bar__title--fake text-input"></div>
       <div class="navigation-bar__title navigation-bar__title--text text-input" v-bind:style="{maxWidth: styles.titleMaxWidth + 'px'}">{{title}}</div>
       <input class="navigation-bar__title navigation-bar__title--input text-input" :class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" v-bind:style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keyup.enter="submitTitle()" @keyup.esc="submitTitle(true)" v-on:mouseenter="titleHover = true" v-on:mouseleave="titleHover = false" v-model="title">
+      <button v-if="!offline && isSyncPossible" class="navigation-bar__button button" :disabled="isSyncRequested" @click="requestSync">
+        <icon-sync></icon-sync>
+      </button>
+      <button v-if="offline && isSyncPossible" class="navigation-bar__button navigation-bar__button--sync-off button" disabled="disabled">
+        <icon-sync-off></icon-sync-off>
+      </button>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--edit-buttons">
       <button class="navigation-bar__button button" @click="pagedownClick('bold')">
@@ -60,8 +66,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 import editorSvc from '../services/editorSvc';
+import syncSvc from '../services/syncSvc';
 import animationSvc from '../services/animationSvc';
 
 export default {
@@ -72,9 +79,19 @@ export default {
     titleHover: false,
   }),
   computed: {
+    ...mapState([
+      'offline',
+    ]),
+    ...mapState('queue', [
+      'isSyncRequested',
+    ]),
     ...mapGetters('layout', [
       'styles',
     ]),
+    isSyncPossible() {
+      return this.$store.getters['data/loginToken'] ||
+        this.$store.getters['syncLocation/current'].length;
+    },
     showSpinner() {
       return !this.$store.state.queue.isEmpty;
     },
@@ -112,6 +129,11 @@ export default {
       'toggleExplorer',
       'toggleSideBar',
     ]),
+    requestSync() {
+      if (!this.isSyncRequested) {
+        syncSvc.requestSync();
+      }
+    },
     pagedownClick(name) {
       editorSvc.pagedownEditor.uiManager.doClick(name);
     },
@@ -201,6 +223,24 @@ export default {
   color: $navbar-color;
   background-color: transparent;
   font-size: 22px;
+}
+
+.navigation-bar__button[disabled] {
+  &,
+  &:active,
+  &:focus,
+  &:hover {
+    color: $navbar-color;
+  }
+}
+
+.navigation-bar__button--sync-off[disabled] {
+  &,
+  &:active,
+  &:focus,
+  &:hover {
+    color: #f20;
+  }
 }
 
 .navigation-bar__title--input,

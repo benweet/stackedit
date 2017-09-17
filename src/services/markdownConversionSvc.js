@@ -129,13 +129,13 @@ const markdownConversionSvc = {
    * Creates a converter and init it with extensions.
    * @returns {Object} A converter.
    */
-  createConverter(options, isCurrentFile) {
+  createConverter(options) {
     // Let the listeners add the rules
     const converter = new MarkdownIt('zero');
     converter.core.ruler.enable([], true);
     converter.block.ruler.enable([], true);
     converter.inline.ruler.enable([], true);
-    extensionSvc.initConverter(converter, options, isCurrentFile);
+    extensionSvc.initConverter(converter, options);
     Object.keys(startSectionBlockTypeMap).forEach((type) => {
       const rule = converter.renderer.rules[type] || converter.renderer.renderToken;
       converter.renderer.rules[type] = (tokens, idx, opts, env, self) => {

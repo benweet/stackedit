@@ -255,7 +255,7 @@ export default {
             // Put item in the store
             dbItem.tx = undefined;
             store.commit(`${dbItem.type}/setItem`, dbItem);
-            resolve();
+            resolve(dbItem);
           }
         };
       }, () => onError());
@@ -266,16 +266,34 @@ export default {
    * Unload from the store contents that haven't been opened recently
    */
   unloadContents() {
-    // Keep only last opened files in memory
-    const lastOpenedFileIds = new Set(store.getters['data/lastOpenedIds']);
-    Object.keys(contentTypes).forEach((type) => {
-      store.getters[`${type}/items`].forEach((item) => {
-        const [fileId] = item.id.split('/');
-        if (!lastOpenedFileIds.has(fileId)) {
-          // Remove item from the store
-          store.commit(`${type}/deleteItem`, item.id);
-        }
+    return this.sync()
+      .then(() => {
+        // Keep only last opened files in memory
+        const lastOpenedFileIds = new Set(store.getters['data/lastOpenedIds']);
+        Object.keys(contentTypes).forEach((type) => {
+          store.getters[`${type}/items`].forEach((item) => {
+            const [fileId] = item.id.split('/');
+            if (!lastOpenedFileIds.has(fileId)) {
+              // Remove item from the store
+              store.commit(`${type}/deleteItem`, item.id);
+            }
+          });
+        });
       });
-    });
+  },
+
+  /**
+   * Drop the database
+   */
+  removeDb() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.deleteDatabase('stackedit-db');
+      request.onerror = reject;
+      request.onsuccess = resolve;
+    })
+    .then(() => {
+      localStorage.removeItem('localDbVersion');
+      window.location.reload();
+    }, () => console.error('Could not delete local database.'));
   },
 };

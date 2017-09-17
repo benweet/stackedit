@@ -27,10 +27,10 @@ export default {
     }, {});
   },
 
-  initConverter(markdown, options, isCurrentFile) {
+  initConverter(markdown, options) {
     // Use forEach as it's a sparsed array
     initConverterListeners.forEach((listener) => {
-      listener(markdown, options, isCurrentFile);
+      listener(markdown, options);
     });
   },
 

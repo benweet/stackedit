@@ -10,7 +10,6 @@ import folder from './modules/folder';
 import syncLocation from './modules/syncLocation';
 import data from './modules/data';
 import layout from './modules/layout';
-import editor from './modules/editor';
 import explorer from './modules/explorer';
 import modal from './modules/modal';
 import queue from './modules/queue';
@@ -48,7 +47,6 @@ const store = new Vuex.Store({
     syncLocation,
     data,
     layout,
-    editor,
     explorer,
     modal,
     queue,

@@ -1,0 +1,81 @@
+# Adjust font size in editor and preview
+fontSizeFactor: 1
+# Adjust maximum text width in editor and preview
+maxWidthFactor: 1
+# Synchronize editor and preview scrollbars
+scrollSync: true
+
+# Editor settings
+editor:
+  # Display images in the editor
+  inlineImages: true
+  # Use monospaced font only
+  monospacedFontOnly: false
+
+# Keyboard shortcuts (see https://craig.is/killing/mice)
+shortcuts:
+-
+  keys: mod+s
+  method: sync
+-
+  keys: mod+shift+b
+  method: bold
+-
+  keys: mod+shift+i
+  method: italic
+-
+  keys: mod+shift+l
+  method: link
+-
+  keys: mod+shift+l
+  method: link
+-
+  keys: mod+shift+q
+  method: quote
+-
+  keys: mod+shift+k
+  method: code
+-
+  keys: mod+shift+g
+  method: image
+-
+  keys: mod+shift+o
+  method: olist
+-
+  keys: mod+shift+o
+  method: olist
+-
+  keys: mod+shift+u
+  method: ulist
+-
+  keys: mod+shift+h
+  method: heading
+-
+  keys: mod+shift+r
+  method: hr
+-
+  keys: = = > space
+  method: expand
+  params:
+  - '==> '
+  - '⇒ '
+-
+  keys: < = = space
+  method: expand
+  params:
+  - '<== '
+  - '⇐ '
+
+# Default content for newly created files
+newFileContent: |
+
+
+
+  > Written with [StackEdit](https://stackedit.io/).
+
+# Default properties for newly created files
+newFileProperties: |
+# extensions:
+#   markdown:
+#     breaks: true
+

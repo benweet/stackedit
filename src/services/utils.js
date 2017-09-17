@@ -1,8 +1,14 @@
+import yaml from 'js-yaml';
+import defaultProperties from '../data/defaultFileProperties.yml';
+
+// For sortObject
+const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
+
 // For uid()
 const crypto = window.crypto || window.msCrypto;
 const alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const radix = alphabet.length;
-const array = new Uint32Array(20);
+const array = new Uint32Array(16);
 
 // For addQueryParams()
 const urlParser = window.document.createElement('a');
@@ -10,10 +16,8 @@ const urlParser = window.document.createElement('a');
 // For loadScript()
 const scriptLoadingPromises = Object.create(null);
 
-// For startOauth2()
-const origin = `${location.protocol}//${location.host}`;
-
 export default {
+  origin: `${location.protocol}//${location.host}`,
   types: ['contentState', 'syncedContent', 'content', 'file', 'folder', 'syncLocation', 'data'],
   deepCopy(obj) {
     return obj == null ? obj : JSON.parse(JSON.stringify(obj));
@@ -30,6 +34,15 @@ export default {
       }, {});
     });
   },
+  sortObject(obj, sortFunc = key => key) {
+    const result = {};
+    const compare = (key1, key2) => collator.compare(
+      sortFunc(key1, obj[key1]), sortFunc(key2, obj[key2]));
+    Object.keys(obj).sort(compare).forEach((key) => {
+      result[key] = obj[key];
+    });
+    return result;
+  },
   uid() {
     crypto.getRandomValues(array);
     return array.cl_map(value => alphabet[value % radix]).join('');
@@ -43,6 +56,27 @@ export default {
       hash |= 0; // eslint-disable-line no-bitwise
     }
     return hash;
+  },
+  computeProperties(yamlProperties) {
+    const customProperties = yaml.safeLoad(yamlProperties);
+    const properties = yaml.safeLoad(defaultProperties);
+    const override = (obj, opt) => {
+      const objType = Object.prototype.toString.call(obj);
+      const optType = Object.prototype.toString.call(opt);
+      if (objType !== optType) {
+        return obj;
+      } else if (objType !== '[object Object]') {
+        return opt === undefined ? obj : opt;
+      }
+      Object.keys({
+        ...obj,
+        ...opt,
+      }).forEach((key) => {
+        obj[key] = override(obj[key], opt[key]);
+      });
+      return obj;
+    };
+    return override(properties, customProperties);
   },
   randomize(value) {
     return Math.floor((1 + (Math.random() * 0.2)) * value);
@@ -85,17 +119,15 @@ export default {
     // Build the authorize URL
     const state = this.uid();
     params.state = state;
-    params.redirect_uri = `${origin}/oauth2/callback.html`;
+    params.redirect_uri = `${this.origin}/oauth2/callback.html`;
     const authorizeUrl = this.addQueryParams(url, params);
     if (silent) {
       // Use an iframe as wnd for silent mode
       oauth2Context.iframeElt = document.createElement('iframe');
       oauth2Context.iframeElt.style.position = 'absolute';
       oauth2Context.iframeElt.style.left = '-9999px';
-      oauth2Context.iframeElt.onload = () => {
-        oauth2Context.closeTimeout = setTimeout(() => oauth2Context.clean(), 5 * 1000);
-      };
-      oauth2Context.iframeElt.onerror = () => oauth2Context.clean();
+      oauth2Context.closeTimeout = setTimeout(() => oauth2Context.clean('Unknown error.'), 5 * 1000);
+      oauth2Context.iframeElt.onerror = () => oauth2Context.clean('Unknown error.');
       oauth2Context.iframeElt.src = authorizeUrl;
       document.body.appendChild(oauth2Context.iframeElt);
       oauth2Context.wnd = oauth2Context.iframeElt.contentWindow;
@@ -106,7 +138,7 @@ export default {
       if (!oauth2Context.wnd) {
         return Promise.reject();
       }
-      oauth2Context.closeTimeout = setTimeout(() => oauth2Context.clean(), 120 * 1000);
+      oauth2Context.closeTimeout = setTimeout(() => oauth2Context.clean('Timeout.'), 120 * 1000);
     }
     return new Promise((resolve, reject) => {
       oauth2Context.clean = (errorMsg) => {
@@ -129,7 +161,7 @@ export default {
 
       oauth2Context.msgHandler = (event) => {
         if (event.source === oauth2Context.wnd &&
-          event.origin === origin &&
+          event.origin === this.origin &&
           event.data &&
           event.data.state === state
         ) {
@@ -145,9 +177,9 @@ export default {
 
       oauth2Context.checkClosedInterval = !silent && setInterval(() => {
         if (oauth2Context.wnd.closed) {
-          oauth2Context.clean();
+          oauth2Context.clean('Authorize window was closed');
         }
-      }, 200);
+      }, 250);
     });
   },
   request(configParam) {

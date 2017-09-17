@@ -51,6 +51,8 @@ function SelectionMgr(editor) {
     if (adjustScroll) {
       var adjustment = scrollElt.clientHeight / 2 * editor.options.getCursorFocusRatio()
       var cursorTop = this.cursorCoordinates.top + this.cursorCoordinates.height / 2
+      // Adjust cursorTop with contentElt position relative to scrollElt
+      cursorTop += contentElt.getBoundingClientRect().top - scrollElt.getBoundingClientRect().top + scrollElt.scrollTop;
       var minScrollTop = cursorTop - adjustment
       var maxScrollTop = cursorTop + adjustment - scrollElt.clientHeight
       if (scrollElt.scrollTop > minScrollTop) {

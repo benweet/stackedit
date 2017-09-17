@@ -1,18 +1,18 @@
 <template>
-  <div class="side-bar-item button flex flex--row flex--align-center">
-    <div class="side-bar-item__icon flex flex--column flex--center">
+  <a href="javascript:void(0)" class="menu-entry button flex flex--row flex--align-center">
+    <div class="menu-entry__icon flex flex--column flex--center">
       <slot name="icon"></slot>
     </div>
     <div class="flex flex--column">
       <slot></slot>
     </div>
-  </div>
+  </a>
 </template>
 
 <style lang="scss">
-.side-bar-item {
+.menu-entry {
   text-align: left;
-  padding: 10px 12px;
+  padding: 10px;
   height: auto;
 
   span {
@@ -24,7 +24,7 @@
   }
 }
 
-.side-bar-item__icon {
+.menu-entry__icon {
   height: 20px;
   width: 20px;
   margin-right: 12px;

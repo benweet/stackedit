@@ -37,14 +37,13 @@ export default {
     }
   },
   saveItem(token, item, syncData, ifNotTooLate) {
-    return googleHelper.saveFile(
-      token,
-      JSON.stringify(item),
-      ['appDataFolder'],
-      null,
-      syncData && syncData.id,
-      ifNotTooLate,
-    )
+    return googleHelper.saveAppDataFile(
+        token,
+        JSON.stringify(item), ['appDataFolder'],
+        null,
+        syncData && syncData.id,
+        ifNotTooLate,
+      )
       .then(file => ({
         // Build sync data
         id: file.id,
@@ -83,17 +82,16 @@ export default {
       return Promise.resolve();
     }
     return googleHelper.saveAppDataFile(
-      token,
-      JSON.stringify({
-        id: item.id,
-        type: item.type,
-        hash: item.hash,
-      }),
-      ['appDataFolder'],
-      JSON.stringify(item),
-      syncData && syncData.id,
-      ifNotTooLate,
-    )
+        token,
+        JSON.stringify({
+          id: item.id,
+          type: item.type,
+          hash: item.hash,
+        }), ['appDataFolder'],
+        JSON.stringify(item),
+        syncData && syncData.id,
+        ifNotTooLate,
+      )
       .then(file => store.dispatch('data/setSyncData', {
         ...store.getters['data/syncData'],
         [file.id]: {

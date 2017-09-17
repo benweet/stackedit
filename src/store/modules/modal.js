@@ -1,49 +1,54 @@
-const confirmButtons = yesText => [{
-  text: 'No',
-}, {
-  text: yesText || 'Yes',
-  resolve: true,
-}];
-
 export default {
   namespaced: true,
   state: {
-    content: null,
+    config: null,
   },
   mutations: {
-    setContent: (state, value) => {
-      state.content = value;
+    setConfig: (state, value) => {
+      state.config = value;
     },
   },
   actions: {
-    open({ commit }, content) {
+    open({ commit }, param) {
       return new Promise((resolve, reject) => {
-        if (!content.buttons) {
-          content.buttons = [{
-            text: 'OK',
-            resolve: true,
-          }];
-        }
-        content.buttons.forEach((button) => {
-          button.onClick = () => {
-            commit('setContent');
-            if (button.resolve) {
-              resolve(button.resolve);
-            } else {
-              reject();
-            }
+        let config = param;
+        if (typeof config === 'string') {
+          config = {
+            type: config,
           };
-        });
-        commit('setContent', content);
+        }
+        config.resolve = (result) => {
+          if (config.onResolve) {
+            config.onResolve(result);
+          }
+          commit('setConfig');
+          resolve(result);
+        };
+        config.reject = (error) => {
+          commit('setConfig');
+          reject(error);
+        };
+        commit('setConfig', config);
       });
     },
+    notImplemented: ({ dispatch }) => dispatch('open', {
+      content: '<p>Sorry, this feature is not available yet...</p>',
+      rejectText: 'Ok',
+    }),
     fileDeletion: ({ dispatch }, item) => dispatch('open', {
-      text: `<p>You are about to delete the file <b>${item.name}</b>. Are you sure ?</p>`,
-      buttons: confirmButtons('Yes, delete'),
+      content: `<p>You are about to delete the file <b>${item.name}</b>. Are you sure?</p>`,
+      resolveText: 'Yes, delete',
+      rejectText: 'No',
     }),
     folderDeletion: ({ dispatch }, item) => dispatch('open', {
-      text: `<p>You are about to delete the folder <b>${item.name}</b> and all its files. Are you sure ?</p>`,
-      buttons: confirmButtons('Yes, delete'),
+      content: `<p>You are about to delete the folder <b>${item.name}</b> and all its files. Are you sure?</p>`,
+      resolveText: 'Yes, delete',
+      rejectText: 'No',
+    }),
+    reset: ({ dispatch }) => dispatch('open', {
+      content: '<p>This will clean your local files and settings. Are you sure?</p>',
+      resolveText: 'Yes, clean',
+      rejectText: 'No',
     }),
   },
 };

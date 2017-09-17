@@ -6,4 +6,6 @@ export default () => ({
   showSideBar: false,
   showExplorer: false,
   focusMode: false,
+  sideBarPanel: 'menu',
+  htmlExportLastTemplate: 'styledHtml',
 });

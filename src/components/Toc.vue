@@ -59,7 +59,7 @@ export default {
   color: rgba(0, 0, 0, 0.75);
   cursor: pointer;
   font-size: 10px;
-  padding: 5px 20px 40px;
+  padding: 10px 20px 40px;
   white-space: nowrap;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -75,6 +75,7 @@ export default {
     * {
       margin: 0.2em 0;
       padding: 0.2em 0;
+      border-bottom: 0;
     }
 
     h2 {

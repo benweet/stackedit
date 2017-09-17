@@ -1,4 +1,4 @@
-const editorMinWidth = 280;
+const editorMinWidth = 320;
 const minPadding = 20;
 const previewButtonWidth = 55;
 const editorTopPadding = 10;
@@ -15,7 +15,7 @@ const constants = {
   statusBarHeight: 20,
 };
 
-function computeStyles(state, localSettings, styles = {
+function computeStyles(state, computedSettings, localSettings, styles = {
   showNavigationBar: !localSettings.showEditor || localSettings.showNavigationBar,
   showStatusBar: localSettings.showStatusBar,
   showEditor: localSettings.showEditor,
@@ -49,7 +49,7 @@ function computeStyles(state, localSettings, styles = {
   if (styles.showSidePreview && doublePanelWidth / 2 < editorMinWidth) {
     styles.showSidePreview = false;
     styles.showPreview = false;
-    return computeStyles(state, localSettings, styles);
+    return computeStyles(state, computedSettings, localSettings, styles);
   }
 
   styles.fontSize = 18;
@@ -61,14 +61,14 @@ function computeStyles(state, localSettings, styles = {
   if (doublePanelWidth < 1040) {
     styles.textWidth = 830;
   }
-  styles.textWidth *= state.editorWidthFactor;
+  styles.textWidth *= computedSettings.maxWidthFactor;
   if (doublePanelWidth < styles.textWidth) {
     styles.textWidth = doublePanelWidth;
   }
   if (styles.textWidth < 640) {
     styles.fontSize -= 1;
   }
-  styles.fontSize *= state.fontSizeFactor;
+  styles.fontSize *= computedSettings.fontSizeFactor;
 
   const bottomPadding = Math.floor(styles.innerHeight / 2);
   const panelWidth = Math.floor(doublePanelWidth / 2);
@@ -98,21 +98,13 @@ function computeStyles(state, localSettings, styles = {
   return styles;
 }
 
-const setter = propertyName => (state, value) => {
-  state[propertyName] = value;
-};
-
 export default {
   namespaced: true,
   state: {
-    editorWidthFactor: 1,
-    fontSizeFactor: 1,
     bodyWidth: 0,
     bodyHeight: 0,
   },
   mutations: {
-    setEditorWidthFactor: setter('editorWidthFactor'),
-    setFontSizeFactor: setter('fontSizeFactor'),
     updateBodySize: (state) => {
       state.bodyWidth = document.body.clientWidth;
       state.bodyHeight = document.body.clientHeight;
@@ -121,8 +113,9 @@ export default {
   getters: {
     constants: () => constants,
     styles: (state, getters, rootState, rootGetters) => {
+      const computedSettings = rootGetters['data/computedSettings'];
       const localSettings = rootGetters['data/localSettings'];
-      return computeStyles(state, localSettings);
+      return computeStyles(state, computedSettings, localSettings);
     },
   },
 };

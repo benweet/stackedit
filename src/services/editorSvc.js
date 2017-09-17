@@ -28,7 +28,6 @@ const allowDebounce = (action, wait) => {
 };
 
 const diffMatchPatch = new DiffMatchPatch();
-let lastContentId = null;
 let instantPreview = true;
 let tokens;
 const anchorHash = {};
@@ -153,8 +152,8 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
    */
   initPrism() {
     const options = {
-      insideFences: markdownConversionSvc.defaultOptions.insideFences,
       ...this.options,
+      insideFences: markdownConversionSvc.defaultOptions.insideFences,
     };
     this.prismGrammars = markdownGrammarSvc.makeGrammars(options);
   },
@@ -185,10 +184,6 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
       },
     };
     editorEngineSvc.initClEditor(options);
-    editorEngineSvc.clEditor.toggleEditable(true);
-    const contentId = store.getters['content/current'].id;
-    // Switch off the editor when no content is loaded
-    editorEngineSvc.clEditor.toggleEditable(!!contentId);
     this.restoreScrollPosition();
   },
 
@@ -213,7 +208,6 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
     let insertBeforePreviewElt = this.previewElt.firstChild;
     let insertBeforeTocElt = this.tocElt.firstChild;
     let previewHtml = '';
-    let heading;
     this.conversionCtx.htmlSectionDiff.forEach((item) => {
       for (let i = 0; i < item[1].length; i += 1) {
         const section = this.conversionCtx.sectionList[sectionIdx];
@@ -237,13 +231,13 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
           insertBeforeTocElt = insertBeforeTocElt.nextSibling;
           this.tocElt.removeChild(sectionTocElt);
         } else if (item[0] === 1) {
-          const html = this.conversionCtx.htmlSectionList[sectionIdx];
+          const html = htmlSanitizer.sanitizeHtml(this.conversionCtx.htmlSectionList[sectionIdx]);
           sectionIdx += 1;
 
           // Create preview section element
           sectionPreviewElt = document.createElement('div');
           sectionPreviewElt.className = 'cl-preview-section modified';
-          sectionPreviewElt.innerHTML = htmlSanitizer.sanitizeHtml(html);
+          sectionPreviewElt.innerHTML = html;
           if (insertBeforePreviewElt) {
             this.previewElt.insertBefore(sectionPreviewElt, insertBeforePreviewElt);
           } else {
@@ -254,17 +248,11 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
           // Create TOC section element
           sectionTocElt = document.createElement('div');
           sectionTocElt.className = 'cl-toc-section modified';
-          let headingElt = sectionPreviewElt.querySelector('h1, h2, h3, h4, h5, h6');
-          heading = undefined;
+          const headingElt = sectionPreviewElt.querySelector('h1, h2, h3, h4, h5, h6');
           if (headingElt) {
-            heading = {
-              title: headingElt.textContent,
-              anchor: headingElt.id,
-              level: parseInt(headingElt.tagName.slice(1), 10),
-            };
-            headingElt = headingElt.cloneNode(true);
-            headingElt.removeAttribute('id');
-            sectionTocElt.appendChild(headingElt);
+            const clonedElt = headingElt.cloneNode(true);
+            clonedElt.removeAttribute('id');
+            sectionTocElt.appendChild(clonedElt);
           }
           if (insertBeforeTocElt) {
             this.tocElt.insertBefore(sectionTocElt, insertBeforeTocElt);
@@ -272,23 +260,13 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
             this.tocElt.appendChild(sectionTocElt);
           }
 
-          const clonedElt = sectionPreviewElt.cloneNode(true);
-          // Unwrap tables
-          clonedElt.querySelectorAll('.table-wrapper').cl_each((elt) => {
-            while (elt.firstChild) {
-              elt.parentNode.appendChild(elt.firstChild);
-            }
-            elt.parentNode.removeChild(elt);
-          });
-
-          previewHtml += clonedElt.innerHTML;
+          previewHtml += html;
           newSectionDescList.push({
             section,
             editorElt: section.elt,
             previewElt: sectionPreviewElt,
             tocElt: sectionTocElt,
-            html: clonedElt.innerHTML,
-            heading,
+            html,
           });
         }
       }
@@ -455,74 +433,6 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
   },
 
   /**
-   * Apply the template to the file content
-   */
-  // applyTemplate({ state, commit, dispatch, rootState }, template) {
-  // function groupToc(array, level = 1) {
-  //   const result = [];
-  //   let currentItem;
-
-  //   function pushCurrentItem() {
-  //     if (currentItem) {
-  //       if (currentItem.children.length > 0) {
-  //         currentItem.children = groupToc(currentItem.children, level + 1);
-  //       }
-  //       result.push(currentItem);
-  //     }
-  //   }
-  //   array.forEach((item) => {
-  //     if (item.level !== level) {
-  //       currentItem = currentItem || {
-  //         children: [],
-  //       };
-  //       currentItem.children.push(item);
-  //     } else {
-  //       pushCurrentItem();
-  //       currentItem = item;
-  //     }
-  //   });
-  //   pushCurrentItem();
-  //   return result;
-  // }
-
-  // let toc = [];
-  // state.sectionDescList.cl_each((sectionDesc) => {
-  //   if (sectionDesc.heading) {
-  //     toc.push({
-  //       title: sectionDesc.heading.title,
-  //       level: sectionDesc.heading.level,
-  //       anchor: sectionDesc.heading.anchor,
-  //       children: [],
-  //     });
-  //   }
-  // });
-  // toc = groupToc(toc);
-
-  // const view = {
-  //   file: {
-  //     name: rootState.file.currentFile.name,
-  //     content: {
-  //       properties: rootState.file.currentFile.content.properties,
-  //       text: rootState.file.currentFile.content.text,
-  //       html: state.previewHtml,
-  //       toc,
-  //     },
-  //   },
-  // };
-  // const worker = new window.Worker(clVersion.getAssetPath('templateWorker-min.js'));
-  // worker.postMessage([template, view, clSettingSvc.values.handlebarsHelpers]);
-  // return new Promise((resolve, reject) => {
-  //   worker.addEventListener('message', (e) => {
-  //     resolve(e.data.toString());
-  //   });
-  //   setTimeout(() => {
-  //     worker.terminate();
-  //     reject('Template generation timeout.');
-  //   }, 10000);
-  // });
-  // },
-
-  /**
    * Pass the elements to the store and initialize the editor.
    */
   init(editorElt, previewElt, tocElt) {
@@ -531,7 +441,6 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
     this.tocElt = tocElt;
 
     editorEngineSvc.createClEditor(editorElt);
-    editorEngineSvc.clEditor.toggleEditable(false);
     editorEngineSvc.clEditor.on('contentChanged', (content, diffs, sectionList) => {
       const parsingCtx = {
         ...this.parsingCtx,
@@ -543,18 +452,20 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
       input: Object.create(editorEngineSvc.clEditor),
     });
     this.pagedownEditor.run();
-    // state.pagedownEditor.hooks.set('insertLinkDialog', (callback) => {
-    //   clEditorSvc.linkDialogCallback = callback
-    //   clEditorLayoutSvc.currentControl = 'linkDialog'
-    //   scope.$evalAsync()
-    //   return true
-    // })
-    // state.pagedownEditor.hooks.set('insertImageDialog', (callback) => {
-    //   clEditorSvc.imageDialogCallback = callback
-    //   clEditorLayoutSvc.currentControl = 'imageDialog'
-    //   scope.$evalAsync()
-    //   return true
-    // })
+    this.pagedownEditor.hooks.set('insertLinkDialog', (callback) => {
+      store.dispatch('modal/open', {
+        type: 'link',
+        callback,
+      });
+      return true;
+    });
+    this.pagedownEditor.hooks.set('insertImageDialog', (callback) => {
+      store.dispatch('modal/open', {
+        type: 'image',
+        callback,
+      });
+      return true;
+    });
 
     this.editorElt.parentNode.addEventListener('scroll', () => this.saveContentState(true));
 
@@ -636,7 +547,7 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
     }, 100);
 
     let imgEltsToCache = [];
-    if (store.state.editor.inlineImages) {
+    if (store.getters['data/computedSettings'].editor.inlineImages) {
       editorEngineSvc.clEditor.highlighter.on('sectionHighlighted', (section) => {
         section.elt.getElementsByClassName('token img').cl_each((imgTokenElt) => {
           const srcElt = imgTokenElt.querySelector('.token.cl-src');
@@ -683,10 +594,6 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
 
     this.$emit('inited');
 
-    // scope.$watch('editorLayoutSvc.isEditorOpen', function (isOpen) {
-    //   clEditorSvc.cledit.toggleEditable(isOpen)
-    // })
-
     // scope.$watch('editorLayoutSvc.currentControl', function (currentControl) {
     //   !currentControl && setTimeout(function () {
     //     !scope.isDialogOpen && clEditorSvc.cledit && clEditorSvc.cledit.focus()
@@ -705,6 +612,8 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
     // })
 
     // Watch file content changes
+    let lastContentId = null;
+    let lastProperties;
     store.watch(
       () => store.getters['content/current'].hash,
       () => {
@@ -717,12 +626,15 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
           initClEditor = true;
         }
         // Track properties changes
-        const options = extensionSvc.getOptions(content.properties, true);
-        if (JSON.stringify(options) !== JSON.stringify(editorSvc.options)) {
-          editorSvc.options = options;
-          editorSvc.initPrism();
-          editorSvc.initConverter();
-          initClEditor = true;
+        if (content.properties !== lastProperties) {
+          lastProperties = content.properties;
+          const options = extensionSvc.getOptions(store.getters['content/currentProperties']);
+          if (JSON.stringify(options) !== JSON.stringify(editorSvc.options)) {
+            editorSvc.options = options;
+            editorSvc.initPrism();
+            editorSvc.initConverter();
+            initClEditor = true;
+          }
         }
         if (initClEditor) {
           editorSvc.initClEditor();
@@ -730,6 +642,13 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
         // Apply possible text and discussion changes
         editorEngineSvc.applyContent();
       }, {
+        immediate: true,
+      });
+
+    // Disable editor if hidden or if no content is loaded
+    store.watch(
+      () => store.getters['content/current'].id && store.getters['layout/styles'].showEditor,
+      editable => editorEngineSvc.clEditor.toggleEditable(!!editable), {
         immediate: true,
       });
 

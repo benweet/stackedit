@@ -1,0 +1,25 @@
+### File properties can contain metadata used for your publications (Wordpress, Blogger...).
+
+### For example, you can specify a blog post title:
+#title: My article
+
+### Extension configuration
+extensions:
+
+  # Markdown extensions
+  markdown:
+    abbr: true
+    breaks: false
+    deflist: true
+    del: true
+    fence: true
+    footnote: true
+    linkify: true
+    sub: true
+    sup: true
+    table: true
+    typographer: true
+
+  # Katex extension
+  katex:
+    enabled: true

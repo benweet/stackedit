@@ -80,8 +80,9 @@ textarea {
   &:focus,
   &:hover {
     color: #333;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.067);
     outline: 0;
+    text-decoration: none;
   }
 
   &[disabled] {
@@ -93,6 +94,76 @@ textarea {
       background-color: transparent;
       cursor: inherit;
     }
+  }
+}
+
+.form-entry {
+  margin: 1em 0;
+}
+
+.form-entry__label {
+  display: block;
+  font-size: 0.9rem;
+  color: #a0a0a0;
+
+  .form-entry--focused & {
+    color: darken($link-color, 10%);
+  }
+}
+
+.form-entry__field {
+  border: 1px solid #d8d8d8;
+  border-radius: $border-radius-base;
+  position: relative;
+  overflow: hidden;
+
+  .form-entry--focused & {
+    border-color: $link-color;
+  }
+}
+
+.form-entry__actions {
+  text-align: right;
+  margin: 0.25em;
+}
+
+.form-entry__button {
+  width: 38px;
+  height: 38px;
+  padding: 6px;
+  display: inline-block;
+  background-color: transparent;
+  opacity: 0.75;
+
+  &:active,
+  &:focus,
+  &:hover {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.textfield {
+  background-color: transparent;
+  border: 0;
+  font-family: inherit;
+  font-weight: 400;
+  font-size: 1.05em;
+  padding: 0 0.6rem;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  color: inherit;
+  height: 2.6rem;
+
+  &:focus {
+    outline: none;
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+    background-color: #f8f8f8;
+    color: #999;
   }
 }
 
@@ -162,6 +233,7 @@ textarea {
   &:focus,
   &:hover {
     opacity: 1;
+    background-color: rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -172,4 +244,45 @@ textarea {
   white-space: nowrap;
   text-overflow: ellipsis;
   width: 100%;
+}
+
+.tabs {
+  border-bottom: 1px solid $hr-color;
+  margin-bottom: 2em;
+
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
+.tabs__tab {
+  width: 50%;
+  float: left;
+  text-align: center;
+  line-height: 2.5em;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  border-top-left-radius: $border-radius-base;
+  border-top-right-radius: $border-radius-base;
+  color: $link-color;
+  font-weight: 400;
+  font-size: 1.1em;
+
+  &:hover,
+  &:focus {
+    background-color: rgba(0, 0, 0, 0.067);
+  }
+}
+
+.tabs__tab--active {
+  border-bottom: 2px solid $link-color;
+  color: inherit;
+  cursor: auto;
+
+  &:hover,
+  &:focus {
+    background-color: transparent;
+  }
 }

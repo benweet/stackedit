@@ -1,0 +1,24 @@
+<!-- Specify your Handlebars template here.
+
+The following JavaScript context will be passed to the template:
+{
+  files: [{
+    name: 'The filename',
+    content: {
+      text: 'The file content',
+      html: '<p>The file content</p>',
+      yamlProperties: 'The file properties in YAML format',
+      properties: {
+        // Computed file properties object
+      },
+      toc: [
+        // Table Of Contents tree
+      ]
+    }
+  }]
+}
+
+You can use Handlebars built-in helpers and some custom StackEdit helpers:
+- {{#tocToHtml files.0.content.toc}}{{/tocToHtml}} will produce a nice TOC.
+- {{#tocToHtml files.0.content.toc 3}}{{/tocToHtml}} will limit the TOC depth to 3.
+-->

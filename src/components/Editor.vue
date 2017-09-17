@@ -1,6 +1,6 @@
 <template>
   <div class="editor">
-    <pre class="editor__inner markdown-highlighting" :style="{padding: styles.editorPadding}"></pre>
+    <pre class="editor__inner markdown-highlighting" :style="{padding: styles.editorPadding}" :class="{monospaced: computedSettings.editor.monospacedFontOnly}"></pre>
   </div>
 </template>
 
@@ -9,9 +9,14 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  computed: mapGetters('layout', [
-    'styles',
-  ]),
+  computed: {
+    ...mapGetters('layout', [
+      'styles',
+    ]),
+    ...mapGetters('data', [
+      'computedSettings',
+    ]),
+  },
 };
 </script>
 

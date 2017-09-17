@@ -58,7 +58,7 @@ function texMath(state, silent) {
 }
 
 extensionSvc.onGetOptions((options, properties) => {
-  options.math = properties['ext:katex'] !== 'false';
+  options.math = properties.extensions.katex.enabled;
 });
 
 extensionSvc.onInitConverter(2, (markdown, options) => {

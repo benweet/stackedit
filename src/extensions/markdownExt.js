@@ -47,19 +47,8 @@ const inlineBaseRules2 = [
   'text_collapse',
 ];
 
-extensionSvc.onGetOptions((options, properties) => {
-  options.abbr = properties['ext:markdown:abbr'] !== 'false';
-  options.breaks = properties['ext:markdown:breaks'] === 'true';
-  options.deflist = properties['ext:markdown:deflist'] !== 'false';
-  options.del = properties['ext:markdown:del'] !== 'false';
-  options.fence = properties['ext:markdown:fence'] !== 'false';
-  options.footnote = properties['ext:markdown:footnote'] !== 'false';
-  options.linkify = properties['ext:markdown:linkify'] !== 'false';
-  options.sub = properties['ext:markdown:sub'] !== 'false';
-  options.sup = properties['ext:markdown:sup'] !== 'false';
-  options.table = properties['ext:markdown:table'] !== 'false';
-  options.typographer = properties['ext:markdown:typographer'] !== 'false';
-});
+extensionSvc.onGetOptions(
+  (options, properties) => Object.assign(options, properties.extensions.markdown));
 
 extensionSvc.onInitConverter(0, (markdown, options) => {
   markdown.set({

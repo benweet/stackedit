@@ -4,7 +4,8 @@ import welcomeFile from '../data/welcomeFile.md';
 import utils from './utils';
 import diffUtils from './diffUtils';
 import userActivitySvc from './userActivitySvc';
-import gdriveAppDataProvider from './providers/gdriveAppDataProvider';
+import googleDriveAppDataProvider from './providers/googleDriveAppDataProvider';
+import googleDriveProvider from './providers/googleDriveProvider';
 
 const lastSyncActivityKey = 'lastSyncActivity';
 let lastSyncActivity;
@@ -38,17 +39,21 @@ function setLastSyncActivity() {
 
 function getSyncProvider(syncLocation) {
   switch (syncLocation.provider) {
-    case 'gdriveAppData':
+    case 'googleDriveAppData':
     default:
-      return gdriveAppDataProvider;
+      return googleDriveAppDataProvider;
+    case 'googleDrive':
+      return googleDriveProvider;
   }
 }
 
 function getSyncToken(syncLocation) {
   switch (syncLocation.provider) {
-    case 'gdriveAppData':
+    case 'googleDriveAppData':
     default:
       return store.getters['data/loginToken'];
+    case 'googleDrive':
+      return store.getters['data/googleTokens'][syncLocation.sub];
   }
 }
 
@@ -135,7 +140,7 @@ function syncFile(fileId) {
           ...store.getters['syncLocation/groupedByFileId'][fileId] || [],
         ];
         if (isDataSyncPossible()) {
-          syncLocations.push({ id: 'main', provider: 'gdriveAppData', fileId });
+          syncLocations.unshift({ id: 'main', provider: 'googleDriveAppData', fileId });
         }
         let result;
         syncLocations.some((syncLocation) => {
@@ -200,7 +205,8 @@ function syncFile(fileId) {
                   }
                 }
 
-                // Store server content if any, and merged content which will be sent if different
+                // Store last sent if it's in the server history,
+                // and merged content which will be sent if different
                 const newSyncedContent = utils.deepCopy(syncedContent);
                 const newSyncHistoryItem = newSyncedContent.syncHistory[syncLocation.id] || [];
                 newSyncedContent.syncHistory[syncLocation.id] = newSyncHistoryItem;
@@ -248,10 +254,12 @@ function syncFile(fileId) {
 
       return syncOneContentLocation();
     })
-    .then(() => localDbSvc.unloadContents(), (err) => {
-      localDbSvc.unloadContents();
-      throw err;
-    })
+    .then(
+      () => localDbSvc.unloadContents(),
+      err => localDbSvc.unloadContents()
+        .then(() => {
+          throw err;
+        }))
     .catch((err) => {
       if (err && err.message === 'TOO_LATE') {
         // Restart sync
@@ -263,11 +271,11 @@ function syncFile(fileId) {
 
 function sync() {
   const googleToken = store.getters['data/loginToken'];
-  return gdriveAppDataProvider.getChanges(googleToken)
+  return googleDriveAppDataProvider.getChanges(googleToken)
     .then((changes) => {
       // Apply changes
       applyChanges(changes);
-      gdriveAppDataProvider.setAppliedChanges(googleToken, changes);
+      googleDriveAppDataProvider.setAppliedChanges(googleToken, changes);
 
       // Prevent from sending items too long after changes have been retrieved
       const syncStartTime = Date.now();
@@ -292,7 +300,7 @@ function sync() {
           const item = storeItemMap[id];
           const existingSyncData = syncDataByItemId[id];
           if (!existingSyncData || existingSyncData.hash !== item.hash) {
-            result = gdriveAppDataProvider.saveItem(
+            result = googleDriveAppDataProvider.saveItem(
               googleToken,
               // Use deepCopy to freeze objects
               utils.deepCopy(item),
@@ -327,7 +335,8 @@ function sync() {
           ) {
             // Use deepCopy to freeze objects
             const syncDataToRemove = utils.deepCopy(existingSyncData);
-            result = gdriveAppDataProvider.removeItem(googleToken, syncDataToRemove, ifNotTooLate)
+            result = googleDriveAppDataProvider
+              .removeItem(googleToken, syncDataToRemove, ifNotTooLate)
               .then(() => {
                 const syncDataCopy = { ...store.getters['data/syncData'] };
                 delete syncDataCopy[syncDataToRemove.id];
@@ -396,7 +405,7 @@ function requestSync() {
         clearInterval(intervalId);
         if (!isSyncPossible()) {
           // Cancel sync
-          reject();
+          reject('Sync not possible.');
           return;
         }
 

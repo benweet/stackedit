@@ -4,29 +4,18 @@ import store from '../../../store';
 const clientId = '241271498917-t4t7d07qis7oc0ahaskbif3ft6tk63cd.apps.googleusercontent.com';
 const appsDomain = null;
 const tokenExpirationMargin = 5 * 60 * 1000; // 5 min (Google tokens expire after 1h)
+let gapi;
+let google;
 
-// const scopeMap = {
-//   profile: [
-//     'https://www.googleapis.com/auth/userinfo.profile',
-//   ],
-//   gdrive: [
-//     'https://www.googleapis.com/auth/drive.install',
-//     store.getters['data/settings'].gdriveFullAccess === true ?
-//     'https://www.googleapis.com/auth/drive' :
-//     'https://www.googleapis.com/auth/drive.file',
-//   ],
-//   blogger: [
-//     'https://www.googleapis.com/auth/blogger',
-//   ],
-//   picasa: [
-//     'https://www.googleapis.com/auth/photos',
-//   ],
-// };
-
-const gdriveAppDataScopes = ['https://www.googleapis.com/auth/drive.appdata'];
-const getGdriveScopes = () => [store.getters['data/settings'].gdriveFullAccess === true
+const driveAppDataScopes = ['https://www.googleapis.com/auth/drive.appdata'];
+const getDriveScopes = token => [token.driveFullAccess
   ? 'https://www.googleapis.com/auth/drive'
-  : 'https://www.googleapis.com/auth/drive.file'];
+  : 'https://www.googleapis.com/auth/drive.file',
+  'https://www.googleapis.com/auth/drive.install'];
+// const bloggerScopes = ['https://www.googleapis.com/auth/blogger'];
+const photosScopes = ['https://www.googleapis.com/auth/photos'];
+
+const libraries = ['picker'];
 
 const request = (token, options) => utils.request({
   ...options,
@@ -101,7 +90,7 @@ export default {
       'https://accounts.google.com/o/oauth2/v2/auth', {
         client_id: clientId,
         response_type: 'token',
-        scope: scopes.join(' '),
+        scope: ['openid', ...scopes].join(' '), // Need openid for user info
         hd: appsDomain,
         login_hint: sub,
         prompt: silent ? 'none' : null,
@@ -128,7 +117,12 @@ export default {
           accessToken: data.accessToken,
           expiresOn: Date.now() + (data.expiresIn * 1000),
           sub: res.body.sub,
-          isLogin: !store.getters['data/loginToken'],
+          isLogin: !store.getters['data/loginToken'] &&
+            scopes.indexOf('https://www.googleapis.com/auth/drive.appdata') !== -1,
+          isDrive: scopes.indexOf('https://www.googleapis.com/auth/drive') !== -1 ||
+            scopes.indexOf('https://www.googleapis.com/auth/drive.file') !== -1,
+          isPhotos: scopes.indexOf('https://www.googleapis.com/auth/photos') !== -1,
+          driveFullAccess: scopes.indexOf('https://www.googleapis.com/auth/drive') !== -1,
         };
       }))
       // Call the tokeninfo endpoint
@@ -140,11 +134,14 @@ export default {
         token.name = res.body.displayName;
         const existingToken = store.getters['data/googleTokens'][token.sub];
         if (existingToken) {
-          if (!sub) {
-            throw new Error('Google account already linked.');
-          }
-          // Add isLogin and nextPageToken to token
-          token.isLogin = existingToken.isLogin;
+          // We probably retrieved a new token with restricted scopes.
+          // That's no problem, token will be refreshed later with merged scopes.
+          // Save flags
+          token.isLogin = existingToken.isLogin || token.isLogin;
+          token.isDrive = existingToken.isDrive || token.isDrive;
+          token.isPhotos = existingToken.isPhotos || token.isPhotos;
+          token.driveFullAccess = existingToken.driveFullAccess || token.driveFullAccess;
+          // Save nextPageToken
           token.nextPageToken = existingToken.nextPageToken;
         }
         // Add token to googleTokens
@@ -162,28 +159,49 @@ export default {
 
     return Promise.resolve()
       .then(() => {
-        if (mergedScopes.length === lastToken.scopes.length) {
+        if (mergedScopes.length === lastToken.scopes.length &&
+          lastToken.expiresOn > Date.now() + tokenExpirationMargin
+        ) {
           return lastToken;
         }
-        // New scopes are requested, popup an authorize window
-        return this.startOauth2(mergedScopes, sub);
-      })
-      .then((refreshedToken) => {
-        if (refreshedToken.expiresOn > Date.now() + tokenExpirationMargin) {
-          // Token is fresh enough
-          return refreshedToken;
-        }
-        // Token is almost outdated, try to take one in background
+        // New scopes are requested or existing token is going to expire.
+        // Try to get a new token in background
         return this.startOauth2(mergedScopes, sub, true)
           // If it fails try to popup a window
           .catch(() => this.startOauth2(mergedScopes, sub));
       });
   },
+  loadClientScript() {
+    if (gapi) {
+      return Promise.resolve();
+    }
+    return utils.loadScript('https://apis.google.com/js/api.js')
+    .then(() => Promise.all(libraries.map(
+      library => new Promise((resolve, reject) => window.gapi.load(library, {
+        callback: resolve,
+        onerror: reject,
+        timeout: 30000,
+        ontimeout: reject,
+      })))))
+    .then(() => {
+      gapi = window.gapi;
+      google = window.google;
+    });
+  },
+  signin() {
+    return this.startOauth2(driveAppDataScopes);
+  },
+  addDriveAccount(fullAccess = false) {
+    return this.startOauth2(getDriveScopes({ driveFullAccess: fullAccess }));
+  },
+  addPhotosAccount() {
+    return this.startOauth2(photosScopes);
+  },
   getChanges(token) {
     const result = {
       changes: [],
     };
-    return this.refreshToken(gdriveAppDataScopes, token)
+    return this.refreshToken(driveAppDataScopes, token)
       .then((refreshedToken) => {
         const getPage = (pageToken = '1') => request(refreshedToken, {
           method: 'GET',
@@ -207,27 +225,86 @@ export default {
       });
   },
   saveFile(token, name, parents, media, fileId, ifNotTooLate) {
-    return this.refreshToken(getGdriveScopes(), token)
+    return this.refreshToken(getDriveScopes(token), token)
       .then(refreshedToken => saveFile(refreshedToken, name, parents, media, fileId, ifNotTooLate));
   },
   saveAppDataFile(token, name, parents, media, fileId, ifNotTooLate) {
-    return this.refreshToken(gdriveAppDataScopes, token)
+    return this.refreshToken(driveAppDataScopes, token)
       .then(refreshedToken => saveFile(refreshedToken, name, parents, media, fileId, ifNotTooLate));
   },
   downloadFile(token, id) {
-    return this.refreshToken(getGdriveScopes(), token)
+    return this.refreshToken(getDriveScopes(token), token)
       .then(refreshedToken => downloadFile(refreshedToken, id));
   },
   downloadAppDataFile(token, id) {
-    return this.refreshToken(gdriveAppDataScopes, token)
+    return this.refreshToken(driveAppDataScopes, token)
       .then(refreshedToken => downloadFile(refreshedToken, id));
   },
   removeAppDataFile(token, id, ifNotTooLate = cb => res => cb(res)) {
-    return this.refreshToken(gdriveAppDataScopes, token)
+    return this.refreshToken(driveAppDataScopes, token)
       // Refreshing a token can take a while if an oauth window pops up, so check if it's too late
       .then(ifNotTooLate(refreshedToken => request(refreshedToken, {
         method: 'DELETE',
         url: `https://www.googleapis.com/drive/v3/files/${id}`,
       })));
+  },
+  openPicker(token, type = 'doc') {
+    const scopes = type === 'img' ? photosScopes : getDriveScopes(token);
+    return this.loadClientScript()
+      .then(() => this.refreshToken(scopes, token))
+      .then(refreshedToken => new Promise((resolve) => {
+        let picker;
+        const pickerBuilder = new google.picker.PickerBuilder()
+          .setOAuthToken(refreshedToken.accessToken)
+          .setCallback((data) => {
+            switch (data[google.picker.Response.ACTION]) {
+              case google.picker.Action.PICKED:
+              case google.picker.Action.CANCEL:
+                resolve(data.docs || []);
+                picker.dispose();
+                break;
+              default:
+            }
+          });
+        switch (type) {
+          default:
+          case 'doc': {
+            const view = new google.picker.DocsView(google.picker.ViewId.DOCS);
+            view.setParent('root');
+            view.setIncludeFolders(true);
+            view.setMimeTypes([
+              'text/plain',
+              'text/x-markdown',
+              'application/octet-stream',
+            ].join(','));
+            pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
+            pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);
+            pickerBuilder.addView(view);
+            break;
+          }
+          case 'folder': {
+            const view = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
+            view.setParent('root');
+            view.setIncludeFolders(true);
+            view.setSelectFolderEnabled(true);
+            view.setMimeTypes('application/vnd.google-apps.folder');
+            pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
+            pickerBuilder.addView(view);
+            break;
+          }
+          case 'img': {
+            let view = new google.picker.PhotosView();
+            view.setType('flat');
+            pickerBuilder.addView(view);
+            view = new google.picker.PhotosView();
+            view.setType('ofuser');
+            pickerBuilder.addView(view);
+            pickerBuilder.addView(google.picker.ViewId.PHOTO_UPLOAD);
+            break;
+          }
+        }
+        picker = pickerBuilder.build();
+        picker.setVisible(true);
+      }));
   },
 };

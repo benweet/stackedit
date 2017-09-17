@@ -139,7 +139,13 @@ class Animation {
     this.$end.endCb = typeof endCb === 'function' && endCb;
     this.$end.stepCb = typeof stepCb === 'function' && stepCb;
     this.$startTime = Date.now() + this.$end.delay;
-    this.loop(this.$end.duration && useTransition);
+    if (!this.$end.duration) {
+      this.loop(false);
+    } else if (useTransition) {
+      this.loop(true);
+    } else {
+      this.$requestId = window.requestAnimationFrame(() => this.loop(false));
+    }
     return this.elt;
   }
 

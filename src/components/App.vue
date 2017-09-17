@@ -7,9 +7,17 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { mapState } from 'vuex';
 import Layout from './Layout';
 import Modal from './Modal';
+
+// Global directives
+Vue.directive('focus', {
+  inserted(el) {
+    el.focus();
+  },
+});
 
 export default {
   components: {
@@ -24,7 +32,7 @@ export default {
       return !this.$store.getters['content/current'].id;
     },
     showModal() {
-      return !!this.$store.state.modal.content;
+      return !!this.$store.state.modal.config;
     },
   },
 };

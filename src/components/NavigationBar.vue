@@ -6,8 +6,8 @@
       </button>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--button">
-      <button class="navigation-bar__button button" @click="toggleSideBar()">
-        <icon-menu></icon-menu>
+      <button class="navigation-bar__button navigation-bar__button--stackedit button" @click="toggleSideBar()">
+        <icon-stackedit></icon-stackedit>
       </button>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--right flex flex--row">
@@ -50,7 +50,7 @@
         <icon-format-quote-close></icon-format-quote-close>
       </button>
       <button class="navigation-bar__button button" @click="pagedownClick('code')">
-        <icon-code-braces></icon-code-braces>
+        <icon-code-tags></icon-code-tags>
       </button>
       <button class="navigation-bar__button button" @click="pagedownClick('link')">
         <icon-link-variant></icon-link-variant>
@@ -212,8 +212,19 @@ export default {
   margin-bottom: 20px;
 
   .navigation-bar__inner--button & {
-    padding: 7px;
+    padding: 6px;
     width: 38px;
+
+    &.navigation-bar__button--stackedit {
+      opacity: 0.8;
+      padding: 4px;
+
+      &:active,
+      &:focus,
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
 }
 

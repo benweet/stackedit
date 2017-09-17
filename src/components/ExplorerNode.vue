@@ -24,13 +24,6 @@ import defaultContent from '../data/defaultContent.md';
 export default {
   name: 'explorer-node',
   props: ['node', 'depth'],
-  directives: {
-    focus: {
-      inserted(el) {
-        el.focus();
-      },
-    },
-  },
   data: () => ({
     editingValue: '',
   }),

@@ -26,13 +26,14 @@ export default {
     }
     if (Object.keys(data).length) {
       const serializedData = b64Encode(JSON.stringify(data)).replace(/(.{50})/g, '$1\n');
-      result += `<!--stackedit_data:\n${serializedData}-->`;
+      result += `<!--stackedit_data:\n${serializedData}\n-->`;
     }
     return result;
   },
   parseContent(serializedContent) {
     const result = emptyContent();
     result.text = serializedContent;
+    result.history = [];
     const extractedData = dataExtractor.exec(serializedContent);
     if (extractedData) {
       try {

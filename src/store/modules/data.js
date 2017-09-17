@@ -1,11 +1,17 @@
+import yaml from 'js-yaml';
 import moduleTemplate from './moduleTemplate';
 import utils from '../../services/utils';
+import defaultSettings from '../../data/defaultSettings.yml';
 import defaultLocalSettings from '../../data/defaultLocalSettings';
+import plainHtmlTemplate from '../../data/plainHtmlTemplate.html';
+import styledHtmlTemplate from '../../data/styledHtmlTemplate.html';
 
 const itemTemplate = (id, data = {}) => ({ id, type: 'data', data, hash: 0 });
 
 const empty = (id) => {
   switch (id) {
+    case 'settings':
+      return itemTemplate(id, '\n');
     case 'localSettings':
       return itemTemplate(id, defaultLocalSettings());
     default:
@@ -37,12 +43,66 @@ module.actions.toggleNavigationBar = localSettingsToggler('showNavigationBar');
 module.actions.toggleEditor = localSettingsToggler('showEditor');
 module.actions.toggleSidePreview = localSettingsToggler('showSidePreview');
 module.actions.toggleStatusBar = localSettingsToggler('showStatusBar');
-module.actions.toggleSideBar = localSettingsToggler('showSideBar');
+module.actions.toggleSideBar = ({ getters, dispatch }, value) => {
+  dispatch('setSideBarPanel'); // Reset side bar
+  dispatch('patchLocalSettings', {
+    showSideBar: value === undefined ? !getters.localSettings.showSideBar : value,
+  });
+};
 module.actions.toggleExplorer = localSettingsToggler('showExplorer');
 module.actions.toggleFocusMode = localSettingsToggler('focusMode');
+module.actions.setSideBarPanel = ({ dispatch }, value) => dispatch('patchLocalSettings', {
+  sideBarPanel: value === undefined ? 'menu' : value,
+});
 
 // Settings
 module.getters.settings = getter('settings');
+module.getters.computedSettings = (state, getters) => {
+  const customSettings = yaml.safeLoad(getters.settings);
+  const settings = yaml.safeLoad(defaultSettings);
+  const override = (obj, opt) => {
+    const objType = Object.prototype.toString.call(obj);
+    const optType = Object.prototype.toString.call(opt);
+    if (objType !== optType) {
+      return obj;
+    } else if (objType !== '[object Object]') {
+      return opt;
+    }
+    Object.keys(obj).forEach((key) => {
+      obj[key] = override(obj[key], opt[key]);
+    });
+    return obj;
+  };
+  return override(settings, customSettings);
+};
+module.actions.setSettings = setter('settings');
+
+// Templates
+module.getters.templates = getter('templates');
+const makeAdditionalTemplate = (name, value, helpers = '\n') => ({
+  name,
+  value,
+  helpers,
+  isAdditional: true,
+});
+const additionalTemplates = {
+  plainHtml: makeAdditionalTemplate('Plain HTML', plainHtmlTemplate),
+  styledHtml: makeAdditionalTemplate('Styled HTML', styledHtmlTemplate),
+};
+module.getters.allTemplates = (state, getters) => ({
+  ...getters.templates,
+  ...additionalTemplates,
+});
+module.actions.setTemplates = ({ commit }, data) => {
+  const dataToCommit = {
+    ...data,
+  };
+  // We don't store additional templates
+  Object.keys(additionalTemplates).forEach((id) => {
+    delete dataToCommit[id];
+  });
+  commit('setItem', itemTemplate('templates', dataToCommit));
+};
 
 // Last opened
 module.getters.lastOpened = getter('lastOpened');

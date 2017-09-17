@@ -243,13 +243,6 @@ export default {
           rest: latex,
         },
       };
-      rest['latex block'] = {
-        pattern: /\\begin\{([a-z]*\*?)\}[\s\S]*?\\?\\end\{\1\}/g,
-        inside: {
-          keyword: /\\(begin|end)/,
-          rest: latex,
-        },
-      };
     }
     if (options.footnote) {
       rest.inlinefn = {

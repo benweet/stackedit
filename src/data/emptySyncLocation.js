@@ -1,7 +1,7 @@
 export default () => ({
   id: null,
   type: 'syncLocation',
-  provider: null,
+  providerId: null,
   fileId: null,
   hash: 0,
 });

@@ -51,11 +51,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import utils from '../services/utils';
-import CodeEditor from './CodeEditor';
-import emptyTemplateValue from '../data/emptyTemplateValue.html';
-import emptyTemplateHelpers from '!raw-loader!../data/emptyTemplateHelpers.js'; // eslint-disable-line
+import { mapGetters } from 'vuex';
+import utils from '../../services/utils';
+import CodeEditor from '../CodeEditor';
+import emptyTemplateValue from '../../data/emptyTemplateValue.html';
+import emptyTemplateHelpers from '!raw-loader!../../data/emptyTemplateHelpers.js'; // eslint-disable-line
+
+const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
 
 function fillEmptyFields(template) {
   if (template.value === '\n') {
@@ -78,7 +80,7 @@ export default {
     editingName: '',
   }),
   computed: {
-    ...mapState('modal', [
+    ...mapGetters('modal', [
       'config',
     ]),
     isReadOnly() {
@@ -89,13 +91,17 @@ export default {
     this.$watch(
       () => this.$store.getters['data/allTemplates'],
       (allTemplates) => {
-        const templates = utils.sortObject(
-          utils.deepCopy(allTemplates),
-          (key, template) => template.name,
-        );
-        Object.keys(templates).forEach(id => fillEmptyFields(templates[id]));
+        const templates = {};
+        // Sort templates by name
+        Object.keys(allTemplates)
+          .sort((id1, id2) => collator.compare(allTemplates[id1].name, allTemplates[id2].name))
+          .forEach((id) => {
+            const template = utils.deepCopy(allTemplates[id]);
+            fillEmptyFields(template);
+            templates[id] = template;
+          });
         this.templates = templates;
-        this.selectedId = this.$store.state.modal.config.selectedId;
+        this.selectedId = this.config.selectedId;
         if (!templates[this.selectedId]) {
           this.selectedId = Object.keys(templates)[0];
         }
@@ -143,7 +149,10 @@ export default {
       }, 1);
     },
     resolve() {
-      this.config.resolve(this.templates);
+      this.config.resolve({
+        templates: this.templates,
+        selectedId: this.selectedId,
+      });
     },
   },
 };
@@ -151,6 +160,6 @@ export default {
 
 <style lang="scss">
 .modal__inner-1--templates {
-  max-width: 720px;
+  max-width: 680px;
 }
 </style>

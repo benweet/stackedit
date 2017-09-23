@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 const makeThumbnail = (url, size) => `${url}=s${size}`;
 
@@ -36,7 +36,7 @@ export default {
     thumbnailUrl() {
       return `url(${makeThumbnail(this.config.url, 320)})`;
     },
-    ...mapState('modal', [
+    ...mapGetters('modal', [
       'config',
     ]),
   },

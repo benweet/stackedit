@@ -2,27 +2,38 @@
   <div class="navigation-bar" :class="{'navigation-bar--editor': styles.showEditor}">
     <div class="navigation-bar__inner navigation-bar__inner--left navigation-bar__inner--button">
       <button class="navigation-bar__button button" @click="toggleExplorer()">
-        <icon-folder-multiple></icon-folder-multiple>
+        <icon-folder-open></icon-folder-open>
       </button>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--button">
       <button class="navigation-bar__button navigation-bar__button--stackedit button" @click="toggleSideBar()">
-        <icon-stackedit></icon-stackedit>
+        <icon-provider provider-id="stackedit"></icon-provider>
       </button>
     </div>
-    <div class="navigation-bar__inner navigation-bar__inner--right flex flex--row">
-      <div class="navigation-bar__spinner" v-show="showSpinner">
-        <div class="spinner"></div>
+    <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--title flex flex--row">
+      <div class="navigation-bar__spinner">
+        <div v-show="showSpinner" class="spinner"></div>
       </div>
       <div class="navigation-bar__title navigation-bar__title--fake text-input"></div>
-      <div class="navigation-bar__title navigation-bar__title--text text-input" v-bind:style="{maxWidth: styles.titleMaxWidth + 'px'}">{{title}}</div>
-      <input class="navigation-bar__title navigation-bar__title--input text-input" :class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" v-bind:style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keyup.enter="submitTitle()" @keyup.esc="submitTitle(true)" v-on:mouseenter="titleHover = true" v-on:mouseleave="titleHover = false" v-model="title">
-      <button v-if="!offline && isSyncPossible" class="navigation-bar__button button" :disabled="isSyncRequested" @click="requestSync">
-        <icon-sync></icon-sync>
-      </button>
-      <button v-if="offline && isSyncPossible" class="navigation-bar__button navigation-bar__button--sync-off button" disabled="disabled">
-        <icon-sync-off></icon-sync-off>
-      </button>
+      <div class="navigation-bar__title navigation-bar__title--text text-input" :style="{width: titleWidth + 'px'}">{{title}}</div>
+      <input class="navigation-bar__title navigation-bar__title--input text-input" :class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" :style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keyup.enter="submitTitle()" @keyup.esc="submitTitle(true)" @mouseenter="titleHover = true" @mouseleave="titleHover = false" v-model="title">
+      <div class="flex flex--row" :class="{'navigation-bar__hidden': styles.hideLocations}">
+        <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in syncLocations" :key="location.id" :href="location.url" target="_blank">
+          <icon-provider :provider-id="location.providerId"></icon-provider>
+        </a>
+        <button class="navigation-bar__button navigation-bar__button--sync button" v-if="!offline && isSyncPossible" :disabled="isSyncRequested" @click="requestSync">
+          <icon-sync></icon-sync>
+        </button>
+        <button class="navigation-bar__button navigation-bar__button--sync-off button" v-if="offline && isSyncPossible" disabled="disabled">
+          <icon-sync-off></icon-sync-off>
+        </button>
+        <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in publishLocations" :key="location.id" :href="location.url" target="_blank">
+          <icon-provider :provider-id="location.providerId"></icon-provider>
+        </a>
+        <button class="navigation-bar__button navigation-bar__button--publish button" v-if="publishLocations.length" :disabled="isPublishRequested || offline" @click="requestPublish">
+          <icon-upload></icon-upload>
+        </button>
+      </div>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--edit-buttons">
       <button class="navigation-bar__button button" @click="pagedownClick('bold')">
@@ -69,6 +80,7 @@
 import { mapState, mapGetters, mapActions } from 'vuex';
 import editorSvc from '../services/editorSvc';
 import syncSvc from '../services/syncSvc';
+import publishSvc from '../services/publishSvc';
 import animationSvc from '../services/animationSvc';
 
 export default {
@@ -84,10 +96,18 @@ export default {
     ]),
     ...mapState('queue', [
       'isSyncRequested',
+      'isPublishRequested',
+      'currentLocation',
     ]),
     ...mapGetters('layout', [
       'styles',
     ]),
+    ...mapGetters('syncLocation', {
+      syncLocations: 'current',
+    }),
+    ...mapGetters('publishLocation', {
+      publishLocations: 'current',
+    }),
     isSyncPossible() {
       return this.$store.getters['data/loginToken'] ||
         this.$store.getters['syncLocation/current'].length;
@@ -132,6 +152,11 @@ export default {
     requestSync() {
       if (!this.isSyncRequested) {
         syncSvc.requestSync();
+      }
+    },
+    requestPublish() {
+      if (!this.isPublishRequested) {
+        publishSvc.requestPublish();
       }
     },
     pagedownClick(name) {
@@ -183,6 +208,10 @@ export default {
   overflow: hidden;
 }
 
+.navigation-bar__hidden {
+  display: none;
+}
+
 .navigation-bar__inner--left {
   float: left;
 
@@ -201,23 +230,30 @@ export default {
 
 .navigation-bar__inner--edit-buttons {
   margin-left: 15px;
+
+  .navigation-bar__button {
+    float: left;
+  }
+}
+
+.navigation-bar__inner--title * {
+  flex: none;
 }
 
 .navigation-bar__button {
-  width: 34px;
+  width: 36px;
   height: 36px;
-  padding: 7px;
+  padding: 0 8px;
 
   /* prevent from seeing wrapped buttons */
   margin-bottom: 20px;
 
   .navigation-bar__inner--button & {
-    padding: 6px;
+    padding: 0 4px;
     width: 38px;
 
     &.navigation-bar__button--stackedit {
       opacity: 0.8;
-      padding: 4px;
 
       &:active,
       &:focus,
@@ -228,12 +264,23 @@ export default {
   }
 }
 
+.navigation-bar__title {
+  margin: 0 4px;
+}
+
 .navigation-bar__title,
 .navigation-bar__button {
   display: inline-block;
   color: $navbar-color;
   background-color: transparent;
   font-size: 22px;
+}
+
+.navigation-bar__button--sync,
+.navigation-bar__button--sync-off,
+.navigation-bar__button--publish {
+  padding: 0 6px;
+  margin: 0 5px;
 }
 
 .navigation-bar__button[disabled] {
@@ -250,7 +297,7 @@ export default {
   &:active,
   &:focus,
   &:hover {
-    color: #f20;
+    color: $error-color;
   }
 }
 
@@ -261,6 +308,30 @@ export default {
   &:hover {
     color: $navbar-hover-color;
     background-color: $navbar-hover-background;
+  }
+}
+
+.navigation-bar__button--location {
+  width: 20px;
+  padding: 0 2px 12px;
+  opacity: 0.5;
+
+  &:active,
+  &:focus,
+  &:hover {
+    background-color: transparent;
+    opacity: 1;
+  }
+}
+
+.navigation-bar__button--blink {
+  animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 1;
+    filter: contrast(0.8) brightness(1.25);
   }
 }
 
@@ -283,11 +354,20 @@ export default {
 
 .navigation-bar__title--input,
 .navigation-bar__inner--edit-buttons,
-.navigation-bar__inner--button {
+.navigation-bar__inner--button,
+.navigation-bar__spinner {
   display: none;
 
   .navigation-bar--editor & {
     display: block;
+  }
+}
+
+.navigation-bar__button {
+  display: none;
+
+  .navigation-bar--editor & {
+    display: inline-block;
   }
 }
 
@@ -299,15 +379,16 @@ export default {
   }
 }
 
-.navigation-bar__spinner {
-  margin: 10px 5px 0 15px;
-  color: rgba(255, 255, 255, 0.33);
-}
-
 $r: 9px;
 $d: $r * 2;
 $b: $d/10;
 $t: 1500ms;
+
+.navigation-bar__spinner {
+  width: $d;
+  margin: 10px 5px 0 10px;
+  color: rgba(255, 255, 255, 0.67);
+}
 
 .spinner {
   width: $d;

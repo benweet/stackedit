@@ -356,7 +356,7 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
       if (sectionDesc) {
         const scrollTop = sectionDesc[objectToScroll.dimensionKey].startOffset +
           (sectionDesc[objectToScroll.dimensionKey].height * scrollPosition.posInSection);
-        objectToScroll.elt.scrollTop = scrollTop;
+        objectToScroll.elt.scrollTop = Math.floor(scrollTop);
       }
     }
   },
@@ -468,6 +468,7 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
     });
 
     this.editorElt.parentNode.addEventListener('scroll', () => this.saveContentState(true));
+    this.previewElt.parentNode.addEventListener('scroll', () => this.saveContentState(true));
 
     const refreshPreview = () => {
       this.convert();
@@ -593,12 +594,6 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
       (content, diffs, sectionList) => onEditorChanged(sectionList));
 
     this.$emit('inited');
-
-    // scope.$watch('editorLayoutSvc.currentControl', function (currentControl) {
-    //   !currentControl && setTimeout(function () {
-    //     !scope.isDialogOpen && clEditorSvc.cledit && clEditorSvc.cledit.focus()
-    //   }, 1)
-    // })
 
     // clEditorSvc.setPreviewElt(element[0].querySelector('.preview__inner-2'))
     // var previewElt = element[0].querySelector('.preview')

@@ -1,10 +1,11 @@
 <template>
   <div class="explorer-node" :class="{'explorer-node--selected': isSelected, 'explorer-node--open': isOpen, 'explorer-node--drag-target': isDragTargetFolder}" @dragover.prevent @dragenter.stop="setDragTarget(node.item.id)" @dragleave.stop="isDragTarget && setDragTargetId()" @drop.prevent.stop="onDrop">
-    <div v-if="isEditing" class="explorer-node__item-editor" :class="['explorer-node__item-editor--' + node.item.type]" :style="{'padding-left': leftPadding}">
+    <div class="explorer-node__item-editor" v-if="isEditing" :class="['explorer-node__item-editor--' + node.item.type]" :style="{'padding-left': leftPadding}">
       <input type="text" class="text-input" v-focus @blur="submitEdit()" @keyup.enter="submitEdit()" @keyup.esc="submitEdit(true)" v-model="editingNodeName">
     </div>
-    <div v-else class="explorer-node__item" :class="['explorer-node__item--' + node.item.type]" :style="{'padding-left': leftPadding}" @click="select(node.item.id)" draggable="true" @dragstart.stop="setDragSourceId" @dragend.stop="setDragTargetId()">
+    <div class="explorer-node__item" v-else :class="['explorer-node__item--' + node.item.type]" :style="{'padding-left': leftPadding}" @click="select(node.item.id)" draggable="true" @dragstart.stop="setDragSourceId" @dragend.stop="setDragTargetId()">
       {{node.item.name}}
+      <icon-provider class="explorer-node__location" v-for="location in node.locations" :key="location.id" :provider-id="location.providerId"></icon-provider>
     </div>
     <div class="explorer-node__children" v-if="node.isFolder && isOpen">
       <explorer-node v-for="node in node.folders" :key="node.item.id" :node="node" :depth="depth + 1"></explorer-node>
@@ -112,10 +113,11 @@ export default {
       this.$store.commit('explorer/setNewItem', null);
     },
     submitEdit(cancel) {
-      const id = this.$store.getters['explorer/editingNode'].item.id;
+      const editingNode = this.$store.getters['explorer/editingNode'];
+      const id = editingNode.item.id;
       const value = this.editingValue;
       if (!cancel && id && value) {
-        this.$store.commit('file/patchItem', {
+        this.$store.commit(editingNode.isFolder ? 'folder/patchItem' : 'file/patchItem', {
           id,
           name: value.slice(0, 250),
         });
@@ -166,6 +168,7 @@ $item-font-size: 14px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  padding-right: 5px;
 
   .explorer-node--selected > & {
     background-color: rgba(0, 0, 0, 0.2);
@@ -178,6 +181,13 @@ $item-font-size: 14px;
 
   .explorer__tree--new-item & {
     opacity: 0.33;
+  }
+
+  .explorer-node__location {
+    float: right;
+    width: 18px;
+    height: 18px;
+    margin: 2px 1px;
   }
 }
 

@@ -1,9 +1,0 @@
-<template>
-  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="100%" height="100%" viewBox="0 0 133156 115341">
-    <g>
-      <polygon style="fill:#3777E3" points="22194,115341 44385,76894 133156,76894 110963,115341 "/>
-      <polygon style="fill:#FFCF63" points="88772,76894 133156,76894 88772,0 44385,0 "/>
-      <polygon style="fill:#11A861" points="0,76894 22194,115341 66578,38447 44385,0 "/>
-    </g>
-  </svg>
-</template>

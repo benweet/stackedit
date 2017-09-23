@@ -1,6 +1,7 @@
 <template>
   <div class="modal__inner-1 modal__inner-1--link" @keyup.enter="resolve()">
     <div class="modal__inner-2">
+      <p>Please provide a <b>URL</b> for your link.
       <div class="form-entry">
         <label class="form-entry__label" for="url">URL</label>
         <div class="form-entry__field">
@@ -16,13 +17,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   data: () => ({
     url: '',
   }),
-  computed: mapState('modal', [
+  computed: mapGetters('modal', [
     'config',
   ]),
   methods: {

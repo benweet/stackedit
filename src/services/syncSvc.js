@@ -3,11 +3,10 @@ import store from '../store';
 import welcomeFile from '../data/welcomeFile.md';
 import utils from './utils';
 import diffUtils from './diffUtils';
-import userActivitySvc from './userActivitySvc';
-import googleDriveAppDataProvider from './providers/googleDriveAppDataProvider';
-import googleDriveProvider from './providers/googleDriveProvider';
+import providerRegistry from './providers/providerRegistry';
+import mainProvider from './providers/googleDriveAppDataProvider';
 
-const lastSyncActivityKey = 'lastSyncActivity';
+const lastSyncActivityKey = `${utils.workspaceId}/lastSyncActivity`;
 let lastSyncActivity;
 const getStoredLastSyncActivity = () => parseInt(localStorage[lastSyncActivityKey], 10) || 0;
 const inactivityThreshold = 3 * 1000; // 3 sec
@@ -35,26 +34,6 @@ function setLastSyncActivity() {
   const currentDate = Date.now();
   lastSyncActivity = currentDate;
   localStorage[lastSyncActivityKey] = currentDate;
-}
-
-function getSyncProvider(syncLocation) {
-  switch (syncLocation.provider) {
-    case 'googleDriveAppData':
-    default:
-      return googleDriveAppDataProvider;
-    case 'googleDrive':
-      return googleDriveProvider;
-  }
-}
-
-function getSyncToken(syncLocation) {
-  switch (syncLocation.provider) {
-    case 'googleDriveAppData':
-    default:
-      return store.getters['data/loginToken'];
-    case 'googleDrive':
-      return store.getters['data/googleTokens'][syncLocation.sub];
-  }
 }
 
 function cleanSyncedContent(syncedContent) {
@@ -123,6 +102,37 @@ function applyChanges(changes) {
 const LAST_SENT = 0;
 const LAST_MERGED = 1;
 
+function createSyncLocation(syncLocation) {
+  syncLocation.id = utils.uid();
+  const currentFile = store.getters['file/current'];
+  const fileId = currentFile.id;
+  syncLocation.fileId = fileId;
+  // Use deepCopy to freeze item
+  const content = utils.deepCopy(store.getters['content/current']);
+  store.dispatch('queue/enqueue',
+    () => {
+      const provider = providerRegistry.providers[syncLocation.providerId];
+      const token = provider.getToken(syncLocation);
+      return provider.uploadContent(token, {
+        ...content,
+        history: [content.hash],
+      }, syncLocation)
+        .then(syncLocationToStore => loadSyncedContent(fileId)
+          .then(() => {
+            const newSyncedContent = utils.deepCopy(
+              store.state.syncedContent.itemMap[`${fileId}/syncedContent`]);
+            const newSyncHistoryItem = [];
+            newSyncedContent.syncHistory[syncLocation.id] = newSyncHistoryItem;
+            newSyncHistoryItem[LAST_SENT] = content.hash;
+            newSyncedContent.historyData[content.hash] = content;
+
+            store.commit('syncedContent/patchItem', newSyncedContent);
+            store.commit('syncLocation/setItem', syncLocationToStore);
+            store.dispatch('notification/info', `A new synchronized location was added to "${currentFile.name}".`);
+          }));
+    });
+}
+
 function syncFile(fileId) {
   return loadSyncedContent(fileId)
     .then(() => loadContent(fileId))
@@ -131,121 +141,145 @@ function syncFile(fileId) {
       const getSyncedContent = () => store.state.syncedContent.itemMap[`${fileId}/syncedContent`];
       const getSyncHistoryItem = syncLocationId => getSyncedContent().syncHistory[syncLocationId];
       const downloadedLocations = {};
+      const errorLocations = {};
 
-      const isLocationSynced = syncLocation =>
-        getSyncHistoryItem(syncLocation.id)[LAST_SENT] === getContent().hash;
+      const isLocationSynced = (syncLocation) => {
+        const syncHistoryItem = getSyncHistoryItem(syncLocation.id);
+        return syncHistoryItem && syncHistoryItem[LAST_SENT] === getContent().hash;
+      };
 
       const syncOneContentLocation = () => {
         const syncLocations = [
           ...store.getters['syncLocation/groupedByFileId'][fileId] || [],
         ];
         if (isDataSyncPossible()) {
-          syncLocations.unshift({ id: 'main', provider: 'googleDriveAppData', fileId });
+          syncLocations.unshift({ id: 'main', providerId: mainProvider.id, fileId });
         }
         let result;
         syncLocations.some((syncLocation) => {
-          if (!downloadedLocations[syncLocation.id] || !isLocationSynced(syncLocation)) {
-            const provider = getSyncProvider(syncLocation);
-            const token = getSyncToken(syncLocation);
-            result = provider && token && provider.downloadContent(token, syncLocation)
-              .then((serverContent = null) => {
-                downloadedLocations[syncLocation.id] = true;
+          if (!errorLocations[syncLocation.id] &&
+            (!downloadedLocations[syncLocation.id] || !isLocationSynced(syncLocation))
+          ) {
+            const provider = providerRegistry.providers[syncLocation.providerId];
+            const token = provider.getToken(syncLocation);
+            result = provider && token && store.dispatch('queue/doWithLocation', {
+              location: syncLocation,
+              promise: provider.downloadContent(token, syncLocation)
+                .then((serverContent = null) => {
+                  downloadedLocations[syncLocation.id] = true;
 
-                const syncedContent = getSyncedContent();
-                const syncHistoryItem = getSyncHistoryItem(syncLocation.id);
-                let mergedContent = (() => {
-                  const clientContent = utils.deepCopy(getContent());
-                  if (!serverContent) {
-                    // Sync location has not been created yet
-                    return clientContent;
-                  }
-                  if (serverContent.hash === clientContent.hash) {
-                    // Server and client contents are synced
-                    return clientContent;
-                  }
-                  if (syncedContent.historyData[serverContent.hash]) {
-                    // Server content has not changed or has already been merged
-                    return clientContent;
-                  }
-                  // Perform a merge with last merged content if any, or a simple fusion otherwise
-                  let lastMergedContent;
-                  serverContent.history.some((hash) => {
-                    lastMergedContent = syncedContent.historyData[hash];
-                    return lastMergedContent;
+                  const syncedContent = getSyncedContent();
+                  const syncHistoryItem = getSyncHistoryItem(syncLocation.id);
+                  let mergedContent = (() => {
+                    const clientContent = utils.deepCopy(getContent());
+                    if (!serverContent) {
+                      // Sync location has not been created yet
+                      return clientContent;
+                    }
+                    if (serverContent.hash === clientContent.hash) {
+                      // Server and client contents are synced
+                      return clientContent;
+                    }
+                    if (syncedContent.historyData[serverContent.hash]) {
+                      // Server content has not changed or has already been merged
+                      return clientContent;
+                    }
+                    // Perform a merge with last merged content if any, or a simple fusion otherwise
+                    let lastMergedContent;
+                    serverContent.history.some((hash) => {
+                      lastMergedContent = syncedContent.historyData[hash];
+                      return lastMergedContent;
+                    });
+                    if (!lastMergedContent && syncHistoryItem) {
+                      lastMergedContent = syncedContent.historyData[syncHistoryItem[LAST_MERGED]];
+                    }
+                    return diffUtils.mergeContent(serverContent, clientContent, lastMergedContent);
+                  })();
+
+                  // Update content in store
+                  store.commit('content/patchItem', {
+                    id: `${fileId}/content`,
+                    ...mergedContent,
                   });
-                  if (!lastMergedContent && syncHistoryItem) {
-                    lastMergedContent = syncedContent.historyData[syncHistoryItem[LAST_MERGED]];
+
+                  // Retrieve content with new `hash` value and freeze it
+                  mergedContent = utils.deepCopy(getContent());
+
+                  // Make merged content history
+                  const mergedContentHistory = serverContent ? serverContent.history.slice() : [];
+                  let skipUpload = true;
+                  if (mergedContentHistory[0] !== mergedContent.hash) {
+                    // Put merged content hash at the beginning of history
+                    mergedContentHistory.unshift(mergedContent.hash);
+                    // Server content is either out of sync or its history is incomplete, do upload
+                    skipUpload = false;
                   }
-                  return diffUtils.mergeContent(serverContent, clientContent, lastMergedContent);
-                })();
-
-                // Update content in store
-                store.commit('content/patchItem', {
-                  id: `${fileId}/content`,
-                  ...mergedContent,
-                });
-
-                // Retrieve content with new `hash` value and freeze it
-                mergedContent = utils.deepCopy(getContent());
-
-                // Make merged content history
-                const mergedContentHistory = serverContent ? serverContent.history.slice() : [];
-                let skipUpload = true;
-                if (mergedContentHistory[0] !== mergedContent.hash) {
-                  // Put merged content hash at the beginning of history
-                  mergedContentHistory.unshift(mergedContent.hash);
-                  // Server content is either out of sync or its history is incomplete, do upload
-                  skipUpload = false;
-                }
-                if (syncHistoryItem && syncHistoryItem[0] !== mergedContent.hash) {
-                  // Clean up by removing the hash we've previously added
-                  const idx = mergedContentHistory.indexOf(syncHistoryItem[LAST_SENT]);
-                  if (idx !== -1) {
-                    mergedContentHistory.splice(idx, 1);
+                  if (syncHistoryItem && syncHistoryItem[0] !== mergedContent.hash) {
+                    // Clean up by removing the hash we've previously added
+                    const idx = mergedContentHistory.indexOf(syncHistoryItem[LAST_SENT]);
+                    if (idx !== -1) {
+                      mergedContentHistory.splice(idx, 1);
+                    }
                   }
-                }
 
-                // Store last sent if it's in the server history,
-                // and merged content which will be sent if different
-                const newSyncedContent = utils.deepCopy(syncedContent);
-                const newSyncHistoryItem = newSyncedContent.syncHistory[syncLocation.id] || [];
-                newSyncedContent.syncHistory[syncLocation.id] = newSyncHistoryItem;
-                if (serverContent && (serverContent.hash === newSyncHistoryItem[LAST_SENT] ||
-                  serverContent.history.indexOf(newSyncHistoryItem[LAST_SENT]) !== -1)
-                ) {
-                  // The server has accepted the content we previously sent
-                  newSyncHistoryItem[LAST_MERGED] = newSyncHistoryItem[LAST_SENT];
-                }
-                newSyncHistoryItem[LAST_SENT] = mergedContent.hash;
-                newSyncedContent.historyData[mergedContent.hash] = mergedContent;
-
-                // Clean synced content from unused revisions
-                cleanSyncedContent(newSyncedContent);
-                // Store synced content
-                store.commit('syncedContent/patchItem', newSyncedContent);
-
-                if (skipUpload) {
-                  // Server content and merged content are equal, skip content upload
-                  return null;
-                }
-
-                // Prevent from sending new content too long after old content has been fetched
-                const syncStartTime = Date.now();
-                const ifNotTooLate = cb => (res) => {
-                  // No time to refresh a token...
-                  if (syncStartTime + 500 < Date.now()) {
-                    throw new Error('TOO_LATE');
+                  // Store last sent if it's in the server history,
+                  // and merged content which will be sent if different
+                  const newSyncedContent = utils.deepCopy(syncedContent);
+                  const newSyncHistoryItem = newSyncedContent.syncHistory[syncLocation.id] || [];
+                  newSyncedContent.syncHistory[syncLocation.id] = newSyncHistoryItem;
+                  if (serverContent && (serverContent.hash === newSyncHistoryItem[LAST_SENT] ||
+                    serverContent.history.indexOf(newSyncHistoryItem[LAST_SENT]) !== -1)
+                  ) {
+                    // The server has accepted the content we previously sent
+                    newSyncHistoryItem[LAST_MERGED] = newSyncHistoryItem[LAST_SENT];
                   }
-                  return cb(res);
-                };
+                  newSyncHistoryItem[LAST_SENT] = mergedContent.hash;
+                  newSyncedContent.historyData[mergedContent.hash] = mergedContent;
 
-                // Upload merged content
-                return provider.uploadContent(token, {
-                  ...mergedContent,
-                  history: mergedContentHistory,
-                }, syncLocation, ifNotTooLate);
-              })
-              .then(() => syncOneContentLocation());
+                  // Clean synced content from unused revisions
+                  cleanSyncedContent(newSyncedContent);
+                  // Store synced content
+                  store.commit('syncedContent/patchItem', newSyncedContent);
+
+                  if (skipUpload) {
+                    // Server content and merged content are equal, skip content upload
+                    return null;
+                  }
+
+                  // Prevent from sending new content too long after old content has been fetched
+                  const syncStartTime = Date.now();
+                  const ifNotTooLate = cb => (res) => {
+                    // No time to refresh a token...
+                    if (syncStartTime + 500 < Date.now()) {
+                      throw new Error('TOO_LATE');
+                    }
+                    return cb(res);
+                  };
+
+                  // Upload merged content
+                  return provider.uploadContent(token, {
+                    ...mergedContent,
+                    history: mergedContentHistory,
+                  }, syncLocation, ifNotTooLate)
+                    .then((syncLocationToStore) => {
+                      // Replace sync location if modified
+                      if (utils.serializeObject(syncLocation) !==
+                        utils.serializeObject(syncLocationToStore)
+                      ) {
+                        store.commit('syncLocation/patchItem', syncLocationToStore);
+                      }
+                    });
+                })
+                .catch((err) => {
+                  if (store.state.offline) {
+                    throw err;
+                  }
+                  console.error(err); // eslint-disable-line no-console
+                  store.dispatch('notification/error', err);
+                  errorLocations[syncLocation.id] = true;
+                }),
+            })
+            .then(() => syncOneContentLocation());
           }
           return result;
         });
@@ -271,11 +305,11 @@ function syncFile(fileId) {
 
 function sync() {
   const googleToken = store.getters['data/loginToken'];
-  return googleDriveAppDataProvider.getChanges(googleToken)
+  return mainProvider.getChanges(googleToken)
     .then((changes) => {
       // Apply changes
       applyChanges(changes);
-      googleDriveAppDataProvider.setAppliedChanges(googleToken, changes);
+      mainProvider.setAppliedChanges(googleToken, changes);
 
       // Prevent from sending items too long after changes have been retrieved
       const syncStartTime = Date.now();
@@ -292,6 +326,7 @@ function sync() {
           ...store.state.file.itemMap,
           ...store.state.folder.itemMap,
           ...store.state.syncLocation.itemMap,
+          ...store.state.publishLocation.itemMap,
           // Deal with contents later
         };
         const syncDataByItemId = store.getters['data/syncDataByItemId'];
@@ -300,7 +335,7 @@ function sync() {
           const item = storeItemMap[id];
           const existingSyncData = syncDataByItemId[id];
           if (!existingSyncData || existingSyncData.hash !== item.hash) {
-            result = googleDriveAppDataProvider.saveItem(
+            result = mainProvider.saveItem(
               googleToken,
               // Use deepCopy to freeze objects
               utils.deepCopy(item),
@@ -323,7 +358,8 @@ function sync() {
           ...store.state.file.itemMap,
           ...store.state.folder.itemMap,
           ...store.state.syncLocation.itemMap,
-          ...store.state.content.itemMap, // Deal with contents now
+          ...store.state.publishLocation.itemMap,
+          ...store.state.content.itemMap,
         };
         const syncData = store.getters['data/syncData'];
         let result;
@@ -335,7 +371,7 @@ function sync() {
           ) {
             // Use deepCopy to freeze objects
             const syncDataToRemove = utils.deepCopy(existingSyncData);
-            result = googleDriveAppDataProvider
+            result = mainProvider
               .removeItem(googleToken, syncDataToRemove, ifNotTooLate)
               .then(() => {
                 const syncDataCopy = { ...store.getters['data/syncData'] };
@@ -350,10 +386,7 @@ function sync() {
       });
 
       const getOneFileIdToSync = () => {
-        const allContentIds = Object.keys({
-          ...store.state.content.itemMap,
-          ...store.getters['data/syncDataByType'].content,
-        });
+        const allContentIds = Object.keys(localDbSvc.hashMap.content);
         let fileId;
         allContentIds.some((contentId) => {
           // Get content hash from itemMap or from localDbSvc if not loaded
@@ -361,7 +394,7 @@ function sync() {
           const hash = loadedContent ? loadedContent.hash : localDbSvc.hashMap.content[contentId];
           const syncData = store.getters['data/syncDataByItemId'][contentId];
           // Sync if item hash and syncData hash are different
-          if (!hash || !syncData || hash !== syncData.hash) {
+          if (!syncData || hash !== syncData.hash) {
             [fileId] = contentId.split('/');
           }
           return fileId;
@@ -401,7 +434,7 @@ function requestSync() {
     let intervalId;
     const attempt = () => {
       // Only start syncing when these conditions are met
-      if (userActivitySvc.isActive() && isSyncWindow()) {
+      if (utils.isUserActive() && isSyncWindow()) {
         clearInterval(intervalId);
         if (!isSyncPossible()) {
           // Cancel sync
@@ -422,6 +455,9 @@ function requestSync() {
               return sync();
             }
             if (hasCurrentFileSyncLocations()) {
+              // Only sync current file if data sync is unavailable.
+              // We also could sync files that are out-of-sync but it would
+              // require to load the syncedContent objects of all files.
               return syncFile(store.getters['file/current'].id);
             }
             return null;
@@ -437,7 +473,7 @@ function requestSync() {
 // Sync periodically
 utils.setInterval(() => {
   if (isSyncPossible() &&
-    userActivitySvc.isActive() &&
+    utils.isUserActive() &&
     isSyncWindow() &&
     isAutoSyncReady()
   ) {
@@ -508,4 +544,5 @@ utils.setInterval(() => {
 export default {
   isSyncPossible,
   requestSync,
+  createSyncLocation,
 };

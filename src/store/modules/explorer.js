@@ -18,8 +18,9 @@ const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
 const compare = (node1, node2) => collator.compare(node1.item.name, node2.item.name);
 
 class Node {
-  constructor(item, isFolder, isRoot) {
+  constructor(item, locations = [], isFolder = false, isRoot = false) {
     this.item = item;
+    this.locations = locations;
     this.isFolder = isFolder;
     this.isRoot = isRoot;
     if (isFolder) {
@@ -69,12 +70,16 @@ export default {
     nodeStructure: (state, getters, rootState, rootGetters) => {
       const nodeMap = {};
       rootGetters['folder/items'].forEach((item) => {
-        nodeMap[item.id] = new Node(item, true);
+        nodeMap[item.id] = new Node(item, [], true);
       });
       rootGetters['file/items'].forEach((item) => {
-        nodeMap[item.id] = new Node(item);
+        const locations = [
+          ...rootGetters['syncLocation/groupedByFileId'][item.id] || [],
+          ...rootGetters['publishLocation/groupedByFileId'][item.id] || [],
+        ];
+        nodeMap[item.id] = new Node(item, locations);
       });
-      const rootNode = new Node(emptyFolder(), true, true);
+      const rootNode = new Node(emptyFolder(), [], true, true);
       Object.keys(nodeMap).forEach((id) => {
         const node = nodeMap[id];
         let parentNode = nodeMap[node.item.parentId];
@@ -121,7 +126,7 @@ export default {
     setDragSourceId: setter('dragSourceId'),
     setDragTargetId: setter('dragTargetId'),
     setNewItem(state, item) {
-      state.newChildNode = item ? new Node(item, item.type === 'folder') : nilFileNode;
+      state.newChildNode = item ? new Node(item, [], item.type === 'folder') : nilFileNode;
     },
     setNewItemName(state, name) {
       state.newChildNode.item.name = name;

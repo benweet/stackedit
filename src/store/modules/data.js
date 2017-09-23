@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import yaml from 'js-yaml';
 import moduleTemplate from './moduleTemplate';
 import utils from '../../services/utils';
@@ -5,6 +6,7 @@ import defaultSettings from '../../data/defaultSettings.yml';
 import defaultLocalSettings from '../../data/defaultLocalSettings';
 import plainHtmlTemplate from '../../data/plainHtmlTemplate.html';
 import styledHtmlTemplate from '../../data/styledHtmlTemplate.html';
+import jekyllSiteTemplate from '../../data/jekyllSiteTemplate.html';
 
 const itemTemplate = (id, data = {}) => ({ id, type: 'data', data, hash: 0 });
 
@@ -19,6 +21,23 @@ const empty = (id) => {
   }
 };
 const module = moduleTemplate(empty, true);
+
+module.mutations.setItem = (state, value) => {
+  const emptyItem = empty(value.id);
+  let itemData = value.data || emptyItem.data;
+  if (typeof itemData === 'object') {
+    itemData = Object.assign(emptyItem.data, value.data);
+  }
+  const item = {
+    ...emptyItem,
+    ...value,
+    data: itemData,
+  };
+  if (!item.hash) {
+    item.hash = Date.now();
+  }
+  Vue.set(state.itemMap, item.id, item);
+};
 
 const getter = id => state => (state.itemMap[id] || empty(id)).data;
 const setter = id => ({ commit }, data) => commit('setItem', itemTemplate(id, data));
@@ -86,8 +105,10 @@ const makeAdditionalTemplate = (name, value, helpers = '\n') => ({
   isAdditional: true,
 });
 const additionalTemplates = {
+  plainText: makeAdditionalTemplate('Plain text', '{{{files.0.content.text}}}'),
   plainHtml: makeAdditionalTemplate('Plain HTML', plainHtmlTemplate),
   styledHtml: makeAdditionalTemplate('Styled HTML', styledHtmlTemplate),
+  jekyllSite: makeAdditionalTemplate('Jekyll site', jekyllSiteTemplate),
 };
 module.getters.allTemplates = (state, getters) => ({
   ...getters.templates,
@@ -154,6 +175,8 @@ module.actions.setSyncData = setter('syncData');
 // Tokens
 module.getters.tokens = getter('tokens');
 module.getters.googleTokens = (state, getters) => getters.tokens.google || {};
+module.getters.dropboxTokens = (state, getters) => getters.tokens.dropbox || {};
+module.getters.githubTokens = (state, getters) => getters.tokens.github || {};
 module.getters.loginToken = (state, getters) => {
   // Return the first google token that has the isLogin flag
   const googleTokens = getters.googleTokens;
@@ -166,6 +189,22 @@ module.actions.setGoogleToken = ({ getters, dispatch }, token) => {
   dispatch('patchTokens', {
     google: {
       ...getters.googleTokens,
+      [token.sub]: token,
+    },
+  });
+};
+module.actions.setDropboxToken = ({ getters, dispatch }, token) => {
+  dispatch('patchTokens', {
+    dropbox: {
+      ...getters.dropboxTokens,
+      [token.sub]: token,
+    },
+  });
+};
+module.actions.setGithubToken = ({ getters, dispatch }, token) => {
+  dispatch('patchTokens', {
+    github: {
+      ...getters.githubTokens,
       [token.sub]: token,
     },
   });

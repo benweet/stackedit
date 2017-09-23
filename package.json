@@ -32,6 +32,7 @@
     "normalize-scss": "^7.0.0",
     "prismjs": "^1.6.0",
     "raw-loader": "^0.5.1",
+    "request": "^2.82.0",
     "vue": "^2.3.3",
     "vuex": "^2.3.1"
   },

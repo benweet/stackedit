@@ -2,8 +2,13 @@ const editorMinWidth = 320;
 const minPadding = 20;
 const previewButtonWidth = 55;
 const editorTopPadding = 10;
-const navigationBarSpaceWidth = 30;
-const navigationBarLeftWidth = 570;
+const navigationBarEditButtonsWidth = 36 * 12; // 12 buttons
+const navigationBarLeftButtonWidth = 38 + 4 + 15;
+const navigationBarRightButtonWidth = 38 + 8;
+const navigationBarSpinnerWidth = 18 + 15 + 5; // 5 for left margin
+const navigationBarLocationWidth = 20;
+const navigationBarSyncPublishButtonsWidth = 36 + 10;
+const navigationBarTitleMargin = 8;
 const maxTitleMaxWidth = 800;
 const minTitleMaxWidth = 200;
 
@@ -15,7 +20,7 @@ const constants = {
   statusBarHeight: 20,
 };
 
-function computeStyles(state, computedSettings, localSettings, styles = {
+function computeStyles(state, localSettings, getters, styles = {
   showNavigationBar: !localSettings.showEditor || localSettings.showNavigationBar,
   showStatusBar: localSettings.showStatusBar,
   showEditor: localSettings.showEditor,
@@ -49,9 +54,10 @@ function computeStyles(state, computedSettings, localSettings, styles = {
   if (styles.showSidePreview && doublePanelWidth / 2 < editorMinWidth) {
     styles.showSidePreview = false;
     styles.showPreview = false;
-    return computeStyles(state, computedSettings, localSettings, styles);
+    return computeStyles(state, localSettings, getters, styles);
   }
 
+  const computedSettings = getters['data/computedSettings'];
   styles.fontSize = 18;
   styles.textWidth = 990;
   if (doublePanelWidth < 1120) {
@@ -89,9 +95,23 @@ function computeStyles(state, computedSettings, localSettings, styles = {
     Math.floor((styles.editorWidth - styles.textWidth) / 2), minPadding);
   styles.editorPadding = `${editorTopPadding}px ${editorSidePadding}px ${bottomPadding}px`;
 
-  styles.titleMaxWidth = styles.innerWidth - navigationBarSpaceWidth;
+  styles.titleMaxWidth = styles.innerWidth;
   if (styles.showEditor) {
-    styles.titleMaxWidth -= navigationBarLeftWidth;
+    const syncLocations = getters['syncLocation/current'];
+    const publishLocations = getters['publishLocation/current'];
+    const isSyncPossible = getters['data/loginToken'] || syncLocations.length;
+    styles.titleMaxWidth = styles.innerWidth -
+      navigationBarEditButtonsWidth -
+      navigationBarLeftButtonWidth -
+      navigationBarRightButtonWidth -
+      navigationBarSpinnerWidth -
+      (navigationBarLocationWidth * (syncLocations.length + publishLocations.length)) -
+      (isSyncPossible ? navigationBarSyncPublishButtonsWidth : 0) -
+      (publishLocations.length ? navigationBarSyncPublishButtonsWidth : 0) -
+      navigationBarTitleMargin;
+    if (styles.titleMaxWidth + navigationBarEditButtonsWidth < minTitleMaxWidth) {
+      styles.hideLocations = true;
+    }
   }
   styles.titleMaxWidth = Math.min(styles.titleMaxWidth, maxTitleMaxWidth);
   styles.titleMaxWidth = Math.max(styles.titleMaxWidth, minTitleMaxWidth);
@@ -113,9 +133,8 @@ export default {
   getters: {
     constants: () => constants,
     styles: (state, getters, rootState, rootGetters) => {
-      const computedSettings = rootGetters['data/computedSettings'];
       const localSettings = rootGetters['data/localSettings'];
-      return computeStyles(state, computedSettings, localSettings);
+      return computeStyles(state, localSettings, rootGetters);
     },
   },
 };

@@ -143,6 +143,22 @@ textarea {
   }
 }
 
+.form-entry__radio,
+.form-entry__checkbox {
+  margin: 0.25em 1em;
+
+  input {
+    margin-right: 0.25em;
+  }
+}
+
+.form-entry__info {
+  font-size: 0.75em;
+  opacity: 0.5;
+  line-height: 1.4;
+  margin: 0.25em 0;
+}
+
 .textfield {
   background-color: transparent;
   border: 0;
@@ -168,42 +184,30 @@ textarea {
 }
 
 .flex {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
   display: flex;
 }
 
 .flex--row {
-  -webkit-box-orient: horizontal;
-  -webkit-flex-direction: row;
   flex-direction: row;
 }
 
 .flex--column {
-  -webkit-box-orient: vertical;
-  -webkit-flex-direction: column;
   flex-direction: column;
 }
 
 .flex--center {
-  -webkit-justify-content: center;
   justify-content: center;
 }
 
 .flex--end {
-  -webkit-justify-content: flex-end;
   justify-content: flex-end;
 }
 
 .flex--space-between {
-  -webkit-justify-content: space-between;
   justify-content: space-between;
 }
 
 .flex--align-center {
-  -webkit-align-items: center;
   align-items: center;
 }
 
@@ -212,7 +216,6 @@ textarea {
   line-height: 36px;
   padding: 4px 4px 0;
   background-color: rgba(0, 0, 0, 0.1);
-  -webkit-flex: none;
   flex: none;
 }
 
@@ -223,7 +226,6 @@ textarea {
   display: inline-block;
   background-color: transparent;
   opacity: 0.75;
-  -webkit-flex: none;
   flex: none;
 
   /* prevent from seeing wrapped buttons */
@@ -261,7 +263,8 @@ textarea {
   width: 50%;
   float: left;
   text-align: center;
-  line-height: 2.5em;
+  line-height: 1.4;
+  padding: 0.67em 0.33em;
   cursor: pointer;
   border-bottom: 2px solid transparent;
   border-top-left-radius: $border-radius-base;

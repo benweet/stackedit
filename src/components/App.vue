@@ -2,6 +2,7 @@
   <div v-if="ready" class="app" :class="{'app--loading': loading}">
     <layout></layout>
     <modal v-if="showModal"></modal>
+    <notification></notification>
   </div>
   <div v-else class="app__spash-screen"></div>
 </template>
@@ -11,6 +12,7 @@ import Vue from 'vue';
 import { mapState } from 'vuex';
 import Layout from './Layout';
 import Modal from './Modal';
+import Notification from './Notification';
 
 // Global directives
 Vue.directive('focus', {
@@ -23,6 +25,7 @@ export default {
   components: {
     Layout,
     Modal,
+    Notification,
   },
   computed: {
     ...mapState([
@@ -32,7 +35,7 @@ export default {
       return !this.$store.getters['content/current'].id;
     },
     showModal() {
-      return !!this.$store.state.modal.config;
+      return !!this.$store.getters['modal/config'];
     },
   },
 };

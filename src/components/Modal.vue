@@ -3,10 +3,22 @@
     <file-properties-modal v-if="config.type === 'fileProperties'"></file-properties-modal>
     <settings-modal v-else-if="config.type === 'settings'"></settings-modal>
     <templates-modal v-else-if="config.type === 'templates'"></templates-modal>
+    <html-export-modal v-else-if="config.type === 'htmlExport'"></html-export-modal>
     <link-modal v-else-if="config.type === 'link'"></link-modal>
     <image-modal v-else-if="config.type === 'image'"></image-modal>
     <google-photo-modal v-else-if="config.type === 'googlePhoto'"></google-photo-modal>
-    <html-export-modal v-else-if="config.type === 'htmlExport'"></html-export-modal>
+    <sync-management-modal v-else-if="config.type === 'syncManagement'"></sync-management-modal>
+    <publish-management-modal v-else-if="config.type === 'publishManagement'"></publish-management-modal>
+    <google-drive-sync-modal v-else-if="config.type === 'googleDriveSync'"></google-drive-sync-modal>
+    <google-drive-publish-modal v-else-if="config.type === 'googleDrivePublish'"></google-drive-publish-modal>
+    <dropbox-sync-modal v-else-if="config.type === 'dropboxSync'"></dropbox-sync-modal>
+    <dropbox-publish-modal v-else-if="config.type === 'dropboxPublish'"></dropbox-publish-modal>
+    <github-sync-modal v-else-if="config.type === 'githubSync'"></github-sync-modal>
+    <github-publish-modal v-else-if="config.type === 'githubPublish'"></github-publish-modal>
+    <gist-sync-modal v-else-if="config.type === 'gistSync'"></gist-sync-modal>
+    <gist-publish-modal v-else-if="config.type === 'gistPublish'"></gist-publish-modal>
+    <blogger-publish-modal v-else-if="config.type === 'bloggerPublish'"></blogger-publish-modal>
+    <blogger-page-publish-modal v-else-if="config.type === 'bloggerPagePublish'"></blogger-page-publish-modal>
     <div v-else class="modal__inner-1">
       <div class="modal__inner-2">
         <div class="modal__content" v-html="config.content"></div>
@@ -20,35 +32,56 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
-import FilePropertiesModal from './FilePropertiesModal';
-import SettingsModal from './SettingsModal';
-import TemplatesModal from './TemplatesModal';
-import LinkModal from './LinkModal';
-import ImageModal from './ImageModal';
-import GooglePhotoModal from './GooglePhotoModal';
-import HtmlExportModal from './HtmlExportModal';
+import { mapGetters } from 'vuex';
 import editorEngineSvc from '../services/editorEngineSvc';
+import FilePropertiesModal from './modals/FilePropertiesModal';
+import SettingsModal from './modals/SettingsModal';
+import TemplatesModal from './modals/TemplatesModal';
+import HtmlExportModal from './modals/HtmlExportModal';
+import LinkModal from './modals/LinkModal';
+import ImageModal from './modals/ImageModal';
+import GooglePhotoModal from './modals/GooglePhotoModal';
+import SyncManagementModal from './modals/SyncManagementModal';
+import PublishManagementModal from './modals/PublishManagementModal';
+import GoogleDriveSyncModal from './modals/GoogleDriveSyncModal';
+import GoogleDrivePublishModal from './modals/GoogleDrivePublishModal';
+import DropboxSyncModal from './modals/DropboxSyncModal';
+import DropboxPublishModal from './modals/DropboxPublishModal';
+import GithubSyncModal from './modals/GithubSyncModal';
+import GithubPublishModal from './modals/GithubPublishModal';
+import GistSyncModal from './modals/GistSyncModal';
+import GistPublishModal from './modals/GistPublishModal';
+import BloggerPublishModal from './modals/BloggerPublishModal';
+import BloggerPagePublishModal from './modals/BloggerPagePublishModal';
 
 export default {
   components: {
     FilePropertiesModal,
     SettingsModal,
     TemplatesModal,
+    HtmlExportModal,
     LinkModal,
     ImageModal,
     GooglePhotoModal,
-    HtmlExportModal,
+    SyncManagementModal,
+    PublishManagementModal,
+    GoogleDriveSyncModal,
+    GoogleDrivePublishModal,
+    DropboxSyncModal,
+    DropboxPublishModal,
+    GithubSyncModal,
+    GithubPublishModal,
+    GistSyncModal,
+    GistPublishModal,
+    BloggerPublishModal,
+    BloggerPagePublishModal,
   },
-  computed: mapState('modal', [
+  computed: mapGetters('modal', [
     'config',
   ]),
   methods: {
-    ...mapMutations('modal', [
-      'setConfig',
-    ]),
     onEscape() {
-      this.setConfig();
+      this.config.reject();
       editorEngineSvc.clEditor.focus();
     },
     onFocusInOut(evt) {
@@ -69,7 +102,7 @@ export default {
           }
           target = target.parentNode;
         }
-        this.setConfig();
+        this.config.reject();
       }
     },
   },
@@ -78,7 +111,7 @@ export default {
     window.addEventListener('focusout', this.onFocusInOut);
     const eltToFocus = this.$el.querySelector('input.text-input')
       || this.$el.querySelector('.textfield')
-      || this.$el.querySelector('button.button');
+      || this.$el.querySelector('.button');
     if (eltToFocus) {
       eltToFocus.focus();
     }
@@ -103,7 +136,6 @@ export default {
 
 .modal__inner-1 {
   margin: 0 auto;
-  display: table;
   width: 100%;
   min-width: 320px;
   max-width: 500px;
@@ -142,8 +174,28 @@ export default {
   margin-top: 0;
 }
 
+.modal__image {
+  float: left;
+  width: 64px;
+  height: 64px;
+  margin: 1.5em 1.5em 0.5em 0;
+
+  & + *::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
 .modal__error {
   color: #de2c00;
+}
+
+.modal__tip {
+  background-color: transparentize(#ffd600, 0.85);
+  border-radius: $border-radius-base;
+  margin: 1.2em 0;
+  padding: 0.75em 1.25em;
 }
 
 .modal__button-bar {

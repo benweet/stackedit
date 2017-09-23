@@ -1,6 +1,7 @@
 <template>
   <div class="modal__inner-1 modal__inner-1--image">
     <div class="modal__inner-2">
+      <p>Please provide a <b>URL</b> for your image.
       <div class="form-entry">
         <label class="form-entry__label" for="url">URL</label>
         <div class="form-entry__field">
@@ -8,12 +9,12 @@
         </div>
       </div>
       <menu-entry @click.native="openGooglePhotos(token)" v-for="token in googlePhotosTokens" :key="token.sub">
-        <icon-google-photos slot="icon"></icon-google-photos>
+        <icon-provider slot="icon" provider-id="googlePhotos"></icon-provider>
         <div>Open from Google Photos</div>
         <span>{{token.name}}</span>
       </menu-entry>
       <menu-entry @click.native="addGooglePhotosAccount">
-        <icon-google-photos slot="icon"></icon-google-photos>
+        <icon-provider slot="icon" provider-id="googlePhotos"></icon-provider>
         <span>Add Google Photos account</span>
       </menu-entry>
       <div class="modal__button-bar">
@@ -25,9 +26,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import MenuEntry from './MenuEntry';
-import googleHelper from '../services/providers/helpers/googleHelper';
+import { mapGetters } from 'vuex';
+import MenuEntry from '../menus/MenuEntry';
+import googleHelper from '../../services/providers/helpers/googleHelper';
 
 export default {
   components: {
@@ -37,7 +38,7 @@ export default {
     url: '',
   }),
   computed: {
-    ...mapState('modal', [
+    ...mapGetters('modal', [
       'config',
     ]),
     googlePhotosTokens() {

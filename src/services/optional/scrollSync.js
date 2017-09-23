@@ -167,9 +167,9 @@ editorSvc.$on('previewText', () => {
 
 store.watch(
   () => store.getters['layout/styles'],
-  () => {
-    isScrollEditor = true;
-    isScrollPreview = false;
+  (styles) => {
+    isScrollEditor = styles.showEditor;
+    isScrollPreview = !styles.showEditor;
     skipAnimation = true;
   });
 

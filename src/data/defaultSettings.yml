@@ -75,7 +75,7 @@ newFileContent: |
 
 # Default properties for newly created files
 newFileProperties: |
-# extensions:
-#   markdown:
-#     breaks: true
+#extensions:
+#  markdown:
+#    breaks: true
 

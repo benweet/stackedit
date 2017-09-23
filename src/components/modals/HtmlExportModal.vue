@@ -4,7 +4,7 @@
       <div class="form-entry">
         <label class="form-entry__label" for="template">Template</label>
         <div class="form-entry__field">
-          <select id="template" v-model="selectedTemplate" class="textfield">
+          <select class="textfield" id="template" v-model="selectedTemplate" @keyup.enter="resolve()">
             <option v-for="(template, id) in allTemplates" :key="id" v-bind:value="id">
               {{ template.name }}
             </option>
@@ -24,16 +24,16 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 import Clipboard from 'clipboard';
-import exportSvc from '../services/exportSvc';
+import exportSvc from '../../services/exportSvc';
 
 export default {
   data: () => ({
     result: '',
   }),
   computed: {
-    ...mapState('modal', [
+    ...mapGetters('modal', [
       'config',
     ]),
     ...mapGetters('data', [
@@ -41,11 +41,11 @@ export default {
     ]),
     selectedTemplate: {
       get() {
-        return this.$store.getters['data/localSettings'].htmlExportLastTemplate;
+        return this.$store.getters['data/localSettings'].htmlExportTemplate;
       },
       set(value) {
         this.$store.dispatch('data/patchLocalSettings', {
-          htmlExportLastTemplate: value,
+          htmlExportTemplate: value,
         });
       },
     },
@@ -54,8 +54,8 @@ export default {
     this.$watch('selectedTemplate', (selectedTemplate) => {
       const currentFile = this.$store.getters['file/current'];
       exportSvc.applyTemplate(currentFile.id, this.allTemplates[selectedTemplate])
-        .then((res) => {
-          this.result = res;
+        .then((html) => {
+          this.result = html;
         });
     }, {
       immediate: true,
@@ -69,13 +69,16 @@ export default {
   },
   methods: {
     configureTemplates() {
-      const reopen = () => this.$store.dispatch('modal/open', 'htmlExport');
       this.$store.dispatch('modal/open', {
         type: 'templates',
-        selectedKey: this.selectedTemplate,
+        selectedId: this.selectedTemplate,
       })
-      .then(templates => this.$store.dispatch('data/setTemplates', templates))
-      .then(reopen, reopen);
+        .then(({ templates, selectedId }) => {
+          this.$store.dispatch('data/setTemplates', templates);
+          this.$store.dispatch('data/patchLocalSettings', {
+            htmlExportTemplate: selectedId,
+          });
+        });
     },
     resolve() {
       const currentFile = this.$store.getters['file/current'];

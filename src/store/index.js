@@ -7,11 +7,13 @@ import syncedContent from './modules/syncedContent';
 import content from './modules/content';
 import file from './modules/file';
 import folder from './modules/folder';
+import publishLocation from './modules/publishLocation';
 import syncLocation from './modules/syncLocation';
 import data from './modules/data';
 import layout from './modules/layout';
 import explorer from './modules/explorer';
 import modal from './modules/modal';
+import notification from './modules/notification';
 import queue from './modules/queue';
 
 Vue.use(Vuex);
@@ -44,21 +46,41 @@ const store = new Vuex.Store({
     content,
     file,
     folder,
+    publishLocation,
     syncLocation,
     data,
     layout,
     explorer,
     modal,
+    notification,
     queue,
   },
   strict: debug,
   plugins: debug ? [createLogger()] : [],
 });
 
+let isConnectionDown = false;
+let lastConnectionCheck = 0;
+
 function checkOffline() {
-  const isOffline = window.navigator.onLine === false;
+  const isBrowserOffline = window.navigator.onLine === false;
+  if (!isBrowserOffline && lastConnectionCheck + 30000 < Date.now() && utils.isUserActive()) {
+    lastConnectionCheck = Date.now();
+    utils.checkOnline()
+      .then(() => {
+        isConnectionDown = false;
+      }, () => {
+        isConnectionDown = true;
+      });
+  }
+  const isOffline = isBrowserOffline || isConnectionDown;
   if (isOffline !== store.state.offline) {
     store.commit('setOffline', isOffline);
+    if (isOffline) {
+      store.dispatch('notification/info', 'You are offline.');
+    } else {
+      store.dispatch('notification/info', 'You are back online!');
+    }
   }
 }
 utils.setInterval(checkOffline, 1000);

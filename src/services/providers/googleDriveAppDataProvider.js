@@ -1,7 +1,12 @@
 import store from '../../store';
 import googleHelper from './helpers/googleHelper';
+import providerRegistry from './providerRegistry';
 
-export default {
+export default providerRegistry.register({
+  id: 'googleDriveAppData',
+  getToken() {
+    return store.getters['data/loginToken'];
+  },
   getChanges(token) {
     return googleHelper.getChanges(token)
       .then((result) => {
@@ -37,7 +42,7 @@ export default {
     }
   },
   saveItem(token, item, syncData, ifNotTooLate) {
-    return googleHelper.saveAppDataFile(
+    return googleHelper.uploadAppDataFile(
         token,
         JSON.stringify(item), ['appDataFolder'],
         null,
@@ -76,19 +81,19 @@ export default {
         return item;
       });
   },
-  uploadContent(token, item, syncLocation, ifNotTooLate) {
+  uploadContent(token, content, syncLocation, ifNotTooLate) {
     const syncData = store.getters['data/syncDataByItemId'][`${syncLocation.fileId}/content`];
-    if (syncData && syncData.hash === item.hash) {
+    if (syncData && syncData.hash === content.hash) {
       return Promise.resolve();
     }
-    return googleHelper.saveAppDataFile(
+    return googleHelper.uploadAppDataFile(
         token,
         JSON.stringify({
-          id: item.id,
-          type: item.type,
-          hash: item.hash,
+          id: content.id,
+          type: content.type,
+          hash: content.hash,
         }), ['appDataFolder'],
-        JSON.stringify(item),
+        JSON.stringify(content),
         syncData && syncData.id,
         ifNotTooLate,
       )
@@ -97,10 +102,10 @@ export default {
         [file.id]: {
           // Build sync data
           id: file.id,
-          itemId: item.id,
-          type: item.type,
-          hash: item.hash,
+          itemId: content.id,
+          type: content.type,
+          hash: content.hash,
         },
       }));
   },
-};
+});

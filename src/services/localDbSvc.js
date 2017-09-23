@@ -4,8 +4,8 @@ import utils from './utils';
 import store from '../store';
 
 const indexedDB = window.indexedDB;
-const localStorage = window.localStorage;
 const dbVersion = 1;
+const dbVersionKey = `${utils.workspaceId}/localDbVersion`;
 const dbStoreName = 'objects';
 
 if (!indexedDB) {
@@ -27,7 +27,7 @@ class Connection {
 
     request.onsuccess = (event) => {
       this.db = event.target.result;
-      localStorage.localDbVersion = this.db.version; // Safari does not support onversionchange
+      localStorage[dbVersionKey] = this.db.version; // Safari does not support onversionchange
       this.db.onversionchange = () => window.location.reload();
 
       this.getTxCbs.forEach(({ onTx, onError }) => this.createTx(onTx, onError));
@@ -68,7 +68,7 @@ class Connection {
     }
 
     // If DB version has changed (Safari support)
-    if (parseInt(localStorage.localDbVersion, 10) !== this.db.version) {
+    if (parseInt(localStorage[dbVersionKey], 10) !== this.db.version) {
       return window.location.reload();
     }
 
@@ -292,8 +292,8 @@ export default {
       request.onsuccess = resolve;
     })
     .then(() => {
-      localStorage.removeItem('localDbVersion');
+      localStorage.removeItem(dbVersionKey);
       window.location.reload();
-    }, () => console.error('Could not delete local database.'));
+    }, () => store.dispatch('notification/error', 'Could not delete local database.'));
   },
 };

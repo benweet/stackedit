@@ -12,7 +12,7 @@ const getDriveScopes = token => [token.driveFullAccess
   ? 'https://www.googleapis.com/auth/drive'
   : 'https://www.googleapis.com/auth/drive.file',
   'https://www.googleapis.com/auth/drive.install'];
-// const bloggerScopes = ['https://www.googleapis.com/auth/blogger'];
+const bloggerScopes = ['https://www.googleapis.com/auth/blogger'];
 const photosScopes = ['https://www.googleapis.com/auth/photos'];
 
 const libraries = ['picker'];
@@ -25,9 +25,7 @@ const request = (token, options) => utils.request({
   },
 });
 
-function saveFile(refreshedToken, name, parents, media = null, fileId = null,
-  ifNotTooLate = cb => res => cb(res),
-) {
+function uploadFile(refreshedToken, name, parents, media = null, mediaType = 'text/plain', fileId = null, ifNotTooLate = cb => res => cb(res)) {
   return Promise.resolve()
     // Refreshing a token can take a while if an oauth window pops up, so check if it's too late
     .then(ifNotTooLate(() => {
@@ -52,7 +50,7 @@ function saveFile(refreshedToken, name, parents, media = null, fileId = null,
         multipartRequestBody += 'Content-Type: application/json; charset=UTF-8\r\n\r\n';
         multipartRequestBody += JSON.stringify(metadata);
         multipartRequestBody += delimiter;
-        multipartRequestBody += 'Content-Type: text/plain; charset=UTF-8\r\n\r\n';
+        multipartRequestBody += `Content-Type: ${mediaType}; charset=UTF-8\r\n\r\n`;
         multipartRequestBody += media;
         multipartRequestBody += closeDelimiter;
         options.url = options.url.replace(
@@ -95,7 +93,7 @@ export default {
         login_hint: sub,
         prompt: silent ? 'none' : null,
       }, silent)
-      // Call the tokeninfo endpoint
+      // Call the token info endpoint
       .then(data => utils.request({
         method: 'POST',
         url: 'https://www.googleapis.com/oauth2/v3/tokeninfo',
@@ -121,11 +119,12 @@ export default {
             scopes.indexOf('https://www.googleapis.com/auth/drive.appdata') !== -1,
           isDrive: scopes.indexOf('https://www.googleapis.com/auth/drive') !== -1 ||
             scopes.indexOf('https://www.googleapis.com/auth/drive.file') !== -1,
+          isBlogger: scopes.indexOf('https://www.googleapis.com/auth/blogger') !== -1,
           isPhotos: scopes.indexOf('https://www.googleapis.com/auth/photos') !== -1,
           driveFullAccess: scopes.indexOf('https://www.googleapis.com/auth/drive') !== -1,
         };
       }))
-      // Call the tokeninfo endpoint
+      // Call the user info endpoint
       .then(token => request(token, {
         method: 'GET',
         url: 'https://www.googleapis.com/plus/v1/people/me',
@@ -139,6 +138,7 @@ export default {
           // Save flags
           token.isLogin = existingToken.isLogin || token.isLogin;
           token.isDrive = existingToken.isDrive || token.isDrive;
+          token.isBlogger = existingToken.isBlogger || token.isBlogger;
           token.isPhotos = existingToken.isPhotos || token.isPhotos;
           token.driveFullAccess = existingToken.driveFullAccess || token.driveFullAccess;
           // Save nextPageToken
@@ -168,7 +168,8 @@ export default {
         // Try to get a new token in background
         return this.startOauth2(mergedScopes, sub, true)
           // If it fails try to popup a window
-          .catch(() => this.startOauth2(mergedScopes, sub));
+          .catch(() => utils.checkOnline()
+            .then(() => this.startOauth2(mergedScopes, sub)));
       });
   },
   loadClientScript() {
@@ -176,23 +177,26 @@ export default {
       return Promise.resolve();
     }
     return utils.loadScript('https://apis.google.com/js/api.js')
-    .then(() => Promise.all(libraries.map(
-      library => new Promise((resolve, reject) => window.gapi.load(library, {
-        callback: resolve,
-        onerror: reject,
-        timeout: 30000,
-        ontimeout: reject,
-      })))))
-    .then(() => {
-      gapi = window.gapi;
-      google = window.google;
-    });
+      .then(() => Promise.all(libraries.map(
+        library => new Promise((resolve, reject) => window.gapi.load(library, {
+          callback: resolve,
+          onerror: reject,
+          timeout: 30000,
+          ontimeout: reject,
+        })))))
+      .then(() => {
+        gapi = window.gapi;
+        google = window.google;
+      });
   },
   signin() {
     return this.startOauth2(driveAppDataScopes);
   },
   addDriveAccount(fullAccess = false) {
     return this.startOauth2(getDriveScopes({ driveFullAccess: fullAccess }));
+  },
+  addBloggerAccount() {
+    return this.startOauth2(bloggerScopes);
   },
   addPhotosAccount() {
     return this.startOauth2(photosScopes);
@@ -224,13 +228,15 @@ export default {
         return getPage(refreshedToken.nextPageToken);
       });
   },
-  saveFile(token, name, parents, media, fileId, ifNotTooLate) {
+  uploadFile(token, name, parents, media, mediaType, fileId, ifNotTooLate) {
     return this.refreshToken(getDriveScopes(token), token)
-      .then(refreshedToken => saveFile(refreshedToken, name, parents, media, fileId, ifNotTooLate));
+      .then(refreshedToken => uploadFile(
+        refreshedToken, name, parents, media, mediaType, fileId, ifNotTooLate));
   },
-  saveAppDataFile(token, name, parents, media, fileId, ifNotTooLate) {
+  uploadAppDataFile(token, name, parents, media, fileId, ifNotTooLate) {
     return this.refreshToken(driveAppDataScopes, token)
-      .then(refreshedToken => saveFile(refreshedToken, name, parents, media, fileId, ifNotTooLate));
+      .then(refreshedToken => uploadFile(
+        refreshedToken, name, parents, media, undefined, fileId, ifNotTooLate));
   },
   downloadFile(token, id) {
     return this.refreshToken(getDriveScopes(token), token)
@@ -247,6 +253,72 @@ export default {
         method: 'DELETE',
         url: `https://www.googleapis.com/drive/v3/files/${id}`,
       })));
+  },
+  uploadBlogger(
+    token, blogUrl, blogId, postId, title, content, labels, isDraft, published, isPage,
+  ) {
+    return this.refreshToken(bloggerScopes, token)
+      .then(refreshedToken => Promise.resolve()
+        .then(() => {
+          if (blogId) {
+            return blogId;
+          }
+          return request(refreshedToken, {
+            url: 'https://www.googleapis.com/blogger/v3/blogs/byurl',
+            params: {
+              url: blogUrl,
+            },
+          }).then(res => res.body.id);
+        })
+        .then((resolvedBlogId) => {
+          const path = isPage ? 'pages' : 'posts';
+          const options = {
+            method: 'POST',
+            url: `https://www.googleapis.com/blogger/v3/blogs/${resolvedBlogId}/${path}/`,
+            body: {
+              kind: isPage ? 'blogger#page' : 'blogger#post',
+              blog: {
+                id: resolvedBlogId,
+              },
+              title,
+              content,
+            },
+          };
+          if (labels) {
+            options.body.labels = labels;
+          }
+          if (published) {
+            options.body.published = published.toISOString();
+          }
+          // If it's an update
+          if (postId) {
+            options.method = 'PUT';
+            options.url += postId;
+            options.body.id = postId;
+          }
+          return request(refreshedToken, options)
+            .then(res => res.body);
+        })
+        .then((post) => {
+          if (isPage) {
+            return post;
+          }
+          const options = {
+            method: 'POST',
+            url: `https://www.googleapis.com/blogger/v3/blogs/${post.blog.id}/posts/${post.id}/`,
+            params: {},
+          };
+          if (isDraft) {
+            options.url += 'revert';
+          } else {
+            options.url += 'publish';
+            if (published) {
+              options.params.publishDate = published.toISOString();
+            }
+          }
+          return request(refreshedToken, options)
+            .then(res => res.body);
+        }));
   },
   openPicker(token, type = 'doc') {
     const scopes = type === 'img' ? photosScopes : getDriveScopes(token);

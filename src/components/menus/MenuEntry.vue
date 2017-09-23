@@ -28,7 +28,6 @@
   height: 20px;
   width: 20px;
   margin-right: 12px;
-  -webkit-flex: none;
   flex: none;
 }
 </style>

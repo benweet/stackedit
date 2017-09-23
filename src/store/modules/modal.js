@@ -1,34 +1,47 @@
 export default {
   namespaced: true,
   state: {
-    config: null,
+    stack: [],
+    hidden: false,
   },
   mutations: {
-    setConfig: (state, value) => {
-      state.config = value;
+    setStack: (state, value) => {
+      state.stack = value;
+    },
+    setHidden: (state, value) => {
+      state.hidden = value;
     },
   },
+  getters: {
+    config: state => !state.hidden && state.stack[0],
+  },
   actions: {
-    open({ commit }, param) {
+    open({ commit, state }, param) {
       return new Promise((resolve, reject) => {
-        let config = param;
-        if (typeof config === 'string') {
-          config = {
-            type: config,
-          };
-        }
+        const config = typeof param === 'object' ? { ...param } : { type: param };
+        const clean = () => commit('setStack', state.stack.filter((otherConfig => otherConfig !== config)));
         config.resolve = (result) => {
           if (config.onResolve) {
             config.onResolve(result);
           }
-          commit('setConfig');
+          clean();
           resolve(result);
         };
         config.reject = (error) => {
-          commit('setConfig');
+          clean();
           reject(error);
         };
-        commit('setConfig', config);
+        commit('setStack', [config, ...state.stack]);
+      });
+    },
+    hideUntil({ commit, state }, promise) {
+      commit('setHidden', true);
+      return promise.then((res) => {
+        commit('setHidden', false);
+        return res;
+      }, (err) => {
+        commit('setHidden', false);
+        throw err;
       });
     },
     notImplemented: ({ dispatch }) => dispatch('open', {

@@ -1,14 +1,35 @@
 import yaml from 'js-yaml';
 import defaultProperties from '../data/defaultFileProperties.yml';
 
-// For sortObject
-const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
+const workspaceId = 'main';
 
 // For uid()
+const uidLength = 16;
 const crypto = window.crypto || window.msCrypto;
 const alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const radix = alphabet.length;
-const array = new Uint32Array(16);
+const array = new Uint32Array(uidLength);
+
+// For isUserActive
+const inactiveAfter = 2 * 60 * 1000; // 2 minutes
+let lastActivity;
+const setLastActivity = () => {
+  lastActivity = Date.now();
+};
+window.document.addEventListener('mousedown', setLastActivity);
+window.document.addEventListener('keydown', setLastActivity);
+window.document.addEventListener('touchstart', setLastActivity);
+
+// For isWindowFocused
+let lastFocus;
+const lastFocusKey = `${workspaceId}/lastWindowFocus`;
+const setLastFocus = () => {
+  lastFocus = Date.now();
+  localStorage[lastFocusKey] = lastFocus;
+  setLastActivity();
+};
+setLastFocus();
+window.addEventListener('focus', setLastFocus);
 
 // For addQueryParams()
 const urlParser = window.document.createElement('a');
@@ -17,8 +38,18 @@ const urlParser = window.document.createElement('a');
 const scriptLoadingPromises = Object.create(null);
 
 export default {
+  workspaceId,
   origin: `${location.protocol}//${location.host}`,
-  types: ['contentState', 'syncedContent', 'content', 'file', 'folder', 'syncLocation', 'data'],
+  types: [
+    'contentState',
+    'syncedContent',
+    'content',
+    'file',
+    'folder',
+    'syncLocation',
+    'publishLocation',
+    'data',
+  ],
   deepCopy(obj) {
     return obj == null ? obj : JSON.parse(JSON.stringify(obj));
   },
@@ -33,15 +64,6 @@ export default {
         return sorted;
       }, {});
     });
-  },
-  sortObject(obj, sortFunc = key => key) {
-    const result = {};
-    const compare = (key1, key2) => collator.compare(
-      sortFunc(key1, obj[key1]), sortFunc(key2, obj[key2]));
-    Object.keys(obj).sort(compare).forEach((key) => {
-      result[key] = obj[key];
-    });
-    return result;
   },
   uid() {
     crypto.getRandomValues(array);
@@ -83,6 +105,12 @@ export default {
   },
   setInterval(func, interval) {
     return setInterval(() => func(), this.randomize(interval));
+  },
+  isWindowFocused() {
+    return parseInt(localStorage[lastFocusKey], 10) === lastFocus;
+  },
+  isUserActive() {
+    return lastActivity > Date.now() - inactiveAfter && this.isWindowFocused();
   },
   addQueryParams(url = '', params = {}) {
     const keys = Object.keys(params).filter(key => params[key] != null);
@@ -166,7 +194,7 @@ export default {
           event.data.state === state
         ) {
           oauth2Context.clean();
-          if (event.data.accessToken) {
+          if (event.data.accessToken || event.data.code) {
             resolve(event.data);
           } else {
             reject(event.data);
@@ -259,7 +287,7 @@ export default {
 
         // Add query params to URL
         const url = this.addQueryParams(config.url, config.params);
-        xhr.open(config.method, url);
+        xhr.open(config.method || 'GET', url);
         Object.keys(config.headers).forEach((key) => {
           xhr.setRequestHeader(key, config.headers[key]);
         });
@@ -280,5 +308,25 @@ export default {
         });
 
     return attempt();
+  },
+  checkOnline() {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      let timeout;
+      const cleaner = (cb, res) => () => {
+        clearTimeout(timeout);
+        cb(res);
+        document.head.removeChild(script);
+      };
+      script.onload = cleaner(resolve, 'Online.');
+      script.onerror = cleaner(reject, 'Offline.');
+      script.src = `https://apis.google.com/js/api.js?${Date.now()}`;
+      try {
+        document.head.appendChild(script); // This can fail with bad network
+        timeout = setTimeout(cleaner(reject), 15000); // 15 sec
+      } catch (e) {
+        reject(e);
+      }
+    });
   },
 };

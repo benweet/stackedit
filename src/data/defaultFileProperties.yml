@@ -1,7 +1,12 @@
 ### File properties can contain metadata used for your publications (Wordpress, Blogger...).
-
-### For example, you can specify a blog post title:
 #title: My article
+#author:
+#tags: Tag 1, Tag 2
+#categories: Categorie 1, Categorie 2
+#excerpt:
+#featuredImage:
+#status: draft
+#date: YYYY-MM-DD HH:MM:SS
 
 ### Extension configuration
 extensions:

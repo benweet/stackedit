@@ -1,11 +1,11 @@
 <template>
   <div class="modal__inner-1 modal__inner-1--settings">
     <div class="modal__inner-2">
-      <div class="tabs">
-        <div class="tabs__tab" :class="{'tabs__tab--active': tab === 'custom'}" @click="tab = 'custom'">
+      <div class="tabs flex flex--row">
+        <div class="tabs__tab flex flex--column flex--center" :class="{'tabs__tab--active': tab === 'custom'}" @click="tab = 'custom'">
           Custom settings
         </div>
-        <div class="tabs__tab" :class="{'tabs__tab--active': tab === 'default'}" @click="tab = 'default'">
+        <div class="tabs__tab flex flex--column flex--center" :class="{'tabs__tab--active': tab === 'default'}" @click="tab = 'default'">
           Default settings
         </div>
       </div>
@@ -27,9 +27,9 @@
 
 <script>
 import yaml from 'js-yaml';
-import { mapState } from 'vuex';
-import CodeEditor from './CodeEditor';
-import defaultSettings from '../data/defaultSettings.yml';
+import { mapGetters } from 'vuex';
+import CodeEditor from '../CodeEditor';
+import defaultSettings from '../../data/defaultSettings.yml';
 
 const emptySettings = '# Add your custom settings here to override the default settings.\n';
 
@@ -44,7 +44,7 @@ export default {
     error: null,
   }),
   computed: {
-    ...mapState('modal', [
+    ...mapGetters('modal', [
       'config',
     ]),
     strippedCustomSettings() {
@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'common/variables.scss';
+@import '../common/variables.scss';
 
 .modal__inner-1--settings {
   max-width: 600px;

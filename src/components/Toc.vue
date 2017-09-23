@@ -1,14 +1,24 @@
 <template>
   <div class="toc">
-    <div class="toc__inner">
-    </div>
+    <div class="toc__mask" :style="{top: (maskY - 5) + 'px'}"></div>
+    <div class="toc__inner"></div>
   </div>
 </template>
 
 <script>
+import Vue from 'vue';
+import { mapGetters } from 'vuex';
 import editorSvc from '../services/editorSvc';
 
 export default {
+  data: () => ({
+    maskY: -999,
+  }),
+  computed: {
+    ...mapGetters('layout', [
+      'styles',
+    ]),
+  },
   mounted() {
     const tocElt = this.$el.querySelector('.toc__inner');
 
@@ -49,6 +59,27 @@ export default {
     });
     tocElt.addEventListener('mousemove', (e) => {
       onClick(e);
+    });
+
+    // Change mask postion on scroll
+    const updateMaskY = () => {
+      const scrollPosition = editorSvc.getScrollPosition();
+      const sectionDesc = editorSvc.sectionDescList[scrollPosition.sectionIdx];
+      this.maskY = sectionDesc.tocDimension.startOffset +
+        (scrollPosition.posInSection * sectionDesc.tocDimension.height);
+    };
+
+    Vue.nextTick(() => {
+      editorSvc.editorElt.parentNode.addEventListener('scroll', () => {
+        if (this.styles.showEditor) {
+          updateMaskY();
+        }
+      });
+      editorSvc.previewElt.parentNode.addEventListener('scroll', () => {
+        if (!this.styles.showEditor) {
+          updateMaskY();
+        }
+      });
     });
   },
 };
@@ -98,5 +129,14 @@ export default {
       margin-left: 40px;
     }
   }
+}
+
+.toc__mask {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 35px;
+  background-color: rgba(0, 0, 0, 0.05);
+  pointer-events: none;
 }
 </style>

@@ -81,7 +81,6 @@ import dropboxHelper from '../../services/providers/helpers/dropboxHelper';
 import githubHelper from '../../services/providers/helpers/githubHelper';
 import googleDriveProvider from '../../services/providers/googleDriveProvider';
 import dropboxProvider from '../../services/providers/dropboxProvider';
-import dropboxRestrictedProvider from '../../services/providers/dropboxRestrictedProvider';
 import syncSvc from '../../services/syncSvc';
 import store from '../../store';
 
@@ -142,10 +141,16 @@ export default {
       return googleHelper.addDriveAccount();
     },
     addDropboxAccount() {
-      return dropboxHelper.addAccount();
+      return this.$store.dispatch('modal/open', {
+        type: 'dropboxAccount',
+        onResolve: () => dropboxHelper.addAccount(!store.getters['data/localSettings'].dropboxRestrictedAccess),
+      });
     },
     addGithubAccount() {
-      return githubHelper.addAccount();
+      return this.$store.dispatch('modal/open', {
+        type: 'githubAccount',
+        onResolve: () => githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess),
+      });
     },
     openGoogleDrive(token) {
       return googleHelper.openPicker(token, 'doc')
@@ -155,12 +160,7 @@ export default {
     openDropbox(token) {
       return dropboxHelper.openChooser(token)
         .then(paths => this.$store.dispatch('queue/enqueue',
-          () => {
-            if (token.fullAccess) {
-              return dropboxProvider.openFiles(token, paths);
-            }
-            return dropboxRestrictedProvider.openFiles(token, paths);
-          }));
+          () => dropboxProvider.openFiles(token, paths)));
     },
     saveGoogleDrive(token) {
       return openSyncModal(token, 'googleDriveSync');

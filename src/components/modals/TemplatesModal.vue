@@ -6,7 +6,7 @@
         <div class="form-entry__field">
           <input v-if="isEditing" id="template" type="text" class="textfield" v-focus @blur="submitEdit()" @keyup.enter="submitEdit()" @keyup.esc.stop="submitEdit(true)" v-model="editingName">
           <select v-else id="template" v-model="selectedId" class="textfield">
-            <option v-for="(template, id) in templates" :key="id" v-bind:value="id">
+            <option v-for="(template, id) in templates" :key="id" :value="id">
               {{ template.name }}
             </option>
           </select>

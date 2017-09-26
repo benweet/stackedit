@@ -96,9 +96,9 @@ export default {
             // e.data can contain unsafe data if helpers attempts to call postMessage
             const [err, result] = e.data;
             if (err) {
-              reject(err.toString());
+              reject(`${err}`);
             } else {
-              resolve(result.toString());
+              resolve(`${result}`);
             }
           });
           worker.postMessage([template.value, view, template.helpers]);

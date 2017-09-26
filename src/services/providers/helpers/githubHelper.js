@@ -10,17 +10,14 @@ const getScopes = token => [token.repoFullAccess ? 'repo' : 'public_repo', 'gist
 const request = (token, options) => utils.request({
   ...options,
   headers: {
-    ...options.headers,
+    ...options.headers || {},
     Authorization: `token ${token.accessToken}`,
   },
+  params: {
+    ...options.params || {},
+    t: Date.now(), // Prevent from caching
+  },
 });
-
-const base64Encode = str => btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
-  (match, p1) => String.fromCharCode(`0x${p1}`),
-));
-const base64Decode = str => decodeURIComponent(atob(str).split('').map(
-  c => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`,
-).join(''));
 
 export default {
   startOauth2(scopes, sub = null, silent = false) {
@@ -49,7 +46,7 @@ export default {
       })
         .then((res) => {
           // Check the returned sub consistency
-          if (sub && res.body.id !== sub) {
+          if (sub && `${res.body.id}` !== sub) {
             throw new Error('GitHub account ID not expected.');
           }
           // Build token object including scopes and sub
@@ -57,7 +54,7 @@ export default {
             scopes,
             accessToken,
             name: res.body.name,
-            sub: res.body.id,
+            sub: `${res.body.id}`,
             repoFullAccess: scopes.indexOf('repo') !== -1,
           };
           // Add token to githubTokens
@@ -74,7 +71,7 @@ export default {
       url: `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${encodeURIComponent(path)}`,
       body: {
         message: 'Uploaded by https://stackedit.io/',
-        content: base64Encode(content),
+        content: utils.encodeBase64(content),
         sha,
         branch,
       },
@@ -87,7 +84,7 @@ export default {
     })
       .then(res => ({
         sha: res.body.sha,
-        content: base64Decode(res.body.content),
+        content: utils.decodeBase64(res.body.content),
       }));
   },
   uploadGist(token, description, filename, content, isPublic, gistId) {

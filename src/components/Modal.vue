@@ -11,14 +11,19 @@
     <publish-management-modal v-else-if="config.type === 'publishManagement'"></publish-management-modal>
     <google-drive-sync-modal v-else-if="config.type === 'googleDriveSync'"></google-drive-sync-modal>
     <google-drive-publish-modal v-else-if="config.type === 'googleDrivePublish'"></google-drive-publish-modal>
+    <dropbox-account-modal v-else-if="config.type === 'dropboxAccount'"></dropbox-account-modal>
     <dropbox-sync-modal v-else-if="config.type === 'dropboxSync'"></dropbox-sync-modal>
     <dropbox-publish-modal v-else-if="config.type === 'dropboxPublish'"></dropbox-publish-modal>
+    <github-account-modal v-else-if="config.type === 'githubAccount'"></github-account-modal>
     <github-sync-modal v-else-if="config.type === 'githubSync'"></github-sync-modal>
     <github-publish-modal v-else-if="config.type === 'githubPublish'"></github-publish-modal>
     <gist-sync-modal v-else-if="config.type === 'gistSync'"></gist-sync-modal>
     <gist-publish-modal v-else-if="config.type === 'gistPublish'"></gist-publish-modal>
+    <wordpress-publish-modal v-else-if="config.type === 'wordpressPublish'"></wordpress-publish-modal>
     <blogger-publish-modal v-else-if="config.type === 'bloggerPublish'"></blogger-publish-modal>
     <blogger-page-publish-modal v-else-if="config.type === 'bloggerPagePublish'"></blogger-page-publish-modal>
+    <zendesk-account-modal v-else-if="config.type === 'zendeskAccount'"></zendesk-account-modal>
+    <zendesk-publish-modal v-else-if="config.type === 'zendeskPublish'"></zendesk-publish-modal>
     <div v-else class="modal__inner-1">
       <div class="modal__inner-2">
         <div class="modal__content" v-html="config.content"></div>
@@ -45,14 +50,19 @@ import SyncManagementModal from './modals/SyncManagementModal';
 import PublishManagementModal from './modals/PublishManagementModal';
 import GoogleDriveSyncModal from './modals/GoogleDriveSyncModal';
 import GoogleDrivePublishModal from './modals/GoogleDrivePublishModal';
+import DropboxAccountModal from './modals/DropboxAccountModal';
 import DropboxSyncModal from './modals/DropboxSyncModal';
 import DropboxPublishModal from './modals/DropboxPublishModal';
+import GithubAccountModal from './modals/GithubAccountModal';
 import GithubSyncModal from './modals/GithubSyncModal';
 import GithubPublishModal from './modals/GithubPublishModal';
 import GistSyncModal from './modals/GistSyncModal';
 import GistPublishModal from './modals/GistPublishModal';
+import WordpressPublishModal from './modals/WordpressPublishModal';
 import BloggerPublishModal from './modals/BloggerPublishModal';
 import BloggerPagePublishModal from './modals/BloggerPagePublishModal';
+import ZendeskAccountModal from './modals/ZendeskAccountModal';
+import ZendeskPublishModal from './modals/ZendeskPublishModal';
 
 export default {
   components: {
@@ -67,14 +77,19 @@ export default {
     PublishManagementModal,
     GoogleDriveSyncModal,
     GoogleDrivePublishModal,
+    DropboxAccountModal,
     DropboxSyncModal,
     DropboxPublishModal,
+    GithubAccountModal,
     GithubSyncModal,
     GithubPublishModal,
     GistSyncModal,
     GistPublishModal,
+    WordpressPublishModal,
     BloggerPublishModal,
     BloggerPagePublishModal,
+    ZendeskAccountModal,
+    ZendeskPublishModal,
   },
   computed: mapGetters('modal', [
     'config',

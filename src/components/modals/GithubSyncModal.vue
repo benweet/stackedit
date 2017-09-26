@@ -1,38 +1,29 @@
 <template>
-  <div class="modal__inner-1 modal__inner-1--google-drive-sync">
+  <div class="modal__inner-1">
     <div class="modal__inner-2">
       <div class="modal__image">
         <icon-provider provider-id="github"></icon-provider>
       </div>
       <p>This will save <b>{{currentFileName}}</b> to your <b>GitHub</b> repository and keep it synchronized.</p>
-      <div class="form-entry">
-        <label class="form-entry__label" for="repo">Repository URL</label>
-        <div class="form-entry__field">
-          <input id="repo" type="text" class="textfield" v-model.trim="repoUrl" @keyup.enter="resolve()">
-        </div>
+      <form-entry label="Repository URL">
+        <input slot="field" class="textfield" type="text" v-model.trim="repoUrl" @keyup.enter="resolve()">
         <div class="form-entry__info">
           <b>Example:</b> https://github.com/benweet/stackedit
         </div>
-      </div>
-      <div class="form-entry">
-        <label class="form-entry__label" for="branch">Branch (optional)</label>
-        <div class="form-entry__field">
-          <input id="branch" type="text" class="textfield" v-model.trim="branch" @keyup.enter="resolve()">
-        </div>
+      </form-entry>
+      <form-entry label="Branch (optional)">
+        <input slot="field" class="textfield" type="text" v-model.trim="branch" @keyup.enter="resolve()">
         <div class="form-entry__info">
           If not provided, the master branch will be used.
         </div>
-      </div>
-      <div class="form-entry">
-        <label class="form-entry__label" for="path">File path</label>
-        <div class="form-entry__field">
-          <input id="path" type="text" class="textfield" v-model.trim="path" @keyup.enter="resolve()">
-        </div>
+      </form-entry>
+      <form-entry label="File path">
+        <input slot="field" class="textfield" type="text" v-model.trim="path" @keyup.enter="resolve()">
         <div class="form-entry__info">
           <b>Example:</b> docs/README.md<br>
           If the file exists, it will be replaced.
         </div>
-      </div>
+      </form-entry>
       <div class="modal__button-bar">
         <button class="button" @click="config.reject()">Cancel</button>
         <button class="button" @click="resolve()">Ok</button>
@@ -42,31 +33,16 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import githubProvider from '../../services/providers/githubProvider';
+import modalTemplate from './modalTemplate';
 
-export default {
+export default modalTemplate({
   data: () => ({
     branch: '',
     path: '',
   }),
-  computed: {
-    ...mapGetters('modal', [
-      'config',
-    ]),
-    currentFileName() {
-      return this.$store.getters['file/current'].name;
-    },
-    repoUrl: {
-      get() {
-        return this.$store.getters['data/localSettings'].githubRepoUrl;
-      },
-      set(value) {
-        this.$store.dispatch('data/patchLocalSettings', {
-          githubRepoUrl: value,
-        });
-      },
-    },
+  computedLocalSettings: {
+    repoUrl: 'githubRepoUrl',
   },
   created() {
     this.path = `${this.currentFileName}.md`;
@@ -84,5 +60,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

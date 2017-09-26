@@ -21,11 +21,13 @@ export default {
         const config = typeof param === 'object' ? { ...param } : { type: param };
         const clean = () => commit('setStack', state.stack.filter((otherConfig => otherConfig !== config)));
         config.resolve = (result) => {
-          if (config.onResolve) {
-            config.onResolve(result);
-          }
           clean();
-          resolve(result);
+          if (config.onResolve) {
+            config.onResolve(result)
+              .then(res => resolve(res));
+          } else {
+            resolve(result);
+          }
         };
         config.reject = (error) => {
           clean();
@@ -62,6 +64,12 @@ export default {
       content: '<p>This will clean your local files and settings. Are you sure?</p>',
       resolveText: 'Yes, clean',
       rejectText: 'No',
+    }),
+    providerRedirection: ({ dispatch }, { providerName, onResolve }) => dispatch('open', {
+      content: `<p>You are about to navigate to the <b>${providerName}</b> authorization page.</p>`,
+      resolveText: 'Ok, go on!',
+      rejectText: 'Cancel',
+      onResolve,
     }),
   },
 };

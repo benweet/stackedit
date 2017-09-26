@@ -13,8 +13,9 @@ const getAppKey = (fullAccess) => {
 const request = (token, options, args) => utils.request({
   ...options,
   headers: {
-    ...options.headers,
-    'Content-Type': 'application/octet-stream',
+    ...options.headers || {},
+    'Content-Type': options.body && (typeof options.body === 'string'
+      ? 'application/octet-stream' : 'application/json; charset=utf-8'),
     'Dropbox-API-Arg': args && JSON.stringify(args),
     Authorization: `Bearer ${token.accessToken}`,
   },
@@ -34,17 +35,17 @@ export default {
       })
         .then((res) => {
           // Check the returned sub consistency
-          if (sub && res.body.account_id !== sub) {
+          if (sub && `${res.body.account_id}` !== sub) {
             throw new Error('Dropbox account ID not expected.');
           }
           // Build token object including scopes and sub
           const token = {
             accessToken,
             name: res.body.name.display_name,
-            sub: res.body.account_id,
+            sub: `${res.body.account_id}`,
             fullAccess,
           };
-          // Add token to githubTokens
+          // Add token to dropboxTokens
           store.dispatch('data/setDropboxToken', token);
           return token;
         }));

@@ -40,8 +40,16 @@ export default {
   background-image: url(../assets/iconDropbox.svg);
 }
 
+.icon-provider--wordpress {
+  background-image: url(../assets/iconWordpress.svg);
+}
+
 .icon-provider--blogger,
 .icon-provider--bloggerPage {
   background-image: url(../assets/iconBlogger.svg);
+}
+
+.icon-provider--zendesk {
+  background-image: url(../assets/iconZendesk.svg);
 }
 </style>

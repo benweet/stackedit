@@ -1,16 +1,13 @@
 <template>
-  <div class="modal__inner-1 modal__inner-1--google-drive-sync">
+  <div class="modal__inner-1">
     <div class="modal__inner-2">
       <div class="modal__image">
         <icon-provider provider-id="gist"></icon-provider>
       </div>
-      <p>This will save <b>{{currentFileName}}</b> to a <b>Gist</b> repository and keep it synchronized.</p>
-      <div class="form-entry">
-        <label class="form-entry__label" for="filename">Filename</label>
-        <div class="form-entry__field">
-          <input id="filename" type="text" class="textfield" v-model.trim="filename" @keyup.enter="resolve()">
-        </div>
-      </div>
+      <p>This will save <b>{{currentFileName}}</b> to a <b>Gist</b> and keep it synchronized.</p>
+      <form-entry label="Filename">
+        <input slot="field" class="textfield" type="text" v-model.trim="filename" @keyup.enter="resolve()">
+      </form-entry>
       <div class="form-entry">
         <div class="form-entry__checkbox">
           <label>
@@ -18,15 +15,12 @@
           </label>
         </div>
       </div>
-      <div class="form-entry">
-        <label class="form-entry__label" for="gistId">Gist ID (optional)</label>
-        <div class="form-entry__field">
-          <input id="gistId" type="text" class="textfield" v-model.trim="gistId" @keyup.enter="resolve()">
-        </div>
+      <form-entry label="Existing Gist ID (optional)">
+        <input slot="field" class="textfield" type="text" v-model.trim="gistId" @keyup.enter="resolve()">
         <div class="form-entry__info">
-          If the file exists in the provided Gist, it will be replaced.
+          If the file exists in the Gist, it will be replaced.
         </div>
-      </div>
+      </form-entry>
       <div class="modal__button-bar">
         <button class="button" @click="config.reject()">Cancel</button>
         <button class="button" @click="resolve()">Ok</button>
@@ -36,34 +30,16 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import gistProvider from '../../services/providers/gistProvider';
-import store from '../../store';
+import modalTemplate from './modalTemplate';
 
-const computedLocalSetting = id => ({
-  get() {
-    return store.getters['data/localSettings'][id];
-  },
-  set(value) {
-    store.dispatch('data/patchLocalSettings', {
-      [id]: value,
-    });
-  },
-});
-
-export default {
+export default modalTemplate({
   data: () => ({
     filename: '',
     gistId: '',
   }),
-  computed: {
-    ...mapGetters('modal', [
-      'config',
-    ]),
-    currentFileName() {
-      return this.$store.getters['file/current'].name;
-    },
-    isPublic: computedLocalSetting('gistIsPublic'),
+  computedLocalSettings: {
+    isPublic: 'gistIsPublic',
   },
   created() {
     this.filename = `${this.currentFileName}.md`;
@@ -78,5 +54,5 @@ export default {
       }
     },
   },
-};
+});
 </script>

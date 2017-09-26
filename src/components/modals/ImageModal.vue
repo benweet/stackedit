@@ -1,13 +1,10 @@
 <template>
-  <div class="modal__inner-1 modal__inner-1--image">
+  <div class="modal__inner-1">
     <div class="modal__inner-2">
       <p>Please provide a <b>URL</b> for your image.
-      <div class="form-entry">
-        <label class="form-entry__label" for="url">URL</label>
-        <div class="form-entry__field">
-          <input id="url" type="text" class="textfield" v-model="url" @keyup.enter="resolve()">
-        </div>
-      </div>
+      <form-entry label="URL">
+        <input slot="field" class="textfield" type="text" v-model.trim="url" @keyup.enter="resolve()">
+      </form-entry>
       <menu-entry @click.native="openGooglePhotos(token)" v-for="token in googlePhotosTokens" :key="token.sub">
         <icon-provider slot="icon" provider-id="googlePhotos"></icon-provider>
         <div>Open from Google Photos</div>
@@ -28,10 +25,12 @@
 <script>
 import { mapGetters } from 'vuex';
 import MenuEntry from '../menus/MenuEntry';
+import FormEntry from './FormEntry';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 
 export default {
   components: {
+    FormEntry,
     MenuEntry,
   },
   data: () => ({

@@ -73,8 +73,7 @@ export default {
       return this.$store.dispatch('modal/notImplemented');
     },
     fileProperties() {
-      return this.$store.dispatch('modal/open', 'fileProperties')
-        .then(properties => this.$store.dispatch('content/patchCurrent', { properties }));
+      return this.$store.dispatch('modal/open', 'fileProperties');
     },
   },
 };

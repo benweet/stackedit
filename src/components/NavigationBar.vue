@@ -12,7 +12,8 @@
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--title flex flex--row">
       <div class="navigation-bar__spinner">
-        <div v-show="showSpinner" class="spinner"></div>
+        <div v-if="!offline && showSpinner" class="spinner"></div>
+        <icon-sync-off v-if="offline"></icon-sync-off>
       </div>
       <div class="navigation-bar__title navigation-bar__title--fake text-input"></div>
       <div class="navigation-bar__title navigation-bar__title--text text-input" :style="{width: titleWidth + 'px'}">{{title}}</div>
@@ -21,11 +22,8 @@
         <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in syncLocations" :key="location.id" :href="location.url" target="_blank">
           <icon-provider :provider-id="location.providerId"></icon-provider>
         </a>
-        <button class="navigation-bar__button navigation-bar__button--sync button" v-if="!offline && isSyncPossible" :disabled="isSyncRequested" @click="requestSync">
+        <button class="navigation-bar__button navigation-bar__button--sync button" v-if="isSyncPossible" :disabled="isSyncRequested || offline" @click="requestSync">
           <icon-sync></icon-sync>
-        </button>
-        <button class="navigation-bar__button navigation-bar__button--sync-off button" v-if="offline && isSyncPossible" disabled="disabled">
-          <icon-sync-off></icon-sync-off>
         </button>
         <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in publishLocations" :key="location.id" :href="location.url" target="_blank">
           <icon-provider :provider-id="location.providerId"></icon-provider>
@@ -253,7 +251,7 @@ export default {
     width: 38px;
 
     &.navigation-bar__button--stackedit {
-      opacity: 0.8;
+      opacity: 0.85;
 
       &:active,
       &:focus,
@@ -277,7 +275,6 @@ export default {
 }
 
 .navigation-bar__button--sync,
-.navigation-bar__button--sync-off,
 .navigation-bar__button--publish {
   padding: 0 6px;
   margin: 0 5px;
@@ -289,15 +286,6 @@ export default {
   &:focus,
   &:hover {
     color: $navbar-color;
-  }
-}
-
-.navigation-bar__button--sync-off[disabled] {
-  &,
-  &:active,
-  &:focus,
-  &:hover {
-    color: $error-color;
   }
 }
 
@@ -313,26 +301,23 @@ export default {
 
 .navigation-bar__button--location {
   width: 20px;
-  padding: 0 2px 12px;
+  height: 20px;
+  border-radius: 10px;
+  padding: 2px;
+  margin-top: 8px;
   opacity: 0.5;
+  background-color: rgba(255, 255, 255, 0.2);
 
   &:active,
   &:focus,
   &:hover {
-    background-color: transparent;
     opacity: 1;
+    background-color: rgba(255, 255, 255, 0.2);
   }
 }
 
 .navigation-bar__button--blink {
   animation: blink 1s linear infinite;
-}
-
-@keyframes blink {
-  50% {
-    opacity: 1;
-    filter: contrast(0.8) brightness(1.25);
-  }
 }
 
 .navigation-bar__title--fake {
@@ -382,12 +367,18 @@ export default {
 $r: 9px;
 $d: $r * 2;
 $b: $d/10;
-$t: 1500ms;
+$t: 3000ms;
 
 .navigation-bar__spinner {
-  width: $d;
-  margin: 10px 5px 0 10px;
+  width: 22px;
+  margin: 8px 0 0 8px;
   color: rgba(255, 255, 255, 0.67);
+
+  .icon {
+    width: 22px;
+    height: 22px;
+    color: transparentize($error-color, 0.5);
+  }
 }
 
 .spinner {
@@ -397,6 +388,7 @@ $t: 1500ms;
   position: relative;
   border: $b solid currentColor;
   border-radius: 50%;
+  margin: 2px;
 
   &::before,
   &::after {
@@ -410,16 +402,29 @@ $t: 1500ms;
   }
 
   &::before {
-    height: $r * 0.5;
+    height: $r * 0.35;
     left: $r - $b * 1.5;
     top: 50%;
     animation: spin $t linear infinite;
+  }
+
+  &::after {
+    height: $r * 0.5;
+    left: $r - $b * 1.5;
+    top: 50%;
+    animation: spin $t/4 linear infinite;
   }
 }
 
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 1;
   }
 }
 </style>

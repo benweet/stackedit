@@ -20,7 +20,7 @@ const libraries = ['picker'];
 const request = (token, options) => utils.request({
   ...options,
   headers: {
-    ...options.headers,
+    ...options.headers || {},
     Authorization: `Bearer ${token.accessToken}`,
   },
 });
@@ -106,7 +106,7 @@ export default {
           throw new Error('Client ID inconsistent.');
         }
         // Check the returned sub consistency
-        if (sub && res.body.sub !== sub) {
+        if (sub && `${res.body.sub}` !== sub) {
           throw new Error('Google account ID not expected.');
         }
         // Build token object including scopes and sub
@@ -114,7 +114,7 @@ export default {
           scopes,
           accessToken: data.accessToken,
           expiresOn: Date.now() + (data.expiresIn * 1000),
-          sub: res.body.sub,
+          sub: `${res.body.sub}`,
           isLogin: !store.getters['data/loginToken'] &&
             scopes.indexOf('https://www.googleapis.com/auth/drive.appdata') !== -1,
           isDrive: scopes.indexOf('https://www.googleapis.com/auth/drive') !== -1 ||
@@ -168,8 +168,11 @@ export default {
         // Try to get a new token in background
         return this.startOauth2(mergedScopes, sub, true)
           // If it fails try to popup a window
-          .catch(() => utils.checkOnline()
-            .then(() => this.startOauth2(mergedScopes, sub)));
+          .catch(() => utils.checkOnline() // Check that we are online, silent mode is a hack
+            .then(() => store.dispatch('modal/providerRedirection', {
+              providerName: 'Google',
+              onResolve: () => this.startOauth2(mergedScopes, sub),
+            })));
       });
   },
   loadClientScript() {

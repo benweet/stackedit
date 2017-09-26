@@ -64,6 +64,7 @@ const loadSyncedContent = loader('syncedContent');
 const loadContentState = loader('contentState');
 
 function applyChanges(changes) {
+  const token = mainProvider.getToken();
   const storeItemMap = { ...store.getters.allItemMap };
   const syncData = { ...store.getters['data/syncData'] };
   let syncDataChanged = false;
@@ -79,7 +80,10 @@ function applyChanges(changes) {
       }
       delete syncData[change.fileId];
       syncDataChanged = true;
-    } else if (!change.removed && change.item && change.item.hash) {
+    } else if (!change.removed && change.item && change.item.hash && (
+      // Ignore items that belong to another user (like settings)
+      !change.item.sub || change.item.sub === token.sub
+    )) {
       if (!existingSyncData || (existingSyncData.hash !== change.item.hash && (
         !existingItem || existingItem.hash !== change.item.hash
       ))) {
@@ -202,7 +206,7 @@ function syncFile(fileId) {
                     ...mergedContent,
                   });
 
-                  // Retrieve content with new `hash` value and freeze it
+                  // Retrieve content with new `hash` and freeze it
                   mergedContent = utils.deepCopy(getContent());
 
                   // Make merged content history
@@ -303,13 +307,76 @@ function syncFile(fileId) {
     });
 }
 
+
+function syncDataItem(dataId) {
+  const item = store.state.data.itemMap[dataId];
+  const syncData = store.getters['data/syncDataByItemId'][dataId];
+  // Sync if item hash and syncData hash are inconsistent
+  if (syncData && item && item.hash === syncData.hash) {
+    return null;
+  }
+  const token = mainProvider.getToken();
+  return token && mainProvider.downloadData(token, dataId)
+    .then((serverItem = null) => {
+      const dataSyncData = store.getters['data/dataSyncData'][dataId];
+      let mergedItem = (() => {
+        const clientItem = utils.deepCopy(store.getters[`data/${dataId}`]);
+        if (!serverItem) {
+          return clientItem;
+        }
+        if (!dataSyncData) {
+          return serverItem;
+        }
+        if (dataSyncData.hash !== serverItem.hash) {
+          // Server version has changed
+          if (dataSyncData.hash !== clientItem.hash && typeof clientItem.data === 'object') {
+            // Client version has changed as well, merge data objects
+            return {
+              ...clientItem,
+              data: diffUtils.mergeObjects(serverItem.data, clientItem.data),
+            };
+          }
+          return serverItem;
+        }
+        return clientItem;
+      })();
+
+      // Update item in store
+      store.commit('data/setItem', {
+        id: dataId,
+        ...mergedItem,
+      });
+
+      // Retrieve item with new `hash` and freeze it
+      mergedItem = utils.deepCopy(store.state.data.itemMap[dataId]);
+
+      return Promise.resolve()
+        .then(() => {
+          if (serverItem && serverItem.hash === mergedItem.hash) {
+            return null;
+          }
+          return mainProvider.uploadData(
+            token,
+            dataId === 'settings' ? token.sub : undefined,
+            mergedItem,
+            dataId,
+          );
+        })
+        .then(() => {
+          store.dispatch('data/patchDataSyncData', {
+            [dataId]: utils.deepCopy(store.getters['data/syncDataByItemId'][dataId]),
+          });
+        });
+    });
+}
+
 function sync() {
-  const googleToken = store.getters['data/loginToken'];
-  return mainProvider.getChanges(googleToken)
+  const mainToken = store.getters['data/loginToken'];
+  return mainProvider.getChanges(mainToken)
     .then((changes) => {
       // Apply changes
       applyChanges(changes);
-      mainProvider.setAppliedChanges(googleToken, changes);
+      mainProvider.setAppliedChanges(mainToken, changes);
 
       // Prevent from sending items too long after changes have been retrieved
       const syncStartTime = Date.now();
@@ -327,7 +394,7 @@ function sync() {
           ...store.state.folder.itemMap,
           ...store.state.syncLocation.itemMap,
           ...store.state.publishLocation.itemMap,
-          // Deal with contents later
+          // Deal with contents and data later
         };
         const syncDataByItemId = store.getters['data/syncDataByItemId'];
         let result;
@@ -336,7 +403,7 @@ function sync() {
           const existingSyncData = syncDataByItemId[id];
           if (!existingSyncData || existingSyncData.hash !== item.hash) {
             result = mainProvider.saveItem(
-              googleToken,
+              mainToken,
               // Use deepCopy to freeze objects
               utils.deepCopy(item),
               utils.deepCopy(existingSyncData),
@@ -360,6 +427,7 @@ function sync() {
           ...store.state.syncLocation.itemMap,
           ...store.state.publishLocation.itemMap,
           ...store.state.content.itemMap,
+          ...store.state.data.itemMap,
         };
         const syncData = store.getters['data/syncData'];
         let result;
@@ -372,7 +440,7 @@ function sync() {
             // Use deepCopy to freeze objects
             const syncDataToRemove = utils.deepCopy(existingSyncData);
             result = mainProvider
-              .removeItem(googleToken, syncDataToRemove, ifNotTooLate)
+              .removeItem(mainToken, syncDataToRemove, ifNotTooLate)
               .then(() => {
                 const syncDataCopy = { ...store.getters['data/syncData'] };
                 delete syncDataCopy[syncDataToRemove.id];
@@ -393,7 +461,7 @@ function sync() {
           const loadedContent = store.state.content.itemMap[contentId];
           const hash = loadedContent ? loadedContent.hash : localDbSvc.hashMap.content[contentId];
           const syncData = store.getters['data/syncDataByItemId'][contentId];
-          // Sync if item hash and syncData hash are different
+          // Sync if item hash and syncData hash are inconsistent
           if (!syncData || hash !== syncData.hash) {
             [fileId] = contentId.split('/');
           }
@@ -411,10 +479,13 @@ function sync() {
       return Promise.resolve()
         .then(() => saveNextItem())
         .then(() => removeNextItem())
+        .then(() => syncDataItem('settings'))
+        .then(() => syncDataItem('templates'))
         .then(() => {
-          if (store.getters['content/current'].id) {
+          const currentFileId = store.getters['content/current'].id;
+          if (currentFileId) {
             // Sync current file first
-            return syncFile(store.getters['file/current'].id)
+            return syncFile(currentFileId)
               .then(() => syncNextFile());
           }
           return syncNextFile();

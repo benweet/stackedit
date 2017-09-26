@@ -18,7 +18,7 @@ const ensureArray = (value) => {
     return [];
   }
   if (!Array.isArray(value)) {
-    return value.toString().trim().split(/\s*,\s*/);
+    return `${value}`.trim().split(/\s*,\s*/);
   }
   return value;
 };
@@ -27,14 +27,14 @@ const ensureString = (value, defaultValue) => {
   if (!value) {
     return defaultValue;
   }
-  return value.toString();
+  return `${value}`;
 };
 
 const ensureDate = (value, defaultValue) => {
   if (!value) {
     return defaultValue;
   }
-  return new Date(value.toString());
+  return new Date(`${value}`);
 };
 
 function publish(publishLocation) {
@@ -55,7 +55,7 @@ function publish(publishLocation) {
           excerpt: ensureString(properties.excerpt),
           featuredImage: ensureString(properties.featuredImage),
           status: ensureString(properties.status),
-          date: ensureDate(properties.date),
+          date: ensureDate(properties.date, new Date()),
         };
         return provider.publish(token, html, metadata, publishLocation);
       }));

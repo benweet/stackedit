@@ -39,6 +39,7 @@ import CodeBraces from './CodeBraces';
 import OpenInNew from './OpenInNew';
 import Information from './Information';
 import Alert from './Alert';
+import SignalOff from './SignalOff';
 // Providers
 import Provider from './Provider';
 
@@ -82,5 +83,6 @@ Vue.component('iconCodeBraces', CodeBraces);
 Vue.component('iconOpenInNew', OpenInNew);
 Vue.component('iconInformation', Information);
 Vue.component('iconAlert', Alert);
+Vue.component('iconSignalOff', SignalOff);
 // Providers
 Vue.component('iconProvider', Provider);

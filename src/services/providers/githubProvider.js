@@ -17,46 +17,46 @@ export default providerRegistry.register({
     const token = this.getToken(location);
     return `${location.path} — ${location.owner}/${location.repo} — ${token.name}`;
   },
-  downloadContent(token, location) {
+  downloadContent(token, syncLocation) {
     return githubHelper.downloadFile(
-      token, location.owner, location.repo, location.branch, location.path,
+      token, syncLocation.owner, syncLocation.repo, syncLocation.branch, syncLocation.path,
     )
       .then(({ sha, content }) => {
-        savedSha[location.id] = sha;
-        return providerUtils.parseContent(content);
+        savedSha[syncLocation.id] = sha;
+        return providerUtils.parseContent(content, syncLocation);
       })
       .catch(() => null); // Ignore error, without the sha upload is going to fail anyway
   },
-  uploadContent(token, content, location) {
-    const sha = savedSha[location.id];
-    delete savedSha[location.id];
+  uploadContent(token, content, syncLocation) {
+    const sha = savedSha[syncLocation.id];
+    delete savedSha[syncLocation.id];
     return githubHelper.uploadFile(
       token,
-      location.owner,
-      location.repo,
-      location.branch,
-      location.path,
+      syncLocation.owner,
+      syncLocation.repo,
+      syncLocation.branch,
+      syncLocation.path,
       providerUtils.serializeContent(content),
       sha,
     )
-      .then(() => location);
+      .then(() => syncLocation);
   },
-  publish(token, html, metadata, location) {
-    return this.downloadContent(token, location) // Get the last sha
+  publish(token, html, metadata, publishLocation) {
+    return this.downloadContent(token, publishLocation) // Get the last sha
       .then(() => {
-        const sha = savedSha[location.id];
-        delete savedSha[location.id];
+        const sha = savedSha[publishLocation.id];
+        delete savedSha[publishLocation.id];
         return githubHelper.uploadFile(
           token,
-          location.owner,
-          location.repo,
-          location.branch,
-          location.path,
+          publishLocation.owner,
+          publishLocation.repo,
+          publishLocation.branch,
+          publishLocation.path,
           html,
           sha,
         );
       })
-      .then(() => location);
+      .then(() => publishLocation);
   },
   makeLocation(token, owner, repo, branch, path) {
     return {

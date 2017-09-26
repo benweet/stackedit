@@ -91,8 +91,8 @@ self.onmessage = (evt) => {
     const context = evt.data[1];
     safeEval(evt.data[2]);
     self.postMessage([null, template(context)]);
-  } catch (e) {
-    self.postMessage([e.toString()]);
+  } catch (err) {
+    self.postMessage([`${err}`]);
   }
   close();
 };

@@ -182,5 +182,6 @@ function mergeContent(serverContent, clientContent, lastMergedContent = {}) {
 export default {
   makePatchableText,
   restoreDiscussionOffsets,
+  mergeObjects,
   mergeContent,
 };

@@ -2,6 +2,7 @@ import yaml from 'js-yaml';
 import defaultProperties from '../data/defaultFileProperties.yml';
 
 const workspaceId = 'main';
+const origin = `${location.protocol}//${location.host}`;
 
 // For uid()
 const uidLength = 16;
@@ -37,9 +38,16 @@ const urlParser = window.document.createElement('a');
 // For loadScript()
 const scriptLoadingPromises = Object.create(null);
 
+// For startOauth2
+const oauth2AuthorizationTimeout = 120 * 1000; // 2 minutes
+
+// For checkOnline
+const checkOnlineTimeout = 15 * 1000; // 15 sec
+
 export default {
   workspaceId,
-  origin: `${location.protocol}//${location.host}`,
+  origin,
+  oauth2RedirectUri: `${origin}/oauth2/callback`,
   types: [
     'contentState',
     'syncedContent',
@@ -78,6 +86,14 @@ export default {
       hash |= 0; // eslint-disable-line no-bitwise
     }
     return hash;
+  },
+  encodeBase64(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+      (match, p1) => String.fromCharCode(`0x${p1}`)));
+  },
+  decodeBase64(str) {
+    return decodeURIComponent(atob(str).split('').map(
+      c => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`).join(''));
   },
   computeProperties(yamlProperties) {
     const customProperties = yaml.safeLoad(yamlProperties);
@@ -147,14 +163,16 @@ export default {
     // Build the authorize URL
     const state = this.uid();
     params.state = state;
-    params.redirect_uri = `${this.origin}/oauth2/callback.html`;
+    params.redirect_uri = this.oauth2RedirectUri;
     const authorizeUrl = this.addQueryParams(url, params);
     if (silent) {
       // Use an iframe as wnd for silent mode
       oauth2Context.iframeElt = document.createElement('iframe');
       oauth2Context.iframeElt.style.position = 'absolute';
       oauth2Context.iframeElt.style.left = '-9999px';
-      oauth2Context.closeTimeout = setTimeout(() => oauth2Context.clean('Unknown error.'), 5 * 1000);
+      oauth2Context.closeTimeout = setTimeout(
+        () => oauth2Context.clean('Unknown error.'),
+        checkOnlineTimeout);
       oauth2Context.iframeElt.onerror = () => oauth2Context.clean('Unknown error.');
       oauth2Context.iframeElt.src = authorizeUrl;
       document.body.appendChild(oauth2Context.iframeElt);
@@ -166,7 +184,9 @@ export default {
       if (!oauth2Context.wnd) {
         return Promise.reject();
       }
-      oauth2Context.closeTimeout = setTimeout(() => oauth2Context.clean('Timeout.'), 120 * 1000);
+      oauth2Context.closeTimeout = setTimeout(
+        () => oauth2Context.clean('Timeout.'),
+        oauth2AuthorizationTimeout);
     }
     return new Promise((resolve, reject) => {
       oauth2Context.clean = (errorMsg) => {
@@ -189,32 +209,43 @@ export default {
 
       oauth2Context.msgHandler = (event) => {
         if (event.source === oauth2Context.wnd &&
-          event.origin === this.origin &&
-          event.data &&
-          event.data.state === state
+          event.origin === this.origin
         ) {
           oauth2Context.clean();
-          if (event.data.accessToken || event.data.code) {
-            resolve(event.data);
-          } else {
-            reject(event.data);
+          const data = {};
+          `${event.data}`.slice(1).split('&').forEach((param) => {
+            const [key, value] = param.split('=').map(decodeURIComponent);
+            if (key === 'state') {
+              data.state = value;
+            } else if (key === 'access_token') {
+              data.accessToken = value;
+            } else if (key === 'code') {
+              data.code = value;
+            } else if (key === 'expires_in') {
+              data.expiresIn = value;
+            }
+          });
+          if (data.state === state) {
+            resolve(data);
+            return;
           }
+          reject('Could not get required authorization.');
         }
       };
       window.addEventListener('message', oauth2Context.msgHandler);
 
       oauth2Context.checkClosedInterval = !silent && setInterval(() => {
         if (oauth2Context.wnd.closed) {
-          oauth2Context.clean('Authorize window was closed');
+          oauth2Context.clean('Authorize window was closed.');
         }
       }, 250);
     });
   },
   request(configParam) {
-    const timeout = 30 * 1000; // 30 sec
     let retryAfter = 500; // 500 ms
     const maxRetryAfter = 30 * 1000; // 30 sec
     const config = Object.assign({}, configParam);
+    config.timeout = config.timeout || 30 * 1000; // 30 sec
     config.headers = Object.assign({}, config.headers);
     if (config.body && typeof config.body === 'object') {
       config.body = JSON.stringify(config.body);
@@ -283,13 +314,15 @@ export default {
         timeoutId = setTimeout(() => {
           xhr.abort();
           reject(new Error('Network request timeout.'));
-        }, timeout);
+        }, config.timeout);
 
-        // Add query params to URL
         const url = this.addQueryParams(config.url, config.params);
         xhr.open(config.method || 'GET', url);
         Object.keys(config.headers).forEach((key) => {
-          xhr.setRequestHeader(key, config.headers[key]);
+          const value = config.headers[key];
+          if (value) {
+            xhr.setRequestHeader(key, `${value}`);
+          }
         });
         xhr.send(config.body || null);
       })
@@ -310,23 +343,15 @@ export default {
     return attempt();
   },
   checkOnline() {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      let timeout;
-      const cleaner = (cb, res) => () => {
-        clearTimeout(timeout);
-        cb(res);
-        document.head.removeChild(script);
-      };
-      script.onload = cleaner(resolve, 'Online.');
-      script.onerror = cleaner(reject, 'Offline.');
-      script.src = `https://apis.google.com/js/api.js?${Date.now()}`;
-      try {
-        document.head.appendChild(script); // This can fail with bad network
-        timeout = setTimeout(cleaner(reject), 15000); // 15 sec
-      } catch (e) {
-        reject(e);
+    const checkStatus = (res) => {
+      if (!res.status || res.status < 200) {
+        throw new Error('Offline...');
       }
-    });
+    };
+    return this.request({
+      url: 'https://www.googleapis.com/plus/v1/people/me',
+      timeout: checkOnlineTimeout,
+    })
+      .then(checkStatus, checkStatus);
   },
 };

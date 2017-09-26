@@ -17,37 +17,37 @@ export default providerRegistry.register({
     const token = this.getToken(location);
     return `${location.filename} — ${location.gistId} — ${token.name}`;
   },
-  downloadContent(token, location) {
-    return githubHelper.downloadGist(token, location.gistId, location.filename)
-      .then(content => providerUtils.parseContent(content));
+  downloadContent(token, syncLocation) {
+    return githubHelper.downloadGist(token, syncLocation.gistId, syncLocation.filename)
+      .then(content => providerUtils.parseContent(content, syncLocation));
   },
-  uploadContent(token, content, location) {
-    const file = store.state.file.itemMap[location.fileId];
+  uploadContent(token, content, syncLocation) {
+    const file = store.state.file.itemMap[syncLocation.fileId];
     const description = (file && file.name) || defaultDescription;
     return githubHelper.uploadGist(
       token,
       description,
-      location.filename,
+      syncLocation.filename,
       providerUtils.serializeContent(content),
-      location.isPublic,
-      location.gistId,
+      syncLocation.isPublic,
+      syncLocation.gistId,
     )
       .then(gist => ({
-        ...location,
+        ...syncLocation,
         gistId: gist.id,
       }));
   },
-  publish(token, html, metadata, location) {
+  publish(token, html, metadata, publishLocation) {
     return githubHelper.uploadGist(
       token,
       metadata.title,
-      location.filename,
+      publishLocation.filename,
       html,
-      location.isPublic,
-      location.gistId,
+      publishLocation.isPublic,
+      publishLocation.gistId,
     )
       .then(gist => ({
-        ...location,
+        ...publishLocation,
         gistId: gist.id,
       }));
   },

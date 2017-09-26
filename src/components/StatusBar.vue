@@ -85,7 +85,7 @@ export default {
     computeHtml() {
       let text;
       if (editorSvc.previewSelectionRange) {
-        text = editorSvc.previewSelectionRange.toString();
+        text = `${editorSvc.previewSelectionRange}`;
       }
       this.htmlSelection = true;
       if (!text) {

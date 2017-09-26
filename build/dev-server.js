@@ -24,7 +24,7 @@ var app = express()
 var compiler = webpack(webpackConfig)
 
 // StackEdit custom middlewares
-require('./server')(app);
+require('../server')(app);
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
@@ -62,8 +62,8 @@ app.use(devMiddleware)
 app.use(hotMiddleware)
 
 // serve pure static assets
-// var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
-app.use(express.static('./static'))
+var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
+app.use(staticPath, express.static('./static'))
 
 var uri = 'http://localhost:' + port
 

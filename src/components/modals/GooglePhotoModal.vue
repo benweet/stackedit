@@ -2,18 +2,12 @@
   <div class="modal__inner-1 modal__inner-1--google-photo">
     <div class="modal__inner-2">
       <div class="google-photo__tumbnail" :style="{'background-image': thumbnailUrl}"></div>
-      <div class="form-entry">
-        <label class="form-entry__label" for="title">Title (optional)</label>
-        <div class="form-entry__field">
-          <input id="title" type="text" class="textfield" v-model.trim="title" @keyup.enter="resolve()">
-        </div>
-      </div>
-      <div class="form-entry">
-        <label class="form-entry__label" for="size">Size limit (optional)</label>
-        <div class="form-entry__field">
-          <input id="size" type="text" class="textfield" v-model="size" @keyup.enter="resolve()">
-        </div>
-      </div>
+      <form-entry label="Title (optional)">
+        <input slot="field" class="textfield" type="text" v-model.trim="title" @keyup.enter="resolve()">
+      </form-entry>
+      <form-entry label="Size limit (optional)">
+        <input slot="field" class="textfield" type="text" v-model.trim="size" @keyup.enter="resolve()">
+      </form-entry>
       <div class="modal__button-bar">
         <button class="button" @click="reject()">Cancel</button>
         <button class="button" @click="resolve()">Ok</button>
@@ -24,10 +18,14 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import FormEntry from './FormEntry';
 
 const makeThumbnail = (url, size) => `${url}=s${size}`;
 
 export default {
+  components: {
+    FormEntry,
+  },
   data: () => ({
     title: '',
     size: '',

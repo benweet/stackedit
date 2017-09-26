@@ -20,6 +20,10 @@ export default {
   },
   actions: {
     enqueue({ state, commit, dispatch }, cb) {
+      if (state.offline) {
+        // No need to enqueue
+        return;
+      }
       const checkOffline = () => {
         if (state.offline) {
           // Empty queue

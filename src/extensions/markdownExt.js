@@ -167,7 +167,7 @@ extensionSvc.onInitConverter(0, (markdown, options) => {
   markdown.renderer.rules.th_open = markdown.renderer.rules.td_open;
 
   markdown.renderer.rules.footnote_ref = (tokens, idx) => {
-    const n = Number(tokens[idx].meta.id + 1).toString();
+    const n = `${Number(tokens[idx].meta.id + 1)}`;
     let id = `fnref${n}`;
     if (tokens[idx].meta.subId > 0) {
       id += `:${tokens[idx].meta.subId}`;

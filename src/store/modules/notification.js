@@ -35,7 +35,7 @@ export default {
             item.content = `HTTP error ${error.status}.`;
           }
         } else {
-          item.content = error.toString();
+          item.content = `${error}`;
         }
       }
       if (!item.content || item.content === '[object Object]') {

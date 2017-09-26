@@ -38,11 +38,6 @@ export default (empty, simpleHash = false) => {
     mutations: {
       setItem,
       patchItem,
-      patchOrSetItem(state, patch) {
-        if (!patchItem(state, patch)) {
-          setItem(state, patch);
-        }
-      },
       deleteItem(state, id) {
         Vue.delete(state.itemMap, id);
       },

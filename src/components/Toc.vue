@@ -12,7 +12,7 @@ import editorSvc from '../services/editorSvc';
 
 export default {
   data: () => ({
-    maskY: -999,
+    maskY: 0,
   }),
   computed: {
     ...mapGetters('layout', [
@@ -64,9 +64,11 @@ export default {
     // Change mask postion on scroll
     const updateMaskY = () => {
       const scrollPosition = editorSvc.getScrollPosition();
-      const sectionDesc = editorSvc.sectionDescList[scrollPosition.sectionIdx];
-      this.maskY = sectionDesc.tocDimension.startOffset +
-        (scrollPosition.posInSection * sectionDesc.tocDimension.height);
+      if (scrollPosition) {
+        const sectionDesc = editorSvc.sectionDescList[scrollPosition.sectionIdx];
+        this.maskY = sectionDesc.tocDimension.startOffset +
+          (scrollPosition.posInSection * sectionDesc.tocDimension.height);
+      }
     };
 
     Vue.nextTick(() => {

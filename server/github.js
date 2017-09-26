@@ -15,7 +15,6 @@ function githubToken(clientId, code) {
       if (err) {
         reject(err);
       }
-      console.log(body)
       var token = qs.parse(body).access_token;
       if (token) {
         resolve(token);
@@ -26,13 +25,11 @@ function githubToken(clientId, code) {
   });
 }
 
-module.exports = function (app) {
-  app.get('/oauth2/githubToken', function (req, res) {
-    githubToken(req.query.clientId, req.query.code)
-      .then(function (token) {
-        res.send(token);
-      }, function (err) {
-        res.status(400).send(err ? err.message || err.toString() : 'bad_code');
-      });
-  });
+exports.githubToken = function (req, res) {
+  githubToken(req.query.clientId, req.query.code)
+    .then(function (token) {
+      res.send(token);
+    }, function (err) {
+      res.status(400).send(err ? err.message || err.toString() : 'bad_code');
+    });
 };

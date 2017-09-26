@@ -10,7 +10,8 @@ module.getters = {
     const result = {};
     getters.items.forEach((item) => {
       // Filter items that we can't use
-      if (providerRegistry.providers[item.providerId].getToken(item)) {
+      const provider = providerRegistry.providers[item.providerId];
+      if (provider && provider.getToken(item)) {
         const list = result[item.fileId] || [];
         list.push(item);
         result[item.fileId] = list;

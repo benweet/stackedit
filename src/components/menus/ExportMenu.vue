@@ -2,15 +2,18 @@
   <div class="side-bar__panel side-bar__panel--menu">
     <menu-entry @click.native="exportMarkdown">
       <icon-download slot="icon"></icon-download>
-      Export as Markdown
+      <div>Export as Markdown</div>
+      <span>Save file as plain text.</span>
     </menu-entry>
     <menu-entry @click.native="exportHtml">
       <icon-download slot="icon"></icon-download>
-      Export as HTML
+      <div>Export as HTML</div>
+      <span>Generate an HTML page from a template.</span>
     </menu-entry>
     <menu-entry @click.native="exportPdf">
       <icon-download slot="icon"></icon-download>
-      Export as PDF
+      <div>Export as PDF</div>
+      <span>Produce a PDF from an HTML template.</span>
     </menu-entry>
   </div>
 </template>

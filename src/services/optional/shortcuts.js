@@ -1,12 +1,16 @@
 import Mousetrap from 'mousetrap';
 import store from '../../store';
 import editorSvc from '../../services/editorSvc';
+import editorEngineSvc from '../../services/editorEngineSvc';
 import syncSvc from '../../services/syncSvc';
 
 // Skip shortcuts if modal is open or editor is hidden
 Mousetrap.prototype.stopCallback = () => store.getters['modal/config'] || !store.getters['layout/styles'].showEditor;
 
-const pagedownHandler = name => () => editorSvc.pagedownEditor.uiManager.doClick(name);
+const pagedownHandler = name => () => {
+  editorSvc.pagedownEditor.uiManager.doClick(name);
+  return true;
+};
 
 const methods = {
   bold: pagedownHandler('bold'),
@@ -19,7 +23,32 @@ const methods = {
   ulist: pagedownHandler('ulist'),
   heading: pagedownHandler('heading'),
   hr: pagedownHandler('hr'),
-  sync: () => syncSvc.isSyncPossible() && syncSvc.requestSync(),
+  sync() {
+    if (syncSvc.isSyncPossible()) {
+      syncSvc.requestSync();
+    }
+    return true;
+  },
+  expand(param1, param2) {
+    const text = param1 && `${param1}`;
+    const replacement = param2 && `${param2}`;
+    if (text && replacement) {
+      setTimeout(() => {
+        const selectionMgr = editorEngineSvc.clEditor.selectionMgr;
+        let offset = editorEngineSvc.clEditor.selectionMgr.selectionStart;
+        if (offset === selectionMgr.selectionEnd) {
+          const range = selectionMgr.createRange(offset - text.length, offset);
+          if (`${range}` === text) {
+            range.deleteContents();
+            range.insertNode(document.createTextNode(replacement));
+            offset = (offset - text.length) + replacement.length;
+            selectionMgr.setSelectionStartEnd(offset, offset);
+            selectionMgr.updateCursorCoordinates(true);
+          }
+        }
+      }, 1);
+    }
+  },
 };
 
 store.watch(
@@ -36,10 +65,7 @@ store.watch(
           params = [params];
         }
         if (Object.prototype.hasOwnProperty.call(methods, method)) {
-          Mousetrap.bind(shortcut.keys.toString(), () => {
-            methods[method].apply(null, params);
-            return false; // preventDefault
-          });
+          Mousetrap.bind(`${shortcut.keys}`, () => !methods[method].apply(null, params));
         }
       }
     });

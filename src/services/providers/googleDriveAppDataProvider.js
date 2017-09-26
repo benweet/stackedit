@@ -62,7 +62,11 @@ export default providerRegistry.register({
       .then(() => syncData);
   },
   downloadContent(token, syncLocation) {
-    const syncData = store.getters['data/syncDataByItemId'][`${syncLocation.fileId}/content`];
+    return this.downloadData(token, `${syncLocation.fileId}/content`)
+      .then(() => syncLocation);
+  },
+  downloadData(token, dataId) {
+    const syncData = store.getters['data/syncDataByItemId'][dataId];
     if (!syncData) {
       return Promise.resolve();
     }
@@ -70,8 +74,7 @@ export default providerRegistry.register({
       .then((content) => {
         const item = JSON.parse(content);
         if (item.hash !== syncData.hash) {
-          store.dispatch('data/setSyncData', {
-            ...store.getters['data/syncData'],
+          store.dispatch('data/patchSyncData', {
             [syncData.id]: {
               ...syncData,
               hash: item.hash,
@@ -82,29 +85,34 @@ export default providerRegistry.register({
       });
   },
   uploadContent(token, content, syncLocation, ifNotTooLate) {
-    const syncData = store.getters['data/syncDataByItemId'][`${syncLocation.fileId}/content`];
-    if (syncData && syncData.hash === content.hash) {
+    return this.uploadData(token, undefined, content, `${syncLocation.fileId}/content`, ifNotTooLate)
+      .then(() => syncLocation);
+  },
+  uploadData(token, sub, item, dataId, ifNotTooLate) {
+    const syncData = store.getters['data/syncDataByItemId'][dataId];
+    if (syncData && syncData.hash === item.hash) {
       return Promise.resolve();
     }
     return googleHelper.uploadAppDataFile(
         token,
         JSON.stringify({
-          id: content.id,
-          type: content.type,
-          hash: content.hash,
-        }), ['appDataFolder'],
-        JSON.stringify(content),
+          id: item.id,
+          type: item.type,
+          hash: item.hash,
+          sub,
+        }),
+        ['appDataFolder'],
+        JSON.stringify(item),
         syncData && syncData.id,
         ifNotTooLate,
       )
-      .then(file => store.dispatch('data/setSyncData', {
-        ...store.getters['data/syncData'],
+      .then(file => store.dispatch('data/patchSyncData', {
         [file.id]: {
           // Build sync data
           id: file.id,
-          itemId: content.id,
-          type: content.type,
-          hash: content.hash,
+          itemId: item.id,
+          type: item.type,
+          hash: item.hash,
         },
       }));
   },

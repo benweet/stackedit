@@ -24,17 +24,21 @@ const module = moduleTemplate(empty, true);
 
 module.mutations.setItem = (state, value) => {
   const emptyItem = empty(value.id);
-  let itemData = value.data || emptyItem.data;
-  if (typeof itemData === 'object') {
-    itemData = Object.assign(emptyItem.data, value.data);
-  }
+  const data = typeof value.data === 'object'
+    ? Object.assign(emptyItem.data, value.data)
+    : value.data;
   const item = {
     ...emptyItem,
     ...value,
-    data: itemData,
+    data,
+    hash: Date.now(),
   };
-  if (!item.hash) {
-    item.hash = Date.now();
+  if (item.id === 'settings' || item.id === 'templates') {
+    // Use a real hash for synced types
+    item.hash = utils.hash(utils.serializeObject({
+      ...item,
+      hash: undefined,
+    }));
   }
   Vue.set(state.itemMap, item.id, item);
 };
@@ -42,13 +46,13 @@ module.mutations.setItem = (state, value) => {
 const getter = id => state => (state.itemMap[id] || empty(id)).data;
 const setter = id => ({ commit }, data) => commit('setItem', itemTemplate(id, data));
 const patcher = id => ({ state, commit }, data) => {
-  const item = state.itemMap[id] || empty(id);
-  commit('patchOrSetItem', {
-    ...item,
-    data: {
+  const item = Object.assign(empty(id), state.itemMap[id]);
+  commit('setItem', {
+    ...empty(id),
+    data: typeof data === 'object' ? {
       ...item.data,
       ...data,
-    },
+    } : data,
   });
 };
 
@@ -172,11 +176,17 @@ module.getters.syncDataByType = (state, getters) => {
 module.actions.patchSyncData = patcher('syncData');
 module.actions.setSyncData = setter('syncData');
 
+// Data sync data (used to sync settings and settings)
+module.getters.dataSyncData = getter('dataSyncData');
+module.actions.patchDataSyncData = patcher('dataSyncData');
+
 // Tokens
 module.getters.tokens = getter('tokens');
 module.getters.googleTokens = (state, getters) => getters.tokens.google || {};
 module.getters.dropboxTokens = (state, getters) => getters.tokens.dropbox || {};
 module.getters.githubTokens = (state, getters) => getters.tokens.github || {};
+module.getters.wordpressTokens = (state, getters) => getters.tokens.wordpress || {};
+module.getters.zendeskTokens = (state, getters) => getters.tokens.zendesk || {};
 module.getters.loginToken = (state, getters) => {
   // Return the first google token that has the isLogin flag
   const googleTokens = getters.googleTokens;
@@ -185,29 +195,18 @@ module.getters.loginToken = (state, getters) => {
   return googleTokens[loginSubs[0]];
 };
 module.actions.patchTokens = patcher('tokens');
-module.actions.setGoogleToken = ({ getters, dispatch }, token) => {
+const tokenSetter = providerId => ({ getters, dispatch }, token) => {
   dispatch('patchTokens', {
-    google: {
-      ...getters.googleTokens,
+    [providerId]: {
+      ...getters[`${providerId}Tokens`],
       [token.sub]: token,
     },
   });
 };
-module.actions.setDropboxToken = ({ getters, dispatch }, token) => {
-  dispatch('patchTokens', {
-    dropbox: {
-      ...getters.dropboxTokens,
-      [token.sub]: token,
-    },
-  });
-};
-module.actions.setGithubToken = ({ getters, dispatch }, token) => {
-  dispatch('patchTokens', {
-    github: {
-      ...getters.githubTokens,
-      [token.sub]: token,
-    },
-  });
-};
+module.actions.setGoogleToken = tokenSetter('google');
+module.actions.setDropboxToken = tokenSetter('dropbox');
+module.actions.setGithubToken = tokenSetter('github');
+module.actions.setWordpressToken = tokenSetter('wordpress');
+module.actions.setZendeskToken = tokenSetter('zendesk');
 
 export default module;

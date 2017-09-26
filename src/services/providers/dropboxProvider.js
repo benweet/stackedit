@@ -4,76 +4,75 @@ import providerUtils from './providerUtils';
 import providerRegistry from './providerRegistry';
 import utils from '../utils';
 
-const restrictedFolder = '/Applications/StackEdit (restricted)';
-const restrictedFolderRegexp = /^\/Applications\/StackEdit \(restricted\)/;
+const makePathAbsolute = (token, path) => {
+  if (!token.fullAccess) {
+    return `/Applications/StackEdit (restricted)${path}`;
+  }
+  return path;
+};
+const makePathRelative = (token, path) => {
+  if (!token.fullAccess) {
+    return path.replace(/^\/Applications\/StackEdit \(restricted\)/, '');
+  }
+  return path;
+};
 
 export default providerRegistry.register({
   id: 'dropbox',
-  fullAccess: true,
   getToken(location) {
-    const token = store.getters['data/dropboxTokens'][location.sub];
-    if (token && !!token.fullAccess === this.fullAccess) {
-      return token;
-    }
-    return null;
+    return store.getters['data/dropboxTokens'][location.sub];
   },
   getUrl(location) {
     const pathComponents = location.path.split('/').map(encodeURIComponent);
     const filename = pathComponents.pop();
-    let baseUrl = 'https://www.dropbox.com/home';
-    if (!this.fullAccess) {
-      baseUrl += encodeURIComponent(restrictedFolder);
-    }
-    return `${baseUrl}${pathComponents.join('/')}?preview=${filename}`;
+    return `https://www.dropbox.com/home${pathComponents.join('/')}?preview=${filename}`;
   },
   getDescription(location) {
     const token = this.getToken(location);
-    if (this.fullAccess) {
-      return `${location.path} — ${token.name}`;
-    }
-    return `${location.path} — ${token.name} (restricted)`;
+    return `${location.path} — ${location.dropboxFileId} — ${token.name}`;
   },
   checkPath(path) {
     return path && path.match(/^\/[^\\<>:"|?*]+$/);
   },
-  downloadContent(token, location) {
-    return dropboxHelper.downloadFile(token, location.path, location.dropboxFileId)
-      .then(({ content }) => providerUtils.parseContent(content));
+  downloadContent(token, syncLocation) {
+    return dropboxHelper.downloadFile(
+      token,
+      makePathRelative(token, syncLocation.path),
+      syncLocation.dropboxFileId,
+    )
+      .then(({ content }) => providerUtils.parseContent(content, syncLocation));
   },
-  uploadContent(token, content, location) {
+  uploadContent(token, content, syncLocation) {
     return dropboxHelper.uploadFile(
       token,
-      location.path,
+      makePathRelative(token, syncLocation.path),
       providerUtils.serializeContent(content),
-      location.dropboxFileId,
+      syncLocation.dropboxFileId,
     )
       .then(dropboxFile => ({
-        ...location,
-        path: dropboxFile.path_display,
+        ...syncLocation,
+        path: makePathAbsolute(token, dropboxFile.path_display),
         dropboxFileId: dropboxFile.id,
       }));
   },
-  publish(token, html, metadata, location) {
+  publish(token, html, metadata, publishLocation) {
     return dropboxHelper.uploadFile(
       token,
-      location.path,
+      publishLocation.path,
       html,
-      location.dropboxFileId,
+      publishLocation.dropboxFileId,
     )
       .then(dropboxFile => ({
-        ...location,
-        path: dropboxFile.path_display,
+        ...publishLocation,
+        path: makePathAbsolute(token, dropboxFile.path_display),
         dropboxFileId: dropboxFile.id,
       }));
   },
   openFiles(token, paths) {
     const openOneFile = () => {
-      let path = paths.pop();
+      const path = paths.pop();
       if (!path) {
         return null;
-      }
-      if (!token.fullAccess) {
-        path = path.replace(restrictedFolderRegexp, '');
       }
       let syncLocation;
       // Try to find an existing sync location

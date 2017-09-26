@@ -40,6 +40,13 @@
         <span>{{token.name}}</span>
       </menu-entry>
     </div>
+    <div v-for="token in wordpressTokens" :key="token.sub">
+      <menu-entry @click.native="publishWordpress(token)">
+        <icon-provider slot="icon" provider-id="wordpress"></icon-provider>
+        <div>Publish to WordPress</div>
+        <span>{{token.name}}</span>
+      </menu-entry>
+    </div>
     <div v-for="token in bloggerTokens" :key="token.sub">
       <menu-entry @click.native="publishBlogger(token)">
         <icon-provider slot="icon" provider-id="blogger"></icon-provider>
@@ -50,6 +57,13 @@
         <icon-provider slot="icon" provider-id="bloggerPage"></icon-provider>
         <div>Publish to Blogger Page</div>
         <span>{{token.name}}</span>
+      </menu-entry>
+    </div>
+    <div v-for="token in zendeskTokens" :key="token.sub">
+      <menu-entry @click.native="publishZendesk(token)">
+        <icon-provider slot="icon" provider-id="zendesk"></icon-provider>
+        <div>Publish to Zendesk Help Center</div>
+        <span>{{token.name}} — {{token.subdomain}}</span>
       </menu-entry>
     </div>
     <hr>
@@ -65,9 +79,17 @@
       <icon-provider slot="icon" provider-id="github"></icon-provider>
       <span>Add GitHub account</span>
     </menu-entry>
+    <menu-entry @click.native="addWordpressAccount">
+      <icon-provider slot="icon" provider-id="wordpress"></icon-provider>
+      <span>Add WordPress account</span>
+    </menu-entry>
     <menu-entry @click.native="addBloggerAccount">
       <icon-provider slot="icon" provider-id="blogger"></icon-provider>
       <span>Add Blogger account</span>
+    </menu-entry>
+    <menu-entry @click.native="addZendeskAccount">
+      <icon-provider slot="icon" provider-id="zendesk"></icon-provider>
+      <span>Add Zendesk account</span>
     </menu-entry>
   </div>
 </template>
@@ -78,6 +100,8 @@ import MenuEntry from './MenuEntry';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import dropboxHelper from '../../services/providers/helpers/dropboxHelper';
 import githubHelper from '../../services/providers/helpers/githubHelper';
+import wordpressHelper from '../../services/providers/helpers/wordpressHelper';
+import zendeskHelper from '../../services/providers/helpers/zendeskHelper';
 import publishSvc from '../../services/publishSvc';
 import store from '../../store';
 
@@ -117,8 +141,14 @@ export default {
     githubTokens() {
       return tokensToArray(this.$store.getters['data/githubTokens']);
     },
+    wordpressTokens() {
+      return tokensToArray(this.$store.getters['data/wordpressTokens']);
+    },
     bloggerTokens() {
       return tokensToArray(this.$store.getters['data/googleTokens'], token => token.isBlogger);
+    },
+    zendeskTokens() {
+      return tokensToArray(this.$store.getters['data/zendeskTokens']);
     },
   },
   methods: {
@@ -134,13 +164,28 @@ export default {
       return googleHelper.addDriveAccount();
     },
     addDropboxAccount() {
-      return dropboxHelper.addAccount();
+      return this.$store.dispatch('modal/open', {
+        type: 'dropboxAccount',
+        onResolve: () => dropboxHelper.addAccount(!store.getters['data/localSettings'].dropboxRestrictedAccess),
+      });
     },
     addGithubAccount() {
-      return githubHelper.addAccount();
+      return this.$store.dispatch('modal/open', {
+        type: 'githubAccount',
+        onResolve: () => githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess),
+      });
+    },
+    addWordpressAccount() {
+      return wordpressHelper.addAccount();
     },
     addBloggerAccount() {
       return googleHelper.addBloggerAccount();
+    },
+    addZendeskAccount() {
+      return this.$store.dispatch('modal/open', {
+        type: 'zendeskAccount',
+        onResolve: ({ subdomain, clientId }) => zendeskHelper.addAccount(subdomain, clientId),
+      });
     },
     publishGoogleDrive(token) {
       return openPublishModal(token, 'googleDrivePublish');
@@ -154,11 +199,17 @@ export default {
     publishGist(token) {
       return openPublishModal(token, 'gistPublish');
     },
+    publishWordpress(token) {
+      return openPublishModal(token, 'wordpressPublish');
+    },
     publishBlogger(token) {
       return openPublishModal(token, 'bloggerPublish');
     },
     publishBloggerPage(token) {
       return openPublishModal(token, 'bloggerPagePublish');
+    },
+    publishZendesk(token) {
+      return openPublishModal(token, 'zendeskPublish');
     },
   },
 };

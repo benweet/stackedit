@@ -19,7 +19,7 @@
       <div class="modal__error modal__error--file-properties">{{error}}</div>
       <div class="modal__button-bar">
         <button class="button" @click="config.reject()">Cancel</button>
-        <button class="button" @click="!error && config.resolve(strippedCustomProperties)">Ok</button>
+        <button class="button" @click="resolve()">Ok</button>
       </div>
     </div>
   </div>
@@ -38,6 +38,7 @@ export default {
     CodeEditor,
   },
   data: () => ({
+    contentId: null,
     tab: 'custom',
     defaultProperties,
     customProperties: null,
@@ -52,7 +53,9 @@ export default {
     },
   },
   created() {
-    const properties = this.$store.getters['content/current'].properties;
+    const content = this.$store.getters['content/current'];
+    this.contentId = content.id;
+    const properties = content.properties;
     this.setCustomProperties(properties === '\n' ? emptyProperties : properties);
   },
   methods: {
@@ -63,6 +66,15 @@ export default {
         this.error = null;
       } catch (e) {
         this.error = e.message;
+      }
+    },
+    resolve() {
+      if (!this.error) {
+        this.$store.commit('content/patchItem', {
+          id: this.contentId,
+          properties: this.strippedCustomProperties,
+        });
+        this.config.resolve();
       }
     },
   },

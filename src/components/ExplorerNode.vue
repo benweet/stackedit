@@ -20,7 +20,6 @@
 <script>
 import { mapMutations, mapActions } from 'vuex';
 import utils from '../services/utils';
-import defaultContent from '../data/defaultContent.md';
 
 export default {
   name: 'explorer-node',
@@ -99,9 +98,14 @@ export default {
             id,
           });
         } else {
+          // Add empty line at the end if needed
+          const ensureFinalNewLine = text => `${text}\n`.replace(/\n\n$/, '\n');
+          const text = ensureFinalNewLine(this.$store.getters['data/computedSettings'].newFileContent);
+          const properties = ensureFinalNewLine(this.$store.getters['data/computedSettings'].newFileProperties);
           this.$store.commit('content/setItem', {
             id: `${id}/content`,
-            text: defaultContent,
+            text,
+            properties,
           });
           this.$store.commit('file/setItem', {
             ...newChildNode.item,

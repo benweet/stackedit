@@ -1,7 +1,6 @@
 {
   "name": "stackedit",
   "version": "4.3.14",
-  "private": true,
   "description": "StackEdit is a free, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.",
   "main": "res/main.js",
   "engines": {
@@ -11,12 +10,13 @@
     "doc": "doc"
   },
   "dependencies": {
-    "express": "^4.8.5",
-    "ejs": "~0.8.4",
-    "request": "~2.40.0",
-    "ssh2": "^0.3.5",
+    "bower": "^1.8.2",
     "compression": "^1.0.11",
-    "serve-static": "^1.6.5"
+    "ejs": "~0.8.4",
+    "express": "^4.8.5",
+    "request": "~2.40.0",
+    "serve-static": "^1.6.5",
+    "ssh2": "^0.3.5"
   },
   "devDependencies": {
     "gulp": "^3.8.7",
@@ -36,6 +36,7 @@
     "event-stream": "^3.1.7"
   },
   "scripts": {
+    "postinstall": "bower --allow-root install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

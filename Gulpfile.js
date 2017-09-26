@@ -263,7 +263,12 @@ gulp.task('git-tag', function(cb) {
 				if(err) {
 					return cb(err);
 				}
-				exec('git push origin master --tags', cb);
+				exec('npm publish', function(err) {
+					if(err) {
+						return cb(err);
+					}
+					exec('git push origin master --tags', cb);
+				});
 			});
 		});
 	});

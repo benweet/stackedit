@@ -42,7 +42,7 @@ define([
 				}
 			},
 			onEnd: function() {
-				storage.welcomeTour = 'done';
+				storage.welcomeTour_1 = 'done';
 				infoTooltip('.drag-me', 'Drag me!', 'left');
 				infoTooltip('.layout-toggler-preview', 'Toggle preview', 'right');
 			},
@@ -61,10 +61,11 @@ define([
 		tour.addSteps([
 			{
 				element: '.navbar-inner',
-				title: 'StackEdit 4 is out!',
+				title: 'StackEdit 5 is coming...',
 				content: [
-					'<p>I\'m very pleased to welcome you here! StackEdit keeps getting better and I hope you appreciate it.</p>',
-					'Please click <b>Next</b> to take a quick tour.'
+					'<p>A new version of StackEdit is on its way and <a href="app" target="_blank">you can try it here</a>!</p>',
+					'<p>It\'s still in beta. Some of the features may not be available just yet.</p>',
+					'You can always click <b>Next</b> to go through the StackEdit 4 tour.'
 				].join(""),
 				placement: 'bottom'
 			},
@@ -111,7 +112,7 @@ define([
 				}
 			}
 		]);
-		if(!_.has(storage, 'welcomeTour')) {
+		if(!_.has(storage, 'welcomeTour_1')) {
 			tour.start();
 		}
 		$('.action-welcome-tour').click(function() {

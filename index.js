@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'production';
+
 var cluster = require('cluster');
 var http = require('http');
 var https = require('https');
@@ -7,13 +9,13 @@ var app = express();
 
 require('./server')(app);
 
-var port = process.env.PORT || 8080;
+var port = parseInt(process.env.PORT || 8080, 10);
 if(port === 443) {
 	var fs = require('fs');
 	var credentials = {
-		key: fs.readFileSync(path.join(__dirname, '/../../shared/config/ssl.key'), 'utf8'),
-		cert: fs.readFileSync(path.join(__dirname, '/../../shared/config/ssl.crt'), 'utf8'),
-		ca: fs.readFileSync(path.join(__dirname, '/../../shared/config/ssl.ca'), 'utf8').split('\n\n')
+		key: fs.readFileSync(path.join(__dirname, 'ssl.key'), 'utf8'),
+		cert: fs.readFileSync(path.join(__dirname, 'ssl.crt'), 'utf8'),
+		ca: fs.readFileSync(path.join(__dirname, 'ssl.ca'), 'utf8').split('\n\n')
 	};
 	var httpsServer = https.createServer(credentials, app);
 	httpsServer.listen(port, null, function() {

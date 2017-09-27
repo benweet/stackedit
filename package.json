@@ -1,6 +1,6 @@
 {
   "name": "stackedit",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Free, open-source, full-featured Markdown editor",
   "author": "Benoit Schweblin",
   "license": "Apache-2.0",
@@ -39,7 +39,7 @@
     "raw-loader": "^0.5.1",
     "request": "^2.82.0",
     "serve-static": "^1.12.6",
-    "stackedit": "^4.3.16",
+    "stackedit": "^4.3.17",
     "vue": "^2.3.3",
     "vuex": "^2.3.1"
   },

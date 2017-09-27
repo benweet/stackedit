@@ -62,8 +62,7 @@ export default providerRegistry.register({
       .then(() => syncData);
   },
   downloadContent(token, syncLocation) {
-    return this.downloadData(token, `${syncLocation.fileId}/content`)
-      .then(() => syncLocation);
+    return this.downloadData(token, `${syncLocation.fileId}/content`);
   },
   downloadData(token, dataId) {
     const syncData = store.getters['data/syncDataByItemId'][dataId];

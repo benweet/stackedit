@@ -372,7 +372,7 @@ $t: 3000ms;
 .navigation-bar__spinner {
   width: 22px;
   margin: 8px 0 0 8px;
-  color: rgba(255, 255, 255, 0.67);
+  color: #b2b2b2;
 
   .icon {
     width: 22px;

@@ -5945,9 +5945,9 @@ sshpk@^1.7.0:
     jsbn "~0.1.0"
     tweetnacl "~0.14.0"
 
-stackedit@^4.3.16:
-  version "4.3.16"
-  resolved "https://registry.yarnpkg.com/stackedit/-/stackedit-4.3.16.tgz#e4df6af29e70d2c45a547523e6aa4f8025c1556d"
+stackedit@^4.3.17:
+  version "4.3.17"
+  resolved "https://registry.yarnpkg.com/stackedit/-/stackedit-4.3.17.tgz#3c524a625f7399d13b06706da2305a131a8df56c"
   dependencies:
     bower "^1.8.2"
     compression "^1.0.11"

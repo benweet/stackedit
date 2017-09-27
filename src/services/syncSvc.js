@@ -1,6 +1,5 @@
 import localDbSvc from './localDbSvc';
 import store from '../store';
-import welcomeFile from '../data/welcomeFile.md';
 import utils from './utils';
 import diffUtils from './diffUtils';
 import providerRegistry from './providers/providerRegistry';
@@ -54,15 +53,6 @@ function cleanSyncedContent(syncedContent) {
   });
 }
 
-const loader = type => fileId => localDbSvc.loadItem(`${fileId}/${type}`)
-  // Item does not exist, create it
-  .catch(() => store.commit(`${type}/setItem`, {
-    id: `${fileId}/${type}`,
-  }));
-const loadContent = loader('content');
-const loadSyncedContent = loader('syncedContent');
-const loadContentState = loader('contentState');
-
 function applyChanges(changes) {
   const token = mainProvider.getToken();
   const storeItemMap = { ...store.getters.allItemMap };
@@ -70,31 +60,31 @@ function applyChanges(changes) {
   let syncDataChanged = false;
 
   changes.forEach((change) => {
-    const existingSyncData = syncData[change.fileId];
-    const existingItem = existingSyncData && storeItemMap[existingSyncData.itemId];
-    if (change.removed && existingSyncData) {
-      if (existingItem) {
-        // Remove object from the store
-        store.commit(`${existingItem.type}/deleteItem`, existingItem.id);
-        delete storeItemMap[existingItem.id];
-      }
-      delete syncData[change.fileId];
-      syncDataChanged = true;
-    } else if (!change.removed && change.item && change.item.hash && (
-      // Ignore items that belong to another user (like settings)
-      !change.item.sub || change.item.sub === token.sub
-    )) {
-      if (!existingSyncData || (existingSyncData.hash !== change.item.hash && (
-        !existingItem || existingItem.hash !== change.item.hash
-      ))) {
-        // Put object in the store
-        if (change.item.type !== 'content') { // Merge contents later
-          store.commit(`${change.item.type}/setItem`, change.item);
-          storeItemMap[change.item.id] = change.item;
+    // Ignore items that belong to another user (like settings)
+    if (!change.item || !change.item.sub || change.item.sub === token.sub) {
+      const existingSyncData = syncData[change.fileId];
+      const existingItem = existingSyncData && storeItemMap[existingSyncData.itemId];
+      if (change.removed && existingSyncData) {
+        if (existingItem) {
+          // Remove object from the store
+          store.commit(`${existingItem.type}/deleteItem`, existingItem.id);
+          delete storeItemMap[existingItem.id];
         }
+        delete syncData[change.fileId];
+        syncDataChanged = true;
+      } else if (!change.removed && change.item && change.item.hash) {
+        if (!existingSyncData || (existingSyncData.hash !== change.item.hash && (
+          !existingItem || existingItem.hash !== change.item.hash
+        ))) {
+          // Put object in the store
+          if (change.item.type !== 'content') { // Merge contents later
+            store.commit(`${change.item.type}/setItem`, change.item);
+            storeItemMap[change.item.id] = change.item;
+          }
+        }
+        syncData[change.fileId] = change.syncData;
+        syncDataChanged = true;
       }
-      syncData[change.fileId] = change.syncData;
-      syncDataChanged = true;
     }
   });
 
@@ -121,7 +111,7 @@ function createSyncLocation(syncLocation) {
         ...content,
         history: [content.hash],
       }, syncLocation)
-        .then(syncLocationToStore => loadSyncedContent(fileId)
+        .then(syncLocationToStore => localDbSvc.loadSyncedContent(fileId)
           .then(() => {
             const newSyncedContent = utils.deepCopy(
               store.state.syncedContent.itemMap[`${fileId}/syncedContent`]);
@@ -137,9 +127,11 @@ function createSyncLocation(syncLocation) {
     });
 }
 
-function syncFile(fileId) {
-  return loadSyncedContent(fileId)
-    .then(() => loadContent(fileId))
+function syncFile(fileId, needSyncRestartParam = false) {
+  let needSyncRestart = needSyncRestartParam;
+  return localDbSvc.loadSyncedContent(fileId)
+    .then(() => localDbSvc.loadItem(`${fileId}/content`)
+      .catch(() => {})) // Item may not exist if content has not been downloaded yet
     .then(() => {
       const getContent = () => store.state.content.itemMap[`${fileId}/content`];
       const getSyncedContent = () => store.state.syncedContent.itemMap[`${fileId}/syncedContent`];
@@ -176,6 +168,9 @@ function syncFile(fileId) {
                   const syncHistoryItem = getSyncHistoryItem(syncLocation.id);
                   let mergedContent = (() => {
                     const clientContent = utils.deepCopy(getContent());
+                    if (!clientContent) {
+                      return utils.deepCopy(serverContent);
+                    }
                     if (!serverContent) {
                       // Sync location has not been created yet
                       return clientContent;
@@ -200,10 +195,17 @@ function syncFile(fileId) {
                     return diffUtils.mergeContent(serverContent, clientContent, lastMergedContent);
                   })();
 
-                  // Update content in store
-                  store.commit('content/patchItem', {
+                  if (!mergedContent) {
+                    errorLocations[syncLocation.id] = true;
+                    return null;
+                  }
+
+                  // Update or set content in store
+                  delete mergedContent.history;
+                  store.commit('content/setItem', {
                     id: `${fileId}/content`,
                     ...mergedContent,
+                    hash: 0,
                   });
 
                   // Retrieve content with new `hash` and freeze it
@@ -272,6 +274,12 @@ function syncFile(fileId) {
                       ) {
                         store.commit('syncLocation/patchItem', syncLocationToStore);
                       }
+
+                      // If content was just created, restart sync to create the file as well
+                      const syncDataByItemId = store.getters['data/syncDataByItemId'];
+                      if (!syncDataByItemId[fileId]) {
+                        needSyncRestart = true;
+                      }
                     });
                 })
                 .catch((err) => {
@@ -298,13 +306,15 @@ function syncFile(fileId) {
         .then(() => {
           throw err;
         }))
-    .catch((err) => {
-      if (err && err.message === 'TOO_LATE') {
-        // Restart sync
-        return syncFile(fileId);
-      }
-      throw err;
-    });
+    .then(
+      () => needSyncRestart,
+      (err) => {
+        if (err && err.message === 'TOO_LATE') {
+          // Restart sync
+          return syncFile(fileId, needSyncRestart);
+        }
+        throw err;
+      });
 }
 
 
@@ -320,7 +330,10 @@ function syncDataItem(dataId) {
     .then((serverItem = null) => {
       const dataSyncData = store.getters['data/dataSyncData'][dataId];
       let mergedItem = (() => {
-        const clientItem = utils.deepCopy(store.getters[`data/${dataId}`]);
+        const clientItem = utils.deepCopy(store.state.data.itemMap[dataId]);
+        if (!clientItem) {
+          return serverItem;
+        }
         if (!serverItem) {
           return clientItem;
         }
@@ -340,6 +353,10 @@ function syncDataItem(dataId) {
         }
         return clientItem;
       })();
+
+      if (!mergedItem) {
+        return null;
+      }
 
       // Update item in store
       store.commit('data/setItem', {
@@ -401,7 +418,10 @@ function sync() {
         Object.keys(storeItemMap).some((id) => {
           const item = storeItemMap[id];
           const existingSyncData = syncDataByItemId[id];
-          if (!existingSyncData || existingSyncData.hash !== item.hash) {
+          if ((!existingSyncData || existingSyncData.hash !== item.hash) &&
+            // Add file if content has been uploaded
+            (item.type !== 'file' || syncDataByItemId[`${id}/content`])
+          ) {
             result = mainProvider.saveItem(
               mainToken,
               // Use deepCopy to freeze objects
@@ -454,9 +474,12 @@ function sync() {
       });
 
       const getOneFileIdToSync = () => {
-        const allContentIds = Object.keys(localDbSvc.hashMap.content);
+        const contentIds = [...new Set([
+          ...Object.keys(localDbSvc.hashMap.content),
+          ...store.getters['file/items'].map(file => `${file.id}/content`),
+        ])];
         let fileId;
-        allContentIds.some((contentId) => {
+        contentIds.some((contentId) => {
           // Get content hash from itemMap or from localDbSvc if not loaded
           const loadedContent = store.state.content.itemMap[contentId];
           const hash = loadedContent ? loadedContent.hash : localDbSvc.hashMap.content[contentId];
@@ -470,10 +493,13 @@ function sync() {
         return fileId;
       };
 
-      const syncNextFile = () => {
+      const syncNextFile = (needSyncRestartParam) => {
         const fileId = getOneFileIdToSync();
-        return fileId && syncFile(fileId)
-          .then(() => syncNextFile());
+        if (!fileId) {
+          return needSyncRestartParam;
+        }
+        return syncFile(fileId, needSyncRestartParam)
+          .then(needSyncRestart => syncNextFile(needSyncRestart));
       };
 
       return Promise.resolve()
@@ -482,21 +508,29 @@ function sync() {
         .then(() => syncDataItem('settings'))
         .then(() => syncDataItem('templates'))
         .then(() => {
-          const currentFileId = store.getters['content/current'].id;
+          const currentFileId = store.getters['file/current'].id;
           if (currentFileId) {
             // Sync current file first
             return syncFile(currentFileId)
-              .then(() => syncNextFile());
+              .then(needSyncRestart => syncNextFile(needSyncRestart));
           }
           return syncNextFile();
         })
-        .catch((err) => {
-          if (err && err.message === 'TOO_LATE') {
-            // Restart sync
-            return sync();
-          }
-          throw err;
-        });
+        .then(
+          (needSyncRestart) => {
+            if (needSyncRestart) {
+              // Restart sync
+              return sync();
+            }
+            return null;
+          },
+          (err) => {
+            if (err && err.message === 'TOO_LATE') {
+              // Restart sync
+              return sync();
+            }
+            throw err;
+          });
     });
 }
 
@@ -551,58 +585,6 @@ utils.setInterval(() => {
     requestSync();
   }
 }, 1000);
-
-const ifNoId = cb => (obj) => {
-  if (obj.id) {
-    return obj;
-  }
-  return cb();
-};
-
-// Load the DB on boot
-localDbSvc.sync()
-  // And watch file changing
-  .then(() => store.watch(
-    () => store.getters['file/current'].id,
-    () => Promise.resolve(store.getters['file/current'])
-      // If current file has no ID, get the most recent file
-      .then(ifNoId(() => store.getters['file/lastOpened']))
-      // If still no ID, create a new file
-      .then(ifNoId(() => {
-        const id = utils.uid();
-        store.commit('content/setItem', {
-          id: `${id}/content`,
-          text: welcomeFile,
-        });
-        store.commit('file/setItem', {
-          id,
-          name: 'Welcome file',
-        });
-        return store.state.file.itemMap[id];
-      }))
-      .then((currentFile) => {
-        // Fix current file ID
-        if (store.getters['file/current'].id !== currentFile.id) {
-          store.commit('file/setCurrentId', currentFile.id);
-          // Wait for the next watch tick
-          return null;
-        }
-        // Set last opened
-        store.dispatch('data/setLastOpenedId', currentFile.id);
-        return Promise.resolve()
-          // Load contentState from DB
-          .then(() => loadContentState(currentFile.id))
-          // Load syncedContent from DB
-          .then(() => loadSyncedContent(currentFile.id))
-          // Load content from DB
-          .then(() => localDbSvc.loadItem(`${currentFile.id}/content`));
-      }),
-    {
-      immediate: true,
-    }));
-
-// Sync local DB periodically
-utils.setInterval(() => localDbSvc.sync(), 1000);
 
 // Unload contents from memory periodically
 utils.setInterval(() => {

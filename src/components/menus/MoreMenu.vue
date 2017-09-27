@@ -15,6 +15,16 @@
       <div>Reset application</div>
       <span>Sign out and clean local data.</span>
     </menu-entry>
+    <hr>
+    <a href="editor" target="_blank" class="menu-entry button flex flex--row flex--align-center">
+      <div class="menu-entry__icon flex flex--column flex--center">
+        <icon-alert></icon-alert>
+      </div>
+      <div class="flex flex--column">
+        <div>StackEdit v4</div>
+        <span>Deprecated.</span>
+      </div>
+    </a>
   </div>
 </template>
 

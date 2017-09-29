@@ -98,15 +98,14 @@ const localDbSvc = {
   connection: new Connection(),
 
   /**
-   * Return a promise that is resolved once the synchronization between the store and the localDb
-   * is finished. Effectively, open a transaction, then read and apply all changes from the DB
-   * since the previous transaction, then write all the changes from the store.
+   * Return a promise that will be resolved once the synchronization between the store and the
+   * localDb will be finished. Effectively, open a transaction, then read and apply all changes
+   * from the DB since the previous transaction, then write all the changes from the store.
    */
   sync() {
     return new Promise((resolve, reject) => {
-      const storeItemMap = { ...store.getters.allItemMap };
       this.connection.createTx((tx) => {
-        this.readAll(storeItemMap, tx, () => {
+        this.readAll(tx, (storeItemMap) => {
           this.writeAll(storeItemMap, tx);
           if (!store.state.ready) {
             store.commit('setReady');
@@ -120,7 +119,7 @@ const localDbSvc = {
   /**
    * Read and apply all changes from the DB since previous transaction.
    */
-  readAll(storeItemMap, tx, cb) {
+  readAll(tx, cb) {
     let lastTx = this.lastTx;
     const dbStore = tx.objectStore(dbStoreName);
     const index = dbStore.index('tx');
@@ -142,6 +141,7 @@ const localDbSvc = {
         changes.push(item);
         cursor.continue();
       } else {
+        const storeItemMap = { ...store.getters.allItemMap };
         changes.forEach((item) => {
           this.readDbItem(item, storeItemMap);
           // If item is an old delete marker, remove it from the DB
@@ -150,7 +150,7 @@ const localDbSvc = {
           }
         });
         this.lastTx = lastTx;
-        cb();
+        cb(storeItemMap);
       }
     };
   },

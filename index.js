@@ -7,7 +7,7 @@ var path = require('path');
 var express = require('express');
 var app = express();
 
-require('./server')(app);
+require('./server')(app, process.env.SERVE_V4);
 
 var port = parseInt(process.env.PORT || 8080, 10);
 if(port === 443) {

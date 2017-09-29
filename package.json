@@ -39,7 +39,6 @@
     "raw-loader": "^0.5.1",
     "request": "^2.82.0",
     "serve-static": "^1.12.6",
-    "stackedit": "^4.3.17",
     "vue": "^2.3.3",
     "vuex": "^2.3.1"
   },

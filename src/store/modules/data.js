@@ -29,17 +29,12 @@ module.mutations.setItem = (state, value) => {
     : value.data;
   const item = {
     ...emptyItem,
-    ...value,
     data,
-    hash: Date.now(),
   };
-  if (item.id === 'settings' || item.id === 'templates') {
-    // Use a real hash for synced types
-    item.hash = utils.hash(utils.serializeObject({
-      ...item,
-      hash: undefined,
-    }));
-  }
+  item.hash = utils.hash(utils.serializeObject({
+    ...item,
+    hash: undefined,
+  }));
   Vue.set(state.itemMap, item.id, item);
 };
 

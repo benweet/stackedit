@@ -97,12 +97,12 @@ gulp.task('requirejs', [
 		.pipe(gulp.dest('./public/res-min/'));
 });
 
-gulp.task('bower-requirejs', function(cb) {
-	bowerRequirejs({
-		config: './public/res/main.js'
-	}, function() {
-		cb();
-	});
+gulp.task('bower-requirejs', function() {
+	return new Promise(function (resolve) {
+		bowerRequirejs({
+			config: './public/res/main.js'
+		}, resolve);
+	})
 });
 
 /** __________________________________________
@@ -239,39 +239,35 @@ gulp.task('bump-patch', bumpTask('patch'));
 gulp.task('bump-minor', bumpTask('minor'));
 gulp.task('bump-major', bumpTask('major'));
 
-function exec(cmd, cb) {
-	childProcess.exec(cmd, {cwd: process.cwd()}, function(err, stdout, stderr) {
-		if(!err) {
-			util.log(stdout, stderr);
-		}
-		cb(err);
+function exec(cmd) {
+	return new Promise (function (resolve, reject) {
+		childProcess.exec(cmd, {cwd: process.cwd()}, function(err, stdout, stderr) {
+			if (err) {
+				reject(err);
+			} else {
+				util.log(stdout, stderr);
+				resolve();
+			}
+		});
 	});
 }
 
-gulp.task('git-tag', function(cb) {
+gulp.task('git-tag', function() {
 	var tag = 'v' + getVersion();
 	util.log('Tagging as: ' + util.colors.cyan(tag));
-	exec('git add ./public/res-min', function(err) {
-		if(err) {
-			return cb(err);
-		}
-		exec('git commit -a -m "Prepare release"', function(err) {
-			if(err) {
-				return cb(err);
-			}
-			exec('git tag -a ' + tag + ' -m "Version ' + getVersion() + '"', function(err) {
-				if(err) {
-					return cb(err);
-				}
-				exec('npm publish', function(err) {
-					if(err) {
-						return cb(err);
-					}
-					exec('git push origin master --tags', cb);
-				});
-			});
+	return exec('git add ./public/res-min')
+		.then(function () {
+			return exec('git commit -a -m "Prepare release"');
+		})
+		.then(function () {
+			return exec('git tag -a ' + tag + ' -m "Version ' + getVersion() + '"');
+		})
+		.then(function () {
+			return exec('npm publish');
+		})
+		.then(function () {
+			return exec('git push origin master --tags');
 		});
-	});
 });
 
 function releaseTask(importance) {

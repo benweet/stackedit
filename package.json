@@ -13,10 +13,11 @@
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src",
-    "patch": "yarn run lint && npm-bump patch",
-    "minor": "yarn run lint && npm-bump minor",
-    "major": "yarn run lint && npm-bump major",
-    "tag": "gulp tag"
+    "preversion": "npm run lint",
+    "postversion": "git push origin master --tags && npm publish",
+    "patch": "npm version patch -m \"Tag v%s\"",
+    "minor": "npm version minor -m \"Tag v%s\"",
+    "major": "npm version major -m \"Tag v%s\""
   },
   "dependencies": {
     "bezier-easing": "^1.1.0",

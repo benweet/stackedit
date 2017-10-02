@@ -42,15 +42,24 @@ export default {
   methods: {
     settings() {
       return this.$store.dispatch('modal/open', 'settings')
-        .then(settings => this.$store.dispatch('data/setSettings', settings));
+        .then(
+          settings => this.$store.dispatch('data/setSettings', settings),
+          () => {}, // Cancel
+        );
     },
     templates() {
       return this.$store.dispatch('modal/open', 'templates')
-        .then(({ templates }) => this.$store.dispatch('data/setTemplates', templates));
+        .then(
+          ({ templates }) => this.$store.dispatch('data/setTemplates', templates),
+          () => {}, // Cancel
+        );
     },
     reset() {
       return this.$store.dispatch('modal/reset')
-        .then(() => localDbSvc.removeDb());
+        .then(
+          () => localDbSvc.removeDb(),
+          () => {}, // Cancel
+        );
     },
     about() {
       return this.$store.dispatch('modal/open', 'about');

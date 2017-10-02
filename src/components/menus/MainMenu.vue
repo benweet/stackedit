@@ -75,13 +75,17 @@ export default {
     }),
     signin() {
       return googleHelper.signin()
-        .then(() => syncSvc.requestSync());
+        .then(
+          () => syncSvc.requestSync(),
+          () => {}, // Cancel
+        );
     },
     importFile() {
       return this.$store.dispatch('modal/notImplemented');
     },
     fileProperties() {
-      return this.$store.dispatch('modal/open', 'fileProperties');
+      return this.$store.dispatch('modal/open', 'fileProperties')
+        .catch(() => {}); // Cancel
     },
   },
 };

@@ -161,55 +161,69 @@ export default {
       return this.$store.dispatch('modal/open', 'publishManagement');
     },
     addGoogleDriveAccount() {
-      return googleHelper.addDriveAccount();
+      return googleHelper.addDriveAccount()
+        .catch(() => {}); // Cancel
     },
     addDropboxAccount() {
       return this.$store.dispatch('modal/open', {
         type: 'dropboxAccount',
         onResolve: () => dropboxHelper.addAccount(!store.getters['data/localSettings'].dropboxRestrictedAccess),
-      });
+      })
+        .catch(() => {}); // Cancel
     },
     addGithubAccount() {
       return this.$store.dispatch('modal/open', {
         type: 'githubAccount',
         onResolve: () => githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess),
-      });
+      })
+        .catch(() => {}); // Cancel
     },
     addWordpressAccount() {
-      return wordpressHelper.addAccount();
+      return wordpressHelper.addAccount()
+        .catch(() => {}); // Cancel
     },
     addBloggerAccount() {
-      return googleHelper.addBloggerAccount();
+      return googleHelper.addBloggerAccount()
+        .catch(() => {}); // Cancel
     },
     addZendeskAccount() {
       return this.$store.dispatch('modal/open', {
         type: 'zendeskAccount',
         onResolve: ({ subdomain, clientId }) => zendeskHelper.addAccount(subdomain, clientId),
-      });
+      })
+        .catch(() => {}); // Cancel
     },
     publishGoogleDrive(token) {
-      return openPublishModal(token, 'googleDrivePublish');
+      return openPublishModal(token, 'googleDrivePublish')
+        .catch(() => {}); // Cancel
     },
     publishDropbox(token) {
-      return openPublishModal(token, 'dropboxPublish');
+      return openPublishModal(token, 'dropboxPublish')
+        .catch(() => {}); // Cancel
     },
     publishGithub(token) {
-      return openPublishModal(token, 'githubPublish');
+      return openPublishModal(token, 'githubPublish')
+        .catch(() => {}); // Cancel
     },
     publishGist(token) {
-      return openPublishModal(token, 'gistPublish');
+      return openPublishModal(token, 'gistPublish')
+        .catch(() => {}); // Cancel
     },
     publishWordpress(token) {
-      return openPublishModal(token, 'wordpressPublish');
+      return openPublishModal(token, 'wordpressPublish')
+        .catch(() => {}); // Cancel
     },
     publishBlogger(token) {
-      return openPublishModal(token, 'bloggerPublish');
+      return openPublishModal(token, 'bloggerPublish')
+        .catch(() => {}); // Cancel
     },
     publishBloggerPage(token) {
-      return openPublishModal(token, 'bloggerPagePublish');
+      return openPublishModal(token, 'bloggerPagePublish')
+        .catch(() => {}); // Cancel
     },
     publishZendesk(token) {
-      return openPublishModal(token, 'zendeskPublish');
+      return openPublishModal(token, 'zendeskPublish')
+        .catch(() => {}); // Cancel
     },
   },
 };

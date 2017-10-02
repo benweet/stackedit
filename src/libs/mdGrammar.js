@@ -231,12 +231,6 @@ module.exports = function (options) {
   }
 
   var rest = {}
-  rest.code = {
-    pattern: /(`+)[\s\S]*?\1/g,
-    inside: {
-      'cl cl-code': /`/
-    }
-  }
   if (options.maths) {
     rest['math block'] = {
       pattern: /\\\\\[[\s\S]*?\\\\\]/g,
@@ -276,6 +270,12 @@ module.exports = function (options) {
         'keyword': /\\(begin|end)/,
         rest: latex
       }
+    }
+  }
+  rest.code = {
+    pattern: /(`+)[\s\S]*?\1/g,
+    inside: {
+      'cl cl-code': /`/
     }
   }
   if (options.footnotes) {

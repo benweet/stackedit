@@ -29,10 +29,12 @@ export default {
   methods: {
     exportMarkdown() {
       const currentFile = this.$store.getters['file/current'];
-      return exportSvc.exportToDisk(currentFile.id, 'md');
+      return exportSvc.exportToDisk(currentFile.id, 'md')
+        .catch(() => {}); // Cancel
     },
     exportHtml() {
-      return this.$store.dispatch('modal/open', 'htmlExport');
+      return this.$store.dispatch('modal/open', 'htmlExport')
+        .catch(() => {}); // Cancel
     },
     exportPdf() {
       return this.$store.dispatch('modal/notImplemented');

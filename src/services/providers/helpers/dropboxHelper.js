@@ -1,4 +1,4 @@
-import utils from '../../utils';
+import networkSvc from '../../networkSvc';
 import store from '../../../store';
 
 let Dropbox;
@@ -10,7 +10,7 @@ const getAppKey = (fullAccess) => {
   return 'sw0hlixhr8q1xk0';
 };
 
-const request = (token, options, args) => utils.request({
+const request = (token, options, args) => networkSvc.request({
   ...options,
   headers: {
     ...options.headers || {},
@@ -23,7 +23,7 @@ const request = (token, options, args) => utils.request({
 
 export default {
   startOauth2(fullAccess, sub = null, silent = false) {
-    return utils.startOauth2(
+    return networkSvc.startOauth2(
       'https://www.dropbox.com/oauth2/authorize', {
         client_id: getAppKey(fullAccess),
         response_type: 'token',
@@ -54,7 +54,7 @@ export default {
     if (Dropbox) {
       return Promise.resolve();
     }
-    return utils.loadScript('https://www.dropbox.com/static/api/2/dropins.js')
+    return networkSvc.loadScript('https://www.dropbox.com/static/api/2/dropins.js')
       .then(() => {
         Dropbox = window.Dropbox;
       });

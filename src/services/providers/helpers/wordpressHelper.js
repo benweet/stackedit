@@ -1,10 +1,10 @@
-import utils from '../../utils';
+import networkSvc from '../../networkSvc';
 import store from '../../../store';
 
 const clientId = '23361';
 const tokenExpirationMargin = 5 * 60 * 1000; // 5 min (WordPress tokens expire after 2 weeks)
 
-const request = (token, options) => utils.request({
+const request = (token, options) => networkSvc.request({
   ...options,
   headers: {
     ...options.headers || {},
@@ -14,7 +14,7 @@ const request = (token, options) => utils.request({
 
 export default {
   startOauth2(sub = null, silent = false) {
-    return utils.startOauth2(
+    return networkSvc.startOauth2(
       'https://public-api.wordpress.com/oauth2/authorize', {
         client_id: clientId,
         response_type: 'token',

@@ -1,10 +1,10 @@
 <template>
-  <div v-if="ready" class="app" :class="{'app--loading': loading}">
+  <splash-screen v-if="!ready"></splash-screen>
+  <div v-else class="app" :class="{'app--loading': loading}">
     <layout></layout>
     <modal v-if="showModal"></modal>
     <notification></notification>
   </div>
-  <div v-else class="app__spash-screen"></div>
 </template>
 
 <script>
@@ -13,6 +13,7 @@ import { mapState } from 'vuex';
 import Layout from './Layout';
 import Modal from './Modal';
 import Notification from './Notification';
+import SplashScreen from './SplashScreen';
 
 // Global directives
 Vue.directive('focus', {
@@ -26,6 +27,7 @@ export default {
     Layout,
     Modal,
     Notification,
+    SplashScreen,
   },
   computed: {
     ...mapState([

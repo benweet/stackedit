@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <div class="layout__panel flex flex--row" :class="{'flex--end': styles.showSideBar && !styles.showExplorer}">
+    <div class="layout__panel flex flex--row" :class="{'flex--end': styles.showSideBar}">
       <div class="layout__panel layout__panel--explorer" v-show="styles.showExplorer" :style="{ width: constants.explorerWidth + 'px' }">
         <explorer></explorer>
       </div>

@@ -1,7 +1,7 @@
-import utils from '../../utils';
+import networkSvc from '../../networkSvc';
 import store from '../../../store';
 
-const request = (token, options) => utils.request({
+const request = (token, options) => networkSvc.request({
   ...options,
   headers: {
     ...options.headers || {},
@@ -11,7 +11,7 @@ const request = (token, options) => utils.request({
 
 export default {
   startOauth2(subdomain, clientId, sub = null, silent = false) {
-    return utils.startOauth2(
+    return networkSvc.startOauth2(
       `https://${subdomain}.zendesk.com/oauth/authorizations/new`, {
         client_id: clientId,
         response_type: 'token',

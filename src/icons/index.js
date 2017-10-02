@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import Provider from './Provider';
 import FormatBold from './FormatBold';
 import FormatItalic from './FormatItalic';
 import FormatQuoteClose from './FormatQuoteClose';
@@ -40,9 +41,8 @@ import OpenInNew from './OpenInNew';
 import Information from './Information';
 import Alert from './Alert';
 import SignalOff from './SignalOff';
-// Providers
-import Provider from './Provider';
 
+Vue.component('iconProvider', Provider);
 Vue.component('iconFormatBold', FormatBold);
 Vue.component('iconFormatItalic', FormatItalic);
 Vue.component('iconFormatQuoteClose', FormatQuoteClose);
@@ -84,5 +84,3 @@ Vue.component('iconOpenInNew', OpenInNew);
 Vue.component('iconInformation', Information);
 Vue.component('iconAlert', Alert);
 Vue.component('iconSignalOff', SignalOff);
-// Providers
-Vue.component('iconProvider', Provider);

@@ -3,6 +3,7 @@
     <file-properties-modal v-if="config.type === 'fileProperties'"></file-properties-modal>
     <settings-modal v-else-if="config.type === 'settings'"></settings-modal>
     <templates-modal v-else-if="config.type === 'templates'"></templates-modal>
+    <about-modal v-else-if="config.type === 'about'"></about-modal>
     <html-export-modal v-else-if="config.type === 'htmlExport'"></html-export-modal>
     <link-modal v-else-if="config.type === 'link'"></link-modal>
     <image-modal v-else-if="config.type === 'image'"></image-modal>
@@ -42,6 +43,7 @@ import editorEngineSvc from '../services/editorEngineSvc';
 import FilePropertiesModal from './modals/FilePropertiesModal';
 import SettingsModal from './modals/SettingsModal';
 import TemplatesModal from './modals/TemplatesModal';
+import AboutModal from './modals/AboutModal';
 import HtmlExportModal from './modals/HtmlExportModal';
 import LinkModal from './modals/LinkModal';
 import ImageModal from './modals/ImageModal';
@@ -69,6 +71,7 @@ export default {
     FilePropertiesModal,
     SettingsModal,
     TemplatesModal,
+    AboutModal,
     HtmlExportModal,
     LinkModal,
     ImageModal,

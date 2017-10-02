@@ -22,13 +22,13 @@
         <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in syncLocations" :key="location.id" :href="location.url" target="_blank">
           <icon-provider :provider-id="location.providerId"></icon-provider>
         </a>
-        <button class="navigation-bar__button navigation-bar__button--sync button" v-if="isSyncPossible" :disabled="isSyncRequested || offline" @click="requestSync">
+        <button class="navigation-bar__button navigation-bar__button--sync button" :disabled="!isSyncPossible || isSyncRequested || offline" @click="requestSync">
           <icon-sync></icon-sync>
         </button>
         <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in publishLocations" :key="location.id" :href="location.url" target="_blank">
           <icon-provider :provider-id="location.providerId"></icon-provider>
         </a>
-        <button class="navigation-bar__button navigation-bar__button--publish button" v-if="publishLocations.length" :disabled="isPublishRequested || offline" @click="requestPublish">
+        <button class="navigation-bar__button navigation-bar__button--publish button" :disabled="!publishLocations.length || isPublishRequested || offline" @click="requestPublish">
           <icon-upload></icon-upload>
         </button>
       </div>
@@ -148,12 +148,12 @@ export default {
       'toggleSideBar',
     ]),
     requestSync() {
-      if (!this.isSyncRequested) {
+      if (this.isSyncPossible && !this.isSyncRequested) {
         syncSvc.requestSync();
       }
     },
     requestPublish() {
-      if (!this.isPublishRequested) {
+      if (this.publishLocations.length && !this.isPublishRequested) {
         publishSvc.requestPublish();
       }
     },

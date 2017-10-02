@@ -6,7 +6,7 @@ import './icons/';
 import App from './components/App';
 import store from './store';
 
-if (process.env.NODE_ENV === 'production') {
+if (NODE_ENV === 'production') {
   OfflinePluginRuntime.install();
 }
 

@@ -90,7 +90,7 @@ export default {
   height: 100%;
 
   hr {
-    margin: 10px;
+    margin: 10px 15px;
     display: none;
   }
 

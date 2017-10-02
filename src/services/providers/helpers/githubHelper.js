@@ -1,4 +1,5 @@
 import utils from '../../utils';
+import networkSvc from '../../networkSvc';
 import store from '../../../store';
 
 let clientId = 'cbf0cf25cfd026be23e1';
@@ -7,7 +8,7 @@ if (utils.origin === 'https://stackedit.io') {
 }
 const getScopes = token => [token.repoFullAccess ? 'repo' : 'public_repo', 'gist'];
 
-const request = (token, options) => utils.request({
+const request = (token, options) => networkSvc.request({
   ...options,
   headers: {
     ...options.headers || {},
@@ -21,13 +22,13 @@ const request = (token, options) => utils.request({
 
 export default {
   startOauth2(scopes, sub = null, silent = false) {
-    return utils.startOauth2(
+    return networkSvc.startOauth2(
       'https://github.com/login/oauth/authorize', {
         client_id: clientId,
         scope: scopes.join(' '),
       }, silent)
       // Exchange code with token
-      .then(data => utils.request({
+      .then(data => networkSvc.request({
         method: 'GET',
         url: 'oauth2/githubToken',
         params: {
@@ -37,7 +38,7 @@ export default {
       })
         .then(res => res.body))
       // Call the user info endpoint
-      .then(accessToken => utils.request({
+      .then(accessToken => networkSvc.request({
         method: 'GET',
         url: 'https://api.github.com/user',
         params: {

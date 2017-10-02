@@ -10,6 +10,8 @@
 </template>
 
 <style lang="scss">
+@import '../common/variables.scss';
+
 .menu-entry {
   text-align: left;
   padding: 10px;
@@ -29,5 +31,10 @@
   width: 20px;
   margin-right: 12px;
   flex: none;
+}
+
+.menu-entry__icon--image {
+  border-radius: $border-radius-base;
+  overflow: hidden;
 }
 </style>

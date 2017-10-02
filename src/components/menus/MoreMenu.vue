@@ -16,13 +16,16 @@
       <span>Sign out and clean local data.</span>
     </menu-entry>
     <hr>
+    <menu-entry @click.native="about">
+      <icon-help-circle slot="icon"></icon-help-circle>
+      <span>About StackEdit</span>
+    </menu-entry>
     <a href="editor" target="_blank" class="menu-entry button flex flex--row flex--align-center">
       <div class="menu-entry__icon flex flex--column flex--center">
-        <icon-alert></icon-alert>
+        <icon-open-in-new></icon-open-in-new>
       </div>
       <div class="flex flex--column">
-        <div>StackEdit v4</div>
-        <span>Deprecated.</span>
+        <span>Go back to StackEdit 4</span>
       </div>
     </a>
   </div>
@@ -48,6 +51,9 @@ export default {
     reset() {
       return this.$store.dispatch('modal/reset')
         .then(() => localDbSvc.removeDb());
+    },
+    about() {
+      return this.$store.dispatch('modal/open', 'about');
     },
   },
 };

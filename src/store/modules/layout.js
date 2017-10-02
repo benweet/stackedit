@@ -16,7 +16,7 @@ const constants = {
   explorerWidth: 250,
   sideBarWidth: 280,
   navigationBarHeight: 44,
-  buttonBarWidth: 30,
+  buttonBarWidth: 26,
   statusBarHeight: 20,
 };
 
@@ -99,15 +99,13 @@ function computeStyles(state, localSettings, getters, styles = {
   if (styles.showEditor) {
     const syncLocations = getters['syncLocation/current'];
     const publishLocations = getters['publishLocation/current'];
-    const isSyncPossible = getters['data/loginToken'] || syncLocations.length;
     styles.titleMaxWidth = styles.innerWidth -
       navigationBarEditButtonsWidth -
       navigationBarLeftButtonWidth -
       navigationBarRightButtonWidth -
       navigationBarSpinnerWidth -
       (navigationBarLocationWidth * (syncLocations.length + publishLocations.length)) -
-      (isSyncPossible ? navigationBarSyncPublishButtonsWidth : 0) -
-      (publishLocations.length ? navigationBarSyncPublishButtonsWidth : 0) -
+      (navigationBarSyncPublishButtonsWidth * 2) -
       navigationBarTitleMargin;
     if (styles.titleMaxWidth + navigationBarEditButtonsWidth < minTitleMaxWidth) {
       styles.hideLocations = true;

@@ -5,6 +5,12 @@
       <div>Sign in with Google</div>
       <span>Back up and sync all your files, folders and settings.</span>
     </menu-entry>
+    <div v-else class="menu-entry flex flex--row flex--align-center">
+      <div class="menu-entry__icon menu-entry__icon--image">
+        <user-image :user-id="loginToken.sub"></user-image>
+      </div>
+      <span>Signed in as <b>{{loginToken.name}}</b>.</span>
+    </div>
     <hr>
     <menu-entry @click.native="setPanel('sync')">
       <icon-sync slot="icon"></icon-sync>
@@ -49,12 +55,14 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import MenuEntry from './MenuEntry';
+import UserImage from '../UserImage';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import syncSvc from '../../services/syncSvc';
 
 export default {
   components: {
     MenuEntry,
+    UserImage,
   },
   computed: {
     ...mapGetters('data', [

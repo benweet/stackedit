@@ -2,8 +2,6 @@
 fontSizeFactor: 1
 # Adjust maximum text width in editor and preview
 maxWidthFactor: 1
-# Synchronize editor and preview scrollbars
-scrollSync: true
 
 # Editor settings
 editor:
@@ -66,14 +64,14 @@ shortcuts:
   - '<== '
   - '⇐ '
 
-# Default content for newly created files
+# Default content for new files
 newFileContent: |
 
 
 
   > Written with [StackEdit](https://stackedit.io/).
 
-# Default properties for newly created files
+# Default properties for new files
 newFileProperties: |
 #  extensions:
 #    markdown:

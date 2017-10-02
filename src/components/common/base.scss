@@ -77,7 +77,6 @@ a {
 }
 
 code,
-kbd,
 pre,
 samp {
   font-family: $font-family-monospace;
@@ -140,13 +139,14 @@ td {
 }
 
 kbd {
+  font-family: $font-family-main;
   background-color: #fff;
   border: 1px solid rgba(63, 63, 63, 0.25);
   border-radius: 3px;
   box-shadow: 0 1px 0 rgba(63, 63, 63, 0.25);
   color: #333;
   display: inline-block;
-  font-size: 0.7em;
+  font-size: 0.8em;
   margin: 0 0.1em;
   padding: 0.1em 0.6em;
   white-space: nowrap;
@@ -157,6 +157,15 @@ abbr {
     border-bottom: 1px dotted #777;
     cursor: help;
   }
+}
+
+img {
+  max-width: 100%;
+}
+
+.table-wrapper {
+  max-width: 100%;
+  overflow: auto;
 }
 
 .footnote {

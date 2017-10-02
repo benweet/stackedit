@@ -11,16 +11,20 @@ export default {
     },
   },
   actions: {
-    info({ state, commit }, info) {
-      const item = {
+    showItem({ state, commit }, item) {
+      if (state.items.every(other => other.type !== item.type || other.content !== item.content)) {
+        commit('setItems', [...state.items, item]);
+        setTimeout(() =>
+          commit('setItems', state.items.filter(otherItem => otherItem !== item)), itemTimeout);
+      }
+    },
+    info({ dispatch }, info) {
+      dispatch('showItem', {
         type: 'info',
         content: info,
-      };
-      commit('setItems', [item, ...state.items]);
-      setTimeout(() =>
-        commit('setItems', state.items.filter(otherItem => otherItem !== item)), itemTimeout);
+      });
     },
-    error({ state, commit, rootState }, error) {
+    error({ dispatch, rootState }, error) {
       const item = {
         type: 'error',
       };
@@ -41,9 +45,7 @@ export default {
       if (!item.content || item.content === '[object Object]') {
         item.content = 'Unknown error.';
       }
-      commit('setItems', [item, ...state.items]);
-      setTimeout(() =>
-        commit('setItems', state.items.filter(otherItem => otherItem !== item)), itemTimeout);
+      dispatch('showItem', item);
     },
   },
 };

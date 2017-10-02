@@ -11,7 +11,7 @@
       </div>
       <div class="form-entry">
         <label class="form-entry__label">YAML</label>
-        <div class="form-entry__field">
+        <div class="form-entry__field form-entry__field--code-editor">
           <code-editor v-if="tab === 'custom'" lang="yaml" :value="customSettings" key="custom-settings" @changed="setCustomSettings"></code-editor>
           <code-editor v-else lang="yaml" :value="defaultSettings" disabled="true" key="default-settings"></code-editor>
         </div>

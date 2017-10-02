@@ -1,6 +1,6 @@
 <template>
   <splash-screen v-if="!ready"></splash-screen>
-  <div v-else class="app" :class="{'app--loading': loading}">
+  <div v-else class="app">
     <layout></layout>
     <modal v-if="showModal"></modal>
     <notification></notification>
@@ -33,9 +33,6 @@ export default {
     ...mapState([
       'ready',
     ]),
-    loading() {
-      return !this.$store.getters['content/current'].id;
-    },
     showModal() {
       return !!this.$store.getters['modal/config'];
     },

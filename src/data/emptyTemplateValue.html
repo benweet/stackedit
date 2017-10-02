@@ -1,6 +1,7 @@
 <!-- Specify your Handlebars template here.
 
 The following JavaScript context will be passed to the template:
+
 {
   files: [{
     name: 'The filename',
@@ -18,8 +19,10 @@ The following JavaScript context will be passed to the template:
   }]
 }
 
-You can use Handlebars built-in helpers and some custom StackEdit helpers:
+You can use Handlebars built-in helpers and the custom StackEdit ones:
+
 {{#tocToHtml files.0.content.toc}}{{/tocToHtml}} will produce a clickable TOC.
+
 {{#tocToHtml files.0.content.toc 3}}{{/tocToHtml}} will limit the TOC depth to 3.
 -->
 

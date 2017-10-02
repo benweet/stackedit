@@ -68,6 +68,7 @@ module.actions.toggleSideBar = ({ getters, dispatch }, value) => {
   });
 };
 module.actions.toggleExplorer = localSettingsToggler('showExplorer');
+module.actions.toggleScrollSync = localSettingsToggler('scrollSync');
 module.actions.toggleFocusMode = localSettingsToggler('focusMode');
 module.actions.setSideBarPanel = ({ dispatch }, value) => dispatch('patchLocalSettings', {
   sideBarPanel: value === undefined ? 'menu' : value,

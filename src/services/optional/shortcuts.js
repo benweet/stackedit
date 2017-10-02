@@ -5,7 +5,8 @@ import editorEngineSvc from '../../services/editorEngineSvc';
 import syncSvc from '../../services/syncSvc';
 
 // Skip shortcuts if modal is open or editor is hidden
-Mousetrap.prototype.stopCallback = () => store.getters['modal/config'] || !store.getters['layout/styles'].showEditor;
+Mousetrap.prototype.stopCallback = () => store.getters['modal/config'] ||
+  !store.getters['content/current'].id || !store.getters['layout/styles'].showEditor;
 
 const pagedownHandler = name => () => {
   editorSvc.pagedownEditor.uiManager.doClick(name);

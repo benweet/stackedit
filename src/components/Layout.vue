@@ -122,17 +122,4 @@ export default {
 .layout__panel--side-bar {
   background-color: #dadada;
 }
-
-.layout__panel--button-bar,
-.layout__panel--status-bar,
-.layout__panel--side-bar,
-.layout__panel--explorer,
-.layout__panel--navigation-bar {
-  .app--loading & > * {
-    opacity: 0.5;
-
-    /* Hack to disable mouse focus */
-    pointer-events: none;
-  }
-}
 </style>

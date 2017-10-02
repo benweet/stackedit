@@ -93,6 +93,9 @@ var webpackConfig = merge(baseWebpackConfig, {
       }
     ]),
     new OfflinePlugin({
+      ServiceWorker: {
+        events: true
+      },
       excludes: ['**/.*', '**/*.map', '**/index.html', '**/static/oauth2/callback.html'],
       externals: ['/app', '/oauth2/callback']
     })

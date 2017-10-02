@@ -5,6 +5,7 @@ export default () => ({
   showStatusBar: true,
   showSideBar: false,
   showExplorer: false,
+  scrollSync: true,
   focusMode: false,
   sideBarPanel: 'menu',
   htmlExportTemplate: 'styledHtml',

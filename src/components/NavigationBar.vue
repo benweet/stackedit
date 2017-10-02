@@ -2,7 +2,7 @@
   <div class="navigation-bar" :class="{'navigation-bar--editor': styles.showEditor}">
     <div class="navigation-bar__inner navigation-bar__inner--left navigation-bar__inner--button">
       <button class="navigation-bar__button button" @click="toggleExplorer()">
-        <icon-folder-open></icon-folder-open>
+        <icon-folder></icon-folder>
       </button>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--button">
@@ -158,7 +158,11 @@ export default {
       }
     },
     pagedownClick(name) {
-      editorSvc.pagedownEditor.uiManager.doClick(name);
+      if (this.$store.getters['content/current'].id &&
+        this.$store.getters['layout/styles'].showEditor
+      ) {
+        editorSvc.pagedownEditor.uiManager.doClick(name);
+      }
     },
     editTitle(toggle) {
       this.titleFocus = toggle;

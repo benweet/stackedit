@@ -149,7 +149,7 @@ export default {
 
         xhr.onload = () => {
           if (offlineCheck) {
-            store.commit('setOffline', false);
+            isConnectionDown = false;
           }
           clearTimeout(timeoutId);
           const result = {
@@ -174,6 +174,7 @@ export default {
         xhr.onerror = () => {
           clearTimeout(timeoutId);
           if (offlineCheck) {
+            isConnectionDown = true;
             store.commit('setOffline', true);
             reject('You are offline.');
           } else {
@@ -184,6 +185,7 @@ export default {
         timeoutId = setTimeout(() => {
           xhr.abort();
           if (offlineCheck) {
+            isConnectionDown = true;
             store.commit('setOffline', true);
             reject('You are offline.');
           } else {

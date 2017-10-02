@@ -15,6 +15,9 @@
       <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.focusMode }" @click="toggleFocusMode()">
         <icon-target></icon-target>
       </div>
+      <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.scrollSync }" @click="toggleScrollSync()">
+        <icon-scroll-sync></icon-scroll-sync>
+      </div>
       <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.showStatusBar }" @click="toggleStatusBar()">
         <icon-status-bar></icon-status-bar>
       </div>
@@ -35,6 +38,7 @@ export default {
     'toggleSidePreview',
     'toggleStatusBar',
     'toggleFocusMode',
+    'toggleScrollSync',
   ]),
 };
 </script>

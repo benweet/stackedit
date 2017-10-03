@@ -6,3 +6,4 @@ Thumbs.db
 .DS_Store
 stackedit.iml
 public/res/bower-libs
+.history

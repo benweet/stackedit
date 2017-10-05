@@ -31,8 +31,8 @@ const methods = {
     return true;
   },
   expand(param1, param2) {
-    const text = param1 && `${param1}`;
-    const replacement = param2 && `${param2}`;
+    const text = `${param1 || ''}`;
+    const replacement = `${param2 || ''}`;
     if (text && replacement) {
       setTimeout(() => {
         const selectionMgr = editorEngineSvc.clEditor.selectionMgr;
@@ -58,15 +58,20 @@ store.watch(
     Mousetrap.reset();
 
     const shortcuts = computedSettings.shortcuts;
-    shortcuts.forEach((shortcut) => {
-      if (shortcut.keys) {
-        const method = shortcut.method || shortcut;
+    Object.keys(shortcuts).forEach((key) => {
+      const shortcut = shortcuts[key];
+      if (shortcut) {
+        const method = `${shortcut.method || shortcut}`;
         let params = shortcut.params || [];
         if (!Array.isArray(params)) {
           params = [params];
         }
         if (Object.prototype.hasOwnProperty.call(methods, method)) {
-          Mousetrap.bind(`${shortcut.keys}`, () => !methods[method].apply(null, params));
+          try {
+            Mousetrap.bind(`${key}`, () => !methods[method].apply(null, params));
+          } catch (e) {
+            // Ignore
+          }
         }
       }
     });

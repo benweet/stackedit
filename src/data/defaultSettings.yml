@@ -12,57 +12,27 @@ editor:
 
 # Keyboard shortcuts (see https://craig.is/killing/mice)
 shortcuts:
--
-  keys: mod+s
-  method: sync
--
-  keys: mod+shift+b
-  method: bold
--
-  keys: mod+shift+i
-  method: italic
--
-  keys: mod+shift+l
-  method: link
--
-  keys: mod+shift+l
-  method: link
--
-  keys: mod+shift+q
-  method: quote
--
-  keys: mod+shift+k
-  method: code
--
-  keys: mod+shift+g
-  method: image
--
-  keys: mod+shift+o
-  method: olist
--
-  keys: mod+shift+o
-  method: olist
--
-  keys: mod+shift+u
-  method: ulist
--
-  keys: mod+shift+h
-  method: heading
--
-  keys: mod+shift+r
-  method: hr
--
-  keys: = = > space
-  method: expand
-  params:
-  - '==> '
-  - '⇒ '
--
-  keys: < = = space
-  method: expand
-  params:
-  - '<== '
-  - '⇐ '
+  mod+s: sync
+  mod+shift+b: bold
+  mod+shift+i: italic
+  mod+shift+l: link
+  mod+shift+q: quote
+  mod+shift+k: code
+  mod+shift+g: image
+  mod+shift+o: olist
+  mod+shift+u: ulist
+  mod+shift+h: heading
+  mod+shift+r: hr
+  '= = > space':
+    method: expand
+    params:
+    - '==> '
+    - '⇒ '
+  '< = = space':
+    method: expand
+    params:
+    - '<== '
+    - '⇐ '
 
 # Default content for new files
 newFileContent: |

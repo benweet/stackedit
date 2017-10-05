@@ -88,7 +88,11 @@ module.getters.computedSettings = (state, getters) => {
       return opt;
     }
     Object.keys(obj).forEach((key) => {
-      obj[key] = override(obj[key], opt[key]);
+      if (key === 'shortcuts') {
+        obj[key] = Object.assign(obj[key], opt[key]);
+      } else {
+        obj[key] = override(obj[key], opt[key]);
+      }
     });
     return obj;
   };

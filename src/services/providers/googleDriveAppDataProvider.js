@@ -84,10 +84,10 @@ export default providerRegistry.register({
       });
   },
   uploadContent(token, content, syncLocation, ifNotTooLate) {
-    return this.uploadData(token, undefined, content, `${syncLocation.fileId}/content`, ifNotTooLate)
+    return this.uploadData(token, content, `${syncLocation.fileId}/content`, ifNotTooLate)
       .then(() => syncLocation);
   },
-  uploadData(token, sub, item, dataId, ifNotTooLate) {
+  uploadData(token, item, dataId, ifNotTooLate) {
     const syncData = store.getters['data/syncDataByItemId'][dataId];
     if (syncData && syncData.hash === item.hash) {
       return Promise.resolve();
@@ -98,7 +98,6 @@ export default providerRegistry.register({
           id: item.id,
           type: item.type,
           hash: item.hash,
-          sub,
         }),
         ['appDataFolder'],
         JSON.stringify(item),

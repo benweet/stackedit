@@ -24,7 +24,7 @@
           <a href="javascript:void(0)" @click="configureTemplates">Configure templates</a>
         </div>
       </form-entry>
-      <div class="modal__tip">
+      <div class="modal__info">
         <b>ProTip:</b> You can provide a value for <code>title</code> in the <a href="javascript:void(0)" @click="openFileProperties">file properties</a>.
       </div>
       <div class="modal__button-bar">

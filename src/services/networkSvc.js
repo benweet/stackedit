@@ -264,5 +264,8 @@ function checkOffline() {
 }
 
 utils.setInterval(checkOffline, 1000);
-window.addEventListener('online', checkOffline);
+window.addEventListener('online', () => {
+  isConnectionDown = false;
+  checkOffline();
+});
 window.addEventListener('offline', checkOffline);

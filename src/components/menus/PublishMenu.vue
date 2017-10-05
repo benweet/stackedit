@@ -1,11 +1,11 @@
 <template>
   <div class="side-bar__panel side-bar__panel--menu">
-    <div class="side-bar__warning" v-if="publishLocations.length">
+    <div class="side-bar__info" v-if="publishLocations.length">
       <p><b>{{currentFileName}}</b> is already published.</p>
-      <menu-entry v-if="!offline" @click.native="requestPublish">
+      <menu-entry @click.native="requestPublish">
         <icon-upload slot="icon"></icon-upload>
         <div>Publish now</div>
-        <span>Upload current file to its publication locations.</span>
+        <span>Update current file publications.</span>
       </menu-entry>
       <menu-entry @click.native="managePublish">
         <icon-view-list slot="icon"></icon-view-list>
@@ -120,9 +120,6 @@ export default {
     MenuEntry,
   },
   computed: {
-    ...mapState([
-      'offline',
-    ]),
     ...mapState('queue', [
       'isPublishRequested',
     ]),

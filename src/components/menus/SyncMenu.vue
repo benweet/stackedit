@@ -1,11 +1,11 @@
 <template>
   <div class="side-bar__panel side-bar__panel--menu">
-    <div class="side-bar__warning" v-if="syncLocations.length">
+    <div class="side-bar__info" v-if="syncLocations.length">
       <p><b>{{currentFileName}}</b> is already synchronized.</p>
-      <menu-entry v-if="!offline && isSyncPossible" @click.native="requestSync">
+      <menu-entry v-if="isSyncPossible" @click.native="requestSync">
         <icon-sync slot="icon"></icon-sync>
         <div>Synchronize now</div>
-        <span>Download, merge and upload file changes.</span>
+        <span>Download / upload file changes.</span>
       </menu-entry>
       <menu-entry @click.native="manageSync">
         <icon-view-list slot="icon"></icon-view-list>
@@ -13,13 +13,11 @@
         <span>Manage current file synchronized locations.</span>
       </menu-entry>
     </div>
-    <div v-else-if="!offline && isSyncPossible">
-      <menu-entry @click.native="requestSync">
-        <icon-sync slot="icon"></icon-sync>
-        <div>Synchronize now</div>
-        <span>Download, merge and upload file changes.</span>
-      </menu-entry>
-    </div>
+    <menu-entry v-else-if="isSyncPossible" @click.native="requestSync">
+      <icon-sync slot="icon"></icon-sync>
+      <div>Synchronize now</div>
+      <span>Download / upload file changes.</span>
+    </menu-entry>
     <hr>
     <div v-for="token in googleDriveTokens" :key="token.sub">
       <menu-entry @click.native="openGoogleDrive(token)">
@@ -99,9 +97,6 @@ export default {
     MenuEntry,
   },
   computed: {
-    ...mapState([
-      'offline',
-    ]),
     ...mapState('queue', [
       'isSyncRequested',
     ]),

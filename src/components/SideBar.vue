@@ -143,11 +143,10 @@ export default {
   }
 }
 
-.side-bar__warning {
+.side-bar__info {
   padding: 10px;
   margin: 0 -10px;
-  color: darken($error-color, 10);
-  background-color: transparentize($error-color, 0.925);
+  background-color: $info-bg;
 
   p {
     margin: 10px;

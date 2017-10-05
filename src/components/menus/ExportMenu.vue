@@ -3,7 +3,7 @@
     <menu-entry @click.native="exportMarkdown">
       <icon-download slot="icon"></icon-download>
       <div>Export as Markdown</div>
-      <span>Save file as plain text.</span>
+      <span>Save plain text file.</span>
     </menu-entry>
     <menu-entry @click.native="exportHtml">
       <icon-download slot="icon"></icon-download>

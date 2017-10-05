@@ -60,6 +60,10 @@ export default {
       resolveText: 'Yes, delete',
       rejectText: 'No',
     }),
+    trashDeletion: ({ dispatch }) => dispatch('open', {
+      content: '<p>Files in the trash are automatically deleted after 7 days of inactivity.</p>',
+      resolveText: 'Ok',
+    }),
     reset: ({ dispatch }) => dispatch('open', {
       content: '<p>This will clean your local files and settings. Are you sure?</p>',
       resolveText: 'Yes, clean',

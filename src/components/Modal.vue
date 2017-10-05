@@ -209,8 +209,8 @@ export default {
   color: #de2c00;
 }
 
-.modal__tip {
-  background-color: transparentize(#ffd600, 0.85);
+.modal__info {
+  background-color: $info-bg;
   border-radius: $border-radius-base;
   margin: 1.2em 0;
   padding: 0.75em 1.25em;

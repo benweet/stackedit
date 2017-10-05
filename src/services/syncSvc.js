@@ -54,37 +54,33 @@ function cleanSyncedContent(syncedContent) {
 }
 
 function applyChanges(changes) {
-  const token = mainProvider.getToken();
   const storeItemMap = { ...store.getters.allItemMap };
   const syncData = { ...store.getters['data/syncData'] };
   let syncDataChanged = false;
 
   changes.forEach((change) => {
-    // Ignore items that belong to another user (like settings)
-    if (!change.item || !change.item.sub || change.item.sub === token.sub) {
-      const existingSyncData = syncData[change.fileId];
-      const existingItem = existingSyncData && storeItemMap[existingSyncData.itemId];
-      if (change.removed && existingSyncData) {
-        if (existingItem) {
-          // Remove object from the store
-          store.commit(`${existingItem.type}/deleteItem`, existingItem.id);
-          delete storeItemMap[existingItem.id];
-        }
-        delete syncData[change.fileId];
-        syncDataChanged = true;
-      } else if (!change.removed && change.item && change.item.hash) {
-        if (!existingSyncData || (existingSyncData.hash !== change.item.hash && (
-          !existingItem || existingItem.hash !== change.item.hash
-        ))) {
-          // Put object in the store
-          if (change.item.type !== 'content') { // Merge contents later
-            store.commit(`${change.item.type}/setItem`, change.item);
-            storeItemMap[change.item.id] = change.item;
-          }
-        }
-        syncData[change.fileId] = change.syncData;
-        syncDataChanged = true;
+    const existingSyncData = syncData[change.fileId];
+    const existingItem = existingSyncData && storeItemMap[existingSyncData.itemId];
+    if (change.removed && existingSyncData) {
+      if (existingItem) {
+        // Remove object from the store
+        store.commit(`${existingItem.type}/deleteItem`, existingItem.id);
+        delete storeItemMap[existingItem.id];
       }
+      delete syncData[change.fileId];
+      syncDataChanged = true;
+    } else if (!change.removed && change.item && change.item.hash) {
+      if (!existingSyncData || (existingSyncData.hash !== change.item.hash && (
+        !existingItem || existingItem.hash !== change.item.hash
+      ))) {
+        // Put object in the store
+        if (change.item.type !== 'content') { // Merge contents later
+          store.commit(`${change.item.type}/setItem`, change.item);
+          storeItemMap[change.item.id] = change.item;
+        }
+      }
+      syncData[change.fileId] = change.syncData;
+      syncDataChanged = true;
     }
   });
 
@@ -374,7 +370,6 @@ function syncDataItem(dataId) {
           }
           return mainProvider.uploadData(
             token,
-            dataId === 'settings' ? token.sub : undefined,
             mergedItem,
             dataId,
           );

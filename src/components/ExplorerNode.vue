@@ -129,12 +129,11 @@ export default {
       this.$store.commit('explorer/setEditingId', null);
     },
     setDragSourceId(evt) {
-      const id = this.node.item.id;
-      if (id === 'fake') {
+      if (this.node.noDrag) {
         evt.preventDefault();
         return;
       }
-      this.$store.commit('explorer/setDragSourceId', id);
+      this.$store.commit('explorer/setDragSourceId', this.node.item.id);
     },
     onDrop() {
       const sourceNode = this.$store.getters['explorer/dragSourceNode'];

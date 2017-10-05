@@ -46,7 +46,10 @@ export default {
       'toggleExplorer',
     ]),
     newItem(isFolder) {
-      const parentId = this.$store.getters['explorer/selectedNodeFolder'].item.id;
+      let parentId = this.$store.getters['explorer/selectedNodeFolder'].item.id;
+      if (parentId === 'trash') {
+        parentId = undefined;
+      }
       this.$store.dispatch('explorer/openNode', parentId);
       this.$store.commit('explorer/setNewItem', {
         type: isFolder ? 'folder' : 'file',
@@ -55,11 +58,17 @@ export default {
     },
     editItem() {
       const selectedNode = this.$store.getters['explorer/selectedNode'];
-      this.$store.commit('explorer/setEditingId', selectedNode.item.id);
+      if (selectedNode.item.id !== 'trash') {
+        this.$store.commit('explorer/setEditingId', selectedNode.item.id);
+      }
     },
     deleteItem() {
       const selectedNode = this.$store.getters['explorer/selectedNode'];
       if (!selectedNode.isNil) {
+        if (selectedNode.item.id === 'trash' || selectedNode.item.parentId === 'trash') {
+          this.$store.dispatch('modal/trashDeletion');
+          return;
+        }
         this.$store.dispatch(selectedNode.isFolder
           ? 'modal/folderDeletion'
           : 'modal/fileDeletion',
@@ -67,16 +76,22 @@ export default {
           .then(() => {
             if (selectedNode === this.$store.getters['explorer/selectedNode']) {
               if (selectedNode.isFolder) {
-                const recursiveDelete = (folderNode) => {
-                  folderNode.folders.forEach(recursiveDelete);
+                const recursiveMoveToTrash = (folderNode) => {
+                  folderNode.folders.forEach(recursiveMoveToTrash);
                   folderNode.files.forEach((fileNode) => {
-                    this.$store.commit('file/deleteItem', fileNode.item.id);
+                    this.$store.commit('file/patchItem', {
+                      id: fileNode.item.id,
+                      parentId: 'trash',
+                    });
                   });
                   this.$store.commit('folder/deleteItem', folderNode.item.id);
                 };
-                recursiveDelete(selectedNode);
+                recursiveMoveToTrash(selectedNode);
               } else {
-                this.$store.commit('file/deleteItem', selectedNode.item.id);
+                this.$store.commit('file/patchItem', {
+                  id: selectedNode.item.id,
+                  parentId: 'trash',
+                });
               }
             }
           });

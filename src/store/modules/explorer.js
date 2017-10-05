@@ -42,6 +42,7 @@ const nilFileNode = new Node(emptyFile());
 nilFileNode.isNil = true;
 const fakeFileNode = new Node(emptyFile());
 fakeFileNode.item.id = 'fake';
+fakeFileNode.noDrag = true;
 
 function getParent(node, getters) {
   if (node.isNil) {
@@ -68,7 +69,13 @@ export default {
   },
   getters: {
     nodeStructure: (state, getters, rootState, rootGetters) => {
-      const nodeMap = {};
+      const trashFolderNode = new Node(emptyFolder(), [], true);
+      trashFolderNode.item.id = 'trash';
+      trashFolderNode.item.name = 'Trash';
+      trashFolderNode.noDrag = true;
+      const nodeMap = {
+        trash: trashFolderNode,
+      };
       rootGetters['folder/items'].forEach((item) => {
         nodeMap[item.id] = new Node(item, [], true);
       });
@@ -84,6 +91,9 @@ export default {
         const node = nodeMap[id];
         let parentNode = nodeMap[node.item.parentId];
         if (!parentNode || !parentNode.isFolder) {
+          if (id === 'trash') {
+            return;
+          }
           parentNode = rootNode;
         }
         if (node.isFolder) {
@@ -93,6 +103,9 @@ export default {
         }
       });
       rootNode.sortChildren();
+      if (trashFolderNode.files.length) {
+        rootNode.folders.unshift(trashFolderNode);
+      }
       // Add a fake file at the end of the root folder to always allow drag and drop into it.
       rootNode.files.push(fakeFileNode);
       return {

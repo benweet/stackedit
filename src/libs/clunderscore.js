@@ -59,6 +59,10 @@ liveCollectionProperties.cl_map = function (cb) {
     return slice.call(this).cl_map(cb)
 }
 
+liveCollectionProperties.cl_filter = function (cb) {
+    return slice.call(this).cl_filter(cb)
+}
+
 liveCollectionProperties.cl_reduce = function (cb, memo) {
     return slice.call(this).cl_reduce(cb, memo)
 }

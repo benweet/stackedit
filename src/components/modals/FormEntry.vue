@@ -1,5 +1,5 @@
 <template>
-  <div class="form-entry">
+  <div class="form-entry" :error="error">
     <label class="form-entry__label" :for="uid">{{label}}</label>
     <div class="form-entry__field">
       <slot name="field"></slot>
@@ -12,7 +12,7 @@
 import utils from '../../services/utils';
 
 export default {
-  props: ['label'],
+  props: ['label', 'error'],
   data: () => ({
     uid: utils.uid(),
   }),

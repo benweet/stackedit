@@ -1,5 +1,5 @@
 <template>
-  <div class="modal__inner-1">
+  <div class="modal__inner-1" role="dialog" aria-label="Export to HTML">
     <div class="modal__inner-2">
       <form-entry label="Template">
         <select slot="field" class="textfield" v-model="selectedTemplate" @keyup.enter="resolve()">

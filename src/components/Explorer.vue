@@ -2,20 +2,20 @@
   <div class="explorer flex flex--column">
     <div class="side-title flex flex--row flex--space-between">
       <div class="flex flex--row">
-        <button class="side-title__button button" @click="newItem()">
+        <button class="side-title__button button" @click="newItem()" v-title="'New file'">
           <icon-file-plus></icon-file-plus>
         </button>
-        <button class="side-title__button button" @click="newItem(true)">
+        <button class="side-title__button button" @click="newItem(true)" v-title="'New folder'">
           <icon-folder-plus></icon-folder-plus>
         </button>
-        <button class="side-title__button button" @click="editItem()">
+        <button class="side-title__button button" @click="editItem()" v-title="'Rename'">
           <icon-pen></icon-pen>
         </button>
-        <button class="side-title__button button" @click="deleteItem()">
+        <button class="side-title__button button" @click="deleteItem()" v-title="'Remove'">
           <icon-delete></icon-delete>
         </button>
       </div>
-      <button class="side-title__button button" @click="toggleExplorer(false)">
+      <button class="side-title__button button" @click="toggleExplorer(false)" v-title="'Close explorer'">
         <icon-close></icon-close>
       </button>
     </div>

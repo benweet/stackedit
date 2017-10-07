@@ -1,5 +1,5 @@
 <template>
-  <div class="modal__inner-1 modal__inner-1--publish-management">
+  <div class="modal__inner-1 modal__inner-1--publish-management" role="dialog" aria-label="Manage publication locations">
     <div class="modal__inner-2">
       <p v-if="publishLocations.length"><b>{{currentFileName}}</b> is published to the following location(s):</p>
       <p v-else><b>{{currentFileName}}</b> is not published yet.</p>

@@ -1,11 +1,11 @@
 <template>
-  <div class="modal__inner-1">
+  <div class="modal__inner-1" role="dialog" aria-label="Synchronize with Dropbox">
     <div class="modal__inner-2">
       <div class="modal__image">
         <icon-provider provider-id="dropbox"></icon-provider>
       </div>
       <p>This will save <b>{{currentFileName}}</b> to your <b>Dropbox</b> and keep it synchronized.</p>
-      <form-entry label="File path">
+      <form-entry label="File path" error="path">
         <input slot="field" class="textfield" type="text" v-model.trim="path" @keyup.enter="resolve()">
         <div class="form-entry__info">
           <b>Example:</b> {{config.token.fullAccess ? '' : '/Applications/StackEdit (restricted)'}}/path/to/My Document.md<br>
@@ -33,7 +33,9 @@ export default modalTemplate({
   },
   methods: {
     resolve() {
-      if (dropboxProvider.checkPath(this.path)) {
+      if (!dropboxProvider.checkPath(this.path)) {
+        this.setError('path');
+      } else {
         // Return new location
         const location = dropboxProvider.makeLocation(this.config.token, this.path);
         this.config.resolve(location);

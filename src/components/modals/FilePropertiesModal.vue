@@ -1,19 +1,24 @@
 <template>
-  <div class="modal__inner-1 modal__inner-1--file-properties">
+  <div class="modal__inner-1 modal__inner-1--file-properties" role="dialog" aria-label="File properties">
     <div class="modal__inner-2">
       <div class="tabs flex flex--row">
-        <div class="tabs__tab flex flex--column flex--center" :class="{'tabs__tab--active': tab === 'custom'}" @click="tab = 'custom'">
+        <tab :active="tab === 'custom'" @click="tab = 'custom'">
           Current file properties
-        </div>
-        <div class="tabs__tab flex flex--column flex--center" :class="{'tabs__tab--active': tab === 'default'}" @click="tab = 'default'">
+        </tab>
+        <tab :active="tab === 'default'" @click="tab = 'default'">
           Default properties
-        </div>
+        </tab>
       </div>
-      <div class="form-entry">
+      <div class="form-entry" v-if="tab === 'custom'" role="tabpanel" aria-label="Current file properties">
         <label class="form-entry__label">YAML</label>
         <div class="form-entry__field">
-          <code-editor v-if="tab === 'custom'" lang="yaml" :value="customProperties" key="custom-properties" @changed="setCustomProperties"></code-editor>
-          <code-editor v-else lang="yaml" :value="defaultProperties" disabled="true" key="default-properties"></code-editor>
+          <code-editor lang="yaml" :value="customProperties" key="custom-properties" @changed="setCustomProperties"></code-editor>
+        </div>
+      </div>
+      <div class="form-entry" v-else-if="tab === 'default'" role="tabpanel" aria-label="Default properties">
+        <label class="form-entry__label">YAML</label>
+        <div class="form-entry__field">
+          <code-editor lang="yaml" :value="defaultProperties" key="default-properties" disabled="true"></code-editor>
         </div>
       </div>
       <div class="modal__error modal__error--file-properties">{{error}}</div>
@@ -28,6 +33,7 @@
 <script>
 import yaml from 'js-yaml';
 import { mapGetters } from 'vuex';
+import Tab from './Tab';
 import CodeEditor from '../CodeEditor';
 import defaultProperties from '../../data/defaultFileProperties.yml';
 
@@ -35,6 +41,7 @@ const emptyProperties = '# Add custom properties for the current file here to ov
 
 export default {
   components: {
+    Tab,
     CodeEditor,
   },
   data: () => ({

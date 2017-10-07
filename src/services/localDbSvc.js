@@ -107,9 +107,6 @@ const localDbSvc = {
       this.connection.createTx((tx) => {
         this.readAll(tx, (storeItemMap) => {
           this.writeAll(storeItemMap, tx);
-          if (!store.state.ready) {
-            store.commit('setReady');
-          }
           resolve();
         });
       }, () => reject(new Error('Local DB access error.')));
@@ -316,57 +313,74 @@ const ifNoId = cb => (obj) => {
 
 // Load the DB on boot
 localDbSvc.sync()
-  // And watch file changing
-  .then(() => store.watch(
-    () => store.getters['file/current'].id,
-    () => Promise.resolve(store.getters['file/current'])
-      // If current file has no ID, get the most recent file
-      .then(ifNoId(() => store.getters['file/lastOpened']))
-      // If still no ID, create a new file
-      .then(ifNoId(() => {
-        const id = utils.uid();
-        store.commit('content/setItem', {
-          id: `${id}/content`,
-          text: welcomeFile,
-        });
-        store.commit('file/setItem', {
-          id,
-          name: 'Welcome file',
-        });
-        return store.state.file.itemMap[id];
-      }))
-      .then((currentFile) => {
-        // Fix current file ID
-        if (store.getters['file/current'].id !== currentFile.id) {
-          store.commit('file/setCurrentId', currentFile.id);
-          // Wait for the next watch tick
-          return null;
+  .then(() => {
+    store.commit('setReady');
+
+    // If app was last opened 7 days ago and synchronization is off
+    if (!store.getters['data/loginToken'] &&
+      (utils.lastOpened + utils.cleanTrashAfter < Date.now())
+    ) {
+      // Clean files
+      store.getters['file/items'].forEach((file) => {
+        // If file is in the trash
+        if (file.parentId === 'trash') {
+          store.dispatch('deleteFile', file.id);
         }
-        return Promise.resolve()
-          // Load contentState from DB
-          .then(() => localDbSvc.loadContentState(currentFile.id))
-          // Load syncedContent from DB
-          .then(() => localDbSvc.loadSyncedContent(currentFile.id))
-          // Load content from DB
-          .then(() => localDbSvc.loadItem(`${currentFile.id}/content`))
-          .then(
-            // Success, set last opened file
-            () => store.dispatch('data/setLastOpenedId', currentFile.id),
-            (err) => {
-              // Failure (content is not available), go back to previous file
-              const lastOpenedFile = store.getters['file/lastOpened'];
-              store.commit('file/setCurrentId', lastOpenedFile.id);
-              throw err;
-            },
-          );
-      })
-      .catch((err) => {
-        console.error(err); // eslint-disable-line no-console
-        store.dispatch('notification/error', err);
-      }),
-    {
-      immediate: true,
-    }));
+      });
+    }
+
+    // watch file changing
+    store.watch(
+      () => store.getters['file/current'].id,
+      () => Promise.resolve(store.getters['file/current'])
+        // If current file has no ID, get the most recent file
+        .then(ifNoId(() => store.getters['file/lastOpened']))
+        // If still no ID, create a new file
+        .then(ifNoId(() => {
+          const id = utils.uid();
+          store.commit('content/setItem', {
+            id: `${id}/content`,
+            text: welcomeFile,
+          });
+          store.commit('file/setItem', {
+            id,
+            name: 'Welcome file',
+          });
+          return store.state.file.itemMap[id];
+        }))
+        .then((currentFile) => {
+          // Fix current file ID
+          if (store.getters['file/current'].id !== currentFile.id) {
+            store.commit('file/setCurrentId', currentFile.id);
+            // Wait for the next watch tick
+            return null;
+          }
+          return Promise.resolve()
+            // Load contentState from DB
+            .then(() => localDbSvc.loadContentState(currentFile.id))
+            // Load syncedContent from DB
+            .then(() => localDbSvc.loadSyncedContent(currentFile.id))
+            // Load content from DB
+            .then(() => localDbSvc.loadItem(`${currentFile.id}/content`))
+            .then(
+              // Success, set last opened file
+              () => store.dispatch('data/setLastOpenedId', currentFile.id),
+              (err) => {
+                // Failure (content is not available), go back to previous file
+                const lastOpenedFile = store.getters['file/lastOpened'];
+                store.commit('file/setCurrentId', lastOpenedFile.id);
+                throw err;
+              },
+            );
+        })
+        .catch((err) => {
+          console.error(err); // eslint-disable-line no-console
+          store.dispatch('notification/error', err);
+        }),
+      {
+        immediate: true,
+      });
+  });
 
 // Sync local DB periodically
 utils.setInterval(() => localDbSvc.sync(), 1000);

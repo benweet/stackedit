@@ -1,5 +1,5 @@
 <template>
-  <div class="modal__inner-1 modal__inner-1--about-modal">
+  <div class="modal__inner-1 modal__inner-1--about-modal" role="dialog" aria-label="About">
     <div class="modal__inner-2">
       <div class="logo-background"></div>
       <div class="app-version">v{{version}} — © 2017 Benoit Schweblin</div>

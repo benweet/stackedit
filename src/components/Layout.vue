@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
     <div class="layout__panel flex flex--row" :class="{'flex--end': styles.showSideBar}">
-      <div class="layout__panel layout__panel--explorer" v-show="styles.showExplorer" :style="{ width: constants.explorerWidth + 'px' }">
+      <div class="layout__panel layout__panel--explorer" v-show="styles.showExplorer" :aria-hidden="!styles.showExplorer" :style="{ width: constants.explorerWidth + 'px' }">
         <explorer></explorer>
       </div>
       <div class="layout__panel flex flex--column" :style="{ width: styles.innerWidth + 'px' }">

@@ -40,6 +40,10 @@ export default {
         // Ignore
       }
     }
+    result.hash = utils.hash(utils.serializeObject({
+      ...result,
+      hash: undefined,
+    }));
     return result;
   },
 };

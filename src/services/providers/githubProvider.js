@@ -28,17 +28,24 @@ export default providerRegistry.register({
       .catch(() => null); // Ignore error, without the sha upload is going to fail anyway
   },
   uploadContent(token, content, syncLocation) {
-    const sha = savedSha[syncLocation.id];
-    delete savedSha[syncLocation.id];
-    return githubHelper.uploadFile(
-      token,
-      syncLocation.owner,
-      syncLocation.repo,
-      syncLocation.branch,
-      syncLocation.path,
-      providerUtils.serializeContent(content),
-      sha,
-    )
+    let result = Promise.resolve();
+    if (!savedSha[syncLocation.id]) {
+      result = this.downloadContent(token, syncLocation); // Get the last sha
+    }
+    return result
+      .then(() => {
+        const sha = savedSha[syncLocation.id];
+        delete savedSha[syncLocation.id];
+        return githubHelper.uploadFile(
+          token,
+          syncLocation.owner,
+          syncLocation.repo,
+          syncLocation.branch,
+          syncLocation.path,
+          providerUtils.serializeContent(content),
+          sha,
+        );
+      })
       .then(() => syncLocation);
   },
   publish(token, html, metadata, publishLocation) {

@@ -1,11 +1,11 @@
 <template>
-  <div class="modal__inner-1">
+  <div class="modal__inner-1" role="dialog" aria-label="Publish to Blogger Page">
     <div class="modal__inner-2">
       <div class="modal__image">
         <icon-provider provider-id="bloggerPage"></icon-provider>
       </div>
       <p>This will publish <b>{{currentFileName}}</b> to your <b>Blogger Page</b>.</p>
-      <form-entry label="Blog URL">
+      <form-entry label="Blog URL" error="blogUrl">
         <input slot="field" class="textfield" type="text" v-model.trim="blogUrl" @keyup.enter="resolve()">
         <div class="form-entry__info">
           <b>Example:</b> http://example.blogger.com/
@@ -49,7 +49,9 @@ export default modalTemplate({
   },
   methods: {
     resolve() {
-      if (this.blogUrl) {
+      if (!this.blogUrl) {
+        this.setError('blogUrl');
+      } else {
         // Return new location
         const location = bloggerPageProvider.makeLocation(
           this.config.token, this.blogUrl, this.pageId);

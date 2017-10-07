@@ -56,6 +56,18 @@ const store = new Vuex.Store({
       }
       return Promise.resolve();
     },
+    deleteFile({ getters, commit }, fileId) {
+      commit('file/deleteItem', fileId);
+      commit('content/deleteItem', `${fileId}/content`);
+      commit('syncedContent/deleteItem', `${fileId}/syncedContent`);
+      commit('contentState/deleteItem', `${fileId}/contentState`);
+      getters['syncLocation/items']
+        .filter(item => item.fileId === fileId)
+        .forEach(item => commit('syncLocation/deleteItem', item.id));
+      getters['publishLocation/items']
+        .filter(item => item.fileId === fileId)
+        .forEach(item => commit('publishLocation/deleteItem', item.id));
+    },
   },
   modules: {
     contentState,

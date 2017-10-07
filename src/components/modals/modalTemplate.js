@@ -4,7 +4,12 @@ import store from '../../store';
 export default (desc) => {
   const component = {
     ...desc,
+    data: () => ({
+      ...desc.data ? desc.data() : {},
+      errorTimeouts: {},
+    }),
     components: {
+      ...desc.components || {},
       FormEntry,
     },
     computed: {
@@ -19,6 +24,16 @@ export default (desc) => {
     methods: {
       ...desc.methods || {},
       openFileProperties: () => store.dispatch('modal/open', 'fileProperties'),
+      setError(name) {
+        clearTimeout(this.errorTimeouts[name]);
+        const formEntry = this.$el.querySelector(`.form-entry[error=${name}]`);
+        if (formEntry) {
+          formEntry.classList.add('form-entry--error');
+          this.errorTimeouts[name] = setTimeout(() => {
+            formEntry.classList.remove('form-entry--error');
+          }, 1000);
+        }
+      },
     },
   };
   Object.keys(desc.computedLocalSettings || {}).forEach((key) => {

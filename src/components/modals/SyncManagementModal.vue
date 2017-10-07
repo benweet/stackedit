@@ -1,5 +1,5 @@
 <template>
-  <div class="modal__inner-1 modal__inner-1--sync-management">
+  <div class="modal__inner-1 modal__inner-1--sync-management" role="dialog" aria-label="Manage synchronized locations">
     <div class="modal__inner-2">
       <p v-if="syncLocations.length"><b>{{currentFileName}}</b> is synchronized with the following location(s):</p>
       <p v-else><b>{{currentFileName}}</b> is not synchronized yet.</p>

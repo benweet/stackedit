@@ -1,5 +1,5 @@
 <template>
-  <div class="modal__inner-1">
+  <div class="modal__inner-1" role="dialog" aria-label="Synchronize with Google Drive">
     <div class="modal__inner-2">
       <div class="modal__image">
         <icon-provider provider-id="googleDrive"></icon-provider>

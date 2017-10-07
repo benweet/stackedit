@@ -24,6 +24,7 @@ window.document.addEventListener('touchstart', setLastActivity);
 // For isWindowFocused
 let lastFocus;
 const lastFocusKey = `${workspaceId}/lastWindowFocus`;
+const lastOpened = parseInt(localStorage[lastFocusKey], 10) || 0;
 const setLastFocus = () => {
   lastFocus = Date.now();
   localStorage[lastFocusKey] = lastFocus;
@@ -39,6 +40,8 @@ export default {
   workspaceId,
   origin,
   oauth2RedirectUri: `${origin}/oauth2/callback`,
+  lastOpened,
+  cleanTrashAfter: 7 * 1000, // 7 days
   types: [
     'contentState',
     'syncedContent',

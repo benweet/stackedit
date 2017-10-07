@@ -3,7 +3,7 @@
     <div class="stat-panel__block stat-panel__block--left" v-if="styles.showEditor">
       <span class="stat-panel__block-name">
         Markdown
-        <small v-show="textSelection">(selection)</small>
+        <small v-if="textSelection">(selection)</small>
       </span>
       <span v-for="stat in textStats" :key="stat.id">
         <span class="stat-panel__value">{{stat.value}}</span> {{stat.name}}
@@ -13,7 +13,7 @@
     <div class="stat-panel__block stat-panel__block--right">
       <span class="stat-panel__block-name">
         HTML
-        <small v-show="htmlSelection">(selection)</small>
+        <small v-if="htmlSelection">(selection)</small>
       </span>
       <span v-for="stat in htmlStats" :key="stat.id">
         <span class="stat-panel__value">{{stat.value}}</span> {{stat.name}}

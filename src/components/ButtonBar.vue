@@ -1,24 +1,24 @@
 <template>
   <div class="button-bar">
     <div class="button-bar__inner button-bar__inner--top">
-      <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.showNavigationBar }" @click="toggleNavigationBar()">
+      <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.showNavigationBar }" @click="toggleNavigationBar()" v-title="'Toggle navigation bar'">
         <icon-navigation-bar></icon-navigation-bar>
       </div>
-      <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.showSidePreview }" @click="toggleSidePreview()">
+      <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.showSidePreview }" @click="toggleSidePreview()" v-title="'Toggle side preview'">
         <icon-side-preview></icon-side-preview>
       </div>
-      <div class="button-bar__button" @click="toggleEditor(false)">
+      <div class="button-bar__button" @click="toggleEditor(false)" v-title="'Reader mode'">
         <icon-eye></icon-eye>
       </div>
     </div>
     <div class="button-bar__inner button-bar__inner--bottom">
-      <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.focusMode }" @click="toggleFocusMode()">
+      <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.focusMode }" @click="toggleFocusMode()" v-title="'Toggle focus mode'">
         <icon-target></icon-target>
       </div>
-      <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.scrollSync }" @click="toggleScrollSync()">
+      <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.scrollSync }" @click="toggleScrollSync()" v-title="'Toggle scroll sync'">
         <icon-scroll-sync></icon-scroll-sync>
       </div>
-      <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.showStatusBar }" @click="toggleStatusBar()">
+      <div class="button-bar__button" :class="{ 'button-bar__button--on': localSettings.showStatusBar }" @click="toggleStatusBar()" v-title="'Toggle status bar'">
         <icon-status-bar></icon-status-bar>
       </div>
     </div>

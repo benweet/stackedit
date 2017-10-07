@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" @keyup.esc="onEscape">
+  <div class="modal" @keyup.esc="onEscape" @keydown.tab="onTab">
     <file-properties-modal v-if="config.type === 'fileProperties'"></file-properties-modal>
     <settings-modal v-else-if="config.type === 'settings'"></settings-modal>
     <templates-modal v-else-if="config.type === 'templates'"></templates-modal>
@@ -66,6 +66,10 @@ import BloggerPagePublishModal from './modals/BloggerPagePublishModal';
 import ZendeskAccountModal from './modals/ZendeskAccountModal';
 import ZendeskPublishModal from './modals/ZendeskPublishModal';
 
+const getTabbables = container => container.querySelectorAll('a[href], button, .textfield')
+  // Filter enabled and visible element
+  .cl_filter(el => !el.disabled && el.offsetParent !== null);
+
 export default {
   components: {
     FilePropertiesModal,
@@ -102,6 +106,18 @@ export default {
       this.config.reject();
       editorEngineSvc.clEditor.focus();
     },
+    onTab(evt) {
+      const tabbables = getTabbables(this.$el);
+      const firstTabbable = tabbables[0];
+      const lastTabbable = tabbables[tabbables.length - 1];
+      if (evt.shiftKey && firstTabbable === evt.target) {
+        evt.preventDefault();
+        lastTabbable.focus();
+      } else if (!evt.shiftKey && lastTabbable === evt.target) {
+        evt.preventDefault();
+        firstTabbable.focus();
+      }
+    },
     onFocusInOut(evt) {
       const isFocusIn = evt.type === 'focusin';
       if (evt.target.parentNode && evt.target.parentNode.parentNode) {
@@ -127,12 +143,8 @@ export default {
   mounted() {
     window.addEventListener('focusin', this.onFocusInOut);
     window.addEventListener('focusout', this.onFocusInOut);
-    const eltToFocus = this.$el.querySelector('input.text-input')
-      || this.$el.querySelector('.textfield')
-      || this.$el.querySelector('.button');
-    if (eltToFocus) {
-      eltToFocus.focus();
-    }
+    const tabbables = getTabbables(this.$el);
+    tabbables[0].focus();
   },
   destroyed() {
     window.removeEventListener('focusin', this.onFocusInOut);
@@ -237,6 +249,10 @@ export default {
   .form-entry--focused & {
     color: darken($link-color, 10%);
   }
+
+  .form-entry--error & {
+    color: darken($error-color, 10%);
+  }
 }
 
 .form-entry__field {
@@ -247,6 +263,10 @@ export default {
 
   .form-entry--focused & {
     border-color: $link-color;
+  }
+
+  .form-entry--error & {
+    border-color: $error-color;
   }
 }
 
@@ -285,5 +305,52 @@ export default {
   opacity: 0.5;
   line-height: 1.4;
   margin: 0.25em 0;
+}
+
+.tabs {
+  border-bottom: 1px solid $hr-color;
+  margin-bottom: 2em;
+
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
+.tabs__tab {
+  width: 50%;
+  float: left;
+  text-align: center;
+  line-height: 1.4;
+  font-weight: 400;
+  font-size: 1.1em;
+}
+
+.tabs__tab > a {
+  width: 100%;
+  text-decoration: none;
+  padding: 0.67em 0.33em;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  border-top-left-radius: $border-radius-base;
+  border-top-right-radius: $border-radius-base;
+  color: $link-color;
+
+  &:hover,
+  &:focus {
+    background-color: rgba(0, 0, 0, 0.067);
+  }
+}
+
+.tabs__tab--active > a {
+  border-bottom: 2px solid $link-color;
+  color: inherit;
+  cursor: auto;
+
+  &:hover,
+  &:focus {
+    background-color: transparent;
+  }
 }
 </style>

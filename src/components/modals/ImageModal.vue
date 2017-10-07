@@ -1,8 +1,8 @@
 <template>
-  <div class="modal__inner-1">
+  <div class="modal__inner-1" role="dialog" aria-label="Insert image">
     <div class="modal__inner-2">
       <p>Please provide a <b>URL</b> for your image.
-      <form-entry label="URL">
+      <form-entry label="URL" error="url">
         <input slot="field" class="textfield" type="text" v-model.trim="url" @keyup.enter="resolve()">
       </form-entry>
       <menu-entry @click.native="openGooglePhotos(token)" v-for="token in googlePhotosTokens" :key="token.sub">
@@ -23,23 +23,18 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import modalTemplate from './modalTemplate';
 import MenuEntry from '../menus/MenuEntry';
-import FormEntry from './FormEntry';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 
-export default {
+export default modalTemplate({
   components: {
-    FormEntry,
     MenuEntry,
   },
   data: () => ({
     url: '',
   }),
   computed: {
-    ...mapGetters('modal', [
-      'config',
-    ]),
     googlePhotosTokens() {
       const googleToken = this.$store.getters['data/googleTokens'];
       return Object.keys(googleToken)
@@ -50,7 +45,9 @@ export default {
   },
   methods: {
     resolve() {
-      if (this.url) {
+      if (!this.url) {
+        this.setError('url');
+      } else {
         const callback = this.config.callback;
         this.config.resolve();
         callback(this.url);
@@ -75,5 +72,5 @@ export default {
         }));
     },
   },
-};
+});
 </script>

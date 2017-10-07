@@ -1,19 +1,24 @@
 <template>
-  <div class="modal__inner-1 modal__inner-1--settings">
+  <div class="modal__inner-1 modal__inner-1--settings" role="dialog" aria-label="Settings">
     <div class="modal__inner-2">
       <div class="tabs flex flex--row">
-        <div class="tabs__tab flex flex--column flex--center" :class="{'tabs__tab--active': tab === 'custom'}" @click="tab = 'custom'">
+        <tab :active="tab === 'custom'" @click="tab = 'custom'">
           Custom settings
-        </div>
-        <div class="tabs__tab flex flex--column flex--center" :class="{'tabs__tab--active': tab === 'default'}" @click="tab = 'default'">
+        </tab>
+        <tab :active="tab === 'default'" @click="tab = 'default'">
           Default settings
-        </div>
+        </tab>
       </div>
-      <div class="form-entry">
+      <div class="form-entry" v-if="tab === 'custom'" role="tabpanel" aria-label="Custom settings">
         <label class="form-entry__label">YAML</label>
         <div class="form-entry__field form-entry__field--code-editor">
-          <code-editor v-if="tab === 'custom'" lang="yaml" :value="customSettings" key="custom-settings" @changed="setCustomSettings"></code-editor>
-          <code-editor v-else lang="yaml" :value="defaultSettings" disabled="true" key="default-settings"></code-editor>
+          <code-editor lang="yaml" :value="customSettings" key="custom-settings" @changed="setCustomSettings"></code-editor>
+        </div>
+      </div>
+      <div class="form-entry" v-else-if="tab === 'default'" role="tabpanel" aria-label="Default settings">
+        <label class="form-entry__label">YAML</label>
+        <div class="form-entry__field form-entry__field--code-editor">
+          <code-editor lang="yaml" :value="defaultSettings" key="default-settings" disabled="true"></code-editor>
         </div>
       </div>
       <div class="modal__error modal__error--settings">{{error}}</div>
@@ -28,6 +33,7 @@
 <script>
 import yaml from 'js-yaml';
 import { mapGetters } from 'vuex';
+import Tab from './Tab';
 import CodeEditor from '../CodeEditor';
 import defaultSettings from '../../data/defaultSettings.yml';
 
@@ -35,6 +41,7 @@ const emptySettings = '# Add your custom settings here to override the default s
 
 export default {
   components: {
+    Tab,
     CodeEditor,
   },
   data: () => ({

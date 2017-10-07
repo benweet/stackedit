@@ -1,5 +1,5 @@
 <template>
-  <div class="modal__inner-1 modal__inner-1--templates">
+  <div class="modal__inner-1 modal__inner-1--templates" role="dialog" aria-label="Manage templates">
     <div class="modal__inner-2">
       <div class="form-entry">
         <label class="form-entry__label" for="template">Template</label>

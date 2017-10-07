@@ -189,48 +189,6 @@ textarea {
   width: 100%;
 }
 
-.tabs {
-  border-bottom: 1px solid $hr-color;
-  margin-bottom: 2em;
-
-  &::after {
-    content: '';
-    display: block;
-    clear: both;
-  }
-}
-
-.tabs__tab {
-  width: 50%;
-  float: left;
-  text-align: center;
-  line-height: 1.4;
-  padding: 0.67em 0.33em;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  border-top-left-radius: $border-radius-base;
-  border-top-right-radius: $border-radius-base;
-  color: $link-color;
-  font-weight: 400;
-  font-size: 1.1em;
-
-  &:hover,
-  &:focus {
-    background-color: rgba(0, 0, 0, 0.067);
-  }
-}
-
-.tabs__tab--active {
-  border-bottom: 2px solid $link-color;
-  color: inherit;
-  cursor: auto;
-
-  &:hover,
-  &:focus {
-    background-color: transparent;
-  }
-}
-
 .logo-background {
   background: no-repeat center url('../assets/logo.svg');
   background-size: contain;

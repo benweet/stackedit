@@ -7,7 +7,7 @@ import mainProvider from './providers/googleDriveAppDataProvider';
 
 const lastSyncActivityKey = `${utils.workspaceId}/lastSyncActivity`;
 let lastSyncActivity;
-const getStoredLastSyncActivity = () => parseInt(localStorage[lastSyncActivityKey], 10) || 0;
+const getLastStoredSyncActivity = () => parseInt(localStorage[lastSyncActivityKey], 10) || 0;
 const inactivityThreshold = 3 * 1000; // 3 sec
 const restartSyncAfter = 30 * 1000; // 30 sec
 const autoSyncAfter = utils.randomize(60 * 1000); // 60 sec
@@ -19,13 +19,13 @@ const isSyncPossible = () => !store.state.offline &&
   (isDataSyncPossible() || hasCurrentFileSyncLocations());
 
 function isSyncWindow() {
-  const storedLastSyncActivity = getStoredLastSyncActivity();
+  const storedLastSyncActivity = getLastStoredSyncActivity();
   return lastSyncActivity === storedLastSyncActivity ||
     Date.now() > inactivityThreshold + storedLastSyncActivity;
 }
 
 function isAutoSyncReady() {
-  const storedLastSyncActivity = getStoredLastSyncActivity();
+  const storedLastSyncActivity = getLastStoredSyncActivity();
   return Date.now() > autoSyncAfter + storedLastSyncActivity;
 }
 
@@ -542,6 +542,20 @@ function requestSync() {
           return;
         }
 
+        // Determine if we have to clean files
+        const fileHashesToClean = {};
+        if (getLastStoredSyncActivity() + utils.cleanTrashAfter < Date.now()) {
+          // Last synchronization happened 7 days ago
+          const syncDataByItemId = store.getters['data/syncDataByItemId'];
+          store.getters['file/items'].forEach((file) => {
+            // If file is in the trash and has not been modified since it was last synced
+            const syncData = syncDataByItemId[file.id];
+            if (syncData && file.parentId === 'trash' && file.hash === syncData.hash) {
+              fileHashesToClean[file.id] = file.hash;
+            }
+          });
+        }
+
         // Call setLastSyncActivity periodically
         intervalId = utils.setInterval(() => setLastSyncActivity(), 1000);
         setLastSyncActivity();
@@ -549,6 +563,7 @@ function requestSync() {
           clearInterval(intervalId);
           cb(res);
         };
+
         Promise.resolve()
           .then(() => {
             if (isDataSyncPossible()) {
@@ -561,6 +576,15 @@ function requestSync() {
               return syncFile(store.getters['file/current'].id);
             }
             return null;
+          })
+          .then(() => {
+            // Clean files
+            Object.keys(fileHashesToClean).forEach((fileId) => {
+              const file = store.state.file.itemMap[fileId];
+              if (file && file.hash === fileHashesToClean[fileId]) {
+                store.dispatch('deleteFile', fileId);
+              }
+            });
           })
           .then(cleaner(resolve), cleaner(reject));
       }

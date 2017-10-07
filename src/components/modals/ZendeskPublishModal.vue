@@ -1,11 +1,11 @@
 <template>
-  <div class="modal__inner-1">
+  <div class="modal__inner-1" role="dialog" aria-label="Publish to Zendesk">
     <div class="modal__inner-2">
       <div class="modal__image">
         <icon-provider provider-id="zendesk"></icon-provider>
       </div>
       <p>This will publish <b>{{currentFileName}}</b> to your <b>Zendesk Help Center</b>.</p>
-      <form-entry label="Section ID">
+      <form-entry label="Section ID" error="sectionId">
         <input slot="field" class="textfield" type="text" v-model.trim="sectionId" @keyup.enter="resolve()">
         <div class="form-entry__info">
           https://example.zendesk.com/hc/en-us/sections/<b>21857469</b>-Section-name
@@ -57,7 +57,9 @@ export default modalTemplate({
   },
   methods: {
     resolve() {
-      if (this.sectionId || this.articleId) {
+      if (!this.sectionId && !this.articleId) {
+        this.setError('sectionId');
+      } else {
         // Return new location
         const location = zendeskProvider.makeLocation(
           this.config.token, this.sectionId, this.locale || 'en-us', this.articleId);

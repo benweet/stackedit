@@ -1,5 +1,5 @@
 <template>
-  <div class="modal__inner-1 modal__inner-1--google-photo">
+  <div class="modal__inner-1 modal__inner-1--google-photo" role="dialog" aria-label="Import Google Photo">
     <div class="modal__inner-2">
       <div class="google-photo__tumbnail" :style="{'background-image': thumbnailUrl}"></div>
       <form-entry label="Title (optional)">

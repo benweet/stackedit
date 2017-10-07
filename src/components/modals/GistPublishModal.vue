@@ -1,11 +1,11 @@
 <template>
-  <div class="modal__inner-1">
+  <div class="modal__inner-1" role="dialog" aria-label="Publish to Gist">
     <div class="modal__inner-2">
       <div class="modal__image">
         <icon-provider provider-id="gist"></icon-provider>
       </div>
       <p>This will publish <b>{{currentFileName}}</b> to a <b>Gist</b>.</p>
-      <form-entry label="Filename">
+      <form-entry label="Filename" error="filename">
         <input slot="field" class="textfield" type="text" v-model.trim="filename" @keyup.enter="resolve()">
       </form-entry>
       <div class="form-entry">
@@ -60,7 +60,9 @@ export default modalTemplate({
   },
   methods: {
     resolve() {
-      if (this.filename) {
+      if (!this.filename) {
+        this.setError('filename');
+      } else {
         // Return new location
         const location = gistProvider.makeLocation(
           this.config.token, this.filename, this.isPublic, this.gistId);

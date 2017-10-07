@@ -1,12 +1,12 @@
 <template>
   <div class="navigation-bar" :class="{'navigation-bar--editor': styles.showEditor}">
     <div class="navigation-bar__inner navigation-bar__inner--left navigation-bar__inner--button">
-      <button class="navigation-bar__button button" @click="toggleExplorer()">
+      <button class="navigation-bar__button button" @click="toggleExplorer()" v-title="'Toggle explorer'">
         <icon-folder></icon-folder>
       </button>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--button">
-      <button class="navigation-bar__button navigation-bar__button--stackedit button" @click="toggleSideBar()">
+      <button class="navigation-bar__button navigation-bar__button--stackedit button" @click="toggleSideBar()" v-title="'Toggle side bar'">
         <icon-provider provider-id="stackedit"></icon-provider>
       </button>
     </div>
@@ -19,55 +19,55 @@
       <div class="navigation-bar__title navigation-bar__title--text text-input" :style="{width: titleWidth + 'px'}">{{title}}</div>
       <input class="navigation-bar__title navigation-bar__title--input text-input" :class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" :style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keyup.enter="submitTitle()" @keyup.esc="submitTitle(true)" @mouseenter="titleHover = true" @mouseleave="titleHover = false" v-model="title">
       <div class="flex flex--row" :class="{'navigation-bar__hidden': styles.hideLocations}">
-        <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in syncLocations" :key="location.id" :href="location.url" target="_blank">
+        <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in syncLocations" :key="location.id" :href="location.url" target="_blank" v-title="'Synchronized location'">
           <icon-provider :provider-id="location.providerId"></icon-provider>
         </a>
-        <button class="navigation-bar__button navigation-bar__button--sync button" :disabled="!isSyncPossible || isSyncRequested || offline" @click="requestSync">
+        <button class="navigation-bar__button navigation-bar__button--sync button" :disabled="!isSyncPossible || isSyncRequested || offline" @click="requestSync" v-title="'Synchronize now'">
           <icon-sync></icon-sync>
         </button>
-        <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in publishLocations" :key="location.id" :href="location.url" target="_blank">
+        <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in publishLocations" :key="location.id" :href="location.url" target="_blank" v-title="'Publish location'">
           <icon-provider :provider-id="location.providerId"></icon-provider>
         </a>
-        <button class="navigation-bar__button navigation-bar__button--publish button" :disabled="!publishLocations.length || isPublishRequested || offline" @click="requestPublish">
+        <button class="navigation-bar__button navigation-bar__button--publish button" :disabled="!publishLocations.length || isPublishRequested || offline" @click="requestPublish"v-title="'Publish now'">
           <icon-upload></icon-upload>
         </button>
       </div>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--edit-buttons">
-      <button class="navigation-bar__button button" @click="pagedownClick('bold')">
+      <button class="navigation-bar__button button" @click="pagedownClick('bold')" v-title="'Bold'">
         <icon-format-bold></icon-format-bold>
       </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('italic')">
+      <button class="navigation-bar__button button" @click="pagedownClick('italic')" v-title="'Italic'">
         <icon-format-italic></icon-format-italic>
       </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('strikethrough')">
+      <button class="navigation-bar__button button" @click="pagedownClick('strikethrough')" v-title="'Strikethrough'">
         <icon-format-strikethrough></icon-format-strikethrough>
       </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('heading')">
+      <button class="navigation-bar__button button" @click="pagedownClick('heading')" v-title="'Heading'">
         <icon-format-size></icon-format-size>
       </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('ulist')">
+      <button class="navigation-bar__button button" @click="pagedownClick('ulist')" v-title="'Unordered list'">
         <icon-format-list-bulleted></icon-format-list-bulleted>
       </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('olist')">
+      <button class="navigation-bar__button button" @click="pagedownClick('olist')" v-title="'Ordered list'">
         <icon-format-list-numbers></icon-format-list-numbers>
       </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('table')">
+      <button class="navigation-bar__button button" @click="pagedownClick('table')" v-title="'Table'">
         <icon-table></icon-table>
       </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('quote')">
+      <button class="navigation-bar__button button" @click="pagedownClick('quote')" v-title="'Blockquote'">
         <icon-format-quote-close></icon-format-quote-close>
       </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('code')">
+      <button class="navigation-bar__button button" @click="pagedownClick('code')" v-title="'Code'">
         <icon-code-tags></icon-code-tags>
       </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('link')">
+      <button class="navigation-bar__button button" @click="pagedownClick('link')" v-title="'Link'">
         <icon-link-variant></icon-link-variant>
       </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('image')">
+      <button class="navigation-bar__button button" @click="pagedownClick('image')" v-title="'Image'">
         <icon-file-image></icon-file-image>
       </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('hr')">
+      <button class="navigation-bar__button button" @click="pagedownClick('hr')" v-title="'Horizontal rule'">
         <icon-format-horizontal-rule></icon-format-horizontal-rule>
       </button>
     </div>
@@ -368,14 +368,14 @@ export default {
   }
 }
 
-$r: 9px;
+$r: 10px;
 $d: $r * 2;
 $b: $d/10;
 $t: 3000ms;
 
 .navigation-bar__spinner {
   width: 22px;
-  margin: 8px 0 0 8px;
+  margin: 7px 0 0 8px;
   color: #b2b2b2;
 
   .icon {

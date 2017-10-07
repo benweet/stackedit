@@ -321,12 +321,9 @@ localDbSvc.sync()
       (utils.lastOpened + utils.cleanTrashAfter < Date.now())
     ) {
       // Clean files
-      store.getters['file/items'].forEach((file) => {
-        // If file is in the trash
-        if (file.parentId === 'trash') {
-          store.dispatch('deleteFile', file.id);
-        }
-      });
+      store.getters['file/items']
+        .filter(file => file.parentId === 'trash') // If file is in the trash
+        .forEach(file => store.dispatch('deleteFile', file.id));
     }
 
     // watch file changing

@@ -41,7 +41,7 @@ export default {
   origin,
   oauth2RedirectUri: `${origin}/oauth2/callback`,
   lastOpened,
-  cleanTrashAfter: 7 * 1000, // 7 days
+  cleanTrashAfter: 7 * 24 * 60 * 60 * 1000, // 7 days
   types: [
     'contentState',
     'syncedContent',

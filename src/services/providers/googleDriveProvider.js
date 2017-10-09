@@ -4,8 +4,6 @@ import providerUtils from './providerUtils';
 import providerRegistry from './providerRegistry';
 import utils from '../utils';
 
-const defaultFilename = 'Untitled';
-
 export default providerRegistry.register({
   id: 'googleDrive',
   getToken(location) {
@@ -25,7 +23,7 @@ export default providerRegistry.register({
   },
   uploadContent(token, content, syncLocation, ifNotTooLate) {
     const file = store.state.file.itemMap[syncLocation.fileId];
-    const name = (file && file.name) || defaultFilename;
+    const name = utils.sanitizeName(file && file.name);
     const parents = [];
     if (syncLocation.driveParentId) {
       parents.push(syncLocation.driveParentId);
@@ -95,7 +93,7 @@ export default providerRegistry.register({
           });
           store.commit('file/setItem', {
             id,
-            name: (file.name || defaultFilename).slice(0, 250),
+            name: utils.sanitizeName(file.name),
             parentId: store.getters['file/current'].parentId,
           });
           store.commit('syncLocation/setItem', {

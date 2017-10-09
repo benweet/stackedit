@@ -16,6 +16,20 @@
       <span>Sign out and clean local data.</span>
     </menu-entry>
     <hr>
+    <input class="hidden-file" id="import-backup-file-input" type="file" @change="onImportBackup">
+    <label class="menu-entry button flex flex--row flex--align-center" for="import-backup-file-input">
+      <div class="menu-entry__icon flex flex--column flex--center">
+        <icon-hard-disk></icon-hard-disk>
+      </div>
+      <div class="flex flex--column">
+        Import backup
+      </div>
+    </label>
+    <menu-entry href="#exportBackup=true" target="_blank">
+      <icon-hard-disk slot="icon"></icon-hard-disk>
+      Export backup
+    </menu-entry>
+    <hr>
     <menu-entry @click.native="about">
       <icon-help-circle slot="icon"></icon-help-circle>
       <span>About StackEdit</span>
@@ -34,12 +48,29 @@
 <script>
 import MenuEntry from './MenuEntry';
 import localDbSvc from '../../services/localDbSvc';
+import backupSvc from '../../services/backupSvc';
 
 export default {
   components: {
     MenuEntry,
   },
   methods: {
+    onImportBackup(evt) {
+      const file = evt.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const text = e.target.result;
+          if (text.match(/\uFFFD/)) {
+            this.$store.dispatch('notification/error', 'File is not readable.');
+          } else {
+            backupSvc.importBackup(text);
+          }
+        };
+        const blob = file.slice(0, 10000000);
+        reader.readAsText(blob);
+      }
+    },
     settings() {
       return this.$store.dispatch('modal/open', 'settings')
         .then(

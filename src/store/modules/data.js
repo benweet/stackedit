@@ -131,20 +131,27 @@ module.actions.setTemplates = ({ commit }, data) => {
 
 // Last opened
 module.getters.lastOpened = getter('lastOpened');
-const getLastOpenedIds = (lastOpened, rootState) => Object.keys(lastOpened)
-  .filter(id => rootState.file.itemMap[id])
-  .sort((id1, id2) => lastOpened[id2] - lastOpened[id1])
-  .slice(0, 20);
-module.getters.lastOpenedIds = (state, getters, rootState) =>
-  getLastOpenedIds(getters.lastOpened, rootState);
-module.actions.setLastOpenedId = ({ getters, commit, rootState }, fileId) => {
+module.getters.lastOpenedIds = (state, getters, rootState) => {
+  const lastOpened = getters.lastOpened;
+  return Object.keys(lastOpened)
+    .filter(id => rootState.file.itemMap[id])
+    .sort((id1, id2) => lastOpened[id2] - lastOpened[id1])
+    .slice(0, 20);
+};
+module.actions.setLastOpenedId = ({ getters, commit, dispatch, rootState }, fileId) => {
   const lastOpened = { ...getters.lastOpened };
   lastOpened[fileId] = Date.now();
-  const filteredLastOpened = {};
-  getLastOpenedIds(lastOpened, rootState)
-    .forEach((id) => {
-      filteredLastOpened[id] = lastOpened[id];
-    });
+  commit('setItem', itemTemplate('lastOpened', lastOpened));
+  dispatch('cleanLastOpenedId');
+};
+module.actions.cleanLastOpenedId = ({ getters, commit, rootState }) => {
+  const lastOpened = {};
+  const oldLastOpened = getters.lastOpened;
+  Object.keys(oldLastOpened).forEach((fileId) => {
+    if (rootState.file.itemMap[fileId]) {
+      lastOpened[fileId] = oldLastOpened[fileId];
+    }
+  });
   commit('setItem', itemTemplate('lastOpened', lastOpened));
 };
 

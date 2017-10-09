@@ -114,7 +114,7 @@ export default providerRegistry.register({
           }
           store.commit('file/setItem', {
             id,
-            name: name.slice(0, 250),
+            name: utils.sanitizeName(name),
             parentId: store.getters['file/current'].parentId,
           });
           store.commit('syncLocation/setItem', {

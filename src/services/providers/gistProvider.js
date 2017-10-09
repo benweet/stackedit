@@ -2,8 +2,7 @@ import store from '../../store';
 import githubHelper from './helpers/githubHelper';
 import providerUtils from './providerUtils';
 import providerRegistry from './providerRegistry';
-
-const defaultDescription = 'Untitled';
+import utils from '../utils';
 
 export default providerRegistry.register({
   id: 'gist',
@@ -23,7 +22,7 @@ export default providerRegistry.register({
   },
   uploadContent(token, content, syncLocation) {
     const file = store.state.file.itemMap[syncLocation.fileId];
-    const description = (file && file.name) || defaultDescription;
+    const description = utils.sanitizeName(file && file.name);
     return githubHelper.uploadGist(
       token,
       description,

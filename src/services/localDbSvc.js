@@ -1,5 +1,6 @@
 import 'babel-polyfill';
 import 'indexeddbshim/dist/indexeddbshim';
+import FileSaver from 'file-saver';
 import utils from './utils';
 import store from '../store';
 import welcomeFile from '../data/welcomeFile.md';
@@ -8,6 +9,7 @@ const indexedDB = window.indexedDB;
 const dbVersion = 1;
 const dbVersionKey = `${utils.workspaceId}/localDbVersion`;
 const dbStoreName = 'objects';
+const exportBackup = utils.queryParams.exportBackup;
 
 if (!indexedDB) {
   throw new Error('Your browser is not supported. Please upgrade to the latest version.');
@@ -219,7 +221,7 @@ const localDbSvc = {
       // DB item is different from the corresponding store item
       this.hashMap[dbItem.type][dbItem.id] = dbItem.hash;
       // Update content only if it exists in the store
-      if (existingStoreItem || !contentTypes[dbItem.type]) {
+      if (existingStoreItem || !contentTypes[dbItem.type] || exportBackup) {
         // Put item in the store
         dbItem.tx = undefined;
         store.commit(`${dbItem.type}/setItem`, dbItem);
@@ -314,6 +316,16 @@ const ifNoId = cb => (obj) => {
 // Load the DB on boot
 localDbSvc.sync()
   .then(() => {
+    if (exportBackup) {
+      const backup = JSON.stringify(store.getters.allItemMap);
+      const blob = new Blob([backup], {
+        type: 'text/plain;charset=utf-8',
+      });
+      FileSaver.saveAs(blob, 'StackEdit workspace.json');
+      return;
+    }
+
+    // Set the ready flag
     store.commit('setReady');
 
     // If app was last opened 7 days ago and synchronization is off
@@ -333,18 +345,10 @@ localDbSvc.sync()
         // If current file has no ID, get the most recent file
         .then(ifNoId(() => store.getters['file/lastOpened']))
         // If still no ID, create a new file
-        .then(ifNoId(() => {
-          const id = utils.uid();
-          store.commit('content/setItem', {
-            id: `${id}/content`,
-            text: welcomeFile,
-          });
-          store.commit('file/setItem', {
-            id,
-            name: 'Welcome file',
-          });
-          return store.state.file.itemMap[id];
-        }))
+        .then(ifNoId(() => store.dispatch('createFile', {
+          name: 'Welcome file',
+          text: welcomeFile,
+        })))
         .then((currentFile) => {
           // Fix current file ID
           if (store.getters['file/current'].id !== currentFile.id) {

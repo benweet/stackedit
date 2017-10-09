@@ -1,6 +1,6 @@
 <template>
   <div class="splash-screen">
-    <div class="splash-screen__inner background-logo"></div>
+    <div class="splash-screen__inner logo-background"></div>
   </div>
 </template>
 

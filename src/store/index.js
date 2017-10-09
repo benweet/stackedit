@@ -46,15 +46,32 @@ const store = new Vuex.Store({
     },
   },
   actions: {
-    setOffline: ({ state, commit }, value) => {
+    setOffline: ({ state, commit, dispatch }, value) => {
       if (state.offline !== value) {
         commit('setOffline', value);
         if (state.offline) {
           return Promise.reject('You are offline.');
         }
-        store.dispatch('notification/info', 'You are back online!');
+        dispatch('notification/info', 'You are back online!');
       }
       return Promise.resolve();
+    },
+    createFile({ state, getters, commit }, desc) {
+      const id = utils.uid();
+      commit('content/setItem', {
+        id: `${id}/content`,
+        text: utils.sanitizeText(desc.text || getters['data/computedSettings'].newFileContent),
+        properties: utils.sanitizeText(
+          desc.properties || getters['data/computedSettings'].newFileProperties),
+        discussions: desc.discussions || {},
+        comments: desc.comments || {},
+      });
+      commit('file/setItem', {
+        id,
+        name: utils.sanitizeName(desc.name),
+        parentId: desc.parentId || null,
+      });
+      return Promise.resolve(state.file.itemMap[id]);
     },
     deleteFile({ getters, commit }, fileId) {
       commit('file/deleteItem', fileId);

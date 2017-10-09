@@ -33,12 +33,23 @@ const setLastFocus = () => {
 setLastFocus();
 window.addEventListener('focus', setLastFocus);
 
+// For parseQueryParams()
+const parseQueryParams = (params) => {
+  const result = {};
+  params.split('&').forEach((param) => {
+    const [key, value] = param.split('=').map(decodeURIComponent);
+    result[key] = value;
+  });
+  return result;
+};
+
 // For addQueryParams()
 const urlParser = window.document.createElement('a');
 
 export default {
   workspaceId,
   origin,
+  queryParams: parseQueryParams(location.hash.slice(1)),
   oauth2RedirectUri: `${origin}/oauth2/callback`,
   lastOpened,
   cleanTrashAfter: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -52,6 +63,15 @@ export default {
     'publishLocation',
     'data',
   ],
+  textMaxLength: 150000,
+  sanitizeText(text) {
+    const result = `${text || ''}`.slice(0, this.textMaxLength);
+    // last char must be a `\n`.
+    return `${result}\n`.replace(/\n\n$/, '\n');
+  },
+  sanitizeName(name) {
+    return `${name || ''}`.slice(0, 250) || 'Untitled';
+  },
   deepCopy(obj) {
     return obj == null ? obj : JSON.parse(JSON.stringify(obj));
   },
@@ -122,6 +142,7 @@ export default {
   isUserActive() {
     return lastActivity > Date.now() - inactiveAfter && this.isWindowFocused();
   },
+  parseQueryParams,
   addQueryParams(url = '', params = {}) {
     const keys = Object.keys(params).filter(key => params[key] != null);
     if (!keys.length) {

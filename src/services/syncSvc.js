@@ -197,10 +197,12 @@ function syncFile(fileId, needSyncRestartParam = false) {
                   }
 
                   // Update or set content in store
-                  delete mergedContent.history;
                   store.commit('content/setItem', {
                     id: `${fileId}/content`,
-                    ...mergedContent,
+                    text: utils.sanitizeText(mergedContent.text),
+                    properties: utils.sanitizeText(mergedContent.properties),
+                    discussions: mergedContent.discussions,
+                    comments: mergedContent.comments,
                     hash: 0,
                   });
 

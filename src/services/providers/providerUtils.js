@@ -27,15 +27,26 @@ export default {
     return result;
   },
   parseContent(serializedContent, syncLocation) {
-    const result = utils.deepCopy(store.state.content.itemMap[`${syncLocation.fileId}/content`]) || emptyContent();
-    result.text = serializedContent;
+    const result = utils.deepCopy(store.state.content.itemMap[`${syncLocation.fileId}/content`])
+      || emptyContent();
+    result.text = utils.sanitizeText(serializedContent);
     result.history = [];
     const extractedData = dataExtractor.exec(serializedContent);
     if (extractedData) {
       try {
         const serializedData = extractedData[1].replace(/\s/g, '');
-        Object.assign(result, JSON.parse(utils.decodeBase64(serializedData)));
-        result.text = serializedContent.slice(0, extractedData.index);
+        const parsedData = JSON.parse(utils.decodeBase64(serializedData));
+        result.text = utils.sanitizeText(serializedContent.slice(0, extractedData.index));
+        if (parsedData.properties) {
+          result.properties = utils.sanitizeText(parsedData.properties);
+        }
+        if (parsedData.discussions) {
+          result.discussions = parsedData.discussions;
+        }
+        if (parsedData.comments) {
+          result.comments = parsedData.comments;
+        }
+        result.history = parsedData.history || [];
       } catch (e) {
         // Ignore
       }

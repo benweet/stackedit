@@ -48,7 +48,7 @@ export default {
     newItem(isFolder) {
       let parentId = this.$store.getters['explorer/selectedNodeFolder'].item.id;
       if (parentId === 'trash') {
-        parentId = undefined;
+        parentId = null;
       }
       this.$store.dispatch('explorer/openNode', parentId);
       this.$store.commit('explorer/setNewItem', {
@@ -92,6 +92,7 @@ export default {
                   id: selectedNode.item.id,
                   parentId: 'trash',
                 });
+                this.$store.commit('file/setCurrentId', this.$store.getters['data/lastOpenedIds'][1]);
               }
             }
           });

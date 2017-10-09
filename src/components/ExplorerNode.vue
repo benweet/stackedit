@@ -58,7 +58,7 @@ export default {
         return this.$store.state.explorer.newChildNode.item.name;
       },
       set(value) {
-        this.$store.commit('explorer/setNewItemName', value && value.slice(0, 250));
+        this.$store.commit('explorer/setNewItemName', value);
       },
     },
     editingNodeName: {
@@ -91,28 +91,18 @@ export default {
     submitNewChild(cancel) {
       const newChildNode = this.$store.state.explorer.newChildNode;
       if (!cancel && !newChildNode.isNil && newChildNode.item.name) {
-        const id = utils.uid();
         if (newChildNode.isFolder) {
+          const id = utils.uid();
           this.$store.commit('folder/setItem', {
             ...newChildNode.item,
             id,
+            name: utils.sanitizeName(newChildNode.item.name),
           });
+          this.select(id);
         } else {
-          // Add empty line at the end if needed
-          const ensureFinalNewLine = text => `${text}\n`.replace(/\n\n$/, '\n');
-          const text = ensureFinalNewLine(this.$store.getters['data/computedSettings'].newFileContent);
-          const properties = ensureFinalNewLine(this.$store.getters['data/computedSettings'].newFileProperties);
-          this.$store.commit('content/setItem', {
-            id: `${id}/content`,
-            text,
-            properties,
-          });
-          this.$store.commit('file/setItem', {
-            ...newChildNode.item,
-            id,
-          });
+          this.$store.dispatch('createFile', newChildNode.item)
+            .then(file => this.select(file.id));
         }
-        this.select(id);
       }
       this.$store.commit('explorer/setNewItem', null);
     },
@@ -123,7 +113,7 @@ export default {
       if (!cancel && id && value) {
         this.$store.commit(editingNode.isFolder ? 'folder/patchItem' : 'file/patchItem', {
           id,
-          name: value.slice(0, 250),
+          name: utils.sanitizeName(value),
         });
       }
       this.$store.commit('explorer/setEditingId', null);

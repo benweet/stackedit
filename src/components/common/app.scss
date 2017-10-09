@@ -81,7 +81,8 @@ textarea {
 
   &:active,
   &:focus,
-  &:hover {
+  &:hover,
+  .hidden-file:focus + & {
     color: #333;
     background-color: rgba(0, 0, 0, 0.067);
     outline: 0;
@@ -192,4 +193,42 @@ textarea {
 .logo-background {
   background: no-repeat center url('../assets/logo.svg');
   background-size: contain;
+}
+
+@media print {
+  body {
+    background-color: transparent !important;
+    color: #000 !important; // Black prints faster
+    overflow: visible !important;
+    position: absolute !important;
+
+    div {
+      display: none !important;
+    }
+
+    a {
+      text-decoration: underline;
+    }
+  }
+
+  body > .app,
+  body > .app > .layout,
+  body > .app > .layout > .layout__panel,
+  body > .app > .layout > .layout__panel > .layout__panel,
+  body > .app > .layout > .layout__panel > .layout__panel > .layout__panel,
+  body > .app > .layout > .layout__panel > .layout__panel > .layout__panel > .layout__panel--preview,
+  body > .app > .layout > .layout__panel > .layout__panel > .layout__panel > .layout__panel--preview div {
+    background-color: transparent !important;
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+    position: static !important;
+    width: auto !important;
+    font-size: 16px;
+  }
+
+  .preview__inner-2 {
+    padding: 0 50px !important;
+  }
+  // scss-lint:enable ImportantRule
 }

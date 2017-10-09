@@ -5,7 +5,7 @@ const editorTopPadding = 10;
 const navigationBarEditButtonsWidth = 36 * 12; // 12 buttons
 const navigationBarLeftButtonWidth = 38 + 4 + 15;
 const navigationBarRightButtonWidth = 38 + 8;
-const navigationBarSpinnerWidth = 22 + 8 + 5; // 5 for left margin
+const navigationBarSpinnerWidth = 24 + 8 + 5; // 5 for left margin
 const navigationBarLocationWidth = 20;
 const navigationBarSyncPublishButtonsWidth = 36 + 10;
 const navigationBarTitleMargin = 8;
@@ -95,17 +95,16 @@ function computeStyles(state, localSettings, getters, styles = {
     Math.floor((styles.editorWidth - styles.textWidth) / 2), minPadding);
   styles.editorPadding = `${editorTopPadding}px ${editorSidePadding}px ${bottomPadding}px`;
 
-  styles.titleMaxWidth = styles.innerWidth;
+  styles.titleMaxWidth = styles.innerWidth -
+    navigationBarLeftButtonWidth -
+    navigationBarRightButtonWidth -
+    navigationBarSpinnerWidth;
   if (styles.showEditor) {
     const syncLocations = getters['syncLocation/current'];
     const publishLocations = getters['publishLocation/current'];
-    styles.titleMaxWidth = styles.innerWidth -
-      navigationBarEditButtonsWidth -
-      navigationBarLeftButtonWidth -
-      navigationBarRightButtonWidth -
-      navigationBarSpinnerWidth -
-      (navigationBarLocationWidth * (syncLocations.length + publishLocations.length)) -
-      (navigationBarSyncPublishButtonsWidth * 2) -
+    styles.titleMaxWidth -= navigationBarEditButtonsWidth +
+      (navigationBarLocationWidth * (syncLocations.length + publishLocations.length)) +
+      (navigationBarSyncPublishButtonsWidth * 2) +
       navigationBarTitleMargin;
     if (styles.titleMaxWidth + navigationBarEditButtonsWidth < minTitleMaxWidth) {
       styles.hideLocations = true;

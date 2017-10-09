@@ -42,6 +42,7 @@ import Alert from './Alert';
 import SignalOff from './SignalOff';
 import Folder from './Folder';
 import ScrollSync from './ScrollSync';
+import Printer from './Printer';
 
 Vue.component('iconProvider', Provider);
 Vue.component('iconFormatBold', FormatBold);
@@ -86,3 +87,4 @@ Vue.component('iconAlert', Alert);
 Vue.component('iconSignalOff', SignalOff);
 Vue.component('iconFolder', Folder);
 Vue.component('iconScrollSync', ScrollSync);
+Vue.component('iconPrinter', Printer);

@@ -140,7 +140,7 @@ export default {
     submitEdit(cancel) {
       const template = this.templates[this.selectedId];
       if (!cancel && this.editingName) {
-        template.name = this.editingName.slice(0, 250);
+        template.name = utils.sanitizeName(this.editingName);
       } else {
         this.editingName = template.name;
       }

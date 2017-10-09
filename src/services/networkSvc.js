@@ -86,11 +86,7 @@ export default {
 
       msgHandler = event => event.source === wnd && event.origin === utils.origin && clean()
         .then(() => {
-          const data = {};
-          `${event.data}`.slice(1).split('&').forEach((param) => {
-            const [key, value] = param.split('=').map(decodeURIComponent);
-            data[key] = value;
-          });
+          const data = utils.parseQueryParams(`${event.data}`.slice(1));
           if (data.error || data.state !== state) {
             reject('Could not get required authorization.');
           } else {

@@ -35,6 +35,7 @@ import yaml from 'js-yaml';
 import { mapGetters } from 'vuex';
 import Tab from './Tab';
 import CodeEditor from '../CodeEditor';
+import utils from '../../services/utils';
 import defaultProperties from '../../data/defaultFileProperties.yml';
 
 const emptyProperties = '# Add custom properties for the current file here to override the default properties.\n';
@@ -79,7 +80,7 @@ export default {
       if (!this.error) {
         this.$store.commit('content/patchItem', {
           id: this.contentId,
-          properties: this.strippedCustomProperties,
+          properties: utils.sanitizeText(this.strippedCustomProperties),
         });
         this.config.resolve();
       }

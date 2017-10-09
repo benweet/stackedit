@@ -80,6 +80,7 @@ import editorSvc from '../services/editorSvc';
 import syncSvc from '../services/syncSvc';
 import publishSvc from '../services/publishSvc';
 import animationSvc from '../services/animationSvc';
+import utils from '../services/utils';
 
 export default {
   data: () => ({
@@ -171,7 +172,7 @@ export default {
       } else {
         const title = this.title.trim();
         if (title) {
-          this.$store.dispatch('file/patchCurrent', { name: title.slice(0, 250) });
+          this.$store.dispatch('file/patchCurrent', { name: utils.sanitizeName(title) });
         } else {
           this.title = this.$store.getters['file/current'].name;
         }
@@ -342,9 +343,7 @@ export default {
 }
 
 .navigation-bar__title--input,
-.navigation-bar__inner--edit-buttons,
-.navigation-bar__inner--button,
-.navigation-bar__spinner {
+.navigation-bar__inner--edit-buttons {
   display: none;
 
   .navigation-bar--editor & {
@@ -355,6 +354,7 @@ export default {
 .navigation-bar__button {
   display: none;
 
+  .navigation-bar__inner--button &,
   .navigation-bar--editor & {
     display: inline-block;
   }
@@ -374,13 +374,13 @@ $b: $d/10;
 $t: 3000ms;
 
 .navigation-bar__spinner {
-  width: 22px;
+  width: 24px;
   margin: 7px 0 0 8px;
   color: #b2b2b2;
 
   .icon {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     color: transparentize($error-color, 0.5);
   }
 }

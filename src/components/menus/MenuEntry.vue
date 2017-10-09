@@ -37,4 +37,9 @@
   border-radius: $border-radius-base;
   overflow: hidden;
 }
+
+.hidden-file {
+  position: fixed;
+  top: -999px;
+}
 </style>

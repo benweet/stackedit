@@ -110,9 +110,8 @@ export default {
     clEditor.on('contentChanged', (text) => {
       const oldContent = store.getters['content/current'];
       const newContent = {
-        ...oldContent,
-        discussions: utils.deepCopy(oldContent.discussions),
-        text,
+        ...utils.deepCopy(oldContent),
+        text: utils.sanitizeText(text),
       };
       syncDiscussionMarkers(newContent, true);
       if (!isChangePatch) {

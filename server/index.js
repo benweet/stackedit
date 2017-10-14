@@ -15,7 +15,7 @@ module.exports = (app, serveV4) => {
       // Enable CORS for fonts
       if (/\.(eot|ttf|woff|svg)$/.test(req.url)) {
         res.header('Access-Control-Allow-Origin', '*');
-      };
+      }
       next();
     });
 
@@ -33,9 +33,7 @@ module.exports = (app, serveV4) => {
   }
 
   // Serve callback.html in /app
-  app.get('/oauth2/callback', function(req, res) {
-    res.sendFile(path.join(__dirname, '../static/oauth2/callback.html'));
-  });
+  app.get('/oauth2/callback', (req, res) => res.sendFile(path.join(__dirname, '../static/oauth2/callback.html')));
 
   // Serve static resources
   if (process.env.NODE_ENV === 'production') {

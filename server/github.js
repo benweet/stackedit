@@ -1,21 +1,21 @@
-var qs = require('qs');
-var request = require('request');
+const qs = require('qs'); // eslint-disable-line import/no-extraneous-dependencies
+const request = require('request');
 
 function githubToken(clientId, code) {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     request({
       method: 'POST',
       url: 'https://github.com/login/oauth/access_token',
       qs: {
         client_id: clientId,
         client_secret: process.env.GITHUB_SECRET,
-        code: code
+        code,
       },
-    }, function(err, res, body) {
+    }, (err, res, body) => {
       if (err) {
         reject(err);
       }
-      var token = qs.parse(body).access_token;
+      const token = qs.parse(body).access_token;
       if (token) {
         resolve(token);
       } else {
@@ -25,11 +25,9 @@ function githubToken(clientId, code) {
   });
 }
 
-exports.githubToken = function (req, res) {
+exports.githubToken = (req, res) => {
   githubToken(req.query.clientId, req.query.code)
-    .then(function (token) {
-      res.send(token);
-    }, function (err) {
-      res.status(400).send(err ? err.message || err.toString() : 'bad_code');
-    });
+    .then(
+      token => res.send(token),
+      err => res.status(400).send(err ? err.message || err.toString() : 'bad_code'));
 };

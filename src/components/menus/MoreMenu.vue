@@ -19,14 +19,14 @@
     <input class="hidden-file" id="import-backup-file-input" type="file" @change="onImportBackup">
     <label class="menu-entry button flex flex--row flex--align-center" for="import-backup-file-input">
       <div class="menu-entry__icon flex flex--column flex--center">
-        <icon-hard-disk></icon-hard-disk>
+        <icon-content-save></icon-content-save>
       </div>
       <div class="flex flex--column">
         Import backup
       </div>
     </label>
     <menu-entry href="#exportBackup=true" target="_blank">
-      <icon-hard-disk slot="icon"></icon-hard-disk>
+      <icon-content-save slot="icon"></icon-content-save>
       Export backup
     </menu-entry>
     <hr>

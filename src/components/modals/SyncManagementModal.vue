@@ -21,6 +21,9 @@
           </div>
         </div>
       </div>
+      <div class="modal__info" v-if="syncLocations.length">
+        <b>Note:</b> Removing a synchronized location won't delete any file.
+      </div>
       <div class="modal__button-bar">
         <button class="button" @click="config.reject()">Cancel</button>
         <button class="button" @click="config.resolve()">Ok</button>

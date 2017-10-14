@@ -160,7 +160,7 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba(180, 180, 180, 0.75);
+  background-color: rgba(128, 128, 128, 0.5);
   overflow: auto;
 }
 

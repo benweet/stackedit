@@ -57,4 +57,28 @@ export default {
     }));
     return result;
   },
+  /**
+   * Find and open a file location that fits the criteria
+   */
+  openFileWithLocation(allLocations, criteria) {
+    return allLocations.some((location) => {
+        // If every field fits the criteria
+      if (Object.keys(criteria).every(key => criteria[key] === location[key])) {
+        // Found one location that fits, open it if it exists
+        const file = store.state.file.itemMap[location.fileId];
+        if (file) {
+          store.commit('file/setCurrentId', file.id);
+          // If file is in the trash, restore it
+          if (file.parentId === 'trash') {
+            store.commit('file/patchItem', {
+              ...file,
+              parentId: null,
+            });
+          }
+          return true;
+        }
+      }
+      return false;
+    });
+  },
 };

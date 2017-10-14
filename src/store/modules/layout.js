@@ -2,7 +2,7 @@ const editorMinWidth = 320;
 const minPadding = 20;
 const previewButtonWidth = 55;
 const editorTopPadding = 10;
-const navigationBarEditButtonsWidth = 36 * 12; // 12 buttons
+const navigationBarEditButtonsWidth = (36 * 14) + 8; // 14 buttons + 1 spacer
 const navigationBarLeftButtonWidth = 38 + 4 + 15;
 const navigationBarRightButtonWidth = 38 + 8;
 const navigationBarSpinnerWidth = 24 + 8 + 5; // 5 for left margin
@@ -118,10 +118,18 @@ function computeStyles(state, localSettings, getters, styles = {
 export default {
   namespaced: true,
   state: {
+    canUndo: false,
+    canRedo: false,
     bodyWidth: 0,
     bodyHeight: 0,
   },
   mutations: {
+    setCanUndo: (state, value) => {
+      state.canUndo = value;
+    },
+    setCanRedo: (state, value) => {
+      state.canRedo = value;
+    },
     updateBodySize: (state) => {
       state.bodyWidth = document.body.clientWidth;
       state.bodyHeight = document.body.clientHeight;

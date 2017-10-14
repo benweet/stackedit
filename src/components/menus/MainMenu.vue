@@ -44,14 +44,14 @@
     <input class="hidden-file" id="import-disk-file-input" type="file" @change="onImportFile">
     <label class="menu-entry button flex flex--row flex--align-center" for="import-disk-file-input">
       <div class="menu-entry__icon flex flex--column flex--center">
-        <icon-hard-disk></icon-hard-disk>
+        <icon-content-save></icon-content-save>
       </div>
       <div class="flex flex--column">
         Import from disk
       </div>
     </label>
     <menu-entry @click.native="setPanel('export')">
-      <icon-hard-disk slot="icon"></icon-hard-disk>
+      <icon-content-save slot="icon"></icon-content-save>
       Export to disk
     </menu-entry>
     <hr>

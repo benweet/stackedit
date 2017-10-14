@@ -12,7 +12,7 @@
     "postinstall": "gulp build-prism",
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
-    "lint": "eslint --ext .js,.vue src",
+    "lint": "eslint --ext .js,.vue src server",
     "preversion": "npm run lint",
     "postversion": "git push origin master --tags && npm publish",
     "patch": "npm version patch -m \"Tag v%s\"",

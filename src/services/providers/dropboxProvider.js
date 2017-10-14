@@ -74,23 +74,15 @@ export default providerRegistry.register({
       if (!path) {
         return null;
       }
-      let syncLocation;
-      // Try to find an existing sync location
-      store.getters['syncLocation/items'].some((existingSyncLocation) => {
-        if (existingSyncLocation.providerId === this.id &&
-          existingSyncLocation.path === path
-        ) {
-          syncLocation = existingSyncLocation;
-        }
-        return syncLocation;
-      });
-      if (syncLocation) {
-        // Sync location already exists, just open the file
-        store.commit('file/setCurrentId', syncLocation.fileId);
+      if (providerUtils.openFileWithLocation(store.getters['syncLocation/items'], {
+        providerId: this.id,
+        path,
+      })) {
+        // File exists and has just been opened. Next...
         return openOneFile();
       }
-      // Sync location does not exist, download content from Dropbox and create the file
-      syncLocation = {
+      // Download content from Dropbox and create the file
+      const syncLocation = {
         path,
         providerId: this.id,
         sub: token.sub,

@@ -34,6 +34,13 @@
       </div>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--edit-buttons">
+      <button class="navigation-bar__button button" @click="undo" v-title="'Undo'" :disabled="!canUndo">
+        <icon-undo></icon-undo>
+      </button>
+      <button class="navigation-bar__button button" @click="redo" v-title="'Redo'" :disabled="!canRedo">
+        <icon-redo></icon-redo>
+      </button>
+      <div class="navigation-bar__spacer"></div>
       <button class="navigation-bar__button button" @click="pagedownClick('bold')" v-title="'Bold'">
         <icon-format-bold></icon-format-bold>
       </button>
@@ -77,6 +84,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import editorSvc from '../services/editorSvc';
+import editorEngineSvc from '../services/editorEngineSvc';
 import syncSvc from '../services/syncSvc';
 import publishSvc from '../services/publishSvc';
 import animationSvc from '../services/animationSvc';
@@ -97,6 +105,10 @@ export default {
       'isSyncRequested',
       'isPublishRequested',
       'currentLocation',
+    ]),
+    ...mapState('layout', [
+      'canUndo',
+      'canRedo',
     ]),
     ...mapGetters('layout', [
       'styles',
@@ -148,6 +160,12 @@ export default {
       'toggleExplorer',
       'toggleSideBar',
     ]),
+    undo() {
+      return editorEngineSvc.clEditor.undoMgr.undo();
+    },
+    redo() {
+      return editorEngineSvc.clEditor.undoMgr.redo();
+    },
     requestSync() {
       if (this.isSyncPossible && !this.isSyncRequested) {
         syncSvc.requestSync();
@@ -234,7 +252,8 @@ export default {
 .navigation-bar__inner--edit-buttons {
   margin-left: 15px;
 
-  .navigation-bar__button {
+  .navigation-bar__button,
+  .navigation-bar__spacer {
     float: left;
   }
 }
@@ -243,13 +262,20 @@ export default {
   flex: none;
 }
 
-.navigation-bar__button {
-  width: 36px;
-  height: 36px;
-  padding: 0 8px;
+$button-size: 36px;
+
+.navigation-bar__button,
+.navigation-bar__spacer {
+  height: $button-size;
+  padding: 0 4px;
 
   /* prevent from seeing wrapped buttons */
   margin-bottom: 20px;
+}
+
+.navigation-bar__button {
+  width: $button-size;
+  padding: 0 8px;
 
   .navigation-bar__inner--button & {
     padding: 0 4px;

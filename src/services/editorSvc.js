@@ -448,6 +448,16 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
       };
       this.parsingCtx = parsingCtx;
     });
+    editorEngineSvc.clEditor.undoMgr.on('undoStateChange', () => {
+      const canUndo = editorEngineSvc.clEditor.undoMgr.canUndo();
+      if (canUndo !== store.state.layout.canUndo) {
+        store.commit('layout/setCanUndo', canUndo);
+      }
+      const canRedo = editorEngineSvc.clEditor.undoMgr.canRedo();
+      if (canRedo !== store.state.layout.canRedo) {
+        store.commit('layout/setCanRedo', canRedo);
+      }
+    });
     this.pagedownEditor = pagedown({
       input: Object.create(editorEngineSvc.clEditor),
     });

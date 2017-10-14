@@ -56,30 +56,22 @@ export default providerRegistry.register({
         driveFileId: driveFile.id,
       }));
   },
-  openFiles(token, files) {
+  openFiles(token, driveFiles) {
     const openOneFile = () => {
-      const file = files.pop();
-      if (!file) {
+      const driveFile = driveFiles.pop();
+      if (!driveFile) {
         return null;
       }
-      let syncLocation;
-      // Try to find an existing sync location
-      store.getters['syncLocation/items'].some((existingSyncLocation) => {
-        if (existingSyncLocation.providerId === this.id &&
-          existingSyncLocation.driveFileId === file.id
-        ) {
-          syncLocation = existingSyncLocation;
-        }
-        return syncLocation;
-      });
-      if (syncLocation) {
-        // Sync location already exists, just open the file
-        store.commit('file/setCurrentId', syncLocation.fileId);
+      if (providerUtils.openFileWithLocation(store.getters['syncLocation/items'], {
+        providerId: this.id,
+        driveFileId: driveFile.id,
+      })) {
+        // File exists and has just been opened. Next...
         return openOneFile();
       }
-      // Sync location does not exist, download content from Google Drive and create the file
-      syncLocation = {
-        driveFileId: file.id,
+      // Download content from Google Drive and create the file
+      const syncLocation = {
+        driveFileId: driveFile.id,
         providerId: this.id,
         sub: token.sub,
       };
@@ -93,7 +85,7 @@ export default providerRegistry.register({
           });
           store.commit('file/setItem', {
             id,
-            name: utils.sanitizeName(file.name),
+            name: utils.sanitizeName(driveFile.name),
             parentId: store.getters['file/current'].parentId,
           });
           store.commit('syncLocation/setItem', {
@@ -104,7 +96,7 @@ export default providerRegistry.register({
           store.commit('file/setCurrentId', id);
           store.dispatch('notification/info', `${store.getters['file/current'].name} was imported from Google Drive.`);
         }, () => {
-          store.dispatch('notification/error', `Could not open file ${file.id}.`);
+          store.dispatch('notification/error', `Could not open file ${driveFile.id}.`);
         })
         .then(() => openOneFile());
     };

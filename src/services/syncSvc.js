@@ -157,7 +157,7 @@ function syncFile(fileId, syncContext = new SyncContext()) {
       const isWelcomeFile = () => {
         const file = getFile();
         const content = getContent();
-        const welcomeFileHashes = store.getters['data/welcomeFileHashes'];
+        const welcomeFileHashes = store.getters['data/localSettings'].welcomeFileHashes;
         const hash = content ? utils.hash(content.text) : 0;
         return file.name === 'Welcome file' && welcomeFileHashes[hash];
       };

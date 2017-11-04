@@ -327,10 +327,13 @@ localDbSvc.sync()
 
     // Save welcome file content hash if not done already
     const hash = utils.hash(welcomeFile);
-    const welcomeFileHashes = store.getters['data/welcomeFileHashes'];
+    const welcomeFileHashes = store.getters['data/localSettings'].welcomeFileHashes;
     if (!welcomeFileHashes[hash]) {
-      store.dispatch('data/patchWelcomeFileHashes', {
-        [hash]: 1,
+      store.dispatch('data/patchLocalSettings', {
+        welcomeFileHashes: {
+          ...welcomeFileHashes,
+          [hash]: 1,
+        },
       });
     }
 

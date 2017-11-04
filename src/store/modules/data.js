@@ -211,10 +211,6 @@ module.actions.setSyncData = setter('syncData');
 module.getters.dataSyncData = getter('dataSyncData');
 module.actions.patchDataSyncData = patcher('dataSyncData');
 
-// Welcome file content hashes (used as a file sync blacklist)
-module.getters.welcomeFileHashes = getter('welcomeFileHashes');
-module.actions.patchWelcomeFileHashes = patcher('welcomeFileHashes');
-
 // Tokens
 module.getters.tokens = getter('tokens');
 module.getters.googleTokens = (state, getters) => getters.tokens.google || {};

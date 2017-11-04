@@ -1,4 +1,5 @@
 export default () => ({
+  welcomeFileHashes: {},
   showNavigationBar: true,
   showEditor: true,
   showSidePreview: true,

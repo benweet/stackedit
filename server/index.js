@@ -28,17 +28,13 @@ module.exports = (app, serveV4) => {
     app.use(compression());
   }
 
-  // Parse body mostly for PayPal IPN
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({
-    extended: false,
-  }));
-
   app.get('/oauth2/githubToken', github.githubToken);
   app.get('/userInfo', user.userInfo);
-  app.post('/paypalIpn', user.paypalIpn);
   app.post('/pdfExport', pdf.generate);
   app.post('/pandocExport', pandoc.generate);
+  app.post('/paypalIpn', bodyParser.urlencoded({
+    extended: false,
+  }), user.paypalIpn);
 
   if (serveV4) {
     /* eslint-disable global-require, import/no-unresolved */

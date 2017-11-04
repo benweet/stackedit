@@ -1,20 +1,20 @@
 <template>
-  <div class="modal__inner-1" role="dialog" aria-label="Insert link">
-    <div class="modal__inner-2">
-      <p>Please provide a <b>URL</b> for your link.
+  <modal-inner aria-label="Insert link">
+    <div class="modal__content">
+      <p>Please provide a <b>URL</b> for your link.</p>
       <form-entry label="URL" error="url">
         <input slot="field" class="textfield" type="text" v-model.trim="url" @keyup.enter="resolve()">
       </form-entry>
-      <div class="modal__button-bar">
-        <button class="button" @click="reject()">Cancel</button>
-        <button class="button" @click="resolve()">Ok</button>
-      </div>
     </div>
-  </div>
+    <div class="modal__button-bar">
+      <button class="button" @click="reject()">Cancel</button>
+      <button class="button" @click="resolve()">Ok</button>
+    </div>
+  </modal-inner>
 </template>
 
 <script>
-import modalTemplate from './modalTemplate';
+import modalTemplate from './common/modalTemplate';
 
 export default modalTemplate({
   data: () => ({

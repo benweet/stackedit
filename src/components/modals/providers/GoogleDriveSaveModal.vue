@@ -1,6 +1,6 @@
 <template>
-  <div class="modal__inner-1" role="dialog" aria-label="Synchronize with Google Drive">
-    <div class="modal__inner-2">
+  <modal-inner aria-label="Synchronize with Google Drive">
+    <div class="modal__content">
       <div class="modal__image">
         <icon-provider provider-id="googleDrive"></icon-provider>
       </div>
@@ -20,18 +20,18 @@
           This will overwrite the file on the server.
         </div>
       </form-entry>
-      <div class="modal__button-bar">
-        <button class="button" @click="config.reject()">Cancel</button>
-        <button class="button" @click="resolve()">Ok</button>
-      </div>
     </div>
-  </div>
+    <div class="modal__button-bar">
+      <button class="button" @click="config.reject()">Cancel</button>
+      <button class="button" @click="resolve()">Ok</button>
+    </div>
+  </modal-inner>
 </template>
 
 <script>
-import googleHelper from '../../services/providers/helpers/googleHelper';
-import googleDriveProvider from '../../services/providers/googleDriveProvider';
-import modalTemplate from './modalTemplate';
+import googleHelper from '../../../services/providers/helpers/googleHelper';
+import googleDriveProvider from '../../../services/providers/googleDriveProvider';
+import modalTemplate from '../common/modalTemplate';
 
 export default modalTemplate({
   data: () => ({

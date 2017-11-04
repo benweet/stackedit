@@ -6,6 +6,7 @@ import defaultSettings from '../../data/defaultSettings.yml';
 import defaultLocalSettings from '../../data/defaultLocalSettings';
 import plainHtmlTemplate from '../../data/plainHtmlTemplate.html';
 import styledHtmlTemplate from '../../data/styledHtmlTemplate.html';
+import styledHtmlWithTocTemplate from '../../data/styledHtmlWithTocTemplate.html';
 import jekyllSiteTemplate from '../../data/jekyllSiteTemplate.html';
 
 const itemTemplate = (id, data = {}) => ({ id, type: 'data', data, hash: 0 });
@@ -61,15 +62,37 @@ module.actions.toggleNavigationBar = localSettingsToggler('showNavigationBar');
 module.actions.toggleEditor = localSettingsToggler('showEditor');
 module.actions.toggleSidePreview = localSettingsToggler('showSidePreview');
 module.actions.toggleStatusBar = localSettingsToggler('showStatusBar');
-module.actions.toggleSideBar = ({ getters, dispatch }, value) => {
-  dispatch('setSideBarPanel'); // Reset side bar
-  dispatch('patchLocalSettings', {
-    showSideBar: value === undefined ? !getters.localSettings.showSideBar : value,
-  });
-};
-module.actions.toggleExplorer = localSettingsToggler('showExplorer');
 module.actions.toggleScrollSync = localSettingsToggler('scrollSync');
 module.actions.toggleFocusMode = localSettingsToggler('focusMode');
+const notEnoughSpace = (rootGetters) => {
+  const constants = rootGetters['layout/constants'];
+  return document.body.clientWidth < constants.editorMinWidth +
+    constants.explorerWidth +
+    constants.sideBarWidth +
+    constants.buttonBarWidth;
+};
+module.actions.toggleSideBar = ({ getters, dispatch, rootGetters }, value) => {
+  // Reset side bar
+  dispatch('setSideBarPanel');
+  // Close explorer if not enough space
+  const patch = {
+    showSideBar: value === undefined ? !getters.localSettings.showSideBar : value,
+  };
+  if (patch.showSideBar && notEnoughSpace(rootGetters)) {
+    patch.showExplorer = false;
+  }
+  dispatch('patchLocalSettings', patch);
+};
+module.actions.toggleExplorer = ({ getters, dispatch, rootGetters }, value) => {
+  // Close side bar if not enough space
+  const patch = {
+    showExplorer: value === undefined ? !getters.localSettings.showExplorer : value,
+  };
+  if (patch.showExplorer && notEnoughSpace(rootGetters)) {
+    patch.showSideBar = false;
+  }
+  dispatch('patchLocalSettings', patch);
+};
 module.actions.setSideBarPanel = ({ dispatch }, value) => dispatch('patchLocalSettings', {
   sideBarPanel: value === undefined ? 'menu' : value,
 });
@@ -112,6 +135,7 @@ const additionalTemplates = {
   plainText: makeAdditionalTemplate('Plain text', '{{{files.0.content.text}}}'),
   plainHtml: makeAdditionalTemplate('Plain HTML', plainHtmlTemplate),
   styledHtml: makeAdditionalTemplate('Styled HTML', styledHtmlTemplate),
+  styledHtmlWithToc: makeAdditionalTemplate('Styled HTML with TOC', styledHtmlWithTocTemplate),
   jekyllSite: makeAdditionalTemplate('Jekyll site', jekyllSiteTemplate),
 };
 module.getters.allTemplates = (state, getters) => ({
@@ -186,6 +210,10 @@ module.actions.setSyncData = setter('syncData');
 // Data sync data (used to sync settings and settings)
 module.getters.dataSyncData = getter('dataSyncData');
 module.actions.patchDataSyncData = patcher('dataSyncData');
+
+// Welcome file content hashes (used as a file sync blacklist)
+module.getters.welcomeFileHashes = getter('welcomeFileHashes');
+module.actions.patchWelcomeFileHashes = patcher('welcomeFileHashes');
 
 // Tokens
 module.getters.tokens = getter('tokens');

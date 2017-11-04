@@ -1,6 +1,6 @@
 <template>
-  <div class="modal__inner-1 modal__inner-1--file-properties" role="dialog" aria-label="File properties">
-    <div class="modal__inner-2">
+  <modal-inner class="modal__inner-1--file-properties" aria-label="File properties">
+    <div class="modal__content">
       <div class="tabs flex flex--row">
         <tab :active="tab === 'custom'" @click="tab = 'custom'">
           Current file properties
@@ -22,26 +22,30 @@
         </div>
       </div>
       <div class="modal__error modal__error--file-properties">{{error}}</div>
-      <div class="modal__button-bar">
-        <button class="button" @click="config.reject()">Cancel</button>
-        <button class="button" @click="resolve()">Ok</button>
-      </div>
     </div>
-  </div>
+    <div class="modal__button-bar">
+      <button class="button" @click="config.reject()">Cancel</button>
+      <button class="button" @click="resolve()">Ok</button>
+    </div>
+  </modal-inner>
 </template>
 
 <script>
 import yaml from 'js-yaml';
 import { mapGetters } from 'vuex';
-import Tab from './Tab';
+import ModalInner from './common/ModalInner';
+import Tab from './common/Tab';
 import CodeEditor from '../CodeEditor';
 import utils from '../../services/utils';
 import defaultProperties from '../../data/defaultFileProperties.yml';
 
-const emptyProperties = '# Add custom properties for the current file here to override the default properties.\n';
+const emptyProperties = `# Add custom properties for the current file here
+# to override the default properties.
+`;
 
 export default {
   components: {
+    ModalInner,
     Tab,
     CodeEditor,
   },

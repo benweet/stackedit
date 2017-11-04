@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
     <div class="layout__panel flex flex--row" :class="{'flex--end': styles.showSideBar}">
-      <div class="layout__panel layout__panel--explorer" v-show="styles.showExplorer" :aria-hidden="!styles.showExplorer" :style="{ width: constants.explorerWidth + 'px' }">
+      <div class="layout__panel layout__panel--explorer" v-show="styles.showExplorer" :aria-hidden="!styles.showExplorer" :style="{ width: styles.layoutOverflow ? '100%' : constants.explorerWidth + 'px' }">
         <explorer></explorer>
       </div>
       <div class="layout__panel flex flex--column" :style="{ width: styles.innerWidth + 'px' }">
@@ -11,6 +11,9 @@
         <div class="layout__panel flex flex--row" :style="{ height: styles.innerHeight + 'px' }">
           <div class="layout__panel layout__panel--editor" v-show="styles.showEditor" :style="{ width: styles.editorWidth + 'px', 'font-size': styles.fontSize + 'px' }">
             <editor></editor>
+            <div v-if="showFindReplace" class="layout__panel layout__panel--find-replace">
+              <find-replace></find-replace>
+            </div>
           </div>
           <div class="layout__panel layout__panel--button-bar" v-show="styles.showEditor" :style="{ width: constants.buttonBarWidth + 'px' }">
             <button-bar></button-bar>
@@ -23,7 +26,7 @@
           <status-bar></status-bar>
         </div>
       </div>
-      <div class="layout__panel layout__panel--side-bar" v-show="styles.showSideBar" :style="{ width: constants.sideBarWidth + 'px' }">
+      <div class="layout__panel layout__panel--side-bar" v-show="styles.showSideBar" :style="{ width: styles.layoutOverflow ? '100%' : constants.sideBarWidth + 'px' }">
         <side-bar></side-bar>
       </div>
     </div>
@@ -39,7 +42,9 @@ import Explorer from './Explorer';
 import SideBar from './SideBar';
 import Editor from './Editor';
 import Preview from './Preview';
+import FindReplace from './FindReplace';
 import editorSvc from '../services/editorSvc';
+import editorEngineSvc from '../services/editorEngineSvc';
 
 export default {
   components: {
@@ -50,12 +55,16 @@ export default {
     SideBar,
     Editor,
     Preview,
+    FindReplace,
   },
   computed: {
     ...mapGetters('layout', [
       'constants',
       'styles',
     ]),
+    showFindReplace() {
+      return !!this.$store.state.findReplace.type;
+    },
   },
   methods: {
     ...mapMutations('layout', [
@@ -75,6 +84,10 @@ export default {
     const previewElt = this.$el.querySelector('.preview__inner-2');
     const tocElt = this.$el.querySelector('.toc__inner');
     editorSvc.init(editorElt, previewElt, tocElt);
+
+    // Focus on the editor every time reader mode is disabled
+    this.$watch(() => this.styles.showEditor,
+      showEditor => showEditor && editorEngineSvc.clEditor.focus());
   },
   destroyed() {
     window.removeEventListener('resize', this.updateStyle);
@@ -121,5 +134,15 @@ export default {
 .layout__panel--explorer,
 .layout__panel--side-bar {
   background-color: #dadada;
+}
+
+.layout__panel--find-replace {
+  background-color: #e6e6e6;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  height: auto;
+  border-top-right-radius: $border-radius-base;
 }
 </style>

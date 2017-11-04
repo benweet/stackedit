@@ -10,9 +10,13 @@ editor:
   # Use monospaced font only
   monospacedFontOnly: false
 
-# Keyboard shortcuts (see https://craig.is/killing/mice)
+# Keyboard shortcuts
+# See https://craig.is/killing/mice
 shortcuts:
   mod+s: sync
+  mod+f: find
+  mod+alt+f: replace
+  mod+g: replace
   mod+shift+b: bold
   mod+shift+i: italic
   mod+shift+l: link
@@ -33,6 +37,23 @@ shortcuts:
     params:
     - '<== '
     - '⇐ '
+
+# Options passed to wkhtmltopdf
+# See https://wkhtmltopdf.org/usage/wkhtmltopdf.txt
+wkhtmltopdf:
+  marginTop: 25
+  marginRight: 25
+  marginBottom: 25
+  marginLeft: 25
+  # A3, A4, Legal or Letter
+  pageSize: A4
+
+# Options passed to pandoc
+# See https://pandoc.org/MANUAL.html
+pandoc:
+  highlightStyle: kate
+  toc: true
+  tocDepth: 3
 
 # Default content for new files
 newFileContent: |

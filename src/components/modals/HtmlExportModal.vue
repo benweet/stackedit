@@ -1,8 +1,9 @@
 <template>
-  <div class="modal__inner-1" role="dialog" aria-label="Export to HTML">
-    <div class="modal__inner-2">
+  <modal-inner aria-label="Export to HTML">
+    <div class="modal__content">
+      <p>Please choose a template for your <b>HTML export</b>.</p>
       <form-entry label="Template">
-        <select slot="field" class="textfield" v-model="selectedTemplate" @keyup.enter="resolve()">
+        <select class="textfield" slot="field" v-model="selectedTemplate" @keyup.enter="resolve()">
           <option v-for="(template, id) in allTemplates" :key="id" :value="id">
             {{ template.name }}
           </option>
@@ -11,19 +12,19 @@
           <a href="javascript:void(0)" @click="configureTemplates">Configure templates</a>
         </div>
       </form-entry>
-      <div class="modal__button-bar">
-        <button class="button button--copy">Copy to clipboard</button>
-        <button class="button" @click="config.reject()">Cancel</button>
-        <button class="button" @click="resolve()">Ok</button>
-      </div>
     </div>
-  </div>
+    <div class="modal__button-bar">
+      <button class="button button--copy">Copy to clipboard</button>
+      <button class="button" @click="config.reject()">Cancel</button>
+      <button class="button" @click="resolve()">Ok</button>
+    </div>
+  </modal-inner>
 </template>
 
 <script>
 import Clipboard from 'clipboard';
 import exportSvc from '../../services/exportSvc';
-import modalTemplate from './modalTemplate';
+import modalTemplate from './common/modalTemplate';
 
 export default modalTemplate({
   data: () => ({
@@ -33,12 +34,16 @@ export default modalTemplate({
     selectedTemplate: 'htmlExportTemplate',
   },
   mounted() {
+    let timeoutId;
     this.$watch('selectedTemplate', (selectedTemplate) => {
-      const currentFile = this.$store.getters['file/current'];
-      exportSvc.applyTemplate(currentFile.id, this.allTemplates[selectedTemplate])
-        .then((html) => {
-          this.result = html;
-        });
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        const currentFile = this.$store.getters['file/current'];
+        exportSvc.applyTemplate(currentFile.id, this.allTemplates[selectedTemplate])
+          .then((html) => {
+            this.result = html;
+          });
+      }, 10);
     }, {
       immediate: true,
     });
@@ -51,9 +56,10 @@ export default modalTemplate({
   },
   methods: {
     resolve() {
+      const config = this.config;
       const currentFile = this.$store.getters['file/current'];
+      config.resolve();
       exportSvc.exportToDisk(currentFile.id, 'html', this.allTemplates[this.selectedTemplate]);
-      this.config.resolve();
     },
   },
 });

@@ -1,21 +1,18 @@
-import 'babel-polyfill';
-import 'indexeddbshim/dist/indexeddbshim';
 import FileSaver from 'file-saver';
 import utils from './utils';
 import store from '../store';
 import welcomeFile from '../data/welcomeFile.md';
 
-const indexedDB = window.indexedDB;
 const dbVersion = 1;
 const dbVersionKey = `${utils.workspaceId}/localDbVersion`;
 const dbStoreName = 'objects';
 const exportBackup = utils.queryParams.exportBackup;
-
-if (!indexedDB) {
-  throw new Error('Your browser is not supported. Please upgrade to the latest version.');
+if (exportBackup) {
+  location.hash = '';
 }
 
 const deleteMarkerMaxAge = 1000;
+const checkSponsorshipAfter = (5 * 60 * 1000) + (30 * 1000); // tokenExpirationMargin + 30 sec
 
 class Connection {
   constructor() {
@@ -328,6 +325,15 @@ localDbSvc.sync()
     // Set the ready flag
     store.commit('setReady');
 
+    // Save welcome file content hash if not done already
+    const hash = utils.hash(welcomeFile);
+    const welcomeFileHashes = store.getters['data/welcomeFileHashes'];
+    if (!welcomeFileHashes[hash]) {
+      store.dispatch('data/patchWelcomeFileHashes', {
+        [hash]: 1,
+      });
+    }
+
     // If app was last opened 7 days ago and synchronization is off
     if (!store.getters['data/loginToken'] &&
       (utils.lastOpened + utils.cleanTrashAfter < Date.now())
@@ -336,6 +342,21 @@ localDbSvc.sync()
       store.getters['file/items']
         .filter(file => file.parentId === 'trash') // If file is in the trash
         .forEach(file => store.dispatch('deleteFile', file.id));
+    }
+
+    // Enable sponsorship
+    if (utils.queryParams.paymentSuccess) {
+      location.hash = '';
+      store.dispatch('modal/paymentSuccess');
+      const loginToken = store.getters['data/loginToken'];
+      // Force check sponsorship after a few seconds
+      const currentDate = Date.now();
+      if (loginToken && loginToken.expiresOn > currentDate - checkSponsorshipAfter) {
+        store.dispatch('data/setGoogleToken', {
+          ...loginToken,
+          expiresOn: currentDate - checkSponsorshipAfter,
+        });
+      }
     }
 
     // watch file changing

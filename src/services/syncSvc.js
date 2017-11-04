@@ -123,21 +123,43 @@ function createSyncLocation(syncLocation) {
     });
 }
 
-function syncFile(fileId, needSyncRestartParam = false) {
-  let needSyncRestart = needSyncRestartParam;
+class SyncContext {
+  constructor() {
+    this.restart = false;
+    this.synced = {};
+  }
+}
+
+class FileSyncContext {
+  constructor() {
+    this.downloaded = {};
+    this.errors = {};
+  }
+}
+
+function syncFile(fileId, syncContext = new SyncContext()) {
+  const fileSyncContext = new FileSyncContext();
+  syncContext.synced[`${fileId}/content`] = true;
   return localDbSvc.loadSyncedContent(fileId)
     .then(() => localDbSvc.loadItem(`${fileId}/content`)
       .catch(() => {})) // Item may not exist if content has not been downloaded yet
     .then(() => {
+      const getFile = () => store.state.file.itemMap[fileId];
       const getContent = () => store.state.content.itemMap[`${fileId}/content`];
       const getSyncedContent = () => store.state.syncedContent.itemMap[`${fileId}/syncedContent`];
       const getSyncHistoryItem = syncLocationId => getSyncedContent().syncHistory[syncLocationId];
-      const downloadedLocations = {};
-      const errorLocations = {};
 
       const isLocationSynced = (syncLocation) => {
         const syncHistoryItem = getSyncHistoryItem(syncLocation.id);
         return syncHistoryItem && syncHistoryItem[LAST_SENT] === getContent().hash;
+      };
+
+      const isWelcomeFile = () => {
+        const file = getFile();
+        const content = getContent();
+        const welcomeFileHashes = store.getters['data/welcomeFileHashes'];
+        const hash = content ? utils.hash(content.text) : 0;
+        return file.name === 'Welcome file' && welcomeFileHashes[hash];
       };
 
       const syncOneContentLocation = () => {
@@ -149,16 +171,21 @@ function syncFile(fileId, needSyncRestartParam = false) {
         }
         let result;
         syncLocations.some((syncLocation) => {
-          if (!errorLocations[syncLocation.id] &&
-            (!downloadedLocations[syncLocation.id] || !isLocationSynced(syncLocation))
+          const provider = providerRegistry.providers[syncLocation.providerId];
+          if (
+            // Skip if it previously threw an error
+            !fileSyncContext.errors[syncLocation.id] &&
+            // Skip if it has previously been downloaded and has not changed since then
+            (!fileSyncContext.downloaded[syncLocation.id] || !isLocationSynced(syncLocation)) &&
+            // Skip welcome file if not synchronized explicitly
+            (syncLocations.length > 1 || !isWelcomeFile())
           ) {
-            const provider = providerRegistry.providers[syncLocation.providerId];
             const token = provider.getToken(syncLocation);
             result = provider && token && store.dispatch('queue/doWithLocation', {
               location: syncLocation,
               promise: provider.downloadContent(token, syncLocation)
                 .then((serverContent = null) => {
-                  downloadedLocations[syncLocation.id] = true;
+                  fileSyncContext.downloaded[syncLocation.id] = true;
 
                   const syncedContent = getSyncedContent();
                   const syncHistoryItem = getSyncHistoryItem(syncLocation.id);
@@ -192,7 +219,7 @@ function syncFile(fileId, needSyncRestartParam = false) {
                   })();
 
                   if (!mergedContent) {
-                    errorLocations[syncLocation.id] = true;
+                    fileSyncContext.errors[syncLocation.id] = true;
                     return null;
                   }
 
@@ -274,9 +301,10 @@ function syncFile(fileId, needSyncRestartParam = false) {
                       }
 
                       // If content was just created, restart sync to create the file as well
-                      const syncDataByItemId = store.getters['data/syncDataByItemId'];
-                      if (!syncDataByItemId[fileId]) {
-                        needSyncRestart = true;
+                      if (provider === mainProvider &&
+                        !store.getters['data/syncDataByItemId'][fileId]
+                      ) {
+                        syncContext.restart = true;
                       }
                     });
                 })
@@ -286,7 +314,7 @@ function syncFile(fileId, needSyncRestartParam = false) {
                   }
                   console.error(err); // eslint-disable-line no-console
                   store.dispatch('notification/error', err);
-                  errorLocations[syncLocation.id] = true;
+                  fileSyncContext.errors[syncLocation.id] = true;
                 }),
             })
             .then(() => syncOneContentLocation());
@@ -304,15 +332,13 @@ function syncFile(fileId, needSyncRestartParam = false) {
         .then(() => {
           throw err;
         }))
-    .then(
-      () => needSyncRestart,
-      (err) => {
-        if (err && err.message === 'TOO_LATE') {
-          // Restart sync
-          return syncFile(fileId, needSyncRestart);
-        }
-        throw err;
-      });
+    .catch((err) => {
+      if (err && err.message === 'TOO_LATE') {
+        // Restart sync
+        return syncFile(fileId, syncContext);
+      }
+      throw err;
+    });
 }
 
 
@@ -385,6 +411,7 @@ function syncDataItem(dataId) {
 }
 
 function sync() {
+  const syncContext = new SyncContext();
   const mainToken = store.getters['data/loginToken'];
   return mainProvider.getChanges(mainToken)
     .then((changes) => {
@@ -481,8 +508,12 @@ function sync() {
           const loadedContent = store.state.content.itemMap[contentId];
           const hash = loadedContent ? loadedContent.hash : localDbSvc.hashMap.content[contentId];
           const syncData = store.getters['data/syncDataByItemId'][contentId];
-          // Sync if item hash and syncData hash are inconsistent
-          if (!syncData || hash !== syncData.hash) {
+          if (
+            // Sync if syncData does not exist and content syncing was not attempted yet
+            (!syncData && !syncContext.synced[contentId]) ||
+            // Or if content hash and syncData hash are inconsistent
+            (syncData && hash !== syncData.hash)
+          ) {
             [fileId] = contentId.split('/');
           }
           return fileId;
@@ -490,13 +521,13 @@ function sync() {
         return fileId;
       };
 
-      const syncNextFile = (needSyncRestartParam) => {
+      const syncNextFile = () => {
         const fileId = getOneFileIdToSync();
         if (!fileId) {
-          return needSyncRestartParam;
+          return null;
         }
-        return syncFile(fileId, needSyncRestartParam)
-          .then(needSyncRestart => syncNextFile(needSyncRestart));
+        return syncFile(fileId, syncContext)
+          .then(() => syncNextFile());
       };
 
       return Promise.resolve()
@@ -508,14 +539,14 @@ function sync() {
           const currentFileId = store.getters['file/current'].id;
           if (currentFileId) {
             // Sync current file first
-            return syncFile(currentFileId)
-              .then(needSyncRestart => syncNextFile(needSyncRestart));
+            return syncFile(currentFileId, syncContext)
+              .then(() => syncNextFile());
           }
           return syncNextFile();
         })
         .then(
-          (needSyncRestart) => {
-            if (needSyncRestart) {
+          () => {
+            if (syncContext.restart) {
               // Restart sync
               return sync();
             }

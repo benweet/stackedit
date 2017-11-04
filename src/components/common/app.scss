@@ -30,6 +30,16 @@ body {
   }
 }
 
+pre > code {
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.table-wrapper {
+  max-width: 100%;
+  overflow: auto;
+}
+
 button,
 input,
 select,
@@ -78,6 +88,7 @@ textarea {
   background-image: none;
   border: 0;
   border-radius: $border-radius-base;
+  text-decoration: none;
 
   &:active,
   &:focus,
@@ -193,6 +204,12 @@ textarea {
 .logo-background {
   background: no-repeat center url('../assets/logo.svg');
   background-size: contain;
+}
+
+.hidden-rendering-container {
+  position: absolute;
+  width: 500px;
+  left: -1000px;
 }
 
 @media print {

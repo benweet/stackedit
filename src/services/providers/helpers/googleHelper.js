@@ -19,6 +19,16 @@ const photosScopes = ['https://www.googleapis.com/auth/photos'];
 
 const libraries = ['picker'];
 
+const checkIdToken = (idToken) => {
+  try {
+    const token = idToken.split('.');
+    const payload = JSON.parse(utils.decodeBase64(token[1]));
+    return payload.aud === clientId && Date.now() + tokenExpirationMargin < payload.exp * 1000;
+  } catch (e) {
+    return false;
+  }
+};
+
 export default {
   request(token, options) {
     return networkSvc.request({
@@ -37,7 +47,7 @@ export default {
             expiresOn: 0,
           });
           // Refresh token and retry
-          return this.refreshToken(token.scopes, token)
+          return this.refreshToken(token, token.scopes)
             .then(refreshedToken => this.request(refreshedToken, options));
         }
         throw err;
@@ -115,11 +125,12 @@ export default {
     return networkSvc.startOauth2(
       'https://accounts.google.com/o/oauth2/v2/auth', {
         client_id: clientId,
-        response_type: 'token',
-        scope: ['openid', ...scopes].join(' '), // Need openid for user info
+        response_type: 'token id_token',
+        scope: ['openid', ...scopes].join(' '),
         hd: appsDomain,
         login_hint: sub,
         prompt: silent ? 'none' : null,
+        nonce: utils.uid(),
       }, silent)
       // Call the token info endpoint
       .then(data => networkSvc.request({
@@ -142,9 +153,11 @@ export default {
           scopes,
           accessToken: data.accessToken,
           expiresOn: Date.now() + (data.expiresIn * 1000),
+          idToken: data.idToken,
           sub: `${res.body.sub}`,
           isLogin: !store.getters['data/loginToken'] &&
             scopes.indexOf('https://www.googleapis.com/auth/drive.appdata') !== -1,
+          isSponsor: false,
           isDrive: scopes.indexOf('https://www.googleapis.com/auth/drive') !== -1 ||
             scopes.indexOf('https://www.googleapis.com/auth/drive.file') !== -1,
           isBlogger: scopes.indexOf('https://www.googleapis.com/auth/blogger') !== -1,
@@ -163,19 +176,33 @@ export default {
             // That's no problem, token will be refreshed later with merged scopes.
             // Save flags
             token.isLogin = existingToken.isLogin || token.isLogin;
+            token.isSponsor = existingToken.isSponsor;
             token.isDrive = existingToken.isDrive || token.isDrive;
             token.isBlogger = existingToken.isBlogger || token.isBlogger;
             token.isPhotos = existingToken.isPhotos || token.isPhotos;
             token.driveFullAccess = existingToken.driveFullAccess || token.driveFullAccess;
-            // Save nextPageToken
             token.nextPageToken = existingToken.nextPageToken;
           }
+          return token.isLogin && networkSvc.request({
+            method: 'GET',
+            url: 'userInfo',
+            params: {
+              idToken: token.idToken,
+            },
+          })
+            .then((res) => {
+              token.isSponsor = res.body.sponsorUntil > Date.now();
+            }, () => {
+              // Ignore error
+            });
+        })
+        .then(() => {
           // Add token to googleTokens
           store.dispatch('data/setGoogleToken', token);
           return token;
         }));
   },
-  refreshToken(scopes, token) {
+  refreshToken(token, scopes = []) {
     const sub = token.sub;
     const lastToken = store.getters['data/googleTokens'][sub];
     const mergedScopes = [...new Set([
@@ -185,8 +212,13 @@ export default {
 
     return Promise.resolve()
       .then(() => {
-        if (mergedScopes.length === lastToken.scopes.length &&
-          lastToken.expiresOn > Date.now() + tokenExpirationMargin
+        if (
+          // If we already have permissions for the requested scopes
+          mergedScopes.length === lastToken.scopes.length &&
+          // And lastToken is not expired
+          lastToken.expiresOn > Date.now() + tokenExpirationMargin &&
+          // And in case of a login token, ID token is still valid
+          (!lastToken.isLogin || checkIdToken(lastToken.idToken))
         ) {
           return lastToken;
         }
@@ -222,6 +254,16 @@ export default {
         google = window.google;
       });
   },
+  getSponsorship(token) {
+    return this.refreshToken(token)
+      .then(refreshedToken => networkSvc.request({
+        method: 'GET',
+        url: 'userInfo',
+        params: {
+          idToken: refreshedToken.idToken,
+        },
+      }, true));
+  },
   signin() {
     return this.startOauth2(driveAppDataScopes);
   },
@@ -238,7 +280,7 @@ export default {
     const result = {
       changes: [],
     };
-    return this.refreshToken(driveAppDataScopes, token)
+    return this.refreshToken(token, driveAppDataScopes)
       .then((refreshedToken) => {
         const getPage = (pageToken = '1') => this.request(refreshedToken, {
           method: 'GET',
@@ -262,25 +304,25 @@ export default {
       });
   },
   uploadFile(token, name, parents, media, mediaType, fileId, ifNotTooLate) {
-    return this.refreshToken(getDriveScopes(token), token)
+    return this.refreshToken(token, getDriveScopes(token))
       .then(refreshedToken => this.uploadFileInternal(
         refreshedToken, name, parents, media, mediaType, fileId, ifNotTooLate));
   },
   uploadAppDataFile(token, name, parents, media, fileId, ifNotTooLate) {
-    return this.refreshToken(driveAppDataScopes, token)
+    return this.refreshToken(token, driveAppDataScopes)
       .then(refreshedToken => this.uploadFileInternal(
         refreshedToken, name, parents, media, undefined, fileId, ifNotTooLate));
   },
   downloadFile(token, id) {
-    return this.refreshToken(getDriveScopes(token), token)
+    return this.refreshToken(token, getDriveScopes(token))
       .then(refreshedToken => this.downloadFileInternal(refreshedToken, id));
   },
   downloadAppDataFile(token, id) {
-    return this.refreshToken(driveAppDataScopes, token)
+    return this.refreshToken(token, driveAppDataScopes)
       .then(refreshedToken => this.downloadFileInternal(refreshedToken, id));
   },
   removeAppDataFile(token, id, ifNotTooLate = cb => res => cb(res)) {
-    return this.refreshToken(driveAppDataScopes, token)
+    return this.refreshToken(token, driveAppDataScopes)
       // Refreshing a token can take a while if an oauth window pops up, so check if it's too late
       .then(ifNotTooLate(refreshedToken => this.request(refreshedToken, {
         method: 'DELETE',
@@ -290,7 +332,7 @@ export default {
   uploadBlogger(
     token, blogUrl, blogId, postId, title, content, labels, isDraft, published, isPage,
   ) {
-    return this.refreshToken(bloggerScopes, token)
+    return this.refreshToken(token, bloggerScopes)
       .then(refreshedToken => Promise.resolve()
         .then(() => {
           if (blogId) {
@@ -356,7 +398,7 @@ export default {
   openPicker(token, type = 'doc') {
     const scopes = type === 'img' ? photosScopes : getDriveScopes(token);
     return this.loadClientScript()
-      .then(() => this.refreshToken(scopes, token))
+      .then(() => this.refreshToken(token, scopes))
       .then(refreshedToken => new Promise((resolve) => {
         let picker;
         const pickerBuilder = new google.picker.PickerBuilder()

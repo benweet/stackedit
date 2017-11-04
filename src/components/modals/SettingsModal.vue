@@ -1,6 +1,6 @@
 <template>
-  <div class="modal__inner-1 modal__inner-1--settings" role="dialog" aria-label="Settings">
-    <div class="modal__inner-2">
+  <modal-inner class="modal__inner-1--settings" aria-label="Settings">
+    <div class="modal__content">
       <div class="tabs flex flex--row">
         <tab :active="tab === 'custom'" @click="tab = 'custom'">
           Custom settings
@@ -22,25 +22,29 @@
         </div>
       </div>
       <div class="modal__error modal__error--settings">{{error}}</div>
-      <div class="modal__button-bar">
-        <button class="button" @click="config.reject()">Cancel</button>
-        <button class="button" @click="!error && config.resolve(strippedCustomSettings)">Ok</button>
-      </div>
     </div>
-  </div>
+    <div class="modal__button-bar">
+      <button class="button" @click="config.reject()">Cancel</button>
+      <button class="button" @click="!error && config.resolve(strippedCustomSettings)">Ok</button>
+    </div>
+  </modal-inner>
 </template>
 
 <script>
 import yaml from 'js-yaml';
 import { mapGetters } from 'vuex';
-import Tab from './Tab';
+import ModalInner from './common/ModalInner';
+import Tab from './common/Tab';
 import CodeEditor from '../CodeEditor';
 import defaultSettings from '../../data/defaultSettings.yml';
 
-const emptySettings = '# Add your custom settings here to override the default settings.\n';
+const emptySettings = `# Add your custom settings here to override the
+# default settings.
+`;
 
 export default {
   components: {
+    ModalInner,
     Tab,
     CodeEditor,
   },

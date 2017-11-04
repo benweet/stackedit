@@ -19,6 +19,16 @@ The following JavaScript context will be passed to the template:
   }]
 }
 
+
+As an example:
+
+<html><body>{{{files.0.content.html}}}</body></html>
+
+will produce:
+
+<html><body><p>The file content</p></body></html>
+
+
 You can use Handlebars built-in helpers and the custom StackEdit ones:
 
 {{#tocToHtml files.0.content.toc}}{{/tocToHtml}} will produce a clickable TOC.

@@ -1,6 +1,6 @@
 <template>
-  <div class="modal__inner-1" role="dialog" aria-label="Link Dropbox account">
-    <div class="modal__inner-2">
+  <modal-inner aria-label="Link Dropbox account">
+    <div class="modal__content">
       <div class="modal__image">
         <icon-provider provider-id="dropbox"></icon-provider>
       </div>
@@ -15,16 +15,16 @@
           </div>
         </div>
       </div>
-      <div class="modal__button-bar">
-        <button class="button" @click="config.reject()">Cancel</button>
-        <button class="button" @click="config.resolve()">Ok</button>
-      </div>
     </div>
-  </div>
+    <div class="modal__button-bar">
+      <button class="button" @click="config.reject()">Cancel</button>
+      <button class="button" @click="config.resolve()">Ok</button>
+    </div>
+  </modal-inner>
 </template>
 
 <script>
-import modalTemplate from './modalTemplate';
+import modalTemplate from '../common/modalTemplate';
 
 export default modalTemplate({
   computedLocalSettings: {

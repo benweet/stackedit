@@ -1,6 +1,6 @@
 <template>
-  <div class="modal__inner-1 modal__inner-1--about-modal" role="dialog" aria-label="About">
-    <div class="modal__inner-2">
+  <modal-inner class="modal__inner-1--about-modal" aria-label="About">
+    <div class="modal__content">
       <div class="logo-background"></div>
       <div class="app-version">v{{version}} — © 2017 Benoit Schweblin</div>
       <hr>
@@ -12,17 +12,21 @@
       <a target="_blank" href="https://twitter.com/stackedit/">StackEdit on Twitter</a>
       <hr>
       <a target="_blank" href="privacy_policy.html">Privacy Policy</a>
-      <div class="modal__button-bar">
-        <button class="button" @click="config.resolve()">Close</button>
-      </div>
     </div>
-  </div>
+    <div class="modal__button-bar">
+      <button class="button" @click="config.resolve()">Close</button>
+    </div>
+  </modal-inner>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import ModalInner from './common/ModalInner';
 
 export default {
+  components: {
+    ModalInner,
+  },
   data: () => ({
     version: VERSION,
   }),
@@ -38,7 +42,7 @@ export default {
 
   .logo-background {
     height: 75px;
-    margin-bottom: 0.5rem;
+    margin: 0.5rem 0;
   }
 
   .app-version {

@@ -20,7 +20,7 @@
     <menu-entry @click.native="setPanel('publish')">
       <icon-upload slot="icon"></icon-upload>
       <div>Publish</div>
-      <span>Export to the web.</span>
+      <span>Export your file to the web.</span>
     </menu-entry>
     <hr>
     <menu-entry @click.native="fileProperties">
@@ -63,7 +63,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import MenuEntry from './MenuEntry';
+import MenuEntry from './common/MenuEntry';
 import UserImage from '../UserImage';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import syncSvc from '../../services/syncSvc';

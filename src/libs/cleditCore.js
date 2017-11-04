@@ -103,12 +103,13 @@ function cledit(contentElt, scrollElt, windowParam) {
     selectionMgr.updateCursorCoordinates(true)
   }
 
-  function replaceAll(search, replacement) {
+  function replaceAll(search, replacement, startOffset = 0) {
     undoMgr.setDefaultMode('single')
-    var textContent = getTextContent()
-    var value = textContent.replace(search, replacement)
-    if (value !== textContent) {
-      var offset = editor.setContent(value)
+    var text = getTextContent()
+    var subtext = getTextContent().slice(startOffset);
+    var value = subtext.replace(search, replacement)
+    if (value !== subtext) {
+      var offset = editor.setContent(text.slice(0, startOffset) + value);
       selectionMgr.setSelectionStartEnd(offset.end, offset.end)
       selectionMgr.updateCursorCoordinates(true)
     }
@@ -130,7 +131,7 @@ function cledit(contentElt, scrollElt, windowParam) {
 
   var triggerSpellCheck = debounce(function () {
     var selection = editor.$window.getSelection()
-    if (!selectionMgr.hasFocus || highlighter.isComposing || selectionMgr.selectionStart !== selectionMgr.selectionEnd || !selection.modify) {
+    if (!selectionMgr.hasFocus() || highlighter.isComposing || selectionMgr.selectionStart !== selectionMgr.selectionEnd || !selection.modify) {
       return
     }
     // Hack for Chrome to trigger the spell checker
@@ -209,7 +210,8 @@ function cledit(contentElt, scrollElt, windowParam) {
     if (!editor.$window.document.contains(contentElt)) {
       watcher.stopWatching()
       editor.$window.removeEventListener('keydown', windowKeydownListener)
-      editor.$window.removeEventListener('mouseup', windowMouseupListener)
+      editor.$window.removeEventListener('mousedown', windowMouseListener)
+      editor.$window.removeEventListener('mouseup', windowMouseListener)
       editor.$trigger('destroy')
       return true
     }
@@ -226,12 +228,13 @@ function cledit(contentElt, scrollElt, windowParam) {
   editor.$window.addEventListener('keydown', windowKeydownListener, false)
 
   // Mouseup can happen outside the editor element
-  function windowMouseupListener() {
+  function windowMouseListener() {
     if (!tryDestroy()) {
       selectionMgr.saveSelectionState(true, false)
     }
   }
-  editor.$window.addEventListener('mouseup', windowMouseupListener)
+  editor.$window.addEventListener('mousedown', windowMouseListener)
+  editor.$window.addEventListener('mouseup', windowMouseListener)
   // This can also provoke selection changes and does not fire mouseup event on Chrome/OSX
   contentElt.addEventListener('contextmenu', selectionMgr.saveSelectionState.cl_bind(selectionMgr, true, false))
 
@@ -297,12 +300,10 @@ function cledit(contentElt, scrollElt, windowParam) {
   }, false)
 
   contentElt.addEventListener('focus', function () {
-    selectionMgr.hasFocus = true
     editor.$trigger('focus')
   }, false)
 
   contentElt.addEventListener('blur', function () {
-    selectionMgr.hasFocus = false
     editor.$trigger('blur')
   }, false)
 

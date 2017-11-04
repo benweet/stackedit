@@ -1,6 +1,6 @@
 <template>
-  <div class="modal__inner-1" role="dialog" aria-label="Link GitHub account">
-    <div class="modal__inner-2">
+  <modal-inner aria-label="Link GitHub account">
+    <div class="modal__content">
       <div class="modal__image">
         <icon-provider provider-id="github"></icon-provider>
       </div>
@@ -8,20 +8,20 @@
       <div class="form-entry">
         <div class="form-entry__checkbox">
           <label>
-            <input type="checkbox" v-model="repoFullAccess"> Request access to private repositories
+            <input type="checkbox" v-model="repoFullAccess"> Grant access to my <b>private repositories</b>
           </label>
         </div>
       </div>
-      <div class="modal__button-bar">
-        <button class="button" @click="config.reject()">Cancel</button>
-        <button class="button" @click="config.resolve()">Ok</button>
-      </div>
     </div>
-  </div>
+    <div class="modal__button-bar">
+      <button class="button" @click="config.reject()">Cancel</button>
+      <button class="button" @click="config.resolve()">Ok</button>
+    </div>
+  </modal-inner>
 </template>
 
 <script>
-import modalTemplate from './modalTemplate';
+import modalTemplate from '../common/modalTemplate';
 
 export default modalTemplate({
   computedLocalSettings: {

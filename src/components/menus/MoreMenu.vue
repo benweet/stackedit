@@ -34,21 +34,22 @@
       <icon-help-circle slot="icon"></icon-help-circle>
       <span>About StackEdit</span>
     </menu-entry>
-    <a href="editor" target="_blank" class="menu-entry button flex flex--row flex--align-center">
-      <div class="menu-entry__icon flex flex--column flex--center">
-        <icon-open-in-new></icon-open-in-new>
-      </div>
-      <div class="flex flex--column">
-        <span>Go back to StackEdit 4</span>
-      </div>
-    </a>
+    <menu-entry @click.native="welcomeFile">
+      <icon-file slot="icon"></icon-file>
+      <span>Welcome file</span>
+    </menu-entry>
+    <menu-entry href="editor" target="_blank">
+      <icon-open-in-new slot="icon"></icon-open-in-new>
+      <span>StackEdit 4 (deprecated)</span>
+    </menu-entry>
   </div>
 </template>
 
 <script>
-import MenuEntry from './MenuEntry';
+import MenuEntry from './common/MenuEntry';
 import localDbSvc from '../../services/localDbSvc';
 import backupSvc from '../../services/backupSvc';
+import welcomeFile from '../../data/welcomeFile.md';
 
 export default {
   components: {
@@ -91,6 +92,13 @@ export default {
           () => localDbSvc.removeDb(),
           () => {}, // Cancel
         );
+    },
+    welcomeFile() {
+      return this.$store.dispatch('createFile', {
+        name: 'Welcome file',
+        text: welcomeFile,
+      })
+        .then(createdFile => this.$store.commit('file/setCurrentId', createdFile.id));
     },
     about() {
       return this.$store.dispatch('modal/open', 'about');

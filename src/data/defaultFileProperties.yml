@@ -1,4 +1,5 @@
-# File properties can contain metadata used for your publications (Wordpress, Blogger...).
+# File properties can contain metadata used
+# for your publications (Wordpress, Blogger...).
 
 # For example:
 #title: My article
@@ -26,7 +27,7 @@ extensions:
     sup: true
     table: true
     typographer: true
-    # For strict CommonMark:
+    # Enable strict CommonMark:
     #abbr: false
     #deflist: false
     #del: false
@@ -37,6 +38,25 @@ extensions:
     #table: false
     #typographer: false
 
+  # Emoji extension
+  emoji:
+    # Enable support for emojis & emoticons
+    enabled: true
+    # Enable shortcuts like :) :-(
+    shortcuts: false
+
   # Katex extension
+  # Render LaTeX mathematical expressions by using:
+  #   $...$ for inline formulas
+  #   $$...$$ for displayed formulas.
+  # See https://math.meta.stackexchange.com/questions/5020
   katex:
+    enabled: true
+
+  # Mermaid extension
+  # Convert code blocks starting with:
+  #   ```mermaid
+  # into diagrams and flowcharts.
+  # See https://mermaidjs.github.io/
+  mermaid:
     enabled: true

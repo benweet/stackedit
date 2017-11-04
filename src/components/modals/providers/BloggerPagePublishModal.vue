@@ -1,6 +1,6 @@
 <template>
-  <div class="modal__inner-1" role="dialog" aria-label="Publish to Blogger Page">
-    <div class="modal__inner-2">
+  <modal-inner aria-label="Publish to Blogger Page">
+    <div class="modal__content">
       <div class="modal__image">
         <icon-provider provider-id="bloggerPage"></icon-provider>
       </div>
@@ -27,17 +27,17 @@
       <div class="modal__info">
         <b>ProTip:</b> You can provide a value for <code>title</code> in the <a href="javascript:void(0)" @click="openFileProperties">file properties</a>.
       </div>
-      <div class="modal__button-bar">
-        <button class="button" @click="config.reject()">Cancel</button>
-        <button class="button" @click="resolve()">Ok</button>
-      </div>
     </div>
-  </div>
+    <div class="modal__button-bar">
+      <button class="button" @click="config.reject()">Cancel</button>
+      <button class="button" @click="resolve()">Ok</button>
+    </div>
+  </modal-inner>
 </template>
 
 <script>
-import bloggerPageProvider from '../../services/providers/bloggerPageProvider';
-import modalTemplate from './modalTemplate';
+import bloggerPageProvider from '../../../services/providers/bloggerPageProvider';
+import modalTemplate from '../common/modalTemplate';
 
 export default modalTemplate({
   data: () => ({

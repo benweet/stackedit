@@ -1,5 +1,5 @@
 <template>
-  <div class="navigation-bar" :class="{'navigation-bar--editor': styles.showEditor}">
+  <nav class="navigation-bar" :class="{'navigation-bar--editor': styles.showEditor}">
     <div class="navigation-bar__inner navigation-bar__inner--left navigation-bar__inner--button">
       <button class="navigation-bar__button button" @click="toggleExplorer()" v-title="'Toggle explorer'">
         <icon-folder></icon-folder>
@@ -78,7 +78,7 @@
         <icon-format-horizontal-rule></icon-format-horizontal-rule>
       </button>
     </div>
-  </div>
+  </nav>
 </template>
 
 <script>

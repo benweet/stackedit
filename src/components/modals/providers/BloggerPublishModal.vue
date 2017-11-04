@@ -1,6 +1,6 @@
 <template>
-  <div class="modal__inner-1" role="dialog" aria-label="Publish to Blogger">
-    <div class="modal__inner-2">
+  <modal-inner aria-label="Publish to Blogger">
+    <div class="modal__content">
       <div class="modal__image">
         <icon-provider provider-id="blogger"></icon-provider>
       </div>
@@ -28,17 +28,17 @@
         <b>ProTip:</b> You can provide values for <code>title</code>, <code>tags</code>,
         <code>status</code> and <code>date</code> in the <a href="javascript:void(0)" @click="openFileProperties">file properties</a>.
       </div>
-      <div class="modal__button-bar">
-        <button class="button" @click="config.reject()">Cancel</button>
-        <button class="button" @click="resolve()">Ok</button>
-      </div>
     </div>
-  </div>
+    <div class="modal__button-bar">
+      <button class="button" @click="config.reject()">Cancel</button>
+      <button class="button" @click="resolve()">Ok</button>
+    </div>
+  </modal-inner>
 </template>
 
 <script>
-import bloggerProvider from '../../services/providers/bloggerProvider';
-import modalTemplate from './modalTemplate';
+import bloggerProvider from '../../../services/providers/bloggerProvider';
+import modalTemplate from '../common/modalTemplate';
 
 export default modalTemplate({
   data: () => ({

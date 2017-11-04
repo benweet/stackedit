@@ -103,7 +103,7 @@ function mergeText(serverText, clientText, lastMergedText) {
   const lastMergedTextDiffs = diffMatchPatch.diff_main(lastMergedText, intersectionText)
     // Keep only equalities and deletions
     .filter(diff => diff[0] !== DiffMatchPatch.DIFF_INSERT);
-  diffMatchPatch.diff_cleanupSemantic(serverClientDiffs);
+  diffMatchPatch.diff_cleanupSemantic(lastMergedTextDiffs);
   // Make a patch with deletions only
   const patches = diffMatchPatch.patch_make(lastMergedText, lastMergedTextDiffs);
   // Apply patch to fusion text

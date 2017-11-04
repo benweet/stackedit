@@ -96,7 +96,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import MenuEntry from './MenuEntry';
+import MenuEntry from './common/MenuEntry';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import dropboxHelper from '../../services/providers/helpers/dropboxHelper';
 import githubHelper from '../../services/providers/helpers/githubHelper';

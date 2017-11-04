@@ -3,26 +3,34 @@
     <div class="menu-entry__icon flex flex--column flex--center">
       <slot name="icon"></slot>
     </div>
-    <div class="flex flex--column">
+    <div class="menu-entry__text flex flex--column">
       <slot></slot>
     </div>
   </a>
 </template>
 
 <style lang="scss">
-@import '../common/variables.scss';
+@import '../../common/variables.scss';
 
 .menu-entry {
   text-align: left;
   padding: 10px;
   height: auto;
 
+  div div {
+    text-decoration: underline;
+    text-decoration-skip: ink;
+
+    &.menu-entry__sponsor {
+      text-decoration: none;
+    }
+  }
+
   span {
     display: inline-block;
-    font-size: 0.75em;
+    font-size: 0.75rem;
     opacity: 0.5;
     white-space: normal;
-    line-height: 1.4;
   }
 }
 
@@ -41,5 +49,19 @@
 .hidden-file {
   position: fixed;
   top: -999px;
+}
+
+.menu-entry__sponsor {
+  float: right;
+  font-size: 0.6rem;
+  font-weight: 600;
+  padding: 0.05em 0.25em;
+  background-color: darken($error-color, 10);
+  border-radius: 3px;
+  color: #fff;
+}
+
+.menu-entry__text {
+  width: 100%;
 }
 </style>

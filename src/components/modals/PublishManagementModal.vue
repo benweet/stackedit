@@ -1,6 +1,6 @@
 <template>
-  <div class="modal__inner-1 modal__inner-1--publish-management" role="dialog" aria-label="Manage publication locations">
-    <div class="modal__inner-2">
+  <modal-inner class="modal__inner-1--publish-management" aria-label="Manage publication locations">
+    <div class="modal__content">
       <p v-if="publishLocations.length"><b>{{currentFileName}}</b> is published to the following location(s):</p>
       <p v-else><b>{{currentFileName}}</b> is not published yet.</p>
       <div>
@@ -24,18 +24,22 @@
       <div class="modal__info" v-if="publishLocations.length">
         <b>Note:</b> Removing a synchronized location won't delete any file.
       </div>
-      <div class="modal__button-bar">
-        <button class="button" @click="config.reject()">Cancel</button>
-        <button class="button" @click="config.resolve()">Ok</button>
-      </div>
     </div>
-  </div>
+    <div class="modal__button-bar">
+      <button class="button" @click="config.reject()">Cancel</button>
+      <button class="button" @click="config.resolve()">Ok</button>
+    </div>
+  </modal-inner>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import ModalInner from './common/ModalInner';
 
 export default {
+  components: {
+    ModalInner,
+  },
   computed: {
     ...mapGetters('modal', [
       'config',

@@ -34,6 +34,10 @@ function groupHeadings(headings, level = 1) {
   return result;
 }
 
+const containerElt = document.createElement('div');
+containerElt.className = 'hidden-rendering-container';
+document.body.appendChild(containerElt);
+
 export default {
   /**
    * Apply the template to the file content
@@ -41,7 +45,7 @@ export default {
   applyTemplate(fileId, template = {
     value: '{{{files.0.content.text}}}',
     helpers: '',
-  }) {
+  }, pdf = false) {
     const file = store.state.file.itemMap[fileId];
     return localDbSvc.loadItem(`${fileId}/content`)
       .then((content) => {
@@ -51,19 +55,19 @@ export default {
         const parsingCtx = markdownConversionSvc.parseSections(converter, content.text);
         const conversionCtx = markdownConversionSvc.convert(parsingCtx);
         const html = conversionCtx.htmlSectionList.map(htmlSanitizer.sanitizeHtml).join('');
-        const elt = document.createElement('div');
-        elt.innerHTML = html;
+        containerElt.innerHTML = html;
+        extensionSvc.sectionPreview(containerElt, options);
 
         // Unwrap tables
-        elt.querySelectorAll('.table-wrapper').cl_each((wrapperElt) => {
+        containerElt.querySelectorAll('.table-wrapper').cl_each((wrapperElt) => {
           while (wrapperElt.firstChild) {
-            wrapperElt.parentNode.appendChild(wrapperElt.firstChild);
+            wrapperElt.parentNode.insertBefore(wrapperElt.firstChild, wrapperElt.nextSibling);
           }
           wrapperElt.parentNode.removeChild(wrapperElt);
         });
 
         // Make TOC
-        const headings = elt.querySelectorAll('h1,h2,h3,h4,h5,h6').cl_map(headingElt => ({
+        const headings = containerElt.querySelectorAll('h1,h2,h3,h4,h5,h6').cl_map(headingElt => ({
           title: headingElt.textContent,
           anchor: headingElt.id,
           level: parseInt(headingElt.tagName.slice(1), 10),
@@ -71,17 +75,19 @@ export default {
         }));
         const toc = groupHeadings(headings);
         const view = {
+          pdf,
           files: [{
             name: file.name,
             content: {
               text: content.text,
               properties,
               yamlProperties: content.properties,
-              html: elt.innerHTML,
+              html: containerElt.innerHTML,
               toc,
             },
           }],
         };
+        containerElt.innerHTML = '';
 
         // Run template conversion in a Worker to prevent attacks from helpers
         const worker = new TemplateWorker();
@@ -111,8 +117,8 @@ export default {
   exportToDisk(fileId, type, template) {
     const file = store.state.file.itemMap[fileId];
     return this.applyTemplate(fileId, template)
-      .then((res) => {
-        const blob = new Blob([res], {
+      .then((html) => {
+        const blob = new Blob([html], {
           type: 'text/plain;charset=utf-8',
         });
         FileSaver.saveAs(blob, `${file.name}.${type}`);

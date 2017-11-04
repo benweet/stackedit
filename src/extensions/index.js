@@ -1,2 +1,4 @@
-import './katexExt';
-import './markdownExt';
+import './emojiExtension';
+import './katexExtension';
+import './markdownExtension';
+import './mermaidExtension';

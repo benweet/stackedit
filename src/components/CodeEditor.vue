@@ -35,7 +35,6 @@ export default {
   font-family: $font-family-monospace;
   font-size: $font-size-monospace;
   font-variant-ligatures: no-common-ligatures;
-  white-space: pre-wrap;
   word-break: break-word;
   word-wrap: normal;
   height: auto;

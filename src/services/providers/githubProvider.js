@@ -2,6 +2,7 @@ import store from '../../store';
 import githubHelper from './helpers/githubHelper';
 import providerUtils from './providerUtils';
 import providerRegistry from './providerRegistry';
+import utils from '../utils';
 
 const savedSha = {};
 
@@ -64,6 +65,55 @@ export default providerRegistry.register({
         );
       })
       .then(() => publishLocation);
+  },
+  openFile(token, syncLocation) {
+    return Promise.resolve()
+      .then(() => {
+        if (providerUtils.openFileWithLocation(store.getters['syncLocation/items'], syncLocation)) {
+          // File exists and has just been opened. Next...
+          return null;
+        }
+        // Download content from GitHub and create the file
+        return this.downloadContent(token, syncLocation)
+          .then((content) => {
+            const id = utils.uid();
+            delete content.history;
+            store.commit('content/setItem', {
+              ...content,
+              id: `${id}/content`,
+            });
+            let name = syncLocation.path;
+            const slashPos = name.lastIndexOf('/');
+            if (slashPos > -1 && slashPos < name.length - 1) {
+              name = name.slice(slashPos + 1);
+            }
+            const dotPos = name.lastIndexOf('.');
+            if (dotPos > 0 && slashPos < name.length) {
+              name = name.slice(0, dotPos);
+            }
+            store.commit('file/setItem', {
+              id,
+              name: utils.sanitizeName(name),
+              parentId: store.getters['file/current'].parentId,
+            });
+            store.commit('syncLocation/setItem', {
+              ...syncLocation,
+              id: utils.uid(),
+              fileId: id,
+            });
+            store.commit('file/setCurrentId', id);
+            store.dispatch('notification/info', `${store.getters['file/current'].name} was imported from GitHub.`);
+          }, () => {
+            store.dispatch('notification/error', `Could not open file ${syncLocation.path}.`);
+          });
+      });
+  },
+  parseRepoUrl(url) {
+    const parsedRepo = url.match(/[/:]?([^/:]+)\/([^/]+?)(?:\.git|\/)?$/);
+    return parsedRepo && {
+      owner: parsedRepo[1],
+      repo: parsedRepo[2],
+    };
   },
   makeLocation(token, owner, repo, branch, path) {
     return {

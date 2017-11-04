@@ -178,9 +178,9 @@ extensionSvc.onInitConverter(0, (markdown, options) => {
 
 extensionSvc.onSectionPreview((elt) => {
   elt.querySelectorAll('.prism').cl_each((prismElt) => {
-    if (!prismElt.highlighted) {
+    if (!prismElt.highlightedWithPrism) {
       Prism.highlightElement(prismElt);
+      prismElt.highlightedWithPrism = true;
     }
-    prismElt.highlighted = true;
   });
 });

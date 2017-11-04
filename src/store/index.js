@@ -6,6 +6,7 @@ import contentState from './modules/contentState';
 import syncedContent from './modules/syncedContent';
 import content from './modules/content';
 import file from './modules/file';
+import findReplace from './modules/findReplace';
 import folder from './modules/folder';
 import publishLocation from './modules/publishLocation';
 import syncLocation from './modules/syncLocation';
@@ -26,12 +27,17 @@ const store = new Vuex.Store({
     ready: false,
     offline: false,
     lastOfflineCheck: 0,
+    monetizeSponsor: false,
   },
   getters: {
     allItemMap: (state) => {
       const result = {};
       utils.types.forEach(type => Object.assign(result, state[type].itemMap));
       return result;
+    },
+    isSponsor: (state, getters) => {
+      const loginToken = getters['data/loginToken'];
+      return state.monetizeSponsor || (loginToken && loginToken.isSponsor);
     },
   },
   mutations: {
@@ -43,6 +49,12 @@ const store = new Vuex.Store({
     },
     updateLastOfflineCheck: (state) => {
       state.lastOfflineCheck = Date.now();
+    },
+    setMonetizeSponsor: (state, value) => {
+      state.monetizeSponsor = value;
+    },
+    setGoogleSponsor: (state, value) => {
+      state.googleSponsor = value;
     },
   },
   actions: {
@@ -91,6 +103,7 @@ const store = new Vuex.Store({
     syncedContent,
     content,
     file,
+    findReplace,
     folder,
     publishLocation,
     syncLocation,

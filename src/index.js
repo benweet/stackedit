@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import 'babel-polyfill';
+import 'indexeddbshim/dist/indexeddbshim';
 import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 import './extensions/';
 import './services/optional';
@@ -6,6 +8,10 @@ import './icons/';
 import App from './components/App';
 import store from './store';
 import localDbSvc from './services/localDbSvc';
+
+if (!indexedDB) {
+  throw new Error('Your browser is not supported. Please upgrade to the latest version.');
+}
 
 if (NODE_ENV === 'production') {
   OfflinePluginRuntime.install({

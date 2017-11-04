@@ -93,6 +93,7 @@ export default {
             resolve({
               accessToken: data.access_token,
               code: data.code,
+              idToken: data.id_token,
               expiresIn: data.expires_in,
             });
           }
@@ -107,7 +108,7 @@ export default {
   },
   request(configParam, offlineCheck = false) {
     let retryAfter = 500; // 500 ms
-    const maxRetryAfter = 30 * 1000; // 30 sec
+    const maxRetryAfter = 10 * 1000; // 10 sec
     const config = Object.assign({}, configParam);
     config.timeout = config.timeout || networkTimeout;
     config.headers = Object.assign({}, config.headers);
@@ -151,9 +152,9 @@ export default {
           const result = {
             status: xhr.status,
             headers: parseHeaders(xhr),
-            body: xhr.responseText,
+            body: config.blob ? xhr.response : xhr.responseText,
           };
-          if (!config.raw) {
+          if (!config.raw && !config.blob) {
             try {
               result.body = JSON.parse(result.body);
             } catch (e) {
@@ -197,6 +198,9 @@ export default {
             xhr.setRequestHeader(key, `${value}`);
           }
         });
+        if (config.blob) {
+          xhr.responseType = 'blob';
+        }
         xhr.send(config.body || null);
       })
         .catch((err) => {
@@ -227,17 +231,18 @@ function checkOffline() {
     new Promise((resolve, reject) => {
       const script = document.createElement('script');
       let timeout;
-      const cleaner = (cb, res) => () => {
+      let clean = (cb) => {
         clearTimeout(timeout);
-        cb(res);
         document.head.removeChild(script);
+        clean = () => {}; // Prevent from cleaning several times
+        cb();
       };
-      script.onload = cleaner(resolve);
-      script.onerror = cleaner(reject);
+      script.onload = () => clean(resolve);
+      script.onerror = () => clean(reject);
       script.src = `https://apis.google.com/js/api.js?${Date.now()}`;
       try {
         document.head.appendChild(script); // This can fail with bad network
-        timeout = setTimeout(cleaner(reject), networkTimeout);
+        timeout = setTimeout(() => clean(reject), networkTimeout);
       } catch (e) {
         reject(e);
       }

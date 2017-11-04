@@ -1,6 +1,6 @@
 <template>
-  <div class="modal__inner-1 modal__inner-1--google-photo" role="dialog" aria-label="Import Google Photo">
-    <div class="modal__inner-2">
+  <modal-inner class="modal__inner-1--google-photo" aria-label="Import Google Photo">
+    <div class="modal__content">
       <div class="google-photo__tumbnail" :style="{'background-image': thumbnailUrl}"></div>
       <form-entry label="Title (optional)">
         <input slot="field" class="textfield" type="text" v-model.trim="title" @keyup.enter="resolve()">
@@ -8,17 +8,17 @@
       <form-entry label="Size limit (optional)">
         <input slot="field" class="textfield" type="text" v-model.trim="size" @keyup.enter="resolve()">
       </form-entry>
-      <div class="modal__button-bar">
-        <button class="button" @click="reject()">Cancel</button>
-        <button class="button" @click="resolve()">Ok</button>
-      </div>
     </div>
-  </div>
+    <div class="modal__button-bar">
+      <button class="button" @click="reject()">Cancel</button>
+      <button class="button" @click="resolve()">Ok</button>
+    </div>
+  </modal-inner>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import FormEntry from './FormEntry';
+import FormEntry from '../common/FormEntry';
 
 const makeThumbnail = (url, size) => `${url}=s${size}`;
 

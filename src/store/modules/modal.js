@@ -46,10 +46,6 @@ export default {
         throw err;
       });
     },
-    notImplemented: ({ dispatch }) => dispatch('open', {
-      content: '<p>Sorry, this feature is not available yet...</p>',
-      rejectText: 'Ok',
-    }),
     fileDeletion: ({ dispatch }, item) => dispatch('open', {
       content: `<p>You are about to delete the file <b>${item.name}</b>. Are you sure?</p>`,
       resolveText: 'Yes, delete',
@@ -74,6 +70,20 @@ export default {
       resolveText: 'Ok, go on!',
       rejectText: 'Cancel',
       onResolve,
+    }),
+    signInRequired: ({ dispatch }) => dispatch('open', {
+      content: `<p>We have to sign you in with <b>Google</b> in order to activate your sponsorship.</p>
+      <div class="modal__info"><b>Note:</b> This will backup and sync all your files and settings.</div>`,
+      resolveText: 'Ok, sign in!',
+      rejectText: 'Cancel',
+    }),
+    sponsorOnly: ({ dispatch }) => dispatch('open', {
+      content: '<p>This feature is restricted to <b>sponsor users</b> as it relies on server resources.</p>',
+      resolveText: 'Ok, I understand',
+    }),
+    paymentSuccess: ({ dispatch }) => dispatch('open', {
+      content: '<p>Thank you for your payment! Your sponsorship will be active in a minute.</p>',
+      resolveText: 'Ok',
     }),
   },
 };

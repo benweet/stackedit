@@ -131,24 +131,25 @@ export default {
   initClEditor(opts) {
     const content = store.getters['content/current'];
     if (content) {
-      const options = Object.assign({}, opts);
+      const contentState = store.getters['contentState/current'];
+      const options = Object.assign({
+        selectionStart: contentState.selectionStart,
+        selectionEnd: contentState.selectionEnd,
+        patchHandler: {
+          makePatches,
+          applyPatches,
+          reversePatches,
+        },
+      }, opts);
 
       if (contentId !== content.id) {
         contentId = content.id;
         currentPatchableText = diffUtils.makePatchableText(content, markerKeys, markerIdxMap);
         previousPatchableText = currentPatchableText;
         syncDiscussionMarkers(content, false);
-        const contentState = store.getters['contentState/current'];
         options.content = content.text;
-        options.selectionStart = contentState.selectionStart;
-        options.selectionEnd = contentState.selectionEnd;
       }
 
-      options.patchHandler = {
-        makePatches,
-        applyPatches,
-        reversePatches,
-      };
       clEditor.init(options);
     }
   },

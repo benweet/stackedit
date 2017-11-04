@@ -208,6 +208,7 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
     let insertBeforePreviewElt = this.previewElt.firstChild;
     let insertBeforeTocElt = this.tocElt.firstChild;
     let previewHtml = '';
+    let loadingImages = [];
     this.conversionCtx.htmlSectionDiff.forEach((item) => {
       for (let i = 0; i < item[1].length; i += 1) {
         const section = this.conversionCtx.sectionList[sectionIdx];
@@ -218,9 +219,7 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
           newSectionDescList.push(sectionDesc);
           previewHtml += sectionDesc.html;
           sectionIdx += 1;
-          insertBeforePreviewElt.classList.remove('modified');
           insertBeforePreviewElt = insertBeforePreviewElt.nextSibling;
-          insertBeforeTocElt.classList.remove('modified');
           insertBeforeTocElt = insertBeforeTocElt.nextSibling;
         } else if (item[0] === -1) {
           sectionDescIdx += 1;
@@ -236,7 +235,7 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
 
           // Create preview section element
           sectionPreviewElt = document.createElement('div');
-          sectionPreviewElt.className = 'cl-preview-section modified';
+          sectionPreviewElt.className = 'cl-preview-section';
           sectionPreviewElt.innerHTML = html;
           if (insertBeforePreviewElt) {
             this.previewElt.insertBefore(sectionPreviewElt, insertBeforePreviewElt);
@@ -244,10 +243,14 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
             this.previewElt.appendChild(sectionPreviewElt);
           }
           extensionSvc.sectionPreview(sectionPreviewElt, this.options);
+          loadingImages = [
+            ...loadingImages,
+            ...Array.prototype.slice.call(sectionPreviewElt.getElementsByTagName('img')),
+          ];
 
           // Create TOC section element
           sectionTocElt = document.createElement('div');
-          sectionTocElt.className = 'cl-toc-section modified';
+          sectionTocElt.className = 'cl-toc-section';
           const headingElt = sectionPreviewElt.querySelector('h1, h2, h3, h4, h5, h6');
           if (headingElt) {
             const clonedElt = headingElt.cloneNode(true);
@@ -278,8 +281,7 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
     ]('toc-tab--empty');
 
     // Run preview async operations (image loading, mathjax...)
-    const loadingImages = this.previewElt.querySelectorAll('.cl-preview-section.modified img');
-    const loadedPromises = loadingImages.cl_map(imgElt => new Promise((resolve) => {
+    const loadedPromises = loadingImages.map(imgElt => new Promise((resolve) => {
       if (!imgElt.src) {
         resolve();
         return;
@@ -392,7 +394,7 @@ const editorSvc = Object.assign(new Vue(), { // Use a vue instance as an event b
         const editorEndOffset = editorSvc.getEditorOffset(previewSelectionEndOffset);
         if (editorStartOffset !== undefined && editorEndOffset !== undefined) {
           editorEngineSvc.clEditor.selectionMgr.setSelectionStartEnd(
-            editorStartOffset, editorEndOffset, false);
+            editorStartOffset, editorEndOffset);
         }
       }
       editorSvc.previewSelectionRange = range;

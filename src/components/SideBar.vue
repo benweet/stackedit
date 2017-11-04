@@ -31,7 +31,6 @@
 <script>
 import { mapActions } from 'vuex';
 import Toc from './Toc';
-import MenuEntry from './menus/MenuEntry';
 import MainMenu from './menus/MainMenu';
 import SyncMenu from './menus/SyncMenu';
 import PublishMenu from './menus/PublishMenu';
@@ -53,7 +52,6 @@ const panelNames = {
 export default {
   components: {
     Toc,
-    MenuEntry,
     MainMenu,
     SyncMenu,
     PublishMenu,

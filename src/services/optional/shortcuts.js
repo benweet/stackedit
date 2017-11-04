@@ -13,6 +13,15 @@ const pagedownHandler = name => () => {
   return true;
 };
 
+const findReplaceOpener = type => () => {
+  store.dispatch('findReplace/open', {
+    type,
+    findText: editorEngineSvc.clEditor.selectionMgr.hasFocus() &&
+      editorEngineSvc.clEditor.selectionMgr.getSelectedText(),
+  });
+  return true;
+};
+
 const methods = {
   bold: pagedownHandler('bold'),
   italic: pagedownHandler('italic'),
@@ -30,13 +39,15 @@ const methods = {
     }
     return true;
   },
+  find: findReplaceOpener('find'),
+  replace: findReplaceOpener('replace'),
   expand(param1, param2) {
     const text = `${param1 || ''}`;
     const replacement = `${param2 || ''}`;
     if (text && replacement) {
       setTimeout(() => {
         const selectionMgr = editorEngineSvc.clEditor.selectionMgr;
-        let offset = editorEngineSvc.clEditor.selectionMgr.selectionStart;
+        let offset = selectionMgr.selectionStart;
         if (offset === selectionMgr.selectionEnd) {
           const range = selectionMgr.createRange(offset - text.length, offset);
           if (`${range}` === text) {

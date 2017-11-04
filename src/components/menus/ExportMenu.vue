@@ -12,14 +12,19 @@
     </menu-entry>
     <menu-entry @click.native="exportPdf">
       <icon-download slot="icon"></icon-download>
-      <div>Export as PDF</div>
+      <div><div class="menu-entry__sponsor">sponsor</div> Export as PDF</div>
       <span>Produce a PDF from an HTML template.</span>
+    </menu-entry>
+    <menu-entry @click.native="exportPandoc">
+      <icon-download slot="icon"></icon-download>
+      <div><div class="menu-entry__sponsor">sponsor</div> Export with Pandoc</div>
+      <span>Convert file to PDF, Word, EPUB...</span>
     </menu-entry>
   </div>
 </template>
 
 <script>
-import MenuEntry from './MenuEntry';
+import MenuEntry from './common/MenuEntry';
 import exportSvc from '../../services/exportSvc';
 
 export default {
@@ -37,7 +42,12 @@ export default {
         .catch(() => {}); // Cancel
     },
     exportPdf() {
-      return this.$store.dispatch('modal/notImplemented');
+      return this.$store.dispatch('modal/open', 'pdfExport')
+        .catch(() => {}); // Cancel
+    },
+    exportPandoc() {
+      return this.$store.dispatch('modal/open', 'pandocExport')
+        .catch(() => {}); // Cancel
     },
   },
 };

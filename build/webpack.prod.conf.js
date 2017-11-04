@@ -96,7 +96,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       ServiceWorker: {
         events: true
       },
-      excludes: ['**/.*', '**/*.map', '**/index.html', '**/static/oauth2/callback.html'],
+      excludes: ['**/.*', '**/*.map', '**/index.html', '**/static/oauth2/callback.html', '**/icons-*/*.png', '**/static/fonts/KaTeX_*'],
       externals: ['/app', '/oauth2/callback']
     })
   ]

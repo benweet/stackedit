@@ -22,7 +22,7 @@ import { mapMutations, mapActions } from 'vuex';
 import utils from '../services/utils';
 
 export default {
-  name: 'explorer-node',
+  name: 'explorer-node', // Required for recursivity
   props: ['node', 'depth'],
   data: () => ({
     editingValue: '',

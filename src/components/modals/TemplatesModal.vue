@@ -1,6 +1,6 @@
 <template>
-  <div class="modal__inner-1 modal__inner-1--templates" role="dialog" aria-label="Manage templates">
-    <div class="modal__inner-2">
+  <modal-inner class="modal__inner-1--templates" aria-label="Manage templates">
+    <div class="modal__content">
       <div class="form-entry">
         <label class="form-entry__label" for="template">Template</label>
         <div class="form-entry__field">
@@ -33,7 +33,7 @@
         </div>
       </div>
       <div v-if="!isReadOnly">
-        <a href="javascript:void(0)" v-if="!showHelpers" @click="showHelpers = true">Add helpers ▾</a>
+        <a href="javascript:void(0)" v-if="!showHelpers" @click="showHelpers = true">Add helpers</a>
         <div class="form-entry" v-else>
           <br>
           <label class="form-entry__label">Helpers</label>
@@ -42,17 +42,18 @@
           </div>
         </div>
       </div>
-      <div class="modal__button-bar">
-        <button class="button" @click="config.reject()">Cancel</button>
-        <button class="button" @click="resolve()">Ok</button>
-      </div>
     </div>
-  </div>
+    <div class="modal__button-bar">
+      <button class="button" @click="config.reject()">Cancel</button>
+      <button class="button" @click="resolve()">Ok</button>
+    </div>
+  </modal-inner>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import utils from '../../services/utils';
+import ModalInner from './common/ModalInner';
 import CodeEditor from '../CodeEditor';
 import emptyTemplateValue from '../../data/emptyTemplateValue.html';
 import emptyTemplateHelpers from '!raw-loader!../../data/emptyTemplateHelpers.js'; // eslint-disable-line
@@ -70,6 +71,7 @@ function fillEmptyFields(template) {
 
 export default {
   components: {
+    ModalInner,
     CodeEditor,
   },
   data: () => ({

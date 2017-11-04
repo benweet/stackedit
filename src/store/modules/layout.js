@@ -1,4 +1,3 @@
-const editorMinWidth = 320;
 const minPadding = 20;
 const previewButtonWidth = 55;
 const editorTopPadding = 10;
@@ -13,6 +12,7 @@ const maxTitleMaxWidth = 800;
 const minTitleMaxWidth = 200;
 
 const constants = {
+  editorMinWidth: 320,
   explorerWidth: 250,
   sideBarWidth: 280,
   navigationBarHeight: 44,
@@ -28,6 +28,7 @@ function computeStyles(state, localSettings, getters, styles = {
   showPreview: localSettings.showSidePreview || !localSettings.showEditor,
   showSideBar: localSettings.showSideBar,
   showExplorer: localSettings.showExplorer,
+  layoutOverflow: false,
 }) {
   styles.innerHeight = state.bodyHeight;
   if (styles.showNavigationBar) {
@@ -46,14 +47,16 @@ function computeStyles(state, localSettings, getters, styles = {
   }
 
   let doublePanelWidth = styles.innerWidth - constants.buttonBarWidth;
-  if (doublePanelWidth < editorMinWidth) {
-    doublePanelWidth = editorMinWidth;
-    styles.innerWidth = editorMinWidth + constants.buttonBarWidth;
+  if (doublePanelWidth < constants.editorMinWidth) {
+    doublePanelWidth = constants.editorMinWidth;
+    styles.innerWidth = constants.editorMinWidth + constants.buttonBarWidth;
+    styles.layoutOverflow = true;
   }
 
-  if (styles.showSidePreview && doublePanelWidth / 2 < editorMinWidth) {
+  if (styles.showSidePreview && doublePanelWidth / 2 < constants.editorMinWidth) {
     styles.showSidePreview = false;
     styles.showPreview = false;
+    styles.layoutOverflow = false;
     return computeStyles(state, localSettings, getters, styles);
   }
 

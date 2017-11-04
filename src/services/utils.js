@@ -1,4 +1,5 @@
 import yaml from 'js-yaml';
+import '../libs/clunderscore';
 import defaultProperties from '../data/defaultFileProperties.yml';
 
 const workspaceId = 'main';
@@ -156,5 +157,58 @@ export default {
     }
     urlParser.search += keys.map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
     return urlParser.href;
+  },
+  wrapRange(range, eltProperties) {
+    const rangeLength = `${range}`.length;
+    let wrappedLength = 0;
+    const treeWalker = document.createTreeWalker(
+      range.commonAncestorContainer, NodeFilter.SHOW_TEXT);
+    let startOffset = range.startOffset;
+    treeWalker.currentNode = range.startContainer;
+    if (treeWalker.currentNode.nodeType === Node.TEXT_NODE || treeWalker.nextNode()) {
+      do {
+        if (treeWalker.currentNode.nodeValue !== '\n') {
+          if (treeWalker.currentNode === range.endContainer &&
+            range.endOffset < treeWalker.currentNode.nodeValue.length
+          ) {
+            treeWalker.currentNode.splitText(range.endOffset);
+          }
+          if (startOffset) {
+            treeWalker.currentNode = treeWalker.currentNode.splitText(startOffset);
+            startOffset = 0;
+          }
+          const elt = document.createElement('span');
+          Object.keys(eltProperties).forEach((key) => {
+            elt[key] = eltProperties[key];
+          });
+          treeWalker.currentNode.parentNode.insertBefore(elt, treeWalker.currentNode);
+          elt.appendChild(treeWalker.currentNode);
+        }
+        wrappedLength += treeWalker.currentNode.nodeValue.length;
+        if (wrappedLength >= rangeLength) {
+          break;
+        }
+      }
+      while (treeWalker.nextNode());
+    }
+  },
+  unwrapRange(eltCollection) {
+    Array.prototype.slice.call(eltCollection).forEach((elt) => {
+      // Loop in case another wrapper has been added inside
+      for (let child = elt.firstChild; child; child = elt.firstChild) {
+        if (child.nodeType === 3) {
+          if (elt.previousSibling && elt.previousSibling.nodeType === 3) {
+            child.nodeValue = elt.previousSibling.nodeValue + child.nodeValue;
+            elt.parentNode.removeChild(elt.previousSibling);
+          }
+          if (!child.nextSibling && elt.nextSibling && elt.nextSibling.nodeType === 3) {
+            child.nodeValue += elt.nextSibling.nodeValue;
+            elt.parentNode.removeChild(elt.nextSibling);
+          }
+        }
+        elt.parentNode.insertBefore(child, elt);
+      }
+      elt.parentNode.removeChild(elt);
+    });
   },
 };

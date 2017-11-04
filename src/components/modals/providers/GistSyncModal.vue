@@ -1,10 +1,10 @@
 <template>
-  <div class="modal__inner-1" role="dialog" aria-label="Publish to Gist">
-    <div class="modal__inner-2">
+  <modal-inner aria-label="Synchronize with Gist">
+    <div class="modal__content">
       <div class="modal__image">
         <icon-provider provider-id="gist"></icon-provider>
       </div>
-      <p>This will publish <b>{{currentFileName}}</b> to a <b>Gist</b>.</p>
+      <p>This will save <b>{{currentFileName}}</b> to a <b>Gist</b> and keep it synchronized.</p>
       <form-entry label="Filename" error="filename">
         <input slot="field" class="textfield" type="text" v-model.trim="filename" @keyup.enter="resolve()">
       </form-entry>
@@ -21,30 +21,17 @@
           If the file exists in the Gist, it will be replaced.
         </div>
       </form-entry>
-      <form-entry label="Template">
-        <select slot="field" class="textfield" v-model="selectedTemplate" @keyup.enter="resolve()">
-          <option v-for="(template, id) in allTemplates" :key="id" :value="id">
-            {{ template.name }}
-          </option>
-        </select>
-        <div class="form-entry__actions">
-          <a href="javascript:void(0)" @click="configureTemplates">Configure templates</a>
-        </div>
-      </form-entry>
-      <div class="modal__info">
-        <b>ProTip:</b> You can provide a value for <code>title</code> in the <a href="javascript:void(0)" @click="openFileProperties">file properties</a>.
-      </div>
-      <div class="modal__button-bar">
-        <button class="button" @click="config.reject()">Cancel</button>
-        <button class="button" @click="resolve()">Ok</button>
-      </div>
     </div>
-  </div>
+    <div class="modal__button-bar">
+      <button class="button" @click="config.reject()">Cancel</button>
+      <button class="button" @click="resolve()">Ok</button>
+    </div>
+  </modal-inner>
 </template>
 
 <script>
-import gistProvider from '../../services/providers/gistProvider';
-import modalTemplate from './modalTemplate';
+import gistProvider from '../../../services/providers/gistProvider';
+import modalTemplate from '../common/modalTemplate';
 
 export default modalTemplate({
   data: () => ({
@@ -53,7 +40,6 @@ export default modalTemplate({
   }),
   computedLocalSettings: {
     isPublic: 'gistIsPublic',
-    selectedTemplate: 'gistPublishTemplate',
   },
   created() {
     this.filename = `${this.currentFileName}.md`;
@@ -66,7 +52,6 @@ export default modalTemplate({
         // Return new location
         const location = gistProvider.makeLocation(
           this.config.token, this.filename, this.isPublic, this.gistId);
-        location.templateId = this.selectedTemplate;
         this.config.resolve(location);
       }
     },

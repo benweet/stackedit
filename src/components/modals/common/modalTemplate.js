@@ -1,5 +1,8 @@
+import ModalInner from './ModalInner';
 import FormEntry from './FormEntry';
-import store from '../../store';
+import store from '../../../store';
+
+const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
 
 export default (desc) => {
   const component = {
@@ -10,6 +13,7 @@ export default (desc) => {
     }),
     components: {
       ...desc.components || {},
+      ModalInner,
       FormEntry,
     },
     computed: {
@@ -49,8 +53,18 @@ export default (desc) => {
       },
     };
     if (key === 'selectedTemplate') {
-      component.computed.allTemplates = () => store.getters['data/allTemplates'];
-      component.methods.configureTemplates = () => {
+      component.computed.allTemplates = () => {
+        const allTemplates = store.getters['data/allTemplates'];
+        const sortedTemplates = {};
+        Object.keys(allTemplates)
+          .sort((id1, id2) => collator.compare(allTemplates[id1].name, allTemplates[id2].name))
+          .forEach((templateId) => {
+            sortedTemplates[templateId] = allTemplates[templateId];
+          });
+        return sortedTemplates;
+      };
+      // Make use of `function` to have `this` bound to the component
+      component.methods.configureTemplates = function () { // eslint-disable-line func-names
         store.dispatch('modal/open', {
           type: 'templates',
           selectedId: this.selectedTemplate,

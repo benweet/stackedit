@@ -1,7 +1,7 @@
 <template>
-  <div class="modal__inner-1" role="dialog" aria-label="Insert image">
-    <div class="modal__inner-2">
-      <p>Please provide a <b>URL</b> for your image.
+  <modal-inner aria-label="Insert image">
+    <div class="modal__content">
+      <p>Please provide a <b>URL</b> for your image.</p>
       <form-entry label="URL" error="url">
         <input slot="field" class="textfield" type="text" v-model.trim="url" @keyup.enter="resolve()">
       </form-entry>
@@ -14,17 +14,17 @@
         <icon-provider slot="icon" provider-id="googlePhotos"></icon-provider>
         <span>Add Google Photos account</span>
       </menu-entry>
-      <div class="modal__button-bar">
-        <button class="button" @click="reject()">Cancel</button>
-        <button class="button" @click="resolve()">Ok</button>
-      </div>
     </div>
-  </div>
+    <div class="modal__button-bar">
+      <button class="button" @click="reject()">Cancel</button>
+      <button class="button" @click="resolve()">Ok</button>
+    </div>
+  </modal-inner>
 </template>
 
 <script>
-import modalTemplate from './modalTemplate';
-import MenuEntry from '../menus/MenuEntry';
+import modalTemplate from './common/modalTemplate';
+import MenuEntry from '../menus/common/MenuEntry';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 
 export default modalTemplate({

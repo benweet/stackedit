@@ -1,14 +1,16 @@
-@import '../../node_modules/normalize-scss/sass/normalize';
+@import '../../../node_modules/normalize-scss/sass/normalize';
 @import '../../node_modules/katex/dist/katex.css';
 @import './variables.scss';
 @import './fonts.scss';
 @import './prism';
+@import './mermaid';
 
 @include normalize();
 
 html,
 body {
   color: rgba(0, 0, 0, 0.75);
+  font-size: 16px;
   font-family: $font-family-main;
   font-variant-ligatures: common-ligatures;
   line-height: $line-height-base;
@@ -16,12 +18,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
 p,
 blockquote,
 pre,
@@ -37,26 +33,19 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 1.8em 0 1.2em;
+  margin: 1.8em 0;
   line-height: $line-height-title;
-  padding: 0.33em 0;
 }
 
 h1,
 h2 {
-  border-bottom: 1px solid $hr-color;
-}
-
-h1 {
-  font-size: 2.2em;
-}
-
-h2 {
-  font-size: 1.6em;
-}
-
-h3 {
-  font-size: 1.22em;
+  &::after {
+    content: '';
+    display: block;
+    position: relative;
+    top: 0.33em;
+    border-bottom: 1px solid $hr-color;
+  }
 }
 
 ol ul,
@@ -68,11 +57,12 @@ ol ol {
 
 a {
   color: $link-color;
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-skip: ink;
 
   &:hover,
   &:focus {
-    text-decoration: underline;
+    text-decoration: none;
   }
 }
 
@@ -89,8 +79,8 @@ samp {
 
 blockquote {
   color: rgba(0, 0, 0, 0.5);
-  margin-left: 1em;
-  margin-right: 1em;
+  padding-left: 1.5em;
+  border-left: 5px solid rgba(0, 0, 0, 0.075);
 }
 
 code {
@@ -108,9 +98,9 @@ hr {
 pre > code {
   background-color: $code-bg;
   display: block;
-  overflow-x: auto;
   padding: 0.5em;
   -webkit-text-size-adjust: none;
+  white-space: pre-wrap;
 }
 
 .toc ul {
@@ -126,7 +116,7 @@ table {
 
 td,
 th {
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid #dcdcdc;
   padding: 8px 12px;
 
   &:last-child {
@@ -135,7 +125,7 @@ th {
 }
 
 td {
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #dcdcdc;
 }
 
 kbd {
@@ -163,11 +153,6 @@ img {
   max-width: 100%;
 }
 
-.table-wrapper {
-  max-width: 100%;
-  overflow: auto;
-}
-
 .footnote {
   font-size: 0.8em;
   position: relative;
@@ -175,18 +160,93 @@ img {
   vertical-align: top;
 }
 
-.export-container {
+.stackedit__html {
   margin-bottom: 180px;
   margin-left: auto;
   margin-right: auto;
+  padding-left: 30px;
+  padding-right: 30px;
 
-  > :not(h1):not(h2):not(h3):not(h4):not(h5):not(h6):not([align]) {
-    text-align: justify;
+  @media (min-width: 810px) {
+    .stackedit__html {
+      width: 750px;
+    }
   }
 }
 
-@media (min-width: 768px) {
-  .export-container {
-    width: 750px;
+.stackedit__toc {
+  ul {
+    padding: 0;
+
+    a {
+      margin: 0.5rem 0;
+      padding: 0.5rem 1rem;
+    }
+
+    ul {
+      color: #888;
+      font-size: 0.9em;
+
+      a {
+        margin: 0;
+        padding: 0.1rem 1rem;
+      }
+    }
+  }
+
+  li {
+    display: block;
+  }
+
+  a {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.075);
+      border-radius: $border-radius-base;
+    }
+  }
+}
+
+.stackedit__left {
+  position: fixed;
+  display: none;
+  width: 250px;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+
+  @media (min-width: 1060px) {
+    display: block;
+  }
+}
+
+.stackedit__right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  left: 0;
+
+  @media (min-width: 1060px) {
+    left: 250px;
+  }
+}
+
+.stackedit--pdf {
+  blockquote {
+    // wkhtmltopdf doesn't like borders with transparency
+    border-left-color: #ececec;
+  }
+
+  .stackedit__html {
+    padding-left: 0;
+    padding-right: 0;
   }
 }

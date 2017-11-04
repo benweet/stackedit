@@ -3,7 +3,7 @@
     <div class="stat-panel__block stat-panel__block--left" v-if="styles.showEditor">
       <span class="stat-panel__block-name">
         Markdown
-        <small v-if="textSelection">(selection)</small>
+        <span v-if="textSelection">selection</span>
       </span>
       <span v-for="stat in textStats" :key="stat.id">
         <span class="stat-panel__value">{{stat.value}}</span> {{stat.name}}
@@ -13,7 +13,7 @@
     <div class="stat-panel__block stat-panel__block--right">
       <span class="stat-panel__block-name">
         HTML
-        <small v-if="htmlSelection">(selection)</small>
+        <span v-if="htmlSelection">selection</span>
       </span>
       <span v-for="stat in htmlStats" :key="stat.id">
         <span class="stat-panel__value">{{stat.value}}</span> {{stat.name}}
@@ -121,10 +121,6 @@ export default {
 
 .stat-panel__block--right {
   float: right;
-}
-
-.stat-panel__block-name {
-  font-weight: 600;
 }
 
 .stat-panel__value {

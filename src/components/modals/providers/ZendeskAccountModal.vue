@@ -1,6 +1,6 @@
 <template>
-  <div class="modal__inner-1" role="dialog" aria-label="Link Zendesk account">
-    <div class="modal__inner-2">
+  <modal-inner aria-label="Link Zendesk account">
+    <div class="modal__content">
       <div class="modal__image">
         <icon-provider provider-id="zendesk"></icon-provider>
       </div>
@@ -18,17 +18,17 @@
           <a href="https://support.zendesk.com/hc/en-us/articles/203663836" target="_blank"><b>More info</b></a>
         </div>
       </form-entry>
-      <div class="modal__button-bar">
-        <button class="button" @click="config.reject()">Cancel</button>
-        <button class="button" @click="resolve()">Ok</button>
-      </div>
     </div>
-  </div>
+    <div class="modal__button-bar">
+      <button class="button" @click="config.reject()">Cancel</button>
+      <button class="button" @click="resolve()">Ok</button>
+    </div>
+  </modal-inner>
 </template>
 
 <script>
-import modalTemplate from './modalTemplate';
-import utils from '../../services/utils';
+import utils from '../../../services/utils';
+import modalTemplate from '../common/modalTemplate';
 
 export default modalTemplate({
   data: () => ({

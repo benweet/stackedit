@@ -5,18 +5,23 @@
     <templates-modal v-else-if="config.type === 'templates'"></templates-modal>
     <about-modal v-else-if="config.type === 'about'"></about-modal>
     <html-export-modal v-else-if="config.type === 'htmlExport'"></html-export-modal>
+    <pdf-export-modal v-else-if="config.type === 'pdfExport'"></pdf-export-modal>
+    <pandoc-export-modal v-else-if="config.type === 'pandocExport'"></pandoc-export-modal>
     <link-modal v-else-if="config.type === 'link'"></link-modal>
     <image-modal v-else-if="config.type === 'image'"></image-modal>
-    <google-photo-modal v-else-if="config.type === 'googlePhoto'"></google-photo-modal>
     <sync-management-modal v-else-if="config.type === 'syncManagement'"></sync-management-modal>
     <publish-management-modal v-else-if="config.type === 'publishManagement'"></publish-management-modal>
-    <google-drive-sync-modal v-else-if="config.type === 'googleDriveSync'"></google-drive-sync-modal>
+    <sponsor-modal v-else-if="config.type === 'sponsor'"></sponsor-modal>
+    <!-- Providers -->
+    <google-photo-modal v-else-if="config.type === 'googlePhoto'"></google-photo-modal>
+    <google-drive-save-modal v-else-if="config.type === 'googleDriveSave'"></google-drive-save-modal>
     <google-drive-publish-modal v-else-if="config.type === 'googleDrivePublish'"></google-drive-publish-modal>
     <dropbox-account-modal v-else-if="config.type === 'dropboxAccount'"></dropbox-account-modal>
-    <dropbox-sync-modal v-else-if="config.type === 'dropboxSync'"></dropbox-sync-modal>
+    <dropbox-save-modal v-else-if="config.type === 'dropboxSave'"></dropbox-save-modal>
     <dropbox-publish-modal v-else-if="config.type === 'dropboxPublish'"></dropbox-publish-modal>
     <github-account-modal v-else-if="config.type === 'githubAccount'"></github-account-modal>
-    <github-sync-modal v-else-if="config.type === 'githubSync'"></github-sync-modal>
+    <github-open-modal v-else-if="config.type === 'githubOpen'"></github-open-modal>
+    <github-save-modal v-else-if="config.type === 'githubSave'"></github-save-modal>
     <github-publish-modal v-else-if="config.type === 'githubPublish'"></github-publish-modal>
     <gist-sync-modal v-else-if="config.type === 'gistSync'"></gist-sync-modal>
     <gist-publish-modal v-else-if="config.type === 'gistPublish'"></gist-publish-modal>
@@ -25,70 +30,81 @@
     <blogger-page-publish-modal v-else-if="config.type === 'bloggerPagePublish'"></blogger-page-publish-modal>
     <zendesk-account-modal v-else-if="config.type === 'zendeskAccount'"></zendesk-account-modal>
     <zendesk-publish-modal v-else-if="config.type === 'zendeskPublish'"></zendesk-publish-modal>
-    <div v-else class="modal__inner-1">
-      <div class="modal__inner-2">
-        <div class="modal__content" v-html="config.content"></div>
-        <div class="modal__button-bar">
-          <button v-if="config.rejectText" class="button" @click="config.reject()">{{config.rejectText}}</button>
-          <button v-if="config.resolveText" class="button" @click="config.resolve()">{{config.resolveText}}</button>
-        </div>
+    <modal-inner v-else aria-label="Dialog">
+      <div class="modal__content" v-html="config.content"></div>
+      <div class="modal__button-bar">
+        <button v-if="config.rejectText" class="button" @click="config.reject()">{{config.rejectText}}</button>
+        <button v-if="config.resolveText" class="button" @click="config.resolve()">{{config.resolveText}}</button>
       </div>
-    </div>
+    </modal-inner>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import editorEngineSvc from '../services/editorEngineSvc';
+import ModalInner from './modals/common/ModalInner';
 import FilePropertiesModal from './modals/FilePropertiesModal';
 import SettingsModal from './modals/SettingsModal';
 import TemplatesModal from './modals/TemplatesModal';
 import AboutModal from './modals/AboutModal';
 import HtmlExportModal from './modals/HtmlExportModal';
+import PdfExportModal from './modals/PdfExportModal';
+import PandocExportModal from './modals/PandocExportModal';
 import LinkModal from './modals/LinkModal';
 import ImageModal from './modals/ImageModal';
-import GooglePhotoModal from './modals/GooglePhotoModal';
 import SyncManagementModal from './modals/SyncManagementModal';
 import PublishManagementModal from './modals/PublishManagementModal';
-import GoogleDriveSyncModal from './modals/GoogleDriveSyncModal';
-import GoogleDrivePublishModal from './modals/GoogleDrivePublishModal';
-import DropboxAccountModal from './modals/DropboxAccountModal';
-import DropboxSyncModal from './modals/DropboxSyncModal';
-import DropboxPublishModal from './modals/DropboxPublishModal';
-import GithubAccountModal from './modals/GithubAccountModal';
-import GithubSyncModal from './modals/GithubSyncModal';
-import GithubPublishModal from './modals/GithubPublishModal';
-import GistSyncModal from './modals/GistSyncModal';
-import GistPublishModal from './modals/GistPublishModal';
-import WordpressPublishModal from './modals/WordpressPublishModal';
-import BloggerPublishModal from './modals/BloggerPublishModal';
-import BloggerPagePublishModal from './modals/BloggerPagePublishModal';
-import ZendeskAccountModal from './modals/ZendeskAccountModal';
-import ZendeskPublishModal from './modals/ZendeskPublishModal';
+import SponsorModal from './modals/SponsorModal';
+
+// Providers
+import GooglePhotoModal from './modals/providers/GooglePhotoModal';
+import GoogleDriveSaveModal from './modals/providers/GoogleDriveSaveModal';
+import GoogleDrivePublishModal from './modals/providers/GoogleDrivePublishModal';
+import DropboxAccountModal from './modals/providers/DropboxAccountModal';
+import DropboxSaveModal from './modals/providers/DropboxSaveModal';
+import DropboxPublishModal from './modals/providers/DropboxPublishModal';
+import GithubAccountModal from './modals/providers/GithubAccountModal';
+import GithubOpenModal from './modals/providers/GithubOpenModal';
+import GithubSaveModal from './modals/providers/GithubSaveModal';
+import GithubPublishModal from './modals/providers/GithubPublishModal';
+import GistSyncModal from './modals/providers/GistSyncModal';
+import GistPublishModal from './modals/providers/GistPublishModal';
+import WordpressPublishModal from './modals/providers/WordpressPublishModal';
+import BloggerPublishModal from './modals/providers/BloggerPublishModal';
+import BloggerPagePublishModal from './modals/providers/BloggerPagePublishModal';
+import ZendeskAccountModal from './modals/providers/ZendeskAccountModal';
+import ZendeskPublishModal from './modals/providers/ZendeskPublishModal';
 
 const getTabbables = container => container.querySelectorAll('a[href], button, .textfield')
   // Filter enabled and visible element
-  .cl_filter(el => !el.disabled && el.offsetParent !== null);
+  .cl_filter(el => !el.disabled && el.offsetParent !== null && !el.classList.contains('not-tabbable'));
 
 export default {
   components: {
+    ModalInner,
     FilePropertiesModal,
     SettingsModal,
     TemplatesModal,
     AboutModal,
     HtmlExportModal,
+    PdfExportModal,
+    PandocExportModal,
     LinkModal,
     ImageModal,
-    GooglePhotoModal,
     SyncManagementModal,
     PublishManagementModal,
-    GoogleDriveSyncModal,
+    SponsorModal,
+    // Providers
+    GooglePhotoModal,
+    GoogleDriveSaveModal,
     GoogleDrivePublishModal,
     DropboxAccountModal,
-    DropboxSyncModal,
+    DropboxSaveModal,
     DropboxPublishModal,
     GithubAccountModal,
-    GithubSyncModal,
+    GithubOpenModal,
+    GithubSaveModal,
     GithubPublishModal,
     GistSyncModal,
     GistPublishModal,
@@ -160,7 +176,7 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba(128, 128, 128, 0.5);
+  background-color: rgba(160, 160, 160, 0.5);
   overflow: auto;
 }
 
@@ -172,7 +188,7 @@ export default {
 }
 
 .modal__inner-2 {
-  margin: 50px 10px 100px;
+  margin: 40px 10px 100px;
   background-color: #fff;
   padding: 40px 50px 30px;
   border-radius: $border-radius-base;
@@ -200,7 +216,8 @@ export default {
   }
 }
 
-.modal__content :first-child {
+.modal__content > :first-child,
+.modal__content > .modal__image:first-child + * {
   margin-top: 0;
 }
 
@@ -309,7 +326,7 @@ export default {
 
 .tabs {
   border-bottom: 1px solid $hr-color;
-  margin-bottom: 2em;
+  margin: 1em 0 2em;
 
   &::after {
     content: '';

@@ -44,6 +44,11 @@
       </menu-entry>
     </div>
     <div v-for="token in githubTokens" :key="token.sub">
+      <menu-entry @click.native="openGithub(token)">
+        <icon-provider slot="icon" provider-id="github"></icon-provider>
+        <div>Open from GitHub</div>
+        <span>{{token.name}}</span>
+      </menu-entry>
       <menu-entry @click.native="saveGithub(token)">
         <icon-provider slot="icon" provider-id="github"></icon-provider>
         <div>Save on GitHub</div>
@@ -73,12 +78,13 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import MenuEntry from './MenuEntry';
+import MenuEntry from './common/MenuEntry';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import dropboxHelper from '../../services/providers/helpers/dropboxHelper';
 import githubHelper from '../../services/providers/helpers/githubHelper';
 import googleDriveProvider from '../../services/providers/googleDriveProvider';
 import dropboxProvider from '../../services/providers/dropboxProvider';
+import githubProvider from '../../services/providers/githubProvider';
 import syncSvc from '../../services/syncSvc';
 import store from '../../store';
 
@@ -161,15 +167,23 @@ export default {
           () => dropboxProvider.openFiles(token, paths)));
     },
     saveGoogleDrive(token) {
-      return openSyncModal(token, 'googleDriveSync')
+      return openSyncModal(token, 'googleDriveSave')
         .catch(() => {}); // Cancel
     },
     saveDropbox(token) {
-      return openSyncModal(token, 'dropboxSync')
+      return openSyncModal(token, 'dropboxSave')
         .catch(() => {}); // Cancel
     },
+    openGithub(token) {
+      return store.dispatch('modal/open', {
+        type: 'githubOpen',
+        token,
+      })
+        .then(syncLocation => this.$store.dispatch('queue/enqueue',
+          () => githubProvider.openFile(token, syncLocation)));
+    },
     saveGithub(token) {
-      return openSyncModal(token, 'githubSync')
+      return openSyncModal(token, 'githubSave')
         .catch(() => {}); // Cancel
     },
     saveGist(token) {

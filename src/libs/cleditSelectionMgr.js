@@ -49,12 +49,16 @@ function SelectionMgr(editor) {
       this.$trigger('cursorCoordinatesChanged', coordinates)
     }
     if (adjustScroll) {
-      var adjustment = scrollElt.clientHeight / 2 * editor.options.getCursorFocusRatio()
+      var scrollEltHeight = scrollElt.clientHeight;
+      if (typeof adjustScroll === 'number') {
+        scrollEltHeight -= adjustScroll
+      }
+      var adjustment = scrollEltHeight / 2 * editor.options.getCursorFocusRatio()
       var cursorTop = this.cursorCoordinates.top + this.cursorCoordinates.height / 2
       // Adjust cursorTop with contentElt position relative to scrollElt
       cursorTop += contentElt.getBoundingClientRect().top - scrollElt.getBoundingClientRect().top + scrollElt.scrollTop;
       var minScrollTop = cursorTop - adjustment
-      var maxScrollTop = cursorTop + adjustment - scrollElt.clientHeight
+      var maxScrollTop = cursorTop + adjustment - scrollEltHeight
       if (scrollElt.scrollTop > minScrollTop) {
         scrollElt.scrollTop = minScrollTop
       } else if (scrollElt.scrollTop < maxScrollTop) {
@@ -82,6 +86,10 @@ function SelectionMgr(editor) {
       self.$trigger('selectionChanged', self.selectionStart, self.selectionEnd, selectionRange)
       return true
     }
+  }
+
+  this.hasFocus = function() {
+    return contentElt === editor.$document.activeElement;
   }
 
   this.restoreSelection = function () {
@@ -132,9 +140,9 @@ function SelectionMgr(editor) {
     saveLastSelection()
   }
 
-  this.setSelectionStartEnd = function (start, end, focus) {
+  this.setSelectionStartEnd = function (start, end) {
     setSelection(start, end)
-    return focus !== false && this.restoreSelection()
+    return this.hasFocus() && this.restoreSelection()
   }
 
   this.saveSelectionState = (function () {
@@ -230,48 +238,50 @@ function SelectionMgr(editor) {
     }
 
     function save() {
-      var selectionStart = self.selectionStart
-      var selectionEnd = self.selectionEnd
-      var selection = editor.$window.getSelection()
       var result
-      if (selection.rangeCount > 0) {
-        var selectionRange = selection.getRangeAt(0)
-        var node = selectionRange.startContainer
-        if ((contentElt.compareDocumentPosition(node) & window.Node.DOCUMENT_POSITION_CONTAINED_BY) || contentElt === node) {
-          var offset = selectionRange.startOffset
-          if (node.firstChild && offset > 0) {
-            node = node.childNodes[offset - 1]
-            offset = node.textContent.length
-          }
-          var container = node
-          while (node !== contentElt) {
-            while ((node = node.previousSibling)) {
-              offset += (node.textContent || '').length
+      if (self.hasFocus()) {
+        var selectionStart = self.selectionStart
+        var selectionEnd = self.selectionEnd
+        var selection = editor.$window.getSelection()
+        if (selection.rangeCount > 0) {
+          var selectionRange = selection.getRangeAt(0)
+          var node = selectionRange.startContainer
+          if ((contentElt.compareDocumentPosition(node) & window.Node.DOCUMENT_POSITION_CONTAINED_BY) || contentElt === node) {
+            var offset = selectionRange.startOffset
+            if (node.firstChild && offset > 0) {
+              node = node.childNodes[offset - 1]
+              offset = node.textContent.length
             }
-            node = container = container.parentNode
-          }
-          var selectionText = selectionRange + ''
-          // Fix end of line when only br is selected
-          var brElt = selectionRange.endContainer.firstChild
-          if (brElt && brElt.tagName === 'BR' && selectionRange.endOffset === 1) {
-            selectionText += '\n'
-          }
-          if (comparePoints(selection.anchorNode, selection.anchorOffset, selection.focusNode, selection.focusOffset) === 1) {
-            selectionStart = offset + selectionText.length
-            selectionEnd = offset
-          } else {
-            selectionStart = offset
-            selectionEnd = offset + selectionText.length
-          }
+            var container = node
+            while (node !== contentElt) {
+              while ((node = node.previousSibling)) {
+                offset += (node.textContent || '').length
+              }
+              node = container = container.parentNode
+            }
+            var selectionText = selectionRange + ''
+            // Fix end of line when only br is selected
+            var brElt = selectionRange.endContainer.firstChild
+            if (brElt && brElt.tagName === 'BR' && selectionRange.endOffset === 1) {
+              selectionText += '\n'
+            }
+            if (comparePoints(selection.anchorNode, selection.anchorOffset, selection.focusNode, selection.focusOffset) === 1) {
+              selectionStart = offset + selectionText.length
+              selectionEnd = offset
+            } else {
+              selectionStart = offset
+              selectionEnd = offset + selectionText.length
+            }
 
-          if (selectionStart === selectionEnd && selectionStart === editor.getContent().length) {
-            // If cursor is after the trailingNode
-            selectionStart = --selectionEnd
-            result = self.setSelectionStartEnd(selectionStart, selectionEnd)
-          } else {
-            setSelection(selectionStart, selectionEnd)
-            result = checkSelection(selectionRange)
-            result = result || lastSelectionStart !== self.selectionStart // selectionRange doesn't change when selection is at the start of a section
+            if (selectionStart === selectionEnd && selectionStart === editor.getContent().length) {
+              // If cursor is after the trailingNode
+              selectionStart = --selectionEnd
+              result = self.setSelectionStartEnd(selectionStart, selectionEnd)
+            } else {
+              setSelection(selectionStart, selectionEnd)
+              result = checkSelection(selectionRange)
+              result = result || lastSelectionStart !== self.selectionStart // selectionRange doesn't change when selection is at the start of a section
+            }
           }
         }
       }

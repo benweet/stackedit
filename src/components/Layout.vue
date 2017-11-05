@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import NavigationBar from './NavigationBar';
 import ButtonBar from './ButtonBar';
 import StatusBar from './StatusBar';
@@ -67,7 +67,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('layout', [
+    ...mapActions('layout', [
       'updateBodySize',
     ]),
     saveSelection: () => editorSvc.saveSelection(true),

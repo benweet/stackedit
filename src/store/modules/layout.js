@@ -145,4 +145,12 @@ export default {
       return computeStyles(state, localSettings, rootGetters);
     },
   },
+  actions: {
+    updateBodySize({ commit, dispatch, rootGetters }) {
+      commit('updateBodySize');
+      // Make sure both explorer and side bar are not open if body width is small
+      const localSettings = rootGetters['data/localSettings'];
+      dispatch('data/toggleExplorer', localSettings.showExplorer, { root: true });
+    },
+  },
 };

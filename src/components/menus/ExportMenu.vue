@@ -18,7 +18,7 @@
     <menu-entry @click.native="exportPandoc">
       <icon-download slot="icon"></icon-download>
       <div><div class="menu-entry__sponsor">sponsor</div> Export with Pandoc</div>
-      <span>Convert file to PDF, Word, EPUB...</span>
+      <span>Convert to PDF, Word, EPUB...</span>
     </menu-entry>
   </div>
 </template>

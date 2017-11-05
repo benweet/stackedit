@@ -166,12 +166,7 @@ img {
   margin-right: auto;
   padding-left: 30px;
   padding-right: 30px;
-
-  @media (min-width: 810px) {
-    .stackedit__html {
-      width: 750px;
-    }
-  }
+  max-width: 750px;
 }
 
 .stackedit__toc {
@@ -248,5 +243,6 @@ img {
   .stackedit__html {
     padding-left: 0;
     padding-right: 0;
+    max-width: none;
   }
 }

@@ -1,6 +1,6 @@
 import moduleTemplate from './moduleTemplate';
-import empty from '../../data/emptyPublishLocation';
-import providerRegistry from '../../services/providers/providerRegistry';
+import empty from '../data/emptySyncLocation';
+import providerRegistry from '../services/providers/providerRegistry';
 
 const module = moduleTemplate(empty);
 

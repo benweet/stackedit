@@ -1,5 +1,5 @@
 <template>
-  <div class="user-image" :style="{'background-image': url}">
+  <div class="user-image" :style="{backgroundImage: url}">
   </div>
 </template>
 

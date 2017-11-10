@@ -2,17 +2,11 @@ import cledit from '../../libs/cledit';
 import editorSvc from '../../services/editorSvc';
 import utils from '../../services/utils';
 
-let savedSelection = null;
 const nextTickCbs = [];
 const nextTickExecCbs = cledit.Utils.debounce(() => {
   while (nextTickCbs.length) {
     nextTickCbs.shift()();
   }
-  if (savedSelection) {
-    editorSvc.clEditor.selectionMgr.setSelectionStartEnd(
-      savedSelection.start, savedSelection.end);
-  }
-  savedSelection = null;
 });
 
 const nextTick = (cb) => {
@@ -20,20 +14,12 @@ const nextTick = (cb) => {
   nextTickExecCbs();
 };
 
-const nextTickRestoreSelection = () => {
-  savedSelection = {
-    start: editorSvc.clEditor.selectionMgr.selectionStart,
-    end: editorSvc.clEditor.selectionMgr.selectionEnd,
-  };
-  nextTickExecCbs();
-};
-
-export default class EditorClassApplier {
+export default class PreviewClassApplier {
   constructor(classGetter, offsetGetter, properties) {
     this.classGetter = typeof classGetter === 'function' ? classGetter : () => classGetter;
     this.offsetGetter = typeof offsetGetter === 'function' ? offsetGetter : () => offsetGetter;
     this.properties = properties || {};
-    this.eltCollection = editorSvc.editorElt.getElementsByClassName(this.classGetter()[0]);
+    this.eltCollection = editorSvc.previewElt.getElementsByClassName(this.classGetter()[0]);
     this.lastEltCount = this.eltCollection.length;
 
     this.restoreClass = () => {
@@ -43,42 +29,37 @@ export default class EditorClassApplier {
       }
     };
 
-    editorSvc.clEditor.on('contentChanged', this.restoreClass);
+    editorSvc.$on('previewHtml', this.restoreClass);
+    editorSvc.$on('sectionDescWithDiffsList', this.restoreClass);
     nextTick(() => this.applyClass());
   }
 
   applyClass() {
     const offset = this.offsetGetter();
     if (offset && offset.start !== offset.end) {
-      const range = editorSvc.clEditor.selectionMgr.createRange(
-        Math.min(offset.start, offset.end),
-        Math.max(offset.start, offset.end),
-      );
+      const start = cledit.Utils.findContainer(
+        editorSvc.previewElt, Math.min(offset.start, offset.end));
+      const end = cledit.Utils.findContainer(
+        editorSvc.previewElt, Math.max(offset.start, offset.end));
+      const range = document.createRange();
+      range.setStart(start.container, start.offsetInContainer);
+      range.setEnd(end.container, end.offsetInContainer);
       const properties = {
         ...this.properties,
         className: this.classGetter().join(' '),
       };
-      editorSvc.clEditor.watcher.noWatch(() => {
-        utils.wrapRange(range, properties);
-      });
-      if (editorSvc.clEditor.selectionMgr.hasFocus()) {
-        nextTickRestoreSelection();
-      }
+      utils.wrapRange(range, properties);
       this.lastEltCount = this.eltCollection.length;
     }
   }
 
   removeClass() {
-    editorSvc.clEditor.watcher.noWatch(() => {
-      utils.unwrapRange(this.eltCollection);
-    });
-    if (editorSvc.clEditor.selectionMgr.hasFocus()) {
-      nextTickRestoreSelection();
-    }
+    utils.unwrapRange(this.eltCollection);
   }
 
   stop() {
-    editorSvc.clEditor.off('contentChanged', this.restoreClass);
+    editorSvc.$off('previewHtml', this.restoreClass);
+    editorSvc.$off('sectionDescWithDiffsList', this.restoreClass);
     nextTick(() => this.removeClass());
   }
 }

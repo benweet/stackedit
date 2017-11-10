@@ -206,6 +206,60 @@ textarea {
   background-size: contain;
 }
 
+.gutter {
+  position: absolute;
+  top: 0;
+  height: 100%;
+}
+
+.new-discussion-button {
+  color: rgba(0, 0, 0, 0.33);
+  position: absolute;
+  left: 0;
+  padding: 1px;
+  width: 20px;
+  height: 20px;
+  line-height: 1;
+
+  &:active,
+  &:focus,
+  &:hover {
+    color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+.discussion-editor-highlighting,
+.discussion-preview-highlighting {
+  background-color: mix(#fff, $selection-highlighting-color, 50%);
+  padding: 0.25em 0;
+}
+
+.discussion-editor-highlighting--hover,
+.discussion-preview-highlighting--hover {
+  background-color: mix(#fff, $selection-highlighting-color, 25%);
+
+  * {
+    background-color: transparent;
+  }
+}
+
+.discussion-editor-highlighting--selected,
+.discussion-preview-highlighting--selected {
+  background-color: mix(#fff, $selection-highlighting-color, 10%);
+
+  * {
+    background-color: transparent;
+  }
+}
+
+.discussion-preview-highlighting {
+  cursor: pointer;
+}
+
+.discussion-preview-highlighting--selected {
+  cursor: auto;
+}
+
 .hidden-rendering-container {
   position: absolute;
   width: 500px;

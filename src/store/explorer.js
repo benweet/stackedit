@@ -1,6 +1,6 @@
 import Vue from 'vue';
-import emptyFile from '../../data/emptyFile';
-import emptyFolder from '../../data/emptyFolder';
+import emptyFile from '../data/emptyFile';
+import emptyFolder from '../data/emptyFolder';
 
 const setter = propertyName => (state, value) => {
   state[propertyName] = value;

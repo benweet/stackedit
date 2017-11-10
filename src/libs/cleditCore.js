@@ -212,6 +212,7 @@ function cledit(contentElt, scrollElt, windowParam) {
       editor.$window.removeEventListener('keydown', windowKeydownListener)
       editor.$window.removeEventListener('mousedown', windowMouseListener)
       editor.$window.removeEventListener('mouseup', windowMouseListener)
+      editor.$window.removeEventListener('resize', windowResizeListener)
       editor.$trigger('destroy')
       return true
     }
@@ -235,6 +236,15 @@ function cledit(contentElt, scrollElt, windowParam) {
   }
   editor.$window.addEventListener('mousedown', windowMouseListener)
   editor.$window.addEventListener('mouseup', windowMouseListener)
+
+  // Resize provokes cursor coordinate changes
+  function windowResizeListener() {
+    if (!tryDestroy()) {
+      selectionMgr.updateCursorCoordinates()
+    }
+  }
+  editor.$window.addEventListener('resize', windowResizeListener)
+
   // This can also provoke selection changes and does not fire mouseup event on Chrome/OSX
   contentElt.addEventListener('contextmenu', selectionMgr.saveSelectionState.cl_bind(selectionMgr, true, false))
 

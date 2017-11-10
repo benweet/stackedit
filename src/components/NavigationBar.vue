@@ -84,7 +84,6 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import editorSvc from '../services/editorSvc';
-import editorEngineSvc from '../services/editorEngineSvc';
 import syncSvc from '../services/syncSvc';
 import publishSvc from '../services/publishSvc';
 import animationSvc from '../services/animationSvc';
@@ -161,10 +160,10 @@ export default {
       'toggleSideBar',
     ]),
     undo() {
-      return editorEngineSvc.clEditor.undoMgr.undo();
+      return editorSvc.clEditor.undoMgr.undo();
     },
     redo() {
-      return editorEngineSvc.clEditor.undoMgr.redo();
+      return editorSvc.clEditor.undoMgr.redo();
     },
     requestSync() {
       if (this.isSyncPossible && !this.isSyncRequested) {
@@ -402,7 +401,6 @@ $t: 3000ms;
 .navigation-bar__spinner {
   width: 24px;
   margin: 7px 0 0 8px;
-  color: #b2b2b2;
 
   .icon {
     width: 24px;
@@ -416,7 +414,7 @@ $t: 3000ms;
   height: $d;
   display: block;
   position: relative;
-  border: $b solid currentColor;
+  border: $b solid transparentize($navbar-color, 0.5);
   border-radius: 50%;
   margin: 2px;
 
@@ -426,20 +424,20 @@ $t: 3000ms;
     position: absolute;
     display: block;
     width: $b;
-    background-color: currentColor;
+    background-color: $navbar-color;
     border-radius: $b * 0.5;
     transform-origin: 50% 0;
   }
 
   &::before {
-    height: $r * 0.35;
+    height: $r * 0.4;
     left: $r - $b * 1.5;
     top: 50%;
     animation: spin $t linear infinite;
   }
 
   &::after {
-    height: $r * 0.5;
+    height: $r * 0.6;
     left: $r - $b * 1.5;
     top: 50%;
     animation: spin $t/4 linear infinite;

@@ -21,7 +21,6 @@
     color: $editor-color;
     font-family: $font-family-monospace;
     font-size: $font-size-monospace;
-    word-break: break-all;
 
     [class*='language-'] {
       color: $editor-color-dark;
@@ -29,6 +28,11 @@
 
     * {
       font-size: inherit !important;
+    }
+
+    &,
+    * {
+      line-height: $line-height-title;
     }
   }
 

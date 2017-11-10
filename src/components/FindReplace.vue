@@ -32,9 +32,8 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import { mapState } from 'vuex';
-import editorEngineSvc from '../services/editorEngineSvc';
+import editorSvc from '../services/editorSvc';
 import cledit from '../libs/cledit';
 import store from '../store';
 import EditorClassApplier from './common/EditorClassApplier';
@@ -63,8 +62,8 @@ class DynamicClassApplier {
   constructor(cssClass, offset, silent) {
     this.startMarker = new cledit.Marker(offset.start);
     this.endMarker = new cledit.Marker(offset.end);
-    editorEngineSvc.clEditor.addMarker(this.startMarker);
-    editorEngineSvc.clEditor.addMarker(this.endMarker);
+    editorSvc.clEditor.addMarker(this.startMarker);
+    editorSvc.clEditor.addMarker(this.endMarker);
     if (!silent) {
       this.classApplier = new EditorClassApplier(
         [`find-replace-${this.startMarker.id}`, cssClass],
@@ -76,8 +75,8 @@ class DynamicClassApplier {
   }
 
   clean = () => {
-    editorEngineSvc.clEditor.removeMarker(this.startMarker);
-    editorEngineSvc.clEditor.removeMarker(this.endMarker);
+    editorSvc.clEditor.removeMarker(this.startMarker);
+    editorSvc.clEditor.removeMarker(this.endMarker);
     if (this.classApplier) {
       this.classApplier.stop();
     }
@@ -117,7 +116,7 @@ export default {
           }
           this.replaceRegex = new RegExp(this.searchRegex, this.findCaseSensitive ? 'm' : 'mi');
           this.searchRegex = new RegExp(this.searchRegex, this.findCaseSensitive ? 'gm' : 'gmi');
-          editorEngineSvc.clEditor.getContent().replace(this.searchRegex, (...params) => {
+          editorSvc.clEditor.getContent().replace(this.searchRegex, (...params) => {
             const match = params[0];
             const offset = params[params.length - 2];
             offsetList.push({
@@ -161,7 +160,7 @@ export default {
     find(mode = 'forward') {
       const selectedClassApplier = this.selectedClassApplier;
       this.unselectClassApplier();
-      const selectionMgr = editorEngineSvc.clEditor.selectionMgr;
+      const selectionMgr = editorSvc.clEditor.selectionMgr;
       const startOffset = Math.min(selectionMgr.selectionStart, selectionMgr.selectionEnd);
       const endOffset = Math.max(selectionMgr.selectionStart, selectionMgr.selectionEnd);
       const keys = Object.keys(this.classAppliers);
@@ -208,21 +207,21 @@ export default {
           this.find();
           return;
         }
-        editorEngineSvc.clEditor.replaceAll(
+        editorSvc.clEditor.replaceAll(
           this.replaceRegex, this.replaceText, this.selectedClassApplier.startMarker.offset);
-        Vue.nextTick(() => this.find());
+        this.$nextTick(() => this.find());
       }
     },
     replaceAll() {
       if (this.searchRegex) {
-        editorEngineSvc.clEditor.replaceAll(this.searchRegex, this.replaceText);
+        editorSvc.clEditor.replaceAll(this.searchRegex, this.replaceText);
       }
     },
     close() {
       this.$store.commit('findReplace/setType');
     },
     onEscape() {
-      editorEngineSvc.clEditor.focus();
+      editorSvc.clEditor.focus();
     },
   },
   mounted() {
@@ -236,7 +235,7 @@ export default {
     this.$watch(() => this.findCaseSensitive, this.debouncedHighlightOccurrences);
     this.$watch(() => this.findUseRegexp, this.debouncedHighlightOccurrences);
     // Refresh highlighting when content changes
-    editorEngineSvc.clEditor.on('contentChanged', this.debouncedHighlightOccurrences);
+    editorSvc.clEditor.on('contentChanged', this.debouncedHighlightOccurrences);
 
     // Last open changes trigger focus on text input and find occurence in selection
     this.$watch(() => this.lastOpen, () => {
@@ -266,7 +265,7 @@ export default {
   },
   destroyed() {
     // Unregister listeners
-    editorEngineSvc.clEditor.off('contentChanged', this.debouncedHighlightOccurrences);
+    editorSvc.clEditor.off('contentChanged', this.debouncedHighlightOccurrences);
     window.removeEventListener('keyup', this.onKeyup);
     window.removeEventListener('focusin', this.onFocusIn);
     this.state = 'destroyed';
@@ -350,10 +349,10 @@ export default {
 }
 
 .find-replace-highlighting {
-  background-color: #ff0;
+  background-color: $highlighting-color;
 }
 
 .find-replace-selection {
-  background-color: #ff9632;
+  background-color: $selection-highlighting-color;
 }
 </style>

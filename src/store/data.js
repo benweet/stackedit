@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import yaml from 'js-yaml';
 import moduleTemplate from './moduleTemplate';
-import utils from '../../services/utils';
-import defaultSettings from '../../data/defaultSettings.yml';
-import defaultLocalSettings from '../../data/defaultLocalSettings';
-import plainHtmlTemplate from '../../data/plainHtmlTemplate.html';
-import styledHtmlTemplate from '../../data/styledHtmlTemplate.html';
-import styledHtmlWithTocTemplate from '../../data/styledHtmlWithTocTemplate.html';
-import jekyllSiteTemplate from '../../data/jekyllSiteTemplate.html';
+import utils from '../services/utils';
+import defaultSettings from '../data/defaultSettings.yml';
+import defaultLocalSettings from '../data/defaultLocalSettings';
+import plainHtmlTemplate from '../data/plainHtmlTemplate.html';
+import styledHtmlTemplate from '../data/styledHtmlTemplate.html';
+import styledHtmlWithTocTemplate from '../data/styledHtmlWithTocTemplate.html';
+import jekyllSiteTemplate from '../data/jekyllSiteTemplate.html';
 
 const itemTemplate = (id, data = {}) => ({ id, type: 'data', data, hash: 0 });
 

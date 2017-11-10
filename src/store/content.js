@@ -1,6 +1,6 @@
 import moduleTemplate from './moduleTemplate';
-import empty from '../../data/emptyContent';
-import utils from '../../services/utils';
+import empty from '../data/emptyContent';
+import utils from '../services/utils';
 
 const module = moduleTemplate(empty);
 

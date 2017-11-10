@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import editorSvc from '../services/editorSvc';
 
@@ -71,7 +70,7 @@ export default {
       }
     };
 
-    Vue.nextTick(() => {
+    this.$nextTick(() => {
       editorSvc.editorElt.parentNode.addEventListener('scroll', () => {
         if (this.styles.showEditor) {
           updateMaskY();

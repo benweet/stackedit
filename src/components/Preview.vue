@@ -3,6 +3,7 @@
     <div class="preview__inner-1" @click="onClick" @scroll="onScroll">
       <div class="preview__inner-2" :style="{padding: styles.previewPadding}">
       </div>
+      <preview-new-discussion-button-gutter></preview-new-discussion-button-gutter>
     </div>
     <div v-if="!styles.showEditor" class="preview__button-bar">
       <div class="preview__button" @click="toggleEditor(true)">
@@ -15,10 +16,14 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import PreviewNewDiscussionButtonGutter from './gutters/PreviewNewDiscussionButtonGutter';
 
 const appUri = `${window.location.protocol}//${window.location.host}`;
 
 export default {
+  components: {
+    PreviewNewDiscussionButtonGutter,
+  },
   data: () => ({
     previewTop: true,
   }),
@@ -45,6 +50,43 @@ export default {
     onScroll(evt) {
       this.previewTop = evt.target.scrollTop < 10;
     },
+  },
+  mounted() {
+    const previewElt = this.$el.querySelector('.preview__inner-2');
+    const onDiscussionEvt = cb => (evt) => {
+      let elt = evt.target;
+      while (elt && elt !== previewElt) {
+        if (elt.discussionId) {
+          cb(elt.discussionId);
+          return;
+        }
+        elt = elt.parentNode;
+      }
+    };
+
+    previewElt.addEventListener('mouseover', onDiscussionEvt(discussionId =>
+      previewElt.getElementsByClassName(`discussion-preview-highlighting-${discussionId}`)
+        .cl_each(elt => elt.classList.add('discussion-preview-highlighting--hover')),
+      ));
+    previewElt.addEventListener('mouseout', onDiscussionEvt(discussionId =>
+      previewElt.getElementsByClassName(`discussion-preview-highlighting-${discussionId}`)
+        .cl_each(elt => elt.classList.remove('discussion-preview-highlighting--hover')),
+      ));
+    previewElt.addEventListener('click', onDiscussionEvt((discussionId) => {
+      this.$store.commit('discussion/setCurrentDiscussionId', discussionId);
+    }));
+    this.$watch(
+      () => this.$store.state.discussion.currentDiscussionId,
+      (discussionId, oldDiscussionId) => {
+        if (oldDiscussionId) {
+          previewElt.querySelectorAll(`.discussion-preview-highlighting-${oldDiscussionId}`)
+            .cl_each(elt => elt.classList.remove('discussion-preview-highlighting--selected'));
+        }
+        if (discussionId) {
+          previewElt.querySelectorAll(`.discussion-preview-highlighting-${discussionId}`)
+            .cl_each(elt => elt.classList.add('discussion-preview-highlighting--selected'));
+        }
+      });
   },
 };
 </script>

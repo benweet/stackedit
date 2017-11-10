@@ -1,6 +1,7 @@
 const minPadding = 20;
 const previewButtonWidth = 55;
 const editorTopPadding = 10;
+const gutterWidth = 250;
 const navigationBarEditButtonsWidth = (36 * 14) + 8; // 14 buttons + 1 spacer
 const navigationBarLeftButtonWidth = 38 + 4 + 15;
 const navigationBarRightButtonWidth = 38 + 8;
@@ -20,7 +21,7 @@ const constants = {
   statusBarHeight: 20,
 };
 
-function computeStyles(state, localSettings, getters, styles = {
+function computeStyles(state, getters, localSettings = getters['data/localSettings'], styles = {
   showNavigationBar: !localSettings.showEditor || localSettings.showNavigationBar,
   showStatusBar: localSettings.showStatusBar,
   showEditor: localSettings.showEditor,
@@ -30,7 +31,7 @@ function computeStyles(state, localSettings, getters, styles = {
   showExplorer: localSettings.showExplorer,
   layoutOverflow: false,
 }) {
-  styles.innerHeight = state.bodyHeight;
+  styles.innerHeight = state.layout.bodyHeight;
   if (styles.showNavigationBar) {
     styles.innerHeight -= constants.navigationBarHeight;
   }
@@ -38,7 +39,7 @@ function computeStyles(state, localSettings, getters, styles = {
     styles.innerHeight -= constants.statusBarHeight;
   }
 
-  styles.innerWidth = state.bodyWidth;
+  styles.innerWidth = state.layout.bodyWidth;
   if (styles.showSideBar) {
     styles.innerWidth -= constants.sideBarWidth;
   }
@@ -47,9 +48,12 @@ function computeStyles(state, localSettings, getters, styles = {
   }
 
   let doublePanelWidth = styles.innerWidth - constants.buttonBarWidth;
+  const showGutter = getters['discussion/currentDiscussion'];
+  if (showGutter) {
+    doublePanelWidth -= gutterWidth;
+  }
   if (doublePanelWidth < constants.editorMinWidth) {
     doublePanelWidth = constants.editorMinWidth;
-    styles.innerWidth = constants.editorMinWidth + constants.buttonBarWidth;
     styles.layoutOverflow = true;
   }
 
@@ -57,7 +61,7 @@ function computeStyles(state, localSettings, getters, styles = {
     styles.showSidePreview = false;
     styles.showPreview = false;
     styles.layoutOverflow = false;
-    return computeStyles(state, localSettings, getters, styles);
+    return computeStyles(state, getters, localSettings, styles);
   }
 
   const computedSettings = getters['data/computedSettings'];
@@ -83,10 +87,14 @@ function computeStyles(state, localSettings, getters, styles = {
   const panelWidth = Math.floor(doublePanelWidth / 2);
   styles.previewWidth = styles.showSidePreview ?
     panelWidth :
-    styles.innerWidth;
-  const previewLeftPadding = Math.max(
+    doublePanelWidth + constants.buttonBarWidth;
+  let previewRightPadding = Math.max(
     Math.floor((styles.previewWidth - styles.textWidth) / 2), minPadding);
-  let previewRightPadding = previewLeftPadding;
+  styles.previewGutterWidth = showGutter && !localSettings.showEditor
+    ? gutterWidth
+    : 0;
+  const previewLeftPadding = previewRightPadding + styles.previewGutterWidth;
+  styles.previewGutterLeft = previewLeftPadding - minPadding;
   if (!styles.showEditor && previewRightPadding < previewButtonWidth) {
     previewRightPadding = previewButtonWidth;
   }
@@ -94,9 +102,14 @@ function computeStyles(state, localSettings, getters, styles = {
   styles.editorWidth = styles.showSidePreview ?
     panelWidth :
     doublePanelWidth;
-  const editorSidePadding = Math.max(
+  const editorRightPadding = Math.max(
     Math.floor((styles.editorWidth - styles.textWidth) / 2), minPadding);
-  styles.editorPadding = `${editorTopPadding}px ${editorSidePadding}px ${bottomPadding}px`;
+  styles.editorGutterWidth = showGutter && localSettings.showEditor
+    ? gutterWidth
+    : 0;
+  const editorLeftPadding = editorRightPadding + styles.editorGutterWidth;
+  styles.editorGutterLeft = editorLeftPadding - minPadding;
+  styles.editorPadding = `${editorTopPadding}px ${editorRightPadding}px ${bottomPadding}px ${editorLeftPadding}px`;
 
   styles.titleMaxWidth = styles.innerWidth -
     navigationBarLeftButtonWidth -
@@ -140,10 +153,7 @@ export default {
   },
   getters: {
     constants: () => constants,
-    styles: (state, getters, rootState, rootGetters) => {
-      const localSettings = rootGetters['data/localSettings'];
-      return computeStyles(state, localSettings, rootGetters);
-    },
+    styles: (state, getters, rootState, rootGetters) => computeStyles(rootState, rootGetters),
   },
   actions: {
     updateBodySize({ commit, dispatch, rootGetters }) {

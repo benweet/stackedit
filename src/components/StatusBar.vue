@@ -25,7 +25,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import editorSvc from '../services/editorSvc';
-import editorEngineSvc from '../services/editorEngineSvc';
 import utils from '../services/utils';
 
 class Stat {
@@ -67,13 +66,13 @@ export default {
   methods: {
     computeText() {
       this.textSelection = false;
-      let text = editorEngineSvc.clEditor.getContent();
-      const beforeText = text.slice(0, editorEngineSvc.clEditor.selectionMgr.selectionEnd);
+      let text = editorSvc.clEditor.getContent();
+      const beforeText = text.slice(0, editorSvc.clEditor.selectionMgr.selectionEnd);
       const beforeLines = beforeText.split('\n');
       this.line = beforeLines.length;
       this.column = beforeLines.pop().length;
 
-      const selectedText = editorEngineSvc.clEditor.selectionMgr.getSelectedText();
+      const selectedText = editorSvc.clEditor.selectionMgr.getSelectedText();
       if (selectedText) {
         this.textSelection = true;
         text = selectedText;

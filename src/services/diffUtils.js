@@ -33,14 +33,8 @@ function makePatchableText(content, markerKeys, markerIdxMap) {
       }
     }
 
-    if (discussion.offset0 === discussion.offset1) {
-      // Remove discussion offsets if markers are at the same position
-      discussion.offset0 = undefined;
-      discussion.offset1 = undefined;
-    } else {
-      addMarker('offset0');
-      addMarker('offset1');
-    }
+    addMarker('start');
+    addMarker('end');
   });
 
   let lastOffset = 0;

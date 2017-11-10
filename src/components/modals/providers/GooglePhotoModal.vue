@@ -1,7 +1,7 @@
 <template>
   <modal-inner class="modal__inner-1--google-photo" aria-label="Import Google Photo">
     <div class="modal__content">
-      <div class="google-photo__tumbnail" :style="{'background-image': thumbnailUrl}"></div>
+      <div class="google-photo__tumbnail" :style="{backgroundImage: thumbnailUrl}"></div>
       <form-entry label="Title (optional)">
         <input slot="field" class="textfield" type="text" v-model.trim="title" @keyup.enter="resolve()">
       </form-entry>

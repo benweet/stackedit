@@ -42,7 +42,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import editorEngineSvc from '../services/editorEngineSvc';
+import editorSvc from '../services/editorSvc';
 import ModalInner from './modals/common/ModalInner';
 import FilePropertiesModal from './modals/FilePropertiesModal';
 import SettingsModal from './modals/SettingsModal';
@@ -120,7 +120,7 @@ export default {
   methods: {
     onEscape() {
       this.config.reject();
-      editorEngineSvc.clEditor.focus();
+      editorSvc.clEditor.focus();
     },
     onTab(evt) {
       const tabbables = getTabbables(this.$el);

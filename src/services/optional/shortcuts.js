@@ -1,7 +1,6 @@
 import Mousetrap from 'mousetrap';
 import store from '../../store';
 import editorSvc from '../../services/editorSvc';
-import editorEngineSvc from '../../services/editorEngineSvc';
 import syncSvc from '../../services/syncSvc';
 
 // Skip shortcuts if modal is open or editor is hidden
@@ -16,8 +15,8 @@ const pagedownHandler = name => () => {
 const findReplaceOpener = type => () => {
   store.dispatch('findReplace/open', {
     type,
-    findText: editorEngineSvc.clEditor.selectionMgr.hasFocus() &&
-      editorEngineSvc.clEditor.selectionMgr.getSelectedText(),
+    findText: editorSvc.clEditor.selectionMgr.hasFocus() &&
+      editorSvc.clEditor.selectionMgr.getSelectedText(),
   });
   return true;
 };
@@ -46,7 +45,7 @@ const methods = {
     const replacement = `${param2 || ''}`;
     if (text && replacement) {
       setTimeout(() => {
-        const selectionMgr = editorEngineSvc.clEditor.selectionMgr;
+        const selectionMgr = editorSvc.clEditor.selectionMgr;
         let offset = selectionMgr.selectionStart;
         if (offset === selectionMgr.selectionEnd) {
           const range = selectionMgr.createRange(offset - text.length, offset);

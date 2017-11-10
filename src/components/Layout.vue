@@ -9,7 +9,10 @@
           <navigation-bar></navigation-bar>
         </div>
         <div class="layout__panel flex flex--row" :style="{ height: styles.innerHeight + 'px' }">
-          <div class="layout__panel layout__panel--editor" v-show="styles.showEditor" :style="{ width: styles.editorWidth + 'px', 'font-size': styles.fontSize + 'px' }">
+          <div class="layout__panel layout__panel--editor" v-show="styles.showEditor" :style="{ width: (styles.editorWidth + styles.editorGutterWidth) + 'px', fontSize: styles.fontSize + 'px' }">
+            <div class="gutter" v-if="styles.editorGutterWidth" :style="{left: styles.editorGutterLeft + 'px'}">
+              <div class="gutter__background"></div>
+            </div>
             <editor></editor>
             <div v-if="showFindReplace" class="layout__panel layout__panel--find-replace">
               <find-replace></find-replace>
@@ -18,7 +21,10 @@
           <div class="layout__panel layout__panel--button-bar" v-show="styles.showEditor" :style="{ width: constants.buttonBarWidth + 'px' }">
             <button-bar></button-bar>
           </div>
-          <div class="layout__panel layout__panel--preview" v-show="styles.showPreview" :style="{ width: styles.previewWidth + 'px', 'font-size': styles.fontSize + 'px' }">
+          <div class="layout__panel layout__panel--preview" v-show="styles.showPreview" :style="{ width: (styles.previewWidth + styles.previewGutterWidth) + 'px', fontSize: styles.fontSize + 'px' }">
+            <div class="gutter" v-if="styles.previewGutterWidth" :style="{left: styles.previewGutterLeft + 'px'}">
+              <div class="gutter__background"></div>
+            </div>
             <preview></preview>
           </div>
         </div>
@@ -44,7 +50,6 @@ import Editor from './Editor';
 import Preview from './Preview';
 import FindReplace from './FindReplace';
 import editorSvc from '../services/editorSvc';
-import editorEngineSvc from '../services/editorEngineSvc';
 
 export default {
   components: {
@@ -77,6 +82,7 @@ export default {
     window.addEventListener('resize', this.updateBodySize);
     window.addEventListener('keyup', this.saveSelection);
     window.addEventListener('mouseup', this.saveSelection);
+    window.addEventListener('focusin', this.saveSelection);
     window.addEventListener('contextmenu', this.saveSelection);
   },
   mounted() {
@@ -87,12 +93,13 @@ export default {
 
     // Focus on the editor every time reader mode is disabled
     this.$watch(() => this.styles.showEditor,
-      showEditor => showEditor && editorEngineSvc.clEditor.focus());
+      showEditor => showEditor && editorSvc.clEditor.focus());
   },
   destroyed() {
     window.removeEventListener('resize', this.updateStyle);
     window.removeEventListener('keyup', this.saveSelection);
     window.removeEventListener('mouseup', this.saveSelection);
+    window.removeEventListener('focusin', this.saveSelection);
     window.removeEventListener('contextmenu', this.saveSelection);
   },
 };
@@ -112,6 +119,7 @@ export default {
   width: 100%;
   height: 100%;
   flex: none;
+  overflow: hidden;
 }
 
 .layout__panel--navigation-bar {
@@ -144,5 +152,13 @@ export default {
   width: 300px;
   height: auto;
   border-top-right-radius: $border-radius-base;
+}
+
+.gutter__background {
+  position: absolute;
+  width: 9999px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.05);
+  right: 0;
 }
 </style>

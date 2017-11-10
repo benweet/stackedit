@@ -46,6 +46,7 @@ import Printer from './Printer';
 import Undo from './Undo';
 import Redo from './Redo';
 import ContentSave from './ContentSave';
+import Message from './Message';
 
 Vue.component('iconProvider', Provider);
 Vue.component('iconFormatBold', FormatBold);
@@ -94,3 +95,4 @@ Vue.component('iconPrinter', Printer);
 Vue.component('iconUndo', Undo);
 Vue.component('iconRedo', Redo);
 Vue.component('iconContentSave', ContentSave);
+Vue.component('iconMessage', Message);

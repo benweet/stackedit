@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import utils from '../../services/utils';
+import utils from '../services/utils';
 
 export default (empty, simpleHash = false) => {
   // Use Date.now as a simple hash function, which is ok for not-synced types

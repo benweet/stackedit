@@ -1,6 +1,5 @@
 import cledit from '../../libs/cledit';
 import editorSvc from '../editorSvc';
-import editorEngineSvc from '../editorEngineSvc';
 
 const Keystroke = cledit.Keystroke;
 const indentRegexp = /^ {0,3}>[ ]*|^[ \t]*[*+-][ \t]|^([ \t]*)\d+\.[ \t]|^\s+/;
@@ -116,7 +115,7 @@ function enterKeyHandler(evt, state) {
     clearNewline = true;
   }
 
-  editorEngineSvc.clEditor.undoMgr.setCurrentMode('single');
+  editorSvc.clEditor.undoMgr.setCurrentMode('single');
 
   state.before += `\n${indent}`;
   state.selection = '';
@@ -169,6 +168,6 @@ function tabKeyHandler(evt, state) {
 }
 
 editorSvc.$on('inited', () => {
-  editorEngineSvc.clEditor.addKeystroke(new Keystroke(enterKeyHandler, 50));
-  editorEngineSvc.clEditor.addKeystroke(new Keystroke(tabKeyHandler, 50));
+  editorSvc.clEditor.addKeystroke(new Keystroke(enterKeyHandler, 50));
+  editorSvc.clEditor.addKeystroke(new Keystroke(tabKeyHandler, 50));
 });

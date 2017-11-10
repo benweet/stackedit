@@ -68,12 +68,4 @@ export default {
 
 <style lang="scss">
 @import 'common/app';
-
-.app__spash-screen {
-  margin: 0 auto;
-  max-width: 600px;
-  height: 100%;
-  background: no-repeat center url('../assets/logo.svg');
-  background-size: contain;
-}
 </style>

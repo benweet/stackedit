@@ -1,24 +1,17 @@
 <template>
-  <div class="gutter gutter--new-discussion-button" :style="{left: styles.editorGutterLeft + 'px'}">
-    <a class="new-discussion-button" href="javascript:void(0)" v-if="coordinates" :style="{top: coordinates.top + 'px'}" v-title="'Start a discussion'" @mousedown.stop.prevent @click="createNewDiscussion(selection)">
-      <icon-message></icon-message>
-    </a>
-  </div>
+  <a class="new-discussion-button" href="javascript:void(0)" v-if="coordinates" :style="{top: coordinates.top + 'px'}" v-title="'Start a discussion'" @mousedown.stop.prevent @click="createNewDiscussion(selection)">
+    <icon-message></icon-message>
+  </a>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 import editorSvc from '../../services/editorSvc';
 
 export default {
   data: () => ({
     coordinates: null,
   }),
-  computed: {
-    ...mapGetters('layout', [
-      'styles',
-    ]),
-  },
   methods: {
     ...mapActions('discussion', [
       'createNewDiscussion',

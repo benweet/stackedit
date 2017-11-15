@@ -201,7 +201,7 @@ export default {
         Object.keys(discussions).forEach((discussionId) => {
           const classApplier = oldEditorClassAppliers[discussionId] || new EditorClassApplier(
             () => {
-              const classes = [`discussion-editor-highlighting-${discussionId}`, 'discussion-editor-highlighting'];
+              const classes = [`discussion-editor-highlighting--${discussionId}`, 'discussion-editor-highlighting'];
               if (store.state.discussion.currentDiscussionId === discussionId) {
                 classes.push('discussion-editor-highlighting--selected');
               }
@@ -210,7 +210,7 @@ export default {
             () => {
               const startMarker = discussionMarkers[`${discussionId}:start`];
               const endMarker = discussionMarkers[`${discussionId}:end`];
-              return {
+              return startMarker && endMarker && {
                 start: startMarker.offset,
                 end: endMarker.offset,
               };
@@ -229,7 +229,7 @@ export default {
         Object.keys(discussions).forEach((discussionId) => {
           const classApplier = oldPreviewClassAppliers[discussionId] || new PreviewClassApplier(
             () => {
-              const classes = [`discussion-preview-highlighting-${discussionId}`, 'discussion-preview-highlighting'];
+              const classes = [`discussion-preview-highlighting--${discussionId}`, 'discussion-preview-highlighting'];
               if (store.state.discussion.currentDiscussionId === discussionId) {
                 classes.push('discussion-preview-highlighting--selected');
               }
@@ -238,7 +238,7 @@ export default {
             () => {
               const startMarker = discussionMarkers[`${discussionId}:start`];
               const endMarker = discussionMarkers[`${discussionId}:end`];
-              return {
+              return startMarker && endMarker && {
                 start: this.getPreviewOffset(startMarker.offset),
                 end: this.getPreviewOffset(endMarker.offset),
               };

@@ -380,6 +380,7 @@ localDbSvc.sync()
             // Wait for the next watch tick
             return null;
           }
+
           return Promise.resolve()
             // Load contentState from DB
             .then(() => localDbSvc.loadContentState(currentFile.id))
@@ -388,8 +389,15 @@ localDbSvc.sync()
             // Load content from DB
             .then(() => localDbSvc.loadItem(`${currentFile.id}/content`))
             .then(
-              // Success, set last opened file
-              () => store.dispatch('data/setLastOpenedId', currentFile.id),
+              () => {
+                // Set last opened file
+                store.dispatch('data/setLastOpenedId', currentFile.id);
+                // Cancel new discussion
+                store.commit('discussion/setCurrentDiscussionId');
+                // Open the gutter if file contains discussions
+                store.commit('discussion/setCurrentDiscussionId',
+                  store.getters['discussion/nextDiscussionId']);
+              },
               (err) => {
                 // Failure (content is not available), go back to previous file
                 const lastOpenedFile = store.getters['file/lastOpened'];

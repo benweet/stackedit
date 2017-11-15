@@ -286,7 +286,7 @@ export default {
 }
 
 .find-replace__button {
-  font-size: 16px;
+  font-size: 15px;
   padding: 0 8px;
   line-height: 28px;
   height: 28px;
@@ -298,6 +298,7 @@ export default {
   font-weight: 600;
   letter-spacing: -0.025em;
   color: rgba(0, 0, 0, 0.25);
+  text-transform: none;
 
   &:active,
   &:focus,
@@ -330,15 +331,15 @@ export default {
   position: absolute;
   top: 5px;
   right: 5px;
-  color: rgba(0, 0, 0, 0.25);
   width: 25px;
   height: 25px;
   padding: 2px;
+  color: rgba(0, 0, 0, 0.5);
 
   &:active,
   &:focus,
   &:hover {
-    color: rgba(0, 0, 0, 0.33);
+    color: rgba(0, 0, 0, 0.75);
   }
 }
 

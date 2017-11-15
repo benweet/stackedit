@@ -71,9 +71,9 @@ textarea {
   height: auto;
   padding: 6px 12px;
   margin-bottom: 0;
-  font-size: 18px;
   font-weight: 400;
   line-height: 1.4;
+  text-transform: uppercase;
   overflow: hidden;
   text-align: center;
   white-space: nowrap;
@@ -212,6 +212,12 @@ textarea {
   height: 100%;
 }
 
+.gutter__background {
+  position: absolute;
+  height: 100%;
+  right: 0;
+}
+
 .new-discussion-button {
   color: rgba(0, 0, 0, 0.33);
   position: absolute;
@@ -230,13 +236,13 @@ textarea {
 
 .discussion-editor-highlighting,
 .discussion-preview-highlighting {
-  background-color: mix(#fff, $selection-highlighting-color, 50%);
+  background-color: mix(#fff, $selection-highlighting-color, 70%);
   padding: 0.25em 0;
 }
 
 .discussion-editor-highlighting--hover,
 .discussion-preview-highlighting--hover {
-  background-color: mix(#fff, $selection-highlighting-color, 25%);
+  background-color: mix(#fff, $selection-highlighting-color, 50%);
 
   * {
     background-color: transparent;
@@ -245,7 +251,7 @@ textarea {
 
 .discussion-editor-highlighting--selected,
 .discussion-preview-highlighting--selected {
-  background-color: mix(#fff, $selection-highlighting-color, 10%);
+  background-color: mix(#fff, $selection-highlighting-color, 20%);
 
   * {
     background-color: transparent;
@@ -254,10 +260,6 @@ textarea {
 
 .discussion-preview-highlighting {
   cursor: pointer;
-}
-
-.discussion-preview-highlighting--selected {
-  cursor: auto;
 }
 
 .hidden-rendering-container {

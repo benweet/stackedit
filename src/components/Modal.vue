@@ -184,7 +184,7 @@ export default {
   margin: 0 auto;
   width: 100%;
   min-width: 320px;
-  max-width: 500px;
+  max-width: 480px;
 }
 
 .modal__inner-2 {
@@ -248,10 +248,6 @@ export default {
 .modal__button-bar {
   margin-top: 1.75rem;
   text-align: right;
-
-  .button {
-    margin-left: 5px;
-  }
 }
 
 .form-entry {

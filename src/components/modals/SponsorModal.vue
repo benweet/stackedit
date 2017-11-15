@@ -76,12 +76,14 @@ export default {
   font-size: 2.3em;
   margin: 0.75rem 0;
   line-height: 1.2;
+  text-transform: none;
 
   span {
     display: inline-block;
     font-size: 0.75rem;
     opacity: 0.5;
     white-space: normal;
+    line-height: 1.5;
   }
 
   .paypal-option__offer {

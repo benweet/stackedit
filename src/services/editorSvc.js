@@ -11,6 +11,7 @@ import sectionUtils from './sectionUtils';
 import extensionSvc from './extensionSvc';
 import editorSvcDiscussions from './editorSvcDiscussions';
 import editorSvcUtils from './editorSvcUtils';
+import utils from './utils';
 import store from '../store';
 
 const debounce = cledit.Utils.debounce;
@@ -77,6 +78,8 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
    * Initialize the cledit editor with markdown-it section parser and Prism highlighter
    */
   initClEditor() {
+    this.sectionDescMeasuredList = null;
+    this.sectionDescWithDiffsList = null;
     const options = {
       sectionHighlighter: section => Prism.highlight(
         section.text, this.prismGrammars[section.data]),
@@ -509,7 +512,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
         if (content.properties !== lastProperties) {
           lastProperties = content.properties;
           const options = extensionSvc.getOptions(store.getters['content/currentProperties']);
-          if (JSON.stringify(options) !== JSON.stringify(this.options)) {
+          if (utils.serializeObject(options) !== utils.serializeObject(this.options)) {
             this.options = options;
             this.initPrism();
             this.initConverter();
@@ -532,7 +535,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
         immediate: true,
       });
 
-    store.watch(() => store.getters['layout/styles'],
+    store.watch(() => utils.serializeObject(store.getters['layout/styles']),
       () => this.measureSectionDimensions(false, true));
 
     this.initHighlighters();

@@ -88,6 +88,7 @@ export default {
         .then(() => {
           const data = utils.parseQueryParams(`${event.data}`.slice(1));
           if (data.error || data.state !== state) {
+            console.error(data); // eslint-disable-line no-console
             reject('Could not get required authorization.');
           } else {
             resolve({

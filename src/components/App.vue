@@ -14,6 +14,8 @@ import Layout from './Layout';
 import Modal from './Modal';
 import Notification from './Notification';
 import SplashScreen from './SplashScreen';
+import timeSvc from '../services/timeSvc';
+import store from '../store';
 
 // Global directives
 Vue.directive('focus', {
@@ -47,6 +49,11 @@ Vue.directive('title', {
     el.setAttribute('aria-label', value);
   },
 });
+
+// Global filters
+Vue.filter('formatTime', time =>
+  // Access the minute counter for reactive refresh
+  timeSvc.format(time, store.state.minuteCounter));
 
 export default {
   components: {

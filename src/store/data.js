@@ -64,14 +64,16 @@ module.actions.toggleSidePreview = localSettingsToggler('showSidePreview');
 module.actions.toggleStatusBar = localSettingsToggler('showStatusBar');
 module.actions.toggleScrollSync = localSettingsToggler('scrollSync');
 module.actions.toggleFocusMode = localSettingsToggler('focusMode');
-const notEnoughSpace = (rootGetters) => {
-  const constants = rootGetters['layout/constants'];
+const notEnoughSpace = (getters) => {
+  const constants = getters['layout/constants'];
+  const showGutter = getters['discussion/currentDiscussion'];
   return document.body.clientWidth < constants.editorMinWidth +
     constants.explorerWidth +
     constants.sideBarWidth +
-    constants.buttonBarWidth;
+    constants.buttonBarWidth +
+    (showGutter ? constants.gutterWidth : 0);
 };
-module.actions.toggleSideBar = ({ getters, dispatch, rootGetters }, value) => {
+module.actions.toggleSideBar = ({ commit, getters, dispatch, rootGetters }, value) => {
   // Reset side bar
   dispatch('setSideBarPanel');
   // Close explorer if not enough space
@@ -83,7 +85,7 @@ module.actions.toggleSideBar = ({ getters, dispatch, rootGetters }, value) => {
   }
   dispatch('patchLocalSettings', patch);
 };
-module.actions.toggleExplorer = ({ getters, dispatch, rootGetters }, value) => {
+module.actions.toggleExplorer = ({ commit, getters, dispatch, rootGetters }, value) => {
   // Close side bar if not enough space
   const patch = {
     showExplorer: value === undefined ? !getters.localSettings.showExplorer : value,

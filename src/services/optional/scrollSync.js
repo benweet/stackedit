@@ -166,10 +166,10 @@ editorSvc.$on('previewText', () => {
 });
 
 store.watch(
-  () => store.getters['layout/styles'],
-  (styles) => {
-    isScrollEditor = styles.showEditor;
-    isScrollPreview = !styles.showEditor;
+  () => store.getters['layout/styles'].showEditor,
+  (showEditor) => {
+    isScrollEditor = showEditor;
+    isScrollPreview = !showEditor;
     skipAnimation = true;
   });
 

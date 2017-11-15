@@ -46,6 +46,7 @@ const store = new Vuex.Store({
     ready: false,
     offline: false,
     lastOfflineCheck: 0,
+    minuteCounter: 0,
     monetizeSponsor: false,
   },
   getters: {
@@ -68,6 +69,9 @@ const store = new Vuex.Store({
     },
     updateLastOfflineCheck: (state) => {
       state.lastOfflineCheck = Date.now();
+    },
+    updateMinuteCounter: (state) => {
+      state.minuteCounter += 1;
     },
     setMonetizeSponsor: (state, value) => {
       state.monetizeSponsor = value;
@@ -120,5 +124,9 @@ const store = new Vuex.Store({
   strict: debug,
   plugins: debug ? [createLogger()] : [],
 });
+
+setInterval(() => {
+  store.commit('updateMinuteCounter');
+}, 60 * 1000);
 
 export default store;

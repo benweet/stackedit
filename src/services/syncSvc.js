@@ -155,11 +155,19 @@ function syncFile(fileId, syncContext = new SyncContext()) {
       };
 
       const isWelcomeFile = () => {
+        if (store.getters['data/syncDataByItemId'][`${fileId}/content`]) {
+          // If file has already been synced, keep on syncing
+          return false;
+        }
         const file = getFile();
         const content = getContent();
+        if (!file || !content) {
+          return false;
+        }
         const welcomeFileHashes = store.getters['data/localSettings'].welcomeFileHashes;
-        const hash = content ? utils.hash(content.text) : 0;
-        return file.name === 'Welcome file' && welcomeFileHashes[hash];
+        const hash = utils.hash(content.text);
+        const hasDiscussions = Object.keys(content.discussions).length;
+        return file.name === 'Welcome file' && welcomeFileHashes[hash] && !hasDiscussions;
       };
 
       const syncOneContentLocation = () => {
@@ -180,8 +188,8 @@ function syncFile(fileId, syncContext = new SyncContext()) {
             // Skip welcome file if not synchronized explicitly
             (syncLocations.length > 1 || !isWelcomeFile())
           ) {
-            const token = provider.getToken(syncLocation);
-            result = provider && token && store.dispatch('queue/doWithLocation', {
+            const token = provider && provider.getToken(syncLocation);
+            result = token && store.dispatch('queue/doWithLocation', {
               location: syncLocation,
               promise: provider.downloadContent(token, syncLocation)
                 .then((serverContent = null) => {

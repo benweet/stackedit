@@ -16,6 +16,8 @@
   text-align: left;
   padding: 10px;
   height: auto;
+  font-size: 17px;
+  text-transform: none;
 
   div div {
     text-decoration: underline;

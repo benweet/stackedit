@@ -1,4 +1,5 @@
 import DiffMatchPatch from 'diff-match-patch';
+import cledit from '../libs/cledit';
 import animationSvc from './animationSvc';
 import store from '../store';
 
@@ -103,6 +104,24 @@ export default {
       return false;
     });
     return editorOffset;
+  },
+
+  /**
+   * Get the coordinates of an offset in the preview
+   */
+  getPreviewOffsetCoordinates(offset) {
+    const start = cledit.Utils.findContainer(this.previewElt, offset && offset - 1);
+    const end = cledit.Utils.findContainer(this.previewElt, offset || offset + 1);
+    const range = document.createRange();
+    range.setStart(start.container, start.offsetInContainer);
+    range.setEnd(end.container, end.offsetInContainer);
+    const rect = range.getBoundingClientRect();
+    const contentRect = this.previewElt.getBoundingClientRect();
+    return {
+      top: Math.round((rect.top - contentRect.top) + this.previewElt.scrollTop),
+      height: Math.round(rect.height),
+      left: Math.round((rect.right - contentRect.left) + this.previewElt.scrollLeft),
+    };
   },
 
   /**

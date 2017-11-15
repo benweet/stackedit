@@ -24,17 +24,22 @@ export default {
       'config',
     ]),
     showSponsorButton() {
-      return !this.$store.getters.isSponsor && this.$store.getters['modal/config'].type !== 'sponsor';
+      const type = this.$store.getters['modal/config'].type;
+      return !this.$store.getters.isSponsor && type !== 'sponsor' && type !== 'signInForSponsorship';
     },
   },
   methods: {
     sponsor() {
       Promise.resolve()
         .then(() => !this.$store.getters['data/loginToken'] &&
-          this.$store.dispatch('modal/signInRequired') // If user has to sign in
+          this.$store.dispatch('modal/signInForSponsorship') // If user has to sign in
             .then(() => googleHelper.signin())
             .then(() => syncSvc.requestSync()))
-        .then(() => this.$store.dispatch('modal/open', 'sponsor'))
+        .then(() => {
+          if (!this.$store.getters.isSponsor) {
+            this.$store.dispatch('modal/open', 'sponsor');
+          }
+        })
         .catch(() => { }); // Cancel
     },
   },
@@ -65,7 +70,7 @@ export default {
   color: darken($error-color, 10%);
   background-color: transparentize($error-color, 0.85);
   border-radius: $border-radius-base;
-  padding: 1em;
+  padding: 1em 1.5em;
   margin-bottom: 1.2em;
 }
 </style>

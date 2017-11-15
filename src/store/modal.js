@@ -56,6 +56,16 @@ export default {
       resolveText: 'Yes, delete',
       rejectText: 'No',
     }),
+    discussionDeletion: ({ dispatch }) => dispatch('open', {
+      content: '<p>You are about to delete a discussion. Are you sure?</p>',
+      resolveText: 'Yes, delete',
+      rejectText: 'No',
+    }),
+    commentDeletion: ({ dispatch }) => dispatch('open', {
+      content: '<p>You are about to delete a comment. Are you sure?</p>',
+      resolveText: 'Yes, delete',
+      rejectText: 'No',
+    }),
     trashDeletion: ({ dispatch }) => dispatch('open', {
       content: '<p>Files in the trash are automatically deleted after 7 days of inactivity.</p>',
       resolveText: 'Ok',
@@ -67,14 +77,15 @@ export default {
     }),
     providerRedirection: ({ dispatch }, { providerName, onResolve }) => dispatch('open', {
       content: `<p>You are about to navigate to the <b>${providerName}</b> authorization page.</p>`,
-      resolveText: 'Ok, go on!',
+      resolveText: 'Ok, go on',
       rejectText: 'Cancel',
       onResolve,
     }),
-    signInRequired: ({ dispatch }) => dispatch('open', {
-      content: `<p>We have to sign you in with <b>Google</b> in order to activate your sponsorship.</p>
-      <div class="modal__info"><b>Note:</b> This will backup and sync all your files and settings.</div>`,
-      resolveText: 'Ok, sign in!',
+    signInForSponsorship: ({ dispatch }) => dispatch('open', {
+      type: 'signInForSponsorship',
+      content: `<p>You have to sign in with <b>Google</b> to enable your sponsorship.</p>
+      <div class="modal__info"><b>Note:</b> This will sync all your files and settings.</div>`,
+      resolveText: 'Ok, sign in',
       rejectText: 'Cancel',
     }),
     sponsorOnly: ({ dispatch }) => dispatch('open', {

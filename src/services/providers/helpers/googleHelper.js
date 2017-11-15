@@ -116,6 +116,7 @@ export default {
       .then((res) => {
         store.commit('userInfo/addItem', {
           id: res.body.id,
+          name: res.body.displayName,
           imageUrl: res.body.image.url,
         });
         return res.body;

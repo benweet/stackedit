@@ -168,8 +168,10 @@ function Highlighter(editor) {
       }
       this.addTrailingNode()
       self.$trigger('highlighted')
-      editor.selectionMgr.restoreSelection()
-      editor.selectionMgr.updateCursorCoordinates()
+      if (editor.selectionMgr.hasFocus()) {
+        editor.selectionMgr.restoreSelection()
+        editor.selectionMgr.updateCursorCoordinates()
+      }
     }.cl_bind(this))
 
     return sectionList

@@ -3,12 +3,15 @@
     <div class="preview__inner-1" @click="onClick" @scroll="onScroll">
       <div class="preview__inner-2" :style="{padding: styles.previewPadding}">
       </div>
-      <preview-new-discussion-button-gutter></preview-new-discussion-button-gutter>
-    </div>
-    <div v-if="!styles.showEditor" class="preview__button-bar">
-      <div class="preview__button" @click="toggleEditor(true)">
-        <icon-pen></icon-pen>
+      <div class="gutter" :style="{left: styles.previewGutterLeft + 'px'}">
+        <comment-list v-if="styles.previewGutterWidth"></comment-list>
+        <preview-new-discussion-button></preview-new-discussion-button>
       </div>
+    </div>
+    <div v-if="!styles.showEditor" class="preview__corner">
+      <button class="preview__button button" @click="toggleEditor(true)" v-title="'Edit file'">
+        <icon-pen></icon-pen>
+      </button>
     </div>
   </div>
 </template>
@@ -16,13 +19,15 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import PreviewNewDiscussionButtonGutter from './gutters/PreviewNewDiscussionButtonGutter';
+import CommentList from './gutters/CommentList';
+import PreviewNewDiscussionButton from './gutters/PreviewNewDiscussionButton';
 
 const appUri = `${window.location.protocol}//${window.location.host}`;
 
 export default {
   components: {
-    PreviewNewDiscussionButtonGutter,
+    CommentList,
+    PreviewNewDiscussionButton,
   },
   data: () => ({
     previewTop: true,
@@ -64,26 +69,28 @@ export default {
       }
     };
 
-    previewElt.addEventListener('mouseover', onDiscussionEvt(discussionId =>
-      previewElt.getElementsByClassName(`discussion-preview-highlighting-${discussionId}`)
-        .cl_each(elt => elt.classList.add('discussion-preview-highlighting--hover')),
-      ));
-    previewElt.addEventListener('mouseout', onDiscussionEvt(discussionId =>
-      previewElt.getElementsByClassName(`discussion-preview-highlighting-${discussionId}`)
-        .cl_each(elt => elt.classList.remove('discussion-preview-highlighting--hover')),
-      ));
+    const classToggler = toggle => (discussionId) => {
+      previewElt.getElementsByClassName(`discussion-preview-highlighting--${discussionId}`)
+        .cl_each(elt => elt.classList.toggle('discussion-preview-highlighting--hover', toggle));
+      document.getElementsByClassName(`comment--discussion-${discussionId}`)
+        .cl_each(elt => elt.classList.toggle('comment--hover', toggle));
+    };
+
+    previewElt.addEventListener('mouseover', onDiscussionEvt(classToggler(true)));
+    previewElt.addEventListener('mouseout', onDiscussionEvt(classToggler(false)));
     previewElt.addEventListener('click', onDiscussionEvt((discussionId) => {
       this.$store.commit('discussion/setCurrentDiscussionId', discussionId);
     }));
+
     this.$watch(
       () => this.$store.state.discussion.currentDiscussionId,
       (discussionId, oldDiscussionId) => {
         if (oldDiscussionId) {
-          previewElt.querySelectorAll(`.discussion-preview-highlighting-${oldDiscussionId}`)
+          previewElt.querySelectorAll(`.discussion-preview-highlighting--${oldDiscussionId}`)
             .cl_each(elt => elt.classList.remove('discussion-preview-highlighting--selected'));
         }
         if (discussionId) {
-          previewElt.querySelectorAll(`.discussion-preview-highlighting-${discussionId}`)
+          previewElt.querySelectorAll(`.discussion-preview-highlighting--${discussionId}`)
             .cl_each(elt => elt.classList.add('discussion-preview-highlighting--selected'));
         }
       });
@@ -113,23 +120,37 @@ export default {
   margin-top: 0;
 }
 
-.preview__button-bar {
+$corner-size: 110px;
+
+.preview__corner {
   position: absolute;
-  top: 10px;
-  right: 26px;
+  top: 0;
+  right: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    border-top: $corner-size solid rgba(0, 0, 0, 0.075);
+    border-left: $corner-size solid transparent;
+    pointer-events: none;
+  }
 }
 
 .preview__button {
-  cursor: pointer;
-  color: rgba(0, 0, 0, 0.25);
+  position: absolute;
+  top: 15px;
+  right: 15px;
   width: 40px;
   height: 40px;
   padding: 5px;
-  border-radius: $border-radius-base;
+  color: rgba(0, 0, 0, 0.25);
 
+  &:active,
+  &:focus,
   &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    color: rgba(0, 0, 0, 0.75);
+    color: rgba(0, 0, 0, 0.33);
+    background-color: transparent;
   }
 }
 </style>

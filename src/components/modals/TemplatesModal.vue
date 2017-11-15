@@ -12,16 +12,16 @@
           </select>
         </div>
         <div class="form-entry__actions flex flex--row flex--end">
-          <button class="form-entry__button button" @click="create">
+          <button class="form-entry__button button" @click="create" v-title="'New template'">
             <icon-file-plus></icon-file-plus>
           </button>
-          <button class="form-entry__button button" @click="copy">
+          <button class="form-entry__button button" @click="copy" v-title="'Copy template'">
             <icon-file-multiple></icon-file-multiple>
           </button>
-          <button v-if="!isReadOnly" class="form-entry__button button" @click="isEditing = true">
+          <button v-if="!isReadOnly" class="form-entry__button button" @click="isEditing = true" v-title="'Rename template'">
             <icon-pen></icon-pen>
           </button>
-          <button v-if="!isReadOnly" class="form-entry__button button" @click="remove">
+          <button v-if="!isReadOnly" class="form-entry__button button" @click="remove" v-title="'Remove template'">
             <icon-delete></icon-delete>
           </button>
         </div>

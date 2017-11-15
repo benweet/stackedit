@@ -23,7 +23,9 @@ export default class PreviewClassApplier {
     this.lastEltCount = this.eltCollection.length;
 
     this.restoreClass = () => {
-      if (!this.eltCollection.length || this.eltCollection.length !== this.lastEltCount) {
+      if (!editorSvc.sectionDescWithDiffsList) {
+        this.removeClass();
+      } else if (!this.eltCollection.length || this.eltCollection.length !== this.lastEltCount) {
         this.removeClass();
         this.applyClass();
       }

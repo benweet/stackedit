@@ -1,18 +1,22 @@
 <template>
   <div class="editor">
     <pre class="editor__inner markdown-highlighting" :style="{padding: styles.editorPadding}" :class="{monospaced: computedSettings.editor.monospacedFontOnly}"></pre>
-    <editor-new-discussion-button-gutter></editor-new-discussion-button-gutter>
+    <div class="gutter" :style="{left: styles.editorGutterLeft + 'px'}">
+      <comment-list v-if="styles.editorGutterWidth"></comment-list>
+      <editor-new-discussion-button></editor-new-discussion-button>
+    </div>
   </div>
 </template>
 
-
 <script>
 import { mapGetters } from 'vuex';
-import EditorNewDiscussionButtonGutter from './gutters/EditorNewDiscussionButtonGutter';
+import CommentList from './gutters/CommentList';
+import EditorNewDiscussionButton from './gutters/EditorNewDiscussionButton';
 
 export default {
   components: {
-    EditorNewDiscussionButtonGutter,
+    CommentList,
+    EditorNewDiscussionButton,
   },
   computed: {
     ...mapGetters('layout', [
@@ -35,26 +39,28 @@ export default {
       }
     };
 
-    editorElt.addEventListener('mouseover', onDiscussionEvt(discussionId =>
-      editorElt.getElementsByClassName(`discussion-editor-highlighting-${discussionId}`)
-        .cl_each(elt => elt.classList.add('discussion-editor-highlighting--hover')),
-      ));
-    editorElt.addEventListener('mouseout', onDiscussionEvt(discussionId =>
-      editorElt.getElementsByClassName(`discussion-editor-highlighting-${discussionId}`)
-        .cl_each(elt => elt.classList.remove('discussion-editor-highlighting--hover')),
-      ));
+    const classToggler = toggle => (discussionId) => {
+      editorElt.getElementsByClassName(`discussion-editor-highlighting--${discussionId}`)
+        .cl_each(elt => elt.classList.toggle('discussion-editor-highlighting--hover', toggle));
+      document.getElementsByClassName(`comment--discussion-${discussionId}`)
+        .cl_each(elt => elt.classList.toggle('comment--hover', toggle));
+    };
+
+    editorElt.addEventListener('mouseover', onDiscussionEvt(classToggler(true)));
+    editorElt.addEventListener('mouseout', onDiscussionEvt(classToggler(false)));
     editorElt.addEventListener('click', onDiscussionEvt((discussionId) => {
       this.$store.commit('discussion/setCurrentDiscussionId', discussionId);
     }));
+
     this.$watch(
       () => this.$store.state.discussion.currentDiscussionId,
       (discussionId, oldDiscussionId) => {
         if (oldDiscussionId) {
-          editorElt.querySelectorAll(`.discussion-editor-highlighting-${oldDiscussionId}`)
+          editorElt.querySelectorAll(`.discussion-editor-highlighting--${oldDiscussionId}`)
             .cl_each(elt => elt.classList.remove('discussion-editor-highlighting--selected'));
         }
         if (discussionId) {
-          editorElt.querySelectorAll(`.discussion-editor-highlighting-${discussionId}`)
+          editorElt.querySelectorAll(`.discussion-editor-highlighting--${discussionId}`)
             .cl_each(elt => elt.classList.add('discussion-editor-highlighting--selected'));
         }
       });

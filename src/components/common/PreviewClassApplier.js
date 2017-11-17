@@ -31,7 +31,6 @@ export default class PreviewClassApplier {
       }
     };
 
-    editorSvc.$on('previewHtml', this.restoreClass);
     editorSvc.$on('sectionDescWithDiffsList', this.restoreClass);
     nextTick(() => this.applyClass());
   }

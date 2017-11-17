@@ -233,23 +233,36 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
   /**
    * Make the diff between editor's markdown and preview's html.
    */
-  makeTextToPreviewDiffs: allowDebounce(() => {
+  makeTextToPreviewDiffs() {
     if (editorSvc.sectionDescList &&
       editorSvc.sectionDescList !== editorSvc.sectionDescWithDiffsList
     ) {
-      editorSvc.sectionDescList
-        .forEach((sectionDesc) => {
-          if (!sectionDesc.textToPreviewDiffs) {
-            sectionDesc.previewText = sectionDesc.previewElt.textContent;
-            sectionDesc.textToPreviewDiffs = diffMatchPatch.diff_main(
-              sectionDesc.section.text, sectionDesc.previewText);
-          }
-        });
-      editorSvc.previewTextWithDiffsList = editorSvc.previewText;
-      editorSvc.sectionDescWithDiffsList = editorSvc.sectionDescList;
-      editorSvc.$emit('sectionDescWithDiffsList', editorSvc.sectionDescWithDiffsList);
+      const makeOne = () => {
+        let hasOne = false;
+        const hasMore = editorSvc.sectionDescList
+          .some((sectionDesc) => {
+            if (!sectionDesc.textToPreviewDiffs) {
+              if (hasOne) {
+                return true;
+              }
+              sectionDesc.previewText = sectionDesc.previewElt.textContent;
+              sectionDesc.textToPreviewDiffs = diffMatchPatch.diff_main(
+                sectionDesc.section.text, sectionDesc.previewText);
+              hasOne = true;
+            }
+            return false;
+          });
+        if (hasMore) {
+          setTimeout(() => makeOne(), 10);
+        } else {
+          editorSvc.previewTextWithDiffsList = editorSvc.previewText;
+          editorSvc.sectionDescWithDiffsList = editorSvc.sectionDescList;
+          editorSvc.$emit('sectionDescWithDiffsList', editorSvc.sectionDescWithDiffsList);
+        }
+      };
+      makeOne();
     }
-  }, 50),
+  },
 
   /**
    * Save editor selection/scroll state into the current file content.

@@ -191,6 +191,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
     this.tocElt.classList[
       this.tocElt.querySelector('.cl-toc-section *') ? 'remove' : 'add'
     ]('toc-tab--empty');
+    this.makeTextToPreviewDiffs();
 
     // Run preview async operations (image loading, mathjax...)
     const loadedPromises = loadingImages.map(imgElt => new Promise((resolve) => {
@@ -210,7 +211,6 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
         this.$emit('previewText', this.previewText);
         // Debounce if sections have already been mesured
         this.measureSectionDimensions(!!this.sectionDescMeasuredList);
-        this.makeTextToPreviewDiffs();
       });
   },
 

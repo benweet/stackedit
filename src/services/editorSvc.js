@@ -210,7 +210,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
         this.$emit('previewText', this.previewText);
         // Debounce if sections have already been mesured
         this.measureSectionDimensions(!!this.sectionDescMeasuredList);
-        this.makeTextToPreviewDiffs(true);
+        this.makeTextToPreviewDiffs();
       });
   },
 

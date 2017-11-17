@@ -70,7 +70,7 @@ export default {
   color: darken($error-color, 10%);
   background-color: transparentize($error-color, 0.85);
   border-radius: $border-radius-base;
-  padding: 1em 1.5em;
+  padding: 0.75em 1.5em;
   margin-bottom: 1.2em;
 }
 </style>

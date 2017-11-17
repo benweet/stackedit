@@ -88,6 +88,12 @@ export default {
       resolveText: 'Ok, sign in',
       rejectText: 'Cancel',
     }),
+    signInForComment: ({ dispatch }) => dispatch('open', {
+      content: `<p>You have to sign in with <b>Google</b> to start commenting.</p>
+      <div class="modal__info"><b>Note:</b> This will sync all your files and settings.</div>`,
+      resolveText: 'Ok, sign in',
+      rejectText: 'Cancel',
+    }),
     sponsorOnly: ({ dispatch }) => dispatch('open', {
       content: '<p>This feature is restricted to <b>sponsor users</b> as it relies on server resources.</p>',
       resolveText: 'Ok, I understand',

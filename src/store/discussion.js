@@ -1,4 +1,6 @@
 import utils from '../services/utils';
+import googleHelper from '../services/providers/helpers/googleHelper';
+import syncSvc from '../services/syncSvc';
 
 const idShifter = offset => (state, getters) => {
   const ids = Object.keys(getters.currentFileDiscussions);
@@ -115,8 +117,15 @@ export default {
       getters.currentDiscussionComments[getters.currentDiscussionLastCommentId],
   },
   actions: {
-    createNewDiscussion({ commit, rootGetters }, selection) {
-      if (selection) {
+    createNewDiscussion({ commit, dispatch, rootGetters }, selection) {
+      const loginToken = rootGetters['data/loginToken'];
+      if (!loginToken) {
+        dispatch('modal/signInForComment', null, { root: true })
+          .then(() => googleHelper.signin())
+          .then(() => syncSvc.requestSync())
+          .then(() => dispatch('createNewDiscussion', selection))
+          .catch(() => { }); // Cancel
+      } else if (selection) {
         let text = rootGetters['content/current'].text.slice(selection.start, selection.end).trim();
         const maxLength = 80;
         if (text.length > maxLength) {

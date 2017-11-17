@@ -10,6 +10,7 @@ import editorSvc from '../../services/editorSvc';
 
 export default {
   data: () => ({
+    selection: null,
     coordinates: null,
   }),
   methods: {

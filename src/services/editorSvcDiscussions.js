@@ -18,7 +18,7 @@ let editorClassAppliers = {};
 let previewClassAppliers = {};
 
 function getDiscussionMarkers(discussion, discussionId, onMarker) {
-  function getMarker(offsetName) {
+  const getMarker = (offsetName) => {
     const markerKey = `${discussionId}:${offsetName}`;
     let marker = discussionMarkers[markerKey];
     if (!marker) {
@@ -29,7 +29,7 @@ function getDiscussionMarkers(discussion, discussionId, onMarker) {
       discussionMarkers[markerKey] = marker;
     }
     onMarker(marker);
-  }
+  };
   getMarker('start');
   getMarker('end');
 }
@@ -117,7 +117,6 @@ export default {
   createClEditor(editorElt) {
     this.clEditor = cledit(editorElt, editorElt.parentNode);
     clEditor = this.clEditor;
-    removeDiscussionMarkers();
     clEditor.on('contentChanged', (text) => {
       const oldContent = store.getters['content/current'];
       const newContent = {
@@ -136,10 +135,12 @@ export default {
       store.dispatch('content/patchCurrent', newContent);
       isChangePatch = false;
     });
+    clEditor.on('focus', () => store.commit('discussion/setNewCommentFocus', false));
   },
   initClEditorInternal(opts) {
     const content = store.getters['content/current'];
     if (content) {
+      removeDiscussionMarkers(); // Markers will be recreated on contentChanged
       const contentState = store.getters['contentState/current'];
       const options = Object.assign({
         selectionStart: contentState.selectionStart,

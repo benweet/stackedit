@@ -39,6 +39,7 @@ export default {
   methods: {
     ...mapMutations('discussion', [
       'setIsCommenting',
+      'setNewCommentFocus',
     ]),
     addComment() {
       const text = this.$store.state.discussion.newCommentText.trim();
@@ -88,7 +89,7 @@ export default {
       selectionEnd: this.$store.state.discussion.newCommentSelection.end,
       getCursorFocusRatio: () => 0.2,
     });
-    this.$nextTick(() => clEditor.focus());
+    clEditor.on('focus', () => this.setNewCommentFocus(true));
 
     // Save typed content and selection
     clEditor.on('contentChanged', value =>
@@ -97,6 +98,15 @@ export default {
       this.$store.commit('discussion/setNewCommentSelection', {
         start, end,
       }));
+
+    this.$watch(
+      () => this.$store.state.discussion.currentDiscussionId,
+      () => this.$nextTick(() => {
+        if (this.$store.state.discussion.newCommentFocus) {
+          clEditor.focus();
+        }
+      }),
+      { immediate: true });
 
     const isSticky = this.$el.parentNode.classList.contains('sticky-comment');
     if (isSticky) {
@@ -124,7 +134,9 @@ export default {
             clEditor.setContent(text);
             const selection = this.$store.state.discussion.newCommentSelection;
             clEditor.selectionMgr.setSelectionStartEnd(selection.start, selection.end);
-            clEditor.focus();
+            if (this.$store.state.discussion.newCommentFocus) {
+              clEditor.focus();
+            }
           }
         },
         { immediate: true },

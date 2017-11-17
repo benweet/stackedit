@@ -168,9 +168,12 @@ export default {
       }))
       // Call the user info endpoint
       .then(token => this.getUser(token.sub)
-        .then((user) => {
+        .catch(() => {
+          store.dispatch('notification/info', 'Please activate Google Plus to change your account name!');
+        })
+        .then((user = {}) => {
           // Add name to token
-          token.name = user.displayName;
+          token.name = user.displayName || 'Unknown';
           const existingToken = store.getters['data/googleTokens'][token.sub];
           if (existingToken) {
             // We probably retrieved a new token with restricted scopes.

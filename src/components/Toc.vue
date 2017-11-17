@@ -90,7 +90,7 @@ export default {
 .toc__inner {
   color: rgba(0, 0, 0, 0.75);
   cursor: pointer;
-  font-size: 10px;
+  font-size: 9px;
   padding: 10px 20px 40px;
   white-space: nowrap;
   -webkit-user-select: none;

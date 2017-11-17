@@ -39,6 +39,11 @@ function computeStyles(state, getters, localSettings = getters['data/localSettin
   }
 
   styles.innerWidth = state.layout.bodyWidth;
+  if (styles.innerWidth < constants.editorMinWidth
+    + constants.gutterWidth + constants.buttonBarWidth
+  ) {
+    styles.layoutOverflow = true;
+  }
   if (styles.showSideBar) {
     styles.innerWidth -= constants.sideBarWidth;
   }
@@ -53,7 +58,6 @@ function computeStyles(state, getters, localSettings = getters['data/localSettin
   }
   if (doublePanelWidth < constants.editorMinWidth) {
     doublePanelWidth = constants.editorMinWidth;
-    styles.layoutOverflow = true;
   }
 
   if (styles.showSidePreview && doublePanelWidth / 2 < constants.editorMinWidth) {

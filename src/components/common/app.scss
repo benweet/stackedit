@@ -260,6 +260,10 @@ textarea {
 
 .discussion-preview-highlighting {
   cursor: pointer;
+
+  &.discussion-preview-highlighting--selected {
+    cursor: auto;
+  }
 }
 
 .hidden-rendering-container {

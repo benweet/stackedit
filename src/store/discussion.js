@@ -12,9 +12,10 @@ export default {
     currentDiscussionId: null,
     newDiscussion: null,
     newDiscussionId: null,
+    isCommenting: false,
     newCommentText: '',
     newCommentSelection: { start: 0, end: 0 },
-    isCommenting: false,
+    newCommentFocus: false,
     stickyComment: null,
   },
   mutations: {
@@ -29,9 +30,18 @@ export default {
       state.newDiscussionId = utils.uid();
       state.currentDiscussionId = state.newDiscussionId;
       state.isCommenting = true;
+      state.newCommentFocus = true;
     },
     patchNewDiscussion: (state, value) => {
       Object.assign(state.newDiscussion, value);
+    },
+    setIsCommenting: (state, value) => {
+      state.isCommenting = value;
+      if (!value) {
+        state.newDiscussionId = null;
+      } else {
+        state.newCommentFocus = true;
+      }
     },
     setNewCommentText: (state, value) => {
       state.newCommentText = value || '';
@@ -39,11 +49,8 @@ export default {
     setNewCommentSelection: (state, value) => {
       state.newCommentSelection = value;
     },
-    setIsCommenting: (state, value) => {
-      state.isCommenting = value;
-      if (!value) {
-        state.newDiscussionId = null;
-      }
+    setNewCommentFocus: (state, value) => {
+      state.newCommentFocus = value;
     },
     setStickyComment: (state, value) => {
       state.stickyComment = value;

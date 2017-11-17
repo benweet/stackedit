@@ -186,20 +186,6 @@ export default {
   padding-top: 10px;
 }
 
-.comment--last {
-  opacity: 0.33;
-  cursor: pointer;
-
-  * {
-    pointer-events: none;
-  }
-
-  &:hover,
-  &.comment--hover {
-    opacity: 0.67;
-  }
-}
-
 .comment-list__current-discussion {
   border-top: 2px solid;
   border-bottom: 2px solid;
@@ -217,8 +203,23 @@ export default {
   font-weight: 600;
 }
 
-.comment {
+/* use div selector to avoid collision with Prism */
+div.comment {
   padding: 5px 10px 10px;
+}
+
+.comment--last {
+  opacity: 0.33;
+  cursor: pointer;
+
+  * {
+    pointer-events: none;
+  }
+
+  &:hover,
+  &.comment--hover {
+    opacity: 0.5;
+  }
 }
 
 .comment__header {

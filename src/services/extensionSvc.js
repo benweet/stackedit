@@ -1,7 +1,6 @@
 const getOptionsListeners = [];
 const initConverterListeners = [];
 const sectionPreviewListeners = [];
-const asyncPreviewListeners = [];
 
 export default {
   onGetOptions(listener) {
@@ -14,10 +13,6 @@ export default {
 
   onSectionPreview(listener) {
     sectionPreviewListeners.push(listener);
-  },
-
-  onAsyncPreview(listener) {
-    asyncPreviewListeners.push(listener);
   },
 
   getOptions(properties, isCurrentFile) {
@@ -38,9 +33,5 @@ export default {
     sectionPreviewListeners.forEach((listener) => {
       listener(elt, options);
     });
-  },
-
-  asyncPreview(options) {
-    return Promise.all(asyncPreviewListeners.map(listener => listener(options)));
   },
 };

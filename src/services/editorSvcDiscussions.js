@@ -129,6 +129,7 @@ export default {
         currentPatchableText = diffUtils.makePatchableText(newContent, markerKeys, markerIdxMap);
       } else {
         // Take a chance to restore discussion offsets on undo/redo
+        newContent.text = currentPatchableText;
         diffUtils.restoreDiscussionOffsets(newContent, markerKeys);
         syncDiscussionMarkers(newContent, false);
       }

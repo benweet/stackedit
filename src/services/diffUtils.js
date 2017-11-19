@@ -64,12 +64,6 @@ function stripDiscussionOffsets(objectMap) {
 }
 
 function restoreDiscussionOffsets(content, markerKeys) {
-  // Init offsets (just in case)
-  Object.keys(content.discussions).forEach((discussionId) => {
-    const discussion = content.discussions[discussionId];
-    discussion.start = 0;
-    discussion.end = 0;
-  });
   // Go through markers
   let count = 0;
   const maxIdx = markerKeys.length;
@@ -85,6 +79,15 @@ function restoreDiscussionOffsets(content, markerKeys) {
     }
     count += 1;
     return '';
+  });
+  Object.keys(content.discussions).forEach((discussionId) => {
+    const discussion = content.discussions[discussionId];
+    if (discussion.start === undefined) {
+      discussion.start = discussion.end || 0;
+    }
+    if (discussion.end === undefined) {
+      discussion.end = discussion.start;
+    }
   });
 }
 

@@ -4,7 +4,6 @@ import editorSvc from '../editorSvc';
 
 let editorScrollerElt;
 let previewScrollerElt;
-let previewElt;
 let editorFinishTimeoutId;
 let previewFinishTimeoutId;
 let skipAnimation;
@@ -122,7 +121,6 @@ store.watch(() => store.getters['data/localSettings'].scrollSync, forceScrollSyn
 editorSvc.$on('inited', () => {
   editorScrollerElt = editorSvc.editorElt.parentNode;
   previewScrollerElt = editorSvc.previewElt.parentNode;
-  previewElt = editorSvc.previewElt;
 
   editorScrollerElt.addEventListener('scroll', () => {
     if (isEditorMoving) {
@@ -149,14 +147,7 @@ editorSvc.$on('sectionList', () => {
   sectionDescList = undefined;
 });
 
-editorSvc.$on('conversionCtx', () => {
-  // Set the preview height to prevent scrollbar from jumping
-  previewElt.style.height = `${previewElt.offsetHeight}px`;
-});
-
 editorSvc.$on('previewText', () => {
-  // Remove height property once the preview as been refreshed
-  previewElt.style.removeProperty('height');
   // Assume the user is writing in the editor
   isScrollEditor = store.getters['layout/styles'].showEditor;
   // A preview scrolling event can occur if height is smaller

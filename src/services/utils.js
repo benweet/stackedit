@@ -116,7 +116,9 @@ export default {
     const override = (obj, opt) => {
       const objType = Object.prototype.toString.call(obj);
       const optType = Object.prototype.toString.call(opt);
-      if (objType !== optType) {
+      if (obj === undefined) {
+        return opt;
+      } else if (objType !== optType) {
         return obj;
       } else if (objType !== '[object Object]') {
         return opt === undefined ? obj : opt;

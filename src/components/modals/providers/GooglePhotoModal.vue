@@ -18,12 +18,14 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import ModalInner from '../common/ModalInner';
 import FormEntry from '../common/FormEntry';
 
 const makeThumbnail = (url, size) => `${url}=s${size}`;
 
 export default {
   components: {
+    ModalInner,
     FormEntry,
   },
   data: () => ({

@@ -26,7 +26,7 @@ export default {
     }
     return result;
   },
-  parseContent(serializedContent, syncLocation) {
+  parseContent(serializedContent, syncLocation = {}) {
     const result = utils.deepCopy(store.state.content.itemMap[`${syncLocation.fileId}/content`])
       || emptyContent();
     result.text = utils.sanitizeText(serializedContent);

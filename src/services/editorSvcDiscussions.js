@@ -7,6 +7,7 @@ import EditorClassApplier from '../components/common/EditorClassApplier';
 import PreviewClassApplier from '../components/common/PreviewClassApplier';
 
 let clEditor;
+// let discussionIds = {};
 let discussionMarkers = {};
 let markerKeys;
 let markerIdxMap;
@@ -137,6 +138,25 @@ export default {
       isChangePatch = false;
     });
     clEditor.on('focus', () => store.commit('discussion/setNewCommentFocus', false));
+
+    // Track new discussions (not sure it's a good idea)
+    // store.watch(
+    //   () => store.getters['content/current'].discussions,
+    //   (discussions) => {
+    //     const oldDiscussionIds = discussionIds;
+    //     discussionIds = {};
+    //     let hasNewDiscussion = false;
+    //     Object.keys(discussions).forEach((discussionId) => {
+    //       discussionIds[discussionId] = true;
+    //       if (!oldDiscussionIds[discussionId]) {
+    //         hasNewDiscussion = true;
+    //       }
+    //     });
+    //     if (hasNewDiscussion) {
+    //       const content = store.getters['content/current'];
+    //       currentPatchableText = diffUtils.makePatchableText(content, markerKeys, markerIdxMap);
+    //     }
+    //   });
   },
   initClEditorInternal(opts) {
     const content = store.getters['content/current'];

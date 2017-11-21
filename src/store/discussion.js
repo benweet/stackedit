@@ -117,6 +117,12 @@ export default {
       getters.currentDiscussionComments[getters.currentDiscussionLastCommentId],
   },
   actions: {
+    cancelNewComment({ commit, getters }) {
+      commit('setIsCommenting', false);
+      if (!getters.currentDiscussion) {
+        commit('setCurrentDiscussionId', getters.nextDiscussionId);
+      }
+    },
     createNewDiscussion({ commit, dispatch, rootGetters }, selection) {
       const loginToken = rootGetters['data/loginToken'];
       if (!loginToken) {

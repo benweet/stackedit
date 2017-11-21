@@ -493,8 +493,6 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
     this.clEditor.on('contentChanged',
       (content, diffs, sectionList) => onEditorChanged(sectionList));
 
-    this.$emit('inited');
-
     // clEditorSvc.setPreviewElt(element[0].querySelector('.preview__inner-2'))
     // var previewElt = element[0].querySelector('.preview')
     // clEditorSvc.isPreviewTop = previewElt.scrollTop < 10
@@ -551,6 +549,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
       () => this.measureSectionDimensions(false, true));
 
     this.initHighlighters();
+    this.$emit('inited');
   },
 });
 

@@ -158,7 +158,13 @@ module.actions.setTemplates = ({ commit }, data) => {
 // Last opened
 module.getters.lastOpened = getter('lastOpened');
 module.getters.lastOpenedIds = (state, getters, rootState) => {
-  const lastOpened = getters.lastOpened;
+  const lastOpened = {
+    ...getters.lastOpened,
+  };
+  const currentFileId = rootState.file.currentId;
+  if (currentFileId && !lastOpened[currentFileId]) {
+    lastOpened[currentFileId] = Date.now();
+  }
   return Object.keys(lastOpened)
     .filter(id => rootState.file.itemMap[id])
     .sort((id1, id2) => lastOpened[id2] - lastOpened[id1])

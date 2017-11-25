@@ -4005,11 +4005,11 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.3.6"
 
-katex@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/katex/-/katex-0.7.1.tgz#06bb5298efad05e1e7228035ba8e1591f3061b8f"
+katex@^0.9.0-alpha1:
+  version "0.9.0-alpha1"
+  resolved "https://registry.yarnpkg.com/katex/-/katex-0.9.0-alpha1.tgz#95e2899fa2aac9927f7e3bc2744d39670dfd8cc5"
   dependencies:
-    match-at "^0.1.0"
+    match-at "^0.1.1"
 
 kew@^0.7.0:
   version "0.7.0"
@@ -4409,9 +4409,9 @@ markdown-it@^8.3.1:
     mdurl "^1.0.1"
     uc.micro "^1.0.3"
 
-match-at@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/match-at/-/match-at-0.1.0.tgz#f561e7709ff9a105b85cc62c6b8ee7c15bf24f31"
+match-at@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/match-at/-/match-at-0.1.1.tgz#25d040d291777704d5e6556bbb79230ec2de0540"
 
 math-expression-evaluator@^1.2.14:
   version "1.2.17"

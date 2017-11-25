@@ -79,7 +79,7 @@ extensionSvc.onSectionPreview((elt) => {
       try {
         katex.render(katexElt.textContent, katexElt, { displayMode });
       } catch (e) {
-        // Ignore
+        katexElt.textContent = `${e.message}`;
       }
     }
     katexElt.highlighted = true;

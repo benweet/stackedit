@@ -32,7 +32,7 @@
     "handlebars": "^4.0.10",
     "indexeddbshim": "^3.0.4",
     "js-yaml": "^3.9.1",
-    "katex": "^0.7.1",
+    "katex": "^0.9.0-alpha1",
     "markdown-it": "^8.3.1",
     "markdown-it-abbr": "^1.0.4",
     "markdown-it-deflist": "^2.0.2",

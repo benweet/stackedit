@@ -37,20 +37,24 @@ export default class PreviewClassApplier {
 
   applyClass() {
     const offset = this.offsetGetter();
-    if (offset && offset.start !== offset.end) {
-      const start = cledit.Utils.findContainer(
-        editorSvc.previewElt, Math.min(offset.start, offset.end));
-      const end = cledit.Utils.findContainer(
-        editorSvc.previewElt, Math.max(offset.start, offset.end));
-      const range = document.createRange();
-      range.setStart(start.container, start.offsetInContainer);
-      range.setEnd(end.container, end.offsetInContainer);
-      const properties = {
-        ...this.properties,
-        className: this.classGetter().join(' '),
-      };
-      utils.wrapRange(range, properties);
-      this.lastEltCount = this.eltCollection.length;
+    if (offset) {
+      const offsetStart = editorSvc.getPreviewOffset(offset.start, editorSvc.sectionDescList);
+      const offsetEnd = editorSvc.getPreviewOffset(offset.end, editorSvc.sectionDescList);
+      if (offsetStart != null && offsetEnd != null && offsetStart !== offsetEnd) {
+        const start = cledit.Utils.findContainer(
+          editorSvc.previewElt, Math.min(offsetStart, offsetEnd));
+        const end = cledit.Utils.findContainer(
+          editorSvc.previewElt, Math.max(offsetStart, offsetEnd));
+        const range = document.createRange();
+        range.setStart(start.container, start.offsetInContainer);
+        range.setEnd(end.container, end.offsetInContainer);
+        const properties = {
+          ...this.properties,
+          className: this.classGetter().join(' '),
+        };
+        utils.wrapRange(range, properties);
+        this.lastEltCount = this.eltCollection.length;
+      }
     }
   }
 

@@ -163,6 +163,14 @@ export default {
       () => this.updateStickyTrigger,
       () => this.updateSticky(),
       { immediate: true });
+
+    // Move preview discussions once sectionDescWithDiffsList have been calculated
+    if (!editorSvc.sectionDescWithDiffsList) {
+      editorSvc.$once('sectionDescWithDiffsList', () => {
+        this.updateTops();
+        this.updateSticky();
+      });
+    }
   },
   destroyed() {
     this.scrollerElt.removeEventListener('scroll', this.updateSticky);
@@ -197,10 +205,6 @@ export default {
   .comment-list--bottom & {
     border-top-color: transparent;
   }
-}
-
-.user-name {
-  font-weight: 600;
 }
 
 /* use div selector to avoid collision with Prism */

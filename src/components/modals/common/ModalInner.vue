@@ -53,7 +53,7 @@ export default {
   position: absolute;
   top: 8px;
   right: 8px;
-  color: rgba(0, 0, 0, 0.2);
+  color: rgba(0, 0, 0, 0.5);
   width: 30px;
   height: 30px;
   padding: 2px;
@@ -61,7 +61,7 @@ export default {
   &:active,
   &:focus,
   &:hover {
-    color: rgba(0, 0, 0, 0.3);
+    color: rgba(0, 0, 0, 0.67);
   }
 }
 

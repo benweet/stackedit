@@ -28,6 +28,12 @@
       <div>File properties</div>
       <span>Add metadata and configure extensions.</span>
     </menu-entry>
+    <menu-entry @click.native="history">
+      <icon-history slot="icon"></icon-history>
+      <div>File history</div>
+      <span>Track and restore file revisions.</span>
+    </menu-entry>
+    <hr>
     <menu-entry @click.native="setPanel('toc')">
       <icon-toc slot="icon"></icon-toc>
       Table of contents
@@ -112,6 +118,17 @@ export default {
     fileProperties() {
       return this.$store.dispatch('modal/open', 'fileProperties')
         .catch(() => {}); // Cancel
+    },
+    history() {
+      const loginToken = this.$store.getters['data/loginToken'];
+      if (!loginToken) {
+        this.$store.dispatch('modal/signInForHistory')
+          .then(() => googleHelper.signin())
+          .then(() => syncSvc.requestSync())
+          .catch(() => { }); // Cancel
+      } else {
+        this.setPanel('history');
+      }
     },
     print() {
       print();

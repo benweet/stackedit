@@ -52,12 +52,14 @@ export default {
   restoreScrollPosition() {
     const scrollPosition = store.getters['contentState/current'].scrollPosition;
     if (scrollPosition && this.sectionDescMeasuredList) {
-      const objectToScroll = this.getObjectToScroll();
       const sectionDesc = this.sectionDescMeasuredList[scrollPosition.sectionIdx];
       if (sectionDesc) {
-        const scrollTop = sectionDesc[objectToScroll.dimensionKey].startOffset +
-          (sectionDesc[objectToScroll.dimensionKey].height * scrollPosition.posInSection);
-        objectToScroll.elt.scrollTop = Math.floor(scrollTop);
+        const editorScrollTop = sectionDesc.editorDimension.startOffset +
+          (sectionDesc.editorDimension.height * scrollPosition.posInSection);
+        this.editorElt.parentNode.scrollTop = Math.floor(editorScrollTop);
+        const previewScrollTop = sectionDesc.previewDimension.startOffset +
+          (sectionDesc.previewDimension.height * scrollPosition.posInSection);
+        this.previewElt.parentNode.scrollTop = Math.floor(previewScrollTop);
       }
     }
   },
@@ -65,13 +67,17 @@ export default {
   /**
    * Get the offset in the preview corresponding to the offset of the markdown in the editor
    */
-  getPreviewOffset(editorOffset) {
-    if (!this.sectionDescWithDiffsList) {
+  getPreviewOffset(editorOffset, sectionDescList = this.sectionDescWithDiffsList) {
+    if (!sectionDescList) {
       return null;
     }
     let offset = editorOffset;
     let previewOffset = 0;
-    this.sectionDescWithDiffsList.some((sectionDesc) => {
+    sectionDescList.some((sectionDesc) => {
+      if (!sectionDesc.textToPreviewDiffs) {
+        previewOffset = null;
+        return true;
+      }
       if (sectionDesc.section.text.length >= offset) {
         previewOffset += diffMatchPatch.diff_xIndex(sectionDesc.textToPreviewDiffs, offset);
         return true;
@@ -86,13 +92,17 @@ export default {
   /**
    * Get the offset of the markdown in the editor corresponding to the offset in the preview
    */
-  getEditorOffset(previewOffset) {
-    if (!this.sectionDescWithDiffsList) {
+  getEditorOffset(previewOffset, sectionDescList = this.sectionDescWithDiffsList) {
+    if (!sectionDescList) {
       return null;
     }
     let offset = previewOffset;
     let editorOffset = 0;
-    this.sectionDescWithDiffsList.some((sectionDesc) => {
+    sectionDescList.some((sectionDesc) => {
+      if (!sectionDesc.textToPreviewDiffs) {
+        editorOffset = null;
+        return true;
+      }
       if (sectionDesc.previewText.length >= offset) {
         const previewToTextDiffs = sectionDesc.textToPreviewDiffs
           .map(diff => [-diff[0], diff[1]]);

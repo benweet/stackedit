@@ -1,88 +1,58 @@
 <template>
-  <nav class="navigation-bar" :class="{'navigation-bar--editor': styles.showEditor}">
+  <nav class="navigation-bar" :class="{'navigation-bar--editor': styles.showEditor && !revisionContent}">
+    <!-- Explorer -->
     <div class="navigation-bar__inner navigation-bar__inner--left navigation-bar__inner--button">
-      <button class="navigation-bar__button button" @click="toggleExplorer()" v-title="'Toggle explorer'">
-        <icon-folder></icon-folder>
-      </button>
+      <button class="navigation-bar__button button" @click="toggleExplorer()" v-title="'Toggle explorer'"><icon-folder></icon-folder></button>
     </div>
+    <!-- Side bar -->
     <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--button">
-      <button class="navigation-bar__button navigation-bar__button--stackedit button" @click="toggleSideBar()" v-title="'Toggle side bar'">
-        <icon-provider provider-id="stackedit"></icon-provider>
-      </button>
+      <button class="navigation-bar__button navigation-bar__button--stackedit button" @click="toggleSideBar()" v-title="'Toggle side bar'"><icon-provider provider-id="stackedit"></icon-provider></button>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--title flex flex--row">
+      <!-- Spinner -->
       <div class="navigation-bar__spinner">
         <div v-if="!offline && showSpinner" class="spinner"></div>
         <icon-sync-off v-if="offline"></icon-sync-off>
       </div>
+      <!-- Title -->
       <div class="navigation-bar__title navigation-bar__title--fake text-input"></div>
       <div class="navigation-bar__title navigation-bar__title--text text-input" :style="{width: titleWidth + 'px'}">{{title}}</div>
       <input class="navigation-bar__title navigation-bar__title--input text-input" :class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" :style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keyup.enter="submitTitle()" @keyup.esc="submitTitle(true)" @mouseenter="titleHover = true" @mouseleave="titleHover = false" v-model="title">
+      <!-- Sync/Publish -->
       <div class="flex flex--row" :class="{'navigation-bar__hidden': styles.hideLocations}">
-        <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in syncLocations" :key="location.id" :href="location.url" target="_blank" v-title="'Synchronized location'">
-          <icon-provider :provider-id="location.providerId"></icon-provider>
-        </a>
-        <button class="navigation-bar__button navigation-bar__button--sync button" :disabled="!isSyncPossible || isSyncRequested || offline" @click="requestSync" v-title="'Synchronize now'">
-          <icon-sync></icon-sync>
-        </button>
-        <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in publishLocations" :key="location.id" :href="location.url" target="_blank" v-title="'Publish location'">
-          <icon-provider :provider-id="location.providerId"></icon-provider>
-        </a>
-        <button class="navigation-bar__button navigation-bar__button--publish button" :disabled="!publishLocations.length || isPublishRequested || offline" @click="requestPublish"v-title="'Publish now'">
-          <icon-upload></icon-upload>
-        </button>
+        <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in syncLocations" :key="location.id" :href="location.url" target="_blank" v-title="'Synchronized location'"><icon-provider :provider-id="location.providerId"></icon-provider></a>
+        <button class="navigation-bar__button navigation-bar__button--sync button" :disabled="!isSyncPossible || isSyncRequested || offline" @click="requestSync" v-title="'Synchronize now'"><icon-sync></icon-sync></button>
+        <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in publishLocations" :key="location.id" :href="location.url" target="_blank" v-title="'Publish location'"><icon-provider :provider-id="location.providerId"></icon-provider></a>
+        <button class="navigation-bar__button navigation-bar__button--publish button" :disabled="!publishLocations.length || isPublishRequested || offline" @click="requestPublish"v-title="'Publish now'"><icon-upload></icon-upload></button>
+      </div>
+      <!-- Revision -->
+      <div class="flex flex--row" v-if="revisionContent">
+        <button class="navigation-bar__button navigation-bar__button--revision navigation-bar__button--restore button" @click="restoreRevision">Restore</button>
+        <button class="navigation-bar__button navigation-bar__button--revision button" @click="setRevisionContent()" v-title="'Close revision'"><icon-close></icon-close></button>
       </div>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--edit-buttons">
-      <button class="navigation-bar__button button" @click="undo" v-title="'Undo'" :disabled="!canUndo">
-        <icon-undo></icon-undo>
-      </button>
-      <button class="navigation-bar__button button" @click="redo" v-title="'Redo'" :disabled="!canRedo">
-        <icon-redo></icon-redo>
-      </button>
+      <button class="navigation-bar__button button" @click="undo" v-title="'Undo'" :disabled="!canUndo"><icon-undo></icon-undo></button>
+      <button class="navigation-bar__button button" @click="redo" v-title="'Redo'" :disabled="!canRedo"><icon-redo></icon-redo></button>
       <div class="navigation-bar__spacer"></div>
-      <button class="navigation-bar__button button" @click="pagedownClick('bold')" v-title="'Bold'">
-        <icon-format-bold></icon-format-bold>
-      </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('italic')" v-title="'Italic'">
-        <icon-format-italic></icon-format-italic>
-      </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('strikethrough')" v-title="'Strikethrough'">
-        <icon-format-strikethrough></icon-format-strikethrough>
-      </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('heading')" v-title="'Heading'">
-        <icon-format-size></icon-format-size>
-      </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('ulist')" v-title="'Unordered list'">
-        <icon-format-list-bulleted></icon-format-list-bulleted>
-      </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('olist')" v-title="'Ordered list'">
-        <icon-format-list-numbers></icon-format-list-numbers>
-      </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('table')" v-title="'Table'">
-        <icon-table></icon-table>
-      </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('quote')" v-title="'Blockquote'">
-        <icon-format-quote-close></icon-format-quote-close>
-      </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('code')" v-title="'Code'">
-        <icon-code-tags></icon-code-tags>
-      </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('link')" v-title="'Link'">
-        <icon-link-variant></icon-link-variant>
-      </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('image')" v-title="'Image'">
-        <icon-file-image></icon-file-image>
-      </button>
-      <button class="navigation-bar__button button" @click="pagedownClick('hr')" v-title="'Horizontal rule'">
-        <icon-format-horizontal-rule></icon-format-horizontal-rule>
-      </button>
+      <button class="navigation-bar__button button" @click="pagedownClick('bold')" v-title="'Bold'"><icon-format-bold></icon-format-bold></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('italic')" v-title="'Italic'"><icon-format-italic></icon-format-italic></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('strikethrough')" v-title="'Strikethrough'"><icon-format-strikethrough></icon-format-strikethrough></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('heading')" v-title="'Heading'"><icon-format-size></icon-format-size></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('ulist')" v-title="'Unordered list'"><icon-format-list-bulleted></icon-format-list-bulleted></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('olist')" v-title="'Ordered list'"><icon-format-list-numbers></icon-format-list-numbers></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('table')" v-title="'Table'"><icon-table></icon-table></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('quote')" v-title="'Blockquote'"><icon-format-quote-close></icon-format-quote-close></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('code')" v-title="'Code'"><icon-code-tags></icon-code-tags></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('link')" v-title="'Link'"><icon-link-variant></icon-link-variant></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('image')" v-title="'Image'"><icon-file-image></icon-file-image></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('hr')" v-title="'Horizontal rule'"><icon-format-horizontal-rule></icon-format-horizontal-rule></button>
     </div>
   </nav>
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex';
 import editorSvc from '../services/editorSvc';
 import syncSvc from '../services/syncSvc';
 import publishSvc from '../services/publishSvc';
@@ -108,6 +78,9 @@ export default {
     ...mapState('layout', [
       'canUndo',
       'canRedo',
+    ]),
+    ...mapState('content', [
+      'revisionContent',
     ]),
     ...mapGetters('layout', [
       'styles',
@@ -155,6 +128,12 @@ export default {
     },
   },
   methods: {
+    ...mapMutations('content', [
+      'setRevisionContent',
+    ]),
+    ...mapActions('content', [
+      'restoreRevision',
+    ]),
     ...mapActions('data', [
       'toggleExplorer',
       'toggleSideBar',
@@ -176,9 +155,7 @@ export default {
       }
     },
     pagedownClick(name) {
-      if (this.$store.getters['content/current'].id &&
-        this.$store.getters['layout/styles'].showEditor
-      ) {
+      if (this.$store.getters['content/isCurrentEditable']) {
         editorSvc.pagedownEditor.uiManager.doClick(name);
       }
     },
@@ -292,8 +269,30 @@ $button-size: 36px;
   }
 }
 
+.navigation-bar__button--revision {
+  width: 38px;
+
+  &:first-child {
+    margin-left: 10px;
+  }
+
+  &:last-child {
+    margin-right: 10px;
+  }
+}
+
+.navigation-bar__button--restore {
+  width: auto;
+}
+
 .navigation-bar__title {
   margin: 0 4px;
+  font-size: 22px;
+
+  .layout--revision & {
+    position: absolute;
+    left: -9999px;
+  }
 }
 
 .navigation-bar__title,
@@ -301,7 +300,6 @@ $button-size: 36px;
   display: inline-block;
   color: $navbar-color;
   background-color: transparent;
-  font-size: 22px;
 }
 
 .navigation-bar__button--sync,
@@ -383,6 +381,10 @@ $button-size: 36px;
   .navigation-bar--editor & {
     display: inline-block;
   }
+}
+
+.navigation-bar__button--revision {
+  display: inline-block;
 }
 
 .navigation-bar__title--input {

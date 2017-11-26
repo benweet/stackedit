@@ -37,7 +37,8 @@ export default {
       }
       const newQueue = queue
         .then(() => checkOffline())
-        .then(() => cb()
+        .then(() => Promise.resolve()
+          .then(() => cb())
           .catch((err) => {
             console.error(err); // eslint-disable-line no-console
             checkOffline();

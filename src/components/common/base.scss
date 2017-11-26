@@ -9,7 +9,7 @@
 
 html,
 body {
-  color: rgba(0, 0, 0, 0.75);
+  color: $body-color;
   font-size: 16px;
   font-family: $font-family-main;
   font-variant-ligatures: common-ligatures;

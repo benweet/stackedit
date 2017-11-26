@@ -217,26 +217,28 @@ export default {
     store.watch(
       () => store.getters['discussion/currentFileDiscussions'],
       (discussions) => {
+        const classGetter = (type, discussionId) => () => {
+          const classes = [`discussion-${type}-highlighting--${discussionId}`, `discussion-${type}-highlighting`];
+          if (store.state.discussion.currentDiscussionId === discussionId) {
+            classes.push(`discussion-${type}-highlighting--selected`);
+          }
+          return classes;
+        };
+        const offsetGetter = discussionId => () => {
+          const startMarker = discussionMarkers[`${discussionId}:start`];
+          const endMarker = discussionMarkers[`${discussionId}:end`];
+          return startMarker && endMarker && {
+            start: startMarker.offset,
+            end: endMarker.offset,
+          };
+        };
+
         // Editor class appliers
         const oldEditorClassAppliers = editorClassAppliers;
         editorClassAppliers = {};
         Object.keys(discussions).forEach((discussionId) => {
           const classApplier = oldEditorClassAppliers[discussionId] || new EditorClassApplier(
-            () => {
-              const classes = [`discussion-editor-highlighting--${discussionId}`, 'discussion-editor-highlighting'];
-              if (store.state.discussion.currentDiscussionId === discussionId) {
-                classes.push('discussion-editor-highlighting--selected');
-              }
-              return classes;
-            },
-            () => {
-              const startMarker = discussionMarkers[`${discussionId}:start`];
-              const endMarker = discussionMarkers[`${discussionId}:end`];
-              return startMarker && endMarker && {
-                start: startMarker.offset,
-                end: endMarker.offset,
-              };
-            }, { discussionId });
+            classGetter('editor', discussionId), offsetGetter(discussionId), { discussionId });
           editorClassAppliers[discussionId] = classApplier;
         });
         Object.keys(oldEditorClassAppliers).forEach((discussionId) => {
@@ -250,21 +252,7 @@ export default {
         previewClassAppliers = {};
         Object.keys(discussions).forEach((discussionId) => {
           const classApplier = oldPreviewClassAppliers[discussionId] || new PreviewClassApplier(
-            () => {
-              const classes = [`discussion-preview-highlighting--${discussionId}`, 'discussion-preview-highlighting'];
-              if (store.state.discussion.currentDiscussionId === discussionId) {
-                classes.push('discussion-preview-highlighting--selected');
-              }
-              return classes;
-            },
-            () => {
-              const startMarker = discussionMarkers[`${discussionId}:start`];
-              const endMarker = discussionMarkers[`${discussionId}:end`];
-              return startMarker && endMarker && {
-                start: this.getPreviewOffset(startMarker.offset),
-                end: this.getPreviewOffset(endMarker.offset),
-              };
-            }, { discussionId });
+            classGetter('preview', discussionId), offsetGetter(discussionId), { discussionId });
           previewClassAppliers[discussionId] = classApplier;
         });
         Object.keys(oldPreviewClassAppliers).forEach((discussionId) => {

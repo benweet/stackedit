@@ -21,7 +21,11 @@ export default {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
         let offset;
-        if (editorSvc.previewSelectionRange) {
+        // Show the button if content is not a revision and preview selection is not empty
+        if (
+          !this.$store.state.content.revisionContent &&
+          editorSvc.previewSelectionRange
+        ) {
           this.selection = editorSvc.getTrimmedSelection();
           if (this.selection) {
             const text = editorSvc.previewTextWithDiffsList;

@@ -16,11 +16,11 @@ export default {
     }
     if (scrollElt) {
       const clEditor = cledit(preElt, scrollElt);
+      clEditor.on('contentChanged', value => this.$emit('changed', value));
       clEditor.init({
         content: this.value,
         sectionHighlighter: section => Prism.highlight(section.text, Prism.languages[this.lang]),
       });
-      clEditor.on('contentChanged', value => this.$emit('changed', value));
       clEditor.toggleEditable(!this.disabled);
     }
   },

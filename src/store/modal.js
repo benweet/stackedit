@@ -70,6 +70,11 @@ export default {
       content: '<p>Files in the trash are automatically deleted after 7 days of inactivity.</p>',
       resolveText: 'Ok',
     }),
+    fileRestoration: ({ dispatch }) => dispatch('open', {
+      content: '<p>You are about to revert some changes. Are you sure?</p>',
+      resolveText: 'Yes, revert',
+      rejectText: 'No',
+    }),
     reset: ({ dispatch }) => dispatch('open', {
       content: '<p>This will clean your local files and settings. Are you sure?</p>',
       resolveText: 'Yes, clean',
@@ -83,13 +88,19 @@ export default {
     }),
     signInForSponsorship: ({ dispatch }) => dispatch('open', {
       type: 'signInForSponsorship',
-      content: `<p>You have to sign in with <b>Google</b> to enable your sponsorship.</p>
+      content: `<p>You have to sign in with Google to enable your sponsorship.</p>
       <div class="modal__info"><b>Note:</b> This will sync all your files and settings.</div>`,
       resolveText: 'Ok, sign in',
       rejectText: 'Cancel',
     }),
     signInForComment: ({ dispatch }) => dispatch('open', {
-      content: `<p>You have to sign in with <b>Google</b> to start commenting.</p>
+      content: `<p>You have to sign in with Google to start commenting.</p>
+      <div class="modal__info"><b>Note:</b> This will sync all your files and settings.</div>`,
+      resolveText: 'Ok, sign in',
+      rejectText: 'Cancel',
+    }),
+    signInForHistory: ({ dispatch }) => dispatch('open', {
+      content: `<p>You have to sign in with Google to enable revision history.</p>
       <div class="modal__info"><b>Note:</b> This will sync all your files and settings.</div>`,
       resolveText: 'Ok, sign in',
       rejectText: 'Cancel',

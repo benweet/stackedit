@@ -337,6 +337,44 @@ export default {
         url: `https://www.googleapis.com/drive/v3/files/${id}`,
       })));
   },
+  getFileRevisions(token, id) {
+    return this.refreshToken(token, driveAppDataScopes)
+      .then((refreshedToken) => {
+        const revisions = [];
+        const getPage = pageToken => this.request(refreshedToken, {
+          method: 'GET',
+          url: `https://www.googleapis.com/drive/v3/files/${id}/revisions`,
+          params: {
+            pageToken,
+            pageSize: 1000,
+            fields: 'nextPageToken,revisions(id,modifiedTime,lastModifyingUser/permissionId,lastModifyingUser/displayName,lastModifyingUser/photoLink)',
+          },
+        }).then((res) => {
+          res.body.revisions.forEach((revision) => {
+            store.commit('userInfo/addItem', {
+              id: revision.lastModifyingUser.permissionId,
+              name: revision.lastModifyingUser.displayName,
+              imageUrl: revision.lastModifyingUser.photoLink,
+            });
+            revisions.push(revision);
+          });
+          if (res.body.nextPageToken) {
+            return getPage(res.body.nextPageToken);
+          }
+          return revisions;
+        });
+
+        return getPage();
+      });
+  },
+  downloadFileRevision(token, fileId, revisionId) {
+    return this.refreshToken(token, driveAppDataScopes)
+      .then(refreshedToken => this.request(refreshedToken, {
+        method: 'GET',
+        url: `https://www.googleapis.com/drive/v3/files/${fileId}/revisions/${revisionId}?alt=media`,
+        raw: true,
+      }).then(res => res.body));
+  },
   uploadBlogger(
     token, blogUrl, blogId, postId, title, content, labels, isDraft, published, isPage,
   ) {

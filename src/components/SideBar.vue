@@ -15,6 +15,7 @@
       <main-menu v-if="panel === 'menu'"></main-menu>
       <sync-menu v-else-if="panel === 'sync'"></sync-menu>
       <publish-menu v-else-if="panel === 'publish'"></publish-menu>
+      <history-menu v-else-if="panel === 'history'"></history-menu>
       <export-menu v-else-if="panel === 'export'"></export-menu>
       <more-menu v-else-if="panel === 'more'"></more-menu>
       <div v-else-if="panel === 'help'" class="side-bar__panel side-bar__panel--help">
@@ -34,6 +35,7 @@ import Toc from './Toc';
 import MainMenu from './menus/MainMenu';
 import SyncMenu from './menus/SyncMenu';
 import PublishMenu from './menus/PublishMenu';
+import HistoryMenu from './menus/HistoryMenu';
 import ExportMenu from './menus/ExportMenu';
 import MoreMenu from './menus/MoreMenu';
 import markdownSample from '../data/markdownSample.md';
@@ -45,6 +47,7 @@ const panelNames = {
   toc: 'Table of contents',
   sync: 'Synchronize',
   publish: 'Publish',
+  history: 'File history',
   export: 'Export to disk',
   more: 'More',
 };
@@ -55,6 +58,7 @@ export default {
     MainMenu,
     SyncMenu,
     PublishMenu,
+    HistoryMenu,
     ExportMenu,
     MoreMenu,
   },
@@ -90,6 +94,7 @@ export default {
   hr {
     margin: 10px 40px;
     display: none;
+    border-top: 1px solid $hr-color;
   }
 
   * + hr {

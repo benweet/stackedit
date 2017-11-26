@@ -114,4 +114,18 @@ export default providerRegistry.register({
         },
       }));
   },
+  listRevisions(token, fileId) {
+    const syncData = store.getters['data/syncDataByItemId'][`${fileId}/content`];
+    return googleHelper.getFileRevisions(token, syncData.id)
+      .then(revisions => revisions.map(revision => ({
+        id: revision.id,
+        sub: revision.lastModifyingUser && revision.lastModifyingUser.permissionId,
+        created: new Date(revision.modifiedTime).getTime(),
+      })));
+  },
+  getRevisionContent(token, fileId, revisionId) {
+    const syncData = store.getters['data/syncDataByItemId'][`${fileId}/content`];
+    return googleHelper.downloadFileRevision(token, syncData.id, revisionId)
+      .then(content => JSON.parse(content));
+  },
 });

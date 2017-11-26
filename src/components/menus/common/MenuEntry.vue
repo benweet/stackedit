@@ -1,5 +1,5 @@
 <template>
-  <a href="javascript:void(0)" class="menu-entry button flex flex--row flex--align-center">
+  <a class="menu-entry button flex flex--row flex--align-center" href="javascript:void(0)">
     <div class="menu-entry__icon flex flex--column flex--center">
       <slot name="icon"></slot>
     </div>
@@ -17,6 +17,7 @@
   padding: 10px;
   height: auto;
   font-size: 17px;
+  line-height: 1.5;
   text-transform: none;
 
   div div {

@@ -1,4 +1,4 @@
-import googleHelper from '../services/providers/helpers/googleHelper';
+import googleHelper from './providers/helpers/googleHelper';
 import store from '../store';
 
 const promised = {};
@@ -19,8 +19,10 @@ export default {
       if (!store.state.offline) {
         promised[userId] = true;
         googleHelper.getUser(userId)
-          .catch(() => {
-            promised[userId] = false;
+          .catch((err) => {
+            if (err.status !== 404) {
+              promised[userId] = false;
+            }
           });
       }
     }

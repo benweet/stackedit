@@ -21,7 +21,11 @@ export default {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
         let offset;
-        if (editorSvc.clEditor.selectionMgr.hasFocus()) {
+        // Show the button if content is not a revision and has the focus
+        if (
+          !this.$store.state.content.revisionContent &&
+          editorSvc.clEditor.selectionMgr.hasFocus()
+        ) {
           this.selection = editorSvc.getTrimmedSelection();
           if (this.selection) {
             const text = editorSvc.clEditor.getContent();

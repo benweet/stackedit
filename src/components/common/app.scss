@@ -113,7 +113,7 @@ textarea {
 }
 
 .textfield {
-  background-color: transparent;
+  background-color: #fff;
   border: 0;
   font-family: inherit;
   font-weight: 400;
@@ -131,7 +131,7 @@ textarea {
 
   &[disabled] {
     cursor: not-allowed;
-    background-color: #f8f8f8;
+    background-color: #f2f2f2;
     color: #999;
   }
 }
@@ -162,6 +162,10 @@ textarea {
 
 .flex--align-center {
   align-items: center;
+}
+
+.user-name {
+  font-weight: 600;
 }
 
 .side-title {
@@ -210,6 +214,10 @@ textarea {
   position: absolute;
   top: 0;
   height: 100%;
+
+  & > * {
+    border-left: 2px solid transparent;
+  }
 }
 
 .gutter__background {

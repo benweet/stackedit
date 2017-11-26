@@ -24,6 +24,7 @@ export default {
 .user-image {
   width: 100%;
   height: 100%;
+  background-color: #fff;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;

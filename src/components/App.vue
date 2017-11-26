@@ -21,6 +21,10 @@ import store from '../store';
 Vue.directive('focus', {
   inserted(el) {
     el.focus();
+    const value = el.value;
+    if (value && el.setSelectionRange) {
+      el.setSelectionRange(0, value.length);
+    }
   },
 });
 

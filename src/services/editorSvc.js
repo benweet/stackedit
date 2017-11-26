@@ -124,9 +124,17 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
       for (let i = 0; i < item[1].length; i += 1) {
         const section = this.conversionCtx.sectionList[sectionIdx];
         if (item[0] === 0) {
-          const sectionDesc = this.sectionDescList[sectionDescIdx];
+          let sectionDesc = this.sectionDescList[sectionDescIdx];
           sectionDescIdx += 1;
-          sectionDesc.editorElt = section.elt;
+          if (sectionDesc.editorElt !== section.elt) {
+            // Force textToPreviewDiffs computation
+            sectionDesc = {
+              ...sectionDesc,
+              section,
+              editorElt: section.elt,
+              textToPreviewDiffs: null,
+            };
+          }
           newSectionDescList.push(sectionDesc);
           previewHtml += sectionDesc.html;
           sectionIdx += 1;
@@ -230,7 +238,8 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
   }, 500),
 
   /**
-   * Make the diff between editor's markdown and preview's html.
+   * Compute the diffs between editor's markdown and preview's html
+   * asynchronously unless there is only one section to compute.
    */
   makeTextToPreviewDiffs() {
     if (editorSvc.sectionDescList &&
@@ -244,7 +253,9 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
               if (hasOne) {
                 return true;
               }
-              sectionDesc.previewText = sectionDesc.previewElt.textContent;
+              if (!sectionDesc.previewText) {
+                sectionDesc.previewText = sectionDesc.previewElt.textContent;
+              }
               sectionDesc.textToPreviewDiffs = diffMatchPatch.diff_main(
                 sectionDesc.section.text, sectionDesc.previewText);
               hasOne = true;
@@ -540,7 +551,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
 
     // Disable editor if hidden or if no content is loaded
     store.watch(
-      () => store.getters['content/current'].id && store.getters['layout/styles'].showEditor,
+      () => store.getters['content/isCurrentEditable'],
       editable => this.clEditor.toggleEditable(!!editable), {
         immediate: true,
       });

@@ -113,5 +113,8 @@ export default {
       content: '<p>Thank you for your payment! Your sponsorship will be active in a minute.</p>',
       resolveText: 'Ok',
     }),
+    exportMd: ({ dispatch }) => dispatch('open', {
+      type: 'exportMd',
+    }),
   },
 };

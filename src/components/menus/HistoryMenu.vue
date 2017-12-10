@@ -1,16 +1,20 @@
 <template>
-  <div class="side-bar__panel side-bar__panel--history">
-    <a class="revision button flex flex--row" href="javascript:void(0)" v-for="revision in revisions" :key="revision.id" @click="open(revision)">
-      <div class="revision__icon">
-        <user-image :user-id="revision.sub"></user-image>
-      </div>
-      <div class="revision__header flex flex--column">
-        <user-name :user-id="revision.sub"></user-name>
-        <div class="revision__created">{{revision.created | formatTime}}</div>
-      </div>
-    </a>
+  <div class="history side-bar__panel">
+    <div class="revision" v-for="revision in revisions" :key="revision.id">
+      <div class="history__spacer" v-if="revision.spacer"></div>
+      <a class="revision__button button flex flex--row" href="javascript:void(0)" @click="open(revision)">
+        <div class="revision__icon">
+          <user-image :user-id="revision.sub"></user-image>
+        </div>
+        <div class="revision__header flex flex--column">
+          <user-name :user-id="revision.sub"></user-name>
+          <div class="revision__created">{{revision.created | formatTime}}</div>
+        </div>
+      </a>
+    </div>
+    <div class="history__spacer history__spacer--last"></div>
     <div class="flex flex--row flex--end" v-if="showMoreButton">
-      <button class="revision__button button" @click="showMore">More</button>
+      <button class="history__button button" @click="showMore">More</button>
     </div>
   </div>
 </template>
@@ -33,6 +37,7 @@ let cachedFileId;
 let revisionsPromise;
 let revisionContentPromises;
 const pageSize = 50;
+const spacerThreshold = 12 * 60 * 60 * 1000; // 12h
 
 export default {
   components: {
@@ -46,7 +51,15 @@ export default {
   }),
   computed: {
     revisions() {
-      return this.allRevisions.slice(0, this.showCount);
+      let previousCreated = 0;
+      return this.allRevisions.slice(0, this.showCount).map((revision) => {
+        const revisionWithSpacer = {
+          ...revision,
+          spacer: revision.created + spacerThreshold < previousCreated,
+        };
+        previousCreated = revision.created;
+        return revisionWithSpacer;
+      });
     },
     showMoreButton() {
       return this.showCount < this.allRevisions.length;
@@ -171,11 +184,34 @@ export default {
 <style lang="scss">
 @import '../common/variables.scss';
 
-.side-bar__panel--history {
+.history {
   padding: 5px 5px 50px;
 }
 
-.revision {
+.history__button {
+  font-size: 14px;
+  margin-top: 0.5em;
+}
+
+.history__spacer {
+  position: relative;
+  height: 40px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 24px;
+    border-left: 2px dotted $hr-color;
+  }
+}
+
+.history__spacer--last {
+  height: 20px;
+}
+
+.revision__button {
   text-align: left;
   padding: 15px;
   height: auto;
@@ -199,7 +235,7 @@ export default {
     }
   }
 
-  &:first-child::before {
+  .revision:first-child &::before {
     height: 67%;
     top: 33%;
   }
@@ -223,11 +259,6 @@ export default {
 .revision__created {
   font-size: 0.75em;
   opacity: 0.5;
-}
-
-.revision__button {
-  font-size: 14px;
-  margin-top: 0.5em;
 }
 
 .layout--revision {

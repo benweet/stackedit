@@ -53,7 +53,16 @@ export default {
         throw err;
       });
   },
-  uploadFileInternal(refreshedToken, name, parents, media = null, mediaType = 'text/plain', fileId = null, ifNotTooLate = cb => res => cb(res)) {
+  uploadFileInternal(
+    refreshedToken,
+    name,
+    parents,
+    appProperties,
+    media = null,
+    mediaType = null,
+    fileId = null,
+    ifNotTooLate = cb => res => cb(res),
+  ) {
     return Promise.resolve()
       // Refreshing a token can take a while if an oauth window pops up, make sure it's not too late
       .then(ifNotTooLate(() => {
@@ -61,7 +70,7 @@ export default {
           method: 'POST',
           url: 'https://www.googleapis.com/drive/v3/files',
         };
-        const metadata = { name };
+        const metadata = { name, appProperties };
         if (fileId) {
           options.method = 'PATCH';
           options.url = `https://www.googleapis.com/drive/v3/files/${fileId}`;
@@ -78,7 +87,7 @@ export default {
           multipartRequestBody += 'Content-Type: application/json; charset=UTF-8\r\n\r\n';
           multipartRequestBody += JSON.stringify(metadata);
           multipartRequestBody += delimiter;
-          multipartRequestBody += `Content-Type: ${mediaType}; charset=UTF-8\r\n\r\n`;
+          multipartRequestBody += `Content-Type: ${mediaType || 'text/plain'}; charset=UTF-8\r\n\r\n`;
           multipartRequestBody += media;
           multipartRequestBody += closeDelimiter;
           options.url = options.url.replace(
@@ -94,6 +103,9 @@ export default {
             },
             body: multipartRequestBody,
           }).then(res => res.body);
+        }
+        if (mediaType) {
+          metadata.mimeType = mediaType;
         }
         return this.request(refreshedToken, {
           ...options,
@@ -170,7 +182,7 @@ export default {
       .then(token => this.getUser(token.sub)
         .catch((err) => {
           if (err.status === 404) {
-            store.dispatch('notification/info', 'Please activate Google Plus to change your account name!');
+            store.dispatch('notification/info', 'Please activate Google Plus to change your account name and photo!');
           } else {
             throw err;
           }
@@ -311,15 +323,23 @@ export default {
         return getPage(refreshedToken.nextPageToken);
       });
   },
-  uploadFile(token, name, parents, media, mediaType, fileId, ifNotTooLate) {
+  uploadFile(token, name, parents, appProperties, media, mediaType, fileId, ifNotTooLate) {
     return this.refreshToken(token, getDriveScopes(token))
       .then(refreshedToken => this.uploadFileInternal(
-        refreshedToken, name, parents, media, mediaType, fileId, ifNotTooLate));
+        refreshedToken, name, parents, appProperties, media, mediaType, fileId, ifNotTooLate));
   },
-  uploadAppDataFile(token, name, parents, media, fileId, ifNotTooLate) {
+  uploadAppDataFile(token, name, parents, appProperties, media, fileId, ifNotTooLate) {
     return this.refreshToken(token, driveAppDataScopes)
       .then(refreshedToken => this.uploadFileInternal(
-        refreshedToken, name, parents, media, undefined, fileId, ifNotTooLate));
+        refreshedToken, name, parents, appProperties, media, undefined, fileId, ifNotTooLate));
+  },
+  getFile(token, id) {
+    return this.refreshToken(token, getDriveScopes(token))
+      .then(refreshedToken => this.request(refreshedToken, {
+        method: 'GET',
+        url: `https://www.googleapis.com/drive/v3/files/${id}`,
+      })
+      .then(res => res.body));
   },
   downloadFile(token, id) {
     return this.refreshToken(token, getDriveScopes(token))

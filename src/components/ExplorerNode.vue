@@ -84,7 +84,10 @@ export default {
         if (node.isFolder) {
           this.$store.commit('explorer/toggleOpenNode', id);
         } else {
-          this.$store.commit('file/setCurrentId', id);
+          // Prevent from freezing the UI while loading the file
+          setTimeout(() => {
+            this.$store.commit('file/setCurrentId', id);
+          }, 10);
         }
       }
     },

@@ -190,8 +190,7 @@ export default {
       },
     };
 
-    Object.keys(defs).forEach((name) => {
-      const def = defs[name];
+    Object.entries(defs).forEach(([name, def]) => {
       grammars.main[name] = def;
       grammars.list[name] = def;
       grammars.blockquote[name] = def;
@@ -396,8 +395,7 @@ export default {
     rest.linkref.inside['cl cl-underlined-text'].inside = inside;
 
     // Wrap any other characters to allow paragraph folding
-    Object.keys(grammars).forEach((key) => {
-      const grammar = grammars[key];
+    Object.entries(grammars).forEach(([, grammar]) => {
       grammar.rest = grammar.rest || {};
       grammar.rest.p = /.+/;
     });

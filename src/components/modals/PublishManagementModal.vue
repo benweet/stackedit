@@ -4,7 +4,7 @@
       <p v-if="publishLocations.length"><b>{{currentFileName}}</b> is published to the following location(s):</p>
       <p v-else><b>{{currentFileName}}</b> is not published yet.</p>
       <div>
-        <div v-for="location in publishLocations" :key="location.id" class="publish-entry flex flex--row flex--align-center">
+        <div class="publish-entry flex flex--row flex--align-center" v-for="location in publishLocations" :key="location.id">
           <div class="publish-entry__icon flex flex--column flex--center">
             <icon-provider :provider-id="location.providerId"></icon-provider>
           </div>
@@ -26,8 +26,7 @@
       </div>
     </div>
     <div class="modal__button-bar">
-      <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="config.resolve()">Ok</button>
+      <button class="button" @click="config.resolve()">Close</button>
     </div>
   </modal-inner>
 </template>

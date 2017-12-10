@@ -65,8 +65,7 @@ export default {
       const discussions = rootGetters['content/current'].discussions;
       const comments = rootGetters['content/current'].comments;
       const discussionLastComments = {};
-      Object.keys(comments).forEach((commentId) => {
-        const comment = comments[commentId];
+      Object.entries(comments).forEach(([, comment]) => {
         if (discussions[comment.discussionId]) {
           const lastComment = discussionLastComments[comment.discussionId];
           if (!lastComment || lastComment.created < comment.created) {
@@ -84,10 +83,10 @@ export default {
       }
       const discussions = rootGetters['content/current'].discussions;
       const discussionLastComments = getters.currentFileDiscussionLastComments;
-      Object.keys(discussionLastComments)
-        .sort((id1, id2) =>
-          discussionLastComments[id2].created - discussionLastComments[id1].created)
-        .forEach((discussionId) => {
+      Object.entries(discussionLastComments)
+        .sort(([, lastComment1], [, lastComment2]) =>
+          lastComment1.created - lastComment2.created)
+        .forEach(([discussionId]) => {
           currentFileDiscussions[discussionId] = discussions[discussionId];
         });
       return currentFileDiscussions;
@@ -100,13 +99,13 @@ export default {
       const comments = {};
       if (getters.currentDiscussion) {
         const contentComments = rootGetters['content/current'].comments;
-        Object.keys(contentComments)
-          .filter(commentId =>
-            contentComments[commentId].discussionId === state.currentDiscussionId)
-          .sort((id1, id2) =>
-            contentComments[id1].created - contentComments[id2].created)
-          .forEach((commentId) => {
-            comments[commentId] = contentComments[commentId];
+        Object.entries(contentComments)
+          .filter(([, comment]) =>
+            comment.discussionId === state.currentDiscussionId)
+          .sort(([, comment1], [, comment2]) =>
+            comment1.created - comment2.created)
+          .forEach(([commentId, comment]) => {
+            comments[commentId] = comment;
           });
       }
       return comments;
@@ -126,10 +125,11 @@ export default {
     createNewDiscussion({ commit, dispatch, rootGetters }, selection) {
       const loginToken = rootGetters['data/loginToken'];
       if (!loginToken) {
-        dispatch('modal/signInForComment', null, { root: true })
-          .then(() => googleHelper.signin())
-          .then(() => syncSvc.requestSync())
-          .then(() => dispatch('createNewDiscussion', selection))
+        dispatch('modal/signInForComment', {
+          onResolve: () => googleHelper.signin()
+            .then(() => syncSvc.requestSync())
+            .then(() => dispatch('createNewDiscussion', selection)),
+        }, { root: true })
           .catch(() => { }); // Cancel
       } else if (selection) {
         let text = rootGetters['content/current'].text.slice(selection.start, selection.end).trim();
@@ -150,8 +150,7 @@ export default {
         discussions: {},
         comments: {},
       };
-      Object.keys(comments).forEach((commentId) => {
-        const comment = comments[commentId];
+      Object.entries(comments).forEach(([commentId, comment]) => {
         const discussion = discussions[comment.discussionId];
         if (discussion && comment !== filterComment && discussion !== filterDiscussion) {
           patch.discussions[comment.discussionId] = discussion;

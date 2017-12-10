@@ -34,7 +34,7 @@ function throttle(func, wait) {
 const doScrollSync = () => {
   const localSkipAnimation = skipAnimation || !store.getters['layout/styles'].showSidePreview;
   skipAnimation = false;
-  if (!store.getters['data/localSettings'].scrollSync || !sectionDescList || sectionDescList.length === 0) {
+  if (!store.getters['data/layoutSettings'].scrollSync || !sectionDescList || sectionDescList.length === 0) {
     return;
   }
   let editorScrollTop = editorScrollerElt.scrollTop;
@@ -116,7 +116,7 @@ const forceScrollSync = () => {
     doScrollSync();
   }
 };
-store.watch(() => store.getters['data/localSettings'].scrollSync, forceScrollSync);
+store.watch(() => store.getters['data/layoutSettings'].scrollSync, forceScrollSync);
 
 editorSvc.$on('inited', () => {
   editorScrollerElt = editorSvc.editorElt.parentNode;

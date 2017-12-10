@@ -13,6 +13,7 @@
     </div>
     <div class="side-bar__inner">
       <main-menu v-if="panel === 'menu'"></main-menu>
+      <workspaces-menu v-if="panel === 'workspaces'"></workspaces-menu>
       <sync-menu v-else-if="panel === 'sync'"></sync-menu>
       <publish-menu v-else-if="panel === 'publish'"></publish-menu>
       <history-menu v-else-if="panel === 'history'"></history-menu>
@@ -33,6 +34,7 @@
 import { mapActions } from 'vuex';
 import Toc from './Toc';
 import MainMenu from './menus/MainMenu';
+import WorkspacesMenu from './menus/WorkspacesMenu';
 import SyncMenu from './menus/SyncMenu';
 import PublishMenu from './menus/PublishMenu';
 import HistoryMenu from './menus/HistoryMenu';
@@ -43,6 +45,7 @@ import markdownConversionSvc from '../services/markdownConversionSvc';
 
 const panelNames = {
   menu: 'Menu',
+  workspaces: 'Workspaces',
   help: 'Markdown cheat sheet',
   toc: 'Table of contents',
   sync: 'Synchronize',
@@ -56,6 +59,7 @@ export default {
   components: {
     Toc,
     MainMenu,
+    WorkspacesMenu,
     SyncMenu,
     PublishMenu,
     HistoryMenu,
@@ -67,7 +71,7 @@ export default {
   }),
   computed: {
     panel() {
-      return this.$store.getters['data/localSettings'].sideBarPanel;
+      return this.$store.getters['data/layoutSettings'].sideBarPanel;
     },
     panelName() {
       return panelNames[this.panel];

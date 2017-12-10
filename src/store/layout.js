@@ -20,14 +20,14 @@ const constants = {
   statusBarHeight: 20,
 };
 
-function computeStyles(state, getters, localSettings = getters['data/localSettings'], styles = {
-  showNavigationBar: !localSettings.showEditor || localSettings.showNavigationBar,
-  showStatusBar: localSettings.showStatusBar,
-  showEditor: localSettings.showEditor,
-  showSidePreview: localSettings.showSidePreview && localSettings.showEditor,
-  showPreview: localSettings.showSidePreview || !localSettings.showEditor,
-  showSideBar: localSettings.showSideBar,
-  showExplorer: localSettings.showExplorer,
+function computeStyles(state, getters, layoutSettings = getters['data/layoutSettings'], styles = {
+  showNavigationBar: !layoutSettings.showEditor || layoutSettings.showNavigationBar,
+  showStatusBar: layoutSettings.showStatusBar,
+  showEditor: layoutSettings.showEditor,
+  showSidePreview: layoutSettings.showSidePreview && layoutSettings.showEditor,
+  showPreview: layoutSettings.showSidePreview || !layoutSettings.showEditor,
+  showSideBar: layoutSettings.showSideBar,
+  showExplorer: layoutSettings.showExplorer,
   layoutOverflow: false,
 }) {
   styles.innerHeight = state.layout.bodyHeight;
@@ -64,7 +64,7 @@ function computeStyles(state, getters, localSettings = getters['data/localSettin
     styles.showSidePreview = false;
     styles.showPreview = false;
     styles.layoutOverflow = false;
-    return computeStyles(state, getters, localSettings, styles);
+    return computeStyles(state, getters, layoutSettings, styles);
   }
 
   const computedSettings = getters['data/computedSettings'];
@@ -96,7 +96,7 @@ function computeStyles(state, getters, localSettings = getters['data/localSettin
   if (!styles.showSidePreview) {
     styles.previewWidth += constants.buttonBarWidth;
   }
-  styles.previewGutterWidth = showGutter && !localSettings.showEditor
+  styles.previewGutterWidth = showGutter && !layoutSettings.showEditor
     ? constants.gutterWidth
     : 0;
   const previewLeftPadding = previewRightPadding + styles.previewGutterWidth;
@@ -107,7 +107,7 @@ function computeStyles(state, getters, localSettings = getters['data/localSettin
     doublePanelWidth;
   const editorRightPadding = Math.max(
     Math.floor((styles.editorWidth - styles.textWidth) / 2), minPadding);
-  styles.editorGutterWidth = showGutter && localSettings.showEditor
+  styles.editorGutterWidth = showGutter && layoutSettings.showEditor
     ? constants.gutterWidth
     : 0;
   const editorLeftPadding = editorRightPadding + styles.editorGutterWidth;
@@ -129,8 +129,8 @@ function computeStyles(state, getters, localSettings = getters['data/localSettin
       styles.hideLocations = true;
     }
   }
-  styles.titleMaxWidth = Math.min(styles.titleMaxWidth, maxTitleMaxWidth);
-  styles.titleMaxWidth = Math.max(styles.titleMaxWidth, minTitleMaxWidth);
+  styles.titleMaxWidth = Math.max(minTitleMaxWidth,
+    Math.min(maxTitleMaxWidth, styles.titleMaxWidth));
   return styles;
 }
 
@@ -162,8 +162,8 @@ export default {
     updateBodySize({ commit, dispatch, rootGetters }) {
       commit('updateBodySize');
       // Make sure both explorer and side bar are not open if body width is small
-      const localSettings = rootGetters['data/localSettings'];
-      dispatch('data/toggleExplorer', localSettings.showExplorer, { root: true });
+      const layoutSettings = rootGetters['data/layoutSettings'];
+      dispatch('data/toggleExplorer', layoutSettings.showExplorer, { root: true });
     },
   },
 };

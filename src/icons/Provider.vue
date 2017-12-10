@@ -1,11 +1,30 @@
 <template>
-  <div class="icon-provider" :class="['icon-provider--' + providerId]">
+  <div class="icon-provider" :class="'icon-provider--' + classState">
   </div>
 </template>
 
 <script>
 export default {
   props: ['providerId'],
+  computed: {
+    classState() {
+      switch (this.providerId) {
+        case 'googleDrive':
+        case 'googleDriveWorkspace':
+          return 'google-drive';
+        case 'googlePhotos':
+          return 'google-photos';
+        case 'dropboxRestricted':
+          return 'dropbox';
+        case 'gist':
+          return 'github';
+        case 'bloggerPage':
+          return 'blogger';
+        default:
+          return this.providerId;
+      }
+    },
+  },
 };
 </script>
 
@@ -22,21 +41,19 @@ export default {
   background-image: url(../assets/iconStackedit.svg);
 }
 
-.icon-provider--googleDrive {
+.icon-provider--google-drive {
   background-image: url(../assets/iconGoogleDrive.svg);
 }
 
-.icon-provider--googlePhotos {
+.icon-provider--google-photos {
   background-image: url(../assets/iconGooglePhotos.svg);
 }
 
-.icon-provider--github,
-.icon-provider--gist {
+.icon-provider--github {
   background-image: url(../assets/iconGithub.svg);
 }
 
-.icon-provider--dropbox,
-.icon-provider--dropboxRestricted {
+.icon-provider--dropbox {
   background-image: url(../assets/iconDropbox.svg);
 }
 
@@ -44,8 +61,7 @@ export default {
   background-image: url(../assets/iconWordpress.svg);
 }
 
-.icon-provider--blogger,
-.icon-provider--bloggerPage {
+.icon-provider--blogger {
   background-image: url(../assets/iconBlogger.svg);
 }
 

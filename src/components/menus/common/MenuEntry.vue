@@ -24,7 +24,7 @@
     text-decoration: underline;
     text-decoration-skip: ink;
 
-    &.menu-entry__sponsor {
+    .menu-entry__sponsor {
       text-decoration: none;
     }
   }

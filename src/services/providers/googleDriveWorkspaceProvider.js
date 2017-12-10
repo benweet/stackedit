@@ -1,15 +1,121 @@
 import store from '../../store';
 import googleHelper from './helpers/googleHelper';
 import providerRegistry from './providerRegistry';
+import utils from '../utils';
+
+let workspaceFolderId;
+
+const makeWorkspaceId = () => {
+
+};
 
 export default providerRegistry.register({
-  id: 'googleDriveAppData',
+  id: 'googleDriveWorkspace',
   getToken() {
     return store.getters['data/loginToken'];
   },
   initWorkspace() {
-    // Nothing to do since the main workspace isn't necessarily synchronized
-    return Promise.resolve();
+    const initFolder = (token, folder) => Promise.resolve({
+      workspaceId: this.makeWorkspaceId(folder.id),
+      dataFolderId: folder.appProperties.dataFolderId,
+      trashFolderId: folder.appProperties.trashFolderId,
+    })
+      .then((properties) => {
+        // Make sure data folder exists
+        if (properties.dataFolderId) {
+          return properties;
+        }
+        return googleHelper.uploadFile(
+          token,
+          '.stackedit-data',
+          [folder.id],
+          { workspaceId: properties.workspaceId },
+          undefined,
+          'application/vnd.google-apps.folder',
+        )
+          .then(dataFolder => ({
+            ...properties,
+            dataFolderId: dataFolder.id,
+          }));
+      })
+      .then((properties) => {
+        // Make sure trash folder exists
+        if (properties.trashFolderId) {
+          return properties;
+        }
+        return googleHelper.uploadFile(
+          token,
+          '.stackedit-trash',
+          [folder.id],
+          { workspaceId: properties.workspaceId },
+          undefined,
+          'application/vnd.google-apps.folder',
+        )
+          .then(trashFolder => ({
+            ...properties,
+            trashFolderId: trashFolder.id,
+          }));
+      })
+      .then((properties) => {
+        // Update workspace if some properties are missing
+        if (properties.workspaceId === folder.appProperties.workspaceId
+          && properties.dataFolderId === folder.appProperties.dataFolderId
+          && properties.trashFolderId === folder.appProperties.trashFolderId
+        ) {
+          return properties;
+        }
+        return googleHelper.uploadFile(
+          token,
+          undefined,
+          undefined,
+          properties,
+          undefined,
+          'application/vnd.google-apps.folder',
+          folder.id,
+        )
+          .then(() => properties);
+      })
+      .then((properties) => {
+        // Update workspace in the store
+        store.dispatch('data/patchWorkspaces', {
+          [properties.workspaceId]: {
+            id: properties.workspaceId,
+            sub: token.sub,
+            name: folder.name,
+            providerId: this.id,
+            folderId: folder.id,
+            dataFolderId: properties.dataFolderId,
+            trashFolderId: properties.trashFolderId,
+          },
+        });
+        return store.getters['data/workspaces'][properties.workspaceId];
+      });
+
+    return Promise.resolve(store.getters['data/googleTokens'][utils.queryParams.sub])
+      .then(token => token || this.$store.dispatch('modal/workspaceGoogleRedirection', {
+        onResolve: () => googleHelper.addDriveAccount(),
+      }))
+      .then(token => Promise.resolve()
+        .then(() => utils.queryParams.folderId || googleHelper.uploadFile(
+          token,
+          'StackEdit workspace',
+          [],
+          undefined,
+          undefined,
+          'application/vnd.google-apps.folder',
+        ).then(folder => initFolder(token, folder).then(() => folder.id)))
+        .then((folderId) => {
+          const workspaceId = this.makeWorkspaceId(folderId);
+          const workspace = store.getters['data/workspaces'][workspaceId];
+          return workspace || googleHelper.getFile(token, folderId)
+            .then((folder) => {
+              const folderWorkspaceId = folder.appProperties.workspaceId;
+              if (folderWorkspaceId && folderWorkspaceId !== workspaceId) {
+                throw new Error(`Google Drive folder ${folderId} is part of another workspace.`);
+              }
+              return initFolder(token, folder);
+            });
+        }));
   },
   getChanges(token) {
     return googleHelper.getChanges(token)
@@ -140,5 +246,11 @@ export default providerRegistry.register({
     }
     return googleHelper.downloadFileRevision(token, syncData.id, revisionId)
       .then(content => JSON.parse(content));
+  },
+  makeWorkspaceId(folderId) {
+    return Math.abs(utils.hash(utils.serializeObject({
+      providerId: this.id,
+      folderId: folderId,
+    }))).toString(36);
   },
 });

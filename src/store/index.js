@@ -43,7 +43,6 @@ const store = new Vuex.Store({
     userInfo,
   },
   state: {
-    ready: false,
     offline: false,
     lastOfflineCheck: 0,
     minuteCounter: 0,
@@ -61,9 +60,6 @@ const store = new Vuex.Store({
     },
   },
   mutations: {
-    setReady: (state) => {
-      state.ready = true;
-    },
     setOffline: (state, value) => {
       state.offline = value;
     },

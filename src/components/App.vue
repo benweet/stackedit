@@ -1,7 +1,7 @@
 <template>
-  <splash-screen v-if="!ready"></splash-screen>
-  <div v-else class="app">
-    <layout></layout>
+  <div class="app">
+    <splash-screen v-if="!ready"></splash-screen>
+    <layout v-else></layout>
     <modal v-if="showModal"></modal>
     <notification></notification>
   </div>
@@ -9,11 +9,11 @@
 
 <script>
 import Vue from 'vue';
-import { mapState } from 'vuex';
 import Layout from './Layout';
 import Modal from './Modal';
 import Notification from './Notification';
 import SplashScreen from './SplashScreen';
+import syncSvc from '../services/syncSvc';
 import timeSvc from '../services/timeSvc';
 import store from '../store';
 
@@ -66,13 +66,19 @@ export default {
     Notification,
     SplashScreen,
   },
+  data: () => ({
+    ready: false,
+  }),
   computed: {
-    ...mapState([
-      'ready',
-    ]),
     showModal() {
       return !!this.$store.getters['modal/config'];
     },
+  },
+  created() {
+    syncSvc.init()
+      .then(() => {
+        this.ready = true;
+      });
   },
 };
 </script>

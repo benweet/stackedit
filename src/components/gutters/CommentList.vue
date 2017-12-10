@@ -63,13 +63,13 @@ export default {
       'setCurrentDiscussionId',
     ]),
     updateTops() {
-      const localSettings = this.$store.getters['data/localSettings'];
+      const layoutSettings = this.$store.getters['data/layoutSettings'];
       const minTop = -2;
       let minCommentTop = minTop;
       const getTop = (discussion, commentElt1, commentElt2, isCurrent) => {
         const firstElt = commentElt1 || commentElt2;
         const secondElt = commentElt1 && commentElt2;
-        const coordinates = localSettings.showEditor
+        const coordinates = layoutSettings.showEditor
           ? editorSvc.clEditor.selectionMgr.getCoordinates(discussion.end)
           : editorSvc.getPreviewOffsetCoordinates(editorSvc.getPreviewOffset(discussion.end));
         let commentTop = minTop;
@@ -98,10 +98,9 @@ export default {
       // Get the discussion top coordinates
       const tops = {};
       const discussions = this.currentFileDiscussions;
-      Object.keys(discussions)
-        .sort((id1, id2) => discussions[id1].end - discussions[id2].end)
-        .forEach((discussionId) => {
-          const discussion = this.currentFileDiscussions[discussionId];
+      Object.entries(discussions)
+        .sort(([, discussion1], [, discussion2]) => discussion1.end - discussion2.end)
+        .forEach(([discussionId, discussion]) => {
           if (discussion === this.currentDiscussion || discussion === this.newDiscussion) {
             tops.current = getTop(
               discussion,
@@ -123,8 +122,8 @@ export default {
       () => this.updateTops(),
       { immediate: true });
 
-    const localSettings = this.$store.getters['data/localSettings'];
-    this.scrollerElt = localSettings.showEditor
+    const layoutSettings = this.$store.getters['data/layoutSettings'];
+    this.scrollerElt = layoutSettings.showEditor
       ? editorSvc.editorElt.parentNode
       : editorSvc.previewElt.parentNode;
 

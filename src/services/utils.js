@@ -31,7 +31,9 @@ const setLastFocus = () => {
   localStorage[lastFocusKey] = lastFocus;
   setLastActivity();
 };
-setLastFocus();
+if (document.hasFocus()) {
+  setLastFocus();
+}
 window.addEventListener('focus', setLastFocus);
 
 // For parseQueryParams()
@@ -63,6 +65,12 @@ export default {
     'syncLocation',
     'publishLocation',
     'data',
+  ],
+  localStorageDataIds: [
+    'workspaces',
+    'settings',
+    'layoutSettings',
+    'tokens',
   ],
   textMaxLength: 150000,
   sanitizeText(text) {
@@ -148,10 +156,10 @@ export default {
   parseQueryParams,
   addQueryParams(url = '', params = {}) {
     const keys = Object.keys(params).filter(key => params[key] != null);
-    if (!keys.length) {
-      return url;
-    }
     urlParser.href = url;
+    if (!keys.length) {
+      return urlParser.href;
+    }
     if (urlParser.search) {
       urlParser.search += '&';
     } else {
@@ -180,8 +188,8 @@ export default {
             startOffset = 0;
           }
           const elt = document.createElement('span');
-          Object.keys(eltProperties).forEach((key) => {
-            elt[key] = eltProperties[key];
+          Object.entries(eltProperties).forEach(([key, value]) => {
+            elt[key] = value;
           });
           treeWalker.currentNode.parentNode.insertBefore(elt, treeWalker.currentNode);
           elt.appendChild(treeWalker.currentNode);

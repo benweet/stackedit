@@ -219,6 +219,9 @@ export default {
 
 .navigation-bar__inner--right {
   float: right;
+
+  /* prevent from seeing wrapped buttons */
+  margin-bottom: 20px;
 }
 
 .navigation-bar__inner--button {

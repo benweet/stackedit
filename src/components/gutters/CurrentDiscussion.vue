@@ -68,15 +68,15 @@ export default {
     ]),
     goToDiscussion(discussionId = this.currentDiscussionId) {
       this.setCurrentDiscussionId(discussionId);
-      const localSettings = this.$store.getters['data/localSettings'];
+      const layoutSettings = this.$store.getters['data/layoutSettings'];
       const discussion = this.currentFileDiscussions[discussionId];
-      const coordinates = localSettings.showEditor
+      const coordinates = layoutSettings.showEditor
         ? editorSvc.clEditor.selectionMgr.getCoordinates(discussion.end)
         : editorSvc.getPreviewOffsetCoordinates(editorSvc.getPreviewOffset(discussion.end));
       if (!coordinates) {
         this.$store.dispatch('notification/info', "Discussion can't be located in the file.");
       } else {
-        const scrollerElt = localSettings.showEditor
+        const scrollerElt = layoutSettings.showEditor
           ? editorSvc.editorElt.parentNode
           : editorSvc.previewElt.parentNode;
         let scrollTop = coordinates.top - (scrollerElt.offsetHeight / 2);

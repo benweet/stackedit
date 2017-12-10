@@ -95,12 +95,12 @@ export default {
       (allTemplates) => {
         const templates = {};
         // Sort templates by name
-        Object.keys(allTemplates)
-          .sort((id1, id2) => collator.compare(allTemplates[id1].name, allTemplates[id2].name))
-          .forEach((id) => {
-            const template = utils.deepCopy(allTemplates[id]);
-            fillEmptyFields(template);
-            templates[id] = template;
+        Object.entries(allTemplates)
+          .sort(([, template1], [, template2]) => collator.compare(template1.name, template2.name))
+          .forEach(([id, template]) => {
+            const templateClone = utils.deepCopy(template);
+            fillEmptyFields(templateClone);
+            templates[id] = templateClone;
           });
         this.templates = templates;
         this.selectedId = this.config.selectedId;

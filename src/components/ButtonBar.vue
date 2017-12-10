@@ -1,10 +1,10 @@
 <template>
   <div class="button-bar">
     <div class="button-bar__inner button-bar__inner--top">
-      <button class="button-bar__button button" :class="{ 'button-bar__button--on': localSettings.showNavigationBar }" @click="toggleNavigationBar()" v-title="'Toggle navigation bar'">
+      <button class="button-bar__button button" :class="{ 'button-bar__button--on': layoutSettings.showNavigationBar }" @click="toggleNavigationBar()" v-title="'Toggle navigation bar'">
         <icon-navigation-bar></icon-navigation-bar>
       </button>
-      <button class="button-bar__button button" :class="{ 'button-bar__button--on': localSettings.showSidePreview }" @click="toggleSidePreview()" v-title="'Toggle side preview'">
+      <button class="button-bar__button button" :class="{ 'button-bar__button--on': layoutSettings.showSidePreview }" @click="toggleSidePreview()" v-title="'Toggle side preview'">
         <icon-side-preview></icon-side-preview>
       </button>
       <button class="button-bar__button button" @click="toggleEditor(false)" v-title="'Reader mode'">
@@ -12,13 +12,13 @@
       </button>
     </div>
     <div class="button-bar__inner button-bar__inner--bottom">
-      <button class="button-bar__button button" :class="{ 'button-bar__button--on': localSettings.focusMode }" @click="toggleFocusMode()" v-title="'Toggle focus mode'">
+      <button class="button-bar__button button" :class="{ 'button-bar__button--on': layoutSettings.focusMode }" @click="toggleFocusMode()" v-title="'Toggle focus mode'">
         <icon-target></icon-target>
       </button>
-      <button class="button-bar__button button" :class="{ 'button-bar__button--on': localSettings.scrollSync }" @click="toggleScrollSync()" v-title="'Toggle scroll sync'">
+      <button class="button-bar__button button" :class="{ 'button-bar__button--on': layoutSettings.scrollSync }" @click="toggleScrollSync()" v-title="'Toggle scroll sync'">
         <icon-scroll-sync></icon-scroll-sync>
       </button>
-      <button class="button-bar__button button" :class="{ 'button-bar__button--on': localSettings.showStatusBar }" @click="toggleStatusBar()" v-title="'Toggle status bar'">
+      <button class="button-bar__button button" :class="{ 'button-bar__button--on': layoutSettings.showStatusBar }" @click="toggleStatusBar()" v-title="'Toggle status bar'">
         <icon-status-bar></icon-status-bar>
       </button>
     </div>
@@ -30,7 +30,7 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   computed: mapGetters('data', [
-    'localSettings',
+    'layoutSettings',
   ]),
   methods: mapActions('data', [
     'toggleNavigationBar',

@@ -81,8 +81,7 @@ module.actions = {
             const diffs = diffMatchPatch.diff_main(
               currentContent.text, revisionContent.originalText);
             diffMatchPatch.diff_cleanupSemantic(diffs);
-            Object.keys(currentContent.discussions).forEach((discussionId) => {
-              const discussion = currentContent.discussions[discussionId];
+            Object.entries(currentContent.discussions).forEach(([, discussion]) => {
               const adjustOffset = (offsetName) => {
                 const marker = new cledit.Marker(discussion[offsetName], offsetName === 'end');
                 marker.adjustOffset(diffs);

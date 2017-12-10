@@ -193,12 +193,8 @@ export default {
 
         const url = utils.addQueryParams(config.url, config.params);
         xhr.open(config.method || 'GET', url);
-        Object.keys(config.headers).forEach((key) => {
-          const value = config.headers[key];
-          if (value) {
-            xhr.setRequestHeader(key, `${value}`);
-          }
-        });
+        Object.entries(config.headers).forEach(([key, value]) =>
+          value && xhr.setRequestHeader(key, `${value}`));
         if (config.blob) {
           xhr.responseType = 'blob';
         }

@@ -20,15 +20,13 @@ const languageAliases = ({
   ps1: 'powershell',
   psm1: 'powershell',
 });
-Object.keys(languageAliases).forEach((alias) => {
-  const language = languageAliases[alias];
+Object.entries(languageAliases).forEach(([alias, language]) => {
   Prism.languages[alias] = Prism.languages[language];
 });
 
 // Add programming language parsing capability to markdown fences
 const insideFences = {};
-Object.keys(Prism.languages).forEach((name) => {
-  const language = Prism.languages[name];
+Object.entries(Prism.languages).forEach(([name, language]) => {
   if (Prism.util.type(language) === 'Object') {
     insideFences[`language-${name}`] = {
       pattern: new RegExp(`(\`\`\`|~~~)${name}\\W[\\s\\S]*`),

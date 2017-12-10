@@ -87,8 +87,7 @@ export default {
         nodeMap[item.id] = new Node(item, locations);
       });
       const rootNode = new Node(emptyFolder(), [], true, true);
-      Object.keys(nodeMap).forEach((id) => {
-        const node = nodeMap[id];
+      Object.entries(nodeMap).forEach(([id, node]) => {
         let parentNode = nodeMap[node.item.parentId];
         if (!parentNode || !parentNode.isFolder) {
           if (id === 'trash') {

@@ -40,8 +40,7 @@ export default (desc) => {
       },
     },
   };
-  Object.keys(desc.computedLocalSettings || {}).forEach((key) => {
-    const id = desc.computedLocalSettings[key];
+  Object.entries(desc.computedLocalSettings || {}).forEach(([key, id]) => {
     component.computed[key] = {
       get() {
         return store.getters['data/localSettings'][id];
@@ -56,10 +55,10 @@ export default (desc) => {
       component.computed.allTemplates = () => {
         const allTemplates = store.getters['data/allTemplates'];
         const sortedTemplates = {};
-        Object.keys(allTemplates)
-          .sort((id1, id2) => collator.compare(allTemplates[id1].name, allTemplates[id2].name))
-          .forEach((templateId) => {
-            sortedTemplates[templateId] = allTemplates[templateId];
+        Object.entries(allTemplates)
+          .sort(([, template1], [, template2]) => collator.compare(template1.name, template2.name))
+          .forEach(([templateId, template]) => {
+            sortedTemplates[templateId] = template;
           });
         return sortedTemplates;
       };

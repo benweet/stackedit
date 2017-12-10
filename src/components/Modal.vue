@@ -11,10 +11,12 @@
     <image-modal v-else-if="config.type === 'image'"></image-modal>
     <sync-management-modal v-else-if="config.type === 'syncManagement'"></sync-management-modal>
     <publish-management-modal v-else-if="config.type === 'publishManagement'"></publish-management-modal>
+    <workspace-management-modal v-else-if="config.type === 'workspaceManagement'"></workspace-management-modal>
     <sponsor-modal v-else-if="config.type === 'sponsor'"></sponsor-modal>
     <!-- Providers -->
     <google-photo-modal v-else-if="config.type === 'googlePhoto'"></google-photo-modal>
     <google-drive-save-modal v-else-if="config.type === 'googleDriveSave'"></google-drive-save-modal>
+    <google-drive-workspace-modal v-else-if="config.type === 'googleDriveWorkspace'"></google-drive-workspace-modal>
     <google-drive-publish-modal v-else-if="config.type === 'googleDrivePublish'"></google-drive-publish-modal>
     <dropbox-account-modal v-else-if="config.type === 'dropboxAccount'"></dropbox-account-modal>
     <dropbox-save-modal v-else-if="config.type === 'dropboxSave'"></dropbox-save-modal>
@@ -55,11 +57,13 @@ import LinkModal from './modals/LinkModal';
 import ImageModal from './modals/ImageModal';
 import SyncManagementModal from './modals/SyncManagementModal';
 import PublishManagementModal from './modals/PublishManagementModal';
+import WorkspaceManagementModal from './modals/WorkspaceManagementModal';
 import SponsorModal from './modals/SponsorModal';
 
 // Providers
 import GooglePhotoModal from './modals/providers/GooglePhotoModal';
 import GoogleDriveSaveModal from './modals/providers/GoogleDriveSaveModal';
+import GoogleDriveWorkspaceModal from './modals/providers/GoogleDriveWorkspaceModal';
 import GoogleDrivePublishModal from './modals/providers/GoogleDrivePublishModal';
 import DropboxAccountModal from './modals/providers/DropboxAccountModal';
 import DropboxSaveModal from './modals/providers/DropboxSaveModal';
@@ -94,10 +98,12 @@ export default {
     ImageModal,
     SyncManagementModal,
     PublishManagementModal,
+    WorkspaceManagementModal,
     SponsorModal,
     // Providers
     GooglePhotoModal,
     GoogleDriveSaveModal,
+    GoogleDriveWorkspaceModal,
     GoogleDrivePublishModal,
     DropboxAccountModal,
     DropboxSaveModal,
@@ -178,6 +184,10 @@ export default {
   height: 100%;
   background-color: rgba(160, 160, 160, 0.5);
   overflow: auto;
+
+  hr {
+    margin: 0.5em 0;
+  }
 }
 
 .modal__inner-1 {

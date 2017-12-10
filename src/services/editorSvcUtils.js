@@ -7,35 +7,24 @@ const diffMatchPatch = new DiffMatchPatch();
 
 export default {
   /**
-   * Get element and dimension that handles scrolling.
-   */
-  getObjectToScroll() {
-    let elt = this.editorElt.parentNode;
-    let dimensionKey = 'editorDimension';
-    if (!store.getters['layout/styles'].showEditor) {
-      elt = this.previewElt.parentNode;
-      dimensionKey = 'previewDimension';
-    }
-    return {
-      elt,
-      dimensionKey,
-    };
-  },
-
-  /**
    * Get an object describing the position of the scroll bar in the file.
    */
-  getScrollPosition() {
-    const objToScroll = this.getObjectToScroll();
-    const scrollTop = objToScroll.elt.scrollTop;
+  getScrollPosition(elt = store.getters['layout/styles'].showEditor
+    ? this.editorElt
+    : this.previewElt,
+  ) {
+    const dimensionKey = elt === this.editorElt
+      ? 'editorDimension'
+      : 'previewDimension';
+    const scrollTop = elt.parentNode.scrollTop;
     let result;
     if (this.sectionDescMeasuredList) {
       this.sectionDescMeasuredList.some((sectionDesc, sectionIdx) => {
-        if (scrollTop >= sectionDesc[objToScroll.dimensionKey].endOffset) {
+        if (scrollTop >= sectionDesc[dimensionKey].endOffset) {
           return false;
         }
-        const posInSection = (scrollTop - sectionDesc[objToScroll.dimensionKey].startOffset) /
-          (sectionDesc[objToScroll.dimensionKey].height || 1);
+        const posInSection = (scrollTop - sectionDesc[dimensionKey].startOffset) /
+          (sectionDesc[dimensionKey].height || 1);
         result = {
           sectionIdx,
           posInSection,

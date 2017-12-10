@@ -48,6 +48,7 @@ import Redo from './Redo';
 import ContentSave from './ContentSave';
 import Message from './Message';
 import History from './History';
+import Database from './Database';
 
 Vue.component('iconProvider', Provider);
 Vue.component('iconFormatBold', FormatBold);
@@ -98,3 +99,4 @@ Vue.component('iconRedo', Redo);
 Vue.component('iconContentSave', ContentSave);
 Vue.component('iconMessage', Message);
 Vue.component('iconHistory', History);
+Vue.component('iconDatabase', Database);

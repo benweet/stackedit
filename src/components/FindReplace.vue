@@ -47,12 +47,12 @@ const accessor = (fieldName, setterName) => ({
   },
 });
 
-const computedLocalSetting = key => ({
+const computedLayoutSetting = key => ({
   get() {
-    return store.getters['data/localSettings'][key];
+    return store.getters['data/layoutSettings'][key];
   },
   set(value) {
-    store.dispatch('data/patchLocalSettings', {
+    store.dispatch('data/patchLayoutSettings', {
       [key]: value,
     });
   },
@@ -95,14 +95,13 @@ export default {
     ]),
     findText: accessor('findText', 'setFindText'),
     replaceText: accessor('replaceText', 'setReplaceText'),
-    findCaseSensitive: computedLocalSetting('findCaseSensitive'),
-    findUseRegexp: computedLocalSetting('findUseRegexp'),
+    findCaseSensitive: computedLayoutSetting('findCaseSensitive'),
+    findUseRegexp: computedLayoutSetting('findUseRegexp'),
   },
   methods: {
     highlightOccurrences() {
       const oldClassAppliers = {};
-      Object.keys(this.classAppliers).forEach((key) => {
-        const classApplier = this.classAppliers[key];
+      Object.entries(this.classAppliers).forEach(([, classApplier]) => {
         const newKey = `${classApplier.startMarker.offset}:${classApplier.endMarker.offset}`;
         oldClassAppliers[newKey] = classApplier;
       });
@@ -137,8 +136,7 @@ export default {
           this.state = 'created';
         }
       }
-      Object.keys(oldClassAppliers).forEach((key) => {
-        const classApplier = oldClassAppliers[key];
+      Object.entries(oldClassAppliers).forEach(([key, classApplier]) => {
         if (!this.classAppliers[key]) {
           classApplier.clean();
           if (classApplier === this.selectedClassApplier) {

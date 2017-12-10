@@ -62,8 +62,8 @@ export default {
    */
   openFileWithLocation(allLocations, criteria) {
     return allLocations.some((location) => {
-        // If every field fits the criteria
-      if (Object.keys(criteria).every(key => criteria[key] === location[key])) {
+      // If every field fits the criteria
+      if (Object.entries(criteria).every(([key, value]) => value === location[key])) {
         // Found one location that fits, open it if it exists
         const file = store.state.file.itemMap[location.fileId];
         if (file) {

@@ -45,8 +45,7 @@ function syncDiscussionMarkers(content, writeOffsets) {
       ...newDiscussion,
     };
   }
-  Object.keys(discussionMarkers).forEach((markerKey) => {
-    const marker = discussionMarkers[markerKey];
+  Object.entries(discussionMarkers).forEach(([markerKey, marker]) => {
     // Remove marker if discussion was removed
     const discussion = discussions[marker.discussionId];
     if (!discussion) {
@@ -55,8 +54,7 @@ function syncDiscussionMarkers(content, writeOffsets) {
     }
   });
 
-  Object.keys(discussions).forEach((discussionId) => {
-    const discussion = discussions[discussionId];
+  Object.entries(discussions).forEach(([discussionId, discussion]) => {
     getDiscussionMarkers(discussion, discussionId, writeOffsets
       ? (marker) => {
         discussion[marker.offsetName] = marker.offset;
@@ -73,8 +71,8 @@ function syncDiscussionMarkers(content, writeOffsets) {
 }
 
 function removeDiscussionMarkers() {
-  Object.keys(discussionMarkers).forEach((markerKey) => {
-    clEditor.removeMarker(discussionMarkers[markerKey]);
+  Object.entries(discussionMarkers).forEach(([, marker]) => {
+    clEditor.removeMarker(marker);
   });
   discussionMarkers = {};
   markerKeys = [];
@@ -138,25 +136,6 @@ export default {
       isChangePatch = false;
     });
     clEditor.on('focus', () => store.commit('discussion/setNewCommentFocus', false));
-
-    // Track new discussions (not sure it's a good idea)
-    // store.watch(
-    //   () => store.getters['content/current'].discussions,
-    //   (discussions) => {
-    //     const oldDiscussionIds = discussionIds;
-    //     discussionIds = {};
-    //     let hasNewDiscussion = false;
-    //     Object.keys(discussions).forEach((discussionId) => {
-    //       discussionIds[discussionId] = true;
-    //       if (!oldDiscussionIds[discussionId]) {
-    //         hasNewDiscussion = true;
-    //       }
-    //     });
-    //     if (hasNewDiscussion) {
-    //       const content = store.getters['content/current'];
-    //       currentPatchableText = diffUtils.makePatchableText(content, markerKeys, markerIdxMap);
-    //     }
-    //   });
   },
   initClEditorInternal(opts) {
     const content = store.getters['content/current'];
@@ -241,9 +220,10 @@ export default {
             classGetter('editor', discussionId), offsetGetter(discussionId), { discussionId });
           editorClassAppliers[discussionId] = classApplier;
         });
-        Object.keys(oldEditorClassAppliers).forEach((discussionId) => {
+        // Clean unused class appliers
+        Object.entries(oldEditorClassAppliers).forEach(([discussionId, classApplier]) => {
           if (!editorClassAppliers[discussionId]) {
-            oldEditorClassAppliers[discussionId].stop();
+            classApplier.stop();
           }
         });
 
@@ -255,9 +235,10 @@ export default {
             classGetter('preview', discussionId), offsetGetter(discussionId), { discussionId });
           previewClassAppliers[discussionId] = classApplier;
         });
-        Object.keys(oldPreviewClassAppliers).forEach((discussionId) => {
+        // Clean unused class appliers
+        Object.entries(oldPreviewClassAppliers).forEach(([discussionId, classApplier]) => {
           if (!previewClassAppliers[discussionId]) {
-            oldPreviewClassAppliers[discussionId].stop();
+            classApplier.stop();
           }
         });
       },

@@ -67,8 +67,7 @@ store.watch(
     Mousetrap.reset();
 
     const shortcuts = computedSettings.shortcuts;
-    Object.keys(shortcuts).forEach((key) => {
-      const shortcut = shortcuts[key];
+    Object.entries(shortcuts).forEach(([key, shortcut]) => {
       if (shortcut) {
         const method = `${shortcut.method || shortcut}`;
         let params = shortcut.params || [];

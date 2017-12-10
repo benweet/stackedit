@@ -15,8 +15,7 @@ export default {
 
     // Parse JSON value
     const parsedValue = JSON.parse(jsonValue);
-    Object.keys(parsedValue).forEach((id) => {
-      const value = parsedValue[id];
+    Object.entries(parsedValue).forEach(([id, value]) => {
       if (value) {
         const v4Match = id.match(/^file\.([^.]+)\.([^.]+)$/);
         if (v4Match) {
@@ -56,8 +55,8 @@ export default {
     });
 
     // Go through the maps
-    Object.keys(nameMap).forEach(externalId => store.dispatch('createFile', {
-      name: nameMap[externalId],
+    Object.entries(nameMap).forEach(([externalId, name]) => store.dispatch('createFile', {
+      name,
       parentId: folderIdMap[parentIdMap[externalId]],
       text: textMap[externalId],
       properties: propertiesMap[externalId],

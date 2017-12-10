@@ -32,9 +32,11 @@ export default {
     sponsor() {
       Promise.resolve()
         .then(() => !this.$store.getters['data/loginToken'] &&
-          this.$store.dispatch('modal/signInForSponsorship') // If user has to sign in
-            .then(() => googleHelper.signin())
-            .then(() => syncSvc.requestSync()))
+          // If user has to sign in
+          this.$store.dispatch('modal/signInForSponsorship', {
+            onResolve: () => googleHelper.signin()
+              .then(() => syncSvc.requestSync()),
+          })
         .then(() => {
           if (!this.$store.getters.isSponsor) {
             this.$store.dispatch('modal/open', 'sponsor');

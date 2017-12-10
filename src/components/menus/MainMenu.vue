@@ -11,6 +11,11 @@
       </div>
       <span>Signed in as <b>{{loginToken.name}}</b>.</span>
     </div>
+    <menu-entry @click.native="setPanel('workspaces')">
+      <icon-database slot="icon"></icon-database>
+      <div>Workspaces</div>
+      <span>Switch to another workspace.</span>
+    </menu-entry>
     <hr>
     <menu-entry @click.native="setPanel('sync')">
       <icon-sync slot="icon"></icon-sync>
@@ -22,16 +27,15 @@
       <div>Publish</div>
       <span>Export your file to the web.</span>
     </menu-entry>
-    <hr>
-    <menu-entry @click.native="fileProperties">
-      <icon-view-list slot="icon"></icon-view-list>
-      <div>File properties</div>
-      <span>Add metadata and configure extensions.</span>
-    </menu-entry>
     <menu-entry @click.native="history">
       <icon-history slot="icon"></icon-history>
       <div>File history</div>
       <span>Track and restore file revisions.</span>
+    </menu-entry>
+    <menu-entry @click.native="fileProperties">
+      <icon-view-list slot="icon"></icon-view-list>
+      <div>File properties</div>
+      <span>Add metadata and configure extensions.</span>
     </menu-entry>
     <hr>
     <menu-entry @click.native="setPanel('toc')">
@@ -42,7 +46,6 @@
       <icon-help-circle slot="icon"></icon-help-circle>
       Markdown cheat sheet
     </menu-entry>
-    <hr>
     <menu-entry @click.native="print">
       <icon-printer slot="icon"></icon-printer>
       Print
@@ -122,9 +125,10 @@ export default {
     history() {
       const loginToken = this.$store.getters['data/loginToken'];
       if (!loginToken) {
-        this.$store.dispatch('modal/signInForHistory')
-          .then(() => googleHelper.signin())
-          .then(() => syncSvc.requestSync())
+        this.$store.dispatch('modal/signInForHistory', {
+          onResolve: () => googleHelper.signin()
+            .then(() => syncSvc.requestSync()),
+        })
           .catch(() => { }); // Cancel
       } else {
         this.setPanel('history');

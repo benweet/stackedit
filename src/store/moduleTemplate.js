@@ -33,7 +33,7 @@ export default (empty, simpleHash = false) => {
       itemMap: {},
     },
     getters: {
-      items: state => Object.keys(state.itemMap).map(key => state.itemMap[key]),
+      items: state => Object.entries(state.itemMap).map(([, item]) => item),
     },
     mutations: {
       setItem,

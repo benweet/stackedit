@@ -3,38 +3,73 @@ import store from '../store';
 import utils from './utils';
 import diffUtils from './diffUtils';
 import providerRegistry from './providers/providerRegistry';
-import mainProvider from './providers/googleDriveAppDataProvider';
+import googleDriveAppDataProvider from './providers/googleDriveAppDataProvider';
 
-const lastSyncActivityKey = `${utils.workspaceId}/lastSyncActivity`;
-let lastSyncActivity;
-const getLastStoredSyncActivity = () => parseInt(localStorage[lastSyncActivityKey], 10) || 0;
 const inactivityThreshold = 3 * 1000; // 3 sec
 const restartSyncAfter = 30 * 1000; // 30 sec
 const autoSyncAfter = utils.randomize(60 * 1000); // 60 sec
 
-const isDataSyncPossible = () => !!store.getters['data/loginToken'];
+let workspaceProvider;
+
+/**
+ * Use a lock in the local storage to prevent multiple windows concurrency.
+ */
+const lastSyncActivityKey = `${utils.workspaceId}/lastSyncActivity`;
+let lastSyncActivity;
+const getLastStoredSyncActivity = () => parseInt(localStorage[lastSyncActivityKey], 10) || 0;
+
+/**
+ * Return true if workspace sync is possible.
+ */
+const isWorkspaceSyncPossible = () => {
+  const loginToken = store.getters['data/loginToken'];
+  if (!loginToken && Object.keys(store.getters['data/syncData']).length) {
+    // Reset sync data if token was removed
+    store.dispatch('data/setSyncData', {});
+  }
+  return !!loginToken;
+};
+
+/**
+ * Return true if file has at least one explicit sync location.
+ */
 const hasCurrentFileSyncLocations = () => !!store.getters['syncLocation/current'].length;
 
+/**
+ * Return true if we are online and we have something to sync.
+ */
 const isSyncPossible = () => !store.state.offline &&
-  (isDataSyncPossible() || hasCurrentFileSyncLocations());
+  (isWorkspaceSyncPossible() || hasCurrentFileSyncLocations());
 
+/**
+ * Return true if we are the many window, ie we have the lastSyncActivity lock.
+ */
 function isSyncWindow() {
   const storedLastSyncActivity = getLastStoredSyncActivity();
   return lastSyncActivity === storedLastSyncActivity ||
     Date.now() > inactivityThreshold + storedLastSyncActivity;
 }
 
+/**
+ * Return true if auto sync can start, ie that lastSyncActivity is old enough.
+ */
 function isAutoSyncReady() {
   const storedLastSyncActivity = getLastStoredSyncActivity();
   return Date.now() > autoSyncAfter + storedLastSyncActivity;
 }
 
+/**
+ * Update the lastSyncActivity, assuming we have the lock.
+ */
 function setLastSyncActivity() {
   const currentDate = Date.now();
   lastSyncActivity = currentDate;
   localStorage[lastSyncActivityKey] = currentDate;
 }
 
+/**
+ * Clean a syncedContent.
+ */
 function cleanSyncedContent(syncedContent) {
   // Clean syncHistory from removed syncLocations
   Object.keys(syncedContent.syncHistory).forEach((syncLocationId) => {
@@ -42,17 +77,21 @@ function cleanSyncedContent(syncedContent) {
       delete syncedContent.syncHistory[syncLocationId];
     }
   });
-  const allSyncLocationHashes = new Set([].concat(
+  const allSyncLocationHashSet = new Set([].concat(
     ...Object.keys(syncedContent.syncHistory).map(
       id => syncedContent.syncHistory[id])));
   // Clean historyData from unused contents
   Object.keys(syncedContent.historyData).map(hash => parseInt(hash, 10)).forEach((hash) => {
-    if (!allSyncLocationHashes.has(hash)) {
+    if (!allSyncLocationHashSet.has(hash)) {
       delete syncedContent.historyData[hash];
     }
   });
 }
 
+/**
+ * Apply changes retrieved from the main provider. Update sync data accordingly.
+ * @param {*} changes The changes to apply.
+ */
 function applyChanges(changes) {
   const storeItemMap = { ...store.getters.allItemMap };
   const syncData = { ...store.getters['data/syncData'] };
@@ -92,6 +131,9 @@ function applyChanges(changes) {
 const LAST_SENT = 0;
 const LAST_MERGED = 1;
 
+/**
+ * Create a sync location by uploading the current file content.
+ */
 function createSyncLocation(syncLocation) {
   syncLocation.id = utils.uid();
   const currentFile = store.getters['file/current'];
@@ -137,6 +179,9 @@ class FileSyncContext {
   }
 }
 
+/**
+ * Sync one file with all its locations.
+ */
 function syncFile(fileId, syncContext = new SyncContext()) {
   const fileSyncContext = new FileSyncContext();
   syncContext.synced[`${fileId}/content`] = true;
@@ -174,7 +219,7 @@ function syncFile(fileId, syncContext = new SyncContext()) {
         const syncLocations = [
           ...store.getters['syncLocation/groupedByFileId'][fileId] || [],
         ];
-        if (isDataSyncPossible()) {
+        if (isWorkspaceSyncPossible()) {
           syncLocations.unshift({ id: 'main', providerId: mainProvider.id, fileId });
         }
         let result;
@@ -349,7 +394,9 @@ function syncFile(fileId, syncContext = new SyncContext()) {
     });
 }
 
-
+/**
+ * Sync a data item, typically settings and templates.
+ */
 function syncDataItem(dataId) {
   const item = store.state.data.itemMap[dataId];
   const syncData = store.getters['data/syncDataByItemId'][dataId];
@@ -418,7 +465,10 @@ function syncDataItem(dataId) {
     });
 }
 
-function sync() {
+/**
+ * Sync the whole workspace with the main provider and the current file explicit locations.
+ */
+function syncWorkspace() {
   const syncContext = new SyncContext();
   const mainToken = store.getters['data/loginToken'];
   return mainProvider.getChanges(mainToken)
@@ -447,8 +497,7 @@ function sync() {
         };
         const syncDataByItemId = store.getters['data/syncDataByItemId'];
         let result;
-        Object.keys(storeItemMap).some((id) => {
-          const item = storeItemMap[id];
+        Object.entries(storeItemMap).some(([id, item]) => {
           const existingSyncData = syncDataByItemId[id];
           if ((!existingSyncData || existingSyncData.hash !== item.hash) &&
             // Add file if content has been uploaded
@@ -483,8 +532,7 @@ function sync() {
         };
         const syncData = store.getters['data/syncData'];
         let result;
-        Object.keys(syncData).some((id) => {
-          const existingSyncData = syncData[id];
+        Object.entries(syncData).some(([, existingSyncData]) => {
           if (!storeItemMap[existingSyncData.itemId] &&
             // Remove content only if file has been removed
             (existingSyncData.type !== 'content' || !storeItemMap[existingSyncData.itemId.split('/')[0]])
@@ -556,20 +604,23 @@ function sync() {
           () => {
             if (syncContext.restart) {
               // Restart sync
-              return sync();
+              return syncWorkspace();
             }
             return null;
           },
           (err) => {
             if (err && err.message === 'TOO_LATE') {
               // Restart sync
-              return sync();
+              return syncWorkspace();
             }
             throw err;
           });
     });
 }
 
+/**
+ * Enqueue a sync task, if possible.
+ */
 function requestSync() {
   store.dispatch('queue/enqueueSyncRequest', () => new Promise((resolve, reject) => {
     let intervalId;
@@ -607,8 +658,8 @@ function requestSync() {
 
         Promise.resolve()
           .then(() => {
-            if (isDataSyncPossible()) {
-              return sync();
+            if (isWorkspaceSyncPossible()) {
+              return syncWorkspace();
             }
             if (hasCurrentFileSyncLocations()) {
               // Only sync current file if data sync is unavailable.
@@ -620,9 +671,9 @@ function requestSync() {
           })
           .then(() => {
             // Clean files
-            Object.keys(fileHashesToClean).forEach((fileId) => {
+            Object.entries(fileHashesToClean).forEach(([fileId, fileHash]) => {
               const file = store.state.file.itemMap[fileId];
-              if (file && file.hash === fileHashesToClean[fileId]) {
+              if (file && file.hash === fileHash) {
                 store.dispatch('deleteFile', fileId);
               }
             });
@@ -635,26 +686,41 @@ function requestSync() {
   }));
 }
 
-// Sync periodically
-utils.setInterval(() => {
-  if (isSyncPossible() &&
-    utils.isUserActive() &&
-    isSyncWindow() &&
-    isAutoSyncReady()
-  ) {
-    requestSync();
-  }
-}, 1000);
-
-// Unload contents from memory periodically
-utils.setInterval(() => {
-  // Wait for sync and publish to finish
-  if (store.state.queue.isEmpty) {
-    localDbSvc.unloadContents();
-  }
-}, 5000);
-
 export default {
+  init() {
+    // Load workspaces and tokens from localStorage
+    localDbSvc.syncLocalStorage();
+
+    // Try to find a suitable workspace provider
+    workspaceProvider = providerRegistry.providers[utils.queryParams.providerId];
+    if (!workspaceProvider || !workspaceProvider.initWorkspace) {
+      workspaceProvider = googleDriveAppDataProvider;
+    }
+
+    return workspaceProvider.initWorkspace()
+      .then(workspace => store.commit('workspace/setCurrentWorkspaceId', workspace.id))
+      .then(() => localDbSvc.init())
+      .then(() => {
+        // Sync periodically
+        utils.setInterval(() => {
+          if (isSyncPossible() &&
+            utils.isUserActive() &&
+            isSyncWindow() &&
+            isAutoSyncReady()
+          ) {
+            requestSync();
+          }
+        }, 1000);
+
+        // Unload contents from memory periodically
+        utils.setInterval(() => {
+          // Wait for sync and publish to finish
+          if (store.state.queue.isEmpty) {
+            localDbSvc.unloadContents();
+          }
+        }, 5000);
+      });
+  },
   isSyncPossible,
   requestSync,
   createSyncLocation,

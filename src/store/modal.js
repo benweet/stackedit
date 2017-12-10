@@ -86,24 +86,33 @@ export default {
       rejectText: 'Cancel',
       onResolve,
     }),
-    signInForSponsorship: ({ dispatch }) => dispatch('open', {
+    workspaceGoogleRedirection: ({ dispatch }, { onResolve }) => dispatch('open', {
+      content: '<p>You have to sign in with Google to access this workspace.</p>',
+      resolveText: 'Ok, sign in',
+      rejectText: 'Cancel',
+      onResolve,
+    }),
+    signInForSponsorship: ({ dispatch }, { onResolve }) => dispatch('open', {
       type: 'signInForSponsorship',
       content: `<p>You have to sign in with Google to enable your sponsorship.</p>
       <div class="modal__info"><b>Note:</b> This will sync all your files and settings.</div>`,
       resolveText: 'Ok, sign in',
       rejectText: 'Cancel',
+      onResolve,
     }),
-    signInForComment: ({ dispatch }) => dispatch('open', {
+    signInForComment: ({ dispatch }, { onResolve }) => dispatch('open', {
       content: `<p>You have to sign in with Google to start commenting.</p>
       <div class="modal__info"><b>Note:</b> This will sync all your files and settings.</div>`,
       resolveText: 'Ok, sign in',
       rejectText: 'Cancel',
+      onResolve,
     }),
-    signInForHistory: ({ dispatch }) => dispatch('open', {
+    signInForHistory: ({ dispatch }, { onResolve }) => dispatch('open', {
       content: `<p>You have to sign in with Google to enable revision history.</p>
       <div class="modal__info"><b>Note:</b> This will sync all your files and settings.</div>`,
       resolveText: 'Ok, sign in',
       rejectText: 'Cancel',
+      onResolve,
     }),
     sponsorOnly: ({ dispatch }) => dispatch('open', {
       content: '<p>This feature is restricted to <b>sponsor users</b> as it relies on server resources.</p>',

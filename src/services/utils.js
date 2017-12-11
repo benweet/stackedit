@@ -2,7 +2,6 @@ import yaml from 'js-yaml';
 import '../libs/clunderscore';
 import defaultProperties from '../data/defaultFileProperties.yml';
 
-const workspaceId = 'main';
 const origin = `${location.protocol}//${location.host}`;
 
 // For uid()
@@ -11,30 +10,6 @@ const crypto = window.crypto || window.msCrypto;
 const alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const radix = alphabet.length;
 const array = new Uint32Array(uidLength);
-
-// For isUserActive
-const inactiveAfter = 2 * 60 * 1000; // 2 minutes
-let lastActivity;
-const setLastActivity = () => {
-  lastActivity = Date.now();
-};
-window.document.addEventListener('mousedown', setLastActivity);
-window.document.addEventListener('keydown', setLastActivity);
-window.document.addEventListener('touchstart', setLastActivity);
-
-// For isWindowFocused
-let lastFocus;
-const lastFocusKey = `${workspaceId}/lastWindowFocus`;
-const lastOpened = parseInt(localStorage[lastFocusKey], 10) || 0;
-const setLastFocus = () => {
-  lastFocus = Date.now();
-  localStorage[lastFocusKey] = lastFocus;
-  setLastActivity();
-};
-if (document.hasFocus()) {
-  setLastFocus();
-}
-window.addEventListener('focus', setLastFocus);
 
 // For parseQueryParams()
 const parseQueryParams = (params) => {
@@ -50,11 +25,9 @@ const parseQueryParams = (params) => {
 const urlParser = window.document.createElement('a');
 
 export default {
-  workspaceId,
   origin,
   queryParams: parseQueryParams(location.hash.slice(1)),
   oauth2RedirectUri: `${origin}/oauth2/callback`,
-  lastOpened,
   cleanTrashAfter: 7 * 24 * 60 * 60 * 1000, // 7 days
   types: [
     'contentState',
@@ -146,12 +119,6 @@ export default {
   },
   setInterval(func, interval) {
     return setInterval(() => func(), this.randomize(interval));
-  },
-  isWindowFocused() {
-    return parseInt(localStorage[lastFocusKey], 10) === lastFocus;
-  },
-  isUserActive() {
-    return lastActivity > Date.now() - inactiveAfter && this.isWindowFocused();
   },
   parseQueryParams,
   addQueryParams(url = '', params = {}) {

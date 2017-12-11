@@ -131,17 +131,6 @@ export default {
       });
       return result;
     },
-    dbName: (state, getters) => {
-      let dbName;
-      Object.keys(getters.workspaces).some((id) => {
-        dbName = 'stackedit-db';
-        if (id !== 'main') {
-          dbName += `-${id}`;
-        }
-        return dbName;
-      });
-      return dbName;
-    },
     settings: getter('settings'),
     computedSettings: (state, getters) => {
       const customSettings = yaml.safeLoad(getters.settings);

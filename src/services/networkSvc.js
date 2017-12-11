@@ -5,8 +5,88 @@ const scriptLoadingPromises = Object.create(null);
 const oauth2AuthorizationTimeout = 120 * 1000; // 2 minutes
 const networkTimeout = 30 * 1000; // 30 sec
 let isConnectionDown = false;
+const userInactiveAfter = 2 * 60 * 1000; // 2 minutes
+
 
 export default {
+  init() {
+    // Keep track of the last user activity
+    this.lastActivity = 0;
+    const setLastActivity = () => {
+      this.lastActivity = Date.now();
+    };
+    window.document.addEventListener('mousedown', setLastActivity);
+    window.document.addEventListener('keydown', setLastActivity);
+    window.document.addEventListener('touchstart', setLastActivity);
+
+    // Keep track of the last window focus
+    this.lastFocus = 0;
+    const setLastFocus = () => {
+      this.lastFocus = Date.now();
+      localStorage.setItem(store.getters['workspace/lastFocusKey'], this.lastFocus);
+      setLastActivity();
+    };
+    if (document.hasFocus()) {
+      setLastFocus();
+    }
+    window.addEventListener('focus', setLastFocus);
+
+    // Check browser is online periodically
+    const checkOffline = () => {
+      const isBrowserOffline = window.navigator.onLine === false;
+      if (!isBrowserOffline &&
+        store.state.lastOfflineCheck + networkTimeout + 5000 < Date.now() &&
+        this.isUserActive()
+      ) {
+        store.commit('updateLastOfflineCheck');
+        new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          let timeout;
+          let clean = (cb) => {
+            clearTimeout(timeout);
+            document.head.removeChild(script);
+            clean = () => {}; // Prevent from cleaning several times
+            cb();
+          };
+          script.onload = () => clean(resolve);
+          script.onerror = () => clean(reject);
+          script.src = `https://apis.google.com/js/api.js?${Date.now()}`;
+          try {
+            document.head.appendChild(script); // This can fail with bad network
+            timeout = setTimeout(() => clean(reject), networkTimeout);
+          } catch (e) {
+            reject(e);
+          }
+        })
+          .then(() => {
+            isConnectionDown = false;
+          }, () => {
+            isConnectionDown = true;
+          });
+      }
+      const offline = isBrowserOffline || isConnectionDown;
+      if (store.state.offline !== offline) {
+        store.commit('setOffline', offline);
+        if (offline) {
+          store.dispatch('notification/error', 'You are offline.');
+        } else {
+          store.dispatch('notification/info', 'You are back online!');
+        }
+      }
+    };
+    utils.setInterval(checkOffline, 1000);
+    window.addEventListener('online', () => {
+      isConnectionDown = false;
+      checkOffline();
+    });
+    window.addEventListener('offline', checkOffline);
+  },
+  isWindowFocused() {
+    return parseInt(localStorage.getItem(this.lastFocusKey), 10) === this.lastFocus;
+  },
+  isUserActive() {
+    return this.lastActivity > Date.now() - userInactiveAfter && this.isWindowFocused();
+  },
   loadScript(url) {
     if (!scriptLoadingPromises[url]) {
       scriptLoadingPromises[url] = new Promise((resolve, reject) => {
@@ -217,53 +297,3 @@ export default {
     return attempt();
   },
 };
-
-function checkOffline() {
-  const isBrowserOffline = window.navigator.onLine === false;
-  if (!isBrowserOffline &&
-    store.state.lastOfflineCheck + networkTimeout + 5000 < Date.now() &&
-    utils.isUserActive()
-  ) {
-    store.commit('updateLastOfflineCheck');
-    new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      let timeout;
-      let clean = (cb) => {
-        clearTimeout(timeout);
-        document.head.removeChild(script);
-        clean = () => {}; // Prevent from cleaning several times
-        cb();
-      };
-      script.onload = () => clean(resolve);
-      script.onerror = () => clean(reject);
-      script.src = `https://apis.google.com/js/api.js?${Date.now()}`;
-      try {
-        document.head.appendChild(script); // This can fail with bad network
-        timeout = setTimeout(() => clean(reject), networkTimeout);
-      } catch (e) {
-        reject(e);
-      }
-    })
-      .then(() => {
-        isConnectionDown = false;
-      }, () => {
-        isConnectionDown = true;
-      });
-  }
-  const offline = isBrowserOffline || isConnectionDown;
-  if (store.state.offline !== offline) {
-    store.commit('setOffline', offline);
-    if (offline) {
-      store.dispatch('notification/error', 'You are offline.');
-    } else {
-      store.dispatch('notification/info', 'You are back online!');
-    }
-  }
-}
-
-utils.setInterval(checkOffline, 1000);
-window.addEventListener('online', () => {
-  isConnectionDown = false;
-  checkOffline();
-});
-window.addEventListener('offline', checkOffline);

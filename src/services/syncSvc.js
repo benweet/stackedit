@@ -2,6 +2,7 @@ import localDbSvc from './localDbSvc';
 import store from '../store';
 import utils from './utils';
 import diffUtils from './diffUtils';
+import networkSvc from './networkSvc';
 import providerRegistry from './providers/providerRegistry';
 import googleDriveAppDataProvider from './providers/googleDriveAppDataProvider';
 
@@ -14,9 +15,9 @@ let workspaceProvider;
 /**
  * Use a lock in the local storage to prevent multiple windows concurrency.
  */
-const lastSyncActivityKey = `${utils.workspaceId}/lastSyncActivity`;
 let lastSyncActivity;
-const getLastStoredSyncActivity = () => parseInt(localStorage[lastSyncActivityKey], 10) || 0;
+const getLastStoredSyncActivity = () =>
+  parseInt(localStorage.getItem(store.getters['workspace/lastSyncActivityKey']), 10) || 0;
 
 /**
  * Return true if workspace sync is possible.
@@ -51,7 +52,7 @@ function isSyncWindow() {
 }
 
 /**
- * Return true if auto sync can start, ie that lastSyncActivity is old enough.
+ * Return true if auto sync can start, ie if lastSyncActivity is old enough.
  */
 function isAutoSyncReady() {
   const storedLastSyncActivity = getLastStoredSyncActivity();
@@ -64,7 +65,7 @@ function isAutoSyncReady() {
 function setLastSyncActivity() {
   const currentDate = Date.now();
   lastSyncActivity = currentDate;
-  localStorage[lastSyncActivityKey] = currentDate;
+  localStorage.setItem(store.getters['workspace/lastSyncActivityKey'], currentDate);
 }
 
 /**
@@ -626,7 +627,7 @@ function requestSync() {
     let intervalId;
     const attempt = () => {
       // Only start syncing when these conditions are met
-      if (utils.isUserActive() && isSyncWindow()) {
+      if (networkSvc.isUserActive() && isSyncWindow()) {
         clearInterval(intervalId);
         if (!isSyncPossible()) {
           // Cancel sync
@@ -704,7 +705,7 @@ export default {
         // Sync periodically
         utils.setInterval(() => {
           if (isSyncPossible() &&
-            utils.isUserActive() &&
+          networkSvc.isUserActive() &&
             isSyncWindow() &&
             isAutoSyncReady()
           ) {

@@ -4,7 +4,6 @@ import store from '../store';
 import welcomeFile from '../data/welcomeFile.md';
 
 const dbVersion = 1;
-const dbVersionKey = `${utils.workspaceId}/localDbVersion`;
 const dbStoreName = 'objects';
 const exportBackup = utils.queryParams.exportBackup;
 if (exportBackup) {
@@ -15,11 +14,18 @@ const deleteMarkerMaxAge = 1000;
 const checkSponsorshipAfter = (5 * 60 * 1000) + (30 * 1000); // tokenExpirationMargin + 30 sec
 
 class Connection {
-  constructor(dbName) {
+  constructor() {
     this.getTxCbs = [];
 
+    // Make the DB name
+    const workspaceId = store.getters['workspace/currentWorkspace'].id;
+    this.dbName = 'stackedit-db';
+    if (workspaceId !== 'main') {
+      this.dbName += `-${workspaceId}`;
+    }
+
     // Init connection
-    const request = indexedDB.open(dbName, dbVersion);
+    const request = indexedDB.open(this.dbName, dbVersion);
 
     request.onerror = () => {
       throw new Error("Can't connect to IndexedDB.");
@@ -27,7 +33,6 @@ class Connection {
 
     request.onsuccess = (event) => {
       this.db = event.target.result;
-      localStorage[dbVersionKey] = this.db.version; // Safari does not support onversionchange
       this.db.onversionchange = () => window.location.reload();
 
       this.getTxCbs.forEach(({ onTx, onError }) => this.createTx(onTx, onError));
@@ -67,11 +72,6 @@ class Connection {
       return this.getTxCbs.push({ onTx, onError });
     }
 
-    // If DB version has changed (Safari support)
-    if (parseInt(localStorage[dbVersionKey], 10) !== this.db.version) {
-      return window.location.reload();
-    }
-
     // Open transaction in read/write will prevent conflict with other tabs
     const tx = this.db.transaction(this.db.objectStoreNames, 'readwrite');
     tx.onerror = onError;
@@ -102,7 +102,7 @@ const localDbSvc = {
    */
   init() {
     // Create the connection
-    this.connection = new Connection(store.getters['data/dbName']);
+    this.connection = new Connection();
 
     // Load the DB
     return localDbSvc.sync()
@@ -131,7 +131,7 @@ const localDbSvc = {
 
         // If app was last opened 7 days ago and synchronization is off
         if (!store.getters['data/loginToken'] &&
-          (utils.lastOpened + utils.cleanTrashAfter < Date.now())
+          (store.getters['workspace/lastFocus'] + utils.cleanTrashAfter < Date.now())
         ) {
           // Clean files
           store.getters['file/items']
@@ -447,7 +447,6 @@ const localDbSvc = {
       request.onsuccess = resolve;
     })
     .then(() => {
-      localStorage.removeItem(dbVersionKey);
       window.location.reload();
     }, () => store.dispatch('notification/error', 'Could not delete local database.'));
   },

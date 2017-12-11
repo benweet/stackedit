@@ -23,7 +23,7 @@ const isGoogleSponsor = () => {
 
 const checkPayment = () => {
   const currentDate = Date.now();
-  if (!isGoogleSponsor() && utils.isUserActive() && !store.state.offline &&
+  if (!isGoogleSponsor() && networkSvc.isUserActive() && !store.state.offline &&
     lastCheck + checkPaymentEvery < currentDate
   ) {
     lastCheck = currentDate;
@@ -39,9 +39,10 @@ const checkPayment = () => {
   }
 };
 
-utils.setInterval(checkPayment, 2000);
-
 export default {
+  init: () => {
+    utils.setInterval(checkPayment, 2000);
+  },
   getToken() {
     if (isGoogleSponsor() || store.state.offline) {
       return Promise.resolve();

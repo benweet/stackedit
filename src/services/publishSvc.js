@@ -1,6 +1,7 @@
 import localDbSvc from './localDbSvc';
 import store from '../store';
 import utils from './utils';
+import networkSvc from './networkSvc';
 import exportSvc from './exportSvc';
 import providerRegistry from './providers/providerRegistry';
 
@@ -114,7 +115,7 @@ function requestPublish() {
     let intervalId;
     const attempt = () => {
       // Only start publishing when these conditions are met
-      if (utils.isUserActive()) {
+      if (networkSvc.isUserActive()) {
         clearInterval(intervalId);
         if (!hasCurrentFilePublishLocations()) {
           // Cancel sync

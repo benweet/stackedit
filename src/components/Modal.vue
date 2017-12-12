@@ -12,6 +12,7 @@
     <sync-management-modal v-else-if="config.type === 'syncManagement'"></sync-management-modal>
     <publish-management-modal v-else-if="config.type === 'publishManagement'"></publish-management-modal>
     <sponsor-modal v-else-if="config.type === 'sponsor'"></sponsor-modal>
+    <export-md-modal v-else-if="config.type === 'exportMd'"></export-md-modal>
     <!-- Providers -->
     <google-photo-modal v-else-if="config.type === 'googlePhoto'"></google-photo-modal>
     <google-drive-save-modal v-else-if="config.type === 'googleDriveSave'"></google-drive-save-modal>
@@ -56,6 +57,7 @@ import ImageModal from './modals/ImageModal';
 import SyncManagementModal from './modals/SyncManagementModal';
 import PublishManagementModal from './modals/PublishManagementModal';
 import SponsorModal from './modals/SponsorModal';
+import exportMdModal from './modals/exportMdModal';
 
 // Providers
 import GooglePhotoModal from './modals/providers/GooglePhotoModal';
@@ -95,6 +97,7 @@ export default {
     SyncManagementModal,
     PublishManagementModal,
     SponsorModal,
+    exportMdModal,
     // Providers
     GooglePhotoModal,
     GoogleDriveSaveModal,
@@ -194,26 +197,6 @@ export default {
   border-radius: $border-radius-base;
   position: relative;
   overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: $border-radius-base;
-    width: 100%;
-    background-image: linear-gradient(to left, #ffe600, #ffe600 25%, #bbd500 25%, #bbd500 50%, #ff8a00 50%, #ff8a00 75%, #75b7fd 75%);
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: $border-radius-base;
-    width: 100%;
-    background-image: linear-gradient(to right, #ffe600, #ffe600 25%, #bbd500 25%, #bbd500 50%, #ff8a00 50%, #ff8a00 75%, #75b7fd 75%);
-  }
 }
 
 .modal__content > :first-child,

@@ -1,6 +1,6 @@
 <template>
   <nav class="navigation-bar" :class="{'navigation-bar--editor': styles.showEditor && !revisionContent}">
-    <!-- Explorer -->
+<!-- Explorer -->
     <div class="navigation-bar__inner navigation-bar__inner--left navigation-bar__inner--button">
       <button class="navigation-bar__button button" @click="toggleExplorer()" v-title="'Toggle explorer'"><icon-folder></icon-folder></button>
     </div>
@@ -37,16 +37,29 @@
       <div class="navigation-bar__spacer"></div>
       <button class="navigation-bar__button button" @click="pagedownClick('bold')" v-title="'Bold'"><icon-format-bold></icon-format-bold></button>
       <button class="navigation-bar__button button" @click="pagedownClick('italic')" v-title="'Italic'"><icon-format-italic></icon-format-italic></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('strikethrough')" v-title="'Strikethrough'"><icon-format-strikethrough></icon-format-strikethrough></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('heading')" v-title="'Heading'"><icon-format-size></icon-format-size></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('ulist')" v-title="'Unordered list'"><icon-format-list-bulleted></icon-format-list-bulleted></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('link')" v-title="'Link'"><icon-link-variant></icon-link-variant></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('code')" v-title="'Code'"><icon-code-tags></icon-code-tags></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('image')" v-title="'Image'"><icon-file-image></icon-file-image></button>
       <button class="navigation-bar__button button" @click="pagedownClick('olist')" v-title="'Ordered list'"><icon-format-list-numbers></icon-format-list-numbers></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('ulist')" v-title="'Unordered list'"><icon-format-list-bulleted></icon-format-list-bulleted></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('heading')" v-title="'Heading'"><icon-format-size></icon-format-size></button>
+      <button class="navigation-bar__button button" @click="pagedownClick('strikethrough')" v-title="'Strikethrough'"><icon-format-strikethrough></icon-format-strikethrough></button>
       <button class="navigation-bar__button button" @click="pagedownClick('table')" v-title="'Table'"><icon-table></icon-table></button>
       <button class="navigation-bar__button button" @click="pagedownClick('quote')" v-title="'Blockquote'"><icon-format-quote-close></icon-format-quote-close></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('code')" v-title="'Code'"><icon-code-tags></icon-code-tags></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('link')" v-title="'Link'"><icon-link-variant></icon-link-variant></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('image')" v-title="'Image'"><icon-file-image></icon-file-image></button>
       <button class="navigation-bar__button button" @click="pagedownClick('hr')" v-title="'Horizontal rule'"><icon-format-horizontal-rule></icon-format-horizontal-rule></button>
+
+      <div class="navigation-bar__spacer"></div>
+      <div class="navigation-bar__spacer"></div>
+      <div class="navigation-bar__spacer"></div>
+
+      <button class="navigation-bar__button button" @click="pagedownClick('draft')" v-title="'保存到草稿'"><icon-draft></icon-draft></button>
+      <!--import from disk-->
+      <button class="navigation-bar__button button" v-title="'本地导入'" style="position:relative;">
+        <icon-upload></icon-upload>
+        <input class="hidden-file" id="import-disk-file-input" type="file" @change="onImportFile">
+        <label for="import-disk-file-input" style="width:100%;height:100%;position:absolute;left:0;cursor:pointer;"></label>
+      </button>
+      <button class="navigation-bar__button button" @click="exportMd" v-title="'导出到本地'"><icon-download></icon-download></button>
     </div>
   </nav>
 </template>
@@ -58,6 +71,7 @@ import syncSvc from '../services/syncSvc';
 import publishSvc from '../services/publishSvc';
 import animationSvc from '../services/animationSvc';
 import utils from '../services/utils';
+import providerUtils from '../services/providers/providerUtils';
 
 export default {
   data: () => ({
@@ -177,6 +191,32 @@ export default {
         this.title = '';
       }
       this.titleInputElt.blur();
+    },
+    onImportFile(evt) {
+      const file = evt.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const content = e.target.result;
+          if (content.match(/\uFFFD/)) {
+            this.$store.dispatch('notification/error', '不支持该类型文件.');
+          } else {
+            this.$store.dispatch('createFile', {
+              ...providerUtils.parseContent(content),
+              name: file.name,
+            })
+              .then(item => this.$store.commit('file/setCurrentId', item.id));
+          }
+        };
+        reader.readAsText(file);
+      }
+    },
+    exportMd() {
+      return this.$store.dispatch('modal/exportMd')
+        .then(
+          () => {},
+          () => {}, // Cancel
+        );
     },
   },
   created() {

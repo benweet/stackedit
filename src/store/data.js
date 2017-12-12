@@ -6,8 +6,8 @@ import defaultSettings from '../data/defaultSettings.yml';
 import defaultLocalSettings from '../data/defaultLocalSettings';
 import plainHtmlTemplate from '../data/plainHtmlTemplate.html';
 import styledHtmlTemplate from '../data/styledHtmlTemplate.html';
-import styledHtmlWithTocTemplate from '../data/styledHtmlWithTocTemplate.html';
-import jekyllSiteTemplate from '../data/jekyllSiteTemplate.html';
+// import styledHtmlWithTocTemplate from '../data/styledHtmlWithTocTemplate.html';
+// import jekyllSiteTemplate from '../data/jekyllSiteTemplate.html';
 
 const itemTemplate = (id, data = {}) => ({ id, type: 'data', data, hash: 0 });
 
@@ -134,11 +134,11 @@ const makeAdditionalTemplate = (name, value, helpers = '\n') => ({
   isAdditional: true,
 });
 const additionalTemplates = {
-  plainText: makeAdditionalTemplate('Plain text', '{{{files.0.content.text}}}'),
+  // plainText: makeAdditionalTemplate('Plain text', '{{{files.0.content.text}}}'),
   plainHtml: makeAdditionalTemplate('Plain HTML', plainHtmlTemplate),
   styledHtml: makeAdditionalTemplate('Styled HTML', styledHtmlTemplate),
-  styledHtmlWithToc: makeAdditionalTemplate('Styled HTML with TOC', styledHtmlWithTocTemplate),
-  jekyllSite: makeAdditionalTemplate('Jekyll site', jekyllSiteTemplate),
+  // styledHtmlWithToc: makeAdditionalTemplate('Styled HTML with TOC', styledHtmlWithTocTemplate),
+  // jekyllSite: makeAdditionalTemplate('Jekyll site', jekyllSiteTemplate),
 };
 module.getters.allTemplates = (state, getters) => ({
   ...getters.templates,

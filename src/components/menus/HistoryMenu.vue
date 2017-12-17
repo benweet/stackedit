@@ -12,7 +12,7 @@
         </div>
       </a>
     </div>
-    <div class="history__spacer history__spacer--last"></div>
+    <div class="history__spacer history__spacer--last" v-if="revisions.length"></div>
     <div class="flex flex--row flex--end" v-if="showMoreButton">
       <button class="history__button button" @click="showMore">More</button>
     </div>
@@ -79,7 +79,7 @@ export default {
       let revisionContentPromise = revisionContentPromises[revision.id];
       if (!revisionContentPromise) {
         revisionContentPromise = new Promise((resolve, reject) => {
-          const loginToken = this.$store.getters['data/loginToken'];
+          const loginToken = this.$store.getters['workspace/loginToken'];
           const currentFile = this.$store.getters['file/current'];
           this.$store.dispatch('queue/enqueue',
             () => Promise.resolve()
@@ -133,7 +133,7 @@ export default {
             this.setRevisionContent();
             cachedFileId = id;
             revisionContentPromises = {};
-            const loginToken = this.$store.getters['data/loginToken'];
+            const loginToken = this.$store.getters['workspace/loginToken'];
             const currentFile = this.$store.getters['file/current'];
             revisionsPromise = new Promise((resolve, reject) => {
               this.$store.dispatch('queue/enqueue',

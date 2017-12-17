@@ -123,7 +123,7 @@ export default {
       }
     },
     createNewDiscussion({ commit, dispatch, rootGetters }, selection) {
-      const loginToken = rootGetters['data/loginToken'];
+      const loginToken = rootGetters['workspace/loginToken'];
       if (!loginToken) {
         dispatch('modal/signInForComment', {
           onResolve: () => googleHelper.signin()

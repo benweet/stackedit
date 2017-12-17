@@ -31,18 +31,18 @@ export default {
   methods: {
     sponsor() {
       Promise.resolve()
-        .then(() => !this.$store.getters['data/loginToken'] &&
+        .then(() => !this.$store.getters['workspace/sponsorToken'] &&
           // If user has to sign in
           this.$store.dispatch('modal/signInForSponsorship', {
             onResolve: () => googleHelper.signin()
               .then(() => syncSvc.requestSync()),
-          })
+          }))
         .then(() => {
           if (!this.$store.getters.isSponsor) {
             this.$store.dispatch('modal/open', 'sponsor');
           }
         })
-        .catch(() => { }); // Cancel
+        .catch(() => {}); // Cancel
     },
   },
 };

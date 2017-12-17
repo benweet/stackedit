@@ -1,3 +1,5 @@
+# Auto-sync frequency (in ms). Minimum is 60000.
+autoSyncEvery: 90000
 # Adjust font size in editor and preview
 fontSizeFactor: 1
 # Adjust maximum text width in editor and preview

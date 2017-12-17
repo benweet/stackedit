@@ -18,6 +18,7 @@ import modal from './modal';
 import notification from './notification';
 import queue from './queue';
 import userInfo from './userInfo';
+import workspace from './workspace';
 
 Vue.use(Vuex);
 
@@ -41,6 +42,7 @@ const store = new Vuex.Store({
     notification,
     queue,
     userInfo,
+    workspace,
   },
   state: {
     offline: false,
@@ -55,8 +57,8 @@ const store = new Vuex.Store({
       return result;
     },
     isSponsor: (state, getters) => {
-      const loginToken = getters['data/loginToken'];
-      return state.monetizeSponsor || (loginToken && loginToken.isSponsor);
+      const sponsorToken = getters['workspace/sponsorToken'];
+      return state.monetizeSponsor || (sponsorToken && sponsorToken.isSponsor);
     },
   },
   mutations: {

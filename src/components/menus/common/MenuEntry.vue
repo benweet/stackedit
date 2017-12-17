@@ -19,12 +19,13 @@
   font-size: 17px;
   line-height: 1.5;
   text-transform: none;
+  white-space: normal;
 
   div div {
     text-decoration: underline;
     text-decoration-skip: ink;
 
-    .menu-entry__sponsor {
+    .menu-entry__label {
       text-decoration: none;
     }
   }
@@ -33,8 +34,18 @@
     display: inline-block;
     font-size: 0.75rem;
     opacity: 0.5;
-    white-space: normal;
+
+    span {
+      display: inline;
+      opacity: 1;
+    }
   }
+}
+
+.menu-entry--info {
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 10px 0;
 }
 
 .menu-entry__icon {
@@ -42,6 +53,10 @@
   width: 20px;
   margin-right: 12px;
   flex: none;
+}
+
+.menu-entry__icon--disabled {
+  opacity: 0.5;
 }
 
 .menu-entry__icon--image {
@@ -54,7 +69,7 @@
   top: -999px;
 }
 
-.menu-entry__sponsor {
+.menu-entry__label {
   float: right;
   font-size: 0.6rem;
   font-weight: 600;
@@ -66,5 +81,6 @@
 
 .menu-entry__text {
   width: 100%;
+  overflow: hidden;
 }
 </style>

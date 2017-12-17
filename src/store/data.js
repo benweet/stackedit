@@ -87,6 +87,9 @@ const tokenSetter = providerId => ({ getters, dispatch }, token) => {
   });
 };
 
+// For workspaces
+const urlParser = window.document.createElement('a');
+
 export default {
   namespaced: true,
   state: {
@@ -118,18 +121,24 @@ export default {
     },
   },
   getters: {
-    workspaces: (state) => {
+    workspaces: (state, getters, rootState, rootGetters) => {
       const workspaces = (state.lsItemMap.workspaces || empty('workspaces')).data;
-      const result = {};
+      const sanitizedWorkspaces = {};
+      const mainWorkspaceToken = rootGetters['workspace/mainWorkspaceToken'];
       Object.entries(workspaces).forEach(([id, workspace]) => {
-        result[id] = {
-          ...workspace,
+        const sanitizedWorkspace = {
           id,
-          providerId: workspace.providerId || 'googleDriveWorkspace',
-          url: utils.addQueryParams('app'),
+          providerId: mainWorkspaceToken && 'googleDriveAppData',
+          sub: mainWorkspaceToken && mainWorkspaceToken.sub,
+          ...workspace,
         };
+        // Rebuild the url with current hostname
+        urlParser.href = workspace.url || 'app';
+        const params = utils.parseQueryParams(urlParser.hash.slice(1));
+        sanitizedWorkspace.url = utils.addQueryParams('app', params, true);
+        sanitizedWorkspaces[id] = sanitizedWorkspace;
       });
-      return result;
+      return sanitizedWorkspaces;
     },
     settings: getter('settings'),
     computedSettings: (state, getters) => {
@@ -202,13 +211,6 @@ export default {
     githubTokens: (state, getters) => getters.tokens.github || {},
     wordpressTokens: (state, getters) => getters.tokens.wordpress || {},
     zendeskTokens: (state, getters) => getters.tokens.zendesk || {},
-    loginToken: (state, getters) => {
-      // Return the first google token that has the isLogin flag
-      const googleTokens = getters.googleTokens;
-      const loginSubs = Object.keys(googleTokens)
-        .filter(sub => googleTokens[sub].isLogin);
-      return googleTokens[loginSubs[0]];
-    },
   },
   actions: {
     setWorkspaces: setter('workspaces'),

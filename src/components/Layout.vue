@@ -141,7 +141,7 @@ export default {
 }
 
 .layout__panel--navigation-bar {
-  background-color: #2c2c2c;
+  background-color: $navbar-bg;
 }
 
 .layout__panel--status-bar {

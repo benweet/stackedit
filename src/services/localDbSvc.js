@@ -5,13 +5,17 @@ import welcomeFile from '../data/welcomeFile.md';
 
 const dbVersion = 1;
 const dbStoreName = 'objects';
-const exportBackup = utils.queryParams.exportBackup;
-if (exportBackup) {
-  location.hash = '';
-}
-
+const exportWorkspace = utils.queryParams.exportWorkspace;
 const deleteMarkerMaxAge = 1000;
 const checkSponsorshipAfter = (5 * 60 * 1000) + (30 * 1000); // tokenExpirationMargin + 30 sec
+
+const getDbName = (workspaceId) => {
+  let dbName = 'stackedit-db';
+  if (workspaceId !== 'main') {
+    dbName += `-${workspaceId}`;
+  }
+  return dbName;
+};
 
 class Connection {
   constructor() {
@@ -19,10 +23,7 @@ class Connection {
 
     // Make the DB name
     const workspaceId = store.getters['workspace/currentWorkspace'].id;
-    this.dbName = 'stackedit-db';
-    if (workspaceId !== 'main') {
-      this.dbName += `-${workspaceId}`;
-    }
+    this.dbName = getDbName(workspaceId);
 
     // Init connection
     const request = indexedDB.open(this.dbName, dbVersion);
@@ -33,7 +34,7 @@ class Connection {
 
     request.onsuccess = (event) => {
       this.db = event.target.result;
-      this.db.onversionchange = () => window.location.reload();
+      this.db.onversionchange = () => location.reload();
 
       this.getTxCbs.forEach(({ onTx, onError }) => this.createTx(onTx, onError));
       this.getTxCbs = null;
@@ -101,14 +102,33 @@ const localDbSvc = {
    * Create the connection and start syncing.
    */
   init() {
-    // Create the connection
-    this.connection = new Connection();
-
-    // Load the DB
-    return localDbSvc.sync()
+    return Promise.resolve()
       .then(() => {
-        // If exportBackup parameter was provided
-        if (exportBackup) {
+        // Reset the app if reset flag was passed
+        if (utils.queryParams.reset) {
+          return Promise.all(
+            Object.keys(store.getters['data/workspaces'])
+              .map(workspaceId => localDbSvc.removeWorkspace(workspaceId)),
+          )
+            .then(() => utils.localStorageDataIds.forEach((id) => {
+              // Clean data stored in localStorage
+              localStorage.removeItem(`data/${id}`);
+            }))
+            .then(() => {
+              location.replace(utils.resolveUrl('app'));
+              throw new Error('reload');
+            });
+        }
+
+        // Create the connection
+        this.connection = new Connection();
+
+        // Load the DB
+        return localDbSvc.sync();
+      })
+      .then(() => {
+        // If exportWorkspace parameter was provided
+        if (exportWorkspace) {
           const backup = JSON.stringify(store.getters.allItemMap);
           const blob = new Blob([backup], {
             type: 'text/plain;charset=utf-8',
@@ -130,8 +150,8 @@ const localDbSvc = {
         }
 
         // If app was last opened 7 days ago and synchronization is off
-        if (!store.getters['data/loginToken'] &&
-          (store.getters['workspace/lastFocus'] + utils.cleanTrashAfter < Date.now())
+        if (!store.getters['workspace/syncToken'] &&
+          (store.state.workspace.lastFocus + utils.cleanTrashAfter < Date.now())
         ) {
           // Clean files
           store.getters['file/items']
@@ -141,14 +161,14 @@ const localDbSvc = {
 
         // Enable sponsorship
         if (utils.queryParams.paymentSuccess) {
-          location.hash = '';
+          location.hash = ''; // PaymentSuccess param is always on its own
           store.dispatch('modal/paymentSuccess');
-          const loginToken = store.getters['data/loginToken'];
+          const sponsorToken = store.getters['workspace/sponsorToken'];
           // Force check sponsorship after a few seconds
           const currentDate = Date.now();
-          if (loginToken && loginToken.expiresOn > currentDate - checkSponsorshipAfter) {
+          if (sponsorToken && sponsorToken.expiresOn > currentDate - checkSponsorshipAfter) {
             store.dispatch('data/setGoogleToken', {
-              ...loginToken,
+              ...sponsorToken,
               expiresOn: currentDate - checkSponsorshipAfter,
             });
           }
@@ -288,7 +308,7 @@ const localDbSvc = {
           lastTx = item.tx;
           if (this.lastTx && item.tx - this.lastTx > deleteMarkerMaxAge) {
             // We may have missed some delete markers
-            window.location.reload();
+            location.reload();
             return;
           }
         }
@@ -376,7 +396,7 @@ const localDbSvc = {
       // DB item is different from the corresponding store item
       this.hashMap[dbItem.type][dbItem.id] = dbItem.hash;
       // Update content only if it exists in the store
-      if (existingStoreItem || !contentTypes[dbItem.type] || exportBackup) {
+      if (existingStoreItem || !contentTypes[dbItem.type] || exportWorkspace) {
         // Put item in the store
         dbItem.tx = undefined;
         store.commit(`${dbItem.type}/setItem`, dbItem);
@@ -438,17 +458,25 @@ const localDbSvc = {
   },
 
   /**
-   * Drop the database
+   * Drop the database and clean the localStorage for the specified workspaceId.
    */
-  removeDb() {
+  removeWorkspace(id) {
+    const workspaces = {
+      ...this.workspaces,
+    };
+    delete workspaces[id];
+    store.dispatch('data/setWorkspaces', workspaces);
+    this.syncLocalStorage();
     return new Promise((resolve, reject) => {
-      const request = indexedDB.deleteDatabase('stackedit-db');
+      const dbName = getDbName(id);
+      const request = indexedDB.deleteDatabase(dbName);
       request.onerror = reject;
       request.onsuccess = resolve;
     })
-    .then(() => {
-      window.location.reload();
-    }, () => store.dispatch('notification/error', 'Could not delete local database.'));
+      .then(() => {
+        localStorage.removeItem(`${id}/lastSyncActivity`);
+        localStorage.removeItem(`${id}/lastWindowFocus`);
+      });
   },
 };
 

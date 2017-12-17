@@ -1,15 +1,31 @@
 <template>
   <div class="side-bar__panel side-bar__panel--menu">
-    <menu-entry v-if="!loginToken" @click.native="signin">
-      <icon-login slot="icon"></icon-login>
-      <div>Sign in with Google</div>
-      <span>Back up and sync all your files, folders and settings.</span>
-    </menu-entry>
-    <div v-else class="menu-entry flex flex--row flex--align-center">
-      <div class="menu-entry__icon menu-entry__icon--image">
-        <user-image :user-id="loginToken.sub"></user-image>
+    <div v-if="!loginToken">
+      <div class="menu-entry menu-entry--info flex flex--row flex--align-center">
+        <div class="menu-entry__icon menu-entry__icon--disabled">
+          <icon-sync-off></icon-sync-off>
+        </div>
+        <span><b>{{currentWorkspace.name}}</b> not synced.</span>
       </div>
-      <span>Signed in as <b>{{loginToken.name}}</b>.</span>
+      <menu-entry @click.native="signin">
+        <icon-login slot="icon"></icon-login>
+        <div>Sign in with Google</div>
+        <span>Back up and sync all your files, folders and settings.</span>
+      </menu-entry>
+    </div>
+    <div v-else>
+      <div class="menu-entry menu-entry--info flex flex--row flex--align-center">
+        <div class="menu-entry__icon menu-entry__icon--image">
+          <user-image :user-id="loginToken.sub"></user-image>
+        </div>
+        <span>Signed in as <b>{{loginToken.name}}</b>.</span>
+      </div>
+      <div class="menu-entry menu-entry--info flex flex--row flex--align-center">
+        <div class="menu-entry__icon menu-entry__icon--image">
+          <icon-provider :provider-id="currentWorkspace.providerId"></icon-provider>
+        </div>
+        <span><b>{{currentWorkspace.name}}</b> synced.</span>
+      </div>
     </div>
     <menu-entry @click.native="setPanel('workspaces')">
       <icon-database slot="icon"></icon-database>
@@ -46,9 +62,10 @@
       <icon-help-circle slot="icon"></icon-help-circle>
       Markdown cheat sheet
     </menu-entry>
-    <menu-entry @click.native="print">
-      <icon-printer slot="icon"></icon-printer>
-      Print
+    <hr>
+    <menu-entry @click.native="setPanel('export')">
+      <icon-content-save slot="icon"></icon-content-save>
+      Export to disk
     </menu-entry>
     <input class="hidden-file" id="import-disk-file-input" type="file" @change="onImportFile">
     <label class="menu-entry button flex flex--row flex--align-center" for="import-disk-file-input">
@@ -59,9 +76,9 @@
         Import from disk
       </div>
     </label>
-    <menu-entry @click.native="setPanel('export')">
-      <icon-content-save slot="icon"></icon-content-save>
-      Export to disk
+    <menu-entry @click.native="print">
+      <icon-printer slot="icon"></icon-printer>
+      Print
     </menu-entry>
     <hr>
     <menu-entry @click.native="setPanel('more')">
@@ -84,7 +101,8 @@ export default {
     UserImage,
   },
   computed: {
-    ...mapGetters('data', [
+    ...mapGetters('workspace', [
+      'currentWorkspace',
       'loginToken',
     ]),
   },
@@ -123,8 +141,7 @@ export default {
         .catch(() => {}); // Cancel
     },
     history() {
-      const loginToken = this.$store.getters['data/loginToken'];
-      if (!loginToken) {
+      if (!this.loginToken) {
         this.$store.dispatch('modal/signInForHistory', {
           onResolve: () => googleHelper.signin()
             .then(() => syncSvc.requestSync()),

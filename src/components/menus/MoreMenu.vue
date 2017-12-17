@@ -13,22 +13,22 @@
     <menu-entry @click.native="reset">
       <icon-logout slot="icon"></icon-logout>
       <div>Reset application</div>
-      <span>Sign out and clean local data.</span>
+      <span>Sign out and clean all workspaces.</span>
     </menu-entry>
     <hr>
+    <menu-entry @click.native="exportWorkspace">
+      <icon-content-save slot="icon"></icon-content-save>
+      Export workspace backup
+    </menu-entry>
     <input class="hidden-file" id="import-backup-file-input" type="file" @change="onImportBackup">
     <label class="menu-entry button flex flex--row flex--align-center" for="import-backup-file-input">
       <div class="menu-entry__icon flex flex--column flex--center">
         <icon-content-save></icon-content-save>
       </div>
       <div class="flex flex--column">
-        Import backup
+        Import workspace backup
       </div>
     </label>
-    <menu-entry href="#exportBackup=true" target="_blank">
-      <icon-content-save slot="icon"></icon-content-save>
-      Export backup
-    </menu-entry>
     <hr>
     <menu-entry @click.native="about">
       <icon-help-circle slot="icon"></icon-help-circle>
@@ -47,8 +47,8 @@
 
 <script>
 import MenuEntry from './common/MenuEntry';
-import localDbSvc from '../../services/localDbSvc';
 import backupSvc from '../../services/backupSvc';
+import utils from '../../services/utils';
 import welcomeFile from '../../data/welcomeFile.md';
 
 export default {
@@ -72,6 +72,17 @@ export default {
         reader.readAsText(blob);
       }
     },
+    exportWorkspace() {
+      const url = utils.addQueryParams('app', {
+        ...utils.queryParams,
+        exportWorkspace: true,
+      }, true);
+      const iframeElt = utils.createHiddenIframe(url);
+      document.body.appendChild(iframeElt);
+      setTimeout(() => {
+        document.body.removeChild(iframeElt);
+      }, 60000);
+    },
     settings() {
       return this.$store.dispatch('modal/open', 'settings')
         .then(
@@ -88,10 +99,10 @@ export default {
     },
     reset() {
       return this.$store.dispatch('modal/reset')
-        .then(
-          () => localDbSvc.removeDb(),
-          () => {}, // Cancel
-        );
+        .then(() => {
+          location.href = '#reset=true';
+          location.reload();
+        });
     },
     welcomeFile() {
       return this.$store.dispatch('createFile', {

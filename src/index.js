@@ -24,7 +24,7 @@ if (NODE_ENV === 'production') {
         .then(() => {
           localStorage.updated = true;
           // Reload the webpage to load into the new version
-          window.location.reload();
+          location.reload();
         });
     },
   });

@@ -8,11 +8,11 @@
         <button class="side-title__button button" @click="newItem(true)" v-title="'New folder'">
           <icon-folder-plus></icon-folder-plus>
         </button>
-        <button class="side-title__button button" @click="editItem()" v-title="'Rename'">
-          <icon-pen></icon-pen>
-        </button>
         <button class="side-title__button button" @click="deleteItem()" v-title="'Remove'">
           <icon-delete></icon-delete>
+        </button>
+        <button class="side-title__button button" @click="editItem()" v-title="'Rename'">
+          <icon-pen></icon-pen>
         </button>
       </div>
       <button class="side-title__button button" @click="toggleExplorer(false)" v-title="'Close explorer'">

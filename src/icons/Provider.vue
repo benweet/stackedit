@@ -10,6 +10,7 @@ export default {
     classState() {
       switch (this.providerId) {
         case 'googleDrive':
+        case 'googleDriveAppData':
         case 'googleDriveWorkspace':
           return 'google-drive';
         case 'googlePhotos':

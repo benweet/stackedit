@@ -82,6 +82,12 @@ export default {
         networkSvc.init();
         sponsorSvc.init();
         this.ready = true;
+      })
+      .catch((err) => {
+        if (err && err.message !== 'reload') {
+          console.error(err); // eslint-disable-line no-console
+          this.$store.dispatch('notification/error', err);
+        }
       });
   },
 };

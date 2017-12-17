@@ -4,6 +4,7 @@ export default () => ({
   pdfExportTemplate: 'styledHtml',
   pandocExportFormat: 'pdf',
   googleDriveFolderId: '',
+  googleDriveWorkspaceFolderId: '',
   googleDrivePublishFormat: 'markdown',
   googleDrivePublishTemplate: 'styledHtml',
   bloggerBlogUrl: '',

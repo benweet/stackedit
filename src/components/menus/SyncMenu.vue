@@ -106,8 +106,8 @@ export default {
     ...mapState('queue', [
       'isSyncRequested',
     ]),
-    ...mapGetters('data', [
-      'loginToken',
+    ...mapGetters('workspace', [
+      'syncToken',
     ]),
     ...mapGetters('syncLocation', {
       syncLocations: 'current',
@@ -116,7 +116,7 @@ export default {
       return this.$store.getters['file/current'].name;
     },
     isSyncPossible() {
-      return this.$store.getters['data/loginToken'] ||
+      return this.syncToken ||
         this.$store.getters['syncLocation/current'].length;
     },
     googleDriveTokens() {

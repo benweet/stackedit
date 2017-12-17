@@ -5,12 +5,13 @@ import diffUtils from './diffUtils';
 import networkSvc from './networkSvc';
 import providerRegistry from './providers/providerRegistry';
 import googleDriveAppDataProvider from './providers/googleDriveAppDataProvider';
+import './providers/googleDriveWorkspaceProvider';
 
 const inactivityThreshold = 3 * 1000; // 3 sec
 const restartSyncAfter = 30 * 1000; // 30 sec
-const autoSyncAfter = utils.randomize(60 * 1000); // 60 sec
+const minAutoSyncEvery = 60 * 1000; // 60 sec
 
-let workspaceProvider;
+let syncProvider;
 
 /**
  * Use a lock in the local storage to prevent multiple windows concurrency.
@@ -22,14 +23,7 @@ const getLastStoredSyncActivity = () =>
 /**
  * Return true if workspace sync is possible.
  */
-const isWorkspaceSyncPossible = () => {
-  const loginToken = store.getters['data/loginToken'];
-  if (!loginToken && Object.keys(store.getters['data/syncData']).length) {
-    // Reset sync data if token was removed
-    store.dispatch('data/setSyncData', {});
-  }
-  return !!loginToken;
-};
+const isWorkspaceSyncPossible = () => !!store.getters['workspace/syncToken'];
 
 /**
  * Return true if file has at least one explicit sync location.
@@ -55,8 +49,11 @@ function isSyncWindow() {
  * Return true if auto sync can start, ie if lastSyncActivity is old enough.
  */
 function isAutoSyncReady() {
-  const storedLastSyncActivity = getLastStoredSyncActivity();
-  return Date.now() > autoSyncAfter + storedLastSyncActivity;
+  let autoSyncEvery = store.getters['data/computedSettings'].autoSyncEvery;
+  if (autoSyncEvery < minAutoSyncEvery) {
+    autoSyncEvery = minAutoSyncEvery;
+  }
+  return Date.now() > autoSyncEvery + getLastStoredSyncActivity();
 }
 
 /**
@@ -91,7 +88,6 @@ function cleanSyncedContent(syncedContent) {
 
 /**
  * Apply changes retrieved from the main provider. Update sync data accordingly.
- * @param {*} changes The changes to apply.
  */
 function applyChanges(changes) {
   const storeItemMap = { ...store.getters.allItemMap };
@@ -99,7 +95,7 @@ function applyChanges(changes) {
   let syncDataChanged = false;
 
   changes.forEach((change) => {
-    const existingSyncData = syncData[change.fileId];
+    const existingSyncData = syncData[change.syncDataId];
     const existingItem = existingSyncData && storeItemMap[existingSyncData.itemId];
     if (change.removed && existingSyncData) {
       if (existingItem) {
@@ -107,19 +103,19 @@ function applyChanges(changes) {
         store.commit(`${existingItem.type}/deleteItem`, existingItem.id);
         delete storeItemMap[existingItem.id];
       }
-      delete syncData[change.fileId];
+      delete syncData[change.syncDataId];
       syncDataChanged = true;
     } else if (!change.removed && change.item && change.item.hash) {
       if (!existingSyncData || (existingSyncData.hash !== change.item.hash && (
         !existingItem || existingItem.hash !== change.item.hash
       ))) {
-        // Put object in the store
-        if (change.item.type !== 'content') { // Merge contents later
+        // Put object in the store, except for content and data which will be merge later
+        if (change.item.type !== 'content' && change.item.type !== 'data') {
           store.commit(`${change.item.type}/setItem`, change.item);
           storeItemMap[change.item.id] = change.item;
         }
       }
-      syncData[change.fileId] = change.syncData;
+      syncData[change.syncDataId] = change.syncData;
       syncDataChanged = true;
     }
   });
@@ -221,7 +217,7 @@ function syncFile(fileId, syncContext = new SyncContext()) {
           ...store.getters['syncLocation/groupedByFileId'][fileId] || [],
         ];
         if (isWorkspaceSyncPossible()) {
-          syncLocations.unshift({ id: 'main', providerId: mainProvider.id, fileId });
+          syncLocations.unshift({ id: 'main', providerId: syncProvider.id, fileId });
         }
         let result;
         syncLocations.some((syncLocation) => {
@@ -355,7 +351,7 @@ function syncFile(fileId, syncContext = new SyncContext()) {
                       }
 
                       // If content was just created, restart sync to create the file as well
-                      if (provider === mainProvider &&
+                      if (provider === syncProvider &&
                         !store.getters['data/syncDataByItemId'][fileId]
                       ) {
                         syncContext.restart = true;
@@ -396,21 +392,25 @@ function syncFile(fileId, syncContext = new SyncContext()) {
 }
 
 /**
- * Sync a data item, typically settings and templates.
+ * Sync a data item, typically settings, workspaces and templates.
  */
 function syncDataItem(dataId) {
-  const item = store.state.data.itemMap[dataId];
+  const getItem = () => store.state.data.itemMap[dataId]
+    || store.state.data.lsItemMap[dataId];
+
+  const item = getItem();
   const syncData = store.getters['data/syncDataByItemId'][dataId];
   // Sync if item hash and syncData hash are inconsistent
   if (syncData && item && item.hash === syncData.hash) {
     return null;
   }
-  const token = mainProvider.getToken();
-  return token && mainProvider.downloadData(token, dataId)
+
+  const syncToken = store.getters['workspace/syncToken'];
+  return syncToken && syncProvider.downloadData(syncToken, dataId)
     .then((serverItem = null) => {
       const dataSyncData = store.getters['data/dataSyncData'][dataId];
       let mergedItem = (() => {
-        const clientItem = utils.deepCopy(store.state.data.itemMap[dataId]);
+        const clientItem = utils.deepCopy(getItem());
         if (!clientItem) {
           return serverItem;
         }
@@ -445,15 +445,15 @@ function syncDataItem(dataId) {
       });
 
       // Retrieve item with new `hash` and freeze it
-      mergedItem = utils.deepCopy(store.state.data.itemMap[dataId]);
+      mergedItem = utils.deepCopy(getItem());
 
       return Promise.resolve()
         .then(() => {
           if (serverItem && serverItem.hash === mergedItem.hash) {
             return null;
           }
-          return mainProvider.uploadData(
-            token,
+          return syncProvider.uploadData(
+            syncToken,
             mergedItem,
             dataId,
           );
@@ -469,14 +469,26 @@ function syncDataItem(dataId) {
 /**
  * Sync the whole workspace with the main provider and the current file explicit locations.
  */
-function syncWorkspace() {
+function syncWorkspace(workspace, syncToken) {
   const syncContext = new SyncContext();
-  const mainToken = store.getters['data/loginToken'];
-  return mainProvider.getChanges(mainToken)
+
+  return Promise.resolve()
+    .then(() => {
+      // Store the sub in the DB since it's not safely stored in the token
+      const localSettings = store.getters['data/localSettings'];
+      if (!localSettings.syncSub) {
+        store.dispatch('data/patchLocalSettings', {
+          workspaceSyncSub: syncToken.sub,
+        });
+      } else if (localSettings.syncSub !== syncToken.sub) {
+        throw new Error('Synchronization failed due to token inconsistency.');
+      }
+    })
+    .then(() => syncProvider.getChanges(syncToken))
     .then((changes) => {
       // Apply changes
       applyChanges(changes);
-      mainProvider.setAppliedChanges(mainToken, changes);
+      syncProvider.setAppliedChanges(changes);
 
       // Prevent from sending items too long after changes have been retrieved
       const syncStartTime = Date.now();
@@ -504,8 +516,8 @@ function syncWorkspace() {
             // Add file if content has been uploaded
             (item.type !== 'file' || syncDataByItemId[`${id}/content`])
           ) {
-            result = mainProvider.saveItem(
-              mainToken,
+            result = syncProvider.saveItem(
+              syncToken,
               // Use deepCopy to freeze objects
               utils.deepCopy(item),
               utils.deepCopy(existingSyncData),
@@ -529,19 +541,20 @@ function syncWorkspace() {
           ...store.state.syncLocation.itemMap,
           ...store.state.publishLocation.itemMap,
           ...store.state.content.itemMap,
-          ...store.state.data.itemMap,
         };
         const syncData = store.getters['data/syncData'];
         let result;
         Object.entries(syncData).some(([, existingSyncData]) => {
           if (!storeItemMap[existingSyncData.itemId] &&
+            // We don't want to delete data items, especially on first sync
+            existingSyncData.type !== 'data' &&
             // Remove content only if file has been removed
             (existingSyncData.type !== 'content' || !storeItemMap[existingSyncData.itemId.split('/')[0]])
           ) {
             // Use deepCopy to freeze objects
             const syncDataToRemove = utils.deepCopy(existingSyncData);
-            result = mainProvider
-              .removeItem(mainToken, syncDataToRemove, ifNotTooLate)
+            result = syncProvider
+              .removeItem(syncToken, syncDataToRemove, ifNotTooLate)
               .then(() => {
                 const syncDataCopy = { ...store.getters['data/syncData'] };
                 delete syncDataCopy[syncDataToRemove.id];
@@ -590,7 +603,10 @@ function syncWorkspace() {
       return Promise.resolve()
         .then(() => saveNextItem())
         .then(() => removeNextItem())
-        .then(() => syncDataItem('settings'))
+        // Sync settings only in the main workspace
+        .then(() => workspace.id === 'main' && syncDataItem('settings'))
+        // Sync workspaces only in the main workspace
+        .then(() => workspace.id === 'main' && syncDataItem('workspaces'))
         .then(() => syncDataItem('templates'))
         .then(() => {
           const currentFileId = store.getters['file/current'].id;
@@ -605,14 +621,14 @@ function syncWorkspace() {
           () => {
             if (syncContext.restart) {
               // Restart sync
-              return syncWorkspace();
+              return syncWorkspace(workspace, syncToken);
             }
             return null;
           },
           (err) => {
             if (err && err.message === 'TOO_LATE') {
               // Restart sync
-              return syncWorkspace();
+              return syncWorkspace(workspace, syncToken);
             }
             throw err;
           });
@@ -660,12 +676,14 @@ function requestSync() {
         Promise.resolve()
           .then(() => {
             if (isWorkspaceSyncPossible()) {
-              return syncWorkspace();
+              return syncWorkspace(
+                store.getters['workspace/currentWorkspace'],
+                store.getters['workspace/syncToken']);
             }
             if (hasCurrentFileSyncLocations()) {
-              // Only sync current file if data sync is unavailable.
-              // We also could sync files that are out-of-sync but it would
-              // require to load the syncedContent objects of all files.
+              // Only sync current file if workspace sync is unavailable.
+              // We could also sync files that are out-of-sync but it would
+              // require to load all the syncedContent objects from the DB.
               return syncFile(store.getters['file/current'].id);
             }
             return null;
@@ -692,14 +710,14 @@ export default {
     // Load workspaces and tokens from localStorage
     localDbSvc.syncLocalStorage();
 
-    // Try to find a suitable workspace provider
-    workspaceProvider = providerRegistry.providers[utils.queryParams.providerId];
-    if (!workspaceProvider || !workspaceProvider.initWorkspace) {
-      workspaceProvider = googleDriveAppDataProvider;
+    // Try to find a suitable workspace sync provider
+    syncProvider = providerRegistry.providers[utils.queryParams.providerId];
+    if (!syncProvider || !syncProvider.initWorkspace) {
+      syncProvider = googleDriveAppDataProvider;
     }
 
-    return workspaceProvider.initWorkspace()
-      .then(workspace => store.commit('workspace/setCurrentWorkspaceId', workspace.id))
+    return syncProvider.initWorkspace()
+      .then(workspace => store.dispatch('workspace/setCurrentWorkspaceId', workspace.id))
       .then(() => localDbSvc.init())
       .then(() => {
         // Sync periodically

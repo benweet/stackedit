@@ -45,17 +45,17 @@ export default modalTemplate({
       const selectedFormat = this.selectedFormat;
       this.$store.dispatch('queue/enqueue', () => Promise.all([
         Promise.resolve().then(() => {
-          const loginToken = this.$store.getters['data/loginToken'];
-          return loginToken && googleHelper.refreshToken(loginToken);
+          const sponsorToken = this.$store.getters['workspace/sponsorToken'];
+          return sponsorToken && googleHelper.refreshToken(sponsorToken);
         }),
         sponsorSvc.getToken(),
       ])
-        .then(([loginToken, token]) => networkSvc.request({
+        .then(([sponsorToken, token]) => networkSvc.request({
           method: 'POST',
           url: 'pandocExport',
           params: {
             token,
-            idToken: loginToken && loginToken.idToken,
+            idToken: sponsorToken && sponsorToken.idToken,
             format: selectedFormat,
             options: JSON.stringify(this.$store.getters['data/computedSettings'].pandoc),
             metadata: JSON.stringify(currentContent.properties),

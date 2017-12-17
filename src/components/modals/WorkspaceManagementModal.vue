@@ -5,18 +5,20 @@
         <div class="workspace-entry__icon flex flex--column flex--center">
           <icon-provider :provider-id="workspace.providerId"></icon-provider>
         </div>
-        <input class="text-input" type="text" v-if="editedId === id" v-focus @blur="submitEdit()" @keyup.enter="submitEdit()" @keyup.esc.stop="submitEdit(true)" v-model="editingName">
-        <div class="workspace-entry__name" v-else>
-          {{workspace.name}}
+        <div class="workspace-entry__description flex flex--column">
+          <input class="text-input" type="text" v-if="editedId === id" v-focus @blur="submitEdit()" @keyup.enter="submitEdit()" @keyup.esc.stop="submitEdit(true)" v-model="editingName">
+          <div class="workspace-entry__name" v-else>
+            {{workspace.name}}
+          </div>
+          <div class="workspace-entry__url">
+            {{workspace.url}}
+          </div>
         </div>
         <div class="workspace-entry__buttons flex flex--row flex--center">
           <button class="workspace-entry__button button" @click="edit(id)">
             <icon-pen></icon-pen>
           </button>
-          <a class="workspace-entry__button button" :href="workspace.url" target="_blank">
-            <icon-open-in-new></icon-open-in-new>
-          </a>
-          <button class="workspace-entry__button button" @click="remove(id)">
+          <button class="workspace-entry__button button" v-if="workspace !== currentWorkspace && workspace !== mainWorkspace" @click="remove(id)">
             <icon-delete></icon-delete>
           </button>
         </div>
@@ -31,6 +33,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import ModalInner from './common/ModalInner';
+import localDbSvc from '../../services/localDbSvc';
 
 export default {
   components: {
@@ -46,6 +49,10 @@ export default {
     ]),
     ...mapGetters('data', [
       'workspaces',
+    ]),
+    ...mapGetters('workspace', [
+      'mainWorkspace',
+      'currentWorkspace',
     ]),
   },
   methods: {
@@ -68,11 +75,11 @@ export default {
       this.editedId = null;
     },
     remove(id) {
-      const workspaces = {
-        ...this.workspaces,
-      };
-      delete workspaces[id];
-      this.$store.dispatch('data/setWorkspaces', workspaces);
+      return this.$store.dispatch('modal/removeWorkspace')
+        .then(
+          () => localDbSvc.removeWorkspace(id),
+          () => {}, // Cancel
+        );
     },
   },
 };
@@ -97,6 +104,11 @@ export default {
   &:last-child {
     border-bottom: none;
   }
+
+  span {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 }
 
 .workspace-entry__icon {
@@ -106,10 +118,20 @@ export default {
   flex: none;
 }
 
-.workspace-entry__name {
+.workspace-entry__description {
   width: 100%;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+
+.workspace-entry__name {
   overflow: hidden;
   font-weight: bold;
+}
+
+.workspace-entry__url {
+  opacity: 0.5;
+  font-size: 0.75em;
 }
 
 .workspace-entry__buttons {

@@ -92,7 +92,7 @@ export default {
       publishLocations: 'current',
     }),
     isSyncPossible() {
-      return this.$store.getters['data/loginToken'] ||
+      return this.$store.getters['workspace/syncToken'] ||
         this.$store.getters['syncLocation/current'].length;
     },
     showSpinner() {

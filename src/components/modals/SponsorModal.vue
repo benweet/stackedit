@@ -25,12 +25,12 @@ export default {
     ModalInner,
   },
   data() {
-    const loginToken = this.$store.getters['data/loginToken'];
+    const sponsorToken = this.$store.getters['workspace/sponsorToken'];
     const makeButton = (id, price, description, offer) => {
       const params = {
         cmd: '_s-xclick',
         hosted_button_id: id,
-        custom: loginToken.sub,
+        custom: sponsorToken.sub,
       };
       return {
         id,
@@ -42,7 +42,7 @@ export default {
     };
 
     return {
-      buttons: loginToken ? [
+      buttons: sponsorToken ? [
         makeButton('TDAPH47B3J2JW', '$5', '3 months sponsorship'),
         makeButton('6CTKPKF8868UA', '$15', '1 year sponsorship', '-25%'),
         makeButton('A5ZDYW6SYDLBE', '$25', '2 years sponsorship', '-37%'),

@@ -7,7 +7,6 @@ const networkTimeout = 30 * 1000; // 30 sec
 let isConnectionDown = false;
 const userInactiveAfter = 2 * 60 * 1000; // 2 minutes
 
-
 export default {
   init() {
     // Keep track of the last user activity
@@ -82,7 +81,9 @@ export default {
     window.addEventListener('offline', checkOffline);
   },
   isWindowFocused() {
-    return parseInt(localStorage.getItem(this.lastFocusKey), 10) === this.lastFocus;
+    // We don't use state.workspace.lastFocus as it's not reactive
+    const storedLastFocus = localStorage.getItem(store.getters['workspace/lastFocusKey']);
+    return parseInt(storedLastFocus, 10) === this.lastFocus;
   },
   isUserActive() {
     return this.lastActivity > Date.now() - userInactiveAfter && this.isWindowFocused();
@@ -113,10 +114,7 @@ export default {
     let wnd;
     if (silent) {
       // Use an iframe as wnd for silent mode
-      iframeElt = document.createElement('iframe');
-      iframeElt.style.position = 'absolute';
-      iframeElt.style.left = '-9999px';
-      iframeElt.src = authorizeUrl;
+      iframeElt = utils.createHiddenIframe(authorizeUrl);
       document.body.appendChild(iframeElt);
       wnd = iframeElt.contentWindow;
     } else {

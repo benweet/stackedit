@@ -168,7 +168,7 @@ export default {
           expiresOn: Date.now() + (data.expiresIn * 1000),
           idToken: data.idToken,
           sub: `${res.body.sub}`,
-          isLogin: !store.getters['data/loginToken'] &&
+          isLogin: !store.getters['workspace/loginToken'] &&
             scopes.indexOf('https://www.googleapis.com/auth/drive.appdata') !== -1,
           isSponsor: false,
           isDrive: scopes.indexOf('https://www.googleapis.com/auth/drive') !== -1 ||
@@ -195,13 +195,14 @@ export default {
             // We probably retrieved a new token with restricted scopes.
             // That's no problem, token will be refreshed later with merged scopes.
             // Restore flags
-            token.isLogin = existingToken.isLogin || token.isLogin;
-            token.isSponsor = existingToken.isSponsor;
-            token.isDrive = existingToken.isDrive || token.isDrive;
-            token.isBlogger = existingToken.isBlogger || token.isBlogger;
-            token.isPhotos = existingToken.isPhotos || token.isPhotos;
-            token.driveFullAccess = existingToken.driveFullAccess || token.driveFullAccess;
-            token.nextPageToken = existingToken.nextPageToken;
+            Object.assign(token, {
+              isLogin: existingToken.isLogin || token.isLogin,
+              isSponsor: existingToken.isSponsor,
+              isDrive: existingToken.isDrive || token.isDrive,
+              isBlogger: existingToken.isBlogger || token.isBlogger,
+              isPhotos: existingToken.isPhotos || token.isPhotos,
+              driveFullAccess: existingToken.driveFullAccess || token.driveFullAccess,
+            });
           }
           return token.isLogin && networkSvc.request({
             method: 'GET',
@@ -296,7 +297,7 @@ export default {
   addPhotosAccount() {
     return this.startOauth2(photosScopes);
   },
-  getChanges(token) {
+  getChanges(token, startPageToken, spaces) {
     const result = {
       changes: [],
     };
@@ -307,20 +308,21 @@ export default {
           url: 'https://www.googleapis.com/drive/v3/changes',
           params: {
             pageToken,
-            spaces: 'appDataFolder',
+            spaces,
             pageSize: 1000,
-            fields: 'nextPageToken,newStartPageToken,changes(fileId,removed,file/name,file/properties)',
+            fields: 'nextPageToken,newStartPageToken,changes(fileId,removed,file/name,file/appProperties)',
           },
-        }).then((res) => {
-          result.changes = result.changes.concat(res.body.changes.filter(item => item.fileId));
-          if (res.body.nextPageToken) {
-            return getPage(res.body.nextPageToken);
-          }
-          result.nextPageToken = res.body.newStartPageToken;
-          return result;
-        });
+        })
+          .then((res) => {
+            result.changes = result.changes.concat(res.body.changes.filter(item => item.fileId));
+            if (res.body.nextPageToken) {
+              return getPage(res.body.nextPageToken);
+            }
+            result.startPageToken = res.body.newStartPageToken;
+            return result;
+          });
 
-        return getPage(refreshedToken.nextPageToken);
+        return getPage(startPageToken);
       });
   },
   uploadFile(token, name, parents, appProperties, media, mediaType, fileId, ifNotTooLate) {
@@ -338,6 +340,9 @@ export default {
       .then(refreshedToken => this.request(refreshedToken, {
         method: 'GET',
         url: `https://www.googleapis.com/drive/v3/files/${id}`,
+        params: {
+          fields: 'id,name,mimeType,appProperties',
+        },
       })
       .then(res => res.body));
   },
@@ -369,20 +374,21 @@ export default {
             pageSize: 1000,
             fields: 'nextPageToken,revisions(id,modifiedTime,lastModifyingUser/permissionId,lastModifyingUser/displayName,lastModifyingUser/photoLink)',
           },
-        }).then((res) => {
-          res.body.revisions.forEach((revision) => {
-            store.commit('userInfo/addItem', {
-              id: revision.lastModifyingUser.permissionId,
-              name: revision.lastModifyingUser.displayName,
-              imageUrl: revision.lastModifyingUser.photoLink,
+        })
+          .then((res) => {
+            res.body.revisions.forEach((revision) => {
+              store.commit('userInfo/addItem', {
+                id: revision.lastModifyingUser.permissionId,
+                name: revision.lastModifyingUser.displayName,
+                imageUrl: revision.lastModifyingUser.photoLink,
+              });
+              revisions.push(revision);
             });
-            revisions.push(revision);
+            if (res.body.nextPageToken) {
+              return getPage(res.body.nextPageToken);
+            }
+            return revisions;
           });
-          if (res.body.nextPageToken) {
-            return getPage(res.body.nextPageToken);
-          }
-          return revisions;
-        });
 
         return getPage();
       });

@@ -28,11 +28,8 @@ import modalTemplate from '../common/modalTemplate';
 import utils from '../../../services/utils';
 
 export default modalTemplate({
-  data: () => ({
-    fileId: '',
-  }),
   computedLocalSettings: {
-    folderId: 'googleDriveFolderId',
+    folderId: 'googleDriveWorkspaceFolderId',
   },
   methods: {
     openFolder() {
@@ -41,7 +38,7 @@ export default modalTemplate({
         googleHelper.openPicker(this.config.token, 'folder')
           .then((folders) => {
             this.$store.dispatch('data/patchLocalSettings', {
-              googleDriveFolderId: folders[0].id,
+              googleDriveWorkspaceFolderId: folders[0].id,
             });
           }));
     },
@@ -50,7 +47,7 @@ export default modalTemplate({
         providerId: 'googleDriveWorkspace',
         folderId: this.folderId,
         sub: this.config.token.sub,
-      });
+      }, true);
       this.config.resolve();
       window.open(url);
     },

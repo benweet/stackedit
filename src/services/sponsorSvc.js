@@ -17,8 +17,8 @@ const getMonetize = () => Promise.resolve()
   });
 
 const isGoogleSponsor = () => {
-  const loginToken = store.getters['data/loginToken'];
-  return loginToken && loginToken.isSponsor;
+  const sponsorToken = store.getters['workspace/sponsorToken'];
+  return sponsorToken && sponsorToken.isSponsor;
 };
 
 const checkPayment = () => {

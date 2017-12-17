@@ -1,38 +1,50 @@
-import utils from '../services/utils';
-import googleHelper from '../services/providers/helpers/googleHelper';
-import syncSvc from '../services/syncSvc';
-
-const idShifter = offset => (state, getters) => {
-  const ids = Object.keys(getters.currentFileDiscussions);
-  const idx = ids.indexOf(state.currentDiscussionId) + offset + ids.length;
-  return ids[idx % ids.length];
-};
-
 export default {
   namespaced: true,
   state: {
     currentWorkspaceId: null,
+    lastFocus: 0,
   },
   mutations: {
     setCurrentWorkspaceId: (state, value) => {
       state.currentWorkspaceId = value;
     },
+    setLastFocus: (state, value) => {
+      state.lastFocus = value;
+    },
   },
   getters: {
+    mainWorkspace: (state, getters, rootState, rootGetters) => {
+      const workspaces = rootGetters['data/workspaces'];
+      return workspaces.main;
+    },
     currentWorkspace: (state, getters, rootState, rootGetters) => {
       const workspaces = rootGetters['data/workspaces'];
-      return workspaces[state.currentWorkspaceId] || workspaces.main;
+      return workspaces[state.currentWorkspaceId] || getters.mainWorkspace;
     },
-    lastSyncActivityKey: (state, getters) => {
-      const workspaceId = getters.currentWorkspace.id;
-      return `${workspaceId}/lastSyncActivity`;
+    lastSyncActivityKey: (state, getters) => `${getters.currentWorkspace.id}/lastSyncActivity`,
+    lastFocusKey: (state, getters) => `${getters.currentWorkspace.id}/lastWindowFocus`,
+    mainWorkspaceToken: (state, getters, rootState, rootGetters) => {
+      const googleTokens = rootGetters['data/googleTokens'];
+      const loginSubs = Object.keys(googleTokens)
+        .filter(sub => googleTokens[sub].isLogin);
+      return googleTokens[loginSubs[0]];
     },
-    lastFocusKey: (state, getters) => {
-      const workspaceId = getters.currentWorkspace.id;
-      return `${workspaceId}/lastWindowFocus`;
+    syncToken: (state, getters, rootState, rootGetters) => {
+      const workspace = getters.currentWorkspace;
+      if (workspace.providerId === 'googleDriveWorkspace') {
+        const googleTokens = rootGetters['data/googleTokens'];
+        return googleTokens[workspace.sub];
+      }
+      return getters.mainWorkspaceToken;
     },
-    lastFocus: (state, getters) => parseInt(localStorage.getItem(getters.lastFocusKey), 10) || 0,
+    loginToken: (state, getters) => getters.syncToken,
+    sponsorToken: (state, getters) => getters.mainWorkspaceToken,
   },
   actions: {
+    setCurrentWorkspaceId: ({ commit, getters }, value) => {
+      commit('setCurrentWorkspaceId', value);
+      const lastFocus = parseInt(localStorage.getItem(getters.lastFocusKey), 10) || 0;
+      commit('setLastFocus', lastFocus);
+    },
   },
 };

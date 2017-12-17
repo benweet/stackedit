@@ -4,24 +4,26 @@ import defaultProperties from '../data/defaultFileProperties.yml';
 
 const origin = `${location.protocol}//${location.host}`;
 
-// For uid()
+// For utils.uid()
 const uidLength = 16;
 const crypto = window.crypto || window.msCrypto;
 const alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const radix = alphabet.length;
 const array = new Uint32Array(uidLength);
 
-// For parseQueryParams()
+// For utils.parseQueryParams()
 const parseQueryParams = (params) => {
   const result = {};
   params.split('&').forEach((param) => {
     const [key, value] = param.split('=').map(decodeURIComponent);
-    result[key] = value;
+    if (key) {
+      result[key] = value;
+    }
   });
   return result;
 };
 
-// For addQueryParams()
+// For utils.addQueryParams()
 const urlParser = window.document.createElement('a');
 
 export default {
@@ -121,19 +123,42 @@ export default {
     return setInterval(() => func(), this.randomize(interval));
   },
   parseQueryParams,
-  addQueryParams(url = '', params = {}) {
+  addQueryParams(url = '', params = {}, hash = false) {
     const keys = Object.keys(params).filter(key => params[key] != null);
     urlParser.href = url;
     if (!keys.length) {
       return urlParser.href;
     }
-    if (urlParser.search) {
-      urlParser.search += '&';
+    const serializedParams = keys.map(key =>
+      `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
+    if (hash) {
+      if (urlParser.hash) {
+        urlParser.hash += '&';
+      } else {
+        urlParser.hash = '#';
+      }
+      urlParser.hash += serializedParams;
     } else {
-      urlParser.search = '?';
+      if (urlParser.search) {
+        urlParser.search += '&';
+      } else {
+        urlParser.search = '?';
+      }
+      urlParser.search += serializedParams;
     }
-    urlParser.search += keys.map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`).join('&');
     return urlParser.href;
+  },
+  resolveUrl(url) {
+    return this.addQueryParams(url);
+  },
+  createHiddenIframe(url) {
+    const iframeElt = document.createElement('iframe');
+    iframeElt.style.position = 'absolute';
+    iframeElt.style.left = '-9999px';
+    iframeElt.style.width = '1px';
+    iframeElt.style.height = '1px';
+    iframeElt.src = url;
+    return iframeElt;
   },
   wrapRange(range, eltProperties) {
     const rangeLength = `${range}`.length;

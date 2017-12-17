@@ -75,8 +75,13 @@ export default {
       resolveText: 'Yes, revert',
       rejectText: 'No',
     }),
+    removeWorkspace: ({ dispatch }) => dispatch('open', {
+      content: '<p>This will clean your workspace locally. Are you sure?</p>',
+      resolveText: 'Yes, clean',
+      rejectText: 'No',
+    }),
     reset: ({ dispatch }) => dispatch('open', {
-      content: '<p>This will clean your local files and settings. Are you sure?</p>',
+      content: '<p>This will clean all your workspaces locally. Are you sure?</p>',
       resolveText: 'Yes, clean',
       rejectText: 'No',
     }),

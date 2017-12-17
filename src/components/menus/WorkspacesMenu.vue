@@ -2,9 +2,8 @@
   <div class="side-bar__panel side-bar__panel--menu">
     <div class="workspace" v-for="(workspace, id) in workspaces" :key="id">
       <menu-entry :href="workspace.url" target="_blank">
-        <icon-provider slot="icon" provider-id="googleDrive"></icon-provider>
-        <div class="workspace__name">{{workspace.name}}</div>
-        <span>{{workspace.url}}</span>
+        <icon-provider slot="icon" :provider-id="workspace.providerId"></icon-provider>
+        <div class="workspace__name"><div class="menu-entry__label" v-if="currentWorkspace === workspace">current</div>{{workspace.name}}</div>
       </menu-entry>
     </div>
     <hr>
@@ -32,6 +31,9 @@ export default {
     ...mapGetters('data', [
       'workspaces',
     ]),
+    ...mapGetters('workspace', [
+      'currentWorkspace',
+    ]),
   },
   methods: {
     addGoogleDriveWorkspace() {
@@ -50,8 +52,16 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../common/variables.scss';
+
+.workspace .menu-entry {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
 .workspace__name {
   font-weight: bold;
+  line-height: 1.2;
 
   .menu-entry div & {
     text-decoration: none;

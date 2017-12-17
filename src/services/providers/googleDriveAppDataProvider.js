@@ -5,17 +5,19 @@ import providerRegistry from './providerRegistry';
 export default providerRegistry.register({
   id: 'googleDriveAppData',
   getToken() {
-    return store.getters['data/loginToken'];
+    return store.getters['workspace/syncToken'];
   },
   initWorkspace() {
     // Nothing to do since the main workspace isn't necessarily synchronized
-    return Promise.resolve();
+    return Promise.resolve(store.getters['data/workspaces'].main);
   },
   getChanges(token) {
-    return googleHelper.getChanges(token)
+    const startPageToken = store.getters['data/localSettings'].syncStartPageToken;
+    return googleHelper.getChanges(token, startPageToken, 'appDataFolder')
       .then((result) => {
         const changes = result.changes.filter((change) => {
           if (change.file) {
+            // Parse item from file name
             try {
               change.item = JSON.parse(change.file.name);
             } catch (e) {
@@ -30,20 +32,17 @@ export default providerRegistry.register({
             };
             change.file = undefined;
           }
+          change.syncDataId = change.fileId;
           return true;
         });
-        changes.nextPageToken = result.nextPageToken;
+        changes.startPageToken = result.startPageToken;
         return changes;
       });
   },
-  setAppliedChanges(token, changes) {
-    const lastToken = store.getters['data/googleTokens'][token.sub];
-    if (changes.nextPageToken !== lastToken.nextPageToken) {
-      store.dispatch('data/setGoogleToken', {
-        ...lastToken,
-        nextPageToken: changes.nextPageToken,
-      });
-    }
+  setAppliedChanges(changes) {
+    store.dispatch('data/patchLocalSettings', {
+      workspaceSyncStartPageToken: changes.startPageToken,
+    });
   },
   saveItem(token, item, syncData, ifNotTooLate) {
     return googleHelper.uploadAppDataFile(

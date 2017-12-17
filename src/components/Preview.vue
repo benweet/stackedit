@@ -22,7 +22,7 @@ import { mapGetters, mapActions } from 'vuex';
 import CommentList from './gutters/CommentList';
 import PreviewNewDiscussionButton from './gutters/PreviewNewDiscussionButton';
 
-const appUri = `${window.location.protocol}//${window.location.host}`;
+const appUri = `${location.protocol}//${location.host}`;
 
 export default {
   components: {

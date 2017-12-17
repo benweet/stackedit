@@ -33,7 +33,7 @@ export default {
   components: {
     UserImage,
   },
-  computed: mapGetters('data', [
+  computed: mapGetters('workspace', [
     'loginToken',
   ]),
   methods: {

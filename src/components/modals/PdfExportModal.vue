@@ -38,19 +38,19 @@ export default modalTemplate({
       const currentFile = this.$store.getters['file/current'];
       this.$store.dispatch('queue/enqueue', () => Promise.all([
         Promise.resolve().then(() => {
-          const loginToken = this.$store.getters['data/loginToken'];
-          return loginToken && googleHelper.refreshToken(loginToken);
+          const sponsorToken = this.$store.getters['workspace/sponsorToken'];
+          return sponsorToken && googleHelper.refreshToken(sponsorToken);
         }),
         sponsorSvc.getToken(),
         exportSvc.applyTemplate(
           currentFile.id, this.allTemplates[this.selectedTemplate], true),
       ])
-        .then(([loginToken, token, html]) => networkSvc.request({
+        .then(([sponsorToken, token, html]) => networkSvc.request({
           method: 'POST',
           url: 'pdfExport',
           params: {
             token,
-            idToken: loginToken && loginToken.idToken,
+            idToken: sponsorToken && sponsorToken.idToken,
             options: JSON.stringify(this.$store.getters['data/computedSettings'].wkhtmltopdf),
           },
           body: html,

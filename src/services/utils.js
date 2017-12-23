@@ -85,6 +85,17 @@ export default {
     }
     return hash;
   },
+  addItemHash(item) {
+    return {
+      ...item,
+      hash: this.hash(this.serializeObject({
+        ...item,
+        // These properties must not be part of the hash
+        history: undefined,
+        hash: undefined,
+      })),
+    };
+  },
   encodeBase64(str) {
     return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
       (match, p1) => String.fromCharCode(`0x${p1}`)));

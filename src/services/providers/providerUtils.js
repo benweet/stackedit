@@ -51,11 +51,7 @@ export default {
         // Ignore
       }
     }
-    result.hash = utils.hash(utils.serializeObject({
-      ...result,
-      hash: undefined,
-    }));
-    return result;
+    return utils.addItemHash(result);
   },
   /**
    * Find and open a file location that fits the criteria

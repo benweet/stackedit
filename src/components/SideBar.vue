@@ -120,6 +120,12 @@ export default {
   width: 100%;
   height: 100%;
   overflow: auto;
+
+  &::after {
+    content: '';
+    display: block;
+    height: 40px;
+  }
 }
 
 .side-bar__panel--hidden {
@@ -127,11 +133,11 @@ export default {
 }
 
 .side-bar__panel--menu {
-  padding: 10px 10px 50px;
+  padding: 10px;
 }
 
 .side-bar__panel--help {
-  padding: 0 10px 40px 20px;
+  padding: 0 10px 0 20px;
 
   pre {
     font-size: 0.9em;

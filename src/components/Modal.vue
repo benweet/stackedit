@@ -15,6 +15,7 @@
     <sponsor-modal v-else-if="config.type === 'sponsor'"></sponsor-modal>
     <!-- Providers -->
     <google-photo-modal v-else-if="config.type === 'googlePhoto'"></google-photo-modal>
+    <google-drive-account-modal v-else-if="config.type === 'googleDriveAccount'"></google-drive-account-modal>
     <google-drive-save-modal v-else-if="config.type === 'googleDriveSave'"></google-drive-save-modal>
     <google-drive-workspace-modal v-else-if="config.type === 'googleDriveWorkspace'"></google-drive-workspace-modal>
     <google-drive-publish-modal v-else-if="config.type === 'googleDrivePublish'"></google-drive-publish-modal>
@@ -62,6 +63,7 @@ import SponsorModal from './modals/SponsorModal';
 
 // Providers
 import GooglePhotoModal from './modals/providers/GooglePhotoModal';
+import GoogleDriveAccountModal from './modals/providers/GoogleDriveAccountModal';
 import GoogleDriveSaveModal from './modals/providers/GoogleDriveSaveModal';
 import GoogleDriveWorkspaceModal from './modals/providers/GoogleDriveWorkspaceModal';
 import GoogleDrivePublishModal from './modals/providers/GoogleDrivePublishModal';
@@ -102,6 +104,7 @@ export default {
     SponsorModal,
     // Providers
     GooglePhotoModal,
+    GoogleDriveAccountModal,
     GoogleDriveSaveModal,
     GoogleDriveWorkspaceModal,
     GoogleDrivePublishModal,

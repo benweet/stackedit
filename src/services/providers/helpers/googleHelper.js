@@ -30,6 +30,7 @@ const checkIdToken = (idToken) => {
 };
 
 export default {
+  folderMimeType: 'application/vnd.google-apps.folder',
   request(token, options) {
     return networkSvc.request({
       ...options,
@@ -120,6 +121,53 @@ export default {
       raw: true,
     }).then(res => res.body);
   },
+  removeFileInternal(refreshedToken, id, ifNotTooLate = cb => res => cb(res)) {
+    return Promise.resolve()
+      // Refreshing a token can take a while if an oauth window pops up, so check if it's too late
+      .then(ifNotTooLate(() => this.request(refreshedToken, {
+        method: 'DELETE',
+        url: `https://www.googleapis.com/drive/v3/files/${id}`,
+      })));
+  },
+  getFileRevisionsInternal(refreshedToken, id) {
+    return Promise.resolve()
+      .then(() => {
+        const revisions = [];
+        const getPage = pageToken => this.request(refreshedToken, {
+          method: 'GET',
+          url: `https://www.googleapis.com/drive/v3/files/${id}/revisions`,
+          params: {
+            pageToken,
+            pageSize: 1000,
+            fields: 'nextPageToken,revisions(id,modifiedTime,lastModifyingUser/permissionId,lastModifyingUser/displayName,lastModifyingUser/photoLink)',
+          },
+        })
+          .then((res) => {
+            res.body.revisions.forEach((revision) => {
+              store.commit('userInfo/addItem', {
+                id: revision.lastModifyingUser.permissionId,
+                name: revision.lastModifyingUser.displayName,
+                imageUrl: revision.lastModifyingUser.photoLink,
+              });
+              revisions.push(revision);
+            });
+            if (res.body.nextPageToken) {
+              return getPage(res.body.nextPageToken);
+            }
+            return revisions;
+          });
+
+        return getPage();
+      });
+  },
+  downloadFileRevisionInternal(refreshedToken, fileId, revisionId) {
+    return Promise.resolve()
+      .then(() => this.request(refreshedToken, {
+        method: 'GET',
+        url: `https://www.googleapis.com/drive/v3/files/${fileId}/revisions/${revisionId}?alt=media`,
+        raw: true,
+      }).then(res => res.body));
+  },
   getUser(userId) {
     return networkSvc.request({
       method: 'GET',
@@ -168,7 +216,7 @@ export default {
           expiresOn: Date.now() + (data.expiresIn * 1000),
           idToken: data.idToken,
           sub: `${res.body.sub}`,
-          isLogin: !store.getters['workspace/loginToken'] &&
+          isLogin: !store.getters['workspace/mainWorkspaceToken'] &&
             scopes.indexOf('https://www.googleapis.com/auth/drive.appdata') !== -1,
           isSponsor: false,
           isDrive: scopes.indexOf('https://www.googleapis.com/auth/drive') !== -1 ||
@@ -297,20 +345,24 @@ export default {
   addPhotosAccount() {
     return this.startOauth2(photosScopes);
   },
-  getChanges(token, startPageToken, spaces) {
+  getChanges(token, startPageToken, isAppData) {
     const result = {
       changes: [],
     };
-    return this.refreshToken(token, driveAppDataScopes)
+    let fileFields = 'file/name';
+    if (!isAppData) {
+      fileFields += ',file/parents,file/mimeType,file/appProperties';
+    }
+    return this.refreshToken(token, isAppData ? driveAppDataScopes : getDriveScopes(token))
       .then((refreshedToken) => {
         const getPage = (pageToken = '1') => this.request(refreshedToken, {
           method: 'GET',
           url: 'https://www.googleapis.com/drive/v3/changes',
           params: {
             pageToken,
-            spaces,
+            spaces: isAppData ? 'appDataFolder' : 'drive',
             pageSize: 1000,
-            fields: 'nextPageToken,newStartPageToken,changes(fileId,removed,file/name,file/appProperties)',
+            fields: `nextPageToken,newStartPageToken,changes(fileId,${fileFields})`,
           },
         })
           .then((res) => {
@@ -328,12 +380,28 @@ export default {
   uploadFile(token, name, parents, appProperties, media, mediaType, fileId, ifNotTooLate) {
     return this.refreshToken(token, getDriveScopes(token))
       .then(refreshedToken => this.uploadFileInternal(
-        refreshedToken, name, parents, appProperties, media, mediaType, fileId, ifNotTooLate));
+        refreshedToken,
+        name,
+        parents,
+        appProperties,
+        media,
+        mediaType,
+        fileId,
+        ifNotTooLate,
+      ));
   },
-  uploadAppDataFile(token, name, parents, appProperties, media, fileId, ifNotTooLate) {
+  uploadAppDataFile(token, name, media, fileId, ifNotTooLate) {
     return this.refreshToken(token, driveAppDataScopes)
       .then(refreshedToken => this.uploadFileInternal(
-        refreshedToken, name, parents, appProperties, media, undefined, fileId, ifNotTooLate));
+        refreshedToken,
+        name,
+        ['appDataFolder'],
+        undefined,
+        media,
+        undefined,
+        fileId,
+        ifNotTooLate,
+      ));
   },
   getFile(token, id) {
     return this.refreshToken(token, getDriveScopes(token))
@@ -354,52 +422,31 @@ export default {
     return this.refreshToken(token, driveAppDataScopes)
       .then(refreshedToken => this.downloadFileInternal(refreshedToken, id));
   },
+  removeFile(token, id, ifNotTooLate) {
+    return this.refreshToken(token, getDriveScopes(token))
+      .then(refreshedToken => this.removeFileInternal(refreshedToken, id, ifNotTooLate));
+  },
   removeAppDataFile(token, id, ifNotTooLate = cb => res => cb(res)) {
     return this.refreshToken(token, driveAppDataScopes)
-      // Refreshing a token can take a while if an oauth window pops up, so check if it's too late
-      .then(ifNotTooLate(refreshedToken => this.request(refreshedToken, {
-        method: 'DELETE',
-        url: `https://www.googleapis.com/drive/v3/files/${id}`,
-      })));
+      .then(refreshedToken => this.removeFileInternal(refreshedToken, id, ifNotTooLate));
   },
   getFileRevisions(token, id) {
+    return this.refreshToken(token, getDriveScopes(token))
+      .then(refreshedToken => this.getFileRevisionsInternal(refreshedToken, id));
+  },
+  getAppDataFileRevisions(token, id) {
     return this.refreshToken(token, driveAppDataScopes)
-      .then((refreshedToken) => {
-        const revisions = [];
-        const getPage = pageToken => this.request(refreshedToken, {
-          method: 'GET',
-          url: `https://www.googleapis.com/drive/v3/files/${id}/revisions`,
-          params: {
-            pageToken,
-            pageSize: 1000,
-            fields: 'nextPageToken,revisions(id,modifiedTime,lastModifyingUser/permissionId,lastModifyingUser/displayName,lastModifyingUser/photoLink)',
-          },
-        })
-          .then((res) => {
-            res.body.revisions.forEach((revision) => {
-              store.commit('userInfo/addItem', {
-                id: revision.lastModifyingUser.permissionId,
-                name: revision.lastModifyingUser.displayName,
-                imageUrl: revision.lastModifyingUser.photoLink,
-              });
-              revisions.push(revision);
-            });
-            if (res.body.nextPageToken) {
-              return getPage(res.body.nextPageToken);
-            }
-            return revisions;
-          });
-
-        return getPage();
-      });
+      .then(refreshedToken => this.getFileRevisionsInternal(refreshedToken, id));
   },
   downloadFileRevision(token, fileId, revisionId) {
+    return this.refreshToken(token, getDriveScopes(token))
+      .then(refreshedToken => this.downloadFileRevisionInternal(
+        refreshedToken, fileId, revisionId));
+  },
+  downloadAppDataFileRevision(token, fileId, revisionId) {
     return this.refreshToken(token, driveAppDataScopes)
-      .then(refreshedToken => this.request(refreshedToken, {
-        method: 'GET',
-        url: `https://www.googleapis.com/drive/v3/files/${fileId}/revisions/${revisionId}?alt=media`,
-        raw: true,
-      }).then(res => res.body));
+      .then(refreshedToken => this.downloadFileRevisionInternal(
+        refreshedToken, fileId, revisionId));
   },
   uploadBlogger(
     token, blogUrl, blogId, postId, title, content, labels, isDraft, published, isPage,
@@ -475,6 +522,7 @@ export default {
         let picker;
         const pickerBuilder = new google.picker.PickerBuilder()
           .setOAuthToken(refreshedToken.accessToken)
+          .hideTitleBar()
           .setCallback((data) => {
             switch (data[google.picker.Response.ACTION]) {
               case google.picker.Action.PICKED:
@@ -488,27 +536,35 @@ export default {
         switch (type) {
           default:
           case 'doc': {
-            const view = new google.picker.DocsView(google.picker.ViewId.DOCS);
-            view.setParent('root');
-            view.setIncludeFolders(true);
-            view.setMimeTypes([
-              'text/plain',
-              'text/x-markdown',
-              'application/octet-stream',
-            ].join(','));
-            pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
+            const addView = (hasRootParent) => {
+              const view = new google.picker.DocsView(google.picker.ViewId.DOCS);
+              if (hasRootParent) {
+                view.setParent('root');
+              }
+              view.setMimeTypes([
+                'text/plain',
+                'text/x-markdown',
+                'application/octet-stream',
+              ].join(','));
+              pickerBuilder.addView(view);
+            };
             pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);
-            pickerBuilder.addView(view);
+            addView(false);
+            // addView(true);
             break;
           }
           case 'folder': {
-            const view = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
-            view.setParent('root');
-            view.setIncludeFolders(true);
-            view.setSelectFolderEnabled(true);
-            view.setMimeTypes('application/vnd.google-apps.folder');
-            pickerBuilder.enableFeature(google.picker.Feature.NAV_HIDDEN);
-            pickerBuilder.addView(view);
+            const addView = (hasRootParent) => {
+              const view = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
+              if (hasRootParent) {
+                view.setParent('root');
+              }
+              view.setSelectFolderEnabled(true);
+              view.setMimeTypes(this.folderMimeType);
+              pickerBuilder.addView(view);
+            };
+            addView(false);
+            // addView(true);
             break;
           }
           case 'img': {

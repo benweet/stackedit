@@ -21,7 +21,7 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import googleDriveAppDataProvider from '../../services/providers/googleDriveAppDataProvider';
+import providerRegistry from '../../services/providers/providerRegistry';
 import MenuEntry from './common/MenuEntry';
 import UserImage from '../UserImage';
 import UserName from '../UserName';
@@ -83,7 +83,7 @@ export default {
           const currentFile = this.$store.getters['file/current'];
           this.$store.dispatch('queue/enqueue',
             () => Promise.resolve()
-              .then(() => googleDriveAppDataProvider.getRevisionContent(
+              .then(() => this.workspaceProvider.getRevisionContent(
                 loginToken, currentFile.id, revision.id))
               .then(resolve, reject));
         });
@@ -123,6 +123,10 @@ export default {
     },
   },
   created() {
+    // Find the workspace provider
+    const workspace = this.$store.getters['workspace/currentWorkspace'];
+    this.workspaceProvider = providerRegistry.providers[workspace.providerId];
+
     // Watch file changes
     this.$watch(
       () => this.$store.getters['file/current'].id,
@@ -138,7 +142,7 @@ export default {
             revisionsPromise = new Promise((resolve, reject) => {
               this.$store.dispatch('queue/enqueue',
                 () => Promise.resolve()
-                  .then(() => googleDriveAppDataProvider.listRevisions(loginToken, currentFile.id))
+                  .then(() => this.workspaceProvider.listRevisions(loginToken, currentFile.id))
                   .then((revisions) => {
                     resolve(revisions.sort(
                       (revision1, revision2) => revision2.created - revision1.created));

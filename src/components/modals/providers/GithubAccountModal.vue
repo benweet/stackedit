@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="github"></icon-provider>
       </div>
-      <p>This will link your <b>GitHub</b> account to your <b>StackEdit</b> workspace.</p>
+      <p>This will link your <b>GitHub</b> account to <b>StackEdit</b>.</p>
       <div class="form-entry">
         <div class="form-entry__checkbox">
           <label>

@@ -105,16 +105,12 @@ export default {
       const data = typeof value.data === 'object'
         ? Object.assign(emptyItem.data, value.data)
         : value.data;
-      const item = {
+
+      // Make item with hash
+      const item = utils.addItemHash({
         ...emptyItem,
         data,
-      };
-
-      // Calculate item hash
-      item.hash = utils.hash(utils.serializeObject({
-        ...item,
-        hash: undefined,
-      }));
+      });
 
       // Store item in itemMap or lsItemMap if its stored in the localStorage
       Vue.set(lsItemIdSet.has(item.id) ? state.lsItemMap : state.itemMap, item.id, item);

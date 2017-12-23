@@ -158,7 +158,10 @@ export default {
       return this.$store.dispatch('modal/open', 'publishManagement');
     },
     addGoogleDriveAccount() {
-      return googleHelper.addDriveAccount()
+      return this.$store.dispatch('modal/open', {
+        type: 'googleDriveAccount',
+        onResolve: () => googleHelper.addDriveAccount(!store.getters['data/localSettings'].googleDriveRestrictedAccess),
+      })
         .catch(() => {}); // Cancel
     },
     addDropboxAccount() {

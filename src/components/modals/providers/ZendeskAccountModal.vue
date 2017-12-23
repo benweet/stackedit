@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="zendesk"></icon-provider>
       </div>
-      <p>This will link your <b>Zendesk</b> account to your <b>StackEdit</b> workspace.</p>
+      <p>This will link your <b>Zendesk</b> account to <b>StackEdit</b>.</p>
       <form-entry label="Site URL" error="siteUrl">
         <input slot="field" class="textfield" type="text" v-model.trim="siteUrl" @keyup.enter="resolve()">
         <div class="form-entry__info">

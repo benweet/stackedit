@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     addGoogleDriveWorkspace() {
-      return googleHelper.addDriveAccount()
+      return googleHelper.addDriveAccount(true)
         .then(token => this.$store.dispatch('modal/open', {
           type: 'googleDriveWorkspace',
           token,

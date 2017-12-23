@@ -33,7 +33,7 @@ const lsItemIdSet = new Set(utils.localStorageDataIds);
 // Getter/setter/patcher factories
 const getter = id => state => ((lsItemIdSet.has(id)
   ? state.lsItemMap
-  : state.itemMap)[id] || empty(id)).data;
+  : state.itemMap)[id] || {}).data || empty(id).data;
 const setter = id => ({ commit }, data) => commit('setItem', itemTemplate(id, data));
 const patcher = id => ({ state, commit }, data) => {
   const item = Object.assign(empty(id), (lsItemIdSet.has(id)
@@ -118,7 +118,7 @@ export default {
   },
   getters: {
     workspaces: (state, getters, rootState, rootGetters) => {
-      const workspaces = (state.lsItemMap.workspaces || empty('workspaces')).data;
+      const workspaces = (state.lsItemMap.workspaces || {}).data || empty('workspaces').data;
       const sanitizedWorkspaces = {};
       const mainWorkspaceToken = rootGetters['workspace/mainWorkspaceToken'];
       Object.entries(workspaces).forEach(([id, workspace]) => {

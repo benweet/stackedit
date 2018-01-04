@@ -17,6 +17,94 @@ export default providerRegistry.register({
     const token = this.getToken(location);
     return `${location.driveFileId} — ${token.name}`;
   },
+  initAction() {
+    const state = googleHelper.driveState || {};
+    return state.userId && Promise.resolve()
+      .then(() => {
+        // Try to find the token corresponding to the user ID
+        const token = store.getters['data/googleTokens'][state.userId];
+        // If not found or not enough permission, popup an OAuth2 window
+        return token && token.isDrive ? token : store.dispatch('modal/open', {
+          type: 'googleDriveAccount',
+          onResolve: () => googleHelper.addDriveAccount(
+            !store.getters['data/localSettings'].googleDriveRestrictedAccess,
+            state.userId,
+          ),
+        });
+      })
+      .then((token) => {
+        switch (state.action) {
+          case 'create':
+          default:
+            // See if folder is part of a workspace we can open
+            return googleHelper.getFile(token, state.folderId)
+              .then((folder) => {
+                folder.appProperties = folder.appProperties || {};
+                googleHelper.driveActionFolder = folder;
+                if (folder.appProperties.folderId) {
+                  // Change current URL to workspace URL
+                  utils.setQueryParams({
+                    providerId: 'googleDriveWorkspace',
+                    folderId: folder.appProperties.folderId,
+                    sub: state.userId,
+                  });
+                }
+              }, (err) => {
+                if (!err || err.status !== 404) {
+                  throw err;
+                }
+                // We received a 404 error meaning we have no permission to read the folder
+                googleHelper.driveActionFolder = { id: state.folderId };
+              });
+
+          case 'open': {
+            const getOneFile = (ids) => {
+              const id = ids.shift();
+              return id && googleHelper.getFile(token, id)
+                .then((file) => {
+                  file.appProperties = file.appProperties || {};
+                  googleHelper.driveActionFiles.push(file);
+                  return getOneFile(ids);
+                });
+            };
+
+            return getOneFile(state.ids || [])
+              .then(() => {
+                // Check if first file is part of a workspace
+                const firstFile = googleHelper.driveActionFiles[0];
+                if (firstFile && firstFile.appProperties && firstFile.appProperties.folderId) {
+                  // Change current URL to workspace URL
+                  utils.setQueryParams({
+                    providerId: 'googleDriveWorkspace',
+                    folderId: firstFile.appProperties.folderId,
+                    sub: state.userId,
+                  });
+                }
+              });
+          }
+        }
+      });
+  },
+  performAction() {
+    const state = googleHelper.driveState || {};
+    const token = store.getters['data/googleTokens'][state.userId];
+    return token && Promise.resolve()
+      .then(() => {
+        switch (state.action) {
+          case 'create':
+          default:
+            return store.dispatch('createFile')
+              .then((file) => {
+                store.commit('file/setCurrentId', file.id);
+                // Return a new syncLocation
+                return this.makeLocation(token, null, googleHelper.driveActionFolder.id);
+              });
+          case 'open':
+            return store.dispatch('queue/enqueue',
+              () => this.openFiles(token, googleHelper.driveActionFiles));
+        }
+      });
+  },
   downloadContent(token, syncLocation) {
     return googleHelper.downloadFile(token, syncLocation.driveFileId)
       .then(content => providerUtils.parseContent(content, syncLocation));
@@ -60,7 +148,7 @@ export default providerRegistry.register({
   },
   openFiles(token, driveFiles) {
     const openOneFile = () => {
-      const driveFile = driveFiles.pop();
+      const driveFile = driveFiles.shift();
       if (!driveFile) {
         return null;
       }

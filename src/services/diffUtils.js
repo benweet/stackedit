@@ -158,12 +158,18 @@ function mergeContent(serverContent, clientContent, lastMergedContent = {}) {
   const serverText = makePatchableText(serverContent, markerKeys, markerIdxMap);
   const clientText = makePatchableText(clientContent, markerKeys, markerIdxMap);
   const isServerTextChanges = lastMergedText !== serverText;
+  const isClientTextChanges = lastMergedText !== clientText;
   const isTextSynchronized = serverText === clientText;
+  let text = clientText;
+  if (!isTextSynchronized && isServerTextChanges) {
+    text = serverText;
+    if (isClientTextChanges) {
+      text = mergeText(serverText, clientText, lastMergedText);
+    }
+  }
 
   const result = {
-    text: isTextSynchronized || !isServerTextChanges
-      ? clientText
-      : mergeText(serverText, clientText, lastMergedText),
+    text,
     properties: mergeValues(
       serverContent.properties,
       clientContent.properties,

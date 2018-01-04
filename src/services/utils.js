@@ -24,13 +24,22 @@ const parseQueryParams = (params) => {
 };
 
 // For utils.addQueryParams()
-const urlParser = window.document.createElement('a');
+const urlParser = document.createElement('a');
 
 export default {
-  origin,
-  queryParams: parseQueryParams(location.hash.slice(1)),
-  oauth2RedirectUri: `${origin}/oauth2/callback`,
   cleanTrashAfter: 7 * 24 * 60 * 60 * 1000, // 7 days
+  origin,
+  oauth2RedirectUri: `${origin}/oauth2/callback`,
+  queryParams: parseQueryParams(location.hash.slice(1)),
+  setQueryParams(params = {}) {
+    this.queryParams = params;
+    const serializedParams = Object.entries(this.queryParams).map(([key, value]) =>
+      `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&');
+    const hash = serializedParams && `#${serializedParams}`;
+    if (location.hash !== hash) {
+      location.hash = hash;
+    }
+  },
   types: [
     'contentState',
     'syncedContent',
@@ -95,6 +104,9 @@ export default {
         hash: undefined,
       })),
     };
+  },
+  makeWorkspaceId(params) {
+    return Math.abs(this.hash(this.serializeObject(params))).toString(36);
   },
   encodeBase64(str) {
     return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,

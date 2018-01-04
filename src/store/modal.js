@@ -23,6 +23,7 @@ export default {
         config.resolve = (result) => {
           clean();
           if (config.onResolve) {
+            // Call onResolve immediately (mostly to prevent browsers from blocking popup windows)
             config.onResolve(result)
               .then(res => resolve(res));
           } else {
@@ -92,8 +93,8 @@ export default {
       onResolve,
     }),
     workspaceGoogleRedirection: ({ dispatch }, { onResolve }) => dispatch('open', {
-      content: '<p>You have to sign in with Google to access this workspace.</p>',
-      resolveText: 'Ok, sign in',
+      content: '<p>StackEdit needs full Google Drive access to open this workspace.</p>',
+      resolveText: 'Ok, grant',
       rejectText: 'Cancel',
       onResolve,
     }),
@@ -107,14 +108,14 @@ export default {
     }),
     signInForComment: ({ dispatch }, { onResolve }) => dispatch('open', {
       content: `<p>You have to sign in with Google to start commenting.</p>
-      <div class="modal__info"><b>Note:</b> This will sync all your files and settings.</div>`,
+      <div class="modal__info"><b>Note:</b> This will sync your main workspace.</div>`,
       resolveText: 'Ok, sign in',
       rejectText: 'Cancel',
       onResolve,
     }),
     signInForHistory: ({ dispatch }, { onResolve }) => dispatch('open', {
       content: `<p>You have to sign in with Google to enable revision history.</p>
-      <div class="modal__info"><b>Note:</b> This will sync all your files and settings.</div>`,
+      <div class="modal__info"><b>Note:</b> This will sync your main workspace.</div>`,
       resolveText: 'Ok, sign in',
       rejectText: 'Cancel',
       onResolve,

@@ -6,6 +6,7 @@ import welcomeFile from '../data/welcomeFile.md';
 const dbVersion = 1;
 const dbStoreName = 'objects';
 const exportWorkspace = utils.queryParams.exportWorkspace;
+const resetApp = utils.queryParams.reset;
 const deleteMarkerMaxAge = 1000;
 const checkSponsorshipAfter = (5 * 60 * 1000) + (30 * 1000); // tokenExpirationMargin + 30 sec
 
@@ -105,7 +106,7 @@ const localDbSvc = {
     return Promise.resolve()
       .then(() => {
         // Reset the app if reset flag was passed
-        if (utils.queryParams.reset) {
+        if (resetApp) {
           return Promise.all(
             Object.keys(store.getters['data/workspaces'])
               .map(workspaceId => localDbSvc.removeWorkspace(workspaceId)),
@@ -115,7 +116,7 @@ const localDbSvc = {
               localStorage.removeItem(`data/${id}`);
             }))
             .then(() => {
-              location.replace(utils.resolveUrl('app'));
+              location.reload();
               throw new Error('reload');
             });
         }
@@ -177,33 +178,29 @@ const localDbSvc = {
         // Sync local DB periodically
         utils.setInterval(() => localDbSvc.sync(), 1000);
 
-        const ifNoId = cb => (obj) => {
-          if (obj.id) {
-            return obj;
-          }
-          return cb();
-        };
-
         // watch current file changing
         store.watch(
           () => store.getters['file/current'].id,
-          () => Promise.resolve(store.getters['file/current'])
+          () => {
+            // See if currentFile is real, ie it has an ID
+            const currentFile = store.getters['file/current'];
             // If current file has no ID, get the most recent file
-            .then(ifNoId(() => store.getters['file/lastOpened']))
-            // If still no ID, create a new file
-            .then(ifNoId(() => store.dispatch('createFile', {
-              name: 'Welcome file',
-              text: welcomeFile,
-            })))
-            .then((currentFile) => {
-              // Fix current file ID
-              if (store.getters['file/current'].id !== currentFile.id) {
-                store.commit('file/setCurrentId', currentFile.id);
-                // Wait for the next watch tick
-                return null;
+            if (!currentFile.id) {
+              const recentFile = store.getters['file/lastOpened'];
+              // Set it as the current file
+              if (recentFile.id) {
+                store.commit('file/setCurrentId', recentFile.id);
+              } else {
+                // If still no ID, create a new file
+                store.dispatch('createFile', {
+                  name: 'Welcome file',
+                  text: welcomeFile,
+                })
+                  // Set it as the current file
+                  .then(newFile => store.commit('file/setCurrentId', newFile.id));
               }
-
-              return Promise.resolve()
+            } else {
+              Promise.resolve()
                 // Load contentState from DB
                 .then(() => localDbSvc.loadContentState(currentFile.id))
                 // Load syncedContent from DB
@@ -226,13 +223,13 @@ const localDbSvc = {
                     store.commit('file/setCurrentId', lastOpenedFile.id);
                     throw err;
                   },
-                );
-            })
-            .catch((err) => {
-              console.error(err); // eslint-disable-line no-console
-              store.dispatch('notification/error', err);
-            }),
-          {
+                )
+                .catch((err) => {
+                  console.error(err); // eslint-disable-line no-console
+                  store.dispatch('notification/error', err);
+                });
+            }
+          }, {
             immediate: true,
           });
       });

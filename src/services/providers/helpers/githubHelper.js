@@ -2,10 +2,7 @@ import utils from '../../utils';
 import networkSvc from '../../networkSvc';
 import store from '../../../store';
 
-let clientId = 'cbf0cf25cfd026be23e1';
-if (utils.origin === 'https://stackedit.io') {
-  clientId = '30c1491057c9ad4dbd56';
-}
+const clientId = GITHUB_CLIENT_ID;
 const getScopes = token => [token.repoFullAccess ? 'repo' : 'public_repo', 'gist'];
 
 const request = (token, options) => networkSvc.request({

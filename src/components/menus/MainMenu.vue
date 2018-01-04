@@ -1,19 +1,14 @@
 <template>
   <div class="side-bar__panel side-bar__panel--menu">
-    <div v-if="!loginToken">
+    <div class="menu-info-entries" v-if="!loginToken">
       <div class="menu-entry menu-entry--info flex flex--row flex--align-center">
         <div class="menu-entry__icon menu-entry__icon--disabled">
           <icon-sync-off></icon-sync-off>
         </div>
         <span><b>{{currentWorkspace.name}}</b> not synced.</span>
       </div>
-      <menu-entry @click.native="signin">
-        <icon-login slot="icon"></icon-login>
-        <div>Sign in with Google</div>
-        <span>Back up and sync all your files, folders and settings.</span>
-      </menu-entry>
     </div>
-    <div v-else>
+    <div class="menu-info-entries" v-else>
       <div class="menu-entry menu-entry--info flex flex--row flex--align-center">
         <div class="menu-entry__icon menu-entry__icon--image">
           <user-image :user-id="loginToken.sub"></user-image>
@@ -27,6 +22,11 @@
         <span><b>{{currentWorkspace.name}}</b> synced.</span>
       </div>
     </div>
+    <menu-entry v-if="!loginToken" @click.native="signin">
+      <icon-login slot="icon"></icon-login>
+      <div>Sign in with Google</div>
+      <span>Back up and sync your main workspace.</span>
+    </menu-entry>
     <menu-entry @click.native="setPanel('workspaces')">
       <icon-database slot="icon"></icon-database>
       <div>Workspaces</div>

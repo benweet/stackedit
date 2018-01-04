@@ -117,11 +117,11 @@ export default {
     },
   },
   getters: {
-    workspaces: (state, getters, rootState, rootGetters) => {
-      const workspaces = (state.lsItemMap.workspaces || {}).data || empty('workspaces').data;
+    workspaces: getter('workspaces'),
+    sanitizedWorkspaces: (state, getters, rootState, rootGetters) => {
       const sanitizedWorkspaces = {};
       const mainWorkspaceToken = rootGetters['workspace/mainWorkspaceToken'];
-      Object.entries(workspaces).forEach(([id, workspace]) => {
+      Object.entries(getters.workspaces).forEach(([id, workspace]) => {
         const sanitizedWorkspace = {
           id,
           providerId: mainWorkspaceToken && 'googleDriveAppData',

@@ -4,6 +4,9 @@ var config = require('../config')
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
 }
+if (!process.env.GOOGLE_CLIENT_ID) {
+  process.env.GOOGLE_CLIENT_ID = JSON.parse(config.dev.env.GOOGLE_CLIENT_ID)
+}
 
 var opn = require('opn')
 var path = require('path')

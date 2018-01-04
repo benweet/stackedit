@@ -89,7 +89,7 @@ const store = new Vuex.Store({
       }
       return Promise.resolve();
     },
-    createFile({ state, getters, commit }, desc) {
+    createFile({ state, getters, commit }, desc = {}) {
       const id = utils.uid();
       commit('content/setItem', {
         id: `${id}/content`,

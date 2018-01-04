@@ -158,7 +158,7 @@ export default {
 
 .side-bar__info {
   padding: 10px;
-  margin: 0 -10px;
+  margin: -10px -10px 0;
   background-color: $info-bg;
 
   p {

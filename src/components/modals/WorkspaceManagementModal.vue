@@ -18,7 +18,7 @@
           <button class="workspace-entry__button button" @click="edit(id)">
             <icon-pen></icon-pen>
           </button>
-          <button class="workspace-entry__button button" v-if="workspace !== currentWorkspace && workspace !== mainWorkspace" @click="remove(id)">
+          <button class="workspace-entry__button button" v-if="id !== currentWorkspace.id && id !== mainWorkspace.id" @click="remove(id)">
             <icon-delete></icon-delete>
           </button>
         </div>

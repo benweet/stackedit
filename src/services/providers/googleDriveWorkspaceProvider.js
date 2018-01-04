@@ -4,18 +4,24 @@ import providerRegistry from './providerRegistry';
 import providerUtils from './providerUtils';
 import utils from '../utils';
 
+let fileIdToOpen;
+
 export default providerRegistry.register({
   id: 'googleDriveWorkspace',
   getToken() {
     return store.getters['workspace/syncToken'];
   },
   initWorkspace() {
-    const makeWorkspaceId = folderId => folderId && Math.abs(utils.hash(utils.serializeObject({
+    const makeWorkspaceIdParams = folderId => ({
       providerId: this.id,
       folderId,
-    }))).toString(36);
+    });
 
-    const getWorkspace = folderId => store.getters['data/workspaces'][makeWorkspaceId(folderId)];
+    const makeWorkspaceId = folderId => folderId && utils.makeWorkspaceId(
+      makeWorkspaceIdParams(folderId));
+
+    const getWorkspace = folderId =>
+      store.getters['data/sanitizedWorkspaces'][makeWorkspaceId(folderId)];
 
     const initFolder = (token, folder) => Promise.resolve({
       folderId: folder.id,
@@ -78,12 +84,6 @@ export default providerRegistry.register({
           .then(() => properties);
       })
       .then((properties) => {
-        // Fix the current url hash
-        const hash = `#providerId=${this.id}&folderId=${folder.id}`;
-        if (location.hash !== hash) {
-          location.hash = hash;
-        }
-
         // Update workspace in the store
         const workspaceId = makeWorkspaceId(folder.id);
         store.dispatch('data/patchWorkspaces', {
@@ -92,7 +92,7 @@ export default providerRegistry.register({
             sub: token.sub,
             name: folder.name,
             providerId: this.id,
-            url: utils.resolveUrl(hash),
+            url: location.href,
             folderId: folder.id,
             dataFolderId: properties.dataFolderId,
             trashFolderId: properties.trashFolderId,
@@ -103,9 +103,9 @@ export default providerRegistry.register({
         return getWorkspace(folder.id);
       });
 
-    const workspace = getWorkspace(utils.queryParams.folderId);
     return Promise.resolve()
       .then(() => {
+        const workspace = getWorkspace(utils.queryParams.folderId);
         // See if we already have a token
         const googleTokens = store.getters['data/googleTokens'];
         // Token sub is in the workspace or in the url if workspace is about to be created
@@ -115,7 +115,7 @@ export default providerRegistry.register({
         }
         // If no token has been found, popup an authorize window and get one
         return store.dispatch('modal/workspaceGoogleRedirection', {
-          onResolve: () => googleHelper.addDriveAccount(true),
+          onResolve: () => googleHelper.addDriveAccount(true, utils.queryParams.sub),
         });
       })
       .then(token => Promise.resolve()
@@ -139,12 +139,70 @@ export default providerRegistry.register({
             folder.appProperties = folder.appProperties || {};
             const folderIdProperty = folder.appProperties.folderId;
             if (folderIdProperty && folderIdProperty !== folderId) {
-              throw new Error(`Google Drive folder ${folderId} is part of another workspace.`);
+              throw new Error(`Folder ${folderId} is part of another workspace.`);
             }
             return initFolder(token, folder);
           }, () => {
             throw new Error(`Folder ${folderId} is not accessible. Make sure you have the right permissions.`);
-          })));
+          }))
+        .then((workspace) => {
+          // Fix the URL hash
+          utils.setQueryParams(makeWorkspaceIdParams(workspace.folderId));
+          return workspace;
+        }));
+  },
+  performAction() {
+    return Promise.resolve()
+      .then(() => {
+        const state = googleHelper.driveState || {};
+        const token = this.getToken();
+        switch (token && state.action) {
+          case 'create':
+            return Promise.resolve()
+              .then(() => {
+                const driveFolder = googleHelper.driveActionFolder;
+                let syncData = store.getters['data/syncData'][driveFolder.id];
+                if (!syncData && driveFolder.appProperties.id) {
+                  // Create folder if not already synced
+                  store.commit('folder/setItem', {
+                    id: driveFolder.appProperties.id,
+                    name: driveFolder.name,
+                  });
+                  const item = store.state.folder.itemMap[driveFolder.appProperties.id];
+                  syncData = {
+                    id: driveFolder.id,
+                    itemId: item.id,
+                    type: item.type,
+                    hash: item.hash,
+                  };
+                  store.dispatch('data/patchSyncData', {
+                    [syncData.id]: syncData,
+                  });
+                }
+                return store.dispatch('createFile', {
+                  parentId: syncData && syncData.itemId,
+                })
+                  .then((file) => {
+                    store.commit('file/setCurrentId', file.id);
+                    // File will be created on next workspace sync
+                  });
+              });
+          case 'open':
+            return Promise.resolve()
+              .then(() => {
+                // open first file only
+                const firstFile = googleHelper.driveActionFiles[0];
+                const syncData = store.getters['data/syncData'][firstFile.id];
+                if (!syncData) {
+                  fileIdToOpen = firstFile.id;
+                } else {
+                  store.commit('file/setCurrentId', syncData.itemId);
+                }
+              });
+          default:
+            return null;
+        }
+      });
   },
   getChanges() {
     const workspace = store.getters['workspace/currentWorkspace'];
@@ -178,8 +236,8 @@ export default providerRegistry.register({
           let contentChange;
           if (change.file) {
             // Ignore changes in files that are not in the workspace
-            const properties = change.file.appProperties;
-            if (!properties || properties.folderId !== workspace.folderId
+            const appProperties = change.file.appProperties;
+            if (!appProperties || appProperties.folderId !== workspace.folderId
             ) {
               return;
             }
@@ -198,7 +256,7 @@ export default providerRegistry.register({
                 ? 'folder'
                 : 'file';
               const item = {
-                id: properties.id,
+                id: appProperties.id,
                 type,
                 name: change.file.name,
                 parentId: null,
@@ -222,14 +280,14 @@ export default providerRegistry.register({
                 // create a fake change as a file content change
                 contentChange = {
                   item: {
-                    id: `${properties.id}/content`,
+                    id: `${appProperties.id}/content`,
                     type: 'content',
                     // Need a truthy value to force saving sync data
                     hash: 1,
                   },
                   syncData: {
                     id: `${change.fileId}/content`,
-                    itemId: `${properties.id}/content`,
+                    itemId: `${appProperties.id}/content`,
                     type: 'content',
                     // Need a truthy value to force downloading the content
                     hash: 1,
@@ -340,6 +398,14 @@ export default providerRegistry.register({
               hash: item.hash,
             },
           });
+        }
+        // Open the file requested by action if it was to synced yet
+        if (fileIdToOpen && fileIdToOpen === syncData.id) {
+          fileIdToOpen = null;
+          // Open the file once downloaded content has been stored
+          setTimeout(() => {
+            store.commit('file/setCurrentId', syncData.itemId);
+          }, 10);
         }
         return item;
       });

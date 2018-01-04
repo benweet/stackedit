@@ -2,7 +2,7 @@ import utils from '../../utils';
 import networkSvc from '../../networkSvc';
 import store from '../../../store';
 
-const clientId = '241271498917-t4t7d07qis7oc0ahaskbif3ft6tk63cd.apps.googleusercontent.com';
+const clientId = GOOGLE_CLIENT_ID;
 const apiKey = 'AIzaSyC_M4RA9pY6XmM9pmFxlT59UPMO7aHr9kk';
 const appsDomain = null;
 const tokenExpirationMargin = 5 * 60 * 1000; // 5 min (Google tokens expire after 1h)
@@ -29,8 +29,20 @@ const checkIdToken = (idToken) => {
   }
 };
 
+let driveState;
+if (utils.queryParams.providerId === 'googleDrive') {
+  try {
+    driveState = JSON.parse(utils.queryParams.state);
+  } catch (e) {
+    // Ignore
+  }
+}
+
 export default {
   folderMimeType: 'application/vnd.google-apps.folder',
+  driveState,
+  driveActionFolder: null,
+  driveActionFiles: [],
   request(token, options) {
     return networkSvc.request({
       ...options,
@@ -336,8 +348,8 @@ export default {
   signin() {
     return this.startOauth2(driveAppDataScopes);
   },
-  addDriveAccount(fullAccess = false) {
-    return this.startOauth2(getDriveScopes({ driveFullAccess: fullAccess }));
+  addDriveAccount(fullAccess = false, sub = null) {
+    return this.startOauth2(getDriveScopes({ driveFullAccess: fullAccess }), sub);
   },
   addBloggerAccount() {
     return this.startOauth2(bloggerScopes);

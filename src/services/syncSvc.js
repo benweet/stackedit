@@ -11,7 +11,8 @@ const inactivityThreshold = 3 * 1000; // 3 sec
 const restartSyncAfter = 30 * 1000; // 30 sec
 const minAutoSyncEvery = 60 * 1000; // 60 sec
 
-let syncProvider;
+let actionProvider;
+let workspaceProvider;
 
 /**
  * Use a lock in the local storage to prevent multiple windows concurrency.
@@ -221,7 +222,7 @@ function syncFile(fileId, syncContext = new SyncContext()) {
           ...store.getters['syncLocation/groupedByFileId'][fileId] || [],
         ];
         if (isWorkspaceSyncPossible()) {
-          syncLocations.unshift({ id: 'main', providerId: syncProvider.id, fileId });
+          syncLocations.unshift({ id: 'main', providerId: workspaceProvider.id, fileId });
         }
         let result;
         syncLocations.some((syncLocation) => {
@@ -355,7 +356,7 @@ function syncFile(fileId, syncContext = new SyncContext()) {
                       }
 
                       // If content was just created, restart sync to create the file as well
-                      if (provider === syncProvider &&
+                      if (provider === workspaceProvider &&
                         !store.getters['data/syncDataByItemId'][fileId]
                       ) {
                         syncContext.restart = true;
@@ -409,7 +410,7 @@ function syncDataItem(dataId) {
     return null;
   }
 
-  return syncProvider.downloadData(dataId)
+  return workspaceProvider.downloadData(dataId)
     .then((serverItem = null) => {
       const dataSyncData = store.getters['data/dataSyncData'][dataId];
       let mergedItem = (() => {
@@ -455,7 +456,7 @@ function syncDataItem(dataId) {
           if (serverItem && serverItem.hash === mergedItem.hash) {
             return null;
           }
-          return syncProvider.uploadData(mergedItem, dataId);
+          return workspaceProvider.uploadData(mergedItem, dataId);
         })
         .then(() => {
           store.dispatch('data/patchDataSyncData', {
@@ -485,11 +486,11 @@ function syncWorkspace() {
         throw new Error('Synchronization failed due to token inconsistency.');
       }
     })
-    .then(() => syncProvider.getChanges())
+    .then(() => workspaceProvider.getChanges())
     .then((changes) => {
       // Apply changes
       applyChanges(changes);
-      syncProvider.setAppliedChanges(changes);
+      workspaceProvider.setAppliedChanges(changes);
 
       // Prevent from sending items too long after changes have been retrieved
       const syncStartTime = Date.now();
@@ -519,7 +520,7 @@ function syncWorkspace() {
             // Add file if content has been added
             && (item.type !== 'file' || syncDataByItemId[`${id}/content`])
           ) {
-            promise = syncProvider.saveSimpleItem(
+            promise = workspaceProvider.saveSimpleItem(
               // Use deepCopy to freeze objects
               utils.deepCopy(item),
               utils.deepCopy(existingSyncData),
@@ -555,7 +556,7 @@ function syncWorkspace() {
           ) {
             // Use deepCopy to freeze objects
             const syncDataToRemove = utils.deepCopy(existingSyncData);
-            promise = syncProvider
+            promise = workspaceProvider
               .removeItem(syncDataToRemove, ifNotTooLate)
               .then(() => {
                 const syncDataCopy = { ...store.getters['data/syncData'] };
@@ -707,25 +708,38 @@ function requestSync() {
 
 export default {
   init() {
-    // Load workspaces and tokens from localStorage
-    localDbSvc.syncLocalStorage();
+    return Promise.resolve()
+      .then(() => {
+        // Load workspaces and tokens from localStorage
+        localDbSvc.syncLocalStorage();
 
-    // Try to find a suitable workspace sync provider
-    syncProvider = providerRegistry.providers[utils.queryParams.providerId];
-    if (!syncProvider || !syncProvider.initWorkspace) {
-      syncProvider = googleDriveAppDataProvider;
-    }
-
-    return syncProvider.initWorkspace()
+        // Try to find a suitable action provider
+        actionProvider = providerRegistry.providers[utils.queryParams.providerId];
+        return actionProvider && actionProvider.initAction && actionProvider.initAction();
+      })
+      .then(() => {
+        // Try to find a suitable workspace sync provider
+        workspaceProvider = providerRegistry.providers[utils.queryParams.providerId];
+        if (!workspaceProvider || !workspaceProvider.initWorkspace) {
+          workspaceProvider = googleDriveAppDataProvider;
+        }
+        return workspaceProvider.initWorkspace();
+      })
       .then(workspace => store.dispatch('workspace/setCurrentWorkspaceId', workspace.id))
       .then(() => localDbSvc.init())
       .then(() => {
+        // Try to find a suitable action provider
+        actionProvider = providerRegistry.providers[utils.queryParams.providerId] || actionProvider;
+        return actionProvider && actionProvider.performAction && actionProvider.performAction()
+          .then(newSyncLocation => newSyncLocation && this.createSyncLocation(newSyncLocation));
+      })
+      .then(() => {
         // Sync periodically
         utils.setInterval(() => {
-          if (isSyncPossible() &&
-          networkSvc.isUserActive() &&
-            isSyncWindow() &&
-            isAutoSyncReady()
+          if (isSyncPossible()
+            && networkSvc.isUserActive()
+            && isSyncWindow()
+            && isAutoSyncReady()
           ) {
             requestSync();
           }

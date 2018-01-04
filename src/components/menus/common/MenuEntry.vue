@@ -42,10 +42,15 @@
   }
 }
 
+.menu-info-entries {
+  padding: 10px;
+  margin: -10px -10px 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
 .menu-entry--info {
-  padding-top: 0;
-  padding-bottom: 0;
-  margin: 10px 0;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 
 .menu-entry__icon {

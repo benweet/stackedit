@@ -101,16 +101,18 @@ export default {
         start, end,
       }));
 
+    const isSticky = this.$el.parentNode.classList.contains('sticky-comment');
+    const isVisible = () => isSticky || this.$store.state.discussion.stickyComment === null;
+
     this.$watch(
       () => this.$store.state.discussion.currentDiscussionId,
       () => this.$nextTick(() => {
-        if (this.$store.state.discussion.newCommentFocus) {
+        if (isVisible() && this.$store.state.discussion.newCommentFocus) {
           clEditor.focus();
         }
       }),
       { immediate: true });
 
-    const isSticky = this.$el.parentNode.classList.contains('sticky-comment');
     if (isSticky) {
       let scrollerMirrorElt;
       const getScrollerMirrorElt = () => {
@@ -128,10 +130,10 @@ export default {
     } else {
       // Maintain the state with the sticky comment
       this.$watch(
-        () => this.$store.state.discussion.stickyComment === null,
-        (isVisible) => {
-          clEditor.toggleEditable(isVisible);
-          if (isVisible) {
+        () => isVisible(),
+        (visible) => {
+          clEditor.toggleEditable(visible);
+          if (visible) {
             const text = this.$store.state.discussion.newCommentText;
             clEditor.setContent(text);
             const selection = this.$store.state.discussion.newCommentSelection;

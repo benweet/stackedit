@@ -99,11 +99,14 @@ function enterKeyHandler(evt, state) {
   }
 
   evt.preventDefault();
-  const lf = state.before.lastIndexOf('\n') + 1;
-  const previousLine = state.before.slice(lf);
-  const indentMatch = previousLine.match(indentRegexp) || [''];
+
+  // Get the last line before the selection
+  const lastLf = state.before.lastIndexOf('\n') + 1;
+  const lastLine = state.before.slice(lastLf);
+  // See if the line is indented
+  const indentMatch = lastLine.match(indentRegexp) || [''];
   if (clearNewline && !state.selection && state.before.length === lastSelection) {
-    state.before = state.before.substring(0, lf);
+    state.before = state.before.substring(0, lastLf);
     state.selection = '';
     clearNewline = false;
     fixNumberedList(state, indentMatch[1]);
@@ -135,13 +138,14 @@ function tabKeyHandler(evt, state) {
 
   evt.preventDefault();
   const isInverse = evt.shiftKey;
-  const lf = state.before.lastIndexOf('\n') + 1;
-  const previousLine = state.before.slice(lf) + state.selection + state.after;
-  const indentMatch = previousLine.match(indentRegexp);
+  const lastLf = state.before.lastIndexOf('\n') + 1;
+  const lastLine = state.before.slice(lastLf);
+  const currentLine = lastLine + state.selection + state.after;
+  const indentMatch = currentLine.match(indentRegexp);
   if (isInverse) {
     const previousChar = state.before.slice(-1);
-    if (/\s/.test(state.before.charAt(lf))) {
-      state.before = strSplice(state.before, lf, 1);
+    if (/\s/.test(state.before.charAt(lastLf))) {
+      state.before = strSplice(state.before, lastLf, 1);
       if (indentMatch) {
         fixNumberedList(state, indentMatch[1]);
         if (indentMatch[1]) {
@@ -154,8 +158,13 @@ function tabKeyHandler(evt, state) {
     if (previousChar) {
       state.selection = state.selection.slice(1);
     }
-  } else if (state.selection || indentMatch) {
-    state.before = strSplice(state.before, lf, 0, '\t');
+  } else if (
+    // If selection is not empty
+    state.selection
+    // Or we are in an indented paragraph and the cursor is over the indentation characters
+    || (indentMatch && indentMatch[0].length >= lastLine.length)
+  ) {
+    state.before = strSplice(state.before, lastLf, 0, '\t');
     state.selection = state.selection.replace(/\n(?=.)/g, '\n\t');
     if (indentMatch) {
       fixNumberedList(state, indentMatch[1]);

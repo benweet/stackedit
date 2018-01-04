@@ -14,11 +14,11 @@ export default {
   },
   getters: {
     mainWorkspace: (state, getters, rootState, rootGetters) => {
-      const workspaces = rootGetters['data/workspaces'];
+      const workspaces = rootGetters['data/sanitizedWorkspaces'];
       return workspaces.main;
     },
     currentWorkspace: (state, getters, rootState, rootGetters) => {
-      const workspaces = rootGetters['data/workspaces'];
+      const workspaces = rootGetters['data/sanitizedWorkspaces'];
       return workspaces[state.currentWorkspaceId] || getters.mainWorkspace;
     },
     lastSyncActivityKey: (state, getters) => `${getters.currentWorkspace.id}/lastSyncActivity`,

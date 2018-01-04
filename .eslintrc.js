@@ -16,7 +16,9 @@ module.exports = {
   ],
   globals: {
     "NODE_ENV": false,
-    "VERSION": false
+    "VERSION": false,
+    "GOOGLE_CLIENT_ID": false,
+    "GITHUB_CLIENT_ID": false
   },
   // check if imports actually resolve
   'settings': {

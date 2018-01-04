@@ -1,6 +1,7 @@
 import store from '../../store';
 import googleHelper from './helpers/googleHelper';
 import providerRegistry from './providerRegistry';
+import utils from '../utils';
 
 export default providerRegistry.register({
   id: 'googleDriveAppData',
@@ -8,8 +9,14 @@ export default providerRegistry.register({
     return store.getters['workspace/syncToken'];
   },
   initWorkspace() {
-    // Nothing to do since the main workspace isn't necessarily synchronized
-    return Promise.resolve(store.getters['data/workspaces'].main);
+    // Nothing much to do since the main workspace isn't necessarily synchronized
+    return Promise.resolve()
+      .then(() => {
+        // Remove the URL hash
+        utils.setQueryParams();
+        // Return the main workspace
+        return store.getters['data/workspaces'].main;
+      });
   },
   getChanges() {
     const syncToken = store.getters['workspace/syncToken'];

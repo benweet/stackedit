@@ -1,11 +1,10 @@
 const env = require('./config/prod.env');
 
-if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = JSON.parse(env.NODE_ENV);
-}
-if (!process.env.GOOGLE_CLIENT_ID) {
-  process.env.GOOGLE_CLIENT_ID = JSON.parse(env.GOOGLE_CLIENT_ID);
-}
+Object.entries(env).forEach(([key, value]) => {
+  if (!process.env[key]) {
+    process.env[key] = JSON.parse(value);
+  }
+});
 
 const http = require('http');
 const https = require('https');

@@ -33,6 +33,25 @@ export default providerRegistry.register({
         });
       })
       .then((token) => {
+        const openWorkspaceIfExists = (file) => {
+          const folderId = file
+            && file.appProperties
+            && file.appProperties.folderId;
+          if (folderId) {
+            // See if we have the corresponding workspace
+            const workspaceParams = {
+              providerId: 'googleDriveWorkspace',
+              folderId,
+            };
+            const workspaceId = utils.makeWorkspaceId(workspaceParams);
+            const workspace = store.getters['data/sanitizedWorkspaces'][workspaceId];
+            // If we have the workspace, open it by changing the current URL
+            if (workspace) {
+              utils.setQueryParams(workspaceParams);
+            }
+          }
+        };
+
         switch (state.action) {
           case 'create':
           default:
@@ -41,24 +60,17 @@ export default providerRegistry.register({
               .then((folder) => {
                 folder.appProperties = folder.appProperties || {};
                 googleHelper.driveActionFolder = folder;
-                if (folder.appProperties.folderId) {
-                  // Change current URL to workspace URL
-                  utils.setQueryParams({
-                    providerId: 'googleDriveWorkspace',
-                    folderId: folder.appProperties.folderId,
-                    sub: state.userId,
-                  });
-                }
+                openWorkspaceIfExists(folder);
               }, (err) => {
                 if (!err || err.status !== 404) {
                   throw err;
                 }
-                // We received a 404 error meaning we have no permission to read the folder
+                // We received an HTTP 404 meaning we have no permission to read the folder
                 googleHelper.driveActionFolder = { id: state.folderId };
               });
 
           case 'open': {
-            const getOneFile = (ids) => {
+            const getOneFile = (ids = state.ids || []) => {
               const id = ids.shift();
               return id && googleHelper.getFile(token, id)
                 .then((file) => {
@@ -68,31 +80,20 @@ export default providerRegistry.register({
                 });
             };
 
-            return getOneFile(state.ids || [])
-              .then(() => {
-                // Check if first file is part of a workspace
-                const firstFile = googleHelper.driveActionFiles[0];
-                if (firstFile && firstFile.appProperties && firstFile.appProperties.folderId) {
-                  // Change current URL to workspace URL
-                  utils.setQueryParams({
-                    providerId: 'googleDriveWorkspace',
-                    folderId: firstFile.appProperties.folderId,
-                    sub: state.userId,
-                  });
-                }
-              });
+            return getOneFile()
+              // Check if first file is part of a workspace
+              .then(() => openWorkspaceIfExists(googleHelper.driveActionFiles[0]));
           }
         }
       });
   },
   performAction() {
-    const state = googleHelper.driveState || {};
-    const token = store.getters['data/googleTokens'][state.userId];
-    return token && Promise.resolve()
+    return Promise.resolve()
       .then(() => {
-        switch (state.action) {
+        const state = googleHelper.driveState || {};
+        const token = store.getters['data/googleTokens'][state.userId];
+        switch (token && state.action) {
           case 'create':
-          default:
             return store.dispatch('createFile')
               .then((file) => {
                 store.commit('file/setCurrentId', file.id);
@@ -102,6 +103,8 @@ export default providerRegistry.register({
           case 'open':
             return store.dispatch('queue/enqueue',
               () => this.openFiles(token, googleHelper.driveActionFiles));
+          default:
+            return null;
         }
       });
   },

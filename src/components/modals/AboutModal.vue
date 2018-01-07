@@ -2,15 +2,18 @@
   <modal-inner class="modal__inner-1--about-modal" aria-label="About">
     <div class="modal__content">
       <div class="logo-background"></div>
-      <div class="app-version">v{{version}} — © 2017 Benoit Schweblin</div>
+      <div class="app-version">v{{version}} — © 2018 Benoit Schweblin</div>
       <hr>
-      <a target="_blank" href="https://github.com/benweet/stackedit/">StackEdit on GitHub</a> /
+      <a target="_blank" href="https://github.com/benweet/stackedit/">GitHub repo</a> —
       <a target="_blank" href="https://github.com/benweet/stackedit/issues">issue tracker</a>
       <br>
       <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome app</a> — thanks for your review!
       <br>
-      <a target="_blank" href="https://twitter.com/stackedit/">StackEdit on Twitter</a>
+      StackEdit on <a target="_blank" href="https://twitter.com/stackedit/">Twitter</a>
       <hr>
+      Licensed under an
+      <a target="_blank" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a>
+      <br>
       <a target="_blank" href="privacy_policy.html">Privacy Policy</a>
     </div>
     <div class="modal__button-bar">
@@ -46,7 +49,7 @@ export default {
   }
 
   .app-version {
-    font-size: 0.75em;
+    font-size: 0.8em;
   }
 
   hr {

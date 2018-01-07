@@ -1,9 +1,9 @@
 require('./check-versions')()
 
 var config = require('../config')
-Object.entries(config.dev.env).forEach(([key, value]) => {
+Object.keys(config.dev.env).forEach((key) => {
   if (!process.env[key]) {
-    process.env[key] = JSON.parse(value);
+    process.env[key] = JSON.parse(config.dev.env[key]);
   }
 });
 

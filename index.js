@@ -1,8 +1,8 @@
 const env = require('./config/prod.env');
 
-Object.entries(env).forEach(([key, value]) => {
+Object.keys(env).forEach((key) => {
   if (!process.env[key]) {
-    process.env[key] = JSON.parse(value);
+    process.env[key] = JSON.parse(env[key]);
   }
 });
 

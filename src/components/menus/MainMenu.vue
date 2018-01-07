@@ -36,12 +36,12 @@
     <menu-entry @click.native="setPanel('sync')">
       <icon-sync slot="icon"></icon-sync>
       <div>Synchronize</div>
-      <span>Open, save, collaborate in the Cloud.</span>
+      <span>Sync your files in the Cloud.</span>
     </menu-entry>
     <menu-entry @click.native="setPanel('publish')">
       <icon-upload slot="icon"></icon-upload>
       <div>Publish</div>
-      <span>Export your file to the web.</span>
+      <span>Export your files to the web.</span>
     </menu-entry>
     <menu-entry @click.native="history">
       <icon-history slot="icon"></icon-history>

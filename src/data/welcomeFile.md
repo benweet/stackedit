@@ -1,17 +1,11 @@
 # Welcome to StackEdit!
 
-Hi! I'm your first Markdown file in **StackEdit**. If you want to learn about StackEdit, you can read me. If you want to play with Markdown, you can edit me. If you have finished with me, you can just create new files by opening the **file explorer** on left corner of the navigation bar.
+Hi! I'm your first Markdown file in **StackEdit**. If you want to learn about StackEdit, you can read me. If you want to play with Markdown, you can edit me. If you have finished with me, you can just create new files by opening the **file explorer** on the left corner of the navigation bar.
 
 
 # Files
 
 StackEdit stores your files in your browser, which means all your files are automatically saved locally and are accessible **offline!**
-
-> **Note:**
->
-> - StackEdit can be used offline thanks to the application cache.
-> - Your local files are not shared between different browsers or computers unless you use the [synchronization mechanism](#synchronization).
-> - Clearing your browser's data may **delete all your files!** Make sure you sign in with Google to have all your files and settings backed up and synced.
 
 ## Create files and folders
 

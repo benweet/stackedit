@@ -266,7 +266,7 @@ gulp.task('git-tag', function() {
 			return exec('npm publish');
 		})
 		.then(function () {
-			return exec('git push origin master --tags');
+			return exec('git push origin v4 --tags');
 		});
 });
 

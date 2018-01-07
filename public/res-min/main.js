@@ -7193,7 +7193,7 @@ var saveAs = saveAs || function(t) {
  }, utils;
 }), define("constants", [], function() {
  var t = {};
- return t.VERSION = "4.3.19", t.MAIN_URL = "https://stackedit.io/", t.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", 
+ return t.VERSION = "4.3.20", t.MAIN_URL = "https://stackedit.io/", t.GOOGLE_ANALYTICS_ACCOUNT_ID = "UA-39556145-1", 
  t.GOOGLE_API_KEY = "AIzaSyAeCU8CGcSkn0z9js6iocHuPBX4f_mMWkw", t.GOOGLE_DRIVE_APP_ID = "241271498917", 
  t.DROPBOX_APP_KEY = "lq6mwopab8wskas", t.DROPBOX_APP_SECRET = "851fgnucpezy84t", 
  t.DROPBOX_RESTRICTED_APP_KEY = "sw0hlixhr8q1xk0", t.DROPBOX_RESTRICTED_APP_SECRET = "1r808p2xygs6lbg", 

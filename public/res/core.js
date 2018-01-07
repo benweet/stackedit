@@ -576,7 +576,7 @@ define([
 			document.getElementById('input-settings-theme').innerHTML = themeOptions;
 		}
 
-		$('.modal-header').append('<a class="dialog-header-message" href="app" target="_blank"><i class="icon-megaphone"></i> Try StackEdit 5!</a>');
+		$('.modal-header').append('<a class="dialog-header-message" href="app" target="_blank"><i class="icon-megaphone"></i> Switch to StackEdit 5 now!</a>');
 		checkPayment();
 	});
 

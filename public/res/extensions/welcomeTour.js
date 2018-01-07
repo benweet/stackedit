@@ -2,9 +2,10 @@ define([
 	'underscore',
 	'jquery',
 	'storage',
+	'utils',
 	'classes/Extension',
 	'bootstrap-tour'
-], function(_, $, storage, Extension, Tour) {
+], function(_, $, storage, utils, Extension, Tour) {
 
 	var welcomeTour = new Extension('welcomeTour', 'Welcome tour', false, true);
 
@@ -42,9 +43,9 @@ define([
 				}
 			},
 			onEnd: function() {
-				storage.welcomeTour_1 = 'done';
-				infoTooltip('.drag-me', 'Drag me!', 'left');
-				infoTooltip('.layout-toggler-preview', 'Toggle preview', 'right');
+				// storage.welcomeTour = 'done';
+				// infoTooltip('.drag-me', 'Drag me!', 'left');
+				// infoTooltip('.layout-toggler-preview', 'Toggle preview', 'right');
 			},
 			template: [
 				'<div class="popover tour">',
@@ -53,7 +54,7 @@ define([
 				'   <div class="popover-content"></div>',
 				'   <nav class="popover-navigation">',
 				'       <button class="btn btn-primary" data-role="next">Next</button>',
-				'       <button class="btn btn-default" data-role="end">Got it!</button>',
+				'       <button class="btn btn-default" data-role="end">OK</button>',
 				'   </nav>',
 				'</div>'
 			].join("")
@@ -61,60 +62,23 @@ define([
 		tour.addSteps([
 			{
 				element: '.navbar-inner',
-				title: 'StackEdit 5 is coming...',
+				title: 'StackEdit 4 is deprecated',
 				content: [
-					'<p>A new version of StackEdit is on its way and <a href="app" target="_blank">you can try it here</a>!</p>',
-					'<p>It\'s still in beta. Some of the features may not be available just yet.</p>',
-					'You can always click <b>Next</b> to go through the StackEdit 4 tour.'
-				].join(""),
-				placement: 'bottom'
-			},
-			{
-				element: '.document-panel .toggle-button',
-				title: 'Documents',
-				content: [
-					'<p>The <i class="icon-folder-open"></i> <b>document panel</b> allows you to manage your local documents.</p>',
-					'<b>Tip:</b> Use <kbd>Ctrl+[</kbd> and <kbd>Ctrl+]</kbd> to toggle documents.'
-				].join(""),
-				placement: 'left',
-				reflex: true
-			},
-			{
-				element: '.menu-panel .toggle-button',
-				title: 'Menu',
-				content: [
-					'<p>The <i class="icon-provider-stackedit"></i> <b>menu panel</b> allows you to synchronize your documents on <i class="icon-provider-gdrive"></i> Google Drive, <i class="icon-provider-dropbox"></i> Dropbox or to publish them on <i class="icon-provider-github"></i> GitHub, <i class="icon-provider-blogger"></i> Blogger...</p>',
-					'<b>Tip:</b> Use the <i class="icon-provider-stackedit"></i> <b>menu panel</b> to access the settings.'
-				].join(""),
-				placement: 'right',
-				reflex: true
-			},
-			{
-				element: '.navbar-inner > .nav .button-open-discussion, .navbar .buttons-dropdown > .nav > .btn:not(:hidden)',
-				title: 'Comments/discussions',
-				content: [
-					'<p>New in StackEdit 4: the <i class="icon-comment-alt"></i> <b>comments</b> button lets you create inline discussions!</p>',
-					'<b>Tip:</b> Reopen the Hello! document from Settings>Utils to discover other new features.'
-				].join(""),
-				placement: 'right',
-				reflex: true
-			},
-			{
-				element: '.navbar-inner',
-				title: 'Happy StackWriting!',
-				content: [
-					'<p>Enjoy, and don\'t forget to rate 5 stars on the <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg/reviews">Chrome Web Store</a>...</p>',
-					'<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://stackedit.io" data-text="Great #markdown editor!" data-via="stackedit" data-size="large"></a>'
+					'<p><b>StackEdit 5</b> is now ready for production!</p>',
+					'<p>If you want to migrate, <a href="#" class="action-export-docs-tour">click here</a> to export a backup of your files.</p>',
+					'<p>To import the backup in StackEdit 5, go to Menu > More > Import workspace backup.</p>',
+					'<p><a href="app" target="_blank">Click here</a> to open StackEdit 5 now!</p>',
+					'You can always click <b>OK</b> to continue with StackEdit 4.'
 				].join(""),
 				placement: 'bottom',
 				onShown: function() {
-					eventMgr.onTweet();
+					$(".action-export-docs-tour").click(function() {
+						utils.saveAs(JSON.stringify(storage), "StackEdit local storage.json");
+					});
 				}
-			}
+			},
 		]);
-		if(!_.has(storage, 'welcomeTour_1')) {
-			tour.start();
-		}
+		tour.start();
 		$('.action-welcome-tour').click(function() {
 			tour.restart();
 		});

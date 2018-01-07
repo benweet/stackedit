@@ -282,7 +282,15 @@ define([
 			localStorage.settings = JSON.stringify(settings);
 		}
 		version = "v23";
+    }
+
+    if(version == 'v23') {
+		// Force welcome tour
+		localStorage.removeItem("welcomeTour");
+		localStorage.removeItem("welcomeTour_1");
+		version = "v24";
 	}
+
 
 	localStorage.version = version;
     return localStorage;

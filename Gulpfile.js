@@ -76,7 +76,7 @@ gulp.task('requirejs', [
 		name: 'main',
 		out: 'main.js',
 		mainConfigFile: 'public/res/main.js',
-		optimize: 'uglify2',
+		// optimize: 'uglify2',
 		inlineText: true,
 		paths: {
 			mathjax: 'empty:'

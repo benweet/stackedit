@@ -24,7 +24,7 @@
     "yaml.js": "https://github.com/jeremyfa/yaml.js.git#~0.1.4",
     "prism": "a12e8692b5f660a0123a06f74935f75386a93042",
     "MutationObservers": "https://github.com/Polymer/MutationObservers.git#~0.2.1",
-    "rangy": "~1.2.3",
+    "rangy": "1.2.3",
     "google-diff-match-patch-js": "~1.0.0",
     "jsondiffpatch": "https://github.com/benweet/jsondiffpatch.git#fb9dddf7cd076d8ec89d376c0e9de9223e9888f9",
     "hammerjs": "~1.0.10",

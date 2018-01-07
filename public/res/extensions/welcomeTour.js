@@ -67,7 +67,7 @@ define([
 					'<p><b>StackEdit 5</b> is now ready for production!</p>',
 					'<p>If you want to migrate, <a href="#" class="action-export-docs-tour">click here</a> to export a backup of your files.</p>',
 					'<p>To import the backup in StackEdit 5, go to Menu > More > Import workspace backup.</p>',
-					'<p><a href="app" target="_blank">Click here</a> to open StackEdit 5 now!</p>',
+					'<p><a href="app" target="_blank">Open StackEdit 5 now!</a></p>',
 					'You can always click <b>OK</b> to continue with StackEdit 4.'
 				].join(""),
 				placement: 'bottom',

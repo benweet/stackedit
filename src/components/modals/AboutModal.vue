@@ -2,7 +2,7 @@
   <modal-inner class="modal__inner-1--about-modal" aria-label="About">
     <div class="modal__content">
       <div class="logo-background"></div>
-      <div class="app-version">v{{version}} — © 2018 Benoit Schweblin</div>
+      <small>v{{version}} — © 2018 Benoit Schweblin</small>
       <hr>
       <a target="_blank" href="https://github.com/benweet/stackedit/">GitHub repo</a> —
       <a target="_blank" href="https://github.com/benweet/stackedit/issues">issue tracker</a>
@@ -11,10 +11,9 @@
       <br>
       StackEdit on <a target="_blank" href="https://twitter.com/stackedit/">Twitter</a>
       <hr>
-      Licensed under an
-      <a target="_blank" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a>
-      <br>
-      <a target="_blank" href="privacy_policy.html">Privacy Policy</a>
+      <small>Licensed under an
+      <a target="_blank" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a><br>
+      <a target="_blank" href="privacy_policy.html">Privacy Policy</a></small>
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.resolve()">Close</button>
@@ -48,8 +47,8 @@ export default {
     margin: 0.5rem 0;
   }
 
-  .app-version {
-    font-size: 0.8em;
+  small {
+    display: block;
   }
 
   hr {

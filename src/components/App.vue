@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" :class="themeClasses">
     <splash-screen v-if="!ready"></splash-screen>
     <layout v-else></layout>
     <modal v-if="showModal"></modal>
@@ -61,6 +61,11 @@ Vue.filter('formatTime', time =>
   // Access the minute counter for reactive refresh
   timeSvc.format(time, store.state.minuteCounter));
 
+const themeClasses = {
+  light: ['app--light'],
+  dark: ['app--dark'],
+};
+
 export default {
   components: {
     Layout,
@@ -72,6 +77,10 @@ export default {
     ready: false,
   }),
   computed: {
+    themeClasses() {
+      const result = themeClasses[this.$store.getters['data/computedSettings'].colorTheme];
+      return Array.isArray(result) ? result : themeClasses.light;
+    },
     showModal() {
       return !!this.$store.getters['modal/config'];
     },

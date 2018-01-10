@@ -148,25 +148,46 @@ export default {
   background-color: #007acc;
 }
 
-$editor-background: #fff;
+$editor-background-light: #fff;
+$editor-background-dark: #1e1e1e;
 
 .layout__panel--editor {
-  background-color: $editor-background;
+  .app--light & {
+    background-color: $editor-background-light;
+  }
+
+  .app--dark & {
+    background-color: $editor-background-dark;
+  }
 
   .gutter__background,
   .comment-list__current-discussion,
   .sticky-comment,
   .current-discussion {
-    background-color: mix(#000, $editor-background, 6.7%);
-    border-color: $editor-background;
+    .app--light & {
+      background-color: mix(#000, $editor-background-light, 6.7%);
+      border-color: $editor-background-light;
+    }
+
+    .app--dark & {
+      background-color: mix(#fff, $editor-background-dark, 5%);
+      border-color: $editor-background-dark;
+    }
   }
 }
 
-$preview-background: #f3f3f3;
+$preview-background-light: #f3f3f3;
+$preview-background-dark: #252525;
 
 .layout__panel--preview,
 .layout__panel--button-bar {
-  background-color: $preview-background;
+  .app--light & {
+    background-color: $preview-background-light;
+  }
+
+  .app--dark & {
+    background-color: $preview-background-dark;
+  }
 }
 
 .layout__panel--preview {
@@ -174,8 +195,8 @@ $preview-background: #f3f3f3;
   .comment-list__current-discussion,
   .sticky-comment,
   .current-discussion {
-    background-color: mix(#000, $preview-background, 6.7%);
-    border-color: $preview-background;
+    background-color: mix(#000, $preview-background-light, 6.7%);
+    border-color: $preview-background-light;
   }
 }
 

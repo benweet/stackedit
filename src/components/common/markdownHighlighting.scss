@@ -1,7 +1,16 @@
 @import './variables';
 
 .markdown-highlighting {
-  color: $editor-color;
+  .app--light & {
+    color: $editor-color-light;
+    caret-color: $editor-color-light-low;
+  }
+
+  .app--dark & {
+    color: $editor-color-dark;
+    caret-color: $editor-color-dark-low;
+  }
+
   font-family: inherit;
   font-size: inherit;
   -webkit-font-smoothing: auto;
@@ -18,12 +27,25 @@
   }
 
   .pre {
-    color: $editor-color;
+    .app--light & {
+      color: $editor-color-light;
+    }
+
+    .app--dark & {
+      color: $editor-color-dark;
+    }
+
     font-family: $font-family-monospace;
     font-size: $font-size-monospace;
 
     [class*='language-'] {
-      color: $editor-color-dark;
+      .app--light & {
+        color: $editor-color-light-low;
+      }
+
+      .app--dark & {
+        color: $editor-color-dark-low;
+      }
     }
 
     * {
@@ -37,7 +59,14 @@
   }
 
   .tag {
-    color: $editor-color;
+    .app--light & {
+      color: $editor-color-light;
+    }
+
+    .app--dark & {
+      color: $editor-color-dark;
+    }
+
     font-family: $font-family-monospace;
     font-size: $font-size-monospace;
     font-weight: $editor-font-weight-bold;
@@ -55,11 +84,24 @@
 
   .latex,
   .math {
-    color: $editor-color;
+    .app--light & {
+      color: $editor-color-light;
+    }
+
+    .app--dark & {
+      color: $editor-color-dark;
+    }
   }
 
   .entity {
-    color: $editor-color;
+    .app--light & {
+      color: $editor-color-light;
+    }
+
+    .app--dark & {
+      color: $editor-color-dark;
+    }
+
     font-family: $font-family-monospace;
     font-size: $font-size-monospace;
     font-style: italic;
@@ -79,11 +121,24 @@
   }
 
   .comment {
-    color: $editor-color-light;
+    .app--light & {
+      color: $editor-color-light-high;
+    }
+
+    .app--dark & {
+      color: $editor-color-dark-high;
+    }
   }
 
   .keyword {
-    color: $editor-color-dark;
+    .app--light & {
+      color: $editor-color-light-low;
+    }
+
+    .app--dark & {
+      color: $editor-color-dark-low;
+    }
+
     font-weight: $editor-font-weight-bold;
   }
 
@@ -164,12 +219,25 @@
   }
 
   .cl-hash {
-    color: $editor-color-light;
+    .app--light & {
+      color: $editor-color-light-high;
+    }
+
+    .app--dark & {
+      color: $editor-color-dark-high;
+    }
   }
 
   .cl,
   .hr {
-    color: $editor-color-light;
+    .app--light & {
+      color: $editor-color-light-high;
+    }
+
+    .app--dark & {
+      color: $editor-color-dark-high;
+    }
+
     font-style: normal;
     font-weight: $editor-font-weight-base;
   }
@@ -196,7 +264,13 @@
   }
 
   .linkdef .url {
-    color: $editor-color-light;
+    .app--light & {
+      color: $editor-color-light-high;
+    }
+
+    .app--dark & {
+      color: $editor-color-dark-high;
+    }
   }
 
   .fn,
@@ -217,15 +291,33 @@
   .imgref,
   .link,
   .linkref {
-    color: $editor-color-light;
+    .app--light & {
+      color: $editor-color-light-high;
+    }
+
+    .app--dark & {
+      color: $editor-color-dark-high;
+    }
 
     .cl-underlined-text {
-      color: $editor-color-dark;
+      .app--light & {
+        color: $editor-color-light-low;
+      }
+
+      .app--dark & {
+        color: $editor-color-dark-low;
+      }
     }
   }
 
   .cl-title {
-    color: $editor-color;
+    .app--light & {
+      color: $editor-color-light;
+    }
+
+    .app--dark & {
+      color: $editor-color-dark;
+    }
   }
 }
 

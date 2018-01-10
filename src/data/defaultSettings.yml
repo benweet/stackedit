@@ -1,3 +1,5 @@
+# light or dark
+colorTheme: light
 # Auto-sync frequency (in ms). Minimum is 60000.
 autoSyncEvery: 60000
 # Adjust font size in editor and preview

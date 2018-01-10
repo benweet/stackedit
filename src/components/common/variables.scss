@@ -18,8 +18,13 @@ $navbar-color: mix($navbar-bg, #fff, 33%);
 $navbar-hover-color: #fff;
 $navbar-hover-background: rgba(255, 255, 255, 0.1);
 
-$editor-color: rgba(0, 0, 0, 0.8);
-$editor-color-light: rgba(0, 0, 0, 0.28);
-$editor-color-dark: #000;
+$editor-color-light: rgba(0, 0, 0, 0.8);
+$editor-color-light-high: rgba(0, 0, 0, 0.28);
+$editor-color-light-low: #000;
+
+$editor-color-dark: rgba(255, 255, 255, 0.8);
+$editor-color-dark-high: rgba(255, 255, 255, 0.28);
+$editor-color-dark-low: #fff;
+
 $editor-font-weight-base: 400;
 $editor-font-weight-bold: 600;

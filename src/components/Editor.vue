@@ -85,7 +85,6 @@ export default {
   white-space: pre-wrap;
   word-break: break-word;
   word-wrap: break-word;
-  caret-color: #000;
 
   * {
     line-height: $line-height-base;

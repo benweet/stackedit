@@ -268,11 +268,23 @@ export default {
 .layout--revision {
   .cledit-section *,
   .cl-preview-section * {
-    color: rgba(0, 0, 0, 0.15) !important;
+    .app--light & {
+      color: transparentize($editor-color-light, 0.67) !important;
+    }
+
+    .app--dark & {
+      color: transparentize($editor-color-dark, 0.67) !important;
+    }
   }
 
   .cledit-section .revision-diff {
-    color: $editor-color !important;
+    .app--light & {
+      color: $editor-color-light !important;
+    }
+
+    .app--dark & {
+      color: $editor-color-dark !important;
+    }
   }
 
   .cl-preview-section .revision-diff {

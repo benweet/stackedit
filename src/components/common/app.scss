@@ -100,6 +100,18 @@ textarea {
     text-decoration: none;
   }
 
+  .app--dark .layout__panel--editor &,
+  .app--dark .layout__panel--preview & {
+    color: #ccc;
+
+    &:active,
+    &:focus,
+    &:hover {
+      color: #ccc;
+      background-color: rgba(255, 255, 255, 0.067);
+    }
+  }
+
   &[disabled] {
     &,
     &:active,
@@ -235,22 +247,38 @@ textarea {
   height: 21px;
   line-height: 1;
 
+  .app--dark & {
+    color: rgba(255, 255, 255, 0.33);
+  }
+
   &:active,
   &:focus,
   &:hover {
     color: rgba(0, 0, 0, 0.4);
+
+    .app--dark & {
+      color: rgba(255, 255, 255, 0.4);
+    }
   }
 }
 
 .discussion-editor-highlighting,
 .discussion-preview-highlighting {
-  background-color: mix(#fff, $selection-highlighting-color, 70%);
+  background-color: mix($editor-background-light, $selection-highlighting-color, 70%);
   padding: 0.25em 0;
+
+  .app--dark & {
+    background-color: mix($editor-background-dark, $selection-highlighting-color, 70%);
+  }
 }
 
 .discussion-editor-highlighting--hover,
 .discussion-preview-highlighting--hover {
-  background-color: mix(#fff, $selection-highlighting-color, 50%);
+  background-color: mix($editor-background-light, $selection-highlighting-color, 50%);
+
+  .app--dark & {
+    background-color: mix($editor-background-dark, $selection-highlighting-color, 50%);
+  }
 
   * {
     background-color: transparent;
@@ -259,7 +287,11 @@ textarea {
 
 .discussion-editor-highlighting--selected,
 .discussion-preview-highlighting--selected {
-  background-color: mix(#fff, $selection-highlighting-color, 20%);
+  background-color: mix($editor-background-light, $selection-highlighting-color, 20%);
+
+  .app--dark & {
+    background-color: mix($editor-background-dark, $selection-highlighting-color, 20%);
+  }
 
   * {
     background-color: transparent;

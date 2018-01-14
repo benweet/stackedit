@@ -43,8 +43,9 @@ export default {
 };
 </script>
 
-
 <style lang="scss">
+@import 'common/variables.scss';
+
 .button-bar {
   position: absolute;
   width: 100%;
@@ -60,27 +61,44 @@ export default {
 }
 
 .button-bar__button {
-  display: block;
   color: rgba(0, 0, 0, 0.2);
+  display: block;
   width: 26px;
   height: 26px;
   padding: 2px;
   margin: 3px 0;
 
+  .app--dark & {
+    color: rgba(255, 255, 255, 0.15);
+  }
+
   &:active,
   &:focus,
   &:hover {
     color: rgba(0, 0, 0, 0.2);
+
+    .app--dark & {
+      color: rgba(255, 255, 255, 0.15);
+      background-color: $navbar-hover-background;
+    }
   }
 }
 
 .button-bar__button--on {
   color: rgba(0, 0, 0, 0.4);
 
+  .app--dark & {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
   &:active,
   &:focus,
   &:hover {
     color: rgba(0, 0, 0, 0.4);
+
+    .app--dark & {
+      color: rgba(255, 255, 255, 0.4);
+    }
   }
 }
 </style>

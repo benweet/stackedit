@@ -1,10 +1,8 @@
 @import './variables';
 
 .markdown-highlighting {
-  .app--light & {
-    color: $editor-color-light;
-    caret-color: $editor-color-light-low;
-  }
+  color: $editor-color-light;
+  caret-color: $editor-color-light-low;
 
   .app--dark & {
     color: $editor-color-dark;
@@ -27,9 +25,7 @@
   }
 
   .pre {
-    .app--light & {
-      color: $editor-color-light;
-    }
+    color: $editor-color-light;
 
     .app--dark & {
       color: $editor-color-dark;
@@ -39,9 +35,7 @@
     font-size: $font-size-monospace;
 
     [class*='language-'] {
-      .app--light & {
-        color: $editor-color-light-low;
-      }
+      color: $editor-color-light-low;
 
       .app--dark & {
         color: $editor-color-dark-low;
@@ -59,9 +53,7 @@
   }
 
   .tag {
-    .app--light & {
-      color: $editor-color-light;
-    }
+    color: $editor-color-light;
 
     .app--dark & {
       color: $editor-color-dark;
@@ -84,9 +76,7 @@
 
   .latex,
   .math {
-    .app--light & {
-      color: $editor-color-light;
-    }
+    color: $editor-color-light;
 
     .app--dark & {
       color: $editor-color-dark;
@@ -94,9 +84,7 @@
   }
 
   .entity {
-    .app--light & {
-      color: $editor-color-light;
-    }
+    color: $editor-color-light;
 
     .app--dark & {
       color: $editor-color-dark;
@@ -121,9 +109,7 @@
   }
 
   .comment {
-    .app--light & {
-      color: $editor-color-light-high;
-    }
+    color: $editor-color-light-high;
 
     .app--dark & {
       color: $editor-color-dark-high;
@@ -131,9 +117,7 @@
   }
 
   .keyword {
-    .app--light & {
-      color: $editor-color-light-low;
-    }
+    color: $editor-color-light-low;
 
     .app--dark & {
       color: $editor-color-dark-low;
@@ -173,7 +157,11 @@
   }
 
   .blockquote {
-    color: rgba(0, 0, 0, 0.48);
+    color: $editor-color-light-blockquote;
+
+    .app--dark & {
+      color: $editor-color-dark-blockquote;
+    }
   }
 
   .h1,
@@ -219,9 +207,7 @@
   }
 
   .cl-hash {
-    .app--light & {
-      color: $editor-color-light-high;
-    }
+    color: $editor-color-light-high;
 
     .app--dark & {
       color: $editor-color-dark-high;
@@ -230,9 +216,7 @@
 
   .cl,
   .hr {
-    .app--light & {
-      color: $editor-color-light-high;
-    }
+    color: $editor-color-light-high;
 
     .app--dark & {
       color: $editor-color-dark-high;
@@ -264,9 +248,7 @@
   }
 
   .linkdef .url {
-    .app--light & {
-      color: $editor-color-light-high;
-    }
+    color: $editor-color-light-high;
 
     .app--dark & {
       color: $editor-color-dark-high;
@@ -291,18 +273,14 @@
   .imgref,
   .link,
   .linkref {
-    .app--light & {
-      color: $editor-color-light-high;
-    }
+    color: $editor-color-light-high;
 
     .app--dark & {
       color: $editor-color-dark-high;
     }
 
     .cl-underlined-text {
-      .app--light & {
-        color: $editor-color-light-low;
-      }
+      color: $editor-color-light-low;
 
       .app--dark & {
         color: $editor-color-dark-low;
@@ -311,9 +289,7 @@
   }
 
   .cl-title {
-    .app--light & {
-      color: $editor-color-light;
-    }
+    color: $editor-color-light;
 
     .app--dark & {
       color: $editor-color-dark;

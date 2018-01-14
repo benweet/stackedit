@@ -1,10 +1,11 @@
 $font-family-main: Lato, 'Helvetica Neue', Helvetica, sans-serif;
 $font-family-monospace: 'Roboto Mono', 'Lucida Sans Typewriter', 'Lucida Console', monaco, Courrier, monospace;
-$body-color: rgba(0, 0, 0, 0.75);
+$body-color-light: rgba(0, 0, 0, 0.75);
+$body-color-dark: rgba(255, 255, 255, 0.75);
+$code-bg: rgba(0, 0, 0, 0.05);
 $line-height-base: 1.67;
 $line-height-title: 1.33;
 $font-size-monospace: 0.85em;
-$code-bg: rgba(0, 0, 0, 0.05);
 $highlighting-color: #ff0;
 $selection-highlighting-color: #ff9632;
 $info-bg: transparentize($selection-highlighting-color, 0.85);
@@ -18,13 +19,18 @@ $navbar-color: mix($navbar-bg, #fff, 33%);
 $navbar-hover-color: #fff;
 $navbar-hover-background: rgba(255, 255, 255, 0.1);
 
+$editor-background-light: #fff;
+$editor-background-dark: #1e1e1e;
+
 $editor-color-light: rgba(0, 0, 0, 0.8);
-$editor-color-light-high: rgba(0, 0, 0, 0.28);
 $editor-color-light-low: #000;
+$editor-color-light-high: rgba(0, 0, 0, 0.28);
+$editor-color-light-blockquote: rgba(0, 0, 0, 0.48);
 
 $editor-color-dark: rgba(255, 255, 255, 0.8);
-$editor-color-dark-high: rgba(255, 255, 255, 0.28);
 $editor-color-dark-low: #fff;
+$editor-color-dark-high: rgba(255, 255, 255, 0.28);
+$editor-color-dark-blockquote: rgba(255, 255, 255, 0.48);
 
 $editor-font-weight-base: 400;
 $editor-font-weight-bold: 600;

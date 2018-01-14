@@ -300,8 +300,12 @@ div.comment {
     position: absolute;
     bottom: -8px;
     right: 0;
-    border-top: 8px solid #fff;
+    border-top: 8px solid $editor-background-light;
     border-left: 8px solid transparent;
+
+    .app--dark & {
+      border-top-color: $editor-background-dark;
+    }
   }
 
   h1,
@@ -351,10 +355,14 @@ div.comment {
   max-height: 200px;
   overflow: auto;
   padding: 1px 8px;
-  background-color: #fff;
+  background-color: $editor-background-light;
   border: 1px solid transparent;
   border-radius: $border-radius-base;
   border-bottom-right-radius: 0;
+
+  .app--dark & {
+    background-color: $editor-background-dark;
+  }
 
   .markdown-highlighting {
     padding: 5px 0;

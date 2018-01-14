@@ -30,16 +30,16 @@ https://stackedit.io/.
 
 ``` bash
 # install dependencies
-yarn install
+npm install
 
 # serve with hot reload at localhost:8080
-yarn start
+npm start
 
 # build for production with minification
-yarn run build
+npm run build
 
 # build for production and view the bundle analyzer report
-yarn run build --report
+npm run build --report
 ```
 
 > **NOTE:** This page has been written and published with [StackEdit](https://stackedit.io/ "StackEdit").

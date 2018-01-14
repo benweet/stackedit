@@ -349,6 +349,7 @@ export default {
 
 .find-replace-highlighting {
   background-color: $highlighting-color;
+  color: $editor-color-light !important;
 }
 
 .find-replace-selection {

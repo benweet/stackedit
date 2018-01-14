@@ -10,6 +10,7 @@ const prismScripts = [
   'prismjs/components/prism-javascript',
   'prismjs/components/prism-css',
   'prismjs/components/prism-ruby',
+  'prismjs/components/prism-cpp',
 ].map(require.resolve);
 prismScripts.push(
   path.join(path.dirname(require.resolve('prismjs/components/prism-core')), 'prism-!(*.min).js'));

@@ -134,6 +134,10 @@ $corner-size: 110px;
     border-top: $corner-size solid rgba(0, 0, 0, 0.075);
     border-left: $corner-size solid transparent;
     pointer-events: none;
+
+    .app--dark & {
+      border-top-color: rgba(255, 255, 255, 0.075);
+    }
   }
 }
 
@@ -146,11 +150,19 @@ $corner-size: 110px;
   padding: 5px;
   color: rgba(0, 0, 0, 0.25);
 
+  .app--dark & {
+    color: rgba(255, 255, 255, 0.25);
+  }
+
   &:active,
   &:focus,
   &:hover {
     color: rgba(0, 0, 0, 0.33);
     background-color: transparent;
+
+    .app--dark & {
+      color: rgba(255, 255, 255, 0.33);
+    }
   }
 }
 </style>

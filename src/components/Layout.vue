@@ -18,9 +18,6 @@
               <sticky-comment v-if="styles.editorGutterWidth && stickyComment === 'top'"></sticky-comment>
               <current-discussion v-if="styles.editorGutterWidth"></current-discussion>
             </div>
-            <div class="layout__panel layout__panel--find-replace" v-if="showFindReplace">
-              <find-replace></find-replace>
-            </div>
           </div>
           <div class="layout__panel layout__panel--button-bar" v-show="styles.showEditor" :style="{width: constants.buttonBarWidth + 'px'}">
             <button-bar></button-bar>
@@ -34,6 +31,9 @@
               <sticky-comment v-if="styles.previewGutterWidth && stickyComment === 'top'"></sticky-comment>
               <current-discussion v-if="styles.previewGutterWidth"></current-discussion>
             </div>
+          </div>
+          <div class="layout__panel layout__panel--find-replace" v-if="showFindReplace">
+            <find-replace></find-replace>
           </div>
         </div>
         <div class="layout__panel layout__panel--status-bar" v-show="styles.showStatusBar" :style="{height: constants.statusBarHeight + 'px'}">
@@ -148,13 +148,8 @@ export default {
   background-color: #007acc;
 }
 
-$editor-background-light: #fff;
-$editor-background-dark: #1e1e1e;
-
 .layout__panel--editor {
-  .app--light & {
-    background-color: $editor-background-light;
-  }
+  background-color: $editor-background-light;
 
   .app--dark & {
     background-color: $editor-background-dark;
@@ -164,13 +159,11 @@ $editor-background-dark: #1e1e1e;
   .comment-list__current-discussion,
   .sticky-comment,
   .current-discussion {
-    .app--light & {
-      background-color: mix(#000, $editor-background-light, 6.7%);
-      border-color: $editor-background-light;
-    }
+    background-color: mix(#000, $editor-background-light, 6.7%);
+    border-color: $editor-background-light;
 
     .app--dark & {
-      background-color: mix(#fff, $editor-background-dark, 5%);
+      background-color: mix(#fff, $editor-background-dark, 6.7%);
       border-color: $editor-background-dark;
     }
   }
@@ -181,9 +174,7 @@ $preview-background-dark: #252525;
 
 .layout__panel--preview,
 .layout__panel--button-bar {
-  .app--light & {
-    background-color: $preview-background-light;
-  }
+  background-color: $preview-background-light;
 
   .app--dark & {
     background-color: $preview-background-dark;

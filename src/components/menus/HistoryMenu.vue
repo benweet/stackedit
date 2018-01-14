@@ -268,9 +268,7 @@ export default {
 .layout--revision {
   .cledit-section *,
   .cl-preview-section * {
-    .app--light & {
-      color: transparentize($editor-color-light, 0.67) !important;
-    }
+    color: transparentize($editor-color-light, 0.67) !important;
 
     .app--dark & {
       color: transparentize($editor-color-dark, 0.67) !important;
@@ -278,9 +276,7 @@ export default {
   }
 
   .cledit-section .revision-diff {
-    .app--light & {
-      color: $editor-color-light !important;
-    }
+    color: $editor-color-light !important;
 
     .app--dark & {
       color: $editor-color-dark !important;
@@ -288,7 +284,11 @@ export default {
   }
 
   .cl-preview-section .revision-diff {
-    color: $body-color !important;
+    color: $body-color-light !important;
+
+    .app--dark & {
+      color: $body-color-dark !important;
+    }
   }
 
   .revision-diff {

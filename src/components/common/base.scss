@@ -9,13 +9,18 @@
 
 html,
 body {
-  color: $body-color;
+  color: $body-color-light;
   font-size: 16px;
   font-family: $font-family-main;
   font-variant-ligatures: common-ligatures;
   line-height: $line-height-base;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.app--dark .layout__panel--editor,
+.app--dark .layout__panel--preview {
+  color: $body-color-dark;
 }
 
 p,
@@ -81,6 +86,12 @@ blockquote {
   color: rgba(0, 0, 0, 0.5);
   padding-left: 1.5em;
   border-left: 5px solid rgba(0, 0, 0, 0.075);
+
+  .app--dark .layout__panel--editor &,
+  .app--dark .layout__panel--preview & {
+    color: rgba(255, 255, 255, 0.4);
+    border-left-color: rgba(255, 255, 255, 0.075);
+  }
 }
 
 code {

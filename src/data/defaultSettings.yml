@@ -70,5 +70,5 @@ newFileContent: |
 newFileProperties: |
 #  extensions:
 #    markdown:
-#      breaks: true
+#      breaks: false
 

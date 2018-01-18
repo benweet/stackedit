@@ -17,7 +17,7 @@ extensions:
   # Markdown extensions
   markdown:
     abbr: true
-    breaks: false
+    breaks: true
     deflist: true
     del: true
     fence: true
@@ -29,6 +29,7 @@ extensions:
     typographer: true
     # Enable strict CommonMark:
     #abbr: false
+    #breaks: false
     #deflist: false
     #del: false
     #footnote: false

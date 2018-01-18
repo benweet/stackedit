@@ -38,8 +38,9 @@ export default modalTemplate({
     googlePhotosTokens() {
       const googleTokens = this.$store.getters['data/googleTokens'];
       return Object.entries(googleTokens)
-        .filter(([, token]) => token.isPhotos)
-        .sort(([, token1], [, token2]) => token1.name.localeCompare(token2.name));
+        .map(([, token]) => token)
+        .filter(token => token.isPhotos)
+        .sort((token1, token2) => token1.name.localeCompare(token2.name));
     },
   },
   methods: {

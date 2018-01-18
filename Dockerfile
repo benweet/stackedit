@@ -15,8 +15,8 @@ WORKDIR /opt/stackedit
 COPY package.json /opt/stackedit/
 COPY yarn.lock /opt/stackedit/
 COPY gulpfile.js /opt/stackedit/
-RUN npm install
-  && npm cache clean --force
+RUN npm install \
+  && npm cache clean --force \
   && npm run build
 COPY . /opt/stackedit
 ENV NODE_ENV production

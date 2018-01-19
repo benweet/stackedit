@@ -13,14 +13,13 @@ RUN npm pack stackedit@$V4_VERSION \
 WORKDIR /opt/stackedit
 
 COPY package.json /opt/stackedit/
-COPY yarn.lock /opt/stackedit/
+COPY package-lock.lock /opt/stackedit/
 COPY gulpfile.js /opt/stackedit/
 RUN npm install \
-  && npm cache clean --force \
-  && npm run build
+  && npm cache clean --force
 COPY . /opt/stackedit
 ENV NODE_ENV production
-RUN yarn run build
+RUN npm run build
 
 EXPOSE 8080
 

@@ -12,8 +12,7 @@ RUN npm pack stackedit@$V4_VERSION \
 
 WORKDIR /opt/stackedit
 
-COPY package.json /opt/stackedit/
-COPY package-lock.lock /opt/stackedit/
+COPY package*json /opt/stackedit/
 COPY gulpfile.js /opt/stackedit/
 RUN npm install \
   && npm cache clean --force

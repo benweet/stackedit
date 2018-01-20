@@ -115,6 +115,10 @@ export default {
       // Store item in itemMap or lsItemMap if its stored in the localStorage
       Vue.set(lsItemIdSet.has(item.id) ? state.lsItemMap : state.itemMap, item.id, item);
     },
+    deleteItem(state, id) {
+      // Only used by localDbSvc to clean itemMap from object moved to localStorage
+      Vue.delete(state.itemMap, id);
+    },
   },
   getters: {
     workspaces: getter('workspaces'),

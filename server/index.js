@@ -10,21 +10,16 @@ const pandoc = require('./pandoc');
 const resolvePath = pathToResolve => path.join(__dirname, '..', pathToResolve);
 
 module.exports = (app, serveV4) => {
-  // Use gzip compression
   if (process.env.NODE_ENV === 'production') {
+    // Enable CORS for fonts
     app.all('*', (req, res, next) => {
-      // Force HTTPS on stackedit.io
-      if (req.headers.host === 'stackedit.io' && !req.secure && req.headers['x-forwarded-proto'] !== 'https') {
-        res.redirect(`https://stackedit.io${req.url}`);
-        return;
-      }
-      // Enable CORS for fonts
       if (/\.(eot|ttf|woff|svg)$/.test(req.url)) {
         res.header('Access-Control-Allow-Origin', '*');
       }
       next();
     });
 
+    // Use gzip compression
     app.use(compression());
   }
 

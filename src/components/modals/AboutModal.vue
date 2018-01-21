@@ -11,6 +11,9 @@
       <br>
       StackEdit on <a target="_blank" href="https://twitter.com/stackedit/">Twitter</a>
       <hr>
+      <h3>FAQ</h3>
+      <div class="faq" v-html="faq"></div>
+      <hr>
       <small>Licensed under an
       <a target="_blank" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a><br>
       <a target="_blank" href="privacy_policy.html">Privacy Policy</a></small>
@@ -24,6 +27,9 @@
 <script>
 import { mapGetters } from 'vuex';
 import ModalInner from './common/ModalInner';
+import htmlSanitizer from '../../libs/htmlSanitizer';
+import markdownConversionSvc from '../../services/markdownConversionSvc';
+import faq from '../../data/faq.md';
 
 export default {
   components: {
@@ -32,9 +38,14 @@ export default {
   data: () => ({
     version: VERSION,
   }),
-  computed: mapGetters('modal', [
-    'config',
-  ]),
+  computed: {
+    ...mapGetters('modal', [
+      'config',
+    ]),
+    faq() {
+      return htmlSanitizer.sanitizeHtml(markdownConversionSvc.defaultConverter.render(faq));
+    },
+  },
 };
 </script>
 
@@ -56,5 +67,10 @@ export default {
     max-width: 100%;
     margin: 1.5em auto;
   }
+}
+
+.faq {
+  font-size: 0.8em;
+  line-height: 1.5;
 }
 </style>

@@ -36,8 +36,8 @@
     <modal-inner v-else aria-label="Dialog">
       <div class="modal__content" v-html="config.content"></div>
       <div class="modal__button-bar">
-        <button v-if="config.rejectText" class="button" @click="config.reject()">{{config.rejectText}}</button>
-        <button v-if="config.resolveText" class="button" @click="config.resolve()">{{config.resolveText}}</button>
+        <button class="button" v-if="config.rejectText" @click="config.reject()">{{config.rejectText}}</button>
+        <button class="button" v-if="config.resolveText" @click="config.resolve()">{{config.resolveText}}</button>
       </div>
     </modal-inner>
   </div>

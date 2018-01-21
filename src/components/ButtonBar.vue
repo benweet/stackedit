@@ -4,7 +4,7 @@
       <button class="button-bar__button button" :class="{ 'button-bar__button--on': layoutSettings.showNavigationBar }" @click="toggleNavigationBar()" v-title="'Toggle navigation bar'">
         <icon-navigation-bar></icon-navigation-bar>
       </button>
-      <button class="button-bar__button button" :class="{ 'button-bar__button--on': layoutSettings.showSidePreview }" @click="toggleSidePreview()" v-title="'Toggle side preview'">
+      <button class="button-bar__button button" :class="{ 'button-bar__button--on': layoutSettings.showSidePreview }" tour-step-anchor="editor" @click="toggleSidePreview()" v-title="'Toggle side preview'">
         <icon-side-preview></icon-side-preview>
       </button>
       <button class="button-bar__button button" @click="toggleEditor(false)" v-title="'Reader mode'">

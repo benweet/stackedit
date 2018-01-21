@@ -100,7 +100,7 @@ export default {
     }),
     signInForSponsorship: ({ dispatch }, { onResolve }) => dispatch('open', {
       type: 'signInForSponsorship',
-      content: `<p>You have to sign in with Google to enable your sponsorship.</p>
+      content: `<p>You have to sign in with Google to sponsor.</p>
       <div class="modal__info"><b>Note:</b> This will sync your main workspace.</div>`,
       resolveText: 'Ok, sign in',
       rejectText: 'Cancel',

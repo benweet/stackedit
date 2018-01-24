@@ -6,6 +6,7 @@ import networkSvc from './networkSvc';
 import providerRegistry from './providers/providerRegistry';
 import googleDriveAppDataProvider from './providers/googleDriveAppDataProvider';
 import './providers/googleDriveWorkspaceProvider';
+import './providers/couchdbWorkspaceProvider';
 
 const inactivityThreshold = 3 * 1000; // 3 sec
 const restartSyncAfter = 30 * 1000; // 30 sec

@@ -100,7 +100,7 @@ export default providerRegistry.register({
         });
 
         // Return the workspace
-        return getWorkspace(folder.id);
+        return store.getters['data/sanitizedWorkspaces'][workspaceId];
       });
 
     return Promise.resolve()
@@ -148,7 +148,15 @@ export default providerRegistry.register({
         .then((workspace) => {
           // Fix the URL hash
           utils.setQueryParams(makeWorkspaceIdParams(workspace.folderId));
-          return workspace;
+          if (workspace.url !== location.href) {
+            store.dispatch('data/patchWorkspaces', {
+              [workspace.id]: {
+                ...workspace,
+                url: location.href,
+              },
+            });
+          }
+          return store.getters['data/sanitizedWorkspaces'][workspace.id];
         }));
   },
   performAction() {

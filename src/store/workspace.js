@@ -31,13 +31,30 @@ export default {
     },
     syncToken: (state, getters, rootState, rootGetters) => {
       const workspace = getters.currentWorkspace;
-      if (workspace.providerId === 'googleDriveWorkspace') {
-        const googleTokens = rootGetters['data/googleTokens'];
-        return googleTokens[workspace.sub];
+      switch (workspace.providerId) {
+        case 'googleDriveWorkspace': {
+          const googleTokens = rootGetters['data/googleTokens'];
+          return googleTokens[workspace.sub];
+        }
+        case 'couchdbWorkspace': {
+          const couchdbTokens = rootGetters['data/couchdbTokens'];
+          return couchdbTokens[workspace.id];
+        }
+        default:
+          return getters.mainWorkspaceToken;
       }
-      return getters.mainWorkspaceToken;
     },
-    loginToken: (state, getters) => getters.syncToken,
+    loginToken: (state, getters, rootState, rootGetters) => {
+      const workspace = getters.currentWorkspace;
+      switch (workspace.providerId) {
+        case 'googleDriveWorkspace': {
+          const googleTokens = rootGetters['data/googleTokens'];
+          return googleTokens[workspace.sub];
+        }
+        default:
+          return getters.mainWorkspaceToken;
+      }
+    },
     sponsorToken: (state, getters) => getters.mainWorkspaceToken,
   },
   actions: {

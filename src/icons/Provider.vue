@@ -22,6 +22,8 @@ export default {
           return 'github';
         case 'bloggerPage':
           return 'blogger';
+        case 'couchdbWorkspace':
+          return 'couchdb';
         default:
           return this.providerId;
       }
@@ -69,5 +71,9 @@ export default {
 
 .icon-provider--zendesk {
   background-image: url(../assets/iconZendesk.svg);
+}
+
+.icon-provider--couchdb {
+  background-image: url(../assets/iconCouchdb.svg);
 }
 </style>

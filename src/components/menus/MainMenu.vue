@@ -1,31 +1,29 @@
 <template>
   <div class="side-bar__panel side-bar__panel--menu">
-    <div class="menu-info-entries" v-if="!loginToken">
-      <div class="menu-entry menu-entry--info flex flex--row flex--align-center">
+    <div class="menu-info-entries">
+      <div class="menu-entry menu-entry--info flex flex--row flex--align-center" v-if="loginToken">
+        <div class="menu-entry__icon menu-entry__icon--image">
+          <user-image :user-id="loginToken.sub"></user-image>
+        </div>
+        <span>Signed in as <b>{{loginToken.name}}</b>.</span>
+      </div>
+      <div class="menu-entry menu-entry--info flex flex--row flex--align-center" v-if="syncToken">
+        <div class="menu-entry__icon menu-entry__icon--image">
+          <icon-provider :provider-id="currentWorkspace.providerId"></icon-provider>
+        </div>
+        <span><b>{{currentWorkspace.name}}</b> synced.</span>
+      </div>
+      <div class="menu-entry menu-entry--info flex flex--row flex--align-center" v-else>
         <div class="menu-entry__icon menu-entry__icon--disabled">
           <icon-sync-off></icon-sync-off>
         </div>
         <span><b>{{currentWorkspace.name}}</b> not synced.</span>
       </div>
     </div>
-    <div class="menu-info-entries" v-else>
-      <div class="menu-entry menu-entry--info flex flex--row flex--align-center">
-        <div class="menu-entry__icon menu-entry__icon--image">
-          <user-image :user-id="loginToken.sub"></user-image>
-        </div>
-        <span>Signed in as <b>{{loginToken.name}}</b>.</span>
-      </div>
-      <div class="menu-entry menu-entry--info flex flex--row flex--align-center">
-        <div class="menu-entry__icon menu-entry__icon--image">
-          <icon-provider :provider-id="currentWorkspace.providerId"></icon-provider>
-        </div>
-        <span><b>{{currentWorkspace.name}}</b> synced.</span>
-      </div>
-    </div>
     <menu-entry v-if="!loginToken" @click.native="signin">
       <icon-login slot="icon"></icon-login>
       <div>Sign in with Google</div>
-      <span>Back up and sync your main workspace.</span>
+      <span>Sync your main workspace and unlock functionalities.</span>
     </menu-entry>
     <menu-entry @click.native="setPanel('workspaces')">
       <icon-database slot="icon"></icon-database>
@@ -103,6 +101,7 @@ export default {
   computed: {
     ...mapGetters('workspace', [
       'currentWorkspace',
+      'syncToken',
       'loginToken',
     ]),
   },

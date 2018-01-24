@@ -171,8 +171,19 @@ export default {
     }
     return urlParser.href;
   },
-  resolveUrl(url) {
-    return this.addQueryParams(url);
+  resolveUrl(baseUrl, path) {
+    const oldBaseElt = document.getElementsByTagName('base')[0];
+    const oldHref = oldBaseElt && oldBaseElt.href;
+    const newBaseElt = oldBaseElt || document.head.appendChild(document.createElement('base'));
+    newBaseElt.href = baseUrl;
+    urlParser.href = path;
+    const result = urlParser.href;
+    if (oldBaseElt) {
+      oldBaseElt.href = oldHref;
+    } else {
+      document.head.removeChild(newBaseElt);
+    }
+    return result;
   },
   createHiddenIframe(url) {
     const iframeElt = document.createElement('iframe');

@@ -121,7 +121,7 @@ export default {
       onResolve,
     }),
     sponsorOnly: ({ dispatch }) => dispatch('open', {
-      content: '<p>This feature is restricted to <b>sponsor users</b> as it relies on server resources.</p>',
+      content: '<p>This feature is restricted to sponsors as it relies on server resources.</p>',
       resolveText: 'Ok, I understand',
     }),
     paymentSuccess: ({ dispatch }) => dispatch('open', {

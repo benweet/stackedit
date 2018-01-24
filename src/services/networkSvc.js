@@ -221,6 +221,7 @@ export default {
           store.commit('updateLastOfflineCheck');
         }
         const xhr = new window.XMLHttpRequest();
+        xhr.withCredentials = config.withCredentials || false;
         let timeoutId;
 
         xhr.onload = () => {

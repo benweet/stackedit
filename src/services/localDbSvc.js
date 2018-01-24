@@ -459,7 +459,7 @@ const localDbSvc = {
    */
   removeWorkspace(id) {
     const workspaces = {
-      ...this.workspaces,
+      ...store.getters['data/workspaces'],
     };
     delete workspaces[id];
     store.dispatch('data/setWorkspaces', workspaces);

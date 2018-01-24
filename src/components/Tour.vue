@@ -3,7 +3,7 @@
     <div class="tour-step" :class="'tour-step--' + step" :style="stepStyle">
       <div class="tour-step__inner" v-if="step === 'welcome'">
         <h2>Welcome to StackEdit!</h2>
-        <p>Greater, lighter, faster... StackEdit 5 is here!</p>
+        <p>Greater, lighter, faster... <b>StackEdit 5</b> is here!</p>
         <p>Please click <b>Next</b> to take a quick tour.</p>
         <div class="tour-step__button-bar">
           <button class="button" @click="finish">Skip</button>
@@ -139,7 +139,7 @@ export default {
 }
 
 $tour-step-background: mix(#fafafa, $selection-highlighting-color, 80%);
-$tour-step-width: 220px;
+$tour-step-width: 240px;
 
 .tour-step__inner {
   position: absolute;

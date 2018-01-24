@@ -27,7 +27,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import ModalInner from './common/ModalInner';
-import htmlSanitizer from '../../libs/htmlSanitizer';
 import markdownConversionSvc from '../../services/markdownConversionSvc';
 import faq from '../../data/faq.md';
 
@@ -43,7 +42,7 @@ export default {
       'config',
     ]),
     faq() {
-      return htmlSanitizer.sanitizeHtml(markdownConversionSvc.defaultConverter.render(faq));
+      return markdownConversionSvc.defaultConverter.render(faq);
     },
   },
 };

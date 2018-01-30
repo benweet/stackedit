@@ -398,7 +398,7 @@ export default providerRegistry.register({
     }
     return googleHelper.downloadFile(token, syncData.id)
       .then((content) => {
-        const item = providerUtils.parseContent(content, syncLocation);
+        const item = providerUtils.parseContent(content, `${syncLocation.fileId}/content`);
         if (item.hash !== contentSyncData.hash) {
           store.dispatch('data/patchSyncData', {
             [contentSyncData.id]: {
@@ -543,7 +543,8 @@ export default providerRegistry.register({
         id: revision.id,
         sub: revision.lastModifyingUser && revision.lastModifyingUser.permissionId,
         created: new Date(revision.modifiedTime).getTime(),
-      })));
+      }))
+        .sort((revision1, revision2) => revision2.created - revision1.created));
   },
   getRevisionContent(token, fileId, revisionId) {
     const syncData = store.getters['data/syncDataByItemId'][fileId];
@@ -551,6 +552,6 @@ export default providerRegistry.register({
       return Promise.reject(); // No need for a proper error message.
     }
     return googleHelper.downloadFileRevision(token, syncData.id, revisionId)
-      .then(content => providerUtils.parseContent(content));
+      .then(content => providerUtils.parseContent(content, `${fileId}/content`));
   },
 });

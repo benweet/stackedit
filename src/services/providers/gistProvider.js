@@ -18,7 +18,7 @@ export default providerRegistry.register({
   },
   downloadContent(token, syncLocation) {
     return githubHelper.downloadGist(token, syncLocation.gistId, syncLocation.filename)
-      .then(content => providerUtils.parseContent(content, syncLocation));
+      .then(content => providerUtils.parseContent(content, `${syncLocation.fileId}/content`));
   },
   uploadContent(token, content, syncLocation) {
     const file = store.state.file.itemMap[syncLocation.fileId];

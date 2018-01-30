@@ -365,7 +365,7 @@ function syncFile(fileId, syncContext = new SyncContext()) {
                     });
                 })
                 .catch((err) => {
-                  if (store.state.offline) {
+                  if (store.state.offline || (err && err.message === 'TOO_LATE')) {
                     throw err;
                   }
                   console.error(err); // eslint-disable-line no-console
@@ -583,10 +583,10 @@ function syncWorkspace() {
           const hash = loadedContent ? loadedContent.hash : localDbSvc.hashMap.content[contentId];
           const syncData = store.getters['data/syncDataByItemId'][contentId];
           if (
-            // Sync if syncData does not exist and content syncing was not attempted yet
-            (!syncData && !syncContext.synced[contentId]) ||
-            // Or if content hash and syncData hash are inconsistent
-            (syncData && hash !== syncData.hash)
+            // Sync if content syncing was not attempted yet
+            !syncContext.synced[contentId] &&
+            // And if syncData does not exist or if content hash and syncData hash are inconsistent
+            (!syncData || syncData.hash !== hash)
           ) {
             [fileId] = contentId.split('/');
           }

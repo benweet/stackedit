@@ -26,9 +26,8 @@ export default {
     }
     return result;
   },
-  parseContent(serializedContent, syncLocation = {}) {
-    const result = utils.deepCopy(store.state.content.itemMap[`${syncLocation.fileId}/content`])
-      || emptyContent();
+  parseContent(serializedContent, id) {
+    const result = utils.deepCopy(store.state.content.itemMap[id]) || emptyContent(id);
     result.text = utils.sanitizeText(serializedContent);
     result.history = [];
     const extractedData = dataExtractor.exec(serializedContent);

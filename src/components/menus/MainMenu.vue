@@ -140,7 +140,7 @@ export default {
         .catch(() => {}); // Cancel
     },
     history() {
-      if (!this.loginToken) {
+      if (!this.syncToken) {
         this.$store.dispatch('modal/signInForHistory', {
           onResolve: () => googleHelper.signin()
             .then(() => syncSvc.requestSync()),

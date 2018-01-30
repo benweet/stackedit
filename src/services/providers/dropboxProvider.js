@@ -40,7 +40,7 @@ export default providerRegistry.register({
       makePathRelative(token, syncLocation.path),
       syncLocation.dropboxFileId,
     )
-      .then(({ content }) => providerUtils.parseContent(content, syncLocation));
+      .then(({ content }) => providerUtils.parseContent(content, `${syncLocation.fileId}/content`));
   },
   uploadContent(token, content, syncLocation) {
     return dropboxHelper.uploadFile(

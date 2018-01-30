@@ -1,6 +1,6 @@
 <template>
   <div class="history side-bar__panel">
-    <div class="revision" v-for="revision in revisions" :key="revision.id">
+    <div class="revision" v-for="revision in revisionsWithSpacer" :key="revision.id">
       <div class="history__spacer" v-if="revision.spacer"></div>
       <a class="revision__button button flex flex--row" href="javascript:void(0)" @click="open(revision)">
         <div class="revision__icon">
@@ -36,7 +36,7 @@ let previewClassAppliers = [];
 let cachedFileId;
 let revisionsPromise;
 let revisionContentPromises;
-const pageSize = 50;
+const pageSize = 30;
 const spacerThreshold = 12 * 60 * 60 * 1000; // 12h
 
 export default {
@@ -51,8 +51,11 @@ export default {
   }),
   computed: {
     revisions() {
+      return this.allRevisions.slice(0, this.showCount);
+    },
+    revisionsWithSpacer() {
       let previousCreated = 0;
-      return this.allRevisions.slice(0, this.showCount).map((revision) => {
+      return this.revisions.map((revision) => {
         const revisionWithSpacer = {
           ...revision,
           spacer: revision.created + spacerThreshold < previousCreated,
@@ -79,12 +82,12 @@ export default {
       let revisionContentPromise = revisionContentPromises[revision.id];
       if (!revisionContentPromise) {
         revisionContentPromise = new Promise((resolve, reject) => {
-          const loginToken = this.$store.getters['workspace/loginToken'];
+          const syncToken = this.$store.getters['workspace/syncToken'];
           const currentFile = this.$store.getters['file/current'];
           this.$store.dispatch('queue/enqueue',
             () => Promise.resolve()
               .then(() => this.workspaceProvider.getRevisionContent(
-                loginToken, currentFile.id, revision.id))
+                syncToken, currentFile.id, revision.id))
               .then(resolve, reject));
         });
         revisionContentPromises[revision.id] = revisionContentPromise;
@@ -137,17 +140,13 @@ export default {
             this.setRevisionContent();
             cachedFileId = id;
             revisionContentPromises = {};
-            const loginToken = this.$store.getters['workspace/loginToken'];
+            const syncToken = this.$store.getters['workspace/syncToken'];
             const currentFile = this.$store.getters['file/current'];
             revisionsPromise = new Promise((resolve, reject) => {
               this.$store.dispatch('queue/enqueue',
                 () => Promise.resolve()
-                  .then(() => this.workspaceProvider.listRevisions(loginToken, currentFile.id))
-                  .then((revisions) => {
-                    resolve(revisions.sort(
-                      (revision1, revision2) => revision2.created - revision1.created));
-                  })
-                  .catch(reject));
+                  .then(() => this.workspaceProvider.listRevisions(syncToken, currentFile.id))
+                  .then(resolve, reject));
             });
             revisionsPromise.catch(() => {
               cachedFileId = null;
@@ -159,6 +158,28 @@ export default {
           });
         }
       }, { immediate: true });
+
+    const loadOne = () => {
+      this.$store.dispatch('queue/enqueue',
+        () => {
+          let loadPromise;
+          this.revisions.some((revision) => {
+            if (!revision.created) {
+              const syncToken = this.$store.getters['workspace/syncToken'];
+              const currentFile = this.$store.getters['file/current'];
+              loadPromise = this.workspaceProvider.loadRevision(syncToken, currentFile.id, revision)
+                .then(() => loadOne());
+            }
+            return loadPromise;
+          });
+          return loadPromise;
+        });
+    };
+
+    this.$watch(
+      () => this.revisions,
+      () => loadOne(),
+      { immediate: true });
 
     // Watch diffs changes
     this.$watch(
@@ -181,6 +202,8 @@ export default {
     this.refreshHighlighters();
     // Remove event listener
     window.removeEventListener('keyup', this.onKeyup);
+    // Cancel loading revisions
+    this.showCount = 0;
   },
 };
 </script>

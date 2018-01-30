@@ -1,5 +1,5 @@
-export default () => ({
-  id: null,
+export default (id = null) => ({
+  id,
   type: 'publishLocation',
   providerId: null,
   fileId: null,

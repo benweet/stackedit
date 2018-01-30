@@ -82,8 +82,8 @@ export default providerRegistry.register({
     }
     const syncToken = store.getters['workspace/syncToken'];
     return googleHelper.downloadAppDataFile(syncToken, syncData.id)
-      .then((content) => {
-        const item = JSON.parse(content);
+      .then((data) => {
+        const item = JSON.parse(data);
         if (item.hash !== syncData.hash) {
           store.dispatch('data/patchSyncData', {
             [syncData.id]: {
@@ -136,7 +136,8 @@ export default providerRegistry.register({
         id: revision.id,
         sub: revision.lastModifyingUser && revision.lastModifyingUser.permissionId,
         created: new Date(revision.modifiedTime).getTime(),
-      })));
+      }))
+        .sort((revision1, revision2) => revision2.created - revision1.created));
   },
   getRevisionContent(token, fileId, revisionId) {
     const syncData = store.getters['data/syncDataByItemId'][`${fileId}/content`];

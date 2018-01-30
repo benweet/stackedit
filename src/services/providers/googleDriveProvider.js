@@ -110,7 +110,7 @@ export default providerRegistry.register({
   },
   downloadContent(token, syncLocation) {
     return googleHelper.downloadFile(token, syncLocation.driveFileId)
-      .then(content => providerUtils.parseContent(content, syncLocation));
+      .then(content => providerUtils.parseContent(content, `${syncLocation.fileId}/content`));
   },
   uploadContent(token, content, syncLocation, ifNotTooLate) {
     const file = store.state.file.itemMap[syncLocation.fileId];

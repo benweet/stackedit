@@ -24,7 +24,7 @@ export default providerRegistry.register({
     )
       .then(({ sha, content }) => {
         savedSha[syncLocation.id] = sha;
-        return providerUtils.parseContent(content, syncLocation);
+        return providerUtils.parseContent(content, `${syncLocation.fileId}/content`);
       })
       .catch(() => null); // Ignore error, without the sha upload is going to fail anyway
   },

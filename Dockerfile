@@ -4,7 +4,7 @@ RUN mkdir -p /opt/stackedit/stackedit_v4
 WORKDIR /opt/stackedit/stackedit_v4
 
 ENV SERVE_V4 true
-ENV V4_VERSION 4.3.21
+ENV V4_VERSION 4.3.22
 RUN npm pack stackedit@$V4_VERSION \
   && tar xzf stackedit-*.tgz --strip 1 \
   && yarn \

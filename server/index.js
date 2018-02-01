@@ -41,6 +41,8 @@ module.exports = (app, serveV4) => {
 
   // Serve landing.html
   app.get('/', (req, res) => res.sendFile(resolvePath('static/landing/index.html')));
+  // Serve sitemap.xml
+  app.get('/sitemap.xml', (req, res) => res.sendFile(resolvePath('static/sitemap.xml')));
   // Serve callback.html
   app.get('/oauth2/callback', (req, res) => res.sendFile(resolvePath('static/oauth2/callback.html')));
   // Google Drive action receiver

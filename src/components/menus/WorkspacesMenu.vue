@@ -1,6 +1,6 @@
 <template>
   <div class="side-bar__panel side-bar__panel--menu">
-    <div class="workspace" v-for="(workspace, id) in workspaces" :key="id">
+    <div class="workspace" v-for="(workspace, id) in sanitizedWorkspaces" :key="id">
       <menu-entry :href="workspace.url" target="_blank">
         <icon-provider slot="icon" :provider-id="workspace.providerId"></icon-provider>
         <div class="workspace__name"><div class="menu-entry__label" v-if="currentWorkspace === workspace">current</div>{{workspace.name}}</div>
@@ -34,7 +34,7 @@ export default {
   },
   computed: {
     ...mapGetters('data', [
-      'workspaces',
+      'sanitizedWorkspaces',
     ]),
     ...mapGetters('workspace', [
       'currentWorkspace',

@@ -4,6 +4,13 @@ import providerRegistry from './providerRegistry';
 import providerUtils from './providerUtils';
 import utils from '../utils';
 
+const getSyncData = (fileId) => {
+  const syncData = store.getters['data/syncDataByItemId'][`${fileId}/content`];
+  return syncData
+    ? Promise.resolve(syncData)
+    : Promise.reject(); // No need for a proper error message.
+};
+
 export default providerRegistry.register({
   id: 'couchdbWorkspace',
   getToken() {
@@ -184,11 +191,8 @@ export default providerRegistry.register({
       }));
   },
   listRevisions(token, fileId) {
-    const syncData = store.getters['data/syncDataByItemId'][`${fileId}/content`];
-    if (!syncData) {
-      return Promise.reject(); // No need for a proper error message.
-    }
-    return couchdbHelper.retrieveDocumentWithRevisions(token, syncData.id)
+    return getSyncData(fileId)
+      .then(syncData => couchdbHelper.retrieveDocumentWithRevisions(token, syncData.id))
       .then((body) => {
         const revisions = [];
         body._revs_info.forEach((revInfo) => { // eslint-disable-line no-underscore-dangle
@@ -204,22 +208,17 @@ export default providerRegistry.register({
       });
   },
   loadRevision(token, fileId, revision) {
-    const syncData = store.getters['data/syncDataByItemId'][`${fileId}/content`];
-    if (!syncData) {
-      return Promise.reject(); // No need for a proper error message.
-    }
-    return couchdbHelper.retrieveDocument(token, syncData.id, revision.id)
+    return getSyncData(fileId)
+      .then(syncData => couchdbHelper.retrieveDocument(token, syncData.id, revision.id))
       .then((body) => {
         revision.sub = body.sub;
-        revision.created = body.created;
+        revision.created = body.time || 1; // Has to be truthy to prevent from loading several times
       });
   },
   getRevisionContent(token, fileId, revisionId) {
-    const syncData = store.getters['data/syncDataByItemId'][`${fileId}/content`];
-    if (!syncData) {
-      return Promise.reject(); // No need for a proper error message.
-    }
-    return couchdbHelper.retrieveDocumentWithAttachments(token, syncData.id, revisionId)
+    return getSyncData(fileId)
+      .then(syncData => couchdbHelper
+        .retrieveDocumentWithAttachments(token, syncData.id, revisionId))
       .then(body => providerUtils.parseContent(body.attachments.data, body.item.id));
   },
 });

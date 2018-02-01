@@ -160,20 +160,23 @@ export default {
       }, { immediate: true });
 
     const loadOne = () => {
-      this.$store.dispatch('queue/enqueue',
-        () => {
-          let loadPromise;
-          this.revisions.some((revision) => {
-            if (!revision.created) {
-              const syncToken = this.$store.getters['workspace/syncToken'];
-              const currentFile = this.$store.getters['file/current'];
-              loadPromise = this.workspaceProvider.loadRevision(syncToken, currentFile.id, revision)
-                .then(() => loadOne());
-            }
+      if (!this.destroyed) {
+        this.$store.dispatch('queue/enqueue',
+          () => {
+            let loadPromise;
+            this.revisions.some((revision) => {
+              if (!revision.created) {
+                const syncToken = this.$store.getters['workspace/syncToken'];
+                const currentFile = this.$store.getters['file/current'];
+                loadPromise = this.workspaceProvider
+                  .loadRevision(syncToken, currentFile.id, revision)
+                  .then(() => loadOne());
+              }
+              return loadPromise;
+            });
             return loadPromise;
           });
-          return loadPromise;
-        });
+      }
     };
 
     this.$watch(
@@ -203,7 +206,7 @@ export default {
     // Remove event listener
     window.removeEventListener('keyup', this.onKeyup);
     // Cancel loading revisions
-    this.showCount = 0;
+    this.destroyed = true;
   },
 };
 </script>

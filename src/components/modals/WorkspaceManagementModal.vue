@@ -1,7 +1,7 @@
 <template>
   <modal-inner class="modal__inner-1--workspace-management" aria-label="Manage workspaces">
     <div class="modal__content">
-      <div class="workspace-entry flex flex--row flex--align-center" v-for="(workspace, id) in workspaces" :key="id">
+      <div class="workspace-entry flex flex--row flex--align-center" v-for="(workspace, id) in sanitizedWorkspaces" :key="id">
         <div class="workspace-entry__icon flex flex--column flex--center">
           <icon-provider :provider-id="workspace.providerId"></icon-provider>
         </div>
@@ -49,6 +49,7 @@ export default {
     ]),
     ...mapGetters('data', [
       'workspaces',
+      'sanitizedWorkspaces',
     ]),
     ...mapGetters('workspace', [
       'mainWorkspace',

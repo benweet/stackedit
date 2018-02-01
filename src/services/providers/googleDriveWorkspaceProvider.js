@@ -6,6 +6,13 @@ import utils from '../utils';
 
 let fileIdToOpen;
 
+const getSyncData = (fileId) => {
+  const syncData = store.getters['data/syncDataByItemId'][`${fileId}/content`];
+  return syncData
+    ? Promise.resolve(syncData)
+    : Promise.reject(); // No need for a proper error message.
+};
+
 export default providerRegistry.register({
   id: 'googleDriveWorkspace',
   getToken() {
@@ -441,7 +448,7 @@ export default providerRegistry.register({
   uploadContent(token, content, syncLocation, ifNotTooLate) {
     const contentSyncData = store.getters['data/syncDataByItemId'][`${syncLocation.fileId}/content`];
     if (contentSyncData && contentSyncData.hash === content.hash) {
-      return Promise.resolve();
+      return Promise.resolve(syncLocation);
     }
     return Promise.resolve()
       .then(() => {
@@ -534,11 +541,8 @@ export default providerRegistry.register({
       }));
   },
   listRevisions(token, fileId) {
-    const syncData = store.getters['data/syncDataByItemId'][fileId];
-    if (!syncData) {
-      return Promise.reject(); // No need for a proper error message.
-    }
-    return googleHelper.getFileRevisions(token, syncData.id)
+    return getSyncData(fileId)
+      .then(syncData => googleHelper.getFileRevisions(token, syncData.id))
       .then(revisions => revisions.map(revision => ({
         id: revision.id,
         sub: revision.lastModifyingUser && revision.lastModifyingUser.permissionId,
@@ -547,11 +551,8 @@ export default providerRegistry.register({
         .sort((revision1, revision2) => revision2.created - revision1.created));
   },
   getRevisionContent(token, fileId, revisionId) {
-    const syncData = store.getters['data/syncDataByItemId'][fileId];
-    if (!syncData) {
-      return Promise.reject(); // No need for a proper error message.
-    }
-    return googleHelper.downloadFileRevision(token, syncData.id, revisionId)
+    return getSyncData(fileId)
+      .then(syncData => googleHelper.downloadFileRevision(token, syncData.id, revisionId))
       .then(content => providerUtils.parseContent(content, `${fileId}/content`));
   },
 });

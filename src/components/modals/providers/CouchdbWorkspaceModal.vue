@@ -11,10 +11,9 @@
           <b>Example:</b> https://instance.smileupps.com/stackedit-workspace
         </div>
         <div class="form-entry__actions">
-          <a href="javascript:void(0)" v-if="!showInfo" @click="showInfo = true">More info</a>
+          <a href="https://community.stackedit.io/t/couchdb-workspace-setup/" target="_blank">More info</a>
         </div>
       </form-entry>
-      <div class="couchdb-workspace__info" v-if="showInfo" v-html="info"></div>
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
@@ -26,19 +25,11 @@
 <script>
 import modalTemplate from '../common/modalTemplate';
 import utils from '../../../services/utils';
-import couchdbSetup from '../../../data/couchdbSetup.md';
-import markdownConversionSvc from '../../../services/markdownConversionSvc';
 
 export default modalTemplate({
   data: () => ({
     dbUrl: '',
-    showInfo: false,
   }),
-  computed: {
-    info() {
-      return markdownConversionSvc.defaultConverter.render(couchdbSetup);
-    },
-  },
   methods: {
     resolve() {
       if (!this.dbUrl) {

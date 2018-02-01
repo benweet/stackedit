@@ -39,11 +39,11 @@ define([
 			'<head>',
 			'<meta charset="utf-8">',
 			'<title><%= documentTitle %></title>',
-			'<link rel="stylesheet" href="http://localhost/res-min/themes/base.css" />',
+			'<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />',
 			'<script type="text/x-mathjax-config">',
 			'MathJax.Hub.Config({ messageStyle: "none" });',
 			'</script>',
-			'<script type="text/javascript" src="http://localhost/res/bower-libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>',
+			'<script type="text/javascript" src="https://stackedit.io/res/bower-libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>',
 			'</head>',
 			'<body><%= documentHTML %></body>',
 			'</html>'

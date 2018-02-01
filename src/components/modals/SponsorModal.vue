@@ -43,10 +43,10 @@ export default {
 
     return {
       buttons: sponsorToken ? [
-        makeButton('TDAPH47B3J2JW', '$5', '3 months sponsorship'),
-        makeButton('6CTKPKF8868UA', '$15', '1 year sponsorship', '-25%'),
-        makeButton('A5ZDYW6SYDLBE', '$25', '2 years sponsorship', '-37%'),
-        makeButton('3DMD3TT2RDPQA', '$50', '5 years sponsorship', '-50%'),
+        makeButton('EZM658LWLLG6C', '$5', '3 months sponsorship'),
+        makeButton('EL2GN2LPZGBJ4', '$15', '1 year sponsorship', '-25%'),
+        makeButton('3FH26ATC3M48A', '$25', '2 years sponsorship', '-37%'),
+        makeButton('PY8WT7L3M4KSY', '$50', '5 years sponsorship', '-50%'),
       ] : [],
     };
   },

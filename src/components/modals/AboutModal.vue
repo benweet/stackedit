@@ -7,6 +7,8 @@
       <a target="_blank" href="https://github.com/benweet/stackedit/">GitHub repo</a> —
       <a target="_blank" href="https://github.com/benweet/stackedit/issues">issue tracker</a>
       <br>
+      <a target="_blank" href="https://community.stackedit.io/">Community</a>
+      <br>
       <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome app</a> — thanks for your review!
       <br>
       StackEdit on <a target="_blank" href="https://twitter.com/stackedit/">Twitter</a>
@@ -14,9 +16,9 @@
       <h3>FAQ</h3>
       <div class="faq" v-html="faq"></div>
       <hr>
-      <small>Licensed under an
+      Licensed under an
       <a target="_blank" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a><br>
-      <a target="_blank" href="privacy_policy.html">Privacy Policy</a></small>
+      <a target="_blank" href="privacy_policy.html">Privacy Policy</a>
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.resolve()">Close</button>

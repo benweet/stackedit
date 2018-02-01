@@ -40,7 +40,7 @@
       <div class="tour-step__inner" v-else-if="step === 'end'">
         <h2>Enjoy!</h2>
         <p>If you like StackEdit, please rate 5 stars on the <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg/reviews">Chrome Web Store</a>.</p>
-        <p>You can also star the project on <a target="_blank" href="https://github.com/benweet/stackedit">GitHub</a>.</p>
+        <p>You can also star the project on <a target="_blank" href="https://github.com/benweet/stackedit">GitHub</a> and join the <a target="_blank" href="https://community.stackedit.io/">community</a>.</p>
         <div class="tour-step__button-bar">
           <button class="button" @click="finish">Ok</button>
         </div>
@@ -138,13 +138,13 @@ export default {
   position: absolute;
 }
 
-$tour-step-background: mix(#fafafa, $selection-highlighting-color, 80%);
-$tour-step-width: 240px;
+$tour-step-background: mix(#f3f3f3, $selection-highlighting-color, 75%);
+$tour-step-width: 220px;
 
 .tour-step__inner {
   position: absolute;
   background-color: $tour-step-background;
-  padding: 1.75em 1.75em 1.25em;
+  padding: 1.25em;
   font-size: 0.9em;
   line-height: 1.33;
   width: $tour-step-width;

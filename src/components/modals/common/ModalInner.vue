@@ -5,8 +5,8 @@
         <icon-close></icon-close>
       </button>
       <div class="modal__sponsor-button" v-if="showSponsorButton">
-        Please consider
-        <a class="not-tabbable" href="javascript:void(0)" @click="sponsor">sponsoring StackEdit</a> for just $5.
+        StackEdit is open source! Please consider
+        <a class="not-tabbable" href="javascript:void(0)" @click="sponsor">sponsoring</a> for just $5.
       </div>
       <slot></slot>
     </div>
@@ -72,6 +72,7 @@ export default {
   color: darken($error-color, 10%);
   background-color: transparentize($error-color, 0.85);
   border-radius: $border-radius-base;
+  font-size: 0.9em;
   padding: 0.75em 1.5em;
   margin-bottom: 1.2em;
 }

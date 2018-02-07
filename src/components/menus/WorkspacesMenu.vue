@@ -15,7 +15,6 @@
       <icon-provider slot="icon" provider-id="couchdbWorkspace"></icon-provider>
       <span>Add CouchDB workspace</span>
     </menu-entry>
-    <hr>
     <menu-entry @click.native="manageWorkspaces">
       <icon-database slot="icon"></icon-database>
       <span>Manage workspaces</span>

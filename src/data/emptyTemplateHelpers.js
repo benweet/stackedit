@@ -11,6 +11,6 @@ Handlebars.registerHelper('transform', function (options) {
 
 Then use the helper in your template:
 
-{{#transform}}{{{file.content.html}}}{{/transform}}
+{{#transform}}{{{files.0.content.html}}}{{/transform}}
 */
 

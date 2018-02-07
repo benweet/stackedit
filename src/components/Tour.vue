@@ -144,7 +144,7 @@ $tour-step-width: 220px;
 .tour-step__inner {
   position: absolute;
   background-color: $tour-step-background;
-  padding: 1.25em;
+  padding: 1.5em 1em 1em;
   font-size: 0.9em;
   line-height: 1.33;
   width: $tour-step-width;
@@ -175,7 +175,7 @@ $tour-step-width: 220px;
   .tour-step--welcome &,
   .tour-step--end & {
     left: -$tour-step-width/2;
-    top: 30px;
+    top: 36px;
     border-bottom-right-radius: 0;
 
     &::before {

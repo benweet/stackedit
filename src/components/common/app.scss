@@ -17,6 +17,33 @@ body {
   box-sizing: border-box;
 }
 
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar {
+  background-color: transparent;
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
+  &:horizontal {
+    height: 8px;
+  }
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
+  &:vertical {
+    width: 8px;
+  }
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #bbb;
+
+  .app--dark & {
+    background-color: #666;
+  }
+}
+
 :focus {
   outline: none;
 }

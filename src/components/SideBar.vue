@@ -18,6 +18,7 @@
       <publish-menu v-else-if="panel === 'publish'"></publish-menu>
       <history-menu v-else-if="panel === 'history'"></history-menu>
       <export-menu v-else-if="panel === 'export'"></export-menu>
+      <import-menu v-else-if="panel === 'import'"></import-menu>
       <more-menu v-else-if="panel === 'more'"></more-menu>
       <div v-else-if="panel === 'help'" class="side-bar__panel side-bar__panel--help">
         <pre class="markdown-highlighting" v-html="markdownSample"></pre>
@@ -39,6 +40,7 @@ import SyncMenu from './menus/SyncMenu';
 import PublishMenu from './menus/PublishMenu';
 import HistoryMenu from './menus/HistoryMenu';
 import ExportMenu from './menus/ExportMenu';
+import ImportMenu from './menus/ImportMenu';
 import MoreMenu from './menus/MoreMenu';
 import markdownSample from '../data/markdownSample.md';
 import markdownConversionSvc from '../services/markdownConversionSvc';
@@ -52,6 +54,7 @@ const panelNames = {
   publish: 'Publish',
   history: 'File history',
   export: 'Export to disk',
+  import: 'Import from disk',
   more: 'More',
 };
 
@@ -64,6 +67,7 @@ export default {
     PublishMenu,
     HistoryMenu,
     ExportMenu,
+    ImportMenu,
     MoreMenu,
   },
   data: () => ({

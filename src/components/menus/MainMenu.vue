@@ -65,15 +65,10 @@
       <icon-content-save slot="icon"></icon-content-save>
       Export to disk
     </menu-entry>
-    <input class="hidden-file" id="import-disk-file-input" type="file" @change="onImportFile">
-    <label class="menu-entry button flex flex--row flex--align-center" for="import-disk-file-input">
-      <div class="menu-entry__icon flex flex--column flex--center">
-        <icon-content-save></icon-content-save>
-      </div>
-      <div class="flex flex--column">
-        Import from disk
-      </div>
-    </label>
+    <menu-entry @click.native="setPanel('import')">
+      <icon-content-save slot="icon"></icon-content-save>
+      Import from disk
+    </menu-entry>
     <menu-entry @click.native="print">
       <icon-printer slot="icon"></icon-printer>
       Print
@@ -91,7 +86,6 @@ import MenuEntry from './common/MenuEntry';
 import UserImage from '../UserImage';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import syncSvc from '../../services/syncSvc';
-import providerUtils from '../../services/providers/providerUtils';
 
 export default {
   components: {
@@ -115,25 +109,6 @@ export default {
           () => syncSvc.requestSync(),
           () => {}, // Cancel
         );
-    },
-    onImportFile(evt) {
-      const file = evt.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const content = e.target.result;
-          if (content.match(/\uFFFD/)) {
-            this.$store.dispatch('notification/error', 'File is not readable.');
-          } else {
-            this.$store.dispatch('createFile', {
-              ...providerUtils.parseContent(content),
-              name: file.name,
-            })
-              .then(item => this.$store.commit('file/setCurrentId', item.id));
-          }
-        };
-        reader.readAsText(file);
-      }
     },
     fileProperties() {
       return this.$store.dispatch('modal/open', 'fileProperties')

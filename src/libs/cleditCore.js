@@ -1,4 +1,13 @@
-var DiffMatchPatch = require('diff-match-patch');
+var htmlSanitizer = require('./htmlSanitizer').default
+var DiffMatchPatch = require('diff-match-patch')
+var TurndownService = require('turndown/lib/turndown.browser.umd')
+
+var turndownService = new TurndownService({
+  headingStyle: 'atx',
+  hr: '----------',
+  bulletListMarker: '-',
+  codeBlockStyle: 'fenced',
+})
 
 function cledit(contentElt, scrollElt, windowParam) {
   scrollElt = scrollElt || contentElt
@@ -293,6 +302,18 @@ function cledit(contentElt, scrollElt, windowParam) {
     var clipboardData = evt.clipboardData
     if (clipboardData) {
       data = clipboardData.getData('text/plain')
+      try {
+        var html = clipboardData.getData('text/html');
+        if (html) {
+          var sanitizedHtml = htmlSanitizer.sanitizeHtml(html)
+            .replace(/&#160;/g, ' '); // Replace non-breaking spaces with classic spaces
+          if (sanitizedHtml && sanitizedHtml.indexOf('<span class="token ') === -1) {
+            data = turndownService.turndown(sanitizedHtml);
+          }
+        }
+      } catch(e) {
+        // Ignore
+      }
     } else {
       clipboardData = editor.$window.clipboardData
       data = clipboardData && clipboardData.getData('Text')

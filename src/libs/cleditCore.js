@@ -295,6 +295,24 @@ function cledit(contentElt, scrollElt, windowParam) {
     }, 0)
   }, false)
 
+  contentElt.addEventListener('copy', function (evt) {
+    if (evt.clipboardData) {
+      evt.clipboardData.setData('text/plain', selectionMgr.getSelectedText());
+      evt.preventDefault();
+    }
+  })
+
+  contentElt.addEventListener('cut', function (evt) {
+    if (evt.clipboardData) {
+      evt.clipboardData.setData('text/plain', selectionMgr.getSelectedText());
+      evt.preventDefault();
+      replace(selectionMgr.selectionStart, selectionMgr.selectionEnd, '')
+    } else {
+      undoMgr.setCurrentMode('single')
+    }
+    adjustCursorPosition()
+  })
+
   contentElt.addEventListener('paste', function (evt) {
     undoMgr.setCurrentMode('single')
     evt.preventDefault()
@@ -304,10 +322,10 @@ function cledit(contentElt, scrollElt, windowParam) {
       data = clipboardData.getData('text/plain')
       try {
         var html = clipboardData.getData('text/html');
-        if (html) {
+        if (html && !clipboardData.getData('text/css')) {
           var sanitizedHtml = htmlSanitizer.sanitizeHtml(html)
             .replace(/&#160;/g, ' '); // Replace non-breaking spaces with classic spaces
-          if (sanitizedHtml && sanitizedHtml.indexOf('<span class="token ') === -1) {
+          if (sanitizedHtml) {
             data = turndownService.turndown(sanitizedHtml);
           }
         }
@@ -322,11 +340,6 @@ function cledit(contentElt, scrollElt, windowParam) {
       return
     }
     replace(selectionMgr.selectionStart, selectionMgr.selectionEnd, data)
-    adjustCursorPosition()
-  }, false)
-
-  contentElt.addEventListener('cut', function () {
-    undoMgr.setCurrentMode('single')
     adjustCursorPosition()
   }, false)
 

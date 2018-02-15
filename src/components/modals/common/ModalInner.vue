@@ -5,7 +5,7 @@
         <icon-close></icon-close>
       </button>
       <div class="modal__sponsor-button" v-if="showSponsorButton">
-        StackEdit is open source! Please consider
+        StackEdit is <a class="not-tabbable" target="_blank" href="https://github.com/benweet/stackedit/">open source</a>. Please consider
         <a class="not-tabbable" href="javascript:void(0)" @click="sponsor">sponsoring</a> for just $5.
       </div>
       <slot></slot>

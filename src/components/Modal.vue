@@ -371,18 +371,12 @@ export default {
 
   &:hover,
   &:focus {
-    background-color: rgba(0, 0, 0, 0.067);
+    background-color: rgba(0, 0, 0, 0.05);
   }
 }
 
 .tabs__tab--active > a {
   border-bottom: 2px solid $link-color;
   color: inherit;
-  cursor: auto;
-
-  &:hover,
-  &:focus {
-    background-color: transparent;
-  }
 }
 </style>

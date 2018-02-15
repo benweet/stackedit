@@ -1,5 +1,8 @@
 <template>
   <div class="side-bar__panel side-bar__panel--menu">
+    <div class="side-bar__info" v-if="noToken">
+      <p>You have to <b>link an account</b> to start syncing files.</p>
+    </div>
     <div class="side-bar__info" v-if="syncLocations.length">
       <p><b>{{currentFileName}}</b> is already synchronized.</p>
       <menu-entry v-if="isSyncPossible" @click.native="requestSync">
@@ -127,6 +130,11 @@ export default {
     },
     githubTokens() {
       return tokensToArray(this.$store.getters['data/githubTokens']);
+    },
+    noToken() {
+      return !this.googleDriveTokens.length
+        && !this.dropboxTokens.length
+        && !this.githubTokens.length;
     },
   },
   methods: {

@@ -4,14 +4,15 @@
       <div class="logo-background"></div>
       <small>v{{version}} — © 2018 Benoit Schweblin</small>
       <hr>
-      <a target="_blank" href="https://github.com/benweet/stackedit/">GitHub repo</a> —
-      <a target="_blank" href="https://github.com/benweet/stackedit/issues">issue tracker</a>
+      StackEdit on <a target="_blank" href="https://github.com/benweet/stackedit/">GitHub</a>
       <br>
-      <a target="_blank" href="https://community.stackedit.io/">Community</a>
+      <a target="_blank" href="https://github.com/benweet/stackedit/issues">Issue tracker</a> — <a target="_blank" href="https://github.com/benweet/stackedit/blob/master/CHANGELOG.md">Changelog</a>
       <br>
       <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome app</a> — thanks for your review!
       <br>
       StackEdit on <a target="_blank" href="https://twitter.com/stackedit/">Twitter</a>
+      <br>
+      <a target="_blank" href="https://community.stackedit.io/">Community</a>
       <hr>
       <h3>FAQ</h3>
       <div class="faq" v-html="faq"></div>

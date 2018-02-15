@@ -1,5 +1,8 @@
 <template>
   <div class="side-bar__panel side-bar__panel--menu">
+    <div class="side-bar__info" v-if="noToken">
+      <p>You have to <b>link an account</b> to start publishing files.</p>
+    </div>
     <div class="side-bar__info" v-if="publishLocations.length">
       <p><b>{{currentFileName}}</b> is already published.</p>
       <menu-entry @click.native="requestPublish">
@@ -146,6 +149,14 @@ export default {
     },
     zendeskTokens() {
       return tokensToArray(this.$store.getters['data/zendeskTokens']);
+    },
+    noToken() {
+      return !this.googleDriveTokens.length
+        && !this.dropboxTokens.length
+        && !this.githubTokens.length
+        && !this.wordpressTokens.length
+        && !this.bloggerTokens.length
+        && !this.zendeskTokens.length;
     },
   },
   methods: {

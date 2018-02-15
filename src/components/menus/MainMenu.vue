@@ -41,7 +41,7 @@
       <div>Publish</div>
       <span>Export your files to the web.</span>
     </menu-entry>
-    <menu-entry @click.native="history">
+    <menu-entry @click.native="setPanel('history')">
       <icon-history slot="icon"></icon-history>
       <div>File history</div>
       <span>Track and restore file revisions.</span>
@@ -113,17 +113,6 @@ export default {
     fileProperties() {
       return this.$store.dispatch('modal/open', 'fileProperties')
         .catch(() => {}); // Cancel
-    },
-    history() {
-      if (!this.syncToken) {
-        this.$store.dispatch('modal/signInForHistory', {
-          onResolve: () => googleHelper.signin()
-            .then(() => syncSvc.requestSync()),
-        })
-          .catch(() => { }); // Cancel
-      } else {
-        this.setPanel('history');
-      }
     },
     print() {
       print();

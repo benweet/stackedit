@@ -1,5 +1,9 @@
 <template>
   <div class="history side-bar__panel">
+    <div class="side-bar__info" v-if="!syncToken">
+      <p>You have to <a href="javascript:void(0)" @click="signin">sign in with Google</a> to enable revision history.</p>
+      <p><b>Note:</b> This will sync your main workspace.</p>
+    </div>
     <div class="revision" v-for="revision in revisionsWithSpacer" :key="revision.id">
       <div class="history__spacer" v-if="revision.spacer"></div>
       <a class="revision__button button flex flex--row" href="javascript:void(0)" @click="open(revision)">
@@ -20,7 +24,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapGetters } from 'vuex';
 import providerRegistry from '../../services/providers/providerRegistry';
 import MenuEntry from './common/MenuEntry';
 import UserImage from '../UserImage';
@@ -29,6 +33,8 @@ import EditorClassApplier from '../common/EditorClassApplier';
 import PreviewClassApplier from '../common/PreviewClassApplier';
 import utils from '../../services/utils';
 import editorSvc from '../../services/editorSvc';
+import googleHelper from '../../services/providers/helpers/googleHelper';
+import syncSvc from '../../services/syncSvc';
 
 let editorClassAppliers = [];
 let previewClassAppliers = [];
@@ -50,6 +56,9 @@ export default {
     showCount: pageSize,
   }),
   computed: {
+    ...mapGetters('workspace', [
+      'syncToken',
+    ]),
     revisions() {
       return this.allRevisions.slice(0, this.showCount);
     },
@@ -67,11 +76,24 @@ export default {
     showMoreButton() {
       return this.showCount < this.allRevisions.length;
     },
+    refreshTrigger() {
+      return utils.serializeObject([
+        this.$store.getters['file/current'].id,
+        this.syncToken,
+      ]);
+    },
   },
   methods: {
     ...mapMutations('content', [
       'setRevisionContent',
     ]),
+    signin() {
+      return googleHelper.signin()
+        .then(
+          () => syncSvc.requestSync(),
+          () => {}, // Cancel
+        );
+    },
     close() {
       this.$store.dispatch('data/setSideBarPanel', 'menu');
     },
@@ -82,7 +104,7 @@ export default {
       let revisionContentPromise = revisionContentPromises[revision.id];
       if (!revisionContentPromise) {
         revisionContentPromise = new Promise((resolve, reject) => {
-          const syncToken = this.$store.getters['workspace/syncToken'];
+          const syncToken = this.syncToken;
           const currentFile = this.$store.getters['file/current'];
           this.$store.dispatch('queue/enqueue',
             () => Promise.resolve()
@@ -132,30 +154,33 @@ export default {
 
     // Watch file changes
     this.$watch(
-      () => this.$store.getters['file/current'].id,
-      (id) => {
+      () => this.refreshTrigger,
+      () => {
         this.allRevisions = [];
-        if (id) {
+        const id = this.$store.getters['file/current'].id;
+        const syncToken = this.syncToken;
+        if (id && syncToken) {
           if (id !== cachedFileId) {
             this.setRevisionContent();
             cachedFileId = id;
             revisionContentPromises = {};
-            const syncToken = this.$store.getters['workspace/syncToken'];
             const currentFile = this.$store.getters['file/current'];
             revisionsPromise = new Promise((resolve, reject) => {
               this.$store.dispatch('queue/enqueue',
                 () => Promise.resolve()
                   .then(() => this.workspaceProvider.listRevisions(syncToken, currentFile.id))
                   .then(resolve, reject));
-            });
-            revisionsPromise.catch(() => {
-              cachedFileId = null;
-              return [];
+            })
+              .catch(() => {
+                cachedFileId = null;
+                return [];
+              });
+          }
+          if (revisionsPromise) {
+            revisionsPromise.then((revisions) => {
+              this.allRevisions = revisions;
             });
           }
-          revisionsPromise.then((revisions) => {
-            this.allRevisions = revisions;
-          });
         }
       }, { immediate: true });
 
@@ -166,7 +191,7 @@ export default {
             let loadPromise;
             this.revisions.some((revision) => {
               if (!revision.created) {
-                const syncToken = this.$store.getters['workspace/syncToken'];
+                const syncToken = this.syncToken;
                 const currentFile = this.$store.getters['file/current'];
                 loadPromise = this.workspaceProvider
                   .loadRevision(syncToken, currentFile.id, revision)

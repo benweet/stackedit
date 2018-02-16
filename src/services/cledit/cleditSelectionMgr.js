@@ -1,79 +1,83 @@
-var cledit = require('./cleditCore')
+import cledit from './cleditCore';
 
 function SelectionMgr(editor) {
-  var debounce = cledit.Utils.debounce
-  var contentElt = editor.$contentElt
-  var scrollElt = editor.$scrollElt
-  cledit.Utils.createEventHooks(this)
+  const debounce = cledit.Utils.debounce;
+  const contentElt = editor.$contentElt;
+  const scrollElt = editor.$scrollElt;
+  cledit.Utils.createEventHooks(this);
 
-  var self = this
-  var lastSelectionStart = 0
-  var lastSelectionEnd = 0
-  this.selectionStart = 0
-  this.selectionEnd = 0
-  this.cursorCoordinates = {}
+  const self = this;
+  let lastSelectionStart = 0;
+  let lastSelectionEnd = 0;
+  this.selectionStart = 0;
+  this.selectionEnd = 0;
+  this.cursorCoordinates = {};
 
-  this.findContainer = function (offset) {
-    var result = cledit.Utils.findContainer(contentElt, offset)
+  this.findContainer = (offset) => {
+    const result = cledit.Utils.findContainer(contentElt, offset);
     if (result.container.nodeValue === '\n') {
-      var hdLfElt = result.container.parentNode
+      const hdLfElt = result.container.parentNode;
       if (hdLfElt.className === 'hd-lf' && hdLfElt.previousSibling && hdLfElt.previousSibling.tagName === 'BR') {
-        result.container = hdLfElt.parentNode
-        result.offsetInContainer = Array.prototype.indexOf.call(result.container.childNodes, result.offsetInContainer === 0 ? hdLfElt.previousSibling : hdLfElt)
+        result.container = hdLfElt.parentNode;
+        result.offsetInContainer = Array.prototype.indexOf.call(
+          result.container.childNodes,
+          result.offsetInContainer === 0 ? hdLfElt.previousSibling : hdLfElt,
+        );
       }
     }
-    return result
-  }
+    return result;
+  };
 
   this.createRange = function (start, end) {
-    var range = editor.$document.createRange()
-    if (start === end) {
-      end = start = isNaN(start) ? start : this.findContainer(start < 0 ? 0 : start)
-    } else {
-      start = isNaN(start) ? start : this.findContainer(start < 0 ? 0 : start)
-      end = isNaN(end) ? end : this.findContainer(end < 0 ? 0 : end)
+    const range = document.createRange();
+    const startContainer = isNaN(start) ? start : this.findContainer(start < 0 ? 0 : start);
+    let endContainer = startContainer;
+    if (start !== end) {
+      endContainer = isNaN(end) ? end : this.findContainer(end < 0 ? 0 : end);
     }
-    range.setStart(start.container, start.offsetInContainer)
-    range.setEnd(end.container, end.offsetInContainer)
-    return range
-  }
+    range.setStart(startContainer.container, startContainer.offsetInContainer);
+    range.setEnd(endContainer.container, endContainer.offsetInContainer);
+    return range;
+  };
 
-  var adjustScroll
-  var debouncedUpdateCursorCoordinates = debounce(function () {
-    var coordinates = this.getCoordinates(this.selectionEnd, this.selectionEndContainer, this.selectionEndOffset)
+  let adjustScroll;
+  const debouncedUpdateCursorCoordinates = debounce(() => {
+    const coordinates = this.getCoordinates(
+      this.selectionEnd, this.selectionEndContainer, this.selectionEndOffset);
     if (this.cursorCoordinates.top !== coordinates.top ||
       this.cursorCoordinates.height !== coordinates.height ||
       this.cursorCoordinates.left !== coordinates.left
     ) {
-      this.cursorCoordinates = coordinates
-      this.$trigger('cursorCoordinatesChanged', coordinates)
+      this.cursorCoordinates = coordinates;
+      this.$trigger('cursorCoordinatesChanged', coordinates);
     }
     if (adjustScroll) {
-      var scrollEltHeight = scrollElt.clientHeight;
+      let scrollEltHeight = scrollElt.clientHeight;
       if (typeof adjustScroll === 'number') {
-        scrollEltHeight -= adjustScroll
+        scrollEltHeight -= adjustScroll;
       }
-      var adjustment = scrollEltHeight / 2 * editor.options.getCursorFocusRatio()
-      var cursorTop = this.cursorCoordinates.top + this.cursorCoordinates.height / 2
+      const adjustment = (scrollEltHeight / 2) * editor.options.getCursorFocusRatio();
+      let cursorTop = this.cursorCoordinates.top + (this.cursorCoordinates.height / 2);
       // Adjust cursorTop with contentElt position relative to scrollElt
-      cursorTop += contentElt.getBoundingClientRect().top - scrollElt.getBoundingClientRect().top + scrollElt.scrollTop;
-      var minScrollTop = cursorTop - adjustment
-      var maxScrollTop = cursorTop + adjustment - scrollEltHeight
+      cursorTop += (contentElt.getBoundingClientRect().top - scrollElt.getBoundingClientRect().top)
+        + scrollElt.scrollTop;
+      const minScrollTop = cursorTop - adjustment;
+      const maxScrollTop = (cursorTop + adjustment) - scrollEltHeight;
       if (scrollElt.scrollTop > minScrollTop) {
-        scrollElt.scrollTop = minScrollTop
+        scrollElt.scrollTop = minScrollTop;
       } else if (scrollElt.scrollTop < maxScrollTop) {
-        scrollElt.scrollTop = maxScrollTop
+        scrollElt.scrollTop = maxScrollTop;
       }
     }
-    adjustScroll = false
-  }.cl_bind(this))
+    adjustScroll = false;
+  });
 
   this.updateCursorCoordinates = function (adjustScrollParam) {
-    adjustScroll = adjustScroll || adjustScrollParam
-    debouncedUpdateCursorCoordinates()
-  }
+    adjustScroll = adjustScroll || adjustScrollParam;
+    debouncedUpdateCursorCoordinates();
+  };
 
-  var oldSelectionRange
+  let oldSelectionRange;
 
   function checkSelection(selectionRange) {
     if (!oldSelectionRange ||
@@ -82,170 +86,159 @@ function SelectionMgr(editor) {
       oldSelectionRange.endContainer !== selectionRange.endContainer ||
       oldSelectionRange.endOffset !== selectionRange.endOffset
     ) {
-      oldSelectionRange = selectionRange
-      self.$trigger('selectionChanged', self.selectionStart, self.selectionEnd, selectionRange)
-      return true
+      oldSelectionRange = selectionRange;
+      self.$trigger('selectionChanged', self.selectionStart, self.selectionEnd, selectionRange);
+      return true;
     }
+    return false;
   }
 
-  this.hasFocus = function() {
-    return contentElt === editor.$document.activeElement;
+  this.hasFocus = () => contentElt === document.activeElement;
+
+  this.restoreSelection = () => {
+    const min = Math.min(this.selectionStart, this.selectionEnd);
+    const max = Math.max(this.selectionStart, this.selectionEnd);
+    const selectionRange = this.createRange(min, max);
+    if (!document.contains(selectionRange.commonAncestorContainer)) {
+      return null;
+    }
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    const isBackward = this.selectionStart > this.selectionEnd;
+    if (isBackward && selection.extend) {
+      const beginRange = selectionRange.cloneRange();
+      beginRange.collapse(false);
+      selection.addRange(beginRange);
+      selection.extend(selectionRange.startContainer, selectionRange.startOffset);
+    } else {
+      selection.addRange(selectionRange);
+    }
+    checkSelection(selectionRange);
+    return selectionRange;
+  };
+
+  const saveLastSelection = debounce(() => {
+    lastSelectionStart = self.selectionStart;
+    lastSelectionEnd = self.selectionEnd;
+  }, 50);
+
+  function setSelection(start = self.selectionStart, end = this.selectionEnd) {
+    self.selectionStart = start < 0 ? 0 : start;
+    self.selectionEnd = end < 0 ? 0 : end;
+    saveLastSelection();
   }
 
-  this.restoreSelection = function () {
-    var min = Math.min(this.selectionStart, this.selectionEnd)
-    var max = Math.max(this.selectionStart, this.selectionEnd)
-    var selectionRange = this.createRange(min, max)
-    if (editor.$document.contains(selectionRange.commonAncestorContainer)) {
-      var selection = editor.$window.getSelection()
-      selection.removeAllRanges()
-      var isBackward = this.selectionStart > this.selectionEnd
-      if (selection.extend) {
-        var beginRange = selectionRange.cloneRange()
-        beginRange.collapse(!isBackward)
-        selection.addRange(beginRange)
-        if (isBackward) {
-          selection.extend(selectionRange.startContainer, selectionRange.startOffset)
-        } else {
-          selection.extend(selectionRange.endContainer, selectionRange.endOffset)
-        }
-      } else {
-        selection.addRange(selectionRange)
-      }
-      checkSelection(selectionRange)
-      return selectionRange
-    }
-  }
+  this.setSelectionStartEnd = (start, end) => {
+    setSelection(start, end);
+    return this.hasFocus() && this.restoreSelection();
+  };
 
-  var saveLastSelection = debounce(function () {
-    lastSelectionStart = self.selectionStart
-    lastSelectionEnd = self.selectionEnd
-  }, 50)
-
-  function setSelection(start, end) {
-    if (start === undefined) {
-      start = self.selectionStart
-    }
-    if (start < 0) {
-      start = 0
-    }
-    if (end === undefined) {
-      end = this.selectionEnd
-    }
-    if (end < 0) {
-      end = 0
-    }
-    self.selectionStart = start
-    self.selectionEnd = end
-    saveLastSelection()
-  }
-
-  this.setSelectionStartEnd = function (start, end) {
-    setSelection(start, end)
-    return this.hasFocus() && this.restoreSelection()
-  }
-
-  this.saveSelectionState = (function () {
+  this.saveSelectionState = (() => {
     // Credit: https://github.com/timdown/rangy
     function arrayContains(arr, val) {
-      var i = arr.length
-      while (i--) {
+      let i = arr.length;
+      while (i) {
+        i -= 1;
         if (arr[i] === val) {
-          return true
+          return true;
         }
       }
-      return false
+      return false;
     }
 
     function getClosestAncestorIn(node, ancestor, selfIsAncestor) {
-      var p
-      var n = selfIsAncestor ? node : node.parentNode
+      let p;
+      let n = selfIsAncestor ? node : node.parentNode;
       while (n) {
-        p = n.parentNode
+        p = n.parentNode;
         if (p === ancestor) {
-          return n
+          return n;
         }
-        n = p
+        n = p;
       }
-      return null
+      return null;
     }
 
     function getNodeIndex(node) {
-      var i = 0
-      while ((node = node.previousSibling)) {
-        ++i
+      let i = 0;
+      let previousSibling = node.previousSibling;
+      while (previousSibling) {
+        i += 1;
+        previousSibling = node.previousSibling;
       }
-      return i
+      return i;
     }
 
     function getCommonAncestor(node1, node2) {
-      var ancestors = []
-      var n
+      const ancestors = [];
+      let n;
       for (n = node1; n; n = n.parentNode) {
-        ancestors.push(n)
+        ancestors.push(n);
       }
 
       for (n = node2; n; n = n.parentNode) {
         if (arrayContains(ancestors, n)) {
-          return n
+          return n;
         }
       }
 
-      return null
+      return null;
     }
 
     function comparePoints(nodeA, offsetA, nodeB, offsetB) {
       // See http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level-2-Range-Comparing
-      var nodeC, root, childA, childB, n
+      let n;
       if (nodeA === nodeB) {
         // Case 1: nodes are the same
-        return offsetA === offsetB ? 0 : (offsetA < offsetB) ? -1 : 1
-      } else if (
-        (nodeC = getClosestAncestorIn(nodeB, nodeA, true))
-      ) {
-        // Case 2: node C (container B or an ancestor) is a child node of A
-        return offsetA <= getNodeIndex(nodeC) ? -1 : 1
-      } else if (
-        (nodeC = getClosestAncestorIn(nodeA, nodeB, true))
-      ) {
-        // Case 3: node C (container A or an ancestor) is a child node of B
-        return getNodeIndex(nodeC) < offsetB ? -1 : 1
-      } else {
-        root = getCommonAncestor(nodeA, nodeB)
-        if (!root) {
-          throw new Error('comparePoints error: nodes have no common ancestor')
+        if (offsetA === offsetB) {
+          return 0;
         }
+        return offsetA < offsetB ? -1 : 1;
+      }
+      let nodeC = getClosestAncestorIn(nodeB, nodeA, true);
+      if (nodeC) {
+        // Case 2: node C (container B or an ancestor) is a child node of A
+        return offsetA <= getNodeIndex(nodeC) ? -1 : 1;
+      }
+      nodeC = getClosestAncestorIn(nodeA, nodeB, true);
+      if (nodeC) {
+        // Case 3: node C (container A or an ancestor) is a child node of B
+        return getNodeIndex(nodeC) < offsetB ? -1 : 1;
+      }
+      const root = getCommonAncestor(nodeA, nodeB);
+      if (!root) {
+        throw new Error('comparePoints error: nodes have no common ancestor');
+      }
 
-        // Case 4: containers are siblings or descendants of siblings
-        childA = (nodeA === root) ? root : getClosestAncestorIn(nodeA, root, true)
-        childB = (nodeB === root) ? root : getClosestAncestorIn(nodeB, root, true)
+      // Case 4: containers are siblings or descendants of siblings
+      const childA = (nodeA === root) ? root : getClosestAncestorIn(nodeA, root, true);
+      const childB = (nodeB === root) ? root : getClosestAncestorIn(nodeB, root, true);
 
-        if (childA === childB) {
-          // This shouldn't be possible
-          throw module.createError('comparePoints got to case 4 and childA and childB are the same!')
-        } else {
-          n = root.firstChild
-          while (n) {
-            if (n === childA) {
-              return -1
-            } else if (n === childB) {
-              return 1
-            }
-            n = n.nextSibling
+      if (childA === childB) {
+        // This shouldn't be possible
+        throw module.createError('comparePoints got to case 4 and childA and childB are the same!');
+      } else {
+        n = root.firstChild;
+        while (n) {
+          if (n === childA) {
+            return -1;
+          } else if (n === childB) {
+            return 1;
           }
+          n = n.nextSibling;
         }
       }
     }
 
     function save() {
-      var result
+      let result;
       if (self.hasFocus()) {
-        var selectionStart = self.selectionStart
-        var selectionEnd = self.selectionEnd
-        var selection = editor.$window.getSelection()
+        const selectionStart = self.selectionStart;
+        const selectionEnd = self.selectionEnd;
+        const selection = window.getSelection();
         if (selection.rangeCount > 0) {
-          var selectionRange = selection.getRangeAt(0)
-          var node = selectionRange.startContainer
+          const selectionRange = selection.getRangeAt(0);
+          const node = selectionRange.startContainer;
           if ((contentElt.compareDocumentPosition(node) & window.Node.DOCUMENT_POSITION_CONTAINED_BY) || contentElt === node) {
             var offset = selectionRange.startOffset
             if (node.firstChild && offset > 0) {

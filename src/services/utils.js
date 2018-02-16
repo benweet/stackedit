@@ -56,7 +56,7 @@ export default {
     'layoutSettings',
     'tokens',
   ],
-  textMaxLength: 150000,
+  textMaxLength: 250000,
   sanitizeText(text) {
     const result = `${text || ''}`.slice(0, this.textMaxLength);
     // last char must be a `\n`.

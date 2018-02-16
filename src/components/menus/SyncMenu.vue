@@ -5,7 +5,7 @@
     </div>
     <div class="side-bar__info" v-if="syncLocations.length">
       <p><b>{{currentFileName}}</b> is already synchronized.</p>
-      <menu-entry v-if="isSyncPossible" @click.native="requestSync">
+      <menu-entry @click.native="requestSync">
         <icon-sync slot="icon"></icon-sync>
         <div>Synchronize now</div>
         <span>Download / upload file changes.</span>
@@ -16,11 +16,6 @@
         <span>Manage current file synchronized locations.</span>
       </menu-entry>
     </div>
-    <menu-entry v-else-if="isSyncPossible" @click.native="requestSync">
-      <icon-sync slot="icon"></icon-sync>
-      <div>Synchronize now</div>
-      <span>Download / upload file changes.</span>
-    </menu-entry>
     <hr>
     <div v-for="token in googleDriveTokens" :key="token.sub">
       <menu-entry @click.native="openGoogleDrive(token)">
@@ -117,10 +112,6 @@ export default {
     }),
     currentFileName() {
       return this.$store.getters['file/current'].name;
-    },
-    isSyncPossible() {
-      return this.syncToken ||
-        this.$store.getters['syncLocation/current'].length;
     },
     googleDriveTokens() {
       return tokensToArray(this.$store.getters['data/googleTokens'], token => token.isDrive);

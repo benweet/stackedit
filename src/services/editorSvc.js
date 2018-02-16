@@ -393,7 +393,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
       instantPreview = false;
     };
 
-    const debouncedRefreshPreview = debounce(refreshPreview, 20);
+    const debouncedRefreshPreview = debounce(refreshPreview, 50);
 
     const onEditorChanged =
       (sectionList = this.sectionList, selectionRange = this.selectionRange) => {

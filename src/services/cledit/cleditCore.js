@@ -145,9 +145,6 @@ function cledit(contentElt, scrollEltOpt) {
   let watcher;
   let skipSaveSelection;
   function checkContentChange(mutations) {
-    if (contentElt.textContent.indexOf('.') >= 0) {
-      debugger;
-    }
     watcher.noWatch(() => {
       const removedSections = [];
       const modifiedSections = [];
@@ -175,16 +172,16 @@ function cledit(contentElt, scrollEltOpt) {
       noContentFix = false;
     });
 
+    if (!skipSaveSelection) {
+      selectionMgr.saveSelectionState();
+    }
+    skipSaveSelection = false;
+
     const newTextContent = getTextContent();
     const diffs = diffMatchPatch.diff_main(lastTextContent, newTextContent);
     editor.$markers.cl_each((marker) => {
       marker.adjustOffset(diffs);
     });
-
-    if (!skipSaveSelection) {
-      selectionMgr.saveSelectionState();
-    }
-    skipSaveSelection = false;
 
     const sectionList = highlighter.parseSections(newTextContent);
     editor.$trigger('contentChanged', newTextContent, diffs, sectionList);
@@ -315,6 +312,9 @@ function cledit(contentElt, scrollEltOpt) {
     setTimeout(() => {
       if (highlighter.isComposing) {
         highlighter.isComposing -= 1;
+        if (!highlighter.isComposing) {
+          checkContentChange([]);
+        }
       }
     }, 1);
   });

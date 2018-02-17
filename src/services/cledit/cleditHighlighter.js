@@ -62,7 +62,7 @@ function Highlighter(editor) {
   }
 
   this.parseSections = (content, isInit) => {
-    if (true) {
+    if (this.isComposing) {
       return sectionList;
     }
 

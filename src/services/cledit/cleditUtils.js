@@ -67,6 +67,7 @@ Utils.createEventHooks = (object) => {
         try {
           listener.apply(object, args);
         } catch (e) {
+          // eslint-disable-next-line no-console
           console.error(e.message, e.stack);
         }
       });

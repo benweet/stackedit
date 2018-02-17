@@ -11,7 +11,6 @@ function createStyleSheet(document) {
 }
 
 function Highlighter(editor) {
-  const self = this;
   cledit.Utils.createEventHooks(this);
 
   if (!styleElts.cl_some(styleElt => document.head.contains(styleElt))) {
@@ -63,7 +62,7 @@ function Highlighter(editor) {
   }
 
   this.parseSections = (content, isInit) => {
-    if (this.isComposing) {
+    if (true) {
       return sectionList;
     }
 
@@ -133,14 +132,14 @@ function Highlighter(editor) {
       sectionList = leftSections.concat(modifiedSections).concat(rightSections);
     }
 
-    function highlight(section) {
+    const highlight = (section) => {
       const html = editor.options.sectionHighlighter(section).replace(/\n/g, lfHtml);
       const sectionElt = document.createElement('div');
       sectionElt.className = 'cledit-section';
       sectionElt.innerHTML = html;
       section.setElement(sectionElt);
-      self.$trigger('sectionHighlighted', section);
-    }
+      this.$trigger('sectionHighlighted', section);
+    };
 
     const newSectionEltList = document.createDocumentFragment();
     modifiedSections.cl_each((section) => {
@@ -183,7 +182,8 @@ function Highlighter(editor) {
         childNode = nextNode;
       }
       this.addTrailingNode();
-      self.$trigger('highlighted');
+      this.$trigger('highlighted');
+
       if (editor.selectionMgr.hasFocus()) {
         editor.selectionMgr.restoreSelection();
         editor.selectionMgr.updateCursorCoordinates();

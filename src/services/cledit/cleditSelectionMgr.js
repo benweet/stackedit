@@ -6,7 +6,6 @@ function SelectionMgr(editor) {
   const scrollElt = editor.$scrollElt;
   cledit.Utils.createEventHooks(this);
 
-  const self = this;
   let lastSelectionStart = 0;
   let lastSelectionEnd = 0;
   this.selectionStart = 0;
@@ -28,7 +27,7 @@ function SelectionMgr(editor) {
     return result;
   };
 
-  this.createRange = function (start, end) {
+  this.createRange = (start, end) => {
     const range = document.createRange();
     const startContainer = isNaN(start) ? start : this.findContainer(start < 0 ? 0 : start);
     let endContainer = startContainer;
@@ -72,14 +71,14 @@ function SelectionMgr(editor) {
     adjustScroll = false;
   });
 
-  this.updateCursorCoordinates = function (adjustScrollParam) {
+  this.updateCursorCoordinates = (adjustScrollParam) => {
     adjustScroll = adjustScroll || adjustScrollParam;
     debouncedUpdateCursorCoordinates();
   };
 
   let oldSelectionRange;
 
-  function checkSelection(selectionRange) {
+  const checkSelection = (selectionRange) => {
     if (!oldSelectionRange ||
       oldSelectionRange.startContainer !== selectionRange.startContainer ||
       oldSelectionRange.startOffset !== selectionRange.startOffset ||
@@ -87,11 +86,11 @@ function SelectionMgr(editor) {
       oldSelectionRange.endOffset !== selectionRange.endOffset
     ) {
       oldSelectionRange = selectionRange;
-      self.$trigger('selectionChanged', self.selectionStart, self.selectionEnd, selectionRange);
+      this.$trigger('selectionChanged', this.selectionStart, this.selectionEnd, selectionRange);
       return true;
     }
     return false;
-  }
+  };
 
   this.hasFocus = () => contentElt === document.activeElement;
 
@@ -118,19 +117,22 @@ function SelectionMgr(editor) {
   };
 
   const saveLastSelection = debounce(() => {
-    lastSelectionStart = self.selectionStart;
-    lastSelectionEnd = self.selectionEnd;
+    lastSelectionStart = this.selectionStart;
+    lastSelectionEnd = this.selectionEnd;
   }, 50);
 
-  function setSelection(start = self.selectionStart, end = this.selectionEnd) {
-    self.selectionStart = start < 0 ? 0 : start;
-    self.selectionEnd = end < 0 ? 0 : end;
+  const setSelection = (start = this.selectionStart, end = this.selectionEnd) => {
+    this.selectionStart = start < 0 ? 0 : start;
+    this.selectionEnd = end < 0 ? 0 : end;
     saveLastSelection();
-  }
+  };
 
-  this.setSelectionStartEnd = (start, end) => {
+  this.setSelectionStartEnd = (start, end, restoreSelection = true) => {
     setSelection(start, end);
-    return this.hasFocus() && this.restoreSelection();
+    if (restoreSelection && this.hasFocus()) {
+      return this.restoreSelection();
+    }
+    return null;
   };
 
   this.saveSelectionState = (() => {
@@ -217,182 +219,199 @@ function SelectionMgr(editor) {
       if (childA === childB) {
         // This shouldn't be possible
         throw module.createError('comparePoints got to case 4 and childA and childB are the same!');
-      } else {
-        n = root.firstChild;
-        while (n) {
-          if (n === childA) {
-            return -1;
-          } else if (n === childB) {
-            return 1;
-          }
-          n = n.nextSibling;
-        }
       }
+      n = root.firstChild;
+      while (n) {
+        if (n === childA) {
+          return -1;
+        } else if (n === childB) {
+          return 1;
+        }
+        n = n.nextSibling;
+      }
+      return 0;
     }
 
-    function save() {
+    const save = () => {
       let result;
-      if (self.hasFocus()) {
-        const selectionStart = self.selectionStart;
-        const selectionEnd = self.selectionEnd;
+      if (this.hasFocus()) {
+        let selectionStart = this.selectionStart;
+        let selectionEnd = this.selectionEnd;
         const selection = window.getSelection();
         if (selection.rangeCount > 0) {
           const selectionRange = selection.getRangeAt(0);
-          const node = selectionRange.startContainer;
-          if ((contentElt.compareDocumentPosition(node) & window.Node.DOCUMENT_POSITION_CONTAINED_BY) || contentElt === node) {
-            var offset = selectionRange.startOffset
+          let node = selectionRange.startContainer;
+          // eslint-disable-next-line no-bitwise
+          if ((contentElt.compareDocumentPosition(node)
+            & window.Node.DOCUMENT_POSITION_CONTAINED_BY)
+            || contentElt === node
+          ) {
+            let offset = selectionRange.startOffset;
             if (node.firstChild && offset > 0) {
-              node = node.childNodes[offset - 1]
-              offset = node.textContent.length
+              node = node.childNodes[offset - 1];
+              offset = node.textContent.length;
             }
-            var container = node
+            let container = node;
             while (node !== contentElt) {
-              while ((node = node.previousSibling)) {
-                offset += (node.textContent || '').length
+              node = node.previousSibling;
+              while (node) {
+                offset += (node.textContent || '').length;
+                node = node.previousSibling;
               }
-              node = container = container.parentNode
+              node = container.parentNode;
+              container = node;
             }
-            var selectionText = selectionRange + ''
+            let selectionText = `${selectionRange}`;
             // Fix end of line when only br is selected
-            var brElt = selectionRange.endContainer.firstChild
+            const brElt = selectionRange.endContainer.firstChild;
             if (brElt && brElt.tagName === 'BR' && selectionRange.endOffset === 1) {
-              selectionText += '\n'
+              selectionText += '\n';
             }
-            if (comparePoints(selection.anchorNode, selection.anchorOffset, selection.focusNode, selection.focusOffset) === 1) {
-              selectionStart = offset + selectionText.length
-              selectionEnd = offset
+            if (comparePoints(
+              selection.anchorNode,
+              selection.anchorOffset,
+              selection.focusNode,
+              selection.focusOffset) === 1
+            ) {
+              selectionStart = offset + selectionText.length;
+              selectionEnd = offset;
             } else {
-              selectionStart = offset
-              selectionEnd = offset + selectionText.length
+              selectionStart = offset;
+              selectionEnd = offset + selectionText.length;
             }
 
             if (selectionStart === selectionEnd && selectionStart === editor.getContent().length) {
               // If cursor is after the trailingNode
-              selectionStart = --selectionEnd
-              result = self.setSelectionStartEnd(selectionStart, selectionEnd)
+              selectionEnd -= 1;
+              selectionStart = selectionEnd;
+              result = this.setSelectionStartEnd(selectionStart, selectionEnd);
             } else {
-              setSelection(selectionStart, selectionEnd)
-              result = checkSelection(selectionRange)
-              result = result || lastSelectionStart !== self.selectionStart // selectionRange doesn't change when selection is at the start of a section
+              setSelection(selectionStart, selectionEnd);
+              result = checkSelection(selectionRange);
+              // selectionRange doesn't change when selection is at the start of a section
+              result = result || lastSelectionStart !== this.selectionStart;
             }
           }
         }
       }
-      return result
-    }
+      return result;
+    };
 
-    function saveCheckChange() {
-      return save() && (lastSelectionStart !== self.selectionStart || lastSelectionEnd !== self.selectionEnd)
-    }
+    const saveCheckChange = () => save() && (
+      lastSelectionStart !== this.selectionStart || lastSelectionEnd !== this.selectionEnd);
 
-    var nextTickAdjustScroll = false
-    var debouncedSave = debounce(function () {
-      self.updateCursorCoordinates(saveCheckChange() && nextTickAdjustScroll)
-      // In some cases we have to wait a little longer to see the selection change (Cmd+A on Chrome OSX)
-      longerDebouncedSave()
-    })
-    var longerDebouncedSave = debounce(function () {
-      self.updateCursorCoordinates(saveCheckChange() && nextTickAdjustScroll)
-      nextTickAdjustScroll = false
-    }, 10)
+    let nextTickAdjustScroll = false;
+    const longerDebouncedSave = debounce(() => {
+      this.updateCursorCoordinates(saveCheckChange() && nextTickAdjustScroll);
+      nextTickAdjustScroll = false;
+    }, 10);
+    const debouncedSave = debounce(() => {
+      this.updateCursorCoordinates(saveCheckChange() && nextTickAdjustScroll);
+      // In some cases we have to wait a little longer to see the
+      // selection change (Cmd+A on Chrome OSX)
+      longerDebouncedSave();
+    });
 
-    return function (debounced, adjustScroll, forceAdjustScroll) {
+    return (debounced, adjustScrollParam, forceAdjustScroll) => {
       if (forceAdjustScroll) {
-        lastSelectionStart = undefined
-        lastSelectionEnd = undefined
+        lastSelectionStart = undefined;
+        lastSelectionEnd = undefined;
       }
       if (debounced) {
-        nextTickAdjustScroll = nextTickAdjustScroll || adjustScroll
-        return debouncedSave()
+        nextTickAdjustScroll = nextTickAdjustScroll || adjustScrollParam;
+        debouncedSave();
       } else {
-        save()
+        save();
       }
-    }
-  })()
+    };
+  })();
 
-  this.getSelectedText = function () {
-    var min = Math.min(this.selectionStart, this.selectionEnd)
-    var max = Math.max(this.selectionStart, this.selectionEnd)
-    return editor.getContent().substring(min, max)
-  }
+  this.getSelectedText = () => {
+    const min = Math.min(this.selectionStart, this.selectionEnd);
+    const max = Math.max(this.selectionStart, this.selectionEnd);
+    return editor.getContent().substring(min, max);
+  };
 
-  this.getCoordinates = function (inputOffset, container, offsetInContainer) {
+  this.getCoordinates = (inputOffset, containerParam, offsetInContainerParam) => {
+    let container = containerParam;
+    let offsetInContainer = offsetInContainerParam;
     if (!container) {
-      var offset = this.findContainer(inputOffset)
-      container = offset.container
-      offsetInContainer = offset.offsetInContainer
+      const offset = this.findContainer(inputOffset);
+      container = offset.container;
+      offsetInContainer = offset.offsetInContainer;
     }
-    var containerElt = container
+    let containerElt = container;
     if (!containerElt.hasChildNodes()) {
-      containerElt = container.parentNode
+      containerElt = container.parentNode;
     }
-    var isInvisible = false
-    var index = editor.$allElements.indexOf(containerElt)
-    while (containerElt.offsetHeight === 0 && index > 0) {
-      isInvisible = true
-      containerElt = editor.$allElements[--index]
+    let isInvisible = false;
+    while (containerElt.offsetHeight === 0) {
+      isInvisible = true;
+      if (containerElt.previousSibling) {
+        containerElt = containerElt.previousSibling;
+      } else {
+        containerElt = containerElt.parentNode;
+      }
     }
-    var rect
-    var contentRect
-    var left = 'left'
+    let rect;
+    let left = 'left';
     if (isInvisible || container.textContent === '\n') {
-      rect = containerElt.getBoundingClientRect()
+      rect = containerElt.getBoundingClientRect();
     } else {
-      var selectedChar = editor.getContent()[inputOffset]
-      var startOffset = {
-        container: container,
-        offsetInContainer: offsetInContainer
-      }
-      var endOffset = {
-        container: container,
-        offsetInContainer: offsetInContainer
-      }
+      const selectedChar = editor.getContent()[inputOffset];
+      let startOffset = {
+        container,
+        offsetInContainer,
+      };
+      let endOffset = {
+        container,
+        offsetInContainer,
+      };
       if (inputOffset > 0 && (selectedChar === undefined || selectedChar === '\n')) {
-        left = 'right'
+        left = 'right';
         if (startOffset.offsetInContainer === 0) {
           // Need to calculate offset-1
-          startOffset = inputOffset - 1
+          startOffset = inputOffset - 1;
         } else {
-          startOffset.offsetInContainer -= 1
+          startOffset.offsetInContainer -= 1;
         }
+      } else if (endOffset.offsetInContainer === container.textContent.length) {
+        // Need to calculate offset+1
+        endOffset = inputOffset + 1;
       } else {
-        if (endOffset.offsetInContainer === container.textContent.length) {
-          // Need to calculate offset+1
-          endOffset = inputOffset + 1
-        } else {
-          endOffset.offsetInContainer += 1
-        }
+        endOffset.offsetInContainer += 1;
       }
-      var range = this.createRange(startOffset, endOffset)
-      rect = range.getBoundingClientRect()
+      const range = this.createRange(startOffset, endOffset);
+      rect = range.getBoundingClientRect();
     }
-    contentRect = contentElt.getBoundingClientRect()
+    const contentRect = contentElt.getBoundingClientRect();
     return {
-      top: Math.round(rect.top - contentRect.top + contentElt.scrollTop),
+      top: Math.round((rect.top - contentRect.top) + contentElt.scrollTop),
       height: Math.round(rect.height),
-      left: Math.round(rect[left] - contentRect.left + contentElt.scrollLeft)
-    }
-  }
+      left: Math.round((rect[left] - contentRect.left) + contentElt.scrollLeft),
+    };
+  };
 
-  this.getClosestWordOffset = function (offset) {
-    var offsetStart = 0
-    var offsetEnd = 0
-    var nextOffset = 0
-    editor.getContent().split(/\s/).cl_some(function (word) {
+  this.getClosestWordOffset = (offset) => {
+    let offsetStart = 0;
+    let offsetEnd = 0;
+    let nextOffset = 0;
+    editor.getContent().split(/\s/).cl_some((word) => {
       if (word) {
-        offsetStart = nextOffset
-        offsetEnd = nextOffset + word.length
+        offsetStart = nextOffset;
+        offsetEnd = nextOffset + word.length;
         if (offsetEnd > offset) {
-          return true
+          return true;
         }
       }
-      nextOffset += word.length + 1
-    })
+      nextOffset += word.length + 1;
+      return false;
+    });
     return {
       start: offsetStart,
-      end: offsetEnd
-    }
-  }
+      end: offsetEnd,
+    };
+  };
 }
 
-cledit.SelectionMgr = SelectionMgr
+cledit.SelectionMgr = SelectionMgr;

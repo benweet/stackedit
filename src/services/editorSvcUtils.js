@@ -1,5 +1,5 @@
 import DiffMatchPatch from 'diff-match-patch';
-import cledit from '../libs/cledit';
+import cledit from './cledit';
 import animationSvc from './animationSvc';
 import store from '../store';
 

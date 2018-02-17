@@ -1,33 +1,34 @@
-var cledit = require('./cleditCore')
+import cledit from './cleditCore';
 
 function Watcher(editor, listener) {
-  this.isWatching = false
-  var contentObserver
-  this.startWatching = function () {
-    this.stopWatching()
-    this.isWatching = true
-    contentObserver = new window.MutationObserver(listener)
+  this.isWatching = false;
+  let contentObserver;
+  this.startWatching = () => {
+    this.stopWatching();
+    this.isWatching = true;
+    contentObserver = new window.MutationObserver(listener);
     contentObserver.observe(editor.$contentElt, {
       childList: true,
       subtree: true,
-      characterData: true
-    })
-  }
-  this.stopWatching = function () {
+      characterData: true,
+    });
+  };
+  this.stopWatching = () => {
     if (contentObserver) {
-      contentObserver.disconnect()
-      contentObserver = undefined
+      contentObserver.disconnect();
+      contentObserver = undefined;
     }
-    this.isWatching = false
-  }
-  this.noWatch = function (cb) {
+    this.isWatching = false;
+  };
+  this.noWatch = (cb) => {
     if (this.isWatching === true) {
-      this.stopWatching()
-      cb()
-      return this.startWatching()
+      this.stopWatching();
+      cb();
+      this.startWatching();
+    } else {
+      cb();
     }
-    cb()
-  }
+  };
 }
 
-cledit.Watcher = Watcher
+cledit.Watcher = Watcher;

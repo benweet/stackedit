@@ -1,123 +1,128 @@
-var cledit = require('./cleditCore')
+import cledit from './cleditCore';
 
-var Utils = {
+const Utils = {
   isGecko: 'MozAppearance' in document.documentElement.style,
   isWebkit: 'WebkitAppearance' in document.documentElement.style,
   isMsie: 'msTransform' in document.documentElement.style,
-  isMac: navigator.userAgent.indexOf('Mac OS X') !== -1
-}
+  isMac: navigator.userAgent.indexOf('Mac OS X') !== -1,
+};
 
 // Faster than setTimeout(0). Credit: https://github.com/stefanpenner/es6-promise
-Utils.defer = (function () {
-  var queue = new Array(1000)
-  var queueLength = 0
+Utils.defer = (() => {
+  const queue = new Array(1000);
+  let queueLength = 0;
   function flush() {
-    for (var i = 0; i < queueLength; i++) {
+    for (let i = 0; i < queueLength; i += 1) {
       try {
-        queue[i]()
+        queue[i]();
       } catch (e) {
-        console.error(e.message, e.stack)
+        // eslint-disable-next-line no-console
+        console.error(e.message, e.stack);
       }
-      queue[i] = undefined
+      queue[i] = undefined;
     }
-    queueLength = 0
+    queueLength = 0;
   }
 
-  var iterations = 0
-  var observer = new window.MutationObserver(flush)
-  var node = document.createTextNode('')
-  observer.observe(node, { characterData: true })
+  let iterations = 0;
+  const observer = new window.MutationObserver(flush);
+  const node = document.createTextNode('');
+  observer.observe(node, { characterData: true });
 
-  return function (fn) {
-    queue[queueLength++] = fn
+  return (fn) => {
+    queue[queueLength] = fn;
+    queueLength += 1;
     if (queueLength === 1) {
-      node.data = (iterations = ++iterations % 2)
+      iterations = (iterations + 1) % 2;
+      node.data = iterations;
     }
-  }
-})()
+  };
+})();
 
-Utils.debounce = function (func, wait) {
-  var timeoutId, isExpected
+Utils.debounce = (func, wait) => {
+  let timeoutId;
+  let isExpected;
   return wait
-    ? function () {
-      clearTimeout(timeoutId)
-      timeoutId = setTimeout(func, wait)
+    ? () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(func, wait);
     }
-    : function () {
+    : () => {
       if (!isExpected) {
-        isExpected = true
-        Utils.defer(function () {
-          isExpected = false
-          func()
-        })
+        isExpected = true;
+        Utils.defer(() => {
+          isExpected = false;
+          func();
+        });
       }
-    }
-}
+    };
+};
 
-Utils.createEventHooks = function (object) {
-  var listenerMap = Object.create(null)
-  object.$trigger = function (eventType) {
-    var listeners = listenerMap[eventType]
+Utils.createEventHooks = (object) => {
+  const listenerMap = Object.create(null);
+  object.$trigger = (eventType, ...args) => {
+    const listeners = listenerMap[eventType];
     if (listeners) {
-      var args = Array.prototype.slice.call(arguments, 1)
-      listeners.cl_each(function (listener) {
+      listeners.cl_each((listener) => {
         try {
-          listener.apply(object, args)
+          listener.apply(object, args);
         } catch (e) {
-          console.error(e.message, e.stack)
+          console.error(e.message, e.stack);
         }
-      })
+      });
     }
-  }
-  object.on = function (eventType, listener) {
-    var listeners = listenerMap[eventType]
+  };
+  object.on = (eventType, listener) => {
+    let listeners = listenerMap[eventType];
     if (!listeners) {
-      listeners = []
-      listenerMap[eventType] = listeners
+      listeners = [];
+      listenerMap[eventType] = listeners;
     }
-    listeners.push(listener)
-  }
-  object.off = function (eventType, listener) {
-    var listeners = listenerMap[eventType]
+    listeners.push(listener);
+  };
+  object.off = (eventType, listener) => {
+    const listeners = listenerMap[eventType];
     if (listeners) {
-      var index = listeners.indexOf(listener)
-      if (~index) {
-        listeners.splice(index, 1)
+      const index = listeners.indexOf(listener);
+      if (index !== -1) {
+        listeners.splice(index, 1);
       }
     }
-  }
-}
+  };
+};
 
-Utils.findContainer = function (elt, offset) {
-  var containerOffset = 0
-  var container
+Utils.findContainer = (elt, offset) => {
+  let containerOffset = 0;
+  let container;
+  let child = elt;
   do {
-    container = elt
-    elt = elt.firstChild
-    if (elt) {
+    container = child;
+    child = child.firstChild;
+    if (child) {
       do {
-        var len = elt.textContent.length
+        const len = child.textContent.length;
         if (containerOffset <= offset && containerOffset + len > offset) {
-          break
+          break;
         }
-        containerOffset += len
-      } while ((elt = elt.nextSibling))
+        containerOffset += len;
+        child = child.nextSibling;
+      } while (child);
     }
-  } while (elt && elt.firstChild && elt.nodeType !== 3)
+  } while (child && child.firstChild && child.nodeType !== 3);
 
-  if (elt) {
+  if (child) {
     return {
-      container: elt,
-      offsetInContainer: offset - containerOffset
-    }
+      container: child,
+      offsetInContainer: offset - containerOffset,
+    };
   }
   while (container.lastChild) {
-    container = container.lastChild
+    container = container.lastChild;
   }
   return {
-    container: container,
-    offsetInContainer: container.nodeType === 3 ? container.textContent.length : 0
-  }
-}
+    container,
+    offsetInContainer: container.nodeType === 3 ? container.textContent.length : 0,
+  };
+};
 
-cledit.Utils = Utils
+cledit.Utils = Utils;

@@ -2,7 +2,7 @@ import Vue from 'vue';
 import DiffMatchPatch from 'diff-match-patch';
 import Prism from 'prismjs';
 import markdownItPandocRenderer from 'markdown-it-pandoc-renderer';
-import cledit from '../libs/cledit';
+import cledit from './cledit';
 import pagedown from '../libs/pagedown';
 import htmlSanitizer from '../libs/htmlSanitizer';
 import markdownConversionSvc from './markdownConversionSvc';

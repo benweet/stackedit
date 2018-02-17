@@ -1,4 +1,4 @@
-import createLogger from 'vuex/dist/logger';
+// import createLogger from 'vuex/dist/logger';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import utils from '../services/utils';
@@ -120,7 +120,7 @@ const store = new Vuex.Store({
     },
   },
   strict: debug,
-  plugins: debug ? [createLogger()] : [],
+  // plugins: debug ? [createLogger()] : [],
 });
 
 setInterval(() => {

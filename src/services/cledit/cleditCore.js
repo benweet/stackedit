@@ -37,15 +37,6 @@ function cledit(contentElt, scrollEltOpt) {
   let lastTextContent = getTextContent();
   const highlighter = new cledit.Highlighter(editor);
 
-  let sectionList;
-
-  function parseSections(content, isInit) {
-    sectionList = highlighter.parseSections(content, isInit);
-    editor.$allElements = Array.prototype.slice
-      .call(contentElt.querySelectorAll('.cledit-section *'));
-    return sectionList;
-  }
-
   /* eslint-disable new-cap */
   const diffMatchPatch = new DiffMatchPatch();
   /* eslint-enable new-cap */
@@ -152,7 +143,11 @@ function cledit(contentElt, scrollEltOpt) {
   }, 10);
 
   let watcher;
+  let skipSaveSelection;
   function checkContentChange(mutations) {
+    if (contentElt.textContent.indexOf('.') >= 0) {
+      debugger;
+    }
     watcher.noWatch(() => {
       const removedSections = [];
       const modifiedSections = [];
@@ -186,9 +181,13 @@ function cledit(contentElt, scrollEltOpt) {
       marker.adjustOffset(diffs);
     });
 
-    selectionMgr.saveSelectionState();
-    const parsedSections = parseSections(newTextContent);
-    editor.$trigger('contentChanged', newTextContent, diffs, parsedSections);
+    if (!skipSaveSelection) {
+      selectionMgr.saveSelectionState();
+    }
+    skipSaveSelection = false;
+
+    const sectionList = highlighter.parseSections(newTextContent);
+    editor.$trigger('contentChanged', newTextContent, diffs, sectionList);
     if (!ignoreUndo) {
       undoMgr.addDiffs(lastTextContent, newTextContent, diffs);
       undoMgr.setDefaultMode('typing');
@@ -270,12 +269,12 @@ function cledit(contentElt, scrollEltOpt) {
 
   contentElt.addEventListener('keydown', keydownHandler((evt) => {
     selectionMgr.saveSelectionState();
-    adjustCursorPosition();
 
     // Perform keystroke
+    let contentChanging = false;
     const textContent = getTextContent();
-    const min = Math.min(selectionMgr.selectionStart, selectionMgr.selectionEnd);
-    const max = Math.max(selectionMgr.selectionStart, selectionMgr.selectionEnd);
+    let min = Math.min(selectionMgr.selectionStart, selectionMgr.selectionEnd);
+    let max = Math.max(selectionMgr.selectionStart, selectionMgr.selectionEnd);
     const state = {
       before: textContent.slice(0, min),
       after: textContent.slice(max),
@@ -286,15 +285,26 @@ function cledit(contentElt, scrollEltOpt) {
       if (!keystroke.handler(evt, state, editor)) {
         return false;
       }
-      editor.setContent(state.before + state.selection + state.after, false, min);
-      const min1 = state.before.length;
-      const max1 = min + state.selection.length;
+      const newContent = state.before + state.selection + state.after;
+      if (newContent !== getTextContent()) {
+        editor.setContent(newContent, false, min);
+        contentChanging = true;
+        skipSaveSelection = true;
+      }
+      min = state.before.length;
+      max = min + state.selection.length;
       selectionMgr.setSelectionStartEnd(
-        state.isBackwardSelection ? max1 : min1,
-        state.isBackwardSelection ? min : max1,
+        state.isBackwardSelection ? max : min,
+        state.isBackwardSelection ? min : max,
+        !contentChanging, // Expect a restore selection on mutation event
       );
       return true;
     });
+
+    if (!contentChanging) {
+      // Optimization to avoid saving selection
+      adjustCursorPosition();
+    }
   }));
 
   contentElt.addEventListener('compositionstart', () => {
@@ -406,8 +416,8 @@ function cledit(contentElt, scrollEltOpt) {
       }
     }
 
-    const parsedSections = parseSections(lastTextContent, true);
-    editor.$trigger('contentChanged', lastTextContent, [0, lastTextContent], parsedSections);
+    const sectionList = highlighter.parseSections(lastTextContent, true);
+    editor.$trigger('contentChanged', lastTextContent, [0, lastTextContent], sectionList);
     if (options.selectionStart !== undefined && options.selectionEnd !== undefined) {
       editor.setSelection(options.selectionStart, options.selectionEnd);
     } else {
@@ -423,4 +433,4 @@ function cledit(contentElt, scrollEltOpt) {
   return editor;
 }
 
-module.exports = cledit;
+export default cledit;

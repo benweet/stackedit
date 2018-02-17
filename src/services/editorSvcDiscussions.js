@@ -1,5 +1,5 @@
 import DiffMatchPatch from 'diff-match-patch';
-import cledit from '../libs/cledit';
+import cledit from './cledit';
 import utils from './utils';
 import diffUtils from './diffUtils';
 import store from '../store';

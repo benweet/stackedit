@@ -1,178 +1,176 @@
-var DiffMatchPatch = require('diff-match-patch');
-var cledit = require('./cleditCore')
+import DiffMatchPatch from 'diff-match-patch';
+import cledit from './cleditCore';
 
 function UndoMgr(editor) {
-  cledit.Utils.createEventHooks(this)
+  cledit.Utils.createEventHooks(this);
 
   /* eslint-disable new-cap */
-  var diffMatchPatch = new DiffMatchPatch()
+  const diffMatchPatch = new DiffMatchPatch();
   /* eslint-enable new-cap */
 
-  var self = this
-  var selectionMgr
-  var undoStack = []
-  var redoStack = []
-  var currentState
-  var previousPatches = []
-  var currentPatches = []
-  var debounce = cledit.Utils.debounce
+  const self = this;
+  let selectionMgr;
+  const undoStack = [];
+  const redoStack = [];
+  let currentState;
+  let previousPatches = [];
+  let currentPatches = [];
+  const debounce = cledit.Utils.debounce;
 
-  self.options = {
+  this.options = {
     undoStackMaxSize: 200,
     bufferStateUntilIdle: 1000,
     patchHandler: {
-      makePatches: function (oldContent, newContent, diffs) {
-        return diffMatchPatch.patch_make(oldContent, diffs)
+      makePatches(oldContent, newContent, diffs) {
+        return diffMatchPatch.patch_make(oldContent, diffs);
       },
-      applyPatches: function (patches, content) {
-        return diffMatchPatch.patch_apply(patches, content)[0]
+      applyPatches(patches, content) {
+        return diffMatchPatch.patch_apply(patches, content)[0];
       },
-      reversePatches: function (patches) {
-        patches = diffMatchPatch.patch_deepCopy(patches).reverse()
-        patches.cl_each(function (patch) {
-          patch.diffs.cl_each(function (diff) {
-            diff[0] = -diff[0]
-          })
-        })
-        return patches
-      }
-    }
-  }
+      reversePatches(patches) {
+        const reversedPatches = diffMatchPatch.patch_deepCopy(patches).reverse();
+        reversedPatches.cl_each((patch) => {
+          patch.diffs.cl_each((diff) => {
+            diff[0] = -diff[0];
+          });
+        });
+        return reversedPatches;
+      },
+    },
+  };
 
-  function State() { }
-
+  let stateMgr;
   function StateMgr() {
-    var currentTime, lastTime
-    var lastMode
+    let currentTime;
+    let lastTime;
+    let lastMode;
 
-    this.isBufferState = function () {
-      currentTime = Date.now()
+    this.isBufferState = () => {
+      currentTime = Date.now();
       return this.currentMode !== 'single' &&
         this.currentMode === lastMode &&
-        currentTime - lastTime < self.options.bufferStateUntilIdle
-    }
+        currentTime - lastTime < self.options.bufferStateUntilIdle;
+    };
 
-    this.setDefaultMode = function (mode) {
-      this.currentMode = this.currentMode || mode
-    }
+    this.setDefaultMode = (mode) => {
+      this.currentMode = this.currentMode || mode;
+    };
 
-    this.resetMode = function () {
-      stateMgr.currentMode = undefined
-      lastMode = undefined
-    }
+    this.resetMode = () => {
+      stateMgr.currentMode = undefined;
+      lastMode = undefined;
+    };
 
-    this.saveMode = function () {
-      lastMode = this.currentMode
-      this.currentMode = undefined
-      lastTime = currentTime
+    this.saveMode = () => {
+      lastMode = this.currentMode;
+      this.currentMode = undefined;
+      lastTime = currentTime;
+    };
+  }
+
+  class State {
+    addToUndoStack() {
+      undoStack.push(this);
+      this.patches = previousPatches;
+      previousPatches = [];
+    }
+    addToRedoStack() {
+      redoStack.push(this);
+      this.patches = previousPatches;
+      previousPatches = [];
     }
   }
 
-  function addToStack(stack) {
-    return function () {
-      stack.push(this)
-      this.patches = previousPatches
-      previousPatches = []
-    }
-  }
+  stateMgr = new StateMgr();
+  this.setCurrentMode = (mode) => {
+    stateMgr.currentMode = mode;
+  };
+  this.setDefaultMode = stateMgr.setDefaultMode.cl_bind(stateMgr);
 
-  State.prototype.addToUndoStack = addToStack(undoStack)
-  State.prototype.addToRedoStack = addToStack(redoStack)
-
-  var stateMgr = new StateMgr()
-  this.setCurrentMode = function (mode) {
-    stateMgr.currentMode = mode
-  }
-  this.setDefaultMode = stateMgr.setDefaultMode.cl_bind(stateMgr)
-
-  this.addDiffs = function (oldContent, newContent, diffs) {
-    var patches = self.options.patchHandler.makePatches(oldContent, newContent, diffs)
-    currentPatches.push.apply(currentPatches, patches)
-  }
+  this.addDiffs = (oldContent, newContent, diffs) => {
+    const patches = this.options.patchHandler.makePatches(oldContent, newContent, diffs);
+    patches.cl_each(patch => currentPatches.push(patch));
+  };
 
   function saveCurrentPatches() {
     // Move currentPatches into previousPatches
-    Array.prototype.push.apply(previousPatches, currentPatches)
-    currentPatches = []
+    Array.prototype.push.apply(previousPatches, currentPatches);
+    currentPatches = [];
   }
 
-  this.saveState = debounce(function () {
-    redoStack.length = 0
+  this.saveState = debounce(() => {
+    redoStack.length = 0;
     if (!stateMgr.isBufferState()) {
-      currentState.addToUndoStack()
+      currentState.addToUndoStack();
 
       // Limit the size of the stack
-      while (undoStack.length > self.options.undoStackMaxSize) {
-        undoStack.shift()
+      while (undoStack.length > this.options.undoStackMaxSize) {
+        undoStack.shift();
       }
     }
-    saveCurrentPatches()
-    currentState = new State()
-    stateMgr.saveMode()
-    self.$trigger('undoStateChange')
-  })
+    saveCurrentPatches();
+    currentState = new State();
+    stateMgr.saveMode();
+    this.$trigger('undoStateChange');
+  });
 
-  this.canUndo = function () {
-    return !!undoStack.length
-  }
+  this.canUndo = () => !!undoStack.length;
+  this.canRedo = () => !!redoStack.length;
 
-  this.canRedo = function () {
-    return !!redoStack.length
-  }
-
-  function restoreState(patches, isForward) {
+  const restoreState = (patchesParam, isForward) => {
+    let patches = patchesParam;
     // Update editor
-    var content = editor.getContent()
+    const content = editor.getContent();
     if (!isForward) {
-      patches = self.options.patchHandler.reversePatches(patches)
+      patches = this.options.patchHandler.reversePatches(patches);
     }
 
-    var newContent = self.options.patchHandler.applyPatches(patches, content)
-    var newContentText = newContent.text || newContent
-    var range = editor.setContent(newContentText, true)
-    var selection = newContent.selection || {
+    const newContent = this.options.patchHandler.applyPatches(patches, content);
+    const newContentText = newContent.text || newContent;
+    const range = editor.setContent(newContentText, true);
+    const selection = newContent.selection || {
       start: range.end,
-      end: range.end
-    }
+      end: range.end,
+    };
 
-    selectionMgr.setSelectionStartEnd(selection.start, selection.end)
-    selectionMgr.updateCursorCoordinates(true)
+    selectionMgr.setSelectionStartEnd(selection.start, selection.end);
+    selectionMgr.updateCursorCoordinates(true);
 
-    stateMgr.resetMode()
-    self.$trigger('undoStateChange')
-    editor.adjustCursorPosition()
-  }
+    stateMgr.resetMode();
+    this.$trigger('undoStateChange');
+    editor.adjustCursorPosition();
+  };
 
-  this.undo = function () {
-    var state = undoStack.pop()
+  this.undo = () => {
+    const state = undoStack.pop();
     if (!state) {
-      return
+      return;
     }
-    saveCurrentPatches()
-    currentState.addToRedoStack()
-    restoreState(currentState.patches)
-    previousPatches = state.patches
-    currentState = state
-  }
+    saveCurrentPatches();
+    currentState.addToRedoStack();
+    restoreState(currentState.patches);
+    previousPatches = state.patches;
+    currentState = state;
+  };
 
-  this.redo = function () {
-    var state = redoStack.pop()
+  this.redo = () => {
+    const state = redoStack.pop();
     if (!state) {
-      return
+      return;
     }
-    currentState.addToUndoStack()
-    restoreState(state.patches, true)
-    previousPatches = state.patches
-    currentState = state
-  }
+    currentState.addToUndoStack();
+    restoreState(state.patches, true);
+    previousPatches = state.patches;
+    currentState = state;
+  };
 
-  this.init = function (options) {
-    self.options.cl_extend(options || {})
-    selectionMgr = editor.selectionMgr
+  this.init = (options) => {
+    this.options.cl_extend(options || {});
+    selectionMgr = editor.selectionMgr;
     if (!currentState) {
-      currentState = new State()
+      currentState = new State();
     }
-  }
+  };
 }
 
-cledit.UndoMgr = UndoMgr
+cledit.UndoMgr = UndoMgr;

@@ -1,4 +1,4 @@
-import cledit from '../../libs/cledit';
+import cledit from '../cledit';
 import editorSvc from '../editorSvc';
 
 const Keystroke = cledit.Keystroke;

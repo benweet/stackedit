@@ -28,13 +28,9 @@ import TurndownService from 'turndown/lib/turndown.browser.umd';
 import htmlSanitizer from '../../libs/htmlSanitizer';
 import MenuEntry from './common/MenuEntry';
 import providerUtils from '../../services/providers/providerUtils';
+import store from '../../store';
 
-const turndownService = new TurndownService({
-  headingStyle: 'atx',
-  hr: '----------',
-  bulletListMarker: '-',
-  codeBlockStyle: 'fenced',
-});
+const turndownService = new TurndownService(store.getters['data/computedSettings'].turndown);
 
 const readFile = file => new Promise((resolve) => {
   if (file) {

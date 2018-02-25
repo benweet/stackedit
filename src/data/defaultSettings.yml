@@ -59,6 +59,19 @@ pandoc:
   toc: true
   tocDepth: 3
 
+# HTML to Markdown converter options
+# See https://github.com/domchristie/turndown
+turndown:
+  headingStyle: atx
+  hr: ----------
+  bulletListMarker: '-'
+  codeBlockStyle: fenced
+  fence: '```'
+  emDelimiter: _
+  strongDelimiter: '**'
+  linkStyle: inlined
+  linkReferenceStyle: full
+
 # Default content for new files
 newFileContent: |
 

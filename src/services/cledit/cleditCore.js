@@ -1,13 +1,7 @@
 import DiffMatchPatch from 'diff-match-patch';
 import TurndownService from 'turndown/lib/turndown.browser.umd';
 import htmlSanitizer from '../../libs/htmlSanitizer';
-
-const turndownService = new TurndownService({
-  headingStyle: 'atx',
-  hr: '----------',
-  bulletListMarker: '-',
-  codeBlockStyle: 'fenced',
-});
+import store from '../../store';
 
 function cledit(contentElt, scrollEltOpt) {
   const scrollElt = scrollEltOpt || contentElt;
@@ -114,6 +108,7 @@ function cledit(contentElt, scrollEltOpt) {
 
   function focus() {
     selectionMgr.restoreSelection();
+    contentElt.focus();
   }
 
   function addMarker(marker) {
@@ -336,6 +331,8 @@ function cledit(contentElt, scrollEltOpt) {
     }
     adjustCursorPosition();
   });
+
+  const turndownService = new TurndownService(store.getters['data/computedSettings'].turndown);
 
   contentElt.addEventListener('paste', (evt) => {
     undoMgr.setCurrentMode('single');

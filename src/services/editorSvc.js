@@ -395,26 +395,29 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
 
     const debouncedRefreshPreview = debounce(refreshPreview, 50);
 
-    const onEditorChanged =
-      (sectionList = this.sectionList, selectionRange = this.selectionRange) => {
-        if (this.sectionList !== sectionList) {
-          this.sectionList = sectionList;
-          this.$emit('sectionList', this.sectionList);
-          if (instantPreview) {
-            refreshPreview();
-          } else {
-            debouncedRefreshPreview();
-          }
+    let newSectionList;
+    let newSelectionRange;
+    const onEditorChanged = debounce(() => {
+      if (this.sectionList !== newSectionList) {
+        this.sectionList = newSectionList;
+        this.$emit('sectionList', this.sectionList);
+        if (instantPreview) {
+          refreshPreview();
+        } else {
+          debouncedRefreshPreview();
         }
-        if (this.selectionRange !== selectionRange) {
-          this.selectionRange = selectionRange;
-          this.$emit('selectionRange', this.selectionRange);
-        }
-        this.saveContentState();
-      };
+      }
+      if (this.selectionRange !== newSelectionRange) {
+        this.selectionRange = newSelectionRange;
+        this.$emit('selectionRange', this.selectionRange);
+      }
+      this.saveContentState();
+    }, 10);
 
-    this.clEditor.selectionMgr.on('selectionChanged',
-      (start, end, selectionRange) => onEditorChanged(undefined, selectionRange));
+    this.clEditor.selectionMgr.on('selectionChanged', (start, end, selectionRange) => {
+      newSelectionRange = selectionRange;
+      onEditorChanged();
+    });
 
     /* -----------------------------
      * Inline images
@@ -502,8 +505,10 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
       triggerImgCacheGc();
     });
 
-    this.clEditor.on('contentChanged',
-      (content, diffs, sectionList) => onEditorChanged(sectionList));
+    this.clEditor.on('contentChanged', (content, diffs, sectionList) => {
+      newSectionList = sectionList;
+      onEditorChanged();
+    });
 
     // clEditorSvc.setPreviewElt(element[0].querySelector('.preview__inner-2'))
     // var previewElt = element[0].querySelector('.preview')

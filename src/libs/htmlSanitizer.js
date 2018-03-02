@@ -64,7 +64,7 @@ blockElements.iframe = true;
 var inlineElements = {
   ...optionalEndTagInlineElements,
   ...makeMap("a,abbr,acronym,b," +
-    "bdi,bdo,big,br,cite,code,del,dfn,em,font,i,img,ins,kbd,label,map,mark,q,ruby,rp,rt,s," +
+    "bdi,bdo,big,br,cite,code,del,dfn,em,font,i,img,input,ins,kbd,label,map,mark,q,ruby,rp,rt,s," +
     "samp,small,span,strike,strong,sub,sup,time,tt,u,var")
 };
 
@@ -90,7 +90,7 @@ var validElements = {
 //Attributes that have href and hence need to be sanitized
 var uriAttrs = makeMap("background,cite,href,longdesc,src,usemap,xlink:href");
 
-var htmlAttrs = makeMap('abbr,align,alt,axis,bgcolor,border,cellpadding,cellspacing,class,clear,' +
+var htmlAttrs = makeMap('abbr,align,alt,axis,bgcolor,border,cellpadding,cellspacing,checked,class,clear,' +
   'color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace,' +
   'ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules,' +
   'scope,scrolling,shape,size,span,start,summary,tabindex,target,title,type,' +

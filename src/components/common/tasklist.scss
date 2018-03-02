@@ -1,0 +1,41 @@
+html body ol li.task-list-item {
+  list-style-type: none;
+}
+
+html body ol li input.task-list-item-checkbox {
+  margin: 0 1em 0.25em 0.2em;
+  padding: 0;
+  -ms-transform: scale(2);
+
+  /* IE */
+  -moz-transform: scale(2);
+
+  /* FF */
+  -webkit-transform: scale(2);
+
+  /* Safari and Chrome */
+  -o-transform: scale(2);
+
+  /* Opera */
+}
+
+html body ul li.task-list-item {
+  list-style-type: none;
+}
+
+html body ul li input.task-list-item-checkbox {
+  margin: 0 1em 0.28em 0.1em;
+  padding: 0;
+  -ms-transform: scale(2);
+
+  /* IE */
+  -moz-transform: scale(2);
+
+  /* FF */
+  -webkit-transform: scale(2);
+
+  /* Safari and Chrome */
+  -o-transform: scale(2);
+
+  /* Opera */
+}

@@ -1,9 +1,9 @@
 <template>
-  <div class="explorer-node" :class="{'explorer-node--selected': isSelected, 'explorer-node--open': isOpen, 'explorer-node--drag-target': isDragTargetFolder}" @dragover.prevent @dragenter.stop="setDragTarget(node.item.id)" @dragleave.stop="isDragTarget && setDragTargetId()" @drop.prevent.stop="onDrop">
+  <div class="explorer-node" :class="{'explorer-node--selected': isSelected, 'explorer-node--open': isOpen, 'explorer-node--drag-target': isDragTargetFolder}" @dragover.prevent @dragenter.stop="setDragTarget(node.item.id)" @dragleave.stop="isDragTarget && setDragTargetId()" @drop.prevent.stop="onDrop" @contextmenu="onContextMenu">
     <div class="explorer-node__item-editor" v-if="isEditing" :class="['explorer-node__item-editor--' + node.item.type]" :style="{paddingLeft: leftPadding}" draggable="true" @dragstart.stop.prevent>
       <input type="text" class="text-input" v-focus @blur="submitEdit()" @keyup.enter="submitEdit()" @keyup.esc="submitEdit(true)" v-model="editingNodeName">
     </div>
-    <div class="explorer-node__item" v-else :class="['explorer-node__item--' + node.item.type]" :style="{paddingLeft: leftPadding}" @click="select(node.item.id)" draggable="true" @dragstart.stop="setDragSourceId" @dragend.stop="setDragTargetId()">
+    <div class="explorer-node__item" v-else :class="['explorer-node__item--' + node.item.type]" :style="{paddingLeft: leftPadding}" @click="select()" draggable="true" @dragstart.stop="setDragSourceId" @dragend.stop="setDragTargetId()">
       {{node.item.name}}
       <icon-provider class="explorer-node__location" v-for="location in node.locations" :key="location.id" :provider-id="location.providerId"></icon-provider>
     </div>
@@ -73,23 +73,30 @@ export default {
   methods: {
     ...mapMutations('explorer', [
       'setDragTargetId',
+      'setEditingId',
     ]),
     ...mapActions('explorer', [
       'setDragTarget',
+      'newItem',
+      'deleteItem',
     ]),
-    select(id) {
+    select(id = this.node.item.id, doOpen = true) {
       const node = this.$store.getters['explorer/nodeMap'][id];
-      if (node) {
-        this.$store.commit('explorer/setSelectedId', id);
-        if (node.isFolder) {
-          this.$store.commit('explorer/toggleOpenNode', id);
-        } else {
-          // Prevent from freezing the UI while loading the file
-          setTimeout(() => {
-            this.$store.commit('file/setCurrentId', id);
-          }, 10);
-        }
+      if (!node) {
+        return false;
       }
+      this.$store.commit('explorer/setSelectedId', id);
+      if (doOpen) {
+        // Prevent from freezing the UI while loading the file
+        setTimeout(() => {
+          if (node.isFolder) {
+            this.$store.commit('explorer/toggleOpenNode', id);
+          } else {
+            this.$store.commit('file/setCurrentId', id);
+          }
+        }, 10);
+      }
+      return true;
     },
     submitNewChild(cancel) {
       const newChildNode = this.$store.state.explorer.newChildNode;
@@ -119,7 +126,7 @@ export default {
           name: utils.sanitizeName(value),
         });
       }
-      this.$store.commit('explorer/setEditingId', null);
+      this.setEditingId(null);
     },
     setDragSourceId(evt) {
       if (this.node.noDrag) {
@@ -147,6 +154,38 @@ export default {
         }
       }
     },
+    onContextMenu(evt) {
+      if (this.select(undefined, false)) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        this.$store.dispatch('contextMenu/open', {
+          coordinates: {
+            left: evt.clientX,
+            top: evt.clientY,
+          },
+          items: [{
+            name: 'New file',
+            disabled: !this.node.isFolder || this.node.isTrash,
+            perform: () => this.newItem(false),
+          }, {
+            name: 'New folder',
+            disabled: !this.node.isFolder || this.node.isTrash,
+            perform: () => this.newItem(true),
+          }, {
+            type: 'separator',
+          }, {
+            name: 'Rename',
+            disabled: this.node.isTrash,
+            perform: () => this.setEditingId(this.node.item.id),
+          }, {
+            name: 'Delete',
+            disabled: this.node.isTrash || this.node.item.parentId === 'trash',
+            perform: () => this.deleteItem(),
+          }],
+        })
+          .then(item => item.perform());
+      }
+    },
   },
 };
 </script>
@@ -159,6 +198,7 @@ $item-font-size: 14px;
 }
 
 .explorer-node__item {
+  position: relative;
   cursor: pointer;
   font-size: $item-font-size;
   overflow: hidden;

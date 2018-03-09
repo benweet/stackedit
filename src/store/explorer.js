@@ -72,6 +72,7 @@ export default {
       const trashFolderNode = new Node(emptyFolder(), [], true);
       trashFolderNode.item.id = 'trash';
       trashFolderNode.item.name = 'Trash';
+      trashFolderNode.isTrash = true;
       trashFolderNode.noDrag = true;
       const nodeMap = {
         trash: trashFolderNode,
@@ -79,18 +80,20 @@ export default {
       rootGetters['folder/items'].forEach((item) => {
         nodeMap[item.id] = new Node(item, [], true);
       });
+      const syncLocationsByFileId = rootGetters['syncLocation/groupedByFileId'];
+      const publishLocationsByFileId = rootGetters['publishLocation/groupedByFileId'];
       rootGetters['file/items'].forEach((item) => {
         const locations = [
-          ...rootGetters['syncLocation/groupedByFileId'][item.id] || [],
-          ...rootGetters['publishLocation/groupedByFileId'][item.id] || [],
+          ...syncLocationsByFileId[item.id] || [],
+          ...publishLocationsByFileId[item.id] || [],
         ];
         nodeMap[item.id] = new Node(item, locations);
       });
       const rootNode = new Node(emptyFolder(), [], true, true);
-      Object.entries(nodeMap).forEach(([id, node]) => {
+      Object.entries(nodeMap).forEach(([, node]) => {
         let parentNode = nodeMap[node.item.parentId];
         if (!parentNode || !parentNode.isFolder) {
-          if (id === 'trash') {
+          if (node.isTrash) {
             return;
           }
           parentNode = rootNode;
@@ -105,7 +108,7 @@ export default {
       if (trashFolderNode.files.length) {
         rootNode.folders.unshift(trashFolderNode);
       }
-      // Add a fake file at the end of the root folder to always allow drag and drop into it.
+      // Add a fake file at the end of the root folder to allow drag and drop into it.
       rootNode.files.push(fakeFileNode);
       return {
         nodeMap,
@@ -163,6 +166,68 @@ export default {
     setDragTarget({ state, getters, commit, dispatch }, id) {
       commit('setDragTargetId', id);
       dispatch('openDragTarget');
+    },
+    newItem({ getters, commit, dispatch }, isFolder) {
+      let parentId = getters.selectedNodeFolder.item.id;
+      if (parentId === 'trash') {
+        parentId = null;
+      }
+      dispatch('openNode', parentId);
+      commit('setNewItem', {
+        type: isFolder ? 'folder' : 'file',
+        parentId,
+      });
+    },
+    deleteItem({ rootState, getters, rootGetters, commit, dispatch }) {
+      const selectedNode = getters.selectedNode;
+      if (selectedNode.isNil) {
+        return Promise.resolve();
+      }
+      if (selectedNode.isTrash || selectedNode.item.parentId === 'trash') {
+        return dispatch('modal/trashDeletion', null, { root: true });
+      }
+      return dispatch(selectedNode.isFolder
+        ? 'modal/folderDeletion'
+        : 'modal/fileDeletion',
+        selectedNode.item,
+        { root: true },
+      )
+        .then(() => {
+          if (selectedNode === getters.selectedNode) {
+            const currentFileId = rootGetters['file/current'].id;
+            let doClose = selectedNode.item.id === currentFileId;
+            if (selectedNode.isFolder) {
+              const recursiveMoveToTrash = (folderNode) => {
+                folderNode.folders.forEach(recursiveMoveToTrash);
+                folderNode.files.forEach((fileNode) => {
+                  commit('file/patchItem', {
+                    id: fileNode.item.id,
+                    parentId: 'trash',
+                  }, { root: true });
+                  doClose = doClose || fileNode.item.id === currentFileId;
+                });
+                commit('folder/deleteItem', folderNode.item.id, { root: true });
+              };
+              recursiveMoveToTrash(selectedNode);
+            } else {
+              commit('file/patchItem', {
+                id: selectedNode.item.id,
+                parentId: 'trash',
+              }, { root: true });
+            }
+            if (doClose) {
+              // Close the current file by opening the last opened, not deleted one
+              rootGetters['data/lastOpenedIds'].some((id) => {
+                const file = rootState.file.itemMap[id];
+                if (file.parentId === 'trash') {
+                  return false;
+                }
+                commit('file/setCurrentId', id, { root: true });
+                return true;
+              });
+            }
+          }
+        }, () => {}); // Cancel
     },
   },
 };

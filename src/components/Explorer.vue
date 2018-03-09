@@ -8,7 +8,7 @@
         <button class="side-title__button button" @click="newItem(true)" v-title="'New folder'">
           <icon-folder-plus></icon-folder-plus>
         </button>
-        <button class="side-title__button button" @click="deleteItem()" v-title="'Remove'">
+        <button class="side-title__button button" @click="deleteItem()" v-title="'Delete'">
           <icon-delete></icon-delete>
         </button>
         <button class="side-title__button button" @click="editItem()" v-title="'Rename'">
@@ -39,63 +39,21 @@ export default {
     ]),
     ...mapGetters('explorer', [
       'rootNode',
+      'selectedNode',
     ]),
   },
   methods: {
     ...mapActions('data', [
       'toggleExplorer',
     ]),
-    newItem(isFolder) {
-      let parentId = this.$store.getters['explorer/selectedNodeFolder'].item.id;
-      if (parentId === 'trash') {
-        parentId = null;
-      }
-      this.$store.dispatch('explorer/openNode', parentId);
-      this.$store.commit('explorer/setNewItem', {
-        type: isFolder ? 'folder' : 'file',
-        parentId,
-      });
-    },
+    ...mapActions('explorer', [
+      'newItem',
+      'deleteItem',
+    ]),
     editItem() {
-      const selectedNode = this.$store.getters['explorer/selectedNode'];
-      if (selectedNode.item.id !== 'trash') {
-        this.$store.commit('explorer/setEditingId', selectedNode.item.id);
-      }
-    },
-    deleteItem() {
-      const selectedNode = this.$store.getters['explorer/selectedNode'];
-      if (!selectedNode.isNil) {
-        if (selectedNode.item.id === 'trash' || selectedNode.item.parentId === 'trash') {
-          this.$store.dispatch('modal/trashDeletion');
-          return;
-        }
-        this.$store.dispatch(selectedNode.isFolder
-          ? 'modal/folderDeletion'
-          : 'modal/fileDeletion',
-          selectedNode.item)
-          .then(() => {
-            if (selectedNode === this.$store.getters['explorer/selectedNode']) {
-              if (selectedNode.isFolder) {
-                const recursiveMoveToTrash = (folderNode) => {
-                  folderNode.folders.forEach(recursiveMoveToTrash);
-                  folderNode.files.forEach((fileNode) => {
-                    this.$store.commit('file/patchItem', {
-                      id: fileNode.item.id,
-                      parentId: 'trash',
-                    });
-                  });
-                  this.$store.commit('folder/deleteItem', folderNode.item.id);
-                };
-                recursiveMoveToTrash(selectedNode);
-              } else {
-                this.$store.commit('file/patchItem', {
-                  id: selectedNode.item.id,
-                  parentId: 'trash',
-                });
-                this.$store.commit('file/setCurrentId', this.$store.getters['data/lastOpenedIds'][1]);
-              }
-            }
-          });
+      const node = this.selectedNode;
+      if (!node.isTrash) {
+        this.$store.commit('explorer/setEditingId', node.item.id);
       }
     },
   },

@@ -4,6 +4,7 @@
     <layout v-else></layout>
     <modal v-if="showModal"></modal>
     <notification></notification>
+    <context-menu></context-menu>
   </div>
 </template>
 
@@ -12,6 +13,7 @@ import Vue from 'vue';
 import Layout from './Layout';
 import Modal from './Modal';
 import Notification from './Notification';
+import ContextMenu from './ContextMenu';
 import SplashScreen from './SplashScreen';
 import syncSvc from '../services/syncSvc';
 import networkSvc from '../services/networkSvc';
@@ -71,6 +73,7 @@ export default {
     Layout,
     Modal,
     Notification,
+    ContextMenu,
     SplashScreen,
   },
   data: () => ({

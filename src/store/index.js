@@ -2,21 +2,22 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import utils from '../services/utils';
-import contentState from './contentState';
-import syncedContent from './syncedContent';
 import content from './content';
+import contentState from './contentState';
+import contextMenu from './contextMenu';
+import data from './data';
+import discussion from './discussion';
+import explorer from './explorer';
 import file from './file';
 import findReplace from './findReplace';
 import folder from './folder';
-import publishLocation from './publishLocation';
-import syncLocation from './syncLocation';
-import data from './data';
-import discussion from './discussion';
 import layout from './layout';
-import explorer from './explorer';
 import modal from './modal';
 import notification from './notification';
+import publishLocation from './publishLocation';
 import queue from './queue';
+import syncedContent from './syncedContent';
+import syncLocation from './syncLocation';
 import userInfo from './userInfo';
 import workspace from './workspace';
 
@@ -26,21 +27,22 @@ const debug = NODE_ENV !== 'production';
 
 const store = new Vuex.Store({
   modules: {
-    contentState,
-    syncedContent,
     content,
+    contentState,
+    contextMenu,
+    data,
     discussion,
+    explorer,
     file,
     findReplace,
     folder,
-    publishLocation,
-    syncLocation,
-    data,
     layout,
-    explorer,
     modal,
     notification,
+    publishLocation,
     queue,
+    syncedContent,
+    syncLocation,
     userInfo,
     workspace,
   },

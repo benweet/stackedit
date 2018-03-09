@@ -6,7 +6,7 @@
       </div>
       <p>This will save <b>{{currentFileName}}</b> to a <b>Gist</b> and keep it synchronized.</p>
       <form-entry label="Filename" error="filename">
-        <input slot="field" class="textfield" type="text" v-model.trim="filename" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="filename" @keydown.enter="resolve()">
       </form-entry>
       <div class="form-entry">
         <div class="form-entry__checkbox">
@@ -16,7 +16,7 @@
         </div>
       </div>
       <form-entry label="Existing Gist ID (optional)">
-        <input slot="field" class="textfield" type="text" v-model.trim="gistId" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="gistId" @keydown.enter="resolve()">
         <div class="form-entry__info">
           If the file exists in the Gist, it will be replaced.
         </div>

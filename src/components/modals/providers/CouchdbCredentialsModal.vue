@@ -6,10 +6,10 @@
       </div>
       <p>Please provide your credentials to login to <b>CouchDB</b>.</p>
       <form-entry label="Name" error="name">
-        <input slot="field" class="textfield" type="text" v-model.trim="name" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="name" @keydown.enter="resolve()">
       </form-entry>
       <form-entry label="Password" error="password">
-        <input slot="field" class="textfield" type="password" v-model.trim="password" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="password" v-model.trim="password" @keydown.enter="resolve()">
       </form-entry>
     </div>
     <div class="modal__button-bar">

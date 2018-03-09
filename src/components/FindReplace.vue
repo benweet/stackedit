@@ -1,10 +1,10 @@
 <template>
-  <div class="find-replace" @keyup.esc="onEscape">
+  <div class="find-replace" @keydown.esc="onEscape">
     <button class="find-replace__close-button button not-tabbable" @click="close()" v-title="'Close'">
       <icon-close></icon-close>
     </button>
     <div class="find-replace__row">
-      <input type="text" class="find-replace__text-input find-replace__text-input--find text-input" @keyup.enter="find('forward')" v-model="findText">
+      <input type="text" class="find-replace__text-input find-replace__text-input--find text-input" @keydown.enter="find('forward')" v-model="findText">
       <div class="find-replace__find-stats">
         {{findPosition}} of {{findCount}}
       </div>
@@ -21,7 +21,7 @@
     </div>
     <div v-if="type === 'replace'">
       <div class="find-replace__row">
-        <input type="text" class="find-replace__text-input find-replace__text-input--replace text-input" @keyup.enter="replace" v-model="replaceText">
+        <input type="text" class="find-replace__text-input find-replace__text-input--replace text-input" @keydown.enter="replace" v-model="replaceText">
       </div>
       <div class="find-replace__row flex flex--row flex--end">
         <button class="find-replace__button button" @click="replace">Replace</button>

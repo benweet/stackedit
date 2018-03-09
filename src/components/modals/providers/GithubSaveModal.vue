@@ -6,19 +6,19 @@
       </div>
       <p>This will save <b>{{currentFileName}}</b> to your <b>GitHub</b> repository and keep it synchronized.</p>
       <form-entry label="Repository URL" error="repoUrl">
-        <input slot="field" class="textfield" type="text" v-model.trim="repoUrl" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="repoUrl" @keydown.enter="resolve()">
         <div class="form-entry__info">
           <b>Example:</b> https://github.com/benweet/stackedit
         </div>
       </form-entry>
       <form-entry label="Branch (optional)">
-        <input slot="field" class="textfield" type="text" v-model.trim="branch" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="branch" @keydown.enter="resolve()">
         <div class="form-entry__info">
           If not provided, the <code>master</code> branch will be used.
         </div>
       </form-entry>
       <form-entry label="File path" error="path">
-        <input slot="field" class="textfield" type="text" v-model.trim="path" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="path" @keydown.enter="resolve()">
         <div class="form-entry__info">
           <b>Example:</b> docs/README.md<br>
           If the file exists, it will be replaced.

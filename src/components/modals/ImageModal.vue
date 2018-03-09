@@ -3,7 +3,7 @@
     <div class="modal__content">
       <p>Please provide a <b>URL</b> for your image.</p>
       <form-entry label="URL" error="url">
-        <input slot="field" class="textfield" type="text" v-model.trim="url" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="url" @keydown.enter="resolve()">
       </form-entry>
       <menu-entry @click.native="openGooglePhotos(token)" v-for="token in googlePhotosTokens" :key="token.sub">
         <icon-provider slot="icon" provider-id="googlePhotos"></icon-provider>

@@ -6,22 +6,22 @@
       </div>
       <p>This will publish <b>{{currentFileName}}</b> to your <b>Zendesk Help Center</b>.</p>
       <form-entry label="Section ID" error="sectionId">
-        <input slot="field" class="textfield" type="text" v-model.trim="sectionId" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="sectionId" @keydown.enter="resolve()">
         <div class="form-entry__info">
           https://example.zendesk.com/hc/en-us/sections/<b>21857469</b>-Section-name
         </div>
       </form-entry>
       <form-entry label="Existing article ID (optional)">
-        <input slot="field" class="textfield" type="text" v-model.trim="articleId" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="articleId" @keydown.enter="resolve()">
       </form-entry>
       <form-entry label="Locale (optional)">
-        <input slot="field" class="textfield" type="text" v-model.trim="locale" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="locale" @keydown.enter="resolve()">
         <div class="form-entry__info">
           <b>Default:</b> en-us
         </div>
       </form-entry>
       <form-entry label="Template">
-        <select slot="field" class="textfield" v-model="selectedTemplate" @keyup.enter="resolve()">
+        <select slot="field" class="textfield" v-model="selectedTemplate" @keydown.enter="resolve()">
           <option v-for="(template, id) in allTemplates" :key="id" :value="id">
             {{ template.name }}
           </option>

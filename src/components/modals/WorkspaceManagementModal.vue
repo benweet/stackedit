@@ -6,7 +6,7 @@
           <icon-provider :provider-id="workspace.providerId"></icon-provider>
         </div>
         <div class="workspace-entry__description flex flex--column">
-          <input class="text-input" type="text" v-if="editedId === id" v-focus @blur="submitEdit()" @keyup.enter="submitEdit()" @keyup.esc.stop="submitEdit(true)" v-model="editingName">
+          <input class="text-input" type="text" v-if="editedId === id" v-focus @blur="submitEdit()" @keydown.enter="submitEdit()" @keydown.esc.stop="submitEdit(true)" v-model="editingName">
           <div class="workspace-entry__name" v-else>
             {{workspace.name}}
           </div>

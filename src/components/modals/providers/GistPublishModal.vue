@@ -6,7 +6,7 @@
       </div>
       <p>This will publish <b>{{currentFileName}}</b> to a <b>Gist</b>.</p>
       <form-entry label="Filename" error="filename">
-        <input slot="field" class="textfield" type="text" v-model.trim="filename" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="filename" @keydown.enter="resolve()">
       </form-entry>
       <div class="form-entry">
         <div class="form-entry__checkbox">
@@ -16,13 +16,13 @@
         </div>
       </div>
       <form-entry label="Existing Gist ID (optional)">
-        <input slot="field" class="textfield" type="text" v-model.trim="gistId" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="gistId" @keydown.enter="resolve()">
         <div class="form-entry__info">
           If the file exists in the Gist, it will be replaced.
         </div>
       </form-entry>
       <form-entry label="Template">
-        <select slot="field" class="textfield" v-model="selectedTemplate" @keyup.enter="resolve()">
+        <select slot="field" class="textfield" v-model="selectedTemplate" @keydown.enter="resolve()">
           <option v-for="(template, id) in allTemplates" :key="id" :value="id">
             {{ template.name }}
           </option>

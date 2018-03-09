@@ -6,7 +6,7 @@
       </div>
       <p>This will publish <b>{{currentFileName}}</b> to your <b>Google Drive</b> account.</p>
       <form-entry label="Folder ID (optional)">
-        <input slot="field" class="textfield" type="text" v-model.trim="folderId" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="folderId" @keydown.enter="resolve()">
         <div class="form-entry__info">
           If no folder ID is supplied, the file will be created in your root folder.
         </div>
@@ -15,7 +15,7 @@
         </div>
       </form-entry>
       <form-entry label="Existing file ID (optional)">
-        <input slot="field" class="textfield" type="text" v-model.trim="fileId" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="fileId" @keydown.enter="resolve()">
         <div class="form-entry__info">
           This will overwrite the file on the server.
         </div>
@@ -33,7 +33,7 @@
         </div>
       </div>
       <form-entry label="Template">
-        <select slot="field" class="textfield" v-model="selectedTemplate" @keyup.enter="resolve()">
+        <select slot="field" class="textfield" v-model="selectedTemplate" @keydown.enter="resolve()">
           <option v-for="(template, id) in allTemplates" :key="id" :value="id">
             {{ template.name }}
           </option>

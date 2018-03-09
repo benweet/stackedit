@@ -3,7 +3,7 @@
     <div class="modal__content">
       <p>Please choose a format for your <b>Pandoc export</b>.</p>
       <form-entry label="Template">
-        <select class="textfield" slot="field" v-model="selectedFormat" @keyup.enter="resolve()">
+        <select class="textfield" slot="field" v-model="selectedFormat" @keydown.enter="resolve()">
           <option value="asciidoc">AsciiDoc</option>
           <option value="context">ConTeXt</option>
           <option value="epub">EPUB</option>

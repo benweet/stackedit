@@ -1,5 +1,5 @@
 <template>
-  <div class="tour" @keyup.esc="skip">
+  <div class="tour" @keydown.esc="skip">
     <div class="tour-step" :class="'tour-step--' + step" :style="stepStyle">
       <div class="tour-step__inner" v-if="step === 'welcome'">
         <h2>Welcome to StackEdit!</h2>

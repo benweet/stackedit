@@ -1,5 +1,5 @@
 <template>
-  <div class="comment comment--new" @keyup.esc="cancelNewComment">
+  <div class="comment comment--new" @keydown.esc="cancelNewComment">
     <div class="comment__header flex flex--row flex--space-between flex--align-center">
       <div class="comment__user flex flex--row flex--align-center">
         <div class="comment__user-image">

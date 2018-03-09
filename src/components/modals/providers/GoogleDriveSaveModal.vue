@@ -6,7 +6,7 @@
       </div>
       <p>This will save <b>{{currentFileName}}</b> to your <b>Google Drive</b> account and keep it synchronized.</p>
       <form-entry label="Folder ID (optional)">
-        <input slot="field" class="textfield" type="text" v-model.trim="folderId" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="folderId" @keydown.enter="resolve()">
         <div class="form-entry__info">
           If no folder ID is supplied, the file will be created in your root folder.
         </div>
@@ -15,7 +15,7 @@
         </div>
       </form-entry>
       <form-entry label="Existing file ID (optional)">
-        <input slot="field" class="textfield" type="text" v-model.trim="fileId" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="fileId" @keydown.enter="resolve()">
         <div class="form-entry__info">
           This will overwrite the file on the server.
         </div>

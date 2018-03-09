@@ -3,10 +3,10 @@
     <div class="modal__content">
       <div class="google-photo__tumbnail" :style="{backgroundImage: thumbnailUrl}"></div>
       <form-entry label="Title (optional)">
-        <input slot="field" class="textfield" type="text" v-model.trim="title" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="title" @keydown.enter="resolve()">
       </form-entry>
       <form-entry label="Size limit (optional)">
-        <input slot="field" class="textfield" type="text" v-model.trim="size" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="size" @keydown.enter="resolve()">
       </form-entry>
     </div>
     <div class="modal__button-bar">

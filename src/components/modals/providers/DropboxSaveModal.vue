@@ -6,7 +6,7 @@
       </div>
       <p>This will save <b>{{currentFileName}}</b> to your <b>Dropbox</b> and keep it synchronized.</p>
       <form-entry label="File path" error="path">
-        <input slot="field" class="textfield" type="text" v-model.trim="path" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="path" @keydown.enter="resolve()">
         <div class="form-entry__info">
           <b>Example:</b> {{config.token.fullAccess ? '' : '/Applications/StackEdit (restricted)'}}/path/to/My Document.md<br>
           If the file exists, it will be replaced.

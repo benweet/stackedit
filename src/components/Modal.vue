@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" @keyup.esc="onEscape" @keydown.tab="onTab">
+  <div class="modal" @keydown.esc="onEscape" @keydown.tab="onTab">
     <file-properties-modal v-if="config.type === 'fileProperties'"></file-properties-modal>
     <settings-modal v-else-if="config.type === 'settings'"></settings-modal>
     <templates-modal v-else-if="config.type === 'templates'"></templates-modal>

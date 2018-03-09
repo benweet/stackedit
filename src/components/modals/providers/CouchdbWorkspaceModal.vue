@@ -6,7 +6,7 @@
       </div>
       <p>This will create a workspace synchronized with a <b>CouchDB</b> database.</p>
       <form-entry label="Database URL" error="dbUrl">
-        <input slot="field" class="textfield" type="text" v-model.trim="dbUrl" @keyup.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="dbUrl" @keydown.enter="resolve()">
         <div class="form-entry__info">
           <b>Example:</b> https://instance.smileupps.com/stackedit-workspace
         </div>

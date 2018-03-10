@@ -14,8 +14,6 @@ import editorSvcUtils from './editorSvcUtils';
 import utils from './utils';
 import store from '../store';
 
-const debounce = cledit.Utils.debounce;
-
 const allowDebounce = (action, wait) => {
   let timeoutId;
   return (doDebounce = false, ...params) => {
@@ -382,7 +380,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
     this.editorElt.parentNode.addEventListener('scroll', () => this.saveContentState(true));
     this.previewElt.parentNode.addEventListener('scroll', () => this.saveContentState(true));
 
-    const refreshPreview = () => {
+    const refreshPreview = allowDebounce(() => {
       this.convert();
       if (instantPreview) {
         this.refreshPreview();
@@ -391,21 +389,15 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
         setTimeout(() => this.refreshPreview(), 10);
       }
       instantPreview = false;
-    };
-
-    const debouncedRefreshPreview = debounce(refreshPreview, 50);
+    }, 25);
 
     let newSectionList;
     let newSelectionRange;
-    const onEditorChanged = debounce(() => {
+    const onEditorChanged = allowDebounce(() => {
       if (this.sectionList !== newSectionList) {
         this.sectionList = newSectionList;
         this.$emit('sectionList', this.sectionList);
-        if (instantPreview) {
-          refreshPreview();
-        } else {
-          debouncedRefreshPreview();
-        }
+        refreshPreview(!instantPreview);
       }
       if (this.selectionRange !== newSelectionRange) {
         this.selectionRange = newSelectionRange;
@@ -416,7 +408,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
 
     this.clEditor.selectionMgr.on('selectionChanged', (start, end, selectionRange) => {
       newSelectionRange = selectionRange;
-      onEditorChanged();
+      onEditorChanged(!instantPreview);
     });
 
     /* -----------------------------
@@ -450,7 +442,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
         }) && imgElt;
     };
 
-    const triggerImgCacheGc = debounce(() => {
+    const triggerImgCacheGc = cledit.Utils.debounce(() => {
       Object.entries(imgCache).forEach(([src, entries]) => {
         // Filter entries that are not attached to the DOM
         const filteredEntries = entries.filter(imgElt => this.editorElt.contains(imgElt));
@@ -507,7 +499,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
 
     this.clEditor.on('contentChanged', (content, diffs, sectionList) => {
       newSectionList = sectionList;
-      onEditorChanged();
+      onEditorChanged(!instantPreview);
     });
 
     // clEditorSvc.setPreviewElt(element[0].querySelector('.preview__inner-2'))

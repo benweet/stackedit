@@ -1,3 +1,7 @@
+### v5.9
+
+- Added explorer context menu
+
 ### v5.8
 
 - New import menu with HTML to Markdown conversion

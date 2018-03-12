@@ -6,6 +6,7 @@ import extensionSvc from './extensionSvc';
 
 const htmlSectionMarker = '\uF111\uF222\uF333\uF444';
 const diffMatchPatch = new DiffMatchPatch();
+const markdownitTaskLists = require('markdown-it-task-lists');
 
 // Create aliases for syntax highlighting
 const languageAliases = ({
@@ -129,7 +130,7 @@ const markdownConversionSvc = {
    */
   createConverter(options) {
     // Let the listeners add the rules
-    const converter = new MarkdownIt('zero');
+    const converter = new MarkdownIt('zero').use(markdownitTaskLists, { enabled: true });
     converter.core.ruler.enable([], true);
     converter.block.ruler.enable([], true);
     converter.inline.ruler.enable([], true);

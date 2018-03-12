@@ -3,6 +3,8 @@ import TurndownService from 'turndown/lib/turndown.browser.umd';
 import htmlSanitizer from '../../libs/htmlSanitizer';
 import store from '../../store';
 
+const turndownPluginGfm = require('turndown-plugin-gfm');
+
 function cledit(contentElt, scrollEltOpt) {
   const scrollElt = scrollEltOpt || contentElt;
   const editor = {
@@ -214,6 +216,7 @@ function cledit(contentElt, scrollEltOpt) {
 
   let windowKeydownListener;
   let windowMouseListener;
+  let windowClickListener;
   let windowResizeListener;
   function tryDestroy() {
     if (document.contains(contentElt)) {
@@ -223,6 +226,7 @@ function cledit(contentElt, scrollEltOpt) {
     window.removeEventListener('keydown', windowKeydownListener);
     window.removeEventListener('mousedown', windowMouseListener);
     window.removeEventListener('mouseup', windowMouseListener);
+    window.removeEventListener('click', windowClickListener);
     window.removeEventListener('resize', windowResizeListener);
     editor.$trigger('destroy');
     return true;
@@ -238,6 +242,26 @@ function cledit(contentElt, scrollEltOpt) {
   };
   window.addEventListener('keydown', windowKeydownListener);
 
+  const gfm = turndownPluginGfm.gfm;
+  const turndownService = new TurndownService(store.getters['data/computedSettings'].turndown).use(gfm);
+
+  windowClickListener = (evt) => {
+    if (evt.target.tagName === 'INPUT' && evt.target.type === 'checkbox') {
+      if (evt.target.checked) {
+        evt.target.setAttribute('checked', 'checked');
+      } else {
+        evt.target.removeAttribute('checked');
+      }
+      const html = document.querySelector('.preview__inner-2').innerHTML;
+      let sanitizedHtml = htmlSanitizer.sanitizeHtml(html)
+        .replace(/&#160;/g, ' '); // Replace non-breaking spaces with classic spaces
+      if (sanitizedHtml) {
+        sanitizedHtml = turndownService.turndown(sanitizedHtml);
+        setContent(sanitizedHtml);
+      }
+    }
+  };
+
   // Mouseup can happen outside the editor element
   windowMouseListener = () => {
     if (!tryDestroy()) {
@@ -246,6 +270,7 @@ function cledit(contentElt, scrollEltOpt) {
   };
   window.addEventListener('mousedown', windowMouseListener);
   window.addEventListener('mouseup', windowMouseListener);
+  window.addEventListener('click', windowClickListener);
 
   // Resize provokes cursor coordinate changes
   windowResizeListener = () => {
@@ -331,8 +356,6 @@ function cledit(contentElt, scrollEltOpt) {
     }
     adjustCursorPosition();
   });
-
-  const turndownService = new TurndownService(store.getters['data/computedSettings'].turndown);
 
   contentElt.addEventListener('paste', (evt) => {
     undoMgr.setCurrentMode('single');

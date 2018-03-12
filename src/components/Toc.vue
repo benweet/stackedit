@@ -30,7 +30,7 @@ export default {
       e.preventDefault();
       const y = e.clientY - tocElt.getBoundingClientRect().top;
 
-      editorSvc.sectionDescList.some((sectionDesc) => {
+      editorSvc.previewCtx.sectionDescList.some((sectionDesc) => {
         if (y >= sectionDesc.tocDimension.endOffset) {
           return false;
         }
@@ -64,7 +64,7 @@ export default {
     const updateMaskY = () => {
       const scrollPosition = editorSvc.getScrollPosition();
       if (scrollPosition) {
-        const sectionDesc = editorSvc.sectionDescList[scrollPosition.sectionIdx];
+        const sectionDesc = editorSvc.previewCtx.sectionDescList[scrollPosition.sectionIdx];
         this.maskY = sectionDesc.tocDimension.startOffset +
           (scrollPosition.posInSection * sectionDesc.tocDimension.height);
       }

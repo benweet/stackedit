@@ -341,16 +341,23 @@ function SelectionMgr(editor) {
       offsetInContainer = offset.offsetInContainer;
     }
     let containerElt = container;
-    if (!containerElt.hasChildNodes()) {
+    if (!containerElt.hasChildNodes() && container.parentNode) {
       containerElt = container.parentNode;
     }
     let isInvisible = false;
-    while (containerElt.offsetHeight === 0) {
+    while (!containerElt.offsetHeight) {
       isInvisible = true;
       if (containerElt.previousSibling) {
         containerElt = containerElt.previousSibling;
       } else {
         containerElt = containerElt.parentNode;
+        if (!containerElt) {
+          return {
+            top: 0,
+            height: 0,
+            left: 0,
+          };
+        }
       }
     }
     let rect;

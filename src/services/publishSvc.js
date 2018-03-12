@@ -111,6 +111,11 @@ function publishFile(fileId) {
 }
 
 function requestPublish() {
+  // No publish in light mode
+  if (store.state.light) {
+    return;
+  }
+
   store.dispatch('queue/enqueuePublishRequest', () => new Promise((resolve, reject) => {
     let intervalId;
     const attempt = () => {

@@ -44,7 +44,7 @@
         <side-bar></side-bar>
       </div>
     </div>
-    <tour v-if="!layoutSettings.welcomeTourFinished"></tour>
+    <tour v-if="!light && !layoutSettings.welcomeTourFinished"></tour>
   </div>
 </template>
 
@@ -78,6 +78,9 @@ export default {
     FindReplace,
   },
   computed: {
+    ...mapState([
+      'light',
+    ]),
     ...mapState('content', [
       'revisionContent',
     ]),

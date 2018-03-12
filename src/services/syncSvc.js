@@ -7,6 +7,7 @@ import providerRegistry from './providers/providerRegistry';
 import googleDriveAppDataProvider from './providers/googleDriveAppDataProvider';
 import './providers/googleDriveWorkspaceProvider';
 import './providers/couchdbWorkspaceProvider';
+import tempFileSvc from './tempFileSvc';
 
 const inactivityThreshold = 3 * 1000; // 3 sec
 const restartSyncAfter = 30 * 1000; // 30 sec
@@ -169,25 +170,16 @@ function createSyncLocation(syncLocation) {
 }
 
 class SyncContext {
-  constructor() {
-    this.restart = false;
-    this.synced = {};
-  }
-}
-
-class FileSyncContext {
-  constructor() {
-    this.downloaded = {};
-    this.errors = {};
-  }
+  restart = false;
+  attempted = {};
 }
 
 /**
  * Sync one file with all its locations.
  */
 function syncFile(fileId, syncContext = new SyncContext()) {
-  const fileSyncContext = new FileSyncContext();
-  syncContext.synced[`${fileId}/content`] = true;
+  syncContext.attempted[`${fileId}/content`] = true;
+
   return localDbSvc.loadSyncedContent(fileId)
     .then(() => localDbSvc.loadItem(`${fileId}/content`)
       .catch(() => {})) // Item may not exist if content has not been downloaded yet
@@ -197,14 +189,9 @@ function syncFile(fileId, syncContext = new SyncContext()) {
       const getSyncedContent = () => store.state.syncedContent.itemMap[`${fileId}/syncedContent`];
       const getSyncHistoryItem = syncLocationId => getSyncedContent().syncHistory[syncLocationId];
 
-      const isLocationSynced = (syncLocation) => {
-        const syncHistoryItem = getSyncHistoryItem(syncLocation.id);
-        return syncHistoryItem && syncHistoryItem[LAST_SENT] === getContent().hash;
-      };
-
-      const isWelcomeFile = () => {
+      const isTempFile = () => {
         if (store.getters['data/syncDataByItemId'][`${fileId}/content`]) {
-          // If file has already been synced, keep on syncing
+          // If file has already been synced, it's not a temp file
           return false;
         }
         const file = getFile();
@@ -212,12 +199,29 @@ function syncFile(fileId, syncContext = new SyncContext()) {
         if (!file || !content) {
           return false;
         }
+        if (file.parentId === 'temp') {
+          return true;
+        }
+        const locations = [
+          ...store.getters['syncLocation/groupedByFileId'][fileId] || [],
+          ...store.getters['publishLocation/groupedByFileId'][fileId] || [],
+        ];
+        if (locations.length) {
+          // If file has explicit sync/publish locations, it's not a temp file
+          return false;
+        }
+        // Return true if it's a welcome file that has no discussion
         const welcomeFileHashes = store.getters['data/localSettings'].welcomeFileHashes;
         const hash = utils.hash(content.text);
         const hasDiscussions = Object.keys(content.discussions).length;
         return file.name === 'Welcome file' && welcomeFileHashes[hash] && !hasDiscussions;
       };
 
+      if (isTempFile()) {
+        return null;
+      }
+
+      const attemptedLocations = {};
       const syncOneContentLocation = () => {
         const syncLocations = [
           ...store.getters['syncLocation/groupedByFileId'][fileId] || [],
@@ -229,20 +233,17 @@ function syncFile(fileId, syncContext = new SyncContext()) {
         syncLocations.some((syncLocation) => {
           const provider = providerRegistry.providers[syncLocation.providerId];
           if (
-            // Skip if it previously threw an error
-            !fileSyncContext.errors[syncLocation.id] &&
-            // Skip if it has previously been downloaded and has not changed since then
-            (!fileSyncContext.downloaded[syncLocation.id] || !isLocationSynced(syncLocation)) &&
-            // Skip welcome file if not synchronized explicitly
-            (syncLocations.length > 1 || !isWelcomeFile())
+            // Skip if it has been attempted already
+            !attemptedLocations[syncLocation.id] &&
+            // Skip temp file
+            !isTempFile()
           ) {
+            attemptedLocations[syncLocation.id] = true;
             const token = provider && provider.getToken(syncLocation);
             result = token && store.dispatch('queue/doWithLocation', {
               location: syncLocation,
               promise: provider.downloadContent(token, syncLocation)
                 .then((serverContent = null) => {
-                  fileSyncContext.downloaded[syncLocation.id] = true;
-
                   const syncedContent = getSyncedContent();
                   const syncHistoryItem = getSyncHistoryItem(syncLocation.id);
                   let mergedContent = (() => {
@@ -275,7 +276,6 @@ function syncFile(fileId, syncContext = new SyncContext()) {
                   })();
 
                   if (!mergedContent) {
-                    fileSyncContext.errors[syncLocation.id] = true;
                     return null;
                   }
 
@@ -370,7 +370,6 @@ function syncFile(fileId, syncContext = new SyncContext()) {
                   }
                   console.error(err); // eslint-disable-line no-console
                   store.dispatch('notification/error', err);
-                  fileSyncContext.errors[syncLocation.id] = true;
                 }),
             })
             .then(() => syncOneContentLocation());
@@ -584,7 +583,7 @@ function syncWorkspace() {
           const syncData = store.getters['data/syncDataByItemId'][contentId];
           if (
             // Sync if content syncing was not attempted yet
-            !syncContext.synced[contentId] &&
+            !syncContext.attempted[contentId] &&
             // And if syncData does not exist or if content hash and syncData hash are inconsistent
             (!syncData || syncData.hash !== hash)
           ) {
@@ -643,6 +642,11 @@ function syncWorkspace() {
  * Enqueue a sync task, if possible.
  */
 function requestSync() {
+  // No sync in light mode
+  if (store.state.light) {
+    return;
+  }
+
   store.dispatch('queue/enqueueSyncRequest', () => new Promise((resolve, reject) => {
     let intervalId;
     const attempt = () => {
@@ -734,25 +738,28 @@ export default {
         return actionProvider && actionProvider.performAction && actionProvider.performAction()
           .then(newSyncLocation => newSyncLocation && this.createSyncLocation(newSyncLocation));
       })
+      .then(() => tempFileSvc.init())
       .then(() => {
-        // Sync periodically
-        utils.setInterval(() => {
-          if (isSyncPossible()
-            && networkSvc.isUserActive()
-            && isSyncWindow()
-            && isAutoSyncReady()
-          ) {
-            requestSync();
-          }
-        }, 1000);
+        if (!store.state.light) {
+          // Sync periodically
+          utils.setInterval(() => {
+            if (isSyncPossible()
+              && networkSvc.isUserActive()
+              && isSyncWindow()
+              && isAutoSyncReady()
+            ) {
+              requestSync();
+            }
+          }, 1000);
 
-        // Unload contents from memory periodically
-        utils.setInterval(() => {
-          // Wait for sync and publish to finish
-          if (store.state.queue.isEmpty) {
-            localDbSvc.unloadContents();
-          }
-        }, 5000);
+          // Unload contents from memory periodically
+          utils.setInterval(() => {
+            // Wait for sync and publish to finish
+            if (store.state.queue.isEmpty) {
+              localDbSvc.unloadContents();
+            }
+          }, 5000);
+        }
       });
   },
   isSyncPossible,

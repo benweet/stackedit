@@ -1,5 +1,5 @@
 <template>
-  <div class="explorer-node" :class="{'explorer-node--selected': isSelected, 'explorer-node--open': isOpen, 'explorer-node--drag-target': isDragTargetFolder}" @dragover.prevent @dragenter.stop="setDragTarget(node.item.id)" @dragleave.stop="isDragTarget && setDragTargetId()" @drop.prevent.stop="onDrop" @contextmenu="onContextMenu">
+  <div class="explorer-node" :class="{'explorer-node--selected': isSelected, 'explorer-node--open': isOpen, 'explorer-node--drag-target': isDragTargetFolder}" @dragover.prevent @dragenter.stop="node.noDrop || setDragTarget(node.item.id)" @dragleave.stop="isDragTarget && setDragTargetId()" @drop.prevent.stop="onDrop" @contextmenu="onContextMenu">
     <div class="explorer-node__item-editor" v-if="isEditing" :class="['explorer-node__item-editor--' + node.item.type]" :style="{paddingLeft: leftPadding}" draggable="true" @dragstart.stop.prevent>
       <input type="text" class="text-input" v-focus @blur="submitEdit()" @keydown.enter="submitEdit()" @keydown.esc="submitEdit(true)" v-model="editingNodeName">
     </div>

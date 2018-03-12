@@ -28,7 +28,7 @@ export default {
         ) {
           this.selection = editorSvc.getTrimmedSelection();
           if (this.selection) {
-            const text = editorSvc.previewTextWithDiffsList;
+            const text = editorSvc.previewCtxWithDiffs.text;
             offset = editorSvc.getPreviewOffset(this.selection.end);
             while (offset && text[offset - 1] === '\n') {
               offset -= 1;

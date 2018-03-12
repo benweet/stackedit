@@ -48,6 +48,7 @@ export default {
       'previousDiscussionId',
       'nextDiscussionId',
       'currentFileDiscussions',
+      'currentDiscussionLastCommentId',
     ]),
     ...mapGetters('layout', [
       'constants',
@@ -59,7 +60,7 @@ export default {
       return this.nextDiscussionId && this.nextDiscussionId !== this.currentDiscussionId;
     },
     showRemove() {
-      return this.currentFileDiscussions[this.currentDiscussionId];
+      return this.currentDiscussionLastCommentId;
     },
   },
   methods: {

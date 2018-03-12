@@ -21,14 +21,17 @@ const constants = {
 };
 
 function computeStyles(state, getters, layoutSettings = getters['data/layoutSettings'], styles = {
-  showNavigationBar: !layoutSettings.showEditor || layoutSettings.showNavigationBar,
+  showNavigationBar: layoutSettings.showNavigationBar
+    || !layoutSettings.showEditor
+    || state.content.revisionContent,
   showStatusBar: layoutSettings.showStatusBar,
   showEditor: layoutSettings.showEditor,
   showSidePreview: layoutSettings.showSidePreview && layoutSettings.showEditor,
   showPreview: layoutSettings.showSidePreview || !layoutSettings.showEditor,
-  showSideBar: layoutSettings.showSideBar,
-  showExplorer: layoutSettings.showExplorer,
+  showSideBar: layoutSettings.showSideBar && !state.light,
+  showExplorer: layoutSettings.showExplorer && !state.light,
   layoutOverflow: false,
+  hideLocations: state.light,
 }) {
   styles.innerHeight = state.layout.bodyHeight;
   if (styles.showNavigationBar) {
@@ -52,7 +55,8 @@ function computeStyles(state, getters, layoutSettings = getters['data/layoutSett
   }
 
   let doublePanelWidth = styles.innerWidth - constants.buttonBarWidth;
-  const showGutter = !!getters['discussion/currentDiscussion'];
+  // No commenting for temp files
+  const showGutter = !getters['file/isCurrentTemp'] && !!getters['discussion/currentDiscussion'];
   if (showGutter) {
     doublePanelWidth -= constants.gutterWidth;
   }

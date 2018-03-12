@@ -163,9 +163,9 @@ export default {
       () => this.updateSticky(),
       { immediate: true });
 
-    // Move preview discussions once sectionDescWithDiffsList have been calculated
-    if (!editorSvc.sectionDescWithDiffsList) {
-      editorSvc.$once('sectionDescWithDiffsList', () => {
+    // Move preview discussions once previewCtxWithDiffs has been calculated
+    if (!editorSvc.previewCtxWithDiffs) {
+      editorSvc.$once('previewCtxWithDiffs', () => {
         this.updateTops();
         this.updateSticky();
       });

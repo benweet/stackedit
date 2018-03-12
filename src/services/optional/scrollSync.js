@@ -11,7 +11,7 @@ let isScrollEditor;
 let isScrollPreview;
 let isEditorMoving;
 let isPreviewMoving;
-let sectionDescList;
+let sectionDescList = [];
 
 let throttleTimeoutId;
 let throttleLastTime = 0;
@@ -34,7 +34,7 @@ function throttle(func, wait) {
 const doScrollSync = () => {
   const localSkipAnimation = skipAnimation || !store.getters['layout/styles'].showSidePreview;
   skipAnimation = false;
-  if (!store.getters['data/layoutSettings'].scrollSync || !sectionDescList || sectionDescList.length === 0) {
+  if (!store.getters['data/layoutSettings'].scrollSync || sectionDescList.length === 0) {
     return;
   }
   let editorScrollTop = editorScrollerElt.scrollTop;
@@ -144,10 +144,10 @@ editorSvc.$on('inited', () => {
 editorSvc.$on('sectionList', () => {
   clearTimeout(timeoutId);
   isPreviewRefreshing = true;
-  sectionDescList = undefined;
+  sectionDescList = [];
 });
 
-editorSvc.$on('previewText', () => {
+editorSvc.$on('previewCtx', () => {
   // Assume the user is writing in the editor
   isScrollEditor = store.getters['layout/styles'].showEditor;
   // A preview scrolling event can occur if height is smaller
@@ -170,7 +170,9 @@ store.watch(
     skipAnimation = true;
   });
 
-editorSvc.$on('sectionDescMeasuredList', (sectionDescMeasuredList) => {
-  sectionDescList = sectionDescMeasuredList;
-  forceScrollSync();
+editorSvc.$on('previewCtxMeasured', (previewCtxMeasured) => {
+  if (previewCtxMeasured) {
+    sectionDescList = previewCtxMeasured.sectionDescList;
+    forceScrollSync();
+  }
 });

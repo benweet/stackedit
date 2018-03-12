@@ -47,6 +47,7 @@ const store = new Vuex.Store({
     workspace,
   },
   state: {
+    light: false,
     offline: false,
     lastOfflineCheck: 0,
     minuteCounter: 0,
@@ -64,6 +65,9 @@ const store = new Vuex.Store({
     },
   },
   mutations: {
+    setLight: (state, value) => {
+      state.light = value;
+    },
     setOffline: (state, value) => {
       state.offline = value;
     },
@@ -109,16 +113,14 @@ const store = new Vuex.Store({
       return Promise.resolve(state.file.itemMap[id]);
     },
     deleteFile({ getters, commit }, fileId) {
+      (getters['syncLocation/groupedByFileId'][fileId] || [])
+        .forEach(item => commit('syncLocation/deleteItem', item.id));
+      (getters['publishLocation/groupedByFileId'][fileId] || [])
+        .forEach(item => commit('publishLocation/deleteItem', item.id));
       commit('file/deleteItem', fileId);
       commit('content/deleteItem', `${fileId}/content`);
       commit('syncedContent/deleteItem', `${fileId}/syncedContent`);
       commit('contentState/deleteItem', `${fileId}/contentState`);
-      getters['syncLocation/items']
-        .filter(item => item.fileId === fileId)
-        .forEach(item => commit('syncLocation/deleteItem', item.id));
-      getters['publishLocation/items']
-        .filter(item => item.fileId === fileId)
-        .forEach(item => commit('publishLocation/deleteItem', item.id));
     },
   },
   strict: debug,

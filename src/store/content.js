@@ -37,6 +37,14 @@ module.getters = {
     }
     return state.itemMap[`${rootGetters['file/current'].id}/content`] || empty();
   },
+  currentChangeTrigger: (state, getters) => {
+    const current = getters.current;
+    return utils.serializeObject([
+      current.id,
+      current.text,
+      current.hash,
+    ]);
+  },
   currentProperties: (state, getters) => utils.computeProperties(getters.current.properties),
   isCurrentEditable: (state, getters, rootState, rootGetters) =>
     !state.revisionContent &&

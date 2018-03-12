@@ -4,6 +4,12 @@
       <p>You have to <a href="javascript:void(0)" @click="signin">sign in with Google</a> to enable revision history.</p>
       <p><b>Note:</b> This will sync your main workspace.</p>
     </div>
+    <div class="side-bar__info" v-if="loading">
+      <p>Loading history…</p>
+    </div>
+    <div class="side-bar__info" v-else-if="!revisionsWithSpacer.length">
+      <p><b>{{currentFileName}}</b> has no history.</p>
+    </div>
     <div class="revision" v-for="revision in revisionsWithSpacer" :key="revision.id">
       <div class="history__spacer" v-if="revision.spacer"></div>
       <a class="revision__button button flex flex--row" href="javascript:void(0)" @click="open(revision)">
@@ -53,12 +59,16 @@ export default {
   },
   data: () => ({
     allRevisions: [],
+    loading: false,
     showCount: pageSize,
   }),
   computed: {
     ...mapGetters('workspace', [
       'syncToken',
     ]),
+    currentFileName() {
+      return this.$store.getters['file/current'].name;
+    },
     revisions() {
       return this.allRevisions.slice(0, this.showCount);
     },
@@ -127,7 +137,7 @@ export default {
       previewClassAppliers.forEach(previewClassApplier => previewClassApplier.stop());
       previewClassAppliers = [];
       if (revisionContent) {
-        editorSvc.$once('sectionDescWithDiffsList', () => {
+        editorSvc.$once('previewCtxWithDiffs', () => {
           let offset = 0;
           revisionContent.diffs.forEach(([type, text]) => {
             if (type) {
@@ -177,7 +187,9 @@ export default {
               });
           }
           if (revisionsPromise) {
+            this.loading = true;
             revisionsPromise.then((revisions) => {
+              this.loading = false;
               this.allRevisions = revisions;
             });
           }

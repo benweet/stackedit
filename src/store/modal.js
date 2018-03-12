@@ -47,14 +47,19 @@ export default {
         throw err;
       });
     },
-    fileDeletion: ({ dispatch }, item) => dispatch('open', {
-      content: `<p>You are about to delete the file <b>${item.name}</b>. Are you sure?</p>`,
+    folderDeletion: ({ dispatch }, item) => dispatch('open', {
+      content: `<p>You are about to delete the folder <b>${item.name}</b>. Its files will be moved to Trash. Are you sure?</p>`,
       resolveText: 'Yes, delete',
       rejectText: 'No',
     }),
-    folderDeletion: ({ dispatch }, item) => dispatch('open', {
-      content: `<p>You are about to delete the folder <b>${item.name}</b> and all its files. Are you sure?</p>`,
+    tempFileDeletion: ({ dispatch }, item) => dispatch('open', {
+      content: `<p>You are about to permanently delete the temporary file <b>${item.name}</b>. Are you sure?</p>`,
       resolveText: 'Yes, delete',
+      rejectText: 'No',
+    }),
+    tempFolderDeletion: ({ dispatch }) => dispatch('open', {
+      content: '<p>You are about to permanently delete all the temporary files. Are you sure?</p>',
+      resolveText: 'Yes, delete all',
       rejectText: 'No',
     }),
     discussionDeletion: ({ dispatch }) => dispatch('open', {

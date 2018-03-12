@@ -5,6 +5,7 @@ import welcomeFile from '../data/welcomeFile.md';
 
 const dbVersion = 1;
 const dbStoreName = 'objects';
+const fileIdToOpen = utils.queryParams.fileId;
 const exportWorkspace = utils.queryParams.exportWorkspace;
 const resetApp = utils.queryParams.reset;
 const deleteMarkerMaxAge = 1000;
@@ -178,6 +179,10 @@ const localDbSvc = {
         // Sync local DB periodically
         utils.setInterval(() => localDbSvc.sync(), 1000);
 
+        if (fileIdToOpen) {
+          store.commit('file/setCurrentId', fileIdToOpen);
+        }
+
         // watch current file changing
         store.watch(
           () => store.getters['file/current'].id,
@@ -216,6 +221,11 @@ const localDbSvc = {
                     // Open the gutter if file contains discussions
                     store.commit('discussion/setCurrentDiscussionId',
                       store.getters['discussion/nextDiscussionId']);
+                    // Add the fileId to the queryParams
+                    utils.setQueryParams({
+                      ...utils.queryParams,
+                      fileId: currentFile.id,
+                    });
                   },
                   (err) => {
                     // Failure (content is not available), go back to previous file

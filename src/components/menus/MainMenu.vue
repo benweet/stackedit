@@ -61,13 +61,13 @@
       Markdown cheat sheet
     </menu-entry>
     <hr>
-    <menu-entry @click.native="setPanel('export')">
-      <icon-content-save slot="icon"></icon-content-save>
-      Export to disk
-    </menu-entry>
     <menu-entry @click.native="setPanel('import')">
       <icon-content-save slot="icon"></icon-content-save>
       Import from disk
+    </menu-entry>
+    <menu-entry @click.native="setPanel('export')">
+      <icon-content-save slot="icon"></icon-content-save>
+      Export to disk
     </menu-entry>
     <menu-entry @click.native="print">
       <icon-printer slot="icon"></icon-printer>

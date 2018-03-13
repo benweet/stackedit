@@ -1,40 +1,6 @@
 <template>
   <div class="modal" @keydown.esc="onEscape" @keydown.tab="onTab">
-    <file-properties-modal v-if="config.type === 'fileProperties'"></file-properties-modal>
-    <settings-modal v-else-if="config.type === 'settings'"></settings-modal>
-    <templates-modal v-else-if="config.type === 'templates'"></templates-modal>
-    <about-modal v-else-if="config.type === 'about'"></about-modal>
-    <html-export-modal v-else-if="config.type === 'htmlExport'"></html-export-modal>
-    <pdf-export-modal v-else-if="config.type === 'pdfExport'"></pdf-export-modal>
-    <pandoc-export-modal v-else-if="config.type === 'pandocExport'"></pandoc-export-modal>
-    <link-modal v-else-if="config.type === 'link'"></link-modal>
-    <image-modal v-else-if="config.type === 'image'"></image-modal>
-    <sync-management-modal v-else-if="config.type === 'syncManagement'"></sync-management-modal>
-    <publish-management-modal v-else-if="config.type === 'publishManagement'"></publish-management-modal>
-    <workspace-management-modal v-else-if="config.type === 'workspaceManagement'"></workspace-management-modal>
-    <sponsor-modal v-else-if="config.type === 'sponsor'"></sponsor-modal>
-    <!-- Providers -->
-    <google-photo-modal v-else-if="config.type === 'googlePhoto'"></google-photo-modal>
-    <google-drive-account-modal v-else-if="config.type === 'googleDriveAccount'"></google-drive-account-modal>
-    <google-drive-save-modal v-else-if="config.type === 'googleDriveSave'"></google-drive-save-modal>
-    <google-drive-workspace-modal v-else-if="config.type === 'googleDriveWorkspace'"></google-drive-workspace-modal>
-    <google-drive-publish-modal v-else-if="config.type === 'googleDrivePublish'"></google-drive-publish-modal>
-    <dropbox-account-modal v-else-if="config.type === 'dropboxAccount'"></dropbox-account-modal>
-    <dropbox-save-modal v-else-if="config.type === 'dropboxSave'"></dropbox-save-modal>
-    <dropbox-publish-modal v-else-if="config.type === 'dropboxPublish'"></dropbox-publish-modal>
-    <github-account-modal v-else-if="config.type === 'githubAccount'"></github-account-modal>
-    <github-open-modal v-else-if="config.type === 'githubOpen'"></github-open-modal>
-    <github-save-modal v-else-if="config.type === 'githubSave'"></github-save-modal>
-    <github-publish-modal v-else-if="config.type === 'githubPublish'"></github-publish-modal>
-    <gist-sync-modal v-else-if="config.type === 'gistSync'"></gist-sync-modal>
-    <gist-publish-modal v-else-if="config.type === 'gistPublish'"></gist-publish-modal>
-    <wordpress-publish-modal v-else-if="config.type === 'wordpressPublish'"></wordpress-publish-modal>
-    <blogger-publish-modal v-else-if="config.type === 'bloggerPublish'"></blogger-publish-modal>
-    <blogger-page-publish-modal v-else-if="config.type === 'bloggerPagePublish'"></blogger-page-publish-modal>
-    <zendesk-account-modal v-else-if="config.type === 'zendeskAccount'"></zendesk-account-modal>
-    <zendesk-publish-modal v-else-if="config.type === 'zendeskPublish'"></zendesk-publish-modal>
-    <couchdb-workspace-modal v-else-if="config.type === 'couchdbWorkspace'"></couchdb-workspace-modal>
-    <couchdb-credentials-modal v-else-if="config.type === 'couchdbCredentials'"></couchdb-credentials-modal>
+    <component :is="currentModalComponent" v-if="currentModalComponent"></component>
     <modal-inner v-else aria-label="Dialog">
       <div class="modal__content" v-html="config.content"></div>
       <div class="modal__button-bar">
@@ -90,6 +56,8 @@ const getTabbables = container => container.querySelectorAll('a[href], button, .
   // Filter enabled and visible element
   .cl_filter(el => !el.disabled && el.offsetParent !== null && !el.classList.contains('not-tabbable'));
 
+const kebabCase = str => str.replace(/[A-Z\u00C0-\u00D6\u00D8-\u00DE]/g, match => `-${match.toLowerCase()}`);
+
 export default {
   components: {
     ModalInner,
@@ -129,9 +97,18 @@ export default {
     CouchdbWorkspaceModal,
     CouchdbCredentialsModal,
   },
-  computed: mapGetters('modal', [
-    'config',
-  ]),
+  computed: {
+    ...mapGetters('modal', [
+      'config',
+    ]),
+    currentModalComponent() {
+      if (!this.condig.modal) {
+        return '';
+      }
+
+      return `${kebabCase(this.config.modal)}-modal`;
+    },
+  },
   methods: {
     onEscape() {
       this.config.reject();

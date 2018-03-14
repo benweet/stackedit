@@ -69,17 +69,26 @@ export default {
   },
   getters: {
     nodeStructure: (state, getters, rootState, rootGetters) => {
+      const rootNode = new Node(emptyFolder(), [], true, true);
+
+      // Create Trash node
       const trashFolderNode = new Node(emptyFolder(), [], true);
       trashFolderNode.item.id = 'trash';
       trashFolderNode.item.name = 'Trash';
       trashFolderNode.noDrag = true;
       trashFolderNode.isTrash = true;
+      trashFolderNode.parentNode = rootNode;
+
+      // Create Temp node
       const tempFolderNode = new Node(emptyFolder(), [], true);
       tempFolderNode.item.id = 'temp';
       tempFolderNode.item.name = 'Temp';
       tempFolderNode.noDrag = true;
       tempFolderNode.noDrop = true;
       tempFolderNode.isTemp = true;
+      tempFolderNode.parentNode = rootNode;
+
+      // Fill nodeMap with all file and folder nodes
       const nodeMap = {
         trash: trashFolderNode,
         temp: tempFolderNode,
@@ -96,7 +105,8 @@ export default {
         ];
         nodeMap[item.id] = new Node(item, locations);
       });
-      const rootNode = new Node(emptyFolder(), [], true, true);
+
+      // Build the tree
       Object.entries(nodeMap).forEach(([, node]) => {
         let parentNode = nodeMap[node.item.parentId];
         if (!parentNode || !parentNode.isFolder) {
@@ -110,8 +120,11 @@ export default {
         } else {
           parentNode.files.push(node);
         }
+        node.parentNode = parentNode;
       });
       rootNode.sortChildren();
+
+      // Add Trash and Temp nodes
       rootNode.folders.unshift(tempFolderNode);
       tempFolderNode.files.forEach((node) => {
         node.noDrop = true;
@@ -119,7 +132,8 @@ export default {
       if (trashFolderNode.files.length) {
         rootNode.folders.unshift(trashFolderNode);
       }
-      // Add a fake file at the end of the root folder to allow drag and drop into it.
+
+      // Add a fake file at the end of the root folder to allow drag and drop into it
       rootNode.files.push(fakeFileNode);
       return {
         nodeMap,

@@ -25,7 +25,7 @@ export default {
     ]),
     showSponsorButton() {
       const type = this.$store.getters['modal/config'].type;
-      return !this.$store.getters.isSponsor && type !== 'sponsor' && type !== 'signInForSponsorship';
+      return !this.$store.getters.isSponsor && type !== 'SponsorModal' && type !== 'signInForSponsorship';
     },
   },
   methods: {

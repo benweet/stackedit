@@ -108,9 +108,7 @@ export default {
       }
       this.titleFakeElt.textContent = this.title;
       const width = this.titleFakeElt.getBoundingClientRect().width + 2; // 2px for the caret
-      return width < this.styles.titleMaxWidth
-        ? width
-        : this.styles.titleMaxWidth;
+      return Math.min(width, this.styles.titleMaxWidth);
     },
     titleScrolling() {
       const result = this.titleHover && !this.titleFocus;
@@ -220,7 +218,7 @@ export default {
   float: left;
 
   &.navigation-bar__inner--button {
-    margin-right: 15px;
+    margin-right: 12px;
   }
 }
 

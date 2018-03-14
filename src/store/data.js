@@ -170,7 +170,7 @@ export default {
       ...getters.templates,
       ...additionalTemplates,
     }),
-    fileCreations: getter('fileCreations'),
+    lastCreated: getter('lastCreated'),
     lastOpened: getter('lastOpened'),
     lastOpenedIds: (state, getters, rootState) => {
       const lastOpened = {
@@ -262,7 +262,7 @@ export default {
       });
       commit('setItem', itemTemplate('templates', dataToCommit));
     },
-    setFileCreations: setter('fileCreations'),
+    setLastCreated: setter('lastCreated'),
     setLastOpenedId: ({ getters, commit, dispatch, rootState }, fileId) => {
       const lastOpened = { ...getters.lastOpened };
       lastOpened[fileId] = Date.now();

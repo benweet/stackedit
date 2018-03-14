@@ -169,7 +169,7 @@ export default {
             perform: () => this.newItem(false),
           }, {
             name: 'New folder',
-            disabled: !this.node.isFolder || this.node.isTrash,
+            disabled: !this.node.isFolder || this.node.isTrash || this.node.isTemp,
             perform: () => this.newItem(true),
           }, {
             type: 'separator',
@@ -179,7 +179,6 @@ export default {
             perform: () => this.setEditingId(this.node.item.id),
           }, {
             name: 'Delete',
-            disabled: this.node.isTrash || this.node.item.parentId === 'trash',
             perform: () => this.deleteItem(),
           }],
         })

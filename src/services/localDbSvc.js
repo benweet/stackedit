@@ -5,7 +5,6 @@ import welcomeFile from '../data/welcomeFile.md';
 
 const dbVersion = 1;
 const dbStoreName = 'objects';
-const fileIdToOpen = utils.queryParams.fileId;
 const exportWorkspace = utils.queryParams.exportWorkspace;
 const resetApp = utils.queryParams.reset;
 const deleteMarkerMaxAge = 1000;
@@ -99,151 +98,6 @@ const localDbSvc = {
   lastTx: 0,
   hashMap,
   connection: null,
-
-  /**
-   * Create the connection and start syncing.
-   */
-  init() {
-    return Promise.resolve()
-      .then(() => {
-        // Reset the app if reset flag was passed
-        if (resetApp) {
-          return Promise.all(
-            Object.keys(store.getters['data/workspaces'])
-              .map(workspaceId => localDbSvc.removeWorkspace(workspaceId)),
-          )
-            .then(() => utils.localStorageDataIds.forEach((id) => {
-              // Clean data stored in localStorage
-              localStorage.removeItem(`data/${id}`);
-            }))
-            .then(() => {
-              location.reload();
-              throw new Error('reload');
-            });
-        }
-
-        // Create the connection
-        this.connection = new Connection();
-
-        // Load the DB
-        return localDbSvc.sync();
-      })
-      .then(() => {
-        // If exportWorkspace parameter was provided
-        if (exportWorkspace) {
-          const backup = JSON.stringify(store.getters.allItemMap);
-          const blob = new Blob([backup], {
-            type: 'text/plain;charset=utf-8',
-          });
-          FileSaver.saveAs(blob, 'StackEdit workspace.json');
-          return;
-        }
-
-        // Save welcome file content hash if not done already
-        const hash = utils.hash(welcomeFile);
-        const welcomeFileHashes = store.getters['data/localSettings'].welcomeFileHashes;
-        if (!welcomeFileHashes[hash]) {
-          store.dispatch('data/patchLocalSettings', {
-            welcomeFileHashes: {
-              ...welcomeFileHashes,
-              [hash]: 1,
-            },
-          });
-        }
-
-        // If app was last opened 7 days ago and synchronization is off
-        if (!store.getters['workspace/syncToken'] &&
-          (store.state.workspace.lastFocus + utils.cleanTrashAfter < Date.now())
-        ) {
-          // Clean files
-          store.getters['file/items']
-            .filter(file => file.parentId === 'trash') // If file is in the trash
-            .forEach(file => store.dispatch('deleteFile', file.id));
-        }
-
-        // Enable sponsorship
-        if (utils.queryParams.paymentSuccess) {
-          location.hash = ''; // PaymentSuccess param is always on its own
-          store.dispatch('modal/paymentSuccess');
-          const sponsorToken = store.getters['workspace/sponsorToken'];
-          // Force check sponsorship after a few seconds
-          const currentDate = Date.now();
-          if (sponsorToken && sponsorToken.expiresOn > currentDate - checkSponsorshipAfter) {
-            store.dispatch('data/setGoogleToken', {
-              ...sponsorToken,
-              expiresOn: currentDate - checkSponsorshipAfter,
-            });
-          }
-        }
-
-        // Sync local DB periodically
-        utils.setInterval(() => localDbSvc.sync(), 1000);
-
-        if (fileIdToOpen) {
-          store.commit('file/setCurrentId', fileIdToOpen);
-        }
-
-        // watch current file changing
-        store.watch(
-          () => store.getters['file/current'].id,
-          () => {
-            // See if currentFile is real, ie it has an ID
-            const currentFile = store.getters['file/current'];
-            // If current file has no ID, get the most recent file
-            if (!currentFile.id) {
-              const recentFile = store.getters['file/lastOpened'];
-              // Set it as the current file
-              if (recentFile.id) {
-                store.commit('file/setCurrentId', recentFile.id);
-              } else {
-                // If still no ID, create a new file
-                store.dispatch('createFile', {
-                  name: 'Welcome file',
-                  text: welcomeFile,
-                })
-                  // Set it as the current file
-                  .then(newFile => store.commit('file/setCurrentId', newFile.id));
-              }
-            } else {
-              Promise.resolve()
-                // Load contentState from DB
-                .then(() => localDbSvc.loadContentState(currentFile.id))
-                // Load syncedContent from DB
-                .then(() => localDbSvc.loadSyncedContent(currentFile.id))
-                // Load content from DB
-                .then(() => localDbSvc.loadItem(`${currentFile.id}/content`))
-                .then(
-                  () => {
-                    // Set last opened file
-                    store.dispatch('data/setLastOpenedId', currentFile.id);
-                    // Cancel new discussion
-                    store.commit('discussion/setCurrentDiscussionId');
-                    // Open the gutter if file contains discussions
-                    store.commit('discussion/setCurrentDiscussionId',
-                      store.getters['discussion/nextDiscussionId']);
-                    // Add the fileId to the queryParams
-                    utils.setQueryParams({
-                      ...utils.queryParams,
-                      fileId: currentFile.id,
-                    });
-                  },
-                  (err) => {
-                    // Failure (content is not available), go back to previous file
-                    const lastOpenedFile = store.getters['file/lastOpened'];
-                    store.commit('file/setCurrentId', lastOpenedFile.id);
-                    throw err;
-                  },
-                )
-                .catch((err) => {
-                  console.error(err); // eslint-disable-line no-console
-                  store.dispatch('notification/error', err);
-                });
-            }
-          }, {
-            immediate: true,
-          });
-      });
-  },
 
   /**
    * Sync data items stored in the localStorage.
@@ -483,6 +337,142 @@ const localDbSvc = {
       .then(() => {
         localStorage.removeItem(`${id}/lastSyncActivity`);
         localStorage.removeItem(`${id}/lastWindowFocus`);
+      });
+  },
+
+  /**
+   * Create the connection and start syncing.
+   */
+  init() {
+    return Promise.resolve()
+      .then(() => {
+        // Reset the app if reset flag was passed
+        if (resetApp) {
+          return Promise.all(
+            Object.keys(store.getters['data/workspaces'])
+              .map(workspaceId => localDbSvc.removeWorkspace(workspaceId)),
+          )
+            .then(() => utils.localStorageDataIds.forEach((id) => {
+              // Clean data stored in localStorage
+              localStorage.removeItem(`data/${id}`);
+            }))
+            .then(() => {
+              location.reload();
+              throw new Error('reload');
+            });
+        }
+
+        // Create the connection
+        this.connection = new Connection();
+
+        // Load the DB
+        return localDbSvc.sync();
+      })
+      .then(() => {
+        // If exportWorkspace parameter was provided
+        if (exportWorkspace) {
+          const backup = JSON.stringify(store.getters.allItemMap);
+          const blob = new Blob([backup], {
+            type: 'text/plain;charset=utf-8',
+          });
+          FileSaver.saveAs(blob, 'StackEdit workspace.json');
+          return;
+        }
+
+        // Save welcome file content hash if not done already
+        const hash = utils.hash(welcomeFile);
+        const welcomeFileHashes = store.getters['data/localSettings'].welcomeFileHashes;
+        if (!welcomeFileHashes[hash]) {
+          store.dispatch('data/patchLocalSettings', {
+            welcomeFileHashes: {
+              ...welcomeFileHashes,
+              [hash]: 1,
+            },
+          });
+        }
+
+        // If app was last opened 7 days ago and synchronization is off
+        if (!store.getters['workspace/syncToken'] &&
+          (store.state.workspace.lastFocus + utils.cleanTrashAfter < Date.now())
+        ) {
+          // Clean files
+          store.getters['file/items']
+            .filter(file => file.parentId === 'trash') // If file is in the trash
+            .forEach(file => store.dispatch('deleteFile', file.id));
+        }
+
+        // Enable sponsorship
+        if (utils.queryParams.paymentSuccess) {
+          location.hash = ''; // PaymentSuccess param is always on its own
+          store.dispatch('modal/paymentSuccess');
+          const sponsorToken = store.getters['workspace/sponsorToken'];
+          // Force check sponsorship after a few seconds
+          const currentDate = Date.now();
+          if (sponsorToken && sponsorToken.expiresOn > currentDate - checkSponsorshipAfter) {
+            store.dispatch('data/setGoogleToken', {
+              ...sponsorToken,
+              expiresOn: currentDate - checkSponsorshipAfter,
+            });
+          }
+        }
+
+        // Sync local DB periodically
+        utils.setInterval(() => localDbSvc.sync(), 1000);
+
+        // watch current file changing
+        store.watch(
+          () => store.getters['file/current'].id,
+          () => {
+            // See if currentFile is real, ie it has an ID
+            const currentFile = store.getters['file/current'];
+            // If current file has no ID, get the most recent file
+            if (!currentFile.id) {
+              const recentFile = store.getters['file/lastOpened'];
+              // Set it as the current file
+              if (recentFile.id) {
+                store.commit('file/setCurrentId', recentFile.id);
+              } else {
+                // If still no ID, create a new file
+                store.dispatch('createFile', {
+                  name: 'Welcome file',
+                  text: welcomeFile,
+                })
+                  // Set it as the current file
+                  .then(newFile => store.commit('file/setCurrentId', newFile.id));
+              }
+            } else {
+              Promise.resolve()
+                // Load contentState from DB
+                .then(() => localDbSvc.loadContentState(currentFile.id))
+                // Load syncedContent from DB
+                .then(() => localDbSvc.loadSyncedContent(currentFile.id))
+                // Load content from DB
+                .then(() => localDbSvc.loadItem(`${currentFile.id}/content`))
+                .then(
+                  () => {
+                    // Set last opened file
+                    store.dispatch('data/setLastOpenedId', currentFile.id);
+                    // Cancel new discussion
+                    store.commit('discussion/setCurrentDiscussionId');
+                    // Open the gutter if file contains discussions
+                    store.commit('discussion/setCurrentDiscussionId',
+                      store.getters['discussion/nextDiscussionId']);
+                  },
+                  (err) => {
+                    // Failure (content is not available), go back to previous file
+                    const lastOpenedFile = store.getters['file/lastOpened'];
+                    store.commit('file/setCurrentId', lastOpenedFile.id);
+                    throw err;
+                  },
+                )
+                .catch((err) => {
+                  console.error(err); // eslint-disable-line no-console
+                  store.dispatch('notification/error', err);
+                });
+            }
+          }, {
+            immediate: true,
+          });
       });
   },
 };

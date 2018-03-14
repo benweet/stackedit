@@ -4,16 +4,17 @@ import utils from './utils';
 import editorSvc from './editorSvc';
 
 const origin = utils.queryParams.origin;
-const existingFileId = utils.queryParams.fileId;
 const fileName = utils.queryParams.fileName;
 const contentText = utils.queryParams.contentText;
 const contentProperties = utils.queryParams.contentProperties;
 
 export default {
+  closed: false,
   close() {
-    if (origin && window.parent) {
+    if (!this.closed && origin && window.parent) {
       window.parent.postMessage({ type: 'close' }, origin);
     }
+    this.closed = true;
   },
   init() {
     if (!origin || !window.parent) {
@@ -21,64 +22,39 @@ export default {
     }
 
     store.commit('setLight', true);
-    return Promise.resolve()
-      .then(() => {
-        const file = store.state.file.itemMap[existingFileId];
-        if (file) {
-          // If file exists, check that the origin site has created it
-          const fileCreation = store.getters['data/fileCreations'][file.id];
-          if (fileCreation && fileCreation.origin === origin) {
-            return file;
-          }
-        }
-
-        // Create a new temp file
-        return store.dispatch('createFile', {
-          name: fileName,
-          text: contentText,
-          properties: contentProperties,
-          parentId: 'temp',
-        });
-      })
+    return store.dispatch('createFile', {
+      name: fileName,
+      text: contentText,
+      properties: contentProperties,
+      parentId: 'temp',
+    })
       .then((file) => {
         const fileItemMap = store.state.file.itemMap;
 
         // Sanitize file creations
-        const fileCreations = {};
-        Object.entries(store.getters['data/fileCreations']).forEach(([id, fileCreation]) => {
-          if (fileItemMap[id]) {
-            fileCreations[id] = fileCreation;
+        const lastCreated = {};
+        Object.entries(store.getters['data/lastCreated']).forEach(([id, createdOn]) => {
+          if (fileItemMap[id] && fileItemMap[id].parentId === 'temp') {
+            lastCreated[id] = createdOn;
           }
         });
 
-        // Track file creation from the origin site
-        fileCreations[file.id] = {
+        // Track file creation from other site
+        lastCreated[file.id] = {
           created: Date.now(),
-          origin,
         };
 
-        // List temp files
-        const tempFileCreations = [];
-        Object.entries(fileCreations).forEach(([id, fileCreation]) => {
-          if (fileItemMap[id].parentId === 'temp') {
-            tempFileCreations.push({
-              id,
-              created: fileCreation.created,
-            });
-          }
-        });
-
-        // Keep only the last 10 temp files
-        tempFileCreations
-          .sort((fileCreation1, fileCreation2) => fileCreation2.created - fileCreation1.created)
+        // Keep only the last 10 temp files created by other sites
+        Object.entries(lastCreated)
+          .sort(([, createdOn1], [, createdOn2]) => createdOn2 - createdOn1)
           .splice(10)
-          .forEach((fileCreation) => {
-            delete fileCreations[fileCreation.id];
-            store.dispatch('deleteFile', fileCreation.id);
+          .forEach(([id]) => {
+            delete lastCreated[id];
+            store.dispatch('deleteFile', id);
           });
 
         // Store file creations and open the file
-        store.dispatch('data/setFileCreations', fileCreations);
+        store.dispatch('data/setLastCreated', lastCreated);
         store.commit('file/setCurrentId', file.id);
 
         const onChange = cledit.Utils.debounce(() => {
@@ -86,7 +62,7 @@ export default {
           if (currentFile.id !== file.id) {
             // Close editor if file has changed for some reason
             this.close();
-          } else if (editorSvc.previewCtx.html != null) {
+          } else if (!this.closed && editorSvc.previewCtx.html != null) {
             const content = store.getters['content/current'];
             const properties = utils.computeProperties(content.properties);
             window.parent.postMessage({

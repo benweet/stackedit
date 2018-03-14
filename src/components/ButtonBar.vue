@@ -1,7 +1,7 @@
 <template>
   <div class="button-bar">
     <div class="button-bar__inner button-bar__inner--top">
-      <button class="button-bar__button button" :class="{ 'button-bar__button--on': layoutSettings.showNavigationBar }" @click="toggleNavigationBar()" v-title="'Toggle navigation bar'">
+      <button class="button-bar__button button" :class="{ 'button-bar__button--on': layoutSettings.showNavigationBar }" v-if="!light" @click="toggleNavigationBar()" v-title="'Toggle navigation bar'">
         <icon-navigation-bar></icon-navigation-bar>
       </button>
       <button class="button-bar__button button" :class="{ 'button-bar__button--on': layoutSettings.showSidePreview }" tour-step-anchor="editor" @click="toggleSidePreview()" v-title="'Toggle side preview'">
@@ -26,12 +26,17 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 
 export default {
-  computed: mapGetters('data', [
-    'layoutSettings',
-  ]),
+  computed: {
+    ...mapState([
+      'light',
+    ]),
+    ...mapGetters('data', [
+      'layoutSettings',
+    ]),
+  },
   methods: mapActions('data', [
     'toggleNavigationBar',
     'toggleEditor',

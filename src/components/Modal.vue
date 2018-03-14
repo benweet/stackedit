@@ -1,6 +1,6 @@
 <template>
   <div class="modal" @keydown.esc="onEscape" @keydown.tab="onTab">
-    <component :is="currentModalComponent" v-if="currentModalComponent"></component>
+    <component v-if="currentModalComponent" :is="currentModalComponent"></component>
     <modal-inner v-else aria-label="Dialog">
       <div class="modal__content" v-html="config.content"></div>
       <div class="modal__button-bar">
@@ -56,8 +56,6 @@ const getTabbables = container => container.querySelectorAll('a[href], button, .
   // Filter enabled and visible element
   .cl_filter(el => !el.disabled && el.offsetParent !== null && !el.classList.contains('not-tabbable'));
 
-const kebabCase = str => str.replace(/[A-Z\u00C0-\u00D6\u00D8-\u00DE]/g, match => `-${match.toLowerCase()}`);
-
 export default {
   components: {
     ModalInner,
@@ -102,11 +100,15 @@ export default {
       'config',
     ]),
     currentModalComponent() {
-      if (!this.condig.modal) {
-        return '';
+      if (this.config.type) {
+        let componentName = this.config.type[0].toUpperCase();
+        componentName += this.config.type.slice(1);
+        componentName += 'Modal';
+        if (this.$options.components[componentName]) {
+          return componentName;
+        }
       }
-
-      return `${kebabCase(this.config.modal)}-modal`;
+      return null;
     },
   },
   methods: {

@@ -19,7 +19,7 @@
         <icon-close></icon-close>
       </button>
     </div>
-    <div class="explorer__tree" :class="{'explorer__tree--new-item': !newChildNode.isNil}" v-if="!light" tabindex="0">
+    <div class="explorer__tree" :class="{'explorer__tree--new-item': !newChildNode.isNil}" v-if="!light" tabindex="0" @keyup.delete="deleteItem()">
       <explorer-node :node="rootNode" :depth="0"></explorer-node>
     </div>
   </div>

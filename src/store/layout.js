@@ -1,7 +1,7 @@
 const minPadding = 20;
 const editorTopPadding = 10;
 const navigationBarEditButtonsWidth = (36 * 14) + 8; // 14 buttons + 1 spacer
-const navigationBarLeftButtonWidth = 38 + 4 + 15;
+const navigationBarLeftButtonWidth = 38 + 4 + 12;
 const navigationBarRightButtonWidth = 38 + 8;
 const navigationBarSpinnerWidth = 24 + 8 + 5; // 5 for left margin
 const navigationBarLocationWidth = 20;
@@ -23,7 +23,8 @@ const constants = {
 function computeStyles(state, getters, layoutSettings = getters['data/layoutSettings'], styles = {
   showNavigationBar: layoutSettings.showNavigationBar
     || !layoutSettings.showEditor
-    || state.content.revisionContent,
+    || state.content.revisionContent
+    || state.light,
   showStatusBar: layoutSettings.showStatusBar,
   showEditor: layoutSettings.showEditor,
   showSidePreview: layoutSettings.showSidePreview && layoutSettings.showEditor,

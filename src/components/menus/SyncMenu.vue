@@ -1,76 +1,81 @@
 <template>
   <div class="side-bar__panel side-bar__panel--menu">
-    <div class="side-bar__info" v-if="noToken">
-      <p>You have to <b>link an account</b> to start syncing files.</p>
+    <div class="side-bar__info" v-if="isCurrentTemp">
+      <p><b>{{currentFileName}}</b> can not be synchronized as it's a temporary file.</p>
     </div>
-    <div class="side-bar__info" v-if="syncLocations.length">
-      <p><b>{{currentFileName}}</b> is already synchronized.</p>
-      <menu-entry @click.native="requestSync">
-        <icon-sync slot="icon"></icon-sync>
-        <div>Synchronize now</div>
-        <span>Download / upload file changes.</span>
-      </menu-entry>
-      <menu-entry @click.native="manageSync">
-        <icon-view-list slot="icon"></icon-view-list>
-        <div>File synchronization</div>
-        <span>Manage current file synchronized locations.</span>
-      </menu-entry>
-    </div>
-    <hr>
-    <div v-for="token in googleDriveTokens" :key="token.sub">
-      <menu-entry @click.native="openGoogleDrive(token)">
+    <div v-else>
+      <div class="side-bar__info" v-if="noToken">
+        <p>You have to <b>link an account</b> to start syncing files.</p>
+      </div>
+      <div class="side-bar__info" v-if="syncLocations.length">
+        <p><b>{{currentFileName}}</b> is already synchronized.</p>
+        <menu-entry @click.native="requestSync">
+          <icon-sync slot="icon"></icon-sync>
+          <div>Synchronize now</div>
+          <span>Download / upload file changes.</span>
+        </menu-entry>
+        <menu-entry @click.native="manageSync">
+          <icon-view-list slot="icon"></icon-view-list>
+          <div>File synchronization</div>
+          <span>Manage current file synchronized locations.</span>
+        </menu-entry>
+      </div>
+      <hr>
+      <div v-for="token in googleDriveTokens" :key="token.sub">
+        <menu-entry @click.native="openGoogleDrive(token)">
+          <icon-provider slot="icon" provider-id="googleDrive"></icon-provider>
+          <div>Open from Google Drive</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+        <menu-entry @click.native="saveGoogleDrive(token)">
+          <icon-provider slot="icon" provider-id="googleDrive"></icon-provider>
+          <div>Save on Google Drive</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+      </div>
+      <div v-for="token in dropboxTokens" :key="token.sub">
+        <menu-entry @click.native="openDropbox(token)">
+          <icon-provider slot="icon" provider-id="dropbox"></icon-provider>
+          <div>Open from Dropbox</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+        <menu-entry @click.native="saveDropbox(token)">
+          <icon-provider slot="icon" provider-id="dropbox"></icon-provider>
+          <div>Save on Dropbox</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+      </div>
+      <div v-for="token in githubTokens" :key="token.sub">
+        <menu-entry @click.native="openGithub(token)">
+          <icon-provider slot="icon" provider-id="github"></icon-provider>
+          <div>Open from GitHub</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+        <menu-entry @click.native="saveGithub(token)">
+          <icon-provider slot="icon" provider-id="github"></icon-provider>
+          <div>Save on GitHub</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+        <menu-entry @click.native="saveGist(token)">
+          <icon-provider slot="icon" provider-id="gist"></icon-provider>
+          <div>Save on Gist</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+      </div>
+      <hr>
+      <menu-entry @click.native="addGoogleDriveAccount">
         <icon-provider slot="icon" provider-id="googleDrive"></icon-provider>
-        <div>Open from Google Drive</div>
-        <span>{{token.name}}</span>
+        <span>Add Google Drive account</span>
       </menu-entry>
-      <menu-entry @click.native="saveGoogleDrive(token)">
-        <icon-provider slot="icon" provider-id="googleDrive"></icon-provider>
-        <div>Save on Google Drive</div>
-        <span>{{token.name}}</span>
-      </menu-entry>
-    </div>
-    <div v-for="token in dropboxTokens" :key="token.sub">
-      <menu-entry @click.native="openDropbox(token)">
+      <menu-entry @click.native="addDropboxAccount">
         <icon-provider slot="icon" provider-id="dropbox"></icon-provider>
-        <div>Open from Dropbox</div>
-        <span>{{token.name}}</span>
+        <span>Add Dropbox account</span>
       </menu-entry>
-      <menu-entry @click.native="saveDropbox(token)">
-        <icon-provider slot="icon" provider-id="dropbox"></icon-provider>
-        <div>Save on Dropbox</div>
-        <span>{{token.name}}</span>
+      <menu-entry @click.native="addGithubAccount">
+        <icon-provider slot="icon" provider-id="github"></icon-provider>
+        <span>Add GitHub account</span>
       </menu-entry>
     </div>
-    <div v-for="token in githubTokens" :key="token.sub">
-      <menu-entry @click.native="openGithub(token)">
-        <icon-provider slot="icon" provider-id="github"></icon-provider>
-        <div>Open from GitHub</div>
-        <span>{{token.name}}</span>
-      </menu-entry>
-      <menu-entry @click.native="saveGithub(token)">
-        <icon-provider slot="icon" provider-id="github"></icon-provider>
-        <div>Save on GitHub</div>
-        <span>{{token.name}}</span>
-      </menu-entry>
-      <menu-entry @click.native="saveGist(token)">
-        <icon-provider slot="icon" provider-id="gist"></icon-provider>
-        <div>Save on Gist</div>
-        <span>{{token.name}}</span>
-      </menu-entry>
-    </div>
-    <hr>
-    <menu-entry @click.native="addGoogleDriveAccount">
-      <icon-provider slot="icon" provider-id="googleDrive"></icon-provider>
-      <span>Add Google Drive account</span>
-    </menu-entry>
-    <menu-entry @click.native="addDropboxAccount">
-      <icon-provider slot="icon" provider-id="dropbox"></icon-provider>
-      <span>Add Dropbox account</span>
-    </menu-entry>
-    <menu-entry @click.native="addGithubAccount">
-      <icon-provider slot="icon" provider-id="github"></icon-provider>
-      <span>Add GitHub account</span>
-    </menu-entry>
   </div>
 </template>
 
@@ -106,6 +111,9 @@ export default {
     ]),
     ...mapGetters('workspace', [
       'syncToken',
+    ]),
+    ...mapGetters('file', [
+      'isCurrentTemp',
     ]),
     ...mapGetters('syncLocation', {
       syncLocations: 'current',

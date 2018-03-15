@@ -2,11 +2,13 @@
   <nav class="navigation-bar" :class="{'navigation-bar--editor': styles.showEditor && !revisionContent}">
     <!-- Explorer -->
     <div class="navigation-bar__inner navigation-bar__inner--left navigation-bar__inner--button">
-      <button class="navigation-bar__button button" tour-step-anchor="explorer" @click="toggleExplorer()" v-title="'Toggle explorer'"><icon-folder></icon-folder></button>
+      <button class="navigation-bar__button button" v-if="light" @click="close()" v-title="'Close StackEdit'"><icon-close></icon-close></button>
+      <button class="navigation-bar__button button" v-else tour-step-anchor="explorer" @click="toggleExplorer()" v-title="'Toggle explorer'"><icon-folder></icon-folder></button>
     </div>
     <!-- Side bar -->
     <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--button">
-      <button class="navigation-bar__button navigation-bar__button--stackedit button" tour-step-anchor="menu" @click="toggleSideBar()" v-title="'Toggle side bar'"><icon-provider provider-id="stackedit"></icon-provider></button>
+      <a class="navigation-bar__button navigation-bar__button--stackedit button" v-if="light" href="app" target="_blank" v-title="'Open StackEdit'"><icon-provider provider-id="stackedit"></icon-provider></a>
+      <button class="navigation-bar__button navigation-bar__button--stackedit button" v-else tour-step-anchor="menu" @click="toggleSideBar()" v-title="'Toggle side bar'"><icon-provider provider-id="stackedit"></icon-provider></button>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--title flex flex--row">
       <!-- Spinner -->
@@ -57,6 +59,7 @@ import editorSvc from '../services/editorSvc';
 import syncSvc from '../services/syncSvc';
 import publishSvc from '../services/publishSvc';
 import animationSvc from '../services/animationSvc';
+import tempFileSvc from '../services/tempFileSvc';
 import utils from '../services/utils';
 
 export default {
@@ -68,6 +71,7 @@ export default {
   }),
   computed: {
     ...mapState([
+      'light',
       'offline',
     ]),
     ...mapState('queue', [
@@ -104,9 +108,7 @@ export default {
       }
       this.titleFakeElt.textContent = this.title;
       const width = this.titleFakeElt.getBoundingClientRect().width + 2; // 2px for the caret
-      return width < this.styles.titleMaxWidth
-        ? width
-        : this.styles.titleMaxWidth;
+      return Math.min(width, this.styles.titleMaxWidth);
     },
     titleScrolling() {
       const result = this.titleHover && !this.titleFocus;
@@ -178,9 +180,12 @@ export default {
       }
       this.titleInputElt.blur();
     },
+    close() {
+      tempFileSvc.close();
+    },
   },
   created() {
-    this.$store.watch(
+    this.$watch(
       () => this.$store.getters['file/current'].name,
       (name) => {
         this.title = name;
@@ -213,7 +218,7 @@ export default {
   float: left;
 
   &.navigation-bar__inner--button {
-    margin-right: 15px;
+    margin-right: 12px;
   }
 }
 
@@ -255,6 +260,7 @@ $button-size: 36px;
 .navigation-bar__button {
   width: $button-size;
   padding: 0 8px;
+  transition: opacity 0.25s;
 
   .navigation-bar__inner--button & {
     padding: 0 4px;
@@ -290,7 +296,7 @@ $button-size: 36px;
 
 .navigation-bar__title {
   margin: 0 4px;
-  font-size: 22px;
+  font-size: 21px;
 
   .layout--revision & {
     position: absolute;

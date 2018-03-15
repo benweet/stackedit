@@ -1,7 +1,7 @@
 const minPadding = 20;
 const editorTopPadding = 10;
 const navigationBarEditButtonsWidth = (36 * 14) + 8; // 14 buttons + 1 spacer
-const navigationBarLeftButtonWidth = 38 + 4 + 15;
+const navigationBarLeftButtonWidth = 38 + 4 + 12;
 const navigationBarRightButtonWidth = 38 + 8;
 const navigationBarSpinnerWidth = 24 + 8 + 5; // 5 for left margin
 const navigationBarLocationWidth = 20;
@@ -21,14 +21,18 @@ const constants = {
 };
 
 function computeStyles(state, getters, layoutSettings = getters['data/layoutSettings'], styles = {
-  showNavigationBar: !layoutSettings.showEditor || layoutSettings.showNavigationBar,
+  showNavigationBar: layoutSettings.showNavigationBar
+    || !layoutSettings.showEditor
+    || state.content.revisionContent
+    || state.light,
   showStatusBar: layoutSettings.showStatusBar,
   showEditor: layoutSettings.showEditor,
   showSidePreview: layoutSettings.showSidePreview && layoutSettings.showEditor,
   showPreview: layoutSettings.showSidePreview || !layoutSettings.showEditor,
-  showSideBar: layoutSettings.showSideBar,
-  showExplorer: layoutSettings.showExplorer,
+  showSideBar: layoutSettings.showSideBar && !state.light,
+  showExplorer: layoutSettings.showExplorer && !state.light,
   layoutOverflow: false,
+  hideLocations: state.light,
 }) {
   styles.innerHeight = state.layout.bodyHeight;
   if (styles.showNavigationBar) {
@@ -52,7 +56,8 @@ function computeStyles(state, getters, layoutSettings = getters['data/layoutSett
   }
 
   let doublePanelWidth = styles.innerWidth - constants.buttonBarWidth;
-  const showGutter = !!getters['discussion/currentDiscussion'];
+  // No commenting for temp files
+  const showGutter = !getters['file/isCurrentTemp'] && !!getters['discussion/currentDiscussion'];
   if (showGutter) {
     doublePanelWidth -= constants.gutterWidth;
   }

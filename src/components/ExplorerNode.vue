@@ -1,5 +1,5 @@
 <template>
-  <div class="explorer-node" :class="{'explorer-node--selected': isSelected, 'explorer-node--open': isOpen, 'explorer-node--drag-target': isDragTargetFolder}" @dragover.prevent @dragenter.stop="setDragTarget(node.item.id)" @dragleave.stop="isDragTarget && setDragTargetId()" @drop.prevent.stop="onDrop" @contextmenu="onContextMenu">
+  <div class="explorer-node" :class="{'explorer-node--selected': isSelected, 'explorer-node--open': isOpen, 'explorer-node--drag-target': isDragTargetFolder}" @dragover.prevent @dragenter.stop="node.noDrop || setDragTarget(node.item.id)" @dragleave.stop="isDragTarget && setDragTargetId()" @drop.prevent.stop="onDrop" @contextmenu="onContextMenu">
     <div class="explorer-node__item-editor" v-if="isEditing" :class="['explorer-node__item-editor--' + node.item.type]" :style="{paddingLeft: leftPadding}" draggable="true" @dragstart.stop.prevent>
       <input type="text" class="text-input" v-focus @blur="submitEdit()" @keydown.enter="submitEdit()" @keydown.esc="submitEdit(true)" v-model="editingNodeName">
     </div>
@@ -169,7 +169,7 @@ export default {
             perform: () => this.newItem(false),
           }, {
             name: 'New folder',
-            disabled: !this.node.isFolder || this.node.isTrash,
+            disabled: !this.node.isFolder || this.node.isTrash || this.node.isTemp,
             perform: () => this.newItem(true),
           }, {
             type: 'separator',
@@ -179,7 +179,6 @@ export default {
             perform: () => this.setEditingId(this.node.item.id),
           }, {
             name: 'Delete',
-            disabled: this.node.isTrash || this.node.item.parentId === 'trash',
             perform: () => this.deleteItem(),
           }],
         })

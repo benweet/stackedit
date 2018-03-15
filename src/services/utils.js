@@ -35,9 +35,9 @@ export default {
     this.queryParams = params;
     const serializedParams = Object.entries(this.queryParams).map(([key, value]) =>
       `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&');
-    const hash = serializedParams && `#${serializedParams}`;
+    const hash = `#${serializedParams}`;
     if (location.hash !== hash) {
-      location.hash = hash;
+      location.replace(hash);
     }
   },
   types: [
@@ -184,6 +184,10 @@ export default {
       document.head.removeChild(newBaseElt);
     }
     return result;
+  },
+  getHostname(url) {
+    urlParser.href = url;
+    return urlParser.hostname;
   },
   createHiddenIframe(url) {
     const iframeElt = document.createElement('iframe');

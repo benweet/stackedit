@@ -18,8 +18,8 @@ export default {
       : 'previewDimension';
     const scrollTop = elt.parentNode.scrollTop;
     let result;
-    if (this.sectionDescMeasuredList) {
-      this.sectionDescMeasuredList.some((sectionDesc, sectionIdx) => {
+    if (this.previewCtxMeasured) {
+      this.previewCtxMeasured.sectionDescList.some((sectionDesc, sectionIdx) => {
         if (scrollTop >= sectionDesc[dimensionKey].endOffset) {
           return false;
         }
@@ -40,8 +40,8 @@ export default {
    */
   restoreScrollPosition() {
     const scrollPosition = store.getters['contentState/current'].scrollPosition;
-    if (scrollPosition && this.sectionDescMeasuredList) {
-      const sectionDesc = this.sectionDescMeasuredList[scrollPosition.sectionIdx];
+    if (scrollPosition && this.previewCtxMeasured) {
+      const sectionDesc = this.previewCtxMeasured.sectionDescList[scrollPosition.sectionIdx];
       if (sectionDesc) {
         const editorScrollTop = sectionDesc.editorDimension.startOffset +
           (sectionDesc.editorDimension.height * scrollPosition.posInSection);
@@ -56,7 +56,10 @@ export default {
   /**
    * Get the offset in the preview corresponding to the offset of the markdown in the editor
    */
-  getPreviewOffset(editorOffset, sectionDescList = this.sectionDescWithDiffsList) {
+  getPreviewOffset(
+    editorOffset,
+    sectionDescList = (this.previewCtxWithDiffs || {}).sectionDescList,
+  ) {
     if (!sectionDescList) {
       return null;
     }
@@ -81,7 +84,10 @@ export default {
   /**
    * Get the offset of the markdown in the editor corresponding to the offset in the preview
    */
-  getEditorOffset(previewOffset, sectionDescList = this.sectionDescWithDiffsList) {
+  getEditorOffset(
+    previewOffset,
+    sectionDescList = (this.previewCtxWithDiffs || {}).sectionDescList,
+  ) {
     if (!sectionDescList) {
       return null;
     }

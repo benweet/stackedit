@@ -170,6 +170,7 @@ export default {
       ...getters.templates,
       ...additionalTemplates,
     }),
+    lastCreated: getter('lastCreated'),
     lastOpened: getter('lastOpened'),
     lastOpenedIds: (state, getters, rootState) => {
       const lastOpened = {
@@ -261,21 +262,18 @@ export default {
       });
       commit('setItem', itemTemplate('templates', dataToCommit));
     },
+    setLastCreated: setter('lastCreated'),
     setLastOpenedId: ({ getters, commit, dispatch, rootState }, fileId) => {
       const lastOpened = { ...getters.lastOpened };
       lastOpened[fileId] = Date.now();
-      commit('setItem', itemTemplate('lastOpened', lastOpened));
-      dispatch('cleanLastOpenedId');
-    },
-    cleanLastOpenedId: ({ getters, commit, rootState }) => {
-      const lastOpened = {};
-      const oldLastOpened = getters.lastOpened;
-      Object.entries(oldLastOpened).forEach(([fileId, date]) => {
-        if (rootState.file.itemMap[fileId]) {
-          lastOpened[fileId] = date;
+      // Remove entries that don't exist anymore
+      const cleanedLastOpened = {};
+      Object.entries(lastOpened).forEach(([id, value]) => {
+        if (rootState.file.itemMap[id]) {
+          cleanedLastOpened[id] = value;
         }
       });
-      commit('setItem', itemTemplate('lastOpened', lastOpened));
+      commit('setItem', itemTemplate('lastOpened', cleanedLastOpened));
     },
     setSyncData: setter('syncData'),
     patchSyncData: patcher('syncData'),

@@ -59,7 +59,7 @@ export default {
   created() {
     editorSvc.$on('sectionList', () => this.computeText());
     editorSvc.$on('selectionRange', () => this.computeText());
-    editorSvc.$on('previewText', () => this.computeHtml());
+    editorSvc.$on('previewCtx', () => this.computeHtml());
     editorSvc.$on('previewSelectionRange', () => this.computeHtml());
   },
 
@@ -92,7 +92,7 @@ export default {
         this.htmlSelection = true;
         if (!text) {
           this.htmlSelection = false;
-          text = editorSvc.previewText;
+          text = editorSvc.previewCtx.text;
         }
         if (text != null) {
           this.htmlStats.forEach((stat) => {

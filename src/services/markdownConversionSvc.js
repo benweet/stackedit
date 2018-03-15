@@ -165,6 +165,7 @@ const markdownConversionSvc = {
       lines.pop();
     }
     const parsingCtx = {
+      text,
       sections: [],
       converter,
       markdownState,
@@ -248,6 +249,7 @@ const markdownConversionSvc = {
       ];
     }
     return {
+      text: parsingCtx.text,
       sectionList: parsingCtx.sectionList,
       htmlSectionList,
       htmlSectionDiff,

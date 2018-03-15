@@ -69,13 +69,29 @@ export default {
   },
   getters: {
     nodeStructure: (state, getters, rootState, rootGetters) => {
+      const rootNode = new Node(emptyFolder(), [], true, true);
+
+      // Create Trash node
       const trashFolderNode = new Node(emptyFolder(), [], true);
       trashFolderNode.item.id = 'trash';
       trashFolderNode.item.name = 'Trash';
-      trashFolderNode.isTrash = true;
       trashFolderNode.noDrag = true;
+      trashFolderNode.isTrash = true;
+      trashFolderNode.parentNode = rootNode;
+
+      // Create Temp node
+      const tempFolderNode = new Node(emptyFolder(), [], true);
+      tempFolderNode.item.id = 'temp';
+      tempFolderNode.item.name = 'Temp';
+      tempFolderNode.noDrag = true;
+      tempFolderNode.noDrop = true;
+      tempFolderNode.isTemp = true;
+      tempFolderNode.parentNode = rootNode;
+
+      // Fill nodeMap with all file and folder nodes
       const nodeMap = {
         trash: trashFolderNode,
+        temp: tempFolderNode,
       };
       rootGetters['folder/items'].forEach((item) => {
         nodeMap[item.id] = new Node(item, [], true);
@@ -89,11 +105,12 @@ export default {
         ];
         nodeMap[item.id] = new Node(item, locations);
       });
-      const rootNode = new Node(emptyFolder(), [], true, true);
+
+      // Build the tree
       Object.entries(nodeMap).forEach(([, node]) => {
         let parentNode = nodeMap[node.item.parentId];
         if (!parentNode || !parentNode.isFolder) {
-          if (node.isTrash) {
+          if (node.isTrash || node.isTemp) {
             return;
           }
           parentNode = rootNode;
@@ -103,12 +120,20 @@ export default {
         } else {
           parentNode.files.push(node);
         }
+        node.parentNode = parentNode;
       });
       rootNode.sortChildren();
+
+      // Add Trash and Temp nodes
+      rootNode.folders.unshift(tempFolderNode);
+      tempFolderNode.files.forEach((node) => {
+        node.noDrop = true;
+      });
       if (trashFolderNode.files.length) {
         rootNode.folders.unshift(trashFolderNode);
       }
-      // Add a fake file at the end of the root folder to allow drag and drop into it.
+
+      // Add a fake file at the end of the root folder to allow drag and drop into it
       rootNode.files.push(fakeFileNode);
       return {
         nodeMap,
@@ -169,7 +194,9 @@ export default {
     },
     newItem({ getters, commit, dispatch }, isFolder) {
       let parentId = getters.selectedNodeFolder.item.id;
-      if (parentId === 'trash') {
+      if (parentId === 'trash' // Not allowed to create new items in the trash
+        || (isFolder && parentId === 'temp') // Not allowed to create new folders in the temp folder
+      ) {
         parentId = null;
       }
       dispatch('openNode', parentId);
@@ -186,34 +213,50 @@ export default {
       if (selectedNode.isTrash || selectedNode.item.parentId === 'trash') {
         return dispatch('modal/trashDeletion', null, { root: true });
       }
-      return dispatch(selectedNode.isFolder
-        ? 'modal/folderDeletion'
-        : 'modal/fileDeletion',
-        selectedNode.item,
-        { root: true },
-      )
+
+      // See if we have a dialog to show
+      let modalAction;
+      let moveToTrash = true;
+      if (selectedNode.isTemp) {
+        modalAction = 'modal/tempFolderDeletion';
+        moveToTrash = false;
+      } else if (selectedNode.item.parentId === 'temp') {
+        modalAction = 'modal/tempFileDeletion';
+        moveToTrash = false;
+      } else if (selectedNode.isFolder) {
+        modalAction = 'modal/folderDeletion';
+      }
+
+      return (modalAction
+        ? dispatch(modalAction, selectedNode.item, { root: true })
+        : Promise.resolve())
         .then(() => {
+          const deleteFile = (id) => {
+            if (moveToTrash) {
+              commit('file/patchItem', {
+                id,
+                parentId: 'trash',
+              }, { root: true });
+            } else {
+              dispatch('deleteFile', id, { root: true });
+            }
+          };
+
           if (selectedNode === getters.selectedNode) {
             const currentFileId = rootGetters['file/current'].id;
             let doClose = selectedNode.item.id === currentFileId;
             if (selectedNode.isFolder) {
-              const recursiveMoveToTrash = (folderNode) => {
-                folderNode.folders.forEach(recursiveMoveToTrash);
+              const recursiveDelete = (folderNode) => {
+                folderNode.folders.forEach(recursiveDelete);
                 folderNode.files.forEach((fileNode) => {
-                  commit('file/patchItem', {
-                    id: fileNode.item.id,
-                    parentId: 'trash',
-                  }, { root: true });
                   doClose = doClose || fileNode.item.id === currentFileId;
+                  deleteFile(fileNode.item.id);
                 });
                 commit('folder/deleteItem', folderNode.item.id, { root: true });
               };
-              recursiveMoveToTrash(selectedNode);
+              recursiveDelete(selectedNode);
             } else {
-              commit('file/patchItem', {
-                id: selectedNode.item.id,
-                parentId: 'trash',
-              }, { root: true });
+              deleteFile(selectedNode.item.id);
             }
             if (doClose) {
               // Close the current file by opening the last opened, not deleted one

@@ -19,7 +19,7 @@
         <icon-close></icon-close>
       </button>
     </div>
-    <div class="explorer__tree" :class="{'explorer__tree--new-item': !newChildNode.isNil}" tabindex="0">
+    <div class="explorer__tree" :class="{'explorer__tree--new-item': !newChildNode.isNil}" v-if="!light" tabindex="0" @keyup.delete="deleteItem()">
       <explorer-node :node="rootNode" :depth="0"></explorer-node>
     </div>
   </div>
@@ -34,6 +34,9 @@ export default {
     ExplorerNode,
   },
   computed: {
+    ...mapState([
+      'light',
+    ]),
     ...mapState('explorer', [
       'newChildNode',
     ]),
@@ -58,7 +61,7 @@ export default {
     },
   },
   created() {
-    this.$store.watch(
+    this.$watch(
       () => this.$store.getters['file/current'].id,
       (currentFileId) => {
         this.$store.commit('explorer/setSelectedId', currentFileId);

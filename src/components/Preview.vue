@@ -5,7 +5,7 @@
       </div>
       <div class="gutter" :style="{left: styles.previewGutterLeft + 'px'}">
         <comment-list v-if="styles.previewGutterWidth"></comment-list>
-        <preview-new-discussion-button></preview-new-discussion-button>
+        <preview-new-discussion-button v-if="!isCurrentTemp"></preview-new-discussion-button>
       </div>
     </div>
     <div v-if="!styles.showEditor" class="preview__corner">
@@ -32,9 +32,14 @@ export default {
   data: () => ({
     previewTop: true,
   }),
-  computed: mapGetters('layout', [
-    'styles',
-  ]),
+  computed: {
+    ...mapGetters('file', [
+      'isCurrentTemp',
+    ]),
+    ...mapGetters('layout', [
+      'styles',
+    ]),
+  },
   methods: {
     ...mapActions('data', [
       'toggleEditor',

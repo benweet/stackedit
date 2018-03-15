@@ -54,15 +54,15 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
   converter: null,
   parsingCtx: null,
   conversionCtx: null,
+  previewCtx: {
+    sectionDescList: [],
+  },
+  previewCtxMeasured: null,
+  previewCtxWithDiffs: null,
   sectionList: null,
-  sectionDescList: [],
-  sectionDescMeasuredList: null,
-  sectionDescWithDiffsList: null,
   selectionRange: null,
   previewSelectionRange: null,
   previewSelectionStartOffset: null,
-  previewHtml: null,
-  previewText: null,
 
   /**
    * Initialize the Prism grammar with the options
@@ -86,8 +86,10 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
    * Initialize the cledit editor with markdown-it section parser and Prism highlighter
    */
   initClEditor() {
-    this.sectionDescMeasuredList = null;
-    this.sectionDescWithDiffsList = null;
+    this.previewCtxMeasured = null;
+    editorSvc.$emit('previewCtxMeasured', null);
+    this.previewCtxWithDiffs = null;
+    editorSvc.$emit('previewCtxWithDiffs', null);
     const options = {
       sectionHighlighter: section => Prism.highlight(
         section.text, this.prismGrammars[section.data]),
@@ -119,7 +121,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
    * Refresh the preview with the result of `convert()`
    */
   refreshPreview() {
-    const newSectionDescList = [];
+    const sectionDescList = [];
     let sectionPreviewElt;
     let sectionTocElt;
     let sectionIdx = 0;
@@ -132,14 +134,14 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
       for (let i = 0; i < item[1].length; i += 1) {
         const section = this.conversionCtx.sectionList[sectionIdx];
         if (item[0] === 0) {
-          let sectionDesc = this.sectionDescList[sectionDescIdx];
+          let sectionDesc = this.previewCtx.sectionDescList[sectionDescIdx];
           sectionDescIdx += 1;
           if (sectionDesc.editorElt !== section.elt) {
             // Force textToPreviewDiffs computation
             sectionDesc = new SectionDesc(
               section, sectionDesc.previewElt, sectionDesc.tocElt, sectionDesc.html);
           }
-          newSectionDescList.push(sectionDesc);
+          sectionDescList.push(sectionDesc);
           previewHtml += sectionDesc.html;
           sectionIdx += 1;
           insertBeforePreviewElt = insertBeforePreviewElt.nextSibling;
@@ -187,20 +189,22 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
           }
 
           previewHtml += html;
-          newSectionDescList.push(new SectionDesc(section, sectionPreviewElt, sectionTocElt, html));
+          sectionDescList.push(new SectionDesc(section, sectionPreviewElt, sectionTocElt, html));
         }
       }
     });
 
-    this.sectionDescList = newSectionDescList;
-    this.previewHtml = previewHtml.replace(/^\s+|\s+$/g, '');
-    this.$emit('previewHtml', this.previewHtml);
     this.tocElt.classList[
       this.tocElt.querySelector('.cl-toc-section *') ? 'remove' : 'add'
     ]('toc-tab--empty');
 
-    this.previewText = this.previewElt.textContent;
-    this.$emit('previewText', this.previewText);
+    this.previewCtx = {
+      markdown: this.conversionCtx.text,
+      html: previewHtml.replace(/^\s+|\s+$/g, ''),
+      text: this.previewElt.textContent,
+      sectionDescList,
+    };
+    this.$emit('previewCtx', this.previewCtx);
     this.makeTextToPreviewDiffs();
 
     // Wait for images to load
@@ -217,22 +221,20 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
 
     Promise.all(loadedPromises)
       // Debounce if sections have already been measured
-      .then(() => this.measureSectionDimensions(!!this.sectionDescMeasuredList));
+      .then(() => this.measureSectionDimensions(!!this.previewCtxMeasured));
   },
 
   /**
    * Measure the height of each section in editor, preview and toc.
    */
-  measureSectionDimensions: allowDebounce((restoreScrollPosition) => {
-    if (editorSvc.sectionDescList &&
-      this.sectionDescList !== editorSvc.sectionDescMeasuredList
-    ) {
+  measureSectionDimensions: allowDebounce((restoreScrollPosition = false, force = false) => {
+    if (force || editorSvc.previewCtx !== editorSvc.previewCtxMeasured) {
       sectionUtils.measureSectionDimensions(editorSvc);
-      editorSvc.sectionDescMeasuredList = editorSvc.sectionDescList;
+      editorSvc.previewCtxMeasured = editorSvc.previewCtx;
       if (restoreScrollPosition) {
         editorSvc.restoreScrollPosition();
       }
-      editorSvc.$emit('sectionDescMeasuredList', editorSvc.sectionDescMeasuredList);
+      editorSvc.$emit('previewCtxMeasured', editorSvc.previewCtxMeasured);
     }
   }, 500),
 
@@ -241,12 +243,10 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
    * asynchronously unless there is only one section to compute.
    */
   makeTextToPreviewDiffs() {
-    if (editorSvc.sectionDescList &&
-      editorSvc.sectionDescList !== editorSvc.sectionDescWithDiffsList
-    ) {
+    if (editorSvc.previewCtx !== editorSvc.previewCtxWithDiffs) {
       const makeOne = () => {
         let hasOne = false;
-        const hasMore = editorSvc.sectionDescList
+        const hasMore = editorSvc.previewCtx.sectionDescList
           .some((sectionDesc) => {
             if (!sectionDesc.textToPreviewDiffs) {
               if (hasOne) {
@@ -264,9 +264,8 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
         if (hasMore) {
           setTimeout(() => makeOne(), 10);
         } else {
-          editorSvc.previewTextWithDiffsList = editorSvc.previewText;
-          editorSvc.sectionDescWithDiffsList = editorSvc.sectionDescList;
-          editorSvc.$emit('sectionDescWithDiffsList', editorSvc.sectionDescWithDiffsList);
+          editorSvc.previewCtxWithDiffs = editorSvc.previewCtx;
+          editorSvc.$emit('previewCtxWithDiffs', editorSvc.previewCtxWithDiffs);
         }
       };
       makeOne();
@@ -517,7 +516,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
     let lastContentId = null;
     let lastProperties;
     store.watch(
-      () => store.getters['content/current'].hash,
+      () => store.getters['content/currentChangeTrigger'],
       () => {
         const content = store.getters['content/current'];
         // Track ID changes
@@ -541,7 +540,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
         if (initClEditor) {
           this.initClEditor();
         }
-        // Apply possible text and discussion changes
+        // Apply potential text and discussion changes
         this.applyContent();
       }, {
         immediate: true,
@@ -555,7 +554,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
       });
 
     store.watch(() => utils.serializeObject(store.getters['layout/styles']),
-      () => this.measureSectionDimensions(false, true));
+      () => this.measureSectionDimensions(false, true, true));
 
     this.initHighlighters();
     this.$emit('inited');

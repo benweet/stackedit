@@ -1,3 +1,8 @@
+### v5.10
+
+- Added temporary folder
+- New iframe mode (see [here](https://benweet.github.io/stackedit.js/))
+
 ### v5.9
 
 - Added explorer context menu

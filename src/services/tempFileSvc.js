@@ -9,6 +9,11 @@ const contentText = utils.queryParams.contentText;
 const contentProperties = utils.queryParams.contentProperties;
 
 export default {
+  setReady() {
+    if (origin && window.parent) {
+      window.parent.postMessage({ type: 'ready' }, origin);
+    }
+  },
   closed: false,
   close() {
     if (!this.closed && origin && window.parent) {
@@ -22,9 +27,10 @@ export default {
     }
 
     store.commit('setLight', true);
+
     return store.dispatch('createFile', {
-      name: fileName,
-      text: contentText,
+      name: fileName || utils.getHostname(origin),
+      text: contentText || '\n',
       properties: contentProperties,
       parentId: 'temp',
     })
@@ -67,11 +73,11 @@ export default {
             const properties = utils.computeProperties(content.properties);
             window.parent.postMessage({
               type: 'fileChange',
-              file: {
+              payload: {
                 id: file.id,
                 name: currentFile.name,
                 content: {
-                  text: content.text,
+                  text: content.text.slice(0, -1), // Remove trailing LF
                   properties,
                   yamlProperties: content.properties,
                   html: editorSvc.previewCtx.html,
@@ -83,7 +89,7 @@ export default {
 
         // Watch preview refresh and file name changes
         editorSvc.$on('previewCtx', onChange);
-        store.$watch(() => store.getters['file/current'].name, onChange);
+        store.watch(() => store.getters['file/current'].name, onChange);
       });
   },
 };

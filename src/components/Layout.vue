@@ -119,8 +119,13 @@ export default {
     editorSvc.init(editorElt, previewElt, tocElt);
 
     // Focus on the editor every time reader mode is disabled
-    this.$watch(() => this.styles.showEditor,
-      showEditor => showEditor && editorSvc.clEditor.focus());
+    const focus = () => {
+      if (this.styles.showEditor) {
+        editorSvc.clEditor.focus();
+      }
+    };
+    setTimeout(focus, 100);
+    this.$watch(() => this.styles.showEditor, focus);
   },
   destroyed() {
     window.removeEventListener('resize', this.updateStyle);

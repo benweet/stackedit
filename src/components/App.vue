@@ -18,6 +18,7 @@ import SplashScreen from './SplashScreen';
 import syncSvc from '../services/syncSvc';
 import networkSvc from '../services/networkSvc';
 import sponsorSvc from '../services/sponsorSvc';
+import tempFileSvc from '../services/tempFileSvc';
 import timeSvc from '../services/timeSvc';
 import store from '../store';
 
@@ -94,6 +95,7 @@ export default {
         networkSvc.init();
         sponsorSvc.init();
         this.ready = true;
+        tempFileSvc.setReady();
       })
       .catch((err) => {
         if (err && err.message !== 'reload') {

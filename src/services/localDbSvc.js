@@ -6,6 +6,7 @@ import welcomeFile from '../data/welcomeFile.md';
 const dbVersion = 1;
 const dbStoreName = 'objects';
 const exportWorkspace = utils.queryParams.exportWorkspace;
+const silent = utils.queryParams.silent;
 const resetApp = utils.queryParams.reset;
 const deleteMarkerMaxAge = 1000;
 const checkSponsorshipAfter = (5 * 60 * 1000) + (30 * 1000); // tokenExpirationMargin + 30 sec
@@ -195,6 +196,10 @@ const localDbSvc = {
    * Write all changes from the store since previous transaction.
    */
   writeAll(storeItemMap, tx) {
+    if (silent) {
+      // Skip writing to DB in silent mode
+      return;
+    }
     const dbStore = tx.objectStore(dbStoreName);
     const incrementedTx = this.lastTx + 1;
 

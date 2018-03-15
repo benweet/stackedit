@@ -4,7 +4,11 @@
 
 > Full-featured, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.
 
-https://stackedit.io/.
+https://stackedit.io/
+
+### NEW!!! Integrate StackEdit in any website!
+
+See https://benweet.github.io/stackedit.js/
 
 ### StackEdit can:
 

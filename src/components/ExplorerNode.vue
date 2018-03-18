@@ -230,7 +230,7 @@ $item-font-size: 14px;
 .explorer-node__item-editor--folder,
 .explorer-node__new-child--folder {
   &::before {
-    content: '▸';
+    content: '▹';
     position: absolute;
     margin-left: -13px;
 

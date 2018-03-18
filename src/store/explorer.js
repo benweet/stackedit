@@ -129,9 +129,7 @@ export default {
       tempFolderNode.files.forEach((node) => {
         node.noDrop = true;
       });
-      if (trashFolderNode.files.length) {
-        rootNode.folders.unshift(trashFolderNode);
-      }
+      rootNode.folders.unshift(trashFolderNode);
 
       // Add a fake file at the end of the root folder to allow drag and drop into it
       rootNode.files.push(fakeFileNode);

@@ -189,7 +189,7 @@ export default {
         store.commit('userInfo/addItem', {
           id: res.body.id,
           name: res.body.displayName,
-          imageUrl: res.body.image.url,
+          imageUrl: (res.body.image.url || '').replace(/\bsz?=\d+$/, 'sz=40'),
         });
         return res.body;
       });

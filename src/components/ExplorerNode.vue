@@ -134,6 +134,9 @@ export default {
         return;
       }
       this.$store.commit('explorer/setDragSourceId', this.node.item.id);
+      // Fix for Firefox
+      // See https://stackoverflow.com/a/3977637/1333165
+      evt.dataTransfer.setData('Text', this.node.item.id);
     },
     onDrop() {
       const sourceNode = this.$store.getters['explorer/dragSourceNode'];
@@ -175,7 +178,7 @@ export default {
             type: 'separator',
           }, {
             name: 'Rename',
-            disabled: this.node.isTrash,
+            disabled: this.node.isTrash || this.node.isTemp,
             perform: () => this.setEditingId(this.node.item.id),
           }, {
             name: 'Delete',

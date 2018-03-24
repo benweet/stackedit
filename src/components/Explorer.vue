@@ -55,7 +55,7 @@ export default {
     ]),
     editItem() {
       const node = this.selectedNode;
-      if (!node.isTrash) {
+      if (!node.isTrash && !node.isTemp) {
         this.$store.commit('explorer/setEditingId', node.item.id);
       }
     },

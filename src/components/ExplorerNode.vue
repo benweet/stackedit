@@ -136,7 +136,7 @@ export default {
       this.$store.commit('explorer/setDragSourceId', this.node.item.id);
       // Fix for Firefox
       // See https://stackoverflow.com/a/3977637/1333165
-      evt.dataTransfer.setData('Text', this.node.item.id);
+      evt.dataTransfer.setData('Text', '');
     },
     onDrop() {
       const sourceNode = this.$store.getters['explorer/dragSourceNode'];

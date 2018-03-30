@@ -6,7 +6,7 @@ node_js:
 services:
   - docker
 
-before_install:
+before_deploy:
   - docker build -t benweet/stackedit .
 
 deploy:

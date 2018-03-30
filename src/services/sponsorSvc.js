@@ -23,8 +23,11 @@ const isGoogleSponsor = () => {
 
 const checkPayment = () => {
   const currentDate = Date.now();
-  if (!isGoogleSponsor() && networkSvc.isUserActive() && !store.state.offline &&
-    lastCheck + checkPaymentEvery < currentDate
+  if (!isGoogleSponsor()
+    && networkSvc.isUserActive()
+    && !store.state.offline
+    && !store.state.light
+    && lastCheck + checkPaymentEvery < currentDate
   ) {
     lastCheck = currentDate;
     getMonetize()

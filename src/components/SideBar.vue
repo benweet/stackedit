@@ -75,7 +75,7 @@ export default {
   }),
   computed: {
     panel() {
-      return this.$store.getters['data/layoutSettings'].sideBarPanel;
+      return !this.$store.state.light && this.$store.getters['data/layoutSettings'].sideBarPanel;
     },
     panelName() {
       return panelNames[this.panel];

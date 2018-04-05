@@ -14,6 +14,8 @@
       <br>
       <a target="_blank" href="https://community.stackedit.io/">Community</a>
       <hr>
+      For commercial support and custom development, please <a href="mailto:stackedit.project@gmail.com">contact us</a>.
+      <hr>
       <h3>FAQ</h3>
       <div class="faq" v-html="faq"></div>
       <hr>

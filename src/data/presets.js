@@ -31,6 +31,18 @@ export default {
       fence: true,
     },
   }],
+  gfm: [zero, {
+    markdown: {
+      breaks: true,
+      del: true,
+      fence: true,
+      linkify: true,
+      table: true,
+    },
+    emoji: {
+      enabled: true,
+    },
+  }],
   default: [zero, {
     markdown: {
       abbr: true,

@@ -12,12 +12,14 @@
 #date: YYYY-MM-DD HH:MM:SS
 
 ## Extensions configuration
-## Preset can be `default`, `commonmark` or `zero`
-## Use preset `zero` to enable extensions manually.
+## Preset can be `default`, `commonmark`, `gfm` or `zero`.
+## Use preset `zero` to manually switch on extensions.
+
 extensions:
   preset: default
 
-  ## Markdown extensions
+  ## Markdown extension
+
   #markdown:
     #abbr: true
     #breaks: true
@@ -32,12 +34,12 @@ extensions:
     #typographer: true
 
   ## Emoji extension
+
   #emoji:
-    ## Support for emojis & emoticons
     #enabled: true
 
-    ## Shortcuts like :) :-(
-    ## Disabled in the default preset.
+    ## Enable shortcuts like :) :-(
+    ## These are disabled by default.
     #shortcuts: false
 
   ## Katex extension
@@ -45,13 +47,14 @@ extensions:
   ##   $...$ for inline formulas
   ##   $$...$$ for displayed formulas.
   ## See https://math.meta.stackexchange.com/questions/5020
+
   #katex:
     #enabled: true
 
   ## Mermaid extension
-  ## Convert code blocks starting with:
-  ##   ```mermaid
+  ## Convert code blocks starting with ```mermaid
   ## into diagrams and flowcharts.
   ## See https://mermaidjs.github.io/
+
   #mermaid:
     #enabled: true

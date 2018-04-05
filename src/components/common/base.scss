@@ -111,7 +111,8 @@ pre > code {
   display: block;
   padding: 0.5em;
   -webkit-text-size-adjust: none;
-  white-space: pre-wrap;
+  overflow-x: auto;
+  white-space: pre;
 }
 
 .toc ul {

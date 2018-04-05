@@ -13,7 +13,9 @@
       StackEdit on <a target="_blank" href="https://twitter.com/stackedit/">Twitter</a>
       <br>
       <a target="_blank" href="https://community.stackedit.io/">Community</a>
-      <hr>
+      <div class="modal__info">
+      For commercial support or custom development, please <a href="mailto:stackedit.project@gmail.com">send us an email</a>.
+      </div>
       <h3>FAQ</h3>
       <div class="faq" v-html="faq"></div>
       <hr>

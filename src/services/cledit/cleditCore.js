@@ -335,6 +335,7 @@ function cledit(contentElt, scrollEltOpt, isMarkdown = false) {
     });
 
     turndownService = new TurndownService(store.getters['data/computedSettings'].turndown);
+    turndownService.escape = str => str; // Disable escaping
   }
 
   contentElt.addEventListener('paste', (evt) => {
@@ -347,7 +348,7 @@ function cledit(contentElt, scrollEltOpt, isMarkdown = false) {
       if (turndownService) {
         try {
           const html = clipboardData.getData('text/html');
-          if (html && !clipboardData.getData('text/css')) {
+          if (html) {
             const sanitizedHtml = htmlSanitizer.sanitizeHtml(html)
               .replace(/&#160;/g, ' '); // Replace non-breaking spaces with classic spaces
             if (sanitizedHtml) {

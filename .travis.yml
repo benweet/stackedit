@@ -1,3 +1,16 @@
 language: node_js
+
 node_js:
   - "8"
+
+services:
+  - docker
+
+before_deploy:
+  - docker build -t benweet/stackedit .
+
+deploy:
+  provider: script
+  script: bash build/docker-push-tag.sh
+  on:
+    tags: true

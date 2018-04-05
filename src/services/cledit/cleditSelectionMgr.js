@@ -166,7 +166,7 @@ function SelectionMgr(editor) {
       let previousSibling = node.previousSibling;
       while (previousSibling) {
         i += 1;
-        previousSibling = node.previousSibling;
+        previousSibling = previousSibling.previousSibling;
       }
       return i;
     }

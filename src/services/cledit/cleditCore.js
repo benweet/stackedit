@@ -3,7 +3,7 @@ import TurndownService from 'turndown/lib/turndown.browser.umd';
 import htmlSanitizer from '../../libs/htmlSanitizer';
 import store from '../../store';
 
-function cledit(contentElt, scrollEltOpt) {
+function cledit(contentElt, scrollEltOpt, isMarkdown = false) {
   const scrollElt = scrollEltOpt || contentElt;
   const editor = {
     $contentElt: contentElt,
@@ -314,25 +314,28 @@ function cledit(contentElt, scrollEltOpt) {
     }, 1);
   });
 
-  contentElt.addEventListener('copy', (evt) => {
-    if (evt.clipboardData) {
-      evt.clipboardData.setData('text/plain', selectionMgr.getSelectedText());
-      evt.preventDefault();
-    }
-  });
+  let turndownService;
+  if (isMarkdown) {
+    contentElt.addEventListener('copy', (evt) => {
+      if (evt.clipboardData) {
+        evt.clipboardData.setData('text/plain', selectionMgr.getSelectedText());
+        evt.preventDefault();
+      }
+    });
 
-  contentElt.addEventListener('cut', (evt) => {
-    if (evt.clipboardData) {
-      evt.clipboardData.setData('text/plain', selectionMgr.getSelectedText());
-      evt.preventDefault();
-      replace(selectionMgr.selectionStart, selectionMgr.selectionEnd, '');
-    } else {
-      undoMgr.setCurrentMode('single');
-    }
-    adjustCursorPosition();
-  });
+    contentElt.addEventListener('cut', (evt) => {
+      if (evt.clipboardData) {
+        evt.clipboardData.setData('text/plain', selectionMgr.getSelectedText());
+        evt.preventDefault();
+        replace(selectionMgr.selectionStart, selectionMgr.selectionEnd, '');
+      } else {
+        undoMgr.setCurrentMode('single');
+      }
+      adjustCursorPosition();
+    });
 
-  const turndownService = new TurndownService(store.getters['data/computedSettings'].turndown);
+    turndownService = new TurndownService(store.getters['data/computedSettings'].turndown);
+  }
 
   contentElt.addEventListener('paste', (evt) => {
     undoMgr.setCurrentMode('single');
@@ -341,17 +344,19 @@ function cledit(contentElt, scrollEltOpt) {
     let clipboardData = evt.clipboardData;
     if (clipboardData) {
       data = clipboardData.getData('text/plain');
-      try {
-        const html = clipboardData.getData('text/html');
-        if (html && !clipboardData.getData('text/css')) {
-          const sanitizedHtml = htmlSanitizer.sanitizeHtml(html)
-            .replace(/&#160;/g, ' '); // Replace non-breaking spaces with classic spaces
-          if (sanitizedHtml) {
-            data = turndownService.turndown(sanitizedHtml);
+      if (turndownService) {
+        try {
+          const html = clipboardData.getData('text/html');
+          if (html && !clipboardData.getData('text/css')) {
+            const sanitizedHtml = htmlSanitizer.sanitizeHtml(html)
+              .replace(/&#160;/g, ' '); // Replace non-breaking spaces with classic spaces
+            if (sanitizedHtml) {
+              data = turndownService.turndown(sanitizedHtml);
+            }
           }
+        } catch (e) {
+          // Ignore
         }
-      } catch (e) {
-        // Ignore
       }
     } else {
       clipboardData = window.clipboardData;

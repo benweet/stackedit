@@ -1,6 +1,7 @@
 import yaml from 'js-yaml';
 import '../libs/clunderscore';
-import defaultProperties from '../data/defaultFileProperties.yml';
+import defaultPropertiesYaml from '../data/defaultFileProperties.yml';
+import presets from '../data/presets';
 
 const origin = `${location.protocol}//${location.host}`;
 
@@ -23,8 +24,46 @@ const parseQueryParams = (params) => {
   return result;
 };
 
+// For utils.computeProperties()
+const deepOverride = (obj, opt) => {
+  if (obj === undefined) {
+    return opt;
+  }
+  const objType = Object.prototype.toString.call(obj);
+  const optType = Object.prototype.toString.call(opt);
+  if (objType !== optType) {
+    return obj;
+  }
+  if (objType !== '[object Object]') {
+    return opt === undefined ? obj : opt;
+  }
+  Object.keys({
+    ...obj,
+    ...opt,
+  }).forEach((key) => {
+    obj[key] = deepOverride(obj[key], opt[key]);
+  });
+  return obj;
+};
+
 // For utils.addQueryParams()
 const urlParser = document.createElement('a');
+
+const deepCopy = (obj) => {
+  if (obj == null) {
+    return obj;
+  }
+  return JSON.parse(JSON.stringify(obj));
+};
+
+// Build presets
+Object.keys(presets).forEach((key) => {
+  let preset = deepCopy(presets[key][0]);
+  if (presets[key][1]) {
+    preset = deepOverride(preset, presets[key][1]);
+  }
+  presets[key] = preset;
+});
 
 export default {
   cleanTrashAfter: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -65,9 +104,7 @@ export default {
   sanitizeName(name) {
     return `${name || ''}`.slice(0, 250) || 'Untitled';
   },
-  deepCopy(obj) {
-    return obj == null ? obj : JSON.parse(JSON.stringify(obj));
-  },
+  deepCopy,
   serializeObject(obj) {
     return obj === undefined ? obj : JSON.stringify(obj, (key, value) => {
       if (Object.prototype.toString.call(value) !== '[object Object]') {
@@ -118,26 +155,13 @@ export default {
   },
   computeProperties(yamlProperties) {
     const customProperties = yaml.safeLoad(yamlProperties);
-    const properties = yaml.safeLoad(defaultProperties);
-    const override = (obj, opt) => {
-      const objType = Object.prototype.toString.call(obj);
-      const optType = Object.prototype.toString.call(opt);
-      if (obj === undefined) {
-        return opt;
-      } else if (objType !== optType) {
-        return obj;
-      } else if (objType !== '[object Object]') {
-        return opt === undefined ? obj : opt;
-      }
-      Object.keys({
-        ...obj,
-        ...opt,
-      }).forEach((key) => {
-        obj[key] = override(obj[key], opt[key]);
-      });
-      return obj;
-    };
-    return override(properties, customProperties);
+    const defaultProperties = yaml.safeLoad(defaultPropertiesYaml);
+    const properties = deepOverride(defaultProperties, customProperties);
+    const preset = deepCopy(presets[properties.extensions.preset] || presets.default);
+    const extensions = deepOverride(preset, properties.extensions);
+    extensions.preset = properties.extensions.preset;
+    properties.extensions = extensions;
+    return properties;
   },
   randomize(value) {
     return Math.floor((1 + (Math.random() * 0.2)) * value);

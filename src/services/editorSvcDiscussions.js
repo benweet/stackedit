@@ -114,7 +114,7 @@ function reversePatches(patches) {
 
 export default {
   createClEditor(editorElt) {
-    this.clEditor = cledit(editorElt, editorElt.parentNode);
+    this.clEditor = cledit(editorElt, editorElt.parentNode, true);
     clEditor = this.clEditor;
     clEditor.on('contentChanged', (text) => {
       const oldContent = store.getters['content/current'];

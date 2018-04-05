@@ -49,7 +49,7 @@ wkhtmltopdf:
   marginRight: 25
   marginBottom: 25
   marginLeft: 25
-  # A3, A4, Legal or Letter
+  # `A3`, `A4`, `Legal` or `Letter`
   pageSize: A4
 
 # Options passed to pandoc

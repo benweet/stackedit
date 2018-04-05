@@ -80,7 +80,7 @@ export default {
   mounted() {
     const preElt = this.$el.querySelector('pre.markdown-highlighting');
     const scrollerElt = this.$el.querySelector('.comment__text-inner');
-    const clEditor = cledit(preElt, scrollerElt);
+    const clEditor = cledit(preElt, scrollerElt, true);
     clEditor.init({
       sectionHighlighter: section => Prism.highlight(
         section.text, editorSvc.prismGrammars[section.data]),

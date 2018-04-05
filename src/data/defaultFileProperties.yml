@@ -1,6 +1,6 @@
-# File properties can contain metadata used
-# for your publications (Wordpress, Blogger...).
-# For example:
+## File properties can contain metadata used
+## for your publications (Wordpress, Blogger...).
+## For example:
 
 #title: My article
 #author:
@@ -11,53 +11,47 @@
 #status: draft
 #date: YYYY-MM-DD HH:MM:SS
 
-# Extension configuration
+## Extensions configuration
+## Preset can be `default`, `commonmark` or `zero`
+## Use preset `zero` to enable extensions manually.
 extensions:
+  preset: default
 
-  # Markdown extensions
-  markdown:
-    abbr: true
-    breaks: true
-    deflist: true
-    del: true
-    fence: true
-    footnote: true
-    linkify: true
-    sub: true
-    sup: true
-    table: true
-    typographer: true
-    # Enable strict CommonMark:
-    #abbr: false
-    #breaks: false
-    #deflist: false
-    #del: false
-    #footnote: false
-    #linkify: false
-    #sub: false
-    #sup: false
-    #table: false
-    #typographer: false
+  ## Markdown extensions
+  #markdown:
+    #abbr: true
+    #breaks: true
+    #deflist: true
+    #del: true
+    #fence: true
+    #footnote: true
+    #linkify: true
+    #sub: true
+    #sup: true
+    #table: true
+    #typographer: true
 
-  # Emoji extension
-  emoji:
-    # Enable support for emojis & emoticons
-    enabled: true
-    # Enable shortcuts like :) :-(
-    shortcuts: false
+  ## Emoji extension
+  #emoji:
+    ## Support for emojis & emoticons
+    #enabled: true
 
-  # Katex extension
-  # Render LaTeX mathematical expressions by using:
-  #   $...$ for inline formulas
-  #   $$...$$ for displayed formulas.
-  # See https://math.meta.stackexchange.com/questions/5020
-  katex:
-    enabled: true
+    ## Shortcuts like :) :-(
+    ## Disabled in the default preset.
+    #shortcuts: false
 
-  # Mermaid extension
-  # Convert code blocks starting with:
-  #   ```mermaid
-  # into diagrams and flowcharts.
-  # See https://mermaidjs.github.io/
-  mermaid:
-    enabled: true
+  ## Katex extension
+  ## Render LaTeX mathematical expressions by using:
+  ##   $...$ for inline formulas
+  ##   $$...$$ for displayed formulas.
+  ## See https://math.meta.stackexchange.com/questions/5020
+  #katex:
+    #enabled: true
+
+  ## Mermaid extension
+  ## Convert code blocks starting with:
+  ##   ```mermaid
+  ## into diagrams and flowcharts.
+  ## See https://mermaidjs.github.io/
+  #mermaid:
+    #enabled: true

@@ -20,12 +20,14 @@ if (NODE_ENV === 'production') {
       OfflinePluginRuntime.applyUpdate();
     },
     onUpdated: () => {
-      localDbSvc.sync()
-        .then(() => {
-          localStorage.updated = true;
-          // Reload the webpage to load into the new version
-          location.reload();
-        });
+      if (!store.state.light) {
+        localDbSvc.sync()
+          .then(() => {
+            localStorage.updated = true;
+            // Reload the webpage to load into the new version
+            location.reload();
+          });
+      }
     },
   });
 }

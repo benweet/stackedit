@@ -14,6 +14,7 @@ function cledit(contentElt, scrollEltOpt, isMarkdown = false) {
   cledit.Utils.createEventHooks(editor);
   const debounce = cledit.Utils.debounce;
 
+  contentElt.setAttribute('tabindex', '0'); // To have focus even when disabled
   editor.toggleEditable = (isEditable) => {
     contentElt.contentEditable = isEditable == null ? !contentElt.contentEditable : isEditable;
   };

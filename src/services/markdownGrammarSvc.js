@@ -150,6 +150,16 @@ export default {
       pattern: /^ {0,3}([*\-_] *){3,}$/gm,
     };
 
+    if (options.tasklist) {
+      grammars.list.task = {
+        pattern: /^\[[ xX]\] /,
+        inside: {
+          cl: /[[\]]/,
+          strong: /[xX]/,
+        },
+      };
+    }
+
     const defs = {};
     if (options.footnote) {
       defs.fndef = {
@@ -335,6 +345,16 @@ export default {
         },
       };
     }
+    if (options.mark) {
+      rest.mark = {
+        pattern: /(^|[^\w*])(==)[\s\S]*?\2(?=([^\w*]|$))/gm,
+        lookbehind: true,
+        inside: {
+          cl: /==/,
+          'cl-mark-text': /[^=]+/,
+        },
+      };
+    }
     if (options.sub) {
       rest.sub = {
         pattern: /(~)(?=\S)(.*?\S)\1/gm,
@@ -378,6 +398,9 @@ export default {
     rest.em.inside.rest = restLight;
     if (options.del) {
       rest.del.inside.rest = restLight;
+    }
+    if (options.mark) {
+      rest.mark.inside.rest = restLight;
     }
 
     const inside = {

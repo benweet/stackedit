@@ -165,6 +165,14 @@ img {
   max-width: 100%;
 }
 
+.task-list-item {
+  list-style-type: none;
+}
+
+.task-list-item-checkbox {
+  margin: 0 0.2em 0 -1.3em;
+}
+
 .footnote {
   font-size: 0.8em;
   position: relative;

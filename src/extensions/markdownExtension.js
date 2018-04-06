@@ -5,7 +5,7 @@ import markdownitFootnote from 'markdown-it-footnote';
 import markdownitSub from 'markdown-it-sub';
 import markdownitSup from 'markdown-it-sup';
 import markdownitMark from 'markdown-it-mark';
-import markdownitTasklist from 'markdown-it-task-lists';
+import markdownitTasklist from './libs/markdownItTasklist';
 import extensionSvc from '../services/extensionSvc';
 
 const coreBaseRules = [
@@ -185,10 +185,21 @@ extensionSvc.onInitConverter(0, (markdown, options) => {
 });
 
 extensionSvc.onSectionPreview((elt) => {
+  // Highlight with Prism
   elt.querySelectorAll('.prism').cl_each((prismElt) => {
     if (!prismElt.highlightedWithPrism) {
       Prism.highlightElement(prismElt);
       prismElt.highlightedWithPrism = true;
     }
+  });
+
+  // Transform task list spans into checkboxes
+  elt.querySelectorAll('span.task-list-item-checkbox').cl_each((spanElt) => {
+    const checkboxElt = document.createElement('input');
+    checkboxElt.type = 'checkbox';
+    checkboxElt.className = 'task-list-item-checkbox';
+    checkboxElt.checked = spanElt.classList.contains('checked');
+    checkboxElt.disabled = 'disabled';
+    spanElt.parentNode.replaceChild(checkboxElt, spanElt);
   });
 });

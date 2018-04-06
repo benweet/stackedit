@@ -241,6 +241,11 @@
     text-decoration: line-through;
   }
 
+  .cl-mark-text {
+    background-color: #ff0;
+    color: $editor-color-light-low;
+  }
+
   .url,
   .email,
   .cl-underlined-text {

@@ -7,6 +7,7 @@ import markdownitImgsize from 'markdown-it-imsize';
 import markdownitSub from 'markdown-it-sub';
 import markdownitSup from 'markdown-it-sup';
 import markdownitTasklist from './libs/markdownItTasklist';
+import markdownitAnchor from './libs/markdownItAnchor';
 import extensionSvc from '../services/extensionSvc';
 
 const coreBaseRules = [
@@ -106,58 +107,7 @@ extensionSvc.onInitConverter(0, (markdown, options) => {
   if (options.tasklist) {
     markdown.use(markdownitTasklist);
   }
-
-  markdown.core.ruler.before('replacements', 'anchors', (state) => {
-    const anchorHash = {};
-    let headingOpenToken;
-    let headingContent;
-    state.tokens.forEach((token) => {
-      if (token.type === 'heading_open') {
-        headingContent = '';
-        headingOpenToken = token;
-      } else if (token.type === 'heading_close') {
-        headingOpenToken.headingContent = headingContent;
-
-        // According to http://pandoc.org/README.html#extension-auto_identifiers
-        let slug = headingContent
-          .replace(/\s/g, '-') // Replace all spaces and newlines with hyphens
-          .replace(/[\0-,/:-@[-^`{-~]/g, '') // Remove all punctuation, except underscores, hyphens, and periods
-          .toLowerCase(); // Convert all alphabetic characters to lowercase
-
-        // Remove everything up to the first letter
-        let i;
-        for (i = 0; i < slug.length; i += 1) {
-          const charCode = slug.charCodeAt(i);
-          if ((charCode >= 0x61 && charCode <= 0x7A) || charCode > 0x7E) {
-            break;
-          }
-        }
-
-        // If nothing left after this, use `section`
-        slug = slug.slice(i) || 'section';
-
-        let anchor = slug;
-        let index = 1;
-        while (Object.prototype.hasOwnProperty.call(anchorHash, anchor)) {
-          anchor = `${slug}-${index}`;
-          index += 1;
-        }
-        anchorHash[anchor] = true;
-        headingOpenToken.headingAnchor = anchor;
-        headingOpenToken.attrs = [
-          ['id', anchor],
-        ];
-        headingOpenToken = undefined;
-      } else if (headingOpenToken) {
-        headingContent += token.children.reduce((result, child) => {
-          if (child.type !== 'footnote_ref') {
-            return result + child.content;
-          }
-          return result;
-        }, '');
-      }
-    });
-  });
+  markdown.use(markdownitAnchor);
 
   // Wrap tables into a div for scrolling
   markdown.renderer.rules.table_open = (tokens, idx, opts) =>
@@ -188,22 +138,24 @@ extensionSvc.onInitConverter(0, (markdown, options) => {
   };
 });
 
-extensionSvc.onSectionPreview((elt) => {
+extensionSvc.onSectionPreview((elt, options, isEditor) => {
   // Highlight with Prism
   elt.querySelectorAll('.prism').cl_each((prismElt) => {
-    if (!prismElt.highlightedWithPrism) {
+    if (!prismElt.$highlightedWithPrism) {
       Prism.highlightElement(prismElt);
-      prismElt.highlightedWithPrism = true;
+      prismElt.$highlightedWithPrism = true;
     }
   });
 
-  // Transform task list spans into checkboxes
+  // Transform task spans into checkboxes
   elt.querySelectorAll('span.task-list-item-checkbox').cl_each((spanElt) => {
     const checkboxElt = document.createElement('input');
     checkboxElt.type = 'checkbox';
     checkboxElt.className = 'task-list-item-checkbox';
     checkboxElt.checked = spanElt.classList.contains('checked');
-    checkboxElt.disabled = 'disabled';
+    if (!isEditor) {
+      checkboxElt.disabled = 'disabled';
+    }
     spanElt.parentNode.replaceChild(checkboxElt, spanElt);
   });
 });

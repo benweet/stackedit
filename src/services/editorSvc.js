@@ -167,7 +167,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
           } else {
             this.previewElt.appendChild(sectionPreviewElt);
           }
-          extensionSvc.sectionPreview(sectionPreviewElt, this.options);
+          extensionSvc.sectionPreview(sectionPreviewElt, this.options, true);
           loadingImages = [
             ...loadingImages,
             ...Array.prototype.slice.call(sectionPreviewElt.getElementsByTagName('img')),

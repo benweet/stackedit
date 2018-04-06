@@ -29,9 +29,9 @@ export default {
     });
   },
 
-  sectionPreview(elt, options) {
+  sectionPreview(elt, options, isEditor) {
     sectionPreviewListeners.forEach((listener) => {
-      listener(elt, options);
+      listener(elt, options, isEditor);
     });
   },
 };

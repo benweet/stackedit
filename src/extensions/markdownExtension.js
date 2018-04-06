@@ -2,9 +2,10 @@ import Prism from 'prismjs';
 import markdownitAbbr from 'markdown-it-abbr';
 import markdownitDeflist from 'markdown-it-deflist';
 import markdownitFootnote from 'markdown-it-footnote';
+import markdownitMark from 'markdown-it-mark';
+import markdownitImgsize from 'markdown-it-imsize';
 import markdownitSub from 'markdown-it-sub';
 import markdownitSup from 'markdown-it-sup';
-import markdownitMark from 'markdown-it-mark';
 import markdownitTasklist from './libs/markdownItTasklist';
 import extensionSvc from '../services/extensionSvc';
 
@@ -89,6 +90,9 @@ extensionSvc.onInitConverter(0, (markdown, options) => {
   }
   if (options.footnote) {
     markdown.use(markdownitFootnote);
+  }
+  if (options.imgsize) {
+    markdown.use(markdownitImgsize);
   }
   if (options.mark) {
     markdown.use(markdownitMark);

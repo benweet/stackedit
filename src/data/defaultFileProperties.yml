@@ -27,6 +27,7 @@ extensions:
     #del: true
     #fence: true
     #footnote: true
+    #imgsize: true
     #linkify: true
     #mark: true
     #sub: true

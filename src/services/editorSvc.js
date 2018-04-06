@@ -416,17 +416,21 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
 
     const imgCache = Object.create(null);
 
+    const hashImgElt = imgElt => `${imgElt.src}:${imgElt.width || -1}:${imgElt.height || -1}`;
+
     const addToImgCache = (imgElt) => {
-      let entries = imgCache[imgElt.src];
+      const hash = hashImgElt(imgElt);
+      let entries = imgCache[hash];
       if (!entries) {
         entries = [];
-        imgCache[imgElt.src] = entries;
+        imgCache[hash] = entries;
       }
       entries.push(imgElt);
     };
 
-    const getFromImgCache = (src) => {
-      const entries = imgCache[src];
+    const getFromImgCache = (imgEltsToCache) => {
+      const hash = hashImgElt(imgEltsToCache);
+      const entries = imgCache[hash];
       if (!entries) {
         return null;
       }
@@ -469,6 +473,17 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
                 imgElt.style.display = '';
               };
               imgElt.src = uri;
+              // Take img size into account
+              const sizeElt = imgTokenElt.querySelector('.token.cl-size');
+              if (sizeElt) {
+                const match = sizeElt.textContent.match(/=(\d*)x(\d*)/);
+                if (match[1]) {
+                  imgElt.width = parseInt(match[1], 10);
+                }
+                if (match[2]) {
+                  imgElt.height = parseInt(match[2], 10);
+                }
+              }
               imgEltsToCache.push(imgElt);
             }
             const imgTokenWrapper = document.createElement('span');
@@ -483,7 +498,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
 
     this.clEditor.highlighter.on('highlighted', () => {
       imgEltsToCache.forEach((imgElt) => {
-        const cachedImgElt = getFromImgCache(imgElt.src);
+        const cachedImgElt = getFromImgCache(imgElt);
         if (cachedImgElt) {
           // Found a previously loaded image that has just been released
           imgElt.parentNode.replaceChild(cachedImgElt, imgElt);

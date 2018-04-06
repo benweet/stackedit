@@ -277,6 +277,9 @@ export default {
         },
       },
     };
+    if (options.imgsize) {
+      rest.img.inside['cl cl-size'] = /=\d*x\d*/;
+    }
     rest.link = {
       pattern: /\[.*?\]\(.+?\)/gm,
       inside: {

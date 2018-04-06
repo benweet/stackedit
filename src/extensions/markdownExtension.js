@@ -4,6 +4,8 @@ import markdownitDeflist from 'markdown-it-deflist';
 import markdownitFootnote from 'markdown-it-footnote';
 import markdownitSub from 'markdown-it-sub';
 import markdownitSup from 'markdown-it-sup';
+import markdownitMark from 'markdown-it-mark';
+import markdownitTasklist from 'markdown-it-task-lists';
 import extensionSvc from '../services/extensionSvc';
 
 const coreBaseRules = [
@@ -88,11 +90,17 @@ extensionSvc.onInitConverter(0, (markdown, options) => {
   if (options.footnote) {
     markdown.use(markdownitFootnote);
   }
+  if (options.mark) {
+    markdown.use(markdownitMark);
+  }
   if (options.sub) {
     markdown.use(markdownitSub);
   }
   if (options.sup) {
     markdown.use(markdownitSup);
+  }
+  if (options.tasklist) {
+    markdown.use(markdownitTasklist);
   }
 
   markdown.core.ruler.before('replacements', 'anchors', (state) => {
@@ -106,7 +114,7 @@ extensionSvc.onInitConverter(0, (markdown, options) => {
       } else if (token.type === 'heading_close') {
         headingOpenToken.headingContent = headingContent;
 
-        // Slugify according to http://pandoc.org/README.html#extension-auto_identifiers
+        // According to http://pandoc.org/README.html#extension-auto_identifiers
         let slug = headingContent
           .replace(/\s/g, '-') // Replace all spaces and newlines with hyphens
           .replace(/[\0-,/:-@[-^`{-~]/g, '') // Remove all punctuation, except underscores, hyphens, and periods

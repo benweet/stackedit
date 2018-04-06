@@ -43,7 +43,7 @@
     </menu-entry>
     <menu-entry @click.native="setPanel('history')">
       <icon-history slot="icon"></icon-history>
-      <div>File history</div>
+      <div>History</div>
       <span>Track and restore file revisions.</span>
     </menu-entry>
     <menu-entry @click.native="fileProperties">

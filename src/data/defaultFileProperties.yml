@@ -28,9 +28,11 @@ extensions:
     #fence: true
     #footnote: true
     #linkify: true
+    #mark: true
     #sub: true
     #sup: true
     #table: true
+    #tasklist: true
     #typographer: true
 
   ## Emoji extension

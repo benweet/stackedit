@@ -7,9 +7,11 @@ const zero = {
     fence: false,
     footnote: false,
     linkify: false,
+    mark: false,
     sub: false,
     sup: false,
     table: false,
+    tasklist: false,
     typographer: false,
   },
   emoji: {
@@ -38,6 +40,7 @@ export default {
       fence: true,
       linkify: true,
       table: true,
+      tasklist: true,
     },
     emoji: {
       enabled: true,
@@ -52,9 +55,11 @@ export default {
       fence: true,
       footnote: true,
       linkify: true,
+      mark: true,
       sub: true,
       sup: true,
       table: true,
+      tasklist: true,
       typographer: true,
     },
     emoji: {

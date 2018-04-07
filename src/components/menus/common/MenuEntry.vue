@@ -17,23 +17,15 @@
   padding: 10px;
   height: auto;
   font-size: 17px;
-  line-height: 1.5;
+  line-height: 1.4;
   text-transform: none;
   white-space: normal;
-
-  div div {
-    text-decoration: underline;
-    text-decoration-skip: ink;
-
-    .menu-entry__label {
-      text-decoration: none;
-    }
-  }
 
   span {
     display: inline-block;
     font-size: 0.75rem;
     opacity: 0.5;
+    line-height: 1.3;
 
     span {
       display: inline;

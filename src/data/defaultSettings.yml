@@ -9,6 +9,8 @@ maxWidthFactor: 1
 
 # Editor settings
 editor:
+  # Automatic list numbering
+  listAutoNumber: true
   # Display images in the editor
   inlineImages: true
   # Use monospaced font only

@@ -1,11 +1,23 @@
+import pagedownButtons from '../data/pagedownButtons';
+
+let buttonCount = 0;
+let spacerCount = 0;
+pagedownButtons.forEach((button) => {
+  if (button.action) {
+    buttonCount += 1;
+  } else {
+    spacerCount += 1;
+  }
+});
+
 const minPadding = 20;
 const editorTopPadding = 10;
-const navigationBarEditButtonsWidth = (36 * 14) + 8; // 14 buttons + 1 spacer
+const navigationBarEditButtonsWidth = (34 * buttonCount) + (8 * spacerCount); // buttons + spacers
 const navigationBarLeftButtonWidth = 38 + 4 + 12;
 const navigationBarRightButtonWidth = 38 + 8;
 const navigationBarSpinnerWidth = 24 + 8 + 5; // 5 for left margin
 const navigationBarLocationWidth = 20;
-const navigationBarSyncPublishButtonsWidth = 36 + 10;
+const navigationBarSyncPublishButtonsWidth = 34 + 10;
 const navigationBarTitleMargin = 8;
 const maxTitleMaxWidth = 800;
 const minTitleMaxWidth = 200;

@@ -207,7 +207,7 @@ $preview-background-dark: #252525;
 
 .layout__panel--explorer,
 .layout__panel--side-bar {
-  background-color: #dadada;
+  background-color: #ddd;
 }
 
 .layout__panel--find-replace {

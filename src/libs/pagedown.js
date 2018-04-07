@@ -477,6 +477,9 @@ function UIManager(input, commandManager) {
     buttons.ulist = bindCommand(function (chunk, postProcessing) {
       this.doList(chunk, postProcessing, false);
     });
+    buttons.clist = bindCommand(function (chunk, postProcessing) {
+      this.doList(chunk, postProcessing, false, true);
+    });
     buttons.heading = bindCommand("doHeading");
     buttons.hr = bindCommand("doHorizontalRule");
     buttons.table = bindCommand("doTable");
@@ -1032,7 +1035,7 @@ commandProto.doCode = function (chunk) {
   }
 };
 
-commandProto.doList = function (chunk, postProcessing, isNumberedList) {
+commandProto.doList = function (chunk, postProcessing, isNumberedList, isCheckList) {
 
   // These are identical except at the very beginning and end.
   // Should probably use the regex extension function to make this clearer.
@@ -1048,13 +1051,18 @@ commandProto.doList = function (chunk, postProcessing, isNumberedList) {
   var num = 1;
 
   // Get the item prefix - e.g. " 1. " for a numbered list, " - " for a bulleted list.
-  var getItemPrefix = function () {
+  var getItemPrefix = function (checkListContent) {
     var prefix;
     if (isNumberedList) {
       prefix = " " + num + ". ";
       num++;
     } else {
       prefix = " " + bullet + " ";
+      if (isCheckList) {
+        prefix += '[';
+        prefix += checkListContent || ' ';
+        prefix += '] ';
+      }
     }
     return prefix;
   };
@@ -1068,9 +1076,11 @@ commandProto.doList = function (chunk, postProcessing, isNumberedList) {
     }
 
     // Renumber/bullet the list element.
-    itemText = itemText.replace(/^[ ]{0,3}([*+-]|\d+[.])\s/gm,
-      function () {
-        return getItemPrefix();
+    itemText = itemText.replace(isCheckList
+      ? /^[ ]{0,3}([*+-]|\d+[.])\s+\[([ xX])\]\s/gm
+      : /^[ ]{0,3}([*+-]|\d+[.])\s/gm,
+      function (match, p1, p2) {
+        return getItemPrefix(p2);
       });
 
     return itemText;

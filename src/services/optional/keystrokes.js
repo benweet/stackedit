@@ -1,13 +1,17 @@
 import cledit from '../cledit';
 import editorSvc from '../editorSvc';
+import store from '../../store';
 
 const Keystroke = cledit.Keystroke;
-const indentRegexp = /^ {0,3}>[ ]*|^[ \t]*[*+-][ \t]|^([ \t]*)\d+\.[ \t]|^\s+/;
+const indentRegexp = /^ {0,3}>[ ]*|^[ \t]*[*+-][ \t](?:\[[ xX]\][ \t])?|^([ \t]*)\d+\.[ \t](?:\[[ xX]\][ \t])?|^\s+/;
 let clearNewline;
 let lastSelection;
 
 function fixNumberedList(state, indent) {
-  if (state.selection || indent === undefined) {
+  if (state.selection
+    || indent === undefined
+    || !store.getters['data/computedSettings'].editor.listAutoNumber
+  ) {
     return;
   }
   const spaceIndent = indent.replace(/\t/g, '    ');

@@ -1,5 +1,5 @@
 <template>
-  <nav class="navigation-bar" :class="{'navigation-bar--editor': styles.showEditor && !revisionContent}">
+  <nav class="navigation-bar" :class="{'navigation-bar--editor': styles.showEditor && !revisionContent, 'navigation-bar--light': light}">
     <!-- Explorer -->
     <div class="navigation-bar__inner navigation-bar__inner--left navigation-bar__inner--button">
       <button class="navigation-bar__button button" v-if="light" @click="close()" v-title="'Close StackEdit'"><icon-close></icon-close></button>
@@ -33,22 +33,15 @@
         <button class="navigation-bar__button navigation-bar__button--revision button" @click="setRevisionContent()" v-title="'Close revision'"><icon-close></icon-close></button>
       </div>
     </div>
-    <div class="navigation-bar__inner navigation-bar__inner--edit-buttons">
+    <div class="navigation-bar__inner navigation-bar__inner--edit-pagedownButtons">
       <button class="navigation-bar__button button" @click="undo" v-title="'Undo'" :disabled="!canUndo"><icon-undo></icon-undo></button>
       <button class="navigation-bar__button button" @click="redo" v-title="'Redo'" :disabled="!canRedo"><icon-redo></icon-redo></button>
-      <div class="navigation-bar__spacer"></div>
-      <button class="navigation-bar__button button" @click="pagedownClick('bold')" v-title="'Bold'"><icon-format-bold></icon-format-bold></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('italic')" v-title="'Italic'"><icon-format-italic></icon-format-italic></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('strikethrough')" v-title="'Strikethrough'"><icon-format-strikethrough></icon-format-strikethrough></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('heading')" v-title="'Heading'"><icon-format-size></icon-format-size></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('ulist')" v-title="'Unordered list'"><icon-format-list-bulleted></icon-format-list-bulleted></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('olist')" v-title="'Ordered list'"><icon-format-list-numbers></icon-format-list-numbers></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('table')" v-title="'Table'"><icon-table></icon-table></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('quote')" v-title="'Blockquote'"><icon-format-quote-close></icon-format-quote-close></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('code')" v-title="'Code'"><icon-code-tags></icon-code-tags></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('link')" v-title="'Link'"><icon-link-variant></icon-link-variant></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('image')" v-title="'Image'"><icon-file-image></icon-file-image></button>
-      <button class="navigation-bar__button button" @click="pagedownClick('hr')" v-title="'Horizontal rule'"><icon-format-horizontal-rule></icon-format-horizontal-rule></button>
+      <div v-for="button in pagedownButtons" :key="button.action">
+        <button class="navigation-bar__button button" v-if="button.action" @click="pagedownClick(button.action)" v-title="button.title">
+          <component :is="button.iconClass"></component>
+        </button>
+        <div class="navigation-bar__spacer" v-else></div>
+      </div>
     </div>
   </nav>
 </template>
@@ -61,6 +54,7 @@ import publishSvc from '../services/publishSvc';
 import animationSvc from '../services/animationSvc';
 import tempFileSvc from '../services/tempFileSvc';
 import utils from '../services/utils';
+import pagedownButtons from '../data/pagedownButtons';
 
 export default {
   data: () => ({
@@ -95,6 +89,16 @@ export default {
     ...mapGetters('publishLocation', {
       publishLocations: 'current',
     }),
+    pagedownButtons() {
+      return pagedownButtons.map((button) => {
+        const title = button.title;
+        return {
+          ...button,
+          title,
+          iconClass: `icon-${button.icon}`,
+        };
+      });
+    },
     isSyncPossible() {
       return this.$store.getters['workspace/syncToken'] ||
         this.$store.getters['syncLocation/current'].length;
@@ -225,7 +229,7 @@ export default {
 .navigation-bar__inner--right {
   float: right;
 
-  /* prevent from seeing wrapped buttons */
+  /* prevent from seeing wrapped pagedownButtons */
   margin-bottom: 20px;
 }
 
@@ -233,7 +237,7 @@ export default {
   margin: 0 4px;
 }
 
-.navigation-bar__inner--edit-buttons {
+.navigation-bar__inner--edit-pagedownButtons {
   margin-left: 15px;
 
   .navigation-bar__button,
@@ -246,20 +250,18 @@ export default {
   flex: none;
 }
 
-$button-size: 36px;
-
 .navigation-bar__button,
 .navigation-bar__spacer {
-  height: $button-size;
+  height: 36px;
   padding: 0 4px;
 
-  /* prevent from seeing wrapped buttons */
+  /* prevent from seeing wrapped pagedownButtons */
   margin-bottom: 20px;
 }
 
 .navigation-bar__button {
-  width: $button-size;
-  padding: 0 8px;
+  width: 34px;
+  padding: 0 7px;
   transition: opacity 0.25s;
 
   .navigation-bar__inner--button & {
@@ -375,7 +377,7 @@ $button-size: 36px;
 }
 
 .navigation-bar__title--input,
-.navigation-bar__inner--edit-buttons {
+.navigation-bar__inner--edit-pagedownButtons {
   display: none;
 
   .navigation-bar--editor & {
@@ -401,6 +403,10 @@ $button-size: 36px;
 
   &.navigation-bar__title--focus {
     cursor: text;
+  }
+
+  .navigation-bar--light & {
+    display: none;
   }
 }
 

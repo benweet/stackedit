@@ -5,7 +5,7 @@
         <icon-provider provider-id="googleDrive"></icon-provider>
       </div>
       <p>This will create a workspace synchronized with a <b>Google Drive</b> folder.</p>
-      <form-entry label="Folder ID (optional)">
+      <form-entry label="Folder ID" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="folderId" @keydown.enter="resolve()">
         <div class="form-entry__info">
           If no folder ID is supplied, a new workspace folder will be created in your root folder.

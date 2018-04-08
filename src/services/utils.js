@@ -1,6 +1,5 @@
 import yaml from 'js-yaml';
 import '../libs/clunderscore';
-import defaultPropertiesYaml from '../data/defaultFileProperties.yml';
 import presets from '../data/presets';
 
 const origin = `${location.protocol}//${location.host}`;
@@ -56,13 +55,14 @@ const deepCopy = (obj) => {
   return JSON.parse(JSON.stringify(obj));
 };
 
-// Build presets
+// Compute presets
+const computedPresets = {};
 Object.keys(presets).forEach((key) => {
   let preset = deepCopy(presets[key][0]);
   if (presets[key][1]) {
     preset = deepOverride(preset, presets[key][1]);
   }
-  presets[key] = preset;
+  computedPresets[key] = preset;
 });
 
 export default {
@@ -154,13 +154,17 @@ export default {
       c => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`).join(''));
   },
   computeProperties(yamlProperties) {
-    const customProperties = yaml.safeLoad(yamlProperties);
-    const defaultProperties = yaml.safeLoad(defaultPropertiesYaml);
-    const properties = deepOverride(defaultProperties, customProperties);
-    const preset = deepCopy(presets[properties.extensions.preset] || presets.default);
-    const extensions = deepOverride(preset, properties.extensions);
-    extensions.preset = properties.extensions.preset;
-    properties.extensions = extensions;
+    let properties = {};
+    try {
+      properties = yaml.safeLoad(yamlProperties) || {};
+    } catch (e) {
+      // Ignore
+    }
+    const extensions = properties.extensions || {};
+    const computedPreset = deepCopy(computedPresets[extensions.preset] || computedPresets.default);
+    const computedExtensions = deepOverride(computedPreset, properties.extensions);
+    computedExtensions.preset = extensions.preset;
+    properties.extensions = computedExtensions;
     return properties;
   },
   randomize(value) {

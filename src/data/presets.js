@@ -1,4 +1,5 @@
 const zero = {
+  // Markdown extensions
   markdown: {
     abbr: false,
     breaks: false,
@@ -15,13 +16,28 @@ const zero = {
     tasklist: false,
     typographer: false,
   },
+  // Emoji extension
   emoji: {
     enabled: false,
+    // Enable shortcuts like :) :-(
     shortcuts: false,
   },
+  /*
+  Katex extension
+  Render LaTeX mathematical expressions using:
+    $...$ for inline formulas
+    $$...$$ for displayed formulas.
+  See https://math.meta.stackexchange.com/questions/5020
+  */
   katex: {
     enabled: false,
   },
+  /*
+  Mermaid extension
+  Convert code blocks starting with ```mermaid
+  into diagrams and flowcharts.
+  See https://mermaidjs.github.io/
+  */
   mermaid: {
     enabled: false,
   },

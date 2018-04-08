@@ -1,49 +1,49 @@
 export default [{}, {
-  action: 'bold',
+  method: 'bold',
   title: 'Bold',
   icon: 'format-bold',
 }, {
-  action: 'italic',
+  method: 'italic',
   title: 'Italic',
   icon: 'format-italic',
 }, {
-  action: 'heading',
+  method: 'heading',
   title: 'Heading',
   icon: 'format-size',
 }, {
-  action: 'strikethrough',
+  method: 'strikethrough',
   title: 'Strikethrough',
   icon: 'format-strikethrough',
 }, {}, {
-  action: 'ulist',
+  method: 'ulist',
   title: 'Unordered list',
   icon: 'format-list-bulleted',
 }, {
-  action: 'olist',
+  method: 'olist',
   title: 'Ordered list',
   icon: 'format-list-numbers',
 }, {
-  action: 'clist',
+  method: 'clist',
   title: 'Check list',
   icon: 'format-list-checks',
 }, {}, {
-  action: 'quote',
+  method: 'quote',
   title: 'Blockquote',
   icon: 'format-quote-close',
 }, {
-  action: 'code',
+  method: 'code',
   title: 'Code',
   icon: 'code-tags',
 }, {
-  action: 'table',
+  method: 'table',
   title: 'Table',
   icon: 'table',
 }, {
-  action: 'link',
+  method: 'link',
   title: 'Link',
   icon: 'link-variant',
 }, {
-  action: 'image',
+  method: 'image',
   title: 'Image',
   icon: 'file-image',
 }];

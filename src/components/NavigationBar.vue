@@ -36,8 +36,8 @@
     <div class="navigation-bar__inner navigation-bar__inner--edit-pagedownButtons">
       <button class="navigation-bar__button button" @click="undo" v-title="'Undo'" :disabled="!canUndo"><icon-undo></icon-undo></button>
       <button class="navigation-bar__button button" @click="redo" v-title="'Redo'" :disabled="!canRedo"><icon-redo></icon-redo></button>
-      <div v-for="button in pagedownButtons" :key="button.action">
-        <button class="navigation-bar__button button" v-if="button.action" @click="pagedownClick(button.action)" v-title="button.title">
+      <div v-for="button in pagedownButtons" :key="button.method">
+        <button class="navigation-bar__button button" v-if="button.method" @click="pagedownClick(button.method)" v-title="button.titleWithShortcut">
           <component :is="button.iconClass"></component>
         </button>
         <div class="navigation-bar__spacer" v-else></div>
@@ -55,6 +55,28 @@ import animationSvc from '../services/animationSvc';
 import tempFileSvc from '../services/tempFileSvc';
 import utils from '../services/utils';
 import pagedownButtons from '../data/pagedownButtons';
+import store from '../store';
+
+// According to mousetrap
+const mod = /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? 'Meta' : 'Ctrl';
+
+const getShortcut = (method) => {
+  let result = '';
+  Object.entries(store.getters['data/computedSettings'].shortcuts).some(([keys, shortcut]) => {
+    if (`${shortcut.method || shortcut}` !== method) {
+      return false;
+    }
+    result = keys.split('+').map(key => key.toLowerCase()).map((key) => {
+      if (key === 'mod') {
+        return mod;
+      }
+      // Capitalize
+      return key && `${key[0].toUpperCase()}${key.slice(1)}`;
+    }).join('+');
+    return true;
+  });
+  return result && ` – ${result}`;
+};
 
 export default {
   data: () => ({
@@ -90,14 +112,11 @@ export default {
       publishLocations: 'current',
     }),
     pagedownButtons() {
-      return pagedownButtons.map((button) => {
-        const title = button.title;
-        return {
-          ...button,
-          title,
-          iconClass: `icon-${button.icon}`,
-        };
-      });
+      return pagedownButtons.map(button => ({
+        ...button,
+        titleWithShortcut: `${button.title}${getShortcut(button.method)}`,
+        iconClass: `icon-${button.icon}`,
+      }));
     },
     isSyncPossible() {
       return this.$store.getters['workspace/syncToken'] ||

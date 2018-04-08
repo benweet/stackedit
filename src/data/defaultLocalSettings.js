@@ -1,5 +1,6 @@
 export default () => ({
   welcomeFileHashes: {},
+  filePropertiesTab: '',
   htmlExportTemplate: 'styledHtml',
   pdfExportTemplate: 'styledHtml',
   pandocExportFormat: 'pdf',

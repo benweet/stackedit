@@ -3,7 +3,7 @@ import pagedownButtons from '../data/pagedownButtons';
 let buttonCount = 0;
 let spacerCount = 0;
 pagedownButtons.forEach((button) => {
-  if (button.action) {
+  if (button.method) {
     buttonCount += 1;
   } else {
     spacerCount += 1;

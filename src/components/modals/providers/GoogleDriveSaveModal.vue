@@ -5,7 +5,7 @@
         <icon-provider provider-id="googleDrive"></icon-provider>
       </div>
       <p>This will save <b>{{currentFileName}}</b> to your <b>Google Drive</b> account and keep it synchronized.</p>
-      <form-entry label="Folder ID (optional)">
+      <form-entry label="Folder ID" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="folderId" @keydown.enter="resolve()">
         <div class="form-entry__info">
           If no folder ID is supplied, the file will be created in your root folder.
@@ -14,7 +14,7 @@
           <a href="javascript:void(0)" @click="openFolder">Choose folder</a>
         </div>
       </form-entry>
-      <form-entry label="Existing file ID (optional)">
+      <form-entry label="Existing file ID" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="fileId" @keydown.enter="resolve()">
         <div class="form-entry__info">
           This will overwrite the file on the server.

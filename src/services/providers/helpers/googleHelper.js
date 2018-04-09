@@ -110,6 +110,7 @@ export default {
             ...options,
             params: {
               uploadType: 'multipart',
+              supportsTeamDrives: true,
             },
             headers: {
               'Content-Type': `multipart/mixed; boundary="${boundary}"`,
@@ -123,6 +124,9 @@ export default {
         return this.request(refreshedToken, {
           ...options,
           body: metadata,
+          params: {
+            supportsTeamDrives: true,
+          },
         }).then(res => res.body);
       }));
   },
@@ -139,6 +143,9 @@ export default {
       .then(ifNotTooLate(() => this.request(refreshedToken, {
         method: 'DELETE',
         url: `https://www.googleapis.com/drive/v3/files/${id}`,
+        params: {
+          supportsTeamDrives: true,
+        },
       })));
   },
   getFileRevisionsInternal(refreshedToken, id) {
@@ -152,6 +159,7 @@ export default {
             pageToken,
             pageSize: 1000,
             fields: 'nextPageToken,revisions(id,modifiedTime,lastModifyingUser/permissionId,lastModifyingUser/displayName,lastModifyingUser/photoLink)',
+            supportsTeamDrives: true,
           },
         })
           .then((res) => {
@@ -178,6 +186,9 @@ export default {
         method: 'GET',
         url: `https://www.googleapis.com/drive/v3/files/${fileId}/revisions/${revisionId}?alt=media`,
         raw: true,
+        params: {
+          supportsTeamDrives: true,
+        },
       }).then(res => res.body));
   },
   getUser(userId) {
@@ -375,6 +386,8 @@ export default {
             spaces: isAppData ? 'appDataFolder' : 'drive',
             pageSize: 1000,
             fields: `nextPageToken,newStartPageToken,changes(fileId,${fileFields})`,
+            supportsTeamDrives: true,
+            includeTeamDriveItems: true,
           },
         })
           .then((res) => {
@@ -422,6 +435,7 @@ export default {
         url: `https://www.googleapis.com/drive/v3/files/${id}`,
         params: {
           fields: 'id,name,mimeType,appProperties',
+          supportsTeamDrives: true,
         },
       })
       .then(res => res.body));
@@ -534,6 +548,7 @@ export default {
         let picker;
         const pickerBuilder = new google.picker.PickerBuilder()
           .setOAuthToken(refreshedToken.accessToken)
+          .enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES)
           .hideTitleBar()
           .setCallback((data) => {
             switch (data[google.picker.Response.ACTION]) {
@@ -567,13 +582,23 @@ export default {
           }
           case 'folder': {
             const addView = (hasRootParent) => {
-              const view = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
+              const teamDriveView = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
               if (hasRootParent) {
-                view.setParent('root');
+                teamDriveView.setParent('root');
               }
-              view.setSelectFolderEnabled(true);
-              view.setMimeTypes(this.folderMimeType);
-              pickerBuilder.addView(view);
+              teamDriveView.setSelectFolderEnabled(true);
+              teamDriveView.setEnableTeamDrives(true);
+              teamDriveView.setMimeTypes(this.folderMimeType);
+
+              const folderView = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
+              if (hasRootParent) {
+                folderView.setParent('root');
+              }
+              folderView.setSelectFolderEnabled(true);
+              folderView.setMimeTypes(this.folderMimeType);
+
+              pickerBuilder.addView(teamDriveView);
+              pickerBuilder.addView(folderView);
             };
             addView(false);
             // addView(true);

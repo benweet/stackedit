@@ -1,6 +1,6 @@
 import pagedownButtons from '../data/pagedownButtons';
 
-let buttonCount = 0;
+let buttonCount = 2; // 2 for undo/redo
 let spacerCount = 0;
 pagedownButtons.forEach((button) => {
   if (button.method) {

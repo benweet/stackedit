@@ -127,6 +127,7 @@ export default providerRegistry.register({
       providerUtils.serializeContent(content),
       undefined,
       syncLocation.driveFileId,
+      undefined,
       ifNotTooLate,
     )
       .then(driveFile => ({

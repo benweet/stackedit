@@ -74,6 +74,7 @@ export default {
     media = null,
     mediaType = null,
     fileId = null,
+    oldParents = null,
     ifNotTooLate = cb => res => cb(res),
   ) {
     return Promise.resolve()
@@ -83,12 +84,22 @@ export default {
           method: 'POST',
           url: 'https://www.googleapis.com/drive/v3/files',
         };
+        const params = {
+          supportsTeamDrives: true,
+        };
         const metadata = { name, appProperties };
         if (fileId) {
           options.method = 'PATCH';
           options.url = `https://www.googleapis.com/drive/v3/files/${fileId}`;
+          if (parents && oldParents) {
+            params.addParents = parents
+              .filter(parent => oldParents.indexOf(parent) === -1)
+              .join(',');
+            params.removeParents = oldParents
+              .filter(parent => parents.indexOf(parent) === -1)
+              .join(',');
+          }
         } else if (parents) {
-          // Parents field is not patchable
           metadata.parents = parents;
         }
         if (media) {
@@ -109,8 +120,8 @@ export default {
           return this.request(refreshedToken, {
             ...options,
             params: {
+              ...params,
               uploadType: 'multipart',
-              supportsTeamDrives: true,
             },
             headers: {
               'Content-Type': `multipart/mixed; boundary="${boundary}"`,
@@ -124,9 +135,7 @@ export default {
         return this.request(refreshedToken, {
           ...options,
           body: metadata,
-          params: {
-            supportsTeamDrives: true,
-          },
+          params,
         }).then(res => res.body);
       }));
   },
@@ -399,7 +408,17 @@ export default {
         return getPage(startPageToken);
       });
   },
-  uploadFile(token, name, parents, appProperties, media, mediaType, fileId, ifNotTooLate) {
+  uploadFile(
+    token,
+    name,
+    parents,
+    appProperties,
+    media,
+    mediaType,
+    fileId,
+    oldParents,
+    ifNotTooLate,
+  ) {
     return this.refreshToken(token, getDriveScopes(token))
       .then(refreshedToken => this.uploadFileInternal(
         refreshedToken,
@@ -409,6 +428,7 @@ export default {
         media,
         mediaType,
         fileId,
+        oldParents,
         ifNotTooLate,
       ));
   },
@@ -422,6 +442,7 @@ export default {
         media,
         undefined,
         fileId,
+        undefined,
         ifNotTooLate,
       ));
   },

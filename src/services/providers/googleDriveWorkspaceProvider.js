@@ -260,7 +260,7 @@ export default providerRegistry.register({
 
             // If change is on a data item
             if (change.file.parents[0] === workspace.dataFolderId) {
-              // Data item has a JSON as a filename
+              // Data item has a JSON filename
               try {
                 change.item = JSON.parse(change.file.name);
               } catch (e) {
@@ -316,6 +316,7 @@ export default providerRegistry.register({
             // Build sync data
             change.syncData = {
               id: change.fileId,
+              parentIds: change.file.parents,
               itemId: change.item.id,
               type: change.item.type,
               hash: change.item.hash,
@@ -363,6 +364,7 @@ export default providerRegistry.register({
             undefined,
             undefined,
             syncData && syncData.id,
+            syncData && syncData.parentIds,
             ifNotTooLate,
           );
         }
@@ -379,6 +381,7 @@ export default providerRegistry.register({
           undefined,
           item.type === 'folder' ? googleHelper.folderMimeType : undefined,
           syncData && syncData.id,
+          syncData && syncData.parentIds,
           ifNotTooLate,
         );
       })
@@ -464,6 +467,7 @@ export default providerRegistry.register({
             providerUtils.serializeContent(content),
             undefined,
             syncData.id,
+            undefined,
             ifNotTooLate,
           );
         }
@@ -481,6 +485,7 @@ export default providerRegistry.register({
             folderId: workspace.folderId,
           },
           providerUtils.serializeContent(content),
+          undefined,
           undefined,
           undefined,
           ifNotTooLate,
@@ -529,6 +534,7 @@ export default providerRegistry.register({
       JSON.stringify(item),
       undefined,
       syncData && syncData.id,
+      syncData && syncData.parentIds,
       ifNotTooLate,
     )
       .then(file => store.dispatch('data/patchSyncData', {

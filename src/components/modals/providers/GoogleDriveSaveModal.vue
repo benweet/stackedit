@@ -8,7 +8,7 @@
       <form-entry label="Folder ID" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="folderId" @keydown.enter="resolve()">
         <div class="form-entry__info">
-          If no folder ID is supplied, the file will be created in your root folder.
+          If not supplied, the file will be created in your Drive root folder.
         </div>
         <div class="form-entry__actions">
           <a href="javascript:void(0)" @click="openFolder">Choose folder</a>

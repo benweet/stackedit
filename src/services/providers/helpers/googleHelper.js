@@ -159,7 +159,6 @@ export default {
             pageToken,
             pageSize: 1000,
             fields: 'nextPageToken,revisions(id,modifiedTime,lastModifyingUser/permissionId,lastModifyingUser/displayName,lastModifyingUser/photoLink)',
-            supportsTeamDrives: true,
           },
         })
           .then((res) => {
@@ -186,9 +185,6 @@ export default {
         method: 'GET',
         url: `https://www.googleapis.com/drive/v3/files/${fileId}/revisions/${revisionId}?alt=media`,
         raw: true,
-        params: {
-          supportsTeamDrives: true,
-        },
       }).then(res => res.body));
   },
   getUser(userId) {
@@ -368,7 +364,7 @@ export default {
   addPhotosAccount() {
     return this.startOauth2(photosScopes);
   },
-  getChanges(token, startPageToken, isAppData) {
+  getChanges(token, startPageToken, isAppData, teamDriveId = null) {
     const result = {
       changes: [],
     };
@@ -387,7 +383,8 @@ export default {
             pageSize: 1000,
             fields: `nextPageToken,newStartPageToken,changes(fileId,${fileFields})`,
             supportsTeamDrives: true,
-            includeTeamDriveItems: true,
+            includeTeamDriveItems: !!teamDriveId,
+            teamDriveId,
           },
         })
           .then((res) => {
@@ -434,7 +431,7 @@ export default {
         method: 'GET',
         url: `https://www.googleapis.com/drive/v3/files/${id}`,
         params: {
-          fields: 'id,name,mimeType,appProperties',
+          fields: 'id,name,mimeType,appProperties,teamDriveId',
           supportsTeamDrives: true,
         },
       })
@@ -563,45 +560,36 @@ export default {
         switch (type) {
           default:
           case 'doc': {
-            const addView = (hasRootParent) => {
-              const view = new google.picker.DocsView(google.picker.ViewId.DOCS);
-              if (hasRootParent) {
-                view.setParent('root');
-              }
-              view.setMimeTypes([
-                'text/plain',
-                'text/x-markdown',
-                'application/octet-stream',
-              ].join(','));
-              pickerBuilder.addView(view);
-            };
+            const mimeTypes = [
+              'text/plain',
+              'text/x-markdown',
+              'application/octet-stream',
+            ].join(',');
+
+            const view = new google.picker.DocsView(google.picker.ViewId.DOCS);
+            view.setMimeTypes(mimeTypes);
+            pickerBuilder.addView(view);
+
+            const teamDriveView = new google.picker.DocsView(google.picker.ViewId.DOCS);
+            teamDriveView.setMimeTypes(mimeTypes);
+            teamDriveView.setEnableTeamDrives(true);
+            pickerBuilder.addView(teamDriveView);
+
             pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);
-            addView(false);
-            // addView(true);
+            pickerBuilder.enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES);
             break;
           }
           case 'folder': {
-            const addView = (hasRootParent) => {
-              const teamDriveView = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
-              if (hasRootParent) {
-                teamDriveView.setParent('root');
-              }
-              teamDriveView.setSelectFolderEnabled(true);
-              teamDriveView.setEnableTeamDrives(true);
-              teamDriveView.setMimeTypes(this.folderMimeType);
+            const folderView = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
+            folderView.setSelectFolderEnabled(true);
+            folderView.setMimeTypes(this.folderMimeType);
+            pickerBuilder.addView(folderView);
 
-              const folderView = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
-              if (hasRootParent) {
-                folderView.setParent('root');
-              }
-              folderView.setSelectFolderEnabled(true);
-              folderView.setMimeTypes(this.folderMimeType);
-
-              pickerBuilder.addView(teamDriveView);
-              pickerBuilder.addView(folderView);
-            };
-            addView(false);
-            // addView(true);
+            const teamDriveView = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
+            teamDriveView.setSelectFolderEnabled(true);
+            teamDriveView.setEnableTeamDrives(true);
+            teamDriveView.setMimeTypes(this.folderMimeType);
+            pickerBuilder.addView(teamDriveView);
             break;
           }
           case 'img': {

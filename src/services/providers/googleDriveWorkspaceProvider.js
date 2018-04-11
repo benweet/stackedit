@@ -101,6 +101,7 @@ export default providerRegistry.register({
             providerId: this.id,
             url: location.href,
             folderId: folder.id,
+            teamDriveId: folder.teamDriveId,
             dataFolderId: properties.dataFolderId,
             trashFolderId: properties.trashFolderId,
           },
@@ -223,7 +224,7 @@ export default providerRegistry.register({
     const workspace = store.getters['workspace/currentWorkspace'];
     const syncToken = store.getters['workspace/syncToken'];
     const startPageToken = store.getters['data/localSettings'].syncStartPageToken;
-    return googleHelper.getChanges(syncToken, startPageToken, false)
+    return googleHelper.getChanges(syncToken, startPageToken, false, workspace.teamDriveId)
       .then((result) => {
         // Collect possible parent IDs
         const parentIds = {};

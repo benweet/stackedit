@@ -15,6 +15,8 @@ Styling
 
 **Strong** __strong__
 
+==Marked text.==
+
 ~~Mistaken text.~~
 
 > Quoted text.
@@ -31,9 +33,12 @@ Lists
 * Item
 + Item
 
-1. Item
-2. Item
-3. Item
+1. Item 1
+2. Item 2
+3. Item 3
+
+- [ ] Incomplete item
+- [x] Complete item
 
 
 Links
@@ -42,6 +47,8 @@ Links
 A [link](http://example.com).
 
 An image: ![Alt](img.jpg)
+
+A sized image: ![Alt](img.jpg =60x50)
 
 
 Code
@@ -81,9 +88,9 @@ Definition lists
 Markdown
 :  Text-to-HTML conversion tool
 
-Classeur
-:  French translation for "Binder"
-:  A Markdown editing app
+Authors
+:  John
+:  Luke
 
 Footnotes
 ---------------------------

@@ -66,6 +66,7 @@ Object.keys(presets).forEach((key) => {
 });
 
 export default {
+  computedPresets,
   cleanTrashAfter: 7 * 24 * 60 * 60 * 1000, // 7 days
   origin,
   oauth2RedirectUri: `${origin}/oauth2/callback`,

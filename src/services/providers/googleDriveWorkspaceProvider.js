@@ -368,12 +368,22 @@ export default providerRegistry.register({
             ifNotTooLate,
           );
         }
-        // Type `file` or `folder`
+
+        // For type `file` or `folder`
         const parentSyncData = store.getters['data/syncDataByItemId'][item.parentId];
+        let parentId;
+        if (item.parentId === 'trash') {
+          parentId = workspace.trashFolderId;
+        } else if (parentSyncData) {
+          parentId = parentSyncData.id;
+        } else {
+          parentId = workspace.folderId;
+        }
+
         return googleHelper.uploadFile(
           syncToken,
           item.name,
-          [parentSyncData ? parentSyncData.id : workspace.folderId],
+          [parentId],
           {
             id: item.id,
             folderId: workspace.folderId,

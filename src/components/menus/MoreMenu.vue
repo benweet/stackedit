@@ -32,7 +32,7 @@
     <hr>
     <menu-entry href="editor" target="_blank">
       <icon-open-in-new slot="icon"></icon-open-in-new>
-      <span>StackEdit 4 (deprecated)</span>
+      <span>StackEdit 4 &mdash; deprecated</span>
     </menu-entry>
     <menu-entry @click.native="about">
       <icon-help-circle slot="icon"></icon-help-circle>

@@ -1,7 +1,7 @@
 {
   "name": "StackEdit",
   "description": "In-browser Markdown editor",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "manifest_version": 2,
   "container" : "GOOGLE_DRIVE",
   "api_console_project_id" : "241271498917",
@@ -10,7 +10,8 @@
     "32": "icon-32.png",
     "64": "icon-64.png",
     "128": "icon-128.png",
-    "256": "icon-256.png"
+    "256": "icon-256.png",
+    "512": "icon-512.png"
   },
   "app": {
     "urls": [

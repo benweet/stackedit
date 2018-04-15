@@ -15,7 +15,7 @@
           </label>
         </div>
       </div>
-      <form-entry label="Existing Gist ID (optional)">
+      <form-entry label="Existing Gist ID" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="gistId" @keydown.enter="resolve()">
         <div class="form-entry__info">
           If the file exists in the Gist, it will be replaced.

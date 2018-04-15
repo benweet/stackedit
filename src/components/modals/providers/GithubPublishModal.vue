@@ -11,7 +11,7 @@
           <b>Example:</b> https://github.com/benweet/stackedit
         </div>
       </form-entry>
-      <form-entry label="Branch (optional)">
+      <form-entry label="Branch" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="branch" @keydown.enter="resolve()">
         <div class="form-entry__info">
           If not provided, the master branch will be used.

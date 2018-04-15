@@ -12,6 +12,7 @@ import tempFileSvc from './tempFileSvc';
 const inactivityThreshold = 3 * 1000; // 3 sec
 const restartSyncAfter = 30 * 1000; // 30 sec
 const minAutoSyncEvery = 60 * 1000; // 60 sec
+const maxContentHistory = 20;
 
 let actionProvider;
 let workspaceProvider;
@@ -132,8 +133,9 @@ function applyChanges(changes) {
   }
 }
 
-const LAST_SENT = 0;
+const LAST_SEEN = 0;
 const LAST_MERGED = 1;
+const LAST_SENT = 2;
 
 /**
  * Create a sync location by uploading the current file content.
@@ -159,6 +161,7 @@ function createSyncLocation(syncLocation) {
               store.state.syncedContent.itemMap[`${fileId}/syncedContent`]);
             const newSyncHistoryItem = [];
             newSyncedContent.syncHistory[syncLocation.id] = newSyncHistoryItem;
+            newSyncHistoryItem[LAST_SEEN] = content.hash;
             newSyncHistoryItem[LAST_SENT] = content.hash;
             newSyncedContent.historyData[content.hash] = content;
 
@@ -301,9 +304,12 @@ function syncFile(fileId, syncContext = new SyncContext()) {
                     // Server content is either out of sync or its history is incomplete, do upload
                     skipUpload = false;
                   }
-                  if (syncHistoryItem && syncHistoryItem[0] !== mergedContent.hash) {
+                  if (syncHistoryItem
+                    && syncHistoryItem[LAST_SENT] != null
+                    && syncHistoryItem[LAST_SENT] !== mergedContent.hash
+                  ) {
                     // Clean up by removing the hash we've previously added
-                    const idx = mergedContentHistory.indexOf(syncHistoryItem[LAST_SENT]);
+                    const idx = mergedContentHistory.lastIndexOf(syncHistoryItem[LAST_SENT]);
                     if (idx !== -1) {
                       mergedContentHistory.splice(idx, 1);
                     }
@@ -314,13 +320,16 @@ function syncFile(fileId, syncContext = new SyncContext()) {
                   const newSyncedContent = utils.deepCopy(syncedContent);
                   const newSyncHistoryItem = newSyncedContent.syncHistory[syncLocation.id] || [];
                   newSyncedContent.syncHistory[syncLocation.id] = newSyncHistoryItem;
-                  if (serverContent && (serverContent.hash === newSyncHistoryItem[LAST_SENT] ||
-                    serverContent.history.indexOf(newSyncHistoryItem[LAST_SENT]) !== -1)
+                  if (serverContent &&
+                    (serverContent.hash === newSyncHistoryItem[LAST_SEEN] ||
+                    serverContent.history.indexOf(newSyncHistoryItem[LAST_SEEN]) !== -1)
                   ) {
-                    // The server has accepted the content we previously sent
-                    newSyncHistoryItem[LAST_MERGED] = newSyncHistoryItem[LAST_SENT];
+                    // That's the 2nd time we've seen this content, trust it for future merges
+                    newSyncHistoryItem[LAST_MERGED] = newSyncHistoryItem[LAST_SEEN];
                   }
-                  newSyncHistoryItem[LAST_SENT] = mergedContent.hash;
+                  newSyncHistoryItem[LAST_MERGED] = newSyncHistoryItem[LAST_MERGED] || null;
+                  newSyncHistoryItem[LAST_SEEN] = mergedContent.hash;
+                  newSyncHistoryItem[LAST_SENT] = skipUpload ? null : mergedContent.hash;
                   newSyncedContent.historyData[mergedContent.hash] = mergedContent;
 
                   // Clean synced content from unused revisions
@@ -346,7 +355,7 @@ function syncFile(fileId, syncContext = new SyncContext()) {
                   // Upload merged content
                   return provider.uploadContent(token, {
                     ...mergedContent,
-                    history: mergedContentHistory,
+                    history: mergedContentHistory.slice(0, maxContentHistory),
                   }, syncLocation, ifNotTooLate)
                     .then((syncLocationToStore) => {
                       // Replace sync location if modified

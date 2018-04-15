@@ -38,7 +38,6 @@ import UserName from '../UserName';
 import EditorClassApplier from '../common/EditorClassApplier';
 import PreviewClassApplier from '../common/PreviewClassApplier';
 import utils from '../../services/utils';
-import editorSvc from '../../services/editorSvc';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import syncSvc from '../../services/syncSvc';
 
@@ -137,22 +136,20 @@ export default {
       previewClassAppliers.forEach(previewClassApplier => previewClassApplier.stop());
       previewClassAppliers = [];
       if (revisionContent) {
-        editorSvc.$once('previewCtxWithDiffs', () => {
-          let offset = 0;
-          revisionContent.diffs.forEach(([type, text]) => {
-            if (type) {
-              const classes = ['revision-diff', `revision-diff--${type > 0 ? 'insert' : 'delete'}`];
-              const offsets = {
-                start: offset,
-                end: offset + text.length,
-              };
-              editorClassAppliers.push(new EditorClassApplier(
-                [`revision-diff--${utils.uid()}`, ...classes], offsets));
-              previewClassAppliers.push(new PreviewClassApplier(
-                [`revision-diff--${utils.uid()}`, ...classes], offsets));
-            }
-            offset += text.length;
-          });
+        let offset = 0;
+        revisionContent.diffs.forEach(([type, text]) => {
+          if (type) {
+            const classes = ['revision-diff', `revision-diff--${type > 0 ? 'insert' : 'delete'}`];
+            const offsets = {
+              start: offset,
+              end: offset + text.length,
+            };
+            editorClassAppliers.push(new EditorClassApplier(
+              [`revision-diff--${utils.uid()}`, ...classes], offsets));
+            previewClassAppliers.push(new PreviewClassApplier(
+              [`revision-diff--${utils.uid()}`, ...classes], offsets));
+          }
+          offset += text.length;
         });
       }
     },

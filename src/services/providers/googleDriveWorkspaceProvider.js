@@ -101,6 +101,7 @@ export default providerRegistry.register({
             providerId: this.id,
             url: location.href,
             folderId: folder.id,
+            teamDriveId: folder.teamDriveId,
             dataFolderId: properties.dataFolderId,
             trashFolderId: properties.trashFolderId,
           },
@@ -223,7 +224,7 @@ export default providerRegistry.register({
     const workspace = store.getters['workspace/currentWorkspace'];
     const syncToken = store.getters['workspace/syncToken'];
     const startPageToken = store.getters['data/localSettings'].syncStartPageToken;
-    return googleHelper.getChanges(syncToken, startPageToken, false)
+    return googleHelper.getChanges(syncToken, startPageToken, false, workspace.teamDriveId)
       .then((result) => {
         // Collect possible parent IDs
         const parentIds = {};
@@ -259,7 +260,7 @@ export default providerRegistry.register({
 
             // If change is on a data item
             if (change.file.parents[0] === workspace.dataFolderId) {
-              // Data item has a JSON as a filename
+              // Data item has a JSON filename
               try {
                 change.item = JSON.parse(change.file.name);
               } catch (e) {
@@ -315,6 +316,7 @@ export default providerRegistry.register({
             // Build sync data
             change.syncData = {
               id: change.fileId,
+              parentIds: change.file.parents,
               itemId: change.item.id,
               type: change.item.type,
               hash: change.item.hash,
@@ -362,15 +364,26 @@ export default providerRegistry.register({
             undefined,
             undefined,
             syncData && syncData.id,
+            syncData && syncData.parentIds,
             ifNotTooLate,
           );
         }
-        // Type `file` or `folder`
+
+        // For type `file` or `folder`
         const parentSyncData = store.getters['data/syncDataByItemId'][item.parentId];
+        let parentId;
+        if (item.parentId === 'trash') {
+          parentId = workspace.trashFolderId;
+        } else if (parentSyncData) {
+          parentId = parentSyncData.id;
+        } else {
+          parentId = workspace.folderId;
+        }
+
         return googleHelper.uploadFile(
           syncToken,
           item.name,
-          [parentSyncData ? parentSyncData.id : workspace.folderId],
+          [parentId],
           {
             id: item.id,
             folderId: workspace.folderId,
@@ -378,6 +391,7 @@ export default providerRegistry.register({
           undefined,
           item.type === 'folder' ? googleHelper.folderMimeType : undefined,
           syncData && syncData.id,
+          syncData && syncData.parentIds,
           ifNotTooLate,
         );
       })
@@ -463,6 +477,7 @@ export default providerRegistry.register({
             providerUtils.serializeContent(content),
             undefined,
             syncData.id,
+            undefined,
             ifNotTooLate,
           );
         }
@@ -480,6 +495,7 @@ export default providerRegistry.register({
             folderId: workspace.folderId,
           },
           providerUtils.serializeContent(content),
+          undefined,
           undefined,
           undefined,
           ifNotTooLate,
@@ -528,6 +544,7 @@ export default providerRegistry.register({
       JSON.stringify(item),
       undefined,
       syncData && syncData.id,
+      syncData && syncData.parentIds,
       ifNotTooLate,
     )
       .then(file => store.dispatch('data/patchSyncData', {

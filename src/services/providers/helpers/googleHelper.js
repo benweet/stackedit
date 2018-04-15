@@ -74,6 +74,7 @@ export default {
     media = null,
     mediaType = null,
     fileId = null,
+    oldParents = null,
     ifNotTooLate = cb => res => cb(res),
   ) {
     return Promise.resolve()
@@ -83,12 +84,22 @@ export default {
           method: 'POST',
           url: 'https://www.googleapis.com/drive/v3/files',
         };
+        const params = {
+          supportsTeamDrives: true,
+        };
         const metadata = { name, appProperties };
         if (fileId) {
           options.method = 'PATCH';
           options.url = `https://www.googleapis.com/drive/v3/files/${fileId}`;
+          if (parents && oldParents) {
+            params.addParents = parents
+              .filter(parent => oldParents.indexOf(parent) === -1)
+              .join(',');
+            params.removeParents = oldParents
+              .filter(parent => parents.indexOf(parent) === -1)
+              .join(',');
+          }
         } else if (parents) {
-          // Parents field is not patchable
           metadata.parents = parents;
         }
         if (media) {
@@ -109,6 +120,7 @@ export default {
           return this.request(refreshedToken, {
             ...options,
             params: {
+              ...params,
               uploadType: 'multipart',
             },
             headers: {
@@ -123,6 +135,7 @@ export default {
         return this.request(refreshedToken, {
           ...options,
           body: metadata,
+          params,
         }).then(res => res.body);
       }));
   },
@@ -139,6 +152,9 @@ export default {
       .then(ifNotTooLate(() => this.request(refreshedToken, {
         method: 'DELETE',
         url: `https://www.googleapis.com/drive/v3/files/${id}`,
+        params: {
+          supportsTeamDrives: true,
+        },
       })));
   },
   getFileRevisionsInternal(refreshedToken, id) {
@@ -357,7 +373,7 @@ export default {
   addPhotosAccount() {
     return this.startOauth2(photosScopes);
   },
-  getChanges(token, startPageToken, isAppData) {
+  getChanges(token, startPageToken, isAppData, teamDriveId = null) {
     const result = {
       changes: [],
     };
@@ -375,6 +391,9 @@ export default {
             spaces: isAppData ? 'appDataFolder' : 'drive',
             pageSize: 1000,
             fields: `nextPageToken,newStartPageToken,changes(fileId,${fileFields})`,
+            supportsTeamDrives: true,
+            includeTeamDriveItems: !!teamDriveId,
+            teamDriveId,
           },
         })
           .then((res) => {
@@ -389,7 +408,17 @@ export default {
         return getPage(startPageToken);
       });
   },
-  uploadFile(token, name, parents, appProperties, media, mediaType, fileId, ifNotTooLate) {
+  uploadFile(
+    token,
+    name,
+    parents,
+    appProperties,
+    media,
+    mediaType,
+    fileId,
+    oldParents,
+    ifNotTooLate,
+  ) {
     return this.refreshToken(token, getDriveScopes(token))
       .then(refreshedToken => this.uploadFileInternal(
         refreshedToken,
@@ -399,6 +428,7 @@ export default {
         media,
         mediaType,
         fileId,
+        oldParents,
         ifNotTooLate,
       ));
   },
@@ -412,6 +442,7 @@ export default {
         media,
         undefined,
         fileId,
+        undefined,
         ifNotTooLate,
       ));
   },
@@ -421,7 +452,8 @@ export default {
         method: 'GET',
         url: `https://www.googleapis.com/drive/v3/files/${id}`,
         params: {
-          fields: 'id,name,mimeType,appProperties',
+          fields: 'id,name,mimeType,appProperties,teamDriveId',
+          supportsTeamDrives: true,
         },
       })
       .then(res => res.body));
@@ -534,6 +566,7 @@ export default {
         let picker;
         const pickerBuilder = new google.picker.PickerBuilder()
           .setOAuthToken(refreshedToken.accessToken)
+          .enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES)
           .hideTitleBar()
           .setCallback((data) => {
             switch (data[google.picker.Response.ACTION]) {
@@ -548,35 +581,36 @@ export default {
         switch (type) {
           default:
           case 'doc': {
-            const addView = (hasRootParent) => {
-              const view = new google.picker.DocsView(google.picker.ViewId.DOCS);
-              if (hasRootParent) {
-                view.setParent('root');
-              }
-              view.setMimeTypes([
-                'text/plain',
-                'text/x-markdown',
-                'application/octet-stream',
-              ].join(','));
-              pickerBuilder.addView(view);
-            };
+            const mimeTypes = [
+              'text/plain',
+              'text/x-markdown',
+              'application/octet-stream',
+            ].join(',');
+
+            const view = new google.picker.DocsView(google.picker.ViewId.DOCS);
+            view.setMimeTypes(mimeTypes);
+            pickerBuilder.addView(view);
+
+            const teamDriveView = new google.picker.DocsView(google.picker.ViewId.DOCS);
+            teamDriveView.setMimeTypes(mimeTypes);
+            teamDriveView.setEnableTeamDrives(true);
+            pickerBuilder.addView(teamDriveView);
+
             pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);
-            addView(false);
-            // addView(true);
+            pickerBuilder.enableFeature(google.picker.Feature.SUPPORT_TEAM_DRIVES);
             break;
           }
           case 'folder': {
-            const addView = (hasRootParent) => {
-              const view = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
-              if (hasRootParent) {
-                view.setParent('root');
-              }
-              view.setSelectFolderEnabled(true);
-              view.setMimeTypes(this.folderMimeType);
-              pickerBuilder.addView(view);
-            };
-            addView(false);
-            // addView(true);
+            const folderView = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
+            folderView.setSelectFolderEnabled(true);
+            folderView.setMimeTypes(this.folderMimeType);
+            pickerBuilder.addView(folderView);
+
+            const teamDriveView = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
+            teamDriveView.setSelectFolderEnabled(true);
+            teamDriveView.setEnableTeamDrives(true);
+            teamDriveView.setMimeTypes(this.folderMimeType);
+            pickerBuilder.addView(teamDriveView);
             break;
           }
           case 'img': {

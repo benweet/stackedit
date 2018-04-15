@@ -1,5 +1,5 @@
 <template>
-  <div class="app" :class="themeClasses">
+  <div class="app" :class="classes">
     <splash-screen v-if="!ready"></splash-screen>
     <layout v-else></layout>
     <modal v-if="showModal"></modal>
@@ -81,7 +81,7 @@ export default {
     ready: false,
   }),
   computed: {
-    themeClasses() {
+    classes() {
       const result = themeClasses[this.$store.getters['data/computedSettings'].colorTheme];
       return Array.isArray(result) ? result : themeClasses.light;
     },

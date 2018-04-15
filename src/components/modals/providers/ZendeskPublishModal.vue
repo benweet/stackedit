@@ -11,10 +11,10 @@
           https://example.zendesk.com/hc/en-us/sections/<b>21857469</b>-Section-name
         </div>
       </form-entry>
-      <form-entry label="Existing article ID (optional)">
+      <form-entry label="Existing article ID" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="articleId" @keydown.enter="resolve()">
       </form-entry>
-      <form-entry label="Locale (optional)">
+      <form-entry label="Locale" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="locale" @keydown.enter="resolve()">
         <div class="form-entry__info">
           <b>Default:</b> en-us

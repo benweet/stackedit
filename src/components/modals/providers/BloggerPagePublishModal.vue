@@ -11,7 +11,7 @@
           <b>Example:</b> http://example.blogger.com/
         </div>
       </form-entry>
-      <form-entry label="Existing page ID (optional)">
+      <form-entry label="Existing page ID" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="pageId" @keydown.enter="resolve()">
       </form-entry>
       <form-entry label="Template">

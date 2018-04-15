@@ -62,6 +62,7 @@ import StickyComment from './gutters/StickyComment';
 import CurrentDiscussion from './gutters/CurrentDiscussion';
 import FindReplace from './FindReplace';
 import editorSvc from '../services/editorSvc';
+import markdownConversionSvc from '../services/markdownConversionSvc';
 
 export default {
   components: {
@@ -105,6 +106,7 @@ export default {
     saveSelection: () => editorSvc.saveSelection(true),
   },
   created() {
+    markdownConversionSvc.init(); // Needs to be inited before mount
     this.updateBodySize();
     window.addEventListener('resize', this.updateBodySize);
     window.addEventListener('keyup', this.saveSelection);

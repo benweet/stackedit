@@ -12,7 +12,7 @@
           <b>Jetpack plugin</b> is required for self-hosted sites.
         </div>
       </form-entry>
-      <form-entry label="Existing post ID (optional)">
+      <form-entry label="Existing post ID" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="postId" @keydown.enter="resolve()">
       </form-entry>
       <form-entry label="Template">

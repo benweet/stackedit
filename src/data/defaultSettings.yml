@@ -24,15 +24,18 @@ shortcuts:
   mod+alt+f: replace
   mod+g: replace
   mod+shift+b: bold
-  mod+shift+i: italic
-  mod+shift+l: link
-  mod+shift+q: quote
+  mod+shift+c: clist
   mod+shift+k: code
-  mod+shift+g: image
-  mod+shift+o: olist
-  mod+shift+u: ulist
   mod+shift+h: heading
   mod+shift+r: hr
+  mod+shift+g: image
+  mod+shift+i: italic
+  mod+shift+l: link
+  mod+shift+o: olist
+  mod+shift+q: quote
+  mod+shift+s: strikethrough
+  mod+shift+t: table
+  mod+shift+u: ulist
   '= = > space':
     method: expand
     params:
@@ -84,6 +87,5 @@ newFileContent: |
 # Default properties for new files
 newFileProperties: |
 #  extensions:
-#    markdown:
-#      breaks: false
+#    preset: gfm
 

@@ -29,6 +29,7 @@ const methods = {
   image: pagedownHandler('image'),
   olist: pagedownHandler('olist'),
   ulist: pagedownHandler('ulist'),
+  clist: pagedownHandler('clist'),
   heading: pagedownHandler('heading'),
   hr: pagedownHandler('hr'),
   sync() {
@@ -66,8 +67,7 @@ store.watch(
   (computedSettings) => {
     Mousetrap.reset();
 
-    const shortcuts = computedSettings.shortcuts;
-    Object.entries(shortcuts).forEach(([key, shortcut]) => {
+    Object.entries(computedSettings.shortcuts).forEach(([key, shortcut]) => {
       if (shortcut) {
         const method = `${shortcut.method || shortcut}`;
         let params = shortcut.params || [];

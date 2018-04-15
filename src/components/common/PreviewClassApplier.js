@@ -32,30 +32,32 @@ export default class PreviewClassApplier {
     };
 
     editorSvc.$on('previewCtxWithDiffs', this.restoreClass);
-    nextTick(() => this.applyClass());
+    nextTick(() => this.restoreClass());
   }
 
   applyClass() {
-    const offset = this.offsetGetter();
-    if (offset) {
-      const offsetStart = editorSvc.getPreviewOffset(
-        offset.start, editorSvc.previewCtx.sectionDescList);
-      const offsetEnd = editorSvc.getPreviewOffset(
-        offset.end, editorSvc.previewCtx.sectionDescList);
-      if (offsetStart != null && offsetEnd != null && offsetStart !== offsetEnd) {
-        const start = cledit.Utils.findContainer(
-          editorSvc.previewElt, Math.min(offsetStart, offsetEnd));
-        const end = cledit.Utils.findContainer(
-          editorSvc.previewElt, Math.max(offsetStart, offsetEnd));
-        const range = document.createRange();
-        range.setStart(start.container, start.offsetInContainer);
-        range.setEnd(end.container, end.offsetInContainer);
-        const properties = {
-          ...this.properties,
-          className: this.classGetter().join(' '),
-        };
-        utils.wrapRange(range, properties);
-        this.lastEltCount = this.eltCollection.length;
+    if (!this.stopped) {
+      const offset = this.offsetGetter();
+      if (offset) {
+        const offsetStart = editorSvc.getPreviewOffset(
+          offset.start, editorSvc.previewCtx.sectionDescList);
+        const offsetEnd = editorSvc.getPreviewOffset(
+          offset.end, editorSvc.previewCtx.sectionDescList);
+        if (offsetStart != null && offsetEnd != null && offsetStart !== offsetEnd) {
+          const start = cledit.Utils.findContainer(
+            editorSvc.previewElt, Math.min(offsetStart, offsetEnd));
+          const end = cledit.Utils.findContainer(
+            editorSvc.previewElt, Math.max(offsetStart, offsetEnd));
+          const range = document.createRange();
+          range.setStart(start.container, start.offsetInContainer);
+          range.setEnd(end.container, end.offsetInContainer);
+          const properties = {
+            ...this.properties,
+            className: this.classGetter().join(' '),
+          };
+          utils.wrapRange(range, properties);
+          this.lastEltCount = this.eltCollection.length;
+        }
       }
     }
   }
@@ -67,5 +69,6 @@ export default class PreviewClassApplier {
   stop() {
     editorSvc.$off('previewCtxWithDiffs', this.restoreClass);
     nextTick(() => this.removeClass());
+    this.stopped = true;
   }
 }

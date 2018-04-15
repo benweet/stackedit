@@ -44,27 +44,29 @@ export default class EditorClassApplier {
     };
 
     editorSvc.clEditor.on('contentChanged', this.restoreClass);
-    nextTick(() => this.applyClass());
+    nextTick(() => this.restoreClass());
   }
 
   applyClass() {
-    const offset = this.offsetGetter();
-    if (offset && offset.start !== offset.end) {
-      const range = editorSvc.clEditor.selectionMgr.createRange(
-        Math.min(offset.start, offset.end),
-        Math.max(offset.start, offset.end),
-      );
-      const properties = {
-        ...this.properties,
-        className: this.classGetter().join(' '),
-      };
-      editorSvc.clEditor.watcher.noWatch(() => {
-        utils.wrapRange(range, properties);
-      });
-      if (editorSvc.clEditor.selectionMgr.hasFocus()) {
-        nextTickRestoreSelection();
+    if (!this.stopped) {
+      const offset = this.offsetGetter();
+      if (offset && offset.start !== offset.end) {
+        const range = editorSvc.clEditor.selectionMgr.createRange(
+          Math.min(offset.start, offset.end),
+          Math.max(offset.start, offset.end),
+        );
+        const properties = {
+          ...this.properties,
+          className: this.classGetter().join(' '),
+        };
+        editorSvc.clEditor.watcher.noWatch(() => {
+          utils.wrapRange(range, properties);
+        });
+        if (editorSvc.clEditor.selectionMgr.hasFocus()) {
+          nextTickRestoreSelection();
+        }
+        this.lastEltCount = this.eltCollection.length;
       }
-      this.lastEltCount = this.eltCollection.length;
     }
   }
 
@@ -80,5 +82,6 @@ export default class EditorClassApplier {
   stop() {
     editorSvc.clEditor.off('contentChanged', this.restoreClass);
     nextTick(() => this.removeClass());
+    this.stopped = true;
   }
 }

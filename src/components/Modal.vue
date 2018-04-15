@@ -232,6 +232,19 @@ export default {
   }
 }
 
+.modal__title {
+  font-weight: bold;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  margin-top: 2.5rem;
+}
+
+.modal__sub-title {
+  opacity: 0.5;
+  font-size: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
 .modal__error {
   color: #de2c00;
 }
@@ -241,6 +254,12 @@ export default {
   border-radius: $border-radius-base;
   margin: 1.2em 0;
   padding: 0.75em 1.25em;
+  font-size: 0.95em;
+  line-height: 1.6;
+
+  pre {
+    line-height: 1.5;
+  }
 }
 
 .modal__button-bar {
@@ -264,6 +283,10 @@ export default {
   .form-entry--error & {
     color: darken($error-color, 10%);
   }
+}
+
+.form-entry__label-info {
+  font-size: 0.75rem;
 }
 
 .form-entry__field {

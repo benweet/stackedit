@@ -1,3 +1,8 @@
+### v5.11
+
+- New file properties modal with extension presets
+- Added new Markdown extensions: task lists, image size, mark
+
 ### v5.10
 
 - Added temporary folder

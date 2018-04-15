@@ -90,7 +90,8 @@ function cledit(contentElt, scrollEltOpt, isMarkdown = false) {
   function replace(selectionStart, selectionEnd, replacement) {
     undoMgr.setDefaultMode('single');
     replaceContent(selectionStart, selectionEnd, replacement);
-    const endOffset = selectionStart + replacement.length;
+    const startOffset = Math.min(selectionStart, selectionEnd);
+    const endOffset = startOffset + replacement.length;
     selectionMgr.setSelectionStartEnd(endOffset, endOffset);
     selectionMgr.updateCursorCoordinates(true);
   }

@@ -8,7 +8,7 @@
       <br>
       <a target="_blank" href="https://github.com/benweet/stackedit/issues">Issue tracker</a> — <a target="_blank" href="https://github.com/benweet/stackedit/blob/master/CHANGELOG.md">Changelog</a>
       <br>
-      <a target="_blank" href="https://chrome.google.com/webstore/detail/stackedit/iiooodelglhkcpgbajoejffhijaclcdg">Chrome app</a> — thanks for your review!
+      <a target="_blank" href="https://chrome.google.com/webstore/detail/iiooodelglhkcpgbajoejffhijaclcdg">Chrome app</a> — <a target="_blank" href="https://chrome.google.com/webstore/detail/ajehldoplanpchfokmeempkekhnhmoha">Chrome extension</a>
       <br>
       StackEdit on <a target="_blank" href="https://twitter.com/stackedit/">Twitter</a>
       <br>

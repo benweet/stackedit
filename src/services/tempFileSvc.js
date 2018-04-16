@@ -11,7 +11,8 @@ const contentProperties = utils.queryParams.contentProperties;
 export default {
   setReady() {
     if (origin && window.parent) {
-      window.parent.postMessage({ type: 'ready' }, origin);
+      // Wait for the editor to init
+      setTimeout(() => window.parent.postMessage({ type: 'ready' }, origin), 1);
     }
   },
   closed: false,

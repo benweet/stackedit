@@ -2,7 +2,7 @@
   <nav class="navigation-bar" :class="{'navigation-bar--editor': styles.showEditor && !revisionContent, 'navigation-bar--light': light}">
     <!-- Explorer -->
     <div class="navigation-bar__inner navigation-bar__inner--left navigation-bar__inner--button">
-      <button class="navigation-bar__button button" v-if="light" @click="close()" v-title="'Close StackEdit'"><icon-close></icon-close></button>
+      <button class="navigation-bar__button button" v-if="light" @click="close()" v-title="'Close StackEdit'"><icon-close-circle></icon-close-circle></button>
       <button class="navigation-bar__button button" v-else tour-step-anchor="explorer" @click="toggleExplorer()" v-title="'Toggle explorer'"><icon-folder></icon-folder></button>
     </div>
     <!-- Side bar -->

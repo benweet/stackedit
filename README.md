@@ -6,9 +6,27 @@
 
 https://stackedit.io/
 
-### NEW!!! Integrate StackEdit in any website!
+### NEW!!! Embed StackEdit in any website!
 
-See https://benweet.github.io/stackedit.js/
+See https://github.com/benweet/stackedit.js
+
+Chrome extension: https://chrome.google.com/webstore/detail/ajehldoplanpchfokmeempkekhnhmoha
+
+### Build Setup
+
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm start
+
+# build for production with minification
+npm run build
+
+# build for production and view the bundle analyzer report
+npm run build --report
+```
 
 ### StackEdit can:
 
@@ -31,21 +49,5 @@ See https://benweet.github.io/stackedit.js/
  - Offline editing
  - Online synchronization using Google Drive, Dropbox and GitHub
  - One click publish to Blogger, Dropbox, Gist, GitHub, Google Drive, WordPress, Zendesk
-
-### Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm start
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-```
 
 > **NOTE:** This page has been written and published with [StackEdit](https://stackedit.io/ "StackEdit").

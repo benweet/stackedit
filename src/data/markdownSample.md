@@ -8,6 +8,7 @@ Headers
 ### Header 3
 
 
+
 Styling
 ---------------------------
 
@@ -26,12 +27,13 @@ H~2~O is a liquid.
 2^10^ is 1024.
 
 
+
 Lists
 ---------------------------
 
 - Item
-* Item
-+ Item
+  * Item
+    + Item
 
 1. Item 1
 2. Item 2
@@ -39,6 +41,7 @@ Lists
 
 - [ ] Incomplete item
 - [x] Complete item
+
 
 
 Links
@@ -49,6 +52,7 @@ A [link](http://example.com).
 An image: ![Alt](img.jpg)
 
 A sized image: ![Alt](img.jpg =60x50)
+
 
 
 Code
@@ -67,6 +71,7 @@ var foo = 'bar';
 ```
 
 
+
 Tables
 ---------------------------
 
@@ -82,6 +87,7 @@ Pipe     | $1
 | centered | right-aligned |
 
 
+
 Definition lists
 ---------------------------
 
@@ -92,6 +98,8 @@ Authors
 :  John
 :  Luke
 
+
+
 Footnotes
 ---------------------------
 
@@ -100,12 +108,14 @@ Some text with a footnote.[^1]
 [^1]: The footnote.
 
 
+
 Abbreviations
 ---------------------------
 
 Markdown converts text to HTML.
 
 *[HTML]: HyperText Markup Language
+
 
 
 LaTeX math

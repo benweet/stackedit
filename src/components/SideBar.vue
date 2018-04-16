@@ -164,10 +164,11 @@ export default {
   padding: 10px;
   margin: -10px -10px 10px;
   background-color: $info-bg;
+  font-size: 0.95em;
 
   p {
     margin: 10px;
-    line-height: 1.4;
+    line-height: 1.5;
   }
 }
 </style>

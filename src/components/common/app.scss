@@ -11,6 +11,9 @@ body {
   position: fixed;
   tab-size: 4;
   text-rendering: auto;
+
+  /* Prevent body overscroll on Chrome */
+  overflow: hidden;
 }
 
 * {

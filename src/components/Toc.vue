@@ -89,7 +89,7 @@ export default {
 <style lang="scss">
 .toc__inner {
   position: relative;
-  color: rgba(0, 0, 0, 0.75);
+  color: rgba(0, 0, 0, 0.67);
   cursor: pointer;
   font-size: 9px;
   padding: 10px 20px 40px;

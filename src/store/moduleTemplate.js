@@ -3,10 +3,7 @@ import utils from '../services/utils';
 
 export default (empty, simpleHash = false) => {
   // Use Date.now() as a simple hash function, which is ok for not-synced types
-  const hashFunc = simpleHash ? Date.now : item => utils.hash(utils.serializeObject({
-    ...item,
-    hash: undefined,
-  }));
+  const hashFunc = simpleHash ? Date.now : item => utils.getItemHash(item);
 
   return {
     namespaced: true,
@@ -19,7 +16,7 @@ export default (empty, simpleHash = false) => {
     mutations: {
       setItem(state, value) {
         const item = Object.assign(empty(value.id), value);
-        if (!item.hash) {
+        if (!item.hash || !simpleHash) {
           item.hash = hashFunc(item);
         }
         Vue.set(state.itemMap, item.id, item);

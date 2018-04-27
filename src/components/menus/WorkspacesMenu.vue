@@ -7,13 +7,17 @@
       </menu-entry>
     </div>
     <hr>
-    <menu-entry @click.native="addGoogleDriveWorkspace">
-      <icon-provider slot="icon" provider-id="googleDriveWorkspace"></icon-provider>
-      <span>Add Google Drive workspace</span>
-    </menu-entry>
     <menu-entry @click.native="addCouchdbWorkspace">
       <icon-provider slot="icon" provider-id="couchdbWorkspace"></icon-provider>
       <span>Add CouchDB workspace</span>
+    </menu-entry>
+    <menu-entry @click.native="addGithubWorkspace">
+      <icon-provider slot="icon" provider-id="githubWorkspace"></icon-provider>
+      <span>Add GitHub workspace</span>
+    </menu-entry>
+    <menu-entry @click.native="addGoogleDriveWorkspace">
+      <icon-provider slot="icon" provider-id="googleDriveWorkspace"></icon-provider>
+      <span>Add Google Drive workspace</span>
     </menu-entry>
     <menu-entry @click.native="manageWorkspaces">
       <icon-database slot="icon"></icon-database>
@@ -40,18 +44,24 @@ export default {
     ]),
   },
   methods: {
+    addCouchdbWorkspace() {
+      return this.$store.dispatch('modal/open', {
+        type: 'couchdbWorkspace',
+      })
+        .catch(() => {}); // Cancel
+    },
+    addGithubWorkspace() {
+      return this.$store.dispatch('modal/open', {
+        type: 'githubWorkspace',
+      })
+        .catch(() => {}); // Cancel
+    },
     addGoogleDriveWorkspace() {
       return googleHelper.addDriveAccount(true)
         .then(token => this.$store.dispatch('modal/open', {
           type: 'googleDriveWorkspace',
           token,
         }))
-        .catch(() => {}); // Cancel
-    },
-    addCouchdbWorkspace() {
-      return this.$store.dispatch('modal/open', {
-        type: 'couchdbWorkspace',
-      })
         .catch(() => {}); // Cancel
     },
     manageWorkspaces() {

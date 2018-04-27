@@ -17,6 +17,16 @@ const request = (token, options) => networkSvc.request({
   },
 });
 
+const repoRequest = (token, owner, repo, options) => request(token, {
+  ...options,
+  url: `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/${options.url}`,
+});
+
+const getCommitMessage = (name, path) => {
+  const message = store.getters['data/computedSettings'].github[name];
+  return message.replace(/{{path}}/g, path);
+};
+
 export default {
   startOauth2(scopes, sub = null, silent = false) {
     return networkSvc.startOauth2(
@@ -51,7 +61,7 @@ export default {
           const token = {
             scopes,
             accessToken,
-            name: res.body.name,
+            name: res.body.login,
             sub: `${res.body.id}`,
             repoFullAccess: scopes.indexOf('repo') !== -1,
           };
@@ -63,21 +73,58 @@ export default {
   addAccount(repoFullAccess = false) {
     return this.startOauth2(getScopes({ repoFullAccess }));
   },
+  getTree(token, owner, repo, sha) {
+    return repoRequest(token, owner, repo, {
+      url: `git/trees/${encodeURIComponent(sha)}?recursive=1`,
+    })
+      .then((res) => {
+        if (res.body.truncated) {
+          throw new Error('Git tree too big. Please remove some files in the repository.');
+        }
+        return res.body.tree;
+      });
+  },
+  getHeadTree(token, owner, repo, branch) {
+    return repoRequest(token, owner, repo, {
+      url: `branches/${encodeURIComponent(branch)}`,
+    })
+      .then(res => this.getTree(token, owner, repo, res.body.commit.commit.tree.sha));
+  },
+  getCommits(token, owner, repo, sha, path) {
+    return repoRequest(token, owner, repo, {
+      url: 'commits',
+      params: { sha, path },
+    })
+      .then(res => res.body);
+  },
   uploadFile(token, owner, repo, branch, path, content, sha) {
-    return request(token, {
+    return repoRequest(token, owner, repo, {
       method: 'PUT',
-      url: `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${encodeURIComponent(path)}`,
+      url: `contents/${encodeURIComponent(path)}`,
       body: {
-        message: 'Uploaded by https://stackedit.io/',
+        message: getCommitMessage(sha ? 'updateFileMessage' : 'createFileMessage', path),
         content: utils.encodeBase64(content),
         sha,
         branch,
       },
-    });
+    })
+      .then(res => res.body);
+  },
+  removeFile(token, owner, repo, branch, path, sha) {
+    return repoRequest(token, owner, repo, {
+      method: 'DELETE',
+      url: `contents/${encodeURIComponent(path)}`,
+      body: {
+        message: getCommitMessage('deleteFileMessage', path),
+        sha,
+        branch,
+      },
+    })
+      .then(res => res.body);
   },
   downloadFile(token, owner, repo, branch, path) {
-    return request(token, {
-      url: `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${encodeURIComponent(path)}`,
+    return repoRequest(token, owner, repo, {
+      url: `contents/${encodeURIComponent(path)}`,
       params: { ref: branch },
     })
       .then(res => ({

@@ -614,11 +614,8 @@ export default {
             break;
           }
           case 'img': {
-            let view = new google.picker.PhotosView();
-            view.setType('flat');
-            pickerBuilder.addView(view);
-            view = new google.picker.PhotosView();
-            view.setType('ofuser');
+            const view = new google.picker.PhotosView();
+            view.setType('highlights');
             pickerBuilder.addView(view);
             pickerBuilder.addView(google.picker.ViewId.PHOTO_UPLOAD);
             break;

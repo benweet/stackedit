@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="zendesk"></icon-provider>
       </div>
-      <p>This will publish <b>{{currentFileName}}</b> to your <b>Zendesk Help Center</b>.</p>
+      <p>Publish <b>{{currentFileName}}</b> to your <b>Zendesk Help Center</b>.</p>
       <form-entry label="Section ID" error="sectionId">
         <input slot="field" class="textfield" type="text" v-model.trim="sectionId" @keydown.enter="resolve()">
         <div class="form-entry__info">

@@ -3,5 +3,6 @@ export default (id = null) => ({
   type: 'syncedContent',
   historyData: {},
   syncHistory: {},
+  v: 0,
   hash: 0,
 });

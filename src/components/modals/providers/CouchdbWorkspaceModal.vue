@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="couchdb"></icon-provider>
       </div>
-      <p>This will create a workspace synchronized with a <b>CouchDB</b> database.</p>
+      <p>Create a workspace synchronized with a <b>CouchDB</b> database.</p>
       <form-entry label="Database URL" error="dbUrl">
         <input slot="field" class="textfield" type="text" v-model.trim="dbUrl" @keydown.enter="resolve()">
         <div class="form-entry__info">

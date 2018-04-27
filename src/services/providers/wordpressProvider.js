@@ -1,8 +1,8 @@
 import store from '../../store';
 import wordpressHelper from './helpers/wordpressHelper';
-import providerRegistry from './providerRegistry';
+import Provider from './common/Provider';
 
-export default providerRegistry.register({
+export default new Provider({
   id: 'wordpress',
   getToken(location) {
     return store.getters['data/wordpressTokens'][location.sub];

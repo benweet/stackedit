@@ -4,6 +4,10 @@ import store from '../store';
 const promised = {};
 
 export default {
+  addInfo({ id, name, imageUrl }) {
+    promised[id] = true;
+    store.commit('userInfo/addItem', { id, name, imageUrl });
+  },
   getInfo(userId) {
     if (!promised[userId]) {
       // Try to find a token with this sub

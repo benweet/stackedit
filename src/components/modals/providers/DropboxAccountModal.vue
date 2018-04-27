@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="dropbox"></icon-provider>
       </div>
-      <p>This will link your <b>Dropbox</b> account to <b>StackEdit</b>.</p>
+      <p>Link your <b>Dropbox</b> account to <b>StackEdit</b>.</p>
       <div class="form-entry">
         <div class="form-entry__checkbox">
           <label>

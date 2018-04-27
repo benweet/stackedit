@@ -31,7 +31,7 @@
 
 <script>
 import { mapMutations, mapGetters } from 'vuex';
-import providerRegistry from '../../services/providers/providerRegistry';
+import providerRegistry from '../../services/providers/common/providerRegistry';
 import MenuEntry from './common/MenuEntry';
 import UserImage from '../UserImage';
 import UserName from '../UserName';
@@ -48,7 +48,7 @@ let cachedFileId;
 let revisionsPromise;
 let revisionContentPromises;
 const pageSize = 30;
-const spacerThreshold = 12 * 60 * 60 * 1000; // 12h
+const spacerThreshold = 60 * 60 * 1000; // 1h
 
 export default {
   components: {

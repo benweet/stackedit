@@ -14,12 +14,13 @@ import folder from './folder';
 import layout from './layout';
 import modal from './modal';
 import notification from './notification';
-import publishLocation from './publishLocation';
 import queue from './queue';
 import syncedContent from './syncedContent';
-import syncLocation from './syncLocation';
 import userInfo from './userInfo';
 import workspace from './workspace';
+import locationTemplate from './locationTemplate';
+import emptyPublishLocation from '../data/emptyPublishLocation';
+import emptySyncLocation from '../data/emptySyncLocation';
 
 Vue.use(Vuex);
 
@@ -39,10 +40,10 @@ const store = new Vuex.Store({
     layout,
     modal,
     notification,
-    publishLocation,
+    publishLocation: locationTemplate(emptyPublishLocation),
     queue,
     syncedContent,
-    syncLocation,
+    syncLocation: locationTemplate(emptySyncLocation),
     userInfo,
     workspace,
   },
@@ -57,6 +58,41 @@ const store = new Vuex.Store({
     allItemMap: (state) => {
       const result = {};
       utils.types.forEach(type => Object.assign(result, state[type].itemMap));
+      return result;
+    },
+    itemPaths: (state) => {
+      const result = {};
+      const getPath = (item) => {
+        let itemPath = result[item.id];
+        if (!itemPath) {
+          if (item.parendId === 'trash') {
+            itemPath = `.stackedit-trash/${item.name}`;
+          } else {
+            let name = item.name;
+            if (item.type === 'folder') {
+              name += '/';
+            }
+            const parent = state.folder.itemMap[item.parentId];
+            if (!parent) {
+              itemPath = name;
+            } else {
+              itemPath = getPath(parent) + name;
+            }
+          }
+        }
+        result[item.id] = itemPath;
+        return itemPath;
+      };
+      [...state.folder.items, ...state.file.items].forEach(item => getPath(item));
+      return result;
+    },
+    pathItems: (state, getters) => {
+      const result = {};
+      const itemPaths = getters.itemPaths;
+      const allItemMap = getters.allItemMap;
+      Object.entries(itemPaths).forEach(([id, path]) => {
+        result[path] = allItemMap[id];
+      });
       return result;
     },
     isSponsor: (state, getters) => {

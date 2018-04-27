@@ -1,10 +1,7 @@
 import store from '../../store';
 import googleHelper from './helpers/googleHelper';
-import providerRegistry from './providerRegistry';
-import providerUtils from './providerUtils';
+import Provider from './common/Provider';
 import utils from '../utils';
-
-let fileIdToOpen;
 
 const getSyncData = (fileId) => {
   const syncData = store.getters['data/syncDataByItemId'][`${fileId}/content`];
@@ -13,19 +10,22 @@ const getSyncData = (fileId) => {
     : Promise.reject(); // No need for a proper error message.
 };
 
-export default providerRegistry.register({
+let fileIdToOpen;
+let syncStartPageToken;
+
+export default new Provider({
   id: 'googleDriveWorkspace',
   getToken() {
     return store.getters['workspace/syncToken'];
   },
   initWorkspace() {
-    const makeWorkspaceIdParams = folderId => ({
+    const makeWorkspaceParams = folderId => ({
       providerId: this.id,
       folderId,
     });
 
     const makeWorkspaceId = folderId => folderId && utils.makeWorkspaceId(
-      makeWorkspaceIdParams(folderId));
+      makeWorkspaceParams(folderId));
 
     const getWorkspace = folderId =>
       store.getters['data/sanitizedWorkspaces'][makeWorkspaceId(folderId)];
@@ -155,7 +155,7 @@ export default providerRegistry.register({
           }))
         .then((workspace) => {
           // Fix the URL hash
-          utils.setQueryParams(makeWorkspaceIdParams(workspace.folderId));
+          utils.setQueryParams(makeWorkspaceParams(workspace.folderId));
           if (workspace.url !== location.href) {
             store.dispatch('data/patchWorkspaces', {
               [workspace.id]: {
@@ -339,13 +339,13 @@ export default providerRegistry.register({
             changes.push(contentChange);
           }
         });
-        changes.startPageToken = result.startPageToken;
+        syncStartPageToken = result.startPageToken;
         return changes;
       });
   },
-  setAppliedChanges(changes) {
+  onChangesApplied() {
     store.dispatch('data/patchLocalSettings', {
-      syncStartPageToken: changes.startPageToken,
+      syncStartPageToken,
     });
   },
   saveSimpleItem(item, syncData, ifNotTooLate) {
@@ -419,7 +419,7 @@ export default providerRegistry.register({
     }
     return googleHelper.downloadFile(token, syncData.id)
       .then((content) => {
-        const item = providerUtils.parseContent(content, `${syncLocation.fileId}/content`);
+        const item = Provider.parseContent(content, `${syncLocation.fileId}/content`);
         if (item.hash !== contentSyncData.hash) {
           store.dispatch('data/patchSyncData', {
             [contentSyncData.id]: {
@@ -428,7 +428,7 @@ export default providerRegistry.register({
             },
           });
         }
-        // Open the file requested by action if it was to synced yet
+        // Open the file requested by action if it wasn't synced yet
         if (fileIdToOpen && fileIdToOpen === syncData.id) {
           fileIdToOpen = null;
           // Open the file once downloaded content has been stored
@@ -474,7 +474,7 @@ export default providerRegistry.register({
             undefined,
             undefined,
             undefined,
-            providerUtils.serializeContent(content),
+            Provider.serializeContent(content),
             undefined,
             syncData.id,
             undefined,
@@ -494,7 +494,7 @@ export default providerRegistry.register({
             id: item.id,
             folderId: workspace.folderId,
           },
-          providerUtils.serializeContent(content),
+          Provider.serializeContent(content),
           undefined,
           undefined,
           undefined,
@@ -523,8 +523,8 @@ export default providerRegistry.register({
       }))
       .then(() => syncLocation);
   },
-  uploadData(item, dataId, ifNotTooLate) {
-    const syncData = store.getters['data/syncDataByItemId'][dataId];
+  uploadData(item, ifNotTooLate) {
+    const syncData = store.getters['data/syncDataByItemId'][item.id];
     if (syncData && syncData.hash === item.hash) {
       return Promise.resolve();
     }
@@ -570,6 +570,6 @@ export default providerRegistry.register({
   getRevisionContent(token, fileId, revisionId) {
     return getSyncData(fileId)
       .then(syncData => googleHelper.downloadFileRevision(token, syncData.id, revisionId))
-      .then(content => providerUtils.parseContent(content, `${fileId}/content`));
+      .then(content => Provider.parseContent(content, `${fileId}/content`));
   },
 });

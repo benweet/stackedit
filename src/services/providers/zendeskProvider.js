@@ -1,8 +1,8 @@
 import store from '../../store';
 import zendeskHelper from './helpers/zendeskHelper';
-import providerRegistry from './providerRegistry';
+import Provider from './common/Provider';
 
-export default providerRegistry.register({
+export default new Provider({
   id: 'zendesk',
   getToken(location) {
     return store.getters['data/zendeskTokens'][location.sub];

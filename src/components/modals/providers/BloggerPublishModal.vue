@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="blogger"></icon-provider>
       </div>
-      <p>This will publish <b>{{currentFileName}}</b> to your <b>Blogger</b> site.</p>
+      <p>Publish <b>{{currentFileName}}</b> to your <b>Blogger</b> site.</p>
       <form-entry label="Blog URL" error="blogUrl">
         <input slot="field" class="textfield" type="text" v-model.trim="blogUrl" @keydown.enter="resolve()">
         <div class="form-entry__info">

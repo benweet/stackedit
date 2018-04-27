@@ -118,6 +118,18 @@ export default {
       }, {});
     });
   },
+  search(items, criteria) {
+    let result;
+    items.some((item) => {
+      // If every field fits the criteria
+      if (Object.entries(criteria).every(([key, value]) => value === item[key])) {
+        result = item;
+        return true;
+      }
+      return false;
+    });
+    return result;
+  },
   uid() {
     crypto.getRandomValues(array);
     return array.cl_map(value => alphabet[value % radix]).join('');
@@ -132,26 +144,39 @@ export default {
     }
     return hash;
   },
+  getItemHash(item) {
+    return this.hash(this.serializeObject({
+      ...item,
+      // These properties must not be part of the hash
+      id: undefined,
+      hash: undefined,
+      history: undefined,
+    }));
+  },
   addItemHash(item) {
     return {
       ...item,
-      hash: this.hash(this.serializeObject({
-        ...item,
-        // These properties must not be part of the hash
-        history: undefined,
-        hash: undefined,
-      })),
+      hash: this.getItemHash(item),
     };
   },
   makeWorkspaceId(params) {
     return Math.abs(this.hash(this.serializeObject(params))).toString(36);
   },
-  encodeBase64(str) {
-    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+  encodeBase64(str, urlSafe = false) {
+    const result = btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
       (match, p1) => String.fromCharCode(`0x${p1}`)));
+    if (!urlSafe) {
+      return result;
+    }
+    return result
+      .replace(/\//g, '_') // Replace `/` with `_`
+      .replace(/\+/g, '-') // Replace `+` with `-`
+      .replace(/=+$/, ''); // Remove trailing `=`
   },
   decodeBase64(str) {
-    return decodeURIComponent(atob(str).split('').map(
+    // In case of URL safe base64
+    const sanitizedStr = str.replace(/_/g, '/').replace(/-/g, '+');
+    return decodeURIComponent(atob(sanitizedStr).split('').map(
       c => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`).join(''));
   },
   computeProperties(yamlProperties) {
@@ -214,6 +239,9 @@ export default {
     }
     return result;
   },
+  concatPaths(...paths) {
+    return paths.join('/').replace(/\/+/g, '/');
+  },
   getHostname(url) {
     urlParser.href = url;
     return urlParser.hostname;
@@ -221,7 +249,7 @@ export default {
   createHiddenIframe(url) {
     const iframeElt = document.createElement('iframe');
     iframeElt.style.position = 'absolute';
-    iframeElt.style.left = '-9999px';
+    iframeElt.style.left = '-99px';
     iframeElt.style.width = '1px';
     iframeElt.style.height = '1px';
     iframeElt.src = url;

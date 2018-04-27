@@ -3,7 +3,7 @@ import store from '../store';
 import utils from './utils';
 import networkSvc from './networkSvc';
 import exportSvc from './exportSvc';
-import providerRegistry from './providers/providerRegistry';
+import providerRegistry from './providers/common/providerRegistry';
 
 const hasCurrentFilePublishLocations = () => !!store.getters['publishLocation/current'].length;
 
@@ -67,7 +67,7 @@ function publishFile(fileId) {
   return loadContent(fileId)
     .then(() => {
       const publishLocations = [
-        ...store.getters['publishLocation/groupedByFileId'][fileId] || [],
+        ...store.getters['publishLocation/filteredGroupedByFileId'][fileId] || [],
       ];
       const publishOneContentLocation = () => {
         const publishLocation = publishLocations.shift();

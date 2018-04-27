@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="googleDrive"></icon-provider>
       </div>
-      <p>This will publish <b>{{currentFileName}}</b> to your <b>Google Drive</b> account.</p>
+      <p>Publish <b>{{currentFileName}}</b> to your <b>Google Drive</b> account.</p>
       <form-entry label="Folder ID" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="folderId" @keydown.enter="resolve()">
         <div class="form-entry__info">

@@ -1,10 +1,9 @@
 import store from '../../store';
 import githubHelper from './helpers/githubHelper';
-import providerUtils from './providerUtils';
-import providerRegistry from './providerRegistry';
+import Provider from './common/Provider';
 import utils from '../utils';
 
-export default providerRegistry.register({
+export default new Provider({
   id: 'gist',
   getToken(location) {
     return store.getters['data/githubTokens'][location.sub];
@@ -18,7 +17,7 @@ export default providerRegistry.register({
   },
   downloadContent(token, syncLocation) {
     return githubHelper.downloadGist(token, syncLocation.gistId, syncLocation.filename)
-      .then(content => providerUtils.parseContent(content, `${syncLocation.fileId}/content`));
+      .then(content => Provider.parseContent(content, `${syncLocation.fileId}/content`));
   },
   uploadContent(token, content, syncLocation) {
     const file = store.state.file.itemMap[syncLocation.fileId];
@@ -27,7 +26,7 @@ export default providerRegistry.register({
       token,
       description,
       syncLocation.filename,
-      providerUtils.serializeContent(content),
+      Provider.serializeContent(content),
       syncLocation.isPublic,
       syncLocation.gistId,
     )

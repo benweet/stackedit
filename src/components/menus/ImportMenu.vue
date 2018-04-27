@@ -27,7 +27,7 @@
 import TurndownService from 'turndown/lib/turndown.browser.umd';
 import htmlSanitizer from '../../libs/htmlSanitizer';
 import MenuEntry from './common/MenuEntry';
-import providerUtils from '../../services/providers/providerUtils';
+import Provider from '../../services/providers/common/Provider';
 import store from '../../store';
 
 const turndownService = new TurndownService(store.getters['data/computedSettings'].turndown);
@@ -56,7 +56,7 @@ export default {
       const file = evt.target.files[0];
       readFile(file)
         .then(content => this.$store.dispatch('createFile', {
-          ...providerUtils.parseContent(content),
+          ...Provider.parseContent(content),
           name: file.name,
         })
           .then(item => this.$store.commit('file/setCurrentId', item.id)));
@@ -65,7 +65,7 @@ export default {
       const file = evt.target.files[0];
       readFile(file)
         .then(content => this.$store.dispatch('createFile', {
-          ...providerUtils.parseContent(
+          ...Provider.parseContent(
             turndownService.turndown(
               htmlSanitizer.sanitizeHtml(content)
                 .replace(/&#160;/g, ' '), // Replace non-breaking spaces with classic spaces

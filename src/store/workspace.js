@@ -36,6 +36,10 @@ export default {
           const googleTokens = rootGetters['data/googleTokens'];
           return googleTokens[workspace.sub];
         }
+        case 'githubWorkspace': {
+          const githubTokens = rootGetters['data/githubTokens'];
+          return githubTokens[workspace.sub];
+        }
         case 'couchdbWorkspace': {
           const couchdbTokens = rootGetters['data/couchdbTokens'];
           return couchdbTokens[workspace.id];

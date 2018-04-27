@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="googleDrive"></icon-provider>
       </div>
-      <p>This will link your <b>Google Drive</b> account to <b>StackEdit</b>.</p>
+      <p>Link your <b>Google Drive</b> account to <b>StackEdit</b>.</p>
       <div class="form-entry">
         <div class="form-entry__checkbox">
           <label>

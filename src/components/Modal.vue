@@ -41,6 +41,7 @@ import DropboxPublishModal from './modals/providers/DropboxPublishModal';
 import GithubAccountModal from './modals/providers/GithubAccountModal';
 import GithubOpenModal from './modals/providers/GithubOpenModal';
 import GithubSaveModal from './modals/providers/GithubSaveModal';
+import GithubWorkspaceModal from './modals/providers/GithubWorkspaceModal';
 import GithubPublishModal from './modals/providers/GithubPublishModal';
 import GistSyncModal from './modals/providers/GistSyncModal';
 import GistPublishModal from './modals/providers/GistPublishModal';
@@ -84,6 +85,7 @@ export default {
     GithubAccountModal,
     GithubOpenModal,
     GithubSaveModal,
+    GithubWorkspaceModal,
     GithubPublishModal,
     GistSyncModal,
     GistPublishModal,
@@ -176,6 +178,10 @@ export default {
   hr {
     margin: 0.5em 0;
   }
+
+  p {
+    line-height: 1.5;
+  }
 }
 
 .modal__inner-1 {
@@ -221,9 +227,9 @@ export default {
 
 .modal__image {
   float: left;
-  width: 64px;
-  height: 64px;
-  margin: 1.5em 1.5em 0.5em 0;
+  width: 60px;
+  height: 60px;
+  margin: 1.5em 1.2em 0.5em 0;
 
   & + *::after {
     content: '';
@@ -260,6 +266,11 @@ export default {
   pre {
     line-height: 1.5;
   }
+}
+
+.modal__info--multiline {
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
 }
 
 .modal__button-bar {

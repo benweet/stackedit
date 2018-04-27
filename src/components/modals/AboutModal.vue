@@ -10,9 +10,9 @@
       <br>
       <a target="_blank" href="https://chrome.google.com/webstore/detail/iiooodelglhkcpgbajoejffhijaclcdg">Chrome app</a> — <a target="_blank" href="https://chrome.google.com/webstore/detail/ajehldoplanpchfokmeempkekhnhmoha">Chrome extension</a>
       <br>
-      StackEdit on <a target="_blank" href="https://twitter.com/stackedit/">Twitter</a>
+      <a target="_blank" href="https://community.stackedit.io/">Community</a> — <a target="_blank" href="https://community.stackedit.io/c/how-to">Tutos and How To</a>
       <br>
-      <a target="_blank" href="https://community.stackedit.io/">Community</a>
+      StackEdit on <a target="_blank" href="https://twitter.com/stackedit/">Twitter</a>
       <div class="modal__info">
       For commercial support or custom development, please <a href="mailto:stackedit.project@gmail.com">send us an email</a>.
       </div>

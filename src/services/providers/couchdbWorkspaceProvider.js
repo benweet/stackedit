@@ -1,7 +1,6 @@
 import store from '../../store';
 import couchdbHelper from './helpers/couchdbHelper';
-import providerRegistry from './providerRegistry';
-import providerUtils from './providerUtils';
+import Provider from './common/Provider';
 import utils from '../utils';
 
 const getSyncData = (fileId) => {
@@ -11,18 +10,20 @@ const getSyncData = (fileId) => {
     : Promise.reject(); // No need for a proper error message.
 };
 
-export default providerRegistry.register({
+let syncLastSeq;
+
+export default new Provider({
   id: 'couchdbWorkspace',
   getToken() {
     return store.getters['workspace/syncToken'];
   },
   initWorkspace() {
     const dbUrl = (utils.queryParams.dbUrl || '').replace(/\/?$/, ''); // Remove trailing /
-    const workspaceIdParams = {
+    const workspaceParams = {
       providerId: this.id,
       dbUrl,
     };
-    const workspaceId = utils.makeWorkspaceId(workspaceIdParams);
+    const workspaceId = utils.makeWorkspaceId(workspaceParams);
     const getToken = () => store.getters['data/couchdbTokens'][workspaceId];
     const getWorkspace = () => store.getters['data/sanitizedWorkspaces'][workspaceId];
 
@@ -51,7 +52,7 @@ export default providerRegistry.register({
         }))
       .then((workspace) => {
         // Fix the URL hash
-        utils.setQueryParams(workspaceIdParams);
+        utils.setQueryParams(workspaceParams);
         if (workspace.url !== location.href) {
           store.dispatch('data/patchWorkspaces', {
             [workspace.id]: {
@@ -86,13 +87,13 @@ export default providerRegistry.register({
           change.syncDataId = change.id;
           return true;
         });
-        changes.lastSeq = result.lastSeq;
+        syncLastSeq = result.lastSeq;
         return changes;
       });
   },
-  setAppliedChanges(changes) {
+  onChangesApplied() {
     store.dispatch('data/patchLocalSettings', {
-      syncLastSeq: changes.lastSeq,
+      syncLastSeq,
     });
   },
   saveSimpleItem(item, syncData) {
@@ -131,9 +132,9 @@ export default providerRegistry.register({
       .then((body) => {
         let item;
         if (body.item.type === 'content') {
-          item = providerUtils.parseContent(body.attachments.data, body.item.id);
+          item = Provider.parseContent(body.attachments.data, body.item.id);
         } else {
-          item = JSON.parse(body.attachments.data);
+          item = utils.addItemHash(JSON.parse(body.attachments.data));
         }
         const rev = body._rev; // eslint-disable-line no-underscore-dangle
         if (item.hash !== syncData.hash || rev !== syncData.rev) {
@@ -149,18 +150,18 @@ export default providerRegistry.register({
       });
   },
   uploadContent(token, content, syncLocation) {
-    return this.uploadData(content, `${syncLocation.fileId}/content`)
+    return this.uploadData(content)
       .then(() => syncLocation);
   },
-  uploadData(item, dataId) {
-    const syncData = store.getters['data/syncDataByItemId'][dataId];
+  uploadData(item) {
+    const syncData = store.getters['data/syncDataByItemId'][item.id];
     if (syncData && syncData.hash === item.hash) {
       return Promise.resolve();
     }
     let data;
     let dataType;
     if (item.type === 'content') {
-      data = providerUtils.serializeContent(item);
+      data = Provider.serializeContent(item);
       dataType = 'text/plain';
     } else {
       data = JSON.stringify(item);
@@ -219,6 +220,6 @@ export default providerRegistry.register({
     return getSyncData(fileId)
       .then(syncData => couchdbHelper
         .retrieveDocumentWithAttachments(token, syncData.id, revisionId))
-      .then(body => providerUtils.parseContent(body.attachments.data, body.item.id));
+      .then(body => Provider.parseContent(body.attachments.data, body.item.id));
   },
 });

@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="wordpress"></icon-provider>
       </div>
-      <p>This will publish <b>{{currentFileName}}</b> to your <b>WordPress</b> site.</p>
+      <p>Publish <b>{{currentFileName}}</b> to your <b>WordPress</b> site.</p>
       <form-entry label="Site domain" error="domain">
         <input slot="field" class="textfield" type="text" v-model.trim="domain" @keydown.enter="resolve()">
         <div class="form-entry__info">

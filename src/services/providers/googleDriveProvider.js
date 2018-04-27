@@ -1,10 +1,9 @@
 import store from '../../store';
 import googleHelper from './helpers/googleHelper';
-import providerUtils from './providerUtils';
-import providerRegistry from './providerRegistry';
+import Provider from './common/Provider';
 import utils from '../utils';
 
-export default providerRegistry.register({
+export default new Provider({
   id: 'googleDrive',
   getToken(location) {
     const token = store.getters['data/googleTokens'][location.sub];
@@ -110,7 +109,7 @@ export default providerRegistry.register({
   },
   downloadContent(token, syncLocation) {
     return googleHelper.downloadFile(token, syncLocation.driveFileId)
-      .then(content => providerUtils.parseContent(content, `${syncLocation.fileId}/content`));
+      .then(content => Provider.parseContent(content, `${syncLocation.fileId}/content`));
   },
   uploadContent(token, content, syncLocation, ifNotTooLate) {
     const file = store.state.file.itemMap[syncLocation.fileId];
@@ -124,7 +123,7 @@ export default providerRegistry.register({
       name,
       parents,
       undefined,
-      providerUtils.serializeContent(content),
+      Provider.serializeContent(content),
       undefined,
       syncLocation.driveFileId,
       undefined,
@@ -156,7 +155,7 @@ export default providerRegistry.register({
       if (!driveFile) {
         return null;
       }
-      if (providerUtils.openFileWithLocation(store.getters['syncLocation/items'], {
+      if (Provider.openFileWithLocation(store.getters['syncLocation/items'], {
         providerId: this.id,
         driveFileId: driveFile.id,
       })) {

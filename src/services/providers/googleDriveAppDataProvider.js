@@ -1,9 +1,11 @@
 import store from '../../store';
 import googleHelper from './helpers/googleHelper';
-import providerRegistry from './providerRegistry';
+import Provider from './common/Provider';
 import utils from '../utils';
 
-export default providerRegistry.register({
+let syncStartPageToken;
+
+export default new Provider({
   id: 'googleDriveAppData',
   getToken() {
     return store.getters['workspace/syncToken'];
@@ -42,13 +44,13 @@ export default providerRegistry.register({
           change.syncDataId = change.fileId;
           return true;
         });
-        changes.startPageToken = result.startPageToken;
+        syncStartPageToken = result.startPageToken;
         return changes;
       });
   },
-  setAppliedChanges(changes) {
+  onChangesApplied() {
     store.dispatch('data/patchLocalSettings', {
-      syncStartPageToken: changes.startPageToken,
+      syncStartPageToken,
     });
   },
   saveSimpleItem(item, syncData, ifNotTooLate) {
@@ -83,7 +85,7 @@ export default providerRegistry.register({
     const syncToken = store.getters['workspace/syncToken'];
     return googleHelper.downloadAppDataFile(syncToken, syncData.id)
       .then((data) => {
-        const item = JSON.parse(data);
+        const item = utils.addItemHash(JSON.parse(data));
         if (item.hash !== syncData.hash) {
           store.dispatch('data/patchSyncData', {
             [syncData.id]: {
@@ -96,11 +98,11 @@ export default providerRegistry.register({
       });
   },
   uploadContent(token, content, syncLocation, ifNotTooLate) {
-    return this.uploadData(content, `${syncLocation.fileId}/content`, ifNotTooLate)
+    return this.uploadData(content, ifNotTooLate)
       .then(() => syncLocation);
   },
-  uploadData(item, dataId, ifNotTooLate) {
-    const syncData = store.getters['data/syncDataByItemId'][dataId];
+  uploadData(item, ifNotTooLate) {
+    const syncData = store.getters['data/syncDataByItemId'][item.id];
     if (syncData && syncData.hash === item.hash) {
       return Promise.resolve();
     }

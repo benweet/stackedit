@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="github"></icon-provider>
       </div>
-      <p>This will open a file from your <b>GitHub</b> repository and keep it synchronized.</p>
+      <p>Open a file from your <b>GitHub</b> repository and keep it synchronized.</p>
       <form-entry label="Repository URL" error="repoUrl">
         <input slot="field" class="textfield" type="text" v-model.trim="repoUrl" @keydown.enter="resolve()">
         <div class="form-entry__info">
@@ -14,13 +14,13 @@
       <form-entry label="Branch" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="branch" @keydown.enter="resolve()">
         <div class="form-entry__info">
-          If not provided, the <code>master</code> branch will be used.
+          If not supplied, the <code>master</code> branch will be used.
         </div>
       </form-entry>
       <form-entry label="File path" error="path">
         <input slot="field" class="textfield" type="text" v-model.trim="path" @keydown.enter="resolve()">
         <div class="form-entry__info">
-          <b>Example:</b> docs/README.md
+          <b>Example:</b> path/to/README.md
         </div>
       </form-entry>
     </div>

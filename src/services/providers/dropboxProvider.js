@@ -1,7 +1,6 @@
 import store from '../../store';
 import dropboxHelper from './helpers/dropboxHelper';
-import providerUtils from './providerUtils';
-import providerRegistry from './providerRegistry';
+import Provider from './common/Provider';
 import utils from '../utils';
 
 const makePathAbsolute = (token, path) => {
@@ -17,7 +16,7 @@ const makePathRelative = (token, path) => {
   return path;
 };
 
-export default providerRegistry.register({
+export default new Provider({
   id: 'dropbox',
   getToken(location) {
     return store.getters['data/dropboxTokens'][location.sub];
@@ -40,13 +39,13 @@ export default providerRegistry.register({
       makePathRelative(token, syncLocation.path),
       syncLocation.dropboxFileId,
     )
-      .then(({ content }) => providerUtils.parseContent(content, `${syncLocation.fileId}/content`));
+      .then(({ content }) => Provider.parseContent(content, `${syncLocation.fileId}/content`));
   },
   uploadContent(token, content, syncLocation) {
     return dropboxHelper.uploadFile(
       token,
       makePathRelative(token, syncLocation.path),
-      providerUtils.serializeContent(content),
+      Provider.serializeContent(content),
       syncLocation.dropboxFileId,
     )
       .then(dropboxFile => ({
@@ -74,7 +73,7 @@ export default providerRegistry.register({
       if (!path) {
         return null;
       }
-      if (providerUtils.openFileWithLocation(store.getters['syncLocation/items'], {
+      if (Provider.openFileWithLocation(store.getters['syncLocation/items'], {
         providerId: this.id,
         path,
       })) {

@@ -54,7 +54,7 @@
           </div>
         </div>
         <div class="modal__error modal__error--file-properties">{{error}}</div>
-        <div class="modal__info">
+        <div class="modal__info modal__info--multiline">
           <p><strong>ProTip:</strong> You can manually toggle extensions:</p>
           <pre class=" language-yaml"><code class="prism  language-yaml"><span class="token key atrule">extensions</span><span class="token punctuation">:</span>
   <span class="token key atrule">emoji</span><span class="token punctuation">:</span>

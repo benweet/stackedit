@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="github"></icon-provider>
       </div>
-      <p>This will publish <b>{{currentFileName}}</b> to your <b>GitHub</b> repository.</p>
+      <p>Publish <b>{{currentFileName}}</b> to your <b>GitHub</b> repository.</p>
       <form-entry label="Repository URL" error="repoUrl">
         <input slot="field" class="textfield" type="text" v-model.trim="repoUrl" @keydown.enter="resolve()">
         <div class="form-entry__info">
@@ -14,14 +14,14 @@
       <form-entry label="Branch" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="branch" @keydown.enter="resolve()">
         <div class="form-entry__info">
-          If not provided, the master branch will be used.
+          If not supplied, the <code>master</code> branch will be used.
         </div>
       </form-entry>
       <form-entry label="File path" error="path">
         <input slot="field" class="textfield" type="text" v-model.trim="path" @keydown.enter="resolve()">
         <div class="form-entry__info">
-          <b>Example:</b> docs/README.md<br>
-          If the file exists, it will be replaced.
+          <b>Example:</b> path/to/README.md<br>
+          If the file exists, it will be overwritten.
         </div>
       </form-entry>
       <form-entry label="Template">

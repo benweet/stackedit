@@ -1,12 +1,11 @@
 import store from '../../store';
 import githubHelper from './helpers/githubHelper';
-import providerUtils from './providerUtils';
-import providerRegistry from './providerRegistry';
+import Provider from './common/Provider';
 import utils from '../utils';
 
 const savedSha = {};
 
-export default providerRegistry.register({
+export default new Provider({
   id: 'github',
   getToken(location) {
     return store.getters['data/githubTokens'][location.sub];
@@ -24,9 +23,9 @@ export default providerRegistry.register({
     )
       .then(({ sha, content }) => {
         savedSha[syncLocation.id] = sha;
-        return providerUtils.parseContent(content, `${syncLocation.fileId}/content`);
+        return Provider.parseContent(content, `${syncLocation.fileId}/content`);
       })
-      .catch(() => null); // Ignore error, without the sha upload is going to fail anyway
+      .catch(() => null); // Ignore error, upload is going to fail anyway
   },
   uploadContent(token, content, syncLocation) {
     let result = Promise.resolve();
@@ -43,7 +42,7 @@ export default providerRegistry.register({
           syncLocation.repo,
           syncLocation.branch,
           syncLocation.path,
-          providerUtils.serializeContent(content),
+          Provider.serializeContent(content),
           sha,
         );
       })
@@ -69,7 +68,7 @@ export default providerRegistry.register({
   openFile(token, syncLocation) {
     return Promise.resolve()
       .then(() => {
-        if (providerUtils.openFileWithLocation(store.getters['syncLocation/items'], syncLocation)) {
+        if (Provider.openFileWithLocation(store.getters['syncLocation/items'], syncLocation)) {
           // File exists and has just been opened. Next...
           return null;
         }
@@ -109,7 +108,7 @@ export default providerRegistry.register({
       });
   },
   parseRepoUrl(url) {
-    const parsedRepo = url.match(/[/:]?([^/:]+)\/([^/]+?)(?:\.git|\/)?$/);
+    const parsedRepo = url && url.match(/([^/:]+)\/([^/]+?)(?:\.git|\/)?$/);
     return parsedRepo && {
       owner: parsedRepo[1],
       repo: parsedRepo[2],

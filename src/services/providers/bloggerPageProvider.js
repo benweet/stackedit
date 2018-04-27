@@ -1,8 +1,8 @@
 import store from '../../store';
 import googleHelper from './helpers/googleHelper';
-import providerRegistry from './providerRegistry';
+import Provider from './common/Provider';
 
-export default providerRegistry.register({
+export default new Provider({
   id: 'bloggerPage',
   getToken(location) {
     const token = store.getters['data/googleTokens'][location.sub];

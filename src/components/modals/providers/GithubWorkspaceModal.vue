@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="github"></icon-provider>
       </div>
-      <p>Save <b>{{currentFileName}}</b> to your <b>GitHub</b> repository and keep it synchronized.</p>
+      <p>Create a workspace synchronized with a <b>GitHub</b> repository folder.</p>
       <form-entry label="Repository URL" error="repoUrl">
         <input slot="field" class="textfield" type="text" v-model.trim="repoUrl" @keydown.enter="resolve()">
         <div class="form-entry__info">
@@ -17,11 +17,10 @@
           If not supplied, the <code>master</code> branch will be used.
         </div>
       </form-entry>
-      <form-entry label="File path" error="path">
+      <form-entry label="Folder path" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="path" @keydown.enter="resolve()">
         <div class="form-entry__info">
-          <b>Example:</b> path/to/README.md<br>
-          If the file exists, it will be overwritten.
+          If not supplied, the root folder will be used.
         </div>
       </form-entry>
     </div>
@@ -34,6 +33,7 @@
 
 <script>
 import githubProvider from '../../../services/providers/githubProvider';
+import utils from '../../../services/utils';
 import modalTemplate from '../common/modalTemplate';
 
 export default modalTemplate({
@@ -42,24 +42,23 @@ export default modalTemplate({
     path: '',
   }),
   computedLocalSettings: {
-    repoUrl: 'githubRepoUrl',
-  },
-  created() {
-    this.path = `${this.currentFileName}.md`;
+    repoUrl: 'githubWorkspaceRepoUrl',
   },
   methods: {
     resolve() {
       const parsedRepo = githubProvider.parseRepoUrl(this.repoUrl);
       if (!parsedRepo) {
         this.setError('repoUrl');
-      }
-      if (!this.path) {
-        this.setError('path');
-      }
-      if (parsedRepo && this.path) {
-        const location = githubProvider.makeLocation(
-          this.config.token, parsedRepo.owner, parsedRepo.repo, this.branch || 'master', this.path);
-        this.config.resolve(location);
+      } else {
+        const path = this.path && this.path.replace(/^\//, '');
+        const url = utils.addQueryParams('app', {
+          providerId: 'githubWorkspace',
+          repo: `${parsedRepo.owner}/${parsedRepo.repo}`,
+          branch: this.branch || 'master',
+          path: path || undefined,
+        }, true);
+        this.config.resolve();
+        window.open(url);
       }
     },
   },

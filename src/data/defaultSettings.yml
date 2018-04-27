@@ -1,11 +1,11 @@
 # light or dark
 colorTheme: light
-# Auto-sync frequency (in ms). Minimum is 60000.
-autoSyncEvery: 60000
 # Adjust font size in editor and preview
 fontSizeFactor: 1
 # Adjust maximum text width in editor and preview
 maxWidthFactor: 1
+# Auto-sync frequency (in ms). Minimum is 60000.
+autoSyncEvery: 60000
 
 # Editor settings
 editor:
@@ -54,7 +54,7 @@ wkhtmltopdf:
   marginRight: 25
   marginBottom: 25
   marginLeft: 25
-  # `A3`, `A4`, `Legal` or `Letter`
+  # A3, A4, Legal or Letter
   pageSize: A4
 
 # Options passed to pandoc
@@ -76,6 +76,11 @@ turndown:
   strongDelimiter: '**'
   linkStyle: inlined
   linkReferenceStyle: full
+
+github:
+  createFileMessage: Create {{path}} from https://stackedit.io/
+  updateFileMessage: Update {{path}} from https://stackedit.io/
+  deleteFileMessage: Delete {{path}} from https://stackedit.io/
 
 # Default content for new files
 newFileContent: |

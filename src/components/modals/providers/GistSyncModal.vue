@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="gist"></icon-provider>
       </div>
-      <p>This will save <b>{{currentFileName}}</b> to a <b>Gist</b> and keep it synchronized.</p>
+      <p>Save <b>{{currentFileName}}</b> to a <b>Gist</b> and keep it synchronized.</p>
       <form-entry label="Filename" error="filename">
         <input slot="field" class="textfield" type="text" v-model.trim="filename" @keydown.enter="resolve()">
       </form-entry>
@@ -18,7 +18,7 @@
       <form-entry label="Existing Gist ID" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="gistId" @keydown.enter="resolve()">
         <div class="form-entry__info">
-          If the file exists in the Gist, it will be replaced.
+          If the file exists in the Gist, it will be overwritten.
         </div>
       </form-entry>
     </div>

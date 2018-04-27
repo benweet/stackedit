@@ -15,6 +15,7 @@ export default () => ({
   dropboxPublishTemplate: 'styledHtml',
   githubRepoFullAccess: false,
   githubRepoUrl: '',
+  githubWorkspaceRepoUrl: '',
   githubPublishTemplate: 'jekyllSite',
   gistIsPublic: false,
   gistPublishTemplate: 'plainText',

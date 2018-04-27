@@ -1,11 +1,20 @@
-import emptyContent from '../../data/emptyContent';
-import store from '../../store';
-import utils from '../utils';
+import providerRegistry from './providerRegistry';
+import emptyContent from '../../../data/emptyContent';
+import utils from '../../utils';
+import store from '../../../store';
 
 const dataExtractor = /<!--stackedit_data:([A-Za-z0-9+/=\s]+)-->$/;
 
-export default {
-  serializeContent(content) {
+export default class Provider {
+  constructor(props) {
+    Object.assign(this, props);
+    providerRegistry.register(this);
+  }
+
+  /**
+   * Serialize content in a self contain Markdown compatible format
+   */
+  static serializeContent(content) {
     let result = content.text;
     const data = {};
     if (content.properties.length > 1) {
@@ -25,8 +34,12 @@ export default {
       result += `<!--stackedit_data:\n${serializedData}\n-->`;
     }
     return result;
-  },
-  parseContent(serializedContent, id) {
+  }
+
+  /**
+   * Parse content serialized with serializeContent()
+   */
+  static parseContent(serializedContent, id) {
     const result = utils.deepCopy(store.state.content.itemMap[id]) || emptyContent(id);
     result.text = utils.sanitizeText(serializedContent);
     result.history = [];
@@ -51,29 +64,26 @@ export default {
       }
     }
     return utils.addItemHash(result);
-  },
+  }
+
   /**
-   * Find and open a file location that fits the criteria
+   * Find and open a file with location that meets the criteria
    */
-  openFileWithLocation(allLocations, criteria) {
-    return allLocations.some((location) => {
-      // If every field fits the criteria
-      if (Object.entries(criteria).every(([key, value]) => value === location[key])) {
-        // Found one location that fits, open it if it exists
-        const file = store.state.file.itemMap[location.fileId];
-        if (file) {
-          store.commit('file/setCurrentId', file.id);
-          // If file is in the trash, restore it
-          if (file.parentId === 'trash') {
-            store.commit('file/patchItem', {
-              ...file,
-              parentId: null,
-            });
-          }
-          return true;
+  static openFileWithLocation(allLocations, criteria) {
+    const location = utils.search(allLocations, criteria);
+    if (location) {
+      // Found one, open it if it exists
+      const file = store.state.file.itemMap[location.fileId];
+      if (file) {
+        store.commit('file/setCurrentId', file.id);
+        // If file is in the trash, restore it
+        if (file.parentId === 'trash') {
+          store.commit('file/patchItem', {
+            ...file,
+            parentId: null,
+          });
         }
       }
-      return false;
-    });
-  },
-};
+    }
+  }
+}

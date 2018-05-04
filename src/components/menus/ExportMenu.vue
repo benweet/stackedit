@@ -35,19 +35,19 @@ export default {
     exportMarkdown() {
       const currentFile = this.$store.getters['file/current'];
       return exportSvc.exportToDisk(currentFile.id, 'md')
-        .catch(() => {}); // Cancel
+        .catch(() => { /* Cancel */ });
     },
     exportHtml() {
       return this.$store.dispatch('modal/open', 'htmlExport')
-        .catch(() => {}); // Cancel
+        .catch(() => { /* Cancel */ });
     },
     exportPdf() {
       return this.$store.dispatch('modal/open', 'pdfExport')
-        .catch(() => {}); // Cancel
+        .catch(() => { /* Cancel */ });
     },
     exportPandoc() {
       return this.$store.dispatch('modal/open', 'pandocExport')
-        .catch(() => {}); // Cancel
+        .catch(() => { /* Cancel */ });
     },
   },
 };

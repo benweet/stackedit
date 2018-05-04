@@ -31,6 +31,8 @@ import { mapGetters } from 'vuex';
 import MenuEntry from './common/MenuEntry';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 
+const onCancel = () => {};
+
 export default {
   components: {
     MenuEntry,
@@ -48,13 +50,13 @@ export default {
       return this.$store.dispatch('modal/open', {
         type: 'couchdbWorkspace',
       })
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     addGithubWorkspace() {
       return this.$store.dispatch('modal/open', {
         type: 'githubWorkspace',
       })
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     addGoogleDriveWorkspace() {
       return googleHelper.addDriveAccount(true)
@@ -62,7 +64,7 @@ export default {
           type: 'googleDriveWorkspace',
           token,
         }))
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     manageWorkspaces() {
       return this.$store.dispatch('modal/open', 'workspaceManagement');

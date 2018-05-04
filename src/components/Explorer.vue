@@ -28,6 +28,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import ExplorerNode from './ExplorerNode';
+import explorerSvc from '../services/explorerSvc';
 
 export default {
   components: {
@@ -49,10 +50,8 @@ export default {
     ...mapActions('data', [
       'toggleExplorer',
     ]),
-    ...mapActions('explorer', [
-      'newItem',
-      'deleteItem',
-    ]),
+    newItem: isFolder => explorerSvc.newItem(isFolder),
+    deleteItem: () => explorerSvc.deleteItem(),
     editItem() {
       const node = this.selectedNode;
       if (!node.isTrash && !node.isTemp) {

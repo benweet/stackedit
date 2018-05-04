@@ -3,7 +3,7 @@
     <div class="menu-info-entries">
       <div class="menu-entry menu-entry--info flex flex--row flex--align-center" v-if="loginToken">
         <div class="menu-entry__icon menu-entry__icon--image">
-          <user-image :user-id="loginToken.sub"></user-image>
+          <user-image :user-id="userId"></user-image>
         </div>
         <span>Signed in as <b>{{loginToken.name}}</b>.</span>
       </div>
@@ -97,6 +97,7 @@ export default {
       'currentWorkspace',
       'syncToken',
       'loginToken',
+      'userId',
     ]),
   },
   methods: {
@@ -107,12 +108,12 @@ export default {
       return googleHelper.signin()
         .then(
           () => syncSvc.requestSync(),
-          () => {}, // Cancel
+          () => { /* Cancel */ },
         );
     },
     fileProperties() {
       return this.$store.dispatch('modal/open', 'fileProperties')
-        .catch(() => {}); // Cancel
+        .catch(() => { /* Cancel */ });
     },
     print() {
       print();

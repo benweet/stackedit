@@ -82,14 +82,14 @@ export default {
       return this.$store.dispatch('modal/open', 'settings')
         .then(
           settings => this.$store.dispatch('data/setSettings', settings),
-          () => {}, // Cancel
+          () => { /* Cancel */ },
         );
     },
     templates() {
       return this.$store.dispatch('modal/open', 'templates')
         .then(
           ({ templates }) => this.$store.dispatch('data/setTemplates', templates),
-          () => {}, // Cancel
+          () => { /* Cancel */ },
         );
     },
     reset() {

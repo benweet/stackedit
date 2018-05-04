@@ -11,7 +11,10 @@ export default (empty, simpleHash = false) => {
       itemMap: {},
     },
     getters: {
-      items: state => Object.entries(state.itemMap).map(([, item]) => item),
+      items: (state) => {
+        console.log(state.itemMap);
+        return Object.values(state.itemMap);
+      },
     },
     mutations: {
       setItem(state, value) {

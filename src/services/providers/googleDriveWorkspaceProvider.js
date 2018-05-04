@@ -2,6 +2,7 @@ import store from '../../store';
 import googleHelper from './helpers/googleHelper';
 import Provider from './common/Provider';
 import utils from '../utils';
+import fileSvc from '../fileSvc';
 
 const getSyncData = (fileId) => {
   const syncData = store.getters['data/syncDataByItemId'][`${fileId}/content`];
@@ -195,9 +196,9 @@ export default new Provider({
                     [syncData.id]: syncData,
                   });
                 }
-                return store.dispatch('createFile', {
+                return fileSvc.createFile({
                   parentId: syncData && syncData.itemId,
-                })
+                }, true)
                   .then((file) => {
                     store.commit('file/setCurrentId', file.id);
                     // File will be created on next workspace sync

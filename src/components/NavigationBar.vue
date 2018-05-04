@@ -19,7 +19,7 @@
       <!-- Title -->
       <div class="navigation-bar__title navigation-bar__title--fake text-input"></div>
       <div class="navigation-bar__title navigation-bar__title--text text-input" :style="{width: titleWidth + 'px'}">{{title}}</div>
-      <input class="navigation-bar__title navigation-bar__title--input text-input" :class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" :style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keydown.enter="submitTitle()" @keydown.esc="submitTitle(true)" @mouseenter="titleHover = true" @mouseleave="titleHover = false" v-model="title">
+      <input class="navigation-bar__title navigation-bar__title--input text-input" :class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" :style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keydown.enter="submitTitle(false)" @keydown.esc="submitTitle(true)" @mouseenter="titleHover = true" @mouseleave="titleHover = false" v-model="title">
       <!-- Sync/Publish -->
       <div class="flex flex--row" :class="{'navigation-bar__hidden': styles.hideLocations}">
         <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in syncLocations" :key="location.id" :href="location.url" target="_blank" v-title="'Synchronized location'"><icon-provider :provider-id="location.providerId"></icon-provider></a>
@@ -56,6 +56,7 @@ import tempFileSvc from '../services/tempFileSvc';
 import utils from '../services/utils';
 import pagedownButtons from '../data/pagedownButtons';
 import store from '../store';
+import fileSvc from '../services/fileSvc';
 
 // According to mousetrap
 const mod = /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? 'Meta' : 'Ctrl';
@@ -151,6 +152,13 @@ export default {
       }
       return result;
     },
+    editCancelTrigger() {
+      const current = this.$store.getters['file/current'];
+      return utils.serializeObject([
+        current.id,
+        current.name,
+      ]);
+    },
   },
   methods: {
     ...mapMutations('content', [
@@ -190,10 +198,13 @@ export default {
         this.titleInputElt.setSelectionRange(0, this.titleInputElt.value.length);
       } else {
         const title = this.title.trim();
+        this.title = this.$store.getters['file/current'].name;
         if (title) {
-          this.$store.dispatch('file/patchCurrent', { name: utils.sanitizeName(title) });
-        } else {
-          this.title = this.$store.getters['file/current'].name;
+          fileSvc.storeItem({
+            ...this.$store.getters['file/current'],
+            name: title,
+          })
+            .catch(() => { /* Cancel */ });
         }
       }
     },
@@ -209,9 +220,10 @@ export default {
   },
   created() {
     this.$watch(
-      () => this.$store.getters['file/current'].name,
-      (name) => {
-        this.title = name;
+      () => this.editCancelTrigger,
+      () => {
+        this.title = '';
+        this.editTitle(false);
       }, { immediate: true });
   },
   mounted() {

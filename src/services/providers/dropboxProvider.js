@@ -2,6 +2,7 @@ import store from '../../store';
 import dropboxHelper from './helpers/dropboxHelper';
 import Provider from './common/Provider';
 import utils from '../utils';
+import fileSvc from '../fileSvc';
 
 const makePathAbsolute = (token, path) => {
   if (!token.fullAccess) {
@@ -88,12 +89,6 @@ export default new Provider({
       };
       return this.downloadContent(token, syncLocation)
         .then((content) => {
-          const id = utils.uid();
-          delete content.history;
-          store.commit('content/setItem', {
-            ...content,
-            id: `${id}/content`,
-          });
           let name = path;
           const slashPos = name.lastIndexOf('/');
           if (slashPos > -1 && slashPos < name.length - 1) {
@@ -103,25 +98,30 @@ export default new Provider({
           if (dotPos > 0 && slashPos < name.length) {
             name = name.slice(0, dotPos);
           }
-          store.commit('file/setItem', {
-            id,
-            name: utils.sanitizeName(name),
+          return fileSvc.createFile({
+            name,
             parentId: store.getters['file/current'].parentId,
-          });
+            text: content.text,
+            properties: content.properties,
+            discussions: content.discussions,
+            comments: content.comments,
+          }, true);
+        })
+        .then((item) => {
+          store.commit('file/setCurrentId', item.id);
           store.commit('syncLocation/setItem', {
             ...syncLocation,
             id: utils.uid(),
-            fileId: id,
+            fileId: item.id,
           });
-          store.commit('file/setCurrentId', id);
           store.dispatch('notification/info', `${store.getters['file/current'].name} was imported from Dropbox.`);
-        }, () => {
+        })
+        .catch(() => {
           store.dispatch('notification/error', `Could not open file ${path}.`);
         })
         .then(() => openOneFile());
     };
-    return Promise.resolve()
-      .then(() => openOneFile());
+    return Promise.resolve(openOneFile());
   },
   makeLocation(token, path) {
     return {

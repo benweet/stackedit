@@ -100,7 +100,7 @@ export default {
       return googleHelper.signin()
         .then(
           () => syncSvc.requestSync(),
-          () => {}, // Cancel
+          () => { /* Cancel */ },
         );
     },
     close() {

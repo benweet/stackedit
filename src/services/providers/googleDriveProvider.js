@@ -2,6 +2,7 @@ import store from '../../store';
 import googleHelper from './helpers/googleHelper';
 import Provider from './common/Provider';
 import utils from '../utils';
+import fileSvc from '../fileSvc';
 
 export default new Provider({
   id: 'googleDrive',
@@ -93,7 +94,7 @@ export default new Provider({
         const token = store.getters['data/googleTokens'][state.userId];
         switch (token && state.action) {
           case 'create':
-            return store.dispatch('createFile')
+            return fileSvc.createFile({}, true)
               .then((file) => {
                 store.commit('file/setCurrentId', file.id);
                 // Return a new syncLocation
@@ -169,32 +170,29 @@ export default new Provider({
         sub: token.sub,
       };
       return this.downloadContent(token, syncLocation)
-        .then((content) => {
-          const id = utils.uid();
-          delete content.history;
-          store.commit('content/setItem', {
-            ...content,
-            id: `${id}/content`,
-          });
-          store.commit('file/setItem', {
-            id,
-            name: utils.sanitizeName(driveFile.name),
-            parentId: store.getters['file/current'].parentId,
-          });
+        .then(content => fileSvc.createFile({
+          name,
+          parentId: store.getters['file/current'].parentId,
+          text: content.text,
+          properties: content.properties,
+          discussions: content.discussions,
+          comments: content.comments,
+        }, true))
+        .then((item) => {
+          store.commit('file/setCurrentId', item.id);
           store.commit('syncLocation/setItem', {
             ...syncLocation,
             id: utils.uid(),
-            fileId: id,
+            fileId: item.id,
           });
-          store.commit('file/setCurrentId', id);
           store.dispatch('notification/info', `${store.getters['file/current'].name} was imported from Google Drive.`);
-        }, () => {
+        })
+        .catch(() => {
           store.dispatch('notification/error', `Could not open file ${driveFile.id}.`);
         })
         .then(() => openOneFile());
     };
-    return Promise.resolve()
-      .then(() => openOneFile());
+    return Promise.resolve(openOneFile());
   },
   makeLocation(token, fileId, folderId) {
     const location = {

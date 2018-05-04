@@ -9,6 +9,7 @@ import './providers/couchdbWorkspaceProvider';
 import './providers/githubWorkspaceProvider';
 import './providers/googleDriveWorkspaceProvider';
 import tempFileSvc from './tempFileSvc';
+import fileSvc from './fileSvc';
 
 const minAutoSyncEvery = 60 * 1000; // 60 sec
 const inactivityThreshold = 3 * 1000; // 3 sec
@@ -746,7 +747,7 @@ function requestSync() {
             Object.entries(fileHashesToClean).forEach(([fileId, fileHash]) => {
               const file = store.state.file.itemMap[fileId];
               if (file && file.hash === fileHash) {
-                store.dispatch('deleteFile', fileId);
+                fileSvc.deleteFile(fileId);
               }
             });
           })

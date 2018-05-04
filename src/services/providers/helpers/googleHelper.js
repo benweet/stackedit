@@ -203,7 +203,7 @@ export default {
     }, true)
       .then((res) => {
         store.commit('userInfo/addItem', {
-          id: res.body.id,
+          id: `go:${res.body.id}`,
           name: res.body.displayName,
           imageUrl: (res.body.image.url || '').replace(/\bsz?=\d+$/, 'sz=40'),
         });

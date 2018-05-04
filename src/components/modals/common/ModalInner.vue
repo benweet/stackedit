@@ -42,7 +42,7 @@ export default {
             this.$store.dispatch('modal/open', 'sponsor');
           }
         })
-        .catch(() => {}); // Cancel
+        .catch(() => { /* Cancel */ });
     },
   },
 };

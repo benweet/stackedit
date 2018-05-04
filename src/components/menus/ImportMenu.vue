@@ -29,6 +29,7 @@ import htmlSanitizer from '../../libs/htmlSanitizer';
 import MenuEntry from './common/MenuEntry';
 import Provider from '../../services/providers/common/Provider';
 import store from '../../store';
+import fileSvc from '../../services/fileSvc';
 
 const turndownService = new TurndownService(store.getters['data/computedSettings'].turndown);
 
@@ -55,16 +56,18 @@ export default {
     onImportMarkdown(evt) {
       const file = evt.target.files[0];
       readFile(file)
-        .then(content => this.$store.dispatch('createFile', {
+        .then(content => fileSvc.createFile({
           ...Provider.parseContent(content),
           name: file.name,
         })
-          .then(item => this.$store.commit('file/setCurrentId', item.id)));
+        .then(
+          item => this.$store.commit('file/setCurrentId', item.id)),
+          () => { /* Cancel */ });
     },
     onImportHtml(evt) {
       const file = evt.target.files[0];
       readFile(file)
-        .then(content => this.$store.dispatch('createFile', {
+        .then(content => fileSvc.createFile({
           ...Provider.parseContent(
             turndownService.turndown(
               htmlSanitizer.sanitizeHtml(content)
@@ -72,7 +75,9 @@ export default {
               )),
           name: file.name,
         }))
-        .then(item => this.$store.commit('file/setCurrentId', item.id));
+        .then(
+          item => this.$store.commit('file/setCurrentId', item.id),
+          () => { /* Cancel */ });
     },
   },
 };

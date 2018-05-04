@@ -1,9 +1,10 @@
-import store from '../store';
+import fileSvc from './fileSvc';
 import utils from './utils';
 
 export default {
-  importBackup(jsonValue) {
-    const nameMap = {};
+  async importBackup(jsonValue) {
+    const fileNameMap = {};
+    const folderNameMap = {};
     const parentIdMap = {};
     const textMap = {};
     const propertiesMap = {};
@@ -22,24 +23,18 @@ export default {
           // StackEdit v4 format
           const [, v4Id, type] = v4Match;
           if (type === 'title') {
-            nameMap[v4Id] = value;
+            fileNameMap[v4Id] = value;
           } else if (type === 'content') {
             textMap[v4Id] = value;
           }
         } else if (value.type === 'folder') {
           // StackEdit v5 folder
-          const folderId = utils.uid();
-          const name = utils.sanitizeName(value.name);
-          const parentId = `${value.parentId || ''}` || null;
-          store.commit('folder/setItem', {
-            id: folderId,
-            name,
-            parentId,
-          });
-          folderIdMap[id] = folderId;
+          folderIdMap[id] = utils.uid();
+          folderNameMap[id] = value.name;
+          parentIdMap[id] = `${value.parentId || ''}`;
         } else if (value.type === 'file') {
           // StackEdit v5 file
-          nameMap[id] = utils.sanitizeName(value.name);
+          fileNameMap[id] = value.name;
           parentIdMap[id] = `${value.parentId || ''}`;
         } else if (value.type === 'content') {
           // StackEdit v5 content
@@ -54,14 +49,20 @@ export default {
       }
     });
 
-    // Go through the maps
-    Object.entries(nameMap).forEach(([externalId, name]) => store.dispatch('createFile', {
-      name,
+    await utils.awaitSequence(Object.keys(folderNameMap), async externalId => fileSvc.storeItem({
+      id: folderIdMap[externalId],
+      type: 'folder',
+      name: folderNameMap[externalId],
+      parentId: folderIdMap[parentIdMap[externalId]],
+    }, true));
+
+    await utils.awaitSequence(Object.keys(fileNameMap), async externalId => fileSvc.createFile({
+      name: fileNameMap[externalId],
       parentId: folderIdMap[parentIdMap[externalId]],
       text: textMap[externalId],
       properties: propertiesMap[externalId],
       discussions: discussionsMap[externalId],
       comments: commentsMap[externalId],
-    }));
+    }, true));
   },
 };

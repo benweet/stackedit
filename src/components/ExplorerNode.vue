@@ -19,7 +19,8 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex';
-import utils from '../services/utils';
+import fileSvc from '../services/fileSvc';
+import explorerSvc from '../services/explorerSvc';
 
 export default {
   name: 'explorer-node', // Required for recursivity
@@ -77,8 +78,6 @@ export default {
     ]),
     ...mapActions('explorer', [
       'setDragTarget',
-      'newItem',
-      'deleteItem',
     ]),
     select(id = this.node.item.id, doOpen = true) {
       const node = this.$store.getters['explorer/nodeMap'][id];
@@ -102,31 +101,26 @@ export default {
       const newChildNode = this.$store.state.explorer.newChildNode;
       if (!cancel && !newChildNode.isNil && newChildNode.item.name) {
         if (newChildNode.isFolder) {
-          const id = utils.uid();
-          this.$store.commit('folder/setItem', {
-            ...newChildNode.item,
-            id,
-            name: utils.sanitizeName(newChildNode.item.name),
-          });
-          this.select(id);
+          fileSvc.storeItem(newChildNode.item)
+            .then(item => this.select(item.id), () => { /* cancel */ });
         } else {
-          this.$store.dispatch('createFile', newChildNode.item)
-            .then(file => this.select(file.id));
+          fileSvc.createFile(newChildNode.item)
+            .then(item => this.select(item.id), () => { /* cancel */ });
         }
       }
       this.$store.commit('explorer/setNewItem', null);
     },
     submitEdit(cancel) {
-      const editingNode = this.$store.getters['explorer/editingNode'];
-      const id = editingNode.item.id;
+      const item = this.$store.getters['explorer/editingNode'].item;
       const value = this.editingValue;
-      if (!cancel && id && value) {
-        this.$store.commit(editingNode.isFolder ? 'folder/patchItem' : 'file/patchItem', {
-          id,
-          name: utils.sanitizeName(value),
-        });
-      }
       this.setEditingId(null);
+      if (!cancel && item.id && value) {
+        fileSvc.storeItem({
+          ...item,
+          name: value,
+        })
+          .catch(() => { /* cancel */ });
+      }
     },
     setDragSourceId(evt) {
       if (this.node.noDrag) {
@@ -169,11 +163,11 @@ export default {
           items: [{
             name: 'New file',
             disabled: !this.node.isFolder || this.node.isTrash,
-            perform: () => this.newItem(false),
+            perform: () => explorerSvc.newItem(false),
           }, {
             name: 'New folder',
             disabled: !this.node.isFolder || this.node.isTrash || this.node.isTemp,
-            perform: () => this.newItem(true),
+            perform: () => explorerSvc.newItem(true),
           }, {
             type: 'separator',
           }, {
@@ -182,7 +176,7 @@ export default {
             perform: () => this.setEditingId(this.node.item.id),
           }, {
             name: 'Delete',
-            perform: () => this.deleteItem(),
+            perform: () => explorerSvc.deleteItem(),
           }],
         })
           .then(item => item.perform());

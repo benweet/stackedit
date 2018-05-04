@@ -70,7 +70,8 @@ export default modalTemplate({
           if (err.status !== 401) {
             throw err;
           }
-          this.$store.dispatch('modal/sponsorOnly');
+          this.$store.dispatch('modal/sponsorOnly')
+            .catch(() => { /* Cancel */ });
         }))
         .catch((err) => {
           console.error(err); // eslint-disable-line no-console

@@ -136,7 +136,7 @@ export default new Provider({
     return googleHelper.getAppDataFileRevisions(token, syncData.id)
       .then(revisions => revisions.map(revision => ({
         id: revision.id,
-        sub: revision.lastModifyingUser && revision.lastModifyingUser.permissionId,
+        sub: revision.lastModifyingUser && `go:${revision.lastModifyingUser.permissionId}`,
         created: new Date(revision.modifiedTime).getTime(),
       }))
         .sort((revision1, revision2) => revision2.created - revision1.created));

@@ -101,6 +101,8 @@ const openSyncModal = (token, type) => store.dispatch('modal/open', {
   token,
 }).then(syncLocation => syncSvc.createSyncLocation(syncLocation));
 
+const onCancel = () => {};
+
 export default {
   components: {
     MenuEntry,
@@ -150,21 +152,21 @@ export default {
         type: 'googleDriveAccount',
         onResolve: () => googleHelper.addDriveAccount(!store.getters['data/localSettings'].googleDriveRestrictedAccess),
       })
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     addDropboxAccount() {
       return this.$store.dispatch('modal/open', {
         type: 'dropboxAccount',
         onResolve: () => dropboxHelper.addAccount(!store.getters['data/localSettings'].dropboxRestrictedAccess),
       })
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     addGithubAccount() {
       return this.$store.dispatch('modal/open', {
         type: 'githubAccount',
         onResolve: () => githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess),
       })
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     openGoogleDrive(token) {
       return googleHelper.openPicker(token, 'doc')
@@ -178,11 +180,11 @@ export default {
     },
     saveGoogleDrive(token) {
       return openSyncModal(token, 'googleDriveSave')
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     saveDropbox(token) {
       return openSyncModal(token, 'dropboxSave')
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     openGithub(token) {
       return store.dispatch('modal/open', {
@@ -194,11 +196,11 @@ export default {
     },
     saveGithub(token) {
       return openSyncModal(token, 'githubSave')
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     saveGist(token) {
       return openSyncModal(token, 'gistSync')
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
   },
 };

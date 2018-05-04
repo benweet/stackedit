@@ -2,6 +2,7 @@ import FileSaver from 'file-saver';
 import utils from './utils';
 import store from '../store';
 import welcomeFile from '../data/welcomeFile.md';
+import fileSvc from './fileSvc';
 
 const dbVersion = 1;
 const dbStoreName = 'objects';
@@ -186,6 +187,7 @@ const localDbSvc = {
             dbStore.delete(item.id);
           }
         });
+        fileSvc.ensureUniquePaths();
         this.lastTx = lastTx;
         cb(storeItemMap);
       }
@@ -249,20 +251,20 @@ const localDbSvc = {
    * Read and apply one DB change.
    */
   readDbItem(dbItem, storeItemMap) {
-    const existingStoreItem = storeItemMap[dbItem.id];
+    const storeItem = storeItemMap[dbItem.id];
     if (!dbItem.hash) {
       // DB item is a delete marker
       delete this.hashMap[dbItem.type][dbItem.id];
-      if (existingStoreItem) {
+      if (storeItem) {
         // Remove item from the store
-        store.commit(`${existingStoreItem.type}/deleteItem`, existingStoreItem.id);
-        delete storeItemMap[existingStoreItem.id];
+        store.commit(`${storeItem.type}/deleteItem`, storeItem.id);
+        delete storeItemMap[storeItem.id];
       }
     } else if (this.hashMap[dbItem.type][dbItem.id] !== dbItem.hash) {
       // DB item is different from the corresponding store item
       this.hashMap[dbItem.type][dbItem.id] = dbItem.hash;
       // Update content only if it exists in the store
-      if (existingStoreItem || !contentTypes[dbItem.type] || exportWorkspace) {
+      if (storeItem || !contentTypes[dbItem.type] || exportWorkspace) {
         // Put item in the store
         dbItem.tx = undefined;
         store.commit(`${dbItem.type}/setItem`, dbItem);
@@ -403,13 +405,14 @@ const localDbSvc = {
           // Clean files
           store.getters['file/items']
             .filter(file => file.parentId === 'trash') // If file is in the trash
-            .forEach(file => store.dispatch('deleteFile', file.id));
+            .forEach(file => fileSvc.deleteFile(file.id));
         }
 
         // Enable sponsorship
         if (utils.queryParams.paymentSuccess) {
           location.hash = ''; // PaymentSuccess param is always on its own
-          store.dispatch('modal/paymentSuccess');
+          store.dispatch('modal/paymentSuccess')
+            .catch(() => { /* Cancel */ });
           const sponsorToken = store.getters['workspace/sponsorToken'];
           // Force check sponsorship after a few seconds
           const currentDate = Date.now();
@@ -438,10 +441,10 @@ const localDbSvc = {
                 store.commit('file/setCurrentId', recentFile.id);
               } else {
                 // If still no ID, create a new file
-                store.dispatch('createFile', {
+                fileSvc.createFile({
                   name: 'Welcome file',
                   text: welcomeFile,
-                })
+                }, true)
                   // Set it as the current file
                   .then(newFile => store.commit('file/setCurrentId', newFile.id));
               }

@@ -123,6 +123,8 @@ const openPublishModal = (token, type) => store.dispatch('modal/open', {
   token,
 }).then(publishLocation => publishSvc.createPublishLocation(publishLocation));
 
+const onCancel = () => {};
+
 export default {
   components: {
     MenuEntry,
@@ -181,68 +183,68 @@ export default {
         type: 'googleDriveAccount',
         onResolve: () => googleHelper.addDriveAccount(!store.getters['data/localSettings'].googleDriveRestrictedAccess),
       })
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     addDropboxAccount() {
       return this.$store.dispatch('modal/open', {
         type: 'dropboxAccount',
         onResolve: () => dropboxHelper.addAccount(!store.getters['data/localSettings'].dropboxRestrictedAccess),
       })
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     addGithubAccount() {
       return this.$store.dispatch('modal/open', {
         type: 'githubAccount',
         onResolve: () => githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess),
       })
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     addWordpressAccount() {
       return wordpressHelper.addAccount()
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     addBloggerAccount() {
       return googleHelper.addBloggerAccount()
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     addZendeskAccount() {
       return this.$store.dispatch('modal/open', {
         type: 'zendeskAccount',
         onResolve: ({ subdomain, clientId }) => zendeskHelper.addAccount(subdomain, clientId),
       })
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     publishGoogleDrive(token) {
       return openPublishModal(token, 'googleDrivePublish')
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     publishDropbox(token) {
       return openPublishModal(token, 'dropboxPublish')
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     publishGithub(token) {
       return openPublishModal(token, 'githubPublish')
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     publishGist(token) {
       return openPublishModal(token, 'gistPublish')
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     publishWordpress(token) {
       return openPublishModal(token, 'wordpressPublish')
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     publishBlogger(token) {
       return openPublishModal(token, 'bloggerPublish')
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     publishBloggerPage(token) {
       return openPublishModal(token, 'bloggerPagePublish')
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
     publishZendesk(token) {
       return openPublishModal(token, 'zendeskPublish')
-        .catch(() => {}); // Cancel
+        .catch(onCancel);
     },
   },
 };

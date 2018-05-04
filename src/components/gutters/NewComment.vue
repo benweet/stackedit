@@ -3,7 +3,7 @@
     <div class="comment__header flex flex--row flex--space-between flex--align-center">
       <div class="comment__user flex flex--row flex--align-center">
         <div class="comment__user-image">
-          <user-image :user-id="loginToken.sub"></user-image>
+          <user-image :user-id="userId"></user-image>
         </div>
         <span class="user-name">{{loginToken.name}}</span>
       </div>
@@ -33,9 +33,12 @@ export default {
   components: {
     UserImage,
   },
-  computed: mapGetters('workspace', [
-    'loginToken',
-  ]),
+  computed: {
+    ...mapGetters('workspace', [
+      'loginToken',
+      'userId',
+    ]),
+  },
   methods: {
     ...mapMutations('discussion', [
       'setNewCommentFocus',
@@ -53,7 +56,7 @@ export default {
           const discussionId = this.$store.state.discussion.currentDiscussionId;
           const comment = {
             discussionId,
-            sub: this.loginToken.sub,
+            sub: this.userId,
             text,
             created: Date.now(),
           };

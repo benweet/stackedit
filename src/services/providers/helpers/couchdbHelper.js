@@ -91,9 +91,9 @@ export default {
       method: 'POST',
       body: { item, time: Date.now() },
     };
-    const loginToken = store.getters['workspace/loginToken'];
-    if (loginToken) {
-      options.body.sub = loginToken.sub;
+    const userId = store.getters['workspace/userId'];
+    if (userId) {
+      options.body.sub = userId;
     }
     if (documentId) {
       options.method = 'PUT';

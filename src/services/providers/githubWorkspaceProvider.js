@@ -479,12 +479,13 @@ export default new Provider({
         } else if (entry.committer && entry.committer.login) {
           user = entry.committer;
         }
-        userSvc.addInfo({ id: user.login, name: user.login, imageUrl: user.avatar_url });
+        const sub = `gh:${user.id}`;
+        userSvc.addInfo({ id: sub, name: user.login, imageUrl: user.avatar_url });
         const date = (entry.commit.author && entry.commit.author.date)
           || (entry.commit.committer && entry.commit.committer.date);
         return {
           id: entry.sha,
-          sub: user.login,
+          sub,
           created: date ? new Date(date).getTime() : 1,
         };
       })

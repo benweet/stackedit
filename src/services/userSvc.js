@@ -1,7 +1,15 @@
 import googleHelper from './providers/helpers/googleHelper';
+import githubHelper from './providers/helpers/githubHelper';
+import utils from './utils';
 import store from '../store';
 
 const promised = {};
+
+const parseUserId = (userId) => {
+  const prefix = userId[2] === ':' && userId.slice(0, 2);
+  const type = prefix && utils.userIdPrefixes[prefix];
+  return type ? [type, userId.slice(3)] : ['google', userId];
+};
 
 export default {
   addInfo({ id, name, imageUrl }) {
@@ -10,8 +18,10 @@ export default {
   },
   getInfo(userId) {
     if (!promised[userId]) {
+      const [type, sub] = parseUserId(userId);
+
       // Try to find a token with this sub
-      const token = store.getters['data/googleTokens'][userId];
+      const token = store.getters[`data/${type}Tokens`][sub];
       if (token) {
         store.commit('userInfo/addItem', {
           id: userId,
@@ -19,16 +29,31 @@ export default {
         });
       }
 
-      // Get user info from Google
+      // Get user info from provider
       if (!store.state.offline) {
         promised[userId] = true;
-        googleHelper.getUser(userId)
-          .catch((err) => {
-            if (err.status !== 404) {
-              promised[userId] = false;
-            }
-          });
+        switch (type) {
+          case 'github': {
+            return githubHelper.getUser(sub)
+              .catch((err) => {
+                if (err.status !== 404) {
+                  promised[userId] = false;
+                }
+              });
+          }
+          case 'google':
+          default: {
+            return googleHelper.getUser(sub)
+              .catch((err) => {
+                if (err.status !== 404) {
+                  promised[userId] = false;
+                }
+              });
+          }
+        }
       }
     }
+
+    return null;
   },
 };

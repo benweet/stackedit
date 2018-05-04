@@ -99,7 +99,7 @@ export default {
           () => this.$store.dispatch('discussion/cleanCurrentFile', {
             filterDiscussion: this.currentDiscussion,
           }),
-          () => {}); // Cancel
+          () => { /* Cancel */ });
     },
   },
 };

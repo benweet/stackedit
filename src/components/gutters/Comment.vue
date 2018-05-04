@@ -51,7 +51,7 @@ export default {
       this.$store.dispatch('modal/commentDeletion')
         .then(
           () => this.$store.dispatch('discussion/cleanCurrentFile', { filterComment: this.comment }),
-          () => {}); // Cancel
+          () => { /* Cancel */ });
     },
   },
   mounted() {

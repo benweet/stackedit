@@ -23,6 +23,7 @@ const parseQueryParams = (params) => {
   return result;
 };
 
+
 // For utils.computeProperties()
 const deepOverride = (obj, opt) => {
   if (obj === undefined) {
@@ -96,14 +97,23 @@ export default {
     'layoutSettings',
     'tokens',
   ],
+  userIdPrefixes: {
+    go: 'google',
+    gh: 'github',
+  },
   textMaxLength: 250000,
   sanitizeText(text) {
     const result = `${text || ''}`.slice(0, this.textMaxLength);
     // last char must be a `\n`.
     return `${result}\n`.replace(/\n\n$/, '\n');
   },
+  defaultName: 'Untitled',
   sanitizeName(name) {
-    return `${name || ''}`.slice(0, 250) || 'Untitled';
+    return `${name || ''}`
+      // Replace `/`, control characters and other kind of spaces with a space
+      .replace(/[/\x00-\x1F\x7f-\xa0\s]+/g, ' ').trim()
+      // Keep only 250 characters
+      .slice(0, 250) || this.defaultName;
   },
   deepCopy,
   serializeObject(obj) {
@@ -124,9 +134,8 @@ export default {
       // If every field fits the criteria
       if (Object.entries(criteria).every(([key, value]) => value === item[key])) {
         result = item;
-        return true;
       }
-      return false;
+      return result;
     });
     return result;
   },
@@ -199,6 +208,18 @@ export default {
   setInterval(func, interval) {
     return setInterval(() => func(), this.randomize(interval));
   },
+  async awaitSequence(values, asyncFunc) {
+    const results = [];
+    const valuesLeft = values.slice().reverse();
+    const runWithNextValue = async () => {
+      if (!valuesLeft.length) {
+        return results;
+      }
+      results.push(await asyncFunc(valuesLeft.pop()));
+      return runWithNextValue();
+    };
+    return runWithNextValue();
+  },
   parseQueryParams,
   addQueryParams(url = '', params = {}, hash = false) {
     const keys = Object.keys(params).filter(key => params[key] != null);
@@ -238,9 +259,6 @@ export default {
       document.head.removeChild(newBaseElt);
     }
     return result;
-  },
-  concatPaths(...paths) {
-    return paths.join('/').replace(/\/+/g, '/');
   },
   getHostname(url) {
     urlParser.href = url;

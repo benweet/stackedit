@@ -74,11 +74,25 @@ export default {
     }),
     trashDeletion: ({ dispatch }) => dispatch('open', {
       content: '<p>Files in the trash are automatically deleted after 7 days of inactivity.</p>',
-      resolveText: 'Ok',
+      rejectText: 'Ok',
     }),
     fileRestoration: ({ dispatch }) => dispatch('open', {
       content: '<p>You are about to revert some changes. Are you sure?</p>',
       resolveText: 'Yes, revert',
+      rejectText: 'No',
+    }),
+    unauthorizedName: ({ dispatch }, name) => dispatch('open', {
+      content: `<p><b>${name}</b> is not an authorized name.</p>`,
+      rejectText: 'Ok',
+    }),
+    stripName: ({ dispatch }, name) => dispatch('open', {
+      content: `<p><b>${name}</b> contains illegal characters. Do you want to strip them?</p>`,
+      resolveText: 'Yes, strip',
+      rejectText: 'No',
+    }),
+    pathConflict: ({ dispatch }, name) => dispatch('open', {
+      content: `<p><b>${name}</b> already exists. Do you want to add a suffix?</p>`,
+      resolveText: 'Yes, add suffix',
       rejectText: 'No',
     }),
     removeWorkspace: ({ dispatch }) => dispatch('open', {
@@ -127,11 +141,11 @@ export default {
     }),
     sponsorOnly: ({ dispatch }) => dispatch('open', {
       content: '<p>This feature is restricted to sponsors as it relies on server resources.</p>',
-      resolveText: 'Ok, I understand',
+      rejectText: 'Ok, I understand',
     }),
     paymentSuccess: ({ dispatch }) => dispatch('open', {
       content: '<p>Thank you for your payment! Your sponsorship will be active in a minute.</p>',
-      resolveText: 'Ok',
+      rejectText: 'Ok',
     }),
   },
 };

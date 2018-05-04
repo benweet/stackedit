@@ -83,7 +83,9 @@ export default class Provider {
             parentId: null,
           });
         }
+        return true;
       }
     }
+    return false;
   }
 }

@@ -79,7 +79,7 @@ export default {
       return this.$store.dispatch('modal/removeWorkspace')
         .then(
           () => localDbSvc.removeWorkspace(id),
-          () => {}, // Cancel
+          () => { /* Cancel */ },
         );
     },
   },

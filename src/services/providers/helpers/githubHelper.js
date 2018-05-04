@@ -73,6 +73,22 @@ export default {
   addAccount(repoFullAccess = false) {
     return this.startOauth2(getScopes({ repoFullAccess }));
   },
+  getUser(userId) {
+    return networkSvc.request({
+      url: `https://api.github.com/user/${userId}`,
+      params: {
+        t: Date.now(), // Prevent from caching
+      },
+    })
+      .then((res) => {
+        store.commit('userInfo/addItem', {
+          id: `gh:${res.body.id}`,
+          name: res.body.login,
+          imageUrl: res.body.avatar_url || '',
+        });
+        return res.body;
+      });
+  },
   getTree(token, owner, repo, sha) {
     return repoRequest(token, owner, repo, {
       url: `git/trees/${encodeURIComponent(sha)}?recursive=1`,
@@ -86,9 +102,9 @@ export default {
   },
   getHeadTree(token, owner, repo, branch) {
     return repoRequest(token, owner, repo, {
-      url: `branches/${encodeURIComponent(branch)}`,
+      url: `commits/${encodeURIComponent(branch)}`,
     })
-      .then(res => this.getTree(token, owner, repo, res.body.commit.commit.tree.sha));
+      .then(res => this.getTree(token, owner, repo, res.body.commit.tree.sha));
   },
   getCommits(token, owner, repo, sha, path) {
     return repoRequest(token, owner, repo, {

@@ -130,7 +130,7 @@ export default {
             .then(() => syncSvc.requestSync())
             .then(() => dispatch('createNewDiscussion', selection)),
         }, { root: true })
-          .catch(() => { }); // Cancel
+          .catch(() => { /* Cancel */ });
       } else if (selection) {
         let text = rootGetters['content/current'].text.slice(selection.start, selection.end).trim();
         const maxLength = 80;

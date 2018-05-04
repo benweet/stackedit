@@ -52,8 +52,8 @@
     "serve-static": "^1.12.6",
     "tmp": "^0.0.33",
     "turndown": "^4.0.1",
-    "vue": "^2.3.3",
-    "vuex": "^2.3.1"
+    "vue": "^2.5.16",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",

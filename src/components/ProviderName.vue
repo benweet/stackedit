@@ -3,8 +3,6 @@
 </template>
 
 <script>
-import userSvc from '../services/userSvc';
-
 export default {
   props: ['providerId'],
   computed: {
@@ -14,9 +12,6 @@ export default {
           return 'Google Drive';
       }
     },
-  },
-  created() {
-    userSvc.getInfo(this.userId);
   },
 };
 </script>

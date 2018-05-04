@@ -62,6 +62,7 @@ const store = new Vuex.Store({
     },
     itemPaths: (state) => {
       const result = {};
+      const folderMap = state.folder.itemMap;
       const getPath = (item) => {
         let itemPath = result[item.id];
         if (!itemPath) {
@@ -69,29 +70,31 @@ const store = new Vuex.Store({
             itemPath = `.stackedit-trash/${item.name}`;
           } else {
             let name = item.name;
-            if (item.type === 'folder') {
+            if (folderMap[item.id]) {
               name += '/';
             }
-            const parent = state.folder.itemMap[item.parentId];
-            if (!parent) {
-              itemPath = name;
+            const parentFolder = folderMap[item.parentId];
+            if (parentFolder) {
+              itemPath = getPath(parentFolder) + name;
             } else {
-              itemPath = getPath(parent) + name;
+              itemPath = name;
             }
           }
         }
         result[item.id] = itemPath;
         return itemPath;
       };
+
       [...state.folder.items, ...state.file.items].forEach(item => getPath(item));
       return result;
     },
     pathItems: (state, getters) => {
       const result = {};
-      const itemPaths = getters.itemPaths;
       const allItemMap = getters.allItemMap;
-      Object.entries(itemPaths).forEach(([id, path]) => {
-        result[path] = allItemMap[id];
+      Object.entries(getters.itemPaths).forEach(([id, path]) => {
+        const items = result[path] || [];
+        items.push(allItemMap[id]);
+        result[path] = items;
       });
       return result;
     },
@@ -130,33 +133,6 @@ const store = new Vuex.Store({
         dispatch('notification/info', 'You are back online!');
       }
       return Promise.resolve();
-    },
-    createFile({ state, getters, commit }, desc = {}) {
-      const id = utils.uid();
-      commit('content/setItem', {
-        id: `${id}/content`,
-        text: utils.sanitizeText(desc.text || getters['data/computedSettings'].newFileContent),
-        properties: utils.sanitizeText(
-          desc.properties || getters['data/computedSettings'].newFileProperties),
-        discussions: desc.discussions || {},
-        comments: desc.comments || {},
-      });
-      commit('file/setItem', {
-        id,
-        name: utils.sanitizeName(desc.name),
-        parentId: desc.parentId || null,
-      });
-      return Promise.resolve(state.file.itemMap[id]);
-    },
-    deleteFile({ getters, commit }, fileId) {
-      (getters['syncLocation/groupedByFileId'][fileId] || [])
-        .forEach(item => commit('syncLocation/deleteItem', item.id));
-      (getters['publishLocation/groupedByFileId'][fileId] || [])
-        .forEach(item => commit('publishLocation/deleteItem', item.id));
-      commit('file/deleteItem', fileId);
-      commit('content/deleteItem', `${fileId}/content`);
-      commit('syncedContent/deleteItem', `${fileId}/syncedContent`);
-      commit('contentState/deleteItem', `${fileId}/contentState`);
     },
   },
   strict: debug,

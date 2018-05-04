@@ -2,6 +2,7 @@ import cledit from './cledit';
 import store from '../store';
 import utils from './utils';
 import editorSvc from './editorSvc';
+import fileSvc from './fileSvc';
 
 const origin = utils.queryParams.origin;
 const fileName = utils.queryParams.fileName;
@@ -29,12 +30,12 @@ export default {
 
     store.commit('setLight', true);
 
-    return store.dispatch('createFile', {
+    return fileSvc.createFile({
       name: fileName || utils.getHostname(origin),
       text: contentText || '\n',
       properties: contentProperties,
       parentId: 'temp',
-    })
+    }, true)
       .then((file) => {
         const fileItemMap = store.state.file.itemMap;
 
@@ -57,7 +58,7 @@ export default {
           .splice(10)
           .forEach(([id]) => {
             delete lastCreated[id];
-            store.dispatch('deleteFile', id);
+            fileSvc.deleteFile(id);
           });
 
         // Store file creations and open the file

@@ -71,7 +71,7 @@ export default {
         }));
       }
     },
-    doWithLocation({ state, commit, dispatch }, { location, promise }) {
+    doWithLocation({ commit }, { location, promise }) {
       commit('setCurrentLocation', location);
       return promise
         .then((res) => {

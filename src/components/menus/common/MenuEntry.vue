@@ -10,7 +10,7 @@
 </template>
 
 <style lang="scss">
-@import '../../common/variables.scss';
+@import '../../../styles/variables.scss';
 
 .menu-entry {
   text-align: left;

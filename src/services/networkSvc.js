@@ -121,7 +121,7 @@ export default {
       // Open a tab otherwise
       wnd = window.open(authorizeUrl);
       if (!wnd) {
-        return Promise.reject('The authorize window was blocked.');
+        return Promise.reject(new Error('The authorize window was blocked.'));
       }
     }
 
@@ -145,21 +145,23 @@ export default {
 
       if (silent) {
         iframeElt.onerror = () => clean()
-          .then(() => reject('Unknown error.'));
+          .then(() => reject(new Error('Unknown error.')));
         closeTimeout = setTimeout(
           () => clean()
             .then(() => {
               isConnectionDown = true;
               store.commit('setOffline', true);
               store.commit('updateLastOfflineCheck');
-              reject('You are offline.');
+              reject(new Error('You are offline.'));
             }),
-          networkTimeout);
+          networkTimeout,
+        );
       } else {
         closeTimeout = setTimeout(
           () => clean()
-            .then(() => reject('Timeout.')),
-          oauth2AuthorizationTimeout);
+            .then(() => reject(new Error('Timeout.'))),
+          oauth2AuthorizationTimeout,
+        );
       }
 
       msgHandler = event => event.source === wnd && event.origin === utils.origin && clean()
@@ -167,7 +169,7 @@ export default {
           const data = utils.parseQueryParams(`${event.data}`.slice(1));
           if (data.error || data.state !== state) {
             console.error(data); // eslint-disable-line no-console
-            reject('Could not get required authorization.');
+            reject(new Error('Could not get required authorization.'));
           } else {
             resolve({
               accessToken: data.access_token,
@@ -181,7 +183,7 @@ export default {
       window.addEventListener('message', msgHandler);
       if (!silent) {
         checkClosedInterval = setInterval(() => wnd.closed && clean()
-          .then(() => reject('Authorize window was closed.')), 250);
+          .then(() => reject(new Error('Authorize window was closed.'))), 250);
       }
     });
   },
@@ -253,9 +255,9 @@ export default {
           if (offlineCheck) {
             isConnectionDown = true;
             store.commit('setOffline', true);
-            reject('You are offline.');
+            reject(new Error('You are offline.'));
           } else {
-            reject('Network request failed.');
+            reject(new Error('Network request failed.'));
           }
         };
 
@@ -264,9 +266,9 @@ export default {
           if (offlineCheck) {
             isConnectionDown = true;
             store.commit('setOffline', true);
-            reject('You are offline.');
+            reject(new Error('You are offline.'));
           } else {
-            reject('Network request timeout.');
+            reject(new Error('Network request timeout.'));
           }
         }, config.timeout);
 
@@ -282,12 +284,11 @@ export default {
         .catch((err) => {
           // Try again later in case of retriable error
           if (isRetriable(err) && retryAfter < maxRetryAfter) {
-            return new Promise(
-              (resolve) => {
-                setTimeout(resolve, retryAfter);
-                // Exponential backoff
-                retryAfter *= 2;
-              })
+            return new Promise((resolve) => {
+              setTimeout(resolve, retryAfter);
+              // Exponential backoff
+              retryAfter *= 2;
+            })
               .then(attempt);
           }
           throw err;

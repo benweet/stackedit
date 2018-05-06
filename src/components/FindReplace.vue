@@ -70,7 +70,8 @@ class DynamicClassApplier {
         () => ({
           start: this.startMarker.offset,
           end: this.endMarker.offset,
-        }));
+        }),
+      );
     }
   }
 
@@ -126,7 +127,10 @@ export default {
           offsetList.forEach((offset, i) => {
             const key = `${offset.start}:${offset.end}`;
             this.classAppliers[key] = oldClassAppliers[key] || new DynamicClassApplier(
-              'find-replace-highlighting', offset, i > 200);
+              'find-replace-highlighting',
+              offset,
+              i > 200,
+            );
           });
         } catch (e) {
           // Ignore
@@ -156,9 +160,9 @@ export default {
       this.findPosition = 0;
     },
     find(mode = 'forward') {
-      const selectedClassApplier = this.selectedClassApplier;
+      const { selectedClassApplier } = this;
       this.unselectClassApplier();
-      const selectionMgr = editorSvc.clEditor.selectionMgr;
+      const { selectionMgr } = editorSvc.clEditor;
       const startOffset = Math.min(selectionMgr.selectionStart, selectionMgr.selectionEnd);
       const endOffset = Math.max(selectionMgr.selectionStart, selectionMgr.selectionEnd);
       const keys = Object.keys(this.classAppliers);
@@ -206,7 +210,10 @@ export default {
           return;
         }
         editorSvc.clEditor.replaceAll(
-          this.replaceRegex, this.replaceText, this.selectedClassApplier.startMarker.offset);
+          this.replaceRegex,
+          this.replaceText,
+          this.selectedClassApplier.startMarker.offset,
+        );
         this.$nextTick(() => this.find());
       }
     },
@@ -227,7 +234,9 @@ export default {
 
     // Highlight occurences
     this.debouncedHighlightOccurrences = cledit.Utils.debounce(
-      () => this.highlightOccurrences(), 25);
+      () => this.highlightOccurrences(),
+      25,
+    );
     // Refresh highlighting when find text changes or changing options
     this.$watch(() => this.findText, this.debouncedHighlightOccurrences);
     this.$watch(() => this.findCaseSensitive, this.debouncedHighlightOccurrences);
@@ -273,7 +282,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'common/variables.scss';
+@import '../styles/variables.scss';
 
 .find-replace {
   padding: 0 35px 0 25px;

@@ -57,7 +57,10 @@ export default modalTemplate({
       } else {
         // Return new location
         const location = wordpressProvider.makeLocation(
-          this.config.token, this.domain, this.postId);
+          this.config.token,
+          this.domain,
+          this.postId,
+        );
         location.templateId = this.selectedTemplate;
         this.config.resolve(location);
       }

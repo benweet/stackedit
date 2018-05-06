@@ -7,22 +7,29 @@ export default {
   /**
    * Create a file in the store with the specified fields.
    */
-  createFile(fields = {}, background = false) {
+  createFile({
+    name,
+    parentId,
+    text,
+    properties,
+    discussions,
+    comments,
+  } = {}, background = false) {
     const id = utils.uid();
     const file = {
       id,
-      name: utils.sanitizeName(fields.name),
-      parentId: fields.parentId || null,
+      name: utils.sanitizeName(name),
+      parentId: parentId || null,
     };
     const content = {
       id: `${id}/content`,
-      text: utils.sanitizeText(fields.text || store.getters['data/computedSettings'].newFileContent),
-      properties: utils.sanitizeText(
-        fields.properties || store.getters['data/computedSettings'].newFileProperties),
-      discussions: fields.discussions || {},
-      comments: fields.comments || {},
+      text: utils.sanitizeText(text || store.getters['data/computedSettings'].newFileContent),
+      properties: utils
+        .sanitizeText(properties || store.getters['data/computedSettings'].newFileProperties),
+      discussions: discussions || {},
+      comments: comments || {},
     };
-    const nameStripped = file.name !== utils.defaultName && file.name !== fields.name;
+    const nameStripped = file.name !== utils.defaultName && file.name !== name;
 
     // Check if there is a path conflict
     const workspaceUniquePaths = store.getters['workspace/hasUniquePaths'];
@@ -35,8 +42,8 @@ export default {
 
     // Show warning dialogs and then save in the store
     return Promise.resolve()
-      .then(() => !background && nameStripped && store.dispatch('modal/stripName', fields.name))
-      .then(() => !background && pathConflict && store.dispatch('modal/pathConflict', fields.name))
+      .then(() => !background && nameStripped && store.dispatch('modal/stripName', name))
+      .then(() => !background && pathConflict && store.dispatch('modal/pathConflict', name))
       .then(() => {
         store.commit('content/setItem', content);
         store.commit('file/setItem', file);
@@ -131,12 +138,12 @@ export default {
    * Add a prefix to its name and return true otherwise.
    */
   makePathUnique(id) {
-    const item = store.getters.allItemMap[id];
+    const { pathItems, allItemMap, itemPaths } = store.getters;
+    const item = allItemMap[id];
     if (!item) {
       return false;
     }
-    let path = store.getters.itemPaths[id];
-    const pathItems = store.getters.pathItems;
+    let path = itemPaths[id];
     if (pathItems[path].length === 1) {
       return false;
     }

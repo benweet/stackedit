@@ -140,7 +140,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'common/variables.scss';
+@import '../styles/variables.scss';
 
 .layout {
   position: absolute;

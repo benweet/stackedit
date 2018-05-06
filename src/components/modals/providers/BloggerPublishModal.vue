@@ -55,7 +55,10 @@ export default modalTemplate({
       } else {
         // Return new location
         const location = bloggerProvider.makeLocation(
-          this.config.token, this.blogUrl, this.postId);
+          this.config.token,
+          this.blogUrl,
+          this.postId,
+        );
         location.templateId = this.selectedTemplate;
         this.config.resolve(location);
       }

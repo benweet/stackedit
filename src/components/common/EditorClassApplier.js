@@ -10,7 +10,9 @@ const nextTickExecCbs = cledit.Utils.debounce(() => {
   }
   if (savedSelection) {
     editorSvc.clEditor.selectionMgr.setSelectionStartEnd(
-      savedSelection.start, savedSelection.end);
+      savedSelection.start,
+      savedSelection.end,
+    );
   }
   savedSelection = null;
 });

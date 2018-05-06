@@ -4,10 +4,12 @@ import utils from './utils';
 import editorSvc from './editorSvc';
 import fileSvc from './fileSvc';
 
-const origin = utils.queryParams.origin;
-const fileName = utils.queryParams.fileName;
-const contentText = utils.queryParams.contentText;
-const contentProperties = utils.queryParams.contentProperties;
+const {
+  origin,
+  fileName,
+  contentText,
+  contentProperties,
+} = utils.queryParams;
 
 export default {
   setReady() {

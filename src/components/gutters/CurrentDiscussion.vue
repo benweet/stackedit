@@ -99,14 +99,15 @@ export default {
           () => this.$store.dispatch('discussion/cleanCurrentFile', {
             filterDiscussion: this.currentDiscussion,
           }),
-          () => { /* Cancel */ });
+          () => { /* Cancel */ },
+        );
     },
   },
 };
 </script>
 
 <style lang="scss">
-@import '../common/variables.scss';
+@import '../../styles/variables.scss';
 
 .current-discussion {
   position: absolute;

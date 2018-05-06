@@ -15,11 +15,14 @@ const request = (token, options) => networkSvc.request({
 export default {
   startOauth2(sub = null, silent = false) {
     return networkSvc.startOauth2(
-      'https://public-api.wordpress.com/oauth2/authorize', {
+      'https://public-api.wordpress.com/oauth2/authorize',
+      {
         client_id: clientId,
         response_type: 'token',
         scope: 'global',
-      }, silent)
+      },
+      silent,
+    )
       // Call the user info endpoint
       .then(data => request({ accessToken: data.accessToken }, {
         url: 'https://public-api.wordpress.com/rest/v1.1/me',
@@ -42,7 +45,7 @@ export default {
         }));
   },
   refreshToken(token) {
-    const sub = token.sub;
+    const { sub } = token;
     const lastToken = store.getters['data/wordpressTokens'][sub];
 
     return Promise.resolve()

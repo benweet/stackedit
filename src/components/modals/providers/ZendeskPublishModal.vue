@@ -62,7 +62,11 @@ export default modalTemplate({
       } else {
         // Return new location
         const location = zendeskProvider.makeLocation(
-          this.config.token, this.sectionId, this.locale || 'en-us', this.articleId);
+          this.config.token,
+          this.sectionId,
+          this.locale || 'en-us',
+          this.articleId,
+        );
         location.templateId = this.selectedTemplate;
         this.config.resolve(location);
       }

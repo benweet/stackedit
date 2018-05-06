@@ -15,7 +15,7 @@ function UndoMgr(editor) {
   let currentState;
   let previousPatches = [];
   let currentPatches = [];
-  const debounce = cledit.Utils.debounce;
+  const { debounce } = cledit.Utils;
 
   this.options = {
     undoStackMaxSize: 200,
@@ -166,7 +166,7 @@ function UndoMgr(editor) {
 
   this.init = (options) => {
     this.options.cl_extend(options || {});
-    selectionMgr = editor.selectionMgr;
+    ({ selectionMgr } = editor);
     if (!currentState) {
       currentState = new State();
     }

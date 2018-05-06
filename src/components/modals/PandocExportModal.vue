@@ -42,7 +42,7 @@ export default modalTemplate({
       this.config.resolve();
       const currentFile = this.$store.getters['file/current'];
       const currentContent = this.$store.getters['content/current'];
-      const selectedFormat = this.selectedFormat;
+      const { selectedFormat } = this;
       this.$store.dispatch('queue/enqueue', () => Promise.all([
         Promise.resolve().then(() => {
           const sponsorToken = this.$store.getters['workspace/sponsorToken'];
@@ -64,15 +64,15 @@ export default modalTemplate({
           blob: true,
           timeout: 60000,
         })
-        .then((res) => {
-          FileSaver.saveAs(res.body, `${currentFile.name}.${selectedFormat}`);
-        }, (err) => {
-          if (err.status !== 401) {
-            throw err;
-          }
-          this.$store.dispatch('modal/sponsorOnly')
-            .catch(() => { /* Cancel */ });
-        }))
+          .then((res) => {
+            FileSaver.saveAs(res.body, `${currentFile.name}.${selectedFormat}`);
+          }, (err) => {
+            if (err.status !== 401) {
+              throw err;
+            }
+            this.$store.dispatch('modal/sponsorOnly')
+              .catch(() => { /* Cancel */ });
+          }))
         .catch((err) => {
           console.error(err); // eslint-disable-line no-console
           this.$store.dispatch('notification/error', err);

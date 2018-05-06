@@ -56,7 +56,7 @@ export default modalTemplate({
   },
   methods: {
     resolve() {
-      const config = this.config;
+      const { config } = this;
       const currentFile = this.$store.getters['file/current'];
       config.resolve();
       exportSvc.exportToDisk(currentFile.id, 'html', this.allTemplates[this.selectedTemplate]);

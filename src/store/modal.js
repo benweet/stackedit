@@ -37,7 +37,7 @@ export default {
         commit('setStack', [config, ...state.stack]);
       });
     },
-    hideUntil({ commit, state }, promise) {
+    hideUntil({ commit }, promise) {
       commit('setHidden', true);
       return promise.then((res) => {
         commit('setHidden', false);

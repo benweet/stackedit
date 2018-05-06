@@ -1,7 +1,7 @@
 import cledit from './cleditCore';
 
 function SelectionMgr(editor) {
-  const debounce = cledit.Utils.debounce;
+  const { debounce } = cledit.Utils;
   const contentElt = editor.$contentElt;
   const scrollElt = editor.$scrollElt;
   cledit.Utils.createEventHooks(this);
@@ -29,10 +29,10 @@ function SelectionMgr(editor) {
 
   this.createRange = (start, end) => {
     const range = document.createRange();
-    const startContainer = isNaN(start) ? start : this.findContainer(start < 0 ? 0 : start);
+    const startContainer = Number.isNaN(start) ? start : this.findContainer(start < 0 ? 0 : start);
     let endContainer = startContainer;
     if (start !== end) {
-      endContainer = isNaN(end) ? end : this.findContainer(end < 0 ? 0 : end);
+      endContainer = Number.isNaN(end) ? end : this.findContainer(end < 0 ? 0 : end);
     }
     range.setStart(startContainer.container, startContainer.offsetInContainer);
     range.setEnd(endContainer.container, endContainer.offsetInContainer);
@@ -42,7 +42,10 @@ function SelectionMgr(editor) {
   let adjustScroll;
   const debouncedUpdateCursorCoordinates = debounce(() => {
     const coordinates = this.getCoordinates(
-      this.selectionEnd, this.selectionEndContainer, this.selectionEndOffset);
+      this.selectionEnd,
+      this.selectionEndContainer,
+      this.selectionEndOffset,
+    );
     if (this.cursorCoordinates.top !== coordinates.top ||
       this.cursorCoordinates.height !== coordinates.height ||
       this.cursorCoordinates.left !== coordinates.left
@@ -163,10 +166,10 @@ function SelectionMgr(editor) {
 
     function getNodeIndex(node) {
       let i = 0;
-      let previousSibling = node.previousSibling;
+      let { previousSibling } = node;
       while (previousSibling) {
         i += 1;
-        previousSibling = previousSibling.previousSibling;
+        ({ previousSibling } = previousSibling);
       }
       return i;
     }
@@ -235,8 +238,8 @@ function SelectionMgr(editor) {
     const save = () => {
       let result;
       if (this.hasFocus()) {
-        let selectionStart = this.selectionStart;
-        let selectionEnd = this.selectionEnd;
+        let { selectionStart } = this;
+        let { selectionEnd } = this;
         const selection = window.getSelection();
         if (selection.rangeCount > 0) {
           const selectionRange = selection.getRangeAt(0);
@@ -271,8 +274,8 @@ function SelectionMgr(editor) {
               selection.anchorNode,
               selection.anchorOffset,
               selection.focusNode,
-              selection.focusOffset) === 1
-            ) {
+              selection.focusOffset,
+            ) === 1) {
               selectionStart = offset + selectionText.length;
               selectionEnd = offset;
             } else {
@@ -337,8 +340,8 @@ function SelectionMgr(editor) {
     let offsetInContainer = offsetInContainerParam;
     if (!container) {
       const offset = this.findContainer(inputOffset);
-      container = offset.container;
-      offsetInContainer = offset.offsetInContainer;
+      ({ container } = offset);
+      ({ offsetInContainer } = offset);
     }
     let containerElt = container;
     if (!containerElt.hasChildNodes() && container.parentNode) {

@@ -10,8 +10,7 @@ function attrSet(token, name, value) {
 }
 
 module.exports = (md) => {
-  md.core.ruler.after('inline', 'tasklist', (state) => {
-    const tokens = state.tokens;
+  md.core.ruler.after('inline', 'tasklist', ({ tokens, Token }) => {
     for (let i = 2; i < tokens.length; i += 1) {
       const token = tokens[i];
       if (token.content
@@ -24,7 +23,7 @@ module.exports = (md) => {
       ) {
         const cross = token.content[1].toLowerCase();
         if (cross === ' ' || cross === 'x') {
-          const checkbox = new state.Token('html_inline', '', 0);
+          const checkbox = new Token('html_inline', '', 0);
           if (cross === ' ') {
             checkbox.content = '<span class="task-list-item-checkbox" type="checkbox">&#9744;</span>';
           } else {

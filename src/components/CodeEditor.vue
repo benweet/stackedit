@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'common/variables.scss';
+@import '../styles/variables.scss';
 
 .code-editor {
   margin: 0;

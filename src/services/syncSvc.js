@@ -60,7 +60,7 @@ function isSyncWindow() {
  * Return true if auto sync can start, ie if lastSyncActivity is old enough.
  */
 function isAutoSyncReady() {
-  let autoSyncEvery = store.getters['data/computedSettings'].autoSyncEvery;
+  let { autoSyncEvery } = store.getters['data/computedSettings'];
   if (autoSyncEvery < minAutoSyncEvery) {
     autoSyncEvery = minAutoSyncEvery;
   }
@@ -112,15 +112,17 @@ function cleanSyncedContent(syncedContent) {
       delete syncedContent.syncHistory[syncLocationId];
     }
   });
-  const allSyncLocationHashSet = new Set([].concat(
-    ...Object.keys(syncedContent.syncHistory).map(
-      id => syncedContent.syncHistory[id])));
+  const allSyncLocationHashSet = new Set([]
+    .concat(...Object.keys(syncedContent.syncHistory)
+      .map(id => syncedContent.syncHistory[id])));
   // Clean historyData from unused contents
-  Object.keys(syncedContent.historyData).map(hash => parseInt(hash, 10)).forEach((hash) => {
-    if (!allSyncLocationHashSet.has(hash)) {
-      delete syncedContent.historyData[hash];
-    }
-  });
+  Object.keys(syncedContent.historyData)
+    .map(hash => parseInt(hash, 10))
+    .forEach((hash) => {
+      if (!allSyncLocationHashSet.has(hash)) {
+        delete syncedContent.historyData[hash];
+      }
+    });
 }
 
 /**
@@ -180,7 +182,8 @@ function createSyncLocation(syncLocation) {
   syncLocation.fileId = fileId;
   // Use deepCopy to freeze item
   const content = utils.deepCopy(store.getters['content/current']);
-  store.dispatch('queue/enqueue',
+  store.dispatch(
+    'queue/enqueue',
     () => {
       const provider = providerRegistry.providers[syncLocation.providerId];
       const token = provider.getToken(syncLocation);
@@ -190,8 +193,7 @@ function createSyncLocation(syncLocation) {
       }, syncLocation)
         .then(syncLocationToStore => localDbSvc.loadSyncedContent(fileId)
           .then(() => {
-            const newSyncedContent = utils.deepCopy(upgradeSyncedContent(
-              store.state.syncedContent.itemMap[`${fileId}/syncedContent`]));
+            const newSyncedContent = utils.deepCopy(upgradeSyncedContent(store.state.syncedContent.itemMap[`${fileId}/syncedContent`]));
             const newSyncHistoryItem = [];
             newSyncedContent.syncHistory[syncLocation.id] = newSyncHistoryItem;
             newSyncHistoryItem[LAST_SEEN] = content.hash;
@@ -202,7 +204,8 @@ function createSyncLocation(syncLocation) {
             store.commit('syncLocation/setItem', syncLocationToStore);
             store.dispatch('notification/info', `A new synchronized location was added to "${currentFile.name}".`);
           }));
-    });
+    },
+  );
 }
 
 // Prevent from sending new data too long after old data has been fetched
@@ -221,7 +224,7 @@ class SyncContext {
   attempted = {};
 }
 
- /**
+/**
  * Sync one file with all its locations.
  */
 function syncFile(fileId, syncContext = new SyncContext()) {
@@ -233,8 +236,7 @@ function syncFile(fileId, syncContext = new SyncContext()) {
     .then(() => {
       const getFile = () => store.state.file.itemMap[fileId];
       const getContent = () => store.state.content.itemMap[`${fileId}/content`];
-      const getSyncedContent = () => upgradeSyncedContent(
-        store.state.syncedContent.itemMap[`${fileId}/syncedContent`]);
+      const getSyncedContent = () => upgradeSyncedContent(store.state.syncedContent.itemMap[`${fileId}/syncedContent`]);
       const getSyncHistoryItem = syncLocationId => getSyncedContent().syncHistory[syncLocationId];
 
       const isTempFile = () => {
@@ -259,7 +261,7 @@ function syncFile(fileId, syncContext = new SyncContext()) {
           return false;
         }
         // Return true if it's a welcome file that has no discussion
-        const welcomeFileHashes = store.getters['data/localSettings'].welcomeFileHashes;
+        const { welcomeFileHashes } = store.getters['data/localSettings'];
         const hash = utils.hash(content.text);
         const hasDiscussions = Object.keys(content.discussions).length;
         return file.name === 'Welcome file' && welcomeFileHashes[hash] && !hasDiscussions;
@@ -415,7 +417,7 @@ function syncFile(fileId, syncContext = new SyncContext()) {
                   store.dispatch('notification/error', err);
                 }),
             })
-            .then(() => syncOneContentLocation());
+              .then(() => syncOneContentLocation());
           }
           return result;
         });
@@ -429,7 +431,8 @@ function syncFile(fileId, syncContext = new SyncContext()) {
       err => localDbSvc.unloadContents()
         .then(() => {
           throw err;
-        }))
+        }),
+    )
     .catch((err) => {
       if (err && err.message === 'TOO_LATE') {
         // Restart sync
@@ -641,8 +644,8 @@ function syncWorkspace() {
           .then(() => syncNextFile());
       };
 
-      const onSyncEnd = () => Promise.resolve(
-        workspaceProvider.onSyncEnd && workspaceProvider.onSyncEnd());
+      const onSyncEnd = () => Promise.resolve(workspaceProvider.onSyncEnd
+        && workspaceProvider.onSyncEnd());
 
       return Promise.resolve()
         .then(() => saveNextItem())
@@ -667,7 +670,8 @@ function syncWorkspace() {
             throw err;
           }, () => {
             throw err;
-          }))
+          }),
+        )
         .then(
           () => {
             if (syncContext.restart) {
@@ -682,7 +686,8 @@ function syncWorkspace() {
               return syncWorkspace();
             }
             throw err;
-          });
+          },
+        );
     });
 }
 
@@ -703,7 +708,7 @@ function requestSync() {
         clearInterval(intervalId);
         if (!isSyncPossible()) {
           // Cancel sync
-          reject('Sync not possible.');
+          reject(new Error('Sync not possible.'));
           return;
         }
 

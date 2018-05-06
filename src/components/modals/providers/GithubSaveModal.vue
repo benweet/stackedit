@@ -58,7 +58,12 @@ export default modalTemplate({
       }
       if (parsedRepo && this.path) {
         const location = githubProvider.makeLocation(
-          this.config.token, parsedRepo.owner, parsedRepo.repo, this.branch || 'master', this.path);
+          this.config.token,
+          parsedRepo.owner,
+          parsedRepo.repo,
+          this.branch || 'master',
+          this.path,
+        );
         this.config.resolve(location);
       }
     },

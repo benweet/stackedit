@@ -30,10 +30,13 @@ const getCommitMessage = (name, path) => {
 export default {
   startOauth2(scopes, sub = null, silent = false) {
     return networkSvc.startOauth2(
-      'https://github.com/login/oauth/authorize', {
+      'https://github.com/login/oauth/authorize',
+      {
         client_id: clientId,
         scope: scopes.join(' '),
-      }, silent)
+      },
+      silent,
+    )
       // Exchange code with token
       .then(data => networkSvc.request({
         method: 'GET',

@@ -91,8 +91,8 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
     this.previewCtxWithDiffs = null;
     editorSvc.$emit('previewCtxWithDiffs', null);
     const options = {
-      sectionHighlighter: section => Prism.highlight(
-        section.text, this.prismGrammars[section.data]),
+      sectionHighlighter: section => Prism
+        .highlight(section.text, this.prismGrammars[section.data]),
       sectionParser: (text) => {
         this.parsingCtx = markdownConversionSvc.parseSections(this.converter, text);
         return this.parsingCtx.sections;
@@ -114,7 +114,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
   convert() {
     this.conversionCtx = markdownConversionSvc.convert(this.parsingCtx, this.conversionCtx);
     this.$emit('conversionCtx', this.conversionCtx);
-    tokens = this.parsingCtx.markdownState.tokens;
+    ({ tokens } = this.parsingCtx.markdownState);
   },
 
   /**
@@ -139,7 +139,11 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
           if (sectionDesc.editorElt !== section.elt) {
             // Force textToPreviewDiffs computation
             sectionDesc = new SectionDesc(
-              section, sectionDesc.previewElt, sectionDesc.tocElt, sectionDesc.html);
+              section,
+              sectionDesc.previewElt,
+              sectionDesc.tocElt,
+              sectionDesc.html,
+            );
           }
           sectionDescList.push(sectionDesc);
           previewHtml += sectionDesc.html;
@@ -256,7 +260,9 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
                 sectionDesc.previewText = sectionDesc.previewElt.textContent;
               }
               sectionDesc.textToPreviewDiffs = diffMatchPatch.diff_main(
-                sectionDesc.section.text, sectionDesc.previewText);
+                sectionDesc.section.text,
+                sectionDesc.previewText,
+              );
               hasOne = true;
             }
             return false;
@@ -316,7 +322,9 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
         const editorEndOffset = editorSvc.getEditorOffset(previewSelectionEndOffset);
         if (editorStartOffset != null && editorEndOffset != null) {
           editorSvc.clEditor.selectionMgr.setSelectionStartEnd(
-            editorStartOffset, editorEndOffset);
+            editorStartOffset,
+            editorEndOffset,
+          );
         }
       }
       editorSvc.previewSelectionRange = range;
@@ -559,17 +567,21 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
         this.applyContent();
       }, {
         immediate: true,
-      });
+      },
+    );
 
     // Disable editor if hidden or if no content is loaded
     store.watch(
       () => store.getters['content/isCurrentEditable'],
       editable => this.clEditor.toggleEditable(!!editable), {
         immediate: true,
-      });
+      },
+    );
 
-    store.watch(() => utils.serializeObject(store.getters['layout/styles']),
-      () => this.measureSectionDimensions(false, true, true));
+    store.watch(
+      () => utils.serializeObject(store.getters['layout/styles']),
+      () => this.measureSectionDimensions(false, true, true),
+    );
 
     this.initHighlighters();
     this.$emit('inited');

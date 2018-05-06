@@ -53,31 +53,25 @@ export default {
     MenuEntry,
   },
   methods: {
-    onImportMarkdown(evt) {
+    async onImportMarkdown(evt) {
       const file = evt.target.files[0];
-      readFile(file)
-        .then(content => fileSvc.createFile({
-          ...Provider.parseContent(content),
-          name: file.name,
-        })
-        .then(
-          item => this.$store.commit('file/setCurrentId', item.id)),
-          () => { /* Cancel */ });
+      const content = await readFile(file);
+      const item = await fileSvc.createFile({
+        ...Provider.parseContent(content),
+        name: file.name,
+      });
+      this.$store.commit('file/setCurrentId', item.id);
     },
-    onImportHtml(evt) {
+    async onImportHtml(evt) {
       const file = evt.target.files[0];
-      readFile(file)
-        .then(content => fileSvc.createFile({
-          ...Provider.parseContent(
-            turndownService.turndown(
-              htmlSanitizer.sanitizeHtml(content)
-                .replace(/&#160;/g, ' '), // Replace non-breaking spaces with classic spaces
-              )),
-          name: file.name,
-        }))
-        .then(
-          item => this.$store.commit('file/setCurrentId', item.id),
-          () => { /* Cancel */ });
+      const content = await readFile(file);
+      const sanitizedContent = htmlSanitizer.sanitizeHtml(content)
+        .replace(/&#160;/g, ' '); // Replace non-breaking spaces with classic spaces
+      const item = await fileSvc.createFile({
+        ...Provider.parseContent(turndownService.turndown(sanitizedContent)),
+        name: file.name,
+      });
+      this.$store.commit('file/setCurrentId', item.id);
     },
   },
 };

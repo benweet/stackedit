@@ -162,17 +162,19 @@ store.watch(
     isScrollEditor = showEditor;
     isScrollPreview = !showEditor;
     skipAnimation = true;
-  });
+  },
+);
 
 store.watch(
   () => store.getters['file/current'].id,
   () => {
     skipAnimation = true;
-  });
+  },
+);
 
 editorSvc.$on('previewCtxMeasured', (previewCtxMeasured) => {
   if (previewCtxMeasured) {
-    sectionDescList = previewCtxMeasured.sectionDescList;
+    ({ sectionDescList } = previewCtxMeasured);
     forceScrollSync();
   }
 });

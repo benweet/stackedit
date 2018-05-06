@@ -141,7 +141,7 @@ export default {
       }
       if (isFocusIn && this.config) {
         const modalInner = this.$el.querySelector('.modal__inner-2');
-        let target = evt.target;
+        let { target } = evt;
         while (target) {
           if (target === modalInner) {
             return;
@@ -166,7 +166,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'common/variables.scss';
+@import '../styles/variables.scss';
 
 .modal {
   position: absolute;

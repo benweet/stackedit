@@ -94,7 +94,7 @@ export default {
         return new Promise((resolve, reject) => {
           const timeoutId = setTimeout(() => {
             worker.terminate();
-            reject('Template generation timeout.');
+            reject(new Error('Template generation timeout.'));
           }, 10000);
           worker.addEventListener('message', (e) => {
             clearTimeout(timeoutId);
@@ -102,7 +102,7 @@ export default {
             // e.data can contain unsafe data if helpers attempts to call postMessage
             const [err, result] = e.data;
             if (err) {
-              reject(`${err}`);
+              reject(new Error(`${err}`));
             } else {
               resolve(`${result}`);
             }

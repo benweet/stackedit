@@ -98,7 +98,7 @@ export default {
       return true;
     },
     submitNewChild(cancel) {
-      const newChildNode = this.$store.state.explorer.newChildNode;
+      const { newChildNode } = this.$store.state.explorer;
       if (!cancel && !newChildNode.isNil && newChildNode.item.name) {
         if (newChildNode.isFolder) {
           fileSvc.storeItem(newChildNode.item)
@@ -111,7 +111,7 @@ export default {
       this.$store.commit('explorer/setNewItem', null);
     },
     submitEdit(cancel) {
-      const item = this.$store.getters['explorer/editingNode'].item;
+      const { item } = this.$store.getters['explorer/editingNode'];
       const value = this.editingValue;
       this.setEditingId(null);
       if (!cancel && item.id && value) {

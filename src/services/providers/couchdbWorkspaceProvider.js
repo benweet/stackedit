@@ -53,11 +53,11 @@ export default new Provider({
       .then((workspace) => {
         // Fix the URL hash
         utils.setQueryParams(workspaceParams);
-        if (workspace.url !== location.href) {
+        if (workspace.url !== window.location.href) {
           store.dispatch('data/patchWorkspaces', {
             [workspace.id]: {
               ...workspace,
-              url: location.href,
+              url: window.location.href,
             },
           });
         }

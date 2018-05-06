@@ -62,8 +62,7 @@ export default {
     newDiscussion: state =>
       state.currentDiscussionId === state.newDiscussionId && state.newDiscussion,
     currentFileDiscussionLastComments: (state, getters, rootState, rootGetters) => {
-      const discussions = rootGetters['content/current'].discussions;
-      const comments = rootGetters['content/current'].comments;
+      const { discussions, comments } = rootGetters['content/current'];
       const discussionLastComments = {};
       Object.entries(comments).forEach(([, comment]) => {
         if (discussions[comment.discussionId]) {
@@ -77,13 +76,12 @@ export default {
     },
     currentFileDiscussions: (state, getters, rootState, rootGetters) => {
       const currentFileDiscussions = {};
-      const newDiscussion = getters.newDiscussion;
+      const { newDiscussion } = getters;
       if (newDiscussion) {
         currentFileDiscussions[state.newDiscussionId] = newDiscussion;
       }
-      const discussions = rootGetters['content/current'].discussions;
-      const discussionLastComments = getters.currentFileDiscussionLastComments;
-      Object.entries(discussionLastComments)
+      const { discussions } = rootGetters['content/current'];
+      Object.entries(getters.currentFileDiscussionLastComments)
         .sort(([, lastComment1], [, lastComment2]) =>
           lastComment1.created - lastComment2.created)
         .forEach(([discussionId]) => {
@@ -140,12 +138,14 @@ export default {
         commit('setNewDiscussion', { ...selection, text });
       }
     },
-    cleanCurrentFile(
-      { getters, rootGetters, commit, dispatch },
-      { filterComment, filterDiscussion } = {},
-    ) {
-      const discussions = rootGetters['content/current'].discussions;
-      const comments = rootGetters['content/current'].comments;
+    cleanCurrentFile({
+      getters,
+      rootGetters,
+      commit,
+      dispatch,
+    }, { filterComment, filterDiscussion } = {}) {
+      const { discussions } = rootGetters['content/current'];
+      const { comments } = rootGetters['content/current'];
       const patch = {
         discussions: {},
         comments: {},
@@ -158,7 +158,7 @@ export default {
         }
       });
 
-      const nextDiscussionId = getters.nextDiscussionId;
+      const { nextDiscussionId } = getters;
       dispatch('content/patchCurrent', patch, { root: true });
       if (!getters.currentDiscussion) {
         // Keep the gutter open

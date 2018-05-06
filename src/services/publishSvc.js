@@ -39,7 +39,7 @@ const ensureDate = (value, defaultValue) => {
 };
 
 function publish(publishLocation) {
-  const fileId = publishLocation.fileId;
+  const { fileId } = publishLocation;
   const template = store.getters['data/allTemplates'][publishLocation.templateId];
   return exportSvc.applyTemplate(fileId, template)
     .then(html => localDbSvc.loadItem(`${fileId}/content`)
@@ -107,7 +107,8 @@ function publishFile(fileId) {
       err => localDbSvc.unloadContents()
         .then(() => {
           throw err;
-        }));
+        }),
+    );
 }
 
 function requestPublish() {
@@ -124,7 +125,7 @@ function requestPublish() {
         clearInterval(intervalId);
         if (!hasCurrentFilePublishLocations()) {
           // Cancel sync
-          reject('Publish not possible.');
+          reject(new Error('Publish not possible.'));
           return;
         }
         publishFile(store.getters['file/current'].id)
@@ -140,12 +141,14 @@ function createPublishLocation(publishLocation) {
   publishLocation.id = utils.uid();
   const currentFile = store.getters['file/current'];
   publishLocation.fileId = currentFile.id;
-  store.dispatch('queue/enqueue',
+  store.dispatch(
+    'queue/enqueue',
     () => publish(publishLocation)
       .then((publishLocationToStore) => {
         store.commit('publishLocation/setItem', publishLocationToStore);
         store.dispatch('notification/info', `A new publication location was added to "${currentFile.name}".`);
-      }));
+      }),
+  );
 }
 
 export default {

@@ -2,10 +2,12 @@ const request = require('request');
 const AWS = require('aws-sdk');
 const verifier = require('google-id-token-verifier');
 
-const BUCKET_NAME = process.env.USER_BUCKET_NAME || 'stackedit-users';
-const PAYPAL_URI = process.env.PAYPAL_URI || 'https://www.paypal.com/cgi-bin/webscr';
-const PAYPAL_RECEIVER_EMAIL = process.env.PAYPAL_RECEIVER_EMAIL || 'stackedit.sales@gmail.com';
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const {
+  USER_BUCKET_NAME = 'stackedit-users',
+  PAYPAL_URI = 'https://www.paypal.com/cgi-bin/webscr',
+  PAYPAL_RECEIVER_EMAIL = 'stackedit.sales@gmail.com',
+  GOOGLE_CLIENT_ID,
+} = process.env;
 const s3Client = new AWS.S3();
 
 const cb = (resolve, reject) => (err, res) => {
@@ -18,21 +20,22 @@ const cb = (resolve, reject) => (err, res) => {
 
 exports.getUser = id => new Promise((resolve, reject) => {
   s3Client.getObject({
-    Bucket: BUCKET_NAME,
+    Bucket: USER_BUCKET_NAME,
     Key: id,
   }, cb(resolve, reject));
 })
   .then(
-  res => JSON.parse(`${res.Body}`),
-  (err) => {
-    if (err.code !== 'NoSuchKey') {
-      throw err;
-    }
-  });
+    res => JSON.parse(`${res.Body}`),
+    (err) => {
+      if (err.code !== 'NoSuchKey') {
+        throw err;
+      }
+    },
+  );
 
 exports.putUser = (id, user) => new Promise((resolve, reject) => {
   s3Client.putObject({
-    Bucket: BUCKET_NAME,
+    Bucket: USER_BUCKET_NAME,
     Key: id,
     Body: JSON.stringify(user),
   }, cb(resolve, reject));
@@ -40,20 +43,24 @@ exports.putUser = (id, user) => new Promise((resolve, reject) => {
 
 exports.removeUser = id => new Promise((resolve, reject) => {
   s3Client.deleteObject({
-    Bucket: BUCKET_NAME,
+    Bucket: USER_BUCKET_NAME,
     Key: id,
   }, cb(resolve, reject));
 });
 
-exports.getUserFromToken = idToken => new Promise(
-  (resolve, reject) => verifier.verify(idToken, GOOGLE_CLIENT_ID, cb(resolve, reject)))
+exports.getUserFromToken = idToken => new Promise((resolve, reject) => verifier
+  .verify(idToken, GOOGLE_CLIENT_ID, cb(resolve, reject)))
   .then(tokenInfo => exports.getUser(tokenInfo.sub));
 
 exports.userInfo = (req, res) => exports.getUserFromToken(req.query.idToken)
-  .then(user => res.send(Object.assign({
-    sponsorUntil: 0,
-  }, user)),
-  err => res.status(400).send(err ? err.message || err.toString() : 'invalid_token'));
+  .then(
+    user => res.send(Object.assign({
+      sponsorUntil: 0,
+    }, user)),
+    err => res
+      .status(400)
+      .send(err ? err.message || err.toString() : 'invalid_token'),
+  );
 
 exports.paypalIpn = (req, res, next) => Promise.resolve()
   .then(() => {

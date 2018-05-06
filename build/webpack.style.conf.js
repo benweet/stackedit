@@ -14,7 +14,7 @@ function resolve (dir) {
 
 module.exports = {
   entry: {
-    style: './src/components/style.scss'
+    style: './src/styles/'
   },
   module: {
     rules: [{

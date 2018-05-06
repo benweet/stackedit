@@ -24,7 +24,7 @@ export default {
       'config',
     ]),
     showSponsorButton() {
-      const type = this.$store.getters['modal/config'].type;
+      const { type } = this.$store.getters['modal/config'];
       return !this.$store.getters.isSponsor && type !== 'sponsor' && type !== 'signInForSponsorship';
     },
   },
@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../common/variables.scss';
+@import '../../../styles/variables.scss';
 
 .modal__close-button {
   position: absolute;

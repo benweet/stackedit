@@ -65,8 +65,10 @@ function syncDiscussionMarkers(content, writeOffsets) {
   });
 
   if (writeOffsets && newDiscussion) {
-    store.commit('discussion/patchNewDiscussion',
-      discussions[store.state.discussion.newDiscussionId]);
+    store.commit(
+      'discussion/patchNewDiscussion',
+      discussions[store.state.discussion.newDiscussionId],
+    );
   }
 }
 
@@ -115,7 +117,7 @@ function reversePatches(patches) {
 export default {
   createClEditor(editorElt) {
     this.clEditor = cledit(editorElt, editorElt.parentNode, true);
-    clEditor = this.clEditor;
+    ({ clEditor } = this);
     clEditor.on('contentChanged', (text) => {
       const oldContent = store.getters['content/current'];
       const newContent = {
@@ -175,7 +177,7 @@ export default {
     }
   },
   getTrimmedSelection() {
-    const selectionMgr = clEditor.selectionMgr;
+    const { selectionMgr } = clEditor;
     let start = Math.min(selectionMgr.selectionStart, selectionMgr.selectionEnd);
     let end = Math.max(selectionMgr.selectionStart, selectionMgr.selectionEnd);
     const text = clEditor.getContent();
@@ -217,7 +219,10 @@ export default {
         editorClassAppliers = {};
         Object.keys(discussions).forEach((discussionId) => {
           const classApplier = oldEditorClassAppliers[discussionId] || new EditorClassApplier(
-            classGetter('editor', discussionId), offsetGetter(discussionId), { discussionId });
+            classGetter('editor', discussionId),
+            offsetGetter(discussionId),
+            { discussionId },
+          );
           editorClassAppliers[discussionId] = classApplier;
         });
         // Clean unused class appliers
@@ -232,7 +237,10 @@ export default {
         previewClassAppliers = {};
         Object.keys(discussions).forEach((discussionId) => {
           const classApplier = oldPreviewClassAppliers[discussionId] || new PreviewClassApplier(
-            classGetter('preview', discussionId), offsetGetter(discussionId), { discussionId });
+            classGetter('preview', discussionId),
+            offsetGetter(discussionId),
+            { discussionId },
+          );
           previewClassAppliers[discussionId] = classApplier;
         });
         // Clean unused class appliers

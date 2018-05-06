@@ -7,10 +7,10 @@ editorSvc.$on('inited', () => {
     if (!elt || elt === editorSvc.previewElt) {
       return offset;
     }
-    let previousSibling = elt.previousSibling;
+    let { previousSibling } = elt;
     while (previousSibling) {
       offset += previousSibling.textContent.length;
-      previousSibling = previousSibling.previousSibling;
+      ({ previousSibling } = previousSibling);
     }
     return offset + getPreviewOffset(elt.parentNode);
   };

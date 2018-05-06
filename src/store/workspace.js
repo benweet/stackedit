@@ -69,8 +69,7 @@ export default {
           return getters.mainWorkspaceToken;
       }
     },
-    userId: (state, getters, rootState, rootGetters) => {
-      const loginToken = getters.loginToken;
+    userId: (state, { loginToken }, rootState, rootGetters) => {
       if (!loginToken) {
         return null;
       }

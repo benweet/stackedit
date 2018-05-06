@@ -38,7 +38,7 @@ module.getters = {
     return state.itemMap[`${rootGetters['file/current'].id}/content`] || empty();
   },
   currentChangeTrigger: (state, getters) => {
-    const current = getters.current;
+    const { current } = getters;
     return utils.serializeObject([
       current.id,
       current.text,
@@ -55,7 +55,7 @@ module.getters = {
 module.actions = {
   ...module.actions,
   patchCurrent({ state, getters, commit }, value) {
-    const id = getters.current.id;
+    const { id } = getters.current;
     if (id && !state.revisionContent) {
       commit('patchItem', {
         ...value,
@@ -76,8 +76,13 @@ module.actions = {
       });
     }
   },
-  restoreRevision({ state, getters, commit, dispatch }) {
-    const revisionContent = state.revisionContent;
+  restoreRevision({
+    state,
+    getters,
+    commit,
+    dispatch,
+  }) {
+    const { revisionContent } = state;
     if (revisionContent) {
       dispatch('modal/fileRestoration', null, { root: true })
         .then(() => {
@@ -86,8 +91,8 @@ module.actions = {
           const currentContent = utils.deepCopy(getters.current);
           if (currentContent) {
             // Restore text and move discussions
-            const diffs = diffMatchPatch.diff_main(
-              currentContent.text, revisionContent.originalText);
+            const diffs = diffMatchPatch
+              .diff_main(currentContent.text, revisionContent.originalText);
             diffMatchPatch.diff_cleanupSemantic(diffs);
             Object.entries(currentContent.discussions).forEach(([, discussion]) => {
               const adjustOffset = (offsetName) => {

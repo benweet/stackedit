@@ -63,7 +63,7 @@ function StyleAttribute(name, unit, defaultValue, wrap = identity) {
   this.name = name;
   this.setStart = (animation) => {
     let value = parseFloat(animation.elt.style[name]);
-    if (isNaN(value)) {
+    if (Number.isNaN(value)) {
       value = animation.$current[name] || defaultValue;
     }
     animation.$start[name] = value;
@@ -157,7 +157,7 @@ class Animation {
     const onTransitionEnd = (evt) => {
       if (evt.target === this.elt) {
         this.elt.removeEventListener(transitionEndEvent, onTransitionEnd);
-        const endCb = this.$end.endCb;
+        const { endCb } = this.$end;
         this.$end.endCb = undefined;
         if (endCb) {
           endCb();

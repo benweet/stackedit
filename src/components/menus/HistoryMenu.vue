@@ -113,13 +113,15 @@ export default {
       let revisionContentPromise = revisionContentPromises[revision.id];
       if (!revisionContentPromise) {
         revisionContentPromise = new Promise((resolve, reject) => {
-          const syncToken = this.syncToken;
+          const { syncToken } = this;
           const currentFile = this.$store.getters['file/current'];
-          this.$store.dispatch('queue/enqueue',
+          this.$store.dispatch(
+            'queue/enqueue',
             () => Promise.resolve()
-              .then(() => this.workspaceProvider.getRevisionContent(
-                syncToken, currentFile.id, revision.id))
-              .then(resolve, reject));
+              .then(() => this.workspaceProvider
+                .getRevisionContent(syncToken, currentFile.id, revision.id))
+              .then(resolve, reject),
+          );
         });
         revisionContentPromises[revision.id] = revisionContentPromise;
         revisionContentPromise.catch(() => {
@@ -130,7 +132,7 @@ export default {
         this.$store.dispatch('content/setRevisionContent', revisionContent));
     },
     refreshHighlighters() {
-      const revisionContent = this.$store.state.content.revisionContent;
+      const { revisionContent } = this.$store.state.content;
       editorClassAppliers.forEach(editorClassApplier => editorClassApplier.stop());
       editorClassAppliers = [];
       previewClassAppliers.forEach(previewClassApplier => previewClassApplier.stop());
@@ -145,9 +147,13 @@ export default {
               end: offset + text.length,
             };
             editorClassAppliers.push(new EditorClassApplier(
-              [`revision-diff--${utils.uid()}`, ...classes], offsets));
+              [`revision-diff--${utils.uid()}`, ...classes],
+              offsets,
+            ));
             previewClassAppliers.push(new PreviewClassApplier(
-              [`revision-diff--${utils.uid()}`, ...classes], offsets));
+              [`revision-diff--${utils.uid()}`, ...classes],
+              offsets,
+            ));
           }
           offset += text.length;
         });
@@ -164,8 +170,8 @@ export default {
       () => this.refreshTrigger,
       () => {
         this.allRevisions = [];
-        const id = this.$store.getters['file/current'].id;
-        const syncToken = this.syncToken;
+        const { id } = this.$store.getters['file/current'];
+        const { syncToken } = this;
         if (id && syncToken) {
           if (id !== cachedFileId) {
             this.setRevisionContent();
@@ -173,10 +179,12 @@ export default {
             revisionContentPromises = {};
             const currentFile = this.$store.getters['file/current'];
             revisionsPromise = new Promise((resolve, reject) => {
-              this.$store.dispatch('queue/enqueue',
+              this.$store.dispatch(
+                'queue/enqueue',
                 () => Promise.resolve()
                   .then(() => this.workspaceProvider.listRevisions(syncToken, currentFile.id))
-                  .then(resolve, reject));
+                  .then(resolve, reject),
+              );
             })
               .catch(() => {
                 cachedFileId = null;
@@ -191,16 +199,18 @@ export default {
             });
           }
         }
-      }, { immediate: true });
+      }, { immediate: true },
+    );
 
     const loadOne = () => {
       if (!this.destroyed) {
-        this.$store.dispatch('queue/enqueue',
+        this.$store.dispatch(
+          'queue/enqueue',
           () => {
             let loadPromise;
             this.revisions.some((revision) => {
               if (!revision.created) {
-                const syncToken = this.syncToken;
+                const { syncToken } = this;
                 const currentFile = this.$store.getters['file/current'];
                 loadPromise = this.workspaceProvider
                   .loadRevision(syncToken, currentFile.id, revision)
@@ -209,19 +219,22 @@ export default {
               return loadPromise;
             });
             return loadPromise;
-          });
+          },
+        );
       }
     };
 
     this.$watch(
       () => this.revisions,
       () => loadOne(),
-      { immediate: true });
+      { immediate: true },
+    );
 
     // Watch diffs changes
     this.$watch(
       () => this.$store.state.content.revisionContent,
-      () => this.refreshHighlighters());
+      () => this.refreshHighlighters(),
+    );
 
     // Close revision
     this.onKeyup = (evt) => {
@@ -246,7 +259,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../common/variables.scss';
+@import '../../styles/variables.scss';
 
 .history {
   padding: 5px 5px 50px;

@@ -6,8 +6,8 @@ function SectionDimension(startOffset, endOffset) {
 
 function dimensionNormalizer(dimensionName) {
   return (editorSvc) => {
-    const dimensionList = editorSvc.previewCtx.sectionDescList.map(
-      sectionDesc => sectionDesc[dimensionName]);
+    const dimensionList = editorSvc.previewCtx.sectionDescList
+      .map(sectionDesc => sectionDesc[dimensionName]);
     let dimension;
     let i;
     let j;
@@ -68,7 +68,9 @@ function measureSectionDimensions(editorSvc) {
       ? newPreviewSectionOffset
       : previewSectionOffset;
     sectionDesc.previewDimension = new SectionDimension(
-      previewSectionOffset, newPreviewSectionOffset);
+      previewSectionOffset,
+      newPreviewSectionOffset,
+    );
     previewSectionOffset = newPreviewSectionOffset;
 
     // Measure TOC section
@@ -88,11 +90,17 @@ function measureSectionDimensions(editorSvc) {
   sectionDesc = editorSvc.previewCtx.sectionDescList[i - 1];
   if (sectionDesc) {
     sectionDesc.editorDimension = new SectionDimension(
-      editorSectionOffset, editorSvc.editorElt.scrollHeight);
+      editorSectionOffset,
+      editorSvc.editorElt.scrollHeight,
+    );
     sectionDesc.previewDimension = new SectionDimension(
-      previewSectionOffset, editorSvc.previewElt.scrollHeight);
+      previewSectionOffset,
+      editorSvc.previewElt.scrollHeight,
+    );
     sectionDesc.tocDimension = new SectionDimension(
-      tocSectionOffset, editorSvc.tocElt.scrollHeight);
+      tocSectionOffset,
+      editorSvc.tocElt.scrollHeight,
+    );
   }
 
   normalizeEditorDimensions(editorSvc);

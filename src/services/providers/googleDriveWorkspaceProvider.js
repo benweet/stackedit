@@ -25,8 +25,8 @@ export default new Provider({
       folderId,
     });
 
-    const makeWorkspaceId = folderId => folderId && utils.makeWorkspaceId(
-      makeWorkspaceParams(folderId));
+    const makeWorkspaceId = folderId => folderId
+      && utils.makeWorkspaceId(makeWorkspaceParams(folderId));
 
     const getWorkspace = folderId =>
       store.getters['data/sanitizedWorkspaces'][makeWorkspaceId(folderId)];
@@ -100,7 +100,7 @@ export default new Provider({
             sub: token.sub,
             name: folder.name,
             providerId: this.id,
-            url: location.href,
+            url: window.location.href,
             folderId: folder.id,
             teamDriveId: folder.teamDriveId,
             dataFolderId: properties.dataFolderId,
@@ -141,7 +141,7 @@ export default new Provider({
             ...folder,
             appProperties: {},
           })
-          .then(() => folder.id)))
+            .then(() => folder.id)))
         // If workspace does not exist, initialize one
         .then(folderId => getWorkspace(folderId) || googleHelper.getFile(token, folderId)
           .then((folder) => {
@@ -157,11 +157,11 @@ export default new Provider({
         .then((workspace) => {
           // Fix the URL hash
           utils.setQueryParams(makeWorkspaceParams(workspace.folderId));
-          if (workspace.url !== location.href) {
+          if (workspace.url !== window.location.href) {
             store.dispatch('data/patchWorkspaces', {
               [workspace.id]: {
                 ...workspace,
-                url: location.href,
+                url: window.location.href,
               },
             });
           }
@@ -233,7 +233,7 @@ export default new Provider({
           parentIds[syncData.id] = id;
         });
         result.changes.forEach((change) => {
-          const id = ((change.file || {}).appProperties || {}).id;
+          const { id } = (change.file || {}).appProperties || {};
           if (id) {
             parentIds[change.fileId] = id;
           }
@@ -253,7 +253,7 @@ export default new Provider({
           let contentChange;
           if (change.file) {
             // Ignore changes in files that are not in the workspace
-            const appProperties = change.file.appProperties;
+            const { appProperties } = change.file;
             if (!appProperties || appProperties.folderId !== workspace.folderId
             ) {
               return;

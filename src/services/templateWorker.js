@@ -61,6 +61,7 @@ const whiteList = {
   close: 1,
 };
 
+/* eslint-disable no-restricted-globals */
 let global = self;
 while (global !== Object.prototype) {
   Object.getOwnPropertyNames(global).forEach((prop) => { // eslint-disable-line no-loop-func

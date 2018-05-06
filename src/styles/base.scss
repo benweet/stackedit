@@ -1,9 +1,5 @@
-@import '../../../node_modules/normalize-scss/sass/normalize';
-@import '../../node_modules/katex/dist/katex.css';
-@import './variables.scss';
-@import './fonts.scss';
-@import './prism';
-@import './mermaid';
+@import '../../node_modules/normalize-scss/sass/normalize';
+@import './variables';
 
 @include normalize();
 

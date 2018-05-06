@@ -43,7 +43,10 @@ export default modalTemplate({
         }),
         sponsorSvc.getToken(),
         exportSvc.applyTemplate(
-          currentFile.id, this.allTemplates[this.selectedTemplate], true),
+          currentFile.id,
+          this.allTemplates[this.selectedTemplate],
+          true,
+        ),
       ])
         .then(([sponsorToken, token, html]) => networkSvc.request({
           method: 'POST',
@@ -57,15 +60,15 @@ export default modalTemplate({
           blob: true,
           timeout: 60000,
         })
-        .then((res) => {
-          FileSaver.saveAs(res.body, `${currentFile.name}.pdf`);
-        }, (err) => {
-          if (err.status !== 401) {
-            throw err;
-          }
-          this.$store.dispatch('modal/sponsorOnly')
-            .catch(() => { /* Cancel */ });
-        }))
+          .then((res) => {
+            FileSaver.saveAs(res.body, `${currentFile.name}.pdf`);
+          }, (err) => {
+            if (err.status !== 401) {
+              throw err;
+            }
+            this.$store.dispatch('modal/sponsorOnly')
+              .catch(() => { /* Cancel */ });
+          }))
         .catch((err) => {
           console.error(err); // eslint-disable-line no-console
           this.$store.dispatch('notification/error', err);

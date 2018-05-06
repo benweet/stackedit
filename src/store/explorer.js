@@ -174,7 +174,12 @@ export default {
     },
   },
   actions: {
-    openNode({ state, getters, commit, dispatch }, id) {
+    openNode({
+      state,
+      getters,
+      commit,
+      dispatch,
+    }, id) {
       const node = getters.nodeMap[id];
       if (node) {
         if (node.isFolder && !state.openNodes[id]) {
@@ -186,7 +191,7 @@ export default {
     openDragTarget: debounceAction(({ state, dispatch }) => {
       dispatch('openNode', state.dragTargetId);
     }, 1000),
-    setDragTarget({ state, getters, commit, dispatch }, id) {
+    setDragTarget({ commit, dispatch }, id) {
       commit('setDragTargetId', id);
       dispatch('openDragTarget');
     },

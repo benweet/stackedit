@@ -116,7 +116,7 @@ export default {
         .catch(() => { /* Cancel */ });
     },
     print() {
-      print();
+      window.print();
     },
   },
 };

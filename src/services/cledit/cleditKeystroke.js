@@ -165,7 +165,10 @@ cledit.defaultKeystrokes = [
     // Custom jump behavior
     const textContent = editor.getContent();
     const offset = getNextWordOffset(
-      textContent, editor.selectionMgr.selectionEnd, evt.which === 37);
+      textContent,
+      editor.selectionMgr.selectionEnd,
+      evt.which === 37,
+    );
     if (evt.shiftKey) {
       // rebuild the state completely
       const min = Math.min(editor.selectionMgr.selectionStart, offset);

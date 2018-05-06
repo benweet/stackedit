@@ -86,9 +86,11 @@ export default {
     const clEditor = cledit(preElt, scrollerElt, true);
     clEditor.init({
       sectionHighlighter: section => Prism.highlight(
-        section.text, editorSvc.prismGrammars[section.data]),
-      sectionParser: text => markdownConversionSvc.parseSections(
-        editorSvc.converter, text).sections,
+        section.text,
+        editorSvc.prismGrammars[section.data],
+      ),
+      sectionParser: text => markdownConversionSvc
+        .parseSections(editorSvc.converter, text).sections,
       content: this.$store.state.discussion.newCommentText,
       selectionStart: this.$store.state.discussion.newCommentSelection.start,
       selectionEnd: this.$store.state.discussion.newCommentSelection.end,
@@ -114,14 +116,14 @@ export default {
           clEditor.focus();
         }
       }),
-      { immediate: true });
+      { immediate: true },
+    );
 
     if (isSticky) {
       let scrollerMirrorElt;
       const getScrollerMirrorElt = () => {
         if (!scrollerMirrorElt) {
-          scrollerMirrorElt = document.querySelector(
-            '.comment-list .comment--new .comment__text-inner');
+          scrollerMirrorElt = document.querySelector('.comment-list .comment--new .comment__text-inner');
         }
         return scrollerMirrorElt || { scrollTop: 0 };
       };
@@ -150,7 +152,7 @@ export default {
       );
       this.$watch(
         () => this.$store.state.discussion.newCommentText,
-          newCommentText => clEditor.setContent(newCommentText),
+        newCommentText => clEditor.setContent(newCommentText),
       );
     }
   },

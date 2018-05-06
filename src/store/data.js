@@ -10,7 +10,12 @@ import styledHtmlTemplate from '../data/styledHtmlTemplate.html';
 import styledHtmlWithTocTemplate from '../data/styledHtmlWithTocTemplate.html';
 import jekyllSiteTemplate from '../data/jekyllSiteTemplate.html';
 
-const itemTemplate = (id, data = {}) => ({ id, type: 'data', data, hash: 0 });
+const itemTemplate = (id, data = {}) => ({
+  id,
+  type: 'data',
+  data,
+  hash: 0,
+});
 
 const empty = (id) => {
   switch (id) {
@@ -226,7 +231,7 @@ export default {
     toggleStatusBar: layoutSettingsToggler('showStatusBar'),
     toggleScrollSync: layoutSettingsToggler('scrollSync'),
     toggleFocusMode: layoutSettingsToggler('focusMode'),
-    toggleSideBar: ({ commit, getters, dispatch, rootGetters }, value) => {
+    toggleSideBar: ({ getters, dispatch, rootGetters }, value) => {
       // Reset side bar
       dispatch('setSideBarPanel');
 
@@ -239,7 +244,7 @@ export default {
       }
       dispatch('patchLayoutSettings', patch);
     },
-    toggleExplorer: ({ commit, getters, dispatch, rootGetters }, value) => {
+    toggleExplorer: ({ getters, dispatch, rootGetters }, value) => {
       // Close side bar if not enough space
       const patch = {
         showExplorer: value === undefined ? !getters.layoutSettings.showExplorer : value,
@@ -263,7 +268,7 @@ export default {
       commit('setItem', itemTemplate('templates', dataToCommit));
     },
     setLastCreated: setter('lastCreated'),
-    setLastOpenedId: ({ getters, commit, dispatch, rootState }, fileId) => {
+    setLastOpenedId: ({ getters, commit, rootState }, fileId) => {
       const lastOpened = { ...getters.lastOpened };
       lastOpened[fileId] = Date.now();
       // Remove entries that don't exist anymore

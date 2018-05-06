@@ -224,7 +224,9 @@ export default {
       () => {
         this.title = '';
         this.editTitle(false);
-      }, { immediate: true });
+      },
+      { immediate: true },
+    );
   },
   mounted() {
     this.titleFakeElt = this.$el.querySelector('.navigation-bar__title--fake');
@@ -235,7 +237,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'common/variables.scss';
+@import '../styles/variables.scss';
 
 .navigation-bar {
   position: absolute;

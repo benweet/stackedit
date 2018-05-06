@@ -95,8 +95,8 @@ export default {
     reset() {
       return this.$store.dispatch('modal/reset')
         .then(() => {
-          location.href = '#reset=true';
-          location.reload();
+          window.location.href = '#reset=true';
+          window.location.reload();
         });
     },
     about() {

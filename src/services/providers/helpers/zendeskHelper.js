@@ -12,11 +12,14 @@ const request = (token, options) => networkSvc.request({
 export default {
   startOauth2(subdomain, clientId, sub = null, silent = false) {
     return networkSvc.startOauth2(
-      `https://${subdomain}.zendesk.com/oauth/authorizations/new`, {
+      `https://${subdomain}.zendesk.com/oauth/authorizations/new`,
+      {
         client_id: clientId,
         response_type: 'token',
         scope: 'read hc:write',
-      }, silent)
+      },
+      silent,
+    )
       // Call the user info endpoint
       .then(({ accessToken }) => request({ accessToken }, {
         url: `https://${subdomain}.zendesk.com/api/v2/users/me.json`,

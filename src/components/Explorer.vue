@@ -67,7 +67,8 @@ export default {
         this.$store.dispatch('explorer/openNode', currentFileId);
       }, {
         immediate: true,
-      });
+      },
+    );
   },
 };
 </script>

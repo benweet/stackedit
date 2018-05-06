@@ -51,7 +51,8 @@ export default {
       this.$store.dispatch('modal/commentDeletion')
         .then(
           () => this.$store.dispatch('discussion/cleanCurrentFile', { filterComment: this.comment }),
-          () => { /* Cancel */ });
+          () => { /* Cancel */ },
+        );
     },
   },
   mounted() {
@@ -63,8 +64,7 @@ export default {
       let scrollerMirrorElt;
       const getScrollerMirrorElt = () => {
         if (!scrollerMirrorElt) {
-          scrollerMirrorElt = document.querySelector(
-            `.comment-list .comment--${commentId} .comment__text-inner`);
+          scrollerMirrorElt = document.querySelector(`.comment-list .comment--${commentId} .comment__text-inner`);
         }
         return scrollerMirrorElt || { scrollTop: 0 };
       };

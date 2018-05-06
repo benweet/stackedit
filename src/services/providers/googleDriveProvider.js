@@ -101,8 +101,10 @@ export default new Provider({
                 return this.makeLocation(token, null, googleHelper.driveActionFolder.id);
               });
           case 'open':
-            return store.dispatch('queue/enqueue',
-              () => this.openFiles(token, googleHelper.driveActionFiles));
+            return store.dispatch(
+              'queue/enqueue',
+              () => this.openFiles(token, googleHelper.driveActionFiles),
+            );
           default:
             return null;
         }
@@ -171,7 +173,7 @@ export default new Provider({
       };
       return this.downloadContent(token, syncLocation)
         .then(content => fileSvc.createFile({
-          name,
+          name: driveFile.name,
           parentId: store.getters['file/current'].parentId,
           text: content.text,
           properties: content.properties,

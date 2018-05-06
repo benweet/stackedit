@@ -24,10 +24,13 @@ const request = (token, options, args) => networkSvc.request({
 export default {
   startOauth2(fullAccess, sub = null, silent = false) {
     return networkSvc.startOauth2(
-      'https://www.dropbox.com/oauth2/authorize', {
+      'https://www.dropbox.com/oauth2/authorize',
+      {
         client_id: getAppKey(fullAccess),
         response_type: 'token',
-      }, silent)
+      },
+      silent,
+    )
       // Call the user info endpoint
       .then(({ accessToken }) => request({ accessToken }, {
         method: 'POST',
@@ -56,7 +59,7 @@ export default {
     }
     return networkSvc.loadScript('https://www.dropbox.com/static/api/2/dropins.js')
       .then(() => {
-        Dropbox = window.Dropbox;
+        ({ Dropbox } = window);
       });
   },
   addAccount(fullAccess = false) {

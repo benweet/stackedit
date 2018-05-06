@@ -20,7 +20,11 @@ export default new Provider({
   },
   downloadContent(token, syncLocation) {
     return githubHelper.downloadFile(
-      token, syncLocation.owner, syncLocation.repo, syncLocation.branch, syncLocation.path,
+      token,
+      syncLocation.owner,
+      syncLocation.repo,
+      syncLocation.branch,
+      syncLocation.path,
     )
       .then(({ sha, content }) => {
         savedSha[syncLocation.id] = sha;

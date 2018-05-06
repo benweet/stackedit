@@ -13,7 +13,7 @@ const driveAppDataScopes = ['https://www.googleapis.com/auth/drive.appdata'];
 const getDriveScopes = token => [token.driveFullAccess
   ? 'https://www.googleapis.com/auth/drive'
   : 'https://www.googleapis.com/auth/drive.file',
-  'https://www.googleapis.com/auth/drive.install'];
+'https://www.googleapis.com/auth/drive.install'];
 const bloggerScopes = ['https://www.googleapis.com/auth/blogger'];
 const photosScopes = ['https://www.googleapis.com/auth/photos'];
 
@@ -52,7 +52,7 @@ export default {
       },
     }, true)
       .catch((err) => {
-        const reason = ((((err.body || {}).error || {}).errors || [])[0] || {}).reason;
+        const { reason } = (((err.body || {}).error || {}).errors || [])[0] || {};
         if (reason === 'authError') {
           // Mark the token as revoked and get a new one
           store.dispatch('data/setGoogleToken', {
@@ -116,7 +116,8 @@ export default {
           multipartRequestBody += closeDelimiter;
           options.url = options.url.replace(
             'https://www.googleapis.com/',
-            'https://www.googleapis.com/upload/');
+            'https://www.googleapis.com/upload/',
+          );
           return this.request(refreshedToken, {
             ...options,
             params: {
@@ -212,7 +213,8 @@ export default {
   },
   startOauth2(scopes, sub = null, silent = false) {
     return networkSvc.startOauth2(
-      'https://accounts.google.com/o/oauth2/v2/auth', {
+      'https://accounts.google.com/o/oauth2/v2/auth',
+      {
         client_id: clientId,
         response_type: 'token id_token',
         scope: ['openid', ...scopes].join(' '),
@@ -220,7 +222,9 @@ export default {
         login_hint: sub,
         prompt: silent ? 'none' : null,
         nonce: utils.uid(),
-      }, silent)
+      },
+      silent,
+    )
       // Call the token info endpoint
       .then(data => networkSvc.request({
         method: 'POST',
@@ -300,7 +304,7 @@ export default {
         }));
   },
   refreshToken(token, scopes = []) {
-    const sub = token.sub;
+    const { sub } = token;
     const lastToken = store.getters['data/googleTokens'][sub];
     const mergedScopes = [...new Set([
       ...scopes,
@@ -339,16 +343,16 @@ export default {
       return Promise.resolve();
     }
     return networkSvc.loadScript('https://apis.google.com/js/api.js')
-      .then(() => Promise.all(libraries.map(
-        library => new Promise((resolve, reject) => window.gapi.load(library, {
+      .then(() => Promise.all(libraries
+        .map(library => new Promise((resolve, reject) => window.gapi.load(library, {
           callback: resolve,
           onerror: reject,
           timeout: 30000,
           ontimeout: reject,
         })))))
       .then(() => {
-        gapi = window.gapi;
-        google = window.google;
+        ({ gapi } = window);
+        ({ google } = window);
       });
   },
   getSponsorship(token) {
@@ -455,8 +459,8 @@ export default {
           fields: 'id,name,mimeType,appProperties,teamDriveId',
           supportsTeamDrives: true,
         },
-      })
-      .then(res => res.body));
+      }))
+      .then(res => res.body);
   },
   downloadFile(token, id) {
     return this.refreshToken(token, getDriveScopes(token))
@@ -484,16 +488,25 @@ export default {
   },
   downloadFileRevision(token, fileId, revisionId) {
     return this.refreshToken(token, getDriveScopes(token))
-      .then(refreshedToken => this.downloadFileRevisionInternal(
-        refreshedToken, fileId, revisionId));
+      .then(refreshedToken => this
+        .downloadFileRevisionInternal(refreshedToken, fileId, revisionId));
   },
   downloadAppDataFileRevision(token, fileId, revisionId) {
     return this.refreshToken(token, driveAppDataScopes)
-      .then(refreshedToken => this.downloadFileRevisionInternal(
-        refreshedToken, fileId, revisionId));
+      .then(refreshedToken => this
+        .downloadFileRevisionInternal(refreshedToken, fileId, revisionId));
   },
   uploadBlogger(
-    token, blogUrl, blogId, postId, title, content, labels, isDraft, published, isPage,
+    token,
+    blogUrl,
+    blogId,
+    postId,
+    title,
+    content,
+    labels,
+    isDraft,
+    published,
+    isPage,
   ) {
     return this.refreshToken(token, bloggerScopes)
       .then(refreshedToken => Promise.resolve()

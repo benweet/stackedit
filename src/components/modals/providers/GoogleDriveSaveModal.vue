@@ -49,12 +49,16 @@ export default modalTemplate({
             this.$store.dispatch('data/patchLocalSettings', {
               googleDriveFolderId: folders[0].id,
             });
-          }));
+          }),
+      );
     },
     resolve() {
       // Return new location
       const location = googleDriveProvider.makeLocation(
-        this.config.token, this.fileId, this.folderId);
+        this.config.token,
+        this.fileId,
+        this.folderId,
+      );
       this.config.resolve(location);
     },
   },

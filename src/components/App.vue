@@ -10,6 +10,9 @@
 
 <script>
 import Vue from 'vue';
+import '../styles';
+import '../styles/markdownHighlighting.scss';
+import '../styles/app.scss';
 import Layout from './Layout';
 import Modal from './Modal';
 import Notification from './Notification';
@@ -26,7 +29,7 @@ import store from '../store';
 Vue.directive('focus', {
   inserted(el) {
     el.focus();
-    const value = el.value;
+    const { value } = el;
     if (value && el.setSelectionRange) {
       el.setSelectionRange(0, value.length);
     }
@@ -106,7 +109,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-@import 'common/app';
-</style>

@@ -42,20 +42,20 @@ export default {
   },
   methods: {
     resolve() {
-      let url = this.config.url;
+      let { url } = this.config;
       const size = parseInt(this.size, 10);
-      if (!isNaN(size)) {
+      if (!Number.isNaN(size)) {
         url = makeThumbnail(url, size);
       }
       if (this.title) {
         url += ` "${this.title}"`;
       }
-      const callback = this.config.callback;
+      const { callback } = this.config;
       this.config.resolve();
       callback(url);
     },
     reject() {
-      const callback = this.config.callback;
+      const { callback } = this.config;
       this.config.reject();
       callback(null);
     },

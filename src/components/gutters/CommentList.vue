@@ -107,10 +107,13 @@ export default {
               this.currentDiscussionLastCommentId
                 && this.$el.querySelector(`.comment--${this.currentDiscussionLastCommentId}`),
               this.$el.querySelector('.comment--new'),
-              true);
+              true,
+            );
           } else {
-            tops[discussionId] = getTop(discussion,
-              this.$el.querySelector(`.comment--discussion-${discussionId}`));
+            tops[discussionId] = getTop(
+              discussion,
+              this.$el.querySelector(`.comment--discussion-${discussionId}`),
+            );
           }
         });
       this.tops = tops;
@@ -120,7 +123,8 @@ export default {
     this.$watch(
       () => this.updateTopsTrigger,
       () => this.updateTops(),
-      { immediate: true });
+      { immediate: true },
+    );
 
     const layoutSettings = this.$store.getters['data/layoutSettings'];
     this.scrollerElt = layoutSettings.showEditor
@@ -161,7 +165,8 @@ export default {
     this.$watch(
       () => this.updateStickyTrigger,
       () => this.updateSticky(),
-      { immediate: true });
+      { immediate: true },
+    );
 
     // Move preview discussions once previewCtxWithDiffs has been calculated
     if (!editorSvc.previewCtxWithDiffs) {
@@ -178,7 +183,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../common/variables.scss';
+@import '../../styles/variables.scss';
 
 .comment-list {
   position: absolute;

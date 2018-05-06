@@ -48,13 +48,13 @@ export default modalTemplate({
       if (!this.url) {
         this.setError('url');
       } else {
-        const callback = this.config.callback;
+        const { callback } = this.config;
         this.config.resolve();
         callback(this.url);
       }
     },
     reject() {
-      const callback = this.config.callback;
+      const { callback } = this.config;
       this.config.reject();
       callback(null);
     },
@@ -62,7 +62,7 @@ export default modalTemplate({
       return googleHelper.addPhotosAccount();
     },
     openGooglePhotos(token) {
-      const callback = this.config.callback;
+      const { callback } = this.config;
       this.config.reject();
       googleHelper.openPicker(token, 'img')
         .then(res => res[0] && this.$store.dispatch('modal/open', {

@@ -69,7 +69,7 @@ const store = new Vuex.Store({
           if (item.parendId === 'trash') {
             itemPath = `.stackedit-trash/${item.name}`;
           } else {
-            let name = item.name;
+            let { name } = item;
             if (folderMap[item.id]) {
               name += '/';
             }
@@ -88,10 +88,9 @@ const store = new Vuex.Store({
       [...state.folder.items, ...state.file.items].forEach(item => getPath(item));
       return result;
     },
-    pathItems: (state, getters) => {
+    pathItems: (state, { allItemMap, itemPaths }) => {
       const result = {};
-      const allItemMap = getters.allItemMap;
-      Object.entries(getters.itemPaths).forEach(([id, path]) => {
+      Object.entries(itemPaths).forEach(([id, path]) => {
         const items = result[path] || [];
         items.push(allItemMap[id]);
         result[path] = items;
@@ -128,7 +127,7 @@ const store = new Vuex.Store({
       if (state.offline !== value) {
         commit('setOffline', value);
         if (state.offline) {
-          return Promise.reject('You are offline.');
+          return Promise.reject(new Error('You are offline.'));
         }
         dispatch('notification/info', 'You are back online!');
       }

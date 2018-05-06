@@ -105,10 +105,12 @@ export default {
         this.templates = templates;
         this.selectedId = this.config.selectedId;
         if (!templates[this.selectedId]) {
-          this.selectedId = Object.keys(templates)[0];
+          [this.selectedId] = Object.keys(templates);
         }
         this.isEditing = false;
-      }, { immediate: true });
+      },
+      { immediate: true },
+    );
     this.$watch('selectedId', (selectedId) => {
       const template = this.templates[selectedId];
       this.showHelpers = template.helpers !== emptyTemplateHelpers;
@@ -137,7 +139,7 @@ export default {
     },
     remove() {
       delete this.templates[this.selectedId];
-      this.selectedId = Object.keys(this.templates)[0];
+      [this.selectedId] = Object.keys(this.templates);
     },
     submitEdit(cancel) {
       const template = this.templates[this.selectedId];

@@ -2,7 +2,7 @@ import yaml from 'js-yaml';
 import '../libs/clunderscore';
 import presets from '../data/presets';
 
-const origin = `${location.protocol}//${location.host}`;
+const origin = `${window.location.protocol}//${window.location.host}`;
 
 // For utils.uid()
 const uidLength = 16;
@@ -71,14 +71,14 @@ export default {
   cleanTrashAfter: 7 * 24 * 60 * 60 * 1000, // 7 days
   origin,
   oauth2RedirectUri: `${origin}/oauth2/callback`,
-  queryParams: parseQueryParams(location.hash.slice(1)),
+  queryParams: parseQueryParams(window.location.hash.slice(1)),
   setQueryParams(params = {}) {
     this.queryParams = params;
     const serializedParams = Object.entries(this.queryParams).map(([key, value]) =>
       `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&');
     const hash = `#${serializedParams}`;
-    if (location.hash !== hash) {
-      location.replace(hash);
+    if (window.location.hash !== hash) {
+      window.location.replace(hash);
     }
   },
   types: [
@@ -111,7 +111,7 @@ export default {
   sanitizeName(name) {
     return `${name || ''}`
       // Replace `/`, control characters and other kind of spaces with a space
-      .replace(/[/\x00-\x1F\x7f-\xa0\s]+/g, ' ').trim()
+      .replace(/[/\x00-\x1F\x7f-\xa0\s]+/g, ' ').trim() // eslint-disable-line no-control-regex
       // Keep only 250 characters
       .slice(0, 250) || this.defaultName;
   },
@@ -172,8 +172,10 @@ export default {
     return Math.abs(this.hash(this.serializeObject(params))).toString(36);
   },
   encodeBase64(str, urlSafe = false) {
-    const result = btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
-      (match, p1) => String.fromCharCode(`0x${p1}`)));
+    const result = btoa(encodeURIComponent(str).replace(
+      /%([0-9A-F]{2})/g,
+      (match, p1) => String.fromCharCode(`0x${p1}`),
+    ));
     if (!urlSafe) {
       return result;
     }
@@ -185,8 +187,10 @@ export default {
   decodeBase64(str) {
     // In case of URL safe base64
     const sanitizedStr = str.replace(/_/g, '/').replace(/-/g, '+');
-    return decodeURIComponent(atob(sanitizedStr).split('').map(
-      c => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`).join(''));
+    return decodeURIComponent(atob(sanitizedStr)
+      .split('')
+      .map(c => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
+      .join(''));
   },
   computeProperties(yamlProperties) {
     let properties = {};
@@ -276,9 +280,9 @@ export default {
   wrapRange(range, eltProperties) {
     const rangeLength = `${range}`.length;
     let wrappedLength = 0;
-    const treeWalker = document.createTreeWalker(
-      range.commonAncestorContainer, NodeFilter.SHOW_TEXT);
-    let startOffset = range.startOffset;
+    const treeWalker = document
+      .createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_TEXT);
+    let { startOffset } = range;
     treeWalker.currentNode = range.startContainer;
     if (treeWalker.currentNode.nodeType === Node.TEXT_NODE || treeWalker.nextNode()) {
       do {

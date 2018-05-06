@@ -33,10 +33,10 @@ function Highlighter(editor) {
       section.forceHighlighting = true;
       if (!noContentFix) {
         if (useBr) {
-          section.elt.getElementsByClassName('hd-lf').cl_each(
-            lfElt => lfElt.parentNode.removeChild(lfElt));
-          section.elt.getElementsByTagName('br').cl_each(
-            brElt => brElt.parentNode.replaceChild(document.createTextNode('\n'), brElt));
+          section.elt.getElementsByClassName('hd-lf')
+            .cl_each(lfElt => lfElt.parentNode.removeChild(lfElt));
+          section.elt.getElementsByTagName('br')
+            .cl_each(brElt => brElt.parentNode.replaceChild(document.createTextNode('\n'), brElt));
         }
         if (section.elt.textContent.slice(-1) !== '\n') {
           section.elt.appendChild(document.createTextNode('\n'));
@@ -127,7 +127,7 @@ function Highlighter(editor) {
       const leftSections = sectionList.slice(0, leftIndex);
       modifiedSections = newSectionList.slice(leftIndex, newSectionList.length + rightIndex);
       const rightSections = sectionList.slice(sectionList.length + rightIndex, sectionList.length);
-      insertBeforeSection = rightSections[0];
+      [insertBeforeSection] = rightSections;
       sectionsToRemove = sectionList.slice(leftIndex, sectionList.length + rightIndex);
       sectionList = leftSections.concat(modifiedSections).concat(rightSections);
     }

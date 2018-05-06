@@ -6,8 +6,8 @@ import fileSvc from './fileSvc';
 
 const dbVersion = 1;
 const dbStoreName = 'objects';
-const exportWorkspace = utils.queryParams.exportWorkspace;
-const silent = utils.queryParams.silent;
+const { exportWorkspace } = utils.queryParams;
+const { silent } = utils.queryParams;
 const resetApp = utils.queryParams.reset;
 const deleteMarkerMaxAge = 1000;
 const checkSponsorshipAfter = (5 * 60 * 1000) + (30 * 1000); // tokenExpirationMargin + 30 sec
@@ -37,7 +37,7 @@ class Connection {
 
     request.onsuccess = (event) => {
       this.db = event.target.result;
-      this.db.onversionchange = () => location.reload();
+      this.db.onversionchange = () => window.location.reload();
 
       this.getTxCbs.forEach(({ onTx, onError }) => this.createTx(onTx, onError));
       this.getTxCbs = null;
@@ -51,16 +51,15 @@ class Connection {
       // the fall-through behavior is what we want.
       /* eslint-disable no-fallthrough */
       switch (oldVersion) {
-        case 0:
-          {
-            // Create store
-            const dbStore = eventDb.createObjectStore(dbStoreName, {
-              keyPath: 'id',
-            });
-            dbStore.createIndex('tx', 'tx', {
-              unique: false,
-            });
-          }
+        case 0: {
+          // Create store
+          const dbStore = eventDb.createObjectStore(dbStoreName, {
+            keyPath: 'id',
+          });
+          dbStore.createIndex('tx', 'tx', {
+            unique: false,
+          });
+        }
         default:
       }
       /* eslint-enable no-fallthrough */
@@ -158,7 +157,7 @@ const localDbSvc = {
    * Read and apply all changes from the DB since previous transaction.
    */
   readAll(tx, cb) {
-    let lastTx = this.lastTx;
+    let { lastTx } = this;
     const dbStore = tx.objectStore(dbStoreName);
     const index = dbStore.index('tx');
     const range = window.IDBKeyRange.lowerBound(this.lastTx, true);
@@ -171,7 +170,7 @@ const localDbSvc = {
           lastTx = item.tx;
           if (this.lastTx && item.tx - this.lastTx > deleteMarkerMaxAge) {
             // We may have missed some delete markers
-            location.reload();
+            window.location.reload();
             return;
           }
         }
@@ -355,16 +354,14 @@ const localDbSvc = {
       .then(() => {
         // Reset the app if reset flag was passed
         if (resetApp) {
-          return Promise.all(
-            Object.keys(store.getters['data/workspaces'])
-              .map(workspaceId => localDbSvc.removeWorkspace(workspaceId)),
-          )
+          return Promise.all(Object.keys(store.getters['data/workspaces'])
+            .map(workspaceId => localDbSvc.removeWorkspace(workspaceId)))
             .then(() => utils.localStorageDataIds.forEach((id) => {
               // Clean data stored in localStorage
               localStorage.removeItem(`data/${id}`);
             }))
             .then(() => {
-              location.reload();
+              window.location.reload();
               throw new Error('reload');
             });
         }
@@ -388,7 +385,7 @@ const localDbSvc = {
 
         // Save welcome file content hash if not done already
         const hash = utils.hash(welcomeFile);
-        const welcomeFileHashes = store.getters['data/localSettings'].welcomeFileHashes;
+        const { welcomeFileHashes } = store.getters['data/localSettings'];
         if (!welcomeFileHashes[hash]) {
           store.dispatch('data/patchLocalSettings', {
             welcomeFileHashes: {
@@ -410,7 +407,7 @@ const localDbSvc = {
 
         // Enable sponsorship
         if (utils.queryParams.paymentSuccess) {
-          location.hash = ''; // PaymentSuccess param is always on its own
+          window.location.hash = ''; // PaymentSuccess param is always on its own
           store.dispatch('modal/paymentSuccess')
             .catch(() => { /* Cancel */ });
           const sponsorToken = store.getters['workspace/sponsorToken'];
@@ -463,8 +460,10 @@ const localDbSvc = {
                     // Cancel new discussion
                     store.commit('discussion/setCurrentDiscussionId');
                     // Open the gutter if file contains discussions
-                    store.commit('discussion/setCurrentDiscussionId',
-                      store.getters['discussion/nextDiscussionId']);
+                    store.commit(
+                      'discussion/setCurrentDiscussionId',
+                      store.getters['discussion/nextDiscussionId'],
+                    );
                   },
                   (err) => {
                     // Failure (content is not available), go back to previous file
@@ -480,7 +479,8 @@ const localDbSvc = {
             }
           }, {
             immediate: true,
-          });
+          },
+        );
       });
   },
 };

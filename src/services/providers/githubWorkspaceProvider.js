@@ -40,7 +40,7 @@ export default new Provider({
   },
   initWorkspace() {
     const [owner, repo] = (utils.queryParams.repo || '').split('/');
-    const branch = utils.queryParams.branch;
+    const { branch } = utils.queryParams;
     const workspaceParams = {
       providerId: this.id,
       repo: `${owner}/${repo}`,
@@ -84,11 +84,11 @@ export default new Provider({
         }
         // Fix the URL hash
         utils.setQueryParams(workspaceParams);
-        if (workspace.url !== location.href) {
+        if (workspace.url !== window.location.href) {
           store.dispatch('data/patchWorkspaces', {
             [workspaceId]: {
               ...workspace,
-              url: location.href,
+              url: window.location.href,
             },
           });
         }
@@ -494,8 +494,8 @@ export default new Provider({
   getRevisionContent(token, fileId, revisionId) {
     const { owner, repo } = getWorkspaceWithOwner();
     return getSyncData(fileId)
-      .then(syncData => githubHelper.downloadFile(
-        token, owner, repo, revisionId, getAbsolutePath(syncData)))
+      .then(syncData => githubHelper
+        .downloadFile(token, owner, repo, revisionId, getAbsolutePath(syncData)))
       .then(({ content }) => Provider.parseContent(content, `${fileId}/content`));
   },
 });

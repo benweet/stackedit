@@ -73,7 +73,12 @@ export default modalTemplate({
         } else {
           // Return new location
           const location = githubProvider.makeLocation(
-            this.config.token, parsedRepo[1], parsedRepo[2], this.branch || 'master', this.path);
+            this.config.token,
+            parsedRepo[1],
+            parsedRepo[2],
+            this.branch || 'master',
+            this.path,
+          );
           location.templateId = this.selectedTemplate;
           this.config.resolve(location);
         }

@@ -10,13 +10,11 @@ export default {
    * Get an object describing the position of the scroll bar in the file.
    */
   getScrollPosition(elt = store.getters['layout/styles'].showEditor
-    ? this.editorElt
-    : this.previewElt,
-  ) {
+    ? this.editorElt : this.previewElt) {
     const dimensionKey = elt === this.editorElt
       ? 'editorDimension'
       : 'previewDimension';
-    const scrollTop = elt.parentNode.scrollTop;
+    const { scrollTop } = elt.parentNode;
     let result;
     if (this.previewCtxMeasured) {
       this.previewCtxMeasured.sectionDescList.some((sectionDesc, sectionIdx) => {
@@ -39,7 +37,7 @@ export default {
    * Restore the scroll position from the current file content state.
    */
   restoreScrollPosition() {
-    const scrollPosition = store.getters['contentState/current'].scrollPosition;
+    const { scrollPosition } = store.getters['contentState/current'];
     if (scrollPosition && this.previewCtxMeasured) {
       const sectionDesc = this.previewCtxMeasured.sectionDescList[scrollPosition.sectionIdx];
       if (sectionDesc) {

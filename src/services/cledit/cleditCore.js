@@ -12,7 +12,7 @@ function cledit(contentElt, scrollEltOpt, isMarkdown = false) {
     $markers: {},
   };
   cledit.Utils.createEventHooks(editor);
-  const debounce = cledit.Utils.debounce;
+  const { debounce } = cledit.Utils;
 
   contentElt.setAttribute('tabindex', '0'); // To have focus even when disabled
   editor.toggleEditable = (isEditable) => {
@@ -21,7 +21,7 @@ function cledit(contentElt, scrollEltOpt, isMarkdown = false) {
   editor.toggleEditable(true);
 
   function getTextContent() {
-     // Markdown-it sanitization (Mac/DOS to Unix)
+    // Markdown-it sanitization (Mac/DOS to Unix)
     let textContent = contentElt.textContent.replace(/\r[\n\u0085]?|[\u2424\u2028\u0085]/g, '\n');
     if (textContent.slice(-1) !== '\n') {
       textContent += '\n';
@@ -258,8 +258,10 @@ function cledit(contentElt, scrollEltOpt, isMarkdown = false) {
   window.addEventListener('resize', windowResizeListener);
 
   // Provokes selection changes and does not fire mouseup event on Chrome/OSX
-  contentElt.addEventListener('contextmenu',
-    selectionMgr.saveSelectionState.cl_bind(selectionMgr, true, false));
+  contentElt.addEventListener(
+    'contextmenu',
+    selectionMgr.saveSelectionState.cl_bind(selectionMgr, true, false),
+  );
 
   contentElt.addEventListener('keydown', keydownHandler((evt) => {
     selectionMgr.saveSelectionState();
@@ -344,7 +346,7 @@ function cledit(contentElt, scrollEltOpt, isMarkdown = false) {
     undoMgr.setCurrentMode('single');
     evt.preventDefault();
     let data;
-    let clipboardData = evt.clipboardData;
+    let { clipboardData } = evt;
     if (clipboardData) {
       data = clipboardData.getData('text/plain');
       if (turndownService) {
@@ -362,7 +364,7 @@ function cledit(contentElt, scrollEltOpt, isMarkdown = false) {
         }
       }
     } else {
-      clipboardData = window.clipboardData;
+      ({ clipboardData } = window.clipboardData);
       data = clipboardData && clipboardData.getData('Text');
     }
     if (!data) {
@@ -382,8 +384,9 @@ function cledit(contentElt, scrollEltOpt, isMarkdown = false) {
 
   function addKeystroke(keystroke) {
     const keystrokes = Array.isArray(keystroke) ? keystroke : [keystroke];
-    editor.$keystrokes = editor.$keystrokes.concat(keystrokes).sort(
-      (keystroke1, keystroke2) => keystroke1.priority - keystroke2.priority);
+    editor.$keystrokes = editor.$keystrokes
+      .concat(keystrokes)
+      .sort((keystroke1, keystroke2) => keystroke1.priority - keystroke2.priority);
   }
   addKeystroke(cledit.defaultKeystrokes);
 

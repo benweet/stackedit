@@ -126,7 +126,7 @@ export default {
 
 
 <style lang="scss">
-@import 'common/variables.scss';
+@import '../styles/variables.scss';
 
 .tour {
   position: absolute;

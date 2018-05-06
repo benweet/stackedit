@@ -40,7 +40,8 @@ export default modalTemplate({
             this.$store.dispatch('data/patchLocalSettings', {
               googleDriveWorkspaceFolderId: folders[0].id,
             });
-          }));
+          }),
+      );
     },
     resolve() {
       const url = utils.addQueryParams('app', {

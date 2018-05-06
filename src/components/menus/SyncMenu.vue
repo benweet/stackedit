@@ -170,13 +170,17 @@ export default {
     },
     openGoogleDrive(token) {
       return googleHelper.openPicker(token, 'doc')
-        .then(files => this.$store.dispatch('queue/enqueue',
-          () => googleDriveProvider.openFiles(token, files)));
+        .then(files => this.$store.dispatch(
+          'queue/enqueue',
+          () => googleDriveProvider.openFiles(token, files),
+        ));
     },
     openDropbox(token) {
       return dropboxHelper.openChooser(token)
-        .then(paths => this.$store.dispatch('queue/enqueue',
-          () => dropboxProvider.openFiles(token, paths)));
+        .then(paths => this.$store.dispatch(
+          'queue/enqueue',
+          () => dropboxProvider.openFiles(token, paths),
+        ));
     },
     saveGoogleDrive(token) {
       return openSyncModal(token, 'googleDriveSave')
@@ -191,8 +195,10 @@ export default {
         type: 'githubOpen',
         token,
       })
-        .then(syncLocation => this.$store.dispatch('queue/enqueue',
-          () => githubProvider.openFile(token, syncLocation)));
+        .then(syncLocation => this.$store.dispatch(
+          'queue/enqueue',
+          () => githubProvider.openFile(token, syncLocation),
+        ));
     },
     saveGithub(token) {
       return openSyncModal(token, 'githubSave')

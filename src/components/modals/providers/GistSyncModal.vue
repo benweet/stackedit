@@ -51,7 +51,11 @@ export default modalTemplate({
       } else {
         // Return new location
         const location = gistProvider.makeLocation(
-          this.config.token, this.filename, this.isPublic, this.gistId);
+          this.config.token,
+          this.filename,
+          this.isPublic,
+          this.gistId,
+        );
         this.config.resolve(location);
       }
     },

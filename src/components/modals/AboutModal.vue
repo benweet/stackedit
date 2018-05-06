@@ -6,7 +6,7 @@
       <hr>
       StackEdit on <a target="_blank" href="https://github.com/benweet/stackedit/">GitHub</a>
       <br>
-      <a target="_blank" href="https://github.com/benweet/stackedit/issues">Issue tracker</a> — <a target="_blank" href="https://github.com/benweet/stackedit/blob/master/CHANGELOG.md">Changelog</a>
+      <a target="_blank" href="https://github.com/benweet/stackedit/issues">Issue tracker</a> — <a target="_blank" href="https://github.com/benweet/stackedit/releases">Changelog</a>
       <br>
       <a target="_blank" href="https://chrome.google.com/webstore/detail/iiooodelglhkcpgbajoejffhijaclcdg">Chrome app</a> — <a target="_blank" href="https://chrome.google.com/webstore/detail/ajehldoplanpchfokmeempkekhnhmoha">Chrome extension</a>
       <br>
